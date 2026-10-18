@@ -30,7 +30,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED-RETRO:2026-10-18 T0-ONLY LAB:results CLASS:C1 REVIEWER:Claude Haiku blind-then-reveal TRUST:UNCHECKED | Operator 2026-10-18: nobody else will pick this up; filed so it is not lost. Rough prior (NOT a result): 2020-2021 is about 730 days, so the total is probably below 2,427.",
+  "note": "REVIEWED-RETRO:2026-10-18 T0-ONLY LAB:results CLASS:C1 REVIEWER:Claude Haiku blind-then-reveal TRUST:UNCHECKED | Operator 2026-10-18: nobody else will pick this up; filed so it is not lost. Rough prior (NOT a result): 2020-2021 is about 730 days, so the total is probably below 2,427.\nREVIEWED: gemini-4-argon-low 2026-10-18 - Independent cross-vendor Lab_Guy(GEM-NUC) review (producer=CODEX, class=C1, weight=B-SHARED): ACCEPT.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -59,5 +59,6 @@
   "tests": "recount of the 662 baseline with the same script must reproduce 662 before adding new days",
   "title": "Q76/B187: does F:/MTS/data/dev_ext_2019_2021 (exists on the NUC) lift the power gate from 662 to the 2,427 feasible days needed? Count before any data is fetched",
   "weight": "B-SHARED",
-  "worker": "agent"
+  "worker": "agent",
+  "updated": "2026-10-18T10:00:00Z"
 }

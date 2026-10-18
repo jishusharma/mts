@@ -25,7 +25,7 @@
   ],
   "layers": [],
   "live_path": true,
-  "note": "REVIEWED:2026-10-18 ACCEPT LAB:none CLASS:C3 REVIEWER:review SESSION DECISION (OURS): cause hypothesis = main() opens and json-loads every snapshot file each cycle even when already labeled (unbounded growth vs the 30 s timeout at start-trading-day.ps1:547); fix = skip labeled files before opening, keep the timeout; tested on a synthetic dir (the script hardcodes the live path R, tests must patch SNAPS/LABELS, never read the live tree).\n[REVIEW 2026-10-18 by Lab_Guy(GEM-NUC) model=gemini-4-argon-low class=C3 weight=CRITICAL]: REVIEWED:2026-10-18 ACCEPT — Spec, scope_in, steps, and done_when verified against live repo state and Lab_Guy v3.1 E1-E7 checklist.",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C3 REVIEWER:review SESSION DECISION (OURS): cause hypothesis = main() opens and json-loads every snapshot file each cycle even when already labeled (unbounded growth vs the 30 s timeout at start-trading-day.ps1:547); fix = skip labeled files before opening, keep the timeout; tested on a synthetic dir (the script hardcodes the live path R, tests must patch SNAPS/LABELS, never read the live tree).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -55,6 +55,5 @@
   "tests": "scripts/dev/test_outcome_labeler_incremental.py::test_labeled_snapshots_are_not_reopened (fails on current load_snapshots, which opens every file)",
   "title": "Network: outcome_labeler hits its 30 s timeout in the live loop (find cause, raise or fix)",
   "weight": "CRITICAL",
-  "worker": "session",
-  "updated": "2026-10-18T05:30:00Z"
+  "worker": "session"
 }

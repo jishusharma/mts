@@ -89,6 +89,19 @@ class TestLayerBoundaries(unittest.TestCase):
                     failures.append(f"{py_file.name} imports {imp}")
         self.assertFalse(failures, "; ".join(failures))
 
+    def test_kurisko_is_observation_only(self):
+        """kurisko/ is observation-only: stdlib, its own modules and rsi_core only (no execution, no Tom code, no numpy)."""
+        allowed = {"math", "collections", "csv", "json", "sys", "unittest", "pathlib", "stoch_core", "quad_rotation",
+                   "MyTradingSys"}
+        failures = []
+        for py_file in (self.layers_dir / "kurisko").glob("*.py"):
+            for imp in self.get_imports(py_file):
+                root = imp.split(".")[0]
+                ok = root in allowed and (root != "MyTradingSys" or imp == "MyTradingSys.backtest.layers.rsi.rsi_core")
+                if not ok:
+                    failures.append(f"{py_file.name} imports {imp}")
+        self.assertFalse(failures, "; ".join(failures))
+
     def test_execution_doesnt_import_layer_backtest(self):
         """Verify no .py under execution/ imports MyTradingSys.backtest.layers."""
         failures = []

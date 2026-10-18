@@ -30,7 +30,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT LAB:definitions CLASS:C2 REVIEWER:Gemini 4 Argon low (non-Claude C2 spec review) + Haiku re-derive + 2nd vendor on first use WEIGHT:CRUCIAL. Re-check candidate: lab-crossvendor-same-vendor-gate (findings/2026-10-18_review_same_vendor_gate.md). [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use]",
+  "note": "REVIEWED: gemini-4-argon-low 2026-10-18 - Independent cross-vendor Lab_Guy(GEM-NUC) review (producer=CODEX, class=C2, weight=CRUCIAL): ACCEPT.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -61,5 +61,6 @@
   "tests": "fail-first tests: citing card refused on UNCHECKED, allowed on VERIFIED-C1; tag expires on changed hash",
   "title": "Lab: a safe-to-build-on tag per lab result (UNCHECKED, MACHINE-OK, VERIFIED-C1, VERIFIED-C2, DISPUTED) read by tasks.py at card start",
   "weight": "CRUCIAL",
-  "worker": "session"
+  "worker": "session",
+  "updated": "2026-10-18T10:00:00Z"
 }

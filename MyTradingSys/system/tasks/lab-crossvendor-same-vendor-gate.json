@@ -39,7 +39,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED-RETRO:2026-10-18 T0-ONLY LAB:definitions CLASS:C2 REVIEWER:none-recorded (C2 re-review pending, Lab_Guy; see findings/2026-10-18_review_same_vendor_gate.md, follow-up lab-vendor-gate-harden DONE) TRUST:UNCHECKED | lab-touch=yes class=C1 reviewer=Gemini Flash high",
+  "note": "REVIEWED-RETRO:2026-10-18 T0-ONLY LAB:definitions CLASS:C2 REVIEWER:none-recorded (C2 re-review pending, Lab_Guy; see findings/2026-10-18_review_same_vendor_gate.md, follow-up lab-vendor-gate-harden DONE) TRUST:UNCHECKED | lab-touch=yes class=C1 reviewer=Gemini Flash high\nREVIEWED: gemini-4-argon-low 2026-10-18 - Independent cross-vendor Lab_Guy(GEM-NUC) review (producer=CODEX, class=C2, weight=IMPORTANT): ACCEPT.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -70,5 +70,6 @@
   "tests": "fail-first test in scripts/dev/test_lab_flow.py: codex/gpt-6.1-sol reviewing codex/gpt-6-astra is rejected; different vendor accepted; C0 override accepted",
   "title": "Lab: lab_flow gate must reject same-vendor producer/reviewer pairs (compare vendor, not model id)",
   "weight": "IMPORTANT",
-  "worker": "session"
+  "worker": "session",
+  "updated": "2026-10-18T10:00:00Z"
 }

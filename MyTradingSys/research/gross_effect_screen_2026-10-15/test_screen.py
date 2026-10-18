@@ -146,6 +146,75 @@ def test_small_n_inconclusive():
     assert res["verdict"] == "INCONCLUSIVE", res
 
 
+def test_manifest_matches_pass():
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        f1 = tdp / "file1.csv"
+        f2 = tdp / "file2.csv"
+        f1.write_bytes(b"hello world")
+        f2.write_bytes(b"test data 123")
+        man = tdp / "DATA_MANIFEST.csv"
+        rows1 = S.check_manifest([f1, f2], path=man)
+        assert man.exists()
+        assert len(rows1) == 2
+        # Second call with existing matching manifest passes without error
+        rows2 = S.check_manifest([f1, f2], path=man)
+        assert rows1 == rows2
+
+
+def test_manifest_refuses_changed_input():
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        f1 = tdp / "file1.csv"
+        f1.write_bytes(b"original content")
+        man = tdp / "DATA_MANIFEST.csv"
+        S.check_manifest([f1], path=man)
+        frozen_bytes = man.read_bytes()
+
+        # Modify file by one byte
+        f1.write_bytes(b"original content!")
+        try:
+            S.check_manifest([f1], path=man)
+        except SystemExit as exc:
+            assert "file1.csv" in str(exc)
+        else:
+            raise AssertionError("check_manifest did not raise SystemExit on changed content")
+        assert man.read_bytes() == frozen_bytes, "Manifest was modified on refusal"
+
+
+def test_manifest_refuses_file_set_change():
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        f1 = tdp / "file1.csv"
+        f2 = tdp / "file2.csv"
+        f1.write_bytes(b"content1")
+        f2.write_bytes(b"content2")
+        man = tdp / "DATA_MANIFEST.csv"
+        S.check_manifest([f1], path=man)
+        frozen_bytes = man.read_bytes()
+
+        # Extra file
+        try:
+            S.check_manifest([f1, f2], path=man)
+        except SystemExit as exc:
+            assert "file2.csv" in str(exc) or "file" in str(exc).lower()
+        else:
+            raise AssertionError("check_manifest did not raise SystemExit on extra file")
+        assert man.read_bytes() == frozen_bytes
+
+        # Missing file
+        man2 = tdp / "DATA_MANIFEST_2.csv"
+        S.check_manifest([f1, f2], path=man2)
+        frozen_bytes2 = man2.read_bytes()
+        try:
+            S.check_manifest([f1], path=man2)
+        except SystemExit as exc:
+            assert "file2.csv" in str(exc) or "file" in str(exc).lower()
+        else:
+            raise AssertionError("check_manifest did not raise SystemExit on missing file")
+        assert man2.read_bytes() == frozen_bytes2
+
+
 def main():
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]
     for t in tests:
@@ -156,3 +225,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

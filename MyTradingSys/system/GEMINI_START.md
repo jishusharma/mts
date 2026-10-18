@@ -31,6 +31,7 @@ The tool actually installed on the NUC (2026-10-17) is the **Google Antigravity 
 5. Gemini never restarts processes, touches HALT files, opens trades, or reads `.secrets/` / `.env` / keys. Testnet only. The repo is PUBLIC: never commit runtime, order or account data.
 6. Cards that need `OPUS` stay with Claude. CI gates Gemini code exactly like Claude code; Claude spot-checks one claim per Gemini report.
 7. Data-bound cards (1m klines, DAX archive, videos live on JIS-NB disks): post a desk task (`desk.py post ... --target JIS-NB`) instead of guessing.
+8. **NO ASSUMPTIONS, NO FABRICATIONS (strict `Producer != Reviewer`)**: Never self-stamp `ACCEPT` on a `C1+` / `IMPORTANT+` card that Gemini refined or built (`refined_by: gemini-*` gets `REVIEWED:<YYYY-MM-DD> T0-ONLY` only, leaving `C1+`/`IMPORTANT+` cards in `refined` for a non-Gemini reviewer). Never bulk-replace `T0-ONLY` with `ACCEPT` or bulk-append `HOLD-CLEARED` via script. Only stamp `REVIEWED: <gemini-model-id> <YYYY-MM-DD>` (`ACCEPT`/`FIX`/`REWORK`) when acting as an independent cross-vendor reviewer on a Claude/Codex card after verifying every `file:line` and `E1`–`E7` check one card at a time.
 
 ## How Google AI Pro works (checked 2026-10-17; there is no "project" object, unlike the Codex app)
 - It is an IDE (Antigravity) plus a terminal tool (Antigravity CLI), not a project-based app like Codex. Old route (Code Assist extension in VS Code, Gemini CLI login) is dead for AI Pro. Quota for the AI Pro login: see Google's Antigravity pricing page (UNVERIFIED here).
@@ -57,6 +58,7 @@ You are an MTS builder session (surface GEM, Gemini). Work only in this folder. 
 2. `sync.py ship --release <slug>`, `sync.py where` clean.
 Commit trailer `MTS-Session: MTS-<UTC date>-<HHMMZ>-GEM-BLD-<slug>`, body line `Result: <what works now / the number>`.
 Provenance rule applies: label every parameter SOURCED (trader's quote + file:line) or OURS (CLAUDE.md Hard rules).
+NO ASSUMPTIONS, NO FABRICATIONS: never self-stamp ACCEPT on cards Gemini refined/built (use T0-ONLY); never bulk-stamp ACCEPT or HOLD-CLEARED.
 Skip OPUS cards; do not touch NEXT_SESSION.md or the relay. One card per session, then stop with a one-line summary.
 ```
 

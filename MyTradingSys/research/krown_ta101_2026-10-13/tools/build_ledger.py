@@ -20,7 +20,9 @@ CODES = {"CAN": "8MvxK_nxO-0", "TFR": "_t_XIBrcjRk", "TRL": "14bxwxC8gBQ", "SNR"
          "MAV": "-NXzJs5JRks", "RNG": "6aA-P4Gvhrc", "FEE": "HhV4HI9p5Uw",
          # batch 2 (2026-10-14): the March-June 2026 videos
          "GDE": "Aysdt7PBETQ", "TRD": "2-nG9bsMoPQ", "LVL": "2ei4fj-Ba24", "VJZ": "vjzy_KxJ_y8", "RSI": "INOCBmqQupc",
-         "KCM": "kcMnnQr1VFg", "TOP": "7IxfsuD2wCM"}
+         "KCM": "kcMnnQr1VFg", "TOP": "7IxfsuD2wCM",
+         # batch 3 (2026-10-18): Foundations ep8 (order book)
+         "OBK": "ftK2BqggabQ"}
 
 FAMILIES = {
     "T": "Top-down and context (timeframes, modes)",
@@ -35,6 +37,7 @@ FAMILIES = {
     "P": "Major tops: the four-signal sell framework",
     "X": "Risk and execution",
     "F": "Framing and claims (not rules)",
+    "OBK": "Order book and market structure (Foundations ep8)",
 }
 
 # id, name, side, type, rule, params, label, sources, mirror, encodability, phase3, blockers
@@ -523,6 +526,47 @@ add("KR-F11", "Put it into a testable format, test, document, iterate", "none", 
     "After the four steps the idea is put into a testable format (the scientific method applied to trading), tested, the results documented and then either iterated or put into motion.",
     "no test length, sample or pass criterion", "NONE", "GDE-27", "n/a", "NOT_TA", "REJECT", "meta: this is our own protocol (PRE_REG_KROWN.md)")
 
+# =====================================================================================================================
+# BATCH 3 (2026-10-18): Foundations ep8 (ftK2BqggabQ, order book). Execution lesson, not a directional setup video.
+# Krown explicitly rejects using the order book to pick direction (REJECT).
+# =====================================================================================================================
+add("KR-OBK01", "Maker vs taker fee gap", "none", "PROCESS",
+    "A resting limit order adds liquidity and fills as a maker at lower fees (even placed 1 cent below the best bid); a market order crosses the spread, consumes liquidity, and fills as a taker at higher fees. Fee gap is an execution and cost input, not a directional setup.",
+    'maker lower fees: "maker orders will incur significantly less fees than taker orders" (ftK2BqggabQ t=00:09:51); "even if you put it like 1 cent below the best bid, you are still a maker" (ftK2BqggabQ t=00:07:42)',
+    "SOURCED", "OBK-06;OBK-07", "n/a", "MECHANICAL", "READY",
+    "cost realism input only (gap-g7, dsa-audit-06); use exchange published fee tables, not affiliate figures (t=00:09:44); no directional signal")
+add("KR-OBK02", "Healthy market has tight spread and deep book", "none", "CONTEXT/REGIME",
+    "The spread is the gap between the highest bid and the lowest ask (to buy now pay ask, to sell now hit bid). A healthy market has an extremely small spread and a deep book that is cheap to cross; a wide spread represents a large friction tax on takers.",
+    'tight spread / deep book: "extremely small between the best bid and the best ask" (ftK2BqggabQ t=00:03:40); "deep book, which is cheap to cross" (ftK2BqggabQ t=00:04:03); 1 cent spread example on BTC at 79,260 (t=00:03:55)',
+    "SOURCED", "OBK-03;OBK-04", "n/a", "PARTIAL", "READY",
+    "thresholds for tight spread and deep book are not defined; execution cost filter, not a directional rule")
+add("KR-OBK03", "Market orders move price; resting orders cannot", "none", "MENTAL-MODEL",
+    "Market orders never appear in the order book; they lift or hit resting orders, show up on the tape (recent trades), and are the only orders that move price. Limit orders cannot move the market; resting orders can be cancelled at any moment and are advertisement, not a promise.",
+    'market orders move price: "Market orders never appear in the order books" (ftK2BqggabQ t=00:17:52); "A limit order cannot move price" (ftK2BqggabQ t=00:18:32); "Limit orders cannot move the market" (ftK2BqggabQ t=00:18:49)',
+    "SOURCED", "OBK-10;OBK-13;OBK-05", "n/a", "NOT_TA", "READY",
+    "market structure mental model; supports measuring taker flow (CVD/aggTrades); no order-book layer")
+add("KR-OBK04", "Hidden size: iceberg, hidden orders, TWAP", "none", "PATTERN",
+    "Large participants hide size using iceberg orders, straight hidden orders, split orders, or TWAP execution; the visible book stopping at a price with no liquidity beyond it is a tell, and real walls are typically invisible.",
+    'hidden size: "You can do what\'s called iceberg orders or just straight up hidden orders" (ftK2BqggabQ t=00:19:06); "real walls typically are invisible" (ftK2BqggabQ t=00:19:29); "T-WP, you know, time weighted average price order" (ftK2BqggabQ t=00:25:35)',
+    "SOURCED", "OBK-14", "n/a", "PARTIAL", "READY",
+    "no quantitative detection algorithm or threshold given in extract; descriptive pattern of large player execution")
+add("KR-OBK05", "Painting the book and spoofing", "none", "PATTERN",
+    "Displayed depth is often manipulated by painting the book or spoofing: showing big size with no intent to get filled to bait other participants and algos, then pulling the orders before execution. Obvious outlier walls are typically spoofing or tricky orders.",
+    'spoofing: "that\'s where you show big size that you never intend to get filled" (ftK2BqggabQ t=00:19:55); "Those are the ones to pay attention to because those are typically, you know, spoofing or tricky orders" (ftK2BqggabQ t=00:30:21)',
+    "SOURCED", "OBK-12;OBK-21", "n/a", "PARTIAL", "READY",
+    "no quantitative spoof detection rule; qualitative pattern; any wall idea needs its own PRE_REG with null expectation")
+add("KR-OBK06", "Order book is a poor direction tool", "none", "MENTAL-MODEL",
+    "The order book is one of the worst ways to pick market direction and staring at the book to predict moves is misleading; resting orders vanish with a click. The book is the worst compass to use but the best receipt for execution. Direction belongs to chart skills (episodes 1-7).",
+    'REJECT for direction: "The order book is one of the worst ways to pick directions" (ftK2BqggabQ t=00:25:00); "anyone telling you they predict markets by staring at the book in my opinion is misleading you" (ftK2BqggabQ t=00:25:38); "worst compass to use but it is the best receipt" (ftK2BqggabQ t=00:31:03)',
+    "SOURCED", "OBK-17;OBK-11;OBK-01", "n/a", "NOT_TA", "REJECT",
+    "REJECT for directional trading: Krown explicitly rejects using order book depth or walls to predict direction; negative rule; no order-book layer")
+add("KR-OBK07", "The 10-second pre-execution habit", "long", "PROCESS",
+    "Three checks taking no more than 10 seconds before clicking buy: (1) look at spread and depth (avoid paying a silent tax on a wide spread), (2) when patient, prefer the limit order for lower maker fees, (3) respect size versus depth (an order big relative to resting depth moves price against you before filling).",
+    '10-second habit: "three checks. It should take you no more than 10 seconds before you click buy" (ftK2BqggabQ t=00:28:13); "chew through all the order book until it fills that 10 Bitcoin" causing 30-40 dollar slippage illustration (ftK2BqggabQ t=00:27:10, t=00:27:23)',
+    "SOURCED", "OBK-20;OBK-19", "yes (short execution mirror implied)", "DISCRETIONARY", "READY",
+    "human pre-execution checklist; testnet orders are too small for size-vs-depth slippage; cost/slippage inputs map to gap-g7 and dsa-audit-06")
+
+
 CONFLICTS = [
     ("C1", "KR-Z13 vs KR-L02", "More touches weaken a level, beyond three it breaks (SNR-18, SNR-19); three touches make a line a trend (TRL-08).",
      "Different objects (a horizontal level versus a trend line) but the same counting variable pulls opposite ways. Not resolved: test touch count against bounce size and break rate separately for levels and lines."),
@@ -599,7 +643,7 @@ def main():
                 bad.append((rid, tok))
             codes.add(code)
         n = len(codes)
-        rows.append(dict(rule_id=rid, family=rid[3], name=name, side=side, type=typ, rule=rule, params=params,
+        rows.append(dict(rule_id=rid, family=re.match(r"^KR-([A-Z]+)", rid).group(1), name=name, side=side, type=typ, rule=rule, params=params,
                          param_label=label, sources=sources, n_videos=n,
                          cluster=("OK" if n >= 3 else "PROVISIONAL"), mirror_stated=mirror, encodability=enc,
                          phase3=ph3, blockers=blockers, tier="T3"))
@@ -629,7 +673,7 @@ def main():
                "`CODE-NN` = concept `K-<video id>-NN` (codes in MANIFEST.csv). Batch 1 (Aug-Oct 2026): CAN=ep1 candles, TFR=ep2 timeframes, TRL=ep3 trend lines, "
                "SNR=ep4 support/resistance, VOL=ep5 volume, MAV=ep6 moving averages, RNG=ep7 range, FEE=fees video. Batch 2 (Mar-Jun 2026): "
                "GDE=intro guide, TRD=trend (dominant highs and lows), LVL=levels, VJZ=moving-average setup, RSI=RSI, KCM=volatility (BBWP) and entry timing, "
-               "TOP=selling long-term holdings at tops. Every source token was "
+               "TOP=selling long-term holdings at tops. Batch 3 (Oct 2026): OBK=ep8 order book. Every source token was "
                "checked against the real concept headings: dead pointers = 0.\n")
     out.append(f"**{total} consolidated rules: {by3['READY']} READY, {by3['BLOCKED']} BLOCKED, {by3['REJECT']} REJECT** "
                f"(READY or BLOCKED rows seen in fewer than 3 videos are PROVISIONAL: {prov}). Parameter labels: SOURCED = his words carry the number, "

@@ -42,8 +42,10 @@ PYTEST_LAYER_PATHS = [
     "scripts/dev/test_live_owner.py",
     "scripts/dev/test_loop_supervisor_grace.py",
     "scripts/dev/test_nowin.py",
+    "scripts/dev/test_outcome_labeler_incremental.py",
     "scripts/dev/test_wrapper_load_resilience.py",
     "scripts/dev/test_gate_priority.py",
+    "scripts/dev/test_gate_scratch.py",
     "scripts/dev/test_feed_watchdog_script.py",
     "MyTradingSys/observation/tests",
 ]
@@ -140,8 +142,21 @@ def gate_tmp(prefix):
 def pytest_cmd(targets, root=REPO):
     """One gate pytest step: own basetemp (parallel pytest processes share %TEMP%/pytest-of-<user> and its cleanup raises PermissionError
     after all tests pass: JIS-NB 2026-10-14, six ships at once), no cache dir, and transient tmp dirs ignored (transient_ignore_glob)."""
+    scratch = tempfile.mkdtemp(prefix="mts_s4_")
+    _SCRATCH.append(scratch)
     return [sys.executable, "-m", "pytest", *targets, "-q", "-p", "no:cacheprovider", transient_ignore_glob(root),
-            f"--basetemp={gate_tmp('mts_s4_') / 'bt'}"]
+            f"--basetemp={Path(scratch) / 'bt'}"]
+
+
+_SCRATCH = []
+
+
+@atexit.register
+def _drop_scratch():
+    """B194: every gate run left ~12 mts_s4_* dirs of ~1000 files in %TEMP% (963 dirs / 374k files on JIS-NB by 2026-10-18, one run per
+    AutoDeploy tick); the User Profile Service logon step grew from 18 s to 340 s as they piled up. Remove them when the run ends."""
+    for d in _SCRATCH:
+        shutil.rmtree(d, ignore_errors=True)
 
 
 def unbuffer(stream=None):
@@ -360,6 +375,7 @@ def build_plan(quick):
     add("3c", "User guide in sync with mts.ps1", [sys.executable, "scripts/dev/check_guide.py"], "Step 3c: Guide in sync")
     add("3r", "Alert rate checker tests", [sys.executable, "scripts/dev/test_alert_rate_check.py"], "Step 3r: Alert rate checker tests")
     add("3cv", "Chart verify (RSI/BB/StochRSI) tests", [sys.executable, "scripts/dev/test_chart_verify.py"], "Step 3cv: Chart verify tests")
+    add("3tm", "One timeframe map tests", [sys.executable, "scripts/dev/test_tf_map.py"], "Step 3tm: TF map tests")
     add("3s", "Testnet status summary tests", [sys.executable, "scripts/dev/test_testnet_status.py"], "Step 3s: Testnet status tests")
     add("3f", "Funnel report tests", [sys.executable, "scripts/dev/test_funnel_report.py"], "Step 3f: Funnel report tests")
     plan.append(Step("3dk", "Desk board tests", "Step 3dk: Desk board tests", run=lambda: exec_unittest_shards("scripts/dev/test_desk.py", gate_jobs() if gate_jobs() == 1 else 2), cmd_text="python -m unittest (scripts/dev/test_desk.py, 2 shards)", tail=None))
@@ -369,6 +385,7 @@ def build_plan(quick):
     add("3sq", "Spec quote checker tests", [sys.executable, "scripts/dev/test_check_spec_quotes.py"], "Step 3sq: Spec quote checker tests")   # spec quotes verbatim in the cited transcript lines
     add("3ly", "Layer index tests", [sys.executable, "scripts/dev/test_make_layers_md.py"], "Step 3ly: Layer index tests")   # LAYERS.md: no dead pointer, every layer owned
     add("3cx", "Layer lab runner tests", [sys.executable, "scripts/dev/test_codex_run.py"], "Step 3cx: Layer lab runner tests")
+    add("3cy", "ask_model tests", [sys.executable, "scripts/dev/test_ask_model.py"], "Step 3cy: ask_model tests")
     add("3tl", "Task cards meet the Definition of Ready", [sys.executable, "scripts/dev/tasks.py", "lint"], "Step 3tl: Task card lint")   # a ready/active card that fails the Definition of Ready is an error
     add("3q", "INDEX/BUGS consistency", [sys.executable, "scripts/dev/test_registry_consistency.py"], "Step 3q: INDEX/BUGS consistency")
     add("3p", "P4 corrected script tests", [sys.executable, "MyTradingSys/research/test_p4_corrected.py"], "Step 3p: P4 corrected script tests")

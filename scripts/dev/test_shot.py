@@ -445,6 +445,56 @@ class ShotTest(unittest.TestCase):
             rc, _, _ = self.run_main("hook", stdin=self.payload())
         self.assertEqual(rc, 0)
 
+    # ------------------------------------------------------------ carried falsifiers (T092)
+    def test_falsifier_status_price_level_held(self):
+        # SOURCED line: "Falsify: acceptance under 82630" (test_shot.py:211, B157_screenshot_read_starts_cold.md:7)
+        # OURS fixture: low touches/dips to 82600 (tested), but close 82650 holds above 82630
+        line = "Falsify: acceptance under 82630"
+        klines = [{"o": 82700.0, "h": 82750.0, "l": 82600.0, "c": 82650.0}]
+        self.assertEqual(shot.falsifier_status(line, klines), "HELD")
+
+    def test_falsifier_status_price_level_broken_by_close(self):
+        # SOURCED line: "Falsify: acceptance under 82630" (test_shot.py:211, B157_screenshot_read_starts_cold.md:7)
+        # OURS fixture: close 82550 is below 82630
+        line = "Falsify: acceptance under 82630"
+        klines = [{"o": 82700.0, "h": 82750.0, "l": 82500.0, "c": 82550.0}]
+        self.assertEqual(shot.falsifier_status(line, klines), "BROKEN")
+
+    def test_falsifier_status_price_level_not_yet_reached(self):
+        # SOURCED line: "Falsify: acceptance under 82630" (test_shot.py:211, B157_screenshot_read_starts_cold.md:7)
+        # OURS fixture: low 82680 never reaches 82630
+        line = "Falsify: acceptance under 82630"
+        klines = [{"o": 82700.0, "h": 82800.0, "l": 82680.0, "c": 82750.0}]
+        self.assertEqual(shot.falsifier_status(line, klines), "UNTESTED")
+
+    def test_falsifier_status_range_and_non_price_lines(self):
+        # SOURCED line: "Invalidation: acceptance outside 82450-83470" (test_shot.py:211)
+        line = "Invalidation: acceptance outside 82450-83470"
+        # Level held: low probes 82400 but close is 82460 (inside range)
+        self.assertEqual(shot.falsifier_status(line, [{"o": 82500, "h": 82600, "l": 82400, "c": 82460}]), "HELD")
+        # Broken: close 82400 (outside range)
+        self.assertEqual(shot.falsifier_status(line, [{"o": 82500, "h": 82600, "l": 82350, "c": 82400}]), "BROKEN")
+        # Unreached: all bars inside [82450, 83470] without touching bounds
+        self.assertEqual(shot.falsifier_status(line, [{"o": 82500, "h": 83000, "l": 82500, "c": 82900}]), "UNTESTED")
+        # SOURCED line: "- falsify if CVD flips" (test_shot.py:212) -> non-price line -> UNTESTED
+        self.assertEqual(shot.falsifier_status("- falsify if CVD flips", [{"o": 82500, "h": 82600, "l": 82400, "c": 82460}]), "UNTESTED")
+
+    def test_read_prints_status_for_each_carried_falsifier(self):
+        c = self.chart("c", "5m")
+        rows = "| C1-01 | MATCH | a | b |\n"
+        old = self.tmp / "prior_read.md"
+        old.write_text("Shots: x\n- Invalidation: acceptance outside 82450-83470\nFalsify: acceptance under 82630\n- falsify if CVD flips\n",
+                       encoding="utf-8", newline="\n")
+        ext = self.extract("Shots: %s\nPrior: %s\n%s" % (c, old, rows))
+        # Provide klines where 82630 and 82450 are broken by close (close 82400 < 82450 < 82630)
+        kpath = self.tmp / "klines.json"
+        kpath.write_text(json.dumps([{"o": 82700, "h": 82750, "l": 82350, "c": 82400}]), encoding="utf-8", newline="\n")
+        rc, out, _ = self.run_main("read", c, "--extract", str(ext), "--klines", str(kpath))
+        self.assertEqual(rc, 0)
+        self.assertIn("[BROKEN] Falsify: acceptance under 82630", out)
+        self.assertIn("[BROKEN] Invalidation: acceptance outside 82450-83470", out)
+        self.assertIn("[UNTESTED] falsify if CVD flips", out)
+
 
 class MainRootOldGit(unittest.TestCase):
     def test_git_224_flag_echo_is_not_a_path(self):

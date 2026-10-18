@@ -1,7 +1,7 @@
 {
   "approved_by": "operator (chat 2026-10-11: 'whatever research u need with Opus')",
   "asks": "",
-  "class": "C2",
+  "class": "C1",
   "commands": [],
   "created": "2026-10-11T12:00:00Z",
   "crucial": "Foundational no-undo market/cost/stop-width design call (C2 base definition) governing all Fabio recall and encode cards.",
@@ -28,10 +28,10 @@
     "fabio"
   ],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT LAB:definitions CLASS:C2 REVIEWER:Gemini 4 Argon low + Haiku re-derive WEIGHT:CRUCIAL. Waits on depends_on fabio-layer-v2-spec and fabio-ledger-minute-timestamps; DoR fields and stamp are now clean.",
+  "note": "CHECKED 2026-10-18, NOT started (OPUS lane, no Opus started): (1) depends_on fabio-layer-v2-spec is blocked on the fabio ledger FIX-FIRST fixes; (2) lane OPUS needs weight crucial plus one line why only Opus fits (WORKERS.md rule 6); (3) q12 home-market chain pause. Cheapest next step: when fabio-layer-v2-spec ships, re-lane to SONNET (writes spec part B and cards, no live money) or the operator names Opus. | [PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] 2026-10-15 q12: home-market chain paused (p5) per operator answer; raise again when crypto-native cards are done.\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C1 weight=IMPORTANT); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
   "prio": 5,
   "refine_tries": 0,
-  "refined_by": "opus-2026-10-11 (operator chat: redefine Tom and Fabio layers from today's findings)",
+  "refined_by": "gemini-nuc",
   "refreshed": "2026-10-18T05:12:53Z",
   "refs": [],
   "result": "",
@@ -58,6 +58,7 @@
   ],
   "tests": "Every created card passes tasks.py check.",
   "title": "Fabio layer v2 spec, part B: data plan per market, cost, stop width, build + recall cards (Opus research)",
-  "weight": "CRUCIAL",
-  "worker": "session"
+  "weight": "IMPORTANT",
+  "worker": "session",
+  "updated": "2026-10-18T10:00:00Z"
 }

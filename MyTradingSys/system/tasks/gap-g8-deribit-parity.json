@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "class": "C1",
+  "class": "C2",
   "commands": [],
   "created": "2026-10-14T11:26:02Z",
   "depends_on": [],
@@ -31,10 +31,10 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT LAB:data CLASS:C1 REVIEWER:Gemini 4 Argon low + Haiku re-derive 1-3 numbers WEIGHT:IMPORTANT. HOLD-CLEARED A-20261018-5 (lifted by operator). Lab_Guy E1 fix: dropped untagged levels_confluence event_table.csv (which starts 2024-11, after the 2024-07-01 DEV cut) and restricted all bars to DEV 2022-01-01..2024-06-30 (< 2024-07-01) with causal prior-day high/low stop-bar checks.",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:GPT medium+Haiku re-derive HOLD A-20261018-5: reads levels_confluence event_table.csv, an untagged lab table. Also its rows start 2024-11 (VALIDATION, after the 2024-07-01 DEV cut), so as written zero DEV rows exist. DECISION (OURS): state refined; to unblock, restrict the stop-bar check to DEV rows (touch_t < 2024-07-01) from a tagged DEV table, or drop that half and keep the basis table only (Deribit vs Binance 1m, DEV 2022-01-01..2024-06-30). LANE moved CODEX->SONNET 2026-10-18: Needs network (Deribit public candles); GPT lab sandbox blocks sockets (WinError 10013). REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT venue verdict. 2026-10-15 q-gap-c answered Yes: public market data only, no account, no orders. DISPATCH lane CODEX (JIS-NUC lab): Binance 1m on NUC (tom_raw), Deribit candles fetched public at run time. Verify: sha + empty git cherry + ls-tree lists files.\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C2 weight=CRUCIAL); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
   "prio": 5,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "gemini-nuc",
   "refreshed": "2026-10-18T05:13:34Z",
   "refs": [
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
@@ -57,7 +57,7 @@
     "q-gap-c 2026-10-15: Yes, public market data only (card note)",
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md section 5 G8 (tom_bt_report.py:229 not modelled)"
   ],
-  "state": "ready",
+  "state": "refined",
   "steps": [
     "Tests first (red): parse a get_tradingview_chart_data reply into bars; basis_bp on a hand pair (100000 vs 100010 = 1.0 bp); first_stop_bar on a hand path for long/short; assert loader refuses any timestamp >= 2024-07-01.",
     "Fetch BTC-PERPETUAL 1m for a stratified DEV sample (first 5 days of each quarter 2022-01..2024-06, 50 days = 72,000 bars, OURS) from public www.deribit.com/api/v2/public/get_tradingview_chart_data in <= 5000-bar chunks to F:/MTS/data/deribit_1m (off-repo, sha256 logged).",
@@ -67,6 +67,7 @@
   ],
   "tests": "test_parity.py (new, in MyTradingSys/research/gap_g8_deribit_parity_2026-10-18/) fails before parity.py exists and verifies bars >= 2024-07-01 are refused: python -m pytest MyTradingSys/research/gap_g8_deribit_parity_2026-10-18/test_parity.py -q",
   "title": "G8 Deribit vs Binance venue parity (public mainnet candles allowed, q-gap-c 2026-10-15)",
-  "weight": "IMPORTANT",
-  "worker": "session"
+  "weight": "CRUCIAL",
+  "worker": "session",
+  "updated": "2026-10-18T10:00:00Z"
 }

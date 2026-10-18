@@ -48,6 +48,7 @@ final class SpikeFadeDetector {
         final int n;
         final long[] t;
         final double[] o, h, l, c;
+        final double[] v;   // volume (kline index 5); NaN when the series carries none -> profile items NOT_IN_DATA
         final LocalDate[] date;
         final LocalTime[] time;
 
@@ -58,10 +59,12 @@ final class SpikeFadeDetector {
             h = new double[n];
             l = new double[n];
             c = new double[n];
+            v = new double[n];
             date = new LocalDate[n];
             time = new LocalTime[n];
             for (int i = 0; i < n; i++) {
                 JsonNode b = k.get(i);
+                v[i] = b.size() > 5 && b.get(5).isNumber() ? b.get(5).asDouble() : Double.NaN;
                 t[i] = b.get(0).asLong();
                 o[i] = b.get(1).asDouble();
                 h[i] = b.get(2).asDouble();
@@ -81,6 +84,8 @@ final class SpikeFadeDetector {
             this.h = h;
             this.l = l;
             this.c = c;
+            v = new double[n];
+            Arrays.fill(v, Double.NaN);
             date = new LocalDate[n];
             time = new LocalTime[n];
             for (int i = 0; i < n; i++) {
@@ -98,6 +103,7 @@ final class SpikeFadeDetector {
             h = Arrays.copyOfRange(full.h, from, to);
             l = Arrays.copyOfRange(full.l, from, to);
             c = Arrays.copyOfRange(full.c, from, to);
+            v = Arrays.copyOfRange(full.v, from, to);
             date = Arrays.copyOfRange(full.date, from, to);
             time = Arrays.copyOfRange(full.time, from, to);
         }

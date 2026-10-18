@@ -2,7 +2,7 @@
 
 Fabio date-match card is done (DATE_MATCH.md verdict AMBIGUOUS; spoken day 2025-10-15 13:47 UTC scores 1.0, >=8 days tie). Next on this thread: a card that adds path constraints (F11-F14 range, 1m highs/lows ordering) or a video-frame date read to break the tie; ledger entry_time_utc stays empty until then.
 Tom raw cards tom-cvd-aligned-direction-blind and tom-ctlong-zone-lost-state were resolved and dropped with audit evidence in commit 7d30650a (ruling BUGS B054/T015 WONTFIX and tier trigger_ready exclusivity).
-Open next for SONNET: `rv02-fix-dax-producer-data-binding` (p1) / `tom-dax-backtest` (p2).
+DAX work is dropped (operator 2026-10-18, commit bf5dba20): RV02 R3 and R4 are on trunk (770a0ae9, 39da07e3); `tom-dax-backtest`, `gap-g2-dax-ask-candles`, `tom-v2-dax-dev-backtest` no longer exist. The 4-hour lane plan is `PLAN_4H_2026-10-18.md`; the third-login laptop setup is `LENOVO_SETUP.md`.
 
 ## Layers wave 1 (planner 2026-10-18): for the NUC (NB at 79% weekly, no new NB work)
 Kurisko Quad Rotation = John Kurisko's FOUR STOCHASTICS (9,3) (14,3) (40,4) (60,10,10), not RSI; the "4 RSI" memory is unsourced (transcript has 0 mentions of RSI). Spec `research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md` s5, extract `extracts/processed/kurisko/QUAD_ROTATION.md` (both on trunk).
@@ -15,4 +15,10 @@ Untouched by design: 5 DSA/NUC run-lane cards and 6 parked cards unrefined; `gap
 Positioning (FlowHorse/whale) home-fit audit: commit 3e66309d (HOME_FIT_AUDIT_POSITIONING.md + 3 follow-up cards) was shipping at hand-over; verify with `git cherry origin/fast-track 3e66309d`. Malkan home-fit audit: commit c3383c71 (2 FAIR, 10 UNFAIR), same check.
 EU-low/US-sweep follow-ups: all three legs BLOCKED by the power gate (n=133/208/100 days, MDE+cost above the 0.30 R cap); VAL and HOLDOUT sealed; no outcome read.
 GPT/Gemini saturation until the 5 h reset needs a NUC session to take the desk rows (`desk.py`).
+
+## NB tandem coordinator 2026-10-18 hand-over (NB at 81% weekly on 2026-10-18 ~13:00 IST, 5-hour 33%; weekly cap 78% passed: NB does shipping only until the 2026-10-20 reset)
+Shipped to trunk (git cherry empty): outcome-labeler incremental fix + 9 tests (SLOW exit 3 is discarded by `start-trading-day.ps1:546`, log it there: follow-up), krown-recall-check, state-machine vwap/cvd audit, RV02 R1+R2 (REVIEWED stamps), Fabio date-match + Tom ctlong audit, planner batch 3.
+Not on NB: a Tom fade paths ship (`tom-encode-fade-entry-paths`, branch claude/eloquent-shannon-345adc, REVIEWED APPROVE; NUC claimed the same card at 0628Z: look in the trunk history first) and eu-low-sweep (branch claude/quirky-volhard-b457c7): both sessions were told to ship and stop.
+For the NUC / Gemini (Flash medium or high; `agy` cannot run from NB, it says sign in over the SSH gate): `tom-probe-prereg`, `rv05-h2-position-line-evidence`, `rv-dsa-ledger-mechanical`, planner raw cards. Stay Claude (CRUCIAL, diff-only review Agent first): RV02 R3 `rv02-fix-dax-full-dev-authorization`, R4 `rv02-fix-dax-producer-data-binding`, `tom-dax-backtest`. Hold `gap-g2-dax-ask-candles` (A-20261018-6) and new consumers of unchecked lab bases (A-20261018-5). Live tree not at trunk (blocked by a live BUGS.md edit); BUGS rows B190-B193, java-popups desk check and the JIS-NB fetch row for gap-g2 are still open.
+Ship tips: run ships detached (`nohup python -u sync.py ship > log 2>&1 &`), the 2 gate slots queue for hours when 6+ sessions ship; a red from `Java insufficient memory` is load, rerun once.
 

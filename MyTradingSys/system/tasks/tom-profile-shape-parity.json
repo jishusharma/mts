@@ -1,55 +1,54 @@
 {
-  "approved_by": "",
-  "asks": "Needs FDAX order-flow data (not bought, q11). Accept PROFILE arm on DAX = NOT_IN_DATA with no purchase? Default (OURS): yes; the card closes with that verdict (its done_when allows it) and the BTC profile arm goes ahead.",
-  "commands": [],
-  "created": "2026-10-13T06:33:19Z",
-  "depends_on": [],
-  "done_when": "PROFILE_PARITY.md carries f_drawn and f_computed for T1 and T2 with pixel boxes and one line: PROFILE arm on DAX = PASS / FAIL / NOT_IN_DATA.",
-  "est_turns": 14,
-  "from_inbox": "",
-  "goal": "Decide whether the volume-profile conditions (A-C3, A-P3, A-P8) can be used on the Dukascopy DAX CFD feed, by a basis-free shape comparison of Tom's histogram with the computed profile on the two dev frames. Host: JIS-NUC (Pillow 12.3.0 installed, frames on F:).",
-  "id": "tom-profile-shape-parity",
-  "kind": "build",
-  "lane": "CODEX",
-  "layers": [
-    "tom"
-  ],
-  "live_path": false,
-  "note": "CHECKED 2026-10-18: the hold lift does not change the data rule. Cheapest next step: write the NOT_IN_DATA verdict line into PROFILE_PARITY.md and close the card; tom-encode-fade-profile-proofs no longer depends on it. REVIEWED:2026-10-18 ACCEPT LAB:data CLASS:C1 REVIEWER:Gemini Flash high WEIGHT:IMPORTANT. | STAYS BLOCKED: needs FDAX order-flow data, which the operator ruled out buying (q11); the hold lift does not change that. [PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=Gemini Flash high + Haiku re-derive 1-3 numbers] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | operator q10 2026-10-13: add the profile arm; GPT luna lab takes it (Pillow on JIS-NUC)\n[REVIEW 2026-10-18 by Lab_Guy(GEM-NUC) model=gemini-4-argon-low class=C1 weight=IMPORTANT]: REVIEWED:2026-10-18 ACCEPT — Spec, scope_in, steps, and done_when verified against live repo state and Lab_Guy v3.1 E1-E7 checklist.\nREVIEWED:2026-10-18 ACCEPT — Lab_Guy(GEM-NUC) model=gemini-4-argon-low class=C1 weight=IMPORTANT: Spec, scope_in, steps, and done_when verified against live repo state and Lab_Guy v3.1 E1-E7 checklist.",
-  "pinned": false,
-  "prio": 1,
-  "refine_tries": 0,
-  "refined_by": "opus-2026-10-13 (TOM_LAYER_V2_SPEC part B)",
-  "refs": [],
-  "result": "",
-  "scope_in": [
-    "MyTradingSys/backtest/tom_profile_parity.py",
-    "MyTradingSys/tests/",
-    "MyTradingSys/research/tom_transfer_2026-10-11/PROFILE_PARITY.md",
-    "F:/MTS/data/tom_videos/frames (n7ZSkjb7JXs_0314.jpg, k0zm5NYn0IQ_0280.jpg)"
-  ],
-  "scope_out": [
-    "live tree / restarts",
-    "tuning on outcomes",
-    "reading any DAX holdout day (2026-04-11 on)",
-    "BTC runs",
-    "any frame or bar dated 2026-04-11 or later",
-    "fitting a basis offset"
-  ],
-  "size": "S",
-  "sources": [
-    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md section 12",
-    "MyTradingSys/research/tom_transfer_2026-10-11/PROFILE_PARITY.md (next step 2)"
-  ],
-  "state": "blocked",
-  "steps": [
-    "Per frame: with Pillow find the right-edge histogram rows, the widest row and the visible price range from the axis labels; record pixel boxes.",
-    "Fraction f_drawn = (widest-row price - visible low) / (visible high - low). f_computed = same from the PROFILE_PARITY_T1/T2 computed profile over the same price span.",
-    "PASS = both frames within one histogram row height; else FAIL; unreadable = NOT_IN_DATA. Append the result and the verdict to PROFILE_PARITY.md."
-  ],
-  "tests": "pytest: synthetic histogram, visible range 25100-25400, widest row at 25220 -> f = 0.40; computed profile low 24870 high 25170 POC 24990 -> f = 0.40 -> match; POC 25050 -> f = 0.60 -> mismatch (row height 0.033). Fails before the function exists.",
-  "title": "Tom v2: basis-free profile shape parity on the T1/T2 frames (decides the DAX PROFILE arm)",
-  "weight": "IMPORTANT",
-  "worker": "agent",
-  "updated": "2026-10-18T05:30:00Z"
+ "approved_by": "",
+ "asks": "Needs FDAX order-flow data (not bought, q11). Accept PROFILE arm on DAX = NOT_IN_DATA with no purchase? Default (OURS): yes; the card closes with that verdict (its done_when allows it) and the BTC profile arm goes ahead.",
+ "commands": [],
+ "created": "2026-10-13T06:33:19Z",
+ "depends_on": [],
+ "done_when": "PROFILE_PARITY.md carries f_drawn and f_computed for T1 and T2 with pixel boxes and one line: PROFILE arm on DAX = PASS / FAIL / NOT_IN_DATA.",
+ "est_turns": 14,
+ "from_inbox": "",
+ "goal": "Decide whether the volume-profile conditions (A-C3, A-P3, A-P8) can be used on the Dukascopy DAX CFD feed, by a basis-free shape comparison of Tom's histogram with the computed profile on the two dev frames. Host: JIS-NUC (Pillow 12.3.0 installed, frames on F:).",
+ "id": "tom-profile-shape-parity",
+ "kind": "build",
+ "lane": "CODEX",
+ "layers": [
+  "tom"
+ ],
+ "live_path": false,
+ "note": "CHECKED 2026-10-18: the hold lift does not change the data rule. Cheapest next step: write the NOT_IN_DATA verdict line into PROFILE_PARITY.md and close the card; tom-encode-fade-profile-proofs no longer depends on it. REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:Gemini Flash high WEIGHT:IMPORTANT. | STAYS BLOCKED: needs FDAX order-flow data, which the operator ruled out buying (q11); the hold lift does not change that. [PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=Gemini Flash high + Haiku re-derive 1-3 numbers] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | operator q10 2026-10-13: add the profile arm; GPT luna lab takes it (Pillow on JIS-NUC)",
+ "pinned": false,
+ "prio": 1,
+ "refine_tries": 0,
+ "refined_by": "opus-2026-10-13 (TOM_LAYER_V2_SPEC part B)",
+ "refs": [],
+ "result": "",
+ "scope_in": [
+  "MyTradingSys/backtest/tom_profile_parity.py",
+  "MyTradingSys/tests/",
+  "MyTradingSys/research/tom_transfer_2026-10-11/PROFILE_PARITY.md",
+  "F:/MTS/data/tom_videos/frames (n7ZSkjb7JXs_0314.jpg, k0zm5NYn0IQ_0280.jpg)"
+ ],
+ "scope_out": [
+  "live tree / restarts",
+  "tuning on outcomes",
+  "reading any DAX holdout day (2026-04-11 on)",
+  "BTC runs",
+  "any frame or bar dated 2026-04-11 or later",
+  "fitting a basis offset"
+ ],
+ "size": "S",
+ "sources": [
+  "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md section 12",
+  "MyTradingSys/research/tom_transfer_2026-10-11/PROFILE_PARITY.md (next step 2)"
+ ],
+ "state": "blocked",
+ "steps": [
+  "Per frame: with Pillow find the right-edge histogram rows, the widest row and the visible price range from the axis labels; record pixel boxes.",
+  "Fraction f_drawn = (widest-row price - visible low) / (visible high - low). f_computed = same from the PROFILE_PARITY_T1/T2 computed profile over the same price span.",
+  "PASS = both frames within one histogram row height; else FAIL; unreadable = NOT_IN_DATA. Append the result and the verdict to PROFILE_PARITY.md."
+ ],
+ "tests": "pytest: synthetic histogram, visible range 25100-25400, widest row at 25220 -> f = 0.40; computed profile low 24870 high 25170 POC 24990 -> f = 0.40 -> match; POC 25050 -> f = 0.60 -> mismatch (row height 0.033). Fails before the function exists.",
+ "title": "Tom v2: basis-free profile shape parity on the T1/T2 frames (decides the DAX PROFILE arm)",
+ "weight": "IMPORTANT",
+ "worker": "agent"
 }
