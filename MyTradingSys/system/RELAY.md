@@ -25,7 +25,7 @@ Next tasks come from `python scripts/dev/tasks.py next --n 3` (a card's `brief` 
 - `begin` takes a HAIKU or SONNET card (`tasks.CODE_LANES` minus OPUS) that no open claim holds (`tasks.py next` hides claimed cards; `--all` shows them).
 
 ## Turn meter (2026-10-14)
-The 40 tool / 10 operator turn cap (operator q20, 2026-10-15) is a hook, `scripts/dev/turn_meter.py`: at the cap and every 5 tool turns after, it injects a 1-line hand-off reminder (<= 250 B). One assistant message = one turn (parallel tool calls count once); subagents (`agent_id` in the hook payload) are skipped; clear resets the count. Caps differ per model (WORKERS.md rule 5): Opus 500k context, Fable one message.
+The 40 tool / 10 operator turn cap (operator q20, 2026-10-15) is a hook, `scripts/dev/turn_meter.py`: at the cap and every 5 tool turns after, it injects a 1-line hand-off reminder (<= 250 B). One assistant message = one turn (parallel calls count once); subagents are skipped; clear resets. Per-model caps: WORKERS.md rule 5.
 
 ## Brakes (all fail closed)
 - no header, header says stop, no task this host can run, or only lane work left -> `kick` IDLE; `handoff --stop` ends a chain
