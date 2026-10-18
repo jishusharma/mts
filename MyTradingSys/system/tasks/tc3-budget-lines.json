@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T21:55:00Z",
+  "depends_on": [],
+  "done_when": "`traffic.py status` shows budgets for at least one login after a role boot; shipped.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "traffic.py status reads `BUDGET login=<A|B|C> 5h=<n>% week=<n>%` signal lines (traffic.budgets_from_signals); no role sends them yet, and NB/Lenovo senders show `?` because MTS_ACCOUNT is unset. Without them per-login idle and pacing are not measurable.",
+  "id": "tc3-budget-lines",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "SUPERVISOR.md: no forbidden git-command ref in system docs (test_integrity 2)",
+      "ref": "3a2095ccee94",
+      "utc": "2026-10-18T18:49:01Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "3a2095ccee94 SUPERVISOR.md: no forbidden git-command ref in system docs (test_integrity 2)",
+      "ref": "MyTradingSys/system/SUPERVISOR.md",
+      "utc": "2026-10-18T18:49:01Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T21:55:20Z",
+  "refs": [
+    "MyTradingSys/system/TRAFFIC_CONTROLLER.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/roles/*.md",
+    "scripts/dev/mts_signal.py",
+    "MyTradingSys/system/SUPERVISOR.md"
+  ],
+  "scope_out": [
+    "the live tree",
+    "deploys",
+    "HALT files",
+    ".secrets/.env"
+  ],
+  "scope_sha": "3a2095ccee94",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Add the BUDGET line to the Boot of every role file and the Supervisor wake loop (after get_usage); login letters from traffic_inventory.json.",
+    "mts_signal.py send: when MTS_ACCOUNT is unset, use the git user.name instead of `?` (no email).",
+    "role_loader.py retoken + check exit 0."
+  ],
+  "tests": "test for the sender fallback fails before (sender `?`), passes after.",
+  "title": "BUDGET signal lines per Claude login so traffic.py can pace logins",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
