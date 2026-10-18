@@ -10,6 +10,7 @@ Any body edit changes the token, so a stale token is detectable (`check`). `toke
   retoken [--all | file...]   rewrite tokens in headers.
   check   rows of ROLES.md vs files vs header validity vs token freshness (exit 1 on malformed or stale).
   banner <Name>   the expected first-reply banner line.
+  verify --text <note|-> [--role Name] [--sid id]   supervisor trust check of a worker's banner (0 ok, 2 stale, 1 untrusted).
 """
 import hashlib
 import json
@@ -25,7 +26,7 @@ ROLES_REL = "MyTradingSys/system/roles"
 ROLES_MD_REL = "MyTradingSys/system/ROLES.md"
 TRUNK = "origin/fast-track"
 KNOWN_ROLES = ["Eagle_Eyes", "Lab_Guy", "Session_Planner", "MTS_Doctor", "Artifacts_Guy", "Network_Admin_Guy",
-               "Q&A_Helper", "Pipeliner"]
+               "Q&A_Helper", "Pipeliner", "Supervisor"]
 
 # Fixed list: index = 16-bit chunk % 256. Never reorder or edit (it would change every token); the length is asserted below.
 WORDS = (
@@ -103,6 +104,26 @@ def git_show(repo, rel):
         return r.stdout.decode("utf-8") if r.returncode == 0 else None
     except Exception:
         return None
+
+
+def git_show_at(repo, rev, rel):
+    """Text of rel at commit rev, or None."""
+    try:
+        r = subprocess.run(["git", "-C", str(repo), "show", f"{rev}:{rel}"], capture_output=True, timeout=8,
+                           creationflags=_flags())
+        return r.stdout.decode("utf-8") if r.returncode == 0 else None
+    except Exception:
+        return None
+
+
+def git_is_ancestor(repo, sha):
+    """True when commit sha is on origin/fast-track."""
+    try:
+        r = subprocess.run(["git", "-C", str(repo), "merge-base", "--is-ancestor", sha, TRUNK], capture_output=True,
+                           timeout=8, creationflags=_flags())
+        return r.returncode == 0
+    except Exception:
+        return False
 
 
 def git_sha8(repo):
@@ -390,6 +411,69 @@ def _check_one(f, name, out):
     return 0
 
 
+BANNER_RE = re.compile(r"ROLE LOADED(?P<row> \(ROW ONLY\))?: (?P<name>\S+) (?P<version>v\S+) \S token (?P<token>[a-z]+-[a-z?]+|none) \S "
+                       r"(?P<path>\S+) @ (?P<sha>[0-9a-f]{7,40}|unknown)")
+
+
+def verify(text, repo=REPO, role=None, sid=None, out=print):
+    """SUPERVISOR.md trust check of a worker's banner (quoted in its note). 0 = genuine and current, 2 = genuine but the role
+    file changed on trunk since the worker loaded it (tell it `reload role`), 1 = do not trust the claim.
+    Proves the worker saw the role file at that trunk sha (and, with sid, that the hook injected it); not that it followed it."""
+    if re.search(r"ROLE NOT LOADED", text or ""):
+        out("FAIL: worker reports ROLE NOT LOADED")
+        return 1
+    m = BANNER_RE.search(text or "")
+    if not m:
+        out("FAIL: no ROLE LOADED banner in the text")
+        return 1
+    name, ver, tok, path, sha = (m.group(k) for k in ("name", "version", "token", "path", "sha"))
+    if m.group("row"):
+        out(f"FAIL {name}: ROW ONLY banner (no role file was loaded)")
+        return 1
+    if role and name != role:
+        out(f"FAIL: banner names {name}, expected {role}")
+        return 1
+    want = f"{ROLES_REL}/{file_for(name)}"
+    if path != want:
+        out(f"FAIL {name}: banner path {path}, expected {want}")
+        return 1
+    if sha == "unknown" or not git_is_ancestor(repo, sha):
+        out(f"FAIL {name}: sha {sha} is not on {TRUNK}")
+        return 1
+    then = git_show_at(repo, sha, path)
+    h = parse_header(then.replace("\r\n", "\n")) if then else None
+    if not h or h["name"] != name:
+        out(f"FAIL {name}: no valid role file {path} at {sha}")
+        return 1
+    if (h["version"], compute_token(then)) != (ver, tok):
+        out(f"FAIL {name}: banner {ver}/{tok} does not match the file at {sha} ({h['version']}/{compute_token(then)})")
+        return 1
+    if sid is not None:
+        meta = role_meta(sid, name)
+        if not meta or meta.get("token") != tok:
+            out(f"FAIL {name}: the hook state for session {sid} has no injection with token {tok}")
+            return 1
+    now = git_show(repo, path)
+    if now is not None and compute_token(now) != tok:
+        out(f"STALE {name}: genuine {ver}/{tok} @ {sha}, but trunk now gives {compute_token(now)} (send `reload role`)")
+        return 2
+    out(f"ok   {name} {ver} token {tok} @ {sha}: fresh")
+    return 0
+
+
+def cmd_verify(args):
+    role = args[args.index("--role") + 1] if "--role" in args and args.index("--role") + 1 < len(args) else None
+    sid = args[args.index("--sid") + 1] if "--sid" in args and args.index("--sid") + 1 < len(args) else None
+    if "--text" not in args or args.index("--text") + 1 >= len(args):
+        print("usage: role_loader.py verify --text <note | -> [--role Name] [--sid <session id>]")
+        return 2
+    text = args[args.index("--text") + 1]
+    if text == "-":
+        text = sys.stdin.buffer.read().decode("utf-8", "replace")
+    git_fetch(REPO)
+    return verify(text, REPO, role=role, sid=sid)
+
+
 def cmd_banner(name):
     f = Path(REPO) / ROLES_REL / file_for(name)
     if not f.exists():
@@ -420,6 +504,8 @@ def main(argv):
         return 0
     if c == "check":
         return check()
+    if c == "verify":
+        return cmd_verify(argv[2:])
     if c == "banner" and len(argv) > 2:
         return cmd_banner(argv[2])
     print(__doc__)

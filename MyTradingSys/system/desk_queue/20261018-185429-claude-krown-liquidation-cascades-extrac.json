@@ -1,0 +1,10 @@
+{
+  "done_when": "Reviewed and acknowledged in desk board or layer specs",
+  "from": "JIS-NUC",
+  "id": "20261018-185429-claude-krown-liquidation-cascades-extrac",
+  "need": "Review extract_P3rDSh187TE.md and integrate liquidation cascade concepts into Krown layer specs",
+  "posted": "2026-10-18T18:54:29Z",
+  "status": "pending",
+  "target": "JIS-NB",
+  "title": "Claude: Krown liquidation cascades extraction (P3rDSh187TE)"
+}

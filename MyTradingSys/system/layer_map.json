@@ -672,6 +672,46 @@
      "src": "grid"
     }
    ]
+  },
+  {
+   "id": "pitchfork_swing",
+   "family": "pitchfork",
+   "name": "Pitchfork swing dynamics (Andrews / Schiff / Modified Schiff ML & Hagopian failure)",
+   "module": "MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py",
+   "status": "Foundational papers delivered; detector built with unit tests (100% pass)",
+   "params": [
+    {
+     "k": "variant",
+     "label": "pitchfork variant",
+     "kind": "choice",
+     "values": [
+      "standard",
+      "schiff",
+      "modified_schiff"
+     ],
+     "src": "sourced"
+    },
+    {
+     "k": "auto_schiff",
+     "label": "auto promote steep angles to modified schiff",
+     "kind": "choice",
+     "values": [
+      "true",
+      "false"
+     ],
+     "src": "sourced"
+    },
+    {
+     "k": "timeframe",
+     "label": "primary swing timeframe",
+     "kind": "choice",
+     "values": [
+      "4H",
+      "1D"
+     ],
+     "src": "code"
+    }
+   ]
   }
  ],
  "backtests": [

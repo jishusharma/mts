@@ -1,0 +1,2 @@
+seed 20261016 root C:\Users\e-ngineers\IdeaProjects\mts-desktop-f7iu69n-dsa02-lenovo-2
+wlow_bounce|bbrsi60|1h                       n=1600 cuts=50 events=0 late=0 repaint=0 nan_diff=0 x10_diff=0 lag=0/0 err(tr/nan/x10)=0/0/0 VACUOUS (0 events on synthetic bars)  51.4s

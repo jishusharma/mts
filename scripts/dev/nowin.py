@@ -4,6 +4,7 @@ Under pythonw there is no console, so every console child (git.exe, python.exe, 
 Windows open a new console window: it flashes and steals focus (B173, operator 2026-10-16: git windows flashing on both
 machines). `install()` makes subprocess.Popen add CREATE_NO_WINDOW when the caller set no creationflags. Active only
 on Windows under pythonw.exe (or MTS_NOWIN=1), so interactive runs and tests are untouched. Idempotent.
+Gate note (GATE_SPEED.md): a change here is an ordinary smoke ship, so the fast gate runs only the tests the import graph reaches.
 """
 import os
 import subprocess

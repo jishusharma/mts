@@ -1,0 +1,45 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T19:46:43Z",
+  "depends_on": [],
+  "done_when": "pack shipped (<5 MB), leak check green, README states windows and cost",
+  "est_turns": "30",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Build research/fable_setups_2026-10-19/pack/ per fable_run_4_brief.md Step 0 (LOOK window 2022-01-01..2023-06-30 only).",
+  "id": "fable-setups-pack-prep",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "HOLD (operator 2026-10-19): do not build until Fable run 2 REGATE_AUDIT.md has shipped.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/system/fable_run_4_brief.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/fable_setups_2026-10-19/pack/"
+  ],
+  "scope_out": [
+    "VALIDATION and HOLDOUT reads (except the scored survivor PRE_REG)",
+    "live tree",
+    "code outside the study folder"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/system/fable_run_4_brief.md"
+  ],
+  "state": "blocked",
+  "steps": [],
+  "tests": "Leak check script asserts no pack timestamp >= 2023-07-01; fails on a planted row. POC/VAH/VAL for one hand-picked week match a hand computation from FORMULAS 18.1.",
+  "title": "Fable run 4 pack: LOOK-window BTC OHLCV, VP levels, 31 naked charts, Tom/Fabio rules digest",
+  "weight": "IMPORTANT",
+  "worker": "session",
+  "blocked_by": "fable-run2-regate-all-prereg"
+}

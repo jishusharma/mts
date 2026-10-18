@@ -98,6 +98,16 @@ PRECHECK_JOBS = 2
 TARGET_STEP = "4t"   # precheck pytest of the MyTradingSys/tests files that reference the change (they also run in their shard)
 TARGET_CAP = 12      # OURS: at most this many files (sorted), so the precheck stays about a minute
 SLOW_FILE_S = 30     # files measured at >= this many seconds stay in their shard only
+CHEAP_STEPS += ("3qn", "3gi")
+# GATE_SPEED X2 (ship only, --fast, smoke mode): the fast path. One phase, tests chosen by gate_impact, a time budget, the rest left to CI.
+FAST_STEP_TIMEOUT_S = 240     # OURS: a fast-gate step still running after this is hung (a held slot would block every later ship)
+FAST_BASE_S = 6              # OURS: seconds of ALWAYS-step work counted against the budget before any test is added
+UNIT_DEFAULT_S = 8            # OURS: estimated seconds of a script-style test step that is not in STEP_EST
+EXTRA_FILE_S = 4              # OURS: estimated seconds per step-3xt file (one pytest process each) and per step-5b module
+# Estimated CPU seconds of the script-style test steps a change can reach (each run alone on JIS-NB, 2026-10-18; 3k/3ds/3dk/3bk run as
+# 2-3 shards, the figure is their sum); a step above the budget is deferred to CI unless a changed file names it.
+STEP_EST = {"3k": 200, "3ds": 30, "3bk": 25, "3dk": 14, "3ad": 24, "3sig": 21, "3cx": 11, "3tk": 13, "3lh": 9, "3ms": 13, "3sg": 9,
+            "3cr": 8, "3lm": 4, "3hy": 1, "3w": 9, "3x": 3}
 RECORD_NAME = "mts_gate_record.json"   # GATE_SPEED D3: per-worktree git dir, never shared between trees or machines
 RECORD_MAX_AGE_S = 24 * 3600
 
@@ -107,10 +117,16 @@ gate_mode = None
 TIMING_FILE = Path("runtime_data") / "gate_timing.jsonl"   # gitignored: per-step timings, nothing sensitive
 
 
+_SHA = []
+
+
 def _short_sha():
+    if _SHA:   # one `git rev-parse` per gate, not one per step (GATE_SPEED X2: 0.1 s each on Windows)
+        return _SHA[0]
     try:
         r = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=str(REPO), capture_output=True, text=True, timeout=10)
-        return r.stdout.strip() or "?"
+        _SHA.append(r.stdout.strip() or "?")
+        return _SHA[0]
     except Exception:
         return "?"
 
@@ -156,13 +172,13 @@ def gate_tmp(prefix):
     return Path(d)
 
 
-def pytest_cmd(targets, root=REPO):
+def pytest_cmd(targets, root=REPO, deselect=()):
     """One gate pytest step: own basetemp (parallel pytest processes share %TEMP%/pytest-of-<user> and its cleanup raises PermissionError
     after all tests pass: JIS-NB 2026-10-14, six ships at once), no cache dir, and transient tmp dirs ignored (transient_ignore_glob)."""
     scratch = tempfile.mkdtemp(prefix="mts_s4_")
     _SCRATCH.append(scratch)
     return [sys.executable, "-m", "pytest", *targets, "-q", "-p", "no:cacheprovider", transient_ignore_glob(root),
-            f"--basetemp={Path(scratch) / 'bt'}"]
+            f"--basetemp={Path(scratch) / 'bt'}", *[a for d in deselect for a in ("--deselect", d)]]
 
 
 _SCRATCH = []
@@ -188,13 +204,19 @@ def unbuffer(stream=None):
     return stream
 
 
+STEP_TIMEOUT_S = None   # set by the fast path (FAST_STEP_TIMEOUT_S); None = no limit, as before
+
+
 def exec_step(cmd, cwd=None):
-    """Run one command to completion. Returns (ok, output): ok is True/False, or None with a reason when the executable is missing."""
+    """Run one command to completion. Returns (ok, output): ok is True/False, or None with a reason when the executable is missing.
+    A step over STEP_TIMEOUT_S (fast path only) fails: a hung step must not hold a gate slot for ever."""
     try:
         result = subprocess.run(cmd, cwd=cwd or str(REPO), capture_output=True, text=True, errors="replace",
-                                shell=isinstance(cmd, str))
+                                shell=isinstance(cmd, str), timeout=STEP_TIMEOUT_S)
     except FileNotFoundError as e:
         return None, f"not found: {e}"
+    except subprocess.TimeoutExpired:
+        return False, f"step timed out after {STEP_TIMEOUT_S} s (fast gate limit): treated as a failure"
     return result.returncode == 0, result.stdout + result.stderr
 
 
@@ -345,6 +367,7 @@ class Step:
         self.run = run or (lambda: exec_step(cmd))
         self.lane = "seq" if self.num in SERIAL_STEPS else "par"
         self.key = key   # what the step runs beyond cmd_text (a module subset); part of its pass-record signature
+        self.est = None  # estimated seconds, set by the fast path (orders the pool longest first)
 
     def sig(self):
         """Signature for the pass record: the command without its per-run scratch paths, plus `key`."""
@@ -441,6 +464,8 @@ def build_plan(quick):
     add("3vd", "Verdict registry override tests (sourced hand corrections survive backfill)", [sys.executable, "scripts/dev/test_verdicts.py"], "Step 3vd: Verdict registry tests")
     add("3lm", "Live mirror tests (read-only desktop->work-tree data, fail-closed)", [sys.executable, "scripts/dev/test_live_mirror.py"], "Step 3lm: Live mirror tests")
     add("3js", "Config check (settings.json parses, hook scripts exist, secrets stay ignored)", [sys.executable, "scripts/dev/test_config_check.py"], "Step 3js: Config check")   # GATE_SPEED D5
+    add("3gi", "Gate impact tests (import-graph test selection, budget, quarantine)", [sys.executable, "scripts/dev/test_gate_impact.py"], "Step 3gi: Gate impact tests")   # GATE_SPEED X1
+    add("3qn", "Gate quarantine list valid (owner, reason, not expired)", [sys.executable, "scripts/dev/gate_impact.py", "--check-quarantine"], "Step 3qn: Quarantine check")   # GATE_SPEED X5
 
     # Step 3w: wiring gate - every unrun code file is declared in wiring_registry.json or archived (fast, in --quick too)
     add("3w", "Wiring gate tests", [sys.executable, "scripts/dev/test_wiring_scan.py"], "Step 3w: Wiring gate tests")
@@ -573,7 +598,10 @@ def run_plan(plan, jobs, out=None, fail_fast=False, precheck=False, slot=None, r
                 run_one(s, stop_on_fail)
             return
         par = [s for s in steps if s.lane == "par"]
-        par.sort(key=lambda s: SLOWEST_FIRST.index(s.num) if s.num in SLOWEST_FIRST else len(SLOWEST_FIRST))   # stable: the rest keep definition order
+        if any(getattr(s, "est", None) for s in par):   # fast path: longest estimated first
+            par.sort(key=lambda s: -(getattr(s, "est", None) or UNIT_DEFAULT_S))
+        else:
+            par.sort(key=lambda s: SLOWEST_FIRST.index(s.num) if s.num in SLOWEST_FIRST else len(SLOWEST_FIRST))   # stable: the rest keep definition order
         with ThreadPoolExecutor(max_workers=n_jobs) as pool:
             list(pool.map(lambda s: run_one(s, stop_on_fail), par))
         for s in steps:
@@ -634,6 +662,154 @@ def targeted_tests(files, root=REPO):
     return out[:TARGET_CAP]
 
 
+FAST_JOBS_MAX = 6
+FAST_SLOTS = 2
+FAST_COSTLY_ALWAYS = ("3w", "3tl", "3dl")   # gate_select.ALWAYS steps of 3-9 s that a fast gate runs only when the change can matter to them
+FAST_ALWAYS = ("4d", "3qn")   # 4d: the doc/tree-scanning pytest tests, 3qn: the quarantine list stays valid (both seconds)
+fast_applied = False
+fast_info = {}
+
+
+def fast_jobs():
+    """Workers of the fast path: MTS_GATE_JOBS, else cpu count - 2 (the gate is pinned off the top 2 logical CPUs) within 2..FAST_JOBS_MAX."""
+    try:
+        n = int(os.environ.get("MTS_GATE_JOBS", ""))
+    except ValueError:
+        n = min(FAST_JOBS_MAX, max(2, (os.cpu_count() or 4) - 2))
+    return max(1, n)
+
+
+def step_test_files(s, root=REPO):
+    """Repo-relative test files a pytest step covers: its file arguments and every test_*.py under its directory arguments."""
+    import gate_select
+    out = set()
+    for p in gate_select._cmd_files(s.cmd_text, root):
+        try:
+            out.add(Path(p).resolve().relative_to(Path(root).resolve()).as_posix())
+        except ValueError:
+            pass
+    return sorted(out)
+
+
+def apply_fast(plan, files, nums, jobs):
+    """GATE_SPEED X1/X2: replace the smoke selection of a ship (`--fast`) by the tests the import graph reaches (gate_impact.reach), kept inside
+    a time budget. `nums` = what gate_select.explain picked (ALWAYS steps, doc steps, steps whose test names a changed file; its shard picks
+    are replaced here). Returns (plan, info); plan None = live code imports the change, the caller runs the full gate. Raises on any
+    surprise: the caller then keeps the old whole-shard smoke selection."""
+    import gate_impact
+    import gate_select
+    import run_extra_tests
+    reach = gate_impact.reach(files)
+    info = {"reached": len(reach.tests), "direct": len(reach.direct), "deferred": []}
+    if reach.live_hit:
+        info["live_hit"] = reach.live_hit
+        return None, info
+    est_file = lambda f: gate_impact.estimate(f, TEST_FILE_SECONDS)   # noqa: E731
+    step_est = lambda n: STEP_EST.get(n, UNIT_DEFAULT_S)              # noqa: E731
+    all_nums = [s.num for s in plan]
+    pytest_nums = [n for n in all_nums if n.startswith("4") and n not in FAST_ALWAYS and n != TARGET_STEP]
+    steps_list = [(s.num, s.cmd_text) for s in plan]
+    # ALWAYS steps that cost 3-9 s each run in a fast gate only when the change can matter to them: a file their command names, a ride-along
+    # doc (task cards, INDEX/BUGS), a changed test file (CI deps lint). 3x (wiring check), 3gd (test discovery), 3qn, 4d always run.
+    needed = set()
+    for f in files:
+        needed.update(gate_select._name_matches(f, steps_list))
+        if gate_impact.is_test_file(f):
+            needed.add("3dl")
+    if any(gate_select._is_doc(f) for f in files):
+        needed.update(gate_select.DOC_STEPS)
+    keep_nums = {n for n in nums if n in all_nums and n not in pytest_nums and n not in ("3xt", "5b") and (n not in FAST_COSTLY_ALWAYS or n in needed)}         | {n for n in FAST_ALWAYS if n in all_nums}
+    units = {}   # key -> (estimated seconds, direct)
+
+    def unit(key, e, direct):
+        old = units.get(key)
+        units[key] = (e, direct or (old[1] if old else False))
+
+    for n in keep_nums:
+        unit(("sc", n), step_est(n), True)
+    pyt = {}
+    for s in plan:
+        if s.num in pytest_nums:
+            hit = [f for f in step_test_files(s) if f in reach.tests]
+            if hit:
+                pyt[s.num] = hit
+                for f in hit:
+                    unit(("py", s.num, f), est_file(f), f in reach.direct)
+    for t in reach.tests:
+        for n in gate_select._name_matches(t, steps_list):
+            if n not in pytest_nums and n not in ("3xt", "5b") and n not in keep_nums:
+                unit(("sc", n), step_est(n), t in reach.direct)
+    extras = run_extra_tests.all_tests()
+    ex = {t for t in gate_select.extra_subset(files, extras) if t in extras} | {t for t in extras if t in reach.tests}
+    for t in ex:
+        unit(("ex", t), EXTRA_FILE_S, t in reach.direct)
+    modules = find_layer_modules()
+    ly = set(gate_select.layer_subset([f for f in files if not f.endswith(gate_select.DOC_SUFFIXES)], modules)) \
+        | {m for m in modules if m.replace(".", "/") + ".py" in reach.tests}
+    for m in ly:
+        unit(("ly", m), EXTRA_FILE_S, m.replace(".", "/") + ".py" in reach.direct)
+    direct = [k for k, (e, d) in units.items() if d]
+    others = [k for k, (e, d) in units.items() if not d]
+    workers = min(jobs, gate_impact.EFFECTIVE_WORKERS)
+    kept, deferred = gate_impact.plan_budget(direct, others, lambda k: units[k][0], workers, base_s=FAST_BASE_S, budget=gate_impact.FAST_BUDGET_S)
+    kept = set(kept)
+    info["deferred"] = sorted(("/".join(k[1:]) for k in deferred))
+    info["kept"], info["budget"] = len(kept), gate_impact.FAST_BUDGET_S
+    info["est_s"] = round((FAST_BASE_S + sum(units[k][0] for k in kept)) / max(1, workers))
+    deselect = gate_impact.active_deselects(gate_impact.trunk_quarantine())
+    info["quarantined"] = deselect
+    new_plan = []
+    for s in plan:
+        n = s.num
+        if n == TARGET_STEP:
+            continue
+        if n in pytest_nums:
+            fk = sorted(f for f in pyt.get(n, []) if ("py", n, f) in kept)
+            if not fk:
+                s.skip = "fast: no reached test in this shard" if n not in pyt else "fast: reached tests deferred to CI (budget)"
+                new_plan.append(s)
+                continue
+            total = sum(est_file(f) for f in fk)
+            chunks = gate_impact.balance(fk, est_file, max(1, min(jobs, round(total / 10) or 1)))
+            for i, c in enumerate(chunks):
+                if sum(len(f) + 1 for f in c) > 24000:      # Windows command line limit is 32 KB: fall back to the whole-shard smoke gate
+                    raise ValueError(f"fast gate: {len(c)} test files do not fit one command line")
+                ds =[d for d in deselect if d.split("::")[0] in c]
+                step = Step(n if i == 0 else f"{n}.{i}", f"Pytest (fast): {len(c)} of {len(step_test_files(s))} files that the change reaches"
+                            + (f" (chunk {i + 1}/{len(chunks)})" if len(chunks) > 1 else ""), s.label, cmd=pytest_cmd(c, deselect=ds))
+                step.est = sum(est_file(f) for f in c) + 1
+                new_plan.append(step)
+            continue
+        if n == "3xt":
+            sub = [t for t in extras if ("ex", t) in kept]
+            if sub:
+                s = Step("3xt", f"Extra tests the change reaches ({len(sub)} of {len(extras)} files)", s.label,
+                         cmd=[sys.executable, "scripts/dev/run_extra_tests.py", "--only", *sub])
+                s.est = len(sub) * EXTRA_FILE_S / 2
+            else:
+                s.skip = "fast: no extra test reached (CI runs it)"
+            new_plan.append(s)
+            continue
+        if n == "5b":
+            sub = [m for m in modules if ("ly", m) in kept]
+            if sub:
+                s = Step("5b", f"Layer tests the change reaches ({len(sub)} of {len(modules)} modules)", s.label, tail=None,
+                         run=(lambda sub=sub, jobs=jobs: exec_layer_chunks(sub, jobs)), key=",".join(sub), cmd_text=f"python -m unittest ({len(sub)} modules)")
+                s.est = len(sub) * EXTRA_FILE_S / 2
+            else:
+                s.skip = "fast: no layer test reached (CI runs it)"
+            new_plan.append(s)
+            continue
+        if n in keep_nums or ("sc", n) in kept:
+            s.est = step_est(n)
+        elif ("sc", n) in units:
+            s.skip = "fast: reached but deferred to CI (budget)"
+        else:
+            s.skip = "fast: not reached by the change (CI runs it)"
+        new_plan.append(s)
+    return new_plan, info
+
+
 def apply_selection(plan, args):
     """--changed-file F (one path per line, vs origin/fast-track) with --smoke: skip the steps gate_select.select does not pick.
     --smoke without --changed-file, or an unreadable file, runs everything (fail closed). Returns (plan, mode or None).
@@ -655,6 +831,23 @@ def apply_selection(plan, args):
     gate_mode = mode
     if mode == "full":
         return plan, mode
+    global fast_applied, fast_info
+    if "--fast" in args and mode == "smoke":
+        try:
+            new_plan, info = apply_fast(plan, files, nums, fast_jobs())
+        except Exception as e:   # any surprise: the old whole-shard smoke selection below (a larger, slower set)
+            for s in plan:
+                if str(s.skip).startswith("fast:"):
+                    s.skip = None
+            print(f"fast path unavailable ({type(e).__name__}: {e}); using the whole-shard smoke selection", flush=True)
+        else:
+            fast_info = info
+            if new_plan is None:
+                gate_reason = f"full: live code imports the change ({', '.join(info['live_hit'][:3])})"
+                gate_mode = "full"
+                return plan, "full"
+            fast_applied = True
+            return new_plan, mode
     for s in plan:
         if s.num not in nums and not s.skip and s.num != TARGET_STEP:
             s.skip = f"not selected by the {mode} gate (CI runs it)"
@@ -807,6 +1000,15 @@ def main(argv=None):
     if mode:
         print(f"Gate mode: {mode} ({sum(1 for s in plan if not s.skip)} steps); CI runs the full suite behind the push", flush=True)
         print(f"Gate reason: {gate_reason}", flush=True)
+    global STEP_TIMEOUT_S
+    if fast_applied:
+        STEP_TIMEOUT_S = FAST_STEP_TIMEOUT_S
+        print(f"Fast gate (GATE_SPEED X2): {fast_info['reached']} test files reached ({fast_info['direct']} direct), {fast_info['kept']} units kept, "
+              f"estimated {fast_info['est_s']} s (budget {fast_info['budget']} s) on {fast_jobs()} workers; {len(fast_info['deferred'])} deferred to CI (budget)", flush=True)
+        if fast_info["deferred"]:
+            print("  DEFERRED to CI: " + ", ".join(fast_info["deferred"][:15]) + (f" (+{len(fast_info['deferred']) - 15} more)" if len(fast_info["deferred"]) > 15 else ""), flush=True)
+        if fast_info["quarantined"]:
+            print("  QUARANTINED (deselected here, CI runs them): " + ", ".join(fast_info["quarantined"]), flush=True)
     # GATE_SPEED: the ship-only flags (sync.run_gate passes them; CI, auto_deploy and daily_hygiene never do)
     use_record = "--record" in args and not os.environ.get("CI")
     start_tree, reused = None, {}
@@ -819,8 +1021,12 @@ def main(argv=None):
     slot = None
     if "--slot" in args and mode not in ("docs", "none"):
         import sync
-        slot = lambda: sync.gate_slot(REPO)   # noqa: E731 - the slot is taken after the precheck, released when the main phase ends
-    results = run_plan(plan, gate_jobs(), fail_fast="--fail-fast" in args, precheck="--precheck" in args, slot=slot, reused=reused)
+        if fast_applied:   # own pool: a fast gate never queues behind the 9-minute full gates
+            slot = lambda: sync.gate_slot(REPO, slots=FAST_SLOTS, name="gate-slots-fast")   # noqa: E731
+        else:
+            slot = lambda: sync.gate_slot(REPO)   # noqa: E731 - the slot is taken after the precheck, released when the main phase ends
+    results = run_plan(plan, fast_jobs() if fast_applied else gate_jobs(), fail_fast="--fail-fast" in args,
+                       precheck="--precheck" in args and not fast_applied, slot=slot, reused=reused)
     if use_record:
         save_record(plan, results, start_tree=start_tree)
 
