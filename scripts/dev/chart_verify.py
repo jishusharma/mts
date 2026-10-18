@@ -16,7 +16,9 @@ from rsi_core import rsi_core  # noqa: E402
 import capture  # noqa: E402
 
 FAPI = "https://fapi.binance.com/fapi/v1/klines"
-TFS = set(capture.TF_MINUTES)
+# capture.TF_MINUTES is the one map; these capture-only intervals are not served by fapi klines
+FAPI_UNSUPPORTED = {"4m", "3h", "7h"}
+TFS = set(capture.TF_MINUTES) - FAPI_UNSUPPORTED
 
 
 def rsi(closes, period=14):

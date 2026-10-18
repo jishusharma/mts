@@ -12,7 +12,10 @@ import alert_rate_check
 
 class TestTimeframeMap(unittest.TestCase):
     def test_chart_verify_tfs_equals_capture_tf_minutes(self):
-        self.assertEqual(chart_verify.TFS, set(capture.TF_MINUTES))
+        self.assertEqual(chart_verify.TFS, set(capture.TF_MINUTES) - chart_verify.FAPI_UNSUPPORTED)
+        self.assertTrue(chart_verify.FAPI_UNSUPPORTED <= set(capture.TF_MINUTES))
+        self.assertNotIn("4m", chart_verify.TFS)
+        self.assertIn("1w", chart_verify.TFS)
 
     def test_alert_rate_check_keys_in_capture_tf_minutes(self):
         for k, v in alert_rate_check.TF_MIN.items():
