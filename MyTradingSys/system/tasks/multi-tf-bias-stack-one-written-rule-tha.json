@@ -1,60 +1,59 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python MyTradingSys/research/multi_tf_bias_2026-10-18/test_study.py"
+  ],
   "created": "2026-10-18T14:58:36Z",
-  "depends_on": [],
+  "depends_on": [
+    "context-conditioned-session-flow-states"
+  ],
   "done_when": "Rule written as a table (inputs per TF, output bias + 'no bias' case); DEV event study fee-net vs single-TF baselines (1h only, 1D only); trial ledger row; report in research/ with Result line.",
-  "est_turns": 30,
+  "est_turns": 28,
   "from_inbox": "",
-  "goal": "Operator 2026-10-18 (6 shots 1h..1D at 14:53-14:57Z): the read flips by timeframe (1D/12h balance with net taker selling, 8h compression, 6h/4h failed rotation, 1h impulsive down into -2s). Write ONE bias rule as a fixed stack and test it: per TF record state (balance/imbalance), location in that TF's range (edge/middle), flow (CVD step sign, OI direction); the rule: highest TF sets location, lowest TF sets timing, a lower-TF move toward a higher-TF edge is 'continuation' only until the edge, at the edge it is a failed-auction watch (Tom TOM-2/TOM-7 wording, SOURCED rows only from SETUP_CATALOG). All thresholds OURS, chosen on DEV.",
+  "goal": "Operator 2026-10-18: the read flips by timeframe. Write ONE bias rule as a fixed stack and test it on DEV: per TF state (balance/imbalance), range location (edge/middle), flow sign; highest TF sets location, lowest sets timing; at an HTF edge a lower-TF move is a failed-auction watch (TOM-2/TOM-7 wording). Thresholds OURS.",
   "id": "multi-tf-bias-stack-one-written-rule-tha",
   "lane": "SONNET",
-  "latest": [
-    {
-      "auto": true,
-      "kind": "ship",
-      "line": "live-market 10-18: 6h read + multi-TF bias table, bias-stack card",
-      "ref": "cd0ec7c6cdde",
-      "utc": "2026-10-18T14:59:42Z"
-    },
-    {
-      "auto": true,
-      "kind": "report",
-      "line": "cd0ec7c6cdde live-market 10-18: 6h read + multi-TF bias table, bias-stack card",
-      "ref": "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/READ.md",
-      "utc": "2026-10-18T14:59:42Z"
-    }
-  ],
+  "latest": [],
   "layers": [
     "tom"
   ],
   "live_path": false,
-  "note": "Artifact to remove first: TradingView VWAP is built from the chart's own bars, so 'price vs VWAP' changes with TF alone (10-18 14:56Z: 1D 81,431 / 8h 81,533 / 4h 81,661 / 1h 81,674 / 12h 81,694; engine 1m 81,676). The stack must use one VWAP (1m-built) for every TF.",
+  "note": "Depends on context-conditioned-session-flow-states (shares its context table; not a duplicate: that card tests flow stability, this one forms a bias rule). Becomes servable when that card is done. Artifact removed first: TradingView VWAP is built from each chart's own bars.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-18T14:59:53Z",
+  "refreshed": "2026-10-18T15:46:53Z",
   "refs": [
     "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/SHOT_2da0ed270ed8.md"
   ],
   "result": "",
   "scope_in": [
-    "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/READ.md (10-18 multi-TF table)",
-    "Binance fapi klines 1h/4h/8h/12h/1d DEV split",
-    "SETUP_CATALOG.md TOM-2, TOM-7"
+    "NEW MyTradingSys/research/multi_tf_bias_2026-10-18/ (RULE.md, study.py, test_study.py, REPORT.md)",
+    "reuses the context table built by context-conditioned-session-flow-states (HTF balance/trend, range position); no second context builder",
+    "Binance fapi klines 1h/4h/8h/12h/1d, DEV split"
   ],
   "scope_out": [
     "live code",
+    "engine label change (report only)",
     "VALIDATION/HOLDOUT reads",
     "trade advice"
   ],
-  "scope_sha": "cd0ec7c6cdde",
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "OURS: all thresholds (DEV-chosen); one VWAP built from 1m for every TF",
+    "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/READ.md:40 (10-18 multi-TF table, VWAP differs by TF 81,431..81,694)",
+    "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md:46 (TOM-2 SOURCED), :50 (TOM-7 SOURCED)",
+    "MyTradingSys/runtime/mts_math.py:354 (engine labels trend_healthy whenever price is outside the daily VA; OURS rule)"
+  ],
+  "state": "refined",
+  "steps": [
+    "Write RULE.md table: inputs per TF (state, range location, flow sign), output bias plus a 'no bias' case; HTF sets location, LTF sets timing; TOM-2/TOM-7 wording only from SETUP_CATALOG rows.",
+    "Build all TF VWAPs from 1m bars; check the 10-18 14:56Z table is reproduced (spread across TFs near zero).",
+    "DEV event study fee-net: stack vs 1h-only and 1D-only baselines, day-clustered SE; trial ledger row; REPORT.md Result line."
+  ],
+  "tests": "test_study.py: 1m-built VWAP is identical for every TF on a fixed fixture, and the bias table gives 'no bias' when TFs disagree; fails before study.py exists",
   "title": "Multi-TF bias stack: one written rule that forms bias from HTF location + LTF flow, tested on DEV (operator 10-18: bias changes with each TF)",
-  "worker": ""
+  "worker": "session"
 }

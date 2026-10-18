@@ -1,15 +1,17 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python MyTradingSys/research/session_flow_context_2026-10-18/test_build_rows.py"
+  ],
   "created": "2026-10-18T15:30:36Z",
   "depends_on": [],
   "done_when": "PRE_REG written (context definitions frozen first, all thresholds OURS on DEV); DEV event table with day-clustered SE per pattern x context; verdict on the operator's claim; trial ledger row; Result line.",
-  "est_turns": 40,
+  "est_turns": 32,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Operator 2026-10-18: behaviour of price/CVD/OI/net delta is consistent only inside a context (e.g. 60-64K Aug range, 84-87K Sep range, post-10-08 balance), not all year. Build per-session rows (ASIA/LDN/US/LATE): price change, taker delta, OI change, range position, sweep-and-reclaim of prior-session extreme; label quadrant (squeeze, long liquidation, new longs, new shorts, absorption). Outcome = next-session return/range. Context per day: HTF balance vs trend and position in 10-20d range, realised-vol percentile, OI trend, weekday/weekend, price regime. Test: within-context stability vs across-context instability of each pattern's outcome.",
+  "goal": "Test the operator's claim (2026-10-18): price/CVD/OI behaviour is stable only inside a context (HTF balance vs trend, 10-20d range position, vol percentile, OI trend, weekday), not across the year. Per-session rows (ASIA/LDN/US/LATE): price chg, taker delta, OI chg, range position, sweep-reclaim; quadrant label; outcome = next-session return/range.",
   "id": "context-conditioned-session-flow-states",
   "lane": "SONNET",
   "latest": [],
@@ -18,33 +20,46 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "Blocker to check first: Binance public openInterestHist keeps 30 days only; long OI must come from our archive. Session split UTC 00/08/13:30/20 is OURS.",
+  "note": "long OI not on disk; waits for desk fetch 20261013-143640-gap-g5 (DSA-NUC)",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-18T15:30:48Z",
+  "refreshed": "2026-10-18T15:46:45Z",
   "refs": [
     "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/SET_41f213b5bea3_188135336af0.md"
   ],
   "result": "",
   "scope_in": [
-    "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/SET_41f213b5bea3_188135336af0.md (worked example, 3 windows)",
-    "context-factors PRE_REG_V3 data path (437/319 days)",
-    "OI_DELTA_4STATE_BACKTEST_2026-09-21.md (8-day prior, no context)",
-    "gptb-session-momentum-event-table"
+    "NEW MyTradingSys/research/session_flow_context_2026-10-18/ (PRE_REG.md, build_rows.py, test_build_rows.py, REPORT.md)",
+    "reads Dumps/backtest/raw/metrics (5m OI) and the 1m klines taker data via MyTradingSys/backtest/bt_data.py",
+    "context-factors context definitions (context_asof.py, as-of only)"
   ],
   "scope_out": [
     "live code",
-    "VALIDATION/HOLDOUT reads before PRE_REG",
+    "VALIDATION/HOLDOUT reads before PRE_REG is frozen",
+    "Binance openInterestHist (30 days only)",
     "trade advice"
   ],
   "scope_sha": "",
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "size": "M",
+  "sources": [
+    "OURS: session split UTC 00/08/13:30/20, all thresholds (chosen on DEV, one VALIDATION check, holdout read once)",
+    "MyTradingSys/backtest/fetch_binance_archive.py:14 (metrics = 5m OI + L/S ratios), :24-25 (run flags), :36 (daily files only)",
+    "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md:141 (archive futures/um/daily/metrics/BTCUSDT starts 2020-09-01)",
+    "MyTradingSys/research/context_factors_pit_2026-10-16/AUDIT_BEFORE_RUN.md:51-52 (437 / 319 day power numbers, days not OI)",
+    "MyTradingSys/research/context_factors_pit_2026-10-16/CONTEXT_FACTORS_SPEC.md:192 (OI NOT_IN_DATA on disk: no long OI exists yet)",
+    "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/SET_41f213b5bea3_188135336af0.md (worked example, 3 windows)"
+  ],
+  "state": "blocked",
+  "steps": [
+    "Gate: ls Dumps/backtest/raw/metrics; need daily files from 2020-09-01 (fetched by desk task 20261013-143640-gap-g5-fetch-binance-btcusdt-futures-met, target DSA-NUC). If missing: stop, hand back as refined.",
+    "Write PRE_REG.md first: freeze context defs (HTF balance/trend, 10-20d range position, vol percentile, OI trend, weekday), quadrant labels, outcome; run verdicts.py check and prereg_gate.py; label every number SOURCED/OURS.",
+    "build_rows.py: per-session rows (ASIA/LDN/US/LATE) with price chg, taker delta (FORMULAS s.14), 5m OI chg, range position, sweep-reclaim; next-session return/range; DEV only.",
+    "Event table: day-clustered SE per pattern x context; within-context vs across-context stability test; verdict on the operator's claim; trial ledger row; REPORT.md Result line."
+  ],
+  "tests": "test_build_rows.py: hand-computed 2-day fixture (expected numbers from FORMULAS.md s.14, not from code) for delta, OI change and quadrant label; must fail before build_rows.py exists",
   "title": "Context-conditioned session flow states: per-session price/delta/OI quadrant + sweep-reclaim, next-session outcome, stable within context vs across contexts (operator 10-18)",
-  "weight": "",
-  "worker": ""
+  "weight": "B-SHARED",
+  "worker": "session"
 }
