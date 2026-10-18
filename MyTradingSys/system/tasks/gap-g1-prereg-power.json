@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C1",
   "commands": [],
   "created": "2026-10-14T11:26:00Z",
   "depends_on": [],
@@ -22,11 +23,11 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT [PLAN 2026-10-18 weight=ROUTINE lab-touch=yes class=C0 reviewer=machine checks + Flash low pass] DECISION (OURS) 2026-10-18: re-laned OPUS -> CODEX; display-only change needs no Opus (operator kept the frozen bar). 2.8016 = 1.96 + 0.8416 (two-sided 5 percent, 80 percent power).",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:definitions CLASS:C1 REVIEWER:Gemini 4 Argon low (Lab_Guy C1 review: MDE80 = 2.8016*se_pct and n80 = n*(MDE80/net)^2 hand-verified on n=400, se=0.10, net=0.15 -> MDE80=0.28016, n80=1395.34 -> 1395) | [PLAN 2026-10-18 weight=ROUTINE lab-touch=yes class=C0 reviewer=machine checks + Flash low pass] DECISION (OURS) 2026-10-18: re-laned OPUS -> CODEX; display-only change needs no Opus (operator kept the frozen bar). 2.8016 = 1.96 + 0.8416 (two-sided 5 percent, 80 percent power).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-17T20:21:24Z",
+  "refreshed": "2026-10-18T05:13:05Z",
   "refs": [
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
   ],
@@ -52,6 +53,6 @@
   ],
   "tests": "scripts/dev/test_verdicts.py new power-line test, expected numbers as in step 1; fails before the change.",
   "title": "G1 pre-reg power: print MDE and trades-for-80%-power beside every verdict; INCONCLUSIVE rule (operator D-a)",
-  "weight": "ROUTINE",
+  "weight": "B-SHARED",
   "worker": "agent"
 }

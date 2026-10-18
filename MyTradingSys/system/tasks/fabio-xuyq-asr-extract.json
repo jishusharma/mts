@@ -33,7 +33,7 @@
     "fabio"
   ],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:coordinator reads Result + verify_extract_quotes PASS DECISION (OURS): long ASR job (3.8 h audio) runs on NB as one low-priority background job; extraction via 4 Sonnet readers.",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:none CLASS:C0 REVIEWER:coordinator reads Result + verify_extract_quotes PASS DECISION (OURS): long ASR job (3.8 h audio) runs on NB as one low-priority background job; extraction via 4 Sonnet readers.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -64,5 +64,6 @@
   "tests": "verify_extract_quotes.py PASS on the new extract; git cherry origin/fast-track empty after ship.",
   "title": "Fabio xUyqIjCfZzg: finish ASR transcription (JIS-NB, resumable) then canonical transcript + V2 extract + FAB catalogue quotes",
   "weight": "IMPORTANT",
-  "worker": "session"
+  "worker": "session",
+  "updated": "2026-10-18T05:30:00Z"
 }

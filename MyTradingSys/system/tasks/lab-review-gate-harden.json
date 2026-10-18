@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "lab lab-vendor-gate-harden: DONE (build)",
-      "ref": "f72d05a3a951",
-      "utc": "2026-10-17T22:55:09Z"
+      "line": "lane_health: DSA close path goes through tasks.review_gate",
+      "ref": "f9a7b9c811a3",
+      "utc": "2026-10-18T02:47:42Z"
     },
     {
       "auto": true,
@@ -36,20 +36,21 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
-  "refreshed": "2026-10-18T04:09:21Z",
+  "refreshed": "2026-10-18T05:17:55Z",
   "refs": [],
   "result": "",
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/test_tasks.py",
-    "scripts/dev/lab_flow.py"
+    "scripts/dev/lab_flow.py",
+    "scripts/dev/lane_health.py"
   ],
   "scope_out": [
     "the live path",
     "holdout reads",
     "parameters without a trader quote (NO-SOURCE)"
   ],
-  "scope_sha": "f72d05a3a951",
+  "scope_sha": "f9a7b9c811a3",
   "size": "S",
   "sources": [],
   "state": "ready",
@@ -61,6 +62,7 @@
   ],
   "tests": "forged-stamp forms (placeholder reviewer, producer reviewer, invalid date, quoted mid-note), class-field downgrade and whitespace receipt each fail on current code first",
   "title": "Review-gate hardening: forged stamp, downgrade, other close paths, vacuous tests",
+  "updated": "2026-10-18T05:30:00Z",
   "weight": "",
   "worker": ""
 }

@@ -1,7 +1,10 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "class": "C1",
+  "commands": [
+    "python MyTradingSys/research/levels_confluence_2026-10-14/ladder.py --rule MyTradingSys/research/levels_confluence_2026-10-14/frozen_rule.json --window 2025-04-01..2025-06-30 --out MyTradingSys/research/levels_confluence_2026-10-14/validation.md"
+  ],
   "created": "2026-10-13T18:51:54Z",
   "depends_on": [
     "lc-ladder-dev"
@@ -11,12 +14,14 @@
   "goal": "One run of the frozen DEV rule on the validation window. No changes after; the number is the answer.",
   "id": "lc-validation",
   "lane": "DSA-NUC",
+  "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] HOLD A-20261018-5: reads an unchecked lab base; start only when the base carries a trust tag >= its class (lab-trust-tag) or the operator lifts it. Operator idea 2026-10-14; own layer (research only until LC3 passes); numbers OURS, printed in each report.",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:results CLASS:C1 REVIEWER:Gemini 4 Argon low + Haiku re-derive 1-3 numbers WEIGHT:CRUCIAL. HOLD-CLEARED A-20261018-5 (lifted by operator). Stays refined until depends_on lc-ladder-dev is done and frozen_rule.json exists; then tasks.py check promotes it automatically.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-14 (LC PLAN.md, operator chat)",
+  "refreshed": "2026-10-18T05:12:41Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -26,17 +31,18 @@
     "any edit to frozen_rule.json or code",
     "HOLDOUT 2025-07+"
   ],
+  "scope_sha": "",
   "size": "S",
   "sources": [
     "MyTradingSys/research/levels_confluence_2026-10-14/PLAN.md (operator ask 2026-10-14, verbatim at top)",
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 10-15 (BTC minimum stop width)",
     "MyTradingSys/backtest/layers/FORMULAS.md (RSI, value area, Bollinger)"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "python ladder.py --rule frozen_rule.json --window 2025-04-01..2025-06-30 > validation.md"
   ],
-  "tests": "none (run card)",
+  "tests": "",
   "title": "LC4 Levels Confluence: run frozen_rule.json once on VALIDATION 2025-04..2025-06 and report",
   "weight": "CRUCIAL"
 }
