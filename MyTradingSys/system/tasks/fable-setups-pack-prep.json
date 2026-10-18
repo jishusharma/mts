@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "HOLD (operator 2026-10-19): do not build until Fable run 2 REGATE_AUDIT.md has shipped.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -35,10 +35,11 @@
   "sources": [
     "MyTradingSys/system/fable_run_4_brief.md"
   ],
-  "state": "raw",
+  "state": "blocked",
   "steps": [],
   "tests": "Leak check script asserts no pack timestamp >= 2023-07-01; fails on a planted row. POC/VAH/VAL for one hand-picked week match a hand computation from FORMULAS 18.1.",
   "title": "Fable run 4 pack: LOOK-window BTC OHLCV, VP levels, 31 naked charts, Tom/Fabio rules digest",
   "weight": "IMPORTANT",
-  "worker": "session"
+  "worker": "session",
+  "blocked_by": "fable-run2-regate-all-prereg"
 }
