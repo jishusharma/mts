@@ -1,0 +1,73 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/fetch_captions.py --analyst Kurisko PjigwAmhiT0"
+  ],
+  "created": "2026-10-18T03:57:12Z",
+  "depends_on": [],
+  "done_when": "QUAD_ROTATION.md passes verify_extract_quotes.py; KURISKO_SPEC.md section 5 shows every gap CLOSED with a quote or OPEN with its labelled OURS default; shipped. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Close the Kurisko spec gaps from his own words: fetch the Desire To Trade ep 472 captions (PjigwAmhiT0), write a quote-gated extract of the Quad Rotation rule, settle (40,4) vs 44, the turn-up entry, stop and exit.",
+  "id": "kurisko-transcript-extract",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Kurisko Quad Rotation sourced spec: it is 4 stochastics not RSI; NO-SOURCE items flagged",
+      "ref": "e3e1be6bd15f",
+      "utc": "2026-10-09T13:04:19Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "e3e1be6bd15f Kurisko Quad Rotation sourced spec: it is 4 stochastics not RSI; NO-SOURCE it",
+      "ref": "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md",
+      "utc": "2026-10-09T13:04:19Z"
+    }
+  ],
+  "layers": [
+    "rsi"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Free public captions (CLAUDE.md pre-approval). The 4-RSI memory stays NO-SOURCE unless his words say RSI. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T03:58:35Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "raw_transcripts_canonical/",
+    "extracts/processed/kurisko/",
+    "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md",
+    "scripts/dev/fetch_captions.py",
+    "scripts/dev/verify_extract_quotes.py"
+  ],
+  "scope_out": [
+    "any backtest",
+    "RSI parameters attributed to Kurisko without his words",
+    "video or audio download"
+  ],
+  "scope_sha": "e3e1be6bd15f",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md sections 3 and 5"
+  ],
+  "state": "ready",
+  "steps": [
+    "python scripts/dev/fetch_captions.py --analyst Kurisko PjigwAmhiT0 (captions only; YouTube is pre-approved). RATELIMIT: rerun with --wait 120, 3 tries max; NOCAPS: record it and go to step 4",
+    "write extracts/processed/kurisko/QUAD_ROTATION.md: one quoted line per rule (periods, levels 20/80, turn-up entry, stop, exit, timeframe, waiting) with transcript file:line",
+    "python scripts/dev/verify_extract_quotes.py extracts/processed/kurisko/QUAD_ROTATION.md until it exits 0",
+    "KURISKO_SPEC.md section 5: mark each gap CLOSED (quote) or OPEN; for each open gap write the labelled OURS default the module card will use"
+  ],
+  "tests": "verify_extract_quotes.py exits 0 on the extract and exits 1 on a copy with one doctored quote",
+  "title": "Kurisko Quad Rotation: fetch the interview captions and extract the rule with the quote gate",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
