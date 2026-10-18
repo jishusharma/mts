@@ -14,16 +14,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/codex-lab",
-      "ref": "7bb70d2bac4a",
-      "utc": "2026-10-17T20:39:41Z"
+      "line": "fix(test): remove leaked json line from test_run_all_tests.py",
+      "ref": "44cabf8e140c",
+      "utc": "2026-10-18T04:52:02Z"
     },
     {
       "auto": true,
-      "kind": "report",
-      "line": "311b710b6c31 chart_verify.py: recompute RSI/BB/StochRSI from fapi klines at a shot clock",
-      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
-      "utc": "2026-10-17T18:21:17Z"
+      "kind": "audit",
+      "line": "dfb243d4cc83 labguy-pass-b: Lab_Guy ACCEPT stamps for 5 cards (b187 done, audit/rv05-h2/h3",
+      "ref": "MyTradingSys/research/lab_guy/specs/indicator-values-multi-model-audit.md",
+      "utc": "2026-10-18T04:13:20Z"
     }
   ],
   "layers": [
@@ -36,7 +36,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-17T21:37:57Z",
+  "refreshed": "2026-10-18T05:13:16Z",
   "refs": [
     "MyTradingSys/backtest/layers/FORMULAS.md",
     "MyTradingSys/research/lab_guy/specs/indicator-values-multi-model-audit.md"
@@ -51,7 +51,7 @@
     "engine code fixes (file B-items)",
     "live tree"
   ],
-  "scope_sha": "7bb70d2bac4a",
+  "scope_sha": "44cabf8e140c",
   "size": "M",
   "sources": [],
   "state": "ready",

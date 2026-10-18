@@ -25,7 +25,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none (coordinator spot-check) DECISION (OURS): the copy to F:/AIBridge/extension and the reload are operator-only and are not in done_when.",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:none CLASS:C0 REVIEWER:none (coordinator spot-check) DECISION (OURS): the copy to F:/AIBridge/extension and the reload are operator-only and are not in done_when.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -55,5 +55,6 @@
   "tests": "node scripts/aibridge/tests/loop.test.js",
   "title": "Bug: AIBridge keep-alive copy still shows version 0.7.0 in the panel and chrome://extensions; bump manifest.json and the panel label, then reload",
   "weight": "ROUTINE",
-  "worker": "agent"
+  "worker": "agent",
+  "updated": "2026-10-18T05:30:00Z"
 }
