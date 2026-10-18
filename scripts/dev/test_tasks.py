@@ -194,6 +194,23 @@ class QueueTest(unittest.TestCase):
         self.run_cli("check", "B1")
         self.assertEqual(T.get(self.repo, "B1")["state"], "ready")
 
+    def test_ready_card_closes_without_take_when_every_gate_passes(self):
+        T.save(self.repo, good("B1"))
+        rc, out = self.run_cli("done", "B1", "--result", "28 rows")
+        self.assertEqual(rc, 0, out)
+        c = T.get(self.repo, "B1")
+        self.assertEqual(c["state"], "done")
+        self.assertTrue(c["taken"])
+
+    def test_ready_card_that_fails_a_gate_does_not_close(self):
+        T.save(self.repo, good("B1", goal=""))
+        rc, out = self.run_cli("done", "B1", "--result", "x")
+        self.assertNotEqual(rc, 0)
+        self.assertEqual(T.get(self.repo, "B1")["state"], "ready")
+        T.save(self.repo, good("B2", state="refined"))
+        rc, _ = self.run_cli("done", "B2", "--result", "x")
+        self.assertNotEqual(rc, 0)
+
     def test_check_all_demotes_a_ready_card_that_regressed(self):
         T.save(self.repo, good("B1", goal=""))
         rc, _ = self.run_cli("check", "--demote")
@@ -581,17 +598,17 @@ class ReviewGateTest(unittest.TestCase):
         card = good(weight="CRUCIAL", note="REVIEWED: Argon 2026-10-18")
         self.assertTrue(any("receipt" in e for e in T.review_gate(card, True, "   ")))
 
-    def test_done_requires_active_state(self):
+    def test_done_requires_ready_or_active_state(self):
         d = tempfile.TemporaryDirectory()
         repo = Path(d.name)
         previous = T.REPO
         T.REPO = repo
         try:
-            T.save(repo, good("STATE1", state="ready"))
+            T.save(repo, good("STATE1", state="refined"))
             rc, out = run_cli("done", "STATE1", "--result", "receipt")
             self.assertNotEqual(rc, 0, out)
-            self.assertIn("only an active", out)
-            self.assertEqual(T.get(repo, "STATE1")["state"], "ready")
+            self.assertIn("only a ready or active", out)
+            self.assertEqual(T.get(repo, "STATE1")["state"], "refined")
         finally:
             T.REPO = previous
             d.cleanup()
