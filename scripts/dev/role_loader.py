@@ -167,22 +167,33 @@ def state_path(sid):
     return base / (re.sub(r"[^A-Za-z0-9_.-]", "_", sid or "nosession") + ".json")
 
 
-def injected(sid):
+def _load(sid):
     try:
-        return json.loads(state_path(sid).read_text(encoding="utf-8"))
+        d = json.loads(state_path(sid).read_text(encoding="utf-8"))
+        return d if isinstance(d, dict) else {"roles": list(d), "meta": {}}
     except Exception:
-        return []
+        return {"roles": [], "meta": {}}
 
 
-def mark_injected(sid, name):
+def injected(sid):
+    return _load(sid)["roles"]
+
+
+def role_meta(sid, name):
+    return _load(sid)["meta"].get(name)
+
+
+def mark_injected(sid, name, meta=None):
     try:
         p = state_path(sid)
         p.parent.mkdir(parents=True, exist_ok=True)
-        cur = injected(sid)
-        if name not in cur:
-            cur.append(name)
+        d = _load(sid)
+        if name not in d["roles"]:
+            d["roles"].append(name)
+        if meta:
+            d["meta"][name] = meta
         with open(p, "w", encoding="utf-8", newline="\n") as fh:
-            fh.write(json.dumps(cur))
+            fh.write(json.dumps(d))
     except Exception:
         pass
 
@@ -203,7 +214,11 @@ def boot_step(body):
     return "(first step of the file's boot section)"
 
 
+LAST_META = {}
+
+
 def build_text(name, repo, fetched_ok):
+    LAST_META.clear()
     sha8 = git_sha8(repo)
     stale = "" if fetched_ok else "STALE: fetch failed (using the local origin/fast-track ref; it may be old).\n"
     fname = file_for(name)
@@ -218,6 +233,7 @@ def build_text(name, repo, fetched_ok):
         if h["token"] != tok and h["token"] != "PENDING":
             stale += f"WARN: header token {h['token']} differs from the body token {tok}; the body is what you follow.\n"
         _, body = split_header(text)
+        LAST_META.update(version=h["version"], token=tok, file=fname)
         b = banner(h["name"], h["version"], tok, fname, sha8)
         return (f"{stale}ROLE LOADER (hook): you are {h['name']}. The file below is the authoritative workflow "
                 f"({ROLES_REL}/{fname} on {TRUNK} @ {sha8}).\n"
@@ -239,6 +255,20 @@ def build_text(name, repo, fetched_ok):
 
 def _out(event, text):
     return json.dumps({"hookSpecificOutput": {"hookEventName": event, "additionalContext": text}})
+
+
+def _reminder(sid):
+    """Compact per-prompt reminder for a session that already has a role (no git)."""
+    done = injected(sid)
+    if not done:
+        return ""
+    name = done[-1]
+    m = role_meta(sid, name)
+    if not m:
+        return ""
+    path = f"{ROLES_REL}/{m['file']}"
+    return _out("UserPromptSubmit", f"Role: {name} {m['version']} (token {m['token']}, {path}). Follow that file; if you no longer "
+                f"have it in context, say ROLE CONTEXT LOST and re-read it with git show {TRUNK}:{path}.")
 
 
 def handle(payload, repo=REPO):
@@ -269,9 +299,9 @@ def handle(payload, repo=REPO):
         if not name:
             return ""
     else:
-        return ""
+        return _reminder(sid)
     text = build_text(name, repo, git_fetch(repo))
-    mark_injected(sid, name)
+    mark_injected(sid, name, dict(LAST_META))
     return _out("UserPromptSubmit", text)
 
 
