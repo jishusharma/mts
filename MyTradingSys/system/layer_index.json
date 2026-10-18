@@ -716,11 +716,12 @@
       "id": "pitchfork",
       "name": "Pitchfork (Andrews / Schiff / Morge median line)",
       "tracks": "Gemini (study/detector), Claude",
-      "status": "Foundational study papers delivered (papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md, papers/02_PITCHFORK_APPLICATION_ON_BTC.md); detector and test suite built.",
+      "status": "Foundational study papers delivered (papers/01, 02, 03); detector, tests, and YouTube BTC evaluation benchmark built.",
       "spec": [
         "papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md",
         "papers/02_PITCHFORK_APPLICATION_ON_BTC.md",
-        "MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md"
+        "MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md",
+        "papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md"
       ],
       "code": [
         "MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py"
