@@ -180,6 +180,11 @@ class Stale(unittest.TestCase):
         a = '{"generated": "2026-10-17 14:19 UTC", "commit": "56a493f3", "x": 1}'
         self.assertEqual(af.content_hash(a), af.content_hash(a.replace("14:19", "15:00").replace("56a493f3", "abcdef01")))
         self.assertNotEqual(af.content_hash(a), af.content_hash(a.replace('"x": 1', '"x": 2')))
+        # 2026-10-18: claim ages and minutes move with the clock, and the Control Room embeds registry publish dates;
+        # without blanking them every generated page is STALE right after publish-record
+        c = '{"age_h": 4.3, "minutes": 22, "pub": "2026-10-17", "x": 1}'
+        self.assertEqual(af.content_hash(c), af.content_hash('{"age_h": 4.4, "minutes": 260, "pub": "2026-10-18", "x": 1}'))
+        self.assertNotEqual(af.content_hash(c), af.content_hash(c.replace('"x": 1', '"x": 2')))
 
     def test_stale_lists_exactly_the_differing_pages(self):
         pages = af.tracked(self.reg)
@@ -214,6 +219,7 @@ class Stale(unittest.TestCase):
 
     def test_home_shows_behind_badge_and_published_date(self):
         import make_home as mh
+        next(p for p in self.reg["pages"] if p["slug"] == "research_map")["published_sha"] = None
         pages = {p["slug"]: p for p in mh.build(self.reg)["pages"]}
         self.assertTrue(pages["research_map"]["behind"])  # no published_sha yet
         af.publish_record(self.reg, "research_map", today="2026-10-18")

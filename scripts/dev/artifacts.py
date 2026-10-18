@@ -5,7 +5,7 @@
   python scripts/dev/artifacts.py plan --account jishu.sharma   # what a session on that account must publish / pin / record
   python scripts/dev/artifacts.py build                     # regenerate every page that has a generator in this repo
   python scripts/dev/artifacts.py stale                     # STALE <slug> <url> for each page whose repo build differs from what was last published
-  python scripts/dev/artifacts.py publish-record --slug X   # after an Artifact publish: store published_sha + today's date
+  python scripts/dev/artifacts.py publish-record --slug X [--date YYYY-MM-DD]   # after an Artifact publish: store published_sha + the publish date (default today)
   python scripts/dev/artifacts.py banner --slug research_map [--file live.html]   # insert/refresh the "Part of MTS Home" line
 
 Pages are republished over their existing url (Artifact tool: `url` = the account's url), which keeps the link and the pin.
@@ -161,7 +161,8 @@ def cmd_list(reg):
         print(f"{pg['slug']:20} {pg['status']:10} {'pin' if pg['pinned'] else '   '} {urls}  pub {pg['last_published']}")
 
 
-VOLATILE = re.compile(r'"(?:generated|commit)":\s*"[^"]*"')  # build timestamp / head sha: change on every build, not content
+# build timestamp / head sha, clock-derived ages, and the registry publish dates the Control Room embeds: they change on every build or record, not content
+VOLATILE = re.compile(r'"(?:generated|commit|pub)":\s*"[^"]*"|"(?:[a-z_]*age_h|minutes)":\s*-?[0-9.]+')
 
 
 def content_hash(text):
@@ -236,6 +237,7 @@ def main(argv=None):
     ap.add_argument("--account", default="jishu.sharma")
     ap.add_argument("--slug", help="banner / publish-record: the registry page")
     ap.add_argument("--file", help="banner: html to update in place (default: the page's repo html)")
+    ap.add_argument("--date", help="publish-record: the day the page was last published (default today)")
     a = ap.parse_args(argv)
     reg = load()
     if a.cmd == "banner":
@@ -247,7 +249,7 @@ def main(argv=None):
         print(f"banner: {a.slug} -> {f}")
         return 0
     if a.cmd == "publish-record":
-        sha = publish_record(reg, a.slug)
+        sha = publish_record(reg, a.slug, today=a.date)
         REG.write_text(json.dumps(reg, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
         print(f"publish-record: {a.slug} published_sha={sha[:12]}")
         return 0
