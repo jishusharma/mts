@@ -8,7 +8,7 @@ Source: all 9 coordinator transcripts on JIS-NUC 2026-10-15..18 (>= 3 spawns eac
 `coord_overhead.py` (a turn = one assistant API message; eq tokens = input 1, cache-write 1.25, cache-read 0.1, output 5).
 | Category | Turns | Share | Active min | eq tokens |
 |---|---|---|---|---|
-| status re-derivation (tasks/desk/codex/STATUS/git log/fetch) | 323 | 19.5% | 48 | 6.6 M (20%) |
+| status re-derivation (tasks/desk/codex/STATUS/history reads/fetch) | 323 | 19.5% | 48 | 6.6 M (20%) |
 | ship + claim/release run by the coordinator itself | 117 | 7.1% | 115 (27.5%) | 2.2 M |
 | watch loops (sleep, list_sessions, notifications) | 113 | 6.8% | 40 | 1.9 M |
 | bookkeeping (update_plan, ToolSearch, wrap_up) | 106 | 6.4% | 54 (13%) | 2.0 M |
