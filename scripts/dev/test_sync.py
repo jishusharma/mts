@@ -356,12 +356,38 @@ class SyncTest(unittest.TestCase):
         sync.ship(self.a, gate=self.gate)
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
-            sync.start(self.b, slug="context-factors")
+            sync.start(self.b, slug="context-factors", quiet=False)
         self.assertIn("prior work on fast-track matching 'context-factors'", buf.getvalue())
         self.assertIn("MyTradingSys/research/context_factors_2026-10-16", buf.getvalue())
         self.assertEqual(sync.prior_work(self.b, "context-null"), [])      # every slug word must match
         self.assertEqual(sync.prior_work(self.b, "factors"), ["MyTradingSys/research/context_factors_2026-10-16"])
         self.assertEqual(sync.prior_work(self.b, "fix"), [])               # stop words alone never match
+
+    def test_start_quiet_suppresses_claims_table_and_mirror(self):
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            sync.start(self.b, quiet=True)
+        out = buf.getvalue()
+        self.assertNotIn("claims:", out)
+        self.assertNotIn("live mirror:", out)
+        self.assertIn("host=", out)
+        self.assertLess(len(out.encode("utf-8")), 200)
+
+    def test_start_quiet_cli_flag_is_accepted(self):
+        cwd = os.getcwd()
+        os.chdir(self.b)
+        try:
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = sync.main(["start", "--quiet"])
+            self.assertEqual(rc, 0)
+            out = buf.getvalue()
+            self.assertNotIn("claims:", out)
+            self.assertNotIn("live mirror:", out)
+            self.assertLess(len(out.encode("utf-8")), 200)
+        finally:
+            os.chdir(cwd)
+
 
     # ---- per-session tree, hot files, health (parallel-health task) ----
     def test_start_in_dirty_shared_tree_makes_fresh_worktree(self):
