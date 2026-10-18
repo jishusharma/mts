@@ -36,7 +36,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `tom-btc-dev-backtest` blocked p2 CODEX: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
   - `tom-btc-encode` blocked p2 CODEX: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
   - `tom-btc-validation` refined p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
-  - `tom-check-set-find-frames-only-tom-trade` ready p2 SONNET: Tom check set: find frames-only Tom trade recaps and log entry/stop/target without reading captions (check set
+  - `tom-check-set-find-frames-only-tom-trade` refined p2 SONNET: Tom check set: find frames-only Tom trade recaps and log entry/stop/target without reading captions (check set
   - `tom-encode-fade-profile-proofs` ready p2 SONNET: Tom v2: encode the PROFILE arm of the fade (thin top, failed P breakout, lower b-shape)
   - `tom-ledger-add-the-losing-first-attempts` ready p2 SONNET: Tom ledger: add the losing first attempts Tom states but the ledger lacks (S1, S6 pre-session stops)
   - `tom-probe-prereg` refined p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
@@ -135,7 +135,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Code: `MyTradingSys/backtest/layers/positioning`
 - Other results: `MyTradingSys/research/OI_DIVERGENCE_V2_2026-10-10.md`; `MyTradingSys/research/OI_EVENT_STUDY_2026-10-10.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `positioning-c1-longwindow-count-power` ready p4 SONNET: Positioning C1 (NO-SOURCE): count-only events on the DEV window, fire rate, power, null spec (items 3/9/10/12)
   - `positioning-c1-prereg-no-source` raw p4 SONNET: Positioning C1: pre-registration labelled NO-SOURCE (items 1/6/8/9/11/12, gates 0a/0f)
   - `positioning-flowhorse-ledger-feasibility` ready p4 SONNET: FlowHorse positioning: is there any dated trade or call to score (items 1/2/3/5, gates 0c/0d)
 
@@ -202,8 +201,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `indicator-values-multi-model-audit` ready p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by Haiku and Sonnet, plus GPT and D
   - `state-code-accumulator-backfill` ready p2 JIS-NB: StateCodeEmitter: backfill session CVD/cum_pv/cum_vol after restart and WS reconnect, fail closed on backfill 
   - `identify-the-coinglass-net-delta-panel-u` ready p3 SONNET: Identify the CoinGlass Net Delta panel unit and scope: 4 reads in a row NOT_IN_DATA (8h 4.181K, 30m -8.366K, 1
-  - `live-loop-timeouts-b191` ready p3 SONNET: Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)
-  - `live-orderflow-state-line-1m-5m-15m-pric` ready p3 SONNET: Live read: one order-flow state line per TF (1m/5m/15m price swing vs Binance CVD swing vs OI change), descrip
+  - `live-loop-timeouts-b191` refined p3 SONNET: Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)
+  - `live-orderflow-state-line-1m-5m-15m-pric` refined p3 SONNET: Live read: one order-flow state line per TF (1m/5m/15m price swing vs Binance CVD swing vs OI change), descrip
   - `score-context-reads-automatically-carrie` refined p3 SONNET: Score context reads automatically: carried falsifier lines (HELD/BROKEN/UNTESTED) computed from klines at the 
   - `snapshot-vwap-anchor-label` ready p3 JIS-NB: MarketDataSnapshot: vwap_anchor_utc must be the UTC day start used by the VWAP, not today's NY open (audit M3)
   - `one-timeframe-map-for-the-whole-toolchai` ready p4 CODEX: One timeframe map for the whole toolchain: capture.TF_MINUTES lacked 8h (CoinGlass button) while holding 7h; g
@@ -225,8 +224,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md`
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-17_krown-catalogue-gpt-audit.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `krown-data-cme-btc-volume` ready p2 DSA: Krown CME BTC futures daily volume (public data only) as third volume arm
-  - `krown-dev-event-study` ready p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
+  - `krown-data-cme-btc-volume` refined p2 DSA: Krown CME BTC futures daily volume (public data only) as third volume arm
+  - `krown-dev-event-study` refined p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
   - `review-ground-layer-youtube-strategy-and` ready p2 SONNET: Review Ground Layer YouTube strategy and execution priorities
   - `krown-foundations-ep08-follow-through` ready p3 SONNET: Krown Foundations EP08 follow-through: fold the order-book extract into the ledger, re-check the 17 private pl
   - `krown-other-sources-event-study-videos` refined p3 SONNET: Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigg
