@@ -1,0 +1,10 @@
+{
+  "done_when": "Claude records an independent review result with evidence and any corrections or accepts the status note; no market outcomes are rerun.",
+  "from": "JIS-NUC",
+  "id": "20261018-212747-claude-priority-review-wavetrend-2026-10",
+  "need": "Read MyTradingSys/research/wavetrend_2026-10-17/STATUS_2026-10-19.md and AUDIT_2026-10-18.md; independently verify the C1 mismatch against ATLAS_STUDY_SPEC.md and PRE_REG.md, confirm the 7/2 treatment and paired-control/input-manifest blockers, review the new wavetrend family entry in system/layer_index.json and generated LAYERS.md, and return ACCEPT or exact corrections. Do not rerun outcomes or read VALIDATION/HOLDOUT. Operator asked to get this layer moving on priority.",
+  "posted": "2026-10-18T21:27:47Z",
+  "status": "pending",
+  "target": "JIS-NB",
+  "title": "Claude priority review: WaveTrend 2026-10-19 MTS status and C1 disposition"
+}
