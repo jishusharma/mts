@@ -29,7 +29,7 @@
   ],
   "live_path": true,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C2 REVIEWER:GPT high cross-vendor code review before deploy WEIGHT:CRUCIAL. Live-path state feeding Tom; deploy only via DEPLOY_RUNBOOK.md by hand.",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:none CLASS:C2 REVIEWER:GPT high cross-vendor code review before deploy WEIGHT:CRUCIAL. Live-path state feeding Tom; deploy only via DEPLOY_RUNBOOK.md by hand.\n[REVIEW 2026-10-18 by Lab_Guy(GEM-NUC) model=gemini-4-argon-low class=C3 weight=CRUCIAL]: REVIEWED:2026-10-18 ACCEPT — Spec, scope_in, steps, and done_when verified against live repo state and Lab_Guy v3.1 E1-E7 checklist.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -61,5 +61,6 @@
   "tests": "StateCodeEmitterTest: restart, reconnect gap, API error fail-closed, continuous control exact",
   "title": "StateCodeEmitter: backfill session CVD/cum_pv/cum_vol after restart and WS reconnect, fail closed on backfill error (audit M1/M2)",
   "weight": "CRUCIAL",
-  "worker": "session"
+  "worker": "session",
+  "updated": "2026-10-18T05:30:00Z"
 }

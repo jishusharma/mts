@@ -36,6 +36,44 @@ class PreRegTemplate(unittest.TestCase):
                 self.assertNotIn("Answer: TODO", txt)
                 self.assertNotIn("NOT_ANSWERED", txt)
 
+    def test_home_fit_audits_have_verdict_answer_evidence_per_item(self):
+        # every numbered item of an audit carries a FAIR/UNFAIR verdict, an Answer and an Evidence line
+        for p in ROOT.rglob("HOME_FIT_AUDIT_*.md"):
+            with self.subTest(audit=p.name):
+                parts = re.split(r"(?m)^## (?=\d+\. )", p.read_text(encoding="utf-8"))[1:]
+                self.assertEqual(len(parts), 12)
+                for sec in parts:
+                    n = sec.split(".", 1)[0]
+                    self.assertRegex(sec, r"(?m)^Verdict: (FAIR|UNFAIR)\b", "item %s: no verdict" % n)
+                    self.assertRegex(sec, r"(?m)^Answer: \S", "item %s: no answer" % n)
+                    self.assertRegex(sec, r"(?m)^Evidence \(file:line\): \S", "item %s: no evidence" % n)
+
+    def test_malkan_home_fit_audit_present(self):
+        p = ROOT / "research" / "tom_transfer_2026-10-11" / "HOME_FIT_AUDIT_MALKAN.md"
+        self.assertTrue(p.exists(), "HOME_FIT_AUDIT_MALKAN.md missing")
+        self.assertEqual(item_numbers(p), list(range(1, 13)))
+
+
+POSITIONING_AUDIT = ROOT / "research" / "tom_transfer_2026-10-11" / "HOME_FIT_AUDIT_POSITIONING.md"
+VERDICT = re.compile(r"^Verdict: (FAIR|UNFAIR)", re.M)
+
+
+class PositioningHomeFitAudit(unittest.TestCase):
+    """Card positioning-home-fit-audit: the file must exist (the rglob test above passes vacuously without it)."""
+
+    def test_file_exists(self):
+        self.assertTrue(POSITIONING_AUDIT.exists(), "HOME_FIT_AUDIT_POSITIONING.md missing")
+
+    def test_twelve_items_each_with_verdict_and_evidence(self):
+        txt = POSITIONING_AUDIT.read_text(encoding="utf-8")
+        self.assertEqual(item_numbers(POSITIONING_AUDIT), list(range(1, 13)))
+        self.assertEqual(len(VERDICT.findall(txt)), 12)
+        self.assertEqual(txt.count("Evidence (file:line):"), 12)
+
+    def test_has_follow_up_cards_section(self):
+        txt = POSITIONING_AUDIT.read_text(encoding="utf-8")
+        self.assertIn("## Tally and order of cards", txt)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -60,5 +60,13 @@ Provenance rule applies: label every parameter SOURCED (trader's quote + file:li
 Skip OPUS cards; do not touch NEXT_SESSION.md or the relay. One card per session, then stop with a one-line summary.
 ```
 
+## Lab queries (on demand; read-only, `scripts/dev/lab_query.py`)
+Use these instead of ad-hoc grep when asked about Tom/Fabio fixes, backtests or a layer. Family ids: `layer_index.json` (tom, fabio, guidance, ...). Add `--format md` for a readable answer, `--n N` for more rows.
+- `python scripts/dev/lab_query.py changes tom` : recent commits on the family's spec, code, ledger and result files (also its layers' modules).
+- `python scripts/dev/lab_query.py rulings fabio` : BUGS.md bug rows that name the family, newest first (status, severity, title).
+- `python scripts/dev/lab_query.py backtests tom` : layer_map.json backtests of the family, newest first (verdict, n, report path) plus trial-audit status counts from `research/TRIAL_LEDGER.csv`.
+- `python scripts/dev/lab_query.py layers [fabio]` : every layer with its status (layer_map.json) and the latest commit on its module. Layer map text: `LAYERS.md`.
+Run `sync.py start` first so the data is current. Test: `scripts/dev/test_lab_query.py`.
+
 ## Hand-over both ways
 Claude puts the task on a card (`tasks.py new`, lane CODEX, `kind`) and ships it; Gemini returns results only through `tasks.py done` and `sync.py ship`. A question for the operator = `Operator: <question>` in the commit body. Read the other side's work with `python scripts/dev/sync.py news 24`.
