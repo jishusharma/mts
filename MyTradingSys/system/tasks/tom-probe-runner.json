@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T12:59:12Z",
+  "depends_on": [
+    "tom-probe-prereg"
+  ],
+  "done_when": "MyTradingSys/research/tom_transfer_2026-10-11/PROBE_ARMS_REPORT.md complete with 24 trial rows in TRIAL_REGISTRY.csv and DSR computed.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Run the 24 pre-registered management arms (M0-M4, M_all) on DAX and BTC under the stop-width transfer rule with honest trial accounting.",
+  "id": "tom-probe-runner",
+  "lane": "SONNET",
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Pre-registered in PRE_REG_ARMS.md. Evaluates M arms on dev sets under stop-width floor W_min.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "gemini-flash",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_ARMS.md",
+    "MyTradingSys/research/tom_transfer_2026-10-11/PROBE_PLAN.md",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md",
+    "MyTradingSys/backtest/tom_bt.py"
+  ],
+  "scope_out": [
+    "touching clean holdouts (BTC >= 2026-09-27, DAX 2026-04-11..2026-10-09) before dev pass",
+    "live or testnet changes"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_ARMS.md",
+    "MyTradingSys/research/tom_transfer_2026-10-11/PROBE_PLAN.md section 3",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md section 11"
+  ],
+  "state": "refined",
+  "steps": [
+    "1. Implement simulators for M1 (trailing stop), M2 (partial at 1R), M3 (re-entry), and M4 (no timeout) in backtest pipeline.",
+    "2. Enforce stop-width floor W_min on BTC (>=0.40% all-taker, >=0.20% Deribit; DAX reported) per TOM_LAYER_V2_SPEC section 11.",
+    "3. Execute 24 pre-registered trials on dev periods of DAX and BTC; record every trial row in TRIAL_REGISTRY.csv.",
+    "4. Report touch vs trade-through fills, session-matched null (N7), and stratified breakdowns by session and regime (B154).",
+    "5. Calculate DSR and PBO against cumulative N=121 trial count; report n < 100 as 'underpowered', never 'no edge'."
+  ],
+  "tests": "pytest MyTradingSys/tests/test_tom_probe_prereg.py -q passes; tasks.py lint stays green.",
+  "title": "Run pre-registered Tom management arms on DAX and BTC",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
