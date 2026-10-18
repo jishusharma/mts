@@ -1,44 +1,46 @@
 {
-  "approved_by": "",
-  "asks": "T6 depends on tom-btc-encode (parked, see its question). Default: wait for T5.",
-  "commands": [],
-  "created": "2026-10-13T17:31:44Z",
-  "depends_on": [
-    "tom-btc-encode"
-  ],
-  "done_when": "DEV_BT.md table + DEV_FROZEN.json + trial rows.",
-  "from_inbox": "",
-  "goal": "Fee-net DEV run of the T5 detector; arms: partial at the node, no-loss after a new balance, one re-entry; touch and trade-through; power stated. Choose the OURS values on DEV only and freeze them.",
-  "id": "tom-btc-dev-backtest",
-  "kind": "build",
-  "lane": "CODEX",
-  "layers": [
-    "tom"
-  ],
-  "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C1 reviewer=Gemini Flash high + Haiku re-derive 1-3 numbers] HOLD A-20261018-5: reads an unchecked lab base; start only when the base carries a trust tag >= its class (lab-trust-tag) or the operator lifts it. PARKED 2026-10-18 (not stamped): depends_on tom-btc-encode (parked). Lab can run it once T5 exists; DEV 2024-12-01..2025-03-31 per TOM_ON_BTC.md s4.",
-  "prio": 2,
-  "refine_tries": 1,
-  "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
-  "refs": [],
-  "result": "",
-  "scope_in": [
-    "MyTradingSys/research/tom_btc_2026-10-13/"
-  ],
-  "scope_out": [
-    "VALIDATION and HOLDOUT dates",
-    "live tree"
-  ],
-  "size": "M",
-  "sources": [
-    "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4",
-    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2, 11"
-  ],
-  "state": "raw",
-  "steps": [
-    "Run, table, freeze config in DEV_FROZEN.json."
-  ],
-  "tests": "run lane",
-  "title": "Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant a trial row",
-  "weight": "CRUCIAL"
+ "approved_by": "",
+ "asks": "Depends on tom-btc-encode, which waits for the operator G3 marks. Default (OURS): wait; once T5 exists run as CODEX run with a PRE_REG first (verdicts.py check, prereg_gate.py).",
+ "commands": [],
+ "created": "2026-10-13T17:31:44Z",
+ "depends_on": [
+  "tom-btc-encode"
+ ],
+ "done_when": "DEV_BT.md table + DEV_FROZEN.json + trial rows.",
+ "est_turns": 30,
+ "from_inbox": "",
+ "goal": "Fee-net DEV run of the T5 detector; arms: partial at the node, no-loss after a new balance, one re-entry; touch and trade-through; power stated. Choose the OURS values on DEV only and freeze them.",
+ "id": "tom-btc-dev-backtest",
+ "kind": "build",
+ "lane": "CODEX",
+ "layers": [
+  "tom"
+ ],
+ "live_path": false,
+ "note": "HOLD-CLEARED A-20261018-5 (lifted by the operator). BLOCKED 2026-10-18 (refine-lab-codex): real blocker is the T5 chain (tom-btc-encode <- tom-btc-eye-read, operator). DEV only 2024-12-01..2025-03-31; every variant a trial row; OURS values chosen on DEV and frozen in DEV_FROZEN.json; crucial run (astra effort per CODEX card flag crucial when released). Class C1 reviewer Gemini Flash high + Haiku re-derive 1-3 numbers. Not stamped until its dependency is done. [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C1 reviewer=Gemini Flash high + Haiku re-derive 1-3 numbers] PARKED 2026-10-18 (not stamped): depends_on tom-btc-encode (parked). Lab can run it once T5 exists; DEV 2024-12-01..2025-03-31 per TOM_ON_BTC.md s4.",
+ "prio": 2,
+ "refine_tries": 1,
+ "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
+ "refs": [],
+ "result": "",
+ "scope_in": [
+  "MyTradingSys/research/tom_btc_2026-10-13/"
+ ],
+ "scope_out": [
+  "VALIDATION and HOLDOUT dates",
+  "live tree"
+ ],
+ "size": "M",
+ "sources": [
+  "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4",
+  "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2, 11"
+ ],
+ "state": "blocked",
+ "steps": [
+  "Run, table, freeze config in DEV_FROZEN.json."
+ ],
+ "tests": "run lane",
+ "title": "Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant a trial row",
+ "weight": "CRUCIAL",
+ "worker": "session"
 }

@@ -330,6 +330,21 @@ class EndToEnd(unittest.TestCase):
         self.assertEqual(done["state"], "done")
         self.assertIn("via DSA", done["result"])
 
+    def test_finished_dsa_row_does_not_close_unreviewed_hard_card(self):
+        for extra in ({"weight": "crucial"}, {"class": "C2"}):
+            with self.subTest(extra=extra):
+                c = self.cards()["a-audit"]
+                c.update(extra)
+                T.save(self.repo, c)
+                L.save(self.repo, L.record_run(L.blank(), "LIMIT", "credits", NOW))
+                L.sweep(self.repo, NOW, do_apply=True)
+                row = desk.tasks(self.repo)[0]
+                row.update(status="done", result="verdict SOUND, report r.md")
+                desk.save(self.repo, row)
+                out = L.sweep(self.repo, NOW + timedelta(hours=1), do_apply=True)
+                self.assertNotEqual(self.cards()["a-audit"]["state"], "done")
+                self.assertIn("not closed", out)
+
     def test_codex_run_skips_rerouted_and_prefers_crucial_on_probe(self):
         cs = [card("a", reroute={"to": "DSA", "desk": "r"}), card("b"), card("c", crucial=True)]
         self.assertEqual(R.pick(cs, set(), {})["id"], "b")

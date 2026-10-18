@@ -11,7 +11,7 @@
  "lane": "SONNET",
  "layers": [],
  "live_path": false,
- "note": "PARKED 2026-10-18 (not stamped): operator design decision (machine roles); coordinator takes the default and logs. PARKED 2026-10-18 (not stamped): P2 RETIRED 2026-10-17 (SCHEDULING_POLICY.md), P1 conflicts with the desktop-relay request; needs a coordinator decision on the machine-role default before any scope exists.",
+ "note": "PARKED 2026-10-18: acts = coordinator decision on the machine-role default (P2 retired by SCHEDULING_POLICY.md); logged DECISION OURS, then cards. PARKED 2026-10-18 (not stamped): operator design decision (machine roles); coordinator takes the default and logs. PARKED 2026-10-18 (not stamped): P2 RETIRED 2026-10-17 (SCHEDULING_POLICY.md), P1 conflicts with the desktop-relay request; needs a coordinator decision on the machine-role default before any scope exists.",
  "prio": 3,
  "refine_tries": 1,
  "refined_by": "",
