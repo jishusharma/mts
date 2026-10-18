@@ -1,0 +1,1 @@
+{"t": "20261018T195301Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "start gemini-review 2>&1 | tail -30; ls /f/MTS/gq 2>&1 | head -30; ls \"C:/Users/E-ngineers/AppData/Roaming/Claude/side-session-notes/\"*"}
