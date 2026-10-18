@@ -1,0 +1,2 @@
+seed 20261016 root C:\Users\e-ngineers\IdeaProjects\mts-desktop-f7iu69n-dsa02-lenovo-2
+bb_top_reversal|bb_top_reversal|15m          n=1500 cuts=50 events=31 late=0 repaint=0 nan_diff=0 x10_diff=0 lag=0/0 err(tr/nan/x10)=0/0/0 PASS  14.6s
