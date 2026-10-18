@@ -47,8 +47,9 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `tom-probe-prereg` refined p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
   - `tom-short-coverage-above-vah` raw p2 SONNET: Tom short coverage on trend-down days: no candidate above VAH, ct_short at VAH killed by POC-only target (2026
   - `tom-btc-other-setups` blocked p3 CODEX: Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, b
-  - `tom-ctlong-below-zone-cvd-aligned-audit` ready p3 SONNET: Tom engine read 2026-10-17 10:03Z (alert 413): ct_long below zone, cvd_aligned contradiction, stale swings: re
+  - `tom-cvd-aligned-direction-blind` raw p3 SONNET: Tom: SetupCandidatesBuilder cvdAligned is direction-blind (SetupCandidatesBuilder.java:600 counts it for longs
   - `tom-ledger-single-trade-date-used-column` blocked p3 SONNET: Tom ledger: single trade_date_used column, blank date for non-observed rows (RV01 F1,F2)
+  - `tom-ctlong-zone-lost-state` raw p4 SONNET: Tom: ct_long/ct_short at a zone price price has already passed stays a live candidate (no zone-lost state, sub
   - `tom-v2-btc-min-stop-width` blocked p5 CODEX: Tom v2: minimum stop width gate for BTC replays (noise unit N5 and fee floor)
   - `tom-v2-dax-dev-backtest` blocked p5 SONNET: Tom v2: DAX dev backtest of the fade under the part B protocol (both fills, session null)
 
@@ -122,7 +123,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Code: `MyTradingSys/backtest/layers/cryptocred`
 - Other results: `MyTradingSys/research/cryptocred_stop_2026-10-10`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `cryptocred-prereg-4h-1d` ready p3 SONNET: CryptoCred: pre-registration for the 4h/1d redesign (items 6/8/11/12)
+  - `cryptocred-prereg-4h-1d` refined p3 SONNET: CryptoCred: pre-registration for the 4h/1d redesign (items 6/8/11/12)
 
 ## Positioning (funding, OI, whale / FlowHorse) (`positioning`)
 - Status: T055 C1 FAIL; OI/long-short unused as filters.

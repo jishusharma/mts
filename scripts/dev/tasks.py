@@ -554,8 +554,8 @@ def cmd_stale(a):
 REVIEW_WEIGHTS = ("CRUCIAL", "CRITICAL")   # lab_guy v3.1: these weights (or class C2/C3) need a real review stamp before start and finish
 SOFT_WEIGHTS = ("IMPORTANT",)              # IMPORTANT / class C1: a real review stamp is needed to be PROMOTED to ready (`check`), not to be taken
 # Two stamp formats are in use: planner `REVIEWED:<date> <ACCEPT|T0-ONLY>` (session_planner.md) and legacy `REVIEWED: <who> <date>`.
-STAMP_PLAN_RE = re.compile(r"REVIEWED:\s*(\d{4}-\d{2}-\d{2})\s+(ACCEPT|T0-ONLY)", re.I)
-REVIEWED_RE = re.compile(r"REVIEWED:\s+(?!\d{4}-\d{2}-\d{2})\S+\s+\d{4}-\d{2}-\d{2}", re.I)
+STAMP_PLAN_RE = re.compile(r"^REVIEWED:\s*(\d{4}-\d{2}-\d{2})\s+(ACCEPT|T0-ONLY)(?:\s|$)", re.I | re.M)
+REVIEWED_RE = re.compile(r"^REVIEWED:\s+(?!\d{4}-\d{2}-\d{2})(\S+)\s+(\d{4}-\d{2}-\d{2})(?:\s|$)", re.I | re.M)
 HOLD_RE = re.compile(r"HOLD[ :]+(A-\d{8}-\d+)")
 HOLD_CLEARED_RE = re.compile(r"HOLD-CLEARED[ :]+(A-\d{8}-\d+)")
 
@@ -563,18 +563,35 @@ HOLD_CLEARED_RE = re.compile(r"HOLD-CLEARED[ :]+(A-\d{8}-\d+)")
 def stamp_kind(card):
     """'real' (a reviewer or ACCEPT stamp), 't0' (T0-ONLY: machine checks only, no reviewer ran) or '' (none)."""
     note = str(card.get("note") or "")
-    m = STAMP_PLAN_RE.search(note)
-    if m:
+    for m in STAMP_PLAN_RE.finditer(note):
+        try:
+            datetime.strptime(m.group(1), "%Y-%m-%d")
+        except ValueError:
+            continue
         return "t0" if m.group(2).upper() == "T0-ONLY" else "real"
-    return "real" if REVIEWED_RE.search(note) else ""
+    for m in REVIEWED_RE.finditer(note):
+        reviewer = m.group(1).strip("<>[](){}.,:;").casefold()
+        try:
+            datetime.strptime(m.group(2), "%Y-%m-%d")
+        except ValueError:
+            continue
+        producer_ids = {str(card.get(k) or "").strip().casefold() for k in ("producer", "producer_model", "vendor", "model", "worker", "refined_by")}
+        if reviewer in {"", "x", "self", "producer", "reviewer", "pending", "unknown"} or reviewer in producer_ids:
+            continue
+        return "real"
+    return ""
 
 
 def card_class(card):
     """C0-C3: the card's own `class` field, else `class=Cn` / `CLASS:Cn` in the note stamp; a live-path card is C3 at least."""
-    c = str(card.get("class") or "").strip().upper()
-    if not re.fullmatch(r"C[0-3]", c):
-        m = re.search(r"class[=:]\s*(C[0-3])", str(card.get("note") or ""), re.I)
-        c = m.group(1).upper() if m else ""
+    values = []
+    field = str(card.get("class") or "").strip().upper()
+    if field:
+        values.append(field if re.fullmatch(r"C[0-3]", field) else "C3")
+    for m in re.finditer(r"\bclass\s*[=:]\s*(C\d+)\b", str(card.get("note") or ""), re.I):
+        value = m.group(1).upper()
+        values.append(value if value in {"C0", "C1", "C2", "C3"} else "C3")
+    c = max(values, key=lambda x: int(x[1:])) if values else ""
     if card.get("live_path") is True:
         c = "C3"
     return c
@@ -657,6 +674,8 @@ def cmd_done(a):
     c = get(REPO, a.id)
     if c.get("flow"):
         raise SystemExit("tasks: flow cards close through lab_flow.py finish (evidence receipt required)")
+    if c.get("state") != "active":
+        raise SystemExit(f"tasks: {a.id} is {c.get('state')}, only an active card can be marked done")
     gate = review_gate(c, finishing=True, result=a.result)
     if gate:
         raise SystemExit(f"tasks: {a.id} cannot be marked done: " + "; ".join(gate))
@@ -710,6 +729,10 @@ def cmd_sweep(a):
             hit += 1
             print(f"{c['id']}: all refs {' '.join(refs)} closed -> done" + ("" if a.apply else " (dry run)"))
             if a.apply:
+                gate = review_gate(c, finishing=True, result=c.get("result") or "registry rows closed")
+                if gate:
+                    print(f"{c['id']}: cannot be marked done: " + "; ".join(gate))
+                    continue
                 c.update(state="done", result=c.get("result") or "registry rows closed", closed=now())
                 save(REPO, c)
     if not hit:

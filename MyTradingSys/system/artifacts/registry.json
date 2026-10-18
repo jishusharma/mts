@@ -33,7 +33,8 @@
       },
       "note": "One Inbox: the jishu.sharma page (q21; db seeded from OPERATOR_DECISIONS.md and OPERATOR_INBOX.md 2026-10-15, existing answers kept). Publish the other copies without writing to their db. Carries the Claude-GPT cycle section (system/RELAY_NOTES.md). Republished by the NUC pickup, built with the trade ledger. The jishusharma1985 copy is published WITHOUT capabilities (2026-10-14): the page's own code shows 'Read-only view', so that login has no second Inbox nobody picks up. Republish it without passing capabilities.",
       "purpose": "Decisions waiting on you (Inbox), testnet health, road to profitability.",
-      "notes_go_to": "Inbox answers save to this page's decisions list. One Inbox only (q21)."
+      "notes_go_to": "Inbox answers save to this page's decisions list. One Inbox only (q21).",
+      "published_sha": null
     },
     {
       "slug": "mts_layer_map",
@@ -59,14 +60,15 @@
       },
       "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Published on all three logins.",
       "purpose": "Every trading layer's road and where it is stuck.",
-      "notes_go_to": "Read only. Put notes on the Research Map."
+      "notes_go_to": "Read only. Put notes on the Research Map.",
+      "published_sha": null
     },
     {
       "slug": "tom_fabio_deck",
       "title": "Tom and Fabio: what they taught",
       "status": "canonical",
       "pinned": true,
-      "generator": null,
+      "generator": "hand-made",
       "html": "MyTradingSys/system/artifacts/tom_fabio_deck.html",
       "single_owner": "jishusharma1985",
       "pointer_html": "MyTradingSys/system/artifacts/cr_moved.html",
@@ -85,7 +87,8 @@
       },
       "note": "Rebuilt from TOM_FABIO_STORY_2026-10-05.md and tom_fabio_guidance_2026-10-12/. Old jishu.sharma url 2DXWot is an old copy and not found.",
       "purpose": "Slides: what Tom and Fabio taught.",
-      "notes_go_to": "Read only."
+      "notes_go_to": "Read only.",
+      "published_sha": null
     },
     {
       "slug": "cbp_monday_desk",
@@ -111,7 +114,8 @@
       },
       "note": "Repo HTML is a 2026-10-09 snapshot; the live content comes from CBP.",
       "purpose": "Weekly CBP crypto desk, every Monday.",
-      "notes_go_to": "Read only."
+      "notes_go_to": "Read only.",
+      "published_sha": null
     },
     {
       "slug": "cbp_consensus_desk",
@@ -137,7 +141,8 @@
       },
       "note": "Repo HTML is a snapshot of F:/CryptoScrapper/cbp_v2/dashboard.html (refreshed 2026-10-14 10:49 IST build); the live content comes from the CBP daily workflow. Not in the pinned list of the JIS-NB app (screenshot 2026-10-12): pin it or retire it there.",
       "purpose": "Daily CBP consensus desk.",
-      "notes_go_to": "Read only."
+      "notes_go_to": "Read only.",
+      "published_sha": null
     },
     {
       "slug": "cbp_desk",
@@ -160,7 +165,8 @@
       },
       "note": "Pinned only on the JIS-NB app (key jishu.awgp since the 2026-10-15 relabel); its URL is in no repo file. 2026-10-14: on that login the page titled \"CBP Desk\" IS cbp_consensus_desk (same url V1d9xSL9...); no separate page.",
       "purpose": "Same page as the CBP Consensus Desk on the JIS-NB login.",
-      "notes_go_to": "Read only."
+      "notes_go_to": "Read only.",
+      "published_sha": null
     },
     {
       "slug": "mts_home",
@@ -185,13 +191,14 @@
       "db": [],
       "purpose": "This list: every MTS page, its owner login, where your notes go, and how to open it from any login.",
       "notes_go_to": "Nothing to write here.",
-      "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login."
+      "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login.",
+      "published_sha": null
     },
     {
       "slug": "research_map",
       "status": "canonical",
       "pinned": true,
-      "generator": null,
+      "generator": "hand-made",
       "single_owner": "jishusharma1985",
       "urls": {
         "jishusharma1985": "https://claude.ai/artifact/9nqpZeMeEehadoBoYopZU3",
@@ -213,13 +220,14 @@
       ],
       "purpose": "Where the research stands: what was tested, each trader's gate, what you can change.",
       "notes_go_to": "the Note / ask button. It saves to this page's own list (db \"requests\"); the next super session answers there.",
-      "note": "Capabilities db + user (keep them: republish without passing capabilities). Other sessions edit DATA: read the live version first, never an old saved copy."
+      "note": "Capabilities db + user (keep them: republish without passing capabilities). Other sessions edit DATA: read the live version first, never an old saved copy.",
+      "published_sha": null
     },
     {
       "slug": "session_planner",
       "status": "canonical",
       "pinned": true,
-      "generator": null,
+      "generator": "hand-made",
       "single_owner": "jishusharma1985",
       "urls": {
         "jishusharma1985": "https://claude.ai/artifact/2Ti4CGqsFwhWpP1jwmw7UU",
@@ -241,7 +249,8 @@
       ],
       "purpose": "Builds the prompt for the next super session: pick a goal and hours, copy, paste into a new session.",
       "notes_go_to": "nothing to send. Copy the prompt; your ticks and goal stay saved on this page.",
-      "note": "Capability db (keep it: republish without passing capabilities)."
+      "note": "Capability db (keep it: republish without passing capabilities).",
+      "published_sha": null
     }
   ],
   "unpinned_old": {
