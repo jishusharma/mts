@@ -31,6 +31,7 @@ import json
 import multiprocessing as mp
 import os
 import random
+import re
 import shutil
 import subprocess
 import time
@@ -612,12 +613,34 @@ def generation_environment():
     return {str(p): file_hash(p) for p in [*binaries, *shot.engine_jars()]}
 
 
+def gen_end(e_day, cut_t):
+    """Last snapshot minute: end of e_day, never later than the last complete development minute."""
+    last = dt.datetime(e_day.year, e_day.month, e_day.day, 23, 59, tzinfo=UTC).timestamp()
+    if cut_t is not None:
+        last = min(last, cut_t - 60)
+    return dt.datetime.fromtimestamp(last, UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def month_start_ts(name):
+    return dt.datetime(int(name[:4]), int(name[5:7]), 1, tzinfo=UTC).timestamp()
+
+
+def month_in_scope(name, cut_t):
+    """A month file belongs to development only if its first minute precedes the authorized cutoff."""
+    return cut_t is None or month_start_ts(name[:7]) < cut_t
+
+
 def cmd_gen(a):
     t0 = time.time()
-    subprocess.run([sys.executable, "-I", str(HERE / "dax_data.py"), "convert", "--raw", str(DAX_RAW), "--out", str(DAX_ARCHIVE)],
-                   check=True)
+    split = load_split(getattr(a, "split_manifest", None))   # manifest first: no conversion/data access without it
+    cut_t = None if getattr(a, "read_holdout", False) else split["dev_end"]
+    convert_cmd = [sys.executable, "-I", str(HERE / "dax_data.py"), "convert", "--raw", str(DAX_RAW), "--out", str(DAX_ARCHIVE)]
+    convert_cmd += ["--end-ms", str(int(cut_t * 1000))] if cut_t is not None else ["--read-holdout"]
+    subprocess.run(convert_cmd, check=True)
     start = max(DAX_START, dt.date.fromisoformat(a.start)) if a.start else DAX_START
     end = min(DAX_END, dt.date.fromisoformat(a.end)) if a.end else DAX_END
+    if cut_t is not None:
+        end = min(end, dt.datetime.fromtimestamp(cut_t - 60, UTC).date())
     months = complete_months(DAX_RAW, start, end)
     if a.months:
         months = [m for m in months if m in a.months]
@@ -631,7 +654,7 @@ def cmd_gen(a):
         nxt = dt.date(ly + (lm == 12), lm % 12 + 1, 1)
         e_day = min(nxt - dt.timedelta(1), end)
         cmd = [sys.executable, "-I", str(HERE / "dax_engine.py"), "gen", "--raw", str(DAX_ARCHIVE), "--out", str(DAX_SNAPS),
-               "--start", "%sT00:00:00Z" % s_day.isoformat(), "--end", "%sT23:59:00Z" % e_day.isoformat(),
+               "--start", "%sT00:00:00Z" % s_day.isoformat(), "--end", gen_end(e_day, cut_t),
                "--step", "15", "--shards", str(a.shards)]
         print(" ".join(cmd), flush=True)
         inputs = dict(codes=generation_codes(), environment=generation_environment(), command=cmd,
@@ -730,6 +753,13 @@ def cache_inputs(market, path, shifts, mask, cut_t, floor):
     if origin is not None and (origin.get("codes") != generation_codes() or
                                origin.get("snapshot_sha256") != file_hash(path)):
         raise ValueError("cache input snapshot producer mismatch in %s; regenerate through gen" % producer)
+    if market == "dax" and cut_t is not None:
+        command = (origin or {}).get("command") or []
+        if "--end" not in command:
+            raise ValueError("snapshot producer end absent in %s; regenerate through gen" % producer)
+        from snapshots import parse_ts
+        if parse_ts(command[command.index("--end") + 1]) >= cut_t:
+            raise ValueError("snapshot %s was generated past the development cutoff; regenerate through gen" % path)
     source_meta = path.with_name(path.name.replace(".jsonl.gz", ".meta.json"))
     return dict(schema="dax-inputs-v1", market=market, snapshot=str(path),
                 snapshot_sha256=file_hash(path),
@@ -765,6 +795,9 @@ def validate_cache(out, meta, expected=None, mask=None, shifts=None, bars=None, 
     return obj
 
 
+_TS_KEY = re.compile(r'"timestamp_utc"\s*:\s*"([^"]+)"')
+
+
 def _init_dax(klines, cut_t=None):
     global _BARS
     _BARS = load_development_bars(klines, cut_t) if cut_t is not None else T.load_bars_1m(klines, fill_gaps=True)
@@ -793,12 +826,17 @@ def _rows_month(job):
     tmp = out.with_suffix(".part")
     with gzip.open(path, "rt", encoding="utf-8") as fh, open(tmp, "w", encoding="utf-8", newline="\n") as fo:
         for line in fh:
-            s = json.loads(line)
-            t = parse_ts(s["timestamp_utc"])
+            hit = _TS_KEY.search(line)
+            if hit is None:
+                raise ValueError("snapshot line lacks timestamp_utc in %s" % path)
+            t = parse_ts(hit.group(1))
             stats["snapshots_kept_by_java"] += 1
             if cut_t is not None and t >= cut_t:
-                stats["cut"] += 1
+                stats["cut"] += 1          # payload of an excluded timestamp is never decoded
                 continue
+            s = json.loads(line)
+            if parse_ts(s["timestamp_utc"]) != t:
+                raise ValueError("snapshot timestamp key ambiguous in %s" % path)
             if market == "dax" and not is_open(_BARS, t):
                 stats["closed_dropped"] += 1
                 continue
@@ -830,7 +868,8 @@ def cmd_rows(a):
                 p.unlink()
         files = [str(p) for p in sorted(snap_dir.glob("*.jsonl.gz"))
                  if p.name.replace(".jsonl.gz", "") in (a.months or [p.name.replace(".jsonl.gz", "")])
-                 and (snap_dir / (p.name.replace(".jsonl.gz", "") + ".meta.json")).exists()]
+                 and (snap_dir / (p.name.replace(".jsonl.gz", "") + ".meta.json")).exists()
+                 and (market != "dax" or month_in_scope(p.name, None if a.read_holdout else split["dev_end"]))]
         mask = () if (market == "btc" and a.mask == "none") else MASK_OF   # DAX is always masked (no-op on exact-zero deltas)
         cut_t = T_BTC_BURNED if market == "btc" else None if a.read_holdout else split["dev_end"]
         jobs = [(market, f, str(out_dir), tuple(a.shifts), mask, cut_t) for f in files]
@@ -846,6 +885,8 @@ def load_rows(market, key, months=None, split=None, read_holdout=False, counts=N
     rows = []
     for p in sorted((WORK / ("rows_" + market)).glob("*.rows.jsonl")):
         if months and p.name[:7] not in months:
+            continue
+        if market == "dax" and split and not read_holdout and not month_in_scope(p.name, split["dev_end"]):
             continue
         meta = p.with_name(p.name.replace(".rows.jsonl", ".rows.meta.json"))
         frozen = validate_cache(p, meta, mask=mask, shifts=shifts, bars=bars, verify_bars=verify_bars)
@@ -999,8 +1040,11 @@ def build_report(a):
     b_dax = (T.load_bars_1m(DAX_ARCHIVE / "klines", fill_gaps=True) if a.read_holdout else
              load_development_bars(DAX_ARCHIVE / "klines", split["dev_end"]))
     n_hole_days = _data_holes(b_dax, lo_d, hi_d if months else hi_d + dt.timedelta(days=1))
-    dax_meta = [json.loads(p.read_text()) for p in sorted(DAX_SNAPS.glob("*.meta.json")) if not months or p.name[:7] in months]
-    rmeta = [json.loads(p.read_text()) for p in sorted((WORK / "rows_dax").glob("*.rows.meta.json")) if not months or p.name[:7] in months]
+    scope_cut = None if a.read_holdout else split["dev_end"]
+    dax_meta = [json.loads(p.read_text()) for p in sorted(DAX_SNAPS.glob("*.meta.json"))
+                if (not months or p.name[:7] in months) and month_in_scope(p.name, scope_cut)]
+    rmeta = [json.loads(p.read_text()) for p in sorted((WORK / "rows_dax").glob("*.rows.meta.json"))
+             if (not months or p.name[:7] in months) and month_in_scope(p.name, scope_cut)]
     acct["dax"] = dict(months=len(dax_meta), evaluated=sum(m["evaluated"] for m in dax_meta), kept=sum(m["kept"] for m in dax_meta),
                        errors=sum(m["errors"] for m in dax_meta), closed=sum(m.get("closed_dropped", 0) for m in rmeta),
                        rows=sum(m.get("rows", 0) for m in rmeta), holdout_rows=0, mask_changed=sum(m.get("mask_changed", 0) for m in rmeta))
@@ -1020,7 +1064,7 @@ def build_report(a):
     from net_rr_floor import load_floor
     selected_markets = ("dax", "btc") if getattr(a, "market", "both") == "both" else (getattr(a, "market", "dax"),)
     row_files = [p for market in selected_markets for p in sorted((WORK / ("rows_" + market)).glob("*.rows.jsonl"))
-                 if not months or p.name[:7] in months]
+                 if (not months or p.name[:7] in months) and (market != "dax" or month_in_scope(p.name, scope_cut))]
     cache_ids = {}
     for p in row_files:
         market = p.parent.name.removeprefix("rows_")
@@ -1312,6 +1356,10 @@ def main(argv=None):
         p.add_argument("--readiness-manifest", type=Path, help="owner's JSON items 1..12: ANSWERED + answer/evidence, or WAIVED + answer/evidence/approver; required for reports")
         p.add_argument("--null-session", type=Path, help="owner's frozen session addendum JSON: timezone/start/end/source; required for reports")
     a = ap.parse_args(argv)
+    if a.cmd == "all":   # every manifest is validated before conversion, generation or any data access
+        load_readiness(a.readiness_manifest)
+        load_split(a.split_manifest)
+        load_null_session(a.null_session)
     if a.cmd in ("gen", "all"):
         cmd_gen(a)
     if a.cmd in ("rows", "all"):

@@ -844,7 +844,11 @@ class TestDriver(unittest.TestCase):
                         fh.write('{}\n')
                     (snaps / "2026-01.meta.json").write_text('{"evaluated": 1}',
                         encoding="utf-8", newline="\n")
-            a = SimpleNamespace(start=None, end=None, months=["2026-01"], shards=1)
+            split_path = root / "split.json"
+            split_path.write_text(json.dumps(dict(design_end_utc="2026-02-01T00:00:00Z",
+                holdout_start_utc="2026-06-01T00:00:00Z", embargo_s=0)), encoding="utf-8", newline="\n")
+            a = SimpleNamespace(start=None, end=None, months=["2026-01"], shards=1, read_holdout=False,
+                                split_manifest=split_path)
             with patch.object(D, "DAX_ARCHIVE", archive), patch.object(D, "DAX_SNAPS", snaps), \
                  patch.object(D, "DAX_RAW", root / "raw"), \
                  patch.object(D, "generation_environment", return_value={"synthetic-JDK-and-jars": "fixture"}), \
@@ -933,7 +937,8 @@ class TestDriver(unittest.TestCase):
                     D._rows_month(job)
                 origin = root / "2026-01.inputs.json"
                 origin.write_text(json.dumps(dict(codes=D.generation_codes(),
-                    snapshot_sha256=D.file_hash(source), data={"synthetic": "fixture"})),
+                    snapshot_sha256=D.file_hash(source), data={"synthetic": "fixture"},
+                    command=["py", "dax_engine.py", "gen", "--end", "2026-01-05T10:00:00Z"])),
                     encoding="utf-8", newline="\n")
                 D._rows_month(job)
                 self.assertEqual(D._rows_month(job), ("2026-01", None))
@@ -1216,6 +1221,126 @@ class TestReadinessGate(unittest.TestCase):
                         full.assert_not_called()
                         rows.assert_not_called()
                         reserve.assert_not_called()
+
+
+class TestPreprocessingIsolation(unittest.TestCase):
+    """RV02 R1. Expected epochs are hand-derived: 2026-01-01Z = 1735689600 + 365*86400 = 1767225600;
+    2026-06-01Z = that + (31+28+31+30+31)*86400 = 1780272000."""
+    CUT = 1780272000
+
+    @staticmethod
+    def split_file(root, hold="2026-06-01T00:00:00Z"):
+        path = Path(root) / "split.json"
+        path.write_text(json.dumps(dict(design_end_utc="2026-02-01T00:00:00Z", holdout_start_utc=hold,
+                                        embargo_s=0)), encoding="utf-8", newline="\n")
+        return path
+
+    def test_gen_without_manifest_touches_no_subprocess_or_data(self):
+        with patch.object(D.subprocess, "run", side_effect=AssertionError("child process reached")) as run:
+            with self.assertRaisesRegex(ValueError, "split manifest"):
+                D.cmd_gen(SimpleNamespace(start=None, end=None, months=None, shards=1, read_holdout=False,
+                                          split_manifest=None))
+            with self.assertRaises(ValueError):
+                D.main(["all", "--market", "dax"])
+        run.assert_not_called()
+
+    def test_gen_convert_and_engine_end_are_clipped_to_development(self):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
+            root = Path(td)
+            calls = []
+            a = SimpleNamespace(start=None, end=None, months=None, shards=1, read_holdout=False,
+                                split_manifest=self.split_file(root))
+            with patch.object(D, "DAX_ARCHIVE", root / "a"), patch.object(D, "DAX_SNAPS", root / "s"), \
+                 patch.object(D, "DAX_RAW", root / "raw"), \
+                 patch.object(D, "complete_months", return_value=["2026-05"]), \
+                 patch.object(D, "generation_environment", return_value={"x": "y"}), \
+                 patch.object(D.subprocess, "run", side_effect=lambda c, **k: calls.append(c)):
+                D.cmd_gen(a)
+            convert, gen = calls[0], calls[1]
+            self.assertEqual(convert[convert.index("--end-ms") + 1], str(self.CUT * 1000))
+            self.assertEqual(gen[gen.index("--end") + 1], "2026-05-31T23:59:00Z")   # DAX_END is 2026-10-09
+
+    def test_gen_end_never_passes_last_complete_minute(self):
+        day = dt.date(2026, 1, 5)
+        cut = 1767225600 + 4 * 86400 + 10 * 3600     # 2026-01-05T10:00:00Z
+        self.assertEqual(D.gen_end(day, cut), "2026-01-05T09:59:00Z")
+        self.assertEqual(D.gen_end(day, None), "2026-01-05T23:59:00Z")
+
+    def test_future_snapshot_payload_is_not_decoded(self):
+        from snapshots import parse_ts
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
+            root = Path(td)
+            out_dir = root / "rows_dax"
+            out_dir.mkdir()
+            source = root / "2026-01.jsonl.gz"
+            good = snap([cand(1, "short", "vwap", "vwap_band", proof_node(spike=True), 0)])
+            t = parse_ts(good["timestamp_utc"])
+            with gzip.open(source, "wt", encoding="utf-8") as fh:
+                fh.write(json.dumps(good) + "\n")
+                fh.write('{"timestamp_utc": "2026-01-05T10:30:00Z", "payload": <<not json, future>>\n')
+            source.with_name("2026-01.inputs.json").write_text(json.dumps(dict(
+                codes=D.generation_codes(), snapshot_sha256=D.file_hash(source), data={"x": "y"},
+                command=["py", "dax_engine.py", "gen", "--end", "2026-01-05T10:00:00Z"])),
+                encoding="utf-8", newline="\n")
+            b = mk([(100.,) * 4] * 3, int(t * 1000) - 60000)
+            b.real = bytearray([1] * 3)
+            with patch.object(D, "_BARS", b):
+                name, stats = D._rows_month(("dax", source, out_dir, (0,), D.MASK_OF, t + 120))
+            self.assertEqual(stats["cut"], 1)
+            self.assertEqual(stats["rows"], 1)
+
+    def test_snapshot_produced_past_cutoff_is_refused(self):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
+            source = Path(td) / "2026-01.jsonl.gz"
+            with gzip.open(source, "wt", encoding="utf-8") as fh:
+                fh.write("{}\n")
+            origin = source.with_name("2026-01.inputs.json")
+            for command, pattern in ((["gen", "--end", "2026-01-05T10:00:00Z"], "past the development cutoff"),
+                                     ([], "producer end absent")):
+                origin.write_text(json.dumps(dict(codes=D.generation_codes(), snapshot_sha256=D.file_hash(source),
+                                                  command=command)), encoding="utf-8", newline="\n")
+                with self.assertRaisesRegex(ValueError, pattern):
+                    D.cache_inputs("dax", source, (0,), D.MASK_OF, 1767225600 + 4 * 86400 + 10 * 3600, 1.0)
+
+    def test_month_scope_excludes_future_months_from_accounting_inputs(self):
+        self.assertTrue(D.month_in_scope("2026-05.meta.json", self.CUT))
+        self.assertFalse(D.month_in_scope("2026-06.meta.json", self.CUT))   # starts exactly at the cutoff
+        self.assertFalse(D.month_in_scope("2026-09.rows.jsonl", self.CUT))
+        self.assertTrue(D.month_in_scope("2099-01.meta.json", None))
+
+    def test_load_rows_does_not_open_future_month_caches(self):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
+            rows = Path(td) / "rows_dax"
+            rows.mkdir()
+            (rows / "2026-09.rows.jsonl").write_text("garbage", encoding="utf-8", newline="\n")
+            split = D.load_split(self.split_file(td))
+            self.assertEqual(D.load_rows("dax", "coded/0", split=split), [])
+
+
+class TestCutoffBoundary(unittest.TestCase):
+    def test_rows_at_cutoff_minus_equal_plus_one_ms(self):
+        from snapshots import parse_ts
+        cut = 1767225600 + 4 * 86400 + 10 * 3600     # 2026-01-05T10:00:00Z
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
+            root = Path(td)
+            out_dir = root / "rows_dax"
+            out_dir.mkdir()
+            source = root / "2026-01.jsonl.gz"
+            stamps = ("2026-01-05T09:59:59.999000Z", "2026-01-05T10:00:00Z", "2026-01-05T10:00:00.001000Z")
+            with gzip.open(source, "wt", encoding="utf-8") as fh:
+                for ts in stamps:
+                    fh.write(json.dumps(snap([cand(1, "short", "vwap", "vwap_band", proof_node(spike=True), 0)], t=ts)) + "\n")
+            source.with_name("2026-01.inputs.json").write_text(json.dumps(dict(
+                codes=D.generation_codes(), snapshot_sha256=D.file_hash(source), data={"x": "y"},
+                command=["py", "gen", "--end", "2026-01-05T09:59:00Z"])), encoding="utf-8", newline="\n")
+            b = mk([(100.,) * 4] * 6, (cut - 120) * 1000)
+            b.real = bytearray([1] * 6)
+            with patch.object(D, "_BARS", b):
+                _, stats = D._rows_month(("dax", source, out_dir, (0,), D.MASK_OF, cut))
+            self.assertEqual((stats["rows"], stats["cut"]), (1, 2))
+            kept = [json.loads(x)["t"] for x in (out_dir / "2026-01.rows.jsonl").read_text().splitlines()]
+            self.assertEqual(kept, [parse_ts(stamps[0])])
+            self.assertLess(kept[0], cut)
 
 
 if __name__ == "__main__":
