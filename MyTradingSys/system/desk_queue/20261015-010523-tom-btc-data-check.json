@@ -5,7 +5,9 @@
   "id": "20261015-010523-tom-btc-data-check",
   "need": "python -c \"from pathlib import Path; import datetime as d; p=Path(r'F:\\MTS\\data\\orderflow_1m'); s=d.date(2024,12,1); n=(d.date(2025,6,30)-s).days+1; days=[s+d.timedelta(i) for i in range(n)]; miss=[str(x) for x in days if not list(p.glob(str(x)+'*'))]; print(n-len(miss),'of',n,'days present; missing',len(miss),miss[:40])\" (full brief: python scripts/dev/tasks.py brief tom-btc-data-check)",
   "posted": "2026-10-15T01:05:23Z",
-  "status": "pending",
+  "status": "taken",
+  "taken": "2026-10-18T15:58:46Z",
+  "taken_by": "JIS-NUC",
   "target": "DSA-NUC",
   "title": "Tom on BTC T1: check the footprint bars on JIS-NUC cover DEV + VALIDATION (2024-12..2025-06), list gaps"
 }
