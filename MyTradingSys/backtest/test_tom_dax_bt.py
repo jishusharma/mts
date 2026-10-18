@@ -851,6 +851,8 @@ class TestDriver(unittest.TestCase):
             snaps.mkdir()
             data = archive / "klines" / "synthetic.csv"
             data.write_text("synthetic archive bytes\n", encoding="utf-8", newline="\n")
+            gen_bars = mk([(100.,) * 4] * 3, 1767225600000)
+            gen_bars.real = bytearray([1] * 3)
             def fake_run(command, **kwargs):
                 if "dax_engine.py" not in str(command[2]):
                     return
@@ -869,9 +871,11 @@ class TestDriver(unittest.TestCase):
                  patch.object(D, "DAX_RAW", root / "raw"), \
                  patch.object(D, "generation_environment", return_value={"synthetic-JDK-and-jars": "fixture"}), \
                  patch.object(D, "complete_months", return_value=["2026-01"]), \
+                 patch.object(D, "load_development_bars", return_value=gen_bars), \
                  patch.object(D.subprocess, "run", side_effect=fake_run):
                 D.cmd_gen(a)
                 origin = json.loads((snaps / "2026-01.inputs.json").read_text(encoding="utf-8"))
+                self.assertEqual(origin["bars"], D.bars_identity(gen_bars))   # R4: execution data bound at generation
                 self.assertEqual(origin["codes"], D.generation_codes())
                 self.assertEqual(origin["environment"], {"synthetic-JDK-and-jars": "fixture"})
                 self.assertEqual(origin["data"][str(data)], D.file_hash(data))
@@ -954,6 +958,7 @@ class TestDriver(unittest.TestCase):
                 origin = root / "2026-01.inputs.json"
                 origin.write_text(json.dumps(dict(codes=D.generation_codes(),
                     snapshot_sha256=D.file_hash(source), data={"synthetic": "fixture"},
+                    bars=D.bars_identity(b),
                     command=["py", "dax_engine.py", "gen", "--end", "2026-01-05T10:00:00Z"])),
                     encoding="utf-8", newline="\n")
                 D._rows_month(job)
@@ -961,7 +966,7 @@ class TestDriver(unittest.TestCase):
                 with patch.object(D, "load_development_bars", return_value=b):
                     self.assertEqual(len(D.load_rows("dax", "coded/0")), 1)
                     b.real[1] = 0
-                    with self.assertRaisesRegex(ValueError, "cache input"):
+                    with self.assertRaisesRegex(ValueError, "cache input|execution data differs"):
                         D.load_rows("dax", "coded/0")
                 b.real[1] = 1
                 with self.assertRaisesRegex(ValueError, "cache input"):
@@ -1270,6 +1275,7 @@ class TestPreprocessingIsolation(unittest.TestCase):
                  patch.object(D, "DAX_RAW", root / "raw"), \
                  patch.object(D, "complete_months", return_value=["2026-05"]), \
                  patch.object(D, "generation_environment", return_value={"x": "y"}), \
+                 patch.object(D, "load_development_bars", return_value=mk([(100.,) * 4] * 3, 0)), \
                  patch.object(D.subprocess, "run", side_effect=lambda c, **k: calls.append(c)):
                 D.cmd_gen(a)
             convert, gen = calls[0], calls[1]
@@ -1291,15 +1297,16 @@ class TestPreprocessingIsolation(unittest.TestCase):
             source = root / "2026-01.jsonl.gz"
             good = snap([cand(1, "short", "vwap", "vwap_band", proof_node(spike=True), 0)])
             t = parse_ts(good["timestamp_utc"])
+            b = mk([(100.,) * 4] * 3, int(t * 1000) - 60000)
+            b.real = bytearray([1] * 3)
             with gzip.open(source, "wt", encoding="utf-8") as fh:
                 fh.write(json.dumps(good) + "\n")
                 fh.write('{"timestamp_utc": "2026-01-05T10:30:00Z", "payload": <<not json, future>>\n')
             source.with_name("2026-01.inputs.json").write_text(json.dumps(dict(
                 codes=D.generation_codes(), snapshot_sha256=D.file_hash(source), data={"x": "y"},
-                command=["py", "dax_engine.py", "gen", "--end", "2026-01-05T10:00:00Z"])),
+                command=["py", "dax_engine.py", "gen", "--end", "2026-01-05T10:00:00Z"],
+                bars=D.bars_identity(b))),
                 encoding="utf-8", newline="\n")
-            b = mk([(100.,) * 4] * 3, int(t * 1000) - 60000)
-            b.real = bytearray([1] * 3)
             with patch.object(D, "_BARS", b):
                 name, stats = D._rows_month(("dax", source, out_dir, (0,), D.MASK_OF, t + 120))
             self.assertEqual(stats["cut"], 1)
@@ -1343,20 +1350,85 @@ class TestCutoffBoundary(unittest.TestCase):
             out_dir.mkdir()
             source = root / "2026-01.jsonl.gz"
             stamps = ("2026-01-05T09:59:59.999000Z", "2026-01-05T10:00:00Z", "2026-01-05T10:00:00.001000Z")
+            b = mk([(100.,) * 4] * 6, (cut - 120) * 1000)
+            b.real = bytearray([1] * 6)
             with gzip.open(source, "wt", encoding="utf-8") as fh:
                 for ts in stamps:
                     fh.write(json.dumps(snap([cand(1, "short", "vwap", "vwap_band", proof_node(spike=True), 0)], t=ts)) + "\n")
             source.with_name("2026-01.inputs.json").write_text(json.dumps(dict(
                 codes=D.generation_codes(), snapshot_sha256=D.file_hash(source), data={"x": "y"},
+                bars=D.bars_identity(b),
                 command=["py", "gen", "--end", "2026-01-05T09:59:00Z"])), encoding="utf-8", newline="\n")
-            b = mk([(100.,) * 4] * 6, (cut - 120) * 1000)
-            b.real = bytearray([1] * 6)
             with patch.object(D, "_BARS", b):
                 _, stats = D._rows_month(("dax", source, out_dir, (0,), D.MASK_OF, cut))
             self.assertEqual((stats["rows"], stats["cut"]), (1, 2))
             kept = [json.loads(x)["t"] for x in (out_dir / "2026-01.rows.jsonl").read_text().splitlines()]
             self.assertEqual(kept, [parse_ts(stamps[0])])
             self.assertLess(kept[0], cut)
+
+
+class TestProducerDataBinding(unittest.TestCase):
+    """RV02 R4. Snapshots frozen at execution price 100, then the execution bars are revised to 200: fresh rows and
+    reports must be refused until the snapshots are regenerated. Synthetic only; no archive or holdout bytes."""
+    CUT_OFFSET = 120
+
+    @staticmethod
+    def bars(price, t):
+        b = mk([(price,) * 4] * 3, int(t * 1000) - 60000)
+        b.real = bytearray([1] * 3)
+        return b
+
+    def build(self, td, producer_price):
+        from snapshots import parse_ts
+        root = Path(td)
+        out_dir = root / "rows_dax"
+        out_dir.mkdir()
+        source = root / "2026-01.jsonl.gz"
+        s = snap([cand(1, "short", "vwap", "vwap_band", proof_node(spike=True), 0)])
+        t = parse_ts(s["timestamp_utc"])
+        with gzip.open(source, "wt", encoding="utf-8") as fh:
+            fh.write(json.dumps(s) + "\n")
+        origin = dict(codes=D.generation_codes(), snapshot_sha256=D.file_hash(source), data={"synthetic": "fixture"},
+                      command=["py", "dax_engine.py", "gen", "--end", "2026-01-05T10:00:00Z"])
+        if producer_price is not None:
+            origin["bars"] = D.bars_identity(self.bars(producer_price, t))
+        source.with_name("2026-01.inputs.json").write_text(json.dumps(origin), encoding="utf-8", newline="\n")
+        return source, out_dir, t
+
+    def test_revised_execution_bars_refuse_fresh_rows_until_regenerated(self):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
+            source, out_dir, t = self.build(td, 100.)
+            job = ("dax", source, out_dir, (0,), D.MASK_OF, t + self.CUT_OFFSET)
+            with patch.object(D, "_BARS", self.bars(200., t)):
+                with self.assertRaisesRegex(ValueError, "execution data differs"):
+                    D._rows_month(job)
+            self.assertEqual(list(out_dir.iterdir()), [])             # nothing was built
+            with patch.object(D, "_BARS", self.bars(100., t)):
+                self.assertEqual(D._rows_month(job)[1]["rows"], 1)    # same data passes
+                self.assertEqual(D._rows_month(job), ("2026-01", None))
+            with patch.object(D, "_BARS", self.bars(200., t)):         # reuse of an existing cache is refused too
+                with self.assertRaisesRegex(ValueError, "execution data differs"):
+                    D._rows_month(job)
+
+    def test_producer_without_bars_identity_requires_regeneration(self):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
+            source, out_dir, t = self.build(td, None)
+            job = ("dax", source, out_dir, (0,), D.MASK_OF, t + self.CUT_OFFSET)
+            with patch.object(D, "_BARS", self.bars(100., t)):
+                with self.assertRaisesRegex(ValueError, "lacks the execution bars identity"):
+                    D._rows_month(job)
+
+    def test_report_stage_refuses_revised_bars_against_cached_rows(self):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
+            source, out_dir, t = self.build(td, 100.)
+            job = ("dax", source, out_dir, (0,), D.MASK_OF, t + self.CUT_OFFSET)
+            with patch.object(D, "_BARS", self.bars(100., t)):
+                D._rows_month(job)
+            with patch.object(D, "load_development_bars", return_value=self.bars(100., t)):
+                self.assertEqual(len(D.load_rows("dax", "coded/0")), 1)
+            with patch.object(D, "load_development_bars", return_value=self.bars(200., t)):
+                with self.assertRaisesRegex(ValueError, "execution data differs"):
+                    D.load_rows("dax", "coded/0")
 
 
 class TestExactNetRrGate(unittest.TestCase):
