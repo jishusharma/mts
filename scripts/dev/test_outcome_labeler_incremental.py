@@ -46,6 +46,7 @@ class Base(unittest.TestCase):
         self.m = load_mod()
         self.m.SNAPS = self.snaps
         self.m.LABELS = self.labels
+        self.m.SLOW_WARN_S = 1e9              # wall-clock under a loaded gate is not under test (exit 3 flaked step 4f)
 
     def tearDown(self):
         self.tmp.cleanup()
