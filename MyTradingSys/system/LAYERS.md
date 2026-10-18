@@ -228,6 +228,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `krown-data-cme-btc-volume` raw p2 DSA: Krown CME BTC futures daily volume (public data only) as third volume arm
   - `krown-dev-event-study` refined p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
+  - `krown-foundations-ep08-follow-through` ready p3 SONNET: Krown Foundations EP08 follow-through: fold the order-book extract into the ledger, re-check the 17 private pl
   - `krown-other-sources-event-study-videos` refined p3 SONNET: Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigg
   - `krown-ta101-extract-remaining-10` ready p3 SONNET: Krown TA 101: get captions and extract the remaining 4 videos (ids in STATE.md); DONE when: 4 extracts pass bo
 
