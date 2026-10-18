@@ -1,0 +1,1 @@
+{"t": "20261018T182115Z", "from": "jis-nuc/sharma", "to": "all", "kind": "claim", "text": "claim -h | head -20; grep -n \"RU1\" -A25 MyTradingSys/research/roles/ROLE_UPGRADES_2026-10-18.md | head -60; grep -n \"^def \\|^SHOW\\|^[A-Z_]* = \" scripts/dev/tasks.py | head -80; wc -l scripts/dev/tasks"}
