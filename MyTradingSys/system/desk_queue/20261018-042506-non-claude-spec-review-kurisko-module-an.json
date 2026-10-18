@@ -1,0 +1,10 @@
+{
+  "done_when": "MyTradingSys/research/lab_guy/spec_review_kurisko_2026-10-18.md is on origin/fast-track with one ACCEPT or FIX verdict per card from a non-Claude model (model, effort and tokens recorded), and git cherry origin/fast-track HEAD is empty",
+  "from": "JIS-NB",
+  "id": "20261018-042506-non-claude-spec-review-kurisko-module-an",
+  "need": "Non-Claude spec review (lab_guy.md C2 rule). The producer of both cards is Claude, so the reviewer must be GPT at high effort via codex_run.py, or Gemini Argon; never Claude. Blind first: give the reviewer only the files below, not the producer's reasoning. Cards: kurisko-quad-rotation-module and kurisko-dev-event-study (JSON in MyTradingSys/system/tasks/). Evidence: MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md sections 3, 5, 6; MyTradingSys/backtest/layers/FORMULAS.md sections 13 and 20; MyTradingSys/research/wavetrend_2026-10-17/PRE_REG.md (precedent); MyTradingSys/research/gross_effect_screen_2026-10-15/PRE_REG.md lines 25-40 (cost model). Questions, each answered with a file:line or quote. (1) Module: is the pinned stochastic definition and the OURS event rule (episode, first uptick, one event per episode, mirror short) a faithful reading of the spec quotes, or does a source quote contradict it (E2)? Can every listed fixture expected value be derived without the module (E4)? Any look-ahead (E1, E3)? (2) Event study: do done_when and tests test the goal (E4)? Is any pass bar, cost, funding or placebo choice left open that could be tuned after the first outcome (E5, E7)? Do the guard list and tests close E1 (data shas, holdout) and E6 (14 bp, funding)? Reply at most 5 lines per card: ACCEPT or FIX: what, where. Write MyTradingSys/research/lab_guy/spec_review_kurisko_2026-10-18.md with the verdict lines, model, effort and tokens used. Stop condition: if a run fails twice, close the task failed with the error text. Do not edit any card or code.",
+  "posted": "2026-10-18T04:25:06Z",
+  "status": "pending",
+  "target": "DSA-NUC",
+  "title": "Non-Claude spec review: Kurisko module and DEV study cards (C2)"
+}
