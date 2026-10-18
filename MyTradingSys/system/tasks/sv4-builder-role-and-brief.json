@@ -1,0 +1,71 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T19:30:00Z",
+  "depends_on": [],
+  "done_when": "role_loader.py check exits 0 with Builder; brief and dispatch tests pass; shipped",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Every worker starts as a role session (banner = version receipt); the brief boilerplate lives in the role file, start text is card ids only.",
+  "id": "sv4-builder-role-and-brief",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tasks.py dispatch: one ranked dispatch snapshot for Session_Planner (RU1)",
+      "ref": "93560b51e352",
+      "utc": "2026-10-18T18:24:23Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "419870db0183 roles: five role files (MTS_Doctor, Artifacts_Guy, Network_Admin_Guy, Q&A_Hel",
+      "ref": "MyTradingSys/system/ROLES.md",
+      "utc": "2026-10-18T17:15:18Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED: gpt-6-astra 2026-10-18 - cross-vendor read-only review of the SUPERVISOR.md design this card implements (12 findings, folded or rejected with reasons there): ACCEPT.",
+  "pinned": false,
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "supervisor-design (Opus, operator-named)",
+  "refreshed": "2026-10-18T18:46:58Z",
+  "refs": [
+    "MyTradingSys/system/SUPERVISOR.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/roles/builder.md (new)",
+    "MyTradingSys/system/ROLES.md (Builder row)",
+    "scripts/dev/supervisor.py (brief)",
+    "scripts/dev/tasks.py (dispatch: role field)",
+    "tests for both"
+  ],
+  "scope_out": [
+    "live tree, processes, deploys, HALT files",
+    "ROUTING.md (Pipeliner owns it)",
+    "unrelated cleanups"
+  ],
+  "scope_sha": "93560b51e352",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/system/SUPERVISOR.md (design 2026-10-18)"
+  ],
+  "state": "ready",
+  "steps": [
+    "builder.md: boot, no-questions rule, fail-first tests, ship once with --release, final report line 1 = banner, then Result and sha",
+    "role_loader.py retoken + check",
+    "brief prints the exact start_session text; dispatch adds role by lane/kind"
+  ],
+  "tests": "brief for a fixture card contains 'You are Builder.' and the card id and no secrets path; dispatch role for a CODEX card is Lab_Guy; fail first",
+  "title": "Supervisor SV4: roles/builder.md + supervisor.py brief <card> --role R + dispatch role field",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

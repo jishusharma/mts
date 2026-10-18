@@ -5,6 +5,9 @@ A **super session** is one coordinator session in the Claude Code Win App that s
 meter has headroom (Pacing below). First one: 2026-10-15, coordinator local_62faa820 (Opus), about 20 linked workers, an Opus
 observer, and a second coordinator (coord-2) that drained the ship queue at the end.
 
+**Operating design: SUPERVISOR.md** (wake loop, role workers, verification, ship order; role file `roles/supervisor.md`,
+start a coordinator with `You are Supervisor.`). This file keeps the audit, rules history, boot facts and the session log.
+
 While a super session runs, the relay is paused: the coordinator IS the dispatcher. When none runs, nothing moves on its own: no relay, dispatcher or routine (MTS-DispatchGate and `mts-dispatcher` RETIRED 2026-10-17, see SCHEDULING_POLICY.md).
 For "schedule the next 5h/10h" the coordinator writes the card order into a plan file and works it.
 
