@@ -118,8 +118,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `MyTradingSys/items/B143_cryptocred_stop_buffer_and_target_unsourced.md`; `MyTradingSys/backtest/layers/FORMULAS.md`
 - Code: `MyTradingSys/backtest/layers/cryptocred`
 - Other results: `MyTradingSys/research/cryptocred_stop_2026-10-10`
-- Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `cryptocred-prereg-4h-1d` ready p3 SONNET: CryptoCred: pre-registration for the 4h/1d redesign (items 6/8/11/12)
+- Open cards: none
 
 ## Positioning (funding, OI, whale / FlowHorse) (`positioning`)
 - Status: T055 C1 FAIL; OI/long-short unused as filters.

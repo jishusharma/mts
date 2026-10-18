@@ -1,6 +1,6 @@
 """One way for any session on any machine to share work: origin/fast-track is the only meeting point.
 
-  python scripts/dev/sync.py start [slug]  # up to date with origin/fast-track; in a shared/dirty tree makes your own worktree;
+  python scripts/dev/sync.py start [slug] [--quiet]  # up to date with origin/fast-track; in a shared/dirty tree makes your own worktree;
                                            # in a lane tree (mts-app, mts-relay, mts-dsa) `start <slug>` switches to branch <host>/<slug>
   python scripts/dev/sync.py health  # stale/overlapping claims, shared or orphan worktrees, branches never shipped
   python scripts/dev/sync.py ship [--full]  # merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
@@ -347,7 +347,7 @@ def prior_work(repo, slug, ref=f"origin/{TRUNK}"):
     return hits
 
 
-def start(repo, slug=None, here=False):
+def start(repo, slug=None, here=False, quiet=False):
     """Bring a tree up to date. Returns the tree the session must work in: `repo` when it is clean, else a
     fresh worktree off origin/fast-track (printed as `WORKTREE: <path>`); never touches the other files."""
     refuse_live(repo)
@@ -365,13 +365,15 @@ def start(repo, slug=None, here=False):
     n = merge_trunk(repo)
     branch = git(repo, "branch", "--show-current").stdout.strip() or "(detached)"
     print(f"host={socket.gethostname()} branch={branch} pulled={n} head={git(repo, 'rev-parse', '--short', 'HEAD').stdout.strip()}")
-    print_claims(repo)
+    if not quiet:
+        print_claims(repo)
     prior = prior_work(repo, slug)
     if prior:
         print(f"prior work on {TRUNK} matching '{slug}' (read it before building; same task twice = compare, never overwrite):")
         for p in prior[:12]:
             print(f"  {p}")
-    pull_mirror(repo)
+    if not quiet:
+        pull_mirror(repo)
     return repo
 
 
@@ -1019,11 +1021,12 @@ def main(argv):
             print(f"sync: {e}", file=sys.stderr)
             return 1
         return 0
-    if argv and argv[0] == "start" and len(argv) <= 3:
+    if argv and argv[0] == "start" and len(argv) <= 4:
         try:
             here = "--here" in argv
-            rest = [a for a in argv[1:] if a != "--here"]
-            start(toplevel(Path.cwd()), rest[0] if rest else None, here)
+            quiet = "--quiet" in argv or "-q" in argv
+            rest = [a for a in argv[1:] if a not in ("--here", "--quiet", "-q")]
+            start(toplevel(Path.cwd()), rest[0] if rest else None, here, quiet=quiet)
         except SyncError as e:
             print(f"sync: {e}", file=sys.stderr)
             return 1
