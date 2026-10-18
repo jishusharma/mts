@@ -52,8 +52,10 @@ other sessions' uncommitted files and unshipped commits) and a handful of hot fi
    = the doc invariants (task-card DoR, INDEX/BUGS, prompt contract, doc size/contract tests), seconds, no gate slot; non-live code =
    the tests of the changed files + the pytest shards + wiring + task cards; live-path files (execution, runtime, scripts/sched, src, .github,
    sync.py, run_all_tests.py, auto_deploy.py) or any path no rule knows = every `--quick` step (fail closed); `--full` forces that.
-   Start `ship` with run_in_background and read the output once (a foreground tool call dies at 600 s). A rejected push means
-   someone shipped first; it re-merges and retries. A real conflict stops and asks you to resolve it. Ship the last task with `sync.py ship --release <slug>` (the claim file is deleted in the same push; a standalone `sync.py release <slug>` is only for 'nothing to ship');
+   Cheap steps and the tests that reference the change run first (precheck, no slot) and the gate stops at the first failure; a
+   step that passed on the same clean tree is not rerun (GATE_SPEED.md). Start `ship` with run_in_background and read the output once
+   (a foreground tool call dies at 600 s). A rejected push means someone shipped first; it re-merges and retries (re-gating only
+   when the incoming commits touch what you ship). A real conflict stops and asks you to resolve it. Ship the last task with `sync.py ship --release <slug>` (the claim file is deleted in the same push; a standalone `sync.py release <slug>` is only for 'nothing to ship');
    `sync.py where` must be clean; overwrite NEXT_SESSION.md if you are the last session of the day (hand-over: RELAY.md; session length: CLAUDE.md SHORT SESSIONS).
 5. CI (`.github/workflows/ci.yml`) runs the full gate on both OSes after every push and publishes the passing SHA as `green/fast-track`;
    MTS-AutoDeploy (`scripts/dev/auto_deploy.py`, RETIRED 2026-10-17, see SCHEDULING_POLICY.md) deployed only that branch (fast-track only after 90 min without a green advance, gated by the

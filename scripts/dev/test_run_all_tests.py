@@ -2,6 +2,7 @@
 import contextlib
 import io
 import os
+import subprocess
 import sys
 import tempfile
 import time
@@ -190,7 +191,9 @@ class TestShardedPytest(unittest.TestCase):
             f.write_text("MyTradingSys/system/RELAY.md\n", encoding="utf-8")
             plan, mode = rat.apply_selection(rat.build_plan(True), ["--smoke", "--changed-file", str(f)])
             self.assertEqual(mode, "docs")
-            self.assertEqual({s.num for s in plan if not s.skip}, {"3tl", "3q", "3pc", "3c", "4d"})
+            ran = {s.num for s in plan if not s.skip}
+            self.assertLessEqual({"3tl", "3q", "3pc", "3c", "4d"}, ran)
+            self.assertLessEqual(ran - {"3tl", "3q", "3pc", "3c", "4d"}, {"3xt"})   # GATE_SPEED D6: extra tests that name RELAY.md
             f.write_text("MyTradingSys/execution/executor.py\n", encoding="utf-8")
             plan, mode = rat.apply_selection(rat.build_plan(True), ["--smoke", "--changed-file", str(f)])
             self.assertEqual(mode, "full")
@@ -440,6 +443,150 @@ class TestGateTimingLog(unittest.TestCase):
             self.assertEqual(mode, "full")
             self.assertIn("src/x.java", rat.gate_reason)
 
+
+
+class TestGateSpeed(unittest.TestCase):
+    """GATE_SPEED.md D1-D3 (2026-10-18): precheck, fail-fast, slot around the main phase only, same-tree pass record."""
+
+    def setUp(self):
+        rat.NOT_RUN.clear()
+
+    def run_plan(self, plan, **kw):
+        buf = io.StringIO()
+        return rat.run_plan(plan, 4, out=buf, **kw), buf.getvalue()
+
+    def slot(self, log):
+        @contextlib.contextmanager
+        def held():
+            log.append(("start", "slot", time.monotonic()))
+            yield
+            log.append(("end", "slot", time.monotonic()))
+        return held
+
+    def test_a_cheap_failure_stops_the_gate_before_the_slow_steps_and_the_slot(self):
+        log = []
+        plan = [fake("4d", log, 0.01, ok=False), fake("3c", log, 0.01), fake("4h", log, 0.01), fake("3xt", log, 0.01)]
+        results, text = self.run_plan(plan, precheck=True, fail_fast=True, slot=self.slot(log))
+        self.assertEqual(results, {"4d": False, "3c": True, "4h": None, "3xt": None})
+        self.assertEqual({n for _, n, _ in log}, {"4d", "3c"})          # neither slow step nor the slot ran
+        self.assertIn("Step 4h: NOT RUN (precheck failed: step 4d)", text)
+        self.assertEqual(rat.NOT_RUN, {"4h": "precheck failed: step 4d", "3xt": "precheck failed: step 4d"})
+
+    def test_slot_is_held_around_the_main_phase_only(self):
+        log = []
+        plan = [fake("4d", log, 0.02), fake("4h", log, 0.02), fake("3xt", log, 0.02)]
+        _, text = self.run_plan(plan, precheck=True, slot=self.slot(log))
+        self.assertGreaterEqual(at(log, "start", "slot"), at(log, "end", "4d"))
+        self.assertLessEqual(at(log, "start", "slot"), min(at(log, "start", "4h"), at(log, "start", "3xt")))
+        self.assertIn("Precheck passed", text)
+
+    def test_fail_fast_does_not_start_new_steps_after_a_failure(self):
+        log = []
+        plan = [fake("4h", log, 0.01, ok=False)] + [fake(f"9{i}", log, 0.01) for i in range(6)]
+        with mock.patch.object(rat, "record_timing") as timing:
+            results, text = rat.run_plan(plan, 1, out=io.StringIO(), fail_fast=True), None
+        self.assertEqual(results["4h"], False)
+        self.assertTrue(all(results[f"9{i}"] is None for i in range(6)))
+        self.assertEqual([c.args[0] for c in timing.call_args_list], ["4h"])   # a NOT RUN step is not timed
+
+    def test_summary_fails_closed_on_a_not_run_step(self):
+        plan = [fake("3a", [], 0.0)]
+        with mock.patch.object(rat, "build_plan", return_value=plan), mock.patch.object(rat, "run_plan",
+                side_effect=lambda *a, **k: (rat.NOT_RUN.update({"3a": "x"}) or {"3a": None})), \
+                mock.patch.object(rat, "lower_priority"), mock.patch.object(rat, "isolate_pytest_tmp"), \
+                contextlib.redirect_stdout(io.StringIO()) as out:
+            self.assertEqual(rat.main(["--quick"]), 1)
+        self.assertIn("NOT RUN (x)", out.getvalue())
+
+    def test_targeted_tests_name_the_test_files_that_reference_the_change(self):
+        with tempfile.TemporaryDirectory() as d:
+            t = Path(d) / "MyTradingSys" / "tests"
+            t.mkdir(parents=True)
+            (t / "test_relay.py").write_text("RELAY = 'MyTradingSys/system/RELAY.md'\n", encoding="utf-8")
+            (t / "test_kit.py").write_text("import screen\n", encoding="utf-8")
+            (t / "test_none.py").write_text("x = 1\n", encoding="utf-8")
+            self.assertEqual(rat.targeted_tests(["MyTradingSys/system/RELAY.md", "MyTradingSys/research/s/screen.py"], d),
+                             ["MyTradingSys/tests/test_kit.py", "MyTradingSys/tests/test_relay.py"])
+
+    def test_precheck_flag_adds_the_targeted_step_in_every_mode(self):
+        with tempfile.TemporaryDirectory() as d:
+            lst = Path(d) / "changed.txt"
+            lst.write_text("MyTradingSys/system/RELAY.md\n", encoding="utf-8")
+            plan, mode = rat.apply_selection(rat.build_plan(True), ["--smoke", "--precheck", "--changed-file", str(lst)])
+            self.assertEqual(mode, "docs")
+            four_t = [s for s in plan if s.num == rat.TARGET_STEP]
+            self.assertEqual(len(four_t), 1)
+            self.assertIsNone(four_t[0].skip)
+            self.assertIn("test_relay_prompts.py", four_t[0].cmd_text)
+            plan, _ = rat.apply_selection(rat.build_plan(True), ["--smoke", "--changed-file", str(lst)])
+            self.assertFalse([s for s in plan if s.num == rat.TARGET_STEP])   # CI / auto_deploy argv: no precheck step
+
+    def test_config_check_is_a_cheap_gate_step(self):
+        plan = {s.num: s for s in rat.build_plan(True)}
+        self.assertIn("test_config_check.py", plan["3js"].cmd_text)
+        self.assertIn("3js", rat.CHEAP_STEPS)
+
+
+class TestPassRecord(unittest.TestCase):
+    """GATE_SPEED D3: a step that passed on this exact clean tree, same signature, same python, < 24 h, is not run again."""
+
+    def setUp(self):
+        self.d = Path(tempfile.mkdtemp())
+        for args in (["init", "-q"], ["config", "user.email", "t@t"], ["config", "user.name", "t"]):
+            subprocess.run(["git", "-C", str(self.d), *args], check=True, capture_output=True)
+        (self.d / "a.py").write_text("a\n", encoding="utf-8")
+        subprocess.run(["git", "-C", str(self.d), "add", "a.py"], check=True, capture_output=True)
+        subprocess.run(["git", "-C", str(self.d), "commit", "-q", "-m", "a"], check=True, capture_output=True)
+        self.plan = [rat.Step("3a", "d", "l", cmd_text="python x.py --basetemp=C:/t/1"), rat.Step("3b", "d", "l", cmd_text="python y.py")]
+
+    def tearDown(self):
+        import shutil
+        shutil.rmtree(self.d, ignore_errors=True)
+
+    def save(self, results, **kw):
+        return rat.save_record(self.plan, results, root=self.d, **kw)
+
+    def test_passing_steps_are_reused_on_the_same_tree_and_a_failed_step_runs_again(self):
+        self.assertTrue(self.save({"3a": True, "3b": False}))
+        self.assertEqual(set(rat.load_reused(self.plan, root=self.d)), {"3a"})
+
+    def test_basetemp_does_not_change_the_signature_but_the_command_does(self):
+        self.save({"3a": True, "3b": True})
+        again = [rat.Step("3a", "d", "l", cmd_text="python x.py --basetemp=C:/t/9"), rat.Step("3b", "d", "l", cmd_text="python y.py --only z")]
+        self.assertEqual(set(rat.load_reused(again, root=self.d)), {"3a"})
+
+    def test_a_new_commit_a_dirty_tree_or_an_old_record_reuses_nothing(self):
+        self.save({"3a": True, "3b": True})
+        (self.d / "new.txt").write_text("u\n", encoding="utf-8")            # untracked file: dirty
+        self.assertEqual(rat.load_reused(self.plan, root=self.d), {})
+        self.assertFalse(self.save({"3a": True}))                            # and a dirty tree writes no record
+        (self.d / "new.txt").unlink()
+        self.assertEqual(set(rat.load_reused(self.plan, root=self.d)), {"3a", "3b"})
+        self.assertEqual(rat.load_reused(self.plan, root=self.d, now=time.time() + rat.RECORD_MAX_AGE_S + 1), {})
+        (self.d / "a.py").write_text("b\n", encoding="utf-8")
+        subprocess.run(["git", "-C", str(self.d), "commit", "-qam", "b"], check=True, capture_output=True)
+        self.assertEqual(rat.load_reused(self.plan, root=self.d), {})
+
+    def test_head_moving_during_the_gate_writes_no_record(self):
+        start = rat.tree_state(self.d)[0]
+        (self.d / "a.py").write_text("c\n", encoding="utf-8")
+        subprocess.run(["git", "-C", str(self.d), "commit", "-qam", "c"], check=True, capture_output=True)
+        self.assertFalse(self.save({"3a": True}, start_tree=start))
+
+    def test_reused_steps_print_pass_and_do_not_run(self):
+        ran = []
+        plan = [rat.Step("3a", "d", "l", run=lambda: (ran.append(1), (True, ""))[1], cmd_text="x")]
+        results = rat.run_plan(plan, 2, out=io.StringIO(), reused={"3a": "reused: passed"})
+        self.assertEqual((results, ran), ({"3a": True}, []))
+
+    def test_ci_never_uses_the_record(self):
+        with mock.patch.dict(os.environ, {"CI": "true"}), mock.patch.object(rat, "build_plan", return_value=[]), \
+                mock.patch.object(rat, "load_reused") as load, mock.patch.object(rat, "save_record") as save, \
+                mock.patch.object(rat, "lower_priority"), mock.patch.object(rat, "isolate_pytest_tmp"), \
+                contextlib.redirect_stdout(io.StringIO()):
+            rat.main(["--quick", "--record"])
+        load.assert_not_called()
+        save.assert_not_called()
 
 if __name__ == "__main__":
     unittest.main()

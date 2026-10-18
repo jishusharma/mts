@@ -182,3 +182,7 @@ MyTradingSys/runtime/wlow_bounce_forward.jsonl
 MyTradingSys/research/imbalance_qriptal_2026-10-16/events_*.csv
 # stray empty file from a mistyped shell redirect (2026-10-17 overnight coordinator)
 /.py
+# secrets never enter this PUBLIC repo (CLAUDE.md hard rules; checked by scripts/dev/test_config_check.py, gate step 3js)
+.secrets/
+.env
+.env.*
