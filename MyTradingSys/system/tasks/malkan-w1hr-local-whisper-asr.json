@@ -1,0 +1,75 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "class": "C0",
+  "commands": [
+    "F:/MTS/tools/asr-venv/Scripts/python.exe scripts/dev/asr_transcribe.py --audio F:/MTS/data/malkan_videos/audio/W1HrDl70Lhk.f251.webm --out F:/MTS/data/malkan_videos/asr/W1HrDl70Lhk.jsonl --model large-v3 --beam 5"
+  ],
+  "created": "2026-10-18T21:02:00Z",
+  "depends_on": [],
+  "done_when": "raw_transcripts_canonical/W1HrDl70Lhk_asr_raw.txt and updated GARBLED stop rows in MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md are shipped; git cherry origin/fast-track empty.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Run local Whisper ASR on W1HrDl70Lhk (18 min Hinglish 5-Star RSI video, already extracted with YouTube auto-captions) on JIS-NB to recover the exact Hinglish stop wording for MAL-1, MAL-4, and MAL-6 (resolving the garbled 'block printed not retired children' auto-caption translation) without hitting YouTube.",
+  "id": "malkan-w1hr-local-whisper-asr",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Malkan 5-star/7-star: COMPARE.md with extract lines vs web/spec/code, Source lines on SETU",
+      "ref": "ecc5bebc038b",
+      "utc": "2026-10-15T21:19:33Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "ecc5bebc038b Malkan 5-star/7-star: COMPARE.md with extract lines vs web/spec/code, Source ",
+      "ref": "MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md",
+      "utc": "2026-10-15T21:19:33Z"
+    }
+  ],
+  "layers": [
+    "rsi"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Created by Session_Planner per GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md s6.2 item 1. Replaces anonymous YouTube caption scraping with local Whisper ASR on W1HrDl70Lhk.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "gemini-yt-pipeliner",
+  "refreshed": "2026-10-18T21:10:10Z",
+  "refs": [
+    "MyTradingSys/research/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md",
+    "MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md",
+    "MyTradingSys/research/layer_lab/reports/2026-10-17_malkan-hindi-rows-gpt-read.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md",
+    "MyTradingSys/research/malkan_extract_2026-10-15/extracts/extract_W1HrDl70Lhk.md",
+    "raw_transcripts_canonical/"
+  ],
+  "scope_out": [
+    "engine and layer code",
+    "any backtest",
+    "anonymous YouTube caption scraping loops"
+  ],
+  "scope_sha": "ecc5bebc038b",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Run scripts/dev/asr_transcribe.py on JIS-NB at low priority on W1HrDl70Lhk audio (18 min) and convert to raw_transcripts_canonical/W1HrDl70Lhk_asr_raw.txt via scripts/dev/asr_to_canonical.py.",
+    "Update the GARBLED stop lines in extract_W1HrDl70Lhk.md and SETUP_SUMMARY.md (MAL-1, MAL-4, MAL-6) with the clean ASR quotes, labelled ASR.",
+    "Run scripts/dev/verify_extract_quotes.py on extract_W1HrDl70Lhk.md until PASS and ship."
+  ],
+  "tests": "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/malkan_extract_2026-10-15/extracts/extract_W1HrDl70Lhk.md",
+  "title": "Malkan W1HrDl70Lhk: local Whisper ASR on JIS-NB to recover Hinglish 5-Star RSI stop wording (no YouTube caption scraping)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

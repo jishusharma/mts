@@ -1,0 +1,60 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/backtest/test_pre_reg_template.py"
+  ],
+  "created": "2026-10-18T21:02:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/malkan_extract_2026-10-15/PRE_REG_MALKAN_GFS_BTC.md is shipped with DEV count-only power check (prereg_gate.py) and decision rule on whether to ingest v8pCR_bA0_0 and U12jz3LQhy0; test_pre_reg_template.py passes.",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Implement the 'Edge-Before-Extraction' pre-registration on Malkan GFS (Grandfather-Father-Son: Monthly RSI > 60, Weekly RSI > 60, Daily RSI support at 60) on historical Binance 1D/4h BTC DEV klines (count-only + prereg_gate.py power check first). Decision rule: if GFS shows no power or no DEV edge on BTC, cancel all remaining Malkan video downloads; if it passes, ingest only v8pCR_bA0_0 and U12jz3LQhy0.",
+  "id": "malkan-gfs-btc-htf-prereg",
+  "lane": "SONNET",
+  "layers": [
+    "rsi"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:results CLASS:C1 REVIEWER:none WEIGHT:IMPORTANT. Refined by gemini-yt-pipeliner per GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md s6.2 item 2; T0 mechanical checks passed, awaiting non-Gemini Lab_Guy ACCEPT stamp for C1/IMPORTANT promotion.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "gemini-yt-pipeliner",
+  "refreshed": "2026-10-18T21:02:00Z",
+  "refs": [
+    "MyTradingSys/research/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md",
+    "MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md",
+    "MyTradingSys/research/krown_malkan_g3_2026-10-16/EVENT_COUNTS.md",
+    "MyTradingSys/backtest/PRE_REG_TEMPLATE.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/malkan_extract_2026-10-15/",
+    "MyTradingSys/backtest/PRE_REG_TEMPLATE.md"
+  ],
+  "scope_out": [
+    "VALIDATION and HOLDOUT reads",
+    "live tree",
+    "fetching any Malkan YouTube videos before the DEV verdict"
+  ],
+  "scope_sha": "60c1b88e5269",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md",
+    "MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read SETUP_SUMMARY.md (MAL-1, MAL-2, MAL-10) and EVENT_COUNTS.md for the Malkan GFS 40/60 RSI rules and BTC fire counts.",
+    "Write MyTradingSys/research/malkan_extract_2026-10-15/PRE_REG_MALKAN_GFS_BTC.md answering all 12 items of PRE_REG_TEMPLATE.md and gates 0a-0f on historical BTC 1D/4h DEV klines; label every number SOURCED or OURS.",
+    "Run scripts/dev/prereg_gate.py with the ledger m count and record the MDE + cost gate result; state the gate decision rule for v8pCR_bA0_0 and U12jz3LQhy0."
+  ],
+  "tests": "python MyTradingSys/backtest/test_pre_reg_template.py (fails if any of the 12 readiness items is unanswered).",
+  "title": "Malkan GFS on BTC 1D/4h: edge-before-extraction pre-registration and count/power gate before any further video ingestion",
+  "weight": "IMPORTANT",
+  "worker": "session",
+  "class": "C1"
+}

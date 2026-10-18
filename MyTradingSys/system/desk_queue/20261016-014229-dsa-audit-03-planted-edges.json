@@ -1,11 +1,14 @@
 {
   "card": "dsa-audit-03-planted-edges",
   "done_when": "T03_planted_edges.md shipped: harness x canary table, independent stats rebuild vs published, threshold boundary tests, lead L5 resolved, scripts re-runnable, S1/S2 carded.",
+  "finished": "2026-10-18T21:07:09Z",
   "from": "JIS-NB",
+  "host": "DESKTOP-F7IU69N",
   "id": "20261016-014229-dsa-audit-03-planted-edges",
   "need": "python scripts/dev/sync.py claim \"dsa-audit-03-planted-edges\"; python scripts/dev/tasks.py take dsa-audit-03-planted-edges; git grep -n -E \"def (simulate_trade|sim_limit_trade|trade|net_return|verdict|day_clustered|clustered_se)\" -- MyTradingSys; Get-Content MyTradingSys/backtest/layers/FORMULAS.md -TotalCount 80; python scripts/dev/tasks.py done dsa-audit-03-planted-edges --result \"<Tnn>: k findings (S1 a, S2 b, S3 c); <headline>\"; # AIRUN task=mts-ship repo=<WORKTREE> timeout=1800  (then git cherry origin/fast-track HEAD is empty) (full brief: python scripts/dev/tasks.py brief dsa-audit-03-planted-edges)",
   "posted": "2026-10-16T01:44:30Z",
-  "status": "pending",
+  "result": "done: shipped 3ddd0b0f T03_planted_edges.md; F:/MTS/data follow-up -> desk row 20261018-183805",
+  "status": "done",
   "target": "DSA-NB",
   "title": "DSA audit T03: known-answer canaries through every simulator and the verdict statistics"
 }

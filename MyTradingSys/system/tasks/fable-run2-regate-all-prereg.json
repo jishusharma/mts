@@ -22,7 +22,8 @@
   "refs": [
     "MyTradingSys/system/fable_run_2_brief.md"
   ],
-  "result": "",
+  "result": "8429a7b2: MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md (18 studies re-gated, 4 flips, 8 fix items)",
+  "closed": "2026-10-18T21:05:00Z",
   "scope_in": [
     "MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md"
   ],
@@ -37,7 +38,7 @@
     "MyTradingSys/system/fable_run_2_brief.md",
     "MyTradingSys/research/fable_audit_2026-10-18/GATE_AUDIT.md"
   ],
-  "state": "raw",
+  "state": "done",
   "steps": [],
   "tests": "Output REGATE_AUDIT.md has one row per study in brief read-list items 3-5 and a go/no-go list for context composite V2, pit V3, wavetrend, carry_basis.",
   "title": "Fable run 2: re-gate all pre-registrations under the fixed prereg_gate (brief fable_run_2_brief.md)",

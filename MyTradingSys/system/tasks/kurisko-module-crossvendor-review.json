@@ -3,35 +3,82 @@
   "asks": "",
   "commands": [],
   "created": "2026-10-18T16:17:43Z",
-  "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "depends_on": [
+    "kurisko-quad-rotation-module"
+  ],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-10-19_kurisko-module-crossvendor-review.md contains SOUND / FIX-FIRST / BLOCKED, file:line evidence for each requested check, and the reviewer-model identity; this card's result contains ACCEPT or concise FIX lines with the report path. No source file is edited.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Review MyTradingSys/backtest/layers/kurisko/ (stoch_core.py, quad_rotation.py, test_quad_rotation.py, make_golden.py) against FORMULAS.md section 24 and KURISKO_SPEC s5: event rule, D-line, NaN handling, no look-ahead, fixture independence. Reply ACCEPT or FIX lines in the card result; reviewer model must differ from the producer.",
+  "goal": "Independently audit the Kurisko module implementation and tests against FORMULAS.md section 24 and the cited spec evidence: confirm D-line calculation, event and episode rules, NaN and gap handling, closed-bar causality, and independent fixture derivation. Report ACCEPT or specific FIX lines; use a reviewer model different from the module producer.",
   "id": "kurisko-module-crossvendor-review",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "kurisko: causal Quad Rotation layer module (stochastic arm + RSI hypothesis arm), FORMULAS",
+      "ref": "dd001f2a7902",
+      "utc": "2026-10-18T06:39:54Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "dd001f2a7902 kurisko: causal Quad Rotation layer module (stochastic arm + RSI hypothesis a",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-10-18T06:39:54Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "From desk row 20261018-065548 (DSA-NUC) via Pipeliner 2026-10-18: cross-vendor review is a CODEX card (GPT via codex_run.py or Gemini via gemini_queue.py), ROUTING.md.",
+  "note": "REVIEWED:2026-10-19 ACCEPT GPT Luna independent card review; fixes applied: event-rule citation 24.4 and delivery verification. This reviews the task brief only; implementation audit and its result remain pending. Producer module is Claude SONNET; execute audit with GPT. Lab bases remain UNCHECKED.",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
-  "refs": [
-    "MyTradingSys/backtest/layers/FORMULAS.md"
-  ],
+  "refined_by": "GPT Luna draft; Session_Planner review pending",
+  "refreshed": "2026-10-18T21:20:48Z",
+  "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/kurisko/stoch_core.py",
+    "MyTradingSys/backtest/layers/kurisko/quad_rotation.py",
+    "MyTradingSys/backtest/layers/kurisko/test_quad_rotation.py",
+    "MyTradingSys/backtest/layers/kurisko/make_golden.py",
+    "MyTradingSys/backtest/layers/kurisko/golden_stoch_k5d3.csv",
+    "MyTradingSys/backtest/layers/kurisko/params/kurisko_default.json",
+    "MyTradingSys/backtest/layers/FORMULAS.md",
+    "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md",
+    "extracts/processed/kurisko/QUAD_ROTATION.md",
+    "MyTradingSys/research/lab_guy/spec_review_kurisko_2026-10-18.md"
+  ],
+  "scope_out": [
+    "code and test edits",
+    "backtests, outcomes, VALIDATION, or HOLDOUT",
+    "live wiring or execution"
+  ],
+  "scope_sha": "dd001f2a7902",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/backtest/layers/FORMULAS.md section 24 (definition, worked values, event rule, fixtures)",
+    "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md section 5 (open OURS defaults and source gaps)",
+    "extracts/processed/kurisko/QUAD_ROTATION.md rules R1, R2, R3, R8, R10 (quote-gated source evidence)",
+    "MyTradingSys/research/lab_guy/spec_review_kurisko_2026-10-18.md (prior independent D-line review finding)",
+    "MyTradingSys/system/desk_queue/20261018-065548-non-claude-review-kurisko-module-code-te.json (original request and wrong-channel failure)",
+    "MyTradingSys/system/ROUTING.md (CODEX cross-vendor routing)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read every scope_in file. Resolve the module producer model from its task/report evidence, then use GPT or Gemini only if it differs from the producer; if the producer cannot be established, report BLOCKED with the missing evidence.",
+    "Compare each stochastic line and label in stoch_core.py and kurisko_default.json with FORMULAS 24.1-24.2 and the SOURCED/OURS distinctions in KURISKO_SPEC s5; check the implemented D line against the prior review FIX and the R8 quote.",
+    "Trace quad_rotation.py event creation, episode reset, bar availability, NaN bars, and time gaps against FORMULAS 24.4 and extract R2/R3; report any behavior or boundary mismatch with file:line evidence.",
+    "Re-derive the values in golden_stoch_k5d3.csv from the OHLC fixture and FORMULAS 24.2 without importing stoch_core.py; inspect test_quad_rotation.py fixtures and look-ahead checks for independence and correspondence to FORMULAS 24.5.",
+    "Write the bounded audit report under research/layer_lab/reports/ in the LAYER_LAB.md audit format; record SOUND, FIX-FIRST, or BLOCKED and put ACCEPT or concise FIX lines plus the report path in this card's result. Make no source edits.",
+    "Verify delivery: record the content commit SHA; git cherry origin/fast-track <sha> must be empty and git ls-tree -r origin/fast-track --name-only must include the report."
+  ],
+  "tests": "Audit existing tests and independent golden fixture; report whether the named fixture, NaN/gap checks, and planted future-spike test cover the stated claims. Do not edit tests or product files.",
   "title": "Cross-vendor review: kurisko module code+tests vs FORMULAS s24",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
