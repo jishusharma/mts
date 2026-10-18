@@ -1,10 +1,13 @@
 {
   "done_when": "Dumps/ holds the metrics files and file count and date range are in the reply",
+  "finished": "2026-10-18T16:17:37Z",
   "from": "JIS-NUC",
+  "host": "JIS-NUC",
   "id": "20261013-143640-gap-g5-fetch-binance-btcusdt-futures-met",
   "need": "From the primary tree run scripts/dev/fetch_binance_archive.py for futures/um/daily/metrics BTCUSDT 2020-09-01..today into Dumps/ (read the script header for flags; do not touch bookDepth yet). Print file count and bytes. Stop after two failures.",
   "posted": "2026-10-13T14:36:40Z",
-  "status": "pending",
+  "result": "Pipeliner drain 2026-10-18: re-posted to DSA-NUC with the correct path (MyTradingSys/backtest/fetch_binance_archive.py, not scripts/dev/); see the new 'Gap G5' row",
+  "status": "failed",
   "target": "DSA-NUC",
   "title": "Gap G5: fetch Binance BTCUSDT futures metrics (OI, long/short ratios) 2020-09..now (host=JIS-NUC)"
 }
