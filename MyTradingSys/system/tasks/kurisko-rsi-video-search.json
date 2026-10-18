@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/rsi_kurisko_2026-10-09/RSI_VIDEO_SEARCH.md"
   ],
@@ -39,13 +40,14 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "active",
   "steps": [
     "Read KURISKO_SPEC.md and the transcript extract folder to list the Kurisko videos already known.",
     "Search his channel/captions (free public YouTube captions are pre-approved) for 'RSI', 'relative strength', 'divergence', indicator settings and platform names.",
     "Write RSI_VIDEO_SEARCH.md with exact quotes, url, timestamp, platform, plus a list of videos checked with no RSI numbers.",
     "Run verify_extract_quotes.py on the file and fix failing quotes."
   ],
+  "taken": "2026-10-18T16:17:13Z",
   "tests": "No code change. verify_extract_quotes.py on RSI_VIDEO_SEARCH.md must pass; it fails before the file exists.",
   "title": "Kurisko: find videos where he states RSI periods, levels, smoothing and platform (TradingView or other) for the four-indicator setup",
   "weight": "",
