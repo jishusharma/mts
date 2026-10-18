@@ -1,10 +1,13 @@
 {
   "done_when": "MyTradingSys/research/layer_lab/DATA_COVERAGE_TOM_FABIO.md: table input x market x (HAVE with path+range / PARTIAL / MISSING), semantics note per input (what half-volume or CFD bid means), and for each MISSING one acquisition option with source and cost class (free/paid); no purchase decision.",
+  "finished": "2026-10-18T16:17:36Z",
   "from": "JIS-NUC",
+  "host": "JIS-NUC",
   "id": "20261012-071127-data-coverage-for-tom-dax-and-fabio-v2-p",
   "need": "For each proof/readiness input the Tom DAX v2 (research/tom_transfer_2026-10-11/PRE_REG_DAX.md, TOM_LAYER_V2_SPEC inputs, PROFILE_PARITY.md) and Fabio v2 (fabio-layer-v2-markets card) tests need, inventory what the NUC/JIS-NB data holds: instrument (FDAX vs GER40 CFD, NQ vs US100), timeframe, date range, bid/ask vs trade, volume vs aggressor split, session/closed-market flags, holes. Read files only; no backtest, no holdout read, no purchase. Reference: layer_lab report 2026-10-11_lab-audit-tom-dax-bt.md items 4,5,6 and H6.",
   "posted": "2026-10-12T07:11:27Z",
-  "status": "pending",
+  "result": "Pipeliner drain 2026-10-18: obsolete: Tom DAX dropped bf5dba20; Fabio home-market chain paused (SUPER_SESSION boot facts)",
+  "status": "failed",
   "target": "DSA",
   "title": "Data coverage for Tom DAX and Fabio v2 proofs: missing inputs and acquisition options"
 }
