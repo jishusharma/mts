@@ -33,7 +33,7 @@ only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once); at ~1
 8. **Agent workers (2026-10-16).** Briefs ask for: ship once then stop (a second `sync.py ship` only re-wakes the coordinator),
    the proof that new tests fail on the old code (run them against `git show <sha>^:<file>` copies), a final reply of at most
    N lines, long notes in the shared notes folder. Tasks touching the same file run one after the other; others run in parallel.
-9. **Compaction by context share (operator 2026-10-16).** `.claude/settings.json` sets `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=25`: a backstop, not a
+9. **Compaction by context share (operator 2026-10-16).** `.claude/settings.json` sets `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=12` (~120k of 1M, 2026-10-18): a backstop, not a
    plan (WORKERS.md rule 5). A model cannot run `/compact` itself. Working bands: under ~18 % keep going; 18-20 % finish the current task,
    then end it (ship, release, hand off); 20-25 % finish only if crucial and nearly done, else commit and let it run. Keep working state in
    files (NEXT_SESSION.md, notes folder, task card), not in the context.
