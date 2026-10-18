@@ -20,15 +20,16 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
-  "result": "",
+  "result": "GATE_AUDIT.md b63e8589 Q3/Q6: promote.py Holm z equals prereg_gate for every m; variants is per manifest ledger and Kurisko is absent; fixes gate-fix-5, gate-fix-6",
   "scope_in": [],
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "done",
   "steps": [],
   "tests": "",
   "title": "Fable run 1 part 2: promote.py G4 Holm/MDE math consistent with prereg_gate and trial-ledger variants (same Fable session, brief Q3 and Q6)",
   "weight": "",
-  "worker": ""
+  "worker": "",
+  "closed": "2026-10-18T15:40:19Z"
 }
