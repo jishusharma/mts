@@ -34,6 +34,8 @@ def main():
             start = time.perf_counter()
             with (OUT / (name + ".txt")).open("w", encoding="utf-8", newline="\n") as log:
                 result = subprocess.run(command, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, env={**os.environ, "PYTHONIOENCODING": "utf-8"})
+            log_path = OUT / (name + chr(46) + chr(116) + chr(120) + chr(116))
+            log_path.write_bytes(log_path.read_bytes().replace(bytes([13, 10]), bytes([10])))
             receipt["runs"].append({"name": name, "command": command, "seconds": round(time.perf_counter()-start, 3), "exit_code": result.returncode})
             (OUT / "receipt.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8", newline="\n")
             print("END", receipt["runs"][-1], flush=True)
