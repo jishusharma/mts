@@ -5,7 +5,9 @@
   "id": "20261012-173924-rv-dsa-ledger-mechanical",
   "need": "python scripts/dev/make_layers_md.py --help (full brief: python scripts/dev/tasks.py brief rv-dsa-ledger-mechanical)",
   "posted": "2026-10-12T17:39:24Z",
-  "status": "pending",
+  "status": "taken",
+  "taken": "2026-10-18T15:56:22Z",
+  "taken_by": "JIS-NUC",
   "target": "DSA-NUC",
   "title": "RV-DSA Tom ledger mechanical check and path audit of the layer index (host=JIS-NUC)"
 }
