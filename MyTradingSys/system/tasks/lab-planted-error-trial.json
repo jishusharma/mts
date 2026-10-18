@@ -7,52 +7,62 @@
     "lab-data-pin-hash",
     "lab-machine-checks-extra"
   ],
-  "done_when": "a dated FLOW note with a catch table per class and per stack, and a recommendation on effort per class",
-  "est_turns": 25,
+  "done_when": "FLOW_PLANTED_2026-10-18.md with the machine-layer catch table (8 classes x caught/missed), manifest.json for 10 shadows, test passes, clean originals pass. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+  "effort": "medium",
+  "est_turns": 30,
   "from_inbox": "",
-  "goal": "Measure which review stack catches which class of planted error, and at what token cost.",
+  "goal": "Build the planted-error harness and measure the MACHINE layer: 10 shadow copies of finished cards each get one planted error (8 classes), and the existing machine checks (tasks.py, lab_flow.py) are run on them. Output is a catch table per error class with empty columns for the model stacks, which the coordinator fills with Haiku/Flash and Argon/GPT-high desk rows.",
   "id": "lab-planted-error-trial",
   "kind": "build",
   "lane": "CODEX",
   "latest": [
     {
       "auto": true,
-      "kind": "ship",
-      "line": "lab lab-flow-contract-hardening: BLOCKED (build)",
-      "ref": "e677a2790b09",
-      "utc": "2026-10-16T08:34:43Z"
+      "kind": "report",
+      "line": "6a6e60c72332 Merge remote-tracking branch 'origin/fast-track' into jis-nuc/codex-lab",
+      "ref": "MyTradingSys/research/layer_lab/TRIALS.md",
+      "utc": "2026-10-17T18:47:32Z"
     }
   ],
   "layers": [],
   "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=Gemini Flash high + Haiku re-derive 1-3 numbers] Blocked until lab-data-pin-hash and lab-machine-checks-extra are done (its pass criteria need those machine checks); then tasks.py release.",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:definitions CLASS:C1 REVIEWER:Gemini Flash high + Haiku re-derive 1-3 numbers WEIGHT:IMPORTANT. HOLD-CLEARED A-20261018-5 (lifted by the operator). Predecessors lab-data-pin-hash and lab-machine-checks-extra are done (reports 2026-10-17). DECISION (OURS): the GPT lab builds the harness and machine leg only; the Haiku/Flash and Argon/GPT-high legs run afterwards as coordinator desk rows from the packets, because one codex run cannot call other vendors. Model: luna medium. Reviewed by a separate Sonnet Agent (FIX round 1 applied).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-17T19:21:15Z",
+  "refreshed": "2026-10-18T03:35:21Z",
   "refs": [],
   "result": "",
   "scope_in": [
-    "MyTradingSys/research/lab_guy/ (new)",
-    "scripts/dev/lab_flow.py (read-only)",
-    "10 finished cards copied as shadow cards"
+    "scripts/dev/planted_error_trial.py (new)",
+    "scripts/dev/test_planted_error_trial.py (new)",
+    "MyTradingSys/research/lab_guy/planted/ (new: shadow cards + manifest.json)",
+    "MyTradingSys/research/lab_guy/FLOW_PLANTED_2026-10-18.md (new)",
+    "scripts/dev/lab_flow.py (read only)",
+    "scripts/dev/tasks.py (read only)",
+    "MyTradingSys/research/layer_lab/TRIALS.md (read only)",
+    "F:/codex_home/lab_runs/runs.jsonl (read only)"
   ],
   "scope_out": [
     "live tree",
     "HALT files",
     "deploys",
-    "VALIDATION and HOLDOUT bars"
+    "VALIDATION and HOLDOUT bars",
+    "editing the real cards",
+    "calling Anthropic or Google models (desk rows do that)"
   ],
-  "scope_sha": "e677a2790b09",
+  "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "blocked",
+  "state": "ready",
   "steps": [
-    "plant one error per shadow card: wrong data copy, one-bar shift, holdout leak, expected value copied from code, deleted trials, zero slippage, edited gate constant, mislabelled SOURCED number",
-    "run the cheap stack (machine checks + Haiku independent re-derivation + GPT-OSS or Flash) and the expensive stack (Argon or GPT high)",
-    "record catches per class, tokens and effort in the findings ledger"
+    "pick 10 finished lab cards with a report whose ORIGINALS pass every machine check today (list in manifest.json with report path; skip cards that do not); copy each card JSON, report, and an excerpt of its TRIALS.md rows and runs.jsonl rows into planted/<n>/ as a shadow; originals untouched",
+    "plant exactly one error (one edit hunk) per shadow, 8 classes over 10 cards: wrong data copy, one-bar shift, holdout leak, expected value copied from code, deleted trial rows, zero slippage, edited gate constant, mislabelled SOURCED number (two classes appear twice); record class, location and original value in manifest.json",
+    "run the machine layer on every shadow (tasks.py check logic, lab_flow contract/launch validation, data-pin hash, trial-ledger vs runs.jsonl count); record caught / missed per shadow and the rejecting check name",
+    "FLOW_PLANTED_2026-10-18.md: catch table per class for the machine layer, shadows missed by every machine check listed for the model stacks, empty columns cheap stack (Haiku blind re-derivation + Flash) and expensive stack (Argon / GPT high) with tokens and effort cells, and a packet per missed shadow",
+    "trial is invalid if the clean originals do not pass all machine checks or if a planted shadow differs from its original by more than the one planted change (script asserts both)"
   ],
-  "tests": "shadow cards must be rejected by at least one stack or the trial is invalid",
+  "tests": "scripts/dev/test_planted_error_trial.py::test_one_plant_per_shadow_and_clean_originals_pass: each shadow differs from its original in exactly one edit hunk, every clean original passes the machine layer, a dummy no-op plant is rejected as invalid; fails before the script exists",
   "title": "Lab: planted-error trial on 10 finished cards, cheap stack vs Argon/GPT high",
   "weight": "IMPORTANT",
   "worker": "session"

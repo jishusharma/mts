@@ -50,5 +50,6 @@
   ],
   "tests": "recount of the 662 baseline with the same script must reproduce 662 before adding new days",
   "title": "Q76/B187: does F:/MTS/data/dev_ext_2019_2021 (exists on the NUC) lift the power gate from 662 to the 2,427 feasible days needed? Count before any data is fetched",
+  "weight": "B-SHARED",
   "worker": "agent"
 }
