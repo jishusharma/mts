@@ -4,8 +4,7 @@
  "commands": [],
  "created": "2026-10-13T06:33:19Z",
  "depends_on": [
-  "tom-encode-spike-fade",
-  "tom-profile-shape-parity"
+  "tom-encode-spike-fade"
  ],
  "done_when": "The three profile items appear in the proof JSON with arm = profile, the thirds test passes with the hand numbers, PRICE-arm candidates are unchanged on the card-1 fixture.",
  "est_turns": 30,
@@ -17,7 +16,7 @@
   "tom"
  ],
  "live_path": false,
- "note": "UNBLOCKED 2026-10-18: operator lifted the holds in chat (DAX chain q11 hold, A-20261018-5); no-FDAX-data-purchase rule stays. Results built on lab bases stay labelled UNCHECKED. [PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
+ "note": "DECISION OURS 2026-10-18: dropped depends_on tom-profile-shape-parity (blocked: needs FDAX order-flow data, not bought). Step 1 already covers it: build for BTC replays, DAX PROFILE arm = NOT_IN_DATA. Needs the real Lab_Guy stamp (C2). | UNBLOCKED 2026-10-18: operator lifted the holds in chat (DAX chain q11 hold, A-20261018-5); no-FDAX-data-purchase rule stays. Results built on lab bases stay labelled UNCHECKED. [PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
  "pinned": false,
  "prio": 2,
  "refine_tries": 0,
