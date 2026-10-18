@@ -2,6 +2,7 @@
   "approved_by": "",
   "asks": "",
   "claim": "",
+  "closed": "2026-10-18T10:32:15Z",
   "commands": [],
   "created": "2026-10-18T05:45:18Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "id": "krown-foundations-ep08-follow-through",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "built 127 rules, 0 dead pointers, 17 hidden ids re-checked",
+      "ref": "4654da8e",
+      "utc": "2026-10-18T10:32:15Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,7 @@
     "MyTradingSys/research/krown_ta101_2026-10-13/MANIFEST.csv",
     "MyTradingSys/research/krown_ta101_2026-10-13/tools/build_ledger.py"
   ],
-  "result": "",
+  "result": "built 127 rules, 0 dead pointers, 17 hidden ids re-checked",
   "scope_in": [
     "MyTradingSys/research/krown_ta101_2026-10-13/",
     "raw_transcripts_canonical/"
@@ -56,7 +63,7 @@
   "sources": [
     "ftK2BqggabQ"
   ],
-  "state": "active",
+  "state": "done",
   "steps": [
     "Read FOUNDATIONS_EP08_IMPLICATIONS.md and extracts/extract_ftK2BqggabQ.md (22 concepts, quote-gated).",
     "Add the EP08 rules to the data list in tools/build_ledger.py as a new family (suggest OBK): maker vs taker fee, spread/deep book, market orders move price and resting orders cannot, hidden size, spoofing, book = poor direction tool (REJECT for direction), 10-second habit (execution). Every row T3, n_videos 1 so PROVISIONAL, param_label SOURCED only with a quote. Rebuild; expect 0 dead pointers.",
