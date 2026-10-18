@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-18T12:48:34Z",
   "commands": [],
   "created": "2026-10-13T06:33:19Z",
   "depends_on": [
@@ -13,6 +15,12 @@
   "id": "tom-encode-fade-profile-proofs",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "d5ac4ffa: SpikeFadeProfile arm, 10 new tests, 41 SpikeFade tests pass; DAX profile NOT_IN_",
+      "ref": "f28770e5",
+      "utc": "2026-10-18T12:48:34Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +47,7 @@
   "refined_by": "opus-2026-10-13 (TOM_LAYER_V2_SPEC part B)",
   "refreshed": "2026-10-18T03:33:19Z",
   "refs": [],
-  "result": "",
+  "result": "d5ac4ffa: SpikeFadeProfile arm, 10 new tests, 41 SpikeFade tests pass; DAX profile NOT_IN_DATA (parity)",
   "scope_in": [
     "src/main/java/datafeed/SetupCandidatesBuilder.java",
     "src/main/java/datafeed/MarketDataSnapshot.java (read only)",
@@ -59,13 +67,14 @@
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2.1, 2.2, 12, 13"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "If tom-profile-shape-parity is not PASS: build for BTC replays only and mark the DAX PROFILE arm NOT_IN_DATA in the proof JSON.",
     "A-C3 per spec section 13: leg range in thirds, top-third volume below each lower third, session POC not in the top third.",
     "A-P3 and A-P8 from Tom's words in spec section 2.2; any number they need that the spec lacks is NO-SOURCE: emit the raw measure, no gate.",
     "Arm label price / profile on every candidate; flag-off output unchanged."
   ],
+  "taken": "2026-10-18T12:48:31Z",
   "tests": "Java: leg 24010-24110, volume by third 500 / 300 / 100, POC in the bottom third -> thin = true; top third 400 -> false; POC in the top third -> false. Flag off -> identical output. Fails before the code exists.",
   "title": "Tom v2: encode the PROFILE arm of the fade (thin top, failed P breakout, lower b-shape)",
   "weight": "IMPORTANT",
