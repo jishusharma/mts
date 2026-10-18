@@ -677,12 +677,15 @@ def cmd_done(a):
     c = get(REPO, a.id)
     if c.get("flow"):
         raise SystemExit("tasks: flow cards close through lab_flow.py finish (evidence receipt required)")
-    if c.get("state") != "active":
-        raise SystemExit(f"tasks: {a.id} is {c.get('state')}, only an active card can be marked done")
+    if c.get("state") not in ("ready", "active"):
+        raise SystemExit(f"tasks: {a.id} is {c.get('state')}, only a ready or active card can be marked done")
     gate = review_gate(c, finishing=True, result=a.result)
+    if c["state"] == "ready":   # runners claim via sync.py and never call `take`: ready->done needs every gate `take` would apply
+        gate += promotion_problems(c) + problems(c, load_all(REPO), registry(REPO))
     if gate:
         raise SystemExit(f"tasks: {a.id} cannot be marked done: " + "; ".join(gate))
     c.update(state="done", result=a.result, closed=now())
+    c.setdefault("taken", c["closed"])
     head = TS.git(REPO, "rev-parse", "--short", "HEAD")
     if head:   # base the work was done on; the ship commit that carries this card becomes the tag (SHIPPED@<sha>)
         TS.add_entry(c, "ship", head, c["closed"], a.result)

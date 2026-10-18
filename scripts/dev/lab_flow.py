@@ -322,9 +322,11 @@ def finish(repo, cid, report, verdict, result):
     gate = tasks.review_gate(card, finishing=True, result=result)
     if gate:
         raise ValueError("; ".join(gate))
-    if verdict == "PASS" and card.get("state") != "active":
-        raise ValueError("only an active flow card can be marked done")
+    if verdict == "PASS" and card.get("state") not in ("ready", "active"):
+        raise ValueError("only a ready or active flow card can be marked done")
     errors = tasks.problems(card, tasks.load_all(repo), tasks.registry(repo), repo=repo)
+    if verdict == "PASS" and card.get("state") == "ready":   # runners never call `take`: ready->done needs the same gates
+        errors += tasks.promotion_problems(card)
     if errors:
         raise ValueError("; ".join(errors))
     p = safe_file(repo, report)
@@ -354,6 +356,7 @@ def finish(repo, cid, report, verdict, result):
                               "vendor": card["vendor"], "model": card["model"],
                               "report_sha256": hashlib.sha256(p.read_bytes()).hexdigest(),
                               "sources": fingerprint(repo, flow["scope_in"], flow.get("data_scope")), "criteria": statuses})
+    card.setdefault("taken", card["closed"])
     tasks.save(repo, card)
     if verdict == "PASS":
         cards = tasks.load_all(repo)
