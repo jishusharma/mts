@@ -2,6 +2,7 @@
 
   python scripts/dev/make_home.py                 # writes MyTradingSys/system/artifacts/mts_home.html
   python scripts/dev/make_home.py --out x.html
+  (an ordinary smoke ship: the fast gate runs only the tests its import graph reaches)
 
 Operator 2026-10-16: "all my artifacts available from one place, and how to access them explained". Each row says what the page is for,
 which login owns it, where notes go and when it was last published; a box says how to open the pages from any login; a list names the
