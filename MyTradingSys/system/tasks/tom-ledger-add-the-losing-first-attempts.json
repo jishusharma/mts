@@ -1,50 +1,72 @@
 {
- "approved_by": "",
- "asks": "",
- "commands": [],
- "created": "2026-10-12T19:43:09Z",
- "depends_on": [],
- "done_when": "TOM_TRADE_LEDGER.csv has the two ATTEMPT_LOST rows with verified quotes and no invented number; .md counts updated. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
- "est_turns": 14,
- "from_inbox": "",
- "goal": "Add the two losing first attempts Tom states (S1 n7ZSkjb7JXs:31-33, S6 l8RZrBfzvp4:175-177) to the Tom ledger as attempt rows so a backtest counts every attempt.",
- "id": "tom-ledger-add-the-losing-first-attempts",
- "lane": "SONNET",
- "layers": [
-  "tom"
- ],
- "live_path": false,
- "note": "REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:GPT medium + Haiku re-derive the two quote spans WEIGHT:IMPORTANT. UNBLOCKED 2026-10-18 (A-20261018-5 lifted). Dates stay unverified (spec section 7 exclusions apply): attempt rows sit in the same excluded sessions.",
- "pinned": false,
- "prio": 2,
- "refine_tries": 0,
- "refined_by": "",
- "refs": [
-  "TOM_LAYER_V2_SPEC.md section 3: n7ZSkjb7JXs:31-33, l8RZrBfzvp4:175-177"
- ],
- "result": "",
- "scope_in": [
-  "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv",
-  "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.md",
-  "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md (section 3, read only)"
- ],
- "scope_out": [
-  "inventing a price, time or R for an unquoted field",
-  "encoding and backtests",
-  "changing existing rows",
-  "live tree"
- ],
- "size": "S",
- "sources": [],
- "state": "refined",
- "steps": [
-  "read the two caption spans in F:/MTS/data/tom_videos/n7ZSkjb7JXs.txt and the l8RZrBfzvp4 caption and copy the quotes",
-  "append rows T1-a0 (S1, pre-trade stop loss) and T7-a0 (S6, pre-session stop, he states losing one R) with row_kind=ATTEMPT_LOST, family spike_fade, entry/stop/target NOT_IN_DATA unless a frame shows them, quote + file:line in note",
-  "update the row/trade counts in the .md; say S2 T2 first entry is already row T2 and S3/T5 losing attempts have no frame fills (spec section 3)",
-  "script check: each new quote is a substring of its caption file at the cited lines"
- ],
- "tests": "check_attempt_rows.py: quote substring check on both rows, NOT_IN_DATA where unquoted; fails before the rows exist",
- "title": "Tom ledger: add the losing first attempts Tom states but the ledger lacks (S1, S6 pre-session stops)",
- "weight": "IMPORTANT",
- "worker": "agent"
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-12T19:43:09Z",
+  "depends_on": [],
+  "done_when": "TOM_TRADE_LEDGER.csv has the two ATTEMPT_LOST rows with verified quotes and no invented number; .md counts updated. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+  "est_turns": 14,
+  "from_inbox": "",
+  "goal": "Add the two losing first attempts Tom states (S1 n7ZSkjb7JXs:31-33, S6 l8RZrBfzvp4:175-177) to the Tom ledger as attempt rows so a backtest counts every attempt.",
+  "id": "tom-ledger-add-the-losing-first-attempts",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tom v2: DESIGN recall + fire rate of the fade encoding (FAIL, no k*), long 1m series for t",
+      "ref": "b5c3e10e2a51",
+      "utc": "2026-10-13T08:01:30Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "b5c3e10e2a51 tom v2: DESIGN recall + fire rate of the fade encoding (FAIL, no k*), long 1m",
+      "ref": "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md",
+      "utc": "2026-10-13T08:01:30Z"
+    }
+  ],
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:data CLASS:C1 REVIEWER:GPT medium + Haiku re-derive the two quote spans WEIGHT:IMPORTANT. UNBLOCKED 2026-10-18 (A-20261018-5 lifted). Dates stay unverified (spec section 7 exclusions apply): attempt rows sit in the same excluded sessions. | Reviewer (Sonnet medium, 2026-10-18) FIX applied: canonical groups CSV + tom_ledger_dates.py check + tom_dax_recall.py handling added to scope/steps.",
+  "pinned": false,
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T03:32:50Z",
+  "refs": [
+    "TOM_LAYER_V2_SPEC.md section 3: n7ZSkjb7JXs:31-33, l8RZrBfzvp4:175-177"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.md",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md (section 3, read only)",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LEDGER_CANONICAL_GROUPS.csv",
+    "scripts/dev/tom_ledger_dates.py (read, run check)",
+    "MyTradingSys/research/tom_transfer_2026-10-11/check_attempt_rows.py (new)"
+  ],
+  "scope_out": [
+    "inventing a price, time or R for an unquoted field",
+    "encoding and backtests",
+    "changing existing rows",
+    "live tree"
+  ],
+  "scope_sha": "b5c3e10e2a51",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read the two caption spans in F:/MTS/data/tom_videos/n7ZSkjb7JXs.txt and the l8RZrBfzvp4 caption and copy the quotes",
+    "append rows T1-a0 (S1, pre-trade stop loss) and T7-a0 (S6, pre-session stop, he states losing one R) with row_kind=ATTEMPT_LOST, family spike_fade, entry/stop/target NOT_IN_DATA unless a frame shows them, quote + file:line in note",
+    "update the row/trade counts in the .md; say S2 T2 first entry is already row T2 and S3/T5 losing attempts have no frame fills (spec section 3)",
+    "fill canonical_id (T1, T7 groups) and the time-provenance columns (NOT_IN_DATA) for both rows; add them to TOM_LEDGER_CANONICAL_GROUPS.csv if the check requires; run python scripts/dev/tom_ledger_dates.py check: 0 violations",
+    "read backtest/tom_dax_recall.py and state in the .md how it treats row_kind=ATTEMPT_LOST (must not count as a recall target); script check: each new quote is a substring of its caption file at the cited lines"
+  ],
+  "tests": "check_attempt_rows.py: quote substring check on both rows, NOT_IN_DATA where unquoted; fails before the rows exist",
+  "title": "Tom ledger: add the losing first attempts Tom states but the ledger lacks (S1, S6 pre-session stops)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }
