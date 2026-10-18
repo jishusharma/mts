@@ -12,18 +12,29 @@
   "goal": "Implement Crypto Chase FVG social call listener and parser for Twitter/X calls (@Crypto_Chase). Parse limit order posts with parse_social_call and log records into MyTradingSys/research/analysts/cryptochase/CALL_LEDGER.csv.",
   "id": "analyst-ingest-cryptochase-x",
   "lane": "SONNET",
-  "latest": [],
-  "layers": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "review-imbalance-analysts-report-and-imp: evaluation, ingestion pipeline and scorecard eng",
+      "ref": "1e405a57e967",
+      "utc": "2026-10-18T13:52:59Z"
+    }
+  ],
+  "layers": [
+    "callers"
+  ],
   "live_path": false,
   "mutation_check": "",
-  "note": "Drafted by review-imbalance-analysts-report-and-imp following survey recommendation",
+  "note": "Drafted by review-imbalance-analysts-report-and-imp following survey recommendation. REVIEWED:2026-10-18 T0-ONLY",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
-  "refreshed": "2026-10-18T13:08:30Z",
+  "refined_by": "gemini-4-argon",
+  "refreshed": "2026-10-18T16:30:14Z",
   "refs": [
     "MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md",
     "MyTradingSys/research/analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md",
+    "MyTradingSys/research/analysts/ROADMAP.md",
     "MyTradingSys/research/analysts/schema.py",
     "MyTradingSys/research/analysts/ingest_analysts.py"
   ],
@@ -36,7 +47,7 @@
     "live order execution",
     "paid Twitter API credentials"
   ],
-  "scope_sha": "",
+  "scope_sha": "1e405a57e967",
   "size": "M",
   "sources": [
     "MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md:95-113"
