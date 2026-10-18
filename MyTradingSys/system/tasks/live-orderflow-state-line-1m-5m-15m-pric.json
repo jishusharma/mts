@@ -23,11 +23,11 @@
     "live_engine"
   ],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Closed bars only. Same file as the next two market_guide cards, which depend on this one. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Closed bars only. Same file as the next two market_guide cards, which depend on this one. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C1 weight=IMPORTANT); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
-  "refreshed": "2026-10-17T21:38:00Z",
+  "refined_by": "gemini-nuc",
+  "refreshed": "2026-10-18T10:00:50Z",
   "refs": [
     "MyTradingSys/research/orderflow_views_2026-10-14/RESULT.md",
     "MyTradingSys/research/screenshots/2026-10-14_BTCUSDT_c688fa7b068c.md"
@@ -44,7 +44,7 @@
   "scope_sha": "f8e201dbc8c5",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "refined",
   "steps": [
     "read card refs (orderflow_views RESULT.md) and market_guide.py structure",
     "add order_flow_state_lines(klines_1m,5m,15m,oi): per TF price swing, Binance CVD swing, OI 60-min change, state label, marked descriptive / no tested edge",
@@ -53,7 +53,8 @@
   ],
   "tests": "test_market_guide.py new fixture test; python scripts/dev/run_all_tests.py --quick",
   "title": "Live read: one order-flow state line per TF (1m/5m/15m price swing vs Binance CVD swing vs OI change), descriptive only",
-  "weight": "ROUTINE",
+  "updated": "2026-10-18T10:00:00Z",
+  "weight": "IMPORTANT",
   "worker": "session",
-  "updated": "2026-10-18T05:30:00Z"
+  "class": "C1"
 }

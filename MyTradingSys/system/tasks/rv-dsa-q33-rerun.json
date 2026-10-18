@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "class": "C0",
+  "class": "C1",
   "commands": [
     "python MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed/Dumps/backtest/raw_1m_2022/klines <scratch-out-dir>"
   ],
@@ -30,11 +30,11 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT LAB:results CLASS:C0 REVIEWER:Gemini 4 Argon low WEIGHT:ROUTINE. PARKED (blocked): guidance matrix layer is parked (LAYER_REBUILD_PLAN_2026-10-15 s3 Parked) and the 1m perp fetch is heavy.",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch=yes class=C0 reviewer=machine checks + Flash low pass] PARKED: guidance matrix layer is parked (plan s3 Parked) and the 1m perp fetch is heavy. LAYER_REBUILD_PLAN_2026-10-15 s2 gate order; observer GPT queue 2026-10-15 (coordinator)\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C1 weight=IMPORTANT); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "gemini-nuc",
   "refreshed": "2026-10-18T05:12:41Z",
   "refs": [],
   "result": "",
@@ -58,5 +58,6 @@
   ],
   "tests": "",
   "title": "RV-DSA Q33 matrix re-run on JIS-NUC and diff against the committed cells (host=JIS-NUC)",
-  "weight": "ROUTINE"
+  "weight": "IMPORTANT",
+  "updated": "2026-10-18T10:00:00Z"
 }

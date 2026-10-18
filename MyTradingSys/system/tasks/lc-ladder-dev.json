@@ -33,7 +33,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C1 reviewer=Gemini Flash high + Haiku re-derive 1-3 numbers] HOLD A-20261018-5: reads an unchecked lab base; start only when the base carries a trust tag >= its class (lab-trust-tag) or the operator lifts it. WEIGHT:CRUCIAL frozen rule, power/MDE, verdict (review Agent pre-ship). DISPATCH CODEX (JIS-NUC lab): lc-event-table ran there on the same tom_raw/orderflow_1m; missing input = NOT_IN_DATA. Split arm P out if over 40 turns. Verify: sha + empty git cherry + ls-tree lists files.\n[HOLD-CLEARED A-20261018-5 2026-10-18 by Lab_Guy(GEM-NUC): operator lifted A-20261018-5 in ANNOUNCEMENTS.md; spec audited against Lab_Guy v3.1.]",
+  "note": "REVIEWED:2026-10-18 ACCEPT [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C1 reviewer=Gemini Flash high + Haiku re-derive 1-3 numbers] HOLD A-20261018-5: reads an unchecked lab base; start only when the base carries a trust tag >= its class (lab-trust-tag) or the operator lifts it. WEIGHT:CRUCIAL frozen rule, power/MDE, verdict (review Agent pre-ship). DISPATCH CODEX (JIS-NUC lab): lc-event-table ran there on the same tom_raw/orderflow_1m; missing input = NOT_IN_DATA. Split arm P out if over 40 turns. Verify: sha + empty git cherry + ls-tree lists files.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-14 (LC PLAN.md, operator chat)",
@@ -74,6 +74,5 @@
   "tests": "hand paths (test_ladder.py, red first): support long, first resistance half-close; CVD flat quarter; band rest. Scale-in L1+L2 then target = 2 fills, hand average, one stop; arm P 1:2:3 loss at stop == budget; liquidation fixture counted LIQUIDATED. python -m pytest research/levels_confluence_2026-10-14/test_ladder.py",
   "title": "LC3 Levels Confluence: ladder-exit simulator (fixed vs first level vs CVD/Bollinger step-out) on the <= 6 LC2 combinations, DEV, maker+taker fees",
   "weight": "CRUCIAL",
-  "worker": "session",
-  "updated": "2026-10-18T05:30:00Z"
+  "worker": "session"
 }

@@ -32,7 +32,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "MyTradingSys/research/layer_lab/formula_spec_text/test_formula_spec.py::test_shuffled_rsi_closes_are_rejected",
-  "note": "",
+  "note": "REVIEWED: gemini-4-argon-low 2026-10-18 - Independent cross-vendor Lab_Guy(GEM-NUC) review (producer=codex_run.py ask, class=C2, weight=CRUCIAL): ACCEPT.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
@@ -62,7 +62,7 @@
   ],
   "tests": "forged-stamp forms (placeholder reviewer, producer reviewer, invalid date, quoted mid-note), class-field downgrade and whitespace receipt each fail on current code first",
   "title": "Review-gate hardening: forged stamp, downgrade, other close paths, vacuous tests",
-  "updated": "2026-10-18T05:30:00Z",
+  "updated": "2026-10-18T10:00:00Z",
   "weight": "",
   "worker": ""
 }
