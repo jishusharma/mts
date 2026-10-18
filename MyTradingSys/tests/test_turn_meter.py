@@ -131,12 +131,55 @@ class TurnMeterTest(unittest.TestCase):
             fire(self.home, "PostToolUse")
         self.assertIn("[TURN METER]", fire(self.home, "UserPromptSubmit"))
 
-    def test_compact_resets(self):
+    def test_clear_resets(self):
         for _ in range(41):
             fire(self.home, "PostToolUse")
-        fire(self.home, "SessionStart", extra={"source": "compact"})
+        fire(self.home, "SessionStart", extra={"source": "clear"})
         self.assertEqual(fire(self.home, "UserPromptSubmit"), "")
         self.assertEqual([n for n in range(1, 41) if fire(self.home, "PostToolUse")], [40])
+
+    def model_transcript(self, model, ctx):
+        tp = self.home / f"{model}.jsonl"
+        tp.write_text(json.dumps({"type": "assistant", "message": {"id": "m1", "model": f"claude-{model}-5", "content": [], "usage": {
+            "input_tokens": 10, "cache_creation_input_tokens": 0, "cache_read_input_tokens": ctx - 10}}}) + "\n", encoding="utf-8")
+        return {"transcript_path": str(tp)}
+
+    def test_default_models_get_fewer_turns_as_context_grows(self):
+        # 4M read budget / context: 250k -> 16 turns; a small context keeps the flat 40
+        big = self.model_transcript("sonnet", 250_000)
+        self.assertEqual([n for n in range(1, 30) if fire(self.home, "PostToolUse", sid="a", extra=big)][:2], [16, 21])
+        small = self.model_transcript("sonnet", 50_000)
+        self.assertEqual([n for n in range(1, 50) if fire(self.home, "PostToolUse", sid="b", extra=small)][:1], [40])
+
+    def test_opus_has_no_turn_cap_only_a_500k_context_cap(self):
+        under = self.model_transcript("opus", 400_000)
+        for _ in range(60):
+            self.assertEqual(fire(self.home, "PostToolUse", sid="o", extra=under), "")
+        for _ in range(12):
+            self.assertEqual(fire(self.home, "UserPromptSubmit", sid="o", extra=under), "")
+        over = self.model_transcript("opus", 520_000)
+        self.assertIn("Opus context 520k", fire(self.home, "UserPromptSubmit", sid="o", extra=over))
+
+    def test_fable_gets_one_message_hard_even_with_the_switch_off(self):
+        f = self.model_transcript("fable", 800_000)
+        self.assertEqual(fire(self.home, "UserPromptSubmit", sid="f"), "")      # first message: model not known yet, allowed
+        for _ in range(80):
+            self.assertEqual(fire(self.home, "PostToolUse", sid="f", extra=f), "")   # no tool-turn cap
+        for env in (None, {"MTS_TURN_METER": "off", "MTS_TURN_METER_USER_CAP": "99"}):
+            out = json.loads(fire(self.home, "UserPromptSubmit", sid="f", extra=f, env=env))
+            self.assertEqual(out["decision"], "block")
+            self.assertIn("new Fable session", out["reason"])
+
+    def test_fable_block_survives_synthetic_lines_and_lost_transcript(self):
+        f = self.model_transcript("fable", 300_000)
+        fire(self.home, "UserPromptSubmit", sid="g")
+        fire(self.home, "PostToolUse", sid="g", extra=f)
+        with open(f["transcript_path"], "a", encoding="utf-8") as fh:      # an API-error line: <synthetic>, zero usage
+            fh.write(json.dumps({"type": "assistant", "message": {"id": "m2", "model": "<synthetic>", "content": [], "usage": {"input_tokens": 1}}}) + chr(10))
+        self.assertIn("block", fire(self.home, "UserPromptSubmit", sid="g", extra=f))
+        fire(self.home, "UserPromptSubmit", sid="h", extra=f)
+        self.assertIn("block", fire(self.home, "UserPromptSubmit", sid="h", extra=f))   # tier now remembered
+        self.assertIn("block", fire(self.home, "UserPromptSubmit", sid="h"))            # transcript unreadable: still blocked
 
     def test_resume_keeps_counts(self):
         for _ in range(40):

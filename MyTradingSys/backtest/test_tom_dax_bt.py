@@ -243,6 +243,7 @@ class TestClosedExecutions(unittest.TestCase):
             manifest.write_text(json.dumps(dict(design_end_utc="2026-04-10T23:59:00Z",
                 holdout_start_utc="2026-04-11T00:00:00Z", embargo_s=0)), encoding="utf-8", newline="\n")
             with patch.object(D, "DAX_RAW", raw), patch.object(T, "load_bars_1m") as load, \
+                 patch.object(D, "binding_identity", return_value={}), \
                  patch.object(D, "load_null_session", return_value=dict(timezone="UTC", start="10:00", end="12:00")):
                 with self.assertRaisesRegex(SystemExit, "incomplete DAX download coverage"):
                     D.build_report(SimpleNamespace(months=["2026-01"], shifts=[0], read_holdout=False,
