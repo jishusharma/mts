@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-18T12:38:50Z",
   "commands": [],
   "created": "2026-10-12T19:48:29Z",
   "depends_on": [],
@@ -11,6 +13,12 @@
   "id": "funding-carry-with-real-spot-basis-margi",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/carry_basis_2026-10-18/RESULT.md",
+      "ref": "e4d7db8d",
+      "utc": "2026-10-18T12:38:50Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -29,7 +37,7 @@
   "refined_by": "",
   "refreshed": "2026-10-18T03:29:48Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/carry_basis_2026-10-18/RESULT.md",
   "scope_in": [
     "MyTradingSys/research/carry_basis_2026-10-18/",
     "MyTradingSys/research/published_strats_2026-10-13/supp_carry.py"
@@ -43,7 +51,7 @@
   "scope_sha": "cc99b1f09546",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "python scripts/dev/verdicts.py check \"funding carry basis\" (no prior row); write PRE_REG.md first: definitions below, DEV 2021-2023-07 / VAL / HOLD as in run_pub.py WIN, all params OURS, no tuning",
     "fetch public Binance spot BTCUSDT 1d/1h klines (data.binance.vision, no key) to MTS_DUMPS; reuse load_1h/load_funding from run_pub.py",
@@ -51,6 +59,7 @@
     "report net ann %, max drawdown, worst 30 d, per window vs supp_carry.txt; haircut table (what taker fee or basis move kills it)",
     "RESULT.md; append row to research/VERDICTS.csv via verdicts.py backfill"
   ],
+  "taken": "2026-10-18T12:38:42Z",
   "tests": "basis PnL unit test with a synthetic 2-day series computed by hand in the test (spot +1%, perp +1.2%, funding 0.01%); fails before the function exists",
   "title": "Funding carry with real spot basis, margin and borrow: net 15.4 -> 12.1 -> 6.2 %/yr decay in published_strats_2026-10-13/supp_carry.txt is funding only; model basis and 4-leg costs before any carry claim. host=any",
   "weight": "IMPORTANT",
