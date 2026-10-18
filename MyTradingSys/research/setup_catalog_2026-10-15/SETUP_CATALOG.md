@@ -63,8 +63,6 @@ A day or session boundary on BTC (UTC day, a chosen "open") is OURS; where a set
 | FAB-5 | Buyers protect a level (value-area low / gap / wall): long, squeeze trapped sellers (his names: "AAA setup", "value area low fade") | Fabio | price comes down to a level, buyers defend it (absorbed selling, protection wall), long with a small stop below the protection level, re-enter if it fails | Y (below the protection level; no distance) | PARTIAL | 11 (FL F3a, F3b, F6-F14) |
 | FAB-6 | IVB: first 30 minutes of the US open | Fabio | the first 30 minutes' range sets the day's direction; trade the break of it | N | PARTIAL | 0 |
 | FAB-8 | Volume-defined fair value gap rejection | Fabio | the lowest-volume price inside the value area of a swing; price rejects there | N | YES | 0 |
-| FAB-9 | Delta print zone: reload where the previous swing leg's big trades, delta and value area high overlap (added 2026-10-18, 06R-ebyOhDI) | Fabio | trend day, price returns to the zone, aggressive orders print again, stop beyond the zone | Y (location: beyond the area) | PARTIAL | 0 (2 shown, no prices) |
-| FAB-10 | Volume ledge plus absorbed counter-traders: limit order at the retrace (added 2026-10-18, 06R-ebyOhDI) | Fabio | volume falls from a peak node to a low node fast, the candle body shows aggressive trend-side orders and absorbed counter-side | N | YES | 0 |
 
 Moved or merged 2026-10-16 (D3): TOM-5 -> TOM-4 (worked example), TOM-13 -> section 2.3 (routes and targets, not a setup), FAB-3 -> FAB-2 (variant), FAB-7 -> section 4.1 (heat-map tool family, not a setup),
 TOM-1 -> TOM-1a + TOM-1b. TOM-6 and TOM-12 are one family (he files the break-in as "variant one for a breakout", gFJBg8Bsw68): read them together; the rows stay separate.
@@ -1502,7 +1500,7 @@ Source files (raw promoted by cc3d27bf; V2 extracts all PASS the quote checker):
 
 **Other items merged from `extracts/v2/fabio/CATALOG_DELTA.md`.** 1 % daily drawdown stop (0KyIEdvVKMQ: "If I reach 1% of draw down, I stop for the day."): a loss-side stop, different from the profit-side floor of fZlNGWvd2Ko ("if we go back to break even, we stop the session"). FAB-6 verbatim definition (StaphlRH8NQ, in FAB-6 above). The four non-intraday edges of StaphlRH8NQ (earnings drift, politician tracking, option premium, MVRV allocation) are OUT OF SCOPE for BTC intraday. Delta contradictions C1 to C6 stand as listed there. The rulebook line FR-13 "minimum 1:3" is NOT CONFIRMED (section 5).
 
-**Counts after this merge.** Fabio setup rows: FAB-1, 2, 4, 5, 6, 8, 9, 10 (8 rows). Rows that gained SOURCED text: FAB-6 (rules), FAB-8 (definition), FAB-9 and FAB-10 (new). Real trades added: 0.
+**Counts after this merge.** Fabio setup rows: FAB-1, 2, 4, 5, 6, 8, 9, 10 (8 rows). Rows that gained SOURCED text: FAB-6 (rules), FAB-8 (definition); FAB-9 and FAB-10 are candidate rows described here only (not in the section 0 table or COST_GATE.csv until a cost-gate pass adds them). Real trades added: 0.
 
 ## 5. Cross-source contradictions (both quoted or cited)
 | topic | source 1 | source 2 |
