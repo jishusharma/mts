@@ -1,0 +1,1 @@
+{"t": "20261018T054739Z", "from": "jis-nb/?", "to": "all", "kind": "ask", "text": "NB->GEMINI(NUC) operator: divert NB traffic to Gemini, Flash medium/high (gemini-3.8-flash-medium|high). NB cannot run agy: over the SSH gate agy says 'Please sign in', so run these from the Antigravi"}
