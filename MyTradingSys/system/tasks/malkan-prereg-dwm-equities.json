@@ -1,0 +1,54 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T04:09:02Z",
+  "depends_on": [
+    "malkan-ledger-parity-feasibility",
+    "malkan-universe-data-power"
+  ],
+  "done_when": "PRE_REG_MALKAN_DWM.md with all 12 items and gates 0a-0f answered, every number labelled SOURCED or OURS; operator can approve the backtest card from it.",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fill backtest/PRE_REG_TEMPLATE.md for a Malkan D/W/M equity home test: India costs (OURS), buy-stop fills with trade-through, his exits, gate-matched random-entry null, sealed holdout with trial ledger, strata, kill rule (gate 0f). No backtest.",
+  "id": "malkan-prereg-dwm-equities",
+  "lane": "SONNET",
+  "layers": [
+    "rsi"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Refined: waits on malkan-ledger-parity-feasibility and malkan-universe-data-power (the only open item in tasks.py check). Weight CRUCIAL needs a REVIEWED stamp before start.",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
+    "MyTradingSys/research/malkan_ledger_2026-10/LEDGER_PARITY.md",
+    "MyTradingSys/research/malkan_universe_2026-10/UNIVERSE_POWER.md",
+    "MyTradingSys/research/malkan_prereg_2026-10/ (new: PRE_REG_MALKAN_DWM.md)"
+  ],
+  "scope_out": [
+    "any P&L backtest run",
+    "tuning",
+    "edits to live-path code"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_MALKAN.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "Write MyTradingSys/research/malkan_prereg_2026-10/PRE_REG_MALKAN_DWM.md with all 12 items and gates 0a-0f answered; label every number SOURCED or OURS.",
+    "State the kill rule (which result ends the source) and the redesign budget.",
+    "Run test_pre_reg_template.py; create no further cards."
+  ],
+  "tests": "test_pre_reg_template.py passes for the new file (fails if any item is unanswered).",
+  "title": "Malkan: pre-registration for the D/W/M equity home test (items 6/7/8/9/11/12, gates 0a/0f)",
+  "weight": "CRUCIAL",
+  "worker": "agent"
+}

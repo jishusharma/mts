@@ -670,6 +670,24 @@ def month_in_scope(name, cut_t):
     return cut_t is None or month_start_ts(name[:7]) < cut_t
 
 
+def producer_bars_identity(cut_t):
+    """Identity of the execution bars exactly as the row stage loads them (see _init_dax); recorded at generation."""
+    klines = DAX_ARCHIVE / "klines"
+    return bars_identity(load_development_bars(klines, cut_t) if cut_t is not None else T.load_bars_1m(klines, fill_gaps=True))
+
+
+def require_producer_bars(origin, bars, producer):
+    """R4: the snapshots and the execution bars must describe the same data. Absent identity = regenerate (fail closed)."""
+    recorded = (origin or {}).get("bars")
+    if not recorded:
+        raise ValueError("snapshot producer lacks the execution bars identity in %s; regenerate through gen" % producer)
+    if bars is None:
+        raise ValueError("execution bars not loaded; cannot bind snapshot producer %s" % producer)
+    if recorded != bars_identity(bars):
+        raise ValueError("snapshot producer execution data differs from the current execution bars (%s); "
+                         "regenerate snapshots through gen" % producer)
+
+
 def cmd_gen(a):
     t0 = time.time()
     split = load_split(getattr(a, "split_manifest", None))   # manifest first: no conversion/data access without it
@@ -698,18 +716,21 @@ def cmd_gen(a):
                "--step", "15", "--shards", str(a.shards)]
         print(" ".join(cmd), flush=True)
         inputs = dict(codes=generation_codes(), environment=generation_environment(), command=cmd,
-                      data={str(p): file_hash(p) for p in sorted((DAX_ARCHIVE / "klines").glob("*.csv"))})
+                      data={str(p): file_hash(p) for p in sorted((DAX_ARCHIVE / "klines").glob("*.csv"))},
+                      bars=producer_bars_identity(cut_t))
         existing = set(DAX_SNAPS.glob("*.jsonl.gz"))
         for p in existing:
             origin_path = p.with_name(p.name.replace(".jsonl.gz", ".inputs.json"))
             origin = json.loads(origin_path.read_text(encoding="utf-8")) if origin_path.exists() else {}
             if origin.get("codes") != inputs["codes"] or origin.get("data") != inputs["data"] or \
+                    origin.get("bars") != inputs["bars"] or \
                     origin.get("environment") != inputs["environment"] or \
                     origin.get("snapshot_sha256") != file_hash(p):
                 raise ValueError("cache input snapshot provenance absent/stale in %s; use a fresh snapshot directory" % p)
         subprocess.run(cmd, check=True, env=_java_env())
         after = dict(codes=generation_codes(), environment=generation_environment(), command=cmd,
-                     data={str(p): file_hash(p) for p in sorted((DAX_ARCHIVE / "klines").glob("*.csv"))})
+                     data={str(p): file_hash(p) for p in sorted((DAX_ARCHIVE / "klines").glob("*.csv"))},
+                     bars=producer_bars_identity(cut_t))
         if inputs != after:
             raise ValueError("cache inputs changed during snapshot generation; use a fresh snapshot directory")
         for p in set(DAX_SNAPS.glob("*.jsonl.gz")) - existing:
@@ -800,6 +821,12 @@ def cache_inputs(market, path, shifts, mask, cut_t, floor):
         from snapshots import parse_ts
         if parse_ts(command[command.index("--end") + 1]) >= cut_t:
             raise ValueError("snapshot %s was generated past the development cutoff; regenerate through gen" % path)
+    if market == "dax":
+        if _BARS is None:
+            if not (origin or {}).get("bars"):
+                raise ValueError("snapshot producer lacks the execution bars identity in %s; regenerate through gen" % producer)
+        else:
+            require_producer_bars(origin, _BARS, producer)   # before any row is built or reused
     source_meta = path.with_name(path.name.replace(".jsonl.gz", ".meta.json"))
     return dict(schema="dax-inputs-v1", market=market, snapshot=str(path),
                 snapshot_sha256=file_hash(path),
@@ -828,6 +855,7 @@ def validate_cache(out, meta, expected=None, mask=None, shifts=None, bars=None, 
             elif bars is None:
                 bars = load_development_bars(DAX_ARCHIVE / "klines", frozen["cut_t"])
             if verify_bars:
+                require_producer_bars(frozen.get("producer"), bars, frozen["snapshot"])
                 expected["bars"] = bars_identity(bars)
     if frozen != expected or (mask is not None and frozen["mask"] != sorted(mask)) or \
             (shifts is not None and frozen["shifts"] != sorted(set(shifts))):

@@ -23,7 +23,7 @@
     "live_engine"
   ],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Closed bars only. Same file as the next two market_guide cards, which depend on this one. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Closed bars only. Same file as the next two market_guide cards, which depend on this one. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -54,5 +54,6 @@
   "tests": "test_market_guide.py new fixture test; python scripts/dev/run_all_tests.py --quick",
   "title": "Live read: one order-flow state line per TF (1m/5m/15m price swing vs Binance CVD swing vs OI change), descriptive only",
   "weight": "ROUTINE",
-  "worker": "session"
+  "worker": "session",
+  "updated": "2026-10-18T05:30:00Z"
 }

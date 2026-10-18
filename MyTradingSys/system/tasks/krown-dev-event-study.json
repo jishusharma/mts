@@ -1,51 +1,63 @@
 {
- "approved_by": "",
- "asks": "",
- "commands": [],
- "created": "2026-10-14T15:57:19Z",
- "depends_on": [],
- "done_when": "research/krown_ta101_2026-10-13/DEV_RESULTS.md: per H-id N, power or MDE, effect with CI, placebo, strata; 'underpowered' where N < 100; every variant in research/TRIAL_LEDGER (or the registry); no VALIDATION or HOLDOUT bar opened",
- "est_turns": 30,
- "from_inbox": "",
- "goal": "Pre-register and run the DEV event studies H-V1..H-T1 (KROWN_CONSOLIDATED.md) on BTC DEV 2017-08..2024-06: power and expected N first (backtest/power_mde.py), fee-net, same-window placebo drawn without replacement, stratified by mode, top-down agreement, volume flag, year.",
- "id": "krown-dev-event-study",
- "lane": "SONNET",
- "layers": [
-  "krown"
- ],
- "live_path": false,
- "note": "DECISION 2026-10-18 (planner, OURS default): the recall bar is waived as a gate (only 3 of 12 examples verify); run DEV only for H-ids not needing the failed examples, labelled NO-RECALL-CLEARANCE. Dependency krown-recall-check dropped as done elsewhere. Needs a Lab_Guy ACCEPT stamp (CRUCIAL, C1) before ready. | CHECKED 2026-10-18: real blocker kept (RECALL FAIL, bar of 6 unreachable with 3 verifiable examples). Cheapest next step: the asks default (waive gate, label NO-RECALL-CLEARANCE, DEV-only H-ids not needing the failed examples) applies when the coordinator answers. | BLOCKED 2026-10-18 by krown-recall-check result (RECALL.md line 36: RECALL FAIL, bar unreachable). REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:GPT medium WEIGHT:CRUCIAL. HELD refined: waits on krown-recall-check (depends_on). [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] Unparked 2026-10-17 by q-krown-saturation, q-krown-stop, q-krown-volume-venue. Was left blocked: moved to refined by backlog-refine-1017; waits on krown-recall-check (depends_on).",
- "pinned": false,
- "prio": 2,
- "refine_tries": 0,
- "refined_by": "",
- "refs": [
-  "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md",
-  "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv",
-  "MyTradingSys/research/krown_ta101_2026-10-13/PRE_REG_KROWN.md"
- ],
- "result": "",
- "scope_in": [
-  "MyTradingSys/research/krown_ta101_2026-10-13/",
-  "MyTradingSys/backtest/layers/krown/"
- ],
- "scope_out": [
-  "VALIDATION 2024-07..2025-06",
-  "HOLDOUT 2025-07..2026-09",
-  "live path"
- ],
- "size": "M",
- "sources": [],
- "state": "refined",
- "steps": [
-  "freeze the study list and parameter grids in PRE_REG_KROWN.md (a dated addendum) before the first run",
-  "compute expected N and MDE per H-id; mark underpowered ones and pool majors only if the data card landed",
-  "run DEV once per grid; both volume baselines (plain SMA20 x2 and same-slot) and both retest arms (Z10 vs Z11)",
-  "write DEV_RESULTS.md; a hypothesis suggested by DEV is tested once on VALIDATION as one pooled trial (a separate card), never promoted on its DEV p-value",
-  "DECISION OURS 2026-10-18 (planner default for the asks): recall bar waived as a gate; label every result NO-RECALL-CLEARANCE; skip H-ids whose detector needs the failed RECALL examples (RECALL.md)"
- ],
- "tests": "docs/run lane: DEV_RESULTS.md plus the frozen-config hash; the runner reuses layers/runner.py forward_return_stats",
- "title": "Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: DEV_RESULTS.md with N, power, CI per H-id and every variant in the trial ledger",
- "weight": "CRUCIAL",
- "worker": "session"
+  "approved_by": "",
+  "asks": "",
+  "class": "C1",
+  "commands": [],
+  "created": "2026-10-14T15:57:19Z",
+  "depends_on": [],
+  "done_when": "research/krown_ta101_2026-10-13/DEV_RESULTS.md: per H-id N, power or MDE, effect with CI, placebo, strata; 'underpowered' where N < 100; every variant in research/TRIAL_LEDGER (or the registry); no VALIDATION or HOLDOUT bar opened",
+  "est_turns": 30,
+  "from_inbox": "",
+  "goal": "Pre-register and run the DEV event studies H-V1..H-T1 (KROWN_CONSOLIDATED.md) on BTC DEV 2017-08..2024-06: power and expected N first (backtest/power_mde.py), fee-net, same-window placebo drawn without replacement, stratified by mode, top-down agreement, volume flag, year.",
+  "id": "krown-dev-event-study",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Krown recall check: count hits strictly within 2 bars (R04, R13 lenient rules become side ",
+      "ref": "5edd22989700",
+      "utc": "2026-10-17T20:38:34Z"
+    }
+  ],
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:data CLASS:C1 REVIEWER:Gemini 4 Argon low + Haiku re-derive 1-3 numbers WEIGHT:CRUCIAL. HOLD-CLEARED A-20261018-5 (lifted by operator). DECISION 2026-10-18 (planner, OURS default): recall bar waived as a gate (only 3 of 12 examples verify in RECALL.md); run DEV only (open_time < 2024-07-01) for H-ids not needing the failed examples, labelled NO-RECALL-CLEARANCE; power and MDE computed first via backtest/power_mde.py.",
+  "pinned": false,
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T05:13:38Z",
+  "refs": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md",
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv",
+    "MyTradingSys/research/krown_ta101_2026-10-13/PRE_REG_KROWN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/",
+    "MyTradingSys/backtest/layers/krown/"
+  ],
+  "scope_out": [
+    "VALIDATION 2024-07..2025-06",
+    "HOLDOUT 2025-07..2026-09",
+    "live path"
+  ],
+  "scope_sha": "5edd22989700",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "freeze the study list and parameter grids in PRE_REG_KROWN.md (a dated addendum) before the first run",
+    "compute expected N and MDE per H-id; mark underpowered ones and pool majors only if the data card landed",
+    "run DEV once per grid; both volume baselines (plain SMA20 x2 and same-slot) and both retest arms (Z10 vs Z11)",
+    "write DEV_RESULTS.md; a hypothesis suggested by DEV is tested once on VALIDATION as one pooled trial (a separate card), never promoted on its DEV p-value",
+    "DECISION OURS 2026-10-18 (planner default for the asks): recall bar waived as a gate; label every result NO-RECALL-CLEARANCE; skip H-ids whose detector needs the failed RECALL examples (RECALL.md)"
+  ],
+  "tests": "test_dev_study.py (new, in MyTradingSys/research/krown_ta101_2026-10-13/): fails before study script exists; verifies loader refuses bars >= 2024-07-01, fee-net return matches FORMULAS 13 hand value, and every output table carries NO-RECALL-CLEARANCE.",
+  "title": "Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: DEV_RESULTS.md with N, power, CI per H-id and every variant in the trial ledger",
+  "weight": "CRUCIAL",
+  "worker": "session"
 }
