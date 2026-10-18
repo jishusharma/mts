@@ -1,47 +1,78 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "class": "C1",
+  "closed": "2026-10-18T05:41:13Z",
   "commands": [],
   "created": "2026-10-18T04:11:25Z",
   "depends_on": [],
-  "done_when": "CLI/script interface or structured index generator exists so Gemini UI can run on-demand queries for Tom/Fabio fixes, backtest audits, and layer-by-layer critical changes without re-inventing ad-hoc grep commands.",
-  "est_turns": 4,
+  "done_when": "scripts/dev/lab_query.py and scripts/dev/test_lab_query.py pass, registered in EXTRA and wiring_registry.json, documented in GEMINI_START.md; git cherry origin/fast-track <sha> empty.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "Operator note 2026-10-18: Make the LAB see all critical updates that matter. I should be able to ask Gemini from the UI on Antigravity to do things like 'List all latest happenings and fixes on Tom and Fabio and find critical gaps only' - 'What are latest backtesting results and can you do an audit for the critical ones?' - 'Can you list all layers and find the latest work in each and do an audit on only the critical changes'.",
   "goal": "Expose canonical query commands/manifests in scripts/dev/ so the Gemini Antigravity UI can directly retrieve and audit Tom/Fabio updates, backtest outcomes, and per-layer critical changes.",
   "id": "gemini-lab-query-tooling",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "lab_query.py + 12 tests, GEMINI_START Lab queries section",
+      "ref": "828a356e",
+      "utc": "2026-10-18T05:41:13Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "make_status: cheap stale-pages line (no generator run)",
+      "ref": "3332a60cad28",
+      "utc": "2026-10-17T23:02:45Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "2826150eddc3 GEMINI_START: Claude/GPT in Antigravity are included in Pro; quota pools, rou",
+      "ref": "MyTradingSys/system/GEMINI_START.md",
+      "utc": "2026-10-17T18:32:20Z"
+    }
+  ],
   "layers": [
     "tom",
     "fabio"
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator requirement for Gemini Antigravity interface.",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:none CLASS:C1 REVIEWER:Gemini 4 Argon low WEIGHT:IMPORTANT. Operator requirement for Gemini Antigravity interface: on-demand structured queries for Tom/Fabio fixes, backtest verdicts and layer-by-layer critical changes.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "gemini-builder",
+  "refreshed": "2026-10-18T05:13:36Z",
   "refs": [],
-  "result": "",
+  "result": "lab_query.py + 12 tests, GEMINI_START Lab queries section",
   "scope_in": [
-    "scripts/dev/lab_query.py",
+    "scripts/dev/make_status.py",
+    "scripts/dev/run_extra_tests.py",
+    "MyTradingSys/system/wiring_registry.json",
     "MyTradingSys/system/GEMINI_START.md"
   ],
   "scope_out": [
     "live tree",
-    "trading execution"
+    "trading execution",
+    "HOLDOUT reads"
   ],
+  "scope_sha": "3332a60cad28",
   "size": "S",
   "sources": [],
-  "state": "refined",
+  "state": "done",
   "steps": [
-    "Provide a dedicated CLI/manifest helper (e.g. scripts/dev/lab_query.py or make_status integration) that outputs structured JSON/markdown for: (1) Tom/Fabio recent diffs and bug rulings, (2) latest backtest outcomes and trial audit status, (3) layer map status and latest commit per layer.",
-    "Document entry points in GEMINI_START.md so Gemini sessions can run them directly on user query.",
-    "Verify with tests."
+    "Write fail-first test scripts/dev/test_lab_query.py: test `lab_query.py tom-fabio`, `lab_query.py backtests`, and `lab_query.py layers` return deterministic JSON/markdown summaries of recent commits, bug rulings, trial counts and layer statuses; register in scripts/dev/run_extra_tests.py EXTRA and MyTradingSys/system/wiring_registry.json (disp TOOL).",
+    "Implement scripts/dev/lab_query.py reading committed repo files (BUGS.md, layer_index.json, layer_map.json, VERDICTS.csv, layer_lab/INDEX.md, git log) with zero network or live-tree reads.",
+    "Document the 3 query commands in MyTradingSys/system/GEMINI_START.md and run test_lab_query.py + tasks.py lint."
   ],
-  "tests": "scripts/dev/test_lab_query.py verifying query commands return accurate recent findings",
+  "taken": "2026-10-18T05:41:12Z",
+  "tests": "python -m pytest scripts/dev/test_lab_query.py -q (fails before scripts/dev/lab_query.py exists; registered in run_extra_tests.py EXTRA and wiring_registry.json)",
   "title": "Lab/Gemini UI queries for Tom/Fabio fixes, backtests and layer audit",
   "weight": "IMPORTANT",
-  "worker": "session"
+  "worker": "agent"
 }

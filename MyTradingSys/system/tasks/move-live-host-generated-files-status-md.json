@@ -19,25 +19,25 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/gate-observability",
-      "ref": "8d2549c885d7",
-      "utc": "2026-10-16T19:16:41Z"
+      "line": "make_status: cheap stale-pages line (no generator run)",
+      "ref": "3332a60cad28",
+      "utc": "2026-10-17T23:02:45Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "692afe6313f8 auto_deploy: restart the alert runner by its -m module name (kill pattern mat",
+      "line": "312d69da7728 docs: SCHEDULING_POLICY.md - no scheduled tasks or routines on any device",
       "ref": "MyTradingSys/system/DEPLOY_RUNBOOK.md",
-      "utc": "2026-10-16T13:55:54Z"
+      "utc": "2026-10-17T10:05:01Z"
     }
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C3 REVIEWER:review SESSION Touches auto_deploy (deploy gate): CRITICAL by the deploy trigger; built in a worktree only, the live tree changes only by a manual deploy. make_status.py -> research/STATUS.md; scripts/worker/audit_digest.py -> audits/AUDIT_DIGEST.md; audit_t0_checks.py -> audits/T0_CHECKS.md; scripts/Build-Check.ps1 -> runtime/BUILD_REPORT.md; oi_recorder.py -> runtime/oi_live/*.csv; fabio/htf_context_live.py -> research/htf_context/*. | DECISION (OURS): lane JIS-NB because the generators run on the live host. Default: untrack, never delete files on disk.",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:none CLASS:C3 REVIEWER:review SESSION Touches auto_deploy (deploy gate): CRITICAL by the deploy trigger; built in a worktree only, the live tree changes only by a manual deploy. make_status.py -> research/STATUS.md; scripts/worker/audit_digest.py -> audits/AUDIT_DIGEST.md; audit_t0_checks.py -> audits/T0_CHECKS.md; scripts/Build-Check.ps1 -> runtime/BUILD_REPORT.md; oi_recorder.py -> runtime/oi_live/*.csv; fabio/htf_context_live.py -> research/htf_context/*. | DECISION (OURS): lane JIS-NB because the generators run on the live host. Default: untrack, never delete files on disk.\n[REVIEW 2026-10-18 by Lab_Guy(GEM-NUC) model=gemini-4-argon-low class=C3 weight=CRITICAL]: REVIEWED:2026-10-18 ACCEPT — Spec, scope_in, steps, and done_when verified against live repo state and Lab_Guy v3.1 E1-E7 checklist.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "W9 orderflow-restart-map",
-  "refreshed": "2026-10-17T07:25:00Z",
+  "refreshed": "2026-10-18T05:13:26Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -55,7 +55,7 @@
     "live_runner_cli.py",
     "scripts/sched/relay.py"
   ],
-  "scope_sha": "8d2549c885d7",
+  "scope_sha": "3332a60cad28",
   "size": "M",
   "sources": [],
   "state": "ready",
@@ -69,5 +69,6 @@
   "tests": "test_auto_deploy: a dirty/untracked generated path no longer needs the allowlist and GENERATED_RE is gone (fails on the current allowlist code); test_live_mirror and test_make_status pass with the files untracked.",
   "title": "Move live-host generated files (STATUS.md, AUDIT_DIGEST.md, T0_CHECKS.md, BUILD_REPORT.md, oi_live csv, htf_context) out of git tracking; auto_deploy GENERATED_RE allowlist is the stopgap. Update readers (live_mirror, cicd_run, make_status) first.",
   "weight": "CRITICAL",
-  "worker": "session"
+  "worker": "session",
+  "updated": "2026-10-18T05:30:00Z"
 }

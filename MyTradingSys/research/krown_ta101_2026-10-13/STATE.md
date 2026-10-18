@@ -40,3 +40,6 @@ The older note said "28 listed / 18 reachable / 10 to do". That was wrong: 11 id
    the batch-2 block of `tools/build_ledger.py`, reflexivity_log batch 3.
 3. Other Krown sources not yet read: daily BTC event-study videos and CBP candidates (options/research/KROWN_FREE_VS_PAID.md; card
    `krown-other-sources-event-study-videos`).
+
+## 2026-10-18 update (planner)
+- EP08 (ftK2BqggabQ, order book, TA Foundations episode 8) went public 2026-10-17; it was one of the 18 hidden ids. Extracted: 22 concepts, both gates PASS (MANIFEST row 35). The other 17 hidden ids re-checked 2026-10-18: all still private (likely unreleased episodes). Read FOUNDATIONS_EP08_IMPLICATIONS.md; follow-up card krown-foundations-ep08-follow-through.

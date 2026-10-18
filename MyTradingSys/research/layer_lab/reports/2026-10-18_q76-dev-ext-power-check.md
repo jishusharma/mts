@@ -21,3 +21,9 @@ DEV_EXT contributes 545 distinct feasible days in 2020–2021. These dates do no
 | LOW | `bug_b187_evidence.txt:17` | **MISMATCH:** prior DEV_EXT estimate (+465) understates the directly counted addition (+545) for this setup. | Use the direct count in the B187 status record. |
 
 Follow-up cards created: none.
+
+## Haiku blind re-derivation (from FLOW_2026-10-18.md:7)
+
+- Lab count: 545 new + 662 baseline = 1,207 feasible days.
+- Haiku blind from the definition: 549 + 666 = 1,215 feasible days (0.7 percent apart); events +3.3 percent and +2.1 percent (outside the 1 percent freeze bar; stop-basis cause untested); headline holds (about 1,210 of 2,427 days).
+- Trust tag: `MACHINE-OK` needs a machine re-count, which `b187-prereg-v2-correction` supplies; until then the tag stays `UNCHECKED`.
