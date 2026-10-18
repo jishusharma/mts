@@ -141,6 +141,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Layer `turn_of_candle`: no edge, closed | module backtest/layers/turn_of_candle/
 - Layer `session_levels`: no edge | module research/t087_session_levels_2026-10-09
 - Backtests (layer_map.json, newest first):
+  - 2026-10-18 `EUR-LOW-US-SWEEP-FOLLOWUPS-20261018`: BLOCKED by power gate (A, B, C); legs stay open | `MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/RESULT.md`
   - 2026-10-14 `LC-SIZING-QUICK-20261014`: EXPLORATORY NEGATIVE; full LC hypothesis untested | `MyTradingSys/research/levels_sizing_2026-10-14/REPORT.md`
   - 2026-10-14 `EUR-LOW-US-SWEEP-20261014`: EXPLORATORY NEGATIVE (short leg); long-after-reclaim untested | `MyTradingSys/research/eur_low_us_sweep_2026-10-14/RESULT.md`
   - 2026-10-09 `T087`: no edge (net -0.036%, t -1.72); EU-touch cells insufficient n | `MyTradingSys/research/t087_session_levels_2026-10-09/RESULT.md`
@@ -150,8 +151,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `MyTradingSys/research/TURN_OF_CANDLE_ORIGIN_2026-10-09.md`
 - Code: `MyTradingSys/backtest/layers/session`; `MyTradingSys/backtest/layers/session_levels`; `MyTradingSys/backtest/layers/turn_of_candle`
 - Other results: `MyTradingSys/research/t087_session_levels_2026-10-09`; `MyTradingSys/research/eur_low_us_sweep_2026-10-14`
-- Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `eu-low-us-sweep-follow-ups-long-after-sw` ready p2 SONNET: EU-low/US-sweep follow-ups: long after sweep+reclaim (stability test), LTF RSI-divergence short from daily hig
+- Open cards: none
 
 ## Volume, candle patterns, daily MA setups, bigtrade (`volume_candles_ma`)
 - Status: No validated edge; volume HOLDOUT sealed; MA numbers NO-SOURCE.

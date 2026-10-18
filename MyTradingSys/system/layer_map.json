@@ -1322,6 +1322,24 @@
    "read": "summary"
   },
   {
+   "id": "EUR-LOW-US-SWEEP-FOLLOWUPS-20261018",
+   "title": "EU-low/US-sweep follow-ups: long after sweep+reclaim, 5m RSI-divergence short from the day high, pre-US double-top short",
+   "date": "2026-10-18",
+   "market": "Binance BTCUSDT perpetual 1m (5m built from 1m)",
+   "layers": [
+    "session_levels"
+   ],
+   "params": "OURS: reclaim = first 1m close > L within 120m of the break; stop sweep low/P1/day high +0.1%; RSI14 divergence >2 pts with prior RSI>=60; double-top tolerance 0.15%, valley 0.5%; time exit 120/120/240m",
+   "split": "DEV only (bars before 2024-07-01); VAL/HOLDOUT sealed, not read; no outcome computed",
+   "fees": "taker 0.05%/side; funding unmodeled",
+   "interaction": "none run (power gate)",
+   "effects": "none read; MDE+cost 0.47/0.47/0.51 R vs 0.30 R cap",
+   "n": "A 133, B 208, C 100 tradeable days",
+   "verdict": "BLOCKED by power gate (A, B, C); legs stay open",
+   "report": "MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/RESULT.md",
+   "read": "summary"
+  },
+  {
    "id": "PRICE-CVD-DIV-1M5M-20261014",
    "title": "Price lower low with CVD higher low (and mirror) on 1m and 5m, OI up/down split",
    "date": "2026-10-14",
