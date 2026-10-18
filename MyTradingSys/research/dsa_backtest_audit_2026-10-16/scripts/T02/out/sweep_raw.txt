@@ -1,0 +1,87 @@
+MyTradingSys/backtest/bigtrade/bigmoves.py:119:    rows = resample(bars_1m, tf, REGISTRY)
+MyTradingSys/backtest/bigtrade/test_fires_kline.py:157:            ref = tf_resample.resample(bars, tf, reg)
+MyTradingSys/backtest/bigtrade/test_fires_kline.py:168:        self.assertNotIn("tbv", tf_resample.resample(bars, "15m", reg)[0])  # documents finding F-BT-07
+MyTradingSys/backtest/layers/cryptocred/cc_htf_count.py:90:        tf_bars = resample(bars, tf, reg)
+MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py:333:    return bars, resample(bars, tf, registry), funding
+MyTradingSys/backtest/layers/cryptocred/test_cc_htf_count.py:35:        h1 = resample(m1, "1h", reg)
+MyTradingSys/backtest/layers/cryptocred/test_cc_htf_count.py:49:        h1 = resample(m1, "1h", reg)
+MyTradingSys/backtest/layers/fabio/run_backtest.py:11:tf_resample.resample() does not aggregate taker-buy-volume (tbv), which every Fabio
+MyTradingSys/backtest/layers/fabio/run_backtest.py:51:    """resample() for OHLCV + a same-bucket sum of tbv, merged in by matching t."""
+MyTradingSys/backtest/layers/fabio/run_backtest.py:52:    out = resample(bars_1m, tf, registry)
+MyTradingSys/backtest/layers/rsi/run_divergence_mtf.py:271:        bars = bars_1m if tf == "1m" else resample(bars_1m, tf, registry)
+MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py:283:        bars = resample(bars_1m, tf, registry)
+MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py:290:            htf = {t: resample(bars_1m, t, registry) for t in ("1w", "1M")}
+MyTradingSys/backtest/layers/rsi/run_t090_anchor_probe.py:25:        rb = resample(shifted, tf, reg)
+MyTradingSys/backtest/layers/run_t055.py:316:    out = resample(bars_1m, tf, registry)
+MyTradingSys/backtest/layers/tick/build_tiers.py:50:        for b in TE.resample(bars_1m, tf):
+MyTradingSys/backtest/layers/tick/test_tick_extremes.py:62:        buckets = resample(SPEC_BARS, 2)
+MyTradingSys/backtest/layers/tick/test_tick_extremes.py:84:        buckets = resample(SPEC_BARS, 1)
+MyTradingSys/backtest/layers/tick/test_tick_extremes.py:92:            resample([], 2)
+MyTradingSys/backtest/layers/tick/test_tick_extremes.py:97:            resample(bars, 1)
+MyTradingSys/backtest/layers/tick/test_tick_extremes.py:157:        buckets = resample(SPEC_BARS, 2)
+MyTradingSys/backtest/layers/tick/test_tick_extremes.py:174:        buckets = resample(SPEC_BARS, 2)
+MyTradingSys/backtest/layers/tick/tick_extremes.py:9:def resample(bars: list, tf_minutes: int) -> list:
+MyTradingSys/backtest/layers/tick/tick_extremes.py:217:    For each tf in timeframes (int minutes): call resample(bars, tf).
+MyTradingSys/backtest/layers/tick/tick_extremes.py:226:            buckets = resample(bars, tf)
+MyTradingSys/backtest/layers/timeframe/test_tf_resample.py:62:        out = resample(bars, "3m", REGISTRY)
+MyTradingSys/backtest/layers/timeframe/test_tf_resample.py:76:        out = resample(bars, "10m", REGISTRY)
+MyTradingSys/backtest/layers/timeframe/test_tf_resample.py:88:            self.assertEqual(resample([], tf, REGISTRY), [])
+MyTradingSys/backtest/layers/timeframe/test_tf_resample.py:93:            resample(bars, "7m", REGISTRY)
+MyTradingSys/backtest/layers/timeframe/test_tf_resample.py:140:        out = resample(day_bars(DAY, 1440), "7h", REGISTRY)
+MyTradingSys/backtest/layers/timeframe/test_tf_resample.py:148:        out = resample(day_bars(DAY, 22 * 60), "7h", REGISTRY)
+MyTradingSys/backtest/layers/timeframe/test_tf_resample.py:152:        out = resample(day_bars(DAY, 7 * 60 + 1, skip=(5, 100)), "7h", REGISTRY)
+MyTradingSys/backtest/layers/timeframe/test_tf_resample.py:157:        out = resample(day_bars(DAY, 10, skip=(1,)), "4m", REGISTRY)
+MyTradingSys/backtest/layers/timeframe/test_tf_resample.py:160:        out = resample(day_bars(DAY, 7 * 60), "3h", REGISTRY)
+MyTradingSys/backtest/layers/timeframe/tf_realdata_gate.py:58:    resampled_bars = resample(bars_1m, "1d", registry)
+MyTradingSys/backtest/layers/timeframe/tf_realdata_gate.py:142:    resampled = resample(bars_1m, "10m", registry)
+MyTradingSys/backtest/layers/timeframe/tf_resample.py:90:def resample(bars_1m: list, tf: str, registry: dict) -> list:
+MyTradingSys/backtest/layers/trendlines/trendline_core.py:39:    return resample(bars_1m, tf, reg)
+MyTradingSys/backtest/test_tom_bt.py:191:    def test_resample(self):
+MyTradingSys/backtest/vp_pivot_probe.py:315:def resample(t, o, h, l, c, v, bucket_ms):
+MyTradingSys/backtest/vp_pivot_probe.py:359:    t5, o5, h5, l5, c5, v5, inc5 = resample(t, o, h, l, c, v, 5 * MIN_MS)
+MyTradingSys/backtest/vp_pivot_probe.py:360:    t1, o1, h1, l1, c1, v1, inc1 = resample(t, o, h, l, c, v, HOUR_MS)
+MyTradingSys/research/carry_basis_2026-10-18/carry_basis.py:185:    b_perp = R.Bars(R.resample(a_perp, "1d"), f, "1d")
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:631:    return series.shift(-1)
+MyTradingSys/research/context_factors_pit_2026-10-16/indep_pandas.py:71:        g = df.resample("168h", origin=MONDAY0, label="left", closed="left")
+MyTradingSys/research/context_factors_pit_2026-10-16/indep_pandas.py:73:        g = df.resample(RULES[tf], origin="epoch", label="left", closed="left")
+MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/filter_join.py:76:    b = imb.resample(df1m, tf)
+MyTradingSys/research/imbalance_qriptal_2026-10-16/imb.py:126:def resample(df1m, tf):
+MyTradingSys/research/imbalance_qriptal_2026-10-16/imb.py:304:    b = resample(df1m, tf)
+MyTradingSys/research/imbalance_qriptal_2026-10-16/imb.py:416:        ours = resample(df1m, tf).set_index("t")
+MyTradingSys/research/imbalance_qriptal_2026-10-16/test_imb.py:17:    b = imb.resample(df, "1h")
+MyTradingSys/research/kurisko_2026-10-18/count_events.py:77:    return [(b["t"], b["h"], b["l"], b["c"]) for b in tf_resample.resample(src, "5m", REG5) if b["gap_count"] == 0]
+MyTradingSys/research/layer_lab/candle_close_2026-10-14/study.py:78:    rs = a.resample(f'{minutes}min', origin='epoch', closed='left', label='right')
+MyTradingSys/research/layer_lab/candle_close_2026-10-14/study.py:114:    day = aggregate(a, 1440).reindex(a.resample('1440min', origin='epoch', label='right').size().index)
+MyTradingSys/research/layer_lab/candle_close_2026-10-14/study.py:115:    four = aggregate(a, 240).reindex(a.resample('240min', origin='epoch', label='right').size().index)
+MyTradingSys/research/layer_lab/candle_close_2026-10-14/study.py:117:    wr = a.resample('W-MON', closed='left', label='right')
+MyTradingSys/research/non_core_layer_audit_2026-10-12/verify_audit.py:37:    results['gapped_resample']=resample(bars,'5m',reg)
+MyTradingSys/research/pit_levels_2026-10-16/test_pit_leakage.py:254:    res = tfr.resample(bars, "1h", REG) if bars else []
+MyTradingSys/research/pit_levels_2026-10-16/test_pit_leakage.py:374:    def test_f4_resample(self):
+MyTradingSys/research/positioning_c1_2026-10/count_power.py:171:    bars_15m = resample(bars_1m, "15m", reg)
+MyTradingSys/research/published_strats_2026-10-13/run_pub.py:47:def resample(a, tf):
+MyTradingSys/research/published_strats_2026-10-13/run_pub.py:519:    data = {tf: Bars(resample(a, tf), fund, tf) for tf in ("1h", "4h", "1d")}
+MyTradingSys/research/published_strats_2026-10-13/supp_carry.py:7:b = R.Bars(R.resample(a, "1d"), f, "1d")
+MyTradingSys/research/setup_catalog_2026-10-15/evidence/rsi_divergence_mtf_checks.py:23:def resample(step, upto=None):
+MyTradingSys/research/setup_catalog_2026-10-15/evidence/rsi_divergence_mtf_checks.py:54:    bars = resample(5, ms(cut)); cl = [e[4] for e in bars]; rsi = wilder(cl); i = len(bars) - 1; e = bars[i]
+MyTradingSys/research/setup_catalog_2026-10-15/evidence/rsi_divergence_mtf_checks.py:59:bars = resample(5, ms("15:24")); cl = [e[4] for e in bars]
+MyTradingSys/research/setup_catalog_2026-10-15/evidence/rsi_divergence_mtf_checks.py:75:    bars = resample(step); cl = [e[4] for e in bars]; rsi = wilder(cl)
+MyTradingSys/research/setup_catalog_2026-10-15/evidence/rsi_divergence_mtf_checks.py:94:    bars = resample(step); cl = [e[4] for e in bars]; rsi = wilder(cl); res = {}
+MyTradingSys/research/setup_catalog_2026-10-15/evidence/rsi_divergence_mtf_checks.py:102:bars = resample(5, ms("15:25")); cl = [e[4] for e in bars]; rsi = wilder(cl); rows = []
+MyTradingSys/research/setup_catalog_2026-10-15/evidence/rsi_divergence_mtf_checks.py:123:    bars = resample(step); cl = [e[4] for e in bars]; rsi = wilder(cl)
+MyTradingSys/research/setup_catalog_2026-10-15/evidence/rsi_divergence_mtf_checks.py:130:bars = resample(5, ms("15:25")); cvd = 0.0
+MyTradingSys/research/volume_2026-10-09/run_v0.py:52:dd = D.resample(h1, 24)
+MyTradingSys/research/volume_2026-10-09/test_volume.py:207:        r = vdata.resample(b, 4)
+MyTradingSys/research/volume_2026-10-09/vdata.py:69:def resample(b1h, k=4):
+MyTradingSys/research/volume_2026-10-09/vdata.py:98:    return _cut(resample(full), start_ms, end_ms)
+MyTradingSys/research/wavetrend_2026-10-17/count_events.py:55:def resample(A, m):
+MyTradingSys/research/wavetrend_2026-10-17/count_events.py:291:        B = resample(A, m)
+MyTradingSys/tests/test_lookahead_lint.py:22:# ---------------------------------------------------------------- rolling(center=True)
+MyTradingSys/tests/test_lookahead_lint.py:24:    assert hits("y = df.c.rolling(5, center=True).mean()\n") == [(1, "rolling-center", "FAIL")]
+MyTradingSys/tests/test_lookahead_lint.py:31:# ---------------------------------------------------------------- shift(-k)
+MyTradingSys/tests/test_lookahead_lint.py:33:    assert hits("df['x'] = df.c.shift(-3)\n") == [(1, "shift-negative", "FAIL")]
+MyTradingSys/tests/test_lookahead_lint.py:36:    assert hits("k = 4\ny = df.c.shift(-k)\n") == [(2, "shift-negative", "FAIL")]
+MyTradingSys/tests/test_lookahead_lint.py:41:        assert hits(f"{tgt} = df.c.shift(-5)\n") == [], tgt
+MyTradingSys/tests/test_lookahead_lint.py:42:    assert hits("df = df.assign(fwd=df.c.shift(-5))\n") == []
+MyTradingSys/tests/test_lookahead_lint.py:43:    assert hits("def outcome(df):\n    return df.c.shift(-5)\n") == []
+MyTradingSys/tests/test_lookahead_lint.py:48:    assert hits("retest = df.c.shift(-1)\n") == [(1, "shift-negative", "FAIL")]
+MyTradingSys/tests/test_lookahead_lint.py:102:    assert hits("from scipy.signal import argrelextrema\nk = argrelextrema(h, np.greater, order=3)\n") == [(2, "pivot-function", "WARN")]

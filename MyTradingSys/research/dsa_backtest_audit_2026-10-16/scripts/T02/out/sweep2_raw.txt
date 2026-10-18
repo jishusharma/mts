@@ -1,0 +1,314 @@
+MyTradingSys/archive/cleanup-2026-10-08/fabio_of_model/run_of_model.py:12:from bisect import bisect_left
+MyTradingSys/archive/cleanup-2026-10-08/fabio_of_model/run_of_model.py:40:        i0, i1 = bisect_left(times, s), bisect_left(times, e)
+MyTradingSys/archive/cleanup-2026-10-08/fabio_of_model/run_of_model.py:67:        st_i = bisect_left(times, cur["s"] + (M.STATE_MIN - 1) * 60000)
+MyTradingSys/archive/cleanup-2026-10-08/fabio_of_model/run_of_model.py:75:            lo = bisect_left(tts, cur["s"] + M.STATE_MIN * 60000)
+MyTradingSys/archive/cleanup-2026-10-08/fabio_of_model/run_of_model.py:76:            hi = bisect_left(tts, cur["e"] - tf * 60000 + 1)
+MyTradingSys/archive/cleanup-2026-10-08/p1_p4_research_scripts/p1_breakdowns.py:91:            next_bar = bars[i + 1]
+MyTradingSys/archive/cleanup-2026-10-08/p1_p4_research_scripts/p1_corrected.py:98:            next_bar = bars[i + 1]
+MyTradingSys/backtest/bigtrade/bigmoves.py:172:    """Per bar j: MFE and MAE-before-MFE (ATR units) for a market entry at open[j+1] over bars j+1..j+H. See module docstring."""
+MyTradingSys/backtest/bigtrade/capture.py:96:    j = np.searchsorted(t_close, t, side="right") - 1
+MyTradingSys/backtest/bigtrade/capture.py:134:    lo = np.searchsorted(fire_t, ts, side="left")  # first fire >= ts
+MyTradingSys/backtest/bigtrade/capture.py:135:    c_e = np.searchsorted(fire_t, ts + d * EARLY_FRAC, side="right")  # fires <= ts + 25%
+MyTradingSys/backtest/bigtrade/capture.py:136:    c_m = np.searchsorted(fire_t, ts + d * MID_FRAC, side="right")
+MyTradingSys/backtest/bigtrade/capture.py:137:    c_l = np.searchsorted(fire_t, te, side="right")
+MyTradingSys/backtest/bigtrade/capture.py:335:                j = int(np.searchsorted(t_close, ts))
+MyTradingSys/backtest/bigtrade/exit_policies.py:120:                i0 = int(np.searchsorted(t_arr, t_fire, side="left"))     # first bar opening at/after the fire-bar close
+MyTradingSys/backtest/bigtrade/fires_kline.py:34:import bisect
+MyTradingSys/backtest/bigtrade/fires_kline.py:704:        i0 = int(np.searchsorted(a["t"], t0_ms, side="left"))
+MyTradingSys/backtest/bigtrade/fires_kline.py:705:        i1 = int(np.searchsorted(a["t"], t1_ms, side="right"))
+MyTradingSys/backtest/bigtrade/mutation_check_bigmoves_capture.py:24:    ("atr uses the NEXT bar (lookahead)", "bigmoves",
+MyTradingSys/backtest/bigtrade/mutation_check_bigmoves_capture.py:39:    ("capture: EARLY upper edge exclusive", "capture", "c_e = np.searchsorted(fire_t, ts + d * EARLY_FRAC, side=\"right\")",
+MyTradingSys/backtest/bigtrade/mutation_check_bigmoves_capture.py:40:     "c_e = np.searchsorted(fire_t, ts + d * EARLY_FRAC, side=\"left\")"),
+MyTradingSys/backtest/bigtrade/mutation_check_bigmoves_capture.py:41:    ("capture: a fire exactly at the leg end is lost", "capture", "c_l = np.searchsorted(fire_t, te, side=\"right\")",
+MyTradingSys/backtest/bigtrade/mutation_check_bigmoves_capture.py:42:     "c_l = np.searchsorted(fire_t, te, side=\"left\")"),
+MyTradingSys/backtest/bigtrade/mutation_check_bigmoves_capture.py:47:    ("capture: fire time mapped FORWARD to the next bar", "capture", "j = np.searchsorted(t_close, t, side=\"right\") - 1",
+MyTradingSys/backtest/bigtrade/mutation_check_bigmoves_capture.py:48:     "j = np.searchsorted(t_close, t, side=\"left\")"),
+MyTradingSys/backtest/bigtrade/obs_vp_check.py:9:import bisect
+MyTradingSys/backtest/bigtrade/obs_vp_check.py:49:        i = bisect.bisect_right(keys, p) - 1
+MyTradingSys/backtest/bigtrade/parity_kline.py:89:    i = int(np.searchsorted(arrays["t"], conf_open_ms))
+MyTradingSys/backtest/bigtrade/parity_kline.py:109:        i = int(np.searchsorted(a["t"], raw["t_confirm"]))
+MyTradingSys/backtest/bt/bt_data.py:5:from bisect import bisect_right
+MyTradingSys/backtest/bt/bt_data.py:110:    idx = bisect_right([x[0] for x in funding], t_ms) - 1
+MyTradingSys/backtest/bt/bt_engine.py:5:- scanning starts at the first bar with t > entry_t (no look-ahead);
+MyTradingSys/backtest/bt/bt_engine.py:13:import bisect
+MyTradingSys/backtest/bt/bt_engine.py:61:        i = bisect.bisect_right(fund_times, last_t)
+MyTradingSys/backtest/l1_patch_mds.py:6:  1. archive mode: spot_perp_basis and oi_breakdown are NOT fetched from live REST (look-ahead, F7); a neutral
+MyTradingSys/backtest/l1_patch_mds.py:49:"""        // ── Trade flow from 1m klines (same formula as fetchSnapshot; no live data, no look-ahead) ──
+MyTradingSys/backtest/layers/alerts/live_runner_cli.py:159:    has thr_days == 0 (own-day big-trade thresholds = look-ahead, spec section 1)."""
+MyTradingSys/backtest/layers/alerts/live_runner_core.py:35:        if bars[i]["t"] >= bars[i + 1]["t"]:
+MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py:32:import bisect
+MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py:114:    lo = bisect.bisect_left(times, meta["placed_t"] + tf_ms)
+MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py:115:    hi = bisect.bisect_left(times, meta["valid_until_t"] + tf_ms)
+MyTradingSys/backtest/layers/fabio/fabio_cvd_absorption.py:64:         look-ahead-free (the swing, and therefore the event, is only known `right` bars after `i`).
+MyTradingSys/backtest/layers/fabio/fabio_of_model.py:29:from bisect import bisect_left
+MyTradingSys/backtest/layers/fabio/fabio_of_model.py:88:        up = (v[z + 1] if z + 1 < n else 0.0) + (v[z + 2] if z + 2 < n else 0.0)
+MyTradingSys/backtest/layers/fabio/fabio_of_model.py:104:            if v[i] < v[i - 1] and v[i] <= v[i + 1] and v[i] <= 0.5 * med]
+MyTradingSys/backtest/layers/fabio/fabio_of_model.py:107:                           if s[i] >= s[i - 1] and s[i] >= s[i + 1] and s[i] >= 0.6 * v[poc_i]})
+MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py:42:            "b_i": swings[k+1]["i"],
+MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py:44:            "b_price": swings[k+1]["price"],
+MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py:45:            "confirmed_i": swings[k+1]["confirmed_i"]
+MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py:153:        vol_hi = profile["volumes"][hi_edge + 1] if hi_edge < len(profile["volumes"]) - 1 else 0
+MyTradingSys/backtest/layers/fabio/of_backfill.py:2:MyTradingSys/backtest/layers/fabio/of_backfill.py - TF3: backfill finished days of live-schema order-flow bars.
+MyTradingSys/backtest/layers/fabio/of_backfill.py:12:Run: python -m MyTradingSys.backtest.layers.fabio.of_backfill --start 2026-09-29 --end 2026-10-02
+MyTradingSys/backtest/layers/fabio/of_backfill.py:28:    free; an existing CSV is protected separately in backfill_day."""
+MyTradingSys/backtest/layers/fabio/of_backfill.py:47:def backfill_day(day, raw_dir, stage, live_dir, offline_hist=ol.OFFLINE_HIST):
+MyTradingSys/backtest/layers/fabio/of_backfill.py:77:    scratch = Path(tempfile.mkdtemp(prefix="of_backfill_"))
+MyTradingSys/backtest/layers/fabio/of_backfill.py:84:            res = backfill_day(d, raw, stage, a.live)
+MyTradingSys/backtest/layers/fabio/orderflow_bars.py:23:and thr_days = 0 (look-ahead: exclude such days from any test).
+MyTradingSys/backtest/layers/fabio/orderflow_bars.py:236:    if n == 0:  # no prior day: need own-day histogram first (look-ahead, thr_days=0)
+MyTradingSys/backtest/layers/fabio/orderflow_live.py:20:and the emitter refuses those bars (fail closed; own-day thresholds would be look-ahead).
+MyTradingSys/backtest/layers/fabio/orderflow_live.py:47:# 200 hit HTTP 429 on a 15 h backfill (2026-10-07) and, all-or-nothing, never advanced.
+MyTradingSys/backtest/layers/fabio/orderflow_live.py:50:# the backfill chunk keeps only whole minutes before the last fetched one, so it stayed empty and next_ms never moved
+MyTradingSys/backtest/layers/fabio/orderflow_live.py:75:    Stops after max_pages (backfill is continued next cycle). An error on the first page raises (the caller writes
+MyTradingSys/backtest/layers/fabio/orderflow_live.py:76:    nothing); an error after it returns the pages already fetched as capped, with the error, so a backfill advances."""
+MyTradingSys/backtest/layers/fabio/orderflow_live.py:211:    if capped and trades:  # backfill chunk: only whole minutes strictly before the last fetched one
+MyTradingSys/backtest/layers/fabio/orderflow_live.py:330:    ap.add_argument("--since", help="ISO UTC start for a first run / backfill, e.g. 2026-10-03T13:30:00")
+MyTradingSys/backtest/layers/fabio/v3/day_gates.py:88:    thr_days == 0 (own-day thresholds = look-ahead), or more than 5 missing minutes in the window.
+MyTradingSys/backtest/layers/fabio/v3/manage.py:192:            return _closed(w, bars[i + 1]["o"], i + 1, "s8", "taker")
+MyTradingSys/backtest/layers/fabio/v3/manage.py:208:    target (maker, fill-through), S8 (taker at o[i+1]), window end (taker at c[end_idx]).
+MyTradingSys/backtest/layers/fabio/v3/models.py:94:    rest: limit at LVN*, structural stop = s*(entry - O) + TICK; confirm: taker at o[j+1] after the first armed bar j
+MyTradingSys/backtest/layers/fabio/v3/models.py:113:            entry = bars[j + 1]["o"]
+MyTradingSys/backtest/layers/fabio/v3/models.py:144:    confirm: taker at o[j+1]. Structural stop = |Xp - entry| + TICK. target_mode "edge": target = E_s (maker,
+MyTradingSys/backtest/layers/fabio/v3/models.py:174:            entry = bars[j + 1]["o"]
+MyTradingSys/backtest/layers/fabio/v3/models.py:199:    (valid until end_idx); confirm = taker at o[i+1]. Structural stop = s*(entry - mid) + TICK. One IVB set-up per day:
+MyTradingSys/backtest/layers/fabio/v3/models.py:223:                    entry = bars[i + 1]["o"]
+MyTradingSys/backtest/layers/fabio/v3/models.py:236:    s*(c - lvl) < 0 (the level failed); confirm: taker at o[k+1]. Structural stop = s*(entry - lvl) + TICK. No target.
+MyTradingSys/backtest/layers/fabio/v3/models.py:256:    entry = bars[k + 1]["o"]
+MyTradingSys/backtest/layers/fabio/v3/models.py:278:    ctrl == s) | SIGNAL (confirm: taker at o[i+1]; entry_ref = c[i]) | IN_TRADE (an earlier order would have filled).
+MyTradingSys/backtest/layers/fabio/v3/models.py:308:                    entry = bars[b + 1]["o"]
+MyTradingSys/backtest/layers/fabio/v3/models.py:329:    SIGNAL (confirm: taker at o[i+1]; entry_ref = c[i]) | IN_TRADE (an earlier order would have filled)."""
+MyTradingSys/backtest/layers/fabio/v3/models.py:363:            entry = bars[j + 1]["o"]
+MyTradingSys/backtest/layers/fabio/v3/models.py:385:    IB_s, live until the window end) | SIGNAL (confirm: taker at o[i+1]; entry_ref = c[i]) | IN_TRADE (the order would
+MyTradingSys/backtest/layers/fabio/v3/models.py:418:            entry = bars[b + 1]["o"]
+MyTradingSys/backtest/layers/fabio/v3/models.py:428:    SIGNAL (confirm: taker at o[i+1]; entry_ref = c[i]) | IN_TRADE (an earlier order would have filled)."""
+MyTradingSys/backtest/layers/fabio/v3/models.py:454:            entry = bars[b + 1]["o"]
+MyTradingSys/backtest/layers/fabio/v3/signals.py:3:Conventions (spec section 2): every function f(bars, i, ...) reads bars[0..i] ONLY (look-ahead canary T49/T64);
+MyTradingSys/backtest/layers/fabio/v3/signals.py:144:        up = (v[z + 1] if z + 1 < n else 0.0) + (v[z + 2] if z + 2 < n else 0.0)
+MyTradingSys/backtest/layers/fabio/v3/signals.py:159:    """LVN prices (bin centres, ascending): interior i with v[i] < v[i-1] and v[i] <= v[i+1] and v[i] <= 0.5*med, med =
+MyTradingSys/backtest/layers/fabio/v3/signals.py:169:            if v[k] < v[k - 1] and v[k] <= v[k + 1] and v[k] <= LVN_FRAC * med]
+MyTradingSys/backtest/layers/fabio/v3/signals.py:388:    """S8 exhaustion -> bool (spec section 3; exit taker at o[i+1], applied by manage.py).
+MyTradingSys/backtest/layers/krown/krown_core.py:1:"""Krown layer v0 detectors: pure functions of closed bars, no lookahead (a value at bar t uses bars <= t only).
+MyTradingSys/backtest/layers/krown/run_fire_counts.py:67:        if len(rows) == 7 and all(rows[i][0] + DAY == rows[i + 1][0] for i in range(6)):
+MyTradingSys/backtest/layers/positioning/funding_cvd_fade.py:11:from bisect import bisect_right
+MyTradingSys/backtest/layers/positioning/funding_cvd_fade.py:34:    idx = bisect_right([x[0] for x in series], t_ms) - 1
+MyTradingSys/backtest/layers/positioning/trade_costs.py:9:from bisect import bisect_right
+MyTradingSys/backtest/layers/positioning/trade_costs.py:32:    idx = bisect_right([x[0] for x in funding], t_in) - 1
+MyTradingSys/backtest/layers/rsi/rsi_divergence.py:11:known one bar later, so the event time is ts[i+1] (causal: never uses a bar after the one it is stamped on).
+MyTradingSys/backtest/layers/rsi/rsi_divergence.py:26:        a, b, c = sign * vals[i - 1], sign * vals[i], sign * vals[i + 1]
+MyTradingSys/backtest/layers/rsi/rsi_divergence.py:54:                "t": ts[b + 1], "i": b + 1, "event": kind + "_divergence",
+MyTradingSys/backtest/layers/rsi/run_divergence_mtf.py:97:                    "t": ts[b + 1], "i": b + 1, "event": kind + "_divergence_long",
+MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py:221:    """Bar CLOSE times for higher-timeframe bars labelled by open time (no-look-ahead gate)."""
+MyTradingSys/backtest/layers/tick/tick_extremes.py:112:    Compute gaps[i] = values_desc[i] - values_desc[i+1] for i in 0..len-2.
+MyTradingSys/backtest/layers/tick/tick_extremes.py:126:        if values_desc[i] < values_desc[i + 1]:
+MyTradingSys/backtest/layers/tick/tick_extremes.py:131:        gap = values_desc[i] - values_desc[i + 1]
+MyTradingSys/backtest/layers/tick/tick_oi_extremes.py:95:    gaps = [values_desc[i] - values_desc[i+1] for i in range(len(values_desc)-1)]
+MyTradingSys/backtest/layers/tick/tick_oi_extremes.py:110:        tiers[i+1] = current_tier
+MyTradingSys/backtest/layers/wavetrend/make_golden.py:21:last = side.ffill().shift(1)
+MyTradingSys/backtest/replay.py:35:    cov = sum(rows[i + 1]["t"] - rows[i]["t"] for i in range(len(rows) - 1) if rows[i + 1]["t"] - rows[i]["t"] <= 180) / 3600
+MyTradingSys/backtest/stop_buffer_wf.py:20:import bisect
+MyTradingSys/backtest/stop_buffer_wf.py:86:        """ATR over the last n bars that CLOSED at or before t_ms (bar open + tf <= t_ms): no look-ahead."""
+MyTradingSys/backtest/stop_buffer_wf.py:87:        j = bisect.bisect_right(self.t, t_ms - self.tf_ms) - 1
+MyTradingSys/backtest/tom_bt.py:275:# ---------------------------------------------------------------- regime tags (no look-ahead: data <= t)
+MyTradingSys/backtest/tom_bt_report.py:106:            e = b.o[k + 1]
+MyTradingSys/backtest/tom_bt_report.py:220:              "`fetchSnapshot`, not in `fetchHistoricalSnapshot`, which still called live REST (also a look-ahead). Proposed fix: "
+MyTradingSys/backtest/vp_pivot_probe.py:52:    """Spread every bar over the bins it overlaps. Returns (offs, ks, wts, kl, kh): bar i owns ks[offs[i]:offs[i+1]]."""
+MyTradingSys/backtest/vp_pivot_probe.py:79:        vh = vol[hi + 1] if hi < last else -1.0
+MyTradingSys/backtest/vp_pivot_probe.py:158:        pos = np.searchsorted(other, mine, side="left") - 1      # largest opposite pivot with index < p
+MyTradingSys/backtest/vp_pivot_probe.py:182:    pos = np.searchsorted(act, g, side="right") - 1
+MyTradingSys/backtest/vp_pivot_probe.py:375:        self.start_idx = int(np.searchsorted(self.t5, start_ms))
+MyTradingSys/backtest/vp_pivot_probe.py:377:        pos = np.searchsorted(self.t1 + HOUR_MS, self.t5, side="right") - 1      # 1h bars closed before the 5m open
+MyTradingSys/backtest/vp_pivot_probe.py:418:                start = added = int(np.searchsorted(self.t5, a))
+MyTradingSys/backtest/vp_pivot_probe.py:443:            s, e = int(np.searchsorted(self.t5, a)), int(np.searchsorted(self.t5, b))
+MyTradingSys/backtest/vp_pivot_probe.py:487:        pos = np.searchsorted(self.ref_idx, np.arange(self.N), side="right") - 1
+MyTradingSys/backtest/vp_pivot_probe.py:593:        s, e = np.searchsorted(day, dd, "left"), np.searchsorted(day, dd, "right")
+MyTradingSys/backtest/vp_pivot_probe.py:677:    lo5 = int(np.searchsorted(d["t5"], start_ms - WARMUP_DAYS * DAY_MS)); hi5 = int(np.searchsorted(d["t5"], end_ms))
+MyTradingSys/backtest/vp_pivot_probe.py:678:    lo1 = int(np.searchsorted(d["t1"], start_ms - WARMUP_DAYS * DAY_MS)); hi1 = int(np.searchsorted(d["t1"], end_ms))
+MyTradingSys/execution/trade_ledger.py:16:  python -m MyTradingSys.execution.trade_ledger --backfill     # rows for closed plans found in auto_trades.jsonl
+MyTradingSys/execution/trade_ledger.py:226:    Returns the row, or None if the plan already has a resolved row. write_unresolved=False (backfill probing)
+MyTradingSys/execution/trade_ledger.py:281:def backfill(fetcher=None, ledger_path=None, auto_log=None, candidates=None):
+MyTradingSys/execution/trade_ledger.py:311:                append_row(unresolved_row(a, acct_hint, "backfill: no closed round trip on any probed account",
+MyTradingSys/execution/trade_ledger.py:345:    ap.add_argument("--backfill", action="store_true")
+MyTradingSys/execution/trade_ledger.py:348:    if a.backfill:
+MyTradingSys/execution/trade_ledger.py:349:        added, unresolved = backfill()
+MyTradingSys/execution/trade_ledger.py:350:        print(f"backfill: {len(added)} row(s) added, {len(unresolved)} unresolved {unresolved}")
+MyTradingSys/options/backtest/panel.py:4:queried through numpy searchsorted. No query ever looks at data later than the stated time except
+MyTradingSys/options/backtest/panel.py:7:import bisect  # noqa: F401
+MyTradingSys/options/backtest/panel.py:108:        starts = np.searchsorted(ids_s, np.arange(len(uniq) + 1)).astype(np.int64)
+MyTradingSys/options/backtest/panel.py:136:        self.slices = {nm: (int(starts[i]), int(starts[i + 1])) for i, nm in enumerate(self.names)}
+MyTradingSys/options/backtest/panel.py:288:            k = int(np.searchsorted(day.ts[i0:i1], ts_ms, side="right"))
+MyTradingSys/options/backtest/panel.py:316:                k = int(np.searchsorted(day.ts[i0:i1], lo, side="right"))
+MyTradingSys/options/backtest/panel.py:339:            a = int(np.searchsorted(tsv, ts_ms, side="left"))
+MyTradingSys/options/backtest/panel.py:340:            b = int(np.searchsorted(tsv, t_end, side="right"))
+MyTradingSys/options/backtest/panel.py:376:                k = int(np.searchsorted(day.ts[i0:i1], ts_ms, side="right"))
+MyTradingSys/options/backtest/panel.py:405:            k = int(np.searchsorted(day.g_ts, ts_ms, side="right"))
+MyTradingSys/options/backtest/panel.py:425:            a = int(np.searchsorted(tsv, t0_ms, side="left"))
+MyTradingSys/options/backtest/panel.py:426:            b = int(np.searchsorted(tsv, t1_ms, side="right"))
+MyTradingSys/options/backtest/selection.py:1:"""Instrument / expiry selection. Uses ONLY observations with ts <= decision time (no lookahead)."""
+MyTradingSys/options/backtest/strategies.py:1:"""Strategies R1 R2 R3 R4 R7 S7 (BT_SPEC). Each returns (trades, skipped). Deterministic, no lookahead:
+MyTradingSys/options/backtest/strategies.py:65:    k = int(np.searchsorted(t, ts_ms - DAY_MS, side="right")) - 1
+MyTradingSys/options/backtest/strategies.py:223:        k = int(np.searchsorted(ots, t, side="right")) - 1
+MyTradingSys/options/backtest/strategies.py:241:        fi = np.minimum(np.searchsorted(fund["ts"], times), fund["ts"].size - 1)
+MyTradingSys/options/backtest/strategies.py:322:    whose last-obs premium is nearest the put's last-obs premium (selected at decision time, no lookahead)."""
+MyTradingSys/options/collector/deribit_opt_backfill.py:1:"""Deribit BTC options historical backfill (public market data only, read-only, no keys, no orders).
+MyTradingSys/options/collector/deribit_opt_backfill.py:19:Run:  python MyTradingSys/options/collector/deribit_opt_backfill.py --max-seconds 1500
+MyTradingSys/options/collector/deribit_opt_backfill.py:20:      python MyTradingSys/options/collector/deribit_opt_backfill.py --only dvol,perp --max-seconds 300
+MyTradingSys/options/collector/deribit_opt_backfill.py:21:      python MyTradingSys/options/collector/deribit_opt_backfill.py --report
+MyTradingSys/options/collector/deribit_opt_backfill.py:251:def backfill_delivery(client, hist_dir, cursors, deadline, clock=time.monotonic, log=_log):
+MyTradingSys/options/collector/deribit_opt_backfill.py:407:def backfill_trades(client, hist_dir, date_from, date_to, workers, count, soft_deadline, hard_deadline,
+MyTradingSys/options/collector/deribit_opt_backfill.py:632:        guarded("delivery", lambda: backfill_delivery(live, hist, cursors, soft))
+MyTradingSys/options/collector/deribit_opt_backfill.py:651:            return backfill_trades(history, hist, d_from, d_to, a.workers, a.trade_count, soft, hard)
+MyTradingSys/research/b141_htf_stage2.py:63:    return float(vals_sorted[np.searchsorted(np.cumsum(w_sorted), tot / 2.0)])
+MyTradingSys/research/candle_patterns_2026-10-04/d19_4h_test.py:3:import csv, math, bisect
+MyTradingSys/research/candle_patterns_2026-10-04/d19_4h_test.py:92:            entry = bars4h[i+1]["o"]
+MyTradingSys/research/candle_patterns_2026-10-04/d19_4h_test.py:96:            exit_px = bars4h[i+1]["o"]
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/candles.py:96:            mo, ins, brk = f[m], f[m + 1], f[m + 2]
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/cdata.py:88:        import bisect
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/cdata.py:89:        i, j = bisect.bisect_right(self.times, t0), bisect.bisect_right(self.times, t1)
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/mutation_check.py:13: ("cdata.py", "i, j = bisect.bisect_right(self.times, t0), bisect.bisect_right(self.times, t1)", "i, j = bisect.bisect_left(self.times, t0), bisect.bisect_right(self.times, t1)", "funding window includes t0"),
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/run_p1.py:37:    return math.log(bars[i + 1 + h]["o"] / bars[i + 1]["o"])
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/run_p1.py:41:    return funding.sum(bars[i + 1]["t"], bars[i + 1 + h]["t"])
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/run_p1.py:135:        ratio.append(f[i + 1] / mean_prior if mean_prior > 0 else 1.0)
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/run_p1.py:136:        absret.append(abs(math.log(bars[i + 1]["c"] / bars[i + 1]["o"])))
+MyTradingSys/research/context_factors_2026-10-16/angle_b.py:68:        tr = pd.concat([dd.h - dd.l, (dd.h - dd.c.shift()).abs(), (dd.l - dd.c.shift()).abs()], axis=1).max(axis=1)
+MyTradingSys/research/context_factors_2026-10-16/angle_b.py:71:        tr1 = pd.concat([h1.h - h1.l, (h1.h - h1.c.shift()).abs(), (h1.l - h1.c.shift()).abs()], axis=1).max(axis=1)
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:12:`leak=` in context_frame plants one look-ahead per factor (test fixtures only, names in LEAKS); production calls never pass it.
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:297:    i0 = int(np.searchsorted(ot, w0, "left"))
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:419:        ft = np.asarray(bars["fund_t"]); k = int(np.searchsorted(ft, T, "left")) - 1
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:566:    pc = a["c"].shift(1)
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:583:    ok = mid.shift(WALK_N).notna()
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:585:    st[below.shift(1, fill_value=False) & ok] = "reenter_lower"     # lowest priority first; later rows overwrite
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:586:    st[above.shift(1, fill_value=False) & ok & ~below.shift(1, fill_value=False)] = "reenter_upper"
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:591:    exp = bw > bw.shift(WALK_N)
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:600:    o1, h1, l1, c1 = o.shift(1), h.shift(1), l.shift(1), c.shift(1)
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:611:        ("three_up", green & green.shift(1, fill_value=False) & green.shift(2, fill_value=False)),
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:612:        ("three_down", red & red.shift(1, fill_value=False) & red.shift(2, fill_value=False)),
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:626:    return np.searchsorted(np.asarray(starts) + length, T, "right") - 1
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:631:    return series.shift(-1)
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:698:    i5 = np.searchsorted(ot, Ts, "left") - 1        # last 5m bar with open < T
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:699:    part_h_all = pd.Series(df5["h"].to_numpy()).groupby(dkey).cummax().to_numpy()
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:711:    slopeW = smaW - smaW.shift(PH_W_SLOPE)
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:713:    r30 = Dg["c"] / Dg["c"].shift(PH_D_RET) - 1
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:720:    net = H["c"] - H["c"].shift(ER_N)
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:736:        kf = np.searchsorted(ft, Ts, "left") - 1
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:767:            lo_i = int(np.searchsorted(f4s, T - KROWN_LOOKBACK * 4 * HOUR, "left"))
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:813:                lo_j = max(0, j - ROUND_TOUCH_WIN + 1) if near[2] is None else int(np.searchsorted(hstart, near[2], "left"))
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:984:    i = int(np.searchsorted(bars["ot"], T - MIN5, "left"))
+MyTradingSys/research/context_factors_2026-10-16/redteam.py:3:  R1 boundary look-ahead: vectorised rows at 40 seeded decision hours on D/12h/8h/4h boundaries and mid-bucket, built
+MyTradingSys/research/context_factors_2026-10-16/study.py:93:    i = int(np.searchsorted(ot, T + MIN, "left"))
+MyTradingSys/research/context_factors_2026-10-16/study.py:101:    a = np.searchsorted(ft, t_in, "left")
+MyTradingSys/research/context_factors_2026-10-16/study.py:102:    b = np.searchsorted(ft, t_out_end, "left")
+MyTradingSys/research/context_factors_2026-10-16/study.py:244:        j = int(np.searchsorted(ot, ent_ot + HOLD_BARS * MIN, "left"))
+MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py:72:PLANT = {}   # name -> True plants that look-ahead in the VEC build (tests only; see leak_plants.py)
+MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py:134:# single candles; no time indexing happens here, so sharing them cannot hide a look-ahead)
+MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py:256:    rank = np.searchsorted(vals_sorted_window, x, side="right")   # count <= x
+MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py:274:        vh = float(vol[hi + 1]) if hi < n - 1 else -1.0
+MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py:821:            i = int(np.searchsorted(self.fund_t, close_ms, side="right")) - 1
+MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py:1298:        # the VEC build sees the WHOLE array passed in; a look-ahead would read bars after t. The truncation tests
+MyTradingSys/research/context_factors_pit_2026-10-16/indep_pandas.py:83:    pc = c4["C"].shift(1)
+MyTradingSys/research/context_factors_pit_2026-10-16/indep_pandas.py:171:        vh = vol[hi + 1] if hi < len(vol) - 1 else -1.0
+MyTradingSys/research/context_factors_pit_2026-10-16/prior_rule_count.py:62:                         reason="the fill at open[t+1] lies in the next bucket; a candle closed at t is closed information (same as BB/ATR)",
+MyTradingSys/research/context_null_2026-10-16/context_null.py:95:    s = cs[k + 1] - cs[k + 1 - vw]
+MyTradingSys/research/context_null_2026-10-16/context_null.py:96:    s2 = cs2[k + 1] - cs2[k + 1 - vw]
+MyTradingSys/research/core_readiness_2026-09-27/harness/core_invariants.py:135:        if any(raws[i] < raws[i + 1] for i in range(len(raws) - 1)):
+MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py:14:import bisect
+MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py:115:        upper = profile[prices[hi + 1]] if hi < len(prices) - 1 else -1
+MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py:150:        for r in self.rows[bisect.bisect_left(self.rt, t0):bisect.bisect_left(self.rt, t1)]:
+MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py:360:        k = bisect.bisect_right(self.m_end, t_end) - 1
+MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/filter_join.py:99:        hi = int(np.searchsorted(a["end"], touch_t, side="right"))
+MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/filter_join.py:100:        lo = int(np.searchsorted(a["start"], touch_t - imb.LOOKBACK_DAYS[tf] * DAY, side="left"))
+MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/filter_join.py:216:    starts = np.searchsorted(day, np.arange(first_day - 1, last_day + 2))      # start index of each day (day - (first_day-1))
+MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/run_filter.py:132:    ev["gidx"] = np.searchsorted(bar_t, ev["t"].to_numpy())
+MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/run_filter.py:134:    ev["eidx"] = np.searchsorted(bar_t, (ev["day"].to_numpy() + 1) * DAY)
+MyTradingSys/research/imbalance_qriptal_2026-10-16/imb.py:171:    med = s.shift(1).rolling(n, min_periods=n).median()
+MyTradingSys/research/imbalance_qriptal_2026-10-16/imb.py:270:    prior_lo = pd.Series(l).shift(1).rolling(EXTREME_N, min_periods=EXTREME_N).min().to_numpy()
+MyTradingSys/research/imbalance_qriptal_2026-10-16/imb.py:271:    prior_hi = pd.Series(h).shift(1).rolling(EXTREME_N, min_periods=EXTREME_N).max().to_numpy()
+MyTradingSys/research/imbalance_qriptal_2026-10-16/imb.py:315:        a = int(np.searchsorted(t1, t_entry))
+MyTradingSys/research/krown_capture_2026-10-16/check_quotes.py:25:    s = re.match(r"^Source:\s*([A-Za-z0-9_-]{11}) @(\d\d:\d\d:\d\d)", lines[i+1])
+MyTradingSys/research/krown_capture_2026-10-16/check_quotes.py:34:        if fix: lines[i+1] = lines[i+1].replace("@"+s[2], "@"+real, 1)
+MyTradingSys/research/krown_malkan_g3_2026-10-16/event_counts.py:14:from bisect import bisect_right
+MyTradingSys/research/krown_malkan_g3_2026-10-16/event_counts.py:82:    k = bisect_right(htf_close_t, ms) - 1
+MyTradingSys/research/krown_ta101_2026-10-13/tools/build_setup_catalog.py:62:    return None if i is None else (vid, lines[i], lines[i + 1], i + 1)
+MyTradingSys/research/krown_ta101_2026-10-13/tools/build_setup_catalog.py:70:        return "<MISSING>" if i is None else f"\n{lines[i]}\n{lines[i + 1]}\n"
+MyTradingSys/research/layer_lab/bb_top_reversal_event_table/event_table.py:47:        green_t, red_t = times[green_i], times[green_i + 1]
+MyTradingSys/research/layer_lab/bigtrade_event_table/event_table.py:22:    return int(np.searchsorted(times, timestamp, side="right") - 1)
+MyTradingSys/research/layer_lab/bigtrade_event_table/event_table.py:50:    end = min(end, int(np.searchsorted(times, dev_end_ms, side="left")))
+MyTradingSys/research/layer_lab/candle_close_2026-10-14/study.py:71:    audit = [dict(before=str(a.index[i]), after=str(a.index[i+1]),
+MyTradingSys/research/layer_lab/candle_close_2026-10-14/study.py:72:                  missing=int((a.index[i+1]-a.index[i]).total_seconds()/60)-1) for i in gaps]
+MyTradingSys/research/layer_lab/candle_close_2026-10-14/study.py:98:    p = side*(b.c.shift(1).to_numpy()-level)
+MyTradingSys/research/layer_lab/candle_close_2026-10-14/study.py:99:    q = side*(b.c.shift(2).to_numpy()-level)
+MyTradingSys/research/layer_lab/candle_close_2026-10-14/study.py:120:    ret30 = day.c/day.c.shift(30)-1
+MyTradingSys/research/layer_lab/candle_close_2026-10-14/study.py:121:    er = abs(day.c-day.c.shift(30))/day.c.diff().abs().rolling(30).sum()
+MyTradingSys/research/layer_lab/funding_extreme_event_table/event_table.py:43:    i = int(np.searchsorted(times, int(t) - BAR_MS, side="right") - 1)
+MyTradingSys/research/layer_lab/funding_extreme_event_table/event_table.py:51:    start = int(np.searchsorted(times, int(t), side="left"))
+MyTradingSys/research/layer_lab/funding_extreme_event_table/event_table.py:52:    stop = int(np.searchsorted(times, min(int(t) + HORIZON_MS, DEV_END_MS), side="left"))
+MyTradingSys/research/layer_lab/funding_extreme_event_table/event_table.py:103:        start = int(np.searchsorted(all_times, DEV_START_MS, side="left"))
+MyTradingSys/research/layer_lab/funding_extreme_event_table/event_table.py:104:        stop = int(np.searchsorted(all_times, DEV_END_MS, side="left"))
+MyTradingSys/research/layer_lab/oi_delta_event_table/event_table.py:80:        import bisect
+MyTradingSys/research/layer_lab/oi_delta_event_table/event_table.py:81:        i = bisect.bisect_right(times, t)
+MyTradingSys/research/layer_lab/rsi_divergence_event_table/event_table.py:88:        end = min(end, int(np.searchsorted(t, DEV_END_MS, side="left")))
+MyTradingSys/research/level_ledger_2026-10-16/zone_mismatch_classify.py:64:            idx = np.clip(np.searchsorted(keys, ps, side="right") - 1, 0, nb)
+MyTradingSys/research/level_ledger_2026-10-16/zone_mismatch_classify.py:67:            prof[max(0, int(np.searchsorted(keys, tp, side="right")) - 1)] += vo
+MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.py:16:    """Side from the PREVIOUS bar's close (Q79: the touch bar's own close is look-ahead).
+MyTradingSys/research/levels_sizing_2026-10-14/probe.py:31:        right = volumes[hi+1] if hi+1 < len(prices) else -1
+MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py:67:    return fc[np.searchsorted(ft, t_ms, side="right")]
+MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py:83:        out[i + 1] = 100.0 if al == 0 else 100 - 100 / (1 + ag / al)
+MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py:210:        i0 = int(np.searchsorted(t1, tf_))
+MyTradingSys/research/oi_divergence_v2_2026-10-10.py:8:from bisect import bisect_right
+MyTradingSys/research/opr_bb_mtf_center_2026-10-16/study.py:27:M_N, M_X, M_HH = 48, 0.005, 24    # primary range window / zone tolerance / look-ahead bars for the M tests (OURS)
+MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/study.py:49:    m = pd.Series(Cl).rolling(prev).min().shift(1).to_numpy()
+MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/study.py:55:    m = pd.Series(Cl).rolling(prev).min().shift(1).to_numpy()
+MyTradingSys/research/orderflow_views_2026-10-14/study.py:314:                    "delta": round(float(d[k:k + 5].sum()), 1), "cvd22_close": round(float(cvd22[k + 4]), 1),
+MyTradingSys/research/p1_cost_floor/p1_cost_floor.py:51:                nxt_hit = lo[i+1] <= px if side==1 else hi[i+1] >= px
+MyTradingSys/research/p1_cost_floor/p1_cost_floor.py:52:                strict  = lo[i+1] <  px if side==1 else hi[i+1] >  px
+MyTradingSys/research/p4_corrected.py:62:    j = np.searchsorted(t, exit_t)
+MyTradingSys/research/pit_levels_2026-10-16/count_prior_va.py:72:        vh = vol[hi_ + 1] if hi_ < len(vol) - 1 else -1
+MyTradingSys/research/published_strats_2026-10-13/run_pub.py:75:        j = np.searchsorted(self.t, fund[:, 0] - fund[:, 0] % 1, side="right") - 1
+MyTradingSys/research/published_strats_2026-10-13/run_pub.py:117:        out[i + 1] = 100 if ad == 0 else 100 - 100 / (1 + au / ad)
+MyTradingSys/research/published_strats_2026-10-13/run_pub.py:263:    the bar; if both triggers sit in the same 1h bar the worse side is taken (close-direction opposite). No lookahead."""
+MyTradingSys/research/published_strats_2026-10-13/run_pub.py:271:    i0 = np.searchsorted(t1, b.t)
+MyTradingSys/research/published_strats_2026-10-13/run_pub.py:272:    i1 = np.searchsorted(t1, b.t + w)
+MyTradingSys/research/session_sweeps/session_open_study.py:29:import bisect
+MyTradingSys/research/session_sweeps/session_open_study.py:77:        return bisect.bisect_left(self.T, t0), bisect.bisect_left(self.T, t1)
+MyTradingSys/research/session_sweeps/session_open_study.py:92:        i = bisect.bisect_left(self.T, t)
+MyTradingSys/research/session_sweeps/session_open_study.py:97:        i = bisect.bisect_left(self.T, t) - 1
+MyTradingSys/research/setup_alpha_beta_2026-10-10/beta_sweep.py:177:        sh = [bars[i]["h"] for i in prev if bars[i]["h"] >= bars[i-1]["h"] and bars[i]["h"] >= bars[i+1]["h"]]
+MyTradingSys/research/setup_alpha_beta_2026-10-10/beta_sweep.py:178:        sl = [bars[i]["l"] for i in prev if bars[i]["l"] <= bars[i-1]["l"] and bars[i]["l"] <= bars[i+1]["l"]]
+MyTradingSys/research/tom_btc_2026-10-13/chart_lab.py:40:        upper = profile[prices[hi + 1]] if hi < len(prices) - 1 else -1
+MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py:147:    pk = [i for i in range(1, len(sm) - 1) if sm[i] >= sm[i - 1] and sm[i] >= sm[i + 1] and sm[i] >= med_]
+MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py:157:                while j + 1 < len(seg) and lowm[j + 1]: j += 1
+MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py:252:    rr = (C[pool + h] / O[pool + 1] - 1)
+MyTradingSys/research/trendlines_2026-10-17/repro_trendline_gaps.py:66:def gap4_count_only_multi_touch_and_lookahead_terciles():
+MyTradingSys/research/trendlines_2026-10-17/repro_trendline_gaps.py:74:    # Full-sample tercile look-ahead: adding later lines changes the tercile label of line (15, 27)
+MyTradingSys/research/trendlines_2026-10-17/repro_trendline_gaps.py:118:    gap4_count_only_multi_touch_and_lookahead_terciles()
+MyTradingSys/research/volume_2026-10-09/mutation_check.py:21:    ("vdata.py", 'i = bisect.bisect_right(self.times, t0)', 'i = bisect.bisect_left(self.times, t0)'),
+MyTradingSys/research/volume_2026-10-09/run_v1.py:46:        fwd[h] = np.log(b["o"][idx + 1 + h] / b["o"][idx + 1])
+MyTradingSys/research/volume_2026-10-09/run_v1.py:156:        out.append(float(1e4 * np.mean(sgn * np.log(b["o"][ii + 1 + h] / b["o"][ii + 1]))))
+MyTradingSys/research/volume_2026-10-09/run_v2.py:50:        fwd[h] = np.log(d1["o"][idx + 1 + h] / d1["o"][idx + 1])
+MyTradingSys/research/volume_2026-10-09/run_v3.py:45:    fwd = np.log(b["o"][idx + 1 + h] / b["o"][idx + 1])
+MyTradingSys/research/volume_2026-10-09/run_v3.py:80:    fwd2 = np.log(b["o"][idx + 1 + h2] / b["o"][idx + 1])
+MyTradingSys/research/volume_2026-10-09/run_v4.py:36:    fwd = np.log(b["o"][idx + 1 + h] / b["o"][idx + 1])
+MyTradingSys/research/volume_2026-10-09/run_v4.py:95:                fw = np.log(b["o"][idx + 1 + h] / b["o"][idx + 1]) * F.DIRS[nm]
+MyTradingSys/research/volume_2026-10-09/vdata.py:9:import bisect
+MyTradingSys/research/volume_2026-10-09/vdata.py:119:        i = bisect.bisect_right(self.times, t0)
+MyTradingSys/research/volume_2026-10-09/vdata.py:120:        j = bisect.bisect_right(self.times, t1)
+MyTradingSys/research/volume_2026-10-09/vdata.py:127:        i = np.searchsorted(times, t_arr[entry_idx], side="right")
+MyTradingSys/research/volume_2026-10-09/vdata.py:128:        j = np.searchsorted(times, t_arr[exit_idx], side="right")
+MyTradingSys/research/volume_2026-10-09/vfeat.py:3:No look-ahead: every value at bar i uses bars <= i, and rolling windows end at i-1 unless the spec says otherwise.
+MyTradingSys/research/volume_2026-10-09/vfeat.py:46:    d = np.diff(c)                                   # d[k] = c[k+1] - c[k]
+MyTradingSys/research/volume_2026-10-09/vstate.py:2:No look-ahead: state at daily bar i uses bars <= i (the full UTC day i); rank uses the previous 250 values only.
+MyTradingSys/research/wavetrend_2026-10-17/atlas.py:74:    """fwd[H][t] = C[t+H]/O[t+1]-1; up/dn[t] = max high / min low over t+1..t+12 vs O[t+1] (bar extremes: upper bounds)."""
+MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/study.py:99:    if t + 24 >= n or candles[t + 24]["t"] - candles[t + 1]["t"] != 23 * D.HOUR_MS:
+MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/study.py:101:    e = candles[t + 1]["o"]
+MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/study.py:107:    i0 = m1_idx.get(candles[t + 1]["t"])
+MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/study.py:201:        r4 = [(closes[i + 4] / closes[i] - 1) * 100 for i in range(len(closes) - 4)]
+MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/study.py:273:    L.append("## Primary table (R4 = % return, entry open[t+1], exit close[t+4]; day-clustered SE)")
+MyTradingSys/runtime/log_decision.py:23:        evt["verdict"] = sys.argv[i+1]; i += 2
+MyTradingSys/runtime/log_decision.py:25:        evt["setup"] = sys.argv[i+1]; i += 2
+MyTradingSys/runtime/log_decision.py:27:        try: evt["alert_id"] = int(sys.argv[i+1])
+MyTradingSys/runtime/oi_live/oi_recorder.py:5:  --backfill: last 30 days of openInterestHist period=5m -> oi_5m_30d.csv [ts_ms,iso_utc,symbol,sumOpenInterest,sumOpenInterestValue]
+MyTradingSys/runtime/oi_live/oi_recorder.py:59:def backfill():
+MyTradingSys/runtime/oi_live/oi_recorder.py:83:    print("backfill rows", len(out))
+MyTradingSys/runtime/oi_live/oi_recorder.py:98:    ap.add_argument("--backfill", action="store_true")
+MyTradingSys/runtime/oi_live/oi_recorder.py:101:        backfill() if a.backfill else once()
+MyTradingSys/runtime/outcome_labeler.py:8:import bisect, json, sys, os, time, shutil
+MyTradingSys/runtime/outcome_labeler.py:112:            j = bisect.bisect_left(ref_ts, target_ts)  # first snapshot >= target_ts
