@@ -6,13 +6,13 @@ The older note said "28 listed / 18 reachable / 10 to do". That was wrong: 11 id
 
 | Stage | Count | Detail |
 |---|---|---|
-| Reachable | 19 | 14 TA + 1 fees video extracted, **4 still missing** |
-| Phase 1 extracted | 15 | batch 1 (Aug-Oct 2026): 7 TA episodes + the fees video; batch 2 (Mar-Jun 2026): 7 TA videos |
-| Quote gate | 15 of 15 PASS | re-run 2026-10-14 by this session, not taken from worker reports |
-| Number gate | 15 of 15, 0 wrong | 4 benign mismatches in batch 1 (MANIFEST.csv), 0 in batch 2 |
+| Reachable | 20 | 15 TA + 1 fees video extracted, **4 still missing** |
+| Phase 1 extracted | 16 | batch 1 (Aug-Oct 2026): 7 TA episodes + the fees video; batch 2 (Mar-Jun 2026): 7 TA videos; batch 3 (Oct 2026): ep8 order book |
+| Quote gate | 16 of 16 PASS | re-run 2026-10-18, not taken from worker reports |
+| Number gate | 16 of 16, 0 wrong | 4 benign mismatches in batch 1 (MANIFEST.csv), 0 in batch 2, 0 in batch 3 |
 | Phase 1 missing | 4 | hNfjyrJEytI fMRvOt26xcA LB3DRYxnA0A _JoJbu_Ug-A (captions: HTTP 429) |
-| Hidden | 18 | not retrievable; NOT_IN_DATA (private, removed or members-only: unknown) |
-| Phase 2/3 ledger | 120 rules | 99 READY, 6 BLOCKED, 15 REJECT; 0 dead source pointers; KROWN_CONSOLIDATED.md, KROWN_RULES.csv |
+| Hidden | 17 | not retrievable; NOT_IN_DATA (private; all 17 re-checked 2026-10-18, still private) |
+| Phase 2/3 ledger | 127 rules | 105 READY, 6 BLOCKED, 16 REJECT; 0 dead source pointers; KROWN_CONSOLIDATED.md, KROWN_RULES.csv |
 | Layer spec / pre-reg | draft v0.2 | KROWN_LAYER_SPEC.md, PRE_REG_KROWN.md |
 
 ## Batch 2 changed the picture
@@ -41,5 +41,6 @@ The older note said "28 listed / 18 reachable / 10 to do". That was wrong: 11 id
 3. Other Krown sources not yet read: daily BTC event-study videos and CBP candidates (options/research/KROWN_FREE_VS_PAID.md; card
    `krown-other-sources-event-study-videos`).
 
-## 2026-10-18 update (planner)
+## 2026-10-18 update (planner & follow-through)
 - EP08 (ftK2BqggabQ, order book, TA Foundations episode 8) went public 2026-10-17; it was one of the 18 hidden ids. Extracted: 22 concepts, both gates PASS (MANIFEST row 35). The other 17 hidden ids re-checked 2026-10-18: all still private (likely unreleased episodes). Read FOUNDATIONS_EP08_IMPLICATIONS.md; follow-up card krown-foundations-ep08-follow-through.
+- Card krown-foundations-ep08-follow-through: EP08 folded into ledger as family OBK (7 rules: KR-OBK01..KR-OBK07, 0 dead pointers, 127 total rules); all 17 hidden IDs re-checked via yt-dlp on 2026-10-18 and verified still private; EP09 not yet public (weekly re-check noted in MANIFEST.csv).

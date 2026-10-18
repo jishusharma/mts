@@ -75,5 +75,22 @@ class PositioningHomeFitAudit(unittest.TestCase):
         self.assertIn("## Tally and order of cards", txt)
 
 
+MALKAN_LEDGER_PARITY = ROOT / "research" / "malkan_ledger_2026-10" / "LEDGER_PARITY.md"
+
+
+class MalkanLedgerParity(unittest.TestCase):
+    """Card malkan-ledger-parity-feasibility: the file must exist, have counts, and a verdict line."""
+
+    def test_file_exists(self):
+        self.assertTrue(MALKAN_LEDGER_PARITY.exists(), "LEDGER_PARITY.md missing")
+
+    def test_has_counts_and_verdict(self):
+        txt = MALKAN_LEDGER_PARITY.read_text(encoding="utf-8")
+        self.assertRegex(txt, r"(?m)^-?\s*Verdict:\s*(SCORABLE|HYPOTHESIS)\b", "no valid Verdict line")
+        self.assertRegex(txt, r"(?m)^-?\s*Dated calls:\s*\d+\b", "no Dated calls count line")
+        self.assertRegex(txt, r"(?m)^-?\s*RSI parity points:\s*\d+\b", "no RSI parity points count line")
+
+
 if __name__ == "__main__":
     unittest.main()
+

@@ -1,6 +1,9 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "class": "C0",
+  "closed": "2026-10-18T12:28:39Z",
   "commands": [],
   "created": "2026-10-12T05:35:53Z",
   "depends_on": [],
@@ -13,10 +16,16 @@
   "latest": [
     {
       "kind": "ship",
-      "ref": "bb9b2a837b3d",
-      "utc": "2026-10-11T20:19:20Z",
+      "line": "research/audits/session_start_ritual_2026-10-18.md: builder start 8.7 turns/26.9k tok, 3 t",
+      "ref": "2ffc6de7",
+      "utc": "2026-10-18T12:28:39Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
       "line": "B172 step 1: token audit of the relay ritual from transcripts",
-      "auto": true
+      "ref": "bb9b2a837b3d",
+      "utc": "2026-10-11T20:19:20Z"
     }
   ],
   "live_path": false,
@@ -28,7 +37,7 @@
   "refs": [
     "B183"
   ],
-  "result": "",
+  "result": "research/audits/session_start_ritual_2026-10-18.md: builder start 8.7 turns/26.9k tok, 3 trim cards",
   "scope_in": [
     "MyTradingSys/research/audits/session_start_ritual_2026-10-18.md",
     "scripts/dev/token_audit.py"
@@ -41,17 +50,17 @@
   "scope_sha": "bb9b2a837b3d",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "python scripts/dev/token_audit.py --days 3 --out <scratch>.md (read only); take first-turn input per session class (builder, relay, coordinator)",
     "for 3 recent builder session transcripts list the first 10 tool calls and bytes read (CLAUDE.md, STATUS.md, ANNOUNCEMENTS.md, sync.py start output, LESSONS_DIGEST.md)",
     "write the audit .md: table call x bytes x needed-for-this-task (yes/no/only if live-path), total start cost in turns and eq tokens, compare to B172 goals",
     "one follow-up card per real trim (tasks.py new --ref B183); close nothing in BUGS.md here"
   ],
+  "taken": "2026-10-18T12:28:36Z",
   "tests": "none (report only)",
   "title": "Audit session start ritual vs AI-health token goals",
   "updated": "2026-10-18T10:00:00Z",
   "weight": "ROUTINE",
-  "worker": "agent",
-  "class": "C0"
+  "worker": "agent"
 }
