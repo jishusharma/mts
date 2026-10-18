@@ -1399,6 +1399,16 @@ class TestExactNetRrGate(unittest.TestCase):
         self.assertIsNone(D.exact_net_rr(c))
         self.assertEqual(D.exact_rr_verdict(s, "aligned", 1.25, compute_verdict)["net_rr"], 1.25)
 
+    def test_exact_equality_with_floor_is_eligible(self):
+        from verdict import compute_verdict
+        c = cand(1, "long", "vwap", "vwap_band", proof_node("MODERATE"), 1, gross=1.25, net=1.25)
+        c["math"]["target"] = 101.25
+        floor = D.exact_net_rr(c)                       # 1249/1001: exactly at the floor, so >= passes
+        s = snap([c])
+        v = D.exact_rr_verdict(s, "aligned", floor, compute_verdict)
+        self.assertNotEqual(v["verdict"], "WAIT_RR")
+        self.assertAlmostEqual(v["net_rr"], 1.25)       # not tightened: exact is not below the floor
+
 
 if __name__ == "__main__":
     unittest.main()
