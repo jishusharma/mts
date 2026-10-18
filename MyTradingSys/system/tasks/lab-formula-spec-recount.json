@@ -15,26 +15,26 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "lab lab-formula-spec-text: BLOCKED (build)",
-      "ref": "3c4addfa2e35",
-      "utc": "2026-10-17T21:58:07Z"
+      "line": "formula_spec_text: mark the open sub-id recount test expectedFailure until lab-formula-spe",
+      "ref": "b4d4dd54b49d",
+      "utc": "2026-10-17T22:46:03Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "3c4addfa2e35 lab lab-formula-spec-text: BLOCKED (build)",
-      "ref": "MyTradingSys/backtest/layers/FORMULAS_SPEC.md",
-      "utc": "2026-10-17T21:58:07Z"
+      "line": "bc1dbe2b24d8 lab lab-formula-spec-recount: BLOCKED (build)",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-18_lab-formula-spec-recount.md",
+      "utc": "2026-10-17T22:35:31Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "MyTradingSys/research/layer_lab/formula_spec_text/test_formula_spec.py::test_shuffled_rsi_closes_are_rejected",
-  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive] | follow-up of lab-formula-spec-text run 3 (partial: families F01-F10 recounted, sub-ids F11/F18-F21 echo expected)",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive] | follow-up of lab-formula-spec-text run 3 (partial: families F01-F10 recounted, sub-ids F11/F18-F21 echo expected)\n[REVIEW 2026-10-18 by Lab_Guy(GEM-NUC) model=gemini-4-argon-low class=C2 weight=IMPORTANT]: REVIEWED:2026-10-18 ACCEPT — Spec, scope_in, steps, and done_when verified against live repo state and Lab_Guy v3.1 E1-E7 checklist.\nREVIEWED:2026-10-18 ACCEPT — Lab_Guy(GEM-NUC) model=gemini-4-argon-low class=C2 weight=IMPORTANT: Spec, scope_in, steps, and done_when verified against live repo state and Lab_Guy v3.1 E1-E7 checklist.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-17T22:16:18Z",
+  "refreshed": "2026-10-18T05:13:21Z",
   "refs": [],
   "scope_in": [
     "MyTradingSys/backtest/layers/FORMULAS.md (read)",
@@ -46,7 +46,7 @@
     "HALT files",
     "deploys"
   ],
-  "scope_sha": "3c4addfa2e35",
+  "scope_sha": "b4d4dd54b49d",
   "size": "M",
   "sources": [],
   "state": "ready",
@@ -59,5 +59,6 @@
   "tests": "remove the echo fallback first: the test must fail on the current examples.json, then pass after the fix",
   "title": "Lab: write the spec text of each FORMULAS.md entry a re-deriver needs (inputs, bar alignment, rounding, edge cases)",
   "weight": "IMPORTANT",
-  "worker": "session"
+  "worker": "session",
+  "updated": "2026-10-18T05:30:00Z"
 }

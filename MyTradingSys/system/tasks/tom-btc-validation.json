@@ -1,7 +1,10 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "class": "C1",
+  "commands": [
+    "python MyTradingSys/backtest/tom_bt.py --config MyTradingSys/research/tom_btc_2026-10-13/DEV_FROZEN.json --start 2025-04-01 --end 2025-06-30 --out MyTradingSys/research/tom_btc_2026-10-13/VALIDATION.md"
+  ],
   "created": "2026-10-13T17:31:44Z",
   "depends_on": [
     "tom-btc-dev-backtest"
@@ -11,33 +14,52 @@
   "goal": "One read of VALIDATION with DEV_FROZEN.json; PASS / FAIL / INCONCLUSIVE with power. HOLDOUT stays sealed (needs Jis's decision A7).",
   "id": "tom-btc-validation",
   "lane": "DSA-NUC",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab gap-g4-through-ticks-flag: DONE (build)",
+      "ref": "52530e64c23f",
+      "utc": "2026-10-15T14:32:14Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "68f2f372ac50 Tom on BTC plan, MTS Layers page, q11/q14 answers recorded, DAX chain held, o",
+      "ref": "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md",
+      "utc": "2026-10-13T17:44:18Z"
+    }
+  ],
   "layers": [
     "tom"
   ],
   "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] HOLD A-20261018-5: reads an unchecked lab base; start only when the base carries a trust tag >= its class (lab-trust-tag) or the operator lifts it. ROUTED 2026-10-13 (operator: GPT + DSA do the work, Claude economy): one frozen run, DSA runs the command and reports.",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:results CLASS:C1 REVIEWER:Gemini 4 Argon low + Haiku re-derive 1-3 numbers WEIGHT:CRUCIAL. HOLD-CLEARED A-20261018-5 (lifted by operator). Stays refined until depends_on tom-btc-dev-backtest is done and DEV_FROZEN.json exists.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
+  "refreshed": "2026-10-18T05:12:41Z",
   "refs": [],
   "result": "",
   "scope_in": [
-    "MyTradingSys/research/tom_btc_2026-10-13/"
+    "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md",
+    "MyTradingSys/backtest/tom_bt.py"
   ],
   "scope_out": [
     "any change to the frozen config",
     "HOLDOUT"
   ],
+  "scope_sha": "52530e64c23f",
   "size": "S",
   "sources": [
     "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4",
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2, 11"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Run once, write the verdict line."
   ],
-  "tests": "run lane",
+  "tests": "",
   "title": "Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config",
   "weight": "CRUCIAL"
 }

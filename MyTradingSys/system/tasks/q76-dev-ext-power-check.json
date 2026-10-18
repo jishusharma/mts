@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C1",
   "closed": "2026-10-17T20:00:14Z",
   "commands": [],
   "created": "2026-10-17T19:07:06Z",
@@ -14,6 +15,13 @@
   "lane": "CODEX",
   "latest": [
     {
+      "auto": true,
+      "kind": "report",
+      "line": "48306e025f33 lab q76-dev-ext-power-check: DONE (audit)",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-18_q76-dev-ext-power-check.md",
+      "utc": "2026-10-17T20:00:19Z"
+    },
+    {
       "kind": "ship",
       "line": "1207 total vs 2427; 545 DEV_EXT days; MyTradingSys/research/layer_lab/reports/2026-10-18_q",
       "ref": "c1e38e8a",
@@ -22,11 +30,11 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "Operator 2026-10-18: nobody else will pick this up; filed so it is not lost. Rough prior (NOT a result): 2020-2021 is about 730 days, so the total is probably below 2,427.",
+  "note": "REVIEWED-RETRO:2026-10-18 T0-ONLY LAB:results CLASS:C1 REVIEWER:Claude Haiku blind-then-reveal TRUST:UNCHECKED | Operator 2026-10-18: nobody else will pick this up; filed so it is not lost. Rough prior (NOT a result): 2020-2021 is about 730 days, so the total is probably below 2,427.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-17T19:07:06Z",
+  "refreshed": "2026-10-18T05:13:05Z",
   "refs": [],
   "result": "1207 total vs 2427; 545 DEV_EXT days; MyTradingSys/research/layer_lab/reports/2026-10-18_q76-dev-ext-power-check.md",
   "scope_in": [

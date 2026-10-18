@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-18T05:13:05Z",
   "commands": [],
   "created": "2026-10-17T21:33:44Z",
   "depends_on": [],
@@ -14,18 +15,24 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "q76-dev-ext-power-check stamped REVIEWED-RETRO CLASS:C1 TRUST:UNCHECKED; Haiku blind re-de",
+      "ref": "c99625b0",
+      "utc": "2026-10-18T05:13:05Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "lab_guy: findings ledger 2026-10-18, 2 defect cards, Haiku re-derivation of power_mde",
-      "ref": "ae143428070e",
-      "utc": "2026-10-17T21:35:03Z"
+      "line": "labguy-pass-b: Lab_Guy ACCEPT stamps for 5 cards (b187 done, audit/rv05-h2/h3 C1, g7 raise",
+      "ref": "dfb243d4cc83",
+      "utc": "2026-10-18T04:13:20Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "ae143428070e lab_guy: findings ledger 2026-10-18, 2 defect cards, Haiku re-derivation of p",
+      "line": "dfb243d4cc83 labguy-pass-b: Lab_Guy ACCEPT stamps for 5 cards (b187 done, audit/rv05-h2/h3",
       "ref": "MyTradingSys/research/lab_guy/FLOW_2026-10-18.md",
-      "utc": "2026-10-17T21:35:03Z"
+      "utc": "2026-10-18T04:13:20Z"
     }
   ],
   "layers": [],
@@ -35,9 +42,9 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-18T03:35:16Z",
+  "refreshed": "2026-10-18T05:13:05Z",
   "refs": [],
-  "result": "",
+  "result": "q76-dev-ext-power-check stamped REVIEWED-RETRO CLASS:C1 TRUST:UNCHECKED; Haiku blind re-derivation (1,207 vs 1,215 days, 0.7 percent apart) appended to 2026-10-18_q76-dev-ext-power-check.md.",
   "scope_in": [
     "MyTradingSys/system/tasks/q76-dev-ext-power-check.json",
     "MyTradingSys/research/layer_lab/reports/2026-10-18_q76-dev-ext-power-check.md",
@@ -48,10 +55,10 @@
     "bug_b187_evidence.txt",
     "recomputing the count (b187-prereg-v2-correction does that)"
   ],
-  "scope_sha": "ae143428070e",
+  "scope_sha": "dfb243d4cc83",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "q76 card: keep weight B-SHARED (tasks.py resets it while b187 cites the report), prepend REVIEWED-RETRO:2026-10-18 T0-ONLY LAB:results CLASS:C1 REVIEWER:Claude Haiku blind-then-reveal TRUST:UNCHECKED",
     "append a section \"Haiku blind re-derivation (from FLOW_2026-10-18.md:7)\" to the report: lab 545+662=1,207 days, Haiku 549+666=1,215 (0.7 percent apart), events +3.3 and +2.1 percent (outside the 1 percent freeze bar, stop-basis cause untested), headline holds (about 1,210 of 2,427)",

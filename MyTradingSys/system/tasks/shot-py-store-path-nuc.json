@@ -23,7 +23,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none (no code, no lab). DECISION (OURS): ingest into whichever machine's store runs it; the PNGs stay out of git.",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:none CLASS:C0 REVIEWER:none (no code, no lab). DECISION (OURS): ingest into whichever machine's store runs it; the PNGs stay out of git.",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
@@ -52,5 +52,6 @@
   "tests": "Existing: python -m pytest scripts/dev/test_shot.py -q passes (git 2.24 case at line 451); no new code.",
   "title": "shot.py ingest fails on JIS-NUC (git-common-dir flag echoed into the store path); then land the 2 CoinGlass PNGs from branch shots-inbox/2026-10-12-1532 and delete that branch",
   "weight": "ROUTINE",
-  "worker": "agent"
+  "worker": "agent",
+  "updated": "2026-10-18T05:30:00Z"
 }
