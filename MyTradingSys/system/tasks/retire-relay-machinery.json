@@ -1,0 +1,71 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest -q MyTradingSys/tests/docs"
+  ],
+  "created": "2026-10-18T21:55:32Z",
+  "depends_on": [
+    "host-legacy-tasks-unregister"
+  ],
+  "done_when": "wiring_scan.py --check PASS, run_all_tests.py full gate green, git grep of each archived name outside archive and research returns only pointers.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Nothing retired by SCHEDULING_POLICY.md stays runnable: relay.py, tick, dispatch_gate, go, autogo, run_worker, pick_task, register_*.ps1 and relay_prompts/ move to _archive/ with their tests.",
+  "id": "retire-relay-machinery",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "RELAY.md: trim turn-meter line under 6144 B",
+      "ref": "36b7611a4095",
+      "utc": "2026-10-18T15:29:56Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "36b7611a4095 RELAY.md: trim turn-meter line under 6144 B",
+      "ref": "MyTradingSys/system/RELAY.md",
+      "utc": "2026-10-18T15:29:56Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "MTS_Doctor arch-cleanup 2026-10-19",
+  "refreshed": "2026-10-18T21:57:49Z",
+  "refs": [
+    "MyTradingSys/system/ARCHITECTURE.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/sched/",
+    "scripts/sched/relay_prompts/",
+    "MyTradingSys/tests/test_relay*.py",
+    "MyTradingSys/system/RELAY.md"
+  ],
+  "scope_out": [
+    "live-path trading code",
+    "pipeliner.md, desk.py, role_loader.py, sync.py while traffic-controller is active"
+  ],
+  "scope_sha": "36b7611a4095",
+  "size": "M",
+  "sources": [],
+  "state": "refined",
+  "steps": [
+    "Confirm host-legacy-tasks-unregister is done (no NB task runs scripts/sched).",
+    "For each file grep callers on trunk; git mv the dead ones to _archive/<date>-scripts-sched/.",
+    "Keep relay.py lint (NEXT_SESSION format) or move it to scripts/dev/handoff_lint.py; update RELAY.md, test_relay_prompts.py, test_turn_meter.py strings.",
+    "Full gate, ship."
+  ],
+  "tests": "MyTradingSys/tests/docs/test_integrity.py plus a new test that no file in scripts/sched imports an archived module (fails before the move).",
+  "title": "Retire the relay machinery in scripts/sched and relay_prompts",
+  "weight": "",
+  "worker": "session"
+}

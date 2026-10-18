@@ -1,0 +1,60 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest -q MyTradingSys/tests/docs"
+  ],
+  "created": "2026-10-18T21:57:03Z",
+  "depends_on": [
+    "retire-relay-machinery",
+    "deploy-runbook-manual-world"
+  ],
+  "done_when": "test_6 fails on a fixture RETIRED doc and passes on trunk.",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "A doc retired in place cannot stay in system/: BANNER_RE also matches RETIRED in the first 5 lines.",
+  "id": "banner-test-retired",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "B16-B18: claim skips new-files-only dated-folder tasks, release hint, lane-health heartbea",
+      "ref": "33fb256d99a1",
+      "utc": "2026-10-17T08:42:23Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "MTS_Doctor arch-cleanup 2026-10-19",
+  "refreshed": "2026-10-18T21:57:53Z",
+  "refs": [
+    "MyTradingSys/system/ARCHITECTURE.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tests/docs/test_integrity.py"
+  ],
+  "scope_out": [
+    "moving docs (the two depends_on cards do that)"
+  ],
+  "scope_sha": "33fb256d99a1",
+  "size": "S",
+  "sources": [],
+  "state": "refined",
+  "steps": [
+    "Add RETIRED to BANNER_RE.",
+    "Run it before the depends_on cards land (must fail), after (must pass).",
+    "Ship."
+  ],
+  "tests": "MyTradingSys/tests/docs/test_integrity.py",
+  "title": "test_integrity test_6 also fails on RETIRED banners in system/",
+  "weight": "",
+  "worker": "agent"
+}
