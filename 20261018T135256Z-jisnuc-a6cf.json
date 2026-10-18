@@ -1,0 +1,1 @@
+{"t": "20261018T135256Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "start gemini-review-g5 2>&1 | grep -iE \"WORKTREE|branch|switch\" | head; python scripts/dev/sync.py where 2>&1 | head -5"}
