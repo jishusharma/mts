@@ -1,0 +1,1 @@
+{"t": "20261018T175512Z", "from": "jis-nuc/sharma", "to": "all", "kind": "claim", "text": "claim ru10-role-texts 2>&1|tail -1; python scripts/dev/tasks.py check [cut] 2>&1|tail -8; python scripts/dev/tasks.py --help 2>&1|head -20"}
