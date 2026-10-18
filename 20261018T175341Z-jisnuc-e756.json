@@ -1,0 +1,1 @@
+{"t": "20261018T175341Z", "from": "jis-nuc/sharma", "to": "all", "kind": "claim", "text": "claim \"ru10-role-texts\" 2>&1|tail -2; cd $W/MyTradingSys/system/roles; grep -n -i compact eagle_eyes.md; head -1 eagle_eyes.md lab_guy.md pipeliner.md; grep -n -i -B2 -A6 \"stamp\" lab_guy.md; grep -n -"}
