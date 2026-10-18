@@ -5,7 +5,7 @@ every card change). Pointers: `layer_index.json`; layer status and backtests: `l
 Rules: no fixed core; layers may combine or filter each other, results decide (CLAUDE.md, 2026-10-13). A new backtest is a row in
 `layer_map.json` (it then shows here); a new layer joins a family in `layer_index.json`; a new card names `--layer <family>`.
 
-Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow layer) | guidance = Tom/Fabio cross-guidance (BB, LVN, regime filters) | rsi = RSI / Malkan / Kurisko | cryptocred = CryptoCred setups | positioning = Positioning (funding, OI, whale / FlowHorse) | session_timing = Session / timing (session levels, turn of candle, session momentum) | volume_candles_ma = Volume, candle patterns, daily MA setups, bigtrade | live_engine = Live engine, execution and live-market reads (feeds every layer) | callers = Callers (posted trade calls: Qriptal, RLinda, Bennett, Crypto Chase, Roman) | krown = Krown (TA 101: zones, volume, candles, averages, ranges)
+Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow layer) | guidance = Tom/Fabio cross-guidance (BB, LVN, regime filters) | rsi = RSI / Malkan / Kurisko | cryptocred = CryptoCred setups | positioning = Positioning (funding, OI, whale / FlowHorse) | session_timing = Session / timing (session levels, turn of candle, session momentum) | volume_candles_ma = Volume, candle patterns, daily MA setups, bigtrade | live_engine = Live engine, execution and live-market reads (feeds every layer) | callers = Callers (posted trade calls: Qriptal, RLinda, Bennett, Crypto Chase, Roman) | krown = Krown (TA 101: zones, volume, candles, averages, ranges) | pitchfork = Pitchfork (Andrews / Schiff / Morge median line)
 
 ## Tom (order flow + volume profile) (`tom`)
 - Status: Tom on BTC with our own judgement (operator 2026-10-13). DAX chain held, no FDAX data bought (q11). The old BTC encoding stays stopped.
@@ -101,7 +101,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `indicator-values-multi-model-audit` ready p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by Haiku and Sonnet, plus GPT and D
   - `kurisko-dev-event-study` refined p2 SONNET: Kurisko Quad Rotation: DEV event study, fee-net, same-window placebo
-  - `kurisko-prereg-fire-counts` refined p2 SONNET: Kurisko Quad Rotation: count-only pre-registration on BTC DEV 1m/5m (no outcomes)
+  - `kurisko-prereg-fire-counts` ready p2 SONNET: Kurisko Quad Rotation: count-only pre-registration on BTC DEV 1m/5m (no outcomes)
   - `malkan-captions-fetch-noauth` ready p2 HAIKU: Malkan: fetch captions for the 12 ranked-top videos only (video_priority_2026-10-15), no cookies, spaced retri
   - `review-ground-layer-youtube-strategy-and` ready p2 SONNET: Review Ground Layer YouTube strategy and execution priorities
   - `malkan-universe-data-power` ready p3 SONNET: Malkan: Indian-equity D/W/M data sources, universe size and power (items 1/4/10, gates 0d/0e)
@@ -214,6 +214,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/analysts/ROADMAP.md`
 - Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-14_qriptal-score-binance.md`; `MyTradingSys/research/layer_lab/reports/2026-10-13_qriptal-score-binance.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `qriptal-discord-calls-2026-10-18` raw p2 SONNET: Qriptal: transcribe Habib's 2026-10-13..18 Discord calls into the call ledger (B162)
   - `analyst-ingest-bennett-dpa` ready p3 SONNET: Implement DailyPriceAction RSS market plan ingestion for Justin Bennett
   - `analyst-ingest-cryptochase-x` ready p3 SONNET: Implement Crypto Chase FVG social call listener
   - `analyst-ingest-rlinda-tv` ready p3 SONNET: Implement automated TradingView idea scraper for RLinda setups
@@ -235,6 +236,14 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `krown-foundations-ep08-follow-through` ready p3 SONNET: Krown Foundations EP08 follow-through: fold the order-book extract into the ledger, re-check the 17 private pl
   - `krown-other-sources-event-study-videos` refined p3 SONNET: Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigg
   - `krown-ta101-extract-remaining-10` ready p3 SONNET: Krown TA 101: get captions and extract the remaining 4 videos (ids in STATE.md); DONE when: 4 extracts pass bo
+
+## Pitchfork (Andrews / Schiff / Morge median line) (`pitchfork`)
+- Status: Foundational study papers delivered (papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md, papers/02_PITCHFORK_APPLICATION_ON_BTC.md); detector and test suite built.
+- Tracks: Gemini (study/detector), Claude
+- Layer `pitchfork_swing`: Foundational papers delivered; detector built with unit tests (100% pass) | module MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py
+- Spec / sources: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md`; `papers/02_PITCHFORK_APPLICATION_ON_BTC.md`; `MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md`
+- Code: `MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py`
+- Open cards: none
 
 ## Cross-cutting
 

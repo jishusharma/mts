@@ -896,6 +896,10 @@
     "MyTradingSys/backtest/layers/krown/run_recall_check.py": {
       "disp": "REPRO",
       "why": "Rebuilds research/krown_ta101_2026-10-13/RECALL.md (and RECALL_PREREG.md with --prereg) from the checksum-verified DEV daily klines and the Krown v0 detectors; cited in RECALL.md; run by hand, no live process imports it."
+    },
+    "MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py": {
+      "disp": "TOOL",
+      "why": "Geometric Pitchfork channel and median line detection engine for Andrews, Schiff, and Modified Schiff variants; covered by test_pitchfork_detector.py; registered in layer_index.json and layer_map.json."
     }
   },
   "MyTradingSys/research/layer_lab/candle_pattern_event_table/event_table.py": {
