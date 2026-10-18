@@ -103,7 +103,9 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `indicator-values-multi-model-audit` ready p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by GPT, DSA, Haiku, Sonnet and Opus
   - `malkan-captions-fetch-noauth` ready p2 HAIKU: Malkan: fetch captions for the 12 ranked-top videos only (video_priority_2026-10-15), no cookies, spaced retri
-  - `malkan-home-fit-audit` ready p4 SONNET: Home-fit audit of the Malkan RSI layer against the readiness checklist
+  - `malkan-ledger-parity-feasibility` ready p3 SONNET: Malkan: dated-call ledger feasibility and RSI parity points (items 2/3/5, gate 0c)
+  - `malkan-universe-data-power` ready p3 SONNET: Malkan: Indian-equity D/W/M data sources, universe size and power (items 1/4/10, gates 0d/0e)
+  - `malkan-prereg-dwm-equities` refined p4 SONNET: Malkan: pre-registration for the D/W/M equity home test (items 6/7/8/9/11/12, gates 0a/0f)
 
 ## CryptoCred setups (`cryptocred`)
 - Status: S/R flip + fib pullback + failed MSB FAIL after trade-through rerun; stop buffer unsourced (B143).
