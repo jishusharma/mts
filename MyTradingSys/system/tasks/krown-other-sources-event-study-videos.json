@@ -3,9 +3,7 @@
   "asks": "",
   "commands": [],
   "created": "2026-10-14T15:57:19Z",
-  "depends_on": [
-    "krown-ta101-extract-remaining-10"
-  ],
+  "depends_on": [],
   "done_when": "V2 extracts pass verify_extract_quotes.py; research/krown_ta101_2026-10-13/CALL_LEDGER.csv has one row per call with date, side, trigger, target, outcome as he states it; the calls are split design/check by date",
   "est_turns": 30,
   "from_inbox": "",
@@ -16,7 +14,7 @@
     "krown"
   ],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. UNBLOCKED 2026-10-18: no hold; waits only on depends_on krown-ta101-extract-remaining-10 (ready). Moved blocked -> refined so check promotes it when the dep is done. Free YouTube pre-approved, STOP on 429. | [PLAN 2026-10-18 weight=ROUTINE lab-touch: no, protocol skipped] waits on its depends_on cards; release when they are done\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C1 weight=IMPORTANT); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
+  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:none CLASS:C1 REVIEWER:none WEIGHT:IMPORTANT. UNBLOCKED 2026-10-19: depends_on krown-ta101-extract-remaining-10 dropped per GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md s6.1; this card is the approved surgical Krown BTC daily event-study video extraction target (s6.2 item 3). Use Gemini search grounding (gemini_queue.py) or offline paste to avoid yt-dlp HTTP 429.",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
