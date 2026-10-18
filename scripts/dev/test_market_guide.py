@@ -210,3 +210,12 @@ def test_market_guide_build_prints_volume_line(tmp_path):
     assert "effort vs result, match OI scope" in text
     assert "descriptive only" in text
 
+
+
+def test_falsifier_status_available_in_market_guide():
+    # score-context-reads-automatically-carrie scope_in includes market_guide.py
+    assert hasattr(mg, "falsifier_status")
+    # SOURCED line: "Falsify: acceptance under 82630" (test_shot.py:211)
+    # Level broken by close (OURS fixture)
+    res = mg.falsifier_status("Falsify: acceptance under 82630", [{"o": 82700, "h": 82750, "l": 82500, "c": 82550}])
+    assert res == "BROKEN"
