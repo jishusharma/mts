@@ -4,28 +4,69 @@
   "commands": [],
   "created": "2026-10-14T11:26:02Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "SLIPPAGE.md with n, median, p90 (bp and R at 0.40 % stop) for each of 3 buckets (n >= 500 events each or marked THIN), days.csv, TRIALS.md rows, test passes, raw aggTrades deleted.",
+  "effort": "medium",
+  "est_turns": 30,
   "from_inbox": "",
-  "goal": "",
+  "goal": "Measure BTCUSDT stop-order slippage proxy from public aggTrades: price of the first trade at or beyond a level minus the level, per volatility bucket (low/mid/high day range), in bp and in R, so backtests can replace slip=0.0 (tom_bt.py:176) with a measured median.",
   "id": "gap-g7-stop-slippage",
-  "kind": "run",
-  "lane": "CODEX",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab gap-g4-through-ticks-flag: DONE (build)",
+      "ref": "52530e64c23f",
+      "utc": "2026-10-15T14:32:14Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "5a839bfb4430 gap review follow-up: sources checked, G2 spread measured, cards G1-G8 filed",
+      "ref": "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md",
+      "utc": "2026-10-14T11:26:35Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:GPT medium+Haiku re-derive DECISION (OURS): window moved from 2024-12-01..2025-03-31 (after the repo DEV cut 2024-07-01, i.e. VALIDATION) to DEV 2022-01-01..2024-06-30; inputs are raw public klines/aggTrades, not a derived lab base, so no HOLD; output is a new shared number (proposal, OURS). LANE moved CODEX->SONNET 2026-10-18: Needs network (aggTrades fetch); GPT lab sandbox blocks sockets (WinError 10013). REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT proposes the BTC slippage default. DISPATCH lane CODEX (JIS-NUC lab), public fetch: aggTrades are NOT on the NUC (only tom_raw klines + orderflow_1m bars); data.binance.vision is public. If the fetch fails twice, reroute to DSA-NB (JIS-NB), do not force. Verify: sha + empty git cherry + ls-tree lists files.",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T20:21:58Z",
   "refs": [
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "G7 measure BTC stop slippage from aggTrades by volatility bucket"
+  "scope_in": [
+    "MyTradingSys/backtest/tom_bt.py",
+    "MyTradingSys/backtest/maker_model.py",
+    "MyTradingSys/backtest/fetch_binance_archive.py",
+    "MyTradingSys/backtest/bt/bt_data.py",
+    "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
+  ],
+  "scope_out": [
+    "tom_bt.py / maker_model.py edits (read only; the default change is a proposal)",
+    "any day on or after 2024-07-01 (VALIDATION/HOLDOUT)",
+    "live tree"
+  ],
+  "scope_sha": "52530e64c23f",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md section 5 G7 (tom_bt.py:176 slip=0.0; maker_model.py:19 not modelled)",
+    "MyTradingSys/backtest/fetch_binance_archive.py:13 (aggTrades size)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Tests first (red): first_trade_beyond(trades, level, side) hand cases: gap through the level returns price - level, exact hit returns 0, no trade beyond returns None; bucket assignment by tercile.",
+    "From 1m klines (F:/MTS/data/tom_raw via bt_data.load_klines, end_ms=2024-07-01) compute daily range % for DEV days 2022-01-01..2024-06-30; sort; take 4 evenly spaced days per tercile (12 days, OURS) into days.csv.",
+    "Fetch aggTrades for those 12 days with fetch_binance_archive.py --datasets aggTrades into a scratch dir (about 0.1-0.3 GB zipped/day); delete the raw after the summary is written.",
+    "Per day, for every round-100 USD level crossed up or down (OURS proxy for stop levels): slip_bp = |first trade beyond - level| / level * 1e4 and slip in R at stop widths 0.20/0.40/0.80 %.",
+    "Write research/gap_g7_stop_slippage_2026-10-18/SLIPPAGE.md + events summary: n, median, p90 per bucket; name it a trade-through proxy (no own-size impact); propose a default, label OURS; one row per run in layer_lab/TRIALS.md."
+  ],
+  "tests": "test_slippage.py (new, in the output folder) fails before slippage.py exists, passes after: python -m pytest MyTradingSys/research/gap_g7_stop_slippage_2026-10-18/test_slippage.py -q",
+  "title": "G7 measure BTC stop slippage from aggTrades by volatility bucket",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

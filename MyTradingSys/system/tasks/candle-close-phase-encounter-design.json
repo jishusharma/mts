@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T11:21:40Z",
   "commands": [],
   "created": "2026-10-14T12:10:19Z",
   "depends_on": [],
@@ -11,6 +12,12 @@
   "id": "candle-close-phase-encounter-design",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "PHASE_ENCOUNTER_PRE_REG.md: 16 confirmatory tests / 44 views, 12 slots answered, build blo",
+      "ref": "e2655c5c",
+      "utc": "2026-10-17T11:21:40Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -37,7 +44,7 @@
   "refined_by": "Codex independent audit 2026-10-14",
   "refreshed": "2026-10-17T08:58:56Z",
   "refs": [],
-  "result": "",
+  "result": "PHASE_ENCOUNTER_PRE_REG.md: 16 confirmatory tests / 44 views, 12 slots answered, build blocked by B1-B6; spec audit 7 tests pass",
   "scope_in": [
     "MyTradingSys/research/layer_lab/candle_close_2026-10-14/INDEPENDENT_AUDIT.md",
     "MyTradingSys/research/layer_lab/candle_close_2026-10-14/NEXT_EXPERIMENT.md",
@@ -54,7 +61,7 @@
     "MyTradingSys/research/layer_lab/candle_close_2026-10-14/INDEPENDENT_AUDIT.md",
     "MyTradingSys/research/layer_lab/candle_close_2026-10-14/AUDIT_REPRODUCTIONS.json"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read audit A1-A5 and NEXT_EXPERIMENT.md; define directional, range-boundary, volatility and timeframe-alignment features using only available bars.",
     "Specify exact encounter IDs, confirmation/control timestamps, matching and censoring; include failed and untriggered encounters. Label every numerical choice OURS.",

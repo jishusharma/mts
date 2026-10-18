@@ -5,8 +5,8 @@ A **super session** is one coordinator session in the Claude Code Win App that s
 meter has headroom (Pacing below). First one: 2026-10-15, coordinator local_62faa820 (Opus), about 20 linked workers, an Opus
 observer, and a second coordinator (coord-2) that drained the ship queue at the end.
 
-While a super session runs, the relay is paused: the coordinator IS the dispatcher. When none runs, the relay (MTS-DispatchGate +
-`mts-dispatcher` routine, RELAY.md) keeps the queue moving at the pace the meter allows.
+While a super session runs, the relay is paused: the coordinator IS the dispatcher. When none runs, nothing moves on its own: no relay, dispatcher or routine (MTS-DispatchGate and `mts-dispatcher` RETIRED 2026-10-17, see SCHEDULING_POLICY.md).
+For "schedule the next 5h/10h" the coordinator writes the card order into a plan file and works it.
 
 ## Audit of the first one (2026-10-15, 139 transcripts in the last ~24 h, scripts: transcript usage blocks)
 | What | Number |
@@ -72,7 +72,7 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
   takes only an hours number (no --since): for 'after 12:00Z' use the hours since then.
 - Waking: other sessions send no idle notices. Use ONE background shell watcher (`git fetch` every 5 min; exit on a file landing
   on origin/fast-track or after 50 min), and on every wake `python scripts/sched/relay.py heartbeat "<id>" --note "<what>"`.
-- JIS-NB has no MTS-DispatchGate Windows task; the `mts-dispatcher` routine runs in the live tree, so relay/watchdog code only
+- (RETIRED 2026-10-17, see SCHEDULING_POLICY.md) JIS-NB has no MTS-DispatchGate Windows task; the `mts-dispatcher` routine runs in the live tree, so relay/watchdog code only
   takes effect after a deploy.
 - `tasks.py` has no host field: `lane` carries it (JIS-NB, CODEX, DSA-NUC, SONNET, HAIKU). Ready list: `tasks.py list | grep ready`.
   Cards that change the live tree or scheduled tasks (nb-*) are operator-side.
@@ -87,7 +87,7 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
 - CI: `gh run list -R jishusharma/mts --branch fast-track --limit 5` on EVERY wake and after every ship wave (CI sat red 2 h
   unnoticed on 10-16 while a coordinator wrote prompts). New research test files must be registered in run_all_tests /
   run_extra_tests.EXTRA or skipped with a reason (B150, gate step 3gd); study scripts need a `wiring_registry.json` entry.
-- AutoDeploy gate (`MyTradingSys/runtime/sched/auto_deploy_last.json`, lock in `runtime/sched/locks/`): about 5 min on an idle
+- (RETIRED 2026-10-17, see SCHEDULING_POLICY.md) AutoDeploy gate (`MyTradingSys/runtime/sched/auto_deploy_last.json`, lock in `runtime/sched/locks/`): about 5 min on an idle
   host, 16+ min under load, and it times out (25 min, old live copy) when workers, ASR or pytest extras saturate the 8 CPUs.
   Start NO CPU-heavy worker while a gate runs; a red sha is not re-gated (RED_KNOWN) until a newer green exists; STOP_DIRTY names
   the live file (`git --no-optional-locks -C <live> status --short --untracked-files=no`); only the session that owns live-tree
@@ -115,6 +115,7 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
   5-screenshot-read cap per thread.
 
 ## Session log (newest first; one line each, last 5)
+- DOCTOR-NB-1017 (2026-10-17, Sonnet): post-B1/B4 `traffic_report.py 24` = 631 commits, overhead 60% (merge 34, claim 13, release 13), was 68% pre-B1; doctor findings 3 -> 2 (remaining: relay skill 'Output caps' line is intentionally per-skill).
 - 2026-10-17 super-nuc-1017b (JIS-NUC, Opus coordinator, 3 Agents, 03:20Z-03:50Z): boot 12 tool turns (prior session's NEXT_SESSION on origin, not the stale shared checkout); Q85 BLOCKED e5988045, fire CSVs relabelled + 3 DEV reruns (no verdict change) 450636f4, 7 luna cards + g3-blindness-audit-rerun 1d2c875f; T07/T08 still absent. Learned: two of three workers exceeded 100k (should have been sessions); the operator could not see Agents in the sidebar.
 - 2026-10-17 super-nuc-1017 (JIS-NUC, Sonnet coordinator + 3 Agents + 1 triage session, ~8 h): context-compare-close shipped; CI green x3, 163 tests pass; traffic 24 h = 849 commits, overhead 64% (was 68%; re-measure on a window after 2026-10-16 12:00Z); lab BLOCKED cause = no data path in the briefs (fixed, 6a9d63d3); bigtrade DEV leak (DEV_END_MS) fixed 5b1bdc27; fires_kline SPLITS aligned to the repo split 23fb3c7d (old TRAIN fires contaminated, F: CSVs still carry the old split column); lab unstuck (wiring-gate STALE rule 984dbe74, prompt lint line 7eb5b5c8). Weekly 29% at stop. T07/T08 verdicts never landed, so Q87/Q88/confluence-read-encode/prob-dist were NOT started.
 - 2026-10-16 JIS-NUC lagging-tasks super session: layer readiness census; 5 live adapters plus wlow side wired (W3, live in
@@ -141,12 +142,14 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
    the file the card reads from it; if it reads nothing from it, it is not blocked. Holds with no named defect are released (`tasks.py apply-op <id> release`).
    The GPT/Codex lane never idles while a gptb-* or gpt-* card is ready.
 
+14. **Session_Planner (operator 2026-10-17).** The coordinator runs the Session_Planner role (`roles/session_planner.md`) as a foreground Sonnet Agent at boot and on every wake with a free worker slot: it refines raw cards, returns the dispatch table (agent vs session, model, file cluster, weight), lifts blocks that name no live defect and lists stale claims, idle sessions and shipped worktrees for cleanup. Never dispatch a `raw`/`refined` card (2026-10-17: three Haiku workers came back empty on raw cards). Weight CRUCIAL = rule 11 review Agent; CRITICAL = a review session spawned mid-session (plan) and pre-ship (diff), counted in the 4-session cap. Both coordinator prompts carry this line.
+
 ## Start (operator: open a new session, model Opus, paste the prompt below)
 The coordinator, on its first turn: `get_usage` (stop if the Pacing state is THROTTLE), `python scripts/sched/relay.py stop
 "super-session <session id>"` on this machine, read STATUS.md and NEXT_SESSION.md, then spawn.
 
 Heartbeat (watchdog): on every wake the coordinator runs `python scripts/sched/relay.py heartbeat "<session id>" --note "<what>"`
-(rewrites `~/.claude/mts-super-heartbeat.json`: coordinator, host, utc, note; not in git). MTS-DispatchGate runs `relay.py watchdog`
+(rewrites `~/.claude/mts-super-heartbeat.json`: coordinator, host, utc, note; not in git). MTS-DispatchGate (RETIRED 2026-10-17, see SCHEDULING_POLICY.md) ran `relay.py watchdog`
 first: a stop starting `super-session` with a heartbeat missing, malformed or older than 60 min is resumed (logged `watchdog_resume`); any other stop never.
 
 ## End
@@ -159,7 +162,7 @@ republish to claude.ai/artifact/9nqpZeMeEehadoBoYopZU3 from the jishusharma1985 
 | State | Condition | What runs |
 |---|---|---|
 | SPEND | U < 100 f - 10, or less than 24 h to the reset with U < 85 | super session worth starting; relay on Sonnet; Fable cards allowed (operator starts them) |
-| NORMAL | between | relay on its normal cadence, Sonnet builders, Haiku dispatcher |
+| NORMAL | between | (relay and Haiku dispatcher RETIRED 2026-10-17, see SCHEDULING_POLICY.md) Sonnet builders, coordinator dispatches |
 | THROTTLE | U > 100 f + 5, or the 5-hour window > 80 % | only model-free work: Codex lab, DSA desk, CI; relay KICKs wait |
 Today (10-15 17:45Z): f = 0.27, U = 32 -> NORMAL. The meter is only readable from an App session (`get_usage`), so the
 coordinator (and any KICK session) writes it to `~/.claude/mts-budget.json` (not in git); the gate treats a reading older than 6 h as NORMAL.

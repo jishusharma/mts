@@ -207,6 +207,16 @@ class DeclutterTemplateTest(unittest.TestCase):
         self.assertEqual(self.tpl.count("${esc(x.text)}"), 2)  # clipped summary uses slice; full text rendered once per branch
 
 
+class LayersPageLinkTest(unittest.TestCase):
+    """The Control Room links to the MTS Layers page; it no longer carries a second layer table."""
+    tpl = (Path(__file__).resolve().parent / "control_room.tpl.html").read_text(encoding="utf-8")
+
+    def test_control_room_links_layers_page(self):
+        self.assertNotIn('id="layers"', self.tpl)
+        self.assertIn("https://claude.ai/artifact/7eeXJJ9Sb44LaJeCu8jxfJ", self.tpl)  # MTS Layers, registry single_owner
+        self.assertIn("MTS Layers", self.tpl)
+
+
 class InboxItemWithoutRefTest(unittest.TestCase):
     """B181: an Inbox item with no ref (or no reply) still shows status + reply + ref, never nothing."""
     tpl = (Path(__file__).resolve().parent / "control_room.tpl.html").read_text(encoding="utf-8")

@@ -1,0 +1,54 @@
+{
+ "approved_by": "",
+ "asks": "",
+ "commands": [],
+ "created": "2026-10-18T03:57:28Z",
+ "depends_on": [
+  "kurisko-prereg-fire-counts"
+ ],
+ "done_when": "RESULT.md with every frozen cell verdicted, layer_map.json row, VERDICTS.csv backfilled; no unfrozen cell present. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+ "est_turns": 30,
+ "formula_id": "",
+ "formula_ids": [],
+ "from_inbox": "",
+ "goal": "The one DEV run of the frozen Kurisko PRE_REG cells: fee-net forward outcome against a same-window random-clock placebo, Holm over the frozen cells. No cell added or changed after the first outcome; VALIDATION and HOLDOUT untouched.",
+ "id": "kurisko-dev-event-study",
+ "lane": "SONNET",
+ "layers": [
+  "rsi"
+ ],
+ "live_path": false,
+ "mutation_check": "",
+ "note": "REVIEWED:2026-10-18 T0-ONLY LAB:results CLASS:C2 REVIEWER:GPT medium plus Gemini Flash second look on RESULT.md WEIGHT:IMPORTANT. Holdout stays sealed. A result that contradicts the PRE_REG gets reported, not re-cut. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+ "prio": 2,
+ "refine_tries": 0,
+ "refined_by": "",
+ "refs": [],
+ "result": "",
+ "scope_in": [
+  "MyTradingSys/research/kurisko_2026-10-18/",
+  "MyTradingSys/backtest/layers/kurisko/",
+  "MyTradingSys/system/layer_map.json",
+  "MyTradingSys/research/VERDICTS.csv"
+ ],
+ "scope_out": [
+  "VALIDATION and HOLDOUT reads",
+  "new cells or parameters",
+  "live wiring"
+ ],
+ "size": "M",
+ "sources": [
+  "MyTradingSys/research/kurisko_2026-10-18/PRE_REG.md (written by the previous card)"
+ ],
+ "state": "refined",
+ "steps": [
+  "read PRE_REG.md; the run script refuses to start if the PRE_REG commit does not precede this run or a cell differs from the frozen list",
+  "run each cell once: fee-net R (14 bp round trip plus funding), MFE/MAE, 200 random-clock placebos, Holm",
+  "RESULT.md: effect, CI, verdict PASS / FAIL / INSUFFICIENT-N per cell; verdicts.py backfill; add the layer_map.json row under family rsi",
+  "if a cell passes DEV: create ONE VALIDATION card; otherwise close the layer as NO EDGE with the numbers"
+ ],
+ "tests": "test_run_dev.py: the guard refuses a PRE_REG with a changed cell; fails before the guard exists",
+ "title": "Kurisko Quad Rotation: DEV event study, fee-net, same-window placebo",
+ "weight": "IMPORTANT",
+ "worker": "session"
+}

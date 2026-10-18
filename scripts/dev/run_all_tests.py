@@ -340,6 +340,7 @@ def build_plan(quick):
     add("3b", "User guide checker tests", [sys.executable, "scripts/dev/test_check_guide.py"], "Step 3b: Guide checker tests")
     add("3c", "User guide in sync with mts.ps1", [sys.executable, "scripts/dev/check_guide.py"], "Step 3c: Guide in sync")
     add("3r", "Alert rate checker tests", [sys.executable, "scripts/dev/test_alert_rate_check.py"], "Step 3r: Alert rate checker tests")
+    add("3cv", "Chart verify (RSI/BB/StochRSI) tests", [sys.executable, "scripts/dev/test_chart_verify.py"], "Step 3cv: Chart verify tests")
     add("3s", "Testnet status summary tests", [sys.executable, "scripts/dev/test_testnet_status.py"], "Step 3s: Testnet status tests")
     add("3f", "Funnel report tests", [sys.executable, "scripts/dev/test_funnel_report.py"], "Step 3f: Funnel report tests")
     plan.append(Step("3dk", "Desk board tests", "Step 3dk: Desk board tests", run=lambda: exec_unittest_shards("scripts/dev/test_desk.py", gate_jobs() if gate_jobs() == 1 else 2), cmd_text="python -m unittest (scripts/dev/test_desk.py, 2 shards)", tail=None))
@@ -376,6 +377,7 @@ def build_plan(quick):
     add("3rb", "Claude-GPT relay board tests (shared notes, lanes, pack)", [sys.executable, "scripts/dev/test_relay_board.py"], "Step 3rb: Relay board tests")
     add("3af", "Artifact registry tests (one url per page per account)", [sys.executable, "scripts/dev/test_artifacts.py"], "Step 3af: Artifact registry tests")
     plan.append(Step("3bk", "Backup snapshot tests (dirty/untracked work reaches the remote)", "Step 3bk: Backup snapshot tests", run=lambda: exec_unittest_shards("scripts/dev/test_backup_snapshot.py", gate_jobs() if gate_jobs() == 1 else 2), cmd_text="python -m unittest (scripts/dev/test_backup_snapshot.py, 2 shards)", tail=None))
+    add("3vd", "Verdict registry override tests (sourced hand corrections survive backfill)", [sys.executable, "scripts/dev/test_verdicts.py"], "Step 3vd: Verdict registry tests")
     add("3lm", "Live mirror tests (read-only desktop->work-tree data, fail-closed)", [sys.executable, "scripts/dev/test_live_mirror.py"], "Step 3lm: Live mirror tests")
 
     # Step 3w: wiring gate - every unrun code file is declared in wiring_registry.json or archived (fast, in --quick too)

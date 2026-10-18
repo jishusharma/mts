@@ -20,3 +20,5 @@ Result: operator decision on HALT recorded; no live state changed.
 - Step 1 (context baseline, jishu.sharma): still open. Claude Docs and visualize off (earlier). Computer use, Claude in Chrome and the 9 skills cannot be read from the repo; operator to confirm in the app. `token_audit.py --days 1` ran: usage is recorded, no toggle state in it.
 - Step 4 (Q76 power-gate): the question is the pit-levels PRE_REG_V2 card (`pit-prior-va-failed-auction-dev`, state done, result BLOCKED). Gate fails: MDE+cost 0.411 R > 0.30 R; 662 days vs 2,427 needed. The card writes BLOCKED.md unless the operator overrules the plausible effect. Default stands: BLOCKED. Open decision for the operator: overrule the plausible effect and run, or keep BLOCKED.
 - Steps 2, 3, 5-10: unchanged from the handover (see entries above and the open list in this file).
+
+- 2026-10-17 Q76 (PIT power gate): operator decision recorded in OPERATOR_DECISIONS.md (q-pit-power-gate). Get the data from a trusted source where it can be had; if not, keep BLOCKED or remove the card so it does not come back. No overrule written; other sessions take the data work.

@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T20:00:14Z",
+  "commands": [],
+  "created": "2026-10-17T19:07:06Z",
+  "depends_on": [],
+  "done_when": "a dated note with baseline 662 reproduced, new-day count, the total vs 2,427, and a B187 update; no data fetched",
+  "est_turns": 14,
+  "from_inbox": "",
+  "goal": "One number: feasible days with dev_ext_2019_2021 added versus the 2,427 the frozen Q76 gate needs, so B187 is closed or the data fetch is justified.",
+  "id": "q76-dev-ext-power-check",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "1207 total vs 2427; 545 DEV_EXT days; MyTradingSys/research/layer_lab/reports/2026-10-18_q",
+      "ref": "c1e38e8a",
+      "utc": "2026-10-17T20:00:14Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "Operator 2026-10-18: nobody else will pick this up; filed so it is not lost. Rough prior (NOT a result): 2020-2021 is about 730 days, so the total is probably below 2,427.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T19:07:06Z",
+  "refs": [],
+  "result": "1207 total vs 2427; 545 DEV_EXT days; MyTradingSys/research/layer_lab/reports/2026-10-18_q76-dev-ext-power-check.md",
+  "scope_in": [
+    "MyTradingSys/research bug_b187_evidence.txt and PRE_REG_V2.md (read-only)",
+    "F:/MTS/data/dev_ext_2019_2021 (read-only; DEV bars only, open before 2024-07-01)"
+  ],
+  "scope_out": [
+    "live tree",
+    "VALIDATION and HOLDOUT bars",
+    "fetching data",
+    "editing PRE_REG_V2.md"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "read B187 evidence for how feasible days were counted (662)",
+    "count days in dev_ext_2019_2021 that meet the same feasibility rule",
+    "report 662 + new days vs 2,427; if still short say what else would be needed; update B187"
+  ],
+  "tests": "recount of the 662 baseline with the same script must reproduce 662 before adding new days",
+  "title": "Q76/B187: does F:/MTS/data/dev_ext_2019_2021 (exists on the NUC) lift the power gate from 662 to the 2,427 feasible days needed? Count before any data is fetched",
+  "weight": "B-SHARED",
+  "worker": "agent"
+}

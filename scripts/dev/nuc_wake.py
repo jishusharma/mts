@@ -3,7 +3,7 @@
 Why: the NUC coordinator is an App session that only acts when prompted; if it idles, nothing moves.
 How: the gate verb `ps` runs a PowerShell script as the logged-in user (ps-bg runs as SYSTEM, which has no Claude login);
 the script runs `claude -p` (CLI fallback, SURFACE_POLICY.md: the App cannot reach an idle NUC) with the
-boot prompt below. One tick = one card, shipped through sync.py, then it exits. No standing NUC task.
+boot prompt below. One tick = one card, shipped through sync.py, then it exits. No standing NUC task (SCHEDULING_POLICY.md allows only the one-shot task this creates; unregister it after it fires).
 Usage: python scripts/dev/nuc_wake.py [--dry] [--model claude-sonnet-5-5]
 Logs on the NUC: F:/MTS/nuc_wake/out.log (read with the gate `ps` verb).
 """

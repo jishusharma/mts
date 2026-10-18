@@ -1,0 +1,75 @@
+"""GPT-formulas-rederive: stdlib script. Run: copy to a temp .py and run from MyTradingSys/.
+GPT values are computed from FORMULAS.md definitions only (written before reading code); repo values
+come from importing the repo functions. Prints a markdown table."""
+import sys, os
+sys.dont_write_bytecode = True
+sys.path.insert(0, os.getcwd())
+sys.path.insert(0, os.path.join(os.getcwd(), "backtest", "layers"))
+sys.path.insert(0, os.path.join(os.getcwd(), "runtime"))
+
+# ---- GPT side: definitions only ----
+def g_fwd(sgn, closes, i, h):
+    if i + h >= len(closes):
+        return None, None
+    ret = sgn * (closes[i + h] - closes[i]) / closes[i]
+    mae = min(sgn * (closes[j] - closes[i]) / closes[i] for j in range(i + 1, min(i + h, len(closes) - 1) + 1))
+    return ret, mae
+
+def g_atr(h, l, c, n):
+    tr = [max(h[i] - l[i], abs(h[i] - c[i - 1]), abs(l[i] - c[i - 1])) for i in range(1, len(h))]
+    return sum(tr[:n]) / n
+
+def g_net(sgn, pin, pout, tin, tout, recs, fee=0.0010, slip=0.0002):
+    gross = sgn * (pout - pin) / pin
+    return gross - fee - slip - sgn * sum(r for t, r in recs if tin < t <= tout)
+
+def g_netrr(e, t, s, taker=0.0005):
+    if s == e:
+        return 0.0
+    cost = 2 * taker * e
+    return (abs(t - e) - cost) / (abs(e - s) + cost)
+
+rows = []
+def add(name, formulas, gpt, repo, line):
+    ok = isinstance(repo, (int, float)) and abs(formulas - gpt) < 1e-9 and abs(gpt - repo) < 1e-9
+    rows.append((name, formulas, gpt, repo, "MATCH" if ok else ("NOT_IN_DATA" if repo is None else "MISMATCH @ " + line)))
+
+# ---- repo side ----
+from runner import forward_return_stats
+from positioning.trade_costs import net_return
+from mts_math import calculate_net_rr
+
+closes = [100, 102, 99, 103]
+ev = [{"i": 0, "side": "long"}, {"i": 0, "side": "short"}]
+st_l = forward_return_stats(ev[:1], closes, (3,))[3]
+st_s = forward_return_stats(ev[1:], closes, (3,))[3]
+gl, gs = g_fwd(1, closes, 0, 3), g_fwd(-1, closes, 0, 3)
+add("S7 long ret h=3 (own example; FORMULAS has none)", 0.03, gl[0], st_l["mean_return"], "FORMULAS.md:135")
+add("S7 long mae h=3", -0.01, gl[1], st_l["mae"], "FORMULAS.md:137")
+add("S7 short ret h=3", -0.03, gs[0], st_s["mean_return"], "FORMULAS.md:135")
+add("S7 short mae h=3", -0.03, gs[1], st_s["mae"], "FORMULAS.md:137")
+st_n = forward_return_stats(ev[:1], closes, (4,))[4]
+add("S7 i+h>=len contributes nothing (n)", 0, 0 if g_fwd(1, closes, 0, 4)[0] is None else 1, st_n["n"], "FORMULAS.md:135")
+
+H = [10, 11, 12, 11]; L = [9, 9, 10, 9]; C = [9.5, 10.5, 11.5, 10]
+add("S12 ATR SMA n=3", 2.1667, g_atr(H, L, C, 3), None, "FORMULAS.md:340 (Java SetupCandidatesBuilder.averageTrueRange absent from this tree)")
+
+recs = [(8, 0.0001), (16, 0.0003)]
+def repo_net(side, pin, pout, tin, tout, recs):
+    try:
+        return net_return(side, pin, pout, tin, tout, recs)
+    except ValueError as ex:
+        return "RAISES: " + str(ex)[:60]
+
+padded = [(0, 0.0)] + recs  # rate-0 record at t=0 (outside (0,16]) only to satisfy the B103 span guard
+for nm, side, sgn, pout, f in (("long 100->101", "long", 1, 101, 0.0084), ("short 100->99", "short", -1, 99, 0.0092)):
+    add("S13 %s net (records as written)" % nm, f, g_net(sgn, 100, pout, 0, 16, recs), repo_net(side, 100, pout, 0, 16, recs), "FORMULAS.md:353 vs trade_costs.py:27 (B103 guard)")
+    add("S13 %s net (+t=0 zero-rate pad)" % nm, f, g_net(sgn, 100, pout, 0, 16, recs), repo_net(side, 100, pout, 0, 16, padded), "FORMULAS.md:353")
+
+add("S17 net_rr 100/104/98", 3.9 / 2.1, g_netrr(100, 104, 98), calculate_net_rr(100, 104, 98), "FORMULAS.md:405")
+add("S17 net_rr tight 100/100.3/99.9", 1.0, g_netrr(100, 100.3, 99.9), calculate_net_rr(100, 100.3, 99.9), "FORMULAS.md:405")
+add("S17 stop==entry -> 0", 0.0, g_netrr(100, 104, 100), calculate_net_rr(100, 104, 100), "FORMULAS.md:403")
+
+print("| example | FORMULAS | GPT | repo | match |\n|---|---|---|---|---|")
+for n, f, g, r, m in rows:
+    print(f"| {n} | {f:.6g} | {g:.6g} | {'-' if r is None else (format(r, '.6g') if isinstance(r, (int, float)) else r)} | {m} |")

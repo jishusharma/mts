@@ -36,7 +36,16 @@ class LaneRulesTest(unittest.TestCase):
     def test_each_kind_template_meets_the_definition_of_ready(self):
         for kind in R.TEMPLATES:
             with self.subTest(kind=kind):
-                self.assertEqual(T.problems(card(kind=kind)), [])
+                if kind != "build":
+                    self.assertEqual(T.problems(card(kind=kind)), [])
+                    continue
+                with tempfile.TemporaryDirectory() as tmp:
+                    repo = Path(tmp)
+                    probe = repo / "scripts/dev/test_mutation.py"
+                    probe.parent.mkdir(parents=True)
+                    probe.write_text("def test_dummy_output_rejected():\n    assert output != 'dummy'\n", encoding="utf-8")
+                    c = card(kind=kind, mutation_check="scripts/dev/test_mutation.py::test_dummy_output_rejected")
+                    self.assertEqual(T.problems(c, repo=repo), [])
 
     def test_build_template_leaves_the_gate_to_the_runner(self):
         text = " ".join(R.TEMPLATES["build"]["steps"]) + R.TEMPLATES["build"]["done_when"]
@@ -650,6 +659,50 @@ class ShipHoldTest(unittest.TestCase):
             self.assertIn("step unknown", R.read_hold(d))
             (Path(d) / "lab.hold").unlink()
             self.assertEqual(R.read_hold(d), "")
+
+
+class AskMutationFlagTest(unittest.TestCase):
+    """`codex_run.py ask --kind build` must be able to set the mutation_check that tasks.problems() demands for CODEX build cards."""
+    PROBE = "scripts/test_probe.py::test_rejects_dummy"
+
+    def _repo(self, td):
+        repo = Path(td)
+        (repo / "scripts").mkdir()
+        (repo / "scripts" / "test_probe.py").write_text(
+            "def test_rejects_dummy():\n    assert out != dummy  # rejects dummy or shuffled output\n", encoding="utf-8")
+        return repo
+
+    def _ask(self, repo, *extra):
+        argv = ["ask", "Build the thing", "--kind", "build", "--scope", "MyTradingSys/x.py", "--id", "lab-mut", "--tests", "test_x fails first", *extra]
+        out = io.StringIO()
+        with unittest.mock.patch.object(R, "REPO", repo), contextlib.redirect_stdout(out):
+            try:
+                R.main(argv)
+            except SystemExit as e:
+                return str(e.code), out.getvalue()
+        return "", out.getvalue()
+
+    def test_make_card_carries_the_mutation_check(self):
+        c = R.make_card("Build it", "build", ["a.py"], cid="lab-m", mutation_check=self.PROBE)
+        self.assertEqual(c["mutation_check"], self.PROBE)
+
+    def test_ask_build_with_the_flag_writes_a_ready_card(self):
+        with tempfile.TemporaryDirectory() as td:
+            err, out = self._ask(self._repo(td), "--mutation-check", self.PROBE)
+            self.assertEqual(err, "")
+            self.assertIn("wrote", out)
+
+    def test_ask_build_without_the_flag_names_it(self):
+        with tempfile.TemporaryDirectory() as td:
+            err, _ = self._ask(self._repo(td))
+            self.assertIn("--mutation-check", err)
+
+    def test_ask_audit_needs_no_flag(self):
+        with tempfile.TemporaryDirectory() as td:
+            out = io.StringIO()
+            with unittest.mock.patch.object(R, "REPO", Path(td)), contextlib.redirect_stdout(out):
+                R.main(["ask", "Audit it", "--kind", "audit", "--scope", "MyTradingSys/x.py", "--id", "lab-aud"])
+            self.assertIn("wrote", out.getvalue())
 
 
 if __name__ == "__main__":

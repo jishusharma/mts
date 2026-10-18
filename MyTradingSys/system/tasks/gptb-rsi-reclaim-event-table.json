@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T12:04:56Z",
   "commands": [],
   "created": "2026-10-17T03:40:00Z",
   "depends_on": [],
@@ -12,6 +13,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "982 DEV 1h reclaim rows (504 long/478 short), 982 OK/0 NOT_IN_DATA, mean MFE 2.81R/MAE 2.8",
+      "ref": "2db571f9",
+      "utc": "2026-10-17T12:04:56Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -36,7 +43,7 @@
   "refined_by": "lab-cards-1017",
   "refreshed": "2026-10-17T07:24:52Z",
   "refs": [],
-  "result": "",
+  "result": "982 DEV 1h reclaim rows (504 long/478 short), 982 OK/0 NOT_IN_DATA, mean MFE 2.81R/MAE 2.87R; MyTradingSys/research/layer_lab/rsi_reclaim_event_table/REPORT.md",
   "scope_in": [
     "MyTradingSys/research/layer_lab/rsi_reclaim_event_table/event_table.py",
     "MyTradingSys/research/layer_lab/rsi_reclaim_event_table/test_event_table.py",
@@ -63,7 +70,7 @@
   "scope_sha": "515d07a91407",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the BRIEF.md named in scope_in, then write the test file first; run it and confirm it fails (red).",
     "Implement event_table.py in MyTradingSys/research/layer_lab/rsi_reclaim_event_table/ only: DEV data only, gap or missing input = NOT_IN_DATA (never 0); use the two helpers named in the brief (read only).",
@@ -71,5 +78,6 @@
     "Run the CLI once on the real DEV npz; put row/OK/NOT_IN_DATA counts and mean MFE/MAE in REPORT.md and one DEV row in TRIALS.md; delete any CSV you wrote; set the result line."
   ],
   "tests": "synthetic RSI series (inject via a function argument so the test needs no klines): a direct cross gives band_bars 0, a 4-bar below-run gives dwell_below 4, a band pop between two below-runs restarts dwell; the short side mirrors; None bars carry state; entry is next bar open; incomplete forward window = NOT_IN_DATA.",
-  "title": "RSI 40/60 reclaim (operator 2a): event table with dwell/depth buckets and forward MFE/MAE in R on 1h DEV"
+  "title": "RSI 40/60 reclaim (operator 2a): event table with dwell/depth buckets and forward MFE/MAE in R on 1h DEV",
+  "weight": "B-SHARED"
 }

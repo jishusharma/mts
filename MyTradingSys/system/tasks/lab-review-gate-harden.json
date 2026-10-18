@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-17T22:38:34Z",
+  "depends_on": [],
+  "done_when": "The named test passes and the report lists the changed files and the red-then-green test output (the runner's ship runs the quick gate).",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "close findings 1,4,5,5b and the test gaps of MyTradingSys/research/lab_guy/findings/2026-10-18_review_34ecf46a.md (re-check 2,3 against the tip first)",
+  "id": "lab-review-gate-harden",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab lab-vendor-gate-harden: DONE (build)",
+      "ref": "f72d05a3a951",
+      "utc": "2026-10-17T22:55:09Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "49ea3754a44b lab lab-review-gate-harden: BLOCKED (build)",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-17_lab-review-gate-harden.md",
+      "utc": "2026-10-17T22:51:14Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "MyTradingSys/research/layer_lab/formula_spec_text/test_formula_spec.py::test_shuffled_rsi_closes_are_rejected",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-18T04:09:21Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "scripts/dev/test_tasks.py",
+    "scripts/dev/lab_flow.py"
+  ],
+  "scope_out": [
+    "the live path",
+    "holdout reads",
+    "parameters without a trader quote (NO-SOURCE)"
+  ],
+  "scope_sha": "f72d05a3a951",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Write the test named in Tests first and see it fail on the current code.",
+    "Implement the goal inside scope_in only; new behaviour sits behind a flag that is off by default.",
+    "Before finishing run `python scripts/dev/lookahead_lint.py --new`; fix FAIL hits on your files: write forward bars as zip(times, times[1:]), not times[i + 1]; a truly causal pair gets one reviewed row in scripts/dev/lookahead_allowlist.tsv (name it in scope_in).",
+    "Run the test file you changed (PYTHONPATH = the work tree root) until it passes. Do not run scripts/dev/run_all_tests.py: tests that create git repositories are refused in the sandbox; the runner runs the quick gate when it ships."
+  ],
+  "tests": "forged-stamp forms (placeholder reviewer, producer reviewer, invalid date, quoted mid-note), class-field downgrade and whitespace receipt each fail on current code first",
+  "title": "Review-gate hardening: forged stamp, downgrade, other close paths, vacuous tests",
+  "weight": "",
+  "worker": ""
+}

@@ -8,8 +8,8 @@
   ],
   "created": "2026-10-17T07:44:51Z",
   "depends_on": [],
-  "done_when": "manifest.json and loop.js both read 0.8.0 (or the next version); the panel and chrome://extensions show the new number after copying to F:\\AIBridge\\extension and reloading; loop tests pass.",
-  "est_turns": 2,
+  "done_when": "manifest.json version and loop.js L.VERSION both read 0.8.0 and node scripts/aibridge/tests/loop.test.js passes (copying to F:/AIBridge/extension and reloading is the operator's, not the builder's).",
+  "est_turns": 3,
   "from_inbox": "",
   "goal": "The keep-alive copy of the AIBridge extension still reports 0.7.0 in the panel and in chrome://extensions, so the operator cannot tell which build is running. Bump the version string in both places.",
   "id": "aibridge-version-not-bumped",
@@ -25,7 +25,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none (coordinator spot-check) DECISION (OURS): the copy to F:/AIBridge/extension and the reload are operator-only and are not in done_when.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -54,5 +54,6 @@
   ],
   "tests": "node scripts/aibridge/tests/loop.test.js",
   "title": "Bug: AIBridge keep-alive copy still shows version 0.7.0 in the panel and chrome://extensions; bump manifest.json and the panel label, then reload",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

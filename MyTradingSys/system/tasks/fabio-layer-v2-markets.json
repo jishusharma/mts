@@ -1,49 +1,50 @@
 {
-  "approved_by": "operator (chat 2026-10-11: 'whatever research u need with Opus')",
-  "asks": "",
-  "commands": [],
-  "created": "2026-10-11T12:00:00Z",
-  "depends_on": [
-    "fabio-layer-v2-spec",
-    "fabio-ledger-minute-timestamps"
-  ],
-  "done_when": "FABIO_LAYER_V2_SPEC.md part B: per-market proof/cost/stop-width table, recall-harness decision, flag plan (default off), session-matched null + fill rules, NQ-tick-data cost as a Control Room decision with a default, AND the Sonnet recall/encode cards, each passing tasks.py check.",
-  "est_turns": 30,
-  "from_inbox": "",
-  "goal": "Decide what can be tested where: recall harness on free NQ/US100 1m (price-only proofs), which order-flow proofs need aggressor data (BTC has it, CFD does not), cost and stop width in points and % for NQ versus BTC, and the Sonnet cards that build the recall harness and the encoding.",
-  "id": "fabio-layer-v2-markets",
-  "lane": "OPUS",
-  "layers": [
-    "fabio"
-  ],
-  "live_path": false,
-  "note": "2026-10-15 q12: home-market chain paused (p5) per operator answer; raise again when crypto-native cards are done.",
-  "prio": 5,
-  "refine_tries": 0,
-  "refined_by": "opus-2026-10-11 (operator chat: redefine Tom and Fabio layers from today's findings)",
-  "refs": [],
-  "result": "",
-  "scope_in": [
-    "MyTradingSys/backtest/layers/fabio/",
-    "MyTradingSys/research/fabio_transfer/"
-  ],
-  "scope_out": [
-    "coding",
-    "tuning",
-    "holdouts"
-  ],
-  "size": "M",
-  "sources": [
-    "MyTradingSys/research/P2_FABIO_V3_HOLDOUT_STATUS.md (L3-FAIL all four models)"
-  ],
-  "state": "refined",
-  "steps": [
-    "Read FABIO_LAYER_V2_SPEC.md part A, FABIO_TRADE_LEDGER.md stop-width stats, P2_FABIO_V3_HOLDOUT_STATUS.md, tom_transfer_2026-10-11/RECALL_DAX.md and DAX build report (harness pattern).",
-    "Recall harness: free NQ/US100 1m (Dukascopy USA100) for price-only proofs; order-flow proofs flagged data-limited on CFD. State what NQ-to-BTC transfer needs (stop width vs fees).",
-    "Create the Sonnet cards with tasks.py new (recall harness first, then one family per encode card, flag-gated, fail-first tests) and append part B to FABIO_LAYER_V2_SPEC.md.",
-    "State per N4/N7: stops 0.014-0.061 % make BTC fees worse than Tom's; BTC has aggressor side (order-flow proofs testable), no NY-open analogue; NQ with aggressor needs paid CME tick data = decision (default: do not buy; price-only proofs on free NQ, order-flow on BTC); null drawn from the NY session window with the same fill mechanics."
-  ],
-  "tests": "Every created card passes tasks.py check.",
-  "title": "Fabio layer v2 spec, part B: data plan per market, cost, stop width, build + recall cards (Opus research)",
-  "worker": "session"
+ "approved_by": "operator (chat 2026-10-11: 'whatever research u need with Opus')",
+ "asks": "",
+ "commands": [],
+ "created": "2026-10-11T12:00:00Z",
+ "depends_on": [
+  "fabio-layer-v2-spec",
+  "fabio-ledger-minute-timestamps"
+ ],
+ "done_when": "FABIO_LAYER_V2_SPEC.md part B: per-market proof/cost/stop-width table, recall-harness decision, flag plan (default off), session-matched null + fill rules, NQ-tick-data cost as a Control Room decision with a default, AND the Sonnet recall/encode cards, each passing tasks.py check.",
+ "est_turns": 30,
+ "from_inbox": "",
+ "goal": "Decide what can be tested where: recall harness on free NQ/US100 1m (price-only proofs), which order-flow proofs need aggressor data (BTC has it, CFD does not), cost and stop width in points and % for NQ versus BTC, and the Sonnet cards that build the recall harness and the encoding.",
+ "id": "fabio-layer-v2-markets",
+ "lane": "OPUS",
+ "layers": [
+  "fabio"
+ ],
+ "live_path": false,
+ "note": "CHECKED 2026-10-18, NOT started (OPUS lane, no Opus started): (1) depends_on fabio-layer-v2-spec is blocked on the fabio ledger FIX-FIRST fixes; (2) lane OPUS needs weight crucial plus one line why only Opus fits (WORKERS.md rule 6); (3) q12 home-market chain pause. Cheapest next step: when fabio-layer-v2-spec ships, re-lane to SONNET (writes spec part B and cards, no live money) or the operator names Opus. | [PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] 2026-10-15 q12: home-market chain paused (p5) per operator answer; raise again when crypto-native cards are done.",
+ "prio": 5,
+ "refine_tries": 0,
+ "refined_by": "opus-2026-10-11 (operator chat: redefine Tom and Fabio layers from today's findings)",
+ "refs": [],
+ "result": "",
+ "scope_in": [
+  "MyTradingSys/backtest/layers/fabio/",
+  "MyTradingSys/research/fabio_transfer/"
+ ],
+ "scope_out": [
+  "coding",
+  "tuning",
+  "holdouts"
+ ],
+ "size": "M",
+ "sources": [
+  "MyTradingSys/research/P2_FABIO_V3_HOLDOUT_STATUS.md (L3-FAIL all four models)"
+ ],
+ "state": "refined",
+ "steps": [
+  "Read FABIO_LAYER_V2_SPEC.md part A, FABIO_TRADE_LEDGER.md stop-width stats, P2_FABIO_V3_HOLDOUT_STATUS.md, tom_transfer_2026-10-11/RECALL_DAX.md and DAX build report (harness pattern).",
+  "Recall harness: free NQ/US100 1m (Dukascopy USA100) for price-only proofs; order-flow proofs flagged data-limited on CFD. State what NQ-to-BTC transfer needs (stop width vs fees).",
+  "Create the Sonnet cards with tasks.py new (recall harness first, then one family per encode card, flag-gated, fail-first tests) and append part B to FABIO_LAYER_V2_SPEC.md.",
+  "State per N4/N7: stops 0.014-0.061 % make BTC fees worse than Tom's; BTC has aggressor side (order-flow proofs testable), no NY-open analogue; NQ with aggressor needs paid CME tick data = decision (default: do not buy; price-only proofs on free NQ, order-flow on BTC); null drawn from the NY session window with the same fill mechanics."
+ ],
+ "tests": "Every created card passes tasks.py check.",
+ "title": "Fabio layer v2 spec, part B: data plan per market, cost, stop width, build + recall cards (Opus research)",
+ "weight": "IMPORTANT",
+ "worker": "session"
 }

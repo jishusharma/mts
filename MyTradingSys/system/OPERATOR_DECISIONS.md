@@ -1026,3 +1026,30 @@ Applied: 2026-10-17: JIS-NUC: MTS-CodexLab, MTS-DailyHygiene, MTS-DispatchGate u
  "answer": "Remove every scheduled task on every device now (deploys, revival and the relay stop until super sessions cover them)"
 }
 ```
+
+## q-pit-power-gate | asked 2026-10-17 | Research
+
+Q76 PIT price-level study (pit-prior-va-failed-auction-dev): overrule the power gate and run underpowered, or keep it BLOCKED?
+
+Recommended: Keep BLOCKED; get the data from a trusted source first
+Answer: Get the data from a trusted source where it can be had; if it cannot, keep it blocked or remove it, so it does not come back. Other sessions work on it.
+Operator note (verbatim): "This is also a data related question. It must also be answered in the same way. Uh, get the data from where you can get it, the source that you can trust. And if you cannot do it, then uh, keep it blocked, or better to remove it, so that uh, you do not uh, come back here. We need to close things." Then: "We do not need to do anything right now. Just record my decision and uh, let other sessions work on it."
+Applied: 2026-10-17: recorded only. No overrule written; the card stays BLOCKED (BLOCKED.md). Data path for other sessions: data.binance.vision serves the monthly BTCUSDT 1m klines and aggTrades zips (HTTP 200 for 2021-01 when checked 2026-10-17). Public market data only, no account. If no trusted source closes the gap, remove the card and B187 instead of re-asking.
+
+```json
+{
+ "order": 30,
+ "stage": "Research",
+ "refs": "research/pit_levels_2026-10-16/BLOCKED.md, research/pit_levels_2026-10-16/PRE_REG_V2.md, research/BUGS.md B187, research/pit_levels_2026-10-16/bug_b187_evidence.txt",
+ "title": "Q76 PIT power gate: overrule and run underpowered, or keep it BLOCKED?",
+ "why": "The PIT study fails its frozen power gate: MDE plus cost 0.411 R against a plausible 0.30 R, and 662 feasible DEV days against 2,427 needed. Only a written overrule lets it run. The operator asked for trusted data first, and if none closes the gap, to keep it blocked or remove it so it does not come back.",
+ "options": [
+  "Get the data from a trusted source where it can be had; if it cannot, keep it blocked or remove it. Other sessions work on it.",
+  "Overrule the plausible effect and run it underpowered",
+  "Keep BLOCKED with no further data work"
+ ],
+ "recommended": "Keep BLOCKED; get the data from a trusted source first",
+ "answer": "Get the data from a trusted source where it can be had; if it cannot, keep it blocked or remove it, so it does not come back. Other sessions work on it.",
+ "no_auto_apply": true
+}
+```

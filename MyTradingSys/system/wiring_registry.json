@@ -99,6 +99,11 @@
       "disp": "TOOL",
       "why": "Adapter imported by run_cc_setups.py:48 (the hand-run CryptoCred runner); its 1440-bar time exit is C25 NO-SOURCE in LAYER_PROVENANCE_AUDIT.md:110, provenance cleanup is separate."
     },
+    "MyTradingSys/backtest/layers/cryptocred/cc_htf_count.py": {
+      "disp": "REPRO",
+      "ref": "cryptocred-htf-count-power",
+      "why": "Offline count-only driver: 4h/1d CryptoCred signal, fill and power counts on DEV; regenerates research/cryptocred_htf_2026-10/count_power.json; run by hand, not by any loop."
+    },
     "MyTradingSys/backtest/layers/cryptocred/cc_stop_sweep.py": {
       "disp": "REPRO",
       "ref": "B143",
@@ -115,11 +120,6 @@
     "MyTradingSys/backtest/layers/fabio/run_v3_l3.py": {
       "disp": "REPRO",
       "why": "Fabio v3 L3 pre-registered backtest, result L3-FAIL recorded in MyTradingSys/runtime/BUILD_PIPELINE.md:50 and PRE_REG_FABIO_V3.md; kept because that row lists an open follow-up (why models A, B, D almost never fire) that re-runs it."
-    },
-    "MyTradingSys/backtest/layers/rsi/rsi_reclaim.py": {
-      "disp": "WIRE",
-      "ref": "RSI_2A_SPEC.md steps 4-5",
-      "why": "Operator RSI 2a context events (dwell/depth reclaim of 40/60, retest); built and tested 2026-10-09, to be called by run_rsi_backtest.py in the confluence-logging backtest (research/rsi_2a_2026-10-09/RSI_2A_SPEC.md). Not live."
     },
     "MyTradingSys/backtest/layers/rsi/run_t090_anchor_probe.py": {
       "disp": "REPRO",
@@ -864,11 +864,31 @@
       "disp": "REPRO",
       "why": "Regenerates wavetrend/golden_wt_btcusdt_1h_dev_2022-01.csv from fixture_btcusdt_1h_dev_2022-01.csv with pandas (independent of wavetrend.py); run by hand (python make_golden.py), named in FORMULAS.md section 20.4."
     },
+    "MyTradingSys/backtest/layers/krown/krown_core.py": {
+      "disp": "TOOL",
+      "why": "Krown v0 detectors (swings, zones, volume, BBWP, candles, MAs, RSI, range, tops) as pure functions of closed bars; covered by test_krown_core.py, no live imports; flag-gated, alert-only, no live wiring (KROWN_LAYER_SPEC s2)."
+    },
+    "MyTradingSys/backtest/layers/krown/krown_events.py": {
+      "disp": "TOOL",
+      "why": "Krown v0 setup events S1-S9 ({i, side, setup, tags}) built on krown_core.py; covered by test_krown_events.py, no live imports; observation only."
+    },
+    "MyTradingSys/backtest/layers/krown/run_fire_counts.py": {
+      "disp": "REPRO",
+      "why": "Regenerates krown/FIRE_COUNTS_BTC_DEV.md (fire counts per detector and setup, BTCUSDT DEV only, no VALIDATION/HOLDOUT); run by hand (python run_fire_counts.py), named in FORMULAS.md section 21."
+    },
     "MyTradingSys/backtest/layers/trendlines/trendline_core.py": {
       "disp": "WIRE",
       "ref": "trendline-count-only",
       "why": "Causal trend-line detector built and tested (test_trendline_core.py, TRENDLINE_CONTRACT.md v1); nothing runs it yet: the count-only card (DEV counts, no backtest) is the first caller."
+    },
+    "MyTradingSys/backtest/layers/krown/run_recall_check.py": {
+      "disp": "REPRO",
+      "why": "Rebuilds research/krown_ta101_2026-10-13/RECALL.md (and RECALL_PREREG.md with --prereg) from the checksum-verified DEV daily klines and the Krown v0 detectors; cited in RECALL.md; run by hand, no live process imports it."
     }
+  },
+  "MyTradingSys/research/layer_lab/candle_pattern_event_table/event_table.py": {
+    "disp": "TOOL",
+    "why": "DEV-only candle pattern event table (npz loader, 4h from 1h, detectors, close-stamped forward MFE/MAE in R); covered by test_patterns.py, no live imports."
   },
   "MyTradingSys/research/layer_lab/volume_event_table/event_table.py": {
     "disp": "TOOL",
@@ -881,5 +901,33 @@
   "MyTradingSys/research/layer_lab/bb_top_reversal_event_table/event_table.py": {
     "disp": "TOOL",
     "why": "DEV-only 15m BB(20,2) top-reversal event table with forward short MFE/MAE in OURS-defined R; covered by test_event_table.py; reads only DEV timestamps from the local perp NPZ; no live imports."
+  },
+  "MyTradingSys/research/layer_lab/malkan_rsi_event_table/event_table.py": {
+    "disp": "TOOL",
+    "why": "DEV-only 1h Malkan 40/60 RSI bounce event table with 24-bar forward MFE/MAE in ATR14 R; covered by test_event_table.py; reads only DEV timestamps from the local perp NPZ; read-only imports of the rsi layer; no live imports."
+  },
+  "MyTradingSys/research/layer_lab/turn_of_candle_event_table/event_table.py": {
+    "disp": "TOOL",
+    "why": "DEV-only 1m turn-of-candle (T055 C3) per-quarter event table with 15-bar forward MFE/MAE both sides in ATR14(1h) R; covered by test_event_table.py; reads only DEV timestamps from the local perp NPZ; read-only imports of turn_of_candle, dev_split_guard, forward_excursion; no live imports."
+  },
+  "MyTradingSys/research/layer_lab/fabio_lvn_touch_event_table/event_table.py": {
+    "disp": "TOOL",
+    "why": "DEV-only 1h Fabio volume-profile LVN touch event table (long and short columns) with 24-bar forward MFE/MAE in ATR14 R; covered by test_event_table.py; reads only DEV timestamps from the local perp NPZ; read-only imports of fabio_volume_fvg, dev_split_guard, forward_excursion; no live imports."
+  },
+  "MyTradingSys/research/layer_lab/session_momentum_event_table/event_table.py": {
+    "disp": "TOOL",
+    "why": "DEV-only 5m session-momentum (T055 C2) daily event table with forward MFE/MAE to 24:00 UTC in ATR14(1h) R; covered by test_event_table.py; reads only DEV timestamps from the local perp NPZ; read-only imports of session_momentum, dev_split_guard, forward_excursion; no live imports."
+  },
+  "MyTradingSys/research/layer_lab/rsi_reclaim_event_table/event_table.py": {
+    "disp": "TOOL",
+    "why": "DEV-only 1h RSI 40/60 reclaim event table (dwell/depth/band columns) with 24-bar forward MFE/MAE in ATR14 R; covered by test_event_table.py; reads only DEV timestamps from the local perp NPZ; read-only imports of the rsi layer; no live imports."
+  },
+  "MyTradingSys/research/layer_lab/cc_msb_event_table/event_table.py": {
+    "disp": "TOOL",
+    "why": "DEV-only 1h CryptoCred MSB event table (find_swings + classify_msb, read only) with 24-bar forward MFE/MAE in ATR14 R; covered by test_event_table.py; reads only DEV timestamps from the local perp NPZ; no live imports."
+  },
+  "MyTradingSys/research/layer_lab/fabio_escalation_event_table/event_table.py": {
+    "disp": "TOOL",
+    "why": "DEV-only 1h Fabio escalation/absorption (FAB-002/003) event table with 24-bar forward MFE/MAE in ATR14 R; covered by test_event_table.py; reads only DEV timestamps from the local perp NPZ; read-only imports of the fabio layer; no live imports."
   }
 }

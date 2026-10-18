@@ -54,7 +54,11 @@ CRUCIAL_SETTING = ("gpt-6-astra", "low")
 ASTRA_EFFORT = "low"   # operator 2026-10-13: astra at its lightest effort only, never medium or high, whatever the card says
 CODEX_EFFORTS = ("low", "medium", "high", "xhigh", "max")
 LAB_REPORTS = "MyTradingSys/research/layer_lab/reports"
+FORMULAS = "MyTradingSys/backtest/layers/FORMULAS.md"
+TRIALS = "MyTradingSys/research/layer_lab/TRIALS.md"
+RUNS_JSONL = Path("F:/codex_home/lab_runs/runs.jsonl")
 SIZES = ("S", "M", "L")
+WEIGHTS = ("ROUTINE", "IMPORTANT", "CRUCIAL", "CRITICAL", "B-SHARED")   # optional card field; Session_Planner Duty 5
 WORKERS = ("agent", "session")                   # WORKERS.md: who runs the card; set during refinement
 AGENT_MAX_TURNS = 15                             # WORKERS.md: a one-use Agent only for <= 15 turns and size S
 SESSION_MAX_TURNS = 40                           # RELAY.md hand-over cap: a card needing more is split
@@ -79,10 +83,33 @@ def path_of(repo, cid):
     return tdir(repo) / f"{cid}.json"
 
 
+def promote_shared(repo):
+    """Mark a cited card B-SHARED when another card names it in scope_in."""
+    d = tdir(repo)
+    if not d.is_dir():
+        return
+    cards = [json.loads(p.read_text(encoding="utf-8")) for p in d.glob("*.json")]
+    by_id = {c.get("id"): c for c in cards}
+    cited = set()
+    for source in cards:
+        for item in source.get("scope_in", []):
+            text = str(item)
+            for cid in by_id:
+                if re.search(rf"(?<![A-Za-z0-9_-]){re.escape(cid)}(?![A-Za-z0-9_-])", text):
+                    cited.add(cid)
+    for cid in cited:
+        target = by_id[cid]
+        if target.get("weight") != "B-SHARED":
+            target["weight"] = "B-SHARED"
+            p = path_of(repo, cid)
+            p.write_text(json.dumps(target, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
+
+
 def save(repo, card):
     p = path_of(repo, card["id"])
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(card, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
+    promote_shared(repo)
     return p
 
 
@@ -128,10 +155,11 @@ def refresh_layers(repo=REPO):
 
 
 def blank(cid, title, **kw):
-    return {"id": cid, "title": title, "state": "raw", "prio": kw.get("prio", 3), "lane": kw.get("lane", ""), "size": "", "est_turns": None, "worker": "",
+    return {"id": cid, "title": title, "state": "raw", "prio": kw.get("prio", 3), "lane": kw.get("lane", ""), "size": "", "est_turns": None, "worker": "", "weight": "",
             "layers": kw.get("layers", []),
             "goal": "", "scope_in": [], "scope_out": [], "steps": [], "commands": [], "tests": "", "done_when": "",
-            "sources": [], "depends_on": [], "refs": kw.get("refs", []), "live_path": False, "approved_by": "",
+            "sources": [], "depends_on": [], "refs": kw.get("refs", []), "formula_id": kw.get("formula_id", ""), "formula_ids": kw.get("formula_ids", []),
+            "mutation_check": kw.get("mutation_check", ""), "live_path": False, "approved_by": "",
             "from_inbox": kw.get("from_inbox", ""), "refine_tries": 0, "asks": "", "created": now(), "refined_by": "", "note": "", "result": ""}
 
 
@@ -155,10 +183,11 @@ def default_worker(card):
     return (12, "agent") if card.get("size") == "S" else (30, "session")
 
 
-def problems(card, cards=None, reg=None):
+def problems(card, cards=None, reg=None, repo=None):
     """Definition of Ready: [] when a session can run the card with no question to anyone. Every miss is named."""
     p = []
-    card_list = cards or []
+    repo = Path(repo or REPO)
+    card_list = cards if cards is not None else load_all(repo)
     cards = {c["id"]: c for c in card_list}
     reg = reg or {}
     for k in TEXT[:3]:
@@ -167,6 +196,53 @@ def problems(card, cards=None, reg=None):
     for k in ("scope_in", "steps"):
         if not card.get(k):
             p.append(f"{k} is empty")
+    # Formula IDs are canonical section identifiers (for example s15) from FORMULAS.md.
+    formula_ids = list(card.get("formula_ids", []))
+    if card.get("formula_id"):
+        formula_ids.append(card["formula_id"])
+    if formula_ids:
+        formula_path = repo / FORMULAS
+        try:
+            formula_text = formula_path.read_text(encoding="utf-8-sig")
+            known = set(re.findall(r"(?im)^#{1,6}\s*(?:section\s+)?(\d+(?:\.\d+)*)\b", formula_text))
+            known |= {"s" + item for item in known}
+            known |= set(re.findall(r"(?im)\b(?:section\s+)?(s\d+(?:\.\d+)*)\b", formula_text))
+            for fid in formula_ids:
+                if str(fid) not in known:
+                    p.append(f"formula id {fid!r} not found in {FORMULAS}")
+        except OSError:
+            p.append(f"formula source missing: {FORMULAS}")
+    if card.get("lane") == "CODEX" and card.get("kind") == "run":
+        try:
+            ledger = (repo / TRIALS).read_text(encoding="utf-8-sig")
+            if not RUNS_JSONL.is_file():
+                raise OSError(f"missing {RUNS_JSONL}")
+            rows = [json.loads(line) for line in RUNS_JSONL.read_text(encoding="utf-8-sig").splitlines() if line.strip()]
+            runs = sum(row.get("card") == card.get("id") for row in rows)
+            trials = sum(bool(re.search(rf"(?<![A-Za-z0-9_-]){re.escape(card.get('id', ''))}(?![A-Za-z0-9_-])", line)) for line in ledger.splitlines() if line.lstrip().startswith("|"))
+            if trials != runs:
+                p.append(f"trial-ledger count {trials} != runs.jsonl count {runs} for {card.get('id')}")
+        except (OSError, ValueError, json.JSONDecodeError) as e:
+            p.append(f"run accounting unavailable: {e}")
+    if card.get("lane") == "CODEX" and card.get("kind") == "build" and "mutation_check" in card:
+        probe = str(card.get("mutation_check", "")).strip()
+        match = re.fullmatch(r"([^:]+\.py)::(test_[A-Za-z0-9_]+)", probe)
+        if not match:
+            p.append("mutation_check must name path/to/test.py::test_* for dummy or shuffled output")
+        else:
+            test_path = repo / match.group(1)
+            try:
+                test_source = test_path.read_text(encoding="utf-8-sig")
+                if not re.search(rf"(?m)^\s*def\s+{re.escape(match.group(2))}\s*\(", test_source):
+                    p.append(f"mutation_check test not found: {probe}")
+                elif (not re.search(r"(?i)(dummy|shuffl)", test_source)
+                      or not (re.search(r"(?i)raises|fail", test_source) or re.search(r"assert[^\n]*(?:!=|not in|is not)", test_source))):
+                    p.append("mutation_check test must assert rejection of dummy or shuffled output")
+            except OSError:
+                p.append(f"mutation_check test file missing: {match.group(1)}")
+    w = card.get("weight") or ""
+    if w and w not in WEIGHTS:
+        p.append(f"weight {w!r} not one of {', '.join(WEIGHTS)}")
     lane = card.get("lane", "")
     if lane not in LANES:
         p.append(f"lane {lane!r} not one of {', '.join(LANES)}")
@@ -195,6 +271,8 @@ def problems(card, cards=None, reg=None):
             p.append(f"layers: {x!r} is not a family in {LAYER_INDEX} ({', '.join(fams)})")
     if lane == "OPUS" and not card.get("approved_by"):
         p.append("lane OPUS needs approved_by (operator names Opus; CLAUDE.md)")
+    if lane == "OPUS" and not str(card.get("crucial", "")).strip():
+        p.append("lane OPUS needs crucial: one line on why only Opus fits (live money, irreversible data, or a no-undo design call; WORKERS.md rule 6)")
     if card.get("live_path") and lane != "JIS-NB":
         p.append("live_path card must be lane JIS-NB (desk task; builders never touch the live tree or restart)")
     for k in TEXT + LISTS:
@@ -224,6 +302,8 @@ def brief(card):
     L = [f"TASK {card['id']} [{card.get('lane', '?')}, size {card.get('size') or '?'}, {card.get('worker') or '?'} ~{card.get('est_turns') or '?'} turns, prio {card.get('prio', '?')}]: {card['title']}",
          f"Goal: {card.get('goal', '')}",
          f"Scope in: {'; '.join(card.get('scope_in', []))}" + (f" | out: {'; '.join(card['scope_out'])}" if card.get("scope_out") else "")]
+    if card.get("weight"):
+        L.insert(2, f"Weight: {card['weight']}")
     L += [f"{i}. {s}" for i, s in enumerate(card.get("steps", []), 1)]
     if card.get("commands"):
         L += ["Commands:"] + [f"  {c}" for c in card["commands"]]
@@ -357,6 +437,8 @@ def cmd_check(a):
         if (a.id and c["id"] != a.id) or c["state"] not in ("raw", "refined", "ready", "active"):
             continue
         miss = problems(c, cards, reg)
+        if not miss and c["state"] in ("raw", "refined"):
+            miss = promotion_problems(c)
         if not miss:
             if c["state"] in ("raw", "refined"):
                 c.update(state="ready", asks="")
@@ -469,10 +551,107 @@ def cmd_stale(a):
     return 1 if hit and not a.refresh else 0
 
 
+REVIEW_WEIGHTS = ("CRUCIAL", "CRITICAL")   # lab_guy v3.1: these weights (or class C2/C3) need a real review stamp before start and finish
+SOFT_WEIGHTS = ("IMPORTANT",)              # IMPORTANT / class C1: a real review stamp is needed to be PROMOTED to ready (`check`), not to be taken
+# Two stamp formats are in use: planner `REVIEWED:<date> <ACCEPT|T0-ONLY>` (session_planner.md) and legacy `REVIEWED: <who> <date>`.
+STAMP_PLAN_RE = re.compile(r"^REVIEWED:\s*(\d{4}-\d{2}-\d{2})\s+(ACCEPT|T0-ONLY)(?:\s|$)", re.I | re.M)
+REVIEWED_RE = re.compile(r"^REVIEWED:\s+(?!\d{4}-\d{2}-\d{2})(\S+)\s+(\d{4}-\d{2}-\d{2})(?:\s|$)", re.I | re.M)
+HOLD_RE = re.compile(r"HOLD[ :]+(A-\d{8}-\d+)")
+HOLD_CLEARED_RE = re.compile(r"HOLD-CLEARED[ :]+(A-\d{8}-\d+)")
+
+
+def stamp_kind(card):
+    """'real' (a reviewer or ACCEPT stamp), 't0' (T0-ONLY: machine checks only, no reviewer ran) or '' (none)."""
+    note = str(card.get("note") or "")
+    for m in STAMP_PLAN_RE.finditer(note):
+        try:
+            datetime.strptime(m.group(1), "%Y-%m-%d")
+        except ValueError:
+            continue
+        return "t0" if m.group(2).upper() == "T0-ONLY" else "real"
+    for m in REVIEWED_RE.finditer(note):
+        reviewer = m.group(1).strip("<>[](){}.,:;").casefold()
+        try:
+            datetime.strptime(m.group(2), "%Y-%m-%d")
+        except ValueError:
+            continue
+        producer_ids = {str(card.get(k) or "").strip().casefold() for k in ("producer", "producer_model", "vendor", "model", "worker", "refined_by")}
+        if reviewer in {"", "x", "self", "producer", "reviewer", "pending", "unknown"} or reviewer in producer_ids:
+            continue
+        return "real"
+    return ""
+
+
+def card_class(card):
+    """C0-C3: the card's own `class` field, else `class=Cn` / `CLASS:Cn` in the note stamp; a live-path card is C3 at least."""
+    values = []
+    field = str(card.get("class") or "").strip().upper()
+    if field:
+        values.append(field if re.fullmatch(r"C[0-3]", field) else "C3")
+    for m in re.finditer(r"\bclass\s*[=:]\s*(C\d+)\b", str(card.get("note") or ""), re.I):
+        value = m.group(1).upper()
+        values.append(value if value in {"C0", "C1", "C2", "C3"} else "C3")
+    c = max(values, key=lambda x: int(x[1:])) if values else ""
+    if card.get("live_path") is True:
+        c = "C3"
+    return c
+
+
+def active_holds(repo=None):
+    """Announcement ids that are HOLD or STOP entries and not marked lifted/retired/closed."""
+    try:
+        text = ((repo or REPO) / "MyTradingSys" / "system" / "ANNOUNCEMENTS.md").read_text(encoding="utf-8")
+    except OSError:
+        return set()
+    return {m.group(1) for m in re.finditer(r"^### (A-\d{8}-\d+) (?:HOLD|STOP)(?!.*(?:LIFTED|RETIRED|CLOSED))", text, re.M)}
+
+
+def hold_problems(card, holds=None):
+    """Active announcement holds named in the note (`HOLD A-...`) and not cleared there (`HOLD-CLEARED A-...`)."""
+    note = str(card.get("note") or "")
+    held = {h for h in HOLD_RE.findall(note)} - set(HOLD_CLEARED_RE.findall(note))
+    held &= active_holds() if holds is None else set(holds)
+    return [f"held by {h}: stays refined until the announcement is lifted ('HOLD-CLEARED {h}' in the note)" for h in sorted(held)]
+
+
+def needs_review(card):
+    """'hard' (crucial/critical or C2/C3: needed to take and finish), 'soft' (important or C1: needed to promote), or ''."""
+    w = str(card.get("weight") or "").upper()
+    if w in REVIEW_WEIGHTS or card_class(card) in ("C2", "C3"):
+        return "hard"
+    if w in SOFT_WEIGHTS or card_class(card) == "C1":
+        return "soft"
+    return ""
+
+
+def promotion_problems(card, holds=None):
+    """Why `check` must not promote a raw/refined card to ready: an active hold, or no real review for important/crucial/critical or C1+."""
+    p = hold_problems(card, holds)
+    if needs_review(card) and stamp_kind(card) != "real":
+        p.append("needs a real review stamp (ACCEPT or 'REVIEWED: <reviewer> <date>'), not " + ("T0-ONLY" if stamp_kind(card) == "t0" else "none") + ": Lab_Guy pass (roles/lab_guy.md)")
+    return p
+
+
+def review_gate(card, finishing=False, result=""):
+    """Problems stopping a crucial/critical (or C2/C3, or live-path) card from being taken or marked done. routine/important pass.
+    The weight itself is set by the reviewer/planner (the note stamp), never by the producer."""
+    if needs_review(card) != "hard":
+        return []
+    p = []
+    if stamp_kind(card) != "real":
+        p.append("weight/class needs a real review: add 'REVIEWED: <reviewer> <date>' or 'REVIEWED:<date> ACCEPT' to the note first (T0-ONLY is not a review)")
+    if finishing and not str(result or "").strip():
+        p.append("a result receipt is required (--result with the evidence)")
+    return p
+
+
 def cmd_take(a):
     c = get(REPO, a.id)
     if c["state"] != "ready":
         raise SystemExit(f"tasks: {a.id} is {c['state']}, only a ready card can be taken")
+    gate = review_gate(c)
+    if gate:
+        raise SystemExit(f"tasks: {a.id} cannot be taken: " + "; ".join(gate))
     miss = problems(c, load_all(REPO), registry(REPO))
     if miss:
         raise SystemExit(f"tasks: {a.id} fails the Definition of Ready: " + "; ".join(miss))
@@ -495,6 +674,11 @@ def cmd_done(a):
     c = get(REPO, a.id)
     if c.get("flow"):
         raise SystemExit("tasks: flow cards close through lab_flow.py finish (evidence receipt required)")
+    if c.get("state") != "active":
+        raise SystemExit(f"tasks: {a.id} is {c.get('state')}, only an active card can be marked done")
+    gate = review_gate(c, finishing=True, result=a.result)
+    if gate:
+        raise SystemExit(f"tasks: {a.id} cannot be marked done: " + "; ".join(gate))
     c.update(state="done", result=a.result, closed=now())
     head = TS.git(REPO, "rev-parse", "--short", "HEAD")
     if head:   # base the work was done on; the ship commit that carries this card becomes the tag (SHIPPED@<sha>)
@@ -545,6 +729,10 @@ def cmd_sweep(a):
             hit += 1
             print(f"{c['id']}: all refs {' '.join(refs)} closed -> done" + ("" if a.apply else " (dry run)"))
             if a.apply:
+                gate = review_gate(c, finishing=True, result=c.get("result") or "registry rows closed")
+                if gate:
+                    print(f"{c['id']}: cannot be marked done: " + "; ".join(gate))
+                    continue
                 c.update(state="done", result=c.get("result") or "registry rows closed", closed=now())
                 save(REPO, c)
     if not hit:

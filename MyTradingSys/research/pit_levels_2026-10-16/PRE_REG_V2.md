@@ -27,7 +27,7 @@ Fix (all OURS):
 | MDE + cost | 0.232 + 0.179 = **0.411 R** > plausible 0.30 R |
 | n_needed days at 0.30 R | (4.083 x 1.46 / 0.121)^2 = **2,427 days** vs 662 (DEV holds 912 days in all) |
 
-- **The gate FAILS on today's counts.** At a plausible 0.30 R no DEV design of this cell can be powered at the Holm z: even at zero cost n_needed is about 1,000 days (> 912). Per the AUDIT rule ("if MDE + cost > plausible, BLOCK") the executing session reruns this arithmetic from `COUNT.txt`, writes `BLOCKED.md` with the numbers and stops, unless the operator has first overruled the plausible effect in writing in `OPERATOR_DECISIONS.md` (then a PRE_REG_V3 with its own gate supersedes this file). `DECISION (OURS)`: conservative = BLOCK; no stop-floor, horizon or parameter search may rescue the gate (a second parameter set is scope_out in the card).
+- **The gate FAILS on today's counts.** At a plausible 0.30 R no DEV design of this cell can be powered at the Holm z: even at zero cost n_needed is about 395 days (ERRATUM 2026-10-18: the original text said "about 1,000"; correct value (4.083 x 1.46 / 0.30)^2 = 394.8, see ERRATUM section at the end; the gate still fails because 2,427 days are needed at cost 0.179 R). Per the AUDIT rule ("if MDE + cost > plausible, BLOCK") the executing session reruns this arithmetic from `COUNT.txt`, writes `BLOCKED.md` with the numbers and stops, unless the operator has first overruled the plausible effect in writing in `OPERATOR_DECISIONS.md` (then a PRE_REG_V3 with its own gate supersedes this file). `DECISION (OURS)`: conservative = BLOCK; no stop-floor, horizon or parameter search may rescue the gate (a second parameter set is scope_out in the card).
 - The freeze bar `n_T within 1 % of 1,835` (PRE_REG:72-73) is kept, applied to the feasible count of `count_prior_va.py`; the traded n_T is reported separately.
 
 ## Item 4. Holm k (AUDIT item 4)
@@ -48,3 +48,7 @@ PRE_REG:81-82 gave k = 1 (no ledger). Recount, counts only, 2026-10-16:
 ## DECISION log
 - DECISION (OURS): plausible effect 0.30 R; units = days; two-sided z; m = 42 recounted; gate fails, so the default is BLOCK.
 - DECISION (OURS): C kept only as a stop-matched paired comparator; PASS_C dropped.
+
+## ERRATUM 2026-10-18 (power sentence; no outcome read, no decision number changed)
+- Wrong: "even at zero cost n_needed is about 1,000 days". Correct: zero-cost n_needed = ((z_holm + 0.8416) x sd / plausible)^2 = (4.083 x 1.46 / 0.30)^2 = 394.8, about 395 days. Hand arithmetic: 4.083 x 1.46 = 5.9612; 5.9612 / 0.30 = 19.871; 19.871^2 = 394.8. Inputs from lines 18-20 above (sd 1.46, plausible 0.30, z_holm 3.241 + 0.8416 = 4.083). Zero-cost n_needed 395 is below the 912 DEV days, so the "> 912" wording is also wrong; the gate fails because of the 0.179 R cost: n_needed at cost = (4.083 x 1.46 / 0.121)^2 = 2,427 days (unchanged) vs 662 feasible days (unchanged).
+- Unchanged: 2,427 days, 662 days, MDE 0.232 R, MDE + cost 0.411 R, BLOCK default. Sources: this file lines 18-28; MyTradingSys/research/pit_levels_2026-10-16/bug_b187_evidence.txt; MyTradingSys/research/layer_lab/reports/2026-10-18_q76-dev-ext-power-check.md (1,207 of 2,427 days with DEV_EXT).

@@ -10,15 +10,25 @@
   "goal": "Reject partial snapshot months as full development and bind holdout authorization to a durable completed run with its code, arms, data, session and readiness identities.",
   "id": "rv02-fix-dax-full-dev-authorization",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "gate-4f-tmp-race: scratch dirs out of the checkout, gate pytest ignores transient tmp dirs",
+      "ref": "7f5bb09c6f7b",
+      "utc": "2026-10-16T04:53:08Z"
+    }
+  ],
   "layers": [
     "tom"
   ],
   "live_path": false,
-  "note": "HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | Captured by completed RV02 audit; raw SONNET follow-up for refinement. No implementation change made by the audit.",
+  "note": "UNBLOCKED 2026-10-18: operator lifted the holds in chat (DAX chain q11 hold, A-20261018-5); no-FDAX-data-purchase rule stays. Results built on lab bases stay labelled UNCHECKED. [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | Captured by completed RV02 audit; raw SONNET follow-up for refinement. No implementation change made by the audit.",
   "pinned": false,
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T22:06:39Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -31,12 +41,13 @@
     "Specs, ledger and historical reports",
     "Real-data/holdout reads and current-encoding BTC runs"
   ],
+  "scope_sha": "7f5bb09c6f7b",
   "size": "M",
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-12_rv02-dax-harness-fixes.md:45",
     "MyTradingSys/system/revalidation/RV02_dax_harness_fixes.md"
   ],
-  "state": "blocked",
+  "state": "ready",
   "steps": [
     "Read the linked RV02 finding and executable synthetic appendix.",
     "Refine the implementation boundary and reproduce the finding red with synthetic data.",
@@ -44,5 +55,6 @@
   ],
   "tests": "One evaluated snapshot over a complete 1440-minute day cannot certify 96 scheduled observations; reject missing edge coverage, stale producer ranges and changed-run authorization.",
   "title": "RV02 R3: require complete DAX sampling and bind holdout authorization",
+  "weight": "CRUCIAL",
   "worker": "session"
 }

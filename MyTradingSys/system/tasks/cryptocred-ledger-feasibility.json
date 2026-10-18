@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T10:12:13Z",
   "commands": [],
   "created": "2026-10-17T09:02:17Z",
   "depends_on": [],
@@ -11,6 +12,12 @@
   "id": "cryptocred-ledger-feasibility",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "0 dated CryptoCred trades/calls in 5 extracts (2 undated chart examples): HYPOTHESIS, rese",
+      "ref": "5ce36f98",
+      "utc": "2026-10-17T10:12:13Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -36,7 +43,7 @@
   "refined_by": "cryptocred-home-fit-audit 2026-10-17",
   "refreshed": "2026-10-17T09:02:34Z",
   "refs": [],
-  "result": "",
+  "result": "0 dated CryptoCred trades/calls in 5 extracts (2 undated chart examples): HYPOTHESIS, research/cryptocred_ledger_2026-10/LEDGER_FEASIBILITY.md",
   "scope_in": [
     "extracts/processed/cryptocred/",
     "MyTradingSys/research/",
@@ -52,7 +59,7 @@
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_CRYPTOCRED.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "List every dated trade/call in the 5 CryptoCred extracts and any saved sources (quote + file:line); count them.",
     "Write MyTradingSys/research/cryptocred_ledger_2026-10/LEDGER_FEASIBILITY.md: N found, minute timestamps possible or not, design/check split possible or not, verdict SCORABLE / HYPOTHESIS.",

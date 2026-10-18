@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T12:27:32Z",
   "commands": [],
   "created": "2026-10-17T03:40:00Z",
   "depends_on": [],
@@ -12,6 +13,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "DEV 1h 652 escalation events, 649 OK/3 NOT_IN_DATA, mean MFE 4.607R/MAE 3.907R; 8 tests gr",
+      "ref": "5c3dee9a",
+      "utc": "2026-10-17T12:27:32Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -36,7 +43,7 @@
   "refined_by": "lab-cards-1017",
   "refreshed": "2026-10-17T07:24:49Z",
   "refs": [],
-  "result": "",
+  "result": "DEV 1h 652 escalation events, 649 OK/3 NOT_IN_DATA, mean MFE 4.607R/MAE 3.907R; 8 tests green; MyTradingSys/research/layer_lab/fabio_escalation_event_table/REPORT.md",
   "scope_in": [
     "MyTradingSys/research/layer_lab/fabio_escalation_event_table/event_table.py",
     "MyTradingSys/research/layer_lab/fabio_escalation_event_table/test_event_table.py",
@@ -63,7 +70,7 @@
   "scope_sha": "515d07a91407",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the BRIEF.md named in scope_in, then write the test file first; run it and confirm it fails (red).",
     "Implement event_table.py in MyTradingSys/research/layer_lab/fabio_escalation_event_table/ only: DEV data only, gap or missing input = NOT_IN_DATA (never 0); use the two helpers named in the brief (read only).",
@@ -71,5 +78,6 @@
     "Run the CLI once on the real DEV npz; put row/OK/NOT_IN_DATA counts and mean MFE/MAE in REPORT.md and one DEV row in TRIALS.md; delete any CSV you wrote; set the result line."
   ],
   "tests": "synthetic 1h bars with tbv set so a record-delta bar breaks an absorbed swing level: one row on that bar, side in the aggressor's direction; a bar with delta below aggression_k times the average gives none; the swing is not used before confirmed_i; entry is the next bar open; gap or short forward window = NOT_IN_DATA.",
-  "title": "Fabio escalation/absorption: event table with forward MFE/MAE in R on 1h DEV"
+  "title": "Fabio escalation/absorption: event table with forward MFE/MAE in R on 1h DEV",
+  "weight": "B-SHARED"
 }

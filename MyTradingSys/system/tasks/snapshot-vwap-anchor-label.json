@@ -1,0 +1,63 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "mvn -q test -Dtest=MarketDataSnapshotTest",
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-10-17T20:31:40Z",
+  "depends_on": [],
+  "done_when": "MarketDataSnapshotTest passes with vwap_anchor_utc = UTC day start; consumer list in commit body; docs row for the new key. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "MarketDataSnapshot writes vwap_anchor_utc as today's NY 09:30 (13:30Z) but the VWAP is built from UTC 00:00 daily bars; the label is wrong and in the future 00:00-13:30Z. Fix the label (audit M3).",
+  "id": "snapshot-vwap-anchor-label",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "java buildVp: FORMULAS 18.1 edge convention (POC centre, VAH top edge, VAL bottom edge)",
+      "ref": "d8efebc2e1ed",
+      "utc": "2026-10-16T13:36:32Z"
+    }
+  ],
+  "layers": [
+    "live_engine"
+  ],
+  "live_path": true,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C1 REVIEWER:GPT medium (code review at ship) WEIGHT:IMPORTANT. Live-path Java: builder never deploys; deploy by hand per DEPLOY_RUNBOOK.md. Audit lines MarketDataSnapshot.java:832-861.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T21:38:51Z",
+  "refs": [
+    "MyTradingSys/research/audits/state_cvd_vwap_audit_2026-10-18.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "src/main/java/datafeed/MarketDataSnapshot.java",
+    "src/test/java/datafeed/MarketDataSnapshotTest.java"
+  ],
+  "scope_out": [
+    "VWAP maths",
+    "session high/low/IB anchor values",
+    "live tree deploy"
+  ],
+  "scope_sha": "d8efebc2e1ed",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "grep every consumer of vwap_anchor_utc (java, python, docs) and list them in the commit body",
+    "vwap_anchor_utc = UTC day start used by dailyBars; keep the NY open under its own new key session_open_anchor_utc so IB/session high-low consumers still get it",
+    "test: snapshot at 12:43Z has vwap_anchor_utc = 00:00Z same day, never later than now; fails on pre-change code; restart-mid-day and API-error cases still fail closed"
+  ],
+  "tests": "MarketDataSnapshotTest new case fails first on old code; mvn test -Dtest=MarketDataSnapshotTest",
+  "title": "MarketDataSnapshot: vwap_anchor_utc must be the UTC day start used by the VWAP, not today's NY open (audit M3)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

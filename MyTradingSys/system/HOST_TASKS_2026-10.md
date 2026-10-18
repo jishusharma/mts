@@ -1,5 +1,7 @@
 # JIS-NB Windows tasks (MTS-*), 2026-10-15
 
+> **RETIRED 2026-10-17, see SCHEDULING_POLICY.md.** Operator 2026-10-17: every scheduled task on every device is removed; this table is history, the current state is in SCHEDULING_POLICY.md section 5.
+
 `Get-ScheduledTask` 08:33 IST: 21 tasks. Nothing changed; decision q-host-sched-tasks (OPERATOR_DECISIONS.md).
 
 | Task | Runs | Last result | Finding | Action |

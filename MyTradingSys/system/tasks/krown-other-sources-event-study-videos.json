@@ -1,50 +1,51 @@
 {
-  "approved_by": "",
-  "asks": "",
-  "commands": [],
-  "created": "2026-10-14T15:57:19Z",
-  "depends_on": [
-    "krown-ta101-extract-remaining-10"
-  ],
-  "done_when": "V2 extracts pass verify_extract_quotes.py; research/krown_ta101_2026-10-13/CALL_LEDGER.csv has one row per call with date, side, trigger, target, outcome as he states it; the calls are split design/check by date",
-  "est_turns": 30,
-  "from_inbox": "",
-  "goal": "Read Krown's other free content that states entries and targets: his daily BTC event-study videos (options/research/KROWN_FREE_VS_PAID.md s1b lists ids and dates) and the rejected CBP queue item krown_2026-09-25_OggsnATGbOg; extract with the V2 method (decision rows, trade blocks) and build a timestamped call ledger for PRE_REG_KROWN item 2.",
-  "id": "krown-other-sources-event-study-videos",
-  "lane": "SONNET",
-  "layers": [
-    "krown"
-  ],
-  "live_path": false,
-  "note": "waits on its depends_on cards; release when they are done",
-  "pinned": false,
-  "prio": 3,
-  "refine_tries": 0,
-  "refined_by": "",
-  "refs": [
-    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md",
-    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv",
-    "MyTradingSys/research/krown_ta101_2026-10-13/PRE_REG_KROWN.md",
-    "MyTradingSys/options/research/KROWN_FREE_VS_PAID.md"
-  ],
-  "result": "",
-  "scope_in": [
-    "MyTradingSys/research/krown_ta101_2026-10-13/",
-    "raw_transcripts_canonical/"
-  ],
-  "scope_out": [
-    "engine and layer code",
-    "any backtest"
-  ],
-  "size": "M",
-  "sources": [],
-  "state": "blocked",
-  "steps": [
-    "same YouTube rules as the TA 101 card: STOP on 429, ask for pasted transcripts",
-    "extract with research/fast_track_2026-09-27/EXTRACTION_METHOD_V2.md, one video per fresh worker",
-    "build CALL_LEDGER.csv; verify each call date against klines before it is used as ground truth"
-  ],
-  "tests": "docs lane: verify_extract_quotes.py is the gate",
-  "title": "Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigger, target, hit rate as he states them); DONE when: a V2 extract per video passes the quote gate and a call ledger exists",
-  "worker": "session"
+ "approved_by": "",
+ "asks": "",
+ "commands": [],
+ "created": "2026-10-14T15:57:19Z",
+ "depends_on": [
+  "krown-ta101-extract-remaining-10"
+ ],
+ "done_when": "V2 extracts pass verify_extract_quotes.py; research/krown_ta101_2026-10-13/CALL_LEDGER.csv has one row per call with date, side, trigger, target, outcome as he states it; the calls are split design/check by date",
+ "est_turns": 30,
+ "from_inbox": "",
+ "goal": "Read Krown's other free content that states entries and targets: his daily BTC event-study videos (options/research/KROWN_FREE_VS_PAID.md s1b lists ids and dates) and the rejected CBP queue item krown_2026-09-25_OggsnATGbOg; extract with the V2 method (decision rows, trade blocks) and build a timestamped call ledger for PRE_REG_KROWN item 2.",
+ "id": "krown-other-sources-event-study-videos",
+ "lane": "SONNET",
+ "layers": [
+  "krown"
+ ],
+ "live_path": false,
+ "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. UNBLOCKED 2026-10-18: no hold; waits only on depends_on krown-ta101-extract-remaining-10 (ready). Moved blocked -> refined so check promotes it when the dep is done. Free YouTube pre-approved, STOP on 429. | [PLAN 2026-10-18 weight=ROUTINE lab-touch: no, protocol skipped] waits on its depends_on cards; release when they are done",
+ "pinned": false,
+ "prio": 3,
+ "refine_tries": 0,
+ "refined_by": "",
+ "refs": [
+  "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md",
+  "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv",
+  "MyTradingSys/research/krown_ta101_2026-10-13/PRE_REG_KROWN.md",
+  "MyTradingSys/options/research/KROWN_FREE_VS_PAID.md"
+ ],
+ "result": "",
+ "scope_in": [
+  "MyTradingSys/research/krown_ta101_2026-10-13/",
+  "raw_transcripts_canonical/"
+ ],
+ "scope_out": [
+  "engine and layer code",
+  "any backtest"
+ ],
+ "size": "M",
+ "sources": [],
+ "state": "refined",
+ "steps": [
+  "same YouTube rules as the TA 101 card: STOP on 429, ask for pasted transcripts",
+  "extract with research/fast_track_2026-09-27/EXTRACTION_METHOD_V2.md, one video per fresh worker",
+  "build CALL_LEDGER.csv; verify each call date against klines before it is used as ground truth"
+ ],
+ "tests": "docs lane: verify_extract_quotes.py is the gate",
+ "title": "Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigger, target, hit rate as he states them); DONE when: a V2 extract per video passes the quote gate and a call ledger exists",
+ "weight": "ROUTINE",
+ "worker": "session"
 }

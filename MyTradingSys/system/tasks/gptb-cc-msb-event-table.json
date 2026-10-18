@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T12:29:11Z",
   "commands": [],
   "created": "2026-10-17T03:40:00Z",
   "depends_on": [],
@@ -12,6 +13,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "DEV 1h 831 MSB rows (830 OK, 1 NOT_IN_DATA), mean MFE 3.340R / MAE 3.109R; 8 tests green; ",
+      "ref": "4d4f8b3e",
+      "utc": "2026-10-17T12:29:11Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -36,7 +43,7 @@
   "refined_by": "lab-cards-1017",
   "refreshed": "2026-10-17T07:24:48Z",
   "refs": [],
-  "result": "",
+  "result": "DEV 1h 831 MSB rows (830 OK, 1 NOT_IN_DATA), mean MFE 3.340R / MAE 3.109R; 8 tests green; cc_msb_event_table/REPORT.md",
   "scope_in": [
     "MyTradingSys/research/layer_lab/cc_msb_event_table/event_table.py",
     "MyTradingSys/research/layer_lab/cc_msb_event_table/test_event_table.py",
@@ -62,7 +69,7 @@
   "scope_sha": "515d07a91407",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the BRIEF.md named in scope_in, then write the test file first; run it and confirm it fails (red).",
     "Implement event_table.py in MyTradingSys/research/layer_lab/cc_msb_event_table/ only: DEV data only, gap or missing input = NOT_IN_DATA (never 0); use the two helpers named in the brief (read only).",
@@ -70,5 +77,6 @@
     "Run the CLI once on the real DEV npz; put row/OK/NOT_IN_DATA counts and mean MFE/MAE in REPORT.md and one DEV row in TRIALS.md; delete any CSV you wrote; set the result line."
   ],
   "tests": "synthetic 1h bars with a hand-built lower-high then close above it: exactly one up-MSB row stamped on the break bar, the swing is not used before confirmed_i, each broken swing fires once, a close back inside gives no second row; entry is the next bar open; gap or short forward window = NOT_IN_DATA; MFE/MAE equal hand values.",
-  "title": "CryptoCred market-structure break: event table with forward MFE/MAE in R on 1h DEV"
+  "title": "CryptoCred market-structure break: event table with forward MFE/MAE in R on 1h DEV",
+  "weight": "B-SHARED"
 }

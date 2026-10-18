@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T13:47:48Z",
   "commands": [],
   "created": "2026-10-17T03:40:00Z",
   "depends_on": [],
@@ -12,6 +13,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "1546 DEV rows all OK; long MFE 3.23R MAE 3.17R; fabio_lvn_touch_event_table/REPORT.md",
+      "ref": "7d0a148e",
+      "utc": "2026-10-17T13:47:48Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -36,7 +43,7 @@
   "refined_by": "lab-cards-1017",
   "refreshed": "2026-10-17T07:24:50Z",
   "refs": [],
-  "result": "",
+  "result": "1546 DEV rows all OK; long MFE 3.23R MAE 3.17R; fabio_lvn_touch_event_table/REPORT.md",
   "scope_in": [
     "MyTradingSys/research/layer_lab/fabio_lvn_touch_event_table/event_table.py",
     "MyTradingSys/research/layer_lab/fabio_lvn_touch_event_table/test_event_table.py",
@@ -62,7 +69,7 @@
   "scope_sha": "515d07a91407",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the BRIEF.md named in scope_in, then write the test file first; run it and confirm it fails (red).",
     "Implement event_table.py in MyTradingSys/research/layer_lab/fabio_lvn_touch_event_table/ only: DEV data only, gap or missing input = NOT_IN_DATA (never 0); use the two helpers named in the brief (read only).",
@@ -70,5 +77,6 @@
     "Run the CLI once on the real DEV npz; put row/OK/NOT_IN_DATA counts and mean MFE/MAE in REPORT.md and one DEV row in TRIALS.md; delete any CSV you wrote; set the result line."
   ],
   "tests": "synthetic 1h legs with a hand-built volume profile: the LVN price equals the hand value, the first touch bar gets the single row, a touch after a newer confirmed leg gives none, a touch before confirmed_i is ignored (no look-ahead), a leg whose profile is empty = NOT_IN_DATA; entry is the next bar open; long and short excursions equal hand values.",
-  "title": "Fabio volume-profile LVN touch: event table with forward MFE/MAE in R on 1h DEV"
+  "title": "Fabio volume-profile LVN touch: event table with forward MFE/MAE in R on 1h DEV",
+  "weight": "B-SHARED"
 }

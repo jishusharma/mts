@@ -26,18 +26,18 @@ The operator is not a developer: do these, do not ask, do not re-investigate. Ha
 ## Push, CI/CD, deploy, machines
 - Push: never from the live tree (the folder holding `.mts_live`). `sync.py ship` is the way. Cloud containers (claude.ai/code, harness branch `claude/...`): start from origin/fast-track, push the harness branch, open a PR into fast-track; CI auto-merges it when green (PARALLEL.md). `python scripts/dev/cloud_setup.py` installs the gate deps and prints the state. If sync.py itself is broken, the manual recipe is PARALLEL.md "Fallback if sync.py is broken".
 - CI/CD without the operator: `.github/workflows/ci.yml` gates every push (ubuntu AND windows) and moves `green/fast-track`;
-  `MTS-AutoDeploy` (15 min) deploys only that SHA, stops on red; `MTS-DailyHygiene` writes the report STATUS.md embeds. Details,
+  `MTS-AutoDeploy` (RETIRED 2026-10-17, see SCHEDULING_POLICY.md; deploy by hand) deployed only that SHA, stops on red; `MTS-DailyHygiene` writes the report STATUS.md embeds. Details,
   restart map, registration: `MyTradingSys/system/DEPLOY_RUNBOOK.md`. STATUS.md's `CI green:` line says RED when the tip has not
   gone green for an hour: then nothing deploys, and fixing CI is the first job of any session.
 - Deploy to the live tree by hand only if that job is down: DEPLOY_RUNBOOK.md "Manual fallback" (operator pre-authorised "just do it" 2026-10-09).
-- Machine off = stack down. `MTS-Supervisor` starts at logon (+90 s) and revives every aux process. Missed events are not replayed
+- Machine off = stack down. `MTS-Supervisor` (RETIRED 2026-10-17, see SCHEDULING_POLICY.md) no longer revives processes; the coordinator or operator restarts them. Missed events are not replayed
   after an outage on purpose (no stale-signal trades); do not build catch-up.
 - Runner output: `runtime_data/live_runner.log`. alert_rate_check candles: `scripts/dev/refresh_klines.py` runs daily before it.
 - Local gate needs `pip install numpy` (Step 3p). Two `htf_context_live` loops = duplicate rows: keep one (shim parent + child = one loop).
 
 ## Codex, DSA
 - "How is Codex doing?" = `python scripts/dev/codex_run.py status` (also in STATUS.md, "Layer Lab (Codex)"). Codex works lane `CODEX` cards
-  unattended on JIS-NUC (`MTS-CodexLab`, no Claude tokens); how it works, its limits and how to feed it: `MyTradingSys/system/LAYER_LAB.md`.
+  on JIS-NUC (`codex_run.py tick`, run by the coordinator; MTS-CodexLab RETIRED 2026-10-17, see SCHEDULING_POLICY.md); how it works, its limits and how to feed it: `MyTradingSys/system/LAYER_LAB.md`.
   A NEEDS A LOOK line is a NUC session's first job. GPT out of credits/limit or silent: `python scripts/dev/lane_health.py status` (cards move to DSA/Claude or pause by themselves; flag a must-wait card `tasks.py flag <id> crucial`). Scoped research or backtest-code work goes to lane CODEX before a Claude session takes it.
 - DSA delegation (operator 2026-10-09): run-and-report work (backtest reruns, stratifying, inventories, source hunts, gate runs) goes to DSA: `desk.py post "<t>" --need "<commands>" --done-when "<obs>" --target DSA`. Routing and operator guide: `MyTradingSys/system/DSA_DELEGATION.md`. Low on budget: post the rest to DSA, then hand off.
 

@@ -1,5 +1,7 @@
 # PARALLEL - how any number of sessions on any machine work at once
 
+> Scheduled tasks (`MTS-AutoDeploy` etc.) are RETIRED 2026-10-17, see SCHEDULING_POLICY.md: deploys are manual or coordinator-run.
+
 Replaces: commit-only-from-the-desktop (DEVICES section 5), ownership claims in SUPERVISOR_LOG,
 `.new` staging, per-session registration in sessions/, and the inbox-per-surface handoffs
 (SURFACE_POLICY section 2). Older records stay as history.
@@ -30,7 +32,7 @@ other sessions' uncommitted files and unshipped commits) and a handful of hot fi
 ## Two kinds of checkout
 | Checkout | Where | Who changes it | How |
 |---|---|---|---|
-| Live tree | JIS-NB `C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed`, marked by the gitignored file `.mts_live` | `MTS-AutoDeploy` only (DEPLOY_RUNBOOK.md) | gate the green SHA, `git merge --ff-only`, restart what changed |
+| Live tree | JIS-NB `C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed`, marked by the gitignored file `.mts_live` | manual or coordinator-run deploy only (DEPLOY_RUNBOOK.md; MTS-AutoDeploy RETIRED 2026-10-17, see SCHEDULING_POLICY.md) | gate the green SHA, `git merge --ff-only`, restart what changed |
 | Work tree | anything else: an App worktree, `../mts-<slug>`, the NUC or laptop clone, a cloud container | any session | `sync.py start` ... commit ... `sync.py ship` |
 
 `sync.py` refuses to run in the live tree, so a session that opens there is told to make a worktree:
@@ -54,7 +56,7 @@ other sessions' uncommitted files and unshipped commits) and a handful of hot fi
    someone shipped first; it re-merges and retries. A real conflict stops and asks you to resolve it. Ship the last task with `sync.py ship --release <slug>` (the claim file is deleted in the same push; a standalone `sync.py release <slug>` is only for 'nothing to ship');
    `sync.py where` must be clean; overwrite NEXT_SESSION.md if you are the last session of the day (hand-over: RELAY.md; session length: CLAUDE.md SHORT SESSIONS).
 5. CI (`.github/workflows/ci.yml`) runs the full gate on both OSes after every push and publishes the passing SHA as `green/fast-track`;
-   MTS-AutoDeploy (`scripts/dev/auto_deploy.py`) deploys only that branch (fast-track only after 90 min without a green advance, gated by the
+   MTS-AutoDeploy (`scripts/dev/auto_deploy.py`, RETIRED 2026-10-17, see SCHEDULING_POLICY.md) deployed only that branch (fast-track only after 90 min without a green advance, gated by the
    local gate). So a defect reaches testnet never; at worst fast-track is red for one CI cycle. Red CI: `make_status.py` files ONE pinned
    card `ci-<first failing sha7>` (`scripts/dev/ci_red_card.py`, one per failure chain), which tops `tasks.py next`; ship it with your next ship.
 6. Worktree hygiene (2026-10-12): a session that made a `../mts-<host>-<slug>` worktree and shipped everything
@@ -77,7 +79,7 @@ A session blocked on desktop reach (JIS-NB data, a file only it holds, a look at
 other work, and later `desk.py wait <id>` or reads the result after `sync.py start`. The desktop agent (a Claude
 session or the operator) lists open tasks with `mts desk`, claims one (`desk.py take`) and closes it
 (`desk.py done <id> --result ...`, or `--failed` with a reason). It is a board for agents, not an executor: nothing
-runs a command from task text, and restarts, HALT, orders, deploys and secrets stay with the operator and MTS-AutoDeploy
+runs a command from task text, and restarts, HALT, orders, deploys and secrets stay with the operator and the coordinator (MTS-AutoDeploy RETIRED 2026-10-17, see SCHEDULING_POLICY.md)
 (a declined task closes `--failed` and its `Operator:` line shows in `sync.py news`). Cloud work ships by pull request (above).
 
 ## What the operator reads
@@ -85,9 +87,9 @@ runs a command from task text, and restarts, HALT, orders, deploys and secrets s
 No diffs, no PR review. A missing Result line shows as "(not stated)" and is the thing to push back on.
 
 ## What still needs a person
-- Deploying to the live tree: `MTS-AutoDeploy` only (DEPLOY_RUNBOOK.md). Restarts, HALT, orders: not a builder's (CLAUDE.md hard rules).
+- Deploying to the live tree: manual or coordinator-run only (DEPLOY_RUNBOOK.md; MTS-AutoDeploy RETIRED 2026-10-17, see SCHEDULING_POLICY.md). Restarts, HALT, orders: not a builder's (CLAUDE.md hard rules).
 - Changes to `execution/` or `layers/alerts/` ship like anything else; they reach the live system only on the
-  next `MTS-AutoDeploy`, which restarts just the processes whose files changed.
+  next manual or coordinator-run deploy (MTS-AutoDeploy RETIRED 2026-10-17, see SCHEDULING_POLICY.md), which restarts just the processes whose files changed.
 - Two sessions knowingly on the same file: say so in the commit message; git does the rest.
 
 ## Machine-local settings never go in .git/info/exclude
@@ -107,7 +109,7 @@ Which machine, login, lane and model may touch what: HOW_MTS_RUNS.md.
 
 | Device | Runs | May push fast-track? | Rule |
 |---|---|---|---|
-| JIS-NB (desktop) | live loop (live tree), Claude sessions, scheduled checks | yes, from work trees only (`../mts-<slug>`) | the live tree is touched only by `MTS-AutoDeploy`; data lives here (gitignored) |
+| JIS-NB (desktop) | live loop (live tree), Claude sessions, scheduled checks | yes, from work trees only (`../mts-<slug>`) | the live tree is touched only by manual or coordinator-run deploy (MTS-AutoDeploy RETIRED 2026-10-17, see SCHEDULING_POLICY.md); data lives here (gitignored) |
 | JIS-NUC | relay sessions, Codex lab, backtests/heavy research on committed data; F:\MTS\data | yes, from its work tree (relay and lab sessions ship from there) | never run the live loop there before the DEVICES section 3 move; data made on JIS-NB is not there until copied |
 | DESKTOP-F7IU69N (laptop) | travel: Claude app, own clone, RDP into the others | yes, from its clone | work on committed data only; need JIS-NB files -> `desk.py post` and carry on |
 Only one machine runs the live loop at a time (DEVICES section 3).

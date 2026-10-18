@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T12:27:42Z",
   "commands": [],
   "created": "2026-10-17T03:40:00Z",
   "depends_on": [],
@@ -12,6 +13,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "DEV 912 rows, 911 OK/1 NOT_IN_DATA, mean MFE 2.70R MAE 2.81R; 10 tests",
+      "ref": "5e390f80",
+      "utc": "2026-10-17T12:27:42Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -36,7 +43,7 @@
   "refined_by": "lab-cards-1017",
   "refreshed": "2026-10-17T07:24:53Z",
   "refs": [],
-  "result": "",
+  "result": "DEV 912 rows, 911 OK/1 NOT_IN_DATA, mean MFE 2.70R MAE 2.81R; 10 tests",
   "scope_in": [
     "MyTradingSys/research/layer_lab/session_momentum_event_table/event_table.py",
     "MyTradingSys/research/layer_lab/session_momentum_event_table/test_event_table.py",
@@ -62,7 +69,7 @@
   "scope_sha": "515d07a91407",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the BRIEF.md named in scope_in, then write the test file first; run it and confirm it fails (red).",
     "Implement event_table.py in MyTradingSys/research/layer_lab/session_momentum_event_table/ only: DEV data only, gap or missing input = NOT_IN_DATA (never 0); use the two helpers named in the brief (read only). R also needs klines_1h.npz (DEV).",
@@ -70,5 +77,6 @@
     "Run the CLI once on the real DEV npz; put row/OK/NOT_IN_DATA counts and mean MFE/MAE in REPORT.md and one DEV row in TRIALS.md; delete any CSV you wrote; set the result line."
   ],
   "tests": "synthetic 5m day: first-30-minute return +0.4% gives one long row at the close of the 6th bar, -0.4% a short row, exactly 0 gives none; forward window ends at 24:00 UTC and never crosses into the next day; a day with a missing bar in the first 30 minutes = NOT_IN_DATA; MFE/MAE equal hand values; R uses only 1h bars closed at or before the entry bar open.",
-  "title": "Session momentum (T055 C2): daily event table with forward MFE/MAE in R on 5m DEV"
+  "title": "Session momentum (T055 C2): daily event table with forward MFE/MAE in R on 5m DEV",
+  "weight": "B-SHARED"
 }

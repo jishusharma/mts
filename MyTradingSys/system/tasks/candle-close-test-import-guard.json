@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T11:27:32Z",
   "commands": [],
   "created": "2026-10-14T12:10:19Z",
   "depends_on": [],
@@ -11,6 +12,12 @@
   "id": "candle-close-test-import-guard",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "test_study.py: pandas-only except, study import fails closed; A6 repro exit0->nonzero; 8 n",
+      "ref": "8d2625b4",
+      "utc": "2026-10-17T11:27:32Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -37,7 +44,7 @@
   "refined_by": "Codex independent audit 2026-10-14",
   "refreshed": "2026-10-17T08:58:57Z",
   "refs": [],
-  "result": "",
+  "result": "test_study.py: pandas-only except, study import fails closed; A6 repro exit0->nonzero; 8 numerical tests pass, 2 subprocess guard tests",
   "scope_in": [
     "MyTradingSys/research/layer_lab/candle_close_2026-10-14/test_study.py",
     "MyTradingSys/research/layer_lab/candle_close_2026-10-14/INDEPENDENT_AUDIT.md",
@@ -54,7 +61,7 @@
     "MyTradingSys/research/layer_lab/candle_close_2026-10-14/INDEPENDENT_AUDIT.md",
     "MyTradingSys/research/layer_lab/candle_close_2026-10-14/AUDIT_REPRODUCTIONS.json"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Reproduce A6: installed pandas plus ImportError for study currently exits 0 with eight skips.",
     "Catch only optional pandas import failures; import study outside that catch. Add a subprocess regression that fails on the pre-change implementation.",

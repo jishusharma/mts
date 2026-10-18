@@ -5,29 +5,54 @@
   "created": "2026-10-14T15:36:52Z",
   "depends_on": [],
   "done_when": "The live read prints the three state lines from closed bars, a test fixes today's 15:08Z 1m state (price LL 81622, CVD HL, OI up) from a kline fixture, gate green.",
+  "est_turns": 25,
   "from_inbox": "",
   "goal": "Live read misses the CoinGlass order-flow view (operator shots 2026-10-14). Add one line per TF 1m/5m/15m: price swing, Binance CVD swing, OI 60-min change, combined state. Descriptive only, marked 'no tested edge' (orderflow_views_2026-10-14 RESULT.md).",
   "id": "live-orderflow-state-line-1m-5m-15m-pric",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "market guide: read-only MA/RSI/candle digest (mts market), candle pilot P0+P1, MA literatu",
+      "ref": "f8e201dbc8c5",
+      "utc": "2026-10-07T13:59:00Z"
+    }
+  ],
   "layers": [
     "live_engine"
   ],
   "live_path": false,
-  "note": "CoinGlass chart VWAP/CVD levels anchor at the chart's first loaded bar (1m VWAP 82643 = 10:46Z start); print our 00:00Z VWAP and say CVD levels are chart-relative. Aggregated CVD and Net Longs/Shorts are not in our data (see card identify-the-coinglass-net-delta-panel-u).",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Closed bars only. Same file as the next two market_guide cards, which depend on this one. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T21:38:00Z",
   "refs": [
     "MyTradingSys/research/orderflow_views_2026-10-14/RESULT.md",
     "MyTradingSys/research/screenshots/2026-10-14_BTCUSDT_c688fa7b068c.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/market_guide.py",
+    "scripts/dev/test_market_guide.py"
+  ],
+  "scope_out": [
+    "engine and layer code",
+    "live tree"
+  ],
+  "scope_sha": "f8e201dbc8c5",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Live read: one order-flow state line per TF (1m/5m/15m price swing vs Binance CVD swing vs OI change), descriptive only"
+  "state": "ready",
+  "steps": [
+    "read card refs (orderflow_views RESULT.md) and market_guide.py structure",
+    "add order_flow_state_lines(klines_1m,5m,15m,oi): per TF price swing, Binance CVD swing, OI 60-min change, state label, marked descriptive / no tested edge",
+    "print our 00:00Z VWAP and a note that CoinGlass CVD levels are chart-relative",
+    "test fixture: 15:08Z 1m state = price LL 81622, CVD HL, OI up; fails before the function exists"
+  ],
+  "tests": "test_market_guide.py new fixture test; python scripts/dev/run_all_tests.py --quick",
+  "title": "Live read: one order-flow state line per TF (1m/5m/15m price swing vs Binance CVD swing vs OI change), descriptive only",
+  "weight": "ROUTINE",
+  "worker": "session"
 }
