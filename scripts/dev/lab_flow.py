@@ -158,7 +158,7 @@ def accepted(card, repo):
         receipt_vendor = normalize_vendor(receipt.get("vendor", ""))
         receipt_model = (receipt.get("model") or "").strip().lower()
         return (receipt["verdict"] == "PASS" and receipt["contract"] == contract(flow) == flow["contract"]
-                and receipt_vendor == expected_vendor and receipt_model == expected_model
+                and receipt_vendor == expected_vendor and expected_model and receipt_model == expected_model
                 and receipt["criteria"] == ["PASS"] * len(flow["criteria"])
                 and receipt["sources"] == fingerprint(repo, flow["scope_in"], flow.get("data_scope"))
                 and receipt["report_sha256"] == hashlib.sha256(report.read_bytes()).hexdigest()
