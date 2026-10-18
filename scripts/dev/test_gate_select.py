@@ -170,5 +170,75 @@ class Explain(unittest.TestCase):
         self.assertIn("docs", self.ex("a.md")[2])
 
 
+
+def tree(files):
+    """A temp repo root holding {relpath: text}."""
+    d = Path(tempfile.mkdtemp())
+    for rel, text in files.items():
+        (d / rel).parent.mkdir(parents=True, exist_ok=True)
+        (d / rel).write_text(text, encoding="utf-8")
+    return d
+
+
+class GateSpeedRules(unittest.TestCase):
+    """GATE_SPEED.md D5/D6 (2026-10-18)."""
+
+    def sel(self, *files, step_files=None):
+        return gs.explain(list(files), STEPS, mentioned=mentioned, named=lambda b, c: False, step_files=step_files)[:2]
+
+    def test_research_tsv_gz_and_err_are_data_not_a_full_gate(self):
+        for f in ("MyTradingSys/research/x_2026/out.tsv", "MyTradingSys/research/x_2026/bars.json.gz", "MyTradingSys/research/x/run.err"):
+            self.assertEqual(self.sel(f)[0], "docs", f)
+
+    def test_config_files_are_smoke_not_full_and_settings_gets_its_json_step(self):
+        steps = STEPS + [("3js", "python scripts/dev/test_config_check.py")]
+        for f in (".gitignore", ".aiexclude", "scripts/dev/lookahead_allowlist.tsv", "scripts/dev/control_room.tpl.html"):
+            mode, nums = gs.explain([f], steps, mentioned=mentioned, named=lambda b, c: False)[:2]
+            self.assertEqual(mode, "smoke", f)
+            self.assertNotIn("3js", nums, f)
+        mode, nums = gs.explain([".claude/settings.json"], steps, mentioned=mentioned, named=lambda b, c: False)[:2]
+        self.assertEqual(mode, "smoke")
+        self.assertIn("3js", nums)
+
+    def test_config_change_picks_the_steps_whose_tests_name_it(self):
+        mode, nums = gs.explain(["scripts/dev/lookahead_allowlist.tsv"], STEPS, mentioned=mentioned,
+                                named=lambda b, c: b == "lookahead_allowlist.tsv" and "tests/b" in c)[:2]
+        self.assertEqual(mode, "smoke")
+        self.assertIn("4b", nums)
+
+    def test_live_and_unknown_config_still_full(self):
+        for f in (".gitattributes", ".github/workflows/ci.yml", "mts.ps1", "scripts/core/x.json", "scripts/dev/run_extra_tests.py",
+                  "MyTradingSys/runtime/run_list.txt", "scripts/dev/sub/x.tsv"):
+            self.assertEqual(self.sel(f)[0], "full", f)
+
+    def test_extra_subset_picks_own_test_study_folder_shared_module_and_references(self):
+        tests = ["MyTradingSys/research/s1/test_a.py", "MyTradingSys/research/s2/test_b.py", "scripts/dev/test_tool.py",
+                 "scripts/dev/test_other.py", "MyTradingSys/research/layer_lab/l1/test_event_table.py"]
+        root = tree({tests[0]: "", tests[1]: "import tool\n", tests[2]: "", tests[3]: "x = open('RELAY.md')\n", tests[4]: ""})
+        self.assertEqual(gs.extra_subset(["MyTradingSys/research/s1/a.py"], tests, root), [tests[0]])         # its study folder
+        self.assertEqual(gs.extra_subset(["scripts/dev/tool.py"], tests, root), [tests[1], tests[2]])        # references + test_<base>
+        self.assertEqual(gs.extra_subset(["MyTradingSys/system/RELAY.md"], tests, root), [tests[3]])        # a doc: only tests naming it
+        self.assertEqual(gs.extra_subset(["MyTradingSys/research/layer_lab/l1/common.py"], tests, root), [tests[4]])
+        self.assertEqual(gs.extra_subset(["MyTradingSys/research/s1/NOTES.md"], tests, root), [])           # a doc does not pull its folder
+
+    def test_layer_subset_folder_references_and_all_on_shared_or_untested(self):
+        mods = ["MyTradingSys.backtest.layers.rsi.test_rsi", "MyTradingSys.backtest.layers.bb.test_bb", "MyTradingSys.backtest.layers.vol.test_vol"]
+        root = tree({"MyTradingSys/backtest/layers/rsi/test_rsi.py": "", "MyTradingSys/backtest/layers/bb/test_bb.py": "from ..rsi import rsi_core\n",
+                     "MyTradingSys/backtest/layers/vol/test_vol.py": ""})
+        self.assertEqual(gs.layer_subset(["MyTradingSys/backtest/layers/rsi/rsi_core.py"], mods, root), mods[:2])
+        self.assertEqual(gs.layer_subset(["MyTradingSys/backtest/layers/vol/v.py"], mods, root), [mods[2]])
+        self.assertEqual(gs.layer_subset(["MyTradingSys/backtest/layers/engine.py"], mods, root), mods)            # directly in layers/
+        self.assertEqual(gs.layer_subset(["MyTradingSys/backtest/layers/vol/__init__.py"], mods, root), mods)      # shared module
+        self.assertEqual(gs.layer_subset(["MyTradingSys/backtest/layers/newfam/x.py"], mods, root), mods)          # folder without tests
+
+    def test_explain_with_step_files_picks_3xt_and_5b_only_when_the_subset_is_not_empty(self):
+        sf = {"3xt": ["MyTradingSys/research/s1/test_a.py"], "5b": ["MyTradingSys.backtest.layers.rsi.test_rsi"]}
+        with mock.patch.object(gs, "extra_subset", return_value=[]), mock.patch.object(gs, "layer_subset", return_value=[]):
+            mode, nums = self.sel("MyTradingSys/research/s9/x.py", step_files=sf)
+        self.assertEqual(mode, "smoke")
+        self.assertFalse({"3xt", "5b"} & set(nums))
+        with mock.patch.object(gs, "extra_subset", return_value=["t"]), mock.patch.object(gs, "layer_subset", return_value=["m"]):
+            self.assertTrue({"3xt", "5b"} <= set(self.sel("MyTradingSys/backtest/layers/rsi/x.py", step_files=sf)[1]))
+
 if __name__ == "__main__":
     unittest.main()

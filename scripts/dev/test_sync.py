@@ -860,7 +860,104 @@ class GateSlotTest(unittest.TestCase):
         with mock.patch.object(sync.subprocess, "run", side_effect=fake):
             with self.assertRaises(RuntimeError):
                 sync.run_gate(self.tmp)
-        self.assertEqual(list(self.slots.iterdir()), [])
+        self.assertEqual(list(self.slots.iterdir()) if self.slots.exists() else [], [])
+
+    def test_run_gate_leaves_the_slot_to_the_main_phase_of_run_all_tests(self):
+        # GATE_SPEED D2: sync.py no longer holds a slot through the precheck; run_all_tests --slot takes it for the main phase
+        seen = []
+        real = subprocess.run
+
+        def fake(cmd, *a, **k):
+            if "run_all_tests.py" in " ".join(map(str, cmd)):
+                seen.append((list(cmd), self.slots.exists() and list(self.slots.iterdir())))
+                return type("R", (), {"returncode": 0})()
+            return real(cmd, *a, **k)
+        with mock.patch.object(sync.subprocess, "run", side_effect=fake):
+            sync.run_gate(self.tmp, ["scripts/dev/x.py"])
+        cmd, held = seen[0]
+        self.assertFalse(held)
+        for flag in ("--precheck", "--fail-fast", "--slot", "--record", "--smoke", "--changed-file"):
+            self.assertIn(flag, cmd)
+
+
+class ShipRaceTest(unittest.TestCase):
+    """GATE_SPEED D4: fetch retries, jittered push retries, re-gate only when the incoming commits touch what we ship."""
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        origin = self.tmp / "origin.git"
+        sh(self.tmp, "init", "-q", "--bare", str(origin))
+        sh(origin, "symbolic-ref", "HEAD", "refs/heads/fast-track")
+        self.a, self.b = self.tmp / "a", self.tmp / "b"
+        for c in (self.a, self.b):
+            sh(self.tmp, "clone", "-q", str(origin), str(c))
+            sh(c, "config", "user.email", "t@t")
+            sh(c, "config", "user.name", "t")
+        commit(self.a, "README.md", "x\n")
+        commit(self.a, "lib.py", "X = 1\n")
+        sh(self.a, "push", "-q", "origin", "HEAD:fast-track")
+        sh(self.b, "pull", "-q", "origin", "fast-track")
+        self.sleeps = []
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def racing_gate(self, other_file, other_text):
+        """A gate on `a` during which `b` ships first, once: a's first push is then rejected."""
+        calls = []
+
+        def gate(repo, files):
+            calls.append(list(files))
+            if len(calls) == 1:
+                commit(self.b, other_file, other_text)
+                sh(self.b, "push", "-q", "origin", "HEAD:fast-track")
+        return gate, calls
+
+    def test_lost_race_on_unrelated_files_pushes_again_without_a_regate(self):
+        commit(self.a, "mine.py", "import lib\n")
+        gate, calls = self.racing_gate("other.py", "y\n")
+        with contextlib.redirect_stdout(io.StringIO()) as out:
+            sync.ship(self.a, gate=gate, sleep=self.sleeps.append)
+        self.assertEqual(len(calls), 1)
+        self.assertIn("retry 1/", out.getvalue())
+        self.assertEqual(len(self.sleeps), 1)
+        self.assertTrue(1.0 <= self.sleeps[0] <= 5.0)
+
+    def test_lost_race_on_a_module_we_import_regates_once(self):
+        commit(self.a, "mine.py", "import lib\n")
+        gate, calls = self.racing_gate("lib.py", "X = 2\n")
+        with contextlib.redirect_stdout(io.StringIO()) as out:
+            sync.ship(self.a, gate=gate, sleep=self.sleeps.append)
+        self.assertEqual(len(calls), 2)
+        self.assertIn("re-running the gate", out.getvalue())
+
+    def test_race_overlap_same_path_reference_and_unrelated(self):
+        commit(self.a, "mine.py", "import lib\n")
+        self.assertEqual(sync.race_overlap(self.a, ["mine.py"], ["mine.py"]), ["mine.py"])
+        self.assertEqual(sync.race_overlap(self.a, ["lib.py", "other.py", "NOTE.md"], ["mine.py"]), ["lib.py"])
+        self.assertEqual(sync.race_overlap(self.a, ["other.py"], ["mine.py"]), [])
+
+    def test_fetch_retries_then_raises(self):
+        fails = []
+        real = sync.git
+
+        def flaky(repo, *args, check=True):
+            if args[:1] == ("fetch",) and len(fails) < 2:
+                fails.append(1)
+                return type("R", (), {"returncode": 1, "stdout": "", "stderr": "cannot lock ref"})()
+            return real(repo, *args, check=check)
+        with mock.patch.object(sync, "git", side_effect=flaky):
+            sync.fetch_trunk(self.a, sleep=self.sleeps.append)
+        self.assertEqual((len(fails), len(self.sleeps)), (2, 2))
+        with mock.patch.object(sync, "git", return_value=type("R", (), {"returncode": 1, "stdout": "", "stderr": "x"})()):
+            with self.assertRaises(sync.SyncError):
+                sync.fetch_trunk(self.a, sleep=lambda s: None)
+
+    def test_changed_between_lists_both_sides_of_a_rename_and_spaced_paths(self):
+        base = subprocess.run(["git", "rev-parse", "HEAD"], cwd=self.a, capture_output=True, text=True).stdout.strip()
+        sh(self.a, "mv", "lib.py", "new lib.py")
+        sh(self.a, "commit", "-q", "-m", "mv")
+        self.assertEqual(sorted(sync.changed_between(self.a, base, "HEAD")), ["lib.py", "new lib.py"])
 
     def test_pid_alive_self_and_dead(self):
         self.assertTrue(sync.pid_alive(os.getpid()))

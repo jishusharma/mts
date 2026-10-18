@@ -16,6 +16,7 @@ the supervisor deploy (stop, ff-merge, gate, restart).
 """
 import json
 import os
+import random
 import re
 import socket
 import inspect
@@ -76,10 +77,25 @@ def refuse_live(repo):
             f"Make a worktree:  git worktree add ../mts-<slug> -b {socket.gethostname().lower()}/<slug> origin/{TRUNK}")
 
 
+FETCH_TRIES = 3
+
+
+def fetch_trunk(repo, tries=FETCH_TRIES, sleep=time.sleep):
+    """`git fetch origin fast-track`, retried: every worktree of this repo shares refs/remotes/origin/fast-track, so two trees fetching
+    at once fail with "incorrect old value provided" / "cannot lock ref" (2026-10-18: a ship that had passed its whole gate died here)."""
+    for i in range(1, tries + 1):
+        r = git(repo, "fetch", "--quiet", "origin", TRUNK, check=False)
+        if r.returncode == 0:
+            return
+        if i < tries:
+            sleep(1.0 + 2 * i * random.random())
+    raise SyncError(f"git fetch --quiet origin {TRUNK} failed {tries}x:\n{r.stdout}{r.stderr}".rstrip())
+
+
 def merge_trunk(repo):
     """Fetch and merge origin/fast-track into HEAD (never rebase). Returns the commits pulled in.
     A conflict confined to TAKE_ORIGIN files is resolved to origin's text and reported; any other stops."""
-    git(repo, "fetch", "--quiet", "origin", TRUNK)
+    fetch_trunk(repo)
     incoming = git(repo, "rev-list", "--count", f"HEAD..origin/{TRUNK}").stdout.strip()
     if incoming != "0":
         r = git(repo, "merge", "--no-edit", f"origin/{TRUNK}", check=False)
@@ -103,9 +119,15 @@ def merge_trunk(repo):
     return int(incoming)
 
 
-def outgoing_files(repo):
-    out = git(repo, "diff", "--name-only", f"origin/{TRUNK}...HEAD").stdout.split()
+def changed_between(repo, a, b):
+    """Paths that differ between two revisions (or `a...b`): --no-renames so a rename lists the old path too (its importers must be
+    selected), -z so a path with a space stays one path."""
+    out = git(repo, "diff", "--name-only", "--no-renames", "-z", a, *([b] if b else [])).stdout.split("\0")
     return [f for f in out if f]
+
+
+def outgoing_files(repo):
+    return changed_between(repo, f"origin/{TRUNK}...HEAD", None)
 
 
 def needs_gate(files):
@@ -214,24 +236,21 @@ class gate_slot:
 def run_gate(repo, files=None):
     """The ship gate. files = paths changed vs origin/fast-track: run the smoke gate (scripts/dev/gate_select.py picks the steps; live-path
     or unknown paths = every --quick step). files=None, or SYNC_FULL_GATE=1 (`ship --full`), runs the whole --quick gate. Docs-only
-    selections take no gate slot: they are seconds. The full suite runs behind in CI; auto_deploy only takes green/fast-track."""
-    cmd = [sys.executable, "scripts/dev/run_all_tests.py", "--quick"]
+    selections take no gate slot: they are seconds. The full suite runs behind in CI; auto_deploy only takes green/fast-track.
+    GATE_SPEED.md: the ship gate runs --precheck (cheap steps + the tests that reference the change, no slot; a failure stops it in about
+    a minute), --fail-fast, --slot (run_all_tests takes the gate slot for the main phase only; docs selections take none) and --record
+    (a step that passed on this exact clean tree is not run again). `ship --full` still runs every step, with the same four flags."""
+    cmd = [sys.executable, "scripts/dev/run_all_tests.py", "--quick", "--precheck", "--fail-fast", "--slot", "--record"]
     list_file = None
-    slot = True
-    if files and not os.environ.get("SYNC_FULL_GATE"):
-        sys.path.insert(0, str(Path(__file__).resolve().parent))
-        import gate_select
+    if files:
         fd, list_file = tempfile.mkstemp(prefix="mts_changed_", suffix=".txt")
         with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as f:
             f.write("\n".join(files) + "\n")
-        cmd += ["--smoke", "--changed-file", list_file]
-        slot = gate_select.select(files, [])[0] != "docs"
+        cmd += ["--changed-file", list_file]     # full gate too: the precheck targets the tests that reference the change
+        if not os.environ.get("SYNC_FULL_GATE"):
+            cmd += ["--smoke"]
     try:
-        if slot:
-            with gate_slot(repo):
-                r = subprocess.run(cmd, cwd=repo)
-        else:
-            r = subprocess.run(cmd, cwd=repo)
+        r = subprocess.run(cmd, cwd=repo)
     finally:
         if list_file:
             try:
@@ -467,15 +486,40 @@ def warn_stale_pages(repo):
         print("\n".join("  " + l for l in lines))
 
 
-def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None):
+SHIP_PUSH_TRIES = 5   # GATE_SPEED D4: 3 of 4 passing ships of one session (2026-10-18) lost at least one push race; claims keep PUSH_TRIES
+REGATES = 1           # at most this many re-gates after a lost race (only when the incoming commits touch what we ship)
+
+
+def race_overlap(repo, incoming, outgoing):
+    """GATE_SPEED D4: after a lost push race, the incoming trunk files that can break what we ship: the same path, or an incoming
+    module that one of our outgoing .py files references (gate_select.references). Empty = push without a re-gate (CI covers the merge)."""
+    same = sorted(set(incoming) & set(outgoing))
+    if same:
+        return same
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import gate_select
+    except ImportError:
+        return sorted(f for f in incoming if f.endswith(".py"))   # fail closed: cannot tell, so every incoming module counts
+    ours = [Path(repo) / f for f in outgoing if f.endswith(".py") and (Path(repo) / f).is_file()]
+    return sorted(f for f in incoming if f.endswith(".py") and Path(f).stem not in gate_select.SHARED_STEMS
+                  and any(gate_select.references(Path(f).stem, p) for p in ours))
+
+
+def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, sleep=time.sleep):
     """release_slug (traffic buster B4): the claim file is deleted in a commit on this branch, so the release rides the
-    same push as the work (no separate fetch + push). Nothing to ship: falls back to the plumbing release."""
+    same push as the work (no separate fetch + push). Nothing to ship: falls back to the plumbing release.
+    A lost push race (GATE_SPEED D4) re-merges and pushes again after a 1-5 s jitter, up to SHIP_PUSH_TRIES; it re-runs the gate
+    only when the incoming commits overlap what we ship (race_overlap), at most REGATES times."""
     refuse_live(repo)  # only commits are pushed; uncommitted files stay where they are
     rel = f"{CLAIMS_DIR}/{release_slug}.md" if release_slug else None
     released = False
-    for attempt in range(1, PUSH_TRIES + 1):
+    regates = 0
+    files = []
+    for attempt in range(1, SHIP_PUSH_TRIES + 1):
+        before = git(repo, "rev-parse", "HEAD").stdout.strip()
         merge_trunk(repo)
-        files = outgoing_files(repo)
+        shipped_before, files = files, outgoing_files(repo)
         if not files:
             if release_slug:
                 release(repo, release_slug)
@@ -487,6 +531,15 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None):
                 call_gate(gate, repo, files)
             elif docs_gate:
                 docs_gate(repo, files)
+        else:
+            after = git(repo, "rev-parse", "HEAD").stdout.strip()
+            hit = race_overlap(repo, changed_between(repo, before, after), shipped_before) if after != before else []
+            if hit and regates < REGATES and needs_gate(files):
+                regates += 1
+                print(f"incoming commits touch what we ship ({', '.join(hit[:5])}); re-running the gate")
+                call_gate(gate, repo, files)
+            elif hit:
+                print(f"incoming commits touch {', '.join(hit[:5])}; re-gate limit reached, CI checks the merge")
         if rel and git(repo, "cat-file", "-e", f"HEAD:{rel}", check=False).returncode == 0:
             git(repo, "rm", "--quiet", "-f", rel)
             git(repo, "commit", "--quiet", "-m", f"release {release_slug}" + chr(10) * 2 + f"Result: claim {release_slug} closed with the ship")
@@ -496,8 +549,10 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None):
             print(f"shipped {len(files)} file(s) to origin/{TRUNK}" + (f"; released {release_slug}" if released else ""))
             warn_stale_pages(repo)
             return
-        print(f"push rejected (someone shipped first), retry {attempt}/{PUSH_TRIES}")
-    raise SyncError(f"push still rejected after {PUSH_TRIES} tries:\n{r.stderr}")
+        print(f"push rejected (someone shipped first), retry {attempt}/{SHIP_PUSH_TRIES}")
+        if attempt < SHIP_PUSH_TRIES:
+            sleep(1.0 + 4.0 * random.random())   # two ships that lost to the same push must not collide again in lockstep
+    raise SyncError(f"push still rejected after {SHIP_PUSH_TRIES} tries:\n{r.stderr}")
 
 
 def news(repo, hours=24):
