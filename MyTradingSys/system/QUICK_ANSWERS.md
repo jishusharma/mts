@@ -13,7 +13,7 @@ The operator is not a developer: do these, do not ask, do not re-investigate. Ha
 ## Sessions, claims, task cards
 - Same-page check on any Claude login, and before ending a session: `python scripts/dev/sync.py where` (this tree plus trees holding unshipped work; `where --all` lists every tree); commit + ship what is yours. `sync.py health` lists collisions (PARALLEL.md).
 - Task cards (refinement stage: raw idea -> ready task, Definition of Ready, Backlog on the Control Room): `MyTradingSys/system/TASK_REFINEMENT.md`; `python scripts/dev/tasks.py next` before picking work, `tasks.py new` for follow-ups you find.
-- Writing tasks into NEXT_SESSION.md: RELAY.md "Task list standard" (curated, one session each, `DONE when:`); `relay.py handoff` refuses a list that fails `relay.py lint`.
+- Writing tasks into NEXT_SESSION.md: RELAY.md "Task list standard" (curated, one session each, `DONE when:`); check it with `python scripts/sched/relay.py lint --file MyTradingSys/system/NEXT_SESSION.md`; no dispatcher reads it, the coordinator does (SCHEDULING_POLICY.md).
 - Surface fallback (operator 2026-10-08): only if a task truly cannot run in the Claude Code Win App (e.g. needs a process this App cannot reach) file a card (lane JIS-NB) or a desk row with the exact commands, why forced and the expected result, and say so in one line. Never stay silent.
 - Archive backups/rejects with `python scripts/dev/declutter_backups.py --apply` (moves, never deletes).
 - "What did study X lead to?" (its card, VERDICTS.csv row, pre-registration, follow-up cards, commits, LAYERS.md, open claim): `python scripts/dev/trace.py <study_dir | card id | layer id>`; one read-only call, report only (T043 stays WONTFIX).
@@ -26,7 +26,7 @@ The operator is not a developer: do these, do not ask, do not re-investigate. Ha
 ## Push, CI/CD, deploy, machines
 - Push: never from the live tree (the folder holding `.mts_live`). `sync.py ship` is the way. Cloud containers (claude.ai/code, harness branch `claude/...`): start from origin/fast-track, push the harness branch, open a PR into fast-track; CI auto-merges it when green (PARALLEL.md). `python scripts/dev/cloud_setup.py` installs the gate deps and prints the state. If sync.py itself is broken, the manual recipe is PARALLEL.md "Fallback if sync.py is broken".
 - CI/CD without the operator: `.github/workflows/ci.yml` gates every push (ubuntu AND windows) and moves `green/fast-track`;
-  `MTS-AutoDeploy` (RETIRED 2026-10-17, see SCHEDULING_POLICY.md; deploy by hand) deployed only that SHA, stops on red; `MTS-DailyHygiene` writes the report STATUS.md embeds. Details,
+  `MTS-AutoDeploy` (RETIRED 2026-10-17, see SCHEDULING_POLICY.md; deploy by hand) deployed only that SHA, stops on red; `MTS-DailyHygiene` (RETIRED 2026-10-17) wrote the report STATUS.md embeds. Details,
   restart map, registration: `MyTradingSys/system/DEPLOY_RUNBOOK.md`. STATUS.md's `CI green:` line says RED when the tip has not
   gone green for an hour: then nothing deploys, and fixing CI is the first job of any session.
 - Deploy to the live tree by hand only if that job is down: DEPLOY_RUNBOOK.md "Manual fallback" (operator pre-authorised "just do it" 2026-10-09).
