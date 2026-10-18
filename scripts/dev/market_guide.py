@@ -9,6 +9,7 @@ import importlib.util
 import inspect
 import json
 import os
+import statistics
 import sys
 import time
 
@@ -25,6 +26,11 @@ from MyTradingSys.backtest.layers.rsi import malkan_40_60  # noqa: E402
 _sig = inspect.signature(malkan_40_60.malkan_regime)
 MALKAN_LO = _sig.parameters["lo"].default
 MALKAN_HI = _sig.parameters["hi"].default
+
+_dev_dir = os.path.dirname(os.path.abspath(__file__))
+if _dev_dir not in sys.path:
+    sys.path.insert(0, _dev_dir)
+from shot import falsifier_status  # noqa: E402, F401
 
 TF_MS = {"5m": 300000, "15m": 900000, "1h": 3600000, "4h": 14400000}
 TFS = ["5m", "15m", "1h", "4h"]
@@ -180,6 +186,36 @@ def candle_info(bars, candles_mod):
     return sorted(found, key=lambda x: (x[1], x[0]))
 
 
+# ---------------------------------------------------------------- volume context
+# SOURCED: MyTradingSys/research/volume_2026-10-09/vfeat.py:13 (STRIDE={"4h": 6})
+# SOURCED: MyTradingSys/research/volume_2026-10-09/vfeat.py:14 (KBASE={"4h": 20})
+def volume_info(bars, k=20, stride=6):
+    """Time-adjusted relative volume vs same-slot baseline (descriptive only: effort vs result, match OI scope)."""
+    if not bars:
+        return {"volume": None, "baseline": None, "relative_volume": None, "n": 0, "label": "descriptive only"}
+    volumes = [b["v"] if isinstance(b, dict) else float(b) for b in bars]
+    current = volumes[-1]
+    priors = [volumes[-1 - stride * j] for j in range(1, k + 1) if len(volumes) - 1 - stride * j >= 0]
+    n = len(priors)
+    if n > 0:
+        base = float(statistics.median(priors))
+        rv = current / base if base > 0 else None
+    else:
+        base = None
+        rv = None
+    return {"volume": current, "baseline": base, "relative_volume": rv, "n": n, "label": "descriptive only"}
+
+
+volume_context = volume_info
+
+
+def volume_line(vinfo):
+    rv = vinfo.get("relative_volume")
+    n = vinfo.get("n", 0)
+    val_str = "n/a" if rv is None else ("%.2fx" % rv)
+    return "4h time-adjusted relative volume: %s (slot baseline n=%d) | effort vs result, match OI scope | descriptive only" % (val_str, n)
+
+
 # ---------------------------------------------------------------- alerts
 def load_alerts(path, now_ms):
     out = []
@@ -280,6 +316,10 @@ def build(now_ms, kdir, adir, verdicts, candles_mod):
     for tf in TFS:
         ci = candle_info(bars[tf], candles_mod)
         L.append("| %s | %s |" % (tf, ", ".join("%s (%d)" % x for x in ci) if ci else "none"))
+    tagv = verdict_tag(verdicts, "volume")
+    vinfo = volume_info(bars.get("4h", []))
+    L += ["", "## Volume [%s] (same-slot baseline, effort vs result, OI scope)" % tagv, "",
+          volume_line(vinfo)]
     L += ["", "## Alerts, last 24h (turn_of_candle excluded)", "",
           "| tf | layer/sub/event | n | verdict | newest |", "|---|---|---|---|---|"]
     for tf in ALERT_TFS:

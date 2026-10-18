@@ -75,5 +75,68 @@ class PositioningHomeFitAudit(unittest.TestCase):
         self.assertIn("## Tally and order of cards", txt)
 
 
+MALKAN_LEDGER_PARITY = ROOT / "research" / "malkan_ledger_2026-10" / "LEDGER_PARITY.md"
+
+
+class MalkanLedgerParity(unittest.TestCase):
+    """Card malkan-ledger-parity-feasibility: the file must exist, have counts, and a verdict line."""
+
+    def test_file_exists(self):
+        self.assertTrue(MALKAN_LEDGER_PARITY.exists(), "LEDGER_PARITY.md missing")
+
+    def test_has_counts_and_verdict(self):
+        txt = MALKAN_LEDGER_PARITY.read_text(encoding="utf-8")
+        self.assertRegex(txt, r"(?m)^-?\s*Verdict:\s*(SCORABLE|HYPOTHESIS)\b", "no valid Verdict line")
+        self.assertRegex(txt, r"(?m)^-?\s*Dated calls:\s*\d+\b", "no Dated calls count line")
+        self.assertRegex(txt, r"(?m)^-?\s*RSI parity points:\s*\d+\b", "no RSI parity points count line")
+
+
+CRYPTOCRED_HTF_PRE_REG = ROOT / "research" / "cryptocred_htf_2026-10" / "PRE_REG_CRYPTOCRED_HTF.md"
+
+
+class CryptoCredHtfPreReg(unittest.TestCase):
+    """Card cryptocred-prereg-4h-1d: PRE_REG_CRYPTOCRED_HTF.md readiness check."""
+
+    def test_file_exists(self):
+        files = list(ROOT.rglob("PRE_REG_CRYPTOCRED_HTF.md"))
+        self.assertTrue(len(files) > 0, "PRE_REG_CRYPTOCRED_HTF.md missing")
+
+    def test_items_1_to_12_present_and_answered(self):
+        files = list(ROOT.rglob("PRE_REG_CRYPTOCRED_HTF.md"))
+        self.assertTrue(len(files) > 0, "PRE_REG_CRYPTOCRED_HTF.md missing")
+        for p in files:
+            with self.subTest(prereg=p.name):
+                nums = item_numbers(p)
+                for i in range(1, 13):
+                    self.assertIn(i, nums, f"item {i} missing from {p.name}")
+                txt = p.read_text(encoding="utf-8")
+                self.assertNotIn("Answer: TODO", txt)
+                self.assertNotIn("Evidence (file:line): TODO", txt)
+                self.assertNotIn("NOT_ANSWERED", txt)
+                parts = re.split(r"(?m)^## (?=\d+\. )", txt)[1:]
+                self.assertGreaterEqual(len(parts), 12, "fewer than 12 numbered sections")
+                item_secs = [s for s in parts if re.match(r"^([1-9]|1[0-2])\.", s)]
+                self.assertEqual(len(item_secs), 12, "must have all 12 items")
+                for sec in item_secs:
+                    n = sec.split(".", 1)[0]
+                    self.assertRegex(sec, r"(?m)^Answer:\s*\S", f"item {n}: no answer")
+                    self.assertRegex(sec, r"(?m)^Evidence.*:\s*\S", f"item {n}: no evidence")
+
+    def test_gates_0a_to_0f_answered(self):
+        files = list(ROOT.rglob("PRE_REG_CRYPTOCRED_HTF.md"))
+        self.assertTrue(len(files) > 0, "PRE_REG_CRYPTOCRED_HTF.md missing")
+        for p in files:
+            with self.subTest(prereg=p.name):
+                txt = p.read_text(encoding="utf-8")
+                for g in ["0a", "0b", "0c", "0d", "0e", "0f"]:
+                    match = re.search(rf"(?m)^-\s*{g}\b[^\n]*:\s*(.+)$", txt)
+                    self.assertIsNotNone(match, f"gate {g} missing from {p.name}")
+                    ans = match.group(1).strip()
+                    self.assertGreater(len(ans), 10, f"gate {g} answer too short")
+                    self.assertNotIn("TODO", ans)
+                    self.assertNotIn("NOT_ANSWERED", ans)
+
+
 if __name__ == "__main__":
     unittest.main()
+

@@ -24,11 +24,11 @@
     "krown"
   ],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT LAB:data CLASS:C1 REVIEWER:Gemini 4 Argon low + Haiku re-derive 1-3 numbers WEIGHT:CRUCIAL. HOLD-CLEARED A-20261018-5 (lifted by operator). DECISION 2026-10-18 (planner, OURS default): recall bar waived as a gate (only 3 of 12 examples verify in RECALL.md); run DEV only (open_time < 2024-07-01) for H-ids not needing the failed examples, labelled NO-RECALL-CLEARANCE; power and MDE computed first via backtest/power_mde.py.",
+  "note": "DECISION 2026-10-18 (planner, OURS default): the recall bar is waived as a gate (only 3 of 12 examples verify); run DEV only for H-ids not needing the failed examples, labelled NO-RECALL-CLEARANCE. Dependency krown-recall-check dropped as done elsewhere. Needs a Lab_Guy ACCEPT stamp (CRUCIAL, C1) before ready. | CHECKED 2026-10-18: real blocker kept (RECALL FAIL, bar of 6 unreachable with 3 verifiable examples). Cheapest next step: the asks default (waive gate, label NO-RECALL-CLEARANCE, DEV-only H-ids not needing the failed examples) applies when the coordinator answers. | BLOCKED 2026-10-18 by krown-recall-check result (RECALL.md line 36: RECALL FAIL, bar unreachable). REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:GPT medium WEIGHT:CRUCIAL. HELD refined: waits on krown-recall-check (depends_on). [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] Unparked 2026-10-17 by q-krown-saturation, q-krown-stop, q-krown-volume-venue. Was left blocked: moved to refined by backlog-refine-1017; waits on krown-recall-check (depends_on).\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C1 weight=IMPORTANT); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "gemini-nuc",
   "refreshed": "2026-10-18T05:13:38Z",
   "refs": [
     "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md",
@@ -48,7 +48,7 @@
   "scope_sha": "5edd22989700",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "refined",
   "steps": [
     "freeze the study list and parameter grids in PRE_REG_KROWN.md (a dated addendum) before the first run",
     "compute expected N and MDE per H-id; mark underpowered ones and pool majors only if the data card landed",
@@ -58,6 +58,7 @@
   ],
   "tests": "test_dev_study.py (new, in MyTradingSys/research/krown_ta101_2026-10-13/): fails before study script exists; verifies loader refuses bars >= 2024-07-01, fee-net return matches FORMULAS 13 hand value, and every output table carries NO-RECALL-CLEARANCE.",
   "title": "Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: DEV_RESULTS.md with N, power, CI per H-id and every variant in the trial ledger",
-  "weight": "CRUCIAL",
-  "worker": "session"
+  "weight": "IMPORTANT",
+  "worker": "session",
+  "updated": "2026-10-18T10:00:00Z"
 }

@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "class": "C0",
+  "class": "C1",
   "commands": [
     "python -m pytest -q scripts/dev/test_sync.py",
     "python -m pytest -q scripts/dev/test_shot.py scripts/dev/test_tasks.py",
@@ -33,11 +33,11 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT LAB:none CLASS:C0 REVIEWER:Gemini 4 Argon low WEIGHT:ROUTINE. PARKED (blocked): every ship already runs these tests (run_all_tests.py --quick); a second sweep adds no information.",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch=yes class=C0 reviewer=machine checks + Flash low pass] PARKED: every ship already runs these tests (run_all_tests --quick); a second sweep adds no information. LAYER_REBUILD_PLAN_2026-10-15 s2 gate order; observer GPT queue 2026-10-15 (coordinator)\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C1 weight=IMPORTANT); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "gemini-nuc",
   "refreshed": "2026-10-18T05:12:41Z",
   "refs": [],
   "result": "",
@@ -60,5 +60,6 @@
   ],
   "tests": "",
   "title": "RV-DSA test sweep: run the 7 revalidation test files and report counts (host=JIS-NUC)",
-  "weight": "ROUTINE"
+  "weight": "IMPORTANT",
+  "updated": "2026-10-18T10:00:00Z"
 }

@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "class": "C1",
+  "class": "C2",
   "commands": [
     "python MyTradingSys/research/levels_confluence_2026-10-14/ladder.py --rule MyTradingSys/research/levels_confluence_2026-10-14/frozen_rule.json --window 2025-04-01..2025-06-30 --out MyTradingSys/research/levels_confluence_2026-10-14/validation.md"
   ],
@@ -17,10 +17,10 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT LAB:results CLASS:C1 REVIEWER:Gemini 4 Argon low + Haiku re-derive 1-3 numbers WEIGHT:CRUCIAL. HOLD-CLEARED A-20261018-5 (lifted by operator). Stays refined until depends_on lc-ladder-dev is done and frozen_rule.json exists; then tasks.py check promotes it automatically.",
+  "note": "[PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] HOLD A-20261018-5: reads an unchecked lab base; start only when the base carries a trust tag >= its class (lab-trust-tag) or the operator lifts it. Operator idea 2026-10-14; own layer (research only until LC3 passes); numbers OURS, printed in each report.\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C2 weight=CRUCIAL); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "opus-2026-10-14 (LC PLAN.md, operator chat)",
+  "refined_by": "gemini-nuc",
   "refreshed": "2026-10-18T05:12:41Z",
   "refs": [],
   "result": "",
@@ -44,5 +44,6 @@
   ],
   "tests": "",
   "title": "LC4 Levels Confluence: run frozen_rule.json once on VALIDATION 2025-04..2025-06 and report",
-  "weight": "CRUCIAL"
+  "weight": "CRUCIAL",
+  "updated": "2026-10-18T10:00:00Z"
 }

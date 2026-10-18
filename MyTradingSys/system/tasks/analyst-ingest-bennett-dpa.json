@@ -1,0 +1,54 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T13:07:11Z",
+  "depends_on": [],
+  "done_when": "DailyPriceAction parser implemented or verified; articles parsed into MyTradingSys/research/analysts/bennett/CALL_LEDGER.csv; unit tests passing.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Implement DailyPriceAction RSS market plan ingestion for Justin Bennett (https://dailypriceaction.com/market-analysis/). Parse daily BTC market plans using MyTradingSys/research/analysts/ingest_analysts.py (parse_dailypriceaction_article) and write normalized calls to MyTradingSys/research/analysts/bennett/CALL_LEDGER.csv.",
+  "id": "analyst-ingest-bennett-dpa",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Drafted by review-imbalance-analysts-report-and-imp following survey recommendation",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T13:08:26Z",
+  "refs": [
+    "MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md",
+    "MyTradingSys/research/analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md",
+    "MyTradingSys/research/analysts/schema.py",
+    "MyTradingSys/research/analysts/ingest_analysts.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/analysts/bennett/",
+    "MyTradingSys/research/analysts/ingest_analysts.py"
+  ],
+  "scope_out": [
+    "live order execution",
+    "proprietary indicator purchases"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md:210-227"
+  ],
+  "state": "ready",
+  "steps": [
+    "Fetch RSS feed or latest market analysis articles from dailypriceaction.com.",
+    "Parse Bitcoin analysis articles with parse_dailypriceaction_article.",
+    "Store parsed setups into MyTradingSys/research/analysts/bennett/CALL_LEDGER.csv."
+  ],
+  "tests": "python -m unittest MyTradingSys/research/analysts/test_analysts_ingestion_and_scorecard.py",
+  "title": "Implement DailyPriceAction RSS market plan ingestion for Justin Bennett",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

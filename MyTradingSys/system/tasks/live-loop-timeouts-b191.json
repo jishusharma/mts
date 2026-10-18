@@ -23,11 +23,11 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT LAB:none CLASS:C0 REVIEWER:none DECISION (OURS): split at the B191 commit c93b7ac2 (2026-10-16T15:37Z); data = runtime_data/_mirror/runtime_data/live_runner.log (mirror 2026-10-17T20:16Z, covers both sides; run `python scripts/dev/live_mirror.py pull` first); count lines whose json error contains 'timed out'.",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none DECISION (OURS): split at the B191 commit c93b7ac2 (2026-10-16T15:37Z); data = runtime_data/_mirror/runtime_data/live_runner.log (mirror 2026-10-17T20:16Z, covers both sides; run `python scripts/dev/live_mirror.py pull` first); count lines whose json error contains 'timed out'.\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C2 weight=CRUCIAL); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
-  "refreshed": "2026-10-17T20:21:53Z",
+  "refined_by": "gemini-nuc",
+  "refreshed": "2026-10-18T10:00:48Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -43,7 +43,7 @@
   "scope_sha": "c93b7ac29728",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "refined",
   "steps": [
     "count timeout lines before and after the B191 deploy (parse the real format)",
     "report wrapper priority and snapshot.cp state",
@@ -51,7 +51,8 @@
   ],
   "tests": "none (report only; no code change)",
   "title": "Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)",
-  "weight": "ROUTINE",
+  "updated": "2026-10-18T10:00:00Z",
+  "weight": "CRUCIAL",
   "worker": "agent",
-  "updated": "2026-10-18T05:30:00Z"
+  "class": "C2"
 }

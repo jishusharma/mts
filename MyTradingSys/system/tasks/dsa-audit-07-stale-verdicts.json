@@ -20,7 +20,7 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT LAB:results CLASS:C2 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report.\n[HOLD-CLEARED A-20261018-5 2026-10-18 by Lab_Guy(GEM-NUC): operator lifted A-20261018-5 in ANNOUNCEMENTS.md; spec audited against Lab_Guy v3.1.]\n[REVIEW 2026-10-18 by Lab_Guy(GEM-NUC) model=gemini-4-argon-low class=C2 weight=CRUCIAL]: REVIEWED:2026-10-18 ACCEPT — Spec, scope_in, steps, and done_when verified against live repo state and Lab_Guy v3.1 E1-E7 checklist.",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:results CLASS:C2 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
@@ -57,6 +57,5 @@
   "tests": "",
   "title": "DSA audit T07: verdict-to-code provenance, rerun-and-diff of ten results, determinism, CI and doc drift",
   "weight": "CRUCIAL",
-  "worker": "session",
-  "updated": "2026-10-18T05:30:00Z"
+  "worker": "session"
 }

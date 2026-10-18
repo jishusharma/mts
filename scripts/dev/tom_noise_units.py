@@ -16,7 +16,7 @@ import csv
 import glob
 import json
 import os
-from datetime import datetime, timezone, date
+from datetime import datetime, timezone, date, timedelta
 from statistics import median
 from zoneinfo import ZoneInfo
 
@@ -63,6 +63,72 @@ def tr_fracs(agg, tf, keep):
             continue
         out.append(max(h - l, abs(h - pc), abs(l - pc)) / c)
     return out
+
+
+def min_stop_width(entry, n5, fees):
+    """Minimum stop width gate for BTC replays (TOM_LAYER_V2_SPEC.md section 11.4).
+
+    W_noise = 0.88 x N5 (SOURCED 0.88, TOM_LAYER_V2_SPEC.md 11.4; his 20-point stop, k0zm5NYn0IQ:22-24)
+    W_fee = round-turn fee fraction / 0.25 (SOURCED 0.25 R, PROJECT_VISION.md:234)
+    W_min = max(W_noise, W_fee) * entry
+    """
+    fee_rt = (fees["entry"] + fees["stop"]) if isinstance(fees, dict) else float(fees)
+    return max(0.88 * n5, fee_rt / 0.25) * entry
+
+
+def n5(bars, asof=None, days=20):
+    """Noise unit N5: median true range (FORMULAS.md section 12) of completed 5-minute bars
+    of the trailing 20 UTC days as a fraction of close (TOM_LAYER_V2_SPEC.md section 11.4).
+    Reuses true_ranges and aggregate.
+    """
+    if isinstance(bars, list) and bars and len(bars[0]) == 3 and not hasattr(bars[0], "keys"):
+        # Direct list of (high, low, close)
+        trs = true_ranges(bars)
+        return median(trs) if trs else 0.0
+
+    if asof is not None:
+        if isinstance(asof, str):
+            asof = date.fromisoformat(asof)
+        if isinstance(asof, date) and not isinstance(asof, datetime):
+            start_d = asof - timedelta(days=days - 1)
+            lo_ms = int(datetime(start_d.year, start_d.month, start_d.day, 0, 0, tzinfo=timezone.utc).timestamp() * 1000)
+            hi_ms = int(datetime(asof.year, asof.month, asof.day, 23, 59, 59, 999000, tzinfo=timezone.utc).timestamp() * 1000)
+        else:
+            if isinstance(asof, datetime):
+                hi_ms = int(asof.timestamp() * 1000)
+            else:
+                hi_ms = int(asof * 1000) if asof < 1e11 else int(asof)
+            lo_ms = hi_ms - days * 86400 * 1000
+
+        if isinstance(bars, dict):
+            rows = {ts: val for ts, val in bars.items() if lo_ms <= ts <= hi_ms}
+        elif hasattr(bars, "idx") and hasattr(bars, "t0") and hasattr(bars, "o"):
+            i_start = max(0, bars.idx(lo_ms))
+            i_end = min(bars.n, bars.idx(hi_ms) + 1)
+            rows = {bars.t0 + i * 60000: (bars.o[i], bars.h[i], bars.l[i], bars.c[i]) for i in range(i_start, i_end)}
+        else:
+            rows = dict(bars)
+    else:
+        if isinstance(bars, dict):
+            rows = bars
+        elif hasattr(bars, "idx") and hasattr(bars, "t0") and hasattr(bars, "o"):
+            rows = {bars.t0 + i * 60000: (bars.o[i], bars.h[i], bars.l[i], bars.c[i]) for i in range(bars.n)}
+        else:
+            rows = dict(bars)
+
+    agg = aggregate(rows, 5)
+    step = 5 * 60000
+    trs = []
+    chunk = []
+    for i in range(len(agg)):
+        if chunk and agg[i][0] - agg[i - 1][0] != step:
+            if len(chunk) > 1:
+                trs.extend(true_ranges(chunk))
+            chunk = []
+        chunk.append((agg[i][1], agg[i][2], agg[i][3]))
+    if len(chunk) > 1:
+        trs.extend(true_ranges(chunk))
+    return median(trs) if trs else 0.0
 
 
 def load(klines_dir, start, end, dropped):

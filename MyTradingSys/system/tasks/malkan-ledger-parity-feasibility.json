@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-18T12:28:47Z",
   "commands": [],
   "created": "2026-10-18T04:08:51Z",
   "depends_on": [],
@@ -13,6 +15,12 @@
   "id": "malkan-ledger-parity-feasibility",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "LEDGER_PARITY.md: 0 dated calls, 6 RSI parity points, HYPOTHESIS",
+      "ref": "2ffc6de7",
+      "utc": "2026-10-18T12:28:47Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +47,7 @@
   "refined_by": "",
   "refreshed": "2026-10-18T04:11:18Z",
   "refs": [],
-  "result": "",
+  "result": "LEDGER_PARITY.md: 0 dated calls, 6 RSI parity points, HYPOTHESIS",
   "scope_in": [
     "MyTradingSys/research/malkan_extract_2026-10-15/",
     "MyTradingSys/research/video_priority_2026-10-15/",
@@ -56,12 +64,13 @@
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_MALKAN.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "List every dated Malkan trade or call in the 6 extracts and saved captions (quote + file:line); count them.",
     "List every chart RSI value he quotes (for example Nifty weekly 74.29 and 71) with video, line and the stated tolerance.",
     "Write MyTradingSys/research/malkan_ledger_2026-10/LEDGER_PARITY.md: N calls, minute timestamps possible or not, design/check split possible or not, verdict."
   ],
+  "taken": "2026-10-18T12:28:43Z",
   "tests": "test_pre_reg_template.py stays green; the new doc has the counts and a verdict line (fails before the file exists).",
   "title": "Malkan: dated-call ledger feasibility and RSI parity points (items 2/3/5, gate 0c)",
   "weight": "",

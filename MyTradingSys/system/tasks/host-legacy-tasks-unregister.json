@@ -31,7 +31,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT LAB:none CLASS:C3 REVIEWER:review SESSION DECISION (OURS): stays refined (hold is deliberate, coordinator promotes after the last worker ships). WEIGHT:CRITICAL, HELD refined on purpose: unregistering AutoDeploy/relay/dispatcher stops this run's relay; coordinator promotes (tasks.py check) only after the last worker ships. Export XML first (reversible). Operator q-sched-scope 2026-10-17.\n[REVIEW 2026-10-18 by Lab_Guy(GEM-NUC) model=gemini-4-argon-low class=C3 weight=CRITICAL]: REVIEWED:2026-10-18 ACCEPT — Spec, scope_in, steps, and done_when verified against live repo state and Lab_Guy v3.1 E1-E7 checklist.",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C3 REVIEWER:review SESSION DECISION (OURS): stays refined (hold is deliberate, coordinator promotes after the last worker ships). WEIGHT:CRITICAL, HELD refined on purpose: unregistering AutoDeploy/relay/dispatcher stops this run's relay; coordinator promotes (tasks.py check) only after the last worker ships. Export XML first (reversible). Operator q-sched-scope 2026-10-17.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -60,6 +60,5 @@
   "tests": "read-only check after the change: the Get-ScheduledTask command above prints no rows",
   "title": "Unregister every MTS scheduled task on JIS-NB (operator q-sched-scope 2026-10-17)",
   "weight": "CRITICAL",
-  "worker": "agent",
-  "updated": "2026-10-18T05:30:00Z"
+  "worker": "agent"
 }
