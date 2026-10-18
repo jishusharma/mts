@@ -29,7 +29,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Codex lab reports (newest 4 of 18): `MyTradingSys/research/layer_lab/reports/2026-10-15_tom-btc-event-study.md`; `MyTradingSys/research/layer_lab/reports/2026-10-15_gap-g4-through-ticks-flag.md`; `MyTradingSys/research/layer_lab/reports/2026-10-14_tom-v2-btc-min-stop-width.md`; `MyTradingSys/research/layer_lab/reports/2026-10-14_tom-btc-event-study.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `rv02-fix-dax-full-dev-authorization` ready p1 SONNET: RV02 R3: require complete DAX sampling and bind holdout authorization
-  - `rv02-fix-dax-preprocessing-isolation` ready p1 SONNET: RV02 R1: isolate DAX preprocessing and report metadata before holdout
   - `rv02-fix-dax-producer-data-binding` refined p1 SONNET: RV02 R4: reject DAX snapshots made from different execution data
   - `rv02-fix-dax-rounded-rr-gate` ready p1 SONNET: RV02 R2: preserve exact DAX net RR through the decision boundary
   - `tom-btc-eye-read` blocked p1 SONNET: Tom on BTC T3: eye read of the 80 lab charts by two readers (Claude + Jis), blind; agreement per Tom concept
