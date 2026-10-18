@@ -129,6 +129,8 @@ def home():
 # ---------- which role is this session ----------
 def role_name(role):
     """Exact singleton name for any spelling (pipeliner, traffic controller); other names unchanged, never raises."""
+    if not role:
+        return role
     try:
         return canon(role)
     except LeaseError:
