@@ -1,5 +1,7 @@
 # Pre-registration: Positioning C1 (NO-SOURCE Research Test, PRE_REG_TEMPLATE.md)
 
+DRAFT: waits for a trust tag on COUNT_POWER.md; trial count 222. Reviewed by Claude 2026-10-19 (DEV not clean for selection, corrected in item 11); card stays raw.
+
 Date: 2026-10-18. Card: `positioning-c1-prereg-no-source`. Checklist: `research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md` section 6 (template: `backtest/PRE_REG_TEMPLATE.md`).
 No P&L backtest run; no tuning; edits to live-path code out of scope.
 Provenance rule: Every parameter and number is explicitly labelled SOURCED (quote + file:line) or OURS (engineering / design choice). All C1 parameters and empirical DEV numbers are OURS.

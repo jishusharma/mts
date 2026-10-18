@@ -20,15 +20,12 @@
 2. **Statistical Power Requirement (Gate 0e & Item 10):**  
    To detect a realistic true edge of **+0.10 R net** at **80% power** with a two-sided 95% test ($RR = 2.0$, taker fee model), a backtest requires **about 1,655 independent events** (SOURCED: `EVENT_COUNTS.md:12,26`).
 
-3. **Single Stock vs Basket (The Universe Problem):**  
-   - On **BTC alone** or on **any single Indian stock** (e.g. Tata Motors), event frequency for Malkan setups is between **0.87 and 6.11 events per calendar year** (OURS, derived from `EVENT_COUNTS.md:32-36`).
-   - Over a 10-year window, a single stock yields only **9 to 61 events**, all strictly **below the $N = 100$ threshold**.
-   - Per Checklist Item 10 (`PRE_REG_TEMPLATE.md:64`) and Gate 0e, **any single-stock test is declared INCONCLUSIVE in advance**. A single-stock backtest can never support a "no edge" verdict.
+3. **Single stock vs basket:** on one stock, the daily setups give about 6 to 42 events in 10 years (equity basis, OURS from BTC rates) and the weekly ones 4 to 12, all below N = 100. Any single-stock test is INCONCLUSIVE in advance.
 
-4. **Recommended Universe: Nifty 100 (Balanced) or Nifty 500 (Comprehensive):**  
-   - **Nifty 50 (50 stocks):** Requires **9.1 years** for MAL-5 (454 asset-years) and **5.4 to 6.5 years** for daily divergence, but fails completely on narrow setups (MAL-2 needs **32.5 years**; MAL-10 needs **37.8 years**; weekly divergence needs **28 to 75 years**).
-   - **Nifty 100 (100 stocks, RECOMMENDED for Phase 1):** Reaches +0.10 R power for MAL-5 in **4.5 years**, daily divergence in **2.7 to 3.2 years**, and MAL-2 in **16.2 years**. In a 10-year window, all daily setups achieve $N > 870$ and detectable MDE $\le 0.13\text{ R}$ net (**ENOUGH**).
-   - **Nifty 500 (500 stocks, RECOMMENDED for full testing & weekly setups):** Reaches 80% power for MAL-5 in **0.91 years**, all daily setups in under **3.8 years**, and weekly setups in **2.8 to 7.5 years**. Over 10 years, MDE is between **0.02 R and 0.09 R** net across all setups.
+4. **Recommended universe: Nifty 100 for phase 1, Nifty 500 for full testing (equity basis, OURS):**
+   - Nifty 50: MAL-5 needs 13.3 years, daily divergence 7.9 to 9.5, MAL-2 47.4 and MAL-10 55.3 (too long).
+   - Nifty 100: MAL-5 6.6 years, daily divergence 4.0 to 4.8, MAL-2 23.7. A 10-year window gives N >= 598 and MDE <= 0.16 R on every daily setup.
+   - Nifty 500: MAL-5 1.33 years, every daily setup under 5.6 years, weekly 2.8 to 7.5. Over 10 years MDE is 0.03 to 0.09 R.
 
 ---
 
@@ -37,6 +34,9 @@
 All sources surveyed on **2026-10-18** (metadata only; zero price series fetched).
 
 ### Comparison Table
+
+UNVERIFIED: the rows below (coverage years, stock counts, adjustment, delisted names, licences, rate limits) were written by the Gemini run with no fetch evidence kept in the repo; re-check each URL and licence before any download. Only the Kaggle and NSE/BSE names are plausible from general knowledge. Nothing here is SOURCED.
+
 
 | Source Name | Access URL | Coverage Years | Stocks Covered | Adjustment (Splits / Bonuses) | Delisted Names (Survivorship Bias) | Licence / Terms of Use | Fit / Recommendation for Malkan |
 |---|---|---|---|---|---|---|---|
@@ -101,95 +101,80 @@ All numbers computed via `MyTradingSys/research/malkan_universe_2026-10/universe
 
 ## 3. History Needed per Universe Size for +0.10 R Net (Item 10)
 
-How many calendar years of historical data must be pooled across a universe to accumulate the ~1,655 independent events required for 80% power at +0.10 R net?
+> REVIEWER CORRECTION 2026-10-19 (Claude): the first draft (Gemini) scaled BTC event rates by 365 calendar days per asset-year. Indian equities trade about 250 days a year, so daily-setup rates are n / (2510/250) per asset-year [OURS]; weekly setups keep 52 weeks a year. Tables 2-4 and the summary below use this equity basis (script: `universe_power.py`, `equity_rate`). Table 1 keeps both bases side by side. All event rates are BTC stand-ins [OURS]; Indian-equity rates may differ. Pooling stocks assumes independent events [OURS, optimistic]: stocks move together in market-wide episodes, so the effective N is smaller than the table N.
 
-$$\text{Years Needed} = \frac{\text{Asset-Years Needed}}{\text{Universe Size}}$$
+### Table 2: Calendar Years of History Needed for +0.10 R Net (80% Power) per Universe Size
 
-### Table 2: Calendar Years of Data Needed to Confirm +0.10 R Net (80% Power)
-
-| Setup | TF | Events Needed | Asset-Years Needed (OURS) | Universe 50 (Nifty 50) | Universe 100 (Nifty 100) | Universe 500 (Nifty 500) | Single Stock (1 Asset) |
+| Setup | TF | Events Needed | Asset-Years Needed (equity basis) | Universe 50 (Nifty 50) | Universe 100 (Nifty 100) | Universe 500 (Nifty 500) | Single Asset (BTC / 1 stock) |
 |---|---|---|---|---|---|---|---|
-| **MAL-2** | 1d | 1,654 | 1,624 | **32.5 years** (Exceeds NSE history!) | **16.2 years** | **3.25 years** | 1,624 years |
-| **MAL-5** | 1d | 1,650 | 454 | **9.1 years** | **4.5 years** | **0.91 years** | 454 years |
-| **MAL-10** | 1d | 1,652 | 1,892 | **37.8 years** (Exceeds NSE history!) | **18.9 years** | **3.78 years** | 1,892 years |
-| **MAL-17** | 1d | 1,657 | 325 | **6.5 years** | **3.2 years** | **0.65 years** | 325 years |
-| **MAL-16** | 1d | 1,657 | 271 | **5.4 years** | **2.7 years** | **0.54 years** | 271 years |
-| **MAL-17** | 1w | 1,647 | 3,772 | **75.4 years** (Impossible) | **37.7 years** (Impossible) | **7.54 years** | 3,772 years |
-| **MAL-16** | 1w | 1,644 | 1,412 | **28.2 years** (Exceeds NSE history!) | **14.1 years** | **2.82 years** | 1,412 years |
+| MAL-2 1d | 1d | 1654 | 2372 | 47.4 years | 23.7 years | 4.74 years | 2372.0 years |
+| MAL-5 1d | 1d | 1650 | 663 | 13.3 years | 6.6 years | 1.33 years | 663.0 years |
+| MAL-10 1d | 1d | 1652 | 2764 | 55.3 years | 27.6 years | 5.53 years | 2764.0 years |
+| MAL-17 1d | 1d | 1657 | 475 | 9.5 years | 4.8 years | 0.95 years | 475.0 years |
+| MAL-16 1d | 1d | 1657 | 396 | 7.9 years | 4.0 years | 0.79 years | 396.0 years |
+| MAL-17 1w | 1w | 1647 | 3772 | 75.4 years | 37.7 years | 7.54 years | 3772.0 years |
+| MAL-16 1w | 1w | 1644 | 1412 | 28.2 years | 14.1 years | 2.82 years | 1412.0 years |
 
-### Key Takeaways from Table 2:
-1. **Nifty 50 Is Severely Constrained:**  
-   In a 50-stock universe, MAL-2 (RSI 60 support) and MAL-10 (RSI 40 support) would require **32.5 to 37.8 years** of continuous history—exceeding the entire 30-year operational history of the National Stock Exchange of India. Nifty 50 is viable only for high-fire setups (MAL-5 and daily divergence) over 6 to 9 years.
-2. **Weekly Setups Require Nifty 500:**  
-   Weekly divergence on 50 or 100 stocks requires 14 to 75 years of history. Only Nifty 500 can power weekly setups within a realistic timeframe (**2.8 years** for MAL-16w, **7.5 years** for MAL-17w).
+Takeaways (equity basis): Nifty 50 needs 7.9-13.3 years for MAL-5 and the daily divergences and 47-55 years for MAL-2 and MAL-10 (more than NSE history). Weekly setups need Nifty 500 (2.8-7.5 years). Nifty 100 reaches +0.10 R for MAL-5 in 6.6 years and the daily divergences in 4.0-4.8 years.
 
 ---
 
 ## 4. Expected N, Detectable MDE, and Pre-Registered Verdicts Grid (Items 3 & 10)
 
-Per Checklist Item 10:  
-> *"If expected N per period is < 100, say 'underpowered', never 'no edge'."* (`PRE_REG_TEMPLATE.md:64`)
+Per Checklist Item 10: if expected N per period is < 100, say 'underpowered', never 'no edge' (`PRE_REG_TEMPLATE.md:64`). Verdict rules (`EVENT_COUNTS.md:20,374`): N < 100 INCONCLUSIVE; N >= 100 and MDE <= 0.30 R ENOUGH; <= 0.60 R MARGINAL; above THIN.
 
-Verdict Rules (SOURCED: `EVENT_COUNTS.md:20,374`):
-- $N < 100$: **INCONCLUSIVE** (declared in advance; cannot reject $H_0$).
-- $N \ge 100$ and $MDE \le 0.30\text{ R}$: **ENOUGH**.
-- $N \ge 100$ and $0.30 < MDE \le 0.60\text{ R}$: **MARGINAL**.
-- $N \ge 100$ and $MDE > 0.60\text{ R}$: **THIN**.
+### Table 3: Expected N, Detectable MDE, and Pre-Registered Power Verdict
 
-### Table 3: Expected N, Detectable MDE, and Power Verdict Across Multi-Year Windows
-
-| Setup | TF | Universe | 5 Years ($N$, MDE, Verdict) | 10 Years ($N$, MDE, Verdict) | 15 Years ($N$, MDE, Verdict) | 20 Years ($N$, MDE, Verdict) |
+| Setup | TF | Universe | 5 Years (N, MDE, Verdict) | 10 Years (N, MDE, Verdict) | 15 Years (N, MDE, Verdict) | 20 Years (N, MDE, Verdict) |
 |---|---|---|---|---|---|---|
-| **MAL-2** | 1d | 50 stocks | $N=255$, 0.25 R (**ENOUGH**) | $N=509$, 0.18 R (**ENOUGH**) | $N=764$, 0.14 R (**ENOUGH**) | $N=1019$, 0.12 R (**ENOUGH**) |
-| | | 100 stocks | $N=509$, 0.18 R (**ENOUGH**) | $N=1019$, 0.12 R (**ENOUGH**) | $N=1528$, 0.10 R (**ENOUGH**) | $N=2037$, 0.09 R (**ENOUGH**) |
-| | | 500 stocks | $N=2547$, 0.08 R (**ENOUGH**) | $N=5093$, 0.06 R (**ENOUGH**) | $N=7640$, 0.05 R (**ENOUGH**) | $N=10186$, 0.04 R (**ENOUGH**) |
-| **MAL-5** | 1d | 50 stocks | $N=909$, 0.13 R (**ENOUGH**) | $N=1819$, 0.09 R (**ENOUGH**) | $N=2728$, 0.08 R (**ENOUGH**) | $N=3638$, 0.07 R (**ENOUGH**) |
-| | | 100 stocks | $N=1819$, 0.09 R (**ENOUGH**) | $N=3638$, 0.07 R (**ENOUGH**) | $N=5457$, 0.05 R (**ENOUGH**) | $N=7276$, 0.05 R (**ENOUGH**) |
-| | | 500 stocks | $N=9095$, 0.04 R (**ENOUGH**) | $N=18190$, 0.03 R (**ENOUGH**) | $N=27285$, 0.02 R (**ENOUGH**) | $N=36379$, 0.02 R (**ENOUGH**) |
-| **MAL-10** | 1d | 50 stocks | $N=218$, 0.27 R (**ENOUGH**) | $N=437$, 0.19 R (**ENOUGH**) | $N=655$, 0.16 R (**ENOUGH**) | $N=873$, 0.13 R (**ENOUGH**) |
-| | | 100 stocks | $N=437$, 0.19 R (**ENOUGH**) | $N=873$, 0.13 R (**ENOUGH**) | $N=1310$, 0.11 R (**ENOUGH**) | $N=1746$, 0.10 R (**ENOUGH**) |
-| | | 500 stocks | $N=2183$, 0.09 R (**ENOUGH**) | $N=4366$, 0.06 R (**ENOUGH**) | $N=6548$, 0.05 R (**ENOUGH**) | $N=8731$, 0.04 R (**ENOUGH**) |
-| **MAL-17** | 1d | 50 stocks | $N=1273$, 0.11 R (**ENOUGH**) | $N=2547$, 0.08 R (**ENOUGH**) | $N=3820$, 0.06 R (**ENOUGH**) | $N=5093$, 0.06 R (**ENOUGH**) |
-| | | 100 stocks | $N=2547$, 0.08 R (**ENOUGH**) | $N=5093$, 0.06 R (**ENOUGH**) | $N=7640$, 0.05 R (**ENOUGH**) | $N=10186$, 0.04 R (**ENOUGH**) |
-| | | 500 stocks | $N=12733$, 0.04 R (**ENOUGH**) | $N=25466$, 0.02 R (**ENOUGH**) | $N=38198$, 0.02 R (**ENOUGH**) | $N=50931$, 0.02 R (**ENOUGH**) |
-| **MAL-16** | 1d | 50 stocks | $N=1528$, 0.10 R (**ENOUGH**) | $N=3056$, 0.07 R (**ENOUGH**) | $N=4584$, 0.06 R (**ENOUGH**) | $N=6112$, 0.05 R (**ENOUGH**) |
-| | | 100 stocks | $N=3056$, 0.07 R (**ENOUGH**) | $N=6112$, 0.05 R (**ENOUGH**) | $N=9168$, 0.04 R (**ENOUGH**) | $N=12224$, 0.04 R (**ENOUGH**) |
-| | | 500 stocks | $N=15279$, 0.03 R (**ENOUGH**) | $N=30559$, 0.02 R (**ENOUGH**) | $N=45838$, 0.02 R (**ENOUGH**) | $N=61118$, 0.02 R (**ENOUGH**) |
-| **MAL-17** | 1w | 50 stocks | $N=109$, 0.38 R (**MARGINAL**) | $N=218$, 0.27 R (**ENOUGH**) | $N=327$, 0.22 R (**ENOUGH**) | $N=437$, 0.19 R (**ENOUGH**) |
-| | | 100 stocks | $N=218$, 0.27 R (**ENOUGH**) | $N=437$, 0.19 R (**ENOUGH**) | $N=655$, 0.16 R (**ENOUGH**) | $N=873$, 0.13 R (**ENOUGH**) |
-| | | 500 stocks | $N=1091$, 0.12 R (**ENOUGH**) | $N=2183$, 0.09 R (**ENOUGH**) | $N=3274$, 0.07 R (**ENOUGH**) | $N=4366$, 0.06 R (**ENOUGH**) |
-| **MAL-16** | 1w | 50 stocks | $N=291$, 0.23 R (**ENOUGH**) | $N=582$, 0.16 R (**ENOUGH**) | $N=873$, 0.13 R (**ENOUGH**) | $N=1164$, 0.12 R (**ENOUGH**) |
-| | | 100 stocks | $N=582$, 0.16 R (**ENOUGH**) | $N=1164$, 0.12 R (**ENOUGH**) | $N=1746$, 0.09 R (**ENOUGH**) | $N=2328$, 0.08 R (**ENOUGH**) |
-| | | 500 stocks | $N=2910$, 0.07 R (**ENOUGH**) | $N=5821$, 0.05 R (**ENOUGH**) | $N=8731$, 0.04 R (**ENOUGH**) | $N=11641$, 0.04 R (**ENOUGH**) |
+| MAL-2 1d | 1d | 50 stocks | N=174, 0.30 R (MARGINAL) | N=349, 0.21 R (**ENOUGH**) | N=523, 0.17 R (**ENOUGH**) | N=697, 0.15 R (**ENOUGH**) |
+| MAL-2 1d | 1d | 100 stocks | N=349, 0.21 R (**ENOUGH**) | N=697, 0.15 R (**ENOUGH**) | N=1046, 0.12 R (**ENOUGH**) | N=1394, 0.11 R (**ENOUGH**) |
+| MAL-2 1d | 1d | 500 stocks | N=1743, 0.10 R (**ENOUGH**) | N=3486, 0.07 R (**ENOUGH**) | N=5229, 0.06 R (**ENOUGH**) | N=6972, 0.05 R (**ENOUGH**) |
+| MAL-5 1d | 1d | 50 stocks | N=623, 0.16 R (**ENOUGH**) | N=1245, 0.11 R (**ENOUGH**) | N=1868, 0.09 R (**ENOUGH**) | N=2490, 0.08 R (**ENOUGH**) |
+| MAL-5 1d | 1d | 100 stocks | N=1245, 0.11 R (**ENOUGH**) | N=2490, 0.08 R (**ENOUGH**) | N=3735, 0.07 R (**ENOUGH**) | N=4980, 0.06 R (**ENOUGH**) |
+| MAL-5 1d | 1d | 500 stocks | N=6225, 0.05 R (**ENOUGH**) | N=12450, 0.04 R (**ENOUGH**) | N=18675, 0.03 R (**ENOUGH**) | N=24900, 0.03 R (**ENOUGH**) |
+| MAL-10 1d | 1d | 50 stocks | N=149, 0.33 R (MARGINAL) | N=299, 0.23 R (**ENOUGH**) | N=448, 0.19 R (**ENOUGH**) | N=598, 0.16 R (**ENOUGH**) |
+| MAL-10 1d | 1d | 100 stocks | N=299, 0.23 R (**ENOUGH**) | N=598, 0.16 R (**ENOUGH**) | N=896, 0.13 R (**ENOUGH**) | N=1195, 0.12 R (**ENOUGH**) |
+| MAL-10 1d | 1d | 500 stocks | N=1494, 0.10 R (**ENOUGH**) | N=2988, 0.07 R (**ENOUGH**) | N=4482, 0.06 R (**ENOUGH**) | N=5976, 0.05 R (**ENOUGH**) |
+| MAL-17 1d | 1d | 50 stocks | N=872, 0.14 R (**ENOUGH**) | N=1743, 0.10 R (**ENOUGH**) | N=2615, 0.08 R (**ENOUGH**) | N=3486, 0.07 R (**ENOUGH**) |
+| MAL-17 1d | 1d | 100 stocks | N=1743, 0.10 R (**ENOUGH**) | N=3486, 0.07 R (**ENOUGH**) | N=5229, 0.06 R (**ENOUGH**) | N=6972, 0.05 R (**ENOUGH**) |
+| MAL-17 1d | 1d | 500 stocks | N=8715, 0.04 R (**ENOUGH**) | N=17430, 0.03 R (**ENOUGH**) | N=26145, 0.02 R (**ENOUGH**) | N=34861, 0.02 R (**ENOUGH**) |
+| MAL-16 1d | 1d | 50 stocks | N=1046, 0.12 R (**ENOUGH**) | N=2092, 0.09 R (**ENOUGH**) | N=3137, 0.07 R (**ENOUGH**) | N=4183, 0.06 R (**ENOUGH**) |
+| MAL-16 1d | 1d | 100 stocks | N=2092, 0.09 R (**ENOUGH**) | N=4183, 0.06 R (**ENOUGH**) | N=6275, 0.05 R (**ENOUGH**) | N=8367, 0.04 R (**ENOUGH**) |
+| MAL-16 1d | 1d | 500 stocks | N=10458, 0.04 R (**ENOUGH**) | N=20916, 0.03 R (**ENOUGH**) | N=31375, 0.02 R (**ENOUGH**) | N=41833, 0.02 R (**ENOUGH**) |
+| MAL-17 1w | 1w | 50 stocks | N=109, 0.38 R (MARGINAL) | N=218, 0.27 R (**ENOUGH**) | N=327, 0.22 R (**ENOUGH**) | N=437, 0.19 R (**ENOUGH**) |
+| MAL-17 1w | 1w | 100 stocks | N=218, 0.27 R (**ENOUGH**) | N=437, 0.19 R (**ENOUGH**) | N=655, 0.16 R (**ENOUGH**) | N=873, 0.13 R (**ENOUGH**) |
+| MAL-17 1w | 1w | 500 stocks | N=1091, 0.12 R (**ENOUGH**) | N=2183, 0.09 R (**ENOUGH**) | N=3274, 0.07 R (**ENOUGH**) | N=4366, 0.06 R (**ENOUGH**) |
+| MAL-16 1w | 1w | 50 stocks | N=291, 0.23 R (**ENOUGH**) | N=582, 0.16 R (**ENOUGH**) | N=873, 0.13 R (**ENOUGH**) | N=1164, 0.12 R (**ENOUGH**) |
+| MAL-16 1w | 1w | 100 stocks | N=582, 0.16 R (**ENOUGH**) | N=1164, 0.12 R (**ENOUGH**) | N=1746, 0.09 R (**ENOUGH**) | N=2328, 0.08 R (**ENOUGH**) |
+| MAL-16 1w | 1w | 500 stocks | N=2910, 0.07 R (**ENOUGH**) | N=5821, 0.05 R (**ENOUGH**) | N=8731, 0.04 R (**ENOUGH**) | N=11641, 0.04 R (**ENOUGH**) |
 
 ---
 
-## 5. Pre-Registered INCONCLUSIVE in Advance Cells ($N < 100$)
+## 5. Pre-Registered INCONCLUSIVE in Advance Cells (N < 100)
 
-When shorter evaluation windows (1 year or 2 years, e.g. recent annual test sets or single validation folds) or individual stocks are evaluated, the event count drops below 100. **The following cells are formally pre-registered as INCONCLUSIVE in advance:**
+Generated by `universe_power.py` (`format_inconclusive_table`), equity basis. Anyone meeting N < 100 in these cells records INCONCLUSIVE and must not write 'no edge'.
 
-### Table 4: Pre-Registered INCONCLUSIVE Cells for Short Horizons & Single Stocks
-
-| Scenario / Scope | Setup | TF | Expected $N$ | Detectable MDE | Pre-Registered Verdict |
+| Scenario | Setup | TF | Expected N | Detectable MDE | Pre-registered verdict |
 |---|---|---|---|---|---|
-| **1 Year on 50 Stocks** | MAL-2 | 1d | $N = 51$ | 0.56 R | **INCONCLUSIVE IN ADVANCE** |
-| **1 Year on 50 Stocks** | MAL-10 | 1d | $N = 44$ | 0.60 R | **INCONCLUSIVE IN ADVANCE** |
-| **1 Year on 50 Stocks** | MAL-17 | 1w | $N = 22$ | 0.85 R | **INCONCLUSIVE IN ADVANCE** |
-| **1 Year on 50 Stocks** | MAL-16 | 1w | $N = 58$ | 0.52 R | **INCONCLUSIVE IN ADVANCE** |
-| **1 Year on 100 Stocks** | MAL-10 | 1d | $N = 87$ | 0.43 R | **INCONCLUSIVE IN ADVANCE** |
-| **1 Year on 100 Stocks** | MAL-17 | 1w | $N = 44$ | 0.60 R | **INCONCLUSIVE IN ADVANCE** |
-| **2 Years on 50 Stocks** | MAL-10 | 1d | $N = 87$ | 0.43 R | **INCONCLUSIVE IN ADVANCE** |
-| **2 Years on 50 Stocks** | MAL-17 | 1w | $N = 44$ | 0.60 R | **INCONCLUSIVE IN ADVANCE** |
-| **2 Years on 100 Stocks** | MAL-17 | 1w | $N = 87$ | 0.43 R | **INCONCLUSIVE IN ADVANCE** |
-| **Single Stock (10 Years)** | MAL-2 | 1d | $N \approx 10$ | 1.26 R | **INCONCLUSIVE IN ADVANCE** |
-| **Single Stock (10 Years)** | MAL-5 | 1d | $N \approx 36$ | 0.67 R | **INCONCLUSIVE IN ADVANCE** |
-| **Single Stock (10 Years)** | MAL-10 | 1d | $N \approx 9$ | 1.33 R | **INCONCLUSIVE IN ADVANCE** |
-| **Single Stock (10 Years)** | MAL-17 | 1d | $N \approx 51$ | 0.56 R | **INCONCLUSIVE IN ADVANCE** |
-| **Single Stock (10 Years)** | MAL-16 | 1d | $N \approx 61$ | 0.51 R | **INCONCLUSIVE IN ADVANCE** |
-| **Single Stock (10 Years)** | MAL-17 | 1w | $N \approx 4$ | 1.98 R | **INCONCLUSIVE IN ADVANCE** |
-| **Single Stock (10 Years)** | MAL-16 | 1w | $N \approx 12$ | 1.15 R | **INCONCLUSIVE IN ADVANCE** |
-
-*Methodological Rule:* Any researcher or automated harness encountering $N < 100$ in these cells must record `INCONCLUSIVE` and must NOT declare "no edge" or "strategy failed".
+| 1 year on 50 stocks | MAL-2 1d | 1d | 35 | 0.67 R | **INCONCLUSIVE IN ADVANCE** |
+| 1 year on 100 stocks | MAL-2 1d | 1d | 70 | 0.48 R | **INCONCLUSIVE IN ADVANCE** |
+| 2 years on 50 stocks | MAL-2 1d | 1d | 70 | 0.48 R | **INCONCLUSIVE IN ADVANCE** |
+| Single stock, 10 years | MAL-2 1d | 1d | 7 | 1.51 R | **INCONCLUSIVE IN ADVANCE** |
+| Single stock, 10 years | MAL-5 1d | 1d | 25 | 0.80 R | **INCONCLUSIVE IN ADVANCE** |
+| 1 year on 50 stocks | MAL-10 1d | 1d | 30 | 0.73 R | **INCONCLUSIVE IN ADVANCE** |
+| 1 year on 100 stocks | MAL-10 1d | 1d | 60 | 0.51 R | **INCONCLUSIVE IN ADVANCE** |
+| 2 years on 50 stocks | MAL-10 1d | 1d | 60 | 0.51 R | **INCONCLUSIVE IN ADVANCE** |
+| Single stock, 10 years | MAL-10 1d | 1d | 6 | 1.63 R | **INCONCLUSIVE IN ADVANCE** |
+| Single stock, 10 years | MAL-17 1d | 1d | 35 | 0.67 R | **INCONCLUSIVE IN ADVANCE** |
+| Single stock, 10 years | MAL-16 1d | 1d | 42 | 0.62 R | **INCONCLUSIVE IN ADVANCE** |
+| 1 year on 50 stocks | MAL-17 1w | 1w | 22 | 0.85 R | **INCONCLUSIVE IN ADVANCE** |
+| 1 year on 100 stocks | MAL-17 1w | 1w | 44 | 0.60 R | **INCONCLUSIVE IN ADVANCE** |
+| 2 years on 50 stocks | MAL-17 1w | 1w | 44 | 0.60 R | **INCONCLUSIVE IN ADVANCE** |
+| 2 years on 100 stocks | MAL-17 1w | 1w | 87 | 0.43 R | **INCONCLUSIVE IN ADVANCE** |
+| Single stock, 10 years | MAL-17 1w | 1w | 4 | 1.99 R | **INCONCLUSIVE IN ADVANCE** |
+| 1 year on 50 stocks | MAL-16 1w | 1w | 58 | 0.52 R | **INCONCLUSIVE IN ADVANCE** |
+| Single stock, 10 years | MAL-16 1w | 1w | 12 | 1.15 R | **INCONCLUSIVE IN ADVANCE** |
 
 ---
 

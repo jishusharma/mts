@@ -49,3 +49,14 @@ def test_asset_years_and_underpowered_inconclusive():
     # Check N >= 100 verdict
     res_over_100 = mod.evaluate_universe_cell(n_events=500, rr=2.0, cost_r=0.016)
     assert res_over_100["inconclusive_in_advance"] is False
+
+
+def test_equity_rate_daily_uses_250_days_weekly_uses_calendar():
+    """Daily events per equity asset-year scale by 250 trading days, not BTC's 365; weekly keep 52 weeks."""
+    mod = load_universe_power()
+    mal5 = next(r for r in mod.ROWS_DEF if r["name"] == "MAL-5 1d")
+    assert mod.equity_rate(mal5) == pytest.approx(25 / (2510 / 250.0))
+    wk = next(r for r in mod.ROWS_DEF if r["name"] == "MAL-16 1w")
+    assert mod.equity_rate(wk) == pytest.approx(8 / (2510 / 365.25))
+    ay = mod.compute_asset_years_needed("MAL-5 1d")
+    assert round(ay["asset_years_equity"]) == 663
