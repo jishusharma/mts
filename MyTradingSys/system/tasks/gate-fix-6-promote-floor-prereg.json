@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "From Fable run 1 GATE_AUDIT.md fix list; Claude Opus checked the audit arithmetic (z_holm m=8 2.734, MDE 0.137 at 678 days).",
+  "note": "From Fable run 1 GATE_AUDIT.md fix list; Claude Opus checked the audit arithmetic (z_holm m=8 2.734, MDE 0.137 at 678 days).\nREVIEW 2026-10-18 (Claude Sonnet 5.5, blind): NOT STAMPED. promote.py G4 is a promotion gate (C2 base: gate) and a new required manifest field REJECTs every existing manifest; needs a non-Claude spec review + Haiku re-derivation (roles/lab_guy.md:31). Spec/test otherwise sound: the old floor falls 4x with net_r doubled (mde_floor promote.py:62), so the test fails today. Suggest the spec also state migration (existing manifests) before review.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -45,5 +45,6 @@
   "tests": "Good manifest with net_r doubled and plausible_net_r fixed keeps the same floor (today it falls 4x); a manifest without plausible_net_r REJECTs; the other promotion tests still pass. The test must fail on the pre-change code.",
   "title": "promote.py G4: trade floor from the pre-registered plausible_net_r, not the observed net_r",
   "weight": "IMPORTANT",
-  "worker": "session"
+  "worker": "session",
+  "class": "C2"
 }

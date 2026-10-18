@@ -62,6 +62,75 @@ class OverrideMechanism(unittest.TestCase):
         self.assertEqual(rows[0]["kill_scope"], "none")
 
 
+class BlockedStudy(unittest.TestCase):
+    SENT = "FAIL/INCONCLUSIVE: stop; this BLOCK covers only 1m and 5m cells counted here."
+
+    def test_blocked_md_without_result_is_blocked_with_scope(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp) / "demo_2026-02-02"
+            d.mkdir()
+            (d / "PRE_REG.md").write_text("# PRE-REGISTRATION: Demo count, BTCUSDT\n", encoding="utf-8")
+            (d / "BLOCKED.md").write_text("# BLOCKED\n" + self.SENT + "\n", encoding="utf-8")
+            rows = V.parse_study(d)
+        self.assertEqual((rows[0]["verdict"], rows[0]["kill_scope"]), ("BLOCKED", self.SENT))
+
+    def test_blocked_without_sentence_is_scope_none_and_never_blocks_check(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp) / "demo_2026-02-02"
+            d.mkdir()
+            (d / "BLOCKED.md").write_text("# BLOCKED\nnothing frozen\n", encoding="utf-8")
+            rows = V.parse_study(d)
+            self.assertEqual((rows[0]["verdict"], rows[0]["kill_scope"]), ("BLOCKED", "none"))
+            csvp = Path(tmp) / "v.csv"
+            V.save(csvp, rows)
+
+            class A:
+                words, csv = "demo", str(csvp)
+            self.assertEqual(V.cmd_check(A), 0)
+
+    def test_real_kurisko_row_is_blocked_with_scope_and_check_passes(self):
+        rows = [r for r in V.load(V.CSV_PATH) if r["study_dir"].startswith("kurisko_2026-10-18")]
+        self.assertEqual(rows[0]["verdict"], "BLOCKED")
+        self.assertIn("1m and 5m", rows[0]["kill_scope"])
+
+        class A:
+            words, csv = "kurisko quad rotation", str(V.CSV_PATH)
+        self.assertEqual(V.cmd_check(A), 0)
+
+
+class LedgerCount(unittest.TestCase):
+    def test_ledger_union_per_study_max_no_double_count(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            vc = Path(tmp) / "v.csv"
+            cols = V.COLS
+            def vrow(study, arm):
+                r = {c: "x" for c in cols}
+                r.update(study_dir=study, arm=arm, split_read="DEV")
+                return [r[c] for c in cols]
+            write_csv(vc, cols, [vrow("s1", "a"), vrow("s1", "b"), vrow("s2", "(study)")])
+            lc = Path(tmp) / "l.csv"
+            lcols = ["study", "variant", "run_utc", "split", "data_source", "description", "status"]
+            write_csv(lc, lcols, [["s1", "V1", "d", "DEV", "x", "x", "x"],       # s1 already has 2 arms: no extra
+                                  ["s3", "K1", "d", "DEV", "x", "x", "count-only-blocked"],
+                                  ["s3", "K2", "d", "DEV", "x", "x", "count-only-blocked"],
+                                  ["s4", "H1", "d", "VALIDATION", "x", "x", "x"]])  # other split: ignored
+
+            class A:
+                csv, ledger_csv, split, ledger = str(vc), str(lc), "DEV", True
+            seen, _ = V.count_variants(vc, "DEV")
+            self.assertEqual(len(seen), 3)                                       # plain count unchanged
+            self.assertEqual(V.count_with_ledger(vc, lc, "DEV")[0], 5)           # s1 2 + s2 1 + s3 2
+            self.assertEqual(V.cmd_count(A), 0)
+
+    def test_real_ledger_has_kurisko_cells_and_pit_arms(self):
+        per = V.ledger_per_study(RESEARCH_LEDGER, "DEV")
+        self.assertEqual(len(per["kurisko_2026-10-18"]), 8)
+        self.assertEqual(len(per["pit_levels_2026-10-16"]), 2)
+
+
+RESEARCH_LEDGER = V.RESEARCH / "TRIAL_LEDGER.csv"
+
+
 class RealRegistry(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

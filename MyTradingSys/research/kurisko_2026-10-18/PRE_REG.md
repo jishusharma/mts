@@ -1,6 +1,6 @@
 # PRE-REGISTRATION: Kurisko Quad Rotation, count-only, BTCUSDT perp DEV 1m/5m (2026-10-18)
 
-Card `kurisko-prereg-fire-counts`. Status: COUNT-ONLY. **Frozen cells: 0 of 8 candidates.** Every TF x arm x side is fee-dominated or underpowered by `prereg_gate.py` (BLOCK), so nothing is frozen and no outcome study may be built on these cells. Details of the BLOCK: `BLOCKED.md`.
+Card `kurisko-prereg-fire-counts`. Status: COUNT-ONLY. **Frozen cells: 0 of 8 candidates.** Of the eight counted cells (1m and 5m only), every TF x arm x side is fee-dominated or underpowered by `prereg_gate.py` (BLOCK), so nothing is frozen and no outcome study may be built on these cells. Details of the BLOCK: `BLOCKED.md`.
 
 ## 0. Prior-verdict check (step 1)
 `python scripts/dev/verdicts.py check "kurisko quad rotation stochastic"` (exit 0):
@@ -19,7 +19,7 @@ SOURCED: bands, line D, levels 20/80 (params/kurisko_default.json). OURS: turn r
 Round trip 14 bp = 2 x 5 bp taker (SOURCED `backtest/fees.py` BINANCE_TAKER 0.0005, both legs) + 4 bp slippage (OURS). FORMULAS 13 carries 12 bp; I did not re-derive that figure, 14 bp follows the card and is the stricter number. Funding rule (OURS, for any later study): charge the realised 8h funding at each UTC 00/08/16 mark held, sign by side; not applied here because no outcome is read.
 
 ## 4. Counts (DEV, rule: one count per TF x arm x side; both sides reported apart)
-| # | TF | Arm | Side | Events | Event-days | Median stop bp | Stops >= 14 bp | Fee as R (14 / median stop) | MDE (SD units, m=8) | Gate |
+| # | TF | Arm | Side | Events | Event-days | Median stop bp | Stops >= 14 bp | Fee as R (14 / median stop) | MDE (R at sd = 1 R placeholder, m=8; NOT a measured sd, not an R estimate, never add it to a cost) | Gate |
 |---|---|---|---|---|---|---|---|---|---|---|
 | 1 | 1m | stoch | long | 14317 | 912 | 6.67 | 22.1 % | 2.099 | 0.118 | BLOCK |
 | 2 | 1m | stoch | short (NO-SOURCE mirror) | 15706 | 912 | 5.97 | 17.3 % | 2.345 | 0.118 | BLOCK |
@@ -30,7 +30,7 @@ Round trip 14 bp = 2 x 5 bp taker (SOURCED `backtest/fees.py` BINANCE_TAKER 0.00
 | 7 | 5m | rsi | long | 3 | 3 | 452.2 | 100 % | 0.031 | 2.064 | BLOCK |
 | 8 | 5m | rsi | short (NO-SOURCE mirror) | 4 | 4 | 169.32 | 100 % | 0.083 | 1.787 | BLOCK |
 
-Gate command per row: `prereg_gate.py --n <event-days> --sd 1 --cost <fee R> --m 8` (SD units, OURS, since no outcome is read; the study would convert MDE to bp). Result: exit 1 for all 8. Cost alone exceeds the 0.30 R plausible-gross ceiling on every row (fee R 0.03 on the RSI 5m rows is only low because the stops are huge, 170-450 bp, and those have 3-4 days so the MDE is 1.8-2.1 SD).
+Gate command per row: `prereg_gate.py --n <event-days> --sd 1 --cost <fee R> --m 8` (sd = 1 is an unmeasured placeholder, OURS, since no outcome is read; the gate now refuses it without --sd-source, and measured sd of per-event R is 1.4-4.5 R per GATE_AUDIT Q1, which only raises every MDE below, so all 8 rows still BLOCK). Result: exit 1 for all 8. Cost alone exceeds the 0.30 R plausible-gross ceiling on every row (fee R 0.03 on the RSI 5m rows is only low because the stops are huge, 170-450 bp, and those have 3-4 days so the MDE is 1.8-2.1 SD).
 
 ## 5. Fee-floor verdict per TF x arm
 - 1m stochastic: FEE-DOMINATED. Median stop 6.7 bp (long) / 6.0 bp (short) against a 14 bp round trip: the fee is 2.1-2.3 R. 78-83 % of events have a stop narrower than the fee.
@@ -42,6 +42,8 @@ Candidates = TF {1m, 5m} x arm {stoch, RSI} x side {long, short} = 8 (<= 12). A 
 
 ## 7. If a later card revisits (not authorised here)
 Outcome definitions, same-window random-clock control (matched on UTC hour slot and vol tercile, 200 draws), Holm plan over the frozen cells, trial ids and verdicts.py aliases {kurisko, quad rotation, quad_rotation, stochastic rotation} apply only to cells that pass a gate. Possible routes are each a new trial with its own pre-registration: a wider stop (5m+ TF, 15m/1h not counted here), a minimum-stop filter (>= 14 bp, OURS) which changes the sample and must be counted fresh, or dropping the card. Trial ids: KQ-T01 = this count pass (8 candidate cells, 0 frozen).
+
+Kill scope (GATE_AUDIT Q4, gate-fix-4): FAIL/INCONCLUSIVE: stop; this BLOCK (count-only, no outcome read) covers only Quad Rotation on BTCUSDT 1m and 5m with bands (9,3),(14,3),(40,4),(60,10) D-line, the pattern-low stop and a 14 bp taker round trip; 15m and 1h, a minimum-stop filter, a maker entry or a tick stop are untested and need their own PRE_REG and gate.
 
 ## 8. Known weaknesses
 1. The stop width is a pattern-low definition (OURS); a tick-based stop as in the sources would be far tighter on BTC.

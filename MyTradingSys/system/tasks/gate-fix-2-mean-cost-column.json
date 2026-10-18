@@ -1,6 +1,9 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "class": "C1",
+  "closed": "2026-10-18T16:02:31Z",
   "commands": [],
   "created": "2026-10-18T15:40:02Z",
   "depends_on": [],
@@ -12,17 +15,40 @@
   "goal": "Kurisko count_events.py summarise() and the PRE_REG template line (TASK_REFINEMENT.md) carry mean_cost_R and sd_daily_mean_R or 'n/a: no outcome' (GATE_AUDIT.md Q2).",
   "id": "gate-fix-2-mean-cost-column",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "count_events.summarise mean_cost_R (hand 2.1185) + sd_daily_mean_R; counts.csv not regener",
+      "ref": "bc3cef0e",
+      "utc": "2026-10-18T16:02:31Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "kurisko-prereg-fire-counts: count-only Quad Rotation pre-registration, 0 of 8 cells frozen",
+      "ref": "2362bbc7d8d3",
+      "utc": "2026-10-18T12:28:31Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "677f4cda6001 tasks: review gate for crucial/critical or C2/C3 cards (take and done need RE",
+      "ref": "MyTradingSys/system/TASK_REFINEMENT.md",
+      "utc": "2026-10-17T20:27:59Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "From Fable run 1 GATE_AUDIT.md fix list; Claude Opus checked the audit arithmetic (z_holm m=8 2.734, MDE 0.137 at 678 days).",
+  "note": "From Fable run 1 GATE_AUDIT.md fix list; Claude Opus checked the audit arithmetic (z_holm m=8 2.734, MDE 0.137 at 678 days).\nREVIEWED:2026-10-18 ACCEPT class=C1 Lab_Guy blind review by Claude Sonnet 5.5 (different session from the Fable audit author; audit numbers re-read, not re-run).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-18T15:49:40Z",
   "refs": [
     "MyTradingSys/research/fable_audit_2026-10-18/GATE_AUDIT.md"
   ],
-  "result": "",
+  "result": "count_events.summarise mean_cost_R (hand 2.1185) + sd_daily_mean_R; counts.csv not regenerated",
   "scope_in": [
     "MyTradingSys/research/kurisko_2026-10-18/count_events.py",
     "MyTradingSys/research/kurisko_2026-10-18/test_count_events.py",
@@ -33,16 +59,18 @@
     "live tree",
     "any outcome study"
   ],
+  "scope_sha": "2362bbc7d8d3",
   "size": "S",
   "sources": [
     "MyTradingSys/research/fable_audit_2026-10-18/GATE_AUDIT.md (Fable run 1, b63e8589)"
   ],
-  "state": "raw",
+  "state": "done",
   "steps": [
     "write the named test first and watch it fail on current code",
     "implement the change inside scope_in only",
     "python scripts/dev/run_all_tests.py --quick, then sync.py ship with a Result line"
   ],
+  "taken": "2026-10-18T16:02:29Z",
   "tests": "summarise() on a three-stop fixture (5, 7, 9 bp) returns mean_cost_R = (14/5+14/7+14/9)/3 = 2.119, hand value written in the test (today KeyError). The test must fail on the pre-change code.",
   "title": "count pass records mean_cost_R = mean(14/stop_i) beside the median; PRE_REG template uses the mean",
   "weight": "IMPORTANT",

@@ -54,6 +54,17 @@ class Events(unittest.TestCase):
         self.assertEqual(s["share_stop_ge_fee"], 0.0)
 
 
+class MeanCost(unittest.TestCase):
+    def test_mean_cost_is_mean_of_fee_over_stop_not_over_median(self):
+        # hand: stops 5, 7, 9 bp; fee 14 bp -> (14/5 + 14/7 + 14/9) / 3 = (2.8 + 2 + 1.5556) / 3 = 2.1185 R
+        # (14 / median 7 = 2.0 would understate it)
+        rows = [{"side": "long", "t_close_ms": i * 60_000, "stop_bp": s} for i, s in enumerate((5.0, 7.0, 9.0))]
+        s = ce.summarise(rows, "long")
+        self.assertAlmostEqual(s["mean_cost_R"], 2.1185, places=3)
+        self.assertEqual(s["sd_daily_mean_R"], "n/a: no outcome")
+        self.assertTrue(s["mean_cost_R"] > ce.FEE_BP / s["median_stop_bp"])
+
+
 class Loader(unittest.TestCase):
     def _csv(self, d, t_ms):
         p = Path(d) / "x.csv"
