@@ -1088,8 +1088,10 @@ def build_report(a):
     readiness = load_readiness(getattr(a, "readiness_manifest", None))
     split = load_split(getattr(a, "split_manifest", None))
     session = load_null_session(getattr(a, "null_session", None))
+    ident = binding_identity(a, split, readiness, session, a.shifts)
     if a.read_holdout:
         require_full_dev(a, split)
+        require_run_binding(ident, REPORT.read_text(encoding="utf-8"), split["identity"])   # before the read-once reservation
         counts = {}
         load_rows("dax", "%s/%d" % (KINDS[0], a.shifts[0]), None, split=split, counts=counts, verify_bars=False)
         mark_holdout_read(counts.get("holdout", 0), HOLDOUT_MARKER, split)
@@ -1128,8 +1130,16 @@ def build_report(a):
     snap_months = {p.name[:7] for p in DAX_SNAPS.glob("*.meta.json")}
     row_months = {p.name[:7] for p in (WORK / "rows_dax").glob("*.rows.meta.json")
                   if p.with_name(p.name.replace(".rows.meta.json", ".rows.jsonl")).is_file()}
+    all_metas = {}
+    for p in DAX_SNAPS.glob("*.meta.json"):
+        try:
+            all_metas[p.name[:7]] = json.loads(p.read_text())
+        except ValueError:
+            all_metas[p.name[:7]] = None      # unreadable meta: month incomplete
     acct["dax"]["full_dev"] = (not a.read_holdout and not a.months and not getattr(a, "smoke", False) and
                                 expected <= snap_months and expected <= row_months and
+                                dev_months_complete(all_metas, expected, split["dev_end"]) and
+                                all(ident["snapshots"].get(m) for m in expected) and
                                 acct["dax"]["errors"] == 0 and n_hole_days == 0)
     b_btc = None
     from net_rr_floor import load_floor
@@ -1149,12 +1159,9 @@ def build_report(a):
             raise ValueError("cache input split cutoff mismatch in %s; rerun rows --force" % meta)
         cache_ids[str(p)] = dict(input_id=frozen["input_id"], rows_sha256=frozen["rows_sha256"],
                                  inputs=frozen["inputs"])
-    acct["run_manifest"] = dict(schema="dax-run-v1", codes=code_identity(), floor=load_floor(),
-        market=list(selected_markets), split=split, readiness=readiness, session=session,
-        mask=getattr(a, "mask", "all"), shifts=sorted(set(shifts)), kinds=list(KINDS), variants=list(VARIANTS),
+    acct["run_manifest"] = dict(ident, market=list(selected_markets),
         months=sorted(months) if months else None, smoke=getattr(a, "smoke", False),
-        read_holdout=a.read_holdout, look_id=getattr(a, "look_id", ""),
-        seeds=dict(null=7, null_draws=200, bootstrap=12345, bootstrap_draws=2000, diff=99), fees=dict(dax=FEES_FDAX, btc=T.FEES_DERIBIT),
+        read_holdout=a.read_holdout, look_id=getattr(a, "look_id", ""), full_dev=acct["dax"]["full_dev"],
         dax_bars=bars_identity(b_dax), caches=cache_ids)
     if "btc" in selected_markets and (WORK / "rows_btc").exists():
         b_btc = T.load_bars_1m(BTC_KLINES)
@@ -1264,11 +1271,92 @@ def _data_holes(b, lo_d, hi_d):
     return holes
 
 
+SNAP_STEP_MIN = 15      # frozen cadence (cmd_gen --step): 96 scheduled observations per 1440-minute day
+BIND_KEYS = ("schema", "codes", "floor", "market", "split", "readiness", "session", "mask", "shifts", "kinds",
+             "variants", "seeds", "fees", "snapshots", "dev_bars")
+
+
+def snapshot_month_complete(meta, name, cut_t):
+    """True only if the producer's meta proves every scheduled observation of the month (to the dev cutoff) was evaluated.
+
+    Needs the producer's own first/last evaluated instant: the count alone cannot show where the sampling happened.
+    A meta without them (older producer) is stale and fails closed."""
+    try:
+        step = int(meta["step_min"])
+        first, last, n = int(meta["first_ms"]), int(meta["last_ms"]), int(meta["evaluated"])
+    except (KeyError, TypeError, ValueError):
+        return False
+    if step != SNAP_STEP_MIN or step <= 0 or last < first or (last - first) % (step * 60000) or             n != (last - first) // (step * 60000) + 1:
+        return False
+    y, m = int(name[:4]), int(name[5:7])
+    start = max(month_start_ts(name[:7]), dt.datetime(DAX_START.year, DAX_START.month, DAX_START.day, tzinfo=UTC).timestamp())
+    nxt = dt.datetime(y + (m == 12), m % 12 + 1, 1, tzinfo=UTC).timestamp()
+    end = nxt - 60 if cut_t is None else min(nxt - 60, cut_t - 60)
+    first_s, last_s = first / 1000, last / 1000
+    return start <= first_s < start + step * 60 and end - step * 60 < last_s <= end
+
+
+def dev_months_complete(metas, expected, cut_t):
+    """metas: {'YYYY-MM': meta}. Every expected development month must be present and fully sampled."""
+    return all(m in metas and snapshot_month_complete(metas[m], m, cut_t) for m in expected)
+
+
+def snapshot_identity(cut_t):
+    """{'YYYY-MM': sha256 of the snapshot file} for each in-scope month with a meta; None where the file is missing
+    or does not match the hash its producer recorded in .inputs.json (never trust the recorded value alone)."""
+    out = {}
+    for meta in sorted(DAX_SNAPS.glob("*.meta.json")) if DAX_SNAPS.exists() else []:
+        if not month_in_scope(meta.name, cut_t):
+            continue
+        snap = meta.with_name(meta.name.replace(".meta.json", ".jsonl.gz"))
+        origin = meta.with_name(meta.name.replace(".meta.json", ".inputs.json"))
+        try:
+            actual = file_hash(snap)
+            recorded = json.loads(origin.read_text(encoding="utf-8")).get("snapshot_sha256")
+        except (OSError, ValueError, AttributeError):
+            actual = recorded = None
+        out[meta.name[:7]] = actual if actual and actual == recorded else None
+    return out
+
+
+def binding_identity(a, split, readiness, session, shifts):
+    """Everything a holdout run must share with the completed development run, computed from the development window only."""
+    from net_rr_floor import load_floor
+    markets = ["dax", "btc"] if getattr(a, "market", "both") == "both" else [getattr(a, "market", "dax")]
+    return dict(schema="dax-run-v1", codes=code_identity(), floor=load_floor(), market=markets, split=split,
+                readiness=readiness, session=session, mask=getattr(a, "mask", "all"), shifts=sorted(set(shifts)),
+                kinds=list(KINDS), variants=list(VARIANTS),
+                seeds=dict(null=7, null_draws=200, bootstrap=12345, bootstrap_draws=2000, diff=99),
+                fees=dict(dax=FEES_FDAX, btc=T.FEES_DERIBIT), snapshots=snapshot_identity(split["dev_end"]),
+                dev_bars=bars_identity(load_development_bars(DAX_ARCHIVE / "klines", split["dev_end"])))
+
+
+def require_run_binding(manifest, report_text, split_identity):
+    """The holdout may be read only by a run whose arms, code, data rules, session and readiness equal those of the
+    durable completed full-development run named in the report token."""
+    hit = re.search(r"Full development completed for split %s run (dax_bt_[0-9a-f]{64})\s" % re.escape(split_identity), report_text or "")
+    if not hit:
+        raise SystemExit("holdout requires full development report bound to a completed run for this split manifest")
+    run_id = hit.group(1)
+    path = WORK / "runs" / (run_id + ".json")
+    try:
+        done = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        raise SystemExit("holdout requires full development: completed run manifest %s not readable" % path)
+    if not isinstance(done, dict) or "dax_bt_" + digest(done) != run_id or done.get("full_dev") is not True or             done.get("read_holdout") or (done.get("split") or {}).get("identity") != split_identity:
+        raise SystemExit("holdout requires full development: %s is not a completed development run of this split" % path)
+    norm = lambda v: json.loads(json.dumps(v, sort_keys=True))     # tuples vs lists after a JSON round trip
+    diff = [k for k in BIND_KEYS if norm(done.get(k)) != norm(manifest.get(k))]
+    if diff:
+        raise SystemExit("holdout run differs from the completed development run %s in: %s" % (run_id, ", ".join(diff)))
+    return run_id
+
+
 def require_full_dev(a, split):
     if getattr(a, "smoke", False) or a.months:
         raise SystemExit("holdout requires full development; smoke/month restrictions refused")
-    token = "Full development completed for split %s" % split["identity"]
-    if not REPORT.exists() or token not in REPORT.read_text(encoding="utf-8"):
+    if not REPORT.exists() or not re.search(r"Full development completed for split %s run dax_bt_[0-9a-f]{64}\s" % re.escape(split["identity"]),
+                                            REPORT.read_text(encoding="utf-8")):
         raise SystemExit("holdout requires full development report for this split manifest")
     if HOLDOUT_MARKER.exists():
         raise SystemExit("holdout already read (%s): it is read once" % HOLDOUT_MARKER)
@@ -1318,7 +1406,7 @@ def cmd_report(a):
                   split["embargo_s"], dt.datetime.fromtimestamp(split["dev_end"], UTC).isoformat(),
                   d["holdout_rows"], "read once" if a.read_holdout else "excluded, outcomes not read"))
     if not a.read_holdout and d["full_dev"]:
-        md.append("Full development completed for split %s\n" % split["identity"])
+        md.append("Full development completed for split %s run %s\n" % (split["identity"], run_id))
     md.append("\n## 2. Results (one-trade-at-a-time, limit at zone price, stop/target from the rank-1 candidate, 8 zone-tf bars)\n")
     md.append("Fees: DAX = `FEES_FDAX` (0.000005 of price per side on every leg); BTC = Deribit (maker 0, taker 0.0005) as in the BTC rerun. "
               "Primary `coded` preserves Java per-instrument net_rr; GER40 uses FDAX fees. Gross-only selection is removed "
