@@ -158,3 +158,103 @@ def test_budget_age_and_missing(tmp_path):
     assert b["state"] in ("SPEND", "NORMAL", "THROTTLE")
     assert b["five_hour_pct"] == 15.0
     assert b["weekly_all_pct"] == 30.0
+
+
+def test_wait_sha_already_on_trunk_at_baseline_does_not_exit_until_new_sha_lands(tmp_path):
+    """sha already on trunk at baseline start -> does NOT exit immediately; new sha lands (false -> true) -> exits 0 with one-line reason."""
+    polls = [
+        # baseline: sha1 already on trunk, sha2 not on trunk
+        {"shas": {"sha1": True, "sha2": False}, "ci_red": False, "busy_slots": 0},
+        # poll 1: still same (sha1 True, sha2 False) -> must NOT exit
+        {"shas": {"sha1": True, "sha2": False}, "ci_red": False, "busy_slots": 0},
+        # poll 2: sha2 lands (False -> True) -> exits 0
+        {"shas": {"sha1": True, "sha2": True}, "ci_red": False, "busy_slots": 0},
+    ]
+    idx = [0]
+    sleeps = []
+
+    def fake_probe(repo, shas):
+        cur = polls[min(idx[0], len(polls) - 1)]
+        idx[0] += 1
+        return cur
+
+    rc, reason = S.wait_for_transition(
+        repo=tmp_path,
+        shas=["sha1", "sha2"],
+        timeout=3000,
+        interval=300,
+        probe=fake_probe,
+        fetcher=lambda repo: None,
+        sleeper=lambda s: sleeps.append(s),
+    )
+    assert rc == 0
+    assert "sha2" in reason
+    assert "\n" not in reason.strip()
+    assert len(sleeps) == 2
+
+
+def test_wait_ci_flips_false_to_true_and_true_to_false(tmp_path):
+    """CI flips (false -> true or true -> false) -> exits 0 with one-line reason; already red at start does not exit until flip."""
+    def run_seq(seq):
+        it = iter(seq)
+        return S.wait_for_transition(
+            repo=tmp_path,
+            shas=[],
+            timeout=900,
+            interval=300,
+            probe=lambda repo, shas: next(it),
+            fetcher=lambda repo: None,
+            sleeper=lambda s: None,
+        )
+
+    rc_red, msg_red = run_seq([
+        {"shas": {}, "ci_red": False, "busy_slots": 0},
+        {"shas": {}, "ci_red": True, "busy_slots": 0},
+    ])
+    assert rc_red == 0 and "ci" in msg_red.lower()
+
+    # Already red at baseline -> poll 1 still red (no exit) -> poll 2 green (exits 0)
+    rc_green, msg_green = run_seq([
+        {"shas": {}, "ci_red": True, "busy_slots": 0},
+        {"shas": {}, "ci_red": True, "busy_slots": 0},
+        {"shas": {}, "ci_red": False, "busy_slots": 0},
+    ])
+    assert rc_green == 0 and "ci" in msg_green.lower()
+
+
+def test_wait_busy_slot_frees_transition(tmp_path):
+    """busy slot frees (busy -> free transition) -> exits 0; already free at baseline does not exit."""
+    seq = iter([
+        {"shas": {}, "ci_red": False, "busy_slots": 2},
+        {"shas": {}, "ci_red": False, "busy_slots": 2},
+        {"shas": {}, "ci_red": False, "busy_slots": 1},
+    ])
+    rc, reason = S.wait_for_transition(
+        repo=tmp_path,
+        shas=[],
+        timeout=900,
+        interval=300,
+        probe=lambda repo, shas: next(seq),
+        fetcher=lambda repo: None,
+        sleeper=lambda s: None,
+    )
+    assert rc == 0
+    assert "slot" in reason.lower()
+
+
+def test_wait_timeout_exits_3(tmp_path):
+    """timeout reached with no transition -> exits 3."""
+    steady = {"shas": {"sha1": True, "sha2": False}, "ci_red": False, "busy_slots": 0}
+    sleeps = []
+    rc, reason = S.wait_for_transition(
+        repo=tmp_path,
+        shas=["sha1", "sha2"],
+        timeout=600,
+        interval=300,
+        probe=lambda repo, shas: steady,
+        fetcher=lambda repo: None,
+        sleeper=lambda s: sleeps.append(s),
+    )
+    assert rc == 3
+    assert "timeout" in reason.lower()
+    assert sum(sleeps) >= 600

@@ -330,6 +330,95 @@ def parse_shas_arg(values: list[str] | None) -> list[str]:
     return out
 
 
+def parse_duration(val: str | int | float) -> int:
+    if isinstance(val, (int, float)):
+        return max(0, int(val))
+    s = str(val).strip().lower()
+    if s.endswith("m"):
+        return max(0, int(float(s[:-1]) * 60))
+    if s.endswith("h"):
+        return max(0, int(float(s[:-1]) * 3600))
+    if s.endswith("s"):
+        return max(0, int(float(s[:-1])))
+    return max(0, int(float(s)))
+
+
+def _probe_wait_state(repo: Path, shas: list[str]) -> dict:
+    shas_map = read_shas(repo, shas)
+    sha_on_trunk = {s: bool(info.get("on_trunk")) if isinstance(info, dict) and "error" not in info else False for s, info in shas_map.items()}
+    ci_info = read_ci(use_cache=False)
+    ci_red = bool(ci_info["red"]) if isinstance(ci_info, dict) and "red" in ci_info else None
+    gs_info = read_gate_slots(repo)
+    busy_slots = int(gs_info["busy"]) if isinstance(gs_info, dict) and "busy" in gs_info else None
+    return {"shas": sha_on_trunk, "ci_red": ci_red, "busy_slots": busy_slots}
+
+
+def _detect_transition(baseline: dict, current: dict) -> str | None:
+    base_shas = baseline.get("shas", {})
+    cur_shas = current.get("shas", {})
+    for sha, now_on in cur_shas.items():
+        was_on = bool(base_shas.get(sha, False))
+        if not was_on and now_on:
+            return f"TRANSITION sha {sha} landed on {TRUNK_REF}"
+
+    base_ci = baseline.get("ci_red")
+    cur_ci = current.get("ci_red")
+    if base_ci is not None and cur_ci is not None and base_ci != cur_ci:
+        state_str = "RED" if cur_ci else "GREEN"
+        prev_str = "RED" if base_ci else "GREEN"
+        return f"TRANSITION CI flipped {prev_str} -> {state_str}"
+
+    base_busy = baseline.get("busy_slots")
+    cur_busy = current.get("busy_slots")
+    if base_busy is not None and cur_busy is not None and base_busy > 0 and cur_busy < base_busy:
+        return f"TRANSITION gate slot freed ({base_busy} -> {cur_busy} busy)"
+
+    return None
+
+
+def wait_for_transition(
+    repo: Path = REPO,
+    shas: list[str] | None = None,
+    timeout: int | str = 3000,
+    interval: int | str = 300,
+    probe=None,
+    fetcher=None,
+    sleeper=None,
+) -> tuple[int, str]:
+    """Record baseline at start and poll every `interval` seconds after fetching.
+    Exits (0, reason) on the FIRST transition from baseline; never exits on a state that already held at baseline;
+    exits (3, reason) when `timeout` seconds elapse with no transition.
+    """
+    sha_list = parse_shas_arg(shas)
+    timeout_s = parse_duration(timeout)
+    interval_s = max(1, parse_duration(interval))
+    probe_fn = probe or _probe_wait_state
+    fetch_fn = fetcher or fetch_origin
+    sleep_fn = sleeper or time.sleep
+
+    try:
+        fetch_fn(repo)
+    except Exception:
+        pass
+    baseline = probe_fn(repo, sha_list)
+    elapsed = 0
+
+    while elapsed < timeout_s:
+        step = min(interval_s, timeout_s - elapsed)
+        sleep_fn(step)
+        elapsed += step
+        try:
+            fetch_fn(repo)
+        except Exception:
+            pass
+        current = probe_fn(repo, sha_list)
+        reason = _detect_transition(baseline, current)
+        if reason:
+            return 0, reason
+
+    return 3, f"TIMEOUT after {timeout_s}s with no transition"
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -339,12 +428,26 @@ def main(argv: list[str] | None = None) -> int:
     p_tick.add_argument("--shas", nargs="*", default=[], help="comma- or space-separated commit shas to check on trunk/green")
     p_tick.add_argument("--no-fetch", action="store_true", help="skip git fetch origin before reading refs")
 
+    p_wait = sub.add_parser("wait", help="background watcher: exits 0 on first transition from baseline, 3 on timeout")
+    p_wait.add_argument("--shas", nargs="*", default=[], help="comma- or space-separated commit shas to watch for landing on trunk")
+    p_wait.add_argument("--timeout", default="3000", help="timeout in seconds or with s/m/h suffix (default 3000)")
+    p_wait.add_argument("--interval", default="300", help="poll interval in seconds or with s/m/h suffix (default 300)")
+
     args = ap.parse_args(argv)
     if args.cmd == "tick":
         sha_list = parse_shas_arg(args.shas)
         res = tick(repo=REPO, shas=sha_list, no_fetch=args.no_fetch)
         print(json.dumps(res, indent=2, sort_keys=True))
         return 0
+    if args.cmd == "wait":
+        rc, reason = wait_for_transition(
+            repo=REPO,
+            shas=args.shas,
+            timeout=args.timeout,
+            interval=args.interval,
+        )
+        print(reason)
+        return rc
     return 2
 
 
