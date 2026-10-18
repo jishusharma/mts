@@ -1,0 +1,10 @@
+{
+  "done_when": "sync.py ship prints no stale-page warning for those 3 pages",
+  "from": "DESKTOP-F7IU69N",
+  "id": "20261018-184201-republish-3-stale-pages-mts-control-room",
+  "need": "Artifacts_Guy (home login on NB): sync.py ship warns these 3 published pages are older than their sources. Regenerate each from its source file in the repo and republish to its existing url, then open each link.",
+  "posted": "2026-10-18T18:42:01Z",
+  "status": "pending",
+  "target": "JIS-NB",
+  "title": "Republish 3 stale pages: mts_control_room, mts_layer_map, mts_home"
+}
