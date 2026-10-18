@@ -1,0 +1,1 @@
+{"t": "20261018T110548Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship Result: logon Profiles step grew 18s -> 340s as ~1000-file temp dirs piled up (one set per AutoDeploy gate run); gate now deletes them; new test fails on old code (no _SCRATCH)."}
