@@ -1,0 +1,1 @@
+{"t": "20261018T183010Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship 2>&1 | grep -E \"shipped|error\" ; python scripts/dev/sync.py release ru1-dispatch-json 2>&1 | tail -1; python scripts/dev/tasks.py dispatch | head -5"}
