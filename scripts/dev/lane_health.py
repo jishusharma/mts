@@ -314,7 +314,15 @@ def apply_plan(repo, pl, st, now):
         lines.append(f"{c['id']} back on CODEX (GPT is up, desk row {rid or '-'} cancelled)")
     for c, rid in pl["close"]:
         row = next(r for r in desk.tasks(repo) if r["id"] == rid)
-        c.update(state="done", result=f"via DSA ({rid}): {row.get('result', '')}"[:380], closed=iso(now))
+        result = f"via DSA ({rid}): {row.get('result', '')}"[:380]
+        try:
+            gate = tasks.review_gate(c, finishing=True, result=result)
+        except Exception as e:   # fail closed: an unreadable gate leaves the card open
+            gate = [f"review gate error: {e}"]
+        if gate:
+            lines.append(f"{c['id']} DSA row {rid} finished but card not closed: " + "; ".join(gate))
+            continue
+        c.update(state="done", result=result, closed=iso(now))
         changed.append(str(tasks.save(repo, c).relative_to(repo)))
         lines.append(f"{c['id']} closed from DSA row {rid}")
     for c, rid in pl["clear"]:
