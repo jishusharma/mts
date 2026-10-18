@@ -1,0 +1,1 @@
+{"t": "20261018T041511Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship tom-rv02-fixes Result: 7 new TestFullDevAuthorization tests fail on the old code; 82/82 test_tom_dax_bt tests pass; harness Java compiles (JDK 17). Card not marked done: CRUCIAL weight needs a RE"}
