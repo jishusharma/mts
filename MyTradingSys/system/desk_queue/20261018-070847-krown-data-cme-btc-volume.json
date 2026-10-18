@@ -1,0 +1,11 @@
+{
+  "card": "krown-data-cme-btc-volume",
+  "done_when": "A CSV of CME BTC daily volume (date, volume, source url) is on F: with a gap count, or the card result says NOT AVAILABLE with the sources tried; no account or paid data used.",
+  "from": "JIS-NB",
+  "id": "20261018-070847-krown-data-cme-btc-volume",
+  "need": "python MyTradingSys/research/krown_ta101_2026-10-13/tools/fetch_daily_majors.py --out F:/MTS/data/krown_daily; python MyTradingSys/research/krown_ta101_2026-10-13/tools/build_data_coverage.py --data F:/MTS/data/krown_daily (full brief: python scripts/dev/tasks.py brief krown-data-cme-btc-volume)",
+  "posted": "2026-10-18T07:08:47Z",
+  "status": "pending",
+  "target": "DSA",
+  "title": "Krown CME BTC futures daily volume (public data only) as third volume arm"
+}
