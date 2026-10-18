@@ -1,0 +1,54 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T13:07:17Z",
+  "depends_on": [],
+  "done_when": "Social call ingestion utility implemented; setups ingested into MyTradingSys/research/analysts/cryptochase/CALL_LEDGER.csv; unit tests passing.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Implement Crypto Chase FVG social call listener and parser for Twitter/X calls (@Crypto_Chase). Parse limit order posts with parse_social_call and log records into MyTradingSys/research/analysts/cryptochase/CALL_LEDGER.csv.",
+  "id": "analyst-ingest-cryptochase-x",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Drafted by review-imbalance-analysts-report-and-imp following survey recommendation",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T13:08:30Z",
+  "refs": [
+    "MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md",
+    "MyTradingSys/research/analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md",
+    "MyTradingSys/research/analysts/schema.py",
+    "MyTradingSys/research/analysts/ingest_analysts.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/analysts/cryptochase/",
+    "MyTradingSys/research/analysts/ingest_analysts.py"
+  ],
+  "scope_out": [
+    "live order execution",
+    "paid Twitter API credentials"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md:95-113"
+  ],
+  "state": "ready",
+  "steps": [
+    "Implement ingest script reading Crypto Chase tweets or manual operator inbox pastes.",
+    "Extract FVG levels and stop losses with parse_social_call.",
+    "Record calls into MyTradingSys/research/analysts/cryptochase/CALL_LEDGER.csv."
+  ],
+  "tests": "python -m unittest MyTradingSys/research/analysts/test_analysts_ingestion_and_scorecard.py",
+  "title": "Implement Crypto Chase FVG social call listener",
+  "weight": "ROUTINE",
+  "worker": "session"
+}
