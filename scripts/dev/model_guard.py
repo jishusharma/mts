@@ -130,8 +130,6 @@ def decide(tool, inp, parent):
             return None if cheap(parent) else f"A fork inherits this session's model ({parent or 'unknown'}); `model` is ignored. Use context='fresh' with a background. {FIX}"
         if not model:
             return f"start_session without `model` inherits this session's model (may be Opus). {FIX}"
-        if "opus" in str(model).lower() and inp.get("initiation") == "user_asked":
-            return None  # operator 2026-10-18: Opus passes when the operator asked in words (explicit model, user_asked only)
         return None if cheap(model) else f"Model '{model}' is not allowed for new sessions (Opus only when the operator names it; the operator picks it in the app). {FIX}"
     if tool == SET_MODEL:
         return None if cheap(model) else f"Switching a session to '{model}' is not allowed (Opus only by the operator, in the app's model menu)."
