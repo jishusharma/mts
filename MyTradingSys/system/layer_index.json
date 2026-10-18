@@ -239,7 +239,9 @@
       ],
       "code": [
         "MyTradingSys/backtest/layers/rsi/malkan_40_60.py",
-        "MyTradingSys/backtest/layers/rsi/malkan_mtf.py"
+        "MyTradingSys/backtest/layers/rsi/malkan_mtf.py",
+        "MyTradingSys/backtest/layers/kurisko/quad_rotation.py",
+        "MyTradingSys/backtest/layers/kurisko/stoch_core.py"
       ],
       "ledger": [],
       "results": [

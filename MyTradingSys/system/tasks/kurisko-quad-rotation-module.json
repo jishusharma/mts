@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-18T06:55:47Z",
   "commands": [],
   "created": "2026-10-18T03:57:18Z",
   "depends_on": [],
@@ -13,6 +15,12 @@
   "id": "kurisko-quad-rotation-module",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/backtest/layers/kurisko/ + FORMULAS s24, commit dd001f2a; 28 tests, quick gat",
+      "ref": "1a145331",
+      "utc": "2026-10-18T06:55:47Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +47,7 @@
   "refined_by": "",
   "refreshed": "2026-10-18T04:23:38Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/backtest/layers/kurisko/ + FORMULAS s24, commit dd001f2a; 28 tests, quick gate green",
   "scope_in": [
     "MyTradingSys/backtest/layers/kurisko/",
     "MyTradingSys/backtest/layers/FORMULAS.md",
@@ -58,7 +66,7 @@
     "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md section 3",
     "MyTradingSys/backtest/layers/FORMULAS.md sections 1, 20, 21 (pattern)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Before coding: if MyTradingSys/research/lab_guy/spec_review_kurisko_2026-10-18.md and extracts/processed/kurisko/QUAD_ROTATION.md are on origin/fast-track, apply the review's FIX lines and the transcript quotes (label SOURCED with file:line) to steps 2-4; if absent, use the OURS defaults below and do not wait.",
     "FORMULAS.md section 24 (OURS where the sources are silent, spec s5 gaps 2-4): raw %K = 100*(C-LL_k)/(HH_k-LL_k) over bars t-k+1..t, HH=LL gives NaN (never 0 or 100); fast line = raw %K; full (k,d,s) line = SMA_s(raw %K); %D unused in v0. RSI arm = rsi_core Wilder. A 20-bar example from a script that does not import stoch_core (as wavetrend make_golden.py), values written into the section.",
@@ -67,6 +75,7 @@
     "Fixture tests first, expected values from the section 24 example (independent script) or hand-built OHLC, never from the module: flat input (NaN), all-four-under-20 bar, first-uptick event bar, no second event in the same episode, long/short mirror, RSI arm on a short series, planted future spike changes nothing at or before t.",
     "Implement stoch_core.py and quad_rotation.py (pure functions of closed bars; template backtest/layers/wavetrend); add the module to test_layer_boundaries; leave KURISKO_SPEC s5 to the transcript card (read only here); run_all_tests.py --quick."
   ],
+  "taken": "2026-10-18T06:55:45Z",
   "tests": "New tests fail on the pre-change tree (module absent); the planted-spike test also fails on a one-bar look-ahead mutant (run once, say so in the commit body). Every fixture value traces to FORMULAS 24 or hand-built OHLC; none is read from stoch_core or quad_rotation output.",
   "title": "Kurisko Quad Rotation: causal layer module (4 oscillators, stochastic or RSI) with hand-computed fixtures",
   "weight": "IMPORTANT",
