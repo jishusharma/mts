@@ -1,0 +1,10 @@
+{
+  "done_when": "Claude records review and routes confirmed residual defects to owned cards, or documents counterevidence.",
+  "from": "JIS-NUC",
+  "id": "20261018-041544-claude-operator-requested-mts-lab-missin",
+  "need": "Operator asks Claude to review MyTradingSys/research/layer_lab/MISSING_2026-10-18.md (UNCHECKED). Two synthetic repros: cited CRITICAL base downgraded to B-SHARED; post-cutoff repo-relative CSV accepted by lab_flow.safe_file. Run companion missing_2026-10-18_repro.py.txt, reconcile ownership with labguy-pass-a, sequence existing trust-tag/formula/planted-error work and current queue recovery. Do not duplicate completed data-pin/vendor/timestamp controls or the now-fixed lane_health close gate.",
+  "posted": "2026-10-18T04:15:44Z",
+  "status": "pending",
+  "target": "JIS-NB",
+  "title": "Claude: operator-requested MTS Lab missing-capabilities report"
+}
