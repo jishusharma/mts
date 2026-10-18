@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-18T22:47:02Z",
   "commands": [],
   "created": "2026-10-18T17:23:14Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "ru9-artifacts-guy-artifacts-py-audit-lin",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "artifacts.py audit-links + test_artifacts_audit_links.py",
+      "ref": "639f5cd2",
+      "utc": "2026-10-18T22:47:02Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,7 @@
   "refs": [
     "MyTradingSys/research/roles/ROLE_UPGRADES_2026-10-18.md"
   ],
-  "result": "",
+  "result": "artifacts.py audit-links + test_artifacts_audit_links.py",
   "scope_in": [
     "scripts/dev/artifacts.py",
     "MyTradingSys/tests/test_artifacts_audit_links.py"
@@ -44,13 +51,14 @@
   "scope_sha": "9469045808cf",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read artifacts.py and the Artifacts_Guy ROLES.md row",
     "Implement audit-links with injectable fetcher",
     "Fixture test",
     "Run run_all_tests.py --quick, ship"
   ],
+  "taken": "2026-10-18T22:47:02Z",
   "tests": "MyTradingSys/tests/test_artifacts_audit_links.py",
   "title": "RU9 Artifacts_Guy: artifacts.py audit-links",
   "weight": "",

@@ -7,6 +7,7 @@
   python scripts/dev/artifacts.py stale                     # STALE <slug> <url> for each page whose repo build differs from what was last published
   python scripts/dev/artifacts.py publish-record --slug X [--date YYYY-MM-DD]   # after an Artifact publish: store published_sha + the publish date (default today)
   python scripts/dev/artifacts.py banner --slug research_map [--file live.html]   # insert/refresh the "Part of MTS Home" line
+  python scripts/dev/artifacts.py audit-links               # audit registry vs repo copy and verify relative links across pages
 
 Pages are republished over their existing url (Artifact tool: `url` = the account's url), which keeps the link and the pin.
 A session cannot delete or unpin an artifact: `plan` prints those as a list for the operator.
@@ -19,6 +20,7 @@ import re
 import subprocess
 import sys
 import tempfile
+from collections import namedtuple
 from datetime import date
 from pathlib import Path
 
@@ -231,15 +233,188 @@ def cmd_build(reg):
             subprocess.run([sys.executable, str(REPO / g), "--out", str(REPO / pg["html"])], check=True)
 
 
+class AuditRow(namedtuple("AuditRow", ["page", "link", "target", "status"])):
+    def __getitem__(self, item):
+        if isinstance(item, str):
+            return getattr(self, item)
+        return super().__getitem__(item)
+
+    def get(self, key, default=None):
+        return getattr(self, key, default)
+
+
+def format_audit_table(rows):
+    cols = ["PAGE", "LINK", "TARGET", "STATUS"]
+    if not rows:
+        return "PAGE                 LINK                 TARGET               STATUS"
+    widths = [len(c) for c in cols]
+    for r in rows:
+        widths[0] = max(widths[0], len(str(r.page)))
+        widths[1] = max(widths[1], len(str(r.link)))
+        widths[2] = max(widths[2], len(str(r.target)))
+        widths[3] = max(widths[3], len(str(r.status)))
+    header = f"{cols[0]:<{widths[0]}}  {cols[1]:<{widths[1]}}  {cols[2]:<{widths[2]}}  {cols[3]:<{widths[3]}}"
+    lines = [header]
+    for r in rows:
+        lines.append(f"{str(r.page):<{widths[0]}}  {str(r.link):<{widths[1]}}  {str(r.target):<{widths[2]}}  {str(r.status):<{widths[3]}}")
+    return "\n".join(lines)
+
+
+def audit_links(reg, repo=REPO, fetcher=None, reader=None):
+    """Checks registry vs repo copy (which is newer?), opens/verifies markdown relative links across registered pages,
+    and returns a list of AuditRow(page, link, target, status). Injectable fetcher/reader for testing.
+    """
+    rows = []
+
+    def read_file(path_str):
+        if reader is not None:
+            if callable(reader):
+                try:
+                    return reader(path_str)
+                except (FileNotFoundError, KeyError, OSError):
+                    return None
+            elif isinstance(reader, dict):
+                norm = str(path_str).replace("\\", "/")
+                for k, v in reader.items():
+                    if norm.endswith(k) or norm == k:
+                        return v
+                return None
+        p = Path(path_str)
+        if not p.is_absolute():
+            p = Path(repo) / p
+        if p.is_file():
+            try:
+                return p.read_text(encoding="utf-8")
+            except OSError:
+                return None
+        return None
+
+    def check_link_target(target, base_dir):
+        clean_target = target.split("#")[0].split("?")[0].strip()
+        if not clean_target:
+            return "OK"
+        if clean_target.startswith(("http://", "https://")):
+            if fetcher is not None:
+                try:
+                    res = fetcher(clean_target) if callable(fetcher) else fetcher.get(clean_target)
+                    return "OK" if res is not False and res is not None else "BROKEN"
+                except Exception:
+                    return "BROKEN"
+            return "OK"
+
+        # Relative path
+        target_path = Path(clean_target)
+        if not target_path.is_absolute():
+            resolved = base_dir / target_path
+        else:
+            resolved = target_path
+
+        resolved_str = str(resolved).replace("\\", "/")
+        norm_clean = str(clean_target).replace("\\", "/")
+
+        if reader is not None:
+            c = read_file(resolved_str)
+            if c is None:
+                c = read_file(norm_clean)
+            return "OK" if c is not None else "BROKEN"
+
+        if fetcher is not None:
+            try:
+                res = fetcher(clean_target) if callable(fetcher) else fetcher.get(clean_target)
+                if res is None:
+                    res = fetcher(resolved_str) if callable(fetcher) else fetcher.get(resolved_str)
+                return "OK" if res is not False and res is not None else "BROKEN"
+            except Exception:
+                return "BROKEN"
+
+        # Check local disk
+        if resolved.exists() or (Path(repo) / clean_target).exists():
+            return "OK"
+        return "BROKEN"
+
+    for pg in reg.get("pages", []):
+        slug = pg["slug"]
+        file_key = pg.get("html") or pg.get("markdown") or pg.get("file") or pg.get("path")
+        content = None
+        base_dir = Path(repo)
+        if file_key:
+            base_dir = (Path(repo) / file_key).parent
+            content = read_file(file_key)
+            if content is None:
+                content = read_file(str(base_dir / Path(file_key).name))
+
+        # Check registry vs repo copy (which is newer?)
+        if content is not None and file_key:
+            sha = pg.get("published_sha")
+            is_newer = False
+            if not sha:
+                is_newer = True
+            elif content_hash(content) != sha:
+                is_newer = True
+            if is_newer:
+                rows.append(AuditRow(page=slug, link="(repo copy)", target=file_key, status="NEWER_REPO_COPY"))
+
+        # If content wasn't loaded from disk/reader, maybe fetcher can get it from URL
+        if content is None and fetcher is not None and pg.get("urls"):
+            u = pg["urls"].get(owner(pg)) or next((v for v in pg["urls"].values() if v), None)
+            if u:
+                try:
+                    res = fetcher(u) if callable(fetcher) else fetcher.get(u)
+                    if isinstance(res, str):
+                        content = res
+                except Exception:
+                    pass
+
+        # Opens/verifies markdown relative links across registered pages
+        if content:
+            # Remove <script> blocks to avoid matching JS template literals (e.g. ${esc(url)})
+            clean_content = re.sub(r'<script\b[^>]*>.*?</script>', '', content, flags=re.S | re.I)
+            seen_links = set()
+            # 1. Markdown links: [text](target)
+            for m in re.finditer(r'\[([^\]]+)\]\(([^)]+)\)', clean_content):
+                link_text = m.group(1).strip()
+                raw_target = m.group(2).strip()
+                target = raw_target.split()[0] if raw_target else ""
+                if not target or target.startswith(("#", "${", "javascript:")):
+                    continue
+                if (link_text, target) in seen_links:
+                    continue
+                seen_links.add((link_text, target))
+                st = check_link_target(target, base_dir)
+                rows.append(AuditRow(page=slug, link=link_text, target=target, status=st))
+
+            # 2. HTML links: <a href="target">text</a>
+            for m in re.finditer(r'<a\s+[^>]*?href=["\']([^"\']+)["\'][^>]*>(.*?)</a>', clean_content, re.S | re.I):
+                target = m.group(1).strip()
+                link_text = re.sub(r'<[^>]+>', '', m.group(2)).strip() or target
+                if not target or target.startswith(("#", "${", "javascript:")):
+                    continue
+                if (link_text, target) in seen_links:
+                    continue
+                seen_links.add((link_text, target))
+                st = check_link_target(target, base_dir)
+                rows.append(AuditRow(page=slug, link=link_text, target=target, status=st))
+
+    return rows
+
+
+def cmd_audit_links(reg, repo=REPO, fetcher=None, reader=None):
+    rows = audit_links(reg, repo=repo, fetcher=fetcher, reader=reader)
+    print(format_audit_table(rows))
+    return 0
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("cmd", choices=["check", "list", "plan", "build", "banner", "stale", "publish-record"])
+    ap.add_argument("cmd", choices=["check", "list", "plan", "build", "banner", "stale", "publish-record", "audit-links"])
     ap.add_argument("--account", default="jishu.sharma")
     ap.add_argument("--slug", help="banner / publish-record: the registry page")
     ap.add_argument("--file", help="banner: html to update in place (default: the page's repo html)")
     ap.add_argument("--date", help="publish-record: the day the page was last published (default today)")
     a = ap.parse_args(argv)
     reg = load()
+    if a.cmd == "audit-links":
+        return cmd_audit_links(reg)
     if a.cmd == "banner":
         pg = next((p for p in reg["pages"] if p["slug"] == a.slug), None)
         if not pg:
