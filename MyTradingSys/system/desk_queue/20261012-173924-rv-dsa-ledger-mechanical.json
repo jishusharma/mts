@@ -1,11 +1,16 @@
 {
   "card": "rv-dsa-ledger-mechanical",
   "done_when": "RV_DSA_ledger_mechanical.md lists violations per check with row ids and counts, or 0.",
+  "finished": "2026-10-18T15:56:54Z",
   "from": "JIS-NUC",
+  "host": "JIS-NUC",
   "id": "20261012-173924-rv-dsa-ledger-mechanical",
   "need": "python scripts/dev/make_layers_md.py --help (full brief: python scripts/dev/tasks.py brief rv-dsa-ledger-mechanical)",
   "posted": "2026-10-12T17:39:24Z",
-  "status": "pending",
+  "result": "Result: MyTradingSys/research/revalidation/RV_DSA_ledger_mechanical.md - 37 rows: 0 ISO/status/group-date/geometry/group-count violations; 9 rows with no date and no inferred date (T5,T6,T7,T5-m1,T5-p1,T5-a1,T10,T10-a1,T7-m1); T6 geometry unparseable (n/s); 1 frame pointer with trailing annotation (T3b-x, file exists); layer_index 80 paths and layer_map 42 paths all exist.",
+  "status": "done",
+  "taken": "2026-10-18T15:56:22Z",
+  "taken_by": "JIS-NUC",
   "target": "DSA-NUC",
   "title": "RV-DSA Tom ledger mechanical check and path audit of the layer index (host=JIS-NUC)"
 }

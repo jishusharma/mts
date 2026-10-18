@@ -6,7 +6,7 @@ seen 2026-10-14 re-read 625k per turn). The relay (RELAY.md) only helps if sessi
 Claude Code hook (project .claude/settings.json):
   PostToolUse      counts tool turns; at the cap and every NAG_EVERY after it, injects the hand-off instruction
   UserPromptSubmit counts operator turns; over either cap, injects the same instruction before Claude answers
-  SessionStart     resets the counters after a compact or clear (the context is small again)
+  SessionStart     resets the counters after a clear (the context is empty again)
 Never blocks, never raises: a broken meter must not break a prompt.
 
 A turn is one assistant message: parallel tool calls in one message share one context re-read, so they count once
@@ -27,6 +27,9 @@ from pathlib import Path
 TOOL_CAP = 40      # CLAUDE.md SHORT SESSIONS: 40 tool turns (operator q20, 2026-10-15; was 15)
 USER_CAP = 10      # CLAUDE.md SHORT SESSIONS: 10 turns with the operator (was 5)
 NAG_EVERY = 5      # after the cap, repeat every 5 tool turns (once is easy to ignore mid-step)
+READ_BUDGET = 4_000_000    # operator 2026-10-18: turns allowed = budget / context size (100k -> 40 turns, 250k -> 16, 500k -> 8); no compaction
+OPUS_CTX_CAP = 500_000     # Opus: long sessions are wanted; the only cap is the context size
+FABLE_MESSAGES = 1         # Fable: one operator message per session, HARD (ignores MTS_TURN_METER=off and the cap env vars)
 PRUNE_DAYS = 7
 TAIL_START = 1 << 17   # transcript bytes read from the end to find a tool call's message (grows if big results push it out)
 TAIL_MAX = 1 << 22
@@ -72,9 +75,10 @@ def prune(d):
             pass
 
 
-def message(state, tool_cap, user_cap):
+def message(state, tool_cap, user_cap, why=None):
     """Kept under 250 bytes: it sits in the context for every later turn. The how-to is in RELAY.md."""
-    return (f"[TURN METER] {state['tool']} tool turns / {state['user']} operator turns (cap {tool_cap} / {user_cap}); "
+    head = why or f"{state['tool']} tool turns / {state['user']} operator turns (cap {tool_cap} / {user_cap})"
+    return (f"[TURN METER] {head}; "
             "each turn re-reads the whole context. Finish this step, then hand off per RELAY.md: commit, sync.py ship, "
             "relay.py handoff --go (unless the operator said to keep going here).")
 
@@ -118,21 +122,90 @@ def message_id(payload):
         return None
 
 
+def model_and_context(payload):
+    """(model name, context tokens) of the newest assistant line in the transcript tail; ("", 0) when unknown.
+    Context = input + cache creation + cache read of that message: what the next turn re-reads."""
+    path = payload.get("transcript_path")
+    if not path:
+        return "", 0
+    try:
+        with open(path, "rb") as f:
+            size = f.seek(0, 2)
+            window = TAIL_START
+            while True:
+                start = max(0, size - window)
+                f.seek(start)
+                data = f.read(size - start)
+                for line in reversed(data.split(b"\n")):
+                    if b'"assistant"' not in line:
+                        continue
+                    try:
+                        msg = json.loads(line).get("message") or {}
+                    except ValueError:
+                        continue
+                    u = msg.get("usage") or {}
+                    if msg.get("model") and u and not str(msg["model"]).startswith("<"):   # skip <synthetic> error lines
+                        ctx = sum(int(u.get(k) or 0) for k in ("input_tokens", "cache_creation_input_tokens", "cache_read_input_tokens"))
+                        return str(msg["model"]).lower(), ctx
+                if start == 0 or window >= TAIL_MAX:
+                    return "", 0
+                window *= 4
+    except (OSError, ValueError, AttributeError, TypeError):
+        return "", 0
+
+
+def tier(model):
+    return "fable" if "fable" in model else "opus" if "opus" in model else "default"
+
+
+def fable_block():
+    return json.dumps({"decision": "block", "reason": f"[TURN METER] Fable sessions take {FABLE_MESSAGES} operator message "
+                       "(hard rule, operator 2026-10-18; WORKERS.md). Start a new Fable session for the next message."})
+
+
 def handle(payload):
     """Returns the text to print (may be empty). Pure apart from the state file."""
-    if os.environ.get("MTS_TURN_METER", "").lower() == "off":
-        return ""
+    off = os.environ.get("MTS_TURN_METER", "").lower() == "off"
     sid = payload.get("session_id")
     event = payload.get("hook_event_name")
     if not sid or not event or is_subagent(payload):
+        return ""
+    if off and event != "UserPromptSubmit":
         return ""
     d = home()
     path = d / f"{safe_id(sid)}.json"
     tool_cap, user_cap = caps()
     state = load(path)
     out = ""
+    if event == "UserPromptSubmit":
+        state["user"] = state.get("user", 0) + 1
+        model, ctx = model_and_context(payload)
+        kind = tier(model)
+        if kind == "fable":
+            state["tier"] = "fable"      # sticky: a later failed detection must not lift the hard block
+        elif state.get("tier") == "fable" and not model:
+            kind = "fable"
+        if kind == "fable" and state["user"] > FABLE_MESSAGES:     # the hard rule: no switch turns it off
+            state["user"] -= 1
+            save(path, state)
+            return fable_block()
+        if off:
+            save(path, state)
+            return ""
+        if kind == "opus":
+            if ctx >= OPUS_CTX_CAP:
+                out = message(state, tool_cap, user_cap, f"Opus context {ctx // 1000}k >= {OPUS_CTX_CAP // 1000}k cap")
+        else:
+            if kind == "default" and ctx:
+                tool_cap = min(tool_cap, max(5, READ_BUDGET // ctx))
+            if state["user"] > user_cap or state.get("tool", 0) >= tool_cap:
+                out = message(state, tool_cap, user_cap)
+        state["last"] = now_iso()
+        state["cwd"] = payload.get("cwd", state.get("cwd", ""))
+        save(path, state)
+        return out
     if event == "SessionStart":
-        if payload.get("source") in ("compact", "clear") or not path.exists():
+        if payload.get("source") == "clear" or not path.exists():
             state = {"tool": 0, "user": 0, "since": now_iso()}
         prune(d)
     elif event == "PostToolUse":
@@ -142,13 +215,19 @@ def handle(payload):
         state["tool"] = state.get("tool", 0) + 1
         state["msg"] = mid
         t = state["tool"]
-        if t >= tool_cap and (t - tool_cap) % NAG_EVERY == 0:
+        model, ctx = model_and_context(payload)
+        kind = tier(model)
+        if kind == "default" and ctx:
+            tool_cap = min(tool_cap, max(5, READ_BUDGET // ctx))
+        if kind == "fable":
+            pass        # no tool-turn cap: one message, however long it takes
+        elif kind == "opus":
+            if ctx >= OPUS_CTX_CAP and t % NAG_EVERY == 0:
+                out = json.dumps({"hookSpecificOutput": {"hookEventName": "PostToolUse", "additionalContext": message(
+                    state, tool_cap, user_cap, f"Opus context {ctx // 1000}k >= {OPUS_CTX_CAP // 1000}k cap")}})
+        elif t >= tool_cap and (t - tool_cap) % NAG_EVERY == 0:
             out = json.dumps({"hookSpecificOutput": {"hookEventName": "PostToolUse",
                                                      "additionalContext": message(state, tool_cap, user_cap)}})
-    elif event == "UserPromptSubmit":
-        state["user"] = state.get("user", 0) + 1
-        if state["user"] > user_cap or state.get("tool", 0) >= tool_cap:
-            out = message(state, tool_cap, user_cap)
     else:
         return ""
     state["last"] = now_iso()

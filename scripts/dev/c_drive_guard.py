@@ -29,7 +29,10 @@ RUNAWAY_MB = 500
 
 
 def free_gb(drive="C:\\"):
-    return shutil.disk_usage(drive).free / 1e9
+    try:
+        return shutil.disk_usage(drive).free / 1e9
+    except OSError:     # no C: (Linux CI): this is a Windows guard, stay silent
+        return float("inf")
 
 
 def newest_and_size(path):
