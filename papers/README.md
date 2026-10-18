@@ -10,6 +10,7 @@ This directory contains formal quantitative and domain research papers establish
 |-------|-------|-------------|
 | [01_MASTERS_PITCHFORK_FOUNDATIONS.md](01_MASTERS_PITCHFORK_FOUNDATIONS.md) | **Foundational Median Line Analysis & Pitchfork Methodologies** | Synthesis of master traders (Dr. Alan Andrews, Jerome Schiff, Timothy Morge, Patrick Mikula, Dr. Mircea Dologa), Newton's 3rd Law, Babson Action-Reaction cycles, Five core rules, 80% median line reach theorem, Hagopian failure, and Pitchfork variants (Standard, Schiff, Modified Schiff, Inside). |
 | [02_PITCHFORK_APPLICATION_ON_BTC.md](02_PITCHFORK_APPLICATION_ON_BTC.md) | **Quantitative & Empirical Application of Pitchfork and Median Line Dynamics to Bitcoin (BTC)** | Market microstructure, linear vs. logarithmic pitchfork geometry, objective ATR-based pivot detection, empirical regime statistics, Hagopian liquidation cascades, order flow (CVD, absorption) & Volume Profile confluence, and fee economics. |
+| [03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md](03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md) | **YouTube Pitchfork Masters & Algorithmic Bitcoin Evaluation** | High-engagement YouTube channels (Fractal Flow, The Trading Manual, Timothy Morge/Trading Nut, Bob Loukas, CryptoCred, Operator's Stacked Schiff Model), algorithmic benchmarking on BTC swings, slope collapse in standard linear forks, volume profile confluence, and Hagopian payoff asymmetry. |
 
 ---
 

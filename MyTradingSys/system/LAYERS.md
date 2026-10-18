@@ -101,7 +101,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `indicator-values-multi-model-audit` ready p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by Haiku and Sonnet, plus GPT and D
   - `kurisko-dev-event-study` refined p2 SONNET: Kurisko Quad Rotation: DEV event study, fee-net, same-window placebo
-  - `kurisko-prereg-fire-counts` ready p2 SONNET: Kurisko Quad Rotation: count-only pre-registration on BTC DEV 1m/5m (no outcomes)
+  - `kurisko-prereg-fire-counts` refined p2 SONNET: Kurisko Quad Rotation: count-only pre-registration on BTC DEV 1m/5m (no outcomes)
   - `malkan-captions-fetch-noauth` ready p2 HAIKU: Malkan: fetch captions for the 12 ranked-top videos only (video_priority_2026-10-15), no cookies, spaced retri
   - `review-ground-layer-youtube-strategy-and` ready p2 SONNET: Review Ground Layer YouTube strategy and execution priorities
   - `malkan-universe-data-power` ready p3 SONNET: Malkan: Indian-equity D/W/M data sources, universe size and power (items 1/4/10, gates 0d/0e)
@@ -238,10 +238,10 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `krown-ta101-extract-remaining-10` ready p3 SONNET: Krown TA 101: get captions and extract the remaining 4 videos (ids in STATE.md); DONE when: 4 extracts pass bo
 
 ## Pitchfork (Andrews / Schiff / Morge median line) (`pitchfork`)
-- Status: Foundational study papers delivered (papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md, papers/02_PITCHFORK_APPLICATION_ON_BTC.md); detector and test suite built.
+- Status: Foundational study papers delivered (papers/01, 02, 03); detector, tests, and YouTube BTC evaluation benchmark built.
 - Tracks: Gemini (study/detector), Claude
 - Layer `pitchfork_swing`: Foundational papers delivered; detector built with unit tests (100% pass) | module MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py
-- Spec / sources: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md`; `papers/02_PITCHFORK_APPLICATION_ON_BTC.md`; `MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md`
+- Spec / sources: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md`; `papers/02_PITCHFORK_APPLICATION_ON_BTC.md`; `MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md`; `papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md`
 - Code: `MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py`
 - Open cards: none
 
