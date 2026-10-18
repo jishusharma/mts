@@ -4,28 +4,62 @@
   "commands": [],
   "created": "2026-10-11T06:50:57Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "Ledger .md line 48 says read/no-trades/unreadable with format used; any added rows have frame times; ledger test green. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+  "est_turns": 30,
   "from_inbox": "",
-  "goal": "",
+  "goal": "Video 9I5vTvwsMBk was never read (f398 720p stream not offered, FABIO_TRADE_LEDGER.md:48). Fetch it in another format/client, find live Fabio trades, add them to the ledger or record none/NOT_IN_DATA.",
   "id": "fabio-ledger-get-9i5vtvwsmbk-f398-not-av",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "RV05 H1: record date evidence for Fabio ledger CSV 25-71",
+      "ref": "61cf8a7d3634",
+      "utc": "2026-10-17T18:19:38Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "61cf8a7d3634 RV05 H1: record date evidence for Fabio ledger CSV 25-71",
+      "ref": "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
+      "utc": "2026-10-17T18:19:38Z"
+    }
+  ],
   "layers": [
     "fabio"
   ],
   "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch: no, protocol skipped]",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:data CLASS:C1 REVIEWER:GPT medium blind re-read of 2 frames (A-7) WEIGHT:ROUTINE. Image reads follow A-20261018-7 (blind, unreadable allowed). Ledger rows are lab data: a row is only added with frame evidence. Not a cost issue: public YouTube; default taken: skip if only <360p exists.",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-18T03:29:40Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
+    "MyTradingSys/research/fabio_transfer/ledger_stats.py"
+  ],
+  "scope_out": [
+    "backtests",
+    "engine code",
+    "other videos",
+    "F:/MTS/data/fabio_videos contents are never committed"
+  ],
+  "scope_sha": "61cf8a7d3634",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "python -m yt_dlp -F 9I5vTvwsMBk (public); pick the best video format with height >= 360 (try --extractor-args youtube:player_client=android/ios/web_safari if only 144-240p); download to F:/MTS/data/fabio_videos only; if height stays < 360 write that finding and stop (NOT_IN_DATA)",
+    "cut 30 s contact sheets the way earlier passes did (DyS79Eb92Ug sheets under F:/MTS/data/fabio_videos); screen titles/ASR first, read only sheets near trade talk (cap 5 caption fetches, 429 ends caption work for the day)",
+    "per live trade add CSV rows with frame time; fields not visible = NOT_IN_DATA; dedupe by Daily P/L against DyS79Eb92Ug rows F6-F14 before adding",
+    "update the Find-more section line 48 and the PARTIAL coverage text in ledger_stats.py; regenerate; tests: python MyTradingSys/research/fabio_transfer/test_ledger_audit.py"
+  ],
+  "tests": "python MyTradingSys/research/fabio_transfer/test_ledger_audit.py green; new CSV rows each carry a frame time or NOT_IN_DATA",
   "title": "Fabio ledger: get 9I5vTvwsMBk (f398 not available; try another format/client) and read it for trades",
-  "weight": "ROUTINE"
+  "weight": "ROUTINE",
+  "worker": "session"
 }

@@ -11,7 +11,7 @@
  "lane": "SONNET",
  "layers": [],
  "live_path": false,
- "note": "PARKED 2026-10-18 (not stamped): operator-facing pages; after q17 design. [PLAN 2026-10-18 weight=ROUTINE lab-touch: no, protocol skipped]",
+ "note": "PARKED 2026-10-18: acts = coordinator + operator on page layout after q17 design; artifact work, not a builder card. PARKED 2026-10-18 (not stamped): operator-facing pages; after q17 design. [PLAN 2026-10-18 weight=ROUTINE lab-touch: no, protocol skipped]",
  "prio": 3,
  "refine_tries": 0,
  "refined_by": "",

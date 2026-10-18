@@ -18,7 +18,7 @@
   "tom"
  ],
  "live_path": false,
- "note": "UNBLOCKED 2026-10-18: operator lifted the holds in chat (DAX chain q11 hold, A-20261018-5); no-FDAX-data-purchase rule stays. Results built on lab bases stay labelled UNCHECKED. [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | opus 2026-10-11: DIAG_BTC says S SKIP, Q SKIP (thin), M GO. Scope reduced to the M arms (partials, trail, re-entry, no timeout) with stops wide enough to clear BTC noise+fees per TOM_LAYER_V2_SPEC; S/Q arms parked until the v2 encoding exists.",
+ "note": "CHECKED 2026-10-18: waits only on tom-dax-backtest (ready, not done); then needs the real Lab_Guy stamp (CRUCIAL/C2). Order is by depends_on. | UNBLOCKED 2026-10-18: operator lifted the holds in chat (DAX chain q11 hold, A-20261018-5); no-FDAX-data-purchase rule stays. Results built on lab bases stay labelled UNCHECKED. [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | opus 2026-10-11: DIAG_BTC says S SKIP, Q SKIP (thin), M GO. Scope reduced to the M arms (partials, trail, re-entry, no timeout) with stops wide enough to clear BTC noise+fees per TOM_LAYER_V2_SPEC; S/Q arms parked until the v2 encoding exists.",
  "pinned": false,
  "prio": 2,
  "refine_tries": 0,
