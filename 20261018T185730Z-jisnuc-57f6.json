@@ -1,0 +1,1 @@
+{"t": "20261018T185730Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship --release supervisor-design > \"$SP/ship4.txt\" 2>&1; echo exit $?; tail -5 \"$SP/ship4.txt\""}
