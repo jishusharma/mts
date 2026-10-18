@@ -72,6 +72,7 @@ files = [
     ('docs/V07_CONTRACT.md', None),
     ('policy_patch.json', None),
     ('tests/loop.test.js', None),
+    ('tests/handsfree.test.js', None),
     ('tests/agent_live_selftest.py', None),
 ]
 for rel, content in files:
