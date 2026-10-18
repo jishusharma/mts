@@ -5,34 +5,67 @@
   "commands": [],
   "created": "2026-10-18T21:27:37Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "The bounded report compares the two trust models against repository evidence, states the identity guarantee each can and cannot provide, recommends an independently controlled trust root or records the exact missing decision, and includes the specified content-SHA/cherry/upstream-tree receipt. No implementation or same-repo human-identity claim.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Resolve R1 stamp attribution with an explicit trusted reviewer authority; future-date and single-line stamp checks must not be presented as proving reviewer identity.",
+  "goal": "Specify a defensible reviewer-attribution trust boundary for the C2 review gate, after comparing implementable authority options; no implementation in this card.",
   "id": "lab-review-gate-stamp-writer",
-  "kind": "build",
+  "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tasks.py dispatch: one ranked dispatch snapshot for Session_Planner (RU1)",
+      "ref": "93560b51e352",
+      "utc": "2026-10-18T18:24:23Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "59b5144d5d99 roles: fix stale texts (Eagle_Eyes no compaction, Lab_Guy stamps enforced, Pi",
+      "ref": "MyTradingSys/system/roles/lab_guy.md",
+      "utc": "2026-10-18T17:54:01Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Captured during refinement of lab-review-gate-harden2; residual R1 is OPEN and UNCHECKED. Requires independently reviewed authority design before implementation; no approval inferred.",
+  "note": "REVIEWED:2026-10-19 ACCEPT GPT Luna independent brief review. class=C2; CRUCIAL. Audit-only design prerequisite for OPEN R1; no implementation approval or same-repository identity guarantee. Missing independent authority must be reported explicitly.",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "refine-stamp-authority",
+  "refreshed": "2026-10-18T21:34:00Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "scripts/dev/test_tasks.py",
+    "MyTradingSys/system/roles/lab_guy.md",
+    "MyTradingSys/research/lab_guy/findings/2026-10-19_review_harden_pair.md",
+    "MyTradingSys/system/LAYER_LAB.md"
+  ],
+  "scope_out": [
+    "Product/test/workflow edits, roster/key creation, secrets, live path, VALIDATION/HOLDOUT, external account configuration",
+    "Auditor may write only its bounded Layer Lab report and task result; deployment and implementation remain unapproved"
+  ],
+  "scope_sha": "93560b51e352",
+  "size": "S",
   "sources": [
     "MyTradingSys/research/lab_guy/findings/2026-10-19_review_harden_pair.md:R1,R6 and follow-up 1"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Trace the existing stamp grammar, producer checks, hard review gate, close receipt, and provenance values; distinguish what each validates from human identity.",
+    "Compare two implementable trust models: externally held signing key over a canonical review payload, and protected CI identity backed by a server-side review event. For each state trust root, key/identity lifecycle, replay protection, checkout/repo-writer threat boundary, and operational dependency.",
+    "Recommend a model only where the required trust root is explicit and independently controlled; otherwise record the missing trust-boundary decision and leave implementation unapproved.",
+    "Write research/layer_lab/reports/<date>_lab-review-gate-stamp-writer.md with SOUND/FIX-FIRST/BLOCKED, evidence lines, threat boundary, option comparison, recommendation or missing decision, and exact follow-up implementation contract. No identity guarantees beyond cited evidence.",
+    "Executor final reply records content commit SHA, empty git cherry origin/fast-track <sha>, and upstream git ls-tree report existence; sandbox runner handles git. Do not put a report hash or commit SHA inside the report itself."
+  ],
+  "tests": "Read-only audit: source evidence and a bounded report; delivery verification belongs in executor final reply. No test/code modifications.",
   "title": "Review gate R1: trusted stamp writer and reviewer authority",
   "weight": "CRUCIAL",
-  "worker": ""
+  "worker": "session"
 }

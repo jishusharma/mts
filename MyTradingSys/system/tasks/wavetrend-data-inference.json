@@ -1,0 +1,52 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T21:26:36Z",
+  "depends_on": [],
+  "done_when": "A committed, tested DEV-only content manifest and a synthetic-tested paired inference specification exist; no outcome columns or VALIDATION/HOLDOUT data were read.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Make future WaveTrend DEV results reproducible by content-pinning the exact input bars and freezing a matched day/block inference method before any new outcomes are read.",
+  "id": "wavetrend-data-inference",
+  "lane": "SONNET",
+  "layers": [
+    "wavetrend"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Never modify frozen atlas outputs or ledger rows. Create any new exposure entry only alongside the new preregistration.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/wavetrend_2026-10-17/",
+    "MyTradingSys/backtest/research_kit.py",
+    "F:/MTS/data/tom_raw/klines/BTCUSDT-1m-2022-01.csv through BTCUSDT-1m-2024-06.csv"
+  ],
+  "scope_out": [
+    "Do not read or calculate any returns/outcomes; do not read VALIDATION/HOLDOUT; do not modify frozen atlas outputs or ledger rows."
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/wavetrend_2026-10-17/AUDIT_2026-10-18.md",
+    "MyTradingSys/research/wavetrend_2026-10-17/PRE_REG.md",
+    "MyTradingSys/research/wavetrend_2026-10-17/atlas.py",
+    "MyTradingSys/backtest/research_kit.py"
+  ],
+  "state": "raw",
+  "steps": [
+    "Create a frozen manifest for the exact 30 pre-cutoff 1m DEV source files with names, sizes, SHA-256, timestamp coverage, duplicate and missing-minute counts, and usable bars by timeframe.",
+    "Add a fail-first test for duplicate/gap detection and ensure the manifest generator refuses any input at or after the 2024-07-01 cutoff.",
+    "Specify and test a matched day/block resampling or randomization method that preserves common-clock/event clustering for the event and control arms; record the method in a new analysis-version design without running outcomes.",
+    "Create a new exposure-ledger entry only when a preregistration is ready; never rewrite historical rows."
+  ],
+  "tests": "Add fail-first test_input_manifest.py covering cutoff refusal, duplicate timestamps, missing-minute count and file digest; add test_paired_inference.py with synthetic paired day blocks whose expected contrast is hand-computed.",
+  "title": "WaveTrend DEV input manifest and matched inference",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
