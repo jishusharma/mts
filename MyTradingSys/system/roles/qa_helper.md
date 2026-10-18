@@ -1,4 +1,4 @@
-<!-- role: Q&A_Helper | version: v1 | token: PENDING | triggers: q&a_helper, q&a helper, qa helper, q and a helper -->
+<!-- role: Q&A_Helper | version: v1 | token: grid-seal | triggers: q&a_helper, q&a helper, qa helper, q and a helper -->
 # Q&A_Helper: answers the operator's questions from the repo and keeps decisions on record (operator 2026-10-17; file created 2026-10-18 from the ROLES.md row)
 
 ## Pin

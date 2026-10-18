@@ -1,4 +1,4 @@
-<!-- role: Network_Admin_Guy | version: v1 | token: PENDING | triggers: network_admin_guy, network admin guy, network admin -->
+<!-- role: Network_Admin_Guy | version: v1 | token: flip-robin | triggers: network_admin_guy, network admin guy, network admin -->
 # Network_Admin_Guy: machine hygiene on the host it is pinned on (operator 2026-10-17; file created 2026-10-18 from the ROLES.md row)
 
 ## Pin
