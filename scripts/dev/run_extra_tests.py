@@ -102,6 +102,7 @@ EXTRA = [
     "scripts/dev/test_run_extra_tests.py",
     "scripts/dev/test_ci_deps_lint.py",
     "scripts/dev/test_ci_watch.py",
+    "scripts/dev/test_c_drive_guard.py",
 ]
 STUDY_ROOT = "MyTradingSys/research/"
 
