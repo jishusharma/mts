@@ -1,0 +1,1 @@
+{"t": "20261018T183941Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship ` finishes under 60 s on a fixture tree; a red `ci-<sha>` state makes the next ship refuse with the failing sha; CI still runs the whole suite; MyTradingSys/tests/test_ship_fast_path.py passes an"}
