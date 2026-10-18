@@ -25,6 +25,11 @@
             "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/ci_watch.py\" hook",
             "timeout": 8
+          },
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/c_drive_guard.py\" hook",
+            "timeout": 8
           }
         ]
       }

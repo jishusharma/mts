@@ -12,6 +12,7 @@ at a time after the pool. Each step prints its block when it finishes, line-buff
 a redirected or backgrounded run shows progress; the SUMMARY lists every step in definition order. A foreground tool call dies
 at 600 s: start the gate (and `sync.py ship`, which calls it) in the background and read the output once.
 """
+import atexit
 import glob
 import json
 import os
@@ -118,11 +119,29 @@ def transient_ignore_glob(root=REPO):
     return "--ignore-glob=" + glob.escape(str(root)) + "*[/\\]tmp" + "[a-z0-9_]" * 8
 
 
+_GATE_TMP_DIRS = []
+
+
+def _remove_gate_tmp():
+    while _GATE_TMP_DIRS:
+        shutil.rmtree(_GATE_TMP_DIRS.pop(), ignore_errors=True)
+
+
+def gate_tmp(prefix):
+    """mkdtemp that is removed when this gate process exits. Every ship built 5+ basetemp dirs and never removed them: 24k mts_s4_*
+    dirs (1.2 GB) piled up in %TEMP% on JIS-NB by 2026-10-18 and C: ran low (c_drive_guard.py prunes what a killed gate leaves)."""
+    if not _GATE_TMP_DIRS:
+        atexit.register(_remove_gate_tmp)
+    d = tempfile.mkdtemp(prefix=prefix)
+    _GATE_TMP_DIRS.append(d)
+    return Path(d)
+
+
 def pytest_cmd(targets, root=REPO):
     """One gate pytest step: own basetemp (parallel pytest processes share %TEMP%/pytest-of-<user> and its cleanup raises PermissionError
     after all tests pass: JIS-NB 2026-10-14, six ships at once), no cache dir, and transient tmp dirs ignored (transient_ignore_glob)."""
     return [sys.executable, "-m", "pytest", *targets, "-q", "-p", "no:cacheprovider", transient_ignore_glob(root),
-            f"--basetemp={Path(tempfile.mkdtemp(prefix='mts_s4_')) / 'bt'}"]
+            f"--basetemp={gate_tmp('mts_s4_') / 'bt'}"]
 
 
 def unbuffer(stream=None):
@@ -279,7 +298,7 @@ def isolate_pytest_tmp():
     %TEMP% that cannot be unlinked (WinError 5, seen 2026-10-11 after the ESET removal reboot) makes pytest exit 1 even when every test passes,
     which turned the deploy gate red. Returns the path."""
     import tempfile
-    root = os.environ.get("PYTEST_DEBUG_TEMPROOT") or tempfile.mkdtemp(prefix="mts_pytest_")
+    root = os.environ.get("PYTEST_DEBUG_TEMPROOT") or str(gate_tmp("mts_pytest_"))
     os.environ["PYTEST_DEBUG_TEMPROOT"] = root
     return root
 
@@ -433,7 +452,7 @@ def build_plan(quick):
     # Step 5c: options module (own pytest run: its bare module names, e.g. fees.py, collide with other packages); own basetemp and
     # no cache dir because it runs beside other pytest processes
     cmd5c = [sys.executable, "-m", "pytest", "MyTradingSys/options/tests", "-q", "-p", "no:cacheprovider", transient_ignore_glob(),
-             f"--basetemp={Path(tempfile.mkdtemp(prefix='mts_s5c_')) / 'bt'}"]
+             f"--basetemp={gate_tmp('mts_s5c_') / 'bt'}"]
     add("5c", "Options module tests", cmd5c, "Step 5c: Options tests")
 
     # Step 6: backtest (unless --quick)
