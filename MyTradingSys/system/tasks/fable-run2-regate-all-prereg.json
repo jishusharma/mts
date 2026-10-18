@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T18:23:47Z",
+  "depends_on": [],
+  "done_when": "REGATE_AUDIT.md shipped; fix list triaged into cards by a Sonnet session; this card done with the commit sha",
+  "est_turns": "40",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator runs Fable 5.1 by hand on MyTradingSys/system/fable_run_2_brief.md: re-gate every pre-registration under the fixed prereg_gate (8f988e38), flag ADMIT/BLOCK flips, go/no-go for pending one-shot DEV reads.",
+  "id": "fable-run2-regate-all-prereg",
+  "lane": "OPUS",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Operator-run Fable only; no session may start or message it. Run 1 cost 1 weekly point.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/system/fable_run_2_brief.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md"
+  ],
+  "scope_out": [
+    "code edits",
+    "PRE_REG/VERDICTS/ledger edits",
+    "outcome studies",
+    "VALIDATION and HOLDOUT reads"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/system/fable_run_2_brief.md",
+    "MyTradingSys/research/fable_audit_2026-10-18/GATE_AUDIT.md"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "Output REGATE_AUDIT.md has one row per study in brief read-list items 3-5 and a go/no-go list for context composite V2, pit V3, wavetrend, carry_basis.",
+  "title": "Fable run 2: re-gate all pre-registrations under the fixed prereg_gate (brief fable_run_2_brief.md)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
