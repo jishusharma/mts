@@ -32,13 +32,16 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "MyTradingSys/research/layer_lab/formula_spec_text/test_formula_spec.py::test_shuffled_rsi_closes_are_rejected",
-  "note": "REVIEWED: gemini-4-argon-low 2026-10-18 - Independent cross-vendor Lab_Guy(GEM-NUC) review (producer=codex_run.py ask, class=C2, weight=CRUCIAL): ACCEPT.",
+  "note": "CRUCIAL is the human-assigned weight. Latest independent review 2026-10-19 is REWORK; no approval or finding closure is inferred. This predecessor is dropped to prevent duplicate work; residual R1-R6 stay unchecked on lab-review-gate-harden2.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
   "refreshed": "2026-10-18T05:17:55Z",
-  "refs": [],
-  "result": "",
+  "refs": [
+    "MyTradingSys/system/tasks/lab-review-gate-harden2.json",
+    "MyTradingSys/research/lab_guy/findings/2026-10-19_review_harden_pair.md"
+  ],
+  "result": "Superseded by lab-review-gate-harden2 for residual R1-R6. Review at c99625b011daf99a6af43e1411c1a38685023049 confirms earlier findings 2/3 and all four close paths are covered at tip (lane_health gate landed f9a7b9c811a3a31b5a108205ee43557d067f1d05); residual review findings R1-R6 remain REWORK/unchecked and belong to harden2. Dropped only as duplicate predecessor; no review approval or residual fix claimed.",
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/test_tasks.py",
@@ -53,7 +56,7 @@
   "scope_sha": "f9a7b9c811a3",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Write the test named in Tests first and see it fail on the current code.",
     "Implement the goal inside scope_in only; new behaviour sits behind a flag that is off by default.",
@@ -61,8 +64,8 @@
     "Run the test file you changed (PYTHONPATH = the work tree root) until it passes. Do not run scripts/dev/run_all_tests.py: tests that create git repositories are refused in the sandbox; the runner runs the quick gate when it ships."
   ],
   "tests": "forged-stamp forms (placeholder reviewer, producer reviewer, invalid date, quoted mid-note), class-field downgrade and whitespace receipt each fail on current code first",
-  "title": "Review-gate hardening: forged stamp, downgrade, other close paths, vacuous tests",
-  "updated": "2026-10-18T10:00:00Z",
-  "weight": "",
+  "title": "Superseded: review-gate hardening residuals tracked by harden2",
+  "updated": "2026-10-19T00:00:00Z",
+  "weight": "CRUCIAL",
   "worker": ""
 }
