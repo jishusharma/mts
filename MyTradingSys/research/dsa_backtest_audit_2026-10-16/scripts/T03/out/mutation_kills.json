@@ -1,0 +1,42 @@
+[
+ {
+  "mutation": "M1 bt_engine funding sign dropped",
+  "newly_failing": 2,
+  "examples": [
+   "bt_engine.simulate_trade / e_funding_interior_rate+0.0001",
+   "bt_engine.simulate_trade / e_funding_interior_rate-0.0001"
+  ]
+ },
+ {
+  "mutation": "M2 bt_engine gap fills at the stop",
+  "newly_failing": 1,
+  "examples": [
+   "bt_engine.simulate_trade / f_gap_through_stop"
+  ]
+ },
+ {
+  "mutation": "M3 bt_engine targets before stop on a double hit",
+  "newly_failing": 1,
+  "examples": [
+   "bt_engine.simulate_trade / g_same_bar_stop_and_target"
+  ]
+ },
+ {
+  "mutation": "M4 chart_read exit one bar late",
+  "newly_failing": 4,
+  "examples": [
+   "chart_read_g5.trade_gross / a_zero_drift",
+   "chart_read_g5.trade_gross / b_planted_0.30",
+   "chart_read_g5.trade_gross / c_move_inside_signal_bar",
+   "chart_read_g5.trade_gross / d_move_after_exit"
+  ]
+ },
+ {
+  "mutation": "M5 chart_read enters on the signal bar open",
+  "newly_failing": 2,
+  "examples": [
+   "chart_read_g5.trade_gross / a_zero_drift",
+   "chart_read_g5.trade_gross / c_move_inside_signal_bar"
+  ]
+ }
+]

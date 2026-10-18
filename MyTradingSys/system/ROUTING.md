@@ -5,6 +5,7 @@ procedures (how to post a desk row, how the lab runs a card). Changes come from 
 (ROLES.md row Pipeliner); a change that alters how sessions behave also gets an ANNOUNCEMENTS.md entry and one signal line.
 
 ## Changes (newest first)
+- 2026-10-18 Pipeliner opening 2: routed RU3-RU9, ship-gate fast path and tasks.py fill (section 'Routed open items' at the bottom); sweep: 9 DSA-NB audit rows 65 h old, 1 stale NB claim.
 - 2026-10-18 created by Pipeliner from HOW_MTS_RUNS.md (2026-10-15), CLAUDE.md Cost and routing, DSA_DELEGATION.md, WORKERS.md (10-17/18),
   SCHEDULING_POLICY.md (10-17), ANNOUNCEMENTS A-20261018-3/-4/-6/-7, GEMINI_START.md (10-18), LAB_RECIPES.md (10-16),
   research/lab_guy/TANDEM_PLAN_2026-10-18.md. Where two disagreed the newer operator-dated rule was taken; conflicts are at the bottom.
@@ -55,3 +56,18 @@ build or code work is a card, never a desk row; a desk row needs exact commands 
 - C5 Gemini model names: LAB_RECIPES.md (10-16) names "Gemini 2.5 Pro" for build-review; GEMINI_START.md (10-17/18) says the AI Pro login has only Antigravity models (Gemini 3.8 Flash, Gemini 4 Argon) and `gemini_queue.py` is Flash only. Applied: Flash, Argon for C2/C3.
 - C6 HOW_MTS_RUNS.md (10-15) still says the live tree changes only through MTS-AutoDeploy and lists dispatchers as running (marked RETIRED in place); SCHEDULING_POLICY.md and CLAUDE.md (manual or coordinator deploy) win.
 - C7 DeepSeek bridges: 11 DSA-NB rows (the DSA audit T01-T10 batch, posted 10-16) and older DSA rows have not been taken for 2+ days; no file says whether the bridges are still run daily (decision D12 "once a day"). Applied: rows stay on DSA lanes; the operator starts a DSA session when wanted.
+
+## Routed open items (Pipeliner, 2026-10-18; all lane SONNET, any Claude machine, JIS-NUC first)
+| Item | Card | Worker / est | Host and order | Checker |
+|---|---|---|---|---|
+| RU3 shot.py bundle (Eagle_Eyes) | ru3-eagle-eyes-shot-py-bundle-evidence-p | session / 25 | any; independent | diff-only review Agent |
+| RU4 role_loader.py lint | ru4-mts-doctor-role-policy-lint-roles-md | agent / 14 | any; independent | fixture with known contradiction |
+| RU5 lab pre-check in tasks.py | ru5-lab-guy-zero-token-lab-pre-check-in- | agent / 12 | any; FIRST of the tasks.py trio | fail-first test |
+| RU6 content-bound review receipts | ru6-lab-guy-content-bound-review-receipt | session / 28 | after RU5 ships (same file) | diff-only review Agent |
+| RU7 operator_questions.py pending | ru7-q-a-helper-operator-questions-py-pen | agent / 12 | any; independent | fixture log |
+| RU8 nowin.py audit | ru8-network-admin-guy-nowin-py-spawn-dia | agent / 12 | any; independent | fixture spawn |
+| RU9 artifacts.py audit-links | ru9-artifacts-guy-artifacts-py-audit-lin | agent / 14 | any; independent | fixture registry |
+| Ship gate fast path (<60 s) | ship-gate-fast-path-under-60s | session / 35 | any; ask NB by signal for the unshipped NB agent branch first | review Agent; CI full suite |
+| `tasks.py fill` subcommand | tasks-fill-raw-card-fields | agent / 14 | after RU5 and RU6 (same file) | fail-first test |
+Gate speed: GATE_SPEED.md D1-D7 landed (precheck, fail-fast, record, targeted tests; clean full gate still 544 s). The affected-tests-only
+fast path with CI-owned full suite and red-CI-blocks-next-ship is NOT on trunk (no commit, branch or card found by topic words), hence the card.

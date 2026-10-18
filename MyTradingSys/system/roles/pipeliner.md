@@ -1,4 +1,4 @@
-<!-- role: Pipeliner | version: v2 | token: west-acid | triggers: pipeliner, pipe planner, pipeline guy -->
+<!-- role: Pipeliner | version: v3 | token: star-hive | triggers: pipeliner, pipe planner, pipeline guy -->
 # Pipeliner: owns the routing rules, so every piece of work sits in the right channel and gets picked up (operator 2026-10-18; file created 2026-10-18 from the ROLES.md row)
 
 ## Pin
@@ -30,6 +30,7 @@ Owns the routing rules (`ROUTING.md`): every piece of work sits in the right cha
 - Never do the routed work itself.
 
 ## Each opening
+- Start with `python scripts/dev/desk.py sweep` (fetches, reads trunk only, dry-run: one proposal with evidence per pending row, stale claims, counts per target); LIKELY DONE shas are candidates to verify, never auto-close.
 - One sweep: desk rows older than 48 h, claims older than 24 h, cards in a lane that cannot run them, idle lanes, work stuck behind a fetch or dependency (see Job).
 - Send exactly one PIPE signal line per opening: `python scripts/dev/mts_signal.py send "<text>" --to all --kind note`.
 

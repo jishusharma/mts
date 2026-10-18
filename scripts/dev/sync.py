@@ -1,9 +1,11 @@
 """One way for any session on any machine to share work: origin/fast-track is the only meeting point.
 
-  python scripts/dev/sync.py start [slug]  # up to date with origin/fast-track; in a shared/dirty tree makes your own worktree;
+  python scripts/dev/sync.py start [slug] [--quiet]  # up to date with origin/fast-track; in a shared/dirty tree makes your own worktree;
                                            # in a lane tree (mts-app, mts-relay, mts-dsa) `start <slug>` switches to branch <host>/<slug>
   python scripts/dev/sync.py health  # stale/overlapping claims, shared or orphan worktrees, branches never shipped
-  python scripts/dev/sync.py ship [--full]  # merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
+  python scripts/dev/sync.py ship [--full] [--fix-ci]  # merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
+                                           # ordinary code ships run the FAST gate (GATE_SPEED.md: ~60 s, tests chosen by import graph); a red CI blocks code ships until
+                                           # fixed: --fix-ci ships the fix through it with the full gate
   python scripts/dev/sync.py news [hours=24]  # what shipped: feature + Result line per commit, no code
   python scripts/dev/sync.py claim "<task>" [--area <paths>]  # tell parallel sessions what you work on (shipped at once); refused only when --area overlaps an open claim
   python scripts/dev/sync.py claims  # open claims on origin/fast-track (host, account, task, age); release: `release <slug>`
@@ -22,6 +24,7 @@ import socket
 import inspect
 import subprocess
 import tempfile
+import threading
 import time
 import sys
 from concurrent.futures import ThreadPoolExecutor
@@ -172,13 +175,14 @@ class gate_slot:
     Released on exit, whatever raised. timeout=None waits forever (ship); a number of seconds raises GateSlotTimeout when no slot
     came free in that time (deploy: fail closed)."""
 
-    def __init__(self, repo, slots=GATE_SLOTS, alive=pid_alive, sleep=time.sleep, note_every=GATE_WAIT_NOTE_S, poll=2.0, timeout=None):
+    def __init__(self, repo, slots=GATE_SLOTS, alive=pid_alive, sleep=time.sleep, note_every=GATE_WAIT_NOTE_S, poll=2.0, timeout=None,
+                 name="gate-slots"):
         self.repo, self.slots, self.alive, self.sleep = repo, slots, alive, sleep
-        self.note_every, self.poll, self.path, self.timeout = note_every, poll, None, timeout
+        self.note_every, self.poll, self.path, self.timeout, self.name = note_every, poll, None, timeout, name
 
     def _dir(self):
         common = Path(git(self.repo, "rev-parse", "--git-common-dir").stdout.strip())
-        d = (common if common.is_absolute() else Path(self.repo) / common) / "gate-slots"
+        d = (common if common.is_absolute() else Path(self.repo) / common) / self.name
         d.mkdir(parents=True, exist_ok=True)
         return d
 
@@ -191,7 +195,10 @@ class gate_slot:
                     fd = os.open(str(p), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
                 except FileExistsError:
                     try:
-                        owner = int(p.read_text().strip() or 0)
+                        raw = p.read_text().strip()
+                        # GATE_SPEED review: an empty file is its creator mid-write (O_EXCL create, then write), not a dead owner 0;
+                        # reclaiming it let two gates hold one slot. Only an empty file older than 10 s is stale.
+                        owner = int(raw) if raw else (0 if time.time() - p.stat().st_mtime > 10 else None)
                     except (OSError, ValueError):
                         owner = None  # unreadable or half-written: its creator may be mid-write; treat as busy
                     if owner is not None and not self.alive(owner):
@@ -249,6 +256,8 @@ def run_gate(repo, files=None):
         cmd += ["--changed-file", list_file]     # full gate too: the precheck targets the tests that reference the change
         if not os.environ.get("SYNC_FULL_GATE"):
             cmd += ["--smoke"]
+            if not os.environ.get("SYNC_NO_FAST"):
+                cmd += ["--fast"]    # GATE_SPEED X1-X3: import-graph test selection inside a time budget; the rest runs in CI
     try:
         r = subprocess.run(cmd, cwd=repo)
     finally:
@@ -347,7 +356,7 @@ def prior_work(repo, slug, ref=f"origin/{TRUNK}"):
     return hits
 
 
-def start(repo, slug=None, here=False):
+def start(repo, slug=None, here=False, quiet=False):
     """Bring a tree up to date. Returns the tree the session must work in: `repo` when it is clean, else a
     fresh worktree off origin/fast-track (printed as `WORKTREE: <path>`); never touches the other files."""
     refuse_live(repo)
@@ -365,13 +374,15 @@ def start(repo, slug=None, here=False):
     n = merge_trunk(repo)
     branch = git(repo, "branch", "--show-current").stdout.strip() or "(detached)"
     print(f"host={socket.gethostname()} branch={branch} pulled={n} head={git(repo, 'rev-parse', '--short', 'HEAD').stdout.strip()}")
-    print_claims(repo)
+    if not quiet:
+        print_claims(repo)
     prior = prior_work(repo, slug)
     if prior:
         print(f"prior work on {TRUNK} matching '{slug}' (read it before building; same task twice = compare, never overwrite):")
         for p in prior[:12]:
             print(f"  {p}")
-    pull_mirror(repo)
+    if not quiet:
+        pull_mirror(repo)
     return repo
 
 
@@ -472,12 +483,110 @@ def run_docs_gate(repo, files):
         run_gate(repo, files)
 
 
+def ci_state(fetch=None):
+    """GATE_SPEED X6: (state, line) of fast-track CI. state: 'red' (the newest ci_watch.MIN_STREAK finished runs failed), 'green', or
+    'unknown' (offline, rate limited, no runs: never a block). A cached red is re-fetched before it counts, because a fix may have gone
+    green since. A newer run in flight does NOT clear a red (fast-track always has one pending); `ship --fix-ci` is the way through.
+    fetch(use_cache) -> runs newest first (default ci_watch.current)."""
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import ci_watch
+        get = fetch or ci_watch.current
+        runs = get(True)
+        if not runs:
+            return "unknown", "CI state unknown (offline or no runs)"
+        if ci_watch.streak(runs)[0] >= ci_watch.MIN_STREAK:
+            runs = get(False) or runs
+        n, bad, ok = ci_watch.streak(runs)
+        if n >= ci_watch.MIN_STREAK:
+            return "red", ci_watch.message(runs)
+        return "green", f"CI: {n} failed run(s) in a row, last green {ok['head_sha'][:8] if ok else '-'}"
+    except Exception as e:      # never block on a tool failure
+        return "unknown", f"CI state unknown ({type(e).__name__}: {e})"
+
+
+def ci_applies(files):
+    """A red CI blocks code ships only: a docs/data-only ship (gate_select's own definition, not just the suffix) is how a fix is explained."""
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import gate_select
+        return any(not gate_select._is_doc(f.replace(chr(92), "/")) for f in files)
+    except Exception:
+        return needs_gate(files)
+
+
+class CiCheck:
+    """ci_state() on a thread: the network call (4 s cap) overlaps the gate instead of adding to it."""
+
+    def __init__(self, fetch=None):
+        self.result = ("unknown", "CI check did not finish")
+        self.thread = threading.Thread(target=self._run, args=(fetch,), daemon=True)
+        self.thread.start()
+
+    def _run(self, fetch):
+        self.result = ci_state(fetch)
+
+    def verdict(self, wait=8.0):
+        self.thread.join(wait)
+        return self.result
+
+
+def enforce_ci(check):
+    """Print the CI line; raise SyncError when CI is red and this ship is not the fix (`ship --fix-ci` sets SYNC_FIX_CI and the full gate)."""
+    if check is None:
+        return
+    state, line = check.verdict()
+    if state == "red":
+        if os.environ.get("SYNC_FIX_CI"):
+            print(f"{line}\n--fix-ci: shipping through a red CI with the FULL gate")
+            return
+        raise SyncError(f"{line}\nFix-first: a code ship is blocked while CI is red. If this ship is the fix, run `sync.py ship --fix-ci` "
+                        "(full gate); otherwise fix CI before shipping other code.")
+    print(line if state == "unknown" else f"CI {state}: {line}")
+
+
+def stale_pages_lines(repo):
+    """STALE lines from artifacts.py (published pages whose repo build differs from the last publish); raises on tool failure."""
+    r = subprocess.run([sys.executable, str(Path(repo) / "scripts" / "dev" / "artifacts.py"), "stale"],
+                       capture_output=True, text=True, timeout=300)
+    return [l for l in r.stdout.splitlines() if l.startswith("STALE ")]
+
+
+class StalePages:
+    """warn_stale_pages on a thread started before the push, so its ~2 s overlaps the push (GATE_SPEED X4/X6); report() waits at most `wait`."""
+
+    def __init__(self, repo):
+        self.lines, self.error = [], None
+        self.thread = threading.Thread(target=self._run, args=(repo,), daemon=True)
+        self.thread.start()
+
+    def _run(self, repo):
+        try:
+            self.lines = stale_pages_lines(repo)
+        except Exception as e:
+            self.error = e
+
+    def report(self, wait=4.0):
+        self.thread.join(wait)
+        if self.thread.is_alive():
+            print("stale-page check still running; skipped (run `artifacts.py stale` by hand)")
+        else:
+            show_stale(self.lines, self.error)
+
+
+def show_stale(lines, error=None):
+    if error is not None:
+        print(f"WARNING: stale-page check failed: {error}")
+        return
+    if lines:
+        print(f"WARNING: {len(lines)} published page(s) lag the repo (republish, then artifacts.py publish-record --slug X):")
+        print("\n".join("  " + l for l in lines))
+
+
 def warn_stale_pages(repo):
     """Warning only (never a block): published pages whose repo build differs from the last publish."""
     try:
-        r = subprocess.run([sys.executable, str(Path(repo) / "scripts" / "dev" / "artifacts.py"), "stale"],
-                           capture_output=True, text=True, timeout=300)
-        lines = [l for l in r.stdout.splitlines() if l.startswith("STALE ")]
+        lines = stale_pages_lines(repo)
     except Exception as e:
         print(f"WARNING: stale-page check failed: {e}")
         return
@@ -502,8 +611,13 @@ def race_overlap(repo, incoming, outgoing):
     except ImportError:
         return sorted(f for f in incoming if f.endswith(".py"))   # fail closed: cannot tell, so every incoming module counts
     ours = [Path(repo) / f for f in outgoing if f.endswith(".py") and (Path(repo) / f).is_file()]
-    return sorted(f for f in incoming if f.endswith(".py") and Path(f).stem not in gate_select.SHARED_STEMS
-                  and any(gate_select.references(Path(f).stem, p) for p in ours))
+    theirs = [Path(repo) / f for f in incoming if f.endswith(".py") and (Path(repo) / f).is_file()]
+    our_stems = [Path(f).stem for f in outgoing if f.endswith(".py") and Path(f).stem not in gate_select.SHARED_STEMS]
+    fwd = {f for f in incoming if f.endswith(".py") and Path(f).stem not in gate_select.SHARED_STEMS
+           and any(gate_select.references(Path(f).stem, p) for p in ours)}
+    # GATE_SPEED review: the other direction too - an incoming module that imports/names one of OUR changed modules is as dangerous
+    back = {p.relative_to(repo).as_posix() for p in theirs if any(gate_select.references(s, p) for s in our_stems)}
+    return sorted(fwd | back)
 
 
 def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, sleep=time.sleep):
@@ -516,6 +630,7 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, sleep=
     released = False
     regates = 0
     files = []
+    ci = None
     for attempt in range(1, SHIP_PUSH_TRIES + 1):
         before = git(repo, "rev-parse", "HEAD").stdout.strip()
         merge_trunk(repo)
@@ -527,10 +642,13 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, sleep=
                 print("nothing to ship")
             return
         if attempt == 1:
+            if gate is run_gate and ci_applies(files):    # custom gates (tests, throwaway repos) stay hermetic: no network
+                ci = CiCheck()
             if needs_gate(files):
                 call_gate(gate, repo, files)
             elif docs_gate:
                 docs_gate(repo, files)
+            enforce_ci(ci)
         else:
             after = git(repo, "rev-parse", "HEAD").stdout.strip()
             hit = race_overlap(repo, changed_between(repo, before, after), shipped_before) if after != before else []
@@ -544,10 +662,11 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, sleep=
             git(repo, "rm", "--quiet", "-f", rel)
             git(repo, "commit", "--quiet", "-m", f"release {release_slug}" + chr(10) * 2 + f"Result: claim {release_slug} closed with the ship")
             released = True
+        pages = StalePages(repo)       # overlaps the push
         r = git(repo, "push", "--quiet", "origin", f"HEAD:refs/heads/{TRUNK}", check=False)
         if r.returncode == 0:
             print(f"shipped {len(files)} file(s) to origin/{TRUNK}" + (f"; released {release_slug}" if released else ""))
-            warn_stale_pages(repo)
+            pages.report()
             return
         print(f"push rejected (someone shipped first), retry {attempt}/{SHIP_PUSH_TRIES}")
         if attempt < SHIP_PUSH_TRIES:
@@ -1019,15 +1138,21 @@ def main(argv):
             print(f"sync: {e}", file=sys.stderr)
             return 1
         return 0
-    if argv and argv[0] == "start" and len(argv) <= 3:
+    if argv and argv[0] == "start" and len(argv) <= 4:
         try:
             here = "--here" in argv
-            rest = [a for a in argv[1:] if a != "--here"]
-            start(toplevel(Path.cwd()), rest[0] if rest else None, here)
+            quiet = "--quiet" in argv or "-q" in argv
+            rest = [a for a in argv[1:] if a not in ("--here", "--quiet", "-q")]
+            start(toplevel(Path.cwd()), rest[0] if rest else None, here, quiet=quiet)
         except SyncError as e:
             print(f"sync: {e}", file=sys.stderr)
             return 1
         return 0
+    if argv and argv[0] == "ship" and "--fix-ci" in argv:
+        # GATE_SPEED X6: the way through a red-CI block is the FULL gate (never the fast one), so it cannot be a cheap bypass
+        os.environ["SYNC_FIX_CI"] = "1"
+        os.environ["SYNC_FULL_GATE"] = "1"
+        argv = [a for a in argv if a != "--fix-ci"]
     if argv and argv[0] == "ship" and "--release" in argv:
         try:
             i = argv.index("--release")

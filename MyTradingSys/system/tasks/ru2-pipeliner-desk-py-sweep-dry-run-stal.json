@@ -2,6 +2,7 @@
   "approved_by": "",
   "asks": "",
   "claim": "ru2-desk-sweep",
+  "closed": "2026-10-18T18:37:08Z",
   "commands": [
     "python scripts/dev/desk.py sweep --json",
     "python -m pytest MyTradingSys/tests/test_desk_sweep.py -q",
@@ -18,6 +19,12 @@
   "id": "ru2-pipeliner-desk-py-sweep-dry-run-stal",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "41182a2e",
+      "ref": "2d3bd8fe",
+      "utc": "2026-10-18T18:37:08Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -44,7 +51,7 @@
   "refs": [
     "MyTradingSys/research/roles/ROLE_UPGRADES_2026-10-18.md"
   ],
-  "result": "",
+  "result": "41182a2e",
   "scope_in": [
     "scripts/dev/desk.py",
     "MyTradingSys/tests/test_desk_sweep.py",
@@ -58,7 +65,7 @@
   "scope_sha": "59b5144d5d99",
   "size": "M",
   "sources": [],
-  "state": "active",
+  "state": "done",
   "steps": [
     "Read desk rows via git ls-tree/show on origin/fast-track (no local files)",
     "Implement sweep(as_of) classifiers + CLI in scripts/dev/desk.py (no tasks.py edit)",

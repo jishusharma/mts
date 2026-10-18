@@ -39,5 +39,48 @@
 Full mode still runs every step (D1 reorders, D2 only stops a run that already failed). CI runs the whole suite on both OSes; it
 never passes the ship flags. A failed step is dropped from the record. Linux-only failures stay CI's job (`ci_watch.py`).
 
+## 60-second fast path (plan 2026-10-18, operator: a clean ordinary ship must finish in under 60 s)
+Measured floor on JIS-NB (i7-4770K, 4 cores / 8 threads, Defender on, other sessions at ~35% CPU): python start 0.23 s, pytest start 0.5 s,
+git calls 0.1 s. Smoke gate of `scripts/dev/nowin.py` today: 55 s = ALWAYS steps 3x (wiring_scan --check) 17-20 s and 3w (test_wiring_scan) 17-25 s,
+3tl 7-9 s, 3dl 3 s, plus step 4f 17 s; a smoke change that a hub module reaches runs whole pytest shards (minutes). Only live-path/unknown ships
+need the 544 s full gate; docs ships already take ~10 s.
+- X1 Impact map (`scripts/dev/gate_impact.py`): import graph of all tracked .py built fresh each ship (about 1 s; nothing stored, so nothing stale or
+  corrupt across 30 worktrees), reverse closure of the changed modules over real imports (package = its folder name; same-stem files all count). A test
+  is reached when it is in the closure, references a closure module (import, path, `python x.py`, quoted dotted name, `-m pkg.mod`), names a changed
+  non-.py file, or sits beside a changed conftest/`__init__`; a deleted file seeds by name. String mentions are not followed transitively (they made
+  every module reach 59 tests). Live code in the closure (it imports the change) = full gate. Any error = the old whole-shard smoke selection.
+- X2 `ship` passes `--fast` for smoke ships: pytest steps run only their reached files (split over workers), script-style test steps run when their test
+  is reached, 3xt/5b use the closure too. Direct tests (they name the changed file) are never deferred; the transitive ones fill FAST_BUDGET_S = 30 s
+  at EFFECTIVE_WORKERS = 3 (measured: 6 workers give 2-3x on this box, not 6x) by estimated seconds (STEP_EST, TEST_FILE_SECONDS); the rest is
+  DEFERRED to CI and printed by name. Per-step timeout 240 s. ALWAYS steps 3w/3tl/3dl run only when a changed file, test or ride-along doc concerns them.
+- X3 Fast gates use their own slot pool `gate-slots-fast` (2): never queued behind 9-minute full gates. Full/live/unknown ships keep slots and steps.
+  An empty slot file is its creator mid-write (busy, not a dead owner 0) unless older than 10 s.
+- X4 wiring_scan.build: suffix index + memo for `resolve`, per-file facts cached by content hash in the git common dir (a pure function of the text; a
+  missing/corrupt/unwritable cache = recompute). 17 s cold becomes 1.2-1.7 s warm, so 3x and 3w no longer set the floor. `ship` also runs the
+  stale-page check and the CI check on threads that overlap the push/gate.
+- X5 Quarantine `scripts/dev/gate_quarantine.tsv` (test id, owner, expiry, reason): active ids are `--deselect`ed in fast gates only, read from
+  origin/fast-track (a ship cannot quarantine its own failing test); expired or live-path rows deselect nothing and fail cheap step 3qn. Empty today.
+- X6 `ship` prints the CI state (ci_watch; a cached red is re-fetched before it counts; offline = unknown, never a block). Two finished fast-track runs
+  failed = the next code ship is blocked, fix-first. A newer run in flight does not clear a red (fast-track always has one pending). `ship --fix-ci`
+  is the way through for the fix itself and runs the FULL gate, so it is not a cheap bypass. Docs/data-only ships (gate_select's definition) pass.
+- Review fixes (Sonnet + Haiku, one-time, read-only): CI paths now include research .py, options, observation, .gitignore, .claude/settings.json (a
+  smoke ship there had no CI run); FULL_RE gained wiring_scan, ci_watch, config_check, ci_deps_lint, run_staged_tests, gate_impact and the quarantine
+  file (a smoke ship could weaken its own gate); wiring_registry.json edits run 3x/3w; race_overlap also checks incoming modules that import ours;
+  live code importing the change forces the full gate; a hung step times out; command lines over 24 KB fall back; empty-slot and slot-pool fixes.
+  Not taken: per-hash cache files (a lost cache update only costs one recompute) and tree-scanning tests as always-run (4d, 3gd, 3qn already are).
+- Rejected: pytest-xdist (not installed, needs the ci.yml pip line; session fixtures run per worker; the gate already runs one process per step with its own
+  basetemp) and pytest-testmon (one `.testmondata` per checkout and a full first run, so every fresh worktree is cold; it does not track static files or
+  files tests run in a subprocess, which most of ours do; verified in testmon.org docs).
+- Quality trade-off (OURS): a smoke ship no longer runs tests that reach the change only through a string mention, a subprocess call or a data file read at
+  run time, nor the budget-deferred ones; CI (both OSes, whole suite, green-only deploy) runs them minutes later and a red CI now blocks the next code ship.
+  Live-path, unknown paths and the gate scripts themselves keep the full gate.
+
+### Measured (fast path, 2026-10-19, JIS-NB with other sessions running)
+Two clean ships of docstring-only changes outside the live path, wall time of `sync.py ship` end to end (fetch, merge, CI check, gate, push, stale pages):
+`nowin.py` (28 test files reached, 13 steps deferred to CI by the budget) **51.3 s**, gate phase 42 s, set by one pytest chunk (36 s); `make_home.py`
+(1 test file, 0 deferred) **23.8 s**, gate phase 13 s. Fixed overhead outside the gate: about 9 s. The feature ship itself (gate scripts are on the live
+list) took the full 65-step gate, about 9 minutes per attempt, and was repeated twice because other sessions' commits had broken trunk steps 4c and 4d.
+Floor on this box: python start 0.2 s + one pytest chunk of the longest direct test + about 9 s of git/CI/page overhead; hub modules push it to the budget (30 s).
+
 ## Not done (next)
 Machine-wide process budget across concurrent gates; FIFO slot queue; Windows CI on selected steps only.

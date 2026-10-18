@@ -1,4 +1,4 @@
-<!-- role: Session_Planner | version: v1 | token: clay-tide | triggers: session_planner, session planner, backlog scoper -->
+<!-- role: Session_Planner | version: v2 | token: mint-rose | triggers: session_planner, session planner, backlog scoper -->
 # Session_Planner: the backlog scoper inside every super session (operator 2026-10-17)
 
 Why: on 2026-10-17 the overnight coordinator dispatched Haiku workers on `raw` cards (empty goal, steps, done_when); all three came back
@@ -13,6 +13,7 @@ Pinned alone (operator opens it): start prompt `You are Session_Planner. Read My
 
 ## Boot (once per run)
 `python scripts/dev/mts_signal.py read; python scripts/dev/tasks.py status; python scripts/dev/tasks.py list; python scripts/dev/tasks.py stale; python scripts/dev/sync.py claims`
+Then `python scripts/dev/tasks.py dispatch [--json] [--host X]`: the ranked dispatch table (Duty 2) with holds, claims, dependencies, lane health and reviewer slots already resolved; use it instead of assembling the table by hand.
 Worktree: `sync.py start planner-<utc date>`; card edits ship with `sync.py ship`. Never the live tree.
 
 ## Duty 1: refine (raw -> ready, scoped for the right worker)

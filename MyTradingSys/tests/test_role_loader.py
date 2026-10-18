@@ -158,6 +158,68 @@ class TestInject(Base):
         self.assertEqual(self.hook("", sid="fresh", event="SessionStart"), "")
 
 
+class TestVerify(Base):
+    """SV1 (SUPERVISOR.md): the supervisor checks a worker's banner before trusting its claim."""
+    def setUp(self):
+        super().setUp()
+        self.text = self.put_role(role_text(trig="eagle_eyes"))
+        self.at = {("abcd1234", f"{rl.ROLES_REL}/eagle_eyes.md"): self.text}
+        self.on_trunk = {"abcd1234"}
+        for x in [mock.patch.object(rl, "git_show_at", lambda repo, rev, rel: self.at.get((rev, rel))),
+                  mock.patch.object(rl, "git_is_ancestor", lambda repo, sha: sha in self.on_trunk)]:
+            x.start()
+            self.addCleanup(x.stop)
+        self.good = rl.banner("Eagle_Eyes", "v1", rl.compute_token(self.text), "eagle_eyes.md", "abcd1234")
+
+    def verify(self, note, role=None, sid=None):
+        out = []
+        return rl.verify(note, self.repo, role=role, sid=sid, out=out.append), " ".join(out)
+
+    def test_good_banner_in_a_note(self):
+        code, msg = self.verify("Done.\n" + self.good + "\nResult: x shipped 1234abcd")
+        self.assertEqual(code, 0, msg)
+        self.assertIn("fresh", msg)
+
+    def test_missing_banner_and_not_loaded(self):
+        self.assertEqual(self.verify("I did the card. sha 1234abcd")[0], 1)
+        self.assertEqual(self.verify("ROLE NOT LOADED: malformed header")[0], 1)
+
+    def test_row_only_banner_is_not_trusted(self):
+        row = rl.banner("Eagle_Eyes", "v?", "none", "eagle_eyes.md", "abcd1234", row_only=True)
+        self.assertEqual(self.verify(row)[0], 1)
+
+    def test_wrong_token_version_role_or_path(self):
+        tok = rl.compute_token(self.text)
+        for bad in [self.good.replace(tok, "able-acid"), self.good.replace(" v1 ", " v2 "),
+                    self.good.replace("roles/eagle_eyes.md", "roles/lab_guy.md")]:
+            self.assertEqual(self.verify(bad)[0], 1, bad)
+        self.assertEqual(self.verify(self.good, role="Lab_Guy")[0], 1)
+        self.assertEqual(self.verify(self.good, role="Eagle_Eyes")[0], 0)
+
+    def test_sha_not_on_trunk(self):
+        self.on_trunk = set()
+        self.assertEqual(self.verify(self.good)[0], 1)
+
+    def test_role_changed_since_load_is_stale_exit_2(self):
+        self.put_role(role_text(trig="eagle_eyes", body=BODY + "new duty\n"))
+        code, msg = self.verify(self.good)
+        self.assertEqual(code, 2, msg)
+        self.assertIn("STALE", msg)
+
+    def test_hook_state_must_match_when_sid_given(self):
+        self.assertEqual(self.verify(self.good, sid="w1")[0], 1)   # hook never injected for w1
+        self.hook("You are Eagle_Eyes.", sid="w1")
+        self.assertEqual(self.verify(self.good, sid="w1")[0], 0)
+
+    def test_supervisor_is_a_known_role(self):
+        self.assertIn("Supervisor", rl.KNOWN_ROLES)
+
+    def test_cli_reads_stdin(self):
+        r = subprocess.run([sys.executable, str(SCRIPT), "verify", "--text", "-"], input="no banner here",
+                           capture_output=True, text=True)
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+
+
 class TestProcess(unittest.TestCase):
     def test_garbage_stdin_exits_0_silently(self):
         for data in ["", "not json", "[1,2]", '{"prompt": 5}']:

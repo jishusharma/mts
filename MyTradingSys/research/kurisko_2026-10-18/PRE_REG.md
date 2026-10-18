@@ -50,3 +50,12 @@ Kill scope (GATE_AUDIT Q4, gate-fix-4): FAIL/INCONCLUSIVE: stop; this BLOCK (cou
 2. 1m events cluster (about 16 per day): event-days saturate at 912 and the effective n is smaller.
 3. Short side has no Kurisko source; RSI arm is the operator's hypothesis. Both reported only for completeness.
 4. 15m and 1h were not counted (card scope is 1m/5m).
+
+## Addendum 2026-10-19: RSI settings video search (no new arm)
+
+Card kurisko-rsi-video-search (Gemini, reviewed by Claude): 26 Kurisko videos checked, `RSI_VIDEO_SEARCH.md`. Kurisko states NO RSI periods, levels or smoothing in any of them.
+Reviewer spot-check: 4 quotes re-fetched from live YouTube captions (XNfOIzPYChA twice, LD_LOEeKzMs twice), all match.
+- The RSI idea traces to a chatroom member's remark read aloud in XNfOIzPYChA ("the RSI ... using the same settings you're using in the stochastics"). That is a third party, not Kurisko.
+- The TradingView difference the operator remembers is the stochastic, not RSI: TradingView's built-in is Full Stochastic, so Kurisko sets %K smoothing = 1 and hides the %K line (LD_LOEeKzMs). Our `qr.lines` (raw %K, SMA_d) is the same line; nothing to change in the stochastic arm.
+- Result: the RSI arm stays OPERATOR-HYPOTHESIS (Wilder RSI 9/14/40/60 at 20/80). No SOURCED RSI setting exists, so NO new arm, no re-count, no ledger entry. Its 3-18 event-days stay as reported; it stays BLOCKED.
+- Caption caveat: auto-captions read the third period as "44"; it is not resolved by captions whether that is (40,4) or another value. KURISKO_SPEC s5 keeps (40,4) as its existing label.

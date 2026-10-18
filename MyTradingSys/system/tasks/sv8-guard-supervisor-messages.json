@@ -1,0 +1,61 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T19:30:00Z",
+  "depends_on": [],
+  "done_when": "tests pass; stop at 20 turns and report",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Hard rule 'never message Fable' and 'message only own workers' enforced by the hook, not prose (GPT review finding 11).",
+  "id": "sv8-guard-supervisor-messages",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "role_loader: deterministic role load hook with derived-token banner",
+      "ref": "b5ef5d369d63",
+      "utc": "2026-10-18T17:16:30Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED: gpt-6-astra 2026-10-18 - cross-vendor read-only review of the SUPERVISOR.md design this card implements (12 findings, folded or rejected with reasons there): ACCEPT.",
+  "pinned": false,
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "supervisor-design (Opus, operator-named)",
+  "refreshed": "2026-10-18T18:47:03Z",
+  "refs": [
+    "MyTradingSys/system/SUPERVISOR.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/model_guard.py",
+    "MyTradingSys/tests/test_model_guard.py",
+    ".claude/settings.json (matcher for SendMessage, mcp__ccd_session_mgmt__send_message)"
+  ],
+  "scope_out": [
+    "live tree, processes, deploys, HALT files",
+    "ROUTING.md (Pipeliner owns it)",
+    "unrelated cleanups"
+  ],
+  "scope_sha": "b5ef5d369d63",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/SUPERVISOR.md (design 2026-10-18)"
+  ],
+  "state": "ready",
+  "steps": [
+    "deny when the target's transcript model is fable, or the id is not in this session's start_session results (transcript)",
+    "fail closed when the target cannot be resolved, with the reason"
+  ],
+  "tests": "fixture transcripts: own Sonnet worker -> allow; Fable target -> deny; unknown id -> deny; fail first",
+  "title": "Supervisor SV8: model_guard denies messages to Fable sessions and to sessions this one did not start",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

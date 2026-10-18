@@ -12,6 +12,11 @@ on:
       - 'MyTradingSys/runtime/**'
       - 'MyTradingSys/tests/**'
       - 'MyTradingSys/items/**'
+      - 'MyTradingSys/research/**/*.py'   # GATE_SPEED review: smoke ships under these folders defer tests to CI, so CI must run for them
+      - 'MyTradingSys/options/**'
+      - 'MyTradingSys/observation/**'
+      - '.gitignore'
+      - '.claude/settings.json'
       - 'scripts/**'
       - '.github/workflows/**'
   pull_request:
