@@ -137,6 +137,52 @@ class CryptoCredHtfPreReg(unittest.TestCase):
                     self.assertNotIn("NOT_ANSWERED", ans)
 
 
+POSITIONING_C1_PRE_REG = ROOT / "research" / "positioning_c1_2026-10" / "PRE_REG_POSITIONING_C1.md"
+
+
+class PositioningC1PreReg(unittest.TestCase):
+    """Card positioning-c1-prereg-no-source: PRE_REG_POSITIONING_C1.md readiness check."""
+
+    def test_file_exists(self):
+        files = list(ROOT.rglob("PRE_REG_POSITIONING_C1.md"))
+        self.assertTrue(len(files) > 0, "PRE_REG_POSITIONING_C1.md missing")
+
+    def test_items_0_to_12_present_and_answered(self):
+        files = list(ROOT.rglob("PRE_REG_POSITIONING_C1.md"))
+        self.assertTrue(len(files) > 0, "PRE_REG_POSITIONING_C1.md missing")
+        for p in files:
+            with self.subTest(prereg=p.name):
+                nums = item_numbers(p)
+                for i in range(0, 13):
+                    self.assertIn(i, nums, f"item {i} missing from {p.name}")
+                txt = p.read_text(encoding="utf-8")
+                self.assertNotIn("Answer: TODO", txt)
+                self.assertNotIn("Evidence (file:line): TODO", txt)
+                self.assertNotIn("NOT_ANSWERED", txt)
+                parts = re.split(r"(?m)^## (?=\d+\. )", txt)[1:]
+                self.assertGreaterEqual(len(parts), 12, "fewer than 12 numbered sections")
+                item_secs = [s for s in parts if re.match(r"^([1-9]|1[0-2])\.", s)]
+                self.assertEqual(len(item_secs), 12, "must have all 12 items")
+                for sec in item_secs:
+                    n = sec.split(".", 1)[0]
+                    self.assertRegex(sec, r"(?m)^Answer:\s*\S", f"item {n}: no answer")
+                    self.assertRegex(sec, r"(?m)^Evidence.*:\s*\S", f"item {n}: no evidence")
+
+    def test_gates_0a_to_0f_answered(self):
+        files = list(ROOT.rglob("PRE_REG_POSITIONING_C1.md"))
+        self.assertTrue(len(files) > 0, "PRE_REG_POSITIONING_C1.md missing")
+        for p in files:
+            with self.subTest(prereg=p.name):
+                txt = p.read_text(encoding="utf-8")
+                for g in ["0a", "0b", "0c", "0d", "0e", "0f"]:
+                    match = re.search(rf"(?m)^-\s*{g}\b[^\n]*:\s*(.+)$", txt)
+                    self.assertIsNotNone(match, f"gate {g} missing from {p.name}")
+                    ans = match.group(1).strip()
+                    self.assertGreater(len(ans), 10, f"gate {g} answer too short")
+                    self.assertNotIn("TODO", ans)
+                    self.assertNotIn("NOT_ANSWERED", ans)
+
+
 if __name__ == "__main__":
     unittest.main()
 
