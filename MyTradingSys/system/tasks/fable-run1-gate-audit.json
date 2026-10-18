@@ -20,15 +20,16 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
-  "result": "",
+  "result": "GATE_AUDIT.md b63e8589: 0-of-8 stands for the 8 counted cells; Q1 Q2 Q4 Q6 WRONG (label, aggregator, scope wording, ledger), Q3 Q5 CONFIRMED; fixes filed as gate-fix-1..6",
   "scope_in": [],
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "done",
   "steps": [],
   "tests": "",
   "title": "Fable run 1: audit prereg_gate.py and the Kurisko 0-of-8 freeze (brief: MyTradingSys/system/fable_run_1_brief.md; operator runs by hand)",
   "weight": "",
-  "worker": ""
+  "worker": "",
+  "closed": "2026-10-18T15:40:19Z"
 }
