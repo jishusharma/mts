@@ -1,0 +1,63 @@
+{
+  "utc": "2026-10-18T20:46:34.181280+00:00",
+  "head": "621f682891779cfdd1a3ec5912b72eb9fc99366d",
+  "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+  "changed": [
+    "scripts/dev/nowin.py"
+  ],
+  "runs": [
+    {
+      "name": "regressions",
+      "command": [
+        "C:\\Users\\E-ngineers\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "-m",
+        "unittest",
+        "scripts.dev.test_gate_impact",
+        "scripts.dev.test_gate_select",
+        "scripts.dev.test_run_all_tests",
+        "scripts.dev.test_sync"
+      ],
+      "seconds": 142.354,
+      "exit_code": 0
+    },
+    {
+      "name": "baseline_smoke",
+      "command": [
+        "C:\\Users\\E-ngineers\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "scripts/dev/run_all_tests.py",
+        "--quick",
+        "--precheck",
+        "--fail-fast",
+        "--slot",
+        "--smoke",
+        "--changed-file",
+        "C:\\Users\\E-NGIN~1\\AppData\\Local\\Temp\\shipping_proof_lajr88g5\\changed.txt"
+      ],
+      "seconds": 23.022,
+      "exit_code": 0
+    },
+    {
+      "name": "fast_smoke",
+      "command": [
+        "C:\\Users\\E-ngineers\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "scripts/dev/run_all_tests.py",
+        "--quick",
+        "--precheck",
+        "--fail-fast",
+        "--slot",
+        "--smoke",
+        "--changed-file",
+        "C:\\Users\\E-NGIN~1\\AppData\\Local\\Temp\\shipping_proof_lajr88g5\\changed.txt",
+        "--fast"
+      ],
+      "seconds": 25.794,
+      "exit_code": 0
+    }
+  ],
+  "sha256": {
+    "sync.py": "a54de05b25f723ab4d1a7c9f54c11dbcafa653d3dc73004e2b666cb425fe9f65",
+    "gate_impact.py": "3c745b2d73482d8e483d9f1d2e4cbe22687f425cc7b8f74973b54cb7dd3f9941",
+    "gate_select.py": "c537c2e4af7b6cc013c9ec91ef64807958d7cd8afc04e7cbb4ae82c81a057f94",
+    "run_all_tests.py": "e956ba9e6dfd189eeb5ce6da9f921d76dcd764b336a1e9bdbef99eb9673f365f"
+  }
+}
