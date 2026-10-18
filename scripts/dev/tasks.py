@@ -677,12 +677,15 @@ def cmd_done(a):
     c = get(REPO, a.id)
     if c.get("flow"):
         raise SystemExit("tasks: flow cards close through lab_flow.py finish (evidence receipt required)")
-    if c.get("state") != "active":
-        raise SystemExit(f"tasks: {a.id} is {c.get('state')}, only an active card can be marked done")
+    if c.get("state") not in ("ready", "active"):
+        raise SystemExit(f"tasks: {a.id} is {c.get('state')}, only a ready or active card can be marked done")
     gate = review_gate(c, finishing=True, result=a.result)
+    if c["state"] == "ready":   # runners claim via sync.py and never call `take`: ready->done needs every gate `take` would apply
+        gate += promotion_problems(c) + problems(c, load_all(REPO), registry(REPO))
     if gate:
         raise SystemExit(f"tasks: {a.id} cannot be marked done: " + "; ".join(gate))
     c.update(state="done", result=a.result, closed=now())
+    c.setdefault("taken", c["closed"])
     head = TS.git(REPO, "rev-parse", "--short", "HEAD")
     if head:   # base the work was done on; the ship commit that carries this card becomes the tag (SHIPPED@<sha>)
         TS.add_entry(c, "ship", head, c["closed"], a.result)
@@ -740,6 +743,106 @@ def cmd_sweep(a):
                 save(REPO, c)
     if not hit:
         print("sweep: nothing to retire")
+
+
+# ---- dispatch snapshot (RU1) ---------------------------------------------------------------------------------------
+
+WEIGHT_ORDER = {w: i for i, w in enumerate(WEIGHTS)}        # ROUTINE < IMPORTANT < CRUCIAL < CRITICAL < B-SHARED (higher runs first)
+CLASS_WEIGHT = {"C1": "IMPORTANT", "C2": "CRUCIAL", "C3": "CRITICAL"}
+REVIEWER_SLOT = {"ROUTINE": "none (coordinator spot-check)", "IMPORTANT": "coordinator reads Result",
+                 "CRUCIAL": "review Agent", "CRITICAL": "REVIEW session", "B-SHARED": "REVIEW session"}   # session_planner.md Duty 5
+DISPATCH_TABLE_MAX = 15                                      # session_planner.md Duty 2: max 15 lines
+
+
+def effective_weight(card):
+    """The card's weight raised (never lowered) to what its class / live_path demands (session_planner.md Duty 5)."""
+    w = str(card.get("weight") or "ROUTINE").upper()
+    floor = "CRITICAL" if card.get("live_path") else CLASS_WEIGHT.get(card_class(card), "ROUTINE")
+    return max(w, floor, key=lambda x: WEIGHT_ORDER.get(x, 0))
+
+
+def exclusion(card, cards, reg, holds, claims, lane_st, as_of, host=None, repo=REPO):
+    """(code, why) when the card must not be dispatched now, else None. Order: state, hold, claim, dependency, lane, readiness."""
+    import sync
+    import lane_health
+    if card["state"] != "ready":
+        return ("state", f"not ready: state is {card['state']}")
+    held = hold_problems(card, holds)
+    if held:
+        return ("hold", held[0].split(":")[0])
+    own = claim_of(card, claims)
+    if own:
+        return ("claimed", f"claimed by {own.get('host', '?')}/{own.get('account', '?')}")
+    mine = [x.rstrip("/") for x in card.get("scope_in", [])]
+    for slug in sorted(claims):
+        hit = sync.area_overlap(mine, sync.claim_areas(claims[slug])) if mine else None
+        if hit:
+            return ("claimed", f"area {hit[0]} overlaps claim {slug}")
+    miss = problems(card, cards, reg)
+    dep = [m for m in miss if m.startswith("depends_on ")]
+    if dep:
+        return ("dependency", dep[0])
+    if card["lane"] == "CODEX" and lane_st["status"] == "down" and lane_health.allow(lane_st, as_of) == "":
+        return ("lane_down", lane_health.why_down(lane_st))
+    if host and card["lane"] == "JIS-NB" and host != "JIS-NB":
+        return ("host", f"lane JIS-NB needs host JIS-NB, not {host}")
+    if miss:
+        return ("not_ready", "not ready: " + miss[0])
+    if needs_review(card) == "hard" and stamp_kind(card) != "real":
+        return ("no_stamp", "needs a real review stamp (Lab_Guy pass)")
+    return None
+
+
+def dispatch(cards, reg, holds, claims, lane_st, as_of, host=None, repo=REPO):
+    """Pure ranked snapshot: {as_of, host, dispatch: [...], excluded: [...]}. Same inputs -> same dict (as_of is an input)."""
+    inc, exc = [], []
+    for c in cards:
+        if c["state"] in FINAL:
+            continue
+        ex = exclusion(c, cards, reg, holds, claims, lane_st, as_of, host, repo)
+        if ex:
+            exc.append({"id": c["id"], "state": c["state"], "reason_code": ex[0], "why": ex[1]})
+            continue
+        w = effective_weight(c)
+        inc.append({"id": c["id"], "title": c["title"], "lane": c["lane"], "weight": w, "prio": c.get("prio", 3),
+                    "pinned": bool(c.get("pinned")), "est_turns": c.get("est_turns"), "worker": c.get("worker") or "",
+                    "reviewer": REVIEWER_SLOT[w], "scope_in": list(c.get("scope_in", [])), "depends_on": list(c.get("depends_on", [])),
+                    "created": c.get("created", "")})
+    # CI red first (pinned), then priority, then heavier weight first, then oldest, then id (total order = deterministic)
+    inc.sort(key=lambda r: (not r["pinned"], r["prio"], -WEIGHT_ORDER.get(r["weight"], 0), r["created"], r["id"]))
+    for n, r in enumerate(inc, 1):
+        r["rank"] = n
+        del r["created"]
+    exc.sort(key=lambda r: (r["reason_code"], r["id"]))
+    return {"as_of": as_of.strftime("%Y-%m-%dT%H:%M:%SZ"), "host": host or "", "dispatch": inc, "excluded": exc}
+
+
+def dispatch_table(snap):
+    """The <=15-line table session_planner.md Duty 2 asks for, plus one summary line of exclusions."""
+    lines = [f"DISPATCH as_of {snap['as_of']}: {len(snap['dispatch'])} card(s), {len(snap['excluded'])} excluded"]
+    for r in snap["dispatch"][:DISPATCH_TABLE_MAX - 3]:
+        est = f"{r['est_turns']}t" if r["est_turns"] else "-"
+        lines.append(f"{r['rank']}. {r['id']} [{r['lane']}] {r['weight']} p{r['prio']} {r['worker'] or '-'} {est} review={r['reviewer']}")
+    left = len(snap["dispatch"]) - (DISPATCH_TABLE_MAX - 3)
+    if left > 0:
+        lines.append(f"... +{left} more (--json)")
+    by = {}
+    for e in snap["excluded"]:
+        by[e["reason_code"]] = by.get(e["reason_code"], 0) + 1
+    lines.append("excluded: " + (", ".join(f"{k} {by[k]}" for k in sorted(by)) or "none"))
+    return lines
+
+
+def cmd_dispatch(a):
+    import lane_health
+    as_of = datetime.strptime(a.as_of, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc) if a.as_of else datetime.now(timezone.utc).replace(microsecond=0)
+    cards = load_all(REPO)
+    snap = dispatch(cards, registry(REPO), active_holds(REPO), open_claims(REPO), lane_health.load(REPO), as_of, a.host, REPO)
+    if a.json:
+        print(json.dumps(snap, indent=2, sort_keys=True, ensure_ascii=False))
+    else:
+        print(chr(10).join(dispatch_table(snap)))
+    return 0
 
 
 def main(argv=None):
@@ -805,6 +908,11 @@ def main(argv=None):
     st = sp.add_parser("stale")
     st.add_argument("--refresh", action="store_true", help="recompute pointers of every stale card (after re-reading it)")
     st.set_defaults(f=cmd_stale)
+    dp = sp.add_parser("dispatch", help="ranked snapshot of dispatchable cards with why-excluded (session_planner.md Duty 2)")
+    dp.add_argument("--json", action="store_true")
+    dp.add_argument("--host", help="JIS-NB cards are excluded unless this is JIS-NB")
+    dp.add_argument("--as-of", help="UTC YYYY-MM-DDTHH:MM:SSZ (default now); the only wall-clock value in the output")
+    dp.set_defaults(f=cmd_dispatch)
     s = sp.add_parser("sweep")
     s.add_argument("--apply", action="store_true")
     s.set_defaults(f=cmd_sweep)

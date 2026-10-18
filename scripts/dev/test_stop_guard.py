@@ -80,6 +80,33 @@ class StopGuardTest(unittest.TestCase):
     def test_garbage_input_never_raises(self):
         self.assertEqual(stop_guard.hook("not json"), "")
 
+    def test_antigravity_stop_hook_and_gemini_q_exemption(self):
+        os.environ["MTS_STOP_GUARD_HOME"] = str(self.tmp)
+        self.addCleanup(os.environ.pop, "MTS_STOP_GUARD_HOME", None)
+        (self.a / "wip.py").write_text("x\n", newline="\n")
+        payload = json.dumps({
+            "conversationId": "conv-123",
+            "workspacePaths": [str(self.a)],
+            "terminationReason": "NO_TOOL_CALL",
+        })
+        out = json.loads(stop_guard.hook(payload))
+        self.assertEqual(out["decision"], "continue")
+        self.assertIn("sync.py ship", out["reason"])
+        # Non-NO_TOOL_CALL termination (e.g. USER_CANCELED) is allowed to stop
+        canceled = json.dumps({
+            "conversationId": "conv-456",
+            "workspacePaths": [str(self.a)],
+            "terminationReason": "USER_CANCELED",
+        })
+        self.assertEqual(stop_guard.hook(canceled), "")
+        # gemini-q/* branches commit without shipping (reviewed by Claude)
+        sh(self.a, "checkout", "-q", "-b", "gemini-q/test-card")
+        self.assertEqual(stop_guard.hook(json.dumps({
+            "conversationId": "conv-789",
+            "workspacePaths": [str(self.a)],
+            "terminationReason": "NO_TOOL_CALL",
+        })), "")
+
 
 if __name__ == "__main__":
     unittest.main()

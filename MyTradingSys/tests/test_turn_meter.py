@@ -7,16 +7,34 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 REPO = Path(__file__).resolve().parents[2]
 SCRIPT = REPO / "scripts" / "dev" / "turn_meter.py"
 
 
-def fire(home, event, sid="s1", extra=None, env=None):
-    payload = {"session_id": sid, "hook_event_name": event, "cwd": "C:/x", **(extra or {})}
+sys.path.insert(0, str(SCRIPT.parent))
+import turn_meter  # noqa: E402
+
+
+def hook_env(home, env=None):
     e = {k: v for k, v in os.environ.items() if not k.startswith("MTS_TURN_METER")}
     e.update({"MTS_TURN_METER_HOME": str(home), **(env or {})})
-    r = subprocess.run([sys.executable, str(SCRIPT), "hook"], input=json.dumps(payload), capture_output=True, text=True, env=e)
+    return e
+
+
+def fire(home, event, sid="s1", extra=None, env=None):
+    """One hook call, in-process (GATE_SPEED D7, 2026-10-18: a python process per call made this the slowest file of shard 4, 195 s
+    of ~1400 calls); fire_proc keeps the real `turn_meter.py hook` stdin/stdout path covered."""
+    payload = {"session_id": sid, "hook_event_name": event, "cwd": "C:/x", **(extra or {})}
+    with mock.patch.dict(os.environ, hook_env(home, env), clear=True):
+        return turn_meter.handle(payload).strip()
+
+
+def fire_proc(home, event, sid="s1", extra=None, env=None):
+    payload = {"session_id": sid, "hook_event_name": event, "cwd": "C:/x", **(extra or {})}
+    r = subprocess.run([sys.executable, str(SCRIPT), "hook"], input=json.dumps(payload), capture_output=True, text=True,
+                       env=hook_env(home, env))
     assert r.returncode == 0, r.stderr
     return r.stdout.strip()
 
@@ -116,7 +134,7 @@ class TurnMeterTest(unittest.TestCase):
     def test_post_tool_output_is_additional_context_json(self):
         for _ in range(39):
             fire(self.home, "PostToolUse")
-        out = json.loads(fire(self.home, "PostToolUse"))
+        out = json.loads(fire_proc(self.home, "PostToolUse"))   # the real hook process prints the same JSON
         ctx = out["hookSpecificOutput"]["additionalContext"]
         self.assertEqual(out["hookSpecificOutput"]["hookEventName"], "PostToolUse")
         self.assertIn("cap 40 / 10", ctx)
@@ -191,6 +209,11 @@ class TurnMeterTest(unittest.TestCase):
         for _ in range(40):
             fire(self.home, "PostToolUse", sid="a")
         self.assertEqual(fire(self.home, "UserPromptSubmit", sid="b"), "")
+
+    def test_fire_runs_in_process(self):
+        with mock.patch.object(subprocess, "run", side_effect=AssertionError("no process per hook call")):
+            self.assertEqual(fire(self.home, "PostToolUse"), "")
+        self.assertEqual(self.counts()["tool"], 1)
 
     def test_off_and_garbage_never_fail(self):
         self.assertEqual(fire(self.home, "UserPromptSubmit", env={"MTS_TURN_METER": "off", "MTS_TURN_METER_USER_CAP": "0"}), "")

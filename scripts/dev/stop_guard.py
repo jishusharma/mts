@@ -13,6 +13,9 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import nowin  # noqa: E402
+
+nowin.install()
 
 
 def reason(path):
@@ -22,7 +25,7 @@ def reason(path):
     if (top / sync.LIVE_MARKER).exists():
         return None
     branch = sync.git(top, "branch", "--show-current", check=False).stdout.strip()
-    if branch in (sync.TRUNK, "master", "main"):
+    if branch in (sync.TRUNK, "master", "main") or branch.startswith("gemini-q/"):
         return None
     state = sync.tree_state(top)
     t = dict(path=str(top), name=top.name, branch=branch, ahead=state[0], work=state[1], noise=state[2], fix="")
@@ -57,17 +60,24 @@ def seen_before(session_id, why):
 
 
 def hook(stdin_text):
-    """-> JSON string for Claude Code, or '' to allow the stop."""
+    """-> JSON string for Claude Code or Antigravity, or '' to allow the stop."""
     try:
         if os.environ.get("MTS_STOP_GUARD", "").lower() == "off":
             return ""
         data = json.loads(stdin_text or "{}")
         if data.get("stop_hook_active"):
             return ""
-        why = reason(data.get("cwd") or os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd())
-        if not why or seen_before(data.get("session_id"), why):
+        is_agy = "conversationId" in data or "terminationReason" in data or "workspacePaths" in data
+        if is_agy and data.get("terminationReason", "NO_TOOL_CALL") != "NO_TOOL_CALL":
             return ""
-        return json.dumps({"decision": "block", "reason": message(why)})
+        ws = data.get("workspacePaths") or []
+        cwd = data.get("cwd") or (ws[0] if ws else None) or os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
+        sid = data.get("session_id") or data.get("conversationId")
+        why = reason(cwd)
+        if not why or seen_before(sid, why):
+            return ""
+        decision = "continue" if is_agy else "block"
+        return json.dumps({"decision": decision, "reason": message(why)})
     except Exception:
         return ""
 

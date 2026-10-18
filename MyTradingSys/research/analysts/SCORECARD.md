@@ -7,10 +7,6 @@
 
 | Analyst | Platform | Imbalance Construct | Total Ingested | Evaluated | Win Rate | Net R Sum | Profit Factor | Status |
 |---|---|---|---|---|---|---|---|---|
-| **RLinda** | TradingView | `S_R_LIQUIDITY_TRAP` | 0 | 0 | 0.0% | +0.00R | 0.00 | PENDING EVALUATION |
-| **Justin Bennett** | DailyPriceAction | `FVG_DISPLACEMENT` | 0 | 0 | 0.0% | +0.00R | 0.00 | PENDING EVALUATION |
-| **Crypto Chase** | Twitter/X | `FVG_DISPLACEMENT` | 0 | 0 | 0.0% | +0.00R | 0.00 | PENDING EVALUATION |
-| **Roman Trading** | Twitter/X | `VOLUME_ABSORPTION` | 0 | 0 | 0.0% | +0.00R | 0.00 | PENDING EVALUATION |
 
 ## 2. Statistical Power vs. Coin Flip (H0 = 50%, Claim = 67.1%)
 
@@ -29,10 +25,6 @@ Threshold for 80% statistical power: **56 scored calls** (SOURCED: `MyTradingSys
 
 | Call ID | Published (UTC) | Analyst | Direction | Entry | Stop | Target 1 | Risk | Status |
 |---|---|---|---|---|---|---|---|---|
-| `RLINDA-20261018-01` | 2026-10-18T09:00:00Z | RLinda | LONG | 67,500.0 | 66,200.0 | 69,000.0 | 1,300.0 | PENDING |
-| `BENNETT-20261018-01` | 2026-10-18T08:00:00Z | Justin Bennett | SHORT | 68,400.0 | 69,600.0 | 66,800.0 | 1,200.0 | PENDING |
-| `CHASE-20261018-01` | 2026-10-18T14:00:00Z | Crypto Chase | LONG | 65,200.0 | 64,100.0 | 68,000.0 | 1,100.0 | PENDING |
-| `ROMAN-20261018-01` | 2026-10-18T15:30:00Z | Roman Trading | LONG | 67,200.0 | 66,500.0 | 69,200.0 | 700.0 | PENDING |
 
 ## 4. Execution & Audit Rules
 - All signals require explicit Entry, Stop Loss, and at least one Target before scoring.

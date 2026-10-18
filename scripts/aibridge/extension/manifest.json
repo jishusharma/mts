@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "AIBridge",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Local command execution for AI chat replies.",
   "permissions": [
     "storage"

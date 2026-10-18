@@ -5,7 +5,7 @@ every card change). Pointers: `layer_index.json`; layer status and backtests: `l
 Rules: no fixed core; layers may combine or filter each other, results decide (CLAUDE.md, 2026-10-13). A new backtest is a row in
 `layer_map.json` (it then shows here); a new layer joins a family in `layer_index.json`; a new card names `--layer <family>`.
 
-Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow layer) | guidance = Tom/Fabio cross-guidance (BB, LVN, regime filters) | rsi = RSI / Malkan / Kurisko | cryptocred = CryptoCred setups | positioning = Positioning (funding, OI, whale / FlowHorse) | session_timing = Session / timing (session levels, turn of candle, session momentum) | volume_candles_ma = Volume, candle patterns, daily MA setups, bigtrade | live_engine = Live engine, execution and live-market reads (feeds every layer) | callers = Callers (posted trade calls: Qriptal) | krown = Krown (TA 101: zones, volume, candles, averages, ranges)
+Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow layer) | guidance = Tom/Fabio cross-guidance (BB, LVN, regime filters) | rsi = RSI / Malkan / Kurisko | cryptocred = CryptoCred setups | positioning = Positioning (funding, OI, whale / FlowHorse) | session_timing = Session / timing (session levels, turn of candle, session momentum) | volume_candles_ma = Volume, candle patterns, daily MA setups, bigtrade | live_engine = Live engine, execution and live-market reads (feeds every layer) | callers = Callers (posted trade calls: Qriptal, RLinda, Bennett, Crypto Chase, Roman) | krown = Krown (TA 101: zones, volume, candles, averages, ranges)
 
 ## Tom (order flow + volume profile) (`tom`)
 - Status: Tom on BTC with our own judgement (operator 2026-10-13). DAX chain held, no FDAX data bought (q11). The old BTC encoding stays stopped.
@@ -67,6 +67,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `context-conditioned-session-flow-states` blocked p2 SONNET: Context-conditioned session flow states: per-session price/delta/OI quadrant + sweep-reclaim, next-session out
   - `fabio-xuyq-asr-extract` ready p2 JIS-NB: Fabio xUyqIjCfZzg: finish ASR transcription (JIS-NB, resumable) then canonical transcript + V2 extract + FAB c
+  - `oi-pivot-reversal-probability-by-tf` raw p2 SONNET: Causal pivot-candidate study: P(reversal) per TF from OI slope flip + price/OI divergence + delta + location, 
   - `review-ground-layer-youtube-strategy-and` ready p2 SONNET: Review Ground Layer YouTube strategy and execution priorities
   - `rv05-h2-position-line-evidence` ready p3 SONNET: RV05 H2: read position lines and stop prices before applying existing Fabio entry repair
   - `rv05-h3-outcome-evidence` refined p3 SONNET: RV05 H3: incorporate partial stop coverage evidence into existing F13 outcome repair
@@ -204,12 +205,20 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `snapshot-vwap-anchor-label` ready p3 JIS-NB: MarketDataSnapshot: vwap_anchor_utc must be the UTC day start used by the VWAP, not today's NY open (audit M3)
   - `one-timeframe-map-for-the-whole-toolchai` ready p4 CODEX: One timeframe map for the whole toolchain: capture.TF_MINUTES lacked 8h (CoinGlass button) while holding 7h; g
 
-## Callers (posted trade calls: Qriptal) (`callers`)
-- Status: Score the posted calls on Binance klines before anything else (B162). Self-reported 67.1 % wins, avg win 3.99 %, avg loss 0.63 %: unverified.
+## Callers (posted trade calls: Qriptal, RLinda, Bennett, Crypto Chase, Roman) (`callers`)
+- Status: Score the posted calls on Binance klines before anything else (B162 + multi-analyst ingestion). Self-reported 67.1 % wins, avg win 3.99 %, avg loss 0.63 %: unverified. Multi-provider parser + kline scorecard built (2026-10-18); 4 ingestion cards ready.
 - Tracks: Claude, Codex lab (scoring)
-- Spec / sources: `MyTradingSys/items/B162_qriptal_signal_layer.md`
+- Spec / sources: `MyTradingSys/items/B162_qriptal_signal_layer.md`; `MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md`; `MyTradingSys/research/analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md`
+- Code: `MyTradingSys/research/analysts/schema.py`; `MyTradingSys/research/analysts/ingest_analysts.py`; `MyTradingSys/research/analysts/score_analysts.py`; `MyTradingSys/research/analysts/run_scorecard.py`
+- Ledger: `MyTradingSys/research/analysts/SAMPLE_CALL_LEDGER.csv`
+- Other results: `MyTradingSys/research/analysts/SCORECARD.md`
+- Roadmap: `MyTradingSys/research/analysts/ROADMAP.md`
 - Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-14_qriptal-score-binance.md`; `MyTradingSys/research/layer_lab/reports/2026-10-13_qriptal-score-binance.md`
-- Open cards: none
+- Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `analyst-ingest-bennett-dpa` ready p3 SONNET: Implement DailyPriceAction RSS market plan ingestion for Justin Bennett
+  - `analyst-ingest-cryptochase-x` ready p3 SONNET: Implement Crypto Chase FVG social call listener
+  - `analyst-ingest-rlinda-tv` ready p3 SONNET: Implement automated TradingView idea scraper for RLinda setups
+  - `analyst-ingest-roman-x` ready p3 SONNET: Implement Roman Trading volume-absorption social call listener
 
 ## Krown (TA 101: zones, volume, candles, averages, ranges) (`krown`)
 - Status: Spec v0.2 + 120-rule ledger from 15 of 19 reachable TA 101 videos (14 TA + 1 fees). 4 videos blocked on YouTube captions (429). One structural stop (compression breakout), no stop distance or size rule: the rest is OURS. Not built, not backtested.

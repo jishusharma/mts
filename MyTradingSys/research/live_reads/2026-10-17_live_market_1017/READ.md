@@ -62,3 +62,16 @@ Source: `live_mirror.py brief` + _mirror files, all `mirror@2026-10-17 07:11Z` (
 ## 10-18 15:39Z re-paste: the lost multi-TF shots are now filed
 - 4h ffb3dd828daa, 8h 5763ffcc7333, 1h 33369d758139, 12h df60707599d8, 1D 4d1696e42656: SET_ffb3dd828daa_multitf.md (19 MATCH, 2 NOT_IN_DATA, tag NOTE). The numbers match the 14:53-14:57Z table above. The 30m/15m in the same paste are the already-read 41f213b5bea3 / 188135336af0.
 - Intake: re-pasting as a normal prompt works (card mid-turn-image-intake-gap updated). Last read id: 4d1696e42656. HALT state unchanged (mirror@2026-10-18 14:51Z).
+
+## 10-18 17:19Z 15m pivot marks (163af24365f3) mirror@2026-10-18 17:21Z
+- Read: SHOT_163af24365f3.md (7 MATCH, 2 NOT_IN_DATA), tag NOTE. Last read id: 163af24365f3.
+- Divergence 1 (22:15-04:00): price +603, OI -1,294, delta +1,776 = covering rally, then flat. Circled 07:15 bar: volume 5x, delta +374, OI +415 = first new-position bar after 9 h of OI decline. 07:15-08:45: OI +677 at flat price, delta +1,021, released into 09:00-10:00 (+557 to 82,268.7). That was a continuation pivot; the day's reversal pivot was the 09:30 high (OI up, CVD flat, then the 13:15 unwind).
+- Backtest answer: yes, if candidates are defined at bar close (OI slope flip, divergence state, delta, volume, location) and swing labels are only the outcome. Card oi-pivot-reversal-probability-by-tf (raw, SONNET, depends on context-conditioned-session-flow-states); 30-day OI covers a 5m/15m DEV pilot only.
+- Watch next: 14:00-14:45 shorts unwound (reclaim 81,500, OI falling) or acceptance under 80,987.6. HALT unchanged.
+
+## 10-18 17:57Z 5m same day (0061b6c6c2bc) mirror@2026-10-18 17:56Z
+- Read: SHOT_0061b6c6c2bc.md (8 MATCH, 1 NOT_IN_DATA), tag NOTE. Last read id: 0061b6c6c2bc.
+- 5m shows the same phases bar-exact: 07:20 OI step (+415), 09:00 release (+309 OI, delta +889), 13:10-13:55 long liquidation (OI -1,762, delta -1,879), 13:55-15:00 new shorts into the fall (OI +817), 15:00-18:00 flat base (OI -158, delta +140, fading volume).
+- Prior watch: low broken by 31.7 pts (80,955.9 at 15:40), not accepted; 81,500 not reclaimed. Day taker delta back to ~0 (+750).
+- Answer to "only one TF": 5m times a phase start, 15m shows whether it held; both rules go to card oi-pivot-reversal-probability-by-tf. MTS itself has no phase detector (quad = 1h snapshot, display only).
+- Watch next: shorts cover (OI down, price up) or acceptance under 80,955.9 toward weekly VAL 80,868. HALT unchanged.

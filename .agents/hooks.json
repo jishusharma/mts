@@ -1,0 +1,11 @@
+{
+  "mts-stop-guard": {
+    "Stop": [
+      {
+        "type": "command",
+        "command": "python \"../scripts/dev/stop_guard.py\" hook",
+        "timeout": 20
+      }
+    ]
+  }
+}

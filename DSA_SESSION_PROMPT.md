@@ -170,7 +170,7 @@ A claim older than 24 h is stale: release it and say so in the Result line. Neve
 
 ### 5a. ONE TASK, END TO END (the recipe; about 5-8 replies)
 1. Claim (WORKTREE cwd): `python scripts/dev/sync.py start` then `python scripts/dev/sync.py claim "<task>"` (prints the slug).
-   A card: also `tasks.py take <id> --claim <slug>`; a desk row: `desk.py take <id>`.
+   A card: also `tasks.py take <id> --claim <slug>` (optional: `done`/`finish` also close a ready card that passes every gate); a desk row: `desk.py take <id>`.
 2. Read: the card brief or desk row, then only the files it names (`git grep -n`, ranged reads).
 3. Decide: the simplest path that meets the requirements, one or two sentences. A clear task-aligned default exists:
    take it, say which after (operator standing order 2026-10-07). Only the operator's calls (trading direction, orders,

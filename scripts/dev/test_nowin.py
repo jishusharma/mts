@@ -55,9 +55,17 @@ class NoWin(unittest.TestCase):
         with mock.patch.object(sys, "platform", "win32"), mock.patch.object(nowin, "_console_hidden", return_value=False):
             self.assertFalse(nowin.wanted())
 
+    def test_no_console_counts_as_windowless(self):
+        # A python.exe with no console at all (detached, or started by a GUI app) opens a visible console for every git child.
+        if sys.platform != "win32":
+            self.skipTest("Windows console API")
+        with mock.patch("ctypes.windll.kernel32.GetConsoleWindow", return_value=0):
+            self.assertTrue(nowin._console_hidden())
+
     def test_git_callers_install_the_shim(self):
         d = os.path.dirname(os.path.abspath(__file__))
-        for name in ("make_status.py", "testnet_canary.py", "auto_deploy.py", "live_mirror.py"):
+        for name in ("make_status.py", "testnet_canary.py", "auto_deploy.py", "live_mirror.py", "shot.py",
+                     "stop_guard.py"):
             self.assertIn("nowin.install(", open(os.path.join(d, name), encoding="utf-8").read(), name)
 
     def test_backup_snapshot_forces_the_shim(self):

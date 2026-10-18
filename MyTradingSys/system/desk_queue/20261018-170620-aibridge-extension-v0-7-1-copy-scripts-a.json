@@ -1,0 +1,10 @@
+{
+  "done_when": "F:\\AIBridge\\extension\\loop.js contains L.VERSION = '0.7.1'; F:\\AIBridge\\extension\\content.js contains postLanded; F:\\AIBridge\\extension.pre_0.7.1 exists; after the operator reload and F5 the DevTools console prints '[AIBridge] content script v0.7.1 loaded'.",
+  "from": "JIS-NUC",
+  "id": "20261018-170620-aibridge-extension-v0-7-1-copy-scripts-a",
+  "need": "Source: origin/fast-track, path scripts/aibridge/extension (files content.js, loop.js, background.js, manifest.json, panel.css). Backup: F:\\AIBridge\\extension.pre_0.7.1. Target: F:\\AIBridge\\extension. Operator step after the copy: chrome://extensions reload, then F5 on the DeepSeek chat. Do not restart the agent or any process.",
+  "posted": "2026-10-18T17:06:20Z",
+  "status": "pending",
+  "target": "JIS-NB",
+  "title": "AIBridge extension v0.7.1: copy scripts/aibridge/extension from origin/fast-track (commit 3270e742 or later) to F:\\AIBridge\\extension. First rename the current F:\\AIBridge\\extension to F:\\AIBridge\\extension.pre_0.7.1 (backup, do not delete), then copy the new folder in as F:\\AIBridge\\extension. Then tell the operator: reload the AIBridge extension in chrome://extensions, then press F5 on the DeepSeek chat."
+}

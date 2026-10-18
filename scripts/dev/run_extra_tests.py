@@ -27,6 +27,7 @@ EXTRA = [
     "scripts/dev/test_health_audit.py",
     "scripts/dev/test_mts_doctor.py",
     "scripts/dev/test_prereg_gate.py",
+    "scripts/dev/test_eagle_gaps.py",
     "scripts/dev/test_research_kit_lint.py",
     "MyTradingSys/research/layer_lab/context_fix2_mde_rule/test_mde_rule.py",
     "MyTradingSys/research/layer_lab/candle_pattern_event_table/test_patterns.py",
@@ -175,15 +176,29 @@ def run_files(rels, n_jobs, one=run_one, tmp=None):
     return [f"{rel}: missing" if done[rel][1] == "missing" else rel for rel in rels if not done[rel][0]]
 
 
-def main():
+def pick(argv, tests):
+    """`--only A B ...` (the smoke gate's subset, GATE_SPEED D6): those of `tests`, in list order; a name not in `tests` is an error
+    (a typo must not pass as 'nothing to run'). No --only: every test."""
+    if "--only" not in argv:
+        return list(tests)
+    want = [a.replace("\\", "/") for a in argv[argv.index("--only") + 1:]]
+    unknown = [w for w in want if w not in tests]
+    if unknown:
+        raise SystemExit(f"run_extra_tests: not an extra test: {', '.join(unknown)}")
+    return [t for t in tests if t in want]
+
+
+def main(argv=None):
+    argv = sys.argv[1:] if argv is None else argv
     try:
         sys.stdout.reconfigure(line_buffering=True, errors="replace")
     except (AttributeError, ValueError):
         pass
+    tests = pick(argv, all_tests())
     tmp = Path(tempfile.mkdtemp(prefix="mts_xt_"))
-    bad = run_files(all_tests(), jobs(), tmp=tmp)
+    bad = run_files(tests, jobs(), tmp=tmp)
     shutil.rmtree(tmp, ignore_errors=True)
-    print("extra tests: " + ("FAIL " + ", ".join(bad) if bad else "PASS"))
+    print(f"extra tests ({len(tests)} files): " + ("FAIL " + ", ".join(bad) if bad else "PASS"))
     return 1 if bad else 0
 
 

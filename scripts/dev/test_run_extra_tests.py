@@ -44,3 +44,17 @@ def test_study_folder_tests_are_discovered_without_an_entry(tmp_path):
 def test_failure_detail_empty_output_is_empty():
     assert rx.failure_detail("", "") == ""
     assert rx.failure_detail(None, None) == ""
+
+
+def test_only_picks_the_named_subset_in_list_order_and_refuses_a_typo():
+    # GATE_SPEED D6: the smoke gate runs `run_extra_tests.py --only <subset>`
+    tests = ["a/test_1.py", "b/test_2.py", "c/test_3.py"]
+    assert rx.pick([], tests) == tests
+    assert rx.pick(["--only", "c/test_3.py", "a/test_1.py"], tests) == ["a/test_1.py", "c/test_3.py"]
+    assert rx.pick(["--only"], tests) == []
+    try:
+        rx.pick(["--only", "a/test_9.py"], tests)
+    except SystemExit as e:
+        assert "a/test_9.py" in str(e)
+    else:
+        raise AssertionError("a name that is not an extra test must stop the step")

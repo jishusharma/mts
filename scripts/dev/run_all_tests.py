@@ -5,6 +5,8 @@ Usage:
   python scripts/dev/run_all_tests.py --quick (skip mvn and backtest)
   python scripts/dev/run_all_tests.py --quick --smoke --changed-file F   (what `sync.py ship` runs: only the steps gate_select picks
                                                                           for the paths listed in F; live-path or unknown paths = all)
+  sync.py ship adds --precheck --fail-fast --slot --record (MyTradingSys/system/GATE_SPEED.md): cheap steps first without the gate
+  slot, stop at the first failure, the slot around the main phase only, steps that passed on this exact clean tree are not rerun.
 
 Steps that share no state run concurrently in MTS_GATE_JOBS worker threads (default min(4, cpu count); MTS_GATE_JOBS=1 runs
 one step at a time in definition order, the old behaviour). SERIAL_STEPS (they scan or write checkout state) and Maven run one
@@ -13,6 +15,7 @@ a redirected or backgrounded run shows progress; the SUMMARY lists every step in
 at 600 s: start the gate (and `sync.py ship`, which calls it) in the background and read the output once.
 """
 import atexit
+import contextlib
 import glob
 import json
 import os
@@ -24,7 +27,7 @@ import threading
 import time
 import traceback
 from concurrent.futures import ThreadPoolExecutor
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(Path(__file__).resolve().parent))   # gate_select
@@ -70,7 +73,8 @@ SERIAL_STEPS = ("3ly", "3af", "3x", "3ms", "3mg", "5")
 PYTEST_SHARD_NUMS = ("4", "4b", "4c", "4g", "4h")
 TEST_FILE_DEFAULT_S = 2
 TEST_FILE_SECONDS = {
-    "test_turn_meter.py": 150,
+    "test_turn_meter.py": 8,     # 150 until GATE_SPEED D7 (2026-10-18) ran its hook calls in-process: 7 s
+
     "test_aibridge_payload.py": 95,
     "test_b091_build_check_tiers.py": 60,
     "test_build_check_report_reasons.py": 32,
@@ -83,6 +87,19 @@ TEST_FILE_SECONDS = {
 }
 SLOWEST_FIRST = ("4", "4b", "4c", "4g", "4h", "4e", "4f","3xt", "5b", "3k", "3ds", "3dk", "3bk", "3w")
 _LOCK = threading.Lock()
+
+# GATE_SPEED D1 (ship only, --precheck): these run first, PRECHECK_JOBS at a time and WITHOUT a gate slot; any failure stops the gate
+# before the slow steps start. OURS: the steps whose median is <= 25 s over 4106 step rows of 30 trees' gate_timing.jsonl (2026-10-18),
+# plus 3x (ALWAYS, 18 s in ship logs, 8 failures) and 3js. 2026-10-18: RELAY.md over its size cap failed step 4d (6.6 s) at +438 s.
+CHEAP_STEPS = ("1", "2", "3", "3b", "3c", "3r", "3cv", "3tm", "3s", "3f", "3td", "3hs", "3sq", "3ly", "3cy", "3tl", "3q", "3p", "3t",
+               "3d", "3h", "3g", "3gs", "3rc", "3e", "3sh", "3cs", "3pc", "3rb", "3af", "3vd", "3lm", "3gd", "3dl", "3x", "3mg", "3js",
+               "4d", "4e", "5c")
+PRECHECK_JOBS = 2
+TARGET_STEP = "4t"   # precheck pytest of the MyTradingSys/tests files that reference the change (they also run in their shard)
+TARGET_CAP = 12      # OURS: at most this many files (sorted), so the precheck stays about a minute
+SLOW_FILE_S = 30     # files measured at >= this many seconds stay in their shard only
+RECORD_NAME = "mts_gate_record.json"   # GATE_SPEED D3: per-worktree git dir, never shared between trees or machines
+RECORD_MAX_AGE_S = 24 * 3600
 
 # Why gate_select chose the plan (set by apply_selection) and the mode, for the timing log.
 gate_reason = None
@@ -322,11 +339,19 @@ class Step:
     """One gate step. cmd is an argv list (or a string), or run is a zero-argument callable returning (ok, output); skip = reason
     it does not run. lane 'seq' steps run one at a time after the concurrent pool."""
 
-    def __init__(self, num, desc, label, cmd=None, run=None, cmd_text=None, skip=None, tail=15):
+    def __init__(self, num, desc, label, cmd=None, run=None, cmd_text=None, skip=None, tail=15, key=None):
         self.num, self.desc, self.label, self.skip, self.tail = str(num), desc, label, skip, tail
         self.cmd_text = cmd_text or (" ".join(cmd) if isinstance(cmd, list) else str(cmd))
         self.run = run or (lambda: exec_step(cmd))
         self.lane = "seq" if self.num in SERIAL_STEPS else "par"
+        self.key = key   # what the step runs beyond cmd_text (a module subset); part of its pass-record signature
+
+    def sig(self):
+        """Signature for the pass record: the command without its per-run scratch paths, plus `key`."""
+        import hashlib
+        import re
+        text = re.sub(r"--(basetemp|ignore-glob)=\S+", "", self.cmd_text.replace(sys.executable, "python"))
+        return hashlib.sha1(f"{self.num}|{self.desc}|{' '.join(text.split())}|{self.key or ''}".encode("utf-8")).hexdigest()[:16]
 
 
 def run_mvn():
@@ -415,6 +440,7 @@ def build_plan(quick):
     plan.append(Step("3bk", "Backup snapshot tests (dirty/untracked work reaches the remote)", "Step 3bk: Backup snapshot tests", run=lambda: exec_unittest_shards("scripts/dev/test_backup_snapshot.py", gate_jobs() if gate_jobs() == 1 else 2), cmd_text="python -m unittest (scripts/dev/test_backup_snapshot.py, 2 shards)", tail=None))
     add("3vd", "Verdict registry override tests (sourced hand corrections survive backfill)", [sys.executable, "scripts/dev/test_verdicts.py"], "Step 3vd: Verdict registry tests")
     add("3lm", "Live mirror tests (read-only desktop->work-tree data, fail-closed)", [sys.executable, "scripts/dev/test_live_mirror.py"], "Step 3lm: Live mirror tests")
+    add("3js", "Config check (settings.json parses, hook scripts exist, secrets stay ignored)", [sys.executable, "scripts/dev/test_config_check.py"], "Step 3js: Config check")   # GATE_SPEED D5
 
     # Step 3w: wiring gate - every unrun code file is declared in wiring_registry.json or archived (fast, in --quick too)
     add("3w", "Wiring gate tests", [sys.executable, "scripts/dev/test_wiring_scan.py"], "Step 3w: Wiring gate tests")
@@ -489,21 +515,43 @@ def build_plan(quick):
     return plan
 
 
-def run_plan(plan, jobs, out=None):
+NOT_RUN = {}   # step num -> why it did not run (fail-fast / precheck failed); results[num] is None for these
+
+
+def run_plan(plan, jobs, out=None, fail_fast=False, precheck=False, slot=None, reused=None):
     """Run the plan and print each step's block as it finishes. Independent steps run `jobs` at a time, slowest first; SERIAL_STEPS
-    follow one by one; jobs == 1 runs everything in definition order. Returns {step num: True|False|None}."""
+    follow one by one; jobs == 1 runs everything in definition order. Returns {step num: True|False|None}.
+    GATE_SPEED (sync.py ship only; CI, auto_deploy and a bare run pass none of these):
+      precheck   CHEAP_STEPS and the targeted step run first, PRECHECK_JOBS at a time, outside `slot`; any failure there and the rest
+                 is NOT RUN (the whole precheck still runs, so every cheap failure shows at once)
+      fail_fast  in the main phase, after the first failed step the steps not yet started are NOT RUN; started ones finish
+      slot       zero-argument context manager (the gate slot) held around the main phase only
+      reused     {num: note} of steps the pass record shows passing on this exact tree: PASS without running"""
     out = out or sys.stdout
     results = {}
+    reused = reused or {}
     skipped = [s for s in plan if s.skip]
-    todo = [s for s in plan if not s.skip]
+    todo = [s for s in plan if not s.skip and s.num not in reused]
     for s in skipped:
         print(f"\n[Step {s.num}] {s.desc}\nStep {s.num}: SKIP ({s.skip})", file=out, flush=True)
         results[s.num] = None
-    print(f"Gate: {len(todo)} steps, {jobs} at a time", file=out, flush=True)
+    for s in plan:
+        if not s.skip and s.num in reused:
+            print(f"\n[Step {s.num}] {s.desc}\nStep {s.num}: PASS ({reused[s.num]})", file=out, flush=True)
+            results[s.num] = True
     t_start = time.monotonic()
     finished = [0]
+    failed_first = []
 
-    def run_one(s):
+    def not_run(s, why):
+        NOT_RUN[s.num] = why
+        results[s.num] = None
+        with _LOCK:
+            print(f"\n[Step {s.num}] {s.desc}\nStep {s.num}: NOT RUN ({why})", file=out, flush=True)
+
+    def run_one(s, stop_on_fail):
+        if stop_on_fail and failed_first:
+            return not_run(s, f"fail-fast: step {failed_first[0]} failed")
         t0 = time.monotonic()
         try:
             ok, output = s.run()
@@ -513,43 +561,193 @@ def run_plan(plan, jobs, out=None):
         record_timing(s.num, s.desc, elapsed, ok, gate_mode)
         with _LOCK:
             finished[0] += 1
+            if ok is False and not failed_first:
+                failed_first.append(s.num)
             progress = f"{finished[0]}/{len(todo)} done, +{time.monotonic() - t_start:.0f}s"
             print("\n".join(format_step(s.num, s.desc, s.cmd_text, ok, output, elapsed, progress, s.tail)), file=out, flush=True)
         results[s.num] = ok
 
-    if jobs <= 1:
-        for s in todo:
-            run_one(s)
-    else:
-        par = [s for s in todo if s.lane == "par"]
+    def run_steps(steps, n_jobs, stop_on_fail):
+        if n_jobs <= 1:
+            for s in steps:
+                run_one(s, stop_on_fail)
+            return
+        par = [s for s in steps if s.lane == "par"]
         par.sort(key=lambda s: SLOWEST_FIRST.index(s.num) if s.num in SLOWEST_FIRST else len(SLOWEST_FIRST))   # stable: the rest keep definition order
-        with ThreadPoolExecutor(max_workers=jobs) as pool:
-            list(pool.map(run_one, par))
-        for s in todo:
+        with ThreadPoolExecutor(max_workers=n_jobs) as pool:
+            list(pool.map(lambda s: run_one(s, stop_on_fail), par))
+        for s in steps:
             if s.lane == "seq":
-                run_one(s)
+                run_one(s, stop_on_fail)
+
+    if precheck:
+        pre = [s for s in todo if s.num in CHEAP_STEPS or s.num == TARGET_STEP]
+        main_steps = [s for s in todo if s not in pre]
+        print(f"Gate: {len(todo)} steps; precheck {len(pre)} cheap steps, {min(jobs, PRECHECK_JOBS)} at a time, no gate slot"
+              + (f"; {len(reused)} reused from the pass record" if reused else ""), file=out, flush=True)
+        run_steps(pre, min(jobs, PRECHECK_JOBS), False)
+        if failed_first:
+            for s in main_steps:
+                not_run(s, f"precheck failed: step {failed_first[0]}")
+            return results
+        print(f"Precheck passed in {time.monotonic() - t_start:.0f}s; main {len(main_steps)} steps, {jobs} at a time", file=out, flush=True)
+    else:
+        main_steps = todo
+        print(f"Gate: {len(todo)} steps, {jobs} at a time" + (f"; {len(reused)} reused from the pass record" if reused else ""),
+              file=out, flush=True)
+    if main_steps:
+        with (slot() if slot else contextlib.nullcontext()):
+            run_steps(main_steps, jobs, fail_fast)
     return results
+
+
+def changed_files(args):
+    """The --changed-file list (one path per line), or None when absent or unreadable."""
+    if "--changed-file" not in args:
+        return None
+    try:
+        lines = Path(args[args.index("--changed-file") + 1]).read_text(encoding="utf-8").splitlines()
+    except (OSError, IndexError):
+        return None
+    return [f.strip().replace("\\", "/") for f in lines if f.strip()]
+
+
+def targeted_tests(files, root=REPO):
+    """GATE_SPEED D1: MyTradingSys/tests/test_*.py files (the step-4 shard files) that changed, reference a changed module or name a
+    changed non-.py file (docs too: test_relay_prompts names RELAY.md); files measured >= SLOW_FILE_S are left to their shard. Sorted,
+    at most TARGET_CAP."""
+    import gate_select
+    tests_dir = Path(root) / "MyTradingSys" / "tests"
+    if not tests_dir.exists():
+        return []
+    out = []
+    for t in sorted(tests_dir.glob("test_*.py")):
+        rel = f"MyTradingSys/tests/{t.name}"
+        if TEST_FILE_SECONDS.get(t.name, 0) >= SLOW_FILE_S:
+            continue
+        for f in files:
+            p = PurePosixPath(f)
+            if rel == f or (f.endswith(".py") and p.stem not in gate_select.SHARED_STEMS and gate_select.references(p.stem, t)) \
+                    or (not f.endswith(".py") and gate_select.names(p.name, t)):
+                out.append(rel)
+                break
+    return out[:TARGET_CAP]
 
 
 def apply_selection(plan, args):
     """--changed-file F (one path per line, vs origin/fast-track) with --smoke: skip the steps gate_select.select does not pick.
-    --smoke without --changed-file, or an unreadable file, runs everything (fail closed). Returns (plan, mode or None)."""
-    if "--smoke" not in args or "--changed-file" not in args:
-        return plan, None
-    try:
-        files = Path(args[args.index("--changed-file") + 1]).read_text(encoding="utf-8").splitlines()
-    except (OSError, IndexError):
+    --smoke without --changed-file, or an unreadable file, runs everything (fail closed). Returns (plan, mode or None).
+    GATE_SPEED D6: a smoke/docs 3xt runs only gate_select.extra_subset, a smoke 5b only gate_select.layer_subset.
+    D1: with --precheck and a readable list, the targeted step 4t is added (every mode)."""
+    files = changed_files(args)
+    if "--precheck" in args and files:
+        tt = targeted_tests(files)
+        if tt:
+            plan.append(Step(TARGET_STEP, f"Precheck pytest: {len(tt)} test file(s) that reference the change", f"Step {TARGET_STEP}: Targeted pytest",
+                             cmd=pytest_cmd(tt)))
+    if "--smoke" not in args or files is None:
         return plan, None
     import gate_select
+    import run_extra_tests
     global gate_reason, gate_mode
-    mode, nums, gate_reason = gate_select.explain([f.strip() for f in files if f.strip()], [(s.num, s.cmd_text) for s in plan])
+    extras, modules = run_extra_tests.all_tests(), find_layer_modules()
+    mode, nums, gate_reason = gate_select.explain(files, [(s.num, s.cmd_text) for s in plan], step_files={"3xt": extras, "5b": modules})
     gate_mode = mode
     if mode == "full":
         return plan, mode
     for s in plan:
-        if s.num not in nums and not s.skip:
+        if s.num not in nums and not s.skip and s.num != TARGET_STEP:
             s.skip = f"not selected by the {mode} gate (CI runs it)"
+    for i, s in enumerate(plan):
+        if s.skip:
+            continue
+        if s.num == "3xt":
+            sub = gate_select.extra_subset(files, extras)
+            plan[i] = Step("3xt", f"Extra tests the change reaches ({len(sub)} of {len(extras)} files)", s.label,
+                           cmd=[sys.executable, "scripts/dev/run_extra_tests.py", "--only", *sub])
+        elif s.num == "5b":
+            sub = gate_select.layer_subset(files, modules)
+            jobs = gate_jobs()
+            plan[i] = Step("5b", f"Layer tests the change reaches ({len(sub)} of {len(modules)} modules)", s.label, tail=None,
+                           run=(lambda sub=sub, jobs=jobs: exec_layer_chunks(sub, jobs)), key=",".join(sub),
+                           cmd_text=f"python -m unittest ({len(sub)} modules)")
     return plan, mode
+
+
+def _git_out(root, *args):
+    r = subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True, timeout=60)
+    if r.returncode != 0:
+        raise RuntimeError(r.stderr.strip())
+    return r.stdout
+
+
+def tree_state(root=REPO):
+    """(HEAD tree id, clean): clean = `git status --porcelain` shows nothing (untracked files count, ignored ones do not; the
+    pulled live mirror is regenerable noise). A dirty tree never writes or reads the pass record: the gate ran on files HEAD lacks."""
+    tree = _git_out(root, "rev-parse", "HEAD^{tree}").strip()
+    rows = [r for r in _git_out(root, "status", "--porcelain").splitlines() if r.strip() and "runtime_data/_mirror" not in r]
+    return tree, not rows
+
+
+def record_path(root=REPO):
+    return Path(_git_out(root, "rev-parse", "--absolute-git-dir").strip()) / RECORD_NAME
+
+
+def load_reused(plan, root=REPO, now=None):
+    """GATE_SPEED D3 (same-tree retry only, reviewers 2026-10-18): {num: note} for selected steps the record shows PASSING on this exact,
+    clean tree with the same step signature, written by the same python less than RECORD_MAX_AGE_S ago. Anything else (other tree, dirty
+    tree, unreadable record, other python) = {}: run everything selected. Typical hit: a push that failed after ALL TESTS PASSED, or a
+    rerun after one flaky step (only the failed step runs again)."""
+    try:
+        tree, clean = tree_state(root)
+        rec = json.loads(record_path(root).read_text(encoding="utf-8"))
+        if not clean or rec.get("tree") != tree or rec.get("python") != sys.version:
+            return {}
+        if (now or time.time()) - float(rec.get("epoch", 0)) > RECORD_MAX_AGE_S:
+            return {}
+        passed = rec.get("passed", {})
+        return {s.num: f"reused: passed on this tree {rec.get('utc', '?')}" for s in plan
+                if not s.skip and passed.get(s.num) == s.sig()}
+    except Exception:
+        return {}
+
+
+def save_record(plan, results, root=REPO, start_tree=None):
+    """Write the passing steps of this run (and the still-valid passes of the same tree) to the record. Skipped when the tree is dirty or
+    HEAD moved while the gate ran (a session edited or committed mid-gate). Atomic (temp + os.replace, 3 tries on a Windows lock); never
+    raises: a record that cannot be written only costs a rerun."""
+    try:
+        tree, clean = tree_state(root)
+        if not clean or (start_tree and tree != start_tree):
+            return False
+        path = record_path(root)
+        passed = {}
+        try:
+            old = json.loads(path.read_text(encoding="utf-8"))
+            if old.get("tree") == tree and old.get("python") == sys.version:
+                passed = dict(old.get("passed", {}))
+        except Exception:
+            pass
+        for s in plan:
+            if results.get(s.num) is True:
+                passed[s.num] = s.sig()
+            elif results.get(s.num) is False:
+                passed.pop(s.num, None)
+        row = {"tree": tree, "python": sys.version, "epoch": time.time(), "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+               "passed": passed}
+        tmp = path.with_name(f"{RECORD_NAME}.{os.getpid()}.tmp")
+        with open(tmp, "w", encoding="utf-8", newline="\n") as fh:
+            json.dump(row, fh)
+        for i in range(3):
+            try:
+                os.replace(tmp, path)
+                return True
+            except PermissionError:
+                time.sleep(0.5 * (i + 1))
+        os.unlink(tmp)
+    except Exception:
+        pass
+    return False
 
 
 def lower_priority():
@@ -609,7 +807,22 @@ def main(argv=None):
     if mode:
         print(f"Gate mode: {mode} ({sum(1 for s in plan if not s.skip)} steps); CI runs the full suite behind the push", flush=True)
         print(f"Gate reason: {gate_reason}", flush=True)
-    results = run_plan(plan, gate_jobs())
+    # GATE_SPEED: the ship-only flags (sync.run_gate passes them; CI, auto_deploy and daily_hygiene never do)
+    use_record = "--record" in args and not os.environ.get("CI")
+    start_tree, reused = None, {}
+    if use_record:
+        try:
+            start_tree = tree_state()[0]
+        except Exception:
+            use_record = False
+        reused = load_reused(plan) if use_record else {}
+    slot = None
+    if "--slot" in args and mode not in ("docs", "none"):
+        import sync
+        slot = lambda: sync.gate_slot(REPO)   # noqa: E731 - the slot is taken after the precheck, released when the main phase ends
+    results = run_plan(plan, gate_jobs(), fail_fast="--fail-fast" in args, precheck="--precheck" in args, slot=slot, reused=reused)
+    if use_record:
+        save_record(plan, results, start_tree=start_tree)
 
     # Summary
     print("\n" + "=" * 70)
@@ -623,10 +836,14 @@ def main(argv=None):
         elif result is False:
             print(f"{s.label}: FAIL")
             failed.append(s.label)
+        elif s.num in NOT_RUN:
+            print(f"{s.label}: NOT RUN ({NOT_RUN[s.num]})")
         else:
             print(f"{s.label}: SKIP")
 
     print("=" * 70)
+    if not failed and NOT_RUN:   # fail closed: a step that did not run never counts as a pass
+        failed = [s.label for s in plan if s.num in NOT_RUN]
     if failed:
         print(f"FAILED: {len(failed)} step(s)")
         for f in failed:
