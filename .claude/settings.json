@@ -97,7 +97,7 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "Agent|Task|mcp__ccd_session__start_session|mcp__ccd_session_mgmt__set_session_model",
+        "matcher": "Agent|Task|mcp__ccd_session__start_session|mcp__ccd_session_mgmt__set_session_model|SendMessage|mcp__ccd_session_mgmt__send_message",
         "hooks": [
           {
             "type": "command",
