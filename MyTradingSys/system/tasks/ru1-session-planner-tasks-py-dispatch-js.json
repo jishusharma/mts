@@ -4,33 +4,62 @@
   "commands": [],
   "created": "2026-10-18T17:22:43Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "`tasks.py dispatch` and `--json` run on trunk; test_tasks_dispatch.py passes; `role_loader.py check` exits 0.",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Add `tasks.py dispatch [--json] [--host X]`: one deterministic ranked snapshot of dispatchable cards with weight, worker, reviewer slot and a reason for every excluded card (RU1, ROLE_UPGRADES_2026-10-18.md).",
   "id": "ru1-session-planner-tasks-py-dispatch-js",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into claude/competent-ishizaka-823d4b",
+      "ref": "1f3af1f4ebe3",
+      "utc": "2026-10-18T17:27:10Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "b5ef5d369d63 role_loader: deterministic role load hook with derived-token banner",
+      "ref": "MyTradingSys/system/roles/session_planner.md",
+      "utc": "2026-10-18T17:16:30Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-18 T0-ONLY",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-18T18:22:33Z",
   "refs": [
     "MyTradingSys/research/roles/ROLE_UPGRADES_2026-10-18.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "MyTradingSys/tests/test_tasks_dispatch.py",
+    "MyTradingSys/system/roles/session_planner.md"
+  ],
+  "scope_out": [
+    "scripts/dev/desk.py"
+  ],
+  "scope_sha": "1f3af1f4ebe3",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Add dispatch() (pure) + cmd_dispatch to tasks.py reusing rank, problems, active_holds, open_claims, lane_health.",
+    "Table <=15 lines per session_planner.md Duty 2; --json carries included and excluded with reasons.",
+    "Fixture tests: held, claimed, dependency-blocked excluded; hand-ranked order; byte-identical reruns.",
+    "Point session_planner.md boot at `tasks.py dispatch`, bump version, role_loader retoken + check."
+  ],
+  "tests": "MyTradingSys/tests/test_tasks_dispatch.py: held/claimed/dependency excluded with reason, ranking equals hand-ranked fixture, two runs identical; each fails before the change.",
   "title": "RU1 Session_Planner: tasks.py dispatch --json ranked snapshot",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }
