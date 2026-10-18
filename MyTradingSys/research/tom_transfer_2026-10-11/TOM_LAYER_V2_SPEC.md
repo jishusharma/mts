@@ -468,3 +468,18 @@ DESIGN recall of the paths (new trial rows `tom_v2_fade_paths_20261018`): T2b (2
 a hit at any k (band 25242.4, width 22); T3 and T3b fire nothing (A1's idea fails A-C2 that day, nothing new read from 2026-05-12, a holdout
 date). CHECK not read. Not run through `tom_v2_recall.py` (its replay harness is outside this card's scope): a scratch replay of the same
 detector on the one dev day.
+
+## 19. Build record, card 4 (tom-encode-fade-profile-proofs, 2026-10-18, JIS-NUC)
+PROFILE arm built: `SpikeFadeProfile.java`, hooked in `SetupCandidatesBuilder` behind `-Dmts.spikeFade=true`. It takes the A1 candidate of the
+same instant and returns a separate `fade_short` candidate with `arm = profile` (PRICE candidates now carry `arm = price`, nothing else
+changed; flag off = no `arm` anywhere). A-C3 is a gate (spec 13: top-third volume below each lower third, session POC not in the top
+third). A-P3 and A-P8 are proofs, with the raw measures in `profile_items`. Labels: SOURCED = the three Tom quotes (class header);
+RANK-DEFAULT = the thirds rule; OURS = volume at the close price, 30 rows, first-max POC, leg = session start to extreme, balance =
+10 bars before the extreme, P-shape = leg POC in the upper half, A-P8 = 1m bars after the extreme with POC in the lower half of their
+range. NO-SOURCE, raw only: how long price stays inside the balance (`bars_inside`), the smaller timeframe. Shape parity is
+NOT_IN_DATA (PROFILE_PARITY.md 2026-10-13), so GER40 gets no profile candidate unless `-Dmts.spikeFade.profileDax=true`; missing volume
+is NOT_IN_DATA too. `Bars` gained a volume array (kline index 5; NaN when absent; the replay constructor has none, so the
+replay harness needs a volume-carrying constructor before BTC profile replays). Tests: `SpikeFadeProfileTest` (10; thirds 500/300/100 ->
+thin, top 400 -> not thin, POC in the top third -> not thin; failed P breakout and lower b-shape by hand numbers in its header; DAX
+NOT_IN_DATA; no volume; flag off). They did not compile before the class existed (`cannot find symbol SpikeFadeProfile`); the
+SpikeFade PRICE, paths and golden tests are unchanged and pass (41 tests in all four classes).
