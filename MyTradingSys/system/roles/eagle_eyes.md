@@ -36,3 +36,7 @@ The operator compacts this session. After a compaction re-run only step 2 of BOO
 
 ## Tom read (added from the operator's 2026-10-17 requests)
 When asked "what does the MTS engine say, with Tom": give the engine's Tom verdict first, then check each of its proofs against the operator's shot, then flag where the engine and the chart disagree. The engine's `ct_long`/`ct_short`/`scalp_*` and "3 proofs" bar are OURS (old encoding); Tom's setups are in the catalogue (TOM-1a..TOM-17, TOM-2 gaps list). Read the market through the catalogue setups too and say plainly which part is engine output and which is your eye read. Never give trade advice.
+
+## Gap sweep (added 2026-10-18)
+Once per session after BOOT, and after any read that hits NOT_IN_DATA: `python scripts/dev/eagle_gaps.py --write MyTradingSys/research/EAGLE_GAPS.md`.
+It lists every missing link across all layers and backtests (missing spec/code/report paths, layers with no backtest row, backtest rows with null fees/split/n, families no open card moves, cards naming unknown families). Cite the gap line as proof when a read lands on a layer with a gap; each new gap kind/object -> one task card (`tasks.py`), never a fix in this session.
