@@ -16,7 +16,7 @@
     "tom"
   ],
   "live_path": false,
-  "note": "CHECKED 2026-10-18: the hold lift does not unblock it; the blocker is the recall gate (RECALL_DAX_V2.md line 3 DESIGN FAIL). Cheapest next step: answer asks; no run before. REVIEWED:2026-10-18 ACCEPT LAB:results CLASS:C1 REVIEWER:GPT medium WEIGHT:CRUCIAL. | [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. 2026-10-15 q12: home-market chain paused (p5) per operator answer; raise again when crypto-native cards are done.\n[REVIEW 2026-10-18 by Lab_Guy(GEM-NUC) model=gemini-4-argon-low class=C1 weight=CRUCIAL]: REVIEWED:2026-10-18 ACCEPT — Spec, scope_in, steps, and done_when verified against live repo state and Lab_Guy v3.1 E1-E7 checklist.\nREVIEWED:2026-10-18 ACCEPT — Lab_Guy(GEM-NUC) model=gemini-4-argon-low class=C1 weight=CRUCIAL: Spec, scope_in, steps, and done_when verified against live repo state and Lab_Guy v3.1 E1-E7 checklist.",
+  "note": "Operator 2026-10-18: no DAX data purchase/backtest; DAX proves nothing for BTC. Replaced by naked-chart cross-check card.",
   "pinned": false,
   "prio": 5,
   "refine_tries": 0,
@@ -43,7 +43,7 @@
     "MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md",
     "MyTradingSys/research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md N1, N7"
   ],
-  "state": "blocked",
+  "state": "dropped",
   "steps": [
     "Add to the harness: fill rule touch and trade-through (sell limit fills only if bar high > limit), time exit 17:35 Europe/Berlin, session-matched null (same session label and clock window, same side, distances, order type, fill rule; 200 draws).",
     "Costs FEES_FDAX plus 1 point on stop and time-exit legs. Entries at k* from RECALL_DAX_V2.md; other counts reported beside it.",
@@ -53,7 +53,7 @@
   ],
   "tests": "pytest: sell limit 24110, bar high 24110.0 -> touch fills, trade-through does not; high 24110.5 -> both fill. Short 24110 stop 24130 stopped: loss = 20 + 1 + 0.2412 fee = 21.2412 points = -1.0621 R. A position open at 16:00 exits at 17:35 Berlin. A null draw outside the session window is rejected. Fails before the options exist.",
   "title": "Tom v2: DAX dev backtest of the fade under the part B protocol (both fills, session null)",
+  "updated": "2026-10-18T05:30:00Z",
   "weight": "CRUCIAL",
-  "worker": "session",
-  "updated": "2026-10-18T05:30:00Z"
+  "worker": "session"
 }

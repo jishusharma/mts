@@ -41,6 +41,7 @@ public class SpikeFadePathsTest {
     private static final ZoneId BERLIN = ZoneId.of("Europe/Berlin");
     private static final LocalDate TODAY = LocalDate.of(2026, 10, 14);
     private static final double P = 23900.0;
+    private static final String KEY = SpikeFadeSessionState.key("GER40", TODAY);
 
     @BeforeEach
     void setUp(@TempDir Path tmp) throws Exception {
@@ -172,6 +173,10 @@ public class SpikeFadePathsTest {
         assertEquals(24010.0, math.get("target").asDouble(), 1e-9);
         assertEquals(3.55, math.get("gross_rr").asDouble(), 1e-9);
         assertEquals(3.50, math.get("net_rr").asDouble(), 1e-9);
+        // stop_n5 by hand: A1 value 20 * 23900 / 24110 = 19.8257; A3 risk 22 vs A1 risk 20, entry 24088 vs 24110:
+        // 19.8257 * (22 / 20) * (24110 / 24088) = 21.828
+        assertEquals(21.828, c.get("stop_n5").asDouble(), 0.01);
+        assertFalse(c.has("rawStop"));
         assertNull(path(build(k, 24088.0), "A2"), "no pullback bar: not A2");
     }
 
@@ -245,10 +250,10 @@ public class SpikeFadePathsTest {
         ArrayNode k = a3Series(true);
         long t0 = ms(TODAY, 7, 30);
         SpikeFadeSessionState s = SpikeFadeSessionState.shared();
-        s.recordEntry(TODAY, t0, "A1");
-        s.recordStop(TODAY, t0 + 60_000L);
-        s.recordEntry(TODAY, t0 + 120_000L, "A2");
-        s.recordStop(TODAY, t0 + 180_000L);
+        s.recordEntry(KEY, t0, "A1", 24130.0);
+        s.recordStop(KEY, t0 + 60_000L);
+        s.recordEntry(KEY, t0 + 120_000L, "A2", 24130.0);
+        s.recordStop(KEY, t0 + 180_000L);
         assertNull(path(build(k, 24088.0), "A3"), "third attempt in the session: suppressed");
         assertEquals(1, s.suppressedLog().size());
     }
@@ -257,12 +262,12 @@ public class SpikeFadePathsTest {
     void stateSurvivesARestartMidSession() {
         long t0 = ms(TODAY, 7, 30);
         SpikeFadeSessionState s = SpikeFadeSessionState.shared();
-        s.recordEntry(TODAY, t0, "A1");
-        s.recordStop(TODAY, t0 + 60_000L);
-        s.recordEntry(TODAY, t0 + 120_000L, "A2");
-        s.recordStop(TODAY, t0 + 180_000L);
+        s.recordEntry(KEY, t0, "A1", 24130.0);
+        s.recordStop(KEY, t0 + 60_000L);
+        s.recordEntry(KEY, t0 + 120_000L, "A2", 24130.0);
+        s.recordStop(KEY, t0 + 180_000L);
         SpikeFadeSessionState.resetShared();   // process restart: memory gone, file stays
-        assertFalse(SpikeFadeSessionState.shared().admit(TODAY, t0 + 300_000L).allowed);
+        assertFalse(SpikeFadeSessionState.shared().admit(KEY, t0 + 300_000L).allowed);
         assertNull(path(build(a3Series(true), 24088.0), "A3"));
     }
 
@@ -284,5 +289,124 @@ public class SpikeFadePathsTest {
     void pathA1IsUnchangedByThePaths() {
         ArrayNode out = build(a3Series(true), 24088.0);
         assertNotNull(path(out, "A1"), "A1 still emitted beside A3");
+    }
+
+    // ---- review round 1 (blind review REJECT): builder records attempts, A2 tightened, one candidate per instant, log once ----
+
+    @Test
+    void builderRecordsTheAttemptItEmitsAndRefusesTheNextBar() {
+        ArrayNode k = a3Series(true);
+        assertNotNull(path(build(k, 24088.0), "A3"));
+        assertNotNull(path(build(k, 24088.0), "A3"), "same snapshot again: same signal, same answer");
+        bar(k, 61, 24087, 24087, 24080, 24081);   // next bar closes below the balance low again
+        assertNull(path(build(k, 24081.0), "A3"), "attempt 1 still open: the repeat signal is not a new attempt");
+    }
+
+    @Test
+    void stopOutObservedFromBarsOpensTheReEntry() {
+        ArrayNode k = a3Series(true);
+        assertNotNull(path(build(k, 24088.0), "A3"));   // attempt 1, stop 24110
+        bar(k, 61, 24087, 24112, 24087, 24111);          // high 24112 >= stop 24110: stopped out
+        for (int m = 62; m < 70; m++) bar(k, m, 24100, 24101, 24095, 24100);
+        bar(k, 70, 24095, 24095, 24086, 24086);          // fresh close below the balance
+        ArrayNode out = build(k, 24086.0);
+        assertNotNull(path(out, "A3"), "re-entry on a fresh signal after the stop: " + out);
+        assertEquals(2, SpikeFadeSessionState.shared().attempts(SpikeFadeSessionState.key("GER40", TODAY)));
+        for (int m = 71; m < 80; m++) bar(k, m, 24100, 24112, 24095, 24100);   // stop hit again, third signal below
+        bar(k, 80, 24095, 24095, 24080, 24080);
+        assertNull(path(build(k, 24080.0), "A3"), "third attempt: suppressed");
+    }
+
+    @Test
+    void oneCandidatePerInstantA3WinsOverA2() {
+        ArrayNode k = withRamp();
+        bar(k, 50, 24108, 24110, 24100, 24100);
+        bar(k, 51, 24100, 24102, 24084, 24085);   // through 24088
+        for (int m = 52; m < 57; m++) bar(k, m, 24085, 24086, 24083, 24085);
+        bar(k, 57, 24085, 24087, 24084, 24086);   // pullback close 24086 above the prior low 24083, below the zone 24088
+        bar(k, 58, 24086, 24086, 24081, 24082);   // closes below the balance low 24083: A3 signal
+        ArrayNode out = build(k, 24082.0);
+        long n = 0;
+        for (JsonNode c : out) if (c.path("entry_path").asText().matches("A2|A3")) n++;
+        assertEquals(1, n, out.toString());
+        assertNotNull(path(out, "A3"));
+    }
+
+    @Test
+    void a2DoesNotFireOnTheTradeThroughBarItself() {
+        ArrayNode k = withRamp();
+        bar(k, 50, 24110, 24110, 24095, 24095);
+        bar(k, 51, 24095, 24095, 24083, 24085);   // the bar that trades through is the last bar
+        assertNull(path(build(k, 24085.0), "A2"));
+    }
+
+    @Test
+    void a2DoesNotFireOnceCloseWentBackAboveTheZone() {
+        ArrayNode k = withRamp();
+        bar(k, 50, 24110, 24110, 24095, 24095);
+        bar(k, 51, 24095, 24095, 24083, 24085);
+        bar(k, 52, 24085, 24095, 24084, 24093);   // close back above 24088: the limit would have filled
+        bar(k, 53, 24093, 24093, 24085, 24087);   // under the zone again
+        assertNull(path(build(k, 24087.0), "A2"));
+    }
+
+    @Test
+    void attemptsAreKeyedBySymbolAndDate() {
+        long t0 = ms(TODAY, 7, 30);
+        SpikeFadeSessionState s = SpikeFadeSessionState.shared();
+        s.recordEntry(SpikeFadeSessionState.key("GER40", TODAY), t0, "A3", 24110.0);
+        assertFalse(s.admit(SpikeFadeSessionState.key("GER40", TODAY), t0 + 60_000L).allowed);
+        assertTrue(s.admit(SpikeFadeSessionState.key("BTCUSDT", TODAY), t0 + 60_000L).allowed, "other instrument, own cap");
+    }
+
+    @Test
+    void unreadableFileIsNeverOverwritten() throws Exception {
+        Path f = Path.of(System.getProperty(SpikeFadeSessionState.FILE_PROPERTY));
+        Files.writeString(f, "{\"sessions\": {\"GER40|2026-10-14\": [{\"entry_ms\": 1, \"path\": \"A3\"}], \"x\": nope");
+        String before = Files.readString(f);
+        SpikeFadeSessionState.resetShared();
+        SpikeFadeSessionState s = SpikeFadeSessionState.shared();
+        s.recordEntry(TODAY, 5L, "A2");
+        s.recordStop(TODAY, 6L);
+        assertEquals(before, Files.readString(f), "damaged file kept as found");
+        assertFalse(s.admit(TODAY, 9L).allowed);
+    }
+
+    @Test
+    void stopIsCheckedAgainstTheUnroundedPrice() {
+        SpikeFadeSessionState s = SpikeFadeSessionState.shared();
+        long t0 = ms(TODAY, 7, 49);
+        String key = SpikeFadeSessionState.key("GER40", TODAY);
+        s.recordEntry(key, t0, "A3", 24110.004);
+        ArrayNode k = withRamp();
+        bar(k, 50, 24108, 24110.0, 24090, 24095);   // high 24110.00 is below the true stop 24110.004
+        long[] t = new long[k.size()];
+        double[] o = new double[t.length], h = new double[t.length], l = new double[t.length], c = new double[t.length];
+        for (int i = 0; i < t.length; i++) {
+            JsonNode b = k.get(i);
+            t[i] = b.get(0).asLong(); o[i] = b.get(1).asDouble(); h[i] = b.get(2).asDouble();
+            l[i] = b.get(3).asDouble(); c[i] = b.get(4).asDouble();
+        }
+        s.observe(key, TODAY, new SpikeFadeDetector.Bars(t, o, h, l, c));
+        assertFalse(s.admit(key, ms(TODAY, 8, 30)).allowed, "not stopped: re-entry stays closed");
+    }
+
+    @Test
+    void refusalIsLoggedOncePerSessionAndReason() {
+        SpikeFadeSessionState s = SpikeFadeSessionState.shared();
+        long t0 = ms(TODAY, 7, 30);
+        s.recordEntry(TODAY, t0, "A1");
+        for (int i = 1; i <= 5; i++) assertFalse(s.admit(TODAY, t0 + i * 60_000L).allowed);
+        assertEquals(1, s.suppressedLog().size());
+    }
+
+    @Test
+    void stateFileChangedByAnotherProcessIsSeen() {
+        long t0 = ms(TODAY, 7, 30);
+        SpikeFadeSessionState a = SpikeFadeSessionState.shared();
+        assertTrue(a.admit(TODAY, t0).allowed);
+        SpikeFadeSessionState other = new SpikeFadeSessionState(Path.of(System.getProperty(SpikeFadeSessionState.FILE_PROPERTY)));
+        other.recordEntry(TODAY, t0, "A3");
+        assertFalse(a.admit(TODAY, t0 + 60_000L).allowed, "first attempt of the other process is open");
     }
 }

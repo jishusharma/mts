@@ -44,7 +44,8 @@ final class SpikeFadePaths {
                                    SpikeFadeSessionState state) {
         List<ObjectNode> out = new ArrayList<>();
         ObjectNode base = SpikeFadeDetector.detect(mapper, root, b, marketState, sym);
-        if (base == null) return out;
+        if (base == null || !base.has("zone_time_ms") || !base.path("math").has("target") || !base.path("math").has("stop")
+                || !base.has("stop_rule") || !base.path("zone").has("price")) return out;   // fail closed on an unexpected A1 shape
         int last = b.n - 1;
         int hIdx = indexOf(b, base.get("zone_time_ms").asLong());
         if (hIdx < 0 || hIdx >= last) return out;
@@ -52,15 +53,17 @@ final class SpikeFadePaths {
         double close = b.c[last];
         double high = b.h[hIdx];
 
-        ObjectNode a3 = a3(mapper, b, base, hIdx, last, target, close, sym);
-        if (a3 != null) add(out, a3, b, state);
-        ObjectNode a2 = a2(mapper, b, base, hIdx, last, target, high, sym);
-        if (a2 != null) add(out, a2, b, state);
+        String session = SpikeFadeSessionState.key(sym, b.date[last]);
+        state.observe(session, b.date[last], b);   // stop-outs of earlier attempts, from the bars
+        // one candidate per instant (one attempt): the break of the balance supersedes the pullback (OURS)
+        ObjectNode pick = a3(mapper, b, base, hIdx, last, target, close, sym);
+        if (pick == null) pick = a2(mapper, b, base, hIdx, last, target, high, sym);
+        if (pick == null) return out;
+        if (!state.admit(session, b.t[last]).allowed) return out;
+        state.recordEntry(session, b.t[last], pick.get("entry_path").asText(), pick.get("rawStop").asDouble());
+        pick.remove("rawStop");
+        out.add(pick);
         return out;
-    }
-
-    private static void add(List<ObjectNode> out, ObjectNode c, SpikeFadeDetector.Bars b, SpikeFadeSessionState state) {
-        if (state.admit(b.date[b.n - 1], b.t[b.n - 1]).allowed) out.add(c);
     }
 
     private static ObjectNode a3(ObjectMapper m, SpikeFadeDetector.Bars b, ObjectNode base, int hIdx, int last, double target,
@@ -84,14 +87,17 @@ final class SpikeFadePaths {
         double zone = Double.POSITIVE_INFINITY;
         for (int i = hIdx - BUYZONE_BARS; i < hIdx; i++) zone = Math.min(zone, b.l[i]);
         if (!(zone < high)) return null;
-        boolean through = false;
-        double lowSince = Double.POSITIVE_INFINITY;
+        // traded through = first close below the zone; the limit at the zone is still pending only while no close has been
+        // back above it; the pullback is a last bar that is not the trade-through bar and closes above the lows before it
+        int throughIdx = -1;
+        double lowBefore = Double.POSITIVE_INFINITY;
         for (int i = hIdx + 1; i <= last; i++) {
-            if (b.c[i] < zone) through = true;
-            lowSince = Math.min(lowSince, b.l[i]);
+            if (throughIdx < 0 && b.c[i] < zone) throughIdx = i;
+            else if (throughIdx >= 0 && b.c[i] >= zone) return null;   // back at the zone: the limit would have filled
+            if (i < last) lowBefore = Math.min(lowBefore, b.l[i]);
         }
         double close = b.c[last];
-        if (!through || !(close > lowSince) || !(close < zone)) return null;
+        if (throughIdx < 0 || throughIdx == last || !(close > lowBefore) || !(close < zone)) return null;
         double stop = base.get("math").get("stop").asDouble();
         return build(m, base, "A2", base.get("stop_rule").asText(), "sell_limit", "buying_zone", zone, zone, stop, target, sym);
     }
@@ -102,6 +108,7 @@ final class SpikeFadePaths {
         if (!(risk > 0) || !(reward > 0)) return null;
         ObjectNode c = base.deepCopy();
         c.put("entry_path", path);
+        c.put("rawStop", stop);   // unrounded stop for the state; removed before the candidate leaves detect
         c.put("stop_rule", stopRule);
         c.put("entry_type", entryType);
         c.put("entry_rule", "A3".equals(path) ? "next_open" : "limit_at_zone");
@@ -120,10 +127,12 @@ final class SpikeFadePaths {
         math.put("rr_sanity", grossRR >= 1.5);
         math.put("net_rr_sanity", netRR >= NetRrFloor.read());
         JsonNode n5 = base.get("stop_n5");   // stop width in N5 units scales with the new risk and entry
-        if (n5 != null && n5.isNumber()) {
-            double baseHigh = base.get("zone").get("price").asDouble();
-            double baseRisk = base.get("math").get("stop").asDouble() - baseHigh;
+        double baseHigh = base.get("zone").get("price").asDouble();
+        double baseRisk = base.get("math").get("stop").asDouble() - baseHigh;
+        if (n5 != null && n5.isNumber() && baseRisk > 0) {
             c.put("stop_n5", Math.round(n5.asDouble() * (risk / baseRisk) * (baseHigh / entryRef) * 10000.0) / 10000.0);
+        } else {
+            c.putNull("stop_n5");
         }
         return c;
     }
