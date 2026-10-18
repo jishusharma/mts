@@ -1,0 +1,1 @@
+{"t": "20261018T211634Z", "from": "desktop-f7iu69n/?", "to": "all", "kind": "note", "text": "MTS_Doctor 2026-10-19: fast ship gate skips step 3dl unless a test file changed (CI deps lint regression vs old smoke); card [cut]. Codex proof: 50% speed-up vs smoke NOT shown (23.0 s vs 25.8 s). Rep"}
