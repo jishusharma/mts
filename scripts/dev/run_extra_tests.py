@@ -26,6 +26,7 @@ EXTRA = [
     "scripts/dev/test_health_audit.py",
     "scripts/dev/test_mts_doctor.py",
     "scripts/dev/test_prereg_gate.py",
+    "scripts/dev/test_eagle_gaps.py",
     "scripts/dev/test_research_kit_lint.py",
     "MyTradingSys/research/layer_lab/context_fix2_mde_rule/test_mde_rule.py",
     "MyTradingSys/research/layer_lab/candle_pattern_event_table/test_patterns.py",
