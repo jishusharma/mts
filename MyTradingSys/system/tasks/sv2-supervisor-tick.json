@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-18T21:08:34Z",
   "commands": [],
   "created": "2026-10-18T19:30:00Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "sv2-supervisor-tick",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/supervisor.py tick --json + 8 tests in scripts/dev/test_supervisor.py",
+      "ref": "fc5632ea",
+      "utc": "2026-10-18T21:08:34Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,7 +40,7 @@
   "refs": [
     "MyTradingSys/system/SUPERVISOR.md"
   ],
-  "result": "",
+  "result": "scripts/dev/supervisor.py tick --json + 8 tests in scripts/dev/test_supervisor.py",
   "scope_in": [
     "scripts/dev/supervisor.py (new)",
     "scripts/dev/test_supervisor.py (new)",
@@ -49,12 +56,13 @@
   "sources": [
     "MyTradingSys/system/SUPERVISOR.md (design 2026-10-18)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git fetch, then one JSON: tasks.py dispatch top 8, desk.py sweep counts, ci_watch state, gate slots busy (sync.gate_slot dir), per --shas: is-ancestor of origin/fast-track and of origin/green/fast-track, codex/gemini ready depth, ~/.claude/mts-budget.json age",
     "every sub-read fails closed: an error sets that field to {error: ...}, never to a success value",
     "tests with fixtures for each field, register the test (run_all_tests or run_extra_tests.EXTRA)"
   ],
+  "taken": "2026-10-18T21:08:34Z",
   "tests": "fixtures: sha not on trunk -> false; failing sub-command -> error field; CI red -> ci.red true; fails on pre-change code (file absent)",
   "title": "Supervisor SV2: supervisor.py tick --json, one call per wake",
   "weight": "IMPORTANT",

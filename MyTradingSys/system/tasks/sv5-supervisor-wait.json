@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-18T21:12:38Z",
   "commands": [],
   "created": "2026-10-18T19:30:00Z",
   "depends_on": [],
@@ -12,7 +13,14 @@
   "goal": "Replace the 113 watch turns (sleep loops, list_sessions) with one background shell per wave that cannot loop on restart.",
   "id": "sv5-supervisor-wait",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/supervisor.py wait + 12 tests in scripts/dev/test_supervisor.py",
+      "ref": "2a77db54",
+      "utc": "2026-10-18T21:12:38Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,7 +33,7 @@
   "refs": [
     "MyTradingSys/system/SUPERVISOR.md"
   ],
-  "result": "",
+  "result": "scripts/dev/supervisor.py wait + 12 tests in scripts/dev/test_supervisor.py",
   "scope_in": [
     "scripts/dev/supervisor.py (wait)",
     "scripts/dev/test_supervisor.py"
@@ -40,12 +48,13 @@
   "sources": [
     "MyTradingSys/system/SUPERVISOR.md (design 2026-10-18)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "baseline at start: which --shas are on trunk, CI state, slots busy",
     "git fetch every 300 s; exit 0 with a one-line reason on the first transition, exit 3 at --timeout",
     "no exit on a state that held at start"
   ],
+  "taken": "2026-10-18T21:12:38Z",
   "tests": "fake fetch sequence: sha already on trunk at start -> no exit; sha lands -> exit; CI flips -> exit; timeout -> 3; fail first",
   "title": "Supervisor SV5: supervisor.py wait (one watcher, exits on transitions only)",
   "weight": "ROUTINE",

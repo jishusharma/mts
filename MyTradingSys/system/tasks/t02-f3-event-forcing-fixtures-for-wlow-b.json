@@ -1,36 +1,67 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m unittest MyTradingSys.backtest.layers.alerts.test_lookahead_forcing"
+  ],
   "created": "2026-10-18T19:27:04Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/backtest/layers/alerts/test_lookahead_forcing.py exists, 2 layer fixtures each with events > 0 and 0 late/repaint/poison differences, planted-peek self-test detected; file passes under run_all_tests.py --quick.",
+  "est_turns": 22,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "T02-F3: five testnet layers produced 0 events on synthetic bars, so the cut-the-future test was vacuous. Part a builds the shared causality harness plus hand-built fixtures that force events for rsi|malkan_bull and positioning|funding_cvd_fade (both 1h).",
   "id": "t02-f3-event-forcing-fixtures-for-wlow-b",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "T02 backtest audit: no look-ahead in 22 of 27 testnet layers on synthetic bars, 5 layers u",
+      "ref": "ee543e4fa842",
+      "utc": "2026-10-18T19:27:51Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-19 T0-ONLY (planner-20261019, ROUTINE, check clean). Fixture shape: hand-built bars (not random) that force >= 1 event; assert events > 0 first (fails on a zero-event fixture), then for 20+ cuts k compare full vs cut vs NaN tail vs x10 tail on events stamped <= bar k (method of t02_truncation.py docstring); the planted-peek self-test must FAIL.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-18T21:10:36Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T02_lookahead_time.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "T02-F3: event-forcing fixtures for wlow_bounce, session_levels, fabio v3_grid, funding_cvd_fade, malkan_bull truncation tests",
-  "weight": "",
-  "worker": ""
+  "scope_in": [
+    "MyTradingSys/backtest/layers/alerts/live_runner_cli.py",
+    "MyTradingSys/backtest/layers/alerts/live_layers.py",
+    "MyTradingSys/backtest/layers/rsi/malkan_40_60.py",
+    "MyTradingSys/backtest/layers/positioning/funding_cvd_fade.py",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T02/t02_truncation.py"
+  ],
+  "scope_out": [
+    "changing any layer code",
+    "wlow_bounce, session_levels, fabio v3_grid (parts b and c)",
+    "DEV data"
+  ],
+  "scope_sha": "ee543e4fa842",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T02_lookahead_time.md (T02-F3, table 3a)",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T02/t02_truncation.py:1-20 (method)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Create MyTradingSys/backtest/layers/alerts/test_lookahead_forcing.py with helper assert_causal(layer_fn, bars, cuts) implementing full/cut/NaN-tail/x10-tail (method of t02_truncation.py) and a planted-peek self-test",
+    "malkan_bull: read malkan_40_60.py trigger; hand-build 1h bars that force a bull event; add the test",
+    "funding_cvd_fade: read funding_cvd_fade.py; hand-build bars plus an injected funding series (as-of the cut) that force an event; add the test",
+    "Run the new file and test_live_runner_layers.py"
+  ],
+  "tests": "test_lookahead_forcing.py: events > 0 asserted per fixture (fails with the old random bars), causal-layer cases PASS, planted-peek case is detected.",
+  "title": "T02-F3 part a: event-forcing look-ahead fixtures: shared harness, malkan_bull and funding_cvd_fade",
+  "weight": "ROUTINE",
+  "worker": "session"
 }
