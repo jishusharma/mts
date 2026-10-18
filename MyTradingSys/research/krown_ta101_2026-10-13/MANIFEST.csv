@@ -33,6 +33,6 @@ idx,video_id,code,title,duration_s,published,episode,status,extract,quote_gate,n
 32,Ff1U9w3loq8,H32,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,
 33,XVbMOnhPvG8,H33,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,
 34,YdTz8xlUdYw,H34,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,
-35,ftK2BqggabQ,H35,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,
+35,ftK2BqggabQ,OBK,The Coinbase Screen Nobody Opens (I Made a Living Inside It),1982,2026-10-17,TA Foundations ep8 order book,EXTRACTED_TA,extracts/extract_ftK2BqggabQ.md,PASS 0 problems,"36 numbers checked, 0 not found",was HIDDEN_UNAVAILABLE (private) until public 2026-10-17; other 17 hidden ids re-checked 2026-10-18 all still private
 36,CpVjfiecqKg,H36,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,
 37,YAF6fCuVWaI,H37,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,

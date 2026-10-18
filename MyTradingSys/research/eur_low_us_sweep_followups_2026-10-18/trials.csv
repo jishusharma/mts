@@ -1,0 +1,4 @@
+cell,side,h,n,mean_G,se,net,t_net,diff_vs_ctrl,t_diff,verdict
+A long after sweep+reclaim (EU 24h low; reclaim<=120min; stop sweep low -0.1%),1,120,133,none,none,none,none,none,none,BLOCKED
+B LTF RSI(14) divergence short from day high (5m; first signal per day),-1,120,208,none,none,none,none,none,none,BLOCKED
+C pre-US double-top short (P1/P2 within 0.15%; valley 0.5%),-1,240,100,none,none,none,none,none,none,BLOCKED

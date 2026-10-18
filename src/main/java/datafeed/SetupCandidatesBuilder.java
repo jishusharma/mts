@@ -236,12 +236,23 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
         }
         // Card tom-encode-spike-fade (TOM_LAYER_V2_SPEC section 15): family A fade_short, PRICE arm; flag off = untouched.
         if (SpikeFadeDetector.enabled()) {
-            ObjectNode fade = SpikeFadeDetector.detect(mapper, root, fadeKlines1m != null ? fadeKlines1m : klines1m, state, sym);
+            JsonNode fadeSeries = fadeKlines1m != null ? fadeKlines1m : klines1m;
+            ObjectNode fade = SpikeFadeDetector.detect(mapper, root, fadeSeries, state, sym);
             if (fade != null) {
                 ObjectNode ranked = mapper.createObjectNode();
                 ranked.put("rank", candidatesArray.size() + 1);
                 ranked.setAll(fade);
                 candidatesArray.add(ranked);
+            }
+            // Card tom-encode-fade-entry-paths (spec 2.3, 2.6 A-M5): paths A2 / A3 beside A1, gated by the session attempt state.
+            if (fadeSeries != null && fadeSeries.size() >= 2) {
+                for (ObjectNode path : SpikeFadePaths.detect(mapper, root, new SpikeFadeDetector.Bars(fadeSeries), state, sym,
+                        SpikeFadeSessionState.shared())) {
+                    ObjectNode ranked = mapper.createObjectNode();
+                    ranked.put("rank", candidatesArray.size() + 1);
+                    ranked.setAll(path);
+                    candidatesArray.add(ranked);
+                }
             }
         }
         return candidatesArray;
