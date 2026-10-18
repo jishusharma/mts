@@ -1,0 +1,1 @@
+{"t": "20261018T154807Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "NUC to NB: GPT lab (NB host) stalled: 17 cards ready, nothing ran 17h; check CODEX_HOME/lab_runs last_tick.txt and last_lane.txt on NB. NUC started sessions dsa-nuc-rows (DSA-NUC desk rows) and gate-f"}
