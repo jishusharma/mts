@@ -1,0 +1,302 @@
+Gate mode: smoke (13 steps); CI runs the full suite behind the push
+Gate reason: smoke: 1 code file(s) outside the live path; ALWAYS steps 3tl,3w,3x,3gd,3dl ran; plus 4f (name/test/shard match)
+Fast gate (GATE_SPEED X2): 28 test files reached (2 direct), 19 units kept, estimated 29 s (budget 30 s) on 6 workers; 13 deferred to CI (budget)
+  DEFERRED to CI: 3ad, 3bk, 3cx, 3cy, 3gs, 3h, 3k, 3lh, 3mg, 3ms, 3sg, 3sh, 4h/MyTradingSys/tests/test_relay.py
+
+[Step 1] Execution module tests
+Step 1: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 2] G1G2 offline script test
+Step 2: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3] Static test suite
+Step 3: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3b] User guide checker tests
+Step 3b: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3c] User guide in sync with mts.ps1
+Step 3c: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3r] Alert rate checker tests
+Step 3r: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3cv] Chart verify (RSI/BB/StochRSI) tests
+Step 3cv: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3tm] One timeframe map tests
+Step 3tm: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3s] Testnet status summary tests
+Step 3s: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3f] Funnel report tests
+Step 3f: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3dk] Desk board tests
+Step 3dk: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3tk] Task card tests
+Step 3tk: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3td] Tom ledger date tests
+Step 3td: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3hs] Tom holdout split tests
+Step 3hs: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3sq] Spec quote checker tests
+Step 3sq: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3ly] Layer index tests
+Step 3ly: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3cx] Layer lab runner tests
+Step 3cx: SKIP (fast: reached but deferred to CI (budget))
+
+[Step 3cy] ask_model tests
+Step 3cy: SKIP (fast: reached but deferred to CI (budget))
+
+[Step 3tl] Task cards meet the Definition of Ready
+Step 3tl: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3q] INDEX/BUGS consistency
+Step 3q: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3p] P4 corrected script tests
+Step 3p: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3t] T093 turn-of-candle imbalance tests
+Step 3t: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3d] Extract quote checker tests
+Step 3d: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3h] Launcher verb static tests (runner, orphans)
+Step 3h: SKIP (fast: reached but deferred to CI (budget))
+
+[Step 3g] Gate coverage tests (Fabio v3 + live writers)
+Step 3g: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3k] sync.py parallel ship tests
+Step 3k: SKIP (fast: reached but deferred to CI (budget))
+
+[Step 3gs] Gate selector tests (path -> smoke steps, fail closed)
+Step 3gs: SKIP (fast: reached but deferred to CI (budget))
+
+[Step 3rc] Red CI task card tests (one card per red run)
+Step 3rc: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3sg] Stop guard tests (a session cannot end holding unshipped work)
+Step 3sg: SKIP (fast: reached but deferred to CI (budget))
+
+[Step 3sig] Signals between logins (mts_signal.py)
+Step 3sig: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3e] DSA browser worker + queue lane tests
+Step 3e: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3sh] Screenshot intake tests (save, classify, read, close gates)
+Step 3sh: SKIP (fast: reached but deferred to CI (budget))
+
+[Step 3mg] Project group map tests (every row and file has one group)
+Step 3mg: SKIP (fast: reached but deferred to CI (budget))
+
+[Step 3ad] Scheduled auto-deploy tests (stops on red gate)
+Step 3ad: SKIP (fast: reached but deferred to CI (budget))
+
+[Step 3ms] STATUS.md generator tests (commit-dated reports, CI green line)
+Step 3ms: SKIP (fast: reached but deferred to CI (budget))
+
+[Step 3pc] Prompt contract tests (DSA_SESSION_PROMPT 5d, B155)
+Step 3pc: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3ds] DSA helper CLI tests (dsa.py)
+Step 3ds: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3cr] Control Room page generator tests
+Step 3cr: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3lh] GPT lane health tests (down/up rules, reroute, pause, resume, DSA prompt)
+Step 3lh: SKIP (fast: reached but deferred to CI (budget))
+
+[Step 3rb] Claude-GPT relay board tests (shared notes, lanes, pack)
+Step 3rb: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3bk] Backup snapshot tests (dirty/untracked work reaches the remote)
+Step 3bk: SKIP (fast: reached but deferred to CI (budget))
+
+[Step 3vd] Verdict registry override tests (sourced hand corrections survive backfill)
+Step 3vd: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3js] Config check (settings.json parses, hook scripts exist, secrets stay ignored)
+Step 3js: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3w] Wiring gate tests
+Step 3w: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 3dl] CI deps lint: no gated test hard-imports a package the ci.yml pip line lacks
+Step 3dl: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 4] Pytest shard 1/5 (MyTradingSys/tests, 1 files)
+Step 4: SKIP (fast: no reached test in this shard)
+
+[Step 4b] Pytest shard 2/5 (MyTradingSys/tests, 9 files)
+Step 4b: SKIP (fast: no reached test in this shard)
+
+[Step 4c] Pytest shard 3/5 (MyTradingSys/tests, 18 files)
+Step 4c: SKIP (fast: no reached test in this shard)
+
+[Step 4h] Pytest shard 5/5 (MyTradingSys/tests, 19 files)
+Step 4h: SKIP (fast: reached tests deferred to CI (budget))
+
+[Step 5] Maven Java tests
+Step 5: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 5b] Layer tests (77 modules, 4 parallel processes)
+Step 5b: SKIP (fast: no layer test reached (CI runs it))
+
+[Step 5c] Options module tests
+Step 5c: SKIP (fast: not reached by the change (CI runs it))
+
+[Step 6] Backtest tests
+Step 6: SKIP (fast: not reached by the change (CI runs it))
+Gate: 13 steps, 6 at a time
+
+[Step 3qn] Gate quarantine list valid (owner, reason, not expired)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/gate_impact.py --check-quarantine
+  Elapsed: 0.1s (1/13 done, +0s)
+Step 3qn: PASS
+
+[Step 3cs] Cloud SessionStart hook tests (no-op off cloud)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_cloud_setup.py
+  Elapsed: 0.4s (2/13 done, +0s)
+Step 3cs: PASS
+
+[Step 3gd] Gate discovery: every tracked test file is gated (B150)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe MyTradingSys/tests/test_gate_discovery_b150.py
+  Elapsed: 0.4s (3/13 done, +0s)
+Step 3gd: PASS
+
+[Step 4f] Pytest (fast): 3 of 23 files that the change reaches
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe -m pytest scripts/dev/test_dax_engine_flag.py scripts/dev/test_market_guide.py scripts/dev/test_nowin.py -q -p no:cacheprovider --ignore-glob=F:\MTS\mts-jis-nuc-shipping-proof*[/\]tmp[a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_] --basetemp=C:\Users\E-NGIN~1\AppData\Local\Temp\mts_s4_c_i4q9i9\bt
+  Elapsed: 1.9s (4/13 done, +2s)
+Step 4f: PASS
+
+[Step 3lm] Live mirror tests (read-only desktop->work-tree data, fail-closed)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_live_mirror.py
+  Elapsed: 6.2s (5/13 done, +7s)
+Step 3lm: PASS
+
+[Step 3hy] Daily hygiene job tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_daily_hygiene.py
+  Elapsed: 0.4s (6/13 done, +7s)
+Step 3hy: PASS
+
+[Step 4e] Pytest (fast): 3 of 8 files that the change reaches
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe -m pytest MyTradingSys/backtest/test_tom_dax_bt.py MyTradingSys/backtest/test_tom_dax_recall.py MyTradingSys/backtest/test_tom_v2_recall.py -q -p no:cacheprovider --ignore-glob=F:\MTS\mts-jis-nuc-shipping-proof*[/\]tmp[a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_] --basetemp=C:\Users\E-NGIN~1\AppData\Local\Temp\mts_s4_rg0rse9w\bt
+  Elapsed: 7.1s (7/13 done, +7s)
+Step 4e: PASS
+
+[Step 4d] Pytest doc size/contract tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe -m pytest MyTradingSys/tests/docs MyTradingSys/tests/test_relay_prompts.py -q -p no:cacheprovider --ignore-glob=F:\MTS\mts-jis-nuc-shipping-proof*[/\]tmp[a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_] --basetemp=C:\Users\E-NGIN~1\AppData\Local\Temp\mts_s4_o0ubwhiq\bt
+  Elapsed: 7.4s (8/13 done, +7s)
+Step 4d: PASS
+
+[Step 4g] Pytest (fast): 1 of 19 files that the change reaches
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe -m pytest MyTradingSys/tests/test_gate_scratch_outside_checkout.py -q -p no:cacheprovider --ignore-glob=F:\MTS\mts-jis-nuc-shipping-proof*[/\]tmp[a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_] --basetemp=C:\Users\E-NGIN~1\AppData\Local\Temp\mts_s4_n_nbktnc\bt
+  Elapsed: 6.0s (9/13 done, +8s)
+Step 4g: PASS
+
+[Step 3gi] Gate impact tests (import-graph test selection, budget, quarantine)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_gate_impact.py
+  Elapsed: 8.4s (10/13 done, +8s)
+Step 3gi: PASS
+
+[Step 3xt] Extra tests the change reaches (3 of 102 files)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/run_extra_tests.py --only scripts/dev/test_lab_flow.py scripts/dev/test_testnet_canary.py scripts/dev/test_sched_scripts.py
+  Elapsed: 21.7s (11/13 done, +22s)
+Step 3xt: PASS
+
+[Step 3af] Artifact registry tests (one url per page per account)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_artifacts.py
+  Elapsed: 0.5s (12/13 done, +23s)
+Step 3af: PASS
+
+[Step 3x] Wiring check: no undeclared unwired code (wiring_scan.py --check)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/wiring_scan.py --check
+  Elapsed: 1.8s (13/13 done, +24s)
+Step 3x: PASS
+  WARN NO-READER (12 scripts/dev files nobody reads; archive or document the reader): aibridge_install.py, asr_to_canonical.py, chart_verify.py, check_spec_quotes.py, dsa_eval.py, eagle_gaps.py, fabio_prescreen.py, prompt_contract.py, role_hook_launcher.py, tom_holdout_split.py, tom_ledger_dates.py, trial_ledger.py
+
+======================================================================
+SUMMARY
+======================================================================
+Step 1: Execution tests: SKIP
+Step 2: G1G2 offline test: SKIP
+Step 3: Static test suite: SKIP
+Step 3b: Guide checker tests: SKIP
+Step 3c: Guide in sync: SKIP
+Step 3r: Alert rate checker tests: SKIP
+Step 3cv: Chart verify tests: SKIP
+Step 3tm: TF map tests: SKIP
+Step 3s: Testnet status tests: SKIP
+Step 3f: Funnel report tests: SKIP
+Step 3dk: Desk board tests: SKIP
+Step 3tk: Task card tests: SKIP
+Step 3td: Tom ledger date tests: SKIP
+Step 3hs: Tom holdout split tests: SKIP
+Step 3sq: Spec quote checker tests: SKIP
+Step 3ly: Layer index tests: SKIP
+Step 3cx: Layer lab runner tests: SKIP
+Step 3cy: ask_model tests: SKIP
+Step 3tl: Task card lint: SKIP
+Step 3q: INDEX/BUGS consistency: SKIP
+Step 3p: P4 corrected script tests: SKIP
+Step 3t: T093 imbalance tests: SKIP
+Step 3d: Quote checker tests: SKIP
+Step 3h: Launcher static tests: SKIP
+Step 3g: Gate coverage tests: SKIP
+Step 3k: sync.py tests: SKIP
+Step 3gs: Gate selector tests: SKIP
+Step 3rc: Red CI card tests: SKIP
+Step 3sg: Stop guard tests: SKIP
+Step 3sig: Signals tests: SKIP
+Step 3e: DSA worker tests: SKIP
+Step 3sh: Screenshot intake tests: SKIP
+Step 3mg: Project group map tests: SKIP
+Step 3xt: Extra tests: PASS
+Step 3ad: Auto-deploy tests: SKIP
+Step 3hy: Daily hygiene tests: PASS
+Step 3ms: make_status tests: SKIP
+Step 3cs: Cloud setup hook tests: PASS
+Step 3pc: Prompt contract tests: SKIP
+Step 3ds: DSA helper CLI tests: SKIP
+Step 3cr: Control Room tests: SKIP
+Step 3lh: GPT lane health tests: SKIP
+Step 3rb: Relay board tests: SKIP
+Step 3af: Artifact registry tests: PASS
+Step 3bk: Backup snapshot tests: SKIP
+Step 3vd: Verdict registry tests: SKIP
+Step 3lm: Live mirror tests: PASS
+Step 3js: Config check: SKIP
+Step 3gi: Gate impact tests: PASS
+Step 3qn: Quarantine check: PASS
+Step 3w: Wiring gate tests: SKIP
+Step 3x: Wiring check: PASS
+Step 3gd: Gate discovery: PASS
+Step 3dl: CI deps lint: SKIP
+Step 4: Pytest tests: SKIP
+Step 4b: Pytest tests: SKIP
+Step 4c: Pytest tests: SKIP
+Step 4g: Pytest tests: PASS
+Step 4h: Pytest tests: SKIP
+Step 4d: Pytest doc tests: PASS
+Step 4e: Pytest backtest tests: PASS
+Step 4f: Pytest layer tests: PASS
+Step 5: Maven tests: SKIP
+Step 5b: Layer tests: SKIP
+Step 5c: Options tests: SKIP
+Step 6: Backtest tests: SKIP
+======================================================================
+ALL TESTS PASSED

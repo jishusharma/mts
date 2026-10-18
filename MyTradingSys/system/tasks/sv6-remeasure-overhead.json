@@ -1,0 +1,62 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T19:30:00Z",
+  "depends_on": [],
+  "done_when": "script + test shipped; 'after' table in SUPERVISOR.md with per-session numbers",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Turn the SUPERVISOR.md savings from GUESS into measured numbers, worker + coordinator per session.",
+  "id": "sv6-remeasure-overhead",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "kurisko: declare module files in wiring registry",
+      "ref": "c5ecc7d5df8c",
+      "utc": "2026-10-18T06:51:18Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "pinned": false,
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "supervisor-design (Opus, operator-named)",
+  "refreshed": "2026-10-18T18:46:38Z",
+  "refs": [
+    "MyTradingSys/system/SUPERVISOR.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/coord_overhead.py (new; copy in the side-session notes folder of local_a62282b8, else rewrite from SUPERVISOR.md 'Measured overhead')",
+    "scripts/dev/test_coord_overhead.py",
+    "MyTradingSys/system/wiring_registry.json",
+    "MyTradingSys/system/SUPERVISOR.md (table)"
+  ],
+  "scope_out": [
+    "live tree, processes, deploys, HALT files",
+    "ROUTING.md (Pipeliner owns it)",
+    "unrelated cleanups"
+  ],
+  "scope_sha": "c5ecc7d5df8c",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/SUPERVISOR.md (design 2026-10-18)"
+  ],
+  "state": "ready",
+  "steps": [
+    "commit the script with a fixture-transcript test",
+    "after 2 super sessions on SV2-SV5: rerun per session, add an 'after' table"
+  ],
+  "tests": "fixture transcript with known categories gives the expected counts; fail first (file absent)",
+  "title": "Supervisor SV6: commit coord_overhead.py and re-measure on the next 2 super sessions",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

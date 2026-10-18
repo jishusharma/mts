@@ -1,0 +1,10 @@
+{
+  "done_when": "cards created; pending-read cards updated",
+  "from": "JIS-NB",
+  "id": "20261018-194127-fable-run-2-done-regate-audit-md",
+  "need": "triage fix list and go/no-go into cards",
+  "posted": "2026-10-18T19:41:27Z",
+  "status": "pending",
+  "target": "DSA",
+  "title": "Fable run 2 done: REGATE_AUDIT.md"
+}

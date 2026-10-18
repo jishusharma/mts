@@ -1,0 +1,3 @@
+# Flaky-test quarantine for the fast ship gate (GATE_SPEED.md X5). Tab-separated: pytest node id, owner, expires YYYY-MM-DD, reason.
+# A row deselects that test in the fast ship gate only (CI still runs it). Expired rows deselect nothing and fail step 3qn.
+# Rows are read from origin/fast-track, so a ship cannot quarantine its own failing test. Live-path ids (execution/, runtime/) are refused.

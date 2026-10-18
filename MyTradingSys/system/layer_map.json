@@ -672,6 +672,46 @@
      "src": "grid"
     }
    ]
+  },
+  {
+   "id": "pitchfork_swing",
+   "family": "pitchfork",
+   "name": "Pitchfork swing dynamics (Andrews / Schiff / Modified Schiff ML & Hagopian failure)",
+   "module": "MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py",
+   "status": "Foundational papers delivered; detector built with unit tests (100% pass)",
+   "params": [
+    {
+     "k": "variant",
+     "label": "pitchfork variant",
+     "kind": "choice",
+     "values": [
+      "standard",
+      "schiff",
+      "modified_schiff"
+     ],
+     "src": "sourced"
+    },
+    {
+     "k": "auto_schiff",
+     "label": "auto promote steep angles to modified schiff",
+     "kind": "choice",
+     "values": [
+      "true",
+      "false"
+     ],
+     "src": "sourced"
+    },
+    {
+     "k": "timeframe",
+     "label": "primary swing timeframe",
+     "kind": "choice",
+     "values": [
+      "4H",
+      "1D"
+     ],
+     "src": "code"
+    }
+   ]
   }
  ],
  "backtests": [
@@ -1111,7 +1151,7 @@
    "fees": null,
    "interaction": null,
    "effects": "ground-truth legs only; no layer scored here",
-   "n": null,
+   "n": "all legs (ATR zigzag): 4h 1,930; 1h 8,173; 15m 33,790; 5m 105,235",
    "verdict": "ground truth, no verdict",
    "report": "MyTradingSys/research/bigtrade_2026-10-09/BIGMOVES_REPORT.md",
    "read": "header"
@@ -1132,7 +1172,7 @@
     "turn_of_candle"
    ],
    "params": "19 live keys replayed",
-   "split": null,
+   "split": "none: fire history, no split-based result",
    "fees": "none (fire counts and parity)",
    "interaction": null,
    "effects": "244,543 fires; spot rerun parity 92-100 %, turn_of_candle side mismatches 0",

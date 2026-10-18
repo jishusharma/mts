@@ -1,0 +1,44 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T19:46:46Z",
+  "depends_on": [],
+  "done_when": "ANGLE_6.md shipped with shortlist",
+  "est_turns": "180",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator runs one Fable 5.1 session per angle 1..6 on fable_run_4_brief.md; each ships ANGLE_<n>.md.",
+  "id": "fable-run4-setup-angles",
+  "lane": "OPUS",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Operator-run Fable only; no session may start or message it. Waits on fable-setups-pack-prep. Cap 12 weekly points.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/system/fable_run_4_brief.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/fable_setups_2026-10-19/ANGLE_*.md"
+  ],
+  "scope_out": [
+    "VALIDATION and HOLDOUT reads (except the scored survivor PRE_REG)",
+    "live tree",
+    "code outside the study folder"
+  ],
+  "size": "L",
+  "sources": [
+    "MyTradingSys/system/fable_run_4_brief.md"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "ANGLE_1..6.md exist; every setup has predefined p(win) band, win/loss R, net R, SOURCED/OURS labels; angle 6 shortlist <= 8.",
+  "title": "Fable run 4: six angles (Tom edges, Fabio proxy, context filter, confluence, loser vetoes, devil's advocate), operator runs by hand",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

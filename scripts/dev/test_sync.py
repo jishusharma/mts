@@ -992,5 +992,104 @@ class ShipRaceTest(unittest.TestCase):
         self.assertFalse(sync.pid_alive(p.pid))
 
 
+class FastShipTest(unittest.TestCase):
+    """GATE_SPEED.md X3/X6: red-CI block, --fix-ci, the fast gate flag, slot pool names, the reverse race check."""
+    RED = [{"conclusion": "failure", "head_sha": "a" * 40, "created_at": "2026-10-18T10:00:00Z"},
+           {"conclusion": "failure", "head_sha": "b" * 40, "created_at": "2026-10-18T09:00:00Z"},
+           {"conclusion": "success", "head_sha": "c" * 40, "created_at": "2026-10-18T08:00:00Z"}]
+    GREEN = [{"conclusion": "success", "head_sha": "a" * 40, "created_at": "2026-10-18T10:00:00Z"}] + RED[1:]
+
+    def test_two_failed_runs_in_a_row_are_red_and_one_is_not(self):
+        self.assertEqual(sync.ci_state(lambda use_cache: self.RED)[0], "red")
+        self.assertEqual(sync.ci_state(lambda use_cache: self.RED[1:])[0], "green")
+        self.assertEqual(sync.ci_state(lambda use_cache: self.GREEN)[0], "green")
+
+    def test_a_cached_red_is_refetched_and_the_fresh_answer_counts(self):
+        calls = []
+
+        def fetch(use_cache):
+            calls.append(use_cache)
+            return self.RED if use_cache else self.GREEN
+        self.assertEqual(sync.ci_state(fetch)[0], "green")
+        self.assertEqual(calls, [True, False])
+
+    def test_offline_or_a_crash_is_unknown_never_red(self):
+        self.assertEqual(sync.ci_state(lambda use_cache: None)[0], "unknown")
+
+        def boom(use_cache):
+            raise OSError("offline")
+        self.assertEqual(sync.ci_state(boom)[0], "unknown")
+
+    def test_red_blocks_a_code_ship_until_fix_ci(self):
+        check = sync.CiCheck(lambda use_cache: self.RED)
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("SYNC_FIX_CI", None)
+            with self.assertRaises(sync.SyncError) as cm:
+                sync.enforce_ci(check)
+            self.assertIn("--fix-ci", str(cm.exception))
+            os.environ["SYNC_FIX_CI"] = "1"
+            with contextlib.redirect_stdout(io.StringIO()) as out:
+                sync.enforce_ci(check)
+            self.assertIn("FULL gate", out.getvalue())
+
+    def test_green_or_no_check_ships(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            sync.enforce_ci(sync.CiCheck(lambda use_cache: self.GREEN))
+            sync.enforce_ci(None)
+
+    def test_docs_only_ships_are_not_subject_to_the_block(self):
+        self.assertFalse(sync.ci_applies(["MyTradingSys/system/GATE_SPEED.md", "MyTradingSys/research/x/out.tsv"]))
+        self.assertTrue(sync.ci_applies(["scripts/dev/example_tool.py"]))
+        self.assertTrue(sync.ci_applies(["MyTradingSys/runtime/run_list.txt"]))    # a live-path .txt is code to the gate
+
+    def run_gate_cmd(self, files, env):
+        seen = []
+        with mock.patch.object(sync.subprocess, "run", side_effect=lambda cmd, **k: seen.append(cmd) or mock.Mock(returncode=0)), \
+                mock.patch.dict(os.environ, env, clear=False):
+            for k in ("SYNC_FULL_GATE", "SYNC_NO_FAST"):
+                if k not in env:
+                    os.environ.pop(k, None)
+            sync.run_gate(Path("."), files)
+        return seen[0]
+
+    def test_run_gate_asks_for_the_fast_gate_unless_full_or_disabled(self):
+        self.assertIn("--fast", self.run_gate_cmd(["scripts/dev/example_tool.py"], {}))
+        self.assertNotIn("--fast", self.run_gate_cmd(["scripts/dev/example_tool.py"], {"SYNC_FULL_GATE": "1"}))
+        self.assertNotIn("--fast", self.run_gate_cmd(["scripts/dev/example_tool.py"], {"SYNC_NO_FAST": "1"}))
+
+    def test_fix_ci_flag_sets_the_full_gate(self):
+        with mock.patch.object(sync, "ship"), mock.patch.object(sync, "toplevel", return_value=Path(".")), \
+                mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("SYNC_FULL_GATE", None)
+            os.environ.pop("SYNC_FIX_CI", None)
+            self.assertEqual(sync.main(["ship", "--fix-ci"]), 0)
+            self.assertEqual((os.environ.get("SYNC_FIX_CI"), os.environ.get("SYNC_FULL_GATE")), ("1", "1"))
+            os.environ.pop("SYNC_FULL_GATE", None)
+            os.environ.pop("SYNC_FIX_CI", None)
+
+    def test_fast_slots_use_their_own_folder_and_an_empty_slot_file_is_busy(self):
+        tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, tmp, ignore_errors=True)
+        sh(tmp, "init", "-q")
+        with sync.gate_slot(tmp, slots=1, name="gate-slots-fast", alive=lambda p: True):
+            self.assertTrue((tmp / ".git" / "gate-slots-fast" / "slot-0").is_file())
+        d = tmp / ".git" / "gate-slots"
+        d.mkdir(exist_ok=True)
+        (d / "slot-0").write_text("")           # creator is mid-write: another gate must not take it over
+        (d / "slot-1").write_text("")
+        with self.assertRaises(sync.GateSlotTimeout):
+            with sync.gate_slot(tmp, alive=lambda p: False, timeout=0.2, poll=0.05, note_every=99):
+                pass
+
+    def test_race_overlap_also_catches_an_incoming_module_that_imports_ours(self):
+        tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, tmp, ignore_errors=True)
+        sh(tmp, "init", "-q")
+        (tmp / "mine.py").write_text("X = 1\n")
+        (tmp / "theirs.py").write_text("import mine\n")
+        (tmp / "unrelated.py").write_text("Y = 1\n")
+        self.assertEqual(sync.race_overlap(tmp, ["theirs.py", "unrelated.py"], ["mine.py"]), ["theirs.py"])
+
+
 if __name__ == "__main__":
     unittest.main()

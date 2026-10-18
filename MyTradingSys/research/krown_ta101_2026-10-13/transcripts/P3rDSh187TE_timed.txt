@@ -1,0 +1,1291 @@
+# video_id: P3rDSh187TE
+# title: Why Crypto Drops 10% in Minutes: Liquidation Cascades Explained (Former NYSE ARCA Market Maker)
+# channel: Krown
+# ---
+[00:00:00] that's why cascades so often end up
+[00:00:02] in V-shaped recoveries
+[00:00:03] once the borrowed positions are gone
+[00:00:05] there's nobody left who actually wanted to
+[00:00:05] sell
+[00:00:07] these people did not want to sell
+[00:00:09] the machine didn't break
+[00:00:10] it just took out the trash
+[00:00:13] Hey guys, as a community member of shit
+[00:00:13] coin XYZ,
+[00:00:16] I just want to say that I absolutely love
+[00:00:16] the project.
+[00:00:18] Okay, the team is great.
+[00:00:19] It's all rainbows and sunshine.
+[00:00:20] Everything is all hunky dory.
+[00:00:22] But look, last night I went to sleep
+[00:00:23] and when I woke up this morning,
+[00:00:24] price was down like 20%.
+[00:00:26] Just wondering, is there any news I should
+[00:00:26] be aware of?
+[00:00:30] Like, is there any hacks or headlines?
+[00:00:32] And of course, if you've been in crypto
+[00:00:33] for any amount of time,
+[00:00:34] you probably watch something like this.
+[00:00:36] Maybe you've been a part of it as well.
+[00:00:37] And someone on your feed is going to claim
+[00:00:39] it is manipulation.
+[00:00:40] Some are just going to post a bunch of
+[00:00:40] skull emojis
+[00:00:43] and some will actually accurately identify
+[00:00:43] it.
+[00:00:46] And here's what actually happened.
+[00:00:48] Thousands of traders got liquidated.
+[00:00:50] Force closed effectively by the exchange.
+[00:00:52] No choice, no mercy.
+[00:00:54] And each forced exit triggered the next
+[00:00:54] one,
+[00:00:56] which created a chain reaction,
+[00:00:56] effectively your cascade.
+[00:00:59] You can think of this as like a snowball
+[00:01:00] rolling down the hill,
+[00:01:01] gaining more momentum as you go further on
+[00:01:01] down.
+[00:01:04] And today we're going to go over how
+[00:01:04] leverage turns dips
+[00:01:08] into potential avalanches for price.
+[00:01:09] And the two numbers that can tell you
+[00:01:11] when the market is loaded
+[00:01:12] for one of these liquidation cascades.
+[00:01:16] And of course, this is incredibly
+[00:01:16] important to understand
+[00:01:17] so that you can most importantly avoid
+[00:01:17] these things
+[00:01:20] because there are some pretty good
+[00:01:20] indications
+[00:01:21] for when they are more likely to occur.
+[00:01:24] Of course, you don't have any guarantees.
+[00:01:25] Anyways, we are also going to go over
+[00:01:27] how to make sure the avalanche never takes
+[00:01:27] you with it.
+[00:01:31] And by the end of this video,
+[00:01:32] you will have a pretty damn good idea
+[00:01:34] of how to avoid these sort of things.
+[00:01:36] Anyways, with that said, let's go inside
+[00:01:36] the machine.
+[00:01:40] Dare I say, deep inside the machine.
+[00:01:41] I should also let you know
+[00:01:41] that if you're just finding this video
+[00:01:41] randomly,
+[00:01:43] kind of out of order here,
+[00:01:44] this is a part of a greater playlist.
+[00:01:46] This is episode number seven of Inside the
+[00:01:46] Machine.
+[00:01:49] And three episodes have been pointing you
+[00:01:49] towards this.
+[00:01:52] Not necessarily in order here,
+[00:01:53] but episode number three itself told you
+[00:01:55] no pools or no liquidity pools typically
+[00:01:55] means violent moves.
+[00:01:59] Episode number four told you
+[00:02:00] when leverage joins the pool,
+[00:02:02] the harvest can certainly turn into
+[00:02:02] liquidations.
+[00:02:05] Why?
+[00:02:05] Because when you put on leverage,
+[00:02:07] you are going to have what's called a
+[00:02:07] liquidation price
+[00:02:10] in which you will be forced out of your
+[00:02:10] position.
+[00:02:13] And episode number six ended on, of
+[00:02:13] course, last week.
+[00:02:17] You know, nobody has to choose,
+[00:02:18] of course, when that happens.
+[00:02:20] So this is the episode where we go
+[00:02:20] directly at the issue.
+[00:02:25] The most violent thing this series will
+[00:02:25] cover.
+[00:02:28] And honestly, I think it's probably
+[00:02:29] the most important episode of this series
+[00:02:30] because this is the phenomenon
+[00:02:33] that can end accounts very, very quickly.
+[00:02:36] You know, people who have been in this
+[00:02:36] market
+[00:02:37] for even a year, you've probably seen
+[00:02:39] at least one of these events.
+[00:02:40] And realistically in crypto or should I
+[00:02:40] say Bitcoin,
+[00:02:43] especially altcoins, you see two to three
+[00:02:45] of these events per year, typically.
+[00:02:47] Some worse than others, of course.
+[00:02:49] Anyways, we're going to go and explain
+[00:02:50] or do our best job to explain this
+[00:02:50] phenomenon
+[00:02:52] and then more importantly, how to avoid
+[00:02:52] such things.
+[00:02:55] All right, so first we need to go over
+[00:02:56] a little bit of leverage 101.
+[00:03:00] Leverage 101, the immovable stop, if you
+[00:03:00] will.
+[00:03:02] So let's first explain a little bit of
+[00:03:02] leverage
+[00:03:04] because a whole avalanche is, well,
+[00:03:07] it's comprised of this for the most part.
+[00:03:09] Leveraged, when you are putting on a
+[00:03:09] leverage trade,
+[00:03:12] when you're using your account to
+[00:03:12] effectively borrow money
+[00:03:16] to trade bigger size, you are more or less
+[00:03:16] borrowing.
+[00:03:21] And with 10X, 10X leverage, I should say,
+[00:03:25] a thousand dollars controls 10,000.
+[00:03:28] So you only put up a thousand dollars,
+[00:03:30] but you get to trade with a size of
+[00:03:30] 10,000.
+[00:03:33] That is leverage.
+[00:03:34] You are using less to get more.
+[00:03:36] It's very seductive.
+[00:03:38] It is, in some cases, incredibly powerful
+[00:03:40] and very, very valuable, but in the wrong
+[00:03:40] hands,
+[00:03:43] it is perhaps the worst thing ever
+[00:03:45] for your financial life.
+[00:03:47] Anyways, if you are using 10X leverage,
+[00:03:47] then guess what?
+[00:03:52] A 1% move against you, meaning that if you
+[00:03:52] enter long,
+[00:03:58] then a 1% move against you equals a 10%
+[00:03:58] loss.
+[00:04:02] So it doesn't just magnify your potential
+[00:04:02] gains,
+[00:04:04] it also magnifies your potential losses
+[00:04:04] too.
+[00:04:07] And now if you push further and the fine
+[00:04:07] print activates,
+[00:04:10] meaning that you've reached a final
+[00:04:10] liquidation level,
+[00:04:12] which is typically easily readable on your
+[00:04:12] exchange,
+[00:04:16] it will tell you when you take,
+[00:04:18] almost every exchange I've ever been on
+[00:04:19] has told you, when you take a position,
+[00:04:22] what your...
+[00:04:23] liquidation prices which is effectively
+[00:04:23] where you become forced to lose your
+[00:04:27] position and take a major amounts of loss
+[00:04:27] and in traditional markets it can
+[00:04:30] actually be a bigger loss in the money
+[00:04:30] that you should even put up for it to
+[00:04:33] begin with in crypto land typically it is
+[00:04:33] just you know the equity that used to
+[00:04:37] put on that that that trade but anyways
+[00:04:37] yes that can create a liquidation
+[00:04:43] against you now if you're using 10x
+[00:04:43] leverage then guess what a 10% move
+[00:04:47] against you will liquidate you're using
+[00:04:47] 20x leverage a 5% move against
+[00:04:51] you will liquidate you if you're using 3%
+[00:04:51] leverage then a about a 33% and a third
+[00:04:52] percent move will obviously liquidate you
+[00:04:52] as well these are you know general
+[00:04:54] rules here but anyways cross it and a
+[00:04:54] computer will close your position a
+[00:04:59] computer basically run by the exchanges
+[00:04:59] exchanges algorithm and and they will do
+[00:05:03] it at market too so you're gonna you're
+[00:05:03] gonna be forced out of your position at
+[00:05:07] market on a market order meaning that
+[00:05:07] you're gonna get even worse fills than
+[00:05:11] you know whatever that price is showing
+[00:05:11] right then too especially because these
+[00:05:15] typically happen during cascading events
+[00:05:15] where price is moving very very quickly
+[00:05:19] and well a market order into thin books
+[00:05:19] does what it incurs slippage as
+[00:05:23] we went over in last episode anyways think
+[00:05:23] about it sorry think about what
+[00:05:28] that is in this series language which is
+[00:05:28] it's a stop-loss you cannot move your
+[00:05:34] liquidation price is a stop-loss that is
+[00:05:34] not adjustable unless if you add more
+[00:05:39] equity to your account now I would
+[00:05:39] strongly argue that if you are using your
+[00:05:44] liquidation level as a stop-loss you are
+[00:05:44] you done goofed you are giving up
+[00:05:49] significant unnecessary money to the
+[00:05:49] market now that is a topic for TA 101
+[00:05:51] get kind of like the gist of it there
+[00:05:51] anyways like I said that liquidation
+[00:05:53] price you cannot cancel you cannot move
+[00:05:53] unless you add more equity to your
+[00:05:57] account which means that you might just
+[00:05:57] double down on your losses and you
+[00:06:00] cannot argue with it you know episode
+[00:06:00] number four of course showed you you know
+[00:06:04] stops getting hunted and at least those
+[00:06:04] stops were choices like you put that
+[00:06:08] into the order book you got to choose
+[00:06:08] where you were gonna go out this one
+[00:06:11] was signed into the contract the moment
+[00:06:11] you opened the trade that is of course
+[00:06:15] and where you are forced out of your
+[00:06:15] position and this can be incredibly
+[00:06:15] painful I remember when I was back trading
+[00:06:15] as a professional there was one
+[00:06:20] of the guys down there I mean I mean I
+[00:06:20] guess was down there and and he had on
+[00:06:26] a very very large position he had on very
+[00:06:26] large position and he was a good
+[00:06:31] trader by the way he was like a really
+[00:06:31] good trader but one of these
+[00:06:33] cascading moves happens and price came
+[00:06:33] down very quickly very fast and he was
+[00:06:39] forced to sell what ultimately was a good
+[00:06:39] position now this position if you would
+[00:06:44] have if he was able to actually hold on to
+[00:06:44] it he probably would have made like
+[00:06:47] ten million dollars to be fair but because
+[00:06:47] price went against him in such a
+[00:06:51] drastic way so quickly and and and in like
+[00:06:51] a you know a deep way as well he
+[00:06:58] was liquidated and well I don't really
+[00:06:58] know what happened to him after that
+[00:07:02] but I didn't see him on the floor anymore
+[00:07:02] I'll put it that way so these
+[00:07:05] things can and do happen not just to
+[00:07:05] retail traders but also to professionals
+[00:07:07] as well I strongly implore you to always
+[00:07:07] use a proactive stop-loss rather
+[00:07:14] than just waiting for your liquidation get
+[00:07:14] hit like I said it is going to
+[00:07:18] ultimately save you more money in the
+[00:07:18] future if you use the proper tactics
+[00:07:21] that we go over in the TA 101 program
+[00:07:21] which again is free and if you want
+[00:07:24] like super in-depth knowledge on that then
+[00:07:24] of course go check out the
+[00:07:28] crowd
+[00:07:28] training Bible anyways, let's go over the
+[00:07:28] invisible map effectively the bands if you
+[00:07:28] will so
+[00:07:33] Now here's what turns individual fine
+[00:07:33] print hopefully into a market wide event
+[00:07:33] traders will cluster
+[00:07:39] Why well episode three taught you that
+[00:07:39] same obvious entry same round leverage
+[00:07:39] numbers
+[00:07:44] You know people are looking at the same
+[00:07:44] major hire major load a kind of place or
+[00:07:44] stops round or position or their positions
+[00:07:44] around
+[00:07:50] so their liquidation price will stack see
+[00:07:50] knows around similar zones basically and
+[00:07:54] You can actually calculate that in fact
+[00:07:56] There are quant firms whose major strategy
+[00:07:56] is to try to calculate which they can do
+[00:07:56] quite accurately in many cases
+[00:08:03] You know what the average stop-loss is
+[00:08:03] what the average liquidation level is
+[00:08:03] depending upon you know
+[00:08:10] What their data is you know is giving them
+[00:08:10] so under every crypto price?
+[00:08:13] It's a map of bands basically and here is
+[00:08:13] where the 10x longs die
+[00:08:18] You know a bit lower the 5x and so on and
+[00:08:18] you know and and so on and so forth
+[00:08:23] And here's where they're paying that's
+[00:08:23] gonna be you know that's what I'm trying
+[00:08:23] to say anyways remember what a liquidation
+[00:08:23] is of course a
+[00:08:25] Forced market order so those bands are
+[00:08:25] episode 3's pools on steroids
+[00:08:31] They're not resting stops that might be
+[00:08:31] moved around like they aren't they aren't
+[00:08:31] actually sitting in the order book
+[00:08:36] They are contractual forced orders that
+[00:08:36] cannot be changed in a map of guaranteed
+[00:08:36] future aggression as well because again
+[00:08:44] You know those forced market orders
+[00:08:46] Those gonna be visible to anyone who does
+[00:08:46] the math so it can and will be taken
+[00:08:46] advantage of especially by bigger players
+[00:08:46] who do need
+[00:08:52] To engineer liquidity for themselves,
+[00:08:52] which you've kind of been building up to
+[00:08:52] in this series somebody
+[00:08:56] I say and let's go into the funding rate
+[00:08:56] so now let's give you some tools to defend
+[00:08:56] yourself against these things
+[00:09:01] So how do you know when the market is
+[00:09:01] loaded on one side?
+[00:09:04] So there's two free numbers that you can
+[00:09:04] reference gauge number one is gonna be the
+[00:09:04] funding rate so perpetual futures
+[00:09:10] Which is crypto's like best and most
+[00:09:10] favorite product of course have no
+[00:09:10] expiration
+[00:09:16] That is what perpetual quite literally
+[00:09:16] means they because typically when you
+[00:09:16] trade futures contracts
+[00:09:20] They have an expiration, and then they
+[00:09:20] have a premium or discount related to spot
+[00:09:20] price action perpetual future is more or
+[00:09:20] less mimic spot
+[00:09:27] price action, and they just don't have a
+[00:09:29] You know an expiration date for when those
+[00:09:29] contracts
+[00:09:33] Basically go away
+[00:09:34] so exchanges use
+[00:09:37] So to to do these perpetual futures
+[00:09:37] exchanges use a balancing payment when
+[00:09:37] longs crowd the boat
+[00:09:44] Longs will effectively be forced to pay
+[00:09:44] shorts a fee hour after hour or whenever
+[00:09:44] their
+[00:09:49] Intervals are so typically I see intervals
+[00:09:49] of either an hour four hours or eight
+[00:09:49] hours are the going ones in crypto land
+[00:09:49] and if
+[00:09:56] Account active here, so I don't think I
+[00:09:56] can actually access that but let me let me
+[00:09:56] pull up some else in fact
+[00:09:57] I do think we could use maybe central
+[00:09:57] command for this let me bring it up right
+[00:09:57] here
+[00:10:01] Because you can actually get a general
+[00:10:01] idea of what the overall markets
+[00:10:07] Funding rates are looking like yes, I
+[00:10:07] found it okay beautiful. Yeah, so this is
+[00:10:07] Central Command
+[00:10:11] This is a free resource by the way
+[00:10:13] There's a link description below for how
+[00:10:13] to operate this but it is quite literally
+[00:10:13] free
+[00:10:16] You just need to sign up
+[00:10:18] you sign up to Blofin using my affiliate
+[00:10:18] link and then just put in your UID here
+[00:10:21] All this is free doesn't cost you a thing
+[00:10:23] You don't need to use your Blofin account
+[00:10:23] if you don't want to and by the way
+[00:10:26] You also have a liquidation heat map here
+[00:10:26] as well, which is incredibly useful, but
+[00:10:26] funding rates. Yes, right here as you can
+[00:10:26] see
+[00:10:31] so when those funding rates are pop are
+[00:10:31] positive that means that the longs the
+[00:10:31] longs who are
+[00:10:38] Who are who are using perpetual futures
+[00:10:38] are marketing into their positions more
+[00:10:38] aggressively than the shorts
+[00:10:45] So when that funding rate gets very, very
+[00:10:45] high, you can deduce from that, that there
+[00:10:49] are a lot more, in this case, longs
+[00:10:49] getting significantly more aggressive than
+[00:10:49] shorts.
+[00:10:55] Thus, they're going to have more pain
+[00:10:55] points here because they are, of course,
+[00:10:55] aggressive
+[00:10:59] people while they get, they are impatient,
+[00:10:59] they are impatient and in a lot of cases,
+[00:11:06] they can and will be liquidated in the
+[00:11:06] right conditions, especially when that
+[00:11:06] funding
+[00:11:11] rate is very, very high.
+[00:11:12] Because one, you're paying a lot just to
+[00:11:12] hold your position on top of the actual
+[00:11:12] fee
+[00:11:16] that you incurred to put on that position,
+[00:11:16] too.
+[00:11:20] So longs crowd the boat, longs pay shorts,
+[00:11:20] a fee, hour if hour, whenever that
+[00:11:25] is now, there is also scenarios in which
+[00:11:25] this will be a negative number in
+[00:11:29] which shorts will actually pay a fee to
+[00:11:29] the longs to hold their short positions.
+[00:11:36] So this just incurs more and more cost
+[00:11:36] towards these people.
+[00:11:39] And of course, if you can read it like
+[00:11:39] this, hot, positive funding means a
+[00:11:44] crowd is literally paying to stay
+[00:11:44] leveraged along.
+[00:11:47] So that's not going to be a chart pattern.
+[00:11:49] You're not going to see that in the
+[00:11:49] charts, basically.
+[00:11:50] But that is a sentiment with a number on
+[00:11:50] it, which is actually quite useful.
+[00:11:55] You kind of look at it as like a
+[00:11:55] thermometer for how crowded one side of
+[00:11:57] the boat has become, or what, you know,
+[00:11:57] which side of the boat is more
+[00:12:00] aggressive is a better way to think about
+[00:12:00] this.
+[00:12:02] It's not that there's more longs and
+[00:12:02] shorts.
+[00:12:04] Remember, there's always one long for
+[00:12:04] every one short, of course.
+[00:12:07] But when you are marketing into those
+[00:12:07] positions, you are causing a bigger
+[00:12:11] disassociation association between the
+[00:12:11] perpetual futures price and the
+[00:12:15] underlying index price that it is marked
+[00:12:15] off of that is what creates the
+[00:12:21] greater funding rates on both sides, if
+[00:12:21] they get super aggressive.
+[00:12:24] So again, big, high funding rates, longs
+[00:12:24] now have, you know, kind of a pain
+[00:12:28] point, very, very low or sorry, not low,
+[00:12:28] but negative, like big, negative
+[00:12:33] number, uh, like funding rates.
+[00:12:36] Um, that is where shorts are paying longs
+[00:12:36] to put on their positions and you
+[00:12:39] can have, you know, short squeezes, uh,
+[00:12:39] for example, anyways.
+[00:12:43] All right.
+[00:12:43] So gauge number two, and this is your
+[00:12:43] second most important, um, indicator
+[00:12:47] basically to gauge when the sort of
+[00:12:47] cascading events can and are more
+[00:12:51] likely to happen and that is going to be
+[00:12:51] open interest.
+[00:12:54] So open interest effectively relates to
+[00:12:54] how many leverage contracts exist right
+[00:12:54] now.
+[00:12:59] It's this, this, this one's a lot more
+[00:12:59] simple to understand than
+[00:13:01] of course, uh, the funding rates, funding
+[00:13:01] rates.
+[00:13:03] Again, you kind of have to understand the
+[00:13:03] difference between perpetual futures
+[00:13:05] and the index that they're marked off of
+[00:13:05] open interest, just the, the
+[00:13:10] overall total amount of leverage contracts
+[00:13:10] that exist for whatever
+[00:13:13] asset you might be looking at.
+[00:13:15] Now, remember every open and contract is a
+[00:13:15] future exit.
+[00:13:19] You know, these are leverage positions.
+[00:13:20] You're borrowing that money.
+[00:13:21] You're probably going to exit at some
+[00:13:21] point, whether it's forced or not.
+[00:13:24] It's up to you.
+[00:13:25] However, anyways, most will close
+[00:13:25] politely, you know, as you know, as
+[00:13:29] you probably know, but when the open
+[00:13:29] interest climbs fast while price climbs,
+[00:13:33] for example, that new leverage stacking in
+[00:13:33] at the highs, well, guess
+[00:13:37] what, every one of those contracts has
+[00:13:39] the liquidation price sitting below.
+[00:13:40] Maybe not even that far from current price
+[00:13:40] action
+[00:13:42] as people get more and more aggressive
+[00:13:43] using more and more leverage.
+[00:13:45] And you can think of an open interest as
+[00:13:45] like a fuel gauge.
+[00:13:48] Open interest is potential energy.
+[00:13:50] High open interest plus hot funding
+[00:13:52] doesn't tell you when the avalanche comes.
+[00:13:54] Nothing will of course, but same rule as
+[00:13:54] always.
+[00:13:57] It tells you the mountain is loaded with
+[00:13:57] snow
+[00:14:00] and that avalanche has a potential to come
+[00:14:00] now.
+[00:14:04] So when you see big funding rates,
+[00:14:06] and again, that can be both positive or
+[00:14:06] negative.
+[00:14:09] In this case, we have a positive one right
+[00:14:09] here.
+[00:14:11] If it's negative, it's gonna be red.
+[00:14:12] And if you have just straight up big open
+[00:14:12] interest,
+[00:14:16] like which actually we can see over here,
+[00:14:17] which right now we do not,
+[00:14:18] or yes, we do not have high open interest
+[00:14:18] right now.
+[00:14:21] But if it was extremely high,
+[00:14:23] then now would be the conditions ripe
+[00:14:25] for when a potential avalanche
+[00:14:27] or one of those liquidation cascades can
+[00:14:27] occur.
+[00:14:30] So I'm not saying that is definitely going
+[00:14:30] to,
+[00:14:32] but it can.
+[00:14:33] That is the time where you have to be
+[00:14:34] a little bit more guarded.
+[00:14:36] Anyways, let's go over.
+[00:14:39] The cascade engine here
+[00:14:40] has a nice little animation plays out.
+[00:14:43] All right, so here is the engine.
+[00:14:45] And let me just run it again.
+[00:14:46] A dip, any dip, basically a whale sells,
+[00:14:48] a headline, a stop run, whatever.
+[00:14:50] It doesn't really matter.
+[00:14:51] Price slides into the first band.
+[00:14:53] And the 10X longs, they're gonna get
+[00:14:53] liquidated
+[00:14:55] because that is their pain point.
+[00:14:56] That is forced market sells.
+[00:14:58] And remember, nobody chose this.
+[00:15:00] And that burst of selling pushes price
+[00:15:00] lower
+[00:15:02] into band number two.
+[00:15:04] And that's gonna be the five X longs.
+[00:15:07] Five X longs get liquidated next
+[00:15:07] typically,
+[00:15:08] or I mean, just people have lower leverage
+[00:15:11] than 10X basically.
+[00:15:12] Each band force exits are the push that
+[00:15:12] triggers
+[00:15:15] the next band.
+[00:15:16] And that is your cascade.
+[00:15:17] And what happens after that?
+[00:15:18] It's just like dominoes.
+[00:15:19] You've watched them fall in real time
+[00:15:21] and call it a crash.
+[00:15:22] 10% of minutes isn't a thousand people
+[00:15:22] panicking.
+[00:15:25] It's a thousand computers executing
+[00:15:25] contracts in order,
+[00:15:28] which nobody chose effectively that second
+[00:15:28] leg down.
+[00:15:31] Anyways, real quick, this is the cringy
+[00:15:31] part of the video.
+[00:15:33] If that just explained a crash that you
+[00:15:33] lived through,
+[00:15:35] I don't know, consider him hitting the
+[00:15:35] like button
+[00:15:38] and the subscribe button because that is
+[00:15:38] the best way
+[00:15:40] to get more and more content like this
+[00:15:42] at the proper time.
+[00:15:43] And let me just give you an example right
+[00:15:43] here too.
+[00:15:45] So there are many examples in Bitcoin's
+[00:15:45] history,
+[00:15:48] but I do wanna pick something that's been
+[00:15:50] maybe a little bit more recent.
+[00:15:53] And that is, well, shut this one over here
+[00:15:54] would be a pretty damn good one from June,
+[00:15:56] this nice little cascade.
+[00:15:57] But I wanna pull up what probably is a
+[00:15:57] very painful one.
+[00:16:01] Like maybe the most picture perfect one
+[00:16:03] that I've seen in a while,
+[00:16:04] which was from October 10th of the year
+[00:16:04] 2025.
+[00:16:07] If you recall, Bitcoin was just a few days
+[00:16:07] previous to that
+[00:16:10] at all time highs.
+[00:16:12] At all time highs, like making new highs,
+[00:16:14] market was very frothy, leverage was very
+[00:16:14] high,
+[00:16:17] open interest was extremely high.
+[00:16:19] People were deep into all kinds of
+[00:16:19] altcoins at that time too.
+[00:16:23] And in one day, one singular day here on
+[00:16:23] October 10th,
+[00:16:27] we saw Bitcoin go from 122 and a half
+[00:16:27] thousand US dollars
+[00:16:30] down to 105 and a half thousand US
+[00:16:30] dollars.
+[00:16:34] Like just the nominal price drop there
+[00:16:37] is absolutely fucking crazy.
+[00:16:39] This was about a 14% move on Bitcoin,
+[00:16:42] which effectively equated to like 70 to
+[00:16:42] 80% move on altcoins.
+[00:16:45] So when you go to less liquid things,
+[00:16:48] these cascades, they get amplified.
+[00:16:50] Oh my God, yeah, right here.
+[00:16:52] Holy moly.
+[00:16:54] Okay, October 10th, XRP was not joining
+[00:16:54] the bull market,
+[00:16:58] This one down over 51%.
+[00:17:01] Now that actually for shit coins, not that
+[00:17:01] bad.
+[00:17:04] I mean, not that bad, it was still pretty
+[00:17:04] bad.
+[00:17:07] Some of them were down like 70 to 80%.
+[00:17:08] Think about it, on an 80% move against
+[00:17:08] you,
+[00:17:12] and if you're using anything more than one
+[00:17:12] X leverage,
+[00:17:16] you are liquidated.
+[00:17:17] You're gone, you're out, you're put,
+[00:17:17] you're done.
+[00:17:21] So do keep that in mind.
+[00:17:23] These moves get amplified when liquidity
+[00:17:23] is even lower.
+[00:17:26] So Bitcoin has a...
+[00:17:27] a 13% move, the rest of them had, you
+[00:17:27] know, humongously massive and nasty moves.
+[00:17:33] Anyways, moving on from there, let's go
+[00:17:33] over, yes, why crypto specifically has
+[00:17:33] this phenomenon
+[00:17:40] in spades very somewhat frequently, I
+[00:17:40] would say, and also to a much more nasty
+[00:17:40] degree.
+[00:17:46] And you probably already kind of worked
+[00:17:46] out the logic behind this. But anyways,
+[00:17:49] there's four reasons. They're all
+[00:17:49] structural. So one, you got 24 seven
+[00:17:49] markets, there's no
+[00:17:56] cascades fire while your time zone sleeps,
+[00:17:56] you know, when liquidity is lower, when
+[00:17:56] people aren't
+[00:18:00] trading that much basically creates the
+[00:18:00] actually number two right here, which is
+[00:18:00] thin sessions,
+[00:18:05] episode threes, weekend books, we've gone
+[00:18:05] over this, there's shallow liquidity
+[00:18:05] there,
+[00:18:09] there's less and less people trading
+[00:18:09] during off market hours, especially
+[00:18:09] weekends or holidays,
+[00:18:14] for example. So that means the same for
+[00:18:14] selling moves price even further during
+[00:18:14] these times,
+[00:18:19] there's just less liquidity to choose to
+[00:18:19] chew through. So when you market order
+[00:18:19] during those
+[00:18:23] times, your fill is going to be worse and
+[00:18:23] worse. Number three is of course going to
+[00:18:23] be retail
+[00:18:27] leverage, which effectively is products
+[00:18:27] offering up to 100X leverage, which is
+[00:18:27] unfortunately
+[00:18:35] very, very common in crypto land. Some of
+[00:18:35] them only offer 20X leverage, but still,
+[00:18:35] you know,
+[00:18:40] both of these are absolutely astronomical
+[00:18:40] in comparison to what you typically get in
+[00:18:40] traditional
+[00:18:44] markets, which is the maximum leverage I
+[00:18:44] saw in traditional markets was 4X, like
+[00:18:44] 4X. And if you
+[00:18:49] use 4X leverage, that was considered like,
+[00:18:49] oh, damn, like this guy's fucking living
+[00:18:49] on the
+[00:18:55] edge right here, like that was big.
+[00:18:55] Anyways, yes, so retailer leverage. And
+[00:18:55] then number four is,
+[00:19:01] of course, in crypto land, not in
+[00:19:01] traditional market land, but in crypto
+[00:19:01] land, there are no
+[00:19:05] circuit breakers. So in traditional market
+[00:19:05] land, stocks will actually halt trading
+[00:19:05] when the move
+[00:19:10] gets too extreme, something like 5% in
+[00:19:10] five minutes, or, you know, they have
+[00:19:10] changed these
+[00:19:16] rules over time. But crypto just keeps
+[00:19:16] going. So add it up. And here's the honest
+[00:19:16] framing.
+[00:19:22] Crypto isn't more manipulated than other
+[00:19:22] markets, just more flammable. And there's
+[00:19:22] just less
+[00:19:26] things in place to stop the cascade that
+[00:19:26] inevitably will come. Same physics, you
+[00:19:26] know,
+[00:19:32] just more fuel, no fire department there.
+[00:19:32] And again, in traditional markets, you
+[00:19:32] know, when you
+[00:19:36] when you see a big move intraday, I'm
+[00:19:36] going to try to think of some maybe like
+[00:19:36] GameStop,
+[00:19:41] for example, when you see big moves,
+[00:19:41] either the upside or the downside, I think
+[00:19:41] it's I think
+[00:19:45] the rule is five minutes or sorry, 5% in
+[00:19:45] five minutes. I have to have Claude double
+[00:19:45] check
+[00:19:48] minutes get paused for five minutes,
+[00:19:48] something like this. And the reason why
+[00:19:48] they do that is
+[00:19:49] quite literally so people can cool off
+[00:19:49] their fucking heads and not get, you know,
+[00:19:49] lost in
+[00:19:54] the sauce in the moment while prices
+[00:19:54] screaming around, literally the price will
+[00:19:54] stop for five
+[00:19:58] minutes, no trading like no trading
+[00:19:58] allowed. And that can happen multiple
+[00:19:58] times, you know,
+[00:20:03] and GameStop over here. I mean, you've
+[00:20:03] seen this multiple times both on the way
+[00:20:03] up and
+[00:20:06] on the way down to, you know, that does
+[00:20:06] happen even having some big stocks as
+[00:20:06] well, you know,
+[00:20:11] that can and will happen. But but yes, in
+[00:20:11] traditional markets, there's a little bit
+[00:20:11] of a,
+[00:20:16] you know, you have a little bit of
+[00:20:16] protection against that. Again, in crypto,
+[00:20:16] there's not
+[00:20:21] that. So once that liquidation cascade
+[00:20:21] starts going, it fucking goes. And by the
+[00:20:21] way, let's go
+[00:20:27] over perhaps, perhaps the worst one I've
+[00:20:27] ever seen ever with Bitcoin, at least. I
+[00:20:27] mean,
+[00:20:33] in markets, this was this was probably the
+[00:20:33] worst one, to my knowledge, at least
+[00:20:33] during my time.
+[00:20:38] And that's, of course, the March 2020
+[00:20:38] COVID dump over here. This was a just
+[00:20:38] biblical level,
+[00:20:48] biblical level, extreme liquidation
+[00:20:48] cascade. And of course, you know, Bitcoin
+[00:20:48] was already in a
+[00:20:53] downtrend going from February 12th to that
+[00:20:53] fateful day on actually March 11th. But on
+[00:20:53] March 11th
+[00:21:00] of the year 2020, Bitcoin dropped off in
+[00:21:00] one session, one daily session, 41 over
+[00:21:00] 41%.
+[00:21:08] That is fucking ginormous. It's just
+[00:21:08] absolutely ginormous. And again, in
+[00:21:08] stocks, yeah, we saw
+[00:21:16] some deep pullbacks as well, of course.
+[00:21:17] you know, but in crypto, it was worse.
+[00:21:17] Why? Because you didn't have those fail
+[00:21:17] safes in place.
+[00:21:23] But yes, you know, in this case, people
+[00:21:23] thought that the liquidation engine on
+[00:21:23] some exchanges
+[00:21:29] were going so much into overdrive that
+[00:21:29] Bitcoin would have gone down to like $0
+[00:21:29] basically,
+[00:21:34] because one of the exchanges, what they
+[00:21:34] did do is they effectively did a
+[00:21:34] bastardized version of
+[00:21:39] a circuit breaker. I think it was BitMEX
+[00:21:39] at the time, which was a big exchange back
+[00:21:39] in the day,
+[00:21:44] like back in the day, you know, just six
+[00:21:44] years ago. But yeah, it was one of the big
+[00:21:44] exchanges,
+[00:21:48] and they actually turned off their
+[00:21:48] exchange while this was happening. So
+[00:21:48] Bitcoin, you know,
+[00:21:54] people thought that if they didn't turn
+[00:21:54] off their exchange liquidation engine,
+[00:21:58] Bitcoin probably would have been down
+[00:21:58] around like, you know, $1,000. Instead, it
+[00:21:58] got down to about
+[00:22:03] $4,000, which is pretty fucking bad to
+[00:22:03] begin with. But yes, could have been
+[00:22:03] worse. And ultimately,
+[00:22:09] that is an example that will always live
+[00:22:09] deep inside my heart. So yes, you know,
+[00:22:09] these things
+[00:22:14] of an autopsy there. Again, you know,
+[00:22:14] Bitcoin was already in a downtrend here.
+[00:22:14] And then you got that
+[00:22:17] fateful news. And people started selling,
+[00:22:17] selling, selling, which created more
+[00:22:17] selling. Then you
+[00:22:21] started to hit the, you know, the
+[00:22:21] liquidations here, because why? Well, look
+[00:22:21] at this. Up until
+[00:22:28] this point, up until about 6500 on these
+[00:22:28] previous lows here, you know, it was kind
+[00:22:28] of like orderly
+[00:22:34] selling in a way. It was happening fast,
+[00:22:34] yes, but it wasn't like breaking anything
+[00:22:34] major.
+[00:22:38] Once Bitcoin took out that previous higher
+[00:22:38] low on the higher term timeframe trend,
+[00:22:43] what's going to happen there? Well, of
+[00:22:43] course, you've been following this series,
+[00:22:46] you already know many people, most people
+[00:22:46] are going to have their stops where if
+[00:22:46] they
+[00:22:50] were long, they're going to happen, you
+[00:22:50] know, below the most recent and most
+[00:22:50] important higher
+[00:22:53] low, which was right here. So once price
+[00:22:53] got to here, you saw price just fucking
+[00:22:53] scream
+[00:22:59] and almost teleport from 6500 all the way
+[00:22:59] down to 5,000 even. And even lower than
+[00:22:59] that,
+[00:23:04] you know, after all, it got another
+[00:23:04] thousand dollars lower. This happened so
+[00:23:04] fucking fast.
+[00:23:09] And then the snapback on the other side
+[00:23:09] also happened relatively quickly as well.
+[00:23:12] But you'll see massive volume on these and
+[00:23:12] it happens unbelievably quickly.
+[00:23:16] So it's incredibly important to
+[00:23:16] understand, you know, the factors leading
+[00:23:16] into this.
+[00:23:21] You had a lot of things going on. You had
+[00:23:21] very high open interest,
+[00:23:24] very high levels of leverage, you know,
+[00:23:24] and at this point, 100x leverage was just
+[00:23:28] normal for crypto. And then you had a
+[00:23:28] major news event. So those three things
+[00:23:28] together,
+[00:23:34] just rocket fuel for terribleness.
+[00:23:34] Anyways, let's move on to the next one.
+[00:23:39] So who wins? Who wins at the end of the
+[00:23:39] day? Well, if you're looking at this chart
+[00:23:39] right here,
+[00:23:44] guess what? This was actually a technical
+[00:23:44] level to be buying. That was around the
+[00:23:44] previous macro low
+[00:23:48] and ultimately was a higher term time from
+[00:23:48] higher low. So the patient people who were
+[00:23:53] buying on the other side, they got the
+[00:23:53] fucking fill of a lifetime. I mean, just
+[00:23:53] look at this,
+[00:23:57] look at this, that low of about $4,000.
+[00:23:57] Well, Bitcoin has never been even close to
+[00:23:57] it ever
+[00:24:03] since then. And from there, over the
+[00:24:03] course of two years, it went up to 65 to
+[00:24:03] $70,000.
+[00:24:09] So if you are patient during these times,
+[00:24:09] you can make a fucking killing,
+[00:24:15] trading on the other side of these things.
+[00:24:15] So realistically, when open interest gets
+[00:24:15] incredibly
+[00:24:19] high, one of the better strategies is to
+[00:24:19] kind of pull your money away from the
+[00:24:19] market,
+[00:24:24] wait for a cascade to happen, wait for the
+[00:24:24] dust to settle, and then enter on the
+[00:24:24] other side.
+[00:24:29] You can typically take advantage of some
+[00:24:29] massive snapback rallies and in some
+[00:24:29] cases,
+[00:24:33] biblical fucking macro higher lows.
+[00:24:33] Anyways, the patient players, as you know,
+[00:24:33] they pay
+[00:24:40] or they are playing with resting orders,
+[00:24:40] limit orders effectively, so low fees,
+[00:24:40] parks deep in
+[00:24:45] the book. There used to be some people who
+[00:24:45] would just put orders super, super low as
+[00:24:45] like a bottom
+[00:24:50] fishing type of thing. It used to be a
+[00:24:50] popular strategy in crypto because every
+[00:24:50] once in a while,
+[00:24:54] you see price just went down to $1 in some
+[00:24:54] cases. It looks absurd yesterday, but
+[00:24:54] today,
+[00:25:01] you know, it could look good. The cascade
+[00:25:01] delivers panic priced inventory straight
+[00:25:05] into their limit orders, in other words.
+[00:25:07] So the fill of a lifetime at prices,
+[00:25:08] no patient power could have ever even
+[00:25:08] engineered
+[00:25:10] for themselves.
+[00:25:11] And that's where the cascades end,
+[00:25:13] when the force selling runs out of fuel
+[00:25:15] and it hits the wall of patient bids.
+[00:25:18] It basically gets absorbed.
+[00:25:19] That's when the fall just stops.
+[00:25:21] And it's often on a violent V bottom here
+[00:25:21] too.
+[00:25:24] I mean, look, on this low,
+[00:25:26] we're looking at a daily chart right here.
+[00:25:28] From that low, Bitcoin snapped back
+[00:25:28] immediately almost
+[00:25:31] in the course of just one fucking day.
+[00:25:33] I'm talking about literally in one day,
+[00:25:35] from low to high, in one trading session,
+[00:25:35] 54%,
+[00:25:38] a little bit more than 54%.
+[00:25:40] And if you fast forward another couple of
+[00:25:40] weeks from then,
+[00:25:42] it's up multiples from that.
+[00:25:45] These are where fortunes can be made.
+[00:25:48] It just requires a shift out of patience
+[00:25:50] because these things do not happen that
+[00:25:50] often,
+[00:25:52] but they do absolutely happen.
+[00:25:54] And there certainly are some people whose
+[00:25:54] strategies
+[00:25:56] are just completely engineered around that
+[00:25:56] fact.
+[00:26:00] Yep, violent V, lots of opportunity right
+[00:26:00] there.
+[00:26:02] Their patience is basically buying
+[00:26:04] someone else's margin call.
+[00:26:05] It's harsh, it's a harsh game out there,
+[00:26:07] but now you know which side of that trade
+[00:26:09] you'd probably rather be on.
+[00:26:10] Anyways, survival, the defense, your
+[00:26:10] defense, hopefully,
+[00:26:13] how do you make sure the avalanche never
+[00:26:13] takes you with it?
+[00:26:16] Well, three rules we can employ here.
+[00:26:18] Rule number one is gonna be use low
+[00:26:18] leverage.
+[00:26:20] The boring one that always works, of
+[00:26:20] course,
+[00:26:22] is just no leverage, but low leverage
+[00:26:24] I would define as three X or under.
+[00:26:27] And the 1% rule from the TA Foundations
+[00:26:27] Program,
+[00:26:31] this covers this automatically
+[00:26:32] because you're not even gonna liquidate to
+[00:26:32] begin with.
+[00:26:34] If you're using even three X leverage,
+[00:26:37] you need a 33% move or greater
+[00:26:39] to get liquidated on a three X leverage.
+[00:26:41] So if you're using the 1% stop,
+[00:26:46] or sorry, not 1% stop loss rule,
+[00:26:48] but 1% risk rule from the TA Foundations
+[00:26:48] Program,
+[00:26:50] which again is free, it's a different
+[00:26:50] playlist here,
+[00:26:52] but yes, it is free,
+[00:26:54] then you will, you're not gonna run into
+[00:26:54] that.
+[00:26:57] Those cascade victims weren't wrong about
+[00:26:57] direction
+[00:27:00] in most cases, like you see over here too.
+[00:27:02] Eventually, these longs, if they would
+[00:27:02] have just
+[00:27:05] ignored all this, which took a matter of a
+[00:27:05] month and a
+[00:27:08] half, they would have been back at break
+[00:27:08] even or even up,
+[00:27:11] which is something really to think about a
+[00:27:11] lot actually.
+[00:27:15] They were wrong about surviving the path
+[00:27:15] though.
+[00:27:17] And again, that matters.
+[00:27:19] So rule number two, of course,
+[00:27:20] is if you must use leverage,
+[00:27:22] make sure your liquidation price is
+[00:27:22] nowhere near
+[00:27:25] an obvious liquidity pool,
+[00:27:27] Anyways, what does that look like?
+[00:27:29] Well, in this case, you can see right
+[00:27:29] here,
+[00:27:31] this was a major, major, major higher low
+[00:27:34] in which a new high on the rally was made.
+[00:27:37] So this is where a lot of longs were
+[00:27:37] placed in their stops.
+[00:27:40] Again, what happens there?
+[00:27:41] Well, once price gets to that area,
+[00:27:43] it just fucking gets jet fuel for more
+[00:27:43] downside
+[00:27:47] as people are forced to sell their longs.
+[00:27:50] That is a humongous, humongous thing.
+[00:27:54] If you must use leverage,
+[00:27:55] make sure your liquidation is so fucking
+[00:27:55] far away
+[00:27:57] from current price that it's nowhere near
+[00:27:59] one of those major highs and major lows,
+[00:28:01] or if you're in a range, it's not around
+[00:28:01] the range,
+[00:28:04] bound to the upside or the range,
+[00:28:05] bound to the downside or liquidity pool
+[00:28:06] to the upside or downside.
+[00:28:08] You wanna be very far out of there.
+[00:28:09] And again, if you're using the 1% risk
+[00:28:09] rule,
+[00:28:12] you're probably gonna have to worry about
+[00:28:12] this at all.
+[00:28:13] I'd say just low leverage in general
+[00:28:15] if you're gonna use it as well.
+[00:28:16] And again, check out the TA-101 program.
+[00:28:18] It's literally 100% free.
+[00:28:20] We go over better ways, more optimized
+[00:28:20] ways
+[00:28:22] to place your stop losses
+[00:28:23] so that you don't just unnecessarily give
+[00:28:23] up money
+[00:28:25] to the market.
+[00:28:27] All right, and yes, that was also episodes
+[00:28:27] four map
+[00:28:29] from this series.
+[00:28:31] Anyways, okay, yes, rule number three
+[00:28:31] here.
+[00:28:33] Check the weather before you size.
+[00:28:36] Funding and open interest are free.
+[00:28:38] You can find them on centralcommand.io
+[00:28:38] right here again.
+[00:28:42] Just sign up to my Blofin link.
+[00:28:44] There's a shill link description below.
+[00:28:45] You don't need to trade there if you don't
+[00:28:45] want to,
+[00:28:46] but that actually link is actually pretty
+[00:28:46] powerful
+[00:28:48] because it does give you a significant
+[00:28:48] amount
+[00:28:50] of fee reductions in the form of cashback,
+[00:28:52] but it is your ticket to use this platform
+[00:28:52] for free.
+[00:28:55] And you can reference funding rates right
+[00:28:55] here
+[00:28:57] and open interest right here under the
+[00:28:57] markets tab
+[00:28:59] in the alpha section right here.
+[00:29:00] And you even get a liquidation heat map as
+[00:29:00] well.
+[00:29:02] So it even kind of tells you, you know,
+[00:29:03] where those people's pain points are.
+[00:29:07] So hot funding plus stacked OI is a
+[00:29:07] weather warning.
+[00:29:11] It's not going to predict the exact day.
+[00:29:12] Nothing will, but it does give you a
+[00:29:12] pretty good idea
+[00:29:16] of when these things are possible.
+[00:29:18] So again, you can have very high funding
+[00:29:18] rates,
+[00:29:21] both positive or negative.
+[00:29:23] The closer to 0% you are, you know,
+[00:29:26] the less and less realistically of an
+[00:29:26] issue it is.
+[00:29:30] And open interest, you know, if that's
+[00:29:30] just normally high,
+[00:29:32] like extremely high compared to whatever
+[00:29:32] you're looking back
+[00:29:34] to over here, yeah, that will also be an
+[00:29:34] issue here.
+[00:29:37] But both of these are trending down right
+[00:29:37] now.
+[00:29:39] So as of current, not really a major
+[00:29:39] issue.
+[00:29:41] Anyways, let's go over a little bit of a
+[00:29:41] reframe here
+[00:29:44] for the people who are still not
+[00:29:44] convinced.
+[00:29:46] So last mental upgrade, hopefully in this
+[00:29:46] particular video,
+[00:29:49] and it's the one that hopefully is going
+[00:29:49] to kill
+[00:29:51] a lot of panic that I think people have
+[00:29:53] when it comes to trading or investing.
+[00:29:54] A cascade is not the market breaking.
+[00:29:57] It's the market deleveraging is what it
+[00:29:57] is.
+[00:29:59] It's a deleveraging event, fleshing out
+[00:29:59] borrowed conviction.
+[00:30:02] You know, again, that is what leverage
+[00:30:02] trades are.
+[00:30:03] You're borrowing from someone else to put
+[00:30:03] on more size
+[00:30:07] than what you otherwise would have been
+[00:30:07] able to trade with.
+[00:30:10] So think about what those four cells
+[00:30:10] actually are.
+[00:30:12] Episode two taught you, sorry,
+[00:30:15] episode two taught you prints carry
+[00:30:15] opinions, of course.
+[00:30:18] But a liquidation print carries no
+[00:30:18] opinion.
+[00:30:20] The seller didn't decide anything.
+[00:30:22] Just their liquidation level did.
+[00:30:24] The sellers were forced.
+[00:30:25] They weren't convinced to take action.
+[00:30:27] They were forced to take action.
+[00:30:29] And that's why cascades so often end up
+[00:30:31] in V-shaped recoveries.
+[00:30:32] Because once the borrowed positions are
+[00:30:32] gone,
+[00:30:34] there's nobody left who actually wanted to
+[00:30:34] sell.
+[00:30:36] Like these people did not want to sell.
+[00:30:38] The machine didn't break.
+[00:30:39] It just took out the trash.
+[00:30:41] You know, the people were over leveraged
+[00:30:42] and probably way too aggressive.
+[00:30:45] And it did it violently and
+[00:30:45] indiscriminately,
+[00:30:48] but then the previous trend prevailed.
+[00:30:50] Again, I can find it no better example
+[00:30:52] than March 2020 here for Bitcoin,
+[00:30:55] or just markets in general.
+[00:30:56] I mean, shit, you can see it over here
+[00:30:57] on SPY futures too back from that fateful
+[00:30:57] day.
+[00:31:02] Let me just bring you up to speed here.
+[00:31:04] Boom, right here.
+[00:31:05] Painfully obvious on the chart.
+[00:31:07] You can see maybe the most picture-perfect
+[00:31:07] V bottom
+[00:31:09] of all time.
+[00:31:10] Boom, massive move to the downside.
+[00:31:12] Boom, massive move to the upside.
+[00:31:14] Again, if you would have just waited one
+[00:31:14] month
+[00:31:16] and you would have bought literally the
+[00:31:16] top right here,
+[00:31:19] or let's say two months actually,
+[00:31:21] you're already at break even, or, or, or,
+[00:31:21] or, or up.
+[00:31:25] That's what I'm talking about.
+[00:31:28] And remember, if you get liquidated,
+[00:31:30] you lose everything.
+[00:31:31] You lose everything.
+[00:31:32] So we don't want to multiply by zero here.
+[00:31:36] So at the very least,
+[00:31:37] use this information to avoid these
+[00:31:37] things.
+[00:31:39] You don't have to take advantage of them,
+[00:31:40] although there is a lot of opportunity
+[00:31:40] there.
+[00:31:42] So let's now lock it in.
+[00:31:43] The trigger, liquidation, a stop.
+[00:31:45] You can't move, why?
+[00:31:46] Because you borrowed money
+[00:31:47] and you're executing at market by
+[00:31:47] contract.
+[00:31:50] Number two, the engine.
+[00:31:51] Bands of clustered liquidation prices
+[00:31:52] falling like dominoes.
+[00:31:54] Again, you can see over here on Central
+[00:31:54] Command
+[00:31:56] where those sort of liquidation levels
+[00:31:56] are.
+[00:31:58] In fact, even on their terminal,
+[00:31:59] they have a nice overlay for that too.
+[00:32:00] Anyways, back into it over here.
+[00:32:02] That is the engine, effectively.
+[00:32:05] And each band's forced exit, you know,
+[00:32:07] shoves price into the next.
+[00:32:08] So that's where your cascade comes from.
+[00:32:10] You know, first the, first the 50X
+[00:32:10] leverage
+[00:32:12] people get liquidated.
+[00:32:13] Then the 40X leverage, then the 30,
+[00:32:15] then the 20, then the 15, then the 10,
+[00:32:17] then the five, then the three, then the
+[00:32:17] two,
+[00:32:18] then the, well, technically the one won't
+[00:32:18] get liquidated
+[00:32:20] unless the price goes negative.
+[00:32:22] Which actually can't.
+[00:32:23] happen if you were around, again in 2020,
+[00:32:23] oil did that too. So even the unthinkable
+[00:32:23] can
+[00:32:28] and will happen, I suppose. That one was a
+[00:32:28] big surprise for me. Anyways, the defense.
+[00:32:32] Number three here, leverage, use low
+[00:32:32] leverage. You're going to use leverage at
+[00:32:32] all or just
+[00:32:36] trade spot, which you won't have these
+[00:32:36] issues to begin with. Liquidation price
+[00:32:36] should always
+[00:32:41] be far from the pools. You should be
+[00:32:41] actively, proactively managing risk.
+[00:32:41] That's covered
+[00:32:44] in TA 101 and especially in Krown Trading
+[00:32:44] Bible with significant tactics to do such
+[00:32:50] things and significantly more optimized,
+[00:32:50] in my opinion, too. And of course, 10% in
+[00:32:50] minutes
+[00:32:56] should hopefully never be that confusing
+[00:32:56] again. It's just a cascade. That's all
+[00:32:56] that it is.
+[00:33:01] That's what you're seeing when you see one
+[00:33:01] of those just nasty, diabolical moves.
+[00:33:01] Anyways,
+[00:33:06] let's give you some homework here. This
+[00:33:06] one hopefully takes more than two minutes
+[00:33:10] and it will make you smarter than most of
+[00:33:10] your feed. At least that's the goal here.
+[00:33:15] Look up two numbers. Right now, both free
+[00:33:15] on every major crypto data site. I'm
+[00:33:15] talking
+[00:33:19] about Bitcoin's current funding rate and
+[00:33:19] its open interest rate. That will be
+[00:33:19] typically
+[00:33:23] on your main page right here. Like I said,
+[00:33:23] I'm actually not signed up for leverage
+[00:33:23] trading
+[00:33:25] around here. There will be something that
+[00:33:25] just says funding rate. And they also
+[00:33:25] typically
+[00:33:28] tell you about open interest as well
+[00:33:28] pertaining just to that exchange. But if
+[00:33:28] you want
+[00:33:32] all of it, you know, conglomerated
+[00:33:32] together and aggregated together, then
+[00:33:32] like I said,
+[00:33:37] central command, go to the markets tab,
+[00:33:37] then go to alpha, scroll down a little
+[00:33:37] bit.
+[00:33:41] You got them right here. It's all for
+[00:33:41] free, too. Anyways, yes, OK, then comment
+[00:33:41] both
+[00:33:46] numbers plus one word loaded or calm.
+[00:33:46] That's it. Notice what you're doing as
+[00:33:46] well
+[00:33:52] because you're reading the markets
+[00:33:52] leverage weather and not really predicting
+[00:33:52] anything.
+[00:33:55] That's all we're doing here. It's a
+[00:33:55] reading, not a prediction. In other words,
+[00:33:55] I'll have
+[00:33:59] Claude, of course, grade the first 50
+[00:33:59] readings and did the numbers support the
+[00:33:59] word?
+[00:34:03] That's that. That's really the question
+[00:34:03] that we're trying to look for here.
+[00:34:06] And we'll see how the room called it, too,
+[00:34:06] because fair warning.
+[00:34:09] Once you start checking these two numbers,
+[00:34:09] you will never open up a leverage position
+[00:34:12] again without checking them, at least if
+[00:34:12] you have any fucking sense with, you know,
+[00:34:16] in your brain. But yes, I'll have Claude
+[00:34:16] grade the first 50 of these, assuming
+[00:34:19] that this video comes out in time. But
+[00:34:19] yes, at the end of the day,
+[00:34:23] we are now at the end of this particular
+[00:34:23] video.
+[00:34:27] And we go into next week, the finale of
+[00:34:27] this whole playlist, too.
+[00:34:31] This is that is going to be episode number
+[00:34:31] eight, which is the tape.
+[00:34:34] And eight episodes ago, the machine was
+[00:34:34] probably more so a black box.
+[00:34:38] You know, it's like magic. What the fuck
+[00:34:38] is going on here?
+[00:34:41] Candles appeared. You got hurt. You got
+[00:34:41] hunted. Nobody told you why.
+[00:34:44] Since you've never met the operator, the
+[00:34:44] engine, the pool is the hunter,
+[00:34:46] the tricks, the whale and today the
+[00:34:46] avalanche.
+[00:34:50] And one thing left the x-ray, the tape,
+[00:34:50] the raw feed of every trade,
+[00:34:55] where Delta lives, where ultimately the
+[00:34:55] whole market lives.
+[00:34:58] I mean, all these recent trades right
+[00:34:58] here, that's what actually is represented
+[00:35:02] on the chart, ultimately. So that is quite
+[00:35:02] literally the closer
+[00:35:05] you can ever be to a price. Anyways, that
+[00:35:05] is, of course,
+[00:35:10] also where absorption will show itself in
+[00:35:10] real time.
+[00:35:13] When you start to see all of these, you
+[00:35:13] know, if you start to see
+[00:35:16] like a like just a fucking cascade of red,
+[00:35:16] for example, a bunch
+[00:35:19] of a bunch of markets selling orders and
+[00:35:19] prices not actually moving.
+[00:35:23] And they are doing it with sides.
+[00:35:24] You can see that these are not with size
+[00:35:24] right here.
+[00:35:26] These are fractions of a dollar, probably
+[00:35:26] a fraction of a penny even.
+[00:35:31] But when you see big numbers doing that
+[00:35:31] and it gets absorbed, well,
+[00:35:33] now you actually have, like I said,
+[00:35:33] probably a good area
+[00:35:36] to mark off on your charts as potential
+[00:35:36] support. Anyways, yes.
+[00:35:39] Anyways, if today defuse the scariest
+[00:35:39] chart in crypto for you,
+[00:35:42] I would humbly request to hit the like
+[00:35:42] button and subscribe, because like I said,
+[00:35:46] it's the best way to tell YouTube to give
+[00:35:46] you more content like this.
+[00:35:49] And it will end things on that note.
+[00:35:50] As always, I want to show you the best,
+[00:35:50] best, take care and much love.

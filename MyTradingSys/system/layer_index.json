@@ -711,6 +711,64 @@
           "note": "needs an operator ruling on no resting stop"
         }
       }
+    },
+    {
+      "id": "pitchfork",
+      "name": "Pitchfork (Andrews / Schiff / Morge median line)",
+      "tracks": "Gemini (study/detector), Claude",
+      "status": "Foundational study papers delivered (papers/01, 02, 03); detector, tests, and YouTube BTC evaluation benchmark built.",
+      "spec": [
+        "papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md",
+        "papers/02_PITCHFORK_APPLICATION_ON_BTC.md",
+        "MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md",
+        "papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md"
+      ],
+      "code": [
+        "MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py"
+      ],
+      "ledger": [],
+      "results": [],
+      "roadmap": [],
+      "cards": [
+        "pitchfork-*"
+      ],
+      "layers": [
+        "pitchfork_swing"
+      ],
+      "plain": "Dynamic equilibrium channels from 3 swing pivots with median line reach (80% rule) and Hagopian failure breakout on BTC.",
+      "path": {
+        "idea": {
+          "s": "done",
+          "note": "01_MASTERS_PITCHFORK_FOUNDATIONS.md + 02_PITCHFORK_APPLICATION_ON_BTC.md + RESEARCH_PITCHFORK_LAYER.md"
+        },
+        "inputs": {
+          "s": "done",
+          "note": "4H / 1D klines on BTC"
+        },
+        "fees": {
+          "s": "done",
+          "note": "4H/1D stops 1.2-2.0%, targets 3.5-8.0%: fee drag < 5% of gross edge"
+        },
+        "charts": {
+          "s": "planned",
+          "note": "visual chart inspection on BTC swing structures"
+        },
+        "built": {
+          "s": "done",
+          "note": "pitchfork_detector.py + test_pitchfork_detector.py"
+        },
+        "dev": {
+          "s": "planned",
+          "note": "event study on BTC 4H/1D"
+        },
+        "oos": {
+          "s": "planned",
+          "note": "validation on holdout period"
+        },
+        "testnet": {
+          "s": "later"
+        }
+      }
     }
   ],
   "cross_cutting": [
