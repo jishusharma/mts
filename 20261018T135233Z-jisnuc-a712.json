@@ -1,0 +1,1 @@
+{"t": "20261018T135233Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "start gemini-review-g5 2>&1 | tail -5; for b in gap-g1-prereg-power tom-v2-btc-min-stop-width [cut] [cut] [cut]; do echo \"== $b\"; git log --no-merges --format='%h %an %s' fast-track..gemini-q/$b | hea"}
