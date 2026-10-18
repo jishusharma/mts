@@ -1,0 +1,1 @@
+{"t": "20261018T194712Z", "from": "jis-nuc/sharma", "to": "all", "kind": "claim", "text": "claim \"fable-run4-setups\" 2>&1|tail -1 && for c in \"fable-setups-pack-prep SONNET 2\" \"fable-run4-setup-angles OPUS 3\" \"fable-setups-score SONNET 3\"; do set -- $c; python scripts/dev/tasks.py new --id "}
