@@ -1,0 +1,54 @@
+{
+ "approved_by": "",
+ "asks": "",
+ "commands": [],
+ "created": "2026-10-18T03:57:18Z",
+ "depends_on": [],
+ "done_when": "kurisko module, params and FORMULAS section 24 on fast-track; run_all_tests --quick green; every fixture value traced to FORMULAS 24. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+ "est_turns": 32,
+ "formula_id": "",
+ "formula_ids": [],
+ "from_inbox": "",
+ "goal": "Build backtest/layers/kurisko/: a causal four-oscillator Quad Rotation detector (all four under 20, then the fast one turns up; mirror above 80). Oscillator switch: stochastic (9,3),(14,3),(40,4),(60,10,10) per his slides, or RSI on the same four lookbacks as an operator hypothesis. Alert-only.",
+ "id": "kurisko-quad-rotation-module",
+ "lane": "SONNET",
+ "layers": [
+  "rsi"
+ ],
+ "live_path": false,
+ "mutation_check": "",
+ "note": "REVIEWED:2026-10-18 T0-ONLY LAB:definitions CLASS:C1 REVIEWER:GPT medium (formula and look-ahead review at ship) WEIGHT:IMPORTANT. Template: backtest/layers/wavetrend. Params the transcript card closes later are edited in the params file only. Layer is separate, never a Tom filter. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+ "prio": 1,
+ "refine_tries": 0,
+ "refined_by": "",
+ "refs": [],
+ "result": "",
+ "scope_in": [
+  "MyTradingSys/backtest/layers/kurisko/",
+  "MyTradingSys/backtest/layers/FORMULAS.md",
+  "MyTradingSys/backtest/layers/test_layer_boundaries.py",
+  "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md"
+ ],
+ "scope_out": [
+  "outcomes and backtests",
+  "live wiring (enabled stays false)",
+  "Tom code and constants",
+  "execution"
+ ],
+ "size": "M",
+ "sources": [
+  "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md section 3",
+  "MyTradingSys/backtest/layers/FORMULAS.md sections 1, 20, 21 (pattern)"
+ ],
+ "state": "refined",
+ "steps": [
+  "FORMULAS.md section 24: fast stochastic (k,d) and full (k,d,s) with a 20-bar example computed by hand; RSI reuses rsi_core Wilder",
+  "params/kurisko_default.json in the krown format (value, label SOURCED|OURS|OPERATOR-HYPOTHESIS, source row of KURISKO_SPEC s3); 3rd oscillator (40,4) with (44,3) as a switch",
+  "fixture tests first, expected values from the FORMULAS example not the module: flat input, all-four-under-20 bar, turn-up bar, planted future spike changes nothing before t, long/short mirror",
+  "implement stoch_core.py and quad_rotation.py (event row: t_close, side, oscillator kind, four values); add to test_layer_boundaries; run_all_tests.py --quick"
+ ],
+ "tests": "new tests fail on the pre-change tree (module absent); the planted-spike test fails if any value uses a bar after t",
+ "title": "Kurisko Quad Rotation: causal layer module (4 oscillators, stochastic or RSI) with hand-computed fixtures",
+ "weight": "IMPORTANT",
+ "worker": "session"
+}

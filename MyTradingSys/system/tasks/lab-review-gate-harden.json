@@ -13,6 +13,22 @@
   "id": "lab-review-gate-harden",
   "kind": "build",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab lab-vendor-gate-harden: DONE (build)",
+      "ref": "f72d05a3a951",
+      "utc": "2026-10-17T22:55:09Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "49ea3754a44b lab lab-review-gate-harden: BLOCKED (build)",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-17_lab-review-gate-harden.md",
+      "utc": "2026-10-17T22:51:14Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "MyTradingSys/research/layer_lab/formula_spec_text/test_formula_spec.py::test_shuffled_rsi_closes_are_rejected",
@@ -20,6 +36,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-18T03:58:44Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -32,6 +49,7 @@
     "holdout reads",
     "parameters without a trader quote (NO-SOURCE)"
   ],
+  "scope_sha": "f72d05a3a951",
   "size": "S",
   "sources": [],
   "state": "ready",
