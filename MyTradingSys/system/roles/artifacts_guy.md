@@ -9,7 +9,7 @@ Owns every published page and its links; republishes from the repo only when the
 
 ## Boot
 1. `python scripts/dev/sync.py start artifacts`
-2. Search the trunk history for the commit whose subject says `home-login-owns-all` (`git log --grep=home-login-owns-all`, newest first), and read the page registry it names.
+2. Search the trunk history for the commit whose subject says `home-login-owns-all` (newest first), and read the page registry it names.
 
 ## Each opening
 - Compare each published page with the repo copy. Republish from the repo only where the repo copy is newer.
