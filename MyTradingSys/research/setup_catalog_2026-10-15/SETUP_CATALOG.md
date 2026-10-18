@@ -63,6 +63,8 @@ A day or session boundary on BTC (UTC day, a chosen "open") is OURS; where a set
 | FAB-5 | Buyers protect a level (value-area low / gap / wall): long, squeeze trapped sellers (his names: "AAA setup", "value area low fade") | Fabio | price comes down to a level, buyers defend it (absorbed selling, protection wall), long with a small stop below the protection level, re-enter if it fails | Y (below the protection level; no distance) | PARTIAL | 11 (FL F3a, F3b, F6-F14) |
 | FAB-6 | IVB: first 30 minutes of the US open | Fabio | the first 30 minutes' range sets the day's direction; trade the break of it | N | PARTIAL | 0 |
 | FAB-8 | Volume-defined fair value gap rejection | Fabio | the lowest-volume price inside the value area of a swing; price rejects there | N | YES | 0 |
+| FAB-9 | Delta print zone: reload where the previous swing leg's big trades, delta and value area high overlap (added 2026-10-18, 06R-ebyOhDI) | Fabio | trend day, price returns to the zone, aggressive orders print again, stop beyond the zone | Y (location: beyond the area) | PARTIAL | 0 (2 shown, no prices) |
+| FAB-10 | Volume ledge plus absorbed counter-traders: limit order at the retrace (added 2026-10-18, 06R-ebyOhDI) | Fabio | volume falls from a peak node to a low node fast, the candle body shows aggressive trend-side orders and absorbed counter-side | N | YES | 0 |
 
 Moved or merged 2026-10-16 (D3): TOM-5 -> TOM-4 (worked example), TOM-13 -> section 2.3 (routes and targets, not a setup), FAB-3 -> FAB-2 (variant), FAB-7 -> section 4.1 (heat-map tool family, not a setup),
 TOM-1 -> TOM-1a + TOM-1b. TOM-6 and TOM-12 are one family (he files the break-in as "variant one for a breakout", gFJBg8Bsw68): read them together; the rows stay separate.
@@ -1244,7 +1246,7 @@ Merged into FAB-2 on 2026-10-16 (D3). The field numbers below are the old FAB-3'
 
 
 ### FAB-4 Failed breakout back into balance (reversal at the edge of the previous day's value area)
-1. **Name / trader.** Fabio ("failed breakout", "clear failed auction"; 9IliXww64uM, an ES session, "a little over $4,000"). Rewritten 2026-10-16 from the caption file converted in P2 (`9IliXww64uM_raw.txt`); the old row held only OURS structure, the FL schematic note and a rulebook paraphrase (FR-19, FR-86, source `o-w5Gxss6T0`, still without a transcript). Merged files: section 1.
+1. **Name / trader.** Fabio ("failed breakout", "clear failed auction"; 9IliXww64uM, an ES session, "a little over $4,000"). Rewritten 2026-10-16 from the caption file converted in P2 (`9IliXww64uM_raw.txt`); the old row held only OURS structure, the FL schematic note and a rulebook paraphrase (FR-19, FR-86, source `o-w5Gxss6T0`; that transcript has been on disk since 2026-10-18 and gives no failed-breakout rule beyond the CVD absorption of section 4.2). Merged files: section 1.
 2. **What you see.** Frame: the previous session's value area holds 70 % of its activity and is the area of comfort; he opens inside it and expects to stay inside for the day:
 
 > "I consider this to be a very strong area of comfort where price is likely to be keep trading because already 70% of the trading activity happened within this range in the previous session."
@@ -1400,16 +1402,31 @@ Target: the other side of the range, and an early exit when a strong impulse sta
 4. **Context.** "the nature of the US equities have predictable behavior during the opening" (LQvv END, same passage; not block-quoted). Can be improved with option flow (same passage).
 5. **BTC visibility: PARTIAL.** The 30-minute range is computable from klines; the US equity open is not a BTC event (the 13:30 UTC mapping is OURS; V3 MP:128 says it may not port).
 6. **Evidence.** 0 trades.
-7. **Gaps.** Entry, stop, target all NOT STATED. LQvv is a risk-management lecture; the IVB is mentioned as an example.
+7. **Gaps.** Entry, stop, target all NOT STATED in LQvv5xgy_ik (a risk-management lecture; the IVB is an example).
+
+**Merge 2026-10-18 (cUTsoU-15Tc, StaphlRH8NQ; `extracts/v2/fabio/cUTsoU-15Tc_v2.md`).** SOURCED: location (value area to POC block after the breakout), invalidation (a candle CLOSE beyond the value area low), two order-flow triggers (seller absorption on the POC; seller exhaustion with buyer momentum), stop below the protected area, reward 1:2 to 1:2.5, "1 2 3 1 to 2.5" quoted as the consistent target. Definition (StaphlRH8NQ): "The initial balance represent the high and low price established during the first 30 minutes of a regular cash trading". Still NOT STATED: stop in ticks, order type, the "protection level" (an unpublished Deep Charts algorithm; his 65 to 70 % is the tool's claim, OURS untested). FR-81 is now partly verified; the 13.5 % and 1:1 test are in `extracts/v2/fabio/CATALOG_DELTA.md` N3.
 
 ### FAB-8 Volume-defined fair value gap rejection
 1. **Name / trader.** Fabio (FR-94 to FR-96; source o-w5Gxss6T0).
 2. **What you see.** Not the candle-gap FVG: from a swing A to B, the value area (70 %) and inside it the lowest-volume price; price rejects there (rulebook paraphrase; example "24,318 to 24,317").
-3. **Entry, stop, target, management.** NOT STATED beyond "price will reject" (FR-96, paraphrase).
+3. **Entry, stop, target, management.** SOURCED definition and "this is exactly where the price will reject" (o-w5Gxss6T0, below). Entry order, stop and target NOT STATED.
 4. **Context.** NOT STATED.
 5. **BTC visibility: YES.** Swing profile and its low-volume price from aggTrades.
 6. **Evidence.** 0 trades.
-7. **Gaps.** Source transcript o-w5Gxss6T0 is not in raw_transcripts_canonical: no quote can be verified. Swing selection, bin size, timeframe UNDEFINED (FR s4).
+7. **Gaps.** Transcript o-w5Gxss6T0 is in raw_transcripts_canonical since 2026-10-18 (merge below). Swing selection, bin size, timeframe UNDEFINED (FR s4).
+
+**Merge 2026-10-18 (o-w5Gxss6T0; `extracts/v2/fabio/o-w5Gxss6T0_v2.md`).**
+
+> "to identify a real fair value gap, you need to get inside the candle and you need to see how the volume transacted."
+**Source GPS: o-w5Gxss6T0 | MIDDLE** (raw_transcripts_canonical/o-w5Gxss6T0_raw.txt, line numbers in the V2 file)
+
+> "the lowest volume of interaction in all the area of value area. So where 70% of the volume got transacted is exactly this one is the level that goes from 24,318 to 24,317."
+**Source GPS: o-w5Gxss6T0 | MIDDLE**
+
+> "And what you will see thousand of times is that this is exactly where the price will reject."
+**Source GPS: o-w5Gxss6T0 | MIDDLE**
+
+"thousand of times" is his claim; no count is given (OURS: untested).
 
 **ASR addition 2026-10-16 (Is1HvdfQm5c).** A gap read from a transcript we hold (Is1HvdfQm5c, ASR): he calls a small gap between two candles "inefficient volume" and a place to reload. This is the candle-gap reading, not the volume-defined fair value gap of this row's source (o-w5Gxss6T0); keep it as supporting colour only. Entry, stop, target NOT STATED.
 
@@ -1424,8 +1441,8 @@ Target: the other side of the range, and an early exit when a strong impulse sta
 > "So my trend following model took a straight stop loss."
 **Source GPS: jasv3L-d8ZE | BEGIN**
 
-  His trend-following model is never described in the transcripts we hold. FR-20 "Trend-following entry: absorption of counter-trend aggression inside momentum" (source o-w5Gxss6T0, not verified) may be it; it would then be FAB-2.
-- OURS-only model: V3 model A "LVN pullback trend" (enter a pullback to a low-volume node of the breakout leg). V3 P35: "not in these transcripts (FBR:28-29)". Not a Fabio setup until a source is found.
+  His trend-following model is never described in the transcripts we hold. FR-20 "Trend-following entry: absorption of counter-trend aggression inside momentum" now has a SOURCED line (o-w5Gxss6T0: "when you are in a momentum phase like this one and you can see a huge amount of aggression following an absorption, you can understand that the buyers are in control"); it may be this model and would then be FAB-2. No stop or target is stated for it.
+- OURS-only model: V3 model A "LVN pullback trend" (enter a pullback to a low-volume node of the breakout leg). V3 P35: "not in these transcripts (FBR:28-29)". The idea now has a Fabio quote (Pz8f0wWW12M, section 4.2: "Usually, the market like to rebalance the low volume node before continuing in the direction of the trend."), but no entry, stop or target of his: the rule stays OURS, the rationale is SOURCED.
 
 **ASR addition 2026-10-16 (Is1HvdfQm5c).** Names from the 2.5 h live session (Is1HvdfQm5c, ASR; one video each, no filled trade with entry and stop, so none becomes a FAB row). "Virgin POC test" inside profile framing (long bias); "last sniper" (a resting long at the last point of aggression of the sellers, removed when not filled); "deep effort" (his proprietary book-thickness study that marks who controls the auction). Candidates for a later row if a second video states entry, stop and target.
 
@@ -1453,6 +1470,40 @@ Moved out of the setup list on 2026-10-16 (D3): the heat map is a tool; its only
 6. **Evidence.** 0 real trades (ANG R35 hypothetical).
 7. **Gaps.** All thresholds UNDEFINED (FR s4). FawPr was extracted in three V1 chunks; no V2.
 
+## 4.2 Merge 2026-10-18: five recovered transcripts and the V2 delta
+Source files (raw promoted by cc3d27bf; V2 extracts all PASS the quote checker): `extracts/v2/fabio/{o-w5Gxss6T0,cUTsoU-15Tc,Pz8f0wWW12M,Khgj5q1-ln8,06R-ebyOhDI}_v2.md`. Identity check done 2026-10-18: all five are Fabio in the first person (competition record, Deep Charts, staged as fabervaale_*), and none duplicates a file already in raw_transcripts_canonical (8-word overlap with the nearest file under 0.3 %). Label rule: SOURCED = verbatim quote with file:line; OURS = our reading or number.
+
+**FAB-9 Delta print zone (06R-ebyOhDI).** SOURCED: the zone is drawn from the previous swing leg (profile, big trades, delta) and is strongest where value area high, big trades and delta level overlap; short entry on the approach, protected above the area; a re-entry covers above the area and targets a swing point, reward quoted 1:3, 1:4, 1:5 "It depends on how much you want to be safe on the stop-loss placement". NOT STATED: stop distance, big-trade size, order type. BTC visibility PARTIAL (aggTrades give big trades and delta; his delta-level indicator is unpublished).
+
+> "So you have a confluence of value area high, big trades and delta level. This one is a super strong area."
+**Source GPS: 06R-ebyOhDI | BEGIN** (raw_transcripts_canonical/06R-ebyOhDI_raw.txt:53-54)
+
+**FAB-10 Volume ledge (06R-ebyOhDI).** SOURCED: a ledge is a fast drop from a high-volume node to a low-volume node; it is not enough alone; aggressive trend-side orders in the candle body plus absorbed counter-traders confirm it, after which "you can already put a limit order here". Stop and target NOT STATED.
+
+> "But you cannot just execute based on this. So you need to go to check what's happening here in details."
+**Source GPS: 06R-ebyOhDI | END** (raw_transcripts_canonical/06R-ebyOhDI_raw.txt:112)
+
+**Two filters, not setups (Khgj5q1-ln8).** (a) Daily bias: with a bias from profile framing, counter-bias setups are skipped. (b) Mandatory retest: a close beyond the area with no test is a momentum setup he does not take. Both are testable on our data without his tool; his deep-effort series is not reproducible from the words. His count "six R ... lost two ... four R positive" is a hindsight illustration on one chosen week (OURS: selection bias, not a result). Partial: one position out at 50 % of the full profit, runner left.
+
+> "So, I had a clear bias for the day and for this I use profile framing. So, all the short setup if I have a bias, I'm not interested into taking, okay? So, I can save the counter trend setups."
+**Source GPS: Khgj5q1-ln8 | MIDDLE** (raw_transcripts_canonical/Khgj5q1-ln8_raw.txt:158-164)
+
+> "This one it's a momentum setup. Why momentum setup? Because it closed above it and never test. So, this one you couldn't take because the market don't give you a test."
+**Source GPS: Khgj5q1-ln8 | MIDDLE** (raw_transcripts_canonical/Khgj5q1-ln8_raw.txt:178-181)
+
+**U2 split (Pz8f0wWW12M).** Continuation: aggressive orders absorbed and the candle closes with the trend. Reversal: volume dries up into the extreme and a contrarian imbalance prints. No numeric thresholds are stated; any number is OURS and goes through DEV, one VALIDATION look, holdout once.
+
+> "from the concept of vertical volume you can find an exhaustion where you can see that the market is pushing really strong, printing another green candle, but the volume is getting lower and lower. This is a dry up in volume, and usually what you see this in a pattern order flow is that you have a sudden reversal in price."
+**Source GPS: Pz8f0wWW12M | MIDDLE** (raw_transcripts_canonical/Pz8f0wWW12M_raw.txt:418-425)
+
+**V3 model A rationale (Pz8f0wWW12M).** See the unassigned block of section 4: idea SOURCED, rule OURS.
+
+**FAB-7b retest entry (FawPrRUGNpk, CATALOG_DELTA N1; teaching illustration, no trade).** Noted with the heat-map family of 4.1 (needs L2) so that FR-43 is not read as breakout-only: "I can enter on the test" (FawPrRUGNpk_raw.txt:443), stop "below the wall reload", target the next liquidity level at 1:2 to 1:3. BTC visibility NO.
+
+**Other items merged from `extracts/v2/fabio/CATALOG_DELTA.md`.** 1 % daily drawdown stop (0KyIEdvVKMQ: "If I reach 1% of draw down, I stop for the day."): a loss-side stop, different from the profit-side floor of fZlNGWvd2Ko ("if we go back to break even, we stop the session"). FAB-6 verbatim definition (StaphlRH8NQ, in FAB-6 above). The four non-intraday edges of StaphlRH8NQ (earnings drift, politician tracking, option premium, MVRV allocation) are OUT OF SCOPE for BTC intraday. Delta contradictions C1 to C6 stand as listed there. The rulebook line FR-13 "minimum 1:3" is NOT CONFIRMED (section 5).
+
+**Counts after this merge.** Fabio setup rows: FAB-1, 2, 4, 5, 6, 8, 9, 10 (8 rows). Rows that gained SOURCED text: FAB-6 (rules), FAB-8 (definition), FAB-9 and FAB-10 (new). Real trades added: 0.
+
 ## 5. Cross-source contradictions (both quoted or cited)
 | topic | source 1 | source 2 |
 |---|---|---|
@@ -1465,7 +1516,7 @@ Moved out of the setup list on 2026-10-16 (D3): the heat map is a tool; its only
 | Fabio adds | "raise the exposure low in the curve" is not the best idea (8CWK, V3 P11) | loading while still at risk, funded by the day's profit (fZ, LBL D12); F7-F9 re-entries at one level |
 | Fabio exit on new balance | V3 v3.0 S8(b): any new balance after entry exits | fZ: a consolidation where the OTHER side is absorbed is a hold (LBL D18; fixed in v3.1) |
 | Fabio F1 label | FL `balance_failed_auction_punch_to_wall` (FAB-3 words) | 8CWK/ANG: buyers absorbed, sellers control (FAB-2) |
-| Fabio R:R | FR-13 minimum 1:3 (0jM5) | FR-74 prop risk geometry 1:1 to 0.75:1, max 1.5:1 (LQvv) |
+| Fabio R:R | FR-13 minimum 1:3 (0jM5): NOT CONFIRMED, the V2 read finds only the realised "almost 1 to three even more 1:5" (CATALOG_DELTA C5) | FR-74 prop risk geometry 1:1 to 0.75:1, max 1.5:1 (LQvv); cUTsoU-15Tc: "better to take 1 2 3 1 to 2.5" |
 | Tom hit rate and payoff by setup type (SOURCED, T-3 hQ8sOq67x5o, quotes in section 2.1) | breakout 75 % typical (hQ8s); R:R 1:1 to 1.5:1 (uk4P, TOM-6); 80-90 % hit rate claimed for the 1-minute P model (uFxY, TOM-6) | intraday swing 35 % at about 4x risk; counter trading payoff "three to four" (hQ8s) against 1.5 at 40-45 % (k0zm5NYn0IQ) and greater than 3 at 30-40 % (BVpY) |
 | Fabio stop in words | "initial stop is always 'here' on the chart" (the old tally, 0 of 8) | below the protection level, DyS79Eb92Ug (FAB-5); FawPr gives below-reload / below-next-liquidity for the heat-map variants |
 
@@ -1558,7 +1609,8 @@ Status 2026-10-16 (Fable audit section 3): `G0CiJcuXCRs` -> TOM-17; `3o1VVsfBmmU
 | LQvv5xgy_ik | V1 | FAB-6 IVB rules beyond one sentence |
 | 0KyIEdvVKMQ, StaphlRH8NQ | V1 | mental models; FR-80..85 (non-MTS hypotheses) |
 | fZlNGWvd2Ko | V1 + LBL (read line by line) | done |
-| o-w5Gxss6T0 | extract exists, no raw transcript | FAB-4, FAB-8, FR-16..20, FR-93..96: needs the transcript |
+| o-w5Gxss6T0 | raw promoted 2026-10-18, V2 `extracts/v2/fabio/o-w5Gxss6T0_v2.md` | done: FAB-8 definition, FR-20 line; FR-16..19 and FR-93..95 not re-checked line by line |
+| cUTsoU-15Tc, Pz8f0wWW12M, Khgj5q1-ln8, 06R-ebyOhDI | raw promoted 2026-10-18, V2 extracts in `extracts/v2/fabio/` | done (section 4.2): FAB-6 rules, LVN rationale, U2 split, bias and retest filters, FAB-9, FAB-10 |
 | 9IliXww64uM, DyS79Eb92Ug | canonical transcripts since P2 (2026-10-16), used in FAB-4, FAB-5, FAB-1 and section 2.2 | done for the quoted passages; the rest of DyS79 (2.4 h) is not line-by-line read |
 | Jpd96fLqr5M, gLHd20jE8UQ | frames read, no captions on disk | the big-trade size slide "30 to 40 on NQ" (gLHd, FL:50; secondary presenter, not Fabio's own words, H6) |
 | 9I5vTvwsMBk | not downloaded (f398 not available, FL:48) | unknown live session |
