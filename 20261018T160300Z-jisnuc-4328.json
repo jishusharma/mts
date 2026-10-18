@@ -1,0 +1,1 @@
+{"t": "20261018T160300Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship 2>&1 | grep -E \"shipped|rejected|FAIL\""}
