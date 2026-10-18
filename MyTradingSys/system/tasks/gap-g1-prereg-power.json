@@ -1,7 +1,9 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
   "class": "C2",
+  "closed": "2026-10-18T20:25:26Z",
   "commands": [],
   "created": "2026-10-14T11:26:00Z",
   "depends_on": [],
@@ -15,10 +17,16 @@
   "latest": [
     {
       "kind": "ship",
-      "ref": "a440450b50a9",
-      "utc": "2026-10-17T14:26:34Z",
+      "line": "verdicts.py check prints MDE80, net mean, trades-for-80%-power, LOW-POWER flag; 20 tests p",
+      "ref": "057e7bbf",
+      "utc": "2026-10-18T20:25:26Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
       "line": "verdicts: sourced overrides file; eur one_run=yes, orderflow kill_scope, t090 split/verdic",
-      "auto": true
+      "ref": "a440450b50a9",
+      "utc": "2026-10-17T14:26:34Z"
     }
   ],
   "layers": [],
@@ -31,7 +39,7 @@
   "refs": [
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
   ],
-  "result": "",
+  "result": "verdicts.py check prints MDE80, net mean, trades-for-80%-power, LOW-POWER flag; 20 tests pass in test_verdicts.py; VERDICTS.csv byte-identical",
   "scope_in": [
     "scripts/dev/verdicts.py",
     "scripts/dev/test_verdicts.py"
@@ -45,15 +53,16 @@
   "scope_sha": "a440450b50a9",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write test: one row with n=400, se_pct=0.10, gross 0.20, cost 0.05; expected MDE80 0.28016, net 0.15 below it so LOW-POWER, n for 80 percent = 400*(0.28016/0.15)^2 = 1395 (hand-computed; fails before the change).",
     "Add the helper power_line(row) and print it in cmd_check after each hit.",
     "Run test_verdicts.py; confirm VERDICTS.csv is unchanged."
   ],
+  "taken": "2026-10-18T20:24:24Z",
   "tests": "scripts/dev/test_verdicts.py new power-line test, expected numbers as in step 1; fails before the change.",
   "title": "G1 pre-reg power: print MDE and trades-for-80%-power beside every verdict; INCONCLUSIVE rule (operator D-a)",
+  "updated": "2026-10-18T10:00:00Z",
   "weight": "CRUCIAL",
-  "worker": "agent",
-  "updated": "2026-10-18T10:00:00Z"
+  "worker": "agent"
 }
