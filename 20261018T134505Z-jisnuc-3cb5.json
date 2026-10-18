@@ -1,0 +1,1 @@
+{"t": "20261018T134505Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "start gq-review-g3 2>&1 | tail -15; for b in rv05-h3-outcome-evidence [cut] [cut] [cut]; do echo \"== $b\"; git log --oneline fast-track..gemini-q/$b | head; git diff --stat fast-track...gemini-q/$b | t"}
