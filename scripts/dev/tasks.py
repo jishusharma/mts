@@ -35,7 +35,7 @@ REPO = Path(__file__).resolve().parents[2]
 DIR = "MyTradingSys/system/tasks"
 BUGS = "MyTradingSys/research/BUGS.md"
 LAYER_INDEX = "MyTradingSys/system/layer_index.json"
-MUTATING = ("new", "check", "take", "tried", "done", "apply-op", "sweep", "flag", "tag", "stale")
+MUTATING = ("new", "fill", "check", "take", "tried", "done", "apply-op", "sweep", "flag", "tag", "stale")
 
 STATES = ("raw", "refined", "ready", "active", "blocked", "done", "dropped")
 LIVE = ("ready", "active")                      # states that must satisfy the Definition of Ready
@@ -463,6 +463,50 @@ def cmd_new(a):
     if a.crucial:
         card["crucial"] = True
     print(f"wrote {save(REPO, card)} (state raw; refine it, then `tasks.py check {cid}`)")
+
+
+def cmd_fill(a):
+    c = get(REPO, a.id)
+    if a.size:
+        c["size"] = a.size
+    if a.worker:
+        c["worker"] = a.worker
+    if a.est_turns is not None:
+        c["est_turns"] = a.est_turns
+    if a.goal is not None:
+        c["goal"] = a.goal
+    if a.done_when is not None:
+        c["done_when"] = a.done_when
+    if a.tests is not None:
+        c["tests"] = a.tests
+    if a.scope_in is not None:
+        c["scope_in"] = a.scope_in
+    if a.scope_out is not None:
+        c["scope_out"] = a.scope_out
+    if a.steps is not None:
+        c["steps"] = a.steps
+    if a.commands is not None:
+        c["commands"] = a.commands
+    if a.sources is not None:
+        c["sources"] = a.sources
+    if a.refs is not None:
+        c["refs"] = a.refs
+    if a.layers is not None:
+        c["layers"] = a.layers
+    if a.weight is not None:
+        c["weight"] = a.weight
+    if a.lane is not None:
+        c["lane"] = a.lane
+    if a.formula_id is not None:
+        c["formula_id"] = a.formula_id
+    if a.holdout_path is not None:
+        c["holdout_path"] = a.holdout_path
+    if a.split_dates is not None:
+        c["split_dates"] = a.split_dates
+    if a.note is not None:
+        c["note"] = a.note
+    save(REPO, c)
+    return cmd_check(argparse.Namespace(id=c["id"], demote=False))
 
 
 def cmd_check(a):
@@ -1067,6 +1111,28 @@ def main(argv=None):
     n.add_argument("--layer", action="append", help="layer family id (layer_index.json); repeat for several")
     n.add_argument("--crucial", action="store_true", help="lane CODEX: when the GPT lane is down this card waits for GPT instead of moving to DSA/Claude")
     n.set_defaults(f=cmd_new)
+    fi = sp.add_parser("fill", help="set raw-card fields from flags and run check (promotes without hand JSON edits)")
+    fi.add_argument("id")
+    fi.add_argument("--size", choices=("S", "M"))
+    fi.add_argument("--worker", choices=WORKERS)
+    fi.add_argument("--est-turns", type=int)
+    fi.add_argument("--goal")
+    fi.add_argument("--done-when")
+    fi.add_argument("--tests")
+    fi.add_argument("--scope-in", action="append", dest="scope_in")
+    fi.add_argument("--scope-out", action="append", dest="scope_out")
+    fi.add_argument("--step", "--steps", action="append", dest="steps")
+    fi.add_argument("--command", "--commands", action="append", dest="commands")
+    fi.add_argument("--source", "--sources", action="append", dest="sources")
+    fi.add_argument("--ref", "--refs", action="append", dest="refs")
+    fi.add_argument("--layer", "--layers", action="append", dest="layers")
+    fi.add_argument("--weight", choices=WEIGHTS)
+    fi.add_argument("--lane", choices=LANES)
+    fi.add_argument("--formula-id")
+    fi.add_argument("--holdout-path")
+    fi.add_argument("--split-date", "--split-dates", action="append", dest="split_dates")
+    fi.add_argument("--note")
+    fi.set_defaults(f=cmd_fill)
     c = sp.add_parser("check")
     c.add_argument("id", nargs="?")
     c.add_argument("--demote", action="store_true", help="send a ready/active card that now fails back to refined")
