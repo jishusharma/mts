@@ -45,6 +45,7 @@ PYTEST_LAYER_PATHS = [
     "scripts/dev/test_outcome_labeler_incremental.py",
     "scripts/dev/test_wrapper_load_resilience.py",
     "scripts/dev/test_gate_priority.py",
+    "scripts/dev/test_gate_scratch.py",
     "scripts/dev/test_feed_watchdog_script.py",
     "MyTradingSys/observation/tests",
 ]
