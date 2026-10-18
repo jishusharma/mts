@@ -136,6 +136,30 @@ class CryptoCredHtfPreReg(unittest.TestCase):
                     self.assertNotIn("TODO", ans)
                     self.assertNotIn("NOT_ANSWERED", ans)
 
+    def test_provenance_kill_rule_and_review_logged(self):
+        """Rule 11: pinned path, labels, UNCHECKED-BASE, kill rule/redesign budget, review verdict in changelog."""
+        self.assertTrue(CRYPTOCRED_HTF_PRE_REG.exists(), "PRE_REG_CRYPTOCRED_HTF.md not at the pinned path")
+        txt = CRYPTOCRED_HTF_PRE_REG.read_text(encoding="utf-8")
+        for tag in ("[SOURCED", "[OURS", "UNCHECKED-BASE"):
+            self.assertIn(tag, txt, f"provenance tag {tag} missing")
+        self.assertRegex(txt, r"(?i)redesign budget", "redesign budget not stated")
+        self.assertRegex(txt, r"(?i)exactly one \(1\) redesign", "redesign count not stated")
+        self.assertRegex(txt, r"(?im)^## Changelog\b", "no Changelog section")
+        verdicts = re.findall(r"(?m)^- .*Rule 11 review:\s*(APPROVE|BLOCK|WAIVED)\b", txt)
+        self.assertTrue(verdicts, "no Rule 11 review verdict line in the Changelog")
+        self.assertIn(verdicts[-1], ("APPROVE", "WAIVED"), "last Rule 11 verdict is BLOCK")
+        # redesign numbers not reproducible without klines must be tagged inline and gated on the recompute
+        self.assertGreaterEqual(txt.count("OURS-UNREPRODUCED"), 12, "redesign numbers not tagged OURS-UNREPRODUCED inline")
+        for g in ("0a", "0b", "0e"):
+            line = re.search(rf"(?m)^- {g}\b[^\n]*$", txt).group(0)
+            self.assertRegex(line, r"(?i)conditional on the recompute", f"gate {g} not conditional on the recompute")
+            self.assertNotRegex(line, rf"Gate {g} passes\.", f"gate {g} passes unconditionally")
+        self.assertRegex(txt, r"(?i)recompute", "mandatory recompute wording missing")
+        for line in txt.splitlines():
+            if "14 bp" in line:
+                self.assertNotIn("SOURCED fees.py:27-28]", line.split("14 bp", 1)[1][:80],
+                                 "14 bp is not in fees.py:27-28; cite run_p1.py:27")
+
 
 if __name__ == "__main__":
     unittest.main()
