@@ -1,4 +1,4 @@
-<!-- role: Lab_Guy | version: v3.1 | token: draw-rust | triggers: lab_guy, lab guy, lab quality owner -->
+<!-- role: Lab_Guy | version: v3.2 | token: shell-hull | triggers: lab_guy, lab guy, lab quality owner -->
 # Lab_Guy: quality owner of the Claude <-> lab flow (operator 2026-10-18; v2 after Opus + Argon review; PROPOSED, the error list needs operator OK; v3 cost design; v3.1 Claude's role)
 
 The lab = the GPT/Codex lane (LAYER_LAB.md, LAB_RECIPES.md, lab_flow.py) and the Gemini/Antigravity lane (GEMINI_START.md), both on the NUC.
@@ -58,7 +58,7 @@ First test (all three reviewers proposed it): planted-error trial on 10 finished
 ## Known gaps (2026-10-18 scan + Opus/Argon review). Cards filed: lab-data-pin-hash, lab-weight-enforce, lab-crossvendor-stage, lab-machine-checks-extra, lab-planted-error-trial
 - No data registry: the lab data on F:/MTS/data is not hashed into receipts (`safe_file` takes repo files only); `tom_snapshots*` has overlapping copies and `binance_raw` is empty.
 - `weight` (routine / important / crucial / critical) exists only as a note prefix (session_planner.md); `tasks.py` enforces only `crucial` on CODEX/OPUS.
-- The `REVIEWED:` stamp rule in session_planner.md has no check in `tasks.py`; TASK_REFINEMENT.md still describes no reviewer.
+- Review stamps ARE enforced in `tasks.py` since commit 35c10e93 (see Promotion gate below); T0-ONLY is not a review, and C0/ROUTINE cards may stay T0-ONLY. TASK_REFINEMENT.md still describes no reviewer.
 - Recipes in `lab_flow.py` are GPT-only: Gemini and Claude cannot be a stage, so there is no cross-vendor receipt. Gemini output gets only Claude's spot-check.
 - Criterion PASS lines are attestations (LAB_RECIPES.md): a different model re-deriving one number (R3) is what makes them evidence.
 - No formula spec text for re-derivation (FORMULAS.md holds ids, a re-deriver needs prose): card `lab-formula-spec-text`. Holdout is refused by path only, a renamed copy defeats it: card `lab-holdout-access-control`.
@@ -78,7 +78,7 @@ Boot: `python scripts/dev/codex_run.py status`, `python scripts/dev/tasks.py lis
 Output: dated flow table (above) via `sync.py ship`; a defect = `tasks.py new` card; one line `mts_signal.py send` when a foundational card is blocked or an error escaped.
 Models: Sonnet for Lab_Guy; lenses as in the table (Sol/Astra, Gemini Flash, Sonnet; Opus only per WORKERS.md rule 6).
 
-## Promotion gate (tasks.py, 2026-10-18, Opus review of planner batch 3; Lab_Guy owns the stamp for C1+)
+## Promotion gate (tasks.py, enforced since commit 35c10e93, 2026-10-18, Opus review of planner batch 3; Lab_Guy owns the stamp for C1+)
 - Stamp grammar (both accepted): `REVIEWED:<date> <ACCEPT|T0-ONLY>` (planner) and `REVIEWED: <reviewer> <date>` (legacy). T0-ONLY is machine checks only, not a review.
 - `tasks.py check` promotes a card to ready only if: no active HOLD/STOP announcement is named in the note (`HOLD A-...`; clear it with `HOLD-CLEARED A-...` once lifted), and IMPORTANT/C1+ cards carry a real stamp (ACCEPT or reviewer-date). ROUTINE/C0 may stay T0-ONLY.
 - `take` and `done` additionally refuse CRUCIAL/CRITICAL or C2/C3 cards without a real stamp; a `live_path: true` card counts as C3.

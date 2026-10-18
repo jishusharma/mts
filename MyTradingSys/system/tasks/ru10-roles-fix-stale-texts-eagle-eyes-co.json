@@ -1,17 +1,40 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-18T17:55:27Z",
   "commands": [],
   "created": "2026-10-18T17:23:18Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "role_loader.py check exits 0 with eagle_eyes v2, lab_guy v3.2, pipeliner v2 retokened; no instruction to compact in roles/; test_role_loader passes; shipped as 59b5144d.",
+  "est_turns": 15,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Remove stale text from three role files: Eagle_Eyes compaction, Lab_Guy review-stamp enforcement lines, Pipeliner first-job drain.",
   "id": "ru10-roles-fix-stale-texts-eagle-eyes-co",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "59b5144d",
+      "ref": "b80d58f6",
+      "utc": "2026-10-18T17:55:27Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "roles: fix stale texts (Eagle_Eyes no compaction, Lab_Guy stamps enforced, Pipeliner drain",
+      "ref": "59b5144d5d99",
+      "utc": "2026-10-18T17:54:01Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "59b5144d5d99 roles: fix stale texts (Eagle_Eyes no compaction, Lab_Guy stamps enforced, Pi",
+      "ref": "MyTradingSys/system/roles/eagle_eyes.md",
+      "utc": "2026-10-18T17:54:01Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,18 +42,30 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-18T17:55:24Z",
   "refs": [
     "MyTradingSys/research/roles/ROLE_UPGRADES_2026-10-18.md"
   ],
-  "result": "",
-  "scope_in": [],
+  "result": "59b5144d",
+  "scope_in": [
+    "MyTradingSys/system/roles/eagle_eyes.md",
+    "MyTradingSys/system/roles/lab_guy.md",
+    "MyTradingSys/system/roles/pipeliner.md"
+  ],
   "scope_out": [],
-  "size": "",
+  "scope_sha": "59b5144d5d99",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "done",
+  "steps": [
+    "Replace compaction text in eagle_eyes.md with the WORKERS.md rule 5 no-compaction rule",
+    "Make lab_guy.md say review stamps are enforced in tasks.py since 35c10e93",
+    "Reword pipeliner.md first job: drain only if no DRAIN_<date>.md, else sweep and pending rows",
+    "Bump versions, role_loader.py retoken and check, run test_role_loader, ship"
+  ],
+  "taken": "2026-10-18T17:55:27Z",
+  "tests": "MyTradingSys/tests/test_role_loader.py (existing, passes); role_loader.py check exit 0",
   "title": "RU10 roles: fix stale texts (eagle_eyes compaction, lab_guy stamp lines, pipeliner first-job) + retoken",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }

@@ -1,4 +1,4 @@
-<!-- role: Pipeliner | version: v1 | token: form-harp | triggers: pipeliner, pipe planner, pipeline guy -->
+<!-- role: Pipeliner | version: v2 | token: west-acid | triggers: pipeliner, pipe planner, pipeline guy -->
 # Pipeliner: owns the routing rules, so every piece of work sits in the right channel and gets picked up (operator 2026-10-18; file created 2026-10-18 from the ROLES.md row)
 
 ## Pin
@@ -13,7 +13,8 @@ Owns the routing rules (`ROUTING.md`): every piece of work sits in the right cha
 3. Read origin/fast-track `MyTradingSys/system/ANNOUNCEMENTS.md`, `ROUTING.md`, `ROLES.md`, `HOW_MTS_RUNS.md`, `DSA_DELEGATION.md`, `SUPER_SESSION.md`, `WORKERS.md` (`git show origin/fast-track:<path>`).
 4. `python scripts/dev/mts_signal.py read`, `python scripts/dev/sync.py claims`, `python scripts/dev/tasks.py status`, and `get_usage` (5 h pacing).
 
-## FIRST JOB (first opening only): drain the desk queue
+## FIRST JOB: drain the desk queue
+- If no `MyTradingSys/research/pipeliner/DRAIN_<date>.md` exists yet, do the full drain below. The first drain ran 2026-10-18 (commit ebfffe68, `DRAIN_2026-10-18.md`) and `ROUTING.md` exists; so on later openings start with the sweep (Each opening) and re-drain only rows still pending in the last drain table.
 - Read the pending desk rows from the fresh worktree (`python scripts/dev/desk.py list` after the fetch).
 - Give each pending row exactly one decision:
   - DONE ALREADY: needs a commit sha or file as proof.

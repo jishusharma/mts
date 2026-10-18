@@ -72,10 +72,7 @@ class Incremental(Base):
         n = 3000
         for i in range(n):
             write_snap(self.snaps, i)
-        # first cycle is setup: 3000 files through the counting open() can pass SLOW_WARN_S (exit 3) on a loaded
-        # machine (ship gate, 2026-10-18); the speed claim under test is the second cycle, bounded below at 3 s
-        with mock.patch.object(self.m, "SLOW_WARN_S", 1e9):
-            self.run_main()                   # first cycle labels everything labelable
+        self.run_main()                       # first cycle labels everything labelable
         labeled = {l["file"] for l in self.read_labels()}
         self.assertGreater(len(labeled), 2000)
         t0 = time.monotonic()
