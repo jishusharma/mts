@@ -1,25 +1,35 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C2",
   "commands": [],
   "created": "2026-10-18T05:33:19Z",
   "depends_on": [],
-  "done_when": "The named test passes and the report lists the changed files and the red-then-green test output (the runner's ship runs the quick gate).",
-  "est_turns": null,
+  "done_when": "Dated layer_lab report lists R2-R6 fixes, changed files, fail-first results and one killed mutation per guard; surviving mutants stay unresolved. R1 remains open on lab-review-gate-stamp-writer. Delivery receipt in executor final reply must record content commit SHA, empty git cherry origin/fast-track <sha>, and upstream git ls-tree report existence.",
+  "est_turns": 36,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Close findings R1-R6 in MyTradingSys/research/lab_guy/findings/2026-10-19_review_harden_pair.md (section card 2); each check gets a test that fails when the check is removed",
+  "goal": "Close review findings R2-R6 with independently biting tests across task promotion/close paths; keep R1 open because no trusted reviewer authority is defined in scope, and do not claim free-text stamps are enforceable.",
   "id": "lab-review-gate-harden2",
   "kind": "build",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tasks.py dispatch: one ranked dispatch snapshot for Session_Planner (RU1)",
+      "ref": "93560b51e352",
+      "utc": "2026-10-18T18:24:23Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "mutation_check": "MyTradingSys/research/layer_lab/formula_spec_text/test_formula_spec.py::test_shuffled_rsi_closes_are_rejected",
-  "note": "",
+  "note": "REVIEWED:2026-10-19 ACCEPT GPT Luna independent brief review; delivery receipt fix applied. REWORK implementation remains unapproved. class=C2; CRUCIAL. R1 stays open on lab-review-gate-stamp-writer. R2-R6 stay here; preserve READY/ACTIVE close contract.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-18T21:28:19Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -31,21 +41,32 @@
     "scripts/dev/test_lane_health.py"
   ],
   "scope_out": [
-    "the live path",
-    "holdout reads",
-    "parameters without a trader quote (NO-SOURCE)"
+    "R1 trusted stamp writer/roster; all files outside scope_in; no new reviewer roster or command",
+    "live path, holdout reads, RSI/formula golden tests, unrelated vendor-gate findings V1-V6, and any change forbidding ready-to-done when existing gates pass"
   ],
-  "size": "S",
-  "sources": [],
+  "scope_sha": "93560b51e352",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/lab_guy/findings/2026-10-19_review_harden_pair.md: card 2 R1-R6 and follow-up cards 1-3",
+    "scripts/dev/tasks.py:556-655 stamp_kind, card_class, needs_review, promotion_problems, review_gate",
+    "scripts/dev/tasks.py:673-738 done and sweep gates",
+    "scripts/dev/lab_flow.py:322-330 finish review and state gates",
+    "scripts/dev/lane_health.py:319-329 DSA close fail-closed gate",
+    "scripts/dev/test_tasks.py:575-665 review stamp, malformed class, weight, planner format tests",
+    "scripts/dev/test_lab_flow.py: close-path finish tests",
+    "scripts/dev/test_lane_health.py:334-350 DSA close tests"
+  ],
   "state": "ready",
   "steps": [
-    "Write the test named in Tests first and see it fail on the current code.",
-    "Implement the goal inside scope_in only; new behaviour sits behind a flag that is off by default.",
-    "Before finishing run `python scripts/dev/lookahead_lint.py --new`; fix FAIL hits on your files: write forward bars as zip(times, times[1:]), not times[i + 1]; a truly causal pair gets one reviewed row in scripts/dev/lookahead_allowlist.tsv (name it in scope_in).",
-    "Run the test file you changed (PYTHONPATH = the work tree root) until it passes. Do not run scripts/dev/run_all_tests.py: tests that create git repositories are refused in the sandbox; the runner runs the quick gate when it ships."
+    "Inspect each cited R2-R6 site and test. Confirm current close contract: PASS may finish a ready or active card; REWORK/BLOCKED remain non-close outcomes.",
+    "Write fail-first tests for malformed note and field classes, padded/non-string weights and truthy live_path, lab_flow.finish shared review gate for ready and active cards, and lane_health DSA fail-closed handling.",
+    "R4/R6: test each producer identity field independently, invalid dates with valid reviewer names, planner line anchor, class/weight case normalization, and multiline stamps. On scratch copies remove each guard and require its matching test to fail; report each surviving mutation as unresolved.",
+    "Implement only the scoped checks with safe behavior enabled by default; malformed input or gate exceptions must produce a blocking error. Do not add an opt-in security flag or alter allowed ready-to-done behavior.",
+    "Run only changed test files and show each new test failing against baseline then passing after the fix. Save a report at MyTradingSys/research/layer_lab/reports/2026-10-19_lab-review-gate-harden2.md with findings, changed file:line pointers, commands, and before/after results; do not run the quick gate.",
+    "Executor final reply records content commit SHA, empty git cherry origin/fast-track <sha>, and git ls-tree -r origin/fast-track --name-only report existence; sandbox runner handles git."
   ],
-  "tests": "mutation proof: remove each check on a scratch copy and the matching test fails; new tests fail on current code first",
-  "title": "Review gate hardening 2: stamp attribution, class forms, weight strip, bite-tests",
-  "weight": "",
-  "worker": ""
+  "tests": "Fail-first named tests: test_malformed_note_class_fails_closed; test_weight_and_live_path_malformed_values_fail_closed; test_finish_review_gate_applies_to_ready_and_active; test_lane_health_review_gate_errors_fail_closed. Assert each claimed guard directly; retain ready-to-done when gates pass.",
+  "title": "Review gate hardening 2: malformed inputs and independently biting close-path tests",
+  "weight": "CRUCIAL",
+  "worker": "session"
 }
