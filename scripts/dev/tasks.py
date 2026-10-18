@@ -213,6 +213,21 @@ def problems(card, cards=None, reg=None, repo=None):
                     p.append(f"formula id {fid!r} not found in {FORMULAS}")
         except OSError:
             p.append(f"formula source missing: {FORMULAS}")
+    holdouts = []
+    if card.get("holdout_path"):
+        holdouts.append(card["holdout_path"])
+    if card.get("holdout"):
+        holdouts.append(card["holdout"])
+    if isinstance(card.get("holdout_paths"), list):
+        holdouts.extend(card["holdout_paths"])
+    for hp in holdouts:
+        h_path = (repo / hp) if not Path(hp).is_absolute() else Path(hp)
+        if not h_path.exists():
+            p.append(f"holdout path {hp!r} not found")
+    if holdouts and not card.get("split_dates") and not card.get("split_date") and not card.get("split"):
+        p.append("split dates is empty")
+    elif "split_dates" in card and not card.get("split_dates"):
+        p.append("split dates is empty")
     if card.get("lane") == "CODEX" and card.get("kind") == "run":
         try:
             if not RUNS_JSONL.is_file():
@@ -455,14 +470,15 @@ def cmd_check(a):
                 if late or a.id:
                     print(f"{c['id']}: {c['state']} and passes" + (f" but STALE: {late}" if late else ""))
         elif a.id or c["state"] in LIVE:
-            bad += c["state"] in LIVE
+            bad += 1 if a.id else (c["state"] in LIVE)
             if c["state"] in LIVE and a.demote:
                 c["state"] = "refined"
                 save(REPO, c)
             print(f"{c['id']}: NOT READY ({c['state']}): " + "; ".join(miss))
         elif c["state"] == "raw" and a.id:
+            bad += 1
             print(f"{c['id']}: raw: " + "; ".join(miss))
-    return 1 if bad and not a.id else 0
+    return 1 if bad else 0
 
 
 def cmd_lint(a):
