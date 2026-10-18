@@ -1,0 +1,1 @@
+{"t": "20261018T130104Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship \" >/dev/null 2>&1 && ! tasklist 2>/dev/null | grep -q python; do sleep 20; done; tail -8 $TEMP/ship.log | cut -c1-300"}
