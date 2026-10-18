@@ -1,5 +1,1 @@
 call_id,published_utc,analyst,platform,symbol,direction,imbalance_construct,entry,stop,targets_str,status,source_url,exit_price,net_r,return_pct,notes
-RLINDA-20261018-01,2026-10-18T09:00:00Z,RLinda,TradingView,BTCUSDT,LONG,S_R_LIQUIDITY_TRAP,67500.0,66200.0,69000.0;71500.0,PENDING,https://www.tradingview.com/chart/BTCUSDT/idea1/,,,,TradingView idea with Play button verification
-BENNETT-20261018-01,2026-10-18T08:00:00Z,Justin Bennett,DailyPriceAction,BTCUSDT,SHORT,FVG_DISPLACEMENT,68400.0,69600.0,66800.0;65000.0,PENDING,https://dailypriceaction.com/market-analysis/bitcoin-fvg-retest-2026-10-18/,,,,Daily Price Action market plan
-CHASE-20261018-01,2026-10-18T14:00:00Z,Crypto Chase,Twitter/X,BTCUSDT,LONG,FVG_DISPLACEMENT,65200.0,64100.0,68000.0,PENDING,https://x.com/Crypto_Chase/status/123456789/,,,,4H FVG tapped limit long
-ROMAN-20261018-01,2026-10-18T15:30:00Z,Roman Trading,Twitter/X,BTCUSDT,LONG,VOLUME_ABSORPTION,67200.0,66500.0,69200.0,PENDING,https://x.com/Roman_Trading/status/987654321/,,,,Volume absorption candle reclaim
