@@ -73,6 +73,24 @@ class TestH2(unittest.TestCase):
         self.assertNotIn('TP filled ~25001.00', t)
         self.assertNotIn('(TP hit, minus costs)', t)
 
+    def test_f13_gap_1150_not_in_data(self):
+        r = rows()
+        f13x = r['F13-x']
+        exit_price = f13x.get('exit', f13x['entry'])
+        self.assertIn(exit_price, ['-', ''])
+        self.assertIn('1150', f13x['note'])
+        self.assertIn('NOT_IN_DATA', f13x['note'])
+        self.assertNotIn('plus costs/slippage', f13x['note'])
+
+
+        t = MD.read_text(encoding='utf-8')
+        f13_m = re.search(r'F13 \(DyS79Eb92Ug t=3525-3775\):[^\n]+', t)
+        self.assertIsNotNone(f13_m)
+        f13_text = f13_m.group(0)
+        self.assertIn('1150', f13_text)
+        self.assertIn('NOT_IN_DATA', f13_text)
+
+
 
 class TestH3(unittest.TestCase):
     def test_no_unsourced_dates(self):
