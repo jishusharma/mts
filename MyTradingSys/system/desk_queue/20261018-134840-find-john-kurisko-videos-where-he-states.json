@@ -1,10 +1,13 @@
 {
   "done_when": "RSI_VIDEO_SEARCH.md on fast-track listing each checked video (URL, platform, quoted RSI numbers or 'no RSI mention'), extract passes verify_extract_quotes.py; if no video states RSI numbers, that is stated explicitly",
+  "finished": "2026-10-18T16:17:33Z",
   "from": "JIS-NUC",
+  "host": "JIS-NUC",
   "id": "20261018-134840-find-john-kurisko-videos-where-he-states",
   "need": "Use Gemini (video/transcript capable) to search YouTube for John Kurisko videos where he names RSI periods/levels/smoothing for a multi-RSI (quad) setup; he may use different indicator settings on TradingView vs his other platform (NinjaTrader). Known and NOT sufficient: Desire To Trade ep 472 (PjigwAmhiT0) has 'RSI' 0 times (extracts: MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md s4-s5). For each hit give: URL, title, timestamp, the exact quote with the numbers, platform named, and which indicator (RSI, Stochastic RSI, other). Fetch captions with the repo fetch_captions.py where possible and quote-gate any extract with python scripts/dev/verify_extract_quotes.py. Quote only; do not infer values. Write to MyTradingSys/research/rsi_kurisko_2026-10-09/RSI_VIDEO_SEARCH.md and note negative results (videos checked, no RSI mention).",
   "posted": "2026-10-18T13:48:40Z",
-  "status": "pending",
+  "result": "Pipeliner drain 2026-10-18: duplicate: card kurisko-rsi-video-search (ready; claim kurisko-rsi-card started on JIS-NUC 15:49Z); Gemini part runs via gemini_queue.py (ROUTING.md)",
+  "status": "failed",
   "target": "DSA-NUC",
   "title": "Find John Kurisko videos where he states RSI settings (TradingView vs other platform)"
 }

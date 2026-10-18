@@ -1,10 +1,13 @@
 {
   "done_when": "the 5 IDs plus up to 10 Hindi picks are in raw_transcripts_canonical or a NOT AVAILABLE line each, on origin/fast-track",
+  "finished": "2026-10-18T16:17:32Z",
   "from": "JIS-NUC",
+  "host": "JIS-NUC",
   "id": "20261012-085022-d11b-follow-up-claude-malkan-captions-42",
   "need": "Continue D11b Malkan caption fetch from the failed row 20261010-092451-d11b-retry-malkan-captions-after-youtube. State at handoff: (1) yt-dlp 2026.08.19 is installed in Python 3.14 on JIS-NUC, import works, verified. (2) scripts/dev/fetch_captions.py line 17 imports yt_dlp; lines 66-74 build the yt-dlp options dict with only skip_download, quiet, no_warnings, writesubtitles/writeautomaticsub, subtitleslangs, subtitlesformat. No cookies, no impersonation. (3) Retry of fgN6QBFY3Ss and kVIvcn7T44o produced HTTP Error 429: Too Many Requests three times through the 60/120/240s backoff; zero caption files landed for any of the five IDs (fgN6QBFY3Ss kVIvcn7T44o FHEoMmD6xKM TYB7GJODt-k WBByyLBp8-c). (4) Research: yt-dlp issue tracker and wiki both point at authenticated cookies and browser impersonation as the fixes for 429; authenticated sessions get roughly 6x the anonymous rate limit; server IPs are the common structural cause. JIS-NB (the row's original host) is a different address and may not be limited. Planned fix: pip install curl_cffi, add cookiesfrombrowser=('chrome',) and impersonate='chrome' to the base options dict in fetch_captions.py, retry ONE id first, then the other four, then the up to 10 Hindi picks from the Vishal B Malkan channel listing, then convert and add rows to the Malkan additions section of research/transcript_inventory_2026-10-09.md. done_when unchanged: the 5 ids plus Hindi picks in raw_transcripts_canonical or a NOT AVAILABLE line each, on origin/fast-track. Note: the JS wrapper is a plain module import, no vendored copy, so pip target stays the standard site-packages. The row file currently records a stale failure reason (tooling missing); update it or leave the new row as the current truth.",
   "posted": "2026-10-12T08:50:22Z",
-  "status": "pending",
+  "result": "Pipeliner drain 2026-10-18: duplicate: card malkan-captions-fetch-noauth (active, claimed by JIS-NB) owns the cookie/impersonate retry; latest 429 de781422",
+  "status": "failed",
   "target": "CLAUDE",
   "title": "D11b follow-up (Claude): Malkan captions - 429 persists, add cookies+impersonate"
 }

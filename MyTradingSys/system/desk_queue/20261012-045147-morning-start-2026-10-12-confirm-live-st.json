@@ -1,10 +1,13 @@
 {
   "done_when": "A mirror published after 2026-10-12 05:00Z shows the live tree on green, every live process named running, and B142 deployed or the reason; reply lists any process that did not come back.",
+  "finished": "2026-10-18T16:17:34Z",
   "from": "JIS-NUC",
+  "host": "JIS-NUC",
   "id": "20261012-045147-morning-start-2026-10-12-confirm-live-st",
   "need": "Both machines were powered off overnight. On JIS-NB (supervisor role, live tree): 1) Get-ScheduledTask MTS-* with last result; confirm MTS-Supervisor ran after logon and auto_trader, position_manager, daily_loss_monitor, live_runner_cli, the Java feed and one htf_context_live loop are running with fresh log lines (runtime_data/live_runner.log). 2) python scripts/dev/auto_deploy.py --check, and read MyTradingSys/runtime/sched/auto_deploy_last.json: live tree must be on origin/green/fast-track (816f863 or newer); if AutoDeploy is stopped, fix its reason first. 3) Java window: the restart is the window for desk task 20261010-205418 (B142, ExtraSetupBuilder momentum disabled): mvn compile + feed restart, done before 13:00Z or say why not. 4) python scripts/dev/live_mirror.py publish, and do desk task 20261011-201038 (schedule the mirror every 5 min) so the NUC can see live state. No HALT file changes, no manual trades, testnet only.",
   "posted": "2026-10-12T04:51:47Z",
-  "status": "pending",
+  "result": "Pipeliner drain 2026-10-18: obsolete: dated check for 2026-10-12; AutoDeploy/Supervisor retired (SCHEDULING_POLICY.md); live health is the NB coordinator's wake check",
+  "status": "failed",
   "target": "JIS-NB",
   "title": "Morning start 2026-10-12: confirm live stack is up on latest green before US open (13:30Z)"
 }
