@@ -2,6 +2,7 @@
   "approved_by": "",
   "asks": "",
   "claim": "",
+  "closed": "2026-10-18T10:33:09Z",
   "commands": [],
   "created": "2026-10-18T04:08:51Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "id": "malkan-ledger-parity-feasibility",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/malkan_ledger_2026-10/LEDGER_PARITY.md",
+      "ref": "e91e301f",
+      "utc": "2026-10-18T10:33:09Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +47,7 @@
   "refined_by": "",
   "refreshed": "2026-10-18T04:11:18Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/malkan_ledger_2026-10/LEDGER_PARITY.md",
   "scope_in": [
     "MyTradingSys/research/malkan_extract_2026-10-15/",
     "MyTradingSys/research/video_priority_2026-10-15/",
@@ -57,7 +64,7 @@
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_MALKAN.md"
   ],
-  "state": "active",
+  "state": "done",
   "steps": [
     "List every dated Malkan trade or call in the 6 extracts and saved captions (quote + file:line); count them.",
     "List every chart RSI value he quotes (for example Nifty weekly 74.29 and 71) with video, line and the stated tolerance.",
