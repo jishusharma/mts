@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C2",
   "commands": [],
   "created": "2026-10-18T00:00:00Z",
   "depends_on": [],
@@ -11,14 +12,29 @@
   "id": "lab-trust-tag",
   "kind": "build",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab lab-vendor-gate-harden: DONE (build)",
+      "ref": "f72d05a3a951",
+      "utc": "2026-10-17T22:55:09Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "35c10e93b393 tasks.py: promotion gate (active HOLD, real review stamp for IMPORTANT/C1+), ",
+      "ref": "MyTradingSys/system/roles/lab_guy.md",
+      "utc": "2026-10-17T21:55:22Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use]",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:definitions CLASS:C2 REVIEWER:Gemini 4 Argon low (non-Claude C2 spec review) + Haiku re-derive + 2nd vendor on first use WEIGHT:CRUCIAL. Re-check candidate: lab-crossvendor-same-vendor-gate (findings/2026-10-18_review_same_vendor_gate.md). [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use]",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-18T00:00:00Z",
+  "refreshed": "2026-10-18T05:13:05Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -32,7 +48,7 @@
     "HALT files",
     "deploys"
   ],
-  "scope_sha": "",
+  "scope_sha": "f72d05a3a951",
   "size": "M",
   "sources": [],
   "state": "ready",

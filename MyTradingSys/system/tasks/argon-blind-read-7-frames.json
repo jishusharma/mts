@@ -15,7 +15,15 @@
   "id": "argon-blind-read-7-frames",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Record Gemini image-reading pilot: lab_guy rules, announcement A-20261018-7, Argon follow-",
+      "ref": "74772a994d9e",
+      "utc": "2026-10-17T20:39:55Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,7 +31,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-17T20:39:52Z",
+  "refreshed": "2026-10-18T05:13:13Z",
   "refs": [
     "MyTradingSys/system/GEMINI_START.md",
     "MyTradingSys/system/roles/lab_guy.md"
@@ -37,7 +45,7 @@
     "HALT files",
     "deploys"
   ],
-  "scope_sha": "",
+  "scope_sha": "74772a994d9e",
   "size": "S",
   "sources": [],
   "state": "ready",

@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T04:08:56Z",
+  "depends_on": [],
+  "done_when": "UNIVERSE_POWER.md with a source table (coverage, licence, adjustment) and N / MDE per universe, labelled OURS where assumed.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Items 1/4/10 for Malkan: which free public sources hold Indian equity daily OHLC (adjusted, delisted names), how many stocks and years each covers, and N and MDE for universes of 50, 100 and 500 stocks via power_mde.py. Metadata only; fetch no price series.",
+  "id": "malkan-universe-data-power",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "EVENT_COUNTS: add Answer block, soften the upper-bound wording, note the 87% weekly stop a",
+      "ref": "c98a9925c810",
+      "utc": "2026-10-15T22:29:40Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "c98a9925c810 EVENT_COUNTS: add Answer block, soften the upper-bound wording, note the 87% ",
+      "ref": "MyTradingSys/research/krown_malkan_g3_2026-10-16/EVENT_COUNTS.md",
+      "utc": "2026-10-15T22:29:40Z"
+    }
+  ],
+  "layers": [
+    "rsi"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T04:11:27Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/power_mde.py",
+    "MyTradingSys/research/krown_malkan_g3_2026-10-16/EVENT_COUNTS.md",
+    "MyTradingSys/research/malkan_universe_2026-10/ (new: UNIVERSE_POWER.md)",
+    "MyTradingSys/backtest/PRE_REG_TEMPLATE.md"
+  ],
+  "scope_out": [
+    "any P&L backtest run",
+    "tuning",
+    "edits to live-path code"
+  ],
+  "scope_sha": "c98a9925c810",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_MALKAN.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Survey free public sources of Indian EOD OHLC: coverage years, adjustment for splits and bonuses, delisted names, licence; record URL and date, no download of series.",
+    "Compute asset-years needed for +0.10 R net at 80% power from EVENT_COUNTS rates (BTC rate, labelled OURS) for 50, 100 and 500 stocks with power_mde.py.",
+    "Write MyTradingSys/research/malkan_universe_2026-10/UNIVERSE_POWER.md with the table and a recommended universe; write INCONCLUSIVE in advance where N < 100."
+  ],
+  "tests": "A unit test that the N/MDE table reproduces the 1,655-event figure of EVENT_COUNTS.md for +0.10 R; fails before the script exists.",
+  "title": "Malkan: Indian-equity D/W/M data sources, universe size and power (items 1/4/10, gates 0d/0e)",
+  "weight": "",
+  "worker": "agent"
+}

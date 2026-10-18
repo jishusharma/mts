@@ -864,6 +864,18 @@
       "disp": "REPRO",
       "why": "Regenerates wavetrend/golden_wt_btcusdt_1h_dev_2022-01.csv from fixture_btcusdt_1h_dev_2022-01.csv with pandas (independent of wavetrend.py); run by hand (python make_golden.py), named in FORMULAS.md section 20.4."
     },
+    "MyTradingSys/backtest/layers/kurisko/quad_rotation.py": {
+      "disp": "TOOL",
+      "why": "Kurisko quad rotation event detector (episode rule, long/short, stochastic or RSI arm) as pure functions of closed bars; covered by test_quad_rotation.py, no live imports; alert-only, enabled false (FORMULAS s24); the DEV event-study card imports it."
+    },
+    "MyTradingSys/backtest/layers/kurisko/stoch_core.py": {
+      "disp": "TOOL",
+      "why": "Stochastic line (raw %K, SMA_d, slowing) for the Kurisko module; covered by test_quad_rotation.py, no live imports (FORMULAS s24)."
+    },
+    "MyTradingSys/backtest/layers/kurisko/make_golden.py": {
+      "disp": "REPRO",
+      "why": "Regenerates kurisko/golden_stoch_k5d3.csv, the 20-bar example of FORMULAS s24.2, independently of stoch_core.py; run by hand (python make_golden.py)."
+    },
     "MyTradingSys/backtest/layers/krown/krown_core.py": {
       "disp": "TOOL",
       "why": "Krown v0 detectors (swings, zones, volume, BBWP, candles, MAs, RSI, range, tops) as pure functions of closed bars; covered by test_krown_core.py, no live imports; flag-gated, alert-only, no live wiring (KROWN_LAYER_SPEC s2)."

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-18T05:13:05Z",
   "commands": [],
   "created": "2026-10-17T21:33:43Z",
   "depends_on": [],
@@ -14,11 +15,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "lab-trust-tag stamped REVIEWED:2026-10-18 ACCEPT (C2, Gemini 4 Argon low), lab-crossvendor",
+      "ref": "c99625b0",
+      "utc": "2026-10-18T05:13:05Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "close rv02-fix-dax-rounded-rr-gate (R2)",
-      "ref": "dceb0ae4fe25",
-      "utc": "2026-10-18T03:07:39Z"
+      "line": "Merge origin/fast-track into kurisko-extract (LAYERS.md open-cards list resolved by hand: ",
+      "ref": "df8316ba6ca0",
+      "utc": "2026-10-18T04:57:29Z"
     },
     {
       "auto": true,
@@ -35,9 +42,9 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-18T03:35:11Z",
+  "refreshed": "2026-10-18T05:13:05Z",
   "refs": [],
-  "result": "",
+  "result": "lab-trust-tag stamped REVIEWED:2026-10-18 ACCEPT (C2, Gemini 4 Argon low), lab-crossvendor-same-vendor-gate stamped REVIEWED-RETRO CLASS:C2 TRUST:UNCHECKED, gap-g1-prereg-power raised to CLASS:C1 B-SHARED.",
   "scope_in": [
     "MyTradingSys/system/tasks/ (the three task-card JSON files named in the steps)",
     "MyTradingSys/research/lab_guy/findings/2026-10-18_review_same_vendor_gate.md (read)"
@@ -48,10 +55,10 @@
     "real C1/C2 stamps (Lab_Guy writes those)",
     "which reviewer model did earlier reviews (write none-recorded, never invent one)"
   ],
-  "scope_sha": "dceb0ae4fe25",
+  "scope_sha": "df8316ba6ca0",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "lab-trust-tag: add REVIEW-PENDING:Lab_Guy (real stamp + non-Claude spec review owed, class C2) at the start of note; do not run take (it flips the card to active); instead run tasks.review_gate(tasks.get(tasks.REPO, \"lab-trust-tag\")) via python -c with scripts/dev on sys.path and quote the refusal in the commit body",
     "lab-crossvendor-same-vendor-gate (done): prepend REVIEWED-RETRO:2026-10-18 T0-ONLY LAB:definitions CLASS:C2 REVIEWER:none-recorded (C2 re-review pending, Lab_Guy) TRUST:UNCHECKED, citing findings/2026-10-18_review_same_vendor_gate.md; list it as a re-check candidate in the lab-trust-tag note",
