@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
   "commands": [],
   "created": "2026-10-18T04:08:51Z",
   "depends_on": [],
@@ -56,12 +57,13 @@
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_MALKAN.md"
   ],
-  "state": "ready",
+  "state": "active",
   "steps": [
     "List every dated Malkan trade or call in the 6 extracts and saved captions (quote + file:line); count them.",
     "List every chart RSI value he quotes (for example Nifty weekly 74.29 and 71) with video, line and the stated tolerance.",
     "Write MyTradingSys/research/malkan_ledger_2026-10/LEDGER_PARITY.md: N calls, minute timestamps possible or not, design/check split possible or not, verdict."
   ],
+  "taken": "2026-10-18T10:31:37Z",
   "tests": "test_pre_reg_template.py stays green; the new doc has the counts and a verdict line (fails before the file exists).",
   "title": "Malkan: dated-call ledger feasibility and RSI parity points (items 2/3/5, gate 0c)",
   "weight": "",
