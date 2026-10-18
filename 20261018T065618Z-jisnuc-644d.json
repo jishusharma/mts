@@ -1,0 +1,1 @@
+{"t": "20261018T065618Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship 2>&1 | grep -i \"shipped\\|fail\"; python scripts/dev/sync.py release [cut] 2>&1 | tail -2"}
