@@ -1,0 +1,237 @@
+{
+  "head": "99b43fd6d7344d86b158c2ddf4e443b14d6ea690",
+  "rsi_hand_example": {
+    "closes": [
+      10,
+      12,
+      11,
+      14,
+      13
+    ],
+    "period": 3,
+    "expected_seed": 83.33333333333333,
+    "expected_next": 66.66666666666666,
+    "actual": [
+      null,
+      null,
+      null,
+      83.33333333333334,
+      66.66666666666667
+    ]
+  },
+  "regime_value_mismatch": {
+    "input": [
+      65.0,
+      65.0,
+      65.0,
+      65.0,
+      65.0,
+      65.0,
+      65.0,
+      65.0,
+      65.0,
+      65.0,
+      65.0,
+      65.0,
+      65.0,
+      65.0,
+      65.0,
+      65.0,
+      65.0,
+      65.0,
+      65.0,
+      45.0
+    ],
+    "latest_rsi": 45,
+    "computed_regime": "BULL",
+    "meaning": "BULL is possible with current RSI 45; not equivalent to current RSI >60."
+  },
+  "state_asof_contract": {
+    "open_times": [
+      0
+    ],
+    "value": [
+      "BULL"
+    ],
+    "query": 1,
+    "actual": "BULL",
+    "meaning": "No close-time enforcement inside helper; caller must pass availability times."
+  },
+  "gapped_resample": [
+    {
+      "t": 0,
+      "o": 100,
+      "h": 101,
+      "l": 99,
+      "c": 100,
+      "v": 4,
+      "gap_count": 1,
+      "n_bars": 4
+    }
+  ],
+  "summary_recount": {
+    "summary.json": {
+      "timeframes": 19,
+      "cells": 76,
+      "verdicts": {
+        "no edge": 32,
+        "insufficient n": 44
+      },
+      "eligible": 32,
+      "eligible_negative_net": 31,
+      "report_reproduced_exactly": true,
+      "eligible_positive_net": [
+        [
+          "1h",
+          "operator",
+          "bearish",
+          {
+            "n": 332,
+            "gross_mean": 0.0013839767483132374,
+            "net_mean": 0.00038397674831323723,
+            "net_t": 0.38819799331819654,
+            "hit_net": 0.5271084337349398,
+            "baseline_side": -0.00027762759599041784
+          }
+        ]
+      ]
+    },
+    "summary_T088.json": {
+      "timeframes": 4,
+      "cells": 16,
+      "verdicts": {
+        "no edge": 4,
+        "insufficient n": 12
+      },
+      "eligible": 4,
+      "eligible_negative_net": 4,
+      "report_reproduced_exactly": true,
+      "eligible_positive_net": []
+    }
+  },
+  "indicator_named_implementation_paths": {
+    "refs_checked": [
+      "refs/heads/fast-track",
+      "refs/heads/fast-track-old",
+      "refs/heads/fast-track-work",
+      "refs/heads/jis-nuc/b172-tokens",
+      "refs/heads/jis-nuc/codex-lab",
+      "refs/heads/jis-nuc/codex-layer-lab",
+      "refs/heads/jis-nuc/owner-card",
+      "refs/heads/jis-nuc/relay",
+      "refs/heads/jisnb/cloud-backtest-findings",
+      "refs/heads/jisnb/dsa",
+      "refs/heads/jisnb/refiner-lab",
+      "refs/heads/jisnb/tom-fabio-guidance",
+      "refs/heads/jisnuc/t092",
+      "refs/heads/nuc/codex-first",
+      "refs/heads/nuc/codex-holdout",
+      "refs/heads/wf-pending",
+      "refs/remotes/origin/HEAD",
+      "refs/remotes/origin/backup/JIS-NB/BinanceDataFeed",
+      "refs/remotes/origin/backup/JIS-NB/BinanceDataFeed.registry",
+      "refs/remotes/origin/backup/JIS-NB/mts-cc",
+      "refs/remotes/origin/backup/JIS-NB/mts-cicd",
+      "refs/remotes/origin/backup/JIS-NB/mts-control-room",
+      "refs/remotes/origin/backup/JIS-NB/mts-dsa",
+      "refs/remotes/origin/backup/JIS-NB/mts-extract",
+      "refs/remotes/origin/backup/JIS-NB/mts-inbox",
+      "refs/remotes/origin/backup/JIS-NB/mts-live-reads",
+      "refs/remotes/origin/backup/JIS-NB/mts-malkan",
+      "refs/remotes/origin/backup/JIS-NB/mts-missed-trades",
+      "refs/remotes/origin/backup/JIS-NB/mts-ops",
+      "refs/remotes/origin/backup/JIS-NB/mts-push",
+      "refs/remotes/origin/backup/JIS-NB/mts-registry",
+      "refs/remotes/origin/backup/JIS-NB/mts-relay",
+      "refs/remotes/origin/backup/JIS-NB/mts-relay-20261010T0027",
+      "refs/remotes/origin/backup/JIS-NB/mts-relay-20261010T0627Z",
+      "refs/remotes/origin/backup/JIS-NB/mts-research",
+      "refs/remotes/origin/backup/JIS-NB/mts-rsi",
+      "refs/remotes/origin/backup/JIS-NB/mts-shots",
+      "refs/remotes/origin/backup/JIS-NB/mts-sup",
+      "refs/remotes/origin/backup/JIS-NB/mts-t080",
+      "refs/remotes/origin/backup/JIS-NB/mts-t081",
+      "refs/remotes/origin/backup/JIS-NB/mts-task",
+      "refs/remotes/origin/backup/JIS-NB/mts-tom",
+      "refs/remotes/origin/backup/JIS-NB/mts-vpa",
+      "refs/remotes/origin/backup/live-tree-2026-10-09",
+      "refs/remotes/origin/claude/auto-merge-fast-track",
+      "refs/remotes/origin/claude/cbp-trade-inputs-eosfz8",
+      "refs/remotes/origin/claude/ci-offline-gate",
+      "refs/remotes/origin/claude/consensus-tf-maps-eomuv3",
+      "refs/remotes/origin/claude/dazzling-volta-ry933w",
+      "refs/remotes/origin/claude/engine-tests-8y0yqm",
+      "refs/remotes/origin/claude/fabio-v3-core-dtn9bf",
+      "refs/remotes/origin/claude/fast-track-consolidation-phshp6",
+      "refs/remotes/origin/claude/fix-book-imbalance-no-data-eo55st",
+      "refs/remotes/origin/claude/formula-audit-xmj7t4",
+      "refs/remotes/origin/claude/lucid-rubin-6q47un",
+      "refs/remotes/origin/claude/mts-launcher-verbs-37cows",
+      "refs/remotes/origin/claude/nifty-euler-6i4g40",
+      "refs/remotes/origin/claude/project-thread-5v1jht",
+      "refs/remotes/origin/claude/project-thread-7gvyfy",
+      "refs/remotes/origin/claude/project-thread-a5n5nk",
+      "refs/remotes/origin/claude/project-thread-mvbseb",
+      "refs/remotes/origin/claude/project-thread-vi37ux",
+      "refs/remotes/origin/claude/quirky-knuth-y2u3ij",
+      "refs/remotes/origin/claude/sharp-allen-k7m4ap",
+      "refs/remotes/origin/claude/sleepy-pasteur-mbcxe5",
+      "refs/remotes/origin/claude/trusting-meitner-nsjwsm",
+      "refs/remotes/origin/claude/wave1-review-gate-myacv5",
+      "refs/remotes/origin/claude/wizardly-babbage-3098i5",
+      "refs/remotes/origin/claude/zealous-cannon-ehyvh3",
+      "refs/remotes/origin/cloud/work",
+      "refs/remotes/origin/fast-track",
+      "refs/remotes/origin/fix/dsa-prompt-cbp-path",
+      "refs/remotes/origin/green/fast-track",
+      "refs/remotes/origin/jisnb/rsi-kurisko-2026-10-09",
+      "refs/remotes/origin/jisnb/vp-anchored-2026-10-09",
+      "refs/remotes/origin/main",
+      "refs/remotes/origin/research/agenda-2026-10-06",
+      "refs/remotes/origin/research/agenda-registry-2026-10-06"
+    ],
+    "hits": {},
+    "limit": "Named paths only; current code text searched separately."
+  },
+  "mirror": {
+    "utc": "2026-10-11T20:09:30.734919+00:00",
+    "git_head": "927665a",
+    "rows": 3961,
+    "events": {
+      "trade_attempt": 698,
+      "start": 72,
+      "signal_rejected": 499,
+      "skipped_busy": 111,
+      "trade_closed": 682,
+      "ledger_row": 680,
+      "skipped_auto_pause": 3,
+      "adopted": 35,
+      "manager_lost": 25,
+      "manager_exit_unverified": 20,
+      "skipped_halt": 987,
+      "layer_trade_blocked": 148,
+      "fabio_account_missing": 1
+    },
+    "closed_by_source": {
+      "layer:rsi:rsi_events:15m": 13,
+      "smoke": 1,
+      "layer:turn_of_candle:turn_of_candle:1m": 548,
+      "layer:rsi:rsi_events:5m": 48,
+      "layer:session:session_momentum:15m": 5,
+      "layer:rsi:rsi_events:1h": 4,
+      "tom": 7,
+      "layer:fabio:escalation:15m": 6,
+      "layer:fabio:cvd_absorption:15m": 17,
+      "layer:cryptocred:sr_flip:15m": 19,
+      "layer:fabio:cvd_absorption:1h": 2,
+      "layer:cryptocred:fib_pullback:15m": 7,
+      "layer:fabio:volume_fvg:15m": 2,
+      "layer:cryptocred:sr_flip:1h": 2,
+      "layer:cryptocred:failed_msb:15m": 1
+    },
+    "closed_exit_reasons": {
+      "UNKNOWN": 682
+    },
+    "limitation": "Mirrored auto_trades log, not canonical trade ledger; not live and not deduplicated P/L evidence."
+  }
+}

@@ -1,0 +1,277 @@
+{
+  "MyTradingSys/backtest/layers/rsi/rsi_core.py": {
+    "sha256": "05d5cd42a9f7f179011c2ebb1f4a57499b677710edbd8759db21de68e7e8b762",
+    "bytes": 2367,
+    "lines": 57
+  },
+  "MyTradingSys/backtest/layers/FORMULAS.md": {
+    "sha256": "8aa03d2d19fb0722bfbde9c116a84ed21d5f248fae59e2d5f103363fa524ecd2",
+    "bytes": 39500,
+    "lines": 494
+  },
+  "MyTradingSys/backtest/layers/rsi/params/default.json": {
+    "sha256": "685fe1eb8a8dac6fa3c3ad65800721e5ee40f7ab7b50baf311ca1545776906a4",
+    "bytes": 511,
+    "lines": 18
+  },
+  "MyTradingSys/backtest/layers/rsi/rsi_events.py": {
+    "sha256": "79a1e736d5ea330e400a87057eb3626db07caa44fba729fda013d3301eae79a4",
+    "bytes": 4143,
+    "lines": 103
+  },
+  "MyTradingSys/research/non_core_layer_audit_2026-10-12/reproductions.json": {
+    "sha256": "adc55ec5d1d9a206d97b565ee7df4f497931fa7968ecf4118d458de3407fab00",
+    "bytes": 7665,
+    "lines": 237
+  },
+  "MyTradingSys/research/non_core_layer_audit_2026-10-12/test_results.json": {
+    "sha256": "8d37dfc30e47ba2e77b104e559b9c1d9448b3a45d1fb6bfe653c3913d5db1745",
+    "bytes": 3829,
+    "lines": 130
+  },
+  "MyTradingSys/backtest/layers/alerts/live_layers.py": {
+    "sha256": "2354186bfa795deebd57017e166e3adb956ef681c1e0b95fb612935d05681562",
+    "bytes": 9208,
+    "lines": 189
+  },
+  "MyTradingSys/execution/auto_trader.py": {
+    "sha256": "9f7a5201affa81d281f7db906d3c40822c0559a78608a6156dfe302453a679f9",
+    "bytes": 41165,
+    "lines": 803
+  },
+  "MyTradingSys/execution/auto_trader_config.json": {
+    "sha256": "1d4fc9553b5399bae1da07bfed6d99a206b9959392d652d7f943b85a2d6d5d19",
+    "bytes": 3600,
+    "lines": 115
+  },
+  "MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md": {
+    "sha256": "6a8a1ab2ef7495384dbe1ed3c2a0cf6db1421342608f6da3e679f93f75d14034",
+    "bytes": 6545,
+    "lines": 86
+  },
+  "MyTradingSys/backtest/layers/rsi/malkan_40_60.py": {
+    "sha256": "d21747c74636250614ecba5c3ad1b13e5afc169b96ee6741136dedf6642eda7a",
+    "bytes": 6689,
+    "lines": 138
+  },
+  "MyTradingSys/backtest/layers/rsi/malkan_mtf.py": {
+    "sha256": "f7c852dfb860b861adb75359a104c11b27e2140e1e0df160268c12eabfc47051",
+    "bytes": 4860,
+    "lines": 103
+  },
+  "MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py": {
+    "sha256": "70c29a5ddb3bdfb4f6ec18ea613680c3a0ef274ee12f543f43f5fdb3ac160b82",
+    "bytes": 17599,
+    "lines": 366
+  },
+  "MyTradingSys/research/rsi_kurisko_2026-10-09/RSI_HISTORY.md": {
+    "sha256": "2ab4fc5db5370dda7ecf4754f84a6b4fc92aee23f776b6fbe8bbcbdf338a8f88",
+    "bytes": 14406,
+    "lines": 115
+  },
+  "MyTradingSys/research/MARKET_GUIDE_RESULTS_2026-10-07.md": {
+    "sha256": "eca6ff01506f101723ef9f20f40120236a5f493fb8963292cd3fd82a112471e9",
+    "bytes": 4277,
+    "lines": 48
+  },
+  "extracts/processed/malkan/extract_Wvq1TZh8aF0.md": {
+    "sha256": "fecd0d088bb73fd1d742e128e2a02d4b5e2435601f46f4991123e8ea9e048b7d",
+    "bytes": 3836,
+    "lines": 81
+  },
+  "extracts/processed/malkan/extract_cQ-y1oULkBw.md": {
+    "sha256": "856d4b8b39cedbd04fa59b3ea117062911653381a08f7ca2dac12c166ecb8320",
+    "bytes": 1679,
+    "lines": 35
+  },
+  "extracts/processed/malkan/extract_-CBvFi40sIQ.md": {
+    "sha256": "6cc663af18c1e41818777ee9bc749fb7572ae95f71b1795f9e65729977168d01",
+    "bytes": 1211,
+    "lines": 24
+  },
+  "extracts/processed/malkan/extract_2HcJ3NeZmEQ.md": {
+    "sha256": "15b3528a34bb24ba2fee6748bc18f02c78238294959e6528c1045c380bb9cbf8",
+    "bytes": 1158,
+    "lines": 24
+  },
+  "MyTradingSys/backtest/layers/rsi/rsi_divergence.py": {
+    "sha256": "c45ef9e14031d05efdc32ff934996db69554b6023ffac41a4233a2ef8dc80fdc",
+    "bytes": 3041,
+    "lines": 61
+  },
+  "MyTradingSys/backtest/layers/rsi/run_divergence_mtf.py": {
+    "sha256": "acaa7e3285d941d477c5256e1fc805a1ea33c84cb8f92997026179a728e788b3",
+    "bytes": 14132,
+    "lines": 289
+  },
+  "MyTradingSys/research/rsi_divergence_mtf_2026-10-09/RESULT.md": {
+    "sha256": "c87cb3260e0c9ddbf875e8bc75d6d143391204d0acba4270e750de93b359d157",
+    "bytes": 2635,
+    "lines": 34
+  },
+  "MyTradingSys/backtest/layers/rsi/rsi_reclaim.py": {
+    "sha256": "cb8519ed34607e6cc2b3629d37e24da211528b87c4dd522198e3e20d531e2f20",
+    "bytes": 4534,
+    "lines": 108
+  },
+  "MyTradingSys/research/rsi_2a_2026-10-09/RSI_2A_SPEC.md": {
+    "sha256": "f03a644da1d23ebcc9f1c6877fb5bdfe00a08ecf826dd112d4740c2026198977",
+    "bytes": 5880,
+    "lines": 59
+  },
+  "MyTradingSys/research/t090_7h_2026-10-09/RESULT.md": {
+    "sha256": "35a226c5c50c15bf4a48a5eae12a74fa09ee134f866bfbbeb8c1a103852dfb46",
+    "bytes": 2929,
+    "lines": 37
+  },
+  "MyTradingSys/items/T061_wavetrend_lazybear.md": {
+    "sha256": "f72d3772e541fae6fcdde3dbbe95d252856e2a04e016d80623a5fa38c67b4bf7",
+    "bytes": 1703,
+    "lines": 48
+  },
+  "MyTradingSys/research/T065_LAZYBEAR_SURVEY.md": {
+    "sha256": "3d97b2addb017eeacae617a83035a18083fd032ce44dd211a7e1d0f1a8ee7ac4",
+    "bytes": 8589,
+    "lines": 71
+  },
+  "MyTradingSys/items/T065_lazybear_survey.md": {
+    "sha256": "dbc44eed3cb1f12dee7d4876cf5e9e38b3c8150785176f308211e685a2ce49ef",
+    "bytes": 831,
+    "lines": 11
+  },
+  "MyTradingSys/backtest/layers/cryptocred/cc_setups.py": {
+    "sha256": "74f7c393375d98efe8bc75363e540db42a874c93aa2a3892914c4c41781d3989",
+    "bytes": 12717,
+    "lines": 252
+  },
+  "MyTradingSys/backtest/layers/cryptocred/cc_bt_adapter.py": {
+    "sha256": "8a5e87a8b0c387b077e238183a3fc11d779359d4e1891b2cade2eb7f7d84942b",
+    "bytes": 3208,
+    "lines": 82
+  },
+  "extracts/processed/cryptocred/extract_BHwoN7VPrBE.md": {
+    "sha256": "192462fe916f2bec74558fc7a4192859d84769d362fdedf2e43f8e67a31bce65",
+    "bytes": 8578,
+    "lines": 143
+  },
+  "MyTradingSys/research/no_source_sweep_2026-10-09/RESULT.md": {
+    "sha256": "cc25f5966c5c3236f407c52a937b35a53ad15ab1cd0aa341c3dcfc8de3d4c6cb",
+    "bytes": 2298,
+    "lines": 36
+  },
+  "MyTradingSys/research/AUDIT_CLOSEOUT_2026-10-07.md": {
+    "sha256": "b9dd755a3b5cb35e2739c8365c1df763abd5f539b37786e21d3ccdd62e6fa995",
+    "bytes": 6658,
+    "lines": 67
+  },
+  "MyTradingSys/research/LAYER_PROVENANCE_AUDIT.md": {
+    "sha256": "cfe66285fe425f5cd6508b4651e3f88e5b836f902d3c0b86cf4fa855c3aa9e72",
+    "bytes": 24003,
+    "lines": 222
+  },
+  "MyTradingSys/research/fast_track_2026-09-27/T055_BT_RERUN_FULLFUNDING_2026-10-07.md": {
+    "sha256": "b261b96a1be8dee4009aecc5db21861b62194fbe5c31d57acf30bef57f4c36aa",
+    "bytes": 7086,
+    "lines": 114
+  },
+  "MyTradingSys/backtest/layers/session/session_momentum.py": {
+    "sha256": "b82db9757eea1a88d3b828fd6201167563d2e6199d9d39300a964d4400011751",
+    "bytes": 3736,
+    "lines": 118
+  },
+  "MyTradingSys/backtest/layers/positioning/funding_cvd_fade.py": {
+    "sha256": "06f76b4c1db378662b1108ad40132126d9398f6699c598c36eea68d1e48f34af",
+    "bytes": 4296,
+    "lines": 130
+  },
+  "MyTradingSys/backtest/layers/alerts/live_runner_cli.py": {
+    "sha256": "820a8d394ebae544bb27899a8a73d8fa9bd113aa1c41455d3ce5e392aee10748",
+    "bytes": 18236,
+    "lines": 427
+  },
+  "MyTradingSys/research/fast_track_2026-09-27/T055_BT_c3.md": {
+    "sha256": "44e9e04465d28b886f7ae5276e4a65664a04e6f5da44d6b8dc886442f24dd3d5",
+    "bytes": 3956,
+    "lines": 31
+  },
+  "MyTradingSys/research/t087_session_levels_2026-10-09/RESULT.md": {
+    "sha256": "9341d45abeb2ad9a6beb8bcb6ff17ea1abeff76b24b9210bb238b6829e6725b8",
+    "bytes": 4696,
+    "lines": 43
+  },
+  "MyTradingSys/backtest/layers/tick/build_tiers.py": {
+    "sha256": "85b704c8f8242f5f93b1dde551626b070ceb5b48fe1a7def8908484bedbc3544",
+    "bytes": 4740,
+    "lines": 99
+  },
+  "MyTradingSys/backtest/layers/tick/tiers_meta.json": {
+    "sha256": "65e1427c0c07e6477142ceb22e50f41f485c2056fa77df4b3468b6ccf826dc55",
+    "bytes": 767,
+    "lines": 31
+  },
+  "MyTradingSys/backtest/layers/tick/tick_flagger.py": {
+    "sha256": "0422b7259a506a807413b6f4564924309c219bca66de2fa5f79557a3314761d1",
+    "bytes": 6281,
+    "lines": 207
+  },
+  "MyTradingSys/backtest/layers/timeframe/tf_resample.py": {
+    "sha256": "cba6fd0c70e8a9d833c036d4985bb6a71826ff5ddc18b85df80f2d18d5cfe6db",
+    "bytes": 5649,
+    "lines": 158
+  },
+  "MyTradingSys/backtest/layers/timeframe/registry.json": {
+    "sha256": "fe10d3c037f98b5f680d9478ccafe67fbccdd4f5baa15effc0c939ae270b05d7",
+    "bytes": 2124,
+    "lines": 31
+  },
+  "MyTradingSys/backtest/layers/consensus/hook.py": {
+    "sha256": "1c1ff6faa67885b378d3afde966bd1fec0ea0b5acff0be5d235a03240e9bd7dc",
+    "bytes": 6522,
+    "lines": 139
+  },
+  "MyTradingSys/backtest/layers/consensus/README.md": {
+    "sha256": "0a229f696fbb23bc06a463a238dc9b98669d0c76341b4ca41e829eb78825acd1",
+    "bytes": 12908,
+    "lines": 159
+  },
+  "MyTradingSys/backtest/layers/rsi/observation.py": {
+    "sha256": "c716f4090e460ed9b17924f42c33a58fa1652942d92ff676a2e4ce2abb090ab3",
+    "bytes": 7790,
+    "lines": 156
+  },
+  "MyTradingSys/research/volume_2026-10-09/V3_VALIDATION_RESULTS.md": {
+    "sha256": "5ab15134ee26e7834acfb495d6a6fa30acd11aabe5df4680d5b8ec8c94316d8c",
+    "bytes": 1242,
+    "lines": 22
+  },
+  "MyTradingSys/research/candle_patterns_2026-10-04/P1_RESULTS.md": {
+    "sha256": "9beb7731761ea4149c5e2c1227d3e582453713484c167a98b8e38f1e04afc1be",
+    "bytes": 12484,
+    "lines": 145
+  },
+  "MyTradingSys/research/b154_stratified_2026-10-09/RESULT.md": {
+    "sha256": "ff10d640b782543d992f8287f8048eeb155dc5acc41f642531087539adeedfc4",
+    "bytes": 2472,
+    "lines": 48
+  },
+  "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md": {
+    "sha256": "d930f51c05a08066a58f3b7731ca01c9cd80bd48e6d9e31feafd098794c8f634",
+    "bytes": 13604,
+    "lines": 86
+  },
+  "MyTradingSys/backtest/PRE_REG_TEMPLATE.md": {
+    "sha256": "2e790bab7de5ae67bd18092b0fe042049e489396127d107371cafb69ed5f880a",
+    "bytes": 2221,
+    "lines": 65
+  },
+  "MyTradingSys/PROJECT_VISION.md": {
+    "sha256": "21eec21783b6959aa6f0c7cda3a0b0c9ea92a6fa5c3be104a54997c6a7e01e30",
+    "bytes": 20268,
+    "lines": 249
+  },
+  "MyTradingSys/system/control_room.json": {
+    "sha256": "ccd3b737d04e913dbdcb4da670928f30f592ba14be6e7f18ee5f3a89e65e34c8",
+    "bytes": 9695,
+    "lines": 262
+  }
+}
