@@ -5,7 +5,9 @@
   "id": "20261012-173924-rv-dsa-test-sweep",
   "need": "python -m pytest -q scripts/dev/test_sync.py; python -m pytest -q scripts/dev/test_shot.py scripts/dev/test_tasks.py; python -m pytest -q MyTradingSys/tests/test_relay.py; python -m pytest -q MyTradingSys/backtest/test_tom_dax_bt.py (full brief: python scripts/dev/tasks.py brief rv-dsa-test-sweep)",
   "posted": "2026-10-12T17:39:24Z",
-  "status": "pending",
+  "status": "taken",
+  "taken": "2026-10-18T15:58:03Z",
+  "taken_by": "JIS-NUC",
   "target": "DSA-NUC",
   "title": "RV-DSA test sweep: run the 7 revalidation test files and report counts (host=JIS-NUC)"
 }
