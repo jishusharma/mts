@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-18T22:12:02Z",
   "commands": [],
   "created": "2026-10-18T17:23:06Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "ru7-q-a-helper-operator-questions-py-pen",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "operator_questions.py pending + test_operator_questions_pending.py",
+      "ref": "065cc6d0",
+      "utc": "2026-10-18T22:12:02Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,7 @@
   "refs": [
     "MyTradingSys/research/roles/ROLE_UPGRADES_2026-10-18.md"
   ],
-  "result": "",
+  "result": "operator_questions.py pending + test_operator_questions_pending.py",
   "scope_in": [
     "scripts/dev/operator_questions.py",
     "MyTradingSys/tests/test_operator_questions_pending.py"
@@ -44,13 +51,14 @@
   "scope_sha": "592cb2c7e0d3",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read operator_questions.py and OPERATOR_DECISIONS.md format",
     "Implement pending with ranking and report filter",
     "Fixture test",
     "Run run_all_tests.py --quick, ship"
   ],
+  "taken": "2026-10-18T22:12:02Z",
   "tests": "MyTradingSys/tests/test_operator_questions_pending.py",
   "title": "RU7 Q&A_Helper: operator_questions.py pending",
   "weight": "",
