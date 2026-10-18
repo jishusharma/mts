@@ -1,0 +1,1 @@
+{"t": "20261018T215123Z", "from": "jis-nuc/sharma", "to": "all", "kind": "claim", "text": "claim /ship/release` refuse a Pipeliner session that does not hold it. A non-Claude runner (Gemini, Codex) sets `MTS_ROLE=Pipeliner` and `MTS_LEASE_SESSION=<its run id>`.\")"}
