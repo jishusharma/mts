@@ -1,0 +1,56 @@
+{
+ "approved_by": "",
+ "asks": "",
+ "commands": [],
+ "created": "2026-10-18T03:57:23Z",
+ "depends_on": [
+  "kurisko-quad-rotation-module"
+ ],
+ "done_when": "PRE_REG.md on fast-track with <=12 frozen cells, per-cell event-days and MDE, fee-floor verdict per TF, control arm, aliases; EXPOSURE_LEDGER rows added; no outcome column anywhere. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+ "est_turns": 25,
+ "formula_id": "",
+ "formula_ids": [],
+ "from_inbox": "",
+ "goal": "Count-only pre-registration of Quad Rotation on BTCUSDT perp DEV (to 2024-06-30), 1m and 5m, stochastic and RSI arms: events, independent event-days, stop width in bp against the 14 bp round-trip fee. No return is computed.",
+ "id": "kurisko-prereg-fire-counts",
+ "lane": "SONNET",
+ "layers": [
+  "rsi"
+ ],
+ "live_path": false,
+ "mutation_check": "",
+ "note": "REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:GPT medium (MDE and leak check) WEIGHT:IMPORTANT. Spec section 6 expects a few-bp stop to be under the 14 bp fee: the count must show it before any outcome is read. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+ "prio": 2,
+ "refine_tries": 0,
+ "refined_by": "",
+ "refs": [],
+ "result": "",
+ "scope_in": [
+  "MyTradingSys/research/kurisko_2026-10-18/",
+  "MyTradingSys/backtest/layers/kurisko/",
+  "MyTradingSys/research/gross_effect_screen_2026-10-15/EXPOSURE_LEDGER.csv",
+  "MyTradingSys/research/wavetrend_2026-10-17/PRE_REG.md"
+ ],
+ "scope_out": [
+  "any return, MFE/MAE or hit rate",
+  "VALIDATION and HOLDOUT data",
+  "fees in P&L",
+  "trading rules"
+ ],
+ "size": "M",
+ "sources": [
+  "MyTradingSys/research/wavetrend_2026-10-17/PRE_REG.md (precedent)",
+  "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md section 6"
+ ],
+ "state": "refined",
+ "steps": [
+  "python scripts/dev/verdicts.py check \"kurisko quad rotation stochastic\" and paste its output into the PRE_REG",
+  "count_events.py: events, distinct UTC event-days, side split, candidate stop (pattern low) in bp, per TF x oscillator arm; log every DEV read in EXPOSURE_LEDGER.csv",
+  "python scripts/dev/prereg_gate.py --n <event-days> --sd <sd R> --cost <R> --m <cells>; exit 1 = report that TF as fee-dominated or underpowered and do not freeze it",
+  "write PRE_REG.md: at most 12 cells, outcome definitions, same-window random-clock control, Holm plan, trial ids, verdicts.py aliases, SOURCED/OURS labels; no outcome column"
+ ],
+ "tests": "count script test fails on pre-change code: a planted future spike must not move any count before its bar",
+ "title": "Kurisko Quad Rotation: count-only pre-registration on BTC DEV 1m/5m (no outcomes)",
+ "weight": "IMPORTANT",
+ "worker": "session"
+}
