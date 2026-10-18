@@ -357,6 +357,7 @@ def build_plan(quick):
     add("3c", "User guide in sync with mts.ps1", [sys.executable, "scripts/dev/check_guide.py"], "Step 3c: Guide in sync")
     add("3r", "Alert rate checker tests", [sys.executable, "scripts/dev/test_alert_rate_check.py"], "Step 3r: Alert rate checker tests")
     add("3cv", "Chart verify (RSI/BB/StochRSI) tests", [sys.executable, "scripts/dev/test_chart_verify.py"], "Step 3cv: Chart verify tests")
+    add("3tm", "One timeframe map tests", [sys.executable, "scripts/dev/test_tf_map.py"], "Step 3tm: TF map tests")
     add("3s", "Testnet status summary tests", [sys.executable, "scripts/dev/test_testnet_status.py"], "Step 3s: Testnet status tests")
     add("3f", "Funnel report tests", [sys.executable, "scripts/dev/test_funnel_report.py"], "Step 3f: Funnel report tests")
     plan.append(Step("3dk", "Desk board tests", "Step 3dk: Desk board tests", run=lambda: exec_unittest_shards("scripts/dev/test_desk.py", gate_jobs() if gate_jobs() == 1 else 2), cmd_text="python -m unittest (scripts/dev/test_desk.py, 2 shards)", tail=None))
