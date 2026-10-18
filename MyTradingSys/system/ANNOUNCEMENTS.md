@@ -43,7 +43,7 @@ Entry format: `### A-<yyyymmdd>-<n> <kind> <title>` with kind one of INFO, DO-NO
 
 ### A-20261018-8 INFO One routing table: ROUTING.md; Pipeliner owns it
 - Applies to: every session that posts a desk row, creates a card or picks a lane.
-- What: `MyTradingSys/system/ROUTING.md` is the one table kind of work -> machine -> channel -> model -> checker. Build/code/review work is a card, never a desk row; DeepSeek rows go by where the data lives (DSA-NB / DSA-NUC); cross-vendor reviews are CODEX cards (GPT or `gemini_queue.py`); LAB-VERIFY items become lab cards. Pipeliner (pinned on JIS-NUC, ROLES.md) drains the desk queue: 2026-10-18 drain closed 32 of 45 rows (`research/pipeliner/DRAIN_2026-10-18.md`).
+- What: `MyTradingSys/system/ROUTING.md` is the one table kind of work -> machine -> channel -> model -> checker. Build/code/review work is a card, never a desk row; DeepSeek rows go by where the data lives (DSA-NB / DSA-NUC); cross-vendor reviews are CODEX cards (GPT or `gemini_queue.py`); LAB-VERIFY items become lab cards. Pipeliner (pinned on JIS-NUC, ROLES.md) drains the desk queue: 2026-10-18 drain took 45 open rows to 14 (`research/pipeliner/DRAIN_2026-10-18.md`).
 - Operator answers wanted: ROUTING.md conflicts C1-C7 (bottom of that file).
 
 ## EXPIRED
