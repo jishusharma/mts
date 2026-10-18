@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-18T13:04:01Z",
   "commands": [],
   "created": "2026-10-17T09:02:21Z",
   "depends_on": [
@@ -13,6 +15,12 @@
   "id": "cryptocred-prereg-4h-1d",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/cryptocred_htf_2026-10/PRE_REG_CRYPTOCRED_HTF.md",
+      "ref": "c3cecabb",
+      "utc": "2026-10-18T13:04:01Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +46,7 @@
   "refined_by": "cryptocred-home-fit-audit 2026-10-17",
   "refreshed": "2026-10-18T04:24:06Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/cryptocred_htf_2026-10/PRE_REG_CRYPTOCRED_HTF.md",
   "scope_in": [
     "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
     "MyTradingSys/backtest/test_pre_reg_template.py",
@@ -58,13 +66,14 @@
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_CRYPTOCRED.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "First extend MyTradingSys/backtest/test_pre_reg_template.py so it also globs PRE_REG_CRYPTOCRED_HTF.md (items 1-12 present, gates 0a-0f answered, no template placeholder or NOT_ANSWERED left) and run it: it must FAIL (file absent) before step 2.",
     "Write MyTradingSys/research/cryptocred_htf_2026-10/PRE_REG_CRYPTOCRED_HTF.md with all 12 items and gates 0a-0f answered (items 1-5, 7 may cite HOME_FIT_AUDIT_CRYPTOCRED.md rows); label every number SOURCED (quote + file:line) or OURS. Numbers taken from COUNT_POWER.md (commit 380ae4e3eacc) are tagged UNCHECKED-BASE.",
     "Redesign numbers: recompute stop width, cost R and MDE for the NEW stop (invalidation + OURS buffer in noise units) from signal-bar structure only, no forward bars; COUNT_POWER cost_r is for the old 0.1% stop. Name the klines files with sha256 (DATA_MANIFEST.csv), ONE cost model (Deribit fees.py or Binance 14 bp) and DEV <= 2024-06-30; HOLDOUT sealed.",
     "State which result ends the source (kill rule 0f) and the redesign budget; trial-ledger rows for any grid; regime strata per item 12; create no further cards."
   ],
+  "taken": "2026-10-18T12:49:56Z",
   "tests": "test_pre_reg_template.py extended to glob PRE_REG_CRYPTOCRED_HTF.md (items 1-12 and gates 0a-0f answered): it fails before the file exists and when any item is unanswered, and passes for the finished file.",
   "title": "CryptoCred: pre-registration for the 4h/1d redesign (items 6/8/11/12)",
   "weight": "CRUCIAL",
