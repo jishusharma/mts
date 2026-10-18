@@ -1,7 +1,9 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
   "class": "C1",
+  "closed": "2026-10-18T16:02:41Z",
   "commands": [],
   "created": "2026-10-18T15:39:59Z",
   "depends_on": [],
@@ -14,6 +16,12 @@
   "id": "gate-fix-4-verdicts-blocked-scope",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "verdicts.py BLOCKED verdict + BLOCKED.md scope; Kurisko row fixed, check exits 0",
+      "ref": "bc3cef0e",
+      "utc": "2026-10-18T16:02:41Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +48,7 @@
   "refs": [
     "MyTradingSys/research/fable_audit_2026-10-18/GATE_AUDIT.md"
   ],
-  "result": "",
+  "result": "verdicts.py BLOCKED verdict + BLOCKED.md scope; Kurisko row fixed, check exits 0",
   "scope_in": [
     "scripts/dev/verdicts.py",
     "scripts/dev/test_verdicts.py",
@@ -58,12 +66,13 @@
   "sources": [
     "MyTradingSys/research/fable_audit_2026-10-18/GATE_AUDIT.md (Fable run 1, b63e8589)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write the named test first and watch it fail on current code",
     "implement the change inside scope_in only",
     "python scripts/dev/run_all_tests.py --quick, then sync.py ship with a Result line"
   ],
+  "taken": "2026-10-18T16:02:38Z",
   "tests": "A study dir with PRE_REG.md + BLOCKED.md and no RESULT parses to verdict BLOCKED with kill_scope = the sentence (today UNPARSED, UNPARSED); `verdicts.py check \"kurisko quad rotation\"` still exits 0. The test must fail on the pre-change code.",
   "title": "verdicts.py: BLOCKED verdict word + kill_scope from BLOCKED.md; Kurisko PRE_REG s7 kill-scope sentence",
   "weight": "IMPORTANT",

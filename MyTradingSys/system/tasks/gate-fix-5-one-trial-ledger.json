@@ -1,7 +1,9 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
   "class": "C1",
+  "closed": "2026-10-18T16:02:45Z",
   "commands": [],
   "created": "2026-10-18T15:40:06Z",
   "depends_on": [],
@@ -14,6 +16,12 @@
   "id": "gate-fix-5-one-trial-ledger",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "TRIAL_LEDGER +10 count-only rows; count --ledger 75 vs plain 57",
+      "ref": "bc3cef0e",
+      "utc": "2026-10-18T16:02:45Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,7 +41,7 @@
   "refs": [
     "MyTradingSys/research/fable_audit_2026-10-18/GATE_AUDIT.md"
   ],
-  "result": "",
+  "result": "TRIAL_LEDGER +10 count-only rows; count --ledger 75 vs plain 57",
   "scope_in": [
     "MyTradingSys/research/TRIAL_LEDGER.csv",
     "scripts/dev/verdicts.py",
@@ -49,12 +57,13 @@
   "sources": [
     "MyTradingSys/research/fable_audit_2026-10-18/GATE_AUDIT.md (Fable run 1, b63e8589)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write the named test first and watch it fail on current code",
     "implement the change inside scope_in only",
     "python scripts/dev/run_all_tests.py --quick, then sync.py ship with a Result line"
   ],
+  "taken": "2026-10-18T16:02:43Z",
   "tests": "Fixture: VERDICTS 3 DEV rows (s1 x2, s2 x1) + ledger (s1 x1, s3 x2, s4 other split): `count --split DEV --ledger` prints 5 (per-study max, no double count), plain prints 3. Real ledger gains 8 KQ-T01 + 2 pit rows. Fails on old code.",
   "title": "Trial ledger: count-only rows included (Kurisko KQ-T01 x8, pit); verdicts.py count --ledger unions TRIAL_LEDGER and VERDICTS",
   "weight": "IMPORTANT",

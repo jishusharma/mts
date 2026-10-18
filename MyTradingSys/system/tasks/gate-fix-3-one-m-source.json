@@ -1,7 +1,9 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
   "class": "C1",
+  "closed": "2026-10-18T16:02:36Z",
   "commands": [],
   "created": "2026-10-18T15:40:04Z",
   "depends_on": [],
@@ -14,6 +16,12 @@
   "id": "gate-fix-3-one-m-source",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "prereg_gate --m auto --new-cells N = DEV count + N",
+      "ref": "bc3cef0e",
+      "utc": "2026-10-18T16:02:36Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +48,7 @@
   "refs": [
     "MyTradingSys/research/fable_audit_2026-10-18/GATE_AUDIT.md"
   ],
-  "result": "",
+  "result": "prereg_gate --m auto --new-cells N = DEV count + N",
   "scope_in": [
     "scripts/dev/prereg_gate.py",
     "scripts/dev/test_prereg_gate.py",
@@ -56,12 +64,13 @@
   "sources": [
     "MyTradingSys/research/fable_audit_2026-10-18/GATE_AUDIT.md (Fable run 1, b63e8589)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write the named test first and watch it fail on current code",
     "implement the change inside scope_in only",
     "python scripts/dev/run_all_tests.py --quick, then sync.py ship with a Result line"
   ],
+  "taken": "2026-10-18T16:02:34Z",
   "tests": "Add --verdicts-csv <path> (default VERDICTS.csv). With a fixture CSV of 3 DEV rows (distinct study,arm), `--m auto --new-cells 2 --verdicts-csv fx` prints m 5 and uses it for z_holm; `--m auto` without --new-cells counts 0 new; explicit integer --m still works. Must fail on the pre-change code (today argparse error).",
   "title": "prereg_gate --m auto --new-cells N: Holm m = verdicts.py DEV count + new cells",
   "weight": "IMPORTANT",
