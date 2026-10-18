@@ -180,6 +180,28 @@ def tree(files):
     return d
 
 
+class FastGateRules(unittest.TestCase):
+    """GATE_SPEED.md X1-X6 review: the fast gate's own machinery must not ship as smoke (it could weaken itself)."""
+
+    def sel(self, *files):
+        return gs.explain(list(files), STEPS, mentioned=mentioned, named=lambda b, c: False)[:2]
+
+    def test_the_gate_machinery_is_full_gate(self):
+        for f in ("wiring_scan", "ci_watch", "config_check", "ci_deps_lint", "run_staged_tests", "gate_impact"):
+            self.assertEqual(self.sel(f"scripts/dev/{f}.py")[0], "full", f)
+        self.assertEqual(self.sel("scripts/dev/gate_quarantine.tsv")[0], "full")
+
+    def test_an_ordinary_dev_script_is_still_smoke(self):
+        self.assertEqual(self.sel("scripts/dev/example_tool.py")[0], "smoke")
+
+    def test_wiring_registry_edit_runs_the_wiring_steps_not_only_the_doc_steps(self):
+        mode, nums = self.sel("MyTradingSys/system/wiring_registry.json")
+        self.assertEqual(mode, "docs")
+        self.assertIn("3x", nums)
+        self.assertIn("3w", nums)
+        self.assertNotIn("3x", self.sel("MyTradingSys/system/critical_files.json")[1])
+
+
 class GateSpeedRules(unittest.TestCase):
     """GATE_SPEED.md D5/D6 (2026-10-18)."""
 

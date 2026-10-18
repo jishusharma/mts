@@ -27,11 +27,13 @@ DATA_SUFFIXES = (".json", ".csv", ".html", ".jsonl", ".tsv", ".gz", ".err", ".lo
 CONFIG_FILES = (".gitignore", ".aiexclude", ".claude/settings.json")
 DEV_DATA_SUFFIXES = (".tsv", ".json", ".csv", ".html")   # scripts/dev/<x>.tsv (lookahead allowlist), *.tpl.html: read by their tests
 JSON_STEP = "3js"
+WIRING_REGISTRY = "MyTradingSys/system/wiring_registry.json"
 
 # Live path (CLAUDE.md "Gates"): always the full quick gate.
 FULL_RE = re.compile(
     r"^(MyTradingSys/execution/|MyTradingSys/runtime/|scripts/sched/|src/|pom\.xml$|\.github/|"
-    r"scripts/dev/(sync|run_all_tests|gate_select|run_extra_tests|auto_deploy|live_mirror|cloud_setup)\.py$|"
+    r"scripts/dev/(sync|run_all_tests|gate_select|run_extra_tests|auto_deploy|live_mirror|cloud_setup|wiring_scan|ci_watch|config_check|"
+    r"ci_deps_lint|run_staged_tests|gate_impact)\.py$|scripts/dev/gate_quarantine\.tsv$|"
     r"MyTradingSys/backtest/layers/[^/]+/[^/]*(live|writer)[^/]*\.py$)")
 # Non-live code folders: smoke with name-matched steps + the pytest shards + extras
 CODE_DIRS = ("scripts/dev/", "scripts/worker/", "MyTradingSys/tests/", "MyTradingSys/backtest/", "MyTradingSys/research/",
@@ -217,7 +219,9 @@ def explain(files, steps, mentioned=mentions, named=names_file, step_files=None)
         if "5b" in all_nums and code and layer_subset(code, sf.get("5b", [])):
             subset_steps.add("5b")
     if not code:
-        nums = [n for n in all_nums if n in DOC_STEPS or n in subset_steps]
+        # GATE_SPEED review: the wiring registry is data under system/, but 3x/3w are its only readers (a bad entry would go red only in CI)
+        reg = {"3x", "3w"} if any(f == WIRING_REGISTRY for f in files) else set()
+        nums = [n for n in all_nums if n in DOC_STEPS or n in subset_steps or n in reg]
         return "docs", nums, f"docs: {len(files)} doc/data file(s) only; doc invariants {','.join(nums)}"
     picked = {n for n in ALWAYS if n in all_nums} | subset_steps
     always = [n for n in all_nums if n in ALWAYS]

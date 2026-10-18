@@ -2,6 +2,7 @@
 import io
 import json
 import os
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -152,6 +153,51 @@ class DevToolNoReader(unittest.TestCase):
             self.dev_root(tmp)
             built = ws.build(tmp)
             self.assertEqual(ws.dev_no_reader(tmp, built[0], built[1]), ['scripts/dev/dead_tool.py'])
+
+
+class ScanSpeed(unittest.TestCase):
+    """GATE_SPEED.md X4: the content-hash facts cache must never change what the scan finds."""
+
+    def git_root(self):
+        d = tempfile.mkdtemp()
+        self.addCleanup(__import__('shutil').rmtree, d, ignore_errors=True)
+        subprocess.run(['git', '-C', d, 'init', '-q'], check=True, capture_output=True)
+        write(d, 'MyTradingSys/runtime/live_mod.py', 'import os\n')
+        write(d, 'scripts/live/runner.py', 'import MyTradingSys.runtime.live_mod\nfrom MyTradingSys.runtime import live_mod\n')
+        write(d, 'scripts/dev/tool.py', 'import runner\nP = "scripts/dev/helper.py"\n')
+        write(d, 'scripts/dev/helper.py', 'X = 1\n')
+        subprocess.run(['git', '-C', d, 'add', '-A'], check=True, capture_output=True)
+        return d
+
+    def test_file_facts_reads_imports_script_names_and_module_names(self):
+        f = ws.file_facts('import os\nfrom a.b import c\nx = "scripts/dev/tool.py"\ny = "MyTradingSys.runtime.live_mod"\n', True, None)
+        self.assertIn(('I', 'os'), f['imp'])
+        self.assertIn(('F', 'a.b', 0, ['c']), f['imp'])
+        self.assertIn(['tool.py', 'scripts/dev/tool.py'], f['fr'])
+        self.assertIn('MyTradingSys.runtime.live_mod', f['mr'])
+        self.assertEqual(ws.file_facts('import os\n', False, None)['imp'], [])      # non-python files carry no imports
+
+    def test_cache_round_trip_and_a_corrupt_cache_recomputes(self):
+        d = self.git_root()
+        c = ws.ImportCache(d)
+        c.put('k1', {'imp': [['I', 'a']], 'fr': [], 'mr': []})
+        c.save()
+        self.assertEqual(ws.ImportCache(d).get('k1')['imp'], [['I', 'a']])
+        self.assertIsNone(ws.ImportCache(d).get('missing'))
+        Path(c.path).write_text('{ not json', encoding='utf-8')
+        self.assertIsNone(ws.ImportCache(d).get('k1'))            # corrupt: no exception, the scan just recomputes
+        self.assertEqual(ws.ImportCache(tempfile.gettempdir()).rows, {})   # a folder that is not a repo: no cache
+
+    def test_warm_corrupt_and_cold_scans_find_the_same_edges(self):
+        d = self.git_root()
+        cold_code, cold = ws.build(d)
+        warm_code, warm = ws.build(d)                              # reads the cache the first build wrote
+        Path(ws.ImportCache(d).path).write_text('[]', encoding='utf-8')
+        again_code, again = ws.build(d)                            # unusable cache file
+        self.assertEqual((cold_code, cold), (warm_code, warm))
+        self.assertEqual((cold_code, cold), (again_code, again))
+        self.assertIn('scripts/live/runner.py', {a for a, bs in cold.items() if 'MyTradingSys/runtime/live_mod.py' in bs})
+        self.assertIn('scripts/dev/helper.py', cold['scripts/dev/tool.py'])
 
 
 class GateRunsIt(unittest.TestCase):

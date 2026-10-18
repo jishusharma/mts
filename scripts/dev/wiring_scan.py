@@ -93,6 +93,96 @@ def collect(root):
     return out
 
 
+class ImportCache:
+    """GATE_SPEED X4: the python imports of a file are a pure function of its text, so they are cached by content hash in the git common
+    dir (shared by every worktree; 17 s of ast.parse, ast.walk and regex scans per run without it). A missing, unreadable or corrupt cache, or a root that is
+    not a git repo (the tests' temp repos), means every file is parsed: the result never depends on the cache."""
+    NAME = 'mts_wiring_facts_v2.json'
+    CAP = 6000
+
+    def __init__(self, root):
+        self.path, self.rows, self.dirty = None, {}, False
+        try:
+            r = subprocess.run(['git', 'rev-parse', '--git-common-dir'], capture_output=True, text=True, cwd=root, timeout=20)
+            if r.returncode == 0 and r.stdout.strip():
+                common = r.stdout.strip()
+                self.path = os.path.join(root, common) if not os.path.isabs(common) else common
+                self.path = os.path.join(self.path, self.NAME)
+                with open(self.path, encoding='utf-8') as fh:
+                    data = json.load(fh)
+                if isinstance(data, dict):
+                    self.rows = data
+        except (OSError, ValueError, subprocess.SubprocessError):
+            self.rows = {}
+        self.used = set()
+
+    def get(self, key):
+        row = self.rows.get(key)
+        if isinstance(row, dict) and all(k in row for k in ('imp', 'fr', 'mr')):
+            self.used.add(key)
+            return row
+        return None
+
+    def put(self, key, row):
+        self.rows[key] = row
+        self.used.add(key)
+        self.dirty = True
+
+    def save(self):
+        if not self.path or not self.dirty:
+            return
+        try:
+            rows = self.rows if len(self.rows) <= self.CAP else {k: self.rows[k] for k in self.used}
+            tmp = f'{self.path}.{os.getpid()}.tmp'
+            with open(tmp, 'w', encoding='utf-8', newline=chr(10)) as fh:
+                json.dump(rows, fh)
+            os.replace(tmp, self.path)
+        except OSError:
+            pass
+
+
+FILE_REF = re.compile(r'[\w\-./\\]*?([\w\-]+\.(?:py|ps1|vbs|cmd|bat))')
+MOD_REF = re.compile(r'\bMyTradingSys[.\\/][\w.\\/]+')
+
+
+def file_facts(text, is_py, cache=None):
+    """What one file says about others, a pure function of its text (so cacheable by content hash): 'imp' = [('I', dotted name) |
+    ('F', module, level, [names])] of every import statement (nested ones too, ast.walk order), 'fr' = [[basename, path fragment]] of every
+    script file name in it, 'mr' = [dotted MyTradingSys module names]. Only the resolution against the repo's files is left to build()."""
+    import hashlib
+    key = (hashlib.sha1(text.encode('utf-8', 'replace')).hexdigest() + ('p' if is_py else 'o')) if cache else None
+    if cache:
+        row = cache.get(key)
+        if row is not None:
+            return {'imp': [tuple(x) for x in row['imp']], 'fr': row['fr'], 'mr': row['mr']}
+    imps = []
+    if is_py:
+        try:
+            tree = ast.parse(text)
+        except (SyntaxError, ValueError):
+            tree = None
+        for n in (ast.walk(tree) if tree else ()):
+            if isinstance(n, ast.Import):
+                imps.extend(('I', a.name) for a in n.names)
+            elif isinstance(n, ast.ImportFrom):
+                imps.append(('F', n.module or '', n.level or 0, [a.name for a in n.names]))
+    fr = []
+    for m in FILE_REF.finditer(text):
+        item = [m.group(1), m.group(0).replace(BACKSLASH, '/').lstrip('./')]
+        if item not in fr:
+            fr.append(item)
+    mr = []
+    for m in MOD_REF.finditer(text):
+        d = re.sub(r'[\\/]', '.', m.group(0)).rstrip('.')
+        if d.endswith('.py'):
+            d = d[:-3]
+        if d not in mr:
+            mr.append(d)
+    if cache:
+        cache.put(key, {'imp': [list(x) for x in imps], 'fr': fr, 'mr': mr})
+    return {'imp': imps, 'fr': fr, 'mr': mr}
+
+
 def build(root):
     code = collect(root)
     text = {}
@@ -119,60 +209,63 @@ def build(root):
         if a != b:
             edges[a].add(b)
 
+    suffixes = defaultdict(list)   # GATE_SPEED X4: dotted suffix -> files, so resolve() is a lookup, not a scan of every module per name
+    for k, v in dotted.items():
+        parts = k.split('.')
+        for i in range(1, len(parts)):
+            suffixes['.'.join(parts[i:])].append(v)
+    memo = {}
+
     def resolve(name):
-        parts = name.split('.')
+        if name in memo:
+            return memo[name]
+        parts, found = name.split('.'), None
         while parts:
             d = '.'.join(parts)
             if d in dotted:
-                return dotted[d]
-            c = [v for k, v in dotted.items() if k.endswith('.' + d)]
+                found = dotted[d]
+                break
+            c = suffixes.get(d, ())
             if len(c) == 1:
-                return c[0]
+                found = c[0]
+                break
             parts.pop()
-        return None
+        memo[name] = found
+        return found
 
-    file_ref = re.compile(r'[\w\-./\\]*?([\w\-]+\.(?:py|ps1|vbs|cmd|bat))')
-    mod_ref = re.compile(r'\bMyTradingSys[.\\/][\w.\\/]+')
+    cache = ImportCache(root)
     for p in code:
         t = text[p]
-        if p.endswith('.py'):
-            try:
-                tree = ast.parse(t)
-            except (SyntaxError, ValueError):
-                tree = None
-            pkg = os.path.dirname(p).replace('/', '.')
-            for n in (ast.walk(tree) if tree else ()):
-                if isinstance(n, ast.Import):
-                    for a in n.names:
-                        r = resolve(a.name)
-                        if r:
-                            add(p, r)
-                elif isinstance(n, ast.ImportFrom):
-                    base = n.module or ''
-                    if n.level:
-                        up = pkg.split('.')
-                        up = up[:len(up) - (n.level - 1)]
-                        base = '.'.join(up + ([base] if base else []))
-                    r = resolve(base) if base else None
-                    if r:
-                        add(p, r)
-                    for a in n.names:
-                        r2 = resolve((base + '.' if base else '') + a.name)
-                        if r2:
-                            add(p, r2)
-        for m in file_ref.finditer(t):
-            c = by_base.get(m.group(1), [])
+        facts = file_facts(t, p.endswith('.py'), cache)
+        pkg = os.path.dirname(p).replace('/', '.')
+        for imp in facts['imp']:
+            if imp[0] == 'I':
+                r = resolve(imp[1])
+                if r:
+                    add(p, r)
+            else:
+                _, module, level, names = imp
+                base = module or ''
+                if level:
+                    up = pkg.split('.')
+                    up = up[:len(up) - (level - 1)]
+                    base = '.'.join(up + ([base] if base else []))
+                r = resolve(base) if base else None
+                if r:
+                    add(p, r)
+                for a in names:
+                    r2 = resolve((base + '.' if base else '') + a)
+                    if r2:
+                        add(p, r2)
+        for base, frag in facts['fr']:
+            c = by_base.get(base, [])
             if len(c) == 1:
                 add(p, c[0])
             elif len(c) > 1:
-                frag = m.group(0).replace(BACKSLASH, '/').lstrip('./')
                 for q in c:
                     if q.endswith(frag):
                         add(p, q)
-        for m in mod_ref.finditer(t):
-            d = re.sub(r'[\\/]', '.', m.group(0)).rstrip('.')
-            if d.endswith('.py'):
-                d = d[:-3]
+        for d in facts['mr']:
             r = resolve(d)
             if r:
                 add(p, r)
@@ -184,6 +277,7 @@ def build(root):
             main_java = 'src/main/java/datafeed/Main.java'
             if main_java in text:
                 add(p, main_java)
+    cache.save()
     return code, edges
 
 
