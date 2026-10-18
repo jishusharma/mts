@@ -75,3 +75,8 @@ Source: `live_mirror.py brief` + _mirror files, all `mirror@2026-10-17 07:11Z` (
 - Prior watch: low broken by 31.7 pts (80,955.9 at 15:40), not accepted; 81,500 not reclaimed. Day taker delta back to ~0 (+750).
 - Answer to "only one TF": 5m times a phase start, 15m shows whether it held; both rules go to card oi-pivot-reversal-probability-by-tf. MTS itself has no phase detector (quad = 1h snapshot, display only).
 - Watch next: shorts cover (OI down, price up) or acceptance under 80,955.9 toward weekly VAL 80,868. HALT unchanged.
+
+## 10-18 18:08Z operator's own 1W pitchfork chart (362293de1b70 + settings eea9183faa19)
+- Read: SET_362293de1b70_pitchfork.md (3 MATCH + 1 settings MATCH, 2 NOT_IN_DATA), tag NOTE. Last read id: 362293de1b70.
+- Binance spot 1W, linear axis, stacked Schiff pitchforks (red median, blue level 1 only), anchors on the 2017/2021/2022/2024/2025 swings. Price 81,208 at a blue line under the red median that capped the 87,395.67 Sep high (pixel read).
+- Layer: already claimed on trunk as gemini-pitchfork-study-layer (JIS-NUC, 20:14Z); no second card. The extract lists the causal-anchor, placebo and power rules for that build; signal sent to NUC.
