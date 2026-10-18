@@ -14,16 +14,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "live-market-1017: engine vs catalogue Tom setups",
-      "ref": "4573395b5dd2",
-      "utc": "2026-10-17T10:31:39Z"
+      "line": "live-market 10-18: 6h read + multi-TF bias table, bias-stack card",
+      "ref": "cd0ec7c6cdde",
+      "utc": "2026-10-18T14:59:42Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "4573395b5dd2 live-market-1017: engine vs catalogue Tom setups",
+      "line": "cd0ec7c6cdde live-market 10-18: 6h read + multi-TF bias table, bias-stack card",
       "ref": "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/READ.md",
-      "utc": "2026-10-17T10:31:39Z"
+      "utc": "2026-10-18T14:59:42Z"
     }
   ],
   "layers": [
@@ -34,7 +34,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-18T14:58:52Z",
+  "refreshed": "2026-10-18T14:59:53Z",
   "refs": [
     "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/SHOT_2da0ed270ed8.md"
   ],
@@ -49,7 +49,7 @@
     "VALIDATION/HOLDOUT reads",
     "trade advice"
   ],
-  "scope_sha": "4573395b5dd2",
+  "scope_sha": "cd0ec7c6cdde",
   "size": "",
   "sources": [],
   "state": "raw",
