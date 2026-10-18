@@ -11,10 +11,12 @@ import argparse, datetime as dt, json, math, pathlib, sys, urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "MyTradingSys" / "backtest" / "layers" / "rsi"))
+sys.path.insert(0, str(ROOT / "MyTradingSys" / "observation"))
 from rsi_core import rsi_core  # noqa: E402
+import capture  # noqa: E402
 
 FAPI = "https://fapi.binance.com/fapi/v1/klines"
-TFS = {"1m", "3m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "8h", "12h", "1d"}
+TFS = set(capture.TF_MINUTES)
 
 
 def rsi(closes, period=14):
