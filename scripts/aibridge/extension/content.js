@@ -13,6 +13,8 @@
     aibridge_max_blocks: 6      // blocks run, in order, from ONE reply (the rest get an explicit NOT RUN receipt)
   };
   var autoRun = false;
+  var stopHold = false;          // a stop reason stays on the status line until the operator re-arms (watchdog must not overwrite it)
+  var lastPostErr = '';          // why the last post failed, for the stop reason
   var runs = 0;
   var resultN = 0;
   var token = 0;                 // bumped by Stop to abort in-flight work
@@ -235,7 +237,7 @@
         // let DSA answer the "more parts follow" part, then ignore anything it wrote
         var t0 = lastMut;
         for (var w = 0; w < 100 && lastMut === t0; w++) await sleep(300);
-        if (!(await waitQuiet(myToken, CFG.aibridge_wait_ms))) return false;
+        if (!(await waitQuiet(myToken, CFG.aibridge_wait_ms))) { lastPostErr = 'the chat stayed busy after part ' + (i + 1); return false; }
         allBlocks().forEach(function (b) { ranKeys[blockKey(b)] = true; });
       }
     }
@@ -321,6 +323,8 @@
     return best;
   }
   function inputText(el) { return ((el.value !== undefined ? el.value : el.textContent) || '').trim(); }
+  function liveInput(el) { return el ? { node: el, attached: el.isConnected, text: inputText(el) } : null; }
+  function nowInput() { var e = findInput(); return e ? { node: e, text: inputText(e) } : null; }
   function setInput(el, text) {
     el.focus();
     if (el.tagName === 'TEXTAREA') {
@@ -364,7 +368,7 @@
     var t0 = Date.now();
     while (true) {
       if (myToken !== token) return false;
-      if (Date.now() - t0 > CFG.aibridge_wait_ms) { setStatus('chat never became idle; auto stopped'); return false; }
+      if (Date.now() - t0 > CFG.aibridge_wait_ms) { lastPostErr = 'the chat never became idle (or an operator draft sits in the input)'; return false; }
       var el = findInput();
       var idle = textQuiet() >= CFG.aibridge_quiet_ms;
       if (el && idle && inputText(el) === '') break;   // never overwrite an operator draft
@@ -375,10 +379,11 @@
     await sleep(400);
     lastSend = Date.now();
     pressEnter(el2);
-    for (var i = 0; i < 8; i++) { await sleep(250); if (inputText(el2) === '') return true; }
+    // DeepSeek can replace the input node after a send: judge by the chat's current input, not only the node we typed into
+    for (var i = 0; i < 8; i++) { await sleep(250); if (L.postLanded(liveInput(el2), nowInput())) return true; }
     clickSend(el2);
-    for (var j = 0; j < 12; j++) { await sleep(250); if (inputText(el2) === '') return true; }
-    setStatus('could not send into the chat input; auto stopped');
+    for (var j = 0; j < 12; j++) { await sleep(250); if (L.postLanded(liveInput(el2), nowInput())) return true; }
+    lastPostErr = 'the chat input did not clear after sending';
     return false;
   }
 
@@ -391,7 +396,7 @@
     ui.box.className = 'aibridge-ctl' + (autoRun ? ' on' : '');
   }
   function stopAuto(why) {
-    autoRun = false; token++; pending = [];
+    autoRun = false; stopHold = true; token++; pending = [];
     setStatus(why || 'stopped');
     refreshUi();
   }
@@ -414,7 +419,7 @@
     var blocks = allBlocks().filter(function (b) { return !ranKeys[blockKey(b)]; });
     if (!blocks.length && trigger && !ranKeys[blockKey(trigger)]) blocks = [trigger];
     if (!blocks.length) return;
-    if (runs >= CFG.aibridge_cap) { stopAuto('cap of ' + CFG.aibridge_cap + ' consecutive auto-runs reached; press Reset then re-enable'); return; }
+    if (runs >= CFG.aibridge_cap) { stopAuto('auto OFF at the cap: ' + CFG.aibridge_cap + ' blocks ran in this chain. Tick the box again to continue (the counter restarts).'); return; }
     // mark first: a block is never run twice, and anything that appears while we run belongs to the next reply
     var items = blocks.map(function (b) { var o = L.parseMarker(btext(b)); return { block: b, cmd: blockCmd(b), opts: o, shown: o.task ? 'TASK ' + o.task + ' ' + JSON.stringify(o.params || {}) + (o.task === 'inline' ? ' plan=' + L.cmdPreview(blockCmd(b), 300) : '') : null }; });
     items.forEach(function (it) { ranKeys[blockKey(it.block)] = true; });
@@ -441,7 +446,7 @@
     var text = (seenN > 1 ? '[AIRUN BATCH] blocks_seen=' + seenN + ' blocks_run=' + ran + ' not_run=' + (seenN - ran) + '\n' : '') + texts.join('\n\n');
     var lastN = items[items.length - 1].n;
     var ok = await postParts(text, lastN, myToken, '#' + lastN);
-    if (!ok) { if (myToken === token) stopAuto('post failed'); return; }
+    if (!ok) { if (myToken === token) stopAuto('auto OFF: the result was not posted (' + lastPostErr + '). Tick the box again to re-arm.'); return; }
     setStatus('waiting for DSA after #' + lastN);
     // DSA's reply to our result: if it contains no new block it has finished, so hand control back
     var t1 = lastMut;
@@ -485,7 +490,7 @@
       var u = unrun[unrun.length - 1];
       pending.push({ block: u, since: Date.now(), len: (u.textContent || '').length, grew: true });
       setStatus('watchdog: queued an unrun block from the finished reply');
-    } else if (!autoRun) {
+    } else if (!autoRun && !stopHold) {
       setStatus('reply complete, ' + unrun.length + ' block(s) waiting: click Run');
     }
   }
@@ -549,7 +554,7 @@
     ui = { box: box, cb: cb, count: count, status: status, info: info, link: link };
     cb.addEventListener('change', function () {
       autoRun = cb.checked;
-      if (autoRun) { runs = 0; preflight('on:'); } else stopAuto('off: click Run on each block');
+      if (autoRun) { runs = 0; stopHold = false; preflight('on:'); } else stopAuto('off: click Run on each block');
       refreshUi();
     });
     refreshUi();
