@@ -6,6 +6,10 @@ Operator words: "Now my own charts. I use pitch forks. Let us also add that pitc
 Clocks: TradingView clock 18:08:53 UTC; weekly countdown 05:51:07 -> weekly close 10-19 00:00Z, so captured 10-18 18:08:53Z. Chart is Binance SPOT BTCUSDT (not the fapi perp of the other reads), linear price axis (0 and -5,000 ticks are evenly spaced), 2017-08 -> 2027-10.
 Data: Binance spot /api/v3/klines 1w (479 bars, 2017-08-14 -> 2026-10-12), fetched 10-19.
 
+## Carried context
+Prior: MyTradingSys/research/live_reads/2026-10-17_live_market_1017/SHOT_0061b6c6c2bc.md
+Different instrument view (spot 1W vs perp 5m); its watch line (cover vs acceptance under 80,955.9) is not scored by a weekly chart: UNTESTED here.
+
 ## Claims
 | id | class | claim | evidence |
 |---|---|---|---|
