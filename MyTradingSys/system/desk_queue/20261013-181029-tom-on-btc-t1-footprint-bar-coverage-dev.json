@@ -4,7 +4,9 @@
   "id": "20261013-181029-tom-on-btc-t1-footprint-bar-coverage-dev",
   "need": "On JIS-NUC in a work tree: python scripts/dev/tasks.py brief tom-btc-data-check ; run the one command it lists (counts days 2024-12-01..2025-06-30 in F:\\MTS\\data\\orderflow_1m) ; then python scripts/dev/tasks.py done tom-btc-data-check --result \"<printed line>\" ; sync.py ship",
   "posted": "2026-10-13T18:10:29Z",
-  "status": "pending",
+  "status": "taken",
+  "taken": "2026-10-18T16:16:33Z",
+  "taken_by": "JIS-NUC",
   "target": "DSA-NUC",
   "title": "Tom on BTC T1: footprint bar coverage DEV+VALIDATION (card tom-btc-data-check, host=JIS-NUC)"
 }
