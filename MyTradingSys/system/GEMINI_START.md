@@ -32,6 +32,7 @@ The tool actually installed on the NUC (2026-10-17) is the **Google Antigravity 
 6. Cards that need `OPUS` stay with Claude. CI gates Gemini code exactly like Claude code; Claude spot-checks one claim per Gemini report.
 7. Data-bound cards (1m klines, DAX archive, videos live on JIS-NB disks): post a desk task (`desk.py post ... --target JIS-NB`) instead of guessing.
 8. **NO ASSUMPTIONS, NO FABRICATIONS (strict `Producer != Reviewer`)**: Never self-stamp `ACCEPT` on a `C1+` / `IMPORTANT+` card that Gemini refined or built (`refined_by: gemini-*` gets `REVIEWED:<YYYY-MM-DD> T0-ONLY` only, leaving `C1+`/`IMPORTANT+` cards in `refined` for a non-Gemini reviewer). Never bulk-replace `T0-ONLY` with `ACCEPT` or bulk-append `HOLD-CLEARED` via script. Only stamp `REVIEWED: <gemini-model-id> <YYYY-MM-DD>` (`ACCEPT`/`FIX`/`REWORK`) when acting as an independent cross-vendor reviewer on a Claude/Codex card after verifying every `file:line` and `E1`–`E7` check one card at a time.
+9. **ALWAYS COMMIT AND SHIP FINAL DELIVERY (Stop Guard enforced)**: Every Gemini session must write deliverables early, commit incrementally (`Result: ...` + `MTS-Session:` trailer), and run `python scripts/dev/sync.py ship --release <slug>` + verify `sync.py where` is clean before stopping. `.agents/hooks.json` wires `scripts/dev/stop_guard.py` into the Antigravity `Stop` lifecycle hook so a session cannot end with uncommitted or unshipped work in its worktree.
 
 ## How Google AI Pro works (checked 2026-10-17; there is no "project" object, unlike the Codex app)
 - It is an IDE (Antigravity) plus a terminal tool (Antigravity CLI), not a project-based app like Codex. Old route (Code Assist extension in VS Code, Gemini CLI login) is dead for AI Pro. Quota for the AI Pro login: see Google's Antigravity pricing page (UNVERIFIED here).
@@ -42,7 +43,7 @@ The tool actually installed on the NUC (2026-10-17) is the **Google Antigravity 
 - Approval: ask before every file write and every terminal command. Turn off any auto-apply, auto-run or "YOLO" mode.
 - Excludes: `.geminiignore` and `.aiexclude` are committed at the repo root (secret and runtime patterns); whether Antigravity honours either is UNVERIFIED, so on first use set its own ignore/deny list to the same patterns (`.secrets/`, `.env*`, `*.pem`, `*.key`, `runtime_data/`, `.mts_live`) and keep the agent in ask-before-act mode. Keep these files; add to them, never remove.
 - Storage: keep the tool's data folder on F: so C: stays clean (CLI: `GEMINI_CLI_HOME`; extensions: check the settings page).
-- Tool-local folders (`.gemini/`, `.idx/`, `.vscode/`, `.antigravity/`, `.agent/`) are not committed; if one shows up as an untracked file, add it to `.gitignore` (the one place ignores go, CLAUDE.md Hard rules).
+- Tool-local folders (`.gemini/`, `.idx/`, `.vscode/`, `.antigravity/`, `.agent/`) are not committed (`.agents/hooks.json` IS tracked for the Antigravity Stop hook); if one shows up as an untracked file, add it to `.gitignore` (the one place ignores go, CLAUDE.md Hard rules).
 - Context file: Gemini reads `GEMINI.md` at the repo root (a one-line pointer to AGENTS.md -> CLAUDE.md). Do not copy rules into it.
 
 ## Setup (NUC, done 2026-10-17)
@@ -55,8 +56,7 @@ You are an MTS builder session (surface GEM, Gemini). Work only in this folder. 
    Then read GEMINI.md (-> AGENTS.md -> CLAUDE.md), MyTradingSys/research/STATUS.md, MyTradingSys/system/PARALLEL.md, MyTradingSys/system/GEMINI_START.md.
 1. `python scripts/dev/tasks.py next --lane CODEX`: take the first ready card nobody has claimed.
    `tasks.py brief <card>` is the whole task. `sync.py claim "<card>"`, work, tests (new test red before the fix), `tasks.py done <card> --result "<number/file>"`.
-2. `sync.py ship --release <slug>`, `sync.py where` clean.
-Commit trailer `MTS-Session: MTS-<UTC date>-<HHMMZ>-GEM-BLD-<slug>`, body line `Result: <what works now / the number>`.
+2. ALWAYS COMMIT AND SHIP BEFORE STOPPING: write and commit deliverables early (`Result: ...` + `MTS-Session: MTS-<UTC date>-<HHMMZ>-GEM-BLD-<slug>`), run `python scripts/dev/sync.py ship --release <slug>`, and verify `sync.py where` shows `unshipped-commits=0 modified=0 untracked=0` before ending your turn.
 Provenance rule applies: label every parameter SOURCED (trader's quote + file:line) or OURS (CLAUDE.md Hard rules).
 NO ASSUMPTIONS, NO FABRICATIONS: never self-stamp ACCEPT on cards Gemini refined/built (use T0-ONLY); never bulk-stamp ACCEPT or HOLD-CLEARED.
 Skip OPUS cards; do not touch NEXT_SESSION.md or the relay. One card per session, then stop with a one-line summary.
