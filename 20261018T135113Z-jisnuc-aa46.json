@@ -1,0 +1,1 @@
+{"t": "20261018T135113Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "start model-cli-bridge 2>&1 | tail -4; ls scripts/dev | grep -i -E \"gemini|ask_\"; sed -n 1,40p scripts/dev/codex_run.py; grep -n -A25 '\"permissions\"' .claude/settings.json | head -50; where codex agy "}
