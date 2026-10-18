@@ -31,7 +31,7 @@
     "live_engine"
   ],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Descriptive identification, no strategy claim. Candidate set and thresholds (80 percent, 0.8-1.25) are OURS. The 8h 4.181K, 30m -8.366K, 15m -2.257K reads are the motivating NOT_IN_DATA rows; if panel levels are chart-anchored only steps are fitted.",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Descriptive identification, no strategy claim. Candidate set and thresholds (80 percent, 0.8-1.25) are OURS. The 8h 4.181K, 30m -8.366K, 15m -2.257K reads are the motivating NOT_IN_DATA rows; if panel levels are chart-anchored only steps are fitted.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -66,5 +66,6 @@
   "tests": "MyTradingSys/research/netdelta_panel_2026-10-18/test_netdelta_fit.py::test_step_formula: fixture bar close<open with OI up gives a negative step, close>open with OI down gives a negative step, flat bar gives 0; fails before netdelta_fit.py exists",
   "title": "Identify the CoinGlass Net Delta panel unit and scope: 4 reads in a row NOT_IN_DATA (8h 4.181K, 30m -8.366K, 15m -2.257K vs perp delta); regress panel steps vs Binance perp/spot/aggregate delta",
   "weight": "ROUTINE",
-  "worker": "session"
+  "worker": "session",
+  "updated": "2026-10-18T05:30:00Z"
 }

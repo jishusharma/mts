@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C2",
   "closed": "2026-10-17T22:39:19Z",
   "commands": [],
   "created": "2026-10-17T20:32:10Z",
@@ -16,26 +17,33 @@
   "lane": "CODEX",
   "latest": [
     {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab lab-vendor-gate-harden: DONE (build)",
+      "ref": "f72d05a3a951",
+      "utc": "2026-10-17T22:55:09Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "3bc336e6946d lab lab-crossvendor-same-vendor-gate: DONE (build)",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-17_lab-crossvendor-same-vendor-gate.md",
+      "utc": "2026-10-17T22:39:34Z"
+    },
+    {
       "kind": "ship",
       "line": "PASS; 28 tests; MyTradingSys/research/layer_lab/reports/2026-10-17_lab-crossvendor-same-ve",
       "ref": "bc1dbe2b",
       "utc": "2026-10-17T22:39:19Z"
-    },
-    {
-      "auto": true,
-      "kind": "ship",
-      "line": "lab lab-crossvendor-stage: DONE (build)",
-      "ref": "0c06863594a9",
-      "utc": "2026-10-17T20:29:44Z"
     }
   ],
   "layers": [],
   "live_path": false,
-  "note": "lab-touch=yes class=C1 reviewer=Gemini Flash high",
+  "note": "REVIEWED-RETRO:2026-10-18 T0-ONLY LAB:definitions CLASS:C2 REVIEWER:none-recorded (C2 re-review pending, Lab_Guy; see findings/2026-10-18_review_same_vendor_gate.md, follow-up lab-vendor-gate-harden DONE) TRUST:UNCHECKED | lab-touch=yes class=C1 reviewer=Gemini Flash high",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-17T20:32:35Z",
+  "refreshed": "2026-10-18T05:13:05Z",
   "refs": [
     "scripts/dev/lab_flow.py:118",
     "MyTradingSys/system/roles/lab_guy.md"
@@ -50,7 +58,7 @@
     "HALT files",
     "deploys"
   ],
-  "scope_sha": "0c06863594a9",
+  "scope_sha": "f72d05a3a951",
   "size": "S",
   "sources": [],
   "state": "done",

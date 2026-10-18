@@ -15,26 +15,26 @@
   "latest": [
     {
       "auto": true,
+      "kind": "report",
+      "line": "dfb243d4cc83 labguy-pass-b: Lab_Guy ACCEPT stamps for 5 cards (b187 done, audit/rv05-h2/h3",
+      "ref": "MyTradingSys/research/lab_guy/specs/gap-g7-stop-slippage.md",
+      "utc": "2026-10-18T04:13:20Z"
+    },
+    {
+      "auto": true,
       "kind": "ship",
       "line": "lab gap-g4-through-ticks-flag: DONE (build)",
       "ref": "52530e64c23f",
       "utc": "2026-10-15T14:32:14Z"
-    },
-    {
-      "auto": true,
-      "kind": "report",
-      "line": "5a839bfb4430 gap review follow-up: sources checked, G2 spread measured, cards G1-G8 filed",
-      "ref": "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md",
-      "utc": "2026-10-14T11:26:35Z"
     }
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT LAB:results CLASS:C2 REVIEWER:non-Claude spec review (NUC desk row, GPT) + Haiku re-derive of 3 numbers + Lab_Guy Sonnet 5.5 (labguy-pass-b) WEIGHT:IMPORTANT. DECISION (OURS): window moved from 2024-12-01..2025-03-31 (after the repo DEV cut 2024-07-01, i.e. VALIDATION) to DEV 2022-01-01..2024-06-30; inputs are raw public klines/aggTrades, not a derived lab base, so no HOLD. LANE moved CODEX->SONNET 2026-10-18: needs network (aggTrades fetch); the GPT lab sandbox blocks sockets (WinError 10013); aggTrades are NOT on the NUC (only tom_raw klines + orderflow_1m bars), data.binance.vision is public; if the fetch fails twice, reroute to DSA-NB (JIS-NB), do not force. LAB_GUY 2026-10-18: raised C1->C2 because the proposed number replaces slip=0.0 in every Tom backtest (a fill-model entry everything would stand on, E6); the card only proposes, adoption is a separate C2 card. Fixes: (1) the first-trade-beyond proxy is bounded by the 0.1 USD tick (about 0.0008 R at a 0.40 % stop near 30,000 USD) so its median is about 0 by construction and cannot test 'replace slip=0.0' (E4/E6): latency legs 250/1000 ms added (OURS); (2) 12 days x ~10-60 round-100 crossings cannot reach n>=500 per bucket and events cluster by day: extension rule, day-bootstrap range and THIN rule added; (3) no data pin after deleting the raw (E1): zip sha256 in days.csv; (4) stale duplicate stamp and a contradicting 'DISPATCH lane CODEX' sentence removed; (5) venue caveat (Binance, not Deribit) added. Holdout/VALIDATION untouched: assertion in code. Power/fee floor: n and THIN stated; no fee in a slippage measurement.",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:results CLASS:C2 REVIEWER:non-Claude spec review (NUC desk row, GPT) + Haiku re-derive of 3 numbers + Lab_Guy Sonnet 5.5 (labguy-pass-b) WEIGHT:IMPORTANT. DECISION (OURS): window moved from 2024-12-01..2025-03-31 (after the repo DEV cut 2024-07-01, i.e. VALIDATION) to DEV 2022-01-01..2024-06-30; inputs are raw public klines/aggTrades, not a derived lab base, so no HOLD. LANE moved CODEX->SONNET 2026-10-18: needs network (aggTrades fetch); the GPT lab sandbox blocks sockets (WinError 10013); aggTrades are NOT on the NUC (only tom_raw klines + orderflow_1m bars), data.binance.vision is public; if the fetch fails twice, reroute to DSA-NB (JIS-NB), do not force. LAB_GUY 2026-10-18: raised C1->C2 because the proposed number replaces slip=0.0 in every Tom backtest (a fill-model entry everything would stand on, E6); the card only proposes, adoption is a separate C2 card. Fixes: (1) the first-trade-beyond proxy is bounded by the 0.1 USD tick (about 0.0008 R at a 0.40 % stop near 30,000 USD) so its median is about 0 by construction and cannot test 'replace slip=0.0' (E4/E6): latency legs 250/1000 ms added (OURS); (2) 12 days x ~10-60 round-100 crossings cannot reach n>=500 per bucket and events cluster by day: extension rule, day-bootstrap range and THIN rule added; (3) no data pin after deleting the raw (E1): zip sha256 in days.csv; (4) stale duplicate stamp and a contradicting 'DISPATCH lane CODEX' sentence removed; (5) venue caveat (Binance, not Deribit) added. Holdout/VALIDATION untouched: assertion in code. Power/fee floor: n and THIN stated; no fee in a slippage measurement. | REVIEW-SPEC: ACCEPT (Gemini 4 Argon low 2026-10-18: delta 0 ms is tick-bounded optimistic bound; delta 250/1000 ms adverse price_after(t_cross+delta) measures latency slippage; 12-24 DEV days x round-100 USD levels with count-only extension and THIN rule + zip sha256 pin satisfy E1-E7).",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-17T20:21:58Z",
+  "refreshed": "2026-10-18T05:12:41Z",
   "refs": [
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md",
     "MyTradingSys/research/lab_guy/specs/gap-g7-stop-slippage.md"

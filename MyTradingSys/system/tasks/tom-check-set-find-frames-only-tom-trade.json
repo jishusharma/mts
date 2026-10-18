@@ -30,7 +30,7 @@
     "tom"
   ],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C0 REVIEWER:machine checks + Flash low pass WEIGHT:ROUTINE. UNBLOCKED 2026-10-18 (A-20261018-5 lifted; no-FDAX-purchase rule stays; free YouTube pre-approved). DECISION OURS: zero new candidates is a valid result.",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:data CLASS:C0 REVIEWER:machine checks + Flash low pass WEIGHT:ROUTINE. UNBLOCKED 2026-10-18 (A-20261018-5 lifted; no-FDAX-purchase rule stays; free YouTube pre-approved). DECISION OURS: zero new candidates is a valid result.",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
@@ -64,5 +64,6 @@
   "tests": "check_set_frames.py: every new row has an existing frame path, no caption file path in its sources, unreadable fields are NOT_IN_DATA; fails before the rows exist",
   "title": "Tom check set: find frames-only Tom trade recaps and log entry/stop/target without reading captions (check set is 2 trades)",
   "weight": "ROUTINE",
-  "worker": "session"
+  "worker": "session",
+  "updated": "2026-10-18T05:30:00Z"
 }
