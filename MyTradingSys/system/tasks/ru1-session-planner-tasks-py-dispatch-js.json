@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-18T18:29:53Z",
   "commands": [],
   "created": "2026-10-18T17:22:43Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "ru1-session-planner-tasks-py-dispatch-js",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "93560b51",
+      "ref": "2d3312c7",
+      "utc": "2026-10-18T18:29:53Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,7 @@
   "refs": [
     "MyTradingSys/research/roles/ROLE_UPGRADES_2026-10-18.md"
   ],
-  "result": "",
+  "result": "93560b51",
   "scope_in": [
     "scripts/dev/tasks.py",
     "MyTradingSys/tests/test_tasks_dispatch.py",
@@ -51,13 +58,14 @@
   "scope_sha": "1f3af1f4ebe3",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add dispatch() (pure) + cmd_dispatch to tasks.py reusing rank, problems, active_holds, open_claims, lane_health.",
     "Table <=15 lines per session_planner.md Duty 2; --json carries included and excluded with reasons.",
     "Fixture tests: held, claimed, dependency-blocked excluded; hand-ranked order; byte-identical reruns.",
     "Point session_planner.md boot at `tasks.py dispatch`, bump version, role_loader retoken + check."
   ],
+  "taken": "2026-10-18T18:29:53Z",
   "tests": "MyTradingSys/tests/test_tasks_dispatch.py: held/claimed/dependency excluded with reason, ranking equals hand-ranked fixture, two runs identical; each fails before the change.",
   "title": "RU1 Session_Planner: tasks.py dispatch --json ranked snapshot",
   "weight": "ROUTINE",
