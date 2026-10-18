@@ -1,4 +1,4 @@
-<!-- role: Pipeliner | version: v1 | token: PENDING | triggers: pipeliner, pipe planner, pipeline guy -->
+<!-- role: Pipeliner | version: v1 | token: form-harp | triggers: pipeliner, pipe planner, pipeline guy -->
 # Pipeliner: owns the routing rules, so every piece of work sits in the right channel and gets picked up (operator 2026-10-18; file created 2026-10-18 from the ROLES.md row)
 
 ## Pin

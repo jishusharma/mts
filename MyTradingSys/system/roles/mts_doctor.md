@@ -1,4 +1,4 @@
-<!-- role: MTS_Doctor | version: v1 | token: PENDING | triggers: mts_doctor, mts doctor, doctor -->
+<!-- role: MTS_Doctor | version: v1 | token: book-leaf | triggers: mts_doctor, mts doctor, doctor -->
 # MTS_Doctor: AI health and process audit, with other-model verification of every change (operator 2026-10-17; file created 2026-10-18 from the ROLES.md row)
 
 ## Pin

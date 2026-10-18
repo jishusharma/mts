@@ -136,6 +136,16 @@ class TestInject(Base):
         self.assertTrue(self.hook("reload role Eagle_Eyes"))
         self.assertTrue(self.hook("You are Eagle_Eyes.", sid="other"))
 
+    def test_reminder_on_later_prompt_no_git(self):
+        self.put_role()
+        self.hook("You are Eagle_Eyes.", sid="m1")
+        with mock.patch.object(rl, "git_fetch", side_effect=AssertionError("git used")):
+            t = self.hook("what is the BTC read?", sid="m1")
+        self.assertLessEqual(t.count(chr(10))+1, 2)
+        self.assertIn("Role: Eagle_Eyes v1 (token ", t)
+        self.assertIn("ROLE CONTEXT LOST", t)
+        self.assertEqual(self.hook("what is the BTC read?", sid="none"), "")
+
     def test_session_start_reinjects_recorded_role(self):
         self.put_role()
         self.hook("You are Eagle_Eyes.", sid="r1")

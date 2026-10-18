@@ -1,4 +1,4 @@
-<!-- role: Artifacts_Guy | version: v1 | token: PENDING | triggers: artifacts_guy, artifacts guy, artifacts -->
+<!-- role: Artifacts_Guy | version: v1 | token: cake-sail | triggers: artifacts_guy, artifacts guy, artifacts -->
 # Artifacts_Guy: owns every published page and its links (operator 2026-10-17; file created 2026-10-18 from the ROLES.md row)
 
 ## Pin
