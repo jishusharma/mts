@@ -1,0 +1,59 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T02/f1_rows.py c2 --count",
+    "python MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T02/f1_rows.py c2 --show 0 6",
+    "python scripts/dev/lookahead_lint.py --new"
+  ],
+  "created": "2026-10-18T21:07:29Z",
+  "depends_on": [
+    "t02-f1-review-the-132-unreviewed-look-ah"
+  ],
+  "done_when": "0 rows reading 'pre-existing, unreviewed' (fwd-index, pivot-right-neighbour) remain for the chunk 2 files in lookahead_allowlist.tsv (was 32); lookahead_lint.py exit 0; every UNSAFE row has a line in T02_F1_unsafe.md.",
+  "est_turns": 24,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "T02-F1: the CI look-ahead gate gives no assurance on rows still reading 'pre-existing, unreviewed'. Review the 32 fwd-index / pivot-right-neighbour rows of chunk 2 (layer code: fabio v3, volume_fvg, cc_setups, rsi, tick, live_runner_core, bt_stats): decide SAFE or UNSAFE per hit and write the reason into the allowlist row.",
+  "id": "t02-f1-review-allowlist-chunk-2",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-19 T0-ONLY (planner-20261019, ROUTINE, check clean). Chunk 2 of 4, map in T02_F1_chunks.tsv. All chunks edit the one TSV, so they run in order (depends_on chain); edit only your own rows and merge origin/fast-track before ship.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/lookahead_allowlist.tsv",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T02/f1_rows.py",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T02_F1_chunks.tsv",
+    "scripts/dev/lookahead_lint.py"
+  ],
+  "scope_out": [
+    "editing any scanned source file",
+    "fullsample-quantile rows (WARN)",
+    "rows of other chunks",
+    "DEV reruns on a data machine"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T02_lookahead_time.md (T02-F1: 132 rows)",
+    "scripts/dev/lookahead_lint.py docstring (pattern definitions)"
+  ],
+  "state": "refined",
+  "steps": [
+    "Baseline: run f1_rows.py c2 --count (fail-first number); read rows 6 at a time with --show START 6 (about 5-6 calls)",
+    "Per row classify SAFE (index reads past data only, confirmed lag, window end) or UNSAFE (decision bar reads a later bar); keep a python list of (row, verdict, reason) as you go",
+    "Rewrite the 4th column in ONE python script run at the end: 'SAFE: <why, <= 120 chars>' or 'UNSAFE: <what is read>'; columns 1-3 byte-identical, no tabs, newline='\\n'",
+    "UNSAFE rows: do not fix code; append file:line and the verdict study to MyTradingSys/research/dsa_backtest_audit_2026-10-16/T02_F1_unsafe.md (one line each)",
+    "Run the lint and the lint tests; ship"
+  ],
+  "tests": "Fail-first count: f1_rows.py c2 --count prints 32 before and 0 after; lookahead_lint.py --new reports 0 new hits, exit 0.",
+  "title": "T02-F1 chunk 2: review 32 unreviewed look-ahead allowlist rows in layers and bt code",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

@@ -1,36 +1,70 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T02/f1_rows.py c1 --count",
+    "python MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T02/f1_rows.py c1 --show 0 6",
+    "python scripts/dev/lookahead_lint.py --new"
+  ],
   "created": "2026-10-18T19:27:02Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "0 rows reading 'pre-existing, unreviewed' (fwd-index, pivot-right-neighbour) remain for the chunk 1 files in lookahead_allowlist.tsv (was 35); lookahead_lint.py exit 0; every UNSAFE row has a line in T02_F1_unsafe.md.",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "T02-F1: the CI look-ahead gate gives no assurance on rows still reading 'pre-existing, unreviewed'. Review the 35 fwd-index / pivot-right-neighbour rows of chunk 1 (studies behind 1b verdicts: eur_low, mfe_exit, opr_*, orderflow_views, published_strats, matrix_q33, mal_bb, wlow, levels*): decide SAFE or UNSAFE per hit and write the reason into the allowlist row.",
   "id": "t02-f1-review-the-132-unreviewed-look-ah",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "merge origin/fast-track (keep both allowlist additions)",
+      "ref": "c9d37f292717",
+      "utc": "2026-10-18T19:28:11Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-19 ACCEPT (reviewer FIX applied: baseline command and row batching added; est_turns 25). Chunk 1 of 4, map in T02_F1_chunks.tsv. Chunks run in order (shared TSV; depends_on chain); edit only your rows and merge origin/fast-track before ship. Verify: report content sha, `git cherry origin/fast-track <sha>` empty AND `git ls-tree -r origin/fast-track --name-only` lists the delivered files.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-18T21:13:06Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T02_lookahead_time.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "T02-F1: review the 132 unreviewed look-ahead allowlist rows in verdict studies",
-  "weight": "",
-  "worker": ""
+  "scope_in": [
+    "scripts/dev/lookahead_allowlist.tsv",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T02/f1_rows.py",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T02_F1_chunks.tsv",
+    "scripts/dev/lookahead_lint.py"
+  ],
+  "scope_out": [
+    "editing any scanned source file",
+    "fullsample-quantile rows (WARN)",
+    "rows of other chunks",
+    "DEV reruns on a data machine"
+  ],
+  "scope_sha": "c9d37f292717",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T02_lookahead_time.md (T02-F1: 132 rows)",
+    "scripts/dev/lookahead_lint.py docstring (pattern definitions)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Baseline: run f1_rows.py c1 --count (fail-first number); read rows 6 at a time with --show START 6 (about 5-6 calls)",
+    "Per row classify SAFE (index reads past data only, confirmed lag, window end) or UNSAFE (decision bar reads a later bar); keep a python list of (row, verdict, reason) as you go",
+    "Rewrite the 4th column in ONE python script run at the end: 'SAFE: <why, <= 120 chars>' or 'UNSAFE: <what is read>'; columns 1-3 byte-identical, no tabs, newline='\\n'",
+    "UNSAFE rows: do not fix code; append file:line and the verdict study to MyTradingSys/research/dsa_backtest_audit_2026-10-16/T02_F1_unsafe.md (one line each)",
+    "Run the lint and the lint tests; ship"
+  ],
+  "tests": "Fail-first count: f1_rows.py c1 --count prints 35 before and 0 after; lookahead_lint.py --new reports 0 new hits, exit 0.",
+  "title": "T02-F1 chunk 1: review 35 unreviewed look-ahead allowlist rows behind verdict studies",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
