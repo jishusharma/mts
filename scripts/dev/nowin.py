@@ -19,13 +19,13 @@ def wanted():
 
 
 def _console_hidden():
-    """B190: the wscript launchers start python.exe with a hidden console (style 0). Console children of such a process were
+    """No console (detached, or started by a GUI app such as Claude desktop) or a hidden one. B190: the wscript launchers start python.exe with a hidden console (style 0). Console children of such a process were
     still seen flashing on JIS-NB, so treat 'console window exists but is not visible' like pythonw. An interactive terminal
     (visible console) is untouched, so output of children that inherit the console still shows."""
     try:
         import ctypes
         hwnd = ctypes.windll.kernel32.GetConsoleWindow()
-        return bool(hwnd) and not ctypes.windll.user32.IsWindowVisible(hwnd)
+        return not hwnd or not ctypes.windll.user32.IsWindowVisible(hwnd)   # no console at all: every child opens one
     except Exception:
         return False
 

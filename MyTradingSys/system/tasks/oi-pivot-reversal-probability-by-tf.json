@@ -11,7 +11,7 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Operator 2026-10-18 (shot 163af24365f3): are the marked divergences and circled candles pivot signals, and what is the probability of reversal per timeframe? Candidate at bar close (no lookahead): OI slope flip after an N-bar decline/rise, price-vs-OI divergence state, taker-delta sign, volume spike, location vs levels known at that time (daily/weekly VA, prior-session extremes, confirmed delayed pivots). Swing label = outcome only, five-bar rule from CYCLE_DESIGN.md (usable at j+2 close). Outcome per TF (5m,15m,1h,4h): reversal of k x ATR before continuation of k x ATR within H bars; hits/misses/timeouts/censored separate; confirmation delay and entry-to-extreme distance reported. Compare against the base rate at the same location and against the unconditioned 1h divergence baseline (OI_EVENT_STUDY_2026-10-10: no edge). Context columns from context-conditioned-session-flow-states.",
+  "goal": "Operator 2026-10-18 (shot 163af24365f3): are the marked divergences and circled candles pivot signals, and what is the probability of reversal per timeframe? Candidate at bar close (no lookahead): OI slope flip after an N-bar decline/rise, price-vs-OI divergence state, taker-delta sign, volume spike, location vs levels known at that time (daily/weekly VA, prior-session extremes, confirmed delayed pivots). Swing label = outcome only, five-bar rule from CYCLE_DESIGN.md (usable at j+2 close). Outcome per TF (5m,15m,1h,4h): reversal of k x ATR before continuation of k x ATR within H bars; hits/misses/timeouts/censored separate; confirmation delay and entry-to-extreme distance reported. Compare against the base rate at the same location and against the unconditioned 1h divergence baseline (OI_EVENT_STUDY_2026-10-10: no edge). Context columns from context-conditioned-session-flow-states. Operator 2026-10-18 follow-up: MTS has no phase detector today. quad_classify.py is a single fixed 1h snapshot (price/CVD/OI signs, display only in the alert); the engine state emits only balance/trend_healthy (transition unreachable, compiled_engine.md section 1); nothing detects an OI trough/slope flip. So the study must test (1) phase SEQUENCES (e.g. covering rally -> OI trough -> OI build at flat price -> release -> late-long unwind), not a single bar state; (2) every TF separately (5m/15m/1h/4h), then a nested rule (HTF location, mid-TF phase, LTF trigger; see multi-tf-bias-stack-one-written-rule-tha); (3) one family of trials across TFs x features in the trial ledger (multiple testing).",
   "id": "oi-pivot-reversal-probability-by-tf",
   "lane": "SONNET",
   "latest": [],
@@ -24,7 +24,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-18T17:26:37Z",
+  "refreshed": "2026-10-18T17:29:14Z",
   "refs": [
     "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/SHOT_163af24365f3.md",
     "MyTradingSys/research/layer_lab/candle_close_2026-10-14/CYCLE_DESIGN.md",

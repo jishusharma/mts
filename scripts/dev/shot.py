@@ -37,6 +37,10 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
 sys.path.insert(0, str(REPO / "MyTradingSys" / "observation"))
 import capture  # noqa: E402  (time parsing and the timeframe list are shared with the observation channel)
+sys.path.insert(0, str(HERE))
+import nowin  # noqa: E402
+
+nowin.install()
 
 KINDS = ("chart", "positions", "app", "other", "noise")
 PRIVATE_KINDS = ("positions",)

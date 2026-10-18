@@ -1,5 +1,5 @@
-task: eagle-eyes gap sweep
+task: cryptocred-prereg-4h-1d
 host: DESKTOP-F7IU69N
 account: E-ngineers
 area: -
-epoch: 1792342286
+epoch: 1792348080
