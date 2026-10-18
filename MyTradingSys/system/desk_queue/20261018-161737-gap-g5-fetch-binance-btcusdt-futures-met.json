@@ -1,10 +1,13 @@
 {
   "done_when": "metrics files on disk for 2020-09-01..yesterday; file count, bytes and date range in the result; a card waiting on G5 is told by signal",
+  "finished": "2026-10-18T16:19:31Z",
   "from": "JIS-NUC",
+  "host": "JIS-NUC",
   "id": "20261018-161737-gap-g5-fetch-binance-btcusdt-futures-met",
   "need": "Re-post of 20261013-143640-gap-g5 with the correct script path. From a JIS-NUC work tree: python MyTradingSys/backtest/fetch_binance_archive.py --datasets metrics --start 2020-09-01 --end <yesterday> (read the script header for the output dir; metrics is daily-only). Print file count, bytes, first/last date. Stop after two failures and close --failed with the error text.",
   "posted": "2026-10-18T16:17:37Z",
-  "status": "pending",
+  "result": "Pipeliner: duplicate, the original row 20261013-143640-gap-g5 was done by JIS-NUC dsa-nuc-rows (2238 files 2020-09-01..2026-10-17, G5_metrics_coverage_20261018.md)",
+  "status": "failed",
   "target": "DSA-NUC",
   "title": "Gap G5: fetch Binance BTCUSDT futures metrics (OI, long/short) 2020-09..yesterday"
 }
