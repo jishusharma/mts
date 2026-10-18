@@ -1,10 +1,13 @@
 {
   "done_when": "cards created for each fix",
+  "finished": "2026-10-18T16:17:22Z",
   "from": "JIS-NB",
+  "host": "JIS-NUC",
   "id": "20261018-144854-fable-run-1-done-gate-audit-md",
   "need": "triage fix list into cards",
   "posted": "2026-10-18T14:48:54Z",
-  "status": "pending",
+  "result": "Pipeliner drain 2026-10-18: done: 9156c490 GATE_AUDIT.md fix list -> cards gate-fix-1..6; gate-fix-1..5 shipped 8f988e38",
+  "status": "done",
   "target": "DSA",
   "title": "Fable run 1 done: GATE_AUDIT.md"
 }
