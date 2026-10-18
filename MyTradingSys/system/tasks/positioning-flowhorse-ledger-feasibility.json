@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-18T13:05:14Z",
   "commands": [],
   "created": "2026-10-18T04:10:14Z",
   "depends_on": [],
@@ -13,6 +15,12 @@
   "id": "positioning-flowhorse-ledger-feasibility",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "LEDGER_FEASIBILITY.md: 0 scoreable BTC events, HYPOTHESIS",
+      "ref": "e5067cb8",
+      "utc": "2026-10-18T13:05:14Z"
+    },
     {
       "auto": true,
       "kind": "audit",
@@ -41,7 +49,7 @@
   "refs": [
     "positioning-home-fit-audit"
   ],
-  "result": "",
+  "result": "LEDGER_FEASIBILITY.md: 0 scoreable BTC events, HYPOTHESIS",
   "scope_in": [
     "extracts/processed/flowhorse/",
     "extracts/fresh/extract_UrnES-HzQ6w_the_flow_horse.txt",
@@ -61,12 +69,13 @@
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_POSITIONING.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "List every dated trade or call in the 5 FlowHorse sources (3 extracts in extracts/processed/flowhorse/, raw transcripts extracts/fresh/extract_UrnES-HzQ6w and extract_izZyd-HrTSE): video date, event timestamp if stated, side, quote + file:line; mark each SCOREABLE or NOT_SCOREABLE.",
     "For each SCOREABLE event check the date against BTC 1m klines (2022-01..2026-09) and OI 5m (2025-09..2026-09); liquidation history, tick and L2 are NOT_IN_DATA (the repo has only a live forceOrder socket).",
     "Write MyTradingSys/research/positioning_flowhorse_2026-10/LEDGER_FEASIBILITY.md: N found, minute timestamps possible or not, design/check split possible or not, verdict SCORABLE or HYPOTHESIS. If SCORABLE write the ledger csv; no backtest."
   ],
+  "taken": "2026-10-18T13:05:11Z",
   "tests": "A new test (MyTradingSys/research/positioning_flowhorse_2026-10/test_ledger_feasibility.py) asserts LEDGER_FEASIBILITY.md exists, has a line 'Verdict: SCORABLE' or 'Verdict: HYPOTHESIS', and that every listed event row carries a file:line; fails before the file exists. test_pre_reg_template.py stays green.",
   "title": "FlowHorse positioning: is there any dated trade or call to score (items 1/2/3/5, gates 0c/0d)",
   "weight": "ROUTINE",
