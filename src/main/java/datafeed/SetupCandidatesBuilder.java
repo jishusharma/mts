@@ -242,7 +242,18 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
                 ObjectNode ranked = mapper.createObjectNode();
                 ranked.put("rank", candidatesArray.size() + 1);
                 ranked.setAll(fade);
+                ranked.put("arm", "price");
                 candidatesArray.add(ranked);
+                // Card tom-encode-fade-profile-proofs (spec 12): PROFILE arm beside the PRICE arm, a separate candidate.
+                if (fadeSeries != null) {
+                    ObjectNode prof = SpikeFadeProfile.build(mapper, fade, new SpikeFadeDetector.Bars(fadeSeries), sym);
+                    if (prof != null) {
+                        ObjectNode pr = mapper.createObjectNode();
+                        pr.put("rank", candidatesArray.size() + 1);
+                        pr.setAll(prof);
+                        candidatesArray.add(pr);
+                    }
+                }
             }
             // Card tom-encode-fade-entry-paths (spec 2.3, 2.6 A-M5): paths A2 / A3 beside A1, gated by the session attempt state.
             if (fadeSeries != null && fadeSeries.size() >= 2) {
@@ -251,6 +262,7 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
                     ObjectNode ranked = mapper.createObjectNode();
                     ranked.put("rank", candidatesArray.size() + 1);
                     ranked.setAll(path);
+                    ranked.put("arm", "price");
                     candidatesArray.add(ranked);
                 }
             }
