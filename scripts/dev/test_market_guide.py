@@ -172,3 +172,12 @@ def test_candle_info_last_three_bars():
     bars.append({"t": 8, "o": 10, "h": 12, "l": 8, "c": 10, "v": 1})
     found = dict(mg.candle_info(bars, mod))
     assert found.get("doji") == 0
+
+
+def test_falsifier_status_available_in_market_guide():
+    # score-context-reads-automatically-carrie scope_in includes market_guide.py
+    assert hasattr(mg, "falsifier_status")
+    # SOURCED line: "Falsify: acceptance under 82630" (test_shot.py:211)
+    # Level broken by close (OURS fixture)
+    res = mg.falsifier_status("Falsify: acceptance under 82630", [{"o": 82700, "h": 82750, "l": 82500, "c": 82550}])
+    assert res == "BROKEN"
