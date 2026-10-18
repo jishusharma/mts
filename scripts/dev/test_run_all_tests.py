@@ -28,6 +28,21 @@ class GateCoverage(unittest.TestCase):
 
 
 
+class GateTmpCleanup(unittest.TestCase):
+    def test_basetemp_dirs_are_removed_when_the_gate_process_exits(self):
+        import subprocess
+        code = ("import sys; sys.path.insert(0, r'%s'); import run_all_tests as r; "
+                "print(r.pytest_cmd(['x'])[-1].split('=', 1)[1]); print(r.isolate_pytest_tmp())") % Path(__file__).resolve().parent
+        env = dict(os.environ)
+        env.pop("PYTEST_DEBUG_TEMPROOT", None)
+        out = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, env=env, timeout=120)
+        self.assertEqual(out.returncode, 0, out.stderr)
+        made = [Path(line).parent if line.endswith("bt") else Path(line) for line in out.stdout.split()]
+        self.assertEqual(len(made), 2, out.stdout)
+        for d in made:
+            self.assertFalse(d.exists(), f"{d} left in TEMP after the gate exited")
+
+
 class TestPytestTmpIsolation(unittest.TestCase):
     def test_isolate_pytest_tmp_sets_fresh_root_for_children(self):
         import os

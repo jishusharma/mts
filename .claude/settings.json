@@ -1,6 +1,6 @@
 {
   "env": {
-    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "25"
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "12"
   },
   "hooks": {
     "SessionStart": [
@@ -20,6 +20,16 @@
             "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/mts_signal.py\" hook",
             "timeout": 12
+          },
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/ci_watch.py\" hook",
+            "timeout": 8
+          },
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/c_drive_guard.py\" hook",
+            "timeout": 8
           }
         ]
       }
@@ -41,6 +51,11 @@
             "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/mts_signal.py\" hook",
             "timeout": 12
+          },
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/ci_watch.py\" hook",
+            "timeout": 8
           }
         ]
       }

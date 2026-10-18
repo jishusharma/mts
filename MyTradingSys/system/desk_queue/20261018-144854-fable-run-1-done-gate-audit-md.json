@@ -1,0 +1,10 @@
+{
+  "done_when": "cards created for each fix",
+  "from": "JIS-NB",
+  "id": "20261018-144854-fable-run-1-done-gate-audit-md",
+  "need": "triage fix list into cards",
+  "posted": "2026-10-18T14:48:54Z",
+  "status": "pending",
+  "target": "DSA",
+  "title": "Fable run 1 done: GATE_AUDIT.md"
+}

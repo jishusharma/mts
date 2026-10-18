@@ -57,6 +57,16 @@ class StopGuardTest(unittest.TestCase):
         sh(self.a, "fetch", "-q", "origin")
         self.assertEqual(self.run_hook(), "")
 
+    def test_same_state_blocks_a_session_only_once(self):
+        os.environ["MTS_STOP_GUARD_HOME"] = str(self.tmp)
+        self.addCleanup(os.environ.pop, "MTS_STOP_GUARD_HOME", None)
+        (self.a / "wip.py").write_text("x\n", newline="\n")
+        self.assertIn("block", self.run_hook(session_id="s1"))
+        self.assertEqual(self.run_hook(session_id="s1"), "")                  # unchanged state: no second ~150k-token turn
+        (self.a / "more.py").write_text("y\n", newline="\n")
+        self.assertIn("block", self.run_hook(session_id="s1"))                # new work: blocks again
+        self.assertIn("block", self.run_hook(session_id="s2"))                # another session: blocks
+
     def test_live_tree_and_off_switch_are_exempt(self):
         (self.a / "wip.py").write_text("x\n", newline="\n")
         os.environ["MTS_STOP_GUARD"] = "off"

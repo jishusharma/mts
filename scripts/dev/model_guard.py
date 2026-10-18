@@ -7,6 +7,9 @@ Claude Code PreToolUse hook (project .claude/settings.json), on the calls that s
   Agent / Task                          `model` must be given and be sonnet or haiku; a fork (inherits) only from a cheap session
   mcp__ccd_session__start_session       same; `proposal_id` alone (starting a proposal already checked) and cloud starts pass
   mcp__ccd_session_mgmt__set_session_model   only sonnet or haiku
+No click cards (operator 2026-10-18: "I am not sitting in front of the screen"): start_session with initiation "offer" or "own_initiative"
+(or none) is denied for every model, Opus included, because the operator must click to start it and may be away. Use initiation
+"user_asked" (starts now), or the Agent tool with model='sonnet' when the app refuses that on an event turn. MTS_ALLOW_CARDS=1 allows.
 Anything else passes. A blocked call gets a deny with the fix in the reason, so the model retries with model=sonnet.
 Opus is allowed in two cases only (operator 2026-10-17: "whenever I say use Opus, it must be done" and "only critical tasks, a little
 tighter"): (1) the operator's LATEST typed message names it ("opus"/"fable"); (2) the brief cites a task card that is lane OPUS,
@@ -109,8 +112,24 @@ def operator_named_opus(transcript_path, last=1):
     return False
 
 
+CARD_FIX = ("No click cards: the operator is away. Use initiation='user_asked' (starts at once), or the Agent tool with model='sonnet' "
+            "when the app refuses user_asked on an event turn; note the work in your log instead of offering it.")
+
+
+def card_reason(tool, inp):
+    """Deny reason when start_session would show the operator a card to click, else None."""
+    if tool != START or os.environ.get("MTS_ALLOW_CARDS") == "1":
+        return None
+    inp = inp or {}
+    if inp.get("proposal_id") or inp.get("initiation") == "user_asked":
+        return None
+    return f"start_session with initiation={inp.get('initiation')!r} waits for an operator click. " + CARD_FIX
+
+
 def decide(tool, inp, parent):
     """None = allow, else the deny reason."""
+    if card_reason(tool, inp):
+        return card_reason(tool, inp)
     if os.environ.get("MTS_ALLOW_OPUS") == "1":
         return None
     inp = inp or {}
@@ -145,6 +164,11 @@ def hook():
     if tool not in AGENT_TOOLS + (START, SET_MODEL):
         return 0
     inp = ev.get("tool_input") or {}
+    card = card_reason(tool, inp)
+    if card:
+        print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
+                                                 "permissionDecisionReason": "model_guard: " + card}}))
+        return 0
     if inp.get("model") and (operator_named_opus(ev.get("transcript_path"))
                              or crucial_card_cited(inp.get("title"), inp.get("prompt"), inp.get("background"), inp.get("description"))):
         return 0

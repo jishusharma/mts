@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-18T14:51:42Z",
   "commands": [],
   "created": "2026-10-13T14:40:00Z",
   "depends_on": [],
@@ -11,7 +13,14 @@
   "id": "gap-g6-trial-ledger",
   "kind": "build",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "TRIAL_LEDGER_BUILT.csv with 1279 rows from 9 registries; test_trial_ledger.py 3 passed; ho",
+      "ref": "93a80dc2",
+      "utc": "2026-10-18T14:51:42Z"
+    }
+  ],
   "layers": [
     "tom"
   ],
@@ -23,7 +32,7 @@
   "refined_by": "sonnet-2026-10-13 gap review G1-G8",
   "refreshed": "2026-10-17T20:21:23Z",
   "refs": [],
-  "result": "",
+  "result": "TRIAL_LEDGER_BUILT.csv with 1279 rows from 9 registries; test_trial_ledger.py 3 passed; holdout_reads.csv created",
   "scope_in": [
     "scripts/dev/trial_ledger.py (new)",
     "scripts/dev/test_trial_ledger.py (new)",
@@ -41,12 +50,13 @@
   "sources": [
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write test_trial_ledger.py on two small temp registries: row counts per study, sort stable, rerun byte-identical, existing TRIAL_LEDGER.csv untouched (fails before the script exists).",
     "Implement the scan (git ls-files glob of TRIAL_REGISTRY*.csv), write the built ledger and the holdout_reads.csv header.",
     "Run it on the repo; print the per-study counts and the total."
   ],
+  "taken": "2026-10-18T14:47:56Z",
   "tests": "test_trial_ledger.py fails before trial_ledger.py exists; rerun gives a byte-identical file.",
   "title": "Gap G6: append-only research/TRIAL_LEDGER.csv builder + holdout-read log (no verdicts changed)",
   "weight": "IMPORTANT",

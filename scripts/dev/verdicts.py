@@ -328,6 +328,43 @@ def stems(s):
     return {w[:5] for w in re.findall(r"[a-z0-9]{3,}", s.lower()) if not w.isdigit() and w not in STOP}
 
 
+def power_line(row):
+    """Compute MDE80, net mean, LOW-POWER flag and trades-for-80%-power for a row.
+
+    MDE80 = 2.8016 * se_pct (two-sided alpha 0.05, 80% power; SOURCED REPORT.md:211-212).
+    Flagged LOW-POWER when |net mean| < MDE80.
+    Trades for 80% power = round(n * (MDE80 / |net mean|)^2).
+    """
+    try:
+        se_val = row.get("se_pct") if "se_pct" in row else row.get("se")
+        se = float(se_val)
+    except (ValueError, TypeError):
+        return None
+    if se < 0:
+        return None
+    mde80 = 2.8016 * se
+    parts = [f"MDE80={round(mde80, 5)}"]
+
+    try:
+        gross_val = row.get("gross_mean_pct") if "gross_mean_pct" in row else row.get("gross")
+        cost_val = row.get("cost_pct") if "cost_pct" in row else row.get("cost")
+        gross = float(gross_val)
+        cost = float(cost_val)
+        net = gross - cost
+        parts.append(f"net={round(net, 4)}")
+        if abs(net) < mde80:
+            parts.append("LOW-POWER")
+        n_val = row.get("n")
+        n = float(n_val)
+        if n > 0 and abs(net) > 0:
+            n80 = round(n * (mde80 / abs(net)) ** 2)
+            parts.append(f"trades_for_80_power={n80}")
+    except (ValueError, TypeError):
+        pass
+
+    return "power: " + " ".join(parts)
+
+
 def cmd_check(a):
     q = stems(a.words)
     if not q:
@@ -350,6 +387,10 @@ def cmd_check(a):
         print(f"  {flag} {r['study_dir']} | {r['arm']} | {r['split_read']} | n={r['n']} mean={r['gross_mean_pct']} "
               f"se={r['se_pct']} cost={r['cost_pct']} | {r['verdict']} | one_run={r['one_run']} | {r['commit']} {r['date']}")
         print(f"        kill_scope: {r['kill_scope']}")
+        pl = power_line(r)
+        if pl:
+            print(f"        {pl}")
+
     if block:
         print("BLOCKED: a one_run PRE_REG may not be re-run and a FAIL kills its family. A new PRE_REG must say why it is "
               "a different hypothesis. (kill_scope UNPARSED = read the study's PRE_REG/RESULT for the scope.)")

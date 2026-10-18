@@ -121,6 +121,24 @@ def transient_ignore_glob(root=REPO):
     return "--ignore-glob=" + glob.escape(str(root)) + "*[/\\]tmp" + "[a-z0-9_]" * 8
 
 
+_GATE_TMP_DIRS = []
+
+
+def _remove_gate_tmp():
+    while _GATE_TMP_DIRS:
+        shutil.rmtree(_GATE_TMP_DIRS.pop(), ignore_errors=True)
+
+
+def gate_tmp(prefix):
+    """mkdtemp that is removed when this gate process exits. Every ship built 5+ basetemp dirs and never removed them: 24k mts_s4_*
+    dirs (1.2 GB) piled up in %TEMP% on JIS-NB by 2026-10-18 and C: ran low (c_drive_guard.py prunes what a killed gate leaves)."""
+    if not _GATE_TMP_DIRS:
+        atexit.register(_remove_gate_tmp)
+    d = tempfile.mkdtemp(prefix=prefix)
+    _GATE_TMP_DIRS.append(d)
+    return Path(d)
+
+
 def pytest_cmd(targets, root=REPO):
     """One gate pytest step: own basetemp (parallel pytest processes share %TEMP%/pytest-of-<user> and its cleanup raises PermissionError
     after all tests pass: JIS-NB 2026-10-14, six ships at once), no cache dir, and transient tmp dirs ignored (transient_ignore_glob)."""
@@ -295,7 +313,7 @@ def isolate_pytest_tmp():
     %TEMP% that cannot be unlinked (WinError 5, seen 2026-10-11 after the ESET removal reboot) makes pytest exit 1 even when every test passes,
     which turned the deploy gate red. Returns the path."""
     import tempfile
-    root = os.environ.get("PYTEST_DEBUG_TEMPROOT") or tempfile.mkdtemp(prefix="mts_pytest_")
+    root = os.environ.get("PYTEST_DEBUG_TEMPROOT") or str(gate_tmp("mts_pytest_"))
     os.environ["PYTEST_DEBUG_TEMPROOT"] = root
     return root
 
@@ -357,6 +375,7 @@ def build_plan(quick):
     add("3c", "User guide in sync with mts.ps1", [sys.executable, "scripts/dev/check_guide.py"], "Step 3c: Guide in sync")
     add("3r", "Alert rate checker tests", [sys.executable, "scripts/dev/test_alert_rate_check.py"], "Step 3r: Alert rate checker tests")
     add("3cv", "Chart verify (RSI/BB/StochRSI) tests", [sys.executable, "scripts/dev/test_chart_verify.py"], "Step 3cv: Chart verify tests")
+    add("3tm", "One timeframe map tests", [sys.executable, "scripts/dev/test_tf_map.py"], "Step 3tm: TF map tests")
     add("3s", "Testnet status summary tests", [sys.executable, "scripts/dev/test_testnet_status.py"], "Step 3s: Testnet status tests")
     add("3f", "Funnel report tests", [sys.executable, "scripts/dev/test_funnel_report.py"], "Step 3f: Funnel report tests")
     plan.append(Step("3dk", "Desk board tests", "Step 3dk: Desk board tests", run=lambda: exec_unittest_shards("scripts/dev/test_desk.py", gate_jobs() if gate_jobs() == 1 else 2), cmd_text="python -m unittest (scripts/dev/test_desk.py, 2 shards)", tail=None))
@@ -450,7 +469,7 @@ def build_plan(quick):
     # Step 5c: options module (own pytest run: its bare module names, e.g. fees.py, collide with other packages); own basetemp and
     # no cache dir because it runs beside other pytest processes
     cmd5c = [sys.executable, "-m", "pytest", "MyTradingSys/options/tests", "-q", "-p", "no:cacheprovider", transient_ignore_glob(),
-             f"--basetemp={Path(tempfile.mkdtemp(prefix='mts_s5c_')) / 'bt'}"]
+             f"--basetemp={gate_tmp('mts_s5c_') / 'bt'}"]
     add("5c", "Options module tests", cmd5c, "Step 5c: Options tests")
 
     # Step 6: backtest (unless --quick)

@@ -30,7 +30,7 @@ Every other file points here. Numbers come from `python scripts/dev/worker_cost_
    rule 5. Unscoped or judgment work (design, a bug nobody has located, anything touching live money) is not Haiku work.
 4. **Over 40 expected turns: split the card.** A running worker hands over at the 40 tool-turn cap (RELAY.md) to a fresh worker;
    state lives in files (task card, notes folder), not context.
-5. **Compaction is a backstop.** `.claude/settings.json` keeps CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=25. Never compact by hand a worker
+5. **Compaction is a backstop.** `.claude/settings.json` sets CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=12 (operator 2026-10-18: 100-120k cap; the Sonnet 5.5 window is 1M, so the old 25 meant 250k). A model cannot compact another session: no tool does it, `send_message` delivers text, not `/compact`. What a coordinator can do on every wake: `get_usage` with the worker's `session_id` (running sessions only), then per worker: KEEP and reuse it (the env var compacts it at ~120k), or DONE and not reusable -> `mark_completed` + `archive_session` (delete_session always needs the operator's click, never use it). Reuse a session only when its next card needs the same files; otherwise archive. Agents are always use-and-throw, never reused. Never compact by hand a worker
    that will ship soon; compact a long-lived coordinator only with 15+ turns left and above ~150k, else hand over.
 6. **Models.** Workers: Sonnet; Haiku for mechanical status/lookups. **Opus is the tight exception** (operator 2026-10-17: a session-spawned
    Opus can lose data on a bug or misreading, so only critical work): (a) the operator names it in their latest message, it is done;
@@ -38,5 +38,5 @@ Every other file points here. Numbers come from `python scripts/dev/worker_cost_
    or a no-undo design call), cited by id in the brief. Nothing else, not "recommended" and not "better quality". Hook `model_guard.py`
    enforces both, and always denies a call without `model`. A cheap model first: Opus is for what Sonnet already got wrong or cannot undo.
 7. **No clicks.** `start_session` with `initiation: "user_asked"` on operator turns (max 4 workers at once); on event turns where it is
-   refused use rule 3's Agent. Never an `own_initiative` card for work already in scope.
+   refused use rule 3's Agent. Never an `offer` / `own_initiative` card, for any model: `model_guard.py` now denies them (operator 2026-10-18: nobody is at the screen to click).
 8. **Cleanup.** A finished session marks itself completed; the coordinator marks each worker once its ship is verified.

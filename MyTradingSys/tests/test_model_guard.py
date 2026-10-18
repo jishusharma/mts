@@ -42,10 +42,10 @@ class ModelGuardTest(unittest.TestCase):
 
     def test_start_session_without_model_is_denied(self):
         # the 2026-10-15 incident: own_initiative proposal without model inherited Opus
-        self.assertEqual(fire(START, {"initiation": "own_initiative", "title": "x", "prompt": "p", "background": "b"}), "deny")
+        self.assertEqual(fire(START, {"initiation": "user_asked", "title": "x", "prompt": "p", "background": "b"}), "deny")
 
     def test_start_session_opus_or_fable_denied_sonnet_haiku_allowed(self):
-        base = {"initiation": "own_initiative", "title": "x", "prompt": "p", "background": "b"}
+        base = {"initiation": "user_asked", "title": "x", "prompt": "p", "background": "b"}
         self.assertEqual(fire(START, {**base, "model": "claude-opus-5-5"}), "deny")
         self.assertEqual(fire(START, {**base, "model": "claude-fable-5-1"}), "deny")
         self.assertEqual(fire(START, {**base, "model": "claude-sonnet-5-5"}), "allow")
@@ -56,8 +56,18 @@ class ModelGuardTest(unittest.TestCase):
         self.assertEqual(fire(START, {"proposal_id": "task_1"}), "allow")
         self.assertEqual(fire(START, {"proposal_id": "task_1", "prompt": "p", "model": "claude-sonnet-5-5"}), "allow")
 
+    def test_click_cards_are_denied_for_every_model_but_user_asked_passes(self):
+        # operator 2026-10-18: nobody is at the screen to click "offer" / "own_initiative" cards
+        base = {"title": "x", "prompt": "p", "background": "b", "model": "claude-sonnet-5-5"}
+        for init in ("offer", "own_initiative", None):
+            inp = {**base, **({"initiation": init} if init else {})}
+            self.assertEqual(fire(START, inp), "deny", init)
+        self.assertEqual(fire(START, {**base, "initiation": "user_asked", "target": "cloud"}), "allow")
+        self.assertEqual(fire(START, {**base, "initiation": "offer", "target": "cloud"}), "deny")
+        self.assertEqual(fire(START, {**base, "initiation": "own_initiative", "model": "claude-opus-5-5"}), "deny")
+
     def test_fork_follows_parent_model(self):
-        inp = {"initiation": "own_initiative", "title": "x", "prompt": "p", "context": "fork"}
+        inp = {"initiation": "user_asked", "title": "x", "prompt": "p", "context": "fork"}
         self.assertEqual(fire(START, inp, self.transcript("claude-opus-5-5")), "deny")
         self.assertEqual(fire(START, inp, self.transcript("claude-sonnet-5-5")), "allow")
         self.assertEqual(fire(START, inp, None), "deny")  # parent unknown: fail closed

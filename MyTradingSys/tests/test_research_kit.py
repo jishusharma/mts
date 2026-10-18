@@ -5,8 +5,8 @@ isolation, the frozen studies are not imported, run or edited). "edge" = n = 1 o
 
 | copy | file:line | regular input | edge input | verdict |
 |---|---|---|---|---|
-| cluster_mean_se | research/gross_effect_screen_2026-10-15/screen.py:168 | = kit | SE 0.0 (t = inf), kit NaN | agrees (edge differs) |
-| diff_cluster | research/gross_effect_screen_2026-10-15/screen.py:178 | = kit (OLS sandwich = same-day-aware) | not guarded for 1-row groups | agrees (edge differs) |
+| cluster_mean_se | research/gross_effect_screen_2026-10-15/screen.py:183 | = kit | SE 0.0 (t = inf), kit NaN | agrees (edge differs) |
+| diff_cluster | research/gross_effect_screen_2026-10-15/screen.py:193 | = kit (OLS sandwich = same-day-aware) | not guarded for 1-row groups | agrees (edge differs) |
 | cm_se | research/chart_read_g5_2026-10-16/common.py:104 | = kit | SE 0.0, kit NaN | agrees (edge differs) |
 | mde=2.8*se (verdict_arm) | research/chart_read_g5_2026-10-16/common.py:218 | = kit.mde | - | agrees |
 | mde_T = 2.8*se | research/gross_effect_screen_2026-10-15/screen.py:254 | = kit.mde | - | agrees |
@@ -18,7 +18,7 @@ isolation, the frozen studies are not imported, run or edited). "edge" = n = 1 o
 | holm | research/published_strats_2026-10-13/run_pub.py:503 | = kit | - | agrees |
 
 Summary: 3 copies disagree on regular input (wlow diff_stats, vstats mde, krown cost_r); 4 more differ only at the edge
-(screen.py:168 and :178, common.py:104, wlow study.py:80). The studies are frozen; their numbers stand with these caveats.
+(screen.py:183 and :178, common.py:104, wlow study.py:80). The studies are frozen; their numbers stand with these caveats.
 `backtest/power_mde.py` (win-rate MDE) is kept as is and is checked below for agreement with kit.mde.
 """
 import ast
@@ -194,7 +194,7 @@ F = np.array([1, 0, 1, 0, 1, 0, 1, 0.])
 
 
 def test_docstring_line_numbers_are_true():
-    for rel, name, line in ((SCREEN, "cluster_mean_se", 168), (SCREEN, "diff_cluster", 178), (G5, "cm_se", 104),
+    for rel, name, line in ((SCREEN, "cluster_mean_se", 183), (SCREEN, "diff_cluster", 193), (G5, "cm_se", 104),
                             (WLOW, "cluster_se", 80), (WLOW, "diff_stats", 131), (VSTATS, "mde", 130),
                             (KROWN, "mde_block", 303), (PUB, "holm", 503)):
         _, got = _grab(rel, name, _base() | {"mean": lambda x: sum(x) / len(x)})
