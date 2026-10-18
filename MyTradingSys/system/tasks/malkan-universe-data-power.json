@@ -1,8 +1,6 @@
 {
   "approved_by": "",
   "asks": "",
-  "claim": "",
-  "closed": "2026-10-18T17:02:29Z",
   "commands": [],
   "created": "2026-10-18T04:08:56Z",
   "depends_on": [],
@@ -15,12 +13,6 @@
   "id": "malkan-universe-data-power",
   "lane": "SONNET",
   "latest": [
-    {
-      "kind": "ship",
-      "line": "MyTradingSys/research/malkan_universe_2026-10/UNIVERSE_POWER.md",
-      "ref": "cb02a0ca",
-      "utc": "2026-10-18T17:02:29Z"
-    },
     {
       "auto": true,
       "kind": "ship",
@@ -47,7 +39,7 @@
   "refined_by": "",
   "refreshed": "2026-10-18T04:11:27Z",
   "refs": [],
-  "result": "MyTradingSys/research/malkan_universe_2026-10/UNIVERSE_POWER.md",
+  "result": "",
   "scope_in": [
     "MyTradingSys/backtest/power_mde.py",
     "MyTradingSys/research/krown_malkan_g3_2026-10-16/EVENT_COUNTS.md",
@@ -64,13 +56,12 @@
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_MALKAN.md"
   ],
-  "state": "done",
+  "state": "ready",
   "steps": [
     "Survey free public sources of Indian EOD OHLC: coverage years, adjustment for splits and bonuses, delisted names, licence; record URL and date, no download of series.",
     "Compute asset-years needed for +0.10 R net at 80% power from EVENT_COUNTS rates (BTC rate, labelled OURS) for 50, 100 and 500 stocks with power_mde.py.",
     "Write MyTradingSys/research/malkan_universe_2026-10/UNIVERSE_POWER.md with the table and a recommended universe; write INCONCLUSIVE in advance where N < 100."
   ],
-  "taken": "2026-10-18T17:02:19Z",
   "tests": "A unit test that the N/MDE table reproduces the 1,655-event figure of EVENT_COUNTS.md for +0.10 R; fails before the script exists.",
   "title": "Malkan: Indian-equity D/W/M data sources, universe size and power (items 1/4/10, gates 0d/0e)",
   "weight": "",

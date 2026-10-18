@@ -1,8 +1,6 @@
 {
   "approved_by": "",
   "asks": "",
-  "claim": "",
-  "closed": "2026-10-18T16:46:53Z",
   "commands": [],
   "created": "2026-10-18T04:10:19Z",
   "depends_on": [],
@@ -15,12 +13,6 @@
   "id": "positioning-c1-longwindow-count-power",
   "lane": "SONNET",
   "latest": [
-    {
-      "kind": "ship",
-      "line": "MyTradingSys/research/positioning_c1_2026-10/COUNT_POWER.md",
-      "ref": "5ace4514",
-      "utc": "2026-10-18T16:46:53Z"
-    },
     {
       "auto": true,
       "kind": "audit",
@@ -49,7 +41,7 @@
   "refs": [
     "positioning-home-fit-audit"
   ],
-  "result": "MyTradingSys/research/positioning_c1_2026-10/COUNT_POWER.md",
+  "result": "",
   "scope_in": [
     "MyTradingSys/backtest/layers/positioning/",
     "MyTradingSys/backtest/layers/run_t055.py (import only)",
@@ -68,13 +60,12 @@
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_POSITIONING.md"
   ],
-  "state": "done",
+  "state": "ready",
   "steps": [
     "Write MyTradingSys/research/positioning_c1_2026-10/count_power.py (imports funding_cvd_fade_events; does not edit run_t055.py) and run it on 15m bars built from raw_1m_2022 klines with the 2020+ funding, DEV window only, for the 36 grid cells of run_t055.c1_grid().",
     "Report per cell: events per month, fire rate (events per 1000 bars), per-year counts, and gross mean move at 4/16/48 bars versus 2 x 0.12% (gate 0b); compute N and MDE with power_mde.py; write INCONCLUSIVE in advance where N < 100.",
     "Write MyTradingSys/research/positioning_c1_2026-10/COUNT_POWER.md incl. the random-entry null spec (same side mix, holds, taker cost, matched by funding regime and calendar) and the regime strata proposal for B154."
   ],
-  "taken": "2026-10-18T16:46:47Z",
   "tests": "A unit test (test_count_power.py) that the count script reproduces len(funding_cvd_fade_events(...)) on a fixed fixture and refuses any bar dated 2024-07-01 or later; fails before the script exists.",
   "title": "Positioning C1 (NO-SOURCE): count-only events on the DEV window, fire rate, power, null spec (items 3/9/10/12)",
   "weight": "ROUTINE",
