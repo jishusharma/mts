@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-18T04:56:33Z",
   "commands": [
     "python scripts/dev/fetch_captions.py --analyst Kurisko PjigwAmhiT0"
   ],
@@ -15,6 +17,12 @@
   "id": "kurisko-transcript-extract",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "extracts/processed/kurisko/QUAD_ROTATION.md 44 quotes pass the gate; KURISKO_SPEC s5: peri",
+      "ref": "7274342f",
+      "utc": "2026-10-18T04:56:33Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -41,7 +49,7 @@
   "refined_by": "",
   "refreshed": "2026-10-18T03:58:35Z",
   "refs": [],
-  "result": "",
+  "result": "extracts/processed/kurisko/QUAD_ROTATION.md 44 quotes pass the gate; KURISKO_SPEC s5: period 40 closed, stop+exit trigger closed, smoothing/turn-up number/swing rule/BTC translation/short mirror OPEN with OURS defaults",
   "scope_in": [
     "raw_transcripts_canonical/",
     "extracts/processed/kurisko/",
@@ -59,13 +67,14 @@
   "sources": [
     "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md sections 3 and 5"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "python scripts/dev/fetch_captions.py --analyst Kurisko PjigwAmhiT0 (captions only; YouTube is pre-approved). RATELIMIT: rerun with --wait 120, 3 tries max; NOCAPS: record it and go to step 4",
     "write extracts/processed/kurisko/QUAD_ROTATION.md: one quoted line per rule (periods, levels 20/80, turn-up entry, stop, exit, timeframe, waiting) with transcript file:line",
     "python scripts/dev/verify_extract_quotes.py extracts/processed/kurisko/QUAD_ROTATION.md until it exits 0",
     "KURISKO_SPEC.md section 5: mark each gap CLOSED (quote) or OPEN; for each open gap write the labelled OURS default the module card will use"
   ],
+  "taken": "2026-10-18T04:56:27Z",
   "tests": "verify_extract_quotes.py exits 0 on the extract and exits 1 on a copy with one doctored quote",
   "title": "Kurisko Quad Rotation: fetch the interview captions and extract the rule with the quote gate",
   "weight": "ROUTINE",
