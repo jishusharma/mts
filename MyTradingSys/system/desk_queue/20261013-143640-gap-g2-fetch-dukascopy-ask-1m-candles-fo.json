@@ -4,7 +4,9 @@
   "id": "20261013-143640-gap-g2-fetch-dukascopy-ask-1m-candles-fo",
   "need": "Find how MyTradingSys/backtest/dax_data.py loads BID_candles_min_1.bi5 and its source URL pattern (read only). Fetch the same files with ASK_ in place of BID_ for 2024-11-04..2026-04-10 only (dev window; never 2026-04-11 on) into F:/MTS/data/dax_raw_ask/, without changing any repo file. Print file count, bytes and the mean ask-bid spread in points per UTC hour. Stop after two failures.",
   "posted": "2026-10-13T14:36:40Z",
-  "status": "pending",
+  "status": "taken",
+  "taken": "2026-10-18T16:19:24Z",
+  "taken_by": "JIS-NUC",
   "target": "DSA-NUC",
   "title": "Gap G2: fetch Dukascopy ASK 1m candles for the DAX dev window (host=JIS-NUC)"
 }
