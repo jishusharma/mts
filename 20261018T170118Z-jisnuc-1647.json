@@ -1,0 +1,1 @@
+{"t": "20261018T170118Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship > C:/Users/E-ngineers/AppData/Local/Temp/claude/[cut]/[cut]/scratchpad/ship1.txt 2>&1; grep -n -E \"FAILED|Error|error|assert\" C:/Users/E-ngineers/AppData/Local/Temp/claude/[cut]/[cut]/scratchpad/"}
