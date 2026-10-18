@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-18T04:12:21Z",
   "commands": [],
   "created": "2026-10-18T00:00:00Z",
   "depends_on": [],
@@ -12,6 +14,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "395 (zero-cost n_needed days; delivered d707f421, Lab_Guy recompute 394.8 / 2426.8, 2,427 ",
+      "ref": "501af43d",
+      "utc": "2026-10-18T04:12:21Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -29,13 +37,13 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:results CLASS:C1 REVIEWER:review Agent DECISION (OURS): the card is itself the hand re-derivation of the Q76 numbers, so it re-checks (not consumes) the untagged base; review Agent on the diff, no extra vendor run.",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:definitions CLASS:C1 REVIEWER:Lab_Guy Sonnet 5.5 (diff read + independent recompute, labguy-pass-b) WEIGHT:CRUCIAL. DECISION (OURS): the card is itself the hand re-derivation of the Q76 numbers, so it re-checks (not consumes) the untagged base; review Agent on the diff, no extra vendor run. LAB_GUY 2026-10-18: DELIVERED in d707f421 (git cherry origin/fast-track empty): PRE_REG_V2.md line 30 annotated in place + ERRATUM section lines 52-54, bug_b187_evidence.txt, BUGS.md B187 row. Independent recompute with the exact Holm z (statistics.NormalDist, m=42, two-sided 0.05): z=3.2412, zero-cost n=394.8, at cost 0.121 n=2,426.8 -> matches 395 and 2,427 (E4/E7 clear: expected numbers do not come from the edited text). Class stays C1, not C2: no gate input, threshold, cost or verdict changed (BLOCK does not depend on the corrected sentence); the original wording is kept in the erratum, so the frozen file is annotated, not rewritten. Residual: the 3.3 percent figure exists only at roles/lab_guy.md:48; BUGS B187 already marks it unverified, which is right. Nothing left to build: close with tasks.py done.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-10-17T20:21:54Z",
   "refs": [],
-  "result": "",
+  "result": "395 (zero-cost n_needed days; delivered d707f421, Lab_Guy recompute 394.8 / 2426.8, 2,427 and 662 unchanged)",
   "scope_in": [
     "MyTradingSys/research/pit_levels_2026-10-16/PRE_REG_V2.md",
     "MyTradingSys/research/pit_levels_2026-10-16/bug_b187_evidence.txt",
@@ -50,13 +58,14 @@
   "scope_sha": "48306e025f33",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "recompute (z_holm+0.8416)*1.46/0.30 squared by hand and edit the sentence; the 2,427 line is unchanged",
-    "append the Q76 verdict and the 3.3 percent event-count difference (trigger-bar-high in stop basis untested) to B187",
+    "append the Q76 verdict to B187; the 3.3 percent event-count difference (Haiku blind vs lab, only source roles/lab_guy.md:48, Haiku output not pinned in the repo) goes in as UNVERIFIED, never as a measured number",
     "state it as a dated erratum, no outcome read"
   ],
-  "tests": "the sentence matches a hand calculation; the 2,427 and 662 lines are unchanged",
+  "taken": "2026-10-18T04:12:15Z",
+  "tests": "the sentence matches a hand calculation (394.8); the 2,427 and 662 lines are unchanged; B187 row carries 1,207 and marks the 3.3 percent figure unverified",
   "title": "Fix PRE_REG_V2 power sentence (zero-cost n_needed is about 395 days, not about 1,000) and note the stop-basis event difference for B187",
   "weight": "CRUCIAL",
   "worker": "session"
