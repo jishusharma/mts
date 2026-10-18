@@ -16,7 +16,7 @@
   "tom"
  ],
  "live_path": false,
- "note": "UNBLOCKED 2026-10-18: operator lifted the holds in chat (DAX chain q11 hold, A-20261018-5); no-FDAX-data-purchase rule stays. Results built on lab bases stay labelled UNCHECKED. [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | Captured by completed RV02 audit; raw SONNET follow-up for refinement. No implementation change made by the audit.",
+ "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C2 REVIEWER:Sonnet medium reviewer batch; non-Claude spec review owed before take (C2) WEIGHT:CRUCIAL. Dependency rv02-fix-dax-preprocessing-isolation is done. Synthetic data only, so the lab-base HOLD never applied. UNBLOCKED 2026-10-18: operator lifted the holds in chat (DAX chain q11 hold, A-20261018-5); no-FDAX-data-purchase rule stays. Results built on lab bases stay labelled UNCHECKED. [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | Captured by completed RV02 audit; raw SONNET follow-up for refinement. No implementation change made by the audit.",
  "pinned": false,
  "prio": 1,
  "refine_tries": 0,
@@ -39,9 +39,10 @@
  ],
  "state": "refined",
  "steps": [
-  "Read the linked RV02 finding and executable synthetic appendix.",
-  "Refine the implementation boundary and reproduce the finding red with synthetic data.",
-  "Fix within the approved scope, invalidate incompatible caches, and run the focused tests."
+  "read RV02 R4 (2026-10-12_rv02-dax-harness-fixes.md:27; tom_dax_bt.py bars_identity ~759, generation_environment ~647, cmd_gen ~673, freeze_run) and write the synthetic red test first",
+  "record bars_identity(execution bars) in the snapshot producer provenance at generation; before rows_for_snapshot/freeze_run compare it to the authorized execution archive identity and raise on mismatch (fail closed)",
+  "invalidate caches whose provenance lacks the identity (regeneration required); same data passes; no holdout bytes read or hashed",
+  "run the focused test file and python scripts/dev/run_all_tests.py --quick"
  ],
  "tests": "Freeze synthetic snapshots at price 100, revise bars to 200 before fresh rows: reject and require regeneration; same data passes; no holdout bytes read or hashed.",
  "title": "RV02 R4: reject DAX snapshots made from different execution data",
