@@ -173,5 +173,19 @@ class TestH6(unittest.TestCase):
         self.assertIn('gLHd "30 to 40 on NQ" slide is secondary', spec)
 
 
+class Test9I5vTvwsMBk(unittest.TestCase):
+    def test_9i5v_documented_in_ledger(self):
+        md = MD.read_text(encoding='utf-8')
+        self.assertIn('9I5vTvwsMBk', md)
+        self.assertIn('f298', md)
+        self.assertIn('SECONDARY_NOT_SOURCED', md)
+
+    def test_9i5v_rows_have_frame_or_not_in_data(self):
+        r = rows()
+        for k, row in r.items():
+            if '9I5v' in row.get('video', ''):
+                self.assertTrue(row['frame'].startswith('F:/MTS/data/fabio_videos/frames/9I5v') or row['frame'] == 'NOT_IN_DATA', k)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-18T12:36:52Z",
   "commands": [],
   "created": "2026-10-11T06:50:57Z",
   "depends_on": [],
@@ -11,6 +13,12 @@
   "id": "fabio-ledger-get-9i5vtvwsmbk-f398-not-av",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "read in f298; no live trades found",
+      "ref": "49aa8ce6",
+      "utc": "2026-10-18T12:36:52Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -36,7 +44,7 @@
   "refined_by": "",
   "refreshed": "2026-10-18T03:29:40Z",
   "refs": [],
-  "result": "",
+  "result": "read in f298; no live trades found",
   "scope_in": [
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
@@ -51,13 +59,14 @@
   "scope_sha": "61cf8a7d3634",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "python -m yt_dlp -F 9I5vTvwsMBk (public); pick the best video format with height >= 360 (try --extractor-args youtube:player_client=android/ios/web_safari if only 144-240p); download to F:/MTS/data/fabio_videos only; if height stays < 360 write that finding and stop (NOT_IN_DATA)",
     "cut 30 s contact sheets the way earlier passes did (DyS79Eb92Ug sheets under F:/MTS/data/fabio_videos); screen titles/ASR first, read only sheets near trade talk (cap 5 caption fetches, 429 ends caption work for the day)",
     "per live trade add CSV rows with frame time; fields not visible = NOT_IN_DATA; dedupe by Daily P/L against DyS79Eb92Ug rows F6-F14 before adding",
     "update the Find-more section line 48 and the PARTIAL coverage text in ledger_stats.py; regenerate; tests: python MyTradingSys/research/fabio_transfer/test_ledger_audit.py"
   ],
+  "taken": "2026-10-18T12:36:37Z",
   "tests": "python MyTradingSys/research/fabio_transfer/test_ledger_audit.py green; new CSV rows each carry a frame time or NOT_IN_DATA",
   "title": "Fabio ledger: get 9I5vTvwsMBk (f398 not available; try another format/client) and read it for trades",
   "weight": "ROUTINE",
