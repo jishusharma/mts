@@ -1,36 +1,74 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "claim": "ru2-desk-sweep",
+  "commands": [
+    "python scripts/dev/desk.py sweep --json",
+    "python -m pytest MyTradingSys/tests/test_desk_sweep.py -q",
+    "python scripts/dev/role_loader.py check"
+  ],
   "created": "2026-10-18T17:22:47Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "`python scripts/dev/desk.py sweep` runs on current trunk without changing any file or row, prints the trunk sha and a summary line; MyTradingSys/tests/test_desk_sweep.py passes (duplicate, stale, likely-done, blocked each get the right proposal; second run identical; local rows differing from trunk ignored); pipeliner.md says to start with desk.py sweep and `role_loader.py check` exits 0.",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Add `desk.py sweep [--json]` (dry-run): reads desk rows from origin/fast-track, proposes STALE / LIKELY DONE / DUPLICATE / WRONG TARGET / BLOCKED per pending row with evidence. Plan RU2.",
   "id": "ru2-pipeliner-desk-py-sweep-dry-run-stal",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "roles: fix stale texts (Eagle_Eyes no compaction, Lab_Guy stamps enforced, Pipeliner drain",
+      "ref": "59b5144d5d99",
+      "utc": "2026-10-18T17:54:01Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "59b5144d5d99 roles: fix stale texts (Eagle_Eyes no compaction, Lab_Guy stamps enforced, Pi",
+      "ref": "MyTradingSys/system/roles/pipeliner.md",
+      "utc": "2026-10-18T17:54:01Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "mutation_check": "",
+  "mutation_check": "Each new test fails on pre-change desk.py (no sweep function).",
   "note": "",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-18T18:22:26Z",
   "refs": [
     "MyTradingSys/research/roles/ROLE_UPGRADES_2026-10-18.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/desk.py",
+    "MyTradingSys/tests/test_desk_sweep.py",
+    "MyTradingSys/system/roles/pipeliner.md"
+  ],
+  "scope_out": [
+    "scripts/dev/tasks.py (RU1 session)",
+    "closing or editing any desk row",
+    "live tree, HALT files, trades"
+  ],
+  "scope_sha": "59b5144d5d99",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "active",
+  "steps": [
+    "Read desk rows via git ls-tree/show on origin/fast-track (no local files)",
+    "Implement sweep(as_of) classifiers + CLI in scripts/dev/desk.py (no tasks.py edit)",
+    "Write fixture tests in MyTradingSys/tests/test_desk_sweep.py",
+    "Add one line to roles/pipeliner.md each-opening section, bump version, role_loader.py retoken, check",
+    "Run run_all_tests.py --quick, ship"
+  ],
+  "taken": "2026-10-18T18:22:33Z",
+  "tests": "MyTradingSys/tests/test_desk_sweep.py",
   "title": "RU2 Pipeliner: desk.py sweep --dry-run (stale rows, claims, delivered-on-trunk, lane depth)",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }
