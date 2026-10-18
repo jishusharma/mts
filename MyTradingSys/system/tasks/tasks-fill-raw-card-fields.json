@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T18:39:26Z",
+  "depends_on": [],
+  "done_when": "`tasks.py fill <raw-id> ...` with all required flags promotes the card to ready; missing flags print the same NOT READY list as check; test_tasks_fill.py passes.",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Add `tasks.py fill <id> --size --worker --est-turns --goal --done-when --tests --scope-in --step ...` that sets raw-card fields (repeatable list flags), then runs the same check so raw cards promote without hand JSON edits.",
+  "id": "tasks-fill-raw-card-fields",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tasks.py dispatch: one ranked dispatch snapshot for Session_Planner (RU1)",
+      "ref": "93560b51e352",
+      "utc": "2026-10-18T18:24:23Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "Each new test fails on pre-change tasks.py.",
+  "note": "same file as RU5/RU6, so it runs after them. Routed by Pipeliner 2026-10-18; edits tasks.py: run after RU5 and RU6 ship (same file)",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T18:39:53Z",
+  "refs": [
+    "MyTradingSys/research/roles/ROLE_UPGRADES_2026-10-18.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "MyTradingSys/tests/test_tasks_fill.py"
+  ],
+  "scope_out": [
+    "lab/CODEX-only fields",
+    "live tree"
+  ],
+  "scope_sha": "93560b51e352",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read cmd_new, cmd_check, problems() in tasks.py",
+    "Add fill subparser and cmd_fill using save() then problems()",
+    "Fixture test: raw card filled via flags becomes ready; bad worker rejected",
+    "Run run_all_tests.py --quick, ship"
+  ],
+  "tests": "MyTradingSys/tests/test_tasks_fill.py",
+  "title": "tasks.py fill: set raw-card fields from flags so raw cards close without hand edits",
+  "weight": "",
+  "worker": "agent"
+}

@@ -4,33 +4,55 @@
   "commands": [],
   "created": "2026-10-18T17:22:51Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "`python scripts/dev/shot.py bundle <set>` prints one packet for a stored multi-chart set and flags a stale mirror without using it; test_shot_bundle.py passes.",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Add `shot.py bundle <set>`: one evidence packet per stored multi-chart set (classification, engine snapshot, previous read, open mismatches, mirror age) plus an extract stub with MATCH/MISMATCH lines (RU3).",
   "id": "ru3-eagle-eyes-shot-py-bundle-evidence-p",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "nowin: hooks run windowless; a console-less python counts as windowless",
+      "ref": "c51c1a3aa6ce",
+      "utc": "2026-10-18T17:05:45Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "mutation_check": "",
-  "note": "",
+  "mutation_check": "Each new test fails on pre-change code.",
+  "note": " routed by Pipeliner 2026-10-18 (ROUTING.md)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-18T18:38:50Z",
   "refs": [
     "MyTradingSys/research/roles/ROLE_UPGRADES_2026-10-18.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/shot.py",
+    "MyTradingSys/tests/test_shot_bundle.py"
+  ],
+  "scope_out": [
+    "live tree, HALT files, trades",
+    "other scripts"
+  ],
+  "scope_sha": "c51c1a3aa6ce",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read shot.py and roles/eagle_eyes.md for the current manual boot steps",
+    "Implement bundle subcommand reusing existing classify/snapshot helpers",
+    "Fixture test: stored set -> one packet; stale mirror flagged",
+    "Run run_all_tests.py --quick, ship"
+  ],
+  "tests": "MyTradingSys/tests/test_shot_bundle.py",
   "title": "RU3 Eagle_Eyes: shot.py bundle evidence packet",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }
