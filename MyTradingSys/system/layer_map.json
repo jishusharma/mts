@@ -1111,7 +1111,7 @@
    "fees": null,
    "interaction": null,
    "effects": "ground-truth legs only; no layer scored here",
-   "n": null,
+   "n": "all legs (ATR zigzag): 4h 1,930; 1h 8,173; 15m 33,790; 5m 105,235",
    "verdict": "ground truth, no verdict",
    "report": "MyTradingSys/research/bigtrade_2026-10-09/BIGMOVES_REPORT.md",
    "read": "header"
@@ -1132,7 +1132,7 @@
     "turn_of_candle"
    ],
    "params": "19 live keys replayed",
-   "split": null,
+   "split": "none: fire history, no split-based result",
    "fees": "none (fire counts and parity)",
    "interaction": null,
    "effects": "244,543 fires; spot rerun parity 92-100 %, turn_of_candle side mismatches 0",

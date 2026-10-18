@@ -156,6 +156,24 @@ class RealRegistry(unittest.TestCase):
             self.assertEqual(r["verdict"], "INCONCLUSIVE")
             self.assertEqual(r["kill_scope"], "none")
 
+    def test_t087_split_all_and_verdict_inconclusive(self):
+        # RESULT.md:3 rule n >= 300 and t >= 2.0; no cell passes (cells below n=300 read insufficient n)
+        rs = self.row("t087_session_levels_2026-10-09")
+        self.assertTrue(rs)
+        for r in rs:
+            self.assertTrue(r["split_read"].startswith("ALL"), r["split_read"])
+            self.assertEqual(r["verdict"], "INCONCLUSIVE")
+            self.assertEqual(r["kill_scope"], "none")
+
+    def test_weekly_low_kill_scope_v1_only(self):
+        # DEFAULT (OURS) 2026-10-18, no operator sentence: V1 only, family stays open
+        rs = self.row("opr_weekly_low_round_sweep_2026-10-16")
+        self.assertEqual({r["arm"][:2] for r in rs}, {"RL", "AS"})
+        for r in rs:
+            self.assertNotEqual(r["kill_scope"], V.UNP)
+            self.assertTrue(r["kill_scope"].startswith("V1 only"), r["kill_scope"])
+            self.assertIn("family stays open", r["kill_scope"])
+
     def test_every_override_has_source_and_it_exists(self):
         for o in self.ov:
             self.assertTrue(o["source"].strip())
