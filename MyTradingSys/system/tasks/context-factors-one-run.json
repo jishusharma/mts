@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C1",
   "commands": [
     "python -m pytest MyTradingSys/research/context_factors_pit_2026-10-16 -q",
     "python -m pytest MyTradingSys/research/context_null_2026-10-16 -q",
@@ -9,7 +10,8 @@
   ],
   "created": "2026-10-16T16:47:31Z",
   "depends_on": [
-    "context-factors-pit-audit"
+    "context-factors-pit-audit",
+    "context-factors-pre-reg-v3"
   ],
   "done_when": "CROSS_ENGINE.md and episodes.csv committed before any outcome file; RESULT.md with the 14-cell table (verdict words per PRE_REG_V2 s.4, day- and week-clustered t, MDE_real, kappa); 14 VERDICTS.csv rows; lint and quick gate green; shipped.",
   "est_turns": 30,
@@ -17,12 +19,22 @@
   "goal": "Run research/context_factors_pit_2026-10-16/PRE_REG_V2.md once, as written: count-only cross-engine agreement with the Opus frames first (CROSS_ENGINE.md), then the ladder outcome per episode and the 14 cells against context_null matched controls in day units with the realised-MDE verdict rule; RESULT.md + 14 verdicts.py rows.",
   "id": "context-factors-one-run",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "verdicts: sourced overrides file; eur one_run=yes, orderflow kill_scope, t090 split/verdic",
+      "ref": "a440450b50a9",
+      "utc": "2026-10-17T14:26:34Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "note": "Zero operator input: PRE_REG_V2 s.0-7 name every default. Four cells are powered by design (F1, F2 both sides); the other ten are computed and printed, INCONCLUSIVE or FAIL-by-realised-MDE only. PRE_REG.md (episode units) is frozen and is never run. The folder is context_factors_pit_2026-10-16 because research/context_factors_2026-10-16 on fast-track is the Opus run of the same prompt (its PRE_REG was read once); read it, never write there.",
+  "note": "UNBLOCK PATH 2026-10-18: the audit defect is fixed by card context-factors-pre-reg-v3; HOLD-CLEARED A-20261018-5 (lifted by the operator). Waits on that card, then needs the real Lab_Guy stamp (CRUCIAL). | STAYS BLOCKED: defect, not a hold: its audit context-factors-pit-audit ended FIX-FIRST on items 1-2 (664cf00a). [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] HOLD A-20261018-5: reads an unchecked lab base; start only when the base carries a trust tag >= its class (lab-trust-tag) or the operator lifts it. Zero operator input: PRE_REG_V2 s.0-7 name every default. Four cells are powered by design (F1, F2 both sides); the other ten are computed and printed, INCONCLUSIVE or FAIL-by-realised-MDE only. PRE_REG.md (episode units) is frozen and is never run. The folder is context_factors_pit_2026-10-16 because research/context_factors_2026-10-16 on fast-track is the Opus run of the same prompt (its PRE_REG was read once); read it, never write there.\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C1 weight=IMPORTANT); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "gemini-nuc",
+  "refreshed": "2026-10-18T05:12:53Z",
   "refs": [
     "research/context_factors_pit_2026-10-16/PRE_REG_V2.md",
     "research/context_factors_pit_2026-10-16/COMPARISON.md"
@@ -45,6 +57,7 @@
     "MyTradingSys/research/context_factors_2026-10-16/ (the Opus run: read-only; run_dev.py vec may be executed, nothing written)",
     "PRE_REG.md and PRE_REG_V2.md of this folder (frozen)"
   ],
+  "scope_sha": "a440450b50a9",
   "size": "M",
   "sources": [
     "research/context_factors_pit_2026-10-16/PRE_REG.md (sections 0-9)",
@@ -53,8 +66,9 @@
     "research/context_null_2026-10-16/context_null.py:163-276 run()",
     "backtest/research_kit.py:102-146 power_check, holm"
   ],
-  "state": "blocked",
+  "state": "refined",
   "steps": [
+    "PRE_REG_V3.md (card context-factors-pre-reg-v3) supersedes PRE_REG_V2 s.2 and s.4 and adds the stop-width step: apply it wherever the steps below say V2.",
     "Confirm AUDIT_BEFORE_RUN.md exists in the folder with the word OK (card context-factors-pit-audit); on FIX-FIRST write BLOCKED.md and stop. Record the sha of context_asof.py and PRE_REG_V2.md.",
     "python run_compare.py (grid_context.csv, gitignored) and python episode_counts.py; counts must equal EPISODE_COUNTS.md; print the day table and check it equals PRE_REG_V2.md s.2 (a mismatch = BLOCKED).",
     "Cross-engine step (PRE_REG_V2 s.5): rebuild the Opus frames read-only with `python MyTradingSys/research/context_factors_2026-10-16/run_dev.py vec` (never edit that folder), join on (utc_close, side), write CROSS_ENGINE.md with agreement % and kappa per factor pair; commit 'context-factors: cross-engine agreement (no outcome)'.",
@@ -66,5 +80,7 @@
   ],
   "tests": "test_outcome.py: stop exit with a gap (fill at min(open, stop)), target exit, both-touched bar = stop, 24h time exit, dropped entry, hand numbers; test_context_null: outcome=None unchanged; the 18 test_context_asof tests stay green",
   "title": "Context factors: one-run filter verdicts vs context_null (PRE_REG frozen)",
-  "worker": "session"
+  "weight": "IMPORTANT",
+  "worker": "session",
+  "updated": "2026-10-18T10:00:00Z"
 }

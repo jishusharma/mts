@@ -4,27 +4,57 @@
   "commands": [],
   "created": "2026-10-15T09:54:26Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "test_sim_planted_edge.py passes, and fails when stop_first is flipped in a scratch copy; result line states trades matched 20 of 20.",
+  "est_turns": 25,
   "from_inbox": "",
-  "goal": "",
+  "goal": "Validate the tom_bt simulator end to end: a planted edge must be recovered, a fee-including null must give the negative net the fees imply, and the trade list must equal a hand-built expected list (operator q16).",
   "id": "simulator-validation-planted-edge",
-  "lane": "SONNET",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab gap-g4-through-ticks-flag: DONE (build)",
+      "ref": "52530e64c23f",
+      "utc": "2026-10-15T14:32:14Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "REVIEWED:2026-10-18 ACCEPT [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use]",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": [
-    "q17"
-  ],
+  "refreshed": "2026-10-17T20:21:23Z",
+  "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Simulator validation: planted edge in tom_bt/sim, a null that includes fees, a trade-list diff (q16)"
+  "scope_in": [
+    "MyTradingSys/backtest/test_sim_planted_edge.py (new)",
+    "MyTradingSys/backtest/tom_bt.py (read only)",
+    "MyTradingSys/backtest/fees.py (read only)"
+  ],
+  "scope_out": [
+    "tom_bt.py edits",
+    "real market data",
+    "VALIDATION and HOLDOUT",
+    "live tree"
+  ],
+  "scope_sha": "52530e64c23f",
+  "size": "M",
+  "sources": [
+    "q16 (operator, 2026-10-14)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Build synthetic 1m Bars1m (style of test_tom_bt.mk): 20 signals, 12 hit the target and 8 hit the stop, by construction.",
+    "Include 2 bars where one bar touches both stop and target; expect the stop fill (stop_first=True); the mutation test flips stop_first and must then fail on exactly those bars.",
+    "Expected net R per trade and the mean computed by hand from fees.py rates (write the arithmetic in the test); assert run_variant output equals the expected list trade by trade.",
+    "Null: flat-noise bars, same signals; assert mean net R equals minus the round-turn fee in R within 0.01.",
+    "Planted: assert the recovered mean net R equals the hand value within 1e-9."
+  ],
+  "tests": "test_sim_planted_edge.py: expected numbers hand-derived, never from run_variant; a one-line mutation (stop_first flipped) must fail it.",
+  "title": "Simulator validation: planted edge in tom_bt/sim, a null that includes fees, a trade-list diff (q16)",
+  "weight": "CRUCIAL",
+  "worker": "session"
 }

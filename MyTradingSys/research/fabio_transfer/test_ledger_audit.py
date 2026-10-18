@@ -21,7 +21,7 @@ def rows():
 class TestH1(unittest.TestCase):
     def test_prices(self):
         r = rows()
-        self.assertTrue(r['F8']['entry'].startswith('25034.53'))
+        self.assertTrue(r['F8']['entry'].startswith('25034.50'))
         self.assertTrue(r['F9']['stop'].startswith('25019.44'))
         self.assertTrue(r['F10']['entry'].startswith('~25040.00'))
         self.assertTrue(r['F12']['entry'].startswith('25105.78'))
@@ -29,8 +29,8 @@ class TestH1(unittest.TestCase):
         self.assertTrue(r['F12-m2']['entry'].startswith('25108.50'))
         self.assertTrue(r['F12-m2']['stop'].startswith('25098.75'))
         self.assertTrue(r['F12-m2']['target'].startswith('25148.75'))
-        self.assertTrue(r['F13']['entry'].startswith('25108.90'))
-        self.assertTrue(r['F13-m1']['entry'].startswith('25108.05'))
+        self.assertTrue(r['F13']['entry'].startswith('25106.50'))
+        self.assertTrue(r['F13-m1']['entry'].startswith('25108.00'))
 
     def test_f13_add_is_buy_and_old_values_gone(self):
         r = rows()
@@ -72,6 +72,24 @@ class TestH2(unittest.TestCase):
         self.assertIn('Audit correction H2', t)
         self.assertNotIn('TP filled ~25001.00', t)
         self.assertNotIn('(TP hit, minus costs)', t)
+
+    def test_f13_gap_1150_not_in_data(self):
+        r = rows()
+        f13x = r['F13-x']
+        exit_price = f13x.get('exit', f13x['entry'])
+        self.assertIn(exit_price, ['-', ''])
+        self.assertIn('1150', f13x['note'])
+        self.assertIn('NOT_IN_DATA', f13x['note'])
+        self.assertNotIn('plus costs/slippage', f13x['note'])
+
+
+        t = MD.read_text(encoding='utf-8')
+        f13_m = re.search(r'F13 \(DyS79Eb92Ug t=3525-3775\):[^\n]+', t)
+        self.assertIsNotNone(f13_m)
+        f13_text = f13_m.group(0)
+        self.assertIn('1150', f13_text)
+        self.assertIn('NOT_IN_DATA', f13_text)
+
 
 
 class TestH3(unittest.TestCase):
@@ -153,6 +171,20 @@ class TestH6(unittest.TestCase):
         self.assertIn('SECONDARY_NOT_SOURCED, H6', cat)
         spec = (self.ROOT / 'MyTradingSys/research/layer_readiness_2026-10-16/BIGTRADE_SPEC.md').read_text(encoding='utf-8')
         self.assertIn('gLHd "30 to 40 on NQ" slide is secondary', spec)
+
+
+class Test9I5vTvwsMBk(unittest.TestCase):
+    def test_9i5v_documented_in_ledger(self):
+        md = MD.read_text(encoding='utf-8')
+        self.assertIn('9I5vTvwsMBk', md)
+        self.assertIn('f298', md)
+        self.assertIn('SECONDARY_NOT_SOURCED', md)
+
+    def test_9i5v_rows_have_frame_or_not_in_data(self):
+        r = rows()
+        for k, row in r.items():
+            if '9I5v' in row.get('video', ''):
+                self.assertTrue(row['frame'].startswith('F:/MTS/data/fabio_videos/frames/9I5v') or row['frame'] == 'NOT_IN_DATA', k)
 
 
 if __name__ == '__main__':

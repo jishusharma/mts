@@ -1,0 +1,54 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "C:/Users/E-ngineers/.gemini/bin/agy.exe --print \"Open the image <name> in this folder. It is a trading platform screenshot. Reply with ONLY a JSON object {position, entry, stop, target}; use null for any value you cannot read, null is a valid answer.\" --model gemini-4-argon-low   (run with cwd = the scratch agy_in folder, once per frame and crop)"
+  ],
+  "created": "2026-10-17T20:39:20Z",
+  "depends_on": [],
+  "done_when": "a results file with blind-read output (required null option, no claim shown) of gemini-4-argon-low on the 7 frames is committed under research/lab_guy/pilots/2026-10-18_gemini_frame_read/, compared to the audit truth in code, plus a written value for 25200 vs 25206 and for the 0550 stop from a larger crop (or 'unreadable')",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Know whether Argon (gemini-4-argon-low) reads the 7 hard Tom frames better than Flash, and settle 25200 vs 25206 (k0zm_1510_1720) and the T6hDJcHrVBM_0550 stop from larger crops.",
+  "id": "argon-blind-read-7-frames",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "[weight=IMPORTANT class=C0 lab-touch=no worker=session] Follow-up of the 2026-10-18 Flash pilot (MyTradingSys/research/lab_guy/pilots/2026-10-18_gemini_frame_read/). Rules: roles/lab_guy.md 'Using Gemini ... to read images'. LIMITATION: headless agy.exe cannot be handed a file path argument; the image is copied into a scratch folder, agy.exe runs with that folder as cwd and the prompt names the file ('Open the image <name> in this folder'), as in the pilot. Scratch only, never the repo or live tree; frames may carry account data so do not commit images.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T20:39:52Z",
+  "refs": [
+    "MyTradingSys/system/GEMINI_START.md",
+    "MyTradingSys/system/roles/lab_guy.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/lab_guy/pilots/2026-10-18_gemini_frame_read/"
+  ],
+  "scope_out": [
+    "live tree",
+    "HALT files",
+    "deploys"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Make a scratch folder agy_in; copy the 7 frames listed in the pilot README from F:/MTS/data/tom_videos/frames; crop k0zm_1510_1720.png into its top and bottom panels and make 2x crops of the stop/target labels for k0zm and T6hDJcHrVBM_0550 (PIL)",
+    "For each frame/crop run from agy_in (command below; no claim in the prompt, null is a valid answer; never --dangerously-skip-permissions)",
+    "Compare outputs to the audit truth table in the pilot json in code; a number for a hidden field = invented; write results_argon-low.json and add Argon vs Flash counts to the pilot README",
+    "For 25200 vs 25206 and the 0550 stop report the crop reads; if Argon disagrees with itself or Flash mark CONTESTED for a human read, do not pick one"
+  ],
+  "tests": "the comparison script exits non-zero if a prompt contains a claim value or the schema lacks the null option",
+  "title": "Run Argon blind-read with null option on the 7 Gemini-pilot frames; settle 25200 vs 25206 and the T6hDJcHrVBM_0550 stop from a larger crop",
+  "weight": "",
+  "worker": "session"
+}

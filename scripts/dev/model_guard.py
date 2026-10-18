@@ -7,8 +7,14 @@ Claude Code PreToolUse hook (project .claude/settings.json), on the calls that s
   Agent / Task                          `model` must be given and be sonnet or haiku; a fork (inherits) only from a cheap session
   mcp__ccd_session__start_session       same; `proposal_id` alone (starting a proposal already checked) and cloud starts pass
   mcp__ccd_session_mgmt__set_session_model   only sonnet or haiku
+No click cards (operator 2026-10-18: "I am not sitting in front of the screen"): start_session with initiation "offer" or "own_initiative"
+(or none) is denied for every model, Opus included, because the operator must click to start it and may be away. Use initiation
+"user_asked" (starts now), or the Agent tool with model='sonnet' when the app refuses that on an event turn. MTS_ALLOW_CARDS=1 allows.
 Anything else passes. A blocked call gets a deny with the fix in the reason, so the model retries with model=sonnet.
-Worker type and model rule: MyTradingSys/system/WORKERS.md. Opus is still possible: the operator picks it in the app's model menu (the hook never sees that) or sets MTS_ALLOW_OPUS=1.
+Opus is allowed in two cases only (operator 2026-10-17: "whenever I say use Opus, it must be done" and "only critical tasks, a little
+tighter"): (1) the operator's LATEST typed message names it ("opus"/"fable"); (2) the brief cites a task card that is lane OPUS,
+`approved_by` set and `crucial` filled (tasks.py lint enforces the pair). Everything else is denied, and a call without `model` is
+always denied, so an inherited model can never slip in. MTS_ALLOW_OPUS=1 allows all.
 
   python scripts/dev/model_guard.py check '<tool_input json>' <tool_name> [parent_model]   prints the decision (debug)
 """
@@ -48,8 +54,82 @@ def parent_model(transcript_path):
     return None
 
 
+NAMED = ("opus", "fable")
+SKIP_PREFIX = ("<system-reminder>", "<local-command", "<command-name>", "[SIGNALS", "<task-notification", "<side-sessions-event")
+
+
+TASKS = os.environ.get("MTS_TASKS_DIR") or os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+                                                         "MyTradingSys", "system", "tasks")
+
+
+def crucial_card_cited(*texts):
+    """True when a brief cites a task card (its id, a file in system/tasks) that is lane OPUS, operator-approved and has a `crucial` reason.
+    A session may start Opus on its own only for such a card; the card gate is `tasks.py` lint (WORKERS.md rule 6)."""
+    blob = " ".join(str(t or "") for t in texts)
+    try:
+        names = [n[:-5] for n in os.listdir(TASKS) if n.endswith(".json")]
+    except OSError:
+        return False
+    for cid in names:
+        if cid in blob:
+            try:
+                with open(os.path.join(TASKS, cid + ".json"), encoding="utf-8") as f:
+                    c = json.load(f)
+            except (OSError, ValueError):
+                continue
+            if c.get("lane") == "OPUS" and c.get("approved_by") and str(c.get("crucial", "")).strip() and c.get("state") not in ("done", "dropped"):
+                return True
+    return False
+
+
+def operator_named_opus(transcript_path, last=1):
+    """True when the operator's latest typed message in the transcript tail mentions opus/fable."""
+    try:
+        with open(transcript_path, "rb") as f:
+            f.seek(0, 2)
+            f.seek(max(0, f.tell() - (1 << 20)))
+            lines = f.read().decode("utf-8", "replace").splitlines()
+    except (OSError, TypeError, ValueError):
+        return False
+    seen = 0
+    for line in reversed(lines):
+        try:
+            d = json.loads(line)
+        except ValueError:
+            continue
+        if d.get("type") != "user" or d.get("isMeta"):
+            continue
+        c = (d.get("message") or {}).get("content")
+        parts = [c] if isinstance(c, str) else [b.get("text", "") for b in (c or []) if isinstance(b, dict) and b.get("type") == "text"]
+        text = " ".join(t for t in parts if t and not t.lstrip().startswith(SKIP_PREFIX))
+        if not text.strip():
+            continue
+        if any(n in text.lower() for n in NAMED):
+            return True
+        seen += 1
+        if seen >= last:
+            return False
+    return False
+
+
+CARD_FIX = ("No click cards: the operator is away. Use initiation='user_asked' (starts at once), or the Agent tool with model='sonnet' "
+            "when the app refuses user_asked on an event turn; note the work in your log instead of offering it.")
+
+
+def card_reason(tool, inp):
+    """Deny reason when start_session would show the operator a card to click, else None."""
+    if tool != START or os.environ.get("MTS_ALLOW_CARDS") == "1":
+        return None
+    inp = inp or {}
+    if inp.get("proposal_id") or inp.get("initiation") == "user_asked":
+        return None
+    return f"start_session with initiation={inp.get('initiation')!r} waits for an operator click. " + CARD_FIX
+
+
 def decide(tool, inp, parent):
     """None = allow, else the deny reason."""
+    if card_reason(tool, inp):
+        return card_reason(tool, inp)
     if os.environ.get("MTS_ALLOW_OPUS") == "1":
         return None
     inp = inp or {}
@@ -84,6 +164,14 @@ def hook():
     if tool not in AGENT_TOOLS + (START, SET_MODEL):
         return 0
     inp = ev.get("tool_input") or {}
+    card = card_reason(tool, inp)
+    if card:
+        print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
+                                                 "permissionDecisionReason": "model_guard: " + card}}))
+        return 0
+    if inp.get("model") and (operator_named_opus(ev.get("transcript_path"))
+                             or crucial_card_cited(inp.get("title"), inp.get("prompt"), inp.get("background"), inp.get("description"))):
+        return 0
     needs_parent = inp.get("subagent_type") == "fork" or inp.get("context") == "fork"
     reason = decide(tool, inp, parent_model(ev.get("transcript_path")) if needs_parent else None)
     if reason:

@@ -1,32 +1,68 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-18T04:11:42Z",
   "commands": [],
   "created": "2026-10-14T13:52:23Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "research/eur_low_us_sweep_followups_2026-10-18/RESULT.md with 3 legs, each PASS/FAIL/BLOCKED by gate, n, mean, t per split; PRE_REG.md predates the run; VERDICTS rows. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+  "est_turns": 35,
   "from_inbox": "",
-  "goal": "",
+  "goal": "RESULT.md left three open legs: (a) long after sweep+reclaim, with a stability test; (b) LTF RSI-divergence short from the daily high; (c) pre-US double-top short. Test each on its own frozen definition, fee-net, DEV/VAL/HOLDOUT.",
   "id": "eu-low-us-sweep-follow-ups-long-after-sw",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "BLOCKED by power gate: A n=133 (MDE+cost 0.47 R), B n=208 (0.47 R), C n=100 (0.51 R) > 0.3",
+      "ref": "ecefc522",
+      "utc": "2026-10-18T04:11:42Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "eur-low-us-sweep: retested low -> US-window break study + leveraged ladder test (operator ",
+      "ref": "045bb84b5b6b",
+      "utc": "2026-10-14T13:59:38Z"
+    }
+  ],
   "layers": [
     "session_timing"
   ],
   "live_path": false,
-  "note": "",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:results CLASS:C1 REVIEWER:GPT medium + Haiku re-derive 1-3 numbers WEIGHT:IMPORTANT. A-20261018-5 hold LIFTED 2026-10-18. Base eur_low_us_sweep is exploratory (all numbers OURS). Defaults: HOLDOUT = 2026 as in RESULT.md; max 3 legs, one run each (one_run).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-18T03:29:54Z",
   "refs": [
     "MyTradingSys/research/eur_low_us_sweep_2026-10-14/RESULT.md"
   ],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "result": "BLOCKED by power gate: A n=133 (MDE+cost 0.47 R), B n=208 (0.47 R), C n=100 (0.51 R) > 0.30 R; no outcome read; research/eur_low_us_sweep_followups_2026-10-18/RESULT.md",
+  "scope_in": [
+    "MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/",
+    "MyTradingSys/research/eur_low_us_sweep_2026-10-14/study.py"
+  ],
+  "scope_out": [
+    "live code",
+    "Tom layer changes",
+    "leverage ladders (already negative)",
+    "sealed window 2025-07+ unless the PRE_REG says HOLDOUT=2026 as in RESULT.md"
+  ],
+  "scope_sha": "045bb84b5b6b",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "EU-low/US-sweep follow-ups: long after sweep+reclaim (stability test), LTF RSI-divergence short from daily high, pre-US double-top short; reuse eur_low_us_sweep study.py harness (ladder + leverage equity/DD)"
+  "state": "done",
+  "steps": [
+    "reuse study.py load/day_event/stats (import, do not edit); run verdicts.py check per leg: leg (a) matches opr_weekly_low_round_sweep (FAIL, weekly-low/round-number 1m breaks) so PRE_REG states why it differs (EU-session 24h low, day-level T0 event); legs (b),(c) have no prior row",
+    "PRE_REG.md per leg before any run: entry, stop, target, exit, RSI(14) period and divergence rule, double-top tolerance, all OURS; then python scripts/dev/prereg_gate.py --n <days> --sd <sd R> --cost <R> --m 3; a BLOCK parks that leg in the RESULT with the numbers",
+    "leg (a) stability test: DEV/VAL/HOLDOUT same sign, plus leave-one-year-out; fee 0.05%/side, funding not modelled (state it)",
+    "RESULT.md with per-leg verdict and a VERDICTS.csv row each (verdicts.py backfill)"
+  ],
+  "taken": "2026-10-18T04:11:34Z",
+  "tests": "test_followups.py: planted-sweep fixture gives the exact reclaim time and R computed by hand; fails before the leg function exists",
+  "title": "EU-low/US-sweep follow-ups: long after sweep+reclaim (stability test), LTF RSI-divergence short from daily high, pre-US double-top short; reuse eur_low_us_sweep study.py harness (ladder + leverage equity/DD)",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

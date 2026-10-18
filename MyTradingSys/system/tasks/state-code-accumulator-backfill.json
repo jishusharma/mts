@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "mvn -q test -Dtest=StateCodeEmitterTest",
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-10-17T20:31:36Z",
+  "depends_on": [],
+  "done_when": "StateCodeEmitterTest green incl. the new cases that fail on old code; replay CVD within 0.1 BTC of klines; no deploy by the builder. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "StateCodeEmitter loses ticks after a restart or WS reconnect: session CVD (-367 BTC off) and VWAP sums (26.8% volume missing) are partial-session values shown as session values. Backfill and fail closed on backfill error (audit M1/M2).",
+  "id": "state-code-accumulator-backfill",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "retention: schedule daily (MTS-Retention, launch-retention.vbs); drop write-only session_e",
+      "ref": "98b94b97f340",
+      "utc": "2026-10-08T17:32:49Z"
+    }
+  ],
+  "layers": [
+    "live_engine"
+  ],
+  "live_path": true,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C2 REVIEWER:GPT high cross-vendor code review before deploy WEIGHT:CRUCIAL. Live-path state feeding Tom; deploy only via DEPLOY_RUNBOOK.md by hand.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T21:38:53Z",
+  "refs": [
+    "MyTradingSys/research/audits/state_cvd_vwap_audit_2026-10-18.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "src/main/java/datafeed/StateCodeEmitter.java",
+    "src/test/java/datafeed/StateCodeEmitterTest.java"
+  ],
+  "scope_out": [
+    "MarketDataSnapshot.java",
+    "order paths",
+    "HALT files",
+    "live tree deploy"
+  ],
+  "scope_sha": "98b94b97f340",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read audit M1/M2 and StateCodeEmitter.java:179-189,470-474",
+    "on start and on WS reconnect backfill session cvd, cum_pv, cum_vol from the UTC day start to now; if the backfill fails or is incomplete mark the state invalid (fail closed), never present partial sums",
+    "tests (each fails first on old code): restart mid-day, WS reconnect gap, backfill API error gives invalid state, non-trade balance move leaves sums unchanged",
+    "compare emitted CVD to klines on a replay fixture within 0.1 BTC"
+  ],
+  "tests": "StateCodeEmitterTest: restart, reconnect gap, API error fail-closed, continuous control exact",
+  "title": "StateCodeEmitter: backfill session CVD/cum_pv/cum_vol after restart and WS reconnect, fail closed on backfill error (audit M1/M2)",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

@@ -1,31 +1,72 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T18:21:16Z",
   "commands": [],
   "created": "2026-10-12T15:34:42Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "chart_verify.py runs for BTCUSDT 1m and 15m and prints MATCH/MISMATCH lines; test passes; FORMULAS.md has Bollinger and StochRSI sections with worked examples.",
+  "est_turns": 30,
   "from_inbox": "",
-  "goal": "",
+  "goal": "scripts/dev/chart_verify.py recomputes BB, RSI and StochRSI for a CoinGlass timeframe from Binance fapi klines at a shot clock, read-only and label-only, replacing the three hand-written scripts of 2026-10-12.",
   "id": "chart-verify-py-recompute-bb-rsi-stochrs",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/chart_verify.py + 7 tests; BTCUSDT 1m/15m live ok; FORMULAS s22,s23",
+      "ref": "8663fdb7",
+      "utc": "2026-10-17T18:21:16Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Krown layer v0 detectors: core, events, params, tests, FORMULAS section",
+      "ref": "a9e179c7e27a",
+      "utc": "2026-10-17T11:24:08Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "a9e179c7e27a Krown layer v0 detectors: core, events, params, tests, FORMULAS section",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-10-17T11:24:08Z"
+    }
+  ],
   "layers": [
     "live_engine"
   ],
   "live_path": false,
-  "note": "",
+  "note": "REVIEWED:2026-10-17 ACCEPT. WEIGHT:IMPORTANT new formulas entries feed later audits. Source: MyTradingSys/research/observations/2026-10-12_layer_observations.md (read-only, label-only guard). Verify (worker): content commit sha, `git cherry origin/fast-track <sha>` empty AND `git ls-tree -r origin/fast-track --name-only` lists the delivered files.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T18:13:09Z",
   "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "result": "scripts/dev/chart_verify.py + 7 tests; BTCUSDT 1m/15m live ok; FORMULAS s22,s23",
+  "scope_in": [
+    "scripts/dev/chart_verify.py (new)",
+    "scripts/dev/test_chart_verify.py (new)",
+    "MyTradingSys/backtest/layers/FORMULAS.md (new sections: Bollinger, StochRSI, each with a hand-computed worked example)"
+  ],
+  "scope_out": [
+    "any signal or entry output",
+    "live tree or order code",
+    "private or mainnet endpoints (public klines only, q-gap-c)",
+    "volume and OI-delta-step (second card)"
+  ],
+  "scope_sha": "a9e179c7e27a",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "chart_verify.py: recompute BB/RSI/StochRSI/volume/OI/delta-step for any CoinGlass timeframe from fapi at the shot clock (3 hand-written scripts in one session, 10-12)"
+  "state": "done",
+  "steps": [
+    "Add FORMULAS.md sections for Bollinger (20,2; check population vs sample sd against backtest/layers/alerts/live_bb_top_reversal.py bollinger) and StochRSI, each with a 6-bar worked example computed by hand.",
+    "Write the test first on a fixed 40-bar fixture: RSI via the rsi_wilder function in MyTradingSys/backtest/layers/rsi/rsi_core.py (grep the exact name), BB and StochRSI against the hand-worked values; it fails because chart_verify.py does not exist.",
+    "Implement chart_verify.py <symbol> <tf> <utc>: fetch klines (fapi, no key) up to the shot clock, print each indicator next to the value typed from the chart (--seen RSI=69,BB_up=81146.6), the difference and MATCH/MISMATCH at a stated tolerance; no trade wording.",
+    "Run the test and one live call for BTCUSDT 1m; paste the output in the card result."
+  ],
+  "tests": "test_chart_verify.py on a 40-bar fixture: BB, RSI, StochRSI equal the FORMULAS.md hand values; fails before the module exists. No network in tests.",
+  "title": "chart_verify.py: recompute BB/RSI/StochRSI for any CoinGlass timeframe from fapi at the shot clock (3 hand-written scripts in one session, 10-12)",
+  "worker": "session"
 }

@@ -1,0 +1,31 @@
+"""Synthetic-only reproduction; run from MTS repo root. No market data accessed."""
+import json
+import sys
+import tempfile
+from pathlib import Path
+
+sys.path.insert(0, str(Path.cwd() / "scripts/dev"))
+import lab_flow
+import tasks
+
+with tempfile.TemporaryDirectory() as temp:
+    root = Path(temp).resolve()
+    (root / "renamed.csv").write_text(
+        "open_time,close\n1735689600000,1\n", encoding="utf-8", newline="\n"
+    )
+    try:
+        accepted = lab_flow.safe_file(root, "renamed.csv")
+        print("post-cutoff synthetic repo file returned:", accepted.name)
+    except ValueError as exc:
+        print("post-cutoff synthetic repo file refused:", exc)
+    directory = tasks.tdir(root)
+    directory.mkdir(parents=True)
+    for card in (
+        {"id": "base", "weight": "CRITICAL", "scope_in": []},
+        {"id": "consumer", "scope_in": ["base"]},
+    ):
+        (directory / (card["id"] + ".json")).write_text(
+            json.dumps(card), encoding="utf-8", newline="\n"
+        )
+    tasks.promote_shared(root)
+    print("CRITICAL cited base becomes:", json.loads((directory / "base.json").read_text())["weight"])

@@ -1,9 +1,11 @@
 """outcome_labeler.py - labels each snapshot with forward outcomes.
 Reads runtime_data/snapshots/BTCUSDT_*.json, writes runtime_data/outcome_labels.json.
 For each snapshot >120m old with no label: compute return at +30m/+60m/+120m.
-Idempotent: skips already-labeled snapshots. Run hourly or after each session.
+Idempotent: skips already-labeled snapshots WITHOUT opening them (their ts/price come from
+the label entry), so the cost per cycle follows the unlabeled backlog, not the archive size.
+Run hourly or after each session.
 """
-import json, sys, os
+import bisect, json, sys, os, time, shutil
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
 
@@ -12,13 +14,17 @@ R = Path(r"C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed")
 SNAPS = R / "runtime_data" / "snapshots"
 LABELS = R / "runtime_data" / "outcome_labels.json"
 HORIZONS_MIN = [30, 60, 120]
+SLOW_WARN_S = 20.0  # start-trading-day.ps1 kills this script at 30 s; say so before that happens
 
 def parse_ts(s):
     return datetime.fromisoformat(s.replace("Z", "+00:00"))
 
-def load_snapshots():
+def load_snapshots(done=frozenset()):
+    """Open only snapshot files whose name is not in `done` (already labeled)."""
     snaps = []
     for f in SNAPS.glob("BTCUSDT_*.json"):
+        if f.name in done:
+            continue
         try:
             with open(f, "r", encoding="utf-8") as fh:
                 d = json.load(fh)
@@ -44,8 +50,18 @@ def load_labels():
         return {"version": "1.0.0", "labels": []}
     try:
         with open(LABELS, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except Exception:
+            data = json.load(f)
+        if not isinstance(data.get("labels"), list):
+            raise ValueError("no labels list")
+        return data
+    except Exception as e:
+        # fail closed: keep the unreadable file for inspection before it is rebuilt
+        print(f"labels unreadable ({e}); kept as .corrupt, rebuilding")
+        try:
+            stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+            shutil.copyfile(LABELS, LABELS.with_suffix(f".json.corrupt.{stamp}"))
+        except Exception as e2:
+            print(f"could not back up labels: {e2}")
         return {"version": "1.0.0", "labels": []}
 
 def write_labels(data):
@@ -55,17 +71,31 @@ def write_labels(data):
     os.replace(tmp, LABELS)
 
 def main():
-    snaps = load_snapshots()
-    if not snaps:
-        print("no snapshots")
-        return
+    t0 = time.monotonic()
     labels = load_labels()
-    done = {l["file"] for l in labels["labels"]}
+    # an entry counts as done only if its file, ts AND price parse; otherwise the snapshot is reopened (old behaviour)
+    done = set()
+    labeled_names = {l["file"] for l in labels["labels"] if isinstance(l, dict) and "file" in l}
+    label_refs = []
+    for l in labels["labels"]:
+        try:
+            label_refs.append((parse_ts(l["ts"]), l["file"], float(l["price"])))
+            done.add(l["file"])
+        except Exception:
+            pass
+    snaps = load_snapshots(done)  # unlabeled only: labeled files are never reopened
+    if not snaps:
+        print("no unlabeled snapshots")
+        return
+    # forward references: unlabeled snapshots plus already-labeled ones; (ts, filename) order is deterministic
+    refs = [(s["ts"], s["file"], s["price"]) for s in snaps] + label_refs
+    refs.sort(key=lambda x: (x[0], x[1]))
+    ref_ts = [r[0] for r in refs]
     now = datetime.now(timezone.utc)
     added = 0
-    for i, s in enumerate(snaps):
-        if s["file"] in done:
-            continue
+    for s in snaps:
+        if s["file"] in labeled_names:
+            continue  # labeled (entry unusable as a reference, so it was reopened): used as a reference only
         age_min = (now - s["ts"]).total_seconds() / 60
         if age_min < max(HORIZONS_MIN):
             continue  # too recent
@@ -79,17 +109,20 @@ def main():
         }
         for h in HORIZONS_MIN:
             target_ts = s["ts"] + timedelta(minutes=h)
-            # find first snapshot >= target_ts
-            fwd = next((x for x in snaps[i+1:] if x["ts"] >= target_ts), None)
-            if fwd:
-                entry["fwd_return_pct"][f"{h}m"] = round((fwd["price"] - s["price"]) / s["price"] * 100.0, 4)
+            j = bisect.bisect_left(ref_ts, target_ts)  # first snapshot >= target_ts
+            if j < len(refs):
+                entry["fwd_return_pct"][f"{h}m"] = round((refs[j][2] - s["price"]) / s["price"] * 100.0, 4)
             else:
                 entry["fwd_return_pct"][f"{h}m"] = None
         if all(v is not None for v in entry["fwd_return_pct"].values()):
             labels["labels"].append(entry)
             added += 1
     write_labels(labels)
-    print(f"labeled {added} new, total {len(labels['labels'])}")
+    elapsed = time.monotonic() - t0
+    print(f"labeled {added} new, total {len(labels['labels'])}, elapsed {elapsed:.2f}s")
+    if elapsed > SLOW_WARN_S:
+        print(f"SLOW: outcome_labeler took {elapsed:.1f}s (>{SLOW_WARN_S:.0f}s warn, 30s kill in start-trading-day.ps1)")
+        sys.exit(3)
 
 if __name__ == "__main__":
     main()

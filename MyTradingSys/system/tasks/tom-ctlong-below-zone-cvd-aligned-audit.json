@@ -1,35 +1,63 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-17T23:07:50Z",
   "commands": [],
   "created": "2026-10-17T10:09:47Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "audit .md with 3 answers and defect cards. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+  "est_turns": 14,
   "from_inbox": "",
-  "goal": "",
+  "goal": "Report whether the 2026-10-17 10:03Z Tom read (alert 413) is a defect: (1) ct_long at weekly_val 81603.48 stays WAIT_PROOF with price 81537.8 66 pts below the zone, (2) cvd_aligned True vs snapshot cvd_trade_flow_aligned False, (3) stale 15m/1d swing flags. Report only, no live-code fix.",
   "id": "tom-ctlong-below-zone-cvd-aligned-audit",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "audit tom_ctlong_below_zone_2026-10-18.md: WAIT_PROOF as coded (no zone-lost state); cvdAl",
+      "ref": "cb638b70",
+      "utc": "2026-10-17T23:07:50Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "audit: state machine session CVD/VWAP vs klines, vwap_anchor_utc label",
+      "ref": "5f464c1fe506",
+      "utc": "2026-10-17T20:31:47Z"
+    }
+  ],
   "layers": [
     "tom"
   ],
   "live_path": false,
-  "note": "",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Report only, no live-code change.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-17T10:09:48Z",
+  "refreshed": "2026-10-17T21:38:56Z",
   "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "scope_sha": "",
-  "size": "",
+  "result": "audit tom_ctlong_below_zone_2026-10-18.md: WAIT_PROOF as coded (no zone-lost state); cvdAligned direction-blind (probable defect); cards tom-cvd-aligned-direction-blind, tom-ctlong-zone-lost-state",
+  "scope_in": [
+    "MyTradingSys/research/live_reads/2026-10-17_live_market_1017",
+    "MyTradingSys/research/audits/"
+  ],
+  "scope_out": [
+    "live code fixes",
+    "live tree"
+  ],
+  "scope_sha": "5f464c1fe506",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Audit Tom engine read 2026-10-17 10:03Z (alert #413): (1) ct_long @ weekly_val 81603.48 stays WAIT_PROOF while price 81537.8 is 66 pts BELOW the zone with new_shorts quad: should it read 'zone lost, unproven' instead of a pending long; (2) card says cvd_aligned True while snapshot conditions.cvd_trade_flow_aligned False and PROOF_DIR says contradiction; (3) structure 15m swing 81636.6/81630.1 (14 pts) and 1d swing flagged stale. Source: live_reads/2026-10-17_live_market_1017 TOM read. Report only, no live-code fix",
-  "worker": ""
+  "state": "done",
+  "steps": [
+    "read the alert #413 TOM read and snapshot conditions",
+    "answer (1) zone-lost state, (2) cvd_aligned True vs snapshot False and PROOF_DIR, (3) stale 15m/1d swing flags, each with file:line of the code path",
+    "write MyTradingSys/research/audits/tom_ctlong_below_zone_2026-10-18.md; one B-item or card per real defect, or the line no defect"
+  ],
+  "taken": "2026-10-17T23:07:45Z",
+  "tests": "none (report only)",
+  "title": "Tom engine read 2026-10-17 10:03Z (alert 413): ct_long below zone, cvd_aligned contradiction, stale swings: report only",
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

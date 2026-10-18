@@ -4,7 +4,7 @@ Already loaded: do not Read this again. Code mode only (DSA chat: `DSA_SESSION_P
 
 ## Boot (every turn re-reads the context)
 1. `python scripts/dev/sync.py start <slug>`: in a lane tree (mts-app/relay/dsa) it switches to branch <host>/<slug>; elsewhere it prints `WORKTREE: <path>` (work only there, never the live tree).
-2. Read `MyTradingSys/research/STATUS.md` (regenerate: `python scripts/dev/make_status.py`), not what it summarises; `LESSONS_DIGEST.md` only for live-path or backtest work. RED `CI green:` line: fix CI first (pinned `ci-<sha>` card).
+2. Read `MyTradingSys/research/STATUS.md` (regenerate: `python scripts/dev/make_status.py`), not what it summarises; `LESSONS_DIGEST.md` only for live-path or backtest work. RED `CI green:` line: fix CI first (pinned `ci-<sha>` card). Read the ACTIVE entries of `MyTradingSys/system/ANNOUNCEMENTS.md` (STOP/HOLD there outranks the queue).
 3. ONE task from NEXT_SESSION.md (relay KICK: `relay_prompts/relay_session.md`) or `tasks.py next`; `sync.py claim "<task>"`, work, `sync.py ship --release <slug>`, `sync.py where` (own tree clean).
 4. Hand-over: no schedulers or routines run anywhere (SCHEDULING_POLICY.md); nothing starts the next session by itself. Overwrite NEXT_SESSION.md, `sync.py ship`; the coordinator (SUPER_SESSION.md) starts the next one. The block must run with zero operator input (defaults for open questions).
 5. SHORT SESSIONS: one session = one task; hand over when it is done, after 10 operator turns or 40 tool turns, whichever first (commit, then steps 3-4, one line, stop). Live market threads: after 5 screenshot reads.
@@ -39,7 +39,7 @@ Already loaded: do not Read this again. Code mode only (DSA chat: `DSA_SESSION_P
 | Need | Read |
 |---|---|
 | start, ship, claims, push fallback; hand-over, task cards | PARALLEL.md; RELAY.md, TASK_REFINEMENT.md |
-| dev-time waste; MTS doctor (`mts_doctor.py`) | TRAFFIC_BUSTERS.md; MTS_DOCTOR.md |
+| dev-time waste; MTS doctor (`mts_doctor.py`); "you are the <role>" (pinned sessions) | TRAFFIC_BUSTERS.md; MTS_DOCTOR.md; ROLES.md |
 | machines, logins, lanes, who may touch what; surfaces, names | HOW_MTS_RUNS.md, DEVICES.md, CLOUD_ACCOUNTS.md; SURFACE_POLICY.md |
 | deploy, CI/CD; scheduling (none allowed) | DEPLOY_RUNBOOK.md; SCHEDULING_POLICY.md |
 | layers (index); Codex lab | LAYERS.md; CODEX_START.md, LAYER_LAB.md |

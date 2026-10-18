@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T04:10:25Z",
+  "depends_on": [
+    "positioning-c1-longwindow-count-power"
+  ],
+  "done_when": "PRE_REG_POSITIONING_C1.md complete; operator can approve or reject the backtest card from it.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fill PRE_REG_TEMPLATE.md for a re-test of funding_cvd_fade as a NO-SOURCE research test (VISION exception 2): design on DEV 2022-01..2024-06, VALIDATE read once, 2025-07..2026-08 burned for C1, trial ledger counting 108 earlier variants, random-entry null, strata, kill rule (gate 0f). No backtest.",
+  "id": "positioning-c1-prereg-no-source",
+  "lane": "SONNET",
+  "layers": [
+    "positioning"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DRAFT by positioning-home-fit-audit 2026-10-18; not yet REVIEWED. Reads COUNT_POWER.md (untagged lab result) as its base: stays refined until that card carries a trust tag. WEIGHT:IMPORTANT.",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "positioning-home-fit-audit 2026-10-18",
+  "refs": [
+    "positioning-home-fit-audit"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
+    "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_POSITIONING.md",
+    "MyTradingSys/research/positioning_c1_2026-10/COUNT_POWER.md",
+    "MyTradingSys/backtest/test_pre_reg_template.py"
+  ],
+  "scope_out": [
+    "any P&L backtest run",
+    "tuning",
+    "edits to live-path code",
+    "edits to run_t055.py or funding_cvd_fade.py"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_POSITIONING.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "Write MyTradingSys/research/positioning_c1_2026-10/PRE_REG_POSITIONING_C1.md with all 12 items and gates 0a-0f answered; label every number SOURCED or OURS (all of C1's are OURS) and state in item 1 that the layer is not a FlowHorse or whale layer.",
+    "Use COUNT_POWER.md for items 3, 9, 10; copy the null spec; state which result ends the source (kill rule) and the redesign budget.",
+    "Extend test_pre_reg_template.py so the new file is globbed (items 0-12 numbered, every slot answered); run it. Create no further cards."
+  ],
+  "tests": "test_pre_reg_template.py is extended to check PRE_REG_POSITIONING_C1.md (items 0-12 answered, no unanswered slot) and fails before the file exists.",
+  "title": "Positioning C1: pre-registration labelled NO-SOURCE (items 1/6/8/9/11/12, gates 0a/0f)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

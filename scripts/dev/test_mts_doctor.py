@@ -74,3 +74,13 @@ def test_previous_metrics_reads_the_newest_older_report(tmp_path):
     (tmp_path / "REPORT_2026-10-17.md").write_text("METRICS overhead=1" + NL, encoding="utf-8")
     assert D.previous_metrics(tmp_path, "2026-10-17") == {"overhead": "63", "b4": "13"}
     assert D.previous_metrics(tmp_path, "2026-10-01") == {}
+
+
+def test_shared_line_in_per_skill_files_is_not_a_duplicate(tmp_path):
+    for n in ("a", "b"):
+        f = tmp_path / f"relay/{n}.SKILL.md"
+        f.parent.mkdir(parents=True, exist_ok=True)
+        f.write_text(LONG + NL, encoding="utf-8", newline=NL)
+    subprocess.run(["git", "init", "-q"], cwd=tmp_path, check=True)
+    subprocess.run(["git", "add", "-A"], cwd=tmp_path, check=True)
+    assert D.duplicates(tmp_path, ["relay/a.SKILL.md", "relay/b.SKILL.md"]) == []

@@ -1,68 +1,78 @@
 {
-  "approved_by": "operator 2026-10-15",
-  "asks": "",
-  "commands": [],
-  "created": "2026-10-15T09:05:38Z",
-  "depends_on": [],
-  "done_when": "each of the 12 selected ids (-2uZSqKKrFQ, fgN6QBFY3Ss, gfr5n6B5QJk, TYB7GJODt-k, 07aqVQ9GNh8, sPu2SnAFEIY, TrZQ4Xat_sQ, RUKGEMdVNYA, v8pCR_bA0_0, WBByyLBp8-c, kVIvcn7T44o, U12jz3LQhy0) is in raw_transcripts_canonical/ or has a NOT AVAILABLE line with reason in transcript_inventory_2026-10-09.md, on origin/fast-track",
-  "est_turns": 12,
-  "from_inbox": "",
-  "goal": "Get the Malkan captions that matter, anonymously, with spaced retries: only the 12 ids ranked include=Y in MyTradingSys/research/video_priority_2026-10-15/RANKED_MALKAN.csv (method: METHOD.md). The other shortlisted ids are NOT SELECTED (score in transcript_inventory_2026-10-09.md); do not fetch them.",
-  "id": "malkan-captions-fetch-noauth",
-  "lane": "HAIKU",
-  "latest": [
-    {
-      "auto": true,
-      "kind": "ship",
-      "line": "malkan-captions-fetch-noauth: record attempt 4, HTTP 429 on -2uZSqKKrFQ",
-      "ref": "d51592785696",
-      "utc": "2026-10-15T19:41:19Z"
-    },
-    {
-      "auto": true,
-      "kind": "report",
-      "line": "d51592785696 malkan-captions-fetch-noauth: record attempt 4, HTTP 429 on -2uZSqKKrFQ",
-      "ref": "MyTradingSys/research/transcript_inventory_2026-10-09.md",
-      "utc": "2026-10-15T19:41:19Z"
-    }
-  ],
-  "layers": [
-    "rsi"
-  ],
-  "live_path": false,
-  "note": "operator 2026-10-15: \"Queue the Krown/Malkan caption fetch and the Malkan extraction of the two on-disk transcripts.\" NO cookies, browser cookies, tokens, impersonation or third-party caption sites (LESSONS_DIGEST s6); this supersedes the cookie plan in desk_queue/20261012-085022-d11b-follow-up-claude-malkan-captions-42.json. Never open YouTube watch pages in the in-app browser. Part of LAYER_REBUILD_PLAN_2026-10-15 gate G0. 2026-10-15 12:18Z: HTTP 429 on the first request (hNfjyrJEytI, Krown); all 13 target ids PENDING_CAPTIONS: Malkan fgN6QBFY3Ss kVIvcn7T44o FHEoMmD6xKM TYB7GJODt-k WBByyLBp8-c; Krown hNfjyrJEytI fMRvOt26xcA LB3DRYxnA0A _JoJbu_Ug-A; Krown priority UHY740h3e-Y SOaAP9vBgM4 -9rAJNUpMsk EQy4HouRMMk (options list, not in the TA MANIFEST). Next step: retry once a day for 3 days, one request at a time, 60 s apart, no cookies; then NOT AVAILABLE. Channel list and shortlist: research/malkan_extract_2026-10-15/CHANNEL_LIST.md. Session stopped at its turn cap; no relay stop block, per the parent session. 2026-10-15 (video-priority session): the card is restricted to the ranked top. Selected (include=Y): -2uZSqKKrFQ (rank 1, 16.74), fgN6QBFY3Ss (rank 3, 14.09), gfr5n6B5QJk (rank 4, 12.97), TYB7GJODt-k (rank 5, 12.74), 07aqVQ9GNh8 (rank 7, 12.03), sPu2SnAFEIY (rank 8, 11.99), TrZQ4Xat_sQ (rank 9, 11.98), RUKGEMdVNYA (rank 13, 11.07), v8pCR_bA0_0 (rank 14, 10.9), WBByyLBp8-c (rank 21, 9.9), kVIvcn7T44o (rank 23, 9.84), U12jz3LQhy0 (rank 24, 9.84). Method and validation: research/video_priority_2026-10-15/METHOD.md. 23 shortlisted ids are NOT SELECTED (inventory). Still no cookies, tokens or third-party caption sites; retry once a day for 3 days, one request at a time, 60 s apart.",
-  "prio": 2,
-  "refine_tries": 0,
-  "refined_by": "",
-  "refreshed": "2026-10-17T07:24:58Z",
-  "refs": [
-    "MyTradingSys/research/transcript_inventory_2026-10-09.md",
-    "MyTradingSys/research/video_priority_2026-10-15/METHOD.md",
-    "MyTradingSys/research/video_priority_2026-10-15/RANKED_MALKAN.csv",
-    "MyTradingSys/system/desk_queue/20261012-085022-d11b-follow-up-claude-malkan-captions-42.json"
-  ],
-  "result": "",
-  "scope_in": [
-    "MyTradingSys/research/transcript_inventory_2026-10-09.md",
-    "MyTradingSys/research/video_priority_2026-10-15/",
-    "raw_transcripts_canonical/"
-  ],
-  "scope_out": [
-    "engine and layer code",
-    "any backtest",
-    "cookies or credentials"
-  ],
-  "scope_sha": "d51592785696",
-  "size": "S",
-  "sources": [],
-  "state": "ready",
-  "steps": [
-    "try ONE id first, highest rank first: python scripts/dev/fetch_captions_timed.py --analyst Malkan --out raw_transcripts_canonical <id> (also try the JIS-NB host if the NUC is rate-limited); Hindi videos --langs hi,en",
-    "on success fetch the next selected id (RANKED_MALKAN.csv order), at least 60 s apart; on 429 STOP for today and record the attempt in the card note (retry once a day, 3 days max, then NOT AVAILABLE)",
-    "fetch ONLY include=Y ids; never the NOT SELECTED ones, even if a fetch is working (re-rank with video_priority_2026-10-15/score.py first if a new video appears)",
-    "update the Malkan selected-ids row in MyTradingSys/research/transcript_inventory_2026-10-09.md for each id (fetched / NOT AVAILABLE + reason)"
-  ],
-  "tests": "docs lane, no code: files present or NOT AVAILABLE line per id",
-  "title": "Malkan: fetch captions for the 12 ranked-top videos only (video_priority_2026-10-15), no cookies, spaced retries; DONE when each is in raw_transcripts_canonical or has a NOT AVAILABLE line",
-  "worker": "agent"
+ "approved_by": "operator 2026-10-15",
+ "asks": "",
+ "claim": "malkan-captions-fetch-noauth",
+ "closed": "2026-10-18T04:14:50Z",
+ "commands": [],
+ "created": "2026-10-15T09:05:38Z",
+ "depends_on": [],
+ "done_when": "each of the 12 selected ids (-2uZSqKKrFQ, fgN6QBFY3Ss, gfr5n6B5QJk, TYB7GJODt-k, 07aqVQ9GNh8, sPu2SnAFEIY, TrZQ4Xat_sQ, RUKGEMdVNYA, v8pCR_bA0_0, WBByyLBp8-c, kVIvcn7T44o, U12jz3LQhy0) is in raw_transcripts_canonical/ or has a NOT AVAILABLE line with reason in transcript_inventory_2026-10-09.md, on origin/fast-track",
+ "est_turns": 12,
+ "from_inbox": "",
+ "goal": "Get the Malkan captions that matter, anonymously, with spaced retries: only the 12 ids ranked include=Y in MyTradingSys/research/video_priority_2026-10-15/RANKED_MALKAN.csv (method: METHOD.md). The other shortlisted ids are NOT SELECTED (score in transcript_inventory_2026-10-09.md); do not fetch them.",
+ "id": "malkan-captions-fetch-noauth",
+ "lane": "HAIKU",
+ "latest": [
+  {
+   "kind": "ship",
+   "line": "0 of 12 OK; -2uZSqKKrFQ RATELIMIT (4 spaced 429s); 11 NOT TRIED (stop for the day); next a",
+   "ref": "5d285685",
+   "utc": "2026-10-18T04:14:50Z"
+  },
+  {
+   "auto": true,
+   "kind": "ship",
+   "line": "malkan-captions-fetch-noauth: record attempt 5, HTTP 429 on -2uZSqKKrFQ",
+   "ref": "49f57cf63a48",
+   "utc": "2026-10-17T10:58:51Z"
+  },
+  {
+   "auto": true,
+   "kind": "report",
+   "line": "49f57cf63a48 malkan-captions-fetch-noauth: record attempt 5, HTTP 429 on -2uZSqKKrFQ",
+   "ref": "MyTradingSys/research/transcript_inventory_2026-10-09.md",
+   "utc": "2026-10-17T10:58:51Z"
+  }
+ ],
+ "layers": [
+  "rsi"
+ ],
+ "live_path": false,
+ "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. operator 2026-10-15: \"Queue the Krown/Malkan caption fetch and the Malkan extraction of the two on-disk transcripts.\" NO cookies, browser cookies, tokens, impersonation or third-party caption sites (LESSONS_DIGEST s6); this supersedes the cookie plan in desk_queue/20261012-085022-d11b-follow-up-claude-malkan-captions-42.json. Never open YouTube watch pa REOPENED 2026-10-18 (planner): the worker marked it done with 0 of 12 captions; goal not met. Retry 2026-10-19 (the last allowed try); spaced retries, stop on the first 429.",
+ "prio": 2,
+ "refine_tries": 0,
+ "refined_by": "",
+ "refreshed": "2026-10-17T18:16:01Z",
+ "refs": [
+  "MyTradingSys/research/transcript_inventory_2026-10-09.md",
+  "MyTradingSys/research/video_priority_2026-10-15/METHOD.md",
+  "MyTradingSys/research/video_priority_2026-10-15/RANKED_MALKAN.csv",
+  "MyTradingSys/system/desk_queue/20261012-085022-d11b-follow-up-claude-malkan-captions-42.json"
+ ],
+ "result": "0 of 12 OK; -2uZSqKKrFQ RATELIMIT (4 spaced 429s); 11 NOT TRIED (stop for the day); next allowed try 2026-10-19 (last)",
+ "scope_in": [
+  "MyTradingSys/research/transcript_inventory_2026-10-09.md",
+  "MyTradingSys/research/video_priority_2026-10-15/",
+  "raw_transcripts_canonical/"
+ ],
+ "scope_out": [
+  "engine and layer code",
+  "any backtest",
+  "cookies or credentials"
+ ],
+ "scope_sha": "49f57cf63a48",
+ "size": "S",
+ "sources": [],
+ "state": "ready",
+ "steps": [
+  "try ONE id first, highest rank first: python scripts/dev/fetch_captions_timed.py --analyst Malkan --out raw_transcripts_canonical <id> (also try the JIS-NB host if the NUC is rate-limited); Hindi videos --langs hi,en",
+  "on success fetch the next selected id (RANKED_MALKAN.csv order), at least 60 s apart; on 429 STOP for today and record the attempt in the card note (retry once a day, 3 days max, then NOT AVAILABLE)",
+  "fetch ONLY include=Y ids; never the NOT SELECTED ones, even if a fetch is working (re-rank with video_priority_2026-10-15/score.py first if a new video appears)",
+  "update the Malkan selected-ids row in MyTradingSys/research/transcript_inventory_2026-10-09.md for each id (fetched / NOT AVAILABLE + reason)"
+ ],
+ "taken": "2026-10-18T04:14:38Z",
+ "tests": "docs lane, no code: files present or NOT AVAILABLE line per id",
+ "title": "Malkan: fetch captions for the 12 ranked-top videos only (video_priority_2026-10-15), no cookies, spaced retries; DONE when each is in raw_transcripts_canonical or has a NOT AVAILABLE line",
+ "weight": "ROUTINE",
+ "worker": "agent"
 }

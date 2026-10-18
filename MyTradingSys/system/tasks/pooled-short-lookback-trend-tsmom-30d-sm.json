@@ -1,31 +1,64 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "class": "C2",
+  "commands": [
+    "python scripts/dev/verdicts.py check \"published_strats short lookback trend\"",
+    "python scripts/dev/prereg_gate.py --n 912 --sd 1.0 --cost 0.10 --m 62"
+  ],
   "created": "2026-10-12T19:48:28Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "Pre-registration addendum and one-run result committed, OR card stays blocked/dropped per RESULTS.md:66 ('The sealed BTC holdout stays sealed').",
   "from_inbox": "",
-  "goal": "",
+  "goal": "Pre-register and run once the pooled short-lookback trend hypothesis (equal-weight TSMOM 30d, SMA50, SMA100, 4h Donchian 20/10) on BTCUSDT perp if and only if the pre-registration gate (verdicts.py check, prereg_gate.py) and holdout seal rules pass.",
   "id": "pooled-short-lookback-trend-tsmom-30d-sm",
   "kind": "run",
   "lane": "DSA",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research: ETH replication of the BTC trend cluster: 0 of 9 advance",
+      "ref": "6ca61b5ec89b",
+      "utc": "2026-10-12T20:10:11Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "6ca61b5ec89b research: ETH replication of the BTC trend cluster: 0 of 9 advance",
+      "ref": "MyTradingSys/research/published_strats_2026-10-13/RESULTS.md",
+      "utc": "2026-10-12T20:10:11Z"
+    }
+  ],
   "layers": [
     "volume_candles_ma"
   ],
   "live_path": false,
-  "note": "2026-10-15 q-pub-trend-holdout answered Yes: one pooled pre-registered hypothesis, holdout read once. Pre-register first (item 0a-0f gate, q13), then run.",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:results CLASS:C2 REVIEWER:Gemini 4 Argon low WEIGHT:CRUCIAL. DECISION (OURS, Lab_Guy E5/E7 gate): PARKED/BLOCKED because RESULTS.md:9-10 (0/62 passed DEV) and RESULTS.md:64-66 (0/9 passed ETH replication: 'there is no evidence of excess return. The sealed BTC holdout stays sealed') falsified the cluster on DEV/ETH, and opening 2025-07..2026-09 holdout after failed DEV/ETH violates E5/E7 and LAYER_LAB.md ('never by the lab').",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-18T05:12:41Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/published_strats_2026-10-13/RESULTS.md",
+    "MyTradingSys/research/published_strats_2026-10-13/PRE_REG.md",
+    "MyTradingSys/research/published_strats_2026-10-13/run_pub.py"
+  ],
+  "scope_out": [
+    "opening 2025-07..2026-09 sealed holdout without a passing VAL/ETH replication gate",
+    "live tree"
+  ],
+  "scope_sha": "6ca61b5ec89b",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
+  "state": "blocked",
+  "steps": [
+    "Check RESULTS.md:9-10 (0/62 cleared DEV) and RESULTS.md:64-66 (0/9 replicated on ETH; 'The sealed BTC holdout stays sealed').",
+    "Run verdicts.py check and prereg_gate.py before any new run; do not open 2025-07..2026-09 while DEV and ETH replication both failed."
+  ],
   "tests": "",
-  "title": "Pooled short-lookback trend (TSMOM 30d, SMA50/100, 4h Donchian 20/10) on sealed 2025-07..2026-09 BTC holdout: pre-register one hypothesis, run once. host=any. Waits on decision q-pub-trend-holdout. Source: research/published_strats_2026-10-13/RESULTS.md"
+  "title": "Pooled short-lookback trend (TSMOM 30d, SMA50/100, 4h Donchian 20/10) on sealed 2025-07..2026-09 BTC holdout: pre-register one hypothesis, run once. host=any. Waits on decision q-pub-trend-holdout. Source: research/published_strats_2026-10-13/RESULTS.md",
+  "weight": "CRUCIAL"
 }

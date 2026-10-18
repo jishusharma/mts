@@ -16,7 +16,7 @@
     "volume_candles_ma"
   ],
   "live_path": false,
-  "note": "Operator 2026-10-14: 'how do we establish support and resistances while doing backtesting on historical data is questionable'. For each factor: definition, confirmation lag (e.g. a swing high is known only k bars later), which bar may use it, where our code does it today (file:line), and any look-ahead found. Look-ahead found = a B-item, not a fix in this card.",
+  "note": "REVIEWED:2026-10-18 T0-ONLY DROPPED as covered: PIT_CONTRACT.md + REPORT.md (53034030, research/pit_levels_2026-10-16), level_ledger_2026-10-16 (b4fe8d20), context_factors_pit_2026-10-16 ANGLES.md/REPORT.md (664cf00a: bb_4h, RSI/CVD divergence, session) give per-factor definition, lag and code location; 12/13 PASS, 1 FAIL tom_bt_report.py:161 filed as a B-item there. Residual (Java zones, CVD level, VWAP) is ZONE_MISMATCH.md / B187.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -26,7 +26,7 @@
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "Lab design: how every backtest factor (support/resistance, VP levels, divergences, band touches) is set point-in-time on history, element by element"

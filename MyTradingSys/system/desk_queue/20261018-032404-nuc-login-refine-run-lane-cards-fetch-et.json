@@ -1,0 +1,13 @@
+{
+  "done_when": "tasks.py check prints REFINE_OK and the 7 cards are ready or parked with a note, shipped (git cherry origin/fast-track HEAD empty)",
+  "finished": "2026-10-18T05:16:52Z",
+  "from": "JIS-NB",
+  "host": "JIS-NUC",
+  "id": "20261018-032404-nuc-login-refine-run-lane-cards-fetch-et",
+  "need": "On JIS-NUC (Claude login with budget): for each card in MyTradingSys/system/tasks/: fetch-ethusdt-perp-1h-klines-funding-202, pooled-short-lookback-trend-tsmom-30d-sm, krown-data-cme-btc-volume, lc-validation, tom-btc-validation, rv-dsa-q33-rerun, rv-dsa-test-sweep: run 'python scripts/dev/tasks.py brief <card>', fill goal, done_when, size, commands (exact run lines using F:/MTS/data paths), weight, LAB tag, class, reviewer slot and the REVIEWED stamp (TASK_REFINEMENT.md, roles/session_planner.md); then 'tasks.py check' must print REFINE_OK for them; ship with sync.py ship. Open questions: take OURS defaults and log them, never ask the operator. gap-g2-dax-ask-candles stays refined (A-6).",
+  "posted": "2026-10-18T03:24:04Z",
+  "result": "All 7 run-lane cards refined per Lab_Guy v3.1: fetch-ethusdt-perp-1h-klines-funding-202 closed done (shipped in published_strats_2026-10-13/RESULTS.md); pooled-short-lookback-trend-tsmom-30d-sm blocked (holdout stays sealed after 0/62 BTC + 0/9 ETH); krown-data-cme-btc-volume & rv-dsa-q33-rerun promoted to ready; lc-validation, tom-btc-validation, rv-dsa-test-sweep refined & blocked on upstream prereqs.",
+  "status": "done",
+  "target": "DSA-NUC",
+  "title": "NUC login: refine run-lane cards (fetch-eth, pooled-tsmom, krown-cme-btc-volume, lc-validation, tom-btc-validation, rv-dsa-q33-rerun, rv-dsa-test-sweep)"
+}

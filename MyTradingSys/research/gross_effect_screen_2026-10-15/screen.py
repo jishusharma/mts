@@ -79,6 +79,23 @@ def apply_cooldown(cands, cd=60):
     return out
 
 
+def col_percentile(ref, q):
+    """np.nanpercentile(ref, q, axis=0) (linear method, NaN where a column has no value) from one sort.
+    nanpercentile loops over the 1440 columns in Python: 90 s for a 330-day ledger, about 1 s here."""
+    s = np.sort(ref, axis=0)                                       # NaN sorts last
+    cnt = (~np.isnan(ref)).sum(0)
+    v = np.maximum(cnt - 1, 0) * (q / 100)
+    lo = np.floor(v).astype(np.int64)
+    hi = np.minimum(lo + 1, np.maximum(cnt - 1, 0))
+    t = v - lo
+    cols = np.arange(ref.shape[1])
+    a, b = s[lo, cols], s[hi, cols]
+    d = b - a
+    out = a + d * t
+    np.subtract(b, d * (1 - t), out=out, where=t >= 0.5)           # numpy's own two-sided lerp
+    return np.where(cnt > 0, out, np.nan)
+
+
 def build_ledger(A, ndays):
     O, H, L, V, TBV = A["O"], A["H"], A["L"], A["V"], A["TBV"]
     dl = delta(V, TBV)
@@ -111,10 +128,8 @@ def build_ledger(A, ndays):
         if len(ref) == 0:
             continue
         cnt = (~np.isnan(ref)).sum(0)
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore")
-            thr = np.nanpercentile(ref, 80, axis=0)
-        ok = (cnt >= 15) & ~np.isnan(thr) & pv & (j >= 60) & (legs[i] >= np.where(np.isnan(thr), np.inf, thr))
+        thr = col_percentile(ref, 80)
+        ok =(cnt >= 15) & ~np.isnan(thr) & pv & (j >= 60) & (legs[i] >= np.where(np.isnan(thr), np.inf, thr))
         short = ok & (seth >= j - 2) & (setl < seth)
         long_ = ok & (setl >= j - 2) & (seth < setl)
         for side, m in ((-1, short), (1, long_)):
@@ -256,16 +271,52 @@ def evaluate(cells, A, ndays):
 
 
 # ---------------------------------------------------------------- reporting
-def manifest(files):
+def manifest(files, path=None):
+    target = Path(path) if path is not None else HERE / "DATA_MANIFEST.csv"
+    if target.exists():
+        return
     rows = []
     for f in files:
         h = hashlib.sha256(Path(f).read_bytes()).hexdigest()
         rows.append((Path(f).name, h, Path(f).stat().st_size))
-    with open(HERE / "DATA_MANIFEST.csv", "w", newline="\n", encoding="utf-8") as fh:
+    with open(target, "w", newline="\n", encoding="utf-8") as fh:
         w = csv.writer(fh, lineterminator="\n")
         w.writerow(["file", "sha256", "bytes"])
         w.writerows(rows)
     return rows
+
+
+def check_manifest(files, path=None):
+    target = Path(path) if path is not None else HERE / "DATA_MANIFEST.csv"
+    if not target.exists():
+        return manifest(files, path=target)
+
+    # Load stored rows
+    stored = {}
+    with open(target, "r", newline="", encoding="utf-8") as fh:
+        r = csv.DictReader(fh)
+        for row in r:
+            stored[row["file"]] = row["sha256"]
+
+    current_files = {Path(f).name: f for f in files}
+
+    # Compare exact file-name set
+    if set(current_files.keys()) != set(stored.keys()):
+        missing = set(stored.keys()) - set(current_files.keys())
+        extra = set(current_files.keys()) - set(stored.keys())
+        diff_files = sorted(missing | extra)
+        raise SystemExit(f"DATA_MANIFEST mismatch in file set: difference in {diff_files}")
+
+    # Compare sha256 per file to stored rows
+    rows = []
+    for name, f in sorted(current_files.items()):
+        h = hashlib.sha256(Path(f).read_bytes()).hexdigest()
+        if h != stored[name]:
+            raise SystemExit(f"DATA_MANIFEST mismatch in {name}: expected {stored[name]}, got {h}")
+        rows.append((name, h, Path(f).stat().st_size))
+
+    return rows
+
 
 
 def count_text(A, led, cells, files):
@@ -349,7 +400,7 @@ def main(argv):
         print(__doc__)
         return 1
     files = dev_files()
-    rows = manifest(files)
+    rows = check_manifest(files)
     A = load_dev(files)
     led = build_ledger(A, NDAYS_DEV)
     cells = compute_cells(A, led, NDAYS_DEV)

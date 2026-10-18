@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-18T05:13:05Z",
+  "commands": [],
+  "created": "2026-10-17T21:33:43Z",
+  "depends_on": [],
+  "done_when": "the three card JSONs carry the fields above, tasks.py check and lint green, assertion output in the commit body. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fix three card-state defects found by Lab_Guy: lab-trust-tag (CRUCIAL, class C2) is ready with no real stamp; lab-crossvendor-same-vendor-gate (done) has no retro stamp although it is a gate (class C2); gap-g1-prereg-power is stamped C0 but prints power on every verdict (B-SHARED, class C1).",
+  "id": "lab-guy-defect-lab-trust-tag-and-lab-cro",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "lab-trust-tag stamped REVIEWED:2026-10-18 ACCEPT (C2, Gemini 4 Argon low), lab-crossvendor",
+      "ref": "c99625b0",
+      "utc": "2026-10-18T05:13:05Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge origin/fast-track into kurisko-extract (LAYERS.md open-cards list resolved by hand: ",
+      "ref": "df8316ba6ca0",
+      "utc": "2026-10-18T04:57:29Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "753fcbbf4b5f Rule-11 review of the same-vendor gate (3bc336e6): findings + card lab-vendor",
+      "ref": "MyTradingSys/research/lab_guy/findings/2026-10-18_review_same_vendor_gate.md",
+      "utc": "2026-10-17T22:50:35Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:definitions CLASS:C1 REVIEWER:Gemini Flash high WEIGHT:IMPORTANT. Card-state edits only; class values follow the Lab_Guy defect list (card title). DECISION (OURS): the real C2 stamp stays with Lab_Guy, this card only marks it pending. Reviewed by a separate Sonnet Agent (FIX round 1 applied).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T05:13:05Z",
+  "refs": [],
+  "result": "lab-trust-tag stamped REVIEWED:2026-10-18 ACCEPT (C2, Gemini 4 Argon low), lab-crossvendor-same-vendor-gate stamped REVIEWED-RETRO CLASS:C2 TRUST:UNCHECKED, gap-g1-prereg-power raised to CLASS:C1 B-SHARED.",
+  "scope_in": [
+    "MyTradingSys/system/tasks/ (the three task-card JSON files named in the steps)",
+    "MyTradingSys/research/lab_guy/findings/2026-10-18_review_same_vendor_gate.md (read)"
+  ],
+  "scope_out": [
+    "scripts/dev/tasks.py (promotion gate already shipped, 35c10e93b393)",
+    "any lab result or product code",
+    "real C1/C2 stamps (Lab_Guy writes those)",
+    "which reviewer model did earlier reviews (write none-recorded, never invent one)"
+  ],
+  "scope_sha": "df8316ba6ca0",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "lab-trust-tag: add REVIEW-PENDING:Lab_Guy (real stamp + non-Claude spec review owed, class C2) at the start of note; do not run take (it flips the card to active); instead run tasks.review_gate(tasks.get(tasks.REPO, \"lab-trust-tag\")) via python -c with scripts/dev on sys.path and quote the refusal in the commit body",
+    "lab-crossvendor-same-vendor-gate (done): prepend REVIEWED-RETRO:2026-10-18 T0-ONLY LAB:definitions CLASS:C2 REVIEWER:none-recorded (C2 re-review pending, Lab_Guy) TRUST:UNCHECKED, citing findings/2026-10-18_review_same_vendor_gate.md; list it as a re-check candidate in the lab-trust-tag note",
+    "gap-g1-prereg-power: add CLASS:C1 to the note, keep the existing ACCEPT stamp text as recorded (Flash low pass) and mark the C1 re-review pending; the weight becomes B-SHARED by itself because verdicts.py prints power on every verdict (tasks.py sets it)",
+    "run python scripts/dev/tasks.py check and python scripts/dev/tasks.py lint; both stay green"
+  ],
+  "tests": "fail-first assertion script in the commit body: before the edit, lab-trust-tag note lacks REVIEW-PENDING, same-vendor-gate note lacks REVIEWED-RETRO, gap-g1 note lacks CLASS:C1; after the edit all three hold (python -c over the three JSON files)",
+  "title": "Lab_Guy defect: lab-trust-tag and lab-crossvendor-same-vendor-gate are READY with no REVIEWED stamp (PLAN says C2 and C1; a lab-gate card is E7-adjacent so same-vendor-gate should be C2); gap-g1-prereg-power stamped C0 but prints power on every verdict (B-shared, class C1)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T11:41:34Z",
   "commands": [],
   "created": "2026-10-16T13:48:06Z",
   "depends_on": [],
@@ -12,6 +13,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "DEV 1h 3392 spikes (3388 labelled) MFE 1.036R/MAE 0.933R; 4h 645 spikes (643) MFE 1.076R/M",
+      "ref": "0024e072",
+      "utc": "2026-10-17T11:41:34Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -37,7 +44,7 @@
   "refreshed": "2026-10-17T07:24:55Z",
   "refs": [],
   "reopened": "2026-10-17T03:45:00Z",
-  "result": "",
+  "result": "DEV 1h 3392 spikes (3388 labelled) MFE 1.036R/MAE 0.933R; 4h 645 spikes (643) MFE 1.076R/MAE 0.913R; volume_event_table/REPORT.md",
   "scope_in": [
     "MyTradingSys/research/layer_lab/volume_event_table/event_table.py",
     "MyTradingSys/research/layer_lab/volume_event_table/test_event_table.py",
@@ -58,7 +65,7 @@
   "scope_sha": "515d07a91407",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the BRIEF.md in scope_in and the existing module and test file; add a failing test for the DEV npz loader and the DEV slice (red first).",
     "Add the loader + CLI (--input default the npz path in the brief; DEV slice before bars are built; dev_only/assert_dev) and fix gaps the tests expose; gap or missing input = NOT_IN_DATA, never 0.",
@@ -66,5 +73,6 @@
     "Run the CLI once on the real DEV npz; put row/OK/NOT_IN_DATA counts and mean MFE/MAE in REPORT.md and one DEV row in TRIALS.md; delete any CSV; set the result line."
   ],
   "tests": "Existing 5 synthetic tests stay green; new red-first tests: loader drops bars with open >= 2024-07-01; the baseline never contains the current bar (hand ratio); fewer than N prior weeks = NOT_IN_DATA; a 4h bucket with a missing 1h bar is skipped; spike at a known bar is flagged with hand-computed forward MFE/MAE.",
-  "title": "Volume layer: time-adjusted relative-volume spike event table on DEV with forward R"
+  "title": "Volume layer: time-adjusted relative-volume spike event table on DEV with forward R",
+  "weight": "B-SHARED"
 }

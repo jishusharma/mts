@@ -1,7 +1,11 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "class": "C1",
+  "commands": [
+    "python MyTradingSys/research/krown_ta101_2026-10-13/tools/fetch_daily_majors.py --out F:/MTS/data/krown_daily",
+    "python MyTradingSys/research/krown_ta101_2026-10-13/tools/build_data_coverage.py --data F:/MTS/data/krown_daily"
+  ],
   "created": "2026-10-17T04:34:46Z",
   "depends_on": [],
   "done_when": "A CSV of CME BTC daily volume (date, volume, source url) is on F: with a gap count, or the card result says NOT AVAILABLE with the sources tried; no account or paid data used.",
@@ -11,21 +15,47 @@
   "id": "krown-data-cme-btc-volume",
   "kind": "run",
   "lane": "DSA",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Krown data: BTC/ETH/BNB/SOL daily + BTC weekly (Binance spot) and Coinbase BTC-USD daily, ",
+      "ref": "d8a77746809b",
+      "utc": "2026-10-15T21:31:18Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d8a77746809b Krown data: BTC/ETH/BNB/SOL daily + BTC weekly (Binance spot) and Coinbase BT",
+      "ref": "MyTradingSys/research/krown_ta101_2026-10-13/DATA_COVERAGE.md",
+      "utc": "2026-10-15T21:31:18Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "note": "Public market data only (CLAUDE.md pre-approval). If no free source exists say so; do not scrape behind a login.",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch=yes class=C0 reviewer=machine checks + Flash low pass] Public market data only (CLAUDE.md pre-approval). If no free source exists say so; do not scrape behind a login.\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C1 weight=IMPORTANT); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "gemini-nuc",
+  "refreshed": "2026-10-18T10:00:42Z",
   "refs": [
     "q-krown-volume-venue"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
+  "scope_in": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/DATA_COVERAGE.md",
+    "MyTradingSys/research/krown_ta101_2026-10-13/DATA_MANIFEST.csv",
+    "MyTradingSys/research/krown_ta101_2026-10-13/tools/fetch_daily_majors.py"
+  ],
+  "scope_out": [
+    "paid data or login-gated scraping",
+    "reading VALIDATION/HOLDOUT outcomes",
+    "live tree"
+  ],
+  "scope_sha": "d8a77746809b",
   "size": "S",
   "sources": [],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Search for a free public CME BTC futures daily volume source (CME settlement pages, public data mirrors).",
     "Fetch it to F:/MTS/data/krown_daily/ with the same file layout as the Coinbase series.",
@@ -33,5 +63,7 @@
   ],
   "tests": "",
   "title": "Krown CME BTC futures daily volume (public data only) as third volume arm",
+  "updated": "2026-10-18T10:00:00Z",
+  "weight": "IMPORTANT",
   "worker": ""
 }

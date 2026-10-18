@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-18T00:46:08Z",
   "commands": [],
   "created": "2026-10-12T19:46:12Z",
   "depends_on": [],
@@ -10,17 +12,33 @@
   "goal": "Enforce the authorized development interval before conversion, generation, hashing, snapshot decoding and report accounting; prevent future metadata from changing a development result.",
   "id": "rv02-fix-dax-preprocessing-isolation",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "R1 shipped: DAX convert/gen/rows/report bounded to the development interval; 80 backtest/d",
+      "ref": "64373ab6",
+      "utc": "2026-10-18T00:46:08Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab gap-g2-dax-ask-candles: BLOCKED (build)",
+      "ref": "934e5bd05659",
+      "utc": "2026-10-17T18:52:11Z"
+    }
+  ],
   "layers": [
     "tom"
   ],
   "live_path": false,
-  "note": "HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | Captured by completed RV02 audit; raw SONNET follow-up for refinement. No implementation change made by the audit.",
+  "note": "UNBLOCKED 2026-10-18: operator lifted the holds in chat (DAX chain q11 hold, A-20261018-5); no-FDAX-data-purchase rule stays. Results built on lab bases stay labelled UNCHECKED. [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | Captured by completed RV02 audit; raw SONNET follow-up for refinement. No implementation change made by the audit.\nREVIEWED: Sonnet-diff-review-Agent 2026-10-18 APPROVE (diff 4a1ed135; boundary tests + convert CLI bound added after review).",
   "pinned": false,
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T22:06:42Z",
   "refs": [],
-  "result": "",
+  "result": "R1 shipped: DAX convert/gen/rows/report bounded to the development interval; 80 backtest/data tests pass, core new tests red on old code. REVIEWED: Sonnet-diff-review-Agent 2026-10-18 APPROVE",
   "scope_in": [
     "MyTradingSys/backtest/tom_dax_bt.py",
     "MyTradingSys/backtest/dax_data.py",
@@ -33,18 +51,21 @@
     "Specs, ledger and historical reports",
     "Real-data/holdout reads and current-encoding BTC runs"
   ],
+  "scope_sha": "934e5bd05659",
   "size": "M",
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-12_rv02-dax-harness-fixes.md:43",
     "MyTradingSys/system/revalidation/RV02_dax_harness_fixes.md"
   ],
-  "state": "blocked",
+  "state": "done",
   "steps": [
     "Read the linked RV02 finding and executable synthetic appendix.",
     "Refine the implementation boundary and reproduce the finding red with synthetic data.",
     "Fix within the approved scope, invalidate incompatible caches, and run the focused tests."
   ],
+  "taken": "2026-10-18T00:46:03Z",
   "tests": "Synthetic all/gen sentinels reject missing manifests before subprocess/data access; future payload and metadata mutations do not affect development identities or accounting.",
   "title": "RV02 R1: isolate DAX preprocessing and report metadata before holdout",
+  "weight": "CRUCIAL",
   "worker": "session"
 }

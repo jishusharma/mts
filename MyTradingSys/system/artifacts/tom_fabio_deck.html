@@ -1,0 +1,213 @@
+<title>Tom and Fabio: what they taught</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one column of chapter cards, read top to bottom like a teaching file. Tokens match MTS Home. */
+:root{
+  --bg:#eef1f4; --surface:#ffffff; --sunk:#f6f8fa; --ink:#14202b; --muted:#566371; --line:#d6dde4;
+  --accent:#2f43c4; --accent-soft:#e7eafb;
+  --pass:#17734a; --pass-soft:#e2f3ea; --warn:#9a5700; --warn-soft:#fbf0dd; --fail:#b42318; --fail-soft:#fbe7e5;
+  --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0e1318; --surface:#161d24; --sunk:#121820; --ink:#e4e9ee; --muted:#9aa6b2; --line:#29323c;
+  --accent:#93a2ff; --accent-soft:#232a4d;
+  --pass:#5fcf95; --pass-soft:#16301f; --warn:#f2b54f; --warn-soft:#382a12; --fail:#ff8a7d; --fail-soft:#3a1a17;
+  color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0e1318; --surface:#161d24; --sunk:#121820; --ink:#e4e9ee; --muted:#9aa6b2; --line:#29323c;
+  --accent:#93a2ff; --accent-soft:#232a4d;
+  --pass:#5fcf95; --pass-soft:#16301f; --warn:#f2b54f; --warn-soft:#382a12; --fail:#ff8a7d; --fail-soft:#3a1a17;
+  color-scheme:dark }
+*{box-sizing:border-box}
+html{font-size:106.25%;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font:1rem/1.6 var(--f-body);margin:0}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 72px;display:grid;gap:22px}
+h1,h2,h3{font-family:var(--f-display);font-stretch:88%;text-wrap:balance;margin:0;line-height:1.2}
+h1{font-size:2rem;font-weight:800;font-stretch:80%}
+h2{font-size:1.35rem;font-weight:750}
+p{margin:0;max-width:65ch}
+a{color:var(--accent)}
+code{font-family:var(--f-mono);font-size:.84em;overflow-wrap:anywhere}
+.eyebrow{font:700 .72rem var(--f-body);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+header{display:grid;gap:10px}
+.sub{color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:8px}
+.tag{font:700 .72rem var(--f-body);letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--sunk);color:var(--muted);white-space:nowrap}
+.tag.src{background:var(--pass-soft);color:var(--pass);border-color:transparent}
+.tag.ours{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+.tag.conv{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+.tag.no{background:var(--fail-soft);color:var(--fail);border-color:transparent}
+.ch{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;display:grid;gap:12px;min-width:0}
+.chtop{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+.chn{font:700 .8rem var(--f-mono);color:var(--accent)}
+blockquote{margin:0;padding:8px 14px;border-left:3px solid var(--accent);background:var(--sunk);border-radius:0 8px 8px 0;display:grid;gap:4px;max-width:65ch}
+blockquote cite{font:600 .78rem var(--f-mono);color:var(--muted);font-style:normal}
+ul{margin:0;padding-left:1.2em;display:grid;gap:6px;max-width:65ch}
+pre{margin:0;padding:12px 14px;background:var(--sunk);border:1px solid var(--line);border-radius:8px;overflow-x:auto;font:.82rem/1.45 var(--f-mono)}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:.93rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:700 .72rem var(--f-body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.foot{border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:.9rem;display:grid;gap:6px}
+@media (max-width:560px){h1{font-size:1.7rem}.ch{padding:16px}}
+</style>
+
+<main class="wrap">
+<header>
+  <span class="eyebrow">MyTradingSys teaching file</span>
+  <h1>Tom and Fabio: what they taught</h1>
+  <p class="sub">Eleven chapters. The first eight retell both methods as a story (session MTS-2026-10-05, <code>TOM_FABIO_STORY_2026-10-05.md</code>). The last three add what the 2026-10-12 research found. Rebuilt from the repo on 2026-10-17.</p>
+  <div class="legend">
+    <span class="tag src">Sourced: trader's words, quote and file</span>
+    <span class="tag conv">Convention: standard market-profile idea</span>
+    <span class="tag ours">Ours: MTS judgement or measurement</span>
+    <span class="tag no">No source: neither trader says it</span>
+  </div>
+  <p class="sub">The bazaar story in chapter 1 is the narrator's picture. It paraphrases Tom's balance and imbalance (TOM-030); neither trader says it (<code>tom_fabio_guidance_2026-10-12/SOURCED_RULES.md</code> section 0).</p>
+</header>
+
+<section class="ch"><div class="chtop"><span class="chn">1</span><h2>The bazaar</h2><span class="tag no">Narrator's picture</span></div>
+<p>A merchant shouts 90 for saffron and nobody buys. At 80 a few buy. At 70 a crowd forms and trade goes on all afternoon. At 60 the sellers go home. A market is an auction looking for the price where the most business gets done. Price moves fast through prices nobody wants and sits still where everybody trades.</p>
+<blockquote>"where the market is in balance, everyone is satisfied. And where the market is out of balance, there is often dissatisfaction among the big players."<cite>Tom, TOM-030</cite></blockquote></section>
+
+<section class="ch"><div class="chtop"><span class="chn">2</span><h2>The merchant's notebook: the volume profile</h2></div>
+<p>Write down the volume sold at each price and turn it sideways: one bar per price. Illustrative shape, with the real weekly levels of 2026-10-05:</p>
+<pre>price
+86900 |##                  few trades: "unfair" high
+86700 |#####
+86510 |################   POC: the busiest price
+86300 |###########
+86000 |########
+85814 |####               VAL: bottom edge of value
+85500 |##                  few trades: "unfair" low</pre>
+<ul>
+<li><b>POC</b>: "the point where the market has accumulated the highest total volume at a given price level" (Tom, TOM-180). <span class="tag src">Sourced</span></li>
+<li><b>VAH / VAL</b>: "everything above the value area high and below the value area low is considered an unfair price area" (Tom, TOM-183). <span class="tag src">Sourced</span></li>
+<li>The usual value area is the 70% of volume around the POC. Tom gives the idea, not the 70%. <span class="tag conv">Convention</span></li>
+<li>"where high volume occurs, we often see a reaction when a market returns there" (Tom, TOM-182). <span class="tag src">Sourced</span></li>
+<li>MTS keeps weekly, daily, prior-day and 4-hour profiles. <span class="tag ours">Ours</span></li>
+</ul></section>
+
+<section class="ch"><div class="chtop"><span class="chn">3</span><h2>The two moods: balance and trend</h2></div>
+<blockquote>"when supply and demand are balanced, the market will always try to return to that equilibrium."<cite>Tom, TOM-031</cite></blockquote>
+<blockquote>"this is the case in about 70% of market phases"<cite>Tom, TOM-044. His own statistic, not verified.</cite></blockquote>
+<ul>
+<li><b>Fast trend</b>: almost no pullbacks, leaves fair value gaps that often get revisited (TOM-048, TOM-050).</li>
+<li><b>Normal trend</b>: steady with pullbacks, stays on one side of VWAP. "If the price is below it, they're initially more bearishly inclined." (TOM-049)</li>
+<li><b>Slow creeping</b>: grinds along (TOM-050).</li>
+<li>Rising, flat or falling weekly POCs show where the big money moves (TOM-196). Weekly POC went 83896 to 86510 in the week of 2026-10-05: rising. <span class="tag ours">Ours: MARKET_ANALYSIS_2026-10-05</span></li>
+</ul></section>
+
+<section class="ch"><div class="chtop"><span class="chn">4</span><h2>The market cycle</h2></div>
+<pre>BALANCE --(pressure builds)--> BREAK OUT OF VALUE --(acceleration)--> TREND
+   ^                                                                    |
+   +---------- new BALANCE at a new price <--(exhaustion, B/P shape)----+</pre>
+<ul>
+<li>Break: "Very often it accelerates at first ... a lot of market participants fall out of balance and then they sell their positions" (TOM-186).</li>
+<li>A B-shaped profile is "the first sign ... that there has definitely been strong and aggressive selling" (TOM-036).</li>
+<li>A failed break "came back in, formed acceptance" (TOM-011): one of the best stories in the method.</li>
+<li>Right after a big move the market is sorting itself out and the action is WAIT. <span class="tag ours">Ours: setup_type_rules.md section 3</span></li>
+</ul></section>
+
+<section class="ch"><div class="chtop"><span class="chn">5</span><h2>Tom's way: Idea, Proof, Math</h2></div>
+<blockquote>"I need an idea for a route plan and I need proof that this idea should be put into action right now."<cite>Tom, TOM-135</cite></blockquote>
+<ul>
+<li><b>Idea</b>: go from one volume node to the next. "I expect a reaction first. And a reaction is usually a counter at first." (TOM-134) In balance: "I can definitely look for short trades up here and long trades down here." (TOM-042)</li>
+<li><b>Proof</b>: rejection wick, absorption, finished auctions ("only when auctions are completely finished", TOM-013), speed ("the speed with which it rejected this is promising", TOM-010).</li>
+<li><b>Math</b>: the stop goes below the last liquidity; the target is the next node.</li>
+</ul>
+<blockquote>"even with a hit rate of 30 to 40% you have an average riskreward ratio of greater than three and you will be incredibly successful"<cite>Tom, TOM-091</cite></blockquote>
+<blockquote>"through your hit rate and the minimum usable risk-reward ratio, you can know, 'I have to trade at least up to here, otherwise the whole thing makes no sense.'"<cite>Tom, TOM-093</cite></blockquote>
+<div class="tw"><table><thead><tr><th>Mood</th><th>Where</th><th>Trade</th></tr></thead><tbody>
+<tr><td>Balance</td><td>VAH, VAL, prior-day VA edges</td><td>Counter-trade toward the POC</td></tr>
+<tr><td>Balance about to resolve</td><td>The edge, with proof of direction</td><td>Breakout</td></tr>
+<tr><td>Normal trend</td><td>Pullback to VWAP or structure</td><td>Join the trend</td></tr>
+<tr><td>Exhausted trend</td><td>Extreme, with proof of reversal</td><td>Counter-trade</td></tr>
+<tr><td>Sorting itself out</td><td>Anywhere</td><td>Nothing</td></tr></tbody></table></div>
+<p class="sub">The table is our reconstruction of Tom's playbook. <span class="tag ours">Ours: setup_type_rules.md section 3</span></p></section>
+
+<section class="ch"><div class="chtop"><span class="chn">6</span><h2>Fabio's way: listening to the engine room</h2></div>
+<p>Source: <code>research/fast_track_2026-09-27/FABIO_TRADE_MODEL.md</code> (FTM).</p>
+<ul>
+<li><b>Balance first.</b> No direction, so wait.</li>
+<li><b>Hidden pressure.</b> Price flat while CVD runs one way: the leading signal.</li>
+<li><b>Effort vs result.</b> Big aggression, no progress: absorption. Aggression that moves price: control. The trigger is the first bar where pressure gets a result, with big trades behind it.</li>
+<li><b>Tiny stop</b> just past the absorbed extreme; breakeven when price explodes.</li>
+<li><b>Add</b> on each new big-trade confirmation. <b>Trail</b> behind the last level where his side showed control, not bars or ATR. <b>Exit</b> when big trades stop pushing.</li>
+<li><b>Pick the day</b>: volatile, directional days; the NY cash open.</li>
+<li>Payoff: many scratches and a few winners of 1:5 to 1:19.</li>
+</ul>
+<p>Tom asks where they will react. Fabio asks who is winning right now. In MTS they stay separate layers.</p></section>
+
+<section class="ch"><div class="chtop"><span class="chn">7</span><h2>One morning through both lenses</h2><span class="tag ours">Ours: data cutoff 2026-10-05 05:17Z</span></div>
+<ul>
+<li><b>Map (Tom).</b> The weekend rally reached 86956, into the top of weekly value (VAH 86866), found no business and fell back through weekly VAL (85814) to the daily VAL (85452). The weekly POC is rising, so the big picture is up and the short-term story is a failed push.</li>
+<li><b>Engine room (Fabio).</b> 4-hour CVD about -2400: sellers did the work. OI flat, no flush. Buyers poking back on 15 minutes.</li>
+<li><b>Tom's idea</b>: long toward value if the low is rejected (setup 85278, stop 85107, target POC 86510). No proof yet, so wait.</li>
+<li><b>Fabio's idea</b>: not readable, because v3 was in shadow mode and silent.</li>
+<li>If the US open flushes below 85278 and price comes back in and forms acceptance, that is the textbook long (TOM-011). If it stays outside, the next node down is 84677 to 84400.</li>
+</ul></section>
+
+<section class="ch"><div class="chtop"><span class="chn">8</span><h2>Where MTS loses the plot</h2><span class="tag ours">Ours: review of 2026-10-05</span></div>
+<p>Extraction is done (Tom 2 of 74 engine parameters sourced; Fabio v3 0 of 8). The gaps are mostly translation.</p>
+<div class="tw"><table><thead><tr><th>#</th><th>The teacher says</th><th>MTS does</th><th>Fix direction</th></tr></thead><tbody>
+<tr><td>M1</td><td>Minimum R:R comes from your own hit rate (TOM-093)</td><td>Fixed floor 1.25, no measured hit rate</td><td>Derive the floor from measured hit rate per setup</td></tr>
+<tr><td>M2</td><td>Target is the next volume node (TOM-132..134)</td><td>Nearest POC/HVN, so R:R is small</td><td>Test next node beyond the nearest</td></tr>
+<tr><td>M3</td><td>Weekly POC direction is money flow (TOM-196)</td><td>Not computed</td><td>Add weekly POC migration as context</td></tr>
+<tr><td>M4</td><td>"came back in, formed acceptance" (TOM-011)</td><td>No failed-break setup</td><td>Needs a sourced acceptance test; NO-SOURCE until then</td></tr>
+<tr><td>M5</td><td>Hidden pressure and effort vs result are Fabio's core</td><td>Built in v3, but shadow with 0 live rows</td><td>Fix the v3 live silence first</td></tr>
+<tr><td>M6</td><td>Manage the winner: breakeven, add, trail; no clock</td><td>Time exit after 8 bars; no pyramiding</td><td>Remove the time exit on testnet</td></tr>
+<tr><td>M7</td><td>Entry when proof shows</td><td>Limit orders at the zone rarely fill (5 of 6)</td><td>Golden-scenario tests from the extracts</td></tr>
+<tr><td>M8</td><td>Wait while sorting itself out</td><td>turn_of_candle trades every 15 min</td><td>Keep it as a plumbing probe only</td></tr>
+<tr><td>M9</td><td>Fabio's market is the NY cash open</td><td>US anchor fixed at 13:30Z, wrong from 2026-11-01</td><td>DST-aware anchor</td></tr></tbody></table></div>
+<p>MTS knows the map. It does not yet take the trade the way the teachers do. Order: M1/M2 and M6, then M5, then M4.</p></section>
+
+<section class="ch"><div class="chtop"><span class="chn">9</span><h2>Fast moves: what the traders actually say</h2><span class="tag src">Sourced</span></div>
+<p>From <code>tom_fabio_guidance_2026-10-12/SOURCED_RULES.md</code>; each quote was machine-matched to the canonical transcript.</p>
+<blockquote>"these price areas are zones with very low volume for the respective time frame we're looking at. And the market often bounces off these areas."<cite>Tom on low volume nodes, YmygDgtoxO8_raw.txt:19 (TOM-210)</cite></blockquote>
+<blockquote>"fair value gaps are great support resistance levels. They are, but only if the market has trend stability."<cite>Tom, Fj4FDZQxw0I_raw.txt:8 (TOM-204)</cite></blockquote>
+<blockquote>"we gain an advantage because this allows us to see whether a market is supported by volume. Only then does it make sense to trade in that direction."<cite>Tom on Bollinger bands, 4VXpUjhKG2U_raw.txt:7</cite></blockquote>
+<blockquote>"If they squeeze this one on the top and they reach this one, probably, with high probability, they will go for a fast move all the way up because, as you can see, this level is pretty empty"<cite>Fabio, FawPrRUGNpk_raw.txt:770-776</cite></blockquote>
+<ul>
+<li>Tom's low-volume teaching is bounce, fill and revert. "Fast through" appears only for gaps in a stable trend (Tom) and for a sweep into an empty level (Fabio). An empty level alone is no trigger in either source.</li>
+<li>Tom's method order: locations first, then context, then order flow for timing (-dMWA_bbm3o_raw.txt:7).</li>
+<li><span class="tag no">No source</span> Bollinger bands as a trigger, RSI 40-60 (that is Malkan), open interest, long/short ratio, funding, volatility squeeze, ATR rules, and every numeric threshold.</li>
+</ul></section>
+
+<section class="ch"><div class="chtop"><span class="chn">10</span><h2>Do they guide each other?</h2><span class="tag ours">Ours: code audit of 2026-10-12</span></div>
+<p>No. They run side by side and never read or gate each other.</p>
+<ul>
+<li>Fabio v3 may import only stdlib, orderflow_bars and its own siblings (<code>tests/test_b127_fabio_v3_isolation.py:1-8</code>).</li>
+<li>Tom core is Java; no Java file reads the layer alerts. The consensus module only observes: "never gates, vetoes or delays a core" (<code>consensus/hook.py:8-9</code>).</li>
+<li>Layers never filter Tom (<code>test_layer_boundaries.py:3-9</code>). A Fabio-gates-Tom wire needs an operator ruling first.</li>
+<li>In the live runner a Tom trade and a Fabio trade can be open at once on different accounts, same or opposite sides, unaware of each other (<code>auto_trader.py:719-775</code>).</li>
+<li>The traders themselves overlap: Tom uses absorption as proof (TOM-025); Fabio uses value area and profile. Neither names the other. Recommendation: do not wire; measure agreement as a descriptive tag.</li>
+</ul></section>
+
+<section class="ch"><div class="chtop"><span class="chn">11</span><h2>Test result: nothing survives fees</h2><span class="tag ours">Ours: Q33 matrix, 2026-10-12</span></div>
+<p>BTCUSDT perp 15m, 2022-01-01 to 2026-10-11, taker fee 0.10% round turn, entry at the next open, exit after a fixed horizon. Pre-registered in <code>PRE_REG_Q33.md</code> before the run.</p>
+<div class="tw"><table><thead><tr><th>Trigger</th><th>Events</th><th>Net mean at 60 min, long / short</th></tr></thead><tbody>
+<tr><td>BB outside, continuation</td><td class="n">8,689</td><td class="n">-0.091% / -0.103%</td></tr>
+<tr><td>BB outside, fade</td><td class="n">8,689</td><td class="n">-0.097% / -0.109%</td></tr>
+<tr><td>LVN traverse, continuation</td><td class="n">1,491</td><td class="n">-0.104% / -0.115%</td></tr>
+<tr><td>LVN reject, fade</td><td class="n">1,275</td><td class="n">-0.102% / -0.114%</td></tr>
+<tr><td>FVG first test, hold</td><td class="n">19,282</td><td class="n">-0.090% / -0.093%</td></tr>
+<tr><td>FVG second test, through</td><td class="n">8,427</td><td class="n">-0.109% / -0.100%</td></tr>
+<tr><td>Sweep-void, continuation</td><td class="n">1,870</td><td class="n">-0.102% / -0.097%</td></tr></tbody></table></div>
+<ul>
+<li>336 cells built, 186 tested (n at least 300). Survivors: 0. Smallest q-value 0.62.</li>
+<li>Median gross edge across tested cells: +0.0003%. Every trigger is a coin flip before fees and a 0.1% loss after.</li>
+<li>This is not a verdict on Tom's or Fabio's own trades. Their edge is management (breakeven, add, trail, winners of 1:5 to 1:19), which a fixed-horizon return cannot show.</li>
+</ul></section>
+
+<footer class="foot">
+  <p>Sources in the repo: <code>MyTradingSys/research/TOM_FABIO_STORY_2026-10-05.md</code>, <code>MyTradingSys/research/tom_fabio_guidance_2026-10-12/</code>. Read only. Put notes on the Research Map. This page is owned by jishusharma1985 and listed on MTS Home. The earlier copy on jishu.sharma is gone.</p>
+</footer>
+</main>

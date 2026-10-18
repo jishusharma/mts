@@ -1,31 +1,80 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-18T12:28:54Z",
   "commands": [],
   "created": "2026-10-12T15:34:42Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "RESULT.md with per-row ratios and one verdict (a named candidate or UNIDENTIFIED with n); panel_steps.csv; test passes. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+  "est_turns": 22,
   "from_inbox": "",
-  "goal": "",
+  "goal": "Identify what the CoinGlass Net Delta panel shows. SCREENSHOT_OBSERVATIONS.md:38 infers step = sign(close-open) x abs(dOI) from 2 bars; live reads R-12/R-25 (2026-10-15) and 2026-10-17 shots disagree with Binance trade delta by 0.06-1.7x. Fit every panel step we have against OI-based and trade-delta candidates and report which holds.",
   "id": "identify-the-coinglass-net-delta-panel-u",
   "kind": "run",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "RESULT.md: UNIDENTIFIED (n=10); A matches 5m/8h/12h not 30m; trade delta refuted",
+      "ref": "2ffc6de7",
+      "utc": "2026-10-18T12:28:54Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "live-market-1017: engine vs catalogue Tom setups",
+      "ref": "4573395b5dd2",
+      "utc": "2026-10-17T10:31:39Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "6edf86550102 live read 2026-10-15 BTCUSDT: 12h swing map plus 1m/3m intraday zoom",
+      "ref": "MyTradingSys/research/live_reads/2026-10-15_12h_swing_map/READ.md",
+      "utc": "2026-10-15T14:13:21Z"
+    }
+  ],
   "layers": [
     "live_engine"
   ],
   "live_path": false,
-  "note": "",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Descriptive identification, no strategy claim. Candidate set and thresholds (80 percent, 0.8-1.25) are OURS. The 8h 4.181K, 30m -8.366K, 15m -2.257K reads are the motivating NOT_IN_DATA rows; if panel levels are chart-anchored only steps are fitted.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-18T03:34:40Z",
   "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Identify the CoinGlass Net Delta panel unit and scope: 4 reads in a row NOT_IN_DATA (8h 4.181K, 30m -8.366K, 15m -2.257K vs perp delta); regress panel steps vs Binance perp/spot/aggregate delta"
+  "result": "RESULT.md: UNIDENTIFIED (n=10); A matches 5m/8h/12h not 30m; trade delta refuted",
+  "scope_in": [
+    "MyTradingSys/research/netdelta_panel_2026-10-18/ (new folder)",
+    "MyTradingSys/research/bigtrade_2026-10-09/SCREENSHOT_OBSERVATIONS.md (read)",
+    "MyTradingSys/research/live_reads/2026-10-15_12h_swing_map/READ.md (read, R-12 R-25)",
+    "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/ (read)"
+  ],
+  "scope_out": [
+    "live tree",
+    "engine code",
+    "Binance private endpoints",
+    "screenshots re-read (use only values already in the reads)"
+  ],
+  "scope_sha": "4573395b5dd2",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/bigtrade_2026-10-09/SCREENSHOT_OBSERVATIONS.md:30,38,110",
+    "MyTradingSys/research/live_reads/2026-10-15_12h_swing_map/READ.md:72,85"
+  ],
+  "state": "done",
+  "steps": [
+    "collect every Net Delta panel step already written in the cited reads into panel_steps.csv: source row id, timeframe, bar open UTC, panel step value, unit as read (K or raw); rows without a bar time are listed as NOT_IN_DATA, not guessed",
+    "netdelta_fit.py: for each row compute candidate A = sign(close-open) x abs(dOI) (Binance public openInterestHist 5m, klines from MyTradingSys/data/klines or public klines), B = Binance perp taker delta, C = spot taker delta, D = A+B family; Binance-only, other venues are NOT_IN_DATA",
+    "report per candidate: ratio panel/candidate per row, median ratio, sign-agreement count; verdict = the candidate with sign agreement >= 80 percent and ratio spread inside 0.8-1.25, else UNIDENTIFIED with the n rows used (no regression claim under n = 8)",
+    "RESULT.md with the table, the data pulls (public, free) and the OI series file hash; update SCREENSHOT_OBSERVATIONS.md only by an appended dated line"
+  ],
+  "taken": "2026-10-18T12:28:50Z",
+  "tests": "MyTradingSys/research/netdelta_panel_2026-10-18/test_netdelta_fit.py::test_step_formula: fixture bar close<open with OI up gives a negative step, close>open with OI down gives a negative step, flat bar gives 0; fails before netdelta_fit.py exists",
+  "title": "Identify the CoinGlass Net Delta panel unit and scope: 4 reads in a row NOT_IN_DATA (8h 4.181K, 30m -8.366K, 15m -2.257K vs perp delta); regress panel steps vs Binance perp/spot/aggregate delta",
+  "updated": "2026-10-18T05:30:00Z",
+  "weight": "ROUTINE",
+  "worker": "session"
 }

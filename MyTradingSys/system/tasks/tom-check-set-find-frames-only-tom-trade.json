@@ -4,30 +4,67 @@
   "commands": [],
   "created": "2026-10-12T19:43:09Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "CHECK_SET.md lists every frames-only trade found (or the line none found beyond S7/S8 with the queries tried); ledger rows appended with frame times; check script passes. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+  "est_turns": 30,
   "from_inbox": "",
-  "goal": "",
+  "goal": "Grow the Tom CHECK set beyond S7/S8 by logging entry, stop and target of further frames-only Tom recap videos (no caption files read), frozen into CHECK before anyone reads their captions.",
   "id": "tom-check-set-find-frames-only-tom-trade",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Tom ledger: date column observed-or-empty, one inferred date per group (RV01 D4)",
+      "ref": "927515b62091",
+      "utc": "2026-10-12T19:59:39Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "927515b62091 Tom ledger: date column observed-or-empty, one inferred date per group (RV01 ",
+      "ref": "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.md",
+      "utc": "2026-10-12T19:59:39Z"
+    }
+  ],
   "layers": [
     "tom"
   ],
   "live_path": false,
-  "note": "HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C0 REVIEWER:machine checks + Flash low pass WEIGHT:ROUTINE. UNBLOCKED 2026-10-18 (A-20261018-5 lifted; no-FDAX-purchase rule stays; free YouTube pre-approved). DECISION OURS: zero new candidates is a valid result.\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C1 weight=IMPORTANT); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "gemini-nuc",
+  "refreshed": "2026-10-18T10:01:00Z",
   "refs": [
     "TOM_LAYER_V2_SPEC.md section 7"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.md",
+    "MyTradingSys/research/tom_check_set_2026-10-18/"
+  ],
+  "scope_out": [
+    "reading any .vtt or .txt of a check video",
+    "encoding and backtests",
+    "DAX holdout days (2026-04-11 on)",
+    "live tree"
+  ],
+  "scope_sha": "927515b62091",
+  "size": "M",
   "sources": [],
-  "state": "blocked",
-  "steps": [],
-  "tests": "",
-  "title": "Tom check set: find frames-only Tom trade recaps and log entry/stop/target without reading captions (check set is 2 trades)"
+  "state": "refined",
+  "steps": [
+    "list videos in F:/MTS/data/tom_videos with an .mp4 and no .vtt/.txt (liEJMfE_PXg and ZZeET7ng1nk are S7/S8, already CHECK); from the DE channel playlist use yt-dlp metadata only (no captions) to add recap candidates; STOP on HTTP 429 and log it",
+    "download video-only, cut frames with grab.py (host with cv2/ffmpeg: JIS-NB), blind-read each order panel crop per A-20261018-7: required unreadable option, no claim shown, null for a hidden field",
+    "append one row per trade to TOM_TRADE_LEDGER.csv (set=CHECK, entry/stop/target, frame path and time) and write the count line in the .md; compare to existing rows in code",
+    "write research/tom_check_set_2026-10-18/CHECK_SET.md: ids, frames, status and the line: no caption read"
+  ],
+  "tests": "check_set_frames.py: every new row has an existing frame path, no caption file path in its sources, unreadable fields are NOT_IN_DATA; fails before the rows exist",
+  "title": "Tom check set: find frames-only Tom trade recaps and log entry/stop/target without reading captions (check set is 2 trades)",
+  "updated": "2026-10-18T10:00:00Z",
+  "weight": "IMPORTANT",
+  "worker": "session",
+  "class": "C1"
 }

@@ -4,17 +4,22 @@
   python scripts/dev/artifacts.py list                      # table: page, status, urls, last published
   python scripts/dev/artifacts.py plan --account jishu.sharma   # what a session on that account must publish / pin / record
   python scripts/dev/artifacts.py build                     # regenerate every page that has a generator in this repo
+  python scripts/dev/artifacts.py stale                     # STALE <slug> <url> for each page whose repo build differs from what was last published
+  python scripts/dev/artifacts.py publish-record --slug X [--date YYYY-MM-DD]   # after an Artifact publish: store published_sha + the publish date (default today)
   python scripts/dev/artifacts.py banner --slug research_map [--file live.html]   # insert/refresh the "Part of MTS Home" line
 
 Pages are republished over their existing url (Artifact tool: `url` = the account's url), which keeps the link and the pin.
 A session cannot delete or unpin an artifact: `plan` prints those as a list for the operator.
 """
 import argparse
+import hashlib
 import html
 import json
 import re
 import subprocess
 import sys
+import tempfile
+from datetime import date
 from pathlib import Path
 
 sys.dont_write_bytecode = True
@@ -156,6 +161,68 @@ def cmd_list(reg):
         print(f"{pg['slug']:20} {pg['status']:10} {'pin' if pg['pinned'] else '   '} {urls}  pub {pg['last_published']}")
 
 
+# build timestamp / head sha, clock-derived ages, and the registry publish dates the Control Room embeds: they change on every build or record, not content
+VOLATILE = re.compile(r'"(?:generated|commit|pub)":\s*"[^"]*"|"(?:[a-z_]*age_h|minutes)":\s*-?[0-9.]+')
+
+
+def content_hash(text):
+    """sha256 of the page html with the DATA `generated` stamp and `commit` sha blanked (a rebuild alone is not a change)."""
+    return hashlib.sha256(VOLATILE.sub(lambda m: m.group(0).split(":")[0] + ': ""', text).encode("utf-8")).hexdigest()
+
+
+def repo_html(pg, repo=REPO):
+    return (Path(repo) / pg["html"]).read_text(encoding="utf-8")
+
+
+def build_html(pg, repo=REPO):
+    """The page as the repo would build it now, in a temp file: generator output, else the hand-made html file."""
+    g = pg.get("generator") or ""
+    if not g.startswith("scripts/"):
+        return repo_html(pg, repo)
+    with tempfile.TemporaryDirectory() as d:
+        out = Path(d) / "page.html"
+        subprocess.run([sys.executable, str(Path(repo) / g), "--out", str(out)], check=True, capture_output=True)
+        return out.read_text(encoding="utf-8")
+
+
+def tracked(reg):
+    """Pages that are live on their owner's login and have repo html: the ones that can lag the repo."""
+    return [pg for pg in reg["pages"] if pg["status"] == "canonical" and pg.get("html") and pg["urls"].get(owner(pg))]
+
+
+def stale(reg, builder=build_html):
+    """[(slug, url, reason)] for each tracked page whose build hash differs from published_sha."""
+    out = []
+    for pg in tracked(reg):
+        sha = pg.get("published_sha")
+        if not sha:
+            out.append((pg["slug"], pg["urls"][owner(pg)], "no published_sha recorded"))
+        elif content_hash(builder(pg)) != sha:
+            out.append((pg["slug"], pg["urls"][owner(pg)], "repo build differs from last publish"))
+    return out
+
+
+def stale_lines(reg, builder=build_html):
+    return [f"STALE {s} {u}  ({why})" for s, u, why in stale(reg, builder)]
+
+
+def behind(reg, pg, repo=REPO):
+    """MTS Home badge: the repo html on disk differs from what was last published (no generator run, so Home can build itself)."""
+    try:
+        return content_hash(repo_html(pg, repo)) != pg.get("published_sha")
+    except OSError:
+        return True
+
+
+def publish_record(reg, slug, today=None, repo=REPO):
+    pg = next((p for p in reg["pages"] if p["slug"] == slug), None)
+    if not pg or not pg.get("html"):
+        raise SystemExit(f"artifacts: no page {slug!r} with repo html")
+    pg["published_sha"] = content_hash(repo_html(pg, repo))
+    pg["last_published"][owner(pg)] = today or date.today().isoformat()
+    return pg["published_sha"]
+
+
 def cmd_build(reg):
     for pg in reg["pages"]:
         g = pg.get("generator") or ""
@@ -166,10 +233,11 @@ def cmd_build(reg):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("cmd", choices=["check", "list", "plan", "build", "banner"])
+    ap.add_argument("cmd", choices=["check", "list", "plan", "build", "banner", "stale", "publish-record"])
     ap.add_argument("--account", default="jishu.sharma")
-    ap.add_argument("--slug", help="banner: the registry page")
+    ap.add_argument("--slug", help="banner / publish-record: the registry page")
     ap.add_argument("--file", help="banner: html to update in place (default: the page's repo html)")
+    ap.add_argument("--date", help="publish-record: the day the page was last published (default today)")
     a = ap.parse_args(argv)
     reg = load()
     if a.cmd == "banner":
@@ -179,6 +247,15 @@ def main(argv=None):
         f = Path(a.file or REPO / pg["html"])
         f.write_text(put_banner(f.read_text(encoding="utf-8"), reg, a.slug), encoding="utf-8", newline="\n")
         print(f"banner: {a.slug} -> {f}")
+        return 0
+    if a.cmd == "publish-record":
+        sha = publish_record(reg, a.slug, today=a.date)
+        REG.write_text(json.dumps(reg, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
+        print(f"publish-record: {a.slug} published_sha={sha[:12]}")
+        return 0
+    if a.cmd == "stale":
+        lines = stale_lines(reg)
+        print("\n".join(lines) if lines else f"artifacts: no stale pages ({len(tracked(reg))} checked)")
         return 0
     if a.cmd == "check":
         p = problems(reg)

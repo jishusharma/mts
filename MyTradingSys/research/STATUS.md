@@ -1,41 +1,41 @@
 # Development Status
 
-Generated: 2026-10-17 15:45:00
+Generated: 2026-10-18 01:47:26
 
 ## Git Status
-CI green: 614bbc88 (2026-10-17 15:12:46 +0530, 0.5 h old), 5 trunk landing(s) / 32 commit(s) behind origin/fast-track: CI running
+CI green: 51bcc4a0 (2026-10-18 01:30:56 +0530, 0.3 h old), 4 trunk landing(s) / 22 commit(s) behind origin/fast-track: CI running
 LESSONS: digest in sync
 
 ## Gate Board
 ```
-tom     G2  proof changed 12h ago | next: G3 blind marks (READER_PROTOCOL.md + g3_marks_2026-10-16) | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
-fabio   G2  proof changed 12h ago | next: G1 coverage check, then G3 | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
-malkan  G2  proof changed 37h ago | next: G3 blind marks MAL-2/5, MAL-16/17 (g3_marks_2026-10-16) | proof: MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md
-krown   G1  proof changed 65h ago | next: G2 (krown-g2: KROWN_SETUP_CATALOG.md) | proof: MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv
-commits 24h: 417 = research 25% | claim/release 39% | other 36%  OVER 30% CAP
+tom     G2  proof changed 22h ago | next: G3 blind marks (READER_PROTOCOL.md + g3_marks_2026-10-16) | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
+fabio   G2  proof changed 22h ago | next: G1 coverage check, then G3 | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
+malkan  G2  proof changed 47h ago | next: G3 blind marks MAL-2/5, MAL-16/17 (g3_marks_2026-10-16) | proof: MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md
+krown   G1  proof changed 75h ago | next: G2 (krown-g2: KROWN_SETUP_CATALOG.md) | proof: MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv
+commits 24h: 408 = research 23% | claim/release 44% | other 33%  OVER 30% CAP
 ```
 
 **Last 3 commits on origin/fast-track:**
 ```
-45f6c5e3 Merge remote-tracking branch 'origin/fast-track' into claude/mts-operator-guide-0875b3
-736704f6 Merge remote-tracking branch 'origin/fast-track' into claude/mts-live-market-reader-623b37
-69b0d3de layers: index the tom audit card
+50ff8032 release session-planner-add-weight-field-routine
+469910bc Merge remote-tracking branch 'origin/fast-track' into JIS-NB/weight-field
+8250ad9f tandem plan: three logins (Pro, AWGP resets 10-19, Max resets 10-21); pace by 5-hour window and ready work, not the weekly pool
 ```
 
 ## In-Flight .new Files
-- MyTradingSys/backtest/layers/fabio/htf_context_live.py.new (163.9h)
-- MyTradingSys/backtest/layers/fabio/test_htf_context_live.py.new (163.9h)
+- MyTradingSys/backtest/layers/fabio/htf_context_live.py.new (173.9h)
+- MyTradingSys/backtest/layers/fabio/test_htf_context_live.py.new (173.9h)
 
 ## Recent Reports (newest 5, last 3 days)
-- MyTradingSys/research/mts_doctor/REPORT_2026-10-17.md (2026-10-17 15:12) # MTS doctor report 2026-10-17
-- MyTradingSys/research/wavetrend_2026-10-17/REPORT.md (2026-10-17 11:23) # WaveTrend: outside evidence, then MTS application
-- MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md (2026-10-17 09:01) # EXIT POLICIES REPORT (backtest C), 2026-10-09
-- MyTradingSys/research/bigtrade_2026-10-09/FIRES_B1_REPORT.md (2026-10-17 09:01) # FIRES_B1_REPORT - fire history of the kline-only live layers (worker B1, 2026-10-09)
-- MyTradingSys/research/mfe_exit_2026-10-13/REPORT.md (2026-10-17 09:01) # MFE exit study: can exits be reverse-engineered from the peak-profit bar? (2026-10-13, J
+- MyTradingSys/research/layer_lab/turn_of_candle_event_table/REPORT.md (2026-10-17 19:19) # Turn-of-candle (T055 C3) 1m event table
+- MyTradingSys/research/layer_lab/fabio_lvn_touch_event_table/REPORT.md (2026-10-17 19:18) # Fabio LVN touch event table (DEV, 1h)
+- MyTradingSys/research/mts_doctor/REPORT_2026-10-17.md (2026-10-17 18:13) # MTS doctor report 2026-10-17
+- MyTradingSys/research/layer_lab/cc_msb_event_table/REPORT.md (2026-10-17 17:59) # CryptoCred market-structure break (MSB) - DEV event table (1h)
+- MyTradingSys/research/layer_lab/fabio_escalation_event_table/REPORT.md (2026-10-17 17:58) # Fabio escalation/absorption 1h event table
 
 ## Screenshots
 ```
-SHOTS landed 92: new 1, classified 17, read 1, done 73 | overdue(>24h) 14 | claims MATCH 762 MISMATCH 125 NOT_IN_DATA 198 | filed 15
+SHOTS landed 96: new 1, classified 21, read 1, done 73 | overdue(>24h) 15 | claims MATCH 762 MISMATCH 125 NOT_IN_DATA 198 | filed 15
   OVERDUE dfabf169cdc9 new        -                                    | 
   OVERDUE 19f84e6aa598 classified app                                  | Claude app: Mts dispatcher session (Haiku 5.5) showing TICK NOOP; operator asks why idle dispatcher keeps running every 10 min
   OVERDUE 11760405153e classified chart     BTCUSDT 1m   2026-10-15T14:13:00Z | Operator asks where a short with confluence/divergence would be: price spiked ~81,38x (upper BB) then slipped back under 81,146.6 top; OI 93.26K flat after drop, RSI 69 off 77, StochRSI crossing down
@@ -50,21 +50,18 @@ SHOTS landed 92: new 1, classified 17, read 1, done 73 | overdue(>24h) 14 | clai
 
 ## Layer Lab (Codex)
 ```
-Layer lab (Codex) at 2026-10-17 10:15Z: on
+Layer lab (Codex) at 2026-10-17 20:17Z: on
   This machine does not run the lab (it runs on JIS-NUC): the queue below is from the repo; allowance, runs and what needs a look are only known there.
-  Queue: 12 ready
-    malkan-hindi-rows-gpt-read [audit, gpt-6-astra / low]
-    krown-catalogue-gpt-audit [audit, gpt-6-astra / low]
-    gpt-formulas-rederive [audit, gpt-6-astra / low]
-    gptb-candle-pattern-event-table [build, gpt-6-luna / medium]
-    gptb-volume-event-table [build, gpt-6-luna / medium]
-    gptb-malkan-rsi-event-table [build, gpt-6-luna / medium]
-    gptb-cc-msb-event-table [build, gpt-6-luna / medium]
-    gptb-fabio-escalation-event-table [build, gpt-6-luna / medium]
-    gptb-rsi-reclaim-event-table [build, gpt-6-luna / medium]
-    gptb-session-momentum-event-table [build, gpt-6-luna / medium]
-    gptb-fabio-lvn-touch-event-table [build, gpt-6-luna / medium]
-    gptb-turn-of-candle-event-table [build, gpt-6-luna / medium]
+  Queue: 9 ready
+    dsa-audit-08-split-trials [audit, gpt-6-luna / medium]
+    lc-ladder-dev [build, gpt-6-luna / medium]
+    lab-data-pin-hash [build, gpt-6-luna / medium]
+    lab-weight-enforce [build, gpt-6-luna / medium]
+    lab-crossvendor-stage [build, gpt-6-luna / medium]
+    lab-formula-spec-text [build, gpt-6-luna / medium]
+    lab-holdout-access-control [build, gpt-6-luna / medium]
+    lab-machine-checks-extra [build, gpt-6-luna / medium]
+    lab-trust-tag [build, gpt-6-luna / medium]
 ```
 
 ## Project Groups

@@ -1,6 +1,6 @@
 {
   "approved_by": "",
-  "asks": "",
+  "asks": "RECALL_DAX_V2.md = DESIGN FAIL (2 of 5 at k=1; its text says the chain stops there) and this card runs only on PASS. Revise the encoding (new design card) or close the DAX chain? Default (OURS): close it: drop this card, keep BTC arms; revisit only on a sourced Tom spec change.",
   "commands": [],
   "created": "2026-10-13T06:33:20Z",
   "depends_on": [
@@ -16,7 +16,7 @@
     "tom"
   ],
   "live_path": false,
-  "note": "HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. 2026-10-15 q12: home-market chain paused (p5) per operator answer; raise again when crypto-native cards are done.",
+  "note": "Operator 2026-10-18: no DAX data purchase/backtest; DAX proves nothing for BTC. Replaced by naked-chart cross-check card.",
   "pinned": false,
   "prio": 5,
   "refine_tries": 0,
@@ -43,7 +43,7 @@
     "MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md",
     "MyTradingSys/research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md N1, N7"
   ],
-  "state": "blocked",
+  "state": "dropped",
   "steps": [
     "Add to the harness: fill rule touch and trade-through (sell limit fills only if bar high > limit), time exit 17:35 Europe/Berlin, session-matched null (same session label and clock window, same side, distances, order type, fill rule; 200 draws).",
     "Costs FEES_FDAX plus 1 point on stop and time-exit legs. Entries at k* from RECALL_DAX_V2.md; other counts reported beside it.",
@@ -53,5 +53,7 @@
   ],
   "tests": "pytest: sell limit 24110, bar high 24110.0 -> touch fills, trade-through does not; high 24110.5 -> both fill. Short 24110 stop 24130 stopped: loss = 20 + 1 + 0.2412 fee = 21.2412 points = -1.0621 R. A position open at 16:00 exits at 17:35 Berlin. A null draw outside the session window is rejected. Fails before the options exist.",
   "title": "Tom v2: DAX dev backtest of the fade under the part B protocol (both fills, session null)",
+  "updated": "2026-10-18T05:30:00Z",
+  "weight": "CRUCIAL",
   "worker": "session"
 }

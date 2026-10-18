@@ -72,6 +72,8 @@ def dead_refs(repo, files, docs):
 def duplicates(repo, docs):
     seen = defaultdict(set)
     for rel in docs:
+        if rel.endswith(".SKILL.md"):
+            continue  # each skill is installed alone, so shared rules repeat on purpose
         for line in read(repo, rel).splitlines():
             norm = re.sub(r"\s+", " ", line.strip().lstrip("-*0123456789.) ").lower())
             if len(norm) >= DUP_MIN and not norm.startswith(("|", "```", "#")):

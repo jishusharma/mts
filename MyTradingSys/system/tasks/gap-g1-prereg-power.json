@@ -1,30 +1,59 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C2",
   "commands": [],
   "created": "2026-10-14T11:26:00Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "test_verdicts.py passes with the power-line test; VERDICTS.csv byte-identical.",
+  "est_turns": 14,
   "from_inbox": "",
-  "goal": "",
+  "goal": "verdicts.py check prints, under every matched row, MDE80 = 2.8016 x se_pct, trades-for-80%-power and a LOW-POWER flag when |net mean| < MDE80. Display only: the frozen bar and every verdict are unchanged (operator q-gap-a 2026-10-15).",
   "id": "gap-g1-prereg-power",
-  "lane": "OPUS",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "ref": "a440450b50a9",
+      "utc": "2026-10-17T14:26:34Z",
+      "line": "verdicts: sourced overrides file; eur one_run=yes, orderflow kill_scope, t090 split/verdic",
+      "auto": true
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "REVIEWED:2026-10-18 ACCEPT [PLAN 2026-10-18 weight=ROUTINE lab-touch=yes class=C0 reviewer=machine checks + Flash low pass] DECISION (OURS) 2026-10-18: re-laned OPUS -> CODEX; display-only change needs no Opus (operator kept the frozen bar). 2.8016 = 1.96 + 0.8416 (two-sided 5 percent, 80 percent power).\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C2 weight=CRUCIAL); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
   "prio": 1,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "gemini-nuc",
+  "refreshed": "2026-10-18T10:02:34Z",
   "refs": [
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/verdicts.py",
+    "scripts/dev/test_verdicts.py"
+  ],
+  "scope_out": [
+    "VERDICTS.csv rows",
+    "pass bars and verdict values",
+    "MyTradingSys/backtest/power_mde.py",
+    "live tree"
+  ],
+  "scope_sha": "a440450b50a9",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "G1 pre-reg power: print MDE and trades-for-80%-power beside every verdict; INCONCLUSIVE rule (operator D-a)"
+  "state": "ready",
+  "steps": [
+    "Write test: one row with n=400, se_pct=0.10, gross 0.20, cost 0.05; expected MDE80 0.28016, net 0.15 below it so LOW-POWER, n for 80 percent = 400*(0.28016/0.15)^2 = 1395 (hand-computed; fails before the change).",
+    "Add the helper power_line(row) and print it in cmd_check after each hit.",
+    "Run test_verdicts.py; confirm VERDICTS.csv is unchanged."
+  ],
+  "tests": "scripts/dev/test_verdicts.py new power-line test, expected numbers as in step 1; fails before the change.",
+  "title": "G1 pre-reg power: print MDE and trades-for-80%-power beside every verdict; INCONCLUSIVE rule (operator D-a)",
+  "weight": "CRUCIAL",
+  "worker": "agent",
+  "updated": "2026-10-18T10:00:00Z"
 }

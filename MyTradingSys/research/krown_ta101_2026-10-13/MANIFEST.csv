@@ -18,21 +18,21 @@ idx,video_id,code,title,duration_s,published,episode,status,extract,quote_gate,n
 17,Aysdt7PBETQ,GDE,The Last TA 101 Guide You'll Ever Need | Technical Analysis for Beginners,990,2026-03-09,intro guide (order of work) (Mar-Jun 2026 series),EXTRACTED_TA,extracts/extract_Aysdt7PBETQ.md,PASS 0 problems (30 concepts),"10 numbers, 0 not found",garbled '80 80 time frame' marked INFERRED
 18,LB3DRYxnA0A,P18,Stop Strategy-Hopping - Build a System You'll Actually Follow.,256,,title-inferred: system building (content unread),PENDING_CAPTIONS,,,,"Short (256 s); captions: HTTP 429 on 2026-10-14 (2 hosts over 2 days); transcript missing; 2026-10-15 HTTP_429 (relay retry, one run, no bypass); 2026-10-15 12:18Z HTTP_429 again (one anonymous request, no cookies); retry once a day, 3 days max, then NOT AVAILABLE"
 19,_JoJbu_Ug-A,P19,Beginner Traders Keep Adding Indicators And Losing Money | Here's The Real Setup,314,,title-inferred: a setup (content unread),PENDING_CAPTIONS,,,,"Short (314 s); captions: HTTP 429 on 2026-10-14 (2 hosts over 2 days); transcript missing; 2026-10-15 HTTP_429 (relay retry, one run, no bypass); 2026-10-15 12:18Z HTTP_429 again (one anonymous request, no cookies); retry once a day, 3 days max, then NOT AVAILABLE"
-20,5Xg2bzu2sUY,H20,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,No title or captions via yt-dlp flat playlist; private / removed / members-only unknown
-21,5D54U78OHUY,H21,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,
-22,E6bc-LFanPc,H22,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,
-23,UQkb6t-d-yA,H23,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,
-24,YvIaqB8tKQE,H24,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,
-25,nhqTeArnuP8,H25,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,
-26,Ep7Snt9NOnA,H26,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,
-27,NvqaEe_nytE,H27,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,
-28,k7PYtadf8aM,H28,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,
-29,zK9wqb8YtEw,H29,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,
-30,Iy6UvRZBlI8,H30,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,
-31,qHaioH1rVkE,H31,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,
-32,Ff1U9w3loq8,H32,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,
-33,XVbMOnhPvG8,H33,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,
-34,YdTz8xlUdYw,H34,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,
-35,ftK2BqggabQ,H35,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,
-36,CpVjfiecqKg,H36,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,
-37,YAF6fCuVWaI,H37,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,
+20,5Xg2bzu2sUY,H20,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,No title or captions via yt-dlp flat playlist; re-checked 2026-10-18 still private
+21,5D54U78OHUY,H21,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,re-checked 2026-10-18 still private
+22,E6bc-LFanPc,H22,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,re-checked 2026-10-18 still private
+23,UQkb6t-d-yA,H23,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,re-checked 2026-10-18 still private
+24,YvIaqB8tKQE,H24,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,re-checked 2026-10-18 still private
+25,nhqTeArnuP8,H25,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,re-checked 2026-10-18 still private
+26,Ep7Snt9NOnA,H26,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,re-checked 2026-10-18 still private
+27,NvqaEe_nytE,H27,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,re-checked 2026-10-18 still private
+28,k7PYtadf8aM,H28,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,re-checked 2026-10-18 still private
+29,zK9wqb8YtEw,H29,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,re-checked 2026-10-18 still private
+30,Iy6UvRZBlI8,H30,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,re-checked 2026-10-18 still private
+31,qHaioH1rVkE,H31,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,re-checked 2026-10-18 still private
+32,Ff1U9w3loq8,H32,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,re-checked 2026-10-18 still private
+33,XVbMOnhPvG8,H33,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,re-checked 2026-10-18 still private
+34,YdTz8xlUdYw,H34,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,re-checked 2026-10-18 still private
+35,ftK2BqggabQ,OBK,The Coinbase Screen Nobody Opens (I Made a Living Inside It),1982,2026-10-17,TA Foundations ep8 order book,EXTRACTED_TA,extracts/extract_ftK2BqggabQ.md,PASS 0 problems,"36 numbers checked, 0 not found",was HIDDEN_UNAVAILABLE (private) until public 2026-10-17; other 17 hidden ids re-checked 2026-10-18 all still private
+36,CpVjfiecqKg,H36,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,re-checked 2026-10-18 still private
+37,YAF6fCuVWaI,H37,,,,hidden by YouTube (no title),HIDDEN_UNAVAILABLE,,,,re-checked 2026-10-18 still private

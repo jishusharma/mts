@@ -19,12 +19,14 @@ from pathlib import Path
 
 DEFAULT_LOG = Path.home() / ".claude" / "operator_questions.jsonl"
 TAG_RE = re.compile(r"(?<![\w&])#([A-Za-z][\w-]{0,40})")
-AUTOMATED_HEADS = ("This session is being continued from a previous conversation", "<task-notification>")
+AUTOMATED_HEADS = ("This session is being continued from a previous conversation", "<task-notification>",
+                   "<system-reminder>", "<cross-session-message", "You are the MTS OVERNIGHT SUPER-SESSION COORDINATOR")
+MAX_TYPED_CHARS = 3000  # a typed question is short; longer prompts are pasted reports or briefs
 
 
 def is_automated(text):
-    """Context summaries and background-task events: injected by the harness, not typed by the operator."""
-    return text.lstrip().startswith(AUTOMATED_HEADS)
+    """Not typed by the operator: harness events, pasted text from other sessions, long pasted reports or briefs."""
+    return text.lstrip().startswith(AUTOMATED_HEADS) or "<pasted_content" in text or len(text) > MAX_TYPED_CHARS
 
 
 def log_path():
@@ -111,6 +113,19 @@ def cmd_backfill(args):
     print(f"backfilled {added} prompt(s) into {path}")
 
 
+def cmd_prune(args):
+    """Drop rows that is_automated() flags (pasted reports, harness events) from the log; the removed rows go to --out."""
+    path = log_path()
+    rows = read_rows(path)
+    keep = [r for r in rows if not is_automated(r["prompt"])]
+    removed = [r for r in rows if is_automated(r["prompt"])]
+    if args.out:
+        Path(args.out).write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in removed), encoding="utf-8")
+    if args.apply:
+        path.write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in keep), encoding="utf-8")
+    print(f"{'removed' if args.apply else 'would remove'} {len(removed)}, keep {len(keep)} in {path}")
+
+
 def main(argv=None):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # Windows consoles default to cp1251/cp1252
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -126,6 +141,10 @@ def main(argv=None):
     bf = sub.add_parser("backfill")
     bf.add_argument("--transcript", required=True)
     bf.set_defaults(fn=cmd_backfill)
+    pr = sub.add_parser("prune", help="drop pasted or automated rows from the log")
+    pr.add_argument("--apply", action="store_true", help="write the pruned log (default: dry run)")
+    pr.add_argument("--out", help="file to receive the removed rows, for audit")
+    pr.set_defaults(fn=cmd_prune)
     args = p.parse_args(argv)
     args.fn(args)
     return 0

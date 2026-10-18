@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T20:31:39Z",
+  "commands": [],
+  "created": "2026-10-17T19:01:21Z",
+  "depends_on": [],
+  "done_when": "test_tasks.py passes, tasks.py check passes, and a crucial card without a REVIEWED stamp is refused by take and done",
+  "est_turns": 30,
+  "from_inbox": "",
+  "goal": "A card of weight crucial/critical (or class C2/C3) cannot be taken or marked done without a REVIEWED: stamp in its note and a result receipt; routine/important are not blocked; the weight is set by the reviewer/planner, not the producer.",
+  "id": "lab-weight-enforce",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "47 tests OK; tasks.py check passes; report MyTradingSys/research/layer_lab/reports/2026-10",
+      "ref": "0980b743",
+      "utc": "2026-10-17T20:31:39Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Opus gate: operator's latest message or an approved crucial OPUS card; Haiku rule for scop",
+      "ref": "1847cff89574",
+      "utc": "2026-10-17T11:34:43Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "987cb507d2b3 task-state-tags: card latest pointers + derived state tag, tasks.py tag/stale",
+      "ref": "MyTradingSys/system/TASK_REFINEMENT.md",
+      "utc": "2026-10-17T07:25:12Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "REVIEWED: sonnet-reviewer 2026-10-18 ACCEPT (card+tasks.py diff, Claude only; C2 cross-vendor high-effort review still owed after the GPT run) [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use]",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T19:01:23Z",
+  "refs": [],
+  "result": "47 tests OK; tasks.py check passes; report MyTradingSys/research/layer_lab/reports/2026-10-17_lab-weight-enforce.md",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "scripts/dev/test_tasks.py",
+    "MyTradingSys/system/TASK_REFINEMENT.md"
+  ],
+  "scope_out": [
+    "live tree",
+    "HALT files",
+    "deploys"
+  ],
+  "scope_sha": "1847cff89574",
+  "size": "M",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "tasks.py already has WEIGHTS (ROUTINE, IMPORTANT, CRUCIAL, CRITICAL, B-SHARED) and the OPUS-needs-crucial rule: keep both, add no new weight values",
+    "add review_gate(card, finishing, result) used by cmd_take and cmd_done: crucial/critical weight or class C2/C3 (class field or note 'class=Cn') needs 'REVIEWED: <who> <date>' in the note; done also needs a non-empty --result",
+    "update TASK_REFINEMENT.md: weight and class are set by the reviewer/planner stamp, never by the producer"
+  ],
+  "tests": "fail-first tests in test_tasks.py: crucial without REVIEWED refused on take, done without receipt refused, class C2 gated under routine weight, routine/important/C0/C1 pass",
+  "title": "Lab: enforce the 4-level weight (routine/important/crucial/critical) and class C2/C3 in tasks.py: take and done need a REVIEWED stamp",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

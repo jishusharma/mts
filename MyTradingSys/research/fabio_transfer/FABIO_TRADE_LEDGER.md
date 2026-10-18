@@ -45,7 +45,7 @@ Gap to the 20-trade goal: the 5 downloaded videos are exhausted; more recap vide
 
 ## Find-more pass (card find-more-fabio-trade-recap-videos-yt-dl, relay 2026-10-11, JIS-NB) - PARTIAL, 9 entries now
 Downloaded f398 720p (no en vtt exists for these): DyS79Eb92Ug (8500 s), Is1HvdfQm5c (8881 s), xUyqIjCfZzg (13777 s), Jpd96fLqr5M (1051 s), gLHd20jE8UQ (701 s).
-9I5vTvwsMBk: f398 NOT available (formats are 144p-240p+ only per yt-dlp -F), not downloaded; needs another format/client. Files are on F: renamed <id>.f398.mp4.
+9I5vTvwsMBk: read; f398 not available (downloaded f298 1280x720 60fps mp4, 970 s, 9 contact sheets cut at 30 s); no live trades found. t=0-140 shows a clip from Chart Fanatics interview where Fabio illustrates low-volume node on NQ (hypothetical sketch LONG 1 at 21805, stop 21797, target 21815-21830.25, not an executed live trade); t=140-970 is third-party commentary and TradingView chart review (SECONDARY_NOT_SOURCED [H6]). File on F: F:/MTS/data/fabio_videos/9I5vTvwsMBk.298.mp4 (recorded as row F-noTrade-9I5v).
 - Jpd96fLqr5M (read sheets 00-05; 06-08 are talking head): one live NQ trade F6, long 4->6 lots avg 24914.3, stop 24883.50 (30.8pt = 0.124%), stop trailed 24896.50 -> 24914.50 -> 24954.50 -> 24966.50 -> 24971.00, TP 25001.00, exit fill not shown. Sheets 00-05 in F:/MTS/data/fabio_videos/sheets.
 - gLHd20jE8UQ (read sheets 00,03): none shown, it is a MotiveWave big-trades (bubble) tutorial, no trade. SECONDARY_NOT_SOURCED [H6]: this is another presenter, not Fabio. He says 'What I run on ES' (t=420): Aggregate by Order ON, size filter 50; a separate slide footer attributes 'Fabio Valentini uses 30 to 40 on NQ' to Fabio. Neither is Fabio's own statement, so none of ES 50, NQ 30-40 or the aggregation mode is a layer parameter on this source.
 - DyS79Eb92Ug, Is1HvdfQm5c, xUyqIjCfZzg: downloaded, NOT read (2.4 h, 2.5 h, 3.8 h = 280, 296, 459 sheets at 30 s). Need per-video cards with a search step first (transcript or 5-min sampling); see follow-up cards.
@@ -73,7 +73,7 @@ Ledger: 13 entry rows / 40 lines (F1-F10 incl. F3a-c, F4a-b). Still < 20: unread
 
 F11 (DyS79Eb92Ug t=2775-3000): NQ long 4 lots ~25104.75 after the squeeze above 25110, stop ~10pt (0.04%), scaled to 8 lots (stop 25094.25, 13pt = 0.052%), no TP reached, flat with Daily P/L 24354 -> 22239.02 = -2115$ (stop INFERRED; a further -46.02 follows to 22193 at t=3025, unexplained) [H2]. Ledger 14 trades / 43 rows. Still < 20: unread DyS79Eb92Ug t>=3025 (captions 6992, 7598), Is1HvdfQm5c, xUyqIjCfZzg.
 F12 (DyS79Eb92Ug t=3025-3275): NQ long 6 lots, avg 25105.78 at t=3100 [H1-corrected], stop read ~25105.50 at t=3075 then 25089.75 at t=3100 (16.03pt) [H1: not 25085.75], scaled to 8 (stop 25098.50, 9pt) and 10 (avg 25108.50, stop 25098.75 at t=3150, TP sell LMT 25148.75 ~40pt [H1: not 25098.25 / 25140.75; a later frame shows 25098.25]); outcome not on those frames (t=3175 intro/ad, 3225+ talking head); later frames show flat with Daily P/L 22193 -> 20668 = -1525$, cause INFERRED [H2]. Ledger 15 trades / 46 rows. Still < 20: next window t=3275+, then Is1HvdfQm5c, xUyqIjCfZzg.
-F13 (DyS79Eb92Ug t=3525-3775): NQ long 8->10 lots avg 25108.90 then 25108.05 [H1-corrected from ~25104], stop 25097.00 (11.9pt = 0.047%); the +2 order at 25104.75 is a buy add [H1], flat between t=3550 and 3575 (stop INFERRED): Daily P/L 20668 -> 17758 = -2910$, larger than the -1760 stop label [H2]. Then flat, no trade through t=3750 (the window ends t=3775; sheet shows 3725-3750 only). Sequence after F10 (+4964$): F11 -2115$, F12 -1525$, F13 -2910$, three chase longs near the 25110 prior high in ~9 chart minutes with stops 7-21pt. Ledger 16 trades / 52 rows (>= 20 trades not yet). Still < 20: next window t=3775+, then Is1HvdfQm5c, xUyqIjCfZzg.
+F13 (DyS79Eb92Ug t=3525-3775): NQ long 8->10 lots avg 25108.90 then 25108.05 [H1-corrected from ~25104], stop 25097.00 (11.9pt = 0.047%); the +2 order at 25104.75 is a buy add [H1], flat between t=3550 and 3575 (exit cause INFERRED): Daily P/L 20668 -> 17758 = -2910$ (20668-17758=2910), larger than the -1760 stop label [H2]; 2910-1760=1150, difference 1150 USD = NOT_IN_DATA (not slippage, cost or a discretionary fill: none proven; exit price stays '-', no fabricated fill; 8 covered vs 10 open [RV05 H3]). Then flat, no trade through t=3750 (the window ends t=3775; sheet shows 3725-3750 only). Sequence after F10 (+4964$): F11 -2115$, F12 -1525$, F13 -2910$, three chase longs near the 25110 prior high in ~9 chart minutes with stops 7-21pt. Ledger 16 trades / 52 rows (>= 20 trades not yet). Still < 20: next window t=3775+, then Is1HvdfQm5c, xUyqIjCfZzg.
 
 F14 (DyS79Eb92Ug t=3775-4025): NQ long 8 lots ~25101.4, stop 25086.25 (~15pt = 0.060%), target label 25186.75 (+13600$), flat between t=3925 and t=3950 (stop INFERRED): Daily P/L 17758 -> 15147 = -2611$ [H2]. A 10-lot preview near 25109 at t=3800 is a preview, not a submitted order proven, and no fill was seen [H5]. Talking-head at t=3850. Flat t=3975-4000. Sequence F10 +4964, F11 -2115, F12 -1525, F13 -2910, F14 -2611: four chase longs near the 25110 prior high. Ledger 17 trades / 53 rows (>= 20 not yet). Next window t=4025+, then Is1HvdfQm5c, xUyqIjCfZzg.
 
@@ -116,7 +116,7 @@ UNRESOLVED (H1): the F12-m2 label STP -2050$ ties to 25098.25 (10 x 10.25 x 20),
 ## Audit correction H2 (card fabio-audit-20261013-exits, 2026-10-17)
 Rule from the audit: a flat position and a Daily P/L delta are observations; the exit price, whether a stop or a TP filled, and the slippage/cost share are INFERRED or UNKNOWN until a fill record or a continuous frame sequence shows them. Exit rows F3c-x, F5-x..F14-x are relabelled `*_cause_inferred` / `*_cause_unknown` and their notes keep only the observed numbers.
 - F6 +10368 and F10 +4964 are visible differences only; exact fills are absent.
-- F12 -1525 is smaller than the displayed -2050 stop risk; F13 -2910 is larger than the -1760 stop label with 8 covered vs 10 open. Unreconciled, no transaction list exists in the repo.
+- F12 -1525 is smaller than the displayed -2050 stop risk; F13 -2910 is larger than the -1760 stop label with 8 covered vs 10 open (20668-17758=2910, 2910-1760=1150; difference 1150 USD = NOT_IN_DATA, exit price stays '-', exit cause INFERRED, no fabricated fill [RV05 H3]). Unreconciled, no transaction list exists in the repo.
 - Omitted interval: Daily P/L 22239.02 (t=3000) -> 22193 (t=3025) = -46.02 between the F11 and F12 frames, unexplained.
 - Interval totals (M4): F10 +4964 and F11 -2115 sum to +2849; F7-F10 sum to -38-2121+259+4964 = +3064; neither is the day P/L.
 UNRESOLVED (H2): the exit fill prices and causes, the 81$ (F8), 36$ (F10), 35$ (F11) label differences and the -46.02 need a fill/transaction record that is not in the repo.
@@ -145,23 +145,23 @@ Definitions. PARENT TRADE = one position from flat to flat (scale-ins and re-siz
 | P6 | NQ | F5 | 9.47 pt = 0.038% (row F5) | frame-read; scaled 15 -> 18 within the position |
 | P7 | NQ | F6 | 30.83 pt = 0.124% (row F6) | frame-read; scaled 4 -> 6 within the position |
 | P8 | NQ | F7 | 19.50 pt = 0.078% (row F7) | entry derived from risk (approximate) |
-| P9 | NQ | F8 | 12.78 pt = 0.051% (row F8) | frame-read average |
+| P9 | NQ | F8 | 12.75 pt = 0.051% (row F8) | frame-read average |
 | P10 | NQ | F9 | 14.81 pt = 0.059% (row F9) | frame-read average ~ |
 | P11 | NQ | F10 | 20.50 pt = 0.082% (row F10) | frame-read average ~ |
 | P12 | NQ | F11 | 10.00 pt = 0.040% (row F11) | entry and stop both approximate (~) |
 | P13 | NQ | F12 | 16.03 pt = 0.064% (row F12) | frame-read average and stop at t=3100 |
-| P14 | NQ | F13 | 11.90 pt = 0.047% (row F13) | frame-read average |
+| P14 | NQ | F13 | 9.50 pt = 0.038% (row F13) | frame-read average |
 | P15 | NQ | F14 | 15.13 pt = 0.060% (row F14) | frame-read |
 
 Excluded from every count: F15-draft-6975-7025: drawing (DyS79Eb92Ug.txt:2854-2855), not a submitted order, no fill.
 
 Counts (replace the earlier "14 filled trades, 13 NQ / 1 ES" and "all available"): 15 parent rows listed = 13 with a frame-read initial stop (NQ), 1 partial teaching example (P2, NQ), 1 unresolved ES grouping (P5: 1 or 2 parents). So NQ frame-read parent trades = 13; ES = 1-2 parents with no stop; total 14 to 15 parents.
-Row classes in the CSV (72 rows): drawing 1; fill (entry row) 17; flat-state observation (exit) 13; management observation 21; no-trade window (sampled frames only) 20.
+Row classes in the CSV (73 rows): drawing 1; fill (entry row) 17; flat-state observation (exit) 13; management observation 21; no-trade window (sampled frames only) 21.
 
-Stop-width statistic (initial stop, 13 NQ parents with a read stop; entry/stop = first number of the CSV cells, so F7 and F11 are approximate): median 14.81 pt, mean 14.54 pt, min 3.38 pt, max 30.83 pt.
-The old "min 1.5pt (0.006%)" came from the F12 initial stop read (~25105.50 vs ~25107) that the audit rejects (F12 stop is 25089.75 at t=3100); tightened management stops (F5 2.07 pt after the tighten, F12-m1 8.83 pt) are management rows, not initial stops, and are not in this statistic. Members of the statistic: F1=15.75, F3b=8.88, F3c=3.38, F5=9.47, F6=30.83, F7=19.5, F8=12.78, F9=14.81, F10=20.5, F11=10.0, F12=16.03, F13=11.9, F14=15.13.
+Stop-width statistic (initial stop, 13 NQ parents with a read stop; entry/stop = first number of the CSV cells, so F7 and F11 are approximate): median 14.81 pt, mean 14.35 pt, min 3.38 pt, max 30.83 pt.
+The old "min 1.5pt (0.006%)" came from the F12 initial stop read (~25105.50 vs ~25107) that the audit rejects (F12 stop is 25089.75 at t=3100); tightened management stops (F5 2.07 pt after the tighten, F12-m1 8.83 pt) are management rows, not initial stops, and are not in this statistic. Members of the statistic: F1=15.75, F3b=8.88, F3c=3.38, F5=9.47, F6=30.83, F7=19.5, F8=12.75, F9=14.81, F10=20.5, F11=10.0, F12=16.03, F13=9.5, F14=15.13.
 
-Coverage is PARTIAL, not "all available": 8CWKfoSJu3c, fZlNGWvd2Ko, jasv3L-d8ZE, Jpd96fLqr5M sheets read; 0jM5Y31YJak sheets 00/03/04 were unread in the first pass; 9IliXww64uM has no stop/TP labels; DyS79Eb92Ug read in 250 s windows where each no-trade window cites only 2-4 sampled frames, so "no trade" holds for the sampled frames only; Is1HvdfQm5c has frames to t=500 and an ASR extract with no confirmed live position; xUyqIjCfZzg (3.8 h) is unread in this ledger and 9I5vTvwsMBk was never downloaded. F2 omits at least the positions named in 0jM5Y31YJak.en.vtt:1026-1058 and 1234-1258.
+Coverage is PARTIAL, not "all available": 8CWKfoSJu3c, fZlNGWvd2Ko, jasv3L-d8ZE, Jpd96fLqr5M sheets read; 0jM5Y31YJak sheets 00/03/04 were unread in the first pass; 9IliXww64uM has no stop/TP labels; DyS79Eb92Ug read in 250 s windows where each no-trade window cites only 2-4 sampled frames, so "no trade" holds for the sampled frames only; Is1HvdfQm5c has frames to t=500 and an ASR extract with no confirmed live position; xUyqIjCfZzg (3.8 h) is unread in this ledger; 9I5vTvwsMBk downloaded (f298 720p60) and read (t=0-140 interview clip has hypothetical trade sketch only, rest is 3rd-party review; no live Fabio trade). F2 omits at least the positions named in 0jM5Y31YJak.en.vtt:1026-1058 and 1234-1258.
 UNRESOLVED (H4): the P3/P5 grouping rule for F3b/F4 (no flat frame between fills), the F2 position count and prices, and the unread videos; counts above are a definition applied to the current rows, not ground truth.
 
 ## Audit correction H5 (card fabio-audit-20261013-rules, 2026-10-17)
@@ -177,3 +177,26 @@ The H4 inventory above is generated by `python MyTradingSys/research/fabio_trans
 gLHd20jE8UQ (sheet 03, t=420) is a different presenter's MotiveWave tutorial: "What I run on ES" (filter 50) is his own setting, and the NQ 30-40 figure is a footer claim about Fabio by that presenter. Status SECONDARY_NOT_SOURCED.
 Fabio's own words exist elsewhere in the repo and are the source to cite instead: raw_transcripts_canonical/DyS79Eb92Ug_raw.txt:681-683 ([27:14]-[27:19]) answers "What was the minimum contract?" with "Always the same. It's 30 contracts" and "If you are in London, I use 20" (ASR turn markers carry no speaker names; the answer follows the interviewer's question to the trader). That sources NQ 30 contracts (London 20) as SOURCED; it does not source ES 50, "30 to 40", or aggregation mode.
 UNRESOLVED (H6): speaker identity of the DyS79Eb92Ug_raw.txt:681-683 answer is inferred from the turn order, not labelled; a Fabio quote for ES 50 and for the aggregation mode does not exist in the files read.
+
+## Card fabio-ledger-recompute-entry-from-stp-la (2026-10-17)
+Rule: entry = label stop + |STP label $| / (label lots x 20 $ per point). Applied to the four rows whose STP label is on frame. The displayed frame-read averages stay in each CSV cell.
+
+| Row | STP label | Stop used | Recomputed entry | Displayed average (kept) |
+|---|---|---|---|---|
+| F8 | STP -8 -2040$ | 25021.75 | 25034.50 | 25034.53 (w3_01 t1325) |
+| F12-m2 | STP -10 -2050$ | 25098.25 (the H1 tie, not the row stop 25098.75) | 25108.50 | 25108.50 (t3150) |
+| F13 | STP -8 -1520$ | 25097.00 | 25106.50 | 25108.90 (w9_01 t3375) |
+| F13-m1 | STP -8 -1760$ | 25097.00 | 25108.00 | 25108.05 (t3400) |
+
+Consequences: the F13 initial stop width is now 9.50 pt (was 11.90 pt), so the H4 statistic above moves. The F13 label (-1520$ on 8 lots = 9.50 pt) does not match the frame average 25108.90 (11.9 pt, which would be -1904$), so the entry for F13 is UNRESOLVED between the label and the frame read (H1). F13-m1 uses the label's own 8 lots, not the row's 10. F8 width is 12.75 pt (was 12.78).
+Tests: test_ledger_audit.py asserts the new values for F8, F13 and F13-m1 (the assertions failed before this change).
+
+## Card fabio-ledger-replace-date-2026-with-unkn (2026-10-17)
+Checked, no edit needed. Every date cell for the Jpd96fLqr5M and DyS79Eb92Ug rows (F6 to F15 and the no-trade rows) already reads UNKNOWN (...) with no 2026 value. The only 2026 strings left in the CSV sit inside UNKNOWN reasons or screenshot file names (F4a, F4b).
+
+## RV05 H1 date evidence (card rv05-h1-date-evidence, 2026-10-17)
+Scope: CSV lines 25-71 (47 rows). Count of non-UNKNOWN date fields on these lines: 0 (checked before and after; no CSV edit needed, the earlier card fabio-ledger-replace-date-2026-with-unkn already set them).
+Rule: execution date is UNKNOWN unless a same-session source is on screen. A 2026 file name, a 2026 upload or review year, and a contract name such as NQ-202512 are not session dates.
+Rows: F6, F6-m1, F6-m2, F6-m3, F6-x, F7, F7-m1, F7-x, F8, F8-x, F9, F9-m1, F9-x, F10, F10-m1, F10-x, F10-z, F11, F11-m1, F11-x, F12, F12-m1, F12-m2, F12-x, F13, F13-m1, F13-x, F-noTrade-3575-3750, F14, F14-x, F-noTrade-4025-4275, F-noTrade-4275-4525, F-noTrade-4775-5025, F-noTrade-5025-5275, F-noTrade-5275-5525, F-noTrade-5525-5775, F-noTrade-5775-6025, F-noTrade-6025-6275, F-noTrade-6275-6525, F-noTrade-6525-6775, F15-draft-6975-7025, F-noTrade-7025-7275, F-noTrade-7275-7525, F-noTrade-7525-7775, F-noTrade-7775-8025, F-noTrade-8025-8275, F-noTrade-8275-8493.
+Finding (RV05 report, H1, HIGH, CONFIRMED for the 47-row unsupported-date problem): the DyS frames show NQ-202512 (CSV lines 29-71 carry that contract); the Jpd sheet does not expose its contract header. Recording or review date is kept separate from execution date. The stronger claim that every source frame proves a pre-2026 date is NOT_IN_DATA.
+Source: MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md (H1 row, line 34; detail line 44).

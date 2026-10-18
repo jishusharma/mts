@@ -46,6 +46,11 @@ Searched, no usable source found: batching tool calls (no solid source), shallow
 - traffic_report 24 (849 commits): merge 321 (38%), claim 110 (13%), release 110 (13%), other 308 (36%), overhead 541 (64%). Baseline 2026-10-16: 890 commits, merge 40%, claim 14%, release 14%, overhead 68%. Small gain (-4 pts overhead); the window still contains pre-B1 commits, so the ship --release effect is not yet visible. Re-measure on a window starting after 2026-10-16 12:00Z.
 - DECISION (OURS): no code fix needed (no red CI in the last 3 runs, no test failures).
 
+## Gate and boot speed, 2026-10-18 (DOCTOR-NB-1018, measured locally, `pytest --durations`)
+- Done: `screen.py` `build_ledger` called `np.nanpercentile(axis=0)` per day (1440 Python-level column loops): 91 s per call, three tests, 295 s of step 3xt. `col_percentile` (one sort, numpy's own lerp) is bit-identical (test) and the file runs in 9 s. `test_pit_leakage.f4_planted` rescanned all earlier bars per bar (O(n^2)): 126 s -> under 9 s with `bisect`. Step 3xt serial sum fell by about 7 min; it was the slowest gate step and the Windows CI job's critical path.
+- Done: SUPER_SESSION.md 22.1 -> 19.0 KB (rules 11-13 moved out of the log, retired bullets and the 10-15 audit table cut): read by every coordinator boot.
+- Next levers, biggest first: (1) enforce B4 in `sync.py`: `ship` on a branch whose claim slug is known closes that claim itself (release 13% + claim 14% of commits; adoption 19%); (2) layer tests step 5b 207 s and `test_sync.py` 231 s serial (63 tests, 8-17 s each, git-bound) are the next slowest steps; (3) Windows CI 12-17 min vs Ubuntu 2-4 min gates mark-green: profile the Windows-only slow steps from `gate_timing.jsonl`; (4) 201 of 642 commits per day are `Merge remote-tracking branch` from ship merging trunk in: fewer, bigger ships per task.
+
 ## Rejected ideas (2026-10-16), do not re-propose without new evidence
 | Idea | Why rejected |
 |---|---|
@@ -61,3 +66,8 @@ Target after B1: claim + release near 0% of commits (merge share falls with them
 ## NUC (JIS-NUC) and other hosts
 Nothing to install: the change is in `scripts/dev/sync.py`, and every host gets it with its next `sync.py start` (git is the channel, PARALLEL.md).
 Relay sessions on the NUC use the same `claim`/`release` calls and need no prompt change.
+
+## Opus cost review, 2026-10-18 (operator-named Opus; DOCTOR-NB-1018) - to implement, ranked
+Measured over 12 sessions / 33 gate-timing files. Done: stop_guard blocks a session once per unchanged state; model_guard denies click cards.
+Gate (wall time): (1) one machine-wide process budget for run_all_tests.gate_jobs / exec_layer_chunks / exec_unittest_shards / run_extra_tests.jobs (2 gates run ~26 procs on 6 CPUs; 3k 617 s vs 63 s best); (2) 3xt and 5b run only affected tests via gate_select.mentions (CI stays full); (3) gate_select.explain: research non-.py files, lookahead_allowlist.tsv, .gitignore, .aiexclude must not force the full gate (14 of 21 full gates); (4) claims on a separate branch (181 trunk commits/day) and merge-tree scratch merge in ship; (5) gate_slot FIFO with queue position, `ship --wait N` exit 75 "NOT SHIPPED" (a silent exit 0 was the tool timeout killing the call, ship itself waits forever: run ship with run_in_background); (6) run_all_tests sets CODEX_HOME to an empty temp dir, ship refuses non-docs work when ci_watch shows 2 red runs (`--ci-fix` / `--force-red`); (7) per-step pass cache keyed by code hash; (8) CI: Windows job runs selected steps only, pip cache, drop MyTradingSys/items/** from path filter.
+Session tokens: boot steps run once per session (CLAUDE.md "every turn" wording costs 2-4%); no foreground sleeps/polls (PreToolUse deny, B7: 20% of tokens); ship prints "verified: cherry empty"; one-line Opus-session warning; do not re-read own Artifact (Grep the local file); BASH_MAX_OUTPUT_LENGTH=8000 (check the app honours it); disable unused plugins/MCPs in build sessions; tasks.py check prints failures only; Haiku for scoped briefs.

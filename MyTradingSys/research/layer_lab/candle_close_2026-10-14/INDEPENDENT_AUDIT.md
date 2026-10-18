@@ -50,3 +50,9 @@ Run this from the study folder, in a separate Python process. EXPECT on the curr
 The saved raw-event returns and counts retain their mechanical checks. `0/126 pooled arms pass this particular DEV screen` is supported. `No phase-specific edge exists`, `we have tested cycle-bottom signatures`, or `these probabilities are ready to trade` are unsupported.
 
 Priority: A1-A3 phase/encounter design, A5-A6 verification and gate reliability, then a preregistered local/swing study. Do not rerun all 126 arms hoping for a different winner. Report/page publication is a delivery task, not a substitute for those corrections.
+
+## A6 follow-up (2026-10-17, candle-close-test-import-guard)
+
+- Fixed in `test_study.py`: only `import pandas` sits inside the `except ImportError`; `import study` runs outside it, so a broken application import now fails the run (nonzero exit). Reproduction above on the old code: exit 0, `OK (skipped=8)`.
+- New `ImportGuardTests` run `test_study.py` in a subprocess with one import forced to fail: broken `study` must exit nonzero (fails on the old implementation); missing `pandas` still gives explicit skips (exit 0, every test `s`).
+- Execution coverage: with pandas present all eight numerical tests run and pass (plus the two guard tests). `.github/workflows/ci.yml:60` now installs `pandas`, so `run_all_tests.py` (which runs this file via `run_extra_tests.py`) executes them in CI; without pandas the study class skips explicitly. Workflows and strategy outputs untouched.

@@ -34,20 +34,20 @@ class Registry(unittest.TestCase):
         self.assertIn("generator scripts/dev/nope.py missing", p)
 
     def test_plan_actions(self):
-        text = "\n".join(af.plan(self.reg, "jishu.sharma"))
+        text = "\n".join(af.plan(self.reg, "jishusharma1985"))
         self.assertIn("REPUBLISH    MTS Control Room", text)
-        self.assertIn("RECORD URL   CBP Desk", text)
-        # q21 (2026-10-15; 2026-10-17 Ep6gA5 opens on no login, so EoHi2q is the page): the Inbox page belongs to jishu.sharma; Tom and Fabio has no copy on the other login
-        self.assertIn("MTS Control Room <- MyTradingSys/system/artifacts/mts_control_room.html  url=https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su", text)
+        self.assertIn("RECORD URL   CBP Desk", "\n".join(af.plan(self.reg, "jishu.sharma")))
+        # operator 2026-10-17: every page is published from the home login; the Inbox page moved there (MNuodX), Tom and Fabio has no repo html and stays on jishu.sharma
+        self.assertIn("MTS Control Room <- MyTradingSys/system/artifacts/mts_control_room.html  url=https://claude.ai/artifact/MNuodXmi5RiEihX7rFpqUp", text)
         self.assertIn("NO COPY      Tom and Fabio", "\n".join(af.plan(self.reg, "jishu.awgp")))
         self.assertNotIn("CBP Dashboard", text)
         r = copy.deepcopy(self.reg)
         r["pages"][0]["status"] = "retire"
-        self.assertIn("OPERATOR UNPIN+DELETE  MTS Control Room", "\n".join(af.plan(r, "jishu.sharma")))
+        self.assertIn("OPERATOR UNPIN+DELETE  MTS Control Room", "\n".join(af.plan(r, "jishusharma1985")))
         self.assertIn("REPUBLISH    MTS Layers", text)
         r = copy.deepcopy(self.reg)
-        next(pg for pg in r["pages"] if pg["slug"] == "mts_layer_map")["urls"]["jishu.sharma"] = ""
-        self.assertIn("PUBLISH NEW  MTS Layers", "\n".join(af.plan(r, "jishu.sharma")))
+        next(pg for pg in r["pages"] if pg["slug"] == "mts_layer_map")["urls"]["jishusharma1985"] = ""
+        self.assertIn("PUBLISH NEW  MTS Layers", "\n".join(af.plan(r, "jishusharma1985")))
         with self.assertRaises(SystemExit):
             af.plan(self.reg, "nobody")
 
@@ -56,15 +56,14 @@ class Registry(unittest.TestCase):
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             af.cmd_list(self.reg)
-        self.assertIn("jishusharma1985=La75j7gM19pxiQKCpVjJcW", out.getvalue())
-        # single live Control Room (operator 2026-10-15): other logins get a pointer page, never a republish of the real one
-        plan = "\n".join(af.plan(self.reg, "jishusharma1985"))
-        self.assertIn("NO COPY      MTS Control Room", plan)
+        self.assertIn("jishusharma1985=MNuodXmi5RiEihX7rFpqUp", out.getvalue())
+        # single live copy (operator 2026-10-17): the home login republishes every page; the old jishu.sharma copies get the pointer page
+        plan = "\n".join(af.plan(self.reg, "jishu.sharma"))
+        self.assertIn("NO COPY      MTS Research Map", plan)
         self.assertIn("REPLACE      MTS Layers <- MyTradingSys/system/artifacts/cr_moved.html", plan)
-        # home login (2026-10-16): it republishes only its own pages (hub, Research Map, Planner), never a copy of a jishu.sharma page
         self.assertNotIn("REPUBLISH    MTS Control Room", plan)
         self.assertNotIn("REPUBLISH    MTS Layers", plan)
-        self.assertIn("REPUBLISH    MTS Research Map", plan)
+        self.assertIn("REPUBLISH    MTS Research Map", "\n".join(af.plan(self.reg, "jishusharma1985")))
         awgp = "\n".join(af.plan(self.reg, "jishu.awgp"))
         self.assertIn("NO COPY      MTS Control Room", awgp)  # 2026-10-17: EoHi2q is now the live page on jishu.sharma
 
@@ -74,7 +73,8 @@ class Registry(unittest.TestCase):
         self.assertEqual({r["title"] for r in rows}, {"MTS Control Room", "MTS Layers", "Tom and Fabio: what they taught", "CBP Monday Desk",
                                                       "CBP Consensus Desk", "MTS Home", "MTS Research Map", "MTS Session Planner"})
         own = {r["title"]: r["owner"] for r in rows}
-        self.assertEqual(own["MTS Control Room"], "jishu.sharma")
+        self.assertEqual(own["MTS Control Room"], "jishusharma1985")
+        self.assertEqual(own["Tom and Fabio: what they taught"], "jishusharma1985")
         self.assertEqual(own["MTS Research Map"], "jishusharma1985")
         self.assertTrue(all("/artifact/" in r["url"] for r in rows))
 
@@ -107,7 +107,7 @@ class Home(unittest.TestCase):
         self.assertEqual(twice.count(af.BANNER_START), 1)
         self.assertIn("NEW PLACE", twice)
         cr = af.put_banner('<div class="wrap"><header>', self.reg, "mts_control_room")
-        self.assertIn("Owner login: <b>jishu.sharma</b>", cr)
+        self.assertIn("Owner login: <b>jishusharma1985</b>", cr)
         self.assertEqual(af.put_banner("<p>fragment</p>", self.reg, "mts_control_room", strict=False), "<p>fragment</p>")
         with self.assertRaises(SystemExit):
             af.put_banner("<p>fragment</p>", self.reg, "mts_control_room")
@@ -126,8 +126,8 @@ class Home(unittest.TestCase):
         self.assertEqual(titles[:3], ["MTS Research Map", "MTS Control Room", "MTS Session Planner"])  # where Jis writes, first
         self.assertNotIn("MTS Home", titles)
         urls = {r["url"] for r in d["retire"]}
-        self.assertNotIn("https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su", urls)  # 2026-10-17: now the live Control Room, not a copy to delete
-        self.assertIn("https://claude.ai/artifact/La75j7gM19pxiQKCpVjJcW", urls)  # 'Moved' stub on jishusharma1985
+        self.assertIn("https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su", urls)  # 2026-10-17: the jishu.sharma Control Room is now an old copy
+        self.assertIn("https://claude.ai/artifact/QwsvsN3LaZKNPvD6zPTTAe", urls)  # jishu.sharma MTS Layers
         self.assertFalse(urls & {p["url"] for p in d["pages"]})
         html = mh.render(d)
         self.assertIn("<title>MTS Home</title>", html)
@@ -151,8 +151,15 @@ class Home(unittest.TestCase):
         self.assertEqual([w["id"] for w in d["waiting"]], ["q-open", "c1"])
         self.assertEqual(d["waiting"][0]["title"], "Retire old tasks?")
         self.assertTrue(d["waiting"][0]["explicit"])
-        self.assertEqual(d["answerAt"]["owner"], "jishu.sharma")
+        self.assertEqual(d["answerAt"]["owner"], "jishusharma1985")
         self.assertIn("Waiting for you", mh.render(d))
+
+    def test_every_page_opens_on_the_home_login(self):
+        """Operator 2026-10-17: 'make a copy of everything from GitHub and publish everything from this account'."""
+        import make_home as mh
+        d = mh.build(self.reg)
+        off = [p["title"] for p in d["pages"] if p["owner"] != self.reg["home_login"]]
+        self.assertEqual(off, [])
 
     def test_hub_explains_failing_links_first(self):
         """Operator 2026-10-17: links to pages owned by another login fail; the reason and fix come before the lists."""
@@ -161,6 +168,69 @@ class Home(unittest.TestCase):
         self.assertLess(html.index('id="h-how"'), html.index('id="h-wait"'))
         self.assertIn("Link fails? Why, and the one-time fix", html)
         self.assertIn("only after", html)
+
+
+class Stale(unittest.TestCase):
+    """Staleness check: a page whose repo build differs from published_sha is listed; a rebuild alone (new `generated`) is not."""
+
+    def setUp(self):
+        self.reg = copy.deepcopy(af.load())
+
+    def test_hash_ignores_generated_and_commit_only(self):
+        a = '{"generated": "2026-10-17 14:19 UTC", "commit": "56a493f3", "x": 1}'
+        self.assertEqual(af.content_hash(a), af.content_hash(a.replace("14:19", "15:00").replace("56a493f3", "abcdef01")))
+        self.assertNotEqual(af.content_hash(a), af.content_hash(a.replace('"x": 1', '"x": 2')))
+        # 2026-10-18: claim ages and minutes move with the clock, and the Control Room embeds registry publish dates;
+        # without blanking them every generated page is STALE right after publish-record
+        c = '{"age_h": 4.3, "minutes": 22, "pub": "2026-10-17", "x": 1}'
+        self.assertEqual(af.content_hash(c), af.content_hash('{"age_h": 4.4, "minutes": 260, "pub": "2026-10-18", "x": 1}'))
+        self.assertNotEqual(af.content_hash(c), af.content_hash(c.replace('"x": 1', '"x": 2')))
+
+    def test_stale_lists_exactly_the_differing_pages(self):
+        pages = af.tracked(self.reg)
+        self.assertGreaterEqual(len(pages), 3)
+        built = {pg["slug"]: f"html of {pg['slug']}" for pg in pages}
+        for pg in pages:
+            pg["published_sha"] = af.content_hash(built[pg["slug"]])
+        builder = lambda pg: built[pg["slug"]]
+        self.assertEqual(af.stale(self.reg, builder), [])
+        built[pages[1]["slug"]] += " changed"
+        pages[2]["published_sha"] = None
+        got = af.stale(self.reg, builder)
+        self.assertEqual([g[0] for g in got], [pages[1]["slug"], pages[2]["slug"]])
+        self.assertIn(f"STALE {pages[1]['slug']} https://claude.ai/artifact/", "\n".join(af.stale_lines(self.reg, builder)))
+
+    def test_publish_record_makes_page_fresh(self):
+        pg = next(p for p in self.reg["pages"] if p["slug"] == "research_map")
+        sha = af.publish_record(self.reg, "research_map", today="2026-10-18")
+        self.assertEqual(pg["published_sha"], sha)
+        self.assertEqual(pg["last_published"][af.owner(pg)], "2026-10-18")
+        self.assertFalse(af.behind(self.reg, pg))
+        pg["published_sha"] = "0" * 64
+        self.assertTrue(af.behind(self.reg, pg))
+        with self.assertRaises(SystemExit):
+            af.publish_record(self.reg, "nope")
+
+    def test_every_page_has_generator_or_hand_made_mark(self):
+        for pg in self.reg["pages"]:
+            if pg.get("html") and pg["slug"] in ("research_map", "session_planner", "tom_fabio_deck"):
+                self.assertEqual(pg["generator"], "hand-made", pg["slug"])
+            self.assertIn("published_sha", pg)
+
+    def test_home_shows_behind_badge_and_published_date(self):
+        import make_home as mh
+        next(p for p in self.reg["pages"] if p["slug"] == "research_map")["published_sha"] = None
+        pages = {p["slug"]: p for p in mh.build(self.reg)["pages"]}
+        self.assertTrue(pages["research_map"]["behind"])  # no published_sha yet
+        af.publish_record(self.reg, "research_map", today="2026-10-18")
+        d = mh.build(self.reg)
+        self.assertFalse({p["slug"]: p for p in d["pages"]}["research_map"]["behind"])
+        self.assertIn("behind repo", mh.render(d))
+
+    def test_status_reports_pages_stale_line(self):
+        import make_status as ms
+        n, lines = ms.get_stale_pages()
+        self.assertEqual(n, len(lines))
 
 
 if __name__ == "__main__":

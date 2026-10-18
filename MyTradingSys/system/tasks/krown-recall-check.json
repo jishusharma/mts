@@ -1,50 +1,63 @@
 {
-  "approved_by": "",
-  "asks": "",
-  "commands": [],
-  "created": "2026-10-14T15:57:18Z",
-  "depends_on": [
-    "krown-layer-v0-detectors",
-    "krown-data-daily-majors"
-  ],
-  "done_when": "research/krown_ta101_2026-10-13/RECALL.md: per example verified/not verified (klines evidence), hit/miss with the bar offset, fire counts, pass bars stated before the run; examples that do not verify are listed and dropped, not fixed",
-  "est_turns": 30,
-  "from_inbox": "",
-  "goal": "PRE_REG_KROWN item 3: first verify each dated chart example from his videos against klines (captions are not evidence of dates or prices; includes the Bitcoin 2017 and 2021 weekly tops, TOP-12/TOP-32, and the VJZ examples), then run the detectors on them: recall within 2 bars, and fire rate per setup against the 1-in-10-daily-bars ceiling.",
-  "id": "krown-recall-check",
-  "lane": "SONNET",
-  "layers": [
-    "krown"
-  ],
-  "live_path": false,
-  "note": "Unparked 2026-10-17 (q-krown-saturation waiver). depends_on layer-v0-detectors: ready. Raw -> refined by backlog-refine-1017; builder runs it after the detectors card.",
-  "pinned": false,
-  "prio": 2,
-  "refine_tries": 0,
-  "refined_by": "",
-  "refs": [
-    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md",
-    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv",
-    "MyTradingSys/research/krown_ta101_2026-10-13/PRE_REG_KROWN.md"
-  ],
-  "result": "",
-  "scope_in": [
-    "MyTradingSys/research/krown_ta101_2026-10-13/",
-    "MyTradingSys/backtest/layers/krown/"
-  ],
-  "scope_out": [
-    "any P&L",
-    "VALIDATION and HOLDOUT bars"
-  ],
-  "size": "M",
-  "sources": [],
-  "state": "refined",
-  "steps": [
-    "list the examples with extract line cites (PRE_REG_KROWN item 3) and check each date/price against the 1d/1w klines",
-    "run the detectors on the verified examples; log every recall iteration to the trial ledger",
-    "report recall and fire rate; if recall fails fix the encoding (counts as a variant), never the example"
-  ],
-  "tests": "docs lane: the recall table is the result; every example row cites an extract line and a kline row",
-  "title": "Krown recall check: verify his dated chart examples against klines, then detector recall and fire rate (PRE_REG_KROWN item 3); DONE when: RECALL.md has per-example hit/miss and fire counts",
-  "worker": "session"
+ "approved_by": "",
+ "asks": "",
+ "commands": [],
+ "created": "2026-10-14T15:57:18Z",
+ "depends_on": [
+  "krown-layer-v0-detectors",
+  "krown-data-daily-majors"
+ ],
+ "done_when": "research/krown_ta101_2026-10-13/RECALL.md: per example verified/not verified (klines evidence), hit/miss with the bar offset, fire counts, pass bars stated before the run; examples that do not verify are listed and dropped, not fixed",
+ "est_turns": 30,
+ "from_inbox": "",
+ "goal": "PRE_REG_KROWN item 3: first verify each dated chart example from his videos against klines (captions are not evidence of dates or prices; includes the Bitcoin 2017 and 2021 weekly tops, TOP-12/TOP-32, and the VJZ examples), then run the detectors on them: recall within 2 bars, and fire rate per setup against the 1-in-10-daily-bars ceiling.",
+ "id": "krown-recall-check",
+ "lane": "SONNET",
+ "latest": [
+  {
+   "auto": true,
+   "kind": "ship",
+   "line": "Krown layer v0 detectors: core, events, params, tests, FORMULAS section",
+   "ref": "a9e179c7e27a",
+   "utc": "2026-10-17T11:24:08Z"
+  }
+ ],
+ "layers": [
+  "krown"
+ ],
+ "live_path": false,
+ "note": "DONE ELSEWHERE 2026-10-18 (planner, Lab_Guy pass A finding): the recall check already ran (RECALL_PREREG.md 86edce18, RECALL.md 8e5c3647): RECALL FAIL, 3 of 12 verified, 0 strict hits, bar of 6 unreachable. No re-run. REVIEWED:2026-10-18 T0-ONLY LAB:results CLASS:C1 REVIEWER:GPT medium+Haiku re-derive WEIGHT:CRUCIAL. NOT ACCEPTED by Lab_Guy 2026-10-18: DUPLICATE, ALREADY SHIPPED. The deliverable is on origin/fast-track (git cherry empty): RECALL_PREREG.md (commit 86edce18, pass bars before any run), RECALL.md (commits 8e5c3647, 5edd2298: 12 examples listed, 3 verify, 0 strict hits within 2 bars, RECALL FAIL; fire rate PASS, max S2 0.367 per 10 bars) and trial ledger rows RC-I1, RC-F1; the card was never closed. Do not dispatch: a worker would redo shipped research. Coordinator: close it with tasks.py done krown-recall-check --result research/krown_ta101_2026-10-13/RECALL.md after the checks below. The shipped result is UNCHECKED: re-derive 1-3 decision numbers independently (R01 volume ratio 3.36x on 1w 2020-03-09; R07 SMA50 48427 vs SMA200 48438 on 2022-01-14; R09 conditions a-e on the Coinbase week of 2017-12-11) before G3 reads it. E4 warning for G3: the bar of 6 hits was unreachable once only 3 of 12 examples verified (RECALL.md says so itself), and verification ANDs up to 5 OURS conditions per example (R07: the cross did occur on 2022-01-14 and failed only on the OURS 'SMA200 lower than 30 days earlier' condition); read RECALL FAIL as 'the check set could not test recall', not as 'the detectors miss'. Card defect: JSON weight CRUCIAL vs old note WEIGHT:IMPORTANT (fixed to CRUCIAL: pass bars are decision numbers). Original: bases are checksum-verified public Binance klines (DATA_MANIFEST.csv all OK) and builder detectors; any encoding fix needs a fail-first case in test_krown_core.py. Unparked 2026-10-17 (q-krown-saturation waiver).",
+ "pinned": false,
+ "prio": 2,
+ "refine_tries": 1,
+ "refined_by": "",
+ "refreshed": "2026-10-17T20:21:55Z",
+ "refs": [
+  "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md",
+  "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv",
+  "MyTradingSys/research/krown_ta101_2026-10-13/PRE_REG_KROWN.md"
+ ],
+ "result": "",
+ "scope_in": [
+  "MyTradingSys/research/krown_ta101_2026-10-13/",
+  "MyTradingSys/backtest/layers/krown/",
+  "MyTradingSys/research/TRIAL_LEDGER.csv (append recall iterations)"
+ ],
+ "scope_out": [
+  "any P&L",
+  "VALIDATION and HOLDOUT bars"
+ ],
+ "scope_sha": "a9e179c7e27a",
+ "size": "M",
+ "sources": [],
+ "state": "dropped",
+ "steps": [
+  "list the examples with extract line cites (PRE_REG_KROWN item 3) and check each date/price against the 1d/1w klines",
+  "run the detectors on the verified examples; log every recall iteration to the trial ledger",
+  "report recall and fire rate; if recall fails fix the encoding (counts as a variant), never the example"
+ ],
+ "tests": "docs lane for the recall table (every example row cites an extract line and a kline row); an encoding fix, if any, adds a fail-first case to MyTradingSys/backtest/layers/krown/test_krown_core.py",
+ "title": "Krown recall check: verify his dated chart examples against klines, then detector recall and fire rate (PRE_REG_KROWN item 3); DONE when: RECALL.md has per-example hit/miss and fire counts",
+ "weight": "CRUCIAL",
+ "worker": "session"
 }

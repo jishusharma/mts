@@ -12,6 +12,7 @@
   "created": "2026-10-14T12:48:45Z",
   "depends_on": [],
   "done_when": "schtasks lists the logon catch-up task and MTS-LiveMirror, AIBridge task registered, and python scripts/dev/live_mirror.py brief shows a mirror age under 1 hour.",
+  "est_turns": 3,
   "from_inbox": "",
   "goal": "Daily tasks missed while JIS-NB is powered off run at logon, the live mirror publishes again, and AIBridge starts at logon.",
   "id": "nb-sched-register-logon",
@@ -28,7 +29,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none DECISION (OURS): DROPPED, contradicts SCHEDULING_POLICY.md (operator 2026-10-17: no scheduled tasks on any device; MTS-LiveMirror, logon catch-up and AIBridge tasks are retired; run live_mirror.py by hand).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "claude JIS-NUC 2026-10-14 (ops follow-up, from NEXT_SESSION (c))",
@@ -47,12 +48,14 @@
   "scope_sha": "fff6e557ae23",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Run each script without -Apply first and read the dry-run output.",
     "Apply: add_logon_catchup.ps1 -Apply; register_live_mirror.ps1 -Repo <live> -Apply; register_aibridge.ps1 (headless conhost wrapping per memory note).",
     "schtasks /query for the three names; trigger MTS-LiveMirror once and read live_mirror.py brief."
   ],
   "tests": "none (ops); evidence = schtasks output and mirror age",
-  "title": "JIS-NB: register logon catch-up, live-mirror and AIBridge scheduled tasks (NB is off 02:00-10:30, daily tasks never run)"
+  "title": "JIS-NB: register logon catch-up, live-mirror and AIBridge scheduled tasks (NB is off 02:00-10:30, daily tasks never run)",
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
