@@ -1,0 +1,59 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T21:55:02Z",
+  "depends_on": [],
+  "done_when": "test passes, 0 desk_rows_closed_more_than_once in the next `traffic.py measure --hours 24`; shipped.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "2026-10-18 16:15-16:19Z the NUC Pipeliner and the dsa-nuc-rows runner closed the same 3 desk rows (4a6b8562: 'G5 done in parallel by dsa-nuc-rows'). The lease stops two Pipeliners, not a Pipeliner and another desk writer.",
+  "id": "tc4-desk-done-once",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "desk.py sweep: read-only dry run over pending desk rows on trunk (RU2)",
+      "ref": "41182a2e418b",
+      "utc": "2026-10-18T18:34:23Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T21:55:23Z",
+  "refs": [
+    "MyTradingSys/system/TRAFFIC_CONTROLLER.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/desk.py",
+    "MyTradingSys/tests/test_desk.py"
+  ],
+  "scope_out": [
+    "the live tree",
+    "deploys",
+    "HALT files",
+    ".secrets/.env"
+  ],
+  "scope_sha": "41182a2e418b",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "desk.py done/take: re-read the row on a freshly fetched trunk inside the push retry; a row already done/failed (or taken by another session for take) is refused with the closer's commit.",
+    "Reuse the plumbing CAS pattern of lease._write (parent = read tip, non-force push, rejection = re-read)."
+  ],
+  "tests": "Two clones close one row at once: exactly one done commit lands; fails on the pre-change desk.py.",
+  "title": "desk.py done/take refuse a row already closed on trunk",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

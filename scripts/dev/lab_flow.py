@@ -153,8 +153,12 @@ def accepted(card, repo):
         flow, receipt = card["flow"], card["flow_receipt"]
         report = safe_file(repo, receipt["report"])
         stage = RECIPES[flow["recipe"]][flow["stage"] - 1]
+        expected_vendor = normalize_vendor(stage[1])
+        expected_model = stage[3].strip().lower()
+        receipt_vendor = normalize_vendor(receipt.get("vendor", ""))
+        receipt_model = (receipt.get("model") or "").strip().lower()
         return (receipt["verdict"] == "PASS" and receipt["contract"] == contract(flow) == flow["contract"]
-                and receipt.get("vendor") == stage[1] and receipt.get("model") == stage[3]
+                and receipt_vendor == expected_vendor and receipt_model == expected_model
                 and receipt["criteria"] == ["PASS"] * len(flow["criteria"])
                 and receipt["sources"] == fingerprint(repo, flow["scope_in"], flow.get("data_scope"))
                 and receipt["report_sha256"] == hashlib.sha256(report.read_bytes()).hexdigest()
@@ -190,12 +194,9 @@ def gate(card, cards, repo):
         if flow.get(key) and card.get("kind") == ("run" if key == "commands" else "build") and card.get(key) != flow[key]:
             errors.append(f"flow contract {key} changed; launch a new flow")
     try:
-        _, vendor, kind, model, effort, lens = RECIPES[flow["recipe"]][flow["stage"] - 1]
-        producer_vendor = RECIPES[flow["recipe"]][0][1]
-        if flow.get("vendor_gate_hardened") is True:
-            hardened_stages = validate_hardened_recipe(RECIPES[flow["recipe"]])
-            _, vendor, kind, model, effort, lens = hardened_stages[flow["stage"] - 1]
-            producer_vendor = hardened_stages[0][1]
+        hardened_stages = validate_hardened_recipe(RECIPES[flow["recipe"]])
+        _, vendor, kind, model, effort, lens = hardened_stages[flow["stage"] - 1]
+        producer_vendor = hardened_stages[0][1]
         stage_lens = f"{vendor}/{model}: {lens}"
         if flow["stage"] < 1 or card.get("vendor") != vendor or card.get("kind") != kind or tasks.codex_setting(card) != (model, effort) or flow.get("lens") != stage_lens:
             errors.append("flow vendor/kind/model/lens drifted from the recipe")
@@ -205,17 +206,16 @@ def gate(card, cards, repo):
             errors.append("same-vendor override is allowed only for C0 cards")
         if "same_vendor_override" in flow and type(flow["same_vendor_override"]) is not bool:
             errors.append("same_vendor_override must be a boolean")
-        if flow.get("vendor_gate_hardened") is True:
-            vendor = normalize_vendor(vendor)
-            producer_vendor = normalize_vendor(producer_vendor)
-            if card.get("vendor") != vendor:
-                errors.append("flow vendor must use its normalized allowlisted value")
-        elif flow.get("vendor_gate_hardened") not in (None, False):
+        vendor = normalize_vendor(vendor)
+        producer_vendor = normalize_vendor(producer_vendor)
+        if card.get("vendor") != vendor:
+            errors.append("flow vendor must use its normalized allowlisted value")
+        if "vendor_gate_hardened" in flow and type(flow["vendor_gate_hardened"]) is not bool:
             errors.append("vendor_gate_hardened must be a boolean")
         if flow["stage"] > 1 and vendor == producer_vendor and not (
                 flow.get("risk_class") == "C0" and flow.get("same_vendor_override") is True):
             errors.append("flow reviewer vendor must differ from producer vendor; explicit same_vendor_override is C0-only")
-    except (KeyError, IndexError, TypeError):
+    except (KeyError, IndexError, TypeError, ValueError):
         errors.append("flow recipe/stage is invalid")
     expected = []
     try:
@@ -249,12 +249,9 @@ def launch(repo, spec, preview=False):
     if not re.fullmatch(r"[a-z0-9][a-z0-9-]{0,23}", cid):
         raise ValueError("flow id: 1-24 lower-case letters, digits or hyphens")
     recipe = spec["recipe"]
-    stages = RECIPES[recipe]
-    hardened = spec.get("vendor_gate_hardened", False)
-    if type(hardened) is not bool:
+    stages = validate_hardened_recipe(RECIPES[recipe])
+    if "vendor_gate_hardened" in spec and type(spec["vendor_gate_hardened"]) is not bool:
         raise ValueError("vendor_gate_hardened must be a boolean")
-    if hardened:
-        stages = validate_hardened_recipe(stages)
     for field in ("goal", "criteria", "scope_in"):
         if not spec.get(field):
             raise ValueError(f"{field} required")

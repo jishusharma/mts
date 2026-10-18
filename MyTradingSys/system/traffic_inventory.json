@@ -1,0 +1,31 @@
+{
+ "_doc": "What exists, for scripts/dev/traffic.py (TRAFFIC_CONTROLLER.md). Sources: HOW_MTS_RUNS.md, DEVICES.md, CLOUD_ACCOUNTS.md, ROLES.md, ROUTING.md, SUPERVISOR.md pacing. No personal emails, secrets or runtime data (public repo); `authors` are git author ids already in every public commit. Liveness and budgets are measured, never written here.",
+ "machines": {
+  "JIS-NB": {"signal_ids": ["jis-nb"], "branch_prefixes": ["JIS-NB", "jis-nb", "jisnb"], "authors": [], "logins": ["B", "C"],
+             "may": ["build", "live-reads", "deploy-desk", "nb-data", "pages"], "only_here": ["Eagle_Eyes", "Artifacts_Guy", "MTS_Doctor"],
+             "note": "hosts the live testnet tree (.mts_live); builders never deploy"},
+  "JIS-NUC": {"signal_ids": ["jis-nuc"], "branch_prefixes": ["jis-nuc", "JIS-NUC"], "authors": [], "logins": ["A", "C"],
+              "may": ["build", "lab", "nuc-data", "pipeliner"], "only_here": ["Lab_Guy"],
+              "note": "lab host: codex_run.py, gemini_queue.py, F:/MTS/data"},
+  "DESKTOP-F7IU69N": {"signal_ids": ["desktop-f7iu69n"], "branch_prefixes": ["DESKTOP-F7IU69N"], "authors": ["e-ngineers@JIS-NB"],
+                      "logins": ["A", "B", "C"], "may": ["build", "gemini-laptop"], "only_here": [],
+                      "note": "Lenovo laptop; its git email reads e-ngineers@JIS-NB (34/34 of its prefixed merges, 72 h to 2026-10-18T21:35Z)"}
+ },
+ "logins": {
+  "A": {"label": "login A (repo owner, Control Room Inbox; names in CLOUD_ACCOUNTS.md)", "pacing": "5h"},
+  "B": {"label": "login B (CLOUD_ACCOUNTS.md)", "pacing": "5h"},
+  "C": {"label": "login C (CLOUD_ACCOUNTS.md)", "pacing": "5h"}
+ },
+ "lanes": {
+  "codex": {"host": "JIS-NUC", "kind": "GPT via codex_run.py", "runs_log": "F:/codex_home/lab_runs/runs.jsonl", "keep_ready": 8,
+            "card_lane": "CODEX"},
+  "gemini-nuc": {"host": "JIS-NUC", "kind": "Gemini Flash via gemini_queue.py", "log_dir": "F:/MTS/gq", "card_lane": "CODEX"},
+  "gemini-laptop": {"host": "DESKTOP-F7IU69N", "kind": "Gemini (Antigravity app, hand-started)", "session_marker": "-GEM-",
+                    "card_lane": "CODEX"},
+  "dsa": {"host": "JIS-NB,JIS-NUC", "kind": "DeepSeek via desk.py", "card_lane": "DSA"}
+ },
+ "singletons": {"Pipeliner": {"prefer": "JIS-NUC"}, "Traffic_Controller": {"prefer": "JIS-NUC"}},
+ "pacing": {"normal_below": 60, "crucial_only_below": 70, "supervisor_only_below": 80, "codex_window_pts": 50, "codex_window_runs": 10},
+ "liveness_min": {"active": 30, "idle": 180},
+ "slots_per_machine": 4
+}

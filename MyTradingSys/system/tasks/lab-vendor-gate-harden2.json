@@ -2,6 +2,7 @@
   "approved_by": "",
   "asks": "",
   "class": "C2",
+  "closed": "2026-10-18T22:17:29Z",
   "commands": [],
   "created": "2026-10-18T05:33:10Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/lab_flow.py V1-V7 closed + test_lab_flow.py",
+      "ref": "0c0984af",
+      "utc": "2026-10-18T22:17:29Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -31,7 +38,7 @@
   "refined_by": "codex_run.py ask",
   "refreshed": "2026-10-18T21:30:39Z",
   "refs": [],
-  "result": "",
+  "result": "scripts/dev/lab_flow.py V1-V7 closed + test_lab_flow.py",
   "scope_in": [
     "scripts/dev/lab_flow.py",
     "scripts/dev/test_lab_flow.py"
@@ -48,7 +55,7 @@
     "scripts/dev/lab_flow.py:154-163,188-217,246-249",
     "scripts/dev/test_lab_flow.py:116-162"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add fail-first tests: default launch rejects empty/unknown vendors and vendor/model mismatches. Normalize valid case/whitespace variants consistently; reject aliases that bypass same-vendor separation. Validate all three shipped RECIPES unconditionally.",
     "Test V2 by corrupting a recipe row after launch: gate returns an invalid-recipe error and tasks.problems does not raise. Test V3 with whitespace/case recipe labels through finish/accepted.",
@@ -57,6 +64,7 @@
     "Keep RECIPES and READY/ACTIVE/receipt contract unchanged. Implement only scope_in; run only the named test file, then report exact red/green output and required executor/upstream receipt evidence.",
     "Write the dated Layer Lab report and verify delivery separately in executor final reply: content commit SHA, empty git cherry, and upstream git ls-tree changed files/report. Runner handles sandbox git."
   ],
+  "taken": "2026-10-18T22:17:29Z",
   "tests": "Fail-first tests for V1 default-path invalid vendors/model labels + all shipped recipes; V2 post-launch ValueError fails closed through gate/problems; V3 normalized accepted() through finish; V4 documented stage-3 behavior; V5 each of seven mutants listed in steps; V6 core checks and crucial flag regression.",
   "title": "Vendor gate hardening 2: make the hardening always on, no ValueError out of gate",
   "weight": "CRUCIAL",

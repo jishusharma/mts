@@ -440,6 +440,14 @@ def main(argv):
             p.add_argument("--no-ship", action="store_true")
     a = ap.parse_args(argv)
     repo = toplevel()
+    if a.cmd in ("post", "take", "done", "assign", "sweep"):
+        # TRAFFIC_CONTROLLER.md Part A: a Pipeliner (or other singleton-role) session acts only while it holds its lease
+        import lease
+        try:
+            lease.guard(repo)
+        except lease.LeaseError as e:
+            print(f"desk: LEASE {'REFUSED' if e.code == lease.REFUSED else 'UNREACHABLE'}: {e}", file=sys.stderr)
+            return e.code
     if a.cmd == "post":
         print(post(repo, a.title, a.need, a.done_when, a.target, not a.no_ship))
     elif a.cmd == "take":
