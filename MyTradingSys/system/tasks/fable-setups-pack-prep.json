@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "blocked_by": "fable-run2-regate-all-prereg",
   "commands": [],
   "created": "2026-10-18T19:46:43Z",
   "depends_on": [],
@@ -15,7 +16,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "HOLD (operator 2026-10-19): do not build until Fable run 2 REGATE_AUDIT.md has shipped.",
+  "note": "UNBLOCK fable-setups-pack-prep: Fable run 2 REGATE_AUDIT.md shipped 8429a7b2",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -35,11 +36,10 @@
   "sources": [
     "MyTradingSys/system/fable_run_4_brief.md"
   ],
-  "state": "blocked",
+  "state": "refined",
   "steps": [],
   "tests": "Leak check script asserts no pack timestamp >= 2023-07-01; fails on a planted row. POC/VAH/VAL for one hand-picked week match a hand computation from FORMULAS 18.1.",
   "title": "Fable run 4 pack: LOOK-window BTC OHLCV, VP levels, 31 naked charts, Tom/Fabio rules digest",
   "weight": "IMPORTANT",
-  "worker": "session",
-  "blocked_by": "fable-run2-regate-all-prereg"
+  "worker": "session"
 }

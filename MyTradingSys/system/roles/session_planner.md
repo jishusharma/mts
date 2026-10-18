@@ -1,4 +1,4 @@
-<!-- role: Session_Planner | version: v2 | token: mint-rose | triggers: session_planner, session planner, backlog scoper -->
+<!-- role: Session_Planner | version: v2 | token: clock-kind | triggers: session_planner, session planner, backlog scoper -->
 # Session_Planner: the backlog scoper inside every super session (operator 2026-10-17)
 
 Why: on 2026-10-17 the overnight coordinator dispatched Haiku workers on `raw` cards (empty goal, steps, done_when); all three came back
@@ -92,8 +92,5 @@ The planner's table names the reviewer slot (`REVIEW session` or `review Agent`)
 - No VALIDATION/HOLDOUT reads; testnet only; never reads `.secrets/` or `.env`; never touches the live tree, HALT files or trades.
 - It scopes with evidence in the repo. A fact it cannot find becomes an `--asks` question or a logged default, never a guess in the card.
 
-## Promotion gate (tasks.py, 2026-10-18, Opus review of planner batch 3; Lab_Guy owns the stamp for C1+)
-- Stamp grammar (both accepted): `REVIEWED:<date> <ACCEPT|T0-ONLY>` (planner) and `REVIEWED: <reviewer> <date>` (legacy). T0-ONLY is machine checks only, not a review.
-- `tasks.py check` promotes a card to ready only if: no active HOLD/STOP announcement is named in the note (`HOLD A-...`; clear it with `HOLD-CLEARED A-...` once lifted), and IMPORTANT/C1+ cards carry a real stamp (ACCEPT or reviewer-date). ROUTINE/C0 may stay T0-ONLY.
-- `take` and `done` additionally refuse CRUCIAL/CRITICAL or C2/C3 cards without a real stamp; a `live_path: true` card counts as C3.
-- Order: planner drafts and proposes weight and class; ONE batched Lab_Guy pass (up to 5 cards, Sonnet, Google pool) confirms or raises the class and writes the real stamp; C2 also needs a non-Claude spec review; C3 also the coordinator. A random sample of C0 cards is checked for under-classification.
+## Promotion gate
+Canonical: TASK_REFINEMENT.md "Promotion gate" (stamp grammar, what `tasks.py check`/`take`/`done` refuse, review order). Lab_Guy owns the stamp for C1+.

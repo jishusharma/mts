@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-18T21:19:30Z",
   "commands": [],
   "created": "2026-10-18T17:22:54Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "ru4-mts-doctor-role-policy-lint-roles-md",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/role_loader.py lint + MyTradingSys/tests/test_role_lint.py: policy contradicti",
+      "ref": "f05baac8",
+      "utc": "2026-10-18T21:19:30Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,7 @@
   "refs": [
     "MyTradingSys/research/roles/ROLE_UPGRADES_2026-10-18.md"
   ],
-  "result": "",
+  "result": "scripts/dev/role_loader.py lint + MyTradingSys/tests/test_role_lint.py: policy contradictions, dead commands, missing files, CI-red owner line (6/6 pass)",
   "scope_in": [
     "scripts/dev/role_loader.py",
     "MyTradingSys/tests/test_role_lint.py"
@@ -44,13 +51,14 @@
   "scope_sha": "91917641c6da",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read role_loader.py and mts_doctor.py:40",
     "Implement lint: contradiction keywords, dead command paths, missing files",
     "Fixture test with the known contradiction",
     "Run run_all_tests.py --quick, ship"
   ],
+  "taken": "2026-10-18T21:19:30Z",
   "tests": "MyTradingSys/tests/test_role_lint.py",
   "title": "RU4 MTS_Doctor: role-policy lint (roles/*.md contradictions, dead commands) + CI-red owner line",
   "weight": "",
