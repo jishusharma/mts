@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-18T01:01:39Z",
   "commands": [],
   "created": "2026-10-14T16:42:46Z",
   "depends_on": [],
@@ -13,6 +15,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "DATE_MATCH.md: AMBIGUOUS; spoken day 2025-10-15 13:47 UTC scores 1.0 but >=8 days tie; led",
+      "ref": "24ce6c93",
+      "utc": "2026-10-18T01:01:39Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +46,7 @@
   "refined_by": "",
   "refreshed": "2026-10-17T20:21:56Z",
   "refs": [],
-  "result": "",
+  "result": "DATE_MATCH.md: AMBIGUOUS; spoken day 2025-10-15 13:47 UTC scores 1.0 but >=8 days tie; ledger untouched",
   "scope_in": [
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
@@ -56,12 +64,13 @@
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv:25-28,31 (F6 24914.33 to 25001; F7 25022.75)",
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md:95 (price-path match follow-up)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Test first (red): match_score() on a synthetic 1m path that rises 87 pt in <= 40 min then reaches +181..196 pt scores top, and a flat path scores 0; levels are compared as offsets, not absolute (CFD vs Dec-futures basis).",
     "Script research/fabio_date_match_2026-10-18/date_match.py imports parse_bi5/HEADERS from dax_data.py, fetches Dukascopy USATECHIDXUSD BID 1m for the weekdays (cache F:/MTS/data/nq_raw), checks 2025-10-15 first (the spoken day), then scans all days in 13:00-15:15 UTC.",
     "Write DATE_MATCH.md: top 5 day candidates with score, offset pt and minute of the F6 entry; verdict MATCH (best score clearly above second) / AMBIGUOUS / NOT_IN_DATA (instrument not served); state the CFD-vs-futures caveat."
   ],
+  "taken": "2026-10-18T01:01:33Z",
   "tests": "test_date_match.py (new, in the output folder) fails before date_match.py exists, passes after: python -m pytest MyTradingSys/research/fabio_date_match_2026-10-18/test_date_match.py -q",
   "title": "Fabio: date the DyS79Eb92Ug/Jpd96fLqr5M NQ-202512 session by price-path match against NQ 1m history (F6 24914->25001, F11-F14 25095-25110), then fill entry_time_utc",
   "weight": "IMPORTANT",
