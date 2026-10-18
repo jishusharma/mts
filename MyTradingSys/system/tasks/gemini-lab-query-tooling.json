@@ -1,7 +1,9 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
   "class": "C1",
+  "closed": "2026-10-18T05:41:13Z",
   "commands": [],
   "created": "2026-10-18T04:11:25Z",
   "depends_on": [],
@@ -14,6 +16,12 @@
   "id": "gemini-lab-query-tooling",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "lab_query.py + 12 tests, GEMINI_START Lab queries section",
+      "ref": "828a356e",
+      "utc": "2026-10-18T05:41:13Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -41,7 +49,7 @@
   "refined_by": "gemini-builder",
   "refreshed": "2026-10-18T05:13:36Z",
   "refs": [],
-  "result": "",
+  "result": "lab_query.py + 12 tests, GEMINI_START Lab queries section",
   "scope_in": [
     "scripts/dev/make_status.py",
     "scripts/dev/run_extra_tests.py",
@@ -56,12 +64,13 @@
   "scope_sha": "3332a60cad28",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write fail-first test scripts/dev/test_lab_query.py: test `lab_query.py tom-fabio`, `lab_query.py backtests`, and `lab_query.py layers` return deterministic JSON/markdown summaries of recent commits, bug rulings, trial counts and layer statuses; register in scripts/dev/run_extra_tests.py EXTRA and MyTradingSys/system/wiring_registry.json (disp TOOL).",
     "Implement scripts/dev/lab_query.py reading committed repo files (BUGS.md, layer_index.json, layer_map.json, VERDICTS.csv, layer_lab/INDEX.md, git log) with zero network or live-tree reads.",
     "Document the 3 query commands in MyTradingSys/system/GEMINI_START.md and run test_lab_query.py + tasks.py lint."
   ],
+  "taken": "2026-10-18T05:41:12Z",
   "tests": "python -m pytest scripts/dev/test_lab_query.py -q (fails before scripts/dev/lab_query.py exists; registered in run_extra_tests.py EXTRA and wiring_registry.json)",
   "title": "Lab/Gemini UI queries for Tom/Fabio fixes, backtests and layer audit",
   "weight": "IMPORTANT",
