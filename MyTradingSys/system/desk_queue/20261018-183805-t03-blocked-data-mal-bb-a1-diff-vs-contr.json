@@ -1,0 +1,10 @@
+{
+  "done_when": "DIFF, SE, t from the independent diff_se() match RESULT.md (0.0111, t 0.61) to 4 decimals, or the difference is written into T03_planted_edges.md",
+  "from": "DESKTOP-F7IU69N",
+  "id": "20261018-183805-t03-blocked-data-mal-bb-a1-diff-vs-contr",
+  "need": "Rebuild mal_bb_mid_engulf A1 control set (n 2486, bounce-state bars with no engulf, SHORT h=60) from F:/MTS/data/tom_raw/klines (DEV only, before 2024-07-01) and recompute DIFF, SE and t with scripts/T03/t03_stats.py diff_se(); published DIFF +0.0111, t 0.61. The control events are in no committed file; this machine (Lenovo) has no F: drive.",
+  "posted": "2026-10-18T18:38:05Z",
+  "status": "pending",
+  "target": "DSA",
+  "title": "T03 BLOCKED-DATA: mal_bb A1 DIFF vs control rebuild"
+}
