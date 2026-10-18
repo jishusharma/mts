@@ -67,6 +67,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `context-conditioned-session-flow-states` blocked p2 SONNET: Context-conditioned session flow states: per-session price/delta/OI quadrant + sweep-reclaim, next-session out
   - `fabio-xuyq-asr-extract` ready p2 JIS-NB: Fabio xUyqIjCfZzg: finish ASR transcription (JIS-NB, resumable) then canonical transcript + V2 extract + FAB c
+  - `oi-pivot-reversal-probability-by-tf` raw p2 SONNET: Causal pivot-candidate study: P(reversal) per TF from OI slope flip + price/OI divergence + delta + location, 
   - `review-ground-layer-youtube-strategy-and` ready p2 SONNET: Review Ground Layer YouTube strategy and execution priorities
   - `rv05-h2-position-line-evidence` ready p3 SONNET: RV05 H2: read position lines and stop prices before applying existing Fabio entry repair
   - `rv05-h3-outcome-evidence` refined p3 SONNET: RV05 H3: incorporate partial stop coverage evidence into existing F13 outcome repair
