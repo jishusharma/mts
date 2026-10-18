@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest -q MyTradingSys/tests/docs"
+  ],
+  "created": "2026-10-18T21:56:38Z",
+  "depends_on": [],
+  "done_when": "mts_doctor.py BOOT-COST row for Pipeliner under 12k; role_loader.py check ok.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Pipeliner boot costs under 12k tokens (measured 24.1k on 2026-10-19, ARCHITECTURE.md section 3) by reading sections instead of whole SUPER_SESSION, ROLES, HOW_MTS_RUNS, DSA_DELEGATION.",
+  "id": "pipeliner-boot-diet",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "desk.py sweep: read-only dry run over pending desk rows on trunk (RU2)",
+      "ref": "41182a2e418b",
+      "utc": "2026-10-18T18:34:23Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "41182a2e418b desk.py sweep: read-only dry run over pending desk rows on trunk (RU2)",
+      "ref": "MyTradingSys/system/roles/pipeliner.md",
+      "utc": "2026-10-18T18:34:23Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "MTS_Doctor arch-cleanup 2026-10-19",
+  "refreshed": "2026-10-18T21:57:17Z",
+  "refs": [
+    "MyTradingSys/system/ARCHITECTURE.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/roles/pipeliner.md"
+  ],
+  "scope_out": [
+    "any rule change; only what is read at boot"
+  ],
+  "scope_sha": "41182a2e418b",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Wait until the traffic-controller claim on pipeliner.md is released.",
+    "Replace whole-file boot reads with named sections.",
+    "role_loader.py retoken + check; measure with mts_doctor.py; ship."
+  ],
+  "tests": "MyTradingSys/tests/test_role_loader.py",
+  "title": "Pipeliner boot diet: boot reads to pointers, target under 12k tokens",
+  "weight": "",
+  "worker": "agent"
+}

@@ -9,6 +9,7 @@ Any body edit changes the token, so a stale token is detectable (`check`). `toke
   hook    UserPromptSubmit hook: on a role trigger, inject the role file from origin/fast-track + a banner instruction.
   retoken [--all | file...]   rewrite tokens in headers.
   check   rows of ROLES.md vs files vs header validity vs token freshness (exit 1 on malformed or stale).
+  lint    policy contradictions across roles/*.md and ROLES.md, dead commands, missing files + CI-red owner line (exit 1 on defect).
   banner <Name>   the expected first-reply banner line.
   verify --text <note|-> [--role Name] [--sid id]   supervisor trust check of a worker's banner (0 ok, 2 stale, 1 untrusted).
 """
@@ -502,6 +503,138 @@ def cmd_banner(name):
     return 0
 
 
+# ---------- lint (RU4: policy contradictions, dead commands, missing files, CI-red owner line) ----------
+LINT_CMD_RE = re.compile(r"\bpython\s+((?:scripts|MyTradingSys)/[A-Za-z0-9_./-]+\.py)\b")
+LINT_PATH_RE = re.compile(r"`((?:scripts|MyTradingSys)/[A-Za-z0-9_./-]+\.(?:py|ps1|md|json|jsonl|csv|yml|html))`"
+                          r"|(?<!/)\b((?:scripts|MyTradingSys)/[A-Za-z0-9_./-]+\.(?:py|ps1|md|json|jsonl|csv|yml|html))\b")
+LINT_ROLE_SHORT_RE = re.compile(r"`(roles/[a-z0-9_]+\.md)`|(?<![A-Za-z0-9_/])\b(roles/[a-z0-9_]+\.md)\b")
+
+# Policy rules enforced across ROLES.md and roles/*.md: (policy_id, trigger_in_roles_md, bad_pattern_in_role, neg_guard_in_line, description)
+POLICY_RULES = [
+    ("no-compaction",
+     re.compile(r"\bno compaction\b", re.I),
+     re.compile(r"\b(?:the operator compacts|after a compaction|only after a compaction|re-?run[^\n]*after a compaction|^#*\s*compaction\s*$)\b", re.I),
+     re.compile(r"\b(?:no compaction|never compacted|not compacted|replaces compaction|without compaction)\b", re.I),
+     "contradicts ROLES.md 'No compaction' policy"),
+    ("no-live-tree-edit",
+     re.compile(r"\bnever (?:edit |work in )?the live tree\b", re.I),
+     re.compile(r"\b(?:edit|write to|commit in) the live tree\b", re.I),
+     re.compile(r"\b(?:never|do not|don't|read[- ]only)\b", re.I),
+     "contradicts ROLES.md 'never the live tree' policy"),
+    ("no-secrets-read",
+     re.compile(r"\b(?:\.secrets/|never read \.secrets)\b", re.I),
+     re.compile(r"\breads?\s+`?\.secrets/", re.I),
+     re.compile(r"\b(?:never|do not|don't|not)\b", re.I),
+     "contradicts ROLES.md 'never read .secrets/' policy"),
+]
+
+
+def _is_planned_or_runtime_ref(ref, line):
+    low = line.lower()
+    if any(c in ref for c in "<>*") or "YYYY" in ref or re.search(r"\d{4}-\d\d-\d\d", ref):
+        return True
+    if re.search(r"MyTradingSys/(?:runtime|execution)/", ref):
+        return True
+    if "until it exists" in low or f"until `{ref}` exists" in low or f"until {ref} exists" in low:
+        return True
+    short = ref.split("MyTradingSys/system/", 1)[-1]
+    if f"until `{short}` exists" in low or f"until {short} exists" in low:
+        return True
+    return False
+
+
+def ci_red_owner(repo=REPO, runs=None):
+    """Return a one-line 'CI red and owner: ...' status string (RU4)."""
+    if runs is None:
+        cache = Path(os.environ.get("MTS_CI_WATCH_HOME") or Path.home() / ".claude") / "mts-ci-watch.json"
+        try:
+            d = json.loads(cache.read_text(encoding="utf-8"))
+            runs = d.get("runs") or []
+        except Exception:
+            runs = []
+    finished = [r for r in (runs or []) if r.get("conclusion") in ("success", "failure", "timed_out", "startup_failure")]
+    streak = 0
+    for r in finished:
+        if r.get("conclusion") == "success":
+            break
+        streak += 1
+    if streak < 2:
+        return "CI red and owner: green (0 red streak)"
+    sha8 = (finished[0].get("head_sha") or "unknown")[:8]
+    owner = "unclaimed (needs ci-" + sha8 + " worker)"
+    tasks_dir = Path(repo) / "MyTradingSys" / "system" / "tasks"
+    if tasks_dir.is_dir():
+        for tf in sorted(tasks_dir.glob("ci-*.json")):
+            try:
+                cd = json.loads(tf.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            if cd.get("state") not in ("done", "dropped"):
+                owner = f"card {cd.get('id') or tf.stem} ({cd.get('state', 'ready')})"
+                break
+    return f"CI red and owner: RED ({streak} failed in a row, head {sha8}) -> owner: {owner}"
+
+
+def lint(repo=REPO, out=print, ci_runs=None):
+    """Lint ROLES.md and roles/*.md for policy contradictions, dead commands, and missing files (exit 1 on any defect)."""
+    repo = Path(repo)
+    findings = []
+    roles_md_path = repo / ROLES_MD_REL
+    roles_md_text = roles_md_path.read_text(encoding="utf-8", errors="replace") if roles_md_path.exists() else ""
+    docs = ([roles_md_path] if roles_md_path.exists() else []) + role_files(repo)
+
+    # 1. Policy contradictions across ROLES.md and roles/*.md
+    active_rules = [r for r in POLICY_RULES if not roles_md_text or r[1].search(roles_md_text)]
+    for f in role_files(repo):
+        rel = f"{ROLES_REL}/{f.name}"
+        for i, line in enumerate(f.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
+            s = line.strip()
+            if not s or s.startswith("<!--"):
+                continue
+            for pid, _, bad_re, neg_re, desc in active_rules:
+                if bad_re.search(s) and not neg_re.search(s):
+                    findings.append(("CONTRADICTION", f"{rel}:{i}", f"[{pid}] {desc}: {s[:120]}"))
+
+    # 2. Dead commands and missing files in ROLES.md and roles/*.md
+    for doc in docs:
+        rel = ROLES_MD_REL if doc == roles_md_path else f"{ROLES_REL}/{doc.name}"
+        for i, line in enumerate(doc.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
+            if line.strip().startswith("<!--"):
+                continue
+            cmd_paths = set()
+            for m in LINT_CMD_RE.finditer(line):
+                cpath = m.group(1)
+                cmd_paths.add(cpath)
+                if _is_planned_or_runtime_ref(cpath, line):
+                    continue
+                if not (repo / cpath).exists():
+                    findings.append(("DEAD-CMD", f"{rel}:{i}", f"dead command script {cpath}"))
+            for m in LINT_PATH_RE.finditer(line):
+                ref = m.group(1) or m.group(2)
+                if not ref or ref in cmd_paths or _is_planned_or_runtime_ref(ref, line):
+                    continue
+                if not (repo / ref).exists():
+                    if ref.startswith("scripts/") and ref.endswith((".py", ".ps1")):
+                        findings.append(("DEAD-CMD", f"{rel}:{i}", f"dead command script {ref}"))
+                    else:
+                        findings.append(("MISSING-FILE", f"{rel}:{i}", f"missing referenced file {ref}"))
+            for m in LINT_ROLE_SHORT_RE.finditer(line):
+                short = m.group(1) or m.group(2)
+                full = f"MyTradingSys/system/{short}"
+                if _is_planned_or_runtime_ref(full, line):
+                    continue
+                if not (repo / full).exists():
+                    findings.append(("MISSING-FILE", f"{rel}:{i}", f"missing referenced role file {full}"))
+
+    for kind, where, msg in findings:
+        out(f"FAIL [{kind}] {where}: {msg}")
+    out(ci_red_owner(repo, runs=ci_runs))
+    if not findings:
+        out(f"ok   role_loader lint: {len(docs)} role guidance files clean (0 contradictions, 0 dead commands, 0 missing files)")
+        return 0
+    return 1
+
+
 def main(argv):
     if len(argv) < 2:
         print(__doc__)
@@ -517,6 +650,8 @@ def main(argv):
         return 0
     if c == "check":
         return check()
+    if c == "lint":
+        return lint()
     if c == "verify":
         return cmd_verify(argv[2:])
     if c == "banner" and len(argv) > 2:

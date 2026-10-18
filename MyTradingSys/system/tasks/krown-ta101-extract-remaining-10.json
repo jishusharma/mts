@@ -1,63 +1,63 @@
 {
- "approved_by": "operator 2026-10-15",
- "asks": "",
- "commands": [],
- "created": "2026-10-13T05:23:56Z",
- "depends_on": [],
- "done_when": "4 extracts pass verify_extract_quotes.py (0 problems) and check_numbers.py (0 not found); MANIFEST.csv shows each id EXTRACTED or NOT AVAILABLE with the date of its third failed (429) day; build_ledger.py rebuilds KROWN_RULES.csv with 0 dead pointers; reflexivity_log.md has a batch 3 entry.",
- "est_turns": 30,
- "from_inbox": "",
- "goal": "Finish the Krown TA 101 playlist extraction: get timed captions for the 4 reachable videos still missing (hNfjyrJEytI fMRvOt26xcA LB3DRYxnA0A _JoJbu_Ug-A; MANIFEST.csv), then extract each with a fresh single-video worker per PROTOCOL.md s3 (clean slate, EXTRACT_TEMPLATE.md), both gates, rebuild the ledger.",
- "id": "krown-ta101-extract-remaining-10",
- "lane": "SONNET",
- "latest": [
-  {
-   "auto": true,
-   "kind": "ship",
-   "line": "krown ta101: caption retry 2026-10-17 still HTTP 429 for 4 ids, extraction blocked",
-   "ref": "75398687c6e3",
-   "utc": "2026-10-17T11:04:15Z"
-  }
- ],
- "layers": [
-  "krown"
- ],
- "live_path": false,
- "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none Raised ROUTINE->IMPORTANT: extracts feed KROWN_RULES.csv. Gate is verify_extract_quotes.py (free machine check). WEIGHT:ROUTINE. Title says remaining 10 but goal is the 4 caption-missing ids; the other extracts exist. 429: STOP and mark PENDING_CAPTIONS, one retry per day; operator paste is the only other source (OPERATOR-ONLY).",
- "pinned": false,
- "prio": 3,
- "refine_tries": 0,
- "refined_by": "",
- "refreshed": "2026-10-17T18:16:13Z",
- "refs": [
-  "MyTradingSys/research/krown_ta101_2026-10-13/STATE.md",
-  "MyTradingSys/research/krown_ta101_2026-10-13/PROTOCOL.md",
-  "MyTradingSys/research/krown_ta101_2026-10-13/MANIFEST.csv",
-  "MyTradingSys/research/krown_ta101_2026-10-13/EXTRACT_TEMPLATE.md"
- ],
- "result": "",
- "scope_in": [
-  "MyTradingSys/research/krown_ta101_2026-10-13/",
-  "raw_transcripts_canonical/"
- ],
- "scope_out": [
-  "engine and layer code",
-  "any backtest"
- ],
- "scope_sha": "75398687c6e3",
- "size": "M",
- "sources": [
-  "PLPEz1q0esi3gEd4DMbaGwFf3uqwAY6vTU"
- ],
- "state": "ready",
- "steps": [
-  "retry at most once: python scripts/dev/fetch_captions_timed.py --analyst Krown --out MyTradingSys/research/krown_ta101_2026-10-13/transcripts hNfjyrJEytI fMRvOt26xcA LB3DRYxnA0A _JoJbu_Ug-A  (STOP on 429; or the operator pastes them)",
-  "one fresh Sonnet worker per video with the PROTOCOL.md s3 brief (it must not read other extracts)",
-  "both gates on each extract, spot-check numbers against the transcript, then python tools/build_ledger.py (add a batch-3 amendments block)",
-  "update MANIFEST.csv, STATE.md and reflexivity_log.md; read the Gaps: do stops, targets or sizes appear now?"
- ],
- "tests": "docs lane, no code: verify_extract_quotes.py is the gate",
- "title": "Krown TA 101: get captions and extract the remaining 4 videos (ids in STATE.md); DONE when: 4 extracts pass both gates, MANIFEST.csv shows 19 of 19 reachable, ledger rebuilt",
- "weight": "IMPORTANT",
- "worker": "session"
+  "approved_by": "operator 2026-10-15",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-13T05:23:56Z",
+  "depends_on": [],
+  "done_when": "4 extracts pass verify_extract_quotes.py (0 problems) and check_numbers.py (0 not found); MANIFEST.csv shows each id EXTRACTED or NOT AVAILABLE with the date of its third failed (429) day; build_ledger.py rebuilds KROWN_RULES.csv with 0 dead pointers; reflexivity_log.md has a batch 3 entry.",
+  "est_turns": 30,
+  "from_inbox": "",
+  "goal": "Finish the Krown TA 101 playlist extraction: get timed captions for the 4 reachable videos still missing (hNfjyrJEytI fMRvOt26xcA LB3DRYxnA0A _JoJbu_Ug-A; MANIFEST.csv), then extract each with a fresh single-video worker per PROTOCOL.md s3 (clean slate, EXTRACT_TEMPLATE.md), both gates, rebuild the ledger.",
+  "id": "krown-ta101-extract-remaining-10",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "krown ta101: caption retry 2026-10-17 still HTTP 429 for 4 ids, extraction blocked",
+      "ref": "75398687c6e3",
+      "utc": "2026-10-17T11:04:15Z"
+    }
+  ],
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "note": "DROPPED 2026-10-19 per GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md s6.1 (meta lectures, 3x HTTP 429) and KROWN_GAP_AUDIT_2026-10-18.md (9e770d7f Proof A)",
+  "pinned": false,
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T18:16:13Z",
+  "refs": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/STATE.md",
+    "MyTradingSys/research/krown_ta101_2026-10-13/PROTOCOL.md",
+    "MyTradingSys/research/krown_ta101_2026-10-13/MANIFEST.csv",
+    "MyTradingSys/research/krown_ta101_2026-10-13/EXTRACT_TEMPLATE.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/",
+    "raw_transcripts_canonical/"
+  ],
+  "scope_out": [
+    "engine and layer code",
+    "any backtest"
+  ],
+  "scope_sha": "75398687c6e3",
+  "size": "M",
+  "sources": [
+    "PLPEz1q0esi3gEd4DMbaGwFf3uqwAY6vTU"
+  ],
+  "state": "dropped",
+  "steps": [
+    "retry at most once: python scripts/dev/fetch_captions_timed.py --analyst Krown --out MyTradingSys/research/krown_ta101_2026-10-13/transcripts hNfjyrJEytI fMRvOt26xcA LB3DRYxnA0A _JoJbu_Ug-A  (STOP on 429; or the operator pastes them)",
+    "one fresh Sonnet worker per video with the PROTOCOL.md s3 brief (it must not read other extracts)",
+    "both gates on each extract, spot-check numbers against the transcript, then python tools/build_ledger.py (add a batch-3 amendments block)",
+    "update MANIFEST.csv, STATE.md and reflexivity_log.md; read the Gaps: do stops, targets or sizes appear now?"
+  ],
+  "tests": "docs lane, no code: verify_extract_quotes.py is the gate",
+  "title": "Krown TA 101: get captions and extract the remaining 4 videos (ids in STATE.md); DONE when: 4 extracts pass both gates, MANIFEST.csv shows 19 of 19 reachable, ledger rebuilt",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

@@ -32,7 +32,7 @@ Cloud: no routines or always-on sessions; one session per task; nothing live dep
 
 ## 4. Naming
 Session ID: MTS-YYYY-MM-DD-HHMMZ-<SURF>-<ROLE>[-<slug>] (UTC start; slug <=20 chars, lowercase kebab).
-SURF: APP CLI CLD DSA COD GEM. ROLE: SUP BLD ANA EXT MON COO WRK (SUP = operator-driven supervising session; it deploys nothing, MTS-AutoDeploy does). Chat title = session ID.
+SURF: APP CLI CLD DSA COD GEM. ROLE: SUP BLD ANA EXT MON COO WRK (SUP = operator-driven supervising session; it deploys nothing; deploys are by hand, DEPLOY_RUNBOOK.md). Chat title = session ID.
 Record: the commit trailer `MTS-Session: <ID>` (commit history is the registry; sessions/ is history, no new files).
 Cloud branch: the harness-assigned `claude/...` branch, started from origin/fast-track and shipped by PR (PARALLEL.md). Harness names are recorded as branch_alias, never reused.
 Subagents: <parent ID>/<tier>-<nn> (e.g. /sonnet-02).

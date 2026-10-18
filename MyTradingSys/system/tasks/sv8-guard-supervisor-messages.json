@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-18T21:19:16Z",
   "commands": [],
   "created": "2026-10-18T19:30:00Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "sv8-guard-supervisor-messages",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/model_guard.py + MyTradingSys/tests/test_model_guard.py + .claude/settings.jso",
+      "ref": "f05baac8",
+      "utc": "2026-10-18T21:19:16Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,7 +40,7 @@
   "refs": [
     "MyTradingSys/system/SUPERVISOR.md"
   ],
-  "result": "",
+  "result": "scripts/dev/model_guard.py + MyTradingSys/tests/test_model_guard.py + .claude/settings.json: deny SendMessage/send_message to Fable or non-owned sessions, fail closed (16/16 pass)",
   "scope_in": [
     "scripts/dev/model_guard.py",
     "MyTradingSys/tests/test_model_guard.py",
@@ -49,11 +56,12 @@
   "sources": [
     "MyTradingSys/system/SUPERVISOR.md (design 2026-10-18)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "deny when the target's transcript model is fable, or the id is not in this session's start_session results (transcript)",
     "fail closed when the target cannot be resolved, with the reason"
   ],
+  "taken": "2026-10-18T21:19:16Z",
   "tests": "fixture transcripts: own Sonnet worker -> allow; Fable target -> deny; unknown id -> deny; fail first",
   "title": "Supervisor SV8: model_guard denies messages to Fable sessions and to sessions this one did not start",
   "weight": "IMPORTANT",

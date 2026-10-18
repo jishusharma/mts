@@ -1,54 +1,79 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C1",
   "commands": [
-    "C:/Users/E-ngineers/.gemini/bin/agy.exe --print \"Open the image <name> in this folder. It is a trading platform screenshot. Reply with ONLY a JSON object {position, entry, stop, target}; use null for any value you cannot read, null is a valid answer.\" --model gemini-4-argon-low   (run with cwd = the scratch agy_in folder, once per frame and crop)"
+    "C:/Users/E-ngineers/.gemini/bin/agy.exe --print \"Open image <filename> in this folder. Return ONLY JSON {position,entry,stop,target}; each is a number or null. Use null if unreadable or absent. Never infer hidden values.\" --model gemini-4-argon-low --effort low"
   ],
   "created": "2026-10-17T20:39:20Z",
   "depends_on": [],
-  "done_when": "a results file with blind-read output (required null option, no claim shown) of gemini-4-argon-low on the 7 frames is committed under research/lab_guy/pilots/2026-10-18_gemini_frame_read/, compared to the audit truth in code, plus a written value for 25200 vs 25206 and for the 0550 stop from a larger crop (or 'unreadable')",
+  "done_when": "Dated Layer Lab report and results_argon-low.json contain 7-frame/crop blind responses, reader identity, code comparison against UNCHECKED pilot references, descriptive counts and CONTESTED/unreadable labels. Executor final reply records content commit SHA, empty git cherry origin/fast-track <sha>, and upstream git ls-tree report/results existence.",
+  "effort": "low",
   "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Know whether Argon (gemini-4-argon-low) reads the 7 hard Tom frames better than Flash, and settle 25200 vs 25206 (k0zm_1510_1720) and the T6hDJcHrVBM_0550 stop from larger crops.",
+  "goal": "Run blind Gemini 4 Argon low reads of the same 7 hard Tom frames and prescribed crops, then compare visible-field outputs descriptively with pilot audit truth and Flash; resolve the two crop questions only when directly legible, otherwise mark CONTESTED.",
   "id": "argon-blind-read-7-frames",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Record Gemini image-reading pilot: lab_guy rules, announcement A-20261018-7, Argon follow-",
+      "ref": "74772a994d9e",
+      "utc": "2026-10-17T20:39:55Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "74772a994d9e Record Gemini image-reading pilot: lab_guy rules, announcement A-20261018-7, ",
+      "ref": "MyTradingSys/research/lab_guy/pilots/2026-10-18_gemini_frame_read/README.md",
+      "utc": "2026-10-17T20:39:55Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "mutation_check": "",
-  "note": "[weight=IMPORTANT class=C0 lab-touch=no worker=session] Follow-up of the 2026-10-18 Flash pilot (MyTradingSys/research/lab_guy/pilots/2026-10-18_gemini_frame_read/). Rules: roles/lab_guy.md 'Using Gemini ... to read images'. LIMITATION: headless agy.exe cannot be handed a file path argument; the image is copied into a scratch folder, agy.exe runs with that folder as cwd and the prompt names the file ('Open the image <name> in this folder'), as in the pilot. Scratch only, never the repo or live tree; frames may carry account data so do not commit images.",
+  "note": "REVIEWED:2026-10-19 ACCEPT GPT Luna independent brief review; blind-folder separation and unknown-reference scoring fixes applied. IMPORTANT/class=C1. Luna invokes Argon low directly; Flash queue is unsuitable. Pilot references remain UNCHECKED; no general catch-rate claim.",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
-  "refreshed": "2026-10-17T20:39:52Z",
-  "refs": [
-    "MyTradingSys/system/GEMINI_START.md",
-    "MyTradingSys/system/roles/lab_guy.md"
-  ],
+  "refined_by": "codex",
+  "refreshed": "2026-10-18T21:37:53Z",
+  "refs": [],
   "result": "",
   "scope_in": [
-    "MyTradingSys/research/lab_guy/pilots/2026-10-18_gemini_frame_read/"
+    "MyTradingSys/research/lab_guy/pilots/2026-10-18_gemini_frame_read/README.md",
+    "MyTradingSys/research/lab_guy/pilots/2026-10-18_gemini_frame_read/hard_results_gemini-3.8-flash-low.json"
   ],
   "scope_out": [
-    "live tree",
-    "HALT files",
-    "deploys"
+    "Live tree, HALT, deploys, image/account-data commits, reviewer prompt exposure to claim/truth/reference values"
   ],
-  "scope_sha": "",
+  "scope_sha": "74772a994d9e",
   "size": "S",
-  "sources": [],
+  "sources": [
+    "MyTradingSys/research/lab_guy/pilots/2026-10-18_gemini_frame_read/README.md (pilot scope, frame list, prior Flash findings)",
+    "MyTradingSys/research/lab_guy/pilots/2026-10-18_gemini_frame_read/hard_results_gemini-3.8-flash-low.json (embedded audit truth and Flash blind outputs)",
+    "MyTradingSys/system/ANNOUNCEMENTS.md A-20261018-7 (blind-only, null option, panel crops, code comparison, contested values)",
+    "MyTradingSys/system/roles/lab_guy.md section Using Gemini (or any non-producer model) to read images",
+    "MyTradingSys/system/GEMINI_START.md (direct agy model/effort invocation and Argon id)",
+    "scripts/dev/gemini_queue.py lines 7-9 and 48 (Flash-only constraint)",
+    "MyTradingSys/system/ROUTING.md (Gemini routing)",
+    "MyTradingSys/system/LAYER_LAB.md (run-card report and write boundary)"
+  ],
   "state": "ready",
   "steps": [
-    "Make a scratch folder agy_in; copy the 7 frames listed in the pilot README from F:/MTS/data/tom_videos/frames; crop k0zm_1510_1720.png into its top and bottom panels and make 2x crops of the stop/target labels for k0zm and T6hDJcHrVBM_0550 (PIL)",
-    "For each frame/crop run from agy_in (command below; no claim in the prompt, null is a valid answer; never --dangerously-skip-permissions)",
-    "Compare outputs to the audit truth table in the pilot json in code; a number for a hidden field = invented; write results_argon-low.json and add Argon vs Flash counts to the pilot README",
-    "For 25200 vs 25206 and the 0550 stop report the crop reads; if Argon disagrees with itself or Flash mark CONTESTED for a human read, do not pick one"
+    "On JIS-NUC copy only the seven frames named in the pilot README into scratch. For each invocation expose an isolated subfolder containing only its one frame or crop; never copy images into the repository/report.",
+    "Split k0zm_1510_1720.png into top and bottom panels before model calls. Make larger label crops for the k0zm target and T6hDJcHrVBM_0550 stop with enough surrounding pixels to read, without claims or ledger context.",
+    "Invoke the direct agy command with Argon low on each single-panel original, separated panel and required crop. Never submit the unsplit two-panel k0zm original. Use an isolated single-image folder per call; do not use Flash-only gemini_queue.py.",
+    "Keep README, reference JSON, claims, Flash outputs and candidate values outside every reader folder and prompt context. Load references only into the local comparison process after all blind reads; never pass them to agy.",
+    "Save raw responses, IDs and actual reader model/effort to research/layer_lab/argon_blind_read/results_argon-low.json, preserving nulls. Compare position/entry/stop/target to pilot pos/entry/sl/tp only after all blind reads.",
+    "Compare Argon fields locally to pilot references and Flash blind output. Count matches, mismatches, nulls and numbers against truth-null fields separately. Reference ?/missing values are UNVERIFIED: exclude from accuracy denominators and count separately. Give descriptive seven-frame counts only, never general catch-rate claims.",
+    "Report the enlarged-crop reads for k0zm target (25200 versus 25206) and the 0550 stop. Unreadable or conflicting results stay CONTESTED for a human read; do not choose by model vote.",
+    "Write the dated Layer Lab report and bounded JSON results; copy no images or account data. Executor final reply supplies content commit SHA, empty git cherry and upstream git ls-tree report/results verification; sandbox runner handles git."
   ],
-  "tests": "the comparison script exits non-zero if a prompt contains a claim value or the schema lacks the null option",
+  "tests": "No software test: run card. Check each prompt has required nullable fields and contains no claim/truth values; check comparison code counts numeric outputs for truth-null fields as invented and reports only descriptive 7-frame counts.",
   "title": "Run Argon blind-read with null option on the 7 Gemini-pilot frames; settle 25200 vs 25206 and the T6hDJcHrVBM_0550 stop from a larger crop",
-  "weight": "",
+  "weight": "IMPORTANT",
   "worker": "session"
 }

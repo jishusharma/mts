@@ -69,8 +69,8 @@ A second AIBridge + DeepSeek chat now runs on the NUC next to the one on the des
 - Pick by host (B180): each bridge runs `python scripts/dev/desk.py next` (or `next --host JIS-NUC`): it prints the oldest
   pending row whose target is `DSA-<this host>` or `DSA`, exit 1 when there is none. Rows for the other bridge and rows
   addressed to a host itself (`JIS-NB`: live-host work for a Claude session) are never returned.
-- Scheduled assigner (B180): `desk.py assign`, run every day by `MTS-DailyHygiene` (step `desk_assign` of
-  `scripts/dev/daily_hygiene.py`, 06:30 local, registered by `scripts/sched/register_cicd_tasks.ps1`). It posts one desk
+- Assigner (B180): `desk.py assign`, run by hand or by the coordinator (its daily `MTS-DailyHygiene` run is RETIRED
+  2026-10-17, SCHEDULING_POLICY.md). It posts one desk
   row per ready task card whose lane is DSA / DSA-NB / DSA-NUC and that has no row yet (row field `card`), so a
   refined run-and-report card reaches DSA with no Claude session in between. A closed row is never re-posted.
 - Route by where the data lives (DEVICES.md): 1-minute klines (Dumps/backtest/raw_1m_2022: run_cc_setups, fabio, rsi runners)

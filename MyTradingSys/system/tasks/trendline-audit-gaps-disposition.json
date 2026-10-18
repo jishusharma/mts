@@ -1,0 +1,60 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/research/trendlines_2026-10-17/repro_trendline_gaps.py"
+  ],
+  "created": "2026-10-18T21:05:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/trendlines_2026-10-17/DISPOSITION_2026-10-19.md is shipped with disposition of the 3 HIGH and 3 MEDIUM gaps (repro_trendline_gaps.py), plus PRE_REG_TRENDLINES.md updated for the 1h|B|ALL|break MDE flip (0.314 > 0.30 SD at m=78 per REGATE_AUDIT.md).",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Read MyTradingSys/research/trendlines_2026-10-17/AUDIT_2026-10-18.md and run python MyTradingSys/research/trendlines_2026-10-17/repro_trendline_gaps.py (6 synthetic reproductions, zero market data). Disposition the 3 HIGH detector/contract gaps (close-arm wick penetration, ib+1..ib+k pre-availability replay, E11 _broken_anchor blocking outer fan lines) and 3 MEDIUM gaps (count_only multi-touch/terciles/missing retest counts, g3_pack off-chart anchors and 1h omission, daily/ledger.jsonl schema v2 + layer_index/wiring_registry drift) and the REGATE_AUDIT.md 1h|B|ALL|break flip before issuing any DEV outcome study card.",
+  "id": "trendline-audit-gaps-disposition",
+  "lane": "SONNET",
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:results CLASS:C1 REVIEWER:none WEIGHT:IMPORTANT. Created by Pipeliner from wrong-channel desk row 20261018-162016 (ROUTING.md: review/build work is a card, never a desk row). T0 mechanical checks passed, awaiting non-Gemini Lab_Guy ACCEPT stamp for C1/IMPORTANT promotion.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "gemini-yt-pipeliner",
+  "refreshed": "2026-10-18T21:05:00Z",
+  "refs": [
+    "MyTradingSys/research/trendlines_2026-10-17/AUDIT_2026-10-18.md",
+    "MyTradingSys/research/trendlines_2026-10-17/repro_trendline_gaps.py",
+    "MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/trendlines_2026-10-17/AUDIT_2026-10-18.md",
+    "MyTradingSys/research/trendlines_2026-10-17/repro_trendline_gaps.py",
+    "MyTradingSys/research/trendlines_2026-10-17/PRE_REG_TRENDLINES.md",
+    "MyTradingSys/backtest/layers/trendlines/trendline_core.py"
+  ],
+  "scope_out": [
+    "live tree",
+    "VALIDATION and HOLDOUT reads",
+    "running any DEV outcome study before fixes land"
+  ],
+  "scope_sha": "60c1b88e5269",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/trendlines_2026-10-17/AUDIT_2026-10-18.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "Run python MyTradingSys/research/trendlines_2026-10-17/repro_trendline_gaps.py and read AUDIT_2026-10-18.md.",
+    "Write MyTradingSys/research/trendlines_2026-10-17/DISPOSITION_2026-10-19.md recording the contract v1.1 + trendline_core/count_only/g3_pack/registry disposition and the REGATE_AUDIT.md 1h|B|ALL|break flip.",
+    "Scope and file the follow-up fix card(s) if needed before any Trend-Line DEV outcome study."
+  ],
+  "tests": "python MyTradingSys/research/trendlines_2026-10-17/repro_trendline_gaps.py",
+  "title": "Trend-Line layer: disposition of AUDIT_2026-10-18 critical gaps (3 HIGH, 3 MED) and REGATE_AUDIT flip",
+  "weight": "IMPORTANT",
+  "worker": "session",
+  "class": "C1"
+}

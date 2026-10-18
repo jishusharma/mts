@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest -q MyTradingSys/tests/docs"
+  ],
+  "created": "2026-10-18T21:56:52Z",
+  "depends_on": [],
+  "done_when": "research/ top level under 30 files; every moved file's inbound reference updated (git grep returns 0 old paths outside archive).",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "research/ top level holds STATUS.md, VERDICTS.csv, the index and folders; the 121 dated loose .md files go into their topic folders or archive.",
+  "id": "research-top-level-declutter",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/wavetrend-eom",
+      "ref": "0be944155673",
+      "utc": "2026-10-18T21:36:38Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "MTS_Doctor arch-cleanup 2026-10-19",
+  "refreshed": "2026-10-18T21:57:34Z",
+  "refs": [
+    "MyTradingSys/system/ARCHITECTURE.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/"
+  ],
+  "scope_out": [
+    "file content",
+    "runtime_data"
+  ],
+  "scope_sha": "0be944155673",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "List loose files with their inbound refs.",
+    "git mv each to its topic folder; fix refs.",
+    "make_status.py; doc tests; ship."
+  ],
+  "tests": "MyTradingSys/tests/docs/test_integrity.py",
+  "title": "research/ top level: 183 loose files into dated folders plus an index",
+  "weight": "",
+  "worker": "session"
+}
