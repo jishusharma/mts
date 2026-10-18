@@ -27,6 +27,20 @@ def test_no_test_file_is_listed_twice():
     assert not dup, dup
 
 
+def test_study_folder_tests_are_discovered_without_an_entry(tmp_path):
+    import subprocess
+    (tmp_path / "scripts" / "dev").mkdir(parents=True)
+    (tmp_path / "scripts" / "dev" / "run_all_tests.py").write_text('"test_named"' + NL, encoding="utf-8")
+    for rel in ("MyTradingSys/research/s1/test_new.py", "MyTradingSys/research/s1/test_named.py",
+                "MyTradingSys/research/archive/test_old.py", "MyTradingSys/backtest/test_elsewhere.py"):
+        f = tmp_path / rel
+        f.parent.mkdir(parents=True, exist_ok=True)
+        f.write_text("def test_x():" + NL + "    pass" + NL, encoding="utf-8")
+    subprocess.run(["git", "init", "-q"], cwd=tmp_path, check=True)
+    subprocess.run(["git", "add", "-A"], cwd=tmp_path, check=True)
+    assert rx.discovered(tmp_path) == ["MyTradingSys/research/s1/test_new.py"]
+
+
 def test_failure_detail_empty_output_is_empty():
     assert rx.failure_detail("", "") == ""
     assert rx.failure_detail(None, None) == ""

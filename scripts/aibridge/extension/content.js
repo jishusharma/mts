@@ -49,18 +49,52 @@
       setTimeout(fin, ms);
     });
   }
-  var tickPort = null, lastTick = 0;
+  var tickPort = null, lastTick = 0, lastWorkerTick = 0, reconAttempt = 0, reconTimer = null;
+  // connect now (no timer in the way: a hidden page's timers are throttled); a failed attempt backs off 1 s .. 15 s
   function connectTick() {
+    reconTimer = null;
     if (!alive()) return;
     try {
-      tickPort = chrome.runtime.connect({ name: 'aibridge-tick' });
-      tickPort.onMessage.addListener(onTick);
-      tickPort.onDisconnect.addListener(function () { tickPort = null; setTimeout(connectTick, 1000); });
-    } catch (e) { setTimeout(connectTick, 3000); }
+      if (tickPort) { try { tickPort.disconnect(); } catch (e0) {} tickPort = null; }
+      var p = chrome.runtime.connect({ name: 'aibridge-tick' });
+      tickPort = p;
+      p.onMessage.addListener(function () { reconAttempt = 0; onTick(true); });
+      p.onDisconnect.addListener(function () { if (tickPort === p) { tickPort = null; scheduleReconnect(); } });
+    } catch (e) { scheduleReconnect(); }
   }
-  function onTick() {
-    lastTick = Date.now();
-    var now = lastTick;
+  function scheduleReconnect() {
+    if (reconTimer) return;
+    reconAttempt++;
+    var d = L.reconnectDelay(reconAttempt - 1);
+    if (d === 0) connectTick(); else reconTimer = setTimeout(connectTick, d);
+  }
+  // second heartbeat: a dedicated Worker keeps its own 500 ms timer while the tab is in the background and works even
+  // when the service worker is asleep. A page CSP may refuse a blob worker; then the port tick is the only source.
+  function startWorkerTick() {
+    try {
+      var url = URL.createObjectURL(new Blob(['setInterval(function(){postMessage(1)},500)'], { type: 'text/javascript' }));
+      var w = new Worker(url);
+      w.onmessage = function () { lastWorkerTick = Date.now(); onTick(false); };
+      w.onerror = function () { try { w.terminate(); } catch (e) {} };
+    } catch (e) {}
+  }
+  // self-heal + visible status: runs on every tick from either source
+  var lastLinkLabel = '', lastLinkCheck = 0, lastRecon = 0;
+  function linkCheck() {
+    var now = Date.now();
+    if (now - lastLinkCheck < 1000) return;
+    lastLinkCheck = now;
+    var ls = L.linkState(now, { port: lastTick, worker: lastWorkerTick });
+    if (ls.reconnect && now - lastRecon > Math.max(2000, L.reconnectDelay(reconAttempt))) { lastRecon = now; reconAttempt = Math.max(reconAttempt, 1); connectTick(); }
+    if (ui.box) {
+      var lab = L.linkLabel(ls, document.hidden);
+      if (lab !== lastLinkLabel) { lastLinkLabel = lab; ui.box.dataset.link = ls.state; ui.box.title = lab; if (ui.link) { ui.link.textContent = ls.state === 'ok' ? '\u25CF' : (ls.state === 'degraded' ? '\u25D0' : '\u25CB'); ui.link.title = lab; } }
+    }
+  }
+  function onTick(fromPort) {
+    var now = Date.now();
+    if (fromPort) lastTick = now;
+    linkCheck();
     if (sleepers.length) {
       var keep = [];
       for (var i = 0; i < sleepers.length; i++) { if (sleepers[i].due <= now) sleepers[i].fin(); else keep.push(sleepers[i]); }
@@ -460,6 +494,7 @@
   setInterval(function () { sampleText(); growCheck(); }, 250);
   setInterval(pump, 250);
   setInterval(watchdog, 2000);
+  setInterval(linkCheck, 1000);
   setInterval(function () { if (location.href !== lastHref) { lastHref = location.href; if (!lastSend || Date.now() - lastSend > 15000) histUntil = Date.now() + 6000; } }, 500);
   document.addEventListener('click', function (e) { var t = e.target; if (!t || !t.closest || isOurs(t) || !t.closest('button, [role="button"]')) return; var inp = findInput(); if (!inp) return; var box = inp; for (var u = 0; u < 4 && box.parentElement; u++) box = box.parentElement; if (box.contains(t)) lastSend = Date.now(); }, true);
 
@@ -508,9 +543,10 @@
     var count = document.createElement('span');
     var status = document.createElement('div'); status.className = 'st'; status.textContent = 'off: click Run on each block';
     var info = document.createElement('div'); info.className = 'in'; info.textContent = 'AIBridge ' + VER + ' (this chat only)';
-    box.appendChild(lab); box.appendChild(count); box.appendChild(status); box.appendChild(info);
+    var link = document.createElement('span'); link.textContent = '\u25CB'; link.title = 'link: starting'; link.style.marginLeft = '6px'; link.style.cursor = 'help';
+    box.appendChild(lab); box.appendChild(count); box.appendChild(link); box.appendChild(status); box.appendChild(info);
     document.body.appendChild(box);
-    ui = { box: box, cb: cb, count: count, status: status, info: info };
+    ui = { box: box, cb: cb, count: count, status: status, info: info, link: link };
     cb.addEventListener('change', function () {
       autoRun = cb.checked;
       if (autoRun) { runs = 0; preflight('on:'); } else stopAuto('off: click Run on each block');
@@ -529,6 +565,7 @@
     baseline = false;
     obs.observe(document.body || document.documentElement, { childList: true, subtree: true, characterData: true });
     connectTick();
+    startWorkerTick();
     preflight('');
   });
   window.__aibDebug = function () { return { ver: VER, tab: tabId, autoRun: autoRun, runs: runs, resultN: resultN, pending: pending.map(function (p) { return { grew: p.grew, len: p.len, connected: p.block.isConnected }; }), quietFor: Date.now() - lastMut, working: working, tickAgo: lastTick ? Date.now() - lastTick : null, hidden: document.hidden, input: (function () { var e = findInput(); return e ? { tag: e.tagName, text: inputText(e).slice(0, 30) } : null; })(), ranKeys: Object.keys(ranKeys).length }; };

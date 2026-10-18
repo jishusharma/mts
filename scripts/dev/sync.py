@@ -14,6 +14,7 @@ Rules live in MyTradingSys/system/PARALLEL.md. The live tree (a checkout holding
 file .mts_live) is never synced or shipped from: the running system imports it, so it changes only by
 the supervisor deploy (stop, ff-merge, gate, restart).
 """
+import json
 import os
 import re
 import socket
@@ -30,6 +31,7 @@ LIVE_MARKER = ".mts_live"
 DOC_SUFFIXES = (".md", ".txt")
 PUSH_TRIES = 3
 CLAIMS_DIR = "MyTradingSys/system/claims"
+CARDS_DIR = "MyTradingSys/system/tasks"
 STALE_HOURS = 24
 # Generated or whole-file-rewritten files that every session touches. A collision here is never worth a
 # stalled session: origin's text wins, the loser regenerates (STATUS.md) or re-applies its one-line edit.
@@ -451,6 +453,20 @@ def run_docs_gate(repo, files):
         run_gate(repo, files)
 
 
+def warn_stale_pages(repo):
+    """Warning only (never a block): published pages whose repo build differs from the last publish."""
+    try:
+        r = subprocess.run([sys.executable, str(Path(repo) / "scripts" / "dev" / "artifacts.py"), "stale"],
+                           capture_output=True, text=True, timeout=300)
+        lines = [l for l in r.stdout.splitlines() if l.startswith("STALE ")]
+    except Exception as e:
+        print(f"WARNING: stale-page check failed: {e}")
+        return
+    if lines:
+        print(f"WARNING: {len(lines)} published page(s) lag the repo (republish, then artifacts.py publish-record --slug X):")
+        print("\n".join("  " + l for l in lines))
+
+
 def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None):
     """release_slug (traffic buster B4): the claim file is deleted in a commit on this branch, so the release rides the
     same push as the work (no separate fetch + push). Nothing to ship: falls back to the plumbing release."""
@@ -478,6 +494,7 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None):
         r = git(repo, "push", "--quiet", "origin", f"HEAD:refs/heads/{TRUNK}", check=False)
         if r.returncode == 0:
             print(f"shipped {len(files)} file(s) to origin/{TRUNK}" + (f"; released {release_slug}" if released else ""))
+            warn_stale_pages(repo)
             return
         print(f"push rejected (someone shipped first), retry {attempt}/{PUSH_TRIES}")
     raise SyncError(f"push still rejected after {PUSH_TRIES} tries:\n{r.stderr}")
@@ -667,10 +684,57 @@ def push_claim_commit(repo, rel, text, msg):
     raise SyncError(f"claim push still rejected after {PUSH_TRIES} tries")
 
 
-def claim(repo, task, area="-", gate=run_gate):
+def new_files_only_reason(repo, task, area="-"):
+    """B16 (B2 made automatic): why a claim is pointless, or '' (claim as usual). A task whose whole scope is NEW files under
+    its own dated folder (`..._2026-10-17/`) has nothing to collide on. Scope = the --area paths, else `scope_in` of the task
+    card named like the task (id, or the task text slugified), read from origin's tip. Fails open: no card, no scope,
+    a live-path card, an existing file, any path outside a dated folder = claim."""
+    dated = re.compile(r"\d{4}-\d{2}-\d{2}")
+    paths = [x for x in re.split(r"[,\s]+", area) if x not in ("", "-")]
+    where = "--area"
+    if not paths:
+        for cid in dict.fromkeys([str(task).strip(), slugify(task)]):
+            r = git(repo, "show", f"origin/{TRUNK}:{CARDS_DIR}/{cid}.json", check=False)
+            if r.returncode == 0:
+                break
+        else:
+            return ""
+        try:
+            card = json.loads(r.stdout)
+        except ValueError:
+            return ""
+        if card.get("live_path"):
+            return ""
+        where = f"card {cid}"
+        for entry in card.get("scope_in") or []:
+            if re.match(r"\s*read-only", entry, re.I):
+                continue  # reads collide with nothing
+            found = re.findall(r"[\w.\-]+(?:/[\w.\-]*)+", entry)
+            if not found:
+                return ""
+            paths += found
+    if not paths:
+        return ""
+    for pth in paths:
+        parts = pth.rstrip("/").split("/")
+        is_dir = pth.endswith("/") or "." not in parts[-1]
+        if not any(dated.search(d) for d in (parts if is_dir else parts[:-1])):
+            return ""
+        if not is_dir and git(repo, "cat-file", "-e", f"origin/{TRUNK}:{pth}", check=False).returncode == 0:
+            return ""  # edits a file that already exists
+    return f"{where} writes only new files under dated folders ({', '.join(sorted(set(paths))[:3])})"
+
+
+def claim(repo, task, area="-", gate=run_gate, force=False):
     if str(task).startswith("--"):
         raise SyncError(f"claim name {task!r} looks like a flag, not a task name; usage: sync.py claim \"<task>\" [--area <paths>]")
     refuse_live(repo)
+    if not force:
+        git(repo, "fetch", "--quiet", "origin", TRUNK)
+        why = new_files_only_reason(repo, task, area)
+        if why:
+            print(f"no claim needed (B2): {why}. Nothing to release: finish with sync.py ship. Claim anyway: sync.py claim \"<task>\" --force")
+            return
     slug0 = slugify(task)
     mine = claim_areas({"area": area})
     NL = chr(10)
@@ -709,6 +773,9 @@ def release(repo, slug, gate=run_gate):
     rel = f"{CLAIMS_DIR}/{slug}.md"
     if git(repo, "cat-file", "-e", f"origin/{TRUNK}:{rel}", check=False).returncode != 0:
         raise SyncError(f"no claim {slug} on origin/{TRUNK}")
+    ahead = git(repo, "rev-list", "--count", f"origin/{TRUNK}..HEAD", check=False).stdout.strip()
+    if ahead.isdigit() and int(ahead) > 0:
+        print(f"hint (B4): this tree has {ahead} unshipped commit(s); `sync.py ship --release {slug}` closes the claim in the same push and saves a commit")
     push_claim_commit(repo, rel, None, f"release {slug}" + chr(10) * 2 + f"Result: claim {slug} closed")
     print(f"released {slug}")
 
@@ -892,7 +959,7 @@ def main(argv):
                 release(repo, argv[1])
             else:
                 area = argv[argv.index("--area") + 1] if "--area" in argv else "-"
-                claim(repo, argv[1], area)
+                claim(repo, argv[1], area, force="--force" in argv)
         except SyncError as e:
             print(f"sync: {e}", file=sys.stderr)
             return 1

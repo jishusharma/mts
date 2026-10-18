@@ -48,6 +48,7 @@ class FailureCapTest(unittest.TestCase):
         with mock.patch.dict(sys.modules, {"deribit_orders": fake}), \
                 mock.patch.object(dlm, "run_once", run_once), \
                 mock.patch.object(dlm, "write_halt", lambda p, d, r, n: halts.append((p, r))), \
+                mock.patch.object(dlm, "write_blind_halt", lambda p, d, r, n: halts.append((p, r)) or True), \
                 mock.patch.object(dlm.time, "sleep", lambda s: None):
             try:
                 rc = dlm.main(list(argv) + (["--mainnet"] if env == "mainnet" else []))
@@ -64,7 +65,8 @@ class FailureCapTest(unittest.TestCase):
     def test_testnet_halts_at_testnet_cap(self):
         cap = dlm.MAX_CONSECUTIVE_FAILURES_TESTNET
         rc, halts, n = self.run_main("test", cap + 5)
-        self.assertEqual((rc, n, len(halts)), (1, cap, 1))
+        # 2026-10-17: testnet stays alive after the blind halt (so it can clear it); mainnet still exits 1
+        self.assertEqual((rc, n, len(halts)), (None, cap + 6, 1))
         self.assertEqual(halts[0][0], dlm.HALT_PATH)
         self.assertIn(f"{cap} consecutive failures", halts[0][1])
 

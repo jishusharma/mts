@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-17T20:35:21Z",
+  "depends_on": [],
+  "done_when": "the newest CI run on fast-track is green and green/fast-track has advanced",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "CI on fast-track is red since commit 919cc0f (run 39067355060); auto_deploy only takes green, so nothing deploys until it is fixed.",
+  "id": "ci-919cc0f",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "pinned": true,
+  "prio": 0,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "the failing step of run 39067355060 (https://github.com/jishusharma/mts/actions/runs/39067355060) and the commit 919cc0f that first broke it"
+  ],
+  "scope_out": [
+    "unrelated cleanups",
+    "live tree, processes, deploys"
+  ],
+  "size": "S",
+  "sources": [
+    "CI run 39067355060"
+  ],
+  "state": "ready",
+  "steps": [
+    "git show 919cc0f: find what that commit changed; read the failing step in the run page (gh run view 39067355060 --log-failed)",
+    "write the test that fails now, fix the cause (a merge interaction counts: the local gate is a smoke gate)",
+    "python scripts/dev/run_all_tests.py --quick, then sync.py ship; confirm the next CI run is green"
+  ],
+  "tests": "the step CI reports failing: reproduce it locally first (fails before the fix, passes after)",
+  "title": "fix CI 919cc0f: fast-track is red",
+  "weight": "",
+  "worker": "agent"
+}

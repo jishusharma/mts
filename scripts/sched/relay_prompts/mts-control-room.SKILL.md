@@ -6,7 +6,7 @@ description: Not scheduled. Run by hand from a session signed in as jishu.sharma
 MTS Control Room pickup. Work in the worktree C:\Users\E-ngineers\IdeaProjects\mts-control-room (never edit the live tree C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed; it holds .mts_live).
 Read CLAUDE.md there, then follow MyTradingSys/system/CONTROL_ROOM.md exactly. Short form:
 1. `python scripts/dev/sync.py start` in the worktree.
-2. Page: https://claude.ai/artifact/Ep6gA5vskLodMLEseyTnfN (the jishu.sharma page owns the Inbox and decisions db; the other copies are read-only mirrors). If ArtifactData says no such artifact or no access, this login cannot read it: stop and say so. ArtifactData `list` collections `feedback` (Inbox) and `decisions`.
+2. Page: https://claude.ai/artifact/MNuodXmi5RiEihX7rFpqUp (owned by jishusharma1985 since 2026-10-17, it holds the Inbox and decisions db; the jishu.sharma page https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su is an old copy). If ArtifactData says no such artifact or no access, this login cannot read it: stop and say so. ArtifactData `list` collections `feedback` (Inbox) and `decisions`.
 3. Every Inbox item with status "new", oldest first: append it VERBATIM to MyTradingSys/system/OPERATOR_INBOX.md with Bash `cat >>` (never Read the file; rotation rule: CONTROL_ROOM.md step 3), then
    question -> answer from files you actually read, set reply + status "answered";
    task/requirement -> file or attach a BUGS.md row (quote the operator's words), set ref = row id(s) + status "filed" + a one-line reply;

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T21:37:53Z",
   "commands": [],
   "created": "2026-10-16T17:16:24Z",
   "depends_on": [],
@@ -16,12 +17,12 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
-  "result": "",
+  "result": "duplicate, merged into g3-remove-visible-chart-cues-that-disclo",
   "scope_in": [],
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "done",
   "steps": [],
   "tests": "",
   "title": "G3 assess and remove visible chart side channels for enriched half and filter tag"

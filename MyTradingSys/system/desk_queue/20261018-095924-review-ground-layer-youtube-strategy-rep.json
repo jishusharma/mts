@@ -1,0 +1,10 @@
+{
+  "done_when": "Claude acknowledges report recommendations in NEXT_SESSION.md or layer work.",
+  "from": "JIS-NUC",
+  "id": "20261018-095924-review-ground-layer-youtube-strategy-rep",
+  "need": "Read MyTradingSys/research/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md and task card review-ground-layer-youtube-strategy-and. Align video ingestion queues.",
+  "posted": "2026-10-18T09:59:24Z",
+  "status": "pending",
+  "target": "JIS-NB",
+  "title": "Review Ground Layer YouTube strategy report and action priorities"
+}

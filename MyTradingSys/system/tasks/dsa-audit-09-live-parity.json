@@ -12,16 +12,19 @@
   "created": "2026-10-15T23:28:58Z",
   "depends_on": [],
   "done_when": "T09_live_parity.md shipped: layer map with parameter diffs, deployed sha, per-layer signal diff on 30 DEV days, exit-rule diff, the 97% time exits explained; live-path findings posted --target CLAUDE.",
+  "est_turns": 38,
   "from_inbox": "",
   "goal": "Map each testnet layer to the backtest that justified it, replay 30 DEV days bar by bar through the live layer code in the worktree with no network, diff signals and exit rules against the backtest code, and explain the 97% time exits.",
   "id": "dsa-audit-09-live-parity",
   "lane": "DSA-NB",
+  "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
+  "refreshed": "2026-10-17T07:16:28Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md",
     "MyTradingSys/backtest/layers/alerts/live_runner_cli.py",
@@ -39,6 +42,7 @@
     "F:/AIBridge and scripts/aibridge",
     "changing any verdict, ledger or pre-registered bar"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [],
   "state": "ready",
@@ -51,5 +55,7 @@
     "Exit-rule diff (auto_trader.py, position_manager.py, config) vs backtest exits; explain the 97% time exits with numbers."
   ],
   "tests": "",
-  "title": "DSA audit T09: replay DEV bars through the testnet layer code and diff signals and exits against the backtests"
+  "title": "DSA audit T09: replay DEV bars through the testnet layer code and diff signals and exits against the backtests",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

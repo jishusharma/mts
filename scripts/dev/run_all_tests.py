@@ -42,6 +42,7 @@ PYTEST_LAYER_PATHS = [
     "scripts/dev/test_live_owner.py",
     "scripts/dev/test_loop_supervisor_grace.py",
     "scripts/dev/test_nowin.py",
+    "scripts/dev/test_outcome_labeler_incremental.py",
     "scripts/dev/test_wrapper_load_resilience.py",
     "scripts/dev/test_gate_priority.py",
     "scripts/dev/test_feed_watchdog_script.py",
@@ -336,7 +337,7 @@ def build_plan(quick):
         "test_gh_retry_offline", "test_halt_preflight_offline", "test_kill_switch", "test_kill_switch_account", "test_premainnet1_offline",
         "test_risk_guard", "test_s1_cap_offline", "test_s3_unprotected_offline",
         "test_s6_orphan_offline", "test_triggered_stop_offline", "test_soak_report", "test_fix3_offline", "test_fix4_offline",
-        "test_plan_compiler", "test_executor_math", "test_auto_trader", "test_dlm_aggregate", "test_b148_reauth_account", "test_b146_fee_to_stop", "test_dlm_failure_cap", "test_auto_trader_blocklist", "test_auto_trader_sizes", "test_auto_trader_confirm", "test_auto_trader_promotion", "test_orphan_sweep_loop", "test_fabio_slot", "test_fix3_mutants_offline", "test_capture_txlog_settlement", "test_mts_kill_mainnet", "test_pm_heartbeat", "test_pm_heartbeat_wiring", "test_journal_env", "test_mainnet_plan_check", "test_env_wiring", "test_reconciler_env", "test_deribit_read_account", "test_orphan_watchdog", "test_orphan_watchdog_cli", "test_mainnet_pnl", "test_daily_pnl_wiring", "test_xferfix", "test_time_exit_offline", "test_trade_ledger", "test_netretry", "test_r2_runner_exit", "test_r2_breakeven_move",  # W2 R2: execution-math tests (FORMULAS.md 11)
+        "test_plan_compiler", "test_executor_math", "test_auto_trader", "test_dlm_aggregate", "test_b148_reauth_account", "test_b146_fee_to_stop", "test_dlm_failure_cap", "test_dlm_blind_recovery", "test_auto_trader_blocklist", "test_auto_trader_sizes", "test_auto_trader_confirm", "test_auto_trader_promotion", "test_orphan_sweep_loop", "test_fabio_slot", "test_fix3_mutants_offline", "test_capture_txlog_settlement", "test_mts_kill_mainnet", "test_pm_heartbeat", "test_pm_heartbeat_wiring", "test_journal_env", "test_mainnet_plan_check", "test_env_wiring", "test_reconciler_env", "test_deribit_read_account", "test_orphan_watchdog", "test_orphan_watchdog_cli", "test_mainnet_pnl", "test_daily_pnl_wiring", "test_xferfix", "test_time_exit_offline", "test_trade_ledger", "test_netretry", "test_r2_runner_exit", "test_r2_breakeven_move",  # W2 R2: execution-math tests (FORMULAS.md 11)
     ]
     add(1, "Execution module tests", cmd1, "Step 1: Execution tests")
 
@@ -354,6 +355,7 @@ def build_plan(quick):
     add("3b", "User guide checker tests", [sys.executable, "scripts/dev/test_check_guide.py"], "Step 3b: Guide checker tests")
     add("3c", "User guide in sync with mts.ps1", [sys.executable, "scripts/dev/check_guide.py"], "Step 3c: Guide in sync")
     add("3r", "Alert rate checker tests", [sys.executable, "scripts/dev/test_alert_rate_check.py"], "Step 3r: Alert rate checker tests")
+    add("3cv", "Chart verify (RSI/BB/StochRSI) tests", [sys.executable, "scripts/dev/test_chart_verify.py"], "Step 3cv: Chart verify tests")
     add("3s", "Testnet status summary tests", [sys.executable, "scripts/dev/test_testnet_status.py"], "Step 3s: Testnet status tests")
     add("3f", "Funnel report tests", [sys.executable, "scripts/dev/test_funnel_report.py"], "Step 3f: Funnel report tests")
     plan.append(Step("3dk", "Desk board tests", "Step 3dk: Desk board tests", run=lambda: exec_unittest_shards("scripts/dev/test_desk.py", gate_jobs() if gate_jobs() == 1 else 2), cmd_text="python -m unittest (scripts/dev/test_desk.py, 2 shards)", tail=None))
@@ -390,6 +392,7 @@ def build_plan(quick):
     add("3rb", "Claude-GPT relay board tests (shared notes, lanes, pack)", [sys.executable, "scripts/dev/test_relay_board.py"], "Step 3rb: Relay board tests")
     add("3af", "Artifact registry tests (one url per page per account)", [sys.executable, "scripts/dev/test_artifacts.py"], "Step 3af: Artifact registry tests")
     plan.append(Step("3bk", "Backup snapshot tests (dirty/untracked work reaches the remote)", "Step 3bk: Backup snapshot tests", run=lambda: exec_unittest_shards("scripts/dev/test_backup_snapshot.py", gate_jobs() if gate_jobs() == 1 else 2), cmd_text="python -m unittest (scripts/dev/test_backup_snapshot.py, 2 shards)", tail=None))
+    add("3vd", "Verdict registry override tests (sourced hand corrections survive backfill)", [sys.executable, "scripts/dev/test_verdicts.py"], "Step 3vd: Verdict registry tests")
     add("3lm", "Live mirror tests (read-only desktop->work-tree data, fail-closed)", [sys.executable, "scripts/dev/test_live_mirror.py"], "Step 3lm: Live mirror tests")
 
     # Step 3w: wiring gate - every unrun code file is declared in wiring_registry.json or archived (fast, in --quick too)

@@ -51,4 +51,24 @@ t('splitParts: short text unchanged, long text split with headers', () => {
   const p = L.splitParts(('line\n').repeat(2000), 3, 3000);
   assert.ok(p.length > 1 && p[0].startsWith('[AIRUN RESULT #3 part 1/'));
 });
+t('linkState: fresh port tick is ok', () => {
+  const s = L.linkState(10000, { port: 9800, worker: 9900 });
+  assert.strictEqual(s.state, 'ok'); assert.strictEqual(s.reconnect, false);
+});
+t('linkState: only worker ticking = degraded, reconnect port (service worker asleep)', () => {
+  const s = L.linkState(10000, { port: 1000, worker: 9900 });
+  assert.strictEqual(s.state, 'degraded'); assert.strictEqual(s.reconnect, true);
+});
+t('linkState: nothing ticks for 5 s = stale, never "ok" (hidden tab frozen / throttled)', () => {
+  const s = L.linkState(60000, { port: 1000, worker: 2000 });
+  assert.strictEqual(s.state, 'stale'); assert.strictEqual(s.reconnect, true);
+  assert.strictEqual(L.linkState(60000, { port: 0, worker: 0 }).state, 'stale');
+});
+t('reconnectDelay: immediate first, then 1 2 4 8 15 s cap', () => {
+  assert.deepStrictEqual([0, 1, 2, 3, 4, 5, 9].map(L.reconnectDelay), [0, 1000, 2000, 4000, 8000, 15000, 15000]);
+});
+t('linkLabel: visible status text names state, tab hidden, ages', () => {
+  const l = L.linkLabel(L.linkState(10000, { port: 1000, worker: 9900 }), true);
+  assert.ok(l.includes('degraded') && l.includes('tab hidden') && l.includes('worker 0.1s'));
+});
 console.log(n + ' passed');

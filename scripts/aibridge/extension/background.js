@@ -21,6 +21,8 @@ let tickTimer = null;
 chrome.runtime.onConnect.addListener(port => {
   if (port.name !== 'aibridge-tick') return;
   ports.add(port);
+  // exempt this chat tab from Memory Saver / automatic discarding (a discarded tab loses the content script entirely)
+  try { if (port.sender && port.sender.tab) chrome.tabs.update(port.sender.tab.id, { autoDiscardable: false }); } catch (e) {}
   port.onDisconnect.addListener(() => {
     ports.delete(port);
     if (!ports.size && tickTimer) { clearInterval(tickTimer); tickTimer = null; }

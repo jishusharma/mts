@@ -28,30 +28,22 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`; `MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md`
 - Codex lab reports (newest 4 of 18): `MyTradingSys/research/layer_lab/reports/2026-10-15_tom-btc-event-study.md`; `MyTradingSys/research/layer_lab/reports/2026-10-15_gap-g4-through-ticks-flag.md`; `MyTradingSys/research/layer_lab/reports/2026-10-14_tom-v2-btc-min-stop-width.md`; `MyTradingSys/research/layer_lab/reports/2026-10-14_tom-btc-event-study.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `rv02-fix-dax-full-dev-authorization` blocked p1 SONNET: RV02 R3: require complete DAX sampling and bind holdout authorization
-  - `rv02-fix-dax-preprocessing-isolation` blocked p1 SONNET: RV02 R1: isolate DAX preprocessing and report metadata before holdout
-  - `rv02-fix-dax-producer-data-binding` blocked p1 SONNET: RV02 R4: reject DAX snapshots made from different execution data
-  - `rv02-fix-dax-rounded-rr-gate` blocked p1 SONNET: RV02 R2: preserve exact DAX net RR through the decision boundary
   - `tom-btc-eye-read` blocked p1 SONNET: Tom on BTC T3: eye read of the 80 lab charts by two readers (Claude + Jis), blind; agreement per Tom concept
   - `tom-profile-shape-parity` blocked p1 CODEX: Tom v2: basis-free profile shape parity on the T1/T2 frames (decides the DAX PROFILE arm)
-  - `gap-g6-trial-ledger` blocked p2 CODEX: Gap G6: append-only research/TRIAL_LEDGER.csv builder + holdout-read log (no verdicts changed)
-  - `indicator-values-multi-model-audit` raw p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by GPT, DSA, Haiku, Sonnet and Opus
-  - `point-in-time-factor-design` raw p2 CODEX: Lab design: how every backtest factor (support/resistance, VP levels, divergences, band touches) is set point-
-  - `tom-btc-dev-backtest` raw p2 CODEX: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
-  - `tom-btc-encode` raw p2 CODEX: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
-  - `tom-btc-validation` raw p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
-  - `tom-check-set-find-frames-only-tom-trade` blocked p2 SONNET: Tom check set: find frames-only Tom trade recaps and log entry/stop/target without reading captions (check set
-  - `tom-dax-backtest` blocked p2 SONNET: Untuned Tom backtest on DAX vs matched-proof BTC rerun
-  - `tom-direction-health-vs-sources` raw p2 SONNET: Tom core direction/health rules vs his words: determineDirections gives below_val -> long only (SetupCandidate
-  - `tom-encode-fade-entry-paths` blocked p2 SONNET: Tom v2: encode fade entry paths A2 (pullback) and A3 (range break) with one re-entry per session
-  - `tom-encode-fade-profile-proofs` blocked p2 SONNET: Tom v2: encode the PROFILE arm of the fade (thin top, failed P breakout, lower b-shape)
-  - `tom-ledger-add-the-losing-first-attempts` blocked p2 SONNET: Tom ledger: add the losing first attempts Tom states but the ledger lacks (S1, S6 pre-session stops)
-  - `tom-probe-prereg` blocked p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
+  - `gap-g6-trial-ledger` ready p2 CODEX: Gap G6: append-only research/TRIAL_LEDGER.csv builder + holdout-read log (no verdicts changed)
+  - `indicator-values-multi-model-audit` ready p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by Haiku and Sonnet, plus GPT and D
+  - `review-ground-layer-youtube-strategy-and` ready p2 SONNET: Review Ground Layer YouTube strategy and execution priorities
+  - `tom-btc-dev-backtest` blocked p2 CODEX: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
+  - `tom-btc-encode` blocked p2 CODEX: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
+  - `tom-btc-validation` refined p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
+  - `tom-check-set-find-frames-only-tom-trade` ready p2 SONNET: Tom check set: find frames-only Tom trade recaps and log entry/stop/target without reading captions (check set
+  - `tom-encode-fade-profile-proofs` ready p2 SONNET: Tom v2: encode the PROFILE arm of the fade (thin top, failed P breakout, lower b-shape)
+  - `tom-ledger-add-the-losing-first-attempts` ready p2 SONNET: Tom ledger: add the losing first attempts Tom states but the ledger lacks (S1, S6 pre-session stops)
+  - `tom-probe-prereg` refined p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
   - `tom-short-coverage-above-vah` raw p2 SONNET: Tom short coverage on trend-down days: no candidate above VAH, ct_short at VAH killed by POC-only target (2026
-  - `tom-btc-other-setups` blocked p3 CODEX: Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, b
-  - `tom-ledger-single-trade-date-used-column` blocked p3 SONNET: Tom ledger: single trade_date_used column, blank date for non-observed rows (RV01 F1,F2)
-  - `tom-v2-btc-min-stop-width` blocked p5 CODEX: Tom v2: minimum stop width gate for BTC replays (noise unit N5 and fee floor)
-  - `tom-v2-dax-dev-backtest` blocked p5 SONNET: Tom v2: DAX dev backtest of the fade under the part B protocol (both fills, session null)
+  - `tom-btc-other-setups` ready p3 CODEX: Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, b
+  - `tom-dax-naked-chart-crosscheck` raw p3 SONNET: Tom DAX naked-chart cross-check: compare his drawn levels and concepts on DAX frames with our BTC extraction (
+  - `tom-v2-btc-min-stop-width` ready p3 CODEX: Tom v2: minimum stop width gate for BTC replays (noise unit N5 and fee floor)
 
 ## Fabio (order-flow layer) (`fabio`)
 - Status: v3 tried 2026-10-04: OOS FAIL (only model C evaluable, 79 trades, mean -0.1038R); holdout 2026-06-26.. NOT read for Fabio (P2_FABIO_V3_HOLDOUT_STATUS.md, B147); ledger audit FIX-FIRST; being redefined as Fabio v2 (waits on ledger repairs).
@@ -74,22 +66,11 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`
 - Codex lab reports (newest 3 of 3): `MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md`; `MyTradingSys/research/layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-fabio-ledger-frames.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `fabio-audit-20261013-attribution` raw p2 SONNET: H6: Separate secondary presenter settings from Fabio direct parameters
-  - `fabio-audit-20261013-counts` raw p2 SONNET: H4: Rebuild Fabio parent-trade inventory coverage and stop statistics
-  - `fabio-audit-20261013-dates` raw p2 SONNET: H3: Replace unsupported Fabio dates and source each execution timezone
-  - `fabio-audit-20261013-exits` raw p2 SONNET: H2: Reconcile Fabio exit causes and daily PnL deltas with fills
-  - `fabio-audit-20261013-prices` raw p2 SONNET: H1: Correct Fabio F8-F13 frame prices and buy-add order sides
-  - `fabio-audit-20261013-rules` raw p2 SONNET: H5: Correct Fabio management generalizations and distinguish order drawings
   - `fabio-xuyq-asr-extract` ready p2 JIS-NB: Fabio xUyqIjCfZzg: finish ASR transcription (JIS-NB, resumable) then canonical transcript + V2 extract + FAB c
-  - `fabio-ledger-f13-outcome-provenance-2910` raw p3 SONNET: fabio-ledger: F13 outcome provenance (-2910 vs stop -1760)
-  - `fabio-ledger-recompute-entry-from-stp-la` raw p3 SONNET: fabio-ledger: recompute entry from STP label for F8 F12-m2 F13 F13-m1
-  - `fabio-ledger-replace-date-2026-with-unkn` raw p3 SONNET: fabio-ledger: replace date 2026 with UNKNOWN for Jpd96/DyS79 session (contract NQ-202512)
-  - `fabio-session-date-price-match` raw p3 CODEX: Fabio: date the DyS79Eb92Ug/Jpd96fLqr5M NQ-202512 session by price-path match against NQ 1m history (F6 24914-
-  - `find-more-fabio-trade-recap-videos-yt-dl` blocked p3 SONNET: Find more Fabio trade-recap videos (yt-dlp), ledger has only 8 entries vs goal 20
-  - `rv05-h1-date-evidence` raw p3 SONNET: RV05 H1: incorporate date revalidation evidence into existing Fabio ledger date repair
-  - `rv05-h2-position-line-evidence` raw p3 SONNET: RV05 H2: read position lines and stop prices before applying existing Fabio entry repair
-  - `rv05-h3-outcome-evidence` raw p3 SONNET: RV05 H3: incorporate partial stop coverage evidence into existing F13 outcome repair
-  - `fabio-ledger-get-9i5vtvwsmbk-f398-not-av` raw p4 SONNET: Fabio ledger: get 9I5vTvwsMBk (f398 not available; try another format/client) and read it for trades
+  - `review-ground-layer-youtube-strategy-and` ready p2 SONNET: Review Ground Layer YouTube strategy and execution priorities
+  - `rv05-h2-position-line-evidence` ready p3 SONNET: RV05 H2: read position lines and stop prices before applying existing Fabio entry repair
+  - `rv05-h3-outcome-evidence` refined p3 SONNET: RV05 H3: incorporate partial stop coverage evidence into existing F13 outcome repair
+  - `fabio-ledger-get-9i5vtvwsmbk-f398-not-av` ready p4 SONNET: Fabio ledger: get 9I5vTvwsMBk (f398 not available; try another format/client) and read it for trades
   - `fabio-layer-v2-markets` refined p5 OPUS: Fabio layer v2 spec, part B: data plan per market, cost, stop width, build + recall cards (Opus research)
   - `fabio-layer-v2-spec` blocked p5 OPUS: Fabio layer v2 spec, part A: setup families + sourced rules from his ledger (Opus research)
 
@@ -114,14 +95,18 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - 2026-10-07 `MARKET-GUIDE`: table in report not read for this map | `MyTradingSys/research/MARKET_GUIDE_RESULTS_2026-10-07.md`
   - 2026-09-27 `L1-D3`: mixed: 1h support PBO 0.030, everything else PBO 0.39-0.91 | `MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md`
 - Spec / sources: `MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md`; `MyTradingSys/backtest/layers/FORMULAS.md`
-- Code: `MyTradingSys/backtest/layers/rsi/malkan_40_60.py`; `MyTradingSys/backtest/layers/rsi/malkan_mtf.py`
+- Code: `MyTradingSys/backtest/layers/rsi/malkan_40_60.py`; `MyTradingSys/backtest/layers/rsi/malkan_mtf.py`; `MyTradingSys/backtest/layers/kurisko/quad_rotation.py`; `MyTradingSys/backtest/layers/kurisko/stoch_core.py`
 - Other results: `MyTradingSys/research/rsi_divergence_mtf_2026-10-09`
+- Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-17_malkan-hindi-rows-gpt-read.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `malkan-hindi-rows-gpt-read` ready p1 CODEX: Malkan Hindi rows: independent GPT reading of the GARBLED / NOT STATED entry, stop, target and the 5-star / 7-
-  - `indicator-values-multi-model-audit` raw p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by GPT, DSA, Haiku, Sonnet and Opus
+  - `indicator-values-multi-model-audit` ready p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by Haiku and Sonnet, plus GPT and D
+  - `kurisko-dev-event-study` refined p2 SONNET: Kurisko Quad Rotation: DEV event study, fee-net, same-window placebo
+  - `kurisko-prereg-fire-counts` refined p2 SONNET: Kurisko Quad Rotation: count-only pre-registration on BTC DEV 1m/5m (no outcomes)
   - `malkan-captions-fetch-noauth` ready p2 HAIKU: Malkan: fetch captions for the 12 ranked-top videos only (video_priority_2026-10-15), no cookies, spaced retri
-  - `point-in-time-factor-design` raw p2 CODEX: Lab design: how every backtest factor (support/resistance, VP levels, divergences, band touches) is set point-
-  - `malkan-home-fit-audit` refined p4 SONNET: Home-fit audit of the Malkan RSI layer against the readiness checklist
+  - `review-ground-layer-youtube-strategy-and` ready p2 SONNET: Review Ground Layer YouTube strategy and execution priorities
+  - `malkan-ledger-parity-feasibility` ready p3 SONNET: Malkan: dated-call ledger feasibility and RSI parity points (items 2/3/5, gate 0c)
+  - `malkan-universe-data-power` ready p3 SONNET: Malkan: Indian-equity D/W/M data sources, universe size and power (items 1/4/10, gates 0d/0e)
+  - `malkan-prereg-dwm-equities` refined p4 SONNET: Malkan: pre-registration for the D/W/M equity home test (items 6/7/8/9/11/12, gates 0a/0f)
 
 ## CryptoCred setups (`cryptocred`)
 - Status: S/R flip + fib pullback + failed MSB FAIL after trade-through rerun; stop buffer unsourced (B143).
@@ -135,7 +120,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Code: `MyTradingSys/backtest/layers/cryptocred`
 - Other results: `MyTradingSys/research/cryptocred_stop_2026-10-10`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `cryptocred-home-fit-audit` refined p1 SONNET: Home-fit audit of the CryptoCred layer against the readiness checklist
+  - `cryptocred-prereg-4h-1d` ready p3 SONNET: CryptoCred: pre-registration for the 4h/1d redesign (items 6/8/11/12)
 
 ## Positioning (funding, OI, whale / FlowHorse) (`positioning`)
 - Status: T055 C1 FAIL; OI/long-short unused as filters.
@@ -150,7 +135,9 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Code: `MyTradingSys/backtest/layers/positioning`
 - Other results: `MyTradingSys/research/OI_DIVERGENCE_V2_2026-10-10.md`; `MyTradingSys/research/OI_EVENT_STUDY_2026-10-10.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `positioning-home-fit-audit` refined p4 SONNET: Home-fit audit of the FlowHorse / whale positioning layer against the readiness checklist
+  - `positioning-c1-longwindow-count-power` ready p4 SONNET: Positioning C1 (NO-SOURCE): count-only events on the DEV window, fire rate, power, null spec (items 3/9/10/12)
+  - `positioning-c1-prereg-no-source` raw p4 SONNET: Positioning C1: pre-registration labelled NO-SOURCE (items 1/6/8/9/11/12, gates 0a/0f)
+  - `positioning-flowhorse-ledger-feasibility` ready p4 SONNET: FlowHorse positioning: is there any dated trade or call to score (items 1/2/3/5, gates 0c/0d)
 
 ## Session / timing (session levels, turn of candle, session momentum) (`session_timing`)
 - Status: T055 C2/C3 closed; T087 failed prior-day-high fade FAIL.
@@ -159,6 +146,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Layer `turn_of_candle`: no edge, closed | module backtest/layers/turn_of_candle/
 - Layer `session_levels`: no edge | module research/t087_session_levels_2026-10-09
 - Backtests (layer_map.json, newest first):
+  - 2026-10-18 `EUR-LOW-US-SWEEP-FOLLOWUPS-20261018`: BLOCKED by power gate (A, B, C); legs stay open | `MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/RESULT.md`
   - 2026-10-14 `LC-SIZING-QUICK-20261014`: EXPLORATORY NEGATIVE; full LC hypothesis untested | `MyTradingSys/research/levels_sizing_2026-10-14/REPORT.md`
   - 2026-10-14 `EUR-LOW-US-SWEEP-20261014`: EXPLORATORY NEGATIVE (short leg); long-after-reclaim untested | `MyTradingSys/research/eur_low_us_sweep_2026-10-14/RESULT.md`
   - 2026-10-09 `T087`: no edge (net -0.036%, t -1.72); EU-touch cells insufficient n | `MyTradingSys/research/t087_session_levels_2026-10-09/RESULT.md`
@@ -168,8 +156,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `MyTradingSys/research/TURN_OF_CANDLE_ORIGIN_2026-10-09.md`
 - Code: `MyTradingSys/backtest/layers/session`; `MyTradingSys/backtest/layers/session_levels`; `MyTradingSys/backtest/layers/turn_of_candle`
 - Other results: `MyTradingSys/research/t087_session_levels_2026-10-09`; `MyTradingSys/research/eur_low_us_sweep_2026-10-14`
-- Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `eu-low-us-sweep-follow-ups-long-after-sw` raw p2 SONNET: EU-low/US-sweep follow-ups: long after sweep+reclaim (stability test), LTF RSI-divergence short from daily hig
+- Open cards: none
 
 ## Volume, candle patterns, daily MA setups, bigtrade (`volume_candles_ma`)
 - Status: No validated edge; volume HOLDOUT sealed; MA numbers NO-SOURCE.
@@ -199,14 +186,9 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/volume_2026-10-09`; `MyTradingSys/research/candle_patterns_2026-10-04`; `MyTradingSys/research/setup_alpha_beta_2026-10-10`; `MyTradingSys/research/bigtrade_2026-10-09`; `MyTradingSys/research/layer_lab/candle_close_2026-10-14`
 - Codex lab reports (newest 3 of 3): `MyTradingSys/research/layer_lab/reports/2026-10-14_lab-candle-close-research.md`; `MyTradingSys/research/layer_lab/reports/2026-10-14_lab-candle-close-dev.md`; `MyTradingSys/research/layer_lab/reports/2026-10-14_candle-close-independent-audit.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `bb-top-reversal-candle-backtest` raw p2 SONNET: Backtest the 15m top-reversal candle short at the upper Bollinger Band (operator rule 2026-10-14) with a band 
-  - `point-in-time-factor-design` raw p2 CODEX: Lab design: how every backtest factor (support/resistance, VP levels, divergences, band touches) is set point-
-  - `candle-close-phase-encounter-design` blocked p3 SONNET: Candle research: preregister joint phases and fair encounter controls before rerun
-  - `candle-close-test-import-guard` blocked p3 SONNET: Candle research: fail closed on study import errors and verify dependency coverage
-  - `pooled-short-lookback-trend-tsmom-30d-sm` raw p3 DSA: Pooled short-lookback trend (TSMOM 30d, SMA50/100, 4h Donchian 20/10) on sealed 2025-07..2026-09 BTC holdout: 
-  - `time-adjusted-volume-context-line-for-th` raw p3 SONNET: Time-adjusted volume context line for the live read (same-slot baseline, effort vs result, OI scope) as read-o
-  - `fetch-ethusdt-perp-1h-klines-funding-202` raw p4 DSA: Fetch ETHUSDT perp 1h klines + funding 2020-2026 (fetch_binance_archive.py) and re-run research/published_stra
-  - `funding-carry-with-real-spot-basis-margi` raw p4 SONNET: Funding carry with real spot basis, margin and borrow: net 15.4 -> 12.1 -> 6.2 %/yr decay in published_strats_
+  - `pooled-short-lookback-trend-tsmom-30d-sm` blocked p3 DSA: Pooled short-lookback trend (TSMOM 30d, SMA50/100, 4h Donchian 20/10) on sealed 2025-07..2026-09 BTC holdout: 
+  - `time-adjusted-volume-context-line-for-th` refined p3 SONNET: Time-adjusted volume context line for the live read (same-slot baseline, effort vs result, OI scope) as read-o
+  - `funding-carry-with-real-spot-basis-margi` ready p4 SONNET: Funding carry with real spot basis, margin and borrow: net 15.4 -> 12.1 -> 6.2 %/yr decay in published_strats_
 
 ## Live engine, execution and live-market reads (feeds every layer) (`live_engine`)
 - Status: Testnet HALT since 2026-10-12 09:46Z (executor fail_closed); supervisor clears it. Live-market screenshot reads file findings as task cards.
@@ -217,15 +199,14 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/system/NEXT_SESSION.md`
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-13_rv06-live-read-claims.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `blind-monitor-halt-recovery` raw p2 JIS-NB: Blind-monitor halt auto-recovery on testnet (operator policy)
-  - `chart-verify-py-recompute-bb-rsi-stochrs` raw p2 SONNET: chart_verify.py: recompute BB/RSI/StochRSI/volume/OI/delta-step for any CoinGlass timeframe from fapi at the s
-  - `indicator-values-multi-model-audit` raw p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by GPT, DSA, Haiku, Sonnet and Opus
-  - `identify-the-coinglass-net-delta-panel-u` raw p3 SONNET: Identify the CoinGlass Net Delta panel unit and scope: 4 reads in a row NOT_IN_DATA (8h 4.181K, 30m -8.366K, 1
-  - `live-orderflow-state-line-1m-5m-15m-pric` raw p3 SONNET: Live read: one order-flow state line per TF (1m/5m/15m price swing vs Binance CVD swing vs OI change), descrip
-  - `mts-cbp-integration-land-one-cbp-candida` blocked p3 SONNET: MTS-CBP integration: land one CBP candidate on the real queue
-  - `score-context-reads-automatically-carrie` raw p3 SONNET: Score context reads automatically: carried falsifier lines (HELD/BROKEN/UNTESTED) computed from klines at the 
-  - `state-machine-vwap-cvd-vs-klines` raw p3 SONNET: State machine session VWAP/CVD disagree with klines: 2026-10-12 13:08Z state_code.json cum_pv/cum_vol gives 83
-  - `one-timeframe-map-for-the-whole-toolchai` raw p4 SONNET: One timeframe map for the whole toolchain: capture.TF_MINUTES lacked 8h (CoinGlass button) while holding 7h; g
+  - `indicator-values-multi-model-audit` ready p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by Haiku and Sonnet, plus GPT and D
+  - `state-code-accumulator-backfill` ready p2 JIS-NB: StateCodeEmitter: backfill session CVD/cum_pv/cum_vol after restart and WS reconnect, fail closed on backfill 
+  - `identify-the-coinglass-net-delta-panel-u` ready p3 SONNET: Identify the CoinGlass Net Delta panel unit and scope: 4 reads in a row NOT_IN_DATA (8h 4.181K, 30m -8.366K, 1
+  - `live-loop-timeouts-b191` ready p3 SONNET: Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)
+  - `live-orderflow-state-line-1m-5m-15m-pric` ready p3 SONNET: Live read: one order-flow state line per TF (1m/5m/15m price swing vs Binance CVD swing vs OI change), descrip
+  - `score-context-reads-automatically-carrie` refined p3 SONNET: Score context reads automatically: carried falsifier lines (HELD/BROKEN/UNTESTED) computed from klines at the 
+  - `snapshot-vwap-anchor-label` ready p3 JIS-NB: MarketDataSnapshot: vwap_anchor_utc must be the UTC day start used by the VWAP, not today's NY open (audit M3)
+  - `one-timeframe-map-for-the-whole-toolchai` ready p4 CODEX: One timeframe map for the whole toolchain: capture.TF_MINUTES lacked 8h (CoinGlass button) while holding 7h; g
 
 ## Callers (posted trade calls: Qriptal) (`callers`)
 - Status: Score the posted calls on Binance klines before anything else (B162). Self-reported 67.1 % wins, avg win 3.99 %, avg loss 0.63 %: unverified.
@@ -242,12 +223,13 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Ledger: `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv`; `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_CONSOLIDATED.md`; `MyTradingSys/research/krown_ta101_2026-10-13/MANIFEST.csv`
 - Other results: `MyTradingSys/research/krown_ta101_2026-10-13/reflexivity_log.md`; `MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md`; `MyTradingSys/options/research/KROWN_FREE_VS_PAID.md`
 - Roadmap: `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md`
+- Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-17_krown-catalogue-gpt-audit.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `krown-catalogue-gpt-audit` ready p1 CODEX: Krown G2 catalogue: GPT audit of NOT STATED cells, quote support and BTC-visible calls for S1-S9
-  - `krown-dev-event-study` blocked p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
-  - `krown-layer-v0-detectors` blocked p2 SONNET: Krown layer v0 detectors: swings, zones, volume, candles, averages, range/coil as pure functions + params file
-  - `krown-recall-check` blocked p2 SONNET: Krown recall check: verify his dated chart examples against klines, then detector recall and fire rate (PRE_RE
-  - `krown-other-sources-event-study-videos` blocked p3 SONNET: Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigg
+  - `krown-data-cme-btc-volume` ready p2 DSA: Krown CME BTC futures daily volume (public data only) as third volume arm
+  - `krown-dev-event-study` ready p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
+  - `review-ground-layer-youtube-strategy-and` ready p2 SONNET: Review Ground Layer YouTube strategy and execution priorities
+  - `krown-foundations-ep08-follow-through` ready p3 SONNET: Krown Foundations EP08 follow-through: fold the order-book extract into the ledger, re-check the 17 private pl
+  - `krown-other-sources-event-study-videos` refined p3 SONNET: Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigg
   - `krown-ta101-extract-remaining-10` ready p3 SONNET: Krown TA 101: get captions and extract the remaining 4 videos (ids in STATE.md); DONE when: 4 extracts pass bo
 
 ## Cross-cutting

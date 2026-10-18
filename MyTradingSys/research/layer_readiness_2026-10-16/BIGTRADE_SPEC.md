@@ -13,7 +13,7 @@ Date 2026-10-16, task bigtrade-spec-build. Follows HANDOFF_W2b.md (W2b: fires_kl
 | Place | Result |
 |---|---|
 | research/bigtrade_2026-10-09/* | our own backtest plan/reports; hindsight labels |
-| setup_catalog_2026-10-15/SETUP_CATALOG.md, ANGLE_TRADE_CATALOG.md | "big trades" = Fabio/Tom order-flow bubbles (aggTrades size filter, "30 to 40 on NQ"); BTC size is OURS (99th pct, V3); not a volume candle + MA rule, and "big trade" is undefined for BTC (CATALOGUE_AUDIT.md:19) |
+| setup_catalog_2026-10-15/SETUP_CATALOG.md, ANGLE_TRADE_CATALOG.md | "big trades" = Fabio/Tom order-flow bubbles (aggTrades size filter; Fabio's own words are "30 contracts", London 20, DyS79Eb92Ug_raw.txt:681-683; the gLHd "30 to 40 on NQ" slide is secondary, H6); BTC size is OURS (99th pct, V3); not a volume candle + MA rule, and "big trade" is undefined for BTC (CATALOGUE_AUDIT.md:19) |
 | volume_2026-10-09/VOLUME_RESEARCH_REPORT | traders give no numeric volume rule; every threshold NO-SOURCE-TRADER; 0 pass triage |
 | krown_ta101 catalog | KR-S7 capitulation hammer on biggest-volume bar (weekly/daily, provisional, lookback OURS, no stop given; Krown is deferred); "heavy volume = double or more the recent volume bars" is a trend-line rule, not an entry |
 | F:/MTS/data/bigtrade | data/fires from our own replays, no transcripts |

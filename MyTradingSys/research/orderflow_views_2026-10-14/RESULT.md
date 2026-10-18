@@ -1,3 +1,5 @@
+> **RERUN 2026-10-17 (DEV only, new labels):** DEV-only rerun with DEV = before 2024-07-01 (OFV_DEV_ONLY=1, results_dev_rerun_2026-10-17.json). DIV minus CONTROL, 60-min net, DEV diff (Welch t), old -> new: 1m long -0.023 (-1.6) -> -0.023 (-1.4); 1m short +0.013 (1.0) -> +0.016 (1.1); 5m long +0.041 (1.4) -> +0.017 (0.5); 5m short -0.009 (-0.4) -> -0.022 (-0.9). Pass mark (>= 0.05, t >= 2) met by 0 of 4, as before. OI rows have no DEV data (OI series starts 2025-09). VAL and HOLDOUT not evaluated in the rerun. Verdict unchanged: NEGATIVE.
+
 > **CONTAMINATED (DEV read VALIDATION 2024-07..12)** - study.py split_of() is year-based (DEV = year <= 2024), so DEV includes 2024-07..12 (own copy, not fires_kline). See MyTradingSys/backtest/bigtrade/SPLIT_ALIGNMENT_2026-10-17.md. Numbers below are kept as originally run, not recomputed.
 
 # Price vs CVD divergence on 1m and 5m, with an OI split (BTCUSDT, 2022-01..2026-10-14)

@@ -34,5 +34,5 @@ From the JIS-NUC super session (lagging tasks + layer readiness). Read with `NUC
 ## Shared rules (both sides)
 - Before starting any queue item: check claims (`sync.py where`) and the last 24 h of fast-track commits for its id; skip if hit.
 - Whoever ships a queue item removes it from NEXT_SESSION.md in the same ship.
-- Never make the operator click a card; bounded work = one-use background agent, long work = session (SUPER_SESSION.md).
+- Never make the operator click a card; worker type per WORKERS.md (session default, Agent only size S).
 - Live path, deploy, restart, HALT: NB only. Research, lab feeding, verification off the mirror: NUC.

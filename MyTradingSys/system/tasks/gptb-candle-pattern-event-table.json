@@ -1,26 +1,50 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T12:25:37Z",
   "commands": [],
   "created": "2026-10-16T13:48:05Z",
   "depends_on": [],
-  "done_when": "tests green (red first), REPORT written, missing inputs NOT_IN_DATA, trial rows in TRIALS.md if any run.",
+  "done_when": "Tests green (red first), REPORT.md has real DEV row counts from klines_1h.npz, DEV row in TRIALS.md, nothing on/after 2024-07-01 read, result line set.",
   "effort": "medium",
   "from_inbox": "",
-  "goal": "Build layer_lab/candle_pattern_event_table/patterns.py + event_table.py: pure-function detectors (engulfing, pin bar, inside bar, doji) on closed bars with definitions from research/candle_patterns_2026-10-04 (cite file:line), event table with forward MFE/MAE in R on DEV klines. Detectors only, no rules, no tuning. Data: F:/MTS/data/bigtrade/cache/perp/klines_1h.npz (DEV = open < 2024-07-01).",
+  "goal": "Wire the existing patterns.py/event_table.py (engulfing, pin bar, inside bar, doji; definitions PRE_REG_CANDLE_PILOT.md:41-48,56) to the real 1h DEV klines F:/MTS/data/bigtrade/cache/perp/klines_1h.npz (open < 2024-07-01) and produce the DEV event table with forward MFE/MAE. Spec: brief in scope_in.",
   "id": "gptb-candle-pattern-event-table",
   "kind": "build",
   "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "DEV 1h 12219 rows (12195 OK) / 4h 3308 (3298 OK), 11 tests green; layer_lab/reports/2026-1",
+      "ref": "ff039771",
+      "utc": "2026-10-17T12:25:37Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "wavetrend-priority-source-parity: register parity ref + test in wiring and extra gate",
+      "ref": "515d07a91407",
+      "utc": "2026-10-17T06:23:06Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "26c6f3a837e8 bigtrade: relabel fire CSV split column to repo split; DEV-only reruns of con",
+      "ref": "MyTradingSys/research/layer_lab/TRIALS.md",
+      "utc": "2026-10-17T03:31:53Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "model": "gpt-6-luna",
-  "note": "Filled by gpt-feed-builds 2026-10-16; research only, flag off. Data and 4h rule: runner prompt DATA line (codex_run.py DATA_HINT); blocked 4x before this because the brief named no data path.",
+  "note": "Fixed 2026-10-17 (lab-cards-1017): data path + loader scope + brief; earlier BLOCKED runs had no data path. Params OURS unless sourced.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T07:24:47Z",
   "refs": [],
-  "reopened": "2026-10-16T19:56:19Z",
-  "result": "",
+  "reopened": "2026-10-17T03:45:00Z",
+  "result": "DEV 1h 12219 rows (12195 OK) / 4h 3308 (3298 OK), 11 tests green; layer_lab/reports/2026-10-17_gptb-candle-pattern-event-table.md",
   "scope_in": [
     "MyTradingSys/research/layer_lab/candle_pattern_event_table/patterns.py",
     "MyTradingSys/research/layer_lab/candle_pattern_event_table/event_table.py",
@@ -28,7 +52,9 @@
     "MyTradingSys/research/layer_lab/candle_pattern_event_table/REPORT.md",
     "MyTradingSys/system/wiring_registry.json",
     "scripts/dev/run_extra_tests.py",
-    "MyTradingSys/research/candle_patterns_2026-10-04/ (read only)"
+    "MyTradingSys/research/candle_patterns_2026-10-04/ (read only)",
+    "MyTradingSys/research/layer_lab/briefs/gptb-candle-pattern-event-table.md",
+    "MyTradingSys/research/layer_lab/TRIALS.md"
   ],
   "scope_out": [
     "live path (alerts/live_*, execution/)",
@@ -37,15 +63,17 @@
     "Tom/Fabio layer code",
     "trading rules or tuning"
   ],
+  "scope_sha": "515d07a91407",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
-    "Read scope_in sources and write the test file first; run it and confirm it fails (red).",
-    "Implement the module in research/layer_lab only; DEV data only, missing input = NOT_IN_DATA.",
-    "Run the card's own test file until green; register test in scripts/dev/run_extra_tests.py EXTRA and new non-test .py in wiring_registry.json.",
-    "Write REPORT.md (what was built, row counts, test output) and the result line."
+    "Read the BRIEF.md in scope_in and the existing module and test file; add a failing test for the DEV npz loader and the DEV slice (red first).",
+    "Add the loader + CLI (--input default the npz path in the brief; DEV slice before bars are built; dev_only/assert_dev) and fix gaps the tests expose; gap or missing input = NOT_IN_DATA, never 0.",
+    "Run `python scripts/dev/lookahead_lint.py --new`, fix FAIL hits (forward bars as zip(times, times[1:])); run the test file until green; keep the EXTRA and wiring_registry entries that already exist.",
+    "Run the CLI once on the real DEV npz; put row/OK/NOT_IN_DATA counts and mean MFE/MAE in REPORT.md and one DEV row in TRIALS.md; delete any CSV; set the result line."
   ],
-  "tests": "synthetic bars: each pattern fires on a hand-built example and not on its near-miss; the event is stamped at the closing bar, forward path starts the next bar.",
-  "title": "Candle patterns: detector + event table on DEV klines with forward R"
+  "tests": "Existing 6 synthetic tests stay green; new red-first tests: the loader returns only bars with open < 2024-07-01 (a synthetic npz with a 2024-07-01 bar proves it is dropped); a 4h bucket with a missing 1h bar is skipped; each pattern fires on its example and not its near-miss; forward path starts the next bar; gap in forward window = NOT_IN_DATA.",
+  "title": "Candle patterns: detector + event table on DEV klines with forward R",
+  "weight": "B-SHARED"
 }

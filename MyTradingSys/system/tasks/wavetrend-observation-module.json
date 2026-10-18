@@ -1,0 +1,70 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T08:57:57Z",
+  "commands": [],
+  "created": "2026-10-17T03:54:24Z",
+  "depends_on": [
+    "wavetrend-priority-source-parity"
+  ],
+  "done_when": "Module and tests on fast-track; run_all_tests --quick green; every fixture value traced to FORMULAS.md, none produced by the module.",
+  "est_turns": 35,
+  "from_inbox": "",
+  "goal": "Build backtest/layers/wavetrend/ observation module: continuous WT1/WT2, zones, crosses with bar-close availability timestamps, matching hand-computed fixtures.",
+  "id": "wavetrend-observation-module",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "backtest/layers/wavetrend shipped, 13 tests, goldens to 1e-9 (signal 0808Z)",
+      "ref": "d9ccc589",
+      "utc": "2026-10-17T08:57:57Z"
+    },
+    {
+      "kind": "ship",
+      "line": "backtest/layers/wavetrend/ (wavetrend.py, 13 tests + boundary test); goldens 400 DEV 1h ba",
+      "ref": "4c54de21",
+      "utc": "2026-10-17T07:47:58Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "45769db88b5f claim wavetrend-observation-module",
+      "ref": "MyTradingSys/system/claims/wavetrend-observation-module.md",
+      "utc": "2026-10-17T07:37:51Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "Conventions pinned in PARITY_CONTRACT.md s3 (WARMUP 200, d=0 NaN, cross \"le\", closed-bar available_at); goldens from a spreadsheet, not wt_parity_ref.py. backlog-refine-1017: added est_turns/worker (card failed the Ready gate on those fields only).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T07:44:17Z",
+  "refs": [],
+  "result": "backtest/layers/wavetrend shipped, 13 tests, goldens to 1e-9 (signal 0808Z)",
+  "scope_in": [
+    "WT per parity spec: hlc3, EMA 10, EMA 21, SMA 4, 0.015, +/-53/60; d=0, warm-up, cross equality conventions",
+    "Independent fixtures computed by hand/spreadsheet from FORMULAS.md entry, not from the module",
+    "HTF values only from the last closed bar"
+  ],
+  "scope_out": [
+    "Trade direction, execution, outcomes, backtests, live tree, other layers"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/wavetrend_2026-10-17/CLAUDE_VERIFY.md",
+    "MyTradingSys/research/wavetrend_2026-10-17/PARITY_CONTRACT.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Add the FORMULAS.md WaveTrend entry from the parity card.",
+    "Write fixture tests first (golden values, d=0, flat input, NaN, equality, look-ahead).",
+    "Implement module; add to test_layer_boundaries.",
+    "Run run_all_tests.py --quick."
+  ],
+  "tests": "New tests (golden values + look-ahead planted-spike) fail on the pre-change tree (module absent) and pass after.",
+  "title": "WaveTrend causal observation module + fixtures",
+  "worker": "session"
+}

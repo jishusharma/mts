@@ -275,18 +275,33 @@ def load_registry(root):
         return {}
 
 
+LAB_PREFIX = 'MyTradingSys/research/layer_lab/'
+RESEARCH_PREFIX = 'MyTradingSys/research/'
+
+
+def p_in_research(p):
+    return p.startswith(RESEARCH_PREFIX)
+
+
 def check(res, registry):
     """Errors for the gate. Every unwired file must be declared; a declaration must still be true."""
     errors = []
-    for p in sorted(k for k, v in res.items() if v in UNWIRED and k not in registry):
+    # Study folders hold run-once repro scripts, not production code: declaring each one cost ~68 registry commits in 72 h
+    # (2026-10-17 audit) and the shared JSON was a merge-conflict hot spot. They are listed by --check as NOTE, never FAIL.
+    for p in sorted(k for k, v in res.items() if v in UNWIRED and k not in registry and not p_in_research(k)):
         errors.append('UNDECLARED %s: %s, referenced by %s. Wire it, archive it (git mv to MyTradingSys/archive/), '
                       'or add it to %s with a disposition and a reason.'
                       % (res[p], p, 'tests only' if res[p] == 'TEST-ONLY' else 'nothing', REGISTRY_PATH))
     for p, e in sorted(registry.items()):
         if p not in res:
-            errors.append('STALE %s: file is gone or is not code; remove the entry.' % p)
+            if not p_in_research(p):
+                errors.append('STALE %s: file is gone or is not code; remove the entry.' % p)
             continue
         if res[p] not in UNWIRED:
+            if p_in_research(p):
+                continue  # a study script that later got run by something: harmless, not worth failing a ship
+            if p.startswith(LAB_PREFIX):
+                continue  # lab declares TOOL/REPRO, then lists the test in run_extra_tests (-> LIVE); not worth failing the lab ship
             errors.append('STALE %s: now %s (something runs it); remove the entry.' % (p, res[p]))
         if not isinstance(e, dict) or e.get('disp') not in DISPOSITIONS:
             errors.append('BAD %s: disp must be one of %s.' % (p, sorted(DISPOSITIONS)))

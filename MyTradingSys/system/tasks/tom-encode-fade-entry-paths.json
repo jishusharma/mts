@@ -1,27 +1,53 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-18T07:02:19Z",
   "commands": [],
   "created": "2026-10-13T06:33:20Z",
   "depends_on": [
     "tom-v2-recall-fire-rate"
   ],
   "done_when": "Paths A2 and A3 emitted on their synthetic series, third attempt suppressed, restart test green, flag-off output identical, DESIGN recall for T2b/T3/T3b reported as a new trial row.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Add the two other entry paths of family A behind the same flag: A2 pullback after proof (sell limit) and A3 break of the top balance (stop-market), with at most one re-entry per session on a fresh signal (A-M5) and stop rule A-S3.",
   "id": "tom-encode-fade-entry-paths",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "src/test/java/datafeed/SpikeFadePathsTest.java (21 green); T2b paths not a hit, T3/T3b no ",
+      "ref": "51ffc4fe",
+      "utc": "2026-10-18T07:02:19Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "java buildVp: FORMULAS 18.1 edge convention (POC centre, VAH top edge, VAL bottom edge)",
+      "ref": "d8efebc2e1ed",
+      "utc": "2026-10-16T13:36:32Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "b5c3e10e2a51 tom v2: DESIGN recall + fire rate of the fade encoding (FAIL, no k*), long 1m",
+      "ref": "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md",
+      "utc": "2026-10-13T08:01:30Z"
+    }
+  ],
   "layers": [
     "tom"
   ],
   "live_path": false,
-  "note": "HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
+  "note": "REVIEWED:2026-10-18 ACCEPT (blind diff-only Sonnet review, round 3; rounds 1-2 REJECT fixed)\nOURS defaults: A3 balance = range of >=5 bars after the extreme; A2 buying zone = lowest low of 10 bars before the extreme; A2/A3 emission = attempt (fill not modelled); A1 not gated (card: A1 unchanged); one candidate per instant, A3 over A2; key = symbol+Berlin date. Known LOW: A2 lacks the same-date guard on bars after the extreme.\nUNBLOCKED 2026-10-18: operator lifted the holds in chat (DAX chain q11 hold, A-20261018-5); no-FDAX-data-purchase rule stays. Results built on lab bases stay labelled UNCHECKED. [PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-13 (TOM_LAYER_V2_SPEC part B)",
+  "refreshed": "2026-10-17T22:06:55Z",
   "refs": [],
-  "result": "",
+  "result": "src/test/java/datafeed/SpikeFadePathsTest.java (21 green); T2b paths not a hit, T3/T3b no fire",
   "scope_in": [
     "src/main/java/datafeed/SetupCandidatesBuilder.java",
     "src/test/java/datafeed/",
@@ -35,17 +61,21 @@
     "partials, adds, trailing (not modelled, spec section 13)",
     "changing path A1"
   ],
+  "scope_sha": "d8efebc2e1ed",
   "size": "M",
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2.3, 2.4, 2.6, 13"
   ],
-  "state": "blocked",
+  "state": "done",
   "steps": [
     "A3: top balance = the range formed after the session extreme; a 1m close below it emits fade_short path A3, entry next bar open, stop above the last traded volume (A-S3).",
     "A2: after a rejection that traded through the first buying zone, sell limit at the pullback level; quote spec section 2.3 in the comment.",
     "Session state: one first attempt plus one re-entry; a third candidate in the session is suppressed and logged. State resets at the session start and survives a restart mid-session (test).",
     "Re-run the DESIGN recall of card tom-v2-recall-fire-rate for T2b, T3, T3b only as a new TRIAL_REGISTRY row; CHECK is not re-read."
   ],
+  "taken": "2026-10-18T07:02:18Z",
   "tests": "Java: balance 24090-24110 after the extreme; 1m close 24088 -> path A3 candidate, entry at the next open; second stop-out then a third signal in the same session -> suppressed; state restored after a simulated restart. Fails before the paths exist.",
-  "title": "Tom v2: encode fade entry paths A2 (pullback) and A3 (range break) with one re-entry per session"
+  "title": "Tom v2: encode fade entry paths A2 (pullback) and A3 (range break) with one re-entry per session",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

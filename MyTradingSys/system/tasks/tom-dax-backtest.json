@@ -9,19 +9,30 @@
     "tom-holdout-clean-split"
   ],
   "done_when": "MyTradingSys/research/tom_transfer_2026-10-11/DAX_BT_REPORT.md with DAX and matched-proof BTC rows (n, gross R, net R, CI, null), holdout read once, TRIAL_REGISTRY rows added, branch named.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Run the frozen Tom rules unchanged on DAX 1m history and rerun BTC with the same reduced proof set, so H5 (transfer) is tested like for like.",
   "id": "tom-dax-backtest",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "fcf547294663 Tom transfer probe: option map + 6 task cards (DAX recall, gap rules, DAX bac",
+      "ref": "MyTradingSys/research/tom_transfer_2026-10-11/PROBE_PLAN.md",
+      "utc": "2026-10-10T18:56:23Z"
+    }
+  ],
   "layers": [
     "tom"
   ],
   "live_path": false,
-  "note": "HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | Full run deferred by the PROBE_PLAN stop rule (RECALL_DAX.md: 0/7 signals); run after tom-encode-spike-fade. Build landed 1e67b85 (tom_dax_bt.py gen|rows|report|all, 29 tests, FEES_FDAX). Finding: with order-flow proofs masked the proof count is capped at 2 (rejection_wick + volume_spike, SetupCandidatesBuilder.java:557-575) < 3 for WATCH, so the pre-registered arm has 0 signals by construction. DEFAULT (opus 2026-10-11, no operator ask): full run includes --shifts 0,1,2,3 as labelled EXTENSION arms (not pre-registered), every arm counted in TRIAL_REGISTRY; the pre-registered shift-0 row is still reported first. Commands: tom_dax_bt.py all --shifts 0,1,2,3, then report --read-holdout --shifts 0,1,2,3, after ALL_DONE in F:/MTS/data/dax_fetch.log. Smoke (Jan 2026, not a result): shift 2, 309 DAX trades, net -0.53 R vs null +0.13 R.",
+  "note": "Operator 2026-10-18: no DAX data purchase/backtest; DAX proves nothing for BTC. Replaced by naked-chart cross-check card.",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-11 (operator chat)",
+  "refreshed": "2026-10-17T22:06:51Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -34,12 +45,13 @@
     "arms S/Q/M (that is tom-probe-prereg)",
     "the burned 2026-06-26.. BTC holdout"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [
     "operator chat 2026-10-11: queue DAX recall, gap rules, DAX backtest in that order; probe selection/management/session with options flagged up front",
     "MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT_RERUN_2026-10-06_full.md"
   ],
-  "state": "blocked",
+  "state": "dropped",
   "steps": [
     "Pre-register in MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md: rules frozen at HEAD, DAX holdout = last 6 months, fees = FDAX/CFD schedule stated, stops in points as the engine sets them.",
     "Snapshot DAX every 15 min in trading hours; tom_bt variants as in the 2026-10-06 rerun; random-entry null on DAX.",
@@ -48,5 +60,8 @@
     "Holdout = HOLDOUT_CLEAN.json clean days plus the forward holdout (from 2026-10-10), read once; fills reported touch AND trade-through; null drawn from the same session window and order type."
   ],
   "tests": "test_tom_bt_symbol.py: a 20-bar synthetic DAX series with a known stop hit gives the hand-computed R (fails until tom_bt takes symbol/fees as input).",
-  "title": "Untuned Tom backtest on DAX vs matched-proof BTC rerun"
+  "title": "Untuned Tom backtest on DAX vs matched-proof BTC rerun",
+  "updated": "2026-10-18T05:30:00Z",
+  "weight": "CRUCIAL",
+  "worker": "session"
 }

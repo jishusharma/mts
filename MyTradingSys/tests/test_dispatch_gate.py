@@ -45,7 +45,21 @@ class GateTest(unittest.TestCase):
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertTrue(r.stdout.startswith("GATE NOOP"), r.stdout)
         self.assertFalse((self.d / "prompt.txt").exists())   # no model session for an idle tick
-        self.assertIn("--hourly-min 1000000", (self.d / "tick_args.txt").read_text())
+        args = (self.d / "tick_args.txt").read_text()
+        self.assertIn("--hourly-min 60", args)
+        self.assertIn("--gate", args)
+
+    def test_idle_hour_with_refine_ok_launches_nothing(self):
+        r = self.gate("TICK NOOP | queue empty | route=nothing" + NL + "HOURLY housekeep=yes")
+        self.assertTrue(r.stdout.startswith("GATE NOOP"), r.stdout)
+        self.assertFalse((self.d / "prompt.txt").exists())
+
+    def test_refine_needed_hour_launches_one_refiner_session(self):
+        r = self.gate("TICK NOOP | queue empty | route=nothing" + NL + "HOURLY refine=REFINE_NEEDED")
+        self.assertTrue(r.stdout.startswith("GATE NOOP"), r.stdout)
+        prompt = (self.d / "prompt.txt").read_text()
+        self.assertIn("Refiner run", prompt)
+        self.assertIn("do NOT run `relay.py tick`".replace("do NOT", "Do NOT"), prompt)
 
     def test_kick_launches_one_session_with_the_tick_text(self):
         r = self.gate("TICK KICK depth=3 id=aaaa1111 | route=none" + NL + "NEXT: relay begin" + NL + "UNLOCK: relay unlock")

@@ -1,16 +1,33 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T13:44:50Z",
   "commands": [
     "python -m yt_dlp -f 398 --write-subs --sub-langs en -o \"F:/MTS/data/fabio_videos/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=DyS79Eb92Ug"
   ],
   "created": "2026-10-11T04:12:25Z",
   "depends_on": [],
   "done_when": "FABIO_TRADE_LEDGER.csv has new rows with frame evidence for DyS79Eb92Ug, Is1HvdfQm5c, xUyqIjCfZzg, Jpd96fLqr5M, 9I5vTvwsMBk, gLHd20jE8UQ (or a per-video line saying none shown), and the .md header states the new entry count.",
+  "est_turns": 12,
   "from_inbox": "",
   "goal": "Extend FABIO_TRADE_LEDGER from 8 entries toward 20 using the six candidate Fabio videos listed in FABIO_TRADE_LEDGER.md, without re-reading the 5 done videos.",
   "id": "find-more-fabio-trade-recap-videos-yt-dl",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "44 candidate ids in research/fabio_video_search_2026-10-17/candidates.csv, 14 new ranked f",
+      "ref": "8df19df3",
+      "utc": "2026-10-17T13:44:50Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "3d8645f3d391 fabio ledger H6: gLHd settings are a secondary presenter, cite Fabio's own 30",
+      "ref": "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
+      "utc": "2026-10-16T22:21:39Z"
+    }
+  ],
   "layers": [
     "fabio"
   ],
@@ -20,10 +37,11 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T08:59:00Z",
   "refs": [
     "fabio-trade-ledger"
   ],
-  "result": "",
+  "result": "44 candidate ids in research/fabio_video_search_2026-10-17/candidates.csv, 14 new ranked for reading; old six already read",
   "scope_in": [
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
@@ -33,16 +51,18 @@
     "Fabio layer v2 spec (card fabio-layer-v2-spec)",
     "any parameter or backtest"
   ],
+  "scope_sha": "",
   "size": "S",
   "sources": [
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md (candidate ids line)"
   ],
-  "state": "blocked",
+  "state": "done",
   "steps": [
     "Download each candidate as f398 720p video-only mp4 + en vtt into F:/MTS/data/fabio_videos (default android client gives 360p, unreadable).",
     "Make 30 s contact sheets with sheets.py, read them, add one CSV row per entry/management action with the frame file named.",
     "Update the .md header counts and per-video notes; skip videos with no trade on screen and say so."
   ],
   "tests": "No code: verify_extract_quotes not needed; check every new CSV row names an existing frame file.",
-  "title": "Find more Fabio trade-recap videos (yt-dlp), ledger has only 8 entries vs goal 20"
+  "title": "Find more Fabio trade-recap videos (yt-dlp), ledger has only 8 entries vs goal 20",
+  "worker": "agent"
 }

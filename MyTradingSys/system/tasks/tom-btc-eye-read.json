@@ -1,47 +1,50 @@
 {
-  "approved_by": "",
-  "asks": "",
-  "commands": [],
-  "created": "2026-10-13T17:31:44Z",
-  "depends_on": [
-    "tom-btc-chart-lab"
-  ],
-  "done_when": "Both marks CSVs + EYE_READ.md with take-rate candidates vs random and kappa per concept.",
-  "from_inbox": "",
-  "goal": "Each reader marks every chart: take or skip, which Tom concepts are visible (TOM_ON_BTC table 2 ids: A-C3, A-P1..A-P8), where stop and target go. Jis marks at least the 20 seed-chosen charts. Output marks CSVs and agreement per concept; the key is opened only after both are done.",
-  "id": "tom-btc-eye-read",
-  "lane": "SONNET",
-  "layers": [
-    "tom"
-  ],
-  "live_path": false,
-  "note": "G3: the coordinator starts it from research/observer_2026-10-15/OBSERVER_REPORT.md G3 brief (needs the operator as reader 1); not a relay card. Release: apply-op release + check",
-  "pinned": false,
-  "prio": 1,
-  "refine_tries": 0,
-  "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
-  "refs": [],
-  "result": "",
-  "scope_in": [
-    "MyTradingSys/research/tom_btc_2026-10-13/charts/",
-    "MyTradingSys/research/tom_btc_2026-10-13/marks_claude.csv",
-    "MyTradingSys/research/tom_btc_2026-10-13/marks_jis.csv"
-  ],
-  "scope_out": [
-    "outcomes before both readers finish",
-    "changing charts"
-  ],
-  "size": "M",
-  "sources": [
-    "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4",
-    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2, 11"
-  ],
-  "state": "blocked",
-  "steps": [
-    "Claude reader marks all 80 from the PNGs only.",
-    "Jis marks the 20 seed-chosen charts (sheet from index.csv).",
-    "Then open _key.csv: take-rate on candidates vs random, kappa per concept."
-  ],
-  "tests": "none (read task)",
-  "title": "Tom on BTC T3: eye read of the 80 lab charts by two readers (Claude + Jis), blind; agreement per Tom concept"
+ "approved_by": "",
+ "asks": "Needs Jis as reader 1 on the 20 seed-chosen charts (own blind marks). Can a second blind machine reader replace that? Default (OURS): Claude reads all 80 plus a Gemini/GPT blind reader (A-20261018-7 rules), result labelled NO-HUMAN-READER; Jis marks are added whenever done.",
+ "commands": [],
+ "created": "2026-10-13T17:31:44Z",
+ "depends_on": [
+  "tom-btc-chart-lab"
+ ],
+ "done_when": "Both marks CSVs + EYE_READ.md with take-rate candidates vs random and kappa per concept.",
+ "est_turns": 30,
+ "from_inbox": "",
+ "goal": "Each reader marks every chart: take or skip, which Tom concepts are visible (TOM_ON_BTC table 2 ids: A-C3, A-P1..A-P8), where stop and target go. Jis marks at least the 20 seed-chosen charts. Output marks CSVs and agreement per concept; the key is opened only after both are done.",
+ "id": "tom-btc-eye-read",
+ "lane": "SONNET",
+ "layers": [
+  "tom"
+ ],
+ "live_path": false,
+ "note": "CHECKED 2026-10-18: blocker is real (operator-only reader), not the hold. Cheapest next step: Claude marks all 80 charts blind now (marks_claude.csv), a NUC GPT reader does a second pass via desk.py, the 20-chart sheet is built from index.csv for the operator. tom-btc-chart-lab is done. REVIEWED:2026-10-18 T0-ONLY LAB:results CLASS:C1 REVIEWER:GPT medium WEIGHT:IMPORTANT. | STAYS BLOCKED: needs the operator as reader 1 (own chart marks). [PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] G3: the coordinator starts it from research/observer_2026-10-15/OBSERVER_REPORT.md G3 brief (needs the operator as reader 1); not a relay card. Release: apply-op release + check",
+ "pinned": false,
+ "prio": 1,
+ "refine_tries": 0,
+ "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
+ "refs": [],
+ "result": "",
+ "scope_in": [
+  "MyTradingSys/research/tom_btc_2026-10-13/charts/",
+  "MyTradingSys/research/tom_btc_2026-10-13/marks_claude.csv",
+  "MyTradingSys/research/tom_btc_2026-10-13/marks_jis.csv"
+ ],
+ "scope_out": [
+  "outcomes before both readers finish",
+  "changing charts"
+ ],
+ "size": "M",
+ "sources": [
+  "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4",
+  "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2, 11"
+ ],
+ "state": "blocked",
+ "steps": [
+  "Claude reader marks all 80 from the PNGs only.",
+  "Jis marks the 20 seed-chosen charts (sheet from index.csv).",
+  "Then open _key.csv: take-rate on candidates vs random, kappa per concept."
+ ],
+ "tests": "none (read task)",
+ "title": "Tom on BTC T3: eye read of the 80 lab charts by two readers (Claude + Jis), blind; agreement per Tom concept",
+ "weight": "IMPORTANT",
+ "worker": "session"
 }

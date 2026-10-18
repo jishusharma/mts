@@ -67,7 +67,8 @@ def build(reg, now=None, repo=None):
             continue
         pages.append({"slug": pg["slug"], "title": pg["title"], "url": url, "owner": own, "purpose": pg.get("purpose", ""),
                       "notes": pg.get("notes_go_to", ""), "db": bool(pg.get("db")), "refresh": pg["refresh"],
-                      "pub": str(pg["last_published"].get(own, ""))[:10], "write": pg["slug"] in WRITE_FIRST})
+                      "pub": str(pg["last_published"].get(own, ""))[:10], "write": pg["slug"] in WRITE_FIRST,
+                      "behind": af.behind(reg, pg, repo or af.REPO) if pg.get("html") else False})
         if pg.get("single_owner"):
             for a, u in pg["urls"].items():
                 if u and a != own:
@@ -192,6 +193,20 @@ ol.steps li::marker{font-weight:700;color:var(--accent)}
     <p class="who" id="who"></p>
   </div>
 
+  <section aria-labelledby="h-how">
+    <h2 id="h-how">Link fails? Why, and the one-time fix</h2>
+    <div class="box">
+      <p class="sub" id="whyfail"></p>
+      <ol class="steps" id="steps"></ol>
+      <h3>Do this once per login that owns pages</h3>
+      <div class="share" id="share"></div>
+    </div>
+    <div class="box">
+      <h3>What you see on the wrong login</h3>
+      <div class="cases" id="cases"></div>
+    </div>
+  </section>
+
   <section aria-labelledby="h-wait">
     <h2 id="h-wait">Waiting for you</h2>
     <div class="where" id="where"></div>
@@ -204,18 +219,6 @@ ol.steps li::marker{font-weight:700;color:var(--accent)}
     <div class="list" id="pages"></div>
   </section>
 
-  <section aria-labelledby="h-how">
-    <h2 id="h-how">How to open these from any login</h2>
-    <div class="box">
-      <ol class="steps" id="steps"></ol>
-      <h3>Do this once per login that owns pages</h3>
-      <div class="share" id="share"></div>
-    </div>
-    <div class="box">
-      <h3>What you see on the wrong login</h3>
-      <div class="cases" id="cases"></div>
-    </div>
-  </section>
 
   <section aria-labelledby="h-retire">
     <h2 id="h-retire">Old copies to delete</h2>
@@ -245,15 +248,16 @@ $("pages").innerHTML = DATA.pages.map(p => `
   <article class="page${p.write ? " w" : ""}">
     <div class="ptop">
       <a class="ptitle" href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a>
-      <span class="pills"><span class="pill${p.owner === DATA.home ? " home" : ""}">Owner ${esc(p.owner)}</span>${p.db ? `<span class="pill db">Saves your notes</span>` : ""}</span>
+      <span class="pills"><span class="pill${p.owner === DATA.home ? " home" : ""}">Owner ${esc(p.owner)}</span>${p.db ? `<span class="pill db">Saves your notes</span>` : ""}${p.behind ? `<span class="pill old">behind repo</span>` : ""}${p.owner !== DATA.home ? `<span class="pill old">Opens on ${esc(DATA.home)} only after ${esc(p.owner)} shares it</span>` : ""}</span>
     </div>
     <p>${esc(p.purpose)}</p>
     <dl class="kv">
       <dt>Your notes</dt><dd>${esc(p.notes)}</dd>
-      <dt>Updated</dt><dd>${esc(ago(p.pub))}; ${esc(p.refresh)}</dd>
+      <dt>Published</dt><dd>${esc(ago(p.pub))}${p.behind ? " - behind repo: the repo has a newer version, not yet published" : ""}; ${esc(p.refresh)}</dd>
     </dl>
     <span class="url">${esc(p.url)}</span>
   </article>`).join("");
+$("whyfail").innerHTML = `claude.ai pages are private to the login that owns them. A link here to a page owned by another login fails (claude.ai says "not found") until that owner shares it with the login you are on. No page, Claude session or pin can change that: only the owner's <b>Share</b> does, once per page. After that every link works from every login.`;
 $("steps").innerHTML = [
   `Any login works. Use <b>${esc(DATA.home)}</b> when you can: it owns this page and runs the super sessions.`,
   `Each page is owned by one login (the "Owner" tag above). Once per page, on that owner login: open the page, choose <b>Share</b>, invite the email of each other login you use, and give it <b>edit</b> access. Edit is what lets your notes save from that login and lets Claude sessions there update the same page instead of making a copy.`,

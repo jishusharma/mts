@@ -1,20 +1,31 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T10:05:28Z",
   "commands": [],
   "created": "2026-10-16T18:33:52Z",
   "depends_on": [],
   "done_when": "CONTEXT_FIRST.md shipped for the operator to read; no backtest run.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Operator 2026-10-17: no backtest before context (phase, speed, sentiment, absorption/distribution, yesterday, 5-day, weekly, bi-weekly). Describe the context around each operator read from data on disk, then diagnose the backtest apparatus. No returns, no pre-registered bar, no event counts used as evidence.",
   "id": "confluence-read-encode",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "CONTEXT_FIRST.md: 3-day context sheet (10-14..16) from mirror data, 9 operator questions, ",
+      "ref": "0bcc41ff",
+      "utc": "2026-10-17T10:05:28Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "note": "Operator priority high. Private input: the operator transaction-log CSV in his Downloads folder (ask the coordinator for the exact name; path withheld because the repo is public) (never commit it or its numbers). Opus not required.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T07:16:27Z",
   "refs": [
     "MyTradingSys/methodology/operator_chart_checklist.md",
     "MyTradingSys/research/screenshots/2026-10-16_BTCUSDT_c5e7b5c17d90.md",
@@ -22,7 +33,7 @@
     "MyTradingSys/research/event_probability_layer_DESIGN.md",
     "MyTradingSys/methodology/operator_chart_checklist.md items 10-12"
   ],
-  "result": "",
+  "result": "CONTEXT_FIRST.md: 3-day context sheet (10-14..16) from mirror data, 9 operator questions, no backtest",
   "scope_in": [
     "MyTradingSys/research/confluence_read_2026-10-17/"
   ],
@@ -31,11 +42,12 @@
     "no VALIDATION or HOLDOUT reads",
     "no lowered pre-registered bars"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [
     "operator chat 2026-10-17"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Operator's private trade log (path comes from the coordinator in a side note, never in the repo): use it ONLY to check which checklist items were visible at his entries and exits. Aggregate counts only: no per-trade times, prices or PnL (public repo).",
     "Context sheet per trade day and the 2 days before: daily and weekly structure (prior-day high/low/VA, 5-day and 10-day range and drift), macro phase, speed (range per hour vs recent norm), sentiment proxies on disk (funding, OI trend, long/short, liquidations if any), absorption or distribution signs (CVD vs price, OI vs price). Descriptive only; each field names its file or says NOT_IN_DATA.",
@@ -45,5 +57,6 @@
     "Before any later test follow REVIEW.md findings 11-14 (research/review_chart_cards_2026-10-17): rules blind to 10-16 prices, count families not items, list prior VERDICTS rows, cost at 20-50x."
   ],
   "tests": "Every context field cites a file and number or says NOT_IN_DATA; no outcome statistics appear.",
-  "title": "Context first: build the market-context picture around the operator's chart reads, then diagnose why backtests fail (no backtest yet)"
+  "title": "Context first: build the market-context picture around the operator's chart reads, then diagnose why backtests fail (no backtest yet)",
+  "worker": "session"
 }

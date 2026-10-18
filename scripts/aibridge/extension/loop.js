@@ -136,6 +136,24 @@
   // The command: everything after the "# AIRUN ..." line.
   L.stripMarker = function (s) { return s.replace(/^[\s\S]*?# AIRUN[^\n]*\n?/, ''); };
 
+  // Link health of the background heartbeat. Two independent sources tick the page: the service-worker port (t.port) and
+  // a dedicated Worker timer (t.worker, not subject to the main thread's background throttling). Times are ms epoch, 0 =
+  // never. ok: a port tick is fresh. degraded: only the worker ticks (service worker asleep or port dropped): the loop
+  // still runs, reconnect the port. stale: neither ticked for staleMs: the page is frozen or throttled, reconnect and say so.
+  L.linkState = function (now, t, staleMs) {
+    staleMs = staleMs || 5000;
+    var pa = t && t.port ? now - t.port : Infinity, wa = t && t.worker ? now - t.worker : Infinity;
+    var state = pa < 3000 ? 'ok' : (wa < 3000 ? 'degraded' : (Math.min(pa, wa) < staleMs ? 'ok' : 'stale'));
+    return { state: state, portAge: pa, workerAge: wa, reconnect: state !== 'ok' };
+  };
+  // reconnect attempts are spaced: first at once, then 1 s, 2 s, 4 s ... capped at 15 s; a good tick resets the counter
+  L.reconnectDelay = function (attempt) { return attempt <= 0 ? 0 : Math.min(15000, 1000 * Math.pow(2, attempt - 1)); };
+  // text for the panel
+  L.linkLabel = function (ls, hidden) {
+    var a = function (x) { return isFinite(x) ? (x / 1000).toFixed(1) + 's' : 'never'; };
+    return 'link ' + ls.state + (hidden ? ' (tab hidden)' : '') + ' port ' + a(ls.portAge) + ' worker ' + a(ls.workerAge);
+  };
+
   root.AIBridgeLoop = L;
   if (typeof module !== 'undefined') module.exports = L;
 })(typeof window !== 'undefined' ? window : globalThis);

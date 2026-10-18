@@ -10,7 +10,7 @@ droppings excluded: the mirror is regenerable by `live_mirror.py pull`). `refs/l
 | name | what it holds | who decides |
 |---|---|---|
 | mts-daxbt | bigtrade `capture.py`, `fires_kline.py`, `parity_kline.py`, `test_fires_kline.py`, FINDINGS.md: older than the same files on fast-track | DSA: diff against fast-track, keep only what is newer |
-| mts-extract | `scripts/dev/extract_fix_gps.py`, `etg6j0JybfE_v2.md` | DSA extraction lane |
+| mts-extract | `extract_fix_gps.py` (never tracked), `etg6j0JybfE_v2.md` | DSA extraction lane |
 | mts-pastehdr | `DSA_SESSION_PASTE_v2.txt`, `patch_hdr.py`, BUILD_REPORT edit | DSA |
 | mts-research | core_readiness harness + Java replay, `p1_cost_floor_full.py`, `RestHistoricalSource.java` | DSA (research) |
 | mts-krown-layer | `fill_cards.py`, `_patch_prereg.py`, two artifact html edits | Krown lane |

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T00:02:08Z",
   "commands": [],
   "created": "2026-10-16T09:35:17Z",
   "crucial": false,
@@ -28,6 +29,25 @@
     ],
     "stage": 1
   },
+  "flow_receipt": {
+    "contract": "211fb335f3d467b2caa8f5c8109d20fff796a1a03ec669d449bed8a19ecec1d8",
+    "criteria": [
+      "PASS",
+      "PASS",
+      "PASS"
+    ],
+    "report": "MyTradingSys/research/layer_lab/reports/2026-10-17_imb-filter-audit-1-map.md",
+    "report_sha256": "d1e4ad6c96caecd2dbe728d3c4aa69d1145c8d9624cb5a2b7917bc1940002d03",
+    "sources": {
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/COUNTS.md": "c86dfa848952f9cf56355a8c5be3a0693c3a9c806fe78499b7e3078476233070",
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/PRE_REG.md": "54edb80ddb649fedfc723e5af398d6bd7eddd01dd646c3b73e5859b5512edb61",
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/RESULT.md": "17bcf3b22c6d89ca39c8c783f89a295ff069c1e4a8cc71e3985c2f6370eab6f2",
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/events_dev.csv": "b21c2b8e9007ad62a75a45c3e468e05e61af8e03d23d1f4520a3679d8dc72462",
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/trades_dev.csv": "6ba7ced4f2c6a701f1dee5932ef5be3e291ce4db2bfb18ae37f34d23683e9c27",
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/trials.csv": "537050806bf10598642e673e2bd3a1fc71d5066639c0ceb6a214641502cda55f"
+    },
+    "verdict": "PASS"
+  },
   "from_inbox": "",
   "goal": "Audit research/imbalance_qriptal_2026-10-16/filter/RESULT.md from committed tables only: recompute the headline cells, confirm DEV-only inputs, reproduce the touch-bar look-ahead defect. No market rerun, no VALIDATION or HOLDOUT read.",
   "gpt_only": true,
@@ -43,7 +63,7 @@
   "refined_by": "",
   "refs": [],
   "reopened": "2026-10-16T14:00:00Z",
-  "result": "",
+  "result": "C1-C3 PASS: -0.366/-0.467/+0.101 R reproduced; six SHA256s match; DEV touch dates verified; original-loader isolation and HOLD-rate defect effect NOT_IN_DATA with exact fixture requirements.",
   "scope_in": [
     "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/RESULT.md",
     "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/PRE_REG.md",
@@ -57,7 +77,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Map claims to source evidence; expose missing inputs and assumptions.",
     "Read original sources before the prior report; report C1..Cn as PASS, REWORK or BLOCKED with file/command evidence."

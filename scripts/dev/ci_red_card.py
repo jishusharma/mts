@@ -54,7 +54,7 @@ def card_for(run):
     sha = run["headSha"]
     c = tasks.blank(f"ci-{sha[:7]}", f"fix CI {sha[:7]}: fast-track is red", prio=0, lane="SONNET", refs=[])
     c.update(
-        state="ready", size="S", pinned=True,
+        state="ready", size="S", est_turns=10, worker="agent", pinned=True,
         goal=f"CI on fast-track is red since commit {sha[:7]} (run {run['databaseId']}); auto_deploy only takes green, so nothing deploys until it is fixed.",
         scope_in=[f"the failing step of run {run['databaseId']} ({run.get('url', '')}) and the commit {sha[:7]} that first broke it"],
         scope_out=["unrelated cleanups", "live tree, processes, deploys"],

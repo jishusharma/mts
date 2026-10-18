@@ -1,3 +1,5 @@
+> **RERUN 2026-10-17 (DEV only, new labels):** the fire CSVs on F: were relabelled with the repo split (split-relabel-fires). The per-year table below is by t_fire_ms and unchanged; only the split column changed. New split counts over all 19 perp files: see SPLIT_ALIGNMENT_2026-10-17.md section 'Rerun status'. This report holds no split-based result, so there is no verdict to rerun.
+
 > **CONTAMINATED (DEV read VALIDATION 2024-07..12)** - the split column (TRAIN to 2025-01-01) puts 25,607 of 153,685 TRAIN fires in 2024-07..12. See MyTradingSys/backtest/bigtrade/SPLIT_ALIGNMENT_2026-10-17.md. Numbers below are kept as originally run, not recomputed.
 
 # FIRES_B1_REPORT - fire history of the kline-only live layers (worker B1, 2026-10-09)

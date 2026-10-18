@@ -12,16 +12,19 @@
   "created": "2026-10-15T23:28:58Z",
   "depends_on": [],
   "done_when": "T06_cost_fill_realism.md shipped: costs.csv, venue table, real-funding rerun per arm, engine x fill-rule table, break-even per arm, fee-to-stop per testnet layer, leads L1/L3 resolved, S1/S2 carded.",
+  "est_turns": 36,
   "from_inbox": "",
   "goal": "List every fee, slippage, funding and fill assumption across all studies and engines, rerun the recent screens with real signed funding, and give each arm's break-even cost and each testnet layer's fee-to-stop ratio.",
   "id": "dsa-audit-06-cost-fill-realism",
   "lane": "DSA-NB",
+  "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:definitions CLASS:C2 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
+  "refreshed": "2026-10-17T07:16:28Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md",
     "MyTradingSys/backtest/fees.py",
@@ -39,6 +42,7 @@
     "F:/AIBridge and scripts/aibridge",
     "changing any verdict, ledger or pre-registered bar"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [],
   "state": "ready",
@@ -51,5 +55,7 @@
     "Break-even cost per arm vs charged; fee-to-stop ratio for every stop-based testnet layer (extends E3)."
   ],
   "tests": "",
-  "title": "DSA audit T06: every cost, funding and fill assumption side by side, real funding rerun, break-even per arm"
+  "title": "DSA audit T06: every cost, funding and fill assumption side by side, real funding rerun, break-even per arm",
+  "weight": "CRUCIAL",
+  "worker": "session"
 }

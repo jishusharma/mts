@@ -1,14 +1,38 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T10:52:55Z",
   "commands": [],
   "created": "2026-10-12T17:09:52Z",
   "depends_on": [],
   "done_when": "One real CBP pending entry yields a row in queue/candidates/cbp_candidates.jsonl via cbp_adapter.py from the CBP queue path Jis confirmed; the path and the count are in items/B139_cbp_adapter.md.",
+  "est_turns": 12,
   "from_inbox": "",
   "goal": "MTS and CBP share a queue contract (cbp_contract_v1) and an adapter, but no real CBP entry has ever become an MTS candidate: the 2026-10-06 run consumed 0 of 2 entries and wrote no candidates file. Make one real entry flow end to end, still as CANDIDATE_UNTESTED, order_eligible false.",
   "id": "mts-cbp-integration-land-one-cbp-candida",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "partial: DEFAULT_QUEUE env override + test, run consumed 0 (only entry is rejected); no pe",
+      "ref": "b5f0f3be",
+      "utc": "2026-10-17T10:52:55Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship live-tree-only edits: CryptoScrapper on F:, pick_task SURFACE line, audit notes",
+      "ref": "6c83b5e87fda",
+      "utc": "2026-10-14T16:48:49Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "6c83b5e87fda ship live-tree-only edits: CryptoScrapper on F:, pick_task SURFACE line, audi",
+      "ref": "MyTradingSys/items/B139_cbp_adapter.md",
+      "utc": "2026-10-14T16:48:49Z"
+    }
+  ],
   "layers": [
     "live_engine"
   ],
@@ -18,10 +42,11 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T08:59:02Z",
   "refs": [
     "B139"
   ],
-  "result": "",
+  "result": "partial: DEFAULT_QUEUE env override + test, run consumed 0 (only entry is rejected); no pending entry to land, B139",
   "scope_in": [
     "MyTradingSys/queue/cbp_adapter.py",
     "MyTradingSys/queue/consumer.py",
@@ -29,9 +54,10 @@
     "MyTradingSys/items/B139_cbp_adapter.md"
   ],
   "scope_out": [],
+  "scope_sha": "6c83b5e87fda",
   "size": "S",
   "sources": [],
-  "state": "blocked",
+  "state": "done",
   "steps": [
     "Post a Control Room decision: which CBP tree is authoritative (C: CryptoScrapper vs F:), recommended = the tree CBP's routine writes mts_queue to.",
     "Fix consumer.py DEFAULT_QUEUE to that path with a test that fails on the old value.",
@@ -39,5 +65,6 @@
     "Show the candidate count on the Control Room health line or STATUS."
   ],
   "tests": "MyTradingSys/tests/test_cbp_adapter.py: add a case for the fixed queue path (fail first on the old DEFAULT_QUEUE), existing 12 stay green",
-  "title": "MTS-CBP integration: land one CBP candidate on the real queue"
+  "title": "MTS-CBP integration: land one CBP candidate on the real queue",
+  "worker": "agent"
 }

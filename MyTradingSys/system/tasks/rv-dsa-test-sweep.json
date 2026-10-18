@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C1",
   "commands": [
     "python -m pytest -q scripts/dev/test_sync.py",
     "python -m pytest -q scripts/dev/test_shot.py scripts/dev/test_tasks.py",
@@ -14,13 +15,30 @@
   "goal": "Second-eyes baseline: run these tests in the mts-dsa worktree after sync, report pass/fail counts per file. Prompt context: MyTradingSys/system/revalidation/VERDICTS.md.",
   "id": "rv-dsa-test-sweep",
   "lane": "DSA-NUC",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "revalidation: dedupe Q33 rerun (rv04 closed, DSA row blocked on klines), rv03 owned by tid",
+      "ref": "d483ba862673",
+      "utc": "2026-10-12T17:40:12Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d483ba862673 revalidation: dedupe Q33 rerun (rv04 closed, DSA row blocked on klines), rv03",
+      "ref": "MyTradingSys/system/revalidation/VERDICTS.md",
+      "utc": "2026-10-12T17:40:12Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "note": "PARKED: every ship already runs these tests (run_all_tests --quick); a second sweep adds no information. LAYER_REBUILD_PLAN_2026-10-15 s2 gate order; observer GPT queue 2026-10-15 (coordinator)",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch=yes class=C0 reviewer=machine checks + Flash low pass] PARKED: every ship already runs these tests (run_all_tests --quick); a second sweep adds no information. LAYER_REBUILD_PLAN_2026-10-15 s2 gate order; observer GPT queue 2026-10-15 (coordinator)\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C1 weight=IMPORTANT); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "gemini-nuc",
+  "refreshed": "2026-10-18T05:12:41Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -31,6 +49,7 @@
     "holdout reads",
     "tidy --apply"
   ],
+  "scope_sha": "d483ba862673",
   "size": "S",
   "sources": [],
   "state": "blocked",
@@ -40,5 +59,7 @@
     "Write the numbers to the named file; change no code."
   ],
   "tests": "",
-  "title": "RV-DSA test sweep: run the 7 revalidation test files and report counts (host=JIS-NUC)"
+  "title": "RV-DSA test sweep: run the 7 revalidation test files and report counts (host=JIS-NUC)",
+  "weight": "IMPORTANT",
+  "updated": "2026-10-18T10:00:00Z"
 }

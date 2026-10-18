@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T04:35:20Z",
   "commands": [
     "git -C <live> status --short",
     "git -C <live> diff origin/fast-track -- <file>",
@@ -23,7 +24,7 @@
   "refine_tries": 0,
   "refined_by": "claude JIS-NUC 2026-10-14 (ops follow-up, from NEXT_SESSION (b))",
   "refs": [],
-  "result": "",
+  "result": "Already clear, no files moved or restored: last STOP_DIRTY 2026-10-16T06:00Z (launch-supervisor.vbs), STOP_MERGE 2026-10-16T02:45Z; since then DEPLOYED repeatedly (latest 2026-10-17T04:00:01Z 36be7c2->92ac39e). Dry check 2026-10-17T04:34:58Z auto_deploy.py --check: WOULD_DEPLOY c8a1657->8f08bcc 2 files (no STOP_DIRTY/STOP_MERGE). Card paths (DSA_SESSION_PROMPT.md, bigtrade untracked, etc.) no longer dirty; the 52 remaining dirty/untracked live paths do not overlap the deploy diff (GENERATED_RE covers generated ones; untracked ones not in diff). DECISION (OURS): no restore of live files since nothing blocks; untracked HALT files and others left untouched.",
   "scope_in": [
     "live tree (folder holding .mts_live) on JIS-NB: DSA_SESSION_PROMPT.md, MyTradingSys/items/INDEX.md, research/BUGS.md, research/apparatus_fixes.md, runtime/session_log.json, two deleted files, scripts/dev/live_mirror.py",
     "20 untracked files under MyTradingSys/backtest/bigtrade and research/bigtrade_2026-10-09"
@@ -35,7 +36,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git -C <live> status --short; for each dirty file run git -C <live> diff origin/fast-track -- <f> and confirm the live-only lines are on origin (cddac741). If not, copy the file to runtime_data/deploy_backup and report.",
     "Copy runtime/session_log.json to runtime_data/deploy_backup first, then git -C <live> checkout -- <path> for each of the 7 files plus scripts/dev/live_mirror.py.",

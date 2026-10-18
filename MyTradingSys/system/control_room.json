@@ -1,6 +1,6 @@
 {
   "_doc": "Hand-kept content of the MTS Control Room page (scripts/dev/make_control_room.py). Edit HERE, never the page. Process: MyTradingSys/system/CONTROL_ROOM.md. Item ids: registry rows (B/T), bigtrade findings (F-BT-NN), or X- road tasks defined below. When an X- task gets a registry row, replace the X- id with the row id.",
-  "artifact_url": "https://claude.ai/artifact/Ep6gA5vskLodMLEseyTnfN",
+  "artifact_url": "https://claude.ai/artifact/MNuodXmi5RiEihX7rFpqUp",
   "asof": "2026-10-13",
   "verdict": "The system runs on testnet, but trading has been halted since 12 Oct 09:46Z and no source has shown a real edge after fees. The plan of 11 Oct stands: rebuild Tom and Fabio from their own trades, test Tom on his home market first, and stop re-testing the old encodings on BTC. Tom is the furthest along: trade ledger built and repaired, test harness fixed, spec part A written 13 Oct (TOM_LAYER_V2_SPEC.md). The 13 Oct review found the plan right and the pace on that one chain too slow: about 80 sessions in 30 hours, one step forward on Tom. See research/ALIGNMENT_2026-10-13.md.",
   "road": [

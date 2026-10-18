@@ -163,6 +163,60 @@ class SyncTest(unittest.TestCase):
         sh(self.a, "fetch", "-q", "origin")
         self.assertEqual(sync.read_claims(self.a, "origin/fast-track"), [])
 
+    def card(self, cid, scope_in, **kw):
+        import json
+        d = self.a / sync.CARDS_DIR
+        d.mkdir(parents=True, exist_ok=True)
+        (d / f"{cid}.json").write_text(json.dumps({"id": cid, "scope_in": scope_in, **kw}), newline="\n")
+
+    def claims_on_origin(self):
+        sh(self.a, "fetch", "-q", "origin")
+        return [s for s, _ in sync.read_claims(self.a, "origin/fast-track")]
+
+    def test_claim_skips_itself_for_new_files_under_a_dated_folder(self):
+        # B16 (B2 automatic): 51 claims + 56 standalone releases in 72 h, many for run-once report tasks.
+        self.card("lab-run", ["MyTradingSys/research/study_2026-10-17/", "read-only: scripts/dev/sync.py"])
+        self.card("lab-md", ["MyTradingSys/research/audit_2026-10-16/T01.md and MyTradingSys/research/audit_2026-10-16/scripts/T01/ (new files only)"])
+        self.card("code-task", ["scripts/dev/sync.py"])
+        self.card("mixed", ["MyTradingSys/research/study_2026-10-17/", "scripts/dev/sync.py"])
+        self.card("live", ["MyTradingSys/research/study_2026-10-17/"], live_path=True)
+        self.card("edits-existing", ["MyTradingSys/research/study_2026-10-17/README.md"])
+        (self.a / "MyTradingSys/research/study_2026-10-17").mkdir(parents=True)
+        (self.a / "MyTradingSys/research/study_2026-10-17/README.md").write_text("old" + chr(10), newline=chr(10))
+        sh(self.a, "add", "-A")
+        sh(self.a, "commit", "-q", "-m", "cards")
+        sync.ship(self.a, gate=self.gate)
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            sync.claim(self.b, "lab-run", gate=self.gate)
+            sync.claim(self.b, "lab-md", gate=self.gate)
+        self.assertIn("no claim needed", out.getvalue())
+        self.assertEqual(self.claims_on_origin(), [])
+        for name in ("code-task", "mixed", "live", "edits-existing", "no-such-card"):
+            sync.claim(self.b, name, gate=self.gate)   # not provably new-files-only (or no card): claims as before
+        self.assertEqual(sorted(self.claims_on_origin()), ["code-task", "edits-existing", "live", "mixed", "no-such-card"])
+
+    def test_claim_skip_by_area_and_force_override(self):
+        sync.claim(self.b, "Dated report", area="MyTradingSys/research/x_2026-10-17/", gate=self.gate)
+        self.assertEqual(self.claims_on_origin(), [])
+        sync.claim(self.b, "Dated and code", area="MyTradingSys/research/x_2026-10-17/,scripts/dev", gate=self.gate)
+        sync.claim(self.b, "Forced", area="MyTradingSys/research/y_2026-10-17/", gate=self.gate, force=True)
+        self.assertEqual(sorted(self.claims_on_origin()), ["dated-and-code", "forced"])
+
+    def test_release_hints_at_ship_release_when_the_tree_has_unshipped_commits(self):
+        sync.claim(self.a, "Task h", area="scripts/dev", gate=self.gate)
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            sync.release(self.a, "task-h", gate=self.gate)
+        self.assertNotIn("hint", out.getvalue())     # clean and level with trunk: nothing to say
+        sync.claim(self.a, "Task i", area="scripts/dev", gate=self.gate)
+        commit(self.a, "i.py", "i" + chr(10))
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            sync.release(self.a, "task-i", gate=self.gate)
+        self.assertIn("ship --release task-i", out.getvalue())
+        self.assertEqual(self.claims_on_origin(), [])   # and it still released
+
     def test_claim_blocks_only_on_overlapping_areas(self):
         sync.claim(self.a, "Task one", area="scripts/dev,MyTradingSys/backtest", gate=self.gate)
         sync.claim(self.a, "Task two", area="MyTradingSys/research", gate=self.gate)  # disjoint: allowed

@@ -45,5 +45,6 @@
     "BUGS.md row B059: Status CLOSED, Receipt = BuildVpFixedGridTest + commit (fix landed 2026-09-24, sha256 74B14A74 -> 52FF88CF)."
   ],
   "tests": "BuildVpFixedGridTest (new): green now; red under the L566 mutation (binOrigin = minP).",
-  "title": "Pin the fixed-grid volume profile (B059 fix) with a test"
+  "title": "Pin the fixed-grid volume profile (B059 fix) with a test",
+  "weight": "B-SHARED"
 }

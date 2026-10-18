@@ -12,16 +12,19 @@
   "created": "2026-10-15T23:28:58Z",
   "depends_on": [],
   "done_when": "T10_missing_aspects.md shipped: 30+ failure modes with sources, matrix.csv with summaries, 5 DEV demonstrations with numbers, BRIDGE_PLAYBOOK.md from the shipped bridge logs, S1/S2 carded.",
+  "est_turns": 38,
   "from_inbox": "",
   "goal": "List at least 30 ways a crypto-perp backtest can mislead from DeepSeek's own knowledge and published sources, score each against every study and testnet layer, demonstrate the 5 worst gaps on DEV, and merge the audits' bridge logs into a playbook.",
   "id": "dsa-audit-10-missing-aspects",
   "lane": "DSA-NB",
+  "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:definitions CLASS:C2 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
+  "refreshed": "2026-10-17T07:16:29Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md"
   ],
@@ -37,6 +40,7 @@
     "F:/AIBridge and scripts/aibridge",
     "changing any verdict, ledger or pre-registered bar"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [],
   "state": "ready",
@@ -48,5 +52,7 @@
     "BRIDGE_PLAYBOOK.md from the bridge logs of every shipped T report (list the missing): patterns, failures and recoveries, 10 rules; DSA prompt changes proposed via desk.py --target CLAUDE."
   ],
   "tests": "",
-  "title": "DSA audit T10: 30+ backtest failure modes x every study, 5 demonstrations, and the DSA bridge playbook"
+  "title": "DSA audit T10: 30+ backtest failure modes x every study, 5 demonstrations, and the DSA bridge playbook",
+  "weight": "CRUCIAL",
+  "worker": "session"
 }

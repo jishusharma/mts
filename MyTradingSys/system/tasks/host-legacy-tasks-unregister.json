@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "powershell -NoProfile -Command \"Get-ScheduledTask -TaskName MTS-Scheduler-Tick,MTS-Audit-Digest,MTS-Audit-Rotation,MTS_Monitor_4h -ErrorAction SilentlyContinue | Select TaskName,State\""
+  ],
+  "created": "2026-10-17T04:34:46Z",
+  "depends_on": [],
+  "done_when": "Get-ScheduledTask | ? TaskName -match MTS|Alert-Rate|Audit|Declutter|Orphan|Retention returns nothing; XML exports of every task are in F:/MTS/backups/sched_tasks_2026-10-17_NB; the list and date are appended to HOST_TASKS_2026-10.md.",
+  "est_turns": 8,
+  "from_inbox": "",
+  "goal": "On JIS-NB no MTS Windows scheduled task remains (operator q-sched-scope 2026-10-17: every task on every device, accepting that deploys, revival and the relay stop).",
+  "id": "host-legacy-tasks-unregister",
+  "kind": "build",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "docs: SCHEDULING_POLICY.md - no scheduled tasks or routines on any device",
+      "ref": "312d69da7728",
+      "utc": "2026-10-17T10:05:01Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "312d69da7728 docs: SCHEDULING_POLICY.md - no scheduled tasks or routines on any device",
+      "ref": "MyTradingSys/system/HOST_TASKS_2026-10.md",
+      "utc": "2026-10-17T10:05:01Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C3 REVIEWER:review SESSION DECISION (OURS): stays refined (hold is deliberate, coordinator promotes after the last worker ships). WEIGHT:CRITICAL, HELD refined on purpose: unregistering AutoDeploy/relay/dispatcher stops this run's relay; coordinator promotes (tasks.py check) only after the last worker ships. Export XML first (reversible). Operator q-sched-scope 2026-10-17.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T21:35:26Z",
+  "refs": [
+    "q-host-sched-tasks"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/HOST_TASKS_2026-10.md (append result)",
+    "F:/MTS/backups/sched_tasks_2026-10-17_NB (XML exports)"
+  ],
+  "scope_out": [
+    "stopping or restarting any running process",
+    "editing HALT files"
+  ],
+  "scope_sha": "312d69da7728",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Export every matching task to XML (backup first).",
+    "Unregister each with Unregister-ScheduledTask -Confirm:$false; disable any that refuse.",
+    "Append the result to HOST_TASKS_2026-10.md."
+  ],
+  "tests": "read-only check after the change: the Get-ScheduledTask command above prints no rows",
+  "title": "Unregister every MTS scheduled task on JIS-NB (operator q-sched-scope 2026-10-17)",
+  "weight": "CRITICAL",
+  "worker": "agent"
+}

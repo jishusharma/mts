@@ -1,12 +1,13 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T21:53:04Z",
   "commands": [],
   "created": "2026-10-13T05:09:07Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "No ledger row calls an exit fill, TP hit, stop hit or slippage a fact; F11-x to F12 interval records 22239.02 -> 22193 = -46.02; test_ledger_audit TestH2 passes",
   "from_inbox": "",
-  "goal": "",
+  "goal": "H2: flat-state and daily-P/L differences stay as observations; exit price, stop-vs-TP cause and slippage/cost split become inferred/unknown unless a fill is shown; add the omitted -46.02 interval before F12.",
   "id": "fabio-audit-20261013-exits",
   "lane": "SONNET",
   "layers": [
@@ -16,17 +17,34 @@
   "note": "",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "worker-sonnet",
   "refs": [
     "MyTradingSys/research/layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md"
   ],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "result": "H2: exit rows relabelled inferred/unknown, observed flat + Daily P/L deltas kept, -46.02 interval (22239.02 -> 22193) added, M4 interval totals fixed. UNRESOLVED: exit fill prices/causes and F8 81$/F10 36$/F11 35$/F12/F13 label gaps need a fill record not in repo",
+  "scope_in": [
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
+    "MyTradingSys/research/fabio_transfer/test_ledger_audit.py",
+    "scripts/dev/run_extra_tests.py"
+  ],
+  "scope_out": [
+    "any code, backtest, study or holdout read",
+    "new web or video downloads",
+    "numbers not traceable to the audit report or the cited frames/captions"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md H2 row and per-row table EX column"
+  ],
+  "state": "done",
+  "steps": [
+    "list exit rows F6-x,F8-x,F10-x,F11-x,F12-x,F13-x,F14-x and their causal wording",
+    "relabel family to *_inferred and note to observed daily P/L delta only, keep the observed numbers",
+    "add the -46.02 interval note and MD sentence",
+    "write F12 -1525 vs -2050 label and F13 -2910 vs -1760 label as unreconciled",
+    "tests, ship"
+  ],
+  "tests": "test_ledger_audit.py::TestH2 fails first: old rows contain RESOLVED, tp_hit_at, slippage and stop-hit causal text",
   "title": "H2: Reconcile Fabio exit causes and daily PnL deltas with fills"
 }

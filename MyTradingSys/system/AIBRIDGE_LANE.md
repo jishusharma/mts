@@ -38,7 +38,7 @@ HTTP form: POST http://127.0.0.1:7181/run with {"cmd","cwd","timeout_s","token"}
 Response: exit, out, err, ms, timed_out, out_truncated, out_bytes, timeout_s. A refusal is HTTP 403
 with {"error":"refused","reason":"<code>: <text>"}.
 
-v0.7.0 (2026-10-14, "fluent"; full text scripts/aibridge/docs/V07_CONTRACT.md, the source of truth for the prompt):
+v0.7.0 keep-alive update (2026-10-17: background keep-alive: worker heartbeat, auto-reconnect, link dot, no discard; see research/dsa_bridge_keepalive_2026-10-17/DECISION.md). v0.7.0 (2026-10-14, "fluent"; full text scripts/aibridge/docs/V07_CONTRACT.md, the source of truth for the prompt):
 multi-line blocks, up to 6 blocks per reply run in order with one batch receipt, task mode (`# AIRUN task=mts-boot|mts-gate|
 mts-ship|build-check|inline`, cap 1800 s), per-command deterministic auto-run, errors labelled extension_link vs
 agent_unreachable, environment re-read per command, parallel chat pages keep running in the background.

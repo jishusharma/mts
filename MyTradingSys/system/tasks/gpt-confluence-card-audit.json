@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T23:30:48Z",
   "commands": [],
   "created": "2026-10-16T18:41:44Z",
   "depends_on": [],
@@ -22,7 +23,7 @@
     "MyTradingSys/methodology/operator_chart_checklist.md",
     "MyTradingSys/research/event_probability_layer_DESIGN.md"
   ],
-  "result": "",
+  "result": "FIX-FIRST; MyTradingSys/research/layer_lab/reports/2026-10-16_gpt-confluence-card-audit.md",
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/"
   ],
@@ -35,7 +36,7 @@
   "sources": [
     "operator 2026-10-17: reviews by one or two models"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the refs and the VERDICTS.csv rows for RSI, Bollinger and OI studies.",
     "Write the audit table with file:line for each claim.",

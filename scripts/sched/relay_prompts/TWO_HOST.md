@@ -1,5 +1,7 @@
 # Relay on two hosts, any account: rules, install, recovery (2026-10-12; one-call tick 2026-10-15)
 
+> **RETIRED 2026-10-17**: see ACCOUNT_SYNC.md.
+
 One App scheduled task per host, `mts-dispatcher`, fired by cron. Its prompt is `mts-dispatcher.SKILL.md` in this folder: a ~2 KB stub,
 the same on every host except `--peer-quiet-min`. It makes ONE Bash call, `relay.py tick`. On a KICK it IS the relay session (a
 session may not start another one unattended: B164) and follows `relay_session.md`, which tick prints from origin at run time, so

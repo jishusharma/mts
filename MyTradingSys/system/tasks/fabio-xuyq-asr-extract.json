@@ -8,18 +8,36 @@
   "created": "2026-10-16T05:14:39Z",
   "depends_on": [],
   "done_when": "raw_transcripts_canonical/xUyqIjCfZzg_raw.txt and extracts/v2/fabio/xUyqIjCfZzg_v2.md are shipped (verify_extract_quotes PASS), SETUP_CATALOG Fabio rows carry the new ASR quotes and the unread-sources row is updated, git cherry origin/fast-track empty.",
+  "est_turns": 36,
   "from_inbox": "",
   "goal": "xUyqIjCfZzg (3.8 h, Fabio Valentini + Carmine Rosato, two speakers) has no captions. ASR job (small.en beam 5, same settings as Is1HvdfQm5c) writes F:/MTS/data/fabio_videos/asr/xUyqIjCfZzg.jsonl and is resumable; finish it, convert, extract, add catalogue quotes.",
   "id": "fabio-xuyq-asr-extract",
   "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "fabio ledger H6: gLHd settings are a secondary presenter, cite Fabio's own 30 contracts",
+      "ref": "3d8645f3d391",
+      "utc": "2026-10-16T22:21:39Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "3d8645f3d391 fabio ledger H6: gLHd settings are a secondary presenter, cite Fabio's own 30",
+      "ref": "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md",
+      "utc": "2026-10-16T22:21:39Z"
+    }
+  ],
   "layers": [
     "fabio"
   ],
   "live_path": false,
-  "note": "",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:coordinator reads Result + verify_extract_quotes PASS DECISION (OURS): long ASR job (3.8 h audio) runs on NB as one low-priority background job; extraction via 4 Sonnet readers.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T07:24:46Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -33,6 +51,7 @@
     "backtests",
     "new downloads"
   ],
+  "scope_sha": "3d8645f3d391",
   "size": "M",
   "sources": [],
   "state": "ready",
@@ -43,5 +62,7 @@
     "Add the new ASR quotes to the Fabio rows of SETUP_CATALOG.md (same pattern as the Is1HvdfQm5c additions) and update the unread-sources row; ship."
   ],
   "tests": "verify_extract_quotes.py PASS on the new extract; git cherry origin/fast-track empty after ship.",
-  "title": "Fabio xUyqIjCfZzg: finish ASR transcription (JIS-NB, resumable) then canonical transcript + V2 extract + FAB catalogue quotes"
+  "title": "Fabio xUyqIjCfZzg: finish ASR transcription (JIS-NB, resumable) then canonical transcript + V2 extract + FAB catalogue quotes",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

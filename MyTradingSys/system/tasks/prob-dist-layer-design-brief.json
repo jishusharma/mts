@@ -1,20 +1,31 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T11:16:48Z",
   "commands": [],
   "created": "2026-10-16T18:15:20Z",
   "depends_on": [],
   "done_when": "BRIEF.md is shipped and the operator can start the design talk from it.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Operator 2026-10-16 wants a probability-distribution layer (a peer layer, PROJECT_VISION.md:94 and :103) and a design talk. Prepare a brief with the session's own design ideas; build nothing.",
   "id": "prob-dist-layer-design-brief",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "research/prob_dist_layer_brief_2026-10-16/BRIEF.md: prior-work map with file:line, 3 desig",
+      "ref": "cd68159f",
+      "utc": "2026-10-17T11:16:48Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "note": "Operator priority: high. Any session may take it.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T07:16:43Z",
   "refs": [
     "MyTradingSys/research/event_probability_layer_DESIGN.md",
     "MyTradingSys/PROJECT_VISION.md",
@@ -22,7 +33,7 @@
     "MyTradingSys/research/T064_TF_CONFIRMATION_EXTRACT.md",
     "MyTradingSys/system/tasks/candle-close-independent-audit.json"
   ],
-  "result": "",
+  "result": "research/prob_dist_layer_brief_2026-10-16/BRIEF.md: prior-work map with file:line, 3 designs, 8 open questions",
   "scope_in": [
     "MyTradingSys/research/prob_dist_layer_brief_2026-10-16/BRIEF.md"
   ],
@@ -32,11 +43,12 @@
     "no VALIDATION or HOLDOUT reads",
     "no new gate numbers"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [
     "operator chat 2026-10-16 (probability layer, screenshot c5e7b5c17d90)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the refs. Search git log, research/ and system/ for every other probability talk (6f904aa6 close signatures, VISION_GAP_2026-10-10 line 23, the 2026-09-12 four-AI study).",
     "Check what exists: prob_table.py, label counts, the outcome labeler, and why the 09-13 parked design never shipped (prob_table.py and its tests exist and passed the 09-29 gate, GATE_REPORT_2026-09-29.md:19; what is missing is a run on current labels and any VERDICTS row).",
@@ -45,5 +57,6 @@
     "Ship, then stop; the operator opens a design talk in a new session."
   ],
   "tests": "BRIEF.md exists, cites file:line for each prior claim, and lists the open questions.",
-  "title": "Probability distribution layer: gather prior work and arrive with own design ideas for an operator design discussion"
+  "title": "Probability distribution layer: gather prior work and arrive with own design ideas for an operator design discussion",
+  "worker": "session"
 }

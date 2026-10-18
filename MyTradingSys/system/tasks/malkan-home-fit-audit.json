@@ -1,28 +1,53 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-18T04:12:07Z",
   "commands": [],
   "created": "2026-10-11T18:00:25Z",
   "depends_on": [
     "backtest-readiness-template",
-    "tom-layer-v2-cost",
-    "fabio-layer-v2-markets"
+    "tom-layer-v2-cost"
   ],
   "done_when": "HOME_FIT_AUDIT_MALKAN.md with 12 answered items and follow-up cards, each passing tasks.py check.",
+  "est_turns": 14,
   "from_inbox": "",
   "goal": "Apply the 12-point checklist to the Malkan RSI layer so its 'no edge' is read as measuring the encoding or the trader. Home = Indian equities on D/W/M charts; list what a fair test needs (his timeframes, horizon, an asset universe for N). BTC-only monthly bars are underpowered: say so.",
   "id": "malkan-home-fit-audit",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_MALKAN.md: 2 FAIR / 10 UNFAIR of 12; cards",
+      "ref": "68ecf682",
+      "utc": "2026-10-18T04:12:07Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Control Room pickup 2026-10-15: copy and apply 9 operator decisions (q-gap-a/b/c, q-pub-tr",
+      "ref": "d7749d092236",
+      "utc": "2026-10-15T09:54:44Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d7749d092236 Control Room pickup 2026-10-15: copy and apply 9 operator decisions (q-gap-a/",
+      "ref": "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
+      "utc": "2026-10-15T09:54:44Z"
+    }
+  ],
   "layers": [
     "rsi"
   ],
   "live_path": false,
-  "note": "",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Dropped dependency fabio-layer-v2-markets (OPUS, unrelated to this layer; DECISION OURS). Doc-only, no backtest. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "cloud-research 2026-10-11 (C-Cloud BACKTEST_FAILURES_RESEARCH.md; operator: 'get this into action')",
+  "refreshed": "2026-10-17T21:38:02Z",
   "refs": [],
-  "result": "",
+  "result": "research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_MALKAN.md: 2 FAIR / 10 UNFAIR of 12; cards malkan-ledger-parity-feasibility, malkan-universe-data-power, malkan-prereg-dwm-equities",
   "scope_in": [
     "MyTradingSys/research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md",
     "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
@@ -33,16 +58,20 @@
     "tuning",
     "new layers"
   ],
+  "scope_sha": "d7749d092236",
   "size": "S",
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md section 4, 6, 7"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "Answer each of the 12 checklist items for this layer with evidence (file:line, quote) or NOT_IN_DATA.",
     "Write MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_MALKAN.md: verdict FAIR / UNFAIR per item, the cheapest fix, and the order of cards it would need.",
     "Create at most 3 follow-up Sonnet cards via tasks.py new; no backtest here."
   ],
+  "taken": "2026-10-18T04:11:59Z",
   "tests": "test_pre_reg_template.py passes for the new HOME_FIT_AUDIT file (all 12 items answered; fails before the file exists).",
-  "title": "Home-fit audit of the Malkan RSI layer against the readiness checklist"
+  "title": "Home-fit audit of the Malkan RSI layer against the readiness checklist",
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

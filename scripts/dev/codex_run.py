@@ -3,7 +3,7 @@
   python scripts/dev/codex_run.py tick                 # scheduler entry: refresh the lab work tree, then `next`
   python scripts/dev/codex_run.py next [--dry]         # run the first ready, unclaimed CODEX card
   python scripts/dev/codex_run.py run <card> [--dry] [--force]   # run one card by id (--force: past the lab spend guard)
-  python scripts/dev/codex_run.py ask "<title>" --kind audit|build|run --scope <path> [--cmd ..] [--tests ..] [--goal ..]
+  python scripts/dev/codex_run.py ask "<title>" --kind audit|build|run --scope <path> [--cmd ..] [--tests ..] [--goal ..] [--mutation-check path/test.py::test_x]
   python scripts/dev/codex_run.py index                # regenerate MyTradingSys/research/layer_lab/INDEX.md
   python scripts/dev/codex_run.py status               # plain words: allowance, queue, deliveries, last runs, NEEDS A LOOK
   python scripts/dev/codex_run.py stop "<why>" | resume
@@ -92,6 +92,7 @@ TEMPLATES = {
     "build": {
         "steps": ["Write the test named in Tests first and see it fail on the current code.",
                   "Implement the goal inside scope_in only; new behaviour sits behind a flag that is off by default.",
+                  "Before finishing run `python scripts/dev/lookahead_lint.py --new`; fix FAIL hits on your files: write forward bars as zip(times, times[1:]), not times[i + 1]; a truly causal pair gets one reviewed row in scripts/dev/lookahead_allowlist.tsv (name it in scope_in).",
                   "Run the test file you changed (PYTHONPATH = the work tree root) until it passes. Do not run scripts/dev/run_all_tests.py: tests that create git repositories are refused in the sandbox; the runner runs the quick gate when it ships."],
         "scope_out": ["the live path", "holdout reads", "parameters without a trader quote (NO-SOURCE)"],
         "done_when": "The named test passes and the report lists the changed files and the red-then-green test output (the runner's ship runs the quick gate)."},
@@ -809,7 +810,7 @@ def cmd_next(a):
 
 def cmd_run(a):
     card = tasks.get(REPO, a.card)
-    miss = tasks.problems(card, tasks.load_all(REPO), tasks.registry(REPO))
+    miss = tasks.problems(card, tasks.load_all(REPO), tasks.registry(REPO), repo=REPO)
     if card.get("lane") != "CODEX" or card["state"] != "ready" or miss:
         raise SystemExit(f"codex_run: {a.card} must be a ready CODEX card: " + ("; ".join(miss) or f"lane {card.get('lane')}, state {card['state']}"))
     if not (a.dry or a.force):
@@ -839,7 +840,7 @@ def cmd_tick(a):
     return code
 
 
-def make_card(title, kind, scope, cid=None, goal="", cmds=(), tests="", size="S", prio=2, model="", effort=""):
+def make_card(title, kind, scope, cid=None, goal="", cmds=(), tests="", size="S", prio=2, model="", effort="", mutation_check=""):
     t = TEMPLATES[kind]
     card = tasks.blank(cid or sync.slugify(title), title, prio=prio, lane="CODEX")
     card.update(kind=kind, size=size, goal=goal or title, scope_in=list(scope), scope_out=list(t["scope_out"]), steps=list(t["steps"]),
@@ -848,16 +849,22 @@ def make_card(title, kind, scope, cid=None, goal="", cmds=(), tests="", size="S"
         card["model"] = model
     if effort:
         card["effort"] = effort
+    if mutation_check:
+        card["mutation_check"] = mutation_check
     return card
 
 
 def cmd_ask(a):
-    card = make_card(a.title, a.kind, a.scope, a.id, a.goal, a.cmd or [], a.tests or "", a.size, a.prio, a.model or "", a.effort or "")
+    card = make_card(a.title, a.kind, a.scope, a.id, a.goal, a.cmd or [], a.tests or "", a.size, a.prio, a.model or "", a.effort or "",
+                     getattr(a, "mutation_check", None) or "")
     if tasks.path_of(REPO, card["id"]).exists():
         raise SystemExit(f"codex_run: card {card['id']} exists")
-    miss = tasks.problems(card, tasks.load_all(REPO), tasks.registry(REPO))
+    miss = tasks.problems(card, tasks.load_all(REPO), tasks.registry(REPO), repo=REPO)
     if miss:
-        raise SystemExit("codex_run: not ready, nothing written: " + "; ".join(miss))
+        hint = ""
+        if card["kind"] == "build" and not card.get("mutation_check"):
+            hint = "; build cards need --mutation-check path/to/test.py::test_name (a test that rejects dummy or shuffled output)"
+        raise SystemExit("codex_run: not ready, nothing written: " + "; ".join(miss) + hint)
     card["state"] = "ready"
     print(f"wrote {tasks.save(REPO, card)} (ready, {' / '.join(tasks.codex_setting(card))}); commit and `sync.py ship` to queue it")
     return 0
@@ -1029,6 +1036,7 @@ def main(argv=None):
     k.add_argument("--prio", type=int, default=2, choices=range(1, 6))
     k.add_argument("--model")
     k.add_argument("--effort", choices=tasks.CODEX_EFFORTS)
+    k.add_argument("--mutation-check", help="build cards: path/to/test.py::test_name that rejects dummy or shuffled output")
     k.set_defaults(f=cmd_ask)
     sp.add_parser("index").set_defaults(f=cmd_index)
     st = sp.add_parser("status")

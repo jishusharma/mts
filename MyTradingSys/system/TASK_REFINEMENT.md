@@ -18,16 +18,23 @@ Refinement moves that scoping work to a cheap, separate step that runs ahead of 
 New is only: `scripts/dev/tasks.py`, cards in `MyTradingSys/system/tasks/<id>.json`, and the Backlog section of the page.
 
 ## The card (one JSON per task, sorted keys, ships with `sync.py ship`)
-`id` (registry id, else a slug), `title`, `state`, `prio` 1-5, `lane`, `size` S|M, `goal`, `scope_in`, `scope_out`, `steps`, `commands`,
-`tests`, `done_when`, `sources`, `depends_on`, `refs`, `live_path`, `approved_by`, `note`.
+`id` (registry id, else a slug), `title`, `state`, `prio` 1-5, `lane`, `size` S|M, `est_turns` (int), `worker` agent|session, `goal`, `scope_in`, `scope_out`, `steps`, `commands`,
+`tests`, `done_when`, `sources`, `depends_on`, `refs`, `live_path`, `approved_by`, `note`, `latest` (see State tag).
 - `refs` = registry rows this card closes while they are OPEN. A follow-up of a closed row (B160, B149) has NO refs: `sweep` retires a card whose refs are all closed.
 - States: `raw` (captured) -> `refined` (being scoped) -> `ready` (passes the gate) -> `active` -> `done`; `blocked` (operator hold) and `dropped`.
 - Lanes (cheapest tier that can do it): `DSA`/`DSA-NB`/`DSA-NUC` run-and-report; `HAIKU`, `SONNET` code and docs; `OPUS` only with `approved_by`; `JIS-NB` live host (desk task); `CODEX` layer lab (needs `kind` audit/run/build, LAYER_LAB.md; hidden from a plain `tasks.py next`).
 
+## State tag and LATEST (operator ask 2026-10-17: no searching for what is done where)
+Optional card fields `latest` (list of `{kind: ship|report|audit|decision|signal, ref: sha or path, utc, line}`, newest first, max 6), `scope_sha`, `refreshed`; code in `scripts/dev/task_state.py`.
+- `tasks.py brief <id>` ends with `STATE <tag>` and the newest 3 `LATEST` lines: the last commit over the card's scope paths (ship), the newest .md naming the card or its refs, the newest .md inside scope (audit if its name says so), plus manual ones. Read these before grepping anything.
+- Tag (derived, never trusted from the file): `READY`, `ACTIVE@<host>`, `SHIPPED@<sha>` (last commit touching the card JSON), `STALE:<why>` (scope changed after the last refresh, or all refs closed), else the state.
+- `tasks.py tag <id> [--refresh] [--add kind:ref --line ".."]` records a pointer (a decision, a signal); `tasks.py check` promotion refreshes, `tasks.py done` adds the ship entry, `tasks.py take` does not (a stale card shows STALE in its brief).
+- `tasks.py stale [--refresh]` lists ready/active cards whose scope paths changed since `refreshed` (refresh only after re-reading the card against the change). `lint` fails a ready card never refreshed, or stale longer than 24 h (the refiner refreshes on its hourly line; a fresher lag only shows as STALE).
+
 ## Definition of Ready (`tasks.py check`, fail closed; also in the offline gate as `tasks.py lint`)
 A card is `ready` only if all hold, and the tool names every miss:
 1. goal, done_when (an observable: file, row count, number), at least one scope_in and one step.
-2. lane valid; size S or M (an L card is split first: it must fit one ~50k-token session).
+2. lane valid; size S or M (an L card is split first); for SONNET/HAIKU/OPUS cards `est_turns` (whole number, <= 40, else split) and `worker`: agent only for size S and est_turns <= 15, else session (WORKERS.md; `tasks.py check` enforces it).
 3. Code lane: `tests` names the fail-first test. Run lane: copy-ready `commands`. OPUS: `approved_by`.
 4. `live_path` cards are lane JIS-NB only (builders never touch the live tree, restart, or open trades).
 5. No placeholder text (TBD/TODO/figure out), each field <= 400 chars, rendered brief <= 30 lines (CLAUDE.md prompt rule).
@@ -57,7 +64,7 @@ update that worktree (`git -C <wt> fetch -q origin`, then `git -C <wt> merge -q 
    - Needs a fact only the operator has: `tasks.py tried <id> --asks "<one short question>"`; the page shows it, the answer comes in the Inbox.
    - Needs numbers from a run: post a DSA desk task (DSA_DELEGATION.md) and leave the card `refined` with the desk id in `note`; do not run it yourself.
    - Size L: split into S/M cards (`tasks.py new`), drop the parent with a note. A new defect or task still gets its BUGS.md row under that file's rules.
-4. Product code is out of scope for the refiner (cards, docs, desk posts only). `tasks.py lint`, `sync.py ship --release <slug>`.
+4. Product code is out of scope for the refiner (cards, docs, desk posts only). Run `tasks.py stale`: for each listed card re-read the change, then `tasks.py tag <id> --refresh` (or park it with `tried`). `tasks.py lint`, `sync.py ship --release <slug>`.
 5. One pass per HOURLY line, 3 cards max, routine model. The brake: a card gets 2 tries, a question parks it at once, and parked cards do not count toward REFINE_NEEDED.
 
 ## Operator controls (Control Room > Backlog; no other page)
@@ -71,3 +78,6 @@ pickup turns it into a raw card and replies with the card id. The operator never
 - Cost: capture costs nothing, refinement is Sonnet/Haiku/DSA, builders get a <= 30-line prompt. Nobody pays to re-derive scope.
 - Numbers rule (2026-10-13): a card that sets a parameter labels it SOURCED (quote + file:line in `sources`) or OURS (chosen on DEV, checked once on VALIDATION).
 - PRE_REG template (`research/gross_effect_screen_2026-10-15/PRE_REG.md`): before freezing, run `python scripts/dev/verdicts.py check "<family words>"` and paste its output; append your row after RESULT (`verdicts.py backfill`; `verdicts.py count --split DEV` is the m for a Holm adjustment). Then run `python scripts/dev/prereg_gate.py --n <days> --sd <sd R> --cost <R> --m <m>`: exit 1 = MDE + cost exceeds the 0.30 R plausible gross (OURS), so do not freeze. Registry: `research/VERDICTS.csv`; exit 1 = a one_run PRE_REG or a FAIL already covers this family.
+- Weight and review gate (lab_guy v3.1): `weight` is routine|important|crucial|critical (plus B-SHARED, set automatically) and the optional class is C0-C3 (`class` field or `class=Cn` in the note). The reviewer/planner sets them, never the producer. A card of weight crucial/critical or class C2/C3 cannot be `take`n or marked `done` without `REVIEWED: <who> <date>` in its note, and `done` also needs a non-empty `--result` receipt (`tasks.py review_gate`). routine/important/C0/C1 are not blocked. OPUS-lane cards still need `crucial`.
+
+Result (2026-10-17): the state tag + LATEST block ship with `tasks.py tag|stale`; 33 ready cards were refreshed once, lint stays green.

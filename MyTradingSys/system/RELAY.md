@@ -1,6 +1,6 @@
-# RELAY - how one session starts the next with no operator input (operator ask 2026-10-10)
+# RELAY - how one session starts the next with no operator input
 
-Super session: relay paused. `budget.py` THROTTLE: tick prints `NOOP | budget=THROTTLE`. History: `archive/relay_2026-10-15/`.
+> RETIRED 2026-10-17, see SCHEDULING_POLICY.md: no relay or dispatcher runs, the coordinator starts sessions. History: `archive/relay_2026-10-15/`.
 
 ## Pieces
 | Piece | Role |

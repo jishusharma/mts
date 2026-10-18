@@ -1,24 +1,49 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T10:00:47Z",
   "commands": [],
   "created": "2026-10-11T19:49:48Z",
   "depends_on": [],
   "done_when": "token_audit.py rerun on 3+ new kick sessions shows first-turn input and mean cache-read per kick below the 2026-10-12 baseline (65188 / 1671109); numbers in research/TOKEN_AUDIT_<date>.md.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Cut the always-loaded ~65k-token prefix of unattended relay/dispatcher sessions (audit cut #1, #4) without touching interactive sessions.",
   "id": "b172-trim",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "kick first-turn 35k median / cache-read 807803 vs 65188/1671109 baseline; TOKEN_AUDIT_2026",
+      "ref": "3f606a86",
+      "utc": "2026-10-17T10:00:47Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "dispatcher-t0-precheck: gate runs the hourly refiner status model-free",
+      "ref": "03fca725e5ae",
+      "utc": "2026-10-16T21:11:25Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "3ff161a82e42 B4 adoption: boot docs and prompts say sync.py ship --release <slug>",
+      "ref": "scripts/sched/relay_prompts/relay_session.md",
+      "utc": "2026-10-16T18:15:08Z"
+    }
+  ],
   "live_path": false,
   "note": "Relay queue = LAYER_REBUILD_PLAN s6 (coordinator 2026-10-15, observer). Release: tasks.py apply-op <id> release, then tasks.py check <id>",
   "pinned": false,
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "relay-sonnet-2026-10-12",
+  "refreshed": "2026-10-17T08:58:55Z",
   "refs": [
     "B172"
   ],
-  "result": "",
+  "result": "kick first-turn 35k median / cache-read 807803 vs 65188/1671109 baseline; TOKEN_AUDIT_2026-10-17.md",
   "scope_in": [
     "scripts/sched/relay_prompts/*.SKILL.md",
     "scripts/sched/relay_prompts/relay_session.md",
@@ -30,16 +55,18 @@
     "live tree",
     "interactive session settings"
   ],
+  "scope_sha": "03fca725e5ae",
   "size": "M",
   "sources": [
     "MyTradingSys/research/TOKEN_AUDIT_2026-10-12.md"
   ],
-  "state": "blocked",
+  "state": "done",
   "steps": [
     "Measure which sources load in a kick session (CLAUDE.md, memory index, skills list, MCP instructions) from one transcript's first turn.",
     "Add a relay-only trim: dispatcher/relay prompts cap tool output (tail/--quiet) and start from a lean profile where the App allows; record what cannot be trimmed.",
     "Rerun token_audit.py after 3 kick sessions; write before/after table into the new audit file."
   ],
   "tests": "test_relay_prompts.py::test_prompts_carry_output_caps fails on the current prompt files (no tail/--quiet caps), passes after the edit.",
-  "title": "B172 step 2: trim always-loaded context (CLAUDE.md, memory, skills) per TOKEN_AUDIT ranked cuts, before/after token counts"
+  "title": "B172 step 2: trim always-loaded context (CLAUDE.md, memory, skills) per TOKEN_AUDIT ranked cuts, before/after token counts",
+  "worker": "session"
 }

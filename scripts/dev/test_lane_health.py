@@ -174,6 +174,52 @@ class CommitShip(unittest.TestCase):
                 L.git = old
             self.assertEqual(int(g("rev-list", "--count", "HEAD").stdout.strip()), before + 1)
 
+class HeartbeatSideBranch(unittest.TestCase):
+    """B17: an hourly heartbeat must not edit lane_state.json (that was 55 trunk commits in 72 h); it goes to a side branch."""
+
+    def setUp(self):
+        import subprocess
+        self.d = tempfile.TemporaryDirectory()
+        root = Path(self.d.name)
+        self.sub = lambda *a, cwd=root: subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", *a], cwd=cwd, capture_output=True, text=True)
+        self.sub("init", "-q", "--bare", "remote.git")
+        self.repo, self.other = root / "lab", root / "watchdog"
+        for r in (self.repo, self.other):
+            self.sub("clone", "-q", str(root / "remote.git"), r.name)
+        L.save(self.repo, L.blank())
+        T.save(self.repo, card("a-audit"))
+        self.sub("add", "-A", cwd=self.repo)
+        self.sub("commit", "-qm", "base", cwd=self.repo)
+        self.sub("push", "-q", "origin", "HEAD:refs/heads/main", cwd=self.repo)
+        self.sub("pull", "-q", "origin", "main", cwd=self.other)
+
+    def tearDown(self):
+        self.d.cleanup()
+
+    def test_beat_goes_to_the_side_branch_and_the_state_file_stays_clean(self):
+        L.sweep(self.repo, NOW, do_apply=True, beating=True)
+        L.sweep(self.repo, NOW + timedelta(hours=2), do_apply=True, beating=True)
+        self.assertEqual(self.sub("status", "--porcelain", "--", L.STATE, cwd=self.repo).stdout.strip(), "")
+        self.assertEqual(L.load(self.repo)["heartbeat"], "")
+        self.assertEqual(self.sub("show", f"{L.HB_REF}:heartbeat", cwd=Path(self.d.name) / "remote.git").stdout.strip(), L.iso(NOW + timedelta(hours=2)))
+        self.assertEqual(self.sub("rev-list", "--count", L.HB_REF, cwd=Path(self.d.name) / "remote.git").stdout.strip(), "2")
+
+    def test_another_host_sees_the_beat_and_a_dead_lab_still_goes_down(self):
+        L.sweep(self.repo, NOW, do_apply=True, beating=True)
+        line = L.sweep(self.other, NOW + timedelta(hours=1), do_apply=True)   # watchdog, no --beat: reads the side branch
+        self.assertIn("gpt=up", line)
+        self.assertEqual(L.load(self.other)["heartbeat"], "")
+        line = L.sweep(self.other, NOW + timedelta(hours=4), do_apply=True)   # lab silent for 4 h > HEARTBEAT_DOWN_S
+        self.assertIn("gpt=down reason=heartbeat", line)
+        self.assertEqual(L.load(self.other)["heartbeat"], L.iso(NOW))   # a real state change still saves, with the newest beat in it
+
+    def test_no_remote_falls_back_to_the_state_file(self):
+        with tempfile.TemporaryDirectory() as d:
+            T.save(Path(d), card("a-audit"))
+            L.sweep(Path(d), NOW, do_apply=True, beating=True)
+            self.assertEqual(L.load(Path(d))["heartbeat"], L.iso(NOW))
+
+
 class Reroute(unittest.TestCase):
     def setUp(self):
         self.down = L.record_run(L.blank(), "LIMIT", "credits", NOW)
@@ -283,6 +329,21 @@ class EndToEnd(unittest.TestCase):
         done = self.cards()["a-audit"]
         self.assertEqual(done["state"], "done")
         self.assertIn("via DSA", done["result"])
+
+    def test_finished_dsa_row_does_not_close_unreviewed_hard_card(self):
+        for extra in ({"weight": "crucial"}, {"class": "C2"}):
+            with self.subTest(extra=extra):
+                c = self.cards()["a-audit"]
+                c.update(extra)
+                T.save(self.repo, c)
+                L.save(self.repo, L.record_run(L.blank(), "LIMIT", "credits", NOW))
+                L.sweep(self.repo, NOW, do_apply=True)
+                row = desk.tasks(self.repo)[0]
+                row.update(status="done", result="verdict SOUND, report r.md")
+                desk.save(self.repo, row)
+                out = L.sweep(self.repo, NOW + timedelta(hours=1), do_apply=True)
+                self.assertNotEqual(self.cards()["a-audit"]["state"], "done")
+                self.assertIn("not closed", out)
 
     def test_codex_run_skips_rerouted_and_prefers_crucial_on_probe(self):
         cs = [card("a", reroute={"to": "DSA", "desk": "r"}), card("b"), card("c", crucial=True)]

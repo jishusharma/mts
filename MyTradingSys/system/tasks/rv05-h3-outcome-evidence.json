@@ -3,8 +3,11 @@
   "asks": "",
   "commands": [],
   "created": "2026-10-13T05:35:47Z",
-  "depends_on": [],
-  "done_when": "Explain the -2910 daily delta versus -1760 partial-stop label with execution evidence, or retain an inferred outcome and unknown fill price.",
+  "depends_on": [
+    "rv05-h2-position-line-evidence"
+  ],
+  "done_when": "F13-x CSV note and ledger .md F13 paragraph record the 1150 gap as NOT_IN_DATA with 20668-17758=2910 and 2910-1760=1150 shown, exit price blank, exit cause INFERRED, no fabricated fill; the new test fails before and passes after. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+  "est_turns": 12,
   "from_inbox": "",
   "goal": "Integrate RV05 H3 with the existing F13 outcome repair.",
   "id": "rv05-h3-outcome-evidence",
@@ -13,20 +16,34 @@
     "fabio"
   ],
   "live_path": false,
-  "note": "Evidence follow-up to existing repair, not a parallel duplicate implementation. See RV05 report.",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:data CLASS:C1 REVIEWER:GPT medium + Lab_Guy Sonnet 5.5 (labguy-pass-b) WEIGHT:IMPORTANT. Small follow-on to rv05-h2; same files, so after it. LAB_GUY 2026-10-18 fixes: the test 'F13 row has exit mechanism inferred and fill price blank' already passes on the current CSV (E4: a test that cannot fail); the real delta is the unwritten 1150 gap, test rewritten to fail first; caption path and test file added to scope. Class C1: ledger data read by Fabio layer cards.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [
-    "MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md"
+    "MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md",
+    "MyTradingSys/research/lab_guy/specs/rv05-h3-outcome-evidence.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
+    "MyTradingSys/research/fabio_transfer/test_ledger_audit.py"
+  ],
+  "scope_out": [
+    "backtests",
+    "engine code"
+  ],
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "RV05 H3: incorporate partial stop coverage evidence into existing F13 outcome repair"
+  "state": "refined",
+  "steps": [
+    "Baseline (already repaired by AUDIT H2): CSV line 51 F13-x has exit price '-', cause INFERRED and -2910 vs -1760, but the 1150 difference is written nowhere. Hand check: 20668-17758=2910, 2910-1760=1150; frame DyS79Eb92Ug_w10_00 t=3525/3550/3575; caption F:/MTS/data/fabio_videos/DyS79Eb92Ug.txt:1455-1457.",
+    "Add to the F13-x CSV note and the .md F13 paragraph: difference 1150 USD = NOT_IN_DATA (not slippage, cost or a discretionary fill: none proven); exit price stays '-'; if rv05-h2 changed F13/F13-m1 entry or the 8-vs-10 coverage reading, restate the -1760 denominator with h2's convention.",
+    "no cost, slippage or fill price is assumed anywhere"
+  ],
+  "tests": "add test_f13_gap_1150_not_in_data to MyTradingSys/research/fabio_transfer/test_ledger_audit.py: F13-x CSV note and the .md F13 paragraph contain '1150' and 'NOT_IN_DATA' (absent today, so it fails before the edit); exit price cell is '-' or blank; no assertion of slippage or a cost amount; the existing test_exit_rows_do_not_claim_fills_or_causes stays green",
+  "title": "RV05 H3: incorporate partial stop coverage evidence into existing F13 outcome repair",
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }

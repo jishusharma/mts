@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T21:00:46Z",
   "commands": [],
   "created": "2026-10-16T19:53:45Z",
   "depends_on": [],
@@ -12,14 +13,14 @@
   "lane": "CODEX",
   "layers": [],
   "live_path": false,
-  "note": "Do not open the key.",
+  "note": "Do not open the key. Run AFTER g3-remove-visible-chart-cues-that-disclo (blindness fix, done 2026-10-17): also confirm the chart cues are gone and decide if the draw rebuild is safe.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [
     "MyTradingSys/research/layer_lab/reports/2026-10-16_gpt-g3-pack-audit.md"
   ],
-  "result": "",
+  "result": "MATCH 11/11 causality; report MyTradingSys/research/layer_lab/reports/2026-10-16_g3-pack-audit-rerun.md",
   "scope_in": [
     "MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py",
     "MyTradingSys/research/g3_marks_2026-10-16/test_g3_pack.py"
@@ -33,11 +34,12 @@
   "sources": [
     "g3-pack-code-fixes 2026-10-16"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Re-run the poison probe and test_g3_pack.py (11 tests) on current g3_pack.py",
     "Compare the three fixed functions with READER_PROTOCOL sec.1 and list verdicts",
-    "State whether a draw rebuild is safe (blindness cards open: default no)"
+    "State whether a draw rebuild is safe (blindness cards open: default no)",
+    "Confirm blindness fix: TOM-15 range always drawn, no clock labels, selection rules only in ANSWER_KEY_CLOSED"
   ],
   "tests": "Audit report with the three verdicts and probe counts.",
   "title": "G3 pack audit rerun after the three code fixes (fab4 min run, mal divergence window, intraday fence); blindness cards still open"

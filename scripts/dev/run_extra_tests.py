@@ -17,15 +17,35 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 EXTRA = [
+    "MyTradingSys/research/layer_lab/formula_spec_text/test_formula_spec.py",
+    "MyTradingSys/research/wavetrend_2026-10-17/test_wt_parity_ref.py",
+    "MyTradingSys/research/wavetrend_2026-10-17/test_count_events.py",
     "scripts/dev/test_trace.py",
+    "scripts/dev/test_lab_query.py",
+    "scripts/dev/test_health_audit.py",
+    "scripts/dev/test_mts_doctor.py",
     "scripts/dev/test_prereg_gate.py",
     "scripts/dev/test_research_kit_lint.py",
     "MyTradingSys/research/layer_lab/context_fix2_mde_rule/test_mde_rule.py",
     "MyTradingSys/research/layer_lab/candle_pattern_event_table/test_patterns.py",
     "MyTradingSys/research/layer_lab/context_fix1_stop_strata/test_stop_strata.py",
     "MyTradingSys/research/layer_lab/bigtrade_event_table/test_event_table.py",
+    "MyTradingSys/backtest/bigtrade/test_relabel_fires_split.py",
+    "MyTradingSys/research/layer_lab/funding_extreme_event_table/test_event_table.py",
+    "MyTradingSys/research/layer_lab/dev_split_guard/test_event_table.py",
     "MyTradingSys/research/layer_lab/oi_delta_event_table/test_event_table.py",
     "MyTradingSys/research/layer_lab/volume_event_table/test_event_table.py",
+    "MyTradingSys/research/layer_lab/forward_excursion/test_event_table.py",
+    "MyTradingSys/research/layer_lab/session_levels_event_table/test_event_table.py",
+    "MyTradingSys/research/layer_lab/bb_top_reversal_event_table/test_event_table.py",
+    "MyTradingSys/research/layer_lab/malkan_rsi_event_table/test_event_table.py",
+    "MyTradingSys/research/layer_lab/rsi_reclaim_event_table/test_event_table.py",
+    "MyTradingSys/research/layer_lab/cc_msb_event_table/test_event_table.py",
+    "MyTradingSys/research/layer_lab/fabio_escalation_event_table/test_event_table.py",
+    "MyTradingSys/research/layer_lab/rsi_divergence_event_table/test_event_table.py",
+    "MyTradingSys/research/layer_lab/session_momentum_event_table/test_event_table.py",
+    "MyTradingSys/research/layer_lab/turn_of_candle_event_table/test_event_table.py",
+    "MyTradingSys/research/layer_lab/fabio_lvn_touch_event_table/test_event_table.py",
     "scripts/dev/test_lab_flow.py",
     "MyTradingSys/research/qriptal_2026-10-10/test_ledger.py",
     "MyTradingSys/research/qriptal_2026-10-10/test_score_calls.py",
@@ -38,6 +58,7 @@ EXTRA = [
     "MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/test_study.py",
     "MyTradingSys/research/mal_bb_mid_engulf_2026-10-16/test_study.py",
     "MyTradingSys/research/layer_lab/candle_close_2026-10-14/test_study.py",
+    "MyTradingSys/research/layer_lab/candle_close_2026-10-14/test_pre_reg_spec.py",
     "MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py",
     "MyTradingSys/research/context_factors_pit_2026-10-16/test_context_asof.py",
     "MyTradingSys/research/context_null_2026-10-16/test_context_null.py",
@@ -76,11 +97,28 @@ EXTRA = [
     "scripts/worker/test_audit_t0_checks.py",
     "tests/test_worker_prefix_hash.py",
     "scripts/dev/test_fabio_prescreen.py",
+    "MyTradingSys/research/fabio_transfer/test_ledger_audit.py",
     "scripts/dev/test_asr_to_canonical.py",
     "scripts/dev/test_sched_scripts.py",
     "scripts/dev/test_run_extra_tests.py",
     "scripts/dev/test_ci_deps_lint.py",
 ]
+STUDY_ROOT = "MyTradingSys/research/"
+
+
+def discovered(repo=None):
+    """Tracked test_*.py under a study folder that EXTRA does not list and run_all_tests.py does not name: they run
+    without a hand-kept entry (2026-10-17 audit: the two-list registration cost ~100 commits and several red gates in 72 h)."""
+    repo = Path(repo or REPO)
+    out = subprocess.run(["git", "ls-files", "--", STUDY_ROOT], cwd=repo, capture_output=True, text=True).stdout.splitlines()
+    gate_py = repo / "scripts" / "dev" / "run_all_tests.py"
+    gate = gate_py.read_text(encoding="utf-8") if gate_py.exists() else ""
+    return sorted(p for p in out if p.endswith(".py") and Path(p).name.startswith("test_") and "archive" not in p.lower()
+                  and p not in EXTRA and f'"{Path(p).stem}"' not in gate and f"{Path(p).stem}.py" not in gate)
+
+
+def all_tests(repo=None):
+    return EXTRA + discovered(repo)
 
 
 def jobs():
@@ -139,7 +177,7 @@ def main():
     except (AttributeError, ValueError):
         pass
     tmp = Path(tempfile.mkdtemp(prefix="mts_xt_"))
-    bad = run_files(EXTRA, jobs(), tmp=tmp)
+    bad = run_files(all_tests(), jobs(), tmp=tmp)
     shutil.rmtree(tmp, ignore_errors=True)
     print("extra tests: " + ("FAIL " + ", ".join(bad) if bad else "PASS"))
     return 1 if bad else 0

@@ -7,3 +7,14 @@ wlow_bounce_bbrsi60_2026-10-16,L2_cvd_sign,2026-10-16,DEV,F:/MTS/data/tom_raw/kl
 wlow_bounce_bbrsi60_2026-10-16,L2_cvd_median,2026-10-16,DEV,F:/MTS/data/tom_raw/klines 1m->1h,layer CVD change median split,pre-registered
 wlow_bounce_bbrsi60_2026-10-16,L3_netdelta_sign,2026-10-16,DEV,F:/MTS/data/tom_raw/klines 1m->1h,layer net delta hold window sign split,pre-registered
 wlow_bounce_bbrsi60_2026-10-16,L3_netdelta_median,2026-10-16,DEV,F:/MTS/data/tom_raw/klines 1m->1h,layer net delta hold window median split,pre-registered
+wavetrend_2026-10-17,WT-A01_W01,2026-10-17,DEV,F:/MTS/data/tom_raw/klines 1m->5m,5m A1_L53 trend:trend_with primary 12-bar gross vs random clock (Holm m=9),pre-registered
+wavetrend_2026-10-17,WT-A02_W02,2026-10-17,DEV,F:/MTS/data/tom_raw/klines 1m->5m,5m A1_L53 htf:htf_mid primary 12-bar gross vs random clock (Holm m=9),pre-registered
+wavetrend_2026-10-17,WT-A03_W03,2026-10-17,DEV,F:/MTS/data/tom_raw/klines 1m->5m,5m A2_L53 trend:trend_with primary 12-bar gross vs random clock (Holm m=9),pre-registered
+wavetrend_2026-10-17,WT-A04_W04,2026-10-17,DEV,F:/MTS/data/tom_raw/klines 1m->15m,15m A2_L53 trend:trend_with primary 12-bar gross vs random clock (Holm m=9),pre-registered
+wavetrend_2026-10-17,WT-A05_W05,2026-10-17,DEV,F:/MTS/data/tom_raw/klines 1m->15m,15m B2 htf:htf_mid primary 12-bar gross vs random clock (Holm m=9),pre-registered
+wavetrend_2026-10-17,WT-A06_W06,2026-10-17,DEV,F:/MTS/data/tom_raw/klines 1m->15m,15m B2 trend:trend_with primary 12-bar gross vs random clock (Holm m=9),pre-registered
+wavetrend_2026-10-17,WT-A07_W07,2026-10-17,DEV,F:/MTS/data/tom_raw/klines 1m->1h,1h C1 trend:trend_with primary 12-bar gross vs random clock (Holm m=9),pre-registered
+wavetrend_2026-10-17,WT-A08_W08,2026-10-17,DEV,F:/MTS/data/tom_raw/klines 1m->1h,1h C1 htf:htf_mid primary 12-bar gross vs random clock (Holm m=9),pre-registered
+wavetrend_2026-10-17,WT-A09_W09,2026-10-17,DEV,F:/MTS/data/tom_raw/klines 1m->1h,1h B1 htf:htf_mid primary 12-bar gross vs random clock (Holm m=9),pre-registered
+krown_recall_2026-10-18,RC-I1,2026-10-18,DEV,F:/MTS/data/krown_daily BTCUSDT 1d/1w + Coinbase BTC-USD 1d (<2024-07-01),recall iteration 1: v0 detectors unchanged; 12 listed examples 3 verified 0 hit strict within 2 bars; bar >=6 strict,FAIL (bar unreachable: 3 verified)
+krown_recall_2026-10-18,RC-F1,2026-10-18,DEV,F:/MTS/data/krown_daily BTCUSDT 1d 2017-08..2024-06,fire rate per setup S1-S9 vs 1.0 per 10 daily bars ceiling,PASS (max S2 0.367)

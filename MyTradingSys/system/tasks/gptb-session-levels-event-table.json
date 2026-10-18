@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T23:01:27Z",
   "commands": [],
   "created": "2026-10-16T16:10:00Z",
   "depends_on": [],
@@ -19,7 +20,7 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
-  "result": "",
+  "result": "445 rows; MyTradingSys/research/layer_lab/reports/2026-10-16_gptb-session-levels-event-table.md",
   "scope_in": [
     "MyTradingSys/research/layer_lab/session_levels_event_table/event_table.py",
     "MyTradingSys/research/layer_lab/session_levels_event_table/test_event_table.py",
@@ -38,7 +39,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read scope_in sources and write the test file first; run it and confirm it fails (red).",
     "Implement the module in research/layer_lab only; DEV data only, missing input = NOT_IN_DATA.",

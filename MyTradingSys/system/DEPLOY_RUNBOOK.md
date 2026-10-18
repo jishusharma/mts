@@ -1,5 +1,7 @@
 # DEPLOY RUNBOOK (live tree on JIS-NB)
 
+> **RETIRED 2026-10-17, see SCHEDULING_POLICY.md.** MTS-AutoDeploy, MTS-DailyHygiene, MTS-Supervisor, MTS-CodexLab and the other scheduled tasks below are stopped: deploy by the manual fallback or a coordinator-run step. Registration and zero-cost-tick sections are history.
+
 Since 2026-10-10 the deploy runs by itself: scheduled task `MTS-AutoDeploy` (every 15 min) runs `python scripts/dev/auto_deploy.py` on the host
 that holds `.mts_live`. Builders never deploy by hand while it works (fallback: "Manual fallback" below) and never stop or restart processes. Code reaches the live tree only from
 `origin/green/fast-track`, the SHA CI gated on ubuntu AND windows (.github/workflows/ci.yml, job `mark-green`), never from an untested tip.

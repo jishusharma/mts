@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-17T09:02:21Z",
+  "depends_on": [
+    "cryptocred-htf-count-power"
+  ],
+  "done_when": "PRE_REG_CRYPTOCRED_HTF.md complete (items 1-12, gates 0a-0f, every number labelled, COUNT_POWER numbers tagged UNCHECKED-BASE, kill rule and redesign budget stated); the extended test is green; operator can approve the backtest card from it.",
+  "est_turns": 20,
+  "from_inbox": "",
+  "goal": "Fill backtest/PRE_REG_TEMPLATE.md for a CryptoCred 4h/1d redesign: invalidation-based stop with an OURS buffer in noise units, trailing/FTA exits next to the fixed bracket, sealed holdout, trial ledger, regime stratification and the kill rule (gate 0f). No backtest.",
+  "id": "cryptocred-prereg-4h-1d",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "COUNT_POWER: fix 1h reading",
+      "ref": "380ae4e3eacc",
+      "utc": "2026-10-17T18:24:17Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "380ae4e3eacc COUNT_POWER: fix 1h reading",
+      "ref": "MyTradingSys/research/cryptocred_htf_2026-10/COUNT_POWER.md",
+      "utc": "2026-10-17T18:24:17Z"
+    }
+  ],
+  "layers": [
+    "cryptocred"
+  ],
+  "live_path": false,
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:results CLASS:C1 REVIEWER:GPT medium + Haiku re-derives 1-3 decision numbers (the 4h fills 207 and 200 and one cost_r from the raw klines, which also checks COUNT_POWER.md) WEIGHT:CRUCIAL. HOLD-CLEARED A-20261018-5 (lifted by the operator 2026-10-18); COUNT_POWER.md stays UNCHECKED, so every number taken from it is tagged UNCHECKED-BASE in the PRE_REG. Lab_Guy 2026-10-18 keeps C1 and CRUCIAL (kill rule and redesign budget are decision numbers; one downstream reader). Card fixes: test_pre_reg_template.py only globs HOME_FIT_AUDIT_*, so the old test could not fail for the new file (E4): the extension is now step 1 and fail-first; COUNT_POWER cost_r belongs to the old 0.1% stop and must be recomputed for the redesign (E6); klines files with sha and ONE cost model named (E1); worker raised from agent to session (more than 15 turns). DECISION (OURS): ready now, no wait for a trust tag. Verify (worker): content commit sha, git cherry origin/fast-track <sha> empty AND git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "cryptocred-home-fit-audit 2026-10-17",
+  "refreshed": "2026-10-18T04:24:06Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
+    "MyTradingSys/backtest/test_pre_reg_template.py",
+    "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_CRYPTOCRED.md",
+    "MyTradingSys/research/cryptocred_htf_2026-10/COUNT_POWER.md",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/DATA_MANIFEST.csv",
+    "MyTradingSys/backtest/power_mde.py",
+    "MyTradingSys/backtest/fees.py"
+  ],
+  "scope_out": [
+    "any P&L backtest run",
+    "tuning",
+    "edits to live-path code"
+  ],
+  "scope_sha": "380ae4e3eacc",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_CRYPTOCRED.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "First extend MyTradingSys/backtest/test_pre_reg_template.py so it also globs PRE_REG_CRYPTOCRED_HTF.md (items 1-12 present, gates 0a-0f answered, no template placeholder or NOT_ANSWERED left) and run it: it must FAIL (file absent) before step 2.",
+    "Write MyTradingSys/research/cryptocred_htf_2026-10/PRE_REG_CRYPTOCRED_HTF.md with all 12 items and gates 0a-0f answered (items 1-5, 7 may cite HOME_FIT_AUDIT_CRYPTOCRED.md rows); label every number SOURCED (quote + file:line) or OURS. Numbers taken from COUNT_POWER.md (commit 380ae4e3eacc) are tagged UNCHECKED-BASE.",
+    "Redesign numbers: recompute stop width, cost R and MDE for the NEW stop (invalidation + OURS buffer in noise units) from signal-bar structure only, no forward bars; COUNT_POWER cost_r is for the old 0.1% stop. Name the klines files with sha256 (DATA_MANIFEST.csv), ONE cost model (Deribit fees.py or Binance 14 bp) and DEV <= 2024-06-30; HOLDOUT sealed.",
+    "State which result ends the source (kill rule 0f) and the redesign budget; trial-ledger rows for any grid; regime strata per item 12; create no further cards."
+  ],
+  "tests": "test_pre_reg_template.py extended to glob PRE_REG_CRYPTOCRED_HTF.md (items 1-12 and gates 0a-0f answered): it fails before the file exists and when any item is unanswered, and passes for the finished file.",
+  "title": "CryptoCred: pre-registration for the 4h/1d redesign (items 6/8/11/12)",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

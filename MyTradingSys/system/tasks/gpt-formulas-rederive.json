@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T12:27:46Z",
   "commands": [],
   "created": "2026-10-15T12:47:16Z",
   "crucial": true,
@@ -11,14 +12,43 @@
   "id": "gpt-formulas-rederive",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "SOUND: 10/13 rows match, 2 LOW (S13 example vs B103 span guard), 1 NOT_IN_DATA (S12 ATR Ja",
+      "ref": "da8f9bb8",
+      "utc": "2026-10-17T12:27:46Z"
+    },
+    {
+      "kind": "ship",
+      "line": "SOUND: 11/13 rows match; 2 LOW (S13 example vs B103 span guard), S12 ATR NOT_IN_DATA; laye",
+      "ref": "da8f9bb8",
+      "utc": "2026-10-17T12:27:41Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "trendline-contract-spec: apply review fixes (L6 scope, E9-E11 gaps, tie example)",
+      "ref": "c768076dcafe",
+      "utc": "2026-10-17T04:42:49Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "c768076dcafe trendline-contract-spec: apply review fixes (L6 scope, E9-E11 gaps, tie examp",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-10-17T04:42:49Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "note": "codex-feed 2026-10-16: output paths and .py.txt added; before this the card named no output folder (an audit may write only under research/layer_lab/, so the run would have ended OUT_OF_SCOPE on an astra run, about 60 window points).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-17T07:24:47Z",
   "refs": [],
-  "result": "",
+  "result": "SOUND: 10/13 rows match, 2 LOW (S13 example vs B103 span guard), 1 NOT_IN_DATA (S12 ATR Java absent); layer_lab/gpt-formulas-rederive/FORMULAS_REDERIVE.md",
   "scope_in": [
     "MyTradingSys/backtest/layers/FORMULAS.md",
     "MyTradingSys/runtime/mts_math.py",
@@ -30,9 +60,10 @@
     "holdout reads",
     "BTC runs of the current encoding (ROADMAP section 2)"
   ],
+  "scope_sha": "c768076dcafe",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "From FORMULAS.md sections 7, 12, 13 and 17 only (no code yet) write down each worked example and recompute its expected number; record your value before opening any code.",
     "Then read mts_math.py calculate_net_rr, trade_costs.py and runner.py and evaluate the same inputs: repo value per example. Table columns: example, FORMULAS value, GPT value, repo value, match; every mismatch cites the deciding definition line (file:line).",

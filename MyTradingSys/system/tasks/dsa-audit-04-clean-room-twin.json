@@ -12,16 +12,19 @@
   "created": "2026-10-15T23:28:58Z",
   "depends_on": [],
   "done_when": "T04_clean_room_twin.md shipped: ambiguity log, per-study diff by class, every difference classified, verdict on shipped vs twin vs corrected events, twins in scripts/T04/, S1/S2 carded.",
+  "est_turns": 36,
   "from_inbox": "",
   "goal": "Build an independent second implementation of two G5 studies from their PRE_REG.md alone, diff it event by event against the shipped study, and classify every difference as spec ambiguity, shipped bug or twin bug.",
   "id": "dsa-audit-04-clean-room-twin",
   "lane": "DSA-NB",
+  "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:results CLASS:C1 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
+  "refreshed": "2026-10-17T07:16:28Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md",
     "MyTradingSys/research/mal_bb_mid_engulf_2026-10-16/PRE_REG.md",
@@ -39,6 +42,7 @@
     "F:/AIBridge and scripts/aibridge",
     "changing any verdict, ledger or pre-registered bar"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [],
   "state": "ready",
@@ -51,5 +55,7 @@
     "Time left: a third twin for opr_preopen_tops H2."
   ],
   "tests": "",
-  "title": "DSA audit T04: clean-room twin of mal_bb and weekly-low sweep from PRE_REG only, diffed event by event"
+  "title": "DSA audit T04: clean-room twin of mal_bb and weekly-low sweep from PRE_REG only, diffed event by event",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
