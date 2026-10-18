@@ -4,33 +4,55 @@
   "commands": [],
   "created": "2026-10-18T17:22:58Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "A lab card naming a missing formula id fails `tasks.py check <id>` with exit 1; a valid card still passes; test_tasks_lab_precheck.py passes.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Add zero-token Lab pre-checks inside `tasks.py check`: formula id exists in FORMULAS.md, holdout path exists, split dates present (lab_guy.md:25) (RU5).",
   "id": "ru5-lab-guy-zero-token-lab-pre-check-in-",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tasks.py dispatch: one ranked dispatch snapshot for Session_Planner (RU1)",
+      "ref": "93560b51e352",
+      "utc": "2026-10-18T18:24:23Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "mutation_check": "",
-  "note": "",
+  "mutation_check": "Each new test fails on pre-change code.",
+  "note": " routed by Pipeliner 2026-10-18 (ROUTING.md)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-18T18:38:54Z",
   "refs": [
     "MyTradingSys/research/roles/ROLE_UPGRADES_2026-10-18.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "MyTradingSys/tests/test_tasks_lab_precheck.py"
+  ],
+  "scope_out": [
+    "live tree, HALT files, trades",
+    "other scripts"
+  ],
+  "scope_sha": "93560b51e352",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read lab_guy.md:25 and tasks.py problems()",
+    "Add holdout-path and split-date checks beside the formula-id check",
+    "Fail-first fixture tests",
+    "Run run_all_tests.py --quick, ship"
+  ],
+  "tests": "MyTradingSys/tests/test_tasks_lab_precheck.py",
   "title": "RU5 Lab_Guy: zero-token lab pre-check in tasks.py check",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }
