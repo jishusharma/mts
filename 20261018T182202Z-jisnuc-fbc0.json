@@ -1,0 +1,1 @@
+{"t": "20261018T182202Z", "from": "jis-nuc/sharma", "to": "all", "kind": "claim", "text": "claim \"ru2-desk-sweep\" --area scripts/dev/desk.py 2>&1|tail -3; ls MyTradingSys/system/tasks 2>/dev/null|head -3; grep -rl \"ru2-pipeliner\" MyTradingSys --include=*.json --include=*.md -l|head; sed -n "}
