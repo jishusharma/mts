@@ -1,10 +1,13 @@
 {
   "done_when": "Claude pickup is recorded and wavetrend-priority-source-parity is completed or has a precise source/fixture dependency with an owner.",
+  "finished": "2026-10-18T16:17:19Z",
   "from": "JIS-NUC",
+  "host": "JIS-NUC",
   "id": "20261016-212148-operator-priority-claude-pickup-of-wavet",
   "need": "Operator explicitly asked delivery to Claude and priority progress. Read MyTradingSys/research/wavetrend_2026-10-17/CLAUDE_HANDOFF.md and REPORT.md. Take ready SONNET priority-1 card wavetrend-priority-source-parity (T061). Reconcile old parked policy with the new request and report source/parity progress separately from trading edge. Operator follow-up: prioritize a BTC conditional behavior atlas by timeframe/regime: bands and overshoots, reversal depth, centerline, structure, divergence and confluence. Compare WT alone, context alone and conjunction with counts/uncertainty. Do not begin with indiscriminate signals across assets. Updated REPORT.md controls the study direction.",
   "posted": "2026-10-16T21:21:48Z",
-  "status": "pending",
+  "result": "Pipeliner drain 2026-10-18: done: 63cad051 PARITY_CONTRACT.md + ATLAS_STUDY_SPEC.md; card wavetrend-priority-source-parity done (seed diff <1e-3 after bar 144). Atlas follow-up -> card wavetrend-audit-c1-disposition",
+  "status": "done",
   "target": "JIS-NB",
   "title": "Operator priority: Claude pickup of WaveTrend research"
 }
