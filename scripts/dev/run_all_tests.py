@@ -12,6 +12,7 @@ at a time after the pool. Each step prints its block when it finishes, line-buff
 a redirected or backgrounded run shows progress; the SUMMARY lists every step in definition order. A foreground tool call dies
 at 600 s: start the gate (and `sync.py ship`, which calls it) in the background and read the output once.
 """
+import atexit
 import glob
 import json
 import os
@@ -121,8 +122,21 @@ def transient_ignore_glob(root=REPO):
 def pytest_cmd(targets, root=REPO):
     """One gate pytest step: own basetemp (parallel pytest processes share %TEMP%/pytest-of-<user> and its cleanup raises PermissionError
     after all tests pass: JIS-NB 2026-10-14, six ships at once), no cache dir, and transient tmp dirs ignored (transient_ignore_glob)."""
+    scratch = tempfile.mkdtemp(prefix="mts_s4_")
+    _SCRATCH.append(scratch)
     return [sys.executable, "-m", "pytest", *targets, "-q", "-p", "no:cacheprovider", transient_ignore_glob(root),
-            f"--basetemp={Path(tempfile.mkdtemp(prefix='mts_s4_')) / 'bt'}"]
+            f"--basetemp={Path(scratch) / 'bt'}"]
+
+
+_SCRATCH = []
+
+
+@atexit.register
+def _drop_scratch():
+    """B194: every gate run left ~12 mts_s4_* dirs of ~1000 files in %TEMP% (963 dirs / 374k files on JIS-NB by 2026-10-18, one run per
+    AutoDeploy tick); the User Profile Service logon step grew from 18 s to 340 s as they piled up. Remove them when the run ends."""
+    for d in _SCRATCH:
+        shutil.rmtree(d, ignore_errors=True)
 
 
 def unbuffer(stream=None):
