@@ -35,6 +35,27 @@ def message(why):
             f"Then end the session.")
 
 
+def seen_before(session_id, why):
+    """True when this session was already blocked on this exact state: repeating the block only costs a ~150k-token turn
+    (Opus review 2026-10-18: 95 blocks in 12 sessions, 74 of them 'commits not shipped'). The state is remembered per session."""
+    if not session_id:
+        return False
+    f = Path(os.environ.get("MTS_STOP_GUARD_HOME") or Path.home() / ".claude") / "mts-stop-guard.json"
+    try:
+        d = json.loads(f.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        d = {}
+    if d.get(session_id) == why:
+        return True
+    d = {session_id: why}      # one session at a time keeps the file tiny
+    try:
+        f.parent.mkdir(parents=True, exist_ok=True)
+        f.write_text(json.dumps(d), encoding="utf-8", newline=chr(10))
+    except OSError:
+        pass
+    return False
+
+
 def hook(stdin_text):
     """-> JSON string for Claude Code, or '' to allow the stop."""
     try:
@@ -44,7 +65,9 @@ def hook(stdin_text):
         if data.get("stop_hook_active"):
             return ""
         why = reason(data.get("cwd") or os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd())
-        return json.dumps({"decision": "block", "reason": message(why)}) if why else ""
+        if not why or seen_before(data.get("session_id"), why):
+            return ""
+        return json.dumps({"decision": "block", "reason": message(why)})
     except Exception:
         return ""
 
