@@ -1,54 +1,74 @@
 {
- "approved_by": "",
- "asks": "",
- "commands": [],
- "created": "2026-10-18T03:57:18Z",
- "depends_on": [],
- "done_when": "kurisko module, params and FORMULAS section 24 on fast-track; run_all_tests --quick green; every fixture value traced to FORMULAS 24. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
- "est_turns": 32,
- "formula_id": "",
- "formula_ids": [],
- "from_inbox": "",
- "goal": "Build backtest/layers/kurisko/: a causal four-oscillator Quad Rotation detector (all four under 20, then the fast one turns up; mirror above 80). Oscillator switch: stochastic (9,3),(14,3),(40,4),(60,10,10) per his slides, or RSI on the same four lookbacks as an operator hypothesis. Alert-only.",
- "id": "kurisko-quad-rotation-module",
- "lane": "SONNET",
- "layers": [
-  "rsi"
- ],
- "live_path": false,
- "mutation_check": "",
- "note": "REVIEWED:2026-10-18 T0-ONLY LAB:definitions CLASS:C1 REVIEWER:GPT medium (formula and look-ahead review at ship) WEIGHT:IMPORTANT. Template: backtest/layers/wavetrend. Params the transcript card closes later are edited in the params file only. Layer is separate, never a Tom filter. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
- "prio": 1,
- "refine_tries": 0,
- "refined_by": "",
- "refs": [],
- "result": "",
- "scope_in": [
-  "MyTradingSys/backtest/layers/kurisko/",
-  "MyTradingSys/backtest/layers/FORMULAS.md",
-  "MyTradingSys/backtest/layers/test_layer_boundaries.py",
-  "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md"
- ],
- "scope_out": [
-  "outcomes and backtests",
-  "live wiring (enabled stays false)",
-  "Tom code and constants",
-  "execution"
- ],
- "size": "M",
- "sources": [
-  "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md section 3",
-  "MyTradingSys/backtest/layers/FORMULAS.md sections 1, 20, 21 (pattern)"
- ],
- "state": "refined",
- "steps": [
-  "FORMULAS.md section 24: fast stochastic (k,d) and full (k,d,s) with a 20-bar example computed by hand; RSI reuses rsi_core Wilder",
-  "params/kurisko_default.json in the krown format (value, label SOURCED|OURS|OPERATOR-HYPOTHESIS, source row of KURISKO_SPEC s3); 3rd oscillator (40,4) with (44,3) as a switch",
-  "fixture tests first, expected values from the FORMULAS example not the module: flat input, all-four-under-20 bar, turn-up bar, planted future spike changes nothing before t, long/short mirror",
-  "implement stoch_core.py and quad_rotation.py (event row: t_close, side, oscillator kind, four values); add to test_layer_boundaries; run_all_tests.py --quick"
- ],
- "tests": "new tests fail on the pre-change tree (module absent); the planted-spike test fails if any value uses a bar after t",
- "title": "Kurisko Quad Rotation: causal layer module (4 oscillators, stochastic or RSI) with hand-computed fixtures",
- "weight": "IMPORTANT",
- "worker": "session"
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T03:57:18Z",
+  "depends_on": [],
+  "done_when": "kurisko module, params (every value labelled), FORMULAS section 24 with the independent 20-bar example and the event rule on fast-track; run_all_tests --quick green; every fixture value traced to FORMULAS 24; event row carries episode_start_t. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+  "est_turns": 34,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Build backtest/layers/kurisko/: a causal four-oscillator Quad Rotation detector (all four under 20, then the fast one turns up; mirror above 80). Oscillator switch: stochastic (9,3),(14,3),(40,4),(60,10,10) per his slides, or RSI on the same four lookbacks as an operator hypothesis. Alert-only.",
+  "id": "kurisko-quad-rotation-module",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "chart_verify.py: recompute RSI/BB/StochRSI from fapi klines at a shot clock",
+      "ref": "311b710b6c31",
+      "utc": "2026-10-17T18:21:17Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "311b710b6c31 chart_verify.py: recompute RSI/BB/StochRSI from fapi klines at a shot clock",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-10-17T18:21:17Z"
+    }
+  ],
+  "layers": [
+    "rsi"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:definitions CLASS:C2 REVIEWER:GPT high on spec+tests via desk row (non-Claude) + Haiku re-derives the 20-bar example; second vendor re-derives one month of events on first downstream use WEIGHT:IMPORTANT. Lab_Guy 2026-10-18 raised C1 to C2: it writes a canonical FORMULAS section and closes spec s5 gaps 2-4 as OURS, read by two later cards (one is C2). Card fixes: 'turn up' and the episode rule were undefined (E4: fixtures had no definition to derive from), short-side and (40,4)/(44,3) labels, episode_start_t for the next card's stop, independent golden example, look-ahead mutant, no edit of KURISKO_SPEC s5 (the transcript card owns it). Template: backtest/layers/wavetrend. Layer is separate, never a Tom filter (spec line 5 'Tom is core' is superseded by the 2026-10-13 layers rule). Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T04:23:38Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/kurisko/",
+    "MyTradingSys/backtest/layers/FORMULAS.md",
+    "MyTradingSys/backtest/layers/test_layer_boundaries.py",
+    "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md"
+  ],
+  "scope_out": [
+    "outcomes and backtests",
+    "live wiring (enabled stays false)",
+    "Tom code and constants",
+    "execution"
+  ],
+  "scope_sha": "311b710b6c31",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md section 3",
+    "MyTradingSys/backtest/layers/FORMULAS.md sections 1, 20, 21 (pattern)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Before coding: if MyTradingSys/research/lab_guy/spec_review_kurisko_2026-10-18.md and extracts/processed/kurisko/QUAD_ROTATION.md are on origin/fast-track, apply the review's FIX lines and the transcript quotes (label SOURCED with file:line) to steps 1-3; if absent, use the OURS defaults below and do not wait.",
+    "FORMULAS.md section 24 (OURS where the sources are silent, spec s5 gaps 2-4): raw %K = 100*(C-LL_k)/(HH_k-LL_k) over bars t-k+1..t, HH=LL gives NaN (never 0 or 100); fast line = raw %K; full (k,d,s) line = SMA_s(raw %K); %D unused in v0. RSI arm = rsi_core Wilder. A 20-bar example from a script that does not import stoch_core (as wavetrend make_golden.py), values written into the section.",
+    "Event rule (OURS; no source defines 'turn up'): episode = from the first bar s with all four lines < 20 until any line >= 20. Event at the close of the first t > s with all four < 20 on bars s..t-1 and fast[t] > fast[t-1]; one per episode. Mirror (> 80, falling) = short, NO-SOURCE. Row: t_close, side, kind, four values, episode_start_t. Other turn rules = ledger trials, not built.",
+    "params/kurisko_default.json in the krown format (value, label SOURCED|OURS|OPERATOR-HYPOTHESIS, KURISKO_SPEC s3 row): (9,3), (14,3), (60,10,10), levels 20/80 = SOURCED (S4, S2); third = (40,4) SOURCED but contested (S3 says 44), (44,3) only as a switch, any DEV count with it is a ledger trial; RSI on the same lookbacks and its 20/80 = OPERATOR-HYPOTHESIS; short side OURS; enabled false.",
+    "Fixture tests first, expected values from the section 24 example (independent script) or hand-built OHLC, never from the module: flat input (NaN), all-four-under-20 bar, first-uptick event bar, no second event in the same episode, long/short mirror, RSI arm on a short series, planted future spike changes nothing at or before t.",
+    "Implement stoch_core.py and quad_rotation.py (pure functions of closed bars; template backtest/layers/wavetrend); add the module to test_layer_boundaries; leave KURISKO_SPEC s5 to the transcript card (read only here); run_all_tests.py --quick."
+  ],
+  "tests": "New tests fail on the pre-change tree (module absent); the planted-spike test also fails on a one-bar look-ahead mutant (run once, say so in the commit body). Every fixture value traces to FORMULAS 24 or hand-built OHLC; none is read from stoch_core or quad_rotation output.",
+  "title": "Kurisko Quad Rotation: causal layer module (4 oscillators, stochastic or RSI) with hand-computed fixtures",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
