@@ -58,3 +58,7 @@ Source: `live_mirror.py brief` + _mirror files, all `mirror@2026-10-17 07:11Z` (
 - W1 10-16 17:30-19:15 = short squeeze (delta +4,145, OI -1,570). Arrow 1 (26 h, Sat) = absorption: delta -950, price +254. W2 10-17 21:15-22:00 = sweep of the balance low to 80,751 and reclaim (new shorts 21:15 -> covered 21:45 -> new longs 22:00). Arrow 2 = rise led by covering in Asia (delta +2,476, OI -669); late longs 06:00-12:00 (OI +1.8K, CVD flat) were unwound in W3 (13:15 OI -1,350), then new shorts 14:00-14:45 (OI +785).
 - Context: Sat-Sun flow. Backtest card: context-conditioned-session-flow-states (raw). Intake gap: 5 mid-turn shots (4h/1h/8h/12h/1D) never reached disk: card mid-turn-image-intake-gap.
 - Watch next: do the 14:00-14:45 shorts get squeezed (reclaim 81,500, OI falling) like the 10-16 and 10-17 shorts, or does price accept below 80,987.
+
+## 10-18 15:39Z re-paste: the lost multi-TF shots are now filed
+- 4h ffb3dd828daa, 8h 5763ffcc7333, 1h 33369d758139, 12h df60707599d8, 1D 4d1696e42656: SET_ffb3dd828daa_multitf.md (19 MATCH, 2 NOT_IN_DATA, tag NOTE). The numbers match the 14:53-14:57Z table above. The 30m/15m in the same paste are the already-read 41f213b5bea3 / 188135336af0.
+- Intake: re-pasting as a normal prompt works (card mid-turn-image-intake-gap updated). Last read id: 4d1696e42656. HALT state unchanged (mirror@2026-10-18 14:51Z).
