@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T21:54:58Z",
+  "depends_on": [],
+  "done_when": "A lab run of a Pipeliner card without the lease is refused by desk.py/sync.py (exit 3); shipped with a Result line.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The lease (scripts/dev/lease.py) finds a singleton session by MTS_ROLE, the role_loader record, or the acquire marker. A Gemini run (gemini_queue.py, Antigravity on the Lenovo) or a Codex run that acts as Pipeliner sets none of them, so its desk/sync writes are not guarded. 2026-10-18 the Lenovo Gemini ran Pipeliner (41c8a303, MTS-Session ...GEM-BLD-yt-pipeliner).",
+  "id": "tc2-lab-runners-set-lease-env",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into DESKTOP-F7IU69N/gemini-start",
+      "ref": "033ab93f70c8",
+      "utc": "2026-10-18T20:32:20Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "1f98de34c5c5 Gemini laptop: record Google account and approval-mode check",
+      "ref": "MyTradingSys/system/GEMINI_START.md",
+      "utc": "2026-10-18T19:53:55Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T21:55:17Z",
+  "refs": [
+    "MyTradingSys/system/TRAFFIC_CONTROLLER.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/gemini_queue.py",
+    "scripts/dev/codex_run.py",
+    "MyTradingSys/system/GEMINI_START.md",
+    "MyTradingSys/tests/"
+  ],
+  "scope_out": [
+    "the live tree",
+    "deploys",
+    "HALT files",
+    ".secrets/.env"
+  ],
+  "scope_sha": "033ab93f70c8",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "When a card or brief names a role in SINGLETONS (lease.py), export MTS_ROLE=<role> and MTS_LEASE_SESSION=<run id> into the child env.",
+    "Antigravity brief text (GEMINI_START.md): a role run starts with `python scripts/dev/lease.py acquire <Role>` and stops on non-zero.",
+    "Test: a fake card naming Pipeliner gets both env vars; a normal card gets none."
+  ],
+  "tests": "New test fails on the pre-change runner (env lacks MTS_ROLE) and passes after.",
+  "title": "Lab runners set MTS_ROLE/MTS_LEASE_SESSION when a card runs a singleton role",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

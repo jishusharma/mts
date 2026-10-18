@@ -26,7 +26,8 @@ ROLES_REL = "MyTradingSys/system/roles"
 ROLES_MD_REL = "MyTradingSys/system/ROLES.md"
 TRUNK = "origin/fast-track"
 KNOWN_ROLES = ["Eagle_Eyes", "Lab_Guy", "Session_Planner", "MTS_Doctor", "Artifacts_Guy", "Network_Admin_Guy",
-               "Q&A_Helper", "Pipeliner", "Supervisor"]
+               "Q&A_Helper", "Pipeliner", "Supervisor", "Traffic_Controller"]
+SINGLETON_ROLES = ("Pipeliner", "Traffic_Controller")  # one instance across all machines: scripts/dev/lease.py
 
 # Fixed list: index = 16-bit chunk % 256. Never reorder or edit (it would change every token); the length is asserted below.
 WORDS = (
@@ -238,6 +239,18 @@ def boot_step(body):
 LAST_META = {}
 
 
+def lease_suffix(name, repo):
+    """Singleton roles: the banner also shows the lease holder (read from the local origin ref the hook just fetched)."""
+    if name not in SINGLETON_ROLES:
+        return ""
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import lease
+        return " · " + lease.banner_text(repo, name)
+    except Exception as e:
+        return f" · lease UNKNOWN ({type(e).__name__})"
+
+
 def build_text(name, repo, fetched_ok):
     LAST_META.clear()
     sha8 = git_sha8(repo)
@@ -255,7 +268,7 @@ def build_text(name, repo, fetched_ok):
             stale += f"WARN: header token {h['token']} differs from the body token {tok}; the body is what you follow.\n"
         _, body = split_header(text)
         LAST_META.update(version=h["version"], token=tok, file=fname)
-        b = banner(h["name"], h["version"], tok, fname, sha8)
+        b = banner(h["name"], h["version"], tok, fname, sha8) + lease_suffix(h["name"], repo)
         return (f"{stale}ROLE LOADER (hook): you are {h['name']}. The file below is the authoritative workflow "
                 f"({ROLES_REL}/{fname} on {TRUNK} @ {sha8}).\n"
                 f"Your FIRST reply must begin with exactly this line:\n{b}\n"
