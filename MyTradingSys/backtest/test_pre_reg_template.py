@@ -37,5 +37,26 @@ class PreRegTemplate(unittest.TestCase):
                 self.assertNotIn("NOT_ANSWERED", txt)
 
 
+POSITIONING_AUDIT = ROOT / "research" / "tom_transfer_2026-10-11" / "HOME_FIT_AUDIT_POSITIONING.md"
+VERDICT = re.compile(r"^Verdict: (FAIR|UNFAIR)", re.M)
+
+
+class PositioningHomeFitAudit(unittest.TestCase):
+    """Card positioning-home-fit-audit: the file must exist (the rglob test above passes vacuously without it)."""
+
+    def test_file_exists(self):
+        self.assertTrue(POSITIONING_AUDIT.exists(), "HOME_FIT_AUDIT_POSITIONING.md missing")
+
+    def test_twelve_items_each_with_verdict_and_evidence(self):
+        txt = POSITIONING_AUDIT.read_text(encoding="utf-8")
+        self.assertEqual(item_numbers(POSITIONING_AUDIT), list(range(1, 13)))
+        self.assertEqual(len(VERDICT.findall(txt)), 12)
+        self.assertEqual(txt.count("Evidence (file:line):"), 12)
+
+    def test_has_follow_up_cards_section(self):
+        txt = POSITIONING_AUDIT.read_text(encoding="utf-8")
+        self.assertIn("## Tally and order of cards", txt)
+
+
 if __name__ == "__main__":
     unittest.main()

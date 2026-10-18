@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-18T04:14:13Z",
   "commands": [],
   "created": "2026-10-11T18:00:25Z",
   "depends_on": [
@@ -14,6 +16,12 @@
   "id": "positioning-home-fit-audit",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_POSITIONING.md",
+      "ref": "8faa3c29",
+      "utc": "2026-10-18T04:14:13Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +47,7 @@
   "refined_by": "cloud-research 2026-10-11 (C-Cloud BACKTEST_FAILURES_RESEARCH.md; operator: 'get this into action')",
   "refreshed": "2026-10-17T21:38:07Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_POSITIONING.md",
   "scope_in": [
     "MyTradingSys/research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md",
     "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
@@ -55,12 +63,13 @@
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md section 4, 6, 7"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Answer each of the 12 checklist items for this layer with evidence (file:line, quote) or NOT_IN_DATA.",
     "Write MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_POSITIONING.md: verdict FAIR / UNFAIR per item, the cheapest fix, and the order of cards it would need.",
     "Create at most 3 follow-up Sonnet cards via tasks.py new; no backtest here."
   ],
+  "taken": "2026-10-18T04:14:07Z",
   "tests": "test_pre_reg_template.py passes for the new HOME_FIT_AUDIT file (all 12 items answered; fails before the file exists).",
   "title": "Home-fit audit of the FlowHorse / whale positioning layer against the readiness checklist",
   "weight": "ROUTINE",
