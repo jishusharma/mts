@@ -29,6 +29,12 @@
 - Fail-fast needs its own NOT RUN state; skipped steps must not be timed. Shared modules (`__init__`, `conftest`, common*, _*) widen.
 - Defaults taken (OURS): 2 precheck jobs, 12 targeted files (truncated, the shards still run them), 1 re-gate, 24 h record age.
 
+## Measured (after, first ship e71e409b, full mode: sync.py is on the live list)
+- Precheck (41 cheap steps + 4t) passed in 121 s: a cheap-step failure now ends the ship by +121 s (before: 4d FAIL at +438 s,
+  4g at +152 s then ran on to 547 s, 4h at +644 s). Clean full gate 544 s (before 469-636 s); step 4 75 s (before 195 s).
+- The push lost one race; the incoming commits did not touch our paths, so it pushed again with no re-gate (before: a lost fetch
+  race killed a passing ship). 33 new tests fail on the old code.
+
 ## Quality guards
 Full mode still runs every step (D1 reorders, D2 only stops a run that already failed). CI runs the whole suite on both OSes; it
 never passes the ship flags. A failed step is dropped from the record. Linux-only failures stay CI's job (`ci_watch.py`).
