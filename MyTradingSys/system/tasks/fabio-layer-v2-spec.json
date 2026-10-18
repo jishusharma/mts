@@ -1,8 +1,10 @@
 {
   "approved_by": "operator (chat 2026-10-11: 'whatever research u need with Opus')",
   "asks": "",
+  "class": "C2",
   "commands": [],
   "created": "2026-10-11T12:00:00Z",
+  "crucial": "Foundational no-undo layer spec (C2 base definition) separating Fabio encoding vs market transfer across all downstream cards.",
   "depends_on": [
     "fabio-trade-ledger"
   ],
@@ -12,15 +14,25 @@
   "goal": "Rewrite WHAT Fabio trades from FABIO_TRADE_LEDGER: setup families, entry/stop/target/management in his words (quote + file:line or NO-SOURCE), keep/change/drop versus Fabio v3, so the L3-FAIL on BTC can be split into encoding versus transfer.",
   "id": "fabio-layer-v2-spec",
   "lane": "OPUS",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "RV05 H1: record date evidence for Fabio ledger CSV 25-71",
+      "ref": "61cf8a7d3634",
+      "utc": "2026-10-17T18:19:38Z"
+    }
+  ],
   "layers": [
     "fabio"
   ],
   "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] Alignment review 2026-10-13: ledger audit is FIX-FIRST (3 HIGH, 4 MED; 8 entries vs goal 20). Spec waits for the fabio-ledger-* fixes and minute timestamps, as Tom's spec waited for its ledger repairs. Release with apply-op release. 2026-10-15 q12: home-market chain paused (p5) per operator answer; raise again when crypto-native cards are done.",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:definitions CLASS:C2 REVIEWER:Gemini 4 Argon low + Haiku re-derive WEIGHT:CRUCIAL. Stays blocked on fabio-ledger-* fixes and q12 home-market chain pause (p5); DoR fields and stamp are now clean.",
   "pinned": false,
   "prio": 5,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-11 (operator chat: redefine Tom and Fabio layers from today's findings)",
+  "refreshed": "2026-10-18T05:12:53Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -32,6 +44,7 @@
     "tuning",
     "holdouts"
   ],
+  "scope_sha": "61cf8a7d3634",
   "size": "M",
   "sources": [
     "MyTradingSys/research/P2_FABIO_V3_HOLDOUT_STATUS.md (L3-FAIL all four models)"
@@ -44,6 +57,6 @@
   ],
   "tests": "Spec maps 5 ledger trades to rule paths.",
   "title": "Fabio layer v2 spec, part A: setup families + sourced rules from his ledger (Opus research)",
-  "weight": "IMPORTANT",
+  "weight": "CRUCIAL",
   "worker": "session"
 }

@@ -13,6 +13,22 @@
   "id": "lab-review-gate-harden",
   "kind": "build",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lane_health: DSA close path goes through tasks.review_gate",
+      "ref": "f9a7b9c811a3",
+      "utc": "2026-10-18T02:47:42Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "49ea3754a44b lab lab-review-gate-harden: BLOCKED (build)",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-17_lab-review-gate-harden.md",
+      "utc": "2026-10-17T22:51:14Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "MyTradingSys/research/layer_lab/formula_spec_text/test_formula_spec.py::test_shuffled_rsi_closes_are_rejected",
@@ -20,18 +36,21 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-18T05:17:55Z",
   "refs": [],
   "result": "",
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/test_tasks.py",
-    "scripts/dev/lab_flow.py"
+    "scripts/dev/lab_flow.py",
+    "scripts/dev/lane_health.py"
   ],
   "scope_out": [
     "the live path",
     "holdout reads",
     "parameters without a trader quote (NO-SOURCE)"
   ],
+  "scope_sha": "f9a7b9c811a3",
   "size": "S",
   "sources": [],
   "state": "ready",
@@ -43,6 +62,7 @@
   ],
   "tests": "forged-stamp forms (placeholder reviewer, producer reviewer, invalid date, quoted mid-note), class-field downgrade and whitespace receipt each fail on current code first",
   "title": "Review-gate hardening: forged stamp, downgrade, other close paths, vacuous tests",
+  "updated": "2026-10-18T05:30:00Z",
   "weight": "",
   "worker": ""
 }

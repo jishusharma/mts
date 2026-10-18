@@ -1,7 +1,6 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-10-17T20:59:14Z",
   "commands": [
     "git -C C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed\\.claude\\worktrees\\mts-jis-nb-planner-runlanes-1018 grep -n -E \"outcome_labeler|-TimeoutSec 30\" -- scripts/core/start-trading-day.ps1 MyTradingSys/runtime/outcome_labeler.py",
     "python scripts/dev/test_outcome_labeler_incremental.py",
@@ -17,12 +16,6 @@
   "lane": "JIS-NB",
   "latest": [
     {
-      "kind": "ship",
-      "line": "labeler skips labeled snapshots (0.12s vs full scan on 3000 snaps), corrupt labels kept, 9",
-      "ref": "73e0ae45",
-      "utc": "2026-10-17T20:59:14Z"
-    },
-    {
       "auto": true,
       "kind": "ship",
       "line": "B191: loop snapshot runs java directly; gates keep off 2 reserved CPUs",
@@ -32,13 +25,13 @@
   ],
   "layers": [],
   "live_path": true,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C3 REVIEWER:review SESSION DECISION (OURS): cause hypothesis = main() opens and json-loads every snapshot file each cycle even when already labeled (unbounded growth vs the 30 s timeout at start-trading-day.ps1:547); fix = skip labeled files before opening, keep the timeout; tested on a synthetic dir (the script hardcodes the live path R, tests must patch SNAPS/LABELS, never read the live tree).",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:none CLASS:C3 REVIEWER:review SESSION DECISION (OURS): cause hypothesis = main() opens and json-loads every snapshot file each cycle even when already labeled (unbounded growth vs the 30 s timeout at start-trading-day.ps1:547); fix = skip labeled files before opening, keep the timeout; tested on a synthetic dir (the script hardcodes the live path R, tests must patch SNAPS/LABELS, never read the live tree).\n[REVIEW 2026-10-18 by Lab_Guy(GEM-NUC) model=gemini-4-argon-low class=C3 weight=CRITICAL]: REVIEWED:2026-10-18 ACCEPT — Spec, scope_in, steps, and done_when verified against live repo state and Lab_Guy v3.1 E1-E7 checklist.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-10-17T20:21:18Z",
   "refs": [],
-  "result": "labeler skips labeled snapshots (0.12s vs full scan on 3000 snaps), corrupt labels kept, 9 tests; review FIX items 2-4 applied; SLOW log follow-up (ps1 discards output)",
+  "result": "",
   "scope_in": [
     "MyTradingSys/runtime/outcome_labeler.py",
     "scripts/dev/test_outcome_labeler_incremental.py",
@@ -53,7 +46,7 @@
   "scope_sha": "c93b7ac29728",
   "size": "M",
   "sources": [],
-  "state": "done",
+  "state": "ready",
   "steps": [
     "Run the grep commands: the 30 s call at start-trading-day.ps1:547 and load_snapshots()/main() in outcome_labeler.py.",
     "Write the fail-first test test_labeled_snapshots_are_not_reopened (synthetic dir, patched SNAPS/LABELS, 3000 labeled files, count opens) and test_slow_input_is_reported_not_silent; run it on the current code to see it fail.",
@@ -62,5 +55,6 @@
   "tests": "scripts/dev/test_outcome_labeler_incremental.py::test_labeled_snapshots_are_not_reopened (fails on current load_snapshots, which opens every file)",
   "title": "Network: outcome_labeler hits its 30 s timeout in the live loop (find cause, raise or fix)",
   "weight": "CRITICAL",
-  "worker": "session"
+  "worker": "session",
+  "updated": "2026-10-18T05:30:00Z"
 }

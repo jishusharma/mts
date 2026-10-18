@@ -1,31 +1,64 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "class": "C1",
+  "closed": "2026-10-18T05:12:41Z",
+  "commands": [
+    "python MyTradingSys/backtest/fetch_binance_archive.py --start 2020-01-01 --end 2025-06-30 --datasets klines,fundingRate --interval 1h --out F:/MTS/data/backtest_eth",
+    "python MyTradingSys/research/published_strats_2026-10-13/run_pub.py dev"
+  ],
   "created": "2026-10-12T19:48:28Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "RESULTS.md section 'ETH replication of the trend cluster' and state_ETHUSDT.json are committed on fast-track with all 9 cluster variants reported.",
   "from_inbox": "",
-  "goal": "",
+  "goal": "Fetch ETHUSDT USD-M perp 1h klines and 8h funding rates for 2020-01..2025-06 (excluding sealed holdout >= 2025-07-01) and run the 9 short-lookback trend cluster variants from published_strats_2026-10-13/run_pub.py on ETH.",
   "id": "fetch-ethusdt-perp-1h-klines-funding-202",
   "kind": "run",
   "lane": "DSA",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research: ETH replication of the BTC trend cluster: 0 of 9 advance",
+      "ref": "6ca61b5ec89b",
+      "utc": "2026-10-12T20:10:11Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "6ca61b5ec89b research: ETH replication of the BTC trend cluster: 0 of 9 advance",
+      "ref": "MyTradingSys/research/published_strats_2026-10-13/RESULTS.md",
+      "utc": "2026-10-12T20:10:11Z"
+    }
+  ],
   "layers": [
     "volume_candles_ma"
   ],
   "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers]",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:results CLASS:C1 REVIEWER:Gemini 4 Argon low WEIGHT:IMPORTANT. Closed by Lab_Guy refinement pass: ETH replication already ran and shipped in RESULTS.md:52-66 and state_ETHUSDT.json.",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-18T05:12:41Z",
   "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "result": "Already shipped in RESULTS.md:52-66 and state_ETHUSDT.json (0 of 9 cluster variants advance on ETH DEV, BH q >= 0.53; TSMOM 30d net 65.9%/yr vs B&H 63.4%/yr; Donchian 4h flips negative).",
+  "scope_in": [
+    "MyTradingSys/research/published_strats_2026-10-13/RESULTS.md",
+    "MyTradingSys/research/published_strats_2026-10-13/state_ETHUSDT.json",
+    "MyTradingSys/research/published_strats_2026-10-13/run_pub.py"
+  ],
+  "scope_out": [
+    "HOLDOUT >= 2025-07-01",
+    "live tree"
+  ],
+  "scope_sha": "6ca61b5ec89b",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
+  "state": "done",
+  "steps": [
+    "Fetch ETHUSDT 1h klines and 8h fundingRate 2020-01-01..2025-06-30 via fetch_binance_archive.py to off-repo Dumps/backtest_eth.",
+    "Run run_pub.py dev with PUB_SYMBOL=ETHUSDT on the 9 trend-cluster variants and append the ETH replication table to RESULTS.md."
+  ],
   "tests": "",
   "title": "Fetch ETHUSDT perp 1h klines + funding 2020-2026 (fetch_binance_archive.py) and re-run research/published_strats_2026-10-13/run_pub.py on ETH as second market. host=any",
   "weight": "IMPORTANT"

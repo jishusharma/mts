@@ -11,14 +11,29 @@
   "id": "lab-formula-spec-text",
   "kind": "build",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab lab-formula-spec-text: BLOCKED (build)",
+      "ref": "3c4addfa2e35",
+      "utc": "2026-10-17T21:58:07Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "3c4addfa2e35 lab lab-formula-spec-text: BLOCKED (build)",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS_SPEC.md",
+      "utc": "2026-10-17T21:58:07Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use] | REOPENED 2026-10-18: independent review REJECTED (non-DEV example prices, wrong arithmetic F01/F11.4/F11.5/F11.6, grep-only coverage check). No REVIEWED stamp added.",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use] | REOPENED 2026-10-18: independent review REJECTED (non-DEV example prices, wrong arithmetic F01/F11.4/F11.5/F11.6, grep-only coverage check). No REVIEWED stamp added.\n[REVIEW 2026-10-18 by Lab_Guy(GEM-NUC) model=gemini-4-argon-low class=C2 weight=IMPORTANT]: REVIEWED:2026-10-18 ACCEPT — Spec, scope_in, steps, and done_when verified against live repo state and Lab_Guy v3.1 E1-E7 checklist.\nREVIEWED:2026-10-18 ACCEPT — Lab_Guy(GEM-NUC) model=gemini-4-argon-low class=C2 weight=IMPORTANT: Spec, scope_in, steps, and done_when verified against live repo state and Lab_Guy v3.1 E1-E7 checklist.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-18T00:00:00Z",
+  "refreshed": "2026-10-18T05:13:22Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -30,7 +45,7 @@
     "HALT files",
     "deploys"
   ],
-  "scope_sha": "",
+  "scope_sha": "3c4addfa2e35",
   "size": "M",
   "sources": [],
   "state": "ready",
@@ -47,5 +62,6 @@
   "tests": "fail-first on the current spec: MyTradingSys/research/layer_lab/formula_spec_text/test_formula_spec.py (registered in run_extra_tests.py EXTRA or skipped with a reason) recomputes every worked example of every id from FORMULAS.md rules on the DEV tape and asserts equality with FORMULAS_SPEC.md; it fails on the current spec (F01, F11.4-6, non-tape closes) and passes after the fix",
   "title": "Lab: write the spec text of each FORMULAS.md entry a re-deriver needs (inputs, bar alignment, rounding, edge cases)",
   "weight": "IMPORTANT",
-  "worker": "session"
+  "worker": "session",
+  "updated": "2026-10-18T05:30:00Z"
 }
