@@ -4,7 +4,9 @@
   "id": "20261018-161738-jis-nb-worktree-triage-which-unshipped-c",
   "need": "Re-post of 20261013-181538 for the NB bridge (needs JIS-NB trees). From a JIS-NB work tree (not the live tree): python scripts/dev/sync.py where --all; for each tree with unshipped-commits>0: git -C <tree> cherry origin/fast-track HEAD; report per tree the '+' commits (subject + files) not on origin by content. Read only: no commits, no removes. BROKEN trees: list modified files beyond .claude/.",
   "posted": "2026-10-18T16:17:38Z",
-  "status": "pending",
+  "status": "taken",
+  "taken": "2026-10-19T21:01:44Z",
+  "taken_by": "JIS-NB",
   "target": "DSA-NB",
   "title": "JIS-NB worktree triage: which unshipped commits are already on origin by content"
 }
