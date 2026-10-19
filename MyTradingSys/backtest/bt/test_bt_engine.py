@@ -1,5 +1,12 @@
 import unittest
-from bt_engine import simulate_trade as sim
+from bt_engine import simulate_trade as raw
+
+
+def sim(*a, **k):
+    """Tests 01-13 are about fills and fees: they pass the explicit no-funding model funding=[] (B103)."""
+    k.setdefault("funding", [])
+    return raw(*a, **k)
+
 
 def B(t, o, h, l, c): return {"t": t, "o": o, "h": h, "l": l, "c": c}
 T = [(102.0, 0.5), (104.0, 0.5)]
@@ -33,7 +40,7 @@ class TestEngine(unittest.TestCase):
         self.assertEqual(r["exit_reason"], "targets"); self.assertAlmostEqual(r["gross_r"], 3.0, places=9)
     def test08_funding(self):
         bars = [B(M, 100, 100.5, 99.5, 100), B(2*M, 100, 104.5, 100, 104)]
-        f = [(M + 30000, 0.0001)]
+        f = [(0, 0.0), (M + 30000, 0.0001), (3*M, 0.0)]   # records span the whole hold (B103)
         rl = sim("long", 100, 0, 99, T, bars, funding=f)
         self.assertAlmostEqual(rl["funding_paid_pct"], 0.01, places=9)
         rs = sim("short", 100, 0, 101, [(98.0, 0.5), (96.0, 0.5)], [B(M, 100, 100.5, 99.5, 100), B(2*M, 100, 100, 95, 96)], funding=f)
@@ -67,6 +74,44 @@ class TestEngine(unittest.TestCase):
         self.assertEqual(sim("short", 100, 0, 101, [(98.0, 1.0)], bars, taker_fee=0, target_through=0.1)["exit_reason"], "open_at_end")
         bars.append(B(3*M, 99, 99.5, 97.9, 99))
         self.assertEqual(sim("short", 100, 0, 101, [(98.0, 1.0)], bars, taker_fee=0, target_through=0.1)["exit_reason"], "targets")
+
+
+class TestFundingFailClosed(unittest.TestCase):
+    """T03-F1/F2: funding is required; window is t_in < s <= t_out (FORMULAS 13); funding=[] = explicit no model."""
+    R = 0.0001
+    LONG = ("long", 100, 0, 99, T)
+
+    def stop_bar(self):
+        return [B(M, 100, 100.5, 98.8, 99)]          # stop hit on bar M: exit bar closes at the instant 2*M
+
+    def test15_funding_none_raises(self):
+        with self.assertRaises(ValueError): raw(*self.LONG, self.stop_bar())
+        with self.assertRaises(ValueError): raw(*self.LONG, self.stop_bar(), funding=None)
+
+    def test16_records_not_covering_hold_raise(self):
+        bars = [B(M, 100, 100.5, 99.5, 100), B(2*M, 100, 104.5, 100, 104)]     # entry instant M, exit instant 3*M
+        with self.assertRaises(ValueError): raw(*self.LONG, bars, funding=[(0, self.R), (2*M, self.R)])    # ends before exit
+        with self.assertRaises(ValueError): raw(*self.LONG, bars, funding=[(2*M, self.R), (4*M, self.R)])  # starts after entry
+        ok = raw(*self.LONG, bars, funding=[(0, self.R), (4*M, self.R)])                                 # spans: no error
+        self.assertEqual(ok["funding_paid_pct"], 0.0)
+
+    def test17_entry_instant_settlement_not_charged(self):
+        # first scanned bar opens at M = the settlement instant: s = t_in is excluded (t_in < s)
+        r = raw(*self.LONG, self.stop_bar(), funding=[(M, self.R), (4*M, self.R)])
+        self.assertEqual(r["funding_paid_pct"], 0.0)
+
+    def test18_exit_instant_settlement_charged(self):
+        # exit bar M closes at 2*M = the settlement instant: s = t_out is included (s <= t_out)
+        r = raw(*self.LONG, self.stop_bar(), funding=[(0, self.R), (2*M, self.R)])
+        self.assertAlmostEqual(r["funding_paid_pct"], self.R * 99 / 100 * 100, places=12)
+        rs = raw("short", 100, 0, 101, [(98.0, 1.0)], [B(M, 100, 101.5, 99.5, 101)], funding=[(0, self.R), (2*M, self.R)])
+        self.assertAlmostEqual(rs["funding_paid_pct"], -self.R * 101 / 100 * 100, places=12)   # short receives
+
+    def test19_empty_list_is_explicit_no_model(self):
+        r = raw(*self.LONG, self.stop_bar(), funding=[])
+        self.assertEqual(r["funding_paid_pct"], 0.0); self.assertEqual(r["exit_reason"], "stop")
+        r = raw(*self.LONG, [B(M, 100, 100.5, 99.5, 100)], funding=[])      # open_at_end also never raises
+        self.assertEqual(r["exit_reason"], "open_at_end"); self.assertEqual(r["funding_paid_pct"], 0.0)
 
 if __name__ == "__main__":
     unittest.main()
