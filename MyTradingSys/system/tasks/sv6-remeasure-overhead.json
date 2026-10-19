@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-19T05:50:39Z",
   "commands": [],
   "created": "2026-10-18T19:30:00Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "sv6-remeasure-overhead",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/coord_overhead.py + scripts/dev/test_coord_overhead.py + wiring_registry.json",
+      "ref": "55f2a3ae",
+      "utc": "2026-10-19T05:50:39Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,7 +40,12 @@
   "refs": [
     "MyTradingSys/system/SUPERVISOR.md"
   ],
-  "result": "",
+  "result": "scripts/dev/coord_overhead.py + scripts/dev/test_coord_overhead.py + wiring_registry.json",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/coord_overhead.py (new; copy in the side-session notes folder of local_a62282b8, else rewrite from SUPERVISOR.md 'Measured overhead')",
     "scripts/dev/test_coord_overhead.py",
@@ -50,11 +62,12 @@
   "sources": [
     "MyTradingSys/system/SUPERVISOR.md (design 2026-10-18)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "commit the script with a fixture-transcript test",
     "after 2 super sessions on SV2-SV5: rerun per session, add an 'after' table"
   ],
+  "taken": "2026-10-19T05:50:39Z",
   "tests": "fixture transcript with known categories gives the expected counts; fail first (file absent)",
   "title": "Supervisor SV6: commit coord_overhead.py and re-measure on the next 2 super sessions",
   "weight": "ROUTINE",
