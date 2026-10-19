@@ -54,9 +54,13 @@ class SyncTest(unittest.TestCase):
         self.a, self.b = self.tmp / "a", self.tmp / "b"
         for c in (self.a, self.b):
             sh(c, "remote", "set-url", "origin", str(origin))
+        self.slots_base = self.tmp / "slots_env"
+        self.slots_base.mkdir(parents=True, exist_ok=True)
+        os.environ["MTS_GATE_SLOTS_DIR"] = str(self.slots_base)
         self.gated = []
 
     def tearDown(self):
+        os.environ.pop("MTS_GATE_SLOTS_DIR", None)
         shutil.rmtree(self.tmp, ignore_errors=True)
 
     def gate(self, repo):
