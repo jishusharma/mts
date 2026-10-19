@@ -97,7 +97,6 @@ only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once); histo
 - SUPER-DESKTOP-1019 (2026-10-19, Sonnet coordinator, 2 Agents): stale ci-919cc0f closed (CI green at c65cda0, 52dd55e0); layer_map 2 of 8 null rows filled, rest not stated in reports (28313a4f); 3 stale pages posted as JIS-NB desk row. Boot: ~6 tool turns. Lesson: tasks.py next ranks stale ci-* cards first; check ci_watch.py before dispatching a fix.
 - SUPER-NB-1018 (2026-10-18, Sonnet coordinator, ~9 sessions + review Agents, weekly 73 -> 81%): labeler fix, krown, state audit, RV02 R1+R2, Fabio dating, planner batch 3 shipped; diff-only review Agents caught real defects in 4 of 6 diffs. Lesson: with 6+ sessions shipping, the 2 gate slots queue 2-3 h and a ship dies at the tool 600 s timeout unless run detached; one ship per session; weekly cap hit before the block ended.
 - SUPER-NB-1017 (2026-10-17, Sonnet coordinator, 6 Agent workers because start_session is refused for a session started by another session): 14 cards shipped, weekly 66 -> 67%; Agents fit the 100k rule; compound `cd && git`/merge commands were denied, use git -C.
-- DOCTOR-NB-1017 (2026-10-17, Sonnet): post-B1/B4 `traffic_report.py 24` = 631 commits, overhead 60% (merge 34, claim 13, release 13), was 68% pre-B1; doctor findings 3 -> 2 (remaining: relay skill 'Output caps' line is intentionally per-skill).
 
 
 ## Start (operator: open a new session, model Sonnet unless you name Opus (WORKERS.md rule 6), paste the prompt below)
