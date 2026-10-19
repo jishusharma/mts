@@ -296,4 +296,4 @@ def test_tick_reports_peers_and_unknown_login(monkeypatch, tmp_path):
     monkeypatch.setattr(traffic, "budget_view", lambda do_fetch=True, now=None, hours=48: (
         {"logins": {"A": fresh, "C": old}, "overall": "NORMAL", "why": ""}, []))
     p = S.read_peers("B", NOW, do_fetch=False)
-    assert p["active"] == ["A", "B"] and p["missing"] == ["B"] and p["logins"]["C"]["age_h"] > 6
+    assert p["active"] == ["A", "B"] and p["missing"] == [] and p["logins"]["C"]["age_h"] > 6

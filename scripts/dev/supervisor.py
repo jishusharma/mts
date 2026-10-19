@@ -308,7 +308,7 @@ def read_peers(login: str | None, as_of: datetime, do_fetch: bool = True) -> dic
         if login:
             active.add(login)
         return {"self": login, "logins": rows, "active": sorted(active), "overall": view["overall"],
-                "missing": [x for x in "ABC" if x not in rows], "errors": errs}
+                "missing": [x for x in "ABC" if x not in rows and x != login], "errors": errs}
     except (Exception, SystemExit) as e:
         return {"self": login, "error": f"{type(e).__name__}: {e}"}
 

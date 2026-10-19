@@ -316,12 +316,15 @@ def budget_cmd(args):
         return 2
     reset = a.reset if a.reset.endswith("Z") else a.reset + "Z"
     try:
+        sched = str(Path(__file__).resolve().parents[1] / "sched")
+        if sched not in sys.path:
+            sys.path.insert(0, sched)
+        import budget as budget_mod   # the one writer of ~/.claude/mts-budget.json (SUPER_SESSION Pacing)
         rec = {"utc": now().strftime("%Y-%m-%dT%H:%M:%SZ"), "weekly_all_pct": a.week, "weekly_resets_at": reset,
                "five_hour_pct": a.five}
-        d = Path(os.environ.get("MTS_RELAY_HOME") or Path.home() / ".claude")
-        d.mkdir(parents=True, exist_ok=True)
-        (d / "mts-budget.json").write_text(json.dumps(rec, sort_keys=True), encoding="utf-8", newline=chr(10))
-    except OSError as e:
+        budget_mod.home().mkdir(parents=True, exist_ok=True)
+        (budget_mod.home() / "mts-budget.json").write_text(json.dumps(rec, sort_keys=True), encoding="utf-8", newline=chr(10))
+    except (OSError, ImportError) as e:
         print("budget file not written: %s" % e)
     ok = send("BUDGET login=%s 5h=%d%% week=%d%% reset=%s" % (lg, round(a.five), round(a.week), reset), to="all", kind="note")
     print("BUDGET login=%s sent" % lg if ok else "BUDGET not sent (no origin or push failed)")

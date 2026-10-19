@@ -177,7 +177,12 @@ class SignalTest(unittest.TestCase):
         self.assertEqual(texts, ["BUDGET login=B 5h=12% week=40% reset=2026-10-22T19:59Z"])
         import traffic
         self.assertTrue(traffic.BUDGET_RE.search(texts[0]))
-        self.assertTrue((self.tmp / "claudehome" / "mts-budget.json").is_file())
+        import json
+        rec = json.loads((self.tmp / "claudehome" / "mts-budget.json").read_text(encoding="utf-8"))
+        self.assertEqual((rec["weekly_all_pct"], rec["five_hour_pct"], rec["weekly_resets_at"]), (40.0, 12.4, "2026-10-22T19:59Z"))
+        import budget
+        self.assertEqual(sorted(rec), ["five_hour_pct", "utc", "weekly_all_pct", "weekly_resets_at"])
+        self.assertIn(budget.state()[0], ("NORMAL", "SPEND", "THROTTLE"))
         os.environ.pop("MTS_RELAY_HOME")
 
     def test_odd_slug_is_dropped(self):
