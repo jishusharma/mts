@@ -382,10 +382,14 @@ class TestDeployGateSlot(unittest.TestCase):
         self.sync = sync
         self.tmp = Path(tempfile.mkdtemp())
         subprocess.run(["git", "-C", str(self.tmp), "init", "-q"], check=True)
-        self.slots = self.tmp / ".git" / "gate-slots"
+        slots_base = self.tmp / "slots_base"
+        slots_base.mkdir(parents=True, exist_ok=True)
+        os.environ["MTS_GATE_SLOTS_DIR"] = str(slots_base)
+        self.slots = slots_base / "gate-slots"
         p = mock.patch.object(ad, "REPO", self.tmp)
         p.start()
         self.addCleanup(p.stop)
+        self.addCleanup(lambda: os.environ.pop("MTS_GATE_SLOTS_DIR", None))
         self.addCleanup(shutil.rmtree, self.tmp, True)
 
     def run_gate(self, on_gate):

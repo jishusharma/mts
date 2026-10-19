@@ -46,7 +46,7 @@ ROW_CAP = 15  # rows `where` / `health` print before pointing at `where --all`
 # Rows of `git status --short` that are nobody's work: the desktop mirror a pull writes (regenerable data, git-ignored on
 # current trees, tracked on old bases) and the stray AGENTS.md / .codex of older trees.
 MIRROR_PREFIXES = ("runtime_data/_mirror/", "runtime_data/_mirror.")
-STRAY_UNTRACKED = ("AGENTS.md", ".codex/")
+STRAY_UNTRACKED = ("AGENTS.md", ".codex/", "runtime_data/gate_timing.jsonl", "runtime_data/")
 
 
 class SyncError(Exception):
@@ -165,13 +165,30 @@ def pid_alive(pid):
     return True
 
 
+GATE_PRECHECK_SLOTS = 2
+
+
+def host_gate_slots_dir(name="gate-slots", repo=None):
+    """Host-wide gate slots directory (SUPERVISOR.md SV7).
+    Separate clones on the same host share the same slot pool so concurrent gates respect the machine budget.
+    MTS_GATE_SLOTS_DIR overrides the base directory for tests."""
+    env_dir = os.environ.get("MTS_GATE_SLOTS_DIR")
+    if env_dir:
+        base = Path(env_dir)
+    else:
+        base = Path(tempfile.gettempdir()) / "mts_gate_slots"
+    d = base / name
+    d.mkdir(parents=True, exist_ok=True)
+    return d
+
+
 class GateSlotTimeout(Exception):
     """No gate slot came free within the caller's wait budget (auto_deploy treats this as 'do not deploy', never as a green gate)."""
 
 
 class gate_slot:
     """Machine-wide limit on concurrent gates (ship gates and the auto_deploy gate): at most GATE_SLOTS slot files under
-    <git common dir>/gate-slots/, each holding its owner's PID, created with O_EXCL. A slot whose PID is dead is reclaimed.
+    host-wide gate slots directory, each holding its owner's PID, created with O_EXCL. A slot whose PID is dead is reclaimed.
     Released on exit, whatever raised. timeout=None waits forever (ship); a number of seconds raises GateSlotTimeout when no slot
     came free in that time (deploy: fail closed)."""
 
@@ -179,12 +196,10 @@ class gate_slot:
                  name="gate-slots"):
         self.repo, self.slots, self.alive, self.sleep = repo, slots, alive, sleep
         self.note_every, self.poll, self.path, self.timeout, self.name = note_every, poll, None, timeout, name
+        self.wait_s = 0.0
 
     def _dir(self):
-        common = Path(git(self.repo, "rev-parse", "--git-common-dir").stdout.strip())
-        d = (common if common.is_absolute() else Path(self.repo) / common) / self.name
-        d.mkdir(parents=True, exist_ok=True)
-        return d
+        return host_gate_slots_dir(self.name, self.repo)
 
     def _try(self, d):
         busy = 0
@@ -221,6 +236,7 @@ class gate_slot:
         while True:
             self.path, busy = self._try(d)
             if self.path:
+                self.wait_s = time.monotonic() - start
                 return self
             left = None if self.timeout is None else self.timeout - (time.monotonic() - start)
             if left is not None and left <= 0:
@@ -656,6 +672,36 @@ def wait_after(repo, slug, timeout=3600, poll=2.0, sleep=time.sleep, now_fn=time
         sleep(poll)
 
 
+def record_ship_timing(repo, wait_s, run_s, retry_s, ok=True, sha=None, path=None):
+    """Append one JSON line {step, name, wait_s, run_s, retry_s, ok, utc, sha} to runtime_data/gate_timing.jsonl
+    (MTS_GATE_TIMING overrides the path). SV7: logs wait, run and retry seconds per ship. Never raises."""
+    try:
+        p = Path(path or os.environ.get("MTS_GATE_TIMING") or (Path(repo) / "runtime_data" / "gate_timing.jsonl"))
+        p.parent.mkdir(parents=True, exist_ok=True)
+        short_sha = sha
+        if not short_sha:
+            r = git(repo, "rev-parse", "--short=8", "HEAD", check=False)
+            short_sha = r.stdout.strip() if r.returncode == 0 else ""
+        row = {
+            "step": "ship",
+            "name": "sync.ship",
+            "wait_s": round(float(wait_s), 2),
+            "run_s": round(float(run_s), 2),
+            "retry_s": round(float(retry_s), 2),
+            "wait": round(float(wait_s), 2),
+            "run": round(float(run_s), 2),
+            "retry": round(float(retry_s), 2),
+            "secs": round(float(wait_s + run_s + retry_s), 2),
+            "ok": bool(ok),
+            "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "sha": short_sha,
+        }
+        with open(p, "a", encoding="utf-8", newline="\n") as fh:
+            fh.write(json.dumps(row) + "\n")
+    except Exception:
+        pass
+
+
 def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_slug=None, sleep=time.sleep):
     """release_slug (traffic buster B4): the claim file is deleted in a commit on this branch, so the release rides the
     same push as the work (no separate fetch + push). Nothing to ship: falls back to the plumbing release.
@@ -663,55 +709,74 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
     A lost push race (GATE_SPEED D4) re-merges and pushes again after a 1-5 s jitter, up to SHIP_PUSH_TRIES; it re-runs the gate
     only when the incoming commits overlap what we ship (race_overlap), at most REGATES times."""
     refuse_live(repo)  # only commits are pushed; uncommitted files stay where they are
+    wait_s = 0.0
+    run_s = 0.0
+    retry_s = 0.0
     if after_slug:
+        t_wait_0 = time.monotonic()
         res = wait_after(repo, after_slug)
+        wait_s += time.monotonic() - t_wait_0
         print(f"order ticket --after {after_slug}: {res}")
     rel = f"{CLAIMS_DIR}/{release_slug}.md" if release_slug else None
     released = False
     regates = 0
     files = []
     ci = None
-    for attempt in range(1, SHIP_PUSH_TRIES + 1):
-        before = git(repo, "rev-parse", "HEAD").stdout.strip()
-        merge_trunk(repo)
-        shipped_before, files = files, outgoing_files(repo)
-        if not files:
-            if release_slug:
-                release(repo, release_slug)
+    ok = False
+    try:
+        for attempt in range(1, SHIP_PUSH_TRIES + 1):
+            before = git(repo, "rev-parse", "HEAD").stdout.strip()
+            merge_trunk(repo)
+            shipped_before, files = files, outgoing_files(repo)
+            if not files:
+                if release_slug:
+                    release(repo, release_slug)
+                else:
+                    print("nothing to ship")
+                return
+            if attempt == 1:
+                if gate is run_gate and ci_applies(files):    # custom gates (tests, throwaway repos) stay hermetic: no network
+                    ci = CiCheck()
+                if needs_gate(files):
+                    t_gate_0 = time.monotonic()
+                    call_gate(gate, repo, files)
+                    run_s += time.monotonic() - t_gate_0
+                elif docs_gate:
+                    t_gate_0 = time.monotonic()
+                    docs_gate(repo, files)
+                    run_s += time.monotonic() - t_gate_0
+                enforce_ci(ci)
             else:
-                print("nothing to ship")
-            return
-        if attempt == 1:
-            if gate is run_gate and ci_applies(files):    # custom gates (tests, throwaway repos) stay hermetic: no network
-                ci = CiCheck()
-            if needs_gate(files):
-                call_gate(gate, repo, files)
-            elif docs_gate:
-                docs_gate(repo, files)
-            enforce_ci(ci)
-        else:
-            after = git(repo, "rev-parse", "HEAD").stdout.strip()
-            hit = race_overlap(repo, changed_between(repo, before, after), shipped_before) if after != before else []
-            if hit and regates < REGATES and needs_gate(files):
-                regates += 1
-                print(f"incoming commits touch what we ship ({', '.join(hit[:5])}); re-running the gate")
-                call_gate(gate, repo, files)
-            elif hit:
-                print(f"incoming commits touch {', '.join(hit[:5])}; re-gate limit reached, CI checks the merge")
-        if rel and git(repo, "cat-file", "-e", f"HEAD:{rel}", check=False).returncode == 0:
-            git(repo, "rm", "--quiet", "-f", rel)
-            git(repo, "commit", "--quiet", "-m", f"release {release_slug}" + chr(10) * 2 + f"Result: claim {release_slug} closed with the ship")
-            released = True
-        pages = StalePages(repo)       # overlaps the push
-        r = git(repo, "push", "--quiet", "origin", f"HEAD:refs/heads/{TRUNK}", check=False)
-        if r.returncode == 0:
-            print(f"shipped {len(files)} file(s) to origin/{TRUNK}" + (f"; released {release_slug}" if released else ""))
-            pages.report()
-            return
-        print(f"push rejected (someone shipped first), retry {attempt}/{SHIP_PUSH_TRIES}")
-        if attempt < SHIP_PUSH_TRIES:
-            sleep(1.0 + 4.0 * random.random())   # two ships that lost to the same push must not collide again in lockstep
-    raise SyncError(f"push still rejected after {SHIP_PUSH_TRIES} tries:\n{r.stderr}")
+                after = git(repo, "rev-parse", "HEAD").stdout.strip()
+                hit = race_overlap(repo, changed_between(repo, before, after), shipped_before) if after != before else []
+                if hit and regates < REGATES and needs_gate(files):
+                    regates += 1
+                    print(f"incoming commits touch what we ship ({', '.join(hit[:5])}); re-running the gate")
+                    t_gate_0 = time.monotonic()
+                    call_gate(gate, repo, files)
+                    run_s += time.monotonic() - t_gate_0
+                elif hit:
+                    print(f"incoming commits touch {', '.join(hit[:5])}; re-gate limit reached, CI checks the merge")
+            if rel and git(repo, "cat-file", "-e", f"HEAD:{rel}", check=False).returncode == 0:
+                git(repo, "rm", "--quiet", "-f", rel)
+                git(repo, "commit", "--quiet", "-m", f"release {release_slug}" + chr(10) * 2 + f"Result: claim {release_slug} closed with the ship")
+                released = True
+            pages = StalePages(repo)       # overlaps the push
+            r = git(repo, "push", "--quiet", "origin", f"HEAD:refs/heads/{TRUNK}", check=False)
+            if r.returncode == 0:
+                ok = True
+                print(f"shipped {len(files)} file(s) to origin/{TRUNK}" + (f"; released {release_slug}" if released else ""))
+                pages.report()
+                return
+            print(f"push rejected (someone shipped first), retry {attempt}/{SHIP_PUSH_TRIES}")
+            if attempt < SHIP_PUSH_TRIES:
+                t_retry_0 = time.monotonic()
+                sleep(1.0 + 4.0 * random.random())   # two ships that lost to the same push must not collide again in lockstep
+                retry_s += time.monotonic() - t_retry_0
+        raise SyncError(f"push still rejected after {SHIP_PUSH_TRIES} tries:\n{r.stderr}")
+    finally:
+        if files:
+            record_ship_timing(repo, wait_s=wait_s, run_s=run_s, retry_s=retry_s, ok=ok)
 
 
 def news(repo, hours=24):

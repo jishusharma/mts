@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py extracts/bedrock_out/<ID>_bedrock.md"
+  ],
+  "created": "2026-10-19T09:21:20Z",
+  "depends_on": [],
+  "done_when": "extracts/bedrock_out/ holds 9 *_bedrock.md files and 2 *_audit.md files; verify_extract_quotes.py bad-quote count per file is recorded in the card note",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator pastes the AWS_BEDROCK_PILOT.md prompts into Bedrock Playground (credits expire 2026-10-25); a Claude session verifies the saved outputs and records the verbatim-quote rate.",
+  "id": "aws-bedrock-extraction-pilot",
+  "lane": "HAIKU",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "OPERATOR-RUN part: pasting prompts into AWS console; public data only, no spend, no keys",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-19T09:21:36Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/AWS_BEDROCK_PILOT.md",
+    "extracts/bedrock_out"
+  ],
+  "scope_out": [
+    "scripts",
+    "extracts/fresh"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/AWS_BEDROCK_PILOT.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Operator runs jobs J1-J9, A1-A2 from AWS_BEDROCK_PILOT.md via the Haiku helper",
+    "Stage raw_transcripts_canonical/gWjHq5UMisY_raw.txt from pending_raw",
+    "Run verify_extract_quotes.py on each output, record bad-quote counts"
+  ],
+  "tests": "python scripts/dev/verify_extract_quotes.py extracts/bedrock_out/<ID>_bedrock.md exits 0 or lists the bad quotes",
+  "title": "AWS Bedrock pilot: 9 pending Tom transcripts + 2 extract audits through the free-credit Playground, quote-verified",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
