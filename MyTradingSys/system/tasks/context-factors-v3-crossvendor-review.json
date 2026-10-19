@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-19T04:35:57Z",
   "commands": [],
   "created": "2026-10-18T16:17:45Z",
   "depends_on": [],
@@ -14,6 +16,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "FIX-FIRST; report MyTradingSys/research/layer_lab/reports/2026-10-19_context-factors-v3-cr",
+      "ref": "26deeaa2",
+      "utc": "2026-10-19T04:35:57Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +46,7 @@
   "refined_by": "",
   "refreshed": "2026-10-18T21:23:16Z",
   "refs": [],
-  "result": "",
+  "result": "FIX-FIRST; report MyTradingSys/research/layer_lab/reports/2026-10-19_context-factors-v3-crossvendor-review.md: 437/319-day arithmetic and both frozen hashes MATCH; missing control/stratum dispositions and proxy F3 verdict require clarification",
   "scope_in": [
     "MyTradingSys/research/context_factors_pit_2026-10-16/PRE_REG_V3.md",
     "MyTradingSys/research/context_factors_pit_2026-10-16/AUDIT_BEFORE_RUN.md",
@@ -61,7 +69,7 @@
     "MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py (frozen engine SHA reference; inspect committed bytes only)",
     "MyTradingSys/system/LAYER_LAB.md:16-22, 47-52 (CODEX audit role and report/verdict requirements)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Review only the committed trunk versions of PRE_REG_V3.md and AUDIT_BEFORE_RUN.md sections 1-2; the producer was Gemini, so perform the review independently as GPT. Do not inspect Gemini's unshipped branch.",
     "Check audit item 1: count-only diagnostics, matched-control caveat, stratified-E PASS and the exact boundary (>25% gap is INCONCLUSIVE/no-kill; <=25% remains eligible). If missing control pools or insufficient rung strata lack a defined disposition in V3, report FIX-FIRST with file:line evidence; do not invent a rule.",
@@ -71,6 +79,7 @@
     "After delivery, provide a separate verification receipt with the full report commit SHA, line-content check, empty git cherry origin/fast-track <sha>, and git ls-tree report existence; do not put a self-referential SHA receipt in the report.",
     "Executor final reply verifies content commit SHA, empty git cherry origin/fast-track <sha>, and git ls-tree -r origin/fast-track --name-only report existence. Runner handles git for sandboxed audits."
   ],
+  "taken": "2026-10-19T04:34:57Z",
   "tests": "",
   "title": "Cross-vendor review: context-factors PRE_REG_V3.md (Gemini-written, CRUCIAL)",
   "weight": "CRUCIAL",

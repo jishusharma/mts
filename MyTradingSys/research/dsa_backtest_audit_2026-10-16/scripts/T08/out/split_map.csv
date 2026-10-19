@@ -1,0 +1,528 @@
+file,line,code
+MyTradingSys/backtest/bigtrade/exit_policies.py,10,"Splits (repo split, aligned 2026-10-17): TRAIN 2022-01..2024-06, VALIDATE 2024-07..2025-06. HOLDOUT (2025-07..) is NOT read. Every (key x policy) cell is a registered"
+MyTradingSys/backtest/bigtrade/exit_policies.py,31,"TRAIN_END = dt.datetime(2024, 7, 1, tzinfo=dt.timezone.utc).timestamp() * 1000"
+MyTradingSys/backtest/bigtrade/exit_policies.py,32,"VALID_END = dt.datetime(2025, 7, 1, tzinfo=dt.timezone.utc).timestamp() * 1000"
+MyTradingSys/backtest/bigtrade/exit_policies.py,99,"""(assumed). Stop-first on shared bars. HOLDOUT (2025-07..) not read. Policies:"" % (FIRES, CACHE, FEE_RT * 1e4, SLIP_RT * 1e4), """"]"
+MyTradingSys/backtest/bigtrade/fires_kline.py,86,"# Repo split (OPERATOR_DECISIONS.md:878): DEV 2022-01-01..2024-06-30, VALIDATION 2024-07-01..2025-06-30, HOLDOUT after."
+MyTradingSys/backtest/bigtrade/fires_kline.py,87,"# Label names kept (TRAIN = DEV, VALIDATE = VALIDATION) because the fire CSV ""split"" column and callers use them."
+MyTradingSys/backtest/bigtrade/fires_kline.py,88,# DECISION (OURS) 2026-10-17: the old PLAN-section-4 split (TRAIN to 2025-01-01) leaked 2024-07..12 VALIDATION into TRAIN
+MyTradingSys/backtest/bigtrade/fires_kline.py,90,"SPLITS = ((""TRAIN"", ""2022-01-01"", ""2024-07-01""), (""VALIDATE"", ""2024-07-01"", ""2025-07-01""),"
+MyTradingSys/backtest/bigtrade/fires_kline.py,91,"(""HOLDOUT"", ""2025-07-01"", ""2026-10-01""))"
+MyTradingSys/backtest/bigtrade/fires_kline.py,401,def split_of(t_ms):
+MyTradingSys/backtest/bigtrade/fires_kline.py,453,"""t_confirm_open_ms"": fire[""t_confirm""], ""split"": split_of(t_fire), ""price"": _num(price),"
+MyTradingSys/backtest/bigtrade/relabel_fires_split.py,1,"""""""Rewrite the `split` column of bigtrade fire CSVs from fires_kline.split_of(t_fire_ms) (repo split map)."
+MyTradingSys/backtest/bigtrade/relabel_fires_split.py,28,row[i_s] = fk.split_of(int(row[i_t]))
+MyTradingSys/backtest/bigtrade/test_fires_kline.py,433,"self.assertEqual(fk.split_of(ms(""2022-01-01"")), ""TRAIN"")"
+MyTradingSys/backtest/bigtrade/test_fires_kline.py,434,"self.assertEqual(fk.split_of(ms(""2024-06-30"")), ""TRAIN"")"
+MyTradingSys/backtest/bigtrade/test_fires_kline.py,435,"self.assertEqual(fk.split_of(ms(""2024-07-01"")), ""VALIDATE"")"
+MyTradingSys/backtest/bigtrade/test_fires_kline.py,436,"self.assertEqual(fk.split_of(ms(""2024-12-31"")), ""VALIDATE"")"
+MyTradingSys/backtest/bigtrade/test_fires_kline.py,437,"self.assertEqual(fk.split_of(ms(""2025-01-01"")), ""VALIDATE"")"
+MyTradingSys/backtest/bigtrade/test_fires_kline.py,438,"self.assertEqual(fk.split_of(ms(""2025-06-30"")), ""VALIDATE"")"
+MyTradingSys/backtest/bigtrade/test_fires_kline.py,439,"self.assertEqual(fk.split_of(ms(""2025-07-01"")), ""HOLDOUT"")"
+MyTradingSys/backtest/bigtrade/test_fires_kline.py,440,"self.assertEqual(fk.split_of(ms(""2026-09-30"")), ""HOLDOUT"")"
+MyTradingSys/backtest/bigtrade/test_fires_kline.py,441,"self.assertEqual(fk.split_of(ms(""2026-10-01"")), ""POST"")"
+MyTradingSys/backtest/bigtrade/test_fires_kline.py,444,"""""""Repo split: DEV ends 2024-06-30, VALIDATION starts 2024-07-01 (OPERATOR_DECISIONS.md:878)."""""""
+MyTradingSys/backtest/bigtrade/test_fires_kline.py,447,"self.assertNotEqual(fk.split_of(ms(2024, 7, 1)), ""TRAIN"")"
+MyTradingSys/backtest/bigtrade/test_fires_kline.py,448,"self.assertNotEqual(fk.split_of(ms(2024, 9, 15)), ""TRAIN"")"
+MyTradingSys/backtest/bigtrade/test_fires_kline.py,449,"self.assertEqual(fk.split_of(ms(2024, 6, 30, 23, 59)), ""TRAIN"")"
+MyTradingSys/backtest/bigtrade/test_fires_kline.py,450,"self.assertEqual(dict((n, (lo, hi)) for n, lo, hi in fk.SPLITS)[""TRAIN""], (""2022-01-01"", ""2024-07-01""))"
+MyTradingSys/backtest/bigtrade/test_fires_kline.py,454,"self.assertEqual(ep.TRAIN_END, 1719792000000)             # 2024-07-01 00:00 UTC"
+MyTradingSys/backtest/bigtrade/test_relabel_fires_split.py,14,"rows = [(""2024-06-30"", ""TRAIN""), (""2024-07-01"", ""TRAIN""), (""2024-12-31"", ""TRAIN""), (""2025-01-01"", ""VALIDATE""),"
+MyTradingSys/backtest/bigtrade/test_relabel_fires_split.py,15,"(""2025-07-01"", ""HOLDOUT"")]"
+MyTradingSys/backtest/bigtrade/test_relabel_fires_split.py,23,"self.assertEqual(dict(b), {""TRAIN"": 3, ""VALIDATE"": 1, ""HOLDOUT"": 1})"
+MyTradingSys/backtest/bigtrade/test_relabel_fires_split.py,24,"self.assertEqual(dict(a), {""TRAIN"": 1, ""VALIDATE"": 3, ""HOLDOUT"": 1})"
+MyTradingSys/backtest/bigtrade/test_relabel_fires_split.py,26,"self.assertEqual([r[""split""] for r in got], [""TRAIN"", ""VALIDATE"", ""VALIDATE"", ""VALIDATE"", ""HOLDOUT""])"
+MyTradingSys/backtest/layers/alerts/test_live_runner_v3_shadow.py,155,"t_open = int(dt.datetime(2026, 10, 2, 13, 30, tzinfo=dt.timezone.utc).timestamp() * 1000)   # Fri, US DST"
+MyTradingSys/backtest/layers/alerts/test_live_runner_v3_shadow.py,162,"sat = flow_bars(5, int(dt.datetime(2026, 10, 3, 14, 0, tzinfo=dt.timezone.utc).timestamp() * 1000))"
+MyTradingSys/backtest/layers/consensus/test_writer.py,18,"T1 = datetime(2026, 10, 1, 19, 30, 15, 123456, tzinfo=UTC)      # file consensus_20261001.jsonl, ts ...15.123Z"
+MyTradingSys/backtest/layers/consensus/test_writer.py,187,"before = datetime(2026, 10, 1, 23, 59, 59, 999000, tzinfo=UTC)"
+MyTradingSys/backtest/layers/consensus/test_writer.py,188,"after = datetime(2026, 10, 2, 0, 0, 0, 0, tzinfo=UTC)"
+MyTradingSys/backtest/layers/consensus/test_writer.py,202,"self.call(now=datetime(2026, 10, 2, 1, 30, 0, tzinfo=plus2))     # = 2026-10-01 23:30 UTC"
+MyTradingSys/backtest/layers/consensus/test_writer.py,203,"self.call(now=datetime(2026, 10, 1, 5, 6, 7))                    # naive -> UTC"
+MyTradingSys/backtest/layers/cryptocred/cc_htf_count.py,8,backtest/power_mde.py. DEV window only: 2022-01-01 .. 2024-06-30 (repo split; VALIDATION and
+MyTradingSys/backtest/layers/cryptocred/cc_htf_count.py,9,HOLDOUT are never loaded: bars are cut at DEV_END_MS before any signal is computed).
+MyTradingSys/backtest/layers/cryptocred/cc_htf_count.py,28,DEV_START_MS = 1640995200000   # 2022-01-01T00:00Z
+MyTradingSys/backtest/layers/cryptocred/cc_htf_count.py,29,DEV_END_MS = 1719792000000     # 2024-07-01T00:00Z (exclusive); repo split DEV to 2024-06-30
+MyTradingSys/backtest/layers/cryptocred/cc_htf_count.py,83,"bars = [b for b in bars if DEV_START_MS <= b[""t""] < DEV_END_MS]"
+MyTradingSys/backtest/layers/cryptocred/cc_htf_count.py,84,"assert bars and bars[-1][""t""] < DEV_END_MS"
+MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py,77,"def chronological_split(bars, is_frac=0.70):"
+MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py,78,n_is = int(len(bars) * is_frac)
+MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py,250,"def run_setup(name, tf_bars, sim_bars, funding, tf_ms, is_frac=0.70, max_bars=1440, setup_fn=None):"
+MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py,253,"_, bars_oos, n_is = chronological_split(tf_bars, is_frac)"
+MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py,372,"_, bars_oos, n_is = chronological_split(tf_bars)"
+MyTradingSys/backtest/layers/cryptocred/test_run_cc_setups.py,43,"a, b, n_is = R.chronological_split(bars)"
+MyTradingSys/backtest/layers/fabio/pending_test_fabio_v3.py,675,"open_ms = int(dt.datetime(2025, 3, 10, 13, 30, tzinfo=dt.timezone.utc).timestamp() * 1000)"
+MyTradingSys/backtest/layers/fabio/run_backtest.py,64,"def chronological_split(bars, is_frac=0.70):"
+MyTradingSys/backtest/layers/fabio/run_backtest.py,65,n_is = int(len(bars) * is_frac)
+MyTradingSys/backtest/layers/fabio/run_backtest.py,219,"bars_is, bars_oos, n_is = chronological_split(bars)"
+MyTradingSys/backtest/layers/fabio/run_v3_l3.py,29,"OOS_RANGE = (dt.date(2026, 1, 1), dt.date(2026, 6, 25))         # spec 8; holdout 2026-06-26.. is never read here"
+MyTradingSys/backtest/layers/fabio/test_htf_context_live.py,15,"B = int(datetime(2026, 10, 3, 8, 0, tzinfo=timezone.utc).timestamp() * 1000)   # a 4H close boundary"
+MyTradingSys/backtest/layers/fabio/test_htf_context_live.py,159,"mid = int(datetime(2026, 10, 4, 0, 0, tzinfo=timezone.utc).timestamp() * 1000)"
+MyTradingSys/backtest/layers/fabio/test_of_backfill.py,12,"T0 = int(datetime(2026, 10, 1, tzinfo=timezone.utc).timestamp() * 1000)"
+MyTradingSys/backtest/layers/fabio/test_orderflow_live.py,12,"T0 = int(datetime(2026, 10, 3, 14, 0, tzinfo=timezone.utc).timestamp() * 1000)"
+MyTradingSys/backtest/layers/fabio/test_orderflow_live.py,13,"DAY = datetime(2026, 10, 3, tzinfo=timezone.utc).date()"
+MyTradingSys/backtest/layers/fabio/test_orderflow_live.py,174,"nd = int(datetime(2026, 10, 4, 0, 0, tzinfo=timezone.utc).timestamp() * 1000)"
+MyTradingSys/backtest/layers/fabio/test_run_backtest.py,29,"a, b, n_is = rb.chronological_split(list(range(10)))"
+MyTradingSys/backtest/layers/fabio/test_run_backtest.py,31,"self.assertEqual(rb.chronological_split([]), ([], [], 0))"
+MyTradingSys/backtest/layers/krown/run_fire_counts.py,4,"(VALIDATION / HOLDOUT stay sealed). The 2017-2019 DEV years are not on this machine: NOT_IN_DATA, so counts"
+MyTradingSys/backtest/layers/krown/run_fire_counts.py,19,"DEV_END = (2024, 6)"
+MyTradingSys/backtest/layers/krown/run_fire_counts.py,42,"for y in range(2020, DEV_END[0] + 1):"
+MyTradingSys/backtest/layers/krown/run_fire_counts.py,44,"if (y, m) > DEV_END:"
+MyTradingSys/backtest/layers/krown/run_fire_counts.py,118,"""DEV 2020-01..2024-06 from local 1m files (2017-2019 NOT_IN_DATA here). VALIDATION/HOLDOUT not read. """
+MyTradingSys/backtest/layers/krown/run_recall_check.py,4,Reads only DEV bars (open_time < 2024-07-01 UTC) from the checksum-verified public klines in F:/MTS/data/krown_daily
+MyTradingSys/backtest/layers/krown/run_recall_check.py,5,"(DATA_MANIFEST.csv, all OK). Examples that fall in VALIDATION or HOLDOUT (VOL-08 Feb 2026, SNR-17 about 108,000) are"
+MyTradingSys/backtest/layers/krown/run_recall_check.py,24,"DEV_END_MS = int(datetime(2024, 7, 1, tzinfo=timezone.utc).timestamp() * 1000)  # exclusive: nothing later is kept"
+MyTradingSys/backtest/layers/krown/run_recall_check.py,33,2024-07-01 UTC are loaded (DEV); VALIDATION and HOLDOUT are not read. Detector parameters stay at v0.
+MyTradingSys/backtest/layers/krown/run_recall_check.py,53,"**Dropped without a read (listed in RECALL.md):** VOL-08 (February 2026 low: HOLDOUT, sealed), SNR-17 (the 100,000 test reached"
+MyTradingSys/backtest/layers/krown/run_recall_check.py,66,if t >= DEV_END_MS:
+MyTradingSys/backtest/layers/krown/run_recall_check.py,314,"L += ["""", ""Dropped without a read: VOL-08 (HOLDOUT), SNR-17 (after 2024-07), MAV-11/MAV-15, VJZ-13, KCM-15 (no date or price); see rules above."", """","
+MyTradingSys/backtest/layers/krown/run_recall_check.py,315,"""## Fire rate (v0 detectors, DEV bars before 2024-07-01)"", """","
+MyTradingSys/backtest/layers/promotion/promote.py,9,never reads VALIDATION or HOLDOUT data; it only reads the records a research session wrote down. Spec: system/PROMOTION_PIPELINE.md.
+MyTradingSys/backtest/layers/promotion/promote.py,286,# G6: VALIDATION and holdout each read exactly once
+MyTradingSys/backtest/layers/promotion/promote.py,296,"reasons.append(""validation_reads ref %r is not an existing repo file (the logged VALIDATION read)"" % recs[0][""ref""])"
+MyTradingSys/backtest/layers/promotion/test_promote.py,50,"""r/val_read.md"": ""VALIDATION read log\n"","
+MyTradingSys/backtest/layers/promotion/test_promote.py,307,"self.assertTrue(pm.demote(SID, ""off"", self.regp, self.cfg, now=dt.datetime(2026, 10, 16, tzinfo=dt.timezone.utc))[0])"
+MyTradingSys/backtest/layers/promotion/test_registry_gate.py,133,"NOW = datetime(2026, 9, 29, 0, 0, 0, tzinfo=timezone.utc)"
+MyTradingSys/backtest/layers/promotion/test_registry_gate.py,134,"T15 = int(datetime(2026, 9, 28, 23, 30, tzinfo=timezone.utc).timestamp() * 1000)"
+MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py,76,"def chronological_split(bars, is_frac=0.70):"
+MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py,77,n_is = int(len(bars) * is_frac)
+MyTradingSys/backtest/layers/rsi/test_run_rsi_backtest.py,62,"a, b, n_is = rr.chronological_split(list(range(10)))"
+MyTradingSys/backtest/layers/rsi/test_run_rsi_backtest.py,64,"self.assertEqual(rr.chronological_split([]), ([], [], 0))"
+MyTradingSys/backtest/layers/run_bracket_grid.py,109,"def run_layer(name, bars, events, is_frac=0.70, min_is=MIN_IS, min_oos=MIN_OOS, pbo_s=16):"
+MyTradingSys/backtest/layers/run_bracket_grid.py,110,n_is = int(len(bars) * is_frac)
+MyTradingSys/backtest/layers/run_t055.py,101,"def chronological_split(bars, is_frac=0.70):"
+MyTradingSys/backtest/layers/run_t055.py,102,n_is = int(len(bars) * is_frac)
+MyTradingSys/backtest/layers/run_t055.py,195,"net_return=None, is_frac=0.70, min_events=20, fee_rt=0.0010, slip_rt=0.0002,"
+MyTradingSys/backtest/layers/run_t055.py,207,"bars_is, bars_oos, n_is = chronological_split(bars, is_frac)"
+MyTradingSys/backtest/layers/session/test_session_momentum.py,59,"sat = int(dt.datetime(2026, 1, 17, 14, 30, tzinfo=dt.timezone.utc).timestamp() * 1000)"
+MyTradingSys/backtest/layers/test_run_t055.py,47,"a, o, n = R.chronological_split(b)"
+MyTradingSys/backtest/layers/trendlines/test_trendline_core.py,3,"layers/FORMULAS.md section 19 (not from the module). Synthetic bars only: no market data, no VALIDATION/HOLDOUT."
+MyTradingSys/backtest/layers/wlow_bounce/test_detector.py,8,"MON = int(datetime(2026, 10, 5, tzinfo=timezone.utc).timestamp() * 1000)   # a Monday 00:00 UTC"
+MyTradingSys/backtest/maker_model.py,21,Usage: python MyTradingSys/backtest/maker_model.py   (writes the report from the Tom rows; HOLDOUT is never read)
+MyTradingSys/backtest/maker_model.py,120,"HOLDOUT_START = dt.datetime(2026, 6, 26, tzinfo=dt.timezone.utc).timestamp()"
+MyTradingSys/backtest/maker_model.py,121,"DEV_START = dt.datetime(2025, 9, 1, tzinfo=dt.timezone.utc).timestamp()"
+MyTradingSys/backtest/maker_model.py,148,"rows = [r for r in rows if DEV_START <= r[""t""] < HOLDOUT_START]   # HOLDOUT never read past this line"
+MyTradingSys/backtest/maker_model.py,153,"""Rows: %s, DEV only (%s .. 2026-06-25); HOLDOUT 2026-06-26.. not read. Bars: %s."" % ("
+MyTradingSys/backtest/maker_model.py,154,"WORK, dt.datetime.fromtimestamp(DEV_START, dt.timezone.utc).date(), RAW),"
+MyTradingSys/backtest/stop_buffer_wf.py,16,mean net R and n >= 30 is chosen (ties -> smaller k) and applied to the next block. HOLDOUT (2026-06-26..) is burned for
+MyTradingSys/backtest/stop_buffer_wf.py,44,"DEV_START = _ts(2025, 9, 1)"
+MyTradingSys/backtest/stop_buffer_wf.py,151,"return ""dev"" if t >= DEV_START else ""hist"""
+MyTradingSys/backtest/stop_buffer_wf.py,244,"blocks = month_blocks(DEV_START, HOLDOUT_START)"
+MyTradingSys/backtest/stop_buffer_wf.py,246,"""Rows: %s (signals at or after 2026-06-26 excluded: HOLDOUT burned for Tom, B147). Bars: %s."" % (WORK, RAW),"
+MyTradingSys/backtest/stop_buffer_wf.py,264,"""- A trade opened by the last dev signal can exit up to 16 h after 2026-06-26 00:00; those exit bars are read (unavoidable, same as tom_stop_width.py), but no holdout signal is generated or selected on."", """"]"
+MyTradingSys/backtest/stop_buffer_wf.py,353,"""- Funding is not modelled (as in tom_bt.py). Holdout 2026-06-26.. not selected on, not reported."", """"]"
+MyTradingSys/backtest/test_stop_buffer_wf.py,127,"b = W.month_blocks(W.DEV_START, W.HOLDOUT_START)"
+MyTradingSys/backtest/test_stop_buffer_wf.py,133,"self.assertEqual(W.period(W.DEV_START - 1), ""hist"")"
+MyTradingSys/backtest/test_stop_buffer_wf.py,134,"self.assertEqual(W.period(W.DEV_START), ""dev"")"
+MyTradingSys/backtest/test_tom_dax_bt.py,1057,"rows = [{""t"": dt.datetime(2026, 3, 1, tzinfo=dt.timezone.utc).timestamp()},"
+MyTradingSys/backtest/test_tom_dax_bt.py,1058,"{""t"": dt.datetime(2026, 5, 1, tzinfo=dt.timezone.utc).timestamp()}]"
+MyTradingSys/backtest/test_tom_dax_bt.py,1509,"CUT = dt.datetime(2026, 4, 11, tzinfo=dt.timezone.utc).timestamp()"
+MyTradingSys/backtest/test_tom_dax_bt.py,1601,"CUT = dt.datetime(2026, 4, 11, tzinfo=dt.timezone.utc).timestamp()"
+MyTradingSys/backtest/test_tom_dax_recall.py,25,"t = dt.datetime(2026, 5, 12, 8, 0, tzinfo=dt.timezone.utc)"
+MyTradingSys/backtest/tom_bt_report.py,22,"T_DEV = dt.datetime(2025, 9, 1, tzinfo=dt.timezone.utc).timestamp()"
+MyTradingSys/backtest/tom_bt_report.py,23,"T_HOLD = dt.datetime(2026, 6, 26, tzinfo=dt.timezone.utc).timestamp()"
+MyTradingSys/backtest/tom_bt_report.py,34,"return ""hist_2022-01..2025-08"" if t < T_DEV else ""dev_2025-09..2026-06-25"" if t < T_HOLD else ""holdout_2026-06-26.."""
+MyTradingSys/backtest/tom_bt_report.py,151,"""Splits: hist 2022-01-20..2025-08-31 | dev 2025-09-01..2026-06-25 | HOLDOUT 2026-06-26..2026-09-26 (run once, this run)."","
+MyTradingSys/backtest/tom_bt_report.py,231,"md.append(""- Periods: hist = 2022-01..2025-08 (outside the protocol dev window), dev = 2025-09-01..2026-06-25, holdout = 2026-06-26..2026-09-26 (run once). """
+MyTradingSys/backtest/tom_bt_report.py,318,"""(Deribit-style fees; tight stops make fees ~%.2f R per trade); holdout 2026-06-26..: n = %d, net R %.2f [%.2f, %.2f]. """
+MyTradingSys/backtest/tom_bt_report.py,325,"_one(""watch_episode"", ""holdout_2026-06-26.."")[""n_filled""], _one(""watch_episode"", ""holdout_2026-06-26.."")[""mean_net""],"
+MyTradingSys/backtest/tom_bt_report.py,326,"_one(""watch_episode"", ""holdout_2026-06-26.."")[""net_ci""][0], _one(""watch_episode"", ""holdout_2026-06-26.."")[""net_ci""][1])]"
+MyTradingSys/backtest/tom_dax_bt.py,12,"proofs masked exactly as on DAX, rows from 2026-06-26 on are never written (burned holdout, B147)."
+MyTradingSys/backtest/tom_dax_bt.py,1401,"""mask changed %d candidates; %d snapshots from 2026-06-26 on were never read (burned holdout, B147).\n"" % (bt[""rows""], bt[""mask_changed""], bt[""cut""]))"
+MyTradingSys/backtest/tom_probe_diag.py,9,Holdout 2026-06-26.. is burned (B147): rows at or after it are dropped before any signal is built.
+MyTradingSys/backtest/tom_probe_diag.py,53,"T_DEV = dt.datetime(2025, 9, 1, tzinfo=dt.timezone.utc).timestamp()"
+MyTradingSys/backtest/tom_probe_diag.py,54,"T_HOLD = dt.datetime(2026, 6, 26, tzinfo=dt.timezone.utc).timestamp()  # burned holdout: never read"
+MyTradingSys/backtest/tom_probe_diag.py,425,"""- Rows: `%s` (%d rows with t < 2026-06-26 after dropping the burned holdout; holdout rows were never kept). """
+MyTradingSys/backtest/tom_probe_diag.py,427,"""- Periods: hist = 2022-01-20..2025-08-31, dev = 2025-09-01..2026-06-25. Holdout 2026-06-26.. excluded (burned, B147)."" + nl,"
+MyTradingSys/backtest/tom_stop_width.py,6,"0 signals), and splits by period. HOLDOUT (2026-06-26..) is NOT read: it is burned for Tom (B147)."
+MyTradingSys/backtest/tom_stop_width.py,25,"HOLDOUT_START = dt.datetime(2026, 6, 26, tzinfo=dt.timezone.utc).timestamp()"
+MyTradingSys/backtest/tom_stop_width.py,26,"DEV_START = dt.datetime(2025, 9, 1, tzinfo=dt.timezone.utc).timestamp()"
+MyTradingSys/backtest/tom_stop_width.py,45,"return ""dev"" if t >= DEV_START else ""hist"""
+MyTradingSys/backtest/tom_stop_width.py,65,"""Rows: %s (holdout 2026-06-26.. excluded, burned per B147). Bars: %s. Signal variants are SENSITIVITY """
+MyTradingSys/backtest/tom_v2_recall.py,25,"DEV_START, DEV_END = dt.date(2024, 11, 4), dt.date(2026, 4, 10)"
+MyTradingSys/backtest/tom_v2_recall.py,140,"all_days = R.v2_all_window_days(x.raw, DEV_START, DEV_END)"
+MyTradingSys/backtest/tom_v2_recall.py,162,"dev=dict(window=[DEV_START.isoformat(), DEV_END.isoformat()], dropped=len(dropped), days=len(dev_days),"
+MyTradingSys/research/b141_htf_stage1.py,23,"DEV_END = ""2026-06-25""          # holdout 2026-06-26.. is NOT read here"
+MyTradingSys/research/b141_htf_stage1.py,36,"def load_klines(folder, start=HIST_START, end=DEV_END):"
+MyTradingSys/research/b141_htf_stage1.py,118,"doc = {""period"": [HIST_START, DEV_END], ""bars"": int(len(K[""t""])), ""n_cells"": len(res), ""cells"": res}"
+MyTradingSys/research/b141_htf_stage2.py,158,"doc = {""period"": [s1.HIST_START, s1.DEV_END], ""n_cells"": len(results), ""cells"": results, ""selected"": sel}"
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/cdata.py,3,DEV-only guard (PRE_REG_CANDLE_PILOT.md section 1): every loader refuses an end date after DEV_END_MS
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/cdata.py,27,"DEV_END_MS = ms(2024, 7, 1)          # exclusive: DEV is < 2024-07-01"
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/cdata.py,29,"VALID_END_MS = ms(2025, 7, 1)        # exclusive: VALIDATION is [2024-07-01, 2025-07-01)"
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/cdata.py,33,if end_ms is None or end_ms > DEV_END_MS:
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/cdata.py,35,"raise PermissionError(""pilot is DEV-only: end_ms must be <= DEV_END_MS (PRE_REG section 1)"")"
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/cdata.py,38,"def load_daily(start_ms=DAILY_START_MS, end_ms=DEV_END_MS, unseal=False):"
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/data_check.py,16,"m1 = cdata.load_1m(cdata.HOURLY_START_MS, cdata.DEV_END_MS)"
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/mutation_check.py,12,"(""cdata.py"", ""if end_ms is None or end_ms > DEV_END_MS:"", ""if False:"", ""dev-only guard removed""),"
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/run_p0.py,92,"m1 = cdata.load_1m(cdata.HOURLY_START_MS, cdata.DEV_END_MS)"
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/run_p1.py,173,"m1 = cdata.load_1m(cdata.HOURLY_START_MS, cdata.DEV_END_MS)"
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/test_pilot.py,275,cdata.load_daily(end_ms=cdata.DEV_END_MS + 86400000)
+MyTradingSys/research/carry_basis_2026-10-18/carry_basis.py,10,- VAL: 2023-07-01 to 2024-07-01
+MyTradingSys/research/carry_basis_2026-10-18/carry_basis.py,11,- HOLD: 2024-07-01 to 2025-07-01
+MyTradingSys/research/carry_basis_2026-10-18/carry_basis.py,190,# Filter perp to strictly before sealed window 2025-07-01
+MyTradingSys/research/chart_read_g5_2026-10-16/common.py,1,"""""""Shared helpers for the four chart-read G5 screens (2026-10-16). DEV only (bars before 2024-07-01)."
+MyTradingSys/research/chart_read_g5_2026-10-16/common.py,15,import screen as S  # noqa: E402  (loader refuses any bar >= 2024-07-01)
+MyTradingSys/research/chart_read_g5_2026-10-16/common.py,138,"p_in = O[t+1+d], p_out = O[t+1+d+h]; NaN if either is outside the DEV tape (VALIDATION is never read)."""""""
+MyTradingSys/research/context_factors_2026-10-16/build_frames.py,26,"""""""Same output as context_asof.load_funding (calc_time ms, last_funding_rate), bar/settlement time < 2024-07-01."""""""
+MyTradingSys/research/context_factors_2026-10-16/build_frames.py,31,"f = f[f[""calc_time""] < C.DEV_END_MS]"
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py,6,load_dev_5m() / load_funding  DEV loader (bar open 2022-01-01 .. 2024-06-30); refuses any bar opening at/after 2024-07-01.
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py,36,DEV_START_MS = 1_640_995_200_000       # 2022-01-01 00:00 UTC
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py,37,"DEV_END_MS = 1_719_792_000_000         # 2024-07-01 00:00 UTC: VALIDATION starts here, never read"
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py,294,if T > DEV_END_MS:
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py,295,"raise ValueError(""bar at/after 2024-07-01 (VALIDATION) refused"")"
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py,641,"if len(df5) and int(df5[""ot""].iloc[-1]) >= DEV_END_MS:"
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py,642,"raise ValueError(""bar at/after 2024-07-01 (VALIDATION) refused"")"
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py,954,"m = m[(m[""ot""] >= DEV_START_MS) & (m[""ot""] < DEV_END_MS)]"
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py,955,"if len(m) and int(m[""ot""].max()) >= DEV_END_MS:"
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py,956,"raise ValueError(""VALIDATION bar in the DEV load"")"
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py,972,"f = f[f[""calc_time""] < DEV_END_MS]"
+MyTradingSys/research/context_factors_2026-10-16/count_ext.py,32,return ends[(ends % C.HOUR == 0) & (ends >= START_MS) & (ends <= C.DEV_END_MS)]
+MyTradingSys/research/context_factors_2026-10-16/count_ext.py,83,"""now, because DEV_EXT supplies the warm-up). VALIDATION and HOLDOUT are never loaded (`dev_ext.assert_dev_stage`)."", """","
+MyTradingSys/research/context_factors_2026-10-16/counts.py,26,"(""2024H1"", 1_704_067_200_000, C.DEV_END_MS))"
+MyTradingSys/research/context_factors_2026-10-16/counts.py,69,"""(bar open < 2024-07-01). No forward return, win/loss or exit exists in any file of this folder."", """","
+MyTradingSys/research/context_factors_2026-10-16/counts_v2.py,20,"return cn.context_key(Cc, int((T - S.HOUR - S.DEV_START_MS)//S.HOUR), cfg, rv=rv)"
+MyTradingSys/research/context_factors_2026-10-16/counts_v3.py,28,"return cn.context_key(Cc, int((T - S.HOUR - S.DEV_START_MS) // S.HOUR), cfg, rv=rv)"
+MyTradingSys/research/context_factors_2026-10-16/dev_ext.py,4,"(bar open < 2022-01-01). DEV (2022-01-01..2024-06-30), VALIDATION (2024-07-01..2025-06-30) and HOLDOUT boundaries are unchanged."
+MyTradingSys/research/context_factors_2026-10-16/dev_ext.py,5,"DEV_EXT is OFF unless a caller passes include_dev_ext=True. Whatever the flag, no bar with open >= C.DEV_END_MS (2024-07-01)"
+MyTradingSys/research/context_factors_2026-10-16/dev_ext.py,24,DEV_EXT_END_MS = C.DEV_START_MS                           # 2022-01-01 00:00 UTC: DEV starts here
+MyTradingSys/research/context_factors_2026-10-16/dev_ext.py,49,"raise ValueError(""DEV/VALIDATION bar in the DEV_EXT load"")"
+MyTradingSys/research/context_factors_2026-10-16/dev_ext.py,82,"""""""Raise unless every bar opens before 2024-07-01 (VALIDATION / HOLDOUT never pass)."""""""
+MyTradingSys/research/context_factors_2026-10-16/dev_ext.py,83,"if len(bars[""ot""]) and int(np.max(bars[""ot""])) >= C.DEV_END_MS:"
+MyTradingSys/research/context_factors_2026-10-16/dev_ext.py,84,"raise ValueError(""bar at/after 2024-07-01 (VALIDATION/HOLDOUT) refused"")"
+MyTradingSys/research/context_factors_2026-10-16/run_dev.py,24,return ends[(ends % C.HOUR == 0) & (ends >= START_MS) & (ends <= C.DEV_END_MS)]
+MyTradingSys/research/context_factors_2026-10-16/study.py,7,`DECISION (OURS)` in a comment and again in RESULT.md. No bar with open >= 2024-07-01 is read (see `load_1m`).
+MyTradingSys/research/context_factors_2026-10-16/study.py,26,DEV_START_MS = 1_640_995_200_000       # 2022-01-01 00:00 UTC
+MyTradingSys/research/context_factors_2026-10-16/study.py,27,"DEV_END_MS = 1_719_792_000_000         # 2024-07-01 00:00 UTC: first VALIDATION bar, never read"
+MyTradingSys/research/context_factors_2026-10-16/study.py,37,"(""2024H1"", 1_704_067_200_000, DEV_END_MS))"
+MyTradingSys/research/context_factors_2026-10-16/study.py,108,"""""""(calc_time ms, last_funding_rate) of the monthly Binance fundingRate archive 2022-01..2024-06, settlement < 2024-07-01."
+MyTradingSys/research/context_factors_2026-10-16/study.py,118,"f = f[f[""calc_time""] < DEV_END_MS]"
+MyTradingSys/research/context_factors_2026-10-16/study.py,123,"""""""1m bars (dict of arrays ot,o,h,l,c) with open time in [2022-01-01, 2024-07-01). A bar at/after the split is refused."""""""
+MyTradingSys/research/context_factors_2026-10-16/study.py,139,"d = d[(d[""ot""] >= DEV_START_MS) & (d[""ot""] < DEV_END_MS)]"
+MyTradingSys/research/context_factors_2026-10-16/study.py,143,"if len(b[""ot""]) and int(b[""ot""].max()) >= DEV_END_MS:"
+MyTradingSys/research/context_factors_2026-10-16/study.py,144,"raise ValueError(""VALIDATION bar in the DEV 1m load"")"
+MyTradingSys/research/context_factors_2026-10-16/study.py,203,"""""""1h close array on the regular grid from 2022-01-01 00:00 (bar 0 opens at DEV_START_MS); a missing hour is forward"
+MyTradingSys/research/context_factors_2026-10-16/study.py,207,"grid = np.arange(DEV_START_MS // HOUR, DEV_END_MS // HOUR)"
+MyTradingSys/research/context_factors_2026-10-16/study.py,256,"exit_bar_ot=exit_bar_ot, cut_split=bool(ent_ot + HOLD_BARS * MIN > DEV_END_MS),"
+MyTradingSys/research/context_factors_2026-10-16/study.py,257,"gap_short=bool(tr[""cut""] and ent_ot + HOLD_BARS * MIN <= DEV_END_MS))"
+MyTradingSys/research/context_factors_2026-10-16/study.py,327,"assert (cfg.K, cfg.kmin, cfg.ts0_ms) == (20, 10, DEV_START_MS), (cfg.K, cfg.kmin, cfg.ts0_ms)"
+MyTradingSys/research/context_factors_2026-10-16/study.py,331,"print(f""1m bars {len(b['ot'])}, first {b['ot'][0]}, last {b['ot'][-1]} (< {DEV_END_MS}); funding settlements {len(ft)}; """
+MyTradingSys/research/context_factors_2026-10-16/study.py,341,"t_idx = ((e[""T""].to_numpy(np.int64) - HOUR - DEV_START_MS) // HOUR)"
+MyTradingSys/research/context_factors_2026-10-16/study.py,507,"""- Funding data: `F:/MTS/data/candle_close_dev_2022_2024` does not exist on this machine (JIS-NB). The same Binance monthly fundingRate series (identical columns) is read from `F:/MTS/Dumps/backtest/raw/fundingRate/*.csv`, months 2022-01..2024-06, settlements before 2024-07-01. Funding is not part of C; it enters only net_R (and the unused `f7_funding` frame column, built by `build_frames.py` with that loader)."","
+MyTradingSys/research/context_factors_2026-10-16/study.py,517,"f""- DEV data: 1m archive F:/MTS/data/tom_raw/klines; {len(b['ot'])} bars with open < 2024-07-01; missing 1h grid hours filled: {n_missing_hours}."","
+MyTradingSys/research/context_factors_2026-10-16/test_context_asof.py,121,"b[""ot""] = b[""ot""] + (C.DEV_END_MS - int(b[""ot""][0]))"
+MyTradingSys/research/context_factors_2026-10-16/test_dev_ext.py,1,"""""""Tests for dev_ext.py: the DEV_EXT flag can never return VALIDATION/HOLDOUT rows (synthetic files, CI-safe)."""""""
+MyTradingSys/research/context_factors_2026-10-16/test_dev_ext.py,16,Y2024_07 = C.DEV_END_MS
+MyTradingSys/research/context_factors_2026-10-16/test_dev_ext.py,39,assert X.DEV_EXT_END_MS == C.DEV_START_MS
+MyTradingSys/research/context_factors_2026-10-16/test_dev_ext.py,40,assert X.DEV_EXT_START_MS < X.DEV_EXT_END_MS < C.DEV_END_MS
+MyTradingSys/research/context_factors_2026-10-16/test_dev_ext.py,52,base = _bars([C.DEV_START_MS])
+MyTradingSys/research/context_factors_2026-10-16/test_dev_ext.py,53,"base[""fund_t""], base[""fund_r""] = np.array([C.DEV_START_MS]), np.array([1e-4])"
+MyTradingSys/research/context_factors_2026-10-16/test_dev_ext.py,63,"base = _bars([C.DEV_START_MS, C.DEV_START_MS + C.MIN5])"
+MyTradingSys/research/context_factors_2026-10-16/test_dev_ext.py,64,"base[""fund_t""], base[""fund_r""] = np.array([C.DEV_START_MS]), np.array([1e-4])"
+MyTradingSys/research/context_factors_2026-10-16/test_dev_ext.py,70,"assert list(out[""fund_t""]) == [Y2020, C.DEV_START_MS]"
+MyTradingSys/research/context_factors_2026-10-16/test_dev_ext.py,77,"X.load_dev_bars(True, base_loader=lambda: _bars([C.DEV_START_MS, Y2024_07]),"
+MyTradingSys/research/context_factors_2026-10-16/test_dev_ext.py,79,"out = X.load_dev_bars(True, base_loader=lambda: _bars([C.DEV_START_MS]),"
+MyTradingSys/research/context_factors_2026-10-16/test_dev_ext.py,82,"assert list(out[""ot""]) == [Y2020, C.DEV_START_MS]"
+MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py,11,column exists anywhere in this module. Any bar opening at/after 2024-07-01 is refused by the loader (VALIDATION and
+MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py,12,HOLDOUT are sealed).
+MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py,32,DEV_END_MS = 1719792000000     # 2024-07-01 00:00 UTC
+MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py,85,"""""""1m arrays indexed by minutes since TS0 (O,H,L,C,V,TBV), DEV only. Refuses any bar at/after 2024-07-01."""""""
+MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py,100,if t >= DEV_END_MS:
+MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py,101,"raise ValueError(f""bar {t} >= 2024-07-01 refused (VALIDATION/HOLDOUT are sealed): {f}"")"
+MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py,121,if t >= DEV_END_MS:
+MyTradingSys/research/context_factors_pit_2026-10-16/indep_pandas.py,22,"MONDAY0 = pd.Timestamp(""2022-01-03"", tz=""UTC"")"
+MyTradingSys/research/context_factors_pit_2026-10-16/test_context_asof.py,144,"f""{CA.DEV_END_MS},1,1,1,1,1,1,1,1,1,1,0\n"", encoding=""utf-8"")"
+MyTradingSys/research/context_null_2026-10-16/context_null.py,48,DEV_END_MS = screen.CUTOFF_MS          # DEV bars have open time < 2024-07-01
+MyTradingSys/research/context_null_2026-10-16/context_null.py,67,split_end_ms: int = DEV_END_MS      # guard: a bar opening at/after this is refused (VALIDATION/HOLDOUT sealed)
+MyTradingSys/research/context_null_2026-10-16/context_null.py,172,"raise ValueError(""bars at/after the DEV cutoff (2024-07-01) are refused: VALIDATION/HOLDOUT are sealed"")"
+MyTradingSys/research/context_null_2026-10-16/test_context_null.py,234,"late = CN.Config(bar_min=5, ts0_ms=CN.DEV_END_MS - 10 * 86_400_000)    # tape reaching past 2024-06-30 is refused"
+MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T03/t03_canaries.py,27,"TS0 = int(dt.datetime(2022, 1, 1, tzinfo=dt.timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T03/t03_stats.py,3,"Reads only the committed DEV ledgers of the gross screen (ledger.csv) and mal_bb (ledger.csv): no bars, no VALIDATION/HOLDOUT."
+MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T03/t03_stats.py,21,"TS0 = int(dt.datetime(2022, 1, 1, tzinfo=dt.timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/eur_low_us_sweep_2026-10-14/study.py,4,"nothing is tuned: one definition, one run, DEV 2022-2024 / VALIDATION 2025 / HOLDOUT 2026 reported side by side."
+MyTradingSys/research/eur_low_us_sweep_2026-10-14/study.py,213,"return ""DEV"" if y <= 2024 else (""VAL"" if y == 2025 else ""HOLDOUT"")"
+MyTradingSys/research/eur_low_us_sweep_2026-10-14/study.py,221,"for part in (""ALL"", ""DEV"", ""VAL"", ""HOLDOUT""):"
+MyTradingSys/research/eur_low_us_sweep_2026-10-14/study.py,240,"for part in (""ALL"", ""DEV"", ""VAL"", ""HOLDOUT""):"
+MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/followups.py,2,DEV only: bars before 2024-07-01 (the loader refuses later bars). Every number below is OURS unless marked SOURCED.
+MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/followups.py,198,"lines = [""# COUNT: events per leg on the DEV tape (bars before 2024-07-01), no outcome computed"", """","
+MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/followups.py,231,import common as K  # noqa: E402  (loads the DEV tape; refuses bars >= 2024-07-01)
+MyTradingSys/research/fabio_date_match_2026-10-18/test_date_match.py,9,"BASE = int(dt.datetime(2025, 10, 15, tzinfo=dt.timezone.utc).timestamp()) * 1000"
+MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py,34,# Tom/Fabio footprint track DEV (task brief): 2024-12..2025-03. Daily/weekly rows: standard DEV (before 2024-07-01).
+MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py,291,if row and row[0].isdigit() and int(row[0]) < end:  # DEV fence: nothing from 2024-07-01 on is kept
+MyTradingSys/research/g3_marks_2026-10-16/test_g3_pack.py,13,"T0 = int(datetime(2025, 1, 1, tzinfo=timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/g3_marks_2026-10-16/test_g3_pack.py,40,"out.append(dict(t=int(datetime(2020, 1, 1, tzinfo=timezone.utc).timestamp() * 1000) + k * g.DAY, o=o, h=max(o, px) * 1.01,"
+MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py,7,- an exit beyond the last DEV bar is NaN (VALIDATION is never read) and counted as dropped;
+MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py,24,"TS0 = int(dt.datetime(2022, 1, 1, tzinfo=dt.timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py,25,"CUTOFF_MS = int(dt.datetime(2024, 7, 1, tzinfo=dt.timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py,55,"raise ValueError(f""bar {t} >= 2024-07-01 refused (VALIDATION/HOLDOUT are sealed): {f}"")"
+MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py,469,"w.writerow([""orderflow_views_2026-10-14/study.py"", ""2026-10-14"", ""klines 1m + fapi top-up"", ""2022-2024 DEV, 2025 VAL, 2026 HOLDOUT"", ""DEV+VAL+HOLDOUT"", ""prior"", ""published (RESULT.md:37-42)"", ""divergence rule; all three splits published""])"
+MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py,99,"raise AssertionError(""loader accepted a bar >= 2024-07-01"")"
+MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/filter_join.py,6,"- the DEV guard (no bar with open >= 2024-07-01 is ever loaded),"
+MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/filter_join.py,32,"DEV_END_MS = pd.Timestamp(""2024-07-01"").value // 10**6          # first ms that is NOT DEV"
+MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/filter_join.py,33,"FIRST_DAY = pd.Timestamp(""2022-04-01"").value // 10**6 // DAY      # decisions start (90-day warmup)"
+MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/filter_join.py,34,LAST_DAY = (DEV_END_MS - 1) // DAY                                # 2024-06-30
+MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/filter_join.py,35,"H2_START_DAY = pd.Timestamp(""2023-04-01"").value // 10**6 // DAY   # stability halves: H1 < this <= H2"
+MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/filter_join.py,61,if len(t) and int(t.max()) >= DEV_END_MS:
+MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/filter_join.py,62,"raise ValueError(f""bar open {int(t.max())} is at or after 2024-07-01: DEV only"")"
+MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/run_filter.py,80,"f""DEV only: UTC days 2022-04-01..2024-06-30, 1m bars with open < 2024-07-01. Level blocks equal a 40-day window on 3 seeded days: """
+MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/run_filter.py,219,"""DEV only (bars before 2024-07-01, decisions 2022-04-01..2024-06-30); VALIDATION and HOLDOUT were not read. Rules frozen in PRE_REG.md (committed before this file); one run; nothing adopted."", """","
+MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/test_filter_join.py,240,F.assert_dev(np.array([F.DEV_END_MS - 60_000]))
+MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/test_filter_join.py,242,F.assert_dev(np.array([F.DEV_END_MS]))
+MyTradingSys/research/imbalance_qriptal_2026-10-16/imb.py,51,"CHECK = (""2025-09-01"", ""2026-06-26"")   # BACKTEST_PROTOCOL DEV window; holdout 2026-06-26.. is not read here"
+MyTradingSys/research/imbalance_qriptal_2026-10-16/imb.py,402,"f""Design {DESIGN[0]}..{DESIGN[1]}, check {CHECK[0]}..{CHECK[1]} (BACKTEST_PROTOCOL DEV). Holdout 2026-06-26.. not read. Pre-stated PASS: imb_small net CI95 low > 0 in design AND check, and above normal_small in both."", """"]"
+MyTradingSys/research/krown_malkan_g3_2026-10-16/event_counts.py,4,"before 2024-07-01 (DEV) before any indicator is built, so VALIDATION and HOLDOUT bars are never in memory."
+MyTradingSys/research/krown_malkan_g3_2026-10-16/event_counts.py,27,"CUT_MS = int(datetime(2024, 7, 1, tzinfo=timezone.utc).timestamp() * 1000)  # DEV = bars opened before this"
+MyTradingSys/research/krown_malkan_g3_2026-10-16/event_counts.py,390,"""Data: Binance spot daily files from `F:/MTS/data/krown_daily` (DATA_COVERAGE.md), cut to bars opened before 2024-07-01 (DEV) before any indicator was built.\n"""
+MyTradingSys/research/krown_ta101_2026-10-13/tools/build_data_coverage.py,4,on bars dated before 2024-07-01 (DEV window only). No return or outcome is computed.
+MyTradingSys/research/krown_ta101_2026-10-13/tools/build_data_coverage.py,14,"DEV_END_MS = int(datetime(2024, 7, 1, tzinfo=timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/krown_ta101_2026-10-13/tools/build_data_coverage.py,63,"""aggregation touches OHLC mechanically (no return or outcome is computed) and its cross-check compares only bars before 2024-07-01. Bars from 2024-07-01 on are\n"""
+MyTradingSys/research/krown_ta101_2026-10-13/tools/build_data_coverage.py,64,"""stored for the one-time VALIDATION and HOLDOUT reads and are not studied here.\n"","
+MyTradingSys/research/krown_ta101_2026-10-13/tools/build_data_coverage.py,95,if r[0] >= DEV_END_MS or r[0] not in pubmap:
+MyTradingSys/research/krown_ta101_2026-10-13/tools/build_data_coverage.py,102,"md_check = (f""\nCross-check, BTCUSDT weeks dated before 2024-07-01 present in both: {n}; open/high/low/close identical in {eq}; """
+MyTradingSys/research/krown_ta101_2026-10-13/tools/build_ledger.py,705,"""OURS = our choice (DEV only, one VALIDATION look, holdout once, every variant in the trial ledger), MIXED = some of each, NONE = no number involved.\n"")"
+MyTradingSys/research/krown_ta101_2026-10-13/tools/build_setup_catalog.py,138,"No code, no detector, no backtest, no fees, no stop-size math, no VALIDATION/HOLDOUT read. Nothing here is an MTS rule. Corpus: 14 TA"
+MyTradingSys/research/kurisko_2026-10-18/count_events.py,1,"""""""Count-only pass for the Kurisko Quad Rotation PRE_REG (card kurisko-prereg-fire-counts). DEV only (< 2024-07-01)."
+MyTradingSys/research/kurisko_2026-10-18/count_events.py,31,"CUTOFF_MS = int(dt.datetime(2024, 7, 1, tzinfo=dt.timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/kurisko_2026-10-18/count_events.py,51,"""""""[(open_time_ms, high, low, close)]; refuses any bar >= 2024-07-01 and (optionally) any sha not in DATA_MANIFEST."""""""
+MyTradingSys/research/kurisko_2026-10-18/count_events.py,69,"raise ValueError(f""bar {t} >= 2024-07-01 refused (VALIDATION/HOLDOUT sealed): {f}"")"
+MyTradingSys/research/layer_lab/bb_top_reversal_event_table/event_table.py,12,DEV_START_MS = 1640995200000  # 2022-01-01 UTC
+MyTradingSys/research/layer_lab/bb_top_reversal_event_table/event_table.py,13,"DEV_END_MS = 1719792000000    # 2024-07-01 UTC, exclusive"
+MyTradingSys/research/layer_lab/bb_top_reversal_event_table/event_table.py,26,"def build_event_table(bars, horizon=HORIZON, dev_start_ms=DEV_START_MS, dev_end_ms=DEV_END_MS):"
+MyTradingSys/research/layer_lab/bb_top_reversal_event_table/event_table.py,100,"""""""Load only the DEV timestamp slice; bars opening on/after 2024-07-01 are excluded."""""""
+MyTradingSys/research/layer_lab/bb_top_reversal_event_table/event_table.py,106,mask = (timestamps >= DEV_START_MS) & (timestamps < DEV_END_MS)
+MyTradingSys/research/layer_lab/bigtrade_event_table/event_table.py,16,DEV_START_MS = 1640995200000  # 2022-01-01 UTC
+MyTradingSys/research/layer_lab/bigtrade_event_table/event_table.py,17,DEV_END_MS = 1719792000000    # 2024-07-01 UTC (exclusive); OPERATOR_DECISIONS.md:878 DEV=2022-01-01..2024-06-30
+MyTradingSys/research/layer_lab/bigtrade_event_table/event_table.py,25,"def measure_fire(fire, bars, horizon=DEFAULT_HORIZON, dev_end_ms=DEV_END_MS):"
+MyTradingSys/research/layer_lab/bigtrade_event_table/event_table.py,47,if i < 0 or times[i] != t_fire or t_fire < DEV_START_MS or t_fire >= dev_end_ms:
+MyTradingSys/research/layer_lab/bigtrade_event_table/event_table.py,76,"def build_event_table(fires, klines_by_tf, horizon=DEFAULT_HORIZON, dev_end_ms=DEV_END_MS):"
+MyTradingSys/research/layer_lab/bigtrade_event_table/event_table.py,79,"if fire.get(""split"") not in (""TRAIN"", """") or not (DEV_START_MS <= int(float(fire.get(""t_fire_ms"", 0) or 0)) < dev_end_ms):"
+MyTradingSys/research/layer_lab/bigtrade_event_table/test_event_table.py,54,"cut = 1719792000000  # 2024-07-01 00:00 UTC, computed independently"
+MyTradingSys/research/layer_lab/bigtrade_event_table/test_event_table.py,55,assert event_table.DEV_END_MS == cut
+MyTradingSys/research/layer_lab/candle_close_2026-10-14/test_pre_reg_spec.py,74,"self.assertIn('NO VALIDATION/HOLDOUT read', t)"
+MyTradingSys/research/layer_lab/candle_close_2026-10-14/test_study.py,88,"self.assertTrue((e.time>=pd.Timestamp('2022-02-01', tz='UTC')).all())"
+MyTradingSys/research/layer_lab/candle_pattern_event_table/event_table.py,6,DEV_START_MS=1640995200000   # 2022-01-01 UTC
+MyTradingSys/research/layer_lab/candle_pattern_event_table/event_table.py,7,"DEV_END_MS=1719792000000     # 2024-07-01 UTC, exclusive"
+MyTradingSys/research/layer_lab/candle_pattern_event_table/event_table.py,37,"def load_dev_npz(path, timeframe, dev_start_ms=DEV_START_MS, dev_end_ms=DEV_END_MS):"
+MyTradingSys/research/layer_lab/candle_pattern_event_table/test_patterns.py,49,DEV_END = 1719792000000
+MyTradingSys/research/layer_lab/candle_pattern_event_table/test_patterns.py,63,"p = _npz(tmp_path, [DEV_END - 2 * H, DEV_END - H, DEV_END, DEV_END + H])"
+MyTradingSys/research/layer_lab/candle_pattern_event_table/test_patterns.py,65,"assert [x['t'] for x in bars] == [DEV_END - 2 * H, DEV_END - H]"
+MyTradingSys/research/layer_lab/cc_msb_event_table/event_table.py,38,DEV_START_MS = _GUARD.DEV_START_MS
+MyTradingSys/research/layer_lab/cc_msb_event_table/event_table.py,39,DEV_END_MS = _GUARD.DEV_END_EXCLUSIVE_MS
+MyTradingSys/research/layer_lab/cc_msb_event_table/event_table.py,68,"if DEV_START_MS <= b[""t""] < DEV_END_MS}.values(), key=lambda k: bars[k][""t""])"
+MyTradingSys/research/layer_lab/cc_msb_event_table/event_table.py,103,"""""""Load only the DEV timestamp slice; bars opening on/after 2024-07-01 are never materialised."""""""
+MyTradingSys/research/layer_lab/cc_msb_event_table/event_table.py,108,"idx = np.flatnonzero((archive[""t""] >= DEV_START_MS) & (archive[""t""] < DEV_END_MS))"
+MyTradingSys/research/layer_lab/cc_msb_event_table/test_event_table.py,97,assert _rows(_bars(start=event_table.DEV_END_MS)) == []
+MyTradingSys/research/layer_lab/dev_split_guard/event_table.py,5,"DEV_START_MS = 1640995200000       # 2022-01-01T00:00:00Z, inclusive"
+MyTradingSys/research/layer_lab/dev_split_guard/event_table.py,6,DEV_END_EXCLUSIVE_MS = 1719792000000  # 2024-07-01T00:00:00Z
+MyTradingSys/research/layer_lab/dev_split_guard/event_table.py,45,if DEV_START_MS <= stamp < DEV_END_EXCLUSIVE_MS:
+MyTradingSys/research/layer_lab/dev_split_guard/event_table.py,60,if not DEV_START_MS <= stamp < DEV_END_EXCLUSIVE_MS:
+MyTradingSys/research/layer_lab/dev_split_guard/test_event_table.py,14,"{""timestamp"": ""2024-07-01T00:00:00Z"", ""tag"": ""validation""},"
+MyTradingSys/research/layer_lab/dev_split_guard/test_event_table.py,22,"assert ""2024-07-01T00:00:00Z"" in str(exc)"
+MyTradingSys/research/layer_lab/dev_split_guard/test_event_table.py,24,"raise AssertionError(""assert_dev accepted a VALIDATION timestamp"")"
+MyTradingSys/research/layer_lab/dev_split_guard/test_event_table.py,28,"iso = [{""t"": ""2022-01-01T00:00:00Z""}, {""t"": ""2024-07-01T00:00:00Z""}]"
+MyTradingSys/research/layer_lab/fabio_escalation_event_table/event_table.py,38,DEV_START_MS = _GUARD.DEV_START_MS
+MyTradingSys/research/layer_lab/fabio_escalation_event_table/event_table.py,39,DEV_END_MS = _GUARD.DEV_END_EXCLUSIVE_MS
+MyTradingSys/research/layer_lab/fabio_escalation_event_table/event_table.py,66,"if DEV_START_MS <= b[""t""] < DEV_END_MS}.values(), key=lambda k: bars[k][""t""])"
+MyTradingSys/research/layer_lab/fabio_escalation_event_table/event_table.py,96,"""""""Load only the DEV timestamp slice; bars opening on/after 2024-07-01 are never materialised."""""""
+MyTradingSys/research/layer_lab/fabio_escalation_event_table/event_table.py,101,"idx = np.flatnonzero((archive[""t""] >= DEV_START_MS) & (archive[""t""] < DEV_END_MS))"
+MyTradingSys/research/layer_lab/fabio_lvn_touch_event_table/event_table.py,39,DEV_START_MS = _guard.DEV_START_MS
+MyTradingSys/research/layer_lab/fabio_lvn_touch_event_table/event_table.py,40,DEV_END_MS = _guard.DEV_END_EXCLUSIVE_MS
+MyTradingSys/research/layer_lab/fabio_lvn_touch_event_table/event_table.py,129,idx = np.flatnonzero((t >= DEV_START_MS) & (t < DEV_END_MS))
+MyTradingSys/research/layer_lab/fabio_lvn_touch_event_table/test_event_table.py,118,start = 1719792000000  # 2024-07-01T00:00Z
+MyTradingSys/research/layer_lab/funding_extreme_event_table/event_table.py,11,DEV_START_MS = 1640995200000
+MyTradingSys/research/layer_lab/funding_extreme_event_table/event_table.py,12,DEV_END_MS = 1719792000000  # exclusive: 2024-07-01 UTC
+MyTradingSys/research/layer_lab/funding_extreme_event_table/event_table.py,29,if int(t) < DEV_START_MS or int(t) >= DEV_END_MS or len(prior) < BASELINE_PRINTS:
+MyTradingSys/research/layer_lab/funding_extreme_event_table/event_table.py,52,"stop = int(np.searchsorted(times, min(int(t) + HORIZON_MS, DEV_END_MS), side=""left""))"
+MyTradingSys/research/layer_lab/funding_extreme_event_table/event_table.py,67,"dev = [(int(t), float(r)) for t, r in funding if DEV_START_MS <= int(t) < DEV_END_MS]"
+MyTradingSys/research/layer_lab/funding_extreme_event_table/event_table.py,94,if DEV_START_MS <= t < DEV_END_MS:
+MyTradingSys/research/layer_lab/funding_extreme_event_table/event_table.py,103,"start = int(np.searchsorted(all_times, DEV_START_MS, side=""left""))"
+MyTradingSys/research/layer_lab/funding_extreme_event_table/event_table.py,104,"stop = int(np.searchsorted(all_times, DEV_END_MS, side=""left""))"
+MyTradingSys/research/layer_lab/funding_extreme_event_table/test_event_table.py,15,"rates = [(event_table.DEV_START_MS + i * 8 * 60 * 60 * 1000, i / 10000) for i in range(90)]"
+MyTradingSys/research/layer_lab/funding_extreme_event_table/test_event_table.py,16,"rates += [(event_table.DEV_START_MS + 90 * 8 * 60 * 60 * 1000, 0.20)]"
+MyTradingSys/research/layer_lab/funding_extreme_event_table/test_event_table.py,26,t0 = event_table.DEV_START_MS + 1000 * 60 * 60 * 1000
+MyTradingSys/research/layer_lab/funding_extreme_event_table/test_event_table.py,45,t0 = event_table.DEV_START_MS + 1000 * 60 * 60 * 1000
+MyTradingSys/research/layer_lab/funding_extreme_event_table/test_event_table.py,57,"rates = [(event_table.DEV_START_MS + i * 8 * 60 * 60 * 1000, 0.01) for i in range(90)]"
+MyTradingSys/research/layer_lab/funding_extreme_event_table/test_event_table.py,64,t0 = event_table.DEV_START_MS + 1000 * 60 * 60 * 1000
+MyTradingSys/research/layer_lab/malkan_rsi_event_table/event_table.py,41,DEV_START_MS = _GUARD.DEV_START_MS
+MyTradingSys/research/layer_lab/malkan_rsi_event_table/event_table.py,42,DEV_END_MS = _GUARD.DEV_END_EXCLUSIVE_MS
+MyTradingSys/research/layer_lab/malkan_rsi_event_table/event_table.py,71,"if DEV_START_MS <= b[""t""] < DEV_END_MS}.values(), key=lambda k: bars[k][""t""])"
+MyTradingSys/research/layer_lab/malkan_rsi_event_table/event_table.py,105,"""""""Load only the DEV timestamp slice; bars opening on/after 2024-07-01 are never materialised."""""""
+MyTradingSys/research/layer_lab/malkan_rsi_event_table/event_table.py,110,"idx = np.flatnonzero((archive[""t""] >= DEV_START_MS) & (archive[""t""] < DEV_END_MS))"
+MyTradingSys/research/layer_lab/malkan_rsi_event_table/test_event_table.py,111,"bars, rsi = _bull(event_table.DEV_END_MS - 30 * HOUR)  # window crosses 2024-07-01"
+MyTradingSys/research/layer_lab/oi_delta_event_table/event_table.py,7,DEV_START_MS = 1640995200000
+MyTradingSys/research/layer_lab/oi_delta_event_table/event_table.py,8,DEV_END_MS = 1719792000000  # 2024-07-01 UTC exclusive (OPERATOR_DECISIONS.md:878)
+MyTradingSys/research/layer_lab/oi_delta_event_table/event_table.py,48,"def build_event_table(events, bars, horizon=8, dev_start_ms=DEV_START_MS, dev_end_ms=DEV_END_MS):"
+MyTradingSys/research/layer_lab/reports/revalidate_strategy_proofs.py,33,"env = {'d': None, 'line': {'VAL': {'diff': 99}, 'HOLDOUT': {'diff': 99}}}"
+MyTradingSys/research/layer_lab/rsi_divergence_event_table/event_table.py,15,DEV_END_MS = 1719792000000  # 2024-07-01 00:00 UTC
+MyTradingSys/research/layer_lab/rsi_divergence_event_table/event_table.py,80,if entry_i >= len(t) or int(t[entry_i]) >= DEV_END_MS:
+MyTradingSys/research/layer_lab/rsi_divergence_event_table/event_table.py,88,"end = min(end, int(np.searchsorted(t, DEV_END_MS, side=""left"")))"
+MyTradingSys/research/layer_lab/rsi_divergence_event_table/event_table.py,119,mask = t_all < DEV_END_MS
+MyTradingSys/research/layer_lab/rsi_reclaim_event_table/event_table.py,39,DEV_START_MS = _GUARD.DEV_START_MS
+MyTradingSys/research/layer_lab/rsi_reclaim_event_table/event_table.py,40,DEV_END_MS = _GUARD.DEV_END_EXCLUSIVE_MS
+MyTradingSys/research/layer_lab/rsi_reclaim_event_table/event_table.py,70,"if DEV_START_MS <= b[""t""] < DEV_END_MS}.values(), key=lambda k: bars[k][""t""])"
+MyTradingSys/research/layer_lab/rsi_reclaim_event_table/event_table.py,107,"""""""Load only the DEV timestamp slice; bars opening on/after 2024-07-01 are never materialised."""""""
+MyTradingSys/research/layer_lab/rsi_reclaim_event_table/event_table.py,112,"idx = np.flatnonzero((archive[""t""] >= DEV_START_MS) & (archive[""t""] < DEV_END_MS))"
+MyTradingSys/research/layer_lab/rsi_reclaim_event_table/test_event_table.py,129,bars = _bars(event_table.DEV_END_MS - 30 * HOUR)  # window crosses 2024-07-01
+MyTradingSys/research/layer_lab/session_levels_event_table/event_table.py,11,"DEV_END = int(datetime(2024, 7, 1, tzinfo=timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/layer_lab/session_levels_event_table/event_table.py,20,"""""""Load only BTCUSDT 1m archive rows opening before 2024-07-01 UTC."""""""
+MyTradingSys/research/layer_lab/session_levels_event_table/event_table.py,30,if t < DEV_END:
+MyTradingSys/research/layer_lab/session_levels_event_table/event_table.py,39,"bars = sorted((b for b in bars if b[""t""] < DEV_END), key=lambda b: b[""t""])"
+MyTradingSys/research/layer_lab/session_levels_event_table/test_event_table.py,11,"BASE = int(datetime(2024, 1, 1, tzinfo=timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/layer_lab/session_momentum_event_table/event_table.py,35,DEV_START_MS = _guard.DEV_START_MS
+MyTradingSys/research/layer_lab/session_momentum_event_table/event_table.py,36,DEV_END_MS = _guard.DEV_END_EXCLUSIVE_MS
+MyTradingSys/research/layer_lab/session_momentum_event_table/event_table.py,104,idx = np.flatnonzero((t >= DEV_START_MS) & (t < DEV_END_MS))
+MyTradingSys/research/layer_lab/session_momentum_event_table/test_event_table.py,113,start = 1719792000000  # 2024-07-01T00:00Z
+MyTradingSys/research/layer_lab/turn_of_candle_event_table/event_table.py,35,DEV_START_MS = _guard.DEV_START_MS
+MyTradingSys/research/layer_lab/turn_of_candle_event_table/event_table.py,36,DEV_END_MS = _guard.DEV_END_EXCLUSIVE_MS
+MyTradingSys/research/layer_lab/turn_of_candle_event_table/event_table.py,95,idx = np.flatnonzero((t >= DEV_START_MS) & (t < DEV_END_MS))
+MyTradingSys/research/layer_lab/turn_of_candle_event_table/test_event_table.py,88,end = event_table.DEV_END_MS
+MyTradingSys/research/layer_lab/volume_event_table/event_table.py,6,DEV_START_MS = 1640995200000  # 2022-01-01 UTC
+MyTradingSys/research/layer_lab/volume_event_table/event_table.py,7,"DEV_END_MS = 1719792000000    # 2024-07-01 UTC, exclusive"
+MyTradingSys/research/layer_lab/volume_event_table/event_table.py,23,"dev_start_ms=DEV_START_MS, dev_end_ms=DEV_END_MS):"
+MyTradingSys/research/layer_lab/volume_event_table/event_table.py,109,"def load_dev_npz(path, timeframe, dev_start_ms=DEV_START_MS, dev_end_ms=DEV_END_MS):"
+MyTradingSys/research/layer_lab/volume_event_table/test_event_table.py,75,CUT = 1719792000000  # 2024-07-01 UTC
+MyTradingSys/research/mal_bb_mid_engulf_2026-10-16/study.py,1,"""""""MAL-BB-MID-ENGULF G5 DEV screen. Rules: PRE_REG.md (frozen before the outcome run). DEV only (bars < 2024-07-01)."
+MyTradingSys/research/mal_bb_mid_engulf_2026-10-16/study.py,195,"""**Screen, ran before G3 marks by operator decision 2026-10-16.** DEV-only exploration (bars before 2024-07-01); VALIDATION and HOLDOUT were not read. """
+MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py,10,- rules are chosen on TRAIN; VALIDATE is the second look; HOLDOUT is read only for a variant that
+MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py,186,"if r[""tradable""] == ""1"" and r[""side""] in (""long"", ""short"") and r[""split""] in ((""TRAIN"",) if DEV_ONLY else (""TRAIN"", ""VALIDATE"", ""HOLDOUT"")):"
+MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py,388,"tmask = {s: sp == s for s in (""TRAIN"", ""VALIDATE"", ""HOLDOUT"")}"
+MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py,449,"mk = tmask[""HOLDOUT""]"
+MyTradingSys/research/non_core_layer_audit_2026-10-12/build_register.py,242,"cites={""stats"": [(RES + ""volume_2026-10-09/V3_VALIDATION_RESULTS.md"", ""# V3 VALIDATION RESULTS""),"
+MyTradingSys/research/opr_bb_mtf_center_2026-10-16/study.py,2,"DEV only (bars < 2024-07-01). Screen, ran before G3 marks by operator decision 2026-10-16."
+MyTradingSys/research/opr_bb_mtf_center_2026-10-16/study.py,384,"""**Screen, ran before G3 marks by operator decision 2026-10-16.** DEV-only exploration (bars before 2024-07-01); VALIDATION and HOLDOUT were not read. Rules frozen in PRE_REG.md (committed before this file). """
+MyTradingSys/research/opr_preopen_tops_2026-10-16/study.py,1,"""""""OPR-PREOPEN-TOPS G5 DEV screen. Rules: PRE_REG.md (frozen before the outcome run). DEV only (bars < 2024-07-01)."
+MyTradingSys/research/opr_preopen_tops_2026-10-16/study.py,237,"""**Screen, ran before G3 marks by operator decision 2026-10-16.** DEV-only exploration (bars before 2024-07-01); VALIDATION and HOLDOUT were not read. """
+MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/study.py,1,"""""""OPR-WEEKLY-LOW-ROUND-SWEEP G5 DEV screen. Rules: PRE_REG.md (frozen before the outcome run). DEV only (bars < 2024-07-01)."
+MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/study.py,264,"""**Screen, ran before G3 marks by operator decision 2026-10-16.** DEV-only exploration (bars before 2024-07-01); VALIDATION and HOLDOUT were not read. Rules frozen in PRE_REG.md (committed before this file). """
+MyTradingSys/research/orderflow_views_2026-10-14/study.py,24,"Splits: DEV 2022-2024, VAL 2025, HOLDOUT 2026."
+MyTradingSys/research/orderflow_views_2026-10-14/study.py,26,sign on VAL and HOLDOUT. Anything else = no edge.
+MyTradingSys/research/orderflow_views_2026-10-14/study.py,48,"T_TOPUP0 = int(dt.datetime(2026, 9, 27, tzinfo=dt.timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/orderflow_views_2026-10-14/study.py,49,"T_END = int(dt.datetime(2026, 10, 14, 15, 21, tzinfo=dt.timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/orderflow_views_2026-10-14/study.py,214,"# Rerun 2026-10-17 (OFV_DEV_ONLY=1): repo split, DEV = before 2024-07-01. Later rows (VALIDATION, HOLDOUT) are never evaluated."
+MyTradingSys/research/orderflow_views_2026-10-14/study.py,216,"DEV_END_MS = int(dt.datetime(2024, 7, 1, tzinfo=dt.timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/orderflow_views_2026-10-14/study.py,219,def split_of(ms):
+MyTradingSys/research/orderflow_views_2026-10-14/study.py,221,"return ""DEV"" if y <= 2024 else (""VAL"" if y == 2025 else ""HOLDOUT"")"
+MyTradingSys/research/orderflow_views_2026-10-14/study.py,240,if DEV_ONLY and close_ms >= DEV_END_MS:
+MyTradingSys/research/orderflow_views_2026-10-14/study.py,248,"recs.append((close_ms, split_of(close_ms), oid, *r))"
+MyTradingSys/research/orderflow_views_2026-10-14/study.py,252,"for sp in ((""DEV"",) if DEV_ONLY else (""DEV"", ""VAL"", ""HOLDOUT"", ""ALL"")):"
+MyTradingSys/research/orderflow_views_2026-10-14/study.py,271,"for sp in ((""DEV"",) if DEV_ONLY else (""DEV"", ""VAL"", ""HOLDOUT"")):"
+MyTradingSys/research/orderflow_views_2026-10-14/study.py,282,"line.get(s) and line[s][""diff""] > 0 for s in (""VAL"", ""HOLDOUT"")))"
+MyTradingSys/research/orderflow_views_2026-10-14/study.py,299,"day0 = int(dt.datetime(2026, 10, 14, tzinfo=dt.timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/pit_levels_2026-10-16/bug_b187_evidence.py,4,PRE_REG_V2 item 2 and the calendar ceilings from every pre-2024-07-01 history that exists.
+MyTradingSys/research/pit_levels_2026-10-16/bug_b187_evidence.py,5,"Counts and arithmetic only: no outcome column is read, no bar at or after 2024-07-01 is loaded."
+MyTradingSys/research/pit_levels_2026-10-16/bug_b187_evidence.py,44,"say(""== calendar ceilings (pre-2024-07-01 history, this study's sealed cut) =="")"
+MyTradingSys/research/pit_levels_2026-10-16/count_prior_va.py,27,CUTOFF = 1719792000000                   # 2024-07-01 00:00 UTC: refuse any bar at or after it
+MyTradingSys/research/pit_levels_2026-10-16/count_prior_va.py,105,"raise ValueError(f""bar {t} >= 2024-07-01 refused (VALIDATION/HOLDOUT sealed): {f}"")"
+MyTradingSys/research/positioning_c1_2026-10/count_power.py,6,NO net P&L is computed; VALIDATION (2024-07..2025-06) and HOLDOUT (2025-07+) are NEVER loaded.
+MyTradingSys/research/positioning_c1_2026-10/count_power.py,36,# CUTOFF_MS is the first millisecond of VALIDATION: 2024-07-01 00:00:00 UTC
+MyTradingSys/research/positioning_c1_2026-10/count_power.py,37,"CUTOFF_MS = int(datetime(2024, 7, 1, tzinfo=timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/positioning_c1_2026-10/count_power.py,38,"DEV_START_MS = int(datetime(2022, 1, 1, tzinfo=timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/positioning_c1_2026-10/count_power.py,49,"""""""Refuse any bar with open timestamp at or after CUTOFF_MS (2024-07-01)."""""""
+MyTradingSys/research/positioning_c1_2026-10/count_power.py,55,"f""bar open {t} ({dt_str}) >= 2024-07-01 refused (VALIDATION/HOLDOUT sealed)"""
+MyTradingSys/research/positioning_c1_2026-10/count_power.py,102,"f""bar open {t} >= 2024-07-01 refused (VALIDATION/HOLDOUT sealed): {f.name}"""
+MyTradingSys/research/positioning_c1_2026-10/count_power.py,104,if t < DEV_START_MS:
+MyTradingSys/research/positioning_c1_2026-10/test_count_power.py,4,and refuses any bar dated 2024-07-01 or later.
+MyTradingSys/research/positioning_c1_2026-10/test_count_power.py,28,CUTOFF_MS = cp.CUTOFF_MS  # 1719792000000 ms = 2024-07-01 00:00:00 UTC
+MyTradingSys/research/positioning_c1_2026-10/test_count_power.py,32,"""""""Build a deterministic fixture of 15m bars and 8h funding records before 2024-07-01."""""""
+MyTradingSys/research/positioning_c1_2026-10/test_count_power.py,89,# A bar at exactly CUTOFF_MS (2024-07-01 00:00:00 UTC) must be refused
+MyTradingSys/research/positioning_c1_2026-10/test_count_power.py,91,"with pytest.raises(ValueError, match=""2024-07-01""):"
+MyTradingSys/research/positioning_c1_2026-10/test_count_power.py,96,"with pytest.raises(ValueError, match=""2024-07-01""):"
+MyTradingSys/research/positioning_c1_2026-10/test_count_power.py,103,"# Row 1 is DEV, Row 2 is 2024-07-01 00:00:00 UTC"
+MyTradingSys/research/positioning_c1_2026-10/test_count_power.py,111,"with pytest.raises(ValueError, match=""2024-07-01""):"
+MyTradingSys/research/published_strats_2026-10-13/run_pub.py,17,"SEALED_FROM = int(dt.datetime(2025, 7, 1, tzinfo=dt.timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/qriptal_2026-10-10/ledger.py,35,"# BACKTEST_PROTOCOL s2: DEV ends 2026-06-25, HOLDOUT starts 2026-06-26. RULES.md: a limit entry may wait 24 h and the"
+MyTradingSys/research/qriptal_2026-10-10/ledger.py,37,"HOLDOUT_START = datetime(2026, 6, 26, tzinfo=timezone.utc)"
+MyTradingSys/research/qriptal_2026-10-10/ledger.py,126,"""""""DEV when the whole fill+open window ends before the holdout starts, else HOLDOUT."""""""
+MyTradingSys/research/qriptal_2026-10-10/ledger.py,129,"return ""DEV"" if parse_utc(published_utc) + MAX_WINDOW <= HOLDOUT_START else ""HOLDOUT"""
+MyTradingSys/research/qriptal_2026-10-10/ledger.py,213,"""eligible_by_split"": {s: sum(1 for r in elig if r[""window_split""] == s) for s in (""DEV"", ""HOLDOUT"", ""NO_TIME"")},"
+MyTradingSys/research/qriptal_2026-10-10/score_calls.py,6,"24 h fill + 7 d open window ends before 2026-06-26 (ledger column window_split); the loader clamps every read to that date, so"
+MyTradingSys/research/qriptal_2026-10-10/score_calls.py,33,"HOLDOUT_START = datetime(2026, 6, 26, tzinfo=timezone.utc)   # BACKTEST_PROTOCOL s2: DEV 2025-09-01..2026-06-25"
+MyTradingSys/research/qriptal_2026-10-10/score_calls.py,142,"""""""Card: dev data only. A call whose fill + open window (8 d) reaches 2026-06-26 would read holdout candles."""""""
+MyTradingSys/research/qriptal_2026-10-10/score_calls.py,144,"raise HoldoutRefused(f""call at {call_time:%Y-%m-%dT%H:%M:%SZ} has a window that reaches the holdout (2026-06-26)"")"
+MyTradingSys/research/qriptal_2026-10-10/score_calls.py,161,"Without allow_holdout the window is clamped to end before 2026-06-26 and a window that starts there is refused."""""""
+MyTradingSys/research/qriptal_2026-10-10/score_calls.py,228,"eligible = {""DEV"": 0, ""HOLDOUT"": 0}"
+MyTradingSys/research/qriptal_2026-10-10/score_calls.py,302,"f""Of {cn['ledger_rows']} candidate statements, {sum(elig.values())} are ELIGIBLE and {'both' if elig.get('HOLDOUT', 0) == 2 else 'all ' + str(elig.get('HOLDOUT', 0))} """
+MyTradingSys/research/qriptal_2026-10-10/score_calls.py,309,"L.append(""Card: dev data only, scope-out holdout reads. BACKTEST_PROTOCOL section 2: DEV 2025-09-01..2026-06-25, HOLDOUT 2026-06-26..2026-09-26. """
+MyTradingSys/research/qriptal_2026-10-10/score_calls.py,310,"f""A call is DEV only if its call time + 8 days (24 h fill window + 7 days open, RULES.md) ends by 2026-06-26T00:00Z """
+MyTradingSys/research/qriptal_2026-10-10/score_calls.py,314,"for sp in (""DEV"", ""HOLDOUT""):"
+MyTradingSys/research/qriptal_2026-10-10/test_ledger.py,107,# BACKTEST_PROTOCOL s2: holdout starts 2026-06-26; a call can run 24 h to fill + 7 d open = 8 d
+MyTradingSys/research/qriptal_2026-10-10/test_ledger.py,112,"self.assertEqual(L.window_split(""2026-06-18T00:00:01Z""), ""HOLDOUT"")"
+MyTradingSys/research/qriptal_2026-10-10/test_ledger.py,113,"self.assertEqual(L.window_split(""2026-09-21T07:11:25Z""), ""HOLDOUT"")"
+MyTradingSys/research/qriptal_2026-10-10/test_score_calls.py,20,"T0 = datetime(2026, 5, 5, 11, 19, 12, tzinfo=timezone.utc)   # call time inside a minute"
+MyTradingSys/research/qriptal_2026-10-10/test_score_calls.py,141,"""""""Card: dev data only, no holdout reads (BACKTEST_PROTOCOL s2: holdout starts 2026-06-26)."""""""
+MyTradingSys/research/qriptal_2026-10-10/test_score_calls.py,144,"S.guard_call_window(datetime(2026, 6, 18, 0, 0, 0, tzinfo=timezone.utc))            # 8 d later = 06-26 00:00: ok"
+MyTradingSys/research/qriptal_2026-10-10/test_score_calls.py,146,"S.guard_call_window(datetime(2026, 6, 18, 0, 0, 1, tzinfo=timezone.utc))"
+MyTradingSys/research/qriptal_2026-10-10/test_score_calls.py,148,"S.guard_call_window(datetime(2026, 9, 21, 7, 11, 25, tzinfo=timezone.utc))"
+MyTradingSys/research/qriptal_2026-10-10/test_score_calls.py,149,"S.guard_call_window(datetime(2026, 9, 21, 7, 11, 25, tzinfo=timezone.utc), allow_holdout=True)"
+MyTradingSys/research/qriptal_2026-10-10/test_score_calls.py,152,"holdout_ms = int(datetime(2026, 6, 26, tzinfo=timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/qriptal_2026-10-10/test_score_calls.py,165,"t = int(datetime(2026, 9, 1, tzinfo=timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/qriptal_2026-10-10/test_score_calls.py,178,"""A-2,vid,2026-09-21T07:11:25Z,short,\""82,200\"",\""82,800\"",\""73,000; 72,000\"",Y,HOLDOUT,ok\n"""
+MyTradingSys/research/qriptal_2026-10-10/test_score_calls.py,197,"self.assertEqual(out[""counts""][""eligible""], {""DEV"": 1, ""HOLDOUT"": 1})"
+MyTradingSys/research/qriptal_2026-10-10/test_score_calls.py,236,"self.assertEqual(out[""counts""][""eligible""], {""DEV"": 0, ""HOLDOUT"": 2})"
+MyTradingSys/research/qriptal_2026-10-10/test_score_calls.py,237,"self.assertEqual(out[""counts""][""rows_by_split""], {""DEV"": 11, ""HOLDOUT"": 59})"
+MyTradingSys/research/setup_catalog_2026-10-15/evidence/bb_mid_engulf_checks.py,16,"def tsms(h): return int(datetime(2026, 10, 15, int(h[:2]), int(h[3:5]), tzinfo=timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/setup_catalog_2026-10-15/evidence/bb_mtf_center_checks.py,16,"def tsms(h): return int(datetime(2026, 10, 15, int(h[:2]), int(h[3:5]), tzinfo=timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/setup_catalog_2026-10-15/evidence/rsi_divergence_mtf_checks.py,22,"def ms(hhmm): return int(datetime(2026, 10, 15, int(hhmm[:2]), int(hhmm[3:5]), tzinfo=timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/test_b141_htf_stage1.py,76,"self.assertEqual(s1.DEV_END, ""2026-06-25"")"
+MyTradingSys/research/tom_btc_2026-10-13/chart_lab.py,21,"DEV_START, DEV_END = date(2024, 12, 1), date(2025, 3, 31)"
+MyTradingSys/research/tom_btc_2026-10-13/chart_lab.py,198,if DEV_START - timedelta(days=1) <= day <= DEV_END:
+MyTradingSys/research/tom_btc_2026-10-13/chart_lab.py,213,if DEV_START <= _minute_dt(r).date() <= DEV_END:
+MyTradingSys/research/tom_btc_2026-10-13/test_chart_lab.py,22,"day = datetime(2025, 1, 22, tzinfo=timezone.utc)"
+MyTradingSys/research/trendlines_2026-10-17/count_only.py,8,The loader refuses any bar >= 2024-07-01 (VALIDATION/HOLDOUT sealed). Event day = UTC date of the event bar's OPEN time.
+MyTradingSys/research/trendlines_2026-10-17/count_only.py,26,"DEV_START_MS = int(dt.datetime(2022, 1, 1, tzinfo=dt.timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/trendlines_2026-10-17/count_only.py,27,"CUTOFF_MS = int(dt.datetime(2024, 7, 1, tzinfo=dt.timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/trendlines_2026-10-17/count_only.py,64,"raise ValueError(f""bar {t} >= 2024-07-01 refused (VALIDATION/HOLDOUT are sealed): {f}"")"
+MyTradingSys/research/trendlines_2026-10-17/count_only.py,67,"assert bars and bars[-1][""t""] < cutoff, ""no bar at or after 2024-07-01 may be loaded"""
+MyTradingSys/research/trendlines_2026-10-17/g3_pack/g3_pack.py,33,"# standard DEV: 1m store from 2022-01-01 (DEV_EXT daily from 2021-03-01), last day 2024-06-30; VALIDATION/HOLDOUT never opened"
+MyTradingSys/research/trendlines_2026-10-17/g3_pack/test_g3_pack.py,12,"T0 = int(datetime(2022, 3, 1, tzinfo=timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/trendlines_2026-10-17/repro_trendline_gaps.py,3,Reads NO market data and NO VALIDATION/HOLDOUT files. Uses synthetic bars only.
+MyTradingSys/research/trendlines_2026-10-17/test_count_only.py,25,# a 2024-06 file carrying the first VALIDATION minute must raise
+MyTradingSys/research/volume_2026-10-09/run_v0.py,50,"p(""- bars: 1d %d (gaps %d), 1h %d (gaps %d), 4h %d (gaps %d); DEV only, HOLDOUT never loaded."" % ("
+MyTradingSys/research/volume_2026-10-09/run_v1.py,298,"P(""## Candidates frozen for VALIDATION (triage PASS on DEV)"")"
+MyTradingSys/research/volume_2026-10-09/run_v1.py,301,"P(""**None.** No event x horizon x orientation passes the registered triage on DEV in either timeframe. Nothing is sent to VALIDATION; HOLDOUT stays sealed."")"
+MyTradingSys/research/volume_2026-10-09/run_v2.py,204,"P(""### V2 candidates frozen for VALIDATION"")"
+MyTradingSys/research/volume_2026-10-09/run_v3.py,1,"""""""V3: VALIDATION (2024-07-01 .. 2025-06-30), run once, frozen candidates only (PRE_REG_ADDENDUM_A_2026-10-09.md A1)."
+MyTradingSys/research/volume_2026-10-09/run_v3.py,2,"Candidates: R40D_N 4h h=6 REVERSAL (long); TH1 (SP3 session C minus A, 4h, h=18). HOLDOUT is never loaded."
+MyTradingSys/research/volume_2026-10-09/run_v3.py,32,"b = D.load_4h(start_ms=D.START_MS, end_ms=D.VALID_END_MS)        # DEV + VALIDATION for warm-up; never beyond VALID_END_MS"
+MyTradingSys/research/volume_2026-10-09/run_v3.py,38,"P(""# V3 VALIDATION RESULTS (2024-07-01 .. 2025-06-30, run once; HOLDOUT never loaded)"")"
+MyTradingSys/research/volume_2026-10-09/run_v3.py,40,"P(""Frozen in PRE_REG_ADDENDUM_A_2026-10-09.md (commit 6e6227b). Features computed on DEV+VALIDATION concatenated for warm-up; events and baselines restricted to bars opening on/after 2024-07-01; forward windows end by 2025-06-30."")"
+MyTradingSys/research/volume_2026-10-09/run_v3.py,44,"idx = window_idx(b, h, D.DEV_END_MS)"
+MyTradingSys/research/volume_2026-10-09/run_v3.py,72,"P(""DEV had 189 such events in 4.5 years (about 42 per year); VALIDATION has %d in 1 year."" % n)"
+MyTradingSys/research/volume_2026-10-09/run_v3.py,79,"idx = window_idx(b, h2, D.DEV_END_MS)"
+MyTradingSys/research/volume_2026-10-09/run_v4.py,1,"""""""V4: pooled volume-confirmation premium (PRE_REG_ADDENDUM_B_2026-10-09.md). DEV = descriptive prior; VALIDATION = the test (once);"
+MyTradingSys/research/volume_2026-10-09/run_v4.py,2,"HOLDOUT is opened ONLY if VALIDATION supports the hypothesis (p < 0.025, VCP > 0) for that timeframe."
+MyTradingSys/research/volume_2026-10-09/run_v4.py,115,"bd = LOADERS[tf](start_ms=D.START_MS, end_ms=D.DEV_END_MS)"
+MyTradingSys/research/volume_2026-10-09/run_v4.py,119,"val = vcp(tf, bv, D.DEV_END_MS)"
+MyTradingSys/research/volume_2026-10-09/run_v4.py,120,"P(""- **VALIDATION (the test)**: "" + fmt(val))"
+MyTradingSys/research/volume_2026-10-09/run_v4.py,122,"P(""- VALIDATION verdict: **%s** (support needs one-sided p < %.3f and VCP > 0)"" % (""SUPPORTED"" if sup else ""NOT SUPPORTED"", CFG[tf][""alpha""]))"
+MyTradingSys/research/volume_2026-10-09/run_v4.py,126,"P(""Per-pair difference (confirmed minus unconfirmed, bp, oriented gross), DEV then VALIDATION:"")"
+MyTradingSys/research/volume_2026-10-09/run_v4.py,136,"P(""VALIDATION: "" + ""; "".join(""%s nV=%d nN=%d %+.0f [%+.0f, %+.0f]"" % (s[0], s[1], s[2], 1e4 * s[3], 1e4 * s[4], 1e4 * s[5]) for s in val[""sessions""]))"
+MyTradingSys/research/volume_2026-10-09/run_v4.py,139,"bh = LOADERS[tf](start_ms=D.START_MS, end_ms=D.ms(2026, 10, 1), unseal=True)      # only reached when VALIDATION supported the hypothesis"
+MyTradingSys/research/volume_2026-10-09/run_v4.py,142,"P(""- **HOLDOUT (opened once because VALIDATION supported)**: "" + fmt(hold))"
+MyTradingSys/research/volume_2026-10-09/run_v4.py,143,"P(""- HOLDOUT verdict: **%s**"" % (""SUPPORTED"" if hsup else ""NOT SUPPORTED""))"
+MyTradingSys/research/volume_2026-10-09/run_v4.py,144,"reg.append([RUN_ID, ""2026-10-09"", ""V4-vcp"", ""VCP"", tf, CFG[tf][""h""], 0, ""HOLDOUT"", hold[""nA""] + hold[""nB""], ""%.1f"" % (1e4 * hold[""diff""]), ""%.4f"" % hold[""p_one""], ""SUPPORTED"" if hsup else ""NOT-SUPPORTED""])"
+MyTradingSys/research/volume_2026-10-09/run_v4.py,146,"P(""- HOLDOUT: sealed (VALIDATION did not support the hypothesis)."")"
+MyTradingSys/research/volume_2026-10-09/vdata.py,5,"stage ""dev"" cuts at DEV_END_MS, stage ""valid"" at VALID_END_MS."
+MyTradingSys/research/volume_2026-10-09/vdata.py,27,"DEV_END_MS = ms(2024, 7, 1)      # exclusive"
+MyTradingSys/research/volume_2026-10-09/vdata.py,28,"VALID_END_MS = ms(2025, 7, 1)    # exclusive; HOLDOUT = [VALID_END_MS, end of archive), sealed"
+MyTradingSys/research/volume_2026-10-09/vdata.py,29,"STAGE_END = {""dev"": DEV_END_MS, ""valid"": VALID_END_MS}"
+MyTradingSys/research/volume_2026-10-09/vdata.py,30,"STAGE_START = {""dev"": START_MS, ""valid"": DEV_END_MS}"
+MyTradingSys/research/volume_2026-10-09/vdata.py,56,"raise PermissionError(""HOLDOUT is sealed (PRE_REG section 1): end_ms must be <= VALID_END_MS"")"
+MyTradingSys/research/volume_2026-10-09/vdata.py,59,"def load_1d(start_ms=START_MS, end_ms=DEV_END_MS, unseal=False):"
+MyTradingSys/research/volume_2026-10-09/vdata.py,64,"def load_1h(start_ms=START_MS, end_ms=DEV_END_MS, unseal=False):"
+MyTradingSys/research/volume_2026-10-09/vdata.py,94,"def load_4h(start_ms=START_MS, end_ms=DEV_END_MS, unseal=False):"
+MyTradingSys/research/wavetrend_2026-10-17/atlas.py,1,"""""""WaveTrend DEV atlas (card wavetrend-dev-atlas): the ONE pre-registered DEV run of PRE_REG.md. DEV only (< 2024-07-01)."
+MyTradingSys/research/wavetrend_2026-10-17/atlas.py,6,"Gross only: no fees, no funding, no strategy. VALIDATION and HOLDOUT are never opened (the loader refuses bars >= 2024-07-01)."
+MyTradingSys/research/wavetrend_2026-10-17/count_events.py,1,"""""""Count-only pass for the WaveTrend PRE_REG (card wavetrend-prereg-counts). DEV only (< 2024-07-01)."
+MyTradingSys/research/wavetrend_2026-10-17/count_events.py,22,"TS0 = int(dt.datetime(2022, 1, 1, tzinfo=dt.timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/wavetrend_2026-10-17/count_events.py,23,"CUTOFF_MS = int(dt.datetime(2024, 7, 1, tzinfo=dt.timezone.utc).timestamp() * 1000)"
+MyTradingSys/research/wavetrend_2026-10-17/count_events.py,47,"raise ValueError(f""bar {t} >= 2024-07-01 refused (VALIDATION/HOLDOUT sealed): {f}"")"
+MyTradingSys/research/wavetrend_2026-10-17/make_result.py,15,"""FAIL/INCONCLUSIVE: stop; this atlas adopts no rule and the cells are not tuned or re-cut; any strategy needs its own PRE_REG with Binance-venue costs, VALIDATION once, HOLDOUT sealed."")"
+MyTradingSys/research/wavetrend_2026-10-17/make_result.py,17,"w(""Status: EXPLORATORY BEHAVIOUR TABLE on DEV (2022-01-01..2024-06-30), one run, gross (no fees, no funding). Cells, outcomes, arms and Holm m = 9 exactly as `PRE_REG.md` s5-s6 (committed `cd663831` / `7e75c720`, before `atlas.py`). `atlas.py` raises on any cell not in `PRE_REG.md`. VALIDATION reads: 0. HOLDOUT reads: 0 (the loader refuses bars >= 2024-07-01)."")"
+MyTradingSys/research/wavetrend_2026-10-17/make_result.py,96,"w(""3. Bin edges, k, c, R_out, G were chosen on DEV counts (PRE_REG s8); VALIDATION is the only independent check and was not opened."")"
+MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/study.py,1,"""""""wlow_bounce_bbrsi60 study, DEV ONLY (bars opened before 2024-07-01). Rules: PRE_REG.md in this folder (read it first)."
+MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/study.py,7,from the repo root.) Loader guard: a bar with open >= 2024-07-01 is never read.
+MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/study.py,25,"DEV_END_MS = int(datetime(2024, 7, 1, tzinfo=timezone.utc).timestamp() * 1000)   # exclusive: VALIDATION starts here"
+MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/study.py,39,"""""""1m rows (t, o, h, l, c, v, tbv) for files whose month is <= 2024-06 and bars < DEV_END_MS."""""""
+MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/study.py,50,if t >= DEV_END_MS:
+MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/study.py,193,"assert rows[-1][0] < DEV_END_MS, ""VALIDATION/HOLDOUT bar read"""
+MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/study.py,270,"L.append(f""Study wlow_bounce_bbrsi60_2026-10-16, DEV only (1h bars from 1m klines, open < 2024-07-01). Rules: PRE_REG.md (committed before this file). Why: {why}."")"

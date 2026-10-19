@@ -1,7 +1,9 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
   "class": "C2",
+  "closed": "2026-10-19T04:41:25Z",
   "commands": [],
   "created": "2026-10-18T05:33:19Z",
   "depends_on": [],
@@ -15,6 +17,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "R2-R6 fixed: 150 tests + 495 subtests pass; 24/24 guard mutations killed; malformed metada",
+      "ref": "e820e1a5",
+      "utc": "2026-10-19T04:41:25Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -31,7 +39,7 @@
   "refined_by": "codex_run.py ask",
   "refreshed": "2026-10-18T21:28:19Z",
   "refs": [],
-  "result": "",
+  "result": "R2-R6 fixed: 150 tests + 495 subtests pass; 24/24 guard mutations killed; malformed metadata and flow exceptions fail closed; R1 authority remains open; report 2026-10-19_lab-review-gate-harden2.md",
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/test_tasks.py",
@@ -56,7 +64,7 @@
     "scripts/dev/test_lab_flow.py: close-path finish tests",
     "scripts/dev/test_lane_health.py:334-350 DSA close tests"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Inspect each cited R2-R6 site and test. Confirm current close contract: PASS may finish a ready or active card; REWORK/BLOCKED remain non-close outcomes.",
     "Write fail-first tests for malformed note and field classes, padded/non-string weights and truthy live_path, lab_flow.finish shared review gate for ready and active cards, and lane_health DSA fail-closed handling.",
@@ -65,6 +73,7 @@
     "Run only changed test files and show each new test failing against baseline then passing after the fix. Save a report at MyTradingSys/research/layer_lab/reports/2026-10-19_lab-review-gate-harden2.md with findings, changed file:line pointers, commands, and before/after results; do not run the quick gate.",
     "Executor final reply records content commit SHA, empty git cherry origin/fast-track <sha>, and git ls-tree -r origin/fast-track --name-only report existence; sandbox runner handles git."
   ],
+  "taken": "2026-10-19T04:36:58Z",
   "tests": "Fail-first named tests: test_malformed_note_class_fails_closed; test_weight_and_live_path_malformed_values_fail_closed; test_finish_review_gate_applies_to_ready_and_active; test_lane_health_review_gate_errors_fail_closed. Assert each claimed guard directly; retain ready-to-done when gates pass.",
   "title": "Review gate hardening 2: malformed inputs and independently biting close-path tests",
   "weight": "CRUCIAL",
