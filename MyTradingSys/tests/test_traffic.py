@@ -25,7 +25,7 @@ def state(**kw):
     s = {"machines": {"JIS-NB": {"liveness": "ACTIVE", "open_claims": 0, "last_seen": "x"},
                       "JIS-NUC": {"liveness": "ACTIVE", "open_claims": 0, "last_seen": "x"},
                       "DESKTOP-F7IU69N": {"liveness": "SILENT", "open_claims": 0, "last_seen": None}},
-         "leases": {"Pipeliner": {"state": "held"}, "Traffic_Controller": {"state": "held"}},
+         "leases": {"Pipeliner": {"state": "held"}},
          "lanes": {"codex": {"state": "off"}, "gemini-nuc": {"running": 1}},
          "budgets": {}, "desk": {"pending": 0},
          "queue": [{"id": f"s{i}", "lane": "SONNET", "weight": "NORMAL", "title": "t"} for i in range(12)]}
@@ -99,14 +99,14 @@ class Allocate(unittest.TestCase):
         self.assertIn("release only by claim rules", p[0]["action"])
 
     def test_unreadable_lease_fails_closed(self):
-        s = state(leases={"Pipeliner": {"state": "unknown", "error": "fetch failed"}, "Traffic_Controller": {"state": "held"}},
+        s = state(leases={"Pipeliner": {"state": "unknown", "error": "fetch failed"}},
                   desk={"pending": 5})
         props = traffic.allocate(s, inv())
         self.assertTrue(any(p["who"] == "operator" and "run nothing as Pipeliner" in p["action"] for p in props))
         self.assertFalse(any("You are Pipeliner" in p["action"] for p in props))
 
     def test_free_pipeliner_lease_with_pending_desk_starts_one_on_preferred_host(self):
-        s = state(leases={"Pipeliner": {"state": "expired"}, "Traffic_Controller": {"state": "held"}}, desk={"pending": 3})
+        s = state(leases={"Pipeliner": {"state": "expired"}}, desk={"pending": 3})
         props = [p for p in traffic.allocate(s, inv()) if "You are Pipeliner" in p["action"]]
         self.assertEqual([p["who"] for p in props], ["JIS-NUC"])
 
@@ -181,6 +181,40 @@ class Measure(unittest.TestCase):
         b = traffic.budgets_from_signals([(T0, "jis-nb/?", "info", "BUDGET login=B 5h=42% week=30%"),
                                           (T0 + timedelta(minutes=1), "jis-nb/?", "info", "BUDGET login=B 5h=44% week=31%")])
         self.assertEqual(b["B"]["five_h"], 44)
+
+    def test_budget_lines_carry_reset_and_pacing_state_per_login(self):
+        """Operator 2026-10-20: SPEND/NORMAL/THROTTLE per Claude login from the newest BUDGET line, plus overall."""
+        reset = (T0 + timedelta(hours=84)).strftime("%Y-%m-%dT%H:%MZ")          # half the week left: f = 0.5
+        sigs = [(T0 - timedelta(minutes=5), "jis-nb/?", "note", f"BUDGET login=A 5h=10% week=30% reset={reset}"),   # 30 < 40: SPEND
+                (T0 - timedelta(minutes=4), "jis-nuc/?", "note", f"BUDGET login=B 5h=10% week=48% reset={reset}"),  # on pace
+                (T0 - timedelta(minutes=3), "jis-nb/?", "note", f"BUDGET login=C 5h=90% week=40% reset={reset}")]   # 5 h > 80
+        b = traffic.budgets_from_signals(sigs)
+        self.assertEqual(b["A"]["reset"], reset)
+        v = traffic.spend_view(b, T0)
+        self.assertEqual({k: r["state"] for k, r in v["logins"].items()}, {"A": "SPEND", "B": "NORMAL", "C": "THROTTLE"})
+        self.assertEqual(v["overall"], "SPEND")
+        self.assertIn("login A: SPEND", traffic.render_spend(v))
+
+    def test_pacing_reset_in_the_past_or_over_a_week_away_is_unusable(self):
+        """Review fix: a past reset gave f=1 (SPEND under 90%); a reset >168 h away gave f=0 (THROTTLE above 5%)."""
+        at = (T0 - timedelta(minutes=1)).strftime("%Y-%m-%dT%H:%MZ")
+        past = (T0 - timedelta(hours=3)).strftime("%Y-%m-%dT%H:%MZ")
+        far = (T0 + timedelta(hours=200)).strftime("%Y-%m-%dT%H:%MZ")
+        self.assertEqual(traffic.pacing_state({"week": 50, "five_h": 5, "reset": past, "at": at}, T0)[0], "NORMAL")
+        self.assertEqual(traffic.pacing_state({"week": 50, "five_h": 5, "reset": far, "at": at}, T0)[0], "NORMAL")
+
+    def test_pacing_over_pace_stale_and_missing(self):
+        reset = (T0 + timedelta(hours=84)).strftime("%Y-%m-%dT%H:%MZ")
+        at = (T0 - timedelta(minutes=1)).strftime("%Y-%m-%dT%H:%MZ")
+        self.assertEqual(traffic.pacing_state({"week": 60, "five_h": 5, "reset": reset, "at": at}, T0)[0], "THROTTLE")   # 60 > 55
+        old = (T0 - timedelta(hours=7)).strftime("%Y-%m-%dT%H:%MZ")
+        self.assertEqual(traffic.pacing_state({"week": 1, "five_h": 1, "reset": reset, "at": old}, T0)[0], "NORMAL")      # stale never SPEND
+        self.assertEqual(traffic.pacing_state({"week": 1, "five_h": 1, "at": at}, T0)[0], "NORMAL")                        # no reset time
+        soon = (T0 + timedelta(hours=10)).strftime("%Y-%m-%dT%H:%MZ")
+        self.assertEqual(traffic.pacing_state({"week": 80, "five_h": 5, "reset": soon, "at": at}, T0)[0], "SPEND")       # <24 h left, <85
+        self.assertEqual(traffic.spend_view({}, T0)["overall"], "UNKNOWN")
+        allt = {l: {"week": 99, "five_h": 99, "reset": reset, "at": at} for l in "AB"}
+        self.assertEqual(traffic.spend_view(allt, T0)["overall"], "THROTTLE")
 
     def test_inventory_has_no_emails(self):
         text = (REPO / traffic.INVENTORY).read_text(encoding="utf-8")

@@ -1151,7 +1151,7 @@ def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS,
 
 
 def lease_guard(argv):
-    """TRAFFIC_CONTROLLER.md Part A: a singleton-role session (Pipeliner, Traffic_Controller) ships, claims and releases
+    """TRAFFIC_CONTROLLER.md Part A: a singleton-role session (Pipeliner) ships, claims and releases
     only while it holds its lease (scripts/dev/lease.py); fails closed. Any other session: no-op, no network."""
     if not argv or argv[0] not in ("ship", "claim", "release"):
         return 0

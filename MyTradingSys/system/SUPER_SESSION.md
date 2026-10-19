@@ -1,8 +1,8 @@
 # SUPER SESSION - one coordinator, many workers, hours of continuous work (operator term, 2026-10-15)
 
 A **super session** is one coordinator session in the Claude Code Win App that spawns, steers, checks and archives workers (WORKERS.md: sessions or one-use Agents)
-(`start_session`) for several hours, with the operator in the loop only for direction. Max plan only, and only when the weekly
-meter has headroom (Pacing below). First one: 2026-10-15, coordinator local_62faa820 (Opus), about 20 linked workers, an Opus
+(`start_session`) for several hours, with the operator in the loop only for direction. It can start from any device and any login (nothing in the start prompt or `role_loader.py` checks either); in practice a login with weekly
+headroom (a Max login), because the meter decides (Pacing below). Only live-tree work is tied to JIS-NB (deploys, process checks, HALT reads, live-file reads): it goes to a JIS-NB desk row or the NB session, never done from a work tree. First one: 2026-10-15, coordinator local_62faa820 (Opus), about 20 linked workers, an Opus
 observer, and a second coordinator (coord-2) that drained the ship queue at the end.
 
 **Operating design: SUPERVISOR.md** (wake loop, role workers, verification, ship order; role file `roles/supervisor.md`,
@@ -52,8 +52,8 @@ only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once); histo
    verdict APPROVE or BLOCK, then the defects. Cap 30k tokens; if the diff is larger, review the hunks in the paths above only.
    BLOCK means the worker fixes and re-submits once; a second BLOCK goes to the coordinator, who decides and logs it. The reviewer
    edits nothing and the worker may not review its own diff. Both coordinator prompts (below) carry this line.
-12. **Spend the window before it resets (operator 2026-10-17).** Every login's usage window is spent, not saved: when a login (NUC or NB) has
-   budget and its reset is near, pace workers so the meter reaches about 95% right as the window resets (NUC may go to 95%; NB weekly cap stays 75%).
+12. **Spend the window before it resets (operator 2026-10-17).** Every login's usage window is spent, not saved: when a login (any device) has
+   budget and its reset is near, pace workers so the meter reaches about 95% right as the window resets (the operator's weekly cap is 75% for logins B and C when they run on JIS-NB, an operator choice, not a technical limit; login A and the NUC logins may go to 95%; letters per traffic_inventory.json).
    Rule of thumb: remaining minutes / 40 = workers to launch in the window, staggered, one card each; re-check `get_usage` at each launch.
    An idle login with ready cards is a defect. Wake an idle NUC with `python scripts/dev/nuc_wake.py --card <id> --name <n>`. Every coordinator
    prompt carries this line.
@@ -92,6 +92,7 @@ only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once); histo
 - A worker that merges late hits VERDICTS.csv and wiring_registry.json conflicts: union both sides.
 
 ## Session log (newest first; one line each, last 5)
+- DOCTOR-NB-1020 (2026-10-20, Sonnet one-time agent, 2 review Agents): roles 11 -> 7 (Traffic_Controller folded into Pipeliner, Q&A_Helper + Network_Admin_Guy -> Admin_Guy on Haiku high with backlog intake, Artifacts_Guy -> 1985Artifacts_Guy; old names stay aliases in role_loader.py), location wording fixed (Eagle_Eyes runs anywhere via live_mirror brief, super session any device/login), `traffic.py budget` = SPEND per login. Lesson: an alias list in code (ALIASES) keeps old pinned sessions working across a rename.
 - DOCTOR-NB-1019 (2026-10-19, Opus one-time agent, 2 review Agents): roles review; ROLES.md pin table -> 'runs anywhere; needs; at most one' (role_loader checks no host), super-session prompt line 1 now `You are Supervisor.` (the old line loaded no role), RELAY.md retired parts marked, MTS Home gets 'How to use MTS' (6 recipes). Lesson: two entry points for one role drift; one paste line each.
 - SUPER-DESKTOP-1019 (2026-10-19, Sonnet coordinator, 2 Agents): stale ci-919cc0f closed (CI green at c65cda0, 52dd55e0); layer_map 2 of 8 null rows filled, rest not stated in reports (28313a4f); 3 stale pages posted as JIS-NB desk row. Boot: ~6 tool turns. Lesson: tasks.py next ranks stale ci-* cards first; check ci_watch.py before dispatching a fix.
 - SUPER-NB-1018 (2026-10-18, Sonnet coordinator, ~9 sessions + review Agents, weekly 73 -> 81%): labeler fix, krown, state audit, RV02 R1+R2, Fabio dating, planner batch 3 shipped; diff-only review Agents caught real defects in 4 of 6 diffs. Lesson: with 6+ sessions shipping, the 2 gate slots queue 2-3 h and a ship dies at the tool 600 s timeout unless run detached; one ship per session; weekly cap hit before the block ended.
@@ -115,8 +116,9 @@ republish to claude.ai/artifact/9nqpZeMeEehadoBoYopZU3 from the jishusharma1985 
 | SPEND | U < 100 f - 10, or less than 24 h to the reset with U < 85 | super session worth starting; Fable cards allowed (operator starts them) |
 | NORMAL | between | (relay and Haiku dispatcher RETIRED 2026-10-17, see SCHEDULING_POLICY.md) Sonnet builders, coordinator dispatches |
 | THROTTLE | U > 100 f + 5, or the 5-hour window > 80 % | only model-free work: Codex lab, DSA desk, CI |
-The meter is only readable from an App session (`get_usage`), so the coordinator writes it to
-`~/.claude/mts-budget.json` (not in git); the gate treats a reading older than 6 h as NORMAL.
+The meter is only readable from an App session (`get_usage`), one login at a time (no CLI or headless route exists: `claude --help` has no usage command, `claude auth status` shows the login only, `/usage` is interactive). The coordinator writes its login's reading to
+`~/.claude/mts-budget.json` (per machine, not in git); the gate treats a reading older than 6 h as NORMAL.
+**All logins at once (2026-10-20):** every top-level session sends its login's reading at start with `python scripts/dev/mts_signal.py send "BUDGET login=<A|B|C> 5h=<n>% week=<n>% reset=<weekly reset UTC YYYY-MM-DDTHH:MMZ>" --to all --kind note`; `python scripts/dev/traffic.py budget` (Pipeliner runs it) takes the newest line per login and prints SPEND / NORMAL / THROTTLE per login plus overall by the table above (a line older than 6 h counts NORMAL; a login with no line is listed as missing).
 
 ## Prompt: start a super session (paste into a new Sonnet session, permission mode bypass or auto)
 ```
@@ -125,7 +127,7 @@ Goal today: <one line, e.g. "rebuild layers setups-first: catalogue -> PRE_REG -
 First turn: get_usage (THROTTLE -> tell me and stop), read STATUS.md and NEXT_SESSION.md, run the Session_Planner, pick the tasks that serve the goal.
 Spawn workers per WORKERS.md (session by default, Agent only for size S; Sonnet; Haiku for mechanical status), at most 4 running, each with a full brief: goal, files, DONE when, defaults for open questions, hard limits from CLAUDE.md. Workers never ask me; you decide toward the goal and log it.
 Rule 11: any diff touching the live path, gates, promote.py, prereg_gate.py or decision numbers gets an independent Sonnet review Agent (diff only, 5-line reply, 30k token cap) before ship.
-Rule 12: spend the window before it resets: remaining minutes / 40 = workers to launch, staggered, get_usage at each launch (NB weekly cap 75%).
+Rule 12: spend the window before it resets: remaining minutes / 40 = workers to launch, staggered, get_usage at each launch (weekly cap per login as in rule 12).
 Rule 13: a defect blocks only cards that read its output; release holds that name no defect.
 Rule 14: Session_Planner (roles/session_planner.md) as a foreground Sonnet Agent at boot and on each free slot; never dispatch raw/refined cards.
 Run sync.py ship in the background. Verify every ship with git cherry, mark finished workers completed, budget turns per WORKERS.md rule 5, hand the tail to a second coordinator per rule 5 above.

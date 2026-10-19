@@ -9,7 +9,7 @@ which login owns it, where notes go and when it was last published; a box says h
 stale copies only Jis can delete. Operator 2026-10-17: "all my questions and the decisions waiting for me available there":
 a "Waiting for you" list reads the open questions from the repo record (OPERATOR_DECISIONS.md: no answer yet; task cards: `asks`
 set, not done) and says where to answer them (the Control Room, the one place for answers, q1/q21). Publish: Artifact tool, url = registry urls[home_login] of mts_home (never a second copy).
-Operator 2026-10-19: "How to use MTS" at the top: six recipes (when, where, the line to paste, what comes back) and the super-session
+Operator 2026-10-19: "How to use MTS" at the top: seven recipes (when, where, the line to paste, what comes back) and the super-session
 prompt, read from SUPER_SESSION.md at build time so the page never drifts from the doc.
 """
 import argparse
@@ -217,19 +217,19 @@ button.copy{font:700 .8rem var(--f-body);padding:6px 12px;border-radius:999px;bo
   <section aria-labelledby="h-use">
     <h2 id="h-use">How to use MTS</h2>
     <div class="use">
-      <p class="today"><b>What do I do today?</b> Answer anything under <a href="#h-wait">Waiting for you</a>. Send chart screenshots to Eagle_Eyes on JIS-NB. If the weekly meter says SPEND, start one super session (recipe 3). That is all: nothing runs by itself.</p>
-      <p class="sub">Open a new session in the Claude Code app (model Sonnet), paste the line, add your words. Any role starts on any machine; the "where" below is only what the role needs. The first reply must start with <code>ROLE LOADED</code>; if it does not, close that session and open a new one.</p>
+      <p class="today"><b>What do I do today?</b> Answer anything under <a href="#h-wait">Waiting for you</a>. Send chart screenshots to Eagle_Eyes. A backlog idea: paste <code>You are Admin_Guy.</code> plus the idea (recipe 6). If any login's meter says SPEND (Pipeliner shows all of them), start one super session (recipe 3). That is all: nothing runs by itself.</p>
+      <p class="sub">Open a new session in the Claude Code app (model Sonnet), paste the line, add your words. Any role starts on any machine and any login; the "where" below is only what the role needs. The first reply must start with <code>ROLE LOADED</code>; if it does not, close that session and open a new one.</p>
       <ol class="recipes">
         <li><b>Ask a question or make a decision</b>
           <span class="when">Any time, any machine, any login.</span>
-          <span>Paste <span class="paste">You are Q&amp;A_Helper.</span> then your question.</span>
+          <span>Paste <span class="paste">You are Admin_Guy.</span> then your question (Haiku, high effort; it records your words and passes judgement on as a card).</span>
           <span class="get">the answer from the repo, your decision written to the record, and what still waits on you.</span></li>
         <li><b>Read a chart screenshot</b>
-          <span class="when">During market hours, on JIS-NB (it reads the live files there).</span>
+          <span class="when">During market hours. On JIS-NB it reads the live files; on any other device it reads a copy marked <code>mirror@time</code> and says so.</span>
           <span>Paste <span class="paste">You are Eagle_Eyes.</span> then the screenshot.</span>
           <span class="get">a logged read against the engine, tagged NOTE or LAB-VERIFY, and a one-line flag if live money looks wrong.</span></li>
         <li><b>Spend spare budget: one super session</b>
-          <span class="when">When the weekly meter says SPEND. Read the weekly bar in the Claude app's usage view (or ask any session for <code>get_usage</code>): SPEND = the weekly % used is 10+ points below the share of the week already gone (e.g. 40% used on day 4 of 7, 57% gone), or under 85% with less than a day to the reset. Best on the jishusharma1985 login (it can refresh the pages at the end); any login with budget works.</span>
+          <span class="when">When the weekly meter says SPEND. Read the weekly bar in the Claude app's usage view (or ask any session for <code>get_usage</code>): SPEND = the weekly % used is 10+ points below the share of the week already gone (e.g. 40% used on day 4 of 7, 57% gone), or under 85% with less than a day to the reset. Any device and any login with budget works; ask <code>Start the Pipeliner.</code> in any session for the SPEND state of every login.</span>
           <span>Paste the prompt below and fill in the Goal line. It starts the Supervisor, which runs the Session_Planner and up to 4 workers itself: do not open those by hand.</span>
           <span class="get">hours of work on your goal, each ship checked on the trunk, and one line at the end.</span>
           <details class="prompt"><summary>Show the super-session prompt</summary><pre id="sprompt"></pre></details>
@@ -239,13 +239,17 @@ button.copy{font:700 .8rem var(--f-body);padding:6px 12px;border-radius:999px;bo
           <span>Paste <span class="paste">You are MTS_Doctor.</span></span>
           <span class="get">a dated report and one task card per defect.</span></li>
         <li><b>Lab work and routing</b>
-          <span class="when">On JIS-NUC, the lab machine (GPT/Codex, Gemini), or over its SSH gate.</span>
-          <span>Paste <span class="paste">You are Lab_Guy.</span> to review lab work, or <span class="paste">You are Pipeliner.</span> to drain the desk queue (only one Pipeliner at a time; a second is refused).</span>
+          <span class="when">Lab_Guy: on JIS-NUC (the lab: GPT/Codex, Gemini) or over its SSH gate. Pipeliner: anywhere.</span>
+          <span>Paste <span class="paste">You are Lab_Guy.</span> to review lab work, or <span class="paste">You are Pipeliner.</span> (on any device) to drain the desk queue and allocate every machine and login (one at a time; a second is refused). Inside any open session, not an Agent: <span class="paste">Start the Pipeliner.</span></span>
           <span class="get">a flow table or a drain table, and cards for what is wrong.</span></li>
+        <li><b>Put an idea on the backlog</b>
+          <span class="when">Any time, any device, any login.</span>
+          <span>Paste <span class="paste">You are Admin_Guy.</span> followed by the idea, in a new session or an open Admin_Guy session.</span>
+          <span class="get">one scoped card on the trunk with your words quoted, routed by Pipeliner and refined by Session_Planner.</span></li>
         <li><b>Only when something breaks</b>
           <span class="when">A page is stale or a link fails: on the jishusharma1985 login. A console window flashes or the network misbehaves: on that machine.</span>
-          <span>Paste <span class="paste">You are Artifacts_Guy.</span> or <span class="paste">You are Network_Admin_Guy.</span></span>
-          <span class="get">a republished page, or a tested fix (the live tree still changes only by a manual deploy).</span></li>
+          <span>Paste <span class="paste">You are 1985Artifacts_Guy.</span> or <span class="paste">You are Admin_Guy.</span> (old names Artifacts_Guy, Q&amp;A_Helper, Network_Admin_Guy still work)</span>
+          <span class="get">a republished page, or a tested fix card (the live tree still changes only by a manual deploy).</span></li>
       </ol>
     </div>
   </section>

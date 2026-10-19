@@ -1,9 +1,11 @@
 # TRAFFIC_CONTROLLER: one allocator for every machine, login and lane, and a lease that keeps singletons single (design 2026-10-19)
 
-Role file: `roles/traffic_controller.md`. Tools: `scripts/dev/lease.py` (Part A), `scripts/dev/traffic.py` (Part B),
+**FOLDED 2026-10-20 (operator): Traffic_Controller is no longer a role. Its allocator job is Job 2 of `roles/pipeliner.md` (`You are Pipeliner.` anywhere, or `Start the Pipeliner.` inside a top-level session); `You are Traffic_Controller.` is an alias. This file stays as the design record. Per-login SPEND state: `python scripts/dev/traffic.py budget`.**
+
+Role file: `roles/pipeliner.md` (was `traffic_controller.md`). Tools: `scripts/dev/lease.py` (Part A), `scripts/dev/traffic.py` (Part B),
 inventory `MyTradingSys/system/traffic_inventory.json`. Extends SUPERVISOR.md (cards SV2-SV8 stay its own; nothing here
-repeats them). Order: Traffic_Controller (24 h allocation across machines, logins, lanes) > Supervisor (one super session's
-workers) and Pipeliner (desk rows, routing rules) > workers.
+repeats them). Order: Pipeliner as allocator (24 h allocation across machines, logins, lanes) > Supervisor (one super session's
+workers) and the desk/routing rules > workers.
 
 ## Measured first: 72 h, 2026-10-15T22:04Z .. 2026-10-18T22:04Z (`traffic.py measure --hours 72`, every source parsed whole)
 Sources: 2218 trunk commits (1346 attributed to a machine: claim `Result: ... on HOST`, merge prefix `into <host>/` plus that
@@ -81,7 +83,7 @@ share one identity. Non-Claude runners (Gemini, Codex) set `MTS_ROLE` + `MTS_LEA
 **Wired into:** Pipeliner boot step 1 (`lease.py acquire Pipeliner`, refused = stop) and release in Done-when;
 `desk.py post|take|done|assign|sweep` and `sync.py claim|ship|release` call `lease.guard` and refuse (exit 3/4) a singleton
 session without the lease (non-singleton sessions are untouched); the role_loader banner appends `lease held by <host>/<account>
-until <utc>` (or `free`, or `lease UNKNOWN (...)`). Traffic_Controller uses the same lease.
+until <utc>` (or `free`, or `lease UNKNOWN (...)`). The folded allocator (Pipeliner) uses the same lease.
 
 **Test proof** (`MyTradingSys/tests/test_lease.py`, 22 tests, two clones of one bare origin play two machines):
 two simultaneous acquirers behind a barrier, exactly one wins (5/5 repeated runs); second machine refused; stale takeover
@@ -96,7 +98,7 @@ with the new lease.py but trunk desk/sync/role_loader, the 2 wiring tests fail; 
 before those fixes (4 failed, run in a scratch copy). Regression: test_desk, test_sync,
 test_role_loader, test_role_hook_launcher 120 passed.
 
-## Part B: Traffic_Controller
+## Part B: the allocator (was Traffic_Controller, now Pipeliner Job 2)
 **Inventory** (`traffic_inventory.json`, no emails or runtime data): 3 machines (signal ids, branch prefixes, logins usable
 there, what each may run), 3 Claude logins A/B/C (labels only), lanes codex (GPT, NUC), gemini-nuc, gemini-laptop (Lenovo,
 hand-started), dsa; singleton preferences; pacing 60/70/80 (SUPERVISOR.md Pacing); liveness 30/180 min; 4 slots a machine.
@@ -122,7 +124,7 @@ pushes a lease renew. Exit 1 when a source failed (the error is listed, never re
 
 **`traffic.py measure [--hours N] [--json]`**: the table and duplicate list above.
 
-**How it runs.** A pinned session (`You are Traffic_Controller.`); boot = acquire lease, `traffic.py status --json`, BUDGET
+**How it runs.** A session started as `You are Pipeliner.` (or `Start the Pipeliner.` inside one); boot = acquire lease, `traffic.py status --json`, BUDGET
 line. Each wake (note, signal, operator turn, the one background watcher): renew, status, act on PROPOSED in one message,
 end the turn. No scheduler, no polling agent, no timer. Never messages Fable sessions, never deploys, restarts, touches HALT,
 trades or releases others' claims. Leakage both ways: no runtime/order/account/secret/email data in commits, cards, signals or
