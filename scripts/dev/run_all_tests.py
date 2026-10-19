@@ -310,10 +310,13 @@ def exec_layer_chunks(modules, jobs):
     procs = [subprocess.Popen([sys.executable, "-m", "unittest"] + c, cwd=str(REPO), stdout=subprocess.PIPE,
                               stderr=subprocess.STDOUT, text=True, errors="replace") for c in chunks]
     outs = [p.communicate()[0] for p in procs]
-    ok = all(p.returncode == 0 for p in procs)
+    # Python 3.12+ exits 5 when a chunk holds only modules with no unittest cases ('NO TESTS RAN'): that is not a failure.
+    def passed(p, o):
+        return p.returncode == 0 or (p.returncode == 5 and "NO TESTS RAN" in o)
+    ok = all(passed(p, o) for p, o in zip(procs, outs))
     if ok:
         return True, "\n".join(outs)
-    keep = [o if os.environ.get("CI") else "\n".join(o.splitlines()[-15:]) for p, o in zip(procs, outs) if p.returncode != 0]
+    keep = [o if os.environ.get("CI") else "\n".join(o.splitlines()[-15:]) for p, o in zip(procs, outs) if not passed(p, o)]
     return False, "\n".join(keep)
 
 

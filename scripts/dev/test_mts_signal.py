@@ -166,6 +166,25 @@ class SignalTest(unittest.TestCase):
         self.assertEqual((text, kind), ("ship Result: 5 layers live", "done"))
         self.assertNotIn("tail", text)
 
+    def test_budget_command_sends_line_traffic_parses_and_writes_file(self):
+        self.machine("nb", "sharma")
+        os.environ["MTS_RELAY_HOME"] = str(self.tmp / "claudehome")
+        self.assertEqual(S.main(["budget", "--login", "b", "--five", "12.4", "--week", "40", "--reset", "2026-10-22T19:59Z"]), 0)
+        self.assertEqual(S.main(["budget", "--login", "X", "--five", "1", "--week", "1", "--reset", "2026-10-22T19:59Z"]), 2)
+        self.assertEqual(S.main(["budget", "--login", "A", "--five", "1", "--week", "1", "--reset", "soon"]), 2)
+        h = S.ensure()
+        texts = [r["text"] for r in S.load(h)]
+        self.assertEqual(texts, ["BUDGET login=B 5h=12% week=40% reset=2026-10-22T19:59Z"])
+        import traffic
+        self.assertTrue(traffic.BUDGET_RE.search(texts[0]))
+        import json
+        rec = json.loads((self.tmp / "claudehome" / "mts-budget.json").read_text(encoding="utf-8"))
+        self.assertEqual((rec["weekly_all_pct"], rec["five_hour_pct"], rec["weekly_resets_at"]), (40.0, 12.4, "2026-10-22T19:59Z"))
+        import budget
+        self.assertEqual(sorted(rec), ["five_hour_pct", "utc", "weekly_all_pct", "weekly_resets_at"])
+        self.assertIn(budget.state()[0], ("NORMAL", "SPEND", "THROTTLE"))
+        os.environ.pop("MTS_RELAY_HOME")
+
     def test_odd_slug_is_dropped(self):
         orig = S.last_result
         S.last_result = lambda cwd: ""

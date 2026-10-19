@@ -69,6 +69,14 @@ class TestParallelLayerGate(unittest.TestCase):
             self.assertEqual(len(flat), len(set(flat)), jobs)
             self.assertTrue(all(chunks))
 
+    def test_chunk_with_only_testless_modules_passes(self):
+        ok, out = rat.exec_layer_chunks(["MyTradingSys.backtest.layers.alerts.test_live_toc_tfs"], 1)
+        self.assertTrue(ok, out)
+
+    def test_chunk_with_missing_module_still_fails(self):
+        ok, _ = rat.exec_layer_chunks(["MyTradingSys.backtest.layers.alerts.no_such_module_xyz"], 1)
+        self.assertFalse(ok)
+
     def test_gate_jobs_env(self):
         import os
         old = os.environ.get("MTS_GATE_JOBS")
