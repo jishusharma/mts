@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C1",
   "commands": [],
   "created": "2026-10-18T21:26:36Z",
   "depends_on": [],
@@ -17,16 +18,18 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "Never modify frozen atlas outputs or ledger rows. Create any new exposure entry only alongside the new preregistration.",
+  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:results CLASS:C1 REVIEWER:none WEIGHT:IMPORTANT. Refined by gemini-session-planner from AUDIT_2026-10-18 findings 2 & 3; T0 mechanical checks passed, awaiting non-Gemini Lab_Guy ACCEPT stamp for C1/IMPORTANT promotion.",
   "prio": 1,
   "refine_tries": 0,
-  "refined_by": "",
-  "refs": [],
+  "refined_by": "gemini-session-planner",
+  "refreshed": "2026-10-19T03:55:00Z",
+  "refs": [
+    "MyTradingSys/research/wavetrend_2026-10-17/AUDIT_2026-10-18.md"
+  ],
   "result": "",
   "scope_in": [
     "MyTradingSys/research/wavetrend_2026-10-17/",
-    "MyTradingSys/backtest/research_kit.py",
-    "F:/MTS/data/tom_raw/klines/BTCUSDT-1m-2022-01.csv through BTCUSDT-1m-2024-06.csv"
+    "MyTradingSys/backtest/research_kit.py"
   ],
   "scope_out": [
     "Do not read or calculate any returns/outcomes; do not read VALIDATION/HOLDOUT; do not modify frozen atlas outputs or ledger rows."
@@ -38,7 +41,7 @@
     "MyTradingSys/research/wavetrend_2026-10-17/atlas.py",
     "MyTradingSys/backtest/research_kit.py"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Create a frozen manifest for the exact 30 pre-cutoff 1m DEV source files with names, sizes, SHA-256, timestamp coverage, duplicate and missing-minute counts, and usable bars by timeframe.",
     "Add a fail-first test for duplicate/gap detection and ensure the manifest generator refuses any input at or after the 2024-07-01 cutoff.",

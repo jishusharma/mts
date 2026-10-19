@@ -419,6 +419,49 @@ def wait_for_transition(
     return 3, f"TIMEOUT after {timeout_s}s with no transition"
 
 
+def brief(card_id: str, role: str | None = None, repo: Path = REPO, card: dict | None = None) -> str:
+    """supervisor.py brief <card> [--role <role>]
+    Generates the exact start prompt for a worker session.
+    """
+    import tasks
+    if card is None:
+        card = tasks.get(repo, card_id)
+
+    # Determine role
+    worker_role = role or card.get("role") or tasks.card_role(card) or "Builder"
+
+    # Line 1: You are <Role>.
+    line1 = f"You are {worker_role}."
+
+    # Line 2: Card: <card_id>[, <chained_ids>...]. Boot: python <main_checkout>/scripts/dev/sync.py start <slug>; work only in the printed WORKTREE.
+    # Note: <main_checkout> is the path to repo
+    slug = card_id.lower()
+    line2 = f"Card: {card_id}. Boot: python {repo}/scripts/dev/sync.py start {slug}; work only in the printed WORKTREE."
+
+    lines = [line1, line2]
+
+    # Followed by card goal, scope_in, defaults for open questions, and the standard stop lines
+    goal = card.get("goal") or card.get("title") or ""
+    if goal:
+        lines.append(f"Goal: {goal}")
+
+    scope_in = card.get("scope_in") or []
+    if scope_in:
+        # Filter out any secrets paths from display for defense in depth
+        clean_scope = [s for s in scope_in if not any(x in s for x in (".secrets", ".env", "keys"))]
+        if clean_scope:
+            lines.append(f"Scope in: {'; '.join(clean_scope)}")
+
+    # Defaults for open questions
+    lines.append("Defaults for open questions: on any ambiguity take the most conservative default, never ask the operator.")
+
+    # Standard stop line
+    lines.append("Run with zero operator input: never ask; take the conservative default, log DECISION (OURS), continue")
+    lines.append("Your final report starts with your ROLE LOADED banner line, then Result: and the content sha, at most 6 lines.")
+
+    return "\n".join(lines)
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -432,6 +475,10 @@ def main(argv: list[str] | None = None) -> int:
     p_wait.add_argument("--shas", nargs="*", default=[], help="comma- or space-separated commit shas to watch for landing on trunk")
     p_wait.add_argument("--timeout", default="3000", help="timeout in seconds or with s/m/h suffix (default 3000)")
     p_wait.add_argument("--interval", default="300", help="poll interval in seconds or with s/m/h suffix (default 300)")
+
+    p_brief = sub.add_parser("brief", help="generate exact start prompt text for a worker session")
+    p_brief.add_argument("card", help="card id to brief")
+    p_brief.add_argument("--role", default=None, help="role to start worker as (defaults to Builder)")
 
     args = ap.parse_args(argv)
     if args.cmd == "tick":
@@ -448,6 +495,10 @@ def main(argv: list[str] | None = None) -> int:
         )
         print(reason)
         return rc
+    if args.cmd == "brief":
+        out = brief(args.card, role=args.role, repo=REPO)
+        print(out)
+        return 0
     return 2
 
 

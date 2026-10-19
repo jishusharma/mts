@@ -27,7 +27,7 @@ ROLES_REL = "MyTradingSys/system/roles"
 ROLES_MD_REL = "MyTradingSys/system/ROLES.md"
 TRUNK = "origin/fast-track"
 KNOWN_ROLES = ["Eagle_Eyes", "Lab_Guy", "Session_Planner", "MTS_Doctor", "Artifacts_Guy", "Network_Admin_Guy",
-               "Q&A_Helper", "Pipeliner", "Supervisor", "Traffic_Controller"]
+               "Q&A_Helper", "Pipeliner", "Supervisor", "Traffic_Controller", "Builder"]
 SINGLETON_ROLES = ("Pipeliner", "Traffic_Controller")  # one instance across all machines: scripts/dev/lease.py
 
 # Fixed list: index = 16-bit chunk % 256. Never reorder or edit (it would change every token); the length is asserted below.
