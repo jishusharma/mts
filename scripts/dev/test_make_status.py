@@ -298,5 +298,15 @@ class GateBoard(Base):
                          "commits 24h: 2 = research 50% | claim/release 0% | other 50%  OVER 30% CAP")
 
 
+class TestStatusPath(unittest.TestCase):
+    """Card move-live-host-generated-files: the live tree never rewrites the tracked STATUS.md (it blocked hand deploys)."""
+
+    def test_live_tree_writes_the_ignored_copy(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.assertEqual(ms.get_status_path(d), "MyTradingSys/research/STATUS.md")
+            Path(d, ".mts_live").write_text("x")
+            self.assertEqual(ms.get_status_path(d), "runtime_data/STATUS_live.md")
+
+
 if __name__ == "__main__":
     unittest.main()
