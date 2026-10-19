@@ -217,6 +217,18 @@ class FastPlan(unittest.TestCase):
         self.assertEqual(mode, "full")
         self.assertFalse(rat.fast_applied)
 
+    def test_fast_gate_runs_3dl_on_any_py_or_ci_yml_change(self):
+        plan, mode, _ = self.select(["scripts/dev/nowin.py"])
+        self.assertEqual(mode, "smoke")
+        self.assertTrue(rat.fast_applied)
+        run_nums = [s.num for s in plan if not s.skip]
+        self.assertIn("3dl", run_nums)
+
+        plan_ci = rat.build_plan(True)
+        new_plan, _ = rat.apply_fast(plan_ci, [".github/workflows/ci.yml"], nums=[s.num for s in plan_ci], jobs=2)
+        ci_run_nums = [s.num for s in new_plan if not s.skip]
+        self.assertIn("3dl", ci_run_nums)
+
 
 def setattr_all(mod, names, values):
     for n, v in zip(names, values):

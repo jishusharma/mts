@@ -716,7 +716,7 @@ def apply_fast(plan, files, nums, jobs):
     needed = set()
     for f in files:
         needed.update(gate_select._name_matches(f, steps_list))
-        if gate_impact.is_test_file(f):
+        if f.endswith(".py") or f.endswith("ci.yml") or gate_impact.is_test_file(f):
             needed.add("3dl")
     if any(gate_select._is_doc(f) for f in files):
         needed.update(gate_select.DOC_STEPS)
