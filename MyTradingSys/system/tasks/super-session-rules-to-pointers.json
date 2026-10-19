@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest -q MyTradingSys/tests/docs"
+  ],
+  "created": "2026-10-18T21:56:41Z",
+  "depends_on": [],
+  "done_when": "mts_doctor.py reports no DUPLICATE line for the turn-budget and pacing text; test_super_session_doc.py passes.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Turn budget and 5h pacing live once: WORKERS.md rule 5 and the pacing memory rule; SUPER_SESSION rules 1 and 9, SUPERVISOR.md and roles/supervisor.md point at them.",
+  "id": "super-session-rules-to-pointers",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "SUPER_SESSION.md: session log back to the last 5 (trunk had 6, test_session_log_keeps_last",
+      "ref": "8ee38e8d9f62",
+      "utc": "2026-10-18T18:57:34Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8ee38e8d9f62 SUPER_SESSION.md: session log back to the last 5 (trunk had 6, test_session_l",
+      "ref": "MyTradingSys/system/SUPER_SESSION.md",
+      "utc": "2026-10-18T18:57:34Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "MTS_Doctor arch-cleanup 2026-10-19",
+  "refreshed": "2026-10-18T21:57:22Z",
+  "refs": [
+    "MyTradingSys/system/ARCHITECTURE.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/SUPER_SESSION.md",
+    "MyTradingSys/system/SUPERVISOR.md",
+    "MyTradingSys/system/roles/supervisor.md"
+  ],
+  "scope_out": [
+    "rule content"
+  ],
+  "scope_sha": "8ee38e8d9f62",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Wait until the traffic-controller lane releases SUPERVISOR.md and roles/supervisor.md.",
+    "Replace the restated text with one-line pointers, keep rule numbers.",
+    "retoken + check; ship."
+  ],
+  "tests": "MyTradingSys/tests/docs/test_super_session_doc.py",
+  "title": "SUPER_SESSION rules restated elsewhere become pointers, numbering kept",
+  "weight": "",
+  "worker": "agent"
+}

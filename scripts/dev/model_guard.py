@@ -20,13 +20,17 @@ always denied, so an inherited model can never slip in. MTS_ALLOW_OPUS=1 allows 
 """
 import json
 import os
+import re
 import sys
+from pathlib import Path
 
 CHEAP = ("sonnet", "haiku")
 FIX = "Pass model='claude-sonnet-5-5' (Agent tool: model='sonnet'), or 'haiku' for mechanical work."
 AGENT_TOOLS = ("Agent", "Task")
 START = "mcp__ccd_session__start_session"
 SET_MODEL = "mcp__ccd_session_mgmt__set_session_model"
+SEND_TOOLS = ("SendMessage", "mcp__ccd_session_mgmt__send_message")
+SESSION_ID_RE = re.compile(r'session_id["\s:=]+([A-Za-z0-9_.-]+)')
 
 
 def cheap(model):
@@ -51,6 +55,123 @@ def parent_model(transcript_path):
         m = d.get("type") == "assistant" and (d.get("message") or {}).get("model")
         if m and m != "<synthetic>":
             return m
+        att = d.get("attachment") or {}
+        if att.get("type") == "model" and (att.get("identity") or {}).get("modelId"):
+            return att["identity"]["modelId"]
+    return None
+
+
+def claude_home():
+    return Path(os.environ.get("MTS_CLAUDE_HOME") or Path.home() / ".claude")
+
+
+def started_session_ids(transcript_path):
+    """Session ids returned by start_session tool_result blocks in this session's transcript, or None if unreadable."""
+    if not transcript_path:
+        return None
+    try:
+        with open(transcript_path, encoding="utf-8", errors="replace") as f:
+            lines = f.readlines()
+    except (OSError, TypeError, ValueError):
+        return None
+    start_tu = set()
+    for line in lines:
+        if START not in line:
+            continue
+        try:
+            d = json.loads(line)
+        except ValueError:
+            continue
+        for b in ((d.get("message") or {}).get("content") if isinstance((d.get("message") or {}).get("content"), list) else []):
+            if isinstance(b, dict) and b.get("type") == "tool_use" and b.get("name") == START and b.get("id"):
+                start_tu.add(b["id"])
+    sids = set()
+    for line in lines:
+        if "session_id" not in line:
+            continue
+        try:
+            d = json.loads(line)
+        except ValueError:
+            continue
+        for b in ((d.get("message") or {}).get("content") if isinstance((d.get("message") or {}).get("content"), list) else []):
+            if isinstance(b, dict) and b.get("type") == "tool_result":
+                tuid = b.get("tool_use_id")
+                if start_tu and tuid and tuid not in start_tu:
+                    continue
+                blob = json.dumps(b.get("content"))
+                for m in SESSION_ID_RE.finditer(blob):
+                    sids.add(m.group(1))
+    return sids
+
+
+def resolve_target_transcript(target_id, parent_transcript_path=None):
+    """Find the JSONL transcript Path for target_id, or None."""
+    if not target_id:
+        return None
+    p = Path(target_id)
+    if p.suffix == ".jsonl" and p.is_file():
+        return p
+    ch = claude_home()
+    candidates = [target_id]
+    if target_id.startswith("local_"):
+        candidates.append(target_id[6:])
+    sess_dir = ch / "sessions"
+    if sess_dir.is_dir():
+        for sf in sess_dir.glob("*.json"):
+            try:
+                sd = json.loads(sf.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                continue
+            if sd.get("hostSessionId") == target_id or sd.get("sessionId") == target_id:
+                if sd.get("transcriptPath") or sd.get("transcript_path"):
+                    tp = Path(sd.get("transcriptPath") or sd.get("transcript_path"))
+                    if tp.is_file():
+                        return tp
+                if sd.get("sessionId") and sd["sessionId"] not in candidates:
+                    candidates.insert(0, sd["sessionId"])
+    search_dirs = []
+    if parent_transcript_path:
+        pt = Path(parent_transcript_path)
+        if pt.parent.is_dir():
+            search_dirs.append(pt.parent)
+            if pt.parent.parent.is_dir():
+                for d in sorted(pt.parent.parent.iterdir()):
+                    if d.is_dir() and d not in search_dirs:
+                        search_dirs.append(d)
+    proj_root = ch / "projects"
+    if proj_root.is_dir():
+        for d in sorted(proj_root.iterdir()):
+            if d.is_dir() and d not in search_dirs:
+                search_dirs.append(d)
+    for cid in candidates:
+        for d in search_dirs:
+            cand = d / f"{cid}.jsonl"
+            if cand.is_file():
+                return cand
+    return None
+
+
+def message_reason(tool, inp, transcript_path):
+    """Deny reason for SendMessage / mcp__ccd_session_mgmt__send_message (SV8), else None."""
+    if tool not in SEND_TOOLS:
+        return None
+    inp = inp or {}
+    target = str(inp.get("to") or inp.get("session_id") or inp.get("recipient") or "").strip()
+    if not target:
+        return "SendMessage without a target session id (`to` / `session_id`) is denied (fail closed)."
+    owned = started_session_ids(transcript_path)
+    if owned is None:
+        return f"Cannot read this session's transcript to verify ownership of {target!r} (fail closed)."
+    if target not in owned and f"local_{target}" not in owned and (not target.startswith("local_") or target[6:] not in owned):
+        return f"Target session {target!r} was not started by this session (not in start_session results); message only own workers."
+    target_t = resolve_target_transcript(target, transcript_path)
+    if not target_t:
+        return f"Target session {target!r} transcript cannot be resolved on disk (fail closed)."
+    t_model = parent_model(target_t)
+    if not t_model:
+        return f"Target session {target!r} model cannot be resolved from {target_t.name} (fail closed)."
+    if "fable" in t_model.lower():
+        return f"Target session {target!r} runs on Fable ({t_model}); never message a Fable session."
     return None
 
 
@@ -161,9 +282,16 @@ def hook():
     except ValueError:
         return 0
     tool = ev.get("tool_name") or ""
-    if tool not in AGENT_TOOLS + (START, SET_MODEL):
+    if tool not in AGENT_TOOLS + (START, SET_MODEL) + SEND_TOOLS:
         return 0
     inp = ev.get("tool_input") or {}
+    msg = message_reason(tool, inp, ev.get("transcript_path"))
+    if msg:
+        print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
+                                                 "permissionDecisionReason": "model_guard: " + msg}}))
+        return 0
+    if tool in SEND_TOOLS:
+        return 0
     card = card_reason(tool, inp)
     if card:
         print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",

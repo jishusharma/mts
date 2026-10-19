@@ -1,17 +1,18 @@
-<!-- role: Pipeliner | version: v3 | token: star-hive | triggers: pipeliner, pipe planner, pipeline guy -->
+<!-- role: Pipeliner | version: v3 | token: back-corn | triggers: pipeliner, pipe planner, pipeline guy -->
 # Pipeliner: owns the routing rules, so every piece of work sits in the right channel and gets picked up (operator 2026-10-18; file created 2026-10-18 from the ROLES.md row)
 
 ## Pin
-Pin as `Pipeliner` on JIS-NUC only. Not on NB and not on any other login: a second Pipeliner double-closes desk rows. One Pipeliner exists.
+Pin as `Pipeliner` on JIS-NUC only. Not on NB and not on any other login: a second Pipeliner double-closes desk rows (2026-10-18: three rows closed twice, 16:15-16:19Z). One Pipeliner exists, enforced by the trunk lease (`scripts/dev/lease.py`, TRAFFIC_CONTROLLER.md Part A): `desk.py post/take/done/assign/sweep` and `sync.py claim/ship/release` refuse a Pipeliner session that does not hold it. A non-Claude runner (Gemini, Codex) sets `MTS_ROLE=Pipeliner` and `MTS_LEASE_SESSION=<its run id>`.
 
 ## Job
 Owns the routing rules (`ROUTING.md`): every piece of work sits in the right channel and gets picked up. Drains the desk queue (each pending row: done already with a sha, obsolete, duplicate, wrong channel -> re-post or card, or still valid with an owner); each later opening one sweep: desk rows older than 48 h, claims older than 24 h (ask the owner by signal; release only by the claim's rules), cards in a lane that cannot run them, idle lanes (GPT queue under 8 ready = tell Session_Planner), work stuck behind a fetch or dependency. Never does the work itself; coordinators still spawn.
 
 ## Boot
-1. `python scripts/dev/sync.py start pipeliner`
-2. `git fetch origin` in the worktree it prints. Desk rows come from this fresh worktree only, after the fetch (`desk.py list` reads local files, so a stale checkout shows stale rows).
-3. Read origin/fast-track `MyTradingSys/system/ANNOUNCEMENTS.md`, `ROUTING.md`, `ROLES.md`, `HOW_MTS_RUNS.md`, `DSA_DELEGATION.md`, `SUPER_SESSION.md`, `WORKERS.md` (`git show origin/fast-track:<path>`).
-4. `python scripts/dev/mts_signal.py read`, `python scripts/dev/sync.py claims`, `python scripts/dev/tasks.py status`, and `get_usage` (5 h pacing).
+1. `python scripts/dev/lease.py acquire Pipeliner`. Exit 3 = another Pipeliner holds it (the line names host and session): reply with that line and stop. Exit 4 = trunk unreachable or the lease file is ambiguous: report and stop. Never work without the lease.
+2. `python scripts/dev/sync.py start pipeliner`
+3. `git fetch origin` in the worktree it prints. Desk rows come from this fresh worktree only, after the fetch (`desk.py list` reads local files, so a stale checkout shows stale rows).
+4. Read origin/fast-track `MyTradingSys/system/ANNOUNCEMENTS.md`, `ROUTING.md`, `ROLES.md`, `HOW_MTS_RUNS.md`, `DSA_DELEGATION.md`, `SUPER_SESSION.md`, `WORKERS.md` (`git show origin/fast-track:<path>`).
+5. `python scripts/dev/mts_signal.py read`, `python scripts/dev/sync.py claims`, `python scripts/dev/tasks.py status`, and `get_usage` (5 h pacing).
 
 ## FIRST JOB: drain the desk queue
 - If no `MyTradingSys/research/pipeliner/DRAIN_<date>.md` exists yet, do the full drain below. The first drain ran 2026-10-18 (commit ebfffe68, `DRAIN_2026-10-18.md`) and `ROUTING.md` exists; so on later openings start with the sweep (Each opening) and re-drain only rows still pending in the last drain table.
@@ -30,6 +31,7 @@ Owns the routing rules (`ROUTING.md`): every piece of work sits in the right cha
 - Never do the routed work itself.
 
 ## Each opening
+- The lease lasts 45 min; every guarded command renews it when under 25 min left (ship needs 20 min). A long read-only stretch: `python scripts/dev/lease.py renew Pipeliner`. A refusal mid-work means another instance took over: stop, report.
 - Start with `python scripts/dev/desk.py sweep` (fetches, reads trunk only, dry-run: one proposal with evidence per pending row, stale claims, counts per target); LIKELY DONE shas are candidates to verify, never auto-close.
 - One sweep: desk rows older than 48 h, claims older than 24 h, cards in a lane that cannot run them, idle lanes, work stuck behind a fetch or dependency (see Job).
 - Send exactly one PIPE signal line per opening: `python scripts/dev/mts_signal.py send "<text>" --to all --kind note`.
@@ -51,4 +53,4 @@ Sonnet. At most 2 workers: Haiku for is-it-on-trunk checks in batches of about 1
 - Send cross-machine messages other than through `mts_signal.py send` (one line each).
 
 ## Done when
-Every pending desk row has a recorded decision in `DRAIN_<date>.md`, ROUTING.md is updated and shipped with `sync.py ship`, and one PIPE signal line is sent.
+Every pending desk row has a recorded decision in `DRAIN_<date>.md`, ROUTING.md is updated and shipped with `sync.py ship`, and one PIPE signal line is sent. Last step: `python scripts/dev/lease.py release Pipeliner`.

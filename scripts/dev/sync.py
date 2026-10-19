@@ -1110,9 +1110,26 @@ def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS,
     return out
 
 
+def lease_guard(argv):
+    """TRAFFIC_CONTROLLER.md Part A: a singleton-role session (Pipeliner, Traffic_Controller) ships, claims and releases
+    only while it holds its lease (scripts/dev/lease.py); fails closed. Any other session: no-op, no network."""
+    if not argv or argv[0] not in ("ship", "claim", "release"):
+        return 0
+    import lease
+    try:
+        lease.guard(toplevel(Path.cwd()), lease.MIN_FOR_SHIP if argv[0] == "ship" else 0)
+    except (lease.LeaseError, SyncError) as e:
+        print(f"sync: LEASE {'REFUSED' if getattr(e, 'code', 4) == lease.REFUSED else 'UNREACHABLE'}: {e}", file=sys.stderr)
+        return getattr(e, "code", lease.UNREACHABLE)
+    return 0
+
+
 def main(argv):
     cmds = {"start": start, "ship": ship, "news": news, "claims": print_claims, "health": health}
     extra = {"claim", "release"}
+    refused = lease_guard(argv)
+    if refused:
+        return refused
     if argv and argv[0] == "where" and set(argv[1:]) <= {"--all"}:
         try:
             where(toplevel(Path.cwd()), "--all" in argv)

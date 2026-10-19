@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T21:14:45Z",
+  "depends_on": [],
+  "done_when": "PROOF.md and measure.md reflect actual fast behavior; run_all_tests fast header accurately reflects selected steps; test_gate_impact.py passes.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fix doc and log header inaccuracies identified in MTS_Doctor finding #4: clarify in PROOF.md that fast runs skip non-reached ALWAYS steps, update gate selection log text for fast runs, document missing measure.py status, and record host in receipt schema.",
+  "id": "shipping-proof-doc-gaps",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Normalize shipping receipts to LF",
+      "ref": "60c1b88e5269",
+      "utc": "2026-10-18T20:51:05Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "60c1b88e5269 Normalize shipping receipts to LF",
+      "ref": "MyTradingSys/research/shipping_speed_2026-10-19/measure.md",
+      "utc": "2026-10-18T20:51:05Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-19 T0-ONLY ROUTINE doc/log header fix from MTS_Doctor report finding #4.",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "gemini-session-planner",
+  "refreshed": "2026-10-18T22:21:23Z",
+  "refs": [
+    "MyTradingSys/research/mts_doctor/REPORT_2026-10-19.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/shipping_speed_2026-10-19/PROOF.md",
+    "MyTradingSys/research/shipping_speed_2026-10-19/measure.md",
+    "scripts/dev/run_all_tests.py"
+  ],
+  "scope_out": [
+    "live path",
+    "measure timing numbers"
+  ],
+  "scope_sha": "60c1b88e5269",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/mts_doctor/REPORT_2026-10-19.md:27"
+  ],
+  "state": "ready",
+  "steps": [
+    "In MyTradingSys/research/shipping_speed_2026-10-19/PROOF.md, add note clarifying that fast gate skips 3w/3tl/3dl when not reached by changes.",
+    "In scripts/dev/run_all_tests.py, adjust the fast header or log line so it does not report that unreached FAST_COSTLY_ALWAYS steps ran.",
+    "In measure.md note that measure.py was run inline or document its location; add host identifier to receipt."
+  ],
+  "tests": "python scripts/dev/test_gate_impact.py",
+  "title": "Fix shipping proof gaps: stale 'ALWAYS steps ran' fast header, missing measure.py, hostname in receipt",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T21:55:06Z",
+  "depends_on": [],
+  "done_when": "first Lenovo commit with the new email is on trunk and attributed; shipped.",
+  "est_turns": 5,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Every Lenovo commit is authored e-ngineers@JIS-NB, so commits look like NB's (traffic_inventory.json authors). Host attribution in traffic.py depends on a distinct author.",
+  "id": "tc6-lenovo-git-email",
+  "kind": "build",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "docs: SCHEDULING_POLICY NUC row = none (all MTS tasks removed)",
+      "ref": "666ecf09a15a",
+      "utc": "2026-10-17T10:06:40Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "666ecf09a15a docs: SCHEDULING_POLICY NUC row = none (all MTS tasks removed)",
+      "ref": "MyTradingSys/system/DEVICES.md",
+      "utc": "2026-10-17T10:06:40Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T21:55:29Z",
+  "refs": [
+    "MyTradingSys/system/TRAFFIC_CONTROLLER.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/DEVICES.md",
+    "MyTradingSys/system/traffic_inventory.json"
+  ],
+  "scope_out": [
+    "the live tree",
+    "deploys",
+    "HALT files",
+    ".secrets/.env"
+  ],
+  "scope_sha": "666ecf09a15a",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "On DESKTOP-F7IU69N only: `git config user.email e-ngineers@DESKTOP-F7IU69N` in its MTS clones (local config, no secrets).",
+    "traffic_inventory.json authors: add the new address, keep the old one; DEVICES.md one line."
+  ],
+  "tests": "`git log -1 --format=%ae` on a new Lenovo commit shows the new address; traffic.py measure attributes it to DESKTOP-F7IU69N.",
+  "title": "Lenovo clone git email names DESKTOP-F7IU69N",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

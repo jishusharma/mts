@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest -q MyTradingSys/tests/docs"
+  ],
+  "created": "2026-10-18T21:56:49Z",
+  "depends_on": [],
+  "done_when": "tasks.py status shows done+dropped moved; tasks.py lint OK; trace.py still resolves a swept card id.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "tasks/ holds only open cards; done and dropped cards are retired by tasks.py sweep.",
+  "id": "tasks-sweep-closed-cards",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/s1018-204500",
+      "ref": "c4e53d0c51a0",
+      "utc": "2026-10-18T21:37:57Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "MTS_Doctor arch-cleanup 2026-10-19",
+  "refreshed": "2026-10-18T21:57:30Z",
+  "refs": [
+    "MyTradingSys/system/ARCHITECTURE.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/tasks/"
+  ],
+  "scope_out": [
+    "open cards"
+  ],
+  "scope_sha": "c4e53d0c51a0",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "python scripts/dev/tasks.py sweep (dry run), read the list.",
+    "python scripts/dev/tasks.py sweep --apply.",
+    "tasks.py lint; trace.py on one swept id; ship."
+  ],
+  "tests": "scripts/dev/test_tasks.py",
+  "title": "Sweep the 275 closed cards out of tasks/",
+  "weight": "",
+  "worker": "agent"
+}

@@ -713,6 +713,71 @@
       }
     },
     {
+      "id": "wavetrend",
+      "name": "WaveTrend (LazyBear oscillator)",
+      "tracks": "Claude (research and layer work)",
+      "status": "Causal observation module and parity fixtures exist. BTC DEV atlas remains exploratory: W01-W03/W09 FAIL; W04-W08 INCONCLUSIVE per the MTS re-gate; W07/W08 also use an invalid C1 detector. No validated edge or live integration.",
+      "spec": [
+        "MyTradingSys/research/wavetrend_2026-10-17/PARITY_CONTRACT.md",
+        "MyTradingSys/research/wavetrend_2026-10-17/ATLAS_STUDY_SPEC.md",
+        "MyTradingSys/research/wavetrend_2026-10-17/PRE_REG.md"
+      ],
+      "code": [
+        "MyTradingSys/backtest/layers/wavetrend/wavetrend.py"
+      ],
+      "ledger": [
+        "MyTradingSys/research/gross_effect_screen_2026-10-15/EXPOSURE_LEDGER.csv"
+      ],
+      "results": [
+        "MyTradingSys/research/wavetrend_2026-10-17/RESULT.md",
+        "MyTradingSys/research/wavetrend_2026-10-17/AUDIT_2026-10-18.md",
+        "MyTradingSys/research/wavetrend_2026-10-17/DISPOSITION_2026-10-19.md",
+        "MyTradingSys/research/wavetrend_2026-10-17/STATUS_2026-10-19.md"
+      ],
+      "roadmap": [
+        "MyTradingSys/research/wavetrend_2026-10-17/STATUS_2026-10-19.md"
+      ],
+      "cards": [
+        "wavetrend-*"
+      ],
+      "layers": [],
+      "plain": "LazyBear WaveTrend as a causal BTC context layer; observable oscillator states are implemented, while event definitions, controls and fee-net strategy value remain under research.",
+      "path": {
+        "idea": {
+          "s": "done",
+          "note": "Source/parity contract and BTC context study plan"
+        },
+        "inputs": {
+          "s": "done",
+          "note": "BTCUSDT Binance USD-M DEV 2022-01-01 through 2024-06-30; exact content manifest remains open"
+        },
+        "fees": {
+          "s": "planned",
+          "note": "No fee, funding or executable strategy evaluation yet"
+        },
+        "charts": {
+          "s": "planned",
+          "note": "Visual BTC state review remains separate from the frozen gross atlas"
+        },
+        "built": {
+          "s": "done",
+          "note": "Causal observation module, fixtures and reference parity checks"
+        },
+        "dev": {
+          "s": "failed",
+          "note": "Exploratory gross atlas: 4 FAIL and 5 INCONCLUSIVE; W07/W08 also invalid under the stated C1 definition"
+        },
+        "oos": {
+          "s": "planned",
+          "note": "No VALIDATION or HOLDOUT reads; HOLDOUT remains sealed"
+        },
+        "testnet": {
+          "s": "later",
+          "note": "No strategy passed the research gates"
+        }
+      }
+    },
+    {
       "id": "pitchfork",
       "name": "Pitchfork (Andrews / Schiff / Morge median line)",
       "tracks": "Gemini (study/detector), Claude",

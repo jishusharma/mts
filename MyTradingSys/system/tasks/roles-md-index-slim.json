@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest -q MyTradingSys/tests/docs"
+  ],
+  "created": "2026-10-18T21:56:45Z",
+  "depends_on": [],
+  "done_when": "role_loader.py check ok; ROLES.md under 1.2k tokens; test_role_loader.py passes.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "ROLES.md (2.6k tokens) becomes a table: role, file, triggers, one line of purpose; everything else lives in the role file.",
+  "id": "roles-md-index-slim",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "supervisor design: SUPERVISOR.md, roles/supervisor.md, role_loader.py verify, SV2-SV8 card",
+      "ref": "4a59a3412243",
+      "utc": "2026-10-18T18:47:36Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "4a59a3412243 supervisor design: SUPERVISOR.md, roles/supervisor.md, role_loader.py verify,",
+      "ref": "MyTradingSys/system/ROLES.md",
+      "utc": "2026-10-18T18:47:36Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "MTS_Doctor arch-cleanup 2026-10-19",
+  "refreshed": "2026-10-18T21:57:26Z",
+  "refs": [
+    "MyTradingSys/system/ARCHITECTURE.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/ROLES.md"
+  ],
+  "scope_out": [
+    "role files' rules"
+  ],
+  "scope_sha": "4a59a3412243",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Wait for traffic-controller and the ru4 claim (role_loader lint) to release.",
+    "Move prose into the owning role files.",
+    "role_loader.py check; ship."
+  ],
+  "tests": "MyTradingSys/tests/test_role_loader.py",
+  "title": "ROLES.md slim to an index of roles/*.md",
+  "weight": "",
+  "worker": "session"
+}

@@ -21,7 +21,8 @@
  "refine_tries": 0,
  "refined_by": "opus-2026-10-13 (TOM_LAYER_V2_SPEC part B)",
  "refs": [],
- "result": "",
+ "result": "NOT_IN_DATA (in PROFILE_PARITY.md:110; DAX chain dropped bf5dba20)",
+ "closed": "2026-10-18T21:05:00Z",
  "scope_in": [
   "MyTradingSys/backtest/tom_profile_parity.py",
   "MyTradingSys/tests/",
@@ -41,7 +42,7 @@
   "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md section 12",
   "MyTradingSys/research/tom_transfer_2026-10-11/PROFILE_PARITY.md (next step 2)"
  ],
- "state": "blocked",
+ "state": "done",
  "steps": [
   "Per frame: with Pillow find the right-edge histogram rows, the widest row and the visible price range from the axis labels; record pixel boxes.",
   "Fraction f_drawn = (widest-row price - visible low) / (visible high - low). f_computed = same from the PROFILE_PARITY_T1/T2 computed profile over the same price span.",

@@ -46,6 +46,13 @@ The tool actually installed on the NUC (2026-10-17) is the **Google Antigravity 
 - Tool-local folders (`.gemini/`, `.idx/`, `.vscode/`, `.antigravity/`, `.agent/`) are not committed (`.agents/hooks.json` IS tracked for the Antigravity Stop hook); if one shows up as an untracked file, add it to `.gitignore` (the one place ignores go, CLAUDE.md Hard rules).
 - Context file: Gemini reads `GEMINI.md` at the repo root (a one-line pointer to AGENTS.md -> CLAUDE.md). Do not copy rules into it.
 
+## Laptop (DESKTOP-F7IU69N, Lenovo) setup, done 2026-10-18
+- Tool: the **standalone Antigravity app** (`%LOCALAPPDATA%\Programs\antigravity\Antigravity.exe`), not the VS Code extension used on the NUC. First-run onboarding is already completed; its data lives in `%USERPROFILE%\.gemini\antigravity`. The `agy` CLI is NOT installed here (`~\.gemini\bin\agy.exe` missing; the app ships only `language_server.exe`), so `gemini_queue.py` and headless `agy --print` do not work on the laptop until it is installed.
+- Work tree: `C:\Users\e-ngineers\IdeaProjects\mts-gemini` (branch `DESKTOP-F7IU69N/gemini-start`, cut from `origin/fast-track`). No F: drive on the laptop. In Antigravity use File > Open Folder on that path only (not Add Folder to Workspace), sign in with the Google AI Pro login, set approval to ask-before-write/run, then paste the block below. Per task: `python scripts/dev/sync.py start gemini-<slug>` from that tree.
+- Same rules as the NUC (GEMINI.md -> AGENTS.md -> CLAUDE.md); lane CODEX cards only; the claim is the lock against the NUC Gemini and the Codex lab.
+- Google account on this laptop: `jishusharma1985@gmail.com` (Google AI Pro), as reported by the operator 2026-10-19; NOT yet confirmed inside the app. The NUC's Google account is not recorded here yet: record it the same way, so the two subscriptions can be told apart.
+- Approval mode: `%USERPROFILE%\.gemini\config\config.json` still showed auto-run settings on 2026-10-19 (`autoExecutionPolicy` EAGER, `artifactReviewMode` TURBO, `enableTerminalSandbox` false, `nonWorkspaceFileAccessPolicy` ALLOW). Operator reports the app is switched to ask-before-write and ask-before-run; the file was not re-checked after that. Verify in the app's settings before any card runs here.
+
 ## Setup (NUC, done 2026-10-17)
 `git worktree add F:\MTS\mts-gemini -b jis-nuc/gemini-start origin/fast-track`; per task, `python scripts/dev/sync.py start gemini-<slug>` from that tree. In Antigravity use File > Open Folder on that path (not Add Folder to Workspace), open the agent panel, then paste the block below.
 

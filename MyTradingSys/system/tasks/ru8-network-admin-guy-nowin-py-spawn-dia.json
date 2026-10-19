@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-18T22:17:46Z",
   "commands": [],
   "created": "2026-10-18T17:23:10Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "ru8-network-admin-guy-nowin-py-spawn-dia",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "nowin.py spawn log + audit subcommand + test_nowin_audit.py",
+      "ref": "76a73064",
+      "utc": "2026-10-18T22:17:46Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,7 @@
   "refs": [
     "MyTradingSys/research/roles/ROLE_UPGRADES_2026-10-18.md"
   ],
-  "result": "",
+  "result": "nowin.py spawn log + audit subcommand + test_nowin_audit.py",
   "scope_in": [
     "scripts/dev/nowin.py",
     "MyTradingSys/tests/test_nowin_audit.py"
@@ -44,7 +51,7 @@
   "scope_sha": "c51c1a3aa6ce",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read nowin.py",
     "Add opt-in log line per spawn",
@@ -52,6 +59,7 @@
     "Fixture test",
     "Run run_all_tests.py --quick, ship"
   ],
+  "taken": "2026-10-18T22:17:46Z",
   "tests": "MyTradingSys/tests/test_nowin_audit.py",
   "title": "RU8 Network_Admin_Guy: nowin.py spawn diagnostic log + audit",
   "weight": "",

@@ -1,0 +1,85 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "class": "C0",
+  "closed": "2026-10-18T22:07:36Z",
+  "commands": [
+    "python MyTradingSys/research/krown_ta101_2026-10-13/tools/build_ledger.py"
+  ],
+  "created": "2026-10-18T21:05:00Z",
+  "depends_on": [],
+  "done_when": "KROWN_RULES.csv carries the P3rDSh187TE liquidation cascade rules with 0 dead source pointers (build_ledger.py clean) and KROWN_LAYER_SPEC.md notes their disposition; git cherry origin/fast-track empty.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fold the verified Krown liquidation cascades extract (MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_P3rDSh187TE.md, Inside the Machine Ep 7, shipped fbbb369b) into tools/build_ledger.py, KROWN_RULES.csv, and KROWN_LAYER_SPEC.md.",
+  "id": "krown-liquidation-cascades-fold",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "KROWN_RULES.csv carries 4 P3rDSh187TE liquidation cascade rules (KR-LQC01..04) with 0 dead",
+      "ref": "3552ee9d",
+      "utc": "2026-10-18T22:07:36Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "krown: extract liquidation cascades video P3rDSh187TE (Inside the Machine Ep 7)",
+      "ref": "fbbb369b1007",
+      "utc": "2026-10-18T18:56:19Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "fbbb369b1007 krown: extract liquidation cascades video P3rDSh187TE (Inside the Machine Ep ",
+      "ref": "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_P3rDSh187TE.md",
+      "utc": "2026-10-18T18:56:19Z"
+    }
+  ],
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Created by Pipeliner from wrong-channel desk row 20261018-185429 (ROUTING.md: build/review work is a card, never a desk row; extract_P3rDSh187TE.md already shipped in fbbb369b).",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "gemini-yt-pipeliner",
+  "refreshed": "2026-10-18T21:10:34Z",
+  "refs": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_P3rDSh187TE.md",
+    "MyTradingSys/research/krown_ta101_2026-10-13/tools/build_ledger.py",
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md"
+  ],
+  "result": "KROWN_RULES.csv carries 4 P3rDSh187TE liquidation cascade rules (KR-LQC01..04) with 0 dead source pointers, KROWN_LAYER_SPEC.md updated",
+  "scope_in": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_P3rDSh187TE.md",
+    "MyTradingSys/research/krown_ta101_2026-10-13/tools/build_ledger.py",
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv",
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_CONSOLIDATED.md",
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md"
+  ],
+  "scope_out": [
+    "engine and layer code",
+    "any backtest",
+    "video or audio download"
+  ],
+  "scope_sha": "fbbb369b1007",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_P3rDSh187TE.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Read MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_P3rDSh187TE.md (18 quotes verified in fbbb369b).",
+    "Add the P3rDSh187TE liquidation cascade rules to tools/build_ledger.py (tier T3, param_label SOURCED only with quote) and rebuild KROWN_RULES.csv and KROWN_CONSOLIDATED.md (0 dead pointers).",
+    "Update KROWN_LAYER_SPEC.md with the liquidation cascade summary and ship."
+  ],
+  "taken": "2026-10-18T22:07:36Z",
+  "tests": "build_ledger.py reports 0 dead pointers and KROWN_RULES.csv has at least 3 rows citing K-P3rDSh187TE (0 before the change).",
+  "title": "Krown Inside the Machine Ep07 (P3rDSh187TE): fold liquidation cascades extract into KROWN_RULES.csv and spec",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
