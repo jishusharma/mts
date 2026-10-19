@@ -17,7 +17,7 @@ import re
 import subprocess
 import sys
 from collections import defaultdict
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path, PurePosixPath
 
 REPO = Path(__file__).resolve().parents[2]
@@ -29,7 +29,8 @@ DATA_SKIP = (".md", ".txt")            # docs are the doc steps' job (a ride-alo
 FAST_BUDGET_S = 30                     # OURS: selection budget in wall seconds; a ship has ~12-15 s of its own (fetch, merge, push) in a 60 s target
 EFFECTIVE_WORKERS = 3                  # OURS: measured 2026-10-18 on 4 cores / 8 threads with other sessions running: 6 workers gave a 2-3x speedup, not 6x
 QUARANTINE = "scripts/dev/gate_quarantine.tsv"
-NO_QUARANTINE = ("MyTradingSys/execution/", "MyTradingSys/runtime/")   # live-path tests are never deselected
+NO_QUARANTINE = ("MyTradingSys/execution/", "MyTradingSys/runtime/", "MyTradingSys/tests/")   # live-path tests are never deselected (MyTradingSys/tests/ holds the live-code tests: DECISION OURS, whole dir refused)
+QUARANTINE_MAX_DAYS = 14   # OURS: a quarantine row may expire at most this many days from today, so a flaky test cannot be parked for good
 
 _IMPORT_RE = re.compile(r"^[ \t]*(?:from[ \t]+([\w.]+)[ \t]+import[ \t]+(\([^)]*\)|[^\n#;]*)|import[ \t]+([^\n#;]+))", re.M)
 _NAME_RE = re.compile(r"[A-Za-z_]\w*")
@@ -188,7 +189,7 @@ def quarantine_rows(text):
 
 
 def quarantine_problems(rows, today=None):
-    """One message per row that is not a valid, unexpired entry (owner and a real date are required; live-path ids are refused)."""
+    """One message per row that is not a valid, unexpired entry (owner and a real date are required; expiry at most QUARANTINE_MAX_DAYS ahead; live-path ids are refused)."""
     today = today or date.today()
     out = []
     for tid, owner, exp, why in rows:
@@ -201,6 +202,8 @@ def quarantine_problems(rows, today=None):
             out.append(f"{tid or '?'}: test id, owner and reason are all required")
         if d < today:
             out.append(f"{tid}: quarantine expired {exp} (owner {owner}): fix the test or renew with a reason")
+        if d > today + timedelta(days=QUARANTINE_MAX_DAYS):
+            out.append(f"{tid}: quarantine expiry {exp} is more than {QUARANTINE_MAX_DAYS} days away (owner {owner}): use a shorter expiry and renew with a reason")
         if tid.startswith(NO_QUARANTINE):
             out.append(f"{tid}: live-path tests are never quarantined")
     return out

@@ -152,6 +152,18 @@ class Quarantine(unittest.TestCase):
         self.assertIn("never quarantined", gi.quarantine_problems(r, self.TODAY)[0])
         self.assertEqual(gi.active_deselects(r, self.TODAY), [])
 
+    def test_expiry_more_than_14_days_ahead_is_refused_and_deselects_nothing(self):
+        r = self.rows("scripts/dev/test_x.py::T::t	jis	2026-11-02	why")   # TODAY + 15 days
+        self.assertIn("14 days", gi.quarantine_problems(r, self.TODAY)[0])
+        self.assertEqual(gi.active_deselects(r, self.TODAY), [])
+        edge = self.rows("scripts/dev/test_x.py::T::t	jis	2026-11-01	why")   # exactly TODAY + 14 days
+        self.assertEqual(gi.quarantine_problems(edge, self.TODAY), [])
+
+    def test_tests_under_mytradingsys_tests_are_never_quarantined(self):
+        r = self.rows("MyTradingSys/tests/test_o.py::T::t	jis	2026-11-01	why")
+        self.assertIn("never quarantined", gi.quarantine_problems(r, self.TODAY)[0])
+        self.assertEqual(gi.active_deselects(r, self.TODAY), [])
+
     def test_the_repo_quarantine_file_is_valid(self):
         path = gi.REPO / gi.QUARANTINE
         self.assertTrue(path.is_file())
