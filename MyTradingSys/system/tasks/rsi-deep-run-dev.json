@@ -1,0 +1,38 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-19T14:45:12Z",
+  "depends_on": [
+    "rsi-deep-engine"
+  ],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Run the full DEV grid with episode_sim.py on BTCUSDT 1m (NB data) and write grid_dev.csv; no VALIDATION or HOLDOUT bars.",
+  "id": "rsi-deep-run-dev",
+  "lane": "DSA-NB",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Operator RSI deep-buy study 2026-10-19. Full design: MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md. Chain: depth-map -> prereg -> engine -> run-dev -> crossvendor review (Gemini) -> VALIDATION once. Raw: Session_Planner refines (done_when, steps, tests), Lab_Guy stamps C1+.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md"
+  ],
+  "scope_out": [],
+  "size": "S",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "RSI deep-buy: run full grid on DEV with the engine, write grid_dev.csv",
+  "weight": "",
+  "worker": ""
+}
