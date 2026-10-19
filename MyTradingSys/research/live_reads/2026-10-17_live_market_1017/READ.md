@@ -90,3 +90,36 @@ Source: `live_mirror.py brief` + _mirror files, all `mirror@2026-10-17 07:11Z` (
 - Read: SHOT_4ae992130268.md (8 MATCH, 1 NOT_IN_DATA), tag NOTE. Last read id: 4ae992130268. Open MISMATCH cards: none. HALT unchanged.
 - Low 10-18 20:15 (80,622 sweep of 80,751, RSI-only bullish divergence, delta/OI turn then 22:00 squeeze); high 10-19 02:45 (82,788, delta +845 / OI +253 into the high, RSI/WT lower highs, but divergence began 2.5 h earlier). MTS: levels confluence fired at both levels; Tom silent through the low, late at the high; Fabio null; 5 opposite-side shorts at the low; rsi:cross rejected unmapped. Card rsi-cross-unmapped-and-pivot-stack; feature list added to oi-pivot-reversal-probability-by-tf narrative.
 - Watch next: 82,788 high holds and OI falls with delta negative (fade continues toward 82,320 weekly VAL) or reclaim of 82,788.
+
+## 10-19 11:50Z 30m: operator's 82,092.1 line tested (361b7813582c) mirror@2026-10-19 11:46Z
+- Read: SHOT_361b7813582c.md (8 MATCH, 2 NOT_IN_DATA), tag NOTE. Last read id: 361b7813582c. Open MISMATCH cards: none. HALT unchanged.
+- Line = high of the 10-16 17:30 squeeze bar (82,092.1); 11:30 low 82,089.0 (3.1 below), back above in 2 min; held at 82,096.6 (10-18 10:00) and 82,096.2 (10-19 00:30). Prior watch: fade leg HELD (OI -1,463 from 07:30 high 83,157.9), reclaim leg BROKEN. Legend note: CoinGlass 30m VWAP = bar-level hlc3 x bar volume (82,551.1), not 1m hlc3.
+- Live: all skipped under HALT; Tom ct_long entry 82,384.8 (weekly VAL) stop 82,299.6 now below price; Fabio null.
+- Watch next: 30m closes above 82,092.1 with delta turning positive, or a close under it with OI still falling.
+
+## 10-19 12:52Z live read 15m (45668ed864d7) mirror@2026-10-19 11:46Z (stale)
+- Read: SHOT_45668ed864d7.md (4 MATCH, 1 NOT_IN_DATA), tag NOTE. Last read id: 45668ed864d7. Open MISMATCH cards: none. HALT unchanged. Shot time 12:52Z (not 12:07Z).
+- 12:00 new longs (+1,233/OI +647), since 12:15 OI -398 with price stalled under VWAP 82,556; 82,092.1 held at 11:32.
+- Watch next: close over 82,661 with OI up, or fail under 82,385 with OI down toward 82,092.
+
+## 10-19 13:41Z 1m after US open (f34fe84a244a) mirror@2026-10-19 13:41Z
+- Read: SHOT_f34fe84a244a.md (6 MATCH, 1 NOT_IN_DATA), tag NOTE. Last read id: f34fe84a244a. Open MISMATCH cards: none. HALT unchanged. Unfiled shots this turn: 8a7e1d0cfb99 (5m Bitstamp divergences, chat read only), 9b9c03952ae2 (5m prediction ask): classified, outcome note in chat.
+- 13:34 max-volume bar (495, delta -202, price -26, OI up) absorbed then failed; 13:37 +209 delta on 312 volume gained 55 pts then reversed; OI +394 in 13:30-13:40 with price down = new shorts. Open 13:30->13:40 -225 (down branch of the pre-open note). Card one-minute-absorption-and-thin-delta-bars.
+- Watch next: 82,092.1 (low so far 82,138.4) vs a 1m close over 82,369 with OI flat/falling.
+
+## 10-19 13:55Z 1m (dc0f695a740d, 8dc32fc2ff4e) mirror@2026-10-19 13:41Z
+- Read: SHOT_dc0f695a740d.md, SHOT_8dc32fc2ff4e.md, tag NOTE. Last read id: 8dc32fc2ff4e. HALT unchanged.
+- Bounce 82,138 -> 82,426.5 (13:48) on ~0 net delta and flat OI, rising-lows line broken 13:51, price 82,163; OI +494 since 13:20. Watch next: 82,092.1 / BB lower 82,137 hold with delta turning positive, or a 1m close under it with OI still up.
+
+## 10-19 14:03Z 1m flush (17ff48c5fcc4) mirror@2026-10-19 14:01Z
+- Read: SHOT_17ff48c5fcc4.md (5 MATCH, 1 NOT_IN_DATA), tag NOTE. Last read id: 17ff48c5fcc4. HALT unchanged.
+- 13:59-14:02 flush 82,110 -> 81,835 on 479 and 969 BTC, delta -216/-595, OI up (new shorts); rising-lows line and 82,092.1 lost. Watch next: 81,758 / 81,600 / 81,500; retest of 82,092 on low delta = failed retest.
+
+## 10-19 14:20Z 1m bounce (ddb385213d2d, f0a2811014b0) mirror@2026-10-19 14:16Z
+- Read: SHOT_ddb385213d2d.md, SHOT_f0a2811014b0.md (7 MATCH, 1 NOT_IN_DATA each), tag NOTE. Last read id: f0a2811014b0. HALT unchanged.
+- Flush low 81,724 (14:04; 14:03 absorption 889 BTC delta -66), bounce to 82,267.9 (14:15) with volume ramp and OI +814, RSI 21 -> 60.5; low-volume red after the BB tag held one bar (14:17 -458 on 629). Price 135 under VWAP 82,402. Card vwap-as-a-level-research-tom-fabio-analysts-web (DSA).
+- Watch next: BB mid 81,985 holds with delta positive, then VWAP 82,402 as the first real test; fail = back to 81,758/81,724.
+
+## 10-19 14:27Z Fabio value/LVN context (no shot) mirror@2026-10-19 14:16Z
+- Question: weekly + daily auction context and low-volume nodes (Fabio). Method (OURS): Binance 1m hlc3 volume profile, 25-pt bins, 70% value area, LVN = local-minimum bin under 50% of the mean value-area bin. Prior week 10-12..18: open 83,723 high 84,340 low 79,732 close 82,078, POC 81,512.5, VA 80,775-83,025, LVN 82,612.5 / 82,912.5. Sat 10-17: POC 81,562.5 VA 81,275-81,700. Sun 10-18: POC 81,087.5 VA 80,800-81,775 (low 80,622 swept the Sat low 80,751, close 82,078). Sat+Sun: POC 81,512.5 VA 81,025-81,800. Mon 10-19 so far: open 82,077.9 high 83,157.9 low 81,724.0, POC 82,387.5 VA 82,175-82,850, LVN 82,262.5 / 82,312.5; price 82,050.6 at 14:25Z (under today VAL, over Sat+Sun VAH).
+- Fabio layer: layer:fabio:volume_fvg exists, fabio null in consensus; FR-95 volume-FVG thresholds UNDEFINED in FABIO_RULEBOOK.md (bin size, swing, timeframe). Last read id: f0a2811014b0.
