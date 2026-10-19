@@ -101,3 +101,8 @@ Source: `live_mirror.py brief` + _mirror files, all `mirror@2026-10-17 07:11Z` (
 - Read: SHOT_45668ed864d7.md (4 MATCH, 1 NOT_IN_DATA), tag NOTE. Last read id: 45668ed864d7. Open MISMATCH cards: none. HALT unchanged. Shot time 12:52Z (not 12:07Z).
 - 12:00 new longs (+1,233/OI +647), since 12:15 OI -398 with price stalled under VWAP 82,556; 82,092.1 held at 11:32.
 - Watch next: close over 82,661 with OI up, or fail under 82,385 with OI down toward 82,092.
+
+## 10-19 13:41Z 1m after US open (f34fe84a244a) mirror@2026-10-19 13:41Z
+- Read: SHOT_f34fe84a244a.md (6 MATCH, 1 NOT_IN_DATA), tag NOTE. Last read id: f34fe84a244a. Open MISMATCH cards: none. HALT unchanged. Unfiled shots this turn: 8a7e1d0cfb99 (5m Bitstamp divergences, chat read only), 9b9c03952ae2 (5m prediction ask): classified, outcome note in chat.
+- 13:34 max-volume bar (495, delta -202, price -26, OI up) absorbed then failed; 13:37 +209 delta on 312 volume gained 55 pts then reversed; OI +394 in 13:30-13:40 with price down = new shorts. Open 13:30->13:40 -225 (down branch of the pre-open note). Card one-minute-absorption-and-thin-delta-bars.
+- Watch next: 82,092.1 (low so far 82,138.4) vs a 1m close over 82,369 with OI flat/falling.
