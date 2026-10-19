@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-19T22:18:22Z",
   "commands": [],
   "created": "2026-10-15T09:54:26Z",
   "depends_on": [],
@@ -12,6 +13,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "test_sim_planted_edge.py: trades matched 20 of 20; planted mean net R 1.38 exact; fee null",
+      "ref": "d30197dd",
+      "utc": "2026-10-19T22:18:22Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -28,7 +35,12 @@
   "refined_by": "",
   "refreshed": "2026-10-17T20:21:23Z",
   "refs": [],
-  "result": "",
+  "result": "test_sim_planted_edge.py: trades matched 20 of 20; planted mean net R 1.38 exact; fee null -0.05 R; stop_first flip fails exactly bars 6,11",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/test_sim_planted_edge.py (new)",
     "MyTradingSys/backtest/tom_bt.py (read only)",
@@ -45,7 +57,7 @@
   "sources": [
     "q16 (operator, 2026-10-14)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Build synthetic 1m Bars1m (style of test_tom_bt.mk): 20 signals, 12 hit the target and 8 hit the stop, by construction.",
     "Include 2 bars where one bar touches both stop and target; expect the stop fill (stop_first=True); the mutation test flips stop_first and must then fail on exactly those bars.",
@@ -53,6 +65,7 @@
     "Null: flat-noise bars, same signals; assert mean net R equals minus the round-turn fee in R within 0.01.",
     "Planted: assert the recovered mean net R equals the hand value within 1e-9."
   ],
+  "taken": "2026-10-19T22:18:22Z",
   "tests": "test_sim_planted_edge.py: expected numbers hand-derived, never from run_variant; a one-line mutation (stop_first flipped) must fail it.",
   "title": "Simulator validation: planted edge in tom_bt/sim, a null that includes fees, a trade-list diff (q16)",
   "weight": "CRUCIAL",
