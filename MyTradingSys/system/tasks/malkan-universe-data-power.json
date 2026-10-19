@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-19T23:01:20Z",
   "commands": [],
   "created": "2026-10-18T04:08:56Z",
   "depends_on": [],
@@ -14,11 +15,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "UNIVERSE_POWER.md source survey and N/MDE table complete; test_malkan_universe_power.py un",
+      "ref": "f2a22330",
+      "utc": "2026-10-19T23:01:20Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "EVENT_COUNTS: add Answer block, soften the upper-bound wording, note the 87% weekly stop a",
-      "ref": "c98a9925c810",
-      "utc": "2026-10-15T22:29:40Z"
+      "line": "review: positioning C1 prereg marked DRAFT (trials 222); Malkan universe power on 250-day ",
+      "ref": "17158023682d",
+      "utc": "2026-10-18T18:41:42Z"
     },
     {
       "auto": true,
@@ -37,9 +44,14 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-18T04:11:27Z",
+  "refreshed": "2026-10-19T23:00:23Z",
   "refs": [],
-  "result": "",
+  "result": "UNIVERSE_POWER.md source survey and N/MDE table complete; test_malkan_universe_power.py unit test suite reproduces 1,655-event figure and validates underpowered/inconclusive in advance markers.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/power_mde.py",
     "MyTradingSys/research/krown_malkan_g3_2026-10-16/EVENT_COUNTS.md",
@@ -51,17 +63,18 @@
     "tuning",
     "edits to live-path code"
   ],
-  "scope_sha": "c98a9925c810",
+  "scope_sha": "17158023682d",
   "size": "S",
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_MALKAN.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Survey free public sources of Indian EOD OHLC: coverage years, adjustment for splits and bonuses, delisted names, licence; record URL and date, no download of series.",
     "Compute asset-years needed for +0.10 R net at 80% power from EVENT_COUNTS rates (BTC rate, labelled OURS) for 50, 100 and 500 stocks with power_mde.py.",
     "Write MyTradingSys/research/malkan_universe_2026-10/UNIVERSE_POWER.md with the table and a recommended universe; write INCONCLUSIVE in advance where N < 100."
   ],
+  "taken": "2026-10-19T23:01:20Z",
   "tests": "A unit test that the N/MDE table reproduces the 1,655-event figure of EVENT_COUNTS.md for +0.10 R; fails before the script exists.",
   "title": "Malkan: Indian-equity D/W/M data sources, universe size and power (items 1/4/10, gates 0d/0e)",
   "weight": "",
