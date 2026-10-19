@@ -177,6 +177,13 @@ MyTradingSys/runtime/orderflow_live/*.csv
 MyTradingSys/runtime/orderflow_live/_qhist/*.json
 MyTradingSys/runtime/oi_live/*.csv
 
+# Live-host generated files (card move-live-host-generated-files-status-md): rewritten by jobs on the live host, never committed (public repo).
+# STATUS.md stays tracked: make_status.py writes runtime_data/STATUS_live.md instead when it runs in the live tree.
+MyTradingSys/research/audits/AUDIT_DIGEST.md
+MyTradingSys/research/audits/T0_CHECKS.md
+MyTradingSys/runtime/BUILD_REPORT.md
+runtime_data/STATUS_live.md
+
 # wlow-bounce forward sample (runtime readings, never committed)
 MyTradingSys/runtime/wlow_bounce_forward.jsonl
 MyTradingSys/research/imbalance_qriptal_2026-10-16/events_*.csv
