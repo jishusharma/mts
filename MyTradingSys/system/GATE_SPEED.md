@@ -83,4 +83,5 @@ list) took the full 65-step gate, about 9 minutes per attempt, and was repeated 
 Floor on this box: python start 0.2 s + one pytest chunk of the longest direct test + about 9 s of git/CI/page overhead; hub modules push it to the budget (30 s).
 
 ## Not done (next)
-Machine-wide process budget across concurrent gates; FIFO slot queue; Windows CI on selected steps only.
+FIFO slot queue; Windows CI on selected steps only. (Done: Machine-wide process budget across concurrent gates & prechecks counted with ship timing logged, SV7).
+

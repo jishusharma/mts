@@ -888,7 +888,7 @@ class SyncTest(unittest.TestCase):
         (self.b / "MyTradingSys/system/claims").mkdir(parents=True, exist_ok=True)
         commit(self.b, "MyTradingSys/system/claims/pred-hold.md", "claimed\n")
         sh(self.b, "push", "-q", "origin", "HEAD:fast-track")
-        slot_dir = self.a / ".git" / "gate-slots"
+        slot_dir = sync.gate_slot(self.a)._dir()
         now = [1000.0]
         def check_no_slot(s):
             self.assertFalse(slot_dir.exists() and any(slot_dir.iterdir()))
@@ -913,9 +913,13 @@ class GateSlotTest(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp())
         sh(self.tmp, "init", "-q")
-        self.slots = self.tmp / ".git" / "gate-slots"
+        self.slots_base = self.tmp / "slots_env"
+        self.slots_base.mkdir(parents=True, exist_ok=True)
+        os.environ["MTS_GATE_SLOTS_DIR"] = str(self.slots_base)
+        self.slots = self.slots_base / "gate-slots"
 
     def tearDown(self):
+        os.environ.pop("MTS_GATE_SLOTS_DIR", None)
         shutil.rmtree(self.tmp, ignore_errors=True)
 
     def test_third_acquirer_waits_while_two_slots_held(self):
@@ -1144,12 +1148,16 @@ class FastShipTest(unittest.TestCase):
         tmp = Path(tempfile.mkdtemp())
         self.addCleanup(shutil.rmtree, tmp, ignore_errors=True)
         sh(tmp, "init", "-q")
+        slots_base = tmp / "slots_base"
+        os.environ["MTS_GATE_SLOTS_DIR"] = str(slots_base)
+        self.addCleanup(lambda: os.environ.pop("MTS_GATE_SLOTS_DIR", None))
+        fast_d = sync.host_gate_slots_dir("gate-slots-fast")
+        main_d = sync.host_gate_slots_dir("gate-slots")
         with sync.gate_slot(tmp, slots=1, name="gate-slots-fast", alive=lambda p: True):
-            self.assertTrue((tmp / ".git" / "gate-slots-fast" / "slot-0").is_file())
-        d = tmp / ".git" / "gate-slots"
-        d.mkdir(exist_ok=True)
-        (d / "slot-0").write_text("")           # creator is mid-write: another gate must not take it over
-        (d / "slot-1").write_text("")
+            self.assertTrue((fast_d / "slot-0").is_file())
+        main_d.mkdir(parents=True, exist_ok=True)
+        (main_d / "slot-0").write_text("")           # creator is mid-write: another gate must not take it over
+        (main_d / "slot-1").write_text("")
         with self.assertRaises(sync.GateSlotTimeout):
             with sync.gate_slot(tmp, alive=lambda p: False, timeout=0.2, poll=0.05, note_every=99):
                 pass

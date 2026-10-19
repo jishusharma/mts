@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-19T07:16:55Z",
   "commands": [],
   "created": "2026-10-18T19:30:00Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "sv7-host-gate-budget",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "machine-wide gate slots, precheck slot, and ship timing logged + test_gate_budget.py",
+      "ref": "784c5941",
+      "utc": "2026-10-19T07:16:55Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +47,12 @@
   "refs": [
     "MyTradingSys/system/SUPERVISOR.md"
   ],
-  "result": "",
+  "result": "machine-wide gate slots, precheck slot, and ship timing logged + test_gate_budget.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/sync.py (gate_slot dir)",
     "scripts/dev/run_all_tests.py (precheck slot)",
@@ -57,13 +69,14 @@
   "sources": [
     "MyTradingSys/system/SUPERVISOR.md (design 2026-10-18)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "slot dir under a host path (env override for tests)",
     "precheck takes a light slot or counts against the budget",
     "log wait, run and retry seconds per ship",
     "diff-only review Agent (gate change)"
   ],
+  "taken": "2026-10-19T07:16:55Z",
   "tests": "two fake clones share one slot set; precheck counted; dead-PID reclaim still works; fail first",
   "title": "Supervisor SV7: machine-wide gate slots (not per git dir), prechecks counted, queue/service/retry times logged",
   "weight": "CRUCIAL",
