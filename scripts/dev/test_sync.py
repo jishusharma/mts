@@ -842,6 +842,68 @@ class SyncTest(unittest.TestCase):
                if len(re.findall(r'"[\w/.-]+\.py"', l)) >= 2 and "sys.executable" not in l]
         self.assertEqual(bad, [])
 
+    def test_ship_after_predecessor_shipped_proceeds(self):
+        # When predecessor has shipped (claim removed or status done/released), wait_after returns 'shipped'
+        (self.b / "MyTradingSys/system/claims").mkdir(parents=True, exist_ok=True)
+        commit(self.b, f"MyTradingSys/system/claims/pred-task.md", "claimed\n")
+        sh(self.b, "push", "-q", "origin", "HEAD:fast-track")
+        now = [1000.0]
+        # Simulate predecessor shipping
+        commit(self.b, "pred-done.txt", "done\n")
+        sh(self.b, "rm", "-q", "MyTradingSys/system/claims/pred-task.md")
+        sh(self.b, "commit", "-q", "-m", "release pred-task")
+        sh(self.b, "push", "-q", "origin", "HEAD:fast-track")
+        res = sync.wait_after(self.a, "pred-task", timeout=3600, poll=1.0, sleep=lambda s: None, now_fn=lambda: now[0])
+        self.assertEqual(res, "shipped")
+
+    def test_ship_after_predecessor_failed_proceeds(self):
+        # When predecessor card is marked failed, wait_after returns 'failed'
+        import json
+        card = {"id": "pred-fail", "status": "failed"}
+        (self.b / "MyTradingSys/system/tasks").mkdir(parents=True, exist_ok=True)
+        (self.b / "MyTradingSys/system/claims").mkdir(parents=True, exist_ok=True)
+        commit(self.b, "MyTradingSys/system/claims/pred-fail.md", "claimed\n")
+        commit(self.b, "MyTradingSys/system/tasks/pred-fail.json", json.dumps(card))
+        sh(self.b, "push", "-q", "origin", "HEAD:fast-track")
+        res = sync.wait_after(self.a, "pred-fail", timeout=3600, poll=1.0, sleep=lambda s: None, now_fn=lambda: 1000.0)
+        self.assertEqual(res, "failed")
+
+    def test_ship_after_timeout_lapses_proceeds(self):
+        # When timeout (60 min default) is reached without signal, ticket lapses
+        (self.b / "MyTradingSys/system/claims").mkdir(parents=True, exist_ok=True)
+        commit(self.b, "MyTradingSys/system/claims/pred-slow.md", "claimed\n")
+        sh(self.b, "push", "-q", "origin", "HEAD:fast-track")
+        now = [1000.0]
+        def advance_sleep(s):
+            now[0] += 3601.0
+        res = sync.wait_after(self.a, "pred-slow", timeout=3600, poll=1.0, sleep=advance_sleep, now_fn=lambda: now[0])
+        self.assertEqual(res, "lapsed")
+
+    def test_ship_after_waiting_holds_no_gate_slot(self):
+        # While waiting for predecessor, no gate slot is acquired
+        (self.b / "MyTradingSys/system/claims").mkdir(parents=True, exist_ok=True)
+        commit(self.b, "MyTradingSys/system/claims/pred-hold.md", "claimed\n")
+        sh(self.b, "push", "-q", "origin", "HEAD:fast-track")
+        slot_dir = self.a / ".git" / "gate-slots"
+        now = [1000.0]
+        def check_no_slot(s):
+            self.assertFalse(slot_dir.exists() and any(slot_dir.iterdir()))
+            now[0] += 3601.0
+        sync.wait_after(self.a, "pred-hold", timeout=3600, poll=1.0, sleep=check_no_slot, now_fn=lambda: now[0])
+
+    def test_ship_cli_after_flag_calls_ship(self):
+        with mock.patch.object(sync, "toplevel", return_value=self.a), \
+                mock.patch.object(sync, "ship") as mock_ship:
+            self.assertEqual(sync.main(["ship", "--after", "pred-slug"]), 0)
+            mock_ship.assert_called_once_with(self.a, release_slug=None, after_slug="pred-slug")
+
+    def test_ship_cli_after_and_release_flags(self):
+        with mock.patch.object(sync, "toplevel", return_value=self.a), \
+                mock.patch.object(sync, "ship") as mock_ship:
+            self.assertEqual(sync.main(["ship", "--release", "my-slug", "--after", "pred-slug"]), 0)
+            mock_ship.assert_called_once_with(self.a, release_slug="my-slug", after_slug="pred-slug")
+
+
 
 class GateSlotTest(unittest.TestCase):
     def setUp(self):
@@ -1090,6 +1152,6 @@ class FastShipTest(unittest.TestCase):
         (tmp / "unrelated.py").write_text("Y = 1\n")
         self.assertEqual(sync.race_overlap(tmp, ["theirs.py", "unrelated.py"], ["mine.py"]), ["theirs.py"])
 
-
 if __name__ == "__main__":
     unittest.main()
+
