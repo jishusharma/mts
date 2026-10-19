@@ -1,0 +1,169 @@
+{
+  "raw_rows": 2501280,
+  "unique_timestamps": 2491200,
+  "copied_start": "2022-01-01T00:00:00+00:00",
+  "copied_end": "2026-09-26T23:59:00+00:00",
+  "default_paths": {
+    "F:\\MTS\\mts-jis-nuc-critical-backlog\\Dumps\\backtest\\raw_1m_2022\\klines": false,
+    "F:\\MTS\\mts-jis-nuc-critical-backlog\\Dumps\\backtest\\raw\\klines": false
+  },
+  "results": [
+    {
+      "runner": "t055",
+      "file": "MyTradingSys/backtest/layers/run_t055.py",
+      "line": 101,
+      "timeframe_minutes": 1,
+      "n": 2491200,
+      "start": "2022-01-01T00:00:00+00:00",
+      "end": "2026-09-26T23:59:00+00:00",
+      "oos_start": "2025-04-26T00:00:00+00:00",
+      "in_main_holdout": false,
+      "status": "COUNTERFACTUAL copied timestamp set, not default loader or historical reconstruction"
+    },
+    {
+      "runner": "t055",
+      "file": "MyTradingSys/backtest/layers/run_t055.py",
+      "line": 101,
+      "timeframe_minutes": 5,
+      "n": 498240,
+      "start": "2022-01-01T00:00:00+00:00",
+      "end": "2026-09-26T23:55:00+00:00",
+      "oos_start": "2025-04-26T00:00:00+00:00",
+      "in_main_holdout": false,
+      "status": "COUNTERFACTUAL copied timestamp set, not default loader or historical reconstruction"
+    },
+    {
+      "runner": "t055",
+      "file": "MyTradingSys/backtest/layers/run_t055.py",
+      "line": 101,
+      "timeframe_minutes": 15,
+      "n": 166080,
+      "start": "2022-01-01T00:00:00+00:00",
+      "end": "2026-09-26T23:45:00+00:00",
+      "oos_start": "2025-04-25T23:45:00+00:00",
+      "in_main_holdout": false,
+      "status": "COUNTERFACTUAL copied timestamp set, not default loader or historical reconstruction"
+    },
+    {
+      "runner": "rsi",
+      "file": "MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py",
+      "line": 76,
+      "timeframe_minutes": 15,
+      "n": 166080,
+      "start": "2022-01-01T00:00:00+00:00",
+      "end": "2026-09-26T23:45:00+00:00",
+      "oos_start": "2025-04-25T23:45:00+00:00",
+      "in_main_holdout": false,
+      "status": "COUNTERFACTUAL copied timestamp set, not default loader or historical reconstruction"
+    },
+    {
+      "runner": "rsi",
+      "file": "MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py",
+      "line": 76,
+      "timeframe_minutes": 60,
+      "n": 41520,
+      "start": "2022-01-01T00:00:00+00:00",
+      "end": "2026-09-26T23:00:00+00:00",
+      "oos_start": "2025-04-25T23:00:00+00:00",
+      "in_main_holdout": false,
+      "status": "COUNTERFACTUAL copied timestamp set, not default loader or historical reconstruction"
+    },
+    {
+      "runner": "rsi",
+      "file": "MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py",
+      "line": 76,
+      "timeframe_minutes": 240,
+      "n": 10380,
+      "start": "2022-01-01T00:00:00+00:00",
+      "end": "2026-09-26T20:00:00+00:00",
+      "oos_start": "2025-04-25T20:00:00+00:00",
+      "in_main_holdout": false,
+      "status": "COUNTERFACTUAL copied timestamp set, not default loader or historical reconstruction"
+    },
+    {
+      "runner": "rsi",
+      "file": "MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py",
+      "line": 76,
+      "timeframe_minutes": 1440,
+      "n": 1730,
+      "start": "2022-01-01T00:00:00+00:00",
+      "end": "2026-09-26T00:00:00+00:00",
+      "oos_start": "2025-04-26T00:00:00+00:00",
+      "in_main_holdout": false,
+      "status": "COUNTERFACTUAL copied timestamp set, not default loader or historical reconstruction"
+    },
+    {
+      "runner": "fabio",
+      "file": "MyTradingSys/backtest/layers/fabio/run_backtest.py",
+      "line": 64,
+      "timeframe_minutes": 5,
+      "n": 498240,
+      "start": "2022-01-01T00:00:00+00:00",
+      "end": "2026-09-26T23:55:00+00:00",
+      "oos_start": "2025-04-26T00:00:00+00:00",
+      "in_main_holdout": false,
+      "status": "COUNTERFACTUAL copied timestamp set, not default loader or historical reconstruction"
+    },
+    {
+      "runner": "fabio",
+      "file": "MyTradingSys/backtest/layers/fabio/run_backtest.py",
+      "line": 64,
+      "timeframe_minutes": 15,
+      "n": 166080,
+      "start": "2022-01-01T00:00:00+00:00",
+      "end": "2026-09-26T23:45:00+00:00",
+      "oos_start": "2025-04-25T23:45:00+00:00",
+      "in_main_holdout": false,
+      "status": "COUNTERFACTUAL copied timestamp set, not default loader or historical reconstruction"
+    },
+    {
+      "runner": "fabio",
+      "file": "MyTradingSys/backtest/layers/fabio/run_backtest.py",
+      "line": 64,
+      "timeframe_minutes": 60,
+      "n": 41520,
+      "start": "2022-01-01T00:00:00+00:00",
+      "end": "2026-09-26T23:00:00+00:00",
+      "oos_start": "2025-04-25T23:00:00+00:00",
+      "in_main_holdout": false,
+      "status": "COUNTERFACTUAL copied timestamp set, not default loader or historical reconstruction"
+    },
+    {
+      "runner": "cryptocred",
+      "file": "MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py",
+      "line": 77,
+      "timeframe_minutes": 15,
+      "n": 166080,
+      "start": "2022-01-01T00:00:00+00:00",
+      "end": "2026-09-26T23:45:00+00:00",
+      "oos_start": "2025-04-25T23:45:00+00:00",
+      "in_main_holdout": false,
+      "status": "COUNTERFACTUAL copied timestamp set, not default loader or historical reconstruction"
+    },
+    {
+      "runner": "cryptocred",
+      "file": "MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py",
+      "line": 77,
+      "timeframe_minutes": 60,
+      "n": 41520,
+      "start": "2022-01-01T00:00:00+00:00",
+      "end": "2026-09-26T23:00:00+00:00",
+      "oos_start": "2025-04-25T23:00:00+00:00",
+      "in_main_holdout": false,
+      "status": "COUNTERFACTUAL copied timestamp set, not default loader or historical reconstruction"
+    },
+    {
+      "runner": "cryptocred",
+      "file": "MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py",
+      "line": 77,
+      "timeframe_minutes": 240,
+      "n": 10380,
+      "start": "2022-01-01T00:00:00+00:00",
+      "end": "2026-09-26T20:00:00+00:00",
+      "oos_start": "2025-04-25T20:00:00+00:00",
+      "in_main_holdout": false,
+      "status": "COUNTERFACTUAL copied timestamp set, not default loader or historical reconstruction"
+    }
+  ],
+  "historical": "BLOCKED: no dated original runtime input snapshot or immutable manifest; git excludes raw inputs"
+}
