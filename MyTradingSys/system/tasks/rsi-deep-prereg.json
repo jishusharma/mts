@@ -5,7 +5,8 @@
   "created": "2026-10-19T14:44:55Z",
   "depends_on": [
     "rsi-deep-depth-map",
-    "rsi-deep-prob-tables"
+    "rsi-deep-prob-tables",
+    "rsi-deep-context-tables"
   ],
   "done_when": "",
   "est_turns": null,
