@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-18T23:00:27Z",
   "commands": [],
   "created": "2026-10-18T18:39:26Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "tasks-fill-raw-card-fields",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "tasks.py fill subcommand + test_tasks_fill.py",
+      "ref": "af3faea5",
+      "utc": "2026-10-18T23:00:27Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,7 @@
   "refs": [
     "MyTradingSys/research/roles/ROLE_UPGRADES_2026-10-18.md"
   ],
-  "result": "",
+  "result": "tasks.py fill subcommand + test_tasks_fill.py",
   "scope_in": [
     "scripts/dev/tasks.py",
     "MyTradingSys/tests/test_tasks_fill.py"
@@ -44,13 +51,14 @@
   "scope_sha": "93560b51e352",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read cmd_new, cmd_check, problems() in tasks.py",
     "Add fill subparser and cmd_fill using save() then problems()",
     "Fixture test: raw card filled via flags becomes ready; bad worker rejected",
     "Run run_all_tests.py --quick, ship"
   ],
+  "taken": "2026-10-18T23:00:27Z",
   "tests": "MyTradingSys/tests/test_tasks_fill.py",
   "title": "tasks.py fill: set raw-card fields from flags so raw cards close without hand edits",
   "weight": "",

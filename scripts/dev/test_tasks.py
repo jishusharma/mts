@@ -575,6 +575,60 @@ class LabMachineChecksTest(unittest.TestCase):
 
 
 class ReviewGateTest(unittest.TestCase):
+    def test_malformed_note_class_fails_closed(self):
+        for note in ('class C2', 'class=2', 'class: 2', 'class: C 2',
+                     'class:C-2', 'Class: **C2**', 'class: "C2"', 'class=Cx'):
+            with self.subTest(note=note):
+                self.assertEqual(T.card_class(good(note=note)), 'C3')
+                self.assertTrue(T.review_gate(good(note=note)))
+        for value in ([], {}, False, 0, ['class=C2']):
+            with self.subTest(value=value):
+                self.assertTrue(T.review_gate(good(note=value)))
+        for value in ('C9', 'wat', [], {}, False, 0):
+            with self.subTest(field=value):
+                self.assertEqual(T.card_class(good(**{'class': value})), 'C3')
+                self.assertTrue(T.review_gate(good(**{'class': value})))
+
+    def test_weight_and_live_path_malformed_values_fail_closed(self):
+        self.assertEqual(T.needs_review(good(weight=' IMPORTANT ')), 'soft')
+        for weight in (' CRUCIAL', 'CRUCIAL ', 'critical', ['CRUCIAL'], {}, 1, False):
+            with self.subTest(weight=weight):
+                self.assertTrue(T.review_gate(good(weight=weight), True, 'evidence'))
+        for live in ('true', 'false', 1, 0, [], {}):
+            with self.subTest(live=live):
+                self.assertTrue(T.review_gate(good(live_path=live), True, 'evidence'))
+        # Malformed data cannot be rescued by a syntactically valid stamp.
+        self.assertTrue(T.review_gate(good(weight=['CRUCIAL'], note='REVIEWED: Argon 2026-10-18')))
+        self.assertTrue(T.review_gate(good(weight='BOGUS', note='REVIEWED: Argon 2026-10-18')))
+        for key, value in (('note', []), ('class', []), ('weight', []), ('live_path', 'true')):
+            c = good(**{key: value})
+            c['review_receipt'] = T.make_review_receipt(c, 'Argon')
+            self.assertTrue(T.review_gate(c), key)
+
+    def test_each_producer_identity_independently_rejects_own_review(self):
+        for key in ('producer', 'producer_model', 'vendor', 'model', 'worker', 'refined_by', 'author'):
+            for note in ('REVIEWED: Argon 2026-10-18', 'REVIEWED:2026-10-18 ACCEPT reviewer=Argon'):
+                with self.subTest(key=key, note=note):
+                    c = good(weight='CRUCIAL', note=note, **{key: ' Argon '})
+                    self.assertEqual(T.stamp_kind(c), '')
+            c = good(weight='CRUCIAL', **{key: ' Argon '})
+            c['review_receipt'] = T.make_review_receipt(c, 'Argon')
+            self.assertEqual(T.stamp_kind(c), '', key)
+        self.assertEqual(T.stamp_kind(good(weight='CRUCIAL', note='REVIEWED: Argon 2026-10-18', producer='Other')), 'real')
+
+    def test_dates_anchors_case_and_single_line_independently(self):
+        for note in ('REVIEWED: Argon 2026-13-45', 'REVIEWED:2026-13-45 ACCEPT',
+                     'quoted REVIEWED:2026-10-18 ACCEPT',
+                     'REVIEWED:\n2026-10-18 ACCEPT', 'REVIEWED:\nArgon 2026-10-18',
+                     'REVIEWED: Argon\n2026-10-18', 'REVIEWED:2026-10-18\nACCEPT'):
+            with self.subTest(note=note):
+                self.assertEqual(T.stamp_kind(good(note=note)), '')
+        self.assertEqual(T.stamp_kind(good(note='preamble\nREVIEWED: Argon 2026-10-18')), 'real')
+        self.assertEqual(T.card_class(good(**{'class': 'c2'})), 'C2')
+        self.assertEqual(T.card_class(good(note='class=C0 class=C3')), 'C3')
+        self.assertTrue(T.review_gate(good(weight='critical')))
+        self.assertEqual(T.needs_review(good(weight='important')), 'soft')
+
     def test_forged_stamp_forms_are_rejected(self):
         forged = (
             "REVIEWED: <reviewer> 2026-10-18",

@@ -80,3 +80,13 @@ Source: `live_mirror.py brief` + _mirror files, all `mirror@2026-10-17 07:11Z` (
 - Read: SET_362293de1b70_pitchfork.md (3 MATCH + 1 settings MATCH, 2 NOT_IN_DATA), tag NOTE. Last read id: 362293de1b70.
 - Binance spot 1W, linear axis, stacked Schiff pitchforks (red median, blue level 1 only), anchors on the 2017/2021/2022/2024/2025 swings. Price 81,208 at a blue line under the red median that capped the 87,395.67 Sep high (pixel read).
 - Layer: already claimed on trunk as gemini-pitchfork-study-layer (JIS-NUC, 20:14Z); no second card. The extract lists the causal-anchor, placebo and power rules for that build; signal sent to NUC.
+
+## 10-19 04:10Z replacement session boot (no new shot) mirror@2026-10-19 04:06Z
+- Boot done, gap sweep run (11 gaps, EAGLE_GAPS.md refreshed; pitchfork family has no open card, layer pitchfork_swing no backtest row: already tracked under the NUC claim gemini-pitchfork-study-layer). Last read id: 362293de1b70. Open MISMATCH cards: none. HALT + HALT_DAILY_LOSS still raised; last auto-trader event skipped_halt 03:30Z.
+- Pending old shots (10-15, 8 chart/app/other classified, dfabf169 new with no text) are not market reads of today; left untouched.
+- Watch next: shorts cover (OI down, price up) or acceptance under 80,955.9 toward weekly VAL 80,868.
+
+## 10-19 04:30Z operator 15m RSI/WT divergences (4ae992130268) mirror@2026-10-19 04:16Z
+- Read: SHOT_4ae992130268.md (8 MATCH, 1 NOT_IN_DATA), tag NOTE. Last read id: 4ae992130268. Open MISMATCH cards: none. HALT unchanged.
+- Low 10-18 20:15 (80,622 sweep of 80,751, RSI-only bullish divergence, delta/OI turn then 22:00 squeeze); high 10-19 02:45 (82,788, delta +845 / OI +253 into the high, RSI/WT lower highs, but divergence began 2.5 h earlier). MTS: levels confluence fired at both levels; Tom silent through the low, late at the high; Fabio null; 5 opposite-side shorts at the low; rsi:cross rejected unmapped. Card rsi-cross-unmapped-and-pivot-stack; feature list added to oi-pivot-reversal-probability-by-tf narrative.
+- Watch next: 82,788 high holds and OI falls with delta negative (fade continues toward 82,320 weekly VAL) or reclaim of 82,788.

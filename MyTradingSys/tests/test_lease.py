@@ -19,12 +19,13 @@ import lease  # noqa: E402  (absent before this change: every test below fails o
 FLAGS = getattr(subprocess, "CREATE_NO_WINDOW", 0) if sys.platform == "win32" else 0
 
 
-def git(d, *a):
+def git(d, *a, stdin=None):
     r = subprocess.run(["git", "-C", str(d), "-c", "user.email=t@t", "-c", "user.name=t", *a],
-                       capture_output=True, text=True, creationflags=FLAGS)
+                       input=stdin.encode("utf-8") if isinstance(stdin, str) else stdin,
+                       capture_output=True, text=False, creationflags=FLAGS)
     if r.returncode:
-        raise RuntimeError(r.stderr)
-    return r.stdout.strip()
+        raise RuntimeError(r.stderr.decode("utf-8", errors="replace"))
+    return r.stdout.decode("utf-8", errors="replace").strip()
 
 
 class Base(unittest.TestCase):
@@ -35,16 +36,14 @@ class Base(unittest.TestCase):
         self.origin = t / "origin.git"
         git(t, "init", "-q", "--bare", str(self.origin))
         git(self.origin, "symbolic-ref", "HEAD", "refs/heads/fast-track")
-        seed = t / "seed"
-        git(t, "clone", "-q", str(self.origin), str(seed))
-        (seed / "README.md").write_text("x\n")
-        git(seed, "add", "-A")
-        git(seed, "commit", "-qm", "seed")
-        git(seed, "push", "-q", "origin", "HEAD:refs/heads/fast-track")
+        b = git(self.origin, "hash-object", "-w", "--stdin", stdin="x\n")
+        tr = git(self.origin, "mktree", stdin=f"100644 blob {b}\tREADME.md\n")
+        c = git(self.origin, "commit-tree", tr, "-m", "seed")
+        git(self.origin, "update-ref", "refs/heads/fast-track", c)
         self.a = t / "nuc"
         self.b = t / "lenovo"
         for d in (self.a, self.b):
-            git(t, "clone", "-q", "-b", "fast-track", str(self.origin), str(d))
+            git(t, "clone", "-s", "-q", "-b", "fast-track", str(self.origin), str(d))
             git(d, "config", "user.email", "t@t")
             git(d, "config", "user.name", "t")
         self.ident_a = {"MTS_LEASE_HOST": "JIS-NUC", "MTS_LEASE_SESSION": "sess-a", "MTS_ACCOUNT": "sharma",
@@ -167,14 +166,12 @@ class FailClosed(Base):
             lease.require(self.a, "Pipeliner")
 
     def test_malformed_lease_is_ambiguous(self):
-        seed = Path(self.tmp.name) / "seed"
-        git(seed, "pull", "-q", "origin", "fast-track")
-        p = seed / lease.rel_path("Pipeliner")
+        p = self.a / lease.rel_path("Pipeliner")
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text("{not json")
-        git(seed, "add", "-A")
-        git(seed, "commit", "-qm", "broken lease")
-        git(seed, "push", "-q", "origin", "HEAD:refs/heads/fast-track")
+        git(self.a, "add", "-A")
+        git(self.a, "commit", "-qm", "broken lease")
+        git(self.a, "push", "-q", "origin", "HEAD:refs/heads/fast-track")
         self.as_(self.ident_b)
         with self.assertRaises(lease.Unreachable):
             lease.acquire(self.b, "Pipeliner")
@@ -206,14 +203,12 @@ class FailClosed(Base):
         self.assertEqual(self.trunk_lease()["state"], "held")
 
     def test_held_without_holder_is_ambiguous(self):
-        seed = Path(self.tmp.name) / "seed"
-        git(seed, "pull", "-q", "origin", "fast-track")
-        p = seed / lease.rel_path("Pipeliner")
+        p = self.a / lease.rel_path("Pipeliner")
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(json.dumps({"state": "held", "expires": 0}))
-        git(seed, "add", "-A")
-        git(seed, "commit", "-qm", "half lease")
-        git(seed, "push", "-q", "origin", "HEAD:refs/heads/fast-track")
+        git(self.a, "add", "-A")
+        git(self.a, "commit", "-qm", "half lease")
+        git(self.a, "push", "-q", "origin", "HEAD:refs/heads/fast-track")
         self.as_(self.ident_b)
         with self.assertRaises(lease.Unreachable):
             lease.acquire(self.b, "Pipeliner")
@@ -281,6 +276,18 @@ class Wiring(Base):
         git(self.b, "fetch", "-q", "origin")
         self.assertIn("held by JIS-NUC/sharma", role_loader.lease_suffix("Pipeliner", self.b))
         self.assertEqual(role_loader.lease_suffix("Eagle_Eyes", self.b), "")
+
+
+class RoleNameNoRoleTest(unittest.TestCase):
+    """A roleless session (no MTS_ROLE, no injected role) made current_role() None; role_name(None) raised AttributeError
+    and crashed every `sync.py ship` (found 2026-10-19 on the Lenovo)."""
+
+    def test_none_role_does_not_raise(self):
+        self.assertIsNone(lease.role_name(None))
+
+    def test_plain_string_still_canonical(self):
+        self.assertEqual(lease.role_name("pipeliner"), "Pipeliner")
+        self.assertEqual(lease.role_name("Eagle_Eyes"), "Eagle_Eyes")
 
 
 if __name__ == "__main__":

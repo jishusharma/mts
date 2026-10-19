@@ -1,9 +1,12 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C1",
   "commands": [],
   "created": "2026-10-18T21:26:38Z",
-  "depends_on": [],
+  "depends_on": [
+    "wavetrend-data-inference"
+  ],
   "done_when": "A separate C1 detector passes a fail-first test proving both paired points are confirmed pivots, and a count-only DEV run is frozen in a new PRE_REG version before any outcome read.",
   "est_turns": 30,
   "formula_id": "",
@@ -12,16 +15,20 @@
   "goal": "Implement C1 divergence as defined by the existing spec using paired confirmed price and WT pivots, then freeze a new count-only BTC DEV preregistration without reading outcomes.",
   "id": "wavetrend-c1-v2",
   "lane": "SONNET",
-  "layers": ["wavetrend"],
+  "layers": [
+    "wavetrend"
+  ],
   "live_path": false,
   "mutation_check": "",
-  "note": "Depends on the DEV input manifest and paired-control design. Preserve the old detector, counts, PRE_REG and RESULT as historical artifacts; do not read VALIDATION/HOLDOUT.",
+  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:results CLASS:C1 REVIEWER:none WEIGHT:IMPORTANT. Refined by gemini-session-planner from AUDIT_2026-10-18 finding 1; depends on wavetrend-data-inference; awaiting non-Gemini Lab_Guy ACCEPT stamp.",
   "prio": 1,
   "refine_tries": 0,
-  "refined_by": "",
-  "refs": [],
+  "refined_by": "gemini-session-planner",
+  "refreshed": "2026-10-19T03:55:00Z",
+  "refs": [
+    "MyTradingSys/research/wavetrend_2026-10-17/AUDIT_2026-10-18.md"
+  ],
   "result": "",
-  "depends_on": ["wavetrend-data-inference"],
   "scope_in": [
     "MyTradingSys/research/wavetrend_2026-10-17/count_events.py",
     "MyTradingSys/research/wavetrend_2026-10-17/ATLAS_STUDY_SPEC.md",
@@ -37,7 +44,7 @@
     "MyTradingSys/research/wavetrend_2026-10-17/ATLAS_STUDY_SPEC.md",
     "MyTradingSys/research/wavetrend_2026-10-17/PRE_REG.md"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Add a fail-first fixture based on repro_c1_spec_mismatch.py demonstrating the existing false C1 event.",
     "Implement a versioned C1 detector that pairs confirmed price and WT pivot timestamps under the written spec, with causal availability timestamps and independent golden cases.",

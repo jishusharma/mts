@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-19T04:22:37Z",
+  "depends_on": [],
+  "done_when": "Counts file committed (unmapped rsi:cross by TF and week); one-paragraph decision with the DEV number; if mapped, a failing-first test covers restart state and fail-closed reject; Part B note links the shot evidence.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Count rsi:cross rejections as unmapped (auto_trader.py:416) from the mirror, then decide with DEV evidence: add a layer_rules entry or leave unmapped. Also write a read-only note on what a causal level+RSI/WT divergence+delta/OI stack needs; features go to card oi-pivot-reversal-probability-by-tf.",
+  "id": "rsi-cross-unmapped-and-pivot-stack",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [
+    "rsi"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:results CLASS:C1 REVIEWER:none WEIGHT:IMPORTANT. Pipeliner routed from Eagle_Eyes shot 4ae992130268 (live-path code: diff-only review Agent before ship). Awaiting non-Gemini Lab_Guy ACCEPT.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-19T04:22:48Z",
+  "refs": [
+    "MyTradingSys/execution/auto_trader.py:416"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/execution/auto_trader.py layer_rules (only if the decision says map)",
+    "MyTradingSys/execution/test_auto_trader.py",
+    "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/"
+  ],
+  "scope_out": [
+    "any new layer or detector code",
+    "live tree .mts_live, deploys, HALT files"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/SHOT_4ae992130268.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "grep auto_trader.py:77,413,416 and the layer_rules table; note how cross side is derived (CROSS_SIDE_BY_LEVEL)",
+    "count signal_rejected unmapped rsi:cross via live_mirror.py brief and auto_trades.jsonl; commit the counts",
+    "decide map or leave, label any rule parameter SOURCED or OURS; if map, add rule plus failing-first test",
+    "write Part B note and add the shot features to oi-pivot-reversal-probability-by-tf"
+  ],
+  "tests": "If a layer_rules entry is added: test_auto_trader.py case for rsi:cross that fails on the pre-change code (reject unmapped) and passes after; side comes from the alert, fail closed when absent.",
+  "title": "RSI cross events are rejected as unmapped in the auto-trader (no layer_rules entry); and no layer stacks level touch + RSI/WT divergence + delta/OI exhaustion for pivots (evidence: SHOT_4ae992130268.md)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

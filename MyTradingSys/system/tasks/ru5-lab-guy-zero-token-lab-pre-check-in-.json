@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-18T22:45:11Z",
   "commands": [],
   "created": "2026-10-18T17:22:58Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "ru5-lab-guy-zero-token-lab-pre-check-in-",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "tasks.py zero-token lab pre-checks + test_tasks_lab_precheck.py",
+      "ref": "36814b47",
+      "utc": "2026-10-18T22:45:11Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,7 @@
   "refs": [
     "MyTradingSys/research/roles/ROLE_UPGRADES_2026-10-18.md"
   ],
-  "result": "",
+  "result": "tasks.py zero-token lab pre-checks + test_tasks_lab_precheck.py",
   "scope_in": [
     "scripts/dev/tasks.py",
     "MyTradingSys/tests/test_tasks_lab_precheck.py"
@@ -44,13 +51,14 @@
   "scope_sha": "93560b51e352",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read lab_guy.md:25 and tasks.py problems()",
     "Add holdout-path and split-date checks beside the formula-id check",
     "Fail-first fixture tests",
     "Run run_all_tests.py --quick, ship"
   ],
+  "taken": "2026-10-18T22:45:11Z",
   "tests": "MyTradingSys/tests/test_tasks_lab_precheck.py",
   "title": "RU5 Lab_Guy: zero-token lab pre-check in tasks.py check",
   "weight": "",
