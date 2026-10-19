@@ -92,7 +92,8 @@ def read_shas(repo: Path, shas: list[str]) -> dict:
     return out
 
 
-def _dispatch_raw(repo: Path, as_of: datetime, host: str | None = None) -> dict:
+def _dispatch_raw(repo: Path, as_of: datetime, host: str | None = None, login: str | None = None,
+                  logins: list | None = None) -> dict:
     import tasks
     import lane_health
     cards = tasks.load_all(repo)
@@ -100,14 +101,19 @@ def _dispatch_raw(repo: Path, as_of: datetime, host: str | None = None) -> dict:
     holds = tasks.active_holds(repo)
     claims = tasks.open_claims(repo)
     lane_st = lane_health.load(repo)
-    return tasks.dispatch(cards, reg, holds, claims, lane_st, as_of, host or socket.gethostname(), repo)
+    return tasks.dispatch(cards, reg, holds, claims, lane_st, as_of, host or socket.gethostname(), repo,
+                          login=login, logins=logins)
 
 
-def read_dispatch(repo: Path = REPO, as_of: datetime | None = None, host: str | None = None) -> dict:
+def read_dispatch(repo: Path = REPO, as_of: datetime | None = None, host: str | None = None,
+                  login: str | None = None, logins: list | None = None) -> dict:
     try:
         as_of = as_of or _now_utc()
         try:
-            snap = _dispatch_raw(repo, as_of, host=host)
+            if login:
+                snap = _dispatch_raw(repo, as_of, host=host, login=login, logins=logins)
+            else:
+                snap = _dispatch_raw(repo, as_of, host=host)
         except TypeError:
             snap = _dispatch_raw(repo, as_of)
         disp = snap.get("dispatch", [])
@@ -284,14 +290,42 @@ def read_budget(as_of: datetime | None = None, home: Path | None = None) -> dict
         return {"error": f"{type(e).__name__}: {e}"}
 
 
+def read_peers(login: str | None, as_of: datetime, do_fetch: bool = True) -> dict:
+    """The other logins' supervisors, seen only through their BUDGET signal lines (the app cannot message across logins).
+    `active` = logins with a reading newer than 6 h (always including this one), the list dispatch shards over.
+    Fails soft: {"error": ...} and dispatch then runs unsharded."""
+    try:
+        import traffic
+        view, errs = traffic.budget_view(do_fetch=do_fetch, now=as_of)
+        fresh = traffic.BUDGET_FRESH_H * 3600
+        rows, active = {}, set()
+        for lg, r in view["logins"].items():
+            at = traffic.utc(r.get("at"))
+            age_h = round((as_of - at).total_seconds() / 3600, 1) if at else None
+            rows[lg] = {"state": r["state"], "five_h": r.get("five_h"), "week": r.get("week"), "age_h": age_h}
+            if at and (as_of - at).total_seconds() <= fresh:
+                active.add(lg)
+        if login:
+            active.add(login)
+        return {"self": login, "logins": rows, "active": sorted(active), "overall": view["overall"],
+                "missing": [x for x in "ABC" if x not in rows], "errors": errs}
+    except (Exception, SystemExit) as e:
+        return {"self": login, "error": f"{type(e).__name__}: {e}"}
+
+
 def tick(
     repo: Path = REPO,
     shas: list[str] | None = None,
     no_fetch: bool = False,
     as_of: datetime | None = None,
     home: Path | None = None,
+    login: str | None = None,
 ) -> dict:
     as_of = as_of or _now_utc()
+    login = (login or os.environ.get("MTS_LOGIN") or "").strip().upper()[:1] or None
+    peers = read_peers(login, as_of, do_fetch=not no_fetch) if login else {
+        "self": None, "error": "login unknown: set env MTS_LOGIN=A|B|C (or pass --login) so budget and card shards work"}
+    active = peers.get("active") if isinstance(peers, dict) else None
     fetch_status = {"ok": True, "skipped": bool(no_fetch)}
     if not no_fetch:
         try:
@@ -307,7 +341,9 @@ def tick(
     out = {
         "as_of": as_of.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "fetch": fetch_status,
-        "dispatch": read_dispatch(repo, as_of=as_of),
+        "login": login,
+        "peers": peers,
+        "dispatch": read_dispatch(repo, as_of=as_of, login=login, logins=active),
         "desk": read_desk(repo, as_of=as_of),
         "ci": read_ci(now=as_of),
         "gate_slots": read_gate_slots(repo),
@@ -469,6 +505,7 @@ def main(argv: list[str] | None = None) -> int:
     p_tick = sub.add_parser("tick", help="one read-only supervisor status snapshot per wake")
     p_tick.add_argument("--json", action="store_true", help="output JSON (default format)")
     p_tick.add_argument("--shas", nargs="*", default=[], help="comma- or space-separated commit shas to check on trunk/green")
+    p_tick.add_argument("--login", default=None, help="this session's login letter A|B|C (default env MTS_LOGIN)")
     p_tick.add_argument("--no-fetch", action="store_true", help="skip git fetch origin before reading refs")
 
     p_wait = sub.add_parser("wait", help="background watcher: exits 0 on first transition from baseline, 3 on timeout")
@@ -483,7 +520,7 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
     if args.cmd == "tick":
         sha_list = parse_shas_arg(args.shas)
-        res = tick(repo=REPO, shas=sha_list, no_fetch=args.no_fetch)
+        res = tick(repo=REPO, shas=sha_list, no_fetch=args.no_fetch, login=args.login)
         print(json.dumps(res, indent=2, sort_keys=True))
         return 0
     if args.cmd == "wait":

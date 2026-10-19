@@ -258,3 +258,42 @@ def test_wait_timeout_exits_3(tmp_path):
     assert rc == 3
     assert "timeout" in reason.lower()
     assert sum(sleeps) >= 600
+
+
+def _fake_cards(n=12):
+    return [{"id": f"card-{i:02d}", "title": "t", "lane": "SONNET", "state": "ready", "prio": 3, "created": f"2026-10-1{i % 9}"}
+            for i in range(n)]
+
+
+def test_dispatch_shards_cards_across_logins(monkeypatch):
+    """Three supervisors get disjoint own-shard heads; one supervisor alone is unsharded (same order as before)."""
+    import tasks
+    monkeypatch.setattr(tasks, "exclusion", lambda *a, **k: None)
+    cards = _fake_cards()
+    args = (cards, {}, [], {}, {}, NOW, "JIS-NB")
+    owned = {}
+    for lg in "ABC":
+        snap = tasks.dispatch(*args, login=lg, logins=["A", "B", "C"])
+        own = [r["id"] for r in snap["dispatch"] if r["own"]]
+        assert [r["id"] for r in snap["dispatch"][:len(own)]] == own      # own shard ranked first
+        owned[lg] = set(own)
+    assert owned["A"] | owned["B"] | owned["C"] == {c["id"] for c in cards}
+    assert not (owned["A"] & owned["B"]) and not (owned["B"] & owned["C"]) and not (owned["A"] & owned["C"])
+    assert all(owned[lg] for lg in "ABC")
+    solo = tasks.dispatch(*args, login="A", logins=["A"])
+    assert "own" not in solo["dispatch"][0]
+    assert [r["id"] for r in solo["dispatch"]] == [r["id"] for r in tasks.dispatch(*args)["dispatch"]]
+
+
+def test_tick_reports_peers_and_unknown_login(monkeypatch, tmp_path):
+    """tick names the active logins from BUDGET lines and says plainly when MTS_LOGIN is not set."""
+    import traffic
+    monkeypatch.delenv("MTS_LOGIN", raising=False)
+    out = S.tick(repo=tmp_path, no_fetch=True, as_of=NOW, home=tmp_path)
+    assert out["login"] is None and "MTS_LOGIN" in out["peers"]["error"]
+    fresh = {"state": "NORMAL", "five_h": 10, "week": 30, "reset": "2026-10-22T19:59Z", "at": "2026-10-18T20:00Z"}
+    old = dict(fresh, at="2026-10-17T01:00Z")
+    monkeypatch.setattr(traffic, "budget_view", lambda do_fetch=True, now=None, hours=48: (
+        {"logins": {"A": fresh, "C": old}, "overall": "NORMAL", "why": ""}, []))
+    p = S.read_peers("B", NOW, do_fetch=False)
+    assert p["active"] == ["A", "B"] and p["missing"] == ["B"] and p["logins"]["C"]["age_h"] > 6
