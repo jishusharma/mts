@@ -5,6 +5,9 @@ Fail-first proof: OL_MODULE=<path to a copy of the old outcome_labeler.py> pytho
 import importlib.util
 import json
 import os
+import re
+import shutil
+import subprocess
 import sys
 import tempfile
 import time
@@ -72,7 +75,11 @@ class Incremental(Base):
         n = 3000
         for i in range(n):
             write_snap(self.snaps, i)
-        self.run_main()                       # first cycle labels everything labelable
+        for _ in range(10):                   # a 3000 backlog drains over bounded cycles; run until converged
+            before = len(self.labels.read_text(encoding="utf-8")) if self.labels.exists() else 0
+            self.run_main()
+            if self.labels.stat().st_size == before:
+                break
         labeled = {l["file"] for l in self.read_labels()}
         self.assertGreater(len(labeled), 2000)
         t0 = time.monotonic()
@@ -181,6 +188,121 @@ class Incremental(Base):
         self.assertNotEqual(cm.exception.code, 0)
         text = "".join(c.args[0] for c in out.write.call_args_list)
         self.assertIn("SLOW", text)
+
+
+class ColdBacklog(Base):
+    """A cold or corrupt-labels backlog must drain over bounded cycles (30 s kill in start-trading-day.ps1)."""
+
+    def labels_by_file(self):
+        return {l["file"]: l for l in self.read_labels()}
+
+    def test_cold_backlog_drains_within_budget(self):
+        n, budget = 400, 50
+        for i in range(n):
+            write_snap(self.snaps, i)
+        self.m.MAX_OPEN_PER_CYCLE = budget
+        opened = self.run_main()              # first cycle of a cold backlog
+        # budget + the +120 min lookahead window (12 snapshots at 10 min spacing) + 1; the old code opens all 400
+        self.assertLessEqual(len(opened), budget + 13, f"opened {len(opened)} of {n} in one cycle")
+        self.assertGreaterEqual(len(self.read_labels()), 1, "a bounded cycle must still write labels")
+        for _ in range(60):                   # later cycles converge
+            before = len(self.read_labels())
+            self.run_main()
+            if len(self.read_labels()) == before:
+                break
+        bounded = self.labels_by_file()
+        self.labels.unlink()                  # independent unbounded run on the same snapshots
+        self.m.MAX_OPEN_PER_CYCLE = 10 ** 9
+        self.run_main()
+        self.assertEqual(bounded, self.labels_by_file())
+        self.assertEqual(len(bounded), n - 12)
+
+    def test_budget_never_labels_with_a_reference_beyond_the_opened_window(self):
+        # every label of a truncated cycle must equal the unbounded one (price = 100+i, so +30m/+60m/+120m are i+3/i+6/i+12)
+        for i in range(200):
+            write_snap(self.snaps, i)
+        self.m.MAX_OPEN_PER_CYCLE = 20
+        opened = self.run_main()
+        self.assertLessEqual(len(opened), 20 + 13)   # truncated: the old code opens and labels all 188 at once
+        self.assertTrue(0 < len(self.read_labels()) < 188)
+        for f, l in self.labels_by_file().items():
+            i = int(f[len("BTCUSDT_"):-len(".json")])
+            p = 100.0 + i
+            self.assertEqual(l["fwd_return_pct"], {f"{h}m": round((100.0 + i + h // 10 - p) / p * 100, 4)
+                                                   for h in (30, 60, 120)}, f)
+
+    def test_time_budget_stops_opening_but_still_writes(self):
+        for i in range(300):
+            write_snap(self.snaps, i)
+        self.m.OPEN_BUDGET_S = 0.0            # out of time at once: must stop early, never hang or raise
+        self.m.MAX_OPEN_PER_CYCLE = 10 ** 9
+        with self.assertRaises(SystemExit) as cm:   # one file opened, nothing labelable yet: reported as no progress (4)
+            self.run_main()
+        self.assertEqual(cm.exception.code, 4)
+        self.assertTrue(self.labels.exists())
+
+    def test_budget_spent_on_unreadable_files_is_reported_not_silent(self):
+        for i in range(30):                   # the oldest names are all unreadable: a cycle that makes no progress exits 4
+            (self.snaps / f"BTCUSDT_{i:06d}.json").write_text("{bad", encoding="utf-8")
+        for i in range(100, 160):
+            write_snap(self.snaps, i)
+        self.m.MAX_OPEN_PER_CYCLE = 10
+        with self.assertRaises(SystemExit) as cm:
+            self.run_main()
+        self.assertEqual(cm.exception.code, 4)
+
+    def test_killed_bounded_cycle_loses_nothing_and_restart_resumes(self):
+        for i in range(300):
+            write_snap(self.snaps, i)
+        self.m.MAX_OPEN_PER_CYCLE = 40
+        self.assertLessEqual(len(self.run_main()), 40 + 13)
+        kept = self.labels.read_text(encoding="utf-8")
+        with mock.patch("os.replace", side_effect=OSError("disk")):
+            with self.assertRaises(OSError):  # IO error mid-backlog
+                self.m.main()
+        self.assertEqual(self.labels.read_text(encoding="utf-8"), kept)
+        self.assertGreater(len(self.read_labels()), 0)
+        for _ in range(60):                   # a fresh process (restart) resumes from the file
+            before = len(self.read_labels())
+            self.run_main()
+            if len(self.read_labels()) == before:
+                break
+        self.assertEqual(len(self.read_labels()), 300 - 12)
+
+
+LAUNCHER = REPO / "scripts" / "core" / "start-trading-day.ps1"
+
+
+def _ps_exe():
+    return shutil.which("pwsh") or shutil.which("powershell")
+
+
+BLOCK_RE = re.compile(r"^[ \t]*try \{\s*\n[ \t]*\$olCmd = .*?\n[ \t]*\} catch \{\}", re.S | re.M)
+
+
+class Launcher(unittest.TestCase):
+    def run_block(self, rc):
+        ps = _ps_exe()
+        if not ps:
+            self.skipTest("no PowerShell on this host")
+        text = LAUNCHER.read_text(encoding="utf-8")
+        m = BLOCK_RE.search(text)
+        self.assertIsNotNone(m, "outcome_labeler call block not found in start-trading-day.ps1")
+        # run only the launcher's own labeler block, with the process runner and logger stubbed
+        script = ("$R = 'C:\\nowhere'\n"
+                  "function Invoke-WithTimeout { param($File, $ArgList, $TimeoutSec, $Tag, $WorkDir) return " + str(rc) + " }\n"
+                  "function Log-Line { param([string]$msg) Write-Output ('LOGLINE ' + $msg) }\n" + m.group(0))
+        out = subprocess.run([ps, "-NoProfile", "-NonInteractive", "-Command", script],
+                             capture_output=True, text=True, timeout=60)
+        return [l for l in out.stdout.splitlines() if l.startswith("LOGLINE")]
+
+    def test_launcher_logs_labeler_rc(self):
+        lines = self.run_block(3)             # 3 = SLOW (>20 s)
+        self.assertEqual(len(lines), 1, lines)
+        self.assertIn("outcome_labeler", lines[0])
+        self.assertIn("3", lines[0])
+        self.assertEqual(len(self.run_block(-1)), 1)   # a timeout kill (-1) is also logged
+        self.assertEqual(self.run_block(0), [])        # a healthy run stays silent
 
 
 if __name__ == "__main__":

@@ -544,7 +544,9 @@ try {
         # Label past snapshots (idempotent, cheap)
     try {
         $olCmd = 'python "' + $R + '\MyTradingSys\runtime\outcome_labeler.py" > NUL 2>&1'
-        $null = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $olCmd) -TimeoutSec 30 -Tag "outcome_labeler" -WorkDir $R
+        $olRc = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $olCmd) -TimeoutSec 30 -Tag "outcome_labeler" -WorkDir $R
+        # exit 3 = SLOW (>20 s), -1 = killed at 30 s (also logged by Invoke-WithTimeout); output stays in NUL
+        if ($olRc -ne 0) { Log-Line ("outcome_labeler exit=" + $olRc) }
     } catch {}
 
     # Feature layer: kline archive + regime classifier (additive, non-gating)
