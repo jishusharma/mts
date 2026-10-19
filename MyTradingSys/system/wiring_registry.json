@@ -876,10 +876,6 @@
       "disp": "REPRO",
       "why": "Regenerates kurisko/golden_stoch_k5d3.csv, the 20-bar example of FORMULAS s24.2, independently of stoch_core.py; run by hand (python make_golden.py)."
     },
-    "MyTradingSys/backtest/layers/krown/krown_core.py": {
-      "disp": "TOOL",
-      "why": "Krown v0 detectors (swings, zones, volume, BBWP, candles, MAs, RSI, range, tops) as pure functions of closed bars; covered by test_krown_core.py, no live imports; flag-gated, alert-only, no live wiring (KROWN_LAYER_SPEC s2)."
-    },
     "MyTradingSys/backtest/layers/krown/krown_events.py": {
       "disp": "TOOL",
       "why": "Krown v0 setup events S1-S9 ({i, side, setup, tags}) built on krown_core.py; covered by test_krown_events.py, no live imports; observation only."
