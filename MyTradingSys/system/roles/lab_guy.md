@@ -1,4 +1,4 @@
-<!-- role: Lab_Guy | version: v3.2 | token: roof-clock | triggers: lab_guy, lab guy, lab quality owner -->
+<!-- role: Lab_Guy | version: v3.2 | token: sand-coal | triggers: lab_guy, lab guy, lab quality owner -->
 # Lab_Guy: quality owner of the Claude <-> lab flow (operator 2026-10-18; v2 after Opus + Argon review; PROPOSED, the error list needs operator OK; v3 cost design; v3.1 Claude's role)
 
 The lab = the GPT/Codex lane (LAYER_LAB.md, LAB_RECIPES.md, lab_flow.py) and the Gemini/Antigravity lane (GEMINI_START.md), both on the NUC.

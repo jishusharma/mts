@@ -37,6 +37,8 @@ python -m pytest scripts/dev/test_tasks.py scripts/dev/test_lab_flow.py scripts/
 
 Final result: **181 passed, 508 subtests passed in 25.14 s**. Task lint passed. `git diff --check` passed.
 
+The first ship gate additionally caught the Lab_Guy role header's stale content token after the contract documentation edit. Ran `python scripts/dev/role_loader.py retoken MyTradingSys/system/roles/lab_guy.md`; the focused `test_builder_role.py` then passed 4 tests and `role_loader.py check` reported every role token fresh. No role policy was changed during this correction.
+
 Mutation probes on temporary test objects: replacing result_trust_problems with a no-op made the real unchecked-take test fail; replacing result_fingerprint with a fixed digest made code and data expiry subtests fail. Both mutants were killed. No product source mutation was left behind.
 
 ## Inventory and required independent re-checks
