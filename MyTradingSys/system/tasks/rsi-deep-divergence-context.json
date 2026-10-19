@@ -11,7 +11,7 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Per SPEC s2 Step I: causal divergence events (stamped at confirmation), matched no-divergence control, fixed 8-feature context vector, forward % and ATR move, walk-forward shallow model vs Step G level-only and Step H confluence.",
+  "goal": "Per SPEC s2 Step I: causal divergence events (stamped at confirmation), matched no-divergence control, fixed 8-feature context vector, forward % and ATR move, walk-forward shallow model vs Step G level-only and Step H confluence; also Step J (pairing rules P-adj/P-anchor/P-any, RSI regime band, causal reversal scales, session-normalised phase key).",
   "id": "rsi-deep-divergence-context",
   "lane": "SONNET",
   "layers": [],
