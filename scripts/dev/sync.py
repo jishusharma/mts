@@ -3,9 +3,9 @@
   python scripts/dev/sync.py start [slug] [--quiet]  # up to date with origin/fast-track; in a shared/dirty tree makes your own worktree;
                                            # in a lane tree (mts-app, mts-relay, mts-dsa) `start <slug>` switches to branch <host>/<slug>
   python scripts/dev/sync.py health  # stale/overlapping claims, shared or orphan worktrees, branches never shipped
-  python scripts/dev/sync.py ship [--full] [--fix-ci]  # merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
+  python scripts/dev/sync.py ship [--full] [--fix-ci] [--release <slug>] [--after <slug>]  # merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
                                            # ordinary code ships run the FAST gate (GATE_SPEED.md: ~60 s, tests chosen by import graph); a red CI blocks code ships until
-                                           # fixed: --fix-ci ships the fix through it with the full gate
+                                           # fixed: --fix-ci ships the fix through it with the full gate; --after waits for predecessor order ticket
   python scripts/dev/sync.py news [hours=24]  # what shipped: feature + Result line per commit, no code
   python scripts/dev/sync.py claim "<task>" [--area <paths>]  # tell parallel sessions what you work on (shipped at once); refused only when --area overlaps an open claim
   python scripts/dev/sync.py claims  # open claims on origin/fast-track (host, account, task, age); release: `release <slug>`
@@ -620,12 +620,52 @@ def race_overlap(repo, incoming, outgoing):
     return sorted(fwd | back)
 
 
-def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, sleep=time.sleep):
+def wait_after(repo, slug, timeout=3600, poll=2.0, sleep=time.sleep, now_fn=time.time, fetch_fn=None):
+    """Wait for predecessor <slug> to ship or fail, or lapse after timeout (default 60 min).
+    Never holds or acquires a gate slot while waiting.
+    Returns: 'shipped', 'failed', or 'lapsed'.
+    """
+    start = now_fn()
+    claim_path = f"{CLAIMS_DIR}/{slug}.md"
+    card_path = f"{CARDS_DIR}/{slug}.json"
+    while True:
+        if fetch_fn is not None:
+            fetch_fn(repo)
+        else:
+            fetch_trunk(repo)
+
+        card_res = git(repo, "cat-file", "-p", f"origin/{TRUNK}:{card_path}", check=False)
+        if card_res.returncode == 0:
+            try:
+                card = json.loads(card_res.stdout)
+                st = card.get("status") or card.get("state")
+                if st in ("failed", "tried"):
+                    return "failed"
+                if st in ("done", "released", "shipped"):
+                    return "shipped"
+            except Exception:
+                pass
+
+        claim_res = git(repo, "cat-file", "-e", f"origin/{TRUNK}:{claim_path}", check=False)
+        if claim_res.returncode != 0:
+            return "shipped"
+
+        if now_fn() - start >= timeout:
+            return "lapsed"
+
+        sleep(poll)
+
+
+def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_slug=None, sleep=time.sleep):
     """release_slug (traffic buster B4): the claim file is deleted in a commit on this branch, so the release rides the
     same push as the work (no separate fetch + push). Nothing to ship: falls back to the plumbing release.
+    after_slug (SV3): wait for predecessor order ticket to finish or lapse before running the gate; never holds a gate slot while waiting.
     A lost push race (GATE_SPEED D4) re-merges and pushes again after a 1-5 s jitter, up to SHIP_PUSH_TRIES; it re-runs the gate
     only when the incoming commits overlap what we ship (race_overlap), at most REGATES times."""
     refuse_live(repo)  # only commits are pushed; uncommitted files stay where they are
+    if after_slug:
+        res = wait_after(repo, after_slug)
+        print(f"order ticket --after {after_slug}: {res}")
     rel = f"{CLAIMS_DIR}/{release_slug}.md" if release_slug else None
     released = False
     regates = 0
@@ -1166,26 +1206,37 @@ def main(argv):
             print(f"sync: {e}", file=sys.stderr)
             return 1
         return 0
-    if argv and argv[0] == "ship" and "--fix-ci" in argv:
-        # GATE_SPEED X6: the way through a red-CI block is the FULL gate (never the fast one), so it cannot be a cheap bypass
-        os.environ["SYNC_FIX_CI"] = "1"
-        os.environ["SYNC_FULL_GATE"] = "1"
-        argv = [a for a in argv if a != "--fix-ci"]
-    if argv and argv[0] == "ship" and "--release" in argv:
+    if argv and argv[0] == "ship":
         try:
-            i = argv.index("--release")
-            if i + 1 >= len(argv):
-                raise SyncError("usage: sync.py ship [--full] --release <slug>")
+            if "--fix-ci" in argv:
+                # GATE_SPEED X6: the way through a red-CI block is the FULL gate (never the fast one), so it cannot be a cheap bypass
+                os.environ["SYNC_FIX_CI"] = "1"
+                os.environ["SYNC_FULL_GATE"] = "1"
+                argv = [a for a in argv if a != "--fix-ci"]
             if "--full" in argv:
                 os.environ["SYNC_FULL_GATE"] = "1"
-            ship(toplevel(Path.cwd()), release_slug=argv[i + 1])
+                argv = [a for a in argv if a != "--full"]
+            release_slug = None
+            if "--release" in argv:
+                i = argv.index("--release")
+                if i + 1 >= len(argv) or argv[i + 1].startswith("--"):
+                    raise SyncError("usage: sync.py ship [--full] [--fix-ci] [--release <slug>] [--after <slug>]")
+                release_slug = argv[i + 1]
+                argv = argv[:i] + argv[i + 2:]
+            after_slug = None
+            if "--after" in argv:
+                i = argv.index("--after")
+                if i + 1 >= len(argv) or argv[i + 1].startswith("--"):
+                    raise SyncError("usage: sync.py ship [--full] [--fix-ci] [--release <slug>] [--after <slug>]")
+                after_slug = argv[i + 1]
+                argv = argv[:i] + argv[i + 2:]
+            if len(argv) != 1:
+                raise SyncError(f"unknown arguments to ship: {' '.join(argv[1:])}")
+            ship(toplevel(Path.cwd()), release_slug=release_slug, after_slug=after_slug)
         except SyncError as e:
             print(f"sync: {e}", file=sys.stderr)
             return 1
         return 0
-    if argv == ["ship", "--full"]:
-        os.environ["SYNC_FULL_GATE"] = "1"
-        argv = ["ship"]
     if not argv or argv[0] not in cmds or (argv[0] != "news" and len(argv) != 1):
         print(__doc__)
         return 2

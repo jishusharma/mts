@@ -1,4 +1,4 @@
-<!-- role: Lab_Guy | version: v3.2 | token: roof-clock | triggers: lab_guy, lab guy, lab quality owner -->
+<!-- role: Lab_Guy | version: v3.2 | token: sand-coal | triggers: lab_guy, lab guy, lab quality owner -->
 # Lab_Guy: quality owner of the Claude <-> lab flow (operator 2026-10-18; v2 after Opus + Argon review; PROPOSED, the error list needs operator OK; v3 cost design; v3.1 Claude's role)
 
 The lab = the GPT/Codex lane (LAYER_LAB.md, LAB_RECIPES.md, lab_flow.py) and the Gemini/Antigravity lane (GEMINI_START.md), both on the NUC.
@@ -46,6 +46,15 @@ Option B first, C later only if measured: Claude is an INDEPENDENT VERIFIER of b
 - Until measured, lab outputs are called "checked research artifacts with specified evidence"; no numeric confidence is claimed.
 - First experiment (cheaper than the planted-error trial, GPT Sol 6.1): one manual paired review of one real shared result (candidate: the output of `q76-dev-ext-power-check`) by Claude blind-then-reveal; record confirmed defects, false alarms and quota. It shows feasibility and incremental value, not a catch rate; the planted-error trial follows.
 - Trust tag (card `lab-trust-tag`): every lab result carries UNCHECKED / MACHINE-OK / VERIFIED-C1 / VERIFIED-C2 / DISPUTED with checker model, effort, date, data hash and code revision; a card citing a result needs a tag at least as strong as its own class, a citation auto-raises the cited card to shared, the tag expires when hash or revision changes. The card also lists past base results that stand UNCHECKED and files a re-check card for each C2 candidate.
+
+### Result trust receipt contract (2026-10-19)
+`tasks.py` enforces explicit result citations in `scope_in`: `card:<id>`, an existing bare card id, or the exact `MyTradingSys/system/tasks/<id>.json` path. Ordinary report/source file reads are not inferred to be result citations. A re-check audit reads the original source and evidence files and identifies the untrusted base in `refs`; it does not consume that base as a verified premise.
+
+Trust lives in `result_receipt.trust` (ordinary cards) or `flow_receipt.trust` (flows). `make_result_trust` binds a deliberately supplied tag, checker_model, effort, UTC date, data_hash, code_revision, evidence path and evidence_sha256. It does not choose a tag or authenticate a reviewer. R1 (`lab-review-gate-stamp-writer`) remains open; a syntactically valid receipt is evidence bookkeeping, not proof of reviewer authority or scientific correctness. Apply the C1/C2 independent-review requirements above before recording a VERIFIED tag. Completion alone creates only UNCHECKED.
+
+MACHINE-OK covers C0, VERIFIED-C1 covers through C1, VERIFIED-C2 covers through C2. CRUCIAL/CRITICAL consumers require at least C2; C3 has no sufficient tag in this schema and fails closed. UNCHECKED, DISPUTED, missing/unfinished results, missing evidence, malformed receipts and expired pins block promotion/start/close. A re-consumed dependency is checked recursively, including upstream trust. Tags bind explicit input files and any flow data_scope files; directory-only or missing source scopes cannot receive a positive pin until refined to explicit files. An empty declared dataset has a deterministic hash, so code-only results can be checked without inventing a dataset.
+
+The revision binds scoped content and its last scoped commit, not the moving branch HEAD. Changing scoped code/spec/data or the evidence invalidates a tag; unrelated claims do not. Querying the queue does not rewrite cards. Mutating take/done/flow-finish commands mark cited bases B-SHARED with class at least C2 and record shared_consumers. No historical result is automatically upgraded to MACHINE-OK or VERIFIED.
 - First experiment result (Q76, 2026-10-18): lab 545 new + 662 baseline days; Haiku blind from the definition 549 + 666 (within 0.7 percent), events +3.3 percent / +2.1 percent (outside the 1 percent freeze bar; stop-basis cause untested); headline holds (about 1,210 of 2,427 days). Real catch: PRE_REG_V2 says zero-cost n_needed is about 1,000 days, the formula gives about 395 (card `b187-prereg-v2-correction`). One result: feasibility shown, no catch rate.
 - Moves to C (Claude stages inside the lab) when `lab-crossvendor-stage` is built and the experiment shows catches Gemini Flash did not get.
 

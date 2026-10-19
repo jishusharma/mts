@@ -2,6 +2,7 @@
   "approved_by": "",
   "asks": "",
   "claim": "",
+  "closed": "2026-10-19T05:00:40Z",
   "commands": [],
   "created": "2026-10-19T04:43:41Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "CI 39201649292 GREEN on Ubuntu and Windows; mark-green succeeded. Portable mocked spawn lo",
+      "ref": "43abbbcf",
+      "utc": "2026-10-19T05:00:40Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,7 +41,12 @@
   "refs": [
     "MyTradingSys/tests/test_nowin_audit.py"
   ],
-  "result": "",
+  "result": "CI 39201649292 GREEN on Ubuntu and Windows; mark-green succeeded. Portable mocked spawn logging fixture: 12 focused tests pass, no-op logger rejected; commit 9703a302bd2c.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tests/test_nowin_audit.py"
   ],
@@ -44,7 +56,7 @@
   "scope_sha": "dff6abaf14e6",
   "size": "S",
   "sources": [],
-  "state": "active",
+  "state": "done",
   "steps": [
     "Use a fake original Popen constructor under the real install wrapper; verify forwarded flags and log fields for both cases."
   ],

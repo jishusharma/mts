@@ -1,0 +1,146 @@
+[
+  {
+    "card": "gap-g1-power-mde-helper",
+    "tag": "UNCHECKED",
+    "risk": "C2 candidate (OURS)",
+    "recheck": "trust-recheck-gap-g1-power-mde-helper"
+  },
+  {
+    "card": "gpt-formulas-rederive",
+    "tag": "UNCHECKED",
+    "risk": "C2 candidate (OURS)",
+    "recheck": "trust-recheck-gpt-formulas-rederive"
+  },
+  {
+    "card": "gptb-bb-top-reversal-event-table",
+    "tag": "UNCHECKED",
+    "risk": "C1 table candidate (OURS)",
+    "recheck": ""
+  },
+  {
+    "card": "gptb-bigtrade-event-table",
+    "tag": "UNCHECKED",
+    "risk": "C1 table candidate (OURS)",
+    "recheck": ""
+  },
+  {
+    "card": "gptb-candle-pattern-event-table",
+    "tag": "UNCHECKED",
+    "risk": "C1 table candidate (OURS)",
+    "recheck": ""
+  },
+  {
+    "card": "gptb-cc-msb-event-table",
+    "tag": "UNCHECKED",
+    "risk": "C1 table candidate (OURS)",
+    "recheck": ""
+  },
+  {
+    "card": "gptb-dev-split-guard",
+    "tag": "UNCHECKED",
+    "risk": "C2 candidate (OURS)",
+    "recheck": "trust-recheck-gptb-dev-split-guard"
+  },
+  {
+    "card": "gptb-fabio-escalation-event-table",
+    "tag": "UNCHECKED",
+    "risk": "C1 table candidate (OURS)",
+    "recheck": ""
+  },
+  {
+    "card": "gptb-fabio-lvn-touch-event-table",
+    "tag": "UNCHECKED",
+    "risk": "C1 table candidate (OURS)",
+    "recheck": ""
+  },
+  {
+    "card": "gptb-forward-excursion-helper",
+    "tag": "UNCHECKED",
+    "risk": "C2 candidate (OURS)",
+    "recheck": "trust-recheck-gptb-forward-excursion-hel"
+  },
+  {
+    "card": "gptb-funding-extreme-event-table",
+    "tag": "UNCHECKED",
+    "risk": "C1 table candidate (OURS)",
+    "recheck": ""
+  },
+  {
+    "card": "gptb-malkan-rsi-event-table",
+    "tag": "UNCHECKED",
+    "risk": "C1 table candidate (OURS)",
+    "recheck": ""
+  },
+  {
+    "card": "gptb-rsi-divergence-event-table",
+    "tag": "UNCHECKED",
+    "risk": "C1 table candidate (OURS)",
+    "recheck": ""
+  },
+  {
+    "card": "gptb-rsi-reclaim-event-table",
+    "tag": "UNCHECKED",
+    "risk": "C1 table candidate (OURS)",
+    "recheck": ""
+  },
+  {
+    "card": "gptb-session-levels-event-table",
+    "tag": "UNCHECKED",
+    "risk": "C1 table candidate (OURS)",
+    "recheck": ""
+  },
+  {
+    "card": "gptb-session-momentum-event-table",
+    "tag": "UNCHECKED",
+    "risk": "C1 table candidate (OURS)",
+    "recheck": ""
+  },
+  {
+    "card": "gptb-turn-of-candle-event-table",
+    "tag": "UNCHECKED",
+    "risk": "C1 table candidate (OURS)",
+    "recheck": ""
+  },
+  {
+    "card": "gptb-volume-event-table",
+    "tag": "UNCHECKED",
+    "risk": "C1 table candidate (OURS)",
+    "recheck": ""
+  },
+  {
+    "card": "lab-data-pin-hash",
+    "tag": "UNCHECKED",
+    "risk": "C2 candidate (OURS)",
+    "recheck": "trust-recheck-lab-data-pin-hash"
+  },
+  {
+    "card": "lab-dax-net-fee-verdict",
+    "tag": "UNCHECKED",
+    "risk": "C2 candidate (OURS)",
+    "recheck": "trust-recheck-lab-dax-net-fee-verdict"
+  },
+  {
+    "card": "lab-machine-checks-extra",
+    "tag": "UNCHECKED",
+    "risk": "C2 candidate (OURS)",
+    "recheck": "trust-recheck-lab-machine-checks-extra"
+  },
+  {
+    "card": "lab-unpoison-lc-event-table",
+    "tag": "UNCHECKED",
+    "risk": "C1 table candidate (OURS)",
+    "recheck": ""
+  },
+  {
+    "card": "lc-event-table",
+    "tag": "UNCHECKED",
+    "risk": "C1 table candidate (OURS)",
+    "recheck": ""
+  },
+  {
+    "card": "q76-dev-ext-power-check",
+    "tag": "UNCHECKED",
+    "risk": "C2 candidate (OURS)",
+    "recheck": "trust-recheck-q76-dev-ext-power-check"
+  }
+]

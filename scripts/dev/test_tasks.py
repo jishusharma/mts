@@ -764,5 +764,152 @@ class ReviewGateTest(unittest.TestCase):
             d.cleanup()
 
 
+class ResultTrustTest(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.repo = Path(self.tmp.name)
+        (self.repo / 'base.py').write_text('v1\n', encoding='utf-8')
+        (self.repo / 'data.csv').write_text('t,x\n1,2\n', encoding='utf-8')
+        (self.repo / 'proof.md').write_text('independent check\n', encoding='utf-8')
+        self.base = good('BASE', state='done', scope_in=['base.py', 'data.csv'])
+        T.save(self.repo, self.base)
+        self.consumer = good('USE', scope_in=['card:BASE'], **{'class': 'C1'})
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def verify(self, tag='VERIFIED-C1'):
+        self.base['result_receipt'] = {'trust': T.make_result_trust(
+            self.base, tag, 'independent-model', 'medium', 'proof.md', repo=self.repo)}
+        T.save(self.repo, self.base)
+
+    def test_unchecked_refused_verified_c1_allowed(self):
+        self.assertTrue(T.result_trust_problems(self.consumer, self.repo))
+        self.verify()
+        self.assertEqual(T.result_trust_problems(self.consumer, self.repo), [])
+        self.assertTrue(T.result_trust_problems(dict(self.consumer, **{'class': 'C2'}), self.repo))
+        self.verify('VERIFIED-C2')
+        self.assertEqual(T.result_trust_problems(dict(self.consumer, **{'class': 'C2'}), self.repo), [])
+
+    def test_trust_expires_on_data_code_or_evidence_change(self):
+        for file in ('base.py', 'data.csv', 'proof.md'):
+            with self.subTest(file=file):
+                self.verify()
+                path = self.repo / file
+                original = path.read_bytes()
+                path.write_bytes(original + b'changed\n')
+                self.assertTrue(T.result_trust_problems(self.consumer, self.repo))
+                path.write_bytes(original)
+
+    def test_disputed_missing_malformed_or_weak_trust_fails_closed(self):
+        for tag in ('UNCHECKED', 'MACHINE-OK', 'DISPUTED'):
+            self.verify(tag)
+            self.assertTrue(T.result_trust_problems(self.consumer, self.repo))
+        self.verify()
+        for field in ('checker_model', 'effort', 'date', 'data_hash', 'code_revision', 'evidence'):
+            original = dict(self.base['result_receipt']['trust'])
+            self.base['result_receipt']['trust'][field] = ''
+            T.save(self.repo, self.base)
+            self.assertTrue(T.result_trust_problems(self.consumer, self.repo), field)
+            self.base['result_receipt']['trust'] = original
+        self.assertTrue(T.result_trust_problems(good(scope_in=['card:MISSING']), self.repo))
+
+    def test_citation_marks_base_shared_without_query_side_effects(self):
+        self.verify()
+        T.result_trust_problems(self.consumer, self.repo)
+        self.assertEqual(T.get(self.repo, 'BASE')['weight'], '')
+        T.mark_shared_bases(self.consumer, self.repo)
+        shared = T.get(self.repo, 'BASE')
+        self.assertEqual(shared['weight'], 'B-SHARED')
+        self.assertEqual(T.card_class(shared), 'C2')
+        self.assertEqual(shared['shared_consumers'], ['USE'])
+        self.assertEqual(T.result_trust_problems(self.consumer, self.repo), [])
+
+    def test_take_and_active_done_enforce_result_trust(self):
+        previous = T.REPO
+        T.REPO = self.repo
+        try:
+            T.save(self.repo, self.consumer)
+            rc, out = run_cli('take', 'USE')
+            self.assertNotEqual(rc, 0, out)
+            self.consumer['state'] = 'active'
+            T.save(self.repo, self.consumer)
+            rc, out = run_cli('done', 'USE', '--result', 'evidence')
+            self.assertNotEqual(rc, 0, out)
+            self.assertEqual(T.get(self.repo, 'USE')['state'], 'active')
+        finally:
+            T.REPO = previous
+
+    def test_directory_input_cannot_get_a_false_verified_pin(self):
+        (self.repo / 'data_dir').mkdir()
+        self.base['scope_in'] = ['data_dir/']
+        with self.assertRaisesRegex(ValueError, 'explicit file'):
+            self.verify()
+
+    def test_no_data_result_and_flow_data_scope_are_bound(self):
+        self.base['scope_in'] = ['base.py']
+        self.verify()
+        self.assertEqual(T.result_trust_problems(self.consumer, self.repo), [])
+        self.base['flow'] = {'data_scope': ['data.csv']}
+        self.base['flow_receipt'] = {'trust': T.make_result_trust(
+            self.base, 'VERIFIED-C1', 'independent-model', 'medium', 'proof.md', repo=self.repo)}
+        T.save(self.repo, self.base)
+        self.assertEqual(T.result_trust_problems(self.consumer, self.repo), [])
+        (self.repo / 'data.csv').write_text('changed', encoding='utf-8')
+        self.assertTrue(T.result_trust_problems(self.consumer, self.repo))
+
+    def test_flow_ready_and_active_close_require_trusted_base(self):
+        import lab_flow
+        for state in ('ready', 'active'):
+            c = dict(self.consumer, state=state, flow={'id': 'test-flow'})
+            T.save(self.repo, c)
+            with self.assertRaisesRegex(ValueError, 'UNCHECKED'):
+                lab_flow.finish(self.repo, 'USE', 'missing.md', 'PASS', 'receipt')
+            self.assertEqual(T.get(self.repo, 'USE')['state'], state)
+
+    def test_card_file_citation_and_changed_upstream_receipt_expire(self):
+        self.verify('VERIFIED-C2')
+        consumer = dict(self.consumer, scope_in=['MyTradingSys/system/tasks/BASE.json'])
+        self.assertEqual(T.result_trust_problems(consumer, self.repo), [])
+        self.base['result_receipt']['trust']['tag'] = 'DISPUTED'
+        T.save(self.repo, self.base)
+        self.assertTrue(T.result_trust_problems(consumer, self.repo))
+
+    def test_transitive_input_change_is_not_hidden_by_unchanged_card_json(self):
+        root = good('ROOT', state='done', scope_in=['base.py'])
+        root['result_receipt'] = {'trust': T.make_result_trust(
+            root, 'VERIFIED-C2', 'independent-model', 'high', 'proof.md', repo=self.repo)}
+        T.save(self.repo, root)
+        self.base['scope_in'] = ['card:ROOT']
+        self.verify()
+        self.assertEqual(T.result_trust_problems(self.consumer, self.repo), [])
+        (self.repo / 'base.py').write_text('new input code', encoding='utf-8')
+        self.assertTrue(T.result_trust_problems(self.consumer, self.repo))
+
+    def test_declared_flow_risk_class_requires_matching_result_trust(self):
+        self.verify()
+        consumer = dict(self.consumer, **{'class': 'C0'}, flow={'risk_class': 'C2'})
+        self.assertTrue(T.result_trust_problems(consumer, self.repo))
+
+    def test_flow_finish_defaults_to_unchecked_without_claiming_verification(self):
+        # The normal finish contract is tested in test_lab_flow; assert its receipt
+        # default here through the same fixture helpers, without a model call.
+        import lab_flow
+        previous = T.REPO
+        T.REPO = self.repo
+        try:
+            (self.repo / 'source.md').write_text('source', encoding='utf-8')
+            spec = {'id': 'trust-default', 'recipe': 'critical-audit', 'goal': 'check',
+                    'criteria': ['source checked'], 'scope_in': ['source.md']}
+            c = lab_flow.launch(self.repo, spec)[0]
+            proof = self.repo / T.LAB_REPORTS / 'flow.md'
+            proof.parent.mkdir(parents=True, exist_ok=True)
+            proof.write_text(c['id']+'\nC1: PASS\nsource.md:1\n', encoding='utf-8')
+            done = lab_flow.finish(self.repo, c['id'], str(proof.relative_to(self.repo)), 'PASS', 'evidence')
+            self.assertEqual(done['flow_receipt']['trust'], {'tag': 'UNCHECKED'})
+        finally:
+            T.REPO = previous
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-19T04:24:07Z",
   "commands": [],
   "created": "2026-10-18T19:30:00Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "sv3-ship-order-ticket",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "sync.py ship --after <slug> order tickets with lapsing + test_sync.py",
+      "ref": "05ece1fc",
+      "utc": "2026-10-19T04:24:07Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,7 +40,7 @@
   "refs": [
     "MyTradingSys/system/SUPERVISOR.md"
   ],
-  "result": "",
+  "result": "sync.py ship --after <slug> order tickets with lapsing + test_sync.py",
   "scope_in": [
     "scripts/dev/sync.py (ship: --after <slug> waits for that slug's release signal or 60 min, then ships)",
     "scripts/dev/test_sync.py"
@@ -48,12 +55,13 @@
   "sources": [
     "MyTradingSys/system/SUPERVISOR.md (design 2026-10-18)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read gate_slot and ship in sync.py; add --after <slug> that never holds a slot while waiting",
     "lapse on predecessor failure, missing note or 60 min",
     "diff-only review Agent before ship (gate change, SUPER_SESSION rule 11)"
   ],
+  "taken": "2026-10-19T04:24:07Z",
   "tests": "fake clock: predecessor shipped -> go; predecessor failed -> go; 60 min no signal -> go; waiting holds no slot; fail first on old code",
   "title": "Supervisor SV3: ship order tickets (after <slug>, cancellable, 60 min lapse) and ship --release in briefs",
   "weight": "CRUCIAL",
