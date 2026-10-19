@@ -4,36 +4,56 @@
   "commands": [],
   "created": "2026-10-18T21:14:01Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "apply_fast selects 3dl when non-test .py or ci.yml changes; 27 tests pass in test_gate_impact.py.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Fast ship gate (--fast) must include step 3dl (CI deps lint) whenever any .py file or ci.yml changes, preventing unvetted non-test third-party dependencies from breaking CI.",
   "id": "fast-gate-run-3dl-on-any-py-change",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Fast ship gate: import-graph test selection inside a 30 s budget, CI-red fix-first block",
+      "ref": "bd1b0c7da6cd",
+      "utc": "2026-10-18T18:29:57Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-19 T0-ONLY ROUTINE fix for Finding #1 in MTS_Doctor report 2026-10-19.",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
-  "refreshed": "2026-10-18T21:15:08Z",
+  "refined_by": "gemini-session-planner",
+  "refreshed": "2026-10-18T22:19:26Z",
   "refs": [
     "MyTradingSys/research/mts_doctor/REPORT_2026-10-19.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "scope_sha": "",
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "scripts/dev/run_all_tests.py",
+    "scripts/dev/test_gate_impact.py"
+  ],
+  "scope_out": [
+    "live path",
+    "gate_select.py"
+  ],
+  "scope_sha": "bd1b0c7da6cd",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/mts_doctor/REPORT_2026-10-19.md:24"
+  ],
+  "state": "ready",
+  "steps": [
+    "Add a test in scripts/dev/test_gate_impact.py verifying that apply_fast includes step 3dl when a non-test .py file or ci.yml is in files.",
+    "In scripts/dev/run_all_tests.py, update apply_fast around line 717 to check f.endswith('.py') or f.endswith('ci.yml') when selecting step 3dl.",
+    "Run python scripts/dev/test_gate_impact.py to confirm the fix passes."
+  ],
+  "tests": "python scripts/dev/test_gate_impact.py",
   "title": "Fast ship gate must run step 3dl (CI deps lint) whenever any .py or ci.yml changes, not only test files",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

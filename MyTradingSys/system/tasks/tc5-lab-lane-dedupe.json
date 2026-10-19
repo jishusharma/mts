@@ -1,0 +1,61 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T21:55:04Z",
+  "depends_on": [],
+  "done_when": "cards_worked_by_two_lanes is 0 in the next 24 h measure; shipped.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "72 h to 2026-10-18: 12 cards were worked by a Claude session and a lab lane (traffic.py measure cards_worked_by_two_lanes), e.g. tom-v2-btc-min-stop-width and gap-g1-prereg-power claimed on the Lenovo while gemini-nuc ran them; lab-formula-spec-text ran in codex and gemini.",
+  "id": "tc5-lab-lane-dedupe",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/role-hook-reach-2",
+      "ref": "d3573e2d0c04",
+      "utc": "2026-10-18T20:29:38Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T21:55:26Z",
+  "refs": [
+    "MyTradingSys/system/TRAFFIC_CONTROLLER.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "scripts/dev/gemini_queue.py",
+    "scripts/dev/codex_run.py",
+    "MyTradingSys/tests/"
+  ],
+  "scope_out": [
+    "the live tree",
+    "deploys",
+    "HALT files",
+    ".secrets/.env"
+  ],
+  "scope_sha": "d3573e2d0c04",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "tasks.py dispatch excludes a card with an open claim on trunk or a running gq/codex job (reason in `excluded`).",
+    "gemini_queue.py run and codex_run.py next refuse a card with an open claim by another session."
+  ],
+  "tests": "fixture: a claimed CODEX card is excluded from dispatch and refused by gemini_queue; fails before.",
+  "title": "One CODEX card runs in one lane: dispatch and gemini_queue skip claimed or running cards",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

@@ -1,4 +1,4 @@
-﻿"""Reusable lab flows: ordered lenses, evidence gates and economical context."""
+"""Reusable lab flows: ordered lenses, evidence gates and economical context."""
 import json
 import sys
 from pathlib import Path
@@ -91,7 +91,7 @@ def test_same_vendor_different_model_requires_c0_override(repo, monkeypatch):
 
 
 def test_hardened_vendor_gate_rejects_empty_case_alias_and_model_mismatch(repo, monkeypatch):
-    base = spec() | {"vendor_gate_hardened": True}
+    base = spec()
     recipe = [
         ("producer", "codex", "audit", "gpt-6.1-sol", "medium", "Producer."),
         ("challenge", "gemini", "audit", "gemini-2.5-pro", "low", "Reviewer."),
@@ -111,15 +111,104 @@ def test_hardened_vendor_gate_rejects_empty_case_alias_and_model_mismatch(repo, 
             F.launch(repo, base | {"id": flow_id, "recipe": "hardened-vendor-fixture"})
 
 
+def test_shipped_recipes_validate_unconditionally():
+    for name, stages in F.RECIPES.items():
+        validated = F.validate_hardened_recipe(stages)
+        assert len(validated) == len(stages)
+
+
 def test_hardened_vendor_gate_normalizes_case_vendor(repo, monkeypatch):
     recipe = [
         ("producer", " CODEX ", "audit", "gpt-6.1-sol", "medium", "Producer."),
         ("challenge", " GEMINI ", "audit", "gemini-2.5-pro", "low", "Reviewer."),
     ]
     monkeypatch.setitem(F.RECIPES, "normalized-vendor-fixture", recipe)
-    cards = F.launch(repo, spec() | {"id": "normalized-vendor", "recipe": "normalized-vendor-fixture",
-                                     "vendor_gate_hardened": True})
+    cards = F.launch(repo, spec() | {"id": "normalized-vendor", "recipe": "normalized-vendor-fixture"})
     assert [card["vendor"] for card in cards] == ["codex", "gemini"]
+
+
+def test_accepted_normalizes_vendor_and_model(repo, monkeypatch):
+    recipe = [
+        ("producer", " CODEX ", "audit", " GPT-6.1-SOL ", "medium", "Producer."),
+        ("challenge", " GEMINI ", "audit", " GEMINI-2.5-PRO ", "low", "Reviewer."),
+    ]
+    monkeypatch.setitem(F.RECIPES, "norm-accepted-fixture", recipe)
+    cards = F.launch(repo, spec() | {"id": "norm-accepted", "recipe": "norm-accepted-fixture"})
+    done = complete(repo, cards[0])
+    assert F.accepted(done, repo) is True
+
+
+def test_corrupted_recipe_row_post_launch_fails_closed_in_gate(repo, monkeypatch):
+    recipe = [
+        ("producer", "codex", "audit", "gpt-6.1-sol", "medium", "Producer."),
+        ("challenge", "gemini", "audit", "gemini-2.5-pro", "low", "Reviewer."),
+    ]
+    monkeypatch.setitem(F.RECIPES, "corrupt-recipe-fixture", recipe)
+    cards = F.launch(repo, spec() | {"id": "corrupt-recipe", "recipe": "corrupt-recipe-fixture"})
+    # On hardened flow / post-hardening, corrupting the recipe post-launch must fail closed
+    cards[0]["flow"]["vendor_gate_hardened"] = True
+    recipe[0] = ("producer", "", "audit", "gpt-6.1-sol", "medium", "Producer.")
+    errs = F.gate(cards[0], cards, repo)
+    assert any("recipe/stage is invalid" in e or "drifted" in e for e in errs)
+    # Also verify tasks.problems does not raise ValueError
+    prob = tasks.problems(cards[0], cards, repo=repo)
+    assert any("recipe/stage is invalid" in p or "drifted" in p for p in prob)
+
+
+def test_three_stage_recipe_stage3_matching_stage2_accepted(repo, monkeypatch):
+    recipe = [
+        ("producer", "codex", "audit", "gpt-6.1-sol", "medium", "Stage 1."),
+        ("reviewer", "gemini", "audit", "gemini-2.5-pro", "low", "Stage 2."),
+        ("verifier", "gemini", "audit", "gemini-2.5-pro", "low", "Stage 3."),
+    ]
+    monkeypatch.setitem(F.RECIPES, "three-stage-fixture", recipe)
+    cards = F.launch(repo, spec() | {"id": "three-stage", "recipe": "three-stage-fixture"})
+    assert len(cards) == 3
+    # Stage 3 producer_vendor comparison is against stage 1 (codex vs gemini), so stage 3 is accepted
+    assert not any("reviewer vendor must differ" in e for e in F.gate(cards[2], cards, repo))
+
+
+def test_v5_mutant_non_string_vendor_rejected():
+    with pytest.raises(ValueError, match="nonempty string"):
+        F.normalize_vendor(123)
+    with pytest.raises(ValueError, match="nonempty string"):
+        F.normalize_vendor(None)
+    with pytest.raises(ValueError, match="nonempty string"):
+        F.normalize_vendor(["codex"])
+
+
+def test_v5_mutant_empty_model_rejected():
+    stage = [("stage1", "codex", "audit", "", "low", "Lens")]
+    with pytest.raises(ValueError, match="nonempty string"):
+        F.validate_hardened_recipe(stage)
+    stage_whitespace = [("stage1", "codex", "audit", "   ", "low", "Lens")]
+    with pytest.raises(ValueError, match="nonempty string"):
+        F.validate_hardened_recipe(stage_whitespace)
+    stage_nonstring = [("stage1", "codex", "audit", 123, "low", "Lens")]
+    with pytest.raises(ValueError, match="nonempty string"):
+        F.validate_hardened_recipe(stage_nonstring)
+
+
+def test_v5_mutant_model_lowercase_required():
+    stage = [("stage1", "codex", "audit", "GPT-6.1-SOL", "low", "Lens")]
+    validated = F.validate_hardened_recipe(stage)
+    assert validated[0][3] == "gpt-6.1-sol"
+
+
+def test_v5_mutant_gate_normalized_allowlist_card_vendor_check(repo, monkeypatch):
+    recipe = [
+        ("producer", "codex", "audit", "gpt-6.1-sol", "medium", "Producer."),
+        ("challenge", "gemini", "audit", "gemini-2.5-pro", "low", "Reviewer."),
+    ]
+    monkeypatch.setitem(F.RECIPES, "norm-allowlist-fixture", recipe)
+    cards = F.launch(repo, spec() | {"id": "norm-allowlist", "recipe": "norm-allowlist-fixture"})
+    # Tamper card's vendor to non-normalized value
+    cards[0]["vendor"] = " CODEX "
+    errs = F.gate(cards[0], cards, repo)
+    assert any("flow vendor must use its normalized allowlisted value" in e or "drifted" in e for e in errs)
+    cards[0]["vendor"] = "unknownvendor"
+    errs = F.gate(cards[0], cards, repo)
+    assert any("flow vendor must use its normalized allowlisted value" in e or "recipe/stage is invalid" in e or "drifted" in e for e in errs)
 
 
 def test_same_vendor_override_is_c0_only_and_boolean(repo, monkeypatch):
@@ -128,34 +217,19 @@ def test_same_vendor_override_is_c0_only_and_boolean(repo, monkeypatch):
         ("challenge", "codex", "audit", "gpt-6-astra", "low", "Reviewer."),
     ]
     monkeypatch.setitem(F.RECIPES, "override-fixture", recipe)
-    # The opt-in contract flag must survive launch so gate checks cannot silently turn off.
-    monkeypatch.setitem(F.RECIPES, "override-crossvendor-fixture", [
-        ("producer", "codex", "audit", "gpt-6.1-sol", "medium", "Producer."),
-        ("challenge", "gemini", "audit", "gemini-2.5-pro", "low", "Reviewer."),
-    ])
-    baseline = F.launch(repo, spec() | {"id": "override-contract", "recipe": "override-crossvendor-fixture",
-                                       "vendor_gate_hardened": True})
-    assert baseline[0]["flow"]["vendor_gate_hardened"] is True
     for flow_id, risk, override in (("override-c1", "C1", True), ("override-string", "C0", "true")):
         flow_spec = spec() | {"id": flow_id, "recipe": "override-fixture", "risk_class": risk,
-                              "same_vendor_override": override, "vendor_gate_hardened": True}
+                              "same_vendor_override": override}
         with pytest.raises(ValueError):
             F.launch(repo, flow_spec)
 
     allowed = spec() | {"id": "override-c0", "recipe": "override-fixture", "risk_class": "C0",
-                        "same_vendor_override": True, "vendor_gate_hardened": True}
+                        "same_vendor_override": True}
     cards = F.launch(repo, allowed)
     assert cards[1]["flow"]["same_vendor_override"] is True
 
 
-def test_vendor_hardening_is_opt_in_and_critical_audit_restores_crucial(repo, monkeypatch):
-    recipe = [
-        ("producer", "codex", "audit", "gpt-6.1-sol", "medium", "Producer."),
-        ("challenge", "gemini", "audit", "gemini-2.5-pro", "low", "Reviewer."),
-    ]
-    monkeypatch.setitem(F.RECIPES, "opt-in-fixture", recipe)
-    cards = F.launch(repo, spec() | {"id": "opt-in-default", "recipe": "opt-in-fixture"})
-    assert "vendor_gate_hardened" not in cards[0]["flow"]
+def test_critical_audit_restores_crucial(repo):
     critical = F.launch(repo, spec() | {"id": "critical-flag", "recipe": "critical-audit"})
     assert all(card["crucial"] is True for card in critical)
 

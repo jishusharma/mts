@@ -1,36 +1,59 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python MyTradingSys/research/wavetrend_2026-10-17/repro_c1_spec_mismatch.py"
+  ],
   "created": "2026-10-18T16:17:41Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/wavetrend_2026-10-17/DISPOSITION_2026-10-19.md is shipped with C1 paired-pivot disposition, control-arm and manifest disposition, and VERDICTS.csv W04-W08 updated to INCONCLUSIVE per REGATE_AUDIT.md Q3.",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Reproduce research/wavetrend_2026-10-17/repro_c1_spec_mismatch.py; decide whether C1 needs paired confirmed WT pivots under the frozen spec (if yes, a new pre-registered trial card before any rerun); disposition the control-arm inference and raw-input manifest findings; write one repo-visible status note: current sha, source/parity implementation, BTC DEV results, data ranges, split/read status (no VALIDATION/HOLDOUT reads the pre-reg forbids).",
+  "goal": "Reproduce research/wavetrend_2026-10-17/repro_c1_spec_mismatch.py; decide whether C1 needs paired confirmed WT pivots under the frozen spec (if yes, a new pre-registered trial card before any rerun); disposition the control-arm inference and raw-input manifest findings; update VERDICTS.csv W04-W08 to INCONCLUSIVE per REGATE_AUDIT.md Q3; write one repo-visible status note.",
   "id": "wavetrend-audit-c1-disposition",
   "lane": "SONNET",
-  "layers": [],
+  "layers": [
+    "rsi"
+  ],
   "live_path": false,
   "mutation_check": "",
-  "note": "From desk rows 20261018-042354 and 20261018-042953 (JIS-NB, Claude) via Pipeliner 2026-10-18: one judgment card instead of two desk rows (ROUTING.md: build/review = card).",
+  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:results CLASS:C1 REVIEWER:none WEIGHT:IMPORTANT. Refined by gemini-yt-pipeliner from desk rows 20261018-042354 and 20261018-042953; T0 mechanical checks passed, awaiting non-Gemini Lab_Guy ACCEPT stamp for C1/IMPORTANT promotion.",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "gemini-yt-pipeliner",
+  "refreshed": "2026-10-18T21:03:00Z",
   "refs": [
-    "MyTradingSys/research/wavetrend_2026-10-17/AUDIT_2026-10-18.md"
+    "MyTradingSys/research/wavetrend_2026-10-17/AUDIT_2026-10-18.md",
+    "MyTradingSys/research/wavetrend_2026-10-17/repro_c1_spec_mismatch.py",
+    "MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/wavetrend_2026-10-17/AUDIT_2026-10-18.md",
+    "MyTradingSys/research/wavetrend_2026-10-17/repro_c1_spec_mismatch.py",
+    "MyTradingSys/research/wavetrend_2026-10-17/RESULT.md",
+    "MyTradingSys/research/VERDICTS.csv"
+  ],
+  "scope_out": [
+    "live tree",
+    "VALIDATION and HOLDOUT reads"
+  ],
+  "scope_sha": "60c1b88e5269",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/wavetrend_2026-10-17/AUDIT_2026-10-18.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "Run python MyTradingSys/research/wavetrend_2026-10-17/repro_c1_spec_mismatch.py and read AUDIT_2026-10-18.md.",
+    "Update VERDICTS.csv rows W04-W08 of wavetrend_2026-10-17 from FAIL to INCONCLUSIVE (cost 0.14, one_run yes) per REGATE_AUDIT.md Q3.",
+    "Write DISPOSITION_2026-10-19.md recording the C1 paired-pivot ruling, control-arm and input-manifest disposition, and current WaveTrend layer status."
+  ],
+  "tests": "python scripts/dev/verdicts.py check",
   "title": "WaveTrend: state report and disposition of AUDIT_2026-10-18 C1 + control-arm + manifest findings",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session",
+  "class": "C1"
 }

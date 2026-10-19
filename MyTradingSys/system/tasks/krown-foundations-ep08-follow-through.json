@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-18T21:00:08Z",
   "commands": [],
   "created": "2026-10-18T05:45:18Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "krown-foundations-ep08-follow-through",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "966d2607: EP08 folded into KROWN_RULES.csv as OBK (7 rules, 127 total, 0 dead pointers); 1",
+      "ref": "cbf5bae9",
+      "utc": "2026-10-18T21:00:08Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +45,7 @@
     "MyTradingSys/research/krown_ta101_2026-10-13/MANIFEST.csv",
     "MyTradingSys/research/krown_ta101_2026-10-13/tools/build_ledger.py"
   ],
-  "result": "",
+  "result": "966d2607: EP08 folded into KROWN_RULES.csv as OBK (7 rules, 127 total, 0 dead pointers); 17 hidden IDs re-checked 2026-10-18 still private",
   "scope_in": [
     "MyTradingSys/research/krown_ta101_2026-10-13/",
     "raw_transcripts_canonical/"
@@ -55,13 +62,14 @@
   "sources": [
     "ftK2BqggabQ"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read FOUNDATIONS_EP08_IMPLICATIONS.md and extracts/extract_ftK2BqggabQ.md (22 concepts, quote-gated).",
     "Add the EP08 rules to the data list in tools/build_ledger.py as a new family (suggest OBK): maker vs taker fee, spread/deep book, market orders move price and resting orders cannot, hidden size, spoofing, book = poor direction tool (REJECT for direction), 10-second habit (execution). Every row T3, n_videos 1 so PROVISIONAL, param_label SOURCED only with a quote. Rebuild; expect 0 dead pointers.",
     "For each id with status HIDDEN_UNAVAILABLE in MANIFEST.csv run: python -m yt_dlp --skip-download --print \"%(upload_date)s|%(duration)s|%(title)s\" https://www.youtube.com/watch?v=<id> (metadata only, no cookies). Public = extract it (fresh single-video worker, PROTOCOL.md s3, captions with --write-auto-subs --sub-langs en-orig, 429 = stop). Private = note the date.",
     "If EP09 is public, extract it the same way and add its rows; if not, leave this card open and re-check once a week."
   ],
+  "taken": "2026-10-18T21:00:08Z",
   "tests": "ledger check fails before the change and passes after: count of KROWN_RULES.csv rows citing K-ftK2BqggabQ is 0 before, at least 5 after, and build_ledger.py reports 0 dead source pointers; the two extract gates pass for every new extract.",
   "title": "Krown Foundations EP08 follow-through: fold the order-book extract into the ledger, re-check the 17 private playlist ids, extract EP09 when public",
   "weight": "ROUTINE",

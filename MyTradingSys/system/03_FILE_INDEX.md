@@ -524,9 +524,9 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | _archive/2026-10-15-scripts-dev/diff_tom_rows.py | tool | Month-by-month verdict-count diff of two Tom core BT row directories (read-only). | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-08 |
 | scripts/dev/bridge_selftest.ps1 | tool | Direct-mode end-to-end probe run through AIBridge: write/read/delete, sync.py news, paste pipeline parse, python; prints SELFTEST line, denial probes, and a numbered big-output block that measures the output cap. | MTS-2026-10-08-0806Z-APP-BLD-dsa-direct-mode | 2026-10-08 |
 | MyTradingSys/tests/test_dsa_direct_mode.py | test | Guards DSA direct mode: prompt section 0, no split rule, paste and news pipeline intact, sync.py news works in a live tree, size alarms above 250 KB, lane doc contract. | MTS-2026-10-08-0806Z-APP-BLD-dsa-direct-mode | 2026-10-08 |
-| scripts/dev/dsa_eval.py | tool | Scores DSA chat replies against 12 fixed failure scenarios (sheet/template/score); history in research/dsa_eval_history.jsonl. | MTS-2026-10-09-slim-boot-dsa-eval | 2026-10-09 |
-| scripts/dev/dsa_eval_scenarios.py | tool | The 12 DSA eval scenarios from B083/B101/B104/B132/B133 and LESSONS, with good and bad fixture replies. | MTS-2026-10-09-slim-boot-dsa-eval | 2026-10-09 |
-| MyTradingSys/tests/test_dsa_eval.py | test | Tests that every eval scenario's good reply passes and bad reply fails. | MTS-2026-10-09-slim-boot-dsa-eval | 2026-10-09 |
+| _archive/2026-10-19-scripts-dev/dsa_eval.py (archived 2026-10-19, never run) | tool | Scores DSA chat replies against 12 fixed failure scenarios (sheet/template/score); history in research/dsa_eval_history.jsonl. | MTS-2026-10-09-slim-boot-dsa-eval | 2026-10-09 |
+| _archive/2026-10-19-scripts-dev/dsa_eval_scenarios.py | tool | The 12 DSA eval scenarios from B083/B101/B104/B132/B133 and LESSONS, with good and bad fixture replies. | MTS-2026-10-09-slim-boot-dsa-eval | 2026-10-09 |
+| _archive/2026-10-19-scripts-dev/test_dsa_eval.py | test | Tests that every eval scenario's good reply passes and bad reply fails. | MTS-2026-10-09-slim-boot-dsa-eval | 2026-10-09 |
 
 | MyTradingSys/research/PRE_REG_OI_DIVERGENCE_2026-10-10.md | doc | Pre-registration for OI divergence, rule fixed before data, result appended (NO REPLICATION). | MTS-2026-10-10-1608Z-DSA-COO | 2026-10-10 |
 | MyTradingSys/research/oi_divergence_v2_2026-10-10.py | tool | Pre-registered OI divergence run: 15m bars, metrics OI, cost wiring, regime labels, 3-fold walk-forward. | MTS-2026-10-10-1608Z-DSA-COO | 2026-10-10 |

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-18T22:16:15Z",
   "commands": [],
   "created": "2026-10-18T19:30:00Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "sv4-builder-role-and-brief",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "roles/builder.md + supervisor.py brief + dispatch role field",
+      "ref": "d2527ece",
+      "utc": "2026-10-18T22:16:15Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +47,7 @@
   "refs": [
     "MyTradingSys/system/SUPERVISOR.md"
   ],
-  "result": "",
+  "result": "roles/builder.md + supervisor.py brief + dispatch role field",
   "scope_in": [
     "MyTradingSys/system/roles/builder.md (new)",
     "MyTradingSys/system/ROLES.md (Builder row)",
@@ -58,12 +65,13 @@
   "sources": [
     "MyTradingSys/system/SUPERVISOR.md (design 2026-10-18)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "builder.md: boot, no-questions rule, fail-first tests, ship once with --release, final report line 1 = banner, then Result and sha",
     "role_loader.py retoken + check",
     "brief prints the exact start_session text; dispatch adds role by lane/kind"
   ],
+  "taken": "2026-10-18T22:16:15Z",
   "tests": "brief for a fixture card contains 'You are Builder.' and the card id and no secrets path; dispatch role for a CODEX card is Lab_Guy; fail first",
   "title": "Supervisor SV4: roles/builder.md + supervisor.py brief <card> --role R + dispatch role field",
   "weight": "IMPORTANT",

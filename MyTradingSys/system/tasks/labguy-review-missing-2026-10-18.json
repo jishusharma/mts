@@ -1,11 +1,13 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python MyTradingSys/research/layer_lab/missing_2026-10-18_repro.py.txt"
+  ],
   "created": "2026-10-18T16:17:38Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Disposition note in MyTradingSys/research/lab_guy/ maps each finding in MISSING_2026-10-18.md to an existing shipped fix sha, an open ready card (e.g. lab-trust-tag, lab-review-gate-harden, lab-vendor-gate-harden2), or a new card.",
+  "est_turns": 15,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
@@ -15,22 +17,39 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "From desk row 20261018-041544 (JIS-NB, Claude) via Pipeliner 2026-10-18: lab work runs on the NUC (ROUTING.md). Lab_Guy class review.",
+  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:none CLASS:C1 REVIEWER:none WEIGHT:IMPORTANT. Refined by gemini-yt-pipeliner from desk row 20261018-041544; T0 mechanical checks passed, awaiting non-Gemini Lab_Guy ACCEPT stamp for C1/IMPORTANT promotion.",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "gemini-yt-pipeliner",
+  "refreshed": "2026-10-18T21:03:00Z",
   "refs": [
-    "MyTradingSys/research/layer_lab/MISSING_2026-10-18.md"
+    "MyTradingSys/research/layer_lab/MISSING_2026-10-18.md",
+    "MyTradingSys/research/layer_lab/missing_2026-10-18_repro.py.txt"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/MISSING_2026-10-18.md",
+    "MyTradingSys/research/layer_lab/missing_2026-10-18_repro.py.txt",
+    "MyTradingSys/research/lab_guy/"
+  ],
+  "scope_out": [
+    "live tree",
+    "VALIDATION and HOLDOUT reads"
+  ],
+  "scope_sha": "60c1b88e5269",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/MISSING_2026-10-18.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read MyTradingSys/research/layer_lab/MISSING_2026-10-18.md and run missing_2026-10-18_repro.py.txt against current trunk scripts/dev/lab_flow.py and tasks.py.",
+    "Check which findings are already fixed by lab-holdout-access-control, lab-weight-enforce, lab-vendor-gate-harden, or covered by ready cards (lab-review-gate-harden, lab-review-gate-harden2, lab-vendor-gate-harden2, lab-trust-tag).",
+    "Write a concise disposition table in MyTradingSys/research/lab_guy/ and file cards only for any uncovered defect."
+  ],
+  "tests": "python scripts/dev/test_lab_flow.py",
   "title": "Review MISSING_2026-10-18 lab-capability report and route residual defects",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent",
+  "class": "C1"
 }

@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-19T04:33:45Z",
   "commands": [
     "python scripts/dev/sync.py claim \"dsa-audit-08-split-trials\"",
     "python scripts/dev/tasks.py take dsa-audit-08-split-trials",
@@ -18,10 +20,18 @@
   "id": "dsa-audit-08-split-trials",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "BLOCKED full audit coverage: partial metadata report; 1 S1 default-phase risk, 2 S3 covera",
+      "ref": "6d797749",
+      "utc": "2026-10-19T04:33:45Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:results CLASS:C2 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report. WEIGHT:IMPORTANT audit; repo-doc analysis, no 1m data needed; moved to GPT lane 2026-10-17 (operator: use GPT)",
+  "note": "BLOCKED remaining audit: original runtime input manifests, per-study wrapped-loader windows, cross-format seal projection and full PRE_REG/parameter history remain required. Partial report shipped; not a completed audit. Follow-up t08-original-input-window-provenance.",
+  "pinned": false,
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
@@ -31,7 +41,7 @@
     "MyTradingSys/research/TRIAL_LEDGER.csv",
     "MyTradingSys/backtest/layers/run_t055.py"
   ],
-  "result": "",
+  "result": "BLOCKED full audit coverage: partial metadata report; 1 S1 default-phase risk, 2 S3 coverage/provenance gaps; 3 follow-ups; historical windows and true N unknown",
   "scope_in": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T08_split_trials.md and MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T08/ (new files only)",
     "read-only: repo code, result files, data under F:/MTS/data and Dumps (windows per brief section 5)"
@@ -46,7 +56,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Read MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md sections 1-7, then section 8 'T08' (full method).",
     "Static split map: every date filter and split constant under backtest/ and research/ with file:line.",
@@ -55,6 +65,7 @@
     "HOLDOUT seal: committed files with dates >= 2025-07-01 plus return columns (dates and column names only).",
     "True trial count per study from git history vs TRIAL_LEDGER.csv and trials files; haircut bar sqrt(2 ln N) vs t used."
   ],
+  "taken": "2026-10-19T04:29:22Z",
   "tests": "",
   "title": "DSA audit T08: split map, contamination calendar, HOLDOUT seal check and the true trial count",
   "weight": "CRUCIAL",

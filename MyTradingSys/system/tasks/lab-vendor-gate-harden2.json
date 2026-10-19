@@ -1,47 +1,72 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C2",
+  "closed": "2026-10-18T22:17:29Z",
   "commands": [],
   "created": "2026-10-18T05:33:10Z",
   "depends_on": [],
-  "done_when": "The named test passes and the report lists the changed files and the red-then-green test output (the runner's ship runs the quick gate).",
-  "est_turns": null,
+  "done_when": "Dated layer_lab/reports/<date>_lab-vendor-gate-harden2.md records V1-V6 regressions and per-guard killed mutants, fail-first output and changed file:line evidence. Executor final reply provides content commit SHA, empty git cherry origin/fast-track <sha>, and upstream git ls-tree -r origin/fast-track --name-only changed files and report.",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "close V1-V7 of MyTradingSys/research/lab_guy/findings/2026-10-19_review_harden_pair.md: vendor_gate_hardened default-off removed (always validate), gate() catches ValueError and fails closed, 7 test gaps closed",
+  "goal": "Close V1-V3 and V5 in the 2026-10-19 vendor review: make recipe validation unconditional, gate fail closed on ValueError, normalize accepted() vendor comparison, and kill all seven surviving V5 mutants. Lock V4/V6 behavior with regression checks; preserve shipped recipes and READY/ACTIVE contract.",
   "id": "lab-vendor-gate-harden2",
   "kind": "build",
   "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/lab_flow.py V1-V7 closed + test_lab_flow.py",
+      "ref": "0c0984af",
+      "utc": "2026-10-18T22:17:29Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tasks done/lab_flow finish accept ready cards that pass every gate (G1)",
+      "ref": "e2166cc3edcb",
+      "utc": "2026-10-18T17:07:05Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "mutation_check": "MyTradingSys/research/layer_lab/formula_spec_text/test_formula_spec.py::test_shuffled_rsi_closes_are_rejected",
-  "note": "",
+  "note": "REVIEWED:2026-10-19 ACCEPT GPT Luna independent brief review; one-mutant-at-a-time procedure fix applied. CRUCIAL/class=C2. Implementation remains UNCHECKED. Preserve recipes and READY/ACTIVE policy; normalize valid labels consistently.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-18T21:30:39Z",
   "refs": [],
-  "result": "",
+  "result": "scripts/dev/lab_flow.py V1-V7 closed + test_lab_flow.py",
   "scope_in": [
     "scripts/dev/lab_flow.py",
     "scripts/dev/test_lab_flow.py"
   ],
   "scope_out": [
-    "the live path",
-    "holdout reads",
-    "parameters without a trader quote (NO-SOURCE)"
+    "live path, holdout data, secrets, unrelated files",
+    "recipe redesign or changes to shipped recipe stages",
+    "changes to READY/ACTIVE state and receipt contract"
   ],
+  "scope_sha": "e2166cc3edcb",
   "size": "S",
-  "sources": [],
-  "state": "ready",
-  "steps": [
-    "Write the test named in Tests first and see it fail on the current code.",
-    "Implement the goal inside scope_in only; new behaviour sits behind a flag that is off by default.",
-    "Before finishing run `python scripts/dev/lookahead_lint.py --new`; fix FAIL hits on your files: write forward bars as zip(times, times[1:]), not times[i + 1]; a truly causal pair gets one reviewed row in scripts/dev/lookahead_allowlist.tsv (name it in scope_in).",
-    "Run the test file you changed (PYTHONPATH = the work tree root) until it passes. Do not run scripts/dev/run_all_tests.py: tests that create git repositories are refused in the sandbox; the runner runs the quick gate when it ships."
+  "sources": [
+    "MyTradingSys/research/lab_guy/findings/2026-10-19_review_harden_pair.md V1-V6",
+    "scripts/dev/lab_flow.py:154-163,188-217,246-249",
+    "scripts/dev/test_lab_flow.py:116-162"
   ],
-  "tests": "empty/unknown vendor, label/model mismatch and case variant are rejected on the DEFAULT path; each new test fails on current code first",
+  "state": "done",
+  "steps": [
+    "Add fail-first tests: default launch rejects empty/unknown vendors and vendor/model mismatches. Normalize valid case/whitespace variants consistently; reject aliases that bypass same-vendor separation. Validate all three shipped RECIPES unconditionally.",
+    "Test V2 by corrupting a recipe row after launch: gate returns an invalid-recipe error and tasks.problems does not raise. Test V3 with whitespace/case recipe labels through finish/accepted.",
+    "For each V5 guard retained in the final design, remove it alone on a scratch copy, run its named test and record the failing test. Cover flag-contract/bool checks, non-string vendor, empty model, model lower(), normalized allowlist and gate flag type. If a legacy flag is removed, document the obsolete mutant and prove no opt-in bypass remains.",
+    "Cover V4 explicitly: three-stage stage 3 matching stage 2 vendor remains accepted under the existing producer comparison. Cover V6: normalization, allowlist, model-prefix, launch/gate, same-vendor and crucial critical-audit checks remain effective.",
+    "Keep RECIPES and READY/ACTIVE/receipt contract unchanged. Implement only scope_in; run only the named test file, then report exact red/green output and required executor/upstream receipt evidence.",
+    "Write the dated Layer Lab report and verify delivery separately in executor final reply: content commit SHA, empty git cherry, and upstream git ls-tree changed files/report. Runner handles sandbox git."
+  ],
+  "taken": "2026-10-18T22:17:29Z",
+  "tests": "Fail-first tests for V1 default-path invalid vendors/model labels + all shipped recipes; V2 post-launch ValueError fails closed through gate/problems; V3 normalized accepted() through finish; V4 documented stage-3 behavior; V5 each of seven mutants listed in steps; V6 core checks and crucial flag regression.",
   "title": "Vendor gate hardening 2: make the hardening always on, no ValueError out of gate",
-  "weight": "",
-  "worker": ""
+  "weight": "CRUCIAL",
+  "worker": "session"
 }

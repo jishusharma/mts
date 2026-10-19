@@ -117,7 +117,7 @@ Which machine, login, lane and model may touch what: HOW_MTS_RUNS.md.
 Only one machine runs the live loop at a time (DEVICES section 3).
 
 ## Nothing left behind (operator 2026-10-15)
-A session ends with its tree clean and shipped: the Stop hook (`scripts/dev/stop_guard.py`) blocks one stop while it is not. `daily_hygiene.py` runs `sync.py tidy --apply` each morning (repairs case-broken HEADs, retires finished trees). Leftovers swept by hand are listed in LEFTOVERS_2026-10-15.md with the restore command.
+A session ends with its tree clean and shipped: the Stop hook (`scripts/dev/stop_guard.py`) blocks one stop while it is not. `sync.py tidy --apply` (repairs case-broken HEADs, retires finished trees) is run by hand or by the coordinator; its MTS-DailyHygiene schedule is RETIRED 2026-10-17 (SCHEDULING_POLICY.md). Leftovers swept by hand are listed in LEFTOVERS_2026-10-15.md with the restore command.
 
 ## Fallback if sync.py is broken (moved from CLAUDE.md Quick answers, 2026-10-15)
 Never from the live tree (the folder holding `.mts_live`). `git worktree add ../mts-push -b <host>/<slug> HEAD` (reuse it if present),
@@ -128,4 +128,4 @@ take origin's, regenerate), `python scripts/dev/run_all_tests.py --quick` there,
 ## Lane trees (operator q20, 2026-10-15)
 One persistent worktree per lane: JIS-NB `mts-app`, `mts-relay`, `mts-dsa`; NUC `mts-relay`. A task is a branch inside it (`sync.py start <slug>`), not a tree,
 so no stale per-session trees pile up (reason: 26 did on JIS-NB). `tidy` never removes a named lane tree, with or without `--all`. The turn cap
-for one task is 10 operator / 40 tool turns (CLAUDE.md SHORT SESSIONS, `turn_meter.py`). MTS-Backup still snapshots every tree every 15 minutes.
+for one task is 10 operator turns or the tool-turn cap (WORKERS.md rule 5, `turn_meter.py`). The MTS-Backup 15-minute snapshot is RETIRED 2026-10-17 (SCHEDULING_POLICY.md): nothing backs a tree up but `sync.py ship`.

@@ -1,10 +1,13 @@
 {
   "done_when": "Claude records an independent review result with evidence and any corrections or accepts the status note; no market outcomes are rerun.",
+  "finished": "2026-10-18T21:53:00Z",
   "from": "JIS-NUC",
+  "host": "DESKTOP-F7IU69N",
   "id": "20261018-212747-claude-priority-review-wavetrend-2026-10",
-  "need": "Read MyTradingSys/research/wavetrend_2026-10-17/STATUS_2026-10-19.md and AUDIT_2026-10-18.md; independently verify the C1 mismatch against ATLAS_STUDY_SPEC.md and PRE_REG.md, confirm the 7/2 treatment and paired-control/input-manifest blockers, review the new wavetrend family entry in system/layer_index.json and generated LAYERS.md, and return ACCEPT or exact corrections. Do not rerun outcomes or read VALIDATION/HOLDOUT. Operator asked to get this layer moving on priority.",
+  "need": "Read MyTradingSys/research/wavetrend_2026-10-17/DISPOSITION_2026-10-19.md, STATUS_2026-10-19.md and AUDIT_2026-10-18.md; independently verify the C1 mismatch against ATLAS_STUDY_SPEC.md and PRE_REG.md, confirm the W04-W08 INCONCLUSIVE metadata correction, review the paired-control/input-manifest blockers and the wavetrend family entry in layer_index.json/LAYERS.md, then return ACCEPT or exact corrections. Do not rerun outcomes or read VALIDATION/HOLDOUT. Operator asked to get this layer moving on priority.",
   "posted": "2026-10-18T21:27:47Z",
-  "status": "pending",
+  "result": "shipped e0ebe1cd: DISPOSITION_2026-10-19.md, STATUS_2026-10-19.md, wavetrend-c1-v2 and wavetrend-data-inference cards created",
+  "status": "done",
   "target": "JIS-NB",
   "title": "Claude priority review: WaveTrend 2026-10-19 MTS status and C1 disposition"
 }
