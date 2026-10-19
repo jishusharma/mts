@@ -5,27 +5,30 @@
   "created": "2026-10-19T14:44:55Z",
   "depends_on": [
     "rsi-deep-depth-map",
-    "rsi-deep-prob-tables"
+    "rsi-deep-prob-tables",
+    "rsi-deep-context-tables",
+    "rsi-deep-confirmations"
   ],
   "done_when": "",
   "est_turns": null,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Write research/rsi_deep_buy_2026-10-19/PRE_REG.md freezing the grid (entry arms E1/E2, exits X1-X6, ladders S0-S3, divergence TF D), verdict rules and trial rows from SPEC s2-s5 and the depth map, committed before any outcome file.",
+  "goal": "Write research/rsi_deep_buy_2026-10-19/PRE_REG.md freezing the grid (entry arms E1/E2, exits X1-X6, ladders S0-S3, divergence TF D), verdict rules and trial rows from SPEC s2-s5 and the depth map, committed before any outcome file. Scope change (OPUS_FRAMING s2.3): define E1/E2/E3 explicitly (SPEC refers to an undefined earlier draft); state the higher-TF alignment rule (last completed bar); cut the grid to Stage 0-3 survivors; X5 only as X3 + divergence; add bankroll cap B and capital-based catastrophe-exit control; regime split per year; survivorship assets.",
   "id": "rsi-deep-prereg",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator RSI deep-buy study 2026-10-19. Full design: MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md. Chain: depth-map -> prereg -> engine -> run-dev -> crossvendor review (Gemini) -> VALIDATION once. Raw: Session_Planner refines (done_when, steps, tests), Lab_Guy stamps C1+.",
+  "note": "Operator RSI deep-buy study 2026-10-19. Full design: MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md. Chain: depth-map -> prereg -> engine -> run-dev -> crossvendor review (Gemini) -> VALIDATION once. Raw: Session_Planner refines (done_when, steps, tests), Lab_Guy stamps C1+. OPUS_FRAMING.md (2026-10-20) changes scope/order: Stage 0 economic-floor kill test first, then depth map, hazard+context, confirmations, then prereg/engine. Cards stay raw.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
   "scope_in": [
-    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md"
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md"
   ],
   "scope_out": [],
   "size": "S",
