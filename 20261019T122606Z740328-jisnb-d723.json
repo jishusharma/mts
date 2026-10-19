@@ -1,0 +1,1 @@
+{"t": "20261019T122606Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship Result: role passes --login to tick; read_peers never lists the caller as missing; mts_signal budget reuses scripts/sched/budget.py home and the test asserts file contents; 27 tests pass."}
