@@ -106,3 +106,7 @@ Source: `live_mirror.py brief` + _mirror files, all `mirror@2026-10-17 07:11Z` (
 - Read: SHOT_f34fe84a244a.md (6 MATCH, 1 NOT_IN_DATA), tag NOTE. Last read id: f34fe84a244a. Open MISMATCH cards: none. HALT unchanged. Unfiled shots this turn: 8a7e1d0cfb99 (5m Bitstamp divergences, chat read only), 9b9c03952ae2 (5m prediction ask): classified, outcome note in chat.
 - 13:34 max-volume bar (495, delta -202, price -26, OI up) absorbed then failed; 13:37 +209 delta on 312 volume gained 55 pts then reversed; OI +394 in 13:30-13:40 with price down = new shorts. Open 13:30->13:40 -225 (down branch of the pre-open note). Card one-minute-absorption-and-thin-delta-bars.
 - Watch next: 82,092.1 (low so far 82,138.4) vs a 1m close over 82,369 with OI flat/falling.
+
+## 10-19 13:55Z 1m (dc0f695a740d, 8dc32fc2ff4e) mirror@2026-10-19 13:41Z
+- Read: SHOT_dc0f695a740d.md, SHOT_8dc32fc2ff4e.md, tag NOTE. Last read id: 8dc32fc2ff4e. HALT unchanged.
+- Bounce 82,138 -> 82,426.5 (13:48) on ~0 net delta and flat OI, rising-lows line broken 13:51, price 82,163; OI +494 since 13:20. Watch next: 82,092.1 / BB lower 82,137 hold with delta turning positive, or a 1m close under it with OI still up.
