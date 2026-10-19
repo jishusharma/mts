@@ -194,6 +194,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/system/NEXT_SESSION.md`
 - Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-18_one-timeframe-map-for-the-whole-toolchai.md`; `MyTradingSys/research/layer_lab/reports/2026-10-13_rv06-live-read-claims.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `review-statecode-backfill-gpt` ready p1 CODEX: GPT high cross-vendor code review of e4bcc09f: StateCodeEmitter kline backfill, fail-closed INVALID state, vwa
   - `indicator-values-multi-model-audit` ready p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by Haiku and Sonnet, plus GPT and D
   - `state-code-accumulator-backfill` ready p2 JIS-NB: StateCodeEmitter: backfill session CVD/cum_pv/cum_vol after restart and WS reconnect, fail closed on backfill 
   - `live-loop-timeouts-b191` refined p3 SONNET: Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)

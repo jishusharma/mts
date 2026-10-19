@@ -858,7 +858,8 @@ public class MarketDataSnapshot {
                 if (priorDayLow > 0 && l < priorDayLow) { lastSweepBelow = t; }
             }
         }
-        node.put("vwap_anchor_utc", nyOpenUtc.toInstant().toString());
+        // The VWAP is built from UTC 00:00 daily bars, so its anchor is the UTC day start (audit M3), not the NY open.
+        node.put("vwap_anchor_utc", now.truncatedTo(ChronoUnit.DAYS).toInstant().toString());
         node.put("initial_balance_window_minutes", 30);
         if (!seen) {
             node.put("open_price", 0.0);

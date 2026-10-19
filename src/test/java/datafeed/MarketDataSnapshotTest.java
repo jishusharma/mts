@@ -347,6 +347,17 @@ public class MarketDataSnapshotTest {
     }
 
     @Test
+    void liveSession_vwapAnchorIsUtcDayStartAndNeverInTheFuture() throws Exception {
+        // audit M3: the label was today's NY 09:30 in UTC (13:30Z), a future time for 00:00-13:30Z; the VWAP itself is UTC-day based.
+        StubClient s = stubWith(closedBars(nowMs(), 3, i -> 100.0, 10.0, 5.0));
+        Instant anchor = Instant.parse(live(s).get("session").get("vwap_anchor_utc").asText());
+        Instant now = Instant.now();
+        assertEquals(anchor.truncatedTo(java.time.temporal.ChronoUnit.DAYS), anchor);
+        assertTrue(!anchor.isAfter(now));
+        assertTrue(anchor.isAfter(now.minusSeconds(86_400)));
+    }
+
+    @Test
     void fetchHistoricalSnapshot_timestampIsAsOf() throws Exception {
         StubClient s = stubWith(closedBars(AS_OF.toEpochMilli(), 3, i -> 100.0, 10.0, 5.0));
         assertEquals("2026-10-01T12:00:00Z", historical(s).get("timestamp_utc").asText());
