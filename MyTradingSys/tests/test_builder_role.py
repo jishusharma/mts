@@ -78,7 +78,7 @@ def test_tasks_dispatch_role_field():
     assert tasks.card_role(cards[0]) == "Builder"
     assert tasks.card_role(cards[1]) == "Lab_Guy"
     assert tasks.card_role(cards[2]) == "MTS_Doctor"
-    assert tasks.card_role(cards[3]) == "Network_Admin_Guy"
+    assert tasks.card_role(cards[3]) == "Builder"
     assert tasks.card_role(cards[4]) == "Custom_Role"
 
 

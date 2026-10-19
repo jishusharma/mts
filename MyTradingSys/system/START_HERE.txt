@@ -1,0 +1,133 @@
+==============================================================
+ MTS - START HERE   (2026-10-19)   paste a line, get a role
+==============================================================
+
+HOW IT WORKS
+  Open a NEW session (Sonnet unless noted), paste ONE line below.
+  First reply must be a banner:  ROLE LOADED: <Name> vN ...
+  No banner / "ROLE NOT LOADED"  ->  close that session, open a new one.
+  Every role starts on ANY device and ANY login (only the notes differ).
+  Nothing starts by itself: you (or the Supervisor) start every session.
+
+--------------------------------------------------------------
+ WHAT DO I DO TODAY?
+--------------------------------------------------------------
+  Question / decision / new backlog idea .... Admin_Guy
+  Chart screenshot to read .................. Eagle_Eyes
+  Weekly meter says SPEND ................... Supervisor (super session)
+  Once a week, health check ................. MTS_Doctor
+  Everything else is on demand (bottom).
+
+--------------------------------------------------------------
+ 1. QUESTIONS, DECISIONS, BACKLOG IDEAS      any device, any login
+--------------------------------------------------------------
+  Model : Haiku 5.5, effort HIGH (set in the app composer)
+  Paste : You are Admin_Guy.
+          then type your question, decision or backlog idea
+  Gets  : answer from the repo; your decision recorded word for word;
+          a backlog idea becomes a scoped card, shipped, routed.
+  Limit : it never decides for you; fixes go up as a card.
+  Old names still work: Q&A_Helper, Network_Admin_Guy.
+
+--------------------------------------------------------------
+ 2. CHART SCREENSHOTS                         any device
+--------------------------------------------------------------
+  Paste : You are Eagle_Eyes.
+          then paste the screenshot
+  Gets  : market read vs live files, logged, flagged if they disagree.
+  Note  : full detail only on JIS-NB (live files live there).
+          Elsewhere it reads a copy stamped mirror@<utc> - check the age.
+
+--------------------------------------------------------------
+ 3. SUPER SESSION  (hours of parallel work)    any device, any login
+--------------------------------------------------------------
+  WHEN  : the weekly meter says SPEND (see "Budget" below).
+  Model : Sonnet (Opus only if you name it)
+  Paste : the block below, fill in the Goal line.
+  Then  : do nothing. It checks usage, plans, starts up to 4 workers,
+          ships, and leaves you one line at the end.
+  Do NOT open Supervisor / Session_Planner / Builder by hand.
+  Live-tree work and deploys are routed to JIS-NB by the coordinator.
+
+  ---- copy from here ----
+You are Supervisor. Coordinate one super session (MyTradingSys/system/SUPER_SESSION.md, SUPERVISOR.md) for hours with zero operator input except direction I give.
+Goal today: <ONE LINE: what you want done>.
+First turn: get_usage (THROTTLE -> tell me and stop), read STATUS.md and NEXT_SESSION.md, run the Session_Planner, pick the tasks that serve the goal.
+Spawn workers per WORKERS.md (session by default, Agent only for size S; Sonnet; Haiku for mechanical status), at most 4 running, each with a full brief: goal, files, DONE when, defaults for open questions, hard limits from CLAUDE.md. Workers never ask me; you decide toward the goal and log it.
+Rule 11: any diff touching the live path, gates, promote.py, prereg_gate.py or decision numbers gets an independent Sonnet review Agent (diff only, 5-line reply, 30k token cap) before ship.
+Rule 12: spend the window before it resets: remaining minutes / 40 = workers to launch, staggered, get_usage at each launch (weekly cap per login as in rule 12).
+Rule 13: a defect blocks only cards that read its output; release holds that name no defect.
+Rule 14: Session_Planner (roles/session_planner.md) as a foreground Sonnet Agent at boot and on each free slot; never dispatch raw/refined cards.
+Run sync.py ship in the background. Verify every ship with git cherry, mark finished workers completed, budget turns per WORKERS.md rule 5, hand the tail to a second coordinator per rule 5 above.
+End: drain, hand-over note with get_usage, one line to me.
+  ---- copy to here ----
+
+--------------------------------------------------------------
+ 4. HEALTH CHECK                               any device, about weekly
+--------------------------------------------------------------
+  Paste : You are MTS_Doctor.
+  Gets  : dated report in research/mts_doctor/, other-model checks.
+  Limit : at most one a day (a second writes a duplicate report).
+
+--------------------------------------------------------------
+ 5. ROUTING AND ALLOCATION (idle logins, stuck work)    one at a time
+--------------------------------------------------------------
+  Paste : You are Pipeliner.
+     or, inside any top-level session (not an Agent):  Start the Pipeliner.
+  Gets  : desk queue drained; every login/lane/queue allocated; no card
+          done twice; silent machine's work re-routed.
+  Note  : a trunk lease allows only one at a time (it refuses a second).
+          This role now includes the old Traffic_Controller.
+
+--------------------------------------------------------------
+ 6. LAB (GPT/Codex, Gemini)                    needs the NUC lab
+--------------------------------------------------------------
+  Paste : You are Lab_Guy.
+
+--------------------------------------------------------------
+ 7. ONLY WHEN BROKEN
+--------------------------------------------------------------
+  Page stale / links dead ... You are 1985Artifacts_Guy.
+                              (needs the jishusharma1985 login:
+                               it owns every page; republishes MTS Home)
+  Console flashes, hook or network fault ... You are Admin_Guy.
+                              (it triages; fixes go to a Builder card)
+
+--------------------------------------------------------------
+ BUDGET - is it SPEND?
+--------------------------------------------------------------
+  Each login has its own pool, readable only from inside a session
+  on that login (get_usage). No CLI route exists.
+  1. In a session on each login:  get_usage, then send
+       BUDGET login=<A|B|C> 5h=<n>% week=<n>% reset=<UTC>
+     (python scripts/dev/mts_signal.py send "BUDGET login=... ")
+  2. Anywhere:  python scripts/dev/traffic.py budget
+     -> SPEND / NORMAL / THROTTLE per login and overall.
+     Readings older than 6 h count as NORMAL. Nothing sends them
+     automatically yet: send one at the start of each session.
+
+--------------------------------------------------------------
+ DO THESE ONCE (yours, in the app sidebar)
+--------------------------------------------------------------
+  [ ] Rename pinned sessions:
+        Artifacts_Guy      -> 1985Artifacts_Guy
+        Q&A_Helper         -> Admin_Guy
+        Network_Admin_Guy  -> Admin_Guy (keep one)
+        Traffic_Controller -> Pipeliner (keep one)
+  [ ] Open 1985Artifacts_Guy on the jishusharma1985 login and say:
+        republish MTS Home   (Control Room, Layer Map also stale)
+  [ ] AIBridge 0.7.1 fix not installed: copy it, reload the extension
+        (DSA hands-free keeps stopping until you do).
+
+--------------------------------------------------------------
+ THE ROLES (7)
+--------------------------------------------------------------
+  1985Artifacts_Guy  Sonnet   pages          needs jishusharma1985 login
+  Admin_Guy          Haiku 5.5 high  questions, decisions, backlog, faults
+  Eagle_Eyes         Sonnet   screenshots    full detail on JIS-NB
+  Lab_Guy            Sonnet   GPT/Gemini lab needs the NUC lab
+  MTS_Doctor         Sonnet   weekly audit   one a day
+  Pipeliner          Sonnet   routing+alloc  one at a time (lease)
+  Supervisor         Sonnet   super session  one per super session
+  Inside the Supervisor (never call by hand): Session_Planner, Builder.
+==============================================================

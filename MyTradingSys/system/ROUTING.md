@@ -5,6 +5,7 @@ procedures (how to post a desk row, how the lab runs a card). Changes come from 
 (ROLES.md row Pipeliner); a change that alters how sessions behave also gets an ANNOUNCEMENTS.md entry and one signal line.
 
 ## Changes (newest first)
+- 2026-10-20 roles merged (DOCTOR-NB-1020): Traffic_Controller folded into Pipeliner (any device, one at a time by lease); Q&A_Helper + Network_Admin_Guy -> Admin_Guy (also takes BACKLOG intake: card via `tasks.py new`, lane per this table, one signal line); Artifacts_Guy -> 1985Artifacts_Guy; old names are aliases.
 - 2026-10-19 Pipeliner opening 5 (`DRAIN_2026-10-19.md` s4): decided C7 myself. The 7 DSA-NB audit rows stay on DSA-NB (not re-routed to cards); they wait on the 0.7.1 install and go to cards if still untaken 24 h after both installs. NUC copy of AIBridge reads 0.7.1; the `extension.pre_0.7.1` backup is missing (operator to confirm).
 - 2026-10-19 Pipeliner (operator: DSA stops between turns, hands-free unchecks): cause is that AIBridge v0.7.1 (3270e742, handsfree test 7/7) is on trunk but F:/AIBridge/extension is still 0.7.0 on NUC (NB row 20261018-170620 pending 12 h). Posted a JIS-NUC install row. C7 decision: the 7 DSA-NB audit rows stay on DSA lanes and resume after the install; if untaken 24 h after both installs, re-route to cards.
 - 2026-10-19 Pipeliner opening 4 (`DRAIN_2026-10-19.md` s3): sweep only, no row closed; 7 DSA-NB audit rows now 75 h untaken (C7 unchanged, operator answer still needed); raw card `rsi-cross-unmapped-and-pivot-stack` routed to lane SONNET, waits on a Lab_Guy ACCEPT (T0-ONLY stamps no longer pass the promote gate).
@@ -23,14 +24,14 @@ procedures (how to post a desk row, how the lab runs a card). Changes come from 
 | `codex_run.py tick / next` | CODEX-lane cards for GPT, one at a time (lab.lock), spend guard 10 runs per 5 h | the super-session coordinator on wake (no scheduler, SCHEDULING_POLICY.md) |
 | Signal (`mts_signal.py send --kind note|ask`) | one line between machines/logins; points to a desk row, card or board entry; never carries the task | every session (hook shows it within ~5 min) |
 | Board (ANNOUNCEMENTS.md) | durable INFO / DO-NOW / CONTINUE / HOLD / STOP for many sessions; STOP and HOLD need operator OK (PROPOSED until then) | every session at boot |
-| Control Room Inbox | the operator's questions and ideas; Q&A_Helper files decisions in OPERATOR_DECISIONS.md | Q&A_Helper; run-and-report items become desk rows, builds become cards |
+| Control Room Inbox | the operator's questions and ideas; Admin_Guy files decisions in OPERATOR_DECISIONS.md | Admin_Guy; run-and-report items become desk rows, builds become cards |
 
 ## The table
 | Kind of work | Machine | Channel | Model | Who checks |
 |---|---|---|---|---|
 | Live-path code (auto_trader, position manager, Java feeds, safety checks), new strategy logic, formula tests | any Claude machine (work tree) | card, lane SONNET (OPUS only per WORKERS.md rule 6) | Sonnet | diff-only review Agent before ship (SUPER_SESSION rule 11); CI |
 | Deploy to the live tree, process checks, HALT state reads | JIS-NB | desk row `--target JIS-NB` (or the NB coordinator's deploy step, DEPLOY_RUNBOOK.md) | Sonnet session on NB | operator for anything that restarts trading; coordinator checks health after |
-| Screenshot and chart reads, live-market watch | JIS-NB | Eagle_Eyes / live watcher session; `shot.py` | Sonnet | Eagle_Eyes logs each read; LAB-VERIFY items go on as below |
+| Screenshot and chart reads, live-market watch | JIS-NB (live files); any device via `live_mirror.py brief` (stale-stamped `mirror@<utc>`, no verdicts from STALE) | Eagle_Eyes / live watcher session; `shot.py` | Sonnet | Eagle_Eyes logs each read; LAB-VERIFY items go on as below |
 | Eye-read flag that needs a DEV-data check (LAB-VERIFY) | JIS-NUC | card in the lab (lane CODEX or SONNET, weight set), not a desk row (see conflict C4) | GPT luna / Sonnet | Lab_Guy class per `roles/lab_guy.md` |
 | Fetch of 1m klines / Dukascopy / anything needing NB disks or NB's open network | JIS-NB | desk row `--target JIS-NB` (Claude) or `--target DSA-NB` (DeepSeek) when commands are exact | Sonnet / DeepSeek | poster spot-checks one count |
 | Fetch of public data into F:/MTS/data (daily, 1h, funding, metrics) | JIS-NUC | desk row `--target DSA-NUC`, or a CODEX/SONNET card when a new script is needed | DeepSeek / Sonnet | poster spot-checks one count |
@@ -41,12 +42,12 @@ procedures (how to post a desk row, how the lab runs a card). Changes come from 
 | YouTube / video / transcript search and caption fetch | JIS-NUC (search) / JIS-NB (local Whisper ASR) | `gemini_queue.py` (Gemini search grounding, no anonymous yt-dlp loops that hit HTTP 429); local Whisper ASR (`asr_transcribe.py` on JIS-NB) for Hinglish/uncaptioned audio on disk; halt saturated Tom/Fabio/TA101 meta scraping (`GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md`) | Gemini Flash / faster-whisper | `verify_extract_quotes.py` on every extract; edge-before-extraction HTF pre-reg before new video batches |
 | Card refinement, ranking, weight tags, stale blocks | the machine with a running super session | Session_Planner pass inside the coordinator | Sonnet medium | the coordinator reads the dispatch table |
 | Scoped mechanical edits, lookups, registry upkeep, is-it-on-trunk checks | any | one-use Haiku Agent from the session that owns the task (max 5 at once; Pipeliner max 2) | Haiku | the session spot-checks one claim |
-| Docs, routing, board, desk drains | JIS-NUC (Pipeliner) | ROUTING.md, ANNOUNCEMENTS.md, desk rows, cards | Sonnet | operator for STOP/HOLD |
-| Published pages (MTS Home, Control Room, Layers, Research Map) | NB, home login | Artifacts_Guy; a desk row `--target JIS-NB` asks for it | Sonnet | Artifacts_Guy opens every link |
+| Docs, routing, board, desk drains, allocation across logins | any device (Pipeliner, one at a time by lease) | ROUTING.md, ANNOUNCEMENTS.md, desk rows, cards | Sonnet | operator for STOP/HOLD |
+| Published pages (MTS Home, Control Room, Layers, Research Map) | any device signed in as the jishusharma1985 login | 1985Artifacts_Guy; a desk row asks for it | Sonnet | 1985Artifacts_Guy opens every link |
 | claude.ai login-side jobs (routines, pages owned by one login) | the machine where that login is signed in | desk row `--target JIS-NUC` or `JIS-NB` naming the login; the operator does Share steps | Sonnet | operator |
-| AI health, process audit | NB, home login | MTS_Doctor (by hand) | Sonnet | Haiku + fresh Sonnet agents |
-| Console-window, launcher, network faults | the host it happens on | Network_Admin_Guy; card `Network:`; deploy by desk row `--target JIS-NB` | Sonnet | fail-first test |
-| Operator questions and decisions | any | Control Room Inbox -> Q&A_Helper -> OPERATOR_DECISIONS.md | Sonnet | operator decides |
+| AI health, process audit | any | MTS_Doctor (by hand) | Sonnet | Haiku + fresh Sonnet agents |
+| Console-window, launcher, network faults | the host it happens on | Admin_Guy (Part C); card `Network:`; deploy by desk row `--target JIS-NB` | Sonnet | fail-first test |
+| Operator questions and decisions | any | Control Room Inbox -> Admin_Guy -> OPERATOR_DECISIONS.md | Haiku 5.5 high; judgement goes up as a Sonnet card | operator decides |
 
 Rules that apply to every row: work in the printed worktree, never the live tree; share only by `sync.py ship`; no scheduler or routine starts
 anything (SCHEDULING_POLICY.md); cheapest first (T0 script, DeepSeek, Haiku, Sonnet; Opus only when the operator names it or WORKERS.md rule 6);

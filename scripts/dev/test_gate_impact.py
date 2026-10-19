@@ -1,6 +1,7 @@
 """Tests for gate_impact.py and the fast ship gate (GATE_SPEED.md X1-X6). Runs as a script (gate step 3gi): python scripts/dev/test_gate_impact.py"""
 import contextlib
 import io
+import json
 import subprocess
 import sys
 import tempfile
@@ -216,6 +217,30 @@ class FastPlan(unittest.TestCase):
         plan, mode, _ = self.select(["scripts/dev/sync.py"])
         self.assertEqual(mode, "full")
         self.assertFalse(rat.fast_applied)
+
+    def test_fast_gate_runs_3dl_on_any_py_or_ci_yml_change(self):
+        plan, mode, _ = self.select(["scripts/dev/nowin.py"])
+        self.assertEqual(mode, "smoke")
+        self.assertTrue(rat.fast_applied)
+        run_nums = [s.num for s in plan if not s.skip]
+        self.assertIn("3dl", run_nums)
+
+        plan_ci = rat.build_plan(True)
+        new_plan, _ = rat.apply_fast(plan_ci, [".github/workflows/ci.yml"], nums=[s.num for s in plan_ci], jobs=2)
+        ci_run_nums = [s.num for s in new_plan if not s.skip]
+        self.assertIn("3dl", ci_run_nums)
+
+    def test_save_record_stores_deferred_tests_list(self):
+        d = make_repo({"a.py": "x = 1\n"})
+        self.addCleanup(lambda: __import__("shutil").rmtree(d, ignore_errors=True))
+        git(d, "-c", "user.email=t@t", "-c", "user.name=t", "commit", "-q", "-m", "init")
+        plan = []
+        results = {}
+        deferred_tests = ["MyTradingSys/tests/test_foo.py", "scripts/dev/test_bar.py"]
+        ok = rat.save_record(plan, results, root=d, deferred=deferred_tests)
+        self.assertTrue(ok)
+        rec = json.loads(rat.record_path(d).read_text(encoding="utf-8"))
+        self.assertEqual(rec.get("deferred"), deferred_tests)
 
 
 def setattr_all(mod, names, values):
