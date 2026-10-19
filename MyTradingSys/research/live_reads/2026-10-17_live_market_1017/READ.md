@@ -114,3 +114,8 @@ Source: `live_mirror.py brief` + _mirror files, all `mirror@2026-10-17 07:11Z` (
 ## 10-19 14:03Z 1m flush (17ff48c5fcc4) mirror@2026-10-19 14:01Z
 - Read: SHOT_17ff48c5fcc4.md (5 MATCH, 1 NOT_IN_DATA), tag NOTE. Last read id: 17ff48c5fcc4. HALT unchanged.
 - 13:59-14:02 flush 82,110 -> 81,835 on 479 and 969 BTC, delta -216/-595, OI up (new shorts); rising-lows line and 82,092.1 lost. Watch next: 81,758 / 81,600 / 81,500; retest of 82,092 on low delta = failed retest.
+
+## 10-19 14:20Z 1m bounce (ddb385213d2d, f0a2811014b0) mirror@2026-10-19 14:16Z
+- Read: SHOT_ddb385213d2d.md, SHOT_f0a2811014b0.md (7 MATCH, 1 NOT_IN_DATA each), tag NOTE. Last read id: f0a2811014b0. HALT unchanged.
+- Flush low 81,724 (14:04; 14:03 absorption 889 BTC delta -66), bounce to 82,267.9 (14:15) with volume ramp and OI +814, RSI 21 -> 60.5; low-volume red after the BB tag held one bar (14:17 -458 on 629). Price 135 under VWAP 82,402. Card vwap-as-a-level-research-tom-fabio-analysts-web (DSA).
+- Watch next: BB mid 81,985 holds with delta positive, then VWAP 82,402 as the first real test; fail = back to 81,758/81,724.
