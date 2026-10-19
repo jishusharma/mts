@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-18T22:55:29Z",
   "commands": [],
   "created": "2026-10-18T17:23:02Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "ru6-lab-guy-content-bound-review-receipt",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "tasks.py content-bound review receipts + test_review_receipts.py",
+      "ref": "ce2ea0fd",
+      "utc": "2026-10-18T22:55:29Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,7 @@
   "refs": [
     "MyTradingSys/research/roles/ROLE_UPGRADES_2026-10-18.md"
   ],
-  "result": "",
+  "result": "tasks.py content-bound review receipts + test_review_receipts.py",
   "scope_in": [
     "scripts/dev/tasks.py",
     "MyTradingSys/tests/test_review_receipts.py"
@@ -44,7 +51,7 @@
   "scope_sha": "93560b51e352",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read tasks.py stamp_kind/needs_review",
     "Add hash fields to the stamp and verify on check/take",
@@ -52,6 +59,7 @@
     "Fixture tests for void/keep/self-review",
     "Run run_all_tests.py --quick, ship"
   ],
+  "taken": "2026-10-18T22:55:29Z",
   "tests": "MyTradingSys/tests/test_review_receipts.py",
   "title": "RU6 Lab_Guy: content-bound review receipts in tasks.py",
   "weight": "",
