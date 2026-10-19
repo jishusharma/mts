@@ -7,12 +7,12 @@
   ],
   "created": "2026-10-17T20:31:36Z",
   "depends_on": [],
-  "done_when": "StateCodeEmitterTest green incl. the new cases that fail on old code; replay CVD within 0.1 BTC of klines; no deploy by the builder. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
-  "est_turns": 30,
+  "done_when": "Tests a-f in the spec (done_when section) green, each failing on old code first: restart replaces stale sums, reconnect seam exact, API error/short list fails closed and recovers, continuous control exact, non-trade message ignored, same-tick replay CVD within 0.1 BTC. No deploy by the builder.",
+  "est_turns": 40,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "StateCodeEmitter loses ticks after a restart or WS reconnect: session CVD (-367 BTC off) and VWAP sums (26.8% volume missing) are partial-session values shown as session values. Backfill and fail closed on backfill error (audit M1/M2).",
+  "goal": "After a restart or WS reconnect re-seed session CVD/cum_pv/cum_vol from fapi 1m klines (UTC day start to last closed minute), stitched to live ticks with no double count or gap; while the backfill is missing or failed the accumulators are INVALID and their two signals are null (audit M1/M2).",
   "id": "state-code-accumulator-backfill",
   "lane": "JIS-NB",
   "latest": [
@@ -29,7 +29,7 @@
   ],
   "live_path": true,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C2 REVIEWER:GPT high cross-vendor code review before deploy WEIGHT:CRUCIAL. Live-path state feeding Tom; deploy only via DEPLOY_RUNBOOK.md by hand.",
+  "note": "REVIEWED:2026-10-19 ACCEPT REVIEWER:Lab_Guy-Sonnet-5.5 card=65edfdde166a scope=ccb222f04966 CLASS:C3 WEIGHT:CRUCIAL LAB:none Lab_Guy pass 2026-10-19 (Sonnet 5.5; reviewer differs from the Claude planner / Gemini producer). CLASS RAISED C2 -> C3: live_path true (tasks.py counts it C3) and state_code.json state feeds the loop's ADVERSE FLOW exit alerts (start-trading-day.ps1 ~655-665); weight stays CRUCIAL (alert input, not an order path). SPEC REVIEW (E1-E7): E4 done_when 'replay CVD within 0.1 BTC of klines' was untestable as worded: the audit control test shows tick-summed CVD differs from kline CVD by +2.27 BTC over 20 h with NO gap, so 0.1 BTC holds only on a fixture whose klines are built from the same ticks (now said) or when the backfill itself is kline-based (exact by construction). E3 risks the card did not name: double count or gap at the backfill/live seam; restored state_code.json sums being ADDED to (instead of replaced by) the backfill; the cvd slope ring seeing a restore jump as slope; onOpen has no gap handling today (reconnectBlocking reuses the object). All four are now steps and tests. 'Fail closed' was undefined: now = accumulators INVALID flag in state_code.json, cvd_slope and price_vs_vwap signals null (emitter already treats null as unavailable, MIN_SIGNALS=3 at StateCodeEmitter.java:51,244), partial sums never presented. Readers of state_code.json today use only state and timestamp_utc (live_mirror.py, check_live_health.py freshness, start-trading-day.ps1 staleness + ADVERSE FLOW), so adding keys is safe. Live-path checks present: restart/reset (mid-day restart), reconnect gap, API error, non-trade message, day rollover. OPEN ITEM, stated plainly: the non-Claude spec review that the C2/C3 table asks for was NOT run in this pass; Supervisor B's default covers the coordinator step and Lab_Guy stamps the spec (OURS), and the GPT-high cross-vendor CODE review before deploy stays REQUIRED and unchanged (Live-path state feeding Tom; deploy only via DEPLOY_RUNBOOK.md by hand, Java needs mvn compile and a restart window). DECISION (OURS): backfill source = fapi 1m klines (same venue as the WS, fstream.binance.com), because the audit control test shows quote-volume VWAP exact and kline volume within 0.001%. C3 coordinator step: approved by default by Supervisor B (login B), DECISION (OURS) 2026-10-19. SPEC FILE: MyTradingSys/system/card_specs/state-code-accumulator-backfill.md. | PRIOR: REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C2 REVIEWER:GPT high cross-vendor code review before deploy WEIGHT:CRUCIAL. Live-path state feeding Tom; deploy only via DEPLOY_RUNBOOK.md by hand.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -40,26 +40,29 @@
   "result": "",
   "scope_in": [
     "src/main/java/datafeed/StateCodeEmitter.java",
-    "src/test/java/datafeed/StateCodeEmitterTest.java"
+    "src/test/java/datafeed/StateCodeEmitterTest.java",
+    "src/main/java/datafeed/BinanceClient.java (read the klines call; extend only if the emitter cannot reuse it)",
+    "MyTradingSys/system/card_specs/state-code-accumulator-backfill.md (spec, read only)"
   ],
   "scope_out": [
     "MarketDataSnapshot.java",
     "order paths",
     "HALT files",
-    "live tree deploy"
+    "live tree deploy",
+    "vwap_anchor_utc label (separate card snapshot-vwap-anchor-label)"
   ],
   "scope_sha": "98b94b97f340",
   "size": "M",
   "sources": [],
   "state": "ready",
   "steps": [
-    "read audit M1/M2 and StateCodeEmitter.java:179-189,470-474",
-    "on start and on WS reconnect backfill session cvd, cum_pv, cum_vol from the UTC day start to now; if the backfill fails or is incomplete mark the state invalid (fail closed), never present partial sums",
-    "tests (each fails first on old code): restart mid-day, WS reconnect gap, backfill API error gives invalid state, non-trade balance move leaves sums unchanged",
-    "compare emitted CVD to klines on a replay fixture within 0.1 BTC"
+    "Read card_specs/state-code-accumulator-backfill.md first (design, seam, fail-closed meaning, test list), then the audit and StateCodeEmitter.java regions it names.",
+    "Write tests a-f first against an injectable klines seam; run on old code and see them fail.",
+    "Implement: kline backfill on start and every onOpen after a gap, tick buffering until the seam M, INVALID flag + null signals, cvd ring cleared, 30 s retry.",
+    "mvn -q test -Dtest=StateCodeEmitterTest; run_all_tests --quick; ship. Deploy by hand only after the GPT-high code review, in a restart window."
   ],
-  "tests": "StateCodeEmitterTest: restart, reconnect gap, API error fail-closed, continuous control exact",
+  "tests": "StateCodeEmitterTest: one test per done_when item a-f (restart, reconnect gap, API error fail-closed, continuous control, non-trade message, replay); klines source is an injectable seam, no network.",
   "title": "StateCodeEmitter: backfill session CVD/cum_pv/cum_vol after restart and WS reconnect, fail closed on backfill error (audit M1/M2)",
-  "weight": "CRUCIAL",
+  "weight": "B-SHARED",
   "worker": "session"
 }

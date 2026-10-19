@@ -10,7 +10,7 @@
   "goal": "Validate the tom_bt simulator end to end: a planted edge must be recovered, a fee-including null must give the negative net the fees imply, and the trade list must equal a hand-built expected list (operator q16).",
   "id": "simulator-validation-planted-edge",
   "kind": "build",
-  "lane": "SONNET",
+  "lane": "CODEX",
   "latest": [
     {
       "auto": true,
@@ -28,12 +28,6 @@
   "refined_by": "",
   "refreshed": "2026-10-17T20:21:23Z",
   "refs": [],
-  "reroute": {
-    "at": "2026-10-19T14:25:18Z",
-    "from": "CODEX",
-    "to": "SONNET",
-    "why": "heartbeat"
-  },
   "result": "",
   "scope_in": [
     "MyTradingSys/backtest/test_sim_planted_edge.py (new)",
