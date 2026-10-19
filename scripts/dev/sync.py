@@ -969,7 +969,8 @@ QUIET_KEEPS = ("lane", "hand-named")  # decided by the name alone: counted, neve
 # staging dirs) is the desktop live state, re-pulled by `sync.py start` / `live_mirror.py brief`; .pytest_tmp/ and .codex/
 # are test-runner and tool droppings. All three are in .gitignore, so `status --ignored` lists them in every tree.
 REGENERABLE = ("__pycache__/", ".pytest_cache/", ".pyc", " target/", ".claude/settings.local.json", "runtime_data/control_room/",
-               "journal/ACCOUNT_DAILY_LOSS.jsonl", "runtime_data/_mirror", ".pytest_tmp/", ".codex/")
+               "journal/ACCOUNT_DAILY_LOSS.jsonl", "runtime_data/_mirror", ".pytest_tmp/", ".codex/",
+               "runtime_data/gate_timing.jsonl")
 
 
 def holds_files(root, rel):

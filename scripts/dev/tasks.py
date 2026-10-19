@@ -20,6 +20,7 @@ Process, roles and triggers: MyTradingSys/system/TASK_REFINEMENT.md. Card text i
 that changes a card regenerates that page.
 """
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -34,7 +35,7 @@ REPO = Path(__file__).resolve().parents[2]
 DIR = "MyTradingSys/system/tasks"
 BUGS = "MyTradingSys/research/BUGS.md"
 LAYER_INDEX = "MyTradingSys/system/layer_index.json"
-MUTATING = ("new", "check", "take", "tried", "done", "apply-op", "sweep", "flag", "tag", "stale")
+MUTATING = ("new", "fill", "check", "take", "tried", "done", "apply-op", "sweep", "flag", "tag", "stale")
 
 STATES = ("raw", "refined", "ready", "active", "blocked", "done", "dropped")
 LIVE = ("ready", "active")                      # states that must satisfy the Definition of Ready
@@ -213,6 +214,21 @@ def problems(card, cards=None, reg=None, repo=None):
                     p.append(f"formula id {fid!r} not found in {FORMULAS}")
         except OSError:
             p.append(f"formula source missing: {FORMULAS}")
+    holdouts = []
+    if card.get("holdout_path"):
+        holdouts.append(card["holdout_path"])
+    if card.get("holdout"):
+        holdouts.append(card["holdout"])
+    if isinstance(card.get("holdout_paths"), list):
+        holdouts.extend(card["holdout_paths"])
+    for hp in holdouts:
+        h_path = (repo / hp) if not Path(hp).is_absolute() else Path(hp)
+        if not h_path.exists():
+            p.append(f"holdout path {hp!r} not found")
+    if holdouts and not card.get("split_dates") and not card.get("split_date") and not card.get("split"):
+        p.append("split dates is empty")
+    elif "split_dates" in card and not card.get("split_dates"):
+        p.append("split dates is empty")
     if card.get("lane") == "CODEX" and card.get("kind") == "run":
         try:
             if not RUNS_JSONL.is_file():
@@ -295,6 +311,23 @@ def problems(card, cards=None, reg=None, repo=None):
     if card.get("flow"):
         import lab_flow
         p += lab_flow.gate(card, card_list, REPO)
+    receipt = card.get("review_receipt") or card.get("review_stamp")
+    if isinstance(receipt, dict):
+        reviewer = str(receipt.get("reviewer") or "").strip()
+        producer = str(receipt.get("producer") or card.get("producer") or card.get("refined_by") or card.get("worker") or "").strip()
+        if reviewer and producer and reviewer.casefold() == producer.casefold():
+            p.append(f"producer {producer!r} cannot self-review")
+        elif reviewer.casefold() in {"self", "producer"}:
+            p.append("producer cannot self-review")
+        if stamp_kind(card, repo) != "real":
+            p.append("review receipt voided: scope or card changed after review")
+    elif card.get("note"):
+        note = card["note"]
+        for m in REVIEWED_RE.finditer(note):
+            reviewer = m.group(1).strip("<>[](){}.,:;").casefold()
+            producer = str(card.get("producer") or card.get("refined_by") or "").strip().casefold()
+            if producer and reviewer == producer:
+                p.append(f"producer {producer!r} cannot self-review")
     if len(brief(card).splitlines()) > MAX_BRIEF:
         p.append(f"brief is over {MAX_BRIEF} lines: fewer steps or split the card")
     return sorted(set(p))
@@ -432,6 +465,50 @@ def cmd_new(a):
     print(f"wrote {save(REPO, card)} (state raw; refine it, then `tasks.py check {cid}`)")
 
 
+def cmd_fill(a):
+    c = get(REPO, a.id)
+    if a.size:
+        c["size"] = a.size
+    if a.worker:
+        c["worker"] = a.worker
+    if a.est_turns is not None:
+        c["est_turns"] = a.est_turns
+    if a.goal is not None:
+        c["goal"] = a.goal
+    if a.done_when is not None:
+        c["done_when"] = a.done_when
+    if a.tests is not None:
+        c["tests"] = a.tests
+    if a.scope_in is not None:
+        c["scope_in"] = a.scope_in
+    if a.scope_out is not None:
+        c["scope_out"] = a.scope_out
+    if a.steps is not None:
+        c["steps"] = a.steps
+    if a.commands is not None:
+        c["commands"] = a.commands
+    if a.sources is not None:
+        c["sources"] = a.sources
+    if a.refs is not None:
+        c["refs"] = a.refs
+    if a.layers is not None:
+        c["layers"] = a.layers
+    if a.weight is not None:
+        c["weight"] = a.weight
+    if a.lane is not None:
+        c["lane"] = a.lane
+    if a.formula_id is not None:
+        c["formula_id"] = a.formula_id
+    if a.holdout_path is not None:
+        c["holdout_path"] = a.holdout_path
+    if a.split_dates is not None:
+        c["split_dates"] = a.split_dates
+    if a.note is not None:
+        c["note"] = a.note
+    save(REPO, c)
+    return cmd_check(argparse.Namespace(id=c["id"], demote=False))
+
+
 def cmd_check(a):
     cards = load_all(REPO)
     reg = registry(REPO)
@@ -439,9 +516,11 @@ def cmd_check(a):
     for c in cards:
         if (a.id and c["id"] != a.id) or c["state"] not in ("raw", "refined", "ready", "active"):
             continue
-        miss = problems(c, cards, reg)
+        miss = problems(c, cards, reg, repo=REPO)
         if not miss and c["state"] in ("raw", "refined"):
-            miss = promotion_problems(c)
+            miss = promotion_problems(c, repo=REPO)
+        elif not miss and c["state"] in LIVE and needs_review(c) and stamp_kind(c, repo=REPO) != "real":
+            miss = ["review stamp voided or missing: scope or card changed after review"]
         if not miss:
             if c["state"] in ("raw", "refined"):
                 c.update(state="ready", asks="")
@@ -455,14 +534,15 @@ def cmd_check(a):
                 if late or a.id:
                     print(f"{c['id']}: {c['state']} and passes" + (f" but STALE: {late}" if late else ""))
         elif a.id or c["state"] in LIVE:
-            bad += c["state"] in LIVE
+            bad += 1 if a.id else (c["state"] in LIVE)
             if c["state"] in LIVE and a.demote:
                 c["state"] = "refined"
                 save(REPO, c)
             print(f"{c['id']}: NOT READY ({c['state']}): " + "; ".join(miss))
         elif c["state"] == "raw" and a.id:
+            bad += 1
             print(f"{c['id']}: raw: " + "; ".join(miss))
-    return 1 if bad and not a.id else 0
+    return 1 if bad else 0
 
 
 def cmd_lint(a):
@@ -557,30 +637,179 @@ def cmd_stale(a):
 REVIEW_WEIGHTS = ("CRUCIAL", "CRITICAL")   # lab_guy v3.1: these weights (or class C2/C3) need a real review stamp before start and finish
 SOFT_WEIGHTS = ("IMPORTANT",)              # IMPORTANT / class C1: a real review stamp is needed to be PROMOTED to ready (`check`), not to be taken
 # Two stamp formats are in use: planner `REVIEWED:<date> <ACCEPT|T0-ONLY>` (session_planner.md) and legacy `REVIEWED: <who> <date>`.
-STAMP_PLAN_RE = re.compile(r"^REVIEWED:\s*(\d{4}-\d{2}-\d{2})\s+(ACCEPT|T0-ONLY)(?:\s|$)", re.I | re.M)
-REVIEWED_RE = re.compile(r"^REVIEWED:\s+(?!\d{4}-\d{2}-\d{2})(\S+)\s+(\d{4}-\d{2}-\d{2})(?:\s|$)", re.I | re.M)
+STAMP_PLAN_RE = re.compile(r"^REVIEWED:[ \t]*(\d{4}-\d{2}-\d{2})[ \t]+(ACCEPT|T0-ONLY)(?:[ \t]|$)", re.I | re.M)
+REVIEWED_RE = re.compile(r"^REVIEWED:[ \t]+(?!\d{4}-\d{2}-\d{2})(\S+)[ \t]+(\d{4}-\d{2}-\d{2})(?:[ \t]|$)", re.I | re.M)
 HOLD_RE = re.compile(r"HOLD[ :]+(A-\d{8}-\d+)")
 HOLD_CLEARED_RE = re.compile(r"HOLD-CLEARED[ :]+(A-\d{8}-\d+)")
 
 
-def stamp_kind(card):
-    """'real' (a reviewer or ACCEPT stamp), 't0' (T0-ONLY: machine checks only, no reviewer ran) or '' (none)."""
+def review_hashes(card, repo=None):
+    """Compute content hashes of card, code, spec, data, and scope files."""
+    repo = Path(repo or REPO)
+    contract_fields = {k: card.get(k) for k in (
+        "id", "title", "goal", "scope_in", "scope_out", "steps", "commands",
+        "tests", "done_when", "weight", "lane", "size", "kind", "formula_id",
+        "formula_ids", "holdout_path", "split_dates"
+    ) if k in card}
+    card_hash = hashlib.sha256(json.dumps(contract_fields, sort_keys=True).encode("utf-8")).hexdigest()[:12]
+
+    file_hashes = {}
+    code_files = {}
+    spec_files = {}
+    data_files = {}
+    for s in card.get("scope_in", []):
+        t = str(s).split()[0].rstrip(",;") if str(s).strip() else ""
+        t = re.sub(r":\d[\d,\-]*$", "", t).rstrip("/")
+        if not t:
+            continue
+        p = (repo / t) if not Path(t).is_absolute() else Path(t)
+        if p.is_file():
+            h = hashlib.sha256(p.read_bytes()).hexdigest()[:12]
+            file_hashes[t] = h
+            ext = p.suffix.lower()
+            if ext in (".py", ".java", ".ts", ".js", ".c", ".cpp", ".sh"):
+                code_files[t] = h
+            elif ext in (".md", ".txt", ".rst") or "spec" in t.lower():
+                spec_files[t] = h
+            elif ext in (".csv", ".json", ".npz", ".parquet", ".zip", ".dat") or "data" in t.lower():
+                data_files[t] = h
+
+    scope_hash = hashlib.sha256(json.dumps(file_hashes, sort_keys=True).encode("utf-8")).hexdigest()[:12]
+    code_hash = hashlib.sha256(json.dumps(code_files, sort_keys=True).encode("utf-8")).hexdigest()[:12] if code_files else ""
+    spec_hash = hashlib.sha256(json.dumps(spec_files, sort_keys=True).encode("utf-8")).hexdigest()[:12] if spec_files else ""
+    data_hash = hashlib.sha256(json.dumps(data_files, sort_keys=True).encode("utf-8")).hexdigest()[:12] if data_files else ""
+
+    try:
+        lc = TS.last_change(repo, TS.scope_paths(card, repo)) if hasattr(TS, "last_change") else None
+        scope_sha = lc[0] if lc else ""
+    except Exception:
+        scope_sha = ""
+
+    return {
+        "card": card_hash,
+        "scope": scope_hash,
+        "code": code_hash,
+        "spec": spec_hash,
+        "data": data_hash,
+        "scope_sha": scope_sha,
+        "files": file_hashes,
+    }
+
+
+def make_review_receipt(card, reviewer, repo=None, date=None, producer=None):
+    """Create a content-bound review receipt dict recording hashes of card, spec, data and code."""
+    repo = Path(repo or REPO)
+    date_str = date or now()[:10]
+    hashes = review_hashes(card, repo)
+    receipt = {
+        "reviewer": reviewer,
+        "date": date_str,
+        "card_hash": hashes["card"],
+        "scope_hash": hashes["scope"],
+        "code_hash": hashes["code"],
+        "spec_hash": hashes["spec"],
+        "data_hash": hashes["data"],
+        "scope_sha": hashes["scope_sha"],
+        "files": hashes["files"],
+    }
+    prod = producer or card.get("producer") or card.get("refined_by")
+    if prod:
+        receipt["producer"] = prod
+    return receipt
+
+
+def stamp_kind(card, repo=None):
+    """'real' (a verified review stamp), 't0' (T0-ONLY: machine checks only, no reviewer ran) or '' (none/void/rejected)."""
+    repo = Path(repo or REPO)
     note = str(card.get("note") or "")
+    receipt = card.get("review_receipt") or card.get("review_stamp")
+
+    if isinstance(receipt, dict):
+        reviewer = str(receipt.get("reviewer") or "").strip()
+        producer = str(receipt.get("producer") or card.get("producer") or card.get("refined_by") or "").strip()
+        producer_ids = {str(card.get(k) or "").strip().casefold() for k in ("producer", "producer_model", "vendor", "model", "worker", "refined_by", "author") if card.get(k)}
+        if producer:
+            producer_ids.add(producer.casefold())
+        if not reviewer or reviewer.casefold() in {"", "x", "self", "producer", "reviewer", "pending", "unknown"} or reviewer.casefold() in producer_ids:
+            return ""
+        cur = review_hashes(card, repo)
+        if receipt.get("card_hash") and receipt["card_hash"] != cur["card"]:
+            return ""
+        if receipt.get("scope_hash") and receipt["scope_hash"] != cur["scope"]:
+            return ""
+        if receipt.get("code_hash") and cur.get("code") and receipt["code_hash"] != cur["code"]:
+            return ""
+        if receipt.get("spec_hash") and cur.get("spec") and receipt["spec_hash"] != cur["spec"]:
+            return ""
+        if receipt.get("data_hash") and cur.get("data") and receipt["data_hash"] != cur["data"]:
+            return ""
+        if receipt.get("scope_sha") and cur.get("scope_sha") and receipt["scope_sha"] != cur["scope_sha"]:
+            return ""
+        if receipt.get("files"):
+            for fpath, fhash in receipt["files"].items():
+                if cur.get("files", {}).get(fpath) != fhash:
+                    return ""
+        return "real"
+
     for m in STAMP_PLAN_RE.finditer(note):
         try:
             datetime.strptime(m.group(1), "%Y-%m-%d")
         except ValueError:
             continue
-        return "t0" if m.group(2).upper() == "T0-ONLY" else "real"
+        if m.group(2).upper() == "T0-ONLY":
+            return "t0"
+        m_rev = re.search(r"\b(?:reviewer|by)\s*[:=]\s*(\S+)\b", note, re.I)
+        if m_rev:
+            rev = m_rev.group(1).strip("<>[](){}.,:;").casefold()
+            producer_ids = {str(card.get(k) or "").strip().casefold() for k in ("producer", "producer_model", "vendor", "model", "worker", "refined_by", "author") if card.get(k)}
+            if rev in producer_ids or rev in {"self", "producer"}:
+                return ""
+        cur = review_hashes(card, repo)
+        m_scope = re.search(r"\b(?:scope|scope_hash)=([a-f0-9]+)\b", note, re.I)
+        if m_scope and m_scope.group(1).lower() != cur["scope"].lower():
+            return ""
+        m_card = re.search(r"\b(?:card|card_hash)=([a-f0-9]+)\b", note, re.I)
+        if m_card and m_card.group(1).lower() != cur["card"].lower():
+            return ""
+        m_code = re.search(r"\b(?:code|code_hash)=([a-f0-9]+)\b", note, re.I)
+        if m_code and m_code.group(1).lower() != cur.get("code", "").lower():
+            return ""
+        m_spec = re.search(r"\b(?:spec|spec_hash)=([a-f0-9]+)\b", note, re.I)
+        if m_spec and m_spec.group(1).lower() != cur.get("spec", "").lower():
+            return ""
+        m_data = re.search(r"\b(?:data|data_hash)=([a-f0-9]+)\b", note, re.I)
+        if m_data and m_data.group(1).lower() != cur.get("data", "").lower():
+            return ""
+        return "real"
+
     for m in REVIEWED_RE.finditer(note):
         reviewer = m.group(1).strip("<>[](){}.,:;").casefold()
         try:
             datetime.strptime(m.group(2), "%Y-%m-%d")
         except ValueError:
             continue
-        producer_ids = {str(card.get(k) or "").strip().casefold() for k in ("producer", "producer_model", "vendor", "model", "worker", "refined_by")}
+        producer_ids = {str(card.get(k) or "").strip().casefold() for k in ("producer", "producer_model", "vendor", "model", "worker", "refined_by", "author") if card.get(k)}
+        m_prod = re.search(r"\b(?:producer)\s*[:=]\s*(\S+)\b", note, re.I)
+        if m_prod:
+            producer_ids.add(m_prod.group(1).strip("<>[](){}.,:;").casefold())
         if reviewer in {"", "x", "self", "producer", "reviewer", "pending", "unknown"} or reviewer in producer_ids:
-            continue
+            return ""
+        cur = review_hashes(card, repo)
+        m_scope = re.search(r"\b(?:scope|scope_hash)=([a-f0-9]+)\b", note, re.I)
+        if m_scope and m_scope.group(1).lower() != cur["scope"].lower():
+            return ""
+        m_card = re.search(r"\b(?:card|card_hash)=([a-f0-9]+)\b", note, re.I)
+        if m_card and m_card.group(1).lower() != cur["card"].lower():
+            return ""
+        m_code = re.search(r"\b(?:code|code_hash)=([a-f0-9]+)\b", note, re.I)
+        if m_code and m_code.group(1).lower() != cur.get("code", "").lower():
+            return ""
+        m_spec = re.search(r"\b(?:spec|spec_hash)=([a-f0-9]+)\b", note, re.I)
+        if m_spec and m_spec.group(1).lower() != cur.get("spec", "").lower():
+            return ""
+        m_data = re.search(r"\b(?:data|data_hash)=([a-f0-9]+)\b", note, re.I)
+        if m_data and m_data.group(1).lower() != cur.get("data", "").lower():
+            return ""
         return "real"
     return ""
 
@@ -588,14 +817,21 @@ def stamp_kind(card):
 def card_class(card):
     """C0-C3: the card's own `class` field, else `class=Cn` / `CLASS:Cn` in the note stamp; a live-path card is C3 at least."""
     values = []
-    field = str(card.get("class") or "").strip().upper()
-    if field:
+    raw = card.get("class", "")
+    field = raw.strip().upper() if isinstance(raw, str) else ""
+    if raw is not None and not isinstance(raw, str):
+        values.append("C3")
+    elif field:
         values.append(field if re.fullmatch(r"C[0-3]", field) else "C3")
-    for m in re.finditer(r"\bclass\s*[=:]\s*(C\d+)\b", str(card.get("note") or ""), re.I):
-        value = m.group(1).upper()
-        values.append(value if value in {"C0", "C1", "C2", "C3"} else "C3")
+    note = card.get("note", "")
+    if note is not None and not isinstance(note, str):
+        values.append("C3")
+        note = ""
+    for m in re.finditer(r"\bclass(?:[ \t]*[=:]|[ \t]+(?=[Cc](?:\d|x\b|[ \t-])|\d))", note or "", re.I):
+        value = re.match(r"[ \t]*(C[0-3])\b", (note or "")[m.end():], re.I) if re.search(r"[=:]", m.group()) else None
+        values.append(value.group(1).upper() if value else "C3")
     c = max(values, key=lambda x: int(x[1:])) if values else ""
-    if card.get("live_path") is True:
+    if card.get("live_path", False) is not False:
         c = "C3"
     return c
 
@@ -619,7 +855,12 @@ def hold_problems(card, holds=None):
 
 def needs_review(card):
     """'hard' (crucial/critical or C2/C3: needed to take and finish), 'soft' (important or C1: needed to promote), or ''."""
-    w = str(card.get("weight") or "").upper()
+    raw = card.get("weight", "")
+    if raw is not None and not isinstance(raw, str):
+        return "hard"
+    w = (raw or "").strip().upper()
+    if w and w not in WEIGHTS:
+        return "hard"
     if w in REVIEW_WEIGHTS or card_class(card) in ("C2", "C3"):
         return "hard"
     if w in SOFT_WEIGHTS or card_class(card) == "C1":
@@ -627,21 +868,29 @@ def needs_review(card):
     return ""
 
 
-def promotion_problems(card, holds=None):
+def promotion_problems(card, holds=None, repo=None):
     """Why `check` must not promote a raw/refined card to ready: an active hold, or no real review for important/crucial/critical or C1+."""
     p = hold_problems(card, holds)
-    if needs_review(card) and stamp_kind(card) != "real":
-        p.append("needs a real review stamp (ACCEPT or 'REVIEWED: <reviewer> <date>'), not " + ("T0-ONLY" if stamp_kind(card) == "t0" else "none") + ": Lab_Guy pass (roles/lab_guy.md)")
+    if needs_review(card) and stamp_kind(card, repo=repo) != "real":
+        p.append("needs a real review stamp (ACCEPT or 'REVIEWED: <reviewer> <date>'), not " + ("T0-ONLY" if stamp_kind(card, repo=repo) == "t0" else "none") + ": Lab_Guy pass (roles/lab_guy.md)")
     return p
 
 
-def review_gate(card, finishing=False, result=""):
+def review_gate(card, finishing=False, result="", repo=None):
     """Problems stopping a crucial/critical (or C2/C3, or live-path) card from being taken or marked done. routine/important pass.
     The weight itself is set by the reviewer/planner (the note stamp), never by the producer."""
-    if needs_review(card) != "hard":
-        return []
     p = []
-    if stamp_kind(card) != "real":
+    for key in ("note", "class", "weight"):
+        if card.get(key) is not None and not isinstance(card.get(key), str):
+            p.append(f"{key} must be a string")
+    if "live_path" in card and type(card["live_path"]) is not bool:
+        p.append("live_path must be a boolean")
+    weight = card.get("weight")
+    if isinstance(weight, str) and weight.strip() and weight.strip().upper() not in WEIGHTS:
+        p.append("weight is not a recognized review weight")
+    if needs_review(card) != "hard":
+        return p
+    if stamp_kind(card, repo=repo) != "real":
         p.append("weight/class needs a real review: add 'REVIEWED: <reviewer> <date>' or 'REVIEWED:<date> ACCEPT' to the note first (T0-ONLY is not a review)")
     if finishing and not str(result or "").strip():
         p.append("a result receipt is required (--result with the evidence)")
@@ -652,10 +901,10 @@ def cmd_take(a):
     c = get(REPO, a.id)
     if c["state"] != "ready":
         raise SystemExit(f"tasks: {a.id} is {c['state']}, only a ready card can be taken")
-    gate = review_gate(c)
+    gate = review_gate(c, repo=REPO)
     if gate:
         raise SystemExit(f"tasks: {a.id} cannot be taken: " + "; ".join(gate))
-    miss = problems(c, load_all(REPO), registry(REPO))
+    miss = problems(c, load_all(REPO), registry(REPO), repo=REPO)
     if miss:
         raise SystemExit(f"tasks: {a.id} fails the Definition of Ready: " + "; ".join(miss))
     c.update(state="active", claim=a.claim or "", taken=now())
@@ -679,9 +928,9 @@ def cmd_done(a):
         raise SystemExit("tasks: flow cards close through lab_flow.py finish (evidence receipt required)")
     if c.get("state") not in ("ready", "active"):
         raise SystemExit(f"tasks: {a.id} is {c.get('state')}, only a ready or active card can be marked done")
-    gate = review_gate(c, finishing=True, result=a.result)
+    gate = review_gate(c, finishing=True, result=a.result, repo=REPO)
     if c["state"] == "ready":   # runners claim via sync.py and never call `take`: ready->done needs every gate `take` would apply
-        gate += promotion_problems(c) + problems(c, load_all(REPO), registry(REPO))
+        gate += promotion_problems(c, repo=REPO) + problems(c, load_all(REPO), registry(REPO), repo=REPO)
     if gate:
         raise SystemExit(f"tasks: {a.id} cannot be marked done: " + "; ".join(gate))
     c.update(state="done", result=a.result, closed=now())
@@ -882,6 +1131,28 @@ def main(argv=None):
     n.add_argument("--layer", action="append", help="layer family id (layer_index.json); repeat for several")
     n.add_argument("--crucial", action="store_true", help="lane CODEX: when the GPT lane is down this card waits for GPT instead of moving to DSA/Claude")
     n.set_defaults(f=cmd_new)
+    fi = sp.add_parser("fill", help="set raw-card fields from flags and run check (promotes without hand JSON edits)")
+    fi.add_argument("id")
+    fi.add_argument("--size", choices=("S", "M"))
+    fi.add_argument("--worker", choices=WORKERS)
+    fi.add_argument("--est-turns", type=int)
+    fi.add_argument("--goal")
+    fi.add_argument("--done-when")
+    fi.add_argument("--tests")
+    fi.add_argument("--scope-in", action="append", dest="scope_in")
+    fi.add_argument("--scope-out", action="append", dest="scope_out")
+    fi.add_argument("--step", "--steps", action="append", dest="steps")
+    fi.add_argument("--command", "--commands", action="append", dest="commands")
+    fi.add_argument("--source", "--sources", action="append", dest="sources")
+    fi.add_argument("--ref", "--refs", action="append", dest="refs")
+    fi.add_argument("--layer", "--layers", action="append", dest="layers")
+    fi.add_argument("--weight", choices=WEIGHTS)
+    fi.add_argument("--lane", choices=LANES)
+    fi.add_argument("--formula-id")
+    fi.add_argument("--holdout-path")
+    fi.add_argument("--split-date", "--split-dates", action="append", dest="split_dates")
+    fi.add_argument("--note")
+    fi.set_defaults(f=cmd_fill)
     c = sp.add_parser("check")
     c.add_argument("id", nargs="?")
     c.add_argument("--demote", action="store_true", help="send a ready/active card that now fails back to refined")

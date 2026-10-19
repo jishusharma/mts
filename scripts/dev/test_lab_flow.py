@@ -468,3 +468,30 @@ def test_flow_card_finish_refuses_other_states(repo):
     cards = F.launch(repo, spec())
     with pytest.raises(ValueError, match="ready or active"):
         complete(repo, cards[0], state="blocked")
+
+
+@pytest.mark.parametrize('state', ['ready', 'active'])
+def test_finish_review_gate_applies_to_ready_and_active(repo, monkeypatch, state):
+    cards = F.launch(repo, spec())
+    calls = []
+    def reject(card, finishing=False, result='', **kwargs):
+        calls.append((card['id'], finishing, result))
+        return ['sentinel review rejection']
+    monkeypatch.setattr(tasks, 'review_gate', reject)
+    # Isolate the shared close gate from the separate ready-promotion checks.
+    monkeypatch.setattr(tasks, 'promotion_problems', lambda *a, **k: [])
+    monkeypatch.setattr(tasks, 'problems', lambda *a, **k: [])
+    with pytest.raises(ValueError, match='sentinel review rejection'):
+        complete(repo, cards[0], state=state)
+    assert calls == [(cards[0]['id'], True, 'evidence checked')]
+    assert tasks.get(repo, cards[0]['id'])['state'] == state
+
+
+def test_finish_review_gate_exception_keeps_card_open(repo, monkeypatch):
+    cards = F.launch(repo, spec())
+    def broken(*a, **k):
+        raise RuntimeError('unreadable review')
+    monkeypatch.setattr(tasks, 'review_gate', broken)
+    with pytest.raises(ValueError, match='review gate error'):
+        complete(repo, cards[0])
+    assert tasks.get(repo, cards[0]['id'])['state'] == 'active'

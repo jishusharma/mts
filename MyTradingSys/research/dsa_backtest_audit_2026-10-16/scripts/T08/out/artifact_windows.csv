@@ -1,0 +1,68 @@
+file,phase,column,n,minimum,maximum,outcome_columns
+MyTradingSys/research/TRIAL_LEDGER.csv,DEV,run_utc,29,2026-10-16,2026-10-18,
+MyTradingSys/research/TRIAL_LEDGER_BUILT.csv,2020-01-01..2024-06-30,date,64,2026-10-04,2026-10-07,
+MyTradingSys/research/TRIAL_LEDGER_BUILT.csv,2022-01-01..2024-06-30,date,66,2026-10-04,2026-10-07,
+MyTradingSys/research/TRIAL_LEDGER_BUILT.csv,2022-01-01..2026-10-02,date,2,2026-10-10,2026-10-10,
+MyTradingSys/research/TRIAL_LEDGER_BUILT.csv,,date,114,2026-09-30,2026-10-18,
+MyTradingSys/research/TRIAL_LEDGER_BUILT.csv,DEV 2024-12-02..2025-03-31,date,8,2026-10-14,2026-10-14,
+MyTradingSys/research/TRIAL_LEDGER_BUILT.csv,TRAIN,date,102,2026-10-13,2026-10-17,
+MyTradingSys/research/TRIAL_LEDGER_BUILT.csv,VALIDATE,date,51,2026-10-13,2026-10-13,
+MyTradingSys/research/TRIAL_LEDGER_BUILT.csv,DEV 2021-01..2023-06,date,124,2026-10-13,2026-10-13,
+MyTradingSys/research/TRIAL_LEDGER_BUILT.csv,DEV 2021-01..2023-06 ETHUSDT,date,9,2026-10-13,2026-10-13,
+MyTradingSys/research/TRIAL_LEDGER_BUILT.csv,DEV,date,609,2026-10-09,2026-10-09,
+MyTradingSys/research/TRIAL_LEDGER_BUILT.csv,VALID,date,4,2026-10-09,2026-10-09,
+MyTradingSys/research/VERDICTS.csv,UNSPECIFIED,date,65,2026-10-09,2026-10-18,gross_mean_pct
+MyTradingSys/research/bigtrade_2026-10-09/observations.csv,UNSPECIFIED,time_utc,85,2026-08-19,2026-10-07,
+MyTradingSys/research/candle_patterns_2026-10-04/TRIAL_REGISTRY.csv,UNSPECIFIED,date,132,2026-10-04,2026-10-10,mean_net_bps
+MyTradingSys/research/context_factors_2026-10-16/EXPOSURE_LEDGER.csv,DEV,run_utc,1,2026-10-16,2026-10-16,
+MyTradingSys/research/context_factors_2026-10-16/controls.csv,UNSPECIFIED,C_T,3065,2022-04-02,2024-06-19,ctrl_net_R
+MyTradingSys/research/context_factors_2026-10-16/controls.csv,UNSPECIFIED,ctrl_T,3065,2022-04-01,2024-06-30,ctrl_net_R
+MyTradingSys/research/context_factors_2026-10-16/events_dev.csv,UNSPECIFIED,T,5598,2022-04-01,2024-06-30,
+MyTradingSys/research/context_factors_2026-10-16/ledger_C.csv,UNSPECIFIED,T,1010,2022-04-02,2024-06-29,net_R;ctrl_mean_net_R
+MyTradingSys/research/context_factors_2026-10-16/ledger_C.csv,UNSPECIFIED,T_utc,1010,2022-04-02,2024-06-29,net_R;ctrl_mean_net_R
+MyTradingSys/research/core_readiness_2026-09-27/harness/verdict_golden_baseline.csv,UNSPECIFIED,ts,9865,2026-09-13,2026-09-27,
+MyTradingSys/research/fast_track_2026-09-27/bt_runs/TRIAL_REGISTRY.csv,UNSPECIFIED,date,50,2026-09-30,2026-10-18,mean_R_net
+MyTradingSys/research/fast_track_2026-09-27/bt_runs/TRIAL_REGISTRY_SMOKE.csv,UNSPECIFIED,date,64,2026-10-11,2026-10-11,mean_R_net
+MyTradingSys/research/g3_marks_2026-10-16/ANSWER_KEY_CLOSED/KEY.csv,UNSPECIFIED,right_edge_utc,213,2021-03-09,2025-03-31,
+MyTradingSys/research/g3_marks_2026-10-16/WINDOWS.csv,UNSPECIFIED,right_edge_utc,213,2021-03-09,2025-03-31,
+MyTradingSys/research/gross_effect_screen_2026-10-15/EXPOSURE_LEDGER.csv,DEV,run_utc,5,2026-10-15,2026-10-18,
+MyTradingSys/research/gross_effect_screen_2026-10-15/EXPOSURE_LEDGER.csv,DEV+VAL+HOLDOUT,run_utc,1,2026-10-14,2026-10-14,
+MyTradingSys/research/gross_effect_screen_2026-10-15/EXPOSURE_LEDGER.csv,unknown,run_utc,1,2026-10-13,2026-10-13,
+MyTradingSys/research/gross_effect_screen_2026-10-15/EXPOSURE_LEDGER.csv,DEV (footprint window overlaps standard VALIDATION dates),run_utc,1,2026-10-16,2026-10-16,
+MyTradingSys/research/gross_effect_screen_2026-10-15/counts_per_day.csv,UNSPECIFIED,day,912,2022-01-01,2024-06-30,
+MyTradingSys/research/gross_effect_screen_2026-10-15/ledger.csv,UNSPECIFIED,t_open_time,1440,2022-01-17,2024-06-30,G_d0_h5;G_d0_h15;G_d0_h30;G_d0_h60;G_d0_h120;G_d0_h240;G_d1_h5;G_d1_h15;G_d1_h30;G_d1_h60;G_d1_h120;G_d1_h240;G_d2_h5;G_d2_h15;G_d2_h30;G_d2_h60;G_d2_h120;G_d2_h240;G_d5_h5;G_d5_h15;G_d5_h30;G_d5_h60;G_d5_h120;G_d5_h240;G_d15_h5;G_d15_h15;G_d15_h30;G_d15_h60;G_d15_h120;G_d15_h240
+MyTradingSys/research/imbalance_qriptal_2026-10-16/EXPOSURE_LEDGER.csv,DEV+VALIDATION+HOLDOUT (main split; declared as Qriptal/Tom-protocol DEV at run time),run_utc,2,2026-10-16,2026-10-16,
+MyTradingSys/research/imbalance_qriptal_2026-10-16/EXPOSURE_LEDGER.csv,"HOLDOUT bars, no returns read",run_utc,2,2026-10-16,2026-10-16,
+MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/events_dev.csv,UNSPECIFIED,t,5976,2022-04-01,2024-06-30,
+MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/trades_dev.csv,UNSPECIFIED,t,5976,2022-04-01,2024-06-30,gross_1;net_1;net_m_1;gross_2;net_2;net_m_2
+MyTradingSys/research/krown_malkan_g3_2026-10-16/event_counts.csv,UNSPECIFIED,first,52,2017-08-17,2020-08-17,mde_net_r
+MyTradingSys/research/krown_malkan_g3_2026-10-16/event_counts.csv,UNSPECIFIED,last,52,2024-06-24,2024-06-30,mde_net_r
+MyTradingSys/research/layer_lab/bigtrade_event_table/event_table.csv,UNSPECIFIED,t_fire_ms,128078,2022-01-01,2024-06-30,mfe_R;mae_R
+MyTradingSys/research/layer_lab/gpt-verdict-registry-audit/VERDICTS_CHECKED.csv,UNSPECIFIED,date,21,2026-10-09,2026-10-16,gross_mean_pct
+MyTradingSys/research/layer_lab/gpt-verdict-registry-audit/VERDICTS_CHECKED_a.csv,UNSPECIFIED,date,10,2026-10-10,2026-10-16,gross_mean_pct
+MyTradingSys/research/layer_lab/gpt-verdict-registry-audit/VERDICTS_CHECKED_b.csv,UNSPECIFIED,date,23,2026-10-09,2026-10-16,gross_mean_pct
+MyTradingSys/research/layer_lab/session_levels_event_table/events.csv,UNSPECIFIED,day_utc,445,2022-01-10,2024-06-30,mfe_r;mae_r
+MyTradingSys/research/levels_sizing_2026-10-14/TRIAL_REGISTRY.csv,UNSPECIFIED,date,8,2026-10-14,2026-10-14,
+MyTradingSys/research/mal_bb_mid_engulf_2026-10-16/EXPOSURE_LEDGER.csv,DEV,run_utc,1,2026-10-15,2026-10-15,
+MyTradingSys/research/mal_bb_mid_engulf_2026-10-16/ledger.csv,UNSPECIFIED,engulf_bar_open_utc_ms,1179,2022-01-03,2024-06-30,G_short_h60
+MyTradingSys/research/mfe_exit_2026-10-13/TRIAL_REGISTRY.csv,UNSPECIFIED,date,102,2026-10-13,2026-10-13,mean_net_bps
+MyTradingSys/research/mfe_exit_2026-10-13/rerun_dev_2026-10-17/TRIAL_REGISTRY.csv,UNSPECIFIED,date,51,2026-10-17,2026-10-17,mean_net_bps
+MyTradingSys/research/monitor_20260915/D2_alerts.csv,UNSPECIFIED,ts,3,2026-09-15,2026-09-15,
+MyTradingSys/research/monitor_20260915/D4_transitions.csv,UNSPECIFIED,ts,7,2026-09-15,2026-09-15,
+MyTradingSys/research/netdelta_panel_2026-10-18/panel_steps.csv,UNSPECIFIED,bar_open_utc,10,2026-09-23,2026-10-15,
+MyTradingSys/research/opr_bb_mtf_center_2026-10-16/EXPOSURE_LEDGER.csv,DEV,run_utc,1,2026-10-15,2026-10-15,
+MyTradingSys/research/opr_bb_mtf_center_2026-10-16/ledger.csv,UNSPECIFIED,touch_bar_open_utc_ms,476,2022-01-03,2024-06-29,G_long_h120
+MyTradingSys/research/opr_preopen_tops_2026-10-16/EXPOSURE_LEDGER.csv,DEV,run_utc,1,2026-10-15,2026-10-15,
+MyTradingSys/research/opr_preopen_tops_2026-10-16/ledger.csv,UNSPECIFIED,break_close_utc_ms,308,2022-01-06,2024-06-26,G_short_h60;G_long_h60
+MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/EXPOSURE_LEDGER.csv,DEV,run_utc,1,2026-10-15,2026-10-15,
+MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/ledger.csv,UNSPECIFIED,first_break_bar_open_utc_ms,1060,2022-01-01,2024-06-26,
+MyTradingSys/research/published_strats_2026-10-13/TRIAL_REGISTRY.csv,UNSPECIFIED,date,133,2026-10-13,2026-10-13,net_ann_pct;gross_ann_pct
+MyTradingSys/research/qriptal_2026-10-10/CALL_LEDGER.csv,UNSPECIFIED,published_utc,70,2026-04-15,2026-09-22,
+MyTradingSys/research/trendlines_2026-10-17/counts/effective_n_by_day.csv,UNSPECIFIED,date,2776,2022-01-08,2024-06-30,
+MyTradingSys/research/trendlines_2026-10-17/g3_pack/ANSWER_KEY_CLOSED/KEY.csv,UNSPECIFIED,right_edge_utc,40,2021-03-04,2024-06-14,
+MyTradingSys/research/trendlines_2026-10-17/g3_pack/EXPOSURE_LEDGER_LINE.csv,DEV,run_utc,1,2026-10-18,2026-10-18,
+MyTradingSys/research/trendlines_2026-10-17/g3_pack/WINDOWS.csv,UNSPECIFIED,right_edge_utc,40,2021-03-04,2024-06-14,
+MyTradingSys/research/volume_2026-10-09/TRIAL_REGISTRY.csv,UNSPECIFIED,date,613,2026-10-09,2026-10-09,mean_net_bps
+MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/events.csv,UNSPECIFIED,break_open,32,2022-01-10,2024-04-17,
+MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/events.csv,UNSPECIFIED,bounce_open,32,2022-01-10,2024-04-17,
+MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/events.csv,UNSPECIFIED,trigger_open,32,2022-01-11,2024-04-18,

@@ -1,15 +1,16 @@
-# RELAY - how one session starts the next with no operator input
+# RELAY - hand-over rules (the relay loop itself is RETIRED)
 
-> RETIRED 2026-10-17, see SCHEDULING_POLICY.md: no relay or dispatcher runs, the coordinator starts sessions. History: `archive/relay_2026-10-15/`.
+> RETIRED 2026-10-17 (SCHEDULING_POLICY.md): nothing runs `tick`/`kick`, no dispatcher task exists; the operator or a coordinator starts every session.
+> STILL LIVE: **Task list standard** (`relay.py handoff`/`lint` check NEXT_SESSION.md) and **Turn meter** (hook). Pieces, The loop, Brakes, Tick and queue = how the retired loop worked, reference only. History: `archive/relay_2026-10-15/`.
 
-## Pieces
+## Pieces (retired loop)
 | Piece | Role |
 |---|---|
 | `system/NEXT_SESSION.md` | the handoff, committed; header `<!-- relay: go\|stop depth=N id=xxxx -->`, its first fenced block is the task list |
 | `scripts/sched/relay.py` | `tick begin brief handoff unlock lint route kick status stop resume` |
-| App task `mts-dispatcher`, one per host | JIS-NB: cron `*/10 * * * *`, Haiku 5.5 (set in the App). Prompt = the stub `relay_prompts/mts-dispatcher.SKILL.md` (install: INSTALL.md). On KICK it IS the relay session: a scheduled session cannot start another (B164) |
+| App task `mts-dispatcher` (RETIRED, deleted) | was cron `*/10 * * * *`, Haiku; stub `relay_prompts/mts-dispatcher.SKILL.md`. On KICK it was the relay session (B164) |
 
-## The loop (`relay_prompts/relay_session.md`, printed by `tick` on KICK)
+## The loop (retired; `relay_prompts/relay_session.md`)
 `tick` (`TICK NOOP` = reply, stop) -> `begin` (worktree `../mts-relay`, claim, brief) -> ONE task in <= 15 tool turns -> edit the NEXT_SESSION.md block -> `handoff --go` (or `--stop "<reason>"`) -> `sync.py ship`, `where` clean -> `unlock` (not after `--stop`).
 Next tasks come from `python scripts/dev/tasks.py next --n 3` (a card's `brief` is the task text). No ready card, or `tasks.py status` says REFINE_NEEDED: the next task is the refiner (TASK_REFINEMENT.md), never a vague builder task.
 
@@ -27,16 +28,15 @@ Next tasks come from `python scripts/dev/tasks.py next --n 3` (a card's `brief` 
 ## Turn meter (2026-10-14)
 The 40 tool / 10 operator turn cap (operator q20, 2026-10-15) is a hook, `scripts/dev/turn_meter.py`: at the cap and every 5 tool turns after, it injects a 1-line hand-off reminder (<= 250 B). One assistant message = one turn (parallel calls count once); subagents are skipped; clear resets. Per-model caps: WORKERS.md rule 5.
 
-## Brakes (all fail closed)
+## Brakes (retired loop; all fail closed)
 - no header, header says stop, no task this host can run, or only lane work left -> `kick` IDLE; `handoff --stop` ends a chain
 - a launch under 45 min old, or the same handoff id launched under 1 h ago (a session is on it) -> IDLE; `unlock` frees it; after 1 h an unrewritten id retries
 - operator: `relay.py stop "<why>"` halts every tick on that host, `relay.py resume` clears it; log `~/.claude/mts-relay-log.jsonl`
 - a session that hits a blocker, RED hygiene it cannot fix, or an operator decision it needs writes `--stop` with the reason; no relay for live-path/Java restarts (desk tasks)
 
-## Tick and queue (operator 2026-10-14)
-`relay.py tick` is the whole idle path, in T0: fetch, `route`, `kick`, the QUEUE line, a prompt drift check (installed vs origin) and, every 55 min (`mts-hourly.json`), the refiner status (`../mts-refiner`), housekeeping once per 24 h.
-It prints ONE line, `TICK NOOP | <why> | route=.. | queue=..`, or `TICK KICK ..` with the `NEXT:` command and relay_session.md; an `HOURLY refine=REFINE_NEEDED housekeep=yes` line only when the model has work, never while a peer moves the chain (`IDLE peer ..`). No Control Room inbox poll (INSTALL.md).
+## Tick and queue (retired loop, operator 2026-10-14)
+`relay.py tick` was the idle path: fetch, `route`, `kick`, the QUEUE line, prompt drift check, hourly refiner status, daily housekeeping; ONE line out, `TICK NOOP | <why> | ..` or `TICK KICK ..`.
 - **QUEUE line** (tick, `kick`, `status`): task counts by why they wait (exclusive buckets, first match wins, `handoff_lint.parse_tasks`): DONE; `(after ..)` blocked; open `lane=` tasks; another host's; the rest = `runnable` here.
 - **`route`** files each open lane task once, as a desk row `--target DSA` or a raw lane-CODEX card, keyed `relay_key` = `<qn>-<hash of the text>` (edited text = new key; the other host answers `exists`).
 - **Results come back as `look=`**: the row is `done`/`failed` (or the card `done`) and its Qn is still open -> `look=1 [Q60 desk done]` and `kick` wakes a session: relay_session.md makes that read its task: row (`desk.py list --all`) or card (`tasks.py brief <id>`), spot-check ONE claim, rewrite the Qn as `DONE ...`. `codex_look=N` (JIS-NUC) counts `codex_run.py status` NEEDS A LOOK lines: information only, it does not wake kick.
-- **Peers**: `kick --peer-quiet-min N` waits only for a host named in a `relay_runs.jsonl` row (a hand-edited header is `unknown`). Both hosts run the same stub (TWO_HOST.md).
+- **Peers**: `kick --peer-quiet-min N` waited only for a host named in a `relay_runs.jsonl` row (TWO_HOST.md).
