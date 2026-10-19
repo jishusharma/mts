@@ -23,7 +23,7 @@ def test_payload_files_exist_and_versions_agree():
                 "extension/manifest.json", "scripts/run-task.ps1", "scripts/start-agent.ps1", "policy_patch.json"):
         assert (PAYLOAD / rel).is_file(), rel
     assert '"version": "0.7.1"' in (PAYLOAD / "extension/manifest.json").read_text(encoding="utf-8")
-    assert "$AgentVersion = '0.7.0'" in (PAYLOAD / "src/agent.ps1").read_text(encoding="utf-8")
+    assert "$AgentVersion = '0.7.1'" in (PAYLOAD / "src/agent.ps1").read_text(encoding="utf-8")
     assert "L.VERSION = '0.7.1'" in (PAYLOAD / "extension/loop.js").read_text(encoding="utf-8")
 
 
