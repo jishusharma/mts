@@ -296,6 +296,41 @@ def hook():
     return 0
 
 
+def budget_cmd(args):
+    """`budget --five 12 --week 40 --reset 2026-10-22T19:59Z [--login A]`: one call after get_usage. Sends the BUDGET line that
+    traffic.py budget and supervisor.py tick read, and records the reading in ~/.claude/mts-budget.json (same file budget.py uses).
+    The login letter comes from --login or env MTS_LOGIN (the operator sets it once per device, or names it in the start line)."""
+    import argparse
+    ap = argparse.ArgumentParser(prog="mts_signal.py budget")
+    ap.add_argument("--login", default=os.environ.get("MTS_LOGIN", ""))
+    ap.add_argument("--five", type=float, required=True, help="5-hour window used, percent")
+    ap.add_argument("--week", type=float, required=True, help="weekly all-models used, percent")
+    ap.add_argument("--reset", required=True, help="weekly reset, UTC YYYY-MM-DDTHH:MMZ")
+    a = ap.parse_args(args)
+    lg = a.login.strip().upper()
+    if lg not in ("A", "B", "C"):
+        print("login must be A, B or C (--login or env MTS_LOGIN)")
+        return 2
+    if not re.fullmatch(r"\d{4}-\d\d-\d\dT\d\d:\d\dZ?", a.reset):
+        print("--reset must look like 2026-10-22T19:59Z")
+        return 2
+    reset = a.reset if a.reset.endswith("Z") else a.reset + "Z"
+    try:
+        sched = str(Path(__file__).resolve().parents[1] / "sched")
+        if sched not in sys.path:
+            sys.path.insert(0, sched)
+        import budget as budget_mod   # the one writer of ~/.claude/mts-budget.json (SUPER_SESSION Pacing)
+        rec = {"utc": now().strftime("%Y-%m-%dT%H:%M:%SZ"), "weekly_all_pct": a.week, "weekly_resets_at": reset,
+               "five_hour_pct": a.five}
+        budget_mod.home().mkdir(parents=True, exist_ok=True)
+        (budget_mod.home() / "mts-budget.json").write_text(json.dumps(rec, sort_keys=True), encoding="utf-8", newline=chr(10))
+    except (OSError, ImportError) as e:
+        print("budget file not written: %s" % e)
+    ok = send("BUDGET login=%s 5h=%d%% week=%d%% reset=%s" % (lg, round(a.five), round(a.week), reset), to="all", kind="note")
+    print("BUDGET login=%s sent" % lg if ok else "BUDGET not sent (no origin or push failed)")
+    return 0 if ok else 1
+
+
 def main(argv):
     if not argv or argv[0] in ("-h", "--help"):
         print(__doc__)
@@ -313,6 +348,8 @@ def main(argv):
         ok = send(a.text, to=a.to, kind=a.kind)
         print("sent" if ok else "NOT sent (no origin or push failed)")
         return 0 if ok else 1
+    if cmd == "budget":
+        return budget_cmd(argv[1:])
     if cmd == "read":
         hours = 24
         if "--hours" in argv:

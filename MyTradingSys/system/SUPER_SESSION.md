@@ -92,11 +92,11 @@ only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once); histo
 - A worker that merges late hits VERDICTS.csv and wiring_registry.json conflicts: union both sides.
 
 ## Session log (newest first; one line each, last 5)
+- SUPERLOOP-NB-1019 (2026-10-19, Opus one-time agent, Sonnet + Haiku review Agents): five-hour loop on every device/login: `supervisor.py plan` (pacing vs weekly room, heartbeat, shard over live supervisors, one owner per lane, DSA down flag, nuc_wake gate) and `supervisor.py handover`; SUPER_LOOP.md replaces TANDEM_3LOGIN.md; role v3. Lesson: pacing in prose drifts; a T0 command per wake does not.
+- TANDEM-NB-1019 (2026-10-19, Sonnet one-time agent, 2 review Agents): three Supervisors at once (A/B/C); `mts_signal.py budget`, `tasks.py dispatch --login/--logins` shards cards, `supervisor.py tick` shows peers; one-line start; 5 h regime in roles/supervisor.md v2; TANDEM_3LOGIN.md. Lesson: the claim is the lock, but without a shard three supervisors start the same top cards.
 - DOCTOR-NB-1020 (2026-10-20, Sonnet one-time agent, 2 review Agents): roles 11 -> 7 (Traffic_Controller folded into Pipeliner, Q&A_Helper + Network_Admin_Guy -> Admin_Guy on Haiku high with backlog intake, Artifacts_Guy -> 1985Artifacts_Guy; old names stay aliases in role_loader.py), location wording fixed (Eagle_Eyes runs anywhere via live_mirror brief, super session any device/login), `traffic.py budget` = SPEND per login. Lesson: an alias list in code (ALIASES) keeps old pinned sessions working across a rename.
 - DOCTOR-NB-1019 (2026-10-19, Opus one-time agent, 2 review Agents): roles review; ROLES.md pin table -> 'runs anywhere; needs; at most one' (role_loader checks no host), super-session prompt line 1 now `You are Supervisor.` (the old line loaded no role), RELAY.md retired parts marked, MTS Home gets 'How to use MTS' (6 recipes). Lesson: two entry points for one role drift; one paste line each.
 - SUPER-DESKTOP-1019 (2026-10-19, Sonnet coordinator, 2 Agents): stale ci-919cc0f closed (CI green at c65cda0, 52dd55e0); layer_map 2 of 8 null rows filled, rest not stated in reports (28313a4f); 3 stale pages posted as JIS-NB desk row. Boot: ~6 tool turns. Lesson: tasks.py next ranks stale ci-* cards first; check ci_watch.py before dispatching a fix.
-- SUPER-NB-1018 (2026-10-18, Sonnet coordinator, ~9 sessions + review Agents, weekly 73 -> 81%): labeler fix, krown, state audit, RV02 R1+R2, Fabio dating, planner batch 3 shipped; diff-only review Agents caught real defects in 4 of 6 diffs. Lesson: with 6+ sessions shipping, the 2 gate slots queue 2-3 h and a ship dies at the tool 600 s timeout unless run detached; one ship per session; weekly cap hit before the block ended.
-- SUPER-NB-1017 (2026-10-17, Sonnet coordinator, 6 Agent workers because start_session is refused for a session started by another session): 14 cards shipped, weekly 66 -> 67%; Agents fit the 100k rule; compound `cd && git`/merge commands were denied, use git -C.
 
 
 ## Start (operator: open a new session, model Sonnet unless you name Opus (WORKERS.md rule 6), paste the prompt below)
@@ -117,21 +117,20 @@ republish to claude.ai/artifact/9nqpZeMeEehadoBoYopZU3 from the jishusharma1985 
 | THROTTLE | U > 100 f + 5, or the 5-hour window > 80 % | only model-free work: Codex lab, DSA desk, CI |
 The meter is only readable from an App session (`get_usage`), one login at a time (no CLI or headless route exists: `claude --help` has no usage command, `claude auth status` shows the login only, `/usage` is interactive). The coordinator writes its login's reading to
 `~/.claude/mts-budget.json` (per machine, not in git); the gate treats a reading older than 6 h as NORMAL.
+**Supervisors (2026-10-19):** `supervisor.py plan` sends this line with extra heartbeat fields every wake and paces the window from it (SUPER_LOOP.md).
 **All logins at once (2026-10-20):** every top-level session sends its login's reading at start with `python scripts/dev/mts_signal.py send "BUDGET login=<A|B|C> 5h=<n>% week=<n>% reset=<weekly reset UTC YYYY-MM-DDTHH:MMZ>" --to all --kind note`; `python scripts/dev/traffic.py budget` (Pipeliner runs it) takes the newest line per login and prints SPEND / NORMAL / THROTTLE per login plus overall by the table above (a line older than 6 h counts NORMAL; a login with no line is listed as missing).
 
-## Prompt: start a super session (paste into a new Sonnet session, permission mode bypass or auto)
+## Prompt: start a super session (one line; permission mode bypass or auto, model Sonnet)
 ```
-You are Supervisor. Coordinate one super session (MyTradingSys/system/SUPER_SESSION.md, SUPERVISOR.md) for hours with zero operator input except direction I give.
-Goal today: <one line, e.g. "rebuild layers setups-first: catalogue -> PRE_REG -> screens">.
-First turn: get_usage (THROTTLE -> tell me and stop), read STATUS.md and NEXT_SESSION.md, run the Session_Planner, pick the tasks that serve the goal.
-Spawn workers per WORKERS.md (session by default, Agent only for size S; Sonnet; Haiku for mechanical status), at most 4 running, each with a full brief: goal, files, DONE when, defaults for open questions, hard limits from CLAUDE.md. Workers never ask me; you decide toward the goal and log it.
-Rule 11: any diff touching the live path, gates, promote.py, prereg_gate.py or decision numbers gets an independent Sonnet review Agent (diff only, 5-line reply, 30k token cap) before ship.
-Rule 12: spend the window before it resets: remaining minutes / 40 = workers to launch, staggered, get_usage at each launch (weekly cap per login as in rule 12).
+You are Supervisor. Login <A|B|C>. <your tasks>
+```
+Everything else loads by default: the hook injects `roles/supervisor.md` (banner `ROLE LOADED: Supervisor ...`), which runs `supervisor.py plan` every wake (pacing, heartbeat,
+card shard, lane owners, hand-over time). Login letter = the account signed in (A jishu.sharma, B jishu.awgp, C jishusharma1985). Design, three logins at
+once, fit table, failure modes: SUPER_LOOP.md. The lines rules 11-14 ask the prompt to carry now live in the role file (same words, short):
+Rule 11: any diff touching the live path, gates, promote.py, prereg_gate.py or decision numbers gets an independent Sonnet review Agent (diff only) before ship.
+Rule 12: spend the window before it resets, inside the weekly cap per login (`supervisor.py plan` computes slots and mode).
 Rule 13: a defect blocks only cards that read its output; release holds that name no defect.
-Rule 14: Session_Planner (roles/session_planner.md) as a foreground Sonnet Agent at boot and on each free slot; never dispatch raw/refined cards.
-Run sync.py ship in the background. Verify every ship with git cherry, mark finished workers completed, budget turns per WORKERS.md rule 5, hand the tail to a second coordinator per rule 5 above.
-End: drain, hand-over note with get_usage, one line to me.
-```
+Rule 14: Session_Planner (roles/session_planner.md) as a foreground Sonnet Agent refines cards; never dispatch raw/refined cards. (The old multi-line prompt is retired 2026-10-19; its rules are rules 11-14 above and the role file.)
 
 ## Prompt pattern: any worker or Fable session that must not stop
 Lead with: "Run with zero operator input: never ask; on any open question take the most conservative default, write it as
