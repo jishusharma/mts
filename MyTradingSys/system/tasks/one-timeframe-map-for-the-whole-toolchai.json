@@ -10,7 +10,7 @@
   "goal": "One timeframe map: capture.TF_MINUTES is the source; chart_verify.TFS and alert_rate_check.TF_MIN derive from it (subset by name for the alert set) so a TF added in one place cannot be missing in another (lesson G).",
   "id": "one-timeframe-map-for-the-whole-toolchai",
   "kind": "build",
-  "lane": "SONNET",
+  "lane": "CODEX",
   "latest": [
     {
       "auto": true,
@@ -30,12 +30,6 @@
   "refined_by": "",
   "refreshed": "2026-10-17T20:21:22Z",
   "refs": [],
-  "reroute": {
-    "at": "2026-10-19T14:25:18Z",
-    "from": "CODEX",
-    "to": "SONNET",
-    "why": "heartbeat"
-  },
   "result": "",
   "scope_in": [
     "MyTradingSys/observation/capture.py",

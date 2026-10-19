@@ -8,10 +8,10 @@
   ],
   "created": "2026-10-15T18:05:21Z",
   "depends_on": [],
-  "done_when": "git ls-files lists none of the generated paths (except STATUS.md per the decision in step 2); each generator still writes its file; readers (live_mirror.py, cicd_run.py, make_status.py) work with the files untracked; auto_deploy GENERATED_RE and its regenerate branch are removed; run_all_tests green; a live deploy leaves git status clean in the live tree.",
-  "est_turns": 38,
+  "done_when": "Six checks in the spec (done_when section): readers work with files present, untracked and absent; commit 1 untracks only the generated paths; temp-repo test shows deploy removes files and backup-restore returns identical sha; runbook steps; commit 2 removes GENERATED_RE after live confirms; run_all_tests green.",
+  "est_turns": 45,
   "from_inbox": "",
-  "goal": "Untrack the files live-host jobs rewrite (STATUS.md, AUDIT_DIGEST.md, T0_CHECKS.md, BUILD_REPORT.md, oi_live csv, htf_context) so the live tree stays clean and auto_deploy needs no GENERATED_RE stopgap. Generator-to-file map is in note.",
+  "goal": "Untrack the live-host generated files (AUDIT_DIGEST, T0_CHECKS, BUILD_REPORT, oi_live csv, htf_context; STATUS.md stays tracked) without deleting them from the live tree on deploy, then drop the auto_deploy GENERATED_RE stopgap in a second commit.",
   "id": "move-live-host-generated-files-status-md",
   "kind": "build",
   "lane": "JIS-NB",
@@ -33,7 +33,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C3 REVIEWER:review SESSION Touches auto_deploy (deploy gate): CRITICAL by the deploy trigger; built in a worktree only, the live tree changes only by a manual deploy. make_status.py -> research/STATUS.md; scripts/worker/audit_digest.py -> audits/AUDIT_DIGEST.md; audit_t0_checks.py -> audits/T0_CHECKS.md; scripts/Build-Check.ps1 -> runtime/BUILD_REPORT.md; oi_recorder.py -> runtime/oi_live/*.csv; fabio/htf_context_live.py -> research/htf_context/*. | DECISION (OURS): lane JIS-NB because the generators run on the live host. Default: untrack, never delete files on disk.",
+  "note": "REVIEWED:2026-10-19 ACCEPT REVIEWER:Lab_Guy-Sonnet-5.5 card=30c2e19347a6 scope=4c615de4d957 CLASS:C3 WEIGHT:CRITICAL LAB:none Lab_Guy pass 2026-10-19 (Sonnet 5.5). CONFIRMED C3/CRITICAL (touches the deploy gate and the live working tree). SPEC REVIEW: E3/B-noundo (the big one, missing from the card): `git rm --cached` + commit deletes those files from the working tree of every tree that fast-forwards to the commit. Deploying it to the live tree would DELETE runtime/oi_live/*.csv and research/htf_context/* (auto_deploy.py LIVE_INPUT_RE marks them as inputs the live runner and check_live_health READ) plus BUILD_REPORT.md / AUDIT_DIGEST.md / T0_CHECKS.md. 'Never delete files on disk' only holds for the committing tree. New step 4 + test: back up, deploy, restore, sha-verify. STALE: step 5 and done_when assume MTS-AutoDeploy applies the commit; it is RETIRED (CLAUDE.md, DEPLOY_RUNBOOK.md header 2026-10-17): deploy is manual or coordinator-run. ORDER: GENERATED_RE / LIVE_INPUT_RE removal must be a SECOND commit after the live tree has actually taken the untrack commit, otherwise the live tree's older auto_deploy.py/fallback sees the files as dirty clashes (STOP_DIRTY). SCOPE gaps fixed: oi_recorder.py (same dir) must stay tracked, only *.csv goes (.gitignore:173-178 already lists the patterns but does not untrack); other readers found by grep: scripts/sched/check_live_health.py, scripts/dev/run_all_tests.py, MyTradingSys/tests/test_check_live_health.py; cicd_run.py has no test file (scripts/dev/test_cicd_run.py does not exist), so its reader change is tested through its own checks; generators are read-only here. Reader fail-closed rule added: an ABSENT generated file must give SKIP/stale status, never a PASS and never a crash. Restart/reset state: covered by the backup-restore test; API errors N/A. producer note: refined_by W9 orderflow-restart-map is a different identity from this reviewer. DECISION (OURS): STATUS.md stays tracked (kept from prior note); two commits in the order above. C3 coordinator step: approved by default by Supervisor B (login B), DECISION (OURS) 2026-10-19. SPEC FILE: MyTradingSys/system/card_specs/move-live-host-generated-files-status-md.md. | PRIOR: REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C3 REVIEWER:review SESSION Touches auto_deploy (deploy gate): CRITICAL by the deploy trigger; built in a worktree only, the live tree changes only by a manual deploy. make_status.py -> research/STATUS.md; scripts/worker/audit_digest.py -> audits/AUDIT_DIGEST.md; audit_t0_checks.py -> audits/T0_CHECKS.md; scripts/Build-Check.ps1 -> runtime/BUILD_REPORT.md; oi_recorder.py -> runtime/oi_live/*.csv; fabio/htf_context_live.py -> research/htf_context/*. | DECISION (OURS): lane JIS-NB because the generators run on the live host. Default: untrack, never delete files on disk.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "W9 orderflow-restart-map",
@@ -46,28 +46,35 @@
     "scripts/dev/make_status.py",
     "scripts/dev/auto_deploy.py",
     "scripts/dev/test_auto_deploy.py",
+    "scripts/dev/test_live_mirror.py",
+    "scripts/dev/test_make_status.py",
+    "scripts/sched/check_live_health.py",
+    "MyTradingSys/tests/test_check_live_health.py",
+    "scripts/dev/run_all_tests.py (only the oi_live / htf_context lines)",
     ".gitignore",
-    "MyTradingSys/system/DEPLOY_RUNBOOK.md"
+    "MyTradingSys/system/DEPLOY_RUNBOOK.md",
+    "MyTradingSys/system/card_specs/move-live-host-generated-files-status-md.md (spec, read only)"
   ],
   "scope_out": [
     "MyTradingSys/execution/",
     "MyTradingSys/backtest/layers/promotion",
     "live_runner_cli.py",
-    "scripts/sched/relay.py"
+    "scripts/sched/relay.py",
+    "generators (audit_digest.py, audit_t0_checks.py, Build-Check.ps1, oi_recorder.py, htf_context_live.py): read-only, must keep writing the same paths",
+    "live tree, HALT files, deploys, process stop/restart"
   ],
   "scope_sha": "8d2549c885d7",
   "size": "M",
   "sources": [],
   "state": "ready",
   "steps": [
-    "Readers first: make live_mirror.py, cicd_run.py (BUILD_REPORT_REL, allowlist line ~62) and make_status.py (status_path) read the file from the working tree or the mirror, not from git; test each with the file untracked.",
-    "DECISION (OURS): STATUS.md stays tracked but is generated only off the live host (make_status.py at ship/CI); AUDIT_DIGEST.md, T0_CHECKS.md, BUILD_REPORT.md, runtime/oi_live/*.csv and research/htf_context/* go untracked.",
-    "Add those paths to .gitignore and `git rm --cached` them in one commit (files stay on disk; repo is public so no runtime data stays tracked).",
-    "Remove the GENERATED_RE allowlist and regenerate branch in auto_deploy.py once untracked; update its tests and DEPLOY_RUNBOOK.md.",
-    "Ship via sync.py; MTS-AutoDeploy applies it on JIS-NB; builders never deploy by hand."
+    "Read card_specs/move-live-host-generated-files-status-md.md first (hazard, order, reader list).",
+    "Readers first: every reader works from the working tree/mirror and gives SKIP/stale when the file is absent (never PASS); tests with the file untracked and absent.",
+    "Commit 1: .gitignore lines + git rm --cached of the generated paths only (oi_recorder.py and htf_context_live.py stay tracked); write the temp-repo test and the DEPLOY_RUNBOOK manual backup-restore steps.",
+    "Commit 2 only after the coordinator confirms commit 1 is live and the live tree is clean: remove GENERATED_RE, LIVE_INPUT_RE, regenerate branch; update tests; run_all_tests; ship."
   ],
-  "tests": "test_auto_deploy: a dirty/untracked generated path no longer needs the allowlist and GENERATED_RE is gone (fails on the current allowlist code); test_live_mirror and test_make_status pass with the files untracked.",
+  "tests": "test_auto_deploy (GENERATED_RE gone, dirty generated path = STOP_DIRTY; fails on current code); test_live_mirror, test_make_status, test_check_live_health with files untracked and absent; new temp-repo backup-restore test.",
   "title": "Move live-host generated files (STATUS.md, AUDIT_DIGEST.md, T0_CHECKS.md, BUILD_REPORT.md, oi_live csv, htf_context) out of git tracking; auto_deploy GENERATED_RE allowlist is the stopgap. Update readers (live_mirror, cicd_run, make_status) first.",
-  "weight": "CRITICAL",
+  "weight": "B-SHARED",
   "worker": "session"
 }

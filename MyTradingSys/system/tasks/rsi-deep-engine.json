@@ -1,0 +1,39 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-19T14:45:04Z",
+  "depends_on": [
+    "rsi-deep-prereg"
+  ],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Build research/rsi_deep_buy_2026-10-19/episode_sim.py per SPEC s3-s4: entry arms, exit arms, scale-in ladders, no stop, account metrics, ruin test, with fail-first synthetic tests.",
+  "id": "rsi-deep-engine",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Operator RSI deep-buy study 2026-10-19. Full design: MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md. Chain: depth-map -> prereg -> engine -> run-dev -> crossvendor review (Gemini) -> VALIDATION once. Raw: Session_Planner refines (done_when, steps, tests), Lab_Guy stamps C1+.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md"
+  ],
+  "scope_out": [],
+  "size": "M",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "RSI deep-buy: episode simulator (entry arms, RSI/divergence exits, scale-in ladders, no stop, ruin test)",
+  "weight": "",
+  "worker": ""
+}

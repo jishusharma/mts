@@ -1,12 +1,12 @@
 {
  "allowance": {
   "plan": "plus",
-  "week_resets": 1792874520,
-  "week_used": 0,
-  "window_resets": 1792287720,
-  "window_used": 3.0
+  "week_resets": 1792874519,
+  "week_used": 40.0,
+  "window_resets": 1792441069,
+  "window_used": 0
  },
- "at": "2026-10-17T22:55:08Z",
+ "at": "2026-10-19T15:18:51Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -19,10 +19,25 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 0.0,
-  "window_pts": 3.0,
-  "window_runs": 6
+  "window_pts": 0.0,
+  "window_runs": 0
  },
  "runs": [
+  {
+   "at": "2026-10-19T15:17:30Z",
+   "card": "lc-ladder-dev",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 73,
+   "tokens_out": 4577,
+   "tokens_total": 416938,
+   "tokens_uncached": 47177,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-17T22:52:47Z",
    "card": "lab-vendor-gate-harden",
@@ -37,6 +52,21 @@
    "tokens_uncached": 60930,
    "week_pts": 0.0,
    "window_pts": 1.0
+  },
+  {
+   "at": null,
+   "card": "tom-v2-btc-min-stop-width",
+   "effort": null,
+   "kind": null,
+   "model": null,
+   "note": "",
+   "outcome": "REOPENED",
+   "seconds": null,
+   "tokens_out": null,
+   "tokens_total": null,
+   "tokens_uncached": null,
+   "week_pts": null,
+   "window_pts": null
   },
   {
    "at": null,
@@ -142,36 +172,6 @@
    "tokens_uncached": 62716,
    "week_pts": 0.0,
    "window_pts": 1.0
-  },
-  {
-   "at": null,
-   "card": "lab-formula-spec-text",
-   "effort": null,
-   "kind": null,
-   "model": null,
-   "note": "card rewritten after independent review REJECTED the spec (worked examples not from the DEV tape; F01 57.8313, F11.4/F11.5 62751.9875, F11.6 -0.399847 wrong; gr",
-   "outcome": "REOPENED",
-   "seconds": null,
-   "tokens_out": null,
-   "tokens_total": null,
-   "tokens_uncached": null,
-   "week_pts": null,
-   "window_pts": null
-  },
-  {
-   "at": "2026-10-17T20:41:48Z",
-   "card": "lab-formula-spec-text",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 151,
-   "tokens_out": 15633,
-   "tokens_total": 993955,
-   "tokens_uncached": 74514,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }

@@ -13,7 +13,7 @@
   "goal": "Extend chart_lab.py with a setup switch so it finds and renders blind charts for trend-continuation pullbacks (setup_type_rules.md s5) and breakout / break-in (s6) on BTC DEV 2024-12-01..2025-03-31. Charts and candidate index only. The event-study table is not part of this card: it is superseded until G3 marks and G4 recall exist.",
   "id": "tom-btc-other-setups",
   "kind": "build",
-  "lane": "SONNET",
+  "lane": "CODEX",
   "latest": [
     {
       "auto": true,
@@ -41,12 +41,6 @@
   "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
   "refreshed": "2026-10-18T03:35:31Z",
   "refs": [],
-  "reroute": {
-    "at": "2026-10-19T14:25:18Z",
-    "from": "CODEX",
-    "to": "SONNET",
-    "why": "heartbeat"
-  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/tom_btc_2026-10-13/chart_lab.py",
