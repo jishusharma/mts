@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-19T07:08:23Z",
   "commands": [
     "python MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T03/t03_canaries.py",
     "python scripts/dev/run_all_tests.py --quick"
@@ -18,6 +19,12 @@
   "id": "bt-engine-simulate-trade-fail-closed-on-",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/backtest/bt/bt_engine.py: funding=None/uncovered raise, window t_in<s<=t_out;",
+      "ref": "e65c24d6",
+      "utc": "2026-10-19T07:08:23Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -37,7 +44,12 @@
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T03_planted_edges.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/backtest/bt/bt_engine.py: funding=None/uncovered raise, window t_in<s<=t_out; test_bt_engine 19 pass (4 new fail before fix); canary bt_engine e1-e4 FAIL->PASS (FAIL 18->11)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/bt/bt_engine.py",
     "MyTradingSys/backtest/bt/test_bt_engine.py",
@@ -61,7 +73,7 @@
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T03_planted_edges.md:120 (DECISION: window t_in < s <= t_out, FORMULAS 13)",
     "MyTradingSys/backtest/layers/positioning/trade_costs.py:12-30 (B103 pattern)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read bt_engine.py:39-67 and canary rows e1-e4 in t03_canaries.py; run it first and note the 4 FAIL rows (bt_engine column)",
     "Add tests to test_bt_engine.py (fail on current code): funding=None raises; records not covering [entry, exit] raise; entry instant on a settlement not charged; exit instant on a settlement charged; funding=[] charges 0 and never raises",
@@ -69,6 +81,7 @@
     "Callers: cc_bt_adapter default, run_cc_setups `funding or None` (2 sites), run_rsi_backtest.py:109 pass [] when no funding (numbers unchanged); keep their tests green",
     "Rerun t03_canaries.py: bt_engine e1-e4 PASS; run bt, cryptocred and rsi test dirs"
   ],
+  "taken": "2026-10-19T07:08:23Z",
   "tests": "New cases in MyTradingSys/backtest/bt/test_bt_engine.py (None raises, uncovered raises, entry-boundary not charged, exit-boundary charged); they fail on the pre-change code; canary rows e1-e4 flip FAIL to PASS.",
   "title": "bt_engine.simulate_trade: fail closed on missing funding, (t_in,t_out] boundary, callers pass funding=[] explicitly",
   "weight": "IMPORTANT",

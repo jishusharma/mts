@@ -41,7 +41,7 @@ MyTradingSys/backtest/layers/rsi/rsi_divergence.py	fwd-index	"t": ts[b + 1], "i"
 MyTradingSys/backtest/layers/rsi/rsi_divergence.py	pivot-right-neighbour	a, b, c = sign * vals[i - 1], sign * vals[i], sign * vals[i + 1]	pre-existing, unreviewed
 MyTradingSys/backtest/layers/rsi/run_divergence_mtf.py	fwd-index	"t": ts[b + 1], "i": b + 1, "event": kind + "_divergence_long",	pre-existing, unreviewed
 MyTradingSys/backtest/layers/rsi/run_divergence_mtf.py	fwd-index	out[h] = (sum((closes[i + h] - closes[i]) / closes[i] for i in range(n)) / n) if n > 0 else None	pre-existing, unreviewed
-MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py	fwd-index	bars[i + 1:i + 1 + max_bars], taker_fee=taker, maker_fee=maker, max_bars=max_bars)	pre-existing, unreviewed
+MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py	fwd-index	bars[i + 1:i + 1 + max_bars], taker_fee=taker, maker_fee=maker, max_bars=max_bars, funding=[]) # [] = explicit no-funding model (B103)	pre-existing, unreviewed
 MyTradingSys/backtest/layers/run_t055_c3_imbalance.py	fwd-index	if i < free or i + h >= len(bars) or bars[i + h]["t"] - bars[i]["t"] != h * BAR_MS:	pre-existing, unreviewed
 MyTradingSys/backtest/layers/run_t055_c3_imbalance.py	fwd-index	w = bars[i:i + window]	pre-existing, unreviewed
 MyTradingSys/backtest/layers/test_run_bracket_grid.py	fwd-index	bars[i + 1] = bar(i + 1, 95.0, 100.0, 90.0)	pre-existing, unreviewed
