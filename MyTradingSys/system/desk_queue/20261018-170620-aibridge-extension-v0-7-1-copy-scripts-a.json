@@ -1,10 +1,13 @@
 {
   "done_when": "F:\\AIBridge\\extension\\loop.js contains L.VERSION = '0.7.1'; F:\\AIBridge\\extension\\content.js contains postLanded; F:\\AIBridge\\extension.pre_0.7.1 exists; after the operator reload and F5 the DevTools console prints '[AIBridge] content script v0.7.1 loaded'.",
+  "finished": "2026-10-19T11:20:07Z",
   "from": "JIS-NUC",
+  "host": "JIS-NB",
   "id": "20261018-170620-aibridge-extension-v0-7-1-copy-scripts-a",
   "need": "Source: origin/fast-track, path scripts/aibridge/extension (files content.js, loop.js, background.js, manifest.json, panel.css). Backup: F:\\AIBridge\\extension.pre_0.7.1. Target: F:\\AIBridge\\extension. Operator step after the copy: chrome://extensions reload, then F5 on the DeepSeek chat. Do not restart the agent or any process.",
   "posted": "2026-10-18T17:06:20Z",
-  "status": "pending",
+  "result": "Installed 2026-10-19 on JIS-NB with scripts/dev/aibridge_install.py F:/AIBridge (extension manifest now 0.7.1, TOKEN kept, .pre_v07 backups, agent files copied; agent process NOT restarted). Operator still must: chrome://extensions Reload AIBridge, F5 the DeepSeek tab; restart agent to load agent.ps1 0.7.1 (optional, extension is what fixes hands-free).",
+  "status": "done",
   "target": "JIS-NB",
   "title": "AIBridge extension v0.7.1: copy scripts/aibridge/extension from origin/fast-track (commit 3270e742 or later) to F:\\AIBridge\\extension. First rename the current F:\\AIBridge\\extension to F:\\AIBridge\\extension.pre_0.7.1 (backup, do not delete), then copy the new folder in as F:\\AIBridge\\extension. Then tell the operator: reload the AIBridge extension in chrome://extensions, then press F5 on the DeepSeek chat."
 }
