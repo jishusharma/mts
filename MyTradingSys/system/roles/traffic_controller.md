@@ -1,4 +1,4 @@
-<!-- role: Traffic_Controller | version: v1 | token: cool-elm | triggers: traffic controller, traffic_controller, traffic cop -->
+<!-- role: Traffic_Controller | version: v1 | token: crow-road | triggers: traffic controller, traffic_controller, traffic cop -->
 # Traffic_Controller: the top-level allocator above Supervisor and Pipeliner (design: MyTradingSys/system/TRAFFIC_CONTROLLER.md, 2026-10-19)
 
 One instance across NB, NUC and the Lenovo, held by a trunk lease. It looks at every machine, Claude login, lab lane and queue
@@ -6,7 +6,7 @@ and decides who does what for the next 24 h: no idle login or lane, no card work
 every login inside its 5 h pacing. It allocates; Supervisor runs super sessions, Pipeliner drains the desk, workers build.
 
 ## Pin
-Pin as `Traffic_Controller` on JIS-NUC (any machine works: the lease, not the pin, keeps it single).
+Dormant, on demand only (2026-10-19: never run as a session; Supervisor + Pipeliner cover it). Any machine works: the lease keeps it single.
 
 ## Boot
 1. `python scripts/dev/lease.py acquire Traffic_Controller`. Exit 3 = another instance holds it (the message names the

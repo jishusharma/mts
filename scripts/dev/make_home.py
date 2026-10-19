@@ -9,6 +9,8 @@ which login owns it, where notes go and when it was last published; a box says h
 stale copies only Jis can delete. Operator 2026-10-17: "all my questions and the decisions waiting for me available there":
 a "Waiting for you" list reads the open questions from the repo record (OPERATOR_DECISIONS.md: no answer yet; task cards: `asks`
 set, not done) and says where to answer them (the Control Room, the one place for answers, q1/q21). Publish: Artifact tool, url = registry urls[home_login] of mts_home (never a second copy).
+Operator 2026-10-19: "How to use MTS" at the top: six recipes (when, where, the line to paste, what comes back) and the super-session
+prompt, read from SUPER_SESSION.md at build time so the page never drifts from the doc.
 """
 import argparse
 import json
@@ -27,6 +29,16 @@ WRITE_FIRST = ("research_map", "mts_control_room", "session_planner")  # pages w
 DECISIONS = "MyTradingSys/system/OPERATOR_DECISIONS.md"
 TASKS = "MyTradingSys/system/tasks"
 NO_ANSWER = ("", "(none yet)")
+SUPER = "MyTradingSys/system/SUPER_SESSION.md"
+SUPER_HEAD = "## Prompt: start a super session"
+
+
+def super_prompt(repo):
+    """The fenced prompt under SUPER_HEAD in SUPER_SESSION.md, or "" when the file or the block is missing."""
+    f = Path(repo) / SUPER
+    text = f.read_text(encoding="utf-8") if f.is_file() else ""
+    m = re.search(re.escape(SUPER_HEAD) + r"[^\n]*\n```[^\n]*\n(.*?)\n```", text, re.S)
+    return m.group(1).strip() if m else ""
 
 
 def waiting(repo):
@@ -85,7 +97,8 @@ def build(reg, now=None, repo=None):
     cr = next((pg for pg in reg["pages"] if pg["slug"] == "mts_control_room"), None)
     answer = {"title": cr["title"], "url": cr["urls"].get(af.owner(cr), ""), "owner": af.owner(cr)} if cr else None
     return {"generated": now.strftime("%Y-%m-%d %H:%M UTC"), "home": home, "homeUrl": af.home_url(reg), "pages": pages,
-            "retire": retire, "share": share, "logins": list(reg["accounts"]), "waiting": waiting(repo or af.REPO), "answerAt": answer}
+            "retire": retire, "share": share, "logins": list(reg["accounts"]), "waiting": waiting(repo or af.REPO), "answerAt": answer,
+            "superPrompt": super_prompt(repo or af.REPO)}
 
 
 TPL = r"""<title>MTS Home</title>
@@ -170,10 +183,23 @@ ol.steps li::marker{font-weight:700;color:var(--accent)}
 .wait .wr b{font:700 .72rem var(--f-body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-right:6px}
 .wmeta{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .where{background:var(--warn-soft);border-radius:var(--r);padding:16px 20px;display:grid;gap:8px}
+.use{background:var(--surface);border:1px solid var(--line);border-top:6px solid var(--accent);border-radius:var(--r);padding:20px 22px;display:grid;gap:16px}
+.today{font-size:1.08rem;line-height:1.55}
+.recipes{margin:0;padding:0;list-style:none;display:grid;gap:12px;counter-reset:r}
+.recipes>li{counter-increment:r;background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:6px}
+.recipes>li>b{font:750 1.08rem var(--f-display);font-stretch:90%}
+.recipes>li>b::before{content:counter(r) ". ";color:var(--accent)}
+.recipes .when{font-size:.95rem;color:var(--muted)}
+.paste{font-family:var(--f-mono);font-size:.86rem;background:var(--accent-soft);color:var(--ink);border-radius:6px;padding:2px 8px;overflow-wrap:anywhere}
+.recipes .get{font-size:.95rem}
+.recipes .get::before{content:"You get: ";font-weight:700}
+details.prompt summary{cursor:pointer;font-weight:700;color:var(--accent)}
+details.prompt pre{margin:8px 0 0;padding:12px;background:var(--surface);border:1px solid var(--line);border-radius:8px;font:.78rem/1.5 var(--f-mono);white-space:pre-wrap;overflow-wrap:anywhere}
+button.copy{font:700 .8rem var(--f-body);padding:6px 12px;border-radius:999px;border:1px solid var(--accent);background:var(--accent);color:var(--on-accent);cursor:pointer;justify-self:start}
 .foot{border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font-size:.92rem;display:grid;gap:8px}
 @media (max-width:560px){
   h1{font-size:1.7rem}
-  .page,.box,.rule{padding:16px}
+  .page,.box,.rule,.use{padding:16px}
   .kv{grid-template-columns:minmax(0,1fr);gap:0}
   .kv dd{margin-bottom:8px}
   .cases>div{grid-template-columns:minmax(0,1fr)}
@@ -187,6 +213,42 @@ ol.steps li::marker{font-weight:700;color:var(--accent)}
     <p class="sub">Every MTS page in one list. Bookmark or pin this page on each login you use.</p>
     <span class="stamp" id="stamp"></span>
   </header>
+
+  <section aria-labelledby="h-use">
+    <h2 id="h-use">How to use MTS</h2>
+    <div class="use">
+      <p class="today"><b>What do I do today?</b> Answer anything under <a href="#h-wait">Waiting for you</a>. Send chart screenshots to Eagle_Eyes on JIS-NB. If the weekly meter says SPEND, start one super session (recipe 3). That is all: nothing runs by itself.</p>
+      <p class="sub">Open a new session in the Claude Code app (model Sonnet), paste the line, add your words. Any role starts on any machine; the "where" below is only what the role needs. The first reply must start with <code>ROLE LOADED</code>; if it does not, close that session and open a new one.</p>
+      <ol class="recipes">
+        <li><b>Ask a question or make a decision</b>
+          <span class="when">Any time, any machine, any login.</span>
+          <span>Paste <span class="paste">You are Q&amp;A_Helper.</span> then your question.</span>
+          <span class="get">the answer from the repo, your decision written to the record, and what still waits on you.</span></li>
+        <li><b>Read a chart screenshot</b>
+          <span class="when">During market hours, on JIS-NB (it reads the live files there).</span>
+          <span>Paste <span class="paste">You are Eagle_Eyes.</span> then the screenshot.</span>
+          <span class="get">a logged read against the engine, tagged NOTE or LAB-VERIFY, and a one-line flag if live money looks wrong.</span></li>
+        <li><b>Spend spare budget: one super session</b>
+          <span class="when">When the weekly meter says SPEND. Read the weekly bar in the Claude app's usage view (or ask any session for <code>get_usage</code>): SPEND = the weekly % used is 10+ points below the share of the week already gone (e.g. 40% used on day 4 of 7, 57% gone), or under 85% with less than a day to the reset. Best on the jishusharma1985 login (it can refresh the pages at the end); any login with budget works.</span>
+          <span>Paste the prompt below and fill in the Goal line. It starts the Supervisor, which runs the Session_Planner and up to 4 workers itself: do not open those by hand.</span>
+          <span class="get">hours of work on your goal, each ship checked on the trunk, and one line at the end.</span>
+          <details class="prompt"><summary>Show the super-session prompt</summary><pre id="sprompt"></pre></details>
+          <button class="copy" id="scopy" type="button">Copy the prompt</button></li>
+        <li><b>Health check</b>
+          <span class="when">Usually weekly, or when something feels off. Any machine; at most one a day.</span>
+          <span>Paste <span class="paste">You are MTS_Doctor.</span></span>
+          <span class="get">a dated report and one task card per defect.</span></li>
+        <li><b>Lab work and routing</b>
+          <span class="when">On JIS-NUC, the lab machine (GPT/Codex, Gemini), or over its SSH gate.</span>
+          <span>Paste <span class="paste">You are Lab_Guy.</span> to review lab work, or <span class="paste">You are Pipeliner.</span> to drain the desk queue (only one Pipeliner at a time; a second is refused).</span>
+          <span class="get">a flow table or a drain table, and cards for what is wrong.</span></li>
+        <li><b>Only when something breaks</b>
+          <span class="when">A page is stale or a link fails: on the jishusharma1985 login. A console window flashes or the network misbehaves: on that machine.</span>
+          <span>Paste <span class="paste">You are Artifacts_Guy.</span> or <span class="paste">You are Network_Admin_Guy.</span></span>
+          <span class="get">a republished page, or a tested fix (the live tree still changes only by a manual deploy).</span></li>
+      </ol>
+    </div>
+  </section>
 
   <div class="rule" role="note">
     <span class="eyebrow">The one rule</span>
@@ -242,6 +304,11 @@ function ago(d){
   return d + (n <= 0 ? " (today)" : n === 1 ? " (yesterday)" : ` (${n} days ago)`);
 }
 $("stamp").textContent = "List built " + DATA.generated + " from registry.json";
+$("sprompt").textContent = DATA.superPrompt || "Missing: see SUPER_SESSION.md, section \"Prompt: start a super session\".";
+$("scopy").addEventListener("click", async () => {
+  try { await navigator.clipboard.writeText(DATA.superPrompt || ""); $("scopy").textContent = "Copied"; }
+  catch (e) { $("scopy").textContent = "Copy blocked: open the prompt and select it"; }
+});
 const others = DATA.logins.filter(a => a !== DATA.home);
 $("rule").innerHTML = `Open every page from here. <b>${esc(DATA.home)}</b> is the home login: it owns this page, the Research Map and the Session Planner. `
   + `Your other logins (${others.map(esc).join(", ")}) open the <b>same links</b> once each page is shared with them. Never make a copy.`;
