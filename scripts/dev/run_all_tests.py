@@ -907,7 +907,7 @@ def load_reused(plan, root=REPO, now=None):
         return {}
 
 
-def save_record(plan, results, root=REPO, start_tree=None):
+def save_record(plan, results, root=REPO, start_tree=None, deferred=None):
     """Write the passing steps of this run (and the still-valid passes of the same tree) to the record. Skipped when the tree is dirty or
     HEAD moved while the gate ran (a session edited or committed mid-gate). Atomic (temp + os.replace, 3 tries on a Windows lock); never
     raises: a record that cannot be written only costs a rerun."""
@@ -917,6 +917,7 @@ def save_record(plan, results, root=REPO, start_tree=None):
             return False
         path = record_path(root)
         passed = {}
+        old = {}
         try:
             old = json.loads(path.read_text(encoding="utf-8"))
             if old.get("tree") == tree and old.get("python") == sys.version:
@@ -930,6 +931,10 @@ def save_record(plan, results, root=REPO, start_tree=None):
                 passed.pop(s.num, None)
         row = {"tree": tree, "python": sys.version, "epoch": time.time(), "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                "passed": passed}
+        if deferred is not None:
+            row["deferred"] = list(deferred)
+        elif old.get("tree") == tree and "deferred" in old:
+            row["deferred"] = old["deferred"]
         tmp = path.with_name(f"{RECORD_NAME}.{os.getpid()}.tmp")
         with open(tmp, "w", encoding="utf-8", newline="\n") as fh:
             json.dump(row, fh)
@@ -1008,7 +1013,7 @@ def main(argv=None):
         print(f"Fast gate (GATE_SPEED X2): {fast_info['reached']} test files reached ({fast_info['direct']} direct), {fast_info['kept']} units kept, "
               f"estimated {fast_info['est_s']} s (budget {fast_info['budget']} s) on {fast_jobs()} workers; {len(fast_info['deferred'])} deferred to CI (budget)", flush=True)
         if fast_info["deferred"]:
-            print("  DEFERRED to CI: " + ", ".join(fast_info["deferred"][:15]) + (f" (+{len(fast_info['deferred']) - 15} more)" if len(fast_info["deferred"]) > 15 else ""), flush=True)
+            print(f"  DEFERRED to CI ({len(fast_info['deferred'])}): " + ", ".join(fast_info["deferred"]), flush=True)
         if fast_info["quarantined"]:
             print("  QUARANTINED (deselected here, CI runs them): " + ", ".join(fast_info["quarantined"]), flush=True)
     # GATE_SPEED: the ship-only flags (sync.run_gate passes them; CI, auto_deploy and daily_hygiene never do)
@@ -1032,7 +1037,7 @@ def main(argv=None):
     results = run_plan(plan, fast_jobs() if fast_applied else gate_jobs(), fail_fast="--fail-fast" in args,
                        precheck="--precheck" in args and not fast_applied, slot=slot, reused=reused, precheck_slot=precheck_slot)
     if use_record:
-        save_record(plan, results, start_tree=start_tree)
+        save_record(plan, results, start_tree=start_tree, deferred=fast_info.get("deferred") if fast_applied else None)
 
     # Summary
     print("\n" + "=" * 70)
