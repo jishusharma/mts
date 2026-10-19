@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-19T23:42:36Z",
   "commands": [],
   "created": "2026-10-18T13:07:06Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "analyst-ingest-rlinda-tv",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "TradingView idea scraper and parser implemented in MyTradingSys/research/analysts/rlinda/s",
+      "ref": "d9993ad7",
+      "utc": "2026-10-19T23:42:36Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +45,12 @@
     "MyTradingSys/research/analysts/schema.py",
     "MyTradingSys/research/analysts/ingest_analysts.py"
   ],
-  "result": "",
+  "result": "TradingView idea scraper and parser implemented in MyTradingSys/research/analysts/rlinda/scraper.py; validated public RLinda ideas parsed into CALL_LEDGER.csv; unit test suite test_rlinda_ingestion.py and test_analysts_ingestion_and_scorecard.py pass (10/10 tests).",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/analysts/rlinda/",
     "MyTradingSys/research/analysts/ingest_analysts.py"
@@ -52,12 +64,13 @@
   "sources": [
     "MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md:244-261"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Inspect public TradingView profile structure for RLinda.",
     "Implement fetch/parser invoking parse_tradingview_idea on published ideas.",
     "Append newly discovered setups into MyTradingSys/research/analysts/rlinda/CALL_LEDGER.csv."
   ],
+  "taken": "2026-10-19T23:42:36Z",
   "tests": "python -m unittest MyTradingSys/research/analysts/test_analysts_ingestion_and_scorecard.py",
   "title": "Implement automated TradingView idea scraper for RLinda setups",
   "weight": "ROUTINE",

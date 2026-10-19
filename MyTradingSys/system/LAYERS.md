@@ -215,7 +215,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `qriptal-discord-calls-2026-10-18` ready p2 SONNET: Qriptal: transcribe Habib's 2026-10-13..18 Discord calls into the call ledger (B162)
   - `analyst-ingest-bennett-dpa` ready p3 SONNET: Implement DailyPriceAction RSS market plan ingestion for Justin Bennett
   - `analyst-ingest-cryptochase-x` ready p3 SONNET: Implement Crypto Chase FVG social call listener
-  - `analyst-ingest-rlinda-tv` ready p3 SONNET: Implement automated TradingView idea scraper for RLinda setups
   - `analyst-ingest-roman-x` ready p3 SONNET: Implement Roman Trading volume-absorption social call listener
 
 ## Krown (TA 101: zones, volume, candles, averages, ranges) (`krown`)
