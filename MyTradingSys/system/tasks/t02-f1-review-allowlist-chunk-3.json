@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-19T12:16:57Z",
   "commands": [
     "python MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T02/f1_rows.py c3 --count",
     "python MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T02/f1_rows.py c3 --show 0 6",
@@ -18,6 +19,21 @@
   "goal": "T02-F1: the CI look-ahead gate gives no assurance on rows still reading 'pre-existing, unreviewed'. Review the 35 fwd-index / pivot-right-neighbour rows of chunk 3 (bigtrade, vp_pivot_probe, g3_pack, screen tests, candle_close study): decide SAFE or UNSAFE per hit and write the reason into the allowlist row.",
   "id": "t02-f1-review-allowlist-chunk-3",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "f1_rows.py c3 --count 35 before, 0 after; 35 SAFE, 0 UNSAFE",
+      "ref": "afdca42b",
+      "utc": "2026-10-19T12:16:57Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "T02-F1 chunk 2: review 32 look-ahead allowlist rows (layer code)",
+      "ref": "4e88b6d10be3",
+      "utc": "2026-10-19T11:41:12Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,8 +41,14 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-19T12:14:57Z",
   "refs": [],
-  "result": "",
+  "result": "f1_rows.py c3 --count 35 before, 0 after; 35 SAFE, 0 UNSAFE",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/lookahead_allowlist.tsv",
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T02/f1_rows.py",
@@ -39,12 +61,13 @@
     "rows of other chunks",
     "DEV reruns on a data machine"
   ],
+  "scope_sha": "4e88b6d10be3",
   "size": "M",
   "sources": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T02_lookahead_time.md (T02-F1: 132 rows)",
     "scripts/dev/lookahead_lint.py docstring (pattern definitions)"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "Baseline: run f1_rows.py c3 --count (fail-first number); read rows 6 at a time with --show START 6 (about 5-6 calls)",
     "Per row classify SAFE (index reads past data only, confirmed lag, window end) or UNSAFE (decision bar reads a later bar); keep a python list of (row, verdict, reason) as you go",
@@ -52,6 +75,7 @@
     "UNSAFE rows: do not fix code; append file:line and the verdict study to MyTradingSys/research/dsa_backtest_audit_2026-10-16/T02_F1_unsafe.md (one line each)",
     "Run the lint and the lint tests; ship"
   ],
+  "taken": "2026-10-19T12:16:57Z",
   "tests": "Fail-first count: f1_rows.py c3 --count prints 35 before and 0 after; lookahead_lint.py --new reports 0 new hits, exit 0.",
   "title": "T02-F1 chunk 3: review 35 unreviewed look-ahead allowlist rows in bigtrade, vp probe, g3, screen tests",
   "weight": "ROUTINE",
