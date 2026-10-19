@@ -41,7 +41,7 @@ def git(root, *args, check=True):
 
 def init_main(root):
     git(root, "init", "-q")
-    git(root, "symbolic-ref", "HEAD", "refs/heads/main")   # `git init -b` needs git 2.28
+    git(root, "symbolic-ref", "HEAD", "refs/heads/main")   # the -b flag of init needs git 2.28
 
 
 def put(root, rel, text):
@@ -60,7 +60,7 @@ def in_git_checkout():
 
 
 # ---------------------------------------------------------------- done_when (2): what the repo tracks
-@pytest.mark.skipif(not in_git_checkout(), reason="needs a git checkout")
+@pytest.mark.skipif(not in_git_checkout(), reason="needs a work tree under git clone")
 def test_no_generated_path_is_tracked_but_code_and_status_are():
     tracked = set(git(REPO, "ls-files").stdout.split("\n"))
     assert [g for g in GENERATED if g in tracked] == []
@@ -69,7 +69,7 @@ def test_no_generated_path_is_tracked_but_code_and_status_are():
     assert [t for t in STAYS_TRACKED if t not in tracked] == []
 
 
-@pytest.mark.skipif(not in_git_checkout(), reason="needs a git checkout")
+@pytest.mark.skipif(not in_git_checkout(), reason="needs a work tree under git clone")
 def test_every_generated_path_is_gitignored_and_the_live_status_copy_too():
     for rel in GENERATED + ("runtime_data/STATUS_live.md",):
         assert git(REPO, "check-ignore", "-q", rel, check=False).returncode == 0, f"{rel} is not git-ignored"
@@ -216,7 +216,7 @@ def test_backup_refuses_to_overwrite_an_existing_backup(tmp_path):
 
 
 def test_rows_appended_between_backup_and_reset_survive(tmp_path):
-    """Review finding: a recorder appends after `backup`; reset must fold those rows into the backup before `git checkout --`."""
+    """Review finding: a recorder appends after `backup`; reset must fold those rows into the backup before the checkout."""
     origin, live = _origin_and_live(tmp_path)
     stamp, _ = dub.backup(live, stamp="T5")
     grown = live / "MyTradingSys/runtime/oi_live/oi_1m.csv"
