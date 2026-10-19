@@ -91,7 +91,7 @@ _LOCK = threading.Lock()
 # GATE_SPEED D1 (ship only, --precheck): these run first, PRECHECK_JOBS at a time and WITHOUT a gate slot; any failure stops the gate
 # before the slow steps start. OURS: the steps whose median is <= 25 s over 4106 step rows of 30 trees' gate_timing.jsonl (2026-10-18),
 # plus 3x (ALWAYS, 18 s in ship logs, 8 failures) and 3js. 2026-10-18: RELAY.md over its size cap failed step 4d (6.6 s) at +438 s.
-CHEAP_STEPS = ("1", "2", "3", "3b", "3c", "3r", "3cv", "3tm", "3s", "3f", "3td", "3hs", "3sq", "3ly", "3cy", "3tl", "3q", "3p", "3t",
+CHEAP_STEPS = ("1", "2", "3", "3b", "3c", "3r", "3cv", "3cva", "3tm", "3s", "3f", "3td", "3hs", "3sq", "3ly", "3cy", "3tl", "3q", "3p", "3t",
                "3d", "3h", "3g", "3gs", "3rc", "3e", "3sh", "3cs", "3pc", "3rb", "3af", "3vd", "3lm", "3gd", "3dl", "3x", "3mg", "3js",
                "4d", "4e", "5c")
 PRECHECK_JOBS = 2
@@ -426,6 +426,7 @@ def build_plan(quick):
     add("3c", "User guide in sync with mts.ps1", [sys.executable, "scripts/dev/check_guide.py"], "Step 3c: Guide in sync")
     add("3r", "Alert rate checker tests", [sys.executable, "scripts/dev/test_alert_rate_check.py"], "Step 3r: Alert rate checker tests")
     add("3cv", "Chart verify (RSI/BB/StochRSI) tests", [sys.executable, "scripts/dev/test_chart_verify.py"], "Step 3cv: Chart verify tests")
+    add("3cva", "Indicator audit sampler/comparator tests", [sys.executable, "scripts/dev/test_indicator_audit.py"], "Step 3cva: Indicator audit tests")
     add("3tm", "One timeframe map tests", [sys.executable, "scripts/dev/test_tf_map.py"], "Step 3tm: TF map tests")
     add("3s", "Testnet status summary tests", [sys.executable, "scripts/dev/test_testnet_status.py"], "Step 3s: Testnet status tests")
     add("3f", "Funnel report tests", [sys.executable, "scripts/dev/test_funnel_report.py"], "Step 3f: Funnel report tests")
