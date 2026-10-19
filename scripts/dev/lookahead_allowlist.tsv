@@ -13,43 +13,43 @@ MyTradingSys/backtest/bigtrade/bigmoves.py	pivot-right-neighbour	good = h[idx] >
 MyTradingSys/backtest/bigtrade/bigmoves.py	pivot-right-neighbour	good = l[idx] < l[idx - n_side:idx].min() and l[idx] <= l[idx + 1:idx + n_side + 1].min()	pre-existing, unreviewed
 MyTradingSys/backtest/bigtrade/mutation_check_bigmoves_capture.py	fwd-index	sys.modules[PKG + n] = mod	pre-existing, unreviewed
 MyTradingSys/backtest/bigtrade/parity_kline.py	fullsample-quantile	"venue_rsi_diff_p90": float(np.percentile(diffs, 90)) if diffs else None, "venue_rsi_diff_max": noise,	pre-existing, unreviewed
-MyTradingSys/backtest/bt/bt_stats.py	fwd-index	blocks = [M[i:i+block_size] for i in range(0, truncated_T, block_size)]	pre-existing, unreviewed
+MyTradingSys/backtest/bt/bt_stats.py	fwd-index	blocks = [M[i:i+block_size] for i in range(0, truncated_T, block_size)]	SAFE: CSCV partition of the trial matrix into S equal blocks; statistics, not a bar-time decision
 MyTradingSys/backtest/layers/alerts/live_levels_confluence.py	pivot-right-neighbour	nb = h4[i - 2:i] + h4[i + 1:i + 3]	reviewed W2a: 4h fractal confirmed by two closed 4h bars after the pivot, all from days before the level day (point-in-time, tested by truncation test)
-MyTradingSys/backtest/layers/alerts/live_runner_core.py	fwd-index	if bars[i]["t"] >= bars[i + 1]["t"]:	pre-existing, unreviewed
-MyTradingSys/backtest/layers/cryptocred/cc_setups.py	fwd-index	window_bars = bars[c+1 : c+1+failure_lookback]	pre-existing, unreviewed
-MyTradingSys/backtest/layers/cryptocred/cc_setups.py	fwd-index	window_bars = bars[c+1:]	pre-existing, unreviewed
-MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py	fwd-index	seq = [syn] + sim_bars[k + 1:]	pre-existing, unreviewed
-MyTradingSys/backtest/layers/fabio/fabio_of_model.py	fwd-index	up = (v[z + 1] if z + 1 < n else 0.0) + (v[z + 2] if z + 2 < n else 0.0)	pre-existing, unreviewed
-MyTradingSys/backtest/layers/fabio/fabio_of_model.py	pivot-right-neighbour	if s[i] >= s[i - 1] and s[i] >= s[i + 1] and s[i] >= 0.6 * v[poc_i]})	pre-existing, unreviewed
-MyTradingSys/backtest/layers/fabio/fabio_of_model.py	pivot-right-neighbour	if v[i] < v[i - 1] and v[i] <= v[i + 1] and v[i] <= 0.5 * med]	pre-existing, unreviewed
-MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py	fwd-index	"b_i": swings[k+1]["i"],	pre-existing, unreviewed
-MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py	fwd-index	"b_price": swings[k+1]["price"],	pre-existing, unreviewed
-MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py	fwd-index	"confirmed_i": swings[k+1]["confirmed_i"]	pre-existing, unreviewed
-MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py	fwd-index	vol_hi = profile["volumes"][hi_edge + 1] if hi_edge < len(profile["volumes"]) - 1 else 0	pre-existing, unreviewed
-MyTradingSys/backtest/layers/fabio/orderflow_bars.py	fwd-index	a["big"][2 + side] += 1	pre-existing, unreviewed
-MyTradingSys/backtest/layers/fabio/orderflow_bars.py	fwd-index	a["big"][4 + side] += q	pre-existing, unreviewed
-MyTradingSys/backtest/layers/fabio/orderflow_bars.py	fwd-index	a["big"][6 + side] += 1	pre-existing, unreviewed
-MyTradingSys/backtest/layers/fabio/v3/manage.py	fwd-index	return _closed(w, bars[i + 1]["o"], i + 1, "s8", "taker")	pre-existing, unreviewed
-MyTradingSys/backtest/layers/fabio/v3/models.py	fwd-index	entry = bars[b + 1]["o"]	pre-existing, unreviewed
-MyTradingSys/backtest/layers/fabio/v3/models.py	fwd-index	entry = bars[i + 1]["o"]	pre-existing, unreviewed
-MyTradingSys/backtest/layers/fabio/v3/models.py	fwd-index	entry = bars[j + 1]["o"]	pre-existing, unreviewed
-MyTradingSys/backtest/layers/fabio/v3/models.py	fwd-index	entry = bars[k + 1]["o"]	pre-existing, unreviewed
-MyTradingSys/backtest/layers/fabio/v3/models.py	fwd-index	ib = bars[open_idx:open_idx + ib_len]	pre-existing, unreviewed
-MyTradingSys/backtest/layers/fabio/v3/signals.py	fwd-index	up = (v[z + 1] if z + 1 < n else 0.0) + (v[z + 2] if z + 2 < n else 0.0)	pre-existing, unreviewed
-MyTradingSys/backtest/layers/fabio/v3/signals.py	pivot-right-neighbour	if v[k] < v[k - 1] and v[k] <= v[k + 1] and v[k] <= LVN_FRAC * med]	pre-existing, unreviewed
-MyTradingSys/backtest/layers/rsi/rsi_divergence.py	fwd-index	"t": ts[b + 1], "i": b + 1, "event": kind + "_divergence",	pre-existing, unreviewed
-MyTradingSys/backtest/layers/rsi/rsi_divergence.py	pivot-right-neighbour	a, b, c = sign * vals[i - 1], sign * vals[i], sign * vals[i + 1]	pre-existing, unreviewed
-MyTradingSys/backtest/layers/rsi/run_divergence_mtf.py	fwd-index	"t": ts[b + 1], "i": b + 1, "event": kind + "_divergence_long",	pre-existing, unreviewed
-MyTradingSys/backtest/layers/rsi/run_divergence_mtf.py	fwd-index	out[h] = (sum((closes[i + h] - closes[i]) / closes[i] for i in range(n)) / n) if n > 0 else None	pre-existing, unreviewed
-MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py	fwd-index	bars[i + 1:i + 1 + max_bars], taker_fee=taker, maker_fee=maker, max_bars=max_bars, funding=[]) # [] = explicit no-funding model (B103)	pre-existing, unreviewed
+MyTradingSys/backtest/layers/alerts/live_runner_core.py	fwd-index	if bars[i]["t"] >= bars[i + 1]["t"]:	SAFE: ascending-timestamp validation of the bars list; compares neighbours, no signal read
+MyTradingSys/backtest/layers/cryptocred/cc_setups.py	fwd-index	window_bars = bars[c+1 : c+1+failure_lookback]	SAFE: failure window c+1..c+L completes before entry at its last close; engine scans t>entry_t
+MyTradingSys/backtest/layers/cryptocred/cc_setups.py	fwd-index	window_bars = bars[c+1:]	SAFE: unreachable short-window fallback (len(bars)-1 >= c+L guard above); entry stamped at window end
+MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py	fwd-index	seq = [syn] + sim_bars[k + 1:]	SAFE: outcome sim after resting-limit fill bar k; fill bar capped at the fill so no target pre-fill
+MyTradingSys/backtest/layers/fabio/fabio_of_model.py	fwd-index	up = (v[z + 1] if z + 1 < n else 0.0) + (v[z + 2] if z + 2 < n else 0.0)	SAFE: value-area expansion over price-bin neighbours of the volume profile; price axis, not time
+MyTradingSys/backtest/layers/fabio/fabio_of_model.py	pivot-right-neighbour	if s[i] >= s[i - 1] and s[i] >= s[i + 1] and s[i] >= 0.6 * v[poc_i]})	SAFE: HVN peak test on adjacent price bins of a volume profile; price axis, not bar time
+MyTradingSys/backtest/layers/fabio/fabio_of_model.py	pivot-right-neighbour	if v[i] < v[i - 1] and v[i] <= v[i + 1] and v[i] <= 0.5 * med]	SAFE: LVN trough test on adjacent price bins of a volume profile; price axis, not bar time
+MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py	fwd-index	"b_i": swings[k+1]["i"],	SAFE: leg pairs consecutive swings; leg carries confirmed_i of the later swing for availability
+MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py	fwd-index	"b_price": swings[k+1]["price"],	SAFE: leg pairs consecutive swings; leg carries confirmed_i of the later swing for availability
+MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py	fwd-index	"confirmed_i": swings[k+1]["confirmed_i"]	SAFE: stamps the leg with the confirmation index of its later swing, i.e. the lag is explicit
+MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py	fwd-index	vol_hi = profile["volumes"][hi_edge + 1] if hi_edge < len(profile["volumes"]) - 1 else 0	SAFE: value-area growth to the adjacent higher price bin of a volume profile; price axis, not time
+MyTradingSys/backtest/layers/fabio/orderflow_bars.py	fwd-index	a["big"][2 + side] += 1	SAFE: false positive; 2 + side is a fixed counter slot offset in the big-trade accumulator, not a bar index
+MyTradingSys/backtest/layers/fabio/orderflow_bars.py	fwd-index	a["big"][4 + side] += q	SAFE: false positive; 4 + side is a fixed counter slot offset in the big-trade accumulator, not a bar index
+MyTradingSys/backtest/layers/fabio/orderflow_bars.py	fwd-index	a["big"][6 + side] += 1	SAFE: false positive; 6 + side is a fixed counter slot offset in the big-trade accumulator, not a bar index
+MyTradingSys/backtest/layers/fabio/v3/manage.py	fwd-index	return _closed(w, bars[i + 1]["o"], i + 1, "s8", "taker")	SAFE: S8 exhaustion decided on bars<=i (guard i<end); exit taker at the next open o[i+1]
+MyTradingSys/backtest/layers/fabio/v3/models.py	fwd-index	entry = bars[b + 1]["o"]	SAFE: signal on closed bar b (b<i here), fill at next open o[b+1]; replay is up to bar i
+MyTradingSys/backtest/layers/fabio/v3/models.py	fwd-index	entry = bars[i + 1]["o"]	SAFE: confirm entry at next open o[i+1] after bar i closed (guard i+1<=end)
+MyTradingSys/backtest/layers/fabio/v3/models.py	fwd-index	entry = bars[j + 1]["o"]	SAFE: touch on closed bar j, confirm entry at next open o[j+1]; loop bound keeps j+1 inside window
+MyTradingSys/backtest/layers/fabio/v3/models.py	fwd-index	entry = bars[k + 1]["o"]	SAFE: confirm entry at next open o[k+1] after trigger bar k closed (guard k+1<=end)
+MyTradingSys/backtest/layers/fabio/v3/models.py	fwd-index	ib = bars[open_idx:open_idx + ib_len]	SAFE: initial-balance window; signal loop starts at open_idx+ib_len, after the IB is complete
+MyTradingSys/backtest/layers/fabio/v3/signals.py	fwd-index	up = (v[z + 1] if z + 1 < n else 0.0) + (v[z + 2] if z + 2 < n else 0.0)	SAFE: value-area expansion over price-bin neighbours of the volume profile; price axis, not time
+MyTradingSys/backtest/layers/fabio/v3/signals.py	pivot-right-neighbour	if v[k] < v[k - 1] and v[k] <= v[k + 1] and v[k] <= LVN_FRAC * med]	SAFE: LVN trough test on adjacent price bins of a volume profile; price axis, not bar time
+MyTradingSys/backtest/layers/rsi/rsi_divergence.py	fwd-index	"t": ts[b + 1], "i": b + 1, "event": kind + "_divergence",	SAFE: pivot b needs bar b+1 to confirm; event stamped at b+1 (confirmation bar), not at b
+MyTradingSys/backtest/layers/rsi/rsi_divergence.py	pivot-right-neighbour	a, b, c = sign * vals[i - 1], sign * vals[i], sign * vals[i + 1]	SAFE: 3-bar pivot at i is only used via events stamped i+1 (confirmation bar), see event emit
+MyTradingSys/backtest/layers/rsi/run_divergence_mtf.py	fwd-index	"t": ts[b + 1], "i": b + 1, "event": kind + "_divergence_long",	SAFE: swing B known one bar later; event stamped ts[B+1] (confirmation bar)
+MyTradingSys/backtest/layers/rsi/run_divergence_mtf.py	fwd-index	out[h] = (sum((closes[i + h] - closes[i]) / closes[i] for i in range(n)) / n) if n > 0 else None	SAFE: baseline mean forward return over all bars; outcome benchmark for comparison, not a signal
+MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py	fwd-index	bars[i + 1:i + 1 + max_bars], taker_fee=taker, maker_fee=maker, max_bars=max_bars, funding=[]) # [] = explicit no-funding model (B103)	SAFE: trade outcome simulated on bars after the entry bar i (entry at close of i)
 MyTradingSys/backtest/layers/run_t055_c3_imbalance.py	fwd-index	if i < free or i + h >= len(bars) or bars[i + h]["t"] - bars[i]["t"] != h * BAR_MS:	pre-existing, unreviewed
 MyTradingSys/backtest/layers/run_t055_c3_imbalance.py	fwd-index	w = bars[i:i + window]	pre-existing, unreviewed
 MyTradingSys/backtest/layers/test_run_bracket_grid.py	fwd-index	bars[i + 1] = bar(i + 1, 95.0, 100.0, 90.0)	pre-existing, unreviewed
 MyTradingSys/backtest/layers/test_run_bracket_grid.py	fwd-index	self.bars[i + 1] = bar(i + 1, 100.0, 110.0, 100.0)	pre-existing, unreviewed
-MyTradingSys/backtest/layers/tick/tick_extremes.py	fwd-index	gap = values_desc[i] - values_desc[i + 1]	pre-existing, unreviewed
-MyTradingSys/backtest/layers/tick/tick_extremes.py	fwd-index	if values_desc[i] < values_desc[i + 1]:	pre-existing, unreviewed
-MyTradingSys/backtest/layers/tick/tick_oi_extremes.py	fwd-index	gaps = [values_desc[i] - values_desc[i+1] for i in range(len(values_desc)-1)]	pre-existing, unreviewed
-MyTradingSys/backtest/layers/tick/tick_oi_extremes.py	fwd-index	tiers[i+1] = current_tier	pre-existing, unreviewed
+MyTradingSys/backtest/layers/tick/tick_extremes.py	fwd-index	gap = values_desc[i] - values_desc[i + 1]	SAFE: difference of adjacent entries of a sorted-descending value list; no time axis
+MyTradingSys/backtest/layers/tick/tick_extremes.py	fwd-index	if values_desc[i] < values_desc[i + 1]:	SAFE: monotonicity check on a sorted-descending value list; no time axis
+MyTradingSys/backtest/layers/tick/tick_oi_extremes.py	fwd-index	gaps = [values_desc[i] - values_desc[i+1] for i in range(len(values_desc)-1)]	SAFE: gaps between adjacent entries of a sorted-descending value list; no time axis
+MyTradingSys/backtest/layers/tick/tick_oi_extremes.py	fwd-index	tiers[i+1] = current_tier	SAFE: tier label assigned along the sorted value ranking; no time axis
 MyTradingSys/backtest/replay.py	fwd-index	cov = sum(rows[i + 1]["t"] - rows[i]["t"] for i in range(len(rows) - 1) if rows[i + 1]["t"] - rows[i]["t"] <= 180) / 3600	pre-existing, unreviewed
 MyTradingSys/backtest/test_vp_pivot_probe.py	fwd-index	assert P.last_confirmed(piv, t1, n, int(t1[4 + n])) == -1 # open of bar i+n: bar not yet closed	pre-existing, unreviewed
 MyTradingSys/backtest/test_vp_pivot_probe.py	fwd-index	assert P.last_confirmed(piv, t1, n, int(t1[9 + n + 1]) - 1) == 4	pre-existing, unreviewed

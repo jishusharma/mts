@@ -1215,7 +1215,7 @@ def card_role(card):
 
 
 def shard_of(card_id, logins):
-    """Which login's supervisor owns this card when several coordinate at once (TANDEM_3LOGIN.md): a stable hash of the id over the
+    """Which login's supervisor owns this card when several coordinate at once (SUPER_LOOP.md): a stable hash of the id over the
     sorted login letters. Pure and identical on every machine, so three supervisors split the ready list without talking."""
     ls = sorted(set(logins))
     return ls[zlib.crc32(card_id.encode("utf-8")) % len(ls)] if ls else ""

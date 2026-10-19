@@ -90,3 +90,9 @@ Source: `live_mirror.py brief` + _mirror files, all `mirror@2026-10-17 07:11Z` (
 - Read: SHOT_4ae992130268.md (8 MATCH, 1 NOT_IN_DATA), tag NOTE. Last read id: 4ae992130268. Open MISMATCH cards: none. HALT unchanged.
 - Low 10-18 20:15 (80,622 sweep of 80,751, RSI-only bullish divergence, delta/OI turn then 22:00 squeeze); high 10-19 02:45 (82,788, delta +845 / OI +253 into the high, RSI/WT lower highs, but divergence began 2.5 h earlier). MTS: levels confluence fired at both levels; Tom silent through the low, late at the high; Fabio null; 5 opposite-side shorts at the low; rsi:cross rejected unmapped. Card rsi-cross-unmapped-and-pivot-stack; feature list added to oi-pivot-reversal-probability-by-tf narrative.
 - Watch next: 82,788 high holds and OI falls with delta negative (fade continues toward 82,320 weekly VAL) or reclaim of 82,788.
+
+## 10-19 11:50Z 30m: operator's 82,092.1 line tested (361b7813582c) mirror@2026-10-19 11:46Z
+- Read: SHOT_361b7813582c.md (8 MATCH, 2 NOT_IN_DATA), tag NOTE. Last read id: 361b7813582c. Open MISMATCH cards: none. HALT unchanged.
+- Line = high of the 10-16 17:30 squeeze bar (82,092.1); 11:30 low 82,089.0 (3.1 below), back above in 2 min; held at 82,096.6 (10-18 10:00) and 82,096.2 (10-19 00:30). Prior watch: fade leg HELD (OI -1,463 from 07:30 high 83,157.9), reclaim leg BROKEN. Legend note: CoinGlass 30m VWAP = bar-level hlc3 x bar volume (82,551.1), not 1m hlc3.
+- Live: all skipped under HALT; Tom ct_long entry 82,384.8 (weekly VAL) stop 82,299.6 now below price; Fabio null.
+- Watch next: 30m closes above 82,092.1 with delta turning positive, or a close under it with OI still falling.
