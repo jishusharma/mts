@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-19T20:50:13Z",
   "commands": [
     "python scripts/dev/sync.py claim \"dsa-audit-03-planted-edges\"",
     "python scripts/dev/tasks.py take dsa-audit-03-planted-edges",
@@ -17,10 +18,17 @@
   "goal": "Run synthetic markets with known answers (zero edge, a planted +0.30% edge, moves inside the signal bar or after the exit, funding crossings, gap stops, same-bar stop and target) through each backtest harness, and rebuild the verdict statistics independently.",
   "id": "dsa-audit-03-planted-edges",
   "lane": "DSA-NB",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "T03: 4 findings (S1 0, S2 1, S3 3); 89 cells 62 PASS/18 FAIL/9 BLOCKED; stats rebuild matc",
+      "ref": "2dbdb81c",
+      "utc": "2026-10-19T20:50:13Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:results CLASS:C1 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report.",
+  "note": "REVIEWED: Lab_Guy 2026-10-20 ACCEPT HOLD-CLEARED A-20261018-5 LAB:results CLASS:C1 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report. STAMP CAVEAT: Lab_Guy is Claude Sonnet 5.5, same vendor as the producer; the different-vendor C1 spec review (GPT/Gemini) is still owed, not faked. Lab_Guy re-derived screen T arm from ledger.csv: n40 mean -0.05678 SE 0.13036 (published -0.0568/0.1304); canary recount 62 PASS/18 FAIL/9 BLOCKED = 89.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
@@ -30,7 +38,12 @@
     "MyTradingSys/backtest/bt/bt_engine.py",
     "MyTradingSys/research/mts_flow_audit_2026-10-13/REPORT.md"
   ],
-  "result": "",
+  "result": "T03: 4 findings (S1 0, S2 1, S3 3); 89 cells 62 PASS/18 FAIL/9 BLOCKED; stats rebuild matches (T n40 mean -0.05678 SE 0.13036)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T03_planted_edges.md and MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T03/ (new files only)",
     "read-only: repo code, result files, data under F:/MTS/data and Dumps (windows per brief section 5)"
@@ -45,7 +58,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md sections 1-7, then section 8 'T03' (full method).",
     "Find the bars+events entry point of each harness in brief 8 T03 (bt_engine, tom_bt, run_t055, screen.py, chart_read_g5 common.py, an opr study, levels_sizing probe, orderflow_views trade).",
@@ -53,6 +66,7 @@
     "Harness x canary table: expected (own formula, FORMULAS.md) vs got, PASS/FAIL/BLOCKED. Lead L5 shown with canaries.",
     "Rebuild mean, day-clustered SE, t, MDE and DIFF for mal_bb A1 and the gross screen T arm; test every pass-bar threshold at its exact boundary."
   ],
+  "taken": "2026-10-19T20:50:13Z",
   "tests": "",
   "title": "DSA audit T03: known-answer canaries through every simulator and the verdict statistics",
   "weight": "IMPORTANT",
