@@ -2,16 +2,16 @@
   "approved_by": "",
   "asks": "",
   "commands": [
-    "git -C C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed\\.claude\\worktrees\\mts-jis-nb-planner-runlanes-1018 grep -n -E \"outcome_labeler|-TimeoutSec 30\" -- scripts/core/start-trading-day.ps1 MyTradingSys/runtime/outcome_labeler.py",
+    "git grep -n -E \"outcome_labeler|-TimeoutSec 30\" -- scripts/core/start-trading-day.ps1 MyTradingSys/runtime/outcome_labeler.py",
     "python scripts/dev/test_outcome_labeler_incremental.py",
     "python scripts/dev/run_all_tests.py --quick"
   ],
   "created": "2026-10-17T12:20:31Z",
   "depends_on": [],
-  "done_when": "test_labeled_snapshots_are_not_reopened fails before and passes after; labeler on 3000 synthetic snapshots (all labeled) finishes under 3 s, number recorded in the Result line; run_all_tests --quick green.",
-  "est_turns": 25,
+  "done_when": "Full list in the spec (done_when section). In short: 3000-snapshot second cycle < 3 s (0.39 s measured); new cold-backlog and launcher-rc tests fail on old code, pass after; Result records cold-backlog seconds before (48 s measured) and after; run_all_tests --quick green; no deploy.",
+  "est_turns": 20,
   "from_inbox": "",
-  "goal": "outcome_labeler.py stays far below its 30 s timeout in the live loop as snapshots accumulate, by not re-reading snapshots that are already labeled.",
+  "goal": "outcome_labeler.py stays far below the 30 s kill in the live loop: labeled snapshots are not reopened (SHIPPED 36081c4c), a cold backlog drains in bounded cycles, and a SLOW/failed run is logged by the launcher.",
   "id": "outcome-labeler-timeout",
   "lane": "JIS-NB",
   "latest": [
@@ -25,7 +25,7 @@
   ],
   "layers": [],
   "live_path": true,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C3 REVIEWER:review SESSION DECISION (OURS): cause hypothesis = main() opens and json-loads every snapshot file each cycle even when already labeled (unbounded growth vs the 30 s timeout at start-trading-day.ps1:547); fix = skip labeled files before opening, keep the timeout; tested on a synthetic dir (the script hardcodes the live path R, tests must patch SNAPS/LABELS, never read the live tree).",
+  "note": "REVIEWED:2026-10-19 ACCEPT REVIEWER:Lab_Guy-Sonnet-5.5 card=39bf0aacfd79 scope=f024d01fcbbe CLASS:C3 WEIGHT:CRITICAL LAB:none Lab_Guy pass 2026-10-19 (Sonnet 5.5; producer was Gemini/Antigravity + Claude planner, reviewer differs). CONFIRMED C3/CRITICAL (live loop: a 30 s kill at start-trading-day.ps1:547 feeds the loop-supervisor restart storms, B189/B191). FINDING 1 (stale card): the incremental fix is ALREADY SHIPPED (36081c4c, review fixes 73e0ae45, 7d8a34b3; all on origin/fast-track); test_outcome_labeler_incremental.py runs 9 tests OK here; second cycle on 3000 snapshots (2988 labeled) took 0.39 s, opened 12. The card steps/done_when are rewritten to the REMAINING work so a builder does not redo it. FINDING 2 (real gap, measured): the same fixture's FIRST cycle (3000 unlabeled, as after a missing or corrupt outcome_labels.json) took 48 s > the 30 s kill; main() writes labels only once at the end, so a kill writes nothing and every later cycle repeats the same work (livelock, silent because the launcher sends output to NUL). FINDING 3: exit code 3 (SLOW at 20 s) is dropped by `$null = Invoke-WithTimeout` (only the >30 s TIMEOUT is logged). Live-path checks: restart/reset state = covered (idempotent-vs-full-scan, corrupt labels kept, write error keeps old file); API errors and non-trade balance moves = N/A (file-only script, no network, no account state), stated so the builder does not invent tests. DECISION (OURS): per-cycle open budget so a backlog drains over several cycles; keep the 30 s timeout. C3 coordinator step: approved by default by Supervisor B (login B), DECISION (OURS) 2026-10-19. SPEC FILE: MyTradingSys/system/card_specs/outcome-labeler-timeout.md. | PRIOR: REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C3 REVIEWER:review SESSION DECISION (OURS): cause hypothesis = main() opens and json-loads every snapshot file each cycle even when already labeled (unbounded growth vs the 30 s timeout at start-trading-day.ps1:547); fix = skip labeled files before opening, keep the timeout; tested on a synthetic dir (the script hardcodes the live path R, tests must patch SNAPS/LABELS, never read the live tree).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -35,25 +35,28 @@
   "scope_in": [
     "MyTradingSys/runtime/outcome_labeler.py",
     "scripts/dev/test_outcome_labeler_incremental.py",
-    "scripts/core/start-trading-day.ps1 (line 547 timeout only if the measurement needs it)"
+    "scripts/core/start-trading-day.ps1 (the outcome_labeler call at line ~546 only: log the exit code)",
+    "MyTradingSys/system/card_specs/outcome-labeler-timeout.md (spec, read only)"
   ],
   "scope_out": [
     "live tree",
     "HALT files",
     "deploys",
-    "runtime_data (read only, never written by tests)"
+    "runtime_data (read only, never written by tests)",
+    "the 30 s -TimeoutSec value (kept)"
   ],
   "scope_sha": "c93b7ac29728",
   "size": "M",
   "sources": [],
   "state": "ready",
   "steps": [
-    "Run the grep commands: the 30 s call at start-trading-day.ps1:547 and load_snapshots()/main() in outcome_labeler.py.",
-    "Write the fail-first test test_labeled_snapshots_are_not_reopened (synthetic dir, patched SNAPS/LABELS, 3000 labeled files, count opens) and test_slow_input_is_reported_not_silent; run it on the current code to see it fail.",
-    "Change load_snapshots to take the done set and skip labeled files without opening them; keep the atomic write_labels; measure time on the synthetic dir (record the number); run_all_tests --quick; ship. Deploy stays manual."
+    "Read card_specs/outcome-labeler-timeout.md first. The incremental skip is already shipped: do not redo it; run the 9 existing tests.",
+    "Write the two fail-first tests (cold backlog drains within a per-cycle budget; launcher logs the labeler rc); see both fail.",
+    "Implement the budget in outcome_labeler.py (atomic writes kept) and log the non-zero rc at start-trading-day.ps1 ~546; keep -TimeoutSec 30.",
+    "Measure, put the numbers in the Result line, run_all_tests --quick, ship. Deploy stays manual."
   ],
-  "tests": "scripts/dev/test_outcome_labeler_incremental.py::test_labeled_snapshots_are_not_reopened (fails on current load_snapshots, which opens every file)",
+  "tests": "test_outcome_labeler_incremental.py: existing 9 stay green; new test_cold_backlog_drains_within_budget and test_launcher_logs_labeler_rc must fail on the pre-change code.",
   "title": "Network: outcome_labeler hits its 30 s timeout in the live loop (find cause, raise or fix)",
-  "weight": "CRITICAL",
+  "weight": "B-SHARED",
   "worker": "session"
 }
