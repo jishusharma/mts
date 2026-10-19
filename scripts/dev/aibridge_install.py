@@ -1,4 +1,4 @@
-# Install / update AIBridge to the payload in scripts/aibridge (v0.7.0: fluent auto-run, parallel chats, receipts).
+# Install / update AIBridge to the payload in scripts/aibridge (v0.7.1: fluent auto-run, parallel chats, receipts).
 # Usage: python scripts/dev/aibridge_install.py [F:/AIBridge] [--dry] [--restart-agent]
 # Run on each host that has an AIBridge (JIS-NB, JIS-NUC). Token-free: the machine's own TOKEN, AGENT_CWD and
 # config.json are kept. Every overwritten file is first copied to <name>.pre_v07 (once). policy.json is MERGED, not replaced.
@@ -13,7 +13,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PAYLOAD = os.path.normpath(os.path.join(HERE, '..', 'aibridge'))
-VERSION = '0.7.0'
+VERSION = '0.7.1'
 
 args = [a for a in sys.argv[1:] if not a.startswith('--')]
 dry = '--dry' in sys.argv
