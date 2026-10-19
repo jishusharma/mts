@@ -3,7 +3,7 @@
 SUPER_SESSION.md keeps the history, the boot facts and the session log. This file is the operating design: what the supervisor
 does on each wake, which tool answers each question, and what it never does. Built in steps SV1-SV8 (cards at the end).
 
-**Five-hour run, three logins at once, one-line start (2026-10-19):** `roles/supervisor.md` v2 (pacing plan, watch, transit) and TANDEM_3LOGIN.md.
+**Five-hour run, three logins at once, one-line start (2026-10-19):** `roles/supervisor.md` v3 and SUPER_LOOP.md (`supervisor.py plan` every wake: pacing, heartbeat, shard, lane owners; `supervisor.py handover`).
 
 ## Measured overhead (before), real data
 Source: all 9 coordinator transcripts on JIS-NUC 2026-10-15..18 (>= 3 spawns each; Opus 6, Sonnet 3), parsed whole by

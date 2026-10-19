@@ -230,7 +230,7 @@ button.copy{font:700 .8rem var(--f-body);padding:6px 12px;border-radius:999px;bo
           <span class="get">a logged read against the engine, tagged NOTE or LAB-VERIFY, and a one-line flag if live money looks wrong.</span></li>
         <li><b>Spend spare budget: one super session</b>
           <span class="when">When the weekly meter says SPEND. Read the weekly bar in the Claude app's usage view (or ask any session for <code>get_usage</code>): SPEND = the weekly % used is 10+ points below the share of the week already gone (e.g. 40% used on day 4 of 7, 57% gone), or under 85% with less than a day to the reset. Any device and any login with budget works; ask <code>Start the Pipeliner.</code> in any session for the SPEND state of every login.</span>
-          <span>Paste the prompt below and fill in the Goal line. It starts the Supervisor, which runs the Session_Planner and up to 4 workers itself: do not open those by hand.</span>
+          <span>Paste the line below with your login letter and tasks. It starts the Supervisor, which runs the Session_Planner and up to 4 workers itself: do not open those by hand.</span>
           <span class="get">hours of work on your goal, each ship checked on the trunk, and one line at the end.</span>
           <details class="prompt"><summary>Show the super-session prompt</summary><pre id="sprompt"></pre></details>
           <button class="copy" id="scopy" type="button">Copy the prompt</button></li>

@@ -118,15 +118,16 @@ republish to claude.ai/artifact/9nqpZeMeEehadoBoYopZU3 from the jishusharma1985 
 | THROTTLE | U > 100 f + 5, or the 5-hour window > 80 % | only model-free work: Codex lab, DSA desk, CI |
 The meter is only readable from an App session (`get_usage`), one login at a time (no CLI or headless route exists: `claude --help` has no usage command, `claude auth status` shows the login only, `/usage` is interactive). The coordinator writes its login's reading to
 `~/.claude/mts-budget.json` (per machine, not in git); the gate treats a reading older than 6 h as NORMAL.
+**Supervisors (2026-10-19):** `supervisor.py plan` sends this line with extra heartbeat fields every wake and paces the window from it (SUPER_LOOP.md).
 **All logins at once (2026-10-20):** every top-level session sends its login's reading at start with `python scripts/dev/mts_signal.py send "BUDGET login=<A|B|C> 5h=<n>% week=<n>% reset=<weekly reset UTC YYYY-MM-DDTHH:MMZ>" --to all --kind note`; `python scripts/dev/traffic.py budget` (Pipeliner runs it) takes the newest line per login and prints SPEND / NORMAL / THROTTLE per login plus overall by the table above (a line older than 6 h counts NORMAL; a login with no line is listed as missing).
 
 ## Prompt: start a super session (one line; permission mode bypass or auto, model Sonnet)
 ```
-You are Supervisor. <your tasks>
+You are Supervisor. Login <A|B|C>. <your tasks>
 ```
-Everything else loads by default: the hook injects `roles/supervisor.md` (banner `ROLE LOADED: Supervisor ...`), which holds the boot, the 5 h pacing plan,
-the watch and hand-over rules, and points here and to SUPERVISOR.md. Add "Login B" to the tasks when the device has no env `MTS_LOGIN`. Three logins at once:
-TANDEM_3LOGIN.md. (The old multi-line prompt is retired 2026-10-19; its rules are rules 11-14 above and the role file.)
+Everything else loads by default: the hook injects `roles/supervisor.md` (banner `ROLE LOADED: Supervisor ...`), which runs `supervisor.py plan` every wake (pacing, heartbeat,
+card shard, lane owners, hand-over time). Login letter = the account signed in (A jishu.sharma, B jishu.awgp, C jishusharma1985). Design, three logins at
+once, fit table, failure modes: SUPER_LOOP.md. (The old multi-line prompt is retired 2026-10-19; its rules are rules 11-14 above and the role file.)
 
 ## Prompt pattern: any worker or Fable session that must not stop
 Lead with: "Run with zero operator input: never ask; on any open question take the most conservative default, write it as

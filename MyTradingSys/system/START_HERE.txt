@@ -45,37 +45,40 @@ HOW IT WORKS
   Model : Sonnet (Opus only if you name it)
   Paste : ONE line, then your tasks:
 
-      You are Supervisor. <your tasks>
+      You are Supervisor. Login <A|B|C>. <your tasks>
 
+  Login letter = the account you are signed in with on that device:
+  A jishu.sharma, B jishu.awgp, C jishusharma1985.
   That is all. The role file loads itself (first reply: ROLE LOADED:
-  Supervisor v2 ...). It then: reads usage, sends the BUDGET line, reads
-  the board (STOP/HOLD), writes a 5 h pacing plan, starts workers, sends
-  work to idle logins / GPT / Gemini / DeepSeek lanes, and at 4 h 40
-  writes handover/SUPERVISOR_<login>.md and starts its successor.
-  Add "Login B" after Supervisor. if the device has no MTS_LOGIN set
-  (once per device: setx MTS_LOGIN B  - the login signed in there).
+  Supervisor v3 ...). Every wake it runs ONE command,
+  supervisor.py plan, which reads usage, sends its heartbeat, paces
+  the 5 h window against the weekly limit, splits the cards with the
+  other Supervisors, feeds the GPT / Gemini / DeepSeek lanes, and says
+  when to hand over (20 min before the 5 h reset):
+  handover/SUPERVISOR_<login>.md, then the same line again.
   Do NOT open Supervisor / Session_Planner / Builder by hand otherwise.
 
   What is NOT automatic (honest limits):
     - Nothing wakes a Supervisor except its workers and a 50 min
-      watcher; between operator messages it can only start one-use
+      watcher; between your messages it can only start one-use
       Agents. A new wave of full sessions needs any message from you.
     - A Sonnet Supervisor stops at 40 tool turns / 10 messages: one
       5 h run is 1-2 Supervisor sessions. If the successor is not
-      started (event turn), paste the same line again.
-    - No device starts a session on another device.
+      started, paste the line it gives you.
+    - No device starts a session on another device (one exception:
+      a headless worker on the NUC when no Supervisor runs there).
     - DeepSeek (DSA) works only while its chat is open on JIS-NB / NUC
-      with hands-free armed; GPT and Gemini lanes run on JIS-NUC.
+      with hands-free armed; lines starting OPERATOR are for you.
 
   THREE LOGINS AT ONCE (A, B, C on three devices)
-    1. Once per device: setx MTS_LOGIN <A|B|C>, reopen the app.
-    2. On each device, one new session, paste the line above (same
-       or different tasks). They find each other through BUDGET
-       lines and split the cards by login (no two start one card).
+    1. On each device, one new session, paste the line above with
+       that device's login letter (same or different tasks).
+    2. They find each other through heartbeat lines, split the cards
+       (no two start one card) and pick one owner per lane.
     3. NUC: open the DeepSeek chat + arm hands-free; JIS-NB too.
        Laptop: Claude only (no DeepSeek, GPT or agy there).
     4. Check any time:  python scripts/dev/traffic.py budget
-    More: MyTradingSys/system/TANDEM_3LOGIN.md
+    More: MyTradingSys/system/SUPER_LOOP.md
 
 --------------------------------------------------------------
  4. HEALTH CHECK                               any device, about weekly
@@ -119,8 +122,7 @@ HOW IT WORKS
   2. Anywhere:  python scripts/dev/traffic.py budget
      -> SPEND / NORMAL / THROTTLE per login and overall.
      Readings older than 6 h count as NORMAL. The Supervisor sends its
-     own at boot and every wake:
-       python scripts/dev/mts_signal.py budget --login B --five 12 --week 40 --reset 2026-10-22T19:59Z
+     own at boot and every wake (supervisor.py plan, heartbeat line).
 
 --------------------------------------------------------------
  DO THESE ONCE (yours, in the app sidebar)

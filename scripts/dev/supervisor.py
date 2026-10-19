@@ -19,12 +19,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
+import re
 import socket
 import subprocess
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.dont_write_bytecode = True
@@ -292,22 +294,24 @@ def read_budget(as_of: datetime | None = None, home: Path | None = None) -> dict
 
 def read_peers(login: str | None, as_of: datetime, do_fetch: bool = True) -> dict:
     """The other logins' supervisors, seen only through their BUDGET signal lines (the app cannot message across logins).
-    `active` = logins with a reading newer than 6 h (always including this one), the list dispatch shards over.
+    `active` = logins whose supervisor heartbeat (BUDGET line with sup=, < 75 min) has free slots, plus this one: the list dispatch shards over.
     Fails soft: {"error": ...} and dispatch then runs unsharded."""
     try:
         import traffic
         view, errs = traffic.budget_view(do_fetch=do_fetch, now=as_of)
         fresh = traffic.BUDGET_FRESH_H * 3600
-        rows, active = {}, set()
+        rows = {}
         for lg, r in view["logins"].items():
             at = traffic.utc(r.get("at"))
             age_h = round((as_of - at).total_seconds() / 3600, 1) if at else None
-            rows[lg] = {"state": r["state"], "five_h": r.get("five_h"), "week": r.get("week"), "age_h": age_h}
-            if at and (as_of - at).total_seconds() <= fresh:
-                active.add(lg)
+            rows[lg] = {"state": r["state"], "five_h": r.get("five_h"), "week": r.get("week"), "age_h": age_h,
+                        "fresh": bool(at and (as_of - at).total_seconds() <= fresh)}
+        sigs, _e = traffic.read_signals(as_of - timedelta(minutes=HEARTBEAT_MIN), as_of + timedelta(minutes=5))
+        live = live_supervisors(sigs, as_of)
+        active = {lg for lg, s in live.items() if s["free"] > 0}   # shard only over supervisors that can start work (SUPER_LOOP.md)
         if login:
             active.add(login)
-        return {"self": login, "logins": rows, "active": sorted(active), "overall": view["overall"],
+        return {"self": login, "logins": rows, "active": sorted(active), "live": live, "overall": view["overall"],
                 "missing": [x for x in "ABC" if x not in rows], "errors": errs}
     except (Exception, SystemExit) as e:
         return {"self": login, "error": f"{type(e).__name__}: {e}"}
@@ -498,6 +502,458 @@ def brief(card_id: str, role: str | None = None, repo: Path = REPO, card: dict |
     return "\n".join(lines)
 
 
+# ---------- the five-hour loop (MyTradingSys/system/SUPER_LOOP.md): one `plan` call per wake, heartbeat, lanes, hand-over ----------
+LOOP_DIR = "mts-superloop"      # under ~/.claude: this login's get_usage readings (local, never in git)
+HEARTBEAT_MIN = 75              # a supervisor's heartbeat older than this = it is gone (watcher <= 50 min + slack; OURS)
+SPAWN_CEIL = 80                 # 5 h % at which no Claude worker starts (SUPERVISOR.md pacing)
+K_DEFAULT = 0.12                # weekly points per 5 h point until two readings in one window measure it (GUESS)
+TRANSIT_MIN = 20                # write the hand-over this many minutes before the 5 h window resets (OURS)
+DSA_DOWN_H = 24                 # a DSA target whose oldest pending row is older than this has no working bridge (OURS)
+CLAUDE_LANES = ("SONNET", "HAIKU")
+NB, NUC = "JIS-NB", "JIS-NUC"
+HANDOVER_REL = "MyTradingSys/system/handover/SUPERVISOR_{}.md"
+NUC_GATE = "ssh -i ~/.ssh/nuc_gate -o BatchMode=yes e-ngineers@192.168.29.110 ps"
+HB_RE = re.compile(r"\bBUDGET login=([ABC])\b.*\bsup=\S+")
+
+
+def _utc(s):
+    """'2026-10-19T14:00Z', '...:00Z', '...:00.239Z' or '+00:00' -> aware datetime; anything else -> None."""
+    try:
+        d = datetime.fromisoformat(str(s).strip().replace("Z", "+00:00"))
+    except (TypeError, ValueError):
+        return None
+    return d if d.tzinfo else d.replace(tzinfo=timezone.utc)
+
+
+def weekly_cap(login: str, host: str) -> int:
+    """SUPER_SESSION.md rule 12: logins B and C stop at 75% of the week when they run on JIS-NB (operator choice); else 95%."""
+    return 75 if host.upper() == NB and login in ("B", "C") else 95
+
+
+def loop_home(home=None) -> Path:
+    return Path(home) if home else Path(os.environ.get("MTS_RELAY_HOME") or Path.home() / ".claude") / LOOP_DIR
+
+
+def record_reading(login: str, rd: dict, home=None) -> list:
+    """Append this reading to <home>/<login>.jsonl and return the last 50 (oldest first). A write error keeps the reading in memory only."""
+    p = loop_home(home) / f"{login}.jsonl"
+    rows = []
+    try:
+        rows = [json.loads(x) for x in p.read_text(encoding="utf-8").splitlines() if x.strip()]
+    except (OSError, ValueError):
+        rows = []
+    rows = (rows + [rd])[-50:]
+    try:
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text("".join(json.dumps(r, sort_keys=True) + "\n" for r in rows), encoding="utf-8", newline="\n")
+    except OSError:
+        pass
+    return rows
+
+
+def _same_window(a: dict, b: dict) -> bool:
+    ra, rb = _utc(a.get("five_reset")), _utc(b.get("five_reset"))
+    return bool(ra and rb and abs((ra - rb).total_seconds()) <= 600)
+
+
+def estimate_k(hist) -> float | None:
+    """Weekly points per 5 h point, from consecutive readings inside one 5 h window (>= 5 points of 5 h use seen); None = not measured yet."""
+    dp = dw = 0.0
+    for a, b in zip(hist, hist[1:]):
+        wa, wb = _utc(a.get("week_reset")), _utc(b.get("week_reset"))
+        if _same_window(a, b) and wa and wb and abs((wa - wb).total_seconds()) <= 600:
+            d5, d7 = float(b["five"]) - float(a["five"]), float(b["week"]) - float(a["week"])
+            if d5 > 0 and d7 >= 0:
+                dp, dw = dp + d5, dw + d7
+    return round(dw / dp, 3) if dp >= 5 else None
+
+
+def pace_plan(now: datetime, rd: dict, cap: float, hist=(), running: int = 0) -> dict:
+    """Pure: the 5 h plan from one get_usage reading. Spread the weekly room (cap - week%) evenly over the 5 h windows left before the
+    weekly reset, convert it to 5 h points (k), never past SPAWN_CEIL; then a feedback check: the burn since this window's first reading,
+    projected to the window end, shrinks or grows the worker count. Returns mode, slots (max Claude workers at once), new (start now), target."""
+    five, week = float(rd["five"]), float(rd["week"])
+    r5, rw = _utc(rd.get("five_reset")), _utc(rd.get("week_reset"))
+    h_left = (r5 - now).total_seconds() / 3600 if r5 else 5.0
+    if h_left <= 0:
+        five, h_left, r5 = 0.0, 5.0, now + timedelta(hours=5)     # window already reset: the next call opens a fresh one
+    h_left = min(h_left, 5.0)
+    wk_h = (rw - now).total_seconds() / 3600 if rw else 168.0
+    if wk_h <= 0:
+        week, wk_h = 0.0, 168.0
+    windows = max(1, math.ceil(wk_h / 5))
+    share = max(0.0, cap - week) / windows
+    k_meas = estimate_k(list(hist))
+    k = k_meas or K_DEFAULT
+    room = max(0.0, min(share / k, SPAWN_CEIL - five))
+    target = five + room
+    first = next((h for h in hist if _same_window(h, rd)), None)
+    burn = projected = None
+    if first and _utc(first.get("at")):
+        dt = (now - _utc(first["at"])).total_seconds() / 3600
+        if dt >= 0.25:
+            burn = max(0.0, (five - float(first["five"])) / dt)
+            projected = five + burn * h_left
+    slots = 4 if room >= 40 else 3 if room >= 20 else 2 if room >= 10 else 1 if room >= 4 else 0
+    why = [f"week {week:.0f}% of cap {cap:.0f} over {windows} window(s) = {share:.1f} wk pts here, k {k}"
+           f"{'' if k_meas else ' (GUESS)'} -> room {room:.0f} pts of 5 h"]
+    if projected is not None:
+        if projected > target + 3:
+            slots = min(slots, max(0, running - 1))
+            why.append(f"burn {burn:.1f}/h projects {projected:.0f}% > target {target:.0f}%: shrink")
+        elif projected < target - 10 and running < 4:
+            slots = max(slots, min(4, running + 1))
+            why.append(f"burn {burn:.1f}/h projects {projected:.0f}% < target {target:.0f}%: grow")
+    if five >= SPAWN_CEIL or room < 2:
+        mode, slots = "STOP", 0
+    elif five >= 70:
+        mode, slots = "SUPERVISOR-ONLY", 0
+    elif five >= 60:
+        mode, slots = "CRUCIAL-ONLY", min(slots, 1)
+    else:
+        mode = "SPEND" if room >= 30 else "NORMAL"
+    return {"mode": mode, "slots": slots, "new": max(0, slots - running), "running": running, "five": five, "week": week,
+            "cap": cap, "k": k, "k_measured": bool(k_meas), "room": round(room, 1), "target": round(target), "h_left": round(h_left, 2),
+            "burn": None if burn is None else round(burn, 2), "projected": None if projected is None else round(projected),
+            "five_reset": r5.strftime("%Y-%m-%dT%H:%MZ"), "week_reset": (rw or now + timedelta(days=7)).strftime("%Y-%m-%dT%H:%MZ"),
+            "transit": (r5 - timedelta(minutes=TRANSIT_MIN)).strftime("%Y-%m-%dT%H:%MZ"), "why": "; ".join(why)}
+
+
+def heartbeat_text(login: str, host: str, plan: dict, dsa: str | None = None, free: int | None = None, mode: str | None = None) -> str:
+    """The one line every supervisor sends per wake: a BUDGET line (traffic.py budget parses its head) plus who runs where.
+    No card ids (the public signal cleaner cuts long tokens); under 200 chars."""
+    t = (f"BUDGET login={login} 5h={round(plan['five'])}% week={round(plan['week'])}% reset={plan['week_reset']} "
+         f"sup={host.upper()} mode={mode or plan['mode']} run={plan['running']} free={plan['new'] if free is None else free} "
+         f"end={plan['five_reset'][11:]}")
+    return t + (f" dsa={dsa}" if dsa else "")
+
+
+def live_supervisors(sigs, now: datetime, minutes: int = HEARTBEAT_MIN) -> dict:
+    """{login: {host, at, mode, run, free, dsa}} from the newest heartbeat per login younger than `minutes` (sigs = traffic.read_signals rows)."""
+    out = {}
+    for t, _s, _k, x in sorted(sigs, key=lambda r: r[0]):
+        m = HB_RE.search(x)
+        if not m or (now - t).total_seconds() > minutes * 60:
+            continue
+        kv = dict(re.findall(r"(\w+)=(\S+)", x))
+        if kv.get("mode") == "ENDED":
+            out.pop(m.group(1), None)
+            continue
+        out[m.group(1)] = {"host": kv.get("sup", "?").upper(), "at": t.strftime("%Y-%m-%dT%H:%MZ"), "mode": kv.get("mode", "?"),
+                           "run": int(kv.get("run", 0) or 0) if str(kv.get("run", "0")).isdigit() else 0,
+                           "free": int(kv["free"]) if str(kv.get("free", "")).isdigit() else 0, "dsa": kv.get("dsa")}
+    return out
+
+
+def lane_owner(live: dict, host: str | None = None) -> str | None:
+    """Who runs a shared lane action this wake: the lowest login letter among live supervisors on `host` (if any), else the lowest
+    live login anywhere. Same answer on every machine from the same signals, so exactly one supervisor acts."""
+    on = sorted(l for l, h in live.items() if host and h["host"] == host.upper())
+    return on[0] if on else (sorted(live)[0] if live else None)
+
+
+def pick_cards(rows, host: str, n: int, crucial_only: bool = False) -> list:
+    """The first n dispatch rows a Claude worker on `host` can run: lanes SONNET/HAIKU (JIS-NB lane only on JIS-NB), Lab_Guy cards only on
+    JIS-NUC, CRUCIAL/CRITICAL only when the window says so. Rows are already ranked (pinned CI first, own shard first)."""
+    h = host.upper()
+    ok = []
+    for r in rows:
+        lane = str(r.get("lane", "")).upper()
+        if not (lane in CLAUDE_LANES or (lane == NB and h == NB)):
+            continue
+        if r.get("role") == "Lab_Guy" and h != NUC:
+            continue
+        if crucial_only and str(r.get("weight", "")).upper() not in ("CRUCIAL", "CRITICAL"):
+            continue
+        ok.append(r)
+    return ok[:max(0, n)]
+
+
+def dsa_targets_state(rows, now: datetime) -> dict:
+    """{target: {pending, oldest_h, down}} for the DeepSeek targets from trunk desk rows; down = oldest pending older than DSA_DOWN_H."""
+    out = {}
+    for r in rows:
+        tg = str(r.get("target", ""))
+        if r.get("status") != "pending" or not tg.startswith("DSA"):
+            continue
+        at = _utc(r.get("posted"))
+        age = (now - at).total_seconds() / 3600 if at else 0.0
+        d = out.setdefault(tg, {"pending": 0, "oldest_h": 0.0})
+        d["pending"] += 1
+        d["oldest_h"] = round(max(d["oldest_h"], age), 1)
+    for d in out.values():
+        d["down"] = d["oldest_h"] > DSA_DOWN_H
+    return out
+
+
+def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_key: bool) -> list:
+    """Pure: the text a supervisor reads each wake. PLAN/PEER/BOARD lines are state; RUN lines are commands to run now in one Bash call;
+    SPAWN is who to start; NOTE needs nothing from you; OPERATOR is the only thing the operator must do."""
+    h = host.upper()
+    L = [f"PLAN login={login} host={h} mode={plan['mode']} 5h={plan['five']:.0f}% -> target {plan['target']}% by {plan['five_reset']} "
+         f"week={plan['week']:.0f}%/{plan['cap']:.0f} slots={plan['slots']} running={plan['running']} new={plan['new']} ({plan['why']})"]
+    for lg, s in sorted(live.items()):
+        if lg != login:
+            L.append(f"PEER {lg} on {s['host']} mode={s['mode']} run={s['run']} free={s['free']} seen {s['at']}")
+    unknown = bool(ctx.get("peers_unknown"))
+    if unknown:
+        L.append("PEERS UNKNOWN (signals not read): shared-lane actions below are NOTE only this wake; do not touch NEXT_SESSION.md")
+    elif len(live) <= 1:
+        L.append("PEER none live (no heartbeat < 75 min): you are alone; NEXT_SESSION.md is yours to update at transit")
+    for hid, kind, title in ctx.get("holds", []):
+        L.append(f"BOARD {kind} {hid}: {title} (no card of that kind)")
+    if ctx.get("handover"):
+        L.append(f"HANDOVER {ctx['handover']}")
+    ci = ctx.get("ci") or {}
+    if ci.get("error"):
+        L.append(f"NOTE CI unknown ({ci['error'][:80]}): treat as red for live-path cards")
+    if ci.get("red"):
+        L.append(f"SPAWN CI RED: one worker on the pinned ci-* card only; nothing else ships ({ci.get('message', '')[:80]})")
+    picks = ctx.get("picks", [])
+    if plan["new"] and picks and not ci.get("red"):
+        L.append(f"SPAWN {len(picks)}: " + ", ".join(f"{p['id']} ({p.get('role') or 'Builder'}, {p.get('worker') or '?'}, "
+                                                  f"{'own' if p.get('own', True) else 'peer'})" for p in picks)
+                 + "  [operator turn: sessions, 2 chained cards each; event turn: size-S Agents only]")
+    elif plan["new"] and not picks:
+        L.append("NOTE no Claude card fits this host: Session_Planner (foreground Agent) refines raw cards, or idle")
+    # shared lanes: exactly one live supervisor (lane_owner) acts on each
+    me_codex, me_any = lane_owner(live, NUC) == login, lane_owner(live) == login
+    claude_ok = plan["mode"] not in ("STOP", "SUPERVISOR-ONLY") and not ci.get("red")
+    if unknown:
+        if lane_owner(live, NUC) == login and ctx.get("codex_ready"):
+            L.append(f"NOTE GPT lab: {ctx['codex_ready']} CODEX card(s) ready; owner unknown this wake")
+        me_codex = me_any = False
+    cx = ctx.get("codex_ready", 0)
+    if me_codex and cx:
+        if h == NUC:
+            L.append("RUN python scripts/dev/codex_run.py tick")
+        elif gate_key:
+            L.append(f"RUN printf 'Set-Location F:/MTS/mts-codex-lab; python scripts/dev/codex_run.py tick\\n' | {NUC_GATE}")
+        else:
+            L.append(f"NOTE GPT lab: {cx} CODEX card(s) ready, no NUC supervisor and no gate key here: lab idle until one boots on JIS-NUC")
+    if me_codex and claude_ok and ctx.get("gemini_ready") and h == NUC:
+        L.append(f"SPAWN Lab_Guy for {ctx['gemini_ready']} Gemini card(s) (gemini_queue.py run <card>:medium, reviews the branch)")
+    if me_codex and 0 <= cx < 8:
+        L.append(f"NOTE CODEX lane {cx} ready (< 8): Session_Planner refines CODEX cards this wake")
+    if me_any and ctx.get("dsa_unposted"):
+        L.append(f"RUN python -u scripts/dev/desk.py assign > ~/.claude/{LOOP_DIR}/assign.log 2>&1 &   "
+                 f"({ctx['dsa_unposted']} ready DSA-lane card(s) without a desk row)")
+    for tg, d in sorted(ctx.get("dsa", {}).items()):
+        if d["down"]:
+            L.append(f"OPERATOR DeepSeek {tg}: oldest pending row {d['oldest_h']:.0f} h untaken: open the DeepSeek chat on that machine "
+                     f"and arm hands-free; post no more rows to {tg} until it moves")
+    for lg, s in sorted(live.items()):
+        if s.get("dsa") == "down":
+            L.append(f"OPERATOR AIBridge agent down on {s['host']} (heartbeat of {lg}): run scripts/dev/aibridge_health.py there")
+    if me_any and claude_ok and ctx.get("pipeliner_free") and ctx.get("desk_pending"):
+        L.append(f"SPAWN Pipeliner on the next operator turn (`You are Pipeliner.`, lease free, {ctx['desk_pending']} desk rows pending)")
+    if me_any and gate_key and ctx.get("nuc_ok") and not any(s["host"] == NUC for s in live.values()) and ctx.get("spare"):
+        L.append(f"RUN python scripts/dev/nuc_wake.py --card {ctx['spare']} --name {ctx['spare'][:20]}   (NUC has no supervisor: one headless "
+                 f"worker there, the NUC login's budget)")
+    L.append(f"RUN (background) python scripts/dev/supervisor.py wait --timeout 50m{ctx.get('shas_arg', '')}   then end the turn")
+    L.append(f"TRANSIT at {plan['transit']}: python scripts/dev/supervisor.py handover --login {login} --note \"<one line>\"; ship it; "
+             f"successor line: You are Supervisor. Login {login}. Continue from {HANDOVER_REL.format(login)}")
+    return L
+
+
+def _local_bridge(host: str) -> str | None:
+    if host.upper() not in (NB, NUC):
+        return None
+    import socket as _s
+    try:
+        _s.create_connection(("127.0.0.1", 7181), timeout=2).close()
+        return "up"
+    except OSError:
+        return "down"
+
+
+def _git_show(repo: Path, rel: str) -> str | None:
+    r = subprocess.run(["git", "-C", str(repo), "show", f"{TRUNK_REF}:{rel}"], capture_output=True, text=True, encoding="utf-8",
+                       errors="replace", timeout=30)
+    return r.stdout if r.returncode == 0 else None
+
+
+def nuc_budget_ok(login: str, mode: str, now: datetime, no_fetch: bool = True, view=None, inv=None) -> bool:
+    """A headless NUC worker (nuc_wake.py) spends whichever login is signed in on the NUC, which no script can see. So it is allowed only
+    when EVERY login the NUC may run (traffic_inventory.json) has a fresh BUDGET reading that is not THROTTLE, and this login, if it is one
+    of them, is not in STOP. Unknown = no (fail closed)."""
+    try:
+        import traffic
+        inv = inv or traffic.inv_cache()
+        view = view if view is not None else traffic.budget_view(do_fetch=not no_fetch, now=now)[0]
+        for lg in inv["machines"][NUC]["logins"]:
+            r = view["logins"].get(lg)
+            at = traffic.utc((r or {}).get("at"))
+            if not r or not at or (now - at).total_seconds() > traffic.BUDGET_FRESH_H * 3600 or r["state"] == "THROTTLE":
+                return False
+            if lg == login and mode in ("STOP", "SUPERVISOR-ONLY"):
+                return False
+        return True
+    except Exception:
+        return False
+
+
+def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, no_fetch: bool = False, host: str | None = None,
+         home=None, now: datetime | None = None, shas: list | None = None) -> tuple[list, dict]:
+    """One call per wake (boot included): records the reading, sends the heartbeat, reads peers, board, hand-over, CI, dispatch,
+    lanes and desk from trunk, and returns (lines, data). Every sub-read fails soft into a NOTE line, never into a success value."""
+    import tasks
+    import traffic
+    now = now or _now_utc()
+    host = (host or socket.gethostname()).upper()
+    login = login.strip().upper()[:1]
+    rd = {**rd, "at": now.strftime("%Y-%m-%dT%H:%M:%SZ")}
+    hist = record_reading(login, rd, home)
+    pl = pace_plan(now, rd, weekly_cap(login, host), hist[:-1], running)
+    notes, ctx = [], {}
+    if not no_fetch:
+        try:
+            fetch_origin(repo)
+        except Exception as e:
+            ctx["peers_unknown"] = True
+            notes.append(f"NOTE fetch failed ({e}): state below may be old")
+    dsa_local = _local_bridge(host)
+    sent = None
+    try:
+        if not no_fetch:
+            traffic.refresh_signals()
+        sigs, _e = traffic.read_signals(now - timedelta(minutes=HEARTBEAT_MIN), now + timedelta(minutes=5))
+        if _e:
+            ctx["peers_unknown"] = True
+    except Exception as e:
+        sigs = []
+        ctx["peers_unknown"] = True
+        notes.append(f"NOTE signals unreadable ({type(e).__name__}): peers unknown")
+    live = live_supervisors(sigs, now)
+    live[login] = {"host": host, "at": now.strftime("%Y-%m-%dT%H:%MZ"), "mode": pl["mode"], "run": running, "free": pl["new"], "dsa": dsa_local}
+    shard = sorted(l for l, s in live.items() if s["free"] > 0) or [login]
+    try:
+        import desk
+        board = _git_show(repo, "MyTradingSys/system/ANNOUNCEMENTS.md")
+        if board is None:
+            raise OSError("ANNOUNCEMENTS.md not on trunk")
+        ctx["holds"] = desk.active_holds(board)
+    except Exception as e:
+        notes.append(f"NOTE board unreadable ({type(e).__name__}): read ANNOUNCEMENTS.md ACTIVE by hand")
+    ho = _git_show(repo, HANDOVER_REL.format(login))
+    if ho:
+        nxt = [x.strip() for x in ho.splitlines() if x.strip().startswith(("- Next", "Next", "- next"))][:1]
+        ctx["handover"] = HANDOVER_REL.format(login) + " on trunk" + (": " + nxt[0][:160] if nxt else "")
+    ctx["ci"] = read_ci(now=now)
+    try:
+        snap = _dispatch_raw(repo, now, host=host, login=login, logins=shard)
+        ctx["picks"] = pick_cards(snap.get("dispatch", []), host, pl["new"], pl["mode"] == "CRUCIAL-ONLY")
+        rest = pick_cards(snap.get("dispatch", []), NUC, 10)
+        spare = [r["id"] for r in rest if r["id"] not in {p["id"] for p in ctx["picks"]}]
+        ctx["spare"] = spare[0] if spare else None
+    except Exception as e:
+        ctx["picks"] = []
+        notes.append(f"NOTE dispatch failed ({type(e).__name__}: {str(e)[:80]})")
+    try:
+        cards, reg = tasks.load_all(repo), tasks.registry(repo)
+        ready = [c for c in cards if c.get("state") == "ready" and not tasks.problems(c, cards, reg, repo)]
+        ctx["codex_ready"] = sum(1 for c in ready if str(c.get("lane", "")).upper() == "CODEX")
+        ctx["gemini_ready"] = sum(1 for c in ready if str(c.get("vendor", "")).lower() == "gemini")
+        import desk
+        rows = desk.trunk_rows(repo, TRUNK_REF)
+        have = {r.get("card") for r in rows}
+        ctx["dsa_unposted"] = sum(1 for c in ready if str(c.get("lane", "")) in desk.DSA_LANES and c["id"] not in have)
+        ctx["dsa"] = dsa_targets_state(rows, now)
+        ctx["desk_pending"] = sum(1 for r in rows if r.get("status") == "pending")
+    except Exception as e:
+        notes.append(f"NOTE lanes/desk unreadable ({type(e).__name__}: {str(e)[:80]})")
+    try:
+        import lease
+        ctx["pipeliner_free"] = lease.status(repo, roles=("Pipeliner",), do_fetch=False)["Pipeliner"].get("state") in ("free", "expired")
+    except Exception:
+        ctx["pipeliner_free"] = False
+    ctx["nuc_ok"] = nuc_budget_ok(login, pl["mode"], now, no_fetch)
+    stamp = loop_home(home) / "nuc_wake.last"
+    try:
+        last_wake = _utc(stamp.read_text(encoding="utf-8").strip())
+    except OSError:
+        last_wake = None
+    if last_wake and (now - last_wake).total_seconds() < 5 * 3600:
+        ctx["nuc_ok"] = False
+    free = 0 if (ctx["ci"] or {}).get("red") else min(pl["new"], len(ctx.get("picks", [])))
+    if send:
+        try:
+            import mts_signal
+            sent = mts_signal.send(heartbeat_text(login, host, pl, dsa_local, free=free), to="all", kind="note")
+        except Exception as e:
+            sent = False
+            notes.append(f"NOTE heartbeat error {type(e).__name__}")
+        if not sent:
+            notes.append("NOTE heartbeat NOT sent: peers will not count you; your claims still lock your cards")
+        try:
+            budget_rec = {"utc": rd["at"], "weekly_all_pct": pl["week"], "weekly_resets_at": pl["week_reset"], "five_hour_pct": pl["five"]}
+            bh = Path(os.environ.get("MTS_RELAY_HOME") or Path.home() / ".claude")
+            bh.mkdir(parents=True, exist_ok=True)
+            (bh / "mts-budget.json").write_text(json.dumps(budget_rec, sort_keys=True), encoding="utf-8", newline="\n")
+        except OSError:
+            pass
+    if shas:
+        ctx["shas_arg"] = " --shas " + ",".join(shas)
+    live[login]["free"] = free
+    lines = plan_lines(login, host, pl, live, ctx, (Path.home() / ".ssh" / "nuc_gate").exists()) + notes
+    loop_home(home).mkdir(parents=True, exist_ok=True)
+    if any("nuc_wake.py" in x for x in lines):
+        try:
+            stamp.write_text(now.strftime("%Y-%m-%dT%H:%M:%SZ"), encoding="utf-8", newline="\n")
+        except OSError:
+            pass
+    data = {"plan": pl, "live": live, "shard": shard, "heartbeat_sent": sent, "picks": [p["id"] for p in ctx.get("picks", [])],
+            "lines": lines}
+    try:
+        (loop_home(home) / f"{login}-last-plan.json").write_text(json.dumps(data, indent=1, sort_keys=True, default=str),
+                                                                 encoding="utf-8", newline="\n")
+    except OSError:
+        pass
+    return lines, data
+
+
+def render_handover(login: str, host: str, now: datetime, last: dict, claims: list, note: str = "") -> str:
+    """Pure: the per-login hand-over file the next `You are Supervisor.` boot reads (plan prints its Next line)."""
+    pl = last.get("plan", {})
+    peers = ", ".join(f"{lg}@{s.get('host', '?')}" for lg, s in sorted(last.get("live", {}).items()) if lg != login)
+    L = [f"# Supervisor hand-over, login {login} ({host}, {now.strftime('%Y-%m-%dT%H:%MZ')})", "",
+         f"- Next: {note or 'continue the dispatch order; nothing pending from this run'}",
+         f"- Budget at hand-over: 5h {pl.get('five', '?')}% (reset {pl.get('five_reset', '?')}), week {pl.get('week', '?')}% of cap "
+         f"{pl.get('cap', '?')} (reset {pl.get('week_reset', '?')}), mode {pl.get('mode', '?')}, k {pl.get('k', '?')}"
+         f"{'' if pl.get('k_measured') else ' (GUESS)'}",
+         f"- Peers live at hand-over: {peers or 'none'}",
+         f"- Last picks: {', '.join(last.get('picks', [])) or 'none'}",
+         f"- Open claims from {host}: {', '.join(claims) or 'none'} (finish, hand over in the card, or release by the claim rules)",
+         "", f"Successor: `You are Supervisor. Login {login}. Continue from {HANDOVER_REL.format(login)}`", ""]
+    return "\n".join(L)
+
+
+def handover(repo: Path, login: str, note: str = "", host: str | None = None, home=None, now: datetime | None = None,
+             send: bool = False) -> Path:
+    import sync
+    now = now or _now_utc()
+    host = (host or socket.gethostname()).upper()
+    login = login.strip().upper()[:1]
+    try:
+        last = json.loads((loop_home(home) / f"{login}-last-plan.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        last = {}
+    try:
+        claims = [s for s, kv in sync.read_claims(repo, TRUNK_REF) if (kv.get("host") or "").upper() == host]
+    except Exception:
+        claims = ["(claims unreadable)"]
+    p = Path(repo) / HANDOVER_REL.format(login)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(render_handover(login, host, now, last, claims, note), encoding="utf-8", newline="\n")
+    if send and last.get("plan"):
+        try:
+            import mts_signal
+            mts_signal.send(heartbeat_text(login, host, {**last["plan"], "running": 0}, free=0, mode="ENDED"), to="all", kind="note")
+        except Exception:
+            pass   # the 75 min heartbeat age still removes this supervisor
+    return p
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -517,7 +973,44 @@ def main(argv: list[str] | None = None) -> int:
     p_brief.add_argument("card", help="card id to brief")
     p_brief.add_argument("--role", default=None, help="role to start worker as (defaults to Builder)")
 
+    p_plan = sub.add_parser("plan", help="every wake incl. boot: record get_usage, heartbeat, peers, lanes; prints PLAN/RUN/SPAWN lines")
+    p_plan.add_argument("--login", default=os.environ.get("MTS_LOGIN"), help="A|B|C (your account email in CLOUD_ACCOUNTS.md; default env MTS_LOGIN)")
+    p_plan.add_argument("--five", type=float, required=True, help="get_usage 5-hour limit percentUsed")
+    p_plan.add_argument("--five-reset", required=True, help="get_usage 5-hour resetsAt (UTC)")
+    p_plan.add_argument("--week", type=float, required=True, help="get_usage Weekly all models percentUsed")
+    p_plan.add_argument("--week-reset", required=True, help="get_usage Weekly all models resetsAt (UTC)")
+    p_plan.add_argument("--running", type=int, default=0, help="Claude workers you have running now")
+    p_plan.add_argument("--shas", nargs="*", default=[], help="reported shas, passed on to the watcher line")
+    p_plan.add_argument("--no-send", action="store_true", help="do not send the heartbeat (tests, dry runs)")
+    p_plan.add_argument("--no-fetch", action="store_true")
+    p_plan.add_argument("--json", action="store_true")
+
+    p_ho = sub.add_parser("handover", help="write handover/SUPERVISOR_<login>.md from the last plan (ship it once)")
+    p_ho.add_argument("--login", default=os.environ.get("MTS_LOGIN"))
+    p_ho.add_argument("--note", default="", help="one line: what the successor does first")
+    p_ho.add_argument("--no-send", action="store_true", help="do not send the ENDED heartbeat")
+
     args = ap.parse_args(argv)
+    if args.cmd in ("plan", "handover") and (not args.login or args.login.strip().upper()[:1] not in ("A", "B", "C")):
+        print("login must be A, B or C: match your account email to CLOUD_ACCOUNTS.md LOGINS (or set env MTS_LOGIN)")
+        return 2
+    if args.cmd == "plan":
+        bad = [n for n, v in (("--five-reset", args.five_reset), ("--week-reset", args.week_reset)) if _utc(v) is None]
+        if bad:
+            print(f"{', '.join(bad)}: UTC time like 2026-10-19T14:00Z")
+            return 2
+        if not (0 <= args.five <= 100 and 0 <= args.week <= 100 and args.running >= 0):
+            print("--five and --week are percentages 0-100 (get_usage percentUsed); --running >= 0")
+            return 2
+        rd = {"five": args.five, "five_reset": args.five_reset, "week": args.week, "week_reset": args.week_reset}
+        lines, data = plan(REPO, args.login, rd, running=args.running, send=not args.no_send, no_fetch=args.no_fetch,
+                           shas=parse_shas_arg(args.shas))
+        print(json.dumps(data, indent=1, sort_keys=True, default=str) if args.json else chr(10).join(lines))
+        return 0
+    if args.cmd == "handover":
+        p = handover(Path.cwd() if (Path.cwd() / "MyTradingSys").is_dir() else REPO, args.login, note=args.note, send=not args.no_send)
+        print(f"wrote {p}; ship it once (sync.py ship, docs only)")
+        return 0
     if args.cmd == "tick":
         sha_list = parse_shas_arg(args.shas)
         res = tick(repo=REPO, shas=sha_list, no_fetch=args.no_fetch, login=args.login)
