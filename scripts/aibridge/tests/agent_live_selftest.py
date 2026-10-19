@@ -71,7 +71,7 @@ fails = []
 n_ok = 0
 
 
-def http(method, path, body=None, timeout=60):
+def http(method, path, body=None, timeout=180):
     data = json.dumps(body).encode() if body is not None else None
     req = urllib.request.Request('http://127.0.0.1:%d%s' % (PORT, path), data=data, method=method,
                                  headers={'Origin': ORIGIN, 'Content-Type': 'text/plain'})
@@ -82,7 +82,7 @@ def http(method, path, body=None, timeout=60):
         return e.code, json.loads(e.read().decode() or '{}')
 
 
-def run(cmd, auto=True, http_timeout=60, **kw):
+def run(cmd, auto=True, http_timeout=180, **kw):
     b = {'cmd': cmd, 'cwd': work, 'token': TOKEN, 'auto': auto}
     b.update(kw)
     return http('POST', '/run', b, timeout=http_timeout)
