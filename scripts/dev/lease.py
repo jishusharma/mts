@@ -1,4 +1,4 @@
-"""Single-instance lease for singleton roles (Pipeliner, Traffic_Controller), across machines and on one machine.
+"""Single-instance lease for singleton roles (Pipeliner; Traffic_Controller was folded into it 2026-10-20), across machines and on one machine.
 Design and the 2026-10-18 double-run evidence: MyTradingSys/system/TRAFFIC_CONTROLLER.md, section "Part A".
 
   python scripts/dev/lease.py acquire <Role>    take or renew the lease (exit 0 = you hold it)
@@ -44,7 +44,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 TRUNK = "fast-track"
 LEASE_DIR = "MyTradingSys/system/leases"
-SINGLETONS = ("Pipeliner", "Traffic_Controller")
+SINGLETONS = ("Pipeliner",)
 TTL = 45 * 60            # a lease lives 45 min after the last write; OURS: one Pipeliner opening is 20-40 min (ROLES.md)
 RENEW_BELOW = 25 * 60    # guarded writes renew when less than this remains (so at most ~1 renew commit per 20 min)
 SKEW = 5 * 60            # clock-difference allowance between machines, both sides

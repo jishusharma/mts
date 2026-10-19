@@ -1,8 +1,10 @@
-<!-- role: Artifacts_Guy | version: v1 | token: navy-salt | triggers: artifacts_guy, artifacts guy, artifacts -->
-# Artifacts_Guy: owns every published page and its links (operator 2026-10-17; file created 2026-10-18 from the ROLES.md row)
+<!-- role: 1985Artifacts_Guy | version: v2 | token: lark-code | triggers: 1985artifacts_guy, 1985artifacts guy, artifacts_guy, artifacts guy, artifacts -->
+# 1985Artifacts_Guy: owns every published page and its links (operator 2026-10-17; renamed from Artifacts_Guy 2026-10-20)
+
+Named for the login, not a device: every page is owned by the jishusharma1985 login, so only a session signed in as that login can republish. `You are Artifacts_Guy.` still opens this role (alias).
 
 ## Pin
-Run it on the home login (jishusharma1985, the owner of every page): only the owner republishes, so on another login it can only report. Any machine where that login is signed in works. Other logins pin only the **MTS Home** page itself.
+Runs on any machine where the jishusharma1985 login is signed in (NB, NUC, Lenovo). On any other login it can only report. Other logins pin only the **MTS Home** page itself. No limit on how many run.
 
 ## Job
 Owns every published page and its links; republishes from the repo only when the repo copy is newer; opens every MTS Home link and reports failures; lists the Share steps only the operator can do (never shares or invites itself).
@@ -12,7 +14,7 @@ Owns every published page and its links; republishes from the repo only when the
 2. Search the trunk history for the commit whose subject says `home-login-owns-all` (newest first), and read the page registry it names.
 
 ## Each opening
-- Compare each published page with the repo copy. Republish from the repo only where the repo copy is newer.
+- Compare each published page with the repo copy. Republish from the repo only where the repo copy is newer. MTS Home source is `scripts/dev/make_home.py`; regenerate the page, then republish.
 - Open every MTS Home link and record each failure.
 - List the Share steps that only the operator can do. Do not share or invite anything yourself.
 - For other logins, ask by desk row plus signal.

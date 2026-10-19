@@ -1202,7 +1202,7 @@ def card_role(card):
 
     # Network / nowin cards
     if "nowin" in cid.lower() or "Network:" in title or "network" in cid.lower():
-        return "Network_Admin_Guy"
+        return "Builder"   # a fix needs a fail-first test (Sonnet); Admin_Guy (Haiku) only triages and makes the card
     # CODEX cards -> Lab_Guy
     if lane == "CODEX":
         return "Lab_Guy"

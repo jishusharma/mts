@@ -1,11 +1,12 @@
-"""Traffic_Controller's one tool: what exists, what is alive, what budget is left, and who should do what next.
+"""Pipeliner's allocator tool (was Traffic_Controller): what exists, what is alive, what budget is left, and who should do what next.
 Design: MyTradingSys/system/TRAFFIC_CONTROLLER.md. Inventory: MyTradingSys/system/traffic_inventory.json.
 
   python scripts/dev/traffic.py status [--json] [--no-fetch]   inventory + liveness + budgets + leases + queue + proposed allocation
+  python scripts/dev/traffic.py budget [--json] [--no-fetch]   SPEND/NORMAL/THROTTLE per Claude login + overall, from the newest BUDGET signal lines
   python scripts/dev/traffic.py measure [--hours 72] [--json]  idle hours per machine / sender / lab lane and duplicate work
 
 Read-only: it fetches, reads trunk refs, the signal branch clone and the lab logs on this machine; it starts, posts and ships
-nothing. The allocation is a PROPOSAL the Traffic_Controller session acts on (start_session here, a signal or desk row for
+nothing. The allocation is a PROPOSAL the Pipeliner session acts on (start_session here, a signal or desk row for
 another machine, `codex_run.py tick` on the lab host). Every source is parsed whole (never a log tail); a source that cannot
 be read is reported as `unknown` with the reason, never as idle.
 """
@@ -406,7 +407,9 @@ def liveness(last, now, inv):
     return "ACTIVE" if m <= inv["liveness_min"]["active"] else "IDLE" if m <= inv["liveness_min"]["idle"] else "SILENT"
 
 
-BUDGET_RE = re.compile(r"BUDGET login=([ABC]) 5h=(\d+)% week=(\d+)%")
+BUDGET_RE = re.compile(r"BUDGET login=([ABC]) 5h=(\d+)% week=(\d+)%(?: reset=(\d{4}-\d\d-\d\dT\d\d:\d\dZ?))?")
+BUDGET_FRESH_H = 6        # a reading older than this counts as NORMAL / unknown (SUPER_SESSION.md Pacing)
+WEEK_H = 168
 
 
 def budgets_from_signals(sigs):
@@ -416,7 +419,72 @@ def budgets_from_signals(sigs):
         m = BUDGET_RE.search(x)
         if m:
             out[m.group(1)] = {"five_h": int(m.group(2)), "week": int(m.group(3)), "at": t.strftime("%Y-%m-%dT%H:%MZ"), "from": s}
+            if m.group(4):
+                out[m.group(1)]["reset"] = m.group(4) if m.group(4).endswith("Z") else m.group(4) + "Z"
     return out
+
+
+def pacing_state(b, now):
+    """SPEND / NORMAL / THROTTLE for one login's reading (table in SUPER_SESSION.md 'Pacing'). f = share of the week elapsed,
+    from `reset=` (weekly reset time; the week is 168 h). THROTTLE wins over SPEND. A reading older than BUDGET_FRESH_H, or one
+    that lacks the numbers a rule needs, never produces SPEND: NORMAL with the reason."""
+    at = utc(b.get("at"))
+    if at is None or (now - at).total_seconds() > BUDGET_FRESH_H * 3600:
+        return "NORMAL", f"reading older than {BUDGET_FRESH_H} h or undated: counted NORMAL"
+    u, h5 = b.get("week"), b.get("five_h")
+    reset = utc(b.get("reset"))
+    if h5 is not None and h5 > 80:
+        return "THROTTLE", f"5 h window {h5}% > 80"
+    if u is None or reset is None:
+        return "NORMAL", "no weekly % or reset time in the line: only the 5 h rule applies"
+    left_h = (reset - now).total_seconds() / 3600
+    if left_h <= 0 or left_h > WEEK_H:
+        return "NORMAL", f"reset time {b.get('reset')} is past or more than a week away: reading unusable for pace"
+    f = 1 - left_h / WEEK_H
+    if u > 100 * f + 5:
+        return "THROTTLE", f"week {u}% > pace {round(100 * f + 5)}% ({round(f * 100)}% of the week gone)"
+    if u < 100 * f - 10 or (0 <= left_h < 24 and u < 85):
+        return "SPEND", f"week {u}% under pace {round(100 * f - 10)}% or reset in {max(0, round(left_h))} h with room"
+    return "NORMAL", f"week {u}% on pace ({round(f * 100)}% of the week gone)"
+
+
+def spend_view(budgets, now):
+    """{'logins': {L: {state, why, ...reading}}, 'overall': state, 'why'}: per login and overall. Overall: SPEND if any fresh login
+    can spend (the work goes to that login); THROTTLE only when every reported login is THROTTLE; NORMAL otherwise; UNKNOWN when none."""
+    rows = {}
+    for lg, b in sorted(budgets.items()):
+        if lg == "this_login":
+            continue
+        st, why = pacing_state(b, now)
+        rows[lg] = {"state": st, "why": why, **{k: b.get(k) for k in ("five_h", "week", "reset", "at")}}
+    states = [r["state"] for r in rows.values()]
+    if not states:
+        return {"logins": rows, "overall": "UNKNOWN", "why": "no BUDGET line in the window: each session sends one at start"}
+    if "SPEND" in states:
+        who = ",".join(l for l, r in rows.items() if r["state"] == "SPEND")
+        return {"logins": rows, "overall": "SPEND", "why": f"login(s) {who} can spend"}
+    if all(s == "THROTTLE" for s in states):
+        return {"logins": rows, "overall": "THROTTLE", "why": "every reported login is THROTTLE"}
+    return {"logins": rows, "overall": "NORMAL", "why": "no login can spend; not all are THROTTLE"}
+
+
+def render_spend(v):
+    L = ["SPEND view (per login, newest BUDGET line each)"]
+    for lg, r in v["logins"].items():
+        L.append(f"  login {lg}: {r['state']:<8} 5h={r['five_h']}% week={r['week']}% reset={r.get('reset') or '-'} "
+                 f"at {r['at']}  ({r['why']})")
+    L.append(f"  OVERALL: {v['overall']}  ({v['why']})")
+    missing = [l for l in "ABC" if l not in v["logins"]]
+    if missing:
+        L.append(f"  no reading for login(s) {','.join(missing)}: send one from a session on that login (get_usage, then BUDGET line)")
+    return "\n".join(L)
+
+
+def budget_view(do_fetch=True, now=None, hours=48):
+    now = now or datetime.now(UTC)
+    err = refresh_signals() if do_fetch else None
+    sigs, e = read_signals(now - timedelta(hours=hours), now)
+    return spend_view(budgets_from_signals(sigs), now), [x for x in (err, e) if x]
 
 
 CODEX_WIN = re.compile(r"5-hour window (\d+)% used")
@@ -567,7 +635,7 @@ def status(repo=REPO, do_fetch=True, inv=None, now=None):
              "queue": [{k: c.get(k) for k in ("id", "lane", "weight", "title", "est_turns", "worker")} for c in queue],
              "errors": errors}
     if any(e.startswith(("fetch failed", "signal refresh failed")) for e in errors):
-        state["allocation"] = [{"who": "Traffic_Controller", "action": "act on nothing: state is stale",
+        state["allocation"] = [{"who": "Pipeliner", "action": "act on nothing: state is stale",
                                 "why": "; ".join(errors)}]   # cached refs are not current state
     else:
         state["reserved"] = sorted(load_reserved(now))
@@ -655,9 +723,13 @@ def render_measure(m):
 
 
 def main(argv):
-    if not argv or argv[0] not in ("status", "measure"):
+    if not argv or argv[0] not in ("status", "measure", "budget"):
         print(__doc__)
         return 2
+    if argv[0] == "budget":
+        v, errs = budget_view(do_fetch="--no-fetch" not in argv)
+        print(json.dumps({**v, "errors": errs}, indent=1) if "--json" in argv else render_spend(v) + "".join("\n  ERROR: " + x for x in errs))
+        return 0 if not errs else 1
     if argv[0] == "measure":
         h = int(argv[argv.index("--hours") + 1]) if "--hours" in argv else 72
         m = measure(REPO, h, do_fetch="--no-fetch" not in argv)
