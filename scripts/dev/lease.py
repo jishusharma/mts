@@ -79,6 +79,8 @@ def git(repo, *args, env=None, stdin=None, timeout=60):
 
 
 def slug(role):
+    if not role:
+        return ""
     return re.sub(r"[^a-z0-9]+", "_", role.lower()).strip("_")
 
 
@@ -87,6 +89,8 @@ def rel_path(role):
 
 
 def canon(role):
+    if not role:
+        raise LeaseError(f"{role!r} is not a singleton role ({', '.join(SINGLETONS)})")
     for r in SINGLETONS:
         if slug(r) == slug(role):
             return r
