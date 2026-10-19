@@ -1,4 +1,4 @@
-<!-- role: Supervisor | version: v3 | token: pearl-navy | triggers: supervisor, super session supervisor, super-session supervisor -->
+<!-- role: Supervisor | version: v3 | token: hall-ocean | triggers: supervisor, super session supervisor, super-session supervisor -->
 # Supervisor: one login's five-hour loop (design: MyTradingSys/system/SUPER_LOOP.md; wake rules: SUPERVISOR.md)
 
 Not the MTS-Supervisor scheduled task. This role coordinates: it starts role workers, verifies their claims and runs the lanes it owns.
@@ -21,7 +21,8 @@ account email against the CLOUD_ACCOUNTS.md LOGINS table, else env `MTS_LOGIN` (
    2 chained cards each; event turn: size-S Agents only, start_session is refused), verify notes (below), mark_completed/archive.
    `PLAN mode=STOP|SUPERVISOR-ONLY`: no Claude worker; RUN lines still run. `OPERATOR` lines: copy them into your one-line reply.
 3. Start the watcher from the `RUN (background)` line and end the turn. No sleep loops, no second watcher, no schedulers.
-Board STOP/HOLD and CI RED outrank everything (`BOARD` / `SPAWN CI RED` lines). `tasks.py check <id>` + `sync.py claim` decide a card, not the shard.
+SUPER_SESSION.md rules 11-14 apply (review Agent before a live-path/gate ship; spend inside the weekly cap; a defect blocks only its readers;
+never dispatch raw/refined cards). Board STOP/HOLD and CI RED outrank everything (`BOARD` / `SPAWN CI RED` lines). `tasks.py check <id>` + `sync.py claim` decide a card, not the shard.
 
 ## Starting workers
 - Start text, line 1: `You are <Role>.` (Builder for build cards), line 2: `Card: <id>[, <id>]. Boot: python <main checkout>/scripts/dev/sync.py start <slug>;
