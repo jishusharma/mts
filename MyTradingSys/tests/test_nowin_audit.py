@@ -24,38 +24,39 @@ class NowinAuditTest(unittest.TestCase):
 
     def test_spawn_logging_opt_in(self):
         """Opt-in spawn diagnostic log records parent, child, creation flags, elapsed."""
-        orig_init = subprocess.Popen.__init__
-        try:
-            # When MTS_NOWIN_LOG is set, spawns are logged
-            with mock.patch.dict(os.environ, {"MTS_NOWIN_LOG": str(self.log_file)}):
-                # uninstall / reinstall to ensure hook is active
-                subprocess.Popen._mts_nowin = False
-                nowin.install(force=True)
+        calls = []
+        def process_init(proc, *args, **kwargs):
+            # Verify the wrapper, without asking a POSIX subprocess to accept
+            # Windows-only creationflags or starting a visible console on Windows.
+            calls.append((args, kwargs))
+            proc.pid = 4000 + len(calls)
+            proc._child_created = False
 
-                # Spawn with CREATE_NO_WINDOW
-                p1 = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(0.01)"], creationflags=0x08000000)
-                p1.wait()
+        with mock.patch.object(subprocess.Popen, "__init__", process_init), \
+             mock.patch.object(subprocess.Popen, "_mts_nowin", False, create=True), \
+             mock.patch.dict(os.environ, {"MTS_NOWIN_LOG": str(self.log_file)}):
+            self.assertTrue(nowin.install(force=True))
+            subprocess.Popen([sys.executable, "-c", "pass"], creationflags=nowin.CREATE_NO_WINDOW)
+            subprocess.Popen([sys.executable, "-c", "pass"], creationflags=0)
 
-                # Spawn without CREATE_NO_WINDOW
-                p2 = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(0.01)"], creationflags=0)
-                p2.wait()
+        self.assertTrue(self.log_file.is_file())
+        rows = [json.loads(line) for line in self.log_file.read_text(encoding="utf-8").splitlines() if line.strip()]
+        self.assertEqual(len(rows), 2)
+        for i, row in enumerate(rows):
+            self.assertEqual(row["parent_pid"], os.getpid())
+            self.assertEqual(row["child_pid"], 4001 + i)
+            self.assertEqual(row["cmd"], [sys.executable, "-c", "pass"])
+            self.assertGreaterEqual(row["elapsed_ms"], 0)
+            self.assertEqual(row["creationflags"], calls[i][1]["creationflags"])
+        self.assertEqual(rows[0]["creationflags"], nowin.CREATE_NO_WINDOW)
+        self.assertEqual(rows[1]["creationflags"], 0)
+        self.assertTrue(rows[0]["has_create_no_window"])
+        self.assertFalse(rows[1]["has_create_no_window"])
 
-            self.assertTrue(self.log_file.is_file())
-            rows = [json.loads(line) for line in self.log_file.read_text(encoding="utf-8").splitlines() if line.strip()]
-            self.assertEqual(len(rows), 2)
-
-            r1, r2 = rows[0], rows[1]
-            self.assertIn("parent_pid", r1)
-            self.assertIn("child_pid", r1)
-            self.assertIn("cmd", r1)
-            self.assertIn("creationflags", r1)
-            self.assertIn("elapsed_ms", r1)
-
-            self.assertEqual(r1["creationflags"], 0x08000000)
-            self.assertEqual(r2["creationflags"], 0)
-        finally:
-            subprocess.Popen.__init__ = orig_init
-            subprocess.Popen._mts_nowin = False
+    def test_dummy_spawn_log_is_rejected(self):
+        with mock.patch.object(nowin, "_log_spawn", return_value=None):
+            with self.assertRaises(AssertionError):
+                self.test_spawn_logging_opt_in()
 
     def test_audit_subcommand_lists_spawns_without_create_no_window(self):
         """nowin.py audit lists spawns executed without CREATE_NO_WINDOW."""

@@ -316,7 +316,10 @@ def finish(repo, cid, report, verdict, result):
     flow = card["flow"]
     if verdict not in ("PASS", "REWORK", "BLOCKED"):
         raise ValueError("unknown verdict")
-    gate = tasks.review_gate(card, finishing=True, result=result)
+    try:
+        gate = tasks.review_gate(card, finishing=True, result=result, repo=repo)
+    except Exception as e:
+        raise ValueError(f"review gate error: {e}") from e
     if gate:
         raise ValueError("; ".join(gate))
     if verdict == "PASS" and card.get("state") not in ("ready", "active"):

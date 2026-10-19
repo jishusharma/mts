@@ -279,6 +279,18 @@ class EndToEnd(unittest.TestCase):
     def tearDown(self):
         self.d.cleanup()
 
+    def test_lane_health_review_gate_errors_fail_closed(self):
+        from unittest.mock import patch
+        L.save(self.repo, L.record_run(L.blank(), 'LIMIT', 'credits', NOW))
+        L.sweep(self.repo, NOW, do_apply=True)
+        row = next(r for r in desk.tasks(self.repo) if r['card'] == 'a-audit')
+        row.update(status='done', result='evidence')
+        desk.save(self.repo, row)
+        with patch.object(T, 'review_gate', side_effect=RuntimeError('broken gate')):
+            out = L.sweep(self.repo, NOW + timedelta(hours=1), do_apply=True)
+        self.assertNotEqual(self.cards()['a-audit']['state'], 'done')
+        self.assertIn('review gate error', out)
+
     def cards(self):
         return {c["id"]: c for c in T.load_all(self.repo)}
 
