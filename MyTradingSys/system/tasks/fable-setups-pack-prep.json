@@ -1,25 +1,26 @@
 {
   "approved_by": "",
   "asks": "",
-  "blocked_by": "fable-run2-regate-all-prereg",
   "commands": [],
   "created": "2026-10-18T19:46:43Z",
   "depends_on": [],
-  "done_when": "pack shipped (<5 MB), leak check green, README states windows and cost",
-  "est_turns": "30",
+  "done_when": "pack shipped (<5 MB) incl. levels files with session H/L columns, leak check green, README states windows and cost",
+  "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
   "goal": "Build research/fable_setups_2026-10-19/pack/ per fable_run_4_brief.md Step 0 (LOOK window 2022-01-01..2023-06-30 only).",
   "id": "fable-setups-pack-prep",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "UNBLOCK fable-setups-pack-prep: Fable run 2 REGATE_AUDIT.md shipped 8429a7b2",
+  "note": "REVIEWED:2026-10-20 ACCEPT (Sonnet reviewer; FIX applied: cleared stale blocked_by). UNBLOCK fable-setups-pack-prep: Fable run 2 REGATE_AUDIT.md shipped 8429a7b2",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-19T22:06:40Z",
   "refs": [
     "MyTradingSys/system/fable_run_4_brief.md"
   ],
@@ -28,16 +29,23 @@
     "MyTradingSys/research/fable_setups_2026-10-19/pack/"
   ],
   "scope_out": [
-    "VALIDATION and HOLDOUT reads (except the scored survivor PRE_REG)",
-    "live tree",
-    "code outside the study folder"
+    "VALIDATION and HOLDOUT data",
+    "any bar at or after 2023-07-01",
+    "live tree"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [
     "MyTradingSys/system/fable_run_4_brief.md"
   ],
-  "state": "refined",
-  "steps": [],
+  "state": "ready",
+  "steps": [
+    "Write scripts: fetch Binance USD-M BTCUSDT klines 1w/1d/12h/4h for 2022-01-01..2023-06-30 only (public data, assert max bar open < 2023-07-01); write ohlcv_{1w,1d,12h,4h}.csv with taker buy volume",
+    "Compute levels_daily.csv and levels_weekly.csv: POC/VAH/VAL per FORMULAS 18.1 (70 pct value area), prior-period H/L/O/C, Asia/London/NY session H/L per session_levels layer",
+    "Render the 31 naked PNG charts (1W 1, 1D 6, 12h 6, 4h 18) with prior-week POC/VAH/VAL lines; each under 150 KB, total under 5 MB",
+    "Write RULES_DIGEST.md (max 250 lines, SOURCED quotes with file:line from the five files in fable_run_4_brief.md Step 0 item 4, plus the what-already-failed list from LAYERS.md) and README.md (columns, windows, 14 bp cost per FORMULAS 13)",
+    "Write leak_check.py (no timestamp >= 2023-07-01 in any pack file) with a test that fails on a planted row; hand-check one week POC/VAH/VAL against FORMULAS 18.1; ship with sync.py ship; verify git cherry origin/fast-track empty and git ls-tree lists the pack files"
+  ],
   "tests": "Leak check script asserts no pack timestamp >= 2023-07-01; fails on a planted row. POC/VAH/VAL for one hand-picked week match a hand computation from FORMULAS 18.1.",
   "title": "Fable run 4 pack: LOOK-window BTC OHLCV, VP levels, 31 naked charts, Tom/Fabio rules digest",
   "weight": "IMPORTANT",
