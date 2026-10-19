@@ -1,10 +1,15 @@
 {
   "done_when": "result lists each NB tree: N commits truly unshipped (subjects) or 'all on origin'; BROKEN trees safe-to-remove yes/no",
+  "finished": "2026-10-19T21:06:23Z",
   "from": "JIS-NUC",
+  "host": "JIS-NB",
   "id": "20261018-161738-jis-nb-worktree-triage-which-unshipped-c",
   "need": "Re-post of 20261013-181538 for the NB bridge (needs JIS-NB trees). From a JIS-NB work tree (not the live tree): python scripts/dev/sync.py where --all; for each tree with unshipped-commits>0: git -C <tree> cherry origin/fast-track HEAD; report per tree the '+' commits (subject + files) not on origin by content. Read only: no commits, no removes. BROKEN trees: list modified files beyond .claude/.",
   "posted": "2026-10-18T16:17:38Z",
-  "status": "pending",
+  "result": "TRIAGE.md shipped (research/worktree_triage_2026-10-20). 18 landed trees retired; only agent-af8beddd49095a589 has unshipped commits (Kurisko, superseded by trunk dd001f2a7), kept.",
+  "status": "done",
+  "taken": "2026-10-19T21:01:44Z",
+  "taken_by": "JIS-NB",
   "target": "DSA-NB",
   "title": "JIS-NB worktree triage: which unshipped commits are already on origin by content"
 }
