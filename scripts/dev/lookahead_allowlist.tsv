@@ -99,9 +99,9 @@ MyTradingSys/research/context_factors_pit_2026-10-16/test_context_asof.py	fwd-in
 MyTradingSys/research/context_factors_pit_2026-10-16/test_context_asof.py	fwd-index	L[s:s + 240] = cs[k]	synthetic test tape construction, not a feature
 MyTradingSys/research/context_factors_pit_2026-10-16/test_context_asof.py	fwd-index	O[s:s + 240] = cs[k]	synthetic test tape construction (fills 4h block k), not a feature
 MyTradingSys/research/core_readiness_2026-09-27/harness/core_invariants.py	fwd-index	if any(raws[i] < raws[i + 1] for i in range(len(raws) - 1)):	pre-existing, unreviewed
-MyTradingSys/research/eur_low_us_sweep_2026-10-14/study.py	fwd-index	after = C[T0 + b: T0 + b + 120]	pre-existing, unreviewed
-MyTradingSys/research/eur_low_us_sweep_2026-10-14/study.py	fwd-index	if np.isnan(ll).sum() > 30 or np.isnan(L[T0:T0 + 240]).sum() > 10:	pre-existing, unreviewed
-MyTradingSys/research/eur_low_us_sweep_2026-10-14/study.py	fwd-index	w_l = L[T0:T0 + 240]; w_c = C[T0:T0 + 240]	pre-existing, unreviewed
+MyTradingSys/research/eur_low_us_sweep_2026-10-14/study.py	fwd-index	after = C[T0 + b: T0 + b + 120]	SAFE: outcome window after decision minute T0 (labels only); decision uses C[T0-1] and earlier
+MyTradingSys/research/eur_low_us_sweep_2026-10-14/study.py	fwd-index	if np.isnan(ll).sum() > 30 or np.isnan(L[T0:T0 + 240]).sum() > 10:	SAFE: future-NaN gate only drops events with missing data; no price information enters the decision
+MyTradingSys/research/eur_low_us_sweep_2026-10-14/study.py	fwd-index	w_l = L[T0:T0 + 240]; w_c = C[T0:T0 + 240]	SAFE: outcome window from decision minute T0 for break/reclaim labels; level built from bars before T0
 MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py	fwd-index	tmp.write_text(json.dumps([dict(out=str(j["out"]), w=W_PX, h=H_PX, prims=j["prims"]) for j in jobs[s:s + batch]]), encoding="utf-8")	pre-existing, unreviewed
 MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py	fwd-index	upper = profile[prices[hi + 1]] if hi < len(prices) - 1 else -1	pre-existing, unreviewed
 MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py	pivot-right-neighbour	if d[k]["h"] > max(x["h"] for x in d[k - 3:k]) and d[k]["h"] > max(x["h"] for x in d[k + 1:k + 4]) and abs(d[k]["h"] - b["h"]) / b["h"] <= 0.015:	pre-existing, unreviewed
@@ -130,49 +130,49 @@ MyTradingSys/research/layer_lab/candle_pattern_event_table/event_table.py	fwd-in
 MyTradingSys/research/levels_confluence_2026-10-14/event_table.py	fwd-index	for b in path[stopped_at+1:]:	reviewed 2026-10-16: outcome label (was the stop bad) read after the stop bar on purpose; it labels the result and is never a feature for the entry decision
 MyTradingSys/research/levels_confluence_2026-10-14/event_table.py	pivot-right-neighbour	if closed[i]['h']>max(x['h'] for x in closed[i-2:i]+closed[i+1:i+3]): hs.append((i,closed[i]['h']))	reviewed 2026-10-16: closed holds only bars closed before touch_t and the pivot at i needs bars up to i+2 inside closed, so every bar was known at the touch; level definition, not a label
 MyTradingSys/research/levels_confluence_2026-10-14/event_table.py	pivot-right-neighbour	if closed[i]['l']<min(x['l'] for x in closed[i-2:i]+closed[i+1:i+3]): ls.append((i,closed[i]['l']))	reviewed 2026-10-16: same as the high pivot above, only closed bars before touch_t
-MyTradingSys/research/levels_confluence_2026-10-14/levels.py	pivot-right-neighbour	if pivot['h'] > max(x['h'] for x in h4[i - 2:i] + h4[i + 1:i + 3]):	pre-existing, unreviewed
-MyTradingSys/research/levels_confluence_2026-10-14/levels.py	pivot-right-neighbour	if pivot['l'] < min(x['l'] for x in h4[i - 2:i] + h4[i + 1:i + 3]):	pre-existing, unreviewed
-MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.py	fwd-index	back = any(float(b['l']) <= e['level'] <= float(b['h']) for b in later[l2_idx + 1:])	pre-existing, unreviewed
+MyTradingSys/research/levels_confluence_2026-10-14/levels.py	pivot-right-neighbour	if pivot['h'] > max(x['h'] for x in h4[i - 2:i] + h4[i + 1:i + 3]):	SAFE: levels built from days before d only; h4 right neighbours come from the same prior-day set
+MyTradingSys/research/levels_confluence_2026-10-14/levels.py	pivot-right-neighbour	if pivot['l'] < min(x['l'] for x in h4[i - 2:i] + h4[i + 1:i + 3]):	SAFE: levels built from days before d only; h4 right neighbours come from the same prior-day set
+MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.py	fwd-index	back = any(float(b['l']) <= e['level'] <= float(b['h']) for b in later[l2_idx + 1:])	SAFE: post-touch outcome measure (returned_l1) on rows after the touch; descriptive, not a signal
 MyTradingSys/research/levels_sizing_2026-10-14/probe.py	fullsample-quantile	ci = np.percentile((values-baseline)[indices].mean(axis=1), [2.5, 97.5])	pre-existing, unreviewed
-MyTradingSys/research/levels_sizing_2026-10-14/probe.py	fwd-index	entry = a[i+1, 1]	pre-existing, unreviewed
-MyTradingSys/research/levels_sizing_2026-10-14/probe.py	fwd-index	right = volumes[hi+1] if hi+1 < len(prices) else -1	pre-existing, unreviewed
-MyTradingSys/research/mal_bb_mid_engulf_2026-10-16/study.py	fwd-index	w = np.nonzero(a5["H"][i + 1:i + 1 + RETEST_BARS] >= st["mid"][i])[0]	pre-existing, unreviewed
+MyTradingSys/research/levels_sizing_2026-10-14/probe.py	fwd-index	entry = a[i+1, 1]	SAFE: signal bar i closes, entry at open of bar i+1 (next-open fill)
+MyTradingSys/research/levels_sizing_2026-10-14/probe.py	fwd-index	right = volumes[hi+1] if hi+1 < len(prices) else -1	SAFE: volume-profile neighbour on price axis (value-area expansion), not a time index
+MyTradingSys/research/mal_bb_mid_engulf_2026-10-16/study.py	fwd-index	w = np.nonzero(a5["H"][i + 1:i + 1 + RETEST_BARS] >= st["mid"][i])[0]	SAFE: E3 entry at close of the retest bar itself; window scans only bars after the engulf bar
 MyTradingSys/research/malkan_extract_2026-10-15/tools/check_hindi.py	fwd-index	tail = lines[i + 1:i + 5]	pre-existing, unreviewed
-MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py	fwd-index	g, ex = s * (k1["c"][i0 + w - 1] / e - 1), i0 + w	pre-existing, unreviewed
-MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py	fwd-index	lo, hi = k1["l"][i0:i0 + w], k1["h"][i0:i0 + w]	pre-existing, unreviewed
-MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py	fwd-index	out[i + 1] = 100.0 if al == 0 else 100 - 100 / (1 + ag / al)	pre-existing, unreviewed
-MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py	fwd-index	sg = (sig_long if tm["s"][r] > 0 else sig_short)[j:j + K]	pre-existing, unreviewed
-MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py	fwd-index	w = arr[j0:j0 + K]	pre-existing, unreviewed
-MyTradingSys/research/opr_bb_mtf_center_2026-10-16/study.py	fwd-index	c = next((b + i for i in range(k) if b + i < len(C) and ((C[b + i] <= hi) if up_ else (C[b + i] >= lo))), None)	pre-existing, unreviewed
-MyTradingSys/research/opr_bb_mtf_center_2026-10-16/study.py	fwd-index	cnt[i] += int(C[b + 1 + i] > m_)	pre-existing, unreviewed
-MyTradingSys/research/opr_bb_mtf_center_2026-10-16/study.py	fwd-index	nxt = np.array([[a["C"][k + o] > p["mid"][k + o] if k + o < len(a["C"]) else np.nan for o in (1, 2, 3)] for k in ks], float)	pre-existing, unreviewed
-MyTradingSys/research/opr_bb_mtf_center_2026-10-16/study.py	fwd-index	w_l, w_h = L[c + 1:c + 1 + M_HH], H[c + 1:c + 1 + M_HH]	pre-existing, unreviewed
+MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py	fwd-index	g, ex = s * (k1["c"][i0 + w - 1] / e - 1), i0 + w	SAFE: time-exit close at i0+w-1 is the outcome window after entry open i0
+MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py	fwd-index	lo, hi = k1["l"][i0:i0 + w], k1["h"][i0:i0 + w]	SAFE: stop/target scan window starts at entry bar i0; stop checked first (conservative)
+MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py	fwd-index	out[i + 1] = 100.0 if al == 0 else 100 - 100 / (1 + ag / al)	SAFE: Wilder RSI: out[i+1] uses diff d[i]=c[i+1]-c[i]; value at bar i+1 uses closes up to i+1 only
+MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py	fwd-index	sg = (sig_long if tm["s"][r] > 0 else sig_short)[j:j + K]	SAFE: exit signal at TF bar k acts at next 1m open after bar k closes (ex_i = i0+(k+1)*m); post-entry only
+MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py	fwd-index	w = arr[j0:j0 + K]	SAFE: ex-post feature diagnostic around MFE (not a rule); exit rules are tested via rule_offsets
+MyTradingSys/research/opr_bb_mtf_center_2026-10-16/study.py	fwd-index	c = next((b + i for i in range(k) if b + i < len(C) and ((C[b + i] <= hi) if up_ else (C[b + i] >= lo))), None)	SAFE: re-entry bar c searched from poke bar b forward; outcomes measured only after c; event definition, not a signal
+MyTradingSys/research/opr_bb_mtf_center_2026-10-16/study.py	fwd-index	cnt[i] += int(C[b + 1 + i] > m_)	SAFE: descriptive share of next 1/2/3 closes after a midpoint touch bar; outcome only
+MyTradingSys/research/opr_bb_mtf_center_2026-10-16/study.py	fwd-index	nxt = np.array([[a["C"][k + o] > p["mid"][k + o] if k + o < len(a["C"]) else np.nan for o in (1, 2, 3)] for k in ks], float)	SAFE: descriptive next 1/2/3 closes after the touch bar; outcome only
+MyTradingSys/research/opr_bb_mtf_center_2026-10-16/study.py	fwd-index	w_l, w_h = L[c + 1:c + 1 + M_HH], H[c + 1:c + 1 + M_HH]	SAFE: outcome window L/H[c+1:c+1+M_HH] after the re-entry bar c (lines 245, 259)
 MyTradingSys/research/opr_preopen_tops_2026-10-16/study.py	fullsample-quantile	lo, hi = np.quantile(s[ok], [qlo, qhi])	reviewed 2026-10-16: OURS-on-DEV, verdict arms from full-DEV S1 terciles; acceptable only if frozen before VALIDATION
 MyTradingSys/research/opr_preopen_tops_2026-10-16/study.py	fullsample-quantile	q1, q2 = np.quantile(ev["S1"], [1 / 3, 2 / 3])	reviewed 2026-10-16: OURS-on-DEV, verdict arms from full-DEV S1 terciles; acceptable only if frozen before VALIDATION
-MyTradingSys/research/opr_preopen_tops_2026-10-16/study.py	fwd-index	hh, uu = a15["H"][m0:m0 + 26], up15[m0:m0 + 26]	pre-existing, unreviewed
-MyTradingSys/research/opr_preopen_tops_2026-10-16/study.py	fwd-index	x = H[k + 1:end]	pre-existing, unreviewed
-MyTradingSys/research/opr_preopen_tops_2026-10-16/study.py	pivot-right-neighbour	left, right = H[k - w:k], H[k + 1:k + w + 1]	pre-existing, unreviewed
+MyTradingSys/research/opr_preopen_tops_2026-10-16/study.py	fwd-index	hh, uu = a15["H"][m0:m0 + 26], up15[m0:m0 + 26]	SAFE: outcome: did 15m highs in the 26 bars after the open reach the preopen top; descriptive hit-rate
+MyTradingSys/research/opr_preopen_tops_2026-10-16/study.py	fwd-index	x = H[k + 1:end]	SAFE: unbroken(H,k,end): scans k+1..end-1; caller passes end=o15 (the open bar), so only bars before the decision
+MyTradingSys/research/opr_preopen_tops_2026-10-16/study.py	pivot-right-neighbour	left, right = H[k - w:k], H[k + 1:k + w + 1]	SAFE: swing_highs hi bound is o15-1-3, so the 3 right neighbours end at o15-1; confirmed pivots only
 MyTradingSys/research/opr_preopen_tops_2026-10-16/test_study.py	fullsample-quantile	q1, q2 = np.quantile(s, [1 / 3, 2 / 3])	pre-existing, unreviewed
-MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/study.py	fwd-index	post5 = np.array([dl[x:x + 5].sum() for x in j])	pre-existing, unreviewed
-MyTradingSys/research/orderflow_views_2026-10-14/study.py	fwd-index	"delta": round(float(d[k:k + 5].sum()), 1), "cvd22_close": round(float(cvd22[k + 4]), 1),	pre-existing, unreviewed
-MyTradingSys/research/orderflow_views_2026-10-14/study.py	fwd-index	s = seg[k:k + 5]	pre-existing, unreviewed
-MyTradingSys/research/orderflow_views_2026-10-14/study.py	fwd-index	seg = A1[e:e + 120]	pre-existing, unreviewed
+MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/study.py	fwd-index	post5 = np.array([dl[x:x + 5].sum() for x in j])	UNSAFE: flip label uses dl[x:x+5], the 5 bars after the break bar; study flags it descriptive only, cannot be a signal
+MyTradingSys/research/orderflow_views_2026-10-14/study.py	fwd-index	"delta": round(float(d[k:k + 5].sum()), 1), "cvd22_close": round(float(cvd22[k + 4]), 1),	SAFE: 5m report table of a past day; delta and CVD summed within the bar itself, bar close known
+MyTradingSys/research/orderflow_views_2026-10-14/study.py	fwd-index	s = seg[k:k + 5]	SAFE: 5m report table of a past day; OHLC aggregated within the bar itself, bar close known
+MyTradingSys/research/orderflow_views_2026-10-14/study.py	fwd-index	seg = A1[e:e + 120]	SAFE: entry at open of 1m index e, seg is the post-entry outcome window; NaN gate only
 MyTradingSys/research/p1_cost_floor/p1_cost_floor.py	fwd-index	nxt_hit = lo[i+1] <= px if side==1 else hi[i+1] >= px	pre-existing, unreviewed
 MyTradingSys/research/p1_cost_floor/p1_cost_floor.py	fwd-index	strict = lo[i+1] < px if side==1 else hi[i+1] > px	pre-existing, unreviewed
 MyTradingSys/research/p4_corrected.py	fullsample-quantile	return float(np.percentile(means, 2.5)), float(np.percentile(means, 97.5)), float(s.sum() / n.sum())	pre-existing, unreviewed
-MyTradingSys/research/published_strats_2026-10-13/run_pub.py	fwd-index	keep = [i for i in idx if i + n <= len(a) and key[i + n - 1] == key[i]]	pre-existing, unreviewed
-MyTradingSys/research/published_strats_2026-10-13/run_pub.py	fwd-index	out[i + 1] = 100 if ad == 0 else 100 - 100 / (1 + au / ad)	pre-existing, unreviewed
-MyTradingSys/research/published_strats_2026-10-13/run_pub.py	fwd-index	out[n - 1 + lag:] = v[:len(x) - n + 1 - lag] if lag else v	pre-existing, unreviewed
-MyTradingSys/research/published_strats_2026-10-13/run_pub.py	fwd-index	s = a[i:i + n]	pre-existing, unreviewed
-MyTradingSys/research/published_strats_2026-10-13/run_pub.py	fwd-index	samp = np.concatenate([r[s:s + blk] for s in st])[:len(r)]	pre-existing, unreviewed
+MyTradingSys/research/published_strats_2026-10-13/run_pub.py	fwd-index	keep = [i for i in idx if i + n <= len(a) and key[i + n - 1] == key[i]]	SAFE: bar grouping builds each TF bar from its own n hours; consumers lag channels via rmax lag=1
+MyTradingSys/research/published_strats_2026-10-13/run_pub.py	fwd-index	out[i + 1] = 100 if ad == 0 else 100 - 100 / (1 + au / ad)	SAFE: Wilder RSI: out[i+1] uses diff d[i]=c[i+1]-c[i]; value at bar i+1 uses closes up to i+1 only
+MyTradingSys/research/published_strats_2026-10-13/run_pub.py	fwd-index	out[n - 1 + lag:] = v[:len(x) - n + 1 - lag] if lag else v	SAFE: rmax shifts the trailing max forward by lag, so out[t] covers t-lag-n+1..t-lag; past only
+MyTradingSys/research/published_strats_2026-10-13/run_pub.py	fwd-index	s = a[i:i + n]	SAFE: aggregates the n hours of one TF bar; no cross-bar read
+MyTradingSys/research/published_strats_2026-10-13/run_pub.py	fwd-index	samp = np.concatenate([r[s:s + blk] for s in st])[:len(r)]	SAFE: block bootstrap of realised returns for a p-value; no decision bar involved
 MyTradingSys/research/setup_alpha_beta_2026-10-10/beta_sweep.py	pivot-right-neighbour	sh = [bars[i]["h"] for i in prev if bars[i]["h"] >= bars[i-1]["h"] and bars[i]["h"] >= bars[i+1]["h"]]	reviewed 2026-10-16: confirmed day-boundary leak, the last bar of the previous day compares with bars[i+1] = first bar of the decision day; study frozen, not fixed
 MyTradingSys/research/setup_alpha_beta_2026-10-10/beta_sweep.py	pivot-right-neighbour	sl = [bars[i]["l"] for i in prev if bars[i]["l"] <= bars[i-1]["l"] and bars[i]["l"] <= bars[i+1]["l"]]	reviewed 2026-10-16: confirmed day-boundary leak, the last bar of the previous day compares with bars[i+1] = first bar of the decision day; study frozen, not fixed
 MyTradingSys/research/setup_catalog_2026-10-15/evidence/rsi_divergence_mtf_checks.py	pivot-right-neighbour	w = cl[i - k:i + k + 1]	pre-existing, unreviewed
 MyTradingSys/research/tom_btc_2026-10-13/chart_lab.py	fwd-index	upper = profile[prices[hi + 1]] if hi < len(prices) - 1 else -1	pre-existing, unreviewed
-MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py	fwd-index	rr = (C[pool + h] / O[pool + 1] - 1)	pre-existing, unreviewed
-MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py	fwd-index	seg = sm[p0 + 1:p1]	pre-existing, unreviewed
-MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py	fwd-index	while j + 1 < len(seg) and lowm[j + 1]: j += 1	pre-existing, unreviewed
-MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py	pivot-right-neighbour	pk = [i for i in range(1, len(sm) - 1) if sm[i] >= sm[i - 1] and sm[i] >= sm[i + 1] and sm[i] >= med_]	pre-existing, unreviewed
+MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py	fwd-index	rr = (C[pool + h] / O[pool + 1] - 1)	SAFE: placebo: entry open pool+1, exit close pool+h, both after decision bar; random-start benchmark
+MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py	fwd-index	seg = sm[p0 + 1:p1]	SAFE: volume-profile bin axis (price), not a time index; low-volume segment between two HVN peaks
+MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py	fwd-index	while j + 1 < len(seg) and lowm[j + 1]: j += 1	SAFE: volume-profile bin axis (price), not a time index; low-volume run extension
+MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py	pivot-right-neighbour	pk = [i for i in range(1, len(sm) - 1) if sm[i] >= sm[i - 1] and sm[i] >= sm[i + 1] and sm[i] >= med_]	SAFE: volume-profile HVN peak test on neighbouring price bins, not time; day profile from prior data
 MyTradingSys/research/video_priority_2026-10-15/apply_selection.py	fwd-index	keep[idx + 1:idx + 1] = new_rows	pre-existing, unreviewed
 MyTradingSys/research/volume_2026-10-09/run_v0.py	fullsample-quantile	return [np.percentile(x, k) for k in qs]	pre-existing, unreviewed
 MyTradingSys/research/volume_2026-10-09/run_v0.py	fullsample-quantile	rows.append([y, int(mk.sum()), "%.0f" % np.median(v), "%.0f" % np.percentile(v, 95), "%.0f" % v.max(), "%.3f" % np.mean(d1["tbv"][mk] / v), "%.3f" % np.median(np.abs(np.log(d1["c"][mk] / d1["o"][mk])))])	pre-existing, unreviewed
@@ -192,7 +192,7 @@ MyTradingSys/research/wavetrend_2026-10-17/count_events.py	pivot-right-neighbour
 MyTradingSys/research/wavetrend_2026-10-17/test_count_events.py	fwd-index	S["C"][T + 1:T + 3] *= 4.0	reviewed: pivot window; the event is dated at confirmation bar p+k (t=p+k), so right-hand bars are all <= event time; test_count_events.py::test_future_spike_changes_no_past_event + test_pivot_confirmed_k_bars_after_pivot
 MyTradingSys/research/wavetrend_2026-10-17/test_count_events.py	fwd-index	S["H"][T + 1:T + 3] *= 5.0	reviewed: pivot window; the event is dated at confirmation bar p+k (t=p+k), so right-hand bars are all <= event time; test_count_events.py::test_future_spike_changes_no_past_event + test_pivot_confirmed_k_bars_after_pivot
 MyTradingSys/research/wavetrend_2026-10-17/test_count_events.py	fwd-index	S["L"][T + 1:T + 3] *= 0.2	reviewed: pivot window; the event is dated at confirmation bar p+k (t=p+k), so right-hand bars are all <= event time; test_count_events.py::test_future_spike_changes_no_past_event + test_pivot_confirmed_k_bars_after_pivot
-MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/study.py	fwd-index	r4 = [(closes[i + 4] / closes[i] - 1) * 100 for i in range(len(closes) - 4)]	pre-existing, unreviewed
+MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/study.py	fwd-index	r4 = [(closes[i + 4] / closes[i] - 1) * 100 for i in range(len(closes) - 4)]	SAFE: descriptive SD of 4h returns printed as a scale only; not a decision input (event study separate)
 MyTradingSys/research/wavetrend_2026-10-17/atlas.py	fwd-index	w1 = wt1[t + u]	reviewed: response time is an OUTCOME measured after the event bar t (bars t+1..t+12), never a feature or selector; atlas.py primary test uses forward() returns only
 MyTradingSys/research/wavetrend_2026-10-17/atlas.py	fwd-index	if cross[t + u] != 0 or (not np.isnan(w1) and s * w1 <= 0):	reviewed: response time is an OUTCOME measured after the event bar t (bars t+1..t+12), never a feature or selector; atlas.py primary test uses forward() returns only
 MyTradingSys/backtest/layers/krown/krown_core.py	pivot-right-neighbour	around_h = h[i - k:i] + h[i + 1:i + k + 1]	reviewed: swing needs k bars each side by definition; the swing is only used from avail = i+k (causality test)
