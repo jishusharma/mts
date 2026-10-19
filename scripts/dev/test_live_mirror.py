@@ -197,6 +197,30 @@ class MirrorTest(unittest.TestCase):
         for needle in ("AUTO_PAUSE", "number=273", "vwap=82600.5", "regime=RANGE", "mirror@2026-10-09 20:00Z"):
             self.assertIn(needle, out)
 
+    GENERATED = ("MyTradingSys/runtime/oi_live/oi_1m.csv", "MyTradingSys/runtime/oi_live/oi_5m_30d.csv",
+                 "MyTradingSys/research/htf_context/2026-10-08.jsonl")
+
+    def test_generated_files_untracked_in_git_are_still_published(self):
+        """Card move-live-host-generated-files: oi_live csv and htf_context are git-ignored and untracked, so the mirror must read the
+        working tree, not git. Present + ignored -> published."""
+        subprocess.run(["git", "init", "-q"], cwd=self.live, check=True)
+        shutil.copy(REPO / ".gitignore", self.live / ".gitignore")
+        for rel in self.GENERATED:
+            put(self.live, rel, "a,b\n1,2\n")
+        st = subprocess.run(["git", "status", "--porcelain", "--untracked-files=all"], cwd=self.live,
+                            capture_output=True, text=True).stdout
+        self.assertEqual([r for r in self.GENERATED if r in st], [], "generated files must be ignored by git")
+        got = {f["rel"] for f in self.pub()["files"]}
+        self.assertTrue(set(self.GENERATED) <= got)
+
+    def test_generated_files_absent_publish_still_works_and_lists_nothing_invented(self):
+        """Absent generated inputs (fresh clone, merge removed them) are skipped, never crash, never faked; the brief still keys on the snapshot."""
+        m = self.pub()
+        got = {f["rel"] for f in m["files"]}
+        self.assertEqual(got & set(self.GENERATED), set())
+        lm.pull(self.nuc, self.root)
+        self.assertIn(" STALE:", "\n".join(lm.brief_lines(self.nuc, now=T0 + dt.timedelta(minutes=lm.STALE_MIN + 1))))
+
     # --- brief pulls first when this tree's copy is missing or old (trees made by the App never run `sync.py start`)
     def test_brief_pulls_when_no_mirror_yet(self):
         self.pub()

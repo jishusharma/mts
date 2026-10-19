@@ -62,6 +62,19 @@ and a restart window: leave it and say so. Builders never stop or restart anythi
 "Supervisor" in these docs means the Windows task `MTS-Supervisor` (starts at logon, revives dead processes); it deploys nothing.
 Only `MTS-AutoDeploy`, or this fallback while it is down, changes the live tree.
 
+## Deploying the "untrack generated files" commit (2026-10-20, card move-live-host-generated-files-status-md, coordinator by hand)
+Commit 1 of the card runs `git rm --cached` on AUDIT_DIGEST.md, T0_CHECKS.md, runtime/BUILD_REPORT.md, runtime/oi_live/*.csv and
+research/htf_context/*.jsonl|*_summary.json (STATUS.md stays tracked; `oi_recorder.py`, `htf_context_live.py` are code and stay). A tree that fast-forwards to it
+LOSES those files (the live runner and `check_live_health.py` READ the oi_live and htf_context ones), and a dirty tracked copy makes the merge refuse. So, in the live tree
+(`<live>` = the folder holding `.mts_live`; nothing is stopped or restarted; builders never run this):
+1. `python scripts/dev/deploy_untrack_backup.py backup <live>`: copies the files to `runtime_data/deploy_backup/<stamp>/untrack/` with a sha256 MANIFEST.json and verifies the copies. Note `<stamp>`.
+2. `python scripts/dev/deploy_untrack_backup.py reset <live> <stamp>`: refuses unless step 1 verifies, then restores the committed copy of the still-tracked dirty ones only.
+3. `git -C <live> merge --ff-only <target>` (the gated green SHA that holds commit 1). The files disappear here; keep steps 3-4 back to back (the recorders re-create their files on the next write).
+4. `python scripts/dev/deploy_untrack_backup.py restore <live> <stamp>`: puts back every missing file, sha256-verified against the manifest; a file a recorder already re-created is never overwritten: it prints PROBLEM ... KEPT-NEWER and exits 1; merge it by hand from the backup dir (append the backup rows to the new file). `reset` refreshes each dirty file's backup copy right before restoring its committed copy, so rows appended since step 1 are not lost.
+5. `git -C <live> status --porcelain` must be empty (the files are ignored now); `python scripts/sched/check_live_health.py` must not say RED for oi_1m / htf_context.
+6. Tell the builder: commit 2 (remove `GENERATED_RE`, `LIVE_INPUT_RE` and the regenerate branch in `auto_deploy.py`) may ship only after step 5 is clean in the live tree.
+Since this commit `make_status.py` in the live tree writes `runtime_data/STATUS_live.md` (ignored) and never the tracked STATUS.md. Tests: `MyTradingSys/tests/test_generated_files_untracked.py` (temp repos only).
+
 ## Scheduled-task catch-up after the nightly power-off (2026-10-14, JIS-NB)
 JIS-NB is off ~02:00-10:30 IST, so the daily tasks (06:30-09:10) never run on time. `StartWhenAvailable` alone does not catch up: it fires
 ~3 min after boot while no user is logged on and Task Scheduler drops it (event 332, principal ENG\jis Interactive/Limited), no retry.

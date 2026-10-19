@@ -19,25 +19,25 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/gate-observability",
-      "ref": "8d2549c885d7",
-      "utc": "2026-10-16T19:16:41Z"
+      "line": "Lab_Guy re-stamp: move-live-host-generated-files-status-md (run_all_tests.py dropped from ",
+      "ref": "52263d413d62",
+      "utc": "2026-10-19T21:36:32Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "692afe6313f8 auto_deploy: restart the alert runner by its -m module name (kill pattern mat",
-      "ref": "MyTradingSys/system/DEPLOY_RUNBOOK.md",
-      "utc": "2026-10-16T13:55:54Z"
+      "line": "52263d413d62 Lab_Guy re-stamp: move-live-host-generated-files-status-md (run_all_tests.py ",
+      "ref": "MyTradingSys/system/card_specs/move-live-host-generated-files-status-md.md",
+      "utc": "2026-10-19T21:36:32Z"
     }
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-19 ACCEPT REVIEWER:Lab_Guy-Sonnet-5.5 card=30c2e19347a6 scope=4c615de4d957 CLASS:C3 WEIGHT:CRITICAL LAB:none Lab_Guy pass 2026-10-19 (Sonnet 5.5). CONFIRMED C3/CRITICAL (touches the deploy gate and the live working tree). SPEC REVIEW: E3/B-noundo (the big one, missing from the card): `git rm --cached` + commit deletes those files from the working tree of every tree that fast-forwards to the commit. Deploying it to the live tree would DELETE runtime/oi_live/*.csv and research/htf_context/* (auto_deploy.py LIVE_INPUT_RE marks them as inputs the live runner and check_live_health READ) plus BUILD_REPORT.md / AUDIT_DIGEST.md / T0_CHECKS.md. 'Never delete files on disk' only holds for the committing tree. New step 4 + test: back up, deploy, restore, sha-verify. STALE: step 5 and done_when assume MTS-AutoDeploy applies the commit; it is RETIRED (CLAUDE.md, DEPLOY_RUNBOOK.md header 2026-10-17): deploy is manual or coordinator-run. ORDER: GENERATED_RE / LIVE_INPUT_RE removal must be a SECOND commit after the live tree has actually taken the untrack commit, otherwise the live tree's older auto_deploy.py/fallback sees the files as dirty clashes (STOP_DIRTY). SCOPE gaps fixed: oi_recorder.py (same dir) must stay tracked, only *.csv goes (.gitignore:173-178 already lists the patterns but does not untrack); other readers found by grep: scripts/sched/check_live_health.py, scripts/dev/run_all_tests.py, MyTradingSys/tests/test_check_live_health.py; cicd_run.py has no test file (scripts/dev/test_cicd_run.py does not exist), so its reader change is tested through its own checks; generators are read-only here. Reader fail-closed rule added: an ABSENT generated file must give SKIP/stale status, never a PASS and never a crash. Restart/reset state: covered by the backup-restore test; API errors N/A. producer note: refined_by W9 orderflow-restart-map is a different identity from this reviewer. DECISION (OURS): STATUS.md stays tracked (kept from prior note); two commits in the order above. C3 coordinator step: approved by default by Supervisor B (login B), DECISION (OURS) 2026-10-19. SPEC FILE: MyTradingSys/system/card_specs/move-live-host-generated-files-status-md.md. | PRIOR: REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C3 REVIEWER:review SESSION Touches auto_deploy (deploy gate): CRITICAL by the deploy trigger; built in a worktree only, the live tree changes only by a manual deploy. make_status.py -> research/STATUS.md; scripts/worker/audit_digest.py -> audits/AUDIT_DIGEST.md; audit_t0_checks.py -> audits/T0_CHECKS.md; scripts/Build-Check.ps1 -> runtime/BUILD_REPORT.md; oi_recorder.py -> runtime/oi_live/*.csv; fabio/htf_context_live.py -> research/htf_context/*. | DECISION (OURS): lane JIS-NB because the generators run on the live host. Default: untrack, never delete files on disk.",
+  "note": "REVIEWED:2026-10-20 ACCEPT REVIEWER:Lab_Guy-Sonnet-5.5 card=adf09e639cae scope=13e64d5cdf12 CLASS:C3 WEIGHT:CRITICAL LAB:none Lab_Guy pass 2026-10-19 (Sonnet 5.5). CONFIRMED C3/CRITICAL (touches the deploy gate and the live working tree). SPEC REVIEW: E3/B-noundo (the big one, missing from the card): `git rm --cached` + commit deletes those files from the working tree of every tree that fast-forwards to the commit. Deploying it to the live tree would DELETE runtime/oi_live/*.csv and research/htf_context/* (auto_deploy.py LIVE_INPUT_RE marks them as inputs the live runner and check_live_health READ) plus BUILD_REPORT.md / AUDIT_DIGEST.md / T0_CHECKS.md. 'Never delete files on disk' only holds for the committing tree. New step 4 + test: back up, deploy, restore, sha-verify. STALE: step 5 and done_when assume MTS-AutoDeploy applies the commit; it is RETIRED (CLAUDE.md, DEPLOY_RUNBOOK.md header 2026-10-17): deploy is manual or coordinator-run. ORDER: GENERATED_RE / LIVE_INPUT_RE removal must be a SECOND commit after the live tree has actually taken the untrack commit, otherwise the live tree's older auto_deploy.py/fallback sees the files as dirty clashes (STOP_DIRTY). SCOPE gaps fixed: oi_recorder.py (same dir) must stay tracked, only *.csv goes (.gitignore:173-178 already lists the patterns but does not untrack); other readers found by grep: scripts/sched/check_live_health.py, MyTradingSys/tests/test_check_live_health.py (run_all_tests.py only names a test file, test_htf_context_live.py, so it is NOT a reader and was dropped from scope_in on 2026-10-20 re-stamp: a hot shared file kept voiding the stamp); cicd_run.py has no test file (scripts/dev/test_cicd_run.py does not exist), so its reader change is tested through its own checks; generators are read-only here. Reader fail-closed rule added: an ABSENT generated file must give SKIP/stale status, never a PASS and never a crash. Restart/reset state: covered by the backup-restore test; API errors N/A. producer note: refined_by W9 orderflow-restart-map is a different identity from this reviewer. DECISION (OURS): STATUS.md stays tracked (kept from prior note); two commits in the order above. C3 coordinator step: approved by default by Supervisor B (login B), DECISION (OURS) 2026-10-19. SPEC FILE: MyTradingSys/system/card_specs/move-live-host-generated-files-status-md.md. | PRIOR: REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C3 REVIEWER:review SESSION Touches auto_deploy (deploy gate): CRITICAL by the deploy trigger; built in a worktree only, the live tree changes only by a manual deploy. make_status.py -> research/STATUS.md; scripts/worker/audit_digest.py -> audits/AUDIT_DIGEST.md; audit_t0_checks.py -> audits/T0_CHECKS.md; scripts/Build-Check.ps1 -> runtime/BUILD_REPORT.md; oi_recorder.py -> runtime/oi_live/*.csv; fabio/htf_context_live.py -> research/htf_context/*. | DECISION (OURS): lane JIS-NB because the generators run on the live host. Default: untrack, never delete files on disk.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "W9 orderflow-restart-map",
-  "refreshed": "2026-10-17T07:25:00Z",
+  "refreshed": "2026-10-19T21:47:10Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -50,7 +50,6 @@
     "scripts/dev/test_make_status.py",
     "scripts/sched/check_live_health.py",
     "MyTradingSys/tests/test_check_live_health.py",
-    "scripts/dev/run_all_tests.py (only the oi_live / htf_context lines)",
     ".gitignore",
     "MyTradingSys/system/DEPLOY_RUNBOOK.md",
     "MyTradingSys/system/card_specs/move-live-host-generated-files-status-md.md (spec, read only)"
@@ -63,7 +62,7 @@
     "generators (audit_digest.py, audit_t0_checks.py, Build-Check.ps1, oi_recorder.py, htf_context_live.py): read-only, must keep writing the same paths",
     "live tree, HALT files, deploys, process stop/restart"
   ],
-  "scope_sha": "8d2549c885d7",
+  "scope_sha": "52263d413d62",
   "size": "M",
   "sources": [],
   "state": "ready",
