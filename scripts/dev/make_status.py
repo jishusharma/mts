@@ -235,6 +235,16 @@ def get_ci_card_line(ci_line, root=".", env=None):
         return f"CI card: not filed ({type(e).__name__}); run scripts/dev/ci_red_card.py --apply"
 
 
+STATUS_TRACKED = "MyTradingSys/research/STATUS.md"
+STATUS_LIVE = "runtime_data/STATUS_live.md"   # git-ignored
+
+
+def get_status_path(root="."):
+    """Where main() writes the page. STATUS.md stays tracked and is generated off the live host (ship / CI); the live tree writes an
+    ignored copy instead, so a scheduled run there never dirties a tracked file and blocks a hand deploy (card move-live-host-generated-files)."""
+    return STATUS_LIVE if is_live_tree(root) else STATUS_TRACKED
+
+
 LESSONS = "MyTradingSys/system/LESSONS_LEARNED.md"
 DIGEST = "MyTradingSys/system/LESSONS_DIGEST.md"
 
@@ -442,7 +452,8 @@ def main():
     output.append("")
 
     # Write output
-    status_path = "MyTradingSys/research/STATUS.md"
+    status_path = get_status_path()
+    Path(status_path).parent.mkdir(parents=True, exist_ok=True)
     with open(status_path, 'w', encoding='utf-8') as f:
         f.write("\n".join(output))
 
