@@ -9,7 +9,7 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Write depth_map.csv and DEPTH_REPORT.md: per TF (1m,2m,3m,5m,15m,30m,1h,4h,1d) RSI14 local-minimum distribution below 30 per year, DEV only (open < 2024-07-01), per SPEC s2.",
+  "goal": "Write ladder_<t>_<W>.csv, ladder_summary.csv and DEPTH_REPORT.md per SPEC s2 Steps A-C: ranked RSI troughs per 1h/4h/1d/1w window for each TF, P_touch per integer level 5..50 with visit counts, rare-zone boundary for q in 20/10/5/2%. DEV only (open < 2024-07-01).",
   "id": "rsi-deep-depth-map",
   "lane": "SONNET",
   "layers": [],
@@ -30,7 +30,7 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "RSI deep-buy Phase 1: per-timeframe RSI depth map (1m..1d) on BTCUSDT 1m, DEV only",
+  "title": "RSI deep-buy Phase 1A-C: per-TF RSI trough ladder per window, touch probability per level, rare-zone line (DEV only)",
   "weight": "",
   "worker": ""
 }
