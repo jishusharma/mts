@@ -23,8 +23,8 @@ from pathlib import Path
 TRUNK = "origin/fast-track"
 LOADER_REL = "scripts/dev/role_loader.py"
 MARK = "mts_role_launcher.py"
-KNOWN = ["Eagle_Eyes", "Lab_Guy", "Session_Planner", "MTS_Doctor", "Artifacts_Guy", "Network_Admin_Guy", "Q&A_Helper",
-         "Pipeliner"]
+KNOWN = ["Eagle_Eyes", "Lab_Guy", "Session_Planner", "MTS_Doctor", "1985Artifacts_Guy", "Artifacts_Guy", "Admin_Guy",
+         "Q&A_Helper", "Network_Admin_Guy", "Pipeliner", "Traffic_Controller", "Supervisor", "Builder"]
 PREFIX = r"(?:you are|you're|act as|be the|be|role:|i need(?: an| a| the)?|start(?: an| a| the)?)"
 HOME = Path.home() / ".claude"
 

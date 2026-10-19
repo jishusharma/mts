@@ -87,9 +87,11 @@ class TestFees(unittest.TestCase):
         self.assertAlmostEqual(m["net_r"], -1.0 - 0.0495, places=12)
 
     def test_funding_reduces_net_but_not_nofund(self):
-        # long pays positive funding: rate 0.001 at t=MIN, close of that bar 102 -> 0.001*102/100 of notional
-        # = 0.00102 of entry = 0.102R at risk 1% -> net_r drops by 0.102, nofund unchanged
-        tr = R.build_trades([one_signal(0)], self.bars, [(MIN, 0.001)], "all_taker", MIN)[0]
+        # long pays positive funding: rate 0.001 inside the hold (MIN, 2*MIN], close of that bar 102 -> 0.001*102/100 of
+        # notional = 0.00102 of entry = 0.102R at risk 1% -> net_r drops by 0.102, nofund unchanged.
+        # The settlement sits mid-bar, not on the entry instant (t_in < s, T03-F2); zero-rate records at 0 and 3*MIN
+        # make the records span the hold (B103 fail closed) without charging anything.
+        tr = R.build_trades([one_signal(0)], self.bars, [(0, 0.0), (MIN + MIN // 2, 0.001), (3 * MIN, 0.0)], "all_taker", MIN)[0]
         self.assertAlmostEqual(tr["net_nofund_r"], 1.899, places=9)
         self.assertAlmostEqual(tr["net_r"], 1.899 - 0.102, places=9)
 

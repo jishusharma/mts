@@ -26,9 +26,15 @@ REPO = Path(__file__).resolve().parents[2]
 ROLES_REL = "MyTradingSys/system/roles"
 ROLES_MD_REL = "MyTradingSys/system/ROLES.md"
 TRUNK = "origin/fast-track"
-KNOWN_ROLES = ["Eagle_Eyes", "Lab_Guy", "Session_Planner", "MTS_Doctor", "Artifacts_Guy", "Network_Admin_Guy",
-               "Q&A_Helper", "Pipeliner", "Supervisor", "Traffic_Controller", "Builder"]
-SINGLETON_ROLES = ("Pipeliner", "Traffic_Controller")  # one instance across all machines: scripts/dev/lease.py
+KNOWN_ROLES = ["Eagle_Eyes", "Lab_Guy", "Session_Planner", "MTS_Doctor", "1985Artifacts_Guy", "Admin_Guy",
+               "Pipeliner", "Supervisor", "Builder"]
+# Old names that still open the merged/renamed role (operator 2026-10-20); work even when the role file is not local yet.
+ALIASES = {
+    "1985Artifacts_Guy": ["artifacts_guy", "artifacts guy"],
+    "Admin_Guy": ["q&a_helper", "q&a helper", "qa helper", "q and a helper", "network_admin_guy", "network admin guy"],
+    "Pipeliner": ["traffic_controller", "traffic controller", "traffic cop"],
+}
+SINGLETON_ROLES = ("Pipeliner",)  # one instance across all machines: scripts/dev/lease.py
 
 # Fixed list: index = 16-bit chunk % 256. Never reorder or edit (it would change every token); the length is asserted below.
 WORDS = (
@@ -140,7 +146,7 @@ def git_sha8(repo):
 # ---------- trigger matching (no git) ----------
 def local_roles(repo=REPO):
     """{Name: [triggers]} from local role-file headers plus the known names (a role whose file is not local still triggers)."""
-    out = {n: [n.lower()] for n in KNOWN_ROLES}
+    out = {n: [n.lower()] + ALIASES.get(n, []) for n in KNOWN_ROLES}
     d = Path(repo) / ROLES_REL
     if d.is_dir():
         for f in sorted(d.glob("*.md")):
@@ -150,7 +156,7 @@ def local_roles(repo=REPO):
             except Exception:
                 continue
             if h:
-                out[h["name"]] = sorted(set(out.get(h["name"], []) + [h["name"].lower()] + h["triggers"]))
+                out[h["name"]] = sorted(set(out.get(h["name"], []) + [h["name"].lower()] + h["triggers"] + ALIASES.get(h["name"], [])))
     return out
 
 

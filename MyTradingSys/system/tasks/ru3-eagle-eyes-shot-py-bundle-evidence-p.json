@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-19T09:22:38Z",
   "commands": [],
   "created": "2026-10-18T17:22:51Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "ru3-eagle-eyes-shot-py-bundle-evidence-p",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/shot.py bundle subcommand + MyTradingSys/tests/test_shot_bundle.py",
+      "ref": "95329198",
+      "utc": "2026-10-19T09:22:38Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refs": [
     "MyTradingSys/research/roles/ROLE_UPGRADES_2026-10-18.md"
   ],
-  "result": "",
+  "result": "scripts/dev/shot.py bundle subcommand + MyTradingSys/tests/test_shot_bundle.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/shot.py",
     "MyTradingSys/tests/test_shot_bundle.py"
@@ -44,13 +56,14 @@
   "scope_sha": "c51c1a3aa6ce",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read shot.py and roles/eagle_eyes.md for the current manual boot steps",
     "Implement bundle subcommand reusing existing classify/snapshot helpers",
     "Fixture test: stored set -> one packet; stale mirror flagged",
     "Run run_all_tests.py --quick, ship"
   ],
+  "taken": "2026-10-19T09:22:38Z",
   "tests": "MyTradingSys/tests/test_shot_bundle.py",
   "title": "RU3 Eagle_Eyes: shot.py bundle evidence packet",
   "weight": "",

@@ -47,7 +47,7 @@ the others fail silently, so run it by hand to see the error: `echo {} | python 
 |---|---|---|---|
 | is live healthy | `python scripts/dev/live_mirror.py brief` (quote `mirror@<utc>`) | LIVE_MIRROR.md | Supervisor |
 | recorder stopped / process dropped | `python scripts/sched/check_live_health.py` | `runtime_data/live_runner.log` | Supervisor |
-| deploy did not land | read `MyTradingSys/runtime/sched/auto_deploy_last.json` | DEPLOY_RUNBOOK.md | Network_Admin_Guy (hand deploy) |
+| deploy did not land | read `MyTradingSys/runtime/sched/auto_deploy_last.json` | DEPLOY_RUNBOOK.md | desk row `--target JIS-NB` or the coordinator deploy (hand deploy) |
 | trading halted | read `MyTradingSys/execution/HALT` (never edit) | `MyTradingSys/execution/halt_history/` | operator |
 
 ## 5. Cost and waste

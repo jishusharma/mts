@@ -2,13 +2,13 @@
  "_doc": "What exists, for scripts/dev/traffic.py (TRAFFIC_CONTROLLER.md). Sources: HOW_MTS_RUNS.md, DEVICES.md, CLOUD_ACCOUNTS.md, ROLES.md, ROUTING.md, SUPERVISOR.md pacing. No personal emails, secrets or runtime data (public repo); `authors` are git author ids already in every public commit. Liveness and budgets are measured, never written here.",
  "machines": {
   "JIS-NB": {"signal_ids": ["jis-nb"], "branch_prefixes": ["JIS-NB", "jis-nb", "jisnb"], "authors": [], "logins": ["B", "C"],
-             "may": ["build", "live-reads", "deploy-desk", "nb-data", "pages"], "only_here": ["Eagle_Eyes", "Artifacts_Guy", "MTS_Doctor"],
+             "may": ["build", "live-reads", "deploy-desk", "nb-data", "pages"], "best_here": ["Eagle_Eyes (live files; elsewhere live_mirror.py brief)"],
              "note": "hosts the live testnet tree (.mts_live); builders never deploy"},
   "JIS-NUC": {"signal_ids": ["jis-nuc"], "branch_prefixes": ["jis-nuc", "JIS-NUC"], "authors": [], "logins": ["A", "C"],
-              "may": ["build", "lab", "nuc-data", "pipeliner"], "only_here": ["Lab_Guy"],
+              "may": ["build", "lab", "nuc-data", "pipeliner"], "best_here": ["Lab_Guy (needs the NUC lab)"],
               "note": "lab host: codex_run.py, gemini_queue.py, F:/MTS/data"},
-  "DESKTOP-F7IU69N": {"signal_ids": ["desktop-f7iu69n"], "branch_prefixes": ["DESKTOP-F7IU69N"], "authors": ["e-ngineers@JIS-NB"],
-                      "logins": ["A", "B", "C"], "may": ["build", "gemini-laptop"], "only_here": [],
+  "DESKTOP-F7IU69N": {"signal_ids": ["desktop-f7iu69n"], "branch_prefixes": ["DESKTOP-F7IU69N"], "authors": ["e-ngineers@DESKTOP-F7IU69N", "e-ngineers@JIS-NB"],
+                      "logins": ["A", "B", "C"], "may": ["build", "gemini-laptop"], "best_here": [],
                       "note": "Lenovo laptop; its git email reads e-ngineers@JIS-NB (34/34 of its prefixed merges, 72 h to 2026-10-18T21:35Z)"}
  },
  "logins": {
@@ -24,7 +24,7 @@
                     "card_lane": "CODEX"},
   "dsa": {"host": "JIS-NB,JIS-NUC", "kind": "DeepSeek via desk.py", "card_lane": "DSA"}
  },
- "singletons": {"Pipeliner": {"prefer": "JIS-NUC"}, "Traffic_Controller": {"prefer": "JIS-NUC"}},
+ "singletons": {"Pipeliner": {"prefer": "JIS-NUC"}},
  "pacing": {"normal_below": 60, "crucial_only_below": 70, "supervisor_only_below": 80, "codex_window_pts": 50, "codex_window_runs": 10},
  "liveness_min": {"active": 30, "idle": 180},
  "slots_per_machine": 4

@@ -237,6 +237,37 @@ class TestRepoRoles(unittest.TestCase):
     def test_check_passes_on_repo(self):
         self.assertEqual(rl.check(REPO, lambda x: None), 0)
 
+    def test_merged_roles_and_aliases_open_the_new_role(self):
+        """Operator 2026-10-20: 7 top-level roles; old names stay aliases; a name may start with a digit."""
+        roles = rl.local_roles(REPO)
+        for new_name in ("1985Artifacts_Guy", "Admin_Guy", "Pipeliner", "Eagle_Eyes", "Lab_Guy", "MTS_Doctor", "Supervisor"):
+            self.assertIn(new_name, roles)
+        for gone in ("Artifacts_Guy", "Q&A_Helper", "Network_Admin_Guy", "Traffic_Controller"):
+            self.assertNotIn(gone, roles)
+        want = {"You are 1985Artifacts_Guy.": "1985Artifacts_Guy", "You are Artifacts_Guy.": "1985Artifacts_Guy",
+                "You are Admin_Guy.": "Admin_Guy", "You are Q&A_Helper.": "Admin_Guy", "You are Network_Admin_Guy.": "Admin_Guy",
+                "You are Traffic_Controller.": "Pipeliner", "You are Pipeliner.": "Pipeliner", "Start the Pipeliner.": "Pipeliner"}
+        for prompt, name in want.items():
+            self.assertEqual(rl.match_roles(prompt, roles), [name], prompt)
+
+    def test_every_role_and_alias_has_a_file_and_banner(self):
+        for name in rl.KNOWN_ROLES:
+            f = REPO / rl.ROLES_REL / rl.file_for(name)
+            self.assertTrue(f.exists(), name)
+            h = rl.parse_header(f.read_bytes().decode("utf-8").replace("\r\n", "\n"))
+            self.assertEqual(h["name"], name)
+        import lease
+        self.assertEqual(tuple(rl.SINGLETON_ROLES), tuple(lease.SINGLETONS))   # the loader and the lease agree on who is single
+        self.assertEqual(lease.SINGLETONS, ("Pipeliner",))
+        for alias_of, olds in rl.ALIASES.items():
+            self.assertIn(alias_of, rl.KNOWN_ROLES)
+            self.assertTrue(olds)
+
+    def test_admin_guy_file_carries_the_guardrails_and_backlog_flow(self):
+        text = (REPO / rl.ROLES_REL / "admin_guy.md").read_text(encoding="utf-8")
+        for needle in ("VERBATIM", "Haiku 5.5", "effort high", "tasks.py new", "sync.py ship", "mts_signal.py send", "BACKLOG"):
+            self.assertIn(needle, text)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -543,12 +543,12 @@ def build_plan(quick):
 NOT_RUN = {}   # step num -> why it did not run (fail-fast / precheck failed); results[num] is None for these
 
 
-def run_plan(plan, jobs, out=None, fail_fast=False, precheck=False, slot=None, reused=None):
+def run_plan(plan, jobs, out=None, fail_fast=False, precheck=False, slot=None, reused=None, precheck_slot=None):
     """Run the plan and print each step's block as it finishes. Independent steps run `jobs` at a time, slowest first; SERIAL_STEPS
     follow one by one; jobs == 1 runs everything in definition order. Returns {step num: True|False|None}.
     GATE_SPEED (sync.py ship only; CI, auto_deploy and a bare run pass none of these):
-      precheck   CHEAP_STEPS and the targeted step run first, PRECHECK_JOBS at a time, outside `slot`; any failure there and the rest
-                 is NOT RUN (the whole precheck still runs, so every cheap failure shows at once)
+      precheck   CHEAP_STEPS and the targeted step run first, PRECHECK_JOBS at a time, holding precheck_slot when provided;
+                 any failure there and the rest is NOT RUN (the whole precheck still runs, so every cheap failure shows at once)
       fail_fast  in the main phase, after the first failed step the steps not yet started are NOT RUN; started ones finish
       slot       zero-argument context manager (the gate slot) held around the main phase only
       reused     {num: note} of steps the pass record shows passing on this exact tree: PASS without running"""
@@ -611,9 +611,11 @@ def run_plan(plan, jobs, out=None, fail_fast=False, precheck=False, slot=None, r
     if precheck:
         pre = [s for s in todo if s.num in CHEAP_STEPS or s.num == TARGET_STEP]
         main_steps = [s for s in todo if s not in pre]
-        print(f"Gate: {len(todo)} steps; precheck {len(pre)} cheap steps, {min(jobs, PRECHECK_JOBS)} at a time, no gate slot"
+        slot_msg = "with precheck slot" if precheck_slot else "no gate slot"
+        print(f"Gate: {len(todo)} steps; precheck {len(pre)} cheap steps, {min(jobs, PRECHECK_JOBS)} at a time, {slot_msg}"
               + (f"; {len(reused)} reused from the pass record" if reused else ""), file=out, flush=True)
-        run_steps(pre, min(jobs, PRECHECK_JOBS), False)
+        with (precheck_slot() if precheck_slot else contextlib.nullcontext()):
+            run_steps(pre, min(jobs, PRECHECK_JOBS), False)
         if failed_first:
             for s in main_steps:
                 not_run(s, f"precheck failed: step {failed_first[0]}")
@@ -714,7 +716,7 @@ def apply_fast(plan, files, nums, jobs):
     needed = set()
     for f in files:
         needed.update(gate_select._name_matches(f, steps_list))
-        if gate_impact.is_test_file(f):
+        if f.endswith(".py") or f.endswith("ci.yml") or gate_impact.is_test_file(f):
             needed.add("3dl")
     if any(gate_select._is_doc(f) for f in files):
         needed.update(gate_select.DOC_STEPS)
@@ -905,7 +907,7 @@ def load_reused(plan, root=REPO, now=None):
         return {}
 
 
-def save_record(plan, results, root=REPO, start_tree=None):
+def save_record(plan, results, root=REPO, start_tree=None, deferred=None):
     """Write the passing steps of this run (and the still-valid passes of the same tree) to the record. Skipped when the tree is dirty or
     HEAD moved while the gate ran (a session edited or committed mid-gate). Atomic (temp + os.replace, 3 tries on a Windows lock); never
     raises: a record that cannot be written only costs a rerun."""
@@ -915,6 +917,7 @@ def save_record(plan, results, root=REPO, start_tree=None):
             return False
         path = record_path(root)
         passed = {}
+        old = {}
         try:
             old = json.loads(path.read_text(encoding="utf-8"))
             if old.get("tree") == tree and old.get("python") == sys.version:
@@ -928,6 +931,10 @@ def save_record(plan, results, root=REPO, start_tree=None):
                 passed.pop(s.num, None)
         row = {"tree": tree, "python": sys.version, "epoch": time.time(), "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                "passed": passed}
+        if deferred is not None:
+            row["deferred"] = list(deferred)
+        elif old.get("tree") == tree and "deferred" in old:
+            row["deferred"] = old["deferred"]
         tmp = path.with_name(f"{RECORD_NAME}.{os.getpid()}.tmp")
         with open(tmp, "w", encoding="utf-8", newline="\n") as fh:
             json.dump(row, fh)
@@ -1006,7 +1013,7 @@ def main(argv=None):
         print(f"Fast gate (GATE_SPEED X2): {fast_info['reached']} test files reached ({fast_info['direct']} direct), {fast_info['kept']} units kept, "
               f"estimated {fast_info['est_s']} s (budget {fast_info['budget']} s) on {fast_jobs()} workers; {len(fast_info['deferred'])} deferred to CI (budget)", flush=True)
         if fast_info["deferred"]:
-            print("  DEFERRED to CI: " + ", ".join(fast_info["deferred"][:15]) + (f" (+{len(fast_info['deferred']) - 15} more)" if len(fast_info["deferred"]) > 15 else ""), flush=True)
+            print(f"  DEFERRED to CI ({len(fast_info['deferred'])}): " + ", ".join(fast_info["deferred"]), flush=True)
         if fast_info["quarantined"]:
             print("  QUARANTINED (deselected here, CI runs them): " + ", ".join(fast_info["quarantined"]), flush=True)
     # GATE_SPEED: the ship-only flags (sync.run_gate passes them; CI, auto_deploy and daily_hygiene never do)
@@ -1019,16 +1026,18 @@ def main(argv=None):
             use_record = False
         reused = load_reused(plan) if use_record else {}
     slot = None
+    precheck_slot = None
     if "--slot" in args and mode not in ("docs", "none"):
         import sync
         if fast_applied:   # own pool: a fast gate never queues behind the 9-minute full gates
             slot = lambda: sync.gate_slot(REPO, slots=FAST_SLOTS, name="gate-slots-fast")   # noqa: E731
         else:
             slot = lambda: sync.gate_slot(REPO)   # noqa: E731 - the slot is taken after the precheck, released when the main phase ends
+            precheck_slot = lambda: sync.gate_slot(REPO, slots=sync.GATE_PRECHECK_SLOTS, name="gate-slots-precheck")   # noqa: E731
     results = run_plan(plan, fast_jobs() if fast_applied else gate_jobs(), fail_fast="--fail-fast" in args,
-                       precheck="--precheck" in args and not fast_applied, slot=slot, reused=reused)
+                       precheck="--precheck" in args and not fast_applied, slot=slot, reused=reused, precheck_slot=precheck_slot)
     if use_record:
-        save_record(plan, results, start_tree=start_tree)
+        save_record(plan, results, start_tree=start_tree, deferred=fast_info.get("deferred") if fast_applied else None)
 
     # Summary
     print("\n" + "=" * 70)

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-19T09:55:35Z",
   "commands": [],
   "created": "2026-10-18T21:14:01Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "fast-gate-run-3dl-on-any-py-change",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/run_all_tests.py + scripts/dev/test_gate_impact.py",
+      "ref": "591ce80a",
+      "utc": "2026-10-19T09:55:35Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refs": [
     "MyTradingSys/research/mts_doctor/REPORT_2026-10-19.md"
   ],
-  "result": "",
+  "result": "scripts/dev/run_all_tests.py + scripts/dev/test_gate_impact.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/run_all_tests.py",
     "scripts/dev/test_gate_impact.py"
@@ -46,12 +58,13 @@
   "sources": [
     "MyTradingSys/research/mts_doctor/REPORT_2026-10-19.md:24"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add a test in scripts/dev/test_gate_impact.py verifying that apply_fast includes step 3dl when a non-test .py file or ci.yml is in files.",
     "In scripts/dev/run_all_tests.py, update apply_fast around line 717 to check f.endswith('.py') or f.endswith('ci.yml') when selecting step 3dl.",
     "Run python scripts/dev/test_gate_impact.py to confirm the fix passes."
   ],
+  "taken": "2026-10-19T09:55:35Z",
   "tests": "python scripts/dev/test_gate_impact.py",
   "title": "Fast ship gate must run step 3dl (CI deps lint) whenever any .py or ci.yml changes, not only test files",
   "weight": "ROUTINE",
