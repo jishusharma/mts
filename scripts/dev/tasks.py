@@ -637,8 +637,8 @@ def cmd_stale(a):
 REVIEW_WEIGHTS = ("CRUCIAL", "CRITICAL")   # lab_guy v3.1: these weights (or class C2/C3) need a real review stamp before start and finish
 SOFT_WEIGHTS = ("IMPORTANT",)              # IMPORTANT / class C1: a real review stamp is needed to be PROMOTED to ready (`check`), not to be taken
 # Two stamp formats are in use: planner `REVIEWED:<date> <ACCEPT|T0-ONLY>` (session_planner.md) and legacy `REVIEWED: <who> <date>`.
-STAMP_PLAN_RE = re.compile(r"^REVIEWED:\s*(\d{4}-\d{2}-\d{2})\s+(ACCEPT|T0-ONLY)(?:\s|$)", re.I | re.M)
-REVIEWED_RE = re.compile(r"^REVIEWED:\s+(?!\d{4}-\d{2}-\d{2})(\S+)\s+(\d{4}-\d{2}-\d{2})(?:\s|$)", re.I | re.M)
+STAMP_PLAN_RE = re.compile(r"^REVIEWED:[ \t]*(\d{4}-\d{2}-\d{2})[ \t]+(ACCEPT|T0-ONLY)(?:[ \t]|$)", re.I | re.M)
+REVIEWED_RE = re.compile(r"^REVIEWED:[ \t]+(?!\d{4}-\d{2}-\d{2})(\S+)[ \t]+(\d{4}-\d{2}-\d{2})(?:[ \t]|$)", re.I | re.M)
 HOLD_RE = re.compile(r"HOLD[ :]+(A-\d{8}-\d+)")
 HOLD_CLEARED_RE = re.compile(r"HOLD-CLEARED[ :]+(A-\d{8}-\d+)")
 
@@ -817,14 +817,21 @@ def stamp_kind(card, repo=None):
 def card_class(card):
     """C0-C3: the card's own `class` field, else `class=Cn` / `CLASS:Cn` in the note stamp; a live-path card is C3 at least."""
     values = []
-    field = str(card.get("class") or "").strip().upper()
-    if field:
+    raw = card.get("class", "")
+    field = raw.strip().upper() if isinstance(raw, str) else ""
+    if raw is not None and not isinstance(raw, str):
+        values.append("C3")
+    elif field:
         values.append(field if re.fullmatch(r"C[0-3]", field) else "C3")
-    for m in re.finditer(r"\bclass\s*[=:]\s*(C\d+)\b", str(card.get("note") or ""), re.I):
-        value = m.group(1).upper()
-        values.append(value if value in {"C0", "C1", "C2", "C3"} else "C3")
+    note = card.get("note", "")
+    if note is not None and not isinstance(note, str):
+        values.append("C3")
+        note = ""
+    for m in re.finditer(r"\bclass(?:[ \t]*[=:]|[ \t]+(?=[Cc](?:\d|x\b|[ \t-])|\d))", note or "", re.I):
+        value = re.match(r"[ \t]*(C[0-3])\b", (note or "")[m.end():], re.I) if re.search(r"[=:]", m.group()) else None
+        values.append(value.group(1).upper() if value else "C3")
     c = max(values, key=lambda x: int(x[1:])) if values else ""
-    if card.get("live_path") is True:
+    if card.get("live_path", False) is not False:
         c = "C3"
     return c
 
@@ -848,7 +855,12 @@ def hold_problems(card, holds=None):
 
 def needs_review(card):
     """'hard' (crucial/critical or C2/C3: needed to take and finish), 'soft' (important or C1: needed to promote), or ''."""
-    w = str(card.get("weight") or "").upper()
+    raw = card.get("weight", "")
+    if raw is not None and not isinstance(raw, str):
+        return "hard"
+    w = (raw or "").strip().upper()
+    if w and w not in WEIGHTS:
+        return "hard"
     if w in REVIEW_WEIGHTS or card_class(card) in ("C2", "C3"):
         return "hard"
     if w in SOFT_WEIGHTS or card_class(card) == "C1":
@@ -867,9 +879,17 @@ def promotion_problems(card, holds=None, repo=None):
 def review_gate(card, finishing=False, result="", repo=None):
     """Problems stopping a crucial/critical (or C2/C3, or live-path) card from being taken or marked done. routine/important pass.
     The weight itself is set by the reviewer/planner (the note stamp), never by the producer."""
-    if needs_review(card) != "hard":
-        return []
     p = []
+    for key in ("note", "class", "weight"):
+        if card.get(key) is not None and not isinstance(card.get(key), str):
+            p.append(f"{key} must be a string")
+    if "live_path" in card and type(card["live_path"]) is not bool:
+        p.append("live_path must be a boolean")
+    weight = card.get("weight")
+    if isinstance(weight, str) and weight.strip() and weight.strip().upper() not in WEIGHTS:
+        p.append("weight is not a recognized review weight")
+    if needs_review(card) != "hard":
+        return p
     if stamp_kind(card, repo=repo) != "real":
         p.append("weight/class needs a real review: add 'REVIEWED: <reviewer> <date>' or 'REVIEWED:<date> ACCEPT' to the note first (T0-ONLY is not a review)")
     if finishing and not str(result or "").strip():
