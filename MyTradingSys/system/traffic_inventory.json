@@ -7,7 +7,7 @@
   "JIS-NUC": {"signal_ids": ["jis-nuc"], "branch_prefixes": ["jis-nuc", "JIS-NUC"], "authors": [], "logins": ["A", "C"],
               "may": ["build", "lab", "nuc-data", "pipeliner"], "best_here": ["Lab_Guy (needs the NUC lab)"],
               "note": "lab host: codex_run.py, gemini_queue.py, F:/MTS/data"},
-  "DESKTOP-F7IU69N": {"signal_ids": ["desktop-f7iu69n"], "branch_prefixes": ["DESKTOP-F7IU69N"], "authors": ["e-ngineers@JIS-NB"],
+  "DESKTOP-F7IU69N": {"signal_ids": ["desktop-f7iu69n"], "branch_prefixes": ["DESKTOP-F7IU69N"], "authors": ["e-ngineers@DESKTOP-F7IU69N", "e-ngineers@JIS-NB"],
                       "logins": ["A", "B", "C"], "may": ["build", "gemini-laptop"], "best_here": [],
                       "note": "Lenovo laptop; its git email reads e-ngineers@JIS-NB (34/34 of its prefixed merges, 72 h to 2026-10-18T21:35Z)"}
  },

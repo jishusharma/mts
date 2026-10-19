@@ -216,6 +216,12 @@ class Measure(unittest.TestCase):
         allt = {l: {"week": 99, "five_h": 99, "reset": reset, "at": at} for l in "AB"}
         self.assertEqual(traffic.spend_view(allt, T0)["overall"], "THROTTLE")
 
+    def test_attribution_by_author_email(self):
+        cs = [self.c("1", 0, "some commit", email="e-ngineers@DESKTOP-F7IU69N")]
+        inv_data = inv()
+        host = traffic.attribute_commits(REPO, cs, [], inv_data)
+        self.assertEqual(host.get("1"), "DESKTOP-F7IU69N")
+
     def test_inventory_has_no_emails(self):
         text = (REPO / traffic.INVENTORY).read_text(encoding="utf-8")
         self.assertNotRegex(text, r"[\w.]+@[\w-]+\.(com|org|net)")
