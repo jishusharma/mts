@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-19T20:50:24Z",
   "commands": [
     "python scripts/dev/sync.py claim \"dsa-audit-02-lookahead-time\"",
     "python scripts/dev/tasks.py take dsa-audit-02-lookahead-time",
@@ -17,10 +18,17 @@
   "goal": "Show mechanically, for every detector behind a published verdict and every testnet layer, that the signal at time t is the same whether or not the data after t exists; and find every session or bar-stamp convention that disagrees.",
   "id": "dsa-audit-02-lookahead-time",
   "lane": "DSA-NB",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "T02: 5 findings (S1 0, S2 1, S3 4); 22 of 27 testnet layers PASS, 5 NOT DECISIVE, 0 FAIL; ",
+      "ref": "2dbdb81c",
+      "utc": "2026-10-19T20:50:24Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report.",
+  "note": "REVIEWED: Lab_Guy 2026-10-20 ACCEPT HOLD-CLEARED A-20261018-5 LAB:data CLASS:C1 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report. STAMP CAVEAT: Lab_Guy is Claude Sonnet 5.5, same vendor as the producer; the different-vendor C1 spec review (GPT/Gemini) is still owed, not faked. Lab_Guy recount: 22 PASS + 5 NOT DECISIVE = 27 layers; study detectors and clock counts stay BLOCKED-DATA (desk row owns them).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
@@ -29,7 +37,12 @@
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md",
     "MyTradingSys/backtest/layers/alerts/live_runner_cli.py"
   ],
-  "result": "",
+  "result": "T02: 5 findings (S1 0, S2 1, S3 4); 22 of 27 testnet layers PASS, 5 NOT DECISIVE, 0 FAIL; study detectors BLOCKED-DATA",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T02_lookahead_time.md and MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T02/ (new files only)",
     "read-only: repo code, result files, data under F:/MTS/data and Dumps (windows per brief section 5)"
@@ -44,7 +57,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md sections 1-7, then section 8 'T02' (full method).",
     "List every detector behind a brief 1b verdict and every testnet layer (build_default_registry): file, function, bars, timeframe.",
@@ -53,6 +66,7 @@
     "Clock conventions (lead L6): bar stamp (open/close) and session definition per study; DEV events that change label under the other convention.",
     "Entry timing: entry index vs signal-bar close in every study, 10 events per study checked by hand."
   ],
+  "taken": "2026-10-19T20:50:24Z",
   "tests": "",
   "title": "DSA audit T02: truncation and poison tests for look-ahead, plus session clocks",
   "weight": "IMPORTANT",
