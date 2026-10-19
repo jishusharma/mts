@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "commands": [],
+  "created": "2026-10-19T04:43:41Z",
+  "depends_on": [],
+  "done_when": "Focused tests pass and CI offline gate succeeds on both OSes",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fix Linux CI test_spawn_logging_opt_in: Windows creationflags must not reach a real POSIX Popen; preserve logging assertions for both flag values.",
+  "id": "ci-nowin-audit-linux-flags",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "nowin: add spawn diagnostic log and audit subcommand (RU8)",
+      "ref": "dff6abaf14e6",
+      "utc": "2026-10-18T22:18:28Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "MyTradingSys/tests/test_nowin_audit.py::test_dummy_spawn_log_is_rejected",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-19T04:44:59Z",
+  "refs": [
+    "MyTradingSys/tests/test_nowin_audit.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tests/test_nowin_audit.py"
+  ],
+  "scope_out": [
+    "Production nowin.py; live processes; log contents outside temporary test files"
+  ],
+  "scope_sha": "dff6abaf14e6",
+  "size": "S",
+  "sources": [],
+  "state": "active",
+  "steps": [
+    "Use a fake original Popen constructor under the real install wrapper; verify forwarded flags and log fields for both cases."
+  ],
+  "taken": "2026-10-19T04:45:04Z",
+  "tests": "python -m pytest MyTradingSys/tests/test_nowin_audit.py scripts/dev/test_nowin.py -q; Linux baseline CI 39198751302 failed with creationflags ValueError",
+  "title": "CI: make spawn-audit logging test portable across Windows and Linux",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -6,6 +6,8 @@ No trusted reviewer roster or stamp-writer authority was added. Free-text stamps
 
 ## Changes
 
+Changed implementation pointers: `scripts/dev/tasks.py:640` (stamp grammars), `:817` (class parsing), `:856` (weight normalization), `:879` (blocking metadata validation); `scripts/dev/lab_flow.py:319` (shared close gate). Tests: `scripts/dev/test_tasks.py:578`, `:592`, `:608`, `:619`; `scripts/dev/test_lab_flow.py:474`, `:490`; `scripts/dev/test_lane_health.py:282`.
+
 | Finding | Change / evidence |
 |---|---|
 | R2 malformed classes | `scripts/dev/tasks.py::card_class`: explicit malformed field values and note forms conservatively resolve to C3. Multiple class markers on one line are evaluated; a lower class cannot consume and hide a later higher class. Non-string metadata is a blocking review_gate error even with a syntactically valid receipt. |
