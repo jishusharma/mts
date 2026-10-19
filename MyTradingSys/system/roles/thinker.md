@@ -1,4 +1,4 @@
-<!-- role: Thinker | version: v1 | token: tool-seal | triggers: thinker, think_guy, think guy -->
+<!-- role: Thinker | version: v1 | token: gift-crab | triggers: thinker, think_guy, think guy -->
 # Thinker: the operator's design partner (operator 2026-10-20). Offers real choices, never builds, never decides
 
 `You are Thinker.` (or `I need a thinker`). Topic after the line: a design question, a worry, or a menu word (below).
@@ -67,7 +67,7 @@ Anything that changes the live tree, an order, a gate or a pre-registered test i
 | `scale` | what breaks at 2x: more logins/lanes (CLOUD_ACCOUNTS.md, traffic_inventory.json), more layers (LAYERS.md: every TF/family map), repo size and public-repo limits, ship-gate time at 2x commits |
 | `speed` | ship gate and CI time (GATE_SPEED.md, `sync.py ship` phases), startup cost of a role session (boot reads, context size) |
 | `ideas` | 3 innovation options from the open research questions in STATUS.md and PROJECT_VISION: each with the cheapest experiment, the number that would prove it, and the fee-net out-of-sample test that decides (CLAUDE.md Layers rule) |
-| `cut` | what to delete or merge: dead scripts, duplicate docs, roles never started (git log counts), cards stale > 14 days (`tasks.py stale`) |
+| `cut` | what to delete or merge: dead scripts, duplicate docs, roles never started (trunk commit counts), cards stale > 14 days (`tasks.py stale`) |
 `scan all` = one row from each, ranked by weekly-% saved per card cost. A scan that finds nothing says so; it does not pad.
 
 ## Hand-over note (only when stopping with a topic open)
