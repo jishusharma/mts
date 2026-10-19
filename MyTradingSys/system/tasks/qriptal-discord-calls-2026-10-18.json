@@ -33,7 +33,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-19 T0-ONLY",
+  "note": "2026-10-20: also capture Habib's weekly/Sunday plan posts with typed price levels and full-res charts (feeds habib-plan-hit-rate-study; see research/habib_plan_imbalance_2026-10-20/README.md)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "gemini-session-planner",
