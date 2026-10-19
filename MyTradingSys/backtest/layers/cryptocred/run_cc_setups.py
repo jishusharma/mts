@@ -141,7 +141,7 @@ def _limit_trade(sig, hit, sim_bars, taker, maker, entry_refund, funding, max_ba
            else {"t": fb["t"], "o": fill, "h": fb["h"], "l": fill, "c": fill})
     seq = [syn] + sim_bars[k + 1:]
     call = {kk: v for kk, v in sig.items() if kk not in ("meta", "entry_price", "entry_t")}
-    tr = simulate_trade(entry_price=fill, entry_t=fb["t"] - 1, bars=seq, funding=funding or None,
+    tr = simulate_trade(entry_price=fill, entry_t=fb["t"] - 1, bars=seq, funding=funding or [],
                         taker_fee=taker, maker_fee=maker, max_bars=max_bars, stop_first=True,
                         target_through=tick, **call)
     if tr.get("net_r") is None:
@@ -159,7 +159,7 @@ def _market_trade(sig, sim_bars, by_t, tf_ms, taker, maker, entry_refund, fundin
         if c != sig["entry_price"]:
             s2["entry_price"] = c
             s2["targets"] = [(_r_target(c, sig["stop"], sig["side"], sig["meta"]["target_r"]), 1.0)]
-    r = signals_to_trades([s2], sim_bars, funding=funding or None, taker_fee=taker,
+    r = signals_to_trades([s2], sim_bars, funding=funding or [], taker_fee=taker,
                           maker_fee=maker, max_bars=max_bars, target_through=tick)[0]["trade_result"]
     if r.get("net_r") is None:  # open at end of data
         return None
