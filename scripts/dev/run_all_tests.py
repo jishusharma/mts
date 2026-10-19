@@ -849,6 +849,8 @@ def apply_selection(plan, args):
                 gate_mode = "full"
                 return plan, "full"
             fast_applied = True
+            ran_always = [s.num for s in new_plan if not s.skip and s.num in ("3w", "3x", "3tl", "3gd", "3dl")]
+            gate_reason = f"fast smoke: {len(files)} file(s); ALWAYS steps {','.join(ran_always) if ran_always else 'none'} ran"
             return new_plan, mode
     for s in plan:
         if s.num not in nums and not s.skip and s.num != TARGET_STEP:

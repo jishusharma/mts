@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-19T11:16:15Z",
   "commands": [],
   "created": "2026-10-18T21:14:45Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "shipping-proof-doc-gaps",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "measure.py saved beside doc, receipt host added, PROOF clarified, fast gate_reason reflect",
+      "ref": "110be80b",
+      "utc": "2026-10-19T11:16:15Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,12 @@
   "refs": [
     "MyTradingSys/research/mts_doctor/REPORT_2026-10-19.md"
   ],
-  "result": "",
+  "result": "measure.py saved beside doc, receipt host added, PROOF clarified, fast gate_reason reflects executed ALWAYS subset + test_fast_gate_reason_does_not_report_unreached_always_steps",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/shipping_speed_2026-10-19/PROOF.md",
     "MyTradingSys/research/shipping_speed_2026-10-19/measure.md",
@@ -54,12 +66,13 @@
   "sources": [
     "MyTradingSys/research/mts_doctor/REPORT_2026-10-19.md:27"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "In MyTradingSys/research/shipping_speed_2026-10-19/PROOF.md, add note clarifying that fast gate skips 3w/3tl/3dl when not reached by changes.",
     "In scripts/dev/run_all_tests.py, adjust the fast header or log line so it does not report that unreached FAST_COSTLY_ALWAYS steps ran.",
     "In measure.md note that measure.py was run inline or document its location; add host identifier to receipt."
   ],
+  "taken": "2026-10-19T11:16:15Z",
   "tests": "python scripts/dev/test_gate_impact.py",
   "title": "Fix shipping proof gaps: stale 'ALWAYS steps ran' fast header, missing measure.py, hostname in receipt",
   "weight": "ROUTINE",

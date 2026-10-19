@@ -242,6 +242,14 @@ class FastPlan(unittest.TestCase):
         rec = json.loads(rat.record_path(d).read_text(encoding="utf-8"))
         self.assertEqual(rec.get("deferred"), deferred_tests)
 
+    def test_fast_gate_reason_does_not_report_unreached_always_steps(self):
+        plan, mode, out = self.select(["scripts/dev/nowin.py"])
+        self.assertEqual(mode, "smoke")
+        self.assertTrue(rat.fast_applied)
+        # 3w and 3tl were not reached by nowin.py
+        self.assertNotIn("3w", rat.gate_reason)
+        self.assertNotIn("3tl", rat.gate_reason)
+
 
 def setattr_all(mod, names, values):
     for n, v in zip(names, values):
