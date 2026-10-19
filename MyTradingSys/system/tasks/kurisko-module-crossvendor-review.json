@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-19T04:55:25Z",
   "commands": [],
   "created": "2026-10-18T16:17:43Z",
   "depends_on": [
@@ -16,6 +18,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "FIX-FIRST params provenance: combined bands wrongly SOURCED and (44,3)/(44,4) conflict; 30",
+      "ref": "387623c1",
+      "utc": "2026-10-19T04:55:25Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +48,7 @@
   "refined_by": "GPT Luna draft; Session_Planner review pending",
   "refreshed": "2026-10-18T21:20:48Z",
   "refs": [],
-  "result": "",
+  "result": "FIX-FIRST params provenance: combined bands wrongly SOURCED and (44,3)/(44,4) conflict; 30 golden values independently MATCH, 28 tests pass; report 2026-10-19_kurisko-module-crossvendor-review.md",
   "scope_in": [
     "MyTradingSys/backtest/layers/kurisko/stoch_core.py",
     "MyTradingSys/backtest/layers/kurisko/quad_rotation.py",
@@ -68,7 +76,7 @@
     "MyTradingSys/system/desk_queue/20261018-065548-non-claude-review-kurisko-module-code-te.json (original request and wrong-channel failure)",
     "MyTradingSys/system/ROUTING.md (CODEX cross-vendor routing)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read every scope_in file. Resolve the module producer model from its task/report evidence, then use GPT or Gemini only if it differs from the producer; if the producer cannot be established, report BLOCKED with the missing evidence.",
     "Compare each stochastic line and label in stoch_core.py and kurisko_default.json with FORMULAS 24.1-24.2 and the SOURCED/OURS distinctions in KURISKO_SPEC s5; check the implemented D line against the prior review FIX and the R8 quote.",
@@ -77,6 +85,7 @@
     "Write the bounded audit report under research/layer_lab/reports/ in the LAYER_LAB.md audit format; record SOUND, FIX-FIRST, or BLOCKED and put ACCEPT or concise FIX lines plus the report path in this card's result. Make no source edits.",
     "Verify delivery: record the content commit SHA; git cherry origin/fast-track <sha> must be empty and git ls-tree -r origin/fast-track --name-only must include the report."
   ],
+  "taken": "2026-10-19T04:53:14Z",
   "tests": "Audit existing tests and independent golden fixture; report whether the named fixture, NaN/gap checks, and planted future-spike test cover the stated claims. Do not edit tests or product files.",
   "title": "Cross-vendor review: kurisko module code+tests vs FORMULAS s24",
   "weight": "IMPORTANT",

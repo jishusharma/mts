@@ -28,7 +28,7 @@ Baseline result: **34 failed, 148 passed, 463 subtests passed**. Failures reprod
 
 An additional red test found unrecognized weight `BOGUS` could still close with a valid stamp: **1 failed, 13 subtests passed** before adding explicit recognized-weight validation.
 
-Final changed-file run: **150 passed, 495 subtests passed, 20.94 s**. `git diff --check` passed. Modified Python files have LF line endings. No quick/full gate was manually invoked; `sync.py ship` performs its required selected smoke gate.
+Final changed-file run: **150 passed, 495 subtests passed, 20.94 s**. `git diff --check` passed. Modified Python files have LF line endings. The first ship passed all 23 selected smoke steps but was blocked by existing Linux CI. After the named spawn-audit test repair, `sync.py ship --fix-ci` passed all 65 selected steps and shipped the changes. A separate local full-suite run also passed, including Maven; local Windows results do not substitute for Linux CI confirmation.
 
 The named flow/DSA guard tests correctly passed baseline because those guards existed. The new flow-exception conversion test failed baseline. Tests were not weakened to force an artificial baseline failure on already-working guards.
 
