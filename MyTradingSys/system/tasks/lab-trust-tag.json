@@ -1,7 +1,9 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
   "class": "C2",
+  "closed": "2026-10-19T05:08:26Z",
   "commands": [],
   "created": "2026-10-18T00:00:00Z",
   "depends_on": [],
@@ -13,6 +15,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Explicit cited-result trust gate and expiry; 181 tests + 508 subtests pass; 24 bases remai",
+      "ref": "43abbbcf",
+      "utc": "2026-10-19T05:08:26Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -36,7 +44,12 @@
   "refined_by": "",
   "refreshed": "2026-10-18T05:13:05Z",
   "refs": [],
-  "result": "",
+  "result": "Explicit cited-result trust gate and expiry; 181 tests + 508 subtests pass; 24 bases remain UNCHECKED; 8 raw C2 re-check cards. Report 2026-10-19_lab-trust-tag.md; reviewer authority R1 stays open.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/lab_flow.py",
@@ -51,16 +64,17 @@
   "scope_sha": "f72d05a3a951",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "add a trust field (tag, checker model and effort, date, data hash, code revision, evidence path) to the result receipt",
     "tasks.py: a card citing another card in scope_in needs the cited result tag >= its own class; a citation auto-raises the cited card to shared",
     "expiry: tag invalid when hash or revision differs",
     "audit pass: list past results (event tables, gates, power counts, fee/fill model, the Q76 chain) that base work stands on and are UNCHECKED; file one re-check card per base result"
   ],
+  "taken": "2026-10-19T04:57:10Z",
   "tests": "fail-first tests: citing card refused on UNCHECKED, allowed on VERIFIED-C1; tag expires on changed hash",
   "title": "Lab: a safe-to-build-on tag per lab result (UNCHECKED, MACHINE-OK, VERIFIED-C1, VERIFIED-C2, DISPUTED) read by tasks.py at card start",
+  "updated": "2026-10-18T10:00:00Z",
   "weight": "CRUCIAL",
-  "worker": "session",
-  "updated": "2026-10-18T10:00:00Z"
+  "worker": "session"
 }

@@ -191,6 +191,7 @@ def problems(card, cards=None, reg=None, repo=None):
     repo = Path(repo or REPO)
     card_list = cards if cards is not None else load_all(repo)
     cards = {c["id"]: c for c in card_list}
+    p.extend(result_trust_problems(card, repo))
     reg = reg or {}
     for k in TEXT[:3]:
         if not str(card.get(k, "")).strip():
@@ -879,7 +880,7 @@ def promotion_problems(card, holds=None, repo=None):
 def review_gate(card, finishing=False, result="", repo=None):
     """Problems stopping a crucial/critical (or C2/C3, or live-path) card from being taken or marked done. routine/important pass.
     The weight itself is set by the reviewer/planner (the note stamp), never by the producer."""
-    p = []
+    p = result_trust_problems(card, repo)
     for key in ("note", "class", "weight"):
         if card.get(key) is not None and not isinstance(card.get(key), str):
             p.append(f"{key} must be a string")
@@ -897,10 +898,156 @@ def review_gate(card, finishing=False, result="", repo=None):
     return p
 
 
+TRUST_LEVELS = {"UNCHECKED": -1, "DISPUTED": -1, "MACHINE-OK": 0, "VERIFIED-C1": 1, "VERIFIED-C2": 2}
+
+
+def result_bases(card, repo=None):
+    """Explicit card citations in scope_in: card:ID, task JSON path, or an existing bare ID."""
+    repo = Path(repo or REPO)
+    found = {}
+    for item in card.get("scope_in", []):
+        token = str(item).split()[0].rstrip(",;") if str(item).strip() else ""
+        token = token.replace(chr(92), "/")
+        explicit = token.startswith("card:")
+        if explicit:
+            cid = token[5:]
+        elif token.startswith("MyTradingSys/system/tasks/") and token.endswith(".json"):
+            cid = Path(token).stem
+            explicit = True
+        elif re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]*", token):
+            cid = token
+        else:
+            continue
+        if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]*", cid):
+            raise ValueError(f"invalid cited card {token!r}")
+        path = path_of(repo, cid)
+        if explicit or path.is_file():
+            if not path.is_file():
+                raise ValueError(f"missing cited card {cid}")
+            if cid == card.get("id"):
+                raise ValueError("a result cannot cite itself as a trusted base")
+            found[cid] = get(repo, cid)
+    return found
+
+
+def result_fingerprint(card, repo=None):
+    repo = Path(repo or REPO)
+    bases = result_bases(card, repo)
+    scope = []
+    for item in card.get("scope_in", []):
+        token = str(item).split()[0].rstrip(",;") if str(item).strip() else ""
+        token = re.sub(r":\d[\d,\-]*$", "", token)
+        cid = token[5:] if token.startswith("card:") else Path(token).stem if token.startswith("MyTradingSys/system/tasks/") else token
+        if cid in bases:
+            continue  # bind result semantics below, not mutable sharing metadata
+        path = repo / token
+        if path.is_dir():
+            raise ValueError(f"trust requires explicit file pins, not directory scope: {token}")
+        if not path.is_file():
+            raise ValueError(f"trust source file is missing: {token}")
+        scope.append(token)
+    hashes = review_hashes(dict(card, scope_in=scope, weight=""), repo)
+    data = {"scope_data": hashes["data"], "cited_results": {
+        cid: {k: base.get(k) for k in ("state", "result", "scope_in", "goal", "result_receipt", "flow_receipt")}
+        for cid, base in bases.items()}}
+    for item in card.get("flow", {}).get("data_scope", []):
+        path = repo / item
+        if not path.is_file():
+            raise ValueError(f"trust data pin is not an explicit file: {item}")
+        data[item] = hashlib.sha256(path.read_bytes()).hexdigest()
+    # Scope content binds code/spec/data even in scratch repos with no git history.
+    # Unrelated HEAD/claim changes do not expire a result.
+    contract = {"scope": hashes["scope"], "card": hashes["card"], "result": card.get("result"), "flow": card.get("flow")}
+    revision = hashlib.sha256(json.dumps(contract, sort_keys=True).encode()).hexdigest()
+    return hashlib.sha256(json.dumps(data, sort_keys=True).encode()).hexdigest(), hashes["scope_sha"] + ":" + revision
+
+
+def trust_evidence(repo, evidence):
+    root = Path(repo or REPO).resolve()
+    path = (root / evidence).resolve()
+    path.relative_to(root)  # no evidence escaping the checkout
+    if not path.is_file():
+        raise ValueError("trust evidence file is missing")
+    return path
+
+
+def make_result_trust(card, tag, checker_model, effort, evidence, repo=None, date=None):
+    """Bind an explicitly supplied assessment; never infer verification from card completion.
+
+    This is evidence bookkeeping, not reviewer authentication (stamp-writer R1).
+    """
+    if tag not in TRUST_LEVELS:
+        raise ValueError("unknown trust tag")
+    data, revision = result_fingerprint(card, repo)
+    proof = trust_evidence(repo, evidence)
+    return {"tag": tag, "checker_model": checker_model, "effort": effort,
+            "date": date or now()[:10], "data_hash": data, "code_revision": revision,
+            "evidence": proof.relative_to(Path(repo or REPO).resolve()).as_posix(),
+            "evidence_sha256": hashlib.sha256(proof.read_bytes()).hexdigest()}
+
+
+def result_trust_problems(card, repo=None, _seen=None):
+    repo = Path(repo or REPO)
+    try:
+        seen = set(_seen or ())
+        if card.get("id") in seen:
+            raise ValueError("cycle in cited result dependencies")
+        seen.add(card.get("id"))
+        bases = result_bases(card, repo)
+        weight = str(card.get("weight") or "").strip().upper()
+        required = max(int((card_class(card) or "C0")[1]),
+                       2 if weight in REVIEW_WEIGHTS else 1 if weight in SOFT_WEIGHTS or weight == "B-SHARED" else 0)
+        flow_class = card.get("flow", {}).get("risk_class", "C0")
+        required = max(required, int(flow_class[1]) if isinstance(flow_class, str) and re.fullmatch(r"C[0-3]", flow_class) else 3)
+        errors = []
+        for cid, base in bases.items():
+            try:
+                receipt = base.get("flow_receipt") if base.get("flow") else base.get("result_receipt")
+                trust = (receipt or {}).get("trust", {})
+                tag = trust.get("tag", "UNCHECKED")
+                if base.get("state") != "done" or TRUST_LEVELS.get(tag, -1) < required:
+                    raise ValueError(f"{tag}: requires trust at class C{required} or above")
+                for key in ("checker_model", "effort", "date", "data_hash", "code_revision", "evidence", "evidence_sha256"):
+                    if not isinstance(trust.get(key), str) or not trust[key].strip():
+                        raise ValueError(f"missing trust {key}")
+                day = datetime.strptime(trust["date"], "%Y-%m-%d")
+                if day.strftime("%Y-%m-%d") > now()[:10]:
+                    raise ValueError("trust date is in the future")
+                data, revision = result_fingerprint(base, repo)
+                if trust["data_hash"] != data or trust["code_revision"] != revision:
+                    raise ValueError("trust expired: data or code/scope revision changed")
+                proof = trust_evidence(repo, trust["evidence"])
+                if hashlib.sha256(proof.read_bytes()).hexdigest() != trust["evidence_sha256"]:
+                    raise ValueError("trust expired: evidence changed")
+                upstream = result_trust_problems(base, repo, seen)
+                if upstream:
+                    raise ValueError("upstream result trust invalid: " + "; ".join(upstream))
+            except Exception as e:
+                errors.append(f"cited result {cid}: {e}")
+        return errors
+    except Exception as e:
+        return [f"result trust gate error: {e}"]
+
+
+def mark_shared_bases(card, repo=None):
+    """Only mutating lifecycle commands call this; queue queries remain read-only."""
+    repo = Path(repo or REPO)
+    try:
+        bases = result_bases(card, repo)
+    except (ValueError, OSError):
+        return  # the read-only trust gate reports invalid/missing citations
+    for cid, base in bases.items():
+        base["weight"] = "B-SHARED"
+        base["class"] = "C3" if card_class(base) == "C3" else "C2"
+        base["shared_consumers"] = sorted(set(base.get("shared_consumers", [])) | {card["id"]})
+        save(repo, base)
+
+
 def cmd_take(a):
     c = get(REPO, a.id)
     if c["state"] != "ready":
         raise SystemExit(f"tasks: {a.id} is {c['state']}, only a ready card can be taken")
+    mark_shared_bases(c, REPO)
     gate = review_gate(c, repo=REPO)
     if gate:
         raise SystemExit(f"tasks: {a.id} cannot be taken: " + "; ".join(gate))
@@ -928,12 +1075,14 @@ def cmd_done(a):
         raise SystemExit("tasks: flow cards close through lab_flow.py finish (evidence receipt required)")
     if c.get("state") not in ("ready", "active"):
         raise SystemExit(f"tasks: {a.id} is {c.get('state')}, only a ready or active card can be marked done")
+    mark_shared_bases(c, REPO)
     gate = review_gate(c, finishing=True, result=a.result, repo=REPO)
     if c["state"] == "ready":   # runners claim via sync.py and never call `take`: ready->done needs every gate `take` would apply
         gate += promotion_problems(c, repo=REPO) + problems(c, load_all(REPO), registry(REPO), repo=REPO)
     if gate:
         raise SystemExit(f"tasks: {a.id} cannot be marked done: " + "; ".join(gate))
     c.update(state="done", result=a.result, closed=now())
+    c.setdefault("result_receipt", {}).setdefault("trust", {"tag": "UNCHECKED"})
     c.setdefault("taken", c["closed"])
     head = TS.git(REPO, "rev-parse", "--short", "HEAD")
     if head:   # base the work was done on; the ship commit that carries this card becomes the tag (SHIPPED@<sha>)
