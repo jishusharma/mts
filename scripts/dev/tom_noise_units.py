@@ -79,10 +79,13 @@ def min_stop_width(entry, n5, fees):
 def n5(bars, asof=None, days=20):
     """Noise unit N5: median true range (FORMULAS.md section 12) of completed 5-minute bars
     of the trailing 20 UTC days as a fraction of close (TOM_LAYER_V2_SPEC.md section 11.4).
-    Reuses true_ranges and aggregate.
+    Reuses true_ranges and aggregate. Timestamp cutoffs are instants: open+5m must
+    be <= asof. A date includes that whole UTC day (cutoff = next midnight).
     """
     if isinstance(bars, list) and bars and len(bars[0]) == 3 and not hasattr(bars[0], "keys"):
         # Direct list of (high, low, close)
+        if asof is not None:
+            raise ValueError("asof requires timestamped bars")
         trs = true_ranges(bars)
         return median(trs) if trs else 0.0
 
@@ -92,22 +95,26 @@ def n5(bars, asof=None, days=20):
         if isinstance(asof, date) and not isinstance(asof, datetime):
             start_d = asof - timedelta(days=days - 1)
             lo_ms = int(datetime(start_d.year, start_d.month, start_d.day, 0, 0, tzinfo=timezone.utc).timestamp() * 1000)
-            hi_ms = int(datetime(asof.year, asof.month, asof.day, 23, 59, 59, 999000, tzinfo=timezone.utc).timestamp() * 1000)
+            end_d = asof + timedelta(days=1)
+            hi_ms = int(datetime(end_d.year, end_d.month, end_d.day, tzinfo=timezone.utc).timestamp() * 1000)
         else:
             if isinstance(asof, datetime):
+                if asof.tzinfo is None or asof.utcoffset() is None:
+                    raise ValueError("asof datetime requires an explicit timezone")
                 hi_ms = int(asof.timestamp() * 1000)
             else:
                 hi_ms = int(asof * 1000) if asof < 1e11 else int(asof)
             lo_ms = hi_ms - days * 86400 * 1000
 
         if isinstance(bars, dict):
-            rows = {ts: val for ts, val in bars.items() if lo_ms <= ts <= hi_ms}
+            rows = {ts: val for ts, val in bars.items() if lo_ms <= ts < hi_ms}
         elif hasattr(bars, "idx") and hasattr(bars, "t0") and hasattr(bars, "o"):
             i_start = max(0, bars.idx(lo_ms))
             i_end = min(bars.n, bars.idx(hi_ms) + 1)
-            rows = {bars.t0 + i * 60000: (bars.o[i], bars.h[i], bars.l[i], bars.c[i]) for i in range(i_start, i_end)}
+            rows = {bars.t0 + i * 60000: (bars.o[i], bars.h[i], bars.l[i], bars.c[i]) for i in range(i_start, i_end)
+                    if lo_ms <= bars.t0 + i * 60000 < hi_ms}
         else:
-            rows = dict(bars)
+            rows = {ts: val for ts, val in dict(bars).items() if lo_ms <= ts < hi_ms}
     else:
         if isinstance(bars, dict):
             rows = bars
@@ -118,6 +125,8 @@ def n5(bars, asof=None, days=20):
 
     agg = aggregate(rows, 5)
     step = 5 * 60000
+    if asof is not None:
+        agg = [bar for bar in agg if bar[0] + step <= hi_ms]
     trs = []
     chunk = []
     for i in range(len(agg)):
