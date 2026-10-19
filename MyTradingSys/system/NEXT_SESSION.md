@@ -36,11 +36,18 @@ Open from these: T02 desk row for DEV truncation of study detectors (needs data 
 Lenovo has no F: drive and no data: code-only, doc-only and registry cards fit it. Next code-only picks: dsa-audit-04-clean-room-twin only if committed ledgers suffice (else BLOCKED-DATA), tom-v2-btc-min-stop-width is CODEX lane. Stale card `ci-919cc0f` (p0): CI is green x3, close it. Stray worktree mts-desktop-f7iu69n-cryptocred-lenovo-2 can be deleted.
 Pacing: Pro login, spawn nothing above 60% of the 5-hour window; after the 21:40Z reset the window is free again (weekly has headroom: SPEND).
 
-## CI RED hand-over (Lenovo, 2026-10-19 ~02:00 local): FIRST TASK for the next session, on a FAST machine (NUC or NB)
-Trunk CI is red (newest runs d7441996, 6c9ea047; last green 04e15386). Causes found:
-1. `scripts/dev/lease.py` `role_name(None)` raised AttributeError ('NoneType'.lower) for a session with no role, crashing every `sync.py ship` from a roleless session (and `test_sync` / `test_dsa` in CI). Landed with a1550eca.
-2. The planner's `scripts/T02/f1_rows.py:59` slice `[start:start + n]` is a new look-ahead lint FAIL hit (CI shard).
-3. Not diagnosed: ubuntu-only `ValueError: creationflags is only supported on Windows platforms` in Pytest shard 2/5 (CI run 39172318828, job offline gate ubuntu).
-The fix for 1+2 plus 2 new tests (RoleNameNoRoleTest in MyTradingSys/tests/test_lease.py) is `MyTradingSys/system/handoff_history/ci_fix_lease_f1rows_2026-10-19.md` (diff inside a code fence; save it as x.patch and `git apply` it). It passed the quick gate on the Lenovo (ALL TESTS PASSED) but the Lenovo cannot land it: a code ship is blocked while CI is red, `--fix-ci` runs the full gate, and on the Lenovo the full gate fails on machine speed (test_aibridge_payload selftest socket timeout after 473 s; two test_sync gate-flag tests under --fix-ci). Ship it with `sync.py ship --fix-ci` from a fast machine. Set `MTS_ROLE=Builder` if the lease crash still hits before the fix lands.
-Gate timeout lesson: the fast gate steps are cut at 240 s (`run_all_tests.py:103`); with two or more ships running on one machine the pytest steps time out and every ship fails. Ship one at a time per machine.
-Lenovo leftovers (unshipped, queued behind the red): gemini-lab-vendor2 (lab_flow vendor gate; diff review BLOCKED once, empty-model fix applied, test-strength follow-up card lab-flow-vendor-gate-tests-tamper-test-p, third review not run), gemini-sv4 (supervisor/tasks.py brief, merge resolved role_loader.py with Builder + Traffic_Controller), gemini-ru9, gemini-tasks-pack, mts-doctor-2 (REPORT_2026-10-18.md), gemini-laptop-setup (ship said nothing to ship; cherry still lists 9379aff0, check). Worktrees at C:\Users\e-ngineers\IdeaProjects\mts-desktop-f7iu69n-<name>; three folders under BinanceDataFeed\.claude\worktrees could not be deleted (Windows permission): delete by hand.
+## MTS Supervisor Hand-Over (DESKTOP-F7IU69N Lenovo, 2026-10-19 ~05:05Z / 10:35 IST)
+- **Trunk CI**: GREEN (`47044f33`, 0 failed runs in a row). The earlier red CI (lease AttributeError / f1_rows lookahead / creationflags) was resolved and landed on trunk (`204195e1`).
+- **Supervisor Window 1**: 100% COMPLETE. Waves 0 through 4 landed on trunk:
+  - `ci-919cc0f`, `gap-g1-prereg-power`, setup docs (`8ef78193`, `1bdeb2ae`).
+  - Supervisor Core: `sv8-guard-supervisor-messages`, `ru4-mts-doctor-role-policy-lint-roles-md` (`3ef2e721`); `sv2-supervisor-tick`, `sv5-supervisor-wait` (`9c671aaa`).
+  - Roles & Gates: `ru7-q-a-helper-operator-questions-py-pen` (`7ec03475`); `lab-vendor-gate-harden2` (`bccc8a29`); `ru8-network-admin-guy-nowin-py-spawn-dia` (`d7441996`); `sv4-builder-role-and-brief` (`dbee23b8` / `d944882d`).
+  - Tasks & Receipts: `ru9-artifacts-guy-artifacts-py-audit-lin` (`6c9ea047`); `ru5-lab-guy-zero-token-lab-pre-check-in-` (`652468a4`); `ru6-lab-guy-content-bound-review-receipt` (`83d7484f`); `tasks-fill-raw-card-fields` (`f1665cf5` / `4120012e`).
+  - Order Tickets: `sv3-ship-order-ticket` landed & shipping (`c4dfc4b0`).
+- **Window 2 (Hours 5–10)**: Planned in `PLAN_5H_2026-10-19.md` and executing continuously:
+  - Wave 5: `sv7-host-gate-budget`, `sv6-remeasure-overhead`, `ship-gate-fast-path-under-60s`.
+  - Wave 6: `mid-turn-image-intake-gap`, `ru3-eagle-eyes-shot-py-bundle-evidence-p`, `trim-builder-cwd-and-prelaunch-worktree`.
+  - Wave 7: `super-session-rules-to-pointers`, `roles-md-index-slim`, `research-top-level-declutter`, `tasks-sweep-closed-cards`.
+  - Wave 8: `gate-quarantine-expiry-cap`, `fast-gate-run-3dl-on-any-py-change`, `fast-gate-persist-deferred-list`.
+- **Host Policy**: Lenovo executes code-only, gate, tooling, and test cards (no `F:` drive raw market data). Raw market data tasks (`tom-ledger-add-the-losing-first-attempts`, `rv05-h2-position-line-evidence`) are routed to `JIS-NUC` / `JIS-NB`.
+
