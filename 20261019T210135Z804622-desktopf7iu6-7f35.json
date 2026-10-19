@@ -1,0 +1,1 @@
+{"t": "20261019T210135Z", "from": "desktop-f7iu69n/?", "to": "all", "kind": "done", "text": "ship builder-statecode-1020 Result: StateCodeEmitterTest 28/28 (9 new, all red on old behaviour); MarketDataSnapshotTest 22/22 (new anchor test red pre-change). Not shipped yet: awaiting quick suite +"}
