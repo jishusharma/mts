@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-19T07:21:55Z",
   "commands": [
     "python scripts/dev/sync.py claim \"dsa-audit-01-data-forensics\"",
     "python scripts/dev/tasks.py take dsa-audit-01-data-forensics",
@@ -18,6 +20,12 @@
   "id": "dsa-audit-01-data-forensics",
   "lane": "DSA-NB",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "T01: 5 findings (S1 2, S2 1, S3 2); DEV 1m invariants clean (1,313,280 bars); raw_1d vs 1m",
+      "ref": "755ce518",
+      "utc": "2026-10-19T07:21:55Z"
+    },
     {
       "auto": true,
       "kind": "audit",
@@ -37,7 +45,12 @@
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md",
     "MyTradingSys/backtest/bt/bt_data.py"
   ],
-  "result": "",
+  "result": "T01: 5 findings (S1 2, S2 1, S3 2); DEV 1m invariants clean (1,313,280 bars); raw_1d vs 1m resample: 905 open + 847 volume day mismatches; raw/fundingRate path missing, archive at raw_fund",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md and MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T01/ (new files only)",
     "read-only: repo code, result files, data under F:/MTS/data and Dumps (windows per brief section 5)"
@@ -52,7 +65,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md sections 1-7, then section 8 'T01' (full method).",
     "Inventory every source in brief 1d (files, first/last stamp, rows, unique, time unit, gaps) into data_inventory.csv: counts only, all dates.",
@@ -61,6 +74,7 @@
     "Loader torture test: every kline/funding loader fed crafted %TEMP% files (microsecond row, duplicate, gap, header, unsorted): raise/warn/silent. Leads L4, L10.",
     "Impact per defect (studies and DEV events touched; one published count recounted) and the delta sign convention check."
   ],
+  "taken": "2026-10-19T07:15:28Z",
   "tests": "",
   "title": "DSA audit T01: data forensics of every backtest input",
   "weight": "IMPORTANT",

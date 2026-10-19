@@ -3,6 +3,8 @@
 SUPER_SESSION.md keeps the history, the boot facts and the session log. This file is the operating design: what the supervisor
 does on each wake, which tool answers each question, and what it never does. Built in steps SV1-SV8 (cards at the end).
 
+**Five-hour run, three logins at once, one-line start (2026-10-19):** `roles/supervisor.md` v3 and SUPER_LOOP.md (`supervisor.py plan` every wake: pacing, heartbeat, shard, lane owners; `supervisor.py handover`).
+
 ## Measured overhead (before), real data
 Source: all 9 coordinator transcripts on JIS-NUC 2026-10-15..18 (>= 3 spawns each; Opus 6, Sonnet 3), parsed whole by
 `coord_overhead.py` (a turn = one assistant API message; eq tokens = input 1, cache-write 1.25, cache-read 0.1, output 5).
@@ -57,8 +59,8 @@ number. The savings are GUESS until then: batching removes repeated context read
 
 ## Role-based workers
 - Every worker starts with `You are <Role>.` on line 1, then `Card: <id>` (and chained ids). Build cards use **Builder**; the card's role column
-  (dispatch `role`, SV4) picks MTS_Doctor (audits, other-model verification), Lab_Guy (lab review; needs the NUC lab), Eagle_Eyes (live reads; needs the NB live files),
-  Artifacts_Guy (pages; needs the jishusharma1985 login), Network_Admin_Guy, Pipeliner (routing; one at a time, lease), Q&A_Helper. ROLES.md table.
+  (dispatch `role`, SV4) picks MTS_Doctor (audits, other-model verification), Lab_Guy (lab review; needs the NUC lab), Eagle_Eyes (live reads; live files only on JIS-NB, elsewhere `live_mirror.py brief`),
+  1985Artifacts_Guy (pages; needs the jishusharma1985 login), Admin_Guy (questions, decisions, backlog intake, machine hygiene; Haiku high), Pipeliner (routing + allocation; one at a time, lease). ROLES.md table.
 - The role file is the brief; the start text adds only card ids, defaults for open questions the card does not settle, and the stop line.
 - **Version receipt** (not proof of compliance or of correct work: the token is computable from the public file): a worker's report
   (its note) starts with its banner. `python scripts/dev/role_loader.py verify --text "<note>"` exits 0 when

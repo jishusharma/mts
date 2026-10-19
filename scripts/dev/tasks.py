@@ -25,6 +25,7 @@ import json
 import os
 import re
 import sys
+import zlib
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -1202,7 +1203,7 @@ def card_role(card):
 
     # Network / nowin cards
     if "nowin" in cid.lower() or "Network:" in title or "network" in cid.lower():
-        return "Network_Admin_Guy"
+        return "Builder"   # a fix needs a fail-first test (Sonnet); Admin_Guy (Haiku) only triages and makes the card
     # CODEX cards -> Lab_Guy
     if lane == "CODEX":
         return "Lab_Guy"
@@ -1213,9 +1214,21 @@ def card_role(card):
     return "Builder"
 
 
-def dispatch(cards, reg, holds, claims, lane_st, as_of, host=None, repo=REPO):
-    """Pure ranked snapshot: {as_of, host, dispatch: [...], excluded: [...]}. Same inputs -> same dict (as_of is an input)."""
+def shard_of(card_id, logins):
+    """Which login's supervisor owns this card when several coordinate at once (SUPER_LOOP.md): a stable hash of the id over the
+    sorted login letters. Pure and identical on every machine, so three supervisors split the ready list without talking."""
+    ls = sorted(set(logins))
+    return ls[zlib.crc32(card_id.encode("utf-8")) % len(ls)] if ls else ""
+
+
+def dispatch(cards, reg, holds, claims, lane_st, as_of, host=None, repo=REPO, login=None, logins=None):
+    """Pure ranked snapshot: {as_of, host, dispatch: [...], excluded: [...]}. Same inputs -> same dict (as_of is an input).
+    With `login` and at least two `logins` (the supervisors alive), each row gets `shard` and `own`; after pinned (CI) cards the
+    caller's own shard is ranked first, so parallel supervisors start different cards instead of racing for the same claim."""
     inc, exc = [], []
+    sharded = bool(login) and len(set(logins or ())) >= 2
+    if sharded:
+        logins = sorted(set(logins) | {login})
     for c in cards:
         if c["state"] in FINAL:
             continue
@@ -1229,8 +1242,11 @@ def dispatch(cards, reg, holds, claims, lane_st, as_of, host=None, repo=REPO):
                     "pinned": bool(c.get("pinned")), "est_turns": c.get("est_turns"), "worker": c.get("worker") or "",
                     "reviewer": REVIEWER_SLOT[w], "scope_in": list(c.get("scope_in", [])), "depends_on": list(c.get("depends_on", [])),
                     "created": c.get("created", "")})
-    # CI red first (pinned), then priority, then heavier weight first, then oldest, then id (total order = deterministic)
-    inc.sort(key=lambda r: (not r["pinned"], r["prio"], -WEIGHT_ORDER.get(r["weight"], 0), r["created"], r["id"]))
+        if sharded:
+            inc[-1]["shard"] = shard_of(c["id"], logins)
+            inc[-1]["own"] = inc[-1]["shard"] == login
+    # CI red first (pinned), then (sharded) own shard, then priority, then heavier weight first, then oldest, then id (total order = deterministic)
+    inc.sort(key=lambda r: (not r["pinned"], not r.get("own", True), r["prio"], -WEIGHT_ORDER.get(r["weight"], 0), r["created"], r["id"]))
     for n, r in enumerate(inc, 1):
         r["rank"] = n
         del r["created"]
@@ -1258,7 +1274,8 @@ def cmd_dispatch(a):
     import lane_health
     as_of = datetime.strptime(a.as_of, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc) if a.as_of else datetime.now(timezone.utc).replace(microsecond=0)
     cards = load_all(REPO)
-    snap = dispatch(cards, registry(REPO), active_holds(REPO), open_claims(REPO), lane_health.load(REPO), as_of, a.host, REPO)
+    snap = dispatch(cards, registry(REPO), active_holds(REPO), open_claims(REPO), lane_health.load(REPO), as_of, a.host, REPO,
+                    login=a.login or os.environ.get("MTS_LOGIN"), logins=a.logins.split(",") if a.logins else None)
     if a.json:
         print(json.dumps(snap, indent=2, sort_keys=True, ensure_ascii=False))
     else:
@@ -1354,6 +1371,8 @@ def main(argv=None):
     dp = sp.add_parser("dispatch", help="ranked snapshot of dispatchable cards with why-excluded (session_planner.md Duty 2)")
     dp.add_argument("--json", action="store_true")
     dp.add_argument("--host", help="JIS-NB cards are excluded unless this is JIS-NB")
+    dp.add_argument("--login", help="this supervisor's login letter (default env MTS_LOGIN); with --logins ranks its own shard first")
+    dp.add_argument("--logins", help="comma list of the logins whose supervisors are alive, e.g. A,B,C")
     dp.add_argument("--as-of", help="UTC YYYY-MM-DDTHH:MM:SSZ (default now); the only wall-clock value in the output")
     dp.set_defaults(f=cmd_dispatch)
     s = sp.add_parser("sweep")

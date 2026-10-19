@@ -104,6 +104,7 @@ Backtest data (F:\MTS\data on the NUC) is not in git; it is copied after new rec
 - Role (operator 2026-10-06): when travelling, everything is done from the laptop by Remote Desktop into JIS-NB and JIS-NUC (section 4). At home it is used for infrastructure work. It may start the live loop only under the one-owner rule (section 3), never as a second copy.
 - Hardware: Lenovo 20L90025RT, i7-8550U, 32 GB RAM, 477 GB SSD (single drive C:), Windows 11 Pro 25H2, no GPU. Account e-ngineers. Tools: Java 21, Maven 3.9.11, Python 3.14.7, Git 2.24.1 (update before cloning).
 - Repo copy: C:\Users\e-ngineers\IdeaProjects\BinanceDataFeed is on master (0cca386, tracks the removed share; stale): re-clone per section 5. LAN IPv4: NOT CAPTURED (`ipconfig | findstr /C:"IPv4"`).
+- Git author email: `e-ngineers@DESKTOP-F7IU69N` (traffic.py attribution; card tc6-lenovo-git-email).
 
 ## 9. Router and home network
 

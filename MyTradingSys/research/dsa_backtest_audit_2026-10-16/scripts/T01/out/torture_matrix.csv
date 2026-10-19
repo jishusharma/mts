@@ -1,0 +1,19 @@
+loader_input,outcome,exception_or_type,detail
+bt_data.load_klines[clean.csv],return,list,5
+bt_data.load_klines[micro.csv],return,list,5
+bt_data.load_klines[dup.csv],return,list,5
+bt_data.load_klines[gap.csv],return,list,4
+bt_data.load_klines[header.csv],return,list,5
+bt_data.load_klines[unsorted.csv],return,list,5
+bt_data.load_funding[clean.csv],return,list,3
+bt_data.load_funding[micro.csv],return,list,3
+bt_data.load_funding[dup.csv],return,list,4
+bt_data.load_funding[gap.csv],return,list,2
+bt_data.load_funding[header.csv],return,list,3
+bt_data.load_funding[unsorted.csv],return,list,3
+bigmoves.load_1m[clean.csv],return,list+report,bars=5
+bigmoves.load_1m[micro.csv],raise,ValueError,kline open_time is not epoch milliseconds (microsecond archive files?)
+bigmoves.load_1m[dup.csv],return,list+report,bars=5
+bigmoves.load_1m[gap.csv],return,list+report,bars=4
+bigmoves.load_1m[header.csv],return,list+report,bars=5
+bigmoves.load_1m[unsorted.csv],return,list+report,bars=5
