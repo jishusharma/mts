@@ -14,7 +14,7 @@
   "goal": "Simulate the pre-registered LC3 combinations (separation.md 'LC3 pre-registration': E1_rsi_holds_40_60, E4_outer_band on KEEP levels) x exits X0 fixed 1R/2R, X1 first opposing level, X2 CVD/Bollinger ladder, x scale-in S0-S3 x stops K1-K5 per PLAN.md, DEV only, fees both ways.",
   "id": "lc-ladder-dev",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -39,6 +39,12 @@
   "refined_by": "opus-2026-10-14 (LC PLAN.md, operator chat)",
   "refreshed": "2026-10-17T18:44:40Z",
   "refs": [],
+  "reroute": {
+    "at": "2026-10-19T14:25:18Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "heartbeat"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/levels_confluence_2026-10-14/PLAN.md",
