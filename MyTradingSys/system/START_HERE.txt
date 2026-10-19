@@ -39,28 +39,46 @@ HOW IT WORKS
           Elsewhere it reads a copy stamped mirror@<utc> - check the age.
 
 --------------------------------------------------------------
- 3. SUPER SESSION  (hours of parallel work)    any device, any login
+ 3. SUPER SESSION  (5 hours of parallel work)   any device, any login
 --------------------------------------------------------------
-  WHEN  : the weekly meter says SPEND (see "Budget" below).
+  WHEN  : the weekly meter says SPEND, or whenever a login has room.
   Model : Sonnet (Opus only if you name it)
-  Paste : the block below, fill in the Goal line.
-  Then  : do nothing. It checks usage, plans, starts up to 4 workers,
-          ships, and leaves you one line at the end.
-  Do NOT open Supervisor / Session_Planner / Builder by hand.
-  Live-tree work and deploys are routed to JIS-NB by the coordinator.
+  Paste : ONE line, then your tasks:
 
-  ---- copy from here ----
-You are Supervisor. Coordinate one super session (MyTradingSys/system/SUPER_SESSION.md, SUPERVISOR.md) for hours with zero operator input except direction I give.
-Goal today: <ONE LINE: what you want done>.
-First turn: get_usage (THROTTLE -> tell me and stop), read STATUS.md and NEXT_SESSION.md, run the Session_Planner, pick the tasks that serve the goal.
-Spawn workers per WORKERS.md (session by default, Agent only for size S; Sonnet; Haiku for mechanical status), at most 4 running, each with a full brief: goal, files, DONE when, defaults for open questions, hard limits from CLAUDE.md. Workers never ask me; you decide toward the goal and log it.
-Rule 11: any diff touching the live path, gates, promote.py, prereg_gate.py or decision numbers gets an independent Sonnet review Agent (diff only, 5-line reply, 30k token cap) before ship.
-Rule 12: spend the window before it resets: remaining minutes / 40 = workers to launch, staggered, get_usage at each launch (weekly cap per login as in rule 12).
-Rule 13: a defect blocks only cards that read its output; release holds that name no defect.
-Rule 14: Session_Planner (roles/session_planner.md) as a foreground Sonnet Agent at boot and on each free slot; never dispatch raw/refined cards.
-Run sync.py ship in the background. Verify every ship with git cherry, mark finished workers completed, budget turns per WORKERS.md rule 5, hand the tail to a second coordinator per rule 5 above.
-End: drain, hand-over note with get_usage, one line to me.
-  ---- copy to here ----
+      You are Supervisor. Login <A|B|C>. <your tasks>
+
+  Login letter = the account you are signed in with on that device:
+  A jishu.sharma, B jishu.awgp, C jishusharma1985.
+  That is all. The role file loads itself (first reply: ROLE LOADED:
+  Supervisor v3 ...). Every wake it runs ONE command,
+  supervisor.py plan, which reads usage, sends its heartbeat, paces
+  the 5 h window against the weekly limit, splits the cards with the
+  other Supervisors, feeds the GPT / Gemini / DeepSeek lanes, and says
+  when to hand over (20 min before the 5 h reset):
+  handover/SUPERVISOR_<login>.md, then the same line again.
+  Do NOT open Supervisor / Session_Planner / Builder by hand otherwise.
+
+  What is NOT automatic (honest limits):
+    - Nothing wakes a Supervisor except its workers and a 50 min
+      watcher; between your messages it can only start one-use
+      Agents. A new wave of full sessions needs any message from you.
+    - A Sonnet Supervisor stops at 40 tool turns / 10 messages: one
+      5 h run is 1-2 Supervisor sessions. If the successor is not
+      started, paste the line it gives you.
+    - No device starts a session on another device (one exception:
+      a headless worker on the NUC when no Supervisor runs there).
+    - DeepSeek (DSA) works only while its chat is open on JIS-NB / NUC
+      with hands-free armed; lines starting OPERATOR are for you.
+
+  THREE LOGINS AT ONCE (A, B, C on three devices)
+    1. On each device, one new session, paste the line above with
+       that device's login letter (same or different tasks).
+    2. They find each other through heartbeat lines, split the cards
+       (no two start one card) and pick one owner per lane.
+    3. NUC: open the DeepSeek chat + arm hands-free; JIS-NB too.
+       Laptop: Claude only (no DeepSeek, GPT or agy there).
+    4. Check any time:  python scripts/dev/traffic.py budget
+    More: MyTradingSys/system/SUPER_LOOP.md
 
 --------------------------------------------------------------
  4. HEALTH CHECK                               any device, about weekly
@@ -103,8 +121,8 @@ End: drain, hand-over note with get_usage, one line to me.
      (python scripts/dev/mts_signal.py send "BUDGET login=... ")
   2. Anywhere:  python scripts/dev/traffic.py budget
      -> SPEND / NORMAL / THROTTLE per login and overall.
-     Readings older than 6 h count as NORMAL. Nothing sends them
-     automatically yet: send one at the start of each session.
+     Readings older than 6 h count as NORMAL. The Supervisor sends its
+     own at boot and every wake (supervisor.py plan, heartbeat line).
 
 --------------------------------------------------------------
  DO THESE ONCE (yours, in the app sidebar)
@@ -116,8 +134,9 @@ End: drain, hand-over note with get_usage, one line to me.
         Traffic_Controller -> Pipeliner (keep one)
   [ ] Open 1985Artifacts_Guy on the jishusharma1985 login and say:
         republish MTS Home   (Control Room, Layer Map also stale)
-  [ ] AIBridge 0.7.1 fix not installed: copy it, reload the extension
-        (DSA hands-free keeps stopping until you do).
+  [ ] AIBridge 0.7.1: files are installed on JIS-NB (2026-10-19).
+        Reload the extension in chrome://extensions + F5 the DeepSeek tab.
+        JIS-NUC: still open (desk row 20261019-050232).
 
 --------------------------------------------------------------
  THE ROLES (7)
