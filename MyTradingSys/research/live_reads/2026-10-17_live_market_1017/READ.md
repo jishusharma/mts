@@ -110,3 +110,7 @@ Source: `live_mirror.py brief` + _mirror files, all `mirror@2026-10-17 07:11Z` (
 ## 10-19 13:55Z 1m (dc0f695a740d, 8dc32fc2ff4e) mirror@2026-10-19 13:41Z
 - Read: SHOT_dc0f695a740d.md, SHOT_8dc32fc2ff4e.md, tag NOTE. Last read id: 8dc32fc2ff4e. HALT unchanged.
 - Bounce 82,138 -> 82,426.5 (13:48) on ~0 net delta and flat OI, rising-lows line broken 13:51, price 82,163; OI +494 since 13:20. Watch next: 82,092.1 / BB lower 82,137 hold with delta turning positive, or a 1m close under it with OI still up.
+
+## 10-19 14:03Z 1m flush (17ff48c5fcc4) mirror@2026-10-19 14:01Z
+- Read: SHOT_17ff48c5fcc4.md (5 MATCH, 1 NOT_IN_DATA), tag NOTE. Last read id: 17ff48c5fcc4. HALT unchanged.
+- 13:59-14:02 flush 82,110 -> 81,835 on 479 and 969 BTC, delta -216/-595, OI up (new shorts); rising-lows line and 82,092.1 lost. Watch next: 81,758 / 81,600 / 81,500; retest of 82,092 on low delta = failed retest.
