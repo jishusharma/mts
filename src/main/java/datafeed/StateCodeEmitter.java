@@ -57,7 +57,7 @@ public class StateCodeEmitter extends WebSocketClient {
     private final ScheduledExecutorService reconnectExecutor;
     private final ScheduledExecutorService emitExecutor;
     private final AtomicBoolean emitScheduled = new AtomicBoolean(false);
-    private volatile boolean shuttingDown = false;
+    volatile boolean shuttingDown = false;
     private volatile long lastTickMs = 0L;
     private volatile double lastPrice = 0.0;
     private final java.util.concurrent.atomic.AtomicLong msgCount = new java.util.concurrent.atomic.AtomicLong(0);
@@ -71,6 +71,34 @@ public class StateCodeEmitter extends WebSocketClient {
 
     private final Deque<Double> cvdSeries = new ArrayDeque<>();
     private long cvdRingDayStartMs = -1L;
+    private long cvdRingEpoch = 0L;
+
+    // Accumulator backfill (audit M1/M2, OURS). The three session sums are VALID only after a complete 1m-kline
+    // backfill (UTC day start .. last closed minute boundary M) stitched to the ticks seen since the connect. Until then
+    // (start, WS close, failed or incomplete backfill) they are INVALID: ticks are buffered, not summed, the two signals
+    // that use the sums are null and the emitted state is "INVALID". All fields below are guarded by BUFFER_LOCK.
+    private static final long SETTLE_MS = 2_000L;           // let the exchange finalise the just-closed minute
+    private static final long CONNECT_SLACK_MS = 5_000L;    // M must be this far after the connect (clock skew)
+    private static final long FAIL_RETRY_MS = 30_000L;
+    private static final long PENDING_KEEP_MS = 5L * 60_000L;
+    private static final int  KLINE_LIMIT = 1500;           // fapi max rows; one UTC day is <= 1440 bars
+    private boolean accValid = false;
+    private String accReason = "startup_no_backfill";
+    private long accEpoch = 0L;                              // bumped on every invalidate / completion
+    private long connectedAtMs = Long.MAX_VALUE;             // local time of the latest onOpen; MAX = not connected
+    private long connectEpoch = 0L;
+    private final Deque<Tick> pendingTicks = new ArrayDeque<>();
+    volatile long retryDelayMs = FAIL_RETRY_MS;
+    private final AtomicBoolean backfillQueued = new AtomicBoolean(false);
+    private final ScheduledExecutorService backfillExecutor = Executors.newSingleThreadScheduledExecutor(r -> {
+        Thread t = new Thread(r, "state-backfill");
+        t.setDaemon(true);
+        return t;
+    });
+    private final Object sourceLock = new Object();
+    private KlineSource defaultSource;
+    private static final java.util.Set<String> VALID_STATES =
+            java.util.Set.of("A", "A>S", "A>L", "S", "S>L", "L", "L>S");
 
     // T028 test seam: package-private override for CVD-ring day check.
     // Real runtime leaves this at -1 (uses System.currentTimeMillis).
@@ -88,9 +116,21 @@ public class StateCodeEmitter extends WebSocketClient {
     private long stateSinceMs;
     private final Deque<String> transitionChain = new ArrayDeque<>();
 
+    /** Seam for the 1m-kline backfill (no network in tests). */
+    interface KlineSource { JsonNode fetch(String symbol, long startMs, long endMs) throws Exception; }
+
+    final Path stateFile;
+    final KlineSource klineSource;
+
     public StateCodeEmitter(String symbol) throws Exception {
+        this(symbol, Paths.get("MyTradingSys", "runtime", "state_code.json"), null);
+    }
+
+    StateCodeEmitter(String symbol, Path stateFile, KlineSource klineSource) throws Exception {
         super(new URI("wss://fstream.binance.com/market/ws/" + symbol.toLowerCase() + "@aggTrade"));
         this.symbol = symbol;
+        this.stateFile = stateFile;
+        this.klineSource = klineSource;
         this.stateSinceMs = System.currentTimeMillis();
         this.reconnectExecutor = Executors.newSingleThreadScheduledExecutor(r -> {
             Thread t = new Thread(r, "state-reconnect-" + symbol);
@@ -114,6 +154,8 @@ public class StateCodeEmitter extends WebSocketClient {
             emitExecutor.scheduleAtFixedRate(this::safeEmit,
                     EMIT_PERIOD_SEC, EMIT_PERIOD_SEC, TimeUnit.SECONDS);
         }
+        onStreamOpen(nowMs());
+        requestBackfill(0L);
     }
 
     @Override
@@ -136,7 +178,14 @@ public class StateCodeEmitter extends WebSocketClient {
                 ticks.addLast(t);
                 long cutoff = T - TICK_BUFFER_MS;
                 while (!ticks.isEmpty() && ticks.peekFirst().T < cutoff) ticks.pollFirst();
-                applySessionAccumulator(t);
+                if (accValid) {
+                    applySessionAccumulator(t);
+                } else {
+                    // Gap or no backfill yet: hold the tick for the seam, keep only what a later backfill can need.
+                    pendingTicks.addLast(t);
+                    long keep = T - PENDING_KEEP_MS;
+                    while (!pendingTicks.isEmpty() && pendingTicks.peekFirst().T < keep) pendingTicks.pollFirst();
+                }
             }
             lastTickMs = T;
             lastPrice = p;
@@ -148,6 +197,7 @@ public class StateCodeEmitter extends WebSocketClient {
     @Override
     public void onClose(int code, String reason, boolean remote) {
         System.out.println("[StateCode WS] Closed: " + symbol + " | " + reason);
+        onStreamClosed("ws_closed code=" + code);
         if (!shuttingDown) scheduleReconnect();
     }
 
@@ -171,6 +221,7 @@ public class StateCodeEmitter extends WebSocketClient {
         shuttingDown = true;
         reconnectExecutor.shutdownNow();
         emitExecutor.shutdownNow();
+        backfillExecutor.shutdownNow();
         close();
     }
 
@@ -186,6 +237,158 @@ public class StateCodeEmitter extends WebSocketClient {
         sessionCvd += signed;
         sessionCumPV += t.price * t.qty;
         sessionCumVol += t.qty;
+    }
+
+    /**
+     * A new socket: ticks seen so far are history. The next backfill is only accepted for a boundary M that lies after
+     * this connect (plus slack), so every trade with T >= M has been received on this socket.
+     */
+    void onStreamOpen(long openedAtMs) {
+        synchronized (BUFFER_LOCK) {
+            connectedAtMs = openedAtMs;
+            connectEpoch++;
+            pendingTicks.clear();
+            invalidateLocked("waiting_for_backfill_after_connect");
+        }
+    }
+
+    /** Socket closed: from here a gap exists, the sums are no longer a session value. */
+    void onStreamClosed(String why) {
+        synchronized (BUFFER_LOCK) {
+            connectedAtMs = Long.MAX_VALUE;
+            connectEpoch++;
+            pendingTicks.clear();
+            invalidateLocked(why);
+        }
+    }
+
+    private void invalidateLocked(String reason) {
+        accValid = false;
+        accReason = reason;
+        accEpoch++;
+        sessionCvd = 0.0;
+        sessionCumPV = 0.0;
+        sessionCumVol = 0.0;
+        sessionDayStartMs = -1L;
+    }
+
+    private KlineSource source() {
+        if (klineSource != null) return klineSource;
+        synchronized (sourceLock) {
+            if (defaultSource == null) {
+                final BinanceClient client = new BinanceClient();
+                defaultSource = (sym, startMs, endMs) -> client.klinesRange(sym, "1m", startMs, endMs, KLINE_LIMIT);
+            }
+            return defaultSource;
+        }
+    }
+
+    private boolean failBackfill(String reason, long retryMs) {
+        synchronized (BUFFER_LOCK) {
+            if (!accValid) accReason = reason;
+        }
+        retryDelayMs = retryMs;
+        System.err.println("[StateCode] backfill not complete (" + symbol + "): " + reason + " | retry in " + retryMs + " ms");
+        return false;
+    }
+
+    /**
+     * Re-seed the session sums from fapi 1m klines of CLOSED bars: UTC day start .. last closed minute boundary M,
+     * stitched to the ticks received since the connect (T >= M only, so nothing is counted twice and nothing is missing).
+     * Any other outcome (HTTP/JSON error, timeout, wrong bar count, duplicate/non-monotonic openTime, bad row, reconnect or
+     * day change during the call) leaves the accumulators INVALID. Returns true when the sums are valid.
+     */
+    boolean backfillNow() {
+        long now = nowMs();
+        long dayStart = utcDayStart(now);
+        long m = Math.max(dayStart, ((now - SETTLE_MS) / 60_000L) * 60_000L);
+        long epoch;
+        synchronized (BUFFER_LOCK) {
+            if (accValid) return true;
+            epoch = connectEpoch;
+            if (connectedAtMs == Long.MAX_VALUE) {
+                retryDelayMs = FAIL_RETRY_MS;
+                return false;
+            }
+            long needM = connectedAtMs + CONNECT_SLACK_MS;
+            if (m < needM) {
+                long b = ((needM + 59_999L) / 60_000L) * 60_000L;
+                accReason = "waiting_for_minute_boundary";
+                retryDelayMs = Math.max(1_000L, b + SETTLE_MS - now + 250L);
+                return false;
+            }
+        }
+
+        long expected = (m - dayStart) / 60_000L;
+        double cvd = 0.0, pv = 0.0, vol = 0.0;
+        if (expected > 0) {
+            JsonNode k;
+            try {
+                k = source().fetch(symbol, dayStart, m - 1);
+            } catch (Throwable ex) {
+                return failBackfill("backfill_error: " + ex.getClass().getSimpleName() + " " + ex.getMessage(), FAIL_RETRY_MS);
+            }
+            if (k == null || !k.isArray()) return failBackfill("backfill_bad_response", FAIL_RETRY_MS);
+            if (k.size() != expected) {
+                return failBackfill("backfill_bar_count " + k.size() + " expected " + expected, FAIL_RETRY_MS);
+            }
+            for (int i = 0; i < k.size(); i++) {
+                JsonNode r = k.get(i);
+                if (r == null || !r.isArray() || r.size() < 10) return failBackfill("backfill_malformed_row " + i, FAIL_RETRY_MS);
+                if (r.get(0).asLong(-1L) != dayStart + i * 60_000L) {
+                    return failBackfill("backfill_open_time_mismatch at bar " + i, FAIL_RETRY_MS);
+                }
+                double v, qv, tb;
+                try {
+                    v = Double.parseDouble(r.get(5).asText());
+                    qv = Double.parseDouble(r.get(7).asText());
+                    tb = Double.parseDouble(r.get(9).asText());
+                } catch (NumberFormatException nfe) {
+                    return failBackfill("backfill_unparseable_row " + i, FAIL_RETRY_MS);
+                }
+                if (!(v >= 0) || !(qv >= 0) || !(tb >= 0) || tb > v + 1e-6
+                        || Double.isInfinite(v) || Double.isInfinite(qv)) {
+                    return failBackfill("backfill_bad_values at bar " + i, FAIL_RETRY_MS);
+                }
+                cvd += 2.0 * tb - v;
+                vol += v;
+                pv += qv;
+            }
+        }
+
+        synchronized (BUFFER_LOCK) {
+            if (accValid) return true;
+            if (epoch != connectEpoch) return failBackfill("reconnected_during_backfill", 1_000L);
+            if (utcDayStart(nowMs()) != dayStart) return failBackfill("day_rolled_during_backfill", 1_000L);
+            sessionDayStartMs = dayStart;
+            sessionCvd = cvd;
+            sessionCumPV = pv;
+            sessionCumVol = vol;
+            for (Tick t : pendingTicks) if (t.T >= m) applySessionAccumulator(t);
+            pendingTicks.clear();
+            accValid = true;
+            accReason = "ok";
+            accEpoch++;
+        }
+        System.out.println("[StateCode] backfill ok (" + symbol + "): " + expected + " bars to "
+                + Instant.ofEpochMilli(m) + " cvd=" + cvd + " vol=" + vol);
+        return true;
+    }
+
+    private void requestBackfill(long delayMs) {
+        if (shuttingDown) return;
+        if (!backfillQueued.compareAndSet(false, true)) return;
+        try {
+            backfillExecutor.schedule(() -> {
+                backfillQueued.set(false);
+                boolean ok = false;
+                try { ok = backfillNow(); }
+                catch (Throwable t) { failBackfill("backfill_exception: " + t, FAIL_RETRY_MS); }
+                if (!ok && !shuttingDown) requestBackfill(retryDelayMs);
+            }, Math.max(0L, delayMs), TimeUnit.MILLISECONDS);
+        } catch (java.util.concurrent.RejectedExecutionException rex) {
+            backfillQueued.set(false);
+        }
     }
 
     private static long utcDayStart(long epochMs) {
@@ -210,23 +413,36 @@ public class StateCodeEmitter extends WebSocketClient {
         }
     }
 
-    private void evaluateAndEmit() throws Exception {
+    void evaluateAndEmit() throws Exception {
         long nowT;
         double sessionCvdSnap, sessionCumPVSnap, sessionCumVolSnap;
+        boolean validSnap;
+        String reasonSnap;
+        long dayStartSnap, epochSnap;
         List<Tick> snapshot = new ArrayList<>();
         synchronized (BUFFER_LOCK) {
             snapshot.addAll(ticks);
             sessionCvdSnap = sessionCvd;
             sessionCumPVSnap = sessionCumPV;
             sessionCumVolSnap = sessionCumVol;
+            validSnap = accValid;
+            reasonSnap = accReason;
+            dayStartSnap = sessionDayStartMs;
+            epochSnap = accEpoch;
         }
         nowT = lastTickMs > 0 ? lastTickMs : System.currentTimeMillis();
 
         Dir nd1m = computeNetDelta1m(snapshot, nowT);
         Dir l3d = computeLast3Delta(snapshot, nowT);
         Dir vr = computeVolumeRatio(snapshot, nowT);
-        Dir cvd = computeCvdSlope(sessionCvdSnap);
-        Dir pvv = computePriceVsVwap(lastPrice, sessionCumPVSnap, sessionCumVolSnap);
+        // Fail closed: the two accumulator signals exist only on a complete backfill. The slope ring restarts on every
+        // invalidate and on backfill completion so the jump to the backfilled value cannot read as slope.
+        if (epochSnap != cvdRingEpoch) { cvdSeries.clear(); cvdRingEpoch = epochSnap; }
+        Dir cvd = null, pvv = null;
+        if (validSnap) {
+            cvd = computeCvdSlope(sessionCvdSnap);
+            pvv = computePriceVsVwap(lastPrice, sessionCumPVSnap, sessionCumVolSnap);
+        }
 
         Object[] signals = new Object[]{nd1m, l3d, vr, cvd, pvv};
 
@@ -241,7 +457,11 @@ public class StateCodeEmitter extends WebSocketClient {
         long nowMs = System.currentTimeMillis();
         String firedFrom = null, firedTo = null, trigger = null;
 
-        if (available >= MIN_SIGNALS) {
+        if (!validSnap) {
+            pendingState = null;
+            pendingCount = 0;
+            quietCount = 0;
+        } else if (available >= MIN_SIGNALS) {
             String target = nextTarget(currentState, bearish, bullish);
             if (target != null && !target.equals(currentState)) {
                 if (target.equals(pendingState)) pendingCount++;
@@ -284,9 +504,11 @@ public class StateCodeEmitter extends WebSocketClient {
 
         System.out.println("[StateCode] emit  state=" + currentState
                 + " B=" + bearish + " Bl=" + bullish
-                + " av=" + available + " ticks=" + snapshot.size());
+                + " av=" + available + " ticks=" + snapshot.size()
+                + (validSnap ? "" : " INVALID(" + reasonSnap + ")"));
 
-        writeStateJson(signals, bearish, bullish, available, nowMs);
+        writeStateJson(signals, bearish, bullish, available, nowMs, validSnap, reasonSnap, dayStartSnap,
+                sessionCvdSnap, sessionCumPVSnap, sessionCumVolSnap);
     }
 
     private Dir computeNetDelta1m(List<Tick> snap, long nowT) {
@@ -408,10 +630,16 @@ public class StateCodeEmitter extends WebSocketClient {
         return sb.toString();
     }
 
-    private void writeStateJson(Object[] signals, int bearish, int bullish, int available, long nowMs) throws Exception {
+    private void writeStateJson(Object[] signals, int bearish, int bullish, int available, long nowMs,
+                                boolean valid, String reason, long dayStart,
+                                double cvd, double cumPV, double cumVol) throws Exception {
         ObjectNode root = mapper.createObjectNode();
         root.put("timestamp_utc", Instant.ofEpochMilli(nowMs).toString());
-        root.put("state", currentState);
+        // Readers match ^S / ^L on "state"; INVALID matches neither, so no adverse-flow alert fires on partial data.
+        root.put("state", valid ? currentState : "INVALID");
+        root.put("state_last_valid", currentState);
+        root.put("session_accumulators_valid", valid);
+        root.put("session_accumulators_reason", valid ? "ok" : (reason == null || reason.isEmpty() ? "unknown" : reason));
         root.put("bearish_count", bearish);
         root.put("bullish_count", bullish);
         root.put("available_signals", available);
@@ -423,12 +651,19 @@ public class StateCodeEmitter extends WebSocketClient {
         int i = 0;
         for (String s : transitionChain) if (i++ >= start) chain.add(s);
         root.put("weekend", isWeekend(nowMs));
-        // B057: persist session accumulators so mid-day restarts do not
-        // silently shrink the cvd_slope and price_vs_vwap windows.
-        root.put("session_day_start_ms", sessionDayStartMs);
-        root.put("session_cvd",           sessionCvd);
-        root.put("session_cum_pv",        sessionCumPV);
-        root.put("session_cum_vol",       sessionCumVol);
+        // Session sums are informational: never restored (a restart re-seeds them from klines; B057 replaced).
+        // While INVALID they are null so a partial value is never shown as a session value.
+        if (valid) {
+            root.put("session_day_start_ms", dayStart);
+            root.put("session_cvd",           cvd);
+            root.put("session_cum_pv",        cumPV);
+            root.put("session_cum_vol",       cumVol);
+        } else {
+            root.putNull("session_day_start_ms");
+            root.putNull("session_cvd");
+            root.putNull("session_cum_pv");
+            root.putNull("session_cum_vol");
+        }
 
         ObjectNode sig = root.putObject("signals");
         String[] names = {"net_delta_1m", "last_3_delta", "volume_ratio", "cvd_slope", "price_vs_vwap"};
@@ -438,10 +673,10 @@ public class StateCodeEmitter extends WebSocketClient {
             else sig.put(names[k], ((Dir) o).name().toLowerCase());
         }
 
-        Path dir = Paths.get("MyTradingSys", "runtime");
+        Path target = stateFile;
+        Path dir = target.toAbsolutePath().getParent();
         Files.createDirectories(dir);
-        Path target = dir.resolve("state_code.json");
-        Path tmp = dir.resolve("state_code.json.tmp");
+        Path tmp = dir.resolve(target.getFileName() + ".tmp");
         mapper.writeValue(tmp.toFile(), root);
         Files.move(tmp, target, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
     }
@@ -452,14 +687,13 @@ public class StateCodeEmitter extends WebSocketClient {
     }
 
     private void restoreStateFromDisk() {
-        Path p = Paths.get("MyTradingSys", "runtime", "state_code.json");
+        Path p = stateFile;
         if (!Files.exists(p)) return;
         try {
             JsonNode root = mapper.readTree(p.toFile());
-            if (root.has("state")) {
-                String s = root.get("state").asText();
-                if (s != null && !s.isEmpty()) currentState = s;
-            }
+            String saved = root.has("state_last_valid") ? root.get("state_last_valid").asText()
+                    : root.has("state") ? root.get("state").asText() : null;
+            if (saved != null && VALID_STATES.contains(saved)) currentState = saved;
             if (root.has("transition_chain_15m")) {
                 for (JsonNode n : root.get("transition_chain_15m")) transitionChain.addLast(n.asText());
             }
@@ -467,11 +701,8 @@ public class StateCodeEmitter extends WebSocketClient {
                 try { stateSinceMs = Instant.parse(root.get("timestamp_utc").asText()).toEpochMilli(); }
                 catch (Exception ignored) { stateSinceMs = System.currentTimeMillis(); }
             }
-            // B057: restore accumulators
-            if (root.has("session_day_start_ms")) sessionDayStartMs = root.get("session_day_start_ms").asLong();
-            if (root.has("session_cvd"))           sessionCvd         = root.get("session_cvd").asDouble();
-            if (root.has("session_cum_pv"))        sessionCumPV       = root.get("session_cum_pv").asDouble();
-            if (root.has("session_cum_vol"))       sessionCumVol      = root.get("session_cum_vol").asDouble();
+            // Accumulators are NOT restored: ticks missed while down make them partial (audit M1/M2). They stay
+            // INVALID until the kline backfill succeeds.
             System.out.println("[StateCode] Restored state from disk: " + currentState);
         } catch (Exception e) {
             System.err.println("[StateCode] restore failed: " + e.getMessage());

@@ -1,7 +1,19 @@
 package datafeed;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
+import java.io.IOException;
+import java.net.SocketTimeoutException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Instant;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -10,6 +22,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -260,5 +273,325 @@ public class StateCodeEmitterTest {
         long midnight = 1_704_499_200_000L;
         assertEquals(midnight, (long) m.invoke(null, midnight + 5 * 3_600_000L + 123));
         assertEquals(midnight, (long) m.invoke(null, midnight));
+    }
+
+    // ======================================================================================================
+    // state-code-accumulator-backfill (audit M1/M2): session CVD / VWAP sums are re-seeded from fapi 1m klines
+    // on start and after every WS gap, stitched to live ticks at the last closed minute boundary M, and the
+    // two accumulator signals plus the state letter fail closed (INVALID) while the sums are missing/partial.
+    // The klines source is an injectable seam (no network); time is pinned through the nowMs seam.
+    // ======================================================================================================
+
+    private static final long MIN = 60_000L;
+    private static final long D0 = Instant.parse("2026-10-20T00:00:00Z").toEpochMilli();
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
+    @TempDir
+    Path tmp;
+
+    /** One closed 1m bar: [openTime, o, h, l, c, volume, closeTime, quoteVolume, trades, takerBuyBase, takerBuyQuote, ignore]. */
+    private static JsonNode bar(long openTime, double vol, double takerBuyBase, double quoteVol) {
+        ArrayNode r = JsonNodeFactory.instance.arrayNode();
+        r.add(openTime).add("100").add("101").add("99").add("100")
+         .add(String.valueOf(vol)).add(openTime + MIN - 1).add(String.valueOf(quoteVol))
+         .add(10).add(String.valueOf(takerBuyBase)).add("0").add("0");
+        return r;
+    }
+
+    /** n constant bars from day start: volume 10, takerBuy 7 (cvd +4/bar), quote 1000. */
+    private static ArrayNode constBars(long dayStart, int n) {
+        ArrayNode a = JsonNodeFactory.instance.arrayNode();
+        for (int i = 0; i < n; i++) a.add(bar(dayStart + i * MIN, 10.0, 7.0, 1000.0));
+        return a;
+    }
+
+    private interface Behaviour { JsonNode run(long startMs, long endMs) throws Exception; }
+
+    private static final class FakeKlines implements StateCodeEmitter.KlineSource {
+        final AtomicInteger calls = new AtomicInteger();
+        volatile long lastStart = -1, lastEnd = -1;
+        volatile Behaviour behaviour = (st, en) -> constBars(st, (int) ((en + 1 - st) / MIN));
+        public JsonNode fetch(String symbol, long startMs, long endMs) throws Exception {
+            calls.incrementAndGet();
+            lastStart = startMs; lastEnd = endMs;
+            return behaviour.run(startMs, endMs);
+        }
+    }
+
+    private StateCodeEmitter fresh(FakeKlines src, long now) throws Exception {
+        StateCodeEmitter e = new StateCodeEmitter("BTCUSDT", tmp.resolve("state_code.json"), src);
+        e.nowMsOverride = now;
+        return e;
+    }
+
+    private static String trade(long T, double price, double qty, boolean buyerMaker) {
+        return "{\"e\":\"aggTrade\",\"E\":" + T + ",\"s\":\"BTCUSDT\",\"a\":1,\"p\":\"" + price + "\",\"q\":\"" + qty
+                + "\",\"f\":1,\"l\":1,\"T\":" + T + ",\"m\":" + buyerMaker + "}";
+    }
+
+    private JsonNode emit(StateCodeEmitter e) throws Exception {
+        e.evaluateAndEmit();
+        return MAPPER.readTree(tmp.resolve("state_code.json").toFile());
+    }
+
+    private static void assertInvalid(JsonNode j) {
+        assertFalse(j.get("session_accumulators_valid").asBoolean());
+        assertEquals("INVALID", j.get("state").asText());
+        assertTrue(j.get("signals").get("cvd_slope").isNull());
+        assertTrue(j.get("signals").get("price_vs_vwap").isNull());
+        assertTrue(j.get("session_cvd").isNull());
+        assertTrue(j.get("session_cum_pv").isNull());
+        assertTrue(j.get("session_cum_vol").isNull());
+        assertFalse(j.get("session_accumulators_reason").asText().isEmpty());
+    }
+
+    private static final long CONNECT = D0 + 5 * 3_600_000L + 28 * MIN + 10_000L;   // 05:28:10
+    private static final long NOW1 = D0 + 5 * 3_600_000L + 30 * MIN + 20_000L;      // 05:30:20 -> M = 05:30:00
+    private static final long M1 = D0 + 5 * 3_600_000L + 30 * MIN;
+    private static final int BARS1 = 330;
+
+    // (a) restart mid-session with stale restored sums: the emitted sums are kline totals + post-boundary ticks
+    @Test
+    public void restartReplacesStaleRestoredSumsWithBackfill() throws Exception {
+        Files.writeString(tmp.resolve("state_code.json"),
+                "{\"state\":\"S\",\"timestamp_utc\":\"2026-10-20T05:20:00Z\",\"session_day_start_ms\":" + D0
+                        + ",\"session_cvd\":999.0,\"session_cum_pv\":9.9E9,\"session_cum_vol\":5000.0}");
+        FakeKlines src = new FakeKlines();
+        StateCodeEmitter e = fresh(src, NOW1);
+        e.onStreamOpen(CONNECT);
+        e.onMessage(trade(CONNECT + 20_000L, 100.0, 1.0, false));   // 05:28:30 < M: inside the klines, must be dropped
+        e.onMessage(trade(M1 + 5_000L, 101.0, 2.0, false));         // +2
+        e.onMessage(trade(M1 + 10_000L, 99.0, 0.5, true));          // -0.5
+
+        assertInvalid(emit(e));                                      // restored 999 / 9.9E9 never shown as a session value
+        assertTrue(e.backfillNow());
+        assertEquals(D0, src.lastStart);
+        assertEquals(M1 - 1, src.lastEnd);
+        JsonNode j = emit(e);
+        assertTrue(j.get("session_accumulators_valid").asBoolean());
+        assertEquals(330 * 4.0 + 1.5, j.get("session_cvd").asDouble(), 1e-6);
+        assertEquals(3300.0 + 2.5, j.get("session_cum_vol").asDouble(), 1e-6);
+        assertEquals(330 * 1000.0 + 2 * 101.0 + 0.5 * 99.0, j.get("session_cum_pv").asDouble(), 1e-6);
+        assertTrue(j.get("signals").get("cvd_slope").isNull());      // ring was cleared: the jump cannot read as slope
+    }
+
+    // (b) WS reconnect gap: sums = kline totals + ticks with T >= M; a tick with T < M is not counted twice
+    @Test
+    public void reconnectGapSeamIsExact() throws Exception {
+        FakeKlines src = new FakeKlines();
+        StateCodeEmitter e = fresh(src, NOW1);
+        e.onStreamOpen(CONNECT);
+        assertTrue(e.backfillNow());
+        e.onMessage(trade(M1 + 15_000L, 100.0, 4.0, false));         // live, counted once
+
+        long closedAt = M1 + 70_000L;                                 // 05:31:10 socket drops
+        e.onStreamClosed("ws_closed");
+        assertInvalid(emit(e));
+        e.onMessage(trade(closedAt + 5_000L, 100.0, 9.0, false));     // arrives while invalid: buffered, not summed
+        assertInvalid(emit(e));
+
+        long reopen = M1 + 2 * MIN + 5_000L;                          // 05:32:05 reconnect
+        e.onStreamOpen(reopen);
+        e.onMessage(trade(reopen + 10_000L, 100.0, 1.0, false));      // 05:32:15 < M2: inside the new klines
+        long m2 = M1 + 3 * MIN;                                       // 05:33:00
+        e.nowMsOverride = m2 + 12_000L;                               // 05:33:12
+        e.onMessage(trade(m2 + 2_000L, 100.0, 3.0, true));            // >= M2: counted (-3)
+        e.onMessage(trade(m2 + 4_000L, 102.0, 2.0, false));           // >= M2: counted (+2)
+        assertTrue(e.backfillNow());
+        assertEquals(m2 - 1, src.lastEnd);
+        JsonNode j = emit(e);
+        assertTrue(j.get("session_accumulators_valid").asBoolean());
+        int bars = (int) ((m2 - D0) / MIN);
+        assertEquals(bars * 4.0 - 1.0, j.get("session_cvd").asDouble(), 1e-6);
+        assertEquals(bars * 10.0 + 5.0, j.get("session_cum_vol").asDouble(), 1e-6);
+        assertEquals(bars * 1000.0 + 300.0 + 204.0, j.get("session_cum_pv").asDouble(), 1e-6);
+    }
+
+    // (c) backfill failure of every kind: INVALID, signals null, retry delay 30 s, recovers on a later success
+    @Test
+    public void backfillErrorsFailClosedAndRecover() throws Exception {
+        FakeKlines src = new FakeKlines();
+        StateCodeEmitter e = fresh(src, NOW1);
+        e.onStreamOpen(CONNECT);
+        e.onMessage(trade(M1 + 5_000L, 100.0, 1.0, false));
+
+        Behaviour[] bad = new Behaviour[]{
+                (st, en) -> { throw new IOException("HTTP 429"); },
+                (st, en) -> { throw new SocketTimeoutException("timeout"); },
+                (st, en) -> constBars(st, BARS1 - 1),                                    // short list
+                (st, en) -> constBars(st, BARS1 + 1),                                    // long list
+                (st, en) -> null,
+                (st, en) -> { ArrayNode a = constBars(st, BARS1);                        // duplicate openTime
+                              a.set(10, a.get(9)); return a; },
+                (st, en) -> { ArrayNode a = constBars(st, BARS1);                        // non-monotonic
+                              JsonNode x = a.get(20); a.set(20, a.get(21)); a.set(21, x); return a; },
+                (st, en) -> { ArrayNode a = constBars(st, BARS1);                        // malformed row
+                              ((ArrayNode) a.get(5)).removeAll(); return a; },
+        };
+        for (Behaviour b : bad) {
+            src.behaviour = b;
+            assertFalse(e.backfillNow());
+            assertEquals(30_000L, e.retryDelayMs);
+            for (int i = 0; i < 12; i++) assertInvalid(emit(e));   // 12 emits: the cvd ring must not fill up either
+        }
+        src.behaviour = (st, en) -> constBars(st, (int) ((en + 1 - st) / MIN));
+        assertTrue(e.backfillNow());
+        JsonNode j = emit(e);
+        assertTrue(j.get("session_accumulators_valid").asBoolean());
+        assertEquals(BARS1 * 4.0 + 1.0, j.get("session_cvd").asDouble(), 1e-6);
+    }
+
+    // (d) continuous control: no gap, sums equal the plain tick sums exactly (zero klines needed, no HTTP)
+    @Test
+    public void continuousStreamSumsEqualPlainTickSums() throws Exception {
+        FakeKlines src = new FakeKlines();
+        src.behaviour = (st, en) -> { throw new AssertionError("no klines are needed at the day start"); };
+        StateCodeEmitter e = fresh(src, D0 + 30_000L);
+        e.onStreamOpen(D0 - 10_000L);                                  // stream already running before midnight
+        e.onMessage(trade(D0 - 5_000L, 100.0, 7.0, false));            // previous day: never in today's sums
+        assertTrue(e.backfillNow());
+        assertEquals(0, src.calls.get());
+        Random rnd = new Random(42);
+        double cvd = 0, vol = 0, pv = 0;
+        for (int i = 0; i < 500; i++) {
+            long t = D0 + 1_000L + i * 40L;
+            double px = 100 + rnd.nextInt(500) / 10.0, q = 0.001 + rnd.nextInt(2000) / 1000.0;
+            boolean m = rnd.nextBoolean();
+            e.onMessage(trade(t, px, q, m));
+            cvd += m ? -q : q; vol += q; pv += px * q;
+        }
+        JsonNode j = emit(e);
+        assertTrue(j.get("session_accumulators_valid").asBoolean());
+        assertEquals(cvd, j.get("session_cvd").asDouble(), 1e-9);
+        assertEquals(vol, j.get("session_cum_vol").asDouble(), 1e-9);
+        assertEquals(pv, j.get("session_cum_pv").asDouble(), 1e-6);
+    }
+
+    // (e) a non-trade message (or garbage) leaves the sums unchanged and is not buffered while invalid
+    @Test
+    public void nonTradeMessageLeavesSumsUnchanged() throws Exception {
+        FakeKlines src = new FakeKlines();
+        StateCodeEmitter e = fresh(src, NOW1);
+        e.onStreamOpen(CONNECT);
+        e.onMessage("{\"e\":\"depthUpdate\",\"T\":" + (M1 + 1_000L) + ",\"p\":\"1\",\"q\":\"50\",\"m\":false}");   // before backfill
+        assertTrue(e.backfillNow());
+        JsonNode before = emit(e);
+        e.onMessage("{\"result\":null,\"id\":1}");
+        e.onMessage("{\"e\":\"markPriceUpdate\",\"T\":" + (M1 + 2_000L) + ",\"p\":\"77\",\"q\":\"9\",\"m\":true}");
+        e.onMessage("not json at all");
+        JsonNode after = emit(e);
+        assertTrue(after.get("session_accumulators_valid").asBoolean());
+        assertEquals(before.get("session_cvd").asDouble(), after.get("session_cvd").asDouble(), 0.0);
+        assertEquals(before.get("session_cum_vol").asDouble(), after.get("session_cum_vol").asDouble(), 0.0);
+        assertEquals(before.get("session_cum_pv").asDouble(), after.get("session_cum_pv").asDouble(), 0.0);
+        assertEquals(330 * 4.0, after.get("session_cvd").asDouble(), 1e-9);
+    }
+
+    // (f) replay: klines built from the same ticks; the restarted emitter reproduces the full-day tick/kline CVD within 0.1 BTC
+    @Test
+    public void replayFixtureCvdMatchesKlinesWithinTenthOfABtc() throws Exception {
+        Random rnd = new Random(7);
+        int n = 30_000;
+        long span = NOW1 - D0 - 2_000L;
+        long[] ts = new long[n];
+        for (int i = 0; i < n; i++) ts[i] = D0 + (long) (rnd.nextDouble() * span);
+        java.util.Arrays.sort(ts);
+        int minutes = (int) ((M1 - D0) / MIN);
+        double[] vol = new double[minutes], tbb = new double[minutes], qv = new double[minutes];
+        double plainCvd = 0, plainVol = 0, plainPv = 0, klineCvd = 0;
+        double[] px = new double[n], q = new double[n];
+        boolean[] mk = new boolean[n];
+        for (int i = 0; i < n; i++) {
+            px[i] = 80_000 + rnd.nextInt(2000) / 10.0; q[i] = 0.001 + rnd.nextInt(3000) / 1000.0; mk[i] = rnd.nextBoolean();
+            plainCvd += mk[i] ? -q[i] : q[i]; plainVol += q[i]; plainPv += px[i] * q[i];
+            int b = (int) ((ts[i] - D0) / MIN);
+            if (b < minutes) { vol[b] += q[i]; qv[b] += px[i] * q[i]; if (!mk[i]) tbb[b] += q[i]; }
+        }
+        for (int b = 0; b < minutes; b++) klineCvd += 2 * tbb[b] - vol[b];
+        FakeKlines src = new FakeKlines();
+        src.behaviour = (st, en) -> {
+            ArrayNode a = JsonNodeFactory.instance.arrayNode();
+            for (int b = 0; b < (en + 1 - st) / MIN; b++) a.add(bar(st + b * MIN, vol[b], tbb[b], qv[b]));
+            return a;
+        };
+        StateCodeEmitter e = fresh(src, NOW1);
+        e.onStreamOpen(CONNECT);
+        for (int i = 0; i < n; i++) if (ts[i] >= CONNECT) e.onMessage(trade(ts[i], px[i], q[i], mk[i]));   // restart: only post-connect ticks
+        assertTrue(e.backfillNow());
+        JsonNode j = emit(e);
+        assertEquals(plainCvd, j.get("session_cvd").asDouble(), 0.1);
+        assertEquals(plainVol, j.get("session_cum_vol").asDouble(), 0.1);
+        assertEquals(plainPv, j.get("session_cum_pv").asDouble(), 1.0);
+        double tail = 0;
+        for (int i = 0; i < n; i++) if (ts[i] >= M1) tail += mk[i] ? -q[i] : q[i];
+        assertEquals(klineCvd + tail, j.get("session_cvd").asDouble(), 0.1);
+    }
+
+    // day rollover: continuous stream resets to zero at 00:00Z as before; rollover while INVALID re-backfills the NEW day
+    @Test
+    public void dayRolloverContinuousResetsAndInvalidRebackfillsNewDay() throws Exception {
+        long prev = D0 - 86_400_000L;
+        FakeKlines src = new FakeKlines();
+        long now = prev + 23 * 3_600_000L + 50 * MIN + 20_000L;
+        StateCodeEmitter e = fresh(src, now);
+        e.onStreamOpen(prev + 23 * 3_600_000L);
+        assertTrue(e.backfillNow());
+        assertEquals(prev, src.lastStart);
+        e.onMessage(trade(D0 - 10_000L, 100.0, 1.0, false));
+        e.onMessage(trade(D0 + 5_000L, 100.0, 3.0, true));            // new day: sums restart from this tick
+        JsonNode j = emit(e);
+        assertTrue(j.get("session_accumulators_valid").asBoolean());
+        assertEquals(-3.0, j.get("session_cvd").asDouble(), 1e-9);
+        assertEquals(3.0, j.get("session_cum_vol").asDouble(), 1e-9);
+        assertEquals(D0, j.get("session_day_start_ms").asLong());
+
+        e.onStreamClosed("ws_closed");                                  // gap over midnight
+        e.onStreamOpen(D0 + 10_000L);
+        e.nowMsOverride = D0 + 80_000L;                                 // 00:01:20 -> M = 00:01:00, one bar of the NEW day
+        e.onMessage(trade(D0 + 61_000L, 100.0, 2.0, false));
+        assertTrue(e.backfillNow());
+        assertEquals(D0, src.lastStart);
+        assertEquals(D0 + MIN - 1, src.lastEnd);
+        j = emit(e);
+        assertEquals(4.0 + 2.0, j.get("session_cvd").asDouble(), 1e-9);
+        assertEquals(10.0 + 2.0, j.get("session_cum_vol").asDouble(), 1e-9);
+    }
+
+    // seam timing: a backfill is only accepted for a boundary M that lies after the (re)connect, otherwise [M, connect) is missing
+    @Test
+    public void backfillWaitsForAMinuteBoundaryAfterTheConnect() throws Exception {
+        FakeKlines src = new FakeKlines();
+        StateCodeEmitter e = fresh(src, M1 + 20_000L);                 // 05:30:20
+        e.onStreamOpen(M1 + 10_000L);                                   // connected 05:30:10: trades 05:30:00-05:30:10 were never seen
+        assertFalse(e.backfillNow());
+        assertEquals(0, src.calls.get());
+        assertInvalid(emit(e));
+        assertTrue(e.retryDelayMs >= 1_000L && e.retryDelayMs <= 65_000L);
+        e.nowMsOverride = M1 + MIN + 20_000L;                           // 05:31:20 -> M = 05:31:00 > connect
+        assertTrue(e.backfillNow());
+        assertEquals(M1 + MIN - 1, src.lastEnd);
+    }
+
+    // a socket close wipes valid sums and the cvd ring: the post-backfill jump must not read as slope
+    @Test
+    public void closeInvalidatesAndClearsTheCvdRing() throws Exception {
+        FakeKlines src = new FakeKlines();
+        StateCodeEmitter e = fresh(src, NOW1);
+        e.onStreamOpen(CONNECT);
+        assertTrue(e.backfillNow());
+        JsonNode j = null;
+        for (int i = 0; i < 12; i++) {
+            e.onMessage(trade(M1 + 1_000L + i * 1_000L, 100.0, 20.0 * (i + 1), false));
+            j = emit(e);
+        }
+        assertFalse(j.get("signals").get("cvd_slope").isNull());        // ring full while valid
+        e.onStreamClosed("ws_closed");
+        assertInvalid(emit(e));
+        e.onStreamOpen(M1 + 3 * MIN);
+        e.nowMsOverride = M1 + 4 * MIN + 20_000L;
+        assertTrue(e.backfillNow());
+        j = emit(e);
+        assertTrue(j.get("session_accumulators_valid").asBoolean());
+        assertTrue(j.get("signals").get("cvd_slope").isNull());         // fresh ring: 1 sample
     }
 }
