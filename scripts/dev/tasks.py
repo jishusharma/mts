@@ -793,6 +793,28 @@ def exclusion(card, cards, reg, holds, claims, lane_st, as_of, host=None, repo=R
     return None
 
 
+def card_role(card):
+    """Determine the role for a card: explicit card['role'], or inferred by lane/kind/title."""
+    if card.get("role"):
+        return str(card["role"])
+    lane = str(card.get("lane") or "")
+    kind = str(card.get("kind") or "")
+    title = str(card.get("title") or "")
+    cid = str(card.get("id") or "")
+
+    # Network / nowin cards
+    if "nowin" in cid.lower() or "Network:" in title or "network" in cid.lower():
+        return "Network_Admin_Guy"
+    # CODEX cards -> Lab_Guy
+    if lane == "CODEX":
+        return "Lab_Guy"
+    # Audits -> MTS_Doctor
+    if kind == "audit" or "audit" in cid.lower():
+        return "MTS_Doctor"
+    # Build / tool / default cards -> Builder
+    return "Builder"
+
+
 def dispatch(cards, reg, holds, claims, lane_st, as_of, host=None, repo=REPO):
     """Pure ranked snapshot: {as_of, host, dispatch: [...], excluded: [...]}. Same inputs -> same dict (as_of is an input)."""
     inc, exc = [], []
@@ -804,7 +826,8 @@ def dispatch(cards, reg, holds, claims, lane_st, as_of, host=None, repo=REPO):
             exc.append({"id": c["id"], "state": c["state"], "reason_code": ex[0], "why": ex[1]})
             continue
         w = effective_weight(c)
-        inc.append({"id": c["id"], "title": c["title"], "lane": c["lane"], "weight": w, "prio": c.get("prio", 3),
+        role = card_role(c)
+        inc.append({"id": c["id"], "title": c["title"], "lane": c["lane"], "role": role, "weight": w, "prio": c.get("prio", 3),
                     "pinned": bool(c.get("pinned")), "est_turns": c.get("est_turns"), "worker": c.get("worker") or "",
                     "reviewer": REVIEWER_SLOT[w], "scope_in": list(c.get("scope_in", [])), "depends_on": list(c.get("depends_on", [])),
                     "created": c.get("created", "")})
