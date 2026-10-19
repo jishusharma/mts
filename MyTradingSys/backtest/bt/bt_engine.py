@@ -7,7 +7,10 @@ Stdlib only. Bars: dicts {t,o,h,l,c}, t = open time epoch ms. Conventions per BA
 - same-bar stop+target: stop_first=True -> stop takes the whole remaining size (conservative);
 - gap through the stop -> fill at the bar open (worse); targets fill at their limit price (maker),
   and only when price trades THROUGH the limit by `target_through` (default 0.0 = touch; B151 callers pass the tick);
-- entry, stop and timeout pay taker; funding charged at each settlement while size remains.
+- entry, stop and timeout pay taker; funding charged at each settlement s with t_in < s <= t_out while size
+  remains (FORMULAS 13): t_in = open of the first scanned bar (the entry instant), t_out = close instant of the
+  exit bar (open + 60000). funding is REQUIRED (B103, as trade_costs.funding_paid): None raises, a non-empty list
+  that does not span [t_in, t_out] raises, funding=[] is the explicit "no funding model" (charges 0, never raises).
 All R figures are per unit size 1.0: R = abs(entry - stop).
 """
 import bisect
@@ -17,6 +20,9 @@ def simulate_trade(side, entry_price, entry_t, stop, targets, bars, mark_bars=No
                    taker_fee=0.0005, maker_fee=0.0, max_bars=1440, stop_first=True, target_through=0.0):
     if side not in ("long", "short"):
         raise ValueError("side must be long or short")
+    if funding is None:
+        raise ValueError("funding=None: pass the funding records covering the hold, or [] for the explicit "
+                         "no-funding model (B103 fail closed)")
     if targets and abs(sum(f for _, f in targets) - 1.0) > 1e-9:
         raise ValueError("target fractions must sum to 1.0")
     sgn = 1.0 if side == "long" else -1.0
@@ -36,10 +42,11 @@ def simulate_trade(side, entry_price, entry_t, stop, targets, bars, mark_bars=No
     fee_r = taker_fee * entry_price / risk        # entry on size 1.0
     ambiguous = 0
     mae = mfe = 0.0
-    fund_evt = sorted(funding or [])
+    fund_evt = sorted(funding)
     fund_times = [t for t, _ in fund_evt]
     funding_paid_pct = 0.0
     last_t = entry_t
+    t_in = None                                   # entry instant = open of the first scanned bar
     scanned = 0
     exit_t = None
 
@@ -56,8 +63,10 @@ def simulate_trade(side, entry_price, entry_t, stop, targets, bars, mark_bars=No
         if b["t"] <= entry_t:
             continue
         scanned += 1
-        # funding settlements in (last_t, bar close]; bar close ~ t + 60000 - 1
-        bar_end = b["t"] + 59999
+        if t_in is None:
+            t_in = last_t = b["t"]
+        # funding settlements s with last_t < s <= bar close instant (open + 60000); first bar: t_in < s
+        bar_end = b["t"] + 60000
         i = bisect.bisect_right(fund_times, last_t)
         while i < len(fund_times) and fund_times[i] <= bar_end and remaining > 0:
             rate = fund_evt[i][1]
@@ -94,6 +103,10 @@ def simulate_trade(side, entry_price, entry_t, stop, targets, bars, mark_bars=No
             fill(b["t"], b["c"], remaining, "timeout")
             exit_t = b["t"]
             break
+
+    if fund_evt and t_in is not None and (t_in < fund_evt[0][0] or last_t > fund_evt[-1][0]):
+        raise ValueError(f"funding records cover [{fund_evt[0][0]}, {fund_evt[-1][0]}] but the hold is "
+                         f"({t_in}, {last_t}]; load funding for the whole hold (B103) or pass [] for no funding model")
 
     if exit_t is None:  # ran out of data
         return {"exit_reason": "open_at_end", "exit_t": None, "bars_held": scanned, "gross_r": gross_r,

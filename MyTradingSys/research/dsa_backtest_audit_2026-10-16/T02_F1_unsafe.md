@@ -1,0 +1,1 @@
+- MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/study.py :: `post5 = np.array([dl[x:x + 5].sum() for x in j])` :: UNSAFE: flip label uses dl[x:x+5], the 5 bars after the break bar; study flags it descriptive only, cannot be a signal (verdict study: opr_weekly_low_round_sweep_2026-10-16; line 180, CVD flip split, descriptive only)
