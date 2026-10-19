@@ -169,6 +169,26 @@ class Home(unittest.TestCase):
         self.assertIn("Link fails? Why, and the one-time fix", html)
         self.assertIn("only after", html)
 
+    def test_how_to_use_is_on_top_with_recipes_and_the_super_prompt(self):
+        """Operator 2026-10-19: the user workflows (when, where, the line to paste) open the page; the super-session prompt
+        is the one in SUPER_SESSION.md and its line 1 loads the Supervisor role."""
+        import make_home as mh
+        d = mh.build(self.reg)
+        html = mh.render(d)
+        self.assertLess(html.index('id="h-use"'), html.index('class="rule"'))
+        self.assertLess(html.index('id="h-use"'), html.index('id="h-how"'))
+        self.assertIn("What do I do today?", html)
+        for line in ("You are Q&amp;A_Helper.", "You are Eagle_Eyes.", "You are MTS_Doctor.", "You are Lab_Guy.", "You are Pipeliner.",
+                     "You are Artifacts_Guy.", "You are Network_Admin_Guy."):
+            self.assertIn(line, html)
+        recipes = html.split('<ol class="recipes">', 1)[1].split('</ol>', 1)[0]
+        self.assertEqual(recipes.count('<li><b>'), 6)
+        self.assertTrue(d["superPrompt"].startswith("You are Supervisor."), d["superPrompt"][:60])
+        self.assertIn("Goal today:", d["superPrompt"])
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assertEqual(mh.super_prompt(tmp), "")
+
 
 class Stale(unittest.TestCase):
     """Staleness check: a page whose repo build differs from published_sha is listed; a rebuild alone (new `generated`) is not."""

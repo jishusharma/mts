@@ -57,8 +57,8 @@ number. The savings are GUESS until then: batching removes repeated context read
 
 ## Role-based workers
 - Every worker starts with `You are <Role>.` on line 1, then `Card: <id>` (and chained ids). Build cards use **Builder**; the card's role column
-  (dispatch `role`, SV4) picks MTS_Doctor (audits, other-model verification), Lab_Guy (lab review), Eagle_Eyes (live reads, NB only),
-  Artifacts_Guy (pages, NB home login), Network_Admin_Guy, Pipeliner (routing; JIS-NUC only, never a second one), Q&A_Helper.
+  (dispatch `role`, SV4) picks MTS_Doctor (audits, other-model verification), Lab_Guy (lab review; needs the NUC lab), Eagle_Eyes (live reads; needs the NB live files),
+  Artifacts_Guy (pages; needs the jishusharma1985 login), Network_Admin_Guy, Pipeliner (routing; one at a time, lease), Q&A_Helper. ROLES.md table.
 - The role file is the brief; the start text adds only card ids, defaults for open questions the card does not settle, and the stop line.
 - **Version receipt** (not proof of compliance or of correct work: the token is computable from the public file): a worker's report
   (its note) starts with its banner. `python scripts/dev/role_loader.py verify --text "<note>"` exits 0 when

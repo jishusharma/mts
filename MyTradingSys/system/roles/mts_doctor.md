@@ -1,8 +1,8 @@
-<!-- role: MTS_Doctor | version: v1 | token: book-leaf | triggers: mts_doctor, mts doctor, doctor -->
+<!-- role: MTS_Doctor | version: v1 | token: jar-face | triggers: mts_doctor, mts doctor, doctor -->
 # MTS_Doctor: AI health and process audit, with other-model verification of every change (operator 2026-10-17; file created 2026-10-18 from the ROLES.md row)
 
 ## Pin
-Pin as `MTS_Doctor` on NB, home login. Do not pin it on other logins: a second doctor writes a duplicate report.
+Runs on any machine or login. At most one a day, usually weekly: a second doctor the same day writes a duplicate report.
 
 ## Job
 AI health + process audit, other-model verification of every change. Run by hand when the operator opens it: no scheduler exists (SCHEDULING_POLICY.md).

@@ -1,28 +1,30 @@
-# ROLES: pinned helper sessions (operator 2026-10-17)
+# ROLES: helper sessions you open by name (operator 2026-10-17)
 
-A role = a pinned session the operator opens, talks to. The pinned session is the front door; the role itself lives here, so a
-lost or over-budget session is replaced by pasting its one-line start prompt. Channels (signals, desk, shot, sync) are unchanged.
+A role = a session started with one line; the role itself lives here, so a lost or over-budget session is replaced by pasting
+that line again. Pinning is only a sidebar shortcut. Channels (signals, desk, shot, sync) are unchanged.
+How to use them day to day (the six recipes): MTS Home, section "How to use MTS" (source `scripts/dev/make_home.py`).
 
 **Start prompt, identical for every role** (replace NAME): `You are NAME.` The role_loader hook (UserPromptSubmit) loads MyTradingSys/system/roles/<role>.md from origin/fast-track; the first reply must be the `ROLE LOADED: NAME vN · token word-word · <path> @ <sha>` banner (`python scripts/dev/role_loader.py banner NAME` prints the expected one). No banner or `ROLE NOT LOADED` = do not work with that session; open a new one.
 **Files a row names** (e.g. `roles/eagle_eyes.md`): if missing locally, read them the same way with `git show origin/fast-track:<path>`.
 **After a restart or clear:** re-read the row, run its boot line only, continue.
 
-## Pin these names, exactly (same on every login)
-| Pinned session name | Pin on | Not on |
+## Where each role runs (role_loader.py checks no machine or login: every role starts anywhere)
+| Role | Runs anywhere; needs | At most one at a time |
 |---|---|---|
-| `MTS_Doctor` | NB, home login | other logins: a second doctor writes a duplicate report |
-| `Artifacts_Guy` | NB, home login (jishusharma1985, owner of every page) | other logins: they only pin the **MTS Home** page itself |
-| `Eagle_Eyes` | NB (needs the live files) | NUC |
-| `Network_Admin_Guy` | the machine whose network it manages | |
-| `Q&A_Helper` | any login you ask questions on | |
-| `Lab_Guy` | JIS-NUC (the lab: GPT/Codex and Gemini/Antigravity) | NB |
-| `Pipeliner` | JIS-NUC only (operator 2026-10-18) | NB and every other login: a second Pipeliner double-closes desk rows; the trunk lease (`lease.py`) refuses a second instance |
-| `Traffic_Controller` | JIS-NUC (one instance anywhere, held by the trunk lease) | a second one: `lease.py acquire` refuses it |
-| `Session_Planner` | not pinned: embedded in each super session (pin only to run it by hand) | |
-| `Supervisor` | not pinned: one per super session, started with `You are Supervisor.` | a second one on the same login |
-| `MTS Home` (a published page, not a session) | pin on EVERY login after one Share step | |
+| `Q&A_Helper` | nothing | no limit |
+| `Eagle_Eyes` | the live files: run it on JIS-NB (elsewhere it sees only the `live_mirror.py brief` snapshot) | no limit |
+| `MTS_Doctor` | nothing | at most one a day, usually weekly, by convention (a second writes a duplicate report) |
+| `Artifacts_Guy` | the jishusharma1985 login (owns every page; only the owner republishes) | no limit |
+| `Lab_Guy` | the NUC lab (GPT/Codex, Gemini/Antigravity): run it on JIS-NUC or over the NUC SSH gate | no limit |
+| `Pipeliner` | nothing; home JIS-NUC by convention (operator 2026-10-18) | one: the trunk lease (`lease.py`) refuses a second on any machine |
+| `Network_Admin_Guy` | the machine that has the fault (it fixes local console, hook and network issues) | no limit |
+| `Supervisor` | a login with weekly budget; started by the SUPER_SESSION.md prompt, whose line 1 is `You are Supervisor.` | one per super session |
+| `Session_Planner` | nothing; the Supervisor runs it as an Agent (rule 14); open it by hand only to plan without a super session | no limit |
+| `Builder` | nothing; started by the Supervisor with a card id, never by the operator | no limit |
+| `Traffic_Controller` | nothing; dormant (never run as a session; Supervisor + Pipeliner cover it), on demand only | one: trunk lease |
+| `MTS Home` (a page, not a session) | pin it on every login after one Share step | |
 
-Not roles: one-off task threads (Fable backtesting, coordinators). They are task cards; unpin them when shipped.
+Not roles: one-off task threads (Fable backtesting). They are task cards; unpin them when shipped.
 
 ## Rows
 | Role | Job | Boot (once, and after a restart) | Output + channel | Model |

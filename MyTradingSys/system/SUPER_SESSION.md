@@ -6,9 +6,9 @@ meter has headroom (Pacing below). First one: 2026-10-15, coordinator local_62fa
 observer, and a second coordinator (coord-2) that drained the ship queue at the end.
 
 **Operating design: SUPERVISOR.md** (wake loop, role workers, verification, ship order; role file `roles/supervisor.md`,
-start a coordinator with `You are Supervisor.`). This file keeps the audit, rules history, boot facts and the session log.
+loaded by line 1 of the start prompt below, `You are Supervisor.`). This file keeps the audit, rules history, boot facts and the session log.
 
-While a super session runs, the relay is paused: the coordinator IS the dispatcher. When none runs, nothing moves on its own: no relay, dispatcher or routine (MTS-DispatchGate and `mts-dispatcher` RETIRED 2026-10-17, see SCHEDULING_POLICY.md).
+The coordinator is the only dispatcher. When none runs, nothing moves on its own: no relay, dispatcher or routine exists (MTS-DispatchGate and `mts-dispatcher` RETIRED 2026-10-17, see SCHEDULING_POLICY.md).
 For "schedule the next 5h/10h" the coordinator writes the card order into a plan file and works it.
 
 ## Audit of the first one (2026-10-15, 139 transcripts)
@@ -92,11 +92,11 @@ only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once); histo
 - A worker that merges late hits VERDICTS.csv and wiring_registry.json conflicts: union both sides.
 
 ## Session log (newest first; one line each, last 5)
+- DOCTOR-NB-1019 (2026-10-19, Opus one-time agent, 2 review Agents): roles review; ROLES.md pin table -> 'runs anywhere; needs; at most one' (role_loader checks no host), super-session prompt line 1 now `You are Supervisor.` (the old line loaded no role), RELAY.md retired parts marked, MTS Home gets 'How to use MTS' (6 recipes). Lesson: two entry points for one role drift; one paste line each.
 - SUPER-DESKTOP-1019 (2026-10-19, Sonnet coordinator, 2 Agents): stale ci-919cc0f closed (CI green at c65cda0, 52dd55e0); layer_map 2 of 8 null rows filled, rest not stated in reports (28313a4f); 3 stale pages posted as JIS-NB desk row. Boot: ~6 tool turns. Lesson: tasks.py next ranks stale ci-* cards first; check ci_watch.py before dispatching a fix.
 - SUPER-NB-1018 (2026-10-18, Sonnet coordinator, ~9 sessions + review Agents, weekly 73 -> 81%): labeler fix, krown, state audit, RV02 R1+R2, Fabio dating, planner batch 3 shipped; diff-only review Agents caught real defects in 4 of 6 diffs. Lesson: with 6+ sessions shipping, the 2 gate slots queue 2-3 h and a ship dies at the tool 600 s timeout unless run detached; one ship per session; weekly cap hit before the block ended.
 - SUPER-NB-1017 (2026-10-17, Sonnet coordinator, 6 Agent workers because start_session is refused for a session started by another session): 14 cards shipped, weekly 66 -> 67%; Agents fit the 100k rule; compound `cd && git`/merge commands were denied, use git -C.
 - DOCTOR-NB-1017 (2026-10-17, Sonnet): post-B1/B4 `traffic_report.py 24` = 631 commits, overhead 60% (merge 34, claim 13, release 13), was 68% pre-B1; doctor findings 3 -> 2 (remaining: relay skill 'Output caps' line is intentionally per-skill).
-- 2026-10-17 super-nuc-1017b (JIS-NUC, Opus coordinator, 3 Agents, 03:20Z-03:50Z): boot 12 tool turns (prior session's NEXT_SESSION on origin, not the stale shared checkout); Q85 BLOCKED e5988045, fire CSVs relabelled + 3 DEV reruns (no verdict change) 450636f4, 7 luna cards + g3-blindness-audit-rerun 1d2c875f; T07/T08 still absent. Learned: two of three workers exceeded 100k (should have been sessions); the operator could not see Agents in the sidebar.
 
 
 ## Start (operator: open a new session, model Sonnet unless you name Opus (WORKERS.md rule 6), paste the prompt below)
@@ -115,12 +115,12 @@ republish to claude.ai/artifact/9nqpZeMeEehadoBoYopZU3 from the jishusharma1985 
 | SPEND | U < 100 f - 10, or less than 24 h to the reset with U < 85 | super session worth starting; Fable cards allowed (operator starts them) |
 | NORMAL | between | (relay and Haiku dispatcher RETIRED 2026-10-17, see SCHEDULING_POLICY.md) Sonnet builders, coordinator dispatches |
 | THROTTLE | U > 100 f + 5, or the 5-hour window > 80 % | only model-free work: Codex lab, DSA desk, CI |
-The meter is only readable from an App session (`get_usage`), so the coordinator (and any KICK session) writes it to
+The meter is only readable from an App session (`get_usage`), so the coordinator writes it to
 `~/.claude/mts-budget.json` (not in git); the gate treats a reading older than 6 h as NORMAL.
 
 ## Prompt: start a super session (paste into a new Sonnet session, permission mode bypass or auto)
 ```
-You are the MTS super-session coordinator (MyTradingSys/system/SUPER_SESSION.md). Run for hours with zero operator input except direction I give.
+You are Supervisor. Coordinate one super session (MyTradingSys/system/SUPER_SESSION.md, SUPERVISOR.md) for hours with zero operator input except direction I give.
 Goal today: <one line, e.g. "rebuild layers setups-first: catalogue -> PRE_REG -> screens">.
 First turn: get_usage (THROTTLE -> tell me and stop), read STATUS.md and NEXT_SESSION.md, run the Session_Planner, pick the tasks that serve the goal.
 Spawn workers per WORKERS.md (session by default, Agent only for size S; Sonnet; Haiku for mechanical status), at most 4 running, each with a full brief: goal, files, DONE when, defaults for open questions, hard limits from CLAUDE.md. Workers never ask me; you decide toward the goal and log it.
