@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-19T06:18:38Z",
   "commands": [],
   "created": "2026-10-18T18:39:24Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "ship-gate-fast-path-under-60s",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "commit bd1b0c7d (FastShipTest in test_sync.py + GATE_SPEED.md after-numbers)",
+      "ref": "7be780ee",
+      "utc": "2026-10-19T06:18:38Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,12 @@
   "refs": [
     "MyTradingSys/system/GATE_SPEED.md"
   ],
-  "result": "",
+  "result": "commit bd1b0c7d (FastShipTest in test_sync.py + GATE_SPEED.md after-numbers)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/sync.py",
     "scripts/dev/run_all_tests.py",
@@ -54,7 +66,7 @@
   "scope_sha": "b1c928e5be23",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read GATE_SPEED.md and gate_select in sync.py; ask NB signal first whether the NB Sonnet agent has an unshipped branch (reuse it if so)",
     "Map changed files to affected tests (reuse targeted 4t selection) and run them in parallel",
@@ -62,6 +74,7 @@
     "Fail-first tests, measure after-numbers",
     "Run run_all_tests.py --full, ship"
   ],
+  "taken": "2026-10-19T06:18:38Z",
   "tests": "MyTradingSys/tests/test_ship_fast_path.py",
   "title": "Ship gate fast path: clean ship under 60 s",
   "weight": "",
