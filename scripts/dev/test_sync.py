@@ -87,6 +87,7 @@ class SyncTest(unittest.TestCase):
                 return type("R", (), {"returncode": 0})()
             return real(cmd, **k)
         sync.subprocess.run = fake
+        old_full = os.environ.pop("SYNC_FULL_GATE", None)
         try:
             sync.run_gate(self.a, ["MyTradingSys/system/X.md"])
             self.assertIn("--smoke", calls[-1])
@@ -95,7 +96,10 @@ class SyncTest(unittest.TestCase):
             self.assertNotIn("--smoke", calls[-1])
         finally:
             sync.subprocess.run = real
-            os.environ.pop("SYNC_FULL_GATE", None)
+            if old_full is not None:
+                os.environ["SYNC_FULL_GATE"] = old_full
+            else:
+                os.environ.pop("SYNC_FULL_GATE", None)
 
     def test_concurrent_ships_both_land(self):
         commit(self.a, "a.py", "a\n")
@@ -960,8 +964,15 @@ class GateSlotTest(unittest.TestCase):
                 seen.append((list(cmd), self.slots.exists() and list(self.slots.iterdir())))
                 return type("R", (), {"returncode": 0})()
             return real(cmd, *a, **k)
-        with mock.patch.object(sync.subprocess, "run", side_effect=fake):
-            sync.run_gate(self.tmp, ["scripts/dev/x.py"])
+        old_full = os.environ.pop("SYNC_FULL_GATE", None)
+        try:
+            with mock.patch.object(sync.subprocess, "run", side_effect=fake):
+                sync.run_gate(self.tmp, ["scripts/dev/x.py"])
+        finally:
+            if old_full is not None:
+                os.environ["SYNC_FULL_GATE"] = old_full
+            else:
+                os.environ.pop("SYNC_FULL_GATE", None)
         cmd, held = seen[0]
         self.assertFalse(held)
         for flag in ("--precheck", "--fail-fast", "--slot", "--record", "--smoke", "--changed-file"):
