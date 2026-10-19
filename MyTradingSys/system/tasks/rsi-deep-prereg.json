@@ -1,0 +1,38 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-19T14:44:55Z",
+  "depends_on": [
+    "rsi-deep-depth-map"
+  ],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Write research/rsi_deep_buy_2026-10-19/PRE_REG.md freezing the grid (entry arms E1/E2, exits X1-X6, ladders S0-S3, divergence TF D), verdict rules and trial rows from SPEC s2-s5 and the depth map, committed before any outcome file.",
+  "id": "rsi-deep-prereg",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Operator RSI deep-buy study 2026-10-19. Full design: MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md. Chain: depth-map -> prereg -> engine -> run-dev -> crossvendor review (Gemini) -> VALIDATION once. Raw: Session_Planner refines (done_when, steps, tests), Lab_Guy stamps C1+.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md"
+  ],
+  "scope_out": [],
+  "size": "S",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "RSI deep-buy: freeze grid, verdict rules and trial rows in PRE_REG.md before any outcome",
+  "weight": "",
+  "worker": ""
+}
