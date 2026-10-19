@@ -56,7 +56,8 @@ def main():
         print("chunk %s: %d unreviewed rows" % (args.chunk, len(rows)))
         return 0
     start, n = args.show
-    for k, a in enumerate(rows[start:start + n], start):
+    stop = start + n
+    for k, a in enumerate(rows[start:stop], start):
         f, pat, src = a[0], a[1], a[2]
         lines = (REPO / f).read_text(encoding="utf-8", errors="replace").splitlines()
         hits = [i for i, t in enumerate(lines) if norm(t) == norm(src) or norm(src) in norm(t) or norm(t) in norm(src) and len(norm(t)) > 12]

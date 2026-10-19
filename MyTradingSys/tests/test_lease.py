@@ -278,5 +278,17 @@ class Wiring(Base):
         self.assertEqual(role_loader.lease_suffix("Eagle_Eyes", self.b), "")
 
 
+class RoleNameNoRoleTest(unittest.TestCase):
+    """A roleless session (no MTS_ROLE, no injected role) made current_role() None; role_name(None) raised AttributeError
+    and crashed every `sync.py ship` (found 2026-10-19 on the Lenovo)."""
+
+    def test_none_role_does_not_raise(self):
+        self.assertIsNone(lease.role_name(None))
+
+    def test_plain_string_still_canonical(self):
+        self.assertEqual(lease.role_name("pipeliner"), "Pipeliner")
+        self.assertEqual(lease.role_name("Eagle_Eyes"), "Eagle_Eyes")
+
+
 if __name__ == "__main__":
     unittest.main()
