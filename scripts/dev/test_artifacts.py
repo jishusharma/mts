@@ -179,10 +179,10 @@ class Home(unittest.TestCase):
         self.assertLess(html.index('id="h-use"'), html.index('id="h-how"'))
         self.assertIn("What do I do today?", html)
         for line in ("You are Admin_Guy.", "You are Eagle_Eyes.", "You are MTS_Doctor.", "You are Lab_Guy.", "You are Pipeliner.",
-                     "Start the Pipeliner.", "You are 1985Artifacts_Guy."):
+                     "Start the Pipeliner.", "You are 1985Artifacts_Guy.", "You are Thinker."):
             self.assertIn(line, html)
         recipes = html.split('<ol class="recipes">', 1)[1].split('</ol>', 1)[0]
-        self.assertEqual(recipes.count('<li><b>'), 7)
+        self.assertEqual(recipes.count('<li><b>'), 8)
         self.assertIn('backlog', recipes.lower())
         self.assertTrue(d["superPrompt"].startswith("You are Supervisor."), d["superPrompt"][:60])
         self.assertIn("Login <A|B|C>", d["superPrompt"])   # one-line start (SUPER_LOOP.md 2026-10-19)

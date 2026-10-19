@@ -268,6 +268,25 @@ class TestRepoRoles(unittest.TestCase):
         for needle in ("VERBATIM", "Haiku 5.5", "effort high", "tasks.py new", "sync.py ship", "mts_signal.py send", "BACKLOG"):
             self.assertIn(needle, text)
 
+    def test_thinker_role_registered_with_triggers_row_and_guardrails(self):
+        """Operator 2026-10-20: a Thinker design-partner role; Opus-capable, never builds, records choices verbatim."""
+        self.assertIn("Thinker", rl.KNOWN_ROLES)
+        roles = rl.local_roles(REPO)
+        self.assertIn("Thinker", roles)
+        for prompt in ("You are Thinker.", "I need a thinker", "You are Think_Guy.", "be the think guy"):
+            self.assertEqual(rl.match_roles(prompt, roles), ["Thinker"], prompt)
+        self.assertEqual(rl.banner("Thinker", "v1", "a-b", "thinker.md", "abc12345").split(":")[0], "ROLE LOADED")
+        self.assertIn("Thinker", rl.row_names(REPO))
+        text = (REPO / rl.ROLES_REL / "thinker.md").read_text(encoding="utf-8")
+        for needle in ("Opus", "LITE", "500k", "traffic.py budget", "RECOMMEND", "OPERATOR_DECISIONS.md", "tasks.py new",
+                       "Improvement scan", "`waste`", "Never", "PENDING OPERATOR"):
+            self.assertIn(needle, text)
+        rolesmd = (REPO / rl.ROLES_MD_REL).read_text(encoding="utf-8")
+        self.assertIn("| `Thinker` |", rolesmd)
+        self.assertIn("You are Thinker.", (REPO / "MyTradingSys/system/START_HERE.txt").read_text(encoding="utf-8"))
+        import role_hook_launcher as rhl
+        self.assertIn("Thinker", rhl.KNOWN)
+
 
 if __name__ == "__main__":
     unittest.main()
