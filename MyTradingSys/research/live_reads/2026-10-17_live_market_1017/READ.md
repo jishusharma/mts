@@ -96,3 +96,8 @@ Source: `live_mirror.py brief` + _mirror files, all `mirror@2026-10-17 07:11Z` (
 - Line = high of the 10-16 17:30 squeeze bar (82,092.1); 11:30 low 82,089.0 (3.1 below), back above in 2 min; held at 82,096.6 (10-18 10:00) and 82,096.2 (10-19 00:30). Prior watch: fade leg HELD (OI -1,463 from 07:30 high 83,157.9), reclaim leg BROKEN. Legend note: CoinGlass 30m VWAP = bar-level hlc3 x bar volume (82,551.1), not 1m hlc3.
 - Live: all skipped under HALT; Tom ct_long entry 82,384.8 (weekly VAL) stop 82,299.6 now below price; Fabio null.
 - Watch next: 30m closes above 82,092.1 with delta turning positive, or a close under it with OI still falling.
+
+## 10-19 12:52Z live read 15m (45668ed864d7) mirror@2026-10-19 11:46Z (stale)
+- Read: SHOT_45668ed864d7.md (4 MATCH, 1 NOT_IN_DATA), tag NOTE. Last read id: 45668ed864d7. Open MISMATCH cards: none. HALT unchanged. Shot time 12:52Z (not 12:07Z).
+- 12:00 new longs (+1,233/OI +647), since 12:15 OI -398 with price stalled under VWAP 82,556; 82,092.1 held at 11:32.
+- Watch next: close over 82,661 with OI up, or fail under 82,385 with OI down toward 82,092.
