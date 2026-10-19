@@ -316,6 +316,7 @@ def finish(repo, cid, report, verdict, result):
     flow = card["flow"]
     if verdict not in ("PASS", "REWORK", "BLOCKED"):
         raise ValueError("unknown verdict")
+    tasks.mark_shared_bases(card, repo)
     try:
         gate = tasks.review_gate(card, finishing=True, result=result, repo=repo)
     except Exception as e:
@@ -355,7 +356,8 @@ def finish(repo, cid, report, verdict, result):
                 flow_receipt={"verdict": verdict, "contract": flow["contract"], "report": rel,
                               "vendor": card["vendor"], "model": card["model"],
                               "report_sha256": hashlib.sha256(p.read_bytes()).hexdigest(),
-                              "sources": fingerprint(repo, flow["scope_in"], flow.get("data_scope")), "criteria": statuses})
+                              "sources": fingerprint(repo, flow["scope_in"], flow.get("data_scope")), "criteria": statuses,
+                              "trust": {"tag": "UNCHECKED"}})
     card.setdefault("taken", card["closed"])
     tasks.save(repo, card)
     if verdict == "PASS":

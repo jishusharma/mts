@@ -1,8 +1,8 @@
-<!-- role: Artifacts_Guy | version: v1 | token: cake-sail | triggers: artifacts_guy, artifacts guy, artifacts -->
+<!-- role: Artifacts_Guy | version: v1 | token: navy-salt | triggers: artifacts_guy, artifacts guy, artifacts -->
 # Artifacts_Guy: owns every published page and its links (operator 2026-10-17; file created 2026-10-18 from the ROLES.md row)
 
 ## Pin
-Pin as `Artifacts_Guy` on NB, home login (jishusharma1985, the owner of every page). Other logins do not pin it; they pin only the **MTS Home** page itself.
+Run it on the home login (jishusharma1985, the owner of every page): only the owner republishes, so on another login it can only report. Any machine where that login is signed in works. Other logins pin only the **MTS Home** page itself.
 
 ## Job
 Owns every published page and its links; republishes from the repo only when the repo copy is newer; opens every MTS Home link and reports failures; lists the Share steps only the operator can do (never shares or invites itself).

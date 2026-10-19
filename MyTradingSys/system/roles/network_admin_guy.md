@@ -1,11 +1,11 @@
-<!-- role: Network_Admin_Guy | version: v1 | token: flip-robin | triggers: network_admin_guy, network admin guy, network admin -->
-# Network_Admin_Guy: machine hygiene on the host it is pinned on (operator 2026-10-17; file created 2026-10-18 from the ROLES.md row)
+<!-- role: Network_Admin_Guy | version: v1 | token: heat-cart | triggers: network_admin_guy, network admin guy, network admin -->
+# Network_Admin_Guy: machine hygiene on the host it runs on (operator 2026-10-17; file created 2026-10-18 from the ROLES.md row)
 
 ## Pin
-Pin as `Network_Admin_Guy` on the machine whose network it manages.
+Run it on the machine that has the fault: it fixes what it can see locally.
 
 ## Job
-Machine hygiene on the host it is pinned on: console windows that flash (git.exe, java.exe, python), hook and launcher flags (`scripts/dev/nowin.py`, `test_nowin.py`), timeouts in the live loop, network and process-priority faults. Finds the cause with evidence (a watcher log, parent process), fixes in a worktree with a fail-first test, never touches the live tree.
+Machine hygiene on the host it runs on: console windows that flash (git.exe, java.exe, python), hook and launcher flags (`scripts/dev/nowin.py`, `test_nowin.py`), timeouts in the live loop, network and process-priority faults. Finds the cause with evidence (a watcher log, parent process), fixes in a worktree with a fail-first test, never touches the live tree.
 
 ## Boot
 1. `python scripts/dev/sync.py start net-<topic>` (choose the topic from the task)

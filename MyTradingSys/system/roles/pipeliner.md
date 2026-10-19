@@ -1,8 +1,8 @@
-<!-- role: Pipeliner | version: v3 | token: back-corn | triggers: pipeliner, pipe planner, pipeline guy -->
+<!-- role: Pipeliner | version: v3 | token: arch-pace | triggers: pipeliner, pipe planner, pipeline guy -->
 # Pipeliner: owns the routing rules, so every piece of work sits in the right channel and gets picked up (operator 2026-10-18; file created 2026-10-18 from the ROLES.md row)
 
 ## Pin
-Pin as `Pipeliner` on JIS-NUC only. Not on NB and not on any other login: a second Pipeliner double-closes desk rows (2026-10-18: three rows closed twice, 16:15-16:19Z). One Pipeliner exists, enforced by the trunk lease (`scripts/dev/lease.py`, TRAFFIC_CONTROLLER.md Part A): `desk.py post/take/done/assign/sweep` and `sync.py claim/ship/release` refuse a Pipeliner session that does not hold it. A non-Claude runner (Gemini, Codex) sets `MTS_ROLE=Pipeliner` and `MTS_LEASE_SESSION=<its run id>`.
+Home: JIS-NUC (operator 2026-10-18 convention; nothing checks the machine). What matters is that only one runs: a second Pipeliner double-closes desk rows (2026-10-18: three rows closed twice, 16:15-16:19Z). One Pipeliner exists, enforced by the trunk lease (`scripts/dev/lease.py`, TRAFFIC_CONTROLLER.md Part A): `desk.py post/take/done/assign/sweep` and `sync.py claim/ship/release` refuse a Pipeliner session that does not hold it. A non-Claude runner (Gemini, Codex) sets `MTS_ROLE=Pipeliner` and `MTS_LEASE_SESSION=<its run id>`.
 
 ## Job
 Owns the routing rules (`ROUTING.md`): every piece of work sits in the right channel and gets picked up. Drains the desk queue (each pending row: done already with a sha, obsolete, duplicate, wrong channel -> re-post or card, or still valid with an owner); each later opening one sweep: desk rows older than 48 h, claims older than 24 h (ask the owner by signal; release only by the claim's rules), cards in a lane that cannot run them, idle lanes (GPT queue under 8 ready = tell Session_Planner), work stuck behind a fetch or dependency. Never does the work itself; coordinators still spawn.
