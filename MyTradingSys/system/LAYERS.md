@@ -105,6 +105,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `wavetrend-audit-c1-disposition` refined p2 SONNET: WaveTrend: state report and disposition of AUDIT_2026-10-18 C1 + control-arm + manifest findings
   - `malkan-universe-data-power` ready p3 SONNET: Malkan: Indian-equity D/W/M data sources, universe size and power (items 1/4/10, gates 0d/0e)
   - `malkan-w1hr-local-whisper-asr` ready p3 JIS-NB: Malkan W1HrDl70Lhk: local Whisper ASR on JIS-NB to recover Hinglish 5-Star RSI stop wording (no YouTube captio
+  - `rsi-cross-unmapped-and-pivot-stack` raw p3 SONNET: RSI cross events are rejected as unmapped in the auto-trader (no layer_rules entry); and no layer stacks level
   - `malkan-prereg-dwm-equities` refined p4 SONNET: Malkan: pre-registration for the D/W/M equity home test (items 6/7/8/9/11/12, gates 0a/0f)
 
 ## CryptoCred setups (`cryptocred`)
