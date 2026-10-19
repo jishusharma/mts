@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-19T05:13:15Z",
   "commands": [],
   "created": "2026-10-15T20:33:54Z",
   "depends_on": [],
@@ -12,6 +14,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Verified existing f068fd95 fix: 13 tests pass; main uses check_manifest; frozen manifest/l",
+      "ref": "42bfb006",
+      "utc": "2026-10-19T05:13:15Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -28,7 +36,12 @@
   "refined_by": "",
   "refreshed": "2026-10-17T20:25:07Z",
   "refs": [],
-  "result": "",
+  "result": "Verified existing f068fd95 fix: 13 tests pass; main uses check_manifest; frozen manifest/ledger/RESULT/PRE_REG byte-identical. Report 2026-10-19_gross-screen-refuse-a-changed-data-manif.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py",
     "MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py"
@@ -46,12 +59,13 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-15_gross-screen-gpt-audit.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add check_manifest(files, path=None): if path exists, compare exact file-name set and sha256 per file to the stored rows; any difference raises SystemExit naming the file; else (no file) write it as today.",
     "Call it from main() in place of the unconditional manifest(files); keep manifest() writing only when the file is absent.",
     "Add tests in test_screen.py using tempfile dirs only (never the real manifest): matching hashes pass, one changed byte refuses, an extra or missing file refuses, and the stored file is unchanged after a refusal."
   ],
+  "taken": "2026-10-19T05:12:17Z",
   "tests": "test_screen.py::test_manifest_refuses_changed_input and ::test_manifest_refuses_file_set_change fail on the current screen.py (manifest() overwrites, no check) and pass after the edit.",
   "title": "Gross screen: refuse a changed data manifest instead of overwriting it (GPT audit MED)",
   "weight": "IMPORTANT",
