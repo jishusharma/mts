@@ -19,16 +19,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/gate-observability",
-      "ref": "8d2549c885d7",
-      "utc": "2026-10-16T19:16:41Z"
+      "line": "Lab_Guy re-stamp: move-live-host-generated-files-status-md (run_all_tests.py dropped from ",
+      "ref": "52263d413d62",
+      "utc": "2026-10-19T21:36:32Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "692afe6313f8 auto_deploy: restart the alert runner by its -m module name (kill pattern mat",
-      "ref": "MyTradingSys/system/DEPLOY_RUNBOOK.md",
-      "utc": "2026-10-16T13:55:54Z"
+      "line": "52263d413d62 Lab_Guy re-stamp: move-live-host-generated-files-status-md (run_all_tests.py ",
+      "ref": "MyTradingSys/system/card_specs/move-live-host-generated-files-status-md.md",
+      "utc": "2026-10-19T21:36:32Z"
     }
   ],
   "layers": [],
@@ -37,7 +37,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "W9 orderflow-restart-map",
-  "refreshed": "2026-10-17T07:25:00Z",
+  "refreshed": "2026-10-19T21:47:10Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -62,7 +62,7 @@
     "generators (audit_digest.py, audit_t0_checks.py, Build-Check.ps1, oi_recorder.py, htf_context_live.py): read-only, must keep writing the same paths",
     "live tree, HALT files, deploys, process stop/restart"
   ],
-  "scope_sha": "8d2549c885d7",
+  "scope_sha": "52263d413d62",
   "size": "M",
   "sources": [],
   "state": "ready",
