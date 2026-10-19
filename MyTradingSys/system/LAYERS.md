@@ -213,7 +213,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/analysts/ROADMAP.md`
 - Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-14_qriptal-score-binance.md`; `MyTradingSys/research/layer_lab/reports/2026-10-13_qriptal-score-binance.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `qriptal-discord-calls-2026-10-18` raw p2 SONNET: Qriptal: transcribe Habib's 2026-10-13..18 Discord calls into the call ledger (B162)
+  - `qriptal-discord-calls-2026-10-18` ready p2 SONNET: Qriptal: transcribe Habib's 2026-10-13..18 Discord calls into the call ledger (B162)
   - `analyst-ingest-bennett-dpa` ready p3 SONNET: Implement DailyPriceAction RSS market plan ingestion for Justin Bennett
   - `analyst-ingest-cryptochase-x` ready p3 SONNET: Implement Crypto Chase FVG social call listener
   - `analyst-ingest-rlinda-tv` ready p3 SONNET: Implement automated TradingView idea scraper for RLinda setups
@@ -244,8 +244,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/wavetrend_2026-10-17/RESULT.md`; `MyTradingSys/research/wavetrend_2026-10-17/AUDIT_2026-10-18.md`; `MyTradingSys/research/wavetrend_2026-10-17/DISPOSITION_2026-10-19.md`; `MyTradingSys/research/wavetrend_2026-10-17/STATUS_2026-10-19.md`
 - Roadmap: `MyTradingSys/research/wavetrend_2026-10-17/STATUS_2026-10-19.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `wavetrend-c1-v2` raw p1 SONNET: WaveTrend C1 detector correction and new count-only prereg
-  - `wavetrend-data-inference` raw p1 SONNET: WaveTrend DEV input manifest and matched inference
+  - `wavetrend-c1-v2` refined p1 SONNET: WaveTrend C1 detector correction and new count-only prereg
+  - `wavetrend-data-inference` refined p1 SONNET: WaveTrend DEV input manifest and matched inference
 
 ## Pitchfork (Andrews / Schiff / Morge median line) (`pitchfork`)
 - Status: Foundational study papers delivered (papers/01, 02, 03); detector, tests, and YouTube BTC evaluation benchmark built.
