@@ -11,7 +11,7 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Write prob_tables_dev.csv, prob_tables_val.csv and PROB_REPORT.md per SPEC s2 Steps D-E: P(deeper by d | touch, visit n), P(RSI bounce), P(price bounce > fee), bounce-size quantiles and MAE, Wilson CIs, effective N in days, predicted-vs-realised calibration on VALIDATION (read once). Scope change (OPUS_FRAMING s4): add survival curve S(n)=P(no lower price low within n bars), P(deeper by d), rarity classes recent/infrequent/rare by trailing touch history (7d/90d/365d, OURS), shrinkage to the neighbouring level, and a peaks-over-threshold tail fit for the rare class; walk-forward only.",
+  "goal": "Write prob_tables_dev.csv, prob_tables_val.csv and PROB_REPORT.md per SPEC s2 Steps D-E: P(deeper by d | touch, visit n), P(RSI bounce), P(price bounce > fee), bounce-size quantiles and MAE, Wilson CIs, effective N in days, predicted-vs-realised calibration on VALIDATION (read once). Scope change (OPUS_FRAMING s4): add survival curve S(n)=P(no lower price low within n bars), P(deeper by d), rarity",
   "id": "rsi-deep-prob-tables",
   "lane": "SONNET",
   "layers": [],
