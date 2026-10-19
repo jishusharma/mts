@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-19T07:01:02Z",
   "commands": [
     "python -m unittest MyTradingSys.backtest.layers.alerts.test_lookahead_forcing"
   ],
@@ -15,6 +16,12 @@
   "id": "t02-f3-event-forcing-fixtures-for-wlow-b",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/backtest/layers/alerts/test_lookahead_forcing.py: shared causal harness + pla",
+      "ref": "aefffd3f",
+      "utc": "2026-10-19T07:01:02Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,7 +41,12 @@
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T02_lookahead_time.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/backtest/layers/alerts/test_lookahead_forcing.py: shared causal harness + planted-peek self-tests + malkan_bull (1 event) and funding_cvd_fade (2 events) fixtures, 0 late/repaint/poison diffs; 8 tests",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/alerts/live_runner_cli.py",
     "MyTradingSys/backtest/layers/alerts/live_layers.py",
@@ -53,13 +65,14 @@
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T02_lookahead_time.md (T02-F3, table 3a)",
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T02/t02_truncation.py:1-20 (method)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Create MyTradingSys/backtest/layers/alerts/test_lookahead_forcing.py with helper assert_causal(layer_fn, bars, cuts) implementing full/cut/NaN-tail/x10-tail (method of t02_truncation.py) and a planted-peek self-test",
     "malkan_bull: read malkan_40_60.py trigger; hand-build 1h bars that force a bull event; add the test",
     "funding_cvd_fade: read funding_cvd_fade.py; hand-build bars plus an injected funding series (as-of the cut) that force an event; add the test",
     "Run the new file and test_live_runner_layers.py"
   ],
+  "taken": "2026-10-19T07:01:02Z",
   "tests": "test_lookahead_forcing.py: events > 0 asserted per fixture (fails with the old random bars), causal-layer cases PASS, planted-peek case is detected.",
   "title": "T02-F3 part a: event-forcing look-ahead fixtures: shared harness, malkan_bull and funding_cvd_fade",
   "weight": "ROUTINE",
