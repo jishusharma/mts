@@ -1,0 +1,39 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-19T14:44:46Z",
+  "depends_on": [
+    "rsi-deep-prob-tables"
+  ],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Per SPEC s2 Step I: causal divergence events (stamped at confirmation), matched no-divergence control, fixed 8-feature context vector, forward % and ATR move, walk-forward shallow model vs Step G level-only and Step H confluence; also Step J (pairing rules P-adj/P-anchor/P-any, RSI regime band, causal reversal scales, session-normalised phase key).",
+  "id": "rsi-deep-divergence-context",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Operator RSI deep-buy study 2026-10-19. Full design: MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md. Chain: depth-map -> prereg -> engine -> run-dev -> crossvendor review (Gemini) -> VALIDATION once. Raw: Session_Planner refines (done_when, steps, tests), Lab_Guy stamps C1+. OPUS_FRAMING.md (2026-10-20) changes scope/order: Stage 0 economic-floor kill test first, then depth map, hazard+context, confirmations, then prereg/engine. Cards stay raw.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md"
+  ],
+  "scope_out": [],
+  "size": "S",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "RSI deep-buy Step I: causal bullish divergence at RSI lows + speed/volatility context, matched vs no-divergence",
+  "weight": "",
+  "worker": ""
+}
