@@ -1229,6 +1229,29 @@ def lease_guard(argv):
     return 0
 
 
+def toplevel_or_none():
+    try:
+        return toplevel(Path.cwd())
+    except Exception:
+        return None
+
+
+def run_host_health(repo):
+    """Host-health preflight (host_health.py): reap dead gates/tickets, report strays, disk and CPU queue. Fail closed: never raises,
+    never blocks a ship; errors go to <temp>/mts_host_health/health.log."""
+    try:
+        if repo is None:
+            return []
+        import host_health
+        return host_health.run_safe(repo)
+    except Exception as e:
+        try:
+            print(f"host health skipped: {e!r}")
+        except Exception:
+            pass
+        return []
+
+
 def main(argv):
     cmds = {"start": start, "ship": ship, "news": news, "claims": print_claims, "health": health}
     extra = {"claim", "release"}
@@ -1272,6 +1295,7 @@ def main(argv):
             return 1
         return 0
     if argv and argv[0] == "ship":
+        run_host_health(toplevel_or_none())
         try:
             if "--fix-ci" in argv:
                 # GATE_SPEED X6: the way through a red-CI block is the FULL gate (never the fast one), so it cannot be a cheap bypass
@@ -1307,6 +1331,8 @@ def main(argv):
         return 2
     try:
         repo = toplevel(Path.cwd())
+        if argv[0] == "health":
+            run_host_health(repo)
         if argv[0] == "news":
             news(repo, *(int(a) for a in argv[1:2]))
         else:
