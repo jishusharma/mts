@@ -1,0 +1,10 @@
+{
+  "done_when": "operator ran the stop command or allow-listed the pattern in MyTradingSys/system/STRAY_REAP_POLICY.md",
+  "from": "DESKTOP-F7IU69N",
+  "id": "20261020-213805-stray-cpu-hog-on-desktop-f7iu69n",
+  "need": "STRAY PID 20304 Antigravity.exe cpu=39357s age=49.6h chain: Antigravity.exe[20188] <- explorer.exe[9864] <- (parent gone)\n    cmd: \"C:\\Users\\e-ngineers\\AppData\\Local\\Programs\\antigravity\\Antigravity.exe\" --type=renderer --user-data-dir=\"C:\\Users\\e-ngineers\\AppData\\Roaming\\Antigravity\" --sta\n    stop: taskkill /PID 20304 /T /F\nSTRAY PID 20216 Antigravity.exe cpu=9732s age=49.6h chain: Antigravity.exe[20188] <- explorer.exe[9864] <- (parent gone)\n    cmd: \"C:\\Users\\e-ngineers\\AppData\\Local\\Programs\\antigravity\\Antigravity.exe\" --type=gpu-process --user-data-dir=\"C:\\Users\\e-ngineers\\AppData\\Roaming\\Antigravity\" --\n    stop: taskkill /PID 20216 /T /F\nSTRAY PID 12404 language_server.exe cpu=3818s age=49.6h chain: Antigravity.exe[20188] <- explorer.exe[9864] <- (parent gone)\n    cmd: C:\\Users\\e-ngineers\\AppData\\Local\\Programs\\antigravity\\resources\\bin\\language_server.exe --standalone --override_ide_name antigravity --subclient_type hub --ove\n    stop: taskkill /PID 12404 /T /F",
+  "posted": "2026-10-20T21:38:05Z",
+  "status": "pending",
+  "target": "JIS-NB",
+  "title": "Stray CPU hog on DESKTOP-F7IU69N"
+}
