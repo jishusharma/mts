@@ -1,4 +1,6 @@
-# DEPLOY RUNBOOK (live tree on JIS-NB)
+# DEPLOY RUNBOOK (live tree = the folder holding `.mts_live`: JIS-NB today, DESKTOP-F7IU69N after the cutover)
+
+> **Live host move staged 2026-10-21 (LIVE_HOST_MOVE.md).** Steps below name the live tree by its `.mts_live` marker: after the cutover read "JIS-NB" here as DESKTOP-F7IU69N (live tree `C:\MTS\mts-live`). The cutover is the one-owner checklist in LIVE_HOST_MOVE.md section 4, run by the operator or a named coordinator only; builders never run it. Deploy-specific rules: section "Live host cutover" at the end.
 
 > **RETIRED 2026-10-17, see SCHEDULING_POLICY.md.** MTS-AutoDeploy, MTS-DailyHygiene, MTS-Supervisor, MTS-CodexLab and the other scheduled tasks below are stopped: deploy by the manual fallback or a coordinator-run step. Registration and zero-cost-tick sections are history.
 
@@ -131,3 +133,11 @@ operator-side session runs them as the logged-in user):
 - Cheap interim cut that needs no new mechanism: lengthen the App dispatcher cadence when STATUS shows an empty queue, and
   let the dispatcher's step 1 stay one Bash call (already so).
 
+## Live host cutover (JIS-NB -> DESKTOP-F7IU69N, staged 2026-10-21, NOT RUN)
+Full checklist: LIVE_HOST_MOVE.md section 4 (one owner, one restart window). Deploy-specific rules:
+- The laptop live tree starts as a fresh clone at the gated green SHA (`git checkout --detach <origin/green/fast-track>`), quick gate green in it, before `.mts_live` is created there. JIS-NB must run the same SHA at the stop, so the move changes the host and nothing else.
+- Exactly one `.mts_live` at a time: JIS-NB's is renamed `.mts_live.retired-<date>` (checklist step 7) before `mts start` on the laptop. Two markers = two trees every deploy step treats as live.
+- Copy the untracked runtime state (B152 `_state.json` and the LIVE_HOST_MOVE s5 list) with sha256 verification, as step 5 above and `deploy_untrack_backup.py` do; never through git (public repo).
+- `MTS_LIVE_OWNER_DIR` on both hosts points at the NUC share before either loop starts; `live_owner.py check` must refuse on the host that is not the owner.
+- After the cutover the manual fallback above runs on the laptop: `git -C C:\MTS\mts-live ...`. Java changes still need `mvn compile` and a restart window there.
+- Rollback: LIVE_HOST_MOVE.md section 4 "Rollback"; the JIS-NB tree is kept unchanged 14 days.
