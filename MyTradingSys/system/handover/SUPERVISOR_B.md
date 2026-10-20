@@ -1,9 +1,9 @@
-# Supervisor hand-over, login B (DESKTOP-F7IU69N, 2026-10-20T00:58Z)
+# Supervisor hand-over, login B (JIS-NUC, 2026-10-20T14:51Z)
 
-- Next: CI RED on fast-track since 83cd67a0: cause = my outcome_labeler open-budget check (> vs >= on Windows clock), fix 5d812463 on branch DESKTOP-F7IU69N/ci-red-4f-1020-2, ship 'ci-red-4f' was still in the gate (agent ac199aef); confirm on trunk, CI green, then ask NB to hand-deploy outcome_labeler (69326506+fix) and live-host untrack commit 1 (ee286acf; commit 2 GENERATED_RE removal after NB confirms), StateCode e4bcc09f only after GPT review card review-statecode-backfill-gpt (NUC). Indicator audit agent a6debb23 shipping (indicator-audit-1020). Done today: 4 stamps, statecode backfill, outcome-labeler, sim validation (no defect), gate quarantine cap, 11 sessions archived. Next cards: refresh sim card STALE, dsa-audit-02/03 stamps, t02-f3 raw cards, Pipeliner (15 desk rows), NUC idle (login A ended).
-- Budget at hand-over: 5h 37.0% (reset 2026-10-20T01:19Z), week 35.0% of cap 95 (reset 2026-10-25T16:59Z), mode NORMAL, k 0.12 (GUESS)
+- Next: Event turns cannot start sessions; on first operator turn start Builders lab-planted-error-trial + fable-setups-pack-prep and a Pipeliner (18 desk rows); gate-tiers-by-path a4105e0c and review-ground d761f57b shipped
+- Budget at hand-over: 5h 12.0% (reset 2026-10-20T15:30Z), week 49.0% of cap 95 (reset 2026-10-25T17:00Z), mode NORMAL, k 0.125
 - Peers live at hand-over: none
-- Last picks: indicator-values-multi-model-audit, review-ground-layer-youtube-strategy-and
-- Open claims from DESKTOP-F7IU69N: analyst-ingest-bennett-dpa, backfill-t087-session-level-split-and-ve, bt-engine-simulate-trade-fail-closed-on, encode-v1-only-kill-scope-for-weekly-low, indicator-values-multi-model-audit, move-live-host-generated-files-status-md, outcome-labeler-timeout, simulator-validation-planted-edge, state-code-accumulator-backfill, t02-f1-review-allowlist-chunk-2, t02-f1-review-allowlist-chunk-3, t02-f1-review-the-132-unreviewed-look-ah, t02-f3-event-forcing-fixtures-for-wlow-b (finish, hand over in the card, or release by the claim rules)
+- Last picks: lab-planted-error-trial, fable-setups-pack-prep
+- Open claims from JIS-NUC: funding-carry-with-real-spot-basis-margi (finish, hand over in the card, or release by the claim rules)
 
 Successor: `You are Supervisor. Login B. Continue from MyTradingSys/system/handover/SUPERVISOR_B.md`
