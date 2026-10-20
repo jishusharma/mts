@@ -48,6 +48,7 @@ HOW IT WORKS
   Paste : You are Eagle_Eyes.
           then paste the screenshot
   Gets  : market read vs live files, logged, flagged if they disagree.
+          Say "think" after a read: 2 options for the system (never trades).
   Note  : full detail only on JIS-NB (live files live there).
           Elsewhere it reads a copy stamped mirror@<utc> - check the age.
 
