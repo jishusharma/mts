@@ -1,5 +1,13 @@
 # NEXT_SESSION
 
+## Gate tiers by path: shipped 2026-10-20 (hand-over, Sonnet)
+Run with zero operator input; defaults for open questions. gate-tiers-by-path is on trunk (ba46d25c7); measured on JIS-NB after it: non-live code ship (smoke gate, 11 steps) 71 s wall; docs-only ship prints "Gate mode: docs" and runs no local step.
+- Claims now live on the side branch `claims`: `sync.py claim/release` add no trunk commits; `relay_board.py` reads it (b1bb04ff3).
+- Follow-up, one small card: `desk.py` (trunk_claims), `trace.py` (open_claims), `make_layers_board.py` and `scripts/sched/relay.py` (live path: needs the restart/error tests) still read claim files from the trunk folder; point them at `origin/claims`.
+- A duplicate copy of this task sits unshipped on branch claude/vigilant-chatelet-c1366c (mid-merge, 10 conflicts); leave it, the operator decides on deleting it.
+- Second ship from one tree within 10 min is refused; `--again` overrides (trunk implementation).
+- Do not add gates, lints or rule docs for this.
+
 ## Thinker hand-over 2026-10-20 (v1 plan written; nothing else changed)
 Run with zero operator input; defaults for open questions. The v1 plan is in `MyTradingSys/research/v1_plan_2026-10-20/` (README.md indexes D1-D9 and DECISIONS_PROPOSED.md). Nothing in it changed code, cards, config or the live tree.
 - Pipeliner / coordinator: post the seven questions in `DECISIONS_PROPOSED.md` on the decision page (OPERATOR_DECISIONS.md format, defaults given). Until the operator answers, apply only the defaults that cost nothing: release the 3 stale claims, 35-41 h with no commit (D1 section 4), ship the unjam branch `claude/traffic-unjam-77aa8e` after a rule-11 review (2 commits not on trunk: 958c0d05, 8d3dc4d0), run `tasks-sweep-closed-cards`.
