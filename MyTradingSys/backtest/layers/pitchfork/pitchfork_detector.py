@@ -115,6 +115,9 @@ class PitchforkChannel:
             self.offset_uml = self.offset_p2
             self.offset_lml = self.offset_p1
 
+        # Identify which tine P2 originated from (invariant to pitchfork variant or inversion)
+        self.p2_is_lower = (self.offset_p2 <= 0.0)
+
         self.channel_width = abs(self.offset_uml - self.offset_lml)
         self.half_width = self.channel_width / 2.0
 
@@ -166,19 +169,19 @@ class PitchforkChannel:
         if not self.has_reached_ml:
             if low <= ml <= high:
                 self.has_reached_ml = True
-            elif self.is_ascending() and close >= ml:
+            elif self.p2_is_lower and (close >= ml or high >= ml):
                 self.has_reached_ml = True
-            elif not self.is_ascending() and close <= ml:
+            elif not self.p2_is_lower and (close <= ml or low <= ml):
                 self.has_reached_ml = True
 
-        # Track approach ratio towards ML from P2
+        # Track approach ratio towards ML from P2 tine
         if not self.has_reached_ml and self.channel_width > 0:
-            if self.is_ascending():
-                # Started at P2 (low tine / LML), moving towards ML
+            if self.p2_is_lower:
+                # Started at P2 (lower tine / LML), moving upwards towards ML
                 dist_traveled = close - lml
                 ratio = max(0.0, min(1.0, dist_traveled / max(1e-9, self.half_width)))
             else:
-                # Started at P2 (high tine / UML), moving towards ML
+                # Started at P2 (upper tine / UML), moving downwards towards ML
                 dist_traveled = uml - close
                 ratio = max(0.0, min(1.0, dist_traveled / max(1e-9, self.half_width)))
             if ratio > self.max_ml_approach_ratio:
@@ -190,15 +193,15 @@ class PitchforkChannel:
 
         # Hagopian Failure evaluation:
         # If price reversed before reaching ML (approached at least 15% towards ML then rolled over)
-        # and now closes beyond the opposing outer tine:
-        # In an ascending pitchfork: price failed to reach ML and closes below LML.
-        # In a descending pitchfork: price failed to reach ML and closes above UML.
+        # and closes beyond the tine it originated from (P2 tine):
+        # - If P2 originated on lower tine: price fails to reach ML and closes below LML.
+        # - If P2 originated on upper tine: price fails to reach ML and closes above UML.
         hagopian = False
         if not self.has_reached_ml and not self.hagopian_triggered:
-            if self.is_ascending() and breached_lml and self.max_ml_approach_ratio >= 0.15:
+            if self.p2_is_lower and breached_lml and self.max_ml_approach_ratio >= 0.15:
                 self.hagopian_triggered = True
                 hagopian = True
-            elif not self.is_ascending() and breached_uml and self.max_ml_approach_ratio >= 0.15:
+            elif not self.p2_is_lower and breached_uml and self.max_ml_approach_ratio >= 0.15:
                 self.hagopian_triggered = True
                 hagopian = True
 
@@ -225,6 +228,82 @@ class PitchforkChannel:
         )
 
 
+class LogPitchforkChannel:
+    """Wrapper that evaluates a PitchforkChannel in log space (ln(price)).
+
+    Eliminates linear slope collapse and distortion across multi-year Bitcoin expansions.
+    Internal geometry operates on ln(price); query methods return exponentiated dollar levels.
+    """
+
+    def __init__(
+        self,
+        p0: PitchforkPivot,
+        p1: PitchforkPivot,
+        p2: PitchforkPivot,
+        variant: PitchforkVariant = PitchforkVariant.STANDARD,
+    ):
+        p0_log = PitchforkPivot(index=p0.index, price=math.log(max(1e-9, p0.price)), is_high=p0.is_high, timestamp=p0.timestamp)
+        p1_log = PitchforkPivot(index=p1.index, price=math.log(max(1e-9, p1.price)), is_high=p1.is_high, timestamp=p1.timestamp)
+        p2_log = PitchforkPivot(index=p2.index, price=math.log(max(1e-9, p2.price)), is_high=p2.is_high, timestamp=p2.timestamp)
+
+        self._inner = PitchforkChannel(p0_log, p1_log, p2_log, variant=variant)
+        self.variant = variant
+        self.slope_log = self._inner.slope
+        self.channel_width_pct = math.exp(self._inner.channel_width) - 1.0
+
+    def get_ml(self, t: float) -> float:
+        return math.exp(self._inner.get_ml(t))
+
+    def get_uml(self, t: float) -> float:
+        return math.exp(self._inner.get_uml(t))
+
+    def get_lml(self, t: float) -> float:
+        return math.exp(self._inner.get_lml(t))
+
+    def get_upper_warning_line(self, t: float, level: int = 1) -> float:
+        return math.exp(self._inner.get_upper_warning_line(t, level=level))
+
+    def get_lower_warning_line(self, t: float, level: int = 1) -> float:
+        return math.exp(self._inner.get_lower_warning_line(t, level=level))
+
+    def get_upper_quarter_line(self, t: float) -> float:
+        return math.exp(self._inner.get_upper_quarter_line(t))
+
+    def get_lower_quarter_line(self, t: float) -> float:
+        return math.exp(self._inner.get_lower_quarter_line(t))
+
+    def is_ascending(self) -> bool:
+        return self._inner.is_ascending()
+
+    @property
+    def has_reached_ml(self) -> bool:
+        return self._inner.has_reached_ml
+
+    @property
+    def hagopian_triggered(self) -> bool:
+        return self._inner.hagopian_triggered
+
+    def eval_bar(self, t: int, high: float, low: float, close: float) -> PitchforkBarResult:
+        res = self._inner.eval_bar(
+            t,
+            high=math.log(max(1e-9, high)),
+            low=math.log(max(1e-9, low)),
+            close=math.log(max(1e-9, close)),
+        )
+        return PitchforkBarResult(
+            bar_index=t,
+            close_price=close,
+            ml_value=math.exp(res.ml_value),
+            uml_value=math.exp(res.uml_value),
+            lml_value=math.exp(res.lml_value),
+            reached_ml=res.reached_ml,
+            breached_uml=res.breached_uml,
+            breached_lml=res.breached_lml,
+            hagopian_triggered=res.hagopian_triggered,
+            status=res.status,
+        )
+
+
 def construct_pitchfork(
     p0: PitchforkPivot,
     p1: PitchforkPivot,
@@ -232,19 +311,20 @@ def construct_pitchfork(
     variant: PitchforkVariant = PitchforkVariant.STANDARD,
     auto_schiff: bool = True,
     max_slope_bars_ratio: float = 1.0,
-) -> PitchforkChannel:
-    """Constructs a PitchforkChannel with optional auto-switch to Modified Schiff
-    if the raw standard slope is excessively steep.
+    log_scale: bool = False,
+) -> Any:
+    """Constructs a PitchforkChannel (or LogPitchforkChannel) with optional auto-switch
+    to Modified Schiff if the raw standard slope is excessively steep.
     """
+    if log_scale:
+        return LogPitchforkChannel(p0, p1, p2, variant=variant)
+
     pf = PitchforkChannel(p0, p1, p2, variant=variant)
 
     if auto_schiff and variant == PitchforkVariant.STANDARD:
-        # Calculate slope magnitude normalized by channel width
-        # If slope per bar exceeds channel half-width / dt, slope is steep
         dt = max(1.0, float(p2.index - p1.index))
         steepness = abs(pf.slope) * dt / max(1e-9, pf.half_width)
         if steepness > max_slope_bars_ratio:
-            # Automatically promote to Modified Schiff to flatten the angle
             pf = PitchforkChannel(p0, p1, p2, variant=PitchforkVariant.MODIFIED_SCHIFF)
 
     return pf
@@ -259,6 +339,7 @@ def find_pivots_zigzag(
     """Non-repainting pivot finder using local extrema with volatility/change gating.
 
     A pivot at index i is confirmed at index i + lookback.
+    Accurately tracks extending legs by updating peaks/troughs until reversal gating triggers.
     """
     n = len(highs)
     if n < lookback * 2 + 1:
@@ -271,13 +352,30 @@ def find_pivots_zigzag(
         is_local_high = all(highs[i] >= highs[j] for j in range(i - lookback, i + lookback + 1) if j != i)
         is_local_low = all(lows[i] <= lows[j] for j in range(i - lookback, i + lookback + 1) if j != i)
 
-        if is_local_high and (last_type is None or last_type is False):
-            if not pivots or (highs[i] - pivots[-1].price) / max(1e-9, pivots[-1].price) >= min_change_pct:
+        if last_type is None:
+            if is_local_high:
                 pivots.append(PitchforkPivot(index=i, price=highs[i], is_high=True))
                 last_type = True
-        elif is_local_low and (last_type is None or last_type is True):
-            if not pivots or (pivots[-1].price - lows[i]) / max(1e-9, pivots[-1].price) >= min_change_pct:
+            elif is_local_low:
                 pivots.append(PitchforkPivot(index=i, price=lows[i], is_high=False))
                 last_type = False
+        elif last_type is True:
+            # Currently tracking an upswing / swing high
+            if is_local_high and highs[i] > pivots[-1].price:
+                # Higher high extends current swing high
+                pivots[-1] = PitchforkPivot(index=i, price=highs[i], is_high=True)
+            elif is_local_low and (pivots[-1].price - lows[i]) / max(1e-9, pivots[-1].price) >= min_change_pct:
+                # Confirmed reversal to swing low
+                pivots.append(PitchforkPivot(index=i, price=lows[i], is_high=False))
+                last_type = False
+        elif last_type is False:
+            # Currently tracking a downswing / swing low
+            if is_local_low and lows[i] < pivots[-1].price:
+                # Lower low extends current swing low
+                pivots[-1] = PitchforkPivot(index=i, price=lows[i], is_high=False)
+            elif is_local_high and (highs[i] - pivots[-1].price) / max(1e-9, pivots[-1].price) >= min_change_pct:
+                # Confirmed reversal to swing high
+                pivots.append(PitchforkPivot(index=i, price=highs[i], is_high=True))
+                last_type = True
 
     return pivots
