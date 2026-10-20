@@ -46,7 +46,8 @@ Write-Host "-- network adapters: Windows may not turn them off --"
 foreach ($n in @('Wi-Fi', 'Ethernet')) {
     $pm = Get-NetAdapterPowerManagement -Name $n -ErrorAction SilentlyContinue
     Write-Host ("{0,-46} now AllowComputerToTurnOffDevice={1}  want Disabled" -f $n, $(if ($pm) { $pm.AllowComputerToTurnOffDevice } else { 'n/a (needs elevation)' }))
-    if ($Apply -and $pm) { Set-NetAdapterPowerManagement -Name $n -AllowComputerToTurnOffDevice Disabled -ErrorAction Continue }
+    # Set-NetAdapterPowerManagement has no parameter for this one: change the CIM object and pipe it back
+    if ($Apply -and $pm) { $pm.AllowComputerToTurnOffDevice = 'Disabled'; $pm | Set-NetAdapterPowerManagement -ErrorAction Continue }
 }
 
 Write-Host "-- Windows Update: no automatic restart while signed in; show restart notifications --"
