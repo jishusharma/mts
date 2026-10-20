@@ -1,0 +1,1 @@
+{"t": "20261020T034507Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship ship-root-cause Result: a starved but progressing step is no longer killed at 30 min; hung steps still die after 300 s without CPU progress."}
