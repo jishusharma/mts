@@ -7,7 +7,7 @@ from typing import List, Optional
 def rsi_core(closes: List[float], period: int = 14) -> List[Optional[float]]:
     """
     Wilder RSI: returns a list the same length as `closes`; entries before index `period` are `None`.
-    Seed `avg_gain`/`avg_loss` from the mean of the positive/negative deltas among the first `period` bar-to-bar changes (0.0 if there are none of one sign).
+    Seed avg_gain/avg_loss as sum(positive_deltas)/period and sum(negative_deltas)/period over the first period deltas (FORMULAS s1 steps 2-3; always divided by period, never by count of nonzeros).
     RSI at index `period`: if `avg_loss == 0`, `50.0` if `avg_gain == 0` else `100.0`; otherwise `100 - 100/(1 + avg_gain/avg_loss)`.
     For `i > period`: Wilder-smooth `avg_gain = (avg_gain*(period-1) + gain)/period`, `avg_loss = (avg_loss*(period-1) + loss)/period` where `gain = max(0, closes[i]-closes[i-1])`, `loss = max(0, closes[i-1]-closes[i])`, then the same RSI formula.
     Raise `ValueError` if `period < 1` or `len(closes) <= period`.
