@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-20T01:03:48Z",
   "commands": [
     "python -m pytest -q MyTradingSys/tests/docs"
   ],
@@ -15,6 +16,12 @@
   "id": "roles-md-index-slim",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "ROLES.md slimmed to single index table under 620 tokens; role_loader check passes; test_ro",
+      "ref": "552d0d43",
+      "utc": "2026-10-20T01:03:48Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -41,7 +48,12 @@
   "refs": [
     "MyTradingSys/system/ARCHITECTURE.md"
   ],
-  "result": "",
+  "result": "ROLES.md slimmed to single index table under 620 tokens; role_loader check passes; test_role_loader passes",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/ROLES.md"
   ],
@@ -51,12 +63,13 @@
   "scope_sha": "4a59a3412243",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Wait for traffic-controller and the ru4 claim (role_loader lint) to release.",
     "Move prose into the owning role files.",
     "role_loader.py check; ship."
   ],
+  "taken": "2026-10-20T01:03:48Z",
   "tests": "MyTradingSys/tests/test_role_loader.py",
   "title": "ROLES.md slim to an index of roles/*.md",
   "weight": "",

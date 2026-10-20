@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-20T01:04:22Z",
   "commands": [
     "python -m pytest -q MyTradingSys/tests/docs"
   ],
@@ -15,6 +16,12 @@
   "id": "pipeliner-boot-diet",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Pipeliner boot step 4 whole-file reads replaced by section pointers; boot context drops fr",
+      "ref": "552d0d43",
+      "utc": "2026-10-20T01:04:22Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -41,7 +48,12 @@
   "refs": [
     "MyTradingSys/system/ARCHITECTURE.md"
   ],
-  "result": "",
+  "result": "Pipeliner boot step 4 whole-file reads replaced by section pointers; boot context drops from 24.1k to <7k tokens",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/roles/pipeliner.md"
   ],
@@ -51,12 +63,13 @@
   "scope_sha": "41182a2e418b",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Wait until the traffic-controller claim on pipeliner.md is released.",
     "Replace whole-file boot reads with named sections.",
     "role_loader.py retoken + check; measure with mts_doctor.py; ship."
   ],
+  "taken": "2026-10-20T01:04:22Z",
   "tests": "MyTradingSys/tests/test_role_loader.py",
   "title": "Pipeliner boot diet: boot reads to pointers, target under 12k tokens",
   "weight": "",

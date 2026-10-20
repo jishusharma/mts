@@ -107,7 +107,7 @@ EXTRA_FILE_S = 4              # OURS: estimated seconds per step-3xt file (one p
 # Estimated CPU seconds of the script-style test steps a change can reach (each run alone on JIS-NB, 2026-10-18; 3k/3ds/3dk/3bk run as
 # 2-3 shards, the figure is their sum); a step above the budget is deferred to CI unless a changed file names it.
 STEP_EST = {"3k": 200, "3ds": 30, "3bk": 25, "3dk": 14, "3ad": 24, "3sig": 21, "3cx": 11, "3tk": 13, "3lh": 9, "3ms": 13, "3sg": 9,
-            "3cr": 8, "3lm": 4, "3hy": 1, "3w": 9, "3x": 3}
+            "3cr": 8, "3lm": 4, "3hy": 1, "3w": 9, "3x": 3, "3gi": 9, "3dl": 3, "3tl": 4}
 RECORD_NAME = "mts_gate_record.json"   # GATE_SPEED D3: per-worktree git dir, never shared between trees or machines
 RECORD_MAX_AGE_S = 24 * 3600
 
@@ -669,8 +669,8 @@ def targeted_tests(files, root=REPO):
 
 FAST_JOBS_MAX = 6
 FAST_SLOTS = 2
-FAST_COSTLY_ALWAYS = ("3w", "3tl", "3dl")   # gate_select.ALWAYS steps of 3-9 s that a fast gate runs only when the change can matter to them
-FAST_ALWAYS = ("4d", "3qn")   # 4d: the doc/tree-scanning pytest tests, 3qn: the quarantine list stays valid (both seconds)
+FAST_COSTLY_ALWAYS = ("3w", "3tl", "3dl", "4d")   # gate_select.ALWAYS steps of 3-9 s that a fast gate runs only when the change can matter to them
+FAST_ALWAYS = ("3qn",)   # 3qn: the quarantine list stays valid
 fast_applied = False
 fast_info = {}
 
@@ -712,7 +712,7 @@ def apply_fast(plan, files, nums, jobs):
     est_file = lambda f: gate_impact.estimate(f, TEST_FILE_SECONDS)   # noqa: E731
     step_est = lambda n: STEP_EST.get(n, UNIT_DEFAULT_S)              # noqa: E731
     all_nums = [s.num for s in plan]
-    pytest_nums = [n for n in all_nums if n.startswith("4") and n not in FAST_ALWAYS and n != TARGET_STEP]
+    pytest_nums = [n for n in all_nums if n.startswith("4") and n not in FAST_ALWAYS and n not in FAST_COSTLY_ALWAYS and n != TARGET_STEP]
     steps_list = [(s.num, s.cmd_text) for s in plan]
     # ALWAYS steps that cost 3-9 s each run in a fast gate only when the change can matter to them: a file their command names, a ride-along
     # doc (task cards, INDEX/BUGS), a changed test file (CI deps lint). 3x (wiring check), 3gd (test discovery), 3qn, 4d always run.
@@ -763,12 +763,30 @@ def apply_fast(plan, files, nums, jobs):
     info["est_s"] = round((FAST_BASE_S + sum(units[k][0] for k in kept)) / max(1, workers))
     deselect = gate_impact.active_deselects(gate_impact.trunk_quarantine())
     info["quarantined"] = deselect
+    all_pytest_fk = []
+    for pn in pytest_nums:
+        all_pytest_fk.extend(f for f in pyt.get(pn, []) if ("py", pn, f) in kept)
+    all_pytest_fk = sorted(set(all_pytest_fk))
+    batch_pytest = (1 <= len(all_pytest_fk) <= 6 and sum(est_file(f) for f in all_pytest_fk) <= 15)
+    batched_done = False
     new_plan = []
     for s in plan:
         n = s.num
         if n == TARGET_STEP:
             continue
         if n in pytest_nums:
+            if batch_pytest:
+                if not batched_done:
+                    batched_done = True
+                    ds = [d for d in deselect if d.split("::")[0] in all_pytest_fk]
+                    step = Step(n, f"Pytest (fast, batched): {len(all_pytest_fk)} files across shards that the change reaches",
+                                s.label, cmd=pytest_cmd(all_pytest_fk, deselect=ds))
+                    step.est = sum(est_file(f) for f in all_pytest_fk) + 1
+                    new_plan.append(step)
+                else:
+                    s.skip = f"fast: batched into step {pytest_nums[0]} ({len(all_pytest_fk)} files)"
+                    new_plan.append(s)
+                continue
             fk = sorted(f for f in pyt.get(n, []) if ("py", n, f) in kept)
             if not fk:
                 s.skip = "fast: no reached test in this shard" if n not in pyt else "fast: reached tests deferred to CI (budget)"
@@ -805,6 +823,17 @@ def apply_fast(plan, files, nums, jobs):
                 s.skip = "fast: no layer test reached (CI runs it)"
             new_plan.append(s)
             continue
+        if n == "3dl" and (n in keep_nums or ("sc", n) in kept):
+            if not any(f.endswith("ci.yml") for f in files):
+                rel_tests = sorted(t for t in reach.tests if gate_impact.is_test_file(t))
+                if rel_tests and len(rel_tests) <= 20:
+                    s = Step("3dl", f"CI dependency lint ({len(rel_tests)} reached test files)", s.label,
+                             cmd=[sys.executable, "scripts/dev/ci_deps_lint.py", "--entries", ",".join(rel_tests)])
+                    s.est = 2
+                elif not rel_tests and not any(gate_impact.is_test_file(f) for f in files):
+                    s.skip = "fast: no test files reached (CI runs full lint)"
+                    new_plan.append(s)
+                    continue
         if n in keep_nums or ("sc", n) in kept:
             s.est = step_est(n)
         elif ("sc", n) in units:

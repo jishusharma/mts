@@ -46,11 +46,17 @@ def last_change(repo, paths):
     """(short sha, utc, subject) of the newest commit touching any of paths, or None."""
     if not paths:
         return None
+    k = (str(Path(repo).resolve()), tuple(paths))
+    if k in _LAST_CHANGE_CACHE:
+        return _LAST_CHANGE_CACHE[k]
     row = git(repo, "log", "-1", "--format=%H%x09%cI%x09%s", "--", *paths)
     if not row:
+        _LAST_CHANGE_CACHE[k] = None
         return None
     sha, iso, subj = row.split("\t", 2)
-    return sha[:12], utc_of(iso), subj
+    res = (sha[:12], utc_of(iso), subj)
+    _LAST_CHANGE_CACHE[k] = res
+    return res
 
 
 def newest_doc(card, repo):
@@ -112,9 +118,21 @@ def add_entry(card, kind, ref, utc, line):
     return card
 
 
+_SHALLOW_CACHE = {}
+_LAST_CHANGE_CACHE = {}
+
+
+def clear_caches():
+    _SHALLOW_CACHE.clear()
+    _LAST_CHANGE_CACHE.clear()
+
+
 def is_shallow(repo):
     """A depth-limited clone (CI checkout) cannot say when a path last changed: git log then reports HEAD for every path."""
-    return git(repo, "rev-parse", "--is-shallow-repository") == "true"
+    k = str(Path(repo).resolve())
+    if k not in _SHALLOW_CACHE:
+        _SHALLOW_CACHE[k] = (git(repo, "rev-parse", "--is-shallow-repository") == "true")
+    return _SHALLOW_CACHE[k]
 
 
 def stale_reason(card, repo):
@@ -139,6 +157,8 @@ def overdue(card, repo, now=None):
     if is_shallow(repo):
         return ""
     lc = last_change(repo, scope_paths(card, repo))
+    if not lc:
+        return why
     now = now or datetime.now(timezone.utc)
     age = (now - datetime.strptime(lc[1], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)).total_seconds() / 3600
     return why if age > GRACE_H else ""

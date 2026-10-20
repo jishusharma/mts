@@ -26,7 +26,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 LIVE_DIRS = ("MyTradingSys/execution/", "MyTradingSys/runtime/", "scripts/sched/", "src/")
 SHARED = ("__init__", "conftest")      # act on every test beside them
 DATA_SKIP = (".md", ".txt")            # docs are the doc steps' job (a ride-along doc must not seed every script that names it)
-FAST_BUDGET_S = 30                     # OURS: selection budget in wall seconds; a ship has ~12-15 s of its own (fetch, merge, push) in a 60 s target
+FAST_BUDGET_S = 8                      # OURS: selection budget in wall seconds; keep fast gate well under smoke gate
 EFFECTIVE_WORKERS = 3                  # OURS: measured 2026-10-18 on 4 cores / 8 threads with other sessions running: 6 workers gave a 2-3x speedup, not 6x
 QUARANTINE = "scripts/dev/gate_quarantine.tsv"
 NO_QUARANTINE = ("MyTradingSys/execution/", "MyTradingSys/runtime/", "MyTradingSys/tests/")   # live-path tests are never deselected (MyTradingSys/tests/ holds the live-code tests: DECISION OURS, whole dir refused)
@@ -96,8 +96,14 @@ class Reach:
         self.tests, self.direct, self.closure, self.live_hit, self.stems = set(), set(), set(), [], set()
 
 
-def reach(changed, root=REPO):
-    changed = [norm(f) for f in changed if f]
+_REPO_CACHE = {}
+
+
+def _repo_index(root):
+    root_key = str(Path(root).resolve())
+    cached = _REPO_CACHE.get(root_key)
+    if cached is not None:
+        return cached
     files = tracked_py(root)
     texts = {}
     for f in files:
@@ -105,6 +111,24 @@ def reach(changed, root=REPO):
             texts[f] = (Path(root) / f).read_text(encoding="utf-8", errors="ignore")
         except OSError:
             texts[f] = ""
+    by_stem = defaultdict(set)
+    test_files = []
+    test_refs = {}
+    for f in files:
+        t = texts[f]
+        for n in imported_names(t):
+            by_stem[n].add(f)
+        if is_test_file(f):
+            test_files.append(f)
+            test_refs[f] = ref_stems(t)
+    entry = (files, texts, by_stem, test_files, test_refs)
+    _REPO_CACHE[root_key] = entry
+    return entry
+
+
+def reach(changed, root=REPO):
+    changed = [norm(f) for f in changed if f]
+    files, texts, by_stem, test_files, test_refs = _repo_index(root)
     seed_stems = {stem_of(f) for f in changed if f.endswith(".py")}
     seed_files = {f for f in changed if f.endswith(".py") and f in texts}
     for f in changed:
@@ -114,10 +138,6 @@ def reach(changed, root=REPO):
                 if base in t:
                     seed_files.add(g)
                     seed_stems.add(stem_of(g))
-    by_stem = defaultdict(set)                  # name -> files importing it
-    for f, t in texts.items():
-        for n in imported_names(t):
-            by_stem[n].add(f)
     stems, closure, todo = set(seed_stems), set(seed_files), list(seed_stems)
     while todo:
         for g in by_stem.get(todo.pop(), ()):
@@ -134,10 +154,8 @@ def reach(changed, root=REPO):
 
     shared_seed, shared_all = folders(seed_files), folders(closure)
     counterparts = {"test_" + s for s in seed_stems}
-    for t in files:
-        if not is_test_file(t):
-            continue
-        refs = ref_stems(texts[t])
+    for t in test_files:
+        refs = test_refs[t]
         if t in seed_files or refs & seed_stems or PurePosixPath(t).stem in counterparts or any(t.startswith(s) for s in shared_seed):
             r.tests.add(t)
             r.direct.add(t)

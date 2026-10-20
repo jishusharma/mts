@@ -548,6 +548,8 @@ def cmd_check(a):
 
 
 def cmd_lint(a):
+    if hasattr(TS, "clear_caches"):
+        TS.clear_caches()
     cards = load_all(REPO)
     reg = registry(REPO)
     errs = []
@@ -645,7 +647,7 @@ HOLD_RE = re.compile(r"HOLD[ :]+(A-\d{8}-\d+)")
 HOLD_CLEARED_RE = re.compile(r"HOLD-CLEARED[ :]+(A-\d{8}-\d+)")
 
 
-def review_hashes(card, repo=None):
+def review_hashes(card, repo=None, need_sha=True):
     """Compute content hashes of card, code, spec, data, and scope files."""
     repo = Path(repo or REPO)
     contract_fields = {k: card.get(k) for k in (
@@ -681,11 +683,13 @@ def review_hashes(card, repo=None):
     spec_hash = hashlib.sha256(json.dumps(spec_files, sort_keys=True).encode("utf-8")).hexdigest()[:12] if spec_files else ""
     data_hash = hashlib.sha256(json.dumps(data_files, sort_keys=True).encode("utf-8")).hexdigest()[:12] if data_files else ""
 
-    try:
-        lc = TS.last_change(repo, TS.scope_paths(card, repo)) if hasattr(TS, "last_change") else None
-        scope_sha = lc[0] if lc else ""
-    except Exception:
-        scope_sha = ""
+    scope_sha = ""
+    if need_sha:
+        try:
+            lc = TS.last_change(repo, TS.scope_paths(card, repo)) if hasattr(TS, "last_change") else None
+            scope_sha = lc[0] if lc else ""
+        except Exception:
+            scope_sha = ""
 
     return {
         "card": card_hash,
@@ -734,7 +738,7 @@ def stamp_kind(card, repo=None):
             producer_ids.add(producer.casefold())
         if not reviewer or reviewer.casefold() in {"", "x", "self", "producer", "reviewer", "pending", "unknown"} or reviewer.casefold() in producer_ids:
             return ""
-        cur = review_hashes(card, repo)
+        cur = review_hashes(card, repo, need_sha=bool(receipt.get("scope_sha")))
         if receipt.get("card_hash") and receipt["card_hash"] != cur["card"]:
             return ""
         if receipt.get("scope_hash") and receipt["scope_hash"] != cur["scope"]:
@@ -766,7 +770,7 @@ def stamp_kind(card, repo=None):
             producer_ids = {str(card.get(k) or "").strip().casefold() for k in ("producer", "producer_model", "vendor", "model", "worker", "refined_by", "author") if card.get(k)}
             if rev in producer_ids or rev in {"self", "producer"}:
                 return ""
-        cur = review_hashes(card, repo)
+        cur = review_hashes(card, repo, need_sha=False)
         m_scope = re.search(r"\b(?:scope|scope_hash)=([a-f0-9]+)\b", note, re.I)
         if m_scope and m_scope.group(1).lower() != cur["scope"].lower():
             return ""
@@ -796,7 +800,7 @@ def stamp_kind(card, repo=None):
             producer_ids.add(m_prod.group(1).strip("<>[](){}.,:;").casefold())
         if reviewer in {"", "x", "self", "producer", "reviewer", "pending", "unknown"} or reviewer in producer_ids:
             return ""
-        cur = review_hashes(card, repo)
+        cur = review_hashes(card, repo, need_sha=False)
         m_scope = re.search(r"\b(?:scope|scope_hash)=([a-f0-9]+)\b", note, re.I)
         if m_scope and m_scope.group(1).lower() != cur["scope"].lower():
             return ""

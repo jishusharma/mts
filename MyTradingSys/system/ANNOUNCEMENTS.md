@@ -47,8 +47,4 @@ Entry format: `### A-<yyyymmdd>-<n> <kind> <title>` with kind one of INFO, DO-NO
 - Operator answers wanted: ROUTING.md conflicts C1-C7 (bottom of that file).
 
 ## EXPIRED
-### A-20261018-5 HOLD No new consumers of unchecked lab bases (operator OK 2026-10-18)
-- Applies to: every session creating or starting a card that reads a lab event table, the Q76 / B187 chain or another lab result as its base.
-- Until: that result carries a trust tag at or above the card's class (card `lab-trust-tag`), or the operator lifts it.
-- What: running work finishes and ships. Not held: live trading operations, deploys, docs, tooling, hygiene, and the retro-audit and re-check cards themselves.
-- LIFTED 2026-10-18 by the operator in chat ("remove all the holds, get the workflow going"). Results on lab bases stay labelled UNCHECKED.
+- **A-20261018-5** HOLD: No new consumers of unchecked lab bases. *LIFTED 2026-10-18 by operator.* Lab base results stay labelled UNCHECKED.

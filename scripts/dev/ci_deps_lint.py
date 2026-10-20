@@ -633,10 +633,14 @@ def main(argv=None):
     root = REPO
     ci_path = None
     verbose = "-v" in args
+    entries = None
     if "--root" in args:
         root = Path(args[args.index("--root") + 1])
     if "--ci-yml" in args:
         ci_path = Path(args[args.index("--ci-yml") + 1])
+    if "--entries" in args:
+        raw = args[args.index("--entries") + 1]
+        entries = [e.strip() for e in raw.split(",") if e.strip()]
     ci_path = ci_path or (Path(root) / CI_YML)
     if not hasattr(sys, "stdlib_module_names"):
         print("ci_deps_lint: needs Python 3.10+ (sys.stdlib_module_names)")
@@ -648,7 +652,7 @@ def main(argv=None):
         return 1
     edges = []
     try:
-        found, dists, n = lint(root, text, edges=edges)
+        found, dists, n = lint(root, text, entries=entries, edges=edges)
     except ValueError as e:
         print(f"ci_deps_lint: {e}")
         return 1
