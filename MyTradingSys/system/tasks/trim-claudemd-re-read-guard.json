@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-18T18:18:25Z",
   "commands": [],
   "created": "2026-10-18T09:59:00Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "trim-claudemd-re-read-guard",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "CLAUDE.md, scripts/sched/relay_prompts/ (8 tests pass in test_relay_prompts.py)",
+      "ref": "2e96d337",
+      "utc": "2026-10-18T18:18:25Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,7 @@
   "refs": [
     "B183"
   ],
-  "result": "",
+  "result": "CLAUDE.md, scripts/sched/relay_prompts/ (8 tests pass in test_relay_prompts.py)",
   "scope_in": [
     "scripts/sched/relay_prompts/",
     "CLAUDE.md"
@@ -51,11 +58,12 @@
   "scope_sha": "84d4cd8f4750",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Update worker launch prompt template to specify 'CLAUDE.md is already in context; do not cat or Read CLAUDE.md'.",
     "Verify builder transcripts show 0 tool turns spent reading CLAUDE.md."
   ],
+  "taken": "2026-10-18T18:18:25Z",
   "tests": "scripts/dev/test_relay_prompts.py",
   "title": "trim-claudemd-re-read-guard",
   "weight": "ROUTINE",

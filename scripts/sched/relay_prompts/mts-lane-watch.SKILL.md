@@ -9,6 +9,6 @@ MTS GPT-lane watch. Cheap on purpose: Haiku, at most 5 tool calls, no reading of
 2. Run inside that work tree: `python scripts/dev/lane_health.py sweep --apply --ship`
    It decides alone: heartbeat older than 3 h or an out-of-credits/usage-limit run marks the GPT lane down; a down lane moves non-crucial CODEX cards to DSA (desk row with a scoped prompt) or lane SONNET and pauses cards flagged crucial/gpt_only; a lane that is back returns untouched cards to CODEX. Its first output line is `LANE gpt=<up|down> ...`.
 3. Final line, verbatim from step 2's first line: `lane-watch: <that line>`. Nothing else. A `NOT-SHIPPED` in it means another change was in the tree: say so, do not fix.
-Never start other scheduled tasks. Never touch HALT files, trades or the live tree. CLAUDE.md hard rules apply.
+Never start other scheduled tasks. Never touch HALT files, trades or the live tree. CLAUDE.md is already in context; do not cat or Read CLAUDE.md.
 
 Output caps (B172): pipe long command output through `| tail -20`, use `--quiet` flags, no `ls`/`head` probes; finish within 15 tool turns.

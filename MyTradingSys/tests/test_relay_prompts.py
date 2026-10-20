@@ -86,3 +86,16 @@ def test_relay_md_keeps_the_curating_and_lane_directives():
     for need in ("Curating when the list runs low: read STATUS.md", "A candidate you cannot scope in one session becomes a scoping task",
                  "Writing the task list: when curating, tag every task a lane can do alone", "`codex_look=N` (JIS-NUC only)"):
         assert need in h, need
+
+
+def test_prompts_warn_against_reading_claudemd():
+    # B183 trim 2: workers must be clearly instructed that CLAUDE.md is already in context
+    for f in prompt_files():
+        t = read(f)
+        assert ("CLAUDE.md is already in context" in t or "CLAUDE.md is already loaded" in t), (
+            f"{os.path.basename(f)} should instruct workers that CLAUDE.md is already in context"
+        )
+        assert ("do not cat or Read CLAUDE.md" in t or "do not read it" in t), (
+            f"{os.path.basename(f)} should instruct workers not to cat or Read CLAUDE.md"
+        )
+
