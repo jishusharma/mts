@@ -273,7 +273,7 @@ class TestRepoRoles(unittest.TestCase):
         self.assertIn("Thinker", rl.KNOWN_ROLES)
         roles = rl.local_roles(REPO)
         self.assertIn("Thinker", roles)
-        for prompt in ("You are Thinker.", "I need a thinker", "You are Think_Guy.", "be the think guy"):
+        for prompt in ("You are Thinker.", "I need a thinker", "You are thinker_guy", "You are Think_Guy.", "be the think guy"):
             self.assertEqual(rl.match_roles(prompt, roles), ["Thinker"], prompt)
         self.assertEqual(rl.banner("Thinker", "v1", "a-b", "thinker.md", "abc12345").split(":")[0], "ROLE LOADED")
         self.assertIn("Thinker", rl.row_names(REPO))
