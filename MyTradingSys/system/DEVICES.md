@@ -115,6 +115,21 @@ Backtest data (F:\MTS\data on the NUC) is not in git; it is copied after new rec
 - Repo copy: C:\Users\e-ngineers\IdeaProjects\BinanceDataFeed is on master (0cca386, tracks the removed share; stale): re-clone per section 5; the live tree will be a fresh clone `C:\MTS\mts-live` (LIVE_HOST_MOVE s4 step 3). LAN IPv4: 192.168.29.157 (Wi-Fi, DHCP, 2026-10-20; reserve it on the router). No F: drive: runtime state stays on C:, backtest data is read from the NUC share.
 - Git author email: `e-ngineers@DESKTOP-F7IU69N` (traffic.py attribution; card tc6-lenovo-git-email).
 
+## 8b. Worktree maintenance, every device (operator 2026-10-21; the one allowed standing task, SCHEDULING_POLICY.md s4)
+
+One script, identical on JIS-NB, JIS-NUC and the Lenovo laptop (DESKTOP-F7IU69N): `scripts/dev/wt_maint.py`. Daily 07:15 local, headless (`conhost --headless`), task `MTS-WorktreeMaint-<device>`, device read from the hostname, paths from the checkout.
+Each run: fetch; retire finished worktrees (sync.py tidy's rules incl. hand-named trees; ignored data first moved to the primary tree's `Dumps/wt_rescue/`); `git worktree prune`; delete local branches fully merged into origin/fast-track; write trees holding unshipped/uncommitted work to `Dumps/worktree_report.txt` (gitignored) and one line to the SUPERVISOR_LOG.
+Never touched: primary, live tree (`.mts_live`), lane trees, Codex trees, any tree changed in the last 30 min or idle under 24 h, any tree with uncommitted files or commits not on origin/fast-track. No stash/reset/force-push; a second run changes nothing.
+
+```
+python scripts/dev/wt_maint.py install      # once per device, from the primary checkout (after pulling origin/fast-track)
+python scripts/dev/wt_maint.py status       # device, task state, last run, last report
+python scripts/dev/wt_maint.py              # dry run (default); --apply does it by hand
+python scripts/dev/wt_maint.py uninstall
+```
+
+Operator line for the Lenovo session: `You are Builder. Install the worktree maintenance job on this device: pull origin/fast-track, run python scripts/dev/wt_maint.py install, run python scripts/dev/wt_maint.py status, ship.`
+
 ## 9. Router and home network
 
 Router model, firmware and admin address: NOT CAPTURED (admin address is usually the default gateway: `ipconfig | findstr /C:"Default Gateway"`). The router admin login stays with the operator; it is never written to this repo, a chat or a session record.
