@@ -1,0 +1,1 @@
+{"t": "20261020T030619Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship ship-root-cause Result: a starved but progressing gate is no longer killed at 1 h; hung gates still die after 600 s without CPU progress."}
