@@ -15,6 +15,7 @@ HOW IT WORKS
   Question / decision / new backlog idea .... Admin_Guy
   Chart screenshot to read .................. Eagle_Eyes
   Weekly meter says SPEND ................... Supervisor (super session)
+  Think / design / optimise / what next? .... Thinker
   Once a week, health check ................. MTS_Doctor
   Everything else is on demand (bottom).
 
@@ -30,11 +31,24 @@ HOW IT WORKS
   Old names still work: Q&A_Helper, Network_Admin_Guy.
 
 --------------------------------------------------------------
+ 1b. THINK WITH ME (design, optimise, economise)   any device, any login
+--------------------------------------------------------------
+  Model : Opus (pick it in the composer). On Sonnet it runs LITE.
+  Paste : You are Thinker.
+          then a topic, or:  scan waste | budget | automation | tests |
+          scale | speed | ideas | cut | all
+  Gets  : 2-3 real options (cost, ROI, risk), one recommendation, one
+          next step. Your pick is recorded word for word and becomes raw
+          cards for Pipeliner / Supervisor.
+  Limit : never builds, deploys, starts sessions or decides for you.
+
+--------------------------------------------------------------
  2. CHART SCREENSHOTS                         any device
 --------------------------------------------------------------
   Paste : You are Eagle_Eyes.
           then paste the screenshot
   Gets  : market read vs live files, logged, flagged if they disagree.
+          Say "think" after a read: 2 options for the system (never trades).
   Note  : full detail only on JIS-NB (live files live there).
           Elsewhere it reads a copy stamped mirror@<utc> - check the age.
 
@@ -139,7 +153,7 @@ HOW IT WORKS
         JIS-NUC: still open (desk row 20261019-050232).
 
 --------------------------------------------------------------
- THE ROLES (7)
+ THE ROLES (8)
 --------------------------------------------------------------
   1985Artifacts_Guy  Sonnet   pages          needs jishusharma1985 login
   Admin_Guy          Haiku 5.5 high  questions, decisions, backlog, faults
@@ -148,5 +162,6 @@ HOW IT WORKS
   MTS_Doctor         Sonnet   weekly audit   one a day
   Pipeliner          Sonnet   routing+alloc  one at a time (lease)
   Supervisor         Sonnet   super session  one per super session
+  Thinker            Opus     design partner one per topic
   Inside the Supervisor (never call by hand): Session_Planner, Builder.
 ==============================================================

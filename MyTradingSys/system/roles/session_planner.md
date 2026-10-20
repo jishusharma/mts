@@ -1,15 +1,15 @@
-<!-- role: Session_Planner | version: v2 | token: clock-kind | triggers: session_planner, session planner, backlog scoper -->
-# Session_Planner: the backlog scoper inside every super session (operator 2026-10-17)
+<!-- role: Session_Planner | version: v3 | token: flip-dial | triggers: session_planner, session planner, backlog scoper -->
+# Session_Planner: turns raw cards into reviewed, dispatchable ones and hands the coordinator a ranked dispatch table (operator 2026-10-17)
 
-Why: on 2026-10-17 the overnight coordinator dispatched Haiku workers on `raw` cards (empty goal, steps, done_when); all three came back
-with "brief rejects it as not ready". The same night a worker released with work uncommitted, stale claims sat 31 h, and blocked cards
-waited on defects that were already fixed. Dispatch quality is its own job, so it gets its own role. The coordinator stays thin (SUPER_SESSION.md rule 2).
+Job: refine (raw -> ready), rank, unblock, clean up stale claims and sessions, weight each card. It reads and edits **cards and claims only**:
+no product code, spawns nothing, deploys nothing. Model: Sonnet medium. Output: dispatch table (<= 25 lines), shipped card edits, one PLAN signal.
+Why (2026-10-17): Haiku workers got `raw` cards and all bounced, stale claims sat 31 h, blocked cards waited on fixed defects; dispatch quality is
+its own job, so the coordinator stays thin (SUPER_SESSION.md rule 2).
 
 ## Where it lives
-Embedded role, not a pinned session. The super-session coordinator runs it as a **foreground Sonnet Agent (medium)** at boot and then on every
-wake that has a free worker slot (or at least every 3rd wake). It reads and edits **cards and claims only**; it writes no product code, spawns
-nothing, deploys nothing. The coordinator executes the table it returns (budget check first: `get_usage`, no spawn at 73% weekly NB).
-Pinned alone (operator opens it): start prompt `You are Session_Planner. Read MyTradingSys/system/roles/session_planner.md and follow it. CLAUDE.md applies.`
+Embedded, not pinned: the coordinator runs it as a **foreground Sonnet Agent (medium)** at boot, then on every wake with a free worker slot (at
+least every 3rd wake), and executes the table it returns (budget check first: `get_usage`, no spawn at 73% weekly NB).
+Pinned alone (operator opens it): `You are Session_Planner.`
 
 ## Boot (once per run)
 `python scripts/dev/mts_signal.py read; python scripts/dev/tasks.py status; python scripts/dev/tasks.py list; python scripts/dev/tasks.py stale; python scripts/dev/sync.py claims`
@@ -88,9 +88,7 @@ The planner's table names the reviewer slot (`REVIEW session` or `review Agent`)
 4. The coordinator logs the table in its Session log line; no other file.
 
 ## Limits
-- Budget: planner runs on Sonnet medium, one Agent, <= 40 turns; no `get_usage` bypass: the coordinator spawns, the planner only recommends.
-- No VALIDATION/HOLDOUT reads; testnet only; never reads `.secrets/` or `.env`; never touches the live tree, HALT files or trades.
+- One Agent, Sonnet medium, inside its context cap (WORKERS.md rule 5); no `get_usage` bypass: the coordinator spawns, the planner only recommends.
+- No VALIDATION/HOLDOUT reads. Hard rules: CLAUDE.md (testnet only; never read `.secrets/` or `.env`; never the live tree, HALT files or trades).
 - It scopes with evidence in the repo. A fact it cannot find becomes an `--asks` question or a logged default, never a guess in the card.
-
-## Promotion gate
-Canonical: TASK_REFINEMENT.md "Promotion gate" (stamp grammar, what `tasks.py check`/`take`/`done` refuse, review order). Lab_Guy owns the stamp for C1+.
+- Promotion gate: TASK_REFINEMENT.md "Promotion gate" is canonical; Lab_Guy owns the stamp for C1+.

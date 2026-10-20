@@ -27,7 +27,7 @@ ROLES_REL = "MyTradingSys/system/roles"
 ROLES_MD_REL = "MyTradingSys/system/ROLES.md"
 TRUNK = "origin/fast-track"
 KNOWN_ROLES = ["Eagle_Eyes", "Lab_Guy", "Session_Planner", "MTS_Doctor", "1985Artifacts_Guy", "Admin_Guy",
-               "Pipeliner", "Supervisor", "Builder"]
+               "Pipeliner", "Supervisor", "Builder", "Thinker"]
 # Old names that still open the merged/renamed role (operator 2026-10-20); work even when the role file is not local yet.
 ALIASES = {
     "1985Artifacts_Guy": ["artifacts_guy", "artifacts guy"],
