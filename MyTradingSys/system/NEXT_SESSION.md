@@ -1,7 +1,7 @@
 # NEXT_SESSION
 
 ## Gate tiers by path: shipped 2026-10-20 (hand-over, Sonnet)
-Run with zero operator input; defaults for open questions. gate-tiers-by-path is on trunk (ba46d25c7); measured on JIS-NB after it: non-live code ship (smoke gate, 11 steps) 71 s wall; docs-only ship prints "Gate mode: docs" and runs no local step.
+Run with zero operator input; defaults for open questions. gate-tiers-by-path is on trunk (ba46d25c7); measured on JIS-NB after it: non-live code ship (smoke gate, 11 steps) 71 s wall; docs-only ship (this hand-over) 11 s wall, no local step.
 - Claims now live on the side branch `claims`: `sync.py claim/release` add no trunk commits; `relay_board.py` reads it (b1bb04ff3).
 - Follow-up, one small card: `desk.py` (trunk_claims), `trace.py` (open_claims), `make_layers_board.py` and `scripts/sched/relay.py` (live path: needs the restart/error tests) still read claim files from the trunk folder; point them at `origin/claims`.
 - A duplicate copy of this task sits unshipped on branch claude/vigilant-chatelet-c1366c (mid-merge, 10 conflicts); leave it, the operator decides on deleting it.
