@@ -241,6 +241,17 @@ class ColdBacklog(Base):
         self.assertEqual(cm.exception.code, 4)
         self.assertTrue(self.labels.exists())
 
+    def test_zero_time_budget_stops_after_one_file_on_a_frozen_clock(self):
+        # Windows CI clock ticks ~15 ms: a whole cycle can read the same monotonic value, so elapsed == budget == 0.0 must stop
+        for i in range(300):
+            write_snap(self.snaps, i)
+        self.m.OPEN_BUDGET_S = 0.0
+        self.m.MAX_OPEN_PER_CYCLE = 10 ** 9
+        with mock.patch.object(self.m.time, "monotonic", return_value=1000.0):
+            with self.assertRaises(SystemExit) as cm:
+                self.run_main()
+        self.assertEqual(cm.exception.code, 4)
+
     def test_budget_spent_on_unreadable_files_is_reported_not_silent(self):
         for i in range(30):                   # the oldest names are all unreadable: a cycle that makes no progress exits 4
             (self.snaps / f"BTCUSDT_{i:06d}.json").write_text("{bad", encoding="utf-8")
