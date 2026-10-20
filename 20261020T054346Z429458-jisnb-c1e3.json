@@ -1,0 +1,1 @@
+{"t": "20261020T054346Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship Result: trunk's supervisor.py/role/START_HERE taken as is; branch adds only mts_signal.py budget via scripts/sched/budget.py (test asserts file contents) and read_peers never lists the caller as "}
