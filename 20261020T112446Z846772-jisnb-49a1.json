@@ -1,0 +1,1 @@
+{"t": "20261020T112446Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship Result: test_dsa 27 pass; the second full-gate ship failed only on test_dsa BeginEndTest (claim files no longer on trunk)."}
