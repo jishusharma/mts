@@ -666,7 +666,8 @@ def cmd_end(a):
         want = slugify(branch.split("dsa-", 1)[-1])
         slug = next((f.stem for f in (root / CLAIMS_DIR).glob("*.md") if f.stem.strip("-") == want), "")
     claim_rel = f"{CLAIMS_DIR}/{slug}.md"
-    on_origin = bool(slug) and git(root, "cat-file", "-e", f"origin/{TRUNK}:{claim_rel}", check=False)[0] == 0
+    git(root, "fetch", "--quiet", "origin", "claims", timeout=120, check=False)   # claims live on the side branch (D10 2026-10-20)
+    on_origin = bool(slug) and git(root, "cat-file", "-e", f"origin/claims:{claim_rel}", check=False)[0] == 0
     if slug and ((root / claim_rel).exists() or on_origin):
         rc, out, err = sync_cmd(root, "release", slug)
         if rc != 0:
