@@ -1,0 +1,1 @@
+{"t": "20261020T214928Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship > /tmp/ship2.log 2>&1; tail -12 /tmp/ship2.log; grep -n \"FAIL\" /tmp/ship2.log | head"}
