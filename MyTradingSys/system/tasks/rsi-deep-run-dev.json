@@ -11,7 +11,7 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Run the full DEV grid with episode_sim.py on BTCUSDT 1m (NB data) and write grid_dev.csv; no VALIDATION or HOLDOUT bars.",
+  "goal": "Run the full DEV grid with episode_sim.py on BTCUSDT 1m (NB data) and write grid_dev.csv; no VALIDATION or HOLDOUT bars. Per TF, report X1-X3 gross moves in % and in fee multiples next to the fee-net result (SPEC s3, SHOT_REVIEW C9).",
   "id": "rsi-deep-run-dev",
   "lane": "DSA-NB",
   "layers": [],
@@ -25,7 +25,8 @@
   "result": "",
   "scope_in": [
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md",
-    "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md"
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SHOT_REVIEW.md"
   ],
   "scope_out": [],
   "size": "S",
