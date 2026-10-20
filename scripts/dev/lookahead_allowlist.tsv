@@ -233,3 +233,4 @@ MyTradingSys/research/levels_confluence_2026-10-14/ladder.py	pivot-right-neighbo
 MyTradingSys/research/levels_confluence_2026-10-14/ladder.py	pivot-right-neighbour	if agg[i]['l'] < min(x['l'] for x in agg[i - 2:i] + agg[i + 1:i + 3]):	pre-existing, unreviewed
 MyTradingSys/research/pitchfork_2026-10-19/run_pitchfork_event_study.py	fwd-index	p0, p1, p2 = pivots[i], pivots[i + 1], pivots[i + 2]	pivots are historical confirmed extrema; triplets form the 3-pivot pitchfork structure
 MyTradingSys/research/pitchfork_2026-10-19/run_pitchfork_event_study.py	fwd-index	for rem_bar in eval_window[sub_idx + 1 :]:	outcome measurement loop after Hagopian failure trigger bar in event study window
+MyTradingSys/research/pitchfork_2026-10-19/run_pitchfork_4h_poc_study.py	fwd-index	p0, p1, p2 = pivots[i], pivots[i + 1], pivots[i + 2]	pivots are historical confirmed extrema; triplets form the 3-pivot pitchfork structure

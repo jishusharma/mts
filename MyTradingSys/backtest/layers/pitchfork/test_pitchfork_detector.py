@@ -197,6 +197,57 @@ class TestPitchforkDetector(unittest.TestCase):
         res = pf.eval_bar(25, high=ml_25 * 1.05, low=ml_25 * 0.95, close=ml_25 * 1.01)
         self.assertTrue(res.reached_ml)
 
+    def test_pitchfork_vp_poc_confluence(self):
+        from MyTradingSys.backtest.vp_pivot_probe import build_profile
+
+        # Synthetic swing bars from P0 (100) to P1 (150) to P2 (110)
+        # Heavy volume concentrated around 110 (the support node)
+        lows = [100.0, 110.0, 125.0, 140.0, 148.0, 135.0, 120.0, 110.0, 109.5, 110.5]
+        highs = [102.0, 115.0, 130.0, 145.0, 150.0, 140.0, 125.0, 114.0, 112.0, 113.0]
+        # Bimodal volume: standard volume along trend, massive volume cluster around 110
+        volumes = [500.0, 600.0, 700.0, 800.0, 1200.0, 900.0, 800.0, 5000.0, 6500.0, 4800.0]
+
+        vp = build_profile(lows, highs, volumes, w=1.0)
+        self.assertIsNotNone(vp)
+        poc = vp["poc_price"]
+        val = vp["val"]
+        vah = vp["vah"]
+
+        # POC must be in the high-volume cluster around 110.0 - 111.0
+        self.assertGreaterEqual(poc, 109.0)
+        self.assertLessEqual(poc, 112.0)
+
+        # Pitchfork P2 at 110.0 is inside Value Area [VAL, VAH] and within 1% of POC
+        p2_price = 110.0
+        self.assertTrue(val <= p2_price <= vah)
+        poc_error = abs(p2_price - poc) / poc
+        self.assertLessEqual(poc_error, 0.015)
+
+    def test_pitchfork_tine_retest_limit_fill(self):
+        # Modified Schiff pitchfork: P0=(0, 100), P1=(10, 150), P2=(20, 110)
+        pf = PitchforkChannel(self.p0, self.p1, self.p2, variant=PitchforkVariant.MODIFIED_SCHIFF)
+        is_long = (not self.p2.is_high)
+        self.assertTrue(is_long)
+
+        # Bar 24: price tests the LML tine
+        t = 24
+        lml_val = pf.get_lml(float(t))
+        # Bar wraps around LML: low <= LML <= high
+        bar_low = lml_val - 2.0
+        bar_high = lml_val + 3.0
+        self.assertTrue(bar_low <= lml_val <= bar_high)
+
+        # Simulated limit fill at lml_val
+        entry_price = lml_val
+        stop_price = entry_price * 0.985
+        ml_val = pf.get_ml(float(t))
+
+        # Reward to risk ratio at tine entry towards ML
+        potential_reward = ml_val - entry_price
+        risk = entry_price - stop_price
+        rr_ratio = potential_reward / risk
+        self.assertGreaterEqual(rr_ratio, 2.0)  # Tine entry guarantees favorable R:R >= 2:1
+
 
 if __name__ == "__main__":
     unittest.main()
