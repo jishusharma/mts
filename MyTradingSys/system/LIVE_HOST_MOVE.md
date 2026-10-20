@@ -19,7 +19,17 @@ and taking the loop off the NUC lets the NUC run backtests flat out with no "one
 | Windows Update active hours | 22:00-16:00 (local) | HKLM `...\WindowsUpdate\UX\Settings` |
 | Last boot | 2026-10-18 18:08 local | `Win32_OperatingSystem.LastBootUpTime` |
 | Public API round-trip, Wi-Fi, new TLS connection per call, n=15 each | Binance spot `/api/v3/time` median 205 ms (min 179); Binance futures `/fapi/v1/time` 201 ms (min 176); Deribit testnet `public/get_time` 323 ms (min 303) | probe in section 3 item 9 |
-Not captured here: the same probe from JIS-NB (needed for the comparison), charge thresholds, Energy saver state, logged-off startup.
+| Ethernet | built-in Intel I219-V, disconnected (no dongle needed) | `Get-NetAdapter` |
+| Backup internet | built-in LTE modem (Fibocom L830-EB), no SIM / disconnected | `Get-NetAdapter` |
+| Lid close | AC = do nothing, battery = SLEEP: a power cut with the lid shut would sleep the loop | `powercfg /qh` |
+| Energy saver | turns on at 50 % on battery | `powercfg /qh` (Charge level) |
+| Sleep / hibernate on battery | 30 min / 3 h | `powercfg /qh` |
+| Git / gh | 2.24.1 (too old) / missing | `git --version` |
+| C: free | 400 GB | `Get-PSDrive C` |
+Not captured here: the same probe from JIS-NB (needed for the comparison), charge thresholds, logged-off startup.
+
+`scripts/dev/laptop_live_ready.ps1` prints the scriptable items of section 3 (now vs wanted): sleep/hibernate/lid on AC and battery, Energy saver off, NIC power saving off,
+Windows Update no auto-restart while signed in, Git upgrade, gh install. Elevated `-Apply` sets them. Re-run after a Windows feature update.
 
 ## 2. Roles after the move
 | Host | Role | Holds |
