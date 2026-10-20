@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-20T18:53:11Z",
+  "depends_on": [],
+  "done_when": "Deterministic close-before-publish regression passes and an older emit cannot overwrite INVALID; restart and API-error cases remain green.",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Make invalidation and state publication atomic with respect to one another; prevent fresh valid output after socket-close invalidation.",
+  "id": "statecode-invalid-publish-race",
+  "lane": "JIS-NB",
+  "layers": [
+    "live_engine"
+  ],
+  "live_path": true,
+  "mutation_check": "",
+  "note": "Raw follow-up from GPT review; requires owning-lane refinement and review, no deploy authorization.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "src/main/java/datafeed/StateCodeEmitter.java",
+    "src/test/java/datafeed/StateCodeEmitterTest.java"
+  ],
+  "scope_out": [
+    "deploys, process restarts, HALT files, live tree",
+    "unrelated strategy logic"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-20_review-statecode-backfill-gpt.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "Read the GPT review report and reproduce the cited scenario.",
+    "Pause an emit after snapshot, close the stream, resume publication; assert INVALID, null accumulator signals and sums. Test startup restored directional state and subsequent recovery.",
+    "Run the focused Maven tests, required live-path gates, and obtain a fresh independent review before deployment."
+  ],
+  "tests": "Pause an emit after snapshot, close the stream, resume publication; assert INVALID, null accumulator signals and sums. Test startup restored directional state and subsequent recovery.",
+  "title": "StateCodeEmitter: serialize invalidation with state publication",
+  "weight": "crucial",
+  "worker": "session"
+}
