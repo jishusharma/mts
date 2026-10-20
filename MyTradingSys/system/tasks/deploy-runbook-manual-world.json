@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-20T22:57:40Z",
   "commands": [
     "python -m pytest -q MyTradingSys/tests/docs"
   ],
@@ -15,6 +17,12 @@
   "id": "deploy-runbook-manual-world",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "DEPLOY_RUNBOOK.md refactored to make manual deploy the standard operational procedure; Aut",
+      "ref": "9f1162da",
+      "utc": "2026-10-20T22:57:40Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -41,7 +49,12 @@
   "refs": [
     "MyTradingSys/system/ARCHITECTURE.md"
   ],
-  "result": "",
+  "result": "DEPLOY_RUNBOOK.md refactored to make manual deploy the standard operational procedure; AutoDeploy internals moved to archive/deploy_2026-10-19/AUTODEPLOY_HISTORY.md; doc integrity & B152 retention tests pass (27/27 green).",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/DEPLOY_RUNBOOK.md"
   ],
@@ -52,12 +65,13 @@
   "scope_sha": "312d69da7728",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Split the runbook: procedure, restart map, history.",
     "Move history to MyTradingSys/archive/deploy_2026-10-19/.",
     "Ask Network_Admin_Guy review; ship."
   ],
+  "taken": "2026-10-20T22:57:33Z",
   "tests": "MyTradingSys/tests/docs/test_integrity.py",
   "title": "DEPLOY_RUNBOOK: the hand deploy becomes the procedure, AutoDeploy text becomes history",
   "weight": "",
