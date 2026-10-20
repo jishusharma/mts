@@ -36,3 +36,18 @@ Default: yes. Effect: a config change signed by the operator, deployed by the ru
 ## q-v1-spec
 Question: Sign D2 as the v1 spec (with any change written on the page)?
 Default: none; this one needs the operator. Until signed, S2-S4 do not start; S0 runs.
+
+## q-v1-gate-tiers (added after the operator's tuning note, D10)
+Question: Local ship gate by path: none for docs, research, cards and pages (CI is the gate); targeted tests only, 240 s cap,
+for code outside the live path; today's quick gate for the live path. Card lint and doc caps run only on files in the diff.
+Default: yes. Effect: docs ships fall from 17 min to under 1 min (measured 2026-10-20); accuracy unchanged where money is.
+
+## q-v1-claims-off-git
+Question: Claims move to a side branch (like the lane heartbeat, B17) or are skipped for new-file work; no claim or release
+commit on trunk.
+Default: yes. Effect: 27 % of trunk commits and most merge races disappear; one ship per task enforced in sync.py.
+
+## q-v1-turn-caps
+Question: Turn caps (10 operator turns, 40 tool turns) apply to unattended workers only; a session the operator is driving
+ends on his word.
+Default: yes. Effect: one line in WORKERS.md; no new rule.

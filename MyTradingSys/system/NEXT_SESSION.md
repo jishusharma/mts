@@ -5,6 +5,7 @@ Run with zero operator input; defaults for open questions. The v1 plan is in `My
 - Pipeliner / coordinator: post the seven questions in `DECISIONS_PROPOSED.md` on the decision page (OPERATOR_DECISIONS.md format, defaults given). Until the operator answers, apply only the defaults that cost nothing: release the 3 stale claims, 35-41 h with no commit (D1 section 4), ship the unjam branch `claude/traffic-unjam-77aa8e` after a rule-11 review (2 commits not on trunk: 958c0d05, 8d3dc4d0), run `tasks-sweep-closed-cards`.
 - Operator (ten minutes): read `D2_V1_SPEC.md` then `D7_ROADMAP.md`; answer yes / no / change per question. q-v1-config-1023 is due before 2026-10-23 (27 grandfathered sources).
 - Do not start new layers, lanes, pages or rule docs: D7 freeze is proposed and the default is yes.
+- Operator note 2026-10-20 (minimum work, lean, no gates that do not belong): `D10_OPERATOR_STYLE_TUNING.md` adds q-v1-gate-tiers, q-v1-claims-off-git, q-v1-turn-caps (defaults yes). First S0 card after the answer: gate tiers in `gate_select` + `sync.py` with tests that fail on old code.
 
 ## Supervisor (login C, JIS-NB) workload split 2026-10-19 ~20:00 IST (login C weekly 90%, cap 95-96% for the next 5 h; weekly resets 10-20 20:00Z)
 Run with zero operator input; defaults for open questions. Login C has ~5% weekly left: NB ships only (no new builds, workers, Fable) until the reset. Others take, in order, whoever has budget:

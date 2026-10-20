@@ -5,7 +5,7 @@ live tree. Every file proposes; the operator decides on the Control Room page (`
 ready to post). Evidence: a file path, a commit or a number measured on 2026-10-20 from this worktree (JIS-NB, trunk
 63e4a7dd). EXPECT: lines are expectations; RESULT lines are measured (LESSONS_DIGEST.md section 1).
 
-Read in ten minutes: `D2_V1_SPEC.md` then `D7_ROADMAP.md`. Answer yes / no / change on the page.
+Read in ten minutes: `D2_V1_SPEC.md`, `D7_ROADMAP.md`, then `D10_OPERATOR_STYLE_TUNING.md`. Answer yes / no / change on the page.
 
 | File | Deliverable |
 |---|---|
@@ -18,4 +18,5 @@ Read in ten minutes: `D2_V1_SPEC.md` then `D7_ROADMAP.md`. Answer yes / no / cha
 | D7_ROADMAP.md | stages, entry and exit per stage, what is frozen |
 | D8_OPERATIONS.md | fewer lists, lanes and pages; any account on any machine |
 | D9_COST_NOTE.md | which subscriptions and credits serve the roadmap |
+| D10_OPERATOR_STYLE_TUNING.md | tuned to the operator's note: gate tiers, claims off git, one ship per task, measured costs |
 | DECISIONS_PROPOSED.md | the operator questions, in OPERATOR_DECISIONS.md format |
