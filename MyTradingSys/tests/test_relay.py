@@ -458,14 +458,12 @@ class BeginTest(unittest.TestCase):
         self.relay_home = tmp / "relay-home"
 
     def claim_on_origin(self, slug):
-        """A claim file on origin/fast-track, as `sync.py claim` leaves it (the stub claim refuses it like the real one)."""
-        d = self.clone / "MyTradingSys" / "system" / "claims"
-        d.mkdir(parents=True, exist_ok=True)
-        (d / (slug + ".md")).write_text(NL.join(["task: " + slug, "host: JIS-NUC", "account: sharma", "area: -", "epoch: 1", ""]),
-                                        encoding="utf-8", newline=NL)
-        git(self.clone, "add", "-A")
-        git(self.clone, "commit", "-q", "-m", "claim " + slug)
-        git(self.clone, "push", "-q", "origin", "fast-track")
+        """A claim as `sync.py claim` leaves it: a file on origin's side branch `claims` (D10 2026-10-20), none on trunk."""
+        sys.path.insert(0, str(SCRIPT.parents[2] / "scripts" / "dev"))
+        import sync
+        sync.push_claim_commit(self.clone, sync.CLAIMS_DIR + "/" + slug + ".md",
+                               NL.join(["task: " + slug, "host: JIS-NUC", "account: sharma", "area: -", "epoch: 1", ""]), "claim " + slug)
+        sync.fetch_claims(self.clone)
 
     def begin(self, extra=None, *args):
         # per-host relay state (the begin log row) goes to this test's own dir, never to the operator's ~/.claude

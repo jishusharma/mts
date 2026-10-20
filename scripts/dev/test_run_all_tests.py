@@ -200,8 +200,7 @@ class TestShardedPytest(unittest.TestCase):
             plan, mode = rat.apply_selection(rat.build_plan(True), ["--smoke", "--changed-file", str(f)])
             self.assertEqual(mode, "docs")
             ran = {s.num for s in plan if not s.skip}
-            self.assertLessEqual({"3tl", "3q", "3pc", "3c", "4d"}, ran)
-            self.assertLessEqual(ran - {"3tl", "3q", "3pc", "3c", "4d"}, {"3xt"})   # GATE_SPEED D6: extra tests that name RELAY.md
+            self.assertEqual(ran, set())   # D10 2026-10-20: a docs-only ship takes no local step (CI gates behind the push)
             f.write_text("MyTradingSys/execution/executor.py\n", encoding="utf-8")
             plan, mode = rat.apply_selection(rat.build_plan(True), ["--smoke", "--changed-file", str(f)])
             self.assertEqual(mode, "full")
@@ -516,16 +515,17 @@ class TestGateSpeed(unittest.TestCase):
             self.assertEqual(rat.targeted_tests(["MyTradingSys/system/RELAY.md", "MyTradingSys/research/s/screen.py"], d),
                              ["MyTradingSys/tests/test_kit.py", "MyTradingSys/tests/test_relay.py"])
 
-    def test_precheck_flag_adds_the_targeted_step_in_every_mode(self):
+    def test_precheck_flag_adds_the_targeted_step_to_full_gates_only(self):
         with tempfile.TemporaryDirectory() as d:
             lst = Path(d) / "changed.txt"
-            lst.write_text("MyTradingSys/system/RELAY.md\n", encoding="utf-8")
+            lst.write_text("MyTradingSys/system/RELAY.md" + chr(10), encoding="utf-8")
             plan, mode = rat.apply_selection(rat.build_plan(True), ["--smoke", "--precheck", "--changed-file", str(lst)])
             self.assertEqual(mode, "docs")
-            four_t = [s for s in plan if s.num == rat.TARGET_STEP]
-            self.assertEqual(len(four_t), 1)
-            self.assertIsNone(four_t[0].skip)
-            self.assertIn("test_relay_prompts.py", four_t[0].cmd_text)
+            self.assertFalse([s for s in plan if s.num == rat.TARGET_STEP])   # D10 2026-10-20: docs and smoke ships never run 4t
+            lst.write_text("scripts/dev/sync.py" + chr(10), encoding="utf-8")        # live path = full gate
+            plan, mode = rat.apply_selection(rat.build_plan(True), ["--smoke", "--precheck", "--changed-file", str(lst)])
+            self.assertEqual(mode, "full")
+            self.assertEqual(len([s for s in plan if s.num == rat.TARGET_STEP]), 1)
             plan, _ = rat.apply_selection(rat.build_plan(True), ["--smoke", "--changed-file", str(lst)])
             self.assertFalse([s for s in plan if s.num == rat.TARGET_STEP])   # CI / auto_deploy argv: no precheck step
 
