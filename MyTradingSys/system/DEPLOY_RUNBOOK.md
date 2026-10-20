@@ -135,7 +135,7 @@ operator-side session runs them as the logged-in user):
 
 ## Live host cutover (JIS-NB -> DESKTOP-F7IU69N, staged 2026-10-21, NOT RUN)
 Full checklist: LIVE_HOST_MOVE.md section 4 (one owner, one restart window). Deploy-specific rules:
-- The laptop live tree starts as a fresh clone at the gated green SHA (`git checkout --detach <origin/green/fast-track>`), quick gate green in it, before `.mts_live` is created there. JIS-NB must run the same SHA at the stop, so the move changes the host and nothing else.
+- The laptop live tree starts as a fresh clone at the gated green SHA (`git switch --detach <origin/green/fast-track>`), quick gate green in it, before `.mts_live` is created there. JIS-NB must run the same SHA at the stop, so the move changes the host and nothing else.
 - Exactly one `.mts_live` at a time: JIS-NB's is renamed `.mts_live.retired-<date>` (checklist step 7) before `mts start` on the laptop. Two markers = two trees every deploy step treats as live.
 - Copy the untracked runtime state (B152 `_state.json` and the LIVE_HOST_MOVE s5 list) with sha256 verification, as step 5 above and `deploy_untrack_backup.py` do; never through git (public repo).
 - `MTS_LIVE_OWNER_DIR` on both hosts points at the NUC share before either loop starts; `live_owner.py check` must refuse on the host that is not the owner.
