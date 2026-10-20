@@ -283,5 +283,37 @@ class TestJustinBennettDailyPriceActionScraper(unittest.TestCase):
             self.assertEqual(rows[0].targets_str, "66800.0;65000.0")
 
 
+class TestCryptoChaseSocialScraper(unittest.TestCase):
+    def test_cryptochase_ingestion_and_ledger(self):
+        from cryptochase.scraper import (
+            CURATED_CRYPTO_CHASE_POSTS,
+            ingest_cryptochase_posts,
+            load_ledger_rows,
+            parse_crypto_chase_post,
+        )
+        import tempfile
+
+        post = CURATED_CRYPTO_CHASE_POSTS[0]
+        sig = parse_crypto_chase_post(post["text"], post["url"], post["published_utc"])
+        self.assertEqual(sig.analyst, "Crypto Chase")
+        self.assertEqual(sig.direction, SignalDirection.LONG)
+        self.assertEqual(sig.entry_price, 65200.0)
+        self.assertEqual(sig.stop_loss, 64100.0)
+        self.assertEqual(sig.targets, [68000.0])
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_csv = Path(tmp_dir) / "test_ledger.csv"
+            added = ingest_cryptochase_posts(CURATED_CRYPTO_CHASE_POSTS, csv_path=tmp_csv)
+            self.assertEqual(added, 3)
+
+            rows = load_ledger_rows(tmp_csv)
+            self.assertEqual(len(rows), 3)
+            self.assertEqual(rows[0].analyst, "Crypto Chase")
+            self.assertEqual(rows[0].symbol, "BTCUSDT")
+            self.assertEqual(rows[0].entry, 65200.0)
+            self.assertEqual(rows[0].stop, 64100.0)
+            self.assertEqual(rows[0].targets_str, "68000.0")
+
+
 if __name__ == "__main__":
     unittest.main()
