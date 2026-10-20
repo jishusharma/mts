@@ -1,17 +1,17 @@
 {
- "acquired": 1792492564,
- "expires": 1792492654,
+ "acquired": 1792492668,
+ "expires": 1792495368,
  "holder": {
   "account": "sharma",
   "host": "JIS-NUC",
   "key": "JIS-NUC/af31eaaf8947",
   "session": "af31eaaf8947"
  },
- "nonce": "6731507c4728f12c",
- "renewed": 1792492654,
+ "nonce": "896f46ccc4f5dfba",
+ "renewed": 1792492668,
  "role": "Pipeliner",
- "state": "released",
+ "state": "held",
  "took_over_from": null,
  "ttl": 2700,
- "write_id": "a07327e3707d"
+ "write_id": "68747bbd99b5"
 }
