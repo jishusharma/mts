@@ -1,3 +1,5 @@
+# NEXT_SESSION
+
 ## LC3 ladder simulator (lc-ladder-dev) shipped 2026-10-21 (hand-over, Fable; data run on JIS-NB)
 Run with zero operator input; defaults for open questions. Card lc-ladder-dev is done; report `research/levels_confluence_2026-10-14/ladder_dev.md`, rule `frozen_rule.json`, 243 rows in `layer_lab/TRIALS.md`, 9 tests in `test_ladder.py` (red before the code existed).
 - Result on standard DEV (5976 first touches of the 8 KEEP levels, 2022-04..2024-06, VALIDATION/HOLDOUT unread): no variant of the 240 (3 entry filters x 4 scale-ins x 5 stops x 4 exits) has a lower 95 % CI above zero. Frozen rule E1 S2 K5 X0_2R: mean net R -0.039 [-0.123, +0.048], n 772. Verdict: INCONCLUSIVE by the card rule (power_mde.py two-point power 31 % < 50 %), FAIL by sample-sd power (87 % for +0.10 R). Arm P (METHOD.md ladder sizing): -0.130 R, 0 liquidations, max leverage 1.4x; it beats a random-entry control by +0.115 R and the naive S0 K1 X1 by +0.333 R, so the level and the capped adds help, but not enough to pay fees (mean fee 0.11 R per idea; break-even needs gross +0.11 R, the rule makes +0.07 R).
@@ -5,7 +7,6 @@ Run with zero operator input; defaults for open questions. Card lc-ladder-dev is
 - Known contamination: E1/E4 filters were chosen on the stale VALIDATION-window separation.md (kept as pre-registered); event_table.csv was not used.
 - Do not add gates or rule docs for this.
 
-# NEXT_SESSION
 
 ## Gate tiers by path: shipped 2026-10-20 (hand-over, Sonnet)
 Run with zero operator input; defaults for open questions. gate-tiers-by-path is on trunk (ba46d25c7); measured on JIS-NB after it: non-live code ship (smoke gate, 11 steps) 71 s wall; docs-only ship (this hand-over) 11 s wall, no local step.

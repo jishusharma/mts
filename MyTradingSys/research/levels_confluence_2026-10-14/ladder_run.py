@@ -447,7 +447,7 @@ def run(root, limit=None):
     cols = ['day', 'touch_t', 'side', 'L1', 'L2', 'T1', 'T2', 'families', 'atr1h', 'E1', 'E4', 'E1_rsi14', 'k0_winner_mae_pct'] + BIAS_COLS
     arm_cols = [(S, K) for S in ld.S_ARMS for K in ld.K_ARMS]
     with (HERE / 'ladder_ideas_dev.csv').open('w', newline='', encoding='utf-8') as f:
-        w = csv.writer(f)
+        w = csv.writer(f, lineterminator=NL)
         w.writerow(cols + [f'{S}_{K}_X1' for S, K in arm_cols] + [f'{bk[1]}_{bk[2]}_{X}' for X in ld.X_ARMS] + ['P_net_r', 'P_status'])
         for k, r in enumerate(recs):
             row = [r.get(c) for c in cols]
