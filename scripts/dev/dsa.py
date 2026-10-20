@@ -650,6 +650,7 @@ def cmd_end(a):
     if main is None or main == root:
         raise Failed("cannot find the main working tree to run `git worktree remove` from")
     git(root, "fetch", "--quiet", "origin", TRUNK, timeout=120, check=False)
+    git(root, "fetch", "--quiet", "origin", "claims", timeout=120, check=False)
     dirty = [f"{xy} {p}" for xy, p in porcelain(root) if not p.startswith(MIRROR_PREFIX)]
     ahead_n = git(root, "rev-list", "--count", f"origin/{TRUNK}..HEAD", check=False)[1].strip() or "?"
     if dirty or ahead_n != "0":
@@ -666,7 +667,7 @@ def cmd_end(a):
         want = slugify(branch.split("dsa-", 1)[-1])
         slug = next((f.stem for f in (root / CLAIMS_DIR).glob("*.md") if f.stem.strip("-") == want), "")
     claim_rel = f"{CLAIMS_DIR}/{slug}.md"
-    on_origin = bool(slug) and git(root, "cat-file", "-e", f"origin/{TRUNK}:{claim_rel}", check=False)[0] == 0
+    on_origin = bool(slug) and any(git(root, "cat-file", "-e", f"origin/{b}:{claim_rel}", check=False)[0] == 0 for b in (TRUNK, "claims"))
     if slug and ((root / claim_rel).exists() or on_origin):
         rc, out, err = sync_cmd(root, "release", slug)
         if rc != 0:
