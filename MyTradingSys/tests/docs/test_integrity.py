@@ -1,5 +1,6 @@
 # test_integrity.py - doc/project integrity checks (test_6: no bannered docs in system/; test_7: size caps)
 # Run: python -m pytest MyTradingSys/tests/docs -v
+import os
 import re
 from pathlib import Path
 
@@ -16,6 +17,40 @@ SIZE_CAPS = {
     "MyTradingSys/system/RELAY.md": 6656,
 }
 BANNER_RE = re.compile(r"\b(SUPERSEDED|HISTORICAL|STALE)\b")
+
+
+def _diff_files():
+    """D10 2026-10-20: `sync.py ship` sets MTS_DIFF_FILES (newline-separated repo paths of the diff); the banner and size checks then look
+    at those files only, so a doc nobody changed cannot fail a ship. Unset (CI, a bare pytest run) = every file, as before."""
+    raw = os.environ.get("MTS_DIFF_FILES")
+    if raw is None:
+        return None
+    return {f.strip().replace(chr(92), "/") for f in raw.splitlines() if f.strip()}
+
+
+def _banner_hits(repo=REPO, diff=None):
+    hits = []
+    for p in sorted((Path(repo) / "MyTradingSys" / "system").glob("*.md")):
+        rel = p.relative_to(repo).as_posix()
+        if diff is not None and rel not in diff:
+            continue
+        head = p.read_text(encoding="utf-8", errors="ignore").splitlines()[:5]
+        for i, line in enumerate(head, 1):
+            if BANNER_RE.search(line):
+                hits.append(f"{rel}:{i}: {line.strip()[:80]}")
+                break
+    return hits
+
+
+def _size_over(rel, repo=REPO, diff=None, caps=SIZE_CAPS):
+    """None when `rel` is within its cap or outside the diff, else the failure text."""
+    if diff is not None and rel not in diff:
+        return None
+    p = Path(repo) / rel
+    if not p.exists():
+        return f"{rel} is missing"
+    size = len(p.read_bytes().replace(b"\r\n", b"\n"))   # a Windows runner checks out CRLF; the cap is on the committed LF bytes
+    return f"{rel} is {size} B, cap {caps[rel]} B" if size > caps[rel] else None
 
 
 def _live_files(extensions):
@@ -128,13 +163,7 @@ def test_6_no_banner_docs_in_system():
     """A system/ doc that opens with a SUPERSEDED / HISTORICAL / STALE banner is dead weight in every glob, grep and
     accidental Read. Move it with git mv to MyTradingSys/archive/<topic>_<date>/ (archive/ is skipped by _live_files)
     instead of leaving it bannered."""
-    hits = []
-    for p in sorted((MTS / "system").glob("*.md")):
-        head = p.read_text(encoding="utf-8", errors="ignore").splitlines()[:5]
-        for i, line in enumerate(head, 1):
-            if BANNER_RE.search(line):
-                hits.append(f"{p.relative_to(MTS)}:{i}: {line.strip()[:80]}")
-                break
+    hits = _banner_hits(REPO, _diff_files())
     assert not hits, "Bannered docs in system/ (git mv them to MyTradingSys/archive/<topic>_<date>/):\n" + "\n".join(hits)
 
 
@@ -159,7 +188,23 @@ def test_7_size_cap(rel):
     """Boot and pickup files stay small. Over the cap: trim the file (CLAUDE.md, SURFACE_POLICY.md, RELAY.md) or rotate
     it (OPERATOR_INBOX.md: CONTROL_ROOM.md step 3) instead of raising the number; CLAUDE.md moves detail into a system/ doc
     before it grows, it is not word-trimmed one line at a time (B18)."""
-    p = REPO / rel
-    assert p.exists(), f"{rel} is missing"
-    size = len(p.read_bytes().replace(b"\r\n", b"\n"))   # a Windows runner checks out CRLF; the cap is on the committed LF bytes
-    assert size <= SIZE_CAPS[rel], f"{rel} is {size} B, cap {SIZE_CAPS[rel]} B"
+    bad = _size_over(rel, REPO, _diff_files())
+    assert not bad, bad
+
+
+def test_8_banner_and_size_checks_look_only_at_the_diff_when_one_is_given(tmp_path, monkeypatch):
+    (tmp_path / "MyTradingSys" / "system").mkdir(parents=True)
+    old = tmp_path / "MyTradingSys" / "system" / "OLD.md"
+    old.write_text("STALE: do not read" + chr(10), encoding="utf-8")
+    (tmp_path / "BIG.md").write_text("x" * 20, encoding="utf-8")
+    caps = {"BIG.md": 10}
+    monkeypatch.delenv("MTS_DIFF_FILES", raising=False)
+    assert _diff_files() is None                                              # unset: every file is checked, as in CI
+    assert _banner_hits(tmp_path, None) and _size_over("BIG.md", tmp_path, None, caps)
+    monkeypatch.setenv("MTS_DIFF_FILES", "README.md" + chr(10) + "scripts/dev/x.py" + chr(10))
+    diff = _diff_files()
+    assert diff == {"README.md", "scripts/dev/x.py"}
+    assert _banner_hits(tmp_path, diff) == [] and _size_over("BIG.md", tmp_path, diff, caps) is None   # untouched docs cannot fail a ship
+    monkeypatch.setenv("MTS_DIFF_FILES", "MyTradingSys/system/OLD.md" + chr(10) + "BIG.md")
+    diff = _diff_files()
+    assert len(_banner_hits(tmp_path, diff)) == 1 and "BIG.md is 20 B" in _size_over("BIG.md", tmp_path, diff, caps)

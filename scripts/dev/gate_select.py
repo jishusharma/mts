@@ -4,9 +4,10 @@
   explain(files, steps) -> (mode, step numbers, one-line reason: the first file/rule that forced full, or the ALWAYS steps of a smoke)
     files: paths changed vs origin/fast-track; steps: [(num, cmd_text)] of the plan (run_all_tests.build_plan).
     mode  none   nothing changed: no steps
-          docs   only docs/data: the cheap doc invariants (DOC_STEPS), no gate slot needed
+          docs   only docs/data: NO steps (D10 2026-10-20: CI gates behind the push); only a task card in the diff adds the card lint 3tl
           smoke  code outside the live path: steps whose test file matches a changed file, the pytest shards whose tests mention
-                 its module name, plus ALWAYS (wiring, task-card DoR, B150 discovery, CI deps lint); CI runs everything behind the push
+                 its module name, plus ALWAYS (wiring, B150 discovery, CI deps lint) and 3tl when a card is in the diff; CI runs everything
+                 behind the push
           full   any live-path file, or ANY path no rule knows (fail closed): every step, the old --quick gate
 
 Nothing here decides what is safe to deploy: CI on both OSes does, and auto_deploy only takes green/fast-track.
@@ -39,8 +40,10 @@ FULL_RE = re.compile(
 CODE_DIRS = ("scripts/dev/", "scripts/worker/", "MyTradingSys/tests/", "MyTradingSys/backtest/", "MyTradingSys/research/",
              "MyTradingSys/options/", "MyTradingSys/observation/")
 
-ALWAYS = ("3w", "3x", "3tl", "3gd", "3dl")   # wiring, task-card DoR, test-file discovery (B150), CI deps lint: seconds, catch the usual merge-time breaks
-DOC_STEPS = ("3tl", "3q", "3pc", "3c", "4d")   # task cards, INDEX/BUGS, prompt contract, guide sync, doc size/contract pytest
+ALWAYS = ("3w", "3x", "3gd", "3dl")   # wiring, test-file discovery (B150), CI deps lint: seconds, catch the usual merge-time breaks
+CARDS_DIR = "MyTradingSys/system/tasks/"
+CARD_LINT = "3tl"   # task-card DoR lint (~2 min): only when a card is in the diff (D10 2026-10-20)
+DOC_STEPS = ("3tl", "3q", "3pc", "3c", "4d")   # no longer selected by any mode (docs take no local step); kept for gate_impact/run_all_tests
 SHARD_PREFIX = "4"                    # every pytest shard is numbered 4, 4b, 4c ...
 
 
@@ -50,6 +53,15 @@ def _is_doc(f):
     if f.endswith(".txt"):
         return not FULL_RE.match(f)   # a .txt on the live path (resources, run lists) is read by live code: not a doc
     return f.endswith(DATA_SUFFIXES) and f.startswith(DATA_DIRS)
+
+
+def has_card(files):
+    return any(f.replace("\\", "/").startswith(CARDS_DIR) for f in files)
+
+
+def docs_only(files):
+    """True when every changed path is a doc/data file (the `docs` mode of explain): a ship of these takes no local gate."""
+    return bool(files) and all(_is_doc(f.replace("\\", "/")) for f in files)
 
 
 def _is_config(f):
@@ -213,20 +225,17 @@ def explain(files, steps, mentioned=mentions, named=names_file, step_files=None)
     code = [f for f in files if not _is_doc(f)]
     sf = step_files or {}
     subset_steps = set()
-    if step_files is not None:
+    if step_files is not None and code:
         if "3xt" in all_nums and extra_subset(files, sf.get("3xt", [])):
             subset_steps.add("3xt")
-        if "5b" in all_nums and code and layer_subset(code, sf.get("5b", [])):
+        if "5b" in all_nums and layer_subset(code, sf.get("5b", [])):
             subset_steps.add("5b")
+    card = {CARD_LINT} & set(all_nums) if has_card(files) else set()
     if not code:
-        # GATE_SPEED review: the wiring registry is data under system/, but 3x/3w are its only readers (a bad entry would go red only in CI)
-        reg = {"3x", "3w"} if any(f == WIRING_REGISTRY for f in files) else set()
-        nums = [n for n in all_nums if n in DOC_STEPS or n in subset_steps or n in reg]
-        return "docs", nums, f"docs: {len(files)} doc/data file(s) only; doc invariants {','.join(nums)}"
-    picked = {n for n in ALWAYS if n in all_nums} | subset_steps
+        nums = [n for n in all_nums if n in card]
+        return "docs", nums, f"docs: {len(files)} doc/data file(s) only; " + (f"card lint {','.join(nums)} only" if nums else "no local step, CI gates behind the push")
+    picked = {n for n in ALWAYS if n in all_nums} | subset_steps | card
     always = [n for n in all_nums if n in ALWAYS]
-    if len(code) < len(files):                    # docs ride along: their invariants too
-        picked |= {n for n in DOC_STEPS if n in all_nums}
     for f in code:
         if FULL_RE.match(f):
             return "full", list(all_nums), f"full: {f} is on the live path (FULL_RE)"

@@ -342,13 +342,13 @@ class NextSkipsClaimedTest(unittest.TestCase):
         subprocess.run(["git", "-c", "user.email=t@t", "-c", "user.name=t", "-C", str(self.repo), *a], check=True, capture_output=True)
 
     def claim(self, slug, host="JIS-NUC", account="sharma"):
-        """A claim file as sync.py writes it, committed and visible as origin/fast-track (what read_claims reads)."""
+        """A claim file as sync.py writes it, committed and visible as origin/claims (the side branch read_claims reads)."""
         p = self.repo / "MyTradingSys" / "system" / "claims" / f"{slug}.md"
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(chr(10).join([f"task: {slug}", f"host: {host}", f"account: {account}", "area: -", "epoch: 1", ""]), encoding="utf-8", newline=chr(10))
         self.git("add", str(p))
         self.git("commit", "-q", "-m", f"claim {slug}")
-        self.git("update-ref", "refs/remotes/origin/fast-track", "HEAD")
+        self.git("update-ref", "refs/remotes/origin/claims", "HEAD")
 
     def run_cli(self, *argv):
         out = io.StringIO()

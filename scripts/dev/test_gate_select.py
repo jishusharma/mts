@@ -27,17 +27,22 @@ class Select(unittest.TestCase):
     def test_nothing(self):
         self.assertEqual(self.sel(), ("none", []))
 
-    def test_docs_only_runs_doc_invariants_only(self):
-        mode, steps = self.sel("MyTradingSys/system/RELAY.md", "MyTradingSys/system/tasks/x.json")
-        self.assertEqual(mode, "docs")
-        self.assertEqual(steps, ["3tl", "3q", "3pc", "3c", "4d"])
+    def test_docs_select_no_steps_and_the_card_lint_runs_only_with_a_card_in_the_diff(self):
+        # D10 2026-10-20: a docs-only ship measured 17-39 min; CI gates behind the push, so docs take no local step
+        self.assertEqual(self.sel("MyTradingSys/system/RELAY.md", "MyTradingSys/research/x/notes.md", "MyTradingSys/research/x/out.json"),
+                         ("docs", []))
+        self.assertEqual(self.sel("MyTradingSys/system/RELAY.md", "MyTradingSys/system/tasks/x.json"), ("docs", ["3tl"]))
+
+    def test_smoke_runs_the_card_lint_only_for_a_card_and_no_doc_steps(self):
+        self.assertNotIn("3tl", self.sel("scripts/dev/dsa.py")[1])
+        self.assertIn("3tl", self.sel("scripts/dev/dsa.py", "MyTradingSys/system/tasks/x.json")[1])
 
     def test_non_live_code_is_smoke_with_its_own_test_and_the_shards_that_mention_it(self):
         mode, steps = self.sel("scripts/dev/dsa.py")
         self.assertEqual(mode, "smoke")
         self.assertIn("3ds", steps)          # name match survives the "(file, N shards)" command text
         self.assertNotIn("3k", steps)
-        self.assertTrue({"3w", "3x", "3tl", "4b"} <= set(steps))
+        self.assertTrue({"3w", "3x", "4b"} <= set(steps))
         self.assertNotIn("4", steps)         # a shard none of whose tests mention the module is not run
 
     def test_mentions_reads_the_tests_named_in_the_command(self):
@@ -117,10 +122,11 @@ class Select(unittest.TestCase):
     def test_one_live_file_among_docs_makes_it_full(self):
         self.assertEqual(self.sel("README.md", "MyTradingSys/execution/executor.py")[0], "full")
 
-    def test_docs_ride_along_with_code(self):
+    def test_docs_do_not_ride_along_with_code(self):
         _, steps = self.sel("scripts/dev/dsa.py", "MyTradingSys/system/RELAY.md")
-        self.assertIn("4d", steps)
-        self.assertIn("3q", steps)
+        for n in ("3q", "3pc", "3c"):
+            self.assertNotIn(n, steps)
+        self.assertNotIn("4d", steps)
 
     def test_windows_separators(self):
         self.assertEqual(self.sel("MyTradingSys" + BS + "execution" + BS + "auto_trader.py")[0], "full")
@@ -159,6 +165,7 @@ class Explain(unittest.TestCase):
         self.assertTrue(reason.startswith("smoke"))
         for n in gs.ALWAYS:
             self.assertIn(n, reason)
+        self.assertNotIn("3tl", gs.ALWAYS)
 
     def test_explain_agrees_with_select(self):
         for files in ([], ["a.md"], ["scripts/dev/dsa.py"], ["src/x.java"], ["x.rb"]):
@@ -194,12 +201,8 @@ class FastGateRules(unittest.TestCase):
     def test_an_ordinary_dev_script_is_still_smoke(self):
         self.assertEqual(self.sel("scripts/dev/example_tool.py")[0], "smoke")
 
-    def test_wiring_registry_edit_runs_the_wiring_steps_not_only_the_doc_steps(self):
-        mode, nums = self.sel("MyTradingSys/system/wiring_registry.json")
-        self.assertEqual(mode, "docs")
-        self.assertIn("3x", nums)
-        self.assertIn("3w", nums)
-        self.assertNotIn("3x", self.sel("MyTradingSys/system/critical_files.json")[1])
+    def test_wiring_registry_edit_is_docs_with_no_local_step(self):
+        self.assertEqual(self.sel("MyTradingSys/system/wiring_registry.json"), ("docs", []))
 
 
 class GateSpeedRules(unittest.TestCase):
@@ -261,6 +264,32 @@ class GateSpeedRules(unittest.TestCase):
         self.assertFalse({"3xt", "5b"} & set(nums))
         with mock.patch.object(gs, "extra_subset", return_value=["t"]), mock.patch.object(gs, "layer_subset", return_value=["m"]):
             self.assertTrue({"3xt", "5b"} <= set(self.sel("MyTradingSys/backtest/layers/rsi/x.py", step_files=sf)[1]))
+
+class TierPlan(unittest.TestCase):
+    """D10 2026-10-20: run_all_tests.apply_selection adds the broad targeted pytest step 4t to full gates only."""
+
+    def plan_for(self, *files):
+        import run_all_tests
+        d = Path(tempfile.mkdtemp())
+        lst = d / "changed.txt"
+        lst.write_text(chr(10).join(files) + chr(10), encoding="utf-8")
+        plan, mode = run_all_tests.apply_selection(run_all_tests.build_plan(True), ["--quick", "--precheck", "--smoke", "--changed-file", str(lst)])
+        return mode, [s.num for s in plan if not s.skip]
+
+    def test_docs_and_smoke_ships_get_no_targeted_step(self):
+        import run_all_tests
+        mode, nums = self.plan_for("MyTradingSys/system/RELAY.md")      # test_relay_prompts names RELAY.md: 4t used to be added
+        self.assertEqual((mode, nums), ("docs", []))
+        mode, nums = self.plan_for("scripts/dev/dsa.py")
+        self.assertEqual(mode, "smoke")
+        self.assertNotIn(run_all_tests.TARGET_STEP, nums)
+
+    def test_a_live_path_ship_keeps_the_targeted_step(self):
+        import run_all_tests
+        mode, nums = self.plan_for("scripts/dev/sync.py")
+        self.assertEqual(mode, "full")
+        self.assertIn(run_all_tests.TARGET_STEP, nums)
+
 
 if __name__ == "__main__":
     unittest.main()

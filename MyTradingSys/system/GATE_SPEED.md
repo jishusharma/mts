@@ -85,3 +85,5 @@ Floor on this box: python start 0.2 s + one pytest chunk of the longest direct t
 ## Not done (next)
 FIFO slot queue; Windows CI on selected steps only. (Done: Machine-wide process budget across concurrent gates & prechecks counted with ship timing logged, SV7).
 
+## Three tiers by path (D10, operator 2026-10-20: q-v1-gate-tiers, q-v1-claims-off-git)
+`sync.py ship` picks the tier from the diff (gate_select). **docs** (docs/data/research/cards/pages): no local gate, it prints `Gate mode: docs` and pushes; CI gates behind the push, and the card lint 3tl runs only when a file under system/tasks/ is in the diff. **smoke** (code outside the live path): only the steps whose tests import or name the changed module (plus the seconds-long wiring/discovery/deps-lint steps), no targeted step 4t, every step capped at 240 s. **full** (live path, or any path no rule knows): the old `--quick` gate, unchanged, fails closed. Also: claim files live on the side branch `claims` (no claim or release commit on trunk), the banner/size doc checks look at the diff files only (`MTS_DIFF_FILES`), and a second ship from one tree within 10 minutes is refused (`ship --force`).

@@ -820,14 +820,18 @@ def apply_selection(plan, args):
     """--changed-file F (one path per line, vs origin/fast-track) with --smoke: skip the steps gate_select.select does not pick.
     --smoke without --changed-file, or an unreadable file, runs everything (fail closed). Returns (plan, mode or None).
     GATE_SPEED D6: a smoke/docs 3xt runs only gate_select.extra_subset, a smoke 5b only gate_select.layer_subset.
-    D1: with --precheck and a readable list, the targeted step 4t is added (every mode)."""
+    D1: with --precheck and a readable list, the targeted step 4t is added to a full gate only (D10 2026-10-20: docs and smoke ships
+    never ran it usefully; 870-2150 s on tests that never read the changed files)."""
     files = changed_files(args)
-    if "--precheck" in args and files:
-        tt = targeted_tests(files)
-        if tt:
-            plan.append(Step(TARGET_STEP, f"Precheck pytest: {len(tt)} test file(s) that reference the change", f"Step {TARGET_STEP}: Targeted pytest",
-                             cmd=pytest_cmd(tt)))
+
+    def add_targeted():
+        if "--precheck" in args and files:
+            tt = targeted_tests(files)
+            if tt:
+                plan.append(Step(TARGET_STEP, f"Precheck pytest: {len(tt)} test file(s) that reference the change", f"Step {TARGET_STEP}: Targeted pytest",
+                                 cmd=pytest_cmd(tt)))
     if "--smoke" not in args or files is None:
+        add_targeted()
         return plan, None
     import gate_select
     import run_extra_tests
@@ -836,6 +840,7 @@ def apply_selection(plan, args):
     mode, nums, gate_reason = gate_select.explain(files, [(s.num, s.cmd_text) for s in plan], step_files={"3xt": extras, "5b": modules})
     gate_mode = mode
     if mode == "full":
+        add_targeted()
         return plan, mode
     global fast_applied, fast_info
     if "--fast" in args and mode == "smoke":
@@ -1014,8 +1019,9 @@ def main(argv=None):
         print(f"Gate mode: {mode} ({sum(1 for s in plan if not s.skip)} steps); CI runs the full suite behind the push", flush=True)
         print(f"Gate reason: {gate_reason}", flush=True)
     global STEP_TIMEOUT_S
-    if fast_applied:
+    if fast_applied or mode == "smoke":   # D10: a smoke step still running after 240 s is hung
         STEP_TIMEOUT_S = FAST_STEP_TIMEOUT_S
+    if fast_applied:
         print(f"Fast gate (GATE_SPEED X2): {fast_info['reached']} test files reached ({fast_info['direct']} direct), {fast_info['kept']} units kept, "
               f"estimated {fast_info['est_s']} s (budget {fast_info['budget']} s) on {fast_jobs()} workers; {len(fast_info['deferred'])} deferred to CI (budget)", flush=True)
         if fast_info["deferred"]:

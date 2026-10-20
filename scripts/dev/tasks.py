@@ -397,7 +397,7 @@ def ready_cards(repo=REPO, lane=None):
 
 
 def open_claims(repo):
-    """{claim slug: claim fields} of the claim files on origin/fast-track, read with sync.py's own reader (as of the last fetch).
+    """{claim slug: claim fields} of the claim files on origin/claims (read_claims maps a trunk ref there), read with sync.py's own reader (as of the last fetch).
     {} when git or the ref is unavailable (a test repo, a fresh clone): the claim itself stays the lock, `sync.py claim` refuses."""
     import sync   # scripts/dev is on sys.path wherever tasks.py runs or is imported by name
     try:
