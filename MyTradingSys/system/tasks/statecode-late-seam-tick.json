@@ -1,7 +1,9 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "mvn -q test -Dtest=StateCodeEmitterTest,MarketDataSnapshotTest"
+  ],
   "created": "2026-10-20T18:53:09Z",
   "depends_on": [],
   "done_when": "330-bar fixture stays CVD 1320 and volume 3300 after delayed pre-M buy quantity 2; boundary and reconnect cases pass.",
@@ -43,6 +45,6 @@
   ],
   "tests": "After a successful backfill, deliver T=M-1 and assert totals unchanged; deliver T=M and assert exactly one addition; repeat after reconnect and midnight.",
   "title": "StateCodeEmitter: exclude late pre-boundary ticks after backfill completion",
-  "weight": "crucial",
+  "weight": "CRUCIAL",
   "worker": "session"
 }

@@ -1,7 +1,9 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "mvn -q test -Dtest=StateCodeEmitterTest,MarketDataSnapshotTest"
+  ],
   "created": "2026-10-20T18:53:14Z",
   "depends_on": [],
   "done_when": "Each rejection remains INVALID and retries the current connection/day; scheduled recovery succeeds and first recovered CVD slope is null.",
@@ -43,6 +45,6 @@
   ],
   "tests": "Change clock across UTC midnight during fetch; reconnect during fetch; fail a scheduled attempt then recover; close/reopen without intermediate emit and assert cvd ring restarts.",
   "title": "StateCodeEmitter: cover in-flight rollover reconnect and retry scheduling",
-  "weight": "crucial",
+  "weight": "CRUCIAL",
   "worker": "session"
 }

@@ -1,7 +1,9 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "mvn -q test -Dtest=StateCodeEmitterTest,MarketDataSnapshotTest"
+  ],
   "created": "2026-10-20T18:53:11Z",
   "depends_on": [],
   "done_when": "Deterministic close-before-publish regression passes and an older emit cannot overwrite INVALID; restart and API-error cases remain green.",
@@ -43,6 +45,6 @@
   ],
   "tests": "Pause an emit after snapshot, close the stream, resume publication; assert INVALID, null accumulator signals and sums. Test startup restored directional state and subsequent recovery.",
   "title": "StateCodeEmitter: serialize invalidation with state publication",
-  "weight": "crucial",
+  "weight": "CRUCIAL",
   "worker": "session"
 }
