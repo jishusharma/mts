@@ -1,10 +1,13 @@
 {
   "done_when": "operator ran the stop command or allow-listed the pattern in MyTradingSys/system/STRAY_REAP_POLICY.md",
+  "finished": "2026-10-20T10:36:51Z",
   "from": "JIS-NUC",
+  "host": "JIS-NUC",
   "id": "20261020-103555-stray-cpu-hog-on-jis-nuc",
   "need": "STRAY PID 1212 explorer.exe cpu=41915s age=46.3h chain: (parent gone)\n    cmd: C:\\WINDOWS\\Explorer.EXE\n    stop: taskkill /PID 1212 /T /F",
   "posted": "2026-10-20T10:35:55Z",
-  "status": "pending",
+  "result": "declined: PID 1212 is explorer.exe, the Windows shell, with no parent; killing it is not a stray reap. Reaper false positive: Pipeliner proposes allow-listing explorer.exe in STRAY_REAP_POLICY.md (owner: Admin_Guy).",
+  "status": "failed",
   "target": "JIS-NB",
   "title": "Stray CPU hog on JIS-NUC"
 }
