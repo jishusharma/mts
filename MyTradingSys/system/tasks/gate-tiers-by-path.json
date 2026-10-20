@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-20T10:45:14Z",
   "commands": [
     "python -m pytest scripts/dev/test_gate_select.py MyTradingSys/tests/test_sync.py -q",
     "python scripts/dev/sync.py ship"
@@ -16,6 +17,12 @@
   "id": "gate-tiers-by-path",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "gate tiers by path shipped; docs ship 0 local steps",
+      "ref": "ba46d25c",
+      "utc": "2026-10-20T10:45:14Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -42,7 +49,12 @@
   "refs": [
     "q-v1-gate-tiers"
   ],
-  "result": "",
+  "result": "gate tiers by path shipped; docs ship 0 local steps",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/gate_select.py",
     "scripts/dev/run_all_tests.py (CHEAP_STEPS, TARGET_STEP 4t, step 3tl)",
@@ -66,7 +78,7 @@
     "MyTradingSys/system/TRAFFIC_BUSTERS.md B16, B17, B19",
     "scripts/dev/run_all_tests.py:91-100 (CHEAP_STEPS, TARGET_STEP)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write the failing tests first (docs mode = no steps; smoke = importing tests only; claim side branch; second-ship refusal; diff-scoped doc checks); run them on the old code and record the failures.",
     "gate_select: docs mode returns no steps; smoke mode = tests that import the changed module (reuse references()); live path unchanged.",
@@ -74,6 +86,7 @@
     "sync.py claim/release: write to side branch claims (push_heartbeat pattern) or skip (B16); ship refuses a second ship from the same tree within 10 min.",
     "Measure: one docs ship and one code ship on JIS-NB; write both wall times in the commit body as RESULT."
   ],
+  "taken": "2026-10-20T10:45:14Z",
   "tests": "test_gate_select.py: docs selects no steps; smoke selects only importing tests; live path still quick. test_sync.py: claim lands on the side branch; second ship within 10 min refused; docs ship skips the gate and pushes. test_integrity.py: banner/size checks limited to diff files. Each fails on old code first.",
   "title": "Gate tiers by path: docs push with no local gate, code runs targeted tests only, claims off trunk",
   "weight": "IMPORTANT",
