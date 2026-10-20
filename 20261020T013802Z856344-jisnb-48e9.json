@@ -1,0 +1,1 @@
+{"t": "20261020T013802Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship ship-root-cause Result: gate discovery B150 passes again (was FAIL: test_proc_job.py unregistered); the 8 process-tree tests now run in every ship gate."}
