@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-14",
+  "pre_reg_commit": "97f2c42",
+  "research_gate": "11 tests executed, no skips; PASS",
+  "files": {
+    "PRE_REG.md": "10fa96f36cc96b6ce75f91abb4393f9f245a0f06cbcfdbdd8ddaa063aa9b8d11",
+    "PRE_OUTCOME_FIXES.md": "4a437cb29308cdab5d76975e1251c8b99ed5fc19e9af751149bf173e00e87ae0",
+    "engine.py": "16ab46f6d96602cbac8869570a575e2bf1011a8ba0ca7a96c07c835eb6cfa072",
+    "rules.py": "0c4e36768ee0e78c9fa39a7a5da95b6543d7f6d63dea47594dafd482a87abab5",
+    "test_rules.py": "23bfda0ee82a4d488b60d4e91e8e08ddaf1b584d219241194ba6299db3924c73",
+    "test_engine.py": "f7e44fb4681485529d985467880ea3ce1200248227fd82a7fef0289a5a2294c9",
+    "test_import_guard.py": "3c7f6da71a650f79b3ffb4fc01e74787f1cc0befe34f980188a2bb3a4a2ccc8a",
+    "research_gate.py": "84800d7a3163983c213d1fe9d0a50f6fe53a90ef3a98a8443d7229a24786e03e"
+  },
+  "status": "frozen before corrected BTC outcomes"
+}
