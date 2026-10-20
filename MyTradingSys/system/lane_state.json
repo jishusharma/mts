@@ -1,14 +1,14 @@
 {
-  "detail": "Codex run finished",
+  "detail": "no heartbeat from the lab host since 2026-10-19T15:16:59Z",
   "fails": 0,
-  "heartbeat": "2026-10-19T15:16:59Z",
-  "last_error": "2026-10-19T14:25:18Z",
+  "heartbeat": "2026-10-20T10:35:20Z",
+  "last_error": "2026-10-20T10:35:20Z",
   "last_ok": "2026-10-19T15:17:30Z",
   "last_probe": "",
   "override": "",
-  "reason": "",
+  "reason": "heartbeat",
   "resumed": "2026-10-19T15:16:59Z",
-  "since": "",
-  "status": "up",
+  "since": "2026-10-20T10:35:20Z",
+  "status": "down",
   "until": ""
 }

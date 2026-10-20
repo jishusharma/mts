@@ -16,7 +16,7 @@
   "goal": "Run blind Gemini 4 Argon low reads of the same 7 hard Tom frames and prescribed crops, then compare visible-field outputs descriptively with pilot audit truth and Flash; resolve the two crop questions only when directly legible, otherwise mark CONTESTED.",
   "id": "argon-blind-read-7-frames",
   "kind": "run",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -41,6 +41,12 @@
   "refined_by": "codex",
   "refreshed": "2026-10-18T21:37:53Z",
   "refs": [],
+  "reroute": {
+    "at": "2026-10-20T10:35:20Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "heartbeat"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/lab_guy/pilots/2026-10-18_gemini_frame_read/README.md",
