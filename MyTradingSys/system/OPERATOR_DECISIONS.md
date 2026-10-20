@@ -1053,3 +1053,78 @@ Applied: 2026-10-17: recorded only. No overrule written; the card stays BLOCKED 
  "no_auto_apply": true
 }
 ```
+
+## q-v1-gate-tiers | asked 2026-10-20 | Process
+
+Local ship gate by path: none for docs, targeted tests for code, quick gate for the live path? (research/v1_plan_2026-10-20/D10_OPERATOR_STYLE_TUNING.md)
+
+Recommended: Docs/research/cards/pages: no local gate (CI is the gate); code outside the live path: targeted tests only, 240 s cap; live path: quick gate unchanged; lint and doc caps only on files in the diff
+Answer: Docs/research/cards/pages: no local gate (CI is the gate); code outside the live path: targeted tests only, 240 s cap; live path: quick gate unchanged; lint and doc caps only on files in the diff
+Operator note (verbatim): "Yes: apply q-v1-gate-tiers, q-v1-claims-off-git and q-v1-turn-caps with their defaults. File the S0 card for gate tiers in gate_select and sync.py with tests that fail on old code."
+Applied: 2026-10-20: recorded; card gate-tiers-by-path filed (SONNET, prio 1) for gate_select.py, run_all_tests.py, sync.py with tests that fail on the old code. No code changed by this pickup.
+
+```json
+{
+ "order": 31,
+ "stage": "Process",
+ "refs": "research/v1_plan_2026-10-20/D10_OPERATOR_STYLE_TUNING.md, q-v1-gate-tiers",
+ "title": "Local ship gate by path: none for docs, targeted tests for code, quick gate for the live path",
+ "why": "Measured 2026-10-20: a docs-only ship took 17, 17 and 39 min; step 4t (targeted pytest) 870-2150 s on tests that never read the changed files; card lint 2 min on a change with no card. CI runs the full suite behind every push and green/fast-track is the deploy pointer, so the local gate duplicates CI everywhere except the live path.",
+ "options": [
+  "Keep the gate as it is",
+  "Docs/research/cards/pages: no local gate (CI is the gate); code outside the live path: targeted tests only, 240 s cap; live path: quick gate unchanged; lint and doc caps only on files in the diff"
+ ],
+ "recommended": "Docs/research/cards/pages: no local gate (CI is the gate); code outside the live path: targeted tests only, 240 s cap; live path: quick gate unchanged; lint and doc caps only on files in the diff",
+ "answer": "Docs/research/cards/pages: no local gate (CI is the gate); code outside the live path: targeted tests only, 240 s cap; live path: quick gate unchanged; lint and doc caps only on files in the diff"
+}
+```
+
+## q-v1-claims-off-git | asked 2026-10-20 | Process
+
+Claims leave trunk: side branch or skipped for new-file work; one ship per task enforced? (research/v1_plan_2026-10-20/D10_OPERATOR_STYLE_TUNING.md)
+
+Recommended: Claims on a side branch (B17 mechanism) or skipped for new-file work (B16); no claim or release commit on trunk; a second ship from the same tree within 10 min is refused
+Answer: Claims on a side branch (B17 mechanism) or skipped for new-file work (B16); no claim or release commit on trunk; a second ship from the same tree within 10 min is refused
+Operator note (verbatim): "Yes: apply q-v1-gate-tiers, q-v1-claims-off-git and q-v1-turn-caps with their defaults. File the S0 card for gate tiers in gate_select and sync.py with tests that fail on old code."
+Applied: 2026-10-20: recorded; implemented by the same card gate-tiers-by-path (sync.py part).
+
+```json
+{
+ "order": 32,
+ "stage": "Process",
+ "refs": "research/v1_plan_2026-10-20/D10_OPERATOR_STYLE_TUNING.md, q-v1-claims-off-git",
+ "title": "Claims leave trunk: side branch or skipped for new-file work; one ship per task enforced",
+ "why": "3,772 trunk commits since 2026-10-13: claim 538 (14 %), release 477 (13 %), merge 1,239 (33 %). Claim and release commits race every ship into a merge commit. The lane heartbeat already lives on a side branch (TRAFFIC_BUSTERS B17).",
+ "options": [
+  "Keep claims on trunk",
+  "Claims on a side branch (B17 mechanism) or skipped for new-file work (B16); no claim or release commit on trunk; a second ship from the same tree within 10 min is refused"
+ ],
+ "recommended": "Claims on a side branch (B17 mechanism) or skipped for new-file work (B16); no claim or release commit on trunk; a second ship from the same tree within 10 min is refused",
+ "answer": "Claims on a side branch (B17 mechanism) or skipped for new-file work (B16); no claim or release commit on trunk; a second ship from the same tree within 10 min is refused"
+}
+```
+
+## q-v1-turn-caps | asked 2026-10-20 | Process
+
+Turn caps apply to unattended workers only? (research/v1_plan_2026-10-20/D10_OPERATOR_STYLE_TUNING.md)
+
+Recommended: Caps for unattended workers only; a session the operator is driving ends on his word
+Answer: Caps for unattended workers only; a session the operator is driving ends on his word
+Operator note (verbatim): "Yes: apply q-v1-gate-tiers, q-v1-claims-off-git and q-v1-turn-caps with their defaults. File the S0 card for gate tiers in gate_select and sync.py with tests that fail on old code."
+Applied: 2026-10-20: WORKERS.md rule 5 and CLAUDE.md step 5 say so; turn_meter.py unchanged (its message already allows "unless the operator said to keep going here").
+
+```json
+{
+ "order": 33,
+ "stage": "Process",
+ "refs": "research/v1_plan_2026-10-20/D10_OPERATOR_STYLE_TUNING.md, q-v1-turn-caps",
+ "title": "Turn caps apply to unattended workers only",
+ "why": "The turn meter nagged an operator-driven session 10 times while the operator was giving instructions. Caps exist to bound unattended cost; the operator bounds his own session.",
+ "options": [
+  "Caps for every session",
+  "Caps for unattended workers only; a session the operator is driving ends on his word"
+ ],
+ "recommended": "Caps for unattended workers only; a session the operator is driving ends on his word",
+ "answer": "Caps for unattended workers only; a session the operator is driving ends on his word"
+}
+```

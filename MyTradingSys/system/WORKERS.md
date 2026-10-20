@@ -29,7 +29,7 @@ Every other file points here. Numbers come from `python scripts/dev/worker_cost_
    rule 5. Unscoped or judgment work (design, a bug nobody has located, anything touching live money) is not Haiku work.
 4. **Over 40 expected turns: split the card.** A running worker hands over at the 40 tool-turn cap (RELAY.md) to a fresh worker;
    state lives in files (task card, notes folder), not context.
-5. **Turn budget, no compaction (operator 2026-10-18).** Nobody runs `/compact` and `.claude/settings.json` sets no auto-compact override (Claude Code's own built-in auto-compact near the full window still exists; the caps below keep sessions well short of it). A turn costs the whole context, so the limit is turns per context size, set per model by the hook
+5. **Turn budget, no compaction (operator 2026-10-18).** Caps bind unattended workers only; a session the operator is driving ends on his word (q-v1-turn-caps, 2026-10-20). Nobody runs `/compact` and `.claude/settings.json` sets no auto-compact override (Claude Code's own built-in auto-compact near the full window still exists; the caps below keep sessions well short of it). A turn costs the whole context, so the limit is turns per context size, set per model by the hook
    `scripts/dev/turn_meter.py` (RELAY.md): Sonnet/Haiku: tool turns allowed = 4M / context (100k = 40, 250k = 16, floor 5), 10 operator turns;
    **Opus: no turn cap, hand over at 500k context**; **Fable: no cap of any kind except ONE operator message per session, a HARD rule**
    (the hook blocks the 2nd prompt and ignores `MTS_TURN_METER=off` and the cap env vars; nobody changes it). Long single-message
