@@ -1,0 +1,10 @@
+{
+  "done_when": "Gemini lane or explicit Gemini tags exist for ready cards so Gemini sessions can pick unambiguously",
+  "from": "JIS-NUC",
+  "id": "20261020-193841-claude-dispatcher-tag-and-assign-explici",
+  "need": "Claude dispatcher to tag/assign task cards explicitly for Gemini sessions (B194 / gemini-task-dispatch-assignment) in task queue and ROUTING.md",
+  "posted": "2026-10-20T19:38:41Z",
+  "status": "pending",
+  "target": "JIS-NB",
+  "title": "Claude dispatcher: tag and assign explicit Gemini-tailored task cards for the Gemini lane"
+}
