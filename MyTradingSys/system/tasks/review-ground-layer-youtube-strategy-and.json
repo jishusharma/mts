@@ -1,6 +1,7 @@
 {
   "approved_by": "operator",
   "asks": "",
+  "closed": "2026-10-20T10:36:28Z",
   "commands": [],
   "created": "2026-10-18T09:58:16Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "review-ground-layer-youtube-strategy-and",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Reviewed ACCEPT 2026-10-20 (sonnet-builder): 4 cards dropped, 2 done, krown-other-sources ",
+      "ref": "9b5fcdc4",
+      "utc": "2026-10-20T10:36:28Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -36,7 +43,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-19 T0-ONLY - Session_Planner executed the Ground Layer YouTube Strategy alignment: dropped 4 saturated/429-blocked scraping cards (krown-ta101-extract-remaining-10, fabio-xuyq-asr-extract, tom-check-set-find-frames-only-tom-trade, malkan-captions-fetch-noauth), closed 2 delivered cards (kurisko-rsi-video-search, krown-foundations-ep08-follow-through), unblocked krown-other-sources-event-study-videos, created malkan-w1hr-local-whisper-asr and malkan-gfs-btc-htf-prereg, and updated ROUTING.md. Awaiting non-Gemini Lab_Guy ACCEPT stamp to mark done per Producer!=Reviewer rule.",
+  "note": "REVIEWED:2026-10-20 ACCEPT reviewer: sonnet-builder (verified card states and ROUTING.md; prior T0-ONLY by Session_Planner) - Session_Planner executed the Ground Layer YouTube Strategy alignment: dropped 4 saturated/429-blocked scraping cards (krown-ta101-extract-remaining-10, fabio-xuyq-asr-extract, tom-check-set-find-frames-only-tom-trade, malkan-captions-fetch-noauth), closed 2 delivered cards (kurisko-rsi-video-search, krown-foundations-ep08-follow-through), unblocked krown-other-sources-event-study-videos, created malkan-w1hr-local-whisper-asr and malkan-gfs-btc-htf-prereg, and updated ROUTING.md. Awaiting non-Gemini Lab_Guy ACCEPT stamp to mark done per Producer!=Reviewer rule.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "gemini-builder-2026-10-18",
@@ -46,7 +53,12 @@
     "MyTradingSys/system/LAYERS.md",
     "MyTradingSys/methodology/grounded_theory_protocol.md"
   ],
-  "result": "2026-10-19: Dropped 4 saturated/429-blocked YT cards, closed 2 delivered YT cards, unblocked krown-other-sources-event-study-videos, created malkan-w1hr-local-whisper-asr and malkan-gfs-btc-htf-prereg, updated ROUTING.md",
+  "result": "Reviewed ACCEPT 2026-10-20 (sonnet-builder): 4 cards dropped, 2 done, krown-other-sources unblocked, malkan-w1hr-local-whisper-asr ready, malkan-gfs-btc-htf-prereg refined, ROUTING.md aligned. DECISION (OURS): accept T0 alignment as is.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md",
     "MyTradingSys/research/video_priority_2026-10-15/RANKED_MALKAN.csv",
@@ -62,12 +74,13 @@
   "sources": [
     "MyTradingSys/research/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md.",
     "Adopt the video prioritization: halt saturated Tom/Fabio/TA101 meta ingestion.",
     "Schedule local Whisper ASR on W1HrDl70Lhk and Malkan GFS HTF pre-reg on historical 1D/4h BTC."
   ],
+  "taken": "2026-10-20T10:36:28Z",
   "tests": "python -c \"import os; assert os.path.exists('MyTradingSys/research/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md')\"",
   "title": "Review Ground Layer YouTube strategy and execution priorities",
   "weight": "IMPORTANT",
