@@ -1,0 +1,1 @@
+{"t": "20261020T005545Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship ship-root-cause Result: lint 33.3 s / 157 git -> 6.1 s / 41 git; a starved step (0.5 CPU s over 6 s wall, 2 s limit) FAIL -> PASS; orphan gate after ship death 2 h 39 min -> killed at once; test_"}
