@@ -307,4 +307,6 @@ IN-FIX rows older than 14 days fail Build-Check.
 
 | B194 | 2026-10-21 | OPEN | HIGH | task-mode gate block silently never ran; three sends, no receipt and no refusal | [FIXER: Claude Sonnet] [LOGGER: DSA] AIBridge task=mts-gate sent three times, no [AIRUN RESULT] and no refusal; no cicd_run receipt and no gate process (results #43, #44) while plain blocks in the same window ran. Needs an ack per task-mode send and a receipt on screen-out or duplicate. Item: items/B194_task_mode_block_silent_drop.md | - |
 
+| B195 | 2026-10-21 | OPEN | HIGH | AIBridge hands-free auto-OFF triggers on operator input draft, blocking all subsequent runs silently | [FIXER: Claude Sonnet] [LOGGER: DSA] Extension disabled hands-free when it saw an operator draft, posted no chat receipt, and left the block unrun. Needs to ignore drafts and post a receipt on auto-off. Item: items/B195_aibridge_auto_off_operator_draft.md | - |
+
 # END
