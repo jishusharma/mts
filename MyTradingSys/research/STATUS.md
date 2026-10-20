@@ -1,31 +1,33 @@
 # Development Status
 
-Generated: 2026-10-20 02:20:25
+Generated: 2026-10-20 03:30:00
 
 ## Git Status
-CI green: 452b6b84 (2026-10-19 21:40:57 +0530), 11 docs-only commit(s) ahead (no CI-gated path changed): OK
+CI green: d2c6eaa1 (2026-10-20 03:01:57 +0530, 0.5 h old), 11 trunk landing(s) / 13 commit(s) behind origin/fast-track: RED: oldest ungreen commit is 1.2 h old - CI is failing, auto-deploy is idle; fix CI first
+CI card: GREEN; CI on fast-track is green or still running; nothing to file
 LESSONS: digest in sync
-Pages stale: 0
+Pages stale: 1
+STALE mts_home https://claude.ai/artifact/8hKA1rhNRo6RAEdt5mtLg3
 
 ## Gate Board
 ```
-tom     G2  proof changed 28h ago | next: G3 blind marks (READER_PROTOCOL.md + g3_marks_2026-10-16) | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
-fabio   G2  proof changed 28h ago | next: G1 coverage check, then G3 | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
-malkan  G2  proof changed 96h ago | next: G3 blind marks MAL-2/5, MAL-16/17 (g3_marks_2026-10-16) | proof: MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md
-krown   G1  proof changed 23h ago | next: G2 (krown-g2: KROWN_SETUP_CATALOG.md) | proof: MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv
-commits 24h: 266 = research 17% | claim/release 45% | other 38%  OVER 30% CAP
+tom     G2  proof changed 29h ago | next: G3 blind marks (READER_PROTOCOL.md + g3_marks_2026-10-16) | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
+fabio   G2  proof changed 29h ago | next: G1 coverage check, then G3 | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
+malkan  G2  proof changed 97h ago | next: G3 blind marks MAL-2/5, MAL-16/17 (g3_marks_2026-10-16) | proof: MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md
+krown   G1  proof changed 24h ago | next: G2 (krown-g2: KROWN_SETUP_CATALOG.md) | proof: MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv
+commits 24h: 231 = research 19% | claim/release 44% | other 37%  OVER 30% CAP
 ```
 
 **Last 3 commits on origin/fast-track:**
 ```
-2dbdb81c release eu-low-us-sweep-follow-ups-long-after-sw
-82b840f5 release rsi-deep-buy-spec-v3-context-conditionin
-49b07468 RSI deep-buy spec v3: Step F context (macro phase, trailing floor/bounce record, memory length), shrinkage + walk-forward
+27e1c1e7 claim artifacts-freshness
+cc98cc34 claim fable-major-run-design
+9ec7671d refresh card move-live-host-generated-files-status-md (scope stamp)
 ```
 
 ## In-Flight .new Files
-- MyTradingSys/backtest/layers/fabio/htf_context_live.py.new (222.5h)
-- MyTradingSys/backtest/layers/fabio/test_htf_context_live.py.new (222.5h)
+- MyTradingSys/backtest/layers/fabio/htf_context_live.py.new (223.7h)
+- MyTradingSys/backtest/layers/fabio/test_htf_context_live.py.new (223.7h)
 
 ## Recent Reports (newest 5, last 3 days)
 - MyTradingSys/research/gap_audit_2026-10-19/REPORT.md (2026-10-19 09:40) # MTS Critical-Gap Audit, Revalidation & End-to-End Roadmap (2026-10-19)
@@ -51,9 +53,10 @@ SHOTS landed 123: new 1, classified 25, read 1, done 96 | overdue(>24h) 25 | cla
 
 ## Layer Lab (Codex)
 ```
-Layer lab (Codex) at 2026-10-19 20:50Z: on
+Layer lab (Codex) at 2026-10-19 22:00Z: on
   This machine does not run the lab (it runs on JIS-NUC): the queue below is from the repo; allowance, runs and what needs a look are only known there.
-  Queue: 8 ready
+  Queue: 9 ready
+    review-statecode-backfill-gpt [audit, gpt-6-astra / low]
     lc-ladder-dev [build, gpt-6-luna / medium]
     lab-formula-spec-recount [build, gpt-6-luna / medium]
     lab-formula-spec-text [build, gpt-6-luna / medium]
