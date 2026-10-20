@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-20T20:35:56Z",
   "commands": [],
   "created": "2026-10-13T18:51:54Z",
   "depends_on": [
@@ -16,6 +18,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "LC3 DEV run on 5976 first touches (standard DEV, Q79): frozen rule E1 S2 K5 X0_2R mean net",
+      "ref": "68d7be453",
+      "utc": "2026-10-20T20:35:56Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -45,7 +53,12 @@
     "to": "SONNET",
     "why": "heartbeat"
   },
-  "result": "",
+  "result": "LC3 DEV run on 5976 first touches (standard DEV, Q79): frozen rule E1 S2 K5 X0_2R mean net R -0.039 [-0.123, +0.048] n 772; INCONCLUSIVE by the card power rule (power_mde.py 31 %), FAIL by sample-sd power (87 %); every one of the 240 variants has a mean below zero or a CI through zero; arm P -0.130 R, 0 liquidations, +0.115 R over random entry; ladder_dev.md, frozen_rule.json, 243 TRIALS rows, 9 tests green",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/levels_confluence_2026-10-14/PLAN.md",
     "MyTradingSys/research/levels_confluence_2026-10-14/separation.md",
@@ -67,7 +80,7 @@
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 10-15 (BTC minimum stop width)",
     "MyTradingSys/backtest/layers/FORMULAS.md (RSI, value area, Bollinger)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Tests first (red): hand paths from the tests field; then ladder.py: per-leg fee simulator (fees.py), touches from event_table.csv, 1m bars via bt_data.load_klines('F:/MTS/data/tom_raw') as event_table.py:216. Stop beyond level by max(0.10 %, 0.40 % taker / 0.20 % maker).",
     "Scale-in S0-S3 on the SAME trade ideas (S1: half at L1, half at L2, one stop for the set); report net R per idea, an unfilled half counts as zero.",
@@ -77,6 +90,7 @@
     "Arm P liquidation check (isolated margin, mark = bar low/high): max leverage, liquidation count (must be 0), stop-to-liquidation distance; fee stress 10/25/50 % of R and the break-even fee share.",
     "Freeze the single best DEV rule in frozen_rule.json (no edits after); one row per variant in research/layer_lab/TRIALS.md; write ladder_dev.md."
   ],
+  "taken": "2026-10-20T18:28:12Z",
   "tests": "hand paths (test_ladder.py, red first): support long, first resistance half-close; CVD flat quarter; band rest. Scale-in L1+L2 then target = 2 fills, hand average, one stop; arm P 1:2:3 loss at stop == budget; liquidation fixture counted LIQUIDATED. python -m pytest research/levels_confluence_2026-10-14/test_ladder.py",
   "title": "LC3 Levels Confluence: ladder-exit simulator (fixed vs first level vs CVD/Bollinger step-out) on the <= 6 LC2 combinations, DEV, maker+taker fees",
   "weight": "CRUCIAL",
