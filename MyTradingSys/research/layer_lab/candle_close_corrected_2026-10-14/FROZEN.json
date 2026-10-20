@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-14",
+  "pre_reg_commit": "97f2c42",
+  "research_gate": "13 tests executed, no skips; PASS",
+  "files": {
+    "PRE_REG.md": "10fa96f36cc96b6ce75f91abb4393f9f245a0f06cbcfdbdd8ddaa063aa9b8d11",
+    "PRE_OUTCOME_FIXES.md": "fd1e14ea81ae997a48f3468aa275b0cb3b489434b30b9165350170ee6eefc2e8",
+    "engine.py": "4fd0baec3b462aea4991e8ae57966102e1cd1edc1da7e3e78a1591b656e0d9ec",
+    "rules.py": "8818d4a0835bfbe4645091dfbdf38c7d82406c06c1eedf8809beeb64b2bdde55",
+    "test_rules.py": "a297e7197f69a9f4640ae2e9faa7e9905ef64b6ec8d1cfb70897120790029b2a",
+    "test_engine.py": "7bf92c519b63bb8aff0b2291df3953e1983bb25cb80187d65de36f92221f72c2",
+    "test_import_guard.py": "3c7f6da71a650f79b3ffb4fc01e74787f1cc0befe34f980188a2bb3a4a2ccc8a",
+    "research_gate.py": "84800d7a3163983c213d1fe9d0a50f6fe53a90ef3a98a8443d7229a24786e03e",
+    "LEVEL_ORIENTATION_AMENDMENT.md": "c752532c15088e81c34ad17cec4b363198976c97e99001f72224fe61abd2e718",
+    "BOOTSTRAP_AMENDMENT.md": "c4e1b1f2a87ee946451c9c5a2f68881e423b0d6ea9942c6fb37bc1191baec609"
+  },
+  "status": "estimator normalization repair frozen before revised inference; all phase/outcome/matching parameters unchanged"
+}

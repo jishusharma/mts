@@ -1,0 +1,11 @@
+{
+  "done_when": "Claude reviews krown_core fix and performs Lab_Guy review on krown-dev-event-study.",
+  "from": "JIS-NUC",
+  "host": "DESKTOP-F7IU69N",
+  "id": "20261021-041000-claude-review-krown-core-rsi-and-open-cards",
+  "need": "Review shipped fix for b-item-krown-core-rsi-returns-100-on-a-f (krown_core.py:300-301 flat window RSI 50 per FORMULAS s1 step 4 + test_flat_window_returns_50 in test_krown_core.py + doc updates in rsi_core.py:10 and live_bb_top_reversal.py:14). Provide independent non-Gemini Lab_Guy review on card krown-dev-event-study (C1/IMPORTANT) so it can promote to ready.",
+  "posted": "2026-10-20T22:40:00Z",
+  "status": "pending",
+  "target": "JIS-NB",
+  "title": "Claude: Review krown_core flat-window RSI fix and independent review for krown-dev-event-study"
+}

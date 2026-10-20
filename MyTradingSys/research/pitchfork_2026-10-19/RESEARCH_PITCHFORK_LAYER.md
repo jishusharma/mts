@@ -73,11 +73,15 @@ When a Pitchfork setup triggers at Layer 1 (Geometry), it must pass the MTS micr
 
 ### 5. Validation Plan & Milestones
 
-- **Phase 1: Detector & Unit Verification (NOW):**
-  - Implement `MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py`.
-  - Comprehensive unit test suite `test_pitchfork_detector.py` covering all geometric forms, slope thresholds, and Hagopian conditions.
-- **Phase 2: Historical Event Study on BTC (PLANNED):**
-  - Run pitchfork detection across Binance BTCUSDT 4H and 1D klines (2020–2026).
-  - Measure empirical ML reach percentage, average duration to ML, and Hagopian payout ratios.
-- **Phase 3: Order Flow Confluence & Backtest (PLANNED):**
-  - Backtest with Deribit/Binance taker/maker fee models.
+- **Phase 1: Detector & Unit Verification (COMPLETED):**
+  - Implemented `MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py`.
+  - Comprehensive unit test suite `test_pitchfork_detector.py` covering all geometric forms, slope thresholds, log-scale geometry, and Hagopian conditions (100% pass).
+  - Daily 1D historical event study (2,461 bars, 2020-2026) confirmed Andrews' 80% rule on Bitcoin (86.15% - 90.03% reach on Modified Schiff). Detailed in `PHASE1_EVENT_STUDY.md`.
+- **Phase 2: 4-Hour Timeframe & Volume Profile Confluence Study (COMPLETED):**
+  - Run on 14,766 4H Binance Bitcoin klines (2020-2026) across 1,273 confirmed swing setups (`run_pitchfork_4h_poc_study.py`).
+  - Proved that resting limit orders on tine retests (`TINE_LIMIT_RETEST`) eliminate negative fee drag, turning net returns positive across all 4 geometric models (+0.05% to +0.88%).
+  - Proved that **Volume Profile Value Area Confluence (`VA_CONFLUENT`)** boosts Mean Net Return to **+0.61% to +0.69% per trade** with a **1.62 - 1.63 Profit Factor** (detailed in `PHASE2_4H_POC_STUDY.md` and `TRIALS_PITCHFORK_4H.csv`).
+- **Phase 3: Java Execution Engine Wire-up (NEXT IMMEDIATE ACTION):**
+  - Integrate confirmed Pitchfork tine bounces (`PF-REV-L` / `PF-REV-S`) and Hagopian failure triggers (`PF-HAG-L` / `PF-HAG-S`) into `src/main/java/datafeed/SetupCandidatesBuilder.java`.
+- **Phase 4: Task Card & Independent Cross-Vendor Review:**
+  - Create and refine task cards for Claude / Codex cross-model review per `PRODUCER != REVIEWER` mandate.
