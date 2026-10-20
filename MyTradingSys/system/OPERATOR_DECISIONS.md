@@ -1128,3 +1128,6 @@ Applied: 2026-10-20: WORKERS.md rule 5 and CLAUDE.md step 5 say so; turn_meter.p
  "answer": "Caps for unattended workers only; a session the operator is driving ends on his word"
 }
 ```
+
+## DECISION NEEDED 2026-10-21 (Lab_Guy): pre_pipeline_sources review_by 2026-10-23
+27 grandfathered testnet sources in auto_trader_config.json expire for review on 2026-10-23; promoted_setups.json has 0 entries. Options: (a) extend review_by 14 days (recommended, OURS default), (b) prune falsified layers (turn_of_candle, rsi_divergence, session_levels), (c) stop them. Needs an operator answer in the Control Room; no chat question.
