@@ -9,7 +9,7 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "One script + one CSV + one table per OPUS_FRAMING s5 Stage 0: BTCUSDT 1m DEV only (open < 2024-07-01), RSI14 on 1m, 15m, 1h; episode start = close at or below level after h=3 hysteresis; levels abs 30/20/10 plus relative (trailing-90d 2nd percentile, causal); fill next open; gross forward return at {1,4,16} bars of t, MFE/MAE, P(price lower low than fill within N bars), bars and % between RSI minimum and price minimum, bounce > 0.10% fee; matched random baseline (same time of day, trailing-vol tercile); day-clustered CI; MDE. Verdict H1: dead TFs listed; all dead = stop the study.",
+  "goal": "One script + one CSV + one table per OPUS_FRAMING s5 Stage 0: BTCUSDT 1m DEV only (open < 2024-07-01), RSI14 on 1m, 15m, 1h; episode start = close at or below level after h=3 hysteresis; levels abs 30/20/10 plus relative (trailing-90d 2nd percentile, causal); fill next open; gross forward return at {1,4,16} bars of t, MFE/MAE, P(price lower low than fill within N bars), bars and % between RSI minimum and price minimum, bounce > 0.10% fee; matched random baseline (same time of day, trailing-vol tercile); day-clustered CI; MDE. Verdict H1: dead TFs listed; all dead = stop the study. SHOT_REVIEW C12 (same pass, descriptive, does not enter the H1 kill): per TF, gross move from the RSI trough close to the first close at RSI 40/50/60, in % and in multiples of the 0.10% fee (SPEC s3 X1-X3 note, C9; one 1m example: +0.26/+0.44/+0.58%, X1 about 2.6 fees).",
   "id": "rsi-deep-econ-floor",
   "lane": "SONNET",
   "layers": [],
@@ -23,7 +23,8 @@
   "result": "",
   "scope_in": [
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md",
-    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md"
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SHOT_REVIEW.md"
   ],
   "scope_out": [],
   "size": "S",

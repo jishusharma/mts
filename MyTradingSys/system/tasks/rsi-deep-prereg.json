@@ -14,7 +14,7 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Write research/rsi_deep_buy_2026-10-19/PRE_REG.md freezing the grid (entry arms E1/E2, exits X1-X6, ladders S0-S3, divergence TF D), verdict rules and trial rows from SPEC s2-s5 and the depth map, committed before any outcome file. Scope change (OPUS_FRAMING s2.3): define E1/E2/E3 explicitly (SPEC refers to an undefined earlier draft); state the higher-TF alignment rule (last completed bar); cut the grid to Stage 0-3 survivors; X5 only as X3 + divergence; add bankroll cap B and capital-based catastrophe-exit control; regime split per year; survivorship assets.",
+  "goal": "Write research/rsi_deep_buy_2026-10-19/PRE_REG.md freezing the grid (entry arms E1/E2, exits X1-X6, ladders S0-S3, divergence TF D), verdict rules and trial rows from SPEC s2-s5 and the depth map, committed before any outcome file. Scope change (OPUS_FRAMING s2.3): define E1/E2/E3 explicitly (SPEC refers to an undefined earlier draft); state the higher-TF alignment rule (last completed bar); cut the grid to Stage 0-3 survivors; X5 only as X3 + divergence; add bankroll cap B and capital-based catastrophe-exit control; regime split per year; survivorship assets. Write the SHOT_REVIEW trial rows from SPEC s5 'Trial-ledger additions' (C1-C8: pairing rule, episode end, price basis, eps, min RSI diff, FAILURE_SWING, sequence features, 24h sweep, HTF divergence voter window, oscillator agreement, HTF regime-break lookback, session clock, short mirror) with their SOURCED/OURS labels; primary row first, others exploratory and inside the Holm/BH count.",
   "id": "rsi-deep-prereg",
   "lane": "SONNET",
   "layers": [],
@@ -28,7 +28,8 @@
   "result": "",
   "scope_in": [
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md",
-    "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md"
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SHOT_REVIEW.md"
   ],
   "scope_out": [],
   "size": "S",
