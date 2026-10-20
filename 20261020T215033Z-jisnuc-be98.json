@@ -1,0 +1,1 @@
+{"t": "20261020T215033Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship --release wt-maint-job > ../ship_wtm.log 2>&1; grep -n \"FAIL\\|Error\\|assert\" ../ship_wtm.log | head -30; tail -5 ../ship_wtm.log"}
