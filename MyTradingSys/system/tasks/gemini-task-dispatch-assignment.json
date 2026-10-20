@@ -1,0 +1,72 @@
+{
+  "approved_by": "operator",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/tasks.py check gemini-task-dispatch-assignment",
+    "python scripts/dev/tasks.py list --lane CODEX --state ready"
+  ],
+  "created": "2026-10-20T19:33:39Z",
+  "depends_on": [],
+  "done_when": "Claude dispatcher / routing specifies an explicit subset or tag for Gemini-designated tasks (such as Argon blind-reads, vendor cross-reviews, and audit/doc cards) or documents the protocol in ROUTING.md.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Claude dispatcher should tag or partition tasks clearly so Gemini builder sessions can immediately identify and pick cards meant specifically for Gemini/Argon execution.",
+  "id": "gemini-task-dispatch-assignment",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Roles 11 -> 7: Pipeliner absorbs Traffic_Controller, Admin_Guy, 1985Artifacts_Guy, SPEND p",
+      "ref": "653f9937953f",
+      "utc": "2026-10-19T09:02:12Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "653f9937953f Roles 11 -> 7: Pipeliner absorbs Traffic_Controller, Admin_Guy, 1985Artifacts",
+      "ref": "MyTradingSys/system/ROUTING.md",
+      "utc": "2026-10-19T09:02:12Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "Documentation and task dispatching only; no production engine code mutated.",
+  "note": "REVIEWED:2026-10-21 T0-ONLY - refined by gemini-flash (class=C0 weight=ROUTINE); T0 mechanical checks passed.",
+  "prio": 2,
+  "refine_tries": 1,
+  "refined_by": "gemini-3.8-flash",
+  "refreshed": "2026-10-20T19:34:04Z",
+  "refs": [
+    "MyTradingSys/system/GEMINI_START.md",
+    "MyTradingSys/system/ROUTING.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/ROUTING.md",
+    "MyTradingSys/research/BUGS.md"
+  ],
+  "scope_out": [
+    "live tree",
+    "trading loop",
+    "broker execution"
+  ],
+  "scope_sha": "653f9937953f",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/GEMINI_START.md:5-15",
+    "MyTradingSys/system/ROUTING.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Review current task lane assignment rules in ROUTING.md and tasks.py (currently tasks.py allows only HAIKU, SONNET, OPUS, DSA, DSA-NB, DSA-NUC, JIS-NB, CODEX).",
+    "Define a clear tagging convention (e.g. worker: gemini or tags in title/notes) or dispatch queue where Claude creates/assigns tasks directly targeted for Gemini.",
+    "Update ROUTING.md and dispatch documentation so tasks meant for Gemini are unambiguous."
+  ],
+  "tests": "tasks.py check gemini-task-dispatch-assignment",
+  "title": "Claude dispatcher: tag and assign explicit Gemini-tailored task cards for the Gemini lane",
+  "weight": "ROUTINE",
+  "worker": "session"
+}
