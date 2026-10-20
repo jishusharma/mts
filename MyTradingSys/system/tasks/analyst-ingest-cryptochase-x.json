@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-20T01:42:11Z",
   "commands": [],
   "created": "2026-10-18T13:07:17Z",
   "depends_on": [],
@@ -13,6 +15,12 @@
   "id": "analyst-ingest-cryptochase-x",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Implemented Crypto Chase FVG social call listener and parser in cryptochase/scraper.py wit",
+      "ref": "d7ba7524",
+      "utc": "2026-10-20T01:42:11Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +46,12 @@
     "MyTradingSys/research/analysts/schema.py",
     "MyTradingSys/research/analysts/ingest_analysts.py"
   ],
-  "result": "",
+  "result": "Implemented Crypto Chase FVG social call listener and parser in cryptochase/scraper.py with verified SOURCED calls in CALL_LEDGER.csv, operator inbox parsing, and 12 unit tests passing.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/analysts/cryptochase/",
     "MyTradingSys/research/analysts/ingest_analysts.py"
@@ -52,12 +65,13 @@
   "sources": [
     "MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md:95-113"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Implement ingest script reading Crypto Chase tweets or manual operator inbox pastes.",
     "Extract FVG levels and stop losses with parse_social_call.",
     "Record calls into MyTradingSys/research/analysts/cryptochase/CALL_LEDGER.csv."
   ],
+  "taken": "2026-10-20T01:38:15Z",
   "tests": "python -m unittest MyTradingSys/research/analysts/test_analysts_ingestion_and_scorecard.py",
   "title": "Implement Crypto Chase FVG social call listener",
   "weight": "ROUTINE",

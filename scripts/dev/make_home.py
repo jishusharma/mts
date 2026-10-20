@@ -246,6 +246,10 @@ button.copy{font:700 .8rem var(--f-body);padding:6px 12px;border-radius:999px;bo
           <span class="when">Any time, any device, any login.</span>
           <span>Paste <span class="paste">You are Admin_Guy.</span> followed by the idea, in a new session or an open Admin_Guy session.</span>
           <span class="get">one scoped card on the trunk with your words quoted, routed by Pipeliner and refined by Session_Planner.</span></li>
+        <li><b>Think with me: design, optimise, economise</b>
+          <span class="when">Any time, any device, any login. Pick Opus in the composer (on Sonnet it runs in lite mode).</span>
+          <span>Paste <span class="paste">You are Thinker.</span> then a topic, or <code>scan waste</code> / <code>budget</code> / <code>automation</code> / <code>tests</code> / <code>scale</code> / <code>speed</code> / <code>ideas</code> / <code>cut</code>.</span>
+          <span class="get">2-3 real options with cost, ROI and risk, one recommendation, one next step; your pick is recorded word for word and becomes raw cards. It never builds, deploys or decides for you.</span></li>
         <li><b>Only when something breaks</b>
           <span class="when">A page is stale or a link fails: on the jishusharma1985 login. A console window flashes or the network misbehaves: on that machine.</span>
           <span>Paste <span class="paste">You are 1985Artifacts_Guy.</span> or <span class="paste">You are Admin_Guy.</span> (old names Artifacts_Guy, Q&amp;A_Helper, Network_Admin_Guy still work)</span>

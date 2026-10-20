@@ -255,5 +255,65 @@ class TestRLindaTradingViewScraper(unittest.TestCase):
         self.assertEqual(rows[0].targets_str, "69000.0;71500.0")
 
 
+class TestJustinBennettDailyPriceActionScraper(unittest.TestCase):
+    def test_bennett_ingestion_and_ledger(self):
+        from bennett.scraper import (
+            parse_dpa_rss_items,
+            ingest_articles_to_ledger,
+            load_ledger_rows,
+            MOCK_RSS_XML,
+        )
+        import tempfile
+
+        items = parse_dpa_rss_items(MOCK_RSS_XML)
+        self.assertEqual(len(items), 1)
+        self.assertIn("68.4k", items[0]["title"])
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_csv = Path(tmp_dir) / "test_ledger.csv"
+            added = ingest_articles_to_ledger(items, csv_path=tmp_csv)
+            self.assertEqual(added, 1)
+
+            rows = load_ledger_rows(tmp_csv)
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0].analyst, "Justin Bennett")
+            self.assertEqual(rows[0].direction, "SHORT")
+            self.assertEqual(rows[0].entry, 68400.0)
+            self.assertEqual(rows[0].stop, 69600.0)
+            self.assertEqual(rows[0].targets_str, "66800.0;65000.0")
+
+
+class TestCryptoChaseSocialScraper(unittest.TestCase):
+    def test_cryptochase_ingestion_and_ledger(self):
+        from cryptochase.scraper import (
+            CURATED_CRYPTO_CHASE_POSTS,
+            ingest_cryptochase_posts,
+            load_ledger_rows,
+            parse_crypto_chase_post,
+        )
+        import tempfile
+
+        post = CURATED_CRYPTO_CHASE_POSTS[0]
+        sig = parse_crypto_chase_post(post["text"], post["url"], post["published_utc"])
+        self.assertEqual(sig.analyst, "Crypto Chase")
+        self.assertEqual(sig.direction, SignalDirection.LONG)
+        self.assertEqual(sig.entry_price, 65200.0)
+        self.assertEqual(sig.stop_loss, 64100.0)
+        self.assertEqual(sig.targets, [68000.0])
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_csv = Path(tmp_dir) / "test_ledger.csv"
+            added = ingest_cryptochase_posts(CURATED_CRYPTO_CHASE_POSTS, csv_path=tmp_csv)
+            self.assertEqual(added, 3)
+
+            rows = load_ledger_rows(tmp_csv)
+            self.assertEqual(len(rows), 3)
+            self.assertEqual(rows[0].analyst, "Crypto Chase")
+            self.assertEqual(rows[0].symbol, "BTCUSDT")
+            self.assertEqual(rows[0].entry, 65200.0)
+            self.assertEqual(rows[0].stop, 64100.0)
+            self.assertEqual(rows[0].targets_str, "68000.0")
+
+
 if __name__ == "__main__":
     unittest.main()

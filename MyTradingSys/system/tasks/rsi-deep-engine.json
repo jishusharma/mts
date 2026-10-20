@@ -26,14 +26,15 @@
   "result": "",
   "scope_in": [
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md",
-    "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md"
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SHOT_REVIEW.md"
   ],
   "scope_out": [],
   "size": "M",
   "sources": [],
   "state": "raw",
   "steps": [],
-  "tests": "",
+  "tests": "Acceptance tests for the divergence detector the engine uses (X5 exits; same detector as rsi-deep-divergence-context): Known-answer cases K1-K10 (SHOT_REVIEW.md (d); expected values from the review's independent public Binance USD-M perp BTCUSDT computation, not from repo code): UTC bar-open times, close pivots, RSI14 Wilder on close, tolerance +-0.5 RSI. K1 1m A 10-09 13:36 c82506.1 r15.4, B 10-09 14:01 c82459.5 r35.4: P-adj F (13:56 r45.5), P-anchor T (26 bars), P-any T 3/8, Malkan max 10 bars F. K2 1m A 10-09 13:40 c82493.2 r28.3, B 13:42 c82468.0 r30.9: P-adj T, P-anchor T, chain 2 with 13:36->13:40, v1 module stamps 13:43 (regression guard). K3 1m bear A 10-09 14:21 c83180.8 r74.5, B 14:34 c83266.0 r70.0: P-adj F (14:30 r66.6), P-anchor T, 14 bars. K4 30m anchor 10-07 02:00 r19.9 replaced by 10-07 14:30 c82978.1 r17.9, B 10-08 03:30 c82717.3 r31.3: P-anchor T against 14:30 (27 bars), firing #1 of 9, P-adj F (01:30 r38.7). K5 30m A 10-07 14:30, B 10-08 17:00 c80700.0 r26.9: P-adj T (15:30 r25.8), P-anchor T, 54 bars; firing #9 if the episode does not end at RSI 50.9 (10-08 09:30), firing #4 of a new episode under 'end above 50'; P-anchor-split second reading (price A 10-08 03:30 c82717.3, RSI A 10-07 14:30 r17.9) T. K6 5m A 10-15 13:25 c80192.6 r29.1, B 13:50 c79842.4 r30.7: all rules T at min RSI diff 0, F at min diff 2. K7 1m bear A 10-15 14:11 c81250.4 r76.9 (wick 14:10 81390.5), B 14:19 c81270.0 r69.1 (wick 81325.4): close basis T, wick basis F. K8 15m A 10-18 14:45 c81060.2 r23.2, B 20:30 c80818.5 r31.5: P-adj T (20:00 r28.2), P-anchor T firing #5 (15:30, 16:45, 19:30, 20:00 before), P-any 4/7; 16:45 P-adj F. K9 5m A 10-19 10:30 c82118.3 r24.6 (wick 82058.0), B 11:30 c82115.8 r32.3 (wick 82089.0): P-anchor T at eps 0 (close -2.5 USD), P-adj F (11:10 r32.7), wick basis F. K10 5m bear A 10-19 07:30 c83090.1 r73.1, B 09:35 c83037.3 r62.9: every rule F, label FAILURE_SWING. Fixture = public Binance perp 1m klines for these windows resampled UTC, with warm-up from 2026-08-25 or at least 300 bars of the TF before A (Wilder seed, OPUS_FRAMING s2.1); no account data. Assert detector outputs only (pivots, RSI, pairing T/F, firing numbers, labels), never forward returns: the windows lie in the HOLDOUT period, so no study table may use them. The planted 20 -> 30 -> 25 test of SPEC Step J stays; K1, K4, K8 are its real-data versions.",
   "title": "RSI deep-buy: episode simulator (entry arms, RSI/divergence exits, scale-in ladders, no stop, ruin test)",
   "weight": "",
   "worker": ""
