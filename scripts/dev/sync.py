@@ -3,7 +3,7 @@
   python scripts/dev/sync.py start [slug] [--quiet]  # up to date with origin/fast-track; in a shared/dirty tree makes your own worktree;
                                            # in a lane tree (mts-app, mts-relay, mts-dsa) `start <slug>` switches to branch <host>/<slug>
   python scripts/dev/sync.py health  # stale/overlapping claims, shared or orphan worktrees, branches never shipped
-  python scripts/dev/sync.py ship [--full] [--fix-ci] [--release <slug>] [--after <slug>]  # merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
+  python scripts/dev/sync.py ship [--full] [--fix-ci] [--again] [--release <slug>] [--after <slug>]  # a second ship from one tree within 10 min needs --again; docs-only ships run no gate; merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
                                            # ordinary code ships run the FAST gate (GATE_SPEED.md: ~60 s, tests chosen by import graph); a red CI blocks code ships until
                                            # fixed: --fix-ci ships the fix through it with the full gate; --after waits for predecessor order ticket
   python scripts/dev/sync.py news [hours=24]  # what shipped: feature + Result line per commit, no code
@@ -35,6 +35,9 @@ LIVE_MARKER = ".mts_live"
 DOC_SUFFIXES = (".md", ".txt")
 PUSH_TRIES = 3
 CLAIMS_DIR = "MyTradingSys/system/claims"
+CLAIMS_BRANCH = "claims"   # gate-tiers-by-path (q-v1-claims-off-git): claim/release commits live here, never on the trunk
+SHIP_GAP_S = 600           # a second ship from one tree within this many seconds is refused (SYNC_ALLOW_SECOND_SHIP=1 / --again)
+SHIP_STAMP = "mts_last_ship"
 CARDS_DIR = "MyTradingSys/system/tasks"
 STALE_HOURS = 24
 # Generated or whole-file-rewritten files that every session touches. A collision here is never worth a
@@ -417,7 +420,7 @@ def health(repo):
     git(repo, "fetch", "--quiet", "origin", TRUNK)
     issues = []
     now = time.time()
-    claims = read_claims(repo, f"origin/{TRUNK}")
+    claims = open_claims(repo)
     areas = {}
     for slug, kv in claims:
         age_h = (now - int(kv.get("epoch", now))) / 3600
@@ -493,10 +496,33 @@ def call_gate(gate, repo, files):
 
 
 def run_docs_gate(repo, files):
-    """Docs/data-only ship: the cheap doc invariants (task cards, INDEX/BUGS, doc size and contract tests), no gate slot.
-    Skipped where the repo has no gate script (throwaway repos)."""
-    if (Path(repo) / "scripts" / "dev" / "run_all_tests.py").exists() and not os.environ.get("SYNC_NO_DOCS_GATE"):
-        run_gate(repo, files)
+    """Docs/data/cards/pages-only ship (gate-tiers-by-path, operator q-v1-gate-tiers 2026-10-20): no local gate at all. Fetch, merge and
+    push only; CI gates behind (the measured docs ships ran 1025-2329 s locally for checks CI repeats)."""
+    return None
+
+
+def ship_stamp(repo):
+    return Path(git(repo, "rev-parse", "--absolute-git-dir").stdout.strip()) / SHIP_STAMP
+
+
+def check_ship_gap(repo):
+    """Refuse a second ship from one tree within SHIP_GAP_S of the last pushed one (per worktree git dir). Bypass: --again / SYNC_ALLOW_SECOND_SHIP=1."""
+    if os.environ.get("SYNC_ALLOW_SECOND_SHIP"):
+        return
+    try:
+        age = time.time() - float(ship_stamp(repo).read_text().strip())
+    except (OSError, ValueError):
+        return
+    if 0 <= age < SHIP_GAP_S:
+        raise SyncError(f"second ship from this tree {age:.0f} s after the last one (limit 10 min between ships): batch the work into one ship, "
+                        f"or wait, or pass --again if this really is a separate change")
+
+
+def write_ship_stamp(repo):
+    try:
+        ship_stamp(repo).write_text(str(time.time()), encoding="utf-8")
+    except (OSError, SyncError):
+        pass
 
 
 def ci_state(fetch=None):
@@ -735,6 +761,7 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
                     print("nothing to ship")
                 return
             if attempt == 1:
+                check_ship_gap(repo)
                 if gate is run_gate and ci_applies(files):    # custom gates (tests, throwaway repos) stay hermetic: no network
                     ci = CiCheck()
                 if needs_gate(files):
@@ -765,6 +792,9 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
             r = git(repo, "push", "--quiet", "origin", f"HEAD:refs/heads/{TRUNK}", check=False)
             if r.returncode == 0:
                 ok = True
+                write_ship_stamp(repo)
+                if release_slug and not released:
+                    released = release_side(repo, release_slug)
                 print(f"shipped {len(files)} file(s) to origin/{TRUNK}" + (f"; released {release_slug}" if released else ""))
                 pages.report()
                 return
@@ -917,9 +947,30 @@ def read_claims(repo, ref):
     return rows
 
 
+def open_claims(repo, fetch=True):
+    """Open claims: the side branch origin/claims, plus any legacy claim file still on the trunk (claims made before the side branch)."""
+    if fetch:
+        git(repo, "fetch", "--quiet", "origin", CLAIMS_BRANCH, check=False)
+    rows = read_claims(repo, f"origin/{CLAIMS_BRANCH}")
+    have = {s for s, _ in rows}
+    return rows + [r for r in read_claims(repo, f"origin/{TRUNK}") if r[0] not in have]
+
+
+def release_side(repo, slug):
+    """Remove claim `slug` from the side branch (no trunk commit). True when something was removed; never raises (the ship already landed)."""
+    rel = f"{CLAIMS_DIR}/{slug}.md"
+    try:
+        git(repo, "fetch", "--quiet", "origin", CLAIMS_BRANCH, check=False)
+        if git(repo, "cat-file", "-e", f"origin/{CLAIMS_BRANCH}:{rel}", check=False).returncode != 0:
+            return False
+        push_claim_commit(repo, rel, None, f"release {slug}" + chr(10) * 2 + f"Result: claim {slug} closed with the ship", branch=CLAIMS_BRANCH)
+        return True
+    except SyncError:
+        return False
+
+
 def print_claims(repo, ref=None):
-    ref = ref or f"origin/{TRUNK}"
-    rows = read_claims(repo, ref)
+    rows = read_claims(repo, ref) if ref else open_claims(repo)
     if not rows:
         print("claims: none open")
         return
@@ -931,13 +982,15 @@ def print_claims(repo, ref=None):
               f"[area: {kv.get('area','-')}] {age_h:.0f}h old{stale}")
 
 
-def push_claim_commit(repo, rel, text, msg):
-    """Traffic buster (2026-10-16): put ONE claim-file change on origin/fast-track as a commit built with plumbing on
-    top of origin's tip: no merge commit, no gate, no dependence on this tree's state (dirty or ahead is fine). text=None
-    removes the file. Returns the pushed sha. Afterwards this branch is fast-forwarded to it when it can be (never a merge)."""
+def push_claim_commit(repo, rel, text, msg, branch=CLAIMS_BRANCH):
+    """Traffic buster (2026-10-16): put ONE claim-file change on origin/<branch> as a commit built with plumbing on top of origin's
+    tip: no merge commit, no gate, no dependence on this tree's state (dirty or ahead is fine). text=None removes the file. Default
+    branch is the claims side branch (gate-tiers-by-path: no claim/release commit on the trunk; created empty on first use); branch=TRUNK
+    serves legacy claims. Returns the pushed sha. On the trunk this branch is then fast-forwarded to it when it can be (never a merge)."""
     for attempt in range(1, PUSH_TRIES + 1):
-        git(repo, "fetch", "--quiet", "origin", TRUNK)
-        parent = git(repo, "rev-parse", f"origin/{TRUNK}").stdout.strip()
+        have = git(repo, "fetch", "--quiet", "origin", branch, check=False).returncode == 0 and \
+            git(repo, "rev-parse", "--verify", "--quiet", f"origin/{branch}", check=False).returncode == 0
+        parent = git(repo, "rev-parse", f"origin/{branch}").stdout.strip() if have else None
         idx = Path(git(repo, "rev-parse", "--absolute-git-dir").stdout.strip()) / f"claim-index-{os.getpid()}"
         env = {**os.environ, "GIT_INDEX_FILE": str(idx)}
 
@@ -947,17 +1000,18 @@ def push_claim_commit(repo, rel, text, msg):
                 raise SyncError(f"git {' '.join(args)} failed:" + chr(10) + f"{r.stdout}{r.stderr}".rstrip())
             return r.stdout.strip()
         try:
-            plumb("read-tree", parent)
+            plumb("read-tree", parent) if parent else plumb("read-tree", "--empty")
             if text is None:
                 plumb("update-index", "--force-remove", rel)
             else:
                 blob = plumb("hash-object", "-w", "--stdin", stdin=text)
                 plumb("update-index", "--add", "--cacheinfo", f"100644,{blob},{rel}")
-            commit = plumb("commit-tree", plumb("write-tree"), "-p", parent, "-m", msg)
+            commit = plumb("commit-tree", plumb("write-tree"), *(["-p", parent] if parent else []), "-m", msg)
         finally:
             idx.unlink(missing_ok=True)
-        if git(repo, "push", "--quiet", "origin", f"{commit}:refs/heads/{TRUNK}", check=False).returncode == 0:
-            git(repo, "merge", "--ff-only", "--quiet", commit, check=False)  # only when this branch has nothing unshipped
+        if git(repo, "push", "--quiet", "origin", f"{commit}:refs/heads/{branch}", check=False).returncode == 0:
+            if branch == TRUNK:
+                git(repo, "merge", "--ff-only", "--quiet", commit, check=False)  # only when this branch has nothing unshipped
             return commit
         print(f"push rejected (someone shipped first), retry {attempt}/{PUSH_TRIES}")
     raise SyncError(f"claim push still rejected after {PUSH_TRIES} tries")
@@ -1019,8 +1073,8 @@ def claim(repo, task, area="-", gate=run_gate, force=False):
     NL = chr(10)
     for attempt in range(1, PUSH_TRIES + 1):  # re-check on every retry: a racing claim may have landed
         git(repo, "fetch", "--quiet", "origin", TRUNK)
-        open_claims = read_claims(repo, f"origin/{TRUNK}")
-        for other, kv in open_claims:
+        open_rows = open_claims(repo)
+        for other, kv in open_rows:
             # With areas on both sides a claim blocks only on overlap (operator q20); a claim without --area cannot be compared,
             # so there only the same task name blocks.
             theirs = claim_areas(kv)
@@ -1028,7 +1082,7 @@ def claim(repo, task, area="-", gate=run_gate, force=False):
             if hit or (other == slug0 and not (mine and theirs)):
                 raise SyncError(f"already claimed by {kv.get('host')} / {kv.get('account')}: {kv.get('task')}"
                                 + (f" (area {hit[0]} ~ {hit[1]})" if hit else "") + ". Pick another task or area, or ask them (a claim over 24 h old is stale: release it).")
-        taken = {s for s, _ in open_claims}
+        taken = {s for s, _ in open_rows}
         slug, n = slug0, 1
         while slug in taken:  # same task name, disjoint areas: both may work
             n += 1
@@ -1049,13 +1103,15 @@ def claim(repo, task, area="-", gate=run_gate, force=False):
 def release(repo, slug, gate=run_gate):
     refuse_live(repo)
     git(repo, "fetch", "--quiet", "origin", TRUNK)
+    git(repo, "fetch", "--quiet", "origin", CLAIMS_BRANCH, check=False)
     rel = f"{CLAIMS_DIR}/{slug}.md"
-    if git(repo, "cat-file", "-e", f"origin/{TRUNK}:{rel}", check=False).returncode != 0:
-        raise SyncError(f"no claim {slug} on origin/{TRUNK}")
+    side = git(repo, "cat-file", "-e", f"origin/{CLAIMS_BRANCH}:{rel}", check=False).returncode == 0
+    if not side and git(repo, "cat-file", "-e", f"origin/{TRUNK}:{rel}", check=False).returncode != 0:
+        raise SyncError(f"no claim {slug} on origin/{CLAIMS_BRANCH}")
     ahead = git(repo, "rev-list", "--count", f"origin/{TRUNK}..HEAD", check=False).stdout.strip()
     if ahead.isdigit() and int(ahead) > 0:
         print(f"hint (B4): this tree has {ahead} unshipped commit(s); `sync.py ship --release {slug}` closes the claim in the same push and saves a commit")
-    push_claim_commit(repo, rel, None, f"release {slug}" + chr(10) * 2 + f"Result: claim {slug} closed")
+    push_claim_commit(repo, rel, None, f"release {slug}" + chr(10) * 2 + f"Result: claim {slug} closed", branch=CLAIMS_BRANCH if side else TRUNK)
     print(f"released {slug}")
 
 
@@ -1302,6 +1358,9 @@ def main(argv):
                 os.environ["SYNC_FIX_CI"] = "1"
                 os.environ["SYNC_FULL_GATE"] = "1"
                 argv = [a for a in argv if a != "--fix-ci"]
+            if "--again" in argv:
+                os.environ["SYNC_ALLOW_SECOND_SHIP"] = "1"
+                argv = [a for a in argv if a != "--again"]
             if "--full" in argv:
                 os.environ["SYNC_FULL_GATE"] = "1"
                 argv = [a for a in argv if a != "--full"]

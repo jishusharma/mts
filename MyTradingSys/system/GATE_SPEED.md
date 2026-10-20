@@ -85,3 +85,9 @@ Floor on this box: python start 0.2 s + one pytest chunk of the longest direct t
 ## Not done (next)
 FIFO slot queue; Windows CI on selected steps only. (Done: Machine-wide process budget across concurrent gates & prechecks counted with ship timing logged, SV7).
 
+
+## Three tiers by path (gate-tiers-by-path, operator q-v1-gate-tiers 2026-10-20)
+1. **Docs** (.md/.txt, data under research/system/items/methodology, task cards, pages): `gate_select` mode `docs` selects no steps and `sync.py ship` runs no gate (fetch, merge, push, record); CI gates behind. The wiring registry still runs 3x/3w.
+2. **Smoke** (non-live code): only the tests that import the changed module (fast path), every step capped at 240 s; 4t only when a test file is in the diff, 3tl only when a card is; doc size caps and banner checks only on diff files (`MTS_GATE_CHANGED_FILES`).
+3. **Live path / unknown path**: the full quick gate, unchanged (fail closed).
+Claims and releases live on the `claims` branch of origin (no claim/release commit on the trunk; `sync.py claims` reads it plus legacy trunk claims). A second ship from one tree within 10 min is refused: `ship --again` (or `SYNC_ALLOW_SECOND_SHIP=1`) overrides. DECISION (OURS): wall times for one docs and one code ship on JIS-NB are not measured in this card; read them in gate_timing.jsonl after the next ships.

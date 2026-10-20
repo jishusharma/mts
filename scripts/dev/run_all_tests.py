@@ -635,6 +635,11 @@ def run_plan(plan, jobs, out=None, fail_fast=False, precheck=False, slot=None, r
     return results
 
 
+def step_timeout_for(mode):
+    """gate-tiers-by-path: the per-step cap (seconds) of a smoke gate; a full gate and an unselected run keep none."""
+    return FAST_STEP_TIMEOUT_S if mode == "smoke" else None
+
+
 def changed_files(args):
     """The --changed-file list (one path per line), or None when absent or unreadable."""
     if "--changed-file" not in args:
@@ -822,7 +827,8 @@ def apply_selection(plan, args):
     GATE_SPEED D6: a smoke/docs 3xt runs only gate_select.extra_subset, a smoke 5b only gate_select.layer_subset.
     D1: with --precheck and a readable list, the targeted step 4t is added (every mode)."""
     files = changed_files(args)
-    if "--precheck" in args and files:
+    # gate-tiers-by-path: 4t (about 1000 s on a loaded machine) only when a test file is in the diff; the fast path / CI cover the rest
+    if "--precheck" in args and files and any(PurePosixPath(f).name.startswith("test_") and f.endswith(".py") for f in files):
         tt = targeted_tests(files)
         if tt:
             plan.append(Step(TARGET_STEP, f"Precheck pytest: {len(tt)} test file(s) that reference the change", f"Step {TARGET_STEP}: Targeted pytest",
@@ -1010,10 +1016,13 @@ def main(argv=None):
 
     plan = build_plan(quick)
     plan, mode = apply_selection(plan, args)
+    if mode and mode != "full" and changed_files(args):
+        os.environ["MTS_GATE_CHANGED_FILES"] = chr(10).join(changed_files(args))   # tests/docs/test_integrity.py: caps and banners on the diff only
     if mode:
         print(f"Gate mode: {mode} ({sum(1 for s in plan if not s.skip)} steps); CI runs the full suite behind the push", flush=True)
         print(f"Gate reason: {gate_reason}", flush=True)
     global STEP_TIMEOUT_S
+    STEP_TIMEOUT_S = step_timeout_for(mode)
     if fast_applied:
         STEP_TIMEOUT_S = FAST_STEP_TIMEOUT_S
         print(f"Fast gate (GATE_SPEED X2): {fast_info['reached']} test files reached ({fast_info['direct']} direct), {fast_info['kept']} units kept, "

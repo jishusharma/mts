@@ -1,5 +1,6 @@
 # test_integrity.py - doc/project integrity checks (test_6: no bannered docs in system/; test_7: size caps)
 # Run: python -m pytest MyTradingSys/tests/docs -v
+import os
 import re
 from pathlib import Path
 
@@ -124,12 +125,28 @@ def test_5_no_stray_cleanup_candidates():
     assert not bad, f"Stray cleanup candidates: {bad}"
 
 
+def in_gate_diff(rel):
+    """gate-tiers-by-path: a ship gate sets MTS_GATE_CHANGED_FILES (newline-separated repo paths, run_all_tests.apply_selection); the doc
+    caps and banner checks then look at the files of the diff only. Unset (CI, deploy, a full gate) = every file."""
+    raw = os.environ.get("MTS_GATE_CHANGED_FILES")
+    return raw is None or rel in {x.strip().replace("\\", "/") for x in raw.splitlines()}
+
+
+def test_gate_diff_scope_helper(monkeypatch):
+    monkeypatch.delenv("MTS_GATE_CHANGED_FILES", raising=False)
+    assert in_gate_diff("CLAUDE.md")
+    monkeypatch.setenv("MTS_GATE_CHANGED_FILES", "MyTradingSys/system/RELAY.md" + chr(10) + "x.py")
+    assert in_gate_diff("MyTradingSys/system/RELAY.md") and not in_gate_diff("CLAUDE.md")
+
+
 def test_6_no_banner_docs_in_system():
     """A system/ doc that opens with a SUPERSEDED / HISTORICAL / STALE banner is dead weight in every glob, grep and
     accidental Read. Move it with git mv to MyTradingSys/archive/<topic>_<date>/ (archive/ is skipped by _live_files)
     instead of leaving it bannered."""
     hits = []
     for p in sorted((MTS / "system").glob("*.md")):
+        if not in_gate_diff(p.relative_to(REPO).as_posix()):
+            continue
         head = p.read_text(encoding="utf-8", errors="ignore").splitlines()[:5]
         for i, line in enumerate(head, 1):
             if BANNER_RE.search(line):
@@ -159,6 +176,8 @@ def test_7_size_cap(rel):
     """Boot and pickup files stay small. Over the cap: trim the file (CLAUDE.md, SURFACE_POLICY.md, RELAY.md) or rotate
     it (OPERATOR_INBOX.md: CONTROL_ROOM.md step 3) instead of raising the number; CLAUDE.md moves detail into a system/ doc
     before it grows, it is not word-trimmed one line at a time (B18)."""
+    if not in_gate_diff(rel):
+        pytest.skip("not in the ship's diff (CI checks every cap)")
     p = REPO / rel
     assert p.exists(), f"{rel} is missing"
     size = len(p.read_bytes().replace(b"\r\n", b"\n"))   # a Windows runner checks out CRLF; the cap is on the committed LF bytes

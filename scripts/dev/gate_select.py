@@ -4,7 +4,7 @@
   explain(files, steps) -> (mode, step numbers, one-line reason: the first file/rule that forced full, or the ALWAYS steps of a smoke)
     files: paths changed vs origin/fast-track; steps: [(num, cmd_text)] of the plan (run_all_tests.build_plan).
     mode  none   nothing changed: no steps
-          docs   only docs/data: the cheap doc invariants (DOC_STEPS), no gate slot needed
+          docs   only docs/data/cards/pages: no local steps at all (DOC_STEPS is empty; CI gates behind); the wiring registry still runs 3x/3w
           smoke  code outside the live path: steps whose test file matches a changed file, the pytest shards whose tests mention
                  its module name, plus ALWAYS (wiring, task-card DoR, B150 discovery, CI deps lint); CI runs everything behind the push
           full   any live-path file, or ANY path no rule knows (fail closed): every step, the old --quick gate
@@ -39,8 +39,9 @@ FULL_RE = re.compile(
 CODE_DIRS = ("scripts/dev/", "scripts/worker/", "MyTradingSys/tests/", "MyTradingSys/backtest/", "MyTradingSys/research/",
              "MyTradingSys/options/", "MyTradingSys/observation/")
 
-ALWAYS = ("3w", "3x", "3tl", "3gd", "3dl")   # wiring, task-card DoR, test-file discovery (B150), CI deps lint: seconds, catch the usual merge-time breaks
-DOC_STEPS = ("3tl", "3q", "3pc", "3c", "4d")   # task cards, INDEX/BUGS, prompt contract, guide sync, doc size/contract pytest
+ALWAYS = ("3w", "3x", "3gd", "3dl")   # wiring, task-card DoR, test-file discovery (B150), CI deps lint: seconds, catch the usual merge-time breaks
+DOC_STEPS = ()   # gate-tiers-by-path (operator q-v1-gate-tiers, 2026-10-20): a docs ship runs no local step; CI gates behind
+CARD_RE = re.compile(r"^MyTradingSys/system/tasks/[^/]+\.json$")   # a card in the diff brings step 3tl (task-card lint) with it
 SHARD_PREFIX = "4"                    # every pytest shard is numbered 4, 4b, 4c ...
 
 
@@ -221,9 +222,11 @@ def explain(files, steps, mentioned=mentions, named=names_file, step_files=None)
     if not code:
         # GATE_SPEED review: the wiring registry is data under system/, but 3x/3w are its only readers (a bad entry would go red only in CI)
         reg = {"3x", "3w"} if any(f == WIRING_REGISTRY for f in files) else set()
-        nums = [n for n in all_nums if n in DOC_STEPS or n in subset_steps or n in reg]
-        return "docs", nums, f"docs: {len(files)} doc/data file(s) only; doc invariants {','.join(nums)}"
+        nums = [n for n in all_nums if n in DOC_STEPS or n in reg]
+        return "docs", nums, f"docs: {len(files)} doc/data file(s) only; no local gate" + (f" except {','.join(nums)}" if nums else "")
     picked = {n for n in ALWAYS if n in all_nums} | subset_steps
+    if "3tl" in all_nums and any(CARD_RE.match(f) for f in files):
+        picked.add("3tl")
     always = [n for n in all_nums if n in ALWAYS]
     if len(code) < len(files):                    # docs ride along: their invariants too
         picked |= {n for n in DOC_STEPS if n in all_nums}
