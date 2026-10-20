@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/tasks.py brief habib-plan-hit-rate-study"
+  ],
+  "created": "2026-10-19T22:47:07Z",
+  "depends_on": [],
+  "done_when": "Plan ledger of >=12 plans with full/partial/miss; imbalance-level vs placebo-level result with variant count in the trial ledger; report in research/habib_plan_imbalance_2026-10-20/.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Score each Habib weekly/Sunday plan as full, partial or miss (execution excluded from the score), then test whether his imbalance levels beat placebo levels on Binance BTCUSDT, fee-net.",
+  "id": "habib-plan-hit-rate-study",
+  "lane": "DSA-NB",
+  "latest": [],
+  "layers": [
+    "callers"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Blocked on source: needs the operator to paste >=12 plans with full-res charts; see README section 5. Extraction/transcription stays in card qriptal-discord-calls-2026-10-18 (SONNET).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-19T22:48:36Z",
+  "refs": [
+    "items/B162_qriptal_signal_layer.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "research/habib_plan_imbalance_2026-10-20/"
+  ],
+  "scope_out": [
+    "live path, VALIDATION/HOLDOUT reads before pre-reg, committing Discord images or member names"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/habib_plan_imbalance_2026-10-20/README.md",
+    "MyTradingSys/research/imbalance_qriptal_2026-10-16/README.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read README.md here and construct F note in imbalance_qriptal_2026-10-16",
+    "Build plan ledger from operator-pasted posts (needs typed levels)",
+    "Score full/partial/miss from 1m klines, DEV only",
+    "Placebo level comparison, then one VALIDATION check"
+  ],
+  "tests": "Placebo levels (random same-structure levels) must fail to be called a hit more often than his; scorer test fails on a plan with no data.",
+  "title": "Habib plan-hit-rate study: score each Sunday/weekly plan full/partial/miss (execution excluded), then imbalance levels vs placebo levels (research/habib_plan_imbalance_2026-10-20)",
+  "weight": "ROUTINE",
+  "worker": "session"
+}
