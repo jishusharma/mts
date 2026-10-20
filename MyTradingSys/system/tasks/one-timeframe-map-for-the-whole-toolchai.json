@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-20T19:27:29Z",
   "commands": [],
   "created": "2026-10-12T15:34:42Z",
   "depends_on": [],
@@ -12,6 +13,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Lab_Guy 2026-10-21 delivery check: commit on origin/fast-track, tests pass on trunk (61 pa",
+      "ref": "63166659",
+      "utc": "2026-10-20T19:27:29Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -36,7 +43,12 @@
     "to": "SONNET",
     "why": "heartbeat"
   },
-  "result": "",
+  "result": "Lab_Guy 2026-10-21 delivery check: commit on origin/fast-track, tests pass on trunk (61 passed); left open by a cherry-pick without the done commit. (884a3b3a, 4c95b4ed)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/observation/capture.py",
     "scripts/dev/chart_verify.py",
@@ -51,12 +63,13 @@
   "scope_sha": "311b710b6c31",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write test_tf_map.py: chart_verify.TFS equals set(capture.TF_MINUTES) and every alert_rate_check.TF_MIN key is in capture.TF_MINUTES with equal minutes (fails now: TFS lacks 4m, 3h, 7h, 1w).",
     "chart_verify.TFS = set(capture.TF_MINUTES); alert_rate_check.TF_MIN built from capture.TF_MINUTES for its 7 keys.",
     "Run test_tf_map.py, test_chart_verify.py, test_alert_rate_check.py, test_shot.py."
   ],
+  "taken": "2026-10-20T19:27:29Z",
   "tests": "scripts/dev/test_tf_map.py fails on the current hard-coded sets and passes after the change.",
   "title": "One timeframe map for the whole toolchain: capture.TF_MINUTES lacked 8h (CoinGlass button) while holding 7h; grep and unify shot.py, alert_rate_check, audits (lesson G)",
   "weight": "ROUTINE",
