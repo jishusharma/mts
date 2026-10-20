@@ -10,7 +10,7 @@
   "goal": "test_formula_spec.py independently recomputes every sub-id F11.1-8, F18.1-7, F19.1-8, F20.1-4, F21.1-9 from FORMULAS.md rules on the DEV tape; no fallback that echoes the expected value",
   "id": "lab-formula-spec-recount",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -36,6 +36,12 @@
   "refined_by": "",
   "refreshed": "2026-10-17T22:16:18Z",
   "refs": [],
+  "reroute": {
+    "at": "2026-10-20T10:35:20Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "heartbeat"
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/FORMULAS.md (read)",
     "MyTradingSys/backtest/layers/FORMULAS_SPEC.md",
