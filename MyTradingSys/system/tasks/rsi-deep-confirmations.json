@@ -12,7 +12,7 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Per OPUS_FRAMING s3/s4: at the Stage-0 episode starts that survived H1, test causal confirmations one at a time (C1 RSI hook +3, C3 structure shift, C5 fall speed/climax, C7 higher-TF RSI = last COMPLETED bar, C9 volume/taker-buy delta from kline columns), then best pair. Output per confirmation: P(new lower price low within N bars after the confirmation bar) vs raw touch, and fee-net EV per day entering at the confirmation bar's next open. DEV, then VALIDATION once. OI is NOT_IN_DATA before 2025-09.",
+  "goal": "Per OPUS_FRAMING s3/s4: at the Stage-0 episode starts that survived H1, test causal confirmations one at a time (C1 RSI hook +3, C3 structure shift, C5 fall speed/climax, C7 higher-TF RSI = last COMPLETED bar, C9 volume/taker-buy delta from kline columns), then best pair. Output per confirmation: P(new lower price low within N bars after the confirmation bar) vs raw touch, and fee-net EV per day entering at the confirmation bar's next open. DEV, then VALIDATION once. OI is NOT_IN_DATA before 2025-09. SHOT_REVIEW C11 (Tier B, C8 location): pre-registered sweep definition = event low is a new trailing-24h price low, depth below it in ATR (OURS), from SHOT_REVIEW (b)8 (anecdote, n=10); kept next to OPUS_FRAMING's 7d/30d new-low forms, not replacing them.",
   "id": "rsi-deep-confirmations",
   "lane": "SONNET",
   "layers": [],
@@ -26,7 +26,8 @@
   "result": "",
   "scope_in": [
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md",
-    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md"
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SHOT_REVIEW.md"
   ],
   "scope_out": [],
   "size": "S",

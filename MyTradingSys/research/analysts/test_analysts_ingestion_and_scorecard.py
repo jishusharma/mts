@@ -222,5 +222,66 @@ class TestAnalystScorecardEngine(unittest.TestCase):
         self.assertEqual(p_0, 0.0)
 
 
+class TestRLindaTradingViewScraper(unittest.TestCase):
+    def test_rlinda_ingestion_and_ledger(self):
+        from rlinda.scraper import (
+            parse_tradingview_user_ideas_html,
+            ingest_rlinda_ideas,
+            save_ledger_rows,
+            load_ledger_rows,
+        )
+
+        mock_html = """
+        <div class="tv-widget-idea" data-author="RLinda">
+          <a class="tv-widget-idea__title" href="/chart/BTCUSDT/rlinda-idea-1/">BTC Long Setup</a>
+          <span class="tv-widget-idea__time" data-timestamp="1729245600">2024-10-18T10:00:00Z</span>
+          <div class="tv-widget-idea__description-text">
+            BTCUSDT Idea
+            Direction: LONG
+            Entry: 67,500
+            Stop Loss: 66,200
+            Target 1: 69,000
+            Target 2: 71,500
+          </div>
+        </div>
+        """
+        ideas = parse_tradingview_user_ideas_html(mock_html, username="RLinda")
+        self.assertEqual(len(ideas), 1)
+        rows = ingest_rlinda_ideas(html=mock_html, include_curated=False)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].analyst, "RLinda")
+        self.assertEqual(rows[0].entry, 67500.0)
+        self.assertEqual(rows[0].stop, 66200.0)
+        self.assertEqual(rows[0].targets_str, "69000.0;71500.0")
+
+
+class TestJustinBennettDailyPriceActionScraper(unittest.TestCase):
+    def test_bennett_ingestion_and_ledger(self):
+        from bennett.scraper import (
+            parse_dpa_rss_items,
+            ingest_articles_to_ledger,
+            load_ledger_rows,
+            MOCK_RSS_XML,
+        )
+        import tempfile
+
+        items = parse_dpa_rss_items(MOCK_RSS_XML)
+        self.assertEqual(len(items), 1)
+        self.assertIn("68.4k", items[0]["title"])
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_csv = Path(tmp_dir) / "test_ledger.csv"
+            added = ingest_articles_to_ledger(items, csv_path=tmp_csv)
+            self.assertEqual(added, 1)
+
+            rows = load_ledger_rows(tmp_csv)
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0].analyst, "Justin Bennett")
+            self.assertEqual(rows[0].direction, "SHORT")
+            self.assertEqual(rows[0].entry, 68400.0)
+            self.assertEqual(rows[0].stop, 69600.0)
+            self.assertEqual(rows[0].targets_str, "66800.0;65000.0")
+
+
 if __name__ == "__main__":
     unittest.main()
