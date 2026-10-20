@@ -11,7 +11,7 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Per SPEC s2 Step H: pre-register one causal vote per usable layer (same TF and two TFs up, last completed bar), build confluence scores, report change in Step G race probabilities and fee-net EV vs RSI-level-only; layers without causal history = NOT_IN_DATA.",
+  "goal": "Per SPEC s2 Step H: pre-register one causal vote per usable layer (same TF and two TFs up, last completed bar), build confluence scores, report change in Step G race probabilities and fee-net EV vs RSI-level-only; layers without causal history = NOT_IN_DATA. SHOT_REVIEW C5: two more candidate voters inside the 8-voter cap: opposite-side divergence on the next TF up, stamped at its confirmation and within its last 20 bars (-1 for a long; same-side +1; window OURS), and the oscillator agreement count (RSI, StochRSI, WaveTrend divergence at the same pivots, 0-3) only once card wavetrend-data-inference has pinned the WT inputs, else NOT_IN_DATA.",
   "id": "rsi-deep-confluence",
   "lane": "SONNET",
   "layers": [],
@@ -25,7 +25,8 @@
   "result": "",
   "scope_in": [
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md",
-    "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md"
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SHOT_REVIEW.md"
   ],
   "scope_out": [],
   "size": "S",
