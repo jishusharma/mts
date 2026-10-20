@@ -1,0 +1,1 @@
+{"t": "20261020T214419Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship > /tmp/ship1.log 2>&1 &) ; sleep 1; echo started"}
