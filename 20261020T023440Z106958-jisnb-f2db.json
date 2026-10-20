@@ -1,0 +1,1 @@
+{"t": "20261020T023440Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship host-health-guard Result: sync.py ship and sync.py health run host_health.py (fail closed); STRAY_REAP_POLICY.md allow-list starts empty"}
