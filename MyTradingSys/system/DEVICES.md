@@ -108,7 +108,8 @@ Backtest data (F:\MTS\data on the NUC) is not in git; it is copied after new rec
 
 - Role (operator 2026-10-21): the live testnet loop moves here (LIVE_HOST_MOVE.md); STAGED, NOT CUT OVER. Until the cutover it must not run the loop; after it, it is the only host that does (section 3).
   When travelling the laptop leaves home with the operator, and the loop with it: a trip needs a cutover back to JIS-NB first or the loop running on the road (decide per trip; default: cut back to JIS-NB).
-- 24/7 readiness (LIVE_HOST_MOVE s3; tick with date). Captured 2026-10-20 21:34Z: 2 batteries; power plan Balanced; Wi-Fi only (Intel AC 8265), no Ethernet up; Windows Update active hours 22:00-16:00; lid close on AC = do nothing (operator, not re-verified).
+- 24/7 readiness (LIVE_HOST_MOVE s3; tick with date). Captured 2026-10-20 21:34Z: 2 batteries; power plan Balanced; Wi-Fi only (Intel AC 8265), built-in Ethernet I219-V not connected, LTE modem without SIM; Windows Update active hours 22:00-16:00; lid close AC = do nothing, battery = SLEEP; Energy saver at 50 %; sleep on battery 30 min.
+  `scripts/dev/laptop_live_ready.ps1` (dry run by default; elevated `-Apply`) sets the scriptable items.
   Open: charge threshold 60-80 % both batteries [ ]; Energy saver off [ ]; sleep/hibernate on AC never [ ]; NIC power saving off [ ]; Update restart notify + pause around cutover [ ]; Ethernet + DHCP reservation [ ]; logged-off start (default manual) [ ]; latency vs JIS-NB [ ]; `gh` installed (missing 2026-10-21) [ ]; testnet keys placed by the operator [ ].
 - Earlier role (operator 2026-10-06): when travelling, everything is done from the laptop by Remote Desktop into JIS-NB and JIS-NUC (section 4). At home it is used for infrastructure work.
 - Hardware: Lenovo 20L90025RT, i7-8550U, 32 GB RAM, 477 GB SSD (single drive C:), Windows 11 Pro 25H2, no GPU. Account e-ngineers. Tools: Java 21, Maven 3.9.11, Python 3.14.7, Git 2.24.1 (update before cloning).
