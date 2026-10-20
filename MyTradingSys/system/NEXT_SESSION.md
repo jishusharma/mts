@@ -2,7 +2,7 @@
 
 ## Thinker hand-over 2026-10-20 (v1 plan written; nothing else changed)
 Run with zero operator input; defaults for open questions. The v1 plan is in `MyTradingSys/research/v1_plan_2026-10-20/` (README.md indexes D1-D9 and DECISIONS_PROPOSED.md). Nothing in it changed code, cards, config or the live tree.
-- Pipeliner / coordinator: post the seven questions in `DECISIONS_PROPOSED.md` on the decision page (OPERATOR_DECISIONS.md format, defaults given). Until the operator answers, apply only the defaults that cost nothing: release the 3 STALE claims (D1 section 4), ship the unjam branch `claude/traffic-unjam-77aa8e` after a rule-11 review (2 commits not on trunk: 958c0d05, 8d3dc4d0), run `tasks-sweep-closed-cards`.
+- Pipeliner / coordinator: post the seven questions in `DECISIONS_PROPOSED.md` on the decision page (OPERATOR_DECISIONS.md format, defaults given). Until the operator answers, apply only the defaults that cost nothing: release the 3 stale claims, 35-41 h with no commit (D1 section 4), ship the unjam branch `claude/traffic-unjam-77aa8e` after a rule-11 review (2 commits not on trunk: 958c0d05, 8d3dc4d0), run `tasks-sweep-closed-cards`.
 - Operator (ten minutes): read `D2_V1_SPEC.md` then `D7_ROADMAP.md`; answer yes / no / change per question. q-v1-config-1023 is due before 2026-10-23 (27 grandfathered sources).
 - Do not start new layers, lanes, pages or rule docs: D7 freeze is proposed and the default is yes.
 
