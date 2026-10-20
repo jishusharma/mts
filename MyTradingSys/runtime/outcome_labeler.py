@@ -37,7 +37,7 @@ def load_snapshots(done=frozenset()):
     stop_after = None  # set once the count budget is spent: keep opening until the +120 min window is covered
     truncated = False
     for f in names:
-        if opened and time.monotonic() - t_open > OPEN_BUDGET_S:  # always open one file: a cycle never idles
+        if opened and time.monotonic() - t_open >= OPEN_BUDGET_S:  # always open one file: a cycle never idles; >= so a 0 budget stops even on a coarse clock (Windows ~15 ms ticks)
             truncated = True
             break
         if opened >= MAX_OPEN_PER_CYCLE and max_ts is None:
