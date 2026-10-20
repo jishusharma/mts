@@ -164,7 +164,15 @@ def test_sync_ship_and_health_call_the_preflight(monkeypatch):
     assert seen == ["R", "R"]
 
 
-def test_sync_run_host_health_swallows_errors(monkeypatch):
+def test_sync_run_host_health_swallows_errors(monkeypatch, tmp_path):
     import sync
+    (tmp_path / "scripts" / "dev").mkdir(parents=True)
+    (tmp_path / "scripts" / "dev" / "host_health.py").write_text("")
     monkeypatch.setattr(h, "run_safe", lambda repo: (_ for _ in ()).throw(RuntimeError("x")))
-    assert sync.run_host_health("R") == []
+    assert sync.run_host_health(str(tmp_path)) == []
+
+
+def test_sync_skips_host_health_in_throwaway_repo(monkeypatch, tmp_path):
+    import sync
+    monkeypatch.setattr(h, "run_safe", lambda repo: (_ for _ in ()).throw(AssertionError("scanned the host from a scratch repo")))
+    assert sync.run_host_health(str(tmp_path)) == []

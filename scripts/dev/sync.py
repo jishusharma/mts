@@ -1240,8 +1240,8 @@ def run_host_health(repo):
     """Host-health preflight (host_health.py): reap dead gates/tickets, report strays, disk and CPU queue. Fail closed: never raises,
     never blocks a ship; errors go to <temp>/mts_host_health/health.log."""
     try:
-        if repo is None:
-            return []
+        if repo is None or not (Path(repo) / "scripts" / "dev" / "host_health.py").exists():
+            return []     # throwaway repos (tests, scratch clones) are not the host's ship tree: no host scan from them
         import host_health
         return host_health.run_safe(repo)
     except Exception as e:
