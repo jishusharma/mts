@@ -1,0 +1,10 @@
+{
+  "done_when": "operator ran the stop command or allow-listed the pattern in MyTradingSys/system/STRAY_REAP_POLICY.md",
+  "from": "JIS-NUC",
+  "id": "20261020-103555-stray-cpu-hog-on-jis-nuc",
+  "need": "STRAY PID 1212 explorer.exe cpu=41915s age=46.3h chain: (parent gone)\n    cmd: C:\\WINDOWS\\Explorer.EXE\n    stop: taskkill /PID 1212 /T /F",
+  "posted": "2026-10-20T10:35:55Z",
+  "status": "pending",
+  "target": "JIS-NB",
+  "title": "Stray CPU hog on JIS-NUC"
+}
