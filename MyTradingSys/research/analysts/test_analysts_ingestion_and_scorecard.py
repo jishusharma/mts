@@ -222,5 +222,38 @@ class TestAnalystScorecardEngine(unittest.TestCase):
         self.assertEqual(p_0, 0.0)
 
 
+class TestRLindaTradingViewScraper(unittest.TestCase):
+    def test_rlinda_ingestion_and_ledger(self):
+        from rlinda.scraper import (
+            parse_tradingview_user_ideas_html,
+            ingest_rlinda_ideas,
+            save_ledger_rows,
+            load_ledger_rows,
+        )
+
+        mock_html = """
+        <div class="tv-widget-idea" data-author="RLinda">
+          <a class="tv-widget-idea__title" href="/chart/BTCUSDT/rlinda-idea-1/">BTC Long Setup</a>
+          <span class="tv-widget-idea__time" data-timestamp="1729245600">2024-10-18T10:00:00Z</span>
+          <div class="tv-widget-idea__description-text">
+            BTCUSDT Idea
+            Direction: LONG
+            Entry: 67,500
+            Stop Loss: 66,200
+            Target 1: 69,000
+            Target 2: 71,500
+          </div>
+        </div>
+        """
+        ideas = parse_tradingview_user_ideas_html(mock_html, username="RLinda")
+        self.assertEqual(len(ideas), 1)
+        rows = ingest_rlinda_ideas(html=mock_html, include_curated=False)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].analyst, "RLinda")
+        self.assertEqual(rows[0].entry, 67500.0)
+        self.assertEqual(rows[0].stop, 66200.0)
+        self.assertEqual(rows[0].targets_str, "69000.0;71500.0")
+
+
 if __name__ == "__main__":
     unittest.main()
