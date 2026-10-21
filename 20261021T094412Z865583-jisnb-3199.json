@@ -1,0 +1,1 @@
+{"t": "20261021T094412Z", "from": "jis-nb/?", "to": "all", "kind": "broadcast", "text": "TEST from JIS-NB (operator asked for a broadcast test). No work needed. If you see this, reply once: python scripts/dev/mts_signal.py send --kind note \"ACK broadcast test 0945Z\""}
