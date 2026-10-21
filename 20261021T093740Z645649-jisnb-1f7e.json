@@ -1,0 +1,1 @@
+{"t": "20261021T093740Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship Result: typed prompts are never refused (Opus at 200k, Fable 2nd message); 12 operator prompts + 45 tool turns give no nag; an event prompt re-arms the nag. New test fails on the old code; 25 tur"}
