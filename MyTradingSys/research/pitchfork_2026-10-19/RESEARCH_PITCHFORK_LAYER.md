@@ -81,7 +81,9 @@ When a Pitchfork setup triggers at Layer 1 (Geometry), it must pass the MTS micr
   - Run on 14,766 4H Binance Bitcoin klines (2020-2026) across 1,273 confirmed swing setups (`run_pitchfork_4h_poc_study.py`).
   - Proved that resting limit orders on tine retests (`TINE_LIMIT_RETEST`) eliminate negative fee drag, turning net returns positive across all 4 geometric models (+0.05% to +0.88%).
   - Proved that **Volume Profile Value Area Confluence (`VA_CONFLUENT`)** boosts Mean Net Return to **+0.61% to +0.69% per trade** with a **1.62 - 1.63 Profit Factor** (detailed in `PHASE2_4H_POC_STUDY.md` and `TRIALS_PITCHFORK_4H.csv`).
-- **Phase 3: Java Execution Engine Wire-up (NEXT IMMEDIATE ACTION):**
-  - Integrate confirmed Pitchfork tine bounces (`PF-REV-L` / `PF-REV-S`) and Hagopian failure triggers (`PF-HAG-L` / `PF-HAG-S`) into `src/main/java/datafeed/SetupCandidatesBuilder.java`.
-- **Phase 4: Task Card & Independent Cross-Vendor Review:**
-  - Create and refine task cards for Claude / Codex cross-model review per `PRODUCER != REVIEWER` mandate.
+- **Phase 3: Java Execution Engine Wire-up (COMPLETED):**
+  - Implemented `PitchforkSignalLayer.java` with Modified Schiff geometry, uniform volume profile (FORMULAS 18.1), and ZigZag pivot detection.
+  - Wired into `SetupCandidatesBuilder.java` behind feature flag `-Dmts.pitchfork=true`.
+  - Created `PitchforkSignalLayerTest.java` with 6 unit tests covering geometry, volume profile, pivot detection, candidate output schema, and flag-off backward compatibility (100% pass).
+- **Phase 4: Task Card & Independent Cross-Vendor Review (DISPATCHED):**
+  - Created and validated task card `MyTradingSys/system/tasks/pitchfork-layer-java-execution.json` stamped `T0-ONLY` for independent Claude / Codex cross-model review per `PRODUCER != REVIEWER` mandate.

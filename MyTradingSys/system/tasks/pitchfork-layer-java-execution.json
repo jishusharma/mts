@@ -1,0 +1,71 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "mvn test -Dtest=PitchforkSignalLayerTest"
+  ],
+  "created": "2026-10-21T01:01:27Z",
+  "depends_on": [],
+  "done_when": "SetupCandidatesBuilder emits PF-REV-L / PF-REV-S resting limit candidates when -Dmts.pitchfork=true with valid RR >= 1.5, in-VA / POC confluence proof, clean passthrough when flag is false, and all Maven + pytest gate tests pass.",
+  "est_turns": 2,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Integrate the Pitchfork Layer into SetupCandidatesBuilder.java behind feature flag -Dmts.pitchfork (default off): Modified Schiff geometry on 4H klines, anchored Volume Profile (FORMULAS 18.1) Value Area and POC confluence gating, and resting limit tine-touch execution.",
+  "id": "pitchfork-layer-java-execution",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research/pitchfork: commit 4H BTC kline dataset (2020-2026)",
+      "ref": "9f1162dade4c",
+      "utc": "2026-10-20T22:54:05Z"
+    }
+  ],
+  "layers": [
+    "pitchfork"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Validated by 14,766 4H bar multi-year event study (2020-2026) in PHASE2_4H_POC_STUDY.md. Proved that resting limit orders on tine retests eliminate fee drag across all 4 geometric models (+0.05% to +0.88%), and Value Area confluence boosts net return to +0.61% with a 1.63 Profit Factor.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "gemini-3.8-flash 2026-10-21 T0-ONLY",
+  "refreshed": "2026-10-21T01:02:06Z",
+  "refs": [
+    "MyTradingSys/research/pitchfork_2026-10-19/PHASE2_4H_POC_STUDY.md",
+    "MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md",
+    "MyTradingSys/research/pitchfork_2026-10-19/TRIALS_PITCHFORK_4H.csv"
+  ],
+  "result": "Built PitchforkSignalLayer.java and wired into SetupCandidatesBuilder.java behind -Dmts.pitchfork=true. Validated with PitchforkSignalLayerTest (6/6 tests pass).",
+  "scope_in": [
+    "src/main/java/datafeed/PitchforkSignalLayer.java",
+    "src/main/java/datafeed/SetupCandidatesBuilder.java",
+    "src/test/java/datafeed/PitchforkSignalLayerTest.java",
+    "MyTradingSys/research/pitchfork_2026-10-19/"
+  ],
+  "scope_out": [
+    "live tree / restarts",
+    "modifying non-pitchfork candidate scoring"
+  ],
+  "scope_sha": "9f1162dade4c",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md",
+    "MyTradingSys/research/pitchfork_2026-10-19/PHASE2_4H_POC_STUDY.md",
+    "MyTradingSys/backtest/layers/FORMULAS.md section 18"
+  ],
+  "state": "ready",
+  "steps": [
+    "Implement PitchforkSignalLayer.java with Modified Schiff geometry, uniform volume profile (FORMULAS 18.1), and ZigZag pivot detection.",
+    "Wire PitchforkSignalLayer.detect into SetupCandidatesBuilder.build under feature flag -Dmts.pitchfork=true.",
+    "Verify flag-off behavior leaves existing setup candidates untouched.",
+    "Validate setup output schema matches SetupCandidatesBuilder candidate convention (math, zone, proof, score).",
+    "Execute Maven unit test suite (PitchforkSignalLayerTest)."
+  ],
+  "tests": "mvn test -Dtest=PitchforkSignalLayerTest",
+  "title": "Pitchfork Layer: Wire Modified Schiff tine bounce and Volume Profile confluence into SetupCandidatesBuilder",
+  "weight": "",
+  "worker": "session"
+}

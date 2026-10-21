@@ -10,6 +10,13 @@ Run with zero operator input; defaults for open questions. Plan and checklists: 
 - CI: STATUS showed `CI green:` RED (oldest ungreen 22.7 h) and `gh` is missing on the laptop, so CI was not checked here; a host with `gh` checks the pinned `ci-<sha>` card first.
 - Do not add gates, lints or rule docs for this.
 
+## Simulator desk v1 shipped 2026-10-21 (hand-over, Opus lead; JIS-NB)
+Run with zero operator input; defaults for open questions. Cards sim-desk-core and sim-desk-charts are done (Lab_Guy pass by Opus + Haiku re-derivation; no different-vendor lens: lab on the NUC). Start: `python MyTradingSys/research/sim_desk/desk.py`, open http://127.0.0.1:8765 (first Run builds a local data cache once, 77 s on JIS-NB; then ~7 s per Run). Needs the 1m bars at F:/MTS/data/tom_raw/klines (or env SIM_DESK_KLINES).
+- Result: frozen setup shows n 772, mean -0.039 R [-0.123, +0.048], worst losing streak 7, NOT ENOUGH DATA (power 31 %); 6 example charts; 22 tests in `research/sim_desk/` (red before the code). Design changes vs the Thinker: DESIGN.md "Lead review" (no 3 min re-run; any setting re-simulates in seconds).
+- Each new setting appends one TRIALS.md row in the tree it runs in: ship those rows (`sync.py ship`) after a desk session, or they are lost.
+- Next, only if the operator uses it and asks: (1) level-family on/off (needs next levels rebuilt per subset; exact, ~1 card); (2) study 2 = Fabio (`backtest/layers/fabio/fabio_of_model.py`, needs its order-flow bars on disk; check first); Tom needs the Java snapshot pipeline and does not fit a seconds-scale module. Default: no new cards until he has used v1.
+- Do not add gates or rule docs for this.
+
 ## LC3 ladder simulator (lc-ladder-dev) shipped 2026-10-21 (hand-over, Fable; data run on JIS-NB)
 Run with zero operator input; defaults for open questions. Card lc-ladder-dev is done; report `research/levels_confluence_2026-10-14/ladder_dev.md`, rule `frozen_rule.json`, 243 rows in `layer_lab/TRIALS.md`, 9 tests in `test_ladder.py` (red before the code existed).
 - Result on standard DEV (5976 first touches of the 8 KEEP levels, 2022-04..2024-06, VALIDATION/HOLDOUT unread): no variant of the 240 (3 entry filters x 4 scale-ins x 5 stops x 4 exits) has a lower 95 % CI above zero. Frozen rule E1 S2 K5 X0_2R: mean net R -0.039 [-0.123, +0.048], n 772. Verdict: INCONCLUSIVE by the card rule (power_mde.py two-point power 31 % < 50 %), FAIL by sample-sd power (87 % for +0.10 R). Arm P (METHOD.md ladder sizing): -0.130 R, 0 liquidations, max leverage 1.4x; it beats a random-entry control by +0.115 R and the naive S0 K1 X1 by +0.333 R, so the level and the capped adds help, but not enough to pay fees (mean fee 0.11 R per idea; break-even needs gross +0.11 R, the rule makes +0.07 R).
