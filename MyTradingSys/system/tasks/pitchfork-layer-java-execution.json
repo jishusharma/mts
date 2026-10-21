@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-21T04:53:07Z",
   "commands": [
     "mvn test -Dtest=PitchforkSignalLayerTest"
   ],
@@ -15,6 +16,12 @@
   "id": "pitchfork-layer-java-execution",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "PitchforkSignalLayer 15/15 tests, fail-closed, flag-off byte-identical",
+      "ref": "94062427",
+      "utc": "2026-10-21T04:53:07Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +45,12 @@
     "MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md",
     "MyTradingSys/research/pitchfork_2026-10-19/TRIALS_PITCHFORK_4H.csv"
   ],
-  "result": "Built PitchforkSignalLayer.java and wired into SetupCandidatesBuilder.java behind -Dmts.pitchfork=true. Validated with PitchforkSignalLayerTest (6/6 tests pass).",
+  "result": "PitchforkSignalLayer 15/15 tests, fail-closed, flag-off byte-identical",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "src/main/java/datafeed/PitchforkSignalLayer.java",
     "src/main/java/datafeed/SetupCandidatesBuilder.java",
@@ -56,7 +68,7 @@
     "MyTradingSys/research/pitchfork_2026-10-19/PHASE2_4H_POC_STUDY.md",
     "MyTradingSys/backtest/layers/FORMULAS.md section 18"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Implement PitchforkSignalLayer.java with Modified Schiff geometry, uniform volume profile (FORMULAS 18.1), and ZigZag pivot detection.",
     "Wire PitchforkSignalLayer.detect into SetupCandidatesBuilder.build under feature flag -Dmts.pitchfork=true.",
@@ -64,6 +76,7 @@
     "Validate setup output schema matches SetupCandidatesBuilder candidate convention (math, zone, proof, score).",
     "Execute Maven unit test suite (PitchforkSignalLayerTest)."
   ],
+  "taken": "2026-10-21T04:53:07Z",
   "tests": "mvn test -Dtest=PitchforkSignalLayerTest",
   "title": "Pitchfork Layer: Wire Modified Schiff tine bounce and Volume Profile confluence into SetupCandidatesBuilder",
   "weight": "",
