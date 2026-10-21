@@ -159,6 +159,16 @@ def tier(model):
     return "fable" if "fable" in model else "opus" if "opus" in model else "default"
 
 
+def transcript_starts_supervisor(payload):
+    """Older or resumed Supervisors never sent their start line to this hook: read the first user line of the transcript."""
+    try:
+        with open(payload.get("transcript_path") or "", "rb") as f:
+            head = f.read(60_000).decode("utf-8", "ignore")
+    except OSError:
+        return False
+    return "You are Supervisor" in head[:head.find('"type":"assistant"') if '"type":"assistant"' in head else len(head)]
+
+
 def is_supervisor_start(payload):
     """The coordinator start line ("You are Supervisor. Login <L>. ..."), SUPER_SESSION.md; sticky in the state file."""
     return str(payload.get("prompt") or "").lstrip().lower().startswith("you are supervisor")
@@ -187,7 +197,7 @@ def handle(payload):
         state["user"] = state.get("user", 0) + 1
         model, ctx = model_and_context(payload)
         kind = tier(model)
-        if is_supervisor_start(payload):
+        if is_supervisor_start(payload) or (not state.get("role") and transcript_starts_supervisor(payload)):
             state["role"] = "supervisor"     # sticky: it runs unattended for hours; capped by context, not turns (operator 2026-10-21)
         if state.get("role") == "supervisor" and kind == "default":
             kind = "opus"
@@ -232,6 +242,8 @@ def handle(payload):
         t = state["tool"]
         model, ctx = model_and_context(payload)
         kind = tier(model)
+        if not state.get("role") and transcript_starts_supervisor(payload):
+            state["role"] = "supervisor"
         if state.get("role") == "supervisor" and kind == "default":
             kind = "opus"
         if kind == "default" and ctx:

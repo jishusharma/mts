@@ -230,6 +230,23 @@ class TurnMeterTest(unittest.TestCase):
             out = fire(self.home, "UserPromptSubmit", sid=sid, extra={"transcript_path": str(tp)})
             self.assertEqual("block" in out, blocked, (ctx, out))
 
+    def test_supervisor_found_from_transcript_when_hook_never_saw_the_start_line(self):
+        """The NUC Supervisor started before this hook knew the role: its first user line is only in the transcript."""
+        tp = self.home / "sup2.jsonl"
+        with open(tp, "w", encoding="utf-8", newline="\n") as f:
+            f.write(json.dumps({"type": "user", "message": {"content": "You are Supervisor. Login A. 3 hours"}}) + "\n")
+        write_transcript(self.home / "x.jsonl", [])
+        extra = {"transcript_path": str(tp)}
+        for i in range(70):
+            out = fire(self.home, "PostToolUse", sid="sup2", extra={**extra, "message_id": f"z{i}"})
+            self.assertEqual(out, "", i)
+        for _ in range(15):
+            self.assertEqual(fire(self.home, "UserPromptSubmit", sid="sup2", extra=extra), "")
+        plain = self.home / "plain.jsonl"
+        plain.write_text(json.dumps({"type": "user", "message": {"content": "fix the bug"}}) + "\n", encoding="utf-8")
+        outs = [fire(self.home, "PostToolUse", sid="w", extra={"transcript_path": str(plain), "message_id": f"w{i}"}) for i in range(45)]
+        self.assertTrue(any(outs), "a normal worker still gets the 40-turn nag")
+
     def test_resume_keeps_counts(self):
         for _ in range(40):
             fire(self.home, "PostToolUse")
