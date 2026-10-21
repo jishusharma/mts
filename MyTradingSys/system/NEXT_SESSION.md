@@ -2,6 +2,15 @@
 
 Older blocks (2026-10-18/19): `MyTradingSys/system/handoff_history/2026-10-21_next_session_trim.md`. A session reads only its own block.
 
+## Simulator desk R2: ETH 1m + symbol box (hand-over, Supervisor C, 2026-10-21)
+Run with zero operator input; defaults for open questions (park levels; keep RSI daily default; plug nothing new). Plan: `MyTradingSys/research/sim_desk/ROADMAP.md` (now on trunk).
+- Verified: desk tests 41 passed / 3 skipped on trunk code. Nothing built yet (supervisor read budget ran out right after the planner).
+- Step 1 (public data, Sonnet or Haiku): fetch ETHUSDT 1m 2022-01..2024-06 (30 files, warm-up included) into F:/MTS/data/tom_raw/klines; do not commit CSVs: `python -c "import sys; sys.argv=['f','--start','2022-01-01','--end','2024-06-30','--datasets','klines','--out','F:/MTS/data/tom_raw']; import MyTradingSys.backtest.fetch_binance_archive as f; f.SYM='ETHUSDT'; sys.exit(f.main())"`; expect `{'ok': 30}`.
+- Card B1 (Sonnet; owns `backtest/fetch_binance_archive.py` add `--symbol`, `studies/_bars.py`, `test_studies.py`): `load_1m(symbol='BTCUSDT')`, `data_ready(symbol)`, symbol-keyed `.npy` cache and `_ALL` (today keyed `'a'`: ETH would silently read BTC). Test: tmp BTC and ETH CSVs with different prices, `load_1m('ETHUSDT')` after BTC returns ETH; red on old code.
+- Card B2 (Sonnet, after B1; owns `desk.py`, `studies/rsi.py`, `page.html`, `test_desk.py`): `symbol` param (BTCUSDT, ETHUSDT) in rsi `params/normalize/label/run`; TRIALS row carries symbol for non-BTC, BTC label/row byte-identical; bump `RESULT_VERSION` to 3; levels refuses non-BTC; dropdown in page. Test: fake bars both symbols, ETH row has `ETHUSDT`, BTC run after ETH not served from ETH cache; frozen BTC levels row (n 772 / -0.039) unchanged.
+- DEV window only. Thinker session `sim-thinker` (local_05060ea8-b8b6-4e9d-8024-03062ef8c643) is on standby, model not yet set to Opus (set_session_model was blocked); stop it or set Opus then send it the roadmap-judging task.
+- Login B (NUC): GPT card re-derive 255 / -0.119 R; Gemini card cross-review of RSI spec. Not posted this session.
+
 ## Live host move JIS-NB -> DESKTOP-F7IU69N: STAGED 2026-10-21, cutover NOT run (hand-over, Opus, Lenovo)
 Run with zero operator input; defaults for open questions. Plan and checklists: `MyTradingSys/system/LIVE_HOST_MOVE.md`; DEVICES.md s1/3/6/7/8/9 and DEPLOY_RUNBOOK.md ("Live host cutover") point to it. Nothing was deployed, started, stopped or shared.
 - Result: laptop facts captured (2 batteries, Balanced plan, Wi-Fi only, Update active hours 22-16, IPv4 192.168.29.157 DHCP); laptop Wi-Fi baseline 2026-10-20 21:34Z median per new HTTPS call: Binance ~200 ms, Deribit testnet ~320 ms. JIS-NB numbers for the comparison NOT taken.
