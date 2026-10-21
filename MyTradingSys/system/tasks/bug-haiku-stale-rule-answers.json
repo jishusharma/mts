@@ -1,0 +1,45 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/role_loader.py lint",
+    "python -m pytest MyTradingSys/tests/test_role_roster.py -q"
+  ],
+  "created": "2026-10-21T01:59:08Z",
+  "depends_on": [],
+  "done_when": "Every role file opens with a Read-first line naming its source file; role_loader lint fails when a role lacks one; the rules-answer rule is in the roles boot text; a stale budget reading is labelled with its age in the answer.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "A model that answers any question about current rules, roles, the super session or budget must read the current source file in that turn, cite file:line and the source commit date, and say NOT_IN_DATA when it did not read it.",
+  "id": "bug-haiku-stale-rule-answers",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "OPERATOR QUOTE: \"I want to understand that why Haiku is making such mistakes, because you are giving me stale information. This happened twice. Raise a high priority bug on this, that twice it has happened that Haiku is not able to understand what the rules are, which the latest files are, and the same happened with super session related example.\"\nCAUSE (session evidence): answers about roles and the super session were given before reading ROLES.md or SUPER_SESSION.md this turn; a budget reading dated Oct 19 was presented as current; a claim that the device login was a blocker was stated without checking the start-prompt rules. The model did not cite file:line or a commit date for claims about current rules.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/role_loader.py; MyTradingSys/system/roles/*.md (one Read-first line each); MyTradingSys/tests/test_role_roster.py"
+  ],
+  "scope_out": [
+    "trading code; the live tree; the content of the rules themselves"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "Write the failing lint case first and see it fail",
+    "Add the Read-first line to every role file",
+    "Make lint enforce it; run check and lint"
+  ],
+  "tests": "MyTradingSys/tests/test_role_roster.py: new case fails now (role files without a Read-first line), passes after the change",
+  "title": "BUG (high): Haiku answers rule, role and super-session questions from stale or unread files",
+  "weight": "CRUCIAL",
+  "worker": "agent"
+}
