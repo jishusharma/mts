@@ -182,8 +182,8 @@ class TurnMeterTest(unittest.TestCase):
             self.assertEqual(fire(self.home, "PostToolUse", sid="o", extra=under), "")
         for _ in range(12):
             self.assertEqual(fire(self.home, "UserPromptSubmit", sid="o", extra=under), "")
-        big = self.model_transcript("opus", 400_000)        # one job may grow big: tool turns are free
-        for _ in range(60):
+        big = self.model_transcript("opus", 400_000)        # one job may grow big: no turn cap, only the 40M unattended budget
+        for _ in range(40):                                 # 16M: under the half-budget note (test_usage_bounds.py)
             self.assertEqual(fire(self.home, "PostToolUse", sid="o2", extra=big), "")
         over = self.model_transcript("opus", 520_000)
         nags = [fire(self.home, "PostToolUse", sid="o3", extra=over) for _ in range(5)]
