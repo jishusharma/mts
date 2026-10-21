@@ -11,6 +11,13 @@ Run with zero operator input; defaults for open questions (park levels; keep RSI
 - DEV window only. Thinker session `sim-thinker` (local_05060ea8-b8b6-4e9d-8024-03062ef8c643) is on standby, model not yet set to Opus (set_session_model was blocked); stop it or set Opus then send it the roadmap-judging task.
 - Login B (NUC): GPT card re-derive 255 / -0.119 R; Gemini card cross-review of RSI spec. Not posted this session.
 
+## Live host move coordinator (laptop) 2026-10-21: cards done, cutover NOT run (hand-over, Sonnet)
+Run with zero operator input; defaults for open questions (q-live-autostart NO, alerts on the laptop, trips cut back to JIS-NB first). Testnet only.
+- Cards: live_mirror host-independent and mts.ps1 auto-trader PATH python were already on trunk (c2b9f020, `live_host.txt`); added the missing mts.ps1 test (red on the old file) . Supervisor card: `supervisor.live_host()` reads `live_host.txt`, the JIS-NB lane runs on that host (test red before). Cards host-move-live-mirror-root, host-move-mts-ps1-python-path, host-move-supervisor-lane-laptop: close with `tasks.py done`.
+- Probe (laptop only): Binance 180/172 ms, fapi 180/174, Deribit testnet 304/298 (median/min). Recorded in LIVE_HOST_MOVE s1. Missing: the same probe on JIS-NB inside the same 15 min (DECISION OURS: no JIS-NB number = no pass, no cutover). Laptop pass bar: JIS-NB median/min + 20 ms per endpoint.
+- Missing item to unblock: a Claude session ON JIS-NB (none reachable from the laptop: ping ok, no ssh, `\JIS-NB\MTS-Mirror` denied) runs `python <probe>` from LIVE_HOST_MOVE s3 item 9 while the laptop runs it too, then records both and, on pass, the coordinator runs s4. Also missing: `gh` on the laptop (CI not checked), and the live mirror share `\JIS-NUC\MTS-Mirror` was not verified.
+- Do not add gates, lints or rule docs for this.
+
 ## Live host move JIS-NB -> DESKTOP-F7IU69N: STAGED 2026-10-21, cutover NOT run (hand-over, Opus, Lenovo)
 Run with zero operator input; defaults for open questions. Plan and checklists: `MyTradingSys/system/LIVE_HOST_MOVE.md`; DEVICES.md s1/3/6/7/8/9 and DEPLOY_RUNBOOK.md ("Live host cutover") point to it. Nothing was deployed, started, stopped or shared.
 - Result: laptop facts captured (2 batteries, Balanced plan, Wi-Fi only, Update active hours 22-16, IPv4 192.168.29.157 DHCP); laptop Wi-Fi baseline 2026-10-20 21:34Z median per new HTTPS call: Binance ~200 ms, Deribit testnet ~320 ms. JIS-NB numbers for the comparison NOT taken.
