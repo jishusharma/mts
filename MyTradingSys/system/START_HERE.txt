@@ -1,5 +1,5 @@
 ==============================================================
- MTS - START HERE   (2026-10-19)   paste a line, get a role
+ MTS CHEAT SHEET - START HERE   (2026-10-21)   paste a line, get a role
 ==============================================================
 
 HOW IT WORKS
@@ -8,6 +8,9 @@ HOW IT WORKS
   No banner / "ROLE NOT LOADED"  ->  close that session, open a new one.
   Every role starts on ANY device and ANY login (only the notes differ).
   Nothing starts by itself: you (or the Supervisor) start every session.
+  Forgot the role line? The first prompt loads the best fit and says
+  why:  ROLE LOADED: <Name> (fallback: <why>) ...   Wrong one? Paste
+  the right "You are <Role>." line. A tie: it asks you once.
 
 --------------------------------------------------------------
  WHAT DO I DO TODAY?
@@ -124,6 +127,45 @@ HOW IT WORKS
                                it owns every page; republishes MTS Home)
   Console flashes, hook or network fault ... You are Admin_Guy.
                               (it triages; fixes go to a Builder card)
+
+--------------------------------------------------------------
+ COMMANDS  (python scripts/dev/<script> ...; any checkout)
+--------------------------------------------------------------
+  ROLES
+    role_loader.py list               every role, file, start, model
+    role_loader.py pick --text "..."  which role fits this task, why
+    role_loader.py banner <Role>      the banner a session must show
+  STATE OF PLAY
+    make_status.py                    rebuild research/STATUS.md
+    tasks.py next | list | status     what to work on, the queue
+    traffic.py budget                 SPEND / NORMAL / THROTTLE
+    live_mirror.py brief              live state off JIS-NB (mirror@)
+    operator_questions.py list --limit 0   your open questions
+  WORK (every session does this, you rarely need to)
+    sync.py start <slug>              own worktree, up to date
+    sync.py claim "<task>"            say what you work on
+    sync.py ship --release <slug>     tests, push to fast-track
+    sync.py where | claims | health   clean tree? who holds what?
+    sync.py release <slug>            drop a stale claim
+  TALK BETWEEN MACHINES / LOGINS
+    mts_signal.py send "<one line>"   note to every session
+    mts_signal.py read                read the notes
+    desk.py post ... --target DSA     run-and-report job to DeepSeek
+    tasks.py new                      new backlog card (raw)
+  CHECKS
+    run_all_tests.py --quick          fast suite (no Maven/backtest)
+    mts_doctor.py                     health + process audit
+    git cherry origin/fast-track HEAD empty = really shipped
+
+--------------------------------------------------------------
+ GOLDEN RULES
+--------------------------------------------------------------
+  Testnet only (Deribit test). No mainnet orders or accounts.
+  Repo is PUBLIC: no runtime, order or account data in commits.
+  Live tree (JIS-NB) changes only by a deploy, never by a session.
+  No schedulers or routines on any device.
+  Numbers: SOURCED (trader's quote) or OURS (tuned) - never mix.
+  Fee-net out-of-sample results decide what trades, not doctrine.
 
 --------------------------------------------------------------
  BUDGET - is it SPEND?
