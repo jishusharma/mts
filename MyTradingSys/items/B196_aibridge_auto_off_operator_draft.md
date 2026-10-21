@@ -18,6 +18,13 @@ A previous sighting of this same auto-OFF behavior happened without an operator 
 3. If the operator is typing a reply, they likely won't see the small card, assuming the model is still working.
 4. This breaks the "continuous execution" contract of direct mode.
 
+
+## Sighting 4 (2026-10-21 01:58Z)
+
+The extension stayed "armed" (auto ticked) but got stuck waiting: the card read "waiting for DSA after #48",
+agent running 0, while a task-mode block sat unrun. It lost its place in the turn sequence and blocked the
+ship. The "operator draft" trigger was not present this time.
+
 ## Fix shape
 
 In the AIBridge extension (F:\AIBridge, Claude only):
