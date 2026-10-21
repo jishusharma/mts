@@ -382,7 +382,7 @@ def test_pick_cards_respects_host_lanes():
     rows = [{"id": "c1", "lane": "CODEX"}, {"id": "n1", "lane": "JIS-NB"}, {"id": "l1", "lane": "SONNET", "role": "Lab_Guy"},
             {"id": "s1", "lane": "SONNET", "weight": "ROUTINE"}, {"id": "s2", "lane": "HAIKU", "weight": "CRUCIAL"}, {"id": "d1", "lane": "DSA-NB"}]
     ids = lambda h, n=9, c=False: [r["id"] for r in S.pick_cards(rows, h, n, c)]
-    assert ids("DESKTOP-F7IU69N") == ["s1", "s2"]
+    assert ids("DESKTOP-F7IU69N") == ["n1", "s1", "s2"] and ids("OTHER-PC") == ["s1", "s2"]
     assert ids("JIS-NB") == ["n1", "s1", "s2"]
     assert ids("JIS-NUC") == ["l1", "s1", "s2"]
     assert ids("JIS-NUC", 1) == ["l1"] and ids("JIS-NB", 9, True) == ["s2"]
@@ -475,3 +475,14 @@ def test_plan_lines_stop_and_unknown_peers_start_nothing_shared():
 def test_cli_rejects_bad_percent(capsys):
     assert S.main(["plan", "--login", "C", "--five", "700", "--five-reset", "2026-10-19T14:00Z", "--week", "8",
                    "--week-reset", "2026-10-20T20:00Z", "--no-send", "--no-fetch"]) == 2
+
+
+def test_laptop_is_a_live_host_nb_stays_valid():
+    """LIVE_HOST_MOVE s6: DESKTOP-F7IU69N takes the JIS-NB host rules; JIS-NB stays valid; unknown hosts unchanged."""
+    L = "DESKTOP-F7IU69N"
+    assert S.weekly_cap("C", L) == 75 and S.weekly_cap("B", L.lower()) == 75 and S.weekly_cap("A", L) == 95
+    assert S.weekly_cap("C", "JIS-NB") == 75 and S.weekly_cap("C", "OTHER-PC") == 95
+    rows = [{"id": "n1", "lane": "JIS-NB"}, {"id": "s1", "lane": "SONNET"}, {"id": "l1", "lane": "SONNET", "role": "Lab_Guy"}]
+    ids = lambda h: [r["id"] for r in S.pick_cards(rows, h, 9)]
+    assert ids(L) == ["n1", "s1"] and ids("JIS-NB") == ["n1", "s1"] and ids("OTHER-PC") == ["s1"] and ids("JIS-NUC") == ["s1", "l1"]
+    assert S._local_bridge("OTHER-PC") is None and S._local_bridge(L) in ("up", "down")

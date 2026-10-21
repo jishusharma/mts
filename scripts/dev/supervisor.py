@@ -511,6 +511,8 @@ TRANSIT_MIN = 20                # write the hand-over this many minutes before t
 DSA_DOWN_H = 24                 # a DSA target whose oldest pending row is older than this has no working bridge (OURS)
 CLAUDE_LANES = ("SONNET", "HAIKU")
 NB, NUC = "JIS-NB", "JIS-NUC"
+LAPTOP = "DESKTOP-F7IU69N"     # live host after the move (LIVE_HOST_MOVE.md s6); JIS-NB stays valid as cold standby
+LIVE_HOSTS = (NB, LAPTOP)      # hosts that take the live-tree host lane rules; builders still never touch the live tree
 HANDOVER_REL = "MyTradingSys/system/handover/SUPERVISOR_{}.md"
 NUC_GATE = "ssh -i ~/.ssh/nuc_gate -o BatchMode=yes e-ngineers@192.168.29.110 ps"
 HB_RE = re.compile(r"\bBUDGET login=([ABC])\b.*\bsup=\S+")
@@ -527,7 +529,7 @@ def _utc(s):
 
 def weekly_cap(login: str, host: str) -> int:
     """SUPER_SESSION.md rule 12: logins B and C stop at 75% of the week when they run on JIS-NB (operator choice); else 95%."""
-    return 75 if host.upper() == NB and login in ("B", "C") else 95
+    return 75 if host.upper() in LIVE_HOSTS and login in ("B", "C") else 95
 
 
 def loop_home(home=None) -> Path:
@@ -659,7 +661,7 @@ def pick_cards(rows, host: str, n: int, crucial_only: bool = False) -> list:
     ok = []
     for r in rows:
         lane = str(r.get("lane", "")).upper()
-        if not (lane in CLAUDE_LANES or (lane == NB and h == NB)):
+        if not (lane in CLAUDE_LANES or (lane == NB and h in LIVE_HOSTS)):
             continue
         if r.get("role") == "Lab_Guy" and h != NUC:
             continue
@@ -757,7 +759,7 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
 
 
 def _local_bridge(host: str) -> str | None:
-    if host.upper() not in (NB, NUC):
+    if host.upper() not in (*LIVE_HOSTS, NUC):
         return None
     import socket as _s
     try:
