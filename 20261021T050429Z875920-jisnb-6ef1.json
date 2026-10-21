@@ -1,0 +1,1 @@
+{"t": "20261021T050429Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship opus-one-shot Result: Opus may grow to 500k in one job but blocks a follow-up message once context >= 150k; 22 turn_meter tests pass (1 new, red before)."}
