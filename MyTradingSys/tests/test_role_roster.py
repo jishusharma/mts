@@ -76,6 +76,39 @@ class RosterMatchesFiles(unittest.TestCase):
             self.assertEqual(r.returncode, 0, f"{cmd}: {r.stdout.decode(errors='replace')}")
 
 
+class ReadFirstRule(unittest.TestCase):
+    """bug-haiku-stale-rule-answers: rule, role, super-session and budget answers come from a file read this turn."""
+
+    def test_every_role_file_has_a_read_first_line_naming_real_files(self):
+        for f in sorted(ROLES_DIR.glob("*.md")):
+            head = f.read_text(encoding="utf-8").splitlines()[:8]
+            line = next((ln for ln in head if ln.startswith("Read first:")), None)
+            self.assertIsNotNone(line, f"{f.name}: no 'Read first:' line in the first 8 lines")
+            paths = re.findall(r"`([\w./-]+\.(?:md|py|json|txt))`", line)
+            self.assertTrue(paths, f"{f.name}: Read first line names no file")
+            for p in paths:
+                self.assertTrue((REPO / p).exists(), f"{f.name}: {p} does not exist")
+
+    def test_lint_fails_when_a_role_file_has_no_read_first_line(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp) / "MyTradingSys" / "system" / "roles"
+            d.mkdir(parents=True)
+            (d / "x.md").write_text("<!-- role: X | version: v1 | token: PENDING | triggers: x -->\n# X\n\nJob: x.\n",
+                                    encoding="utf-8", newline="\n")
+            lines = []
+            self.assertEqual(rl.lint(tmp, out=lines.append, ci_runs=[]), 1)
+            self.assertTrue(any("READ-FIRST" in ln for ln in lines), lines)
+
+    def test_boot_text_carries_the_rules_answer_rule(self):
+        text = (ROLES_DIR / "admin_guy.md").read_text(encoding="utf-8")
+        with mock.patch.object(rl, "git_sha8", lambda repo: "abcd1234"), \
+                mock.patch.object(rl, "git_show", lambda repo, rel: text if rel.endswith("admin_guy.md") else None), \
+                mock.patch.object(rl, "lease_suffix", lambda name, repo: ""):
+            boot = rl.build_text("Admin_Guy", REPO, True)
+        for must in ("read the source file this turn", "file:line", "commit date", "age", "NOT_IN_DATA"):
+            self.assertIn(must, boot)
+
+
 class BestRoleFallback(unittest.TestCase):
     def pick(self, text):
         return rl.pick_role(text, REPO)

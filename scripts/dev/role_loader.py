@@ -336,6 +336,12 @@ def lease_suffix(name, repo):
         return f" · lease UNKNOWN ({type(e).__name__})"
 
 
+RULES_ANSWER = ("RULES ANSWERS (bug-haiku-stale-rule-answers): before any answer about current rules, roles, the super session "
+                "or budget, read the source file this turn (your role file's `Read first:` line names it); cite file:line and its "
+                "commit date (`git log -1 --format=%cs -- <file>`); a reading (budget, mirror, usage) gives its timestamp and age "
+                "and is called stale past 6 h; nothing read = `NOT_IN_DATA`, never memory or a first search hit.\n")
+
+
 def build_text(name, repo, fetched_ok, fallback=None):
     LAST_META.clear()
     pre = (f"ROLE LOADER (hook): the prompt has no role line; the best fit from the task text is {name} ({fallback}). "
@@ -366,6 +372,7 @@ def _build_text(name, repo, fetched_ok, fallback=None):
                 f"Your FIRST reply must begin with exactly this line:\n{b}\n"
                 f"then on the next line: FIRST ACTION: {boot_step(body)}\n"
                 f"If anything is missing or unreadable, reply `ROLE NOT LOADED: <why>` and stop.\n"
+                f"{RULES_ANSWER}"
                 f"----- {fname} -----\n{text}")
     rows = git_show(repo, ROLES_MD_REL) or ""
     row = next((ln for ln in rows.split("\n") if re.match(r"^\|\s*" + re.escape(name) + r"\s*\|", ln)), None)
@@ -376,6 +383,7 @@ def _build_text(name, repo, fetched_ok, fallback=None):
     return (f"{stale}ROLE LOADER (hook): you are {name}. No role file on {TRUNK}; the ROLES.md row below is all there is.\n"
             f"Your FIRST reply must begin with exactly this line:\n{b}\n"
             f"then follow the row's Boot column. If anything is missing, reply `ROLE NOT LOADED: <why>` and stop.\n"
+            f"{RULES_ANSWER}"
             f"----- ROLES.md row -----\n{row}")
 
 
@@ -815,6 +823,13 @@ def lint(repo=REPO, out=print, ci_runs=None):
                     continue
                 if not (repo / full).exists():
                     findings.append(("MISSING-FILE", f"{rel}:{i}", f"missing referenced role file {full}"))
+
+    # 3. Every role file names the files its rule answers come from (bug-haiku-stale-rule-answers)
+    for f in role_files(repo):
+        head = f.read_text(encoding="utf-8", errors="replace").splitlines()[:8]
+        line = next((ln for ln in head if ln.startswith("Read first:")), None)
+        if line is None or not re.search(r"`[\w./-]+\.(?:md|py|json|txt)`", line):
+            findings.append(("READ-FIRST", f"{ROLES_REL}/{f.name}", "no `Read first:` line naming a source file in the first 8 lines"))
 
     for kind, where, msg in findings:
         out(f"FAIL [{kind}] {where}: {msg}")

@@ -32,6 +32,7 @@ CLEAN_ROLES_MD = """# ROLES
 """
 
 CLEAN_EAGLE_BODY = """# Eagle_Eyes
+Read first: `MyTradingSys/system/ROLES.md` (rule answers: read this turn, else `NOT_IN_DATA`).
 
 You are the standing LIVE MARKET READER for MTS. This session is never compacted.
 
