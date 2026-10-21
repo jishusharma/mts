@@ -97,11 +97,21 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "Agent|Task|mcp__ccd_session__start_session|mcp__ccd_session_mgmt__set_session_model|SendMessage|mcp__ccd_session_mgmt__send_message",
+        "matcher": "Agent|Task|mcp__ccd_session__start_session|mcp__ccd_session_mgmt__set_session_model|SendMessage|mcp__ccd_session_mgmt__send_message|Workflow|ScheduleWakeup|CronCreate|RemoteTrigger|mcp__scheduled-tasks__create_scheduled_task",
         "hooks": [
           {
             "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/model_guard.py\" hook",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/turn_meter.py\" hook",
             "timeout": 10
           }
         ]

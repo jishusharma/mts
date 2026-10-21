@@ -37,7 +37,7 @@ only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once); histo
    the proof that new tests fail on the old code (run them against `git show <sha>^:<file>` copies), a final reply of at most
    N lines, long notes in the shared notes folder. Tasks touching the same file run one after the other; others run in parallel.
 9. **Turn budget by context size (operator 2026-10-18, replaces the 10-16 compaction-by-share rule).** The hook `turn_meter.py` allows 4M / context
-   tool turns to Sonnet/Haiku, no turn cap to Opus (hand over at 500k), and to Fable one operator message (hard). The coordinator's own
+   tool turns to Sonnet/Haiku, no turn cap to Opus (hand over at 500k), and none to Fable; never to a prompt the operator types (WORKERS.md rule 5). The coordinator's own
    sweep on every wake: `get_usage` per running worker, reuse or `mark_completed` + `archive_session`. Keep working state in files
    (NEXT_SESSION.md, notes folder, task card), not in the context.
 10. **Signals between logins and machines (operator 2026-10-16).** The app cannot message across logins, so `scripts/dev/mts_signal.py`
