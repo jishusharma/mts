@@ -118,6 +118,20 @@ class SignalTest(unittest.TestCase):
         self.assertIn("heads up", S.handle(self.payload("PostToolUse", sid="s2", tool_name="Read")))   # gate closed, clone has it
         self.assertEqual(S.handle(self.payload("PostToolUse", sid="s2", tool_name="Read")), "")
 
+    def test_broadcast_sender_told_it_is_pull_only_and_cut(self):
+        # operator 2026-10-22: a broadcast "did not work", nothing flashed; the sender was never told it only lands on a
+        # session's next turn, nor that the 200-character cap dropped the steps
+        self.machine("jis-nb", "?")
+        out = S.handle(self.payload("UserPromptSubmit", sid="sender", prompt="MTS broadcast: " + "step " * 60))
+        self.assertIn("[MTS BROADCAST SENT]", out)
+        self.assertIn("next turn", out)
+        self.assertIn("send_message", out)
+        self.assertIn("lost", out)
+        short = S.handle(self.payload("UserPromptSubmit", sid="sender2", prompt="MTS broadcast: pause"))
+        self.assertIn("[MTS BROADCAST SENT]", short)
+        self.assertNotIn("lost", short)
+        self.assertNotIn("[MTS BROADCAST SENT]", S.handle(self.payload("UserPromptSubmit", sid="s3", prompt="hello")))
+
     def test_broadcast_banner_rendered_prominently(self):
         self.machine("jis-nuc", "sharma")
         self.assertEqual(S.main(["broadcast", "urgent notice for all models"]), 0)

@@ -14,7 +14,8 @@ Default and automatic (hook in .claude/settings.json, no session action needed):
 Never blocks, never raises; a failed network call is skipped.
 
   python scripts/dev/mts_signal.py send "<text>" [--to host|all] [--kind note|claim|done|ask|broadcast]
-  python scripts/dev/mts_signal.py broadcast "<message>"   urgently notify all active sessions across hosts
+  python scripts/dev/mts_signal.py broadcast "<message>"   a signal every other session shows on its NEXT turn (nothing
+                                                         wakes an idle session or flashes; the sender wakes them)
   python scripts/dev/mts_signal.py read [--hours 24]       newest last
   python scripts/dev/mts_signal.py status                  clone, origin, own id
 
@@ -269,6 +270,18 @@ def auto_send_text(payload):
     return None
 
 
+def sender_note(text):
+    """What the sending session is told: a broadcast is pull-only (operator 2026-10-22: "nothing was flashing, it did not
+    work"). Other sessions see it only when they next take a turn; the sender wakes the ones it can reach."""
+    cut = len(" ".join(str(text).split())) - len(clean(text))
+    lines = ["[MTS BROADCAST SENT] Other sessions see it only on their next turn: nothing wakes an idle session or flashes.",
+             "Now: list this login's running sessions (mcp__ccd_session_mgmt__list_sessions) and send_message each one the",
+             "text; tell the operator which machines/logins have no session you reached (he prompts one there)."]
+    if cut > 0:
+        lines.append("Cut to %d characters (%d lost): put the full text in that message." % (TEXT_MAX, cut))
+    return "\n".join(lines)
+
+
 def handle(payload):
     """Returns the text to print (may be empty)."""
     if os.environ.get("MTS_SIGNALS", "").lower() == "off":
@@ -276,8 +289,14 @@ def handle(payload):
     sid, ev = payload.get("session_id"), payload.get("hook_event_name")
     if not sid or not ev or is_subagent(payload):
         return ""
-    cwd = payload.get("cwd") or ""
     auto = auto_send_text(payload)
+    note = sender_note(auto[0]) if auto and auto[1] == "broadcast" else ""
+    got = _handle(payload, sid, ev, auto)
+    return "\n".join(t for t in (note, got) if t)
+
+
+def _handle(payload, sid, ev, auto):
+    cwd = payload.get("cwd") or ""
     if auto:
         spawn_send(auto[0], auto[1], cwd, sid)
     if ev not in ("UserPromptSubmit", "PostToolUse"):
@@ -411,6 +430,8 @@ def main(argv):
         a = ap.parse_args(argv[1:])
         ok = send(a.message, to=a.to, kind="broadcast")
         print("broadcast sent" if ok else "broadcast NOT sent (no origin or push failed)")
+        if ok:
+            print(sender_note(a.message))
         return 0 if ok else 1
     if cmd == "budget":
         return budget_cmd(argv[1:])
