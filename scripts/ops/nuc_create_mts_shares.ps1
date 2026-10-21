@@ -5,7 +5,7 @@
 param([string]$User = 'mtsshare')
 
 $ErrorActionPreference = 'Stop'
-if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole('Administrator')) {
+if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     throw 'Run this in an elevated (Administrator) PowerShell.'
 }
 
