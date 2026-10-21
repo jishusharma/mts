@@ -1,9 +1,9 @@
-# Supervisor hand-over, login B (JIS-NUC, 2026-10-20T14:51Z)
+# Supervisor hand-over, login B (JIS-NUC, 2026-10-21T04:54Z)
 
-- Next: Event turns cannot start sessions; on first operator turn start Builders lab-planted-error-trial + fable-setups-pack-prep and a Pipeliner (18 desk rows); gate-tiers-by-path a4105e0c and review-ground d761f57b shipped
-- Budget at hand-over: 5h 12.0% (reset 2026-10-20T15:30Z), week 49.0% of cap 95 (reset 2026-10-25T17:00Z), mode NORMAL, k 0.125
-- Peers live at hand-over: none
-- Last picks: lab-planted-error-trial, fable-setups-pack-prep
+- Next: pitchfork layer shipped (79da493c); lab caps raised to 65/90/14 (DECISION OURS); GPT lab run in flight, keep 8+ CODEX cards queued; start Builders lab-planted-error-trial + tc4-desk-done-once; DeepSeek DSA/DSA-NB chats unarmed (operator)
+- Budget at hand-over: 5h 13.0% (reset 2026-10-21T08:59Z), week 57.0% of cap 95 (reset 2026-10-25T16:59Z), mode NORMAL, k 0.1
+- Peers live at hand-over: A@JIS-NUC
+- Last picks: pitchfork-layer-java-execution, tc4-desk-done-once
 - Open claims from JIS-NUC: funding-carry-with-real-spot-basis-margi (finish, hand over in the card, or release by the claim rules)
 
 Successor: `You are Supervisor. Login B. Continue from MyTradingSys/system/handover/SUPERVISOR_B.md`
