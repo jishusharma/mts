@@ -36,7 +36,7 @@ READ_BUDGET = 4_000_000    # operator 2026-10-18: turns allowed = budget / conte
 OPUS_CTX_CAP = 500_000     # Opus: long sessions are wanted; the only cap is the context size
 # Unattended read budget (safety review 2026-10-21, research/context_policy_review/DECISION_OPUS.md): every tool turn taken while the
 # operator is not there adds its context size; his typed prompt resets it, events never do. Past it, PreToolUse denies all but hand-off.
-UNATTENDED_READ = {"default": 3 * READ_BUDGET, "opus": 40_000_000, "fable": 40_000_000, "supervisor": 100_000_000}
+UNATTENDED_READ = {"default": 1_000_000, "opus": 1_000_000, "fable": 1_000_000, "supervisor": 1_000_000}   # operator 2026-10-21; note at half
 UNKNOWN_CTX = 250_000      # an unreadable context still costs: counted as a big one
 DRIVEN_IDLE = 1800         # he is "there" from his 2nd typed prompt until 30 min after his latest one
 HANDOFF_BASH = re.compile(r"\b(?:git|sync\.py|relay\.py|tasks\.py|mts_signal\.py)\b")
@@ -322,7 +322,7 @@ def handle(payload):
                 out = message(state, tool_cap, user_cap, f"{kind.capitalize()} context {ctx // 1000}k >= {OPUS_CTX_CAP // 1000}k cap")
             elif state["ur"] >= limit // 2 and not state.get("half"):
                 state["half"] = 1
-                out = message(state, tool_cap, user_cap, f"unattended read {state['ur'] // 10**6}M of {limit // 10**6}M")
+                out = message(state, tool_cap, user_cap, f"unattended read {state['ur'] // 1000}k of {limit // 1000}k")
             if out:
                 out = json.dumps({"hookSpecificOutput": {"hookEventName": "PostToolUse", "additionalContext": out}})
         elif t >= tool_cap and (t - tool_cap) % NAG_EVERY == 0:

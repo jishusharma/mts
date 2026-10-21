@@ -176,19 +176,21 @@ class TurnMeterTest(unittest.TestCase):
         small = self.model_transcript("sonnet", 50_000)
         self.assertEqual([n for n in range(1, 50) if fire(self.home, "PostToolUse", sid="b", extra=small)][:1], [40])
 
+    @mock.patch.dict(turn_meter.UNATTENDED_READ, {k: 10**12 for k in ("default", "opus", "fable", "supervisor")})   # these test the turn/context caps, not the 1M read budget (test_usage_bounds.py)
     def test_opus_has_no_turn_cap_only_a_500k_context_cap(self):
         under = self.model_transcript("opus", 100_000)      # below the 150k follow-up limit: messages keep coming
         for _ in range(60):
             self.assertEqual(fire(self.home, "PostToolUse", sid="o", extra=under), "")
         for _ in range(12):
             self.assertEqual(fire(self.home, "UserPromptSubmit", sid="o", extra=under), "")
-        big = self.model_transcript("opus", 400_000)        # one job may grow big: no turn cap, only the 40M unattended budget
-        for _ in range(40):                                 # 16M: under the half-budget note (test_usage_bounds.py)
+        big = self.model_transcript("opus", 400_000)        # one job may grow big: no turn cap, only the unattended budget
+        for _ in range(40):                                 # budget lifted above
             self.assertEqual(fire(self.home, "PostToolUse", sid="o2", extra=big), "")
         over = self.model_transcript("opus", 520_000)
         nags = [fire(self.home, "PostToolUse", sid="o3", extra=over) for _ in range(5)]
         self.assertIn("Opus context 520k", nags[-1])
 
+    @mock.patch.dict(turn_meter.UNATTENDED_READ, {k: 10**12 for k in ("default", "opus", "fable", "supervisor")})   # these test the turn/context caps, not the 1M read budget (test_usage_bounds.py)
     def test_supervisor_has_context_cap_not_turn_cap(self):
         """Operator 2026-10-21: a Supervisor runs for hours unattended; it is capped by context size (like Opus), not by turns."""
         tp = self.home / "sup.jsonl"
@@ -202,6 +204,7 @@ class TurnMeterTest(unittest.TestCase):
         for i in range(12):
             self.assertEqual(fire(self.home, "UserPromptSubmit", sid="sup", extra={"transcript_path": str(tp), "prompt": "worker note"}), "")
 
+    @mock.patch.dict(turn_meter.UNATTENDED_READ, {k: 10**12 for k in ("default", "opus", "fable", "supervisor")})   # these test the turn/context caps, not the 1M read budget (test_usage_bounds.py)
     def test_supervisor_found_from_transcript_when_hook_never_saw_the_start_line(self):
         """The NUC Supervisor started before this hook knew the role: its first user line is only in the transcript."""
         tp = self.home / "sup2.jsonl"

@@ -54,10 +54,10 @@ class UnattendedBudgetTest(unittest.TestCase):
     def test_unattended_budget_denies_tools_but_lets_the_hand_off_through(self):
         s = self.tp("sonnet", 100_000)
         fire(self.home, "UserPromptSubmit", sid="w", extra={**s, "prompt": "the brief"})
-        for _ in range(119):
+        for _ in range(9):
             fire(self.home, "PostToolUse", sid="w", extra=s)
-        self.assertFalse(denied(self.pre("w", extra=s)), "under 12M: allowed")
-        fire(self.home, "PostToolUse", sid="w", extra=s)                        # 120 x 100k = 12M
+        self.assertFalse(denied(self.pre("w", extra=s)), "under 1M: allowed")
+        fire(self.home, "PostToolUse", sid="w", extra=s)                        # 10 x 100k = 1M
         self.assertTrue(denied(self.pre("w", extra=s)))
         self.assertFalse(denied(self.pre("w", "Bash", {"command": "python scripts/dev/sync.py ship"}, extra=s)))
         self.assertFalse(denied(self.pre("w", "Bash", {"command": "git -C x commit -m y"}, extra=s)))
@@ -91,18 +91,20 @@ class UnattendedBudgetTest(unittest.TestCase):
         f = self.tp("fable", 600_000)
         fire(self.home, "UserPromptSubmit", sid="f", extra={**f, "prompt": "one brief"})
         self.assertTrue(any(fire(self.home, "PostToolUse", sid="f", extra=f) for _ in range(5)))
-        for _ in range(70):
-            fire(self.home, "PostToolUse", sid="f", extra=f)                     # 75 x 600k = 45M > 40M
+        for _ in range(2):
+            fire(self.home, "PostToolUse", sid="f", extra=f)                     # 2 x 600k = 1.2M > 1M
         self.assertTrue(denied(self.pre("f", extra=f)))
 
-    def test_supervisor_budget_is_100m(self):
+    def test_supervisor_budget_is_1m_with_a_note_at_500k(self):
         o = self.tp("opus", 200_000)
         fire(self.home, "UserPromptSubmit", sid="sv", extra={**o, "prompt": "You are Supervisor. Login C."})
-        for _ in range(250):
-            fire(self.home, "PostToolUse", sid="sv", extra=o)                    # 50M: an Opus worker would be denied
+        notes = [fire(self.home, "PostToolUse", sid="sv", extra=o) for _ in range(2)]      # 400k
+        self.assertFalse(any("unattended read" in n for n in notes))
         self.assertFalse(denied(self.pre("sv", extra=o)))
-        for _ in range(250):
-            fire(self.home, "PostToolUse", sid="sv", extra=o)
+        self.assertIn("unattended read 600k of 1000k", fire(self.home, "PostToolUse", sid="sv", extra=o))   # 600k >= 500k
+        fire(self.home, "PostToolUse", sid="sv", extra=o)
+        self.assertFalse(denied(self.pre("sv", extra=o)))                               # 800k
+        fire(self.home, "PostToolUse", sid="sv", extra=o)                               # 1M
         self.assertTrue(denied(self.pre("sv", extra=o)))
 
     def test_unknown_context_counts_as_250k(self):
@@ -110,8 +112,8 @@ class UnattendedBudgetTest(unittest.TestCase):
         blank.write_text("", encoding="utf-8")
         b = {"transcript_path": str(blank)}
         fire(self.home, "UserPromptSubmit", sid="u", extra={**b, "prompt": "x"})
-        for _ in range(48):
-            fire(self.home, "PostToolUse", sid="u", extra=b)                     # 48 x 250k = 12M
+        for _ in range(4):
+            fire(self.home, "PostToolUse", sid="u", extra=b)                     # 4 x 250k = 1M
         self.assertTrue(denied(self.pre("u", extra=b)))
 
     def test_a_typed_prompt_with_a_leading_reminder_is_typed_not_an_event(self):
