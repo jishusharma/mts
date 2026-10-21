@@ -29,12 +29,12 @@ Already loaded (CLAUDE.md is already in context; do not cat or Read CLAUDE.md). 
 - Commit body carries `Result: <what works now / the number>`. Others' uncommitted files: don't stash, clean, revert or report them.
 - Testnet only (Deribit test); no mainnet orders/accounts (public market data OK: q-gap-c); never read `.secrets/`, `.env`, keys.
 - Repo is PUBLIC (since 2026-10-11): never commit runtime/order/account data; backups go only to local F:/MTS_backup.git; go private before mainnet.
-- The live tree (`.mts_live`, JIS-NB) runs the testnet system and changes only by a manual or coordinator-run deploy (DEPLOY_RUNBOOK.md; AutoDeploy, Supervisor retired). Builders never deploy, stop/restart processes, touch HALT files or open trades. No scheduled tasks or routines on any device.
+- The live tree (`.mts_live`) runs the testnet system and changes only by a manual or coordinator-run deploy (DEPLOY_RUNBOOK.md; AutoDeploy, Supervisor retired). Builders never deploy, stop/restart processes, touch HALT files or open trades. No scheduled tasks or routines on any device.
 - Live-path changes need a test for restart/reset state, non-trade balance moves and API errors; safety checks fail closed. New timeframe or layer family: grep every TF/family map. Whoever sets AUTO_PAUSE logs owner + expected end in SUPERVISOR_LOG; each wake clears or escalates an overdue pause.
 - Layers (operator 2026-10-13, replaces "Tom is core"): no fixed core. Tom, Fabio and every other system are layers (combine, filter or switch off); fee-net out-of-sample results decide what trades, never doctrine (PROJECT_VISION).
 - Numbers (operator 2026-10-13): label each parameter SOURCED (trader's words, quote + file:line) or OURS (judgement or tuned). OURS is allowed: chosen on DEV, checked once on VALIDATION, holdout read once, variants in the trial ledger. Never call OURS the trader's.
-- Anything off: report -> independent audit -> fix. Never conclude from truncated output (`cut`, `head`, log tails); parse the real format, then count.
-- Windows: write files with `newline='\n'`; long patches go in a .py script, not a heredoc. The Bash tool strips backslashes: write paths/regexes with Write/Edit; Write decodes backslash-u escapes: use `chr()`; check CR with python bytes, not `grep -c`.
+- Anything off: report -> independent audit -> fix. Never conclude from truncated output; parse the real format, then count.
+- Windows: write files with `newline='\n'`; long patches go in a .py script, not a heredoc. The Bash tool strips backslashes: write paths/regexes with Write/Edit; Write decodes backslash-u escapes: use `chr()`.
 - Never add to `.git/info/exclude`: an ignore that matters goes in `.gitignore`.
 
 ## Where to look (`MyTradingSys/system/`)
