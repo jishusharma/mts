@@ -11,7 +11,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import charts  # noqa: E402
 import desk  # noqa: E402
-import study_levels  # noqa: E402
+from studies import levels as study_levels  # noqa: E402
 
 FROZEN_P = {'entry': 'E1', 'scale': 'S2', 'stop': 'K5', 'exit': 'X0_2R'}
 

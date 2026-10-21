@@ -17,7 +17,7 @@ from pathlib import Path
 
 import numpy as np
 
-HERE = Path(__file__).resolve().parent
+HERE = Path(__file__).resolve().parents[1]   # sim_desk/
 STUDY = HERE.parent / 'levels_confluence_2026-10-14'
 sys.path.insert(0, str(STUDY))
 import ladder as ld  # noqa: E402

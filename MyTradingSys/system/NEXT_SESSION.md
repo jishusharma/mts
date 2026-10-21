@@ -10,6 +10,12 @@ Run with zero operator input; defaults for open questions. Plan and checklists: 
 - CI: STATUS showed `CI green:` RED (oldest ungreen 22.7 h) and `gh` is missing on the laptop, so CI was not checked here; a host with `gh` checks the pinned `ci-<sha>` card first.
 - Do not add gates, lints or rule docs for this.
 
+## Simulator desk: plug-in seam + Questions panel shipped 2026-10-21 (hand-over, Opus lead)
+Run with zero operator input; defaults for open questions.
+- A new layer is one file in `MyTradingSys/research/sim_desk/studies/` (levels moved to `studies/levels.py`); the desk finds it at start, no desk.py edit; a study picker appears once there are two. Contract and per-layer verdicts: `sim_desk/PLUGIN.md`. Nothing fits as-is today; Tom, CryptoCred and RSI need a small adapter; Fabio does not fit (order-flow bars start 2024-12-02, after the DEV window). No layer was ported.
+- Questions panel at the bottom of the desk page: questions live in `sim_desk/questions.json`, the operator's answers append to `sim_desk/cache/answers.jsonl` (local, gitignored). FIRST STEP of the next desk session: read that file (latest row per id wins). No answer = default: `first-layers` -> wait for Tom v2 rules, then wrap Tom first; `levels-park` -> parked.
+- Ask the operator new desk questions by adding them to questions.json, not in chat. 32 tests (6 new, red before).
+
 ## Simulator desk fixes shipped 2026-10-21 (hand-over, Opus lead; Fable review C1-C3 + E)
 Run with zero operator input; defaults for open questions. Start: `python MyTradingSys/research/sim_desk/desk.py`, http://127.0.0.1:8765 (first Run builds a local cache once, ~77 s; then ~7 s per Run; needs the 1m bars at F:/MTS/data/tom_raw/klines).
 - Now: only filled trades count (screen shows "255 trades (517 ideas never filled)"); verdict from the spread of the real trades, the two-point power model is off the screen; every chart caption has date/time UTC, R, long/short and outcome, and the level the entry filled at is drawn; plain error messages; "already tried" is keyed on TRIALS.md rows, so another tree does not log the same setting twice; the target box greys out unless the exit is "chosen multiple"; labels "Which touches" / "How to enter". 26 tests (10 new, red before).

@@ -19,7 +19,7 @@ STUDY_DIR = HERE.parent / 'levels_confluence_2026-10-14'
 FROZEN = json.loads((STUDY_DIR / 'frozen_rule.json').read_text(encoding='utf-8'))
 
 import desk  # noqa: E402
-import study_levels  # noqa: E402
+from studies import levels as study_levels  # noqa: E402
 
 FROZEN_P = {'entry': 'E1', 'scale': 'S2', 'stop': 'K5', 'exit': 'X0_2R'}
 
