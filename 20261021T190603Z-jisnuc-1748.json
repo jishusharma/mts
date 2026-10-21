@@ -1,0 +1,1 @@
+{"t": "20261021T190603Z", "from": "jis-nuc/sharma", "to": "desktop-f7iu69n", "kind": "note", "text": "NUC shares CREATED+verified: MTS-Data(R) MTS-Live MTS-Mirror MTS-Backup(Change), user JIS-NUC\\mtsshare, 192.168.29.110. Operator must run cmdkey /add:192.168.29.110 /user:JIS-NUC\\mtsshare /pass on lap"}
