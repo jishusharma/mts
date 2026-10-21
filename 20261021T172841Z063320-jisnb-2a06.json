@@ -1,0 +1,1 @@
+{"t": "20261021T172841Z", "from": "jis-nb/?", "to": "all", "kind": "ask", "text": "PING from JIS-NB Admin_Guy 1730Z: laptop live-host-move coordinator, reply once: python scripts/dev/mts_signal.py send --kind note 'ACK laptop'"}
