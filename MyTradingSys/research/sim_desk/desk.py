@@ -10,6 +10,7 @@ cache/ is gitignored (the repo is public: no price data or run output is committ
 import argparse
 import datetime as dt
 import hashlib
+import importlib.util
 import json
 import math
 import sys
@@ -152,10 +153,69 @@ def run_setting(study, p, trials_path=TRIALS, cache_dir=CACHE, progress=print, c
     return out
 
 
-# ---- the page ----
-import study_levels  # noqa: E402
+# ---- studies: one file each in studies/, found at start (PLUGIN.md) ----
+STUDY_DIR = HERE / 'studies'
+NEEDS = ('ID', 'params', 'normalize', 'label', 'describe', 'run')
 
-STUDIES = {study_levels.ID: study_levels}
+
+def load_studies(folder=STUDY_DIR):
+    """{ID: module} for every studies/*.py (not _private) that has the study functions; anything else is skipped."""
+    folder = Path(folder)
+    found = {}
+    for f in sorted(folder.glob('*.py')):
+        if f.name.startswith('_'):
+            continue
+        name = f'studies.{f.stem}' if folder.resolve() == STUDY_DIR.resolve() else f'desk_study_{f.stem}'
+        mod = sys.modules.get(name)
+        if mod is None:
+            spec = importlib.util.spec_from_file_location(name, f)
+            mod = importlib.util.module_from_spec(spec)
+            sys.modules[name] = mod    # registered first so build workers can pickle its functions
+            try:
+                spec.loader.exec_module(mod)
+            except Exception as e:
+                del sys.modules[name]
+                print(f'study {f.name} skipped: {e!r}', flush=True)
+                continue
+        if all(hasattr(mod, a) for a in NEEDS):
+            found[mod.ID] = mod
+    return found
+
+
+# ---- questions for the operator, answered on the page; answers stay local (cache/ is gitignored) ----
+QUESTIONS = HERE / 'questions.json'
+ANSWERS = HERE / 'cache' / 'answers.jsonl'
+
+
+def _answers(path):
+    if not Path(path).exists():
+        return []
+    return [json.loads(ln) for ln in Path(path).read_text(encoding='utf-8').splitlines() if ln.strip()]
+
+
+def load_questions(path=QUESTIONS, answers_path=ANSWERS):
+    """Seeded questions, each with its latest answer (or None: the default stands)."""
+    qs = json.loads(Path(path).read_text(encoding='utf-8'))
+    last = {a['id']: a for a in _answers(answers_path)}
+    for q in qs:
+        q['answer'] = last.get(q['id'])
+    return qs
+
+
+def save_answer(qid, choice, text, path=ANSWERS, questions=QUESTIONS):
+    ids = {q['id'] for q in json.loads(Path(questions).read_text(encoding='utf-8'))}
+    if qid not in ids:
+        raise ValueError('that question is not on the desk')
+    row = {'id': qid, 'choice': str(choice or ''), 'text': str(text or '').strip(),
+           'at': dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
+    with open(path, 'a', encoding='utf-8', newline=NL) as fh:
+        fh.write(json.dumps(row) + NL)
+    return row
+
+
+# ---- the page ----
+STUDIES = load_studies()
 LOCK = threading.Lock()
 PROGRESS = {'line': ''}
 
@@ -192,14 +252,24 @@ class Handler(BaseHTTPRequestHandler):
                                      'tries': count_tries(TRIALS, s)} for s in STUDIES.values()])
         if self.path == '/api/progress':
             return self._send(200, PROGRESS)
+        if self.path == '/api/questions':
+            return self._send(200, load_questions())
         self._send(404, {'error': 'not found'})
 
     def do_POST(self):
+        if self.path == '/api/answer':
+            try:
+                body = json.loads(self.rfile.read(int(self.headers.get('Content-Length', 0))) or b'{}')
+                return self._send(200, save_answer(body.get('id'), body.get('choice'), body.get('text')))
+            except ValueError as e:
+                return self._send(400, {'error': f'Not saved: {e}'})
         if self.path != '/api/run':
             return self._send(404, {'error': 'not found'})
         try:
             body = json.loads(self.rfile.read(int(self.headers.get('Content-Length', 0))) or b'{}')
-            study = STUDIES[body.get('study', study_levels.ID)]
+            if body.get('study') not in STUDIES:
+                raise ValueError('pick a study')
+            study = STUDIES[body['study']]
             with LOCK:
                 PROGRESS['line'] = 'running...'
                 out = run_setting(study, body.get('params', {}), progress=lambda s: PROGRESS.update(line=s), charts=True)
@@ -223,7 +293,9 @@ def main():
     ap.add_argument('--build', action='store_true', help='only build the data cache, then exit')
     a = ap.parse_args()
     if a.build:
-        study_levels.build_cache()
+        for s in STUDIES.values():
+            if hasattr(s, 'build_cache'):
+                s.build_cache()
         return
     srv = ThreadingHTTPServer(('127.0.0.1', a.port), Handler)
     print(f'Simulator desk on http://127.0.0.1:{a.port}  (Ctrl+C stops it)', flush=True)
