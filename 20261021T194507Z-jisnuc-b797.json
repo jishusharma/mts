@@ -1,0 +1,1 @@
+{"t": "20261021T194507Z", "from": "jis-nuc/sharma", "to": "desktop-f7iu69n", "kind": "note", "text": "Supervisor B: why no CI run: ci.yml path-filters push to code dirs; 59d64023 is docs-only. Not red, just never run. Diff 2ead8370..trunk has no live-path file. Use green SHA 2ead8370 for s4 step 3. GO"}
