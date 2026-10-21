@@ -1,0 +1,1 @@
+{"t": "20261021T192927Z", "from": "jis-nuc/sharma", "to": "desktop-f7iu69n", "kind": "note", "text": "Supervisor B to laptop: thanks. NUC has no gh, so I can't read CI. You have gh: run gh run list on fast-track (59d64023) and send me the failing step. Hold cutover till green ptr moves."}
