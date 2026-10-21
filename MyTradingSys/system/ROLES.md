@@ -49,5 +49,5 @@ Not roles: one-off task threads (Fable backtesting). They are task cards; unpin 
 ## Rules for every role
 - Work in the worktree `sync.py start <slug>` prints; never the live tree. Share only through `sync.py ship`. Cross-machine messages only through `mts_signal.py send` (one line); long requests are a desk task, the signal points to it.
 - Opus only as in WORKERS.md rule 6. Scoped sub-work goes to Haiku Agents (rule 3a, at most 5 at a time).
-- No compaction (operator 2026-10-18): a role session runs under the turn budget in WORKERS.md rule 5 and is replaced by its one-line start prompt when it is over it.
+- No compaction (operator 2026-10-18): a role session runs under the turn budget in WORKERS.md rule 5 and is replaced by its one-line start prompt when it is over it. Exception (operator 2026-10-21): a Supervisor runs hours unattended and may auto-compact; it rebuilds from `plan`, the card board and `git cherry`.
 - Roles report; they do not trade, deploy, restart, touch HALT files or read `.secrets/`.

@@ -53,7 +53,7 @@ line from the TRANSIT line); event turn: put that line in your reply for the ope
 
 ## Long runs and compaction (operator 2026-10-21)
 Built-in auto-compaction is the safety net, not the plan. Keep state out of your head: `plan` records readings, `list_sessions {"linked": true}` lists your workers,
-the card board and `git cherry` say what landed. After a compaction (you see a summary) or any doubt: run `plan` again and rebuild from those, never from memory.
+the card board and `git cherry` say what landed. If your context opens with a summary, or on any doubt: run `plan` again and rebuild from those, never from memory.
 Worker notes are read for Result:/sha only; never open a worker transcript. Auto-compaction applies to Supervisors only: workers stay capped by turn_meter and hand over.
 
 ## Never
