@@ -179,8 +179,8 @@ class TurnMeterTest(unittest.TestCase):
         for _ in range(60):
             self.assertEqual(fire(self.home, "PostToolUse", sid="o2", extra=big), "")
         over = self.model_transcript("opus", 520_000)
-        fire(self.home, "UserPromptSubmit", sid="o3", extra=over)
-        self.assertIn("Opus context 520k", fire(self.home, "PostToolUse", sid="o3", extra=over) or fire(self.home, "UserPromptSubmit", sid="o3b", extra=over))
+        nags = [fire(self.home, "PostToolUse", sid="o3", extra=over) for _ in range(5)]
+        self.assertIn("Opus context 520k", nags[-1])
 
     def test_fable_gets_one_message_hard_even_with_the_switch_off(self):
         f = self.model_transcript("fable", 800_000)
@@ -246,6 +246,56 @@ class TurnMeterTest(unittest.TestCase):
         plain.write_text(json.dumps({"type": "user", "message": {"content": "fix the bug"}}) + "\n", encoding="utf-8")
         outs = [fire(self.home, "PostToolUse", sid="w", extra={"transcript_path": str(plain), "message_id": f"w{i}"}) for i in range(45)]
         self.assertTrue(any(outs), "a normal worker still gets the 40-turn nag")
+
+    def opus_ctx(self, name, ctx):
+        tp = self.home / f"{name}.jsonl"
+        with open(tp, "w", encoding="utf-8", newline="\n") as f:
+            f.write(json.dumps({"type": "assistant", "message": {"id": "m", "model": "claude-opus-5-5", "content": [],
+                                "usage": {"input_tokens": ctx, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0}}}) + "\n")
+        return {"transcript_path": str(tp)}
+
+    def test_resumed_opus_over_150k_is_blocked_on_its_first_metered_message(self):
+        """A session resumed after its state file was pruned (or begun before the meter) starts at user=0: a context >= 150k
+        already proves an earlier turn, so the first metered message is blocked too (review 2026-10-21, item 3)."""
+        out = fire(self.home, "UserPromptSubmit", sid="r", extra=self.opus_ctx("r", 200_000))
+        self.assertIn("block", out)
+
+    def test_event_messages_neither_count_nor_block(self):
+        """Cross-session messages, side-session events, CI events and task notifications fire UserPromptSubmit like the
+        operator; blocking one loses a worker's report (review 2026-10-21, item 4)."""
+        big = self.opus_ctx("e", 200_000)
+        for head in ("<cross-session-message from=\"x\">done</cross-session-message>", "<side-sessions-event>x",
+                     "  <ci-monitor-event>x", "<task-notification>x"):
+            self.assertEqual(fire(self.home, "UserPromptSubmit", sid="e", extra={**big, "prompt": head}), "", head)
+        self.assertFalse((self.home / "e.json").exists())      # nothing counted
+        f = self.model_transcript("fable", 300_000)
+        fire(self.home, "UserPromptSubmit", sid="fe", extra={**f, "prompt": "do the job"})
+        self.assertEqual(fire(self.home, "UserPromptSubmit", sid="fe", extra={**f, "prompt": "<side-sessions-event>x"}), "")
+
+    def test_compaction_ends_an_opus_job_but_nudges_a_supervisor(self):
+        """Use and destroy (operator 2026-10-21): after a compaction the summary has lost detail, so an Opus/Fable session takes
+        no further operator message even though the context is small again; a Supervisor goes on and rebuilds from its plan."""
+        small = self.opus_ctx("c", 40_000)
+        fire(self.home, "UserPromptSubmit", sid="c", extra=small)
+        self.assertEqual(fire(self.home, "SessionStart", sid="c", extra={**small, "source": "compact"}), "")
+        self.assertIn("block", fire(self.home, "UserPromptSubmit", sid="c", extra=small))
+        sup = {**small, "prompt": "You are Supervisor. Login A. 3 hours"}
+        fire(self.home, "UserPromptSubmit", sid="cs", extra=sup)
+        nudge = json.loads(fire(self.home, "SessionStart", sid="cs", extra={**small, "source": "compact"}))
+        self.assertIn("supervisor.py plan", nudge["hookSpecificOutput"]["additionalContext"])
+        self.assertEqual(fire(self.home, "UserPromptSubmit", sid="cs", extra={**small, "prompt": "go on"}), "")
+
+    def test_a_brief_that_quotes_the_start_line_is_not_a_supervisor(self):
+        """Seen 2026-10-21 (sessions afa3fa90, 01d7aa30): a brief quoting "You are Supervisor" made a reviewer a Supervisor."""
+        quoted = self.home / "q.jsonl"
+        quoted.write_text(json.dumps({"type": "user", "message": {"content": [{"type": "text", "text":
+                          'Review: a session whose first prompt starts "You are Supervisor" is capped by context'}]}},
+                          separators=(",", ":")) + "\n", encoding="utf-8")
+        self.assertFalse(turn_meter.transcript_starts_supervisor({"transcript_path": str(quoted)}))
+        real = self.home / "real.jsonl"
+        real.write_text(json.dumps({"type": "user", "message": {"content": [{"type": "text", "text": "<system-reminder>x</system-reminder>"},
+                        {"type": "text", "text": "You are Supervisor. Login <C>"}]}}, separators=(",", ":")) + "\n", encoding="utf-8")
+        self.assertTrue(turn_meter.transcript_starts_supervisor({"transcript_path": str(real)}))
 
     def test_resume_keeps_counts(self):
         for _ in range(40):

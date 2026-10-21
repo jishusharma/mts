@@ -45,7 +45,7 @@ never dispatch raw/refined cards). Board STOP/HOLD and CI RED outrank everything
 - At most 2 gates per git dir; the brief orders ships; a ship that may pass 600 s runs detached; one ship per worker.
 - Own edits (boot facts, notes): one docs-only ship at transit, never one ship per edit.
 
-## Transit (the `TRANSIT at` time, 5 h >= 80%, or 500k context; a Supervisor has no tool-turn cap, turn_meter.py)
+## Transit (the `TRANSIT at` time or 5 h >= 80%; not context: auto-compaction carries you on, turn_meter.py says rebuild from `plan`)
 Stop spawning, drain, `get_usage` + `plan` once more, then `python scripts/dev/supervisor.py handover --login <L> --note "<the next step>"`
 (writes `handover/SUPERVISOR_<L>.md` in your worktree and sends a `mode=ENDED` heartbeat, so peers take your shard at once), add one Session log line to SUPER_SESSION.md, one docs-only `sync.py ship --release`.
 Alone (`PEER none live`): also overwrite NEXT_SESSION.md. Operator turn: start the successor yourself (start_session, Sonnet, the successor
