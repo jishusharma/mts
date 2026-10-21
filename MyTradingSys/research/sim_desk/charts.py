@@ -11,9 +11,10 @@ import numpy as np
 
 W, H, PAD_T, PAD_B = 300, 160, 6, 22
 MAX_CANDLES = 64
-SPANS = (5, 15, 30, 60, 120)
+SPANS = (5, 15, 30, 60, 120, 240, 480, 1440, 2880)
 REASON = {'T1': 'hit target', 'X0': 'hit target', 'T2': 'hit second target', 'STOP': 'stopped', 'STOP_LATE': 'stopped after target',
-          'TIME': 'closed at day end', 'CVD_AGAINST': 'order flow turned', 'BAND': 'reached opposite band', 'CVD_FLAT': 'order flow went flat'}
+          'TIME': 'closed at day end', 'CVD_AGAINST': 'order flow turned', 'BAND': 'reached opposite band', 'CVD_FLAT': 'order flow went flat',
+          'SIGNAL': 'exit signal', 'HOLD': 'held to the time limit'}
 RULE = '3 winners and 3 losers closest to the typical (median) winner and loser'
 
 

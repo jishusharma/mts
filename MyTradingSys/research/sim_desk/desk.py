@@ -26,6 +26,7 @@ TRIALS = HERE.parent / 'layer_lab' / 'TRIALS.md'
 CACHE = HERE / 'cache' / 'results'
 DEV_FIRST, DEV_LAST = dt.date(2022, 4, 1), dt.date(2024, 6, 30)
 PLAUSIBLE_R = 0.10
+MIN_TRADES = 30          # same floor as the layer runners (run_rsi_backtest.py MIN_OOS_N)
 NL = chr(10)
 CMD = '`python MyTradingSys/research/sim_desk/desk.py`'
 
@@ -75,7 +76,11 @@ def verdict(st):
     n = st.get('n', 0)
     if not n:
         return 'NOT ENOUGH DATA', 'no filled trades with these settings'
+    if n < MIN_TRADES:
+        return 'NOT ENOUGH DATA', f'only {n} filled trades; at least {MIN_TRADES} are needed before the desk calls it'
     rng = f"95 % range of the average {st['lo']:+.3f} to {st['hi']:+.3f} R"
+    if st['hi'] < 0:
+        return 'FAILED', f'the whole {rng} is below zero: it loses money after fees'
     if st['lo'] > 0:
         return 'PASSED', (f'the whole {rng} is above zero. On DEV only: it needs its one validation run, '
                           'which is not on this desk')
@@ -142,7 +147,7 @@ def run_setting(study, p, trials_path=TRIALS, cache_dir=CACHE, progress=print, c
     out = {'verdict': word, 'reason': reason, 'cached': cached, 'already_tried': tried, 'nofill': st.get('nofill', 0), 'describe': study.describe(q),
            'label': study.label(q), 'settings': q, 'n': st.get('n', 0), 'mean': st.get('mean'), 'lo': st.get('lo'),
            'hi': st.get('hi'), 'streak': st.get('streak', 0), 'win_rate': st.get('win_rate'),
-           'try_no': count_tries(trials_path, study), 'prior_tries': len(_rows(trials_path, f"| {getattr(study, 'PRIOR_TAG', '-')} ")),
+           'try_no': count_tries(trials_path, study), 'prior_tries': len(_rows(trials_path, f"| {study.PRIOR_TAG} ")) if hasattr(study, 'PRIOR_TAG') else 0,
            'stats': {k: v for k, v in st.items() if isinstance(v, (int, float))}, 'charts': []}
     if charts:
         try:
