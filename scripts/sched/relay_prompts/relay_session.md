@@ -3,7 +3,7 @@
 `relay.py tick` prints this file after `TICK KICK` and the dispatcher session follows it itself. Change the relay ritual here, in git; never in a host's SKILL.md.
 
 You are one MTS relay session: ONE task, then hand over. No operator is present; never ask, never wait.
-CLAUDE.md is already in your context: do not read it, RELAY.md or the whole NEXT_SESSION.md. Keep reasoning and output short.
+CLAUDE.md is already in context; do not cat or Read CLAUDE.md, RELAY.md or the whole NEXT_SESSION.md. Keep reasoning and output short.
 TURN CAP (B172, measured 2026-10-12): a session starts at ~65k tokens and every turn re-reads that. Finish the task or reach
 step 4 within 15 tool turns; use `| tail -20` / `--quiet`, no `ls`/`head` probes. Past 15 turns: commit, ship,
 `handoff --go` with the remainder in the task line.

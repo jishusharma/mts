@@ -1,4 +1,4 @@
-# B194 - task-mode gate block silently never ran; three sends, no receipt and no refusal
+# B195 - task-mode gate block silently never ran; three sends, no receipt and no refusal
 
 Opened 2026-10-21 | Status OPEN | Severity HIGH | FIXER: Claude (Sonnet lane) | LOGGER: DSA
 Source: DSA chat MTS-2026-10-20-1818Z-DSA-BLD on JIS-NB, worktree mts-dsa-jis-nb-1020-1822.

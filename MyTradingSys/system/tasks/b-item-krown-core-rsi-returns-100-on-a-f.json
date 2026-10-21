@@ -1,38 +1,82 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "class": "C0",
+  "closed": "2026-10-20T22:37:44Z",
   "commands": [],
   "created": "2026-10-19T23:03:46Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
-  "formula_id": "",
-  "formula_ids": [],
+  "done_when": "test_flat_window_returns_50 passes in test_krown_core.py; rsi_core.py:10 and live_bb_top_reversal.py:14 docstrings reworded; all tests green.",
+  "est_turns": 5,
+  "formula_id": "s1",
+  "formula_ids": [
+    "s1",
+    "s22"
+  ],
   "from_inbox": "",
-  "goal": "Engine bug found by indicator-values-multi-model-audit (hand-confirmed): MyTradingSys/backtest/layers/krown/krown_core.py:300-301 val() returns 100.0 whenever avg_loss == 0, so a flat window (all deltas 0, avg_gain == 0) gives RSI 100; FORMULAS.md s1 step 4 (DELIBERATE DEVIATION 2026-09-28) says 50 for flat, and rsi_core.py gives 50. Hand: closes [5]*15, period 14 -> avg_gain 0, avg_loss 0 -> 50. Reachable only on a perfectly flat window (negligible on daily BTC). Fix: avg_gain > 0 -> 100 else 50, add a flat-window test that fails first. Also doc-only: rsi_core.py:10 says the seed is the 'mean of the positive/negative deltas', which reads like the divide-by-count bug named in FORMULAS s1 (the code correctly divides by period): reword; live_bb_top_reversal.py:14 says 'FORMULAS.md has no BB section' but s22 exists: reword.",
+  "goal": "Fix val() in krown_core.py:300-301 to return 50.0 for flat window (avg_loss==0 and avg_gain==0) per FORMULAS s1 step 4, with fail-first test in test_krown_core.py; reword seed phrasing in rsi_core.py:10; update live_bb_top_reversal.py:14 to cite FORMULAS.md section 22.",
   "id": "b-item-krown-core-rsi-returns-100-on-a-f",
   "lane": "HAIKU",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Fixed flat-window RSI returning 100 to 50 in krown_core.py:300-301 per FORMULAS s1 step 4,",
+      "ref": "b2c4fcb8",
+      "utc": "2026-10-20T22:37:44Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Krown layer v0 detectors: core, events, params, tests, FORMULAS section",
+      "ref": "a9e179c7e27a",
+      "utc": "2026-10-17T11:24:08Z"
+    }
+  ],
   "layers": [
     "krown"
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "Filed by indicator-audit-1020 (MTS_Doctor). Raw: refine scope_in/steps/done_when/tests before a worker takes it.",
+  "note": "REVIEWED:2026-10-21 T0-ONLY - refined by gemini-flash (class=C0 weight=ROUTINE); T0 mechanical checks passed.",
   "prio": 4,
-  "refine_tries": 0,
-  "refined_by": "",
+  "refine_tries": 1,
+  "refined_by": "gemini-flash",
+  "refreshed": "2026-10-20T22:37:23Z",
   "refs": [
-    "MyTradingSys/research/indicator_audit_2026-10-14/AUDIT.md"
+    "MyTradingSys/research/indicator_audit_2026-10-14/AUDIT.md",
+    "MyTradingSys/backtest/layers/FORMULAS.md"
   ],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "result": "Fixed flat-window RSI returning 100 to 50 in krown_core.py:300-301 per FORMULAS s1 step 4, fail-first test_flat_window_returns_50 passes in test_krown_core.py; docstrings reworded in rsi_core.py and live_bb_top_reversal.py; 35/35 krown tests, 9/9 bb tests, 134/134 rsi tests pass.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/backtest/layers/krown/krown_core.py",
+    "MyTradingSys/backtest/layers/krown/test_krown_core.py",
+    "MyTradingSys/backtest/layers/rsi/rsi_core.py",
+    "MyTradingSys/backtest/layers/alerts/live_bb_top_reversal.py"
+  ],
+  "scope_out": [
+    "live tree",
+    ".secrets",
+    "backtest engine"
+  ],
+  "scope_sha": "a9e179c7e27a",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "done",
+  "steps": [
+    "Add flat-window fail-first test to test_krown_core.py",
+    "Fix val() in krown_core.py to return 50.0 when al==0 and ag==0 per FORMULAS s1 step 4",
+    "Reword seed phrasing in rsi_core.py docstring",
+    "Update live_bb_top_reversal.py docstring to cite FORMULAS.md section 22"
+  ],
+  "taken": "2026-10-20T22:37:31Z",
+  "tests": "python -m pytest MyTradingSys/backtest/layers/krown/test_krown_core.py -k test_flat_window_returns_50",
   "title": "B-item: krown_core.rsi returns 100 on a flat window (FORMULAS s1 step 4 says 50) + two stale docstrings",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

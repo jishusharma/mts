@@ -83,7 +83,7 @@ Generic high-view YouTube tutorials present severe flaws when applied to Bitcoin
 
 ### 3. Algorithmic Evaluation of YouTube Profiles on Bitcoin
 
-Using our non-repainting geometric engine (`scripts/research/eval_btc_pitchfork_traders.py` and `pitchfork_detector.py`), we evaluated each profile against historical Bitcoin cycle swings (2017 to 2026):
+Using our non-repainting geometric engine (`MyTradingSys/research/pitchfork_2026-10-19/eval_btc_pitchfork_traders.py` and `pitchfork_detector.py`), we evaluated each profile against historical Bitcoin cycle swings (2017 to 2026):
 
 ```
 +-----------------------------------+--------------+---------------+-------------------+------------------+------------------+

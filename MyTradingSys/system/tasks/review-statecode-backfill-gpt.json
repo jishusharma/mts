@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-20T18:54:20Z",
   "commands": [
     "git show e4bcc09f --stat",
     "mvn -q test -Dtest=StateCodeEmitterTest,MarketDataSnapshotTest"
@@ -18,6 +19,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "BLOCK: 2 HIGH reproduced defects, 1 MED coverage gap; 50 Java tests pass; report 2026-10-2",
+      "ref": "68d7be45",
+      "utc": "2026-10-20T18:54:20Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -44,7 +51,12 @@
   "refined_by": "",
   "refreshed": "2026-10-19T21:38:54Z",
   "refs": [],
-  "result": "",
+  "result": "BLOCK: 2 HIGH reproduced defects, 1 MED coverage gap; 50 Java tests pass; report 2026-10-20_review-statecode-backfill-gpt.md; 3 JIS-NB follow-up cards",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "src/main/java/datafeed/StateCodeEmitter.java",
     "src/main/java/datafeed/MarketDataSnapshot.java",
@@ -63,13 +75,14 @@
   "scope_sha": "e4bcc09fd3a3",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read card_specs/state-code-accumulator-backfill.md (the contract), the audit, then git show e4bcc09f for StateCodeEmitter.java, MarketDataSnapshot.java and both tests. Judge the code against the contract, not the builder's comments.",
     "Scenarios, one row each: (1) restart mid-session with stale restored sums; (2) WS reconnect gap, seam M vs connect time, no double count or hole; (3) kline HTTP error/timeout/short list/bad row leaves INVALID and retries; (4) UTC day rollover while valid and while INVALID, incl. day_rolled_during_backfill.",
     "(5) The 1-2 min INVALID window after a reconnect: state is emitted as INVALID, so start-trading-day.ps1 ADVERSE FLOW (state -match ^L / ^S) is suppressed; is that fail-closed enough, and can any other reader (live_mirror, check_live_health, regime) misread state INVALID? (6) Races under BUFFER_LOCK, backfill thread vs WS thread; cvd ring reset. (7) vwap_anchor_utc never later than as_of.",
     "Write the report to MyTradingSys/research/layer_lab/reports/<UTC date>_review-statecode-backfill-gpt.md; for each HIGH/MED defect file a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane JIS-NB. Never deploy, stop or restart anything."
   ],
+  "taken": "2026-10-20T18:54:20Z",
   "tests": "None to write. The reviewer runs mvn -q test -Dtest=StateCodeEmitterTest,MarketDataSnapshotTest and quotes the result; a scenario with no covering test is a finding.",
   "title": "GPT high cross-vendor code review of e4bcc09f: StateCodeEmitter kline backfill, fail-closed INVALID state, vwap_anchor_utc",
   "weight": "CRUCIAL",

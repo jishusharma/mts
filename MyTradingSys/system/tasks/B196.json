@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
-  "created": "2026-10-20T19:09:20Z",
+  "created": "2026-10-20T23:41:17Z",
   "depends_on": [],
   "done_when": "",
   "est_turns": null,
@@ -10,7 +10,7 @@
   "formula_ids": [],
   "from_inbox": "",
   "goal": "",
-  "id": "B194",
+  "id": "B196",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
@@ -20,7 +20,7 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [
-    "B194"
+    "B196"
   ],
   "result": "",
   "scope_in": [],
@@ -30,7 +30,7 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "B194 task-mode gate block silently never ran; no receipt, no refusal on three sends",
+  "title": "B196 AIBridge auto-OFF on operator draft",
   "weight": "",
   "worker": ""
 }

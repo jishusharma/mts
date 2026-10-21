@@ -1,4 +1,4 @@
-# B195 - AIBridge hands-free auto-OFF triggers on operator input draft, blocking all subsequent runs silently
+# B196 - AIBridge hands-free auto-OFF triggers on operator input draft, blocking all subsequent runs silently
 
 Opened 2026-10-21 | Status OPEN | Severity HIGH | FIXER: Claude (Sonnet lane) | LOGGER: DSA
 Source: DSA chat MTS-2026-10-20-1818Z-DSA-BLD on JIS-NB, worktree mts-dsa-jis-nb-1020-1822.

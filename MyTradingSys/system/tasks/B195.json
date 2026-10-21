@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
-  "created": "2026-10-20T23:41:17Z",
+  "created": "2026-10-20T19:09:20Z",
   "depends_on": [],
   "done_when": "",
   "est_turns": null,
@@ -30,7 +30,7 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "B195 AIBridge auto-OFF on operator draft",
+  "title": "B195 task-mode gate block silently never ran; no receipt, no refusal on three sends",
   "weight": "",
   "worker": ""
 }

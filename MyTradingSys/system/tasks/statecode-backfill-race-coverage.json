@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "mvn -q test -Dtest=StateCodeEmitterTest,MarketDataSnapshotTest"
+  ],
+  "created": "2026-10-20T18:53:14Z",
+  "depends_on": [],
+  "done_when": "Each rejection remains INVALID and retries the current connection/day; scheduled recovery succeeds and first recovered CVD slope is null.",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Prove in-flight fetch rejection and automatic retry scheduling with deterministic tests.",
+  "id": "statecode-backfill-race-coverage",
+  "lane": "JIS-NB",
+  "layers": [
+    "live_engine"
+  ],
+  "live_path": true,
+  "mutation_check": "",
+  "note": "Raw follow-up from GPT review; requires owning-lane refinement and review, no deploy authorization.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "src/main/java/datafeed/StateCodeEmitter.java",
+    "src/test/java/datafeed/StateCodeEmitterTest.java"
+  ],
+  "scope_out": [
+    "deploys, process restarts, HALT files, live tree",
+    "unrelated strategy logic"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-20_review-statecode-backfill-gpt.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "Read the GPT review report and reproduce the cited scenario.",
+    "Change clock across UTC midnight during fetch; reconnect during fetch; fail a scheduled attempt then recover; close/reopen without intermediate emit and assert cvd ring restarts.",
+    "Run the focused Maven tests, required live-path gates, and obtain a fresh independent review before deployment."
+  ],
+  "tests": "Change clock across UTC midnight during fetch; reconnect during fetch; fail a scheduled attempt then recover; close/reopen without intermediate emit and assert cvd ring restarts.",
+  "title": "StateCodeEmitter: cover in-flight rollover reconnect and retry scheduling",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-18T18:06:44Z",
   "commands": [],
   "created": "2026-10-18T09:58:55Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "trim-builder-cwd-and-prelaunch-worktree",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/nuc_wake.py:53",
+      "ref": "9a0489e3",
+      "utc": "2026-10-18T18:06:44Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,7 @@
   "refs": [
     "B183"
   ],
-  "result": "",
+  "result": "scripts/dev/nuc_wake.py:53",
   "scope_in": [
     "scripts/sched/relay.py",
     "scripts/dev/sync.py"
@@ -44,11 +51,12 @@
   "scope_sha": "ad26324bc6ec",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Update coordinator/relay launch scripts to spawn builder workers directly in the target worktree path instead of parent root.",
     "Verify builder workers begin task execution on turn 1 without directory exploration."
   ],
+  "taken": "2026-10-18T18:06:44Z",
   "tests": "scripts/dev/test_relay.py",
   "title": "trim-builder-cwd-and-prelaunch-worktree",
   "weight": "ROUTINE",

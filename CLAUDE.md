@@ -1,6 +1,6 @@
 # MTS - Claude Code sessions
 
-Already loaded: do not Read this again. Code mode only (DSA chat: `DSA_SESSION_PROMPT.md`; Codex: `AGENTS.md`).
+Already loaded (CLAUDE.md is already in context; do not cat or Read CLAUDE.md). Code mode only (DSA chat: `DSA_SESSION_PROMPT.md`; Codex: `AGENTS.md`).
 
 ## Boot (every turn re-reads the context)
 1. `python scripts/dev/sync.py start <slug>`: in a lane tree (mts-app/relay/dsa) it switches to branch <host>/<slug>; elsewhere it prints `WORKTREE: <path>` (work only there, never the live tree).

@@ -164,5 +164,6 @@ B158 | CLOSED  | B158_session_state_thesis_dead.md | thesis line removed from th
 B160 | CLOSED  | B160_engine_state_at_screenshot_time.md | shot.py engine replays the engine at the shot minute; landed 2026-10-10
 B185 | OPEN    | B185_silent_malformed_bugs_row.md | malformed BUGS.md row passes the parser silently; restore B141 + reject over-wide rows
 B186 | OPEN    | B186_write_discipline_stray_backup_and_dup_section.md | stray .bak + duplicate section passed all write checks; fix is one-line backup rule + post-write stray scan
-B194 | OPEN    | B194_task_mode_block_silent_drop.md | task-mode gate block silently never ran; no receipt, no refusal on three sends; ack and duplicate-rid fix
-B195 | OPEN    | B195_aibridge_auto_off_operator_draft.md | auto-OFF on operator draft blocks runs silently; ignore drafts, post a receipt on auto-off
+B194 | OPEN    | B194_gemini_dispatch_tagging.md | Claude dispatcher lacks explicit tagging/assignment for Gemini-tailored task cards in task queue
+B195 | OPEN    | B195_task_mode_block_silent_drop.md | task-mode gate block silently never ran; no receipt, no refusal on three sends; ack and duplicate-rid fix
+B196 | OPEN    | B196_aibridge_auto_off_operator_draft.md | auto-OFF on operator draft blocks runs silently; ignore drafts, post a receipt on auto-off

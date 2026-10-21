@@ -2,7 +2,7 @@
 
 Goal: a clean repo clone that syncs from `origin/fast-track`, works on committed data only, and ships with `sync.py ship`. State from DEVICES.md section 8: Lenovo 20L90025RT, Windows 11 Pro, Java 21, Maven 3.9.11, Python 3.14.7, Git 2.24.1 (too old, update), the old clone `C:\Users\e-ngineers\IdeaProjects\BinanceDataFeed` is on `master` and stale: do not reuse it.
 Hostname check first (never the username): PowerShell `$env:COMPUTERNAME` must print `DESKTOP-F7IU69N`. If it prints JIS-NB or JIS-NUC you are in an RDP window: stop.
-Rules: testnet only, never read `.secrets/` `.env` keys, no scheduled tasks, no live loop on this machine (DEVICES section 3), work in work trees only, never commit to master.
+Rules: testnet only, never read `.secrets/` `.env` keys, no scheduled tasks, no live loop on this machine until the cutover in LIVE_HOST_MOVE.md is run by its one owner (DEVICES section 3), work in work trees only, never commit to master.
 
 ## Operator steps (a Haiku guide session walks you through these)
 1. Update Git: `winget upgrade --id Git.Git` (or install from git-scm.com), then reopen PowerShell; `git --version` must be 2.40+.

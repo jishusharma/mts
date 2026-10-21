@@ -105,9 +105,9 @@ def test_live_repo_trial_ledger_built():
     with open(built_path, "r", encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
 
-    # The sum of rows across the 9 TRIAL_REGISTRY*.csv files is 1279
+    # Built ledger = sum of rows across every tracked TRIAL_REGISTRY*.csv (count grows as studies land)
     files = trial_ledger.find_registry_files(REPO)
-    assert len(files) == 9, f"Expected 9 registry files, found {len(files)}"
+    assert len(files) >= 9, f"Expected at least 9 registry files, found {len(files)}"
 
     expected_total = 0
     for f in files:
@@ -116,7 +116,7 @@ def test_live_repo_trial_ledger_built():
             next(r, None)
             expected_total += sum(1 for _ in r)
 
-    assert len(rows) == expected_total == 1279, (
+    assert len(rows) == expected_total >= 1279, (
         f"Built ledger has {len(rows)} rows, expected {expected_total}"
     )
 
