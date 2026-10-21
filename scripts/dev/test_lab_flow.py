@@ -310,7 +310,7 @@ def test_report_mutation_and_contract_drift_block_next_stage(repo):
 def test_flow_optimization_drops_arbitrary_share_caps_but_keeps_real_headroom():
     now = 100000
     rl = {"primary": {"used_percent": 10, "resets_at": 102000}, "secondary": {"used_percent": 10, "resets_at": 1000000}}
-    rows = [{"at": "1970-01-02T03:40:00Z", "model": "gpt-6-luna", "effort": "low", "window_pts": 1, "week_pts": 1}] * 10
+    rows = [{"at": "1970-01-02T03:40:00Z", "model": "gpt-6-luna", "effort": "low", "window_pts": 1, "week_pts": 1}] * R.LAB_RUNS_PER_WINDOW
     assert R.budget_hold("gpt-6.1-sol", "medium", rl, rows, now)[0]
     assert R.budget_hold("gpt-6.1-sol", "medium", rl, rows, now, optimization=True) == ("", 0)
     rl["primary"]["used_percent"] = 99
