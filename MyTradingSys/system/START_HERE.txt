@@ -153,15 +153,21 @@ HOW IT WORKS
         JIS-NUC: still open (desk row 20261019-050232).
 
 --------------------------------------------------------------
- THE ROLES (8)
+ THE ROLES   (full list: python scripts/dev/role_loader.py list)
 --------------------------------------------------------------
-  1985Artifacts_Guy  Sonnet   pages          needs jishusharma1985 login
-  Admin_Guy          Haiku 5.5 high  questions, decisions, backlog, faults
-  Eagle_Eyes         Sonnet   screenshots    full detail on JIS-NB
-  Lab_Guy            Sonnet   GPT/Gemini lab needs the NUC lab
-  MTS_Doctor         Sonnet   weekly audit   one a day
-  Pipeliner          Sonnet   routing+alloc  one at a time (lease)
-  Supervisor         Sonnet   super session  one per super session
-  Thinker            Opus     design partner one per topic
-  Inside the Supervisor (never call by hand): Session_Planner, Builder.
+  -- roster:begin (generated from roles/ROSTER.json by role_loader.py render; do not edit) --
+  You are Admin_Guy.          Haiku 5.5 high                questions, decisions on record, backlog intake, machine faults
+  You are Eagle_Eyes.         Sonnet                        chart screenshots read against live files, logged
+  You are Thinker.            Opus (Sonnet = LITE)          design partner: 2-3 options, cost, ROI, one recommendation
+  You are MTS_Doctor.         Sonnet                        weekly health and process audit, other-model checks
+  You are Pipeliner.          Sonnet                        routing and allocation: desk queue, idle logins and lanes
+                                paste: You are Pipeliner.  (or inside any top-level session: Start the Pipeliner.)
+  You are Supervisor.         Sonnet (Opus only when named) super session: dispatches role workers, verifies their banners
+                                paste: You are Supervisor. Login <A|B|C>. <your tasks>
+  You are Lab_Guy.            Sonnet                        quality owner of the Claude-to-lab flow (GPT/Codex, Gemini)
+  You are 1985Artifacts_Guy.  Sonnet                        owns every published page and its links; republishes
+  Inside the Supervisor (never by hand, never picked by fallback): Session_Planner, Builder.
+  Old names still work: q&a_helper, q&a helper, qa helper, q and a helper, network_admin_guy, network admin guy -> Admin_Guy; traffic_controller, traffic controller, traffic cop -> Pipeliner; artifacts_guy, artifacts guy -> 1985Artifacts_Guy.
+  No role line? The first prompt loads the best fit:  ROLE LOADED: <Name> (fallback: <why>) ...
+  -- roster:end --
 ==============================================================
