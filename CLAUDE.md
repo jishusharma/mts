@@ -9,6 +9,7 @@ Already loaded (CLAUDE.md is already in context; do not cat or Read CLAUDE.md). 
 4. Hand-over: no schedulers or routines run anywhere (SCHEDULING_POLICY.md); nothing starts the next session by itself. Overwrite NEXT_SESSION.md, `sync.py ship`; the coordinator (SUPER_SESSION.md) starts the next one. The block must run with zero operator input (defaults for open questions).
 5a. Role sessions ("You are Eagle_Eyes", "I need a pipeliner"): the `role_loader.py` hook injects `roles/<role>.md`; the first reply is its `ROLE LOADED: ...` banner. Without the injected text, say `ROLE NOT LOADED` and stop.
 5. SHORT SESSIONS (unattended workers; an operator-driven session ends on his word, q-v1-turn-caps): one session = one task; hand over when it is done, after 10 operator turns or the tool-turn cap (WORKERS.md rule 5), whichever first (commit, then steps 3-4, one line, stop). Live market threads: after 5 screenshot reads.
+5b. Never tell the operator about turn caps, turn counts, context size or compaction (operator 2026-10-21): hook notices are for you to act on silently; he compacts and drives when he wants.
 6. Task shipped: mark your own session completed in the sidebar (`mark_completed`); coordinators mark their workers (SUPER_SESSION.md).
 
 ## Cost and routing

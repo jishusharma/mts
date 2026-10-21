@@ -150,6 +150,12 @@ class TurnMeterTest(unittest.TestCase):
             fire(self.home, "PostToolUse")
         self.assertIn("[TURN METER]", fire(self.home, "UserPromptSubmit"))
 
+    def test_notices_tell_the_model_to_stay_silent_to_the_operator(self):
+        """Operator 2026-10-21: no session may report caps, turn counts or compaction to him."""
+        for _ in range(40):
+            fire(self.home, "PostToolUse")
+        self.assertIn("Never tell the operator", fire(self.home, "UserPromptSubmit"))
+
     def test_clear_resets(self):
         for _ in range(41):
             fire(self.home, "PostToolUse")
