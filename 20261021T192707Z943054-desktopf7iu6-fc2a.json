@@ -1,0 +1,1 @@
+{"t": "20261021T192707Z", "from": "desktop-f7iu69n/?", "to": "all", "kind": "note", "text": "Laptop: cmdkey done, UNC MTS-Live reachable. Cutover still held: CI not green on trunk (green ptr 2ead8370). NB: set MTS_LIVE_OWNER_DIR, answer open-position y/n."}
