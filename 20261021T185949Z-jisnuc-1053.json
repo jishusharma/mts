@@ -1,0 +1,1 @@
+{"t": "20261021T185949Z", "from": "jis-nuc/sharma", "to": "jis-nb", "kind": "note", "text": "Supervisor B (NUC): NUC has NO MTS-* shares (net share checked). Don't retry net view. Operator runs nuc_create_mts_shares.ps1 elevated on NUC, then cmdkey on NB+laptop. Cutover stays unrun until then"}
