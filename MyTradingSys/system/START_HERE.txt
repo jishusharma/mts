@@ -1,5 +1,5 @@
 ==============================================================
- MTS - START HERE   (2026-10-19)   paste a line, get a role
+ MTS CHEAT SHEET - START HERE   (2026-10-21)   paste a line, get a role
 ==============================================================
 
 HOW IT WORKS
@@ -8,6 +8,9 @@ HOW IT WORKS
   No banner / "ROLE NOT LOADED"  ->  close that session, open a new one.
   Every role starts on ANY device and ANY login (only the notes differ).
   Nothing starts by itself: you (or the Supervisor) start every session.
+  Forgot the role line? The first prompt loads the best fit and says
+  why:  ROLE LOADED: <Name> (fallback: <why>) ...   Wrong one? Paste
+  the right "You are <Role>." line. A tie: it asks you once.
 
 --------------------------------------------------------------
  WHAT DO I DO TODAY?
@@ -126,6 +129,45 @@ HOW IT WORKS
                               (it triages; fixes go to a Builder card)
 
 --------------------------------------------------------------
+ COMMANDS  (python scripts/dev/<script> ...; any checkout)
+--------------------------------------------------------------
+  ROLES
+    role_loader.py list               every role, file, start, model
+    role_loader.py pick --text "..."  which role fits this task, why
+    role_loader.py banner <Role>      the banner a session must show
+  STATE OF PLAY
+    make_status.py                    rebuild research/STATUS.md
+    tasks.py next | list | status     what to work on, the queue
+    traffic.py budget                 SPEND / NORMAL / THROTTLE
+    live_mirror.py brief              live state off JIS-NB (mirror@)
+    operator_questions.py list --limit 0   your open questions
+  WORK (every session does this, you rarely need to)
+    sync.py start <slug>              own worktree, up to date
+    sync.py claim "<task>"            say what you work on
+    sync.py ship --release <slug>     tests, push to fast-track
+    sync.py where | claims | health   clean tree? who holds what?
+    sync.py release <slug>            drop a stale claim
+  TALK BETWEEN MACHINES / LOGINS
+    mts_signal.py send "<one line>"   note to every session
+    mts_signal.py read                read the notes
+    desk.py post ... --target DSA     run-and-report job to DeepSeek
+    tasks.py new                      new backlog card (raw)
+  CHECKS
+    run_all_tests.py --quick          fast suite (no Maven/backtest)
+    mts_doctor.py                     health + process audit
+    git cherry origin/fast-track HEAD empty = really shipped
+
+--------------------------------------------------------------
+ GOLDEN RULES
+--------------------------------------------------------------
+  Testnet only (Deribit test). No mainnet orders or accounts.
+  Repo is PUBLIC: no runtime, order or account data in commits.
+  Live tree (JIS-NB) changes only by a deploy, never by a session.
+  No schedulers or routines on any device.
+  Numbers: SOURCED (trader's quote) or OURS (tuned) - never mix.
+  Fee-net out-of-sample results decide what trades, not doctrine.
+
+--------------------------------------------------------------
  BUDGET - is it SPEND?
 --------------------------------------------------------------
   Each login has its own pool, readable only from inside a session
@@ -153,15 +195,21 @@ HOW IT WORKS
         JIS-NUC: still open (desk row 20261019-050232).
 
 --------------------------------------------------------------
- THE ROLES (8)
+ THE ROLES   (full list: python scripts/dev/role_loader.py list)
 --------------------------------------------------------------
-  1985Artifacts_Guy  Sonnet   pages          needs jishusharma1985 login
-  Admin_Guy          Haiku 5.5 high  questions, decisions, backlog, faults
-  Eagle_Eyes         Sonnet   screenshots    full detail on JIS-NB
-  Lab_Guy            Sonnet   GPT/Gemini lab needs the NUC lab
-  MTS_Doctor         Sonnet   weekly audit   one a day
-  Pipeliner          Sonnet   routing+alloc  one at a time (lease)
-  Supervisor         Sonnet   super session  one per super session
-  Thinker            Opus     design partner one per topic
-  Inside the Supervisor (never call by hand): Session_Planner, Builder.
+  -- roster:begin (generated from roles/ROSTER.json by role_loader.py render; do not edit) --
+  You are Admin_Guy.          Haiku 5.5 high                questions, decisions on record, backlog intake, machine faults
+  You are Eagle_Eyes.         Sonnet                        chart screenshots read against live files, logged
+  You are Thinker.            Opus (Sonnet = LITE)          design partner: 2-3 options, cost, ROI, one recommendation
+  You are MTS_Doctor.         Sonnet                        weekly health and process audit, other-model checks
+  You are Pipeliner.          Sonnet                        routing and allocation: desk queue, idle logins and lanes
+                                paste: You are Pipeliner.  (or inside any top-level session: Start the Pipeliner.)
+  You are Supervisor.         Sonnet (Opus only when named) super session: dispatches role workers, verifies their banners
+                                paste: You are Supervisor. Login <A|B|C>. <your tasks>
+  You are Lab_Guy.            Sonnet                        quality owner of the Claude-to-lab flow (GPT/Codex, Gemini)
+  You are 1985Artifacts_Guy.  Sonnet                        owns every published page and its links; republishes
+  Inside the Supervisor (never by hand, never picked by fallback): Session_Planner, Builder.
+  Old names still work: q&a_helper, q&a helper, qa helper, q and a helper, network_admin_guy, network admin guy -> Admin_Guy; traffic_controller, traffic controller, traffic cop -> Pipeliner; artifacts_guy, artifacts guy -> 1985Artifacts_Guy.
+  No role line? The first prompt loads the best fit:  ROLE LOADED: <Name> (fallback: <why>) ...
+  -- roster:end --
 ==============================================================

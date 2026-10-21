@@ -355,6 +355,28 @@ class DefaultRootTest(unittest.TestCase):
         shutil.rmtree(self.local)  # publish creates the version folder; the marker alone decides
         self.assertEqual(lm.default_root(self.marked), str(self.local))
 
+    def test_live_host_file_moves_the_share_and_local_folder_rule(self):
+        """After the cutover (live_host.txt = DESKTOP-F7IU69N) the share is on the laptop, only the laptop reads its folder, JIS-NB uses the share."""
+        f = Path(self.tmp) / "live_host.txt"
+        f.write_text("desktop-f7iu69n\n")
+        with mock.patch.object(lm, "LIVE_HOST_FILE", f):
+            self.assertEqual(lm.read_live_host(), "DESKTOP-F7IU69N")
+            host = lm.read_live_host()
+        share = "\\\\" + host + "\\MTS-Mirror"
+        with mock.patch.object(lm, "LIVE_HOST", host), mock.patch.object(lm, "DEFAULT_ROOT", share):
+            self.host("DESKTOP-F7IU69N")
+            self.assertEqual(lm.default_root(self.work), str(self.local))
+            self.host("JIS-NB")
+            self.assertEqual(lm.default_root(self.work), share)
+
+    def test_live_host_file_missing_or_empty_means_jis_nb(self):
+        f = Path(self.tmp) / "nope.txt"
+        with mock.patch.object(lm, "LIVE_HOST_FILE", f):
+            self.assertEqual(lm.read_live_host(), "JIS-NB")
+        f.write_text("  \n")
+        with mock.patch.object(lm, "LIVE_HOST_FILE", f):
+            self.assertEqual(lm.read_live_host(), "JIS-NB")
+
     def test_main_pull_in_worktree_on_jis_nb_reads_local_folder(self):
         self.host("JIS-NB")
         live = make_live(self.tmp)
