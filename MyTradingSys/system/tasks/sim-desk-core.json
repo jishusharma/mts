@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-21T01:03:17Z",
+  "depends_on": [],
+  "done_when": "python MyTradingSys/research/sim_desk/desk.py serves a page where the frozen setup E1 S2 K5 X0_2R shows n 772, mean net -0.039 R and verdict NOT ENOUGH DATA; a free-form stop value runs and appends exactly one TRIALS.md row; an end date after 2024-06-30 is refused (test); tests in test_desk.py fail on old code and pass.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Build the local one-screen simulator desk per MyTradingSys/research/sim_desk/DESIGN.md: settings, Run (stored lookup or real re-run), plain verdict, date lock, one ledger row per real run, levels study as pluggable module 1.",
+  "id": "sim-desk-core",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Operator 2026-10-21: wants hit-and-try free-form values and room for more layers; plain words, one screen, nothing cluttered. Design = Opus proposal of the 3-model comparison. Report to him as done / not done / next steps only.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/levels_confluence_2026-10-14/ladder_run.py",
+    "MyTradingSys/research/levels_confluence_2026-10-14/ladder_dev.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/"
+  ],
+  "scope_out": [
+    "ladder.py and ladder_run.py are imported unchanged; no VALIDATION or HOLDOUT access; no committed price data; no new gates or rule docs; no other studies"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "Write test_desk.py first (verdict on frozen_rule.json numbers, date lock, one ledger row per run) and see it fail",
+    "Implement verdict + stored-lookup path + label table",
+    "Implement real re-run path with settings-hash cache and progress line",
+    "Serve the single HTML page with desk.py; hand-check the frozen setup on screen"
+  ],
+  "tests": "MyTradingSys/research/sim_desk/test_desk.py: frozen setup gives n 772, mean -0.039 R, verdict NOT ENOUGH DATA; an end date after 2024-06-30 is refused; a Run appends exactly one TRIALS.md row and a cached repeat none. Fails before desk.py exists.",
+  "title": "Simulator desk v1: one local page, free-form settings, Run, plain verdict (levels study first, layer-pluggable)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
