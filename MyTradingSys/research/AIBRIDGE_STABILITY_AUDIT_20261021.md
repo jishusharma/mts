@@ -42,3 +42,11 @@ TASK mts-ship reported "TASK RESULT: PASS" while the gate step inside it explici
 Automation pretends things are green when they are red.
 ### Fix Needed
 Task runner must fail if the gate fails. (This is an MTS tool bug, not the bridge, but breaks stability).
+
+## 6. Stale Block Execution
+### Observation
+The extension ran a block from a previous turn instead of the current one. A turn was sent with block 1 (git branch -r) and block 2 (git add + commit). The extension ran block 1, then fetched and ran block 2 from the *previous* turn (a dsa.py put). The intended commit was silently skipped.
+### Impact
+Commands are executed out of order and from history. A destructive command could be re-run.
+### Fix Needed
+The extension must track the turn ID (or block hash) and refuse to execute any block that does not belong to the latest DSA message. If a block is stale, post a visible receipt "STALE_REPLY_DROPPED" and wait for the new block.
