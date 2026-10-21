@@ -199,6 +199,19 @@ class TurnMeterTest(unittest.TestCase):
         self.assertIn("block", fire(self.home, "UserPromptSubmit", sid="h", extra=f))   # tier now remembered
         self.assertIn("block", fire(self.home, "UserPromptSubmit", sid="h"))            # transcript unreadable: still blocked
 
+    def test_supervisor_has_context_cap_not_turn_cap(self):
+        """Operator 2026-10-21: a Supervisor runs for hours unattended; it is capped by context size (like Opus), not by turns."""
+        tp = self.home / "sup.jsonl"
+        write_transcript(tp, [("m0", ["t0"])])
+        sup = {"transcript_path": str(tp), "prompt": "You are Supervisor. Login A. 3 hours"}
+        fire(self.home, "SessionStart", sid="sup")
+        fire(self.home, "UserPromptSubmit", sid="sup", extra=sup)
+        for i in range(60):
+            out = fire(self.home, "PostToolUse", sid="sup", extra={"transcript_path": str(tp), "tool_use_id": f"u{i}", "message_id": f"x{i}"})
+            self.assertEqual(out, "")
+        for i in range(12):
+            self.assertEqual(fire(self.home, "UserPromptSubmit", sid="sup", extra={"transcript_path": str(tp), "prompt": "worker note"}), "")
+
     def test_resume_keeps_counts(self):
         for _ in range(40):
             fire(self.home, "PostToolUse")

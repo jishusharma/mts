@@ -158,6 +158,11 @@ def tier(model):
     return "fable" if "fable" in model else "opus" if "opus" in model else "default"
 
 
+def is_supervisor_start(payload):
+    """The coordinator start line ("You are Supervisor. Login <L>. ..."), SUPER_SESSION.md; sticky in the state file."""
+    return str(payload.get("prompt") or "").lstrip().lower().startswith("you are supervisor")
+
+
 def fable_block():
     return json.dumps({"decision": "block", "reason": f"[TURN METER] Fable sessions take {FABLE_MESSAGES} operator message "
                        "(hard rule, operator 2026-10-18; WORKERS.md). Start a new Fable session for the next message."})
@@ -181,6 +186,10 @@ def handle(payload):
         state["user"] = state.get("user", 0) + 1
         model, ctx = model_and_context(payload)
         kind = tier(model)
+        if is_supervisor_start(payload):
+            state["role"] = "supervisor"     # sticky: it runs unattended for hours; capped by context, not turns (operator 2026-10-21)
+        if state.get("role") == "supervisor" and kind == "default":
+            kind = "opus"
         if kind == "fable":
             state["tier"] = "fable"      # sticky: a later failed detection must not lift the hard block
         elif state.get("tier") == "fable" and not model:
@@ -217,6 +226,8 @@ def handle(payload):
         t = state["tool"]
         model, ctx = model_and_context(payload)
         kind = tier(model)
+        if state.get("role") == "supervisor" and kind == "default":
+            kind = "opus"
         if kind == "default" and ctx:
             tool_cap = min(tool_cap, max(5, READ_BUDGET // ctx))
         if kind == "fable":
