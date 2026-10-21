@@ -10,11 +10,12 @@ Run with zero operator input; defaults for open questions. Plan and checklists: 
 - CI: STATUS showed `CI green:` RED (oldest ungreen 22.7 h) and `gh` is missing on the laptop, so CI was not checked here; a host with `gh` checks the pinned `ci-<sha>` card first.
 - Do not add gates, lints or rule docs for this.
 
-## Simulator desk (sim-desk-core, sim-desk-charts) planned 2026-10-21 (hand-over, Thinker/Sonnet)
-Run with zero operator input; defaults for open questions. Operator wants ONE screen: set any values (free-form, hit and try), click Run, get a plain verdict and 6 tiny example-trade charts; room for more layers later. Design: `research/sim_desk/DESIGN.md` (Opus proposal chosen over Sonnet and Haiku: it found the results CSV holds only 24 S x K columns, so most settings need a real re-run of about 3 min).
-- Both cards exist but are state raw: `tasks.py check` says they need a Lab_Guy review stamp (roles/lab_guy.md). First task: run that pass on sim-desk-core and sim-desk-charts, then `tasks.py check` both. Do not stamp them yourself.
-- Then build sim-desk-core (tests first), then sim-desk-charts. Both lane SONNET, 15 turns each.
-- Report to the operator as done / not done / next steps; ask only on a real dependency. Plain words, no LC3/ladder/KEEP jargon.
+## Simulator desk v1 shipped 2026-10-21 (hand-over, Opus lead; JIS-NB)
+Run with zero operator input; defaults for open questions. Cards sim-desk-core and sim-desk-charts are done (Lab_Guy pass by Opus + Haiku re-derivation; no different-vendor lens: lab on the NUC). Start: `python MyTradingSys/research/sim_desk/desk.py`, open http://127.0.0.1:8765 (first Run builds a local data cache once, 77 s on JIS-NB; then ~7 s per Run). Needs the 1m bars at F:/MTS/data/tom_raw/klines (or env SIM_DESK_KLINES).
+- Result: frozen setup shows n 772, mean -0.039 R [-0.123, +0.048], worst losing streak 7, NOT ENOUGH DATA (power 31 %); 6 example charts; 22 tests in `research/sim_desk/` (red before the code). Design changes vs the Thinker: DESIGN.md "Lead review" (no 3 min re-run; any setting re-simulates in seconds).
+- Each new setting appends one TRIALS.md row in the tree it runs in: ship those rows (`sync.py ship`) after a desk session, or they are lost.
+- Next, only if the operator uses it and asks: (1) level-family on/off (needs next levels rebuilt per subset; exact, ~1 card); (2) study 2 = Fabio (`backtest/layers/fabio/fabio_of_model.py`, needs its order-flow bars on disk; check first); Tom needs the Java snapshot pipeline and does not fit a seconds-scale module. Default: no new cards until he has used v1.
+- Do not add gates or rule docs for this.
 
 ## LC3 ladder simulator (lc-ladder-dev) shipped 2026-10-21 (hand-over, Fable; data run on JIS-NB)
 Run with zero operator input; defaults for open questions. Card lc-ladder-dev is done; report `research/levels_confluence_2026-10-14/ladder_dev.md`, rule `frozen_rule.json`, 243 rows in `layer_lab/TRIALS.md`, 9 tests in `test_ladder.py` (red before the code existed).

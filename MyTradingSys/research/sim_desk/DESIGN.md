@@ -22,3 +22,10 @@ After a Run pick the 3 trades closest to the median winner and loser (rule shown
 
 ## Not now
 Other studies / a general layer builder UI, equity curves, multi-asset, live or testnet hookup, saved presets, auth, VALIDATION read button.
+
+## Lead review (Opus, 2026-10-21): what changed and why
+- Overruled "lookup when stored, else 3 min re-run": the stored CSV holds only fee-net R per trade (no gross, no fee), so the card's power rule cannot be computed from it, and it covers 24 of 80 setups. Instead the first Run builds a local idea cache once (every trade idea plus that day's 1m bars, months in parallel, gitignored `cache/`); after that every Run, stored grid or free-form, re-simulates all ideas in seconds. The CSV stays only as a test cross-check.
+- Overfitting brake, no new gate: the try number sits on the verdict bar itself ("try #N on this data; the best of many tries looks better than it is"), each new setting is one TRIALS.md row, a repeat is served from cache and adds none, and PASSED reads "on DEV only; needs its one validation run (not on this desk)".
+- Layer-pluggable is a module shape, nothing more today: Tom's backtest (`backtest/tom_bt.py`) needs the Java snapshot pipeline, not a seconds-scale module; Fabio (`backtest/layers/fabio/fabio_of_model.py`, order-flow bars) is the likely study 2. v1 promises only the levels study.
+- Free-form knobs v1: entry filter, scale-in, stop type, stop distance past the level (any %), exit (first level, ladder, or target at any R multiple), maker/taker fee (any %), date range inside DEV. Level-family subset left out (Haiku: next levels depend on the full set; exact only with a rebuild).
+- Verdict order = the study runner's: lower CI above 0 -> PASSED (DEV only); else power_mde.py power < 50 % -> NOT ENOUGH DATA; else +0.10 R excluded -> FAILED; else NOT ENOUGH DATA. Sample-sd rule shown as a footnote.

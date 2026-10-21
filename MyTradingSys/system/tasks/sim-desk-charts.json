@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-21T01:20:47Z",
   "commands": [],
   "created": "2026-10-21T01:03:24Z",
   "depends_on": [],
@@ -12,29 +13,52 @@
   "goal": "Add six example-trade SVG charts (3 median winners, 3 median losers) to the sim_desk page per DESIGN.md Charts section.",
   "id": "sim-desk-charts",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "6 SVGs per Run (3 median winners, 3 median losers), each under 10 KB, stop and exit equal ",
+      "ref": "abd54cdf2",
+      "utc": "2026-10-21T01:20:47Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim-desk: INPUTS.md for the Opus lead session",
+      "ref": "2c5e7f740ccc",
+      "utc": "2026-10-21T01:08:44Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Depends on sim-desk-core. Operator: light and precise, no clutter.",
+  "note": "Depends on sim-desk-core. Operator: light and precise, no clutter.\nREVIEWED: claude-opus-5-5 2026-10-21 class=C0 (Lab_Guy pass by the Opus lead: desk re-displays the frozen lc-ladder-dev result, feeds no layer or live path; E5 selection risk handled by one TRIALS.md row per new setting and the try number on the verdict bar; E7 verdict order copied from ladder_run.py; Haiku independent re-derivation from ladder_ideas_dev.csv: n 772, mean -0.0395 R, win share 13.5 %, worst losing streak 7 = frozen_rule.json. No different-vendor lens run: GPT/Gemini lab is on the NUC, not reachable from this session)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-21T01:19:56Z",
   "refs": [],
-  "result": "",
+  "result": "6 SVGs per Run (3 median winners, 3 median losers), each under 10 KB, stop and exit equal ladder.simulate() (test)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/sim_desk/"
   ],
   "scope_out": [
     "no equity curves, no tables, no equity animation, no image files, no charting library"
   ],
+  "scope_sha": "2c5e7f740ccc",
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "done",
   "steps": [
     "Write test_charts.py first (stop and exit on chart equal simulate() output; each SVG under 10 KB) and see it fail",
     "Implement trade picker and SVG renderer",
     "Wire into the page after Run; hand-check frozen setup"
   ],
+  "taken": "2026-10-21T01:20:47Z",
   "tests": "MyTradingSys/research/sim_desk/test_charts.py: 6 SVGs each under 10240 bytes; stop and exit prices on each chart equal simulate() output for that trade. Fails before the renderer exists.",
   "title": "Simulator desk: three winner and three loser example trades as tiny SVG charts",
   "weight": "IMPORTANT",

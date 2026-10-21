@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-21T01:20:44Z",
   "commands": [],
   "created": "2026-10-21T01:03:17Z",
   "depends_on": [],
@@ -9,37 +10,60 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Build the local one-screen simulator desk per MyTradingSys/research/sim_desk/DESIGN.md: settings, Run (stored lookup or real re-run), plain verdict, date lock, one ledger row per real run, levels study as pluggable module 1.",
+  "goal": "Build the local one-screen simulator desk per MyTradingSys/research/sim_desk/DESIGN.md (incl. Lead review): settings, Run (one-time idea cache, then seconds-scale re-simulation of any setting), plain verdict, date lock, one ledger row per new setting, levels study as pluggable module 1.",
   "id": "sim-desk-core",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "desk.py serves one local page; frozen E1 S2 K5 X0_2R shows n 772, mean -0.039 R [-0.123,+0",
+      "ref": "abd54cdf2",
+      "utc": "2026-10-21T01:20:44Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim-desk: INPUTS.md for the Opus lead session",
+      "ref": "2c5e7f740ccc",
+      "utc": "2026-10-21T01:08:44Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-10-21: wants hit-and-try free-form values and room for more layers; plain words, one screen, nothing cluttered. Design = Opus proposal of the 3-model comparison. Report to him as done / not done / next steps only.",
+  "note": "Operator 2026-10-21: wants hit-and-try free-form values and room for more layers; plain words, one screen, nothing cluttered. Design = Opus proposal of the 3-model comparison. Report to him as done / not done / next steps only.\nREVIEWED: claude-opus-5-5 2026-10-21 class=C0 (Lab_Guy pass by the Opus lead: desk re-displays the frozen lc-ladder-dev result, feeds no layer or live path; E5 selection risk handled by one TRIALS.md row per new setting and the try number on the verdict bar; E7 verdict order copied from ladder_run.py; Haiku independent re-derivation from ladder_ideas_dev.csv: n 772, mean -0.0395 R, win share 13.5 %, worst losing streak 7 = frozen_rule.json. No different-vendor lens run: GPT/Gemini lab is on the NUC, not reachable from this session)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-21T01:19:53Z",
   "refs": [
     "MyTradingSys/research/levels_confluence_2026-10-14/ladder_run.py",
     "MyTradingSys/research/levels_confluence_2026-10-14/ladder_dev.md"
   ],
-  "result": "",
+  "result": "desk.py serves one local page; frozen E1 S2 K5 X0_2R shows n 772, mean -0.039 R [-0.123,+0.048], NOT ENOUGH DATA (power 31%); free-form stop/target/fees re-run in ~7 s after a one-time 77 s cache; DEV lock + one TRIALS.md row per new setting tested",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/sim_desk/"
   ],
   "scope_out": [
     "ladder.py and ladder_run.py are imported unchanged; no VALIDATION or HOLDOUT access; no committed price data; no new gates or rule docs; no other studies"
   ],
+  "scope_sha": "2c5e7f740ccc",
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "done",
   "steps": [
-    "Write test_desk.py first (verdict on frozen_rule.json numbers, date lock, one ledger row per run) and see it fail",
-    "Implement verdict + stored-lookup path + label table",
-    "Implement real re-run path with settings-hash cache and progress line",
+    "Write test_desk.py first (verdict on frozen_rule.json numbers, date lock, one ledger row per new setting, free-form target equals grid at 2R) and see it fail",
+    "Implement study module (params, run, describe, labels) over ladder.simulate unchanged",
+    "Implement desk core: idea cache, results cache, stats, verdict, ledger, trial count",
     "Serve the single HTML page with desk.py; hand-check the frozen setup on screen"
   ],
-  "tests": "MyTradingSys/research/sim_desk/test_desk.py: frozen setup gives n 772, mean -0.039 R, verdict NOT ENOUGH DATA; an end date after 2024-06-30 is refused; a Run appends exactly one TRIALS.md row and a cached repeat none. Fails before desk.py exists.",
+  "taken": "2026-10-21T01:20:44Z",
+  "tests": "MyTradingSys/research/sim_desk/test_desk.py: frozen setup gives n 772, mean -0.039 R, verdict NOT ENOUGH DATA; dates outside DEV refused; a new setting appends exactly one TRIALS.md row and a cached repeat none; free-form target 2R equals grid X0_2R. Fails before desk.py exists.",
   "title": "Simulator desk v1: one local page, free-form settings, Run, plain verdict (levels study first, layer-pluggable)",
   "weight": "IMPORTANT",
   "worker": "session"
