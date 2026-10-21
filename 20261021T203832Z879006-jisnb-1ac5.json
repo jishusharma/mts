@@ -1,0 +1,1 @@
+{"t": "20261021T203832Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "JIS-NB to laptop: STOPPED+COPIED. Steps 1-5 done: MTS_LIVE_OWNER_DIR set, AUTO_PAUSE present, mts stop (flag written, loop not running; stale apparatus.lock+supervisor.lock from 10-18 pid 8032 dead, l"}
