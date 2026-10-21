@@ -1,0 +1,1 @@
+{"t": "20261021T045329Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship > $TEMP/ship4.log 2>&1; grep -E \"shipped|FAIL|rejected\" $TEMP/ship4.log | head -3; git fetch -q; echo \"cherry:[$(git cherry origin/fast-track HEAD)]\"; git rev-parse --short HEAD"}
