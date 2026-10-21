@@ -47,7 +47,7 @@ procedures (how to post a desk row, how the lab runs a card). Changes come from 
 | claude.ai login-side jobs (routines, pages owned by one login) | the machine where that login is signed in | desk row `--target JIS-NUC` or `JIS-NB` naming the login; the operator does Share steps | Sonnet | operator |
 | AI health, process audit | any | MTS_Doctor (by hand) | Sonnet | Haiku + fresh Sonnet agents |
 | Console-window, launcher, network faults | the host it happens on | Admin_Guy (Part C); card `Network:`; deploy by desk row `--target JIS-NB` | Sonnet | fail-first test |
-| Operator questions and decisions | any | Control Room Inbox -> Admin_Guy -> OPERATOR_DECISIONS.md | Haiku 5.5 high; judgement goes up as a Sonnet card | operator decides |
+| Operator questions and decisions | any | Control Room Inbox -> Admin_Guy -> OPERATOR_DECISIONS.md | Sonnet 5.5 medium; judgement goes up as a card | operator decides |
 
 Rules that apply to every row: work in the printed worktree, never the live tree; share only by `sync.py ship`; no scheduler or routine starts
 anything (SCHEDULING_POLICY.md); cheapest first (T0 script, DeepSeek, Haiku, Sonnet; Opus only when the operator names it or WORKERS.md rule 6);
