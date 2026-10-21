@@ -369,6 +369,31 @@ class DefaultRootTest(unittest.TestCase):
             self.host("JIS-NB")
             self.assertEqual(lm.default_root(self.work), share)
 
+    def test_env_root_overrides_default(self):
+        self.host("JIS-NUC")
+        os.environ["MTS_MIRROR_ROOT"] = "ELSEWHERE-ROOT"
+        self.assertEqual(lm.default_root(self.work), "ELSEWHERE-ROOT")
+        self.assertEqual(lm.default_root(self.marked), "ELSEWHERE-ROOT")
+
+    def test_host_holding_marker_uses_local_folder_whatever_its_name(self):
+        """Hostname DESKTOP-F7IU69N, live_host.txt still JIS-NB, .mts_live in the main checkout: work tree takes the local folder."""
+        self.host("DESKTOP-F7IU69N")
+        with mock.patch.object(lm, "holds_live_marker", return_value=True):
+            self.assertEqual(lm.default_root(self.work), str(self.local))
+        with mock.patch.object(lm, "holds_live_marker", return_value=False):
+            self.assertEqual(lm.default_root(self.work), lm.DEFAULT_ROOT)
+
+    def test_holds_live_marker_follows_git_common_dir(self):
+        main = Path(self.tmp) / "main"
+        main.mkdir()
+        subprocess.run(["git", "init", "-q", str(main)], check=True)
+        wt = Path(self.tmp) / "wt"
+        subprocess.run(["git", "-C", str(main), "-c", "user.email=a@b", "-c", "user.name=a", "commit", "-q", "--allow-empty", "-m", "x"], check=True)
+        subprocess.run(["git", "-C", str(main), "worktree", "add", "-q", str(wt)], check=True)
+        self.assertFalse(lm.holds_live_marker(wt))
+        (main / ".mts_live").write_text("x")
+        self.assertTrue(lm.holds_live_marker(wt))
+
     def test_live_host_file_missing_or_empty_means_jis_nb(self):
         f = Path(self.tmp) / "nope.txt"
         with mock.patch.object(lm, "LIVE_HOST_FILE", f):

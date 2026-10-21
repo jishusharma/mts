@@ -113,9 +113,32 @@ def is_live_tree(repo):
     return (Path(repo) / LIVE_MARKER).exists()
 
 
+def holds_live_marker(repo):
+    """True when this host holds the live tree: the tree itself, or the main checkout a work tree hangs off, has .mts_live."""
+    repo = Path(repo)
+    if is_live_tree(repo):
+        return True
+    try:
+        out = subprocess.run(["git", "-C", str(repo), "rev-parse", "--git-common-dir"], capture_output=True, text=True, timeout=10)
+        if out.returncode == 0 and out.stdout.strip():
+            common = Path(out.stdout.strip())
+            if not common.is_absolute():
+                common = repo / common
+            return is_live_tree(common.resolve().parent)
+    except (OSError, subprocess.SubprocessError):
+        pass
+    return False
+
+
 def default_root(repo):
-    """The live tree and every work tree on JIS-NB use the local folder; other machines go through the share."""
-    if is_live_tree(repo) or (socket.gethostname().upper() == LIVE_HOST and Path(LIVE_ROOT).is_dir()):
+    """MTS_MIRROR_ROOT wins. The live tree, any work tree beside it (host holds .mts_live) and, by name, the live host
+    (live_host.txt) use the local folder; other machines go through the share."""
+    env = os.environ.get("MTS_MIRROR_ROOT")
+    if env:
+        return env
+    if is_live_tree(repo):
+        return LIVE_ROOT
+    if Path(LIVE_ROOT).is_dir() and (socket.gethostname().upper() == LIVE_HOST or holds_live_marker(repo)):
         return LIVE_ROOT
     return DEFAULT_ROOT
 
