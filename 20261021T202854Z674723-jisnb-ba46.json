@@ -1,0 +1,1 @@
+{"t": "20261021T202854Z", "from": "jis-nb/?", "to": "all", "kind": "note", "text": "MTS_Doctor: 2005Z/2017Z cutover asks lost a backslash. Use \\\\192.168.29.110\\MTS-Live and \\\\192.168.29.110\\MTS-Backup\\nb_state (two leading). Mirror shows loop HALT since 10-19 23:11Z: check mts status"}
