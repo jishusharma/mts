@@ -132,5 +132,31 @@ class WiredToolVerbs(unittest.TestCase):
         self.assertIn("--horizon-h", branch("missed"))
 
 
+class AutoTraderPython(unittest.TestCase):
+    """host-move-mts-ps1-python-path (LIVE_HOST_MOVE.md s6): `mts auto` resolves python like the shell, fails closed."""
+
+    def test_no_hardcoded_user_python_path(self):
+        self.assertNotIn("pythoncore", MTS)
+        b = branch("auto")
+        self.assertTrue(b, "no switch branch for auto")
+        self.assertNotRegex(b, r"[A-Za-z]:[\\/]+Users")
+
+    def test_missing_python_refuses_with_message_and_nonzero_exit_before_launch(self):
+        b = branch("auto")
+        self.assertIn("Get-Command python.exe", b)
+        guard = re.search(r"if \(-not \$autoPy\) \{([^}]*)\}", b)
+        self.assertTrue(guard, "no missing-python guard")
+        self.assertIn("not started", guard.group(1))
+        self.assertIn("exit 1", guard.group(1))
+        self.assertLess(b.index("-not $autoPy"), b.index("Open-Window"))
+
+    def test_launch_uses_resolved_python_in_module_form(self):
+        self.assertIn("'$autoPy' -m MyTradingSys.execution.auto_trader", branch("auto"))
+
+    def test_restart_already_running_skips_launch(self):
+        b = branch("auto")
+        self.assertLess(b.index("already running"), b.index("Open-Window"))
+
+
 if __name__ == "__main__":
     unittest.main()
