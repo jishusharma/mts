@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/operator/cpu_cleanup.ps1 -Audit"
+  ],
+  "created": "2026-10-21T00:29:59Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/cpu_audit_jis-nb.md is shipped, lists the top 12 CPU processes and every non-Windows service/task found, and a desk post gives the operator the exact -Apply command for jis-nb.",
+  "from_inbox": "",
+  "goal": "Find what burns CPU on jis-nb (Defender, OEM helpers, telemetry, old-office agents) and hand the operator one admin command that applies the same cleanup done on JIS-NUC (B175).",
+  "id": "cpu-audit-jis-nb",
+  "lane": "JIS-NB",
+  "layers": [],
+  "live_path": false,
+  "note": "JIS-NB is the live host (HALT flags raised 2026-10-19): read-only audit only; the operator applies, in a quiet window, never restarting or stopping live processes. If scripts/operator/cpu_cleanup.ps1 is missing after sync.py start, take card ship-cpu-cleanup-scripts first.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/operator/cpu_cleanup.ps1 (run -Audit only; extend its lists if the audit shows new safe items)",
+    "scripts/operator/defender_exclusions.ps1 (read)",
+    "MyTradingSys/research/cpu_audit_jis-nb.md (new)"
+  ],
+  "scope_out": [
+    "any change to the live tree, live loop, HALT files or open trades",
+    "disabling services or tasks (that needs the operator in an admin shell)"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/items/B175_defender_msmpeng_cpu.md (2026-10-21 update)",
+    "scripts/operator/cpu_cleanup.ps1 header",
+    "NUC result: MsMpEng 0.45 -> 0-0.12 core under stress, 57 items disabled"
+  ],
+  "state": "ready",
+  "steps": [
+    "git pull via sync.py start; confirm scripts/operator/cpu_cleanup.ps1 and defender_exclusions.ps1 exist",
+    "Run the read-only audit (no admin needed) and keep the log",
+    "Copy the log to MyTradingSys/research/cpu_audit_<host>.md and write a short list: services/tasks safe to disable (same rules as the NUC list) and anything to keep",
+    "Post the admin commands to the operator with desk.py (-Apply, -Lenovo where the audit shows Lenovo/OEM helpers); do not run them",
+    "sync.py ship"
+  ],
+  "tests": [
+    "Fail-first: if a list is extended, a unit check that every name in the safe list is absent from the keep-list (Wi-Fi, Remote Desktop, Windows Update, Defender, MTS-*, AIBridge)"
+  ],
+  "title": "CPU audit and cleanup plan for JIS-NB (Lenovo, live host)"
+}

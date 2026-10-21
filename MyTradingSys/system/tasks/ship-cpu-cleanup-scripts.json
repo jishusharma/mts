@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "git -C C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed log --oneline origin/fast-track..HEAD",
+    "python scripts/dev/sync.py ship"
+  ],
+  "created": "2026-10-21T00:29:59Z",
+  "depends_on": [],
+  "done_when": "git ls-tree origin/fast-track lists scripts/operator/defender_exclusions.ps1, cpu_cleanup.ps1 and cpu_stress.py; sync.py ship exit 0.",
+  "from_inbox": "",
+  "goal": "Get the four local JIS-NUC commits (defender_exclusions.ps1, cpu_stress.py, cpu_cleanup.ps1, B175 note) onto fast-track so NB and the laptop can pull them.",
+  "id": "ship-cpu-cleanup-scripts",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "sync.py ship failed on the shared JIS-NUC tree because six other sessions' files were uncommitted; the commits exist only there.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/operator/defender_exclusions.ps1",
+    "scripts/operator/cpu_cleanup.ps1",
+    "scripts/operator/cpu_stress.py",
+    "MyTradingSys/items/B175_defender_msmpeng_cpu.md"
+  ],
+  "scope_out": [
+    "other sessions' uncommitted files (do not stash, clean or revert them)",
+    "any live-path file"
+  ],
+  "size": "S",
+  "sources": [
+    "B175 note 2026-10-21",
+    "commits 2ddb1aac and 3eb14968 plus the later -Audit/-Lenovo commit on JIS-NUC"
+  ],
+  "state": "ready",
+  "steps": [
+    "On JIS-NUC (E-ngineers clone) git log --oneline origin/fast-track..HEAD should show the four B175 commits",
+    "Ship from a clean tree or lane worktree: sync.py start ship-cpu-cleanup-scripts; cherry-pick those commits if the tree is dirty",
+    "sync.py ship; confirm the three files exist on origin/fast-track"
+  ],
+  "tests": [
+    "Fail-first: powershell parse check of both .ps1 files under Windows PowerShell 5.1 and pwsh 7 (0 errors); python -m py_compile scripts/operator/cpu_stress.py"
+  ],
+  "title": "Ship the Defender and CPU cleanup scripts (B175) to fast-track"
+}

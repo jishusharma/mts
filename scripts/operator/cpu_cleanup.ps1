@@ -16,7 +16,7 @@ param([switch]$Apply, [switch]$Aggressive, [switch]$Restore, [switch]$Lenovo, [s
 
 $ErrorActionPreference = 'Continue'
 $me = [Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()
-if (-not $me.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+if (-not $Audit -and -not $me.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {   # -Audit is read-only: no elevation, so a session can run it
     $a = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', "`"$PSCommandPath`"")
     if ($Apply) { $a += '-Apply' }
     if ($Aggressive) { $a += '-Aggressive' }
@@ -28,6 +28,7 @@ if (-not $me.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
 }
 
 $dir = 'F:\MTS\scratch\cpu_audit'
+if (-not (Test-Path 'F:')) { $dir = Join-Path $env:TEMP 'cpu_audit' }
 if (-not (Test-Path $dir)) { New-Item -ItemType Directory -Force $dir | Out-Null }
 try { Start-Transcript -Path (Join-Path $dir 'cpu_cleanup.log') -Force | Out-Null } catch { }
 
@@ -107,7 +108,6 @@ if ($Audit) {
     Get-Process | ForEach-Object { $p = $_; $x = $a | Where-Object I -eq $p.Id | Select-Object -First 1; if ($x -and $null -ne $x.C -and $null -ne $p.CPU) { [pscustomobject]@{ N = $p.Name; D = [math]::Round(($p.CPU - $x.C) / 20, 3) } } } |
         Group-Object N | ForEach-Object { [pscustomobject]@{ N = $_.Name; D = ($_.Group | Measure-Object D -Sum).Sum } } | Sort-Object D -Descending | Select-Object -First 12 | ForEach-Object { "{0,-30} {1}" -f $_.N, $_.D }
     try { Stop-Transcript | Out-Null } catch { }
-    Read-Host 'Press Enter to close' | Out-Null
     return
 }
 $list = @($safe); if ($Aggressive) { $list += $aggr }; if ($Lenovo) { $list += $lenovo }
