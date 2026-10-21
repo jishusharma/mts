@@ -1,12 +1,12 @@
 {
  "allowance": {
   "plan": "plus",
-  "week_resets": 1792874519,
-  "week_used": 40.0,
-  "window_resets": 1792441069,
-  "window_used": 0
+  "week_resets": 1793097878,
+  "week_used": 1.0,
+  "window_resets": 1792571285,
+  "window_used": 3.0
  },
- "at": "2026-10-19T15:18:51Z",
+ "at": "2026-10-21T04:40:52Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -19,10 +19,25 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 0.0,
-  "window_pts": 0.0,
-  "window_runs": 0
+  "window_pts": 1.0,
+  "window_runs": 1
  },
  "runs": [
+  {
+   "at": "2026-10-21T04:39:23Z",
+   "card": "lab-formula-spec-recount",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 82,
+   "tokens_out": 4474,
+   "tokens_total": 977086,
+   "tokens_uncached": 61252,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-10-19T15:17:30Z",
    "card": "lc-ladder-dev",
@@ -157,21 +172,6 @@
    "tokens_uncached": null,
    "week_pts": null,
    "window_pts": null
-  },
-  {
-   "at": "2026-10-17T20:48:18Z",
-   "card": "lab-formula-spec-text",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 132,
-   "tokens_out": 13054,
-   "tokens_total": 938362,
-   "tokens_uncached": 62716,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }
