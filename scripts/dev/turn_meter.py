@@ -29,6 +29,7 @@ USER_CAP = 10      # CLAUDE.md SHORT SESSIONS: 10 turns with the operator (was 5
 NAG_EVERY = 5      # after the cap, repeat every 5 tool turns (once is easy to ignore mid-step)
 READ_BUDGET = 4_000_000    # operator 2026-10-18: turns allowed = budget / context size (100k -> 40 turns, 250k -> 16, 500k -> 8); no compaction
 OPUS_CTX_CAP = 500_000     # Opus: long sessions are wanted; the only cap is the context size
+OPUS_FOLLOWUP_CTX = 150_000   # Opus (use and destroy, operator 2026-10-21): a job may grow to OPUS_CTX_CAP, but no new operator message above this
 FABLE_MESSAGES = 1         # Fable: one operator message per session, HARD (ignores MTS_TURN_METER=off and the cap env vars)
 PRUNE_DAYS = 7
 TAIL_START = 1 << 17   # transcript bytes read from the end to find a tool call's message (grows if big results push it out)
@@ -202,6 +203,11 @@ def handle(payload):
             save(path, state)
             return ""
         if kind == "opus":
+            if state["user"] > 1 and ctx >= OPUS_FOLLOWUP_CTX and state.get("role") != "supervisor":
+                state["user"] -= 1
+                save(path, state)
+                return json.dumps({"decision": "block", "reason": f"[TURN METER] Opus context is {ctx // 1000}k >= {OPUS_FOLLOWUP_CTX // 1000}k: "
+                                   "every turn would re-read it. Use and destroy: start a new session for the next message (operator 2026-10-21)."})
             if ctx >= OPUS_CTX_CAP:
                 out = message(state, tool_cap, user_cap, f"Opus context {ctx // 1000}k >= {OPUS_CTX_CAP // 1000}k cap")
         else:
