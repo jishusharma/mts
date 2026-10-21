@@ -1,0 +1,42 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-21T01:03:24Z",
+  "depends_on": [],
+  "done_when": "After a Run of the frozen setup the page shows 6 charts each under 10 KB, the stop and exit prices on each chart equal simulate() output for that trade (test), and the ladder_dev.md figures are unchanged.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Add six example-trade SVG charts (3 median winners, 3 median losers) to the sim_desk page per DESIGN.md Charts section.",
+  "id": "sim-desk-charts",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Depends on sim-desk-core. Operator: light and precise, no clutter.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/"
+  ],
+  "scope_out": [
+    "no equity curves, no tables, no equity animation, no image files, no charting library"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "Write test_charts.py first (stop and exit on chart equal simulate() output; each SVG under 10 KB) and see it fail",
+    "Implement trade picker and SVG renderer",
+    "Wire into the page after Run; hand-check frozen setup"
+  ],
+  "tests": "MyTradingSys/research/sim_desk/test_charts.py: 6 SVGs each under 10240 bytes; stop and exit prices on each chart equal simulate() output for that trade. Fails before the renderer exists.",
+  "title": "Simulator desk: three winner and three loser example trades as tiny SVG charts",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
