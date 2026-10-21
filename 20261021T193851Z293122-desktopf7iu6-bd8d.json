@@ -1,0 +1,1 @@
+{"t": "20261021T193851Z", "from": "desktop-f7iu69n/?", "to": "all", "kind": "note", "text": "Laptop to Supervisor B: last red run 43e7370e = CLAUDE.md 7241B>7168B cap only. Fixed in 59d64023 (on origin/fast-track) but GitHub has NO CI run for it. Why none? Can you trigger?"}
