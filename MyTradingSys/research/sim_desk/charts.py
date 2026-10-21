@@ -5,6 +5,8 @@ A study gives chart_trade(ref, q) -> {'bars', 'side', 'level', 'entries', 'stop'
 30 min before the first entry to 15 min after the last exit (5m, coarser when the trade is long), plus only the
 level, entries, stop, target and exit. Built on the fly, never written to disk.
 """
+import datetime as dt
+
 import numpy as np
 
 W, H, PAD_T, PAD_B = 300, 160, 6, 22
@@ -47,7 +49,7 @@ def svg(tr):
     t_last = max(t for t, *_ in tr['exits']) if tr['exits'] else t_first
     t0, t1 = t_first - 30 * 60000, t_last + 15 * 60000
     span, cs = _candles(tr['bars'], t0, t1)
-    prices = [x for c in cs for x in c[1:3]] + [tr['stop'], tr['level']] + ([tr['target']] if tr['target'] else [])
+    prices = [x for c in cs for x in c[1:3]] + [tr['stop'], tr['level']] + [p for _, p in tr['entries']] + ([tr['target']] if tr['target'] else [])
     lo, hi = min(prices), max(prices)
     pad = (hi - lo) * .04 or 1
     lo, hi = lo - pad, hi + pad
@@ -69,7 +71,8 @@ def svg(tr):
         top, bot = y(max(o, c)), y(min(o, c))
         (up if c >= o else dn).append(f'M{xc - cw * .35:.1f} {top:.1f}h{cw * .7:.1f}V{max(bot, top + .6):.1f}h{-cw * .7:.1f}Z')
     ex_px, ex_reason = tr['exits'][-1][1], tr['exits'][-1][2]
-    caption = f"{tr['net_r']:+.2f} R {'long' if tr['side'] > 0 else 'short'}, {REASON.get(ex_reason, ex_reason.lower())} ({span}m candles)"
+    when = dt.datetime.fromtimestamp(t_first / 1000, dt.timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
+    caption = f"{when}  {tr['net_r']:+.2f} R {'long' if tr['side'] > 0 else 'short'}, {REASON.get(ex_reason, ex_reason.lower())} ({span}m)"
     parts = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" '
              f'data-stop="{tr["stop"]!r}" data-exit="{ex_px!r}" data-target="{tr["target"]!r}" data-net="{tr["net_r"]:.4f}">',
              f'<path d="{"".join(wick)}" stroke="#8a8f98" stroke-width="1"/>',
@@ -80,6 +83,11 @@ def svg(tr):
                      f'<text x="{W - 2}" y="{y(p) - 2:.1f}" text-anchor="end" font-size="9" fill="{color}">{name}</text>')
 
     hline(tr['level'], '#6b7280', ' stroke-dasharray="3 3"', 'level')
+    fills = sorted({p for _, p in tr['entries'] if p != tr['level']})
+    for p in fills:
+        hline(p, '#2563eb', ' stroke-dasharray="1 2"', 'filled')
+    if fills:
+        parts[0] = parts[0].replace('<svg ', f'<svg data-fill="{fills[0]!r}" ', 1)
     hline(tr['stop'], '#c0392b', '', 'stop')
     if tr['target']:
         hline(tr['target'], '#1e8449', '', 'target')
@@ -97,7 +105,8 @@ def make(study, q, res):
     """Six chart dicts for one Run (fewer when there are not 3 winners / 3 losers)."""
     if not hasattr(study, 'chart_trade') or not len(res['net']):
         return []
-    wins, losses = pick(res['net'])
+    net = np.where(np.asarray(res.get('filled', np.ones(len(res['net']), bool)), bool), res['net'], 0.)   # no-fills never picked
+    wins, losses = pick(net)
     out = []
     for kind, idx in (('winner', wins), ('loser', losses)):
         for k in idx:

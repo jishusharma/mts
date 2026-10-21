@@ -10,11 +10,12 @@ Run with zero operator input; defaults for open questions. Plan and checklists: 
 - CI: STATUS showed `CI green:` RED (oldest ungreen 22.7 h) and `gh` is missing on the laptop, so CI was not checked here; a host with `gh` checks the pinned `ci-<sha>` card first.
 - Do not add gates, lints or rule docs for this.
 
-## Simulator desk v1 shipped 2026-10-21 (hand-over, Opus lead; JIS-NB)
-Run with zero operator input; defaults for open questions. Cards sim-desk-core and sim-desk-charts are done (Lab_Guy pass by Opus + Haiku re-derivation; no different-vendor lens: lab on the NUC). Start: `python MyTradingSys/research/sim_desk/desk.py`, open http://127.0.0.1:8765 (first Run builds a local data cache once, 77 s on JIS-NB; then ~7 s per Run). Needs the 1m bars at F:/MTS/data/tom_raw/klines (or env SIM_DESK_KLINES).
-- Result: frozen setup shows n 772, mean -0.039 R [-0.123, +0.048], worst losing streak 7, NOT ENOUGH DATA (power 31 %); 6 example charts; 22 tests in `research/sim_desk/` (red before the code). Design changes vs the Thinker: DESIGN.md "Lead review" (no 3 min re-run; any setting re-simulates in seconds).
-- Each new setting appends one TRIALS.md row in the tree it runs in: ship those rows (`sync.py ship`) after a desk session, or they are lost.
-- Next, only if the operator uses it and asks: (1) level-family on/off (needs next levels rebuilt per subset; exact, ~1 card); (2) study 2 = Fabio (`backtest/layers/fabio/fabio_of_model.py`, needs its order-flow bars on disk; check first); Tom needs the Java snapshot pipeline and does not fit a seconds-scale module. Default: no new cards until he has used v1.
+## Simulator desk fixes shipped 2026-10-21 (hand-over, Opus lead; Fable review C1-C3 + E)
+Run with zero operator input; defaults for open questions. Start: `python MyTradingSys/research/sim_desk/desk.py`, http://127.0.0.1:8765 (first Run builds a local cache once, ~77 s; then ~7 s per Run; needs the 1m bars at F:/MTS/data/tom_raw/klines).
+- Now: only filled trades count (screen shows "255 trades (517 ideas never filled)"); verdict from the spread of the real trades, the two-point power model is off the screen; every chart caption has date/time UTC, R, long/short and outcome, and the level the entry filled at is drawn; plain error messages; "already tried" is keyed on TRIALS.md rows, so another tree does not log the same setting twice; the target box greys out unless the exit is "chosen multiple"; labels "Which touches" / "How to enter". 26 tests (10 new, red before).
+- Frozen setup on screen: NOT ENOUGH DATA, 255 filled trades, -0.119 R per trade, 95 % range -0.369 to +0.148 R, worst losing streak 15. The review expected FAILED; on filled trades the spread is wide (sd 1.57 R, power for +0.10 R 17 %), so +0.10 R is not ruled out. FAILED in the review came from the 517 zero rows.
+- Levels strategy: PARKED (coordinator, operator pre-approved). No validation run; card lc-validation stays unrun. Reason: no positive fee-net edge on DEV in any of 240 variants, filled trades average -0.119 R.
+- Open from the review, only if the operator asks after using it: C4 (one no-fill and one day-end example when common), C5 (study 2 = Fabio, check its data first). The study's 240-variant ranking counted no-fills as 0 R trades; nobody should re-rank it (strategy parked).
 - Do not add gates or rule docs for this.
 
 ## LC3 ladder simulator (lc-ladder-dev) shipped 2026-10-21 (hand-over, Fable; data run on JIS-NB)

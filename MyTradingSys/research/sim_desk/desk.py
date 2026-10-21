@@ -55,41 +55,34 @@ def stats(res):
     """n, mean, day-bootstrap 95 % range, power: the study runner's own cell() and Boot (same seed, same days)."""
     import ladder_run as lr
     net = np.asarray(res['net'], float)
+    filled = np.asarray(res.get('filled', np.ones(net.size, bool)), bool)
+    nofill = int((~filled).sum())
+    net = net[filled]
     if net.size == 0:
-        return {'n': 0, 'streak': 0}
+        return {'n': 0, 'streak': 0, 'nofill': nofill}
     boot = lr.Boot(list(res['all_days']))
-    day_idx = np.array([boot.pos[int(d)] for d in res['day']])
-    order = np.argsort(res['touch_t'], kind='stable')
-    c = lr.cell(net, res['gross'], res['fees'], day_idx, order, boot, with_power=True)
+    day_idx = np.array([boot.pos[int(d)] for d in np.asarray(res['day'])[filled]])
+    order = np.argsort(np.asarray(res['touch_t'])[filled], kind='stable')
+    c = lr.cell(net, np.asarray(res['gross'])[filled], np.asarray(res['fees'])[filled], day_idx, order, boot, with_power=True)
     c['streak'] = worst_streak(net[order])
+    c['nofill'] = nofill
     return c
 
 
 def verdict(st):
-    """(word, reason). Rule order of the study runner; PASSED is always DEV only."""
+    """(word, reason) from the spread of the actual filled trades (Fable review C2; the two-point model is not used here)."""
     n = st.get('n', 0)
     if not n:
-        return 'NOT ENOUGH DATA', 'no trades with these settings'
+        return 'NOT ENOUGH DATA', 'no filled trades with these settings'
+    rng = f"95 % range of the average {st['lo']:+.3f} to {st['hi']:+.3f} R"
     if st['lo'] > 0:
-        return 'PASSED', ('the whole 95 % range of the average is above zero. On DEV only: it needs its one validation run, '
+        return 'PASSED', (f'the whole {rng} is above zero. On DEV only: it needs its one validation run, '
                           'which is not on this desk')
-    power = st.get('power_mde', {}).get('power', math.nan)
-    mde = st.get('power_mde', {}).get('mde_net_r', math.nan)
-    if not power >= .5:
-        why = f'{n} trades can only reliably show an edge of {mde:+.2f} R or more' if mde == mde else f'{n} trades are too few to judge'
-        return 'NOT ENOUGH DATA', f'{why} (chance to detect it {power:.0%}; the rule needs 50 %)' if power == power else why
     if st['hi'] < PLAUSIBLE_R and st.get('power_plausible', 0) >= .5:
-        return 'FAILED', f'even a small edge of +{PLAUSIBLE_R:.2f} R per trade is ruled out'
-    return 'NOT ENOUGH DATA', 'the range of the average is too wide to call either way'
-
-
-def footnote(st):
-    """The second rule (sample spread instead of the two-outcome model), one line."""
-    if not st.get('n') or 'power_plausible' not in st:
-        return ''
-    out = 'FAILED' if st['hi'] < PLAUSIBLE_R and st['power_plausible'] >= .5 else 'not FAILED'
-    return (f"By the spread of the actual trades it reads {out}: chance to see a +{PLAUSIBLE_R:.2f} R edge "
-            f"{st['power_plausible']:.0%}, upper end of the range {st['hi']:+.3f} R.")
+        return 'FAILED', f'even a small edge of +{PLAUSIBLE_R:.2f} R per trade is ruled out ({rng})'
+    mde = st.get('mde_sd')
+    small = f'; {n} trades can only rule out edges above about {mde:+.2f} R' if mde and mde == mde else ''
+    return 'NOT ENOUGH DATA', f'{rng}: too wide to call either way{small}'
 
 
 def _rows(path, tag):
@@ -102,16 +95,23 @@ def count_tries(trials_path, study):
     return len(_rows(trials_path, f'| sim-desk {study.ID} '))
 
 
+RESULT_VERSION = 2   # 2: results carry the per-idea filled flag
+
+
 def _key(study, q):
     code = getattr(study, '_code_hash', lambda: '')()
-    raw = json.dumps([study.ID, q, code], sort_keys=True, default=str)
+    raw = json.dumps([study.ID, q, code, RESULT_VERSION], sort_keys=True, default=str)
     return hashlib.sha256(raw.encode()).hexdigest()[:20]
 
 
+def _tag(study, q):
+    return f'| sim-desk {study.ID} {study.label(q)} |'
+
+
 def _append_row(trials_path, study, q, st, word):
-    res = (f"n {st['n']}, mean net R {st['mean']:+.3f} [{st['lo']:+.3f}, {st['hi']:+.3f}], worst losing streak {st['streak']}; {word}"
+    res = (f"filled n {st['n']} ({st.get('nofill', 0)} never filled), mean net R {st['mean']:+.3f} [{st['lo']:+.3f}, {st['hi']:+.3f}], worst losing streak {st['streak']}; {word}"
            if st.get('n') else f'n 0; {word}')
-    row = (f"| {dt.date.today():%Y-%m-%d} | sim-desk {study.ID} {study.label(q)} | {CMD} | DEV {q['start']}..{q['end']}; "
+    row = (f"| {dt.date.today():%Y-%m-%d} {_tag(study, q)} {CMD} | DEV {q['start']}..{q['end']}; "
            f"VALIDATION/HOLDOUT never offered | {res} |")
     p = Path(trials_path)
     text = p.read_text(encoding='utf-8') if p.exists() else ''
@@ -135,13 +135,14 @@ def run_setting(study, p, trials_path=TRIALS, cache_dir=CACHE, progress=print, c
         f.write_text(json.dumps({k: (v.tolist() if isinstance(v, np.ndarray) else v) for k, v in res.items()}), encoding='utf-8')
     st = stats(res)
     word, reason = verdict(st)
-    if not cached:
+    tried = any(_tag(study, q) in ln for ln in _rows(trials_path, '| sim-desk '))   # keyed on the ledger, not this tree's cache
+    if not tried:
         _append_row(trials_path, study, q, st, word)   # the ledger row lands before the result is shown
-    out = {'verdict': word, 'reason': reason, 'footnote': footnote(st), 'cached': cached, 'describe': study.describe(q),
+    out = {'verdict': word, 'reason': reason, 'cached': cached, 'already_tried': tried, 'nofill': st.get('nofill', 0), 'describe': study.describe(q),
            'label': study.label(q), 'settings': q, 'n': st.get('n', 0), 'mean': st.get('mean'), 'lo': st.get('lo'),
            'hi': st.get('hi'), 'streak': st.get('streak', 0), 'win_rate': st.get('win_rate'),
            'try_no': count_tries(trials_path, study), 'prior_tries': len(_rows(trials_path, f"| {getattr(study, 'PRIOR_TAG', '-')} ")),
-           'stats': {k: v for k, v in st.items() if isinstance(v, (int, float, dict))}, 'charts': []}
+           'stats': {k: v for k, v in st.items() if isinstance(v, (int, float))}, 'charts': []}
     if charts:
         try:
             import charts as ch
@@ -204,9 +205,16 @@ class Handler(BaseHTTPRequestHandler):
                 out = run_setting(study, body.get('params', {}), progress=lambda s: PROGRESS.update(line=s), charts=True)
                 PROGRESS['line'] = ''
             self._send(200, out)
-        except (ValueError, KeyError, FileNotFoundError) as e:
+        except (ValueError, KeyError) as e:
             PROGRESS['line'] = ''
-            self._send(400, {'error': str(e)})
+            self._send(400, {'error': f'Could not run: {e}'})
+        except FileNotFoundError:
+            PROGRESS['line'] = ''
+            self._send(400, {'error': 'The price data folder was not found on this machine; the desk needs the 1m bars.'})
+        except Exception as e:   # anything else: one plain line, the detail stays in the desk window
+            PROGRESS['line'] = ''
+            print(f'desk error: {e!r}', flush=True)
+            self._send(500, {'error': 'Something went wrong in the run; nothing was logged. Details are in the desk window.'})
 
 
 def main():

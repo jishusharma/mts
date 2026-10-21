@@ -73,6 +73,9 @@ async function init() {
   $('title').textContent = 'Simulator desk: ' + study.title;
   const form = $('form');
   for (const f of study.params) form.appendChild(field(f, study.defaults[f.name]));
+  const ex = form.querySelector('[name=exit]'), tr = form.querySelector('[name=target_r]');
+  const grey = () => { tr.disabled = ex.value !== 'R'; };
+  ex.onchange = grey; grey();
   const b = document.createElement('button'); b.id = 'run'; b.textContent = 'Run'; b.onclick = run;
   form.appendChild(b);
   $('foot').textContent = `Tries on this desk so far: ${study.tries}. Test window: development data only (2022-04-01 to 2024-06-30).`;
@@ -80,7 +83,7 @@ async function init() {
 
 function values() {
   const p = {};
-  for (const el of $('form').querySelectorAll('select, input')) if (el.value !== '') p[el.name] = el.type === 'number' ? Number(el.value) : el.value;
+  for (const el of $('form').querySelectorAll('select, input')) if (el.value !== '' && !el.disabled) p[el.name] = el.type === 'number' ? Number(el.value) : el.value;
   return p;
 }
 
@@ -112,7 +115,7 @@ function show(o) {
   s.textContent = o.reason + `. Try #${o.try_no} on this data: the best of many tries looks better than it is.`;
   v.appendChild(s);
   $('nums').innerHTML = '';
-  const nums = [[o.n, 'trades'], [fmt(o.mean) + ' R', `average per trade after fees (95 % range ${fmt(o.lo)} to ${fmt(o.hi)})`],
+  const nums = [[o.n, `trades (${o.nofill} ideas never filled)`], [fmt(o.mean) + ' R', `average per trade after fees (95 % range ${fmt(o.lo)} to ${fmt(o.hi)})`],
                 [o.streak, 'worst losing streak']];
   for (const [b, t] of nums) {
     const d = document.createElement('div'); d.className = 'num';
@@ -123,9 +126,9 @@ function show(o) {
   for (const c of o.charts) {
     const f = document.createElement('figure'); f.innerHTML = c.svg; f.title = 'typical ' + c.kind; $('charts').appendChild(f);
   }
-  $('foot').textContent = (o.footnote ? o.footnote + ' ' : '') +
+  $('foot').textContent =
     (o.charts.length ? 'Charts: 3 winners and 3 losers closest to the typical winner and loser. ' : '') +
-    (o.cached ? 'Same settings as an earlier try: shown from cache, not logged again. ' : `Trial #${o.try_no} logged. `) +
+    (o.already_tried ? 'Same settings as an earlier try: not logged again. ' : `Trial #${o.try_no} logged. `) +
     `Setups tried on this data so far: ${o.try_no} here + ${o.prior_tries} by the original study.`;
 }
 init();

@@ -45,8 +45,8 @@ DEFAULT = {'entry': 'E1', 'scale': 'S2', 'stop': 'K5', 'stop_pct': ld.MARGIN * 1
 def params():
     """Fields for the settings strip. Choices plus free-form numbers (hit and try)."""
     return [
-        {'name': 'entry', 'label': 'Take', 'choices': ENTRY},
-        {'name': 'scale', 'label': 'Entry', 'choices': SCALE},
+        {'name': 'entry', 'label': 'Which touches', 'choices': ENTRY},
+        {'name': 'scale', 'label': 'How to enter', 'choices': SCALE},
         {'name': 'stop', 'label': 'Stop', 'choices': STOP},
         {'name': 'stop_pct', 'label': 'Stop distance past it, %', 'number': True, 'min': 0.0, 'max': 5.0, 'step': 0.01},
         {'name': 'exit', 'label': 'Exit', 'choices': EXIT},
@@ -68,7 +68,10 @@ def normalize(p):
             raise ValueError(f'{k}: unknown choice {q[k]!r}')
     for f in params():
         if f.get('number') and not (f['name'] == 'target_r' and q['exit'] != 'R'):
-            v = float(q[f['name']])
+            try:
+                v = float(q[f['name']])
+            except (TypeError, ValueError):
+                raise ValueError(f"{f['label']}: please type a number")
             if not (f['min'] <= v <= f['max']) or v != v:
                 raise ValueError(f"{f['label']}: {v} is outside {f['min']}..{f['max']}")
             q[f['name']] = round(v, 6)
@@ -193,7 +196,7 @@ def _run_month(args):
     m_start, q = args
     blob = _load_month(m_start)
     d0, d1 = _day_num(q['start']), _day_num(q['end'])
-    out = {'day': [], 'touch_t': [], 'net': [], 'gross': [], 'fees': [], 'refs': [], 'all_days': set()}
+    out = {'day': [], 'touch_t': [], 'net': [], 'gross': [], 'fees': [], 'filled': [], 'refs': [], 'all_days': set()}
     ctxs = {}
     for k, idea in enumerate(blob['ideas']):
         d = idea['day']
@@ -211,6 +214,7 @@ def _run_month(args):
             continue
         out['day'].append(d); out['touch_t'].append(idea['touch_t'])
         out['net'].append(r['net_r']); out['gross'].append(r['gross_r']); out['fees'].append(r['fees_r'])
+        out['filled'].append(r['filled_qty'] > 0)
         out['refs'].append([m_start, k])
     return out
 
@@ -223,13 +227,14 @@ def run(q, progress=print):
     todo = [(a, q) for a, b in _months() if a // DAY <= d1 and (b - 1) // DAY >= d0]
     with ProcessPoolExecutor(max_workers=max(1, min(len(todo), (os.cpu_count() or 2) - 1))) as ex:
         parts = list(ex.map(_run_month, todo))
-    res = {k: [] for k in ('day', 'touch_t', 'net', 'gross', 'fees', 'refs')}
+    res = {k: [] for k in ('day', 'touch_t', 'net', 'gross', 'fees', 'filled', 'refs')}
     days = set()
     for p in parts:
         for k in res:
             res[k] += p[k]
         days |= p['all_days']
-    out = {k: np.array(v, dtype=np.int64 if k in ('day', 'touch_t') else float) for k, v in res.items() if k != 'refs'}
+    out = {k: np.array(v, dtype=np.int64 if k in ('day', 'touch_t') else bool if k == 'filled' else float)
+           for k, v in res.items() if k != 'refs'}
     out['refs'] = res['refs']
     out['all_days'] = np.array(sorted(days), dtype=np.int64)
     return out
@@ -248,7 +253,7 @@ def chart_trade(ref, q):
     """The generic chart shape (charts.py) of one trade. Prices are simulate()'s own; exit times are located as the
     first bar after the previous event whose range holds the exit price (day end for a time exit)."""
     db, idea, r = trade_bars(ref, q)
-    if r is None:
+    if r is None or r['filled_qty'] <= 0:
         return None
     lo = np.array([b['l'] for b in db]); hi = np.array([b['h'] for b in db])
     entries = [(db[bar]['t'], p) for p, _, bar in r['fills']]
