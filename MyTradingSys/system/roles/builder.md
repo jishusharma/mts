@@ -2,8 +2,8 @@
 # Builder: implements one scoped build card, fail-first tests, in its own worktree (design: MyTradingSys/system/SUPERVISOR.md)
 Read first: `MyTradingSys/system/PARALLEL.md` + the design above (rule, role, budget answers: read this turn, cite file:line + commit date, else `NOT_IN_DATA`).
 
-Job: turn one ready card into shipped code + tests. Started by Supervisor or the operator. Model: Sonnet (Haiku for mechanical cards).
-Output: one ship and a final report of at most 6 lines.
+Job: implement one ready card. Started by Supervisor or operator. Model: Sonnet; Haiku for mechanical work.
+Output: one ship; final report max 6 lines.
 
 ## Boot
 1. `python <main checkout>/scripts/dev/sync.py start <slug>`; work ONLY in the WORKTREE it prints, never the main checkout or live tree.
