@@ -120,7 +120,8 @@ class TurnMeterTest(unittest.TestCase):
         for name, state in (("s1", {"tool": 39, "user": 0}), ("s2", {"tool": 1999, "user": 99})):
             (self.home / f"{name}.json").write_text(json.dumps(state), encoding="utf-8")
         post = json.loads(fire(self.home, "PostToolUse", sid="s1"))["hookSpecificOutput"]["additionalContext"]
-        prompt = fire(self.home, "UserPromptSubmit", sid="s2")
+        (self.home / "s3.json").write_text(json.dumps({"tool": 1999, "user": 0}), encoding="utf-8")
+        prompt = fire(self.home, "UserPromptSubmit", sid="s3")
         worst = json.loads(fire(self.home, "PostToolUse", sid="s2"))["hookSpecificOutput"]["additionalContext"]
         for text in (post, prompt, worst):
             self.assertLessEqual(len(text.encode("utf-8")), 250, text)
@@ -140,9 +141,9 @@ class TurnMeterTest(unittest.TestCase):
         self.assertIn("cap 40 / 10", ctx)
         self.assertIn("relay.py handoff", ctx)
 
-    def test_operator_turns_over_10_fire(self):
-        fired = [n for n in range(1, 13) if fire(self.home, "UserPromptSubmit")]
-        self.assertEqual(fired, [11, 12])
+    def test_operator_turns_never_fire(self):
+        """Was: a nag after 10 operator turns. Operator 2026-10-21: a session he drives ends on his word."""
+        self.assertEqual([n for n in range(1, 13) if fire(self.home, "UserPromptSubmit")], [])
 
     def test_prompt_after_tool_cap_fires(self):
         for _ in range(40):
@@ -182,27 +183,6 @@ class TurnMeterTest(unittest.TestCase):
         nags = [fire(self.home, "PostToolUse", sid="o3", extra=over) for _ in range(5)]
         self.assertIn("Opus context 520k", nags[-1])
 
-    def test_fable_gets_one_message_hard_even_with_the_switch_off(self):
-        f = self.model_transcript("fable", 800_000)
-        self.assertEqual(fire(self.home, "UserPromptSubmit", sid="f"), "")      # first message: model not known yet, allowed
-        for _ in range(80):
-            self.assertEqual(fire(self.home, "PostToolUse", sid="f", extra=f), "")   # no tool-turn cap
-        for env in (None, {"MTS_TURN_METER": "off", "MTS_TURN_METER_USER_CAP": "99"}):
-            out = json.loads(fire(self.home, "UserPromptSubmit", sid="f", extra=f, env=env))
-            self.assertEqual(out["decision"], "block")
-            self.assertIn("new Fable session", out["reason"])
-
-    def test_fable_block_survives_synthetic_lines_and_lost_transcript(self):
-        f = self.model_transcript("fable", 300_000)
-        fire(self.home, "UserPromptSubmit", sid="g")
-        fire(self.home, "PostToolUse", sid="g", extra=f)
-        with open(f["transcript_path"], "a", encoding="utf-8") as fh:      # an API-error line: <synthetic>, zero usage
-            fh.write(json.dumps({"type": "assistant", "message": {"id": "m2", "model": "<synthetic>", "content": [], "usage": {"input_tokens": 1}}}) + chr(10))
-        self.assertIn("block", fire(self.home, "UserPromptSubmit", sid="g", extra=f))
-        fire(self.home, "UserPromptSubmit", sid="h", extra=f)
-        self.assertIn("block", fire(self.home, "UserPromptSubmit", sid="h", extra=f))   # tier now remembered
-        self.assertIn("block", fire(self.home, "UserPromptSubmit", sid="h"))            # transcript unreadable: still blocked
-
     def test_supervisor_has_context_cap_not_turn_cap(self):
         """Operator 2026-10-21: a Supervisor runs for hours unattended; it is capped by context size (like Opus), not by turns."""
         tp = self.home / "sup.jsonl"
@@ -215,20 +195,6 @@ class TurnMeterTest(unittest.TestCase):
             self.assertEqual(out, "")
         for i in range(12):
             self.assertEqual(fire(self.home, "UserPromptSubmit", sid="sup", extra={"transcript_path": str(tp), "prompt": "worker note"}), "")
-
-    def test_opus_big_context_takes_no_second_message(self):
-        """Operator 2026-10-21: Opus/Fable are use-and-destroy: one job may grow to 500k, but a second operator message is
-        blocked once the context is >= 150k (every turn would re-read it); small context keeps taking messages."""
-        for ctx, blocked in ((60_000, False), (200_000, True)):
-            tp = self.home / f"o{ctx}.jsonl"
-            with open(tp, "w", encoding="utf-8", newline="\n") as f:
-                f.write(json.dumps({"type": "assistant", "message": {"id": "m", "model": "claude-opus-5-5", "content": [],
-                                    "usage": {"input_tokens": ctx, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0}}}) + "\n")
-            sid = f"o{ctx}"
-            fire(self.home, "SessionStart", sid=sid)
-            fire(self.home, "UserPromptSubmit", sid=sid, extra={"transcript_path": str(tp)})
-            out = fire(self.home, "UserPromptSubmit", sid=sid, extra={"transcript_path": str(tp)})
-            self.assertEqual("block" in out, blocked, (ctx, out))
 
     def test_supervisor_found_from_transcript_when_hook_never_saw_the_start_line(self):
         """The NUC Supervisor started before this hook knew the role: its first user line is only in the transcript."""
@@ -254,12 +220,6 @@ class TurnMeterTest(unittest.TestCase):
                                 "usage": {"input_tokens": ctx, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0}}}) + "\n")
         return {"transcript_path": str(tp)}
 
-    def test_resumed_opus_over_150k_is_blocked_on_its_first_metered_message(self):
-        """A session resumed after its state file was pruned (or begun before the meter) starts at user=0: a context >= 150k
-        already proves an earlier turn, so the first metered message is blocked too (review 2026-10-21, item 3)."""
-        out = fire(self.home, "UserPromptSubmit", sid="r", extra=self.opus_ctx("r", 200_000))
-        self.assertIn("block", out)
-
     def test_event_messages_neither_count_nor_block(self):
         """Cross-session messages, side-session events, CI events and task notifications fire UserPromptSubmit like the
         operator; blocking one loses a worker's report (review 2026-10-21, item 4)."""
@@ -272,7 +232,7 @@ class TurnMeterTest(unittest.TestCase):
         fire(self.home, "UserPromptSubmit", sid="fe", extra={**f, "prompt": "do the job"})
         self.assertEqual(fire(self.home, "UserPromptSubmit", sid="fe", extra={**f, "prompt": "<side-sessions-event>x"}), "")
 
-    def test_compaction_unblocks_an_opus_session_and_nudges_a_supervisor(self):
+    def test_compaction_reads_the_new_size_and_nudges_a_supervisor(self):
         """Operator 2026-10-21 (screenshot): after /compact the context was 88k but the block still read the old 163k usage and
         refused every prompt forever. A compact_boundary newer than the last assistant line means the context is small again,
         and a compaction never blocks anything; a Supervisor is told to rebuild from its plan."""
@@ -281,8 +241,6 @@ class TurnMeterTest(unittest.TestCase):
         tp.write_text(json.dumps({"type": "assistant", "message": {"id": "m", "model": "claude-opus-5-5", "content": [],
                       "usage": {"input_tokens": 163_000, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0}}}) + nl, encoding="utf-8")
         extra = {"transcript_path": str(tp)}
-        fire(self.home, "UserPromptSubmit", sid="cb", extra=extra)
-        self.assertIn("block", fire(self.home, "UserPromptSubmit", sid="cb", extra=extra))     # real 163k, no compaction yet
         with open(tp, "a", encoding="utf-8", newline=nl) as f:
             f.write(json.dumps({"type": "system", "subtype": "compact_boundary",
                                 "compactMetadata": {"trigger": "manual", "preTokens": 163_000, "postTokens": 12_000}}) + nl)
@@ -297,6 +255,27 @@ class TurnMeterTest(unittest.TestCase):
         nudge = json.loads(fire(self.home, "SessionStart", sid="cs", extra={**small, "source": "compact"}))
         self.assertIn("supervisor.py plan", nudge["hookSpecificOutput"]["additionalContext"])
         self.assertEqual(fire(self.home, "UserPromptSubmit", sid="cs", extra={**small, "prompt": "go on"}), "")
+
+    def test_operator_prompts_are_never_blocked_and_driving_mutes_the_hand_off(self):
+        """Operator 2026-10-21: "when I am telling sessions to do something ... that hook should never stop you"; he compacts
+        when he wants. A typed prompt is never blocked (Opus at any size, Fable's 2nd message); from his 2nd prompt on the
+        session is his and gets no hand-off nag; a child session's message is not his turn and lets the caps bind again."""
+        big = self.opus_ctx("ob", 200_000)
+        for _ in range(3):
+            self.assertNotIn("block", fire(self.home, "UserPromptSubmit", sid="ob", extra={**big, "prompt": "next step"}))
+        f = self.model_transcript("fable", 300_000)
+        for _ in range(3):
+            self.assertNotIn("block", fire(self.home, "UserPromptSubmit", sid="fb", extra={**f, "prompt": "and this"}))
+        plain = self.home / "drv.jsonl"
+        plain.write_text(json.dumps({"type": "user", "message": {"content": "fix the bug"}}) + "\n", encoding="utf-8")
+        tp = {"transcript_path": str(plain)}
+        fire(self.home, "UserPromptSubmit", sid="un", extra={**tp, "prompt": "fix the bug"})
+        self.assertTrue(any(fire(self.home, "PostToolUse", sid="un", extra=tp) for _ in range(45)), "unattended: nag")
+        for _ in range(12):
+            self.assertEqual(fire(self.home, "UserPromptSubmit", sid="dr", extra={**tp, "prompt": "and now this"}), "")
+        self.assertFalse(any(fire(self.home, "PostToolUse", sid="dr", extra=tp) for _ in range(45)), "operator driving: no nag")
+        fire(self.home, "UserPromptSubmit", sid="dr", extra={**tp, "prompt": "<side-sessions-event>worker done"})
+        self.assertTrue(any(fire(self.home, "PostToolUse", sid="dr", extra=tp) for _ in range(10)), "only events since: caps bind")
 
     def test_system_reminder_wrapped_messages_are_events(self):
         """Seen 2026-10-21: a worker message arriving as a <system-reminder> block was blocked for an Opus session at 163k."""

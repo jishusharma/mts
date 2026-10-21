@@ -9,7 +9,8 @@ Claude Code hook (project .claude/settings.json):
   SessionStart     resets the counters after a clear (the context is empty again); after a compaction a Supervisor is told to
                    rebuild from `supervisor.py plan` (the context size is then read from the compact_boundary, nothing blocks)
 Event prompts (cross-session messages, side-session/CI events, task notifications) are never counted or blocked.
-Never blocks, never raises: a broken meter must not break a prompt.
+An operator prompt is never blocked (operator 2026-10-21: a hook never stops what he asked); from his 2nd prompt the session
+is his ("driven") and gets no hand-off nag until only events arrive again. Never raises: a broken meter must not break a prompt.
 
 A turn is one assistant message: parallel tool calls in one message share one context re-read, so they count once
 (the call's message id is looked up in the transcript tail; if that fails the call counts, as before).
@@ -32,8 +33,6 @@ USER_CAP = 10      # CLAUDE.md SHORT SESSIONS: 10 turns with the operator (was 5
 NAG_EVERY = 5      # after the cap, repeat every 5 tool turns (once is easy to ignore mid-step)
 READ_BUDGET = 4_000_000    # operator 2026-10-18: turns allowed = budget / context size (100k -> 40 turns, 250k -> 16, 500k -> 8); no compaction
 OPUS_CTX_CAP = 500_000     # Opus: long sessions are wanted; the only cap is the context size
-OPUS_FOLLOWUP_CTX = 150_000   # Opus (use and destroy, operator 2026-10-21): a job may grow to OPUS_CTX_CAP, but no new operator message above this
-FABLE_MESSAGES = 1         # Fable: one operator message per session, HARD (ignores MTS_TURN_METER=off and the cap env vars)
 PRUNE_DAYS = 7
 TAIL_START = 1 << 17   # transcript bytes read from the end to find a tool call's message (grows if big results push it out)
 TAIL_MAX = 1 << 22
@@ -194,11 +193,6 @@ def is_supervisor_start(payload):
     return str(payload.get("prompt") or "").lstrip().lower().startswith("you are supervisor")
 
 
-def fable_block():
-    return json.dumps({"decision": "block", "reason": f"[TURN METER] Fable sessions take {FABLE_MESSAGES} operator message "
-                       "(hard rule, operator 2026-10-18; WORKERS.md). Start a new Fable session for the next message."})
-
-
 def handle(payload):
     """Returns the text to print (may be empty). Pure apart from the state file."""
     off = os.environ.get("MTS_TURN_METER", "").lower() == "off"
@@ -215,33 +209,21 @@ def handle(payload):
     out = ""
     if event == "UserPromptSubmit":
         if is_event_prompt(payload):
+            if state.get("driven") and path.exists():
+                state["driven"] = 0      # a child session's note is not the operator: the caps bind again
+                save(path, state)
             return ""
         state["user"] = state.get("user", 0) + 1
+        state["driven"] = int(state["user"] >= 2)    # his 2nd typed prompt: he is here, the session runs on his word
         model, ctx = model_and_context(payload)
         kind = tier(model)
         if is_supervisor_start(payload) or (not state.get("role") and transcript_starts_supervisor(payload)):
             state["role"] = "supervisor"     # sticky: it runs unattended for hours; capped by context, not turns (operator 2026-10-21)
         if state.get("role") == "supervisor" and kind == "default":
             kind = "opus"
-        if kind == "fable":
-            state["tier"] = "fable"      # sticky: a later failed detection must not lift the hard block
-        elif state.get("tier") == "fable" and not model:
-            kind = "fable"
-        if kind == "fable" and state["user"] > FABLE_MESSAGES:     # the hard rule: no switch turns it off
-            state["user"] -= 1
-            save(path, state)
-            return fable_block()
-        if off:
-            save(path, state)
-            return ""
-        if kind == "opus":
-            # no `user > 1` test: a context this big proves an earlier turn, also in a resumed session whose state was pruned
-            if ctx >= OPUS_FOLLOWUP_CTX and state.get("role") != "supervisor":
-                state["user"] -= 1
-                save(path, state)
-                return json.dumps({"decision": "block", "reason": f"[TURN METER] This Opus session context is {ctx // 1000}k >= "
-                                   f"{OPUS_FOLLOWUP_CTX // 1000}k: every turn would re-read it. Use and destroy: start a new session for the next "
-                                   "message, or /compact first (operator 2026-10-21)."})
+        if off or state["driven"] or kind == "fable":
+            pass        # never block or nag a prompt he typed; Fable has no cap
+        elif kind == "opus":
             if ctx >= OPUS_CTX_CAP:
                 out = message(state, tool_cap, user_cap, f"Opus context {ctx // 1000}k >= {OPUS_CTX_CAP // 1000}k cap")
         else:
@@ -278,8 +260,8 @@ def handle(payload):
             kind = "opus"
         if kind == "default" and ctx:
             tool_cap = min(tool_cap, max(5, READ_BUDGET // ctx))
-        if kind == "fable":
-            pass        # no tool-turn cap: one message, however long it takes
+        if kind == "fable" or state.get("driven"):
+            pass        # Fable: no tool-turn cap; driven: the operator decides when it ends
         elif kind == "opus":
             if ctx >= OPUS_CTX_CAP and t % NAG_EVERY == 0:
                 out = json.dumps({"hookSpecificOutput": {"hookEventName": "PostToolUse", "additionalContext": message(
