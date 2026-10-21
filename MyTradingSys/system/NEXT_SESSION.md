@@ -10,6 +10,12 @@ Run with zero operator input; defaults for open questions. Plan and checklists: 
 - CI: STATUS showed `CI green:` RED (oldest ungreen 22.7 h) and `gh` is missing on the laptop, so CI was not checked here; a host with `gh` checks the pinned `ci-<sha>` card first.
 - Do not add gates, lints or rule docs for this.
 
+## Simulator desk (sim-desk-core, sim-desk-charts) planned 2026-10-21 (hand-over, Thinker/Sonnet)
+Run with zero operator input; defaults for open questions. Operator wants ONE screen: set any values (free-form, hit and try), click Run, get a plain verdict and 6 tiny example-trade charts; room for more layers later. Design: `research/sim_desk/DESIGN.md` (Opus proposal chosen over Sonnet and Haiku: it found the results CSV holds only 24 S x K columns, so most settings need a real re-run of about 3 min).
+- Both cards exist but are state raw: `tasks.py check` says they need a Lab_Guy review stamp (roles/lab_guy.md). First task: run that pass on sim-desk-core and sim-desk-charts, then `tasks.py check` both. Do not stamp them yourself.
+- Then build sim-desk-core (tests first), then sim-desk-charts. Both lane SONNET, 15 turns each.
+- Report to the operator as done / not done / next steps; ask only on a real dependency. Plain words, no LC3/ladder/KEEP jargon.
+
 ## LC3 ladder simulator (lc-ladder-dev) shipped 2026-10-21 (hand-over, Fable; data run on JIS-NB)
 Run with zero operator input; defaults for open questions. Card lc-ladder-dev is done; report `research/levels_confluence_2026-10-14/ladder_dev.md`, rule `frozen_rule.json`, 243 rows in `layer_lab/TRIALS.md`, 9 tests in `test_ladder.py` (red before the code existed).
 - Result on standard DEV (5976 first touches of the 8 KEEP levels, 2022-04..2024-06, VALIDATION/HOLDOUT unread): no variant of the 240 (3 entry filters x 4 scale-ins x 5 stops x 4 exits) has a lower 95 % CI above zero. Frozen rule E1 S2 K5 X0_2R: mean net R -0.039 [-0.123, +0.048], n 772. Verdict: INCONCLUSIVE by the card rule (power_mde.py two-point power 31 % < 50 %), FAIL by sample-sd power (87 % for +0.10 R). Arm P (METHOD.md ladder sizing): -0.130 R, 0 liquidations, max leverage 1.4x; it beats a random-entry control by +0.115 R and the naive S0 K1 X1 by +0.333 R, so the level and the capped adds help, but not enough to pay fees (mean fee 0.11 R per idea; break-even needs gross +0.11 R, the rule makes +0.07 R).
