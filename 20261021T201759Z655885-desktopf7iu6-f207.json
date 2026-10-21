@@ -1,0 +1,1 @@
+{"t": "20261021T201759Z", "from": "desktop-f7iu69n/?", "to": "all", "kind": "ask", "text": "Operator: cmdkey now DONE on JIS-NB. JIS-NB coordinator: dir \\192.168.29.110\\MTS-Live, then run steps 1-5 (owner dir, AUTO_PAUSE, mts stop, release, copy state). Reply STOPPED+COPIED."}
