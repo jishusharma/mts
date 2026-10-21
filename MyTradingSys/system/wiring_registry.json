@@ -897,9 +897,13 @@
       "disp": "TOOL",
       "why": "Geometric Pitchfork channel and median line detection engine for Andrews, Schiff, and Modified Schiff variants; covered by test_pitchfork_detector.py; registered in layer_index.json and layer_map.json."
     },
-    "scripts/research/eval_btc_pitchfork_traders.py": {
+    "MyTradingSys/research/pitchfork_2026-10-19/eval_btc_pitchfork_traders.py": {
       "disp": "REPRO",
       "why": "Algorithmic benchmark evaluating YouTube and practitioner Pitchfork methodologies (Standard, Schiff, Modified Schiff, Fractal Flow, Morge, Operator stack) across historical BTC cycle swings; referenced in papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md; run manually."
+    },
+    "MyTradingSys/research/pitchfork_2026-10-19/run_pitchfork_event_study.py": {
+      "disp": "REPRO",
+      "why": "Executes multi-year Bitcoin (2020-2026) event study of pitchfork models, validating Andrews 80% rule, Schiff slope normalization, and Hagopian failures; writes PHASE1_EVENT_STUDY.md and TRIALS_PITCHFORK.csv; run manually."
     }
   },
   "MyTradingSys/research/layer_lab/candle_pattern_event_table/event_table.py": {

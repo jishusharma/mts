@@ -1,10 +1,14 @@
 # NEXT_SESSION
 
-## Simulator desk (sim-desk-core, sim-desk-charts) planned 2026-10-21 (hand-over, Thinker/Sonnet)
-Run with zero operator input; defaults for open questions. Operator wants ONE screen: set any values (free-form, hit and try), click Run, get a plain verdict and 6 tiny example-trade charts; room for more layers later. Design: `research/sim_desk/DESIGN.md` (Opus proposal chosen over Sonnet and Haiku: it found the results CSV holds only 24 S x K columns, so most settings need a real re-run of about 3 min).
-- Both cards exist but are state raw: `tasks.py check` says they need a Lab_Guy review stamp (roles/lab_guy.md). First task: run that pass on sim-desk-core and sim-desk-charts, then `tasks.py check` both. Do not stamp them yourself.
-- Then build sim-desk-core (tests first), then sim-desk-charts. Both lane SONNET, 15 turns each.
-- Report to the operator as done / not done / next steps; ask only on a real dependency. Plain words, no LC3/ladder/KEEP jargon.
+## Live host move JIS-NB -> DESKTOP-F7IU69N: STAGED 2026-10-21, cutover NOT run (hand-over, Opus, Lenovo)
+Run with zero operator input; defaults for open questions. Plan and checklists: `MyTradingSys/system/LIVE_HOST_MOVE.md`; DEVICES.md s1/3/6/7/8/9 and DEPLOY_RUNBOOK.md ("Live host cutover") point to it. Nothing was deployed, started, stopped or shared.
+- Result: laptop facts captured (2 batteries, Balanced plan, Wi-Fi only, Update active hours 22-16, IPv4 192.168.29.157 DHCP); laptop Wi-Fi baseline 2026-10-20 21:34Z median per new HTTPS call: Binance ~200 ms, Deribit testnet ~320 ms. JIS-NB numbers for the comparison NOT taken.
+- Next, builder session (Sonnet, any host, not the live tree), cards in this order, each with tests that fail on old code: (1) `live_mirror.py` root/publisher not tied to the JIS-NB hostname (env/config per host; LIVE_HOST_MOVE s6); (2) `mts.ps1:348` auto-trader Python path resolved like the other launch lines, fail closed if missing (live path: restart + error tests); (3) `supervisor.py` lane rules know the laptop as the live host. File them with `tasks.py` if they are not cards yet.
+- Next, operator (10 min, laptop): LIVE_HOST_MOVE s3 items 1-6 (charge threshold 60-80 % both batteries, Energy saver off, sleep/hibernate on AC never, NIC power saving off, Update restart notify, data SIM in the laptop LTE modem (replaces Ethernet; probe must pass over the SIM)), install `gh` and log in; NUC: create shares MTS-Data (read-only), MTS-Live, MTS-Mirror, MTS-Backup (s5); UPS USB link; router + ONT mini-UPS (s7).
+- Next, a session on JIS-NB: run the s3 item 9 probe on JIS-NB and on the laptop in the same 15 min, record both in LIVE_HOST_MOVE s1, pass/fail per the OURS rule there.
+- Cutover (s4): only the operator or a coordinator the operator names, in a window the operator chooses; none set (default: no move until named). Builders never run it. Defaults: q-live-autostart NO (manual `mts start` after any reboot), alerts stay on the laptop and are read on JIS-NB via the mirror, trips cut back to JIS-NB first.
+- CI: STATUS showed `CI green:` RED (oldest ungreen 22.7 h) and `gh` is missing on the laptop, so CI was not checked here; a host with `gh` checks the pinned `ci-<sha>` card first.
+- Do not add gates, lints or rule docs for this.
 
 ## LC3 ladder simulator (lc-ladder-dev) shipped 2026-10-21 (hand-over, Fable; data run on JIS-NB)
 Run with zero operator input; defaults for open questions. Card lc-ladder-dev is done; report `research/levels_confluence_2026-10-14/ladder_dev.md`, rule `frozen_rule.json`, 243 rows in `layer_lab/TRIALS.md`, 9 tests in `test_ladder.py` (red before the code existed).

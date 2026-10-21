@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/role_loader.py list",
+    "python scripts/dev/role_loader.py check",
+    "python scripts/dev/role_loader.py lint"
+  ],
+  "created": "2026-10-20T23:19:24Z",
+  "depends_on": [],
+  "done_when": "role_loader.py list matches the roster and the role files; fallback picks Eagle_Eyes for a chart screenshot, Admin_Guy for a question, Thinker for a design question, and never Builder or Session_Planner; role_loader.py check and lint exit 0; ROLES.md and START_HERE.txt no longer hand-type role counts.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "One roster file is the single source of what roles exist, where they live and how each starts; a list command prints it; a session with no role line loads the best-fitting operator role from its task text and says why.",
+  "id": "bug-models-cannot-tell-which-roles-exist",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "OPERATOR QUOTE: \"create a bug to clear this confusion so that it never happens to any model. So that everyone knows what roles are, where they are, and to always... this is the best feature that I need. If roles are not provided, given from the task, the model should be able to load the best role.\"",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "roles-md-index-slim"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/role_loader.py; MyTradingSys/system/ROLES.md; MyTradingSys/system/START_HERE.txt; new roster file under MyTradingSys/system/roles/"
+  ],
+  "scope_out": [
+    "role text and behaviour of each role (only the header and the roster change); live tree; trading code"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "Write the roster file: name, file, start (operator line | embedded | alias), model, lane, one-line job, triggers",
+    "Add role_loader.py list and the best-role fallback with the banner note",
+    "Write test_role_roster.py first; see it fail on current docs; then make it pass",
+    "Render ROLES.md and START_HERE role lines from the roster; remove hand-typed counts"
+  ],
+  "tests": "MyTradingSys/tests/test_role_roster.py: list output equals roster and files (fails now: START_HERE says 8 and 7, files are 10); fallback cases above (fail now: no fallback exists)",
+  "title": "BUG: models cannot tell which roles exist, where they live, or which to load; one roster, a list command, best-role fallback",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

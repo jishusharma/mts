@@ -298,7 +298,9 @@ def rsi(c, period):
     al = sum(losses[:period]) / period
 
     def val(ag, al):
-        return 100.0 if al == 0 else 100.0 - 100.0 / (1.0 + ag / al)
+        if al == 0:
+            return 100.0 if ag > 0 else 50.0
+        return 100.0 - 100.0 / (1.0 + ag / al)
 
     out[period] = val(ag, al)
     for t in range(period + 1, n):

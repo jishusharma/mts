@@ -29,8 +29,21 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 LIVE_MARKER = ".mts_live"
-DEFAULT_ROOT = r"\\JIS-NB\MTS-Mirror"
-LIVE_ROOT = r"F:\MTS\Mirror"  # the folder behind that share; JIS-NB sessions are not on the share ACL but can read the folder
+LIVE_HOST_FILE = REPO / "MyTradingSys" / "system" / "live_host.txt"  # one line: the live host's name; changed in the cutover (LIVE_HOST_MOVE.md)
+
+
+def read_live_host():
+    try:
+        name = LIVE_HOST_FILE.read_text(encoding="utf-8").strip().upper()
+    except OSError:
+        name = ""
+    return name or "JIS-NB"
+
+
+LIVE_HOST = read_live_host()
+DEFAULT_ROOT = "\\\\" + LIVE_HOST + "\\MTS-Mirror"
+# the folder behind that share; sessions on the live host may not be on the share ACL but can read the folder
+LIVE_ROOT = os.environ.get("MTS_MIRROR_LIVE_ROOT") or (r"F:\MTS\Mirror" if LIVE_HOST == "JIS-NB" else r"C:\MTS\Mirror")
 MIRROR_DIR = "runtime_data/_mirror"
 KEEP_VERSIONS = 3
 WARN_MIN, STALE_MIN = 15, 60
@@ -102,7 +115,7 @@ def is_live_tree(repo):
 
 def default_root(repo):
     """The live tree and every work tree on JIS-NB use the local folder; other machines go through the share."""
-    if is_live_tree(repo) or (socket.gethostname().upper() == "JIS-NB" and Path(LIVE_ROOT).is_dir()):
+    if is_live_tree(repo) or (socket.gethostname().upper() == LIVE_HOST and Path(LIVE_ROOT).is_dir()):
         return LIVE_ROOT
     return DEFAULT_ROOT
 
