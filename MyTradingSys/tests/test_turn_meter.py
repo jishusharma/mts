@@ -272,18 +272,36 @@ class TurnMeterTest(unittest.TestCase):
         fire(self.home, "UserPromptSubmit", sid="fe", extra={**f, "prompt": "do the job"})
         self.assertEqual(fire(self.home, "UserPromptSubmit", sid="fe", extra={**f, "prompt": "<side-sessions-event>x"}), "")
 
-    def test_compaction_ends_an_opus_job_but_nudges_a_supervisor(self):
-        """Use and destroy (operator 2026-10-21): after a compaction the summary has lost detail, so an Opus/Fable session takes
-        no further operator message even though the context is small again; a Supervisor goes on and rebuilds from its plan."""
+    def test_compaction_unblocks_an_opus_session_and_nudges_a_supervisor(self):
+        """Operator 2026-10-21 (screenshot): after /compact the context was 88k but the block still read the old 163k usage and
+        refused every prompt forever. A compact_boundary newer than the last assistant line means the context is small again,
+        and a compaction never blocks anything; a Supervisor is told to rebuild from its plan."""
+        nl = chr(10)
+        tp = self.home / "cb.jsonl"
+        tp.write_text(json.dumps({"type": "assistant", "message": {"id": "m", "model": "claude-opus-5-5", "content": [],
+                      "usage": {"input_tokens": 163_000, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0}}}) + nl, encoding="utf-8")
+        extra = {"transcript_path": str(tp)}
+        fire(self.home, "UserPromptSubmit", sid="cb", extra=extra)
+        self.assertIn("block", fire(self.home, "UserPromptSubmit", sid="cb", extra=extra))     # real 163k, no compaction yet
+        with open(tp, "a", encoding="utf-8", newline=nl) as f:
+            f.write(json.dumps({"type": "system", "subtype": "compact_boundary",
+                                "compactMetadata": {"trigger": "manual", "preTokens": 163_000, "postTokens": 12_000}}) + nl)
+        self.assertEqual(fire(self.home, "SessionStart", sid="cb", extra={**extra, "source": "compact"}), "")
+        self.assertEqual(fire(self.home, "UserPromptSubmit", sid="cb", extra=extra), "")       # unblocked at once
         small = self.opus_ctx("c", 40_000)
         fire(self.home, "UserPromptSubmit", sid="c", extra=small)
-        self.assertEqual(fire(self.home, "SessionStart", sid="c", extra={**small, "source": "compact"}), "")
-        self.assertIn("block", fire(self.home, "UserPromptSubmit", sid="c", extra=small))
+        fire(self.home, "SessionStart", sid="c", extra={**small, "source": "compact"})
+        self.assertEqual(fire(self.home, "UserPromptSubmit", sid="c", extra=small), "")        # compacted, small: still takes messages
         sup = {**small, "prompt": "You are Supervisor. Login A. 3 hours"}
         fire(self.home, "UserPromptSubmit", sid="cs", extra=sup)
         nudge = json.loads(fire(self.home, "SessionStart", sid="cs", extra={**small, "source": "compact"}))
         self.assertIn("supervisor.py plan", nudge["hookSpecificOutput"]["additionalContext"])
         self.assertEqual(fire(self.home, "UserPromptSubmit", sid="cs", extra={**small, "prompt": "go on"}), "")
+
+    def test_system_reminder_wrapped_messages_are_events(self):
+        """Seen 2026-10-21: a worker message arriving as a <system-reminder> block was blocked for an Opus session at 163k."""
+        big = self.opus_ctx("sr", 200_000)
+        self.assertEqual(fire(self.home, "UserPromptSubmit", sid="sr", extra={**big, "prompt": "<system-reminder>msg</system-reminder>"}), "")
 
     def test_a_brief_that_quotes_the_start_line_is_not_a_supervisor(self):
         """Seen 2026-10-21 (sessions afa3fa90, 01d7aa30): a brief quoting "You are Supervisor" made a reviewer a Supervisor."""

@@ -6,8 +6,8 @@ seen 2026-10-14 re-read 625k per turn). The relay (RELAY.md) only helps if sessi
 Claude Code hook (project .claude/settings.json):
   PostToolUse      counts tool turns; at the cap and every NAG_EVERY after it, injects the hand-off instruction
   UserPromptSubmit counts operator turns; over either cap, injects the same instruction before Claude answers
-  SessionStart     resets the counters after a clear (the context is empty again); after a compaction an Opus session takes
-                   no further operator message and a Supervisor is told to rebuild from `supervisor.py plan`
+  SessionStart     resets the counters after a clear (the context is empty again); after a compaction a Supervisor is told to
+                   rebuild from `supervisor.py plan` (the context size is then read from the compact_boundary, nothing blocks)
 Event prompts (cross-session messages, side-session/CI events, task notifications) are never counted or blocked.
 Never blocks, never raises: a broken meter must not break a prompt.
 
@@ -140,7 +140,14 @@ def model_and_context(payload):
                 start = max(0, size - window)
                 f.seek(start)
                 data = f.read(size - start)
+                post = None     # a compaction newer than the last assistant line: that usage is the old, pre-compaction size
                 for line in reversed(data.split(b"\n")):
+                    if post is None and b'"compact_boundary"' in line:
+                        try:
+                            post = int((json.loads(line).get("compactMetadata") or {}).get("postTokens") or 0)
+                        except (ValueError, TypeError, AttributeError):
+                            post = 0
+                        continue
                     if b'"assistant"' not in line:
                         continue
                     try:
@@ -150,7 +157,7 @@ def model_and_context(payload):
                     u = msg.get("usage") or {}
                     if msg.get("model") and u and not str(msg["model"]).startswith("<"):   # skip <synthetic> error lines
                         ctx = sum(int(u.get(k) or 0) for k in ("input_tokens", "cache_creation_input_tokens", "cache_read_input_tokens"))
-                        return str(msg["model"]).lower(), ctx
+                        return str(msg["model"]).lower(), ctx if post is None else post
                 if start == 0 or window >= TAIL_MAX:
                     return "", 0
                 window *= 4
@@ -163,7 +170,7 @@ def tier(model):
 
 
 SUPERVISOR_LINE = re.compile(r'"(?:text|content)"\s*:\s*"(?:\s|\\n)*You are Supervisor')   # a block that starts with it, not a quote
-EVENT_PROMPTS = ("<cross-session-message", "<side-sessions-event", "<ci-monitor-event", "<task-notification")
+EVENT_PROMPTS = ("<cross-session-message", "<side-sessions-event", "<ci-monitor-event", "<task-notification", "<system-reminder")
 
 
 def transcript_starts_supervisor(payload):
@@ -229,13 +236,12 @@ def handle(payload):
             return ""
         if kind == "opus":
             # no `user > 1` test: a context this big proves an earlier turn, also in a resumed session whose state was pruned
-            if (ctx >= OPUS_FOLLOWUP_CTX or state.get("compacted")) and state.get("role") != "supervisor":
+            if ctx >= OPUS_FOLLOWUP_CTX and state.get("role") != "supervisor":
                 state["user"] -= 1
                 save(path, state)
-                why = "was compacted (the summary dropped detail)" if ctx < OPUS_FOLLOWUP_CTX else \
-                    f"context is {ctx // 1000}k >= {OPUS_FOLLOWUP_CTX // 1000}k: every turn would re-read it"
-                return json.dumps({"decision": "block", "reason": f"[TURN METER] This Opus session {why}. "
-                                   "Use and destroy: start a new session for the next message (operator 2026-10-21)."})
+                return json.dumps({"decision": "block", "reason": f"[TURN METER] This Opus session context is {ctx // 1000}k >= "
+                                   f"{OPUS_FOLLOWUP_CTX // 1000}k: every turn would re-read it. Use and destroy: start a new session for the next "
+                                   "message, or /compact first (operator 2026-10-21)."})
             if ctx >= OPUS_CTX_CAP:
                 out = message(state, tool_cap, user_cap, f"Opus context {ctx // 1000}k >= {OPUS_CTX_CAP // 1000}k cap")
         else:
@@ -251,7 +257,6 @@ def handle(payload):
         if payload.get("source") == "clear" or not path.exists():
             state = {"tool": 0, "user": 0, "since": now_iso()}
         elif payload.get("source") == "compact":
-            state["compacted"] = 1      # Opus: use and destroy, no further operator message (UserPromptSubmit)
             if state.get("role") == "supervisor" or transcript_starts_supervisor(payload):
                 state["role"] = "supervisor"
                 out = json.dumps({"hookSpecificOutput": {"hookEventName": "SessionStart", "additionalContext":
