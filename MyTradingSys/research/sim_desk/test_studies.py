@@ -119,3 +119,28 @@ def test_run_end_to_end(sid, p, min_n, tmp_path):
     for c in out['charts']:
         tr = s.chart_trade(c['ref'], q)
         assert tr['stop'] == c['ref'][3] and 'UTC' in c['svg'] and len(c['svg'].encode()) < 10240
+
+
+@pytest.mark.parametrize('sid', ['rsi', 'wavetrend'])
+def test_symbol_box(sid):
+    s = desk.load_studies()[sid]
+    assert s.params()[0]['name'] == 'symbol' and set(s.params()[0]['choices']) == {'BTCUSDT', 'ETHUSDT'}
+    assert s.normalize({})['symbol'] == 'BTCUSDT' and 'ETH' not in s.label(s.normalize({}))   # BTC ledger names unchanged
+    assert 'ETHUSDT' in s.label(s.normalize({'symbol': 'ETHUSDT'})) and 'ETH' in s.describe(s.normalize({'symbol': 'ETHUSDT'}))
+    with pytest.raises(ValueError):
+        s.normalize({'symbol': 'DOGEUSDT'})
+
+
+@pytest.mark.skipif(not _bars.data_ready('ETHUSDT'), reason='ETH 1m bars not on this machine')
+def test_eth_bars_are_eth_and_stay_inside_dev():
+    a, b = _bars.load_1m(symbol='ETHUSDT'), _bars.load_1m(symbol='BTCUSDT')
+    assert 500 < a[:, 4].mean() < 5000 < b[:, 4].mean() and a[-1, 0] < _bars.day_ms('2024-07-01')
+
+
+@pytest.mark.skipif(not _bars.data_ready('ETHUSDT'), reason='ETH 1m bars not on this machine')
+def test_eth_run_end_to_end(tmp_path):
+    s = desk.load_studies()['rsi']
+    trials = tmp_path / 'TRIALS.md'
+    trials.write_text('', encoding='utf-8')
+    out = desk.run_setting(s, {'symbol': 'ETHUSDT', 'tf': '1h'}, trials_path=trials, cache_dir=tmp_path / 'c')
+    assert out['n'] >= 20 and 'ETH' in out['describe'] and 'ETHUSDT' in trials.read_text(encoding='utf-8')

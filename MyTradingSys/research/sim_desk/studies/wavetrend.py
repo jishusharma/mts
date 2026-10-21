@@ -17,19 +17,20 @@ import _bars  # noqa: E402
 from MyTradingSys.backtest.layers.wavetrend import wavetrend as wt  # noqa: E402
 
 ID = 'wavetrend'
-TITLE = 'WaveTrend (LazyBear): cross out of the overbought / oversold band, BTCUSDT'
+TITLE = 'WaveTrend (LazyBear): cross out of the overbought / oversold band, BTCUSDT or ETHUSDT'
 MAX_HOLD = 100
 TF = {'1h': '1 hour (ours)', '4h': '4 hours (ours)', '15m': '15 minutes (ours)'}
 TF_MIN = {'1h': 60, '4h': 240, '15m': 15}
 BAND = {'53': 'beyond 53 (trader)', '60': 'beyond 60 (trader)'}
 SIDES = {'BOTH': 'long and short (trader: LazyBear)', 'LONG': 'long only (trader: TrendCrypto2022)'}
 EXIT = {'R': 'target at a multiple of risk (trader: 1.5 x)', 'CROSS': 'at the opposite cross (ours)'}
-DEFAULT = {'tf': '1h', 'band': '53', 'sides': 'BOTH', 'exit': 'R', 'target_r': 1.5,
+DEFAULT = {'symbol': 'BTCUSDT', 'tf': '1h', 'band': '53', 'sides': 'BOTH', 'exit': 'R', 'target_r': 1.5,
            **_bars.FEE_DEFAULT, 'start': '2022-04-01', 'end': '2024-06-30'}
 
 
 def params():
-    return [{'name': 'tf', 'label': 'Chart', 'choices': TF},
+    return [_bars.SYMBOL_PARAM,
+            {'name': 'tf', 'label': 'Chart', 'choices': TF},
             {'name': 'band', 'label': 'Cross must happen', 'choices': BAND},
             {'name': 'sides', 'label': 'Trades', 'choices': SIDES},
             {'name': 'exit', 'label': 'Exit (stop: 3-bar low/high, trader)', 'choices': EXIT},
@@ -47,6 +48,7 @@ def normalize(p):
     for k, table in (('tf', TF), ('band', BAND), ('sides', SIDES), ('exit', EXIT)):
         if q[k] not in table:
             raise ValueError(f'{k}: unknown choice {q[k]!r}')
+    _bars.symbol_of(q)
     for f in params():
         if f.get('number') and not (f['name'] == 'target_r' and q['exit'] != 'R'):
             try:
@@ -65,20 +67,20 @@ def normalize(p):
 def label(q):
     ex = f"target {q['target_r']:g}R" if q['exit'] == 'R' else 'opposite cross'
     return (f"{q['tf']} band {q['band']} {q['sides']} {ex} fees {q['maker_pct']:g}/{q['taker_pct']:g}% "
-            f"{q['start']}..{q['end']}")
+            f"{q['start']}..{q['end']}{_bars.coin_tag(q)}")
 
 
 def describe(q):
     ex = f"a target at {q['target_r']:g} x risk" if q['exit'] == 'R' else 'the opposite cross'
     who = 'long when' if q['sides'] == 'LONG' else 'long when'
     short = '' if q['sides'] == 'LONG' else f"; short on a down-cross above +{q['band']}"
-    return (f"{TF[q['tf']].split(' (')[0].capitalize()} WaveTrend: {who} WT1 crosses up through WT2 below -{q['band']}{short}; "
+    return (f"{_bars.SYMBOLS[_bars.symbol_of(q)].split(' (')[0]}, {TF[q['tf']].split(' (')[0]} WaveTrend: {who} WT1 crosses up through WT2 below -{q['band']}{short}; "
             f"market entry at the next bar, stop past the last 3 bars, exit on {ex} or after {MAX_HOLD} bars; "
             f"fees {q['maker_pct']:g} % limit / {q['taker_pct']:g} % market; {q['start']} to {q['end']}.")
 
 
 def run(q, progress=print):
-    a = _bars.load_1m(progress)
+    a = _bars.load_1m(progress, _bars.symbol_of(q))
     progress('computing WaveTrend')
     tf_ms = TF_MIN[q['tf']] * _bars.MIN
     b = _bars.resample(a, TF_MIN[q['tf']])
@@ -113,7 +115,7 @@ def run(q, progress=print):
 
 
 def chart_trade(ref, q):
-    a = _bars.load_1m()
+    a = _bars.load_1m(symbol=_bars.symbol_of(q))
     tr = _bars.replay(a, ref, q)
     if tr is None or not tr['filled']:
         return None

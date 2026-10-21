@@ -31,6 +31,7 @@ never dispatch raw/refined cards). Board STOP/HOLD and CI RED outrank everything
   work only in the printed WORKTREE.` Then defaults for open questions, `Ship once with sync.py ship --release <slug> after <earlier shipper, or none>`,
   `Run with zero operator input: never ask; take the conservative default, log DECISION (OURS), continue`, and
   `Your final report starts with your ROLE LOADED banner line, then Result: and the content sha, at most 6 lines.`
+- A started session must run at once: `initiation: "user_asked"`, never `offer`/`own_initiative` (those are cards that wait for the operator's click, hours if he is away). If the app refuses a start (event turn), put the start line in the reply and write it to the hand-over; never leave a card.
 - Every call passes `model` (sonnet; haiku for scoped work; opus only when the operator named it) and `initiation: "user_asked"`.
 - Never start or message a Fable session; message only session ids you started.
 

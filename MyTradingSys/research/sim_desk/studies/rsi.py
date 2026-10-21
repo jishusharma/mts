@@ -16,18 +16,19 @@ from MyTradingSys.backtest.layers.rsi.malkan_40_60 import malkan_regime, malkan_
 from MyTradingSys.backtest.layers.rsi.rsi_core import rsi_core  # noqa: E402
 
 ID = 'rsi'
-TITLE = 'RSI 40/60 (Malkan): bounce at 40 in an up-trend, reject at 60 in a down-trend, BTCUSDT'
+TITLE = 'RSI 40/60 (Malkan): bounce at 40 in an up-trend, reject at 60 in a down-trend, BTCUSDT or ETHUSDT'
 PERIOD, MAX_HOLD = 14, 100
 TF = {'1d': 'daily (trader)', '4h': '4 hours (ours)', '1h': '1 hour (ours)'}
 TF_MIN = {'1d': 1440, '4h': 240, '1h': 60}
 ENTRY = {'BREAK': 'order above the signal candle high / below its low (trader)', 'CLOSE': 'at the signal candle close (ours)'}
 EXIT = {'LEVEL': 'when RSI reaches 60 (long) / 40 (short) (trader)', 'R': 'target at a chosen multiple of risk (ours)'}
-DEFAULT = {'tf': '1d', 'entry': 'BREAK', 'exit': 'LEVEL', 'target_r': 2.0, 'tolerance': 2.0, 'lookback': 20,
+DEFAULT = {'symbol': 'BTCUSDT', 'tf': '1d', 'entry': 'BREAK', 'exit': 'LEVEL', 'target_r': 2.0, 'tolerance': 2.0, 'lookback': 20,
            **_bars.FEE_DEFAULT, 'start': '2022-04-01', 'end': '2024-06-30'}
 
 
 def params():
-    return [{'name': 'tf', 'label': 'Chart', 'choices': TF},
+    return [_bars.SYMBOL_PARAM,
+            {'name': 'tf', 'label': 'Chart', 'choices': TF},
             {'name': 'entry', 'label': 'Entry', 'choices': ENTRY},
             {'name': 'exit', 'label': 'Exit (stop: past the signal candle, trader)', 'choices': EXIT},
             {'name': 'target_r', 'label': 'Target, x risk (ours)', 'number': True, 'min': 0.5, 'max': 10, 'step': 0.1},
@@ -45,6 +46,7 @@ def normalize(p):
     for k, table in (('tf', TF), ('entry', ENTRY), ('exit', EXIT)):
         if q[k] not in table:
             raise ValueError(f'{k}: unknown choice {q[k]!r}')
+    _bars.symbol_of(q)
     for f in params():
         if f.get('number') and not (f['name'] == 'target_r' and q['exit'] != 'R'):
             try:
@@ -64,12 +66,12 @@ def normalize(p):
 def label(q):
     ex = f"target {q['target_r']:g}R" if q['exit'] == 'R' else 'RSI 60/40'
     return (f"{q['tf']} {q['entry']} {ex} band {q['tolerance']:g} trend {q['lookback']} "
-            f"fees {q['maker_pct']:g}/{q['taker_pct']:g}% {q['start']}..{q['end']}")
+            f"fees {q['maker_pct']:g}/{q['taker_pct']:g}% {q['start']}..{q['end']}{_bars.coin_tag(q)}")
 
 
 def describe(q):
     ex = f"a target at {q['target_r']:g} x risk" if q['exit'] == 'R' else 'RSI reaching 60 (long) or 40 (short)'
-    return (f"{TF[q['tf']].split(' (')[0].capitalize()} RSI {PERIOD}: long when RSI dips to within {q['tolerance']:g} of 40 "
+    return (f"{_bars.SYMBOLS[_bars.symbol_of(q)].split(' (')[0]}, {TF[q['tf']].split(' (')[0]} RSI {PERIOD}: long when RSI dips to within {q['tolerance']:g} of 40 "
             f"and turns up on a green candle in an up-trend (short: mirror at 60); "
             f"{ENTRY[q['entry']].split(' (')[0]}, stop past the signal candle, exit on {ex} or after {MAX_HOLD} bars; "
             f"fees {q['maker_pct']:g} % limit / {q['taker_pct']:g} % market; {q['start']} to {q['end']}.")
@@ -87,7 +89,7 @@ def _signals(q, a):
 
 
 def run(q, progress=print):
-    a = _bars.load_1m(progress)
+    a = _bars.load_1m(progress, _bars.symbol_of(q))
     progress('finding RSI setups')
     b, rsi, sigs = _signals(q, a)
     tf_ms = TF_MIN[q['tf']] * _bars.MIN
@@ -115,7 +117,7 @@ def run(q, progress=print):
 
 
 def chart_trade(ref, q):
-    a = _bars.load_1m()
+    a = _bars.load_1m(symbol=_bars.symbol_of(q))
     tr = _bars.replay(a, ref, q)
     if tr is None or not tr['filled']:
         return None

@@ -1,4 +1,4 @@
-"""Shared parts for bar-based studies (rsi, wavetrend): 1m BTCUSDT bars, resampling, and one trade on 1m bars.
+"""Shared parts for bar-based studies (rsi, wavetrend): 1m bars (BTCUSDT, ETHUSDT), resampling, and one trade on 1m bars.
 
 Not a study (the leading _ keeps the desk from loading it). Bars are read from the 1m CSVs once and kept as .npy
 under sim_desk/cache/bars/ (gitignored). Columns: open time ms, open, high, low, close.
@@ -34,15 +34,32 @@ def _months(first, last):
     return out
 
 
-def data_ready():
-    return all((ROOT / f'BTCUSDT-1m-{m}.csv').exists() for m in _months(WARMUP_FROM, LAST_MONTH))
+SYMBOLS = {'BTCUSDT': 'BTC / USDT (ours)', 'ETHUSDT': 'ETH / USDT (ours)'}
+SYMBOL_PARAM = {'name': 'symbol', 'label': 'Coin', 'choices': SYMBOLS}
 
 
-def _month(m):
-    f = BAR_CACHE / f'BTCUSDT-1m-{m}.npy'
+def data_ready(symbol='BTCUSDT'):
+    return all((ROOT / f'{symbol}-1m-{m}.csv').exists() for m in _months(WARMUP_FROM, LAST_MONTH))
+
+
+def symbol_of(q):
+    s = (q or {}).get('symbol') or 'BTCUSDT'
+    if s not in SYMBOLS:
+        raise ValueError(f'symbol: unknown choice {s!r}')
+    return s
+
+
+def coin_tag(q):
+    """Label suffix: empty for BTC so the existing ledger rows keep their names."""
+    s = symbol_of(q)
+    return '' if s == 'BTCUSDT' else f' {s}'
+
+
+def _month(m, symbol='BTCUSDT'):
+    f = BAR_CACHE / f'{symbol}-1m-{m}.npy'
     if f.exists():
         return np.load(f)
-    src = ROOT / f'BTCUSDT-1m-{m}.csv'
+    src = ROOT / f'{symbol}-1m-{m}.csv'
     if not src.exists():
         raise FileNotFoundError(src)
     with open(src, encoding='utf-8') as fh:
@@ -57,19 +74,21 @@ def _month(m):
 _ALL = {}
 
 
-def load_1m(progress=None):
+def load_1m(progress=None, symbol='BTCUSDT'):
     """All 1m bars from the warm-up month to the end of DEV, sorted, no duplicates."""
-    if 'a' not in _ALL:
+    if symbol not in SYMBOLS:
+        raise ValueError(f'symbol: unknown choice {symbol!r}')
+    if symbol not in _ALL:
         parts = []
         for m in _months(WARMUP_FROM, LAST_MONTH):
             if progress:
                 progress(f'reading 1m bars {m}')
-            parts.append(_month(m))
+            parts.append(_month(m, symbol))
         a = np.concatenate(parts)
         a = a[np.argsort(a[:, 0], kind='stable')]
         assert a[-1, 0] < (dt.date(2024, 7, 1) - dt.date(1970, 1, 1)).days * DAY, 'read past DEV'
-        _ALL['a'] = a
-    return _ALL['a']
+        _ALL[symbol] = a
+    return _ALL[symbol]
 
 
 def resample(a, tf_min):
