@@ -52,9 +52,9 @@ WEEK_STOP = 85            # % of the week used: the rest stays with the operator
 # week 14 points; the 85% pre-check above only looks at what is already used, so a card that starts at 16% may still empty the window.
 WINDOW_S = 5 * 3600
 WEEK_S = 7 * 86400
-LAB_WINDOW_PTS = 50       # points of one 5-hour window the lab may spend (the rest stays with the operator's own sessions)
-LAB_WEEK_PTS = 60         # points of the week the lab may spend (operator 2026-10-16: was 35; GPT sat at 24% of the week while dev waited)
-LAB_RUNS_PER_WINDOW = 10  # cards started per 5-hour window (operator 2026-10-16: was 4; luna/medium runs move 0-3 window pts, the 30-min tick allows 10)
+LAB_WINDOW_PTS = 65       # DECISION (OURS) 2026-10-21 Supervisor B: was 50, 65 is the most that keeps the 10-pt reserve and the tests; reading 3% window / 1% week on Plus; points of one 5-hour window the lab may spend (the rest stays with the operator's own sessions)
+LAB_WEEK_PTS = 90         # DECISION (OURS) 2026-10-21: was 60, ~90% of the week; points of the week the lab may spend (operator 2026-10-16: was 35; GPT sat at 24% of the week while dev waited)
+LAB_RUNS_PER_WINDOW = 14  # DECISION (OURS) 2026-10-21: was 10 (20-min gap allows 15); cards started per 5-hour window (operator 2026-10-16: was 4; luna/medium runs move 0-3 window pts, the 30-min tick allows 10)
 ASTRA_RUNS_PER_WINDOW = 1
 WINDOW_RESERVE = 10       # points of the window never planned away: a card starts only if its estimate fits below 100 - this
 WEEK_RESERVE = 15

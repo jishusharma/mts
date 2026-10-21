@@ -321,6 +321,7 @@ def boot_step(body):
     return "(first step of the file's boot section)"
 
 
+REMIND_EVERY = 6
 LAST_META = {}
 
 
@@ -399,6 +400,11 @@ def _reminder(sid):
     name = done[-1]
     m = role_meta(sid, name)
     if not m:
+        return ""
+    d = _load(sid)
+    d["n"] = d.get("n", 0) + 1       # the same ~230 chars on every prompt is re-read cost: repeat only every REMIND_EVERY-th prompt
+    _save(sid, d)
+    if (d["n"] - 1) % REMIND_EVERY:
         return ""
     path = f"{ROLES_REL}/{m['file']}"
     return _out("UserPromptSubmit", f"Role: {name} {m['version']} (token {m['token']}, {path}). Follow that file; if you no longer "
