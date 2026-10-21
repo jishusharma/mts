@@ -82,6 +82,21 @@ class SignalTest(unittest.TestCase):
         (S.state_dir() / "last_fetch").unlink()
         self.assertEqual(S.handle(self.payload("UserPromptSubmit", sid="s2")), "")         # already seen
 
+    def test_hook_auto_sends_broadcast_prompt(self):
+        self.machine("jis-nb", "pro")
+        text, kind = S.auto_send_text(self.payload("UserPromptSubmit", prompt="MTS broadcast: all sessions sync and pause"))
+        self.assertEqual((text, kind), ("all sessions sync and pause", "broadcast"))
+        text2, kind2 = S.auto_send_text(self.payload("UserPromptSubmit", prompt="broadcast halt orders immediately"))
+        self.assertEqual((text2, kind2), ("halt orders immediately", "broadcast"))
+
+    def test_broadcast_banner_rendered_prominently(self):
+        self.machine("jis-nuc", "sharma")
+        self.assertEqual(S.main(["broadcast", "urgent notice for all models"]), 0)
+        self.machine("jis-nb", "pro")
+        out = S.handle(self.payload("UserPromptSubmit"))
+        self.assertIn("[MTS BROADCAST from operator/session across hosts]", out)
+        self.assertIn("urgent notice for all models", out)
+
     def test_hook_auto_sends_claim_and_ship(self):
         self.machine("jis-nb", "pro")
         S.handle(self.payload("PostToolUse", tool_name="Bash",
