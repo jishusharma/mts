@@ -92,6 +92,7 @@ only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once); histo
 - A worker that merges late hits VERDICTS.csv and wiring_registry.json conflicts: union both sides.
 
 ## Session log (newest first; one line each, last 5)
+- 2026-10-21 Supervisor B (JIS-NUC): GPT lane brought up, 5 cards back to CODEX; lab caps raised to window 65 / week 90 / 14 runs (DECISION (OURS), Plus plan read 5h 3% week 1%); pitchfork layer shipped 79da493c; DSA/DSA-NB chats still unarmed.
 - 2026-10-19 Supervisor A (JIS-NUC): weekly 93%/95 cap, mode=STOP all window, no workers; handover/SUPERVISOR_A.md; DSA/DSA-NB chats need arming.
 - SUPER-LENOVO-1019b (2026-10-19, Sonnet coordinator, 2 Agents): chunk 2 landed (4e88b6d1); gate-fix 6efd40e0 passed the full gate only with MTS_GATE_JOBS=2 and no concurrent ship; 3lh/3cx/4d = load timeouts, 5b = py3.14 exit-5 bug; chunk 3 f9497e45 and part a b9c448c7 left unshipped by operator stop. Lesson: on this laptop run ONE ship at a time with MTS_GATE_JOBS=2 and check for other sync.py ship processes first; start_session is refused on session-started turns, use Agents.
 - SUPERLOOP-NB-1019 (2026-10-19, Opus one-time agent, Sonnet + Haiku review Agents): five-hour loop on every device/login: `supervisor.py plan` (pacing vs weekly room, heartbeat, shard over live supervisors, one owner per lane, DSA down flag, nuc_wake gate) and `supervisor.py handover`; SUPER_LOOP.md replaces TANDEM_3LOGIN.md; role v3. Lesson: pacing in prose drifts; a T0 command per wake does not.
