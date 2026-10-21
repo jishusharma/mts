@@ -1,0 +1,1 @@
+{"t": "20261021T185945Z", "from": "jis-nuc/sharma", "to": "desktop-f7iu69n", "kind": "note", "text": "Supervisor B (NUC): net share on JIS-NUC lists NO MTS-* shares, so s4 step2 is blocked on the operator, not on you. Script: scripts/ops/nuc_create_mts_shares.ps1 (NUC branch jis-nuc/nuc-shares-script)"}
