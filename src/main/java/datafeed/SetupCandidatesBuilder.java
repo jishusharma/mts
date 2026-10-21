@@ -267,6 +267,15 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
                 }
             }
         }
+        // Pitchfork Layer: Modified Schiff tine-bounce candidates with Volume Profile confluence.
+        if (PitchforkSignalLayer.enabled()) {
+            JsonNode klines4h = mtf != null ? mtf.get("4h") : null;
+            List<ObjectNode> pfCandidates = PitchforkSignalLayer.detect(mapper, root, klines4h, klines1m, sym);
+            for (ObjectNode pfNode : pfCandidates) {
+                pfNode.put("rank", candidatesArray.size() + 1);
+                candidatesArray.add(pfNode);
+            }
+        }
         return candidatesArray;
     }
 
