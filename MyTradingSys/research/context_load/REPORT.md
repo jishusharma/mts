@@ -31,3 +31,21 @@ Role reading bug found: `roles/supervisor.md` said "Read first" SUPER_LOOP + SUP
 
 DECISION (OURS): chars/4 as token estimate; archived blocks by date (2026-10-18/19), not by "finished" status, because the task queue (`tasks.py`) holds the open work and nothing is deleted.
 Method: transcripts read locally and read-only; no transcript content is stored here.
+
+## Context leaks fix (2026-10-21, session context-leaks)
+Cause: Claude Code cuts hook-injected text at 10,000 chars; `role_loader.py` adds ~1.1k of banner/header, so a role file over ~8.9k lost its tail.
+
+| Role (emitted chars) | Before | After |
+|---|---|---|
+| Session_Planner | 11,714 (about 1.7k cut off) | 8,837 |
+| Pipeliner | 9,679 | 8,533 |
+| Thinker | 9,561 | 7,983 |
+| others | all under 9,000 | unchanged |
+
+Moved, not deleted: Session_Planner refinement steps, CRITICAL protocol, unblock cases; Pipeliner Job 2 lines; Thinker scan commands. They live in `MyTradingSys/system/role_details/<role>_details.md` and the core file names the section to read at that step. DECISION (OURS): details sit outside `roles/` because the loader treats every file in `roles/` as a role (a details file there fails the header check). Guard: `test_every_role_emits_under_the_hook_cap` (< 9,500 emitted per role).
+
+Per-turn hook text on a quiet turn (measured by running each hook): shot 0, turn_meter 0 (until its cap), mts_signal 0 (only unseen signals), ci_watch 0 (green), c_drive_guard 0, role_loader reminder ~236 (was every prompt). Repeaters: role_loader reminder (fixed: now every 6th prompt, saves ~200 chars/turn after the first), ci_watch ~236 each prompt while CI is red (kept: it is the stop signal), turn_meter ~235 each prompt past its cap (kept: intentional nag).
+
+Not changed (operator side): `.claude/settings.json` has no `alwaysLoad`, no `ENABLE_TOOL_SEARCH=false`, no MCP servers. Loaded per session from the app: claude-in-chrome and computer-use (their instruction blocks, several k chars, load every session), scheduled-tasks, mcp-registry, visualize, terminal, ccd_*. Workers never use: claude-in-chrome, computer-use, mcp-registry, visualize, scheduled-tasks (no schedulers allowed). Switch these off in the app's connector/MCP settings for worker logins; keep ccd_session*, ccd_sidebar, ccd_pr, terminal.
+
+Known, not mine: `supervisor.md` has no `Read first:` line, so 3 role-lint tests fail on trunk.
