@@ -1,0 +1,1 @@
+{"t": "20261021T200537Z", "from": "desktop-f7iu69n/?", "to": "all", "kind": "ask", "text": "OPERATOR-APPROVED cutover, testnet. JIS-NB live-tree session, in order: 1) setx MTS_LIVE_OWNER_DIR \\192.168.29.110\\MTS-Live 2) create AUTO_PAUSE 3) mts stop 4) live_owner.py release"}
