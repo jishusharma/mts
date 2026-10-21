@@ -7,16 +7,27 @@
   "created": "2026-10-21T00:29:59Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/cpu_audit_desktop-f7iu69n.md is shipped, lists the top 12 CPU processes and every non-Windows service/task found, and a desk post gives the operator the exact -Apply command for desktop-f7iu69n.",
+  "est_turns": 15,
   "from_inbox": "",
   "goal": "Find what burns CPU on desktop-f7iu69n (Defender, OEM helpers, telemetry, old-office agents) and hand the operator one admin command that applies the same cleanup done on JIS-NUC (B175).",
   "id": "cpu-audit-laptop-f7iu69n",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "B175: task cards for NB, laptop and shipping; cpu_cleanup -Audit needs no elevation",
+      "ref": "7257400c85f5",
+      "utc": "2026-10-21T01:00:55Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "note": "Run on DESKTOP-F7IU69N itself (check $env:COMPUTERNAME first); the operator says this is the Lenovo device. If scripts/operator/cpu_cleanup.ps1 is missing after sync.py start, take card ship-cpu-cleanup-scripts first.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-21T01:01:58Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -28,6 +39,7 @@
     "any change to the live tree, live loop, HALT files or open trades",
     "disabling services or tasks (that needs the operator in an admin shell)"
   ],
+  "scope_sha": "7257400c85f5",
   "size": "S",
   "sources": [
     "MyTradingSys/items/B175_defender_msmpeng_cpu.md (2026-10-21 update)",
@@ -45,5 +57,6 @@
   "tests": [
     "Fail-first: if a list is extended, a unit check that every name in the safe list is absent from the keep-list (Wi-Fi, Remote Desktop, Windows Update, Defender, MTS-*, AIBridge)"
   ],
-  "title": "CPU audit and cleanup plan for the laptop DESKTOP-F7IU69N"
+  "title": "CPU audit and cleanup plan for the laptop DESKTOP-F7IU69N",
+  "worker": "session"
 }
