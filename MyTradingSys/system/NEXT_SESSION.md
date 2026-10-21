@@ -12,6 +12,12 @@ Run with zero operator input; defaults for open questions. Plan and checklists: 
 - CI: STATUS showed `CI green:` RED (oldest ungreen 22.7 h) and `gh` is missing on the laptop, so CI was not checked here; a host with `gh` checks the pinned `ci-<sha>` card first.
 - Do not add gates, lints or rule docs for this.
 
+## Simulator desk: RSI and WaveTrend studies shipped 2026-10-21 (hand-over, Opus lead)
+Run with zero operator input; defaults for open questions. Start: `python MyTradingSys/research/sim_desk/desk.py`, http://127.0.0.1:8765, pick the study at the top.
+- `studies/rsi.py` (Malkan 40/60 via rsi_core + malkan_40_60) and `studies/wavetrend.py` (LazyBear cross via wavetrend.py) share `studies/_bars.py` (1m bars cached in cache/bars, resample, one trade on 1m bars). Every on-screen choice says (trader) or (ours); sources are in each file header.
+- On screen (DEV, fee-net, filled trades): RSI daily (trader default) 2 trades, -1.04 R, NOT ENOUGH DATA (under 30 trades); RSI 4h 20 trades / 1h 75 trades, about 0 R, NOT ENOUGH DATA. WaveTrend 1h default 369 trades, -0.158 R, range -0.288 to -0.023, FAILED.
+- Desk verdict now: under 30 filled trades = NOT ENOUGH DATA; whole range below zero = FAILED. New question `rsi-timeframe` on the page (default: keep daily).
+
 ## Simulator desk: plug-in seam + Questions panel shipped 2026-10-21 (hand-over, Opus lead)
 Run with zero operator input; defaults for open questions.
 - A new layer is one file in `MyTradingSys/research/sim_desk/studies/` (levels moved to `studies/levels.py`); the desk finds it at start, no desk.py edit; a study picker appears once there are two. Contract and per-layer verdicts: `sim_desk/PLUGIN.md`. Nothing fits as-is today; Tom, CryptoCred and RSI need a small adapter; Fabio does not fit (order-flow bars start 2024-12-02, after the DEV window). No layer was ported.
