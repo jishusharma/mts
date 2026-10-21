@@ -11,7 +11,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import charts  # noqa: E402
 import desk  # noqa: E402
-import study_levels  # noqa: E402
+from studies import levels as study_levels  # noqa: E402
 
 FROZEN_P = {'entry': 'E1', 'scale': 'S2', 'stop': 'K5', 'exit': 'X0_2R'}
 
@@ -43,6 +43,14 @@ def test_svg_small_and_carries_exact_levels():
     assert _attr(svg, 'stop') == tr['stop'] and _attr(svg, 'exit') == tr['exits'][-1][1]
     assert _attr(svg, 'target') == tr['target']
     assert '-1.12 R long' in svg and 'stopped' in svg
+    assert '2023-11-14 ' in svg and 'UTC' in svg            # date and time of the first fill
+
+
+def test_fill_level_drawn_when_not_the_touched_level():
+    tr = _trade()
+    tr['entries'] = [(tr['bars'][120]['t'], 29990.0)]
+    svg = charts.svg(tr)
+    assert _attr(svg, 'fill') == 29990.0 and 'filled' in svg
 
 
 def test_long_trade_still_small():
@@ -67,3 +75,4 @@ def test_frozen_run_charts_match_simulate(tmp_path):
         assert _attr(c['svg'], 'stop') == r['stop']
         assert _attr(c['svg'], 'exit') == r['exits'][-1][0]
         assert (c['net_r'] > 0) == (r['net_r'] > 0)
+        assert r['filled_qty'] > 0 and 'UTC' in c['svg']

@@ -1,0 +1,11 @@
+{
+  "card": "habib-plan-hit-rate-study",
+  "done_when": "Plan ledger of >=12 plans with full/partial/miss; imbalance-level vs placebo-level result with variant count in the trial ledger; report in research/habib_plan_imbalance_2026-10-20/.",
+  "from": "JIS-NUC",
+  "id": "20261021-042947-habib-plan-hit-rate-study",
+  "need": "python scripts/dev/tasks.py brief habib-plan-hit-rate-study (full brief: python scripts/dev/tasks.py brief habib-plan-hit-rate-study)",
+  "posted": "2026-10-21T04:29:47Z",
+  "status": "pending",
+  "target": "DSA-NB",
+  "title": "Habib plan-hit-rate study: score each Sunday/weekly plan full/partial/miss (execution excluded), then imbalance levels vs placebo levels (research/habib_plan_imbalance_2026-10-20)"
+}

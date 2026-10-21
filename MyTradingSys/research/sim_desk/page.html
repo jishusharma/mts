@@ -28,6 +28,16 @@
   .charts figure { margin:0; background:#fff; border:1px solid var(--line); border-radius:8px; padding:4px; }
   .charts svg { width:100%; height:auto; display:block; }
   footer { color:var(--mute); font-size:12px; margin-top:10px; }
+  #qs { margin-top:14px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 12px; }
+  #qs h2 { font-size:14px; margin:0 0 4px; }
+  .q { border-top:1px solid var(--line); padding:8px 0; }
+  .q:first-of-type { border-top:0; }
+  .q p { margin:2px 0; font-size:13px; }
+  .q .mute { color:var(--mute); font-size:12px; }
+  .q .opts { display:flex; gap:6px; flex-wrap:wrap; margin:6px 0 4px; }
+  .q .opts button { background:var(--bg); color:var(--ink); border:1px solid var(--line); padding:4px 10px; font-weight:500; }
+  .q .opts button.on { background:#2563eb; color:#fff; border-color:#2563eb; }
+  .q textarea { width:100%; font:inherit; color:var(--ink); background:var(--bg); border:1px solid var(--line); border-radius:5px; padding:4px 6px; min-height:34px; }
   .err { color:var(--fail); }
 </style>
 </head>
@@ -40,6 +50,7 @@
   <div class="nums" id="nums"></div>
   <div class="charts" id="charts"></div>
   <footer id="foot"></footer>
+  <section id="qs"><h2>Questions for you</h2><div id="qlist"></div></section>
 </main>
 <script>
 const $ = id => document.getElementById(id);
@@ -67,20 +78,64 @@ function field(f, v) {
   return l;
 }
 
+let studies = [];
 async function init() {
-  const studies = await (await fetch('/api/studies')).json();
-  study = studies[0];
+  studies = await (await fetch('/api/studies')).json();
+  pickStudy(studies[0].id);
+  loadQuestions();
+}
+
+function pickStudy(id) {
+  study = studies.find(s => s.id === id);
   $('title').textContent = 'Simulator desk: ' + study.title;
-  const form = $('form');
+  const form = $('form'); form.innerHTML = '';
+  if (studies.length > 1) {            // a picker only once there is a second study
+    const l = document.createElement('label'); l.textContent = 'Study';
+    const sel = document.createElement('select');
+    for (const s of studies) { const o = document.createElement('option'); o.value = s.id; o.textContent = s.title; sel.appendChild(o); }
+    sel.value = study.id; sel.dataset.picker = '1'; sel.onchange = () => pickStudy(sel.value);
+    l.appendChild(sel); form.appendChild(l);
+  }
   for (const f of study.params) form.appendChild(field(f, study.defaults[f.name]));
+  const ex = form.querySelector('[name=exit]'), tr = form.querySelector('[name=target_r]');
+  if (ex && tr) { const grey = () => { tr.disabled = ex.value !== 'R'; }; ex.onchange = grey; grey(); }
   const b = document.createElement('button'); b.id = 'run'; b.textContent = 'Run'; b.onclick = run;
   form.appendChild(b);
   $('foot').textContent = `Tries on this desk so far: ${study.tries}. Test window: development data only (2022-04-01 to 2024-06-30).`;
 }
 
+async function loadQuestions() {
+  const qs = await (await fetch('/api/questions')).json();
+  const list = $('qlist'); list.innerHTML = '';
+  for (const q of qs) {
+    const d = document.createElement('div'); d.className = 'q';
+    const t = document.createElement('p'); t.innerHTML = '<b></b>'; t.firstChild.textContent = q.question;
+    const c = document.createElement('p'); c.textContent = q.context;
+    const df = document.createElement('p'); df.className = 'mute'; df.textContent = 'If you say nothing: ' + q.default;
+    const opts = document.createElement('div'); opts.className = 'opts';
+    const box = document.createElement('textarea'); box.placeholder = 'Anything to add (optional)';
+    const st = document.createElement('p'); st.className = 'mute';
+    if (q.answer) { box.value = q.answer.text || ''; st.textContent = `Your answer (${q.answer.at}): ${q.answer.choice}`; }
+    for (const o of q.options) {
+      const b = document.createElement('button'); b.textContent = o;
+      if (q.answer && q.answer.choice === o) b.className = 'on';
+      b.onclick = async () => {
+        const r = await fetch('/api/answer', { method:'POST', headers:{'Content-Type':'application/json'},
+                                               body: JSON.stringify({ id: q.id, choice: o, text: box.value }) });
+        const a = await r.json();
+        if (!r.ok) { st.textContent = a.error; return; }
+        for (const x of opts.children) x.className = x === b ? 'on' : '';
+        st.textContent = `Saved (${a.at}): ${a.choice}. The next session reads this.`;
+      };
+      opts.appendChild(b);
+    }
+    d.append(t, c, df, opts, box, st); list.appendChild(d);
+  }
+}
+
 function values() {
   const p = {};
-  for (const el of $('form').querySelectorAll('select, input')) if (el.value !== '') p[el.name] = el.type === 'number' ? Number(el.value) : el.value;
+  for (const el of $('form').querySelectorAll('select, input')) if (el.value !== '' && !el.disabled && !el.dataset.picker) p[el.name] = el.type === 'number' ? Number(el.value) : el.value;
   return p;
 }
 
@@ -112,7 +167,7 @@ function show(o) {
   s.textContent = o.reason + `. Try #${o.try_no} on this data: the best of many tries looks better than it is.`;
   v.appendChild(s);
   $('nums').innerHTML = '';
-  const nums = [[o.n, 'trades'], [fmt(o.mean) + ' R', `average per trade after fees (95 % range ${fmt(o.lo)} to ${fmt(o.hi)})`],
+  const nums = [[o.n, `trades (${o.nofill} ideas never filled)`], [fmt(o.mean) + ' R', `average per trade after fees (95 % range ${fmt(o.lo)} to ${fmt(o.hi)})`],
                 [o.streak, 'worst losing streak']];
   for (const [b, t] of nums) {
     const d = document.createElement('div'); d.className = 'num';
@@ -123,9 +178,9 @@ function show(o) {
   for (const c of o.charts) {
     const f = document.createElement('figure'); f.innerHTML = c.svg; f.title = 'typical ' + c.kind; $('charts').appendChild(f);
   }
-  $('foot').textContent = (o.footnote ? o.footnote + ' ' : '') +
+  $('foot').textContent =
     (o.charts.length ? 'Charts: 3 winners and 3 losers closest to the typical winner and loser. ' : '') +
-    (o.cached ? 'Same settings as an earlier try: shown from cache, not logged again. ' : `Trial #${o.try_no} logged. `) +
+    (o.already_tried ? 'Same settings as an earlier try: not logged again. ' : `Trial #${o.try_no} logged. `) +
     `Setups tried on this data so far: ${o.try_no} here + ${o.prior_tries} by the original study.`;
 }
 init();

@@ -29,6 +29,7 @@ USER_CAP = 10      # CLAUDE.md SHORT SESSIONS: 10 turns with the operator (was 5
 NAG_EVERY = 5      # after the cap, repeat every 5 tool turns (once is easy to ignore mid-step)
 READ_BUDGET = 4_000_000    # operator 2026-10-18: turns allowed = budget / context size (100k -> 40 turns, 250k -> 16, 500k -> 8); no compaction
 OPUS_CTX_CAP = 500_000     # Opus: long sessions are wanted; the only cap is the context size
+OPUS_FOLLOWUP_CTX = 150_000   # Opus (use and destroy, operator 2026-10-21): a job may grow to OPUS_CTX_CAP, but no new operator message above this
 FABLE_MESSAGES = 1         # Fable: one operator message per session, HARD (ignores MTS_TURN_METER=off and the cap env vars)
 PRUNE_DAYS = 7
 TAIL_START = 1 << 17   # transcript bytes read from the end to find a tool call's message (grows if big results push it out)
@@ -158,6 +159,21 @@ def tier(model):
     return "fable" if "fable" in model else "opus" if "opus" in model else "default"
 
 
+def transcript_starts_supervisor(payload):
+    """Older or resumed Supervisors never sent their start line to this hook: read the first user line of the transcript."""
+    try:
+        with open(payload.get("transcript_path") or "", "rb") as f:
+            head = f.read(60_000).decode("utf-8", "ignore")
+    except OSError:
+        return False
+    return "You are Supervisor" in head[:head.find('"type":"assistant"') if '"type":"assistant"' in head else len(head)]
+
+
+def is_supervisor_start(payload):
+    """The coordinator start line ("You are Supervisor. Login <L>. ..."), SUPER_SESSION.md; sticky in the state file."""
+    return str(payload.get("prompt") or "").lstrip().lower().startswith("you are supervisor")
+
+
 def fable_block():
     return json.dumps({"decision": "block", "reason": f"[TURN METER] Fable sessions take {FABLE_MESSAGES} operator message "
                        "(hard rule, operator 2026-10-18; WORKERS.md). Start a new Fable session for the next message."})
@@ -181,6 +197,10 @@ def handle(payload):
         state["user"] = state.get("user", 0) + 1
         model, ctx = model_and_context(payload)
         kind = tier(model)
+        if is_supervisor_start(payload) or (not state.get("role") and transcript_starts_supervisor(payload)):
+            state["role"] = "supervisor"     # sticky: it runs unattended for hours; capped by context, not turns (operator 2026-10-21)
+        if state.get("role") == "supervisor" and kind == "default":
+            kind = "opus"
         if kind == "fable":
             state["tier"] = "fable"      # sticky: a later failed detection must not lift the hard block
         elif state.get("tier") == "fable" and not model:
@@ -193,6 +213,11 @@ def handle(payload):
             save(path, state)
             return ""
         if kind == "opus":
+            if state["user"] > 1 and ctx >= OPUS_FOLLOWUP_CTX and state.get("role") != "supervisor":
+                state["user"] -= 1
+                save(path, state)
+                return json.dumps({"decision": "block", "reason": f"[TURN METER] Opus context is {ctx // 1000}k >= {OPUS_FOLLOWUP_CTX // 1000}k: "
+                                   "every turn would re-read it. Use and destroy: start a new session for the next message (operator 2026-10-21)."})
             if ctx >= OPUS_CTX_CAP:
                 out = message(state, tool_cap, user_cap, f"Opus context {ctx // 1000}k >= {OPUS_CTX_CAP // 1000}k cap")
         else:
@@ -217,6 +242,10 @@ def handle(payload):
         t = state["tool"]
         model, ctx = model_and_context(payload)
         kind = tier(model)
+        if not state.get("role") and transcript_starts_supervisor(payload):
+            state["role"] = "supervisor"
+        if state.get("role") == "supervisor" and kind == "default":
+            kind = "opus"
         if kind == "default" and ctx:
             tool_cap = min(tool_cap, max(5, READ_BUDGET // ctx))
         if kind == "fable":

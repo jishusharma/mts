@@ -19,27 +19,35 @@ STUDY_DIR = HERE.parent / 'levels_confluence_2026-10-14'
 FROZEN = json.loads((STUDY_DIR / 'frozen_rule.json').read_text(encoding='utf-8'))
 
 import desk  # noqa: E402
-import study_levels  # noqa: E402
+from studies import levels as study_levels  # noqa: E402
 
 FROZEN_P = {'entry': 'E1', 'scale': 'S2', 'stop': 'K5', 'exit': 'X0_2R'}
 
 
 # ---- verdict (the study runner's rule order) ----
-def test_verdict_frozen_is_not_enough_data():
+def test_verdict_frozen_reads_failed_by_sample_spread():
     st = dict(FROZEN['dev'])
-    st['power_mde'] = FROZEN['power']['power_mde']
     st['power_plausible'] = FROZEN['power']['power_plausible_0.10R']
+    st['power_mde'] = FROZEN['power']['power_mde']
     word, reason = desk.verdict(st)
-    assert word == 'NOT ENOUGH DATA'
-    assert '31' in reason
+    assert word == 'FAILED'
+    assert '+0.10 R' in reason and '50 %' not in reason and 'chance to detect' not in reason
 
 
-def test_verdict_passed_and_failed():
-    assert desk.verdict({'n': 500, 'mean': .2, 'lo': .05, 'hi': .35, 'power_mde': {'power': .2}})[0] == 'PASSED'
-    assert 'DEV only' in desk.verdict({'n': 500, 'mean': .2, 'lo': .05, 'hi': .35, 'power_mde': {'power': .2}})[1]
-    assert desk.verdict({'n': 900, 'mean': -.1, 'lo': -.2, 'hi': .0, 'power_mde': {'power': .7}, 'power_plausible': .9})[0] == 'FAILED'
-    assert desk.verdict({'n': 900, 'mean': .0, 'lo': -.1, 'hi': .2, 'power_mde': {'power': .7}, 'power_plausible': .9})[0] == 'NOT ENOUGH DATA'
+def test_verdict_passed_and_wide():
+    assert desk.verdict({'n': 500, 'mean': .2, 'lo': .05, 'hi': .35, 'power_plausible': .2})[0] == 'PASSED'
+    assert 'DEV only' in desk.verdict({'n': 500, 'mean': .2, 'lo': .05, 'hi': .35, 'power_plausible': .2})[1]
+    # the two-point model no longer decides: weak power_mde but a ruled-out edge still reads FAILED
+    assert desk.verdict({'n': 900, 'mean': -.1, 'lo': -.2, 'hi': .0, 'power_mde': {'power': .1}, 'power_plausible': .9})[0] == 'FAILED'
+    assert desk.verdict({'n': 900, 'mean': .0, 'lo': -.1, 'hi': .2, 'power_plausible': .9})[0] == 'NOT ENOUGH DATA'
     assert desk.verdict({'n': 0})[0] == 'NOT ENOUGH DATA'
+
+
+def test_no_two_point_model_on_screen(tmp_path):
+    trials = tmp_path / 'TRIALS.md'
+    trials.write_text('', encoding='utf-8')
+    r = desk.run_setting(FakeStudy, {'x': 5}, trials_path=trials, cache_dir=tmp_path / 'c')
+    assert 'power_mde' not in r['stats'] and not r.get('footnote')
 
 
 # ---- date lock ----
@@ -84,7 +92,8 @@ class FakeStudy:
         days = np.repeat(np.arange(100), 3)
         net = rng.normal(0, 1, days.size) * p['x']
         return {'day': days, 'touch_t': np.arange(days.size), 'net': net, 'gross': net + .1,
-                'fees': np.full(days.size, .1), 'all_days': np.arange(100), 'refs': [None] * days.size}
+                'fees': np.full(days.size, .1), 'all_days': np.arange(100), 'refs': [None] * days.size,
+                'filled': np.ones(days.size, bool)}
 
 
 def _rows(path):
@@ -117,19 +126,19 @@ def test_losing_streak():
 
 
 # ---- stats against the stored per-idea CSV (fee-net R rounded to 3 decimals) ----
-def test_stats_from_stored_csv_match_frozen():
+def test_stats_count_only_filled_trades_csv():
+    """A no-fill idea pays no fee, so its stored net R is exactly 0; filled trades always pay a fee (Fable review C1)."""
     with (STUDY_DIR / 'ladder_ideas_dev.csv').open(newline='', encoding='utf-8') as f:
         rows = list(csv.DictReader(f))
     all_days = np.array(sorted({int(r['day']) for r in rows}))
     sel = [r for r in rows if r['E1'] == 'True' and r['S2_K5_X0_2R'] != '']
     net = np.array([float(r['S2_K5_X0_2R']) for r in sel])
+    filled = net != 0
     res = {'day': np.array([int(r['day']) for r in sel]), 'touch_t': np.array([int(r['touch_t']) for r in sel]),
-           'net': net, 'gross': net, 'fees': np.zeros(net.size), 'all_days': all_days}
+           'net': net, 'gross': net, 'fees': np.zeros(net.size), 'all_days': all_days, 'filled': filled}
     st = desk.stats(res)
-    assert st['n'] == FROZEN['dev']['n'] == 772
-    assert abs(st['mean'] - FROZEN['dev']['mean']) < 5e-4
-    assert abs(st['lo'] - FROZEN['dev']['lo']) < 5e-3 and abs(st['hi'] - FROZEN['dev']['hi']) < 5e-3
-    assert st['streak'] == 7  # Haiku re-derivation 2026-10-21
+    assert st['n'] == 255 and st['nofill'] == 517
+    assert abs(st['mean'] - (-0.119)) < 1e-3
 
 
 # ---- plain words ----
@@ -146,6 +155,20 @@ def test_unused_target_box_does_not_block_a_run():
         study_levels.normalize({**FROZEN_P, 'exit': 'R', 'target_r': 0})
 
 
+def test_non_number_gives_plain_message():
+    with pytest.raises(ValueError) as e:
+        study_levels.normalize({**FROZEN_P, 'stop_pct': 'abc'})
+    assert 'could not convert' not in str(e.value) and 'number' in str(e.value)
+
+
+def test_already_tried_is_keyed_on_trials_not_cache(tmp_path):
+    trials = tmp_path / 'TRIALS.md'
+    trials.write_text('', encoding='utf-8')
+    desk.run_setting(FakeStudy, {'x': 7}, trials_path=trials, cache_dir=tmp_path / 'tree1')
+    r = desk.run_setting(FakeStudy, {'x': 7}, trials_path=trials, cache_dir=tmp_path / 'tree2')
+    assert len(_rows(trials)) == 1 and r['already_tried']
+
+
 def test_params_cover_free_form_fields():
     names = {f['name'] for f in study_levels.params()}
     assert {'entry', 'scale', 'stop', 'stop_pct', 'exit', 'target_r', 'maker_pct', 'taker_pct', 'start', 'end'} <= names
@@ -156,15 +179,17 @@ needs_cache = pytest.mark.skipif(not study_levels.cache_ready(), reason='idea ca
 
 
 @needs_cache
-def test_frozen_setup_reproduces_study(tmp_path):
+def test_frozen_setup_filled_trades_and_verdict(tmp_path):
     trials = tmp_path / 'TRIALS.md'
     trials.write_text('', encoding='utf-8')
     r = desk.run_setting(study_levels, FROZEN_P, trials_path=trials, cache_dir=tmp_path / 'c')
-    assert r['n'] == 772
-    assert abs(r['mean'] - FROZEN['dev']['mean']) < 1e-9
-    assert abs(r['lo'] - FROZEN['dev']['lo']) < 1e-9 and abs(r['hi'] - FROZEN['dev']['hi']) < 1e-9
-    assert abs(r['stats']['power_mde']['power'] - FROZEN['power']['power_mde']['power']) < 1e-9
-    assert r['verdict'] == 'NOT ENOUGH DATA'
+    assert r['n'] == 255 and r['nofill'] == 517 and r['n'] + r['nofill'] == FROZEN['dev']['n']
+    # all-ideas mean (no-fills as 0) still equals the study's frozen number
+    assert abs(r['mean'] * r['n'] / 772 - FROZEN['dev']['mean']) < 1e-9
+    assert abs(r['mean'] - (-0.119)) < 1e-3
+    # on filled trades the spread is wide (sd about 1.57 R): +0.10 R is NOT ruled out, so the honest verdict is
+    # NOT ENOUGH DATA; the review's FAILED came from the 517 zero rows shrinking the spread (lead check 2026-10-21)
+    assert r['verdict'] == 'NOT ENOUGH DATA' and r['hi'] > 0.10 and r['lo'] < -0.3
 
 
 @needs_cache

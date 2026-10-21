@@ -25,7 +25,7 @@ HOW IT WORKS
 --------------------------------------------------------------
  1. QUESTIONS, DECISIONS, BACKLOG IDEAS      any device, any login
 --------------------------------------------------------------
-  Model : Haiku 5.5, effort HIGH (set in the app composer)
+  Model : Sonnet 5.5, effort MEDIUM (set in the app composer)
   Paste : You are Admin_Guy.
           then type your question, decision or backlog idea
   Gets  : answer from the repo; your decision recorded word for word;
@@ -198,7 +198,7 @@ HOW IT WORKS
  THE ROLES   (full list: python scripts/dev/role_loader.py list)
 --------------------------------------------------------------
   -- roster:begin (generated from roles/ROSTER.json by role_loader.py render; do not edit) --
-  You are Admin_Guy.          Haiku 5.5 high                questions, decisions on record, backlog intake, machine faults
+  You are Admin_Guy.          Sonnet 5.5 medium             questions, decisions on record, backlog intake, machine faults
   You are Eagle_Eyes.         Sonnet                        chart screenshots read against live files, logged
   You are Thinker.            Opus (Sonnet = LITE)          design partner: 2-3 options, cost, ROI, one recommendation
   You are MTS_Doctor.         Sonnet                        weekly health and process audit, other-model checks

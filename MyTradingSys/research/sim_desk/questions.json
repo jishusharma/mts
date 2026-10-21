@@ -1,0 +1,16 @@
+[
+  {
+    "id": "first-layers",
+    "question": "Which layer should the desk test next?",
+    "context": "The desk can now take a new layer as one extra file, but no layer except the levels study is ready today. Tom: a small wrapper over the existing Tom backtest, but the current Tom rules are on hold while Tom v2 is being written, so it would test the new version only. CryptoCred setups: a small wrapper exists already, but its tested setups failed. RSI: a small wrapper over the existing RSI backtest. Fabio: does not fit yet, because the order-flow data starts in December 2024 and the desk's test window ends June 2024. Details: PLUGIN.md.",
+    "default": "Nothing is plugged in until you pick; the next session waits for Tom v2 rules and then wraps Tom first.",
+    "options": ["Tom first (once v2 is written)", "CryptoCred first", "RSI first"]
+  },
+  {
+    "id": "levels-park",
+    "question": "Park the levels idea, or try more versions?",
+    "context": "The levels idea (trade the first touch of strong price levels) lost about 0.12 R per filled trade after fees on the development data (255 trades, 517 ideas never filled). The range is wide, so the desk says NOT ENOUGH DATA rather than FAILED, and more data does not exist in this window. Every extra version tried makes a lucky-looking result more likely.",
+    "default": "Parked: no more versions and no run on the held-back data.",
+    "options": ["Park it", "Try a few more versions"]
+  }
+]

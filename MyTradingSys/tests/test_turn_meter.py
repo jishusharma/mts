@@ -170,13 +170,17 @@ class TurnMeterTest(unittest.TestCase):
         self.assertEqual([n for n in range(1, 50) if fire(self.home, "PostToolUse", sid="b", extra=small)][:1], [40])
 
     def test_opus_has_no_turn_cap_only_a_500k_context_cap(self):
-        under = self.model_transcript("opus", 400_000)
+        under = self.model_transcript("opus", 100_000)      # below the 150k follow-up limit: messages keep coming
         for _ in range(60):
             self.assertEqual(fire(self.home, "PostToolUse", sid="o", extra=under), "")
         for _ in range(12):
             self.assertEqual(fire(self.home, "UserPromptSubmit", sid="o", extra=under), "")
+        big = self.model_transcript("opus", 400_000)        # one job may grow big: tool turns are free
+        for _ in range(60):
+            self.assertEqual(fire(self.home, "PostToolUse", sid="o2", extra=big), "")
         over = self.model_transcript("opus", 520_000)
-        self.assertIn("Opus context 520k", fire(self.home, "UserPromptSubmit", sid="o", extra=over))
+        fire(self.home, "UserPromptSubmit", sid="o3", extra=over)
+        self.assertIn("Opus context 520k", fire(self.home, "PostToolUse", sid="o3", extra=over) or fire(self.home, "UserPromptSubmit", sid="o3b", extra=over))
 
     def test_fable_gets_one_message_hard_even_with_the_switch_off(self):
         f = self.model_transcript("fable", 800_000)
@@ -198,6 +202,50 @@ class TurnMeterTest(unittest.TestCase):
         fire(self.home, "UserPromptSubmit", sid="h", extra=f)
         self.assertIn("block", fire(self.home, "UserPromptSubmit", sid="h", extra=f))   # tier now remembered
         self.assertIn("block", fire(self.home, "UserPromptSubmit", sid="h"))            # transcript unreadable: still blocked
+
+    def test_supervisor_has_context_cap_not_turn_cap(self):
+        """Operator 2026-10-21: a Supervisor runs for hours unattended; it is capped by context size (like Opus), not by turns."""
+        tp = self.home / "sup.jsonl"
+        write_transcript(tp, [("m0", ["t0"])])
+        sup = {"transcript_path": str(tp), "prompt": "You are Supervisor. Login A. 3 hours"}
+        fire(self.home, "SessionStart", sid="sup")
+        fire(self.home, "UserPromptSubmit", sid="sup", extra=sup)
+        for i in range(60):
+            out = fire(self.home, "PostToolUse", sid="sup", extra={"transcript_path": str(tp), "tool_use_id": f"u{i}", "message_id": f"x{i}"})
+            self.assertEqual(out, "")
+        for i in range(12):
+            self.assertEqual(fire(self.home, "UserPromptSubmit", sid="sup", extra={"transcript_path": str(tp), "prompt": "worker note"}), "")
+
+    def test_opus_big_context_takes_no_second_message(self):
+        """Operator 2026-10-21: Opus/Fable are use-and-destroy: one job may grow to 500k, but a second operator message is
+        blocked once the context is >= 150k (every turn would re-read it); small context keeps taking messages."""
+        for ctx, blocked in ((60_000, False), (200_000, True)):
+            tp = self.home / f"o{ctx}.jsonl"
+            with open(tp, "w", encoding="utf-8", newline="\n") as f:
+                f.write(json.dumps({"type": "assistant", "message": {"id": "m", "model": "claude-opus-5-5", "content": [],
+                                    "usage": {"input_tokens": ctx, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0}}}) + "\n")
+            sid = f"o{ctx}"
+            fire(self.home, "SessionStart", sid=sid)
+            fire(self.home, "UserPromptSubmit", sid=sid, extra={"transcript_path": str(tp)})
+            out = fire(self.home, "UserPromptSubmit", sid=sid, extra={"transcript_path": str(tp)})
+            self.assertEqual("block" in out, blocked, (ctx, out))
+
+    def test_supervisor_found_from_transcript_when_hook_never_saw_the_start_line(self):
+        """The NUC Supervisor started before this hook knew the role: its first user line is only in the transcript."""
+        tp = self.home / "sup2.jsonl"
+        with open(tp, "w", encoding="utf-8", newline="\n") as f:
+            f.write(json.dumps({"type": "user", "message": {"content": "You are Supervisor. Login A. 3 hours"}}) + "\n")
+        write_transcript(self.home / "x.jsonl", [])
+        extra = {"transcript_path": str(tp)}
+        for i in range(70):
+            out = fire(self.home, "PostToolUse", sid="sup2", extra={**extra, "message_id": f"z{i}"})
+            self.assertEqual(out, "", i)
+        for _ in range(15):
+            self.assertEqual(fire(self.home, "UserPromptSubmit", sid="sup2", extra=extra), "")
+        plain = self.home / "plain.jsonl"
+        plain.write_text(json.dumps({"type": "user", "message": {"content": "fix the bug"}}) + "\n", encoding="utf-8")
+        outs = [fire(self.home, "PostToolUse", sid="w", extra={"transcript_path": str(plain), "message_id": f"w{i}"}) for i in range(45)]
+        self.assertTrue(any(outs), "a normal worker still gets the 40-turn nag")
 
     def test_resume_keeps_counts(self):
         for _ in range(40):
