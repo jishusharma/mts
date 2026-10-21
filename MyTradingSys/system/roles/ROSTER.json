@@ -2,7 +2,7 @@
   "about": "Single source of which roles exist, where their files live and how each starts. Read by scripts/dev/role_loader.py (list, check, render, best-role fallback). start: operator = the operator pastes start_line; embedded = run by a coordinator, never by hand and never picked by the fallback. keywords (1 point each) and weak_keywords (0.5) pick the best role when a session has no role line; a trailing * matches a word prefix. Edit here, then run: python scripts/dev/role_loader.py render",
   "roles": [
     {"name": "Admin_Guy", "file": "admin_guy.md", "start": "operator", "start_line": "You are Admin_Guy.",
-     "model": "Haiku 5.5 high", "lane": "HAIKU", "where": "any device, any login", "limit": "no limit",
+     "model": "Sonnet 5.5 medium", "lane": "SONNET", "where": "any device, any login", "limit": "no limit",
      "job": "questions, decisions on record, backlog intake, machine faults",
      "aliases": ["q&a_helper", "q&a helper", "qa helper", "q and a helper", "network_admin_guy", "network admin guy"],
      "keywords": ["question", "decision", "decide*", "backlog", "remember", "record*", "where is", "what is", "what was", "how do i", "how does", "who owns", "console", "flashing", "network", "hook flag"],

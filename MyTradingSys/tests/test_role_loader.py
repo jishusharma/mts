@@ -265,8 +265,19 @@ class TestRepoRoles(unittest.TestCase):
 
     def test_admin_guy_file_carries_the_guardrails_and_backlog_flow(self):
         text = (REPO / rl.ROLES_REL / "admin_guy.md").read_text(encoding="utf-8")
-        for needle in ("VERBATIM", "Haiku 5.5", "effort high", "tasks.py new", "sync.py ship", "mts_signal.py send", "BACKLOG"):
+        for needle in ("VERBATIM", "Sonnet 5.5", "effort medium", "tasks.py new", "sync.py ship", "mts_signal.py send", "BACKLOG"):
             self.assertIn(needle, text)
+
+    def test_admin_guy_runs_on_sonnet_everywhere(self):
+        # operator 2026-10-21: Admin_Guy off Haiku (bug-haiku-stale-rule-answers; research/model_economics_2026-10-21.md)
+        role = next(r for r in rl.load_roster(REPO) if r["name"] == "Admin_Guy")
+        self.assertTrue(role["model"].startswith("Sonnet 5.5"), role["model"])
+        self.assertEqual(role["lane"], "SONNET")
+        for rel in ("MyTradingSys/system/START_HERE.txt", "MyTradingSys/system/ROLES.md", f"{rl.ROLES_REL}/admin_guy.md"):
+            text = (REPO / rel).read_text(encoding="utf-8")
+            admin = [ln for ln in text.splitlines() if "Admin_Guy" in ln or "Model :" in ln[:9]]
+            self.assertFalse([ln for ln in admin if "Haiku 5.5" in ln and "Admin_Guy" in ln], rel)
+        self.assertNotIn("Haiku 5.5, effort HIGH", (REPO / "MyTradingSys/system/START_HERE.txt").read_text(encoding="utf-8"))
 
     def test_thinker_role_registered_with_triggers_row_and_guardrails(self):
         """Operator 2026-10-20: a Thinker design-partner role; Opus-capable, never builds, records choices verbatim."""
