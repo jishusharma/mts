@@ -1,0 +1,1 @@
+{"t": "20261021T053444Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship ci-role-lint Result: role_loader lint clean again (0 contradictions); CI roster/lint tests were failing on 'after a compaction'."}
