@@ -1,0 +1,1 @@
+{"t": "20261021T200546Z", "from": "desktop-f7iu69n/?", "to": "all", "kind": "ask", "text": "JIS-NB 5) robocopy runtime_data, MyTradingSys\\runtime, MyTradingSys\\execution state to \\192.168.29.110\\MTS-Backup\\nb_state /E. Open testnet position ignored. Reply STOPPED+COPIED."}
