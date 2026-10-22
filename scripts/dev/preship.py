@@ -8,7 +8,8 @@ Every rule runs the gate's OWN check (never a copy), so it cannot drift from the
                check and the fix; a fast rule (< 1 s) is also run on the spot and its failure shown. Never blocks.
   hook-commit  PreToolUse (Bash): on `git commit`, run every rule the staged files (plus tracked edits with -a) reach; any failure
                denies the commit with the fix. The same failure set is denied once per session, then allowed (a trunk that is
-               already red must not trap a session; the ship gate still stops it).
+               already red must not trap a session; the ship gate still stops it). A doc size cap is denied every time: only
+               this commit's own file can break it, and `sync.py ship` checks it again on a docs-only ship (cap_failures).
   check [files...]   run the rules by hand (default: files changed against origin/fast-track plus the working tree); exit 1 on failure.
 Env: MTS_PRESHIP=off disables both hooks. Never raises in hook mode.
 """
@@ -59,9 +60,15 @@ def _own_test(p, root):
     return t if (Path(root) / t).exists() else None
 
 
+CAP_TEST = "MyTradingSys/tests/docs/test_integrity.py"
 # name, covers(path), commands(root, paths), fast, fix, seen in (evidence)
+CAP_RULE = ("doc size cap", _docs, lambda r, ps: [[PY, "-m", "pytest", "-q", CAP_TEST, "-k", "size_cap"]], True,
+            "move detail out of the file into a MyTradingSys/system/ doc (B18: not one-line word trims); caps: SIZE_CAPS in " + CAP_TEST,
+            "2175ef80: a docs-only ship (no local gate) pushed CLAUDE.md 100 B over its cap, trunk red; CI 39650507034/39638135365")
+ALWAYS_DENY = {CAP_RULE[0]}
 RULES = [
-    ("doc caps and contracts", _docs, lambda r, ps: [[PY, "-m", "pytest", "-q", "-x", "MyTradingSys/tests/docs"]], False,
+    CAP_RULE,
+    ("doc caps and contracts", _docs, lambda r, ps: [[PY, "-m", "pytest", "-q", "-x", "MyTradingSys/tests/docs", "-k", "not size_cap"]], False,
      "trim under the cap in MyTradingSys/tests/docs/test_integrity.py SIZE_CAPS; never quote the CLAUDE.md cap number elsewhere; "
      "session logs keep the last five entries; no git command words in hand-overs/runbooks",
      "CI 39650507034/39638135365/39600601462 CLAUDE.md 7241 B over its cap; 39663504601 cap number quoted; cd611cc4, 19b4ae1d"),
@@ -92,11 +99,12 @@ def rules_for(paths):
 
 
 def run_rule(rule, paths, root, timeout=120):
-    """-> list of failure texts (empty = pass)."""
+    """-> list of failure texts (empty = pass). The doc checks see only `paths`, as in the ship gate (MTS_GATE_CHANGED_FILES)."""
     fails = []
+    env = dict(os.environ, MTS_GATE_CHANGED_FILES=chr(10).join(paths))
     for cmd in rule[2](root, paths):
         try:
-            r = subprocess.run(cmd, cwd=root, capture_output=True, text=True, timeout=timeout, encoding="utf-8", errors="replace")
+            r = subprocess.run(cmd, cwd=root, capture_output=True, text=True, timeout=timeout, encoding="utf-8", errors="replace", env=env)
         except subprocess.TimeoutExpired:
             fails.append(f"{' '.join(cmd[1:])}: timed out after {timeout} s")
             continue
@@ -105,6 +113,14 @@ def run_rule(rule, paths, root, timeout=120):
             out = [x for x in lines if re.search(r"FAIL|Error|assert|STALE|missing|over|>", x)] or lines
             fails.append(f"{' '.join(c for c in cmd[1:] if c not in ('-m', '-q', '-x'))}: " + " | ".join(x.strip()[:220] for x in out[-3:]))
     return fails
+
+
+def cap_failures(root, paths):
+    """The doc size cap for `paths` (under 1 s); sync.py runs it on a docs-only ship, which has no other local gate."""
+    ps = [p for p in paths if CAP_RULE[1](p)]
+    if not ps or not (Path(root) / CAP_TEST).exists():
+        return []
+    return run_rule(CAP_RULE, ps, root)
 
 
 def report(results):
@@ -193,11 +209,11 @@ def hook_commit(data):
         return ""
     text = report(results)
     key = hashlib.sha1(text.encode("utf-8")).hexdigest()[:16]
-    if remember("mts-preship-denied.json", data.get("session_id"), key):
+    if remember("mts-preship-denied.json", data.get("session_id"), key) and not any(r[0] in ALWAYS_DENY for r, _ in results):
         return ""
     return json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
                                               "permissionDecisionReason": "PRESHIP: this commit would fail the ship gate. " + text
-                                              + " (Fix and commit again; the same failure is not blocked twice.)"}})
+                                              + " (Fix and commit again; the same failure is not blocked twice, except a doc size cap.)"}})
 
 
 def hook(mode, stdin_text):

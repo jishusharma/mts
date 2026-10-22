@@ -89,6 +89,25 @@ class PreshipTest(unittest.TestCase):
         self.assertIn("now failing", note)
         self.assertEqual(P.hook("hook-edit", json.dumps(dict(data, tool_input={"file_path": str(self.root / "a.py")}))), "")
 
+    def test_a_doc_size_cap_is_denied_every_time(self):
+        P.RULES = [P.CAP_RULE[:2] + (lambda r, ps: [FAIL],) + P.CAP_RULE[3:]]
+        self.stage()
+        for _ in range(3):
+            out = json.loads(self.commit_hook('git commit -m "x"'))["hookSpecificOutput"]
+            self.assertEqual(out["permissionDecision"], "deny")
+            self.assertIn("doc size cap", out["permissionDecisionReason"])
+
+    def test_cap_failures_runs_the_real_cap_test_on_the_shipped_files_only(self):
+        real = Path(__file__).resolve().parents[2] / P.CAP_TEST
+        (self.root / P.CAP_TEST).parent.mkdir(parents=True)
+        (self.root / P.CAP_TEST).write_text(real.read_text(encoding="utf-8"), encoding="utf-8")
+        (self.root / "CLAUDE.md").write_text("x" * 100, encoding="utf-8")
+        self.assertEqual(P.cap_failures(str(self.root), ["CLAUDE.md"]), [])
+        (self.root / "CLAUDE.md").write_text("x" * 100_000, encoding="utf-8")
+        self.assertIn("100000 <= ", " ".join(P.cap_failures(str(self.root), ["CLAUDE.md"])))
+        self.assertEqual(P.cap_failures(str(self.root), ["a.py"]), [])            # no capped doc in the ship
+        self.assertEqual(P.cap_failures(self.d.name, ["CLAUDE.md"]), [])          # a repo without the cap test
+
     def test_off_switch_and_garbage_never_raise(self):
         self.stage()
         os.environ["MTS_PRESHIP"] = "off"
@@ -107,6 +126,7 @@ class RealRulesTest(unittest.TestCase):
 
     def test_routing(self):
         self.assertIn("doc caps and contracts", self.names("CLAUDE.md"))
+        self.assertIn("doc size cap", self.names("CLAUDE.md"))
         self.assertIn("role files", self.names("MyTradingSys/system/roles/builder.md"))
         self.assertIn("test file not in the gate", self.names("scripts/dev/test_new_thing.py"))
         self.assertNotIn("test file not in the gate", self.names("MyTradingSys/tests/test_new_thing.py"))
