@@ -329,19 +329,31 @@ def decide(tool, inp, parent):
         if not model:
             return f"Agent call without `model` inherits the parent or agent default (may be Opus). {FIX}"
         return None if cheap(model) else f"Model '{model}' is not allowed for subagents (Opus only when the operator names it; the operator picks it in the app). {FIX}"
-    if tool == START:
-        if inp.get("proposal_id") and not inp.get("prompt"):
-            return None
-        if inp.get("target") == "cloud":
-            return None
-        if inp.get("context") == "fork":
-            return None if cheap(parent) else f"A fork inherits this session's model ({parent or 'unknown'}); `model` is ignored. Use context='fresh' with a background. {FIX}"
-        if not model:
-            return f"start_session without `model` inherits this session's model (may be Opus). {FIX}"
-        return None if cheap(model) else f"Model '{model}' is not allowed for new sessions (Opus only when the operator names it; the operator picks it in the app). {FIX}"
-    if tool == SET_MODEL:
-        return None if cheap(model) else f"Switching a session to '{model}' is not allowed (Opus only by the operator, in the app's model menu)."
+    # START / SET_MODEL: child sessions may run any model, never refused (operator 2026-10-22)
     return None
+
+
+RANK = (("haiku", 1), ("sonnet", 2), ("opus", 3), ("fable", 4))
+
+
+def rank(model):
+    m = str(model or "").lower()
+    return next((r for name, r in RANK if name in m), 0)
+
+
+def raise_hint(inp, parent):
+    """Context for an allowed start_session whose `model` is above this session's: the app ignores it, so switch the child after."""
+    model = (inp or {}).get("model")
+    if not model or inp.get("target") == "cloud" or rank(model) <= rank(parent):
+        return None
+    return (f"model_guard: the app starts a child on this session's model ({parent}) and ignores model='{model}'. As soon as the start "
+            f"returns its session_id, call {SET_MODEL}(session_id=<that id>, model='{model}') (allowed; in bypass mode the app does not "
+            "ask), then send the brief with SendMessage so the child answers on the new model.")
+
+
+SPAWN_TOOLS = AGENT_TOOLS + (START, SET_MODEL, WORKFLOW) + SEND_TOOLS + SCHEDULE_TOOLS
+SUBAGENT_REASON = ("A background agent is one-shot: one input, one output, then it ends; it starts, switches or messages nothing "
+                   "(operator 2026-10-22). Do the work yourself and put what else is needed in your final report.")
 
 
 def hook():
@@ -350,9 +362,13 @@ def hook():
     except ValueError:
         return 0
     tool = ev.get("tool_name") or ""
-    if tool not in AGENT_TOOLS + (START, SET_MODEL, WORKFLOW) + SEND_TOOLS + SCHEDULE_TOOLS:
+    if tool not in SPAWN_TOOLS:
         return 0
     inp = ev.get("tool_input") or {}
+    if turn_meter.is_subagent(ev):
+        print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
+                                                 "permissionDecisionReason": "model_guard: " + SUBAGENT_REASON}}))
+        return 0
     storm = storm_reason(tool, ev)
     if storm:
         print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
@@ -375,11 +391,14 @@ def hook():
     if inp.get("model") and (operator_named_opus(ev.get("transcript_path"))
                              or crucial_card_cited(inp.get("title"), inp.get("prompt"), inp.get("background"), inp.get("description"))):
         return 0
-    needs_parent = inp.get("subagent_type") == "fork" or inp.get("context") == "fork"
-    reason = decide(tool, inp, parent_model(ev.get("transcript_path")) if needs_parent else None)
+    needs_parent = inp.get("subagent_type") == "fork" or tool == START
+    parent = parent_model(ev.get("transcript_path")) if needs_parent else None
+    reason = decide(tool, inp, parent)
     if reason:
         print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
                                                  "permissionDecisionReason": "model_guard: " + reason}}))
+    elif tool == START and raise_hint(inp, parent):
+        print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "additionalContext": raise_hint(inp, parent)}}))
     return 0
 
 
