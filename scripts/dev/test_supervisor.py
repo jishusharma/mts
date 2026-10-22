@@ -242,6 +242,22 @@ def test_wait_busy_slot_frees_transition(tmp_path):
     assert "slot" in reason.lower()
 
 
+def test_wait_wakes_when_a_ship_that_started_during_the_watch_frees_its_gate(tmp_path):
+    """Soak 2026-10-22: a worker ships after the watcher started (gates 0 -> 1 -> 0) and is then gone; its worker slot stood empty
+    until the 50 min timeout because only a drop below the baseline counted. A drop below the peak seen since the start wakes."""
+    seq = iter([{"shas": {}, "ci_red": False, "busy_slots": b} for b in (0, 0, 1, 1, 0)])
+    sleeps = []
+    rc, reason = S.wait_for_transition(repo=tmp_path, shas=[], timeout=3000, interval=300, probe=lambda repo, shas: next(seq),
+                                       fetcher=lambda repo: None, sleeper=lambda s: sleeps.append(s))
+    assert rc == 0 and "slot freed (1 -> 0" in reason and len(sleeps) == 4
+    steady = iter([{"shas": {}, "ci_red": False, "busy_slots": b} for b in (1, 2, 2, 2)])     # rising alone never wakes
+    assert S.wait_for_transition(repo=tmp_path, shas=[], timeout=900, interval=300, probe=lambda repo, shas: next(steady),
+                                 fetcher=lambda repo: None, sleeper=lambda s: None)[0] == 3
+    late = iter([{"shas": {}, "ci_red": False, "busy_slots": b} for b in (None, 1, 1, 0)])    # gates unreadable at the start
+    assert S.wait_for_transition(repo=tmp_path, shas=[], timeout=3000, interval=300, probe=lambda repo, shas: next(late),
+                                 fetcher=lambda repo: None, sleeper=lambda s: None)[0] == 0
+
+
 def test_wait_timeout_exits_3(tmp_path):
     """timeout reached with no transition -> exits 3."""
     steady = {"shas": {"sha1": True, "sha2": False}, "ci_red": False, "busy_slots": 0}
