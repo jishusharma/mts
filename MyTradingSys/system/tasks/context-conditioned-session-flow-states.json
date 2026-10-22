@@ -25,7 +25,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-18T15:46:45Z",
+  "refreshed": "2026-10-22T22:47:34Z",
   "refs": [
     "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/SET_41f213b5bea3_188135336af0.md"
   ],
@@ -51,7 +51,7 @@
     "MyTradingSys/research/context_factors_pit_2026-10-16/CONTEXT_FACTORS_SPEC.md:192 (OI NOT_IN_DATA on disk: no long OI exists yet)",
     "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/SET_41f213b5bea3_188135336af0.md (worked example, 3 windows)"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Gate: ls Dumps/backtest/raw/metrics; need daily files from 2020-09-01 (fetched by desk task 20261013-143640-gap-g5-fetch-binance-btcusdt-futures-met, target DSA-NUC). If missing: stop, hand back as refined.",
     "Write PRE_REG.md first: freeze context defs (HTF balance/trend, 10-20d range position, vol percentile, OI trend, weekday), quadrant labels, outcome; run verdicts.py check and prereg_gate.py; label every number SOURCED/OURS.",
