@@ -14,7 +14,7 @@ from pathlib import Path
 from datetime import datetime, timezone, timedelta
 
 sys.dont_write_bytecode = True
-R = Path(r"C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed")
+R = Path(__file__).resolve().parents[2]
 SNAPS = R / "runtime_data" / "snapshots"
 LABELS = R / "runtime_data" / "outcome_labels.json"
 HORIZONS_MIN = [30, 60, 120]
