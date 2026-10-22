@@ -661,8 +661,12 @@ def merge_trunk(wt, ref):
     if m.returncode == 0:
         return
     clash = git(wt, "diff", "--name-only", "--diff-filter=U", check=False).stdout.split()
-    if clash and set(clash) <= {f"{LAB}/INDEX.md"}:
-        git(wt, "checkout", "--theirs", "--", *clash)
+    if clash and set(clash) <= {f"{LAB}/INDEX.md", lane_health.STATE}:
+        # lane_state.json keeps the lab's copy: the lab wrote it after its own run, a Supervisor heartbeat on trunk is older news.
+        # JIS-NUC 2026-10-21: this clash made the lab ship fail and the lab sat idle 34 h.
+        for f, side in ((f"{LAB}/INDEX.md", "--theirs"), (lane_health.STATE, "--ours")):
+            if f in clash:
+                git(wt, "checkout", side, "--", f)
         git(wt, "add", "--", *clash)
         git(wt, "commit", "--quiet", "--no-edit")
         return
@@ -747,6 +751,11 @@ def run_card(card, dry=False, env=os.environ, probing=False):
             git(wt, "add", "-A")
             result = now.get("result") if outcome == "DONE" else f"BLOCKED, card stays ready: see {reports[-1]}"
             git(wt, "commit", "-q", "-m", commit_message(card, outcome, result, when))
+            try:   # trunk moved during the run: take its changes here, where the lane_state/INDEX clashes resolve themselves
+                git(wt, "fetch", "--quiet", "origin", sync.TRUNK)
+                merge_trunk(wt, f"origin/{sync.TRUNK}")
+            except SystemExit:
+                pass   # a real clash: sync.py ship below reports it as SHIP_FAILED
             s = boxed([sys.executable, "scripts/dev/sync.py", "ship"], wt, SHIP_TIMEOUT_S)
             if s.returncode:
                 outcome, note = "SHIP_FAILED", (s.stdout + s.stderr).strip()[-300:]
