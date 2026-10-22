@@ -1,0 +1,1 @@
+{"t": "20261022T124224Z", "from": "desktop-f7iu69n/?", "to": "all", "kind": "broadcast", "text": "HIGH PRIORITY (operator 10-22): every machine needs Defender exclusions", "id": "b-544817", "prio": "high", "cmd": "powershell -ExecutionPolicy Bypass -File <repo>\\scripts\\operator\\defender_exclusions.ps1 (admin), then -Check = 0 missing"}
