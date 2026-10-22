@@ -3,13 +3,19 @@
   "asks": "",
   "commands": [],
   "created": "2026-10-22T11:07:08Z",
-  "depends_on": [],
+  "depends_on": [
+    "confluence-s1-context-counts-need-lab-guy-review-stamp-roles"
+  ],
   "done_when": "research/krown_audit_2026-10-22/run/COUNTS.md committed with n, ISO weeks and MDE per layer and cell; test_krown_context.py passes and its shifted-join test fails on a deliberately shifted join; ACCESS_LOG shows no bar >= 2024-07-01",
   "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
   "goal": "Build backtest/layers/krown/krown_context.py (point-in-time Krown context rows), backfill DEV + DEV_EXT, join with usable DEV event tables at decision time, and write run/COUNTS.md (shares, S histogram, ISO weeks, week-clustered MDE, cost/R) without reading any outcome column. Spec: FABLE_CARD_CONFLUENCE.md s4 S1.",
+  "hosts": [
+    "DESKTOP-F7IU69N",
+    "JIS-NB"
+  ],
   "id": "confluence-s1-context-counts",
   "lane": "SONNET",
   "layers": [

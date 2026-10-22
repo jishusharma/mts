@@ -3,7 +3,9 @@
   "asks": "",
   "commands": [],
   "created": "2026-10-22T11:06:49Z",
-  "depends_on": [],
+  "depends_on": [
+    "confluence-s0-registry-need-lab-guy-review-stamp-roles-lab-g"
+  ],
   "done_when": "make_status.py gate board shows krown G2; LAYERS.md krown status no longer says Not built; STATE.md names the on-disk transcripts; F1/F2 patched with file:line",
   "est_turns": 5,
   "formula_id": "",

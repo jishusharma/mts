@@ -913,3 +913,46 @@ class ResultTrustTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class NeedTest(unittest.TestCase):
+    """Operator 2026-10-22: pre-run items live in the queue (tasks.py need), not in the operator's head."""
+    def setUp(self):
+        self.d = tempfile.TemporaryDirectory()
+        self.repo = Path(self.d.name)
+        self._repo = T.REPO
+        T.REPO = self.repo
+        T.save(self.repo, good("main-card"))
+
+    def tearDown(self):
+        T.REPO = self._repo
+        self.d.cleanup()
+
+    def test_need_makes_an_owned_prereq_card_and_blocks_the_main_card(self):
+        rc, _ = run_cli("need", "main-card", "Lab_Guy review stamp", "--lane", "SONNET", "--role", "Lab_Guy")
+        self.assertEqual(rc, 0)
+        main = T.get(self.repo, "main-card")
+        nid = "main-card-need-lab-guy-review-stamp"
+        self.assertEqual(main["depends_on"], [nid])
+        pre = T.get(self.repo, nid)
+        self.assertEqual((pre["lane"], pre["role"], pre["state"]), ("SONNET", "Lab_Guy", "raw"))
+        self.assertTrue(any(p.startswith("depends_on " + nid) for p in T.problems(main, T.load_all(self.repo), {})))
+        run_cli("need", "main-card", "Lab_Guy review stamp", "--lane", "SONNET")   # idempotent
+        self.assertEqual(T.get(self.repo, "main-card")["depends_on"], [nid])
+
+    def test_need_without_lane_is_refused(self):
+        rc, out = run_cli("need", "main-card", "stamp it")
+        self.assertNotEqual(rc, 0)
+        self.assertIn("--lane", out)
+
+    def test_host_pin_excludes_other_machines_and_shows_in_brief(self):
+        run_cli("need", "main-card", "--host", "JIS-NB", "--host", "DESKTOP-F7IU69N")
+        c = T.get(self.repo, "main-card")
+        self.assertEqual(c["hosts"], ["DESKTOP-F7IU69N", "JIS-NB"])
+        self.assertIn("Host: run only on DESKTOP-F7IU69N or JIS-NB", T.brief(c))
+        lane_st = {"status": "up"}
+        from datetime import datetime, timezone
+        now = datetime(2026, 10, 22, tzinfo=timezone.utc)
+        args = ([c], {}, [], {}, lane_st, now)
+        self.assertEqual(T.exclusion(c, *args[:5], now, "JIS-NUC", self.repo)[0], "host")
+        self.assertIsNone(T.exclusion(c, *args[:5], now, "JIS-NB", self.repo))

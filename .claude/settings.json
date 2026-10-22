@@ -91,6 +91,11 @@
             "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/stop_guard.py\" hook",
             "timeout": 20
+          },
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/prereq_guard.py\" hook",
+            "timeout": 10
           }
         ]
       }

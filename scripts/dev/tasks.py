@@ -36,7 +36,7 @@ REPO = Path(__file__).resolve().parents[2]
 DIR = "MyTradingSys/system/tasks"
 BUGS = "MyTradingSys/research/BUGS.md"
 LAYER_INDEX = "MyTradingSys/system/layer_index.json"
-MUTATING = ("new", "fill", "check", "take", "tried", "done", "apply-op", "sweep", "flag", "tag", "stale")
+MUTATING = ("new", "need", "fill", "check", "take", "tried", "done", "apply-op", "sweep", "flag", "tag", "stale")
 
 STATES = ("raw", "refined", "ready", "active", "blocked", "done", "dropped")
 LIVE = ("ready", "active")                      # states that must satisfy the Definition of Ready
@@ -352,6 +352,8 @@ def brief(card):
         L.append(f"Sources: {'; '.join(card['sources'])}")
     if card.get("refs"):
         L.append(f"Registry: {' '.join(card['refs'])}")
+    if card.get("hosts"):
+        L.append(f"Host: run only on {' or '.join(card['hosts'])} (data or tools there)")
     if card.get("layers"):
         L.append(f"Layer: {', '.join(card['layers'])}: read its section of MyTradingSys/system/LAYERS.md (spec, ledger, backtests, cards)")
     if card.get("flow"):
@@ -465,6 +467,35 @@ def cmd_new(a):
     if a.crucial:
         card["crucial"] = True
     print(f"wrote {save(REPO, card)} (state raw; refine it, then `tasks.py check {cid}`)")
+
+
+def cmd_need(a):
+    """Pre-run item of a card (operator 2026-10-22: "whatever needs to be done regarding a task before it is run, MTS must know").
+    `--host` pins the card to machines; `what` + `--lane` makes a raw prerequisite card an agent owns and adds it to depends_on,
+    so dispatch holds the card until the prerequisite is done. Enforced at session end by prereq_guard.py (Stop hook)."""
+    c = get(REPO, a.id)
+    if a.host:
+        c["hosts"] = sorted(set(c.get("hosts", [])) | set(a.host))
+        print(f"{c['id']}: hosts {', '.join(c['hosts'])}")
+    if a.what:
+        if not a.lane:
+            raise SystemExit("tasks: need with a description needs --lane (who does it); an operator-only item is not a card")
+        nid = (c["id"] + "-need-" + re.sub(r"[^a-z0-9]+", "-", a.what.lower()).strip("-"))[:60].rstrip("-")
+        if not path_of(REPO, nid).exists():
+            n = blank(nid, f"Prereq of {c['id']}: {a.what}"[:120], prio=min(c.get("prio", 3), 3), lane=a.lane, refs=[path_of(REPO, c["id"]).as_posix()])
+            n["goal"] = a.what[:MAX_FIELD]
+            n["note"] = f"PREREQ of {c['id']}: {c['id']} waits on this card (depends_on)."
+            if a.role:
+                n["role"] = a.role
+            save(REPO, n)
+            print(f"wrote {path_of(REPO, nid)} (state raw, lane {a.lane})")
+        if nid not in c.get("depends_on", []):
+            c["depends_on"] = list(c.get("depends_on", [])) + [nid]
+        print(f"{c['id']}: depends_on {', '.join(c['depends_on'])}")
+    if not (a.host or a.what):
+        raise SystemExit("tasks: need <id> [\"<what>\" --lane L] [--host H]")
+    save(REPO, c)
+    return 0
 
 
 def cmd_fill(a):
@@ -1185,6 +1216,8 @@ def exclusion(card, cards, reg, holds, claims, lane_st, as_of, host=None, repo=R
         return ("lane_down", lane_health.why_down(lane_st))
     if host and card["lane"] == "JIS-NB" and host != "JIS-NB":
         return ("host", f"lane JIS-NB needs host JIS-NB, not {host}")
+    if host and card.get("hosts") and host not in card["hosts"]:
+        return ("host", f"needs host {' or '.join(card['hosts'])}, not {host}")
     if miss:
         return ("not_ready", "not ready: " + miss[0])
     if needs_review(card) == "hard" and stamp_kind(card) != "real":
@@ -1297,6 +1330,13 @@ def main(argv=None):
     n.add_argument("--layer", action="append", help="layer family id (layer_index.json); repeat for several")
     n.add_argument("--crucial", action="store_true", help="lane CODEX: when the GPT lane is down this card waits for GPT instead of moving to DSA/Claude")
     n.set_defaults(f=cmd_new)
+    ne = sp.add_parser("need", help="record a pre-run item: a prerequisite card an agent owns (depends_on) and/or a host pin")
+    ne.add_argument("id")
+    ne.add_argument("what", nargs="?")
+    ne.add_argument("--lane", choices=LANES)
+    ne.add_argument("--role", help="role that owns the prerequisite, e.g. Lab_Guy")
+    ne.add_argument("--host", action="append", help="machine the card must run on; repeat for several")
+    ne.set_defaults(f=cmd_need)
     fi = sp.add_parser("fill", help="set raw-card fields from flags and run check (promotes without hand JSON edits)")
     fi.add_argument("id")
     fi.add_argument("--size", choices=("S", "M"))
