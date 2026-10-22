@@ -604,6 +604,11 @@ def sh(wt, *args):
     return subprocess.run([sys.executable, *args], cwd=str(wt), capture_output=True, text=True)
 
 
+# a lab run is always its own change: the 10-minute second-ship guard is for sessions that should batch, and it refused
+# the lab-formula-spec-text run on 2026-10-22 (ship 528 s after a session shipped from the lab tree)
+SHIP_ARGS = ("ship", "--again")
+
+
 def boxed(cmd, cwd, timeout_s):
     """subprocess.run with a hard time box. On expiry the whole process tree is killed (a gate's pytest children hold the pipes, so killing
     only the parent would leave communicate() waiting) and the result has returncode 124 and a TIMEOUT line on stderr."""
@@ -756,7 +761,7 @@ def run_card(card, dry=False, env=os.environ, probing=False):
                 merge_trunk(wt, f"origin/{sync.TRUNK}")
             except SystemExit:
                 pass   # a real clash: sync.py ship below reports it as SHIP_FAILED
-            s = boxed([sys.executable, "scripts/dev/sync.py", "ship"], wt, SHIP_TIMEOUT_S)
+            s = boxed([sys.executable, "scripts/dev/sync.py", *SHIP_ARGS], wt, SHIP_TIMEOUT_S)
             if s.returncode:
                 outcome, note = "SHIP_FAILED", (s.stdout + s.stderr).strip()[-300:]
                 Path(str(log) + ".ship.txt").write_text(s.stdout + s.stderr, encoding="utf-8", newline="\n")   # which gate step failed

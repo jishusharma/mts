@@ -559,6 +559,11 @@ class LimitFallback(unittest.TestCase):
             self.assertNotEqual(run("rev-parse", "-q", "--verify", "MERGE_HEAD").returncode, 0)
             self.assertEqual(run("merge-base", "--is-ancestor", "trunk", "HEAD").returncode, 0)
 
+    def test_a_lab_run_ship_passes_the_second_ship_guard(self):
+        # 2026-10-22: lab-formula-spec-text ran 373 s and then SHIP_FAILED on "second ship from this tree 528 s after the last one"
+        self.assertIn("--again", R.SHIP_ARGS)
+        self.assertIn("*SHIP_ARGS", Path(R.__file__).read_text(encoding="utf-8"))
+
     def test_merge_trunk_keeps_the_labs_lane_state_on_a_clash(self):
         # JIS-NUC 2026-10-21: a Supervisor heartbeat on trunk clashed with the lab's lane_state.json; ship failed, lab idle 34 h
         with tempfile.TemporaryDirectory() as d:
