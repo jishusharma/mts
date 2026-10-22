@@ -53,3 +53,6 @@ switched off in a background process; mark-green uses the compare API and a fast
 Local wall per shard (4-core Linux): 8-way 10-39 s, 3-way 33-53 s. CI wall: to be read from the first run.
 Limits: 11 jobs per run; GitHub Free allows 20 concurrent jobs, so a third push landing inside the same 2 minutes queues. Windows job pickup
 and the slowest file on Windows (Linux 35 s) are the floor; if a run is still over 2 min, that file is the next target.
+Measured: 24399edc 4m00s, dbdb83ae 3m48s, 74889a99 (12 Windows shards, Windows-aware estimates) 2m56s push-to-green
+(run 39844407870: jobs 59-167 s; 14 of 15 jobs <=115 s). Slowest job windows 10/12 = 167 s, of which step 4.5 = 131 s and one file,
+MyTradingSys/tests/test_aibridge_payload.py, = 81 s on Windows. That single file is now the floor: next target is to split or speed it up.
