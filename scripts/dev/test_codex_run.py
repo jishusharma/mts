@@ -558,6 +558,25 @@ class LimitFallback(unittest.TestCase):
             self.assertNotEqual(run("rev-parse", "-q", "--verify", "MERGE_HEAD").returncode, 0)
             self.assertEqual(run("merge-base", "--is-ancestor", "trunk", "HEAD").returncode, 0)
 
+    def test_refresh_survives_a_merge_left_in_progress(self):
+        # Supervisor pilot 2026-10-22: `codex_run.py tick` died with "cannot switch branch while merging" (MERGE_HEAD left behind);
+        # refresh switched branch before merge_trunk could abort it.
+        import socket
+        import subprocess
+        with tempfile.TemporaryDirectory() as d, unittest.mock.patch.dict("os.environ", {"CODEX_HOME": str(Path(d) / "home")}):
+            wt, run = self._two_branches(d, "code.py", "code.py")
+            bare = Path(d) / "origin.git"
+            subprocess.run(["git", "init", "-q", "--bare", str(bare)], check=True)
+            run("remote", "add", "origin", str(bare))
+            run("push", "-q", "origin", "trunk:" + R.sync.TRUNK)
+            run("switch", "-q", "-c", f"{socket.gethostname().lower()}/codex-lab", "lab")
+            self.assertNotEqual(run("merge", "--no-edit", "trunk").returncode, 0)   # real clash: MERGE_HEAD stays
+            self.assertEqual(run("rev-parse", "-q", "--verify", "MERGE_HEAD").returncode, 0)
+            with self.assertRaises(SystemExit) as e:
+                R.refresh(wt)   # the clash itself still needs a session, but the tick must get as far as saying so
+            self.assertIn("clashes on code.py", str(e.exception))
+            self.assertNotEqual(run("rev-parse", "-q", "--verify", "MERGE_HEAD").returncode, 0)
+
     def test_merge_trunk_aborts_a_real_clash_and_leaves_the_tree_clean(self):
         with tempfile.TemporaryDirectory() as d:
             wt, run = self._two_branches(d, "code.py", "code.py")

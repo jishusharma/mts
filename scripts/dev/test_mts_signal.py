@@ -5,6 +5,7 @@ import sys
 import tempfile
 import time
 import unittest
+from datetime import timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -81,6 +82,73 @@ class SignalTest(unittest.TestCase):
         self.assertIn("NUC lab audit landed", S.handle(self.payload("UserPromptSubmit", sid="s2")))
         (S.state_dir() / "last_fetch").unlink()
         self.assertEqual(S.handle(self.payload("UserPromptSubmit", sid="s2")), "")         # already seen
+
+    def test_hook_auto_sends_broadcast_prompt(self):
+        self.machine("jis-nb", "pro")
+        text, kind = S.auto_send_text(self.payload("UserPromptSubmit", prompt="MTS broadcast: all sessions sync and pause"))
+        self.assertEqual((text, kind), ("all sessions sync and pause", "broadcast"))
+        text2, kind2 = S.auto_send_text(self.payload("UserPromptSubmit", prompt="broadcast: halt orders immediately"))
+        self.assertEqual((text2, kind2), ("halt orders immediately", "broadcast"))
+
+    def test_broadcast_prompt_multiline_and_plain_sentence(self):
+        # 2026-10-21 test: a multi-line broadcast was silently dropped, and "broadcast the results..." was sent as one
+        got = S.auto_send_text(self.payload("UserPromptSubmit", prompt="MTS broadcast: pause new work\nthen sync and wait"))
+        self.assertEqual(got, ("pause new work then sync and wait", "broadcast"))
+        self.assertIsNone(S.auto_send_text(self.payload("UserPromptSubmit", prompt="broadcast the results to the team")))
+        self.assertIsNone(S.auto_send_text(self.payload("UserPromptSubmit", prompt="broadcasting is slow, why?")))
+        self.assertEqual(S.auto_send_text(self.payload("UserPromptSubmit", prompt="MTS Broadcast stop all")), ("stop all", "broadcast"))
+
+    def test_broadcast_reaches_sibling_sessions_on_sender_machine(self):
+        # every session on one machine shares one sender id, so a broadcast never reached the sender's own siblings
+        self.machine("jis-nb", "?")
+        S.handle(self.payload("UserPromptSubmit", sid="sender", prompt="MTS broadcast: siblings too"))
+        (S.state_dir() / "last_fetch").unlink()
+        self.assertIn("siblings too", S.handle(self.payload("UserPromptSubmit", sid="sibling")))
+        (S.state_dir() / "last_fetch").unlink()
+        self.assertNotIn("siblings too", S.handle(self.payload("UserPromptSubmit", sid="sender")))   # not echoed to the sender
+        S.send("ship x", kind="done")                                                             # plain notes stay off-machine
+        (S.state_dir() / "last_fetch").unlink()
+        self.assertEqual(S.handle(self.payload("UserPromptSubmit", sid="sibling")), "")
+
+    def test_second_session_sees_broadcast_without_waiting_for_gate(self):
+        # the per-machine 5-minute fetch gate made a second session wait up to 5 more minutes for what the clone already held
+        self.machine("jis-nuc", "sharma")
+        S.main(["broadcast", "heads up"])
+        self.machine("jis-nb", "pro")
+        self.assertIn("heads up", S.handle(self.payload("UserPromptSubmit", sid="s1")))
+        self.assertIn("heads up", S.handle(self.payload("UserPromptSubmit", sid="s2")))   # gate closed, clone has it
+        self.assertEqual(S.handle(self.payload("UserPromptSubmit", sid="s2")), "")
+
+    def test_post_tool_use_only_sends_never_receives(self):
+        # review 2026-10-22: a fetch/read after every tool call cost time and context for nothing
+        self.machine("jis-nuc", "sharma")
+        S.main(["broadcast", "heads up"])
+        self.machine("jis-nb", "pro")
+        self.assertEqual(S.handle(self.payload("PostToolUse", sid="s3", tool_name="Read")), "")
+        self.assertFalse((S.state_dir() / "last_fetch").exists())
+        self.assertIn("heads up", S.handle(self.payload("UserPromptSubmit", sid="s3")))
+
+    def test_broadcast_sender_told_it_is_pull_only_and_cut(self):
+        # operator 2026-10-22: a broadcast "did not work", nothing flashed; the sender was never told it only lands on a
+        # session's next turn, nor that the 200-character cap dropped the steps
+        self.machine("jis-nb", "?")
+        out = S.handle(self.payload("UserPromptSubmit", sid="sender", prompt="MTS broadcast: " + "step " * 60))
+        self.assertIn("[MTS BROADCAST SENT]", out)
+        self.assertIn("next turn", out)
+        self.assertIn("send_message", out)
+        self.assertIn("lost", out)
+        short = S.handle(self.payload("UserPromptSubmit", sid="sender2", prompt="MTS broadcast: pause"))
+        self.assertIn("[MTS BROADCAST SENT]", short)
+        self.assertNotIn("lost", short)
+        self.assertNotIn("[MTS BROADCAST SENT]", S.handle(self.payload("UserPromptSubmit", sid="s3", prompt="hello")))
+
+    def test_broadcast_banner_rendered_prominently(self):
+        self.machine("jis-nuc", "sharma")
+        self.assertEqual(S.main(["broadcast", "urgent notice for all models"]), 0)
+        self.machine("jis-nb", "pro")
+        out = S.handle(self.payload("UserPromptSubmit"))
+        self.assertIn("[MTS BROADCAST from operator/session across hosts]", out)
+        self.assertIn("urgent notice for all models", out)
 
     def test_hook_auto_sends_claim_and_ship(self):
         self.machine("jis-nb", "pro")
@@ -192,6 +260,145 @@ class SignalTest(unittest.TestCase):
             self.assertEqual(S.auto_send_text(self.bash("sync.py start $(whoami)"))[0], "start")
         finally:
             S.last_result = orig
+
+    # ---- HIGH broadcasts (operator 2026-10-22): act on every machine, per-host ack, Stop reminder -----------------------
+
+    def high(self, text="every machine needs the exclusions", cmd="powershell scripts/operator/x.ps1", back_min=0):
+        """Broadcast a HIGH message from jis-nuc, optionally stamped back_min minutes in the past; returns its id."""
+        self.machine("jis-nuc", "sharma")
+        orig = S.now
+        S.now = lambda: orig() - timedelta(minutes=back_min)
+        try:
+            self.assertEqual(S.main(["broadcast", text, "--prio", "high", "--cmd", cmd]), 0)
+        finally:
+            S.now = orig
+        return [r for r in S.load(S.ensure()) if r.get("prio") == "high"][-1]["id"]
+
+    def ups(self, sid="s1"):
+        (S.state_dir() / "last_fetch").unlink(missing_ok=True)
+        return S.handle(self.payload("UserPromptSubmit", sid=sid))
+
+    def test_high_broadcast_repeats_every_turn_until_this_host_acks_done(self):
+        bid = self.high()
+        self.machine("jis-nb", "pro")
+        first = self.ups()
+        self.assertIn("[MTS ACTION REQUIRED %s prio HIGH %s %s from jis-nuc/sharma at" % (chr(183), chr(183), bid), first)
+        self.assertIn('"ACTION FOR THIS MACHINE (jis-nb): powershell scripts/operator/x.ps1"', first)
+        self.assertIn("ack %s told" % bid, first)
+        self.assertIn("ack %s done" % bid, first)
+        for _ in range(3):                                   # every turn, also inside the fetch gate, any session
+            self.assertIn(bid, S.handle(self.payload("UserPromptSubmit", sid="s1")))
+        self.assertIn(bid, S.handle(self.payload("UserPromptSubmit", sid="s2")))
+        self.assertEqual(S.main(["ack", bid, "done", "--note", "ran as admin"]), 0)
+        self.assertNotIn("ACTION REQUIRED", self.ups())
+        self.assertNotIn("ACTION REQUIRED", S.handle(self.payload("SessionStart", sid="s9", source="startup")))
+        self.machine("jis-lab", "x")                         # another host is still nagged
+        self.assertIn(bid, self.ups(sid="s5"))
+
+    def test_session_started_later_sees_two_hour_old_high_broadcast(self):
+        bid = self.high(back_min=120)
+        self.machine("jis-nb", "pro")
+        out = S.handle(self.payload("SessionStart", sid="late", source="startup"))
+        self.assertIn("ACTION REQUIRED", out)
+        self.assertIn(bid, out)
+        self.assertIn(bid, self.ups(sid="late"))             # the 30-minute look-back no longer hides it
+
+    def test_told_is_a_reminder_once_per_session_done_is_silent(self):
+        bid = self.high()
+        self.machine("jis-nb", "pro")
+        self.assertEqual(S.main(["ack", bid, "told"]), 0)
+        self.assertNotIn("ACTION REQUIRED", self.ups())
+        start = S.handle(self.payload("SessionStart", sid="new", source="startup"))
+        self.assertIn("[MTS reminder", start)
+        self.assertIn(bid, start)
+        self.assertNotIn("ACTION REQUIRED", start)
+        self.assertEqual(S.main(["ack", bid, "done"]), 0)
+        self.assertEqual(S.handle(self.payload("SessionStart", sid="new2", source="startup")), "")
+
+    def test_acks_table_and_sender_status(self):
+        import contextlib
+        import io
+        bid = self.high()
+        self.machine("jis-nb", "pro")
+        S.send("hello", kind="note")                         # nb is now a host seen
+        self.assertEqual(S.main(["ack", bid, "done", "--note", "ok"]), 0)
+        self.machine("jis-lab", "x")
+        S.send("hello", kind="note")
+        self.assertEqual(S.main(["ack", bid, "told"]), 0)
+        self.machine("jis-nuc", "sharma")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            self.assertEqual(S.main(["acks", bid]), 0)
+            self.assertEqual(S.main(["acks"]), 0)
+        table = buf.getvalue()
+        self.assertRegex(table, r"jis-nb\s+done\s+ok")
+        self.assertRegex(table, r"jis-lab\s+told")
+        self.assertRegex(table, r"jis-nuc\s+none")
+        self.assertEqual(table.count(bid + " HIGH"), 2)      # with id and the all-open listing
+        status = S.sender_status(S.load(S.ensure()))
+        self.assertIn("1/3 hosts done", status)
+        self.assertIn("jis-lab=told", status)
+        self.assertIn(bid, S.handle(self.payload("UserPromptSubmit", sid="sender")))
+        self.machine("jis-nb", "pro")
+        self.assertNotIn("status]", self.ups())              # other machines get the action block, not the sender status
+
+    def test_stop_blocks_once_unless_reply_has_the_line_or_stop_hook_active(self):
+        import json
+        bid = self.high()
+        self.machine("jis-nb", "pro")
+        S.ensure()
+        stop = lambda **kw: S.handle(self.payload("Stop", **kw))
+        out = json.loads(stop(last_assistant_message="all done"))
+        self.assertEqual(out["decision"], "block")
+        self.assertIn(bid, out["reason"])
+        self.assertIn("ACTION FOR THIS MACHINE (jis-nb)", out["reason"])
+        self.assertEqual(stop(last_assistant_message="all done", stop_hook_active=True), "")          # never twice in a turn
+        self.assertEqual(stop(last_assistant_message="ACTION FOR THIS MACHINE (jis-nb): x\ndone"), "")
+        self.assertEqual(stop(last_assistant_message="see %s" % bid), "")
+        tp = self.tmp / "t.jsonl"                            # without the payload field the transcript is read
+        tp.write_text("\n".join(json.dumps(e) for e in [
+            {"type": "user", "message": {"content": "hi"}},
+            {"type": "assistant", "message": {"content": [{"type": "text", "text": "ACTION FOR THIS MACHINE (jis-nb): x"}]}},
+            {"type": "assistant", "message": {"content": [{"type": "tool_use", "name": "Bash"}]}}]), encoding="utf-8", newline="\n")
+        self.assertEqual(stop(transcript_path=str(tp)), "")
+        self.assertEqual(json.loads(stop(transcript_path=str(self.tmp / "none.jsonl")))["decision"], "block")
+        self.assertEqual(S.main(["ack", bid, "told"]), 0)
+        self.assertEqual(stop(last_assistant_message="all done"), "")
+
+    def test_stop_ignores_normal_broadcasts(self):
+        self.machine("jis-nuc", "sharma")
+        S.main(["broadcast", "plain"])
+        self.machine("jis-nb", "pro")
+        S.ensure()
+        self.assertEqual(S.handle(self.payload("Stop", last_assistant_message="x")), "")
+
+    def test_future_stamped_record_does_not_hide_a_newer_signal(self):
+        self.machine("jis-bad", "x")                         # wrong clock: one day ahead
+        orig = S.now
+        S.now = lambda: orig() + timedelta(days=1)
+        try:
+            S.send("from the future", kind="done")
+        finally:
+            S.now = orig
+        self.machine("jis-nb", "pro")
+        self.assertNotIn("from the future", self.ups())      # ignored, not shown
+        self.machine("jis-nuc", "sharma")
+        S.send("real news", kind="done")
+        self.machine("jis-nb", "pro")
+        self.assertIn("real news", self.ups())               # the marker did not jump a day ahead
+
+    def test_normal_broadcast_is_unchanged(self):
+        self.machine("jis-nuc", "sharma")
+        self.assertEqual(S.main(["broadcast", "plain heads up"]), 0)
+        rec = S.load(S.ensure())[-1]
+        self.assertNotIn("id", rec)
+        self.assertNotIn("prio", rec)
+        self.machine("jis-nb", "pro")
+        out = self.ups()
+        self.assertIn("[MTS BROADCAST from operator/session across hosts]", out)
+        self.assertIn("plain heads up", out)
+        self.assertNotIn("ACTION REQUIRED", out)
+        self.assertEqual(self.ups(), "")                     # shown once, as before
 
 
 if __name__ == "__main__":

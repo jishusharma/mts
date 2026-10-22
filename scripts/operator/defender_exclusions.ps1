@@ -41,6 +41,7 @@ $paths = @(
     $repo,                                   # IdeaProjects\BinanceDataFeed (this tree)
     'F:\MTS',                                # every lane tree: mts-gemini, mts-codex, mts-codex-lab, mts-dsa, data, backups
     "$up\IdeaProjects",
+    "$up\.claude",                           # Claude Code transcripts, hook state (turn meter, signals), plugins
     "$up\.gemini",                           # Gemini CLI / Antigravity state, logs, tmp
     "$up\.cache\codex-runtimes",             # Codex node runtime + dependencies
     "$la\OpenAI\Codex",                      # codex.exe, cua_node, sandbox service

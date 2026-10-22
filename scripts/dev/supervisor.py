@@ -511,6 +511,18 @@ TRANSIT_MIN = 20                # write the hand-over this many minutes before t
 DSA_DOWN_H = 24                 # a DSA target whose oldest pending row is older than this has no working bridge (OURS)
 CLAUDE_LANES = ("SONNET", "HAIKU")
 NB, NUC = "JIS-NB", "JIS-NUC"
+LIVE_HOST_FILE = REPO / "MyTradingSys" / "system" / "live_host.txt"   # one line, the host that holds the live tree (LIVE_HOST_MOVE.md); same file as live_mirror.py
+
+
+def live_host() -> str:
+    """The live host's name; the JIS-NB lane runs there (JIS-NB until the cutover writes the laptop into the file)."""
+    try:
+        name = LIVE_HOST_FILE.read_text(encoding="utf-8").strip().upper()
+    except OSError:
+        name = ""
+    return name or NB
+
+
 HANDOVER_REL = "MyTradingSys/system/handover/SUPERVISOR_{}.md"
 NUC_GATE = "ssh -i ~/.ssh/nuc_gate -o BatchMode=yes e-ngineers@192.168.29.110 ps"
 HB_RE = re.compile(r"\bBUDGET login=([ABC])\b.*\bsup=\S+")
@@ -652,14 +664,15 @@ def lane_owner(live: dict, host: str | None = None) -> str | None:
     return on[0] if on else (sorted(live)[0] if live else None)
 
 
-def pick_cards(rows, host: str, n: int, crucial_only: bool = False) -> list:
-    """The first n dispatch rows a Claude worker on `host` can run: lanes SONNET/HAIKU (JIS-NB lane only on JIS-NB), Lab_Guy cards only on
+def pick_cards(rows, host: str, n: int, crucial_only: bool = False, live: str | None = None) -> list:
+    """The first n dispatch rows a Claude worker on `host` can run: lanes SONNET/HAIKU (JIS-NB lane only on the live host), Lab_Guy cards only on
     JIS-NUC, CRUCIAL/CRITICAL only when the window says so. Rows are already ranked (pinned CI first, own shard first)."""
     h = host.upper()
+    live = (live or live_host()).upper()
     ok = []
     for r in rows:
         lane = str(r.get("lane", "")).upper()
-        if not (lane in CLAUDE_LANES or (lane == NB and h == NB)):
+        if not (lane in CLAUDE_LANES or (lane == NB and h == live)):
             continue
         if r.get("role") == "Lab_Guy" and h != NUC:
             continue

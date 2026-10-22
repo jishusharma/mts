@@ -14,7 +14,7 @@ param(
 # Pull in shared functions, including Get-Descendants.
 . "$PSScriptRoot\shared-functions.ps1"
 
-$R = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
+$R = (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 Set-Location $R
 
 # Resolve pwsh.exe: prefer MSI, fall back to per-user Store AppExecLink.

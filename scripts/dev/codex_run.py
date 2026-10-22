@@ -52,9 +52,9 @@ WEEK_STOP = 85            # % of the week used: the rest stays with the operator
 # week 14 points; the 85% pre-check above only looks at what is already used, so a card that starts at 16% may still empty the window.
 WINDOW_S = 5 * 3600
 WEEK_S = 7 * 86400
-LAB_WINDOW_PTS = 50       # points of one 5-hour window the lab may spend (the rest stays with the operator's own sessions)
-LAB_WEEK_PTS = 60         # points of the week the lab may spend (operator 2026-10-16: was 35; GPT sat at 24% of the week while dev waited)
-LAB_RUNS_PER_WINDOW = 10  # cards started per 5-hour window (operator 2026-10-16: was 4; luna/medium runs move 0-3 window pts, the 30-min tick allows 10)
+LAB_WINDOW_PTS = 65       # DECISION (OURS) 2026-10-21 Supervisor B: was 50, 65 is the most that keeps the 10-pt reserve and the tests; reading 3% window / 1% week on Plus; points of one 5-hour window the lab may spend (the rest stays with the operator's own sessions)
+LAB_WEEK_PTS = 90         # DECISION (OURS) 2026-10-21: was 60, ~90% of the week; points of the week the lab may spend (operator 2026-10-16: was 35; GPT sat at 24% of the week while dev waited)
+LAB_RUNS_PER_WINDOW = 14  # DECISION (OURS) 2026-10-21: was 10 (20-min gap allows 15); cards started per 5-hour window (operator 2026-10-16: was 4; luna/medium runs move 0-3 window pts, the 30-min tick allows 10)
 ASTRA_RUNS_PER_WINDOW = 1
 WINDOW_RESERVE = 10       # points of the window never planned away: a card starts only if its estimate fits below 100 - this
 WEEK_RESERVE = 15
@@ -634,6 +634,7 @@ def run_sweep(wt, runs, *flags):
 
 def refresh(wt):
     """Bring the lab work tree to origin/fast-track on its own branch. Refuses a dirty tree: unfinished work is never touched."""
+    abort_pending_merge(wt)   # Supervisor pilot 2026-10-22: `git switch` refuses "while merging", so the tick died before merge_trunk ran
     if git(wt, "status", "--porcelain").stdout.strip():
         dest, n = salvage(wt, codex_home(), "tick", utc())   # an unfinished run (limit, crash) must not block the lab for good
         print(f"salvaged {n} unfinished file(s) to {dest}")
@@ -646,12 +647,16 @@ def refresh(wt):
         merge_trunk(wt, f"origin/{sync.TRUNK}")
 
 
+def abort_pending_merge(wt):
+    if git(wt, "rev-parse", "-q", "--verify", "MERGE_HEAD", check=False).returncode == 0:   # not .git/MERGE_HEAD: the lab tree is a worktree (.git is a file)
+        git(wt, "merge", "--abort", check=False)
+
+
 def merge_trunk(wt, ref):
     """Merge `ref` into the lab branch. A clash only on the generated INDEX.md takes the trunk's copy (the next delivery
     regenerates it); any other clash aborts the merge so the tree stays clean and says which files need a session.
     JIS-NUC 2026-10-14: a merge stopped on INDEX.md left MERGE_HEAD behind and every later tick died on it."""
-    if git(wt, "rev-parse", "-q", "--verify", "MERGE_HEAD", check=False).returncode == 0:   # not .git/MERGE_HEAD: the lab tree is a worktree (.git is a file)
-        git(wt, "merge", "--abort", check=False)
+    abort_pending_merge(wt)
     m = git(wt, "merge", "--quiet", "--no-edit", ref, check=False)
     if m.returncode == 0:
         return

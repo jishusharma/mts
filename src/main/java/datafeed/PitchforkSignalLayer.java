@@ -29,6 +29,7 @@ public final class PitchforkSignalLayer {
         return Boolean.getBoolean(FLAG);
     }
 
+    public static final int MAX_BINS = 200_000;
     public static final double DEFAULT_W_BIN = 10.0; // FORMULAS 18.1 canonical bin width for BTC (10 USD)
     public static final double VA_RATIO = 0.70;      // 70% Value Area threshold
     public static final double STOP_OFFSET_PCT = 0.015; // 1.5% structural stop beyond tine
@@ -139,7 +140,7 @@ public final class PitchforkSignalLayer {
         }
         int n = lows.length;
         double minPrice = Double.MAX_VALUE;
-        double maxPrice = Double.MIN_VALUE;
+        double maxPrice = -Double.MAX_VALUE;
         double totalVolume = 0.0;
 
         for (int i = 0; i < n; i++) {
@@ -152,6 +153,13 @@ public final class PitchforkSignalLayer {
             return null;
         }
 
+        if (Double.isInfinite(totalVolume) || Double.isNaN(totalVolume) || Double.isInfinite(maxPrice) || Double.isNaN(minPrice)) {
+            return null;
+        }
+        long binSpan = (long) Math.floor(maxPrice / w) - (long) Math.floor(minPrice / w);
+        if (binSpan < 0 || binSpan > MAX_BINS) {
+            return null; // one absurd bar must not allocate a huge grid
+        }
         int kMin = (int) Math.floor(minPrice / w);
         int kMax = (int) Math.floor(maxPrice / w);
         int numBins = kMax - kMin + 1;
@@ -282,22 +290,45 @@ public final class PitchforkSignalLayer {
      * Builds setup candidate ObjectNodes for active Pitchfork setups.
      */
     public static List<ObjectNode> detect(ObjectMapper mapper, ObjectNode root, JsonNode klines4h, JsonNode klines1m, String symbol) {
+        try {
+            return detectUnsafe(mapper, root, klines4h);
+        } catch (RuntimeException | OutOfMemoryError | StackOverflowError e) {
+            return new ArrayList<>(); // fail closed: malformed input never throws into the live candidate builder
+        }
+    }
+
+    /** DECISION (OURS): bin width 10 USD is the BTC grid of FORMULAS 18.1; below this price the grid is meaningless, so no signal. */
+    public static final double MIN_PRICE_FOR_BIN_GRID = 1000.0;
+
+    private static boolean finitePositive(double x) {
+        return !Double.isNaN(x) && !Double.isInfinite(x) && x > 0;
+    }
+
+    private static List<ObjectNode> detectUnsafe(ObjectMapper mapper, ObjectNode root, JsonNode klines4h) {
         List<ObjectNode> candidates = new ArrayList<>();
         if (root == null || mapper == null) {
             return candidates;
         }
 
         double currentPrice = root.has("current_price") ? root.get("current_price").asDouble() : 0.0;
-        if (currentPrice <= 0) {
+        if (!finitePositive(currentPrice) || currentPrice < MIN_PRICE_FOR_BIN_GRID) {
             return candidates;
         }
 
         // Parse 4H bars if available
-        if (klines4h == null || klines4h.size() < 15) {
+        if (klines4h == null || !klines4h.isArray() || klines4h.size() < 15) {
             return candidates;
         }
 
         int n4h = klines4h.size();
+        // DECISION (OURS): a trailing bar whose close time (index 6, when present) is still in the future is unclosed: drop it.
+        JsonNode lastBar = klines4h.get(n4h - 1);
+        if (lastBar != null && lastBar.isArray() && lastBar.size() > 6 && lastBar.get(6).asLong() > System.currentTimeMillis()) {
+            n4h--;
+            if (n4h < 15) {
+                return candidates;
+            }
+        }
         double[] highs = new double[n4h];
         double[] lows = new double[n4h];
         double[] closes = new double[n4h];
@@ -306,11 +337,21 @@ public final class PitchforkSignalLayer {
 
         for (int i = 0; i < n4h; i++) {
             JsonNode b = klines4h.get(i);
+            if (b == null || !b.isArray() || b.size() < 5) {
+                return candidates;
+            }
             timestamps[i] = b.get(0).asLong();
             highs[i] = b.get(2).asDouble();
             lows[i] = b.get(3).asDouble();
             closes[i] = b.get(4).asDouble();
             volumes[i] = b.size() > 5 ? b.get(5).asDouble() : 1.0;
+            if (timestamps[i] < 0 || (i > 0 && timestamps[i] <= timestamps[i - 1])) {
+                return candidates; // bars must be strictly ascending in time
+            }
+            if (!finitePositive(highs[i]) || !finitePositive(lows[i]) || highs[i] < lows[i]
+                    || Double.isNaN(volumes[i]) || Double.isInfinite(volumes[i]) || volumes[i] < 0) {
+                return candidates; // one bad bar poisons the series
+            }
         }
 
         int lookback = 4;
@@ -376,9 +417,18 @@ public final class PitchforkSignalLayer {
         double stopPrice = isLong ? entryPrice * (1.0 - STOP_OFFSET_PCT) : entryPrice * (1.0 + STOP_OFFSET_PCT);
         double targetPrice = mlNow;
 
+        if (!finitePositive(entryPrice) || !finitePositive(targetPrice) || !finitePositive(stopPrice)) {
+            return candidates;
+        }
+        if (isLong ? currentPrice <= stopPrice : currentPrice >= stopPrice) {
+            return candidates; // price already through the stop: stale setup
+        }
+        if (isLong ? targetPrice <= entryPrice : targetPrice >= entryPrice) {
+            return candidates; // target must lie on the profit side of the tine
+        }
         double risk = Math.abs(entryPrice - stopPrice);
         double reward = Math.abs(targetPrice - entryPrice);
-        if (risk <= 0 || reward / risk < 1.5) {
+        if (!(risk > 0) || !(reward / risk >= 1.5)) {
             return candidates; // Fails R:R floor
         }
 

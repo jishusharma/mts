@@ -34,6 +34,50 @@ def run_cmd(cmd, cwd=None):
         return f"Error: {e}"
 
 
+def handoff_blocks(text):
+    """[(heading, body)] for each `## ` block of NEXT_SESSION.md."""
+    out, head, body = [], None, []
+    for line in text.splitlines():
+        if line.startswith("## "):
+            if head:
+                out.append((head, "\n".join(body)))
+            head, body = line[3:].strip(), []
+        elif head:
+            body.append(line)
+    if head:
+        out.append((head, "\n".join(body)))
+    return out
+
+
+def get_handoff_freshness(text=None, newer=None, root="."):
+    """One line per NEXT_SESSION block: FRESH or STALE (operator 2026-10-21: sessions quoted hand-overs that disk and git had already
+    overtaken). STALE = newer trunk commits touch a file the block names in backticks, since the date in its heading.
+    newer(paths, since) -> [one-line commits]; injectable for tests. A hand-over is history, never the current state."""
+    if text is None:
+        try:
+            text = Path(root, "MyTradingSys/system/NEXT_SESSION.md").read_text(encoding="utf-8")
+        except OSError:
+            return ["(NEXT_SESSION.md unreadable: check the disk, do not guess)"]
+    if newer is None:
+        def newer(paths, since):
+            r = subprocess.run(["git", "log", "--since=" + since + " 00:00", "--oneline", TRUNK, "--", *paths], capture_output=True, text=True, cwd=root)
+            return [x for x in r.stdout.splitlines() if x]
+    lines = []
+    for head, body in handoff_blocks(text):
+        m = re.search(r"20\d\d-\d\d-\d\d", head)
+        if not m:
+            continue
+        paths = sorted({t for t in re.findall(r"`([^`\s]+)`", body)
+                        if ("/" in t or t.endswith((".py", ".md", ".ps1", ".json"))) and Path(root, t.split(":")[0]).exists()})[:25]
+        commits = newer(paths, m.group(0)) if paths else []
+        if len(commits) > 1:
+            lines.append(f"STALE {m.group(0)} {head[:70]}: {len(commits)} newer commits touch files it names (newest {commits[0][:80]}). "
+                         "Verify on disk and git before quoting it.")
+        else:
+            lines.append(f"FRESH {m.group(0)} {head[:70]}")
+    return lines or ["(no dated hand-over blocks)"]
+
+
 def get_trunk_log(n=TRUNK_COMMITS, cwd=None):
     """(label, one-line log) of the last n commits on origin/fast-track; falls back to HEAD and says so when the ref is missing.
     Never this host's local HEAD when the trunk is known: that was 258 commits behind the tip in the committed copy."""
@@ -375,6 +419,12 @@ def main():
     n_stale, stale_lines = get_stale_pages()
     output.append(f"Pages stale: {n_stale}")
     output.extend(stale_lines)
+    output.append("")
+
+    output.append("## Hand-over freshness (hand-overs are history: read disk and git, never quote them as current)")
+    output.append("```")
+    output.extend(get_handoff_freshness())
+    output.append("```")
     output.append("")
 
     # Gate board: which gate each layer is at and when its proof last moved (LAYER_REBUILD_PLAN_2026-10-15 s5; gate_board.json)

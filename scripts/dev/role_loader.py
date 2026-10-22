@@ -226,10 +226,14 @@ def _kw_re(kw):
     return re.compile(r"(?<![a-z0-9])" + body + ("" if prefix else r"(?![a-z0-9])"))
 
 
+# A path inside a brief ("C:/Users/x/IdeaProjects/...") must not score: "idea*" matched IdeaProjects (pilot 2026-10-22).
+_PATH_RE = re.compile(r"[a-z]:[\\/][\w.~\\/-]*|[\w.~-]+(?:[\\/][\w.~-]+){2,}")
+
+
 def pick_role(text, repo=REPO):
     """Best operator role for a task text: 1 point per keyword, 0.5 per weak keyword (roster). A role needs one full
     keyword; embedded roles (Builder, Session_Planner) are never picked. Equal top scores = a tie, nothing is picked."""
-    low = (text or "").lower()
+    low = _PATH_RE.sub(" ", (text or "").lower())
     scored = []
     for r in load_roster(repo):
         if r.get("start") != "operator":
@@ -251,7 +255,8 @@ def pick_role(text, repo=REPO):
 def from_session(prompt):
     """A brief sent by another session: its sender names the role, the fallback stays out."""
     p = (prompt or "").lstrip()
-    return "<cross-session-message" in p[:400] or p.startswith("Another Claude session")
+    return ("<cross-session-message" in p[:400] or p.startswith("Another Claude session")
+            or p.startswith("Background (from the session that started this one)"))
 
 
 # ---------- session state ----------
@@ -310,9 +315,10 @@ def boot_step(body):
     lines = body.split("\n")
     for i, ln in enumerate(lines):
         s = ln.strip()
-        m = re.match(r"^(?:#+\s*)?boot\b[^:\n]*?(?::\s*(.*))?$", s, re.I)
+        # a Boot heading, or a short "Boot ...:" label; prose that merely starts with "Boot" is not a section
+        m = re.match(r"^(?:#+\s*boot\b[^:\n]*?(?::\s*(.*))?|boot\b[^:\n]{0,25}:\s*(.*)|boot\b[^.:\n]{0,40}())$", s, re.I)
         if m and not s.startswith("|"):
-            inline = (m.group(1) or "").strip()
+            inline = (m.group(1) or m.group(2) or "").strip()
             if len(inline) > 12:
                 return inline[:240]
             for nx in lines[i + 1:]:
@@ -321,6 +327,7 @@ def boot_step(body):
     return "(first step of the file's boot section)"
 
 
+REMIND_EVERY = 6
 LAST_META = {}
 
 
@@ -399,6 +406,11 @@ def _reminder(sid):
     name = done[-1]
     m = role_meta(sid, name)
     if not m:
+        return ""
+    d = _load(sid)
+    d["n"] = d.get("n", 0) + 1       # the same ~230 chars on every prompt is re-read cost: repeat only every REMIND_EVERY-th prompt
+    _save(sid, d)
+    if (d["n"] - 1) % REMIND_EVERY:
         return ""
     path = f"{ROLES_REL}/{m['file']}"
     return _out("UserPromptSubmit", f"Role: {name} {m['version']} (token {m['token']}, {path}). Follow that file; if you no longer "

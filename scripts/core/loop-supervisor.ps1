@@ -20,7 +20,7 @@ param(
 )
 
 $ErrorActionPreference = "Continue"
-$R = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
+$R = (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 Set-Location $R
 
 $SupLog        = Join-Path $R "runtime_data\supervisor_log.txt"
@@ -37,7 +37,9 @@ $Aux = @(
     @{ name = "auto_trader";        match = "MyTradingSys\.execution\.auto_trader";               vbs = "launch-auto-trader.vbs" },
     @{ name = "live_runner_cli";    match = "MyTradingSys\.backtest\.layers\.alerts\.live_runner_cli"; vbs = "launch-live-runner.vbs" },
     @{ name = "orderflow_live";     match = "MyTradingSys\.backtest\.layers\.fabio\.orderflow_live";  vbs = "launch-orderflow-live.vbs" },
-    @{ name = "daily_loss_monitor"; match = "daily_loss_monitor\.py";                             vbs = "launch-daily-loss.vbs" }
+    @{ name = "daily_loss_monitor"; match = "daily_loss_monitor\.py";                             vbs = "launch-daily-loss.vbs" },
+    @{ name = "oi_recorder";        match = "oi_recorder\.py";                                    vbs = "launch-oi-recorder.vbs" },
+    @{ name = "htf_context_live";   match = "MyTradingSys\.backtest\.layers\.fabio\.htf_context_live"; vbs = "launch-htf-context.vbs" }
 )
 
 function SupLog {

@@ -1,0 +1,10 @@
+{
+  "done_when": "Review verdict posted in desk_queue or news",
+  "from": "DESKTOP-F7IU69N",
+  "id": "20261021-050751-review-mts-broadcast-implementation",
+  "need": "Code review of commit 39c858c5 in scripts/dev/mts_signal.py and test_mts_signal.py (MTS broadcast functionality across all active LLM sessions)",
+  "posted": "2026-10-21T05:07:51Z",
+  "status": "pending",
+  "target": "JIS-NB",
+  "title": "Review MTS broadcast implementation"
+}

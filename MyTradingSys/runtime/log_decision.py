@@ -5,7 +5,7 @@ Usage:
   python log_decision.py note "reason text"
 """
 import sys, json
-sys.path.insert(0, r"C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\runtime")
+sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.abspath(__file__)))
 sys.dont_write_bytecode = True
 import session_state as ss
 

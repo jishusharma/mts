@@ -43,6 +43,14 @@ def test_verdict_passed_and_wide():
     assert desk.verdict({'n': 0})[0] == 'NOT ENOUGH DATA'
 
 
+def test_verdict_few_trades_and_range_below_zero():
+    # 2 trades never decide anything, however narrow their range
+    assert desk.verdict({'n': 2, 'mean': -1.04, 'lo': -1.042, 'hi': -1.03, 'power_plausible': .9})[0] == 'NOT ENOUGH DATA'
+    assert '30' in desk.verdict({'n': 2, 'mean': -1.04, 'lo': -1.042, 'hi': -1.03, 'power_plausible': .9})[1]
+    # the whole range below zero is a loser even when the sample could not see +0.10 R
+    assert desk.verdict({'n': 369, 'mean': -.158, 'lo': -.288, 'hi': -.023, 'power_plausible': .3})[0] == 'FAILED'
+
+
 def test_no_two_point_model_on_screen(tmp_path):
     trials = tmp_path / 'TRIALS.md'
     trials.write_text('', encoding='utf-8')

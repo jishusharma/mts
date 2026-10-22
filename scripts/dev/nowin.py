@@ -6,7 +6,6 @@ machines). `install()` makes subprocess.Popen add CREATE_NO_WINDOW when the call
 on Windows under pythonw.exe (or MTS_NOWIN=1), so interactive runs and tests are untouched. Idempotent.
 Gate note (GATE_SPEED.md): a change here is an ordinary smoke ship, so the fast gate runs only the tests the import graph reaches.
 """
-import argparse
 import json
 import os
 import subprocess
@@ -130,6 +129,7 @@ def install(force=False):
 
 
 def main(argv=None):
+    import argparse
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest="cmd", required=True)
     aud = sub.add_parser("audit", help="list spawns executed without CREATE_NO_WINDOW")

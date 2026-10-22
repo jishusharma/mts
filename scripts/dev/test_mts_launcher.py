@@ -30,6 +30,15 @@ class LauncherVerbs(unittest.TestCase):
         for bad in ("Stop-Process", "Remove-Item", "Move-Item", "mode.ps1"):
             self.assertNotIn(bad, b)
 
+    def test_auto_trader_python_is_resolved_not_hardcoded_and_fails_closed(self):
+        b = branch("auto")
+        self.assertTrue(b, "no switch branch for auto")
+        self.assertNotRegex(b, r"(?i)[a-z]:[\/]+users[\/]", "auto-trader launch line hard-codes a user path")
+        self.assertIn("Get-Command python.exe", b)
+        # the missing-python refusal comes before the window opens
+        self.assertLess(b.index("if (-not $autoPy)"), b.index("Open-Window"))
+        self.assertIn("exit 1", b[b.index("if (-not $autoPy)"):b.index("Open-Window")])
+
     def test_market_verb_runs_read_only_guide(self):
         table = re.search(r"# VERBS-BEGIN(.*?)# VERBS-END", MTS, re.S).group(1)
         self.assertIn("market", set(re.findall(r'@\("[^"]+",\s*"([a-z-]+)"', table)))
@@ -134,3 +143,21 @@ class WiredToolVerbs(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_launch_scripts_do_not_hardcode_the_dev_checkout():
+    """The live tree must run itself, not the dev checkout (host move 2026-10-22: mts start in C:/MTS/mts-live ran the dev tree)."""
+    import pathlib
+    root = pathlib.Path(__file__).resolve().parents[2]
+    old = "IdeaProjects\BinanceDataFeed"
+    files = [*root.glob("scripts/core/*.ps1"), *root.glob("scripts/live/*.ps1"), *root.glob("scripts/monitor/*.ps1"), *root.glob("runtime_data/*.vbs")]
+    bad = [str(f.relative_to(root)) for f in files if old in f.read_text(encoding="utf-8-sig", errors="replace")]
+    assert not bad, bad
+
+
+def test_launchers_do_not_hardcode_a_python_interpreter_path():
+    """A per-host interpreter path (pythoncore-3.14-64 exists on JIS-NB only) silently stopped every AUX process on the laptop (2026-10-22)."""
+    import pathlib
+    root = pathlib.Path(__file__).resolve().parents[2]
+    bad = [str(f.relative_to(root)) for f in root.glob("runtime_data/*.vbs") if "pythoncore" in f.read_text(encoding="utf-8-sig", errors="replace")]
+    assert not bad, bad

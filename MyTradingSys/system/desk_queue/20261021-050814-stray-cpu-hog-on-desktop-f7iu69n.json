@@ -1,0 +1,10 @@
+{
+  "done_when": "operator ran the stop command or allow-listed the pattern in MyTradingSys/system/STRAY_REAP_POLICY.md",
+  "from": "DESKTOP-F7IU69N",
+  "id": "20261021-050814-stray-cpu-hog-on-desktop-f7iu69n",
+  "need": "STRAY PID 9292 PowerMgr.exe cpu=19013s age=64.5h chain: svchost.exe[1376] <- services.exe[1164] <- wininit.exe[1044] <- (parent gone)\n    cmd: \"C:\\WINDOWS\\SysWOW64\\Lenovo\\PowerMgr\\PowerMgr.exe\"\n    stop: taskkill /PID 9292 /T /F\nSTRAY PID 12804 Taskmgr.exe cpu=3925s age=7.2h chain: (parent gone)\n    cmd: \n    stop: taskkill /PID 12804 /T /F",
+  "posted": "2026-10-21T05:08:14Z",
+  "status": "pending",
+  "target": "JIS-NB",
+  "title": "Stray CPU hog on DESKTOP-F7IU69N"
+}

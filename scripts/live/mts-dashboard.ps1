@@ -6,7 +6,7 @@
 # One-shot. No loop. Invoked by: mts-dashboard.
 param([switch]$Watch)
 $ErrorActionPreference = "Continue"
-$R = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
+$R = (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 Set-Location $R
 do {
 if ($Watch) { Clear-Host }

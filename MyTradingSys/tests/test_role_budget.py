@@ -12,7 +12,7 @@ ROLES = REPO / "MyTradingSys" / "system" / "roles"
 
 BUDGET = {  # bytes, OURS
     "1985artifacts_guy.md": 2200, "admin_guy.md": 5200, "builder.md": 1500, "eagle_eyes.md": 7100, "lab_guy.md": 8300,
-    "mts_doctor.md": 1700, "pipeliner.md": 9200, "session_planner.md": 11500, "supervisor.md": 6000, "thinker.md": 9300,
+    "mts_doctor.md": 1700, "pipeliner.md": 9200, "session_planner.md": 11500, "supervisor.md": 7000, "thinker.md": 9300,
 }
 
 RETIRED = [  # (pattern, why it is retired)
