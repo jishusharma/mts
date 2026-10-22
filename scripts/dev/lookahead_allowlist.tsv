@@ -113,9 +113,6 @@ MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py	fwd-index	l[
 MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py	fwd-index	o[b + jb], c[b + jb] = 100.0, p1	SAFE: synthetic test fixture builds bars by index; not decision logic
 MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py	fwd-index	tbv[b:b + DAY] = agg	SAFE: synthetic test fixture builds bars by index; not decision logic
 MyTradingSys/research/imbalance_qriptal_2026-10-16/imb.py	fwd-index	near = w2.iloc[max(0, j - 1): j + 2]	reviewed 2026-10-16: negative-label check reads the low bar +-1; every bar in w2 closed before the video publish time, no trade decision uses it
-MyTradingSys/research/krown_capture_2026-10-16/check_quotes.py	fwd-index	if fix: lines[i+1] = lines[i+1].replace("@"+s[2], "@"+real, 1)	reviewed: indexes transcript text lines (quote checker), no price or time series
-MyTradingSys/research/krown_capture_2026-10-16/check_quotes.py	fwd-index	pos = next((j for j in range(len(words)-k+1) if words[j:j+k] == q), None)	reviewed: indexes transcript text lines (quote checker), no price or time series
-MyTradingSys/research/krown_capture_2026-10-16/check_quotes.py	fwd-index	s = re.match(r"^Source:\s*([A-Za-z0-9_-]{11}) @(\d\d:\d\d:\d\d)", lines[i+1])	reviewed: indexes transcript text lines (quote checker), no price or time series
 MyTradingSys/research/krown_malkan_g3_2026-10-16/event_counts.py	fwd-index	for q in piv[x + 1:]:	pre-existing, unreviewed
 MyTradingSys/research/krown_malkan_g3_2026-10-16/event_counts.py	pivot-right-neighbour	if all(s * v[i] < s * v[i - j] for j in range(1, k + 1)) and all(s * v[i] <= s * v[i + j] for j in range(1, k + 1)):	pre-existing, unreviewed
 MyTradingSys/research/krown_ta101_2026-10-13/tools/build_setup_catalog.py	fwd-index	return "<MISSING>" if i is None else f"\n{lines[i]}\n{lines[i + 1]}\n"	pre-existing, unreviewed

@@ -1253,3 +1253,13 @@ Applied: 2026-10-22: scripts/dev/offer_guard.py (Stop hook, .claude/settings.jso
  "answer": "process earthing end to end - make sure that you do not bloat your context past 250k so better use 1 time spawned agents and plan scoped tasks. (read as: process everything end to end; dictation)",
  "done": "pending: cards cbp-one-quote-checker plus the three below, each run by its own scoped session. DEFAULT (OURS): q-v1-cbp-routine stays unanswered (stopping the Haiku routine is the operator's call). Plan: research/thinker/2026-10-23_cbp_core_vs_adopt.md"}
 ```
+
+## d-supervisor-stay-to-window | decided 2026-10-23 | Thinker
+```json
+{"id": "d-supervisor-stay-to-window", "order": 42, "date": "2026-10-23", "status": "DECIDED",
+ "question": "Supervisor C ended at 2239Z (mode=ENDED, 5h=4%, window end=02:19Z) after CI went green, with ready cards left. What now?",
+ "options": {"A": "Supervisor stays up to its window end while ready cards exist (roles/supervisor.md + a handover guard)", "B": "leave as is; operator restarts by hand", "C": "Thinker flags it each 30-min check"},
+ "recommended": "A",
+ "answer": "A",
+ "done": "pending: card supervisor-handover-refuses-before-trans. Fact: supervisor.md:53 already says transit = TRANSIT time or 5h >= 80%; the early end broke it, so the fix is a guard (handover refuses before transit while ready cards exist, --early <reason> overrides) plus one line in supervisor.md. Review: research/thinker/2026-10-22_ship_context_review.md item 3"}
+```
