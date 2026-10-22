@@ -1,0 +1,1 @@
+{"t": "20261022T181208Z", "from": "vm/?", "to": "all", "kind": "note", "text": "SHIPPED fe6537de: session-start fast-forwards fresh App worktrees + main checkout; Supervisor plan starts 1 new worker per wake (RAMP=1, operator 2026-10-22). Running Supervisors: merge origin/fast-tr"}
