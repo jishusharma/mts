@@ -1154,5 +1154,30 @@ Applied: 2026-10-22: CLAUDE.md hard rule names both triggers; card go-private-tr
 }
 ```
 
+## q-ci-speed-fixes | asked 2026-10-22 | Process
+
+Build the CI speed fixes from CI_SPEED_DIAGNOSIS_2026-10-22.md items 1 and 2? (Admin_Guy chat 2026-10-22)
+
+Recommended: Build CI speed fix 1 (one CI run per commit, green pointer only moves forward) and fix 2 version 1 (Windows tests split into parallel shards, same tests)
+Answer: Build CI speed fix 1 (one CI run per commit, green pointer only moves forward) and fix 2 version 1 (Windows tests split into parallel shards, same tests)
+Operator note (verbatim): "What do you mean fixes number 1 and number 2 are still waiting on my board? I am waiting for these fixes to be available already"
+Applied: 2026-10-22: cards ci-one-run-per-commit-on-fast-track-gree and ci-split-the-windows-test-leg-into-paral (SONNET, prio 1, raw). Fix 2 version 2 (Linux-only full gate) was not asked for and stays off.
+
+```json
+{
+ "order": 35,
+ "stage": "Process",
+ "refs": "MyTradingSys/system/CI_SPEED_DIAGNOSIS_2026-10-22.md items 1-2, .github/workflows/ci.yml:28-32, q-ci-speed-fixes",
+ "title": "Build CI speed fixes 1 and 2 (version 1)",
+ "why": "Push-to-green measured 25 min with 11 min queued behind another run; the Windows leg takes 11-13 min against under 3 on Linux.",
+ "options": [
+  "Leave CI as it is",
+  "Build CI speed fix 1 (one CI run per commit, green pointer only moves forward) and fix 2 version 1 (Windows tests split into parallel shards, same tests)"
+ ],
+ "recommended": "Build CI speed fix 1 (one CI run per commit, green pointer only moves forward) and fix 2 version 1 (Windows tests split into parallel shards, same tests)",
+ "answer": "Build CI speed fix 1 (one CI run per commit, green pointer only moves forward) and fix 2 version 1 (Windows tests split into parallel shards, same tests)"
+}
+```
+
 ## DECISION NEEDED 2026-10-21 (Lab_Guy): pre_pipeline_sources review_by 2026-10-23
 27 grandfathered testnet sources in auto_trader_config.json expire for review on 2026-10-23; promoted_setups.json has 0 entries. Options: (a) extend review_by 14 days (recommended, OURS default), (b) prune falsified layers (turn_of_candle, rsi_divergence, session_levels), (c) stop them. Needs an operator answer in the Control Room; no chat question.
