@@ -390,7 +390,35 @@ def _probe_wait_state(repo: Path, shas: list[str]) -> dict:
     ci_red = bool(ci_info["red"]) if isinstance(ci_info, dict) and "red" in ci_info else None
     gs_info = read_gate_slots(repo)
     busy_slots = int(gs_info["busy"]) if isinstance(gs_info, dict) and "busy" in gs_info else None
-    return {"shas": sha_on_trunk, "ci_red": ci_red, "busy_slots": busy_slots}
+    total_slots = int(gs_info["total"]) if isinstance(gs_info, dict) and "total" in gs_info else None
+    return {"shas": sha_on_trunk, "ci_red": ci_red, "busy_slots": busy_slots, "total_slots": total_slots}
+
+
+STUCK_MAX = 2   # plans in a row with a free worker slot and no new worker: stop the actionable wake (no 5 min wake loop; OURS)
+
+
+def _actionable(last: dict, current: dict) -> str | None:
+    """d-six-slots-poll (operator 2026-10-23, option A): not a change but a state worth a wake. The last plan left worker slots free
+    with more ready cards than it picked (RAMP), the window may spend, CI is green now and this machine has a free gate.
+    Unknown CI or gates = no wake (fail closed); STUCK_MAX plans that spawned nothing = no wake."""
+    pl = last.get("plan") or {}
+    spare, ready = int(last.get("spare") or 0), int(last.get("ready_more") or 0)
+    if pl.get("mode") not in ("SPEND", "NORMAL") or spare <= 0 or ready <= 0 or int(last.get("stuck") or 0) >= STUCK_MAX:
+        return None
+    busy, total = current.get("busy_slots"), current.get("total_slots")
+    if current.get("ci_red") is not False or busy is None or total is None or busy >= total:
+        return None
+    return f"ACTIONABLE {spare} worker slot(s) free, {ready} more card(s) ready, CI green, gates {busy}/{total}: run plan and spawn"
+
+
+def _last_plan(login: str | None, home=None) -> dict:
+    if not login:
+        return {}
+    try:
+        d = json.loads((loop_home(home) / f"{login}-last-plan.json").read_text(encoding="utf-8"))
+        return d if isinstance(d, dict) else {}
+    except (OSError, ValueError):
+        return {}
 
 
 def _detect_transition(baseline: dict, current: dict) -> str | None:
@@ -424,10 +452,13 @@ def wait_for_transition(
     probe=None,
     fetcher=None,
     sleeper=None,
+    login: str | None = None,
+    home=None,
 ) -> tuple[int, str]:
     """Record baseline at start and poll every `interval` seconds after fetching.
     Exits (0, reason) on the FIRST transition from baseline; never exits on a state that already held at baseline;
-    exits (3, reason) when `timeout` seconds elapse with no transition.
+    with `login`, also exits (0, ACTIONABLE ...) from the first poll on when that login's last plan left a worker slot and ready cards
+    unused (_actionable); exits (3, reason) when `timeout` seconds elapse with no transition.
     """
     sha_list = parse_shas_arg(shas)
     timeout_s = parse_duration(timeout)
@@ -452,7 +483,7 @@ def wait_for_transition(
         except Exception:
             pass
         current = probe_fn(repo, sha_list)
-        reason = _detect_transition(baseline, current)
+        reason = _detect_transition(baseline, current) or (_actionable(_last_plan(login, home), current) if login else None)
         if reason:
             return 0, reason
 
@@ -590,7 +621,7 @@ def estimate_k(hist) -> float | None:
 RAMP = 1    # operator 2026-10-22 ("starts with minimum workers ... the operator can build on it"): at most one new worker per wake
 
 
-def pace_plan(now: datetime, rd: dict, cap: float, hist=(), running: int = 0) -> dict:
+def pace_plan(now: datetime, rd: dict, cap: float, hist=(), running: int = 0, gates_idle: bool = False) -> dict:
     """Pure: the 5 h plan from one get_usage reading. Spread the weekly room (cap - week%) evenly over the 5 h windows left before the
     weekly reset, convert it to 5 h points (k), never past SPAWN_CEIL; then a feedback check: the burn since this window's first reading,
     projected to the window end, shrinks or grows the worker count. Start light: at most RAMP new workers per wake, so a fresh
@@ -635,7 +666,11 @@ def pace_plan(now: datetime, rd: dict, cap: float, hist=(), running: int = 0) ->
         mode, slots = "CRUCIAL-ONLY", min(slots, 1)
     else:
         mode = "SPEND" if room >= 30 else "NORMAL"
-    return {"mode": mode, "slots": slots, "new": min(RAMP, max(0, slots - running)), "running": running, "five": five, "week": week,
+    ramp = RAMP
+    if gates_idle and mode in ("SPEND", "NORMAL") and slots - running > RAMP:
+        ramp = slots - running      # d-six-slots-poll (option A): every gate on this machine idle, so the ramp does not wait a wake per worker
+        why.append(f"gates idle: ramp {RAMP} -> {ramp}")
+    return {"mode": mode, "slots": slots, "new": min(ramp, max(0, slots - running)), "running": running, "five": five, "week": week,
             "cap": cap, "k": k, "k_measured": bool(k_meas), "room": round(room, 1), "target": round(target), "h_left": round(h_left, 2),
             "burn": None if burn is None else round(burn, 2), "projected": None if projected is None else round(projected),
             "five_reset": r5.strftime("%Y-%m-%dT%H:%MZ"), "week_reset": (rw or now + timedelta(days=7)).strftime("%Y-%m-%dT%H:%MZ"),
@@ -812,7 +847,11 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
     if me_any and gate_key and ctx.get("nuc_ok") and not any(s["host"] == NUC for s in live.values()) and ctx.get("spare"):
         L.append(f"RUN python scripts/dev/nuc_wake.py --card {ctx['spare']} --name {ctx['spare'][:20]}   (NUC has no supervisor: one headless "
                  f"worker there, the NUC login's budget)")
-    L.append(f"RUN (background) python scripts/dev/supervisor.py wait --timeout 50m{ctx.get('shas_arg', '')}   then end the turn")
+    if me_any:
+        for ih, logins, n in ctx.get("idle_hosts", []):
+            L.append(f"OPERATOR start a Supervisor on {ih}: no heartbeat < {HEARTBEAT_MIN} min, {n} card(s) ready for it, budget on "
+                     f"login {'/'.join(logins)}: `You are Supervisor. Login {logins[0]}.`")
+    L.append(f"RUN (background) python scripts/dev/supervisor.py wait --timeout 50m --login {login}{ctx.get('shas_arg', '')}   then end the turn")
     L.append(f"TRANSIT at {plan['transit']}: python scripts/dev/supervisor.py handover --login {login} --note \"<one line>\"; ship it; "
              f"successor line: You are Supervisor. Login {login}. Continue from {HANDOVER_REL.format(login)}")
     return L
@@ -855,6 +894,33 @@ def nuc_budget_ok(login: str, mode: str, now: datetime, no_fetch: bool = True, v
         return False
 
 
+def idle_hosts(live: dict, dispatch, now: datetime, no_fetch: bool = True, view=None, inv=None) -> list:
+    """d-six-slots-poll (operator 2026-10-23, option C): [(host, [logins], ready)] for each machine with no live supervisor, at least one
+    ready card it can run and a login it may run that has no live supervisor and a fresh BUDGET reading that is not THROTTLE. Nothing
+    can start a session on another machine (SCHEDULING_POLICY.md), so the answer is an OPERATOR line. Unreadable = [] (no line)."""
+    try:
+        import traffic
+        inv = inv or traffic.inv_cache()
+        view = view if view is not None else traffic.budget_view(do_fetch=not no_fetch, now=now)[0]
+        busy_hosts = {s["host"] for s in live.values()}
+        out = []
+        for h, m in sorted(inv["machines"].items()):
+            if h.upper() in busy_hosts:
+                continue
+            ok = []
+            for lg in m.get("logins", []):
+                r = view["logins"].get(lg)
+                at = traffic.utc((r or {}).get("at"))
+                if lg not in live and r and at and (now - at).total_seconds() <= traffic.BUDGET_FRESH_H * 3600 and r["state"] != "THROTTLE":
+                    ok.append(lg)
+            n = len(pick_cards(dispatch, h, 99))
+            if ok and n:
+                out.append((h.upper(), ok, n))
+        return out
+    except Exception:
+        return []
+
+
 def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, no_fetch: bool = False, host: str | None = None,
          home=None, now: datetime | None = None, shas: list | None = None) -> tuple[list, dict]:
     """One call per wake (boot included): records the reading, sends the heartbeat, reads peers, board, hand-over, CI, dispatch,
@@ -867,7 +933,10 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
     rd = {**rd, "at": now.strftime("%Y-%m-%dT%H:%M:%SZ")}
     hist = record_reading(login, rd, home)
     rw = _utc(rd.get("week_reset"))
-    pl = pace_plan(now, rd, weekly_cap(login, host, (rw - now).total_seconds() / 3600 if rw else None), hist[:-1], running)
+    gs = read_gate_slots(repo)
+    pl = pace_plan(now, rd, weekly_cap(login, host, (rw - now).total_seconds() / 3600 if rw else None), hist[:-1], running,
+                   gates_idle=gs.get("busy") == 0)
+    prev = _last_plan(login, home)
     notes, ctx = [], {}
     if not no_fetch:
         try:
@@ -888,8 +957,7 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
         ctx["peers_unknown"] = True
         notes.append(f"NOTE signals unreadable ({type(e).__name__}): peers unknown")
     live = live_supervisors(sigs, now)
-    gs = read_gate_slots(repo)
-    live[login] = {"host": host, "at": now.strftime("%Y-%m-%dT%H:%MZ"), "mode": pl["mode"], "run": running, "free": pl["new"], "dsa": dsa_local,
+    live[login] ={"host": host, "at": now.strftime("%Y-%m-%dT%H:%MZ"), "mode": pl["mode"], "run": running, "free": pl["new"], "dsa": dsa_local,
                    "gates": (gs["busy"], gs["total"]) if "busy" in gs else None}
     shard = sorted(l for l, s in live.items() if s["free"] > 0) or [login]
     try:
@@ -911,6 +979,9 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
         rest = pick_cards(snap.get("dispatch", []), NUC, 10)
         spare = [r["id"] for r in rest if r["id"] not in {p["id"] for p in ctx["picks"]}]
         ctx["spare"] = spare[0] if spare else None
+        ctx["ready_here"] = len(pick_cards(snap.get("dispatch", []), host, 99, pl["mode"] == "CRUCIAL-ONLY"))
+        if not ctx.get("peers_unknown"):
+            ctx["idle_hosts"] = idle_hosts(live, snap.get("dispatch", []), now, no_fetch)
     except Exception as e:
         ctx["picks"] = []
         notes.append(f"NOTE dispatch failed ({type(e).__name__}: {str(e)[:80]})")
@@ -967,8 +1038,12 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
             stamp.write_text(now.strftime("%Y-%m-%dT%H:%M:%SZ"), encoding="utf-8", newline="\n")
         except OSError:
             pass
+    spare_slots = max(0, pl["slots"] - running - pl["new"])
+    pp = prev.get("plan") or {}
+    stuck = int(prev.get("stuck") or 0) + 1 if int(prev.get("spare") or 0) > 0 and running <= int(pp.get("running") or 0) else 0
     data = {"plan": pl, "live": live, "shard": shard, "heartbeat_sent": sent, "picks": [p["id"] for p in ctx.get("picks", [])],
-            "lines": lines}
+            "lines": lines, "spare": spare_slots, "ready_more": max(0, ctx.get("ready_here", 0) - len(ctx.get("picks", []))),
+            "stuck": stuck}
     try:
         (loop_home(home) / f"{login}-last-plan.json").write_text(json.dumps(data, indent=1, sort_keys=True, default=str),
                                                                  encoding="utf-8", newline="\n")
@@ -1033,6 +1108,7 @@ def main(argv: list[str] | None = None) -> int:
     p_wait.add_argument("--shas", nargs="*", default=[], help="comma- or space-separated commit shas to watch for landing on trunk")
     p_wait.add_argument("--timeout", default="3000", help="timeout in seconds or with s/m/h suffix (default 3000)")
     p_wait.add_argument("--interval", default="300", help="poll interval in seconds or with s/m/h suffix (default 300)")
+    p_wait.add_argument("--login", default=os.environ.get("MTS_LOGIN"), help="A|B|C: also wake when its last plan left a slot and cards unused")
 
     p_brief = sub.add_parser("brief", help="generate exact start prompt text for a worker session")
     p_brief.add_argument("card", help="card id to brief")
@@ -1087,6 +1163,7 @@ def main(argv: list[str] | None = None) -> int:
             shas=args.shas,
             timeout=args.timeout,
             interval=args.interval,
+            login=(args.login or "").strip().upper()[:1] or None,
         )
         print(reason)
         return rc

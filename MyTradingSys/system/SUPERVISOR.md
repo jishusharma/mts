@@ -13,7 +13,7 @@ Design history (measured overhead, SV1-SV6, review): `handoff_history/supervisor
 2. Decide, in this order: CI RED -> stop dispatch, one `ci-<sha>` worker (pinned card). Budget THROTTLE -> no spawn. A note in -> verify it (below),
    mark the worker completed, take its next card if the brief chained one. Free slots -> fill from the dispatch list.
 3. Act in ONE message: every `start_session` / Agent / `mark_completed` / SendMessage call of this wake in parallel.
-4. Restart the one watcher (`supervisor.py wait --shas <reported> --timeout 50m`, background) and end the turn. No other waiting.
+4. Restart the one watcher (`supervisor.py wait --login <L> --shas <reported> --timeout 50m`, background) and end the turn. No other waiting.
    The watcher records a baseline when it starts and exits only on a TRANSITION (a listed sha newly on trunk, CI state change, a slot going
    busy -> free while a worker waits on it), never on a state that already held at start, so restarts cannot loop.
 

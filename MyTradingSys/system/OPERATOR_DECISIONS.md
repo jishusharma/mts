@@ -1228,5 +1228,18 @@ Applied: 2026-10-22: scripts/dev/offer_guard.py (Stop hook, .claude/settings.jso
  "done": "CI in 11 shards (Linux 3, Windows 8), file-list steps split per file, Java only on shard 1, uv installs, Defender off in the background, mark-green via the API without a checkout. Local: every shard 10-53 s. CI wall not yet measured (CI_SPEED_DIAGNOSIS_2026-10-22.md)."}
 ```
 
+## d-six-slots-poll | decided 2026-10-23 | Thinker
+```json
+{"id": "d-six-slots-poll", "order": 40, "date": "2026-10-23", "status": "DECIDED",
+ "question": "How can we utilize all 6 slots? ... constant communication between all our logins ... polling.",
+ "options": {"A": "actionable wake: supervisor.py wait also exits when the last plan left a worker slot and ready cards unused (CI green, a gate free); the RAMP lifts when every gate is idle",
+             "B": "a model poll every 5 min per Supervisor (~540k eq tokens/h each)",
+             "C": "revive idle machines: the lane owner prints one OPERATOR line to start a Supervisor on a machine with no heartbeat, ready cards and budget",
+             "D": "do nothing: gates are spare capacity, RAMP 1 per 50 min wake"},
+ "recommended": "A + C",
+ "answer": "go with A + C - do it here",
+ "done": "supervisor.py: wait --login ACTIONABLE wake, pace_plan gates_idle ramp, idle_hosts OPERATOR line; plan research/thinker/2026-10-22_six_slots.md"}
+```
+
 ## DECISION NEEDED 2026-10-21 (Lab_Guy): pre_pipeline_sources review_by 2026-10-23
 27 grandfathered testnet sources in auto_trader_config.json expire for review on 2026-10-23; promoted_setups.json has 0 entries. Options: (a) extend review_by 14 days (recommended, OURS default), (b) prune falsified layers (turn_of_candle, rsi_divergence, session_levels), (c) stop them. Needs an operator answer in the Control Room; no chat question.

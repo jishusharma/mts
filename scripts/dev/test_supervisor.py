@@ -520,3 +520,69 @@ def test_plan_lines_stop_and_unknown_peers_start_nothing_shared():
 def test_cli_rejects_bad_percent(capsys):
     assert S.main(["plan", "--login", "C", "--five", "700", "--five-reset", "2026-10-19T14:00Z", "--week", "8",
                    "--week-reset", "2026-10-20T20:00Z", "--no-send", "--no-fetch"]) == 2
+
+
+# ---------- d-six-slots-poll (operator 2026-10-23: "go with A + C") ----------
+def _wait_with_plan(tmp_path, last, probe_state, timeout=900):
+    home = tmp_path / "home"
+    home.mkdir(exist_ok=True)
+    (home / "B-last-plan.json").write_text(json.dumps(last), encoding="utf-8")
+    sleeps = []
+    rc, reason = S.wait_for_transition(repo=tmp_path, shas=[], timeout=timeout, interval=300, probe=lambda repo, shas: probe_state,
+                                       fetcher=lambda repo: None, sleeper=sleeps.append, login="B", home=home)
+    return rc, reason, sleeps
+
+
+def test_wait_wakes_on_a_free_slot_with_ready_cards_not_after_50_min(tmp_path):
+    """Option A: the plan started 1 of 4 (RAMP) and 6 more cards fit; CI green, 1 of 2 gates busy -> wake at the first poll (5 min)."""
+    last = {"plan": {"mode": "NORMAL", "running": 0}, "spare": 3, "ready_more": 6, "stuck": 0}
+    green = {"shas": {}, "ci_red": False, "busy_slots": 1, "total_slots": 2}
+    rc, reason, sleeps = _wait_with_plan(tmp_path, last, green, timeout=3000)
+    assert rc == 0 and reason.startswith("ACTIONABLE 3 worker slot(s) free, 6 more card(s) ready") and sleeps == [300]
+
+
+def test_wait_actionable_fails_closed_and_stops_after_plans_that_spawn_nothing(tmp_path):
+    last = {"plan": {"mode": "NORMAL", "running": 0}, "spare": 3, "ready_more": 6, "stuck": 0}
+    green = {"shas": {}, "ci_red": False, "busy_slots": 1, "total_slots": 2}
+    for bad_last, state in [(last, dict(green, ci_red=None)),                 # CI unknown
+                            (last, dict(green, ci_red=True)),                 # CI red: the CI flip wakes it, not this
+                            (last, dict(green, busy_slots=2)),                # every gate here busy
+                            (last, dict(green, busy_slots=None)),             # gates unreadable
+                            (dict(last, stuck=S.STUCK_MAX), green),           # two plans in a row spawned nothing
+                            (dict(last, ready_more=0), green),                # no more cards
+                            (dict(last, plan={"mode": "CRUCIAL-ONLY"}), green)]:
+        rc, _r, _s = _wait_with_plan(tmp_path, bad_last, state, timeout=600)
+        assert rc == 3, (bad_last, state)
+    rc, _r = S.wait_for_transition(repo=tmp_path, shas=[], timeout=600, interval=300, probe=lambda r, s: green,
+                                   fetcher=lambda r: None, sleeper=lambda s: None)
+    assert rc == 3          # no --login: the old watcher, transitions only
+
+
+def test_idle_gates_lift_the_ramp_busy_gates_keep_it():
+    """Option A: 4 slots, 0 running. Gates idle -> start all 4 now; a gate busy -> RAMP 1; STOP stays 0."""
+    rd = _rd(20, 50, week_reset="2026-10-19T15:00Z")
+    assert S.pace_plan(T0, rd, 95, gates_idle=True)["new"] == 4
+    assert S.pace_plan(T0, rd, 95, running=1, gates_idle=True)["new"] == 3
+    assert S.pace_plan(T0, rd, 95)["new"] == 1
+    assert S.pace_plan(T0, _rd(85, 20), 95, gates_idle=True)["new"] == 0
+
+
+def test_idle_machine_with_ready_cards_and_budget_gets_one_operator_line():
+    """Option C: A live on DESKTOP; JIS-NB silent with B fresh NORMAL and SONNET cards -> start-a-Supervisor line; JIS-NUC's other
+    login C is THROTTLE and A is busy -> no line for it. Only the shared-lane owner prints it."""
+    inv = {"machines": {"DESKTOP-F7IU69N": {"logins": ["A", "B", "C"]}, "JIS-NB": {"logins": ["B", "C"]}, "JIS-NUC": {"logins": ["A", "C"]}}}
+    fresh = lambda st: {"state": st, "at": "2026-10-19T11:30Z"}
+    view = {"logins": {"A": fresh("THROTTLE"), "B": fresh("NORMAL"), "C": fresh("THROTTLE")}}
+    live = {"A": {"host": "DESKTOP-F7IU69N", "mode": "NORMAL", "run": 1, "free": 0, "at": "x", "dsa": None}}
+    rows = [{"id": f"c{i}", "lane": "SONNET"} for i in range(3)]
+    idle = S.idle_hosts(live, rows, T0, view=view, inv=inv)
+    assert idle == [("JIS-NB", ["B"], 3)]
+    assert S.idle_hosts(live, [], T0, view=view, inv=inv) == []                                  # no cards: no line
+    assert S.idle_hosts(live, rows, T0, view={"logins": {"B": {"state": "NORMAL", "at": "2026-10-18T01:00Z"}}}, inv=inv) == []   # stale
+    p = S.pace_plan(T0, _rd(10, 20), 95)
+    ctx = {"ci": {}, "picks": [], "idle_hosts": idle}
+    a = "\n".join(S.plan_lines("A", "DESKTOP-F7IU69N", p, live, ctx, gate_key=False))
+    assert "OPERATOR start a Supervisor on JIS-NB" in a and "`You are Supervisor. Login B.`" in a
+    assert "supervisor.py wait --timeout 50m --login A" in a
+    two = dict(live, B={"host": "JIS-NUC", "mode": "NORMAL", "run": 0, "free": 0, "at": "x", "dsa": None})
+    assert "OPERATOR start" not in "\n".join(S.plan_lines("B", "JIS-NUC", p, two, ctx, gate_key=False))   # A owns it
