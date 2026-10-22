@@ -1,0 +1,1 @@
+{"t": "20261022T140552Z", "from": "jis-nuc/sharma", "to": "all", "kind": "claim", "text": "claim \"ai-behavior-fold-or-archive\" | tail -1; grep -n \"01_AI_BEHAVIOR\" -r --include=* . -l 2>/dev/null | grep -v \"^./.git/\" | head -30"}
