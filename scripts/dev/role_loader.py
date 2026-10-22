@@ -310,9 +310,10 @@ def boot_step(body):
     lines = body.split("\n")
     for i, ln in enumerate(lines):
         s = ln.strip()
-        m = re.match(r"^(?:#+\s*)?boot\b[^:\n]*?(?::\s*(.*))?$", s, re.I)
+        # a Boot heading, or a short "Boot ...:" label; prose that merely starts with "Boot" is not a section
+        m = re.match(r"^(?:#+\s*boot\b[^:\n]*?(?::\s*(.*))?|boot\b[^:\n]{0,25}:\s*(.*)|boot\b[^.:\n]{0,40}())$", s, re.I)
         if m and not s.startswith("|"):
-            inline = (m.group(1) or "").strip()
+            inline = (m.group(1) or m.group(2) or "").strip()
             if len(inline) > 12:
                 return inline[:240]
             for nx in lines[i + 1:]:

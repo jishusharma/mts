@@ -30,6 +30,7 @@ the others fail silently, so run it by hand to see the error: `echo {} | python 
 | stop refused | `scripts/dev/stop_guard.py` | `~/.claude/mts-stop-guard.json` |
 | stop refused: pre-run items for the operator | `scripts/dev/prereq_guard.py` (`tasks.py need`) | `~/.claude/mts-prereq-guard.json` |
 | commit denied / edit note `PRESHIP` | `python scripts/dev/preship.py check` (rules: its RULES table) | `~/.claude/mts-preship-*.json` |
+| broadcast nobody reacted to | `python scripts/dev/mts_signal.py acks [<id>]` (hosts vs none/told/done); resend with `broadcast "<text>" --prio high --cmd "<command>"` | branch `mts-signals` | the sending session |
 | signal / git windows flash | `scripts/dev/mts_signal.py` | `~/.claude/mts-signals`, branch `mts-signals` |
 | screenshot not picked up | `scripts/dev/shot.py` | `~/.claude/uploads/manifest.jsonl` |
 | worker spawn refused | `scripts/dev/model_guard.py` | WORKERS.md (the rule it enforces) |

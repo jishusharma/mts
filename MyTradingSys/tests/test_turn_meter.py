@@ -5,6 +5,7 @@ import os
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -283,6 +284,10 @@ class TurnMeterTest(unittest.TestCase):
         for _ in range(12):
             self.assertEqual(fire(self.home, "UserPromptSubmit", sid="dr", extra={**tp, "prompt": "and now this"}), "")
         self.assertFalse(any(fire(self.home, "PostToolUse", sid="dr", extra=tp) for _ in range(45)), "operator driving: no nag")
+        st = self.home / "dr.json"
+        d = json.loads(st.read_text(encoding="utf-8"))
+        d["typed_at"] = time.time() - 40 * 60          # he left 40 min ago (a note within 30 min no longer unseats him)
+        st.write_text(json.dumps(d), encoding="utf-8")
         fire(self.home, "UserPromptSubmit", sid="dr", extra={**tp, "prompt": "<side-sessions-event>worker done"})
         self.assertTrue(any(fire(self.home, "PostToolUse", sid="dr", extra=tp) for _ in range(10)), "only events since: caps bind")
 
@@ -327,6 +332,49 @@ class TurnMeterTest(unittest.TestCase):
         self.assertIn("Traceback", (self.home / "hook_errors.log").read_text(encoding="utf-8"))
         (self.home / "s1.json").write_text("{broken", encoding="utf-8")
         self.assertEqual(fire(self.home, "PostToolUse"), "")
+
+
+class AwayFlagAndAtomicSaveTest(unittest.TestCase):
+    """2026-10-22: a task-notification minutes after the operator typed made the session look unattended (driven cleared)."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.home = Path(self.tmp.name)
+        self.addCleanup(self.tmp.cleanup)
+
+    def driven(self, typed_ago_s):
+        fire(self.home, "UserPromptSubmit", sid="a", extra={"prompt": "one"})
+        fire(self.home, "UserPromptSubmit", sid="a", extra={"prompt": "two"})
+        st = self.home / "a.json"
+        d = json.loads(st.read_text(encoding="utf-8"))
+        d["typed_at"] = time.time() - typed_ago_s
+        st.write_text(json.dumps(d), encoding="utf-8")
+
+    def state(self):
+        return json.loads((self.home / "a.json").read_text(encoding="utf-8"))
+
+    def test_event_5_min_after_he_typed_keeps_him_attended(self):
+        self.driven(5 * 60)
+        fire(self.home, "UserPromptSubmit", sid="a", extra={"prompt": "<task-notification>done</task-notification>"})
+        self.assertTrue(turn_meter.attended(self.state()))
+
+    def test_event_40_min_after_he_typed_is_unattended(self):
+        self.driven(40 * 60)
+        fire(self.home, "UserPromptSubmit", sid="a", extra={"prompt": "<task-notification>done</task-notification>"})
+        self.assertFalse(turn_meter.attended(self.state()))
+
+    def test_save_is_atomic_and_leaves_no_temp_file(self):
+        target = self.home / "x.json"
+        real = os.replace
+        seen = []
+
+        def spy(src, dst):
+            seen.append(json.loads(Path(src).read_text(encoding="utf-8")))   # complete JSON existed before the swap
+            return real(src, dst)
+        with mock.patch("os.replace", spy):
+            turn_meter.save(target, {"tool": 3})
+        self.assertEqual(seen, [{"tool": 3}])
+        self.assertEqual([p.name for p in self.home.iterdir()], ["x.json"])
 
 
 if __name__ == "__main__":
