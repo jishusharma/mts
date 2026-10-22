@@ -149,7 +149,7 @@ def test_launch_scripts_do_not_hardcode_the_dev_checkout():
     """The live tree must run itself, not the dev checkout (host move 2026-10-22: mts start in C:/MTS/mts-live ran the dev tree)."""
     import pathlib
     root = pathlib.Path(__file__).resolve().parents[2]
-    old = "IdeaProjects\BinanceDataFeed"
+    old = r"IdeaProjects\BinanceDataFeed"
     files = [*root.glob("scripts/core/*.ps1"), *root.glob("scripts/live/*.ps1"), *root.glob("scripts/monitor/*.ps1"), *root.glob("runtime_data/*.vbs")]
     bad = [str(f.relative_to(root)) for f in files if old in f.read_text(encoding="utf-8-sig", errors="replace")]
     assert not bad, bad
