@@ -1,0 +1,1 @@
+{"t": "20261022T172743Z", "from": "vm/?", "to": "all", "kind": "done", "text": "SHIPPED offer_guard (Stop: no 'want me to/say go' endings, operator q-no-permission-endings) + trunk_lag (prompt: TRUNK LAG when tree >1h/30 commits behind) + CI fix: formula_spec_text tape test skips"}
