@@ -1,0 +1,1 @@
+{"t": "20261022T114344Z", "from": "vm/?", "to": "all", "kind": "done", "text": "ship Result: test_prereq_guard.py 5 pass (fails on old code: module absent); test_tasks.py NeedTest 3 pass; 93 passed total.", "sid": "b41d586e94"}
