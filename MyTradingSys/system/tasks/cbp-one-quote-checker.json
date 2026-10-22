@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest scripts/dev/test_verify_extract_quotes.py -q"
+  ],
+  "created": "2026-10-22T21:45:57Z",
+  "depends_on": [],
+  "done_when": "verifier passes a CBP-format block with a real quote and fails one with an invented quote (test fails on current code); old check_quotes.py callers updated; run_all_tests --quick green.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "One quote checker for MTS and CBP: verify_extract_quotes.py verifies CBP extraction blocks (evidence lines) against transcripts; research/krown_capture_2026-10-16/check_quotes.py is deleted or reduced to a call.",
+  "id": "cbp-one-quote-checker",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Session 3: testnet 14/14, quote-checker timestamp fix, FORMULAS s13-16, C3 repack, DSA can",
+      "ref": "d590d8611d48",
+      "utc": "2026-09-28T22:23:25Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "OPERATOR QUOTE: \"we have to deduplicate everything because MTS is also extracting, CBP is also extracting ... So we need to dedupe first of all.\" DEFAULT (OURS): this step is common to both plans; other steps wait for the operator choice.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-22T21:45:58Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/verify_extract_quotes.py; scripts/dev/test_verify_extract_quotes.py; MyTradingSys/research/krown_capture_2026-10-16/check_quotes.py"
+  ],
+  "scope_out": [
+    "CBP repo files; the live tree; extraction prompts"
+  ],
+  "scope_sha": "d590d8611d48",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/thinker/2026-10-23_cbp_core_vs_adopt.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Write the two failing tests with a real and an invented quote",
+    "Add the CBP evidence-line branch to the verifier",
+    "Remove check_quotes.py after grepping its callers"
+  ],
+  "tests": "scripts/dev/test_verify_extract_quotes.py::test_cbp_evidence_line_verified and ::test_cbp_invented_quote_fails (fail on current verifier, which only parses > \"quote\" + Source GPS)",
+  "title": "One quote checker: verify_extract_quotes.py accepts CBP evidence lines; delete check_quotes.py",
+  "weight": "",
+  "worker": "agent"
+}
