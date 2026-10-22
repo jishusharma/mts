@@ -102,6 +102,9 @@ class TrunkLagTest(unittest.TestCase):
         sh(self.tree, "checkout", "-q", "-b", "jis-nb/work")
         commit(self.origin, "c", 1_000_200)
         self.assertNotIn("Main checkout", T.catch_up(wt), "a main checkout off fast-track is not moved")
+        sh(self.tree, "checkout", "-q", "fast-track")
+        (self.tree / "a").write_text("edited", encoding="utf-8")
+        self.assertIn("left alone (local edits)", T.catch_up(wt), "a stale main checkout is named, never silent")
 
     def test_registered_first_at_session_start(self):
         root = Path(__file__).resolve().parents[2]

@@ -119,8 +119,12 @@ def catch_up(repo=None, fetch=True):
     main = main_checkout(repo)
     if main and main.resolve() != repo.resolve() and git(main, "rev-parse", "--abbrev-ref", "HEAD").stdout.strip() == TRUNK:
         n, _ = fast_forward(main, fetch=False)
+        left = len(git(main, "rev-list", f"HEAD..origin/{TRUNK}").stdout.split())
         if n:
             notes.append(f"Main checkout {main} fast-forwarded {n} commit(s), so the next session cut from it starts on trunk.")
+        elif left:
+            notes.append(f"Main checkout {main} is {left} commit(s) behind origin/{TRUNK} and was left alone (local edits): sessions cut "
+                         f"from it start old, so run `python scripts/dev/sync.py start <slug>` before reading code.")
     return " ".join(notes)
 
 

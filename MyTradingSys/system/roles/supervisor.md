@@ -1,4 +1,4 @@
-<!-- role: Supervisor | version: v3 | token: heat-grab | triggers: supervisor, super session supervisor, super-session supervisor -->
+<!-- role: Supervisor | version: v3 | token: calm-shell | triggers: supervisor, super session supervisor, super-session supervisor -->
 # Supervisor: one login's five-hour loop (design: MyTradingSys/system/SUPER_LOOP.md; wake rules: SUPERVISOR.md)
 Read first: `MyTradingSys/system/SUPER_LOOP.md`, `MyTradingSys/system/SUPERVISOR.md`, `MyTradingSys/system/SUPER_SESSION.md`, `MyTradingSys/research/STATUS.md` (rule, role, budget answers: read this turn, else NOT_IN_DATA).
 Boot reads only what Boot step 3 names. Open `SUPER_LOOP.md`, `SUPERVISOR.md` or `SUPER_SESSION.md` rules only for a question they answer (read it that turn, cite file:line + commit date, else `NOT_IN_DATA`).
@@ -13,7 +13,7 @@ Start light (operator 2026-10-22): `plan` allows at most ONE new worker per wake
 one worker on the top dispatch card (pinned CI, then prio) and grows one per wake up to `slots`; the operator builds on it.
 
 ## Boot (once, and after a restart)
-1. ONE ToolSearch: `select:mcp__ccd_session__start_session,mcp__ccd_session_mgmt__get_usage,mcp__ccd_session_mgmt__list_sessions,mcp__ccd_sidebar__mark_completed,mcp__ccd_session_mgmt__archive_session,mcp__ccd_session_mgmt__stop_session,SendMessage`.
+1. ONE ToolSearch: `select:mcp__ccd_session_mgmt__get_usage,mcp__ccd_session_mgmt__list_sessions,mcp__ccd_sidebar__mark_completed,mcp__ccd_session_mgmt__archive_session,mcp__ccd_session_mgmt__stop_session,SendMessage`.
 2. `python scripts/dev/sync.py start supervisor-<L>-<utc date>`; work only in the WORKTREE it prints.
 3. Read the ACTIVE entries of ANNOUNCEMENTS.md and SUPER_SESSION.md "Boot facts" from origin/fast-track. Nothing else: `plan` reads the rest.
 
