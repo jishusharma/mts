@@ -6,7 +6,7 @@
   "window_resets": 1792707590,
   "window_used": 0
  },
- "at": "2026-10-22T17:20:19Z",
+ "at": "2026-10-22T18:06:49Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,9 +20,24 @@
   "astra_runs": 0,
   "week_pts": 0.0,
   "window_pts": 0.0,
-  "window_runs": 0
+  "window_runs": 1
  },
  "runs": [
+  {
+   "at": "2026-10-22T18:04:19Z",
+   "card": "lab-planted-error-trial",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 141,
+   "tokens_out": 11048,
+   "tokens_total": 1280641,
+   "tokens_uncached": 60249,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-22T17:19:33Z",
    "card": "lab-planted-error-trial",
@@ -157,21 +172,6 @@
    "tokens_uncached": 50939,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-17T22:33:41Z",
-   "card": "lab-formula-spec-recount",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "test layer tests: SKIP\nStep 5: Maven tests: SKIP\nStep 5b: Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n==========================",
-   "outcome": "SHIP_FAILED",
-   "seconds": 102,
-   "tokens_out": 8360,
-   "tokens_total": 1074729,
-   "tokens_uncached": 70529,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }
