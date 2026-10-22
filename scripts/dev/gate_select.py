@@ -112,7 +112,11 @@ def references(stem, path):
     if Path(path).stem == stem:
         return True
     t = _text(str(path))
-    return True if t is None else bool(_reference_re(stem).search(t))
+    if t is None:
+        return True
+    if stem not in t:      # every alternative of _reference_re contains the literal stem: skip the regex scan (profiled: ~2 s of a 5.5 s fast-gate selection)
+        return False
+    return bool(_reference_re(stem).search(t))
 
 
 def names(basename, path):

@@ -49,7 +49,7 @@ ROW_CAP = 15  # rows `where` / `health` print before pointing at `where --all`
 # Rows of `git status --short` that are nobody's work: the desktop mirror a pull writes (regenerable data, git-ignored on
 # current trees, tracked on old bases) and the stray AGENTS.md / .codex of older trees.
 MIRROR_PREFIXES = ("runtime_data/_mirror/", "runtime_data/_mirror.")
-STRAY_UNTRACKED = ("AGENTS.md", ".codex/", "runtime_data/gate_timing.jsonl", "runtime_data/")
+STRAY_UNTRACKED = ("AGENTS.md", ".codex/", "runtime_data/gate_timing.jsonl", "runtime_data/ship_stages.jsonl", "runtime_data/")
 
 
 class SyncError(Exception):
@@ -728,6 +728,165 @@ def record_ship_timing(repo, wait_s, run_s, retry_s, ok=True, sha=None, path=Non
         pass
 
 
+SHIP_STAGES_FILE = "ship_stages.jsonl"   # gitignored runtime log: one row per ship with wall seconds per stage
+
+
+def ship_stages_path(repo):
+    return Path(os.environ.get("MTS_SHIP_STAGES") or (Path(repo) / "runtime_data" / SHIP_STAGES_FILE))
+
+
+class StageClock:
+    """Wall seconds per ship stage (merge = fetch+merge, select, gate, push, release), summed over push retries."""
+
+    def __init__(self, now=time.monotonic):
+        self.now = now
+        self.t0 = now()
+        self.stages = {}
+
+    def add(self, name, secs):
+        self.stages[name] = self.stages.get(name, 0.0) + max(0.0, secs)
+
+    def run(self, name, fn, *a, **kw):
+        t = self.now()
+        try:
+            return fn(*a, **kw)
+        finally:
+            self.add(name, self.now() - t)
+
+    def total(self):
+        return self.now() - self.t0
+
+    def line(self):
+        parts = ", ".join(f"{k} {v:.1f}" for k, v in self.stages.items())
+        return f"ship timing: total {self.total():.1f}s ({parts})"
+
+
+def gate_timing_path(repo):
+    return Path(os.environ.get("MTS_GATE_TIMING") or (Path(repo) / "runtime_data" / "gate_timing.jsonl"))
+
+
+def gate_timing_offset(repo):
+    try:
+        return gate_timing_path(repo).stat().st_size
+    except OSError:
+        return 0
+
+
+def gate_step_rows(repo, offset):
+    """{step: secs} of the per-step rows run_all_tests appended to gate_timing.jsonl after byte `offset`. Never raises."""
+    out = {}
+    try:
+        with open(gate_timing_path(repo), "rb") as fh:
+            fh.seek(offset)
+            for ln in fh.read().decode("utf-8", "replace").splitlines():
+                try:
+                    r = json.loads(ln)
+                except ValueError:
+                    continue
+                if r.get("step") not in (None, "ship") and "secs" in r:
+                    out[str(r["step"])] = out.get(str(r["step"]), 0.0) + float(r["secs"])
+    except (OSError, ValueError, TypeError):
+        pass
+    return out
+
+
+def record_ship_stages(repo, clock, steps=None, ok=True, path=None):
+    """Append one JSON row {utc, ok, total, stages, steps} to the ship_stages log. Never raises."""
+    try:
+        p = Path(path) if path else ship_stages_path(repo)
+        p.parent.mkdir(parents=True, exist_ok=True)
+        row = {"utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "ok": bool(ok), "total": round(clock.total(), 2),
+               "stages": {k: round(v, 2) for k, v in clock.stages.items()},
+               "steps": {k: round(v, 2) for k, v in (steps or {}).items()}}
+        with open(p, "a", encoding="utf-8", newline="\n") as fh:
+            fh.write(json.dumps(row) + "\n")
+    except Exception:
+        pass
+
+
+def _pct(vals, q):
+    v = sorted(vals)
+    if not v:
+        return 0.0
+    k = (len(v) - 1) * q
+    lo = int(k)
+    hi = min(lo + 1, len(v) - 1)
+    return v[lo] + (v[hi] - v[lo]) * (k - lo)
+
+
+def ship_times(repo, last=None, path=None, out=print):
+    """`sync.py ship-times [--last N]`: median and p90 seconds per stage (and per gate step) over the last N logged ships."""
+    p = Path(path) if path else ship_stages_path(repo)
+    rows = []
+    try:
+        for ln in p.read_text(encoding="utf-8").splitlines():
+            try:
+                rows.append(json.loads(ln))
+            except ValueError:
+                pass
+    except OSError:
+        pass
+    if last:
+        rows = rows[-last:]
+    if not rows:
+        out(f"ship-times: no ships logged yet ({p})")
+        return 0
+    cols = {"total": [r["total"] for r in rows if "total" in r]}
+    for r in rows:
+        for k, v in (r.get("stages") or {}).items():
+            cols.setdefault(k, []).append(v)
+        for k, v in (r.get("steps") or {}).items():
+            cols.setdefault("step " + k, []).append(v)
+    out(f"ship-times: {len(rows)} ship(s)")
+    out(f"{'stage':<14}{'n':>4}{'median':>9}{'p90':>9}")
+    for k, v in cols.items():
+        out(f"{k:<14}{len(v):>4}{_pct(v, 0.5):>9.1f}{_pct(v, 0.9):>9.1f}")
+    return len(rows)
+
+
+WAIT_CI_POLL_S = 30
+WAIT_CI_MAX_S = 1800
+
+
+def wait_ci(repo, sha, poll=WAIT_CI_POLL_S, max_s=WAIT_CI_MAX_S, sleep=time.sleep, now_fn=time.monotonic, runner=None, out=print):
+    """CI_SPEED_DIAGNOSIS #3: poll `gh run list --workflow CI --branch fast-track` for <sha> (full or prefix) until its run finishes.
+    Returns 0 green, 1 red (any other finished conclusion), 2 timeout (max_s, default 30 min). runner(argv) -> stdout text."""
+    def default_runner(argv):
+        r = subprocess.run(argv, cwd=repo, capture_output=True, text=True, timeout=60)
+        if r.returncode != 0:
+            raise OSError(r.stderr.strip() or f"gh exited {r.returncode}")
+        return r.stdout
+    run = runner or default_runner
+    argv = ["gh", "run", "list", "--workflow", "CI", "--branch", TRUNK, "--limit", "50", "--json", "headSha,status,conclusion,url"]
+    sha = sha.strip().lower()
+    if not sha:
+        raise SyncError("usage: sync.py wait-ci <sha>")
+    start = now_fn()
+    seen = False
+    while True:
+        try:
+            rows = json.loads(run(argv) or "[]")
+        except (OSError, ValueError, subprocess.SubprocessError) as e:
+            rows = []
+            out(f"wait-ci: gh failed ({type(e).__name__}: {e}); retrying")
+        mine = [r for r in rows if str(r.get("headSha", "")).lower().startswith(sha)]
+        done = [r for r in mine if r.get("status") == "completed"]
+        if done and len(done) == len(mine):
+            bad = [r for r in done if r.get("conclusion") != "success"]
+            if bad:
+                out(f"wait-ci: {sha[:8]} RED ({bad[0].get('conclusion')}) {bad[0].get('url', '')}".rstrip())
+                return 1
+            out(f"wait-ci: {sha[:8]} green")
+            return 0
+        if mine and not seen:
+            seen = True
+            out(f"wait-ci: {sha[:8]} running")
+        if now_fn() - start + poll > max_s:
+            out(f"wait-ci: timeout after {max_s:.0f}s waiting for {sha[:8]}")
+            return 2
+        sleep(poll)
+
+
 def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_slug=None, sleep=time.sleep):
     """release_slug (traffic buster B4): the claim file is deleted in a commit on this branch, so the release rides the
     same push as the work (no separate fetch + push). Nothing to ship: falls back to the plumbing release.
@@ -738,6 +897,8 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
     wait_s = 0.0
     run_s = 0.0
     retry_s = 0.0
+    clock = StageClock()
+    gate_off = gate_timing_offset(repo)
     if after_slug:
         t_wait_0 = time.monotonic()
         res = wait_after(repo, after_slug)
@@ -752,26 +913,35 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
     try:
         for attempt in range(1, SHIP_PUSH_TRIES + 1):
             before = git(repo, "rev-parse", "HEAD").stdout.strip()
-            merge_trunk(repo)
+            clock.run("merge", merge_trunk, repo)
+            t_sel = time.monotonic()
             shipped_before, files = files, outgoing_files(repo)
+            clock.add("select", time.monotonic() - t_sel)
             if not files:
                 if release_slug:
-                    release(repo, release_slug)
+                    clock.run("release", release, repo, release_slug)
                 else:
                     print("nothing to ship")
                 return
             if attempt == 1:
+                t_sel = time.monotonic()
                 check_ship_gap(repo)
                 if gate is run_gate and ci_applies(files):    # custom gates (tests, throwaway repos) stay hermetic: no network
                     ci = CiCheck()
-                if needs_gate(files):
+                use_gate = needs_gate(files)
+                clock.add("select", time.monotonic() - t_sel)
+                if use_gate:
                     t_gate_0 = time.monotonic()
-                    call_gate(gate, repo, files)
+                    try:
+                        call_gate(gate, repo, files)
+                    finally:
+                        clock.add("gate", time.monotonic() - t_gate_0)
                     run_s += time.monotonic() - t_gate_0
                 elif docs_gate:
                     t_gate_0 = time.monotonic()
                     docs_gate(repo, files)
                     run_s += time.monotonic() - t_gate_0
+                    clock.add("gate", time.monotonic() - t_gate_0)
                 enforce_ci(ci)
             else:
                 after = git(repo, "rev-parse", "HEAD").stdout.strip()
@@ -780,21 +950,26 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
                     regates += 1
                     print(f"incoming commits touch what we ship ({', '.join(hit[:5])}); re-running the gate")
                     t_gate_0 = time.monotonic()
-                    call_gate(gate, repo, files)
+                    try:
+                        call_gate(gate, repo, files)
+                    finally:
+                        clock.add("gate", time.monotonic() - t_gate_0)
                     run_s += time.monotonic() - t_gate_0
                 elif hit:
                     print(f"incoming commits touch {', '.join(hit[:5])}; re-gate limit reached, CI checks the merge")
             if rel and git(repo, "cat-file", "-e", f"HEAD:{rel}", check=False).returncode == 0:
+                t_rel = time.monotonic()
                 git(repo, "rm", "--quiet", "-f", rel)
                 git(repo, "commit", "--quiet", "-m", f"release {release_slug}" + chr(10) * 2 + f"Result: claim {release_slug} closed with the ship")
                 released = True
+                clock.add("release", time.monotonic() - t_rel)
             pages = StalePages(repo)       # overlaps the push
-            r = git(repo, "push", "--quiet", "origin", f"HEAD:refs/heads/{TRUNK}", check=False)
+            r = clock.run("push", git, repo, "push", "--quiet", "origin", f"HEAD:refs/heads/{TRUNK}", check=False)
             if r.returncode == 0:
                 ok = True
                 write_ship_stamp(repo)
                 if release_slug and not released:
-                    released = release_side(repo, release_slug)
+                    released = clock.run("release", release_side, repo, release_slug)
                 print(f"shipped {len(files)} file(s) to origin/{TRUNK}" + (f"; released {release_slug}" if released else ""))
                 pages.report()
                 return
@@ -807,6 +982,8 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
     finally:
         if files:
             record_ship_timing(repo, wait_s=wait_s, run_s=run_s, retry_s=retry_s, ok=ok)
+            record_ship_stages(repo, clock, gate_step_rows(repo, gate_off), ok=ok)
+            print(clock.line())
 
 
 def news(repo, hours=24):
@@ -1131,7 +1308,7 @@ QUIET_KEEPS = ("lane", "hand-named")  # decided by the name alone: counted, neve
 # are test-runner and tool droppings. All three are in .gitignore, so `status --ignored` lists them in every tree.
 REGENERABLE = ("__pycache__/", ".pytest_cache/", ".pyc", " target/", ".claude/settings.local.json", "runtime_data/control_room/",
                "journal/ACCOUNT_DAILY_LOSS.jsonl", "runtime_data/_mirror", ".pytest_tmp/", ".codex/",
-               "runtime_data/gate_timing.jsonl")
+               "runtime_data/gate_timing.jsonl", "runtime_data/ship_stages.jsonl")
 
 
 def holds_files(root, rel):
@@ -1321,6 +1498,26 @@ def main(argv):
             print(f"sync: {e}", file=sys.stderr)
             return 1
         return 0
+    if argv and argv[0] == "ship-times":
+        try:
+            last = int(argv[argv.index("--last") + 1]) if "--last" in argv else None
+            ship_times(toplevel(Path.cwd()), last)
+        except (ValueError, IndexError):
+            print("usage: sync.py ship-times [--last N]", file=sys.stderr)
+            return 2
+        except SyncError as e:
+            print(f"sync: {e}", file=sys.stderr)
+            return 1
+        return 0
+    if argv and argv[0] == "wait-ci":
+        if len(argv) != 2:
+            print("usage: sync.py wait-ci <sha>", file=sys.stderr)
+            return 2
+        try:
+            return wait_ci(toplevel(Path.cwd()), argv[1])
+        except SyncError as e:
+            print(f"sync: {e}", file=sys.stderr)
+            return 1
     if argv and argv[0] == "tidy" and len(argv) <= 3:
         try:
             tidy(toplevel(Path.cwd()), "--apply" in argv, "--all" in argv)

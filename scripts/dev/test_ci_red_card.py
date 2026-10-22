@@ -79,12 +79,24 @@ class CiConcurrency(unittest.TestCase):
         self.assertTrue(cancel_in_progress("refs/pull/123/merge"))
         self.assertTrue(cancel_in_progress("refs/heads/some-branch"))
 
-    def test_group_is_per_ref_and_green_mark_still_waits_for_the_gate_on_fast_track(self):
+    def test_group_is_per_sha_on_fast_track_and_per_ref_elsewhere(self):
         text = CI_YML.read_text(encoding="utf-8")
-        self.assertIn("group: ci-${{ github.ref }}", text)   # a PR run never queues behind (or cancels) a fast-track run
+        block = re.search(r"^concurrency:\n((?:[ \t]+.*\n)+)", text, re.M).group(1)
+        group = re.search(r"^\s+group:\s*(.+?)\s*$", block, re.M).group(1)
+        # CI_SPEED_DIAGNOSIS #1: overlapping fast-track pushes must not queue behind each other (11+ min measured)
+        self.assertIn("github.sha", group)
+        self.assertIn("github.ref", group)      # a PR run never queues behind (or cancels) a fast-track run
+        self.assertIn("refs/heads/fast-track", group)
+
+    def test_mark_green_waits_for_the_gate_and_only_moves_the_pointer_forward(self):
+        text = CI_YML.read_text(encoding="utf-8")
         mark = text[text.index("\n  mark-green:"):]
         self.assertIn("needs: offline-gate", mark)
         self.assertIn("github.ref == 'refs/heads/fast-track'", mark)
+        self.assertIn("fetch-depth: 0", mark)                       # the ancestor guard needs history
+        self.assertIn("scripts/dev/mark_green.sh", mark)            # holds the merge-base --is-ancestor guard (tested in test_ship_speed.py)
+        self.assertIn("group: mark-green", mark)                    # one at a time: the check and the push cannot interleave
+        self.assertNotIn('run: git push --force', mark)             # the unguarded push is gone
 
 
 if __name__ == "__main__":

@@ -27,9 +27,10 @@ permissions:
   contents: read
 
 concurrency:
-  group: ci-${{ github.ref }}
-  # fast-track gets a merge every few minutes and a run takes ~6 min: cancelling the running push job starved mark-green.
-  # A fast-track run finishes (GitHub keeps only the newest pending one); PR and other-ref runs are still superseded.
+  # fast-track: one group PER SHA, so overlapping pushes run in parallel instead of queueing 11+ min behind each other
+  # (CI_SPEED_DIAGNOSIS 2026-10-22 #1). Nothing is cancelled there; mark-green's ancestor guard keeps the pointer monotonic.
+  # PR and other-ref runs are still superseded per ref.
+  group: ci-${{ github.ref == 'refs/heads/fast-track' && github.sha || github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/fast-track' }}
 
 jobs:
@@ -106,7 +107,13 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    # one mark-green at a time, queued not cancelled, so the ancestor check and the push cannot interleave
+    concurrency:
+      group: mark-green
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
-      - name: Publish tested SHA as green/fast-track
-        run: git push --force origin "${{ github.sha }}:refs/heads/green/fast-track"
+        with:
+          fetch-depth: 0   # the ancestor guard needs history
+      - name: Publish tested SHA as green/fast-track (only forward: skipped when the published green SHA is not an ancestor)
+        run: bash scripts/dev/mark_green.sh "${{ github.sha }}"

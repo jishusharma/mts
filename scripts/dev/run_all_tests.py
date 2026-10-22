@@ -93,7 +93,7 @@ _LOCK = threading.Lock()
 # before the slow steps start. OURS: the steps whose median is <= 25 s over 4106 step rows of 30 trees' gate_timing.jsonl (2026-10-18),
 # plus 3x (ALWAYS, 18 s in ship logs, 8 failures) and 3js. 2026-10-18: RELAY.md over its size cap failed step 4d (6.6 s) at +438 s.
 CHEAP_STEPS = ("1", "2", "3", "3b", "3c", "3r", "3cv", "3cva", "3tm", "3s", "3f", "3td", "3hs", "3sq", "3ly", "3cy", "3tl", "3q", "3p", "3t",
-               "3d", "3h", "3g", "3gs", "3rc", "3e", "3sh", "3cs", "3pc", "3rb", "3af", "3vd", "3lm", "3gd", "3dl", "3x", "3mg", "3js",
+               "3d", "3h", "3g", "3gs", "3rc", "3ss", "3e", "3sh", "3cs", "3pc", "3rb", "3af", "3vd", "3lm", "3gd", "3dl", "3x", "3mg", "3js",
                "4d", "4e", "5c")
 PRECHECK_JOBS = 2
 TARGET_STEP = "4t"   # precheck pytest of the MyTradingSys/tests files that reference the change (they also run in their shard)
@@ -449,6 +449,7 @@ def build_plan(quick):
     plan.append(Step("3k", "sync.py parallel ship tests", "Step 3k: sync.py tests", run=lambda: exec_unittest_shards("scripts/dev/test_sync.py", gate_jobs() if gate_jobs() == 1 else 3), cmd_text="python -m unittest (scripts/dev/test_sync.py, 3 shards)", tail=None))
     add("3gs", "Gate selector tests (path -> smoke steps, fail closed)", [sys.executable, "scripts/dev/test_gate_select.py"], "Step 3gs: Gate selector tests")
     add("3rc", "Red CI task card tests (one card per red run)", [sys.executable, "scripts/dev/test_ci_red_card.py"], "Step 3rc: Red CI card tests")
+    add("3ss", "Ship speed tests (stage timings, ship-times, wait-ci, mark-green guard)", [sys.executable, "scripts/dev/test_ship_speed.py"], "Step 3ss: Ship speed tests")
     add("3sg", "Stop guard tests (a session cannot end holding unshipped work)", [sys.executable, "scripts/dev/test_stop_guard.py"], "Step 3sg: Stop guard tests")
     add("3sig", "Signals between logins (mts_signal.py)", [sys.executable, "scripts/dev/test_mts_signal.py"], "Step 3sig: Signals tests")
     add("3e", "DSA browser worker + queue lane tests", [sys.executable, "scripts/worker/test_dsa_worker.py"], "Step 3e: DSA worker tests")
