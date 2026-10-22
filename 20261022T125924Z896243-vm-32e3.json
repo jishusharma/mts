@@ -1,0 +1,1 @@
+{"t": "20261022T125924Z", "from": "vm/?", "to": "all", "kind": "note", "text": "NEW HOOKS on fast-track: preship.py (edit note + git commit check for the gate's top failures) and prereq_guard.py (pre-run to-dos must become tasks.py need cards). Pull to get them."}
