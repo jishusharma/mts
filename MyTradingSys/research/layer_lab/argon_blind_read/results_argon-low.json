@@ -1,0 +1,321 @@
+{
+  "metadata": {
+    "card": "argon-blind-read-7-frames",
+    "model": "gemini-4-argon-low",
+    "effort": "low",
+    "generated_utc": "2026-10-22T23:17:45.671621+00:00",
+    "pilot_reference": "MyTradingSys\\research\\lab_guy\\pilots\\2026-10-18_gemini_frame_read\\hard_results_gemini-3.8-flash-low.json",
+    "pilot_reference_trust": "UNCHECKED"
+  },
+  "descriptive_counts_7_frames": {
+    "total_fields": 28,
+    "matches": 16,
+    "mismatches": 1,
+    "correct_nulls": 5,
+    "missed_nulls": 0,
+    "invented_numbers": 4,
+    "unverified": 2
+  },
+  "descriptive_counts_all_panels": {
+    "total_fields": 32,
+    "matches": 19,
+    "mismatches": 1,
+    "correct_nulls": 5,
+    "missed_nulls": 1,
+    "invented_numbers": 4,
+    "unverified": 2
+  },
+  "evaluations": [
+    {
+      "id": "T6hDJcHrVBM_0520",
+      "frame": "T6hDJcHrVBM_0520.jpg",
+      "filename": "T6hDJcHrVBM_0520.jpg",
+      "truth": {
+        "pos": -3,
+        "entry": 24690,
+        "sl": null,
+        "tp": 24184
+      },
+      "argon_parsed": {
+        "position": -3,
+        "entry": 24690,
+        "stop": null,
+        "target": 24184
+      },
+      "argon_scores": {
+        "position": "MATCH",
+        "entry": "MATCH",
+        "stop": "CORRECT_NULL",
+        "target": "MATCH"
+      },
+      "flash_parsed": {
+        "position": -3,
+        "entry": 24690,
+        "stop": null,
+        "target": 24184
+      },
+      "raw_response": "{\"position\":-3,\"entry\":24690,\"stop\":null,\"target\":24184}\n",
+      "seconds": 28.08,
+      "timestamp": "2026-10-22T23:14:09.993967+00:00"
+    },
+    {
+      "id": "T6hDJcHrVBM_0550",
+      "frame": "T6hDJcHrVBM_0550.jpg",
+      "filename": "T6hDJcHrVBM_0550.jpg",
+      "truth": {
+        "pos": -2,
+        "entry": null,
+        "sl": null,
+        "tp": 24184
+      },
+      "argon_parsed": {
+        "position": -2,
+        "entry": 24690,
+        "stop": null,
+        "target": 24184
+      },
+      "argon_scores": {
+        "position": "MATCH",
+        "entry": "INVENTED",
+        "stop": "CORRECT_NULL",
+        "target": "MATCH"
+      },
+      "flash_parsed": {
+        "position": -2,
+        "entry": null,
+        "stop": 24690,
+        "target": 24184
+      },
+      "raw_response": "{\"position\":-2,\"entry\":24690,\"stop\":null,\"target\":24184}\n",
+      "seconds": 18.86,
+      "timestamp": "2026-10-22T23:14:28.856123+00:00"
+    },
+    {
+      "id": "zQTbdEweG3c_0370",
+      "frame": "zQTbdEweG3c_0370.jpg",
+      "filename": "zQTbdEweG3c_0370.jpg",
+      "truth": {
+        "pos": -1,
+        "entry": 25344,
+        "sl": null,
+        "tp": null
+      },
+      "argon_parsed": {
+        "position": -1,
+        "entry": 25344,
+        "stop": null,
+        "target": null
+      },
+      "argon_scores": {
+        "position": "MATCH",
+        "entry": "MATCH",
+        "stop": "CORRECT_NULL",
+        "target": "CORRECT_NULL"
+      },
+      "flash_parsed": {
+        "position": -1,
+        "entry": 25344,
+        "stop": null,
+        "target": null
+      },
+      "raw_response": "{\"position\": -1, \"entry\": 25344, \"stop\": null, \"target\": null}\n",
+      "seconds": 23.11,
+      "timestamp": "2026-10-22T23:14:51.968042+00:00"
+    },
+    {
+      "id": "l8RZrBfzvp4_0190",
+      "frame": "l8RZrBfzvp4_0190.jpg",
+      "filename": "l8RZrBfzvp4_0190.jpg",
+      "truth": {
+        "pos": -1,
+        "entry": 6806.25,
+        "sl": "?",
+        "tp": 6767.25
+      },
+      "argon_parsed": {
+        "position": -1,
+        "entry": 6806.25,
+        "stop": 6812.25,
+        "target": 6767.25
+      },
+      "argon_scores": {
+        "position": "MATCH",
+        "entry": "MATCH",
+        "stop": "UNVERIFIED",
+        "target": "MATCH"
+      },
+      "flash_parsed": {
+        "position": -1,
+        "entry": 6806.25,
+        "stop": 6812.25,
+        "target": 6767.25
+      },
+      "raw_response": "{\"position\": -1, \"entry\": 6806.25, \"stop\": 6812.25, \"target\": 6767.25}\n",
+      "seconds": 22.03,
+      "timestamp": "2026-10-22T23:15:14.003406+00:00"
+    },
+    {
+      "id": "SANOimk8M9o_0270",
+      "frame": "SANOimk8M9o_0270.jpg",
+      "filename": "SANOimk8M9o_0270.jpg",
+      "truth": {
+        "pos": null,
+        "entry": null,
+        "sl": null,
+        "tp": null
+      },
+      "argon_parsed": {
+        "position": -1,
+        "entry": 24229,
+        "stop": null,
+        "target": 24111
+      },
+      "argon_scores": {
+        "position": "INVENTED",
+        "entry": "INVENTED",
+        "stop": "CORRECT_NULL",
+        "target": "INVENTED"
+      },
+      "flash_parsed": {
+        "position": -1,
+        "entry": 24229,
+        "stop": null,
+        "target": 24111
+      },
+      "raw_response": "{\"position\":-1,\"entry\":24229,\"stop\":null,\"target\":24111}\n",
+      "seconds": 21.85,
+      "timestamp": "2026-10-22T23:15:35.853828+00:00"
+    },
+    {
+      "id": "UOBgXV20yCM_0250",
+      "frame": "UOBgXV20yCM_0250.png",
+      "filename": "UOBgXV20yCM_0250.png",
+      "truth": {
+        "pos": "?",
+        "entry": 23887,
+        "sl": 23857,
+        "tp": 23962
+      },
+      "argon_parsed": {
+        "position": 1,
+        "entry": 23887,
+        "stop": 23857,
+        "target": 23962
+      },
+      "argon_scores": {
+        "position": "UNVERIFIED",
+        "entry": "MATCH",
+        "stop": "MATCH",
+        "target": "MATCH"
+      },
+      "flash_parsed": {
+        "position": 1,
+        "entry": 23887,
+        "stop": 23857,
+        "target": 23962
+      },
+      "raw_response": "{\"position\": 1, \"entry\": 23887, \"stop\": 23857, \"target\": 23962}\n",
+      "seconds": 21.73,
+      "timestamp": "2026-10-22T23:15:57.589843+00:00"
+    },
+    {
+      "id": "k0zm_panel_top",
+      "frame": "k0zm_1510_1720.png (top panel, 15:10)",
+      "filename": "k0zm_panel_top.png",
+      "truth": {
+        "pos": -2,
+        "entry": 25332,
+        "sl": 25344,
+        "tp": 25201
+      },
+      "argon_parsed": {
+        "position": -2,
+        "entry": 25332,
+        "stop": 25344,
+        "target": null
+      },
+      "argon_scores": {
+        "position": "MATCH",
+        "entry": "MATCH",
+        "stop": "MATCH",
+        "target": "MISSED_NULL"
+      },
+      "flash_parsed": null,
+      "raw_response": "{\"position\":-2,\"entry\":25332,\"stop\":25344,\"target\":null}\n",
+      "seconds": 23.85,
+      "timestamp": "2026-10-22T23:16:21.445352+00:00"
+    },
+    {
+      "id": "k0zm_panel_bottom",
+      "frame": "k0zm_1510_1720.png (bottom panel, 17:20)",
+      "filename": "k0zm_panel_bottom.png",
+      "truth": {
+        "pos": -1,
+        "entry": 25324,
+        "sl": 25310,
+        "tp": 25200
+      },
+      "argon_parsed": {
+        "position": -1,
+        "entry": 25324,
+        "stop": 25310,
+        "target": 25206
+      },
+      "argon_scores": {
+        "position": "MATCH",
+        "entry": "MATCH",
+        "stop": "MATCH",
+        "target": "MISMATCH"
+      },
+      "flash_parsed": {
+        "position": -1,
+        "entry": 25324.0,
+        "stop": 25349.0,
+        "target": 25200.0
+      },
+      "raw_response": "{\"position\": -1, \"entry\": 25324, \"stop\": 25310, \"target\": 25206}\n",
+      "seconds": 16.23,
+      "timestamp": "2026-10-22T23:16:37.674944+00:00"
+    }
+  ],
+  "crops": [
+    {
+      "id": "crop_k0zm_target",
+      "filename": "k0zm_target_crop.png",
+      "is_crop": true,
+      "model": "gemini-4-argon-low",
+      "effort": "low",
+      "seconds": 13.34,
+      "timestamp": "2026-10-22T23:16:51.014497+00:00",
+      "prompt": "Open image k0zm_target_crop.png in this folder. Return ONLY JSON {position,entry,stop,target}; each is a number or null. Use null if unreadable or absent. Never infer hidden values.",
+      "raw_response": "{\"position\": null, \"entry\": null, \"stop\": null, \"target\": 25206}\n",
+      "parsed": {
+        "position": null,
+        "entry": null,
+        "stop": null,
+        "target": 25206
+      },
+      "descriptive_prompt": "Open image k0zm_target_crop.png in this folder. Describe the visible text and price labels directly. In particular, report what exact numbers are readable for the order/price tags.",
+      "descriptive_response": "Here is the visible text and numbers in [k0zm_target_crop.png](file:///F:/MTS/scratch/argon_run/iso_crop_k0zm_target/k0zm_target_crop.png):\n\n### 1. Price Axis & Order/Price Tags (Left Side)\n* **Highlighted Blue Price Tag:** **`25206`** (white text on a blue tag along the vertical price scale).\n* **Faint Background Axis Labels (below the blue tag):**\n  * Directly under the blue tag: **`25200`** (partially obscured/faint)\n  * Below that: **`25190`** (faint grey text)\n  * Near the bottom: **`25180`** (very blurry/faint grey text)\n\n### 2. Trading Panel / Controls (Right Side)\n* **Top Dark Button (partially cropped at the top):** **`Breakeven (+`** (or `Breakeven (1` / similar, cut off on the right).\n* **Middle Blue Button:** **`Schlie\u0413\u045fen`** (German for \"Close\").\n* **Numeric Input / Value Box (below the blue button):** **`68,0`** (white/light-grey digits with a comma decimal separator).\n* **Bottom Red Button (cropped at the bottom edge):** Only the top edge of a red button is visible; no text is readable.\n"
+    },
+    {
+      "id": "crop_0550_stop",
+      "filename": "T6hDJcHrVBM_0550_crop.png",
+      "is_crop": true,
+      "model": "gemini-4-argon-low",
+      "effort": "low",
+      "seconds": 15.09,
+      "timestamp": "2026-10-22T23:17:23.864688+00:00",
+      "prompt": "Open image T6hDJcHrVBM_0550_crop.png in this folder. Return ONLY JSON {position,entry,stop,target}; each is a number or null. Use null if unreadable or absent. Never infer hidden values.",
+      "raw_response": "{\"position\":-2,\"entry\":24690,\"stop\":null,\"target\":24184}\n",
+      "parsed": {
+        "position": -2,
+        "entry": 24690,
+        "stop": null,
+        "target": 24184
+      },
+      "descriptive_prompt": "Open image T6hDJcHrVBM_0550_crop.png in this folder. Describe the visible text and price labels directly. In particular, report what exact numbers are readable for the order/price tags.",
+      "descriptive_response": "Here is a description of the visible text, order tags, and price labels in [T6hDJcHrVBM_0550_crop.png](file:///F:/MTS/scratch/argon_run/iso_crop_0550_stop/T6hDJcHrVBM_0550_crop.png):\n\n### 1. Order / Price Tags (Highlighted Labels)\n* **Top Red Order Tag & Price Label:**\n  * **Order box (left):** Shows two close icons (`X` `X`), quantity **`-2`**, and a blue-bordered value field that is blacked out/redacted (with only a partial trailing `0` or `)` edge faintly visible).\n  * **Price axis tag (right, red background):** **`24690`**\n\n* **Middle Current/Reference Price Tags:**\n  * **Black price tag (dotted horizontal line):** **`24435`**\n  * **Purple/Blue price tag (solid purple horizontal line directly underneath `24435`):** Partially occluded at the top by the `24435` tag; the lower half of the digits reads **`24425`** (or `24423`, consistent with `24425`).\n\n* **Bottom Blue Take-Profit (TP) Order Tag & Price Label:**\n  * **Order box (left):** Shows a close icon (`X`), quantity **`2`**, label **`TP`**, a blacked-out/redacted value box, and **`R`** on the right.\n  * **Price axis tag (right, blue background):** **`24184`**\n\n---\n\n### 2. Background Price Axis Scale (Right Column, Top to Bottom)\n* **`24750`**\n* **`24700`** (partially covered at the bottom by the `24690` red tag)\n* **`24650`**\n* **`24600`**\n* **`24550`**\n* **`24500`** (faint)\n* **`24350`** (faint)\n* **`24300`**\n* **`24250`**\n* **`24200`** (partially above the `24184` blue tag)\n* **`24150`**\n"
+    }
+  ]
+}
