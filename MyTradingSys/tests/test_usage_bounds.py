@@ -95,16 +95,18 @@ class UnattendedBudgetTest(unittest.TestCase):
             fire(self.home, "PostToolUse", sid="f", extra=f)                     # 2 x 600k = 1.2M > 1M
         self.assertTrue(denied(self.pre("f", extra=f)))
 
-    def test_supervisor_budget_is_1m_with_a_note_at_500k(self):
+    def test_supervisor_budget_is_6m_with_a_note_at_3m(self):
+        # 2026-10-22: at 1M the JIS-NB Supervisor (C) was denied every tool ~15 turns into its unattended run
         o = self.tp("opus", 200_000)
         fire(self.home, "UserPromptSubmit", sid="sv", extra={**o, "prompt": "You are Supervisor. Login C."})
-        notes = [fire(self.home, "PostToolUse", sid="sv", extra=o) for _ in range(2)]      # 400k
+        notes = [fire(self.home, "PostToolUse", sid="sv", extra=o) for _ in range(14)]     # 2.8M
         self.assertFalse(any("unattended read" in n for n in notes))
-        self.assertFalse(denied(self.pre("sv", extra=o)))
-        self.assertIn("unattended read 600k of 1000k", fire(self.home, "PostToolUse", sid="sv", extra=o))   # 600k >= 500k
-        fire(self.home, "PostToolUse", sid="sv", extra=o)
-        self.assertFalse(denied(self.pre("sv", extra=o)))                               # 800k
-        fire(self.home, "PostToolUse", sid="sv", extra=o)                               # 1M
+        self.assertFalse(denied(self.pre("sv", extra=o)), "15 turns in: still working")
+        self.assertIn("unattended read 3000k of 6000k", fire(self.home, "PostToolUse", sid="sv", extra=o))   # 3M
+        for _ in range(14):
+            fire(self.home, "PostToolUse", sid="sv", extra=o)
+        self.assertFalse(denied(self.pre("sv", extra=o)))                               # 5.8M
+        fire(self.home, "PostToolUse", sid="sv", extra=o)                               # 6M
         self.assertTrue(denied(self.pre("sv", extra=o)))
 
     def test_unknown_context_counts_as_250k(self):

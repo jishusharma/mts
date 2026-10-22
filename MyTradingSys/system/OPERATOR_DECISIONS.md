@@ -1179,5 +1179,30 @@ Applied: 2026-10-22: cards ci-one-run-per-commit-on-fast-track-gree and ci-split
 }
 ```
 
+## q-no-permission-endings | asked 2026-10-22 | Process
+
+May a session end its reply by asking the operator's leave ("say go", "want me to?") for work it can do? (Admin_Guy chat 2026-10-22)
+
+Recommended: A Stop hook blocks replies that end by asking the operator's leave for work; sessions do the work, the operator stops them if wrong
+Answer: A Stop hook blocks replies that end by asking the operator's leave for work; sessions do the work, the operator stops them if wrong
+Operator note (verbatim): "There must be a hook which says that never ask such a question as if you say go and you know, you should just go and do it and if I see that you are doing something which you should not, then I will stop you. At least the work will not be lost."
+Applied: 2026-10-22: scripts/dev/offer_guard.py (Stop hook, .claude/settings.json) with scripts/dev/test_offer_guard.py; OPERATOR-ONLY: lines stay allowed for real operator decisions.
+
+```json
+{
+ "order": 36,
+ "stage": "Process",
+ "refs": "scripts/dev/offer_guard.py, q-no-permission-endings",
+ "title": "No permission questions at the end of a reply: do the work",
+ "why": "The operator drives three devices and does not read every reply; a closing question leaves the work undone and it is lost in the chat (CI speed fixes 1-2 sat as 'say go' with no card, 2026-10-22).",
+ "options": [
+  "Sessions may close with an offer or a go/no-go question",
+  "A Stop hook blocks replies that end by asking the operator's leave for work; sessions do the work, the operator stops them if wrong"
+ ],
+ "recommended": "A Stop hook blocks replies that end by asking the operator's leave for work; sessions do the work, the operator stops them if wrong",
+ "answer": "A Stop hook blocks replies that end by asking the operator's leave for work; sessions do the work, the operator stops them if wrong"
+}
+```
+
 ## DECISION NEEDED 2026-10-21 (Lab_Guy): pre_pipeline_sources review_by 2026-10-23
 27 grandfathered testnet sources in auto_trader_config.json expire for review on 2026-10-23; promoted_setups.json has 0 entries. Options: (a) extend review_by 14 days (recommended, OURS default), (b) prune falsified layers (turn_of_candle, rsi_divergence, session_levels), (c) stop them. Needs an operator answer in the Control Room; no chat question.
