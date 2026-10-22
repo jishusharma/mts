@@ -14,6 +14,15 @@
   "goal": "Every operator prompt reaches the session with a fixed header (TASK, CRITERIA, PROOF NEEDED, OUT OF SCOPE, DEFAULTS; \"not stated\" when absent) added as additionalContext, the original text untouched; a crash passes the raw prompt.",
   "id": "prompt-header-role-loader",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "role_loader: file paths never score and Supervisor briefs get no fallback role (pilot 2026",
+      "ref": "8b4ea32a228c",
+      "utc": "2026-10-22T14:29:28Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -21,6 +30,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-22T19:27:07Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -29,11 +39,12 @@
   "scope_out": [
     "trading code; the live tree; any model-based rewriting"
   ],
+  "scope_sha": "8b4ea32a228c",
   "size": "M",
   "sources": [
     "MyTradingSys/research/thinker/2026-10-23_prompt_quality_claude.md"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Run the A/B on 5 past prompts first; stop and report if header does not win",
     "Write failing tests, then the header branch",
@@ -42,5 +53,5 @@
   "tests": "MyTradingSys/tests/test_role_loader.py::test_prompt_header_keeps_original and ::test_prompt_header_failsafe (fail on current role_loader.py, which has no header branch)",
   "title": "Prompt header branch in role_loader: structure every casual prompt, keep original verbatim",
   "weight": "",
-  "worker": "agent"
+  "worker": "session"
 }
