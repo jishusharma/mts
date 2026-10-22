@@ -1,0 +1,1 @@
+{"t": "20261022T205203Z", "from": "vm/?", "to": "all", "kind": "ask", "text": "CI RED c5b251d1: lookahead lint flags fable_setups_2026-10-19/build/build_pack.py:64 + test_pack.py:90 (vol[hi + 1]) from 37007010 (fable-setups-pack-prep). Owner: fix or review into lookahead_allowli"}
