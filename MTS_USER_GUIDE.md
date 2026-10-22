@@ -6,6 +6,8 @@ MTS watches the BTC market, tells you when a setup is forming, and places
 your trades with a stop that is always on the exchange. You decide; MTS executes.
 Everything runs from one command: **`mts`**.
 
+> Starting Claude sessions, roles, super sessions, broadcast: see `MyTradingSys/system/START_HERE.txt` (the cheat sheet, updated 2026-10-22).
+
 ---
 
 ## 1. One-time setup

@@ -119,8 +119,15 @@ class BestRoleFallback(unittest.TestCase):
         self.assertIn("screenshot", p["reason"])
 
     def test_plain_question_picks_admin_guy(self):
-        self.assertEqual(self.pick("What is the current fee setting for the Deribit testnet account?")["name"], "Admin_Guy")
+        self.assertEqual(self.pick("I have a question about the Deribit testnet fee setting")["name"], "Admin_Guy")
         self.assertEqual(self.pick("Where is the decision about the weekly low layer recorded?")["name"], "Admin_Guy")
+
+    def test_bare_question_words_pick_no_role(self):
+        # review 2026-10-22 (R1): "what/why/how/where/?" alone made every chat session Admin_Guy
+        for text in ("why are super sessions still asking me to click a card? what is going on?",
+                     "What is the current fee setting for the Deribit testnet account?",
+                     "where is the report?"):
+            self.assertIsNone(self.pick(text)["name"], text)
 
     def test_design_question_picks_thinker(self):
         self.assertEqual(self.pick("How should we design the layer combiner so it scales to 20 layers?")["name"], "Thinker")
