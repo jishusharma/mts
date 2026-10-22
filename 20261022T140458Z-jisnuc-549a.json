@@ -1,0 +1,1 @@
+{"t": "20261022T140458Z", "from": "jis-nuc/sharma", "to": "all", "kind": "claim", "text": "claim \"pipeliner-boot-diet\" 2>&1 | tail -3; wc -c MyTradingSys/system/roles/pipeliner.md; python scripts/dev/mts_doctor.py 2>&1 | grep -i -E \"boot\" | head; cat MyTradingSys/system/roles/pipeliner.md |"}
