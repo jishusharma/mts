@@ -89,3 +89,6 @@ Ship tips: run ships detached (`nohup python -u sync.py ship > log 2>&1 &`), the
 
 ## DOCTOR hand-over 2026-10-22
 Read MyTradingSys/system/CI_SPEED_DIAGNOSIS_2026-10-22.md (partial). Next: implement item 1 (per-SHA concurrency + mark-green ancestor guard, fail-first test), then sync.py stage timings and the hard-coded path sweep.
+
+## E2E run 2 (2026-10-22, Supervisor B)
+Both cards shipped via Agent Builders: ecd83de0 (e2e-launcher-test-escape), ab82fc75 (e2e-hook-bench-all-hooks). Rechecked: git cherry empty, 103 and 10 tests passed. Open: Builder 2 used ship --again to pass the 10-minute second-ship guard.
