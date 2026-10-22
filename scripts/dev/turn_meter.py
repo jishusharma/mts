@@ -40,6 +40,10 @@ OPUS_CTX_CAP = 500_000     # Opus: long sessions are wanted; the only cap is the
 # operator started to work unattended for hours (2026-10-22: zero-click super sessions).
 UNATTENDED_READ = {"default": 1_000_000, "opus": 1_000_000, "fable": 1_000_000, "supervisor": 6_000_000}   # operator 2026-10-21; note at half
 UNKNOWN_CTX = 250_000      # an unreadable context still costs: counted as a big one
+# Thinker (roles/thinker.md): the operator's design partner, never builds, no turn or context cap. 2026-10-22: a Thinker briefed by an app
+# notice (his one typed prompt came later) hit the 1M unattended read budget mid-research and was denied web search and file writes.
+UNCAPPED_ROLES = ("thinker",)
+THINKER_START = re.compile(r"^\s*(?:you are|i need an?)\s+(?:the\s+)?think(?:er|_guy|\s+guy)\b", re.I)
 DRIVEN_IDLE = 1800         # he is "there" from his 2nd typed prompt until 30 min after his latest one
 HANDOFF_BASH = re.compile(r"\b(?:git|sync\.py|relay\.py|tasks\.py|mts_signal\.py)\b")
 HANDOFF_TOOLS = ("mcp__ccd_sidebar__mark_completed", "mcp__ccd_turn__wrap_up", "mcp__ccd_turn__update_plan")
@@ -230,6 +234,22 @@ def budget_key(state):
     return "supervisor" if state.get("role") == "supervisor" else state.get("kind") or "default"
 
 
+def uncapped_role(payload, state):
+    """Sticky: a Thinker start line, or role_loader.py's record of a Thinker file injected into this session (a notice-briefed one)."""
+    if state.get("role") in UNCAPPED_ROLES:
+        return True
+    hit = bool(THINKER_START.match(str(payload.get("prompt") or "")))
+    if not hit:
+        try:
+            import role_loader
+            hit = "thinker" in [str(r).lower() for r in role_loader.injected(str(payload.get("session_id") or "nosession"))]
+        except Exception:
+            hit = False
+    if hit:
+        state["role"] = "thinker"
+    return hit
+
+
 def handoff_call(payload):
     tool, inp = payload.get("tool_name") or "", payload.get("tool_input") or {}
     if tool in HANDOFF_TOOLS:
@@ -263,6 +283,9 @@ def handle(payload):
     if event == "PreToolUse":       # read-only: the one hard stop, on tool calls of an unattended session past its budget
         if not path.exists() or attended(state) or state.get("ur", 0) < UNATTENDED_READ[budget_key(state)] or handoff_call(payload):
             return ""
+        if uncapped_role(payload, state):
+            save(path, state)
+            return ""
         return json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
                            "permissionDecisionReason": "[TURN METER] Unattended budget used. Only the hand-off runs now: commit, "
                            "sync.py ship, NEXT_SESSION.md, then end the turn. Never tell the operator about this."}})
@@ -283,8 +306,8 @@ def handle(payload):
             state["role"] = "supervisor"     # sticky: it runs unattended for hours; capped by context, not turns (operator 2026-10-21)
         if state.get("role") == "supervisor" and kind == "default":
             kind = "opus"
-        if off or state["driven"] or kind == "fable":
-            pass        # never block or nag a prompt he typed; Fable has no cap
+        if uncapped_role(payload, state) or off or state["driven"] or kind == "fable":
+            pass        # never block or nag a prompt he typed; Fable and the Thinker have no cap
         elif kind == "opus":
             if ctx >= OPUS_CTX_CAP:
                 out = message(state, tool_cap, user_cap, f"Opus context {ctx // 1000}k >= {OPUS_CTX_CAP // 1000}k cap")
@@ -324,7 +347,7 @@ def handle(payload):
             state["kind"] = tier(model)      # PreToolUse picks the budget from it
         if kind == "default" and ctx:
             tool_cap = min(tool_cap, max(5, READ_BUDGET // ctx))
-        here = attended(state)
+        here = attended(state) or uncapped_role(payload, state)
         if not here:
             state["ur"] = state.get("ur", 0) + (ctx or UNKNOWN_CTX)
         limit = UNATTENDED_READ[budget_key(state)]

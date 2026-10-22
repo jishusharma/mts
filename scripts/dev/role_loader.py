@@ -429,6 +429,8 @@ def handle(payload, repo=REPO):
         if not done:
             return ""
         text = build_text(done[-1], repo, git_fetch(repo))
+        if LAST_META:                   # trunk may have changed the role since the first load: record what was served
+            mark_injected(sid, done[-1], dict(LAST_META))
         return _out("SessionStart", "Session resumed/compacted: re-confirm the role. " + text)
     prompt = payload.get("prompt")
     if not isinstance(prompt, str):
