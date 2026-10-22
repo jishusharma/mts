@@ -153,3 +153,11 @@ def test_launch_scripts_do_not_hardcode_the_dev_checkout():
     files = [*root.glob("scripts/core/*.ps1"), *root.glob("scripts/live/*.ps1"), *root.glob("scripts/monitor/*.ps1"), *root.glob("runtime_data/*.vbs")]
     bad = [str(f.relative_to(root)) for f in files if old in f.read_text(encoding="utf-8-sig", errors="replace")]
     assert not bad, bad
+
+
+def test_launchers_do_not_hardcode_a_python_interpreter_path():
+    """A per-host interpreter path (pythoncore-3.14-64 exists on JIS-NB only) silently stopped every AUX process on the laptop (2026-10-22)."""
+    import pathlib
+    root = pathlib.Path(__file__).resolve().parents[2]
+    bad = [str(f.relative_to(root)) for f in root.glob("runtime_data/*.vbs") if "pythoncore" in f.read_text(encoding="utf-8-sig", errors="replace")]
+    assert not bad, bad
