@@ -271,6 +271,12 @@ def handle(payload):
     off = os.environ.get("MTS_TURN_METER", "").lower() == "off"
     sid = payload.get("session_id")
     event = payload.get("hook_event_name")
+    if event == "PostToolUse":      # one BOOT signal per session and per subagent (boot_probe.py; operator 2026-10-22)
+        try:
+            import boot_probe
+            boot_probe.maybe_spawn(payload)
+        except Exception:
+            pass
     if not sid or not event or is_subagent(payload):
         return ""
     if off and event != "UserPromptSubmit":
