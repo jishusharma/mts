@@ -16,7 +16,6 @@ import json
 import os
 import sys
 import time
-import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -56,6 +55,7 @@ def home():
 
 
 def fetch():
+    import urllib.request   # lazy: ~0.47 s of import time that a cache hit never needs
     req = urllib.request.Request(API, headers={"User-Agent": "mts-ci-watch"})
     with urllib.request.urlopen(req, timeout=4) as r:
         return json.load(r)["workflow_runs"]

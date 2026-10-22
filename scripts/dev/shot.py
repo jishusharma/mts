@@ -19,17 +19,13 @@ sha256, so saving never depends on a session remembering to do it. The store is 
 accounts); the extracts written about them are tracked. Process: MyTradingSys/methodology/screenshot_intake.md.
 Store: env MTS_SHOT_DIR, else <main checkout>/runtime_data/screenshots (one store per machine, shared by every worktree).
 """
-import argparse
-import hashlib
 import json
 import os
 import re
 import struct
 import subprocess
 import sys
-import tempfile
 import time
-import traceback
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -90,7 +86,13 @@ def claude_home():
 
 
 def temp_root():
-    return Path(os.environ.get("MTS_SHOT_TEMP") or Path(tempfile.gettempdir()) / "claude")
+    if os.environ.get("MTS_SHOT_TEMP"):
+        return Path(os.environ["MTS_SHOT_TEMP"])
+    for var in ("TMPDIR", "TEMP", "TMP"):      # the first two steps of tempfile.gettempdir(), without importing tempfile (~25 ms)
+        if os.environ.get(var) and os.path.isdir(os.environ[var]):
+            return Path(os.path.abspath(os.environ[var])) / "claude"
+    import tempfile
+    return Path(tempfile.gettempdir()) / "claude"
 
 
 def slug(path):
@@ -222,6 +224,7 @@ def land(store, data, route, session, ts_seen, src, text=""):
     kind = sniff(data)
     if kind is None:
         return None
+    import hashlib
     sha = hashlib.sha256(data).hexdigest()
     sid = sha[:12]
     if sid in fold(load_events(store)):
@@ -328,6 +331,7 @@ def ingest_dir(store, d, route, session, transcript=None):
 
 
 def sha_known(store, data):
+    import hashlib
     return hashlib.sha256(data).hexdigest()[:12] in fold(load_events(store))
 
 
@@ -711,6 +715,7 @@ def engine_jars():
 def run_engine(plan, runner=subprocess.run):
     """Compile src/main + SnapAt into a temp copy (never src/ or target/), run it from an empty cwd, save one record."""
     import shutil
+    import tempfile
     tmp = Path(tempfile.mkdtemp(prefix="mts_snapat_"))
     try:
         src, out, cwd = tmp / "src", tmp / "out", tmp / "cwd"
@@ -1028,6 +1033,7 @@ def hook():
             print(text)
     except Exception:
         try:
+            import traceback    # only on failure
             store.mkdir(parents=True, exist_ok=True)
             with open(store / "hook_errors.log", "a", encoding="utf-8") as f:
                 f.write(now_iso() + "\n" + traceback.format_exc() + "\n")
@@ -1046,6 +1052,9 @@ def fmt(s):
 
 
 def main(argv=None):
+    if (sys.argv[1:] if argv is None else list(argv)) == ["hook"]:
+        return hook()       # fast path: building the argparse tree costs ~0.1 s on every prompt
+    import argparse
     p = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = p.add_subparsers(dest="cmd", required=True)
     a = sub.add_parser("ingest"); a.add_argument("--inbox", help="also land images dropped in this folder (default <store>/inbox)")

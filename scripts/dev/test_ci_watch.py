@@ -61,3 +61,11 @@ def test_offline_is_remembered_so_the_next_prompt_does_not_wait(monkeypatch, tmp
     for _ in range(3):
         W.hook()
     assert len(calls) == 1
+
+
+def test_import_does_not_load_urllib_request():
+    """urllib.request cost ~0.47 s per prompt even on a cache hit (measured 2026-10-22); it is imported inside fetch() only."""
+    import subprocess
+    code = ("import sys; sys.path.insert(0, %r); import ci_watch; "
+            "sys.exit(1 if 'urllib.request' in sys.modules else 0)" % os.path.dirname(os.path.abspath(__file__)))
+    assert subprocess.run([sys.executable, "-c", code]).returncode == 0
