@@ -370,15 +370,16 @@ def first_prompt(transcript_path):
 
 def nested_reason(tool, inp, transcript_path):
     """E2E run 2026-10-22: a Supervisor that a session had started called start_session for its Builders; the app stopped each call
-    for an operator approval and the run sat waiting. A session started by another session starts its workers as background Agents."""
+    for an operator approval and the run sat waiting. A session started by another session starts its workers as background Agents.
+    Operator 2026-10-22: the operator-started login B Supervisor on the NUC got the same "Allow Claude to start the session" card
+    (user_asked, Sonnet). Any role session starts its workers as background Agents."""
     if tool != START or (inp or {}).get("target") == "cloud" or os.environ.get("MTS_ALLOW_NESTED") == "1":
         return None
     import role_loader
-    if not role_loader.from_session(first_prompt(transcript_path)):
+    if not (role_loader.from_session(first_prompt(transcript_path)) or role_session(transcript_path)):
         return None
-    return ("this session was started by another session, so a start_session from here waits for an operator approval in the app "
-            "(the operator is away). Start the worker with the Agent tool instead: model='sonnet', run_in_background=true, the same brief "
-            "(its first line `You are <Role>.`).")
+    return ("a start_session from a role session waits for an operator approval in the app (the operator is away). Start the worker "
+            "with the Agent tool instead: model='sonnet', run_in_background=true, the same brief (its first line `You are <Role>.`).")
 
 
 def role_session(transcript_path):

@@ -98,7 +98,14 @@ class ModelGuardTest(unittest.TestCase):
         self.assertEqual(decision, "deny")
         self.assertIn("Agent tool", reason)
         self.assertEqual(fire("Agent", {"description": "d", "prompt": "You are Builder.", "model": "sonnet"}, p), "allow")
-        self.assertEqual(fire(START, inp, self.transcript("claude-sonnet-5-5")), "allow")   # operator-started session: unchanged
+        self.assertEqual(fire(START, inp, self.transcript("claude-sonnet-5-5")), "allow")   # a plain session (no role line): unchanged
+        # operator 2026-10-22: the login B Supervisor he started himself on the NUC got the same approval card
+        role = Path(self.tmp.name) / "role.jsonl"
+        role.write_text(json.dumps({"type": "user", "message": {"content": "You are Supervisor. Login B. Continue."}}) + "\n",
+                        encoding="utf-8")
+        decision, reason = fire_full(START, inp, role)
+        self.assertEqual(decision, "deny")
+        self.assertIn("Agent tool", reason)
 
     def first(self, name, text):
         p = Path(self.tmp.name) / name
