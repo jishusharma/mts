@@ -226,7 +226,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `krown-data-cme-btc-volume` refined p2 DSA: Krown CME BTC futures daily volume (public data only) as third volume arm
   - `krown-dev-event-study` refined p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
   - `trendline-audit-gaps-disposition` refined p2 SONNET: Trend-Line layer: disposition of AUDIT_2026-10-18 critical gaps (3 HIGH, 3 MED) and REGATE_AUDIT flip
-  - `krown-other-sources-event-study-videos` refined p3 SONNET: Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigg
+  - `krown-other-sources-event-study-videos` refined p3 CODEX: Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigg
 
 ## WaveTrend (LazyBear oscillator) (`wavetrend`)
 - Status: Causal observation module and parity fixtures exist. BTC DEV atlas remains exploratory: W01-W03/W09 FAIL; W04-W08 INCONCLUSIVE per the MTS re-gate; W07/W08 also use an invalid C1 detector. No validated edge or live integration.
