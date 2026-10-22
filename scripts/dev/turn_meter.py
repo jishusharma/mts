@@ -245,8 +245,8 @@ def uncapped_role(payload, state):
             hit = "thinker" in [str(r).lower() for r in role_loader.injected(str(payload.get("session_id") or "nosession"))]
         except Exception:
             hit = False
-    if hit:
-        state["role"] = "thinker"
+    if hit and not state.get("role"):
+        state["role"] = "thinker"       # never overwrite "supervisor": its compaction nudge reads that mark
     return hit
 
 

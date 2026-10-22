@@ -390,6 +390,13 @@ class AwayFlagAndAtomicSaveTest(unittest.TestCase):
         nags, pre = self.unattended_run("t3", "[app notice] continue the brief above")
         self.assertEqual((nags, pre), ([""] * 5, ""))
 
+    def test_a_thinker_line_keeps_a_supervisor_mark(self):
+        st = self.home / "sv.json"
+        st.write_text(json.dumps({"tool": 1, "user": 1, "role": "supervisor"}), encoding="utf-8")
+        self.assertTrue(turn_meter.uncapped_role({"prompt": "You are Thinker.", "session_id": "sv"}, json.loads(st.read_text())))
+        fire(self.home, "UserPromptSubmit", sid="sv", extra={"prompt": "You are Thinker. Topic: x"})
+        self.assertEqual(json.loads(st.read_text(encoding="utf-8"))["role"], "supervisor")
+
     def test_thinking_about_something_is_not_the_thinker_role(self):
         nags, pre = self.unattended_run("w2", "you are thinking too slowly, think about the gate")
         self.assertIn('"deny"', pre)
