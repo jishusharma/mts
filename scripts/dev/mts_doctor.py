@@ -20,7 +20,10 @@ OUT_REL = "MyTradingSys/research/mts_doctor"
 PATH_RE = re.compile(r"`((?:scripts|MyTradingSys)/[A-Za-z0-9_./-]+\.(?:py|ps1|md|json|csv|yml))`")
 BARE_DOC_RE = re.compile(r"\b([A-Z][A-Z0-9_]{3,}\.md)\b")
 DUP_MIN = 80          # a duplicated line shorter than this is usually a heading or a table row
-KINDS = ("DEAD-REF", "DUPLICATE", "MEMORY", "CARD", "SKILL", "HOOKS")
+KINDS = ("DEAD-REF", "DUPLICATE", "MEMORY", "CARD", "SKILL", "HOOKS", "BOOT-COST")
+BOOT_CAP_TOKENS = 12000   # a role whose Boot reads cost more than this (bytes/4) is a BOOT-COST finding
+ROLES_REL = "MyTradingSys/system/roles"
+BOOT_REF_RE = re.compile(r"`([A-Za-z0-9_./-]+\.(?:md|txt))(?:#([^`]+))?`")
 HOOK_FILES = (".claude/settings.json", "scripts/dev/turn_meter.py")
 
 
@@ -142,6 +145,47 @@ def boot_cost(repo, docs):
     return f"Boot cost: CLAUDE.md {claude} B loaded every turn; largest guidance files: {top}. Trim only if the cap test fails (the cache makes the prefix cheap)."
 
 
+def _section(text, head):
+    """Text of the first heading whose title starts with `head` (case-insensitive) up to the next heading of the same or a higher level."""
+    lines = text.splitlines(keepends=True)
+    start = level = None
+    for i, ln in enumerate(lines):
+        m = re.match(r"^(#+)\s*(.*)", ln)
+        if not m:
+            continue
+        if start is None:
+            if m.group(2).lower().startswith(head.lower()):
+                start, level = i, len(m.group(1))
+        elif len(m.group(1)) <= level:
+            return "".join(lines[start:i])
+    return "".join(lines[start:]) if start is not None else ""
+
+
+def boot_cost_roles(repo):
+    """{role file: (bytes, [(ref, bytes)])}: the role file plus every file its `Read first:` line and Boot section name in backticks.
+    `path` counts the whole file, `path#Heading` only that section (so a role can read a section instead of a file)."""
+    out = {}
+    for f in sorted((Path(repo) / ROLES_REL).glob("*.md")):
+        text = f.read_text(encoding="utf-8", errors="ignore")
+        part = [ln for ln in text.splitlines() if ln.startswith("Read first")]
+        m = re.search(r"^## (?:Boot|BOOT)[^\n]*\n(.*?)(?=^## |\Z)", text, re.M | re.S)
+        if m:
+            part.append(m.group(0))
+        refs, seen = [], set()
+        for path, head in BOOT_REF_RE.findall("\n".join(part)):
+            for cand in (path, "MyTradingSys/system/" + path):
+                p = Path(repo) / cand
+                if p.is_file():
+                    if (cand, head) in seen:
+                        break
+                    seen.add((cand, head))
+                    body = p.read_text(encoding="utf-8", errors="ignore")
+                    refs.append((cand + (f"#{head}" if head else ""), len((_section(body, head) if head else body).encode())))
+                    break
+        out[f.name] = (len(text.encode()) + sum(n for _, n in refs), refs)
+    return out
+
+
 def previous_metrics(out, day):
     """METRICS line of the newest report older than `day`, as a dict; {} when there is none."""
     older = sorted(p for p in Path(out).glob("REPORT_*.md") if p.stem[7:] < day)
@@ -157,11 +201,15 @@ def run(repo=REPO, out_dir=None, memory_dir=None, process=True, hours=72, now=No
     docs = ai_files(repo, files)
     findings = (dead_refs(repo, files, docs) + duplicates(repo, docs) + memory_drift(memory_dir) + card_warnings(repo)
                 + skills(repo, docs) + hook_drift(repo))
+    costs = boot_cost_roles(repo)
+    findings += [("BOOT-COST", f"{ROLES_REL}/{n}", f"Boot reads cost {b} B (~{b // 4} tokens), over {BOOT_CAP_TOKENS}",
+                  "read sections (`path#Heading`) instead of whole files in Read first / Boot") for n, (b, _) in costs.items() if b // 4 > BOOT_CAP_TOKENS]
     day = (now or datetime.now(timezone.utc)).strftime("%Y-%m-%d")
     out = Path(out_dir) if out_dir else repo / OUT_REL
     lines = [f"# MTS doctor report {day}", "", f"Part 1: AI health ({len(docs)} guidance files checked). Reports only; nothing was edited.", "",
              boot_cost(repo, docs), f"Memory: {memory_dir if memory_dir and Path(memory_dir).is_dir() else 'skipped (no memory dir on this machine)'}", ""]
     counts = {k: sum(1 for f in findings if f[0] == k) for k in KINDS}
+    lines += [f"BOOT-COST {n[:-3]}: {b} B ~{b // 4} tokens ({len(r)} files read)" for n, (b, r) in sorted(costs.items(), key=lambda kv: -kv[1][0])] + [""]
     lines += ["Findings: " + ", ".join(f"{k} {v}" for k, v in counts.items()), ""]
     lines += [f"- [{k}] {where}: {msg} | fix: {fix}" for k, where, msg, fix in findings] or ["- none"]
     if process:

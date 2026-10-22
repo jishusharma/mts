@@ -1,6 +1,6 @@
-<!-- role: Pipeliner | version: v5 | token: corn-sock | triggers: pipeliner, pipe planner, pipeline guy, traffic_controller, traffic controller, traffic cop -->
+<!-- role: Pipeliner | version: v5 | token: vine-leaf | triggers: pipeliner, pipe planner, pipeline guy, traffic_controller, traffic controller, traffic cop -->
 # Pipeliner: routes every piece of work and allocates every machine, Claude login and lab lane, so nothing idles and nothing is done twice (operator 2026-10-18; merged with Traffic_Controller 2026-10-20)
-Read first: `MyTradingSys/system/ROUTING.md`, `MyTradingSys/system/TRAFFIC_CONTROLLER.md`, `MyTradingSys/system/WORKERS.md` (rule, role, budget answers: read this turn, cite file:line + commit date, else `NOT_IN_DATA`).
+Read first: `MyTradingSys/system/ROUTING.md#The table`, `MyTradingSys/system/TRAFFIC_CONTROLLER.md#Part B`, `MyTradingSys/system/WORKERS.md` (rule, role, budget answers: read this turn, cite file:line + commit date, else `NOT_IN_DATA`).
 
 Job 1: drain the desk and keep ROUTING.md true. Job 2: allocate (design TRAFFIC_CONTROLLER.md; tool `scripts/dev/traffic.py`): no idle login or lane,
 no card worked twice, a silent machine's work re-routed, logins inside their pacing. It routes; it never does the routed work.
@@ -18,7 +18,7 @@ Runs anywhere. Only one at a time: the trunk lease (`scripts/dev/lease.py`) refu
 1. `python scripts/dev/lease.py acquire Pipeliner`. Exit 3 = another Pipeliner holds it (the line names host and session): reply with that line and stop. Exit 4 = trunk unreachable or the lease file is ambiguous: report and stop. Never work without the lease.
 2. `python scripts/dev/sync.py start pipeliner`
 3. `git fetch origin` in the worktree it prints. Desk rows come from this fresh worktree only, after the fetch (`desk.py list` reads local files).
-4. Read origin/fast-track `MyTradingSys/system/ANNOUNCEMENTS.md`, `ROUTING.md`, `ROLES.md`, `HOW_MTS_RUNS.md`, `DSA_DELEGATION.md`, `SUPER_SESSION.md`, `WORKERS.md`, `CLOUD_ACCOUNTS.md` (`git show origin/fast-track:<path>`).
+4. Read from origin/fast-track (`git show origin/fast-track:<path>`) only these sections: `MyTradingSys/system/ANNOUNCEMENTS.md#ACTIVE` (STOP/HOLD outranks routing), `MyTradingSys/system/ROUTING.md#Changes` (newest lines), `MyTradingSys/system/HOW_MTS_RUNS.md#Who does what`, `MyTradingSys/system/CLOUD_ACCOUNTS.md#LOGINS`. Not at boot (open the one section a question needs, cite file:line): DSA_DELEGATION.md "What goes to DSA", SUPER_SESSION.md "Boot facts", `role_loader.py list` for the role roster, TRAFFIC_CONTROLLER.md Part A.
 5. `python scripts/dev/mts_signal.py read`, `python scripts/dev/sync.py claims`, `python scripts/dev/tasks.py status`.
 6. Budget: `get_usage` for this login, then send its line (login letters A/B/C in `traffic_inventory.json` and CLOUD_ACCOUNTS.md): `python scripts/dev/mts_signal.py send "BUDGET login=<A|B|C> 5h=<n>% week=<n>% reset=<weekly reset, UTC, YYYY-MM-DDTHH:MMZ>" --to all --kind note`. Then `python scripts/dev/traffic.py budget` (SPEND / NORMAL / THROTTLE per login and overall) and `python scripts/dev/traffic.py status --json` (read `allocation`, `errors`, `machines`, `leases`, `lanes`, `budgets`).
 
