@@ -301,6 +301,19 @@ class QueueTest(unittest.TestCase):
         self.run_cli("sweep", "--apply")
         self.assertEqual([T.get(self.repo, i)["state"] for i in ("C1", "C2", "C3")], ["done", "ready", "ready"])
 
+    def test_sweep_archive_moves_closed_cards_and_keeps_them_resolvable(self):
+        T.save(self.repo, good("C1"))
+        T.save(self.repo, good("C2"))
+        self.run_cli("apply-op", "C2", "drop")
+        self.run_cli("sweep", "--archive")
+        self.assertTrue((T.tdir(self.repo) / "C2.json").exists())          # dry run moves nothing
+        self.run_cli("sweep", "--archive", "--apply")
+        self.assertFalse((T.tdir(self.repo) / "C2.json").exists())
+        self.assertTrue((T.tdir(self.repo) / "archive" / "C2.json").exists())
+        self.assertTrue((T.tdir(self.repo) / "C1.json").exists())
+        self.assertEqual(T.get(self.repo, "C2")["state"], "dropped")
+        self.assertIn("C2", [c["id"] for c in T.load_all(self.repo)])
+
     def test_new_creates_a_raw_card_and_refuses_duplicates(self):
         rc, _ = self.run_cli("new", "Check the funding sign", "--id", "B950", "--ref", "B950", "--from-inbox", "abc")
         c = T.get(self.repo, "B950")

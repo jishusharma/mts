@@ -83,7 +83,10 @@ def tdir(repo=REPO):
 
 
 def path_of(repo, cid):
-    return tdir(repo) / f"{cid}.json"
+    """Open card path; a retired card (tasks/archive/, `sweep --archive`) keeps resolving there."""
+    p = tdir(repo) / f"{cid}.json"
+    a = tdir(repo) / "archive" / f"{cid}.json"
+    return a if (not p.exists() and a.exists()) else p
 
 
 def promote_shared(repo):
@@ -118,7 +121,7 @@ def save(repo, card):
 
 def load_all(repo=REPO):
     d = tdir(repo)
-    return [json.loads(p.read_text(encoding="utf-8")) for p in sorted(d.glob("*.json"))] if d.is_dir() else []
+    return [json.loads(p.read_text(encoding="utf-8")) for p in sorted([*d.glob("*.json"), *d.glob("archive/*.json")])] if d.is_dir() else []
 
 
 def get(repo, cid):
@@ -1155,7 +1158,24 @@ def cmd_apply_op(a):
     print(f"{a.id}: {a.op} -> {c['state']}")
 
 
+def archive_final(repo, apply=False):
+    """Move done/dropped cards from tasks/ to tasks/archive/ (never deletes); returns the ids moved."""
+    d = tdir(repo)
+    moved = []
+    for p in sorted(d.glob("*.json")):
+        if json.loads(p.read_text(encoding="utf-8")).get("state") in FINAL:
+            moved.append(p.stem)
+            if apply:
+                (d / "archive").mkdir(exist_ok=True)
+                p.replace(d / "archive" / p.name)
+    return moved
+
+
 def cmd_sweep(a):
+    if a.archive:
+        moved = archive_final(REPO, a.apply)
+        print(f"sweep --archive: {len(moved)} closed card(s) -> tasks/archive/" + ("" if a.apply else " (dry run)"))
+        return
     cards = load_all(REPO)
     reg = registry(REPO)
     hit = 0
@@ -1417,6 +1437,7 @@ def main(argv=None):
     dp.set_defaults(f=cmd_dispatch)
     s = sp.add_parser("sweep")
     s.add_argument("--apply", action="store_true")
+    s.add_argument("--archive", action="store_true", help="move done/dropped cards to tasks/archive/")
     s.set_defaults(f=cmd_sweep)
     a = ap.parse_args(argv)
     rc = a.f(a) or 0
