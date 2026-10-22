@@ -388,6 +388,22 @@ def test_heartbeat_is_a_budget_line_and_marks_live_supervisors():
     assert list(live) == ["B"] and live["B"]["host"] == "JIS-NB" and live["B"]["free"] == p["new"] and live["B"]["dsa"] == "up"
 
 
+def test_every_supervisor_sees_every_machines_gates():
+    """Heartbeat carries gates=busy/total; plan prints one GATES line over all live machines (operator 2026-10-23)."""
+    import mts_signal
+    p = S.pace_plan(T0, _rd(10, 20), 95, running=2)
+    t = S.heartbeat_text("A", "DESKTOP-F7IU69N", p, dsa="up", free=0, gates={"busy": 2, "total": 2, "free": 0, "pids": [1, 2]})
+    assert len(t) < 200 and mts_signal.clean(t) == t and " gates=2/2 " in t
+    old = S.heartbeat_text("C", "JIS-NB", p)                                   # a peer not yet on this code: no gates=
+    live = S.live_supervisors([(T0 - timedelta(minutes=5), "x/y", "note", t), (T0 - timedelta(minutes=5), "x/y", "note", old)], T0)
+    assert live["A"]["gates"] == (2, 2) and live["C"]["gates"] is None
+    live["B"] = {"host": "JIS-NUC", "mode": "NORMAL", "run": 0, "free": 2, "at": "x", "dsa": None, "gates": (0, 2)}
+    out = "\n".join(S.plan_lines("A", "DESKTOP-F7IU69N", p, live, {"ci": {"red": False}}, gate_key=False))
+    assert "GATES DESKTOP-F7IU69N 2/2 busy; JIS-NB ?; JIS-NUC 0/2 busy; free 2 of 4 known" in out
+    assert "PEER B on JIS-NUC" in out and "gates=0/2" in out and "free gates on JIS-NUC" in out
+    assert "free gates on" not in "\n".join(S.plan_lines("B", "JIS-NUC", p, live, {"ci": {"red": False}}, gate_key=False))
+
+
 def test_lane_owner_is_deterministic():
     live = {"C": {"host": "JIS-NUC"}, "A": {"host": "JIS-NB"}, "B": {"host": "JIS-NUC"}}
     assert S.lane_owner(live, "JIS-NUC") == "B"

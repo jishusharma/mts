@@ -642,13 +642,41 @@ def pace_plan(now: datetime, rd: dict, cap: float, hist=(), running: int = 0) ->
             "transit": (r5 - timedelta(minutes=TRANSIT_MIN)).strftime("%Y-%m-%dT%H:%MZ"), "why": "; ".join(why)}
 
 
-def heartbeat_text(login: str, host: str, plan: dict, dsa: str | None = None, free: int | None = None, mode: str | None = None) -> str:
-    """The one line every supervisor sends per wake: a BUDGET line (traffic.py budget parses its head) plus who runs where.
+def heartbeat_text(login: str, host: str, plan: dict, dsa: str | None = None, free: int | None = None, mode: str | None = None,
+                   gates: dict | None = None) -> str:
+    """The one line every supervisor sends per wake: a BUDGET line (traffic.py budget parses its head) plus who runs where and
+    `gates=busy/total` of its machine (read_gate_slots), so every supervisor sees all machines' gates (operator 2026-10-23).
     No card ids (the public signal cleaner cuts long tokens); under 200 chars."""
     t = (f"BUDGET login={login} 5h={round(plan['five'])}% week={round(plan['week'])}% reset={plan['week_reset']} "
          f"sup={host.upper()} mode={mode or plan['mode']} run={plan['running']} free={plan['new'] if free is None else free} "
          f"end={plan['five_reset'][11:]}")
+    if gates and "busy" in gates:
+        t += f" gates={gates['busy']}/{gates['total']}"
     return t + (f" dsa={dsa}" if dsa else "")
+
+
+def gates_line(live: dict) -> str:
+    """One GATES line over every machine with a live supervisor: a gate tests code on the machine that holds it, so a worker
+    started where gates are free ships sooner. Machines with no supervisor heartbeat (or an old one without gates=) read `?`."""
+    by_host = {}
+    for s in live.values():
+        g = s.get("gates")
+        if s["host"] not in by_host or (g and not by_host[s["host"]]):
+            by_host[s["host"]] = g
+    parts, free, total = [], 0, 0
+    for h, g in sorted(by_host.items()):
+        if g:
+            b, t = g
+            parts.append(f"{h} {b}/{t} busy")
+            free, total = free + max(0, t - b), total + t
+        else:
+            parts.append(f"{h} ?")
+    return f"GATES {'; '.join(parts)}; free {free} of {total} known"
+
+
+def _gates_kv(v):
+    m = re.fullmatch(r"(\d+)/(\d+)", v or "")
+    return (int(m.group(1)), int(m.group(2))) if m else None
 
 
 def live_supervisors(sigs, now: datetime, minutes: int = HEARTBEAT_MIN) -> dict:
@@ -664,7 +692,8 @@ def live_supervisors(sigs, now: datetime, minutes: int = HEARTBEAT_MIN) -> dict:
             continue
         out[m.group(1)] = {"host": kv.get("sup", "?").upper(), "at": t.strftime("%Y-%m-%dT%H:%MZ"), "mode": kv.get("mode", "?"),
                            "run": int(kv.get("run", 0) or 0) if str(kv.get("run", "0")).isdigit() else 0,
-                           "free": int(kv["free"]) if str(kv.get("free", "")).isdigit() else 0, "dsa": kv.get("dsa")}
+                           "free": int(kv["free"]) if str(kv.get("free", "")).isdigit() else 0, "dsa": kv.get("dsa"),
+                           "gates": _gates_kv(kv.get("gates"))}
     return out
 
 
@@ -718,7 +747,16 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
          f"week={plan['week']:.0f}%/{plan['cap']:.0f} slots={plan['slots']} running={plan['running']} new={plan['new']} ({plan['why']})"]
     for lg, s in sorted(live.items()):
         if lg != login:
-            L.append(f"PEER {lg} on {s['host']} mode={s['mode']} run={s['run']} free={s['free']} seen {s['at']}")
+            g = s.get("gates")
+            L.append(f"PEER {lg} on {s['host']} mode={s['mode']} run={s['run']} free={s['free']} gates={f'{g[0]}/{g[1]}' if g else '?'} "
+                     f"seen {s['at']}")
+    L.append(gates_line(live))
+    mine = (live.get(login) or {}).get("gates")
+    if mine and mine[0] >= mine[1]:
+        roomy = sorted({s["host"] for lg, s in live.items() if s["host"] != h and s.get("gates") and s["gates"][0] < s["gates"][1]})
+        if roomy:
+            L.append(f"NOTE your {mine[1]} gates are all busy; free gates on {', '.join(roomy)}: a worker started now waits in the "
+                     "gate queue, so spawn build cards first and let their peers take ship-ready ones")
     unknown = bool(ctx.get("peers_unknown"))
     if unknown:
         L.append("PEERS UNKNOWN (signals not read): shared-lane actions below are NOTE only this wake; do not touch NEXT_SESSION.md")
@@ -850,7 +888,9 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
         ctx["peers_unknown"] = True
         notes.append(f"NOTE signals unreadable ({type(e).__name__}): peers unknown")
     live = live_supervisors(sigs, now)
-    live[login] = {"host": host, "at": now.strftime("%Y-%m-%dT%H:%MZ"), "mode": pl["mode"], "run": running, "free": pl["new"], "dsa": dsa_local}
+    gs = read_gate_slots(repo)
+    live[login] = {"host": host, "at": now.strftime("%Y-%m-%dT%H:%MZ"), "mode": pl["mode"], "run": running, "free": pl["new"], "dsa": dsa_local,
+                   "gates": (gs["busy"], gs["total"]) if "busy" in gs else None}
     shard = sorted(l for l, s in live.items() if s["free"] > 0) or [login]
     try:
         import desk
@@ -904,7 +944,7 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
     if send:
         try:
             import mts_signal
-            sent = mts_signal.send(heartbeat_text(login, host, pl, dsa_local, free=free), to="all", kind="note")
+            sent = mts_signal.send(heartbeat_text(login, host, pl, dsa_local, free=free, gates=gs), to="all", kind="note")
         except Exception as e:
             sent = False
             notes.append(f"NOTE heartbeat error {type(e).__name__}")
