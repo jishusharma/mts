@@ -425,7 +425,7 @@ def _actionable(last: dict, current: dict, now: datetime | None = None) -> str |
 def _woke_on(login: str, home=None) -> str:
     try:
         return (loop_home(home) / f"{login}-woke.txt").read_text(encoding="utf-8").strip()
-    except OSError:
+    except (OSError, ValueError):     # missing or garbled (UnicodeDecodeError): never kills the watcher
         return ""
 
 
@@ -970,7 +970,7 @@ def _idle_nag_due(hosts: list, now: datetime, home=None) -> list:
     for row in hosts:
         try:
             t = _utc((loop_home(home) / f"idle_{row[0]}.last").read_text(encoding="utf-8").strip())
-        except OSError:
+        except (OSError, ValueError):
             t = None
         if not t or (now - t).total_seconds() >= IDLE_NAG_H * 3600:
             due.append(row)
@@ -1109,7 +1109,8 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
             "lines": lines, "spare": spare_slots, "ready_more": max(0, ctx.get("ready_here", 0) - len(ctx.get("picks", []))),
             "stuck": stuck, "free": free, "at": now.strftime("%Y-%m-%dT%H:%M:%SZ")}
     try:
-        (loop_home(home) / f"{login}-last-plan.json").write_text(json.dumps(data, indent=1, sort_keys=True, default=str),
+        # a --no-send dry run never replaces the real plan: its `at`, `running` and `stuck` drive the ACTIONABLE wake and the hand-over
+        (loop_home(home) / f"{login}-{'last' if send else 'dryrun'}-plan.json").write_text(json.dumps(data, indent=1, sort_keys=True, default=str),
                                                                  encoding="utf-8", newline="\n")
     except OSError:
         pass

@@ -637,12 +637,17 @@ def _stub_plan_reads(monkeypatch, ci_red=False, picks=5):
     monkeypatch.setattr(S, "_dispatch_raw", lambda *a, **k: {"dispatch": [{"id": f"c{i}", "lane": "SONNET"} for i in range(picks)]})
     monkeypatch.setattr(S, "nuc_budget_ok", lambda *a, **k: False)
     monkeypatch.setattr(traffic, "read_signals", lambda a, b: ([], None))
+    import mts_signal
+    monkeypatch.setattr(mts_signal, "send", lambda *a, **k: True)
 
 
-def _plan_run(tmp_path, running, minutes, send=False):
+def _plan_run(tmp_path, running, minutes, send=True):
+    """A real (send=True) plan also writes mts-budget.json under MTS_RELAY_HOME: kept inside tmp_path."""
+    from unittest import mock
     rd = _rd(10, 20, five_reset="2026-10-19T15:00Z", week_reset="2026-10-23T16:00Z")
-    return S.plan(tmp_path, "C", rd, running=running, send=send, no_fetch=True, host="JIS-NB", home=tmp_path,
-                  now=T0 + timedelta(minutes=minutes))
+    with mock.patch.dict(os.environ, {"MTS_RELAY_HOME": str(tmp_path / "relay")}):
+        return S.plan(tmp_path, "C", rd, running=running, send=send, no_fetch=True, host="JIS-NB", home=tmp_path,
+                      now=T0 + timedelta(minutes=minutes))
 
 
 def test_plan_counts_a_wake_that_started_none_of_its_new_workers_as_stuck(tmp_path, monkeypatch):
@@ -687,7 +692,7 @@ def test_idle_line_reaches_plan_output_and_its_stamp_only_on_a_real_plan(tmp_pat
     monkeypatch.setattr(mts_signal, "send", lambda *a, **k: True)
     monkeypatch.setenv("MTS_RELAY_HOME", str(tmp_path / "relay"))
     line = "OPERATOR start a Supervisor on DESKTOP-F7IU69N"
-    assert any(x.startswith(line) for x in _plan_run(tmp_path, 0, 0)[0]) and not (tmp_path / "idle_DESKTOP-F7IU69N.last").exists()
+    assert any(x.startswith(line) for x in _plan_run(tmp_path, 0, 0, send=False)[0]) and not (tmp_path / "idle_DESKTOP-F7IU69N.last").exists()
     assert any(x.startswith(line) for x in _plan_run(tmp_path, 0, 6, send=True)[0])
     assert (tmp_path / "idle_DESKTOP-F7IU69N.last").exists()
     assert not any(x.startswith(line) for x in _plan_run(tmp_path, 0, 12, send=True)[0])
@@ -723,3 +728,23 @@ def test_a_damaged_plan_file_never_wakes_and_never_kills_the_watcher(tmp_path):
     rc, _r = S.wait_for_transition(repo=tmp_path, shas=[], timeout=600, interval=300, probe=lambda r, s: green,
                                    fetcher=lambda r: None, sleeper=lambda s: None, login="B", home=tmp_path / "home")
     assert rc == 3
+
+
+def test_a_dry_run_plan_never_replaces_the_real_plan(tmp_path, monkeypatch):
+    """Review round 2: `plan --no-send --running 0` after a real plan with running 2 must not reset the wake guard or bump stuck."""
+    _stub_plan_reads(monkeypatch)
+    monkeypatch.setattr(S, "idle_hosts", lambda *a, **k: [])
+    monkeypatch.setenv("MTS_RELAY_HOME", str(tmp_path / "relay"))
+    real = _plan_run(tmp_path, 2, 0)[1]
+    _plan_run(tmp_path, 0, 3, send=False)
+    assert json.loads((tmp_path / "C-last-plan.json").read_text(encoding="utf-8"))["at"] == real["at"]
+    assert (tmp_path / "C-dryrun-plan.json").exists()
+
+
+def test_garbled_marker_files_never_kill_the_watcher_or_the_plan(tmp_path):
+    home = tmp_path / "home"
+    home.mkdir()
+    (home / "B-woke.txt").write_bytes(b"\xff\xfe\x00bad")
+    (home / "idle_JIS-NB.last").write_bytes(b"\xff\xfe")
+    assert S._woke_on("B", home) == ""
+    assert S._idle_nag_due([("JIS-NB", ["B"], 1)], T0, home) == [("JIS-NB", ["B"], 1)]
