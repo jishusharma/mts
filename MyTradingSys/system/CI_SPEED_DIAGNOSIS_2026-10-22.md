@@ -24,3 +24,21 @@ ci.yml: `concurrency: ci-${{ github.ref }}`, `cancel-in-progress: false` on fast
 
 ## Open
 sync.py stage timings, `pytest --durations=30` on Windows, context token audit, path sweep, implement item 1 with test.
+
+## Built 2026-10-22 late (Admin_Guy, operator: "Can you finish this task end-to-end?")
+Measured before (run 0cf9fdf4, 23:37 IST): Linux 3m14s, Windows 14m00s (gate 12m54s), plus up to ~15 min queued behind the
+running fast-track run (fe6537de waited 10 min, then was superseded). Worst push-to-green ~30 min.
+1. One CI run per fast-track commit: `concurrency.group` carries the SHA on fast-track; a push starts at once. mark-green runs one
+   at a time, publishes only when the current green is an ancestor of the SHA, with `--force-with-lease` (never backwards).
+2. Windows leg in 3 parallel shards: `run_all_tests.py --shard K/N`, greedy longest-first on `shard_est` (OURS estimates:
+   SHARD_EST_S, SLOWEST_FIRST, STEP_EST); each step runs in exactly one shard; all shards must pass before mark-green.
+3. Windows temp on D: (`runner.temp`) and real-time Defender off on the throwaway runner (sources: runner-images #7320/#8755,
+   nextest Dev Drive notes, GitLab real-time-monitoring commit). Expected ~5-6 min push-to-green; retune SHARD_EST_S from the
+   first sharded runs' per-step times. Tests: scripts/dev/test_ci_split.py (fails on the pre-change code).
+Not built (operator's call): Windows leg only for live-path changes; test impact analysis (testmon) in CI.
+
+## Other gaps found the same night (for the record)
+- App worktrees (.claude/worktrees/<name>) were cut from a stale main checkout and skipped by session-start catch-up: fixed fe6537de.
+- A main checkout with local edits stayed behind silently: now named at session start (trunk_lag.py).
+- Cards: dispatch sorts prio before weight (tasks.py dispatch); Supervisor workers as in-session Agents die with the Supervisor;
+  signal notes cut long folder names as secrets (NB shows `[cut]`). Control room, home and layer-map pages lag the repo.

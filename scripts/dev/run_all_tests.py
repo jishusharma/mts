@@ -5,6 +5,8 @@ Usage:
   python scripts/dev/run_all_tests.py --quick (skip mvn and backtest)
   python scripts/dev/run_all_tests.py --quick --smoke --changed-file F   (what `sync.py ship` runs: only the steps gate_select picks
                                                                           for the paths listed in F; live-path or unknown paths = all)
+  python scripts/dev/run_all_tests.py --shard K/N   (CI: run only shard K of N; every job builds the same plan and splits it
+                                                    by estimated time, longest first, so the N jobs together run every step once)
   sync.py ship adds --precheck --fail-fast --slot --record (MyTradingSys/system/GATE_SPEED.md): cheap steps first without the gate
   slot, stop at the first failure, the slot around the main phase only, steps that passed on this exact clean tree are not rerun.
 
@@ -822,6 +824,36 @@ def apply_fast(plan, files, nums, jobs):
     return new_plan, info
 
 
+SHARD_EST_S = {"5": 150, "6": 60}   # OURS (q-ci-speed-fixes): Maven and backtest seconds for the CI split; SLOWEST_FIRST steps get 400 s
+                                    # down by 25 s per place; the rest STEP_EST, else UNIT_DEFAULT_S. Measure and retune from the CI logs.
+
+
+def shard_est(num):
+    num = str(num)
+    if num in SHARD_EST_S:
+        return SHARD_EST_S[num]
+    if num in SLOWEST_FIRST:
+        return 400 - 25 * SLOWEST_FIRST.index(num)
+    return STEP_EST.get(num, UNIT_DEFAULT_S)
+
+
+def apply_shard(plan, spec):
+    """--shard K/N (operator 2026-10-22, q-ci-speed-fixes: Windows leg 14 of 15 CI minutes): greedy longest-first split of the
+    steps that would run; steps of other shards get skip='shard j/N runs it'. Same plan on every job -> each step runs exactly once."""
+    k, n = (int(x) for x in str(spec).split("/"))
+    if not (1 <= k <= n):
+        raise ValueError(f"bad --shard {spec}")
+    loads, owner = [0.0] * n, {}
+    for st in sorted((x for x in plan if not x.skip), key=lambda x: (-shard_est(x.num), x.num)):
+        j = min(range(n), key=lambda i: (loads[i], i))
+        owner[st.num] = j
+        loads[j] += shard_est(st.num)
+    for st in plan:
+        if st.num in owner and owner[st.num] != k - 1:
+            st.skip = f"shard {owner[st.num] + 1}/{n} runs it"
+    return plan
+
+
 def apply_selection(plan, args):
     """--changed-file F (one path per line, vs origin/fast-track) with --smoke: skip the steps gate_select.select does not pick.
     --smoke without --changed-file, or an unreadable file, runs everything (fail closed). Returns (plan, mode or None).
@@ -1017,6 +1049,10 @@ def main(argv=None):
 
     plan = build_plan(quick)
     plan, mode = apply_selection(plan, args)
+    if "--shard" in args:
+        spec = args[args.index("--shard") + 1]
+        plan = apply_shard(plan, spec)
+        print(f"Shard {spec}: {sum(1 for x in plan if not x.skip)} steps here (est {sum(shard_est(x.num) for x in plan if not x.skip):.0f} s)", flush=True)
     if mode and mode != "full" and changed_files(args):
         files = changed_files(args)
         if len(chr(10).join(files)) > 30000:   # Windows caps an env var at 32767 chars (a card sweep moves hundreds of files); card json carries no doc caps

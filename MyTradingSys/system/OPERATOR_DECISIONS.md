@@ -1212,5 +1212,13 @@ Applied: 2026-10-22: scripts/dev/offer_guard.py (Stop hook, .claude/settings.jso
  "done": "supervisor.py RAMP=1 (one new worker per wake); trunk_lag.py session-start also fast-forwards fresh App worktrees and the main checkout."}
 ```
 
+## q-ci-speed-build (2026-10-22, Admin_Guy)
+```json
+{"id": "q-ci-speed-build", "order": 38, "date": "2026-10-22", "status": "DECIDED",
+ "quote": "Can you finish this task end-to-end? You have like 11 dollars left.",
+ "context": "after 'tell me cool idea to reduce our ship time by half or maybe half of half?'",
+ "done": "per-commit CI + forward-only mark-green; Windows leg in 3 shards; Windows temp on D: and Defender real-time off on the runner (CI_SPEED_DIAGNOSIS_2026-10-22.md)."}
+```
+
 ## DECISION NEEDED 2026-10-21 (Lab_Guy): pre_pipeline_sources review_by 2026-10-23
 27 grandfathered testnet sources in auto_trader_config.json expire for review on 2026-10-23; promoted_setups.json has 0 entries. Options: (a) extend review_by 14 days (recommended, OURS default), (b) prune falsified layers (turn_of_candle, rsi_divergence, session_levels), (c) stop them. Needs an operator answer in the Control Room; no chat question.

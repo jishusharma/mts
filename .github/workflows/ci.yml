@@ -27,18 +27,25 @@ permissions:
   contents: read
 
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.ref }}-${{ github.ref == 'refs/heads/fast-track' && github.sha || 'run' }}
   # fast-track gets a merge every few minutes and a run takes ~6 min: cancelling the running push job starved mark-green.
-  # A fast-track run finishes (GitHub keeps only the newest pending one); PR and other-ref runs are still superseded.
+  # Operator 2026-10-22 (q-ci-speed-fixes): one group PER COMMIT on fast-track, so a push starts at once instead of queueing up
+  # to 15 min behind the running one; mark-green below never moves green backwards. PR and other-ref runs are still superseded.
   cancel-in-progress: ${{ github.ref != 'refs/heads/fast-track' }}
 
 jobs:
   offline-gate:
-    name: offline gate (${{ matrix.os }})
+    name: offline gate (${{ matrix.os }} ${{ matrix.shard }})
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]  # windows mirrors the live box (JIS-NB)
+        # windows mirrors the live box (JIS-NB). Its leg took 14 of 15 min (run 0cf9fdf4): split in 3 parallel shards
+        # (run_all_tests.py --shard); every shard must pass before mark-green. Linux (3 min) stays whole.
+        include:
+          - {os: ubuntu-latest, shard: "1/1"}
+          - {os: windows-latest, shard: "1/3"}
+          - {os: windows-latest, shard: "2/3"}
+          - {os: windows-latest, shard: "3/3"}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     defaults:
@@ -68,10 +75,20 @@ jobs:
       - name: Create runtime folders
         run: mkdir -p MyTradingSys/execution/plans MyTradingSys/execution/journal MyTradingSys/execution/halt_history
 
+      # Windows runners keep TEMP on the slow C: drive; the checkout is on D:. pytest temp dirs go to D: (runner.temp).
+      # The runner is a throwaway VM: real-time Defender scanning is switched off there to cut file-heavy test time.
+      - name: Fast disk for temp files (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Set-MpPreference -DisableRealtimeMonitoring $true -ErrorAction SilentlyContinue
+          "TEMP=${{ runner.temp }}" >> $env:GITHUB_ENV
+          "TMP=${{ runner.temp }}" >> $env:GITHUB_ENV
+
       - name: Offline gate
         env:
           PYTHONIOENCODING: utf-8
-        run: python scripts/dev/run_all_tests.py
+        run: python scripts/dev/run_all_tests.py --shard ${{ matrix.shard }}
 
   # Operator 2026-10-07: a PR into fast-track merges itself once the gate is green on both OSes.
   # Opt out with the "no-automerge" label or by keeping the PR a draft. Merging here does not deploy:
@@ -106,7 +123,19 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    # Runs are per commit now, so an older commit can finish after a newer one: publish only when the current green is an
+    # ancestor of this SHA (green never moves backwards), one mark-green at a time, with a lease on the green we checked.
+    concurrency:
+      group: mark-green
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Publish tested SHA as green/fast-track
-        run: git push --force origin "${{ github.sha }}:refs/heads/green/fast-track"
+        run: |
+          old=$(git ls-remote origin refs/heads/green/fast-track | cut -f1)
+          if [ -n "$old" ] && ! git merge-base --is-ancestor "$old" "${{ github.sha }}"; then
+            echo "green/fast-track is at $old, newer than or beside ${{ github.sha }}: left as is"; exit 0
+          fi
+          git push --force-with-lease="refs/heads/green/fast-track:$old" origin "${{ github.sha }}:refs/heads/green/fast-track"
