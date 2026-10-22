@@ -587,10 +587,14 @@ def estimate_k(hist) -> float | None:
     return round(dw / dp, 3) if dp >= 5 else None
 
 
+RAMP = 1    # operator 2026-10-22 ("starts with minimum workers ... the operator can build on it"): at most one new worker per wake
+
+
 def pace_plan(now: datetime, rd: dict, cap: float, hist=(), running: int = 0) -> dict:
     """Pure: the 5 h plan from one get_usage reading. Spread the weekly room (cap - week%) evenly over the 5 h windows left before the
     weekly reset, convert it to 5 h points (k), never past SPAWN_CEIL; then a feedback check: the burn since this window's first reading,
-    projected to the window end, shrinks or grows the worker count. Returns mode, slots (max Claude workers at once), new (start now), target."""
+    projected to the window end, shrinks or grows the worker count. Start light: at most RAMP new workers per wake, so a fresh
+    Supervisor opens with one worker and grows one per wake up to `slots`. Returns mode, slots (max Claude workers at once), new (start now), target."""
     five, week = float(rd["five"]), float(rd["week"])
     r5, rw = _utc(rd.get("five_reset")), _utc(rd.get("week_reset"))
     h_left = (r5 - now).total_seconds() / 3600 if r5 else 5.0
@@ -631,7 +635,7 @@ def pace_plan(now: datetime, rd: dict, cap: float, hist=(), running: int = 0) ->
         mode, slots = "CRUCIAL-ONLY", min(slots, 1)
     else:
         mode = "SPEND" if room >= 30 else "NORMAL"
-    return {"mode": mode, "slots": slots, "new": max(0, slots - running), "running": running, "five": five, "week": week,
+    return {"mode": mode, "slots": slots, "new": min(RAMP, max(0, slots - running)), "running": running, "five": five, "week": week,
             "cap": cap, "k": k, "k_measured": bool(k_meas), "room": round(room, 1), "target": round(target), "h_left": round(h_left, 2),
             "burn": None if burn is None else round(burn, 2), "projected": None if projected is None else round(projected),
             "five_reset": r5.strftime("%Y-%m-%dT%H:%MZ"), "week_reset": (rw or now + timedelta(days=7)).strftime("%Y-%m-%dT%H:%MZ"),

@@ -1204,5 +1204,13 @@ Applied: 2026-10-22: scripts/dev/offer_guard.py (Stop hook, .claude/settings.jso
 }
 ```
 
+## q-light-supervisor-start (2026-10-22, Admin_Guy)
+```json
+{"id": "q-light-supervisor-start", "order": 37, "date": "2026-10-22", "status": "DECIDED",
+ "quote": "just open all three logins ... and just hit a prompt there, start the super session. Yeah. And the super session starts with minimum workers. It picks the recently available tasks ... it actually picks the critical tasks that are blockers if there are no instructions ... So it starts a light super session, and then the operator can build on it.",
+ "also": "every session that I start, starts latest.",
+ "done": "supervisor.py RAMP=1 (one new worker per wake); trunk_lag.py session-start also fast-forwards fresh App worktrees and the main checkout."}
+```
+
 ## DECISION NEEDED 2026-10-21 (Lab_Guy): pre_pipeline_sources review_by 2026-10-23
 27 grandfathered testnet sources in auto_trader_config.json expire for review on 2026-10-23; promoted_setups.json has 0 entries. Options: (a) extend review_by 14 days (recommended, OURS default), (b) prune falsified layers (turn_of_candle, rsi_divergence, session_levels), (c) stop them. Needs an operator answer in the Control Room; no chat question.

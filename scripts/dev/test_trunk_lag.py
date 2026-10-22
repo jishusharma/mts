@@ -76,7 +76,8 @@ class TrunkLagTest(unittest.TestCase):
         self.assertEqual(T.catch_up(self.tree), "", "tracked edits: left alone")
         sh(self.tree, "checkout", "-q", "--", "a")
         sh(self.tree, "checkout", "-q", "-b", "jis-nb/work")
-        self.assertEqual(T.catch_up(self.tree), "", "another branch: left alone")
+        commit(self.tree, "own", 1_000_150)
+        self.assertEqual(T.catch_up(self.tree), "", "a branch with its own commits: left alone")
         sh(self.tree, "checkout", "-q", "fast-track")
         (self.tree / "untracked.txt").write_text("x", encoding="utf-8")
         note = T.catch_up(self.tree)
@@ -87,6 +88,20 @@ class TrunkLagTest(unittest.TestCase):
         (self.tree / ".mts_live").write_text("", encoding="utf-8")
         commit(self.origin, "d", 1_000_300)
         self.assertEqual(T.catch_up(self.tree), "", "the live tree changes only by a deploy")
+
+    def test_app_worktree_and_main_checkout_catch_up(self):
+        # 2026-10-22: Supervisors started in App worktrees (.claude/worktrees/<name>, own branch) cut from a stale main checkout
+        wt = Path(self.d.name) / "tree" / ".claude" / "worktrees" / "zen"
+        sh(self.tree, "worktree", "add", "-q", "-b", "claude/zen", str(wt))
+        commit(self.origin, "b", 1_000_100)
+        note = T.catch_up(wt)
+        self.assertIn("this checkout fast-forwarded 1 commit(s)", note)
+        self.assertIn("Main checkout", note)
+        self.assertEqual(T.lag(wt, fetch=False), (0, 0))
+        self.assertEqual(T.lag(self.tree, fetch=False), (0, 0))
+        sh(self.tree, "checkout", "-q", "-b", "jis-nb/work")
+        commit(self.origin, "c", 1_000_200)
+        self.assertNotIn("Main checkout", T.catch_up(wt), "a main checkout off fast-track is not moved")
 
     def test_registered_first_at_session_start(self):
         root = Path(__file__).resolve().parents[2]

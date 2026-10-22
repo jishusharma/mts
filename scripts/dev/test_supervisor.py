@@ -339,6 +339,13 @@ def test_pace_spreads_weekly_room_over_windows_left():
     assert p["room"] == 31.2 and p["target"] == 41 and p["slots"] == 3 and p["mode"] == "SPEND" and not p["k_measured"]
 
 
+def test_fresh_supervisor_starts_light_one_new_worker_per_wake():
+    """Operator 2026-10-22: a bare start line opens with minimum workers and grows. 4 slots, 0 running -> start 1; 3 running -> 1."""
+    p = S.pace_plan(T0, _rd(20, 50, week_reset="2026-10-19T15:00Z"), 95)
+    assert p["slots"] == 4 and p["new"] == 1
+    assert S.pace_plan(T0, _rd(20, 50, week_reset="2026-10-19T15:00Z"), 95, running=3)["new"] == 1
+
+
 def test_pace_spends_everything_before_weekly_reset_but_not_past_80():
     """weekly reset in 3 h -> one window: share 45 wk pts / 0.12 = 375, capped at 80 - 20 = 60 -> 4 slots, target 80."""
     p = S.pace_plan(T0, _rd(20, 50, week_reset="2026-10-19T15:00Z"), 95)
