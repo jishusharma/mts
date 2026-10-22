@@ -199,3 +199,4 @@ MyTradingSys/research/imbalance_qriptal_2026-10-16/events_*.csv
 .antigravity/
 .agent/
 .idx/
+/ship.log
