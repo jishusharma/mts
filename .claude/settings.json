@@ -64,6 +64,11 @@
             "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/role_loader.py\" hook",
             "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/trunk_lag.py\" hook",
+            "timeout": 8
           }
         ]
       }

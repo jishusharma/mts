@@ -19,6 +19,7 @@ REPO = Path(__file__).resolve().parents[2]
 EXTRA = [
     "scripts/dev/test_prereq_guard.py",
     "scripts/dev/test_offer_guard.py",
+    "scripts/dev/test_trunk_lag.py",
     "scripts/dev/test_no_syntax_warnings.py",
     "scripts/dev/test_preship.py",
     "MyTradingSys/research/gap_g3_shadow_fills_2026-10-18/test_shadow_fills.py",
