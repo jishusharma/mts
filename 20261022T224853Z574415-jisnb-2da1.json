@@ -1,0 +1,1 @@
+{"t": "20261022T224853Z", "from": "jis-nb/?", "to": "all", "kind": "note", "text": "MTS doctor 2026-10-22: 18 stale claims (host-move-*, sim-desk-core, 100h DESKTOP-F7IU69N ones) - owners release or escalate; main checkout 102 behind fast-track (git -C main pull --ff-only)"}
