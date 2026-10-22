@@ -65,6 +65,28 @@ class VerifyQuotesTest(unittest.TestCase):
         self.assertEqual(bad, 1)
         self.assertIn("POSITION", out)
 
+    def _cbp(self, evidence):
+        (self.root / "inbox").mkdir(exist_ok=True)
+        (self.root / "inbox" / f"Jala_{VID}.txt").write_text(
+            "\n".join(["[0:00] alpha beta gamma", "[0:02] delta epsilon zeta", ""]), encoding="utf-8")
+        ex = self.root / "extractions.md"
+        ex.write_text("\n".join([f"### Jala | 2026-09-27 | {VID} | Some title", "bottom_call: IN",
+                                 f'evidence: "{evidence}"', "btc_levels: support=[1]", ""]), encoding="utf-8")
+        with redirect_stdout(io.StringIO()) as out:
+            bad = v.check(ex)
+        return bad, out.getvalue()
+
+    def test_cbp_evidence_line_verified(self):
+        # CBP: one evidence line per video, id in the ### header, transcript in sibling inbox/, "..." joins fragments.
+        bad, out = self._cbp("beta gamma delta... zeta")
+        self.assertEqual(bad, 0, out)
+        self.assertIn("OK", out)  # a checker that skips the line would also report 0 problems
+
+    def test_cbp_invented_quote_fails(self):
+        bad, out = self._cbp("beta gamma invented words")
+        self.assertEqual(bad, 1)
+        self.assertIn("MISSING", out)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=1)
