@@ -13,7 +13,7 @@ CI_YML = Path(__file__).resolve().parents[2] / ".github" / "workflows" / "ci.yml
 class ShardTest(unittest.TestCase):
     def plan(self):
         return [R.Step(n, f"d{n}", f"Step {n}", cmd=["true"], skip=("off" if n == "3c" else None))
-                for n in ("1", "2", "3", "3b", "3c", "3k", "4", "4b", "4c", "5", "6", "3x")]
+                for n in ("1", "2", "3", "3b", "3c", "3w", "4", "4b", "4c", "5", "6", "3x")]
 
     def test_every_step_runs_in_exactly_one_shard(self):
         ran = []
@@ -32,24 +32,27 @@ class ShardTest(unittest.TestCase):
 
     def test_eight_shards_split_every_test_file_once_and_no_shard_holds_much_more_than_its_share(self):
         import run_extra_tests
-        n, xt, py, mods, ests, maven = 8, [], [], [], [], []
+        n, xt, py, mods, ests, maven, k3 = 8, [], [], [], [], [], []
         for k in range(1, n + 1):
             run = [s for s in R.apply_shard(R.build_plan(False), f"{k}/{n}") if not s.skip]
             ests.append(sum(s.est for s in run))
             maven += [k for s in run if s.num == "5"]
             for s in run:
-                self.assertNotIn(s.num, ("3xt", "5b") + R.PYTEST_SHARD_NUMS)   # the long file-list steps are split
+                self.assertNotIn(s.num, ("3xt", "5b", "3k") + R.PYTEST_SHARD_NUMS)   # the long file-list steps are split
                 if s.num.startswith("3xt."):
                     xt += s.cmd_text.split("--only ", 1)[1].split()
                 elif s.num.startswith("4."):
                     py += [a for a in s.cmd_text.split() if a.startswith("MyTradingSys/tests/")]
                 elif s.num.startswith("5b."):
                     mods += s.key.split(",")
+                elif s.num.startswith("3k."):
+                    k3.append(s.key)
         self.assertEqual(sorted(xt), sorted(run_extra_tests.all_tests()))
         self.assertEqual(sorted(mods), sorted(R.find_layer_modules()))
         whole = [a for s in R.build_plan(False) if s.num in R.PYTEST_SHARD_NUMS for a in s.cmd_text.split() if a.startswith("MyTradingSys/tests/")]
         self.assertEqual(sorted(py), sorted(whole))
         self.assertEqual(maven, [1])   # only shard 1 sets up Java
+        self.assertEqual(sorted(k3), sorted(f"{i}/{n}" for i in range(1, n + 1)))   # test_sync.py split, each slice once
         self.assertLess(max(ests), 1.15 * sum(ests) / n)
 
     def test_ci_prints_the_slowest_step_times_as_one_notice(self):
@@ -58,11 +61,34 @@ class ShardTest(unittest.TestCase):
             R.format_step(num, "d", "c", True, "", sec)
         self.assertEqual(R.times_notice(2), "::notice title=Gate step times::3k=150s, 3xt.6=81s")
 
-    def test_ci_runs_per_commit_in_eleven_shards_with_a_forward_only_green(self):
+    def test_sync_slices_cover_every_test_once(self):
+        import importlib, unittest
+        sys.path.insert(0, str(Path(R.__file__).parent))
+        suite = unittest.defaultTestLoader.loadTestsFromModule(importlib.import_module("test_sync"))
+        def ids(t):
+            return [i for x in t for i in (ids(x) if isinstance(x, unittest.TestSuite) else [x.id()])]
+        all_ids = ids(suite)
+        got = []
+        for i in range(3):
+            got += all_ids[i::3]
+        self.assertEqual(sorted(got), sorted(all_ids))
+
+    def test_file_seconds_are_read_from_pytest_durations_and_extra_lines(self):
+        R.FILE_SECONDS.clear()
+        R.note_file_seconds("1.50s call     MyTradingSys/tests/test_a.py::T::t1\n0.70s setup    MyTradingSys/tests/test_a.py::T::t2\n"
+                            "ok   scripts/dev/test_b.py: 3 passed in 4.10s\n")
+        self.assertEqual(R.FILE_SECONDS, {"MyTradingSys/tests/test_a.py": 2.2, "scripts/dev/test_b.py": 4.1})
+
+    def test_windows_estimates_use_runner_numbers(self):
+        self.assertEqual(R.shard_est("3sig", win=True), 61)
+        self.assertEqual(R.shard_est("3sig", win=False), 20)
+        self.assertEqual(R.shard_est("3zz", win=True), R.WIN_FACTOR * R.SHARD_DEFAULT_S)
+
+    def test_ci_runs_per_commit_in_fifteen_shards_with_a_forward_only_green(self):
         text = CI_YML.read_text(encoding="utf-8")
         self.assertIn("group: ci-${{ github.ref }}-${{ github.ref == 'refs/heads/fast-track' && github.sha || 'run' }}", text)
-        for k in range(1, 9):
-            self.assertIn(f'{{os: windows-latest, shard: "{k}/8"}}', text)
+        for k in range(1, 13):
+            self.assertIn(f'{{os: windows-latest, shard: "{k}/12"}}', text)
         for k in range(1, 4):
             self.assertIn(f'{{os: ubuntu-latest, shard: "{k}/3"}}', text)
         self.assertIn("run_all_tests.py --shard ${{ matrix.shard }}", text)

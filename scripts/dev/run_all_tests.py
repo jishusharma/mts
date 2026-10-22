@@ -21,6 +21,7 @@ import contextlib
 import glob
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -180,7 +181,8 @@ def pytest_cmd(targets, root=REPO, deselect=()):
     after all tests pass: JIS-NB 2026-10-14, six ships at once), no cache dir, and transient tmp dirs ignored (transient_ignore_glob)."""
     scratch = tempfile.mkdtemp(prefix="mts_s4_")
     _SCRATCH.append(scratch)
-    return [sys.executable, "-m", "pytest", *targets, "-q", "-p", "no:cacheprovider", transient_ignore_glob(root),
+    durations = ["--durations=0", "--durations-min=0.5"] if os.environ.get("GITHUB_ACTIONS") else []   # per-file times for the notice
+    return [sys.executable, "-m", "pytest", *targets, "-q", "-p", "no:cacheprovider", *durations, transient_ignore_glob(root),
             f"--basetemp={Path(scratch) / 'bt'}", *[a for d in deselect for a in ("--deselect", d)]]
 
 
@@ -238,11 +240,29 @@ def ci_annotation(num, description, output, limit=3000):
 STEP_SECONDS = {}   # step -> wall seconds of this run; on CI the slowest go out as one ::notice (job logs are not readable off GitHub)
 
 
+FILE_SECONDS = {}
+
+
+def note_file_seconds(output):
+    """Per-file seconds out of a step's output: pytest --durations lines ('1.20s call  path.py::test') summed per file, and the 3xt
+    lines ('ok   path.py: 3 passed in 4.10s')."""
+    for ln in (output or "").splitlines():
+        m = re.match(r"\s*([\d.]+)s (?:call|setup|teardown)\s+([^\s:]+\.py)::", ln)
+        if m:
+            FILE_SECONDS[m.group(2)] = FILE_SECONDS.get(m.group(2), 0) + float(m.group(1))
+            continue
+        m = re.match(r"(?:ok  |FAIL) (\S+\.py): .* in ([\d.]+)s", ln)
+        if m:
+            FILE_SECONDS[m.group(1)] = float(m.group(2))
+
+
 def times_notice(n=15):
     """'::notice title=Gate step times::4.2=19s, ...' for the n slowest steps: the check-run annotations API serves it, so shard
     estimates can be retuned from real runner numbers (operator 2026-10-22, under 2 minutes)."""
     top = sorted(STEP_SECONDS.items(), key=lambda kv: -kv[1])[:n]
-    return "::notice title=Gate step times::" + ", ".join(f"{k}={v:.0f}s" for k, v in top)
+    files = sorted(FILE_SECONDS.items(), key=lambda kv: -kv[1])[:2 * n]
+    return ("::notice title=Gate step times::" + ", ".join(f"{k}={v:.0f}s" for k, v in top)
+            + (("\n::notice title=Gate file times::" + ", ".join(f"{k}={v:.0f}s" for k, v in files)) if files else ""))
 
 
 def format_step(num, description, cmd_text, ok, output, elapsed, progress="", tail=15):
@@ -253,6 +273,7 @@ def format_step(num, description, cmd_text, ok, output, elapsed, progress="", ta
         return lines
     lines.append(f"  Elapsed: {elapsed:.1f}s" + (f" ({progress})" if progress else ""))
     STEP_SECONDS[str(num)] = elapsed
+    note_file_seconds(output)
     lines.append(f"Step {num}: {'PASS' if ok else 'FAIL'}")
     out = output.splitlines()
     if not ok:
@@ -334,7 +355,7 @@ def exec_layer_chunks(modules, jobs):
     return False, "\n".join(keep)
 
 
-def exec_unittest_shards(script, jobs):
+def exec_unittest_shards(script, jobs, part=None):
     """Run one slow unittest script as `jobs` concurrent processes (its test ids split round-robin; union = every test, each once).
     cwd stays the repo root and scripts/dev goes on PYTHONPATH, as when the script runs directly. Returns (ok, output)."""
     import importlib
@@ -349,7 +370,10 @@ def exec_unittest_shards(script, jobs):
     def ids(t):
         return [i for x in t for i in (ids(x) if isinstance(x, unittest.TestSuite) else [x.id()])]
 
-    chunks = split_modules(ids(suite), jobs)
+    all_ids = ids(suite)
+    if part:   # (i, n): only every n-th test id from i, so n CI shards each run a slice (union = every test, each once)
+        all_ids = all_ids[part[0]::part[1]]
+    chunks = split_modules(all_ids, jobs)
     env = dict(os.environ, PYTHONPATH=os.pathsep.join([mod_dir, os.environ.get("PYTHONPATH", "")]).rstrip(os.pathsep))
     procs = [subprocess.Popen([sys.executable, "-m", "unittest"] + c, cwd=str(REPO), stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                               text=True, errors="replace", env=env) for c in chunks]
@@ -840,6 +864,12 @@ def apply_fast(plan, files, nums, jobs):
 SHARD_EST_S = {"5": 17, "6": 8, "3k": 20, "3sig": 20, "3ad": 14, "3cx": 11, "3gi": 8, "3tk": 7, "3cr": 7, "3dl": 6, "3g": 5, "3ds": 5,
                "3dk": 5, "3ms": 5, "4d": 5, "4e": 2, "4f": 10, "1": 4, "3w": 4, "3sg": 4, "5c": 3, "3bk": 3, "3lh": 3}
 SHARD_DEFAULT_S = 2
+# OURS: the same steps on windows-latest CI runners (Gate step times notices, run 39838332881, 2026-10-22). Git-driving steps cost
+# 3-17x their Linux time there; a step not listed counts WIN_FACTOR x its Linux figure, and so do split file parts.
+SHARD_EST_WIN = {"3sig": 61, "4f": 53, "3w": 52, "3tk": 48, "3cx": 40, "3gi": 38, "3dk": 37, "5": 36, "3ad": 35, "3ds": 34, "3sg": 29,
+                 "3cr": 26, "4d": 24, "6": 22, "3g": 22, "3bk": 18, "3lm": 17, "3lh": 13, "3ms": 10, "4e": 9, "3x": 8, "3tl": 7, "1": 6,
+                 "3sh": 6, "3rb": 4, "5c": 3, "3dl": 2}
+WIN_FACTOR = 3
 # OURS: seconds per test file, each file timed alone (4 at a time) on the same container 2026-10-22; the rest count CI_FILE_DEFAULT_S.
 CI_FILE_S = {
     "MyTradingSys/research/context_factors_2026-10-16/test_context_asof.py": 35,
@@ -854,13 +884,20 @@ CI_FILE_S = {
     "MyTradingSys/tests/test_lease.py": 10,
     "MyTradingSys/tests/test_relay_tick.py": 7,
     "MyTradingSys/tests/test_lookahead_lint.py": 6,
+    "MyTradingSys.backtest.layers.test_run_bracket_grid": 22,
+    "MyTradingSys.backtest.layers.promotion.test_promote": 17,
+    "MyTradingSys.backtest.layers.alerts.test_live_levels_confluence": 4,
+    "MyTradingSys.backtest.layers.cryptocred.test_cc_htf_count": 3,
 }
 CI_FILE_DEFAULT_S = 1.5
+CI_MODULE_DEFAULT_S = 0.3   # a layer module not in CI_FILE_S (78 modules took 61 s, two of them 38 s)
 
 
-def shard_est(num):
+def shard_est(num, win=None):
     num = str(num)
-    return SHARD_EST_S.get(num, SHARD_DEFAULT_S)
+    win = (os.name == "nt") if win is None else win
+    lin = SHARD_EST_S.get(num, SHARD_DEFAULT_S)
+    return SHARD_EST_WIN.get(num, WIN_FACTOR * lin) if win else lin
 
 
 def _bins(items, n, sec):
@@ -878,6 +915,8 @@ def split_for_shards(plan, n):
     pytest shards) become n parts each, balanced per file, so no single step holds a shard far past the others. Same split on every
     job (sorted, deterministic). Other steps are kept as they are; est is set on every step."""
     import run_extra_tests
+    f = WIN_FACTOR if os.name == "nt" else 1
+    sec = lambda x: f * CI_FILE_S.get(x, CI_FILE_DEFAULT_S)            # noqa: E731
     out, py_files = [], []
     for s in plan:
         mine = [a for a in s.cmd_text.split() if a.startswith("MyTradingSys/tests/")]
@@ -885,26 +924,33 @@ def split_for_shards(plan, n):
             py_files += mine
             continue
         if not s.skip and s.num == "3xt":
-            for i, (sec, sub) in enumerate(_bins(run_extra_tests.all_tests(), n, lambda f: CI_FILE_S.get(f, CI_FILE_DEFAULT_S))):
+            for i, (est, sub) in enumerate(_bins(run_extra_tests.all_tests(), n, sec)):
                 p = Step(f"3xt.{i + 1}", f"Extra tests part {i + 1} ({len(sub)} files)", s.label,
                          cmd=[sys.executable, "scripts/dev/run_extra_tests.py", "--only", *sub])
-                p.est = sec
+                p.est = est / max(1, min(gate_jobs(), len(sub)))
                 out.append(p)
             continue
         if not s.skip and s.num == "5b" and n > 1:
             jobs = gate_jobs()
             mods = find_layer_modules()
-            for i, (sec, sub) in enumerate(_bins(mods, n, lambda m: 46 * 4 / max(1, len(mods)))):
+            for i, (est, sub) in enumerate(_bins(mods, n, lambda m: f * CI_FILE_S.get(m, CI_MODULE_DEFAULT_S))):
                 p = Step(f"5b.{i + 1}", f"Layer tests part {i + 1} ({len(sub)} modules)", s.label, tail=None, key=",".join(sub),
                          run=(lambda sub=sub: exec_layer_chunks(sub, jobs)), cmd_text=f"python -m unittest ({len(sub)} modules)")
-                p.est = sec / max(1, min(jobs, len(sub)))
+                p.est = est
+                out.append(p)
+            continue
+        if not s.skip and s.num == "3k" and n > 1:   # test_sync.py drives git: 173 s on a Windows runner as one step
+            for i in range(n):
+                p = Step(f"3k.{i + 1}", f"sync.py tests part {i + 1}/{n}", s.label, tail=None, key=f"{i + 1}/{n}", cmd_text=s.cmd_text,
+                         run=(lambda i=i: exec_unittest_shards("scripts/dev/test_sync.py", 2, part=(i, n))))
+                p.est = shard_est("3k") / n
                 out.append(p)
             continue
         s.est = shard_est(s.num)
         out.append(s)
-    for i, (sec, sub) in enumerate(_bins(py_files, n, lambda f: CI_FILE_S.get(f, CI_FILE_DEFAULT_S))):
+    for i, (est, sub) in enumerate(_bins(py_files, n, sec)):
         p = Step(f"4.{i + 1}", f"Pytest MyTradingSys/tests part {i + 1} ({len(sub)} files)", "Step 4: Pytest tests", cmd=pytest_cmd(sub))
-        p.est = sec
+        p.est = est
         out.append(p)
     return out
 

@@ -41,19 +41,24 @@ jobs:
       matrix:
         # windows mirrors the live box (JIS-NB). Its leg took 14 of 15 min (run 0cf9fdf4); in 3 shards the run took 5m50s (788790ff).
         # Operator 2026-10-22: "I want everything to be under 2 minutes": Linux in 3 shards, Windows in 8 (run_all_tests.py --shard
-        # splits the file-list steps per file); every shard must pass before mark-green. 11 jobs per run.
+        # splits the file-list steps per file); every shard must pass before mark-green. 8 Windows shards took 3m48s (run 39838332881:
+        # git-driving tests cost 3-17x on Windows), so Windows runs 12, balanced on Windows step times. 15 jobs per run.
         include:
           - {os: ubuntu-latest, shard: "1/3"}
           - {os: ubuntu-latest, shard: "2/3"}
           - {os: ubuntu-latest, shard: "3/3"}
-          - {os: windows-latest, shard: "1/8"}
-          - {os: windows-latest, shard: "2/8"}
-          - {os: windows-latest, shard: "3/8"}
-          - {os: windows-latest, shard: "4/8"}
-          - {os: windows-latest, shard: "5/8"}
-          - {os: windows-latest, shard: "6/8"}
-          - {os: windows-latest, shard: "7/8"}
-          - {os: windows-latest, shard: "8/8"}
+          - {os: windows-latest, shard: "1/12"}
+          - {os: windows-latest, shard: "2/12"}
+          - {os: windows-latest, shard: "3/12"}
+          - {os: windows-latest, shard: "4/12"}
+          - {os: windows-latest, shard: "5/12"}
+          - {os: windows-latest, shard: "6/12"}
+          - {os: windows-latest, shard: "7/12"}
+          - {os: windows-latest, shard: "8/12"}
+          - {os: windows-latest, shard: "9/12"}
+          - {os: windows-latest, shard: "10/12"}
+          - {os: windows-latest, shard: "11/12"}
+          - {os: windows-latest, shard: "12/12"}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     defaults:
