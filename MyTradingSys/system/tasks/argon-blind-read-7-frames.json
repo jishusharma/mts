@@ -2,6 +2,7 @@
   "approved_by": "",
   "asks": "",
   "class": "C1",
+  "closed": "2026-10-22T23:20:41Z",
   "commands": [
     "C:/Users/E-ngineers/.gemini/bin/agy.exe --print \"Open image <filename> in this folder. Return ONLY JSON {position,entry,stop,target}; each is a number or null. Use null if unreadable or absent. Never infer hidden values.\" --model gemini-4-argon-low --effort low"
   ],
@@ -18,6 +19,12 @@
   "kind": "run",
   "lane": "DSA-NUC",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-10-22_argon-blind-read-7-frames.md",
+      "ref": "60b3c398",
+      "utc": "2026-10-22T23:20:41Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -41,7 +48,12 @@
   "refined_by": "codex",
   "refreshed": "2026-10-18T21:37:53Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/reports/2026-10-22_argon-blind-read-7-frames.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/lab_guy/pilots/2026-10-18_gemini_frame_read/README.md",
     "MyTradingSys/research/lab_guy/pilots/2026-10-18_gemini_frame_read/hard_results_gemini-3.8-flash-low.json"
@@ -61,7 +73,7 @@
     "MyTradingSys/system/ROUTING.md (Gemini routing)",
     "MyTradingSys/system/LAYER_LAB.md (run-card report and write boundary)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "On JIS-NUC copy only the seven frames named in the pilot README into scratch. For each invocation expose an isolated subfolder containing only its one frame or crop; never copy images into the repository/report.",
     "Split k0zm_1510_1720.png into top and bottom panels before model calls. Make larger label crops for the k0zm target and T6hDJcHrVBM_0550 stop with enough surrounding pixels to read, without claims or ledger context.",
@@ -72,6 +84,7 @@
     "Report the enlarged-crop reads for k0zm target (25200 versus 25206) and the 0550 stop. Unreadable or conflicting results stay CONTESTED for a human read; do not choose by model vote.",
     "Write the dated Layer Lab report and bounded JSON results; copy no images or account data. Executor final reply supplies content commit SHA, empty git cherry and upstream git ls-tree report/results verification; sandbox runner handles git."
   ],
+  "taken": "2026-10-22T23:20:41Z",
   "tests": "No software test: run card. Check each prompt has required nullable fields and contains no claim/truth values; check comparison code counts numeric outputs for truth-null fields as invented and reports only descriptive 7-frame counts.",
   "title": "Run Argon blind-read with null option on the 7 Gemini-pilot frames; settle 25200 vs 25206 and the T6hDJcHrVBM_0550 stop from a larger crop",
   "weight": "IMPORTANT",
