@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest -q scripts/dev/test_mts_launcher.py"
+  ],
+  "created": "2026-10-22T15:10:22Z",
+  "depends_on": [],
+  "done_when": "python -W error::SyntaxWarning -c \"import ast,sys; compile(open('scripts/dev/test_mts_launcher.py',encoding='utf-8').read(),'t','exec')\" exits 0; test_mts_launcher.py passes; shipped with sync.py ship",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "No SyntaxWarning when test_mts_launcher.py is collected; the string at scripts/dev/test_mts_launcher.py:152 means the same path",
+  "id": "e2e-launcher-test-escape",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Launchers call python from PATH, not a per-host interpreter path that only exists on JIS-N",
+      "ref": "3cc473c50420",
+      "utc": "2026-10-22T06:31:20Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-22T15:10:23Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/test_mts_launcher.py",
+    "scripts/dev/test_no_syntax_warnings.py"
+  ],
+  "scope_out": [
+    "any other file"
+  ],
+  "scope_sha": "3cc473c50420",
+  "size": "S",
+  "sources": [
+    "E2E run 2026-10-22: pytest warning at test_mts_launcher.py:152"
+  ],
+  "state": "ready",
+  "steps": [
+    "write the fail-first test",
+    "make line 152 a raw string",
+    "ship"
+  ],
+  "tests": "a test that compiles every scripts/dev/test_*.py with SyntaxWarning as error fails before the fix and passes after",
+  "title": "test_mts_launcher.py: invalid escape sequence \\B in a path string (SyntaxWarning)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
