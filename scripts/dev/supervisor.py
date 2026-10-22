@@ -395,20 +395,47 @@ def _probe_wait_state(repo: Path, shas: list[str]) -> dict:
 
 
 STUCK_MAX = 2   # plans in a row with a free worker slot and no new worker: stop the actionable wake (no 5 min wake loop; OURS)
+PLAN_MAX_MIN = 60   # a last plan older than this (watcher 50 min + one wake) is another run's: never acted on (OURS)
 
 
-def _actionable(last: dict, current: dict) -> str | None:
+def _plan_fresh(last: dict, now: datetime | None = None) -> bool:
+    at = _utc(last.get("at"))
+    return bool(at) and 0 <= ((now or _now_utc()) - at).total_seconds() <= PLAN_MAX_MIN * 60
+
+
+def _actionable(last: dict, current: dict, now: datetime | None = None) -> str | None:
     """d-six-slots-poll (operator 2026-10-23, option A): not a change but a state worth a wake. The last plan left worker slots free
     with more ready cards than it picked (RAMP), the window may spend, CI is green now and this machine has a free gate.
-    Unknown CI or gates = no wake (fail closed); STUCK_MAX plans that spawned nothing = no wake."""
-    pl = last.get("plan") or {}
-    spare, ready = int(last.get("spare") or 0), int(last.get("ready_more") or 0)
-    if pl.get("mode") not in ("SPEND", "NORMAL") or spare <= 0 or ready <= 0 or int(last.get("stuck") or 0) >= STUCK_MAX:
-        return None
+    Unknown CI or gates = no wake (fail closed); STUCK_MAX plans that spawned nothing or a plan older than PLAN_MAX_MIN = no wake."""
+    try:
+        if not _plan_fresh(last, now):
+            return None
+        pl = last.get("plan") or {}
+        spare, ready = int(last.get("spare") or 0), int(last.get("ready_more") or 0)
+        if pl.get("mode") not in ("SPEND", "NORMAL") or spare <= 0 or ready <= 0 or int(last.get("stuck") or 0) >= STUCK_MAX:
+            return None
+    except (TypeError, ValueError, AttributeError):
+        return None         # a damaged plan file never wakes anyone and never kills the watcher
     busy, total = current.get("busy_slots"), current.get("total_slots")
     if current.get("ci_red") is not False or busy is None or total is None or busy >= total:
         return None
     return f"ACTIONABLE {spare} worker slot(s) free, {ready} more card(s) ready, CI green, gates {busy}/{total}: run plan and spawn"
+
+
+def _woke_on(login: str, home=None) -> str:
+    try:
+        return (loop_home(home) / f"{login}-woke.txt").read_text(encoding="utf-8").strip()
+    except OSError:
+        return ""
+
+
+def _mark_woke(login: str, at: str, home=None) -> None:
+    """One ACTIONABLE wake per plan: a watcher restarted without a new `plan` (compaction, a slip) never wakes again on the same one."""
+    try:
+        loop_home(home).mkdir(parents=True, exist_ok=True)
+        (loop_home(home) / f"{login}-woke.txt").write_text(str(at), encoding="utf-8", newline="\n")
+    except OSError:
+        pass
 
 
 def _last_plan(login: str | None, home=None) -> dict:
@@ -458,7 +485,7 @@ def wait_for_transition(
     """Record baseline at start and poll every `interval` seconds after fetching.
     Exits (0, reason) on the FIRST transition from baseline; never exits on a state that already held at baseline;
     with `login`, also exits (0, ACTIONABLE ...) from the first poll on when that login's last plan left a worker slot and ready cards
-    unused (_actionable); exits (3, reason) when `timeout` seconds elapse with no transition.
+    unused (_actionable), at most once per plan (`<login>-woke.txt`); exits (3, reason) when `timeout` seconds elapse with no transition.
     """
     sha_list = parse_shas_arg(shas)
     timeout_s = parse_duration(timeout)
@@ -483,7 +510,13 @@ def wait_for_transition(
         except Exception:
             pass
         current = probe_fn(repo, sha_list)
-        reason = _detect_transition(baseline, current) or (_actionable(_last_plan(login, home), current) if login else None)
+        reason = _detect_transition(baseline, current)
+        if not reason and login:
+            last = _last_plan(login, home)
+            if last.get("at") and str(last.get("at")) != _woke_on(login, home):
+                reason = _actionable(last, current)
+                if reason:
+                    _mark_woke(login, last["at"], home)
         if reason:
             return 0, reason
 
@@ -621,7 +654,7 @@ def estimate_k(hist) -> float | None:
 RAMP = 1    # operator 2026-10-22 ("starts with minimum workers ... the operator can build on it"): at most one new worker per wake
 
 
-def pace_plan(now: datetime, rd: dict, cap: float, hist=(), running: int = 0, gates_idle: bool = False) -> dict:
+def pace_plan(now: datetime, rd: dict, cap: float, hist=(), running: int = 0) -> dict:
     """Pure: the 5 h plan from one get_usage reading. Spread the weekly room (cap - week%) evenly over the 5 h windows left before the
     weekly reset, convert it to 5 h points (k), never past SPAWN_CEIL; then a feedback check: the burn since this window's first reading,
     projected to the window end, shrinks or grows the worker count. Start light: at most RAMP new workers per wake, so a fresh
@@ -666,11 +699,7 @@ def pace_plan(now: datetime, rd: dict, cap: float, hist=(), running: int = 0, ga
         mode, slots = "CRUCIAL-ONLY", min(slots, 1)
     else:
         mode = "SPEND" if room >= 30 else "NORMAL"
-    ramp = RAMP
-    if gates_idle and mode in ("SPEND", "NORMAL") and slots - running > RAMP:
-        ramp = slots - running      # d-six-slots-poll (option A): every gate on this machine idle, so the ramp does not wait a wake per worker
-        why.append(f"gates idle: ramp {RAMP} -> {ramp}")
-    return {"mode": mode, "slots": slots, "new": min(ramp, max(0, slots - running)), "running": running, "five": five, "week": week,
+    return {"mode": mode, "slots": slots, "new": min(RAMP, max(0, slots - running)), "running": running, "five": five, "week": week,
             "cap": cap, "k": k, "k_measured": bool(k_meas), "room": round(room, 1), "target": round(target), "h_left": round(h_left, 2),
             "burn": None if burn is None else round(burn, 2), "projected": None if projected is None else round(projected),
             "five_reset": r5.strftime("%Y-%m-%dT%H:%MZ"), "week_reset": (rw or now + timedelta(days=7)).strftime("%Y-%m-%dT%H:%MZ"),
@@ -894,31 +923,58 @@ def nuc_budget_ok(login: str, mode: str, now: datetime, no_fetch: bool = True, v
         return False
 
 
+IDLE_NAG_H = 2      # the same "start a Supervisor on <host>" line at most once per this many hours per machine (OURS)
+
+
 def idle_hosts(live: dict, dispatch, now: datetime, no_fetch: bool = True, view=None, inv=None) -> list:
     """d-six-slots-poll (operator 2026-10-23, option C): [(host, [logins], ready)] for each machine with no live supervisor, at least one
-    ready card it can run and a login it may run that has no live supervisor and a fresh BUDGET reading that is not THROTTLE. Nothing
-    can start a session on another machine (SCHEDULING_POLICY.md), so the answer is an OPERATOR line. Unreadable = [] (no line)."""
+    ready card it can run and a login it may run that has no live supervisor, a fresh SPEND/NORMAL BUDGET reading and weekly room under
+    its cap on that machine (weekly_cap). Nothing can start a session on another machine (SCHEDULING_POLICY.md), so the answer is an
+    OPERATOR line. Unreadable signals or inventory = [] (no line). plan() already fetched the signals: no_fetch by default."""
     try:
         import traffic
         inv = inv or traffic.inv_cache()
-        view = view if view is not None else traffic.budget_view(do_fetch=not no_fetch, now=now)[0]
-        busy_hosts = {s["host"] for s in live.values()}
-        out = []
+        if view is None:
+            view, errs = traffic.budget_view(do_fetch=not no_fetch, now=now)
+            if errs:
+                return []
+        busy_hosts = {str(s.get("host", "")).upper() for s in live.values()}
+        out, used = [], set()       # one login runs one supervisor: never offer the same login for two machines
         for h, m in sorted(inv["machines"].items()):
             if h.upper() in busy_hosts:
                 continue
             ok = []
             for lg in m.get("logins", []):
-                r = view["logins"].get(lg)
-                at = traffic.utc((r or {}).get("at"))
-                if lg not in live and r and at and (now - at).total_seconds() <= traffic.BUDGET_FRESH_H * 3600 and r["state"] != "THROTTLE":
+                r = view["logins"].get(lg) or {}
+                at = traffic.utc(r.get("at"))
+                fresh = bool(at) and 0 <= (now - at).total_seconds() <= traffic.BUDGET_FRESH_H * 3600
+                rs = traffic.utc(r.get("reset"))
+                try:
+                    room = r.get("week") is not None and float(r["week"]) < weekly_cap(lg, h, (rs - now).total_seconds() / 3600 if rs else None)
+                except (TypeError, ValueError):
+                    room = False
+                if lg not in live and lg not in used and fresh and r.get("state") in ("SPEND", "NORMAL") and room:
                     ok.append(lg)
             n = len(pick_cards(dispatch, h, 99))
             if ok and n:
                 out.append((h.upper(), ok, n))
+                used.add(ok[0])
         return out
-    except Exception:
+    except (Exception, SystemExit):
         return []
+
+
+def _idle_nag_due(hosts: list, now: datetime, home=None) -> list:
+    """Drop machines told within IDLE_NAG_H (stamp per machine under loop_home); unreadable stamp = due."""
+    due = []
+    for row in hosts:
+        try:
+            t = _utc((loop_home(home) / f"idle_{row[0]}.last").read_text(encoding="utf-8").strip())
+        except OSError:
+            t = None
+        if not t or (now - t).total_seconds() >= IDLE_NAG_H * 3600:
+            due.append(row)
+    return due
 
 
 def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, no_fetch: bool = False, host: str | None = None,
@@ -934,8 +990,7 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
     hist = record_reading(login, rd, home)
     rw = _utc(rd.get("week_reset"))
     gs = read_gate_slots(repo)
-    pl = pace_plan(now, rd, weekly_cap(login, host, (rw - now).total_seconds() / 3600 if rw else None), hist[:-1], running,
-                   gates_idle=gs.get("busy") == 0)
+    pl = pace_plan(now, rd, weekly_cap(login, host, (rw - now).total_seconds() / 3600 if rw else None), hist[:-1], running)
     prev = _last_plan(login, home)
     notes, ctx = [], {}
     if not no_fetch:
@@ -952,12 +1007,12 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
         sigs, _e = traffic.read_signals(now - timedelta(minutes=HEARTBEAT_MIN), now + timedelta(minutes=5))
         if _e:
             ctx["peers_unknown"] = True
-    except Exception as e:
+    except (Exception, SystemExit) as e:
         sigs = []
         ctx["peers_unknown"] = True
         notes.append(f"NOTE signals unreadable ({type(e).__name__}): peers unknown")
     live = live_supervisors(sigs, now)
-    live[login] ={"host": host, "at": now.strftime("%Y-%m-%dT%H:%MZ"), "mode": pl["mode"], "run": running, "free": pl["new"], "dsa": dsa_local,
+    live[login] = {"host": host, "at": now.strftime("%Y-%m-%dT%H:%MZ"), "mode": pl["mode"], "run": running, "free": pl["new"], "dsa": dsa_local,
                    "gates": (gs["busy"], gs["total"]) if "busy" in gs else None}
     shard = sorted(l for l, s in live.items() if s["free"] > 0) or [login]
     try:
@@ -966,7 +1021,7 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
         if board is None:
             raise OSError("ANNOUNCEMENTS.md not on trunk")
         ctx["holds"] = desk.active_holds(board)
-    except Exception as e:
+    except (Exception, SystemExit) as e:
         notes.append(f"NOTE board unreadable ({type(e).__name__}): read ANNOUNCEMENTS.md ACTIVE by hand")
     ho = _git_show(repo, HANDOVER_REL.format(login))
     if ho:
@@ -981,8 +1036,8 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
         ctx["spare"] = spare[0] if spare else None
         ctx["ready_here"] = len(pick_cards(snap.get("dispatch", []), host, 99, pl["mode"] == "CRUCIAL-ONLY"))
         if not ctx.get("peers_unknown"):
-            ctx["idle_hosts"] = idle_hosts(live, snap.get("dispatch", []), now, no_fetch)
-    except Exception as e:
+            ctx["idle_hosts"] = _idle_nag_due(idle_hosts(live, snap.get("dispatch", []), now), now, home)
+    except (Exception, SystemExit) as e:
         ctx["picks"] = []
         notes.append(f"NOTE dispatch failed ({type(e).__name__}: {str(e)[:80]})")
     try:
@@ -996,12 +1051,12 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
         ctx["dsa_unposted"] = sum(1 for c in ready if str(c.get("lane", "")) in desk.DSA_LANES and c["id"] not in have)
         ctx["dsa"] = dsa_targets_state(rows, now)
         ctx["desk_pending"] = sum(1 for r in rows if r.get("status") == "pending")
-    except Exception as e:
+    except (Exception, SystemExit) as e:
         notes.append(f"NOTE lanes/desk unreadable ({type(e).__name__}: {str(e)[:80]})")
     try:
         import lease
         ctx["pipeliner_free"] = lease.status(repo, roles=("Pipeliner",), do_fetch=False)["Pipeliner"].get("state") in ("free", "expired")
-    except Exception:
+    except (Exception, SystemExit):
         ctx["pipeliner_free"] = False
     ctx["nuc_ok"] = nuc_budget_ok(login, pl["mode"], now, no_fetch)
     stamp = loop_home(home) / "nuc_wake.last"
@@ -1033,17 +1088,26 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
     live[login]["free"] = free
     lines = plan_lines(login, host, pl, live, ctx, (Path.home() / ".ssh" / "nuc_gate").exists()) + notes
     loop_home(home).mkdir(parents=True, exist_ok=True)
+    for ih, _lg, _n in (ctx.get("idle_hosts", []) if send else []):     # a dry run never silences the line
+        if any(x.startswith(f"OPERATOR start a Supervisor on {ih}:") for x in lines):
+            try:
+                (loop_home(home) / f"idle_{ih}.last").write_text(now.strftime("%Y-%m-%dT%H:%M:%SZ"), encoding="utf-8", newline="\n")
+            except OSError:
+                pass
     if any("nuc_wake.py" in x for x in lines):
         try:
             stamp.write_text(now.strftime("%Y-%m-%dT%H:%M:%SZ"), encoding="utf-8", newline="\n")
         except OSError:
             pass
     spare_slots = max(0, pl["slots"] - running - pl["new"])
-    pp = prev.get("plan") or {}
-    stuck = int(prev.get("stuck") or 0) + 1 if int(prev.get("spare") or 0) > 0 and running <= int(pp.get("running") or 0) else 0
+    try:    # stuck: plans in a row that told you to start workers (free > 0: CI green, cards picked) and running did not grow
+        asked = _plan_fresh(prev, now) and int(prev.get("free") or 0) > 0
+        stuck = int(prev.get("stuck") or 0) + 1 if asked and running <= int((prev.get("plan") or {}).get("running") or 0) else 0
+    except (TypeError, ValueError, AttributeError):
+        stuck = 0       # a damaged last plan never blocks this one
     data = {"plan": pl, "live": live, "shard": shard, "heartbeat_sent": sent, "picks": [p["id"] for p in ctx.get("picks", [])],
             "lines": lines, "spare": spare_slots, "ready_more": max(0, ctx.get("ready_here", 0) - len(ctx.get("picks", []))),
-            "stuck": stuck}
+            "stuck": stuck, "free": free, "at": now.strftime("%Y-%m-%dT%H:%M:%SZ")}
     try:
         (loop_home(home) / f"{login}-last-plan.json").write_text(json.dumps(data, indent=1, sort_keys=True, default=str),
                                                                  encoding="utf-8", newline="\n")

@@ -1238,7 +1238,7 @@ Applied: 2026-10-22: scripts/dev/offer_guard.py (Stop hook, .claude/settings.jso
              "D": "do nothing: gates are spare capacity, RAMP 1 per 50 min wake"},
  "recommended": "A + C",
  "answer": "go with A + C - do it here",
- "done": "supervisor.py: wait --login ACTIONABLE wake, pace_plan gates_idle ramp, idle_hosts OPERATOR line; plan research/thinker/2026-10-22_six_slots.md"}
+ "done": "supervisor.py: wait --login ACTIONABLE wake (once per plan, fail closed, off after 2 plans that started nothing), idle_hosts OPERATOR line (once per machine per 2 h). The gates-idle ramp lift was dropped after review (no gate busy = no worker mid-ship, not an idle machine): the 5 min wake does the speed-up. Plan: research/thinker/2026-10-22_six_slots.md"}
 ```
 
 ## DECISION NEEDED 2026-10-21 (Lab_Guy): pre_pipeline_sources review_by 2026-10-23
