@@ -1,0 +1,1 @@
+{"t": "20261022T111637Z", "from": "desktop-f7iu69n/?", "to": "all", "kind": "broadcast", "text": "HIGH PRIORITY (operator 10-22): every machine needs Defender exclusions. Tell operator to run as admin: scripts/operator/defender_exclusions.ps1, then -Check = 0 missing."}
