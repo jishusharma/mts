@@ -36,7 +36,9 @@ READ_BUDGET = 4_000_000    # operator 2026-10-18: turns allowed = budget / conte
 OPUS_CTX_CAP = 500_000     # Opus: long sessions are wanted; the only cap is the context size
 # Unattended read budget (safety review 2026-10-21, research/context_policy_review/DECISION_OPUS.md): every tool turn taken while the
 # operator is not there adds its context size; his typed prompt resets it, events never do. Past it, PreToolUse denies all but hand-off.
-UNATTENDED_READ = {"default": 1_000_000, "opus": 1_000_000, "fable": 1_000_000, "supervisor": 1_000_000}   # operator 2026-10-21; note at half
+# Supervisor: its 40 tool-turn cap x 150k context. 1M (2ead8370) locked the JIS-NB Supervisor out of every tool after ~15 turns of a run the
+# operator started to work unattended for hours (2026-10-22: zero-click super sessions).
+UNATTENDED_READ = {"default": 1_000_000, "opus": 1_000_000, "fable": 1_000_000, "supervisor": 6_000_000}   # operator 2026-10-21; note at half
 UNKNOWN_CTX = 250_000      # an unreadable context still costs: counted as a big one
 DRIVEN_IDLE = 1800         # he is "there" from his 2nd typed prompt until 30 min after his latest one
 HANDOFF_BASH = re.compile(r"\b(?:git|sync\.py|relay\.py|tasks\.py|mts_signal\.py)\b")

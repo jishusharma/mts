@@ -28,7 +28,8 @@ class TrunkLagTest(unittest.TestCase):
         self.d = tempfile.TemporaryDirectory()
         base = Path(self.d.name)
         self.origin, self.tree = base / "origin", base / "tree"
-        sh(base, "init", "-q", "-b", "fast-track", str(self.origin))
+        sh(base, "init", "-q", str(self.origin))          # no `init -b`: JIS-NUC runs git 2.24 (the option came in 2.28)
+        sh(self.origin, "symbolic-ref", "HEAD", "refs/heads/fast-track")
         commit(self.origin, "a", 1_000_000)
         sh(base, "clone", "-q", "-b", "fast-track", str(self.origin), str(self.tree))
 
