@@ -1,3 +1,5 @@
+Set fso = CreateObject("Scripting.FileSystemObject")
+root = fso.GetParentFolderName(fso.GetParentFolderName(WScript.ScriptFullName))
 Set sh = CreateObject("WScript.Shell")
-sh.CurrentDirectory = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
+sh.CurrentDirectory = root
 sh.Run """C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe"" scripts\dev\testnet_canary.py", 0, True

@@ -1,6 +1,6 @@
 # MTS live: quick - quick read - price, snapshot, CVD, state, last verdict
 # usage:    . .\scripts\load.ps1   then type: quick
-$root = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
+$root = (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 $k = Invoke-RestMethod "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m&limit=3"
 $snap = Get-ChildItem "$root\runtime_data\snapshots\BTCUSDT_*.json" | Sort LastWriteTime -Desc | Select -First 1
 $j = Get-Content $snap.FullName -Raw | ConvertFrom-Json

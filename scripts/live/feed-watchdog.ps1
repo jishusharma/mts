@@ -2,7 +2,7 @@
 # Logs snapshot age + state_code age to runtime_data\feed_watchdog.log; WARN above threshold.
 # Keeps the HTF context writer (htf_context_live --loop) and the order-flow writer (orderflow_live) alive: starts them if absent. Never touches java.
 param([int]$MaxSnapshotAgeSec = 180, [int]$MaxStateAgeSec = 180)
-$root = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
+$root = (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 $log  = "$root\runtime_data\feed_watchdog.log"
 $now  = Get-Date
 function Age($p) { if (Test-Path $p) { [Math]::Max(0,[int]($now - (Get-Item $p).LastWriteTime).TotalSeconds) } else { -1 } }

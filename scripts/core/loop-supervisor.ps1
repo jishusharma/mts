@@ -20,7 +20,7 @@ param(
 )
 
 $ErrorActionPreference = "Continue"
-$R = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
+$R = (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 Set-Location $R
 
 $SupLog        = Join-Path $R "runtime_data\supervisor_log.txt"
