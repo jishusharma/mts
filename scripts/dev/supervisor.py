@@ -537,9 +537,16 @@ def _utc(s):
     return d if d.tzinfo else d.replace(tzinfo=timezone.utc)
 
 
-def weekly_cap(login: str, host: str) -> int:
-    """SUPER_SESSION.md rule 12: logins B and C stop at 75% of the week when they run on JIS-NB (operator choice); else 95%."""
-    return 75 if host.upper() == NB and login in ("B", "C") else 95
+LAST_DAY_H = 24      # weekly room left this close to the reset is lost if unused (OURS)
+LAST_DAY_CAP = 99    # operator 2026-10-22, login A at 97% with 15 h to reset: "do not exhaust it completely, but still use it ... slowly"
+
+
+def weekly_cap(login: str, host: str, h_to_reset: float | None = None) -> int:
+    """SUPER_SESSION.md rule 12: logins B and C stop at 75% of the week when they run on JIS-NB (operator choice); else 95%, raised to
+    LAST_DAY_CAP in the last LAST_DAY_H before the weekly reset, so the last points are spent slowly instead of lost (pace_plan spreads them)."""
+    if host.upper() == NB and login in ("B", "C"):
+        return 75
+    return LAST_DAY_CAP if h_to_reset is not None and 0 < h_to_reset <= LAST_DAY_H else 95
 
 
 def loop_home(home=None) -> Path:
@@ -817,7 +824,8 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
     login = login.strip().upper()[:1]
     rd = {**rd, "at": now.strftime("%Y-%m-%dT%H:%M:%SZ")}
     hist = record_reading(login, rd, home)
-    pl = pace_plan(now, rd, weekly_cap(login, host), hist[:-1], running)
+    rw = _utc(rd.get("week_reset"))
+    pl = pace_plan(now, rd, weekly_cap(login, host, (rw - now).total_seconds() / 3600 if rw else None), hist[:-1], running)
     notes, ctx = [], {}
     if not no_fetch:
         try:
