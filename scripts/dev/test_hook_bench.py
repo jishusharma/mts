@@ -51,3 +51,27 @@ def test_payloads_carry_event_fields():
 
 def test_median_of_nothing_is_zero():
     assert B.median([]) == 0.0 and B.median([1.0, 3.0, 2.0]) == 2.0
+
+
+def test_every_configured_hook_is_in_the_bench_rows():
+    """The bench must time every command in .claude/settings.json: matcher hooks (model_guard, preship hook-edit) and SessionStart too."""
+    import json
+    from pathlib import Path
+    settings = json.loads((Path(B.REPO) / ".claude" / "settings.json").read_text(encoding="utf-8"))
+    configured = {(ev, h["command"]) for ev, groups in settings["hooks"].items() for g in groups for h in g["hooks"]}
+    benched = {(ev, cmd) for ev, _name, cmd, _a, _t in B.all_hooks(settings)}
+    assert configured == benched
+    names = {n for _e, n, _c, _a, _t in B.all_hooks(settings)}
+    assert {"model_guard.py", "preship.py hook-edit"} <= names
+
+
+def test_matcher_hooks_get_a_tool_their_matcher_accepts():
+    import re
+    settings = {"hooks": {"PostToolUse": [{"matcher": "Write|Edit", "hooks": [{"command": "python x/preship.py hook-edit"}]}]}}
+    (ev, name, cmd, is_async, tool), = B.all_hooks(settings)
+    assert name == "preship.py hook-edit" and re.fullmatch("Write|Edit", tool)
+    assert "file_path" in B.payload_for("PostToolUse", "x", tool=tool)["tool_input"]
+
+
+def test_session_start_payload_has_a_source():
+    assert B.payload_for("SessionStart", "x")["source"] == "startup"

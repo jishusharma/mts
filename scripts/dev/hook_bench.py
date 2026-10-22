@@ -22,16 +22,18 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 BUDGETS = {"tool call": 0.5, "prompt": 0.8, "stop": 1.0}          # RUN_MODEL.md section 6, seconds
 EVENT_OF = {"PreToolUse": "tool call", "PostToolUse": "tool call", "UserPromptSubmit": "prompt", "Stop": "stop"}
-BENCH_EVENTS = ("PreToolUse", "PostToolUse", "UserPromptSubmit", "Stop")     # SessionStart is once per session and sends signals
+BENCH_EVENTS = ("SessionStart", "PreToolUse", "PostToolUse", "UserPromptSubmit", "Stop")   # SessionStart: once per session, state dirs in temp (isolated_env)
 TOOL = "Bash"
 
 
-def payload_for(event, cwd, sid="bench-session"):
+def payload_for(event, cwd, sid="bench-session", tool=TOOL):
     p = {"session_id": sid, "cwd": str(cwd), "hook_event_name": event, "transcript_path": ""}
     if event in ("PreToolUse", "PostToolUse"):
-        p.update(tool_name=TOOL, tool_input={"command": "git status"}, tool_use_id="toolu_bench")
+        p.update(tool_name=tool, tool_input={"command": "git status", "file_path": str(Path(cwd) / "bench_probe.txt")}, tool_use_id="toolu_bench")
     if event == "PostToolUse":
         p["tool_response"] = {"stdout": "", "stderr": ""}
+    if event == "SessionStart":
+        p["source"] = "startup"
     if event == "UserPromptSubmit":
         p["prompt"] = "continue"
     if event == "Stop":
@@ -59,6 +61,29 @@ def hooks_for(settings, event, tool=TOOL):
                 continue
             name = re.search(r"([\w.-]+\.py)", h["command"])
             out.append((name.group(1) if name else h["command"][:30], h["command"], bool(h.get("async"))))
+    return out
+
+
+def all_hooks(settings, event=None):
+    """[(event, name, command, is_async, tool)] of EVERY command hook; `tool` is Bash if the matcher accepts it, else the
+    first plain alternative of the matcher (so each hook is timed with a payload its matcher accepts)."""
+    out = []
+    for ev, groups in (settings.get("hooks") or {}).items():
+        if event and ev != event:
+            continue
+        for group in groups:
+            m = group.get("matcher")
+            tool = TOOL
+            if m and m != "*" and not re.fullmatch(m, TOOL):
+                tool = m.split("|")[0]
+            for h in group.get("hooks", []):
+                if h.get("type", "command") != "command":
+                    continue
+                parts = argv_for(h["command"], "R")
+                script = next((Path(x).name for x in parts if x.endswith(".py")), h["command"][:30])
+                sub = parts[parts.index(next(x for x in parts if x.endswith(".py"))) + 1:][:1] if script.endswith(".py") else []
+                name = script + (" " + sub[0] if sub and sub[0] != "hook" else "")
+                out.append((ev, name, h["command"], bool(h.get("async")), tool))
     return out
 
 
@@ -133,8 +158,8 @@ def bench(settings, repo, n):
         env = isolated_env(tmp, repo)
         clean = clean_tree(tmp)
         for event in BENCH_EVENTS:
-            payload = payload_for(event, clean if event == "Stop" else repo)
-            for name, command, is_async in hooks_for(settings, event):
+            for _ev, name, command, is_async, tool in all_hooks(settings, event):
+                payload = payload_for(event, clean if event == "Stop" else repo, tool=tool)
                 argv = argv_for(command, repo)
                 times = [time_hook(argv, payload, env, repo) for _ in range(n)]   # cwd stays the repo: that is where the scripts are
                 rows.append({"event": event, "name": name, "async": is_async, "median": median(times), "times": times})
@@ -142,9 +167,9 @@ def bench(settings, repo, n):
 
 
 def report(rows, out=print):
-    out(f"{'event':18} {'hook':20} {'median s':>9}  mode")
+    out(f"{'event':18} {'hook':28} {'median s':>9}  mode")
     for r in rows:
-        out(f"{r['event']:18} {r['name']:20} {r['median']:9.2f}  {'async (background)' if r['async'] else 'sync'}")
+        out(f"{r['event']:18} {r['name']:28} {r['median']:9.2f}  {'async (background)' if r['async'] else 'sync'}")
     walls = aggregate(rows)
     res = verdicts(walls)
     out("")
