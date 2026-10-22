@@ -10,7 +10,7 @@
   "goal": "An independent re-deriver can implement a formula from prose alone, without reading the producer code.",
   "id": "lab-formula-spec-text",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [],
   "layers": [],
   "live_path": false,
@@ -20,6 +20,12 @@
   "refined_by": "",
   "refreshed": "2026-10-18T00:00:00Z",
   "refs": [],
+  "reroute": {
+    "at": "2026-10-22T15:06:36Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "heartbeat"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/backtest/layers/FORMULAS.md (read)",

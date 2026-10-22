@@ -14,7 +14,7 @@
   "goal": "Build the planted-error harness and measure the MACHINE layer: 10 shadow copies of finished cards each get one planted error (8 classes), and the existing machine checks (tasks.py, lab_flow.py) are run on them. Output is a catch table per error class with empty columns for the model stacks, which the coordinator fills with Haiku/Flash and Argon/GPT-high desk rows.",
   "id": "lab-planted-error-trial",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -32,6 +32,12 @@
   "refined_by": "",
   "refreshed": "2026-10-18T03:35:21Z",
   "refs": [],
+  "reroute": {
+    "at": "2026-10-22T15:06:36Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "heartbeat"
+  },
   "result": "",
   "scope_in": [
     "scripts/dev/planted_error_trial.py (new)",
