@@ -1,12 +1,12 @@
 {
  "allowance": {
   "plan": "plus",
-  "week_resets": 1793097878,
-  "week_used": 1.0,
-  "window_resets": 1792683090,
-  "window_used": 1.0
+  "week_resets": 1793294390,
+  "week_used": 0,
+  "window_resets": 1792707590,
+  "window_used": 0
  },
- "at": "2026-10-22T15:15:15Z",
+ "at": "2026-10-22T17:20:19Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -19,18 +19,33 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 0.0,
-  "window_pts": 1.0,
-  "window_runs": 1
+  "window_pts": 0.0,
+  "window_runs": 0
  },
  "runs": [
+  {
+   "at": "2026-10-22T17:19:33Z",
+   "card": "lab-planted-error-trial",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 38,
+   "tokens_out": 1742,
+   "tokens_total": 230588,
+   "tokens_uncached": 36974,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-22T15:08:54Z",
    "card": "lab-formula-spec-text",
    "effort": "medium",
    "kind": "build",
    "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
+   "note": "host health: ok\nsync: second ship from this tree 528 s after the last one (limit 10 min between ships): batch the work into one ship, or wait, or pass --again i",
+   "outcome": "SHIP_FAILED",
    "seconds": 373,
    "tokens_out": 20309,
    "tokens_total": 3086569,
@@ -157,21 +172,6 @@
    "tokens_uncached": 70529,
    "week_pts": 0.0,
    "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-17T21:53:35Z",
-   "card": "lab-formula-spec-text",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "test layer tests: SKIP\nStep 5: Maven tests: SKIP\nStep 5b: Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n==========================",
-   "outcome": "SHIP_FAILED",
-   "seconds": 265,
-   "tokens_out": 12274,
-   "tokens_total": 2223482,
-   "tokens_uncached": 66440,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }
