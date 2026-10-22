@@ -22,6 +22,8 @@ EXTRA = [
     "MyTradingSys/research/wavetrend_2026-10-17/test_wt_parity_ref.py",
     "MyTradingSys/research/wavetrend_2026-10-17/test_count_events.py",
     "scripts/dev/test_trial_ledger.py",
+    "scripts/dev/test_hook_bench.py",
+    "scripts/dev/test_interview_feed.py",
     "scripts/dev/test_trace.py",
     "scripts/dev/test_lab_query.py",
     "scripts/dev/test_health_audit.py",
