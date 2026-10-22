@@ -1129,5 +1129,30 @@ Applied: 2026-10-20: WORKERS.md rule 5 and CLAUDE.md step 5 say so; turn_meter.p
 }
 ```
 
+## q-go-private-on-edge | asked 2026-10-22 | Process
+
+When does the public repo go private? (Admin_Guy chat 2026-10-22; repo public since 2026-10-11, CLAUDE.md "go private before mainnet")
+
+Recommended: Go private when the first layer passes its fee-net out-of-sample gate (a promoted setup), not only before mainnet; a check notifies the operator at that threshold
+Answer: Go private when the first layer passes its fee-net out-of-sample gate (a promoted setup), not only before mainnet; a check notifies the operator at that threshold
+Operator note (verbatim): "Why don't you put word about this MTS files? So that when we have some edge, there is a hook that triggers a threshold when I am notified that okay, maybe it's time to go private. So going private is not a problem, we were actually just not sure what to do. And I also agree with you that some strategies are worth protecting, because they stop working if enough people know about it."
+Applied: 2026-10-22: CLAUDE.md hard rule names both triggers; card go-private-trigger-notify-operator-when- (SONNET, raw) builds the notification with a fail-first test. Going private stays the operator's own action.
+
+```json
+{
+ "order": 34,
+ "stage": "Process",
+ "refs": "CLAUDE.md Hard rules (Repo is PUBLIC), MyTradingSys/execution/promoted_setups.json, q-go-private-on-edge",
+ "title": "Go private when the first layer shows an out-of-sample edge; notify the operator",
+ "why": "A strategy stops working once enough people trade it. Today no layer has an edge (promoted_setups.json has 0 entries, 2026-10-21), so public costs little; the day one passes, its rules and parameters are in the open.",
+ "options": [
+  "Go private only before mainnet",
+  "Go private when the first layer passes its fee-net out-of-sample gate (a promoted setup), not only before mainnet; a check notifies the operator at that threshold"
+ ],
+ "recommended": "Go private when the first layer passes its fee-net out-of-sample gate (a promoted setup), not only before mainnet; a check notifies the operator at that threshold",
+ "answer": "Go private when the first layer passes its fee-net out-of-sample gate (a promoted setup), not only before mainnet; a check notifies the operator at that threshold"
+}
+```
+
 ## DECISION NEEDED 2026-10-21 (Lab_Guy): pre_pipeline_sources review_by 2026-10-23
 27 grandfathered testnet sources in auto_trader_config.json expire for review on 2026-10-23; promoted_setups.json has 0 entries. Options: (a) extend review_by 14 days (recommended, OURS default), (b) prune falsified layers (turn_of_candle, rsi_divergence, session_levels), (c) stop them. Needs an operator answer in the Control Room; no chat question.

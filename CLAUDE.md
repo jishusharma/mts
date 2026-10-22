@@ -28,7 +28,7 @@ Already loaded (CLAUDE.md is already in context; do not cat or Read CLAUDE.md). 
 - Share work only through `sync.py ship`; cloud containers open a PR into fast-track. Never commit to master, never rebase/reset/force-push. No chained `cd x && git ...`: use `git -C <dir> <cmd>`.
 - Commit body carries `Result: <what works now / the number>`. Others' uncommitted files: don't stash, clean, revert or report them.
 - Testnet only (Deribit test); no mainnet orders/accounts (public market data OK: q-gap-c); never read `.secrets/`, `.env`, keys.
-- Repo is PUBLIC (since 2026-10-11): never commit runtime/order/account data; backups go only to local F:/MTS_backup.git; go private before mainnet.
+- Repo is PUBLIC (since 2026-10-11): never commit runtime/order/account data; backups go only to local F:/MTS_backup.git; go private before mainnet or when the first layer passes its fee-net out-of-sample gate, whichever comes first (q-go-private-on-edge).
 - The live tree (`.mts_live`) runs the testnet system and changes only by a manual or coordinator-run deploy (DEPLOY_RUNBOOK.md; AutoDeploy, Supervisor retired). Builders never deploy, stop/restart processes, touch HALT files or open trades. No scheduled tasks or routines on any device.
 - Live-path changes need a test for restart/reset state, non-trade balance moves and API errors; safety checks fail closed. New timeframe or layer family: grep every TF/family map. Whoever sets AUTO_PAUSE logs owner + expected end in SUPERVISOR_LOG; each wake clears or escalates an overdue pause.
 - Layers (operator 2026-10-13, replaces "Tom is core"): no fixed core. Tom, Fabio and every other system are layers (combine, filter or switch off); fee-net out-of-sample results decide what trades, never doctrine (PROJECT_VISION).
