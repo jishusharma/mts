@@ -1243,3 +1243,13 @@ Applied: 2026-10-22: scripts/dev/offer_guard.py (Stop hook, .claude/settings.jso
 
 ## DECISION NEEDED 2026-10-21 (Lab_Guy): pre_pipeline_sources review_by 2026-10-23
 27 grandfathered testnet sources in auto_trader_config.json expire for review on 2026-10-23; promoted_setups.json has 0 entries. Options: (a) extend review_by 14 days (recommended, OURS default), (b) prune falsified layers (turn_of_candle, rsi_divergence, session_levels), (c) stop them. Needs an operator answer in the Control Room; no chat question.
+
+## d-cbp-a2-end-to-end | decided 2026-10-23 | Thinker
+```json
+{"id": "d-cbp-a2-end-to-end", "order": 41, "date": "2026-10-23", "status": "DECIDED",
+ "question": "CBP integration: A (new Extraction Core), A2 (adopt existing MTS tools) or C (do nothing)?",
+ "options": {"A": "new shared Extraction Core module", "A2": "one quote checker, one fetcher, one store, actionable-6 profile, consumer proves one acked row", "C": "do nothing"},
+ "recommended": "A2",
+ "answer": "process earthing end to end - make sure that you do not bloat your context past 250k so better use 1 time spawned agents and plan scoped tasks. (read as: process everything end to end; dictation)",
+ "done": "pending: cards cbp-one-quote-checker plus the three below, each run by its own scoped session. DEFAULT (OURS): q-v1-cbp-routine stays unanswered (stopping the Haiku routine is the operator's call). Plan: research/thinker/2026-10-23_cbp_core_vs_adopt.md"}
+```
