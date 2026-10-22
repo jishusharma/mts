@@ -10,6 +10,7 @@ here is tuned or defaulted (provenance rule); values are copied from CBP as writ
 Read-only on markets. Never places orders. No live process imports this module.
 """
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -22,6 +23,8 @@ DIRECTIONS = ("LONG", "SHORT")
 REQUIRED = ("id", "queued_at", "source", "asset", "direction", "entry_trigger",
             "target", "invalidation", "expires_at")
 SOURCE_REQUIRED = ("analyst", "channel", "video_id", "publish_date")
+QUOTED = re.compile(r'"([^"]{8,})"')
+DEFAULT_TRANSCRIPTS = Path(r"F:\CryptoScrapper\cbp_v2\inbox")
 DEFAULT_OUT = Path(__file__).resolve().parent / "candidates"
 
 
@@ -54,6 +57,28 @@ def validate(alert):
     return errs
 
 
+def _norm(s):
+    return " ".join(re.sub(r"[^a-z0-9%]+", " ", s.lower()).split())
+
+
+def quote_errors(alert, transcript_dir):
+    """Every analyst quote (text in double quotes) in entry_trigger/target.note/invalidation must occur
+    in the transcript <dir>/<analyst>_<video_id>.txt (case/punctuation-insensitive); at least one is required."""
+    src = alert.get("source") or {}
+    path = Path(transcript_dir) / ("%s_%s.txt" % (src.get("analyst"), src.get("video_id")))
+    try:
+        body = _norm(path.read_text(encoding="utf-8", errors="replace"))
+    except OSError:
+        return ["no transcript " + path.name]
+    tgt = alert.get("target") if isinstance(alert.get("target"), dict) else {}
+    fields = [alert.get("entry_trigger"), tgt.get("note"), alert.get("invalidation")]
+    quotes = [q for f in fields if isinstance(f, str) for q in QUOTED.findall(f)]
+    errs = ["quote not in transcript: " + q for q in quotes if _norm(q) not in body]
+    if not quotes:
+        errs.append("no analyst quote to verify")
+    return errs
+
+
 def to_candidate(alert):
     return {
         "cand_id": "cbp:" + alert["id"],
@@ -73,7 +98,7 @@ def to_candidate(alert):
     }
 
 
-def ingest(queue_dir, out_dir=DEFAULT_OUT):
+def ingest(queue_dir, out_dir=DEFAULT_OUT, transcript_dir=None):
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     path = out_dir / "cbp_candidates.jsonl"
@@ -90,10 +115,14 @@ def ingest(queue_dir, out_dir=DEFAULT_OUT):
             f.write(json.dumps(c, ensure_ascii=False) + "\n")
         seen.add(c["cand_id"])
 
-    return consumer.consume(queue_dir, validate=validate, on_consume=emit)
+    check = validate if transcript_dir is None else (lambda a: validate(a) or quote_errors(a, transcript_dir))
+    return consumer.consume(queue_dir, validate=check, on_consume=emit)
 
 
 if __name__ == "__main__":
-    q = Path(sys.argv[1]) if len(sys.argv) > 1 else consumer.DEFAULT_QUEUE
-    o = Path(sys.argv[2]) if len(sys.argv) > 2 else DEFAULT_OUT
-    print(json.dumps(ingest(q, o), indent=2))
+    # One command a session can run (no scheduler): python queue/cbp_adapter.py --verify-quotes [queue] [out]
+    args = [a for a in sys.argv[1:] if a != "--verify-quotes"]
+    tdir = DEFAULT_TRANSCRIPTS if "--verify-quotes" in sys.argv else None
+    q = Path(args[0]) if args else consumer.DEFAULT_QUEUE
+    o = Path(args[1]) if len(args) > 1 else DEFAULT_OUT
+    print(json.dumps(ingest(q, o, tdir), indent=2))
