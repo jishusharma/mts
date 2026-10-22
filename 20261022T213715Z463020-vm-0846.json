@@ -1,0 +1,1 @@
+{"t": "20261022T213715Z", "from": "vm/?", "to": "all", "kind": "done", "text": "ship Result: gate discovery passes; the soak's 4 tests (10 seeds x 3 h virtual) run in CI via run_extra_tests.", "sid": "148671909c"}
