@@ -6,7 +6,7 @@
   "window_resets": 1792707590,
   "window_used": 1.0
  },
- "at": "2026-10-22T19:02:42Z",
+ "at": "2026-10-22T19:48:48Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,9 +20,24 @@
   "astra_runs": 0,
   "week_pts": 0.0,
   "window_pts": 1.0,
-  "window_runs": 2
+  "window_runs": 3
  },
  "runs": [
+  {
+   "at": "2026-10-22T19:47:53Z",
+   "card": "argon-blind-read-7-frames",
+   "effort": "low",
+   "kind": "run",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "INCOMPLETE",
+   "seconds": 49,
+   "tokens_out": 1865,
+   "tokens_total": 394427,
+   "tokens_uncached": 33394,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-22T18:57:09Z",
    "card": "tom-btc-other-setups",
@@ -157,21 +172,6 @@
    "tokens_uncached": null,
    "week_pts": null,
    "window_pts": null
-  },
-  {
-   "at": "2026-10-17T22:48:24Z",
-   "card": "lab-review-gate-harden",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 163,
-   "tokens_out": 9326,
-   "tokens_total": 1446422,
-   "tokens_uncached": 52648,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }
