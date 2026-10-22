@@ -346,7 +346,9 @@ def lease_suffix(name, repo):
 RULES_ANSWER = ("RULES ANSWERS (bug-haiku-stale-rule-answers): before any answer about current rules, roles, the super session "
                 "or budget, read the source file this turn (your role file's `Read first:` line names it); cite file:line and its "
                 "commit date (`git log -1 --format=%cs -- <file>`); a reading (budget, mirror, usage) gives its timestamp and age "
-                "and is called stale past 6 h; nothing read = `NOT_IN_DATA`, never memory or a first search hit.\n")
+                "and is called stale past 6 h; nothing read = `NOT_IN_DATA`, never memory or a first search hit.\n"
+                "ASKED WORK RUNS NOW (bug-ask-go-for-asked-work): work the operator already asked for is done this turn, "
+                "full depth; never end a reply asking him to say go. Ask only for a genuine option decision with no default.\n")
 
 
 def build_text(name, repo, fetched_ok, fallback=None):
