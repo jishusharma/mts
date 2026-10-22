@@ -1,4 +1,5 @@
-"""CI speed (operator 2026-10-22, q-ci-speed-fixes): Windows leg split in shards, one CI run per fast-track commit, green never backwards."""
+"""CI speed (operator 2026-10-22, q-ci-speed-fixes; "I want everything to be under 2 minutes"): shards split per file, one CI run per
+fast-track commit, green never backwards."""
 import sys
 import unittest
 from pathlib import Path
@@ -29,17 +30,43 @@ class ShardTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             R.apply_shard(self.plan(), "4/3")
 
-    def test_ci_runs_per_commit_with_three_windows_shards_and_a_forward_only_green(self):
+    def test_eight_shards_split_every_test_file_once_and_no_shard_holds_much_more_than_its_share(self):
+        import run_extra_tests
+        n, xt, py, mods, ests, maven = 8, [], [], [], [], []
+        for k in range(1, n + 1):
+            run = [s for s in R.apply_shard(R.build_plan(False), f"{k}/{n}") if not s.skip]
+            ests.append(sum(s.est for s in run))
+            maven += [k for s in run if s.num == "5"]
+            for s in run:
+                self.assertNotIn(s.num, ("3xt", "5b") + R.PYTEST_SHARD_NUMS)   # the long file-list steps are split
+                if s.num.startswith("3xt."):
+                    xt += s.cmd_text.split("--only ", 1)[1].split()
+                elif s.num.startswith("4."):
+                    py += [a for a in s.cmd_text.split() if a.startswith("MyTradingSys/tests/")]
+                elif s.num.startswith("5b."):
+                    mods += s.key.split(",")
+        self.assertEqual(sorted(xt), sorted(run_extra_tests.all_tests()))
+        self.assertEqual(sorted(mods), sorted(R.find_layer_modules()))
+        whole = [a for s in R.build_plan(False) if s.num in R.PYTEST_SHARD_NUMS for a in s.cmd_text.split() if a.startswith("MyTradingSys/tests/")]
+        self.assertEqual(sorted(py), sorted(whole))
+        self.assertEqual(maven, [1])   # only shard 1 sets up Java
+        self.assertLess(max(ests), 1.15 * sum(ests) / n)
+
+    def test_ci_runs_per_commit_in_eleven_shards_with_a_forward_only_green(self):
         text = CI_YML.read_text(encoding="utf-8")
         self.assertIn("group: ci-${{ github.ref }}-${{ github.ref == 'refs/heads/fast-track' && github.sha || 'run' }}", text)
-        for k in (1, 2, 3):
-            self.assertIn(f'{{os: windows-latest, shard: "{k}/3"}}', text)
+        for k in range(1, 9):
+            self.assertIn(f'{{os: windows-latest, shard: "{k}/8"}}', text)
+        for k in range(1, 4):
+            self.assertIn(f'{{os: ubuntu-latest, shard: "{k}/3"}}', text)
         self.assertIn("run_all_tests.py --shard ${{ matrix.shard }}", text)
+        self.assertIn("if: startsWith(matrix.shard, '1/')", text[text.index("actions/setup-java"):][:200] + text[:text.index("actions/setup-java")][-300:])
         mark = text[text.index("\n  mark-green:"):]
         self.assertIn("needs: offline-gate", mark)
-        self.assertIn("merge-base --is-ancestor", mark)
-        self.assertIn("--force-with-lease", mark)
+        self.assertIn('compare/$old...$SHA', mark)
+        self.assertIn("force=false", mark)
         self.assertIn("group: mark-green", mark)
+        self.assertNotIn("fetch-depth: 0", mark)
 
 
 if __name__ == "__main__":

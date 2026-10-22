@@ -42,3 +42,14 @@ Not built (operator's call): Windows leg only for live-path changes; test impact
 - A main checkout with local edits stayed behind silently: now named at session start (trunk_lag.py).
 - Cards: dispatch sorts prio before weight (tasks.py dispatch); Supervisor workers as in-session Agents die with the Supervisor;
   signal notes cut long folder names as secrets (NB shows `[cut]`). Control room, home and layer-map pages lag the repo.
+
+## Under 2 minutes (operator 2026-10-22: "I want everything to be under 2 minutes.")
+Measured first: the 3-shard run on 788790ff went green in 5m50s. Gate per job: Linux 162 s, Windows 136/254/212 s; Windows setup 45-60 s
+(pip 30 s, Defender switch 7-30 s, checkout 8-18 s, Java 5-10 s). Locally the full gate is 120 s; one step, 3xt (121 extra test files),
+took 84 s and set the floor. Slowest single file: research/context_factors_2026-10-16/test_context_asof.py, 35 s.
+Built: `run_all_tests.py --shard` now splits 3xt, 5b and the MyTradingSys/tests pytest shards per file (measured seconds, CI_FILE_S) before
+the greedy split; Maven is pinned to shard 1. ci.yml: Linux 3 shards, Windows 8; setup-java only on shard 1; `uv pip install`; Defender
+switched off in a background process; mark-green uses the compare API and a fast-forward-only ref update, no checkout.
+Local wall per shard (4-core Linux): 8-way 10-39 s, 3-way 33-53 s. CI wall: to be read from the first run.
+Limits: 11 jobs per run; GitHub Free allows 20 concurrent jobs, so a third push landing inside the same 2 minutes queues. Windows job pickup
+and the slowest file on Windows (Linux 35 s) are the floor; if a run is still over 2 min, that file is the next target.

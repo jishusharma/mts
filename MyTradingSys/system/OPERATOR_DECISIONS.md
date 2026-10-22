@@ -1220,5 +1220,13 @@ Applied: 2026-10-22: scripts/dev/offer_guard.py (Stop hook, .claude/settings.jso
  "done": "per-commit CI + forward-only mark-green; Windows leg in 3 shards; Windows temp on D: and Defender real-time off on the runner (CI_SPEED_DIAGNOSIS_2026-10-22.md)."}
 ```
 
+## q-ci-under-2-min (2026-10-23 IST, Admin_Guy)
+```json
+{"id": "q-ci-under-2-min", "order": 39, "date": "2026-10-22", "status": "DECIDED",
+ "quote": "I want everything to be under 2 minutes.",
+ "context": "after the 3-shard CI went green in 5m50s push-to-green (run 39833754926 on 788790ff)",
+ "done": "CI in 11 shards (Linux 3, Windows 8), file-list steps split per file, Java only on shard 1, uv installs, Defender off in the background, mark-green via the API without a checkout. Local: every shard 10-53 s. CI wall not yet measured (CI_SPEED_DIAGNOSIS_2026-10-22.md)."}
+```
+
 ## DECISION NEEDED 2026-10-21 (Lab_Guy): pre_pipeline_sources review_by 2026-10-23
 27 grandfathered testnet sources in auto_trader_config.json expire for review on 2026-10-23; promoted_setups.json has 0 entries. Options: (a) extend review_by 14 days (recommended, OURS default), (b) prune falsified layers (turn_of_candle, rsi_divergence, session_levels), (c) stop them. Needs an operator answer in the Control Room; no chat question.

@@ -824,30 +824,94 @@ def apply_fast(plan, files, nums, jobs):
     return new_plan, info
 
 
-SHARD_EST_S = {"5": 150, "6": 60}   # OURS (q-ci-speed-fixes): Maven and backtest seconds for the CI split; SLOWEST_FIRST steps get 400 s
-                                    # down by 25 s per place; the rest STEP_EST, else UNIT_DEFAULT_S. Measure and retune from the CI logs.
+# OURS (operator 2026-10-22 "I want everything to be under 2 minutes"): wall seconds of each gate step, measured alone-in-pool on a
+# 4-core Linux container (full gate 120 s); a step not listed counts 2 s. The file-list steps are split per file below instead.
+SHARD_EST_S = {"5": 17, "6": 8, "3k": 20, "3sig": 20, "3ad": 14, "3cx": 11, "3gi": 8, "3tk": 7, "3cr": 7, "3dl": 6, "3g": 5, "3ds": 5,
+               "3dk": 5, "3ms": 5, "4d": 5, "4e": 2, "4f": 10, "1": 4, "3w": 4, "3sg": 4, "5c": 3, "3bk": 3, "3lh": 3}
+SHARD_DEFAULT_S = 2
+# OURS: seconds per test file, each file timed alone (4 at a time) on the same container 2026-10-22; the rest count CI_FILE_DEFAULT_S.
+CI_FILE_S = {
+    "MyTradingSys/research/context_factors_2026-10-16/test_context_asof.py": 35,
+    "MyTradingSys/research/context_factors_pit_2026-10-16/test_context_asof.py": 19,
+    "MyTradingSys/research/context_null_2026-10-16/test_context_null.py": 19,
+    "scripts/dev/test_ci_deps_lint.py": 15,
+    "MyTradingSys/research/pit_levels_2026-10-16/test_pit_leakage.py": 11,
+    "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/test_filter_join.py": 6,
+    "scripts/dev/test_lab_query.py": 6,
+    "scripts/dev/test_testnet_canary.py": 5,
+    "MyTradingSys/tests/test_relay.py": 11,
+    "MyTradingSys/tests/test_lease.py": 10,
+    "MyTradingSys/tests/test_relay_tick.py": 7,
+    "MyTradingSys/tests/test_lookahead_lint.py": 6,
+}
+CI_FILE_DEFAULT_S = 1.5
 
 
 def shard_est(num):
     num = str(num)
-    if num in SHARD_EST_S:
-        return SHARD_EST_S[num]
-    if num in SLOWEST_FIRST:
-        return 400 - 25 * SLOWEST_FIRST.index(num)
-    return STEP_EST.get(num, UNIT_DEFAULT_S)
+    return SHARD_EST_S.get(num, SHARD_DEFAULT_S)
+
+
+def _bins(items, n, sec):
+    """Greedy longest-first: `items` into at most n non-empty lists balanced by sec(item); their union is exactly `items`."""
+    bins = [[0.0, []] for _ in range(max(1, min(n, len(items))))]
+    for it in sorted(items, key=lambda x: (-sec(x), x)):
+        b = min(bins, key=lambda b: b[0])
+        b[0] += sec(it)
+        b[1].append(it)
+    return [(s, sorted(c)) for s, c in bins if c]
+
+
+def split_for_shards(plan, n):
+    """CI shards (operator 2026-10-22, under 2 minutes): the file-list steps (3xt extra files, 5b layer modules, the MyTradingSys/tests
+    pytest shards) become n parts each, balanced per file, so no single step holds a shard far past the others. Same split on every
+    job (sorted, deterministic). Other steps are kept as they are; est is set on every step."""
+    import run_extra_tests
+    out, py_files = [], []
+    for s in plan:
+        mine = [a for a in s.cmd_text.split() if a.startswith("MyTradingSys/tests/")]
+        if not s.skip and s.num in PYTEST_SHARD_NUMS and mine:   # a shard whose files cannot be read stays whole (fail closed)
+            py_files += mine
+            continue
+        if not s.skip and s.num == "3xt":
+            for i, (sec, sub) in enumerate(_bins(run_extra_tests.all_tests(), n, lambda f: CI_FILE_S.get(f, CI_FILE_DEFAULT_S))):
+                p = Step(f"3xt.{i + 1}", f"Extra tests part {i + 1} ({len(sub)} files)", s.label,
+                         cmd=[sys.executable, "scripts/dev/run_extra_tests.py", "--only", *sub])
+                p.est = sec
+                out.append(p)
+            continue
+        if not s.skip and s.num == "5b" and n > 1:
+            jobs = gate_jobs()
+            mods = find_layer_modules()
+            for i, (sec, sub) in enumerate(_bins(mods, n, lambda m: 46 * 4 / max(1, len(mods)))):
+                p = Step(f"5b.{i + 1}", f"Layer tests part {i + 1} ({len(sub)} modules)", s.label, tail=None, key=",".join(sub),
+                         run=(lambda sub=sub: exec_layer_chunks(sub, jobs)), cmd_text=f"python -m unittest ({len(sub)} modules)")
+                p.est = sec / max(1, min(jobs, len(sub)))
+                out.append(p)
+            continue
+        s.est = shard_est(s.num)
+        out.append(s)
+    for i, (sec, sub) in enumerate(_bins(py_files, n, lambda f: CI_FILE_S.get(f, CI_FILE_DEFAULT_S))):
+        p = Step(f"4.{i + 1}", f"Pytest MyTradingSys/tests part {i + 1} ({len(sub)} files)", "Step 4: Pytest tests", cmd=pytest_cmd(sub))
+        p.est = sec
+        out.append(p)
+    return out
 
 
 def apply_shard(plan, spec):
-    """--shard K/N (operator 2026-10-22, q-ci-speed-fixes: Windows leg 14 of 15 CI minutes): greedy longest-first split of the
-    steps that would run; steps of other shards get skip='shard j/N runs it'. Same plan on every job -> each step runs exactly once."""
+    """--shard K/N (operator 2026-10-22, q-ci-speed-fixes; "everything under 2 minutes"): split_for_shards, then a greedy longest-first
+    split of the steps that would run; steps of other shards get skip='shard j/N runs it'. Same plan on every job -> each step runs
+    exactly once. Maven (step 5) always runs in shard 1, the only job that sets up Java."""
     k, n = (int(x) for x in str(spec).split("/"))
     if not (1 <= k <= n):
         raise ValueError(f"bad --shard {spec}")
+    plan = split_for_shards(plan, n) if n > 1 else plan
+    est = lambda x: x.est if x.est is not None else shard_est(x.num)   # noqa: E731
     loads, owner = [0.0] * n, {}
-    for st in sorted((x for x in plan if not x.skip), key=lambda x: (-shard_est(x.num), x.num)):
-        j = min(range(n), key=lambda i: (loads[i], i))
+    for st in sorted((x for x in plan if not x.skip), key=lambda x: (x.num != "5", -est(x), x.num)):
+        j = 0 if st.num == "5" else min(range(n), key=lambda i: (loads[i], i))
         owner[st.num] = j
-        loads[j] += shard_est(st.num)
+        loads[j] += est(st)
     for st in plan:
         if st.num in owner and owner[st.num] != k - 1:
             st.skip = f"shard {owner[st.num] + 1}/{n} runs it"
@@ -1052,7 +1116,7 @@ def main(argv=None):
     if "--shard" in args:
         spec = args[args.index("--shard") + 1]
         plan = apply_shard(plan, spec)
-        print(f"Shard {spec}: {sum(1 for x in plan if not x.skip)} steps here (est {sum(shard_est(x.num) for x in plan if not x.skip):.0f} s)", flush=True)
+        print(f"Shard {spec}: {sum(1 for x in plan if not x.skip)} steps here (est {sum(x.est if x.est is not None else shard_est(x.num) for x in plan if not x.skip):.0f} s)", flush=True)
     if mode and mode != "full" and changed_files(args):
         files = changed_files(args)
         if len(chr(10).join(files)) > 30000:   # Windows caps an env var at 32767 chars (a card sweep moves hundreds of files); card json carries no doc caps
