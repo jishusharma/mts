@@ -117,6 +117,11 @@
             "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/prereq_guard.py\" hook",
             "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/offer_guard.py\" hook",
+            "timeout": 10
           }
         ]
       }
