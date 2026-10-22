@@ -6,6 +6,11 @@
         "hooks": [
           {
             "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/trunk_lag.py\" session-start",
+            "timeout": 40
+          },
+          {
+            "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/shot.py\" hook",
             "timeout": 15
           },

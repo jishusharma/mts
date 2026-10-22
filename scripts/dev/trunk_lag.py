@@ -5,6 +5,9 @@ merges trunk once at boot; a session that then runs for hours reads code, docs a
 UserPromptSubmit hook (.claude/settings.json): fetches origin/fast-track at most every FETCH_EVERY_S, counts the trunk commits
 this tree lacks and, when the oldest of them landed more than LAG_S ago or MAX_BEHIND are missing, prints one line telling
 the session to merge before it reads code or quotes state. Silent otherwise. Never raises, never blocks; skips the live tree.
+SessionStart (`session-start`): a clean checkout ON fast-track (a device's main checkout) fast-forwards to origin/fast-track first, so a
+session started on any device runs trunk's scripts (2026-10-22: NB and the laptop ran Supervisors on old hooks; nobody pulls there).
+Other branches (worktrees: `sync.py start`), tracked edits and the live tree are left alone.
 Env: MTS_TRUNK_LAG=off disables.
 Run by hand: python scripts/dev/trunk_lag.py check   (prints the line, or nothing)
 """
@@ -72,8 +75,40 @@ def check(repo=None, fetch=True):
     return message(behind, age)
 
 
+def catch_up(repo=None, fetch=True):
+    """SessionStart: fast-forward a clean fast-track checkout to origin/fast-track; returns the note for the session, or ''."""
+    repo = Path(repo or os.getcwd())
+    if ".mts_live" in repo.resolve().parts or (repo / ".mts_live").exists():
+        return ""
+    if git(repo, "rev-parse", "--abbrev-ref", "HEAD").stdout.strip() != TRUNK:
+        return ""
+    if git(repo, "status", "--porcelain", "--untracked-files=no").stdout.strip():
+        return ""
+    if fetch:
+        git(repo, "fetch", "--quiet", "origin", TRUNK, timeout=30)
+    behind = len(git(repo, "rev-list", f"HEAD..origin/{TRUNK}").stdout.split())
+    if not behind:
+        return ""
+    hooks = git(repo, "diff", "--name-only", f"HEAD..origin/{TRUNK}", "--", ".claude/settings.json").stdout.strip()
+    if git(repo, "merge", "--ff-only", "--quiet", f"origin/{TRUNK}", timeout=30).returncode:
+        return ""
+    note = f"TRUNK CATCH-UP: this checkout fast-forwarded {behind} commit(s) to origin/{TRUNK} at session start."
+    if hooks:
+        note += " .claude/settings.json changed: this session runs the old hook list; the next session loads the new one."
+    return note
+
+
 def main(argv):
     if os.environ.get("MTS_TRUNK_LAG", "").lower() == "off":
+        return 0
+    if argv[:1] == ["session-start"]:
+        try:
+            sys.stdin.read()
+            text = catch_up()
+        except Exception:
+            return 0
+        if text:
+            print(text)
         return 0
     if argv[:1] in (["hook"], ["check"]):
         try:

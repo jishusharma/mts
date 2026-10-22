@@ -63,6 +63,36 @@ class TrunkLagTest(unittest.TestCase):
         cmds = [h["command"] for e in ups for h in e["hooks"]]
         self.assertTrue(any("trunk_lag.py" in c for c in cmds), cmds)
 
+    def test_session_start_fast_forwards_a_clean_trunk_checkout_only(self):
+        # 2026-10-22: NB and the laptop started Supervisors on main checkouts nobody had pulled (old hooks, old guards)
+        commit(self.origin, "b", 1_000_100)
+        (self.origin / ".claude").mkdir()
+        (self.origin / ".claude" / "settings.json").write_text("{}", encoding="utf-8")
+        sh(self.origin, "add", ".claude")
+        commit(self.origin, "c", 1_000_200)
+        sh(self.tree, "config", "user.email", "t@t")
+        sh(self.tree, "config", "user.name", "t")
+        (self.tree / "a").write_text("edited", encoding="utf-8")
+        self.assertEqual(T.catch_up(self.tree), "", "tracked edits: left alone")
+        sh(self.tree, "checkout", "-q", "--", "a")
+        sh(self.tree, "checkout", "-q", "-b", "jis-nb/work")
+        self.assertEqual(T.catch_up(self.tree), "", "another branch: left alone")
+        sh(self.tree, "checkout", "-q", "fast-track")
+        (self.tree / "untracked.txt").write_text("x", encoding="utf-8")
+        note = T.catch_up(self.tree)
+        self.assertIn("fast-forwarded 2 commit(s)", note)
+        self.assertIn("settings.json changed", note)
+        self.assertEqual(T.lag(self.tree, fetch=False), (0, 0))
+        self.assertEqual(T.catch_up(self.tree), "", "already current")
+        (self.tree / ".mts_live").write_text("", encoding="utf-8")
+        commit(self.origin, "d", 1_000_300)
+        self.assertEqual(T.catch_up(self.tree), "", "the live tree changes only by a deploy")
+
+    def test_registered_first_at_session_start(self):
+        root = Path(__file__).resolve().parents[2]
+        ss = json.loads((root / ".claude" / "settings.json").read_text(encoding="utf-8"))["hooks"]["SessionStart"]
+        self.assertIn("trunk_lag.py\" session-start", ss[0]["hooks"][0]["command"])
+
 
 if __name__ == "__main__":
     unittest.main()
