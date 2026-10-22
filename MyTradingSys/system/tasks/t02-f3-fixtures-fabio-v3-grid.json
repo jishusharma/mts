@@ -15,7 +15,8 @@
   "from_inbox": "",
   "goal": "T02-F3 part c: fabio|v3_grid|1m gave 0 events on synthetic bars (order-flow bars with footprint and delta fields). Add a hand-built 1m order-flow fixture that forces a v3 signal and run assert_causal from part a on it.",
   "id": "t02-f3-fixtures-fabio-v3-grid",
-  "lane": "SONNET",
+  "kind": "build",
+  "lane": "CODEX",
   "latest": [
     {
       "auto": true,
@@ -27,8 +28,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "mutation_check": "",
-  "note": "REVIEWED:2026-10-19 T0-ONLY (planner-20261019, ROUTINE, check clean). Fixture shape: hand-built bars (not random) that force >= 1 event; assert events > 0 first (fails on a zero-event fixture), then for 20+ cuts k compare full vs cut vs NaN tail vs x10 tail on events stamped <= bar k (method of t02_truncation.py docstring); the planted-peek self-test must FAIL.",
+  "note": "REVIEWED:2026-10-19 T0-ONLY (planner-20261019, ROUTINE, check clean). Fixture shape: hand-built bars (not random) that force >= 1 event; assert events > 0 first (fails on a zero-event fixture), then for 20+ cuts k compare full vs cut vs NaN tail vs x10 tail on events stamped <= bar k (method of t02_truncation.py docstring); the planted-peek self-test must FAIL. | UNSTICK 2026-10-23 (builder codex-unstick): moved SONNET -> CODEX (hand-built bars, one new test file, no data, no live path; part a done). Details: MyTradingSys/system/card_specs/codex-unstick-2026-10-23.md",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -39,7 +39,9 @@
     "MyTradingSys/backtest/layers/alerts/live_runner_cli.py",
     "MyTradingSys/backtest/layers/fabio/v3/signals.py",
     "MyTradingSys/backtest/layers/fabio/v3/day_gates.py",
-    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T02/t02_truncation.py"
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T02/t02_truncation.py",
+    "NEW MyTradingSys/backtest/layers/alerts/test_lookahead_forcing_fabio_v3.py",
+    "MyTradingSys/backtest/layers/alerts/test_lookahead_forcing.py (read: assert_causal, causal_report, _bars_from_closes, TestHarnessSelfTest)"
   ],
   "scope_out": [
     "changing any fabio code",
@@ -56,7 +58,9 @@
     "Read make_fabio_v3_layer (live_runner_cli.py:200) and the v3 signal trigger; reuse the order-flow bar fields from synth(with_flow=True) in t02_truncation.py",
     "Hand-build 1m bars (and session gate time) that force one v3_grid event",
     "New file test_lookahead_forcing_fabio_v3.py in layers/alerts using assert_causal from part a",
-    "Run the new file"
+    "Run the new file",
+    "Include test_planted_peek_is_detected: the same fixture run through a layer that peeks at the next bar must make assert_causal fail (use fwd_peek_next_bar_layer style from test_lookahead_forcing.py)",
+    "Codex sandbox: write only the new test file and the report; run only that test file (python -m unittest ...); no git, no network; do not edit layer code or test_lookahead_forcing.py"
   ],
   "tests": "events > 0 asserted (fails on random bars); 0 late/repaint/poison differences at 10+ cuts.",
   "title": "T02-F3 part c: event-forcing look-ahead fixture for fabio v3_grid",

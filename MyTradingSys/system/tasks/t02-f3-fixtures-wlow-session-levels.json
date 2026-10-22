@@ -15,7 +15,8 @@
   "from_inbox": "",
   "goal": "T02-F3 part b: wlow_bounce|bbrsi60|1h and session_levels|session_levels|1m gave 0 events on synthetic bars. Add hand-built fixtures that force events and run the shared assert_causal harness from part a on them.",
   "id": "t02-f3-fixtures-wlow-session-levels",
-  "lane": "SONNET",
+  "kind": "build",
+  "lane": "CODEX",
   "latest": [
     {
       "auto": true,
@@ -27,8 +28,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "mutation_check": "",
-  "note": "REVIEWED:2026-10-19 T0-ONLY (planner-20261019, ROUTINE, check clean). Fixture shape: hand-built bars (not random) that force >= 1 event; assert events > 0 first (fails on a zero-event fixture), then for 20+ cuts k compare full vs cut vs NaN tail vs x10 tail on events stamped <= bar k (method of t02_truncation.py docstring); the planted-peek self-test must FAIL.",
+  "note": "REVIEWED:2026-10-19 T0-ONLY (planner-20261019, ROUTINE, check clean). Fixture shape: hand-built bars (not random) that force >= 1 event; assert events > 0 first (fails on a zero-event fixture), then for 20+ cuts k compare full vs cut vs NaN tail vs x10 tail on events stamped <= bar k (method of t02_truncation.py docstring); the planted-peek self-test must FAIL. | UNSTICK 2026-10-23 (builder codex-unstick): moved SONNET -> CODEX (hand-built bars, one new test file, no data, no live path; part a done). Details: MyTradingSys/system/card_specs/codex-unstick-2026-10-23.md",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -39,7 +39,9 @@
     "MyTradingSys/backtest/layers/alerts/live_runner_cli.py",
     "MyTradingSys/backtest/layers/wlow_bounce/detector.py",
     "MyTradingSys/backtest/layers/session_levels/session_levels.py",
-    "MyTradingSys/backtest/layers/alerts/live_session_levels.py"
+    "MyTradingSys/backtest/layers/alerts/live_session_levels.py",
+    "NEW MyTradingSys/backtest/layers/alerts/test_lookahead_forcing_wlow_session.py",
+    "MyTradingSys/backtest/layers/alerts/test_lookahead_forcing.py (read: assert_causal, causal_report, _bars_from_closes, TestHarnessSelfTest)"
   ],
   "scope_out": [
     "changing any layer code",
@@ -56,7 +58,9 @@
     "Read detector.py (weekly-low bounce trigger; fetch injected via make_wlow_bounce_layer, fetch_oi stub) and build 1h bars that force one event",
     "Read live_session_levels.py (1m, needs 2900 bars) and session_levels.py; build bars across a UTC day that force a session-level event",
     "New file test_lookahead_forcing_wlow_session.py in layers/alerts importing assert_causal from part a; one test per layer",
-    "Run the new file"
+    "Run the new file",
+    "Include test_planted_peek_is_detected: the same fixture run through a layer that peeks at the next bar must make assert_causal fail (use fwd_peek_next_bar_layer style from test_lookahead_forcing.py)",
+    "Codex sandbox: write only the new test file and the report; run only that test file (python -m unittest ...); no git, no network; do not edit layer code or test_lookahead_forcing.py"
   ],
   "tests": "Per layer: events > 0 asserted (fails on random bars), 0 late/repaint/poison differences at 20+ cuts.",
   "title": "T02-F3 part b: event-forcing look-ahead fixtures for wlow_bounce and session_levels",
