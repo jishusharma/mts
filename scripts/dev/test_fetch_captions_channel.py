@@ -45,14 +45,14 @@ class T(unittest.TestCase):
             with mock.patch.object(f.yt_dlp, "YoutubeDL", FakeYDL), mock.patch.object(f, "CANON", canon), \
                     mock.patch.object(f.time, "sleep"):
                 rc = f.main(["--analyst", "Krown", "--out", str(canon)] + args)
-            return rc, sorted(p.name for p in canon.glob("*_raw.txt")), canon
+            return rc, sorted(p.name for p in canon.glob("*_raw.txt")), {p.name: p.read_text() for p in canon.glob("*_raw.txt")}
 
     def test_latest_n_with_title_filter_keyed_by_video_id(self):
-        rc, raws, canon = self.run_main(["--channel", "@x", "--latest", "2", "--include", "(?i)btc|eth",
+        rc, raws, texts = self.run_main(["--channel", "@x", "--latest", "2", "--include", "(?i)btc|eth",
                                          "--exclude", "(?i)#shorts"])
         self.assertEqual(rc, 0)
         self.assertEqual(raws, ["aaaaaaaaaaa_raw.txt", "ccccccccccc_raw.txt"])
-        self.assertIn("# Channel: @x", (canon / "aaaaaaaaaaa_raw.txt").read_text())
+        self.assertIn("# Channel: @x", texts["aaaaaaaaaaa_raw.txt"])
 
     def test_no_subs_candidate_is_skipped_not_counted(self):
         rc, raws, _ = self.run_main(["--channel", "@x", "--latest", "2", "--exclude", "#shorts"],
