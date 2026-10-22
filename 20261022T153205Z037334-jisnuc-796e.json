@@ -1,0 +1,1 @@
+{"t": "20261022T153205Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship supervisor-B-2026-10-22 Result: bench lists 20 rows incl. model_guard.py, preship.py hook-edit and all SessionStart hooks; test fails if a configured hook is missing.", "sid": "e9bd3cf96a"}
