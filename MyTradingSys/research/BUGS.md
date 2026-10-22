@@ -312,4 +312,6 @@ IN-FIX rows older than 14 days fail Build-Check.
 
 | B197 | 2026-10-22 | OPEN | MED | DSA search discipline: content search before claiming a file or role does not exist; propose thinking lessons in LESSONS_DIGEST.md not apparatus_fixes.md | [FIXER: Claude] [LOGGER: DSA] Three misses in DSA chat MTS-2026-10-22-0601Z (results #5, #7, #4, one root cause: paste treated as tree). Proposed: two rule lines in LESSONS_DIGEST.md section 1, one line in apparatus_fixes.md HOW TO PATCH (also closes B186 item (a)), optional scripts/dev/find_thing.py. Item: items/B197_search_discipline_content_before_absence.md | - |
 
+| B198 | 2026-10-22 | OPEN | HIGH | AIBridge hands-free stalls when the chat tab is backgrounded; blocks sit unrun until tab focus returns, then misfire | [FIXER: Claude] [LOGGER: DSA] Operator returned to tab and found the auto-run button unclicked. Chrome throttling pauses the extension loop. Batch context and cwd are lost when it wakes. Needs chrome.alarms/service worker or an explicit background pause warning. Item: items/B198_aibridge_background_tab_stall.md | - |
+
 # END
