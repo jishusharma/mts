@@ -203,5 +203,16 @@ class FallbackHook(unittest.TestCase):
         self.assertEqual(self.ctx("chart screenshot design options", sid="s4"), "")
 
 
+class AskedWorkRunsNow(unittest.TestCase):
+    # bug-ask-go-for-asked-work: asked work runs this turn; no "say go" gate
+    def test_thinker_no_go_ahead_request(self):
+        text = (ROLES_DIR / "thinker.md").read_text(encoding="utf-8")
+        self.assertIn("ASKED WORK RUNS NOW", text)
+        self.assertIn("never end a reply asking the operator to say go", text)
+
+    def test_boot_text_has_asked_work_rule(self):
+        self.assertIn("ASKED WORK RUNS NOW", rl.RULES_ANSWER)
+
+
 if __name__ == "__main__":
     unittest.main()
