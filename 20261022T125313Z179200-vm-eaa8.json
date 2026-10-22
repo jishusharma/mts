@@ -1,0 +1,1 @@
+{"t": "20261022T125313Z", "from": "vm/?", "to": "all", "kind": "done", "text": "ship Result: preship.py check on this diff: 6/6 rules ok (it first caught a quoted cap number in preship.py itself); 137 tests pass", "sid": "b41d586e94"}
