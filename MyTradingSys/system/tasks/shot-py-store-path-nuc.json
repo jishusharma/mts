@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C0",
+  "closed": "2026-10-22T13:54:50Z",
   "commands": [
     "python scripts/dev/shot.py ingest --inbox <scratch>"
   ],
@@ -15,10 +17,16 @@
   "latest": [
     {
       "kind": "ship",
-      "ref": "6357d0548e5b",
-      "utc": "2026-10-13T19:05:04Z",
+      "line": "manifest 452->454 rows, 2nd ingest 0 new; remote branch already deleted",
+      "ref": "f22763caa",
+      "utc": "2026-10-22T13:54:50Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
       "line": "RV07 layer tooling revalidation; shot.py MISMATCH + whole-token guards",
-      "auto": true
+      "ref": "6357d0548e5b",
+      "utc": "2026-10-13T19:05:04Z"
     }
   ],
   "layers": [],
@@ -30,7 +38,12 @@
   "refined_by": "gemini-nuc",
   "refreshed": "2026-10-18T10:02:34Z",
   "refs": [],
-  "result": "",
+  "result": "manifest 452->454 rows, 2nd ingest 0 new; remote branch already deleted",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/shot.py",
     "scripts/dev/test_shot.py"
@@ -43,16 +56,16 @@
   "scope_sha": "6357d0548e5b",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "In a scratch dir: `git archive origin/shots-inbox/2026-10-12-1532 | tar -x -C <scratch>` (two PNGs: BTCUSDT_15m_coinglass_2026-10-12_1530Z.png and BTCUSDT_30m_coinglass_2026-10-12_1525Z.png).",
     "Run `python scripts/dev/shot.py ingest --inbox <scratch>` from a worktree; count manifest.jsonl rows before and after.",
     "Run it a second time: 0 new rows (sha256 de-dup). Then `git push origin --delete shots-inbox/2026-10-12-1532` (plain delete, no force)."
   ],
+  "taken": "2026-10-22T13:54:50Z",
   "tests": "Existing: python -m pytest scripts/dev/test_shot.py -q passes (git 2.24 case at line 451); no new code.",
   "title": "shot.py ingest fails on JIS-NUC (git-common-dir flag echoed into the store path); then land the 2 CoinGlass PNGs from branch shots-inbox/2026-10-12-1532 and delete that branch",
   "updated": "2026-10-18T10:00:00Z",
   "weight": "ROUTINE",
-  "worker": "agent",
-  "class": "C0"
+  "worker": "agent"
 }
