@@ -344,6 +344,38 @@ def decide(tool, inp, parent):
     return None
 
 
+def first_prompt(transcript_path):
+    """The session's first user message as text, system reminders removed, or '' if unreadable."""
+    try:
+        with open(transcript_path, encoding="utf-8", errors="replace") as f:
+            for line in f:
+                try:
+                    d = json.loads(line)
+                except ValueError:
+                    continue
+                c = (d.get("message") or {}).get("content") if d.get("type") == "user" else None
+                if isinstance(c, list):
+                    c = " ".join(b.get("text", "") for b in c if isinstance(b, dict) and b.get("type") == "text")
+                if isinstance(c, str) and c.strip():
+                    return REMINDER_BLOCK.sub("", c).strip()
+    except (OSError, TypeError, ValueError):
+        pass
+    return ""
+
+
+def nested_reason(tool, inp, transcript_path):
+    """E2E run 2026-10-22: a Supervisor that a session had started called start_session for its Builders; the app stopped each call
+    for an operator approval and the run sat waiting. A session started by another session starts its workers as background Agents."""
+    if tool != START or (inp or {}).get("target") == "cloud" or os.environ.get("MTS_ALLOW_NESTED") == "1":
+        return None
+    import role_loader
+    if not role_loader.from_session(first_prompt(transcript_path)):
+        return None
+    return ("this session was started by another session, so a start_session from here waits for an operator approval in the app "
+            "(the operator is away). Start the worker with the Agent tool instead: model='sonnet', run_in_background=true, the same brief "
+            "(its first line `You are <Role>.`).")
+
+
 def hook():
     try:
         ev = json.loads(sys.stdin.read() or "{}")
@@ -367,7 +399,7 @@ def hook():
         return 0
     if tool in SEND_TOOLS:
         return 0
-    card = card_reason(tool, inp)
+    card = card_reason(tool, inp) or nested_reason(tool, inp, ev.get("transcript_path"))
     if card:
         print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
                                                  "permissionDecisionReason": "model_guard: " + card}}))

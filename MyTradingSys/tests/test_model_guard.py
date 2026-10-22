@@ -85,6 +85,21 @@ class ModelGuardTest(unittest.TestCase):
         self.assertEqual(fire("Agent", {"subagent_type": "fork", "prompt": "p"}, self.transcript("claude-opus-5-5")), "deny")
         self.assertEqual(fire("Agent", {"subagent_type": "fork", "prompt": "p"}, self.transcript("claude-haiku-5-5")), "allow")
 
+    def test_a_started_session_starts_workers_as_agents_not_sessions(self):
+        # E2E run 2026-10-22: a Supervisor started by the super session called start_session for two Builders;
+        # the app asked the operator to approve each one and the run stalled until he came back
+        p = Path(self.tmp.name) / "child.jsonl"
+        brief = ("<system-reminder>\nYou are operating in a git worktree.\n</system-reminder>\n\n"
+                 "Background (from the session that started this one):\nE2E run.\n\nYou are Supervisor. Login B.")
+        p.write_text(json.dumps({"type": "user", "message": {"content": brief}}) + "\n", encoding="utf-8")
+        inp = {"initiation": "user_asked", "title": "Builder", "prompt": "You are Builder.", "background": "b" * 90,
+               "model": "claude-sonnet-5-5"}
+        decision, reason = fire_full(START, inp, p)
+        self.assertEqual(decision, "deny")
+        self.assertIn("Agent tool", reason)
+        self.assertEqual(fire("Agent", {"description": "d", "prompt": "You are Builder.", "model": "sonnet"}, p), "allow")
+        self.assertEqual(fire(START, inp, self.transcript("claude-sonnet-5-5")), "allow")   # operator-started session: unchanged
+
     def test_agent_needs_cheap_model(self):
         self.assertEqual(fire("Agent", {"description": "d", "prompt": "p"}), "deny")
         self.assertEqual(fire("Agent", {"description": "d", "prompt": "p", "model": "opus"}), "deny")
