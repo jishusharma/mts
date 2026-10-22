@@ -1018,7 +1018,10 @@ def main(argv=None):
     plan = build_plan(quick)
     plan, mode = apply_selection(plan, args)
     if mode and mode != "full" and changed_files(args):
-        os.environ["MTS_GATE_CHANGED_FILES"] = chr(10).join(changed_files(args))   # tests/docs/test_integrity.py: caps and banners on the diff only
+        files = changed_files(args)
+        if len(chr(10).join(files)) > 30000:   # Windows caps an env var at 32767 chars (a card sweep moves hundreds of files); card json carries no doc caps
+            files = [f for f in files if not f.startswith("MyTradingSys/system/tasks/")]
+        os.environ["MTS_GATE_CHANGED_FILES"] = chr(10).join(files)   # tests/docs/test_integrity.py: caps and banners on the diff only
     if mode:
         print(f"Gate mode: {mode} ({sum(1 for s in plan if not s.skip)} steps); CI runs the full suite behind the push", flush=True)
         print(f"Gate reason: {gate_reason}", flush=True)
