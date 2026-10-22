@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-22T17:11:08Z",
   "commands": [
     "python scripts/dev/hook_bench.py -n 3"
   ],
@@ -15,6 +16,12 @@
   "id": "e2e-hook-bench-all-hooks",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "ab82fc75: hook_bench times all 20 hook rows; test fails on the old bench (3 failed)",
+      "ref": "e07d7879",
+      "utc": "2026-10-22T17:11:08Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refined_by": "",
   "refreshed": "2026-10-22T15:10:30Z",
   "refs": [],
-  "result": "",
+  "result": "ab82fc75: hook_bench times all 20 hook rows; test fails on the old bench (3 failed)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/hook_bench.py",
     "scripts/dev/test_hook_bench.py"
@@ -45,12 +57,13 @@
   "sources": [
     "E2E run 2026-10-22: bench printed 12 rows, settings.json has 16 hook commands"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write the fail-first test",
     "add per-matcher payloads (tool_name from the matcher) and a SessionStart row that does not send signals (state dirs in temp)",
     "ship"
   ],
+  "taken": "2026-10-22T17:11:08Z",
   "tests": "test_hook_bench.py: a test that reads .claude/settings.json and asserts every configured command appears in the bench rows; fails on the current bench",
   "title": "hook_bench.py skips matcher hooks (model_guard, preship hook-edit) and SessionStart",
   "weight": "ROUTINE",
