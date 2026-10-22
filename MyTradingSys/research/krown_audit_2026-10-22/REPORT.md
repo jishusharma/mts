@@ -1,5 +1,7 @@
 # Krown layer audit: where it stands, what it adds, how it feeds the other layers (2026-10-22)
 
+> Reviewed by an independent Opus pass: `REVIEW_OPUS.md` (SOUND WITH FIXES). Corrections F11, F14, F18 applied in place. The wiring ideas in s5 are superseded where they conflict with `LAYER_CONFLUENCE_DESIGN.md` s9 (v2) and the governance rule PROJECT_VISION.md:262 (no confluence gate before each input passes S3 alone). A prior context study already ran: `research/context_factors_2026-10-16/RESULT.md` INCONCLUSIVE (E = -0.023 R, all C trades -0.137 R net).
+
 Scope (operator request 2026-10-22): look at the Krown layer end to end: how much work is done, where it sits, its vision; compare what
 Krown adds with what MTS needs from it; which layers can take Krown as a confluence input (example: an RSI + Bollinger Band setup);
 sample his recent YouTube uploads and his web app; say what should be taken and where it helps. Audit findings included.
@@ -88,7 +90,7 @@ Principle (MTS, PROJECT_VISION): read layers annotate; a gate only after a DEV/V
 condition, then (maybe) gate**.
 
 ### 5.1 The Krown context vector (one row per closed 1d bar; 1w row per Monday 00:00 UTC close)
-All fields are already computable from `krown_core.py` except where marked NEW.
+Most fields come from `krown_core.py`; not there yet (REVIEW_OPUS F14): ATR, any 1h/4h data path (Krown data is 1d/1w spot), and the 1w series has 8 gaps inside 2022.
 
 | field | values | from |
 |---|---|---|
@@ -108,7 +110,7 @@ Point in time: a 1d row exists only after its 00:00 UTC close; an intraday alert
 
 | target layer (tf) | what it does | Krown inputs that matter | hypothesis (DEV, conditional table, OURS) |
 |---|---|---|---|
-| **wlow_bounce `bbrsi60` (1h)**: weekly-low break, bounce, RSI holds under 60 near upper BB | trend_1w, rsi_regime_1d, bbwp_1d, zone_dist (weekly low is a Krown zone candidate) | H-K2: the short works only when trend_1d/1w is down or range and BBWP_1d is not in compression-rising (a breakout regime) |
+| **wlow_bounce `bbrsi60` (1h)**: weekly-low break, bounce, RSI holds under 60 near upper BB | trend_1w, rsi_regime_1d, bbwp_1d, zone_dist (weekly low is a Krown zone candidate) | H-K2 (corrected per REVIEW_OPUS F18: the wlow primary is LONG and live emits long): the long works only when trend_1d/1w is down or range and BBWP_1d is not in compression-rising (a breakout regime) |
 | **bb_top_reversal (15m)**: green candle into upper BB, red close below its open, short | bbwp (1h/4h, OURS) + range_pos + trend_1d | **H-K1**: fading an upper-band touch pays more when BBWP of the trading tf is >= 85 (volatility extreme, KR-S16) and less/negative when BBWP rose from <= 30 in the last N bars (compression breakout, KR-S8) |
 | **MAL-BB-RSI-4060 draft (1m/5m)**: BB mid + RSI 40/60 short in a short-term downtrend | rsi_regime_1d/1w (Malkan's own MTF filter is monthly/weekly RSI < 40: Krown's 40/60 regime is the same object), trend_1d | H-K3: shorts with rsi_regime_1d = bear and trend_1d = down vs the rest |
 | **rsi `rsi_events` 40-level (5m/15m/1h)**, **malkan_bull/bear (1h)** | rsi_regime_1d, topdown_agree | H-K3 (same table) |
@@ -123,7 +125,7 @@ Point in time: a 1d row exists only after its 00:00 UTC close; an intraday alert
 Setup (MAL-BB-RSI-4060, operator 2026-10-15): 1m BTC, price rejected at the BB mid, RSI rejected near 60 or flows out of 40, short in a
 short-term downtrend. Krown adds, without touching the setup:
 1. **Where (trend)**: is the 1d/1w trend down or range? Malkan's own primary source says the daily-60 sell is taken only inside monthly
-   and weekly RSI < 40 (`extract_2HcJ3NeZmEQ.md:39-58`); Krown's 40/60 regime on 1d/1w is the same filter, already coded (`rsi_zone`).
+   and weekly RSI < 40 (`extract_2HcJ3NeZmEQ.md:39-58`); Krown's 40/60 regime is the same object only on the weekly (and monthly) timeframe; Malkan's daily 60 is his trigger, not his filter (REVIEW_OPUS F11).
 2. **When (volatility)**: is 1h/4h BBWP rising out of compression (then the lower-band "dance" is a walk, not a bounce: Bollinger rule 8,
    and the 2026-10-15 13:26-13:30 data, four closes outside the band in a row) or at an extreme >= 85 (then fades of the mid work better)?
 3. **How (structure)**: is price in the middle of a daily range (no man's land, KR-R01) or just under a ranked daily ceiling zone?
@@ -143,7 +145,7 @@ workers got WebSearch snippets only; nothing below was read from a watch page or
   TA 101 captions that failed recall, A5). The 5/21-cross -> "55 EMA is the minimum target" rule is a SOURCED target for K-TGT.
 - **What the transcript on disk adds (hNfjyrJEytI 00:16:19-00:19:00, his own worked example of the four layers):** downtrend by lower
   highs/lows; volatility "base out at very low levels"; a lower high "on hidden bearish divergence within the context of a downtrend";
-  volatility rises and price continues with the trend; at BBWP "90 percentile ... price action stalls"; a higher low is "a precursor"
+  volatility rises and price continues with the trend; at BBWP "90 percentile ... price action stalls"; a higher low is "a precursor" [sic: auto-caption reads "prereic kicate", 00:18:16]
   but the reversal is "not confirmed until you get a higher high", i.e. a weekly or daily close back above the last rejection high.
   That is a complete context recipe: divergence is read **with** the trend, low BBWP times the move, high BBWP times the exit.
 - Rerun needed on a networked host (JIS-NB/NUC, yt-dlp `--write-auto-subs --sub-langs en-orig`, the method that worked on 2026-10-16):

@@ -220,6 +220,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md`
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-17_krown-catalogue-gpt-audit.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `confluence-s0-registry` raw p2 HAIKU: Confluence S0: Krown registry refresh
+  - `confluence-s1-context-counts` raw p2 SONNET: Confluence S1: Krown context table and counts pass
   - `krown-data-cme-btc-volume` refined p2 DSA: Krown CME BTC futures daily volume (public data only) as third volume arm
   - `krown-dev-event-study` refined p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
   - `trendline-audit-gaps-disposition` refined p2 SONNET: Trend-Line layer: disposition of AUDIT_2026-10-18 critical gaps (3 HIGH, 3 MED) and REGATE_AUDIT flip
@@ -243,8 +245,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Layer `pitchfork_swing`: Foundational papers delivered; detector built with unit tests (100% pass) | module MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py
 - Spec / sources: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md`; `papers/02_PITCHFORK_APPLICATION_ON_BTC.md`; `MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md`; `papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md`
 - Code: `MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py`
-- Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `pitchfork-layer-java-execution` ready p1 SONNET: Pitchfork Layer: Wire Modified Schiff tine bounce and Volume Profile confluence into SetupCandidatesBuilder
+- Open cards: none
 
 ## Cross-cutting
 
