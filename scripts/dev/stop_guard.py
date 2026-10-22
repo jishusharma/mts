@@ -50,7 +50,9 @@ def seen_before(session_id, why):
         d = {}
     if d.get(session_id) == why:
         return True
-    d = {session_id: why}      # one session at a time keeps the file tiny
+    d.pop(session_id, None)
+    d[session_id] = why
+    d = dict(list(d.items())[-50:])     # last 50 sessions: interleaved sessions no longer erase each other (review 2026-10-21)
     try:
         f.parent.mkdir(parents=True, exist_ok=True)
         f.write_text(json.dumps(d), encoding="utf-8", newline=chr(10))

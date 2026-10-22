@@ -1,0 +1,31 @@
+# Simulator desk: all inputs for the Opus lead session (2026-10-21)
+
+Read this first, then DESIGN.md, then the two cards (`tasks/sim-desk-core.json`, `tasks/sim-desk-charts.json`). Written by the Thinker/Sonnet session. Operator: runs 3 devices and 3 accounts, cannot read details, has given bypass permission. Report to him as done / not done / next steps taken; ask only on a real dependency; plain words, no internal names (LC3, ladder, KEEP, arm P) without a gloss.
+
+## 1. What the operator asked for (his words, condensed; he is not sure yet what he needs)
+- "It is more like a dashboard ... one page ... where I can click on things and choose, select, run."
+- "A simulator where we can just configure whatever layers we want to test and start the runs."
+- "Free-form values: we need flexibility, because we need to guess also sometimes and do things like hit and try. ... There should be room to accommodate more layers going in future."
+- Results "very clearly visible with good examples on a chart, on an actual chart, where you can see where it passes and where it fails, the exact example, like a screenshot. ... very light in size and very precisely taken, so that there is no cluttering. Too much information is useless. The most important and critical things first."
+- "Simple, economical, and very, very powerful. It serves the purpose it is made for."
+- Why: he could not see what parameters were set, how a trade looks (entry, exit, what was considered), or why a test failed. The run that triggered this: card lc-ladder-dev (see 3).
+- Reporting rule (memory feedback-plain-status-no-jargon): done or not done; if not, next steps already taken; ask only for his dependencies.
+
+## 2. Hard constraints (CLAUDE.md, restated only where they bite here)
+Testnet only; never read .secrets/.env; repo is PUBLIC so no price or runtime data committed (charts built on the fly, cache gitignored); no scheduled tasks or background services (desk is started by hand); builders never touch the live tree; DEV window only (2022-04-01..2024-06-30), VALIDATION (2024-07-01..2025-06-30) and HOLDOUT (2025-07+) never offered; every real run logged to layer_lab/TRIALS.md; fewer lists, fewer rules, fewer moving parts; no new gates or rule docs.
+
+## 3. The example study the desk must reproduce
+Card lc-ladder-dev (shipped, on trunk): research/levels_confluence_2026-10-14/ (ladder.py, ladder_run.py, ladder_dev.md, frozen_rule.json, ladder_ideas_dev.csv, test_ladder.py). 5976 first touches of 8 price levels (prior-day high/low, prior-day POC, naked POC, 4h swing high/low, round 1000s, prior-week high) on BTCUSDT 1m, 240 variants = entry filter E{0,1,4} x scale-ins S{0..3} x stop K{1..5} x exit X{0_1R,0_2R,1,2}, fees maker 0.02 % taker 0.05 %. Frozen rule E1 S2 K5 X0_2R: n 772, mean net -0.039 R, CI [-0.123,+0.048], gross +0.072 R, fee 0.111 R/trade. Verdict: INCONCLUSIVE by the card's power rule (power_mde.py 31 % < 50 %), FAIL by the sample-sd rule (87 % power for +0.10 R). The desk must show this exact result for the frozen setup.
+
+## 4. Three independent design proposals (same brief, read-only Plan agents)
+All three: local app, not a claude.ai Artifact (an Artifact cannot run Python or reach F:/MTS/data); charts as hand-built SVG, 5m candles, ~6 KB each, 6 per run; DEV date lock in code; ledger row per real run; first build = levels study only.
+- Sonnet (30 s, 1 tool call, 2.5 days): stdlib http.server + one HTML file, new folder sim_ui/. Screen: verdict banner, 4 numbers, left rail of settings, strip of 6 charts (3 wins, 3 losses), collapsed details. Claimed Run = column filter of the CSV over all 240 variants (~1 s). Re-run unmeasured. Own question: 240 only or free-form.
+- Haiku (29 s, 2 tool calls, 2 days): hybrid. build_view.py writes JSON + SVGs, static HTML reads it, no server in v1; real re-run (180 s) is v2 behind a server. Same claim that the CSV answers all 240. Extra valid risk: a level-family subset filter is only approximate because L2/T1/T2 depend on the full KEEP set; label it approximate or leave it out of v1.
+- Opus (52 s, 4 tool calls, 3.5-4 days): checked facts. Data is on this machine (F:/MTS/data/tom_raw, 89 monthly files, includes VALIDATION/HOLDOUT months so the lock must be code); CSV has 50 columns = 24 S x K columns with exit X1, 3 extra exits for S2 K5, arm P, plus E/family columns, so instant lookup covers only about 24 of 80 per-trade setups; ladder.simulate() already returns fills/exits/stop/target; no streamlit or matplotlib installed, pandas is. Plan: desk.py, lookup when stored else real re-run per month in parallel (~3 min, measured once) with cache/<settings-hash>.json, ledger row per run, trial counter in footer, pick charts by median not extremes. Its open question: which pass/fail rule the screen shows.
+- Verified by the Thinker: header of ladder_ideas_dev.csv has 50 columns, 24 matching S?_K?_X*, only S2_K5_X0_1R, S2_K5_X0_2R, S2_K5_X2 and P_net_r/P_status beyond that. Opus is right; Sonnet's and Haiku's "all 240 by lookup" is false.
+
+## 5. Thinker review
+- Chosen basis: Opus proposal. Sonnet and Haiku are fast and well-shaped but unverified on the one fact that decides the design. Haiku's static-page idea and its family-subset warning are worth keeping; Sonnet's rule-based chart picks and "viewed" log idea are fine.
+- Defaults taken (change if you can show cause): card power rule governs the verdict, sample-sd shown as one-line footnote; PASSED always reads "DEV only, needs validation"; free-form values in v1 (operator decision); family filter exact only through a real re-run.
+- Cards written: sim-desk-core (settings, Run, verdict, lock, ledger, pluggable module 1) and sim-desk-charts (6 SVGs). Both lane SONNET, state raw; `tasks.py check` blocks them on a Lab_Guy review stamp (roles/lab_guy.md). The Thinker did not stamp them.
+- Open risks for you to judge: hit-and-try plus one-click Run makes DEV overfitting easy (trial counter and lock are the only brakes; decide if more is needed without adding gates); a 3 min re-run per guess may feel slow (parallel months, cache, maybe cap to a date sub-range); layer-pluggability is only a module shape today, only the levels study has simulator code (Tom and Fabio layers: check what exists before promising).

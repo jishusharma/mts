@@ -84,3 +84,21 @@ def test_shared_line_in_per_skill_files_is_not_a_duplicate(tmp_path):
     subprocess.run(["git", "init", "-q"], cwd=tmp_path, check=True)
     subprocess.run(["git", "add", "-A"], cwd=tmp_path, check=True)
     assert D.duplicates(tmp_path, ["relay/a.SKILL.md", "relay/b.SKILL.md"]) == []
+
+
+def test_stale_main_checkout_hooks_are_reported(tmp_path):
+    """Hooks and env load from the main checkout, not the worktree: seen 2026-10-21, a main checkout 1858 commits behind ran
+    the old turn_meter.py and a removed auto-compact override, so the trunk policy was not live (review item 1)."""
+    for rel in D.HOOK_FILES:
+        f = tmp_path / rel
+        f.parent.mkdir(parents=True, exist_ok=True)
+        f.write_text("trunk" + NL, encoding="utf-8", newline=NL)
+    git = lambda *a: subprocess.run(["git", *a], cwd=tmp_path, check=True, capture_output=True)
+    git("init", "-q")
+    git("add", "-A")
+    git("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", "x")
+    git("update-ref", "refs/remotes/origin/fast-track", "HEAD")
+    assert D.hook_drift(tmp_path) == []
+    (tmp_path / D.HOOK_FILES[0]).write_text("old" + NL, encoding="utf-8", newline=NL)
+    got = D.hook_drift(tmp_path)
+    assert [(k, w) for k, w, _, _ in got] == [("HOOKS", str(tmp_path / D.HOOK_FILES[0]))]

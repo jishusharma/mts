@@ -146,6 +146,13 @@ class TestInject(Base):
         self.assertIn("ROLE CONTEXT LOST", t)
         self.assertEqual(self.hook("what is the BTC read?", sid="none"), "")
 
+    def test_reminder_is_not_repeated_every_prompt(self):
+        self.put_role()
+        self.hook("You are Eagle_Eyes.", sid="m2")
+        got = [bool(self.hook("what is the BTC read?", sid="m2")) for _ in range(2 * rl.REMIND_EVERY)]
+        self.assertEqual(sum(got), 2)
+        self.assertTrue(got[0])
+
     def test_session_start_reinjects_recorded_role(self):
         self.put_role()
         self.hook("You are Eagle_Eyes.", sid="r1")
@@ -234,6 +241,18 @@ class TestRepoRoles(unittest.TestCase):
         for f in files:
             self.assertIsNotNone(rl.parse_header(f.read_bytes().decode("utf-8").replace("\r\n", "\n")), f.name)
 
+    def test_every_role_emits_under_the_hook_cap(self):
+        """Claude Code truncates hook-injected text at 10,000 chars; the rest of a role would be silently lost."""
+        def local_show(repo, rel):
+            p = REPO / rel
+            return p.read_bytes().decode("utf-8") if p.exists() else None
+        with mock.patch.object(rl, "git_show", local_show), mock.patch.object(rl, "git_sha8", lambda r: "abcd1234"), \
+                mock.patch.object(rl, "lease_suffix", lambda n, r: ""):
+            for f in rl.role_files(REPO):
+                h = rl.parse_header(f.read_bytes().decode("utf-8").replace("\r\n", "\n"))
+                n = len(rl.build_text(h["name"], REPO, True))
+                self.assertLess(n, 9500, f"{f.name} emits {n} chars")
+
     def test_check_passes_on_repo(self):
         self.assertEqual(rl.check(REPO, lambda x: None), 0)
 
@@ -265,8 +284,19 @@ class TestRepoRoles(unittest.TestCase):
 
     def test_admin_guy_file_carries_the_guardrails_and_backlog_flow(self):
         text = (REPO / rl.ROLES_REL / "admin_guy.md").read_text(encoding="utf-8")
-        for needle in ("VERBATIM", "Haiku 5.5", "effort high", "tasks.py new", "sync.py ship", "mts_signal.py send", "BACKLOG"):
+        for needle in ("VERBATIM", "Sonnet 5.5", "effort medium", "tasks.py new", "sync.py ship", "mts_signal.py send", "BACKLOG"):
             self.assertIn(needle, text)
+
+    def test_admin_guy_runs_on_sonnet_everywhere(self):
+        # operator 2026-10-21: Admin_Guy off Haiku (bug-haiku-stale-rule-answers; research/model_economics_2026-10-21.md)
+        role = next(r for r in rl.load_roster(REPO) if r["name"] == "Admin_Guy")
+        self.assertTrue(role["model"].startswith("Sonnet 5.5"), role["model"])
+        self.assertEqual(role["lane"], "SONNET")
+        for rel in ("MyTradingSys/system/START_HERE.txt", "MyTradingSys/system/ROLES.md", f"{rl.ROLES_REL}/admin_guy.md"):
+            text = (REPO / rel).read_text(encoding="utf-8")
+            admin = [ln for ln in text.splitlines() if "Admin_Guy" in ln or "Model :" in ln[:9]]
+            self.assertFalse([ln for ln in admin if "Haiku 5.5" in ln and "Admin_Guy" in ln], rel)
+        self.assertNotIn("Haiku 5.5, effort HIGH", (REPO / "MyTradingSys/system/START_HERE.txt").read_text(encoding="utf-8"))
 
     def test_thinker_role_registered_with_triggers_row_and_guardrails(self):
         """Operator 2026-10-20: a Thinker design-partner role; Opus-capable, never builds, records choices verbatim."""

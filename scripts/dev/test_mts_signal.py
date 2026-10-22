@@ -82,6 +82,64 @@ class SignalTest(unittest.TestCase):
         (S.state_dir() / "last_fetch").unlink()
         self.assertEqual(S.handle(self.payload("UserPromptSubmit", sid="s2")), "")         # already seen
 
+    def test_hook_auto_sends_broadcast_prompt(self):
+        self.machine("jis-nb", "pro")
+        text, kind = S.auto_send_text(self.payload("UserPromptSubmit", prompt="MTS broadcast: all sessions sync and pause"))
+        self.assertEqual((text, kind), ("all sessions sync and pause", "broadcast"))
+        text2, kind2 = S.auto_send_text(self.payload("UserPromptSubmit", prompt="broadcast: halt orders immediately"))
+        self.assertEqual((text2, kind2), ("halt orders immediately", "broadcast"))
+
+    def test_broadcast_prompt_multiline_and_plain_sentence(self):
+        # 2026-10-21 test: a multi-line broadcast was silently dropped, and "broadcast the results..." was sent as one
+        got = S.auto_send_text(self.payload("UserPromptSubmit", prompt="MTS broadcast: pause new work\nthen sync and wait"))
+        self.assertEqual(got, ("pause new work then sync and wait", "broadcast"))
+        self.assertIsNone(S.auto_send_text(self.payload("UserPromptSubmit", prompt="broadcast the results to the team")))
+        self.assertIsNone(S.auto_send_text(self.payload("UserPromptSubmit", prompt="broadcasting is slow, why?")))
+        self.assertEqual(S.auto_send_text(self.payload("UserPromptSubmit", prompt="MTS Broadcast stop all")), ("stop all", "broadcast"))
+
+    def test_broadcast_reaches_sibling_sessions_on_sender_machine(self):
+        # every session on one machine shares one sender id, so a broadcast never reached the sender's own siblings
+        self.machine("jis-nb", "?")
+        S.handle(self.payload("UserPromptSubmit", sid="sender", prompt="MTS broadcast: siblings too"))
+        (S.state_dir() / "last_fetch").unlink()
+        self.assertIn("siblings too", S.handle(self.payload("UserPromptSubmit", sid="sibling")))
+        (S.state_dir() / "last_fetch").unlink()
+        self.assertNotIn("siblings too", S.handle(self.payload("UserPromptSubmit", sid="sender")))   # not echoed to the sender
+        S.send("ship x", kind="done")                                                             # plain notes stay off-machine
+        (S.state_dir() / "last_fetch").unlink()
+        self.assertEqual(S.handle(self.payload("UserPromptSubmit", sid="sibling")), "")
+
+    def test_second_session_sees_broadcast_without_waiting_for_gate(self):
+        # the per-machine 5-minute fetch gate made a second session wait up to 5 more minutes for what the clone already held
+        self.machine("jis-nuc", "sharma")
+        S.main(["broadcast", "heads up"])
+        self.machine("jis-nb", "pro")
+        self.assertIn("heads up", S.handle(self.payload("UserPromptSubmit", sid="s1")))
+        self.assertIn("heads up", S.handle(self.payload("PostToolUse", sid="s2", tool_name="Read")))   # gate closed, clone has it
+        self.assertEqual(S.handle(self.payload("PostToolUse", sid="s2", tool_name="Read")), "")
+
+    def test_broadcast_sender_told_it_is_pull_only_and_cut(self):
+        # operator 2026-10-22: a broadcast "did not work", nothing flashed; the sender was never told it only lands on a
+        # session's next turn, nor that the 200-character cap dropped the steps
+        self.machine("jis-nb", "?")
+        out = S.handle(self.payload("UserPromptSubmit", sid="sender", prompt="MTS broadcast: " + "step " * 60))
+        self.assertIn("[MTS BROADCAST SENT]", out)
+        self.assertIn("next turn", out)
+        self.assertIn("send_message", out)
+        self.assertIn("lost", out)
+        short = S.handle(self.payload("UserPromptSubmit", sid="sender2", prompt="MTS broadcast: pause"))
+        self.assertIn("[MTS BROADCAST SENT]", short)
+        self.assertNotIn("lost", short)
+        self.assertNotIn("[MTS BROADCAST SENT]", S.handle(self.payload("UserPromptSubmit", sid="s3", prompt="hello")))
+
+    def test_broadcast_banner_rendered_prominently(self):
+        self.machine("jis-nuc", "sharma")
+        self.assertEqual(S.main(["broadcast", "urgent notice for all models"]), 0)
+        self.machine("jis-nb", "pro")
+        out = S.handle(self.payload("UserPromptSubmit"))
+        self.assertIn("[MTS BROADCAST from operator/session across hosts]", out)
+        self.assertIn("urgent notice for all models", out)
+
     def test_hook_auto_sends_claim_and_ship(self):
         self.machine("jis-nb", "pro")
         S.handle(self.payload("PostToolUse", tool_name="Bash",

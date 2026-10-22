@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulator Desk</title>
+<style>
+  :root { --bg:#f7f7f5; --card:#fff; --ink:#1f2328; --mute:#6b7280; --line:#e3e3df; --pass:#1e8449; --fail:#c0392b; --wait:#b7791f; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#17181a; --card:#212225; --ink:#e8e8e6; --mute:#9aa0a6; --line:#33353a; } }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:14px/1.4 system-ui, sans-serif; }
+  main { max-width:1000px; margin:0 auto; padding:14px 16px; }
+  h1 { font-size:16px; margin:0 0 8px; font-weight:600; }
+  .strip { display:grid; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); gap:8px 12px; background:var(--card);
+           border:1px solid var(--line); border-radius:8px; padding:10px 12px; }
+  label { display:flex; flex-direction:column; font-size:12px; color:var(--mute); gap:2px; }
+  select, input { font:inherit; color:var(--ink); background:var(--bg); border:1px solid var(--line); border-radius:5px; padding:4px 6px; }
+  button { font:inherit; font-weight:600; border:0; border-radius:6px; padding:8px 18px; background:#2563eb; color:#fff; cursor:pointer; align-self:end; }
+  button:disabled { opacity:.5; cursor:default; }
+  .say { color:var(--mute); font-size:12px; margin:6px 2px 10px; }
+  .verdict { border-radius:8px; padding:10px 14px; color:#fff; font-weight:600; display:none; }
+  .verdict small { display:block; font-weight:400; opacity:.95; }
+  .nums { display:flex; gap:12px; margin:10px 0; flex-wrap:wrap; }
+  .num { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 14px; min-width:150px; }
+  .num b { display:block; font-size:20px; }
+  .num span { font-size:12px; color:var(--mute); }
+  .charts { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:10px; }
+  .charts figure { margin:0; background:#fff; border:1px solid var(--line); border-radius:8px; padding:4px; }
+  .charts svg { width:100%; height:auto; display:block; }
+  footer { color:var(--mute); font-size:12px; margin-top:10px; }
+  #qs { margin-top:14px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 12px; }
+  #qs h2 { font-size:14px; margin:0 0 4px; }
+  .q { border-top:1px solid var(--line); padding:8px 0; }
+  .q:first-of-type { border-top:0; }
+  .q p { margin:2px 0; font-size:13px; }
+  .q .mute { color:var(--mute); font-size:12px; }
+  .q .opts { display:flex; gap:6px; flex-wrap:wrap; margin:6px 0 4px; }
+  .q .opts button { background:var(--bg); color:var(--ink); border:1px solid var(--line); padding:4px 10px; font-weight:500; }
+  .q .opts button.on { background:#2563eb; color:#fff; border-color:#2563eb; }
+  .q textarea { width:100%; font:inherit; color:var(--ink); background:var(--bg); border:1px solid var(--line); border-radius:5px; padding:4px 6px; min-height:34px; }
+  .err { color:var(--fail); }
+</style>
+</head>
+<body>
+<main>
+  <h1 id="title">Simulator desk</h1>
+  <div class="strip" id="form"></div>
+  <div class="say" id="say"></div>
+  <div class="verdict" id="verdict"></div>
+  <div class="nums" id="nums"></div>
+  <div class="charts" id="charts"></div>
+  <footer id="foot"></footer>
+  <section id="qs"><h2>Questions for you</h2><div id="qlist"></div></section>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+let study = null;
+const COLORS = { 'PASSED': 'var(--pass)', 'FAILED': 'var(--fail)', 'NOT ENOUGH DATA': 'var(--wait)' };
+
+function field(f, v) {
+  const l = document.createElement('label');
+  l.textContent = f.label;
+  let el;
+  if (f.choices) {
+    el = document.createElement('select');
+    for (const [k, txt] of Object.entries(f.choices)) {
+      const o = document.createElement('option'); o.value = k; o.textContent = txt; el.appendChild(o);
+    }
+  } else {
+    el = document.createElement('input');
+    el.type = f.date ? 'date' : 'number';
+    if (f.min !== undefined) el.min = f.min;
+    if (f.max !== undefined) el.max = f.max;
+    if (f.step) el.step = f.step;
+  }
+  el.name = f.name; el.value = v ?? '';
+  l.appendChild(el);
+  return l;
+}
+
+let studies = [];
+async function init() {
+  studies = await (await fetch('/api/studies')).json();
+  pickStudy(studies[0].id);
+  loadQuestions();
+}
+
+function pickStudy(id) {
+  study = studies.find(s => s.id === id);
+  $('title').textContent = 'Simulator desk: ' + study.title;
+  const form = $('form'); form.innerHTML = '';
+  if (studies.length > 1) {            // a picker only once there is a second study
+    const l = document.createElement('label'); l.textContent = 'Study';
+    const sel = document.createElement('select');
+    for (const s of studies) { const o = document.createElement('option'); o.value = s.id; o.textContent = s.title; sel.appendChild(o); }
+    sel.value = study.id; sel.dataset.picker = '1'; sel.onchange = () => pickStudy(sel.value);
+    l.appendChild(sel); form.appendChild(l);
+  }
+  for (const f of study.params) form.appendChild(field(f, study.defaults[f.name]));
+  const ex = form.querySelector('[name=exit]'), tr = form.querySelector('[name=target_r]');
+  if (ex && tr) { const grey = () => { tr.disabled = ex.value !== 'R'; }; ex.onchange = grey; grey(); }
+  const b = document.createElement('button'); b.id = 'run'; b.textContent = 'Run'; b.onclick = run;
+  form.appendChild(b);
+  $('foot').textContent = `Tries on this desk so far: ${study.tries}. Test window: development data only (2022-04-01 to 2024-06-30).`;
+}
+
+async function loadQuestions() {
+  const qs = await (await fetch('/api/questions')).json();
+  const list = $('qlist'); list.innerHTML = '';
+  for (const q of qs) {
+    const d = document.createElement('div'); d.className = 'q';
+    const t = document.createElement('p'); t.innerHTML = '<b></b>'; t.firstChild.textContent = q.question;
+    const c = document.createElement('p'); c.textContent = q.context;
+    const df = document.createElement('p'); df.className = 'mute'; df.textContent = 'If you say nothing: ' + q.default;
+    const opts = document.createElement('div'); opts.className = 'opts';
+    const box = document.createElement('textarea'); box.placeholder = 'Anything to add (optional)';
+    const st = document.createElement('p'); st.className = 'mute';
+    if (q.answer) { box.value = q.answer.text || ''; st.textContent = `Your answer (${q.answer.at}): ${q.answer.choice}`; }
+    for (const o of q.options) {
+      const b = document.createElement('button'); b.textContent = o;
+      if (q.answer && q.answer.choice === o) b.className = 'on';
+      b.onclick = async () => {
+        const r = await fetch('/api/answer', { method:'POST', headers:{'Content-Type':'application/json'},
+                                               body: JSON.stringify({ id: q.id, choice: o, text: box.value }) });
+        const a = await r.json();
+        if (!r.ok) { st.textContent = a.error; return; }
+        for (const x of opts.children) x.className = x === b ? 'on' : '';
+        st.textContent = `Saved (${a.at}): ${a.choice}. The next session reads this.`;
+      };
+      opts.appendChild(b);
+    }
+    d.append(t, c, df, opts, box, st); list.appendChild(d);
+  }
+}
+
+function values() {
+  const p = {};
+  for (const el of $('form').querySelectorAll('select, input')) if (el.value !== '' && !el.disabled && !el.dataset.picker) p[el.name] = el.type === 'number' ? Number(el.value) : el.value;
+  return p;
+}
+
+async function run() {
+  $('run').disabled = true; $('say').className = 'say'; $('say').textContent = 'Running...';
+  const poll = setInterval(async () => {
+    try { const p = await (await fetch('/api/progress')).json(); if (p.line) $('say').textContent = p.line; } catch (e) {}
+  }, 1000);
+  try {
+    const r = await fetch('/api/run', { method:'POST', headers:{'Content-Type':'application/json'},
+                                       body: JSON.stringify({ study: study.id, params: values() }) });
+    const o = await r.json();
+    if (!r.ok) throw new Error(o.error || r.statusText);
+    show(o);
+  } catch (e) {
+    $('say').className = 'say err'; $('say').textContent = e.message;
+  } finally { clearInterval(poll); $('run').disabled = false; }
+}
+
+function fmt(x, d = 3) { return x === null || x === undefined ? '-' : (x >= 0 ? '+' : '') + x.toFixed(d); }
+
+function show(o) {
+  $('say').textContent = o.describe;
+  const v = $('verdict');
+  v.style.display = 'block'; v.style.background = COLORS[o.verdict] || 'var(--mute)';
+  v.innerHTML = '';
+  v.append(o.verdict + ' ');
+  const s = document.createElement('small');
+  s.textContent = o.reason + `. Try #${o.try_no} on this data: the best of many tries looks better than it is.`;
+  v.appendChild(s);
+  $('nums').innerHTML = '';
+  const nums = [[o.n, `trades (${o.nofill} ideas never filled)`], [fmt(o.mean) + ' R', `average per trade after fees (95 % range ${fmt(o.lo)} to ${fmt(o.hi)})`],
+                [o.streak, 'worst losing streak']];
+  for (const [b, t] of nums) {
+    const d = document.createElement('div'); d.className = 'num';
+    const bb = document.createElement('b'); bb.textContent = b; const sp = document.createElement('span'); sp.textContent = t;
+    d.append(bb, sp); $('nums').appendChild(d);
+  }
+  $('charts').innerHTML = '';
+  for (const c of o.charts) {
+    const f = document.createElement('figure'); f.innerHTML = c.svg; f.title = 'typical ' + c.kind; $('charts').appendChild(f);
+  }
+  $('foot').textContent =
+    (o.charts.length ? 'Charts: 3 winners and 3 losers closest to the typical winner and loser. ' : '') +
+    (o.already_tried ? 'Same settings as an earlier try: not logged again. ' : `Trial #${o.try_no} logged. `) +
+    `Setups tried on this data so far: ${o.try_no} here + ${o.prior_tries} by the original study.`;
+}
+init();
+</script>
+</body>
+</html>

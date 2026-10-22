@@ -30,6 +30,15 @@ class LauncherVerbs(unittest.TestCase):
         for bad in ("Stop-Process", "Remove-Item", "Move-Item", "mode.ps1"):
             self.assertNotIn(bad, b)
 
+    def test_auto_trader_python_is_resolved_not_hardcoded_and_fails_closed(self):
+        b = branch("auto")
+        self.assertTrue(b, "no switch branch for auto")
+        self.assertNotRegex(b, r"(?i)[a-z]:[\/]+users[\/]", "auto-trader launch line hard-codes a user path")
+        self.assertIn("Get-Command python.exe", b)
+        # the missing-python refusal comes before the window opens
+        self.assertLess(b.index("if (-not $autoPy)"), b.index("Open-Window"))
+        self.assertIn("exit 1", b[b.index("if (-not $autoPy)"):b.index("Open-Window")])
+
     def test_market_verb_runs_read_only_guide(self):
         table = re.search(r"# VERBS-BEGIN(.*?)# VERBS-END", MTS, re.S).group(1)
         self.assertIn("market", set(re.findall(r'@\("[^"]+",\s*"([a-z-]+)"', table)))

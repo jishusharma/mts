@@ -1,5 +1,6 @@
-<!-- role: MTS_Doctor | version: v2 | token: earn-cave | triggers: mts_doctor, mts doctor, doctor -->
+<!-- role: MTS_Doctor | version: v2 | token: flag-lion | triggers: mts_doctor, mts doctor, doctor -->
 # MTS_Doctor: AI health and process audit; every change it reviews is verified by other-model agents (operator 2026-10-17)
+Read first: `MyTradingSys/system/MTS_DOCTOR.md`, `MyTradingSys/system/ROLES.md` (rule, role, budget answers: read this turn, cite file:line + commit date, else `NOT_IN_DATA`).
 
 Job: run the audit, verify each change under review with a Haiku agent and a fresh Sonnet agent, report, card each defect.
 Model: Sonnet (verifiers Haiku + fresh Sonnet; Opus only per WORKERS.md rule 6). Output: one dated report.

@@ -20,7 +20,8 @@ OUT_REL = "MyTradingSys/research/mts_doctor"
 PATH_RE = re.compile(r"`((?:scripts|MyTradingSys)/[A-Za-z0-9_./-]+\.(?:py|ps1|md|json|csv|yml))`")
 BARE_DOC_RE = re.compile(r"\b([A-Z][A-Z0-9_]{3,}\.md)\b")
 DUP_MIN = 80          # a duplicated line shorter than this is usually a heading or a table row
-KINDS = ("DEAD-REF", "DUPLICATE", "MEMORY", "CARD", "SKILL")
+KINDS = ("DEAD-REF", "DUPLICATE", "MEMORY", "CARD", "SKILL", "HOOKS")
+HOOK_FILES = (".claude/settings.json", "scripts/dev/turn_meter.py")
 
 
 def tracked(repo):
@@ -111,6 +112,29 @@ def skills(repo, files):
     return out
 
 
+def hook_drift(repo, ref="origin/fast-track"):
+    """Claude Code loads hooks and env from the main checkout, not the worktree (seen 2026-10-21: a main checkout 1858 commits
+    behind ran the old turn_meter.py). Each HOOK_FILES file there that differs from trunk is a finding; no trunk ref, no finding."""
+    common = subprocess.run(["git", "-C", str(repo), "rev-parse", "--path-format=absolute", "--git-common-dir"],
+                            capture_output=True, text=True).stdout.strip()
+    if not common:
+        return []
+    main = Path(common).parent
+    out = []
+    for rel in HOOK_FILES:
+        trunk = subprocess.run(["git", "-C", str(repo), "show", f"{ref}:{rel}"], capture_output=True)
+        if trunk.returncode:
+            continue
+        try:
+            here = (main / rel).read_bytes()
+        except OSError:
+            here = b""
+        if here.replace(b"\r\n", b"\n") != trunk.stdout.replace(b"\r\n", b"\n"):
+            out.append(("HOOKS", str(main / rel), f"differs from {ref}: every session runs this copy",
+                        "operator or coordinator: git -C <main checkout> pull --ff-only"))
+    return out
+
+
 def boot_cost(repo, docs):
     sizes = sorted(((len(read(repo, p).encode()), p) for p in docs), reverse=True)
     claude = len(read(repo, "CLAUDE.md").encode())
@@ -132,7 +156,7 @@ def run(repo=REPO, out_dir=None, memory_dir=None, process=True, hours=72, now=No
     files = tracked(repo)
     docs = ai_files(repo, files)
     findings = (dead_refs(repo, files, docs) + duplicates(repo, docs) + memory_drift(memory_dir) + card_warnings(repo)
-                + skills(repo, docs))
+                + skills(repo, docs) + hook_drift(repo))
     day = (now or datetime.now(timezone.utc)).strftime("%Y-%m-%d")
     out = Path(out_dir) if out_dir else repo / OUT_REL
     lines = [f"# MTS doctor report {day}", "", f"Part 1: AI health ({len(docs)} guidance files checked). Reports only; nothing was edited.", "",
