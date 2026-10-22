@@ -1,6 +1,16 @@
 ==============================================================
- MTS CHEAT SHEET - START HERE   (2026-10-21)   paste a line, get a role
+ MTS CHEAT SHEET - START HERE   (2026-10-22)   paste a line, get a role
 ==============================================================
+
+NEW 2026-10-22 (from the review, research/audits/review_2026-10-22/)
+  - Role pick fixed: a plain question ("what is...?", "why...?") no longer
+    turns a chat into Admin_Guy. No keyword = no role = ordinary session.
+  - Supervisor banner fixed: FIRST ACTION now names the real first step.
+  - Fewer hooks per tool call: signals are sent on Bash only and read only
+    when you send a prompt (less waiting, less context).
+  - Old stale copy F:\MTS\repo is retired (F:\MTS\_retired_repo_2026-10-22).
+  - Simple rule of thumb: ONE task -> a normal Sonnet session, no role line.
+    A role or a Supervisor only when the table below says you need one.
 
 HOW IT WORKS
   Open a NEW session (Sonnet unless noted), paste ONE line below.
@@ -125,6 +135,30 @@ HOW IT WORKS
                                it owns every page; republishes MTS Home)
   Console flashes, hook or network fault ... You are Admin_Guy.
                               (it triages; fixes go to a Builder card)
+
+--------------------------------------------------------------
+ BROADCAST - tell every session something   (read this before you use it)
+--------------------------------------------------------------
+  Type this as your prompt in ANY session (hook sends it for you):
+      MTS broadcast: <one line>
+     or in a shell:  python scripts/dev/mts_signal.py broadcast "<one line>"
+  How it works: a tiny note on a git branch. Every other session on any
+  machine/login sees it on its NEXT prompt (checked at most every 5 min).
+  Limits you must know:
+    - 200 characters. Longer is cut. So send a POINTER, not the content:
+      commit the full text first (sync.py ship), then broadcast
+         "<what to do> <repo path to the file>"
+    - Nothing wakes an idle session. If nobody types in it, it never sees it.
+      Same login: the sender also send_message's each running session.
+      Other logins/devices: you must type one prompt there.
+    - Nobody replies. It is a doorbell, not a chat. Decisions: say what is
+      decided and where it is written (OPERATOR_DECISIONS.md).
+    - Who is listening is NOT known today (there is no live roster;
+      "mts_signal.py status" shows only this machine's id). Assume one
+      session per device you are typing in, and prompt the others yourself.
+  Use it for: operator decisions, HOLD/STOP notices, "read this file".
+  Do not use it for status or progress (hooks already log those, badly).
+  Check what went out:  python scripts/dev/mts_signal.py read --hours 24
 
 --------------------------------------------------------------
  COMMANDS  (python scripts/dev/<script> ...; any checkout)

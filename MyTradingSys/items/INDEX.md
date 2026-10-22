@@ -168,3 +168,4 @@ B194 | OPEN    | B194_gemini_dispatch_tagging.md | Claude dispatcher lacks expli
 B195 | OPEN    | B195_task_mode_block_silent_drop.md | task-mode gate block silently never ran; no receipt, no refusal on three sends; ack and duplicate-rid fix
 B196 | OPEN    | B196_aibridge_auto_off_operator_draft.md | auto-OFF on operator draft blocks runs silently; ignore drafts, post a receipt on auto-off
 B197 | OPEN    | B197_search_discipline_content_before_absence.md | content search before absence; lessons go in LESSONS_DIGEST.md not apparatus_fixes.md
+B198 | OPEN    | B198_aibridge_background_tab_stall.md | hands-free stalls when tab backgrounded; Chrome throttling pauses loop, misfires on wake
