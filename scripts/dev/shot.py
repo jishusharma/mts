@@ -614,7 +614,8 @@ def outcome_exists(token):
     if os.environ.get("MTS_SHOT_SKIP_REPO_CHECK"):
         return True
     if token.startswith("card:"):
-        return (REPO / "MyTradingSys" / "system" / "tasks" / f"{token[5:]}.json").is_file()
+        d = REPO / "MyTradingSys" / "system" / "tasks"
+        return (d / f"{token[5:]}.json").is_file() or (d / "archive" / f"{token[5:]}.json").is_file()   # swept closed cards live in archive/
     if re.fullmatch(r"[BT]\d{3}", token):
         bugs = REPO / "MyTradingSys" / "research" / "BUGS.md"
         return bugs.is_file() and re.search(rf"^\|\s*{re.escape(token)}\s*\|", bugs.read_text(encoding="utf-8"), re.M) is not None
