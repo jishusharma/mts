@@ -11,7 +11,9 @@ Run with zero operator input; defaults for open questions (park levels; keep RSI
 - DEV window only. Thinker session `sim-thinker` (local_05060ea8-b8b6-4e9d-8024-03062ef8c643) is on standby, model not yet set to Opus (set_session_model was blocked); stop it or set Opus then send it the roadmap-judging task.
 - Login B (NUC): GPT card re-derive 255 / -0.119 R; Gemini card cross-review of RSI spec. Not posted this session.
 
-## Live host move coordinator (laptop) 2026-10-22: loop RUNNING on laptop (testnet), s4 steps 10-12 open (hand-over, Sonnet)
+## Live host move coordinator (laptop) 2026-10-22: loop NOT running (stopped on purpose), core scripts hardcode the dev path (hand-over, Sonnet)
+- CORRECTION 2026-10-22 11:00: all devices were switched off overnight on purpose (operator); the engine stop at 03:03 IST and any red alert from it are that, not a fault.
+- FOUND: scripts/core/{loop-supervisor,start-trading-day,stop-day,mode}.ps1 hardcode C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed (dev checkout, 820 behind), so mts start in C:\MTS\mts-live ran the engine from the DEV tree, not the live tree. Yesterday's running-on-laptop was that. Stopped 10:59 IST (mts stop). Fix first: derive the root from $PSScriptRoot in those scripts and launch-wrapper.vbs (MTS-Wrapper task points at the dev path too), ship, move green pointer, re-pull live tree, then start. Same check on NB before its tree is retired.
 - Done: cards 1-3 shipped; probe PASS; NUC shares MTS-* made; cmdkey on laptop+NB; JIS-NB stopped, state copied via NUC MTS-Backup/nb_state (robocopy exit 3, sha256 NOT compared). Live tree C:\MTS\mts-live at 2ead8370 with .mts_live; `mts start` ran, owner marker = desktop-f7iu69n. DECISION (OURS): old testnet HALT/HALT_DAILY_LOSS moved to halt_history (_cleared20261022), operator-approved.
 - Open: AUTO_PAUSE still set; watch 1 h (snapshots, alert cycle, check_live_health not RED, market state STALE should refresh); clear AUTO_PAUSE; publish mirror, live_mirror.py brief; rename NB .mts_live to .retired; sha256 compare state; DEVICES.md and SCHEDULING_POLICY s5 'cut over'. Rollback in LIVE_HOST_MOVE s4.
 
