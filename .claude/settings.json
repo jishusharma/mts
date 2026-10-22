@@ -133,7 +133,7 @@
         ]
       },
       {
-        "matcher": "Agent|Task|mcp__ccd_session__start_session|mcp__ccd_session_mgmt__set_session_model|SendMessage|mcp__ccd_session_mgmt__send_message|Workflow|ScheduleWakeup|CronCreate|RemoteTrigger|mcp__scheduled-tasks__create_scheduled_task",
+        "matcher": "Agent|Task|mcp__ccd_session__start_session|AskUserQuestion|mcp__ccd_turn__wrap_up|mcp__ccd_directory__propose_branch|mcp__ccd_session_mgmt__set_session_model|SendMessage|mcp__ccd_session_mgmt__send_message|Workflow|ScheduleWakeup|CronCreate|RemoteTrigger|mcp__scheduled-tasks__create_scheduled_task",
         "hooks": [
           {
             "type": "command",

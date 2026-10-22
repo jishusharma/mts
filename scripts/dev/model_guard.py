@@ -39,6 +39,11 @@ SEND_TOOLS = ("SendMessage", "mcp__ccd_session_mgmt__send_message")
 WORKFLOW = "Workflow"
 SCHEDULE_TOOLS = ("ScheduleWakeup", "CronCreate", "RemoteTrigger", "mcp__scheduled-tasks__create_scheduled_task")
 SCHEDULE_WORDS = ("loop", "schedul", "remind", "cron", "wake")
+ASK = "AskUserQuestion"
+WRAP_UP = "mcp__ccd_turn__wrap_up"
+BRANCH_CARD = "mcp__ccd_directory__propose_branch"
+BUTTON_TOOLS = (ASK, WRAP_UP, BRANCH_CARD)
+ROLE_LINE = re.compile(r"(?im)^\s*You are ([\w&]+)")
 HOURLY = {START: 4, "Agent": 8, "Task": 8}
 REMINDER_BLOCK = re.compile(r"<system-reminder>.*?</system-reminder>", re.S)
 SESSION_ID_RE = re.compile(r'session_id["\s:=]+([A-Za-z0-9_.-]+)')
@@ -376,15 +381,48 @@ def nested_reason(tool, inp, transcript_path):
             "(its first line `You are <Role>.`).")
 
 
+def role_session(transcript_path):
+    """The role named by a `You are <Role>.` line in the session's first prompt (start line or a started session's brief), else None."""
+    import role_loader
+    names = {n.lower(): n for n in role_loader.KNOWN_ROLES}
+    names.update({a: n for n, al in role_loader.ALIASES.items() for a in al})
+    for m in ROLE_LINE.finditer(first_prompt(transcript_path)[:3000]):
+        if m.group(1).lower() in names:
+            return names[m.group(1).lower()]
+    return None
+
+
+def button_reason(tool, inp, transcript_path):
+    """Operator 2026-10-22, login A Supervisor on the laptop showing buttons: "displaying me buttons to click!!!". A role session never
+    puts a card in front of the operator: no question card, no wrap_up question/buttons, no branch card. It decides and writes it down."""
+    if tool not in BUTTON_TOOLS or os.environ.get("MTS_ALLOW_CARDS") == "1":
+        return None
+    if tool == WRAP_UP and not ((inp or {}).get("ask") or (inp or {}).get("actions")):
+        return None
+    role = role_session(transcript_path)
+    if not role:
+        return None
+    fix = {ASK: "Do not ask: pick the option your role file and the card point to, do it, and note the choice in your log or hand-over.",
+           WRAP_UP: "Call wrap_up again with `recap` only (no `ask`, no `actions`); decide the next step yourself and do it.",
+           BRANCH_CARD: "Do not propose a branch: work where you are (a role session ships through `sync.py ship`)."}[tool]
+    return f"{role} is a role session; the operator is away and wants zero clicks, so {tool} cards are blocked. {fix}"
+
+
 def hook():
     try:
         ev = json.loads(sys.stdin.read() or "{}")
     except ValueError:
         return 0
     tool = ev.get("tool_name") or ""
-    if tool not in AGENT_TOOLS + (START, SET_MODEL, WORKFLOW) + SEND_TOOLS + SCHEDULE_TOOLS:
+    if tool not in AGENT_TOOLS + (START, SET_MODEL, WORKFLOW) + SEND_TOOLS + SCHEDULE_TOOLS + BUTTON_TOOLS:
         return 0
     inp = ev.get("tool_input") or {}
+    if tool in BUTTON_TOOLS:
+        button = button_reason(tool, inp, ev.get("transcript_path"))
+        if button:
+            print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
+                                                     "permissionDecisionReason": "model_guard: " + button}}))
+        return 0
     storm = storm_reason(tool, ev)
     if storm:
         print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",

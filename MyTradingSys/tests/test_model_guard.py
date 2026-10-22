@@ -100,6 +100,30 @@ class ModelGuardTest(unittest.TestCase):
         self.assertEqual(fire("Agent", {"description": "d", "prompt": "You are Builder.", "model": "sonnet"}, p), "allow")
         self.assertEqual(fire(START, inp, self.transcript("claude-sonnet-5-5")), "allow")   # operator-started session: unchanged
 
+    def first(self, name, text):
+        p = Path(self.tmp.name) / name
+        p.write_text(json.dumps({"type": "user", "message": {"content": text}}) + "\n", encoding="utf-8")
+        return p
+
+    def test_a_role_session_never_shows_the_operator_buttons(self):
+        # operator 2026-10-22: the login A Supervisor on the laptop showed him buttons to click
+        role = self.first("role.jsonl", "You are Supervisor. Login A. Week is 97%.")
+        brief = self.first("brief.jsonl", "Background (from the session that started this one):\nx\n\nYou are Builder. Card e2e.")
+        ask = {"questions": [{"question": "Which?", "header": "h", "multiSelect": False, "options": []}]}
+        for t in (role, brief):
+            decision, reason = fire_full("AskUserQuestion", ask, t)
+            self.assertEqual(decision, "deny")
+            self.assertIn("Do not ask", reason)
+            self.assertEqual(fire("mcp__ccd_turn__wrap_up", {"recap": "r", "ask": "Ship it?", "actions": [{"label": "Yes"}]}, t), "deny")
+            self.assertEqual(fire("mcp__ccd_turn__wrap_up", {"recap": "r", "actions": [{"action": "commit"}]}, t), "deny")
+            self.assertEqual(fire("mcp__ccd_turn__wrap_up", {"recap": "r"}, t), "allow")
+            self.assertEqual(fire("mcp__ccd_directory__propose_branch", {"branch": "x"}, t), "deny")
+        plain = self.transcript("claude-sonnet-5-5")     # an ordinary session (no role line) keeps its cards
+        self.assertEqual(fire("AskUserQuestion", ask, plain), "allow")
+        self.assertEqual(fire("mcp__ccd_turn__wrap_up", {"recap": "r", "ask": "Ship it?"}, plain), "allow")
+        mention = self.first("mention.jsonl", "what does the Supervisor do? You are Supervisor-ish only in a quote")
+        self.assertEqual(fire("AskUserQuestion", ask, mention), "allow")
+
     def test_agent_needs_cheap_model(self):
         self.assertEqual(fire("Agent", {"description": "d", "prompt": "p"}), "deny")
         self.assertEqual(fire("Agent", {"description": "d", "prompt": "p", "model": "opus"}), "deny")
@@ -158,7 +182,8 @@ class ModelGuardTest(unittest.TestCase):
         entries = [e for e in d["hooks"].get("PreToolUse", []) if "model_guard.py" in json.dumps(e)]
         self.assertEqual(len(entries), 1)
         matcher = entries[0]["matcher"].split("|")
-        for tool in ("Agent", "Task", START, SET_MODEL, SEND, SEND_MGMT):
+        for tool in ("Agent", "Task", START, SET_MODEL, SEND, SEND_MGMT, "AskUserQuestion", "mcp__ccd_turn__wrap_up",
+                     "mcp__ccd_directory__propose_branch"):
             self.assertIn(tool, matcher)
 
     def _sv8_env(self):
