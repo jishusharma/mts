@@ -235,6 +235,16 @@ def ci_annotation(num, description, output, limit=3000):
     return f"::error title=Step {num} FAIL::{description} | {body}"
 
 
+STEP_SECONDS = {}   # step -> wall seconds of this run; on CI the slowest go out as one ::notice (job logs are not readable off GitHub)
+
+
+def times_notice(n=15):
+    """'::notice title=Gate step times::4.2=19s, ...' for the n slowest steps: the check-run annotations API serves it, so shard
+    estimates can be retuned from real runner numbers (operator 2026-10-22, under 2 minutes)."""
+    top = sorted(STEP_SECONDS.items(), key=lambda kv: -kv[1])[:n]
+    return "::notice title=Gate step times::" + ", ".join(f"{k}={v:.0f}s" for k, v in top)
+
+
 def format_step(num, description, cmd_text, ok, output, elapsed, progress="", tail=15):
     """The block one finished step prints. tail = how many output lines a failure shows (None = all; CI always shows all)."""
     lines = [f"\n[Step {num}] {description}", f"  Command: {cmd_text}"]
@@ -242,6 +252,7 @@ def format_step(num, description, cmd_text, ok, output, elapsed, progress="", ta
         lines.append(f"Step {num}: SKIP ({output})")
         return lines
     lines.append(f"  Elapsed: {elapsed:.1f}s" + (f" ({progress})" if progress else ""))
+    STEP_SECONDS[str(num)] = elapsed
     lines.append(f"Step {num}: {'PASS' if ok else 'FAIL'}")
     out = output.splitlines()
     if not ok:
@@ -1176,6 +1187,8 @@ def main(argv=None):
             print(f"{s.label}: SKIP")
 
     print("=" * 70)
+    if os.environ.get("GITHUB_ACTIONS") and STEP_SECONDS:
+        print(times_notice())
     if not failed and NOT_RUN:   # fail closed: a step that did not run never counts as a pass
         failed = [s.label for s in plan if s.num in NOT_RUN]
     if failed:

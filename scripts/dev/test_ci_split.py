@@ -52,6 +52,12 @@ class ShardTest(unittest.TestCase):
         self.assertEqual(maven, [1])   # only shard 1 sets up Java
         self.assertLess(max(ests), 1.15 * sum(ests) / n)
 
+    def test_ci_prints_the_slowest_step_times_as_one_notice(self):
+        R.STEP_SECONDS.clear()
+        for num, sec in (("3k", 150.4), ("1", 2.0), ("3xt.6", 80.6)):
+            R.format_step(num, "d", "c", True, "", sec)
+        self.assertEqual(R.times_notice(2), "::notice title=Gate step times::3k=150s, 3xt.6=81s")
+
     def test_ci_runs_per_commit_in_eleven_shards_with_a_forward_only_green(self):
         text = CI_YML.read_text(encoding="utf-8")
         self.assertIn("group: ci-${{ github.ref }}-${{ github.ref == 'refs/heads/fast-track' && github.sha || 'run' }}", text)
