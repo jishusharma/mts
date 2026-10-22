@@ -3,16 +3,16 @@
   "plan": "plus",
   "week_resets": 1793097878,
   "week_used": 1.0,
-  "window_resets": 1792571285,
-  "window_used": 3.0
+  "window_resets": 1792683090,
+  "window_used": 1.0
  },
- "at": "2026-10-21T04:40:52Z",
+ "at": "2026-10-22T15:15:15Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
-  "runs_per_window": 10,
-  "week_pts": 60,
-  "window_pts": 50,
+  "runs_per_window": 14,
+  "week_pts": 90,
+  "window_pts": 65,
   "window_reserve": 10
  },
  "host": "JIS-NUC",
@@ -24,13 +24,28 @@
  },
  "runs": [
   {
-   "at": "2026-10-21T04:39:23Z",
-   "card": "lab-formula-spec-recount",
+   "at": "2026-10-22T15:08:54Z",
+   "card": "lab-formula-spec-text",
    "effort": "medium",
    "kind": "build",
    "model": "gpt-6-luna",
    "note": "",
    "outcome": "BLOCKED",
+   "seconds": 373,
+   "tokens_out": 20309,
+   "tokens_total": 3086569,
+   "tokens_uncached": 86932,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
+  {
+   "at": "2026-10-21T04:39:23Z",
+   "card": "lab-formula-spec-recount",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "host health: ok\nsync: merge of origin/fast-track conflicts; resolve, `git commit`, then run ship again.\nAuto-merging MyTradingSys/system/lane_state.json\nCONFLIC",
+   "outcome": "SHIP_FAILED",
    "seconds": 82,
    "tokens_out": 4474,
    "tokens_total": 977086,
@@ -157,21 +172,6 @@
    "tokens_uncached": 66440,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": null,
-   "card": "lab-formula-spec-text",
-   "effort": null,
-   "kind": null,
-   "model": null,
-   "note": "run 2 drafted spec only, no generator/test; card now orders generator+test first; reset by NUC session 2026-10-18",
-   "outcome": "REOPENED",
-   "seconds": null,
-   "tokens_out": null,
-   "tokens_total": null,
-   "tokens_uncached": null,
-   "week_pts": null,
-   "window_pts": null
   }
  ]
 }
