@@ -1,0 +1,1 @@
+{"t": "20261022T140445Z", "from": "jis-nuc/sharma", "to": "all", "kind": "claim", "text": "claim tasks-sweep-closed-cards 2>&1 | tail -2; python scripts/dev/tasks.py sweep 2>&1 | tail -8; python scripts/dev/tasks.py sweep --apply 2>&1 | tail -5; python scripts/dev/tasks.py lint 2>&1 | tail "}
