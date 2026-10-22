@@ -395,7 +395,7 @@ def _handle(payload, sid, ev, auto):
     cwd = payload.get("cwd") or ""
     if auto:
         spawn_send(auto[0], auto[1], cwd, sid)
-    if ev not in ("UserPromptSubmit", "PostToolUse", "SessionStart"):
+    if ev not in ("UserPromptSubmit", "SessionStart"):     # receiving on a prompt or session start; PostToolUse only sends claim/ship (review 2026-10-22: no fetch per tool call)
         return ""
     sd = state_dir()
     sd.mkdir(parents=True, exist_ok=True)

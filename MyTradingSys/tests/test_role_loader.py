@@ -318,5 +318,21 @@ class TestRepoRoles(unittest.TestCase):
         self.assertIn("Thinker", rhl.KNOWN)
 
 
+class BootStepTests(unittest.TestCase):
+    """boot_step must find the Boot section, not prose that merely starts with the word Boot (review 2026-10-22)."""
+
+    def test_prose_line_before_heading_is_skipped(self):
+        body = ("# R\nBoot reads only what Boot step 3 names (cite file:line + commit date, else NOT_IN_DATA).\n\n"
+                "## Boot (once)\n1. `python scripts/dev/sync.py start x`.\n")
+        self.assertEqual(rl.boot_step(body), "1. `python scripts/dev/sync.py start x`.")
+
+    def test_every_real_role_names_its_first_command(self):
+        for f in sorted((REPO / rl.ROLES_REL).glob("*.md")):
+            step = rl.boot_step(f.read_text(encoding="utf-8"))
+            self.assertNotIn("NOT_IN_DATA", step, f.name)
+            self.assertNotIn("first step of the file", step, f.name)
+            self.assertNotIn("Open `SUPER_LOOP.md`", step, f.name)
+
+
 if __name__ == "__main__":
     unittest.main()

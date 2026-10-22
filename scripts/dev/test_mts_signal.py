@@ -116,8 +116,17 @@ class SignalTest(unittest.TestCase):
         S.main(["broadcast", "heads up"])
         self.machine("jis-nb", "pro")
         self.assertIn("heads up", S.handle(self.payload("UserPromptSubmit", sid="s1")))
-        self.assertIn("heads up", S.handle(self.payload("PostToolUse", sid="s2", tool_name="Read")))   # gate closed, clone has it
-        self.assertEqual(S.handle(self.payload("PostToolUse", sid="s2", tool_name="Read")), "")
+        self.assertIn("heads up", S.handle(self.payload("UserPromptSubmit", sid="s2")))   # gate closed, clone has it
+        self.assertEqual(S.handle(self.payload("UserPromptSubmit", sid="s2")), "")
+
+    def test_post_tool_use_only_sends_never_receives(self):
+        # review 2026-10-22: a fetch/read after every tool call cost time and context for nothing
+        self.machine("jis-nuc", "sharma")
+        S.main(["broadcast", "heads up"])
+        self.machine("jis-nb", "pro")
+        self.assertEqual(S.handle(self.payload("PostToolUse", sid="s3", tool_name="Read")), "")
+        self.assertFalse((S.state_dir() / "last_fetch").exists())
+        self.assertIn("heads up", S.handle(self.payload("UserPromptSubmit", sid="s3")))
 
     def test_broadcast_sender_told_it_is_pull_only_and_cut(self):
         # operator 2026-10-22: a broadcast "did not work", nothing flashed; the sender was never told it only lands on a

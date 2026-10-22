@@ -115,11 +115,11 @@ def skills(repo, files):
 def hook_drift(repo, ref="origin/fast-track"):
     """Claude Code loads hooks and env from the main checkout, not the worktree (seen 2026-10-21: a main checkout 1858 commits
     behind ran the old turn_meter.py). Each HOOK_FILES file there that differs from trunk is a finding; no trunk ref, no finding."""
-    common = subprocess.run(["git", "-C", str(repo), "rev-parse", "--path-format=absolute", "--git-common-dir"],
+    common = subprocess.run(["git", "-C", str(repo), "rev-parse", "--git-common-dir"],      # no --path-format: git < 2.31 echoes it
                             capture_output=True, text=True).stdout.strip()
     if not common:
         return []
-    main = Path(common).parent
+    main = (Path(repo) / common).resolve().parent       # relative to repo; an absolute common dir wins
     out = []
     for rel in HOOK_FILES:
         trunk = subprocess.run(["git", "-C", str(repo), "show", f"{ref}:{rel}"], capture_output=True)
