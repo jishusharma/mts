@@ -111,6 +111,7 @@ EXTRA = [
     "scripts/dev/test_fabio_prescreen.py",
     "MyTradingSys/research/fabio_transfer/test_ledger_audit.py",
     "scripts/dev/test_asr_to_canonical.py",
+    "scripts/dev/test_fetch_captions_channel.py",
     "scripts/dev/test_sched_scripts.py",
     "scripts/dev/test_run_extra_tests.py",
     "scripts/dev/test_ci_deps_lint.py",
