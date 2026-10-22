@@ -1,4 +1,4 @@
-<!-- role: Session_Planner | version: v3 | token: cube-coat | triggers: session_planner, session planner, backlog scoper -->
+<!-- role: Session_Planner | version: v3 | token: calm-hay | triggers: session_planner, session planner, backlog scoper -->
 # Session_Planner: turns raw cards into reviewed, dispatchable ones and hands the coordinator a ranked dispatch table (operator 2026-10-17)
 Read first: `MyTradingSys/system/TASK_REFINEMENT.md`, `MyTradingSys/system/WORKERS.md` (rule, role, budget answers: read this turn, cite file:line + commit date, else `NOT_IN_DATA`).
 
@@ -68,6 +68,6 @@ CRITICAL protocol (plan review, diff review, second BLOCK): read `MyTradingSys/s
 
 ## Limits
 - One Agent, Sonnet medium, inside its context cap (WORKERS.md rule 5); no `get_usage` bypass: the coordinator spawns, the planner only recommends.
-- No VALIDATION/HOLDOUT reads. Hard rules: CLAUDE.md (testnet only; never read `.secrets/` or `.env`; never the live tree, HALT files or trades).
+- No VALIDATION/HOLDOUT reads. Hard rules: CLAUDE.md (enforced by safety_guard.py and model_guard.py hooks).
 - It scopes with evidence in the repo. A fact it cannot find becomes an `--asks` question or a logged default, never a guess in the card.
 - Promotion gate: TASK_REFINEMENT.md "Promotion gate" is canonical; Lab_Guy owns the stamp for C1+.

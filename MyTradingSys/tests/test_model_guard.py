@@ -1,5 +1,5 @@
-"""scripts/dev/model_guard.py: session and subagent starts without a cheap model (sonnet/haiku) are denied as a PreToolUse hook,
-forks pass only from a cheap session, proposals and cloud starts pass, and the hook is registered in .claude/settings.json."""
+"""scripts/dev/model_guard.py (operator rule 2026-10-22): sessions may start/switch to any model, Agent/Task keep the cheap-model rule,
+background agents (payload agent_id) may spawn nothing, click cards stay denied, and the hook is registered in .claude/settings.json."""
 import json
 import os
 import subprocess
@@ -9,16 +9,16 @@ import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
-SCRIPT = REPO / "scripts" / "dev" / "model_guard.py"
+SCRIPT = Path(os.environ.get("MG_SCRIPT") or REPO / "scripts" / "dev" / "model_guard.py")
 START = "mcp__ccd_session__start_session"
 SET_MODEL = "mcp__ccd_session_mgmt__set_session_model"
 SEND = "SendMessage"
 SEND_MGMT = "mcp__ccd_session_mgmt__send_message"
 
 
-def fire_full(tool, inp, transcript=None, tasks_dir=None, claude_home=None):
+def run_hook(tool, inp, transcript=None, tasks_dir=None, claude_home=None, extra=None):
     payload = {"session_id": "s1", "hook_event_name": "PreToolUse", "tool_name": tool, "tool_input": inp,
-               "transcript_path": str(transcript) if transcript else ""}
+               "transcript_path": str(transcript) if transcript else "", **(extra or {})}
     env = {k: v for k, v in os.environ.items() if k != "MTS_ALLOW_OPUS"}
     if tasks_dir:
         env["MTS_TASKS_DIR"] = str(tasks_dir)
@@ -27,14 +27,18 @@ def fire_full(tool, inp, transcript=None, tasks_dir=None, claude_home=None):
     r = subprocess.run([sys.executable, str(SCRIPT), "hook"], input=json.dumps(payload), capture_output=True, text=True, env=env)
     assert r.returncode == 0, r.stderr
     out = r.stdout.strip()
-    if not out:
+    return json.loads(out)["hookSpecificOutput"] if out else None
+
+
+def fire_full(tool, inp, transcript=None, tasks_dir=None, claude_home=None, extra=None):
+    h = run_hook(tool, inp, transcript, tasks_dir, claude_home, extra)
+    if not h or "permissionDecision" not in h:
         return "allow", ""
-    h = json.loads(out)["hookSpecificOutput"]
     return h["permissionDecision"], h.get("permissionDecisionReason", "")
 
 
-def fire(tool, inp, transcript=None, tasks_dir=None, claude_home=None):
-    return fire_full(tool, inp, transcript, tasks_dir, claude_home)[0]
+def fire(tool, inp, transcript=None, tasks_dir=None, claude_home=None, extra=None):
+    return fire_full(tool, inp, transcript, tasks_dir, claude_home, extra)[0]
 
 
 class ModelGuardTest(unittest.TestCase):
@@ -51,18 +55,14 @@ class ModelGuardTest(unittest.TestCase):
             f.write(json.dumps({"type": "assistant", "message": {"model": model, "content": []}}) + "\n")
         return p
 
-    def test_start_session_without_model_is_denied(self):
-        # the 2026-10-15 incident: own_initiative proposal without model inherited Opus
-        self.assertEqual(fire(START, {"initiation": "user_asked", "title": "x", "prompt": "p", "background": "b"}), "deny")
-
-    def test_start_session_opus_or_fable_denied_sonnet_haiku_allowed(self):
+    def test_start_session_any_model_or_none_is_allowed(self):
+        # operator 2026-10-22: a child session may run any model, never refused
         base = {"initiation": "user_asked", "title": "x", "prompt": "p", "background": "b"}
-        self.assertEqual(fire(START, {**base, "model": "claude-opus-5-5"}), "deny")
-        self.assertEqual(fire(START, {**base, "model": "claude-fable-5-1"}), "deny")
-        self.assertEqual(fire(START, {**base, "model": "claude-sonnet-5-5"}), "allow")
-        self.assertEqual(fire(START, {**base, "model": "claude-haiku-5-5"}), "allow")
+        self.assertEqual(fire(START, base), "allow")
+        for m in ("claude-opus-5-5", "claude-fable-5-1", "claude-sonnet-5-5", "claude-haiku-5-5"):
+            self.assertEqual(fire(START, {**base, "model": m}), "allow", m)
 
-    def test_offer_card_without_model_is_denied_but_starting_a_proposal_passes(self):
+    def test_click_card_without_model_is_denied_but_starting_a_proposal_passes(self):
         self.assertEqual(fire(START, {"initiation": "offer", "title": "x"}), "deny")
         self.assertEqual(fire(START, {"proposal_id": "task_1"}), "allow")
         self.assertEqual(fire(START, {"proposal_id": "task_1", "prompt": "p", "model": "claude-sonnet-5-5"}), "allow")
@@ -77,11 +77,10 @@ class ModelGuardTest(unittest.TestCase):
         self.assertEqual(fire(START, {**base, "initiation": "offer", "target": "cloud"}), "deny")
         self.assertEqual(fire(START, {**base, "initiation": "own_initiative", "model": "claude-opus-5-5"}), "deny")
 
-    def test_fork_follows_parent_model(self):
+    def test_session_fork_allowed_from_any_parent_but_agent_fork_needs_cheap_parent(self):
         inp = {"initiation": "user_asked", "title": "x", "prompt": "p", "context": "fork"}
-        self.assertEqual(fire(START, inp, self.transcript("claude-opus-5-5")), "deny")
+        self.assertEqual(fire(START, inp, self.transcript("claude-opus-5-5")), "allow")
         self.assertEqual(fire(START, inp, self.transcript("claude-sonnet-5-5")), "allow")
-        self.assertEqual(fire(START, inp, None), "deny")  # parent unknown: fail closed
         self.assertEqual(fire("Agent", {"subagent_type": "fork", "prompt": "p"}, self.transcript("claude-opus-5-5")), "deny")
         self.assertEqual(fire("Agent", {"subagent_type": "fork", "prompt": "p"}, self.transcript("claude-haiku-5-5")), "allow")
 
@@ -100,20 +99,16 @@ class ModelGuardTest(unittest.TestCase):
             f.write(json.dumps({"type": "assistant", "message": {"model": model, "content": []}}) + "\n")
         return p
 
-    def test_operator_naming_opus_lets_the_explicit_model_through(self):
-        inp = {"initiation": "user_asked", "title": "x", "prompt": "p", "background": "b", "model": "claude-opus-5-5"}
-        self.assertEqual(fire(START, inp, self.named_transcript("spawn an Opus session for this")), "allow")
+    def test_operator_naming_opus_lets_the_explicit_agent_model_through(self):
         self.assertEqual(fire("Agent", {"description": "d", "prompt": "p", "model": "opus"}, self.named_transcript("use Opus")), "allow")
-        self.assertEqual(fire(SET_MODEL, {"session_id": "a", "model": "claude-opus-5-5"}, self.named_transcript("use opus")), "allow")
 
-    def test_opus_not_named_or_named_in_an_earlier_message_or_only_in_tool_output_still_denied(self):
-        inp = {"initiation": "user_asked", "title": "x", "prompt": "p", "background": "b", "model": "claude-opus-5-5"}
-        self.assertEqual(fire(START, inp, self.named_transcript("fix the report")), "deny")
-        self.assertEqual(fire(START, inp, self.named_transcript("use opus", "go ahead")), "deny")  # only the latest message counts
-        noreply = {k: v for k, v in inp.items() if k != "model"}
-        self.assertEqual(fire(START, noreply, self.named_transcript("use opus")), "deny")  # still must give a model, never inherit
+    def test_agent_opus_not_named_or_named_earlier_still_denied(self):
+        a = {"description": "d", "prompt": "p", "model": "opus"}
+        self.assertEqual(fire("Agent", a, self.named_transcript("fix the report")), "deny")
+        self.assertEqual(fire("Agent", a, self.named_transcript("use opus", "go ahead")), "deny")  # only the latest message counts
+        self.assertEqual(fire("Agent", {"description": "d", "prompt": "p"}, self.named_transcript("use opus")), "deny")  # model still required
 
-    def test_a_session_may_start_opus_only_for_an_approved_crucial_opus_card(self):
+    def test_agent_may_use_opus_only_for_an_approved_crucial_opus_card(self):
         d = Path(self.tmp.name) / "tasks"
         d.mkdir()
         cards = {"ok-card": {"lane": "OPUS", "approved_by": "operator", "crucial": "no-undo design call", "state": "ready"},
@@ -124,15 +119,56 @@ class ModelGuardTest(unittest.TestCase):
         for cid, c in cards.items():
             (d / (cid + ".json")).write_text(json.dumps(c), encoding="utf-8", newline=chr(10))
         quiet = self.named_transcript("fix the report")
-        base = {"initiation": "user_asked", "title": "x", "background": "b", "model": "claude-opus-5-5"}
-        self.assertEqual(fire(START, {**base, "prompt": "do card ok-card"}, quiet, d), "allow")
+        base = {"description": "x", "model": "opus"}
+        self.assertEqual(fire("Agent", {**base, "prompt": "do card ok-card"}, quiet, d), "allow")
         for cid in ("no-why", "no-approval", "wrong-lane", "finished"):
-            self.assertEqual(fire(START, {**base, "prompt": f"do card {cid}"}, quiet, d), "deny", cid)
-        self.assertEqual(fire(START, {**base, "prompt": "no card cited"}, quiet, d), "deny")
+            self.assertEqual(fire("Agent", {**base, "prompt": f"do card {cid}"}, quiet, d), "deny", cid)
+        self.assertEqual(fire("Agent", {**base, "prompt": "no card cited"}, quiet, d), "deny")
 
-    def test_set_session_model_only_cheap(self):
-        self.assertEqual(fire(SET_MODEL, {"session_id": "a", "model": "claude-opus-5-5"}), "deny")
-        self.assertEqual(fire(SET_MODEL, {"session_id": "a", "model": "claude-sonnet-5-5"}), "allow")
+    def test_set_session_model_any_model(self):
+        for m in ("claude-opus-5-5", "claude-fable-5-1", "claude-sonnet-5-5"):
+            self.assertEqual(fire(SET_MODEL, {"session_id": "a", "model": m}), "allow", m)
+
+    def test_background_agent_may_spawn_nothing(self):
+        # operator 2026-10-22: a background agent is one-shot; agent_id in the payload marks a call fired inside one
+        ok = {
+            "Agent": {"description": "d", "prompt": "p", "model": "sonnet"},
+            START: {"initiation": "user_asked", "title": "x", "prompt": "p", "model": "claude-sonnet-5-5"},
+            SET_MODEL: {"session_id": "a", "model": "claude-sonnet-5-5"},
+            SEND: {"to": "local_x", "message": "m"},
+            "Workflow": {"script": "x"},
+        }
+        for tool, inp in ok.items():
+            dec, reason = fire_full(tool, inp, extra={"agent_id": "ag1", "agent_type": "general-purpose"})
+            self.assertEqual(dec, "deny", tool)
+            self.assertIn("one-shot", reason, tool)
+        self.assertEqual(fire("Agent", ok["Agent"]), "allow")
+        self.assertEqual(fire(START, ok[START]), "allow")
+        self.assertEqual(fire(SET_MODEL, ok[SET_MODEL]), "allow")
+        self.assertEqual(fire("Agent", {"description": "d", "prompt": "p"}), "deny")  # normal rules still apply without agent_id
+
+    def test_start_above_own_model_adds_set_session_model_hint(self):
+        inp = {"initiation": "user_asked", "title": "x", "prompt": "p", "background": "b", "model": "claude-opus-5-5"}
+        h = run_hook(START, inp, self.transcript("claude-sonnet-5-5"))
+        self.assertIsNotNone(h)
+        self.assertNotIn("permissionDecision", h)
+        self.assertEqual(h["hookEventName"], "PreToolUse")
+        self.assertIn("set_session_model", h["additionalContext"])
+        self.assertIsNone(run_hook(START, inp, self.transcript("claude-opus-5-5")))
+        self.assertIsNone(run_hook(START, {**inp, "model": "claude-sonnet-5-5"}, self.transcript("claude-opus-5-5")))
+
+    def test_hint_also_when_operator_names_opus(self):
+        inp = {"initiation": "user_asked", "title": "x", "prompt": "p", "background": "b", "model": "claude-opus-5-5"}
+        h = run_hook(START, inp, self.named_transcript("start an opus session"))
+        self.assertIn("set_session_model", (h or {}).get("additionalContext", ""))
+
+    def test_mts_allow_opus_env_is_removed_by_the_harness(self):
+        # the harness strips MTS_ALLOW_OPUS so a leaked env var cannot turn the Agent rule off in tests
+        os.environ["MTS_ALLOW_OPUS"] = "1"
+        try:
+            self.assertEqual(fire("Agent", {"description": "d", "prompt": "p", "model": "opus"}), "deny")
+        finally:
+            del os.environ["MTS_ALLOW_OPUS"]
 
     def test_cloud_start_and_other_tools_pass(self):
         self.assertEqual(fire(START, {"initiation": "user_asked", "title": "x", "prompt": "p", "target": "cloud"}), "allow")

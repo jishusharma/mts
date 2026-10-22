@@ -1,5 +1,5 @@
 """Role roster (bug-models-cannot-tell-which-roles-exist): one roster file is the single source of what roles exist;
-`role_loader.py list` prints it; a session with no role line gets the best-fitting role from its task text."""
+`role_loader.py list` prints it; a session with no role line gets no role."""
 import json
 import re
 import subprocess
@@ -109,44 +109,7 @@ class ReadFirstRule(unittest.TestCase):
             self.assertIn(must, boot)
 
 
-class BestRoleFallback(unittest.TestCase):
-    def pick(self, text):
-        return rl.pick_role(text, REPO)
-
-    def test_chart_screenshot_picks_eagle_eyes(self):
-        p = self.pick("Here is a chart screenshot of BTC 15m, what do you see?")
-        self.assertEqual(p["name"], "Eagle_Eyes")
-        self.assertIn("screenshot", p["reason"])
-
-    def test_plain_question_picks_admin_guy(self):
-        self.assertEqual(self.pick("What is the current fee setting for the Deribit testnet account?")["name"], "Admin_Guy")
-        self.assertEqual(self.pick("Where is the decision about the weekly low layer recorded?")["name"], "Admin_Guy")
-
-    def test_design_question_picks_thinker(self):
-        self.assertEqual(self.pick("How should we design the layer combiner so it scales to 20 layers?")["name"], "Thinker")
-        self.assertEqual(self.pick("What are our options to optimise token spend?")["name"], "Thinker")
-
-    def test_builder_and_session_planner_never_picked(self):
-        for text in ("Build card t02-f1, implement it with fail-first tests and ship",
-                     "builder: implement the build card", "Refine raw cards and plan the session backlog",
-                     "You are a builder. implement code, write tests, ship it"):
-            p = self.pick(text)
-            self.assertNotIn(p["name"], ("Builder", "Session_Planner"), text)
-            for t in p.get("tie", []):
-                self.assertNotIn(t, ("Builder", "Session_Planner"), text)
-
-    def test_no_signal_picks_nothing(self):
-        p = self.pick("Fix the typo in line 4 of foo.py")
-        self.assertIsNone(p["name"])
-        self.assertEqual(p.get("tie", []), [])
-
-    def test_tie_names_both_and_picks_none(self):
-        p = self.pick("chart screenshot design options")  # 2 Eagle_Eyes words vs 2 Thinker words
-        self.assertIsNone(p["name"])
-        self.assertEqual(sorted(p["tie"]), ["Eagle_Eyes", "Thinker"])
-
-
-class FallbackHook(unittest.TestCase):
+class NoRoleLineHook(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
@@ -162,25 +125,18 @@ class FallbackHook(unittest.TestCase):
         out = rl.handle({"hook_event_name": "UserPromptSubmit", "session_id": sid, "prompt": prompt}, REPO)
         return json.loads(out)["hookSpecificOutput"]["additionalContext"] if out else ""
 
-    def test_first_prompt_without_role_line_loads_best_role_with_fallback_banner(self):
-        c = self.ctx("Here is a chart screenshot of ETH 1h, read it please")
-        self.assertRegex(c, r"ROLE LOADED: Eagle_Eyes \(fallback: [^)]+\) v\d+ ")
-        self.assertIn("Eagle_Eyes", rl.injected("s1"))
-        banner = next(ln for ln in c.splitlines() if ln.startswith("ROLE LOADED"))
-        m = rl.BANNER_RE.search(banner)
-        self.assertIsNotNone(m, "fallback banner must still parse for verify")
-        self.assertEqual(m.group("name"), "Eagle_Eyes")
+    def test_prompt_without_role_line_injects_nothing(self):
+        # 2026-10-22: a planning session got Lab_Guy because its first message mentioned Gemini/GPT.
+        for i, t in enumerate(("Compare Gemini and GPT and codex for the layer lab",
+                               "Here is a chart screenshot of ETH 1h, read it please",
+                               "chart screenshot design options")):
+            self.assertEqual(self.ctx(t, sid=f"n{i}"), "", t)
+            self.assertEqual(rl.injected(f"n{i}"), [])
 
-    def test_only_first_prompt_and_never_for_cross_session_briefs(self):
-        self.assertEqual(self.ctx("Fix the typo in foo.py", sid="s2"), "")
-        self.assertNotIn("ROLE LOADED", self.ctx("Here is a chart screenshot, read it", sid="s2"))
-        self.assertEqual(self.ctx('<cross-session-message from="x">chart screenshot read</cross-session-message>', sid="s3"), "")
-
-    def test_tie_asks_once(self):
-        c = self.ctx("chart screenshot design options", sid="s4")
-        self.assertIn("ask the operator", c.lower())
-        self.assertNotIn("ROLE LOADED:", c)
-        self.assertEqual(self.ctx("chart screenshot design options", sid="s4"), "")
+    def test_explicit_role_line_still_loads(self):
+        c = self.ctx("You are Eagle_Eyes. Read this chart.", sid="e1")
+        self.assertIn("ROLE LOADED: Eagle_Eyes", c)
+        self.assertIn("Eagle_Eyes", rl.injected("e1"))
 
 
 if __name__ == "__main__":

@@ -8,9 +8,7 @@ HOW IT WORKS
   No banner / "ROLE NOT LOADED"  ->  close that session, open a new one.
   Every role starts on ANY device and ANY login (only the notes differ).
   Nothing starts by itself: you (or the Supervisor) start every session.
-  Forgot the role line? The first prompt loads the best fit and says
-  why:  ROLE LOADED: <Name> (fallback: <why>) ...   Wrong one? Paste
-  the right "You are <Role>." line. A tie: it asks you once.
+  No role line = plain Claude session, no role loaded.
 
 --------------------------------------------------------------
  WHAT DO I DO TODAY?
@@ -208,8 +206,8 @@ HOW IT WORKS
                                 paste: You are Supervisor. Login <A|B|C>. <your tasks>
   You are Lab_Guy.            Sonnet                        quality owner of the Claude-to-lab flow (GPT/Codex, Gemini)
   You are 1985Artifacts_Guy.  Sonnet                        owns every published page and its links; republishes
-  Inside the Supervisor (never by hand, never picked by fallback): Session_Planner, Builder.
+  Inside the Supervisor (never by hand): Session_Planner, Builder.
   Old names still work: q&a_helper, q&a helper, qa helper, q and a helper, network_admin_guy, network admin guy -> Admin_Guy; traffic_controller, traffic controller, traffic cop -> Pipeliner; artifacts_guy, artifacts guy -> 1985Artifacts_Guy.
-  No role line? The first prompt loads the best fit:  ROLE LOADED: <Name> (fallback: <why>) ...
+  No role line = plain Claude session, no role loaded.
   -- roster:end --
 ==============================================================

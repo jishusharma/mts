@@ -3,17 +3,24 @@
 Seen 2026-10-15: an Opus session proposed a side session without `model`; it inherited Opus. The rule "Sonnet, Opus only
 when the operator names it" was prose, so nothing stopped it. This hook makes it a hard block.
 
+Operator rule (2026-10-22): "any worker could start any model whenever required. Especially when I am asking it to start it, it should
+never refuse me." "Background agents are one-time use agents ... they just work with one input and provide one output, and then they
+die." "Child sessions can start higher models."
+
 Claude Code PreToolUse hook (project .claude/settings.json), on the calls that start or re-price a model:
-  Agent / Task                          `model` must be given and be sonnet or haiku; a fork (inherits) only from a cheap session
-  mcp__ccd_session__start_session       same; `proposal_id` alone (starting a proposal already checked) and cloud starts pass
-  mcp__ccd_session_mgmt__set_session_model   only sonnet or haiku
+  Agent / Task (main thread)            `model` must be given and be sonnet or haiku; Opus when the operator's latest message names it
+                                        or a crucial OPUS card is cited; a fork (inherits) only from a cheap session
+  mcp__ccd_session__start_session       any model, never refused (click cards excepted, below). If `model` is above this session's, the
+                                        app ignores it: the hook adds context to start, then set_session_model on the child, then SendMessage the brief
+  mcp__ccd_session_mgmt__set_session_model   any model
+  any spawn/send/schedule tool fired inside a background agent (payload has agent_id)   denied: a background agent is one-shot
 No click cards (operator 2026-10-18: "I am not sitting in front of the screen"): start_session with initiation "offer" or "own_initiative"
 (or none) is denied for every model, Opus included, because the operator must click to start it and may be away. Use initiation
 "user_asked" (starts now), or the Agent tool with model='sonnet' when the app refuses that on an event turn. MTS_ALLOW_CARDS=1 allows.
 Spawn storms (review 2026-10-21, DECISION_OPUS.md): while the operator is away (turn_meter.attended), at most 4 start_session
 and 8 Agent/Task calls per hour, and no Workflow. Scheduling tools (ScheduleWakeup, CronCreate, RemoteTrigger, create_scheduled_task)
 are denied unless his latest typed message asks for it (SCHEDULING_POLICY.md: none exist). Anything else passes. A blocked call gets a deny with the fix in the reason, so the model retries with model=sonnet.
-Opus is allowed in two cases only (operator 2026-10-17: "whenever I say use Opus, it must be done" and "only critical tasks, a little
+For Agent/Task, Opus is allowed in two cases only (operator 2026-10-17: "whenever I say use Opus, it must be done" and "only critical tasks, a little
 tighter"): (1) the operator's LATEST typed message names it ("opus"/"fable"); (2) the brief cites a task card that is lane OPUS,
 `approved_by` set and `crucial` filled (tasks.py lint enforces the pair). Everything else is denied, and a call without `model` is
 always denied, so an inherited model can never slip in. MTS_ALLOW_OPUS=1 allows all.
@@ -388,7 +395,7 @@ def hook():
         print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
                                                  "permissionDecisionReason": "model_guard: " + card}}))
         return 0
-    if inp.get("model") and (operator_named_opus(ev.get("transcript_path"))
+    if tool in AGENT_TOOLS and inp.get("model") and (operator_named_opus(ev.get("transcript_path"))
                              or crucial_card_cited(inp.get("title"), inp.get("prompt"), inp.get("background"), inp.get("description"))):
         return 0
     needs_parent = inp.get("subagent_type") == "fork" or tool == START

@@ -1,4 +1,4 @@
-<!-- role: Admin_Guy | version: v2 | token: clay-grid | triggers: admin_guy, admin guy, q&a_helper, q&a helper, qa helper, q and a helper, network_admin_guy, network admin guy, network admin -->
+<!-- role: Admin_Guy | version: v2 | token: grab-epic | triggers: admin_guy, admin guy, q&a_helper, q&a helper, qa helper, q and a helper, network_admin_guy, network admin guy, network admin -->
 # Admin_Guy: answers questions from the repo, records operator decisions verbatim, turns backlog items into raw cards, finds machine faults (operator 2026-10-20)
 Read first: `MyTradingSys/system/ROLES.md`, `MyTradingSys/system/START_HERE.txt`, `MyTradingSys/system/SUPER_SESSION.md`, `MyTradingSys/research/STATUS.md` (rule, role, budget answers: read this turn, cite file:line + commit date, else `NOT_IN_DATA`).
 
@@ -41,8 +41,7 @@ network and process-priority faults on this host. Find the cause with evidence (
 `python scripts/dev/desk.py post ... --target JIS-NB`. Each bug also gets a row in `MyTradingSys/research/BUGS.md`.
 
 ## Never
-Anything in HARD GUARDRAILS. Hard rules: CLAUDE.md (never the live tree; share only via `sync.py ship`; no trades, deploys, restarts, HALT files;
-never read `.secrets/` or `.env`; Opus only per WORKERS.md rule 6). Cross-machine messages only via `mts_signal.py send`, one line each.
+Anything in HARD GUARDRAILS. Hard rules: CLAUDE.md (enforced by safety_guard.py and model_guard.py hooks). Cross-machine messages only via `mts_signal.py send`, one line each.
 
 ## Done when
 Each answered question has a decision record (or `PENDING OPERATOR`), each backlog item a shipped card plus one signal line, each fault a card or a

@@ -31,6 +31,8 @@ the others fail silently, so run it by hand to see the error: `echo {} | python 
 | signal / git windows flash | `scripts/dev/mts_signal.py` | `~/.claude/mts-signals`, branch `mts-signals` |
 | screenshot not picked up | `scripts/dev/shot.py` | `~/.claude/uploads/manifest.jsonl` |
 | worker spawn refused | `scripts/dev/model_guard.py` | WORKERS.md (the rule it enforces) |
+| tool call denied (secrets, force-push, master commit, live tree) | `scripts/dev/safety_guard.py` | none (`MTS_SAFETY_GUARD=0` disables) |
+| reply blocked: read the source first | `scripts/dev/fresh_guard.py` | none (`MTS_FRESH_GUARD=0` disables) |
 | C: drive warning | `scripts/dev/c_drive_guard.py` | none |
 
 ## 3. Cards, desk, lanes

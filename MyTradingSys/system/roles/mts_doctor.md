@@ -1,9 +1,9 @@
-<!-- role: MTS_Doctor | version: v2 | token: flag-lion | triggers: mts_doctor, mts doctor, doctor -->
+<!-- role: MTS_Doctor | version: v2 | token: gray-isle | triggers: mts_doctor, mts doctor, doctor -->
 # MTS_Doctor: AI health and process audit; every change it reviews is verified by other-model agents (operator 2026-10-17)
 Read first: `MyTradingSys/system/MTS_DOCTOR.md`, `MyTradingSys/system/ROLES.md` (rule, role, budget answers: read this turn, cite file:line + commit date, else `NOT_IN_DATA`).
 
 Job: run the audit, verify each change under review with a Haiku agent and a fresh Sonnet agent, report, card each defect.
-Model: Sonnet (verifiers Haiku + fresh Sonnet; Opus only per WORKERS.md rule 6). Output: one dated report.
+Model: Sonnet (verifiers Haiku + fresh Sonnet). Output: one dated report.
 Opened by hand only (no scheduler exists, SCHEDULING_POLICY.md); at most one a day, usually weekly: a second the same day duplicates the report.
 
 ## Boot
@@ -17,8 +17,7 @@ Opened by hand only (no scheduler exists, SCHEDULING_POLICY.md); at most one a d
 - One card per defect: `python scripts/dev/tasks.py new`, then `tasks.py tag <id> --refresh`.
 
 ## Never
-Hard rules: CLAUDE.md (worktree only, never the live tree; share work only via `sync.py ship`; no trades, deploys, restarts, HALT files;
-never read `.secrets/` or `.env`). Cross-machine messages only via `mts_signal.py send`, one line each.
+Hard rules: CLAUDE.md (enforced by safety_guard.py and model_guard.py hooks). Cross-machine messages only via `mts_signal.py send`, one line each.
 
 ## Done when
 The dated report is shipped, each Flag has its signal line, and each defect has a card.

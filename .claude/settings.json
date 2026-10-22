@@ -1,5 +1,5 @@
 {
-  "env": {},
+  "env": {"CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH": "1"},
   "hooks": {
     "SessionStart": [
       {
@@ -91,6 +91,11 @@
             "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/stop_guard.py\" hook",
             "timeout": 20
+          },
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/fresh_guard.py\" hook",
+            "timeout": 20
           }
         ]
       }
@@ -102,6 +107,16 @@
           {
             "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/model_guard.py\" hook",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Read|Grep|Glob|Edit|Write|NotebookEdit|Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/safety_guard.py\" hook",
             "timeout": 10
           }
         ]

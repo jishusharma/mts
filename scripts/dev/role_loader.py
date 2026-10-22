@@ -9,9 +9,8 @@ Any body edit changes the token, so a stale token is detectable (`check`). `toke
 Which roles exist, their files and how each starts: roles/ROSTER.json (the single source; KNOWN_ROLES and ALIASES come from it).
 
   hook    UserPromptSubmit hook: on a role trigger, inject the role file from origin/fast-track + a banner instruction;
-          a session's first prompt with no role line gets the best-fitting operator role (`pick`), banner `(fallback: <why>)`.
+          no role line = nothing injected.
   list    print the roster (name, file, start, model, lane, job) and the aliases.
-  pick --text <task text | ->   the role the fallback would load for that text, and why (never an embedded role).
   render [--check]   rewrite the roster blocks in ROLES.md and START_HERE.txt (--check: exit 1 when stale).
   retoken [--all | file...]   rewrite tokens in headers.
   check   roster vs files, rows of ROLES.md vs files vs header validity vs token freshness, rendered blocks current
@@ -216,44 +215,6 @@ def mentioned_role(prompt, roles):
     return None
 
 
-# ---------- best-role fallback (no role line) ----------
-def _kw_re(kw):
-    kw = kw.lower().strip()
-    if kw == "?":
-        return re.compile(r"\?")
-    prefix = kw.endswith("*")
-    body = r"[_ -]".join(re.escape(p) for p in re.split(r"[_ ]+", kw.rstrip("*")) if p)
-    return re.compile(r"(?<![a-z0-9])" + body + ("" if prefix else r"(?![a-z0-9])"))
-
-
-def pick_role(text, repo=REPO):
-    """Best operator role for a task text: 1 point per keyword, 0.5 per weak keyword (roster). A role needs one full
-    keyword; embedded roles (Builder, Session_Planner) are never picked. Equal top scores = a tie, nothing is picked."""
-    low = (text or "").lower()
-    scored = []
-    for r in load_roster(repo):
-        if r.get("start") != "operator":
-            continue
-        strong = [k for k in r.get("keywords", []) if _kw_re(k).search(low)]
-        weak = [k for k in r.get("weak_keywords", []) if _kw_re(k).search(low)]
-        if strong:
-            scored.append((len(strong) + 0.5 * len(weak), r["name"], strong + weak))
-    if not scored:
-        return {"name": None, "reason": "no role keywords in the text", "tie": []}
-    scored.sort(key=lambda s: -s[0])
-    top = [s for s in scored if s[0] == scored[0][0]]
-    if len(top) > 1:
-        return {"name": None, "reason": "tie: " + "; ".join(f"{n} ({', '.join(k)})" for _, n, k in top),
-                "tie": [n for _, n, _ in top]}
-    return {"name": scored[0][1], "reason": "task text says " + ", ".join(k.rstrip("*") for k in scored[0][2]), "tie": []}
-
-
-def from_session(prompt):
-    """A brief sent by another session: its sender names the role, the fallback stays out."""
-    p = (prompt or "").lstrip()
-    return "<cross-session-message" in p[:400] or p.startswith("Another Claude session")
-
-
 # ---------- session state ----------
 def state_path(sid):
     base = Path(os.environ.get("MTS_ROLES_HOME") or Path(tempfile.gettempdir()) / "mts_roles")
@@ -293,16 +254,6 @@ def mark_injected(sid, name, meta=None):
     if meta:
         d["meta"][name] = meta
     _save(sid, d)
-
-
-def first_prompt(sid):
-    """True once per session: the first prompt the hook sees (the only one the fallback acts on)."""
-    d = _load(sid)
-    if d.get("seen"):
-        return False
-    d["seen"] = True
-    _save(sid, d)
-    return True
 
 
 # ---------- hook ----------
@@ -425,7 +376,6 @@ def handle(payload, repo=REPO):
     prompt = payload.get("prompt")
     if not isinstance(prompt, str):
         return ""
-    first = first_prompt(sid)
     roles = local_roles(repo)
     hits = match_roles(prompt, roles)
     fallback = None
@@ -440,14 +390,6 @@ def handle(payload, repo=REPO):
         name = mentioned_role(prompt, roles) or (injected(sid) or [None])[-1]
         if not name:
             return ""
-    elif first and not injected(sid) and not from_session(prompt):
-        p = pick_role(prompt, repo)
-        if p["tie"]:
-            return _out("UserPromptSubmit", "ROLE LOADER (hook): the prompt has no role line and fits several roles equally ("
-                        + p["reason"] + "). Ask the operator once, in one line, which role (`You are <Role>.`), then stop.")
-        if not p["name"]:
-            return ""
-        name, fallback = p["name"], p["reason"]
     else:
         return _reminder(sid)
     text = build_text(name, repo, git_fetch(repo), fallback)
@@ -512,8 +454,8 @@ def list_lines(repo=REPO):
         if r.get("aliases"):
             out.append(f"alias  {', '.join(r['aliases'])} -> {r['name']}")
     emb = [r["name"] for r in roster if r["start"] != "operator"]
-    out.append(f"{len(roster)} roles ({len(roster) - len(emb)} operator-started, {len(emb)} embedded: {', '.join(emb)}; "
-               f"never picked by the fallback) from {ROSTER_REL}; files in {ROLES_REL}/")
+    out.append(f"{len(roster)} roles ({len(roster) - len(emb)} operator-started, {len(emb)} embedded: {', '.join(emb)})"
+               f" from {ROSTER_REL}; files in {ROLES_REL}/")
     return out
 
 
@@ -533,11 +475,11 @@ def _start_here_block(roster):
         out.append(f"  {'You are ' + r['name'] + '.':<{w}}  {r['model']:<29} {r['job']}")
         if r["start_line"] != f"You are {r['name']}.":
             out.append(f"  {'':<{w}}    paste: {r['start_line']}")
-    out.append("  Inside the Supervisor (never by hand, never picked by fallback): "
+    out.append("  Inside the Supervisor (never by hand): "
                + ", ".join(r["name"] for r in roster if r["start"] != "operator") + ".")
     out.append("  Old names still work: " + "; ".join(f"{', '.join(r['aliases'])} -> {r['name']}"
                                                      for r in roster if r.get("aliases")) + ".")
-    out.append("  No role line? The first prompt loads the best fit:  ROLE LOADED: <Name> (fallback: <why>) ...")
+    out.append("  No role line = plain Claude session, no role loaded.")
     return out
 
 
@@ -869,17 +811,6 @@ def main(argv):
         for rel in stale:
             print(f"{'stale' if '--check' in argv else 'rendered'} {rel}")
         return 1 if (stale and "--check" in argv) else 0
-    if c == "pick":
-        args = argv[2:]
-        if "--text" not in args or args.index("--text") + 1 >= len(args):
-            print("usage: role_loader.py pick --text <task text | ->")
-            return 2
-        text = args[args.index("--text") + 1]
-        if text == "-":
-            text = sys.stdin.buffer.read().decode("utf-8", "replace")
-        p = pick_role(text)
-        print(f"{p['name'] or 'NONE'}: {p['reason']}")
-        return 0 if p["name"] else 1
     if c == "lint":
         return lint()
     if c == "verify":
