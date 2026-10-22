@@ -3,7 +3,8 @@
 Why it exists: the STATUS.md `CI green:` line judges CI from the age of the oldest commit not yet on origin/green/fast-track.
 Green is flaky-intermittent (13 success / 7 failure in 30 runs on 2026-10-17), so the green ref kept moving and the line read
 "CI running" through five red runs in a row. Coordinators read STATUS once at boot, so nobody saw it. This hook reads the
-real run conclusions from the public API (no login, no `gh`: JIS-NUC has none) and speaks on every operator turn.
+real run conclusions from the GitHub API (no `gh`: JIS-NUC has none; logged in with git's saved GitHub login when there is one,
+see token()) and speaks on every operator turn.
 
 Claude Code hook (project .claude/settings.json): SessionStart and UserPromptSubmit print one line when the newest finished
 runs failed MIN_STREAK times in a row (cancelled runs are coalescing, not results, and are skipped). Silent when green,
@@ -54,11 +55,42 @@ def home():
     return Path(os.environ.get("MTS_CI_WATCH_HOME") or Path.home() / ".claude")
 
 
-def fetch():
+def token():
+    """The GitHub login git already pushes with (env GH_TOKEN/GITHUB_TOKEN first, else `git credential fill`), or "" when none.
+    Logged in, the API allows 5000 calls an hour per GitHub user instead of 60 per internet address, which three devices behind one
+    home connection used up on 2026-10-22. Never prompts (GCM_INTERACTIVE=never), never printed, never written to disk."""
+    t = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
+    if t:
+        return t
+    import subprocess
+    try:
+        p = subprocess.run(["git", "credential", "fill"], input=b"protocol=https\nhost=github.com\n\n", capture_output=True, timeout=4,
+                           env=dict(os.environ, GIT_TERMINAL_PROMPT="0", GCM_INTERACTIVE="never"))
+    except (OSError, subprocess.SubprocessError):
+        return ""
+    for line in p.stdout.decode("utf-8", "replace").splitlines():
+        if line.startswith("password="):
+            return line[len("password="):]
+    return ""
+
+
+def get_json(url, agent="mts-ci-watch", timeout=4):
+    """GET a GitHub API url, logged in when token() has one; a refused login (401) retries once without it."""
+    import urllib.error
     import urllib.request   # lazy: ~0.47 s of import time that a cache hit never needs
-    req = urllib.request.Request(API, headers={"User-Agent": "mts-ci-watch"})
-    with urllib.request.urlopen(req, timeout=4) as r:
-        return json.load(r)["workflow_runs"]
+    t = token()
+    for auth in ([t, ""] if t else [""]):
+        h = {"User-Agent": agent, **({"Authorization": f"Bearer {auth}"} if auth else {})}
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url, headers=h), timeout=timeout) as r:
+                return json.load(r)
+        except urllib.error.HTTPError as e:
+            if not (auth and e.code == 401):
+                raise
+
+
+def fetch():
+    return get_json(API)["workflow_runs"]
 
 
 def current(use_cache=True):
