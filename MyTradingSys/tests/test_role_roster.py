@@ -142,6 +142,13 @@ class BestRoleFallback(unittest.TestCase):
             for t in p.get("tie", []):
                 self.assertNotIn(t, ("Builder", "Session_Planner"), text)
 
+    def test_file_paths_never_score(self):
+        # pilot 2026-10-22: a Builder brief held C:/Users/x/IdeaProjects/... and "idea*" picked Thinker
+        for text in ("Boot: python C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed/scripts/dev/sync.py start",
+                     r"Work in C:\Users\E-ngineers\IdeaProjects\mts and run scripts/dev/sync.py"):
+            self.assertIsNone(self.pick(text)["name"], text)
+        self.assertEqual(self.pick("I have an idea about the layer combiner")["name"], "Thinker")
+
     def test_no_signal_picks_nothing(self):
         p = self.pick("Fix the typo in line 4 of foo.py")
         self.assertIsNone(p["name"])
@@ -182,6 +189,12 @@ class FallbackHook(unittest.TestCase):
         self.assertEqual(self.ctx("Fix the typo in foo.py", sid="s2"), "")
         self.assertNotIn("ROLE LOADED", self.ctx("Here is a chart screenshot, read it", sid="s2"))
         self.assertEqual(self.ctx('<cross-session-message from="x">chart screenshot read</cross-session-message>', sid="s3"), "")
+
+    def test_supervisor_brief_gets_no_fallback_role(self):
+        # pilot 2026-10-22: the Supervisor's Builder brief starts "Background (from the session that started this one)"
+        brief = "Background (from the session that started this one):\nTake the conservative option; an idea list is not needed."
+        self.assertEqual(self.ctx(brief, sid="s5"), "")
+        self.assertNotIn("ROLE LOADED", self.ctx(brief, sid="s5"))
 
     def test_tie_asks_once(self):
         c = self.ctx("chart screenshot design options", sid="s4")

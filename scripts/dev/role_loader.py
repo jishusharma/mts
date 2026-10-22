@@ -226,10 +226,14 @@ def _kw_re(kw):
     return re.compile(r"(?<![a-z0-9])" + body + ("" if prefix else r"(?![a-z0-9])"))
 
 
+# A path inside a brief ("C:/Users/x/IdeaProjects/...") must not score: "idea*" matched IdeaProjects (pilot 2026-10-22).
+_PATH_RE = re.compile(r"[a-z]:[\\/][\w.~\\/-]*|[\w.~-]+(?:[\\/][\w.~-]+){2,}")
+
+
 def pick_role(text, repo=REPO):
     """Best operator role for a task text: 1 point per keyword, 0.5 per weak keyword (roster). A role needs one full
     keyword; embedded roles (Builder, Session_Planner) are never picked. Equal top scores = a tie, nothing is picked."""
-    low = (text or "").lower()
+    low = _PATH_RE.sub(" ", (text or "").lower())
     scored = []
     for r in load_roster(repo):
         if r.get("start") != "operator":
@@ -251,7 +255,8 @@ def pick_role(text, repo=REPO):
 def from_session(prompt):
     """A brief sent by another session: its sender names the role, the fallback stays out."""
     p = (prompt or "").lstrip()
-    return "<cross-session-message" in p[:400] or p.startswith("Another Claude session")
+    return ("<cross-session-message" in p[:400] or p.startswith("Another Claude session")
+            or p.startswith("Background (from the session that started this one)"))
 
 
 # ---------- session state ----------
