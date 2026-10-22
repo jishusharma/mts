@@ -10,11 +10,12 @@ SETTINGS = Path(__file__).resolve().parents[2] / ".claude" / "settings.json"
 
 # (event, script) pairs that run in the background. Everything else is synchronous.
 ASYNC = {
-    ("PostToolUse", "turn_meter.py"),        # counts turns; only emits additionalContext (nag), never a decision
-    ("PostToolUse", "mts_signal.py"),        # sends signals detached; prints informational text
-    ("UserPromptSubmit", "mts_signal.py"),   # informational notes from other sessions
-    ("UserPromptSubmit", "ci_watch.py"),     # one informational CI RED line
+    ("PostToolUse", "mts_signal.py"),        # sends signals detached; its output is not needed this turn
 }
+# Printed context the model must see THIS turn (signals, ACTION REQUIRED, CI RED, hand-off nags) is synchronous, and turn_meter
+# is synchronous on PostToolUse because an async run raced the sync UserPromptSubmit run on one state file (lost typed_at/driven).
+MUST_BE_SYNC = {("UserPromptSubmit", "mts_signal.py"), ("UserPromptSubmit", "ci_watch.py"), ("PostToolUse", "turn_meter.py"),
+                ("Stop", "mts_signal.py")}
 
 
 def hooks():
@@ -30,6 +31,12 @@ class HookSettingsTest(unittest.TestCase):
     def test_exactly_the_informational_hooks_are_async(self):
         actual = {(e, s) for e, s, a, _ in hooks() if a}
         self.assertEqual(actual, ASYNC)
+
+    def test_context_printing_hooks_are_synchronous_and_stop_hook_is_wired(self):
+        actual = {(e, s): a for e, s, a, _ in hooks()}
+        for key in MUST_BE_SYNC:
+            self.assertIn(key, actual, key)
+            self.assertFalse(actual[key], f"{key} prints context or can block and must not be async")
 
     def test_deny_and_block_hooks_stay_synchronous(self):
         for event, script, is_async, _ in hooks():

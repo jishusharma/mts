@@ -11,7 +11,19 @@ Default and automatic (hook in .claude/settings.json, no session action needed):
                             it has not seen yet from the machine's clone (at most 5 lines, as extra context): signals
                             from OTHER host/account pairs, and broadcasts from anyone but the sending session itself
   - UserPromptSubmit        a prompt starting "MTS broadcast" (or "broadcast:") is sent as a broadcast; multi-line is joined
-Never blocks, never raises; a failed network call is skipped.
+  - Stop                    only if an unacked HIGH broadcast exists for this host: blocks the stop once (see below)
+Never blocks (except that one Stop case), never raises; a failed network call is skipped.
+
+HIGH broadcasts (operator 2026-10-22: a "every machine needs X" broadcast was shown once and nobody acted):
+  python scripts/dev/mts_signal.py broadcast "<text>" --prio high --cmd "<exact operator command>"
+      gets an id (b-xxxxxx). Every host shows it as "[MTS ACTION REQUIRED ...]" on EVERY prompt and at SessionStart (any age up
+      to KEEP_DAYS, not only the last FIRST_LOOK_MIN minutes) until THAT HOST acks it. It tells the model to put the operator
+      line first in its reply and to ack. A Stop with the reply lacking the id / "ACTION FOR THIS MACHINE" is blocked once.
+  python scripts/dev/mts_signal.py ack <id> told|done [--note "..."]
+      told = the operator was told (host shown a reminder once per session only); done = it ran or a check passed (silent).
+  python scripts/dev/mts_signal.py acks [<id>]   hosts seen in the last KEEP_DAYS vs none/told/done; no id = all open high
+      broadcasts. The sending machine's sessions also get a one-line ack status on their prompts while any host is not done.
+A record stamped more than 10 minutes in the future (wrong clock) is ignored for display and for the seen marker.
 
   python scripts/dev/mts_signal.py send "<text>" [--to host|all] [--kind note|claim|done|ask|broadcast]
   python scripts/dev/mts_signal.py broadcast "<message>"   a signal every other session shows on its NEXT turn (nothing
@@ -43,6 +55,10 @@ SHOW_MAX = 5
 KEEP_DAYS = 7
 TEXT_MAX = 200
 FIRST_LOOK_MIN = 30     # a session seeing the branch for the first time looks back this far
+CMD_MAX = 300           # the operator command of a HIGH broadcast
+FUTURE_MIN = 10        # a record stamped later than now + this is a wrong clock: ignored
+DOT = chr(183)
+RANK = {"none": 0, "told": 1, "done": 2}
 
 
 def home():
@@ -77,12 +93,12 @@ def git(cwd, *args, check=True, timeout=20):
     return r
 
 
-def clean(text):
+def clean(text, limit=TEXT_MAX):
     """One short line; long token-like strings are cut out (the repo is public)."""
     t = " ".join(str(text).split())
     t = re.sub(r"[A-Za-z0-9_\-]{32,}", "[cut]", t)
     t = re.sub(r"(?i)(secret|password|passwd|token|api[_-]?key)\s*[=:]\s*\S+", r"\1=[cut]", t)
-    return t[:TEXT_MAX]
+    return t[:limit]
 
 
 def origin_url(cwd=None):
@@ -143,7 +159,7 @@ def prune(h):
     return len(old)
 
 
-def send(text, to="all", kind="note", cwd=None, sid=""):
+def send(text, to="all", kind="note", cwd=None, sid="", extra=None):
     """Writes one signal file and pushes it; retries on a lost race. Returns True if it reached origin."""
     h = ensure(cwd)
     if h is None:
@@ -152,6 +168,8 @@ def send(text, to="all", kind="note", cwd=None, sid=""):
     rec = {"t": stamp(dt), "from": who(), "to": to, "kind": kind, "text": clean(text)}
     if sid:
         rec["sid"] = sid_tag(sid)
+    if extra:
+        rec.update(extra)
     # microseconds right after the 16-char second stamp: two signals in one second sort in send order, not by the random tail
     name = "%s%06d-%s-%04x.json" % (rec["t"], dt.microsecond, re.sub(r"[^a-z0-9]+", "", host())[:12], random.randrange(1 << 16))
     for _ in range(4):
@@ -177,11 +195,17 @@ def load(h):
     return rows
 
 
+def future_limit():
+    return stamp(now() + timedelta(minutes=FUTURE_MIN))
+
+
 def unseen_for(rows, since, sid=""):
     """Signals newer than `since` (a stamp) that are for everyone or for this host: from another host/account pair, or a
-    broadcast from any session but this one (all sessions on one machine share one sender id)."""
-    me, tag = who(), sid_tag(sid)
-    return [r for r in rows if r.get("t", "") > since and r.get("to") in ("all", host())
+    broadcast from any session but this one (all sessions on one machine share one sender id). Acks and HIGH broadcasts are
+    not news (the action block handles them); a record stamped in the future is ignored."""
+    me, tag, lim = who(), sid_tag(sid), future_limit()
+    return [r for r in rows if since < r.get("t", "") <= lim and r.get("to") in ("all", host())
+            and r.get("kind") != "ack" and r.get("prio") != "high"
             and (r.get("from") != me or (r.get("kind") == "broadcast" and r.get("sid", "") != tag))]
 
 
@@ -289,17 +313,89 @@ def handle(payload):
     sid, ev = payload.get("session_id"), payload.get("hook_event_name")
     if not sid or not ev or is_subagent(payload):
         return ""
+    if ev == "Stop":
+        return stop_check(payload)
     auto = auto_send_text(payload)
     note = sender_note(auto[0]) if auto and auto[1] == "broadcast" else ""
     got = _handle(payload, sid, ev, auto)
     return "\n".join(t for t in (note, got) if t)
 
 
+def high_open(rows):
+    """HIGH broadcasts that have not expired (any age up to KEEP_DAYS), oldest first."""
+    cutoff = stamp(now() - timedelta(days=KEEP_DAYS))
+    return [r for r in rows if r.get("kind") == "broadcast" and r.get("prio") == "high" and r.get("id") and r.get("t", "") >= cutoff]
+
+
+def ack_state(rows, bid, hostname):
+    """Best state this host reached for broadcast bid: none < told < done."""
+    best = "none"
+    for r in rows:
+        if r.get("kind") == "ack" and r.get("id") == bid and str(r.get("host", "")).lower() == hostname \
+                and RANK.get(r.get("state"), 0) > RANK[best]:
+            best = r["state"]
+    return best
+
+
+def hosts_seen(rows):
+    """Hosts with any record in the last KEEP_DAYS (a record stamped in the future does not count)."""
+    cutoff, lim = stamp(now() - timedelta(days=KEEP_DAYS)), future_limit()
+    out = set()
+    for r in rows:
+        if cutoff <= r.get("t", "") <= lim:
+            out.add(str(r.get("host") or str(r.get("from", "")).split("/")[0]).lower())
+    out.discard("")
+    return out
+
+
+def targets(rows, b):
+    return {b["to"]} if b.get("to") not in (None, "all") else hosts_seen(rows) | {host()}
+
+
+def action_text(b):
+    cmd = b.get("cmd") or b.get("text", "")
+    return "ACTION FOR THIS MACHINE (%s): %s" % (host(), cmd)
+
+
+def action_block(rows, ev):
+    """The [MTS ACTION REQUIRED] text for this host: state none on every turn, told once per session (SessionStart), done never."""
+    out = []
+    for b in high_open(rows):
+        if b.get("to") not in ("all", host()):
+            continue
+        st = ack_state(rows, b["id"], host())
+        if st == "done" or (st == "told" and ev != "SessionStart"):
+            continue
+        if st == "told":
+            out.append("[MTS reminder %s HIGH %s] this machine was told, not yet confirmed done: %s (when it ran: python scripts/dev/mts_signal.py ack %s done)"
+                       % (DOT, b["id"], b.get("cmd") or b.get("text", ""), b["id"]))
+            continue
+        out.append("[MTS ACTION REQUIRED %s prio HIGH %s %s from %s at %s] %s" % (DOT, DOT, b["id"], b.get("from", "?"), b["t"][9:13] + "Z", b.get("text", "")))
+        out.append('Do now, before the current task: put this as the FIRST line of your reply to the operator: "%s". Then run: '
+                   "python scripts/dev/mts_signal.py ack %s told. When the operator confirms it ran (or a check passes): ack %s done."
+                   % (action_text(b), b["id"], b["id"]))
+    return "\n".join(out)
+
+
+def sender_status(rows):
+    """One line for the machine that sent a HIGH broadcast while any target host is not done."""
+    out = []
+    for b in high_open(rows):
+        if str(b.get("from", "")).split("/")[0].lower() != host():
+            continue
+        hs = sorted(targets(rows, b))
+        open_ = ["%s=%s" % (h, ack_state(rows, b["id"], h)) for h in hs if ack_state(rows, b["id"], h) != "done"]
+        if open_:
+            out.append("[MTS BROADCAST %s status] %d/%d hosts done; open: %s (python scripts/dev/mts_signal.py acks %s)"
+                       % (b["id"], len(hs) - len(open_), len(hs), ", ".join(open_), b["id"]))
+    return "\n".join(out)
+
+
 def _handle(payload, sid, ev, auto):
     cwd = payload.get("cwd") or ""
     if auto:
         spawn_send(auto[0], auto[1], cwd, sid)
-    if ev not in ("UserPromptSubmit", "PostToolUse"):
+    if ev not in ("UserPromptSubmit", "PostToolUse", "SessionStart"):
         return ""
     sd = state_dir()
     sd.mkdir(parents=True, exist_ok=True)
@@ -315,11 +411,25 @@ def _handle(payload, sid, ev, auto):
         if h is None:
             return ""
     else:
-        # another session of this machine holds the fetch slot: read the machine's clone, but only when it changed since
-        # this session last looked (a second session no longer waits up to 5 more minutes)
-        h = home()
+        h = home()      # another session of this machine holds the fetch slot: read the machine's clone
+        if not (h / ".git").exists():
+            return ""
+    rows = load(h)
+    out = []
+    if ev in ("UserPromptSubmit", "SessionStart"):
+        out.append(action_block(rows, ev))
+    if ev == "UserPromptSubmit":
+        out.append(sender_status(rows))
+    if ev != "SessionStart":
+        out.append(news(rows, sid, seen_f, sd, fetch))
+    return "\n".join(t for t in out if t)
+
+
+def news(rows, sid, seen_f, sd, fetch):
+    """Not-yet-seen signals and broadcasts (the old behaviour); a second session re-reads the clone only when it changed."""
+    if not fetch:
         sync = sd / "last_sync"
-        if not (h / ".git").exists() or not sync.exists():
+        if not sync.exists():
             return ""
         if seen_f.exists() and seen_f.stat().st_mtime >= sync.stat().st_mtime:
             return ""
@@ -327,9 +437,9 @@ def _handle(payload, sid, ev, auto):
         since = seen_f.read_text(encoding="utf-8").strip()
     except OSError:
         since = stamp(now() - timedelta(minutes=FIRST_LOOK_MIN))
-    rows = load(h)
+    lim = future_limit()
     new = unseen_for(rows, since, sid)
-    seen_f.write_text(max([since] + [r.get("t", "") for r in rows]), newline="\n")
+    seen_f.write_text(max([since] + [r.get("t", "") for r in rows if r.get("t", "") <= lim]), newline="\n")
     if not new:
         return ""
     broadcasts = [r for r in new if r.get("kind") == "broadcast"]
@@ -347,6 +457,58 @@ def _handle(payload, sid, ev, auto):
         if more:
             out.append("(+%d older)" % more)
     return "\n".join(out)
+
+
+def reply_text(payload):
+    """The assistant text of the turn that just ended: the payload field if present, else read back from the transcript."""
+    t = payload.get("last_assistant_message")
+    if isinstance(t, str) and t:
+        return t
+    path = payload.get("transcript_path")
+    if not path or not Path(path).is_file():
+        return ""
+    chunks = []
+    with open(path, "rb") as f:
+        f.seek(0, 2)
+        size = f.tell()
+        f.seek(max(0, size - 400000))
+        lines = f.read().decode("utf-8", "replace").splitlines()
+    for ln in reversed(lines):
+        try:
+            e = json.loads(ln)
+        except ValueError:
+            continue
+        msg = e.get("message") if isinstance(e.get("message"), dict) else {}
+        content = msg.get("content")
+        if e.get("type") == "user" and not (isinstance(content, list) and content
+                                            and all(c.get("type") == "tool_result" for c in content if isinstance(c, dict))):
+            break
+        if e.get("type") == "assistant":
+            if isinstance(content, str):
+                chunks.append(content)
+            elif isinstance(content, list):
+                chunks.extend(c.get("text", "") for c in content if isinstance(c, dict) and c.get("type") == "text")
+    return "\n".join(chunks)
+
+
+def stop_check(payload):
+    """Block the stop once while an unacked (state none) HIGH broadcast for this host was not put to the operator."""
+    if payload.get("stop_hook_active"):
+        return ""
+    h = home()
+    if not (h / ".git").exists():
+        return ""
+    rows = load(h)
+    pending = [b for b in high_open(rows) if b.get("to") in ("all", host()) and ack_state(rows, b["id"], host()) == "none"]
+    if not pending:
+        return ""
+    reply = reply_text(payload)
+    if "ACTION FOR THIS MACHINE" in reply or any(b["id"] in reply for b in pending):
+        return ""
+    reason = ("[MTS ACTION REQUIRED] unacked HIGH broadcast for this machine and your reply does not tell the operator. Reply again with "
+              + " ; ".join('"%s" as the FIRST line (%s)' % (action_text(b), b["id"]) for b in pending)
+              + ", then run: " + " ; ".join("python scripts/dev/mts_signal.py ack %s told" % b["id"] for b in pending) + ".")
+    return json.dumps({"decision": "block", "reason": reason}, ensure_ascii=False)
 
 
 def hook():
@@ -427,12 +589,54 @@ def main(argv):
         ap = argparse.ArgumentParser(prog="mts_signal.py broadcast")
         ap.add_argument("message")
         ap.add_argument("--to", default="all")
+        ap.add_argument("--prio", default="normal", choices=["normal", "high"])
+        ap.add_argument("--cmd", default="", help="high: the exact command the operator must run on each machine")
         a = ap.parse_args(argv[1:])
-        ok = send(a.message, to=a.to, kind="broadcast")
+        extra, bid = None, ""
+        if a.prio == "high":
+            bid = "b-" + hashlib.sha1(("%s%s%s" % (time.time(), who(), a.message)).encode("utf-8")).hexdigest()[:6]
+            extra = {"id": bid, "prio": "high", "cmd": clean(a.cmd, CMD_MAX)}
+        ok = send(a.message, to=a.to, kind="broadcast", extra=extra)
         print("broadcast sent" if ok else "broadcast NOT sent (no origin or push failed)")
         if ok:
             print(sender_note(a.message))
+            if bid:
+                print("id %s (HIGH): every host shows it on every prompt until it acks. Follow it with: python scripts/dev/mts_signal.py acks %s" % (bid, bid))
         return 0 if ok else 1
+    if cmd == "ack":
+        import argparse
+        ap = argparse.ArgumentParser(prog="mts_signal.py ack")
+        ap.add_argument("id")
+        ap.add_argument("state", choices=["told", "done"])
+        ap.add_argument("--note", default="")
+        a = ap.parse_args(argv[1:])
+        h = ensure()
+        if h is None:
+            print("no origin")
+            return 1
+        if a.id not in {b["id"] for b in high_open(load(h))}:
+            print("unknown or expired broadcast id %s (python scripts/dev/mts_signal.py acks)" % a.id)
+            return 2
+        ok = send("ack %s %s %s" % (a.id, a.state, a.note), kind="ack", extra={"id": a.id, "state": a.state, "host": host(), "note": clean(a.note, 100)})
+        print("ack %s %s (%s)" % (a.id, a.state, host()) if ok else "ack NOT sent (push failed)")
+        return 0 if ok else 1
+    if cmd == "acks":
+        h = ensure()
+        if h is None:
+            print("no origin")
+            return 1
+        rows = load(h)
+        want = argv[1] if len(argv) > 1 else ""
+        bs = [b for b in high_open(rows) if b["id"] == want] if want else \
+            [b for b in high_open(rows) if any(ack_state(rows, b["id"], t) != "done" for t in targets(rows, b))]
+        for b in bs:
+            print("%s HIGH from %s at %s: %s" % (b["id"], b.get("from", "?"), b["t"], b.get("text", "")))
+            for t in sorted(targets(rows, b)):
+                notes = [r.get("note") for r in rows if r.get("kind") == "ack" and r.get("id") == b["id"] and r.get("host") == t and r.get("note")]
+                print("  %-16s %s%s" % (t, ack_state(rows, b["id"], t), "  " + notes[-1] if notes else ""))
+        if not bs:
+            print("no such broadcast" if want else "no open HIGH broadcasts")
+        return 0
     if cmd == "budget":
         return budget_cmd(argv[1:])
     if cmd == "read":

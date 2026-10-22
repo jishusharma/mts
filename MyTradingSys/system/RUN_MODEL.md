@@ -51,13 +51,14 @@ Use-it-or-lose-it: in the last 24 h before a login's weekly reset, if that login
 ## 6. Speed budget (scripts)
 | Path | Budget | Measured 2026-10-22 (before, session) | hook_bench before (origin/fast-track) | hook_bench after (this branch) |
 |---|---|---|---|---|
-| hooks per tool call (wall) | <= 0.5 s | ~1.2 s (2 blocking pre + 2 blocking post) | 0.90 s | 0.40 s (post-tool hooks async) |
-| hooks per prompt (wall) | <= 0.8 s | ~1.4 s | 0.99 s | 0.70 s (shot 0.99 -> 0.60; ci_watch, mts_signal async) |
-| hooks at stop | <= 1.0 s | ~2.2 s | 2.10 s | 0.82 s (clean tree: no sync.py import, git calls in parallel) |
+| hooks per tool call (wall) | <= 0.5 s | ~1.2 s (2 blocking pre + 2 blocking post) | 0.90 s | 0.24 s (only the PostToolUse mts_signal sender is async) |
+| hooks per prompt (wall) | <= 0.8 s | ~1.4 s | 0.99 s | 0.21 s (slowest: role_loader 0.21; mts_signal and ci_watch are synchronous again, they print context the model must see this turn) |
+| hooks at stop | <= 1.0 s | ~2.2 s | 2.10 s | 0.31 s (clean tree: no sync.py import, git calls in parallel; mts_signal Stop check 0.18 s, parallel) |
 | `sync.py ship` | stage timings logged; target set from the first 20 measured ships | not measured (no timing code) | - | - |
 hook_bench = median of 5 runs per hook on the laptop, state dirs in a temp folder, Stop measured on a clean tree (the common stop); wall of an
-event = slowest synchronous hook. The remaining floor is python start-up (0.26-0.55 s per hook); the async hooks add no wall time.
-Means: post-tool hooks run in the background (`async`), lazy imports, no git or network in per-step hooks. `scripts/dev/hook_bench.py`
+event = slowest synchronous hook. The remaining floor is python start-up (0.26-0.55 s per hook); the one async hook adds no wall time.
+After column re-measured 2026-10-22 on a quiet laptop (the earlier after numbers were taken while other work ran, so the columns are not like for like). Async: only PostToolUse `mts_signal.py` (sends detached). Everything that prints context or can block is synchronous.
+Means: the signal sender runs in the background (`async`), lazy imports, no git or network in per-step hooks. `scripts/dev/hook_bench.py`
 measures every configured hook; `mts_doctor.py` reports it against this table.
 
 ## 7. Interview Prep feed
