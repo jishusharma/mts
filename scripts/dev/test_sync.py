@@ -84,6 +84,17 @@ class SyncTest(unittest.TestCase):
         self.assertEqual(seen, [["d.py"]])
         self.assertEqual(len(docs), 1)
 
+    def test_a_docs_only_ship_over_a_doc_size_cap_is_refused(self):
+        """2175ef80: a docs ship ran no gate and pushed CLAUDE.md over its cap; the default docs gate now checks the caps."""
+        cap = "MyTradingSys/tests/docs/test_integrity.py"
+        (self.a / cap).parent.mkdir(parents=True)
+        commit(self.a, cap, (Path(__file__).resolve().parents[2] / cap).read_text(encoding="utf-8"))
+        sync.ship(self.a, gate=lambda repo, files: None)
+        commit(self.a, "CLAUDE.md", "x" * 100_000)
+        with self.assertRaisesRegex(sync.SyncError, "doc size cap.*100000 <= "):
+            sync.ship(self.a, gate=self.gate)
+        self.assertNotIn("CLAUDE.md", self.head_files(self.a))
+
     def test_run_gate_picks_smoke_and_full_flag_forces_everything(self):
         calls = []
         real = sync.subprocess.run
