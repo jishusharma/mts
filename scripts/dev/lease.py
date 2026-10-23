@@ -141,6 +141,19 @@ def role_name(role):
         return role
 
 
+def runner_env(text, run_id, role=None):
+    """Child env for a non-Claude runner (gemini_queue, codex_run): MTS_ROLE + MTS_LEASE_SESSION when the card
+    names a singleton role ("You are the Pipeliner", "act as Pipeliner", "role: Pipeliner" or the card's role
+    field), else {}. A bare mention of the word never counts."""
+    found = None
+    for r in SINGLETONS:
+        if role and slug(role) == slug(r):
+            found = r
+        elif re.search(r"(?i)\b(?:you are|act as|acting as|role\s*[:=])\s+(?:the\s+)?" + re.escape(r) + r"\b", text or ""):
+            found = r
+    return {"MTS_ROLE": found, "MTS_LEASE_SESSION": str(run_id)} if found else {}
+
+
 def current_role(env=None):
     env = os.environ if env is None else env
     if env.get("MTS_ROLE"):

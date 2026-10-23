@@ -16,7 +16,7 @@
   "goal": "Run blind Gemini 4 Argon low reads of the same 7 hard Tom frames and prescribed crops, then compare visible-field outputs descriptively with pilot audit truth and Flash; resolve the two crop questions only when directly legible, otherwise mark CONTESTED.",
   "id": "argon-blind-read-7-frames",
   "kind": "run",
-  "lane": "CODEX",
+  "lane": "DSA-NUC",
   "latest": [
     {
       "auto": true,
@@ -35,7 +35,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-19 ACCEPT GPT Luna independent brief review; blind-folder separation and unknown-reference scoring fixes applied. IMPORTANT/class=C1. Luna invokes Argon low directly; Flash queue is unsuitable. Pilot references remain UNCHECKED; no general catch-rate claim.",
+  "note": "REVIEWED:2026-10-19 ACCEPT GPT Luna independent brief review; blind-folder separation and unknown-reference scoring fixes applied. IMPORTANT/class=C1. Luna invokes Argon low directly; Flash queue is unsuitable. Pilot references remain UNCHECKED; no general catch-rate claim. | UNSTICK 2026-10-23 (builder codex-unstick): moved CODEX -> DSA-NUC: Codex sandbox has no network and agy.exe needs a fresh sign-in, so every CODEX run ends INCOMPLETE. Details: MyTradingSys/system/card_specs/codex-unstick-2026-10-23.md",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "codex",
