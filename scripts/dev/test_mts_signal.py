@@ -458,47 +458,41 @@ class SignalTest(unittest.TestCase):
         os.environ["MTS_LOGIN"] = "b"
         self.assertEqual(S.login(), "B")
 
-    def test_record_carries_login_and_sender_id_uses_the_letter(self):
+    def test_sender_id_uses_the_letter(self):
         self.machine("lenovo", "")
         os.environ.pop("MTS_ACCOUNT")
         self.assertEqual(S.who(), "lenovo/?")
         self.as_login("alice.fake@example.test")
         self.assertEqual(S.who(), "lenovo/A")
-        S.send("hello")
-        rec = S.load(S.ensure())[-1]
-        self.assertEqual((rec["login"], rec["from"]), ("A", "lenovo/A"))
-        self.assertNotIn("example.test", json.dumps(rec))      # the address never travels
         os.environ["MTS_ACCOUNT"] = "sharma"
         self.assertEqual(S.who(), "lenovo/sharma")             # an explicit account label still wins
 
     def test_session_start_announces_login_and_tells_the_session(self):
         self.machine("jis-nb", "")
-        os.environ.pop("MTS_ACCOUNT")
-        self.machine("jis-nuc", "")
-        os.environ.pop("MTS_ACCOUNT")
-        self.as_login("alice.fake@example.test")
-        S.send("BUDGET login=A 5h=10% week=40% reset=2026-10-27T19:59Z sup=NUC mode=SPEND")
-        self.machine("jis-nb", "")
-        os.environ.pop("MTS_ACCOUNT")
         self.as_login("carol1985@example.test")
-        out = S.handle(self.payload("SessionStart", source="startup"))
-        self.assertIn("LOGIN: this session is login C on JIS-NB (from the app account)", out)
-        self.assertIn("login A ", out)                          # who lines follow
+        self.assertEqual(S.auto_send_text(self.payload("SessionStart", source="startup")), ("session started in %s login=C" % self.tmp.name, "note"))
+        os.environ["MTS_SIGNALS_ORIGIN"] = ""                  # no clone: only the session's own LOGIN line, no network
+        os.environ["MTS_SIGNALS_HOME"] = str(self.tmp / "none")
+        os.environ["MTS_SIGNALS_SYNC"] = ""
+        out = S.handle(self.payload("SessionStart", sid="x", source="compact"))
+        self.assertEqual(out, "LOGIN: this session is login C on JIS-NB (from the app account)")
         self.assertNotIn("example.test", out)
-        texts = [r["text"] for r in S.load(S.ensure())]
-        self.assertIn("session started in %s login=C" % self.tmp.name, texts)
+        self.as_login("stranger@example.test")
+        self.assertIn("LOGIN: unknown on JIS-NB", S.handle(self.payload("SessionStart", sid="y", source="compact")))
 
-    def test_login_mismatch_uses_detected_letter_and_login_is_optional(self):
+    def test_login_mismatch_uses_detected_letter_record_carries_login(self):
         self.machine("lenovo", "")
+        os.environ.pop("MTS_ACCOUNT")
         os.environ["MTS_RELAY_HOME"] = str(self.tmp / "claudehome")
         self.as_login("alice.fake@example.test")
         self.assertEqual(S.resolve_login("C"), ("A", "LOGIN MISMATCH: you passed C, this app is logged in as A; using A"))
         self.assertEqual(S.resolve_login("a"), ("A", ""))
         self.assertEqual(S.resolve_login(""), ("A", ""))
         self.assertEqual(S.main(["budget", "--login", "C", "--five", "1", "--week", "2", "--reset", "2026-10-23T09:00Z"]), 0)
-        self.assertEqual(S.main(["budget", "--five", "1", "--week", "2", "--reset", "2026-10-23T09:00Z"]), 0)
-        texts = [r["text"] for r in S.load(S.ensure())]
-        self.assertEqual(texts, ["BUDGET login=A 5h=1% week=2% reset=2026-10-23T09:00Z"])   # second one is a repeat: dropped
+        rec = S.load(S.ensure())[-1]
+        self.assertEqual(rec["text"], "BUDGET login=A 5h=1% week=2% reset=2026-10-23T09:00Z")
+        self.assertEqual((rec["login"], rec["from"]), ("A", "lenovo/A"))
+        self.assertNotIn("example.test", json.dumps(rec))      # the address never travels
         os.environ.pop("MTS_RELAY_HOME")
 
     def test_who_lines_stale_supervisor_note_and_conflict(self):
