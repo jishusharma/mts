@@ -107,6 +107,44 @@ class ModelGuardTest(unittest.TestCase):
         self.assertEqual(decision, "deny")
         self.assertIn("Agent tool", reason)
 
+    def test_his_typed_turn_in_a_role_session_may_start_a_session_without_the_word_session(self):
+        # operator 2026-10-23 15:16: "if I ask a super session to start a thinker, why it is making me click? ... I can say that,
+        # okay, start a thinker and do this, so that it is ready." 3d54646f6 allowed it only when his message said "session".
+        p = Path(self.tmp.name) / "sup_typed.jsonl"
+        start = {"type": "user", "message": {"content": '<pasted_content id="1">\nYou are Supervisor. Login C.\n</pasted_content>'}}
+        reply = {"type": "assistant", "message": {"model": "claude-opus-5-5", "content": []}}
+        inp = {"initiation": "user_asked", "title": "Thinker", "prompt": "You are Thinker.\nTopic: x", "background": "b" * 90,
+               "model": "claude-sonnet-5-5"}
+
+        def put(*rows):
+            p.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
+
+        put(start, reply, {"type": "user", "message": {"content": "start a thinker and do this, so that it is ready"}})
+        self.assertEqual(fire(START, inp, p), "allow")
+        put(start)                                              # the pasted start line itself: its first turn, no typed ask yet
+        self.assertEqual(fire(START, inp, p), "deny")
+        put(start, reply, {"type": "user", "message": {"content": "start a thinker"}}, reply,
+            {"type": "user", "message": {"content": "<task-notification>\n<task-id>a1</task-id>\n</task-notification>"}})
+        self.assertEqual(fire(START, inp, p), "deny")           # an event opened this turn: the app shows a card
+        brief = {"type": "user", "message": {"content": "Background (from the session that started this one): x\n\nTask:\nYou are Builder."}}
+        put(brief, reply, {"type": "user", "message": {"content": "start a thinker"}})
+        self.assertEqual(fire(START, inp, p), "allow")          # a started session he types into is his turn too
+        put(brief)
+        self.assertEqual(fire(START, inp, p), "deny")
+        # replay 2026-10-23: a /compact echo or an interrupt note is not his ask, and a compaction since his ask brings the card back
+        ask = {"type": "user", "message": {"content": "start a thinker"}}
+        for tail in ({"type": "user", "message": {"content": "<command-name>/compact</command-name>\n<command-message>compact"}},
+                     {"type": "user", "message": {"content": "[Request interrupted by user for tool use]"}},
+                     {"type": "system", "subtype": "compact_boundary", "compactMetadata": {"postTokens": 9}}):
+            put(start, reply, ask, reply, tail)
+            self.assertEqual(fire(START, inp, p), "deny" if tail.get("type") == "system" or "compact" in str(tail) else "allow", tail)
+        put(start, reply, ask, reply, {"type": "user", "message": {"content": "This session is being continued from a previous conversation"}})
+        self.assertEqual(fire(START, inp, p), "deny")           # an unflagged compaction summary (diff review finding 3)
+        # odd lines never crash the hook (diff review finding 1): a non-dict line, a string message, an int text block
+        for odd in ([1], {"type": "user", "message": "hi"}, {"type": "user", "message": {"content": [{"type": "text", "text": 5}]}}):
+            put(start, reply, ask, odd)
+            self.assertEqual(fire(START, inp, p), "allow", odd)
+
     def test_operator_typed_mid_turn_session_ask_reaches_the_guard(self):
         # operator 2026-10-23, typed while a Supervisor turn ran: "issue another Opus session ... start a new session which I can see".
         # The app stores such a message as a queued_command attachment; the guard read only user entries and denied the start.
