@@ -9,7 +9,7 @@ never stamps REVIEWED, never touches the live tree. A Claude session reviews the
 Flash models only (operator 2026-10-18).
 """
 from __future__ import annotations
-import subprocess, sys, time
+import os, subprocess, sys, time
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
@@ -34,6 +34,12 @@ def git(*a, cwd=REPO):
     return subprocess.run(['git', '-C', str(cwd), *a], capture_output=True, text=True)
 
 
+def child_env(card: str, brief: str, base=None) -> dict:
+    """Singleton-role cards (lease.SINGLETONS) get MTS_ROLE + MTS_LEASE_SESSION so desk/sync writes are lease-guarded."""
+    import lease
+    return {**(os.environ if base is None else base), **lease.runner_env(brief, f'gemini-q-{card}-{int(time.time())}')}
+
+
 def run_job(card: str, effort: str) -> None:
     wt = ROOT / card
     log = ROOT / f'{card}.log'
@@ -52,7 +58,7 @@ def run_job(card: str, effort: str) -> None:
     with open(log, 'w', encoding='utf-8', newline='\n') as f:
         f.write(f'START {card} {model}\n')
         f.flush()
-        p = subprocess.run(cmd, cwd=wt, stdout=f, stderr=subprocess.STDOUT, text=True)
+        p = subprocess.run(cmd, cwd=wt, stdout=f, stderr=subprocess.STDOUT, text=True, env=child_env(card, brief))
         f.write(f'\nEXIT {p.returncode} after {int(time.time() - t0)}s\n')
 
 
