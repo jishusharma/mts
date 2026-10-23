@@ -212,7 +212,7 @@ def run(minutes=180, seed=1, real=False, baseline=False, faults=True, out=sys.st
                     world.update()
                     running = world.running(login)
                     lines, data = S.plan(repo, login, world.rd(login), running=running, send=True, no_fetch=True, host=host,
-                                         home=home, now=clock.now())
+                                         home=home, now=clock.now(), who_rows=[])   # the WHO block reads the real signals clone: not in a soak
                     _check_plan(mon, world, login, host, lines, data, running)
                     fail_spawn = faults and login == "B" and 140 <= m < 200
                     for cid in data["picks"][:data["free"]]:

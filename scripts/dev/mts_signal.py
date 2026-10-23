@@ -30,9 +30,17 @@ A record stamped more than 10 minutes in the future (wrong clock) is ignored for
                                                          wakes an idle session or flashes; the sender wakes them)
   python scripts/dev/mts_signal.py read [--hours 24]       newest last
   python scripts/dev/mts_signal.py status                  clone, origin, own id
+  python scripts/dev/mts_signal.py who [--hours 24]        who is logged in where: one line per host+login (last seen, BUDGET
+                                                         numbers with age, supervisor mode, last ROLE/start note); flags
+                                                         `CONFLICT login <L>` when two hosts claim one login with different resets
+
+Login roll call (operator 2026-10-23): login() = env MTS_LOGIN, else the app account (oauthAccount.emailAddress in ~/.claude.json,
+env MTS_CLAUDE_JSON overrides the path) mapped to A/B/C through the LOGINS table of CLOUD_ACCOUNTS.md. Only that one field is read
+and only the letter ever travels (a signal, a commit, a log never carries the address). Every record carries "login", the sender id
+is <host>/<letter> when MTS_ACCOUNT is unset, SessionStart announces login=<L> and tells the session its own login plus who runs where.
 
 The repo is PUBLIC: a signal is a short status line only (200 characters, long token-like strings are cut out). Never put
-account names, secrets, order or runtime data in one. Sender id = <host>/<MTS_ACCOUNT, else "?">.
+account names, secrets, order or runtime data in one. Sender id = <host>/<MTS_ACCOUNT, else the login letter, else "?">.
 Env: MTS_SIGNALS=off disables; MTS_SIGNALS_HOME (clone dir, default ~/.claude/mts-signals), MTS_SIGNALS_ORIGIN (default:
 origin of the current repo), MTS_SIGNALS_HOST (override host name, tests), MTS_SIGNALS_SYNC=1 (send in the foreground, tests).
 """
@@ -73,8 +81,67 @@ def host():
     return (os.environ.get("MTS_SIGNALS_HOST") or socket.gethostname()).lower()
 
 
+LOGIN_LETTERS = ("A", "B", "C")
+_LOGIN_CACHE = {}
+OAUTH_EMAIL_RE = re.compile(r'"oauthAccount"\s*:\s*\{[^{}]*?"emailAddress"\s*:\s*"([^"]+)"')
+
+
+def _logins_md():
+    return Path(os.environ.get("MTS_LOGINS_MD") or Path(__file__).resolve().parents[2] / "MyTradingSys" / "system" / "CLOUD_ACCOUNTS.md")
+
+
+def _letter_for(email, md_text):
+    """A/B/C for `email` from the LOGINS rows (`| A: <key> | ...`): the key is the full address, its local part, or a prefix of it."""
+    em = str(email or "").strip().lower()
+    if "@" not in em:
+        return ""
+    local = em.split("@")[0]
+    for m in re.finditer(r"^\|\s*([ABC]):\s*(\S+)", md_text, re.MULTILINE):
+        key = m.group(2).strip().lower().rstrip(",;")
+        if key == em or key == local or em.startswith(key + "@"):
+            return m.group(1)
+    return ""
+
+
+def login():
+    """This app's login letter A/B/C, or "" when unknown: env MTS_LOGIN, else the app account's address mapped through
+    CLOUD_ACCOUNTS.md (cached per process). The address is never returned, stored or logged: only the letter."""
+    env = os.environ.get("MTS_LOGIN", "").strip().upper()[:1]
+    if env in LOGIN_LETTERS:
+        return env
+    path = os.environ.get("MTS_CLAUDE_JSON") or str(Path.home() / ".claude.json")
+    key = (path, str(_logins_md()))
+    if key not in _LOGIN_CACHE:
+        letter, ok = "", False
+        try:
+            raw = Path(path).read_text(encoding="utf-8")
+            m = OAUTH_EMAIL_RE.search(raw)       # cheap and flat; the file can be many MB and is rewritten by the app
+            if m:
+                email = m.group(1)
+            else:
+                acct = json.loads(raw).get("oauthAccount")
+                email = acct.get("emailAddress") if isinstance(acct, dict) else ""
+            letter, ok = _letter_for(email, _logins_md().read_text(encoding="utf-8")), True
+        except (OSError, ValueError, AttributeError, RecursionError):
+            letter = ""
+        if not ok:
+            return letter       # a half-written or missing file is not cached: the next call reads again
+        _LOGIN_CACHE[key] = letter
+    return _LOGIN_CACHE[key]
+
+
+def resolve_login(passed):
+    """(letter, message): the detected login wins over a typed one (the account is the truth); message is the MISMATCH line, else ''.
+    With nothing detected the typed letter stands (upper-cased, may be invalid: the caller checks)."""
+    typed = str(passed or "").strip().upper()[:1]
+    det = login()
+    if det and typed and typed != det:
+        return det, "LOGIN MISMATCH: you passed %s, this app is logged in as %s; using %s" % (typed, det, det)
+    return det or typed, ""
+
+
 def who():
-    return f"{host()}/{os.environ.get('MTS_ACCOUNT') or '?'}"
+    return f"{host()}/{os.environ.get('MTS_ACCOUNT') or login() or '?'}"
 
 
 def now():
@@ -97,6 +164,7 @@ def clean(text, limit=TEXT_MAX):
     """One short line; long token-like strings are cut out (the repo is public)."""
     t = " ".join(str(text).split())
     t = re.sub(r"[A-Za-z0-9_\-]{32,}", "[cut]", t)
+    t = re.sub(r"[^\s@]+@[^\s@]+\.[^\s@]+", "[cut]", t)       # an e-mail address never travels (public repo)
     t = re.sub(r"(?i)(secret|password|passwd|token|api[_-]?key)\s*[=:]\s*\S+", r"\1=[cut]", t)
     return t[:limit]
 
@@ -184,6 +252,8 @@ def send(text, to="all", kind="note", cwd=None, sid="", extra=None):
         return False
     dt = now()
     rec = {"t": stamp(dt), "from": who(), "to": to, "kind": kind, "text": clean(text)}
+    if login():
+        rec["login"] = login()
     if sid:
         rec["sid"] = sid_tag(sid)
     if extra:
@@ -315,7 +385,7 @@ def auto_send_text(payload):
         if text:
             return text, "broadcast"
     if ev == "SessionStart" and payload.get("source") in (None, "startup"):
-        return "session started in %s" % (Path(cwd).name or "?"), "note"
+        return "session started in %s%s" % (Path(cwd).name or "?", " login=" + login() if login() else ""), "note"
     if ev == "PostToolUse" and payload.get("tool_name") == "Bash":
         cmd = str((payload.get("tool_input") or {}).get("command") or "")
         m = CMD.search(cmd)
@@ -393,7 +463,7 @@ def own_state(rows, b):
     """This host's ack state for broadcast b; for an `--audience top` broadcast an ack from ANY host on my login (env MTS_LOGIN)
     counts too, so two sessions or machines on one login do not both act (EXHAUST_PHASE.md: one actor per login)."""
     best = ack_state(rows, b["id"], host())
-    lg = os.environ.get("MTS_LOGIN", "").strip().upper()
+    lg = login()
     if b.get("aud") == "top" and lg:
         for r in rows:
             if r.get("kind") == "ack" and r.get("id") == b["id"] and str(r.get("login", "")).upper() == lg                     and RANK.get(r.get("state"), 0) > RANK[best]:
@@ -461,6 +531,12 @@ def sender_status(rows):
 
 
 def _handle(payload, sid, ev, auto):
+    head = login_line() if ev == "SessionStart" else ""
+    got = _handle_rows(payload, sid, ev, auto)
+    return "\n".join(t for t in (head, got) if t)
+
+
+def _handle_rows(payload, sid, ev, auto):
     cwd = payload.get("cwd") or ""
     if auto:
         spawn_send(auto[0], auto[1], cwd, sid)
@@ -487,6 +563,8 @@ def _handle(payload, sid, ev, auto):
     out = []
     if ev in ("UserPromptSubmit", "SessionStart"):
         out.append(action_block(rows, ev))
+    if ev == "SessionStart":
+        out.append("\n".join(roll_lines(rows)[:4]))
     if ev == "UserPromptSubmit":
         out.append(sender_status(rows))
     if ev != "SessionStart":
@@ -600,6 +678,106 @@ def hook():
     return 0
 
 
+# ---- roll call: who is logged in where -------------------------------------------------------------------------------
+
+STALE_H = 6          # OURS: a BUDGET reading older than this is shown as stale
+BUDGET_KV = re.compile(r"^BUDGET login=([ABC])\b")
+NOTE_RE = re.compile(r"^(ROLE\b|start\b|session started\b)")
+
+
+def _t(r):
+    try:
+        return datetime.strptime(r["t"], "%Y%m%dT%H%M%SZ").replace(tzinfo=timezone.utc)
+    except (KeyError, ValueError):
+        return None
+
+
+def _age(dt, at):
+    m = max(0, int((at - dt).total_seconds() // 60))
+    return "%dm" % m if m < 120 else "%dh" % (m // 60)
+
+
+def roll_lines(rows, hours=24, at=None):
+    """One line per host+login seen in the last `hours`, CONFLICT lines first. A record's login: its "login" field, else the
+    letter after the slash of its sender id, else the letter typed in a BUDGET text (older records), else "?"."""
+    at = at or now()
+    since, lim = stamp(at - timedelta(hours=hours)), stamp(at + timedelta(minutes=FUTURE_MIN))
+    groups, budgets = {}, {}
+    for r in rows:
+        if not since < r.get("t", "") <= lim or r.get("kind") == "ack":
+            continue
+        frm = str(r.get("from", ""))
+        h = str(r.get("host") or frm.split("/")[0]).lower()
+        txt = str(r.get("text", ""))
+        bm = BUDGET_KV.match(txt)
+        lg = r.get("login") or (frm.split("/")[1] if "/" in frm and frm.split("/")[1] in LOGIN_LETTERS else "") \
+            or (bm.group(1) if bm else "") or "?"
+        g = groups.setdefault((h, lg), {"t": "", "budget": None, "hb": None, "note": None})
+        g["t"] = max(g["t"], r["t"])
+        if bm:
+            g["budget"] = r
+            if "sup=" in txt:
+                g["hb"] = r
+            old = budgets.setdefault(bm.group(1), {}).get(h)     # keyed by the label the line states: that is what readers reason from
+            if (at - (_t(r) or at)).total_seconds() <= STALE_H * 3600 and (old is None or r["t"] >= old["t"]):
+                budgets[bm.group(1)][h] = r                      # only fresh readings can conflict (a reset just rolled over is not one)
+        if NOTE_RE.match(txt):
+            g["note"] = r
+    conflicts = []
+    for lg, per in sorted(budgets.items()):
+        resets = {}
+        for h, r in per.items():
+            m = re.search(r"\breset=(\S+)", r.get("text", ""))
+            if m:
+                resets[h] = m.group(1)[:16]
+        if lg != "?" and len(set(resets.values())) > 1:
+            ordered = sorted(resets.items(), key=lambda kv: kv[1])
+            (h1, r1), (h2, r2) = ordered[0], ordered[-1]
+            conflicts.append("CONFLICT login %s: reset %s on %s vs %s on %s" % (lg, r1, h1, r2, h2))
+    out = []
+    for (h, lg), g in sorted(groups.items(), key=lambda kv: (kv[0][1] == "?", kv[0][1], kv[0][0])):
+        seen = _t({"t": g["t"]})
+        parts = ["login %s %s seen %s ago" % (lg, h, _age(seen, at) if seen else "?")]
+        b = g["budget"]
+        if b:
+            txt = b.get("text", "")
+            nums = " ".join(m.group(0) for m in (re.search(p, txt) for p in (r"\b5h=\d+%", r"\bweek=\d+%", r"\breset=\S+")) if m)
+            bt = _t(b)
+            stale = bt is None or (at - bt).total_seconds() > STALE_H * 3600
+            label = BUDGET_KV.match(txt).group(1)
+            parts.append("BUDGET %s (%s ago%s)%s" % (nums, _age(bt, at) if bt else "?", ", STALE" if stale else "",
+                                                     " MISLABELLED login=" + label if label != lg and lg != "?" else ""))
+        hb = g["hb"]
+        if hb:
+            kv = dict(re.findall(r"(\w+)=(\S+)", hb.get("text", "")))
+            parts.append("sup=%s mode=%s" % (kv.get("sup", "?"), kv.get("mode", "?")))
+        if g["note"]:
+            parts.append(clean(g["note"].get("text", ""), 60))
+        out.append(" | ".join(parts))
+    return conflicts + out
+
+
+def login_line():
+    lg = login()
+    if lg:
+        return "LOGIN: this session is login %s on %s (from the app account)" % (lg, host().upper())
+    return "LOGIN: unknown on %s (the app account is not in CLOUD_ACCOUNTS.md LOGINS; set env MTS_LOGIN=A|B|C)" % host().upper()
+
+
+def who_cmd(args):
+    hours = 24.0
+    if "--hours" in args and args.index("--hours") + 1 < len(args):
+        hours = float(args[args.index("--hours") + 1])
+    h = ensure()
+    if h is None:
+        print("no origin")
+        return 1
+    print(login_line())
+    lines = roll_lines(load(h), hours)
+    print("\n".join(lines) if lines else "no signals in the last %g h" % hours)
+    return 0
+
+
 def budget_line(login, five, week, reset, models):
     """The BUDGET signal text; models = {name: percent used} adds `models=opus:10,fable:3` (exhaust phase spends the model with headroom)."""
     s = "BUDGET login=%s 5h=%d%% week=%d%% reset=%s" % (login, round(five), round(week), reset)
@@ -614,16 +792,18 @@ def budget_cmd(args):
     The login letter comes from --login or env MTS_LOGIN (the operator sets it once per device, or names it in the start line)."""
     import argparse
     ap = argparse.ArgumentParser(prog="mts_signal.py budget")
-    ap.add_argument("--login", default=os.environ.get("MTS_LOGIN", ""))
+    ap.add_argument("--login", default="", help="optional: the app account decides (a differing letter is overridden with a MISMATCH line)")
     ap.add_argument("--five", type=float, required=True, help="5-hour window used, percent")
     ap.add_argument("--week", type=float, required=True, help="weekly all-models used, percent")
     ap.add_argument("--reset", required=True, help="weekly reset, UTC YYYY-MM-DDTHH:MMZ")
     ap.add_argument("--model", action="append", default=[], help="per-model window used, name=percent (repeatable)")
     a = ap.parse_args(args)
     models = {k.strip().lower(): float(v) for k, _, v in (s.partition("=") for s in a.model) if v}
-    lg = a.login.strip().upper()
+    lg, mism = resolve_login(a.login)
+    if mism:
+        print(mism)
     if lg not in ("A", "B", "C"):
-        print("login must be A, B or C (--login or env MTS_LOGIN)")
+        print("login unknown: the app account is not in CLOUD_ACCOUNTS.md LOGINS; pass --login A|B|C or set env MTS_LOGIN")
         return 2
     if not re.fullmatch(r"\d{4}-\d\d-\d\dT\d\d:\d\dZ?", a.reset):
         print("--reset must look like 2026-10-22T19:59Z")
@@ -699,7 +879,7 @@ def main(argv):
         if a.id not in {b["id"] for b in high_open(load(h))}:
             print("unknown or expired broadcast id %s (python scripts/dev/mts_signal.py acks)" % a.id)
             return 2
-        ok = send("ack %s %s %s" % (a.id, a.state, a.note), kind="ack", extra={"id": a.id, "state": a.state, "host": host(), "login": os.environ.get("MTS_LOGIN", "").strip().upper(), "note": clean(a.note, 100)})
+        ok = send("ack %s %s %s" % (a.id, a.state, a.note), kind="ack", extra={"id": a.id, "state": a.state, "host": host(), "login": login(), "note": clean(a.note, 100)})
         print("ack %s %s (%s)" % (a.id, a.state, host()) if ok else "ack NOT sent (push failed)")
         return 0 if ok else 1
     if cmd == "acks":
@@ -721,6 +901,8 @@ def main(argv):
         return 0
     if cmd == "budget":
         return budget_cmd(argv[1:])
+    if cmd == "who":
+        return who_cmd(argv[1:])
     if cmd == "read":
         hours = 24
         if "--hours" in argv:
