@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-23T03:46:16Z",
   "commands": [
     "python scripts/dev/role_loader.py lint",
     "python -m pytest MyTradingSys/tests/test_role_roster.py -q"
@@ -16,6 +17,12 @@
   "id": "bug-ask-go-for-asked-work",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "already on fast-track in a8d4fb2deb71; test_role_roster 23 passed",
+      "ref": "b79c12c6",
+      "utc": "2026-10-23T03:46:16Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +47,12 @@
   "refined_by": "",
   "refreshed": "2026-10-22T19:25:05Z",
   "refs": [],
-  "result": "",
+  "result": "already on fast-track in a8d4fb2deb71; test_role_roster 23 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/roles/thinker.md; scripts/dev/role_loader.py; MyTradingSys/tests/test_role_roster.py"
   ],
@@ -50,12 +62,13 @@
   "scope_sha": "220ec4619d65",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write the failing test first and see it fail",
     "Add to thinker.md and the role_loader boot text: asked work runs this turn; ask only for a genuine option decision",
     "Run role_loader lint and the roster tests"
   ],
+  "taken": "2026-10-23T03:46:16Z",
   "tests": "MyTradingSys/tests/test_role_roster.py::test_thinker_no_go_ahead_request (fails on current thinker.md, which ends every reply with NEXT: pick A/B/C and has no run-asked-work-now rule)",
   "title": "Bug: sessions end replies asking the operator to say go for work he already asked for",
   "weight": "",
