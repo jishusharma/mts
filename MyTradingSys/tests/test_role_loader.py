@@ -400,5 +400,37 @@ class BootStepTests(unittest.TestCase):
         self.assertLess(len(text) // 4, 1200)
 
 
+class TestWrappedFirstPrompt(Base):
+    """Failure review 2026-10-23 (cause 4): start_session wraps the brief; the role line was at char 644, behind a system-reminder."""
+    WRAPPED = ("<system-reminder>\nThis is a git worktree: an isolated copy of the repository. Run all commands from this directory. "
+               "Do NOT cd to the original repository root. The git stash stack is shared with the main checkout and all other "
+               "worktrees; never use bare git stash. Is a git repository: true. Primary working directory: C:/x/.claude/worktrees/a-b-c1\n"
+               "</system-reminder>\nBackground (from the session that started this one): the operator asked for a live chart read; "
+               "the supervisor wants the Admin_Guy queue and a pipeliner check left alone, and the tokens, charts and files under runtime_data untouched.\nTask:\n"
+               "You are Eagle_Eyes. Read the live BTC chart and report.\n")
+
+    def test_fixture_is_realistic(self):
+        self.assertGreater(self.WRAPPED.index("You are Eagle_Eyes"), 600)
+
+    def test_role_line_past_char_600_behind_a_reminder_loads_the_role(self):
+        self.put_role()
+        out = self.hook(self.WRAPPED)
+        self.assertIn("Eagle_Eyes", out)
+        self.assertIn("BOOT (once)", out)
+
+    def test_pasted_wrapper_and_reminder_then_role_line(self):
+        self.put_role()
+        out = self.hook('<system-reminder>notice</system-reminder>\n<pasted_content id="1">\nYou are Eagle_Eyes.\nGo\n</pasted_content>')
+        self.assertIn("BOOT (once)", out)
+
+    def test_role_words_inside_a_sentence_never_switch_roles(self):
+        self.put_role()
+        for i, p in enumerate((
+                "<system-reminder>n</system-reminder>\nBackground: x\nTask:\nPlease tell me why you are Eagle_Eyes in the log.",
+                "<system-reminder>n</system-reminder>\nreview: he said you are Eagle_Eyes",
+                "<system-reminder>n</system-reminder>\n" + ("filler line " * 6 + "\n") * 8 + "You are Eagle_Eyes.")):
+            self.assertNotIn("BOOT (once)", self.hook(p, sid=f"s{i}"), p)
+
+
 if __name__ == "__main__":
     unittest.main()
