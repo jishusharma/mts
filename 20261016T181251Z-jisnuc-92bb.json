@@ -1,1 +1,0 @@
-{"t": "20261016T181251Z", "from": "jis-nuc/sharma", "to": "all", "kind": "claim", "text": "claim \"ai-health-audit-2\" >/dev/null 2>&1; python scripts/dev/sync.py ship 2>&1 | tail -4; python scripts/dev/sync.py release ai-health-audit-2 2>&1 | tail -1"}
