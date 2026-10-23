@@ -61,7 +61,7 @@ class RepeatTest(unittest.TestCase):
 
 class LoginDedupeTest(unittest.TestCase):
     B2 = dict(B, id="b-bbbbbb")
-    ACK = {"kind": "ack", "id": "b-bbbbbb", "state": "done", "host": "jis-nb", "login": "C", "t": "99991231T000001Z"}
+    ACK = {"kind": "ack", "id": "b-bbbbbb", "state": "done", "host": "some-other-pc", "login": "C", "t": "99991231T000001Z"}   # not jis-nb: the suite also runs on JIS-NB
 
     def test_ack_from_another_host_on_my_login_counts(self):
         with mock.patch.dict(os.environ, {"MTS_LOGIN": "C"}):
@@ -77,6 +77,7 @@ class LoginDedupeTest(unittest.TestCase):
     def test_no_login_set_keeps_per_host_behaviour(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop("MTS_LOGIN", None)
+            os.environ["MTS_CLAUDE_JSON"] = str(Path(__file__).parent / "no-such-claude.json")   # no login detection either
             self.assertEqual(mts_signal.own_state([self.B2, self.ACK], self.B2), "none")
 
 

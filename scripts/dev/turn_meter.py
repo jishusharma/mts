@@ -44,7 +44,7 @@ UNKNOWN_CTX = 250_000      # an unreadable context still costs: counted as a big
 # notice (his one typed prompt came later) hit the 1M unattended read budget mid-research and was denied web search and file writes.
 UNCAPPED_ROLES = ("thinker",)
 THINKER_START = re.compile(r"^\s*(?:you are|i need an?)\s+(?:the\s+)?think(?:er|_guy|\s+guy)\b", re.I)
-DRIVEN_IDLE = 1800         # he is "there" from his 2nd typed prompt until 30 min after his latest one
+DRIVEN_IDLE = 1800         # he is "there" from his typed prompt (2nd, or a 1st that is not a brief) until 30 min after his latest one
 HANDOFF_BASH = re.compile(r"\b(?:git|sync\.py|relay\.py|tasks\.py|mts_signal\.py)\b")
 HANDOFF_TOOLS = ("mcp__ccd_sidebar__mark_completed", "mcp__ccd_turn__wrap_up", "mcp__ccd_turn__update_plan")
 PRUNE_DAYS = 7
@@ -225,8 +225,25 @@ def is_event_prompt(payload):
     return is_event_text(payload.get("prompt"))
 
 
+BRIEF_START = re.compile(r"^\s*(?:you are|you're|act as|i need an?|role:)\s", re.I)
+
+
+def briefed(prompt):
+    """True when a first prompt is a worker brief, not his own ask: a brief another session sent (role_loader.from_session) or a
+    `You are <Role>` start line, which coordinators paste into workers. Operator 2026-10-23 (Thinker option A)."""
+    p = LEADING_REMINDERS.sub("", str(prompt or ""), count=1)
+    if not p.strip():
+        return True         # no words to judge: capped, as before
+    try:
+        import role_loader
+        sent = role_loader.from_session(p)
+    except Exception:
+        return True         # cannot tell: capped, as before
+    return sent or bool(BRIEF_START.match(p))
+
+
 def attended(state, now=None):
-    """He drives this session: 2nd typed prompt or later, the latest within DRIVEN_IDLE."""
+    """He drives this session: his typed prompt (2nd, or a 1st that is not a brief), the latest within DRIVEN_IDLE."""
     return bool(state.get("driven")) and (now or time.time()) - float(state.get("typed_at") or 0) < DRIVEN_IDLE
 
 
@@ -248,6 +265,17 @@ def uncapped_role(payload, state):
     if hit and not state.get("role"):
         state["role"] = "thinker"       # never overwrite "supervisor": its compaction nudge reads that mark
     return hit
+
+
+def is_supervisor(payload, state):
+    """Supervisors run on auto-compaction (roles/supervisor.md): no hand-off nag, no unattended-read stop. 2026-10-23 ~08:10Z a Supervisor
+    at 557k/1000k context was denied Agent, Bash and Write by the PreToolUse stop. Sticky mark, else the transcript's first line."""
+    if state.get("role") == "supervisor":
+        return True
+    if state.get("role") is None and (is_supervisor_start(payload) or transcript_starts_supervisor(payload)):
+        state["role"] = "supervisor"
+        return True
+    return False
 
 
 def handoff_call(payload):
@@ -289,7 +317,7 @@ def handle(payload):
     if event == "PreToolUse":       # read-only: the one hard stop, on tool calls of an unattended session past its budget
         if not path.exists() or attended(state) or state.get("ur", 0) < UNATTENDED_READ[budget_key(state)] or handoff_call(payload):
             return ""
-        if uncapped_role(payload, state):
+        if uncapped_role(payload, state) or is_supervisor(payload, state):
             save(path, state)
             return ""
         return json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
@@ -303,7 +331,7 @@ def handle(payload):
                 save(path, state)
             return ""
         state["user"] = state.get("user", 0) + 1
-        state["driven"] = int(state["user"] >= 2)    # his 2nd typed prompt: he is here, the session runs on his word
+        state["driven"] = int(state["user"] >= 2 or not briefed(payload.get("prompt")))   # his own ask: he is here, the session runs on his word
         state["typed_at"] = time.time()
         state["ur"], state["half"] = 0, 0            # his prompt resets the unattended budget
         model, ctx = model_and_context(payload)
@@ -353,7 +381,7 @@ def handle(payload):
             state["kind"] = tier(model)      # PreToolUse picks the budget from it
         if kind == "default" and ctx:
             tool_cap = min(tool_cap, max(5, READ_BUDGET // ctx))
-        here = attended(state) or uncapped_role(payload, state)
+        here = attended(state) or uncapped_role(payload, state) or state.get("role") == "supervisor"
         if not here:
             state["ur"] = state.get("ur", 0) + (ctx or UNKNOWN_CTX)
         limit = UNATTENDED_READ[budget_key(state)]

@@ -71,9 +71,9 @@ def test_default_queue_is_f_tree_and_env_overrides(tmp_path):
 
 
 def test_quote_verified_row_is_consumed_and_unverifiable_quote_rejected(tmp_path):
-    tr = tmp_path / "inbox"
+    tr = tmp_path / "raw_transcripts_canonical"
     tr.mkdir()
-    (tr / "T_v.txt").write_text("header\n\nSo we're probably looking at 87,000 bucks, that is my line in the sand now.\n", encoding="utf-8")
+    (tr / "v_raw.txt").write_text("# Video ID: v\n# ---\nKind: captions\nSo we're probably looking at 87,000 [0:05] bucks, uh uh that is my line in the sand now.\n", encoding="utf-8")
     ok = _good("ok", target={"type": "fixed_price", "note": '87,000 ("we\'re probably looking at 87,000 bucks")'},
                invalidation='close below 79,700 ("that is my line in the sand now")')
     fake = _good("fake", invalidation='close below 1 ("the analyst never said this sentence")')
@@ -87,3 +87,20 @@ def test_quote_verified_row_is_consumed_and_unverifiable_quote_rejected(tmp_path
     assert "never said" in json.loads((q / "acks" / "fake.json").read_text(encoding="utf-8"))["reason"]
     rows = [json.loads(l) for l in (out / "cbp_candidates.jsonl").read_text(encoding="utf-8").splitlines()]
     assert [c["cand_id"] for c in rows] == ["cbp:ok"] and rows[0]["order_eligible"] is False
+
+
+def test_default_transcript_dir_is_canonical_and_single_checker():
+    assert cbp_adapter.DEFAULT_TRANSCRIPTS.name == "raw_transcripts_canonical"
+    src = Path(cbp_adapter.__file__).read_text(encoding="utf-8")
+    assert "def quote_" + "errors" not in src and "def _" + "norm" not in src
+    assert "verify_extract_quotes" in src
+
+
+def test_ellipsis_quote_fragments_must_occur_in_order(tmp_path):
+    tr = tmp_path / "t"
+    tr.mkdir()
+    (tr / "v_raw.txt").write_text("# ---\nalpha beta gamma delta epsilon zeta eta theta\n", encoding="utf-8")
+    good = _good("e1", invalidation='x ("alpha beta gamma ... eta theta")')
+    rev = _good("e2", invalidation='x ("eta theta ... alpha beta gamma")')
+    assert cbp_adapter.quote_check(good, tr) == []
+    assert cbp_adapter.quote_check(rev, tr)

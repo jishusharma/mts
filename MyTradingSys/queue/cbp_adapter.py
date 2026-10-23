@@ -16,7 +16,9 @@ from pathlib import Path
 
 sys.dont_write_bytecode = True
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts" / "dev"))
 import consumer  # noqa: E402
+import verify_extract_quotes as vq  # noqa: E402
 
 CONTRACT_VERSION = 1
 DIRECTIONS = ("LONG", "SHORT")
@@ -24,7 +26,7 @@ REQUIRED = ("id", "queued_at", "source", "asset", "direction", "entry_trigger",
             "target", "invalidation", "expires_at")
 SOURCE_REQUIRED = ("analyst", "channel", "video_id", "publish_date")
 QUOTED = re.compile(r'"([^"]{8,})"')
-DEFAULT_TRANSCRIPTS = Path(r"F:\CryptoScrapper\cbp_v2\inbox")
+DEFAULT_TRANSCRIPTS = Path(__file__).resolve().parents[2] / "raw_transcripts_canonical"
 DEFAULT_OUT = Path(__file__).resolve().parent / "candidates"
 
 
@@ -57,23 +59,39 @@ def validate(alert):
     return errs
 
 
-def _norm(s):
-    return " ".join(re.sub(r"[^a-z0-9%]+", " ", s.lower()).split())
+def _transcript_body(path):
+    """Canonical transcript body: header above '# ---' dropped, [m:ss] markers removed, normalised by
+    verify_extract_quotes.norm (the one MTS quote checker; no second copy here)."""
+    text = path.read_text(encoding="utf-8", errors="replace")
+    body = text.split("# ---", 1)[1] if "# ---" in text else text
+    return vq.norm(vq.TIMESTAMP.sub(" ", body))
 
 
-def quote_errors(alert, transcript_dir):
-    """Every analyst quote (text in double quotes) in entry_trigger/target.note/invalidation must occur
-    in the transcript <dir>/<analyst>_<video_id>.txt (case/punctuation-insensitive); at least one is required."""
+def quote_check(alert, transcript_dir):
+    """Every analyst quote (text in double quotes) in entry_trigger/target.note/invalidation must occur in
+    <transcript_dir>/<video_id>_raw.txt (same matching as verify_extract_quotes; '...' joins fragments that
+    must occur in order); at least one quote is required. Returns a list of errors (empty = verified)."""
     src = alert.get("source") or {}
-    path = Path(transcript_dir) / ("%s_%s.txt" % (src.get("analyst"), src.get("video_id")))
+    path = Path(transcript_dir) / ("%s_raw.txt" % src.get("video_id"))
     try:
-        body = _norm(path.read_text(encoding="utf-8", errors="replace"))
+        body = _transcript_body(path)
     except OSError:
         return ["no transcript " + path.name]
     tgt = alert.get("target") if isinstance(alert.get("target"), dict) else {}
     fields = [alert.get("entry_trigger"), tgt.get("note"), alert.get("invalidation")]
     quotes = [q for f in fields if isinstance(f, str) for q in QUOTED.findall(f)]
-    errs = ["quote not in transcript: " + q for q in quotes if _norm(q) not in body]
+    errs = []
+    for q in quotes:
+        at = 0
+        for frag in re.split(r"\.{3}|…", q):
+            n = vq.norm(frag)
+            if not n:
+                continue
+            at = body.find(n, at)
+            if at < 0:
+                errs.append("quote not in transcript: " + q)
+                break
+            at += len(n)
     if not quotes:
         errs.append("no analyst quote to verify")
     return errs
@@ -115,7 +133,7 @@ def ingest(queue_dir, out_dir=DEFAULT_OUT, transcript_dir=None):
             f.write(json.dumps(c, ensure_ascii=False) + "\n")
         seen.add(c["cand_id"])
 
-    check = validate if transcript_dir is None else (lambda a: validate(a) or quote_errors(a, transcript_dir))
+    check = validate if transcript_dir is None else (lambda a: validate(a) or quote_check(a, transcript_dir))
     return consumer.consume(queue_dir, validate=check, on_consume=emit)
 
 

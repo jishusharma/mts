@@ -203,3 +203,6 @@ MyTradingSys/research/imbalance_qriptal_2026-10-16/events_*.csv
 
 # CBP/MTS shared transcript store: public repo, never commit new transcripts (147 older ones are already tracked)
 raw_transcripts_canonical/
+
+# Krown confluence S1: regenerated outcome-bearing event tables (never committed)
+MyTradingSys/research/krown_audit_2026-10-22/run/sealed/

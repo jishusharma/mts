@@ -66,6 +66,8 @@ EXTRA = [
     "MyTradingSys/research/chart_read_g5_2026-10-16/test_common.py",
     "MyTradingSys/research/opr_preopen_tops_2026-10-16/test_study.py",
     "MyTradingSys/research/krown_malkan_g3_2026-10-16/test_event_counts.py",
+    "MyTradingSys/backtest/layers/krown/test_krown_context.py",
+    "MyTradingSys/backtest/layers/krown/test_krown_context_artifacts.py",
     "MyTradingSys/research/opr_bb_mtf_center_2026-10-16/test_study.py",
     "MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/test_study.py",
     "MyTradingSys/research/mal_bb_mid_engulf_2026-10-16/test_study.py",

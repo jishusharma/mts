@@ -1,0 +1,38 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-23T11:53:31Z",
+  "depends_on": [],
+  "done_when": "roles/thinker.md and roles/admin_guy.md no longer send THINK/BACKLOG asks (cards are enough); Pipeliner role keeps desk drain + ROUTING.md, its allocation rules that `plan` lacks move into supervisor.py plan/traffic.py with a test; doc text these replace is deleted; total bytes of SUPER_SESSION, TRAFFIC_CONTROLLER, ROUTING, TASK_REFINEMENT, SUPER_LOOP, SUPERVISOR, WORKERS, roles/*.md reported before/after in the Result line (target under 60 KB is a direction, do not delete rules still enforced elsewhere).",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "No hand-off depends on a message nobody reads: the card board is the only hand-off (DESIGN.md section 3).",
+  "id": "flow-a3-drop-ask-signals",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "OPERATOR QUOTE 2026-10-23: \"Build option A: file the 3 cards and run them as Builder Agents, one ship each.\" Design: MyTradingSys/research/role_flow_2026-10-23/DESIGN.md sections 3-5.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/roles/thinker.md, admin_guy.md, pipeliner.md, SUPER_SESSION.md, TRAFFIC_CONTROLLER.md, scripts/dev/supervisor.py (after A1 ships), scripts/dev/traffic.py"
+  ],
+  "scope_out": [
+    "role_loader.py, model_guard.py, live path"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "fail-first test for any allocation rule moved into code; role_loader.py check and role tests pass; retoken edited role files.",
+  "title": "Role flow A3: drop THINK/BACKLOG ask signals; Pipeliner allocation rules become plan code; coordination docs shrink",
+  "weight": "",
+  "worker": "agent"
+}

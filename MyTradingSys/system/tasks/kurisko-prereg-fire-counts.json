@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-23T12:06:10Z",
   "commands": [],
   "created": "2026-10-18T03:57:23Z",
   "depends_on": [
@@ -15,6 +16,12 @@
   "id": "kurisko-prereg-fire-counts",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Already shipped: PRE_REG.md + BLOCKED.md on fast-track (2362bbc7d, 8f988e38f, 86288e039; g",
+      "ref": "be5f161d1",
+      "utc": "2026-10-23T12:06:10Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -41,7 +48,12 @@
   "refined_by": "",
   "refreshed": "2026-10-22T22:47:36Z",
   "refs": [],
-  "result": "",
+  "result": "Already shipped: PRE_REG.md + BLOCKED.md on fast-track (2362bbc7d, 8f988e38f, 86288e039; git cherry empty), 0 of 8 cells frozen, ledger row present, 8 tests pass.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/kurisko_2026-10-18/",
     "MyTradingSys/backtest/layers/kurisko/",
@@ -62,7 +74,7 @@
     "MyTradingSys/research/wavetrend_2026-10-17/PRE_REG.md (precedent)",
     "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md section 6"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "python scripts/dev/verdicts.py check \"kurisko quad rotation stochastic\" and paste its output into the PRE_REG; exit 1 = stop, report the kill scope, freeze nothing.",
     "Data (E1): F:/MTS/data/tom_raw/klines/BTCUSDT-1m-2022-01..2024-06 (30 files, DEV); sha256 per file from research/gross_effect_screen_2026-10-15/DATA_MANIFEST.csv written into the PRE_REG; the loader refuses any bar >= 2024-07-01; 5m via tf_resample (FORMULAS 8). Events come from the kurisko module (record its commit sha), not a re-implementation.",
@@ -70,6 +82,7 @@
     "python scripts/dev/prereg_gate.py --n <event-days> --sd 1 --cost <14 bp / median stop bp, in R> --m <cells>: SD units, OURS, because no outcome is read (the study converts MDE to bp); exit 1 = report that TF as fee-dominated or underpowered and do not freeze it.",
     "write PRE_REG.md (wavetrend layout): <=12 cells picked by a rule written before counting (event-days, never outcome); cost 14 bp (fees SOURCED fees.py:27, slippage OURS; FORMULAS 13 says 12 bp: say why 14) and the funding rule; outcome definitions, same-window random-clock control, Holm plan, trial ids, verdicts.py aliases, labels (RSI 20/80 = OPERATOR-HYPOTHESIS); no outcome column."
   ],
+  "taken": "2026-10-23T12:06:10Z",
   "tests": "count script test fails on pre-change code: a planted future spike must not move any count before its bar; the loader refuses a bar >= 2024-07-01; expected counts for a hand-built OHLC series are written out by hand from the FORMULAS 24 rule, not read from the module.",
   "title": "Kurisko Quad Rotation: count-only pre-registration on BTC DEV 1m/5m (no outcomes)",
   "weight": "IMPORTANT",

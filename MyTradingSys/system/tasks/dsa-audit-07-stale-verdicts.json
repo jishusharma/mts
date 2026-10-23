@@ -16,7 +16,7 @@
   "from_inbox": "",
   "goal": "For every published verdict find the code it came from and every later change to that code or its imports, rerun ten results and diff every number, check determinism and CI coverage, and list where docs disagree with result files.",
   "id": "dsa-audit-07-stale-verdicts",
-  "lane": "DSA-NB",
+  "lane": "SONNET",
   "latest": [],
   "layers": [],
   "live_path": false,
@@ -54,7 +54,7 @@
     "CI (lead L9): versions here vs CI, pandas imports, tracked tests in no gate list.",
     "Doc drift: LAYERS.md, layer_map.json, Research Map DATA, STATUS.md vs result files."
   ],
-  "tests": "",
+  "tests": "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T07/test_rerun_diff.py::test_rerun_reproduces_published_numbers_or_flags_them (asserts rerun_diff.csv has one row per published number for the ten results, that two runs of one study give identical output (determinism), and that every STALE-CANDIDATE has a provenance commit; fails on pre-change code: scripts/T07/ does not exist yet)",
   "title": "DSA audit T07: verdict-to-code provenance, rerun-and-diff of ten results, determinism, CI and doc drift",
   "weight": "CRUCIAL",
   "worker": "session"

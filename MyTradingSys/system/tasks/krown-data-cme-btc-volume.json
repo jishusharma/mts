@@ -9,12 +9,12 @@
   "created": "2026-10-17T04:34:46Z",
   "depends_on": [],
   "done_when": "A CSV of CME BTC daily volume (date, volume, source url) is on F: with a gap count, or the card result says NOT AVAILABLE with the sources tried; no account or paid data used.",
-  "est_turns": null,
+  "est_turns": 12,
   "from_inbox": "",
   "goal": "Daily CME BTC futures volume for 2017-2026 from a free public source, next to the Binance and Coinbase daily series on F:/MTS/data/krown_daily, so Krown volume rules can be tested on all three (operator q-krown-volume-venue 2026-10-17: include CME).",
   "id": "krown-data-cme-btc-volume",
   "kind": "run",
-  "lane": "DSA",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -65,5 +65,5 @@
   "title": "Krown CME BTC futures daily volume (public data only) as third volume arm",
   "updated": "2026-10-18T10:00:00Z",
   "weight": "IMPORTANT",
-  "worker": ""
+  "worker": "agent"
 }

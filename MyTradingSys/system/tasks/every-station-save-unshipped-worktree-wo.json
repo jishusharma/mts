@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-23T12:06:12Z",
   "commands": [],
   "created": "2026-10-23T07:16:54Z",
   "depends_on": [],
@@ -13,11 +14,18 @@
   "id": "every-station-save-unshipped-worktree-wo",
   "kind": "run",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "JIS-NB: UNSHIPPED 22 -> 10 (2 branches backed up to origin backup/JIS-NB/*, 11 trees disca",
+      "ref": "be5f161d1",
+      "utc": "2026-10-23T12:06:12Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "OPERATOR QUOTE: I think you should create a task for this. And your task it for all stations. So going forward, station would mean a device, with a login. / And I meant broadcast. You have to broadcast it.",
+  "note": "OPERATOR QUOTE: I think you should create a task for this. And your task it for all stations. So going forward, station would mean a device, with a login. / And I meant broadcast. You have to broadcast it. | 2026-10-23 builder thinker-followups-1023: JIS-NB done. NUC: 8 named commits are safe (argon on origin hold/argon-blind-read-7-frames). Still open, owner first JIS-NUC session or JIS-NB via NUC gate bundle (NUC ssh has no GitHub login): 14 NUC local branches on no origin ref (see research/thinker/OPEN_2026-10-23_followups.md row 2); DESKTOP-F7IU69N station line. Done when: those refs exist on origin and each device sent its STATION line.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -25,7 +33,12 @@
   "refs": [
     "MyTradingSys/system/ANNOUNCEMENTS.md A-20261023-1"
   ],
-  "result": "",
+  "result": "JIS-NB: UNSHIPPED 22 -> 10 (2 branches backed up to origin backup/JIS-NB/*, 11 trees discarded with rescue, rest are locked/lane/active/backed-up). STATION line sent. NUC 14 branches (bundle via NUC gate) still open for JIS-NUC.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "the worktrees of the repo on the station's own device (git worktree list)"
   ],
@@ -35,7 +48,7 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "python scripts/dev/sync.py where --all",
     "for each UNSHIPPED tree: git -C <tree> status --short and git -C <tree> log --oneline origin/fast-track..HEAD; read what it is",
@@ -44,6 +57,7 @@
     "python scripts/dev/sync.py tidy --apply (removes only clean, pushed, idle trees), then where --all again",
     "python scripts/dev/mts_signal.py send \"STATION <device>/<login> worktrees: <n> shipped, <n> discarded, <n> left (why)\" --to all --kind done"
   ],
+  "taken": "2026-10-23T12:06:12Z",
   "tests": "none (run task); proof = where --all output before and after, pasted in the done line or the session's last reply",
   "title": "Every station: save unshipped worktree work to origin, then tidy",
   "weight": "",

@@ -279,7 +279,7 @@ class TurnMeterTest(unittest.TestCase):
         plain = self.home / "drv.jsonl"
         plain.write_text(json.dumps({"type": "user", "message": {"content": "fix the bug"}}) + "\n", encoding="utf-8")
         tp = {"transcript_path": str(plain)}
-        fire(self.home, "UserPromptSubmit", sid="un", extra={**tp, "prompt": "fix the bug"})
+        fire(self.home, "UserPromptSubmit", sid="un", extra={**tp, "prompt": "You are Builder. Fix the bug"})   # a brief, not his own ask
         self.assertTrue(any(fire(self.home, "PostToolUse", sid="un", extra=tp) for _ in range(45)), "unattended: nag")
         for _ in range(12):
             self.assertEqual(fire(self.home, "UserPromptSubmit", sid="dr", extra={**tp, "prompt": "and now this"}), "")
@@ -373,9 +373,63 @@ class AwayFlagAndAtomicSaveTest(unittest.TestCase):
         return nags, fire(self.home, "PreToolUse", sid=sid, extra={"tool_name": "WebSearch", "tool_input": {}})
 
     def test_a_worker_past_the_unattended_budget_is_nagged_then_stopped(self):
-        nags, pre = self.unattended_run("w", "fix the gate test")
+        # a worker is started by a brief, not by his own typed ask (turn_meter option A, operator 2026-10-23)
+        briefs = ("You are Builder. Card: fix the gate test", "Background (from the session that started this one): fix it",
+                  "<system-reminder>x</system-reminder>I need a builder: fix the gate test",
+                  "<cross-session-message from=x>fix</cross-session-message>")
+        for i, brief in enumerate(briefs):
+            nags, pre = self.unattended_run(f"w{i}", brief)
+            self.assertTrue(any(nags) or "<cross" in brief, brief)
+            self.assertIn('"deny"', pre, brief)
+        nags, pre = self.unattended_run("wb", "You are Builder")
         self.assertTrue(any(nags))
-        self.assertIn('"deny"', pre)
+
+    def test_his_own_first_ask_runs_to_the_end_while_he_is_there(self):
+        for i, ask in enumerate(("NUC shutdown diagnosis: why does it die?", "<system-reminder>x</system-reminder>fix the gate test",
+                                 "  fix the gate test")):
+            sid = f"h{i}"
+            nags, pre = self.unattended_run(sid, ask)
+            self.assertEqual((nags, pre), ([""] * 5, ""), ask)
+            self.assertTrue(turn_meter.attended(json.loads((self.home / f"{sid}.json").read_text(encoding="utf-8"))))
+
+    def test_his_first_ask_left_alone_past_30_min_is_capped_again(self):
+        tr = self.home / "l.jsonl"
+        tr.write_text(json.dumps({"type": "assistant", "message": {"id": "m1", "model": "claude-opus-5-5", "content": [],
+                                                                   "usage": {"input_tokens": 300_000}}}) + "\n", encoding="utf-8")
+        fire(self.home, "UserPromptSubmit", sid="l", extra={"prompt": "fix the gate test"})
+        st = self.home / "l.json"
+        d = json.loads(st.read_text(encoding="utf-8"))
+        d["typed_at"] = time.time() - 31 * 60
+        st.write_text(json.dumps(d), encoding="utf-8")
+        for _ in range(5):
+            fire(self.home, "PostToolUse", sid="l", extra={"transcript_path": str(tr)})
+        self.assertIn('"deny"', fire(self.home, "PreToolUse", sid="l", extra={"tool_name": "WebSearch", "tool_input": {}}))
+        fire(self.home, "UserPromptSubmit", sid="l", extra={"prompt": "<task-notification>done</task-notification>"})
+        self.assertFalse(turn_meter.attended(json.loads(st.read_text(encoding="utf-8"))))
+
+    def test_briefed_edges(self):
+        for p in ("You are Builder.", "you're the supervisor", "Act as reviewer", "I need an auditor", "role: Builder",
+                  "Another Claude session asked: x"):
+            self.assertTrue(turn_meter.briefed(p), p)
+        for p in ("you know the NUC keeps dying", "Your task: fix x", "youre late", "fix all", "i needed this yesterday"):
+            self.assertFalse(turn_meter.briefed(p), p)
+        with mock.patch.dict(sys.modules, {"role_loader": None}):
+            self.assertTrue(turn_meter.briefed("fix all"))
+
+    def test_a_supervisor_is_never_stopped_by_the_unattended_budget(self):
+        # 2026-10-23 ~08:10Z: a Supervisor at 557k/1000k context was denied Agent, Bash and Write; roles/supervisor.md: auto-compaction
+        st = self.home / "sv9.json"
+        st.write_text(json.dumps({"tool": 30, "user": 1, "role": "supervisor", "kind": "opus", "ur": 7_000_000}), encoding="utf-8")
+        for tool in ("Agent", "Bash", "Write"):
+            self.assertEqual(fire(self.home, "PreToolUse", sid="sv9", extra={"tool_name": tool, "tool_input": {}}), "", tool)
+        # role mark missing (resumed session): the transcript's first line says Supervisor
+        tr = self.home / "sv8.jsonl"
+        tr.write_text(json.dumps({"type": "user", "message": {"content": "You are Supervisor. Login C."}}) + "\n", encoding="utf-8")
+        (self.home / "sv8.json").write_text(json.dumps({"tool": 30, "user": 1, "kind": "opus", "ur": 7_000_000}), encoding="utf-8")
+        self.assertEqual(fire(self.home, "PreToolUse", sid="sv8", extra={"tool_name": "Bash", "tool_input": {}, "transcript_path": str(tr)}), "")
+        # a worker with the same numbers is still stopped
+        (self.home / "wk.json").write_text(json.dumps({"tool": 30, "user": 1, "kind": "opus", "ur": 7_000_000}), encoding="utf-8")
+        self.assertIn('"deny"', fire(self.home, "PreToolUse", sid="wk", extra={"tool_name": "Bash", "tool_input": {}}))
 
     def test_a_thinker_is_never_nagged_or_stopped(self):
         # thinker.md: no turn or context cap (WORKERS.md rule 5). 2026-10-22: a notice-briefed Thinker was denied web search and writes

@@ -16,7 +16,7 @@
   "from_inbox": "",
   "goal": "List at least 30 ways a crypto-perp backtest can mislead from DeepSeek's own knowledge and published sources, score each against every study and testnet layer, demonstrate the 5 worst gaps on DEV, and merge the audits' bridge logs into a playbook.",
   "id": "dsa-audit-10-missing-aspects",
-  "lane": "DSA-NB",
+  "lane": "SONNET",
   "latest": [],
   "layers": [],
   "live_path": false,
@@ -51,7 +51,7 @@
     "Demonstrate the 5 worst NOT HANDLED cells with small DEV scripts that print a number.",
     "BRIDGE_PLAYBOOK.md from the bridge logs of every shipped T report (list the missing): patterns, failures and recoveries, 10 rules; DSA prompt changes proposed via desk.py --target CLAUDE."
   ],
-  "tests": "",
+  "tests": "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/test_failure_matrix.py::test_matrix_covers_every_study_and_layer (asserts matrix.csv has 30+ failure-mode rows, one column per brief 1b study and testnet layer, and every cell is HANDLED, NOT HANDLED, N/A or UNKNOWN; fails on pre-change code: scripts/T10/ does not exist yet)",
   "title": "DSA audit T10: 30+ backtest failure modes x every study, 5 demonstrations, and the DSA bridge playbook",
   "weight": "CRUCIAL",
   "worker": "session"

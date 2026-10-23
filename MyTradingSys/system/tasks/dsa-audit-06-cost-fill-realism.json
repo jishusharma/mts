@@ -16,7 +16,7 @@
   "from_inbox": "",
   "goal": "List every fee, slippage, funding and fill assumption across all studies and engines, rerun the recent screens with real signed funding, and give each arm's break-even cost and each testnet layer's fee-to-stop ratio.",
   "id": "dsa-audit-06-cost-fill-realism",
-  "lane": "DSA-NB",
+  "lane": "SONNET",
   "latest": [],
   "layers": [],
   "live_path": false,
@@ -54,7 +54,7 @@
     "Engine x fill-rule table (next open, same-bar stop+target, gap stop, limit fills, timeout price, partials); N2 status only.",
     "Break-even cost per arm vs charged; fee-to-stop ratio for every stop-based testnet layer (extends E3)."
   ],
-  "tests": "",
+  "tests": "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/test_cost_inventory.py::test_every_cost_constant_is_inventoried (asserts costs.csv lists every fee, slippage, spread and funding constant under backtest/ and research/ with file:line, unit and side; fails on pre-change code: scripts/T06/ does not exist yet)",
   "title": "DSA audit T06: every cost, funding and fill assumption side by side, real funding rerun, break-even per arm",
   "weight": "CRUCIAL",
   "worker": "session"

@@ -234,7 +234,7 @@ class TestCommittedLedger(unittest.TestCase):
         out = S.run(S.LEDGER, S.KLINE_DIR, loader=no_reads)
         self.assertEqual(out["counts"]["scored"], 0)
         self.assertEqual(out["counts"]["eligible"], {"DEV": 0, "HOLDOUT": 2})
-        self.assertEqual(out["counts"]["rows_by_split"], {"DEV": 11, "HOLDOUT": 59})
+        self.assertEqual(out["counts"]["rows_by_split"], {"DEV": 11, "HOLDOUT": 67, "NO_TIME": 3})
         self.assertEqual([x["call_id"] for x in out["unscored_holdout"]], ["QRP-ZPFK3ZsLwoo-05", "QRP-ZPFK3ZsLwoo-06"])
 
     def test_scorecard_matches_a_rerun(self):
