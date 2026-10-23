@@ -60,3 +60,14 @@ Agree on everything except: Thinker's shipped list missed 152726b and the 22 Oct
 - Layers later: "extraction we will do individually, and it will be targeted on what we need to do". Analyst layers (Krown; Jason+Michael) get their own targeted extraction; CBP does not.
 - Where it plugs into MTS: "a later question". CBP's job now: "find the value which is in CBP that could be provided to MTS".
 Effect on the plan (OURS): `cbp.query` default `since` = 10 days; extraction profile = bias, quotes, trades, pointers only; anything older than 10 days is not extracted or kept in the query path; the 22 Oct run is inside the window (D1 stands). Step 1 adds: measure how many of the 10-day rows are tradable vs bias-only, so the value to MTS is a number, not a belief.
+
+## 8. Amendment 2 (operator 2026-10-23, verbatim) - supersedes the 10-day window and the run rule
+- Window: "instead of 10 days, let us make it 5 days just looks good". Default `since` = 5 days.
+- Simple: "debug optimize simplify and make it performance oriented", "a very simple contract. Yeah. Which will be maintained by MTS".
+- Control: "CDP [CBP] will never run on its own. Okay. MTS will run it. That's what having control means."
+- Cadence: "twice a day is also good. Maybe 3 times is also good. Scanning especially just before the US session and around the mid-European session ... Plus whenever I ask you can run it".
+Design (OURS, no scheduler: SCHEDULING_POLICY.md holds):
+- One entry point `python scripts/dev/cbp_run.py [--force]`: fetch new videos of the actionable analysts (last 5 days), extract only new ones, quote-check, dedupe, write one store. Prints one line: rows added, rows total, window end.
+- Due-ness, not timers: a stamp file records the last run; the coordinator, on each wake, runs `cbp_run.py --due`, which runs only if a window is open and not yet done today. Windows (UTC, OURS): EU 09:00-11:00, pre-US 12:00-13:30. Operator ask = `--force`.
+- Contract: `cbp.query(analyst=None, symbol=None, since_days=5)` returns rows {analyst, video_id, published, bias, quotes[], trades[], pointers[], quote_verified, expires_at}. MTS owns the schema file; CBP code is only ever called through `cbp_run.py` and `query`.
+- Performance: skip videos already in the store (idempotent), transcripts older than 5 days never fetched, one LLM pass per new video, query reads one JSON file.
