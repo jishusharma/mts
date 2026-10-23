@@ -344,7 +344,10 @@ def event_turn(transcript_path):
         parts = [c] if isinstance(c, str) else [b.get("text", "") for b in (c or []) if isinstance(b, dict) and b.get("type") == "text"]
         parts = [t for t in parts if t and not t.lstrip().startswith(SKIP_PREFIX)]
         if parts:
-            return turn_meter.is_event_text("".join(parts))
+            ev = turn_meter.is_event_text("".join(parts))
+            if ev and att is not None:
+                continue           # a queued event (task-notification mid-turn) never starts a turn: the turn's opener decides
+            return ev
     return False
 
 

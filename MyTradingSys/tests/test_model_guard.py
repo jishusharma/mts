@@ -119,6 +119,11 @@ class ModelGuardTest(unittest.TestCase):
         inp = {"initiation": "user_asked", "title": "Opus review", "prompt": "You are Builder.\nStandby.", "background": "b" * 90,
                "model": "claude-opus-5-5"}
         self.assertEqual(fire(START, inp, sup), "allow")
+        # a background task-notification queued after his message does not turn his typed turn into an event turn
+        rows.append({"type": "attachment", "attachment": {"type": "queued_command",
+                                                          "prompt": "<task-notification>\n<task-id>a1</task-id>\n</task-notification>"}})
+        sup.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
+        self.assertEqual(fire(START, inp, sup), "allow")
         rows[2]["attachment"]["prompt"] = "fix the report"         # no session asked, no Opus named: still denied
         sup.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
         self.assertEqual(fire(START, inp, sup), "deny")
