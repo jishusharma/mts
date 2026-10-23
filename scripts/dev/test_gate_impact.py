@@ -95,10 +95,15 @@ class Reach(unittest.TestCase):
 class Budget(unittest.TestCase):
     EST = {"a": 5, "b": 10, "c": 40, "d": 3}.get
 
-    def test_direct_files_are_always_kept_even_over_budget(self):
+    def test_direct_files_obey_the_budget_too(self):
         kept, deferred = gi.plan_budget(["c"], ["a"], self.EST, 1, budget=30)
-        self.assertEqual(kept, ["c"])
-        self.assertEqual(deferred, ["a"])
+        self.assertEqual(kept, ["a"])
+        self.assertEqual(deferred, ["c"])
+
+    def test_direct_files_are_tried_before_others(self):
+        kept, deferred = gi.plan_budget(["b"], ["a", "d"], self.EST, 1, budget=11)
+        self.assertEqual(kept, ["b"])
+        self.assertEqual(sorted(deferred), ["a", "d"])
 
     def test_others_fill_the_budget_cheapest_first(self):
         kept, deferred = gi.plan_budget([], ["b", "a", "d", "c"], self.EST, 1, budget=20)

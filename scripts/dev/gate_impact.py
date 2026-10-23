@@ -1,7 +1,7 @@
 """gate_impact.py - which tests a change can reach, for the 60-second ship gate (GATE_SPEED.md X1, X2, X5).
 
   reach(changed, root)        -> Reach: the test files an import-graph reaches from the changed files, whether live code imports them
-  plan_budget(...)            -> (kept, deferred): fills a time budget, direct tests of the change are never deferred
+  plan_budget(...)            -> (kept, deferred): fills a time budget, direct tests first; what does not fit goes to CI
   balance(files, est, k)      -> the files split into at most k chunks of about equal estimated seconds
   quarantine_rows / quarantine_problems / active_deselects: the flaky-test list scripts/dev/gate_quarantine.tsv
 
@@ -151,13 +151,12 @@ def estimate(f, table, default=2):
 
 
 def plan_budget(direct, others, est, workers, base_s=0, budget=FAST_BUDGET_S):
-    """(kept, deferred): every `direct` file is kept; `others` are added cheapest first while the estimated wall time stays inside `budget`
-    (lower bound: total work / workers, and the largest single file). est: file -> seconds. base_s: seconds of work already planned."""
-    kept = list(direct)
-    total = base_s + sum(est(f) for f in kept)
-    longest = max([est(f) for f in kept] or [0])
-    deferred = []
-    for f in sorted(others, key=lambda f: (est(f), f)):
+    """(kept, deferred): `direct` files are tried first, then `others`, each cheapest first; a file is kept while the estimated wall time stays
+    inside `budget` (lower bound: total work / workers, and the largest single file), else it is left to CI. est: file -> seconds.
+    base_s: seconds of work already planned."""
+    kept, deferred = [], []
+    total, longest = base_s, 0
+    for f in sorted(direct, key=lambda f: (est(f), f)) + sorted(others, key=lambda f: (est(f), f)):
         e = est(f)
         if max(longest, e, (total + e) / max(1, workers)) <= budget:
             kept.append(f)

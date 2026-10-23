@@ -89,6 +89,7 @@ TEST_FILE_SECONDS = {
     "test_net_rr_floor_single_source.py": 8,
     "test_sync_where_unborn.py": 6,
     "test_dsa_direct_mode.py": 6,
+    "test_soak_six_slots.py": 150,                   # pure CPU, 135-164 s: smoke leaves it to CI (card soak-six-slots-smoke-cap)
 }
 SLOWEST_FIRST = ("4", "4b", "4c", "4g", "4h", "4e", "4f","3xt", "5b", "3k", "3ds", "3dk", "3bk", "3w")
 _LOCK = threading.Lock()
@@ -792,7 +793,7 @@ def apply_fast(plan, files, nums, jobs):
     extras = run_extra_tests.all_tests()
     ex = {t for t in gate_select.extra_subset(files, extras) if t in extras} | {t for t in extras if t in reach.tests}
     for t in ex:
-        unit(("ex", t), EXTRA_FILE_S, t in reach.direct)
+        unit(("ex", t), TEST_FILE_SECONDS.get(Path(t).name, EXTRA_FILE_S), t in reach.direct)
     modules = find_layer_modules()
     ly = set(gate_select.layer_subset([f for f in files if not f.endswith(gate_select.DOC_SUFFIXES)], modules)) \
         | {m for m in modules if m.replace(".", "/") + ".py" in reach.tests}
