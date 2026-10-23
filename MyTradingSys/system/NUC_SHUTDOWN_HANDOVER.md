@@ -1,6 +1,10 @@
 # NUC hand-over: JIS-NUC unexpected shutdowns
 
-Brief for the card `nuc-unexpected-shutdown` (queued first in NEXT_SESSION.md). Written 2026-10-23 on JIS-NUC (Intel NUC10i7FNH, Windows 10 22H2 19045, BIOS FNCML357.0059 of 2022-10-19, one Kingston KC600 512 GB SATA SSD, firmware S4500105, holding C: and F:). Evidence comes from this NUC's own event log. Research sources are listed at the end. Nothing on the NUC has been changed yet.
+Brief for the card `nuc-unexpected-shutdown` (queued first in NEXT_SESSION.md). Written 2026-10-23 on JIS-NUC (Intel NUC10i7FNH, Windows 10 22H2 19045, BIOS FNCML357.0059 of 2022-10-19, one Kingston KC600 512 GB SATA SSD, firmware S4500105, holding C: and F:). Evidence comes from this NUC's own event log. Research sources are listed at the end.
+
+## Applied so far
+- 2026-10-23, step 1 (first half): display-off on AC set to Never (`powercfg /change monitor-timeout-ac 0`, High performance scheme). Before: AC 0x258 (600 s), DC 0xF0. After: AC 0, DC 0xF0. Last "Idle Timeout" event 506 was 2026-10-23 02:49:37, before the change; none at the 12:06 check (the NUC was in use, so not yet proof). Undo: `powercfg /change monitor-timeout-ac 10`.
+- Not done: Fast Startup off (needs admin), steps 2-7.
 
 ## Operator facts (2026-10-23)
 - BIOS "After Power Failure = Power On" (setup-nuc.ps1 step b): NOT done.
