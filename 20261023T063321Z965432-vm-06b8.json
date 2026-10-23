@@ -1,0 +1,1 @@
+{"t": "20261023T063321Z", "from": "vm/?", "to": "all", "kind": "ask", "text": "FIX 8a9021e71: ship signals now carry the shipping worktree's Result (DESKTOP-F7IU69N stale 'works on: gemini' text). Pull fast-track in your primary checkout: git -C <repo> merge --ff-only origin/fas"}
