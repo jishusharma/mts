@@ -499,12 +499,13 @@ def call_gate(gate, repo, files):
 
 def run_docs_gate(repo, files):
     """Docs/data/cards/pages-only ship (gate-tiers-by-path, operator q-v1-gate-tiers 2026-10-20): no full local gate. Fetch, merge and
-    push; CI gates behind (the measured docs ships ran 1025-2329 s locally for checks CI repeats). Only the doc size caps run (under
-    1 s): 2175ef80 pushed CLAUDE.md over its cap on a docs ship and turned trunk red (operator 2026-10-22: "make a hook")."""
+    push; CI gates behind (the measured docs ships ran 1025-2329 s locally for checks CI repeats). Only the few-second checks of the
+    files shipped run (preship.DOCS_SHIP_RULES: doc size cap, role files, task cards, bug group map): 2175ef80 pushed CLAUDE.md over its
+    cap, and 7 of 9 red runs on 2026-10-23 were docs ships of role files, cards and BUGS.md rows."""
     import preship
-    fails = preship.cap_failures(repo, files)
-    if fails:
-        raise SyncError("doc size cap: " + " / ".join(fails) + " -> FIX: " + preship.CAP_RULE[4])
+    results = preship.docs_ship_failures(repo, files)
+    if results:
+        raise SyncError("docs ship check failed, nothing pushed: " + preship.report(results))
 
 
 def ship_stamp(repo):

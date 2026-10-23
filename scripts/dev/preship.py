@@ -9,7 +9,7 @@ Every rule runs the gate's OWN check (never a copy), so it cannot drift from the
   hook-commit  PreToolUse (Bash): on `git commit`, run every rule the staged files (plus tracked edits with -a) reach; any failure
                denies the commit with the fix. The same failure set is denied once per session, then allowed (a trunk that is
                already red must not trap a session; the ship gate still stops it). A doc size cap is denied every time: only
-               this commit's own file can break it, and `sync.py ship` checks it again on a docs-only ship (cap_failures).
+               this commit's own file can break it, and `sync.py ship` checks it again on a docs-only ship (docs_ship_failures).
   check [files...]   run the rules by hand (default: files changed against origin/fast-track plus the working tree); exit 1 on failure.
 Env: MTS_PRESHIP=off disables both hooks. Never raises in hook mode.
 """
@@ -81,6 +81,15 @@ RULES = [
      "after ANY role-file edit run `python scripts/dev/role_loader.py retoken <file>`; keep `Read first:` in the first 8 lines; "
      "fit the byte budget in MyTradingSys/tests/test_role_budget.py BUDGET; no rule that contradicts ROLES.md",
      "CI 39531253508 builder.md 1514 > 1500; 39546187460 no Read first; 39547550824/39548363830 contradiction + stale token"),
+    ("task cards", lambda p: re.match(r"^MyTradingSys/system/tasks/[^/]+\.json$", p) is not None,
+     lambda r, ps: [[PY, "-m", "pytest", "-q", "scripts/dev/test_tasks.py", "-k", "RepoDataTest"]], True,
+     "a ready/active card meets the Definition of Ready (`python scripts/dev/tasks.py lint` names the field); "
+     "a sized SONNET/HAIKU/OPUS card carries worker and est_turns",
+     "CI 39952758592/39957175338/39958377375 dsa-audit-04..10 tests empty, krown-data-cme-btc-volume no worker fields"),
+    ("bug group map", lambda p: p in ("MyTradingSys/research/BUGS.md", "MyTradingSys/system/groups.json"),
+     lambda r, ps: [[PY, "scripts/dev/test_make_groups.py"]], True,
+     "give the new BUGS.md row a group: `python scripts/dev/make_groups.py --check` names it; add it in MyTradingSys/system/groups.json",
+     "CI 39930461927/39932950182 B199 UNGROUPED"),
     ("test file not in the gate", _new_test,
      lambda r, ps: [[PY, "-m", "pytest", "-q", "MyTradingSys/tests/test_gate_discovery_b150.py"]], True,
      "add the file to scripts/dev/run_extra_tests.py EXTRA (or a run_all_tests.py step)",
@@ -121,6 +130,22 @@ def cap_failures(root, paths):
     if not ps or not (Path(root) / CAP_TEST).exists():
         return []
     return run_rule(CAP_RULE, ps, root)
+
+
+# A docs/data-only ship has no local gate; these rules guard doc/data files and take seconds, so it runs them (7 of the 9 red
+# fast-track runs of 2026-10-23 came from such ships: role files, task cards, BUGS.md rows; CI found them minutes later).
+DOCS_SHIP_RULES = ("doc size cap", "role files", "task cards", "bug group map")
+
+
+def docs_ship_failures(root, paths):
+    """-> [(rule, failure texts)] of the DOCS_SHIP_RULES the paths reach; sync.py runs it on a docs-only ship."""
+    out = []
+    for rule, ps in rules_for(paths):
+        if rule[0] in DOCS_SHIP_RULES:
+            fails = run_rule(rule, ps, root)
+            if fails:
+                out.append((rule, fails))
+    return out
 
 
 def report(results):
