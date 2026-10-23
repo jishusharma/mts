@@ -23,6 +23,8 @@ class FormulaSpec(unittest.TestCase):
   tape=np.load(DATA); mask=tape['t']<CUTOFF
   t=tape['t'][mask]; o=tape['o'][mask]; h=tape['h'][mask]; l=tape['l'][mask]; c=tape['c'][mask]; v=tape['v'][mask]; tbv=tape['tbv'][mask]
   self.assertTrue(np.all(t<CUTOFF))
+  self.assertIn("Worked example F01 (SYNTHETIC", spec)
+  self.assertIn("57.8313", spec)
   for ident,row in data.items():
    worked=re.search(rf'(?m)^\*\*Worked example {re.escape(ident)} \((?:DEV tape;|SYNTHETIC|NOT_APPLICABLE).*$',spec)
    self.assertIsNotNone(worked,f'{ident}: missing worked example line')

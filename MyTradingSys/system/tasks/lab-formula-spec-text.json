@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-23T20:13:33Z",
   "commands": [],
   "created": "2026-10-18T00:00:00Z",
   "depends_on": [],
@@ -11,16 +12,42 @@
   "id": "lab-formula-spec-text",
   "kind": "build",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "FORMULAS_SPEC.md: F01 tape (57.8302) + synthetic twin (57.8313) documented; F11.4-6 arithm",
+      "ref": "794e56d1",
+      "utc": "2026-10-23T20:13:33Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab-formula-spec-recount: independent recount for all 36 sub-ids in FORMULAS.md",
+      "ref": "c48b25859e19",
+      "utc": "2026-10-22T23:35:14Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "c48b25859e19 lab-formula-spec-recount: independent recount for all 36 sub-ids in FORMULAS.",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS_SPEC.md",
+      "utc": "2026-10-22T23:35:14Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "note": "REVIEWED:2026-10-23 ACCEPT reviewer:claude-sonnet-agent (independent, FIX round 1 applied) WEIGHT:IMPORTANT. [PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use] | REOPENED 2026-10-18: independent review REJECTED (non-DEV example prices, wrong arithmetic F01/F11.4/F11.5/F11.6, grep-only coverage check). No REVIEWED stamp added. | UNSTICK 2026-10-23 (builder codex-unstick): runs 2026-10-22: SHIP_FAILED (ship gap), then BLOCKED on F01 and F18-F21 depth; both resolved by decision. REOPENED row resets tries. Details: MyTradingSys/system/card_specs/codex-unstick-2026-10-23.md",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-18T00:00:00Z",
+  "refreshed": "2026-10-23T20:12:18Z",
   "refs": [],
-  "result": "",
+  "result": "FORMULAS_SPEC.md: F01 tape (57.8302) + synthetic twin (57.8313) documented; F11.4-6 arithmetic corrected; test_formula_spec.py passes 2/2 tests.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/FORMULAS.md (read)",
     "MyTradingSys/backtest/layers/FORMULAS_SPEC.md (new)"
@@ -30,10 +57,10 @@
     "HALT files",
     "deploys"
   ],
-  "scope_sha": "",
+  "scope_sha": "c48b25859e19",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "ORDER: gen_examples.py, examples.json and test_formula_spec.py already exist (run 2026-10-22): extend them, do not restart. First run the test against the CURRENT FORMULAS_SPEC.md and quote the failure, then edit the spec. If you run out of room, deliver generator and test with fail-first shown and say so. A SKIPPED test (tape absent) is NOT a pass",
     "REOPENED: independent review REJECTED the first FORMULAS_SPEC.md (it is on trunk; edit it, do not restart). Defect (a): worked examples in F01, F07, F13, F14, F17 use closes/opens 62724, 62780, 62820, 62750, 62679.99 and changes +56/+40/-70 that are NOT in the DEV tape F:/MTS/data/bigtrade/cache/perp/klines_1h.npz (DEV = open before 2024-07-01), so the 'DEV bars only' header claim is false",
@@ -45,6 +72,7 @@
     "Scope: edits only FORMULAS_SPEC.md (including its line-3 header, which must name the SYNTHETIC F01 twin instead of saying there are none), files under formula_spec_text/, the EXTRA/skip line and the report; FORMULAS.md read-only. No REVIEWED stamp; the card stays for independent re-review",
     "An acceptance number that cannot be reproduced is a MISMATCH finding in the report, not BLOCKED; BLOCKED only if gen_examples.py or test_formula_spec.py cannot be delivered"
   ],
+  "taken": "2026-10-23T20:13:33Z",
   "tests": "fail-first on the current spec: MyTradingSys/research/layer_lab/formula_spec_text/test_formula_spec.py (registered in run_extra_tests.py EXTRA or skipped with a reason) recomputes every worked example of every id from FORMULAS.md rules on the DEV tape and asserts equality with FORMULAS_SPEC.md; it fails on the current spec (F01, F11.4-6, non-tape closes) and passes after the fix",
   "title": "Lab: write the spec text of each FORMULAS.md entry a re-deriver needs (inputs, bar alignment, rounding, edge cases)",
   "weight": "IMPORTANT",
