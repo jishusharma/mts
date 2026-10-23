@@ -1,7 +1,7 @@
 # NEXT SESSION (2026-10-23, Sonnet)
 
-Done this super session: tc2, tc4-desk-done-once, tc3-budget-lines, tc5-lab-lane-dedupe, ci-919cc0f (stale) shipped.
-Next: nuc-unexpected-shutdown first (block below, JIS-NUC), then `tasks.py next` -> dsa-audit-01-data-forensics (DSA lane: `desk.py post ... --target DSA`). Data-blocked on this machine: context-conditioned-session-flow-states, kurisko-prereg-fire-counts (need JIS-NB). Weekly quota of login C was 97% at 04:20Z (reset 09:00Z); after the reset take any pending card.
+Done this super session (DESKTOP-F7IU69N, 2026-10-23): tc2-tc5, card-worker-fields, super-session-rules-to-pointers, roles-md-index-slim, cbp-one-quote-checker (closed), cpu-audit-laptop-f7iu69n (script fixed, desk row to OPERATOR) shipped.
+Next: nuc-unexpected-shutdown first (block below, JIS-NUC), then `tasks.py next`. Open Sonnet cards doable anywhere: prompt-header-role-loader (scope changed 2026-10-22; step 1 A/B of 5 prompts first), gemini-task-dispatch-assignment, research-top-level-declutter, gap-g7-stop-slippage, rv05-h2-position-line-evidence. Data-blocked here (need JIS-NB/F: data): context-composite-v2-dev-read (posted to DSA), context-conditioned-session-flow-states, kurisko-prereg-fire-counts. Loose ends: 87 repeated signal lines (traffic.py measure), CODEX_START/GEMINI_START 5 duplicate lines, 3 stale pages. Weekly quota of login C 97% (reset 09:00Z); after the reset take any pending card.
 
 # NEXT_SESSION
 
