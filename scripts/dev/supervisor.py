@@ -982,8 +982,30 @@ def _idle_nag_due(hosts: list, now: datetime, home=None) -> list:
     return due
 
 
+WHO_MAX = 6     # WHO lines per wake (conflicts first): a Supervisor never asks the operator which login a machine is on
+
+
+def who_block(rows, limit: int = WHO_MAX) -> list:
+    """`WHO ...` lines from the signals roll call (mts_signal.roll_lines) over `rows`; [] when there is nothing or it fails."""
+    try:
+        import mts_signal
+        return ["WHO " + x for x in mts_signal.roll_lines(rows)[:limit]]
+    except Exception:
+        return []
+
+
+def _who_rows() -> list:
+    """The machine's signals clone as it is now (the plan fetched it already unless --no-fetch); [] if there is none."""
+    try:
+        import mts_signal
+        h = mts_signal.home()
+        return mts_signal.load(h) if (h / ".git").exists() else []
+    except Exception:
+        return []
+
+
 def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, no_fetch: bool = False, host: str | None = None,
-         home=None, now: datetime | None = None, shas: list | None = None) -> tuple[list, dict]:
+         home=None, now: datetime | None = None, shas: list | None = None, who_rows=None) -> tuple[list, dict]:
     """One call per wake (boot included): records the reading, sends the heartbeat, reads peers, board, hand-over, CI, dispatch,
     lanes and desk from trunk, and returns (lines, data). Every sub-read fails soft into a NOTE line, never into a success value."""
     import tasks
@@ -1092,7 +1114,7 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
     if shas:
         ctx["shas_arg"] = " --shas " + ",".join(shas)
     live[login]["free"] = free
-    lines = plan_lines(login, host, pl, live, ctx, (Path.home() / ".ssh" / "nuc_gate").exists()) + notes
+    lines = plan_lines(login, host, pl, live, ctx, (Path.home() / ".ssh" / "nuc_gate").exists()) + notes + who_block(_who_rows() if who_rows is None else who_rows)
     loop_home(home).mkdir(parents=True, exist_ok=True)
     for ih, _lg, _n in (ctx.get("idle_hosts", []) if send else []):     # a dry run never silences the line
         if any(x.startswith(f"OPERATOR start a Supervisor on {ih}:") for x in lines):
@@ -1179,14 +1201,14 @@ def main(argv: list[str] | None = None) -> int:
     p_wait.add_argument("--shas", nargs="*", default=[], help="comma- or space-separated commit shas to watch for landing on trunk")
     p_wait.add_argument("--timeout", default="3000", help="timeout in seconds or with s/m/h suffix (default 3000)")
     p_wait.add_argument("--interval", default="300", help="poll interval in seconds or with s/m/h suffix (default 300)")
-    p_wait.add_argument("--login", default=os.environ.get("MTS_LOGIN"), help="A|B|C: also wake when its last plan left a slot and cards unused")
+    p_wait.add_argument("--login", default=None, help="A|B|C (default: detected from the app account): also wake when its last plan left a slot and cards unused")
 
     p_brief = sub.add_parser("brief", help="generate exact start prompt text for a worker session")
     p_brief.add_argument("card", help="card id to brief")
     p_brief.add_argument("--role", default=None, help="role to start worker as (defaults to Builder)")
 
     p_plan = sub.add_parser("plan", help="every wake incl. boot: record get_usage, heartbeat, peers, lanes; prints PLAN/RUN/SPAWN lines")
-    p_plan.add_argument("--login", default=os.environ.get("MTS_LOGIN"), help="A|B|C (your account email in CLOUD_ACCOUNTS.md; default env MTS_LOGIN)")
+    p_plan.add_argument("--login", default=None, help="optional: detected from the app account (a differing letter is overridden with a LOGIN MISMATCH line)")
     p_plan.add_argument("--five", type=float, required=True, help="get_usage 5-hour limit percentUsed")
     p_plan.add_argument("--five-reset", required=True, help="get_usage 5-hour resetsAt (UTC)")
     p_plan.add_argument("--week", type=float, required=True, help="get_usage Weekly all models percentUsed")
@@ -1198,13 +1220,22 @@ def main(argv: list[str] | None = None) -> int:
     p_plan.add_argument("--json", action="store_true")
 
     p_ho = sub.add_parser("handover", help="write handover/SUPERVISOR_<login>.md from the last plan (ship it once)")
-    p_ho.add_argument("--login", default=os.environ.get("MTS_LOGIN"))
+    p_ho.add_argument("--login", default=None, help="optional: detected from the app account")
     p_ho.add_argument("--note", default="", help="one line: what the successor does first")
     p_ho.add_argument("--no-send", action="store_true", help="do not send the ENDED heartbeat")
 
     args = ap.parse_args(argv)
+    if args.cmd in ("plan", "handover", "wait", "tick"):
+        try:
+            import mts_signal      # the account is the truth: a typed letter that differs is overridden (operator 2026-10-23)
+            det, mism = mts_signal.resolve_login(args.login or "")
+        except Exception:
+            det, mism = "", ""
+        if mism:
+            print(mism, file=sys.stderr if getattr(args, "json", False) else sys.stdout)
+        args.login = det or args.login
     if args.cmd in ("plan", "handover") and (not args.login or args.login.strip().upper()[:1] not in ("A", "B", "C")):
-        print("login must be A, B or C: match your account email to CLOUD_ACCOUNTS.md LOGINS (or set env MTS_LOGIN)")
+        print("login unknown: the app account is not in CLOUD_ACCOUNTS.md LOGINS; pass --login A|B|C or set env MTS_LOGIN")
         return 2
     if args.cmd == "plan":
         bad = [n for n, v in (("--five-reset", args.five_reset), ("--week-reset", args.week_reset)) if _utc(v) is None]

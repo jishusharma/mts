@@ -178,6 +178,62 @@ class TestInject(Base):
         self.assertEqual(self.hook("", sid="fresh", event="SessionStart"), "")
 
 
+class TestFallbackIsASoftHint(Base):
+    """Flow A2 (operator 2026-10-23): a fallback-picked role (the word "revalidat" gave a doctor session Lab_Guy) came back after
+    every compaction. Only an explicit `You are X.` line is a role session; role_loader and model_guard.role_session agree."""
+    FALLBACK = "Here is a chart screenshot of BTC 15m, what do you see?"
+
+    def fb(self, sid):
+        pick = {"name": "Eagle_Eyes", "reason": "task text says screenshot", "tie": []}
+        with mock.patch.object(rl, "pick_role", return_value=pick):
+            return self.hook(self.FALLBACK, sid=sid)
+
+    def test_fallback_role_is_not_reinjected_after_compaction(self):
+        self.put_role()
+        self.assertIn("(fallback: ", self.fb("f1"))
+        self.assertEqual(self.hook("", sid="f1", event="SessionStart"), "")
+
+    def test_fallback_role_gets_no_every_6th_prompt_reminder(self):
+        self.put_role()
+        self.fb("f2")
+        got = [self.hook("what is the BTC read?", sid="f2") for _ in range(2 * rl.REMIND_EVERY)]
+        self.assertEqual([g for g in got if g], [])
+
+    def test_explicit_role_is_reinjected_and_reminded(self):
+        self.put_role()
+        self.hook("You are Eagle_Eyes.", sid="f3")
+        self.assertIn("ROLE LOADED: Eagle_Eyes", self.hook("", sid="f3", event="SessionStart"))
+        self.assertIn("Role: Eagle_Eyes", self.hook("what is the BTC read?", sid="f3"))
+
+    def test_explicit_after_fallback_upgrades_the_role(self):
+        self.put_role()
+        self.fb("f4")
+        self.hook("reload role Eagle_Eyes", sid="f4")
+        self.assertIn("ROLE LOADED: Eagle_Eyes", self.hook("", sid="f4", event="SessionStart"))
+
+    def test_rules_text_carries_the_out_of_role_rule(self):
+        self.put_role()
+        t = self.hook("You are Eagle_Eyes.", sid="f5")
+        self.assertIn("OUT OF YOUR ROLE", t)
+        self.assertIn("tasks.py new", t)
+        self.assertIn("You are <Owner>.", t)
+
+    def test_loader_and_model_guard_agree_on_what_a_role_session_is(self):
+        import model_guard
+        self.put_role()
+        cases = {"explicit": "You are Eagle_Eyes. Go.", "fallback": self.FALLBACK, "none": "hello there"}
+        for kind, prompt in cases.items():
+            sid = "agree-" + kind
+            pick = {"name": "Eagle_Eyes", "reason": "x", "tie": []} if kind == "fallback" else {"name": None, "reason": "", "tie": []}
+            with mock.patch.object(rl, "pick_role", return_value=pick):
+                self.hook(prompt, sid=sid)
+            tr = Path(self.tmp.name) / (sid + ".jsonl")
+            tr.write_text(json.dumps({"type": "user", "message": {"content": prompt}}) + chr(10), encoding="utf-8")
+            loader_says = bool(self.hook("", sid=sid, event="SessionStart"))
+            self.assertEqual(loader_says, model_guard.role_session(str(tr)) is not None, kind)
+            self.assertEqual(loader_says, kind == "explicit", kind)
+
+
 class TestSubagentStart(Base):
     """A background Agent ("You are Thinker.") got ROLE NOT LOADED: no SubagentStart hook existed (operator 2026-10-23)."""
     def sub(self, sid="p1", **kw):

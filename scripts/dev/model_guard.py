@@ -44,7 +44,6 @@ ASK = "AskUserQuestion"
 WRAP_UP = "mcp__ccd_turn__wrap_up"
 BRANCH_CARD = "mcp__ccd_directory__propose_branch"
 BUTTON_TOOLS = (ASK, WRAP_UP, BRANCH_CARD)
-ROLE_LINE = re.compile(r"(?im)^\s*You are ([\w&]+)")
 HOURLY = {START: 4, "Agent": 8, "Task": 8}
 REMINDER_BLOCK = re.compile(r"<system-reminder>.*?</system-reminder>", re.S)
 SESSION_ID_RE = re.compile(r'session_id["\s:=]+([A-Za-z0-9_.-]+)')
@@ -415,14 +414,10 @@ def nested_reason(tool, inp, transcript_path):
 
 
 def role_session(transcript_path):
-    """The role named by a `You are <Role>.` line in the session's first prompt (start line or a started session's brief), else None."""
+    """The role the session's first prompt names explicitly (role_loader.explicit_role: the one shared definition; a role the
+    loader would only pick from task words is not a role session), else None."""
     import role_loader
-    names = {n.lower(): n for n in role_loader.KNOWN_ROLES}
-    names.update({a: n for n, al in role_loader.ALIASES.items() for a in al})
-    for m in ROLE_LINE.finditer(first_prompt(transcript_path)[:3000]):
-        if m.group(1).lower() in names:
-            return names[m.group(1).lower()]
-    return None
+    return role_loader.explicit_role(first_prompt(transcript_path))
 
 
 def button_reason(tool, inp, transcript_path):
