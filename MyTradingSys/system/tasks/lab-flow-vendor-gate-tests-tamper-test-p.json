@@ -1,35 +1,52 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest scripts/dev/test_lab_flow.py -q"
+  ],
   "created": "2026-10-18T22:25:03Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "test_lab_flow.py passes; report lists each mutant of lab_flow.py:158,211,215 and the test that kills it; tamper test and empty-receipt test fail on the mutated gate.",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Fix the review BLOCK of 2026-10-19 on the vendor-gate tests in test_lab_flow.py: make the tamper test fail on the old gate, make the V5 mutant tests exercise launch/gate not unchanged helpers, add the stage-3 same-vendor-as-producer case and an empty-vendor receipt test.",
   "id": "lab-flow-vendor-gate-tests-tamper-test-p",
   "kind": "build",
   "lane": "CODEX",
   "layers": [],
   "live_path": false,
-  "mutation_check": "",
-  "note": "",
+  "mutation_check": "scripts/dev/test_lab_flow.py::test_v5_mutant_gate_normalized_allowlist_card_vendor_check",
+  "note": "DECISION (OURS) 2026-10-23: drafted and T0-checked; reviewer Agent blocked by spawn cap (8/h), so no ACCEPT stamp: needs ONE batched Sonnet reviewer pass (or Lab_Guy for CODEX), then stamp REVIEWED:<date> ACCEPT and tasks.py check. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. Lab_Guy owns the review stamp.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
+  "scope_in": [
+    "scripts/dev/test_lab_flow.py",
+    "scripts/dev/lab_flow.py (read; edit only to fix a gate bug a new test exposes)",
+    "MyTradingSys/research/layer_lab/reports/2026-10-23_lab-flow-vendor-gate-tests.md"
+  ],
+  "scope_out": [
+    "live path",
+    "tasks.py gate logic",
+    "recipes in RECIPES"
+  ],
+  "size": "M",
+  "sources": [
+    "scripts/dev/lab_flow.py:158,211-217",
+    "commit ea73852f4 (card filed from review BLOCK)"
+  ],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Tamper test (test_lab_flow.py:198): revert the vendor check in scratch copy of lab_flow.py:211-212 and show the test turns red; today it also accepts the 'drifted' message so it passes on old code: assert the exact vendor-normalized message only.",
+    "V5 mutant tests (:171-196) call normalize_vendor/validate_hardened_recipe directly: rewrite each to go through F.launch or F.gate so a weakened gate (not just a helper) is caught; record which mutant each test kills.",
+    "Add: stage-3 vendor equal to stage-1 producer vendor is refused (lab_flow.py:215); accepted() with a receipt whose vendor is empty returns False (lab_flow.py:158)."
+  ],
+  "tests": "scripts/dev/test_lab_flow.py new tests run against the pre-change lab_flow.py with the vendor checks mutated in scratch: at least the tamper and the empty-receipt test fail there.",
   "title": "lab_flow vendor gate tests: tamper test passes on old code; V5 mutant tests call unchanged functions; add stage-3 same-vendor case and empty-vendor receipt test (review BLOCK 2026-10-19)",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

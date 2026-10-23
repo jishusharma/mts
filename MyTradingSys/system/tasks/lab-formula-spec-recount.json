@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-22T23:35:24Z",
   "commands": [],
   "created": "2026-10-18T00:00:00Z",
   "depends_on": [],
@@ -12,6 +13,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-10-22_lab-formula-spec-recount.md",
+      "ref": "c48b2585",
+      "utc": "2026-10-22T23:35:24Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -36,6 +43,12 @@
   "refined_by": "",
   "refreshed": "2026-10-17T22:16:18Z",
   "refs": [],
+  "result": "MyTradingSys/research/layer_lab/reports/2026-10-22_lab-formula-spec-recount.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/FORMULAS.md (read)",
     "MyTradingSys/backtest/layers/FORMULAS_SPEC.md",
@@ -49,7 +62,7 @@
   "scope_sha": "3c4addfa2e35",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "FIRST list the sub-ids: grep -n -E '^[*][*](11|18|19|20|21)[.][0-9]+ ' MyTradingSys/backtest/layers/FORMULAS.md. Each hit is one sub-id with its rule and worked example. The 2026-10-21 run searched the text 'F11.1' and wrongly found no mapping. See MyTradingSys/system/card_specs/codex-unstick-2026-10-23.md",
     "Run test_formula_spec.py on the current gen_examples.py with the new per-sub-id recount added: it must fail (sub-id rows in examples.json copy their parent row); quote the failure. Remove any expectedFailure marker if one is present. A SKIPPED test (tape absent) is NOT a pass",
@@ -57,6 +70,7 @@
     "Extend test_formula_spec.py with one independent recount per sub-id (F11.1-8, F18, F19, F20, F21); unknown names raise, never fall back",
     "Update FORMULAS_SPEC.md worked examples for those sub-ids from examples.json (bar open UTC or SYNTHETIC). Edit only formula_spec_text/, FORMULAS_SPEC.md and the report; FORMULAS.md is read-only; no REVIEWED stamp"
   ],
+  "taken": "2026-10-22T23:35:24Z",
   "tests": "remove the echo fallback first: the test must fail on the current examples.json, then pass after the fix",
   "title": "Lab: write the spec text of each FORMULAS.md entry a re-deriver needs (inputs, bar alignment, rounding, edge cases)",
   "weight": "IMPORTANT",

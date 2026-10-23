@@ -159,6 +159,24 @@ def prune(h):
     return len(old)
 
 
+REPEAT_SEC = 300   # OURS: an identical note from the same sender inside 5 minutes adds nothing (traffic.py: 87 repeated lines in 72 h)
+
+
+def is_repeat(rows, rec):
+    """True when `rec` is a note that a row from the same sender already says, within REPEAT_SEC. Broadcasts and acks never repeat-drop."""
+    if rec.get("kind") != "note":
+        return False
+    t = datetime.strptime(rec["t"], "%Y%m%dT%H%M%SZ")
+    for r in rows:
+        if r.get("kind") == "note" and r.get("from") == rec.get("from") and r.get("text") == rec.get("text"):
+            try:
+                if 0 <= (t - datetime.strptime(r["t"], "%Y%m%dT%H%M%SZ")).total_seconds() <= REPEAT_SEC:
+                    return True
+            except (KeyError, ValueError):
+                pass
+    return False
+
+
 def send(text, to="all", kind="note", cwd=None, sid="", extra=None):
     """Writes one signal file and pushes it; retries on a lost race. Returns True if it reached origin."""
     h = ensure(cwd)
@@ -170,6 +188,8 @@ def send(text, to="all", kind="note", cwd=None, sid="", extra=None):
         rec["sid"] = sid_tag(sid)
     if extra:
         rec.update(extra)
+    if is_repeat(load(h), rec):
+        return True
     # microseconds right after the 16-char second stamp: two signals in one second sort in send order, not by the random tail
     name = "%s%06d-%s-%04x.json" % (rec["t"], dt.microsecond, re.sub(r"[^a-z0-9]+", "", host())[:12], random.randrange(1 << 16))
     for _ in range(4):
@@ -369,6 +389,18 @@ def ack_state(rows, bid, hostname):
     return best
 
 
+def own_state(rows, b):
+    """This host's ack state for broadcast b; for an `--audience top` broadcast an ack from ANY host on my login (env MTS_LOGIN)
+    counts too, so two sessions or machines on one login do not both act (EXHAUST_PHASE.md: one actor per login)."""
+    best = ack_state(rows, b["id"], host())
+    lg = os.environ.get("MTS_LOGIN", "").strip().upper()
+    if b.get("aud") == "top" and lg:
+        for r in rows:
+            if r.get("kind") == "ack" and r.get("id") == b["id"] and str(r.get("login", "")).upper() == lg                     and RANK.get(r.get("state"), 0) > RANK[best]:
+                best = r["state"]
+    return best
+
+
 def hosts_seen(rows):
     """Hosts with any record in the last KEEP_DAYS (a record stamped in the future does not count)."""
     cutoff, lim = stamp(now() - timedelta(days=KEEP_DAYS)), future_limit()
@@ -389,13 +421,18 @@ def action_text(b):
     return "ACTION FOR THIS MACHINE (%s): %s" % (host(), cmd)
 
 
+def is_worker_env():
+    """True in a subagent or embedded worker (a Supervisor's Builder/Session_Planner): broadcasts sent with --audience top skip it."""
+    return bool(os.environ.get("MTS_SUBAGENT")) or os.environ.get("MTS_ROLE", "") in ("Builder", "Session_Planner")
+
+
 def action_block(rows, ev):
     """The [MTS ACTION REQUIRED] text for this host: state none on every turn, told once per session (SessionStart), done never."""
     out = []
     for b in high_open(rows):
-        if b.get("to") not in ("all", host()):
+        if b.get("to") not in ("all", host()) or (b.get("aud") == "top" and is_worker_env()):
             continue
-        st = ack_state(rows, b["id"], host())
+        st = own_state(rows, b)
         if st == "done" or (st == "told" and ev != "SessionStart"):
             continue
         if st == "told":
@@ -531,7 +568,7 @@ def stop_check(payload):
     if not (h / ".git").exists():
         return ""
     rows = load(h)
-    pending = [b for b in high_open(rows) if b.get("to") in ("all", host()) and ack_state(rows, b["id"], host()) == "none"]
+    pending = [b for b in high_open(rows) if b.get("to") in ("all", host()) and not (b.get("aud") == "top" and is_worker_env()) and own_state(rows, b) == "none"]
     if not pending:
         return ""
     reply = reply_text(payload)
@@ -563,6 +600,14 @@ def hook():
     return 0
 
 
+def budget_line(login, five, week, reset, models):
+    """The BUDGET signal text; models = {name: percent used} adds `models=opus:10,fable:3` (exhaust phase spends the model with headroom)."""
+    s = "BUDGET login=%s 5h=%d%% week=%d%% reset=%s" % (login, round(five), round(week), reset)
+    if models:
+        s += " models=" + ",".join("%s:%d" % (k, round(v)) for k, v in models.items())
+    return s
+
+
 def budget_cmd(args):
     """`budget --five 12 --week 40 --reset 2026-10-22T19:59Z [--login A]`: one call after get_usage. Sends the BUDGET line that
     traffic.py budget and supervisor.py tick read, and records the reading in ~/.claude/mts-budget.json (same file budget.py uses).
@@ -573,7 +618,9 @@ def budget_cmd(args):
     ap.add_argument("--five", type=float, required=True, help="5-hour window used, percent")
     ap.add_argument("--week", type=float, required=True, help="weekly all-models used, percent")
     ap.add_argument("--reset", required=True, help="weekly reset, UTC YYYY-MM-DDTHH:MMZ")
+    ap.add_argument("--model", action="append", default=[], help="per-model window used, name=percent (repeatable)")
     a = ap.parse_args(args)
+    models = {k.strip().lower(): float(v) for k, _, v in (s.partition("=") for s in a.model) if v}
     lg = a.login.strip().upper()
     if lg not in ("A", "B", "C"):
         print("login must be A, B or C (--login or env MTS_LOGIN)")
@@ -593,7 +640,7 @@ def budget_cmd(args):
         (budget_mod.home() / "mts-budget.json").write_text(json.dumps(rec, sort_keys=True), encoding="utf-8", newline=chr(10))
     except (OSError, ImportError) as e:
         print("budget file not written: %s" % e)
-    ok = send("BUDGET login=%s 5h=%d%% week=%d%% reset=%s" % (lg, round(a.five), round(a.week), reset), to="all", kind="note")
+    ok = send(budget_line(lg, a.five, a.week, reset, models), to="all", kind="note")
     print("BUDGET login=%s sent" % lg if ok else "BUDGET not sent (no origin or push failed)")
     return 0 if ok else 1
 
@@ -622,12 +669,15 @@ def main(argv):
         ap.add_argument("message")
         ap.add_argument("--to", default="all")
         ap.add_argument("--prio", default="normal", choices=["normal", "high"])
+        ap.add_argument("--audience", default="all", choices=["all", "top"], help="top: subagents and embedded workers neither see nor block on it")
         ap.add_argument("--cmd", default="", help="high: the exact command the operator must run on each machine")
         a = ap.parse_args(argv[1:])
         extra, bid = None, ""
         if a.prio == "high":
             bid = "b-" + hashlib.sha1(("%s%s%s" % (time.time(), who(), a.message)).encode("utf-8")).hexdigest()[:6]
             extra = {"id": bid, "prio": "high", "cmd": clean(a.cmd, CMD_MAX)}
+            if a.audience == "top":
+                extra["aud"] = "top"
         ok = send(a.message, to=a.to, kind="broadcast", extra=extra)
         print("broadcast sent" if ok else "broadcast NOT sent (no origin or push failed)")
         if ok:
@@ -649,7 +699,7 @@ def main(argv):
         if a.id not in {b["id"] for b in high_open(load(h))}:
             print("unknown or expired broadcast id %s (python scripts/dev/mts_signal.py acks)" % a.id)
             return 2
-        ok = send("ack %s %s %s" % (a.id, a.state, a.note), kind="ack", extra={"id": a.id, "state": a.state, "host": host(), "note": clean(a.note, 100)})
+        ok = send("ack %s %s %s" % (a.id, a.state, a.note), kind="ack", extra={"id": a.id, "state": a.state, "host": host(), "login": os.environ.get("MTS_LOGIN", "").strip().upper(), "note": clean(a.note, 100)})
         print("ack %s %s (%s)" % (a.id, a.state, host()) if ok else "ack NOT sent (push failed)")
         return 0 if ok else 1
     if cmd == "acks":
