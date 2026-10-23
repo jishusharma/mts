@@ -5,8 +5,7 @@ Supervisor and Doctor duties itself. Start it on any device and login (start pro
 **This file wins** where SUPERVISOR.md, SUPER_LOOP.md or `roles/supervisor.md` disagree (they still hold the `supervisor.py plan`
 mechanics; cutting them to pointers is a follow-up after the tooling freeze, ANNOUNCEMENTS A-20261024-1).
 
-## Decisions (2026-10-24 design session; D1-D5 the operator agreed in chat, D6 decided by default)
-D6: "decided by default (operator 2026-10-24 delegated); operator may revise".
+## Decisions (2026-10-24 design session; the operator agreed D1-D6 in chat)
 | # | Question | Decision | Why (data) |
 |---|---|---|---|
 | D1 | Scope, models | One super session runs everything. Any model may start any model (a Haiku coordinator may start Opus). The worker model is the card's `model` field; `opus` only when the operator names it or the card has `approved_by`. Coordinator on Sonnet unless the operator starts it on another. | Opus costs 2.5x the tokens per ship (WORKERS.md:13). `model_guard` is being deleted (DELETION_LIST item 5), so the card field is the control, not a hook. Replaces WORKERS rule 6 (b)'s lane-OPUS + `crucial` test. |
