@@ -4,15 +4,24 @@
   "commands": [],
   "created": "2026-10-23T06:54:09Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "3 new tests fail on old code and pass after; 12 edge cases in the spec hold; quick suite green",
+  "est_turns": 6,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "An operator-typed first ask is metered as attended (30 min window), worker briefs stay capped",
   "id": "turn-meter-his-first-typed-ask-counts-as",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "BOOT signal: every session and subagent reports its first-turn load and role banner",
+      "ref": "6027c19d155c",
+      "utc": "2026-10-22T22:53:04Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -20,16 +29,26 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": [],
+  "refreshed": "2026-10-23T06:54:31Z",
+  "refs": [
+    "MyTradingSys/research/thinker/2026-10-23_first_ask_driven.md"
+  ],
   "result": "",
-  "scope_in": [],
+  "scope_in": [
+    "scripts/dev/turn_meter.py, MyTradingSys/tests/test_turn_meter.py"
+  ],
   "scope_out": [],
-  "size": "",
+  "scope_sha": "6027c19d155c",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Apply the patch in research/thinker/2026-10-23_first_ask_driven.md",
+    "Add the 3 new tests and widen the worker test; prove they fail with the patch stashed",
+    "pytest test_turn_meter + test_model_guard; run_all_tests.py --quick; sync.py ship --release"
+  ],
+  "tests": "test_his_own_first_ask_runs_to_the_end_while_he_is_there (fails on old code)",
   "title": "turn_meter: his first typed ask counts as attended unless it is a worker brief (spec research/thinker/2026-10-23_first_ask_driven.md)",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }
