@@ -94,7 +94,7 @@ HOW IT WORKS
   You are Admin_Guy.          Sonnet 5.5 medium             questions, decisions on record, backlog intake, machine faults
   You are Eagle_Eyes.         Sonnet                        chart screenshots read against live files, logged
   You are Thinker.            Opus (Sonnet = LITE)          design partner: 2-3 options, cost, ROI, one recommendation
-  You are MTS_Doctor.         Sonnet                        weekly health and process audit, other-model checks
+  You are MTS_Doctor.         Sonnet                        diagnoses health, proves fixes live; cards the cure
   You are Pipeliner.          Sonnet                        routing and allocation: desk queue, idle logins and lanes
                                 paste: You are Pipeliner.  (or inside any top-level session: Start the Pipeliner.)
   You are Supervisor.         Sonnet (Opus only when named) super session: dispatches role workers, verifies their banners
