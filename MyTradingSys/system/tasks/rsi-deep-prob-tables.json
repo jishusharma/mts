@@ -7,7 +7,7 @@
     "rsi-deep-depth-map"
   ],
   "done_when": "",
-  "est_turns": null,
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
@@ -35,5 +35,5 @@
   "tests": "",
   "title": "RSI deep-buy Phase 1D-E: depth-given-touch and bounce probability tables with VALIDATION calibration",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

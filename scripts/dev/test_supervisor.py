@@ -242,6 +242,22 @@ def test_wait_busy_slot_frees_transition(tmp_path):
     assert "slot" in reason.lower()
 
 
+def test_wait_wakes_when_a_ship_that_started_during_the_watch_frees_its_gate(tmp_path):
+    """Soak 2026-10-22: a worker ships after the watcher started (gates 0 -> 1 -> 0) and is then gone; its worker slot stood empty
+    until the 50 min timeout because only a drop below the baseline counted. A drop below the peak seen since the start wakes."""
+    seq = iter([{"shas": {}, "ci_red": False, "busy_slots": b} for b in (0, 0, 1, 1, 0)])
+    sleeps = []
+    rc, reason = S.wait_for_transition(repo=tmp_path, shas=[], timeout=3000, interval=300, probe=lambda repo, shas: next(seq),
+                                       fetcher=lambda repo: None, sleeper=lambda s: sleeps.append(s))
+    assert rc == 0 and "slot freed (1 -> 0" in reason and len(sleeps) == 4
+    steady = iter([{"shas": {}, "ci_red": False, "busy_slots": b} for b in (1, 2, 2, 2)])     # rising alone never wakes
+    assert S.wait_for_transition(repo=tmp_path, shas=[], timeout=900, interval=300, probe=lambda repo, shas: next(steady),
+                                 fetcher=lambda repo: None, sleeper=lambda s: None)[0] == 3
+    late = iter([{"shas": {}, "ci_red": False, "busy_slots": b} for b in (None, 1, 1, 0)])    # gates unreadable at the start
+    assert S.wait_for_transition(repo=tmp_path, shas=[], timeout=3000, interval=300, probe=lambda repo, shas: next(late),
+                                 fetcher=lambda repo: None, sleeper=lambda s: None)[0] == 0
+
+
 def test_wait_timeout_exits_3(tmp_path):
     """timeout reached with no transition -> exits 3."""
     steady = {"shas": {"sha1": True, "sha2": False}, "ci_red": False, "busy_slots": 0}
@@ -323,10 +339,27 @@ def test_pace_over_weekly_cap_is_stop():
     assert p["mode"] == "STOP" and p["slots"] == 0 and p["new"] == 0 and p["room"] == 0
 
 
+def test_last_day_before_the_weekly_reset_spends_the_last_points_slowly():
+    """Operator 2026-10-22: A at 97% with 15 h to its reset. Cap 95 -> STOP (points lost); last-day cap 99 over 3 windows ->
+    2/3 wk pt here / 0.12 = 5.6 pts of 5 h -> 1 Claude worker, NORMAL. NB B/C keep their 75."""
+    assert S.weekly_cap("A", "DESKTOP-F7IU69N", 15) == 99 and S.weekly_cap("A", "DESKTOP-F7IU69N", 30) == 95
+    assert S.weekly_cap("A", "DESKTOP-F7IU69N") == 95 and S.weekly_cap("C", "JIS-NB", 15) == 75
+    assert S.pace_plan(T0, _rd(2, 97, week_reset="2026-10-20T03:00Z"), 95)["mode"] == "STOP"
+    p = S.pace_plan(T0, _rd(2, 97, week_reset="2026-10-20T03:00Z"), S.weekly_cap("A", "DESKTOP-F7IU69N", 15))
+    assert p["room"] == 5.6 and p["slots"] == 1 and p["mode"] == "NORMAL"
+
+
 def test_pace_spreads_weekly_room_over_windows_left():
     """week 20%, cap 95, reset 100 h away -> 20 windows; share 75/20 = 3.75 wk pts; k 0.12 -> 31.25 pts of 5 h; 5 h at 10% -> SPEND, 3 slots."""
     p = S.pace_plan(T0, _rd(10, 20, week_reset="2026-10-23T16:00Z"), 95)
     assert p["room"] == 31.2 and p["target"] == 41 and p["slots"] == 3 and p["mode"] == "SPEND" and not p["k_measured"]
+
+
+def test_fresh_supervisor_starts_light_one_new_worker_per_wake():
+    """Operator 2026-10-22: a bare start line opens with minimum workers and grows. 4 slots, 0 running -> start 1; 3 running -> 1."""
+    p = S.pace_plan(T0, _rd(20, 50, week_reset="2026-10-19T15:00Z"), 95)
+    assert p["slots"] == 4 and p["new"] == 1
+    assert S.pace_plan(T0, _rd(20, 50, week_reset="2026-10-19T15:00Z"), 95, running=3)["new"] == 1
 
 
 def test_pace_spends_everything_before_weekly_reset_but_not_past_80():
@@ -369,6 +402,22 @@ def test_heartbeat_is_a_budget_line_and_marks_live_supervisors():
             (T0 - timedelta(minutes=5), "x/y", "note", "BUDGET login=C 5h=1% week=1%")]                # no sup=: not a supervisor
     live = S.live_supervisors(sigs, T0)
     assert list(live) == ["B"] and live["B"]["host"] == "JIS-NB" and live["B"]["free"] == p["new"] and live["B"]["dsa"] == "up"
+
+
+def test_every_supervisor_sees_every_machines_gates():
+    """Heartbeat carries gates=busy/total; plan prints one GATES line over all live machines (operator 2026-10-23)."""
+    import mts_signal
+    p = S.pace_plan(T0, _rd(10, 20), 95, running=2)
+    t = S.heartbeat_text("A", "DESKTOP-F7IU69N", p, dsa="up", free=0, gates={"busy": 2, "total": 2, "free": 0, "pids": [1, 2]})
+    assert len(t) < 200 and mts_signal.clean(t) == t and " gates=2/2 " in t
+    old = S.heartbeat_text("C", "JIS-NB", p)                                   # a peer not yet on this code: no gates=
+    live = S.live_supervisors([(T0 - timedelta(minutes=5), "x/y", "note", t), (T0 - timedelta(minutes=5), "x/y", "note", old)], T0)
+    assert live["A"]["gates"] == (2, 2) and live["C"]["gates"] is None
+    live["B"] = {"host": "JIS-NUC", "mode": "NORMAL", "run": 0, "free": 2, "at": "x", "dsa": None, "gates": (0, 2)}
+    out = "\n".join(S.plan_lines("A", "DESKTOP-F7IU69N", p, live, {"ci": {"red": False}}, gate_key=False))
+    assert "GATES DESKTOP-F7IU69N 2/2 busy; JIS-NB ?; JIS-NUC 0/2 busy; free 2 of 4 known" in out
+    assert "PEER B on JIS-NUC" in out and "gates=0/2" in out and "free gates on JIS-NUC" in out
+    assert "free gates on" not in "\n".join(S.plan_lines("B", "JIS-NUC", p, live, {"ci": {"red": False}}, gate_key=False))
 
 
 def test_lane_owner_is_deterministic():
@@ -487,3 +536,231 @@ def test_plan_lines_stop_and_unknown_peers_start_nothing_shared():
 def test_cli_rejects_bad_percent(capsys):
     assert S.main(["plan", "--login", "C", "--five", "700", "--five-reset", "2026-10-19T14:00Z", "--week", "8",
                    "--week-reset", "2026-10-20T20:00Z", "--no-send", "--no-fetch"]) == 2
+
+
+# ---------- d-six-slots-poll (operator 2026-10-23: "go with A + C") ----------
+def _wait_with_plan(tmp_path, last, probe_state, timeout=900):
+    home = tmp_path / "home"
+    home.mkdir(exist_ok=True)
+    last = {"at": S._now_utc().strftime("%Y-%m-%dT%H:%M:%SZ"), **last}
+    (home / "B-last-plan.json").write_text(json.dumps(last), encoding="utf-8")
+    sleeps = []
+    rc, reason = S.wait_for_transition(repo=tmp_path, shas=[], timeout=timeout, interval=300, probe=lambda repo, shas: probe_state,
+                                       fetcher=lambda repo: None, sleeper=sleeps.append, login="B", home=home)
+    return rc, reason, sleeps
+
+
+def test_wait_wakes_on_a_free_slot_with_ready_cards_not_after_50_min(tmp_path):
+    """Option A: the plan started 1 of 4 (RAMP) and 6 more cards fit; CI green, 1 of 2 gates busy -> wake at the first poll (5 min)."""
+    last = {"plan": {"mode": "NORMAL", "running": 0}, "spare": 3, "ready_more": 6, "stuck": 0}
+    green = {"shas": {}, "ci_red": False, "busy_slots": 1, "total_slots": 2}
+    rc, reason, sleeps = _wait_with_plan(tmp_path, last, green, timeout=3000)
+    assert rc == 0 and reason.startswith("ACTIONABLE 3 worker slot(s) free, 6 more card(s) ready") and sleeps == [300]
+
+
+def test_wait_actionable_fails_closed_and_stops_after_plans_that_spawn_nothing(tmp_path):
+    last = {"plan": {"mode": "NORMAL", "running": 0}, "spare": 3, "ready_more": 6, "stuck": 0}
+    green = {"shas": {}, "ci_red": False, "busy_slots": 1, "total_slots": 2}
+    for bad_last, state in [(last, dict(green, ci_red=None)),                 # CI unknown
+                            (last, dict(green, ci_red=True)),                 # CI red: the CI flip wakes it, not this
+                            (last, dict(green, busy_slots=2)),                # every gate here busy
+                            (last, dict(green, busy_slots=None)),             # gates unreadable
+                            (dict(last, stuck=S.STUCK_MAX), green),           # two plans in a row spawned nothing
+                            (dict(last, ready_more=0), green),                # no more cards
+                            (dict(last, plan={"mode": "CRUCIAL-ONLY"}), green),
+                            (dict(last, at="2026-10-18T01:00:00Z"), green),   # an old run's plan
+                            (dict(last, at=None), green),                     # undated
+                            (dict(last, spare=0), green)]:                    # slots full
+        rc, _r, _s = _wait_with_plan(tmp_path, bad_last, state, timeout=600)
+        assert rc == 3, (bad_last, state)
+    rc, _r = S.wait_for_transition(repo=tmp_path, shas=[], timeout=600, interval=300, probe=lambda r, s: green,
+                                   fetcher=lambda r: None, sleeper=lambda s: None)
+    assert rc == 3          # no --login: the old watcher, transitions only
+
+
+def test_ramp_stays_one_per_plan_the_actionable_wake_does_the_speed_up():
+    """Review 2026-10-23: 'no gate busy' is true whenever no worker is mid-ship, so it was no sign of an idle machine; the start-light
+    rule (q-light-supervisor-start) stays: one new worker per plan, and the ACTIONABLE wake makes the next plan come 5 min later."""
+    rd = _rd(20, 50, week_reset="2026-10-19T15:00Z")
+    assert S.pace_plan(T0, rd, 95)["new"] == 1 and S.pace_plan(T0, rd, 95, running=1)["new"] == 1
+    import inspect
+    assert "gates_idle" not in inspect.signature(S.pace_plan).parameters
+
+
+def test_idle_machine_with_ready_cards_and_budget_gets_one_operator_line():
+    """Option C: A live on DESKTOP; JIS-NB silent with B fresh NORMAL and SONNET cards -> start-a-Supervisor line; JIS-NUC's other
+    login C is THROTTLE and A is busy -> no line for it. Only the shared-lane owner prints it."""
+    inv = {"machines": {"DESKTOP-F7IU69N": {"logins": ["A", "B", "C"]}, "JIS-NB": {"logins": ["B", "C"]}, "JIS-NUC": {"logins": ["A", "C"]}}}
+    fresh = lambda st, week=40: {"state": st, "at": "2026-10-19T11:30Z", "week": week}
+    view = {"logins": {"A": fresh("THROTTLE"), "B": fresh("NORMAL"), "C": fresh("THROTTLE")}}
+    live = {"A": {"host": "DESKTOP-F7IU69N", "mode": "NORMAL", "run": 1, "free": 0, "at": "x", "dsa": None}}
+    rows = [{"id": f"c{i}", "lane": "SONNET"} for i in range(3)]
+    idle = S.idle_hosts(live, rows, T0, view=view, inv=inv)
+    assert idle == [("JIS-NB", ["B"], 3)]
+    assert S.idle_hosts(live, [], T0, view=view, inv=inv) == []                                  # no cards: no line
+    assert S.idle_hosts(live, rows, T0, view={"logins": {"B": {"state": "NORMAL", "at": "2026-10-18T01:00Z"}}}, inv=inv) == []   # stale
+    p = S.pace_plan(T0, _rd(10, 20), 95)
+    ctx = {"ci": {}, "picks": [], "idle_hosts": idle}
+    a = "\n".join(S.plan_lines("A", "DESKTOP-F7IU69N", p, live, ctx, gate_key=False))
+    assert "OPERATOR start a Supervisor on JIS-NB" in a and "`You are Supervisor. Login B.`" in a
+    assert "supervisor.py wait --timeout 50m --login A" in a
+    two = dict(live, B={"host": "JIS-NUC", "mode": "NORMAL", "run": 0, "free": 0, "at": "x", "dsa": None})
+    assert "OPERATOR start" not in "\n".join(S.plan_lines("B", "JIS-NUC", p, two, ctx, gate_key=False))   # A owns it
+
+
+def test_idle_machine_needs_room_under_that_machines_weekly_cap_and_a_known_state():
+    """B at 80% of the week is NORMAL by pace but JIS-NB stops B/C at 75% (rule 12): no line there; DESKTOP (cap 95) still gets B.
+    An unknown state ('UNKNOWN') or a reading from the future is not budget."""
+    inv = {"machines": {"JIS-NB": {"logins": ["B", "C"]}, "DESKTOP-F7IU69N": {"logins": ["B"]}}}
+    rows = [{"id": "c1", "lane": "SONNET"}]
+    b80 = {"logins": {"B": {"state": "NORMAL", "at": "2026-10-19T11:30Z", "week": 80}}}
+    assert S.idle_hosts({}, rows, T0, view=b80, inv=inv) == [("DESKTOP-F7IU69N", ["B"], 1)]
+    for r in ({"state": "UNKNOWN", "at": "2026-10-19T11:30Z", "week": 10}, {"state": "NORMAL", "at": "2026-10-19T13:30Z", "week": 10},
+              {"state": "NORMAL", "at": "2026-10-19T11:30Z", "week": "n/a"}):
+        assert S.idle_hosts({}, rows, T0, view={"logins": {"B": r}}, inv=inv) == [], r
+    assert S.idle_hosts({}, rows, T0, view={"logins": {}}, inv={"machines": None}) == []        # broken inventory: no line
+
+
+def test_idle_line_is_said_once_per_machine_per_2h(tmp_path):
+    rows = [("JIS-NB", ["B"], 3), ("JIS-NUC", ["C"], 1)]
+    assert S._idle_nag_due(rows, T0, tmp_path) == rows
+    (tmp_path / "idle_JIS-NB.last").write_text("2026-10-19T11:00:00Z", encoding="utf-8")     # 1 h ago
+    assert S._idle_nag_due(rows, T0, tmp_path) == rows[1:]
+    assert S._idle_nag_due(rows, T0 + timedelta(hours=1), tmp_path) == rows                     # 2 h later: due again
+
+
+def test_one_login_is_never_offered_for_two_idle_machines():
+    """Real signals 2026-10-22: B live on JIS-NUC; A (97%, last day: cap 99) and C free. DESKTOP gets A, JIS-NB gets C; with only C
+    free, C goes to the first machine and the second gets no line."""
+    inv = {"machines": {"DESKTOP-F7IU69N": {"logins": ["A", "B", "C"]}, "JIS-NB": {"logins": ["B", "C"]}, "JIS-NUC": {"logins": ["A", "C"]}}}
+    rd = lambda st, week: {"state": st, "at": "2026-10-19T11:30Z", "week": week, "reset": "2026-10-20T03:00Z"}   # 15 h to reset
+    view = {"logins": {"A": rd("NORMAL", 97), "B": rd("THROTTLE", 73), "C": rd("SPEND", 12)}}
+    live = {"B": {"host": "JIS-NUC"}}
+    rows = [{"id": "c1", "lane": "SONNET"}]
+    assert S.idle_hosts(live, rows, T0, view=view, inv=inv) == [("DESKTOP-F7IU69N", ["A", "C"], 1), ("JIS-NB", ["C"], 1)]
+    only_c = {"logins": {"A": rd("THROTTLE", 97), "B": rd("THROTTLE", 73), "C": rd("SPEND", 12)}}
+    assert S.idle_hosts(live, rows, T0, view=only_c, inv=inv) == [("DESKTOP-F7IU69N", ["C"], 1)]
+    far = {"logins": {"A": dict(rd("NORMAL", 97), reset="2026-10-23T03:00Z")}}                                  # 87 h: cap 95
+    assert S.idle_hosts(live, rows, T0, view=far, inv=inv) == []
+
+
+def _stub_plan_reads(monkeypatch, ci_red=False, picks=5):
+    import traffic
+    monkeypatch.setattr(S, "read_gate_slots", lambda repo: {"busy": 0, "total": 2})
+    monkeypatch.setattr(S, "fetch_origin", lambda repo: None)
+    monkeypatch.setattr(S, "read_ci", lambda **k: {"red": ci_red, "message": "x"})
+    monkeypatch.setattr(S, "_git_show", lambda repo, rel: None)
+    monkeypatch.setattr(S, "_dispatch_raw", lambda *a, **k: {"dispatch": [{"id": f"c{i}", "lane": "SONNET"} for i in range(picks)]})
+    monkeypatch.setattr(S, "nuc_budget_ok", lambda *a, **k: False)
+    monkeypatch.setattr(traffic, "read_signals", lambda a, b: ([], None))
+    import mts_signal
+    monkeypatch.setattr(mts_signal, "send", lambda *a, **k: True)
+
+
+def _plan_run(tmp_path, running, minutes, send=True):
+    """A real (send=True) plan also writes mts-budget.json under MTS_RELAY_HOME: kept inside tmp_path."""
+    from unittest import mock
+    rd = _rd(10, 20, five_reset="2026-10-19T15:00Z", week_reset="2026-10-23T16:00Z")
+    with mock.patch.dict(os.environ, {"MTS_RELAY_HOME": str(tmp_path / "relay")}):
+        return S.plan(tmp_path, "C", rd, running=running, send=send, no_fetch=True, host="JIS-NB", home=tmp_path,
+                      now=T0 + timedelta(minutes=minutes))
+
+
+def test_plan_counts_a_wake_that_started_none_of_its_new_workers_as_stuck(tmp_path, monkeypatch):
+    """plan() end to end with the reads stubbed: the plan said start 1, running did not grow -> stuck 1, then 2; running grows -> 0.
+    A plan older than PLAN_MAX_MIN is another run's: stuck starts over."""
+    _stub_plan_reads(monkeypatch)
+    monkeypatch.setattr(S, "idle_hosts", lambda *a, **k: [])
+    d = _plan_run(tmp_path, 0, 0)[1]
+    assert d["plan"]["new"] == 1 and d["free"] == 1 and d["spare"] == 2 and d["ready_more"] == 4 and d["stuck"] == 0
+    assert _plan_run(tmp_path, 0, 6)[1]["stuck"] == 1 and _plan_run(tmp_path, 0, 12)[1]["stuck"] == 2
+    assert _plan_run(tmp_path, 1, 18)[1]["stuck"] == 0
+    _plan_run(tmp_path, 1, 24)
+    assert _plan_run(tmp_path, 1, 24 + S.PLAN_MAX_MIN + 1)[1]["stuck"] == 0                            # old plan: fresh count
+
+
+def test_ci_red_or_no_cards_never_counts_as_stuck(tmp_path, monkeypatch):
+    """Review 2026-10-23: two red-CI plans must not switch the ACTIONABLE wake off for the green that follows (free was 0: nothing
+    was asked); same for plans with no card to start."""
+    _stub_plan_reads(monkeypatch, ci_red=True)
+    monkeypatch.setattr(S, "idle_hosts", lambda *a, **k: [])
+    for m in (0, 6, 12):
+        d = _plan_run(tmp_path, 0, m)[1]
+        assert d["free"] == 0 and d["stuck"] == 0
+    _stub_plan_reads(monkeypatch, picks=0)
+    for m in (18, 24, 30):
+        assert _plan_run(tmp_path, 0, m)[1]["stuck"] == 0
+
+
+def test_a_damaged_last_plan_never_breaks_the_next_plan(tmp_path, monkeypatch):
+    _stub_plan_reads(monkeypatch)
+    monkeypatch.setattr(S, "idle_hosts", lambda *a, **k: [])
+    (tmp_path / "C-last-plan.json").write_text(json.dumps({"at": "2026-10-19T11:58:00Z", "free": "x", "plan": "NORMAL"}), encoding="utf-8")
+    assert _plan_run(tmp_path, 0, 0)[1]["stuck"] == 0
+
+
+def test_idle_line_reaches_plan_output_and_its_stamp_only_on_a_real_plan(tmp_path, monkeypatch):
+    """C wired end to end: plan() prints the OPERATOR line; a --no-send dry run leaves no stamp, a real plan stamps the machine and
+    the next plan within IDLE_NAG_H stays quiet."""
+    import mts_signal
+    _stub_plan_reads(monkeypatch)
+    monkeypatch.setattr(S, "idle_hosts", lambda *a, **k: [("DESKTOP-F7IU69N", ["A"], 4)])
+    monkeypatch.setattr(mts_signal, "send", lambda *a, **k: True)
+    monkeypatch.setenv("MTS_RELAY_HOME", str(tmp_path / "relay"))
+    line = "OPERATOR start a Supervisor on DESKTOP-F7IU69N"
+    assert any(x.startswith(line) for x in _plan_run(tmp_path, 0, 0, send=False)[0]) and not (tmp_path / "idle_DESKTOP-F7IU69N.last").exists()
+    assert any(x.startswith(line) for x in _plan_run(tmp_path, 0, 6, send=True)[0])
+    assert (tmp_path / "idle_DESKTOP-F7IU69N.last").exists()
+    assert not any(x.startswith(line) for x in _plan_run(tmp_path, 0, 12, send=True)[0])
+
+
+def test_one_actionable_wake_per_plan(tmp_path):
+    """Review 2026-10-23: a watcher restarted without a new plan (compaction, a slip) must not wake again on the same plan every 5 min."""
+    last = {"plan": {"mode": "NORMAL", "running": 0}, "spare": 3, "ready_more": 6, "stuck": 0}
+    green = {"shas": {}, "ci_red": False, "busy_slots": 0, "total_slots": 2}
+    (tmp_path / "home").mkdir()
+    at = S._now_utc().strftime("%Y-%m-%dT%H:%M:%SZ")
+    (tmp_path / "home" / "B-last-plan.json").write_text(json.dumps(dict(last, at=at)), encoding="utf-8")
+    run = lambda: S.wait_for_transition(repo=tmp_path, shas=[], timeout=900, interval=300, probe=lambda r, s: green,
+                                        fetcher=lambda r: None, sleeper=lambda s: None, login="B", home=tmp_path / "home")[0]
+    assert run() == 0 and run() == 3                # second watcher on the same plan: no wake
+    (tmp_path / "home" / "B-last-plan.json").write_text(json.dumps(dict(last, at=(S._now_utc() - timedelta(minutes=1)).strftime("%Y-%m-%dT%H:%M:%SZ"))), encoding="utf-8")
+    assert run() == 0                               # a new plan: wakes again
+
+
+def test_unknown_weekly_percent_is_no_budget():
+    inv = {"machines": {"DESKTOP-F7IU69N": {"logins": ["B"]}}}
+    view = {"logins": {"B": {"state": "SPEND", "at": "2026-10-19T11:30Z", "week": None}}}
+    assert S.idle_hosts({}, [{"id": "c1", "lane": "SONNET"}], T0, view=view, inv=inv) == []
+
+
+def test_a_damaged_plan_file_never_wakes_and_never_kills_the_watcher(tmp_path):
+    green = {"shas": {}, "ci_red": False, "busy_slots": 0, "total_slots": 2}
+    for bad in ({"spare": "x", "ready_more": 2, "plan": {"mode": "NORMAL"}}, {"spare": 2, "ready_more": 2, "plan": "NORMAL"},
+                {"spare": 2, "ready_more": 2, "plan": {"mode": "NORMAL"}, "stuck": [1]}):
+        rc, _r, _s = _wait_with_plan(tmp_path, bad, green, timeout=600)
+        assert rc == 3, bad
+    (tmp_path / "home" / "B-last-plan.json").write_text("{not json", encoding="utf-8")
+    rc, _r = S.wait_for_transition(repo=tmp_path, shas=[], timeout=600, interval=300, probe=lambda r, s: green,
+                                   fetcher=lambda r: None, sleeper=lambda s: None, login="B", home=tmp_path / "home")
+    assert rc == 3
+
+
+def test_a_dry_run_plan_never_replaces_the_real_plan(tmp_path, monkeypatch):
+    """Review round 2: `plan --no-send --running 0` after a real plan with running 2 must not reset the wake guard or bump stuck."""
+    _stub_plan_reads(monkeypatch)
+    monkeypatch.setattr(S, "idle_hosts", lambda *a, **k: [])
+    monkeypatch.setenv("MTS_RELAY_HOME", str(tmp_path / "relay"))
+    real = _plan_run(tmp_path, 2, 0)[1]
+    _plan_run(tmp_path, 0, 3, send=False)
+    assert json.loads((tmp_path / "C-last-plan.json").read_text(encoding="utf-8"))["at"] == real["at"]
+    assert (tmp_path / "C-dryrun-plan.json").exists()
+
+
+def test_garbled_marker_files_never_kill_the_watcher_or_the_plan(tmp_path):
+    home = tmp_path / "home"
+    home.mkdir()
+    (home / "B-woke.txt").write_bytes(b"\xff\xfe\x00bad")
+    (home / "idle_JIS-NB.last").write_bytes(b"\xff\xfe")
+    assert S._woke_on("B", home) == ""
+    assert S._idle_nag_due([("JIS-NB", ["B"], 1)], T0, home) == [("JIS-NB", ["B"], 1)]

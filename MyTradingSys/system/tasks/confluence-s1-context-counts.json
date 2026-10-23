@@ -1,0 +1,54 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-22T11:07:08Z",
+  "depends_on": [
+    "confluence-s1-context-counts-need-lab-guy-review-stamp-roles"
+  ],
+  "done_when": "research/krown_audit_2026-10-22/run/COUNTS.md committed with n, ISO weeks and MDE per layer and cell; test_krown_context.py passes and its shifted-join test fails on a deliberately shifted join; ACCESS_LOG shows no bar >= 2024-07-01",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Build backtest/layers/krown/krown_context.py (point-in-time Krown context rows), backfill DEV + DEV_EXT, join with usable DEV event tables at decision time, and write run/COUNTS.md (shares, S histogram, ISO weeks, week-clustered MDE, cost/R) without reading any outcome column. Spec: FABLE_CARD_CONFLUENCE.md s4 S1.",
+  "hosts": [
+    "DESKTOP-F7IU69N",
+    "JIS-NB"
+  ],
+  "id": "confluence-s1-context-counts",
+  "lane": "SONNET",
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Step S1 of FABLE_CARD_CONFLUENCE.md; S2 (Fable design + pre-reg) starts only after this ships. Reuse context_factors_pit_2026-10-16/context_asof.py. Needs F:/MTS/data (DESKTOP-F7IU69N or JIS-NB). | REVIEWED: Opus 2026-10-22 (research/krown_audit_2026-10-22/REVIEW_OPUS.md, design SOUND WITH FIXES, amendments folded in)",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/krown_audit_2026-10-22/FABLE_CARD_CONFLUENCE.md",
+    "MyTradingSys/research/krown_audit_2026-10-22/LAYER_CONFLUENCE_DESIGN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/krown/",
+    "MyTradingSys/research/krown_audit_2026-10-22/"
+  ],
+  "scope_out": [
+    "VALIDATION 2024-07..2025-06; HOLDOUT 2025-07..2026-09; live path; outcome columns"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "krown_context.py + tests (fail first)",
+    "DEV/DEV_EXT backfill to run/context_dev.csv",
+    "regenerate event tables, join at decision time, write COUNTS.md; freeze D2/D3 bands from counts only"
+  ],
+  "tests": "test_krown_context.py: hand numbers from FORMULAS.md (BBWP 21.5, RSI s1), fails on pre-change code, no-lookahead shifted-join test",
+  "title": "Confluence S1: Krown context table and counts pass",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

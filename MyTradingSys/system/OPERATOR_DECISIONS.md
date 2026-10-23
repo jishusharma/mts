@@ -1129,5 +1129,147 @@ Applied: 2026-10-20: WORKERS.md rule 5 and CLAUDE.md step 5 say so; turn_meter.p
 }
 ```
 
+## q-go-private-on-edge | asked 2026-10-22 | Process
+
+When does the public repo go private? (Admin_Guy chat 2026-10-22; repo public since 2026-10-11, CLAUDE.md "go private before mainnet")
+
+Recommended: Go private when the first layer passes its fee-net out-of-sample gate (a promoted setup), not only before mainnet; a check notifies the operator at that threshold
+Answer: Go private when the first layer passes its fee-net out-of-sample gate (a promoted setup), not only before mainnet; a check notifies the operator at that threshold
+Operator note (verbatim): "Why don't you put word about this MTS files? So that when we have some edge, there is a hook that triggers a threshold when I am notified that okay, maybe it's time to go private. So going private is not a problem, we were actually just not sure what to do. And I also agree with you that some strategies are worth protecting, because they stop working if enough people know about it."
+Applied: 2026-10-22: CLAUDE.md hard rule names both triggers; card go-private-trigger-notify-operator-when- (SONNET, raw) builds the notification with a fail-first test. Going private stays the operator's own action.
+
+```json
+{
+ "order": 34,
+ "stage": "Process",
+ "refs": "CLAUDE.md Hard rules (Repo is PUBLIC), MyTradingSys/execution/promoted_setups.json, q-go-private-on-edge",
+ "title": "Go private when the first layer shows an out-of-sample edge; notify the operator",
+ "why": "A strategy stops working once enough people trade it. Today no layer has an edge (promoted_setups.json has 0 entries, 2026-10-21), so public costs little; the day one passes, its rules and parameters are in the open.",
+ "options": [
+  "Go private only before mainnet",
+  "Go private when the first layer passes its fee-net out-of-sample gate (a promoted setup), not only before mainnet; a check notifies the operator at that threshold"
+ ],
+ "recommended": "Go private when the first layer passes its fee-net out-of-sample gate (a promoted setup), not only before mainnet; a check notifies the operator at that threshold",
+ "answer": "Go private when the first layer passes its fee-net out-of-sample gate (a promoted setup), not only before mainnet; a check notifies the operator at that threshold"
+}
+```
+
+## q-ci-speed-fixes | asked 2026-10-22 | Process
+
+Build the CI speed fixes from CI_SPEED_DIAGNOSIS_2026-10-22.md items 1 and 2? (Admin_Guy chat 2026-10-22)
+
+Recommended: Build CI speed fix 1 (one CI run per commit, green pointer only moves forward) and fix 2 version 1 (Windows tests split into parallel shards, same tests)
+Answer: Build CI speed fix 1 (one CI run per commit, green pointer only moves forward) and fix 2 version 1 (Windows tests split into parallel shards, same tests)
+Operator note (verbatim): "What do you mean fixes number 1 and number 2 are still waiting on my board? I am waiting for these fixes to be available already"
+Applied: 2026-10-22: cards ci-one-run-per-commit-on-fast-track-gree and ci-split-the-windows-test-leg-into-paral (SONNET, prio 1, raw). Fix 2 version 2 (Linux-only full gate) was not asked for and stays off.
+
+```json
+{
+ "order": 35,
+ "stage": "Process",
+ "refs": "MyTradingSys/system/CI_SPEED_DIAGNOSIS_2026-10-22.md items 1-2, .github/workflows/ci.yml:28-32, q-ci-speed-fixes",
+ "title": "Build CI speed fixes 1 and 2 (version 1)",
+ "why": "Push-to-green measured 25 min with 11 min queued behind another run; the Windows leg takes 11-13 min against under 3 on Linux.",
+ "options": [
+  "Leave CI as it is",
+  "Build CI speed fix 1 (one CI run per commit, green pointer only moves forward) and fix 2 version 1 (Windows tests split into parallel shards, same tests)"
+ ],
+ "recommended": "Build CI speed fix 1 (one CI run per commit, green pointer only moves forward) and fix 2 version 1 (Windows tests split into parallel shards, same tests)",
+ "answer": "Build CI speed fix 1 (one CI run per commit, green pointer only moves forward) and fix 2 version 1 (Windows tests split into parallel shards, same tests)"
+}
+```
+
+## q-no-permission-endings | asked 2026-10-22 | Process
+
+May a session end its reply by asking the operator's leave ("say go", "want me to?") for work it can do? (Admin_Guy chat 2026-10-22)
+
+Recommended: A Stop hook blocks replies that end by asking the operator's leave for work; sessions do the work, the operator stops them if wrong
+Answer: A Stop hook blocks replies that end by asking the operator's leave for work; sessions do the work, the operator stops them if wrong
+Operator note (verbatim): "There must be a hook which says that never ask such a question as if you say go and you know, you should just go and do it and if I see that you are doing something which you should not, then I will stop you. At least the work will not be lost."
+Applied: 2026-10-22: scripts/dev/offer_guard.py (Stop hook, .claude/settings.json) with scripts/dev/test_offer_guard.py; OPERATOR-ONLY: lines stay allowed for real operator decisions.
+
+```json
+{
+ "order": 36,
+ "stage": "Process",
+ "refs": "scripts/dev/offer_guard.py, q-no-permission-endings",
+ "title": "No permission questions at the end of a reply: do the work",
+ "why": "The operator drives three devices and does not read every reply; a closing question leaves the work undone and it is lost in the chat (CI speed fixes 1-2 sat as 'say go' with no card, 2026-10-22).",
+ "options": [
+  "Sessions may close with an offer or a go/no-go question",
+  "A Stop hook blocks replies that end by asking the operator's leave for work; sessions do the work, the operator stops them if wrong"
+ ],
+ "recommended": "A Stop hook blocks replies that end by asking the operator's leave for work; sessions do the work, the operator stops them if wrong",
+ "answer": "A Stop hook blocks replies that end by asking the operator's leave for work; sessions do the work, the operator stops them if wrong"
+}
+```
+
+## q-light-supervisor-start (2026-10-22, Admin_Guy)
+```json
+{"id": "q-light-supervisor-start", "order": 37, "date": "2026-10-22", "status": "DECIDED",
+ "quote": "just open all three logins ... and just hit a prompt there, start the super session. Yeah. And the super session starts with minimum workers. It picks the recently available tasks ... it actually picks the critical tasks that are blockers if there are no instructions ... So it starts a light super session, and then the operator can build on it.",
+ "also": "every session that I start, starts latest.",
+ "done": "supervisor.py RAMP=1 (one new worker per wake); trunk_lag.py session-start also fast-forwards fresh App worktrees and the main checkout."}
+```
+
+## q-ci-speed-build (2026-10-22, Admin_Guy)
+```json
+{"id": "q-ci-speed-build", "order": 38, "date": "2026-10-22", "status": "DECIDED",
+ "quote": "Can you finish this task end-to-end? You have like 11 dollars left.",
+ "context": "after 'tell me cool idea to reduce our ship time by half or maybe half of half?'",
+ "done": "per-commit CI + forward-only mark-green; Windows leg in 3 shards; Windows temp on D: and Defender real-time off on the runner (CI_SPEED_DIAGNOSIS_2026-10-22.md)."}
+```
+
+## q-ci-under-2-min (2026-10-23 IST, Admin_Guy)
+```json
+{"id": "q-ci-under-2-min", "order": 39, "date": "2026-10-22", "status": "DECIDED",
+ "quote": "I want everything to be under 2 minutes.",
+ "context": "after the 3-shard CI went green in 5m50s push-to-green (run 39833754926 on 788790ff)",
+ "done": "CI in 11 shards (Linux 3, Windows 8), file-list steps split per file, Java only on shard 1, uv installs, Defender off in the background, mark-green via the API without a checkout. Local: every shard 10-53 s. CI wall not yet measured (CI_SPEED_DIAGNOSIS_2026-10-22.md)."}
+```
+
+## d-six-slots-poll | decided 2026-10-23 | Thinker
+```json
+{"id": "d-six-slots-poll", "order": 40, "date": "2026-10-23", "status": "DECIDED",
+ "question": "How can we utilize all 6 slots? ... constant communication between all our logins ... polling.",
+ "options": {"A": "actionable wake: supervisor.py wait also exits when the last plan left a worker slot and ready cards unused (CI green, a gate free); the RAMP lifts when every gate is idle",
+             "B": "a model poll every 5 min per Supervisor (~540k eq tokens/h each)",
+             "C": "revive idle machines: the lane owner prints one OPERATOR line to start a Supervisor on a machine with no heartbeat, ready cards and budget",
+             "D": "do nothing: gates are spare capacity, RAMP 1 per 50 min wake"},
+ "recommended": "A + C",
+ "answer": "go with A + C - do it here",
+ "done": "supervisor.py: wait --login ACTIONABLE wake (once per plan, fail closed, off after 2 plans that started nothing), idle_hosts OPERATOR line (once per machine per 2 h). The gates-idle ramp lift was dropped after review (no gate busy = no worker mid-ship, not an idle machine): the 5 min wake does the speed-up. Plan: research/thinker/2026-10-22_six_slots.md"}
+```
+
 ## DECISION NEEDED 2026-10-21 (Lab_Guy): pre_pipeline_sources review_by 2026-10-23
 27 grandfathered testnet sources in auto_trader_config.json expire for review on 2026-10-23; promoted_setups.json has 0 entries. Options: (a) extend review_by 14 days (recommended, OURS default), (b) prune falsified layers (turn_of_candle, rsi_divergence, session_levels), (c) stop them. Needs an operator answer in the Control Room; no chat question.
+
+## d-cbp-a2-end-to-end | decided 2026-10-23 | Thinker
+```json
+{"id": "d-cbp-a2-end-to-end", "order": 41, "date": "2026-10-23", "status": "DECIDED",
+ "question": "CBP integration: A (new Extraction Core), A2 (adopt existing MTS tools) or C (do nothing)?",
+ "options": {"A": "new shared Extraction Core module", "A2": "one quote checker, one fetcher, one store, actionable-6 profile, consumer proves one acked row", "C": "do nothing"},
+ "recommended": "A2",
+ "answer": "process earthing end to end - make sure that you do not bloat your context past 250k so better use 1 time spawned agents and plan scoped tasks. (read as: process everything end to end; dictation)",
+ "done": "pending: cards cbp-one-quote-checker plus the three below, each run by its own scoped session. DEFAULT (OURS): q-v1-cbp-routine stays unanswered (stopping the Haiku routine is the operator's call). Plan: research/thinker/2026-10-23_cbp_core_vs_adopt.md"}
+```
+
+## d-supervisor-stay-to-window | decided 2026-10-23 | Thinker
+```json
+{"id": "d-supervisor-stay-to-window", "order": 42, "date": "2026-10-23", "status": "DECIDED",
+ "question": "Supervisor C ended at 2239Z (mode=ENDED, 5h=4%, window end=02:19Z) after CI went green, with ready cards left. What now?",
+ "options": {"A": "Supervisor stays up to its window end while ready cards exist (roles/supervisor.md + a handover guard)", "B": "leave as is; operator restarts by hand", "C": "Thinker flags it each 30-min check"},
+ "recommended": "A",
+ "answer": "A",
+ "done": "pending: card supervisor-handover-refuses-before-trans. Fact: supervisor.md:53 already says transit = TRANSIT time or 5h >= 80%; the early end broke it, so the fix is a guard (handover refuses before transit while ready cards exist, --early <reason> overrides) plus one line in supervisor.md. Review: research/thinker/2026-10-22_ship_context_review.md item 3"}
+```
+
+## d-first-ask-driven | decided 2026-10-23 | Thinker
+```json
+{"id": "d-first-ask-driven", "order": 43, "date": "2026-10-23", "status": "DECIDED", "question": "His own first typed ask is metered as unattended (turn_meter.py:306, driven from the 2nd prompt); the NUC diagnosis was cut off half done. Fix?", "options": {"A": "his first typed prompt counts as him being there unless it is a worker brief", "B": "keep the budget but deny only writes/spend, not reads and web search", "C": "do nothing"}, "recommended": "A", "answer": "yes - do it - and revalidate eveything once done - test it - stress test it - list scenarios of edge cases - but use quota wisely now - we are 89% and reset happens on Sunday", "done": "pending: card below (builder; the Thinker's own edit was denied by the auto-mode classifier as self-modification). Spec, tests, 12 edge cases: research/thinker/2026-10-23_first_ask_driven.md"}
+```
+
+## d-station-term | decided 2026-10-23 | Thinker
+```json
+{"id": "d-station-term", "order": 44, "date": "2026-10-23", "status": "DECIDED", "question": "What is a station, and who cleans worktrees?", "options": {"A": "station = one device with one login; worktree rescue is one card for every station, broadcast"}, "recommended": "A", "answer": "I think you should create a task for this. And your task it for all stations. So going forward, station would mean a device, with a login. / And I meant broadcast. You have to broadcast it.", "done": "card every-station-save-unshipped-worktree-wo; ANNOUNCEMENTS A-20261023-1; term in DEVICES.md"}
+```

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-23T05:53:24Z",
   "commands": [],
   "created": "2026-10-18T21:55:02Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "shipped to fast-track; traffic.py measure 72h: 0 duplicates",
+      "ref": "f787c15f",
+      "utc": "2026-10-23T05:53:24Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,7 +40,12 @@
   "refs": [
     "MyTradingSys/system/TRAFFIC_CONTROLLER.md"
   ],
-  "result": "",
+  "result": "shipped to fast-track; traffic.py measure 72h: 0 duplicates",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/desk.py",
     "MyTradingSys/tests/test_desk.py"
@@ -47,11 +59,12 @@
   "scope_sha": "41182a2e418b",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "desk.py done/take: re-read the row on a freshly fetched trunk inside the push retry; a row already done/failed (or taken by another session for take) is refused with the closer's commit.",
     "Reuse the plumbing CAS pattern of lease._write (parent = read tip, non-force push, rejection = re-read)."
   ],
+  "taken": "2026-10-23T05:53:24Z",
   "tests": "Two clones close one row at once: exactly one done commit lands; fails on the pre-change desk.py.",
   "title": "desk.py done/take refuse a row already closed on trunk",
   "weight": "ROUTINE",

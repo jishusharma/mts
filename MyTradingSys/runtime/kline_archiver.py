@@ -4,7 +4,7 @@ import json, os, urllib.request
 from pathlib import Path
 from datetime import datetime, timezone
 
-ROOT  = Path(r"C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed")
+ROOT  = Path(__file__).resolve().parents[2]
 STORE = ROOT / "MyTradingSys" / "market_data" / "klines"
 SYMBOL = "BTCUSDT"
 INTERVALS = [("1h", 500), ("15m", 500), ("5m", 500)]

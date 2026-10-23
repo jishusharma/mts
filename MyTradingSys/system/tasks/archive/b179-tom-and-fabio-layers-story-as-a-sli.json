@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-12T09:19:49Z",
+  "commands": [],
+  "created": "2026-10-11T16:08:43Z",
+  "depends_on": [],
+  "done_when": "A Slides artifact (12-16 slides) built only from TOM_FABIO_STORY_2026-10-05.md is published and its link is in MyTradingSys/items/B179_tom_fabio_layers_story_slides.md and on the Control Room inbox item.",
+  "from_inbox": "ggw2vehlbhdnlc4uhd1w",
+  "goal": "Operator wants to learn what Tom and Fabio taught: turn the existing story doc (8 chapters: bazaar, volume profile, balance/trend, market cycle, Tom's way, Fabio's way) into a slide deck artifact.",
+  "id": "b179-tom-and-fabio-layers-story-as-a-sli",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "JIS-NUC relay 2026-10-12",
+  "refs": [
+    "B179"
+  ],
+  "result": "15-slide Slides deck https://claude.ai/artifact/2DXWotLraL8te3xNqo4hWV, link in items/B179_tom_fabio_layers_story_slides.md",
+  "scope_in": [
+    "MyTradingSys/research/TOM_FABIO_STORY_2026-10-05.md (only source)",
+    "Artifact Slides type (quickstart intent=slides)",
+    "Control Room inbox item ggw2vehlbhdnlc4uhd1w (reply with the link)"
+  ],
+  "scope_out": [
+    "new claims or numbers not in the story doc",
+    "layer v2 specs",
+    "engine code",
+    "backtests"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/TOM_FABIO_STORY_2026-10-05.md",
+    "MyTradingSys/items/B179_tom_fabio_layers_story_slides.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Read TOM_FABIO_STORY_2026-10-05.md; outline 12-16 slides: title, one or two per chapter 1-6, a Tom vs Fabio comparison, a closing 'what to remember'. Chapter 7 (one day's market read) and 8 (MTS gaps) get one slide each, dated 2026-10-05.",
+    "Artifact quickstart intent=slides, create from the Slides type, fill it; every slide's speaker note names the chapter it came from.",
+    "Reply on the Control Room inbox item with the deck link (ArtifactData, CONTROL_ROOM.md); page not readable from this account: put the link in items/B179_tom_fabio_layers_story_slides.md and say so."
+  ],
+  "tests": "No code: each slide's note names a chapter of the story doc and no slide carries a number or rule absent from it; deck link opens (Artifact read).",
+  "title": "B179 Tom and Fabio layers story as a slide deck artifact"
+}

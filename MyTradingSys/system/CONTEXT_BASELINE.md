@@ -35,3 +35,8 @@ Decision q-context-baseline = Yes, all three logins. Switches are per login, so 
 | jishu.awgp | operator | operator | operator | operator | operator |
 | jishusharma1985 | operator | operator | operator | operator | operator |
 Before any new session start on a login: `python scripts/dev/token_audit.py --days 1`; a first-turn median above 60k means a switch is still on. Check by opening the session's connector list (`session_connectors_status`) and switching off any of Claude Docs, visualize that show as connected.
+
+## Live check (2026-10-22)
+Every session and subagent sends one signal after its first tool call (`scripts/dev/boot_probe.py`, started by turn_meter.py):
+`BOOT <role> banner=<ok|STALE|FAIL|none|late|n/a> first=<N>k <model> [agent:<type>] [HIGH]`. first = everything loaded before the first reply;
+HIGH = above 60k (a switch above is still on, or a big first prompt). Read them: `python scripts/dev/mts_signal.py read | grep BOOT`. Off: MTS_BOOT_PROBE=off.

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C1",
   "commands": [],
   "created": "2026-10-14T15:57:19Z",
   "depends_on": [],
@@ -9,12 +10,13 @@
   "from_inbox": "",
   "goal": "Read Krown's other free content that states entries and targets: his daily BTC event-study videos (options/research/KROWN_FREE_VS_PAID.md s1b lists ids and dates) and the rejected CBP queue item krown_2026-09-25_OggsnATGbOg; extract with the V2 method (decision rows, trade blocks) and build a timestamped call ledger for PRE_REG_KROWN item 2.",
   "id": "krown-other-sources-event-study-videos",
-  "lane": "SONNET",
+  "kind": "build",
+  "lane": "CODEX",
   "layers": [
     "krown"
   ],
   "live_path": false,
-  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:none CLASS:C1 REVIEWER:none WEIGHT:IMPORTANT. UNBLOCKED 2026-10-19: depends_on krown-ta101-extract-remaining-10 dropped per GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md s6.1; this card is the approved surgical Krown BTC daily event-study video extraction target (s6.2 item 3). Use Gemini search grounding (gemini_queue.py) or offline paste to avoid yt-dlp HTTP 429.",
+  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:none CLASS:C1 REVIEWER:none WEIGHT:IMPORTANT. UNBLOCKED 2026-10-19: depends_on krown-ta101-extract-remaining-10 dropped per GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md s6.1; this card is the approved surgical Krown BTC daily event-study video extraction target (s6.2 item 3). Use Gemini search grounding (gemini_queue.py) or offline paste to avoid yt-dlp HTTP 429. | LANE CODEX for Gemini (operator 2026-10-22: \"It is better that Gemini does it\"): run via scripts/dev/gemini_queue.py on JIS-NUC (ROUTING.md row 42, YouTube = Gemini search grounding, no yt-dlp loops); a Claude Sonnet session reviews the gemini-q branch and ships (GEMINI_START rule 8: producer != reviewer).",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
@@ -44,8 +46,7 @@
   ],
   "tests": "docs lane: verify_extract_quotes.py is the gate",
   "title": "Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigger, target, hit rate as he states them); DONE when: a V2 extract per video passes the quote gate and a call ledger exists",
-  "weight": "IMPORTANT",
-  "worker": "session",
   "updated": "2026-10-18T10:00:00Z",
-  "class": "C1"
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

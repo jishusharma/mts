@@ -2,7 +2,7 @@
 
 Method: titles, durations and playlist membership from `yt-dlp --flat-playlist` (no content read for the list); 8 caption pilots; existing repo work reused, not redone.
 No login, no cookies, no tokens, no paid content, no Discord tooling. Discord was NOT re-read this session (the earlier read-only screen pass stands: #trading-technical-analysis blocked for the operator account).
-Files: `VIDEO_LIST.csv` (3,841 rows: id, duration, tab, class, playlists, title), `classify_channel.py`, `enumerate_channel.py`, `vtt_to_timed.py`, `check_quotes.py`, `transcripts/`, `RULES_DRAFT.md`.
+Files: `VIDEO_LIST.csv` (3,841 rows: id, duration, tab, class, playlists, title), `classify_channel.py`, `enumerate_channel.py`, `vtt_to_timed.py`, `transcripts/`, `RULES_DRAFT.md`.
 
 ## 0. What the repo already holds (not redone)
 | Item | Where | State |

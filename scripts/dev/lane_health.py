@@ -401,11 +401,15 @@ def sweep(repo=REPO, now=None, do_apply=False, do_ship=False, beating=False):
     old = load(repo)
     remote_hb = remote_heartbeat(repo, fetch=True)
     seen = dict(old, heartbeat=remote_hb if epoch(remote_hb) > epoch(old["heartbeat"]) else old["heartbeat"])
+    last_hb = seen["heartbeat"]
+    if beating:   # the lab host is alive this instant: the heartbeat rule must see that, not its own last beat
+        seen = beat(seen, now)   # JIS-NUC 2026-10-22: the first tick after a 34 h stall judged its old beat, went down, moved 5 cards
     st = sweep_state(seen, now)
     hb_in_file = False   # a heartbeat that is not on the side branch has to go through the state file (no remote: tests, fresh clone)
-    if beating and (epoch(seen["heartbeat"]) + HEARTBEAT_WRITE_S <= now.timestamp() or st["status"] != old["status"]):
-        st = beat(st, now)
+    if beating and (epoch(last_hb) + HEARTBEAT_WRITE_S <= now.timestamp() or st["status"] != old["status"]):
         hb_in_file = not push_heartbeat(repo, st["heartbeat"])
+    elif beating:
+        st = dict(st, heartbeat=last_hb)   # within the hour: no new beat is written (B17), so none is saved either
     cards = tasks.load_all(repo)
     pl = plan(st, cards, {r["id"]: r for r in desk.tasks(repo)}, read_claimed(repo))
     changed, lines = [], []

@@ -17,11 +17,20 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 EXTRA = [
+    "scripts/dev/test_prereq_guard.py",
+    "scripts/dev/test_offer_guard.py",
+    "scripts/dev/test_trunk_lag.py",
+    "scripts/dev/test_ci_split.py",
+    "scripts/dev/test_no_syntax_warnings.py",
+    "scripts/dev/test_preship.py",
     "MyTradingSys/research/gap_g3_shadow_fills_2026-10-18/test_shadow_fills.py",
     "MyTradingSys/research/layer_lab/formula_spec_text/test_formula_spec.py",
     "MyTradingSys/research/wavetrend_2026-10-17/test_wt_parity_ref.py",
     "MyTradingSys/research/wavetrend_2026-10-17/test_count_events.py",
     "scripts/dev/test_trial_ledger.py",
+    "scripts/dev/test_soak_six_slots.py",
+    "scripts/dev/test_hook_bench.py",
+    "scripts/dev/test_interview_feed.py",
     "scripts/dev/test_trace.py",
     "scripts/dev/test_lab_query.py",
     "scripts/dev/test_health_audit.py",
@@ -102,6 +111,7 @@ EXTRA = [
     "scripts/dev/test_fabio_prescreen.py",
     "MyTradingSys/research/fabio_transfer/test_ledger_audit.py",
     "scripts/dev/test_asr_to_canonical.py",
+    "scripts/dev/test_fetch_captions_channel.py",
     "scripts/dev/test_sched_scripts.py",
     "scripts/dev/test_run_extra_tests.py",
     "scripts/dev/test_ci_deps_lint.py",

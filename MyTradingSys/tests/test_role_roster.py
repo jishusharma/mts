@@ -119,8 +119,15 @@ class BestRoleFallback(unittest.TestCase):
         self.assertIn("screenshot", p["reason"])
 
     def test_plain_question_picks_admin_guy(self):
-        self.assertEqual(self.pick("What is the current fee setting for the Deribit testnet account?")["name"], "Admin_Guy")
+        self.assertEqual(self.pick("I have a question about the Deribit testnet fee setting")["name"], "Admin_Guy")
         self.assertEqual(self.pick("Where is the decision about the weekly low layer recorded?")["name"], "Admin_Guy")
+
+    def test_bare_question_words_pick_no_role(self):
+        # review 2026-10-22 (R1): "what/why/how/where/?" alone made every chat session Admin_Guy
+        for text in ("why are super sessions still asking me to click a card? what is going on?",
+                     "What is the current fee setting for the Deribit testnet account?",
+                     "where is the report?"):
+            self.assertIsNone(self.pick(text)["name"], text)
 
     def test_design_question_picks_thinker(self):
         self.assertEqual(self.pick("How should we design the layer combiner so it scales to 20 layers?")["name"], "Thinker")
@@ -134,6 +141,13 @@ class BestRoleFallback(unittest.TestCase):
             self.assertNotIn(p["name"], ("Builder", "Session_Planner"), text)
             for t in p.get("tie", []):
                 self.assertNotIn(t, ("Builder", "Session_Planner"), text)
+
+    def test_file_paths_never_score(self):
+        # pilot 2026-10-22: a Builder brief held C:/Users/x/IdeaProjects/... and "idea*" picked Thinker
+        for text in ("Boot: python C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed/scripts/dev/sync.py start",
+                     r"Work in C:\Users\E-ngineers\IdeaProjects\mts and run scripts/dev/sync.py"):
+            self.assertIsNone(self.pick(text)["name"], text)
+        self.assertEqual(self.pick("I have an idea about the layer combiner")["name"], "Thinker")
 
     def test_no_signal_picks_nothing(self):
         p = self.pick("Fix the typo in line 4 of foo.py")
@@ -176,11 +190,28 @@ class FallbackHook(unittest.TestCase):
         self.assertNotIn("ROLE LOADED", self.ctx("Here is a chart screenshot, read it", sid="s2"))
         self.assertEqual(self.ctx('<cross-session-message from="x">chart screenshot read</cross-session-message>', sid="s3"), "")
 
+    def test_supervisor_brief_gets_no_fallback_role(self):
+        # pilot 2026-10-22: the Supervisor's Builder brief starts "Background (from the session that started this one)"
+        brief = "Background (from the session that started this one):\nTake the conservative option; an idea list is not needed."
+        self.assertEqual(self.ctx(brief, sid="s5"), "")
+        self.assertNotIn("ROLE LOADED", self.ctx(brief, sid="s5"))
+
     def test_tie_asks_once(self):
         c = self.ctx("chart screenshot design options", sid="s4")
         self.assertIn("ask the operator", c.lower())
         self.assertNotIn("ROLE LOADED:", c)
         self.assertEqual(self.ctx("chart screenshot design options", sid="s4"), "")
+
+
+class AskedWorkRunsNow(unittest.TestCase):
+    # bug-ask-go-for-asked-work: asked work runs this turn; no "say go" gate
+    def test_thinker_no_go_ahead_request(self):
+        text = (ROLES_DIR / "thinker.md").read_text(encoding="utf-8")
+        self.assertIn("ASKED WORK RUNS NOW", text)
+        self.assertIn("never end a reply asking the operator to say go", text)
+
+    def test_boot_text_has_asked_work_rule(self):
+        self.assertIn("ASKED WORK RUNS NOW", rl.RULES_ANSWER)
 
 
 if __name__ == "__main__":

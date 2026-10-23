@@ -1,6 +1,34 @@
+# NEXT SESSION (2026-10-23, Sonnet)
+
+Done this super session (DESKTOP-F7IU69N, 2026-10-23): tc2-tc5, card-worker-fields, super-session-rules-to-pointers, roles-md-index-slim, cbp-one-quote-checker (closed), cpu-audit-laptop-f7iu69n (script fixed, desk row to OPERATOR) shipped.
+Next: nuc-unexpected-shutdown first (block below, JIS-NUC), then `tasks.py next`. Open Sonnet cards doable anywhere: prompt-header-role-loader (scope changed 2026-10-22; step 1 A/B of 5 prompts first), gemini-task-dispatch-assignment, research-top-level-declutter, gap-g7-stop-slippage, rv05-h2-position-line-evidence. Data-blocked here (need JIS-NB/F: data): context-composite-v2-dev-read (posted to DSA), context-conditioned-session-flow-states, kurisko-prereg-fire-counts. Loose ends: 87 repeated signal lines (traffic.py measure), CODEX_START/GEMINI_START 5 duplicate lines, 3 stale pages. Weekly quota of login C 97% (reset 09:00Z); after the reset take any pending card.
+
 # NEXT_SESSION
 
 Older blocks (2026-10-18/19): `MyTradingSys/system/handoff_history/2026-10-21_next_session_trim.md`. A session reads only its own block.
+
+## Next card: nuc-unexpected-shutdown (hand-over, JIS-NUC session, 2026-10-23)
+Task: nuc-unexpected-shutdown (no card on disk yet; the brief is `MyTradingSys/system/NUC_SHUTDOWN_HANDOVER.md`). Run with zero operator input; defaults for open questions.
+Steps:
+1. `python scripts/dev/sync.py start nuc-unexpected-shutdown`, then `python scripts/dev/sync.py claim "nuc-unexpected-shutdown"`.
+2. Re-read the NUC's event log before any change, for the last 7 days: Kernel-Power 41, event 6008, 1074, 13, WHEA-Logger, 37, and 506/507. Record the counts in the commit body, not from memory.
+3. Research is done (brief, "What official support says" and "What users did", with sources). Follow its ranked plan; do not redo the searches.
+4. Build `scripts/operator/nuc_power_fix.ps1`, modelled on `scripts/operator/defender_exclusions.ps1`: `-Check` changes nothing; sets AC display-off to Never (`powercfg /change monitor-timeout-ac 0`) and Fast Startup off (`HiberbootEnabled = 0`, needs admin); prints what still needs the BIOS or hardware. Never reboots. Test: `-Check` leaves powercfg and registry state unchanged; the test must fail before the script exists.
+5. Never set `PlatformAoAcOverride` (Intel: switching the standby model needs an OS reinstall). Do not reboot the NUC, flash or change the BIOS, add a scheduled task (SCHEDULING_POLICY.md), or touch the live tree.
+6. Ship with `python scripts/dev/sync.py ship --release nuc-unexpected-shutdown`. The commit body carries the event counts and the `-Check` output.
+7. Defaults: BIOS flash: no, until a UPS is in place. Leave the operator steps (BIOS: After Power Failure = Power On, PCIe ASPM off; CR2032; UPS and adapter; KC600 firmware S4500109; Defender exclusions b-544817) in the brief and the recap.
+
+## Next card: tc4-desk-done-once (hand-over, super session DESKTOP-F7IU69N, 2026-10-23)
+Task: tc4-desk-done-once (`python scripts/dev/tasks.py brief tc4-desk-done-once`). Not started (turn cap hit, weekly quota 97%). Steps: `sync.py start tc4-desk-done-once`, claim; test first (two clones close one row, exactly one done commit lands; red on old desk.py); fix `finish`/`take` in scripts/dev/desk.py (lines 126-150) with a re-read inside the push retry, CAS pattern of lease._write; ship. Then tc3-budget-lines, tc5-lab-lane-dedupe. Data-blocked here: context-conditioned-session-flow-states, kurisko-prereg-fire-counts (need Dumps/metrics, F:/MTS klines).
+
+## Next card: mid-turn-image-intake-gap (hand-over, plain pilot session on JIS-NB, 2026-10-22)
+Task: mid-turn-image-intake-gap (card on disk: `python scripts/dev/tasks.py brief mid-turn-image-intake-gap`).
+Steps, no operator input needed:
+1. `python scripts/dev/sync.py start mid-turn-image-intake-gap`, then `sync.py claim "mid-turn-image-intake-gap"`.
+2. Find the 2026-10-18 ~14:57Z session transcript jsonl and check whether the 5 mid-turn images are in it (queued-command or attachment record) versus the user record `ingest_transcript` accepts (scripts/dev/shot.py ~246).
+3. Present: extend `ingest_transcript` plus a fixture test that fails on old code. Absent (DEFAULT, OURS): add a KNOWN LIMITS row to MyTradingSys/methodology/screenshot_intake.md (~line 85: mid-turn images never reach disk, re-paste as a new prompt) and the notice line, with a test that the notice text exists.
+4. `python scripts/dev/test_shot.py`, `tasks.py done mid-turn-image-intake-gap --result "..."`, `sync.py ship --release <slug>`.
+Done earlier this session (pilot C, 2026-10-22): shot-py-store-path-nuc (manifest 452->454 rows), gate-quarantine-expiry-cap (already in c8e5fe3fd, card closed).
 
 ## Simulator desk R2: ETH 1m + symbol box (hand-over, Supervisor C, 2026-10-21)
 Run with zero operator input; defaults for open questions (park levels; keep RSI daily default; plug nothing new). Plan: `MyTradingSys/research/sim_desk/ROADMAP.md` (now on trunk).
@@ -11,13 +39,11 @@ Run with zero operator input; defaults for open questions (park levels; keep RSI
 - DEV window only. Thinker session `sim-thinker` (local_05060ea8-b8b6-4e9d-8024-03062ef8c643) is on standby, model not yet set to Opus (set_session_model was blocked); stop it or set Opus then send it the roadmap-judging task.
 - Login B (NUC): GPT card re-derive 255 / -0.119 R; Gemini card cross-review of RSI spec. Not posted this session.
 
-## Live host move coordinator (laptop) 2026-10-21: cards done, cutover NOT run (hand-over, Sonnet)
-Run with zero operator input; defaults for open questions (q-live-autostart NO, alerts on the laptop, trips cut back to JIS-NB first). Testnet only.
-- Cards: live_mirror host-independent and mts.ps1 auto-trader PATH python were already on trunk (c2b9f020, `live_host.txt`); added the missing mts.ps1 test (red on the old file) . Supervisor card: `supervisor.live_host()` reads `live_host.txt`, the JIS-NB lane runs on that host (test red before). Cards host-move-live-mirror-root, host-move-mts-ps1-python-path, host-move-supervisor-lane-laptop: close with `tasks.py done`.
-- Probe 17:38Z laptop (Wi-Fi) vs JIS-NB 17:48Z (via signals; JIS-NB Admin_Guy answered): PASS on all 3 endpoints under the OURS rule (laptop 180/172, 180/174, 304/298 vs JIS-NB 185/176, 196/171, 312/295). Recorded in LIVE_HOST_MOVE s1. Reach JIS-NB sessions with `mts_signal.py send --to jis-nb --kind ask`.
-- Verified 2026-10-21 on the laptop (operator: earlier blockers were stale): git 2.55, gh 2.102 logged in, Balanced plan listed, 2 batteries. SIM/LTE is PARKED (operator: backup for travel only, tested before use; not a cutover condition; probe on Wi-Fi stands).
-- Cutover NOT run yet. Open: (1) CI red on trunk from a CLAUDE.md size cap (over its size cap) after other sessions' edits; trimmed and shipped with --fix-ci, so `origin/green/fast-track` (still 2ead8370) must advance before s4 step 1; (2) `\JIS-NUC\MTS-*` shares answer on port 445 but the laptop has no stored credential for them (not visible by name, access denied): the cutover needs them for MTS_LIVE_OWNER_DIR and the state copy, so a JIS-NB or NUC session or the operator's sign-in must confirm; (3) no `C:\MTS\mts-live` yet and s4 steps 2-9 need a JIS-NB session (signals reach it). Then run s4.
-- Do not add gates, lints or rule docs for this.
+## Live host move coordinator (laptop) 2026-10-22: engine RUNNING from C:\MTS\mts-live at f435453c, health OK, AUTO_PAUSE cleared (hand-over, Sonnet)
+- CORRECTION 2026-10-22 11:00: all devices were switched off overnight on purpose (operator); the engine stop at 03:03 IST and any red alert from it are that, not a fault.
+- FIXED 2026-10-22 (57b77eab, 57e4ebb7, f435453c): launch scripts derived the dev-checkout path (now from $PSScriptRoot / script location); runtime_data launchers called a per-host python path that exists only on JIS-NB (now `python` from PATH; stuck wscript hosts piled up ~160 until killed); oi_recorder (one-shot, run each supervisor cycle) and htf_context_live --loop had no launcher/supervisor entry (now in loop-supervisor Aux list). MTS-Wrapper and MTS-Supervisor tasks now point at C:\MTS\mts-live. Guard tests in scripts/dev/test_mts_launcher.py. After `mts stop` kill any old loop-supervisor pwsh before `mts start` (an old supervisor keeps the old Aux list).
+- Done: cards 1-3 shipped; probe PASS; NUC shares MTS-* made; cmdkey on laptop+NB; JIS-NB stopped, state copied via NUC MTS-Backup/nb_state (robocopy exit 3, sha256 NOT compared). Live tree C:\MTS\mts-live at 2ead8370 with .mts_live; `mts start` ran, owner marker = desktop-f7iu69n. DECISION (OURS): old testnet HALT/HALT_DAILY_LOSS moved to halt_history (_cleared20261022), operator-approved.
+- Open: AUTO_PAUSE cleared 2026-10-22 08:10Z (health OK, testnet; 1 h watch compressed on operator ASAP); still to do: publish mirror + live_mirror.py brief; rename NB .mts_live to .retired and run the hardcoded-path/python-path check on NB scripts; sha256 compare of copied state; DEVICES.md and SCHEDULING_POLICY s5 'cut over'; JIS-NB red alert cause unconfirmed (NB never answered; likely the same check_live_health RED while the engine was down). Remote access to NB/NUC (ssh key + Tailscale) in progress with the Haiku guide session; NUC key login still refused. Rollback in LIVE_HOST_MOVE s4.
 
 ## Live host move JIS-NB -> DESKTOP-F7IU69N: STAGED 2026-10-21, cutover NOT run (hand-over, Opus, Lenovo)
 Run with zero operator input; defaults for open questions. Plan and checklists: `MyTradingSys/system/LIVE_HOST_MOVE.md`; DEVICES.md s1/3/6/7/8/9 and DEPLOY_RUNBOOK.md ("Live host cutover") point to it. Nothing was deployed, started, stopped or shared.
@@ -79,3 +105,9 @@ Not on NB: a Tom fade paths ship (`tom-encode-fade-entry-paths`, branch claude/e
 For the NUC / Gemini (Flash medium or high; `agy` cannot run from NB, it says sign in over the SSH gate): `tom-probe-prereg`, `rv05-h2-position-line-evidence`, `rv-dsa-ledger-mechanical`, planner raw cards. Stay Claude (CRUCIAL, diff-only review Agent first): RV02 R3 `rv02-fix-dax-full-dev-authorization`, R4 `rv02-fix-dax-producer-data-binding`, `tom-dax-backtest`. Hold `gap-g2-dax-ask-candles` (A-20261018-6) and new consumers of unchecked lab bases (A-20261018-5). Live tree not at trunk (blocked by a live BUGS.md edit); BUGS rows B190-B193, java-popups desk check and the JIS-NB fetch row for gap-g2 are still open.
 Ship tips: run ships detached (`nohup python -u sync.py ship > log 2>&1 &`), the 2 gate slots queue for hours when 6+ sessions ship; a red from `Java insufficient memory` is load, rerun once.
 
+
+## DOCTOR hand-over 2026-10-22
+Read MyTradingSys/system/CI_SPEED_DIAGNOSIS_2026-10-22.md (partial). Next: implement item 1 (per-SHA concurrency + mark-green ancestor guard, fail-first test), then sync.py stage timings and the hard-coded path sweep.
+
+## E2E run 2 (2026-10-22, Supervisor B)
+Both cards shipped via Agent Builders: ecd83de0 (e2e-launcher-test-escape), ab82fc75 (e2e-hook-bench-all-hooks). Rechecked: git cherry empty, 103 and 10 tests passed. Open: Builder 2 used ship --again to pass the 10-minute second-ship guard.

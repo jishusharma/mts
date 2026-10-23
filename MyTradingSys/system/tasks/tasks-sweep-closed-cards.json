@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-22T14:05:48Z",
   "commands": [
     "python -m pytest -q MyTradingSys/tests/docs"
   ],
@@ -15,6 +16,12 @@
   "id": "tasks-sweep-closed-cards",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "339 closed cards -> tasks/archive/ via sweep --archive; 154 open stay; trace/lint OK",
+      "ref": "5333b7cf",
+      "utc": "2026-10-22T14:05:48Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,7 +41,12 @@
   "refs": [
     "MyTradingSys/system/ARCHITECTURE.md"
   ],
-  "result": "",
+  "result": "339 closed cards -> tasks/archive/ via sweep --archive; 154 open stay; trace/lint OK",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/tasks/"
   ],
@@ -44,12 +56,13 @@
   "scope_sha": "c4e53d0c51a0",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "python scripts/dev/tasks.py sweep (dry run), read the list.",
     "python scripts/dev/tasks.py sweep --apply.",
     "tasks.py lint; trace.py on one swept id; ship."
   ],
+  "taken": "2026-10-22T14:05:48Z",
   "tests": "scripts/dev/test_tasks.py",
   "title": "Sweep the 275 closed cards out of tasks/",
   "weight": "",
