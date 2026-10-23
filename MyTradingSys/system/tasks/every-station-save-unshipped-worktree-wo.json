@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-23T12:06:12Z",
   "commands": [],
   "created": "2026-10-23T07:16:54Z",
   "depends_on": [],
@@ -13,7 +14,14 @@
   "id": "every-station-save-unshipped-worktree-wo",
   "kind": "run",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "JIS-NB: UNSHIPPED 22 -> 10 (2 branches backed up to origin backup/JIS-NB/*, 11 trees disca",
+      "ref": "be5f161d1",
+      "utc": "2026-10-23T12:06:12Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,7 +33,12 @@
   "refs": [
     "MyTradingSys/system/ANNOUNCEMENTS.md A-20261023-1"
   ],
-  "result": "",
+  "result": "JIS-NB: UNSHIPPED 22 -> 10 (2 branches backed up to origin backup/JIS-NB/*, 11 trees discarded with rescue, rest are locked/lane/active/backed-up). STATION line sent. NUC 14 branches (bundle via NUC gate) still open for JIS-NUC.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "the worktrees of the repo on the station's own device (git worktree list)"
   ],
@@ -35,7 +48,7 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "python scripts/dev/sync.py where --all",
     "for each UNSHIPPED tree: git -C <tree> status --short and git -C <tree> log --oneline origin/fast-track..HEAD; read what it is",
@@ -44,6 +57,7 @@
     "python scripts/dev/sync.py tidy --apply (removes only clean, pushed, idle trees), then where --all again",
     "python scripts/dev/mts_signal.py send \"STATION <device>/<login> worktrees: <n> shipped, <n> discarded, <n> left (why)\" --to all --kind done"
   ],
+  "taken": "2026-10-23T12:06:12Z",
   "tests": "none (run task); proof = where --all output before and after, pasted in the done line or the session's last reply",
   "title": "Every station: save unshipped worktree work to origin, then tidy",
   "weight": "",
