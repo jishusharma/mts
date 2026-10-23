@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-23T09:39:09Z",
   "commands": [
     "python -m pytest MyTradingSys/tests/test_role_loader.py -q"
   ],
@@ -15,6 +16,12 @@
   "id": "prompt-header-role-loader",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "A/B proxy: regex header does not beat raw+ASKED WORK RUNS NOW; no code shipped; see resear",
+      "ref": "8497e957",
+      "utc": "2026-10-23T09:39:09Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refined_by": "",
   "refreshed": "2026-10-22T19:27:07Z",
   "refs": [],
-  "result": "",
+  "result": "A/B proxy: regex header does not beat raw+ASKED WORK RUNS NOW; no code shipped; see research file",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/role_loader.py; MyTradingSys/tests/test_role_loader.py; MyTradingSys/system/roles/*.md"
   ],
@@ -44,12 +56,13 @@
   "sources": [
     "MyTradingSys/research/thinker/2026-10-23_prompt_quality_claude.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run the A/B on 5 past prompts first; stop and report if header does not win",
     "Write failing tests, then the header branch",
     "Run role_loader lint and tests"
   ],
+  "taken": "2026-10-23T09:39:09Z",
   "tests": "MyTradingSys/tests/test_role_loader.py::test_prompt_header_keeps_original and ::test_prompt_header_failsafe (fail on current role_loader.py, which has no header branch)",
   "title": "Prompt header branch in role_loader: structure every casual prompt, keep original verbatim",
   "weight": "",
