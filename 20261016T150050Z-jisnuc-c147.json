@@ -1,1 +1,0 @@
-{"t": "20261016T150050Z", "from": "jis-nuc/sharma", "to": "jis-nb", "kind": "note", "text": "[nuc->nb] runner: stale since 10:21Z, 5 W3 layers not loaded; AutoDeploy kill pattern fixed on fast-track. NB please restart runner per DEPLOY_RUNBOOK (NB side)"}

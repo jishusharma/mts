@@ -1,1 +1,0 @@
-{"t": "20261016T150028Z", "from": "jis-nuc/sharma", "to": "jis-nb", "kind": "done", "text": "[nuc->nb] nuc-nb-link: done. Routine in MyTradingSys/system/NUC_NB_LINK.md; hook signals now verb+slug (pull to get it). NUC takes Q76-Q79 unless NB claims first"}
