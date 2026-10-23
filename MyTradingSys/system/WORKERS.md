@@ -15,10 +15,10 @@ Every other file points here. Numbers come from `python scripts/dev/worker_cost_
 ## The rule
 1. **Worker type is set before the work starts**, on the task card: `est_turns` (whole number) and `worker` (`agent` | `session`);
    `tasks.py check` enforces it for SONNET/HAIKU/OPUS-lane cards (TASK_REFINEMENT.md). Run lanes (DSA, JIS-NB) are not Claude-worker cards.
-2. **Session** (`start_session`, visible in the sidebar) is the default: anything over 15 expected turns, size M, anything the
+2. **Session** (`start_session`, visible in the sidebar) is the default: anything over 30 expected turns, anything the
    operator may want to open or steer, any build wave or watch.
-3. **One-use Agent** (background, Sonnet, used once, never SendMessage'd) only for size S with `est_turns` <= 15: a read, a single
-   fix, a card. The brief says "stop at 20 turns and report". Also the fallback on event turns where `start_session` is refused.
+3. **One-use Agent** (background, Sonnet, used once, never SendMessage'd) for size S or M with `est_turns` <= 30 (same cost per ship as a session; overrun p90 55, so
+   the brief says "stop at 40 turns and report", size S 20): a read, a fix, a card. On event turns where `start_session` is refused EVERY card runs as an Agent (chained cards allowed).
    Name every Agent in one line to the operator (invisible in the sidebar).
 3a. **Haiku for scoped work (operator 2026-10-17: Haiku is underused).** A task is *scoped* when the brief can name the files, the
    exact change or command, and a check that says done (a test, a count, a diff to compare): mechanical edits, lookups, recomputing

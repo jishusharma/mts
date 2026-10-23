@@ -1,7 +1,7 @@
 # SUPER SESSION - one coordinator, many workers, hours of continuous work (operator term, 2026-10-15)
 
 A **super session** is one coordinator session in the Claude Code Win App that spawns, steers, checks and archives workers (WORKERS.md: sessions or one-use Agents)
-(`start_session`) for several hours, with the operator in the loop only for direction. It can start from any device and any login (nothing in the start prompt or `role_loader.py` checks either); in practice a login with weekly
+(`start_session`) for several hours. Thinker = linked session; its asks are executed here. It can start from any device and any login (nothing in the start prompt or `role_loader.py` checks either); in practice a login with weekly
 headroom (a Max login), because the meter decides (Pacing below). Only live-tree work is tied to JIS-NB (deploys, process checks, HALT reads, live-file reads): it goes to a JIS-NB desk row or the NB session, never done from a work tree. First one: 2026-10-15, coordinator local_62faa820 (Opus), about 20 linked workers, an Opus
 observer, and a second coordinator (coord-2) that drained the ship queue at the end.
 
@@ -62,13 +62,11 @@ only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once); histo
 14. **Session_Planner (operator 2026-10-17).** The coordinator runs the Session_Planner role (`roles/session_planner.md`) as a foreground Sonnet Agent at boot and on every wake with a free worker slot: it refines raw cards, returns the dispatch table (agent vs session, model, file cluster, weight), lifts blocks that name no live defect and lists stale claims, idle sessions and shipped worktrees for cleanup. Never dispatch a `raw`/`refined` card (2026-10-17: three Haiku workers came back empty on raw cards). Weight CRUCIAL = rule 11 review Agent; CRITICAL = a review session spawned mid-session (plan) and pre-ship (diff), counted in the 4-session cap. Both coordinator prompts carry this line.
 
 ## Boot facts (read, do not re-look-up; every super session corrects this list)
-- Live tree = the main checkout `C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed` (`.mts_live` is a marker FILE). Read-only for sessions.
-  Deploy result: `MyTradingSys/runtime/sched/auto_deploy_last.json`; HALT: `MyTradingSys/execution/HALT` (+ `halt_history`).
-- Live state in one read: `live_mirror.py brief` (LIVE_MIRROR.md) + `scripts/sched/check_live_health.py`; ledger = `runtime_data` trade_ledger.jsonl.
+- Live tree = main checkout `C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed` (`.mts_live` marker FILE), read-only; deploy result `MyTradingSys/runtime/sched/auto_deploy_last.json`; HALT `MyTradingSys/execution/HALT`.
+  State: `live_mirror.py brief` + `scripts/sched/check_live_health.py`; ledger `runtime_data` trade_ledger.jsonl.
 - Workers: WORKERS.md is the rule (card fields `worker`, `est_turns`). Agents are invisible in the sidebar: name each in one line.
-- Starting workers: WORKERS.md rules 2, 3, 7. `start_session` is refused on turns a side-session note or event started: on every OPERATOR turn
-  start all workers the next stretch needs (max 4 at once), each briefed to chain its follow-ups; never make the operator click a card.
-  On an event turn a size-S card runs as a background Agent at once; a size-M card waits for the next operator turn (brief it in NEXT_SESSION.md).
+- Starting workers: WORKERS.md rules 2, 3, 7. `start_session` is refused on event turns: on every OPERATOR turn start all workers the next stretch needs (max 4, each chains its follow-ups).
+  Event turns run EVERY card as an Agent (size S: stop at 20 turns; size M: stop at 40, chained cards allowed); sessions only on operator turns.
 - Waking: the app continues the coordinator when a started session ends a turn (`side-sessions-event`) or a background Agent/shell finishes.
 - Run `sync.py ship` detached (`nohup ... > log &`, poll the log): the gate takes 7-12 min, past the 600 s tool cap, and a killed ship loses the run. One ship per session.
 - Verify a worker ship: `git cherry origin/fast-track <sha>` prints nothing; CI: `origin/green/fast-track` moved past it.
@@ -77,7 +75,6 @@ only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once); histo
   in run_all_tests / run_extra_tests.EXTRA (or skipped with a reason, B150, gate step 3gd); study scripts need a `wiring_registry.json` entry.
 - `tasks.py` has no host field: `lane` carries it (JIS-NB, CODEX, DSA-NUC, SONNET, HAIKU). Ready list: `tasks.py list | grep ready`.
   Cards that change the live tree or scheduled tasks (nb-*) are operator-side. A card file can hold a hidden HOLD `note` that `tasks.py brief` omits: read it first.
-- Workers run `python <main checkout>/scripts/dev/sync.py start <slug>` and work only in the printed WORKTREE (app worktrees can be stale).
 - Codex lab: `codex_run.py` merges origin/fast-track before it picks. A skipped card is un-skipped by a REOPENED row in
   F:/codex_home/lab_runs/runs.jsonl (outside git). A brief must name its data path (F:/MTS/data/bigtrade/cache/perp/klines_1h.npz) or the build ends BLOCKED.
   Status from NUC: `printf 'Set-Location F:/MTS/mts-codex-lab; python scripts/dev/codex_run.py status\n' | ssh -i ~/.ssh/nuc_gate -o BatchMode=yes e-ngineers@192.168.29.110 ps`.
@@ -86,16 +83,17 @@ only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once); histo
 - Research Map: `Artifact read` first, edit DATA (the one `const DATA = ` line) in the saved copy by script, write `system/artifacts/research_map.html`,
   republish with `url`; never an old saved copy. Setup requests live in the tab "Setups & story" (DATA.story, SETUP_CATALOG.md; kind question|task|backtest + `setupId`).
   Backtest = fee check at the stated stop first (fee R = 0.14% / stop%), then PRE_REG on DEV only. Fabio home-market chain stays paused.
-- Thread cleanup (hard rule): a finished session marks itself completed (`mark_completed`); the coordinator marks each worker the moment its ship is verified.
-- 5-hour window: under 60 % normal; 60-70 % crucial only; 70-80 % coordinator only; 80 %+ stop (weekly: Pacing section). Fix, don't analyse: when the operator complains, fix the cause in the same turn, report in 1-2 lines; put this in every worker brief.
+- Cleanup: a finished session marks itself completed; the coordinator marks each worker once its ship is verified.
+- 5-hour window: under 60 % normal; 60-70 % crucial only; 70-80 % coordinator only; 80 %+ stop (weekly: Pacing). Quota numbers are quoted only from a get_usage call made this turn, with its read time (B199).
+  When the operator complains, fix the cause in the same turn, report in 1-2 lines (in every worker brief).
 - A worker that merges late hits VERDICTS.csv and wiring_registry.json conflicts: union both sides.
 
 ## Session log (newest first; one line each, last 5)
-- 2026-10-21 Supervisor B (JIS-NUC): GPT lane brought up, 5 cards back to CODEX; lab caps raised to window 65 / week 90 / 14 runs (DECISION (OURS), Plus plan read 5h 3% week 1%); pitchfork layer shipped 79da493c; DSA/DSA-NB chats still unarmed.
-- 2026-10-19 Supervisor A (JIS-NUC): weekly 93%/95 cap, mode=STOP all window, no workers; handover/SUPERVISOR_A.md; DSA/DSA-NB chats need arming.
-- SUPER-LENOVO-1019b (2026-10-19, Sonnet coordinator, 2 Agents): chunk 2 landed (4e88b6d1); gate-fix 6efd40e0 passed the full gate only with MTS_GATE_JOBS=2 and no concurrent ship; 3lh/3cx/4d = load timeouts, 5b = py3.14 exit-5 bug; chunk 3 f9497e45 and part a b9c448c7 left unshipped by operator stop. Lesson: on this laptop run ONE ship at a time with MTS_GATE_JOBS=2 and check for other sync.py ship processes first; start_session is refused on session-started turns, use Agents.
-- SUPERLOOP-NB-1019 (2026-10-19, Opus one-time agent, Sonnet + Haiku review Agents): five-hour loop on every device/login: `supervisor.py plan` (pacing vs weekly room, heartbeat, shard over live supervisors, one owner per lane, DSA down flag, nuc_wake gate) and `supervisor.py handover`; SUPER_LOOP.md replaces TANDEM_3LOGIN.md; role v3. Lesson: pacing in prose drifts; a T0 command per wake does not.
-- TANDEM-NB-1019 (2026-10-19, Sonnet one-time agent, 2 review Agents): three Supervisors at once (A/B/C); `mts_signal.py budget`, `tasks.py dispatch --login/--logins` shards cards, `supervisor.py tick` shows peers; one-line start; 5 h regime in roles/supervisor.md v2; TANDEM_3LOGIN.md. Lesson: the claim is the lock, but without a shard three supervisors start the same top cards.
+- 2026-10-21 Supervisor B (NUC): GPT lane up, 5 cards back to CODEX; lab caps window 65 / week 90 / 14 runs (DECISION (OURS)); pitchfork layer 79da493c.
+- 2026-10-19 Supervisor A (NUC): weekly 93%/95 cap, mode=STOP all window, no workers; handover/SUPERVISOR_A.md; DSA chats need arming.
+- SUPER-LENOVO-1019b (2026-10-19, Sonnet): chunk 2 landed 4e88b6d1; full gate passes only with MTS_GATE_JOBS=2, ONE ship at a time; chunk 3 unshipped.
+- SUPERLOOP-NB-1019 (2026-10-19, Opus agent): five-hour loop `supervisor.py plan`/`handover`; SUPER_LOOP.md replaces TANDEM_3LOGIN.md. Lesson: a T0 command beats prose.
+- TANDEM-NB-1019 (2026-10-19, Sonnet agent): three Supervisors A/B/C; `tasks.py dispatch --login` shards cards. Lesson: without a shard they start the same cards.
 
 
 ## Start (operator: open a new session, model Sonnet unless you name Opus (WORKERS.md rule 6), paste the prompt below)
@@ -105,7 +103,7 @@ Session_Planner (rule 14), then spawn. No relay stop/resume or heartbeat: the re
 ## End
 Drain: every worker shipped (`git cherry` empty) or its partial work handed over in NEXT_SESSION.md; archive finished workers;
 `get_usage` written into the hand-over note; refresh the operator's Research Map (`system/artifacts/research_map.html`, edit its DATA,
-republish to claude.ai/artifact/9nqpZeMeEehadoBoYopZU3 from the jishusharma1985 login); one line to the operator.
+republish to claude.ai/artifact/9nqpZeMeEehadoBoYopZU3 from the jishusharma1985 login); hand-over, ship.
 
 ## Pacing (when no super session runs) - state from the weekly meter
 `f` = fraction of the week elapsed since the last weekly reset, `U` = Weekly all-models % used.
