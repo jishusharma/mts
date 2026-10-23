@@ -190,10 +190,20 @@ def _phrase(t):
     return "[_ ]".join(re.escape(p) for p in re.split(r"[_ ]+", t.strip()) if p)
 
 
+def clean_prompt(prompt):
+    """The prompt without the app's wrappers (reminder blocks, paste tags, start_session "Background ... Task:"): role_line.py."""
+    try:
+        from role_line import clean
+    except ImportError:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from role_line import clean
+    return clean(prompt)
+
+
 def match_roles(prompt, roles):
     """Distinct role names asked for in the first 300 chars: the phrase must start a line or sentence (a quote, a
     negation or a mid-sentence mention does not count)."""
-    head = (prompt or "")[:300].lower()
+    head = clean_prompt(prompt)[:300].lower()
     hits = []
     for name, trigs in roles.items():
         for t in trigs:
@@ -254,7 +264,7 @@ def pick_role(text, repo=REPO):
 
 def from_session(prompt):
     """A brief sent by another session: its sender names the role, the fallback stays out."""
-    p = (prompt or "").lstrip()
+    p = re.sub(r"^\s*(?:<system-reminder>.*?</system-reminder>\s*)+", "", (prompt or ""), flags=re.S).lstrip()
     return ("<cross-session-message" in p[:400] or p.startswith("Another Claude session")
             or p.startswith("Background (from the session that started this one)"))
 

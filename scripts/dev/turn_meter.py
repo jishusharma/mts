@@ -192,18 +192,44 @@ def tier(model):
     return "fable" if "fable" in model else "opus" if "opus" in model else "default"
 
 
-SUPERVISOR_LINE = re.compile(r'"(?:text|content)"\s*:\s*"(?:\s|\\n)*You are Supervisor')   # a block that starts with it, not a quote
+try:
+    import role_line
+except ImportError:         # imported by path from another directory
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import role_line
 EVENT_PROMPTS = ("<cross-session-message", "<side-sessions-event", "<ci-monitor-event", "<task-notification", "<system-reminder")
 
 
 def transcript_starts_supervisor(payload):
-    """Older or resumed Supervisors never sent their start line to this hook: read the first user line of the transcript."""
+    """Older or resumed Supervisors never sent their start line to this hook: read the first user message of the transcript.
+    The line sits behind the app's reminder and paste wrappers (role_line.clean), not at the text start."""
     try:
         with open(payload.get("transcript_path") or "", "rb") as f:
-            head = f.read(60_000).decode("utf-8", "ignore")
+            head = f.read(200_000).decode("utf-8", "ignore")
     except OSError:
         return False
-    return bool(SUPERVISOR_LINE.search(head[:head.find('"type":"assistant"') if '"type":"assistant"' in head else len(head)]))
+    return any(role_line.is_role(t, "Supervisor") for t in _user_texts(head)[:3])
+
+
+def _user_texts(head):
+    """Text of the user entries before the first assistant entry of a transcript head (JSONL; a cut last line is skipped)."""
+    out = []
+    for ln in head.splitlines():
+        try:
+            e = json.loads(ln)
+        except ValueError:
+            continue
+        if not isinstance(e, dict):
+            continue
+        if e.get("type") == "assistant":
+            break
+        if e.get("type") != "user":
+            continue
+        c = (e.get("message") or {}).get("content", e.get("content"))
+        if isinstance(c, list):
+            c = "\n".join(str(b.get("text", "")) for b in c if isinstance(b, dict))
+        out.append(str(c or ""))
+    return out
 
 
 LEADING_REMINDERS = re.compile(r"^\s*(?:<system-reminder>.*?</system-reminder>\s*)+", re.S)
@@ -291,7 +317,7 @@ def handoff_call(payload):
 
 def is_supervisor_start(payload):
     """The coordinator start line ("You are Supervisor. Login <L>. ..."), SUPER_SESSION.md; sticky in the state file."""
-    return str(payload.get("prompt") or "").lstrip().lower().startswith("you are supervisor")
+    return role_line.is_role(payload.get("prompt"), "Supervisor")
 
 
 def handle(payload):

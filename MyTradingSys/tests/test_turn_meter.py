@@ -308,6 +308,22 @@ class TurnMeterTest(unittest.TestCase):
                         {"type": "text", "text": "You are Supervisor. Login <C>"}]}}, separators=(",", ":")) + "\n", encoding="utf-8")
         self.assertTrue(turn_meter.transcript_starts_supervisor({"transcript_path": str(real)}))
 
+    WRAPPED = ('<system-reminder>\nThis is a git worktree: an isolated copy of the repository. ' + "Run all commands from it. " * 12 +
+               '\n</system-reminder>\n<pasted_content id="p1">\nYou are Supervisor. Login C. Run the queue.\n</pasted_content>')
+
+    def test_supervisor_line_behind_reminder_and_paste_wrapper(self):
+        """Failure review 2026-10-23 (R1): the real first message starts with the worktree reminder and a paste wrapper."""
+        self.assertTrue(turn_meter.is_supervisor_start({"prompt": self.WRAPPED}))
+        self.assertFalse(turn_meter.is_supervisor_start({"prompt": "<system-reminder>x</system-reminder>\nplease say you are Supervisor"}))
+        self.assertFalse(turn_meter.is_supervisor_start({"prompt": "filler line\n" * 8 + "You are Supervisor."}))
+        tp = self.home / "w.jsonl"
+        tp.write_text(json.dumps({"type": "user", "message": {"content": self.WRAPPED}}, separators=(",", ":")) + "\n", encoding="utf-8")
+        self.assertTrue(turn_meter.transcript_starts_supervisor({"transcript_path": str(tp)}))
+        for i in range(70):     # a Supervisor has no 40-turn nag
+            self.assertEqual(fire(self.home, "PostToolUse", sid="wr", extra={"transcript_path": str(tp), "message_id": f"z{i}"}), "", i)
+        for _ in range(15):
+            self.assertEqual(fire(self.home, "UserPromptSubmit", sid="wr2", extra={"transcript_path": str(tp), "prompt": self.WRAPPED}), "")
+
     def test_resume_keeps_counts(self):
         for _ in range(40):
             fire(self.home, "PostToolUse")
