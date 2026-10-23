@@ -159,6 +159,24 @@ def prune(h):
     return len(old)
 
 
+REPEAT_SEC = 300   # OURS: an identical note from the same sender inside 5 minutes adds nothing (traffic.py: 87 repeated lines in 72 h)
+
+
+def is_repeat(rows, rec):
+    """True when `rec` is a note that a row from the same sender already says, within REPEAT_SEC. Broadcasts and acks never repeat-drop."""
+    if rec.get("kind") != "note":
+        return False
+    t = datetime.strptime(rec["t"], "%Y%m%dT%H%M%SZ")
+    for r in rows:
+        if r.get("kind") == "note" and r.get("from") == rec.get("from") and r.get("text") == rec.get("text"):
+            try:
+                if 0 <= (t - datetime.strptime(r["t"], "%Y%m%dT%H%M%SZ")).total_seconds() <= REPEAT_SEC:
+                    return True
+            except (KeyError, ValueError):
+                pass
+    return False
+
+
 def send(text, to="all", kind="note", cwd=None, sid="", extra=None):
     """Writes one signal file and pushes it; retries on a lost race. Returns True if it reached origin."""
     h = ensure(cwd)
@@ -170,6 +188,8 @@ def send(text, to="all", kind="note", cwd=None, sid="", extra=None):
         rec["sid"] = sid_tag(sid)
     if extra:
         rec.update(extra)
+    if is_repeat(load(h), rec):
+        return True
     # microseconds right after the 16-char second stamp: two signals in one second sort in send order, not by the random tail
     name = "%s%06d-%s-%04x.json" % (rec["t"], dt.microsecond, re.sub(r"[^a-z0-9]+", "", host())[:12], random.randrange(1 << 16))
     for _ in range(4):
@@ -369,6 +389,18 @@ def ack_state(rows, bid, hostname):
     return best
 
 
+def own_state(rows, b):
+    """This host's ack state for broadcast b; for an `--audience top` broadcast an ack from ANY host on my login (env MTS_LOGIN)
+    counts too, so two sessions or machines on one login do not both act (EXHAUST_PHASE.md: one actor per login)."""
+    best = ack_state(rows, b["id"], host())
+    lg = os.environ.get("MTS_LOGIN", "").strip().upper()
+    if b.get("aud") == "top" and lg:
+        for r in rows:
+            if r.get("kind") == "ack" and r.get("id") == b["id"] and str(r.get("login", "")).upper() == lg                     and RANK.get(r.get("state"), 0) > RANK[best]:
+                best = r["state"]
+    return best
+
+
 def hosts_seen(rows):
     """Hosts with any record in the last KEEP_DAYS (a record stamped in the future does not count)."""
     cutoff, lim = stamp(now() - timedelta(days=KEEP_DAYS)), future_limit()
@@ -400,7 +432,7 @@ def action_block(rows, ev):
     for b in high_open(rows):
         if b.get("to") not in ("all", host()) or (b.get("aud") == "top" and is_worker_env()):
             continue
-        st = ack_state(rows, b["id"], host())
+        st = own_state(rows, b)
         if st == "done" or (st == "told" and ev != "SessionStart"):
             continue
         if st == "told":
@@ -536,7 +568,7 @@ def stop_check(payload):
     if not (h / ".git").exists():
         return ""
     rows = load(h)
-    pending = [b for b in high_open(rows) if b.get("to") in ("all", host()) and not (b.get("aud") == "top" and is_worker_env()) and ack_state(rows, b["id"], host()) == "none"]
+    pending = [b for b in high_open(rows) if b.get("to") in ("all", host()) and not (b.get("aud") == "top" and is_worker_env()) and own_state(rows, b) == "none"]
     if not pending:
         return ""
     reply = reply_text(payload)
@@ -667,7 +699,7 @@ def main(argv):
         if a.id not in {b["id"] for b in high_open(load(h))}:
             print("unknown or expired broadcast id %s (python scripts/dev/mts_signal.py acks)" % a.id)
             return 2
-        ok = send("ack %s %s %s" % (a.id, a.state, a.note), kind="ack", extra={"id": a.id, "state": a.state, "host": host(), "note": clean(a.note, 100)})
+        ok = send("ack %s %s %s" % (a.id, a.state, a.note), kind="ack", extra={"id": a.id, "state": a.state, "host": host(), "login": os.environ.get("MTS_LOGIN", "").strip().upper(), "note": clean(a.note, 100)})
         print("ack %s %s (%s)" % (a.id, a.state, host()) if ok else "ack NOT sent (push failed)")
         return 0 if ok else 1
     if cmd == "acks":

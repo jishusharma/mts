@@ -45,5 +45,40 @@ class StopGuardSubagentTest(unittest.TestCase):
         self.assertEqual(mts_signal.handle(p), "")
 
 
+class RepeatTest(unittest.TestCase):
+    ROWS = [{"t": "20261023T081000Z", "from": "vm/?", "kind": "note", "text": "BOOT - banner=n/a first=71k"}]
+
+    def test_same_note_from_same_sender_within_5_min_is_a_repeat(self):
+        rec = {"t": "20261023T081200Z", "from": "vm/?", "kind": "note", "text": "BOOT - banner=n/a first=71k"}
+        self.assertTrue(mts_signal.is_repeat(self.ROWS, rec))
+
+    def test_later_other_sender_or_other_kind_is_not(self):
+        base = {"t": "20261023T081200Z", "from": "vm/?", "kind": "note", "text": "BOOT - banner=n/a first=71k"}
+        self.assertFalse(mts_signal.is_repeat(self.ROWS, dict(base, t="20261023T082000Z")))
+        self.assertFalse(mts_signal.is_repeat(self.ROWS, dict(base, **{"from": "jis-nb/?"})))
+        self.assertFalse(mts_signal.is_repeat(self.ROWS, dict(base, kind="broadcast")))
+
+
+class LoginDedupeTest(unittest.TestCase):
+    B2 = dict(B, id="b-bbbbbb")
+    ACK = {"kind": "ack", "id": "b-bbbbbb", "state": "done", "host": "jis-nb", "login": "C", "t": "99991231T000001Z"}
+
+    def test_ack_from_another_host_on_my_login_counts(self):
+        with mock.patch.dict(os.environ, {"MTS_LOGIN": "C"}):
+            os.environ.pop("MTS_SUBAGENT", None)
+            os.environ.pop("MTS_ROLE", None)
+            self.assertEqual(mts_signal.own_state([self.B2, self.ACK], self.B2), "done")
+            self.assertEqual(mts_signal.action_block([self.B2, self.ACK], "UserPromptSubmit"), "")
+
+    def test_ack_from_another_login_does_not(self):
+        with mock.patch.dict(os.environ, {"MTS_LOGIN": "A"}):
+            self.assertEqual(mts_signal.own_state([self.B2, self.ACK], self.B2), "none")
+
+    def test_no_login_set_keeps_per_host_behaviour(self):
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("MTS_LOGIN", None)
+            self.assertEqual(mts_signal.own_state([self.B2, self.ACK], self.B2), "none")
+
+
 if __name__ == "__main__":
     unittest.main()
