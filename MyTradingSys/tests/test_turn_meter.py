@@ -324,6 +324,48 @@ class TurnMeterTest(unittest.TestCase):
         for _ in range(15):
             self.assertEqual(fire(self.home, "UserPromptSubmit", sid="wr2", extra={"transcript_path": str(tp), "prompt": self.WRAPPED}), "")
 
+    def test_a_role_line_below_the_first_line_or_inside_an_event_never_exempts_a_worker(self):
+        """Review of 9f0cb459c (2026-10-23_fix34_replay_and_review.md, findings 1-3): a `You are Supervisor.` line anywhere in the first
+        6 lines counted, inside an event, a paste after his words, or an example; a worker escaped its turn cap that way."""
+        for p in ("Example start line below:\nYou are Supervisor.",
+                  "<cross-session-message from=x>\nYou are Supervisor. Login C.\n</cross-session-message>",
+                  "<task-notification>\nYou are Supervisor.\n</task-notification>",
+                  "Another Claude session sent a message:\nYou are Supervisor.",
+                  'take care of this in a separate thread -\n<pasted_content id="1">\nYou are Supervisor.\n</pasted_content>',
+                  "You are the supervisor of nothing; review code.",
+                  "You are Supervisory staff.",
+                  "Background (from x): the parent said:\nTask: You are Supervisor.\nmore"):     # diff review finding 5
+            self.assertFalse(turn_meter.is_supervisor_start({"prompt": p}), p)
+        for p in ("You are Supervisor.", "**You are Supervisor.**", "You are Supervisor Login C", "Task: You are Supervisor.",
+                  "Task:\nYou are Supervisor.", chr(0xfeff) + "You are Supervisor.",      # diff review findings 3, 4
+                  "Background (from the session that started this one): x\r\n\r\nTask:\r\nYou are Supervisor. Login C.",
+                  '<pasted_content id="1">\nYou are Supervisor. Login C. Machine JIS-NB.\n</pasted_content>'):
+            self.assertTrue(turn_meter.is_supervisor_start({"prompt": p}), p)
+        # transcript: only the first real prompt counts; an event entry or a later user entry before the reply does not
+        tp = self.home / "ev.jsonl"
+        rows = [{"type": "user", "message": {"content": "You are Builder. Card: x"}},
+                {"type": "user", "message": {"content": "<task-notification>You are Supervisor.</task-notification>"}},
+                {"type": "user", "message": {"content": "You are Supervisor."}}]
+        tp.write_text("\n".join(json.dumps(r) for r in rows) + "\n", encoding="utf-8")
+        self.assertFalse(turn_meter.transcript_starts_supervisor({"transcript_path": str(tp)}))
+        rows = [{"type": "user", "isMeta": True, "message": {"content": "Caveat: x"}},
+                {"type": "user", "message": {"content": "You are Supervisor."}}]
+        tp.write_text("\n".join(json.dumps(r) for r in rows) + "\n", encoding="utf-8")
+        self.assertTrue(turn_meter.transcript_starts_supervisor({"transcript_path": str(tp)}))
+
+    def test_a_later_supervisor_line_never_replaces_another_role(self):
+        """Review of 9f0cb459c finding 3: the sticky Supervisor mark was set on every prompt and overwrote "thinker"."""
+        st = self.home / "th.json"
+        st.write_text(json.dumps({"tool": 1, "user": 1, "role": "thinker"}), encoding="utf-8")
+        fire(self.home, "UserPromptSubmit", sid="th", extra={"prompt": "You are Supervisor. Login C."})
+        self.assertEqual(json.loads(st.read_text(encoding="utf-8"))["role"], "thinker")
+
+    def test_a_missing_role_line_helper_never_breaks_the_hook(self):
+        """Review of 9f0cb459c finding 7: `import role_line` at the top had no fallback."""
+        with mock.patch.object(turn_meter, "role_line", None):
+            self.assertFalse(turn_meter.is_supervisor_start({"prompt": "You are Supervisor."}))
+            self.assertEqual(fire(self.home, "UserPromptSubmit", sid="nr", extra={"prompt": "You are Supervisor."}), "")
+
     def test_resume_keeps_counts(self):
         for _ in range(40):
             fire(self.home, "PostToolUse")

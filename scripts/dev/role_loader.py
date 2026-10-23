@@ -190,24 +190,49 @@ def _phrase(t):
     return "[_ ]".join(re.escape(p) for p in re.split(r"[_ ]+", t.strip()) if p)
 
 
-def clean_prompt(prompt):
-    """The prompt without the app's wrappers (reminder blocks, paste tags, start_session "Background ... Task:"): role_line.py."""
+def _role_line():
     try:
-        from role_line import clean
+        import role_line
     except ImportError:
         sys.path.insert(0, str(Path(__file__).resolve().parent))
-        from role_line import clean
-    return clean(prompt)
+        try:
+            import role_line
+        except ImportError:     # a missing helper must not break the hook: the 300-char scan below still runs
+            return None
+    return role_line
+
+
+def clean_prompt(prompt):
+    """The prompt without the app's wrappers (reminder blocks, paste tags, start_session "Background ... Task:"): role_line.py."""
+    rl = _role_line()
+    return rl.clean(prompt) if rl else str(prompt or "")
 
 
 def match_roles(prompt, roles):
-    """Distinct role names asked for in the first 300 chars: the phrase must start a line or sentence (a quote, a
-    negation or a mid-sentence mention does not count)."""
-    head = clean_prompt(prompt)[:300].lower()
+    """Distinct role names asked for. A `You are <Role>.` first line behind the app's wrappers (role_line.py) names exactly one;
+    else the first 300 raw chars: the phrase must start a line or sentence (a quote, a negation or a mid-sentence mention does
+    not count). The 300-char scan stays on the raw text: on the cleaned text it reached later sentences (review of 9f0cb459c:
+    "Supervisor. Login C. ..." also matched Session_Planner, a quoted "What about a thinker?" loaded Thinker)."""
+    rl = _role_line()
+    if rl:
+        names = {}
+        for name, trigs in roles.items():
+            for t in [name] + list(trigs):
+                names.setdefault(t, name)
+        hit = rl.role_line(prompt, names)
+        if hit:     # a second explicit `You are <Role>` line still makes it ambiguous; "start a session planner" does not
+            head = (prompt or "")[:300].lower()
+            other = [n for n, trigs in roles.items() if n != names[hit] and any(re.search(
+                r"(?:^|[.!?])[ \t]*(?:you are|you're)\s+(?:the\s+)?" + _phrase(t) + r"(?![a-z0-9_])", head, re.M) for t in trigs)]
+            return [names[hit]] + other
+    # the raw head, plus the first sentence behind the wrappers ("I need a pipeliner" after a long reminder or Background block)
+    heads = [str(prompt or "")[:300].lower()]
+    if rl:
+        heads.append(re.split(r"[.!?]", rl.first_line(prompt), maxsplit=1)[0][:300].lower())
     hits = []
     for name, trigs in roles.items():
         for t in trigs:
-            if re.search(r"(?:^|[.!?])[ 	]*" + PREFIX + r"\s+" + _phrase(t) + r"(?![a-z0-9_])", head, re.M):
+            if any(re.search(r"(?:^|[.!?])[ 	]*" + PREFIX + r"\s+" + _phrase(t) + r"(?![a-z0-9_])", h, re.M) for h in heads):
                 hits.append(name)
                 break
     return hits

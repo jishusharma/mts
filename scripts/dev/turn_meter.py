@@ -196,7 +196,10 @@ try:
     import role_line
 except ImportError:         # imported by path from another directory
     sys.path.insert(0, str(Path(__file__).resolve().parent))
-    import role_line
+    try:
+        import role_line
+    except ImportError:     # a missing helper must not break the hook: nothing counts as a Supervisor (capped, the safe side)
+        role_line = None
 EVENT_PROMPTS = ("<cross-session-message", "<side-sessions-event", "<ci-monitor-event", "<task-notification", "<system-reminder")
 
 
@@ -208,11 +211,13 @@ def transcript_starts_supervisor(payload):
             head = f.read(200_000).decode("utf-8", "ignore")
     except OSError:
         return False
-    return any(role_line.is_role(t, "Supervisor") for t in _user_texts(head)[:3])
+    texts = _user_texts(head)
+    return bool(role_line and texts and role_line.is_role(texts[0], "Supervisor"))
 
 
 def _user_texts(head):
-    """Text of the user entries before the first assistant entry of a transcript head (JSONL; a cut last line is skipped)."""
+    """Text of the user entries before the first assistant entry of a transcript head (JSONL; a cut last line is skipped).
+    Meta entries and app/session events are not his prompts and are skipped: only texts[0], the start prompt, is read."""
     out = []
     for ln in head.splitlines():
         try:
@@ -223,12 +228,14 @@ def _user_texts(head):
             continue
         if e.get("type") == "assistant":
             break
-        if e.get("type") != "user":
+        if e.get("type") != "user" or e.get("isMeta"):
             continue
         c = (e.get("message") or {}).get("content", e.get("content"))
         if isinstance(c, list):
             c = "\n".join(str(b.get("text", "")) for b in c if isinstance(b, dict))
-        out.append(str(c or ""))
+        c = str(c or "")
+        if c.strip() and not is_event_text(c):
+            out.append(c)
     return out
 
 
@@ -317,7 +324,7 @@ def handoff_call(payload):
 
 def is_supervisor_start(payload):
     """The coordinator start line ("You are Supervisor. Login <L>. ..."), SUPER_SESSION.md; sticky in the state file."""
-    return role_line.is_role(payload.get("prompt"), "Supervisor")
+    return bool(role_line and role_line.is_role(payload.get("prompt"), "Supervisor"))
 
 
 def handle(payload):
@@ -362,8 +369,9 @@ def handle(payload):
         state["ur"], state["half"] = 0, 0            # his prompt resets the unattended budget
         model, ctx = model_and_context(payload)
         kind = tier(model)
-        if is_supervisor_start(payload) or (not state.get("role") and transcript_starts_supervisor(payload)):
-            state["role"] = "supervisor"     # sticky: it runs unattended for hours; capped by context, not turns (operator 2026-10-21)
+        if not state.get("role") and (is_supervisor_start(payload) or transcript_starts_supervisor(payload)):
+            state["role"] = "supervisor"     # sticky: it runs unattended for hours; capped by context, not turns (operator 2026-10-21);
+                                             # never overwrites another role (review of 9f0cb459c: a later line replaced "thinker")
         if state.get("role") == "supervisor" and kind == "default":
             kind = "opus"
         if uncapped_role(payload, state) or off or state["driven"] or kind == "fable":
