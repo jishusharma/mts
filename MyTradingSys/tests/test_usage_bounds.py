@@ -31,7 +31,7 @@ def fire(home, event, sid="s1", extra=None, now=None):
 
 
 def denied(out):
-    return bool(out) and json.loads(out)["hookSpecificOutput"].get("permissionDecision") == "deny"
+    return bool(out) and "(warning, not a block)" in json.loads(out)["hookSpecificOutput"].get("additionalContext", "")   # warn-only 2026-10-23
 
 
 class UnattendedBudgetTest(unittest.TestCase):
@@ -130,7 +130,7 @@ def guard(tool, inp, transcript, home, extra_env=None):
     r = subprocess.run([sys.executable, str(DEV / "model_guard.py"), "hook"], input=json.dumps(payload), capture_output=True,
                        text=True, env=env)
     assert r.returncode == 0, r.stderr
-    return "deny" if r.stdout.strip() and "deny" in r.stdout else "allow"
+    return "deny" if r.stdout.strip() and "(warning, not a block)" in r.stdout else "allow"   # "deny" = warned; warn-only 2026-10-23
 
 
 class SpawnAndScheduleGuardTest(unittest.TestCase):

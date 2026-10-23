@@ -438,7 +438,7 @@ class AwayFlagAndAtomicSaveTest(unittest.TestCase):
         for i, brief in enumerate(briefs):
             nags, pre = self.unattended_run(f"w{i}", brief)
             self.assertTrue(any(nags) or "<cross" in brief, brief)
-            self.assertIn('"deny"', pre, brief)
+            self.assertIn('(warning, not a block)', pre, brief)
         nags, pre = self.unattended_run("wb", "You are Builder")
         self.assertTrue(any(nags))
 
@@ -461,7 +461,7 @@ class AwayFlagAndAtomicSaveTest(unittest.TestCase):
         st.write_text(json.dumps(d), encoding="utf-8")
         for _ in range(5):
             fire(self.home, "PostToolUse", sid="l", extra={"transcript_path": str(tr)})
-        self.assertIn('"deny"', fire(self.home, "PreToolUse", sid="l", extra={"tool_name": "WebSearch", "tool_input": {}}))
+        self.assertIn('(warning, not a block)', fire(self.home, "PreToolUse", sid="l", extra={"tool_name": "WebSearch", "tool_input": {}}))
         fire(self.home, "UserPromptSubmit", sid="l", extra={"prompt": "<task-notification>done</task-notification>"})
         self.assertFalse(turn_meter.attended(json.loads(st.read_text(encoding="utf-8"))))
 
@@ -487,7 +487,7 @@ class AwayFlagAndAtomicSaveTest(unittest.TestCase):
         self.assertEqual(fire(self.home, "PreToolUse", sid="sv8", extra={"tool_name": "Bash", "tool_input": {}, "transcript_path": str(tr)}), "")
         # a worker with the same numbers is still stopped
         (self.home / "wk.json").write_text(json.dumps({"tool": 30, "user": 1, "kind": "opus", "ur": 7_000_000}), encoding="utf-8")
-        self.assertIn('"deny"', fire(self.home, "PreToolUse", sid="wk", extra={"tool_name": "Bash", "tool_input": {}}))
+        self.assertIn('(warning, not a block)', fire(self.home, "PreToolUse", sid="wk", extra={"tool_name": "Bash", "tool_input": {}}))
 
     def test_a_thinker_is_never_nagged_or_stopped(self):
         # thinker.md: no turn or context cap (WORKERS.md rule 5). 2026-10-22: a notice-briefed Thinker was denied web search and writes
@@ -511,7 +511,7 @@ class AwayFlagAndAtomicSaveTest(unittest.TestCase):
 
     def test_thinking_about_something_is_not_the_thinker_role(self):
         nags, pre = self.unattended_run("w2", "you are thinking too slowly, think about the gate")
-        self.assertIn('"deny"', pre)
+        self.assertIn('(warning, not a block)', pre)
 
     def test_save_is_atomic_and_leaves_no_temp_file(self):
         target = self.home / "x.json"
