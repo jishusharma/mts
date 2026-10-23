@@ -98,6 +98,29 @@ def fast_forward(repo, fetch=True):
     return behind, hooks
 
 
+HOOK_PATHS = ("scripts/dev", ".claude/settings.json")
+
+
+def sync_hook_files(repo):
+    """A checkout that cannot fast-forward (tracked runtime edits, e.g. SUPERVISOR_LOG.md; failure review 2026-10-23 cause 5) still
+    runs its hooks from scripts/dev: take trunk's copy of each changed hook path that has no local edit of its own (or whose local
+    edit already equals trunk). Deletions and locally edited files are left alone. -> number of files updated."""
+    changed = git(repo, "diff", "--name-only", "HEAD", f"origin/{TRUNK}", "--", *HOOK_PATHS).stdout.split()
+    take = []
+    for p in changed:
+        if git(repo, "cat-file", "-e", f"origin/{TRUNK}:{p}").returncode:
+            continue            # deleted on trunk: removing a file here is not this hook's call
+        same = not git(repo, "diff", "--quiet", f"origin/{TRUNK}", "--", p).returncode
+        if same and not git(repo, "diff", "--cached", "--quiet", f"origin/{TRUNK}", "--", p).returncode:
+            continue            # already trunk's copy (taken earlier)
+        if git(repo, "status", "--porcelain", "--", p).stdout.strip() and not same:
+            continue            # someone's own edit: never overwritten
+        take.append(p)
+    if take and git(repo, "checkout", f"origin/{TRUNK}", "--", *take, timeout=30).returncode == 0:
+        return len(take)
+    return 0
+
+
 def main_checkout(repo):
     """The repo's main working tree (first `git worktree list` entry), or None."""
     for line in git(repo, "worktree", "list", "--porcelain").stdout.splitlines():
@@ -123,8 +146,10 @@ def catch_up(repo=None, fetch=True):
         if n:
             notes.append(f"Main checkout {main} fast-forwarded {n} commit(s), so the next session cut from it starts on trunk.")
         elif left:
-            notes.append(f"Main checkout {main} is {left} commit(s) behind origin/{TRUNK} and was left alone (local edits): sessions cut "
-                         f"from it start old, so run `python scripts/dev/sync.py start <slug>` before reading code.")
+            k = sync_hook_files(main)
+            hooks_note = f"; its hook scripts were updated from trunk ({k} file(s))" if k else ""
+            notes.append(f"Main checkout {main} is {left} commit(s) behind origin/{TRUNK} and was left alone (local edits){hooks_note}: "
+                         f"sessions cut from it start old, so run `python scripts/dev/sync.py start <slug>` before reading code.")
     return " ".join(notes)
 
 

@@ -106,6 +106,36 @@ class TrunkLagTest(unittest.TestCase):
         (self.tree / "a").write_text("edited", encoding="utf-8")
         self.assertIn("left alone (local edits)", T.catch_up(wt), "a stale main checkout is named, never silent")
 
+    def test_blocked_main_checkout_still_gets_trunk_hook_scripts(self):
+        # failure review 2026-10-23 cause 5: the main checkout (hooks run from it) kept a tracked runtime edit (SUPERVISOR_LOG.md),
+        # never fast-forwarded, and ran a 40-commit-old role_loader: a started session said ROLE NOT LOADED
+        hooks = self.origin / "scripts" / "dev"
+        hooks.mkdir(parents=True)
+        for n in ("hook.py", "mine.py", "gone.py"):
+            (hooks / n).write_text("v1", encoding="utf-8")
+        sh(self.origin, "add", "scripts")
+        commit(self.origin, "b", 1_000_100)
+        wt = Path(self.d.name) / "tree" / ".claude" / "worktrees" / "zen"
+        sh(self.tree, "pull", "-q", "--ff-only")
+        sh(self.tree, "worktree", "add", "-q", "-b", "claude/zen", str(wt))
+        for n in ("hook.py", "mine.py", "new.py"):
+            (hooks / n).write_text("v2", encoding="utf-8")
+        (self.origin / "a").write_text("trunk edit", encoding="utf-8")
+        sh(self.origin, "add", "-A")
+        sh(self.origin, "rm", "-q", "scripts/dev/gone.py")
+        commit(self.origin, "c", 1_000_200)
+        main_dev = self.tree / "scripts" / "dev"
+        (self.tree / "a").write_text("runtime log line", encoding="utf-8")     # overlaps trunk: no fast-forward possible
+        (main_dev / "mine.py").write_text("someone's edit", encoding="utf-8")
+        note = T.catch_up(wt)
+        self.assertIn("left alone (local edits); its hook scripts were updated from trunk (2 file(s))", note)
+        self.assertEqual((main_dev / "hook.py").read_text(encoding="utf-8"), "v2")
+        self.assertEqual((main_dev / "new.py").read_text(encoding="utf-8"), "v2")
+        self.assertEqual((main_dev / "mine.py").read_text(encoding="utf-8"), "someone's edit")
+        self.assertTrue((main_dev / "gone.py").exists(), "a trunk deletion is not applied by this hook")
+        self.assertEqual((self.tree / "a").read_text(encoding="utf-8"), "runtime log line")
+        self.assertEqual(T.sync_hook_files(self.tree), 0, "nothing left to take")
+
     def test_registered_first_at_session_start(self):
         root = Path(__file__).resolve().parents[2]
         ss = json.loads((root / ".claude" / "settings.json").read_text(encoding="utf-8"))["hooks"]["SessionStart"]
