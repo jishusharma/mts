@@ -1,0 +1,38 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-23T11:53:28Z",
+  "depends_on": [],
+  "done_when": "role_loader RULES block carries: work outside your role's Job -> `tasks.py new` for its owner (ROLES.md Who does what) or, if the operator asked for it now, a background Sonnet Agent whose brief starts `You are <Owner>.`; never ask first. model_guard.role_session and role_loader use one shared function for role identity; SessionStart after compaction re-injects only a role from an explicit `You are X.` line. Fail-first tests for both.",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "A role asked for work outside its Job moves it to the board or a background Sonnet Agent without asking; a fallback-picked role is not re-injected after compaction (this doctor session gets Lab_Guy from the word revalidat after every compaction).",
+  "id": "flow-a2-out-of-role-rule",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "OPERATOR QUOTE 2026-10-23: \"Build option A: file the 3 cards and run them as Builder Agents, one ship each.\" Design: MyTradingSys/research/role_flow_2026-10-23/DESIGN.md sections 3-5.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/role_loader.py, scripts/dev/model_guard.py, their tests, ROLES.md one line"
+  ],
+  "scope_out": [
+    "supervisor.py, tasks.py, Pipeliner"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "MyTradingSys/tests/test_role_*.py or scripts/dev hook tests: fallback role + compaction -> no re-injection; explicit role -> re-injected; role_session and loader agree on 3 prompts (explicit, fallback, none).",
+  "title": "Role flow A2: one out-of-role rule for every role; role_loader and model_guard agree on what a role session is",
+  "weight": "",
+  "worker": "agent"
+}
