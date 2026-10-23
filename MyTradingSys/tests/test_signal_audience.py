@@ -45,5 +45,19 @@ class StopGuardSubagentTest(unittest.TestCase):
         self.assertEqual(mts_signal.handle(p), "")
 
 
+class RepeatTest(unittest.TestCase):
+    ROWS = [{"t": "20261023T081000Z", "from": "vm/?", "kind": "note", "text": "BOOT - banner=n/a first=71k"}]
+
+    def test_same_note_from_same_sender_within_5_min_is_a_repeat(self):
+        rec = {"t": "20261023T081200Z", "from": "vm/?", "kind": "note", "text": "BOOT - banner=n/a first=71k"}
+        self.assertTrue(mts_signal.is_repeat(self.ROWS, rec))
+
+    def test_later_other_sender_or_other_kind_is_not(self):
+        base = {"t": "20261023T081200Z", "from": "vm/?", "kind": "note", "text": "BOOT - banner=n/a first=71k"}
+        self.assertFalse(mts_signal.is_repeat(self.ROWS, dict(base, t="20261023T082000Z")))
+        self.assertFalse(mts_signal.is_repeat(self.ROWS, dict(base, **{"from": "jis-nb/?"})))
+        self.assertFalse(mts_signal.is_repeat(self.ROWS, dict(base, kind="broadcast")))
+
+
 if __name__ == "__main__":
     unittest.main()

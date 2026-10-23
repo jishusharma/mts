@@ -159,6 +159,24 @@ def prune(h):
     return len(old)
 
 
+REPEAT_SEC = 300   # OURS: an identical note from the same sender inside 5 minutes adds nothing (traffic.py: 87 repeated lines in 72 h)
+
+
+def is_repeat(rows, rec):
+    """True when `rec` is a note that a row from the same sender already says, within REPEAT_SEC. Broadcasts and acks never repeat-drop."""
+    if rec.get("kind") != "note":
+        return False
+    t = datetime.strptime(rec["t"], "%Y%m%dT%H%M%SZ")
+    for r in rows:
+        if r.get("kind") == "note" and r.get("from") == rec.get("from") and r.get("text") == rec.get("text"):
+            try:
+                if 0 <= (t - datetime.strptime(r["t"], "%Y%m%dT%H%M%SZ")).total_seconds() <= REPEAT_SEC:
+                    return True
+            except (KeyError, ValueError):
+                pass
+    return False
+
+
 def send(text, to="all", kind="note", cwd=None, sid="", extra=None):
     """Writes one signal file and pushes it; retries on a lost race. Returns True if it reached origin."""
     h = ensure(cwd)
@@ -170,6 +188,8 @@ def send(text, to="all", kind="note", cwd=None, sid="", extra=None):
         rec["sid"] = sid_tag(sid)
     if extra:
         rec.update(extra)
+    if is_repeat(load(h), rec):
+        return True
     # microseconds right after the 16-char second stamp: two signals in one second sort in send order, not by the random tail
     name = "%s%06d-%s-%04x.json" % (rec["t"], dt.microsecond, re.sub(r"[^a-z0-9]+", "", host())[:12], random.randrange(1 << 16))
     for _ in range(4):
