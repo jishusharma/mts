@@ -91,7 +91,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/rsi_divergence_mtf_2026-10-09`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `kurisko-dev-event-study` refined p2 SONNET: Kurisko Quad Rotation: DEV event study, fee-net, same-window placebo
-  - `kurisko-prereg-fire-counts` ready p2 SONNET: Kurisko Quad Rotation: count-only pre-registration on BTC DEV 1m/5m (no outcomes)
   - `malkan-gfs-btc-htf-prereg` refined p2 SONNET: Malkan GFS on BTC 1D/4h: edge-before-extraction pre-registration and count/power gate before any further video
   - `wavetrend-audit-c1-disposition` refined p2 SONNET: WaveTrend: state report and disposition of AUDIT_2026-10-18 C1 + control-arm + manifest findings
   - `malkan-w1hr-local-whisper-asr` ready p3 JIS-NB: Malkan W1HrDl70Lhk: local Whisper ASR on JIS-NB to recover Hinglish 5-Star RSI stop wording (no YouTube captio
