@@ -51,7 +51,7 @@ $safe = @(
     'WpcMonSvc', 'AJRouter', 'NcdAutoSetup', 'lfsvc', 'TabletInputService', 'WbioSrvc', 'stisvc',
     'SSDPSRV', 'upnphost', 'TrkWks', 'DoSvc', 'CDPSvc', 'PcaSvc'
 )
-$lenovo = @(   # applied with -Lenovo (JIS-NB): OEM helpers and telemetry. Hotkey/battery/Wi-Fi services are NOT here.
+$lenovoList = @(   # applied with -Lenovo (JIS-NB): OEM helpers and telemetry. Hotkey/battery/Wi-Fi services are NOT here.
     'LenovoVantageService', 'LenovoSmartStandby', 'LITSSVC', 
     'ImControllerService',         # Lenovo System Interface Foundation (Vantage helper)
     'SystemInterfaceFoundation', 'Lenovo Instant On', 'LnvAutoUpdate', 'LenovoUpdate',
@@ -98,11 +98,11 @@ if ($Audit) {
     # read-only: what is running that is not Windows itself, and who burns CPU over 20 s; log is the thing to paste back
     Get-CimInstance Win32_ComputerSystem | ForEach-Object { "{0} {1} {2}, {3} logical CPUs" -f $_.Name, $_.Manufacturer, $_.Model, $_.NumberOfLogicalProcessors }
     "--- running non-Windows services"
-    Get-CimInstance Win32_Service | Where-Object { $_.State -eq 'Running' -and $_.PathName -notmatch 'svchost|\Windows\|Microsoft' } | ForEach-Object { "{0,-40} {1,-8} {2}" -f $_.Name, $_.StartMode, $_.DisplayName }
+    Get-CimInstance Win32_Service | Where-Object { $_.State -eq 'Running' -and $_.PathName -notmatch 'svchost|\\Windows\\|Microsoft' } | ForEach-Object { "{0,-40} {1,-8} {2}" -f $_.Name, $_.StartMode, $_.DisplayName }
     "--- startup commands"
     Get-CimInstance Win32_StartupCommand | ForEach-Object { "{0,-40} {1}" -f $_.Name, $_.Location }
     "--- non-Microsoft scheduled tasks enabled"
-    Get-ScheduledTask | Where-Object { $_.State -ne 'Disabled' -and $_.TaskPath -notmatch '^\Microsoft\' } | ForEach-Object { "{0}{1}" -f $_.TaskPath, $_.TaskName }
+    Get-ScheduledTask | Where-Object { $_.State -ne 'Disabled' -and $_.TaskPath -notmatch '^\\Microsoft\\' } | ForEach-Object { "{0}{1}" -f $_.TaskPath, $_.TaskName }
     "--- top CPU over 20 s (core-seconds per second)"
     $a = Get-Process | ForEach-Object { [pscustomobject]@{ I = $_.Id; C = $_.CPU } }; Start-Sleep 20
     Get-Process | ForEach-Object { $p = $_; $x = $a | Where-Object I -eq $p.Id | Select-Object -First 1; if ($x -and $null -ne $x.C -and $null -ne $p.CPU) { [pscustomobject]@{ N = $p.Name; D = [math]::Round(($p.CPU - $x.C) / 20, 3) } } } |
@@ -110,7 +110,7 @@ if ($Audit) {
     try { Stop-Transcript | Out-Null } catch { }
     return
 }
-$list = @($safe); if ($Aggressive) { $list += $aggr }; if ($Lenovo) { $list += $lenovo }
+$list = @($safe); if ($Aggressive) { $list += $aggr }; if ($Lenovo) { $list += $lenovoList }
 $bk = @{ time = (Get-Date).ToString('s'); services = @(); tasks = @() }
 $n = 0
 foreach ($name in $list) {

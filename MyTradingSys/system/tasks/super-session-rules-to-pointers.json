@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-23T05:59:43Z",
   "commands": [
     "python -m pytest -q MyTradingSys/tests/docs"
   ],
@@ -15,6 +16,12 @@
   "id": "super-session-rules-to-pointers",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "rule 9 now a pointer to WORKERS rule 5; test fails on old doc, 6 doc tests OK; doctor show",
+      "ref": "65c27276",
+      "utc": "2026-10-23T05:59:43Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -41,7 +48,12 @@
   "refs": [
     "MyTradingSys/system/ARCHITECTURE.md"
   ],
-  "result": "",
+  "result": "rule 9 now a pointer to WORKERS rule 5; test fails on old doc, 6 doc tests OK; doctor shows no turn-budget DUPLICATE",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/SUPER_SESSION.md",
     "MyTradingSys/system/SUPERVISOR.md",
@@ -53,12 +65,13 @@
   "scope_sha": "8ee38e8d9f62",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Wait until the traffic-controller lane releases SUPERVISOR.md and roles/supervisor.md.",
     "Replace the restated text with one-line pointers, keep rule numbers.",
     "retoken + check; ship."
   ],
+  "taken": "2026-10-23T05:59:43Z",
   "tests": "MyTradingSys/tests/docs/test_super_session_doc.py",
   "title": "SUPER_SESSION rules restated elsewhere become pointers, numbering kept",
   "weight": "",

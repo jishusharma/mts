@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-23T05:53:25Z",
   "commands": [],
   "created": "2026-10-18T21:55:04Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "shipped to fast-track; traffic.py measure 72h: 0 duplicates",
+      "ref": "f787c15f",
+      "utc": "2026-10-23T05:53:25Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,7 +40,12 @@
   "refs": [
     "MyTradingSys/system/TRAFFIC_CONTROLLER.md"
   ],
-  "result": "",
+  "result": "shipped to fast-track; traffic.py measure 72h: 0 duplicates",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/gemini_queue.py",
@@ -49,11 +61,12 @@
   "scope_sha": "d3573e2d0c04",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "tasks.py dispatch excludes a card with an open claim on trunk or a running gq/codex job (reason in `excluded`).",
     "gemini_queue.py run and codex_run.py next refuse a card with an open claim by another session."
   ],
+  "taken": "2026-10-23T05:53:25Z",
   "tests": "fixture: a claimed CODEX card is excluded from dispatch and refused by gemini_queue; fails before.",
   "title": "One CODEX card runs in one lane: dispatch and gemini_queue skip claimed or running cards",
   "weight": "ROUTINE",

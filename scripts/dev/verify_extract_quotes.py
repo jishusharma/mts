@@ -23,8 +23,18 @@ CBP_HEAD = re.compile(r"^###\s*[^|]*\|[^|]*\|\s*([A-Za-z0-9_-]{11})\s*\|")
 GPS = re.compile(r"Source GPS:\s*([A-Za-z0-9_-]{11})\s*\|\s*(BEGIN|MIDDLE|END)")
 
 
+FILLERS = {"uh", "um", "uhm", "er", "erm"}
+
+
 def norm(s: str) -> str:
-    return " ".join(re.sub(r"[^a-z0-9%]+", " ", s.lower()).split())
+    """Lowercase alphanumerics; auto-captions keep spoken fillers (uh, um) and stutters ("is is"),
+    which a clean quote drops, so both sides lose fillers and immediate word repeats."""
+    out = []
+    for w in re.sub(r"[^a-z0-9%]+", " ", s.lower()).split():
+        if w in FILLERS or (out and out[-1] == w):
+            continue
+        out.append(w)
+    return " ".join(out)
 
 
 def transcript_body(vid: str) -> str:
