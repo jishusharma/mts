@@ -369,8 +369,8 @@ class TestRepoRoles(unittest.TestCase):
         self.assertEqual(rl.banner("Thinker", "v1", "a-b", "thinker.md", "abc12345").split(":")[0], "ROLE LOADED")
         self.assertIn("Thinker", rl.row_names(REPO))
         text = (REPO / rl.ROLES_REL / "thinker.md").read_text(encoding="utf-8")
-        for needle in ("Opus", "LITE", "no cap", "traffic.py budget", "RECOMMEND", "OPERATOR_DECISIONS.md", "tasks.py new",
-                       "Improvement scan", "`waste`", "Never", "PENDING OPERATOR"):
+        for needle in ("Opus", "LITE", "no cap", "traffic.py budget", "OPERATOR_DECISIONS.md", "tasks.py new",
+                       "Improvement scan", "`waste`", "Never"):   # RECOMMEND / PENDING OPERATOR left the role in c2c2a3f14 (10k hook cap)
             self.assertIn(needle, text)
         rolesmd = (REPO / rl.ROLES_MD_REL).read_text(encoding="utf-8")
         self.assertIn("| `Thinker` |", rolesmd)
