@@ -16,7 +16,7 @@
   "from_inbox": "",
   "goal": "List every fee, slippage, funding and fill assumption across all studies and engines, rerun the recent screens with real signed funding, and give each arm's break-even cost and each testnet layer's fee-to-stop ratio.",
   "id": "dsa-audit-06-cost-fill-realism",
-  "lane": "DSA-NB",
+  "lane": "SONNET",
   "latest": [],
   "layers": [],
   "live_path": false,
