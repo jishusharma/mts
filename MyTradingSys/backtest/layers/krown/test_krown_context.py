@@ -195,9 +195,8 @@ class TestJoinNoLookahead(unittest.TestCase):
         """A builder that peeks one bar ahead (trend of the NEXT bar) must differ from its truncated recomputation."""
         def leaky_rows(n):
             r = kx.build_daily_rows(self.t[:n], self.o[:n], self.h[:n], self.l[:n], self.c[:n], self.v[:n])
-            for i in range(n - 1):
-                r[i] = dict(r[i], trend_1d_ours=r[i + 1]["trend_1d_ours"], close_1d=r[i + 1]["close_1d"])
-            return r
+            peeked = [dict(a, trend_1d_ours=b["trend_1d_ours"], close_1d=b["close_1d"]) for a, b in zip(r, r[1:])]
+            return peeked + r[-1:]
         full = leaky_rows(420)
         caught = 0
         for i in (140, 199, 260, 333):
