@@ -1,1 +1,0 @@
-{"t": "20261016T160413Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "start session-cleanup-rule 2>&1 | grep WORKTREE; grep -n \"SHORT SESSIONS\" CLAUDE.md | head -2; grep -n \"^- Worker type by size\" MyTradingSys/system/SUPER_SESSION.md"}

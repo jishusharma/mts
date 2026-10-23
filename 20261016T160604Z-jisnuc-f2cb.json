@@ -1,1 +1,0 @@
-{"t": "20261016T160604Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "release session-cleanup-rule 2>&1 | tail -1; git worktree remove ../[cut] 2>&1 | tail -1; git worktree remove ../mts-jis-nuc-nuc-halt-cap 2>&1 | tail -1"}
