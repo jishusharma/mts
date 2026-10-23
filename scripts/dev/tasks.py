@@ -528,17 +528,30 @@ def stale_raw(cards, at=None):
     return out
 
 
+def builder_ready(cards):
+    """Ready cards relay builders can take: ready run-lane cards (DSA, JIS-NB) do not count."""
+    return sum(c["state"] == "ready" and c.get("lane") in CODE_LANES for c in cards)
+
+
+def refine_due(cards, at=None):
+    """Cards the refiner should take now: every stale raw card, plus every refinable card (raw or refined, any age) while
+    builders have fewer than BUFFER ready, so the age rule never leaves an empty queue idle for an hour."""
+    due = stale_raw(cards, at)
+    if builder_ready(cards) < BUFFER:
+        due += [c for c in cards if refinable(c) and c not in due]
+    return due
+
+
 def status_line(cards, at=None):
-    """REFINE_NEEDED while any refinable raw card is older than REFINE_AGE_H, however full the ready stock is. Parked
-    cards (asked the operator, or tried MAX_TRIES times) never count, so a stuck card cannot start a session every tick."""
+    """REFINE_NEEDED while refine_due has a card: a raw card older than REFINE_AGE_H however full the ready stock is, or any
+    refinable card while the builder stock is low. Parked cards (asked the operator, or tried MAX_TRIES times) never count,
+    so a stuck card cannot start a session every tick."""
     n = counts(cards)
     todo = sum(refinable(c) for c in cards)
     parked = n["raw"] + n["refined"] - todo
-    # ready counts only relay-builder lanes: ready run-lane cards (DSA, JIS-NB) cannot be taken by them.
-    ready = sum(c["state"] == "ready" and c.get("lane") in CODE_LANES for c in cards)
     stale = len(stale_raw(cards, at))
-    tail = f"refinable={todo} stale_raw={stale} parked={parked} ready={n['ready']} builder_ready={ready} buffer={BUFFER}"
-    return ("REFINE_NEEDED " if stale else "REFINE_OK ") + tail
+    tail = f"refinable={todo} stale_raw={stale} parked={parked} ready={n['ready']} builder_ready={builder_ready(cards)} buffer={BUFFER}"
+    return ("REFINE_NEEDED " if refine_due(cards, at) else "REFINE_OK ") + tail
 
 
 def summary(repo=REPO):

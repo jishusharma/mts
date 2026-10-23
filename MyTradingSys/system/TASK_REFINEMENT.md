@@ -48,7 +48,7 @@ A ready card that later fails (a dependency reopens, someone edits it) is not se
    read the registry row and its evidence, grep for the files and the source quote, fill the card, run `tasks.py check <id>`. Anything that is
    "run it and read numbers" it delegates as a DSA desk task instead of scoping the answer itself. A question only the operator can answer
    becomes a Control Room decision, and the card waits as `refined` with the reason in `note`.
-3. **Trigger**: `tasks.py status` prints `REFINE_NEEDED` when cards wait and fewer than 3 are ready, else `REFINE_OK`. `relay.py tick` computes
+3. **Trigger**: `tasks.py status` prints `REFINE_NEEDED` when a raw card is over 1 h old, or cards wait and fewer than 3 are ready, else `REFINE_OK`. `relay.py tick` computes
    that line hourly (T0); at NEEDED the dispatcher runs the refiner, not a builder. A relay session also runs `tasks.py next` at
    hand-over: no ready card = refine first, never hand over a vague task.
 4. **Builder session**: `tasks.py next` -> `tasks.py brief <id>` is its whole prompt -> `sync.py claim` -> work -> `tasks.py done <id> --result` -> ship -> release.

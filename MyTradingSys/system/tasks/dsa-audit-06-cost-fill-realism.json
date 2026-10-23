@@ -54,7 +54,7 @@
     "Engine x fill-rule table (next open, same-bar stop+target, gap stop, limit fills, timeout price, partials); N2 status only.",
     "Break-even cost per arm vs charged; fee-to-stop ratio for every stop-based testnet layer (extends E3)."
   ],
-  "tests": "",
+  "tests": "Audit report, no product code: a Haiku Agent re-derives 2 headline numbers of the report from its pinned inputs (own script, not the producer code) and they match; the report fails the check otherwise.",
   "title": "DSA audit T06: every cost, funding and fill assumption side by side, real funding rerun, break-even per arm",
   "weight": "CRUCIAL",
   "worker": "session"

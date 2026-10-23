@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-23T12:56:10Z",
   "commands": [],
   "created": "2026-10-23T11:53:25Z",
   "depends_on": [],
@@ -12,6 +14,21 @@
   "goal": "Raw cards get refined within one Supervisor wake; today 90 raw cards sit while status says REFINE_OK because the trigger is ready < BUFFER (tasks.py:518-527).",
   "id": "flow-a1-plan-refine-trigger",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "REFINE_NEEDED + plan RUN Session_Planner line when a raw card is over 1 h old (real board:",
+      "ref": "3796d5898",
+      "utc": "2026-10-23T12:56:10Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Role flow A1: REFINE_NEEDED and Planner RUN line when any raw card is over 1 h old",
+      "ref": "869e61ca3d8b",
+      "utc": "2026-10-23T12:01:33Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,20 +36,30 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-23T12:56:06Z",
   "refs": [],
-  "result": "",
+  "result": "REFINE_NEEDED + plan RUN Session_Planner line when a raw card is over 1 h old (real board: old REFINE_OK, new REFINE_NEEDED stale_raw=89) or the builder stock is low; e2e 26/26",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/tasks.py refine_line, scripts/dev/supervisor.py plan NOTE at ~847/866, their tests, SUPER_SESSION.md line about Session_Planner on every wake"
   ],
   "scope_out": [
     "role_loader.py, model_guard.py, Pipeliner docs, routing"
   ],
+  "scope_sha": "869e61ca3d8b",
   "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
+  "state": "done",
+  "steps": [
+    "1. stale_raw + refine_due in tasks.py; 2. plan RUN line in supervisor.py; 3. fail-first tests; 4. e2e harness old vs new"
+  ],
+  "taken": "2026-10-23T12:56:09Z",
   "tests": "test in scripts/dev (tasks/supervisor tests): 1 raw card created 2 h ago + 5 ready -> REFINE_NEEDED and plan line; 0 raw -> REFINE_OK; parked raw cards do not count.",
   "title": "Role flow A1: plan runs Session_Planner when any raw card is old or new, not only when ready < 3",
   "weight": "",
-  "worker": "agent"
+  "worker": "session"
 }

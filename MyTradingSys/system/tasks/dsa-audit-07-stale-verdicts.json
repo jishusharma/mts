@@ -54,7 +54,7 @@
     "CI (lead L9): versions here vs CI, pandas imports, tracked tests in no gate list.",
     "Doc drift: LAYERS.md, layer_map.json, Research Map DATA, STATUS.md vs result files."
   ],
-  "tests": "",
+  "tests": "Audit report, no product code: a Haiku Agent re-derives 2 headline numbers of the report from its pinned inputs (own script, not the producer code) and they match; the report fails the check otherwise.",
   "title": "DSA audit T07: verdict-to-code provenance, rerun-and-diff of ten results, determinism, CI and doc drift",
   "weight": "CRUCIAL",
   "worker": "session"

@@ -53,7 +53,7 @@
     "Half-year stability on DEV for arms with n >= 100.",
     "LC1 (lead L8): fair touched-only control on the footprint window (exposure row); recompute the 12 hold rates and which KEEPs survive."
   ],
-  "tests": "",
+  "tests": "Audit report, no product code: a Haiku Agent re-derives 2 headline numbers of the report from its pinned inputs (own script, not the producer code) and they match; the report fails the check otherwise.",
   "title": "DSA audit T05: matched placebo distributions, overlap, best-of-N and a fair LC1 control",
   "weight": "CRUCIAL",
   "worker": "session"

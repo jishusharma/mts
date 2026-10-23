@@ -54,7 +54,7 @@
     "Read study.py; classify each difference (spec ambiguity, shipped bug, twin bug); fix twin bugs; measure mean, t and verdict on shipped vs twin vs corrected events.",
     "Time left: a third twin for opr_preopen_tops H2."
   ],
-  "tests": "",
+  "tests": "Audit report, no product code: a Haiku Agent re-derives 2 headline numbers of the report from its pinned inputs (own script, not the producer code) and they match; the report fails the check otherwise.",
   "title": "DSA audit T04: clean-room twin of mal_bb and weekly-low sweep from PRE_REG only, diffed event by event",
   "weight": "IMPORTANT",
   "worker": "session"

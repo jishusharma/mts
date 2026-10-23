@@ -227,6 +227,19 @@ class QueueTest(unittest.TestCase):
         self.assertTrue(T.status_line(cards, made + timedelta(hours=2)).startswith("REFINE_NEEDED"))
         self.assertTrue(T.status_line(cards, made + timedelta(minutes=30)).startswith("REFINE_OK"))   # too young
 
+    def test_fresh_raw_card_with_empty_builder_stock_is_refine_needed_at_once(self):
+        """The 1 h age rule alone left an empty queue idle for an hour."""
+        made = datetime(2026, 10, 23, 10, 0, tzinfo=timezone.utc)
+        T.save(self.repo, good("B1", state="raw", created="2026-10-23T10:00:00Z"))
+        cards = T.load_all(self.repo)
+        self.assertTrue(T.status_line(cards, made + timedelta(minutes=5)).startswith("REFINE_NEEDED"))
+        self.assertEqual([c["id"] for c in T.refine_due(cards, made + timedelta(minutes=5))], ["B1"])
+
+    def test_old_refined_card_with_empty_builder_stock_is_refine_needed(self):
+        """A refined card (past raw, not yet ready) still wakes the refiner when builders run dry."""
+        T.save(self.repo, good("B1", state="refined", created="2020-01-01T00:00:00Z"))
+        self.assertTrue(T.status_line(T.load_all(self.repo)).startswith("REFINE_NEEDED"))
+
     def test_no_raw_cards_is_refine_ok(self):
         for i in range(5):
             T.save(self.repo, good(f"R{i}"))

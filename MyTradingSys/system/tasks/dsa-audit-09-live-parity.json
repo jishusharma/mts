@@ -54,7 +54,7 @@
     "Run each layer's backtest on the same days; diff signals (same bar, off by one, live-only, backtest-only).",
     "Exit-rule diff (auto_trader.py, position_manager.py, config) vs backtest exits; explain the 97% time exits with numbers."
   ],
-  "tests": "",
+  "tests": "Audit report, no product code: a Haiku Agent re-derives 2 headline numbers of the report from its pinned inputs (own script, not the producer code) and they match; the report fails the check otherwise.",
   "title": "DSA audit T09: replay DEV bars through the testnet layer code and diff signals and exits against the backtests",
   "weight": "IMPORTANT",
   "worker": "session"

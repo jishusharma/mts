@@ -1049,7 +1049,7 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
         cards, reg = tasks.load_all(repo), tasks.registry(repo)
         ready = [c for c in cards if c.get("state") == "ready" and not tasks.problems(c, cards, reg, repo)]
         ctx["codex_ready"] = sum(1 for c in ready if str(c.get("lane", "")).upper() == "CODEX")
-        ctx["refine_raw"] = len(tasks.stale_raw(cards))
+        ctx["refine_raw"] = len(tasks.refine_due(cards))
         ctx["gemini_ready"] = sum(1 for c in ready if str(c.get("vendor", "")).lower() == "gemini")
         import desk
         rows = desk.trunk_rows(repo, TRUNK_REF)
