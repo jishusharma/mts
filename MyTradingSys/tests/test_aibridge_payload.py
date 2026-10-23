@@ -92,31 +92,3 @@ def test_agent_live_selftest():
     fails = [ln for ln in r.stdout.splitlines() if ln.startswith("FAIL")]
     assert r.returncode == 0 and not fails, "\n".join(fails)[:3000] or r.stderr[-2000:]
     assert re.search(r"\d+ passed, 0 failed", r.stdout)
-
-
-@pytest.mark.skipif(os.name != "nt" or shutil.which("powershell.exe") is None, reason="needs Windows PowerShell")
-def test_agent_live_selftest_concurrent_and_port_clash():
-    """Gate failure 2026-10-15: the selftest used fixed port 7199, so sessions shipping at the same time (or any
-    listener on 7199) made it fail with ConnectionResetError. Two runs at once next to a squatter on 7199 must pass."""
-    import socket
-    squat = socket.socket()
-    try:
-        squat.bind(("127.0.0.1", 7199))
-        squat.listen(5)
-    except OSError:
-        squat.close()
-        squat = None   # someone else already holds 7199: the clash is already in place
-    procs = []
-    try:
-        cmd = [sys.executable, "tests/agent_live_selftest.py"]
-        procs = [subprocess.Popen(cmd, cwd=PAYLOAD, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) for _ in range(2)]
-        outs = [p.communicate(timeout=SELFTEST_TIMEOUT_S)[0] for p in procs]
-    finally:
-        if squat:
-            squat.close()
-        for p in procs:   # a timed-out run must not leave its python + PowerShell agent holding a port and CPU
-            _kill_tree(p)
-    for p, out in zip(procs, outs):
-        fails = [ln for ln in out.splitlines() if ln.startswith("FAIL")]
-        assert p.returncode == 0 and not fails, "\n".join(fails)[:3000] or out[-2000:]
-        assert re.search(r"\d+ passed, 0 failed", out)

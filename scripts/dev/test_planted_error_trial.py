@@ -1,6 +1,7 @@
 """Unit tests for planted-error trial harness (lab-planted-error-trial)."""
 from __future__ import annotations
 import json
+import tempfile
 import unittest
 from pathlib import Path
 import sys
@@ -12,7 +13,24 @@ import planted_error_trial as pet
 
 
 class TestPlantedErrorTrial(unittest.TestCase):
-    @unittest.skipUnless(pet.RUNS.is_file(), "runs.jsonl lives on NUC F: drive only")
+    """Hermetic: tasks.RUNS_JSONL lives on the lab host only (F:/codex_home), so CI saw every card with trial rows as a count
+    mismatch and run() hit IndexError (fast-track 8781a044, 33ad19a5). The runs file is built from TRIALS.md here, and run()
+    writes its shadows and flow note to a temp dir, not into the tracked research/lab_guy files."""
+    def setUp(self):
+        self.d = tempfile.TemporaryDirectory()
+        tmp = Path(self.d.name)
+        self._saved = (pet.RUNS, pet.tasks.RUNS_JSONL, pet.OUT, pet.FLOW)
+        rows = [json.dumps({"card": json.loads(p.read_text(encoding="utf-8")).get("id", p.stem)})
+                for p in sorted((ROOT / pet.tasks.DIR / "archive").glob("*.json"))
+                for _ in pet._ledger(json.loads(p.read_text(encoding="utf-8")).get("id", p.stem))]
+        (tmp / "runs.jsonl").write_text("".join(r + chr(10) for r in rows), encoding="utf-8", newline=chr(10))
+        pet.RUNS = pet.tasks.RUNS_JSONL = tmp / "runs.jsonl"
+        pet.OUT, pet.FLOW = tmp / "planted", tmp / "FLOW.md"
+
+    def tearDown(self):
+        pet.RUNS, pet.tasks.RUNS_JSONL, pet.OUT, pet.FLOW = self._saved
+        self.d.cleanup()
+
     def test_one_plant_per_shadow_and_clean_originals_pass(self):
         # Must run the harness and return manifest
         manifest = pet.run()

@@ -531,6 +531,18 @@ class TestGateSpeed(unittest.TestCase):
             plan, _ = rat.apply_selection(rat.build_plan(True), ["--smoke", "--changed-file", str(lst)])
             self.assertFalse([s for s in plan if s.num == rat.TARGET_STEP])   # CI / auto_deploy argv: no precheck step
 
+    def test_a_full_gate_runs_the_targeted_files_once_in_their_shard_not_again_as_4t(self):
+        """Ship 2026-10-24: a full gate ran 4t (12 files, 303 s) serially before the main gate, then ran the same files in their shard."""
+        with tempfile.TemporaryDirectory() as d:
+            lst = Path(d) / "changed.txt"
+            lst.write_text("scripts/dev/sync.py\nMyTradingSys/tests/test_relay_prompts.py\n", encoding="utf-8")
+            plan, mode = rat.apply_selection(rat.build_plan(True), ["--smoke", "--precheck", "--changed-file", str(lst)])
+            self.assertEqual(mode, "full")
+            self.assertFalse([s for s in plan if s.num == rat.TARGET_STEP])
+            shards = [s for s in plan if s.num.startswith("4") and "pytest" in s.cmd_text]
+            self.assertTrue(shards)
+            self.assertFalse([s for s in shards if s.skip])   # every shard (so test_relay_prompts.py) still runs
+
     def test_smoke_steps_are_capped_at_240_s_and_other_modes_are_not(self):
         self.assertEqual(rat.step_timeout_for("smoke"), 240)
         self.assertIsNone(rat.step_timeout_for("full"))

@@ -79,7 +79,8 @@ TEST_FILE_DEFAULT_S = 2
 TEST_FILE_SECONDS = {
     "test_turn_meter.py": 8,     # 150 until GATE_SPEED D7 (2026-10-18) ran its hook calls in-process: 7 s
 
-    "test_aibridge_payload.py": 95,
+    "test_aibridge_payload.py": 45,                  # 95 split 2026-10-24 (quiet: 19 s + 23 s): one selftest here,
+    "test_aibridge_selftest_concurrent.py": 50,      # the concurrent pair there, so two shards share it
     "test_b091_build_check_tiers.py": 60,
     "test_build_check_report_reasons.py": 32,
     "test_relay_tick.py": 32,
@@ -995,8 +996,8 @@ def apply_selection(plan, args):
     extras, modules = run_extra_tests.all_tests(), find_layer_modules()
     mode, nums, gate_reason = gate_select.explain(files, [(s.num, s.cmd_text) for s in plan], step_files={"3xt": extras, "5b": modules})
     gate_mode = mode
-    if mode == "full":
-        return plan, mode
+    if mode == "full":   # every shard runs: 4t would run its files twice, serially before the main gate (303 s, ship 2026-10-24)
+        return [s for s in plan if s.num != TARGET_STEP], mode
     global fast_applied, fast_info
     if "--fast" in args and mode == "smoke":
         try:

@@ -108,6 +108,21 @@ class PreshipTest(unittest.TestCase):
         self.assertEqual(P.cap_failures(str(self.root), ["a.py"]), [])            # no capped doc in the ship
         self.assertEqual(P.cap_failures(self.d.name, ["CLAUDE.md"]), [])          # a repo without the cap test
 
+    def test_docs_ship_runs_the_doc_rules_only_and_sync_refuses_the_push(self):
+        import sync
+        other = ("own unit tests", lambda p: True, lambda r, ps: [FAIL], False, "-", "-")
+        card = ("task cards", lambda p: p.endswith(".json"), lambda r, ps: [self.cmd], True, "fill the card", "-")
+        P.RULES = [other, card]
+        names = [r[0] for r, _ in P.docs_ship_failures(str(self.root), ["MyTradingSys/system/tasks/x.json"])]
+        self.assertEqual(names, ["task cards"])
+        with self.assertRaises(sync.SyncError) as e:
+            sync.run_docs_gate(str(self.root), ["MyTradingSys/system/tasks/x.json"])
+        self.assertIn("[task cards]", str(e.exception))
+        self.assertIn("FIX: fill the card", str(e.exception))
+        self.cmd = PASS
+        self.assertEqual(P.docs_ship_failures(str(self.root), ["MyTradingSys/system/tasks/x.json"]), [])
+        sync.run_docs_gate(str(self.root), ["MyTradingSys/system/tasks/x.json"])
+
     def test_off_switch_and_garbage_never_raise(self):
         self.stage()
         os.environ["MTS_PRESHIP"] = "off"
@@ -133,6 +148,19 @@ class RealRulesTest(unittest.TestCase):
         self.assertIn("look-ahead lint", self.names("MyTradingSys/research/x/study.py"))
         self.assertIn("hook rows", self.names(".claude/settings.json"))
         self.assertEqual(self.names("README.txt"), [])
+
+    def test_the_docs_ships_that_went_red_on_2026_10_23_reach_a_docs_ship_rule(self):
+        for path in ("MyTradingSys/system/roles/supervisor.md", "MyTradingSys/system/ROLES.md",
+                     "MyTradingSys/system/tasks/dsa-audit-04-clean-room-twin.json", "MyTradingSys/research/BUGS.md",
+                     "MyTradingSys/system/groups.json"):
+            with self.subTest(path=path):
+                self.assertTrue(set(self.names(path)) & set(P.DOCS_SHIP_RULES))
+
+    def test_a_repo_without_the_checkers_passes_a_docs_ship(self):
+        """Ship 2026-10-24: test_sync's scratch repos have no doc cap test; the docs ship check failed them on 'file not found'."""
+        with tempfile.TemporaryDirectory() as d:
+            self.assertEqual(P.docs_ship_failures(d, ["CLAUDE.md", "MyTradingSys/system/roles/supervisor.md",
+                                                      "MyTradingSys/system/tasks/x.json", "MyTradingSys/research/BUGS.md"]), [])
 
     def test_every_hook_mode_in_settings_exists(self):
         s = json.loads((Path(__file__).resolve().parents[2] / ".claude" / "settings.json").read_text(encoding="utf-8"))
