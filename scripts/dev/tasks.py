@@ -124,6 +124,94 @@ def load_all(repo=REPO):
     return [json.loads(p.read_text(encoding="utf-8")) for p in sorted([*d.glob("*.json"), *d.glob("archive/*.json")])] if d.is_dir() else []
 
 
+# Twin cards (doctor 2026-10-23: doctor-main-checkout-behind and jis-nb-fast-forward-the-main-checkout-to sat open 10 h, one job).
+# OURS, tuned on the 172 open cards of 2026-10-23: the real pair scores 0.31 there and 0.25 in a 12-card corpus (title words
+# weighted by rarity, so the scale moves with the corpus); 0.25 catches it in both: a warning, never a refusal. Series titles ("Trust re-check: X") are compared after their shared "<series>:" head. A path
+# shared by more than TWIN_COMMON_PATH open cards is a family source (SPEC.md of a study), not a sign of a twin. A pair is
+# silenced by `not_twin_of` on either card. Cards created within TWIN_BATCH_MIN of each other are one session's batch (series
+# siblings: 15 of the 27 pairs on 2026-10-23); twins come from two sessions, the real pair was filed 5 h apart.
+TWIN_TITLE = 0.25
+TWIN_PATHS = 2
+TWIN_COMMON_PATH = 3
+TWIN_BATCH_MIN = 30
+TWIN_STOP = set("the a an of to and in on for with is by from per at or as be it this that its into than then not no all any one two each "
+                "card cards run runs use used new via when what which who so are was were has have only after before".split())
+
+
+def _title_words(title):
+    return [w for w in re.findall(r"[a-z][a-z0-9]+", title.lower()) if w not in TWIN_STOP and len(w) > 2]
+
+
+def _paths(card):
+    """Files a card names, one key per unit: `x.py` and its `test_x.py` count once; notes after the path are dropped."""
+    out = set()
+    for x in (card.get("refs") or []) + (card.get("scope_in") or []):
+        p = str(x).strip().split(" ", 1)[0].rstrip("/")
+        if "/" in p:
+            out.add(re.sub(r"^test_", "", p.rsplit("/", 1)[-1]) if p.endswith(".py") else p)
+    return out
+
+
+def _created(card):
+    try:
+        t = datetime.fromisoformat(str(card.get("created", "")).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return t if t.tzinfo else t.replace(tzinfo=timezone.utc)
+
+
+def _related(a, b):
+    """Parent/child, acknowledged or same-batch pairs are not twins."""
+    ia, ib = a.get("id", ""), b.get("id", "")
+    ta, tb = _created(a), _created(b)
+    return (ib in (a.get("not_twin_of") or []) or ia in (b.get("not_twin_of") or []) or ib in (a.get("depends_on") or [])
+            or ia in (b.get("depends_on") or []) or ia.startswith(ib + "-need-") or ib.startswith(ia + "-need-")
+            or bool(ta and tb and abs((ta - tb).total_seconds()) <= TWIN_BATCH_MIN * 60))
+
+
+def twin_pairs(cards, only=None):
+    """[(score, id_a, id_b, reason)] for likely twins among open cards; `only` = an id whose pairs alone are wanted."""
+    import math
+    from collections import Counter
+    live = [c for c in cards if c.get("state") not in FINAL and c.get("id")]
+    words = {c["id"]: _title_words(c.get("title", "")) for c in live}
+    df = Counter(w for ws in words.values() for w in set(ws))
+    pdf = Counter(p for c in live for p in _paths(c))
+    n = len(live)
+
+    def vec(ws):
+        v = {w: math.log((n + 1) / (df[w] + 1)) for w in set(ws)}
+        s = math.sqrt(sum(x * x for x in v.values())) or 1.0
+        return {w: x / s for w, x in v.items()}
+
+    def score(a, b):
+        ta, tb = a.get("title", ""), b.get("title", "")
+        ha, hb = ta.split(":", 1), tb.split(":", 1)
+        if len(ha) == 2 and len(hb) == 2 and ha[0].strip().lower() == hb[0].strip().lower():
+            ta, tb = ha[1], hb[1]                 # a series: compare the subjects
+        wa, wb = _title_words(ta), _title_words(tb)
+        if wa and wa == wb:
+            return 1.0
+        va, vb = vec(wa), vec(wb)
+        return sum(x * vb.get(w, 0.0) for w, x in va.items())
+
+    out = []
+    for i, a in enumerate(live):
+        for b in live[i + 1:]:
+            if only and only not in (a["id"], b["id"]) or _related(a, b):
+                continue
+            s = score(a, b)
+            shared = sorted(p for p in _paths(a) & _paths(b) if pdf[p] <= TWIN_COMMON_PATH)
+            why = []
+            if s >= TWIN_TITLE:
+                why.append(f"title {s:.2f}")
+            if len(shared) >= TWIN_PATHS:
+                why.append("same files " + ", ".join(shared[:3]))
+            if why:
+                out.append((round(s, 2), a["id"], b["id"], "; ".join(why)))
+    return sorted(out, key=lambda t: (-t[0], t[1], t[2]))
+
+
 def get(repo, cid):
     p = path_of(repo, cid)
     if not p.is_file():
@@ -470,6 +558,17 @@ def cmd_new(a):
     if a.crucial:
         card["crucial"] = True
     print(f"wrote {save(REPO, card)} (state raw; refine it, then `tasks.py check {cid}`)")
+    for s, x, y, why in twin_pairs(load_all(REPO), only=cid):
+        other = y if x == cid else x
+        print(f"WARN likely twin of {other} ({why}): `tasks.py brief {other}`; if it is the same job, drop one; "
+              f"if not, add \"{other}\" to not_twin_of")
+
+
+def cmd_twins(a):
+    pairs = twin_pairs(load_all(REPO))
+    for s, x, y, why in pairs:
+        print(f"TWIN {x} {y} ({why})")
+    print(f"tasks twins: {len(pairs)} likely twin pair(s) among open cards")
 
 
 def cmd_need(a):
@@ -1350,6 +1449,7 @@ def main(argv=None):
     n.add_argument("--layer", action="append", help="layer family id (layer_index.json); repeat for several")
     n.add_argument("--crucial", action="store_true", help="lane CODEX: when the GPT lane is down this card waits for GPT instead of moving to DSA/Claude")
     n.set_defaults(f=cmd_new)
+    sp.add_parser("twins", help="likely duplicate open cards (close title or same rare files)").set_defaults(f=cmd_twins)
     ne = sp.add_parser("need", help="record a pre-run item: a prerequisite card an agent owns (depends_on) and/or a host pin")
     ne.add_argument("id")
     ne.add_argument("what", nargs="?")
