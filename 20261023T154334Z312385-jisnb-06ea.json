@@ -1,0 +1,1 @@
+{"t": "20261023T154334Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship Result: 9 ranked root causes; top: app-drawn approval card (no hook can remove it), model_guard over-blocks, turn_meter misses Supervisor (49 false stops), role_loader 300-char scan, main checkou", "login": "C", "sid": "84e514c9e0"}
