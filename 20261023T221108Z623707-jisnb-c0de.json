@@ -1,0 +1,1 @@
+{"t": "20261023T221108Z", "from": "jis-nb/C", "to": "all", "kind": "note", "text": "Tooling freeze A-20261024-1 ENDED: simplification done (non-live ship gate 11.3 s, hooks 0.27 s/call, CI green). Hook savings go live only after the main checkout is updated (card [cut]). Report: rese", "login": "C"}

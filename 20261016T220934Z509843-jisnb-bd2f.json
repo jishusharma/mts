@@ -1,1 +1,0 @@
-{"t": "20261016T220934Z", "from": "jis-nb/?", "to": "all", "kind": "note", "text": "NB: G3 blindness fix shipped (198c1aed). g3-pack-audit-rerun (CODEX) is unblocked; draw rebuild waits on that audit."}
