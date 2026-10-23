@@ -123,8 +123,7 @@ def run():
     # Construct ordered pool of 6 clean cards with at least one ledger-carrying card at index 4
     ordered_clean = [without_ledger[0], with_ledger[0], with_ledger[1], without_ledger[1], with_ledger[2], without_ledger[2]]
 
-    n_shadows = 10 if len(pool) >= 10 else 8
-    target_classes = CLASSES[:n_shadows] if n_shadows <= len(CLASSES) else CLASSES + CLASSES[:n_shadows - len(CLASSES)]
+    target_classes = CLASSES   # card lab-planted-error-trial: 8 shadows, one per class (a pool of >= 10 made 10: classes 1-2 twice)
 
     OUT.mkdir(parents=True, exist_ok=True)
     records = []
@@ -175,14 +174,14 @@ def run():
         "clean_cards": [c["id"] for c, _, _, _ in ordered_clean],
         "machine_checks": ["tasks.problems", "lab_flow.gate", "lab_flow.fingerprint", "tasks.trial_ledger_runs_count"],
         "skipped_candidates": skipped,
-        "note": f"6 clean cards available (not 10). {n_shadows} shadows generated round-robin per codex-unstick-2026-10-23.md decision."
+        "note": f"6 clean cards available (not 10). {len(target_classes)} shadows generated round-robin per codex-unstick-2026-10-23.md decision."
     }
     (OUT / "manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
 
     lines = [
         "# Planted-error trial: machine layer",
         "",
-        f"Verdict: MACHINE-ONLY; 6 clean cards available (not 10), generating {n_shadows} shadows round-robin per `codex-unstick-2026-10-23.md` decision. Stack rows remain for the coordinator.",
+        f"Verdict: MACHINE-ONLY; 6 clean cards available (not 10), generating {len(target_classes)} shadows round-robin per `codex-unstick-2026-10-23.md` decision. Stack rows remain for the coordinator.",
         "",
         "| Error class | Caught | Missed | Cheap Haiku/Flash (tokens / effort) | Expensive Argon/GPT-high (tokens / effort) |",
         "|---|---:|---:|---|---|",
