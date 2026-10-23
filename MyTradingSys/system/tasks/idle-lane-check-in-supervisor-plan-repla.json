@@ -1,35 +1,55 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest scripts/dev/test_supervisor.py -q"
+  ],
   "created": "2026-10-23T07:12:27Z",
-  "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "depends_on": [
+    "usage-log-py-per-step-usage-ledger-trans"
+  ],
+  "done_when": "supervisor.py plan prints an IDLE line for a fixture with 5h 3% and a ready SONNET card; pace_plan uses the measured k from rows and says (GUESS) only on fallback; tests pass.",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Show IDLE lines from usage_log.py idle in supervisor.py plan output, and compute K (weekly points per 5h point) from USAGE_PILOT.csv rows when a window has 2 readings, falling back to K_DEFAULT.",
   "id": "idle-lane-check-in-supervisor-plan-repla",
   "kind": "build",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "DECISION (OURS) 2026-10-23: drafted and T0-checked; reviewer Agent blocked by spawn cap (8/h), so no ACCEPT stamp: needs ONE batched Sonnet reviewer pass (or Lab_Guy for CODEX), then stamp REVIEWED:<date> ACCEPT and tasks.py check. Supervisor code is not the live trading path, but the pace logic is shared by all logins: keep the fallback. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
+  "scope_in": [
+    "scripts/dev/supervisor.py",
+    "scripts/dev/test_supervisor.py",
+    "scripts/dev/usage_log.py"
+  ],
+  "scope_out": [
+    "spawn logic, SPAWN_CEIL, worker caps",
+    "live path",
+    "traffic.py"
+  ],
+  "size": "M",
+  "sources": [
+    "scripts/dev/supervisor.py:576 (K_DEFAULT GUESS)",
+    "MyTradingSys/research/thinker/2026-10-23_usage_metering.md (Check)"
+  ],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Add usage_log.measured_k(rows): weekly delta / 5h delta over rows in one window with 5h delta >= 3 points; else None.",
+    "estimate_k (supervisor.py:~660) also consults those rows; k_meas or K_DEFAULT stays the fallback.",
+    "plan_lines (supervisor.py:809) appends usage_log.idle() output as IDLE lines; a failing check prints nothing, never breaks plan.",
+    "Tests first: IDLE fixture and measured-k fixture fail before the change."
+  ],
+  "tests": "scripts/dev/test_supervisor.py::test_plan_prints_idle_line and ::test_measured_k_from_usage_rows fail first, pass after.",
   "title": "Idle-lane check in supervisor plan, replacing K_DEFAULT guess with measured rate",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
