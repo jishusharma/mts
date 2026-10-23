@@ -160,6 +160,19 @@ class TestInject(Base):
         self.assertTrue(t.startswith("Session resumed/compacted: re-confirm"))
         self.assertIn("ROLE LOADED: Eagle_Eyes", t)
 
+    def test_session_start_records_the_token_it_served_when_trunk_changed(self):
+        self.put_role()
+        self.hook("You are Eagle_Eyes.", sid="r2")
+        old = rl.role_meta("r2", "Eagle_Eyes")["token"]
+        self.put_role(role_text(body=BODY + "A rule added after the session started.\n"))
+        t = self.hook("", sid="r2", event="SessionStart")
+        new = rl.compute_token(self.trunk[f"{rl.ROLES_REL}/eagle_eyes.md"].replace("\r\n", "\n"))
+        self.assertNotEqual(old, new)
+        self.assertIn(f"token {new}", t)
+        self.assertEqual(rl.role_meta("r2", "Eagle_Eyes")["token"], new)    # the reminder and banner verify read this
+        r = self.hook("what is the BTC read?", sid="r2")
+        self.assertIn(f"token {new}", r)
+
     def test_session_start_without_role_is_silent(self):
         self.put_role()
         self.assertEqual(self.hook("", sid="fresh", event="SessionStart"), "")

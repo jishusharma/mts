@@ -511,6 +511,9 @@ def wait_for_transition(
             pass
         current = probe_fn(repo, sha_list)
         reason = _detect_transition(baseline, current)
+        b, c = baseline.get("busy_slots"), current.get("busy_slots")
+        if not reason and c is not None and (b is None or c > b):     # unknown at the start: the first count read is the baseline
+            baseline = {**baseline, "busy_slots": c}    # a ship that starts during the watch: its gate freeing (worker done) wakes too
         if not reason and login:
             last = _last_plan(login, home)
             if last.get("at") and str(last.get("at")) != _woke_on(login, home):

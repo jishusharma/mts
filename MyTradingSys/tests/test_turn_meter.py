@@ -20,7 +20,7 @@ import turn_meter  # noqa: E402
 
 def hook_env(home, env=None):
     e = {k: v for k, v in os.environ.items() if not k.startswith("MTS_TURN_METER")}
-    e.update({"MTS_TURN_METER_HOME": str(home), **(env or {})})
+    e.update({"MTS_TURN_METER_HOME": str(home), "MTS_ROLES_HOME": str(Path(home) / "roles"), **(env or {})})
     return e
 
 
@@ -362,6 +362,44 @@ class AwayFlagAndAtomicSaveTest(unittest.TestCase):
         self.driven(40 * 60)
         fire(self.home, "UserPromptSubmit", sid="a", extra={"prompt": "<task-notification>done</task-notification>"})
         self.assertFalse(turn_meter.attended(self.state()))
+
+    def unattended_run(self, sid, prompt):
+        """One typed brief, then Opus tool calls at 300k context past the 1M unattended read budget (half-way nag at 500k)."""
+        tr = self.home / f"{sid}.jsonl"
+        tr.write_text(json.dumps({"type": "assistant", "message": {"id": "m1", "model": "claude-opus-5-5", "content": [],
+                                                                   "usage": {"input_tokens": 300_000}}}) + "\n", encoding="utf-8")
+        fire(self.home, "UserPromptSubmit", sid=sid, extra={"prompt": prompt})
+        nags = [fire(self.home, "PostToolUse", sid=sid, extra={"transcript_path": str(tr)}) for _ in range(5)]
+        return nags, fire(self.home, "PreToolUse", sid=sid, extra={"tool_name": "WebSearch", "tool_input": {}})
+
+    def test_a_worker_past_the_unattended_budget_is_nagged_then_stopped(self):
+        nags, pre = self.unattended_run("w", "fix the gate test")
+        self.assertTrue(any(nags))
+        self.assertIn('"deny"', pre)
+
+    def test_a_thinker_is_never_nagged_or_stopped(self):
+        # thinker.md: no turn or context cap (WORKERS.md rule 5). 2026-10-22: a notice-briefed Thinker was denied web search and writes
+        for sid, prompt in (("t1", "You are Thinker. Topic: six slots"), ("t2", "I need a thinker for the CBP plan")):
+            nags, pre = self.unattended_run(sid, prompt)
+            self.assertEqual((nags, pre), ([""] * 5, ""), sid)
+
+    def test_a_thinker_known_only_from_the_role_loader_record_is_not_stopped(self):
+        roles = self.home / "roles"
+        roles.mkdir()
+        (roles / "t3.json").write_text(json.dumps({"roles": ["Thinker"], "meta": {}}), encoding="utf-8")
+        nags, pre = self.unattended_run("t3", "[app notice] continue the brief above")
+        self.assertEqual((nags, pre), ([""] * 5, ""))
+
+    def test_a_thinker_line_keeps_a_supervisor_mark(self):
+        st = self.home / "sv.json"
+        st.write_text(json.dumps({"tool": 1, "user": 1, "role": "supervisor"}), encoding="utf-8")
+        self.assertTrue(turn_meter.uncapped_role({"prompt": "You are Thinker.", "session_id": "sv"}, json.loads(st.read_text())))
+        fire(self.home, "UserPromptSubmit", sid="sv", extra={"prompt": "You are Thinker. Topic: x"})
+        self.assertEqual(json.loads(st.read_text(encoding="utf-8"))["role"], "supervisor")
+
+    def test_thinking_about_something_is_not_the_thinker_role(self):
+        nags, pre = self.unattended_run("w2", "you are thinking too slowly, think about the gate")
+        self.assertIn('"deny"', pre)
 
     def test_save_is_atomic_and_leaves_no_temp_file(self):
         target = self.home / "x.json"

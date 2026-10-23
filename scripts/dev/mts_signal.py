@@ -235,15 +235,24 @@ CMD = re.compile(r"sync\.py\s+(claim|release|ship|start)\b([^|;&>\n]*)")      # 
 SLUG = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,60}$")
 
 
+BOOKKEEPING = ("claim ", "release ", "Merge ")
+
+
 def last_result(cwd):
-    """The `Result:` line of the newest commit in cwd (what a ship delivered), else ''."""
+    """The `Result:` line of the newest work commit in cwd (what a ship delivered), else ''. Claim, release and merge commits
+    are skipped: a ship that ends on its claim commit sent the claim's "works on: <old task>" text as its Result (2026-10-23,
+    DESKTOP-F7IU69N, 9 ships in a row)."""
     try:
-        r = git(cwd, "log", "-1", "--format=%B", check=False, timeout=5)
+        r = git(cwd, "log", "-10", "--format=%x1e%B", check=False, timeout=5)
     except (OSError, subprocess.SubprocessError, RuntimeError):
         return ""
-    for ln in r.stdout.splitlines():
-        if ln.startswith("Result:"):
-            return ln.strip()
+    for body in r.stdout.split(chr(0x1e))[1:]:
+        if body.lstrip().startswith(BOOKKEEPING):
+            continue
+        for ln in body.splitlines():
+            if ln.startswith("Result:"):
+                return ln.strip()
+        return ""
     return ""
 
 

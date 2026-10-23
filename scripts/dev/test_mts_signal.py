@@ -234,6 +234,18 @@ class SignalTest(unittest.TestCase):
         self.assertEqual((text, kind), ("ship Result: 5 layers live", "done"))
         self.assertNotIn("tail", text)
 
+    def test_ship_signal_skips_claim_release_and_merge_commits(self):
+        # 2026-10-23: DESKTOP-F7IU69N ships all signalled the stale claim text "works on: gemini-yt-pipeliner ..."
+        sh(self.tmp, "init", "-q", "repo")
+        repo = self.tmp / "repo"
+        nl2 = chr(10) * 2
+        for msg in ("feat" + nl2 + "Result: lease env set", "claim old-task" + nl2 + "Result: E on PC works on: old task",
+                    "release tc2" + nl2 + "Result: claim tc2 closed", "Merge remote-tracking branch 'origin/fast-track' into x"):
+            sh(repo, "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "--allow-empty", "-m", msg)
+        self.assertEqual(S.last_result(str(repo)), "Result: lease env set")
+        sh(repo, "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "--allow-empty", "-m", "docs only")
+        self.assertEqual(S.last_result(str(repo)), "")      # the newest work commit states no Result: say nothing, not an old one
+
     def test_budget_command_sends_line_traffic_parses_and_writes_file(self):
         self.machine("nb", "sharma")
         os.environ["MTS_RELAY_HOME"] = str(self.tmp / "claudehome")
