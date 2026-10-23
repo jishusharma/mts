@@ -27,12 +27,14 @@
   ],
   "scope_in": "scripts/dev/exhaust.py; scripts/dev/mts_signal.py; MyTradingSys/tests/test_exhaust_phase.py; CLAUDE.md boot line",
   "scope_out": "trading code; live tree; any scheduler",
-  "status": "open",
+  "size": "M",
+  "state": "ready",
   "steps": [
     "Read EXHAUST_PHASE.md",
     "Write the six tests first (fail on old code)",
     "Build exhaust.py, then the mts_signal audience and dedupe changes",
     "Run test_mts_signal and the new tests; ship"
   ],
+  "title": "Exhaust-phase tooling: one actor per login, top-level only, spend all quota before reset",
   "worker": "agent"
 }
