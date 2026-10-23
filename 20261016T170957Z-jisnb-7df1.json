@@ -1,1 +1,0 @@
-{"t": "20261016T170957Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship > \"$TEMP/cf_ship2.log\" 2>&1; echo \"exit $?\"; grep -n \"FAIL\\|PASS\\|SKIP\\|push\\|gate\\|sync:\" \"$TEMP/cf_ship2.log\" | grep -v \": PASS$\" | tail -20"}

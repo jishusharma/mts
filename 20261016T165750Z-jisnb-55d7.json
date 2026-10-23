@@ -1,1 +1,0 @@
-{"t": "20261016T165750Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship > \"$TEMP/cf_ship.log\" 2>&1; echo \"exit $?\"; tail -25 \"$TEMP/cf_ship.log\"; git status --short | grep \"^\\(UU\\|AA\\|DU\\|UD\\|AU\\|UA\\)\" | head"}

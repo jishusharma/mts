@@ -1,1 +1,0 @@
-{"t": "20261016T171904Z", "from": "jis-nuc/sharma", "to": "jis-nb", "kind": "done", "text": "nuc: gpt-g3-pack-audit FIX-FIRST (4 HIGH: intraday date fence, FAB4 outside-run min, divergence window, tag visible). 5 fix cards queued; report layer_lab/reports/2026-10-16_gpt-g3-pack-audit.md"}

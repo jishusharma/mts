@@ -1,1 +1,0 @@
-{"t": "20261016T163658Z", "from": "jis-nb/?", "to": "jis-nuc", "kind": "done", "text": "nb->nuc: v3_grid collection_only-before-unmapped fix shipped (a9608d42). Needs a live deploy to take effect; blocked by STOP_NOT_FF until a human fast-forwards the live tree."}
