@@ -456,5 +456,74 @@ class BootStepTests(unittest.TestCase):
         self.assertLess(len(text) // 4, 1200)
 
 
+class TestWrappedFirstPrompt(Base):
+    """Failure review 2026-10-23 (cause 4): start_session wraps the brief; the role line was at char 644, behind a system-reminder."""
+    WRAPPED = ("<system-reminder>\nThis is a git worktree: an isolated copy of the repository. Run all commands from this directory. "
+               "Do NOT cd to the original repository root. The git stash stack is shared with the main checkout and all other "
+               "worktrees; never use bare git stash. Is a git repository: true. Primary working directory: C:/x/.claude/worktrees/a-b-c1\n"
+               "</system-reminder>\nBackground (from the session that started this one): the operator asked for a live chart read; "
+               "the supervisor wants the Admin_Guy queue and a pipeliner check left alone, and the tokens, charts and files under runtime_data untouched.\nTask:\n"
+               "You are Eagle_Eyes. Read the live BTC chart and report.\n")
+
+    def test_fixture_is_realistic(self):
+        self.assertGreater(self.WRAPPED.index("You are Eagle_Eyes"), 600)
+
+    def test_role_line_past_char_600_behind_a_reminder_loads_the_role(self):
+        self.put_role()
+        out = self.hook(self.WRAPPED)
+        self.assertIn("Eagle_Eyes", out)
+        self.assertIn("BOOT (once)", out)
+
+    def test_pasted_wrapper_and_reminder_then_role_line(self):
+        self.put_role()
+        out = self.hook('<system-reminder>notice</system-reminder>\n<pasted_content id="1">\nYou are Eagle_Eyes.\nGo\n</pasted_content>')
+        self.assertIn("BOOT (once)", out)
+
+    def test_role_words_inside_a_sentence_never_switch_roles(self):
+        self.put_role()
+        for i, p in enumerate((
+                "<system-reminder>n</system-reminder>\nBackground: x\nTask:\nPlease tell me why you are Eagle_Eyes in the log.",
+                "<system-reminder>n</system-reminder>\nreview: he said you are Eagle_Eyes",
+                "<system-reminder>n</system-reminder>\n" + ("filler line " * 6 + "\n") * 8 + "You are Eagle_Eyes.")):
+            self.assertNotIn("BOOT (once)", self.hook(p, sid=f"s{i}"), p)
+
+
+class TestCiRunsOnRoleFiles(unittest.TestCase):
+    def test_a_role_file_change_triggers_ci(self):
+        """Failure review 2026-10-23 cause 8: the CI path filter skipped MyTradingSys/system/**, so a role-file edit shipped untested."""
+        import fnmatch
+        lines = (REPO / ".github/workflows/ci.yml").read_text(encoding="utf-8").split("on:", 1)[1].split("pull_request:", 1)[0]
+        pats = [ln.split("- ", 1)[1].split("#")[0].strip().strip("'\"") for ln in lines.splitlines() if ln.strip().startswith("- ")]
+        for f in ("MyTradingSys/system/roles/builder.md", "MyTradingSys/system/roles/ROSTER.json"):
+            self.assertTrue(any(fnmatch.fnmatch(f, p) for p in pats), (f, pats))
+
+
+class TestRoleLineReview(Base):
+    """Review of 9f0cb459c (2026-10-23_fix34_replay_and_review.md): the 300-char scan on the cleaned text reached later sentences."""
+    NOTICE = "<system-reminder>\n" + "notice text " * 30 + "\n</system-reminder>\n"
+
+    def test_only_the_named_role_loads_when_a_later_sentence_names_another(self):
+        roles = {"Supervisor": ["supervisor"], "Session_Planner": ["session_planner", "session planner"], "Thinker": ["thinker"]}
+        p = self.NOTICE + "You are Supervisor. Login C. Two hours. Start a session planner for the cards."
+        self.assertEqual(rl.match_roles(p, roles), ["Supervisor"])
+        quote = self.NOTICE + 'Operator request (verbatim intent, 2026-10-20): "What about a thinker? I need a thinker for this."'
+        self.assertEqual(rl.match_roles(quote, roles), [])
+
+    def test_real_wrapped_briefs_with_text_after_the_name_load(self):
+        """Replay 2026-10-23 (transcripts 35162ba1, 1672df64): the role name is followed by words or a digit-led name."""
+        roles = {"Lab_Guy": ["lab_guy"], "1985Artifacts_Guy": ["1985artifacts_guy"]}
+        wrap = "Background (from the session that started this one): " + "context " * 60 + "\n\nTask:\n"
+        self.assertEqual(rl.match_roles(wrap + "You are Lab_Guy for ONE batched review pass.", roles), ["Lab_Guy"])
+        self.assertEqual(rl.match_roles(wrap + "You are 1985Artifacts_Guy (roles/ file via role loader).", roles),
+                         ["1985Artifacts_Guy"])
+
+    def test_other_role_phrases_behind_long_wrappers_still_load(self):
+        """Diff review of this fix, finding 1: "I need a pipeliner" behind a 300+ char wrapper; finding 2: a non-str prompt."""
+        roles = {"Pipeliner": ["pipeliner"], "Thinker": ["thinker"]}
+        for p in (self.NOTICE + "I need a pipeliner", "Background (from x): " + "context " * 60 + "\n\nTask:\nI need a pipeliner for this"):
+            self.assertEqual(rl.match_roles(p, roles), ["Pipeliner"], p[-40:])
+        self.assertEqual(rl.match_roles(5, roles), [])
+
+
 if __name__ == "__main__":
     unittest.main()

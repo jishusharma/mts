@@ -192,7 +192,8 @@ def message_reason(tool, inp, transcript_path):
 
 
 NAMED = ("opus", "fable")
-SKIP_PREFIX = ("<local-command", "[SIGNALS")     # events (cross-session, CI, side-session, reminders) via turn_meter.is_event_text
+SKIP_PREFIX = ("<local-command", "[SIGNALS", "<command-name>", "<command-message>", "[Request interrupted")
+# ^ command echoes and notes, not his words; events (cross-session, CI, side-session, reminders) go via turn_meter.is_event_text
 
 
 TASKS = os.environ.get("MTS_TASKS_DIR") or os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
@@ -229,20 +230,46 @@ def typed_texts(transcript_path):
     except (OSError, TypeError, ValueError):
         return False
     for line in reversed(lines):
-        try:
-            d = json.loads(line)
-        except ValueError:
-            continue
-        if d.get("type") != "user" or d.get("isMeta"):
-            continue
+        text = _typed_text(line)
+        if text:
+            yield text
+
+
+def _typed_text(line):
+    """The operator's typed text in one transcript line (lowercase, reminders cut), or None (events, results, echoes)."""
+    try:
+        d = json.loads(line)
+    except ValueError:
+        return None
+    if not isinstance(d, dict) or not isinstance(d.get("message") or {}, dict):
+        return None
+    att = d.get("attachment") if d.get("type") == "attachment" else None
+    if isinstance(att, dict) and att.get("type") == "queued_command" and isinstance(att.get("prompt"), str):
+        c = att["prompt"]      # typed while a turn ran: stored as a queued_command attachment, not a user entry (2026-10-23)
+    elif d.get("type") != "user" or d.get("isMeta") or d.get("isCompactSummary"):
+        return None
+    else:
         c = (d.get("message") or {}).get("content")
-        parts = [c] if isinstance(c, str) else [b.get("text", "") for b in (c or []) if isinstance(b, dict) and b.get("type") == "text"]
-        parts = [t for t in parts if t and not t.lstrip().startswith(SKIP_PREFIX)]
-        if not parts or turn_meter.is_event_text("".join(parts)):
-            continue
-        text = REMINDER_BLOCK.sub("", " ".join(parts))
-        if text.strip():
-            yield text.lower()
+    parts = [c] if isinstance(c, str) else [b.get("text", "") for b in (c if isinstance(c, list) else [])
+                                            if isinstance(b, dict) and b.get("type") == "text"]
+    parts = [t for t in parts if isinstance(t, str) and t and not t.lstrip().startswith(SKIP_PREFIX)]
+    if not parts or turn_meter.is_event_text("".join(parts)):
+        return None
+    text = REMINDER_BLOCK.sub("", " ".join(parts))
+    return text.lower() if text.strip() and not text.lstrip().startswith(SKIP_PREFIX) else None
+
+
+def first_typed(transcript_path):
+    """The session's first prompt as _typed_text reads it (the pasted start line or a starting session's brief), or None."""
+    try:
+        with open(transcript_path, "rb") as f:
+            for raw in f:
+                text = _typed_text(raw.decode("utf-8", "replace"))
+                if text:
+                    return text
+    except (OSError, TypeError, ValueError):
+        pass
+    return None
 
 
 def operator_said(transcript_path, words):
@@ -329,13 +356,23 @@ def event_turn(transcript_path):
             d = json.loads(line)
         except ValueError:
             continue
-        if d.get("type") != "user" or d.get("isMeta"):
+        if not isinstance(d, dict) or not isinstance(d.get("message") or {}, dict):
+            continue        # a hook never raises on an odd line (diff review 2026-10-23)
+        att = d.get("attachment") if d.get("type") == "attachment" else None
+        if isinstance(att, dict) and att.get("type") == "queued_command" and isinstance(att.get("prompt"), str):
+            c = att["prompt"]      # typed while a turn ran: stored as a queued_command attachment, not a user entry (2026-10-23)
+        elif d.get("type") != "user" or d.get("isMeta"):
             continue
-        c = (d.get("message") or {}).get("content")
-        parts = [c] if isinstance(c, str) else [b.get("text", "") for b in (c or []) if isinstance(b, dict) and b.get("type") == "text"]
-        parts = [t for t in parts if t and not t.lstrip().startswith(SKIP_PREFIX)]
+        else:
+            c = (d.get("message") or {}).get("content")
+        parts = [c] if isinstance(c, str) else [b.get("text", "") for b in (c if isinstance(c, list) else [])
+                                                if isinstance(b, dict) and b.get("type") == "text"]
+        parts = [t for t in parts if isinstance(t, str) and t and not t.lstrip().startswith(SKIP_PREFIX)]
         if parts:
-            return turn_meter.is_event_text("".join(parts))
+            ev = turn_meter.is_event_text("".join(parts))
+            if ev and att is not None:
+                continue           # a queued event (task-notification mid-turn) never starts a turn: the turn's opener decides
+            return ev
     return False
 
 
@@ -399,6 +436,44 @@ def first_prompt(transcript_path):
     return ""
 
 
+def typed_turn_after_start(transcript_path):
+    """True when this turn was opened by the operator's typed message and that message is not the session's first prompt
+    (a pasted start line or another session's brief)."""
+    try:
+        if event_turn(transcript_path):
+            return False
+        with open(transcript_path, "rb") as f:
+            f.seek(0, 2)
+            f.seek(max(0, f.tell() - (1 << 20)))
+            lines = f.read().decode("utf-8", "replace").splitlines()
+        for line in reversed(lines):
+            if _compaction(line):
+                return False    # compacted since his message (the card shows after a compaction, failure review cause 1)
+            latest = _typed_text(line)
+            if latest:
+                return latest != first_typed(transcript_path)
+    except Exception:           # a hook never raises: unreadable = not his turn (the guard's old answer)
+        return False
+    return False
+
+
+def _compaction(line):
+    """A compaction boundary, its summary entry, or the /compact echo."""
+    try:
+        d = json.loads(line)
+    except ValueError:
+        return False
+    if not isinstance(d, dict):
+        return False
+    if (d.get("type") == "system" and d.get("subtype") == "compact_boundary") or d.get("isCompactSummary"):
+        return True
+    if d.get("type") != "user":
+        return False
+    c = (d.get("message") or {}).get("content") if isinstance(d.get("message"), dict) else None
+    t = c if isinstance(c, str) else " ".join(str(b.get("text", "")) for b in (c or []) if isinstance(b, dict))
+    return t.lstrip().startswith(("<command-name>/compact", "This session is being continued from a previous conversation"))
+
+
 def nested_reason(tool, inp, transcript_path):
     """E2E run 2026-10-22: a Supervisor that a session had started called start_session for its Builders; the app stopped each call
     for an operator approval and the run sat waiting. A session started by another session starts its workers as background Agents.
@@ -410,6 +485,12 @@ def nested_reason(tool, inp, transcript_path):
     if not (role_loader.from_session(first_prompt(transcript_path)) or role_session(transcript_path)):
         return None
     if interactive_role((inp or {}).get("prompt")):    # operator 2026-10-23: interactive roles are sessions, never background Agents
+        return None
+    # operator 2026-10-23: "if I ask a super session to start a thinker, why it is making me click? ... start a thinker and do this,
+    # so that it is ready"; "start a new session which I can see. And don't tell me that you cannot start it." This turn is his
+    # typed message, not the session's own start brief: he is at the screen and the start comes from his turn (no word test:
+    # the "session" word test of 3d54646f6 refused "start a thinker").
+    if typed_turn_after_start(transcript_path):
         return None
     return ("a start_session from a role session waits for an operator approval in the app (the operator is away). Start the worker "
             "with the Agent tool instead: model='sonnet', run_in_background=true, the same brief (its first line `You are <Role>.`).")
@@ -457,6 +538,12 @@ def button_reason(tool, inp, transcript_path):
     return f"{role} is a role session; the operator is away and wants zero clicks, so {tool} cards are blocked. {fix}"
 
 
+def warn(text):
+    """Warning only, never a block (operator 2026-10-23: the guards stopped all work; the model reads this and decides)."""
+    print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse",
+                                             "additionalContext": "model_guard (warning, not a block): " + text}}))
+
+
 def hook():
     try:
         ev = json.loads(sys.stdin.read() or "{}")
@@ -469,27 +556,23 @@ def hook():
     if tool in BUTTON_TOOLS:
         button = button_reason(tool, inp, ev.get("transcript_path"))
         if button:
-            print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
-                                                     "permissionDecisionReason": "model_guard: " + button}}))
+            warn(button)
         return 0
     storm = storm_reason(tool, ev)
     if storm:
-        print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
-                                                 "permissionDecisionReason": "model_guard: " + storm}}))
+        warn(storm)
         return 0
     if tool in SCHEDULE_TOOLS or tool == WORKFLOW:
         return 0
     msg = message_reason(tool, inp, ev.get("transcript_path"))
     if msg:
-        print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
-                                                 "permissionDecisionReason": "model_guard: " + msg}}))
+        warn(msg)
         return 0
     if tool in SEND_TOOLS:
         return 0
     card = agent_role_reason(tool, inp) or card_reason(tool, inp, ev.get("transcript_path")) or nested_reason(tool, inp, ev.get("transcript_path"))
     if card:
-        print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
-                                                 "permissionDecisionReason": "model_guard: " + card}}))
+        warn(card)
         return 0
     if inp.get("model") and (operator_named_opus(ev.get("transcript_path"))
                              or crucial_card_cited(inp.get("title"), inp.get("prompt"), inp.get("background"), inp.get("description"))):
@@ -497,8 +580,7 @@ def hook():
     needs_parent = inp.get("subagent_type") == "fork" or inp.get("context") == "fork"
     reason = decide(tool, inp, parent_model(ev.get("transcript_path")) if needs_parent else None)
     if reason:
-        print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
-                                                 "permissionDecisionReason": "model_guard: " + reason}}))
+        warn(reason)
     return 0
 
 

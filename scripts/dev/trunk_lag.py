@@ -12,6 +12,7 @@ old base). Checkouts with their own commits (`sync.py start` merges those), trac
 Env: MTS_TRUNK_LAG=off disables.
 Run by hand: python scripts/dev/trunk_lag.py check   (prints the line, or nothing)
 """
+import json
 import os
 import subprocess
 import sys
@@ -83,8 +84,8 @@ def fast_forward(repo, fetch=True):
         return 0, False
     if git(repo, "rev-parse", "--abbrev-ref", "HEAD").stdout.strip() in ("", "HEAD", "master", "main"):
         return 0, False
-    if git(repo, "status", "--porcelain", "--untracked-files=no").stdout.strip():
-        return 0, False
+    if git(repo, "status", "--porcelain", "--untracked-files=no").stdout.strip() and not release_synced(repo):
+        return 0, False         # tracked edits; the hook files this hook took itself do not count (released first)
     if fetch:
         git(repo, "fetch", "--quiet", "origin", TRUNK, timeout=30)
     if git(repo, "merge-base", "--is-ancestor", "HEAD", f"origin/{TRUNK}").returncode:
@@ -96,6 +97,115 @@ def fast_forward(repo, fetch=True):
     if git(repo, "merge", "--ff-only", "--quiet", f"origin/{TRUNK}", timeout=30).returncode:
         return 0, False
     return behind, hooks
+
+
+HOOK_PATHS = ("scripts/dev", ".claude/settings.json")
+
+
+SYNC_RECORD = "mts_hook_sync.json"     # in the git dir: {path: blob} this hook took from trunk (its own edits, not anyone's)
+NUL = chr(0)
+
+
+def _z(repo, *args, timeout=30):
+    """NUL-separated git output as a list (paths with spaces or non-ASCII stay whole)."""
+    return [x for x in git(repo, *args, timeout=timeout).stdout.split(NUL) if x]
+
+
+def _blobs(repo, *args):
+    """{path: blob} from `git ls-tree -r -z <tree>` or `git ls-files -s -z`."""
+    out = {}
+    for rec in _z(repo, *args):
+        meta, _, path = rec.partition("\t")
+        parts = meta.split()
+        if len(parts) >= 3:
+            out[path] = parts[2] if parts[1] == "blob" else parts[1]
+    return out
+
+
+def _record_path(repo):
+    gd = git(repo, "rev-parse", "--absolute-git-dir").stdout.strip()
+    return Path(gd) / SYNC_RECORD if gd else None
+
+
+def _load_record(repo):
+    p = _record_path(repo)
+    try:
+        return json.loads(p.read_text(encoding="utf-8")) if p else {}
+    except (OSError, ValueError):
+        return {}
+
+
+def _hook_state(repo):
+    """(HEAD blobs, index blobs, worktree-vs-index dirty paths, record) for the hook paths: four git calls in all."""
+    head = _blobs(repo, "ls-tree", "-r", "-z", "HEAD", "--", *HOOK_PATHS)
+    index = {p: b for p, b in _blobs(repo, "ls-files", "-s", "-z", "--", *HOOK_PATHS).items()}
+    dirty = set(_z(repo, "diff", "--name-only", "-z", "--", *HOOK_PATHS))
+    return head, index, dirty, _load_record(repo)
+
+
+def _ours(path, head, index, dirty, record):
+    """True when this path is unedited (index = HEAD) or holds exactly what this hook took earlier, worktree = index."""
+    if path in dirty:
+        return False
+    i = index.get(path)
+    return i is not None and (i == head.get(path) or i == record.get(path))
+
+
+def sync_hook_files(repo):
+    """A checkout that cannot fast-forward (tracked runtime edits, e.g. SUPERVISOR_LOG.md; failure review 2026-10-23 cause 5) still
+    runs its hooks from scripts/dev: take trunk's copy of each changed hook path that is unedited or holds what this hook took
+    before (recorded in the git dir). Anyone's own edit (worktree or staged), an untracked file and trunk deletions are left
+    alone. -> number of files updated."""
+    trunk = _blobs(repo, "ls-tree", "-r", "-z", f"origin/{TRUNK}", "--", *HOOK_PATHS)
+    if not trunk:
+        return 0
+    head, index, dirty, record = _hook_state(repo)
+    take = []
+    for p, t in trunk.items():
+        if index.get(p) == t and p not in dirty:
+            continue            # already trunk's copy
+        if p not in index:
+            if p in head or (Path(repo) / p).exists():
+                continue        # deleted here, or someone's untracked file
+            take.append(p)      # new on trunk
+        elif _ours(p, head, index, dirty, record):
+            take.append(p)
+    done = []
+    for i in range(0, len(take), 100):          # Windows command-line length
+        chunk = take[i:i + 100]
+        if git(repo, "checkout", f"origin/{TRUNK}", "--", *chunk, timeout=60).returncode == 0:
+            done += chunk
+    if done:
+        record.update({p: trunk[p] for p in done})
+        rp = _record_path(repo)
+        try:
+            rp.write_text(json.dumps(record), encoding="utf-8", newline=chr(10))
+        except (OSError, AttributeError):
+            pass
+    return len(done)
+
+
+def release_synced(repo):
+    """Before a fast-forward: put the files this hook took back to HEAD (or remove a new one), so `merge --ff-only` re-applies
+    trunk's copy. Returns False when a tracked edit of anyone else remains (the fast-forward must not run)."""
+    status = _z(repo, "status", "--porcelain=v1", "-z", "--untracked-files=no", timeout=30)
+    paths = [rec[3:] for rec in status if len(rec) > 3]
+    if not paths:
+        return True
+    head, index, dirty, record = _hook_state(repo)
+    if not all(p in record and index.get(p) == record[p] and p not in dirty for p in paths):
+        return False
+    back = [p for p in paths if p in head]
+    new = [p for p in paths if p not in head]
+    if back and git(repo, "checkout", "HEAD", "--", *back, timeout=60).returncode:
+        return False
+    for p in new:
+        git(repo, "rm", "-q", "-f", "--cached", "--", p)
+        try:
+            (Path(repo) / p).unlink()
+        except OSError:
+            pass
+    return True
 
 
 def main_checkout(repo):
@@ -123,8 +233,10 @@ def catch_up(repo=None, fetch=True):
         if n:
             notes.append(f"Main checkout {main} fast-forwarded {n} commit(s), so the next session cut from it starts on trunk.")
         elif left:
-            notes.append(f"Main checkout {main} is {left} commit(s) behind origin/{TRUNK} and was left alone (local edits): sessions cut "
-                         f"from it start old, so run `python scripts/dev/sync.py start <slug>` before reading code.")
+            k = sync_hook_files(main)
+            hooks_note = f"; its hook scripts were updated from trunk ({k} file(s))" if k else ""
+            notes.append(f"Main checkout {main} is {left} commit(s) behind origin/{TRUNK} and was left alone (local edits){hooks_note}: "
+                         f"sessions cut from it start old, so run `python scripts/dev/sync.py start <slug>` before reading code.")
     return " ".join(notes)
 
 

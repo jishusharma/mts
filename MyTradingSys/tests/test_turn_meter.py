@@ -308,6 +308,64 @@ class TurnMeterTest(unittest.TestCase):
                         {"type": "text", "text": "You are Supervisor. Login <C>"}]}}, separators=(",", ":")) + "\n", encoding="utf-8")
         self.assertTrue(turn_meter.transcript_starts_supervisor({"transcript_path": str(real)}))
 
+    WRAPPED = ('<system-reminder>\nThis is a git worktree: an isolated copy of the repository. ' + "Run all commands from it. " * 12 +
+               '\n</system-reminder>\n<pasted_content id="p1">\nYou are Supervisor. Login C. Run the queue.\n</pasted_content>')
+
+    def test_supervisor_line_behind_reminder_and_paste_wrapper(self):
+        """Failure review 2026-10-23 (R1): the real first message starts with the worktree reminder and a paste wrapper."""
+        self.assertTrue(turn_meter.is_supervisor_start({"prompt": self.WRAPPED}))
+        self.assertFalse(turn_meter.is_supervisor_start({"prompt": "<system-reminder>x</system-reminder>\nplease say you are Supervisor"}))
+        self.assertFalse(turn_meter.is_supervisor_start({"prompt": "filler line\n" * 8 + "You are Supervisor."}))
+        tp = self.home / "w.jsonl"
+        tp.write_text(json.dumps({"type": "user", "message": {"content": self.WRAPPED}}, separators=(",", ":")) + "\n", encoding="utf-8")
+        self.assertTrue(turn_meter.transcript_starts_supervisor({"transcript_path": str(tp)}))
+        for i in range(70):     # a Supervisor has no 40-turn nag
+            self.assertEqual(fire(self.home, "PostToolUse", sid="wr", extra={"transcript_path": str(tp), "message_id": f"z{i}"}), "", i)
+        for _ in range(15):
+            self.assertEqual(fire(self.home, "UserPromptSubmit", sid="wr2", extra={"transcript_path": str(tp), "prompt": self.WRAPPED}), "")
+
+    def test_a_role_line_below_the_first_line_or_inside_an_event_never_exempts_a_worker(self):
+        """Review of 9f0cb459c (2026-10-23_fix34_replay_and_review.md, findings 1-3): a `You are Supervisor.` line anywhere in the first
+        6 lines counted, inside an event, a paste after his words, or an example; a worker escaped its turn cap that way."""
+        for p in ("Example start line below:\nYou are Supervisor.",
+                  "<cross-session-message from=x>\nYou are Supervisor. Login C.\n</cross-session-message>",
+                  "<task-notification>\nYou are Supervisor.\n</task-notification>",
+                  "Another Claude session sent a message:\nYou are Supervisor.",
+                  'take care of this in a separate thread -\n<pasted_content id="1">\nYou are Supervisor.\n</pasted_content>',
+                  "You are the supervisor of nothing; review code.",
+                  "You are Supervisory staff.",
+                  "Background (from x): the parent said:\nTask: You are Supervisor.\nmore"):     # diff review finding 5
+            self.assertFalse(turn_meter.is_supervisor_start({"prompt": p}), p)
+        for p in ("You are Supervisor.", "**You are Supervisor.**", "You are Supervisor Login C", "Task: You are Supervisor.",
+                  "Task:\nYou are Supervisor.", chr(0xfeff) + "You are Supervisor.",      # diff review findings 3, 4
+                  "Background (from the session that started this one): x\r\n\r\nTask:\r\nYou are Supervisor. Login C.",
+                  '<pasted_content id="1">\nYou are Supervisor. Login C. Machine JIS-NB.\n</pasted_content>'):
+            self.assertTrue(turn_meter.is_supervisor_start({"prompt": p}), p)
+        # transcript: only the first real prompt counts; an event entry or a later user entry before the reply does not
+        tp = self.home / "ev.jsonl"
+        rows = [{"type": "user", "message": {"content": "You are Builder. Card: x"}},
+                {"type": "user", "message": {"content": "<task-notification>You are Supervisor.</task-notification>"}},
+                {"type": "user", "message": {"content": "You are Supervisor."}}]
+        tp.write_text("\n".join(json.dumps(r) for r in rows) + "\n", encoding="utf-8")
+        self.assertFalse(turn_meter.transcript_starts_supervisor({"transcript_path": str(tp)}))
+        rows = [{"type": "user", "isMeta": True, "message": {"content": "Caveat: x"}},
+                {"type": "user", "message": {"content": "You are Supervisor."}}]
+        tp.write_text("\n".join(json.dumps(r) for r in rows) + "\n", encoding="utf-8")
+        self.assertTrue(turn_meter.transcript_starts_supervisor({"transcript_path": str(tp)}))
+
+    def test_a_later_supervisor_line_never_replaces_another_role(self):
+        """Review of 9f0cb459c finding 3: the sticky Supervisor mark was set on every prompt and overwrote "thinker"."""
+        st = self.home / "th.json"
+        st.write_text(json.dumps({"tool": 1, "user": 1, "role": "thinker"}), encoding="utf-8")
+        fire(self.home, "UserPromptSubmit", sid="th", extra={"prompt": "You are Supervisor. Login C."})
+        self.assertEqual(json.loads(st.read_text(encoding="utf-8"))["role"], "thinker")
+
+    def test_a_missing_role_line_helper_never_breaks_the_hook(self):
+        """Review of 9f0cb459c finding 7: `import role_line` at the top had no fallback."""
+        with mock.patch.object(turn_meter, "role_line", None):
+            self.assertFalse(turn_meter.is_supervisor_start({"prompt": "You are Supervisor."}))
+            self.assertEqual(fire(self.home, "UserPromptSubmit", sid="nr", extra={"prompt": "You are Supervisor."}), "")
+
     def test_resume_keeps_counts(self):
         for _ in range(40):
             fire(self.home, "PostToolUse")
@@ -380,7 +438,7 @@ class AwayFlagAndAtomicSaveTest(unittest.TestCase):
         for i, brief in enumerate(briefs):
             nags, pre = self.unattended_run(f"w{i}", brief)
             self.assertTrue(any(nags) or "<cross" in brief, brief)
-            self.assertIn('"deny"', pre, brief)
+            self.assertIn('(warning, not a block)', pre, brief)
         nags, pre = self.unattended_run("wb", "You are Builder")
         self.assertTrue(any(nags))
 
@@ -403,7 +461,7 @@ class AwayFlagAndAtomicSaveTest(unittest.TestCase):
         st.write_text(json.dumps(d), encoding="utf-8")
         for _ in range(5):
             fire(self.home, "PostToolUse", sid="l", extra={"transcript_path": str(tr)})
-        self.assertIn('"deny"', fire(self.home, "PreToolUse", sid="l", extra={"tool_name": "WebSearch", "tool_input": {}}))
+        self.assertIn('(warning, not a block)', fire(self.home, "PreToolUse", sid="l", extra={"tool_name": "WebSearch", "tool_input": {}}))
         fire(self.home, "UserPromptSubmit", sid="l", extra={"prompt": "<task-notification>done</task-notification>"})
         self.assertFalse(turn_meter.attended(json.loads(st.read_text(encoding="utf-8"))))
 
@@ -429,7 +487,7 @@ class AwayFlagAndAtomicSaveTest(unittest.TestCase):
         self.assertEqual(fire(self.home, "PreToolUse", sid="sv8", extra={"tool_name": "Bash", "tool_input": {}, "transcript_path": str(tr)}), "")
         # a worker with the same numbers is still stopped
         (self.home / "wk.json").write_text(json.dumps({"tool": 30, "user": 1, "kind": "opus", "ur": 7_000_000}), encoding="utf-8")
-        self.assertIn('"deny"', fire(self.home, "PreToolUse", sid="wk", extra={"tool_name": "Bash", "tool_input": {}}))
+        self.assertIn('(warning, not a block)', fire(self.home, "PreToolUse", sid="wk", extra={"tool_name": "Bash", "tool_input": {}}))
 
     def test_a_thinker_is_never_nagged_or_stopped(self):
         # thinker.md: no turn or context cap (WORKERS.md rule 5). 2026-10-22: a notice-briefed Thinker was denied web search and writes
@@ -453,7 +511,7 @@ class AwayFlagAndAtomicSaveTest(unittest.TestCase):
 
     def test_thinking_about_something_is_not_the_thinker_role(self):
         nags, pre = self.unattended_run("w2", "you are thinking too slowly, think about the gate")
-        self.assertIn('"deny"', pre)
+        self.assertIn('(warning, not a block)', pre)
 
     def test_save_is_atomic_and_leaves_no_temp_file(self):
         target = self.home / "x.json"

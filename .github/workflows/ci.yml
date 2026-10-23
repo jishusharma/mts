@@ -15,6 +15,7 @@ on:
       - 'MyTradingSys/research/**/*.py'   # GATE_SPEED review: smoke ships under these folders defer tests to CI, so CI must run for them
       - 'MyTradingSys/options/**'
       - 'MyTradingSys/observation/**'
+      - 'MyTradingSys/system/roles/**'      # role files + ROSTER.json: test_role_loader reads them (failure review 2026-10-23 cause 8)
       - '.gitignore'
       - '.claude/settings.json'
       - 'scripts/**'

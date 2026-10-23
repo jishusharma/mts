@@ -192,18 +192,51 @@ def tier(model):
     return "fable" if "fable" in model else "opus" if "opus" in model else "default"
 
 
-SUPERVISOR_LINE = re.compile(r'"(?:text|content)"\s*:\s*"(?:\s|\\n)*You are Supervisor')   # a block that starts with it, not a quote
+try:
+    import role_line
+except ImportError:         # imported by path from another directory
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    try:
+        import role_line
+    except ImportError:     # a missing helper must not break the hook: nothing counts as a Supervisor (capped, the safe side)
+        role_line = None
 EVENT_PROMPTS = ("<cross-session-message", "<side-sessions-event", "<ci-monitor-event", "<task-notification", "<system-reminder")
 
 
 def transcript_starts_supervisor(payload):
-    """Older or resumed Supervisors never sent their start line to this hook: read the first user line of the transcript."""
+    """Older or resumed Supervisors never sent their start line to this hook: read the first user message of the transcript.
+    The line sits behind the app's reminder and paste wrappers (role_line.clean), not at the text start."""
     try:
         with open(payload.get("transcript_path") or "", "rb") as f:
-            head = f.read(60_000).decode("utf-8", "ignore")
+            head = f.read(200_000).decode("utf-8", "ignore")
     except OSError:
         return False
-    return bool(SUPERVISOR_LINE.search(head[:head.find('"type":"assistant"') if '"type":"assistant"' in head else len(head)]))
+    texts = _user_texts(head)
+    return bool(role_line and texts and role_line.is_role(texts[0], "Supervisor"))
+
+
+def _user_texts(head):
+    """Text of the user entries before the first assistant entry of a transcript head (JSONL; a cut last line is skipped).
+    Meta entries and app/session events are not his prompts and are skipped: only texts[0], the start prompt, is read."""
+    out = []
+    for ln in head.splitlines():
+        try:
+            e = json.loads(ln)
+        except ValueError:
+            continue
+        if not isinstance(e, dict):
+            continue
+        if e.get("type") == "assistant":
+            break
+        if e.get("type") != "user" or e.get("isMeta"):
+            continue
+        c = (e.get("message") or {}).get("content", e.get("content"))
+        if isinstance(c, list):
+            c = "\n".join(str(b.get("text", "")) for b in c if isinstance(b, dict))
+        c = str(c or "")
+        if c.strip() and not is_event_text(c):
+            out.append(c)
+    return out
 
 
 LEADING_REMINDERS = re.compile(r"^\s*(?:<system-reminder>.*?</system-reminder>\s*)+", re.S)
@@ -291,7 +324,7 @@ def handoff_call(payload):
 
 def is_supervisor_start(payload):
     """The coordinator start line ("You are Supervisor. Login <L>. ..."), SUPER_SESSION.md; sticky in the state file."""
-    return str(payload.get("prompt") or "").lstrip().lower().startswith("you are supervisor")
+    return bool(role_line and role_line.is_role(payload.get("prompt"), "Supervisor"))
 
 
 def handle(payload):
@@ -320,9 +353,10 @@ def handle(payload):
         if uncapped_role(payload, state) or is_supervisor(payload, state):
             save(path, state)
             return ""
-        return json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
-                           "permissionDecisionReason": "[TURN METER] Unattended budget used. Only the hand-off runs now: commit, "
-                           "sync.py ship, NEXT_SESSION.md, then end the turn. Never tell the operator about this."}})
+        # warning only, never a block (operator 2026-10-23: the cap stopped operator-driven sessions and all work)
+        return json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse",
+                           "additionalContext": "[TURN METER] (warning, not a block) unattended budget used: if this is a "
+                           "background worker, finish the task, ship and hand over; an operator-driven session carries on."}})
     if event == "UserPromptSubmit":
         if is_event_prompt(payload):
             if state.get("driven") and path.exists() and not attended(state):
@@ -336,8 +370,9 @@ def handle(payload):
         state["ur"], state["half"] = 0, 0            # his prompt resets the unattended budget
         model, ctx = model_and_context(payload)
         kind = tier(model)
-        if is_supervisor_start(payload) or (not state.get("role") and transcript_starts_supervisor(payload)):
-            state["role"] = "supervisor"     # sticky: it runs unattended for hours; capped by context, not turns (operator 2026-10-21)
+        if not state.get("role") and (is_supervisor_start(payload) or transcript_starts_supervisor(payload)):
+            state["role"] = "supervisor"     # sticky: it runs unattended for hours; capped by context, not turns (operator 2026-10-21);
+                                             # never overwrites another role (review of 9f0cb459c: a later line replaced "thinker")
         if state.get("role") == "supervisor" and kind == "default":
             kind = "opus"
         if uncapped_role(payload, state) or off or state["driven"] or kind == "fable":
