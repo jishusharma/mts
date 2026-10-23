@@ -3,7 +3,7 @@
 
 param([int]$IntervalSec = 30, [int]$PopCooldownSec = 180)
 $ErrorActionPreference = "Continue"
-$R = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
+$R = (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 Set-Location $R
 $out     = Join-Path $R "runtime_data\live_tape.md"
 $stop    = Join-Path $R "runtime_data\tape_stop.flag"

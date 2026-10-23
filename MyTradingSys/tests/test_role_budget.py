@@ -25,13 +25,24 @@ RETIRED = [  # (pattern, why it is retired)
 OWNED_ELSEWHERE = {"supervisor.md"}  # rewritten on branch super-5h-no-cap; checked for size only
 
 
+def crlf_size(data):
+    """Bytes on a Windows (CRLF) checkout, the same on every OS: 2026-10-22 supervisor.md was 6984 bytes on Linux and passed, 7050 on
+    the Windows CI shard and failed."""
+    lf = data.replace(b"\r\n", b"\n")
+    return len(lf) + lf.count(b"\n")
+
+
 class TestRoleBudget(unittest.TestCase):
     def test_every_role_file_has_a_budget_and_fits(self):
         files = sorted(p.name for p in ROLES.glob("*.md"))
         self.assertEqual(sorted(BUDGET), files, "a new role needs a budget line here")
         for name in files:
-            size = len((ROLES / name).read_bytes())
-            self.assertLessEqual(size, BUDGET[name], f"{name} is {size} bytes, budget {BUDGET[name]}")
+            size = crlf_size((ROLES / name).read_bytes())
+            self.assertLessEqual(size, BUDGET[name], f"{name} is {size} bytes with CRLF, budget {BUDGET[name]}")
+
+    def test_size_is_counted_as_on_windows(self):
+        self.assertEqual(crlf_size(b"ab\ncd\n"), 8)
+        self.assertEqual(crlf_size(b"ab\r\ncd\r\n"), 8)
 
     def test_no_retired_wording(self):
         for p in sorted(ROLES.glob("*.md")):

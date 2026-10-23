@@ -5,7 +5,7 @@
 param([int]$IntervalSec = 30, [switch]$Once)
 
 $ErrorActionPreference = "Continue"
-$Root = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
+$Root = (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 $Out      = Join-Path $Root "Dumps\LIVE_PASTE.txt"
 $StopFlag = Join-Path $Root "runtime_data\live_paste_stop.flag"
 $Log      = Join-Path $Root "runtime_data\apparatus_log.txt"

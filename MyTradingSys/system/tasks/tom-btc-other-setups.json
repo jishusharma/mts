@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-22T19:01:55Z",
   "commands": [],
   "created": "2026-10-13T17:31:44Z",
   "depends_on": [
@@ -15,6 +16,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "504 candidates; 100 blind charts; MyTradingSys/research/layer_lab/reports/2026-10-22_tom-b",
+      "ref": "c2869301",
+      "utc": "2026-10-22T19:01:55Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,14 +41,19 @@
     "tom"
   ],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT LAB:data CLASS:C1 REVIEWER:Gemini Flash high + Haiku re-derive 1-3 numbers WEIGHT:IMPORTANT. HOLD-CLEARED A-20261018-5 (lifted by the operator). DECISION (OURS): split the original card; the T8 event-study half is not run (T4 retired 2026-10-16: no marks, no sentiment series). Pre-flight added after the 2026-10-15 lab-unstall park. Model: luna medium. Reviewed by a separate Sonnet Agent (FIX round 1 applied).",
+  "note": "BLOCKED: requested 2024-12-01..2025-03-31 bars exceed permitted pre-2024-07-01 data cutoff.",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
   "refreshed": "2026-10-18T03:35:31Z",
   "refs": [],
-  "result": "",
+  "result": "504 candidates; 100 blind charts; MyTradingSys/research/layer_lab/reports/2026-10-22_tom-btc-other-setups.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/tom_btc_2026-10-13/chart_lab.py",
     "MyTradingSys/research/tom_btc_2026-10-13/test_chart_lab.py",
@@ -61,13 +73,14 @@
     "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4",
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2, 11"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "pre-flight (stop and report BLOCKED within 5 turns if any fails): F:/MTS/data/orderflow_1m has the 120 DEV date files 2024-12-02..2025-03-31, chart_lab.py runs unchanged and reproduces candidates=105",
     "read setup_type_rules.md s5 (pullback to VWAP/value in a volume-backed trend) and s6 (balance resolves with proof); add detect_tc and detect_bo beside detect_candidates and a --setup {fade,tc,bo} switch defaulting to fade so old output is byte-identical; numeric thresholds labelled OURS on the chart",
     "for tc and bo: scan DEV only, decision-time rows only (no future bars), write candidates_tc_bo.csv and sample 40 + 10 random blind charts to charts_tc_bo/ with a separate _key.csv",
     "write MyTradingSys/research/layer_lab/reports/2026-10-18_tom-btc-other-setups.md: counts per setup and anchor, the pre-flight result, and the note that the event study is deferred to G3/G4"
   ],
+  "taken": "2026-10-22T19:01:55Z",
   "tests": "test_chart_lab.py::test_tc_and_bo_candidates (synthetic, no data): one pullback and one breakout each yield exactly one candidate, plotted rows end at the decision bar; plus test_fade_unchanged (skipif F:/MTS/data/orderflow_1m absent): fade gives 105; fails before the switch exists",
   "title": "Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, breakout/break-in)",
   "weight": "IMPORTANT",

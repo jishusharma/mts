@@ -213,6 +213,13 @@ class HeartbeatSideBranch(unittest.TestCase):
         self.assertIn("gpt=down reason=heartbeat", line)
         self.assertEqual(L.load(self.other)["heartbeat"], L.iso(NOW))   # a real state change still saves, with the newest beat in it
 
+    def test_the_lab_beating_after_a_long_silence_stays_up(self):
+        # JIS-NUC 2026-10-22 15:06Z: the first tick after a 34 h stall judged its own old heartbeat, went down and moved 5 cards off CODEX
+        L.sweep(self.repo, NOW, do_apply=True, beating=True)
+        line = L.sweep(self.repo, NOW + timedelta(hours=34), do_apply=True, beating=True)
+        self.assertIn("gpt=up", line)
+        self.assertIn("moved=0", line)
+
     def test_no_remote_falls_back_to_the_state_file(self):
         with tempfile.TemporaryDirectory() as d:
             T.save(Path(d), card("a-audit"))

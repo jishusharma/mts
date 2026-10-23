@@ -28,7 +28,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$root = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
+$root = (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 Set-Location $root
 
 if ($All) { $Station = @("F1","F2","F3","F4","F5","F6","F7","F8") }

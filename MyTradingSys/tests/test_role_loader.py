@@ -160,9 +160,70 @@ class TestInject(Base):
         self.assertTrue(t.startswith("Session resumed/compacted: re-confirm"))
         self.assertIn("ROLE LOADED: Eagle_Eyes", t)
 
+    def test_session_start_records_the_token_it_served_when_trunk_changed(self):
+        self.put_role()
+        self.hook("You are Eagle_Eyes.", sid="r2")
+        old = rl.role_meta("r2", "Eagle_Eyes")["token"]
+        self.put_role(role_text(body=BODY + "A rule added after the session started.\n"))
+        t = self.hook("", sid="r2", event="SessionStart")
+        new = rl.compute_token(self.trunk[f"{rl.ROLES_REL}/eagle_eyes.md"].replace("\r\n", "\n"))
+        self.assertNotEqual(old, new)
+        self.assertIn(f"token {new}", t)
+        self.assertEqual(rl.role_meta("r2", "Eagle_Eyes")["token"], new)    # the reminder and banner verify read this
+        r = self.hook("what is the BTC read?", sid="r2")
+        self.assertIn(f"token {new}", r)
+
     def test_session_start_without_role_is_silent(self):
         self.put_role()
         self.assertEqual(self.hook("", sid="fresh", event="SessionStart"), "")
+
+
+class TestSubagentStart(Base):
+    """A background Agent ("You are Thinker.") got ROLE NOT LOADED: no SubagentStart hook existed (operator 2026-10-23)."""
+    def sub(self, sid="p1", **kw):
+        payload = {"session_id": sid, "hook_event_name": "SubagentStart", "agent_id": "a1", "agent_type": "general-purpose"}
+        payload.update(kw)
+        out = rl.handle(payload, self.repo)
+        return json.loads(out)["hookSpecificOutput"] if out else None
+
+    def test_prompt_text_injects_the_role_file_and_banner_instruction(self):
+        self.put_role()
+        o = self.sub(prompt="You are Eagle_Eyes. Read the chart.")
+        self.assertEqual(o["hookEventName"], "SubagentStart")
+        self.assertIn("ROLE LOADED: Eagle_Eyes", o["additionalContext"])
+        self.assertIn("BOOT (once)", o["additionalContext"])
+
+    def test_agent_type_names_the_role(self):
+        self.put_role()
+        o = self.sub(agent_type="eagle_eyes")
+        self.assertIn("ROLE LOADED: Eagle_Eyes", o["additionalContext"])
+
+    def test_no_prompt_gets_the_self_load_pointer_not_a_role(self):
+        self.put_role()
+        o = self.sub()
+        self.assertIn("You are <Role>", o["additionalContext"])
+        self.assertIn(rl.ROLES_REL, o["additionalContext"])
+        self.assertNotIn("BOOT (once)", o["additionalContext"])
+
+    def test_builtin_helper_agents_get_nothing(self):
+        self.assertIsNone(self.sub(agent_type="Explore", prompt="You are Eagle_Eyes."))
+
+    def test_same_agent_is_not_injected_twice(self):
+        self.put_role()
+        self.assertTrue(self.sub(prompt="You are Eagle_Eyes."))
+        self.assertIsNone(self.sub(prompt="You are Eagle_Eyes."))
+        self.assertTrue(self.sub(prompt="You are Eagle_Eyes.", agent_id="a2"))
+
+    def test_parent_role_state_is_untouched(self):
+        self.put_role()
+        self.hook("You are Eagle_Eyes.", sid="p9")
+        self.sub(sid="p9", prompt="You are Eagle_Eyes.")
+        self.assertEqual(rl.injected("p9"), ["Eagle_Eyes"])
+
+    def test_settings_wires_subagent_start(self):
+        d = json.loads((REPO / ".claude" / "settings.json").read_text(encoding="utf-8"))
+        cmds = [h["command"] for g in d["hooks"].get("SubagentStart", []) for h in g["hooks"]]
+        self.assertTrue(any("role_loader.py" in c and c.endswith("hook\"") or "role_loader.py\" hook" in c for c in cmds))
 
 
 class TestVerify(Base):
@@ -316,6 +377,27 @@ class TestRepoRoles(unittest.TestCase):
         self.assertIn("You are Thinker.", (REPO / "MyTradingSys/system/START_HERE.txt").read_text(encoding="utf-8"))
         import role_hook_launcher as rhl
         self.assertIn("Thinker", rhl.KNOWN)
+
+
+class BootStepTests(unittest.TestCase):
+    """boot_step must find the Boot section, not prose that merely starts with the word Boot (review 2026-10-22)."""
+
+    def test_prose_line_before_heading_is_skipped(self):
+        body = ("# R\nBoot reads only what Boot step 3 names (cite file:line + commit date, else NOT_IN_DATA).\n\n"
+                "## Boot (once)\n1. `python scripts/dev/sync.py start x`.\n")
+        self.assertEqual(rl.boot_step(body), "1. `python scripts/dev/sync.py start x`.")
+
+    def test_every_real_role_names_its_first_command(self):
+        for f in sorted((REPO / rl.ROLES_REL).glob("*.md")):
+            step = rl.boot_step(f.read_text(encoding="utf-8"))
+            self.assertNotIn("NOT_IN_DATA", step, f.name)
+            self.assertNotIn("first step of the file", step, f.name)
+            self.assertNotIn("Open `SUPER_LOOP.md`", step, f.name)
+
+    def test_roles_md_is_an_index_under_1200_tokens(self):
+        """roles-md-index-slim: ROLES.md holds the index, role prose lives in roles/*.md (~4 chars per token)."""
+        text = (REPO / "MyTradingSys/system/ROLES.md").read_text(encoding="utf-8")
+        self.assertLess(len(text) // 4, 1200)
 
 
 if __name__ == "__main__":

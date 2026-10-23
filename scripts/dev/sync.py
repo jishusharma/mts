@@ -10,6 +10,7 @@
   python scripts/dev/sync.py claim "<task>" [--area <paths>]  # tell parallel sessions what you work on (shipped at once); refused only when --area overlaps an open claim
   python scripts/dev/sync.py claims  # open claims on origin/fast-track (host, account, task, age); release: `release <slug>`
   python scripts/dev/sync.py where [--all]  # trees holding work not on origin/fast-track (nothing lost?); --all lists every tree
+  python scripts/dev/sync.py discard <tree name|path>...  # the operator said discard: save uncommitted work to Dumps/wt_rescue/<tree>/, remove the tree, keep its branch (no app card)
   python scripts/dev/sync.py tidy [--apply] [--all]  # retire finished worktrees (session, App-named, mts-relay-*; clean + fully on origin/fast-track + idle 24 h); dry run by default
 
 Rules live in MyTradingSys/system/PARALLEL.md. The live tree (a checkout holding the gitignored marker
@@ -20,6 +21,7 @@ import json
 import os
 import random
 import re
+import shutil
 import socket
 import inspect
 import subprocess
@@ -496,9 +498,13 @@ def call_gate(gate, repo, files):
 
 
 def run_docs_gate(repo, files):
-    """Docs/data/cards/pages-only ship (gate-tiers-by-path, operator q-v1-gate-tiers 2026-10-20): no local gate at all. Fetch, merge and
-    push only; CI gates behind (the measured docs ships ran 1025-2329 s locally for checks CI repeats)."""
-    return None
+    """Docs/data/cards/pages-only ship (gate-tiers-by-path, operator q-v1-gate-tiers 2026-10-20): no full local gate. Fetch, merge and
+    push; CI gates behind (the measured docs ships ran 1025-2329 s locally for checks CI repeats). Only the doc size caps run (under
+    1 s): 2175ef80 pushed CLAUDE.md over its cap on a docs ship and turned trunk red (operator 2026-10-22: "make a hook")."""
+    import preship
+    fails = preship.cap_failures(repo, files)
+    if fails:
+        raise SyncError("doc size cap: " + " / ".join(fails) + " -> FIX: " + preship.CAP_RULE[4])
 
 
 def ship_stamp(repo):
@@ -1196,6 +1202,61 @@ def repair_heads(repo, apply=True):
     return done
 
 
+def rescue_tree(p, dest):
+    """Copy what `git worktree remove --force` would destroy in tree `p` into `dest`: changes.patch (tracked edits, binary-safe),
+    untracked files and ignored data under files/. Returns the number of paths saved (0 = nothing to save, no dest made)."""
+    patch = git(p, "diff", "HEAD", "--binary", check=False).stdout
+    untracked = [l for l in git(p, "ls-files", "--others", "--exclude-standard", "-z", check=False).stdout.split(chr(0)) if l]
+    data = ignored_data(p)
+    tracked = [l for l in git(p, "diff", "HEAD", "--name-only", check=False).stdout.splitlines() if l]
+    if not (patch or untracked or data):
+        return 0
+    dest.mkdir(parents=True, exist_ok=True)
+    if patch:
+        with open(dest / "changes.patch", "w", encoding="utf-8", newline="\n") as f:
+            f.write(patch)
+    for rel in untracked + [d.strip('"').rstrip("/") for d in data]:
+        src, tgt = p / rel, dest / "files" / rel
+        tgt.parent.mkdir(parents=True, exist_ok=True)
+        if src.is_dir():
+            shutil.copytree(src, tgt, dirs_exist_ok=True)
+        elif src.exists():
+            shutil.copy2(src, tgt)
+    return len(tracked) + len(untracked) + len(data)
+
+
+def discard(repo, targets):
+    """Remove the worktrees the operator said to discard, from Bash, so no Allow card appears. The App's own "discard kept
+    worktree" action asks him in every permission mode, one card per tree (operator 2026-10-23, 4-5 cards: "it asked me to click on
+    buttons to do work that i already asked for"); model_guard denies it and points here. Safer than the App: uncommitted work is
+    first saved to <primary>/Dumps/wt_rescue/<tree>/ and the branch (its commits) is kept. Never the primary tree, the tree we run
+    in, the live tree or a lane tree. Returns the paths removed."""
+    rows = worktrees(repo)
+    primary = Path(rows[0][0]).resolve()
+    here = Path(repo).resolve()
+    out = []
+    for t in targets:
+        hit = [(Path(p).resolve(), b) for p, b in rows[1:] if Path(p).name == t or Path(p).resolve() == Path(t).resolve()]
+        if not hit:
+            print(f"skip  {t}: not a worktree of this repo (`sync.py where --all` lists them)")
+            continue
+        p, branch = hit[0]
+        if p in (primary, here) or (p / LIVE_MARKER).exists() or p.name in LANE_WORKTREES:
+            print(f"skip  {p.name}: primary, current, live or lane tree (never discarded)")
+            continue
+        dest = primary / "Dumps" / "wt_rescue" / p.name
+        n = rescue_tree(p, dest) if p.exists() else 0
+        r = git(primary, "worktree", "remove", "--force", str(p), check=False)
+        if r.returncode != 0 and p.exists():
+            print(f"skip  {p.name}: remove failed ({r.stderr.strip()[:80]})")
+            continue
+        print(f"discarded  {p.name} [{branch}]" + (f": {n} uncommitted path(s) saved to {dest}" if n else ": nothing uncommitted")
+              + "; branch kept")
+        out.append(str(p))
+    git(primary, "worktree", "prune", check=False)
+    return out
+
+
 def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS, now=None):
     """Retire finished worktrees: `../mts-<host>-<slug>` made by `start`, the App's `.claude/worktrees/*` and `../mts-relay-*`.
     Dry run unless apply. Removed only when: not the primary tree, not the one we are in, no live marker, clean (the pulled
@@ -1317,6 +1378,13 @@ def main(argv):
     if argv and argv[0] == "where" and set(argv[1:]) <= {"--all"}:
         try:
             where(toplevel(Path.cwd()), "--all" in argv)
+        except SyncError as e:
+            print(f"sync: {e}", file=sys.stderr)
+            return 1
+        return 0
+    if argv and argv[0] == "discard" and len(argv) >= 2:
+        try:
+            discard(toplevel(Path.cwd()), argv[1:])
         except SyncError as e:
             print(f"sync: {e}", file=sys.stderr)
             return 1

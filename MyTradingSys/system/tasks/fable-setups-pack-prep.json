@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-22T20:47:39Z",
   "commands": [],
   "created": "2026-10-18T19:46:43Z",
   "depends_on": [],
@@ -12,7 +13,14 @@
   "goal": "Build research/fable_setups_2026-10-19/pack/ per fable_run_4_brief.md Step 0 (LOOK window 2022-01-01..2023-06-30 only).",
   "id": "fable-setups-pack-prep",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Pack built under research/fable_setups_2026-10-19/pack (792 KB): 4 OHLCV csv, daily+weekly",
+      "ref": "ea175ecb",
+      "utc": "2026-10-22T20:47:39Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -24,7 +32,12 @@
   "refs": [
     "MyTradingSys/system/fable_run_4_brief.md"
   ],
-  "result": "",
+  "result": "Pack built under research/fable_setups_2026-10-19/pack (792 KB): 4 OHLCV csv, daily+weekly levels with session H/L, 31 charts, RULES_DIGEST (107 lines, quotes machine-checked), README; leak_check + 10 tests green",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/fable_setups_2026-10-19/pack/"
   ],
@@ -38,7 +51,7 @@
   "sources": [
     "MyTradingSys/system/fable_run_4_brief.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write scripts: fetch Binance USD-M BTCUSDT klines 1w/1d/12h/4h for 2022-01-01..2023-06-30 only (public data, assert max bar open < 2023-07-01); write ohlcv_{1w,1d,12h,4h}.csv with taker buy volume",
     "Compute levels_daily.csv and levels_weekly.csv: POC/VAH/VAL per FORMULAS 18.1 (70 pct value area), prior-period H/L/O/C, Asia/London/NY session H/L per session_levels layer",
@@ -46,6 +59,7 @@
     "Write RULES_DIGEST.md (max 250 lines, SOURCED quotes with file:line from the five files in fable_run_4_brief.md Step 0 item 4, plus the what-already-failed list from LAYERS.md) and README.md (columns, windows, 14 bp cost per FORMULAS 13)",
     "Write leak_check.py (no timestamp >= 2023-07-01 in any pack file) with a test that fails on a planted row; hand-check one week POC/VAH/VAL against FORMULAS 18.1; ship with sync.py ship; verify git cherry origin/fast-track empty and git ls-tree lists the pack files"
   ],
+  "taken": "2026-10-22T20:47:39Z",
   "tests": "Leak check script asserts no pack timestamp >= 2023-07-01; fails on a planted row. POC/VAH/VAL for one hand-picked week match a hand computation from FORMULAS 18.1.",
   "title": "Fable run 4 pack: LOOK-window BTC OHLCV, VP levels, 31 naked charts, Tom/Fabio rules digest",
   "weight": "IMPORTANT",

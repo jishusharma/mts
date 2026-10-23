@@ -14,6 +14,22 @@
   "goal": "Count-only pre-registration of Quad Rotation on BTCUSDT perp DEV (to 2024-06-30), 1m and 5m, stochastic and RSI arms: events, independent event-days, stop width in bp against the 14 bp round-trip fee. No return is computed.",
   "id": "kurisko-prereg-fire-counts",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "kurisko: record RSI video search outcome (no sourced RSI settings, no new arm)",
+      "ref": "86288e039ccd",
+      "utc": "2026-10-18T18:31:43Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "7e75c7202b22 wavetrend-prereg-counts: review fixes (C2 wording, rule section ref)",
+      "ref": "MyTradingSys/research/wavetrend_2026-10-17/PRE_REG.md",
+      "utc": "2026-10-17T07:24:13Z"
+    }
+  ],
   "layers": [
     "rsi"
   ],
@@ -23,6 +39,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-22T22:47:36Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -39,12 +56,13 @@
     "fees in P&L",
     "trading rules"
   ],
+  "scope_sha": "86288e039ccd",
   "size": "M",
   "sources": [
     "MyTradingSys/research/wavetrend_2026-10-17/PRE_REG.md (precedent)",
     "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md section 6"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "python scripts/dev/verdicts.py check \"kurisko quad rotation stochastic\" and paste its output into the PRE_REG; exit 1 = stop, report the kill scope, freeze nothing.",
     "Data (E1): F:/MTS/data/tom_raw/klines/BTCUSDT-1m-2022-01..2024-06 (30 files, DEV); sha256 per file from research/gross_effect_screen_2026-10-15/DATA_MANIFEST.csv written into the PRE_REG; the loader refuses any bar >= 2024-07-01; 5m via tf_resample (FORMULAS 8). Events come from the kurisko module (record its commit sha), not a re-implementation.",

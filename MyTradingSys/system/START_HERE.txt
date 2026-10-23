@@ -1,161 +1,81 @@
 ==============================================================
- MTS CHEAT SHEET - START HERE   (2026-10-21)   paste a line, get a role
+ MTS CHEAT SHEET - START HERE   (2026-10-22)   paste a line, get a role
 ==============================================================
 
 HOW IT WORKS
   Open a NEW session (Sonnet unless noted), paste ONE line below.
   First reply must be a banner:  ROLE LOADED: <Name> vN ...
-  No banner / "ROLE NOT LOADED"  ->  close that session, open a new one.
-  Every role starts on ANY device and ANY login (only the notes differ).
-  Nothing starts by itself: you (or the Supervisor) start every session.
-  Forgot the role line? The first prompt loads the best fit and says
-  why:  ROLE LOADED: <Name> (fallback: <why>) ...   Wrong one? Paste
-  the right "You are <Role>." line. A tie: it asks you once.
+  No banner / "ROLE NOT LOADED"  ->  close it, open a new session.
+  Any role runs on ANY device and ANY login.
+  ONE small task -> a normal Sonnet session, no role line needed.
 
 --------------------------------------------------------------
- WHAT DO I DO TODAY?
+ WHICH ROLE?
 --------------------------------------------------------------
-  Question / decision / new backlog idea .... Admin_Guy
-  Chart screenshot to read .................. Eagle_Eyes
-  Weekly meter says SPEND ................... Supervisor (super session)
-  Think / design / optimise / what next? .... Thinker
-  Once a week, health check ................. MTS_Doctor
-  Everything else is on demand (bottom).
+  Question / decision / backlog idea ........ You are Admin_Guy.
+  Think / design / what next? (Opus) ........ You are Thinker.
+  Chart screenshot to read .................. You are Eagle_Eyes.
+  Lots of work, a login has room ............ You are Supervisor. Login <A|B|C>. <tasks>
+  Weekly health check (max 1 a day) ......... You are MTS_Doctor.
+  Idle logins / stuck work (1 at a time) .... You are Pipeliner.
+  GPT / Codex / Gemini lab (needs NUC) ...... You are Lab_Guy.
+  Page stale / links dead ................... You are 1985Artifacts_Guy.
+                                              (jishusharma1985 login only)
+  Hook, console or network fault ............ You are Admin_Guy.
+
+  Logins:  A = jishu.sharma   B = jishu.awgp   C = jishusharma1985
 
 --------------------------------------------------------------
- 1. QUESTIONS, DECISIONS, BACKLOG IDEAS      any device, any login
+ SUPER SESSION  (5 hours of background work, zero clicks)
 --------------------------------------------------------------
-  Model : Sonnet 5.5, effort MEDIUM (set in the app composer)
-  Paste : You are Admin_Guy.
-          then type your question, decision or backlog idea
-  Gets  : answer from the repo; your decision recorded word for word;
-          a backlog idea becomes a scoped card, shipped, routed.
-  Limit : it never decides for you; fixes go up as a card.
-  Old names still work: Q&A_Helper, Network_Admin_Guy.
+  Paste:   You are Supervisor. Login <A|B|C>. <your tasks>
+  Then leave it. It runs on its own:
+    - plans each wake (supervisor.py plan): usage, pacing, card split
+      with the other Supervisors, lanes for GPT / Gemini / DeepSeek
+    - Builders run as background agents: no approval prompts
+    - runs the Codex CLI worker when CODEX cards are ready
+    - rechecks every Builder result itself (reruns the tests)
+    - hands over 20 min before the 5 h reset (NEXT_SESSION.md)
+  Your part:
+    - paste the line again for the next 5 h (once per login)
+    - a Sonnet Supervisor stops at 40 tool turns; paste the
+      successor line it gives you
+    - DeepSeek works only with its chat open on JIS-NB / NUC,
+      hands-free armed
+  More: MyTradingSys/system/SUPER_LOOP.md
 
 --------------------------------------------------------------
- 1b. THINK WITH ME (design, optimise, economise)   any device, any login
+ BUDGET - can I spend?
 --------------------------------------------------------------
-  Model : Opus (pick it in the composer). On Sonnet it runs LITE.
-  Paste : You are Thinker.
-          then a topic, or:  scan waste | budget | automation | tests |
-          scale | speed | ideas | cut | all
-  Gets  : 2-3 real options (cost, ROI, risk), one recommendation, one
-          next step. Your pick is recorded word for word and becomes raw
-          cards for Pipeliner / Supervisor.
-  Limit : never builds, deploys, starts sessions or decides for you.
+  python scripts/dev/traffic.py budget   ->  SPEND / NORMAL / THROTTLE
+  Readings come from sessions (get_usage); older than 6 h = NORMAL.
+  To add one by hand, in a session on that login:
+    mts_signal.py send "BUDGET login=<A|B|C> 5h=<n>% week=<n>% reset=<UTC>"
 
 --------------------------------------------------------------
- 2. CHART SCREENSHOTS                         any device
+ BROADCAST - tell every session one thing
 --------------------------------------------------------------
-  Paste : You are Eagle_Eyes.
-          then paste the screenshot
-  Gets  : market read vs live files, logged, flagged if they disagree.
-          Say "think" after a read: 2 options for the system (never trades).
-  Note  : full detail only on JIS-NB (live files live there).
-          Elsewhere it reads a copy stamped mirror@<utc> - check the age.
+  Type as a prompt anywhere:   MTS broadcast: <one line>
+  - 200 chars max: ship the full text first, broadcast its path
+  - seen on a session's NEXT prompt only; idle sessions never see it
+  - nobody replies; use it for decisions, HOLD/STOP, "read this file"
+  Check:  python scripts/dev/mts_signal.py read --hours 24
 
 --------------------------------------------------------------
- 3. SUPER SESSION  (5 hours of parallel work)   any device, any login
+ COMMANDS   python scripts/dev/<script> ...
 --------------------------------------------------------------
-  WHEN  : the weekly meter says SPEND, or whenever a login has room.
-  Model : Sonnet (Opus only if you name it)
-  Paste : ONE line, then your tasks:
-
-      You are Supervisor. Login <A|B|C>. <your tasks>
-
-  Login letter = the account you are signed in with on that device:
-  A jishu.sharma, B jishu.awgp, C jishusharma1985.
-  That is all. The role file loads itself (first reply: ROLE LOADED:
-  Supervisor v3 ...). Every wake it runs ONE command,
-  supervisor.py plan, which reads usage, sends its heartbeat, paces
-  the 5 h window against the weekly limit, splits the cards with the
-  other Supervisors, feeds the GPT / Gemini / DeepSeek lanes, and says
-  when to hand over (20 min before the 5 h reset):
-  handover/SUPERVISOR_<login>.md, then the same line again.
-  Do NOT open Supervisor / Session_Planner / Builder by hand otherwise.
-
-  What is NOT automatic (honest limits):
-    - Nothing wakes a Supervisor except its workers and a 50 min
-      watcher; between your messages it can only start one-use
-      Agents. A new wave of full sessions needs any message from you.
-    - A Sonnet Supervisor stops at 40 tool turns / 10 messages: one
-      5 h run is 1-2 Supervisor sessions. If the successor is not
-      started, paste the line it gives you.
-    - No device starts a session on another device (one exception:
-      a headless worker on the NUC when no Supervisor runs there).
-    - DeepSeek (DSA) works only while its chat is open on JIS-NB / NUC
-      with hands-free armed; lines starting OPERATOR are for you.
-
-  THREE LOGINS AT ONCE (A, B, C on three devices)
-    1. On each device, one new session, paste the line above with
-       that device's login letter (same or different tasks).
-    2. They find each other through heartbeat lines, split the cards
-       (no two start one card) and pick one owner per lane.
-    3. NUC: open the DeepSeek chat + arm hands-free; JIS-NB too.
-       Laptop: Claude only (no DeepSeek, GPT or agy there).
-    4. Check any time:  python scripts/dev/traffic.py budget
-    More: MyTradingSys/system/SUPER_LOOP.md
-
---------------------------------------------------------------
- 4. HEALTH CHECK                               any device, about weekly
---------------------------------------------------------------
-  Paste : You are MTS_Doctor.
-  Gets  : dated report in research/mts_doctor/, other-model checks.
-  Limit : at most one a day (a second writes a duplicate report).
-
---------------------------------------------------------------
- 5. ROUTING AND ALLOCATION (idle logins, stuck work)    one at a time
---------------------------------------------------------------
-  Paste : You are Pipeliner.
-     or, inside any top-level session (not an Agent):  Start the Pipeliner.
-  Gets  : desk queue drained; every login/lane/queue allocated; no card
-          done twice; silent machine's work re-routed.
-  Note  : a trunk lease allows only one at a time (it refuses a second).
-          This role now includes the old Traffic_Controller.
-
---------------------------------------------------------------
- 6. LAB (GPT/Codex, Gemini)                    needs the NUC lab
---------------------------------------------------------------
-  Paste : You are Lab_Guy.
-
---------------------------------------------------------------
- 7. ONLY WHEN BROKEN
---------------------------------------------------------------
-  Page stale / links dead ... You are 1985Artifacts_Guy.
-                              (needs the jishusharma1985 login:
-                               it owns every page; republishes MTS Home)
-  Console flashes, hook or network fault ... You are Admin_Guy.
-                              (it triages; fixes go to a Builder card)
-
---------------------------------------------------------------
- COMMANDS  (python scripts/dev/<script> ...; any checkout)
---------------------------------------------------------------
-  ROLES
-    role_loader.py list               every role, file, start, model
-    role_loader.py pick --text "..."  which role fits this task, why
-    role_loader.py banner <Role>      the banner a session must show
-  STATE OF PLAY
-    make_status.py                    rebuild research/STATUS.md
-    tasks.py next | list | status     what to work on, the queue
-    traffic.py budget                 SPEND / NORMAL / THROTTLE
-    live_mirror.py brief              live state off JIS-NB (mirror@)
-    operator_questions.py list --limit 0   your open questions
-  WORK (every session does this, you rarely need to)
-    sync.py start <slug>              own worktree, up to date
-    sync.py claim "<task>"            say what you work on
-    sync.py ship --release <slug>     tests, push to fast-track
-    sync.py where | claims | health   clean tree? who holds what?
-    sync.py release <slug>            drop a stale claim
-  TALK BETWEEN MACHINES / LOGINS
-    mts_signal.py send "<one line>"   note to every session
-    mts_signal.py read                read the notes
-    desk.py post ... --target DSA     run-and-report job to DeepSeek
-    tasks.py new                      new backlog card (raw)
-  CHECKS
-    run_all_tests.py --quick          fast suite (no Maven/backtest)
-    mts_doctor.py                     health + process audit
-    git cherry origin/fast-track HEAD empty = really shipped
+  tasks.py next | list | status     what to work on, the queue
+  tasks.py new                      new backlog card
+  traffic.py budget                 SPEND / NORMAL / THROTTLE
+  codex_run.py status               Codex worker: lane up? stalled?
+  make_status.py                    rebuild research/STATUS.md
+  operator_questions.py list --limit 0   your open questions
+  mts_doctor.py                     health + process audit
+  hook_bench.py -n 3                every hook timed vs its budget
+  run_all_tests.py --quick          fast test suite
+  sync.py ship                      test + push to fast-track
+  git cherry origin/fast-track HEAD empty = really shipped
+  role_loader.py list               every role, model, start line
 
 --------------------------------------------------------------
  GOLDEN RULES
@@ -166,33 +86,6 @@ HOW IT WORKS
   No schedulers or routines on any device.
   Numbers: SOURCED (trader's quote) or OURS (tuned) - never mix.
   Fee-net out-of-sample results decide what trades, not doctrine.
-
---------------------------------------------------------------
- BUDGET - is it SPEND?
---------------------------------------------------------------
-  Each login has its own pool, readable only from inside a session
-  on that login (get_usage). No CLI route exists.
-  1. In a session on each login:  get_usage, then send
-       BUDGET login=<A|B|C> 5h=<n>% week=<n>% reset=<UTC>
-     (python scripts/dev/mts_signal.py send "BUDGET login=... ")
-  2. Anywhere:  python scripts/dev/traffic.py budget
-     -> SPEND / NORMAL / THROTTLE per login and overall.
-     Readings older than 6 h count as NORMAL. The Supervisor sends its
-     own at boot and every wake (supervisor.py plan, heartbeat line).
-
---------------------------------------------------------------
- DO THESE ONCE (yours, in the app sidebar)
---------------------------------------------------------------
-  [ ] Rename pinned sessions:
-        Artifacts_Guy      -> 1985Artifacts_Guy
-        Q&A_Helper         -> Admin_Guy
-        Network_Admin_Guy  -> Admin_Guy (keep one)
-        Traffic_Controller -> Pipeliner (keep one)
-  [ ] Open 1985Artifacts_Guy on the jishusharma1985 login and say:
-        republish MTS Home   (Control Room, Layer Map also stale)
-  [ ] AIBridge 0.7.1: files are installed on JIS-NB (2026-10-19).
-        Reload the extension in chrome://extensions + F5 the DeepSeek tab.
-        JIS-NUC: still open (desk row 20261019-050232).
 
 --------------------------------------------------------------
  THE ROLES   (full list: python scripts/dev/role_loader.py list)

@@ -1,0 +1,76 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-23T03:46:16Z",
+  "commands": [
+    "python scripts/dev/role_loader.py lint",
+    "python -m pytest MyTradingSys/tests/test_role_roster.py -q"
+  ],
+  "created": "2026-10-22T19:24:56Z",
+  "depends_on": [],
+  "done_when": "thinker.md and role_loader boot text say: asked work runs this turn, no go-ahead request; a test fails on the old text and passes on the new; lint green.",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "A Thinker reply never ends by asking the operator to say go for work the operator already asked for; it does the work in the same turn and asks only for a decision that is genuinely his (an option choice with no default).",
+  "id": "bug-ask-go-for-asked-work",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "already on fast-track in a8d4fb2deb71; test_role_roster 23 passed",
+      "ref": "b79c12c6",
+      "utc": "2026-10-23T03:46:16Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "context-leaks: keep every role under the 10k hook cap, remind less often",
+      "ref": "220ec4619d65",
+      "utc": "2026-10-21T04:53:21Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "220ec4619d65 context-leaks: keep every role under the 10k hook cap, remind less often",
+      "ref": "MyTradingSys/system/roles/thinker.md",
+      "utc": "2026-10-21T04:53:21Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "OPERATOR QUOTE: \"you have to log a bug first. That I do not, I never want to see in my life you say this again. That say go and I will do this. Because I have already asked you to do this. ... I will just say something like this and go back and do it 10 other things and come back after 1 hour and I will see this message and my ass will be on fire.\"\nEVIDENCE (this session, 2026-10-23): Thinker ended 3 replies with a go-ahead request (\"say go\") after the operator had already asked for the work (prompt-quality research; CBP integration plan). The operator was away for ~1 h and found the work not started. Existing rule ignored: CLAUDE.md \"No routine questions or want me to offers for implied work: do it now, full depth\"; memory feedback-act-on-goal-no-micro-questions. Cause: role file thinker.md reply format ends every reply with \"NEXT: pick A/B/C\" and \"Done when ... operator has a chosen option\", so Thinker treats the end of a reply as a gate even when the operator already ordered the work.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-22T19:25:05Z",
+  "refs": [],
+  "result": "already on fast-track in a8d4fb2deb71; test_role_roster 23 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/system/roles/thinker.md; scripts/dev/role_loader.py; MyTradingSys/tests/test_role_roster.py"
+  ],
+  "scope_out": [
+    "trading code; the live tree"
+  ],
+  "scope_sha": "220ec4619d65",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Write the failing test first and see it fail",
+    "Add to thinker.md and the role_loader boot text: asked work runs this turn; ask only for a genuine option decision",
+    "Run role_loader lint and the roster tests"
+  ],
+  "taken": "2026-10-23T03:46:16Z",
+  "tests": "MyTradingSys/tests/test_role_roster.py::test_thinker_no_go_ahead_request (fails on current thinker.md, which ends every reply with NEXT: pick A/B/C and has no run-asked-work-now rule)",
+  "title": "Bug: sessions end replies asking the operator to say go for work he already asked for",
+  "weight": "",
+  "worker": "agent"
+}

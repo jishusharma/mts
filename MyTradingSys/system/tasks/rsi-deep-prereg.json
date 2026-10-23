@@ -10,7 +10,7 @@
     "rsi-deep-confirmations"
   ],
   "done_when": "",
-  "est_turns": null,
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
@@ -39,5 +39,5 @@
   "tests": "",
   "title": "RSI deep-buy: freeze grid, verdict rules and trial rows in PRE_REG.md before any outcome",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }
