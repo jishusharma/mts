@@ -30,3 +30,12 @@ The role loader's fallback keyword match picked Lab_Guy for this audit because t
 2. Rerun the Supervisor's probe: a background Agent whose brief starts `You are Thinker.` must answer with a `ROLE LOADED` line.
 3. Close the duplicate card; make the lag fail loud: card `hook-lag-gate`.
 4. Card `role-fallback-common-words`: drop generic words like `revalidat` from fallback triggers, or require 2+ hits.
+
+## Fix applied and proven (2026-10-23, operator go)
+- `git -C <main checkout> pull --ff-only`: f22763caa -> 30ee53be5, 0 behind; `SubagentStart` now in the main `.claude/settings.json`; its 54 uncommitted files untouched.
+- Probe: a background `general-purpose` Agent with brief `You are Thinker.` replied `ROLE LOADED: Thinker v2 · token duck-nail · ... @ 30ee53be`.
+  Its transcript (`subagents/agent-a5fa34625a737606f.jsonl`) shows the hook fired, independent of the agent's own claim: line 1 `hook_success` hookEvent=SubagentStart,
+  line 2 `hook_additional_context` with the ROLE LOADER pointer, line 15 the system message "SubagentStart hook additional context: ROLE LOADER (hook) ...".
+- No restart was needed: this session started before the pull and the next agent got the hook (the "restart needed" claim is wrong).
+- What it does not give: the role file itself. The agent receives a pointer and reads the file (one extra tool call), because SubagentStart carries no brief text.
+- Cards `doctor-main-checkout-behind` and `jis-nb-fast-forward-the-main-checkout-to` dropped (done by hand). `hook-lag-gate` stays: the lag will come back without a gate.
