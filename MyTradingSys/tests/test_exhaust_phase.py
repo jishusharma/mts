@@ -32,5 +32,16 @@ class ExhaustPlanTest(unittest.TestCase):
         self.assertEqual(exhaust.plan("A", 50, 5, RESET, {}, now=at(75))["minutes_to_reset"], 75)
 
 
+class ExhaustClaimTest(unittest.TestCase):
+    CLAIMS = [("exhaust-login-c", {"host": "desktop-f7iu69n"}), ("other-task", {"host": "jis-nb"})]
+
+    def test_second_session_on_same_login_sees_holder(self):
+        self.assertEqual(exhaust.holder("C", self.CLAIMS), "desktop-f7iu69n")
+
+    def test_other_login_is_free(self):
+        self.assertEqual(exhaust.holder("A", self.CLAIMS), "")
+        self.assertEqual(exhaust.holder("B", []), "")
+
+
 if __name__ == "__main__":
     unittest.main()
