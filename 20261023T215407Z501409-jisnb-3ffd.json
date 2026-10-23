@@ -1,0 +1,1 @@
+{"t": "20261023T215407Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship Result: +17 lines, tree-equal-to-trunk now prints nothing (new test fails on old code); ship elapsed in gate_timing.jsonl", "login": "C", "sid": "a4a80e87ee"}
