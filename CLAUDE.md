@@ -6,19 +6,19 @@ CLAUDE.md is already in context; do not cat or Read it. Code mode only (DSA chat
 1. `python scripts/dev/sync.py start <slug>`: in a lane tree (mts-app/relay/dsa) it switches to branch <host>/<slug>; elsewhere it prints `WORKTREE: <path>` (work only there, never the live tree).
 2. Read `MyTradingSys/research/STATUS.md` (rebuild: `scripts/dev/make_status.py`), not what it summarises; `LESSONS_DIGEST.md` only for live-path or backtest work. RED `CI green:` line: fix CI first (pinned `ci-<sha>` card). A hand-over (NEXT_SESSION.md) is history (STATUS.md "Hand-over freshness" says STALE when overtaken): current state comes from disk or git this turn. Read the ACTIVE entries of `MyTradingSys/system/ANNOUNCEMENTS.md` (STOP/HOLD there outranks the queue). `[MTS ACTION REQUIRED]` outranks the current task: do it first. Where a kind of work goes (machine, channel, model, checker): `MyTradingSys/system/ROUTING.md`.
 3. ONE task from NEXT_SESSION.md or `tasks.py next`; `sync.py claim "<task>"`, work, `sync.py ship --release <slug>`, `sync.py where` (own tree clean).
-4. Hand-over: no schedulers or routines run anywhere (SCHEDULING_POLICY.md); nothing starts the next session by itself. Overwrite NEXT_SESSION.md, `sync.py ship`; the coordinator (SUPER_SESSION.md) starts the next one. The block must run with zero operator input (defaults for open questions).
+4. Hand-over: no schedulers or routines run anywhere (SCHEDULING_POLICY.md); nothing starts the next session by itself. Overwrite NEXT_SESSION.md, `sync.py ship`; the coordinator (SUPER_SESSION.md) starts the next. The block must run with zero operator input (defaults for open questions).
 5a. Role sessions ("You are Eagle_Eyes", "I need a pipeliner"): the `role_loader.py` hook injects `roles/<role>.md`; the first reply is its `ROLE LOADED: ...` banner. Without the injected text, say `ROLE NOT LOADED` and stop.
 5. SHORT SESSIONS (unattended workers; an operator-driven session ends on his word, q-v1-turn-caps): one session = one task; hand over when it is done, after 10 operator turns or the tool-turn cap (WORKERS.md rule 5), whichever first (commit, then steps 3-4, one line, stop). Live market threads: after 5 screenshot reads.
-5b. Never tell the operator about turn caps, turn counts, context size or compaction (operator 2026-10-21): hook notices are for you to act on silently; he compacts and drives when he wants.
+5b. After `get_usage`: `python scripts/dev/mts_signal.py budget --login <A|B|C> --five <%> --week <%> --reset <UTC>` (jishusharma1985 = C).
 5b. Budget: once per session after `get_usage`: `python scripts/dev/mts_signal.py budget --login <A|B|C> --five <5h%> --week <wk%> --reset <UTC>` (logins: CLOUD_ACCOUNTS.md; jishusharma1985 = C).
 6. Task shipped: mark your own session completed in the sidebar (`mark_completed`); coordinators mark their workers (SUPER_SESSION.md).
 
 ## Cost and routing
 - Interactive sessions and subagents: Sonnet (implementations, spec-derived tests), Opus only when the operator names it; Haiku for mechanical work; worker type + model: WORKERS.md (card fields `worker`, `est_turns`). Wait on a queue with one background shell; spot-check one worker claim.
-- No routine questions or "want me to?" offers for implied work: do it now, full depth. Free public market data and YouTube: pre-approved.
+- No "want me to?" offers for implied work: do it now, full depth. Free public market data and YouTube: pre-approved.
 - T0 script first, then by card lane (HOW_MTS_RUNS.md): run-and-report goes to DSA (`desk.py post ... --target DSA`; low on budget: post the rest to DSA, then hand over).
 - Logins share one repo and queue (CLOUD_ACCOUNTS.md): whoever has budget takes NEXT_SESSION.md; never idle for a weekly reset.
-- Surface: Claude Code Win App only; never tell the operator to "use the CLI" or hand work back. A permission block is not a reason to stop: report the exact blocked call, try the allowed equivalent.
+- Surface: Claude Code Win App only; never tell the operator to "use the CLI" or hand work back. On a permission block: report the call, try the allowed equivalent.
 
 ## Gates (before any commit touching the area)
 - `sync.py ship`: smoke gate (live-path or unknown paths = all `--quick`; `--full`); CI + green-only deploy gate the rest. Full: `python scripts/dev/run_all_tests.py` (`--quick`: no Maven/backtest). Extractions: `python scripts/dev/verify_extract_quotes.py <extract.md>`.
@@ -27,16 +27,16 @@ CLAUDE.md is already in context; do not cat or Read it. Code mode only (DSA chat
 
 ## Hard rules
 - Share work only through `sync.py ship`; cloud containers open a PR into fast-track. Never commit to master, never rebase/reset/force-push. No chained `cd x && git ...`: use `git -C <dir> <cmd>`.
-- Commit body carries `Result: <what works now / the number>`. Others' uncommitted files: don't stash, clean, revert or report them.
+- Commit body carries `Result: <what works now / the number>`. Others' uncommitted files: leave them alone.
 - Testnet only (Deribit test); no mainnet orders/accounts (public market data OK: q-gap-c); never read `.secrets/`, `.env`, keys.
 - Repo is PUBLIC (since 2026-10-11): never commit runtime/order/account data; backups go only to local F:/MTS_backup.git; go private at mainnet or the first fee-net OOS pass, whichever first (q-go-private-on-edge).
 - The live tree (`.mts_live`) runs the testnet system and changes only by a manual or coordinator-run deploy (DEPLOY_RUNBOOK.md). Builders never deploy, stop/restart processes, touch HALT files or open trades. No scheduled tasks or routines on any device.
 - Live-path changes need a test for restart/reset state, non-trade balance moves and API errors; safety checks fail closed. New timeframe or layer family: grep every TF/family map. Whoever sets AUTO_PAUSE logs owner + expected end in SUPERVISOR_LOG; each wake clears or escalates an overdue pause.
 - Layers (operator 2026-10-13, replaces "Tom is core"): no fixed core. Tom, Fabio and every other system are layers (combine, filter or switch off); fee-net out-of-sample results decide what trades, never doctrine (PROJECT_VISION).
 - Numbers (operator 2026-10-13): label each parameter SOURCED (trader's words, quote + file:line) or OURS (judgement or tuned). OURS is allowed: chosen on DEV, checked once on VALIDATION, holdout read once, variants in the trial ledger. Never call OURS the trader's.
-- Anything off: report -> independent audit -> fix. Never conclude from truncated output; parse the real format, then count.
+- Anything off: report -> independent audit -> fix. Never conclude from truncated output; parse, then count.
 - Windows: write files with `newline='\n'`; long patches go in a .py script, not a heredoc. The Bash tool strips backslashes: write paths/regexes with Write/Edit; Write decodes backslash-u escapes: use `chr()`.
-- Never add to `.git/info/exclude`: an ignore that matters goes in `.gitignore`.
+- Never use `.git/info/exclude`: ignores go in `.gitignore`.
 
 ## Where to look (`MyTradingSys/system/`)
 | Need | Read |
