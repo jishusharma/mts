@@ -25,5 +25,15 @@ session (`simplify-tooling`) works from BRIEF.md plus this file.
 | 18 | Non-hermetic tests (16 of 110 fixes) | CI on a second OS catches them; rule 7 reverts them; no new lint (freeze) | BRIEF caveat | - | decided |
 | 19 | Trading focus (notebook, CBP) | Continues; freeze does not apply to trading code | ANNOUNCEMENTS A-20261024-1 | trading sessions | in force |
 
+Decided by default by MTS_Doctor (operator delegated, 2026-10-24 about 03:00 IST: "decide on all the recommended decisions by yourself"); operator may revise:
+
+| # | Point | Decision | Why |
+|---|---|---|---|
+| 20 | Skip 5b/4f locally | No: live-path ships keep them locally; 3k, 4, 3dk, 3ad, 3bk run in CI only | gate_select.py:37 FULL_RE matches layers *live*/*writer* files that 5b/4f test |
+| 21 | Delete soak_six_slots | Keep; its test runs in CI only (TEST_FILE_SECONDS 150) | trading/supervisor check per inv_research_needs; the time cost is gone without deleting |
+| 22 | Multi-device machinery (BRIEF item 9) | Keep, untouched; 3sig, 3lh stay | NB, NUC and desktop all ship to trunk this week |
+| 23 | trunk_lag false "N behind" | Fix: read the session's cwd from the hook payload | trunk_lag.py:73 uses os.getcwd() = main checkout (93 behind) while the session tree was 2 behind |
+| 24 | Super-session design questions | Design session settles each with its recommended option, ships SUPER_SESSION.md; only Opus-without-naming (WORKERS.md rule 6) stays PROPOSED | operator asleep; hard rules unchanged |
+
 Carried over from before this chat (not part of the simplification):
 - Option A: A1, A2 shipped 2026-10-24 (full gate 16 min, `git cherry` empty). A3 (drop ask signals) waits for its turn; A2 agreement fix for its 4 open cases; Lab_Guy re-stamps the 6 dsa-audit cards.
