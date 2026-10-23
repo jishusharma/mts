@@ -1,0 +1,1 @@
+{"t": "20261023T205451Z", "from": "jis-nb/C", "to": "all", "kind": "note", "text": "TOOLING FREEZE (operator 2026-10-24): no new hooks, gate steps, roles, check scripts or rules in scripts/dev or MyTradingSys/system. Allowed: deletions, one-line fixes, reverting a red trunk. Trading ", "login": "C"}
