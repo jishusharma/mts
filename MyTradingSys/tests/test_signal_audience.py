@@ -17,17 +17,17 @@ class AudienceTest(unittest.TestCase):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop("MTS_SUBAGENT", None)
             os.environ.pop("MTS_ROLE", None)
-            self.assertFalse(mts_signal.is_subagent())
+            self.assertFalse(mts_signal.is_worker_env())
             self.assertIn("b-aaaaaa", mts_signal.action_block([B], "UserPromptSubmit"))
 
     def test_subagent_does_not(self):
         with mock.patch.dict(os.environ, {"MTS_SUBAGENT": "1"}):
-            self.assertTrue(mts_signal.is_subagent())
+            self.assertTrue(mts_signal.is_worker_env())
             self.assertEqual(mts_signal.action_block([B], "UserPromptSubmit"), "")
 
     def test_embedded_role_is_a_subagent(self):
         with mock.patch.dict(os.environ, {"MTS_ROLE": "Builder"}):
-            self.assertTrue(mts_signal.is_subagent())
+            self.assertTrue(mts_signal.is_worker_env())
 
 
 if __name__ == "__main__":

@@ -389,7 +389,7 @@ def action_text(b):
     return "ACTION FOR THIS MACHINE (%s): %s" % (host(), cmd)
 
 
-def is_subagent():
+def is_worker_env():
     """True in a subagent or embedded worker (a Supervisor's Builder/Session_Planner): broadcasts sent with --audience top skip it."""
     return bool(os.environ.get("MTS_SUBAGENT")) or os.environ.get("MTS_ROLE", "") in ("Builder", "Session_Planner")
 
@@ -398,7 +398,7 @@ def action_block(rows, ev):
     """The [MTS ACTION REQUIRED] text for this host: state none on every turn, told once per session (SessionStart), done never."""
     out = []
     for b in high_open(rows):
-        if b.get("to") not in ("all", host()) or (b.get("aud") == "top" and is_subagent()):
+        if b.get("to") not in ("all", host()) or (b.get("aud") == "top" and is_worker_env()):
             continue
         st = ack_state(rows, b["id"], host())
         if st == "done" or (st == "told" and ev != "SessionStart"):
@@ -536,7 +536,7 @@ def stop_check(payload):
     if not (h / ".git").exists():
         return ""
     rows = load(h)
-    pending = [b for b in high_open(rows) if b.get("to") in ("all", host()) and not (b.get("aud") == "top" and is_subagent()) and ack_state(rows, b["id"], host()) == "none"]
+    pending = [b for b in high_open(rows) if b.get("to") in ("all", host()) and not (b.get("aud") == "top" and is_worker_env()) and ack_state(rows, b["id"], host()) == "none"]
     if not pending:
         return ""
     reply = reply_text(payload)
