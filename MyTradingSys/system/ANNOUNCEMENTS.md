@@ -13,13 +13,6 @@ Entry format: `### A-<yyyymmdd>-<n> <kind> <title>` with kind one of INFO, DO-NO
 
 ## ACTIVE
 
-### A-20261024-1 HOLD Tooling freeze (operator 2026-10-24)
-- Applies to: every session that would add to scripts/dev, .claude hooks or MyTradingSys/system.
-- Until: the simplification session in `research/mts_doctor/simplify_2026-10-24/BRIEF.md` reports done.
-- What: no new hooks, gate steps, roles, check scripts or rules. Allowed: deletions, one-line fixes, reverting a red trunk.
-  Trading code (layers, backtest, CBP, live path) is not affected.
-- Why: 79% of the last 14 days' fixes were in dev tooling, 42 of them in tooling under 14 days old; a ship took 16-22 min.
-
 ### A-20261023-1 DO-NOW Every station: save unshipped worktree work, then tidy (operator 2026-10-23)
 - Applies to: every station (station = one device with one login, operator 2026-10-23). The first session on each device to read this does it once for that device.
 - Until: each device (JIS-NB, JIS-NUC, DESKTOP-F7IU69N) has sent `STATION <device>/<login> worktrees: ...` done.
@@ -60,6 +53,14 @@ Entry format: `### A-<yyyymmdd>-<n> <kind> <title>` with kind one of INFO, DO-NO
 - Operator answers wanted: ROUTING.md conflicts C1-C7 (bottom of that file).
 
 ## EXPIRED
+### A-20261024-1 HOLD Tooling freeze (operator 2026-10-24)
+- Applies to: every session that would add to scripts/dev, .claude hooks or MyTradingSys/system.
+- Until: the simplification session in `research/mts_doctor/simplify_2026-10-24/BRIEF.md` reports done.
+- What: no new hooks, gate steps, roles, check scripts or rules. Allowed: deletions, one-line fixes, reverting a red trunk.
+  Trading code (layers, backtest, CBP, live path) is not affected.
+- ENDED 2026-10-24 by MTS_Doctor: done-when met. Non-live ship fb139c57c passed its local gate in 11.3 s (goal < 2 min);
+  hook cost 0.27 s per tool call (goal < 0.5 s, hook_bench.py -n 3); CI green; -3,265 lines. See `research/mts_doctor/REPORT_2026-10-24.md`.
+  Prefer deleting over adding: a new hook or gate step still needs a measured catch.
 ### A-20261018-5 HOLD No new consumers of unchecked lab bases (operator OK 2026-10-18)
 - Applies to: every session creating or starting a card that reads a lab event table, the Q76 / B187 chain or another lab result as its base.
 - Until: that result carries a trust tag at or above the card's class (card `lab-trust-tag`), or the operator lifts it.
