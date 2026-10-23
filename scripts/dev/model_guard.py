@@ -424,7 +424,7 @@ def interactive_role(prompt):
     import role_loader
     names = {n.lower(): n for n in INTERACTIVE_ROLES}
     names.update({a: n for n, al in role_loader.ALIASES.items() if n in INTERACTIVE_ROLES for a in al})
-    m = ROLE_LINE.search(str(prompt or "")[:3000])
+    m = role_loader.ROLE_LINE.search(str(prompt or "")[:3000])
     return names.get(m.group(1).lower()) if m else None
 
 
