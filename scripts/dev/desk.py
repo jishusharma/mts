@@ -118,6 +118,10 @@ def post(repo, title, need, done_when, target="JIS-NB", ship=True):
            "done_when": done_when, "target": target, "from": socket.gethostname(), "posted": now(),
            "status": "pending"}
     with writable(repo, ship) as wt:
+        for old in tasks(wt):
+            if (old["status"] not in FINAL and old.get("target") == target
+                    and old["title"].strip().lower() == title.strip().lower()):
+                return old["id"]
         save(wt, req)
         commit_ship(wt, req, f"desk task: {title}\n\nResult: task {req['id']} queued for {target}\n", ship)
     return req["id"]
