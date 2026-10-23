@@ -240,13 +240,21 @@ def catch_up(repo=None, fetch=True):
     return " ".join(notes)
 
 
+def payload_cwd(raw):
+    """The session's own folder from the hook's stdin JSON; None (-> os.getcwd()) when absent. The hook process runs from the main checkout."""
+    try:
+        cwd = json.loads(raw).get("cwd")
+    except (ValueError, AttributeError):
+        return None
+    return cwd if isinstance(cwd, str) and os.path.isdir(cwd) else None
+
+
 def main(argv):
     if os.environ.get("MTS_TRUNK_LAG", "").lower() == "off":
         return 0
     if argv[:1] == ["session-start"]:
         try:
-            sys.stdin.read()
-            text = catch_up()
+            text = catch_up(payload_cwd(sys.stdin.read()))
         except Exception:
             return 0
         if text:
@@ -254,9 +262,7 @@ def main(argv):
         return 0
     if argv[:1] in (["hook"], ["check"]):
         try:
-            if argv[:1] == ["hook"]:
-                sys.stdin.read()
-            text = check()
+            text = check(payload_cwd(sys.stdin.read()) if argv[:1] == ["hook"] else None)
         except Exception:
             return 0
         if text:

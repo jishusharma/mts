@@ -103,7 +103,7 @@ CHEAP_STEPS = ("1", "2", "3", "3b", "3c", "3r", "3cv", "3cva", "3tm", "3s", "3f"
 PRECHECK_JOBS = 2
 TARGET_STEP = "4t"   # precheck pytest of the MyTradingSys/tests files that reference the change (they also run in their shard)
 TARGET_CAP = 12      # OURS: at most this many files (sorted), so the precheck stays about a minute
-LOCAL_SKIP = ("3k", "5b", "4f", "4", "3dk", "3ad", "3bk")   # OURS: BRIEF 3.3, dropped from the local ship gate only; every CI shard still runs them
+LOCAL_SKIP = ("3k", "4", "3dk", "3ad", "3bk")   # OURS: BRIEF 3.3, dropped from the local ship gate only; every CI shard still runs them. Not 5b/4f: live-path layer files (FULL_RE) need them locally
 SLOW_FILE_S = 30     # files measured at >= this many seconds stay in their shard only
 CHEAP_STEPS += ("3qn", "3gi")
 # GATE_SPEED X2 (ship only, --fast, smoke mode): the fast path. One phase, tests chosen by gate_impact, a time budget, the rest left to CI.

@@ -5,6 +5,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import unittest.mock
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -50,6 +51,27 @@ class TrunkLagTest(unittest.TestCase):
         self.assertEqual((behind, age), (2, 7200))
         sh(self.tree, "merge", "-q", "--ff-only", "origin/fast-track")
         self.assertEqual(T.lag(self.tree, now=1_000_100 + 7200, fetch=False), (0, 0))
+
+    def test_hook_measures_the_payload_folder_not_the_process_folder(self):
+        stale = Path(self.d.name) / "stale"
+        sh(self.d.name, "clone", "-q", "-b", "fast-track", str(self.origin), str(stale))
+        commit(self.origin, "b", 1_000_100)
+        sh(self.tree, "pull", "-q", "--ff-only", "origin", "fast-track")        # self.tree now equals trunk, `stale` is one behind
+        from contextlib import redirect_stdout
+        from io import StringIO
+        here = os.getcwd()
+        try:
+            os.chdir(stale)
+            buf = StringIO()
+            with redirect_stdout(buf), unittest.mock.patch("sys.stdin", StringIO(json.dumps({"cwd": str(self.tree)}))):
+                T.main(["hook"])
+            self.assertEqual(buf.getvalue(), "")
+            buf = StringIO()
+            with redirect_stdout(buf), unittest.mock.patch("sys.stdin", StringIO("{}")):
+                T.main(["hook"])
+            self.assertIn("TRUNK LAG", buf.getvalue())          # no cwd in the payload: the process folder, as before
+        finally:
+            os.chdir(here)
 
     def test_fetch_is_throttled(self):
         T.lag(self.tree, now=1_000_000 + 10)
