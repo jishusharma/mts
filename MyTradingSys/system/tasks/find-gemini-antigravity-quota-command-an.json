@@ -1,35 +1,65 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "grep -ril antigravity scripts MyTradingSys/system",
+    "python -m pytest scripts/dev/test_codex_status_parse.py -q"
+  ],
   "created": "2026-10-23T07:12:28Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/thinker/2026-10-23_gemini_quota_find.md names a command with a sample output, or NOT_IN_DATA with the files searched; codex_status_parse.py test passes on a pasted sample.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Find out whether any command reads the Gemini/Antigravity quota (grep known hits), and add a Codex status parse over the NUC gate to usage_log.py as a source. Gemini unreadable = manual column.",
   "id": "find-gemini-antigravity-quota-command-an",
   "kind": "audit",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "gemini_queue: release the claim after the run",
+      "ref": "e8c997c9691c",
+      "utc": "2026-10-23T04:21:08Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-23 T0-ONLY. Priority 3 (Thinker); not blocking the pilot. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-23T08:14:10Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/thinker/2026-10-23_gemini_quota_find.md",
+    "scripts/dev/codex_status_parse.py",
+    "scripts/dev/test_codex_status_parse.py",
+    "scripts/dev/gemini_queue.py",
+    "scripts/dev/ask_model.py"
+  ],
+  "scope_out": [
+    "any login or API-key use",
+    "reading .secrets, .env or keys",
+    "starting a Gemini or Codex run"
+  ],
+  "scope_sha": "e8c997c9691c",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/thinker/2026-10-23_usage_metering.md (Pilot design, Other lanes)"
+  ],
+  "state": "ready",
+  "steps": [
+    "grep -ril antigravity scripts MyTradingSys/system; read gemini_queue.py and ask_model.py hits for a quota or usage call; record the command and a real output line, or NOT_IN_DATA.",
+    "Parse `codex_run.py status` allowance text (window pts, week) into scripts/dev/codex_status_parse.py (standalone, usage_log.py imports it later); test on a pasted sample or fixture.",
+    "Gemini unreadable: document the manual column, no network login."
+  ],
+  "tests": "scripts/dev/test_codex_status_parse.py::test_parse_sample fails first (module absent), passes after.",
   "title": "Find Gemini/Antigravity quota command and parse Codex status over NUC gate",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

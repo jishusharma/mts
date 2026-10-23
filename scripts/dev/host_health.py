@@ -323,7 +323,7 @@ def check_disk(repo, temp=None, drive=None, now=None, free=None, size=dir_size):
     wt.sort(reverse=True)
     if wt:
         lines.append("  largest worktrees: " + "; ".join(f"{p} {b / 1e9:.2f} GB" for b, p in wt[:5])
-                     + "  (remove idle ones with `sync.py tidy`)")
+                     + "  (remove idle ones with `python scripts/dev/sync.py tidy --apply`)")
     freed = 0
     for b, p in rows:
         if not Path(p).name.startswith(OWN_TEMP_PREFIXES):

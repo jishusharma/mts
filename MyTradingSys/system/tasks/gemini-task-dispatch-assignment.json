@@ -1,6 +1,7 @@
 {
   "approved_by": "operator",
   "asks": "",
+  "closed": "2026-10-23T08:43:27Z",
   "commands": [
     "python scripts/dev/tasks.py check gemini-task-dispatch-assignment",
     "python scripts/dev/tasks.py list --lane CODEX --state ready"
@@ -16,6 +17,12 @@
   "id": "gemini-task-dispatch-assignment",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "ROUTING.md [GEMINI] title tag; codex_run.pick skips it; test_routing_gemini_tag 2/2 (faile",
+      "ref": "6bfc5baf",
+      "utc": "2026-10-23T08:43:27Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -43,7 +50,12 @@
     "MyTradingSys/system/GEMINI_START.md",
     "MyTradingSys/system/ROUTING.md"
   ],
-  "result": "",
+  "result": "ROUTING.md [GEMINI] title tag; codex_run.pick skips it; test_routing_gemini_tag 2/2 (failed first)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/ROUTING.md",
     "MyTradingSys/research/BUGS.md"
@@ -59,12 +71,13 @@
     "MyTradingSys/system/GEMINI_START.md:5-15",
     "MyTradingSys/system/ROUTING.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Review current task lane assignment rules in ROUTING.md and tasks.py (currently tasks.py allows only HAIKU, SONNET, OPUS, DSA, DSA-NB, DSA-NUC, JIS-NB, CODEX).",
     "Define a clear tagging convention (e.g. worker: gemini or tags in title/notes) or dispatch queue where Claude creates/assigns tasks directly targeted for Gemini.",
     "Update ROUTING.md and dispatch documentation so tasks meant for Gemini are unambiguous."
   ],
+  "taken": "2026-10-23T08:43:27Z",
   "tests": "tasks.py check gemini-task-dispatch-assignment",
   "title": "Claude dispatcher: tag and assign explicit Gemini-tailored task cards for the Gemini lane",
   "weight": "ROUTINE",

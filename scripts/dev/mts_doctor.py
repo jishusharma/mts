@@ -2,7 +2,7 @@
 
   python scripts/dev/mts_doctor.py [--hours 72] [--memory DIR] [--out DIR] [--no-process]
 
-Part 1 (AI health): dead references, duplicated guidance, memory index drift, task-card lint warnings, bad skills, boot cost.
+Part 1 (AI health): dead references, duplicated guidance, memory index drift, task-card lint warnings, twin cards, bad skills, boot cost.
 Part 2 (process health): health_audit.py (commit mix, gate bookkeeping, B4 adoption, red CI, stale claims).
 Writes ONE file, <out>/REPORT_<utc date>.md (default MyTradingSys/research/mts_doctor/). Reports only: it never edits rules,
 memory, cards or the live tree. Part 1 is deterministic for a given repo state; Part 2 reads trunk and CI at run time.
@@ -20,7 +20,7 @@ OUT_REL = "MyTradingSys/research/mts_doctor"
 PATH_RE = re.compile(r"`((?:scripts|MyTradingSys)/[A-Za-z0-9_./-]+\.(?:py|ps1|md|json|csv|yml))`")
 BARE_DOC_RE = re.compile(r"\b([A-Z][A-Z0-9_]{3,}\.md)\b")
 DUP_MIN = 80          # a duplicated line shorter than this is usually a heading or a table row
-KINDS = ("DEAD-REF", "DUPLICATE", "MEMORY", "CARD", "SKILL", "HOOKS")
+KINDS = ("DEAD-REF", "DUPLICATE", "MEMORY", "CARD", "DUP-CARD", "SKILL", "HOOKS")
 HOOK_FILES = (".claude/settings.json", "scripts/dev/turn_meter.py")
 
 
@@ -102,6 +102,18 @@ def card_warnings(repo):
             for ln in lines[:20]]
 
 
+def dup_cards(repo):
+    """Likely twin cards (`tasks.py twins`): two open cards for one job, e.g. made by two sessions."""
+    r = subprocess.run([sys.executable, str(Path(repo) / "scripts" / "dev" / "tasks.py"), "twins"], capture_output=True, text=True, cwd=repo)
+    out = []
+    for ln in (r.stdout or "").splitlines():
+        m = re.match(r"TWIN (\S+) (\S+) \((.*)\)$", ln)
+        if m:
+            out.append(("DUP-CARD", f"{m.group(1)} + {m.group(2)}", f"likely the same job ({m.group(3)})",
+                        "drop one, or add the other id to not_twin_of"))
+    return out[:20]
+
+
 def skills(repo, files):
     out = []
     for rel in files:
@@ -156,7 +168,7 @@ def run(repo=REPO, out_dir=None, memory_dir=None, process=True, hours=72, now=No
     files = tracked(repo)
     docs = ai_files(repo, files)
     findings = (dead_refs(repo, files, docs) + duplicates(repo, docs) + memory_drift(memory_dir) + card_warnings(repo)
-                + skills(repo, docs) + hook_drift(repo))
+                + dup_cards(repo) + skills(repo, docs) + hook_drift(repo))
     day = (now or datetime.now(timezone.utc)).strftime("%Y-%m-%d")
     out = Path(out_dir) if out_dir else repo / OUT_REL
     lines = [f"# MTS doctor report {day}", "", f"Part 1: AI health ({len(docs)} guidance files checked). Reports only; nothing was edited.", "",

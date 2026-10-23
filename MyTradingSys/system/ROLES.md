@@ -12,7 +12,7 @@ Single source: `roles/ROSTER.json`. `role_loader.py list` prints it; the table i
 | `Admin_Guy` | `You are Admin_Guy.` | any device, any login | no limit | Sonnet 5.5 medium | questions, decisions on record, backlog intake, machine faults |
 | `Eagle_Eyes` | `You are Eagle_Eyes.` | any device (full detail on JIS-NB) | no limit | Sonnet | chart screenshots read against live files, logged |
 | `Thinker` | `You are Thinker.` | any device, any login | one per topic | Opus (Sonnet = LITE) | design partner: 2-3 options, cost, ROI, one recommendation |
-| `MTS_Doctor` | `You are MTS_Doctor.` | any device | one a day (usually weekly) | Sonnet | weekly health and process audit, other-model checks |
+| `MTS_Doctor` | `You are MTS_Doctor.` | any device | one a day (usually weekly) | Sonnet | diagnoses health, proves fixes live; cards the cure |
 | `Pipeliner` | `You are Pipeliner.  (or inside any top-level session: Start the Pipeliner.)` | any device, any login | one at a time (trunk lease) | Sonnet | routing and allocation: desk queue, idle logins and lanes |
 | `Supervisor` | `You are Supervisor. Login <A|B|C>. <your tasks>` | any device, any login | one per login | Sonnet (Opus only when named) | super session: dispatches role workers, verifies their banners |
 | `Lab_Guy` | `You are Lab_Guy.` | any device (needs the NUC lab) | no limit | Sonnet | quality owner of the Claude-to-lab flow (GPT/Codex, Gemini) |
@@ -22,6 +22,9 @@ Single source: `roles/ROSTER.json`. `role_loader.py list` prints it; the table i
 <!-- roster:end -->
 
 Role limits and machine notes live in each role file. **Aliases** (`ALIASES` in `role_loader.py`): `Artifacts_Guy` -> `1985Artifacts_Guy`; `Q&A_Helper`, `Network_Admin_Guy` -> `Admin_Guy`; `Traffic_Controller` -> `Pipeliner`. Not roles: one-off task threads (they are task cards).
+
+## Who does what (2026-10-23): one owner each; work outside a role's Job is a card for its owner
+Health, fix really live: MTS_Doctor. Questions, decisions, backlog, one machine's fault: Admin_Guy. Code: Builder card. Cards, claims: Session_Planner.
 
 ## Rows
 Boot line, output channel and rules: the role file (`role_loader.py check` ties row, file and header). The Job is in the table above.

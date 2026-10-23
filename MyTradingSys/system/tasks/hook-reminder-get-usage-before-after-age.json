@@ -1,35 +1,62 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest scripts/dev/test_usage_reminder.py -q"
+  ],
   "created": "2026-10-23T07:12:26Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Pre and post hooks print the USAGE: reminder for Agent, Task, Workflow and nothing for other tools; test_usage_reminder.py passes.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Print a one-line reminder before and after Agent and Workflow tool calls: call get_usage, then usage_log.py before/after <card>. A hook cannot call MCP, so it only reminds.",
   "id": "hook-reminder-get-usage-before-after-age",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "role_loader: SubagentStart hook injects role text into background Agents",
+      "ref": "f3ac1d6c0dca",
+      "utc": "2026-10-23T07:36:14Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-23 T0-ONLY (weight ROUTINE: a reminder print, no gate logic; spot-check by coordinator). Hooks come from the main checkout (memory hooks-come-from-main-checkout): the reminder is live only after main is fast-forwarded; say so in the Result. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-23T08:15:35Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "scripts/dev/usage_reminder.py",
+    "scripts/dev/test_usage_reminder.py",
+    ".claude/settings.json"
+  ],
+  "scope_out": [
+    "model_guard.py behaviour",
+    "turn_meter.py",
+    "live path"
+  ],
+  "scope_sha": "f3ac1d6c0dca",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/thinker/2026-10-23_usage_metering.md (Roles, hooks, checks)"
+  ],
+  "state": "ready",
+  "steps": [
+    "New usage_reminder.py hook pre|post: reads the hook JSON on stdin, for tool_name in Agent, Task, Workflow prints USAGE: call get_usage then usage_log.py before|after <card>; else silent; never raises, exit 0.",
+    "Add a PreToolUse and a PostToolUse entry for matcher Agent|Task|Workflow in .claude/settings.json (separate entry, existing model_guard entry untouched).",
+    "Test first: stdin for Agent prints the line, Bash prints nothing; fails before the script exists."
+  ],
+  "tests": "scripts/dev/test_usage_reminder.py::test_agent_call_prints_reminder fails first (no script), passes after.",
   "title": "Hook reminder: get_usage before/after Agent and Workflow runs",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

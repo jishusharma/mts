@@ -21,7 +21,7 @@
      "weak_keywords": ["think", "better", "faster", "cheaper"]},
     {"name": "MTS_Doctor", "file": "mts_doctor.md", "start": "operator", "start_line": "You are MTS_Doctor.",
      "model": "Sonnet", "lane": "SONNET", "where": "any device", "limit": "one a day (usually weekly)",
-     "job": "weekly health and process audit, other-model checks",
+     "job": "diagnoses health, proves fixes live; cards the cure",
      "aliases": [],
      "keywords": ["health check", "doctor", "audit", "process audit"],
      "weak_keywords": ["health"]},

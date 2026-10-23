@@ -3,6 +3,8 @@
 Done this super session (DESKTOP-F7IU69N, 2026-10-23): tc2-tc5, card-worker-fields, super-session-rules-to-pointers, roles-md-index-slim, cbp-one-quote-checker (closed), cpu-audit-laptop-f7iu69n (script fixed, desk row to OPERATOR) shipped.
 Next: nuc-unexpected-shutdown first (block below, JIS-NUC), then `tasks.py next`. Open Sonnet cards doable anywhere: prompt-header-role-loader (scope changed 2026-10-22; step 1 A/B of 5 prompts first), gemini-task-dispatch-assignment, research-top-level-declutter, gap-g7-stop-slippage, rv05-h2-position-line-evidence. Data-blocked here (need JIS-NB/F: data): context-composite-v2-dev-read (posted to DSA), context-conditioned-session-flow-states, kurisko-prereg-fire-counts. Loose ends: 87 repeated signal lines (traffic.py measure), CODEX_START/GEMINI_START 5 duplicate lines, 3 stale pages. Weekly quota of login C 97% (reset 09:00Z); after the reset take any pending card.
 
+Exhaust phase (operator 2026-10-23): rule in system/EXHAUST_PHASE.md, broadcast b-2a5b44 sent. exhaust-phase-tooling is DONE (all 7 reqs). The device needs env MTS_LOGIN=<A|B|C> for per-login ack dedupe. Also gemini-task-dispatch-assignment done ([GEMINI] title tag). Within 2h of any weekly reset, spend all quota (every model) in saved steps; one actor per login via `exhaust.py start --login <A|B|C>`.
+
 # NEXT_SESSION
 
 Older blocks (2026-10-18/19): `MyTradingSys/system/handoff_history/2026-10-21_next_session_trim.md`. A session reads only its own block.

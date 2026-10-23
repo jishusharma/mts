@@ -18,6 +18,9 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "not_twin_of": [
+    "rsi-deep-divergence-context"
+  ],
   "note": "Operator RSI deep-buy study. Design: OPUS_FRAMING.md s1 (H3), s3, s5 (Stage 3). Raw.",
   "prio": 2,
   "refine_tries": 0,
