@@ -1,0 +1,39 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-23T22:01:18Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "main-checkout-stale-hooks-2026-10-24",
+  "lane": "JIS-NB",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "hook-lag-gate"
+  ],
+  "note": "One-off machine action (Admin_Guy, operator present). hook-lag-gate is a tool for warning about it, frozen under A-20261024-1.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/mts_doctor/REPORT_2026-10-24.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Main checkout 101 commits behind with others' uncommitted edits (SUPERVISOR_LOG.md, orderflow csv deletions, staged cbp_run.py, control_room.tpl.html): hooks run from it, so tonight's hook removals and trunk_lag fix are not live; save or discard the edits with the operator, then fast-forward",
+  "weight": "",
+  "worker": ""
+}
