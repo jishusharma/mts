@@ -7,7 +7,7 @@
     "rsi-deep-prob-tables"
   ],
   "done_when": "",
-  "est_turns": null,
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
@@ -35,5 +35,5 @@
   "tests": "",
   "title": "RSI deep-buy Phase 1F: context-conditioned tables (macro phase, trailing floor and bounce record, memory length), walk-forward",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

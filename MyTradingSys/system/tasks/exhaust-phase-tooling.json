@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-23T09:00:58Z",
+  "commands": [
+    "python -m pytest MyTradingSys/tests/test_exhaust_phase.py -q"
+  ],
+  "created": "2026-10-23T08:15:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/system/EXHAUST_PHASE.md requirements 1-7 built; the six tests in its Tests section exist, each failed on the old code first, now pass; BUDGET line carries per-model windows.",
+  "effort": "medium",
+  "est_turns": 25,
+  "from_inbox": "",
+  "goal": "Build the exhaust-phase tooling (exhaust.py plan/start, --audience top broadcasts, per-login dedupe, subagent-safe Stop guard) so every login spends its remaining quota in the last 2 hours before the weekly reset.",
+  "id": "exhaust-phase-tooling",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "reqs 1-7 shipped: exhaust.py plan/start, --audience top, per-login ack dedupe (MTS_LOGIN),",
+      "ref": "34615eb7",
+      "utc": "2026-10-23T09:00:58Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "Operator 2026-10-23: spend all paid quota (all models, incl. Fable) in the last 2h before reset; one actor per login; subagents ignore. PROGRESS 2026-10-23 08:50Z: shipped exhaust.py plan+start (req 1,2), mts_signal --audience top (req 3), 9 tests. TODO: req 4 per-login dedupe of the banner (ack is per host today, logins span hosts), req 5 (Stop guard already skips is_subagent(payload); add test), req 6 per-model BUDGET windows, req 7 boot hook calls exhaust.py plan. PROGRESS 08:58Z: req 5 (regression test; handle() already skips subagents) and req 6 (budget --model, budget_line) shipped. 09:00Z: req 7 (CLAUDE.md 5c boot line + test) shipped. Only req 4 (per-login banner dedupe; needs design: acks are per host, logins span hosts) remains.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/system/EXHAUST_PHASE.md",
+    "scripts/dev/mts_signal.py"
+  ],
+  "result": "reqs 1-7 shipped: exhaust.py plan/start, --audience top, per-login ack dedupe (MTS_LOGIN), budget --model, boot 5c; 18 tests",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": "scripts/dev/exhaust.py; scripts/dev/mts_signal.py; MyTradingSys/tests/test_exhaust_phase.py; CLAUDE.md boot line",
+  "scope_out": "trading code; live tree; any scheduler",
+  "size": "M",
+  "state": "done",
+  "steps": [
+    "Read EXHAUST_PHASE.md",
+    "Write the six tests first (fail on old code)",
+    "Build exhaust.py, then the mts_signal audience and dedupe changes",
+    "Run test_mts_signal and the new tests; ship"
+  ],
+  "taken": "2026-10-23T09:00:58Z",
+  "tests": [
+    "MyTradingSys/tests/test_exhaust_phase.py::test_phase_boundaries (fails: exhaust.py does not exist)"
+  ],
+  "title": "Exhaust-phase tooling: one actor per login, top-level only, spend all quota before reset",
+  "worker": "session"
+}

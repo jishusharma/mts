@@ -11,7 +11,7 @@ Replaces TANDEM_3LOGIN.md (2026-10-19 study by the Sonnet agent; its fit table a
 | Pace | every wake | `plan` prints mode, slots, target; no thinking about budget | `pace_plan` (below) |
 | Work | every wake | start what the SPAWN lines say, run the RUN lines in one Bash call | sessions on operator turns, Agents on event turns |
 | Watch/distribute | every wake | PEER/OPERATOR/NOTE lines; the heartbeat goes out inside `plan` | `live_supervisors`, `lane_owner`, `nuc_budget_ok` |
-| Wait | end of each wake | one background watcher, end the turn | `supervisor.py wait --timeout 50m [--shas ..]` |
+| Wait | end of each wake | one background watcher, end the turn | `supervisor.py wait --timeout 50m --login <L> [--shas ..]` (also wakes on a free slot + ready cards) |
 | Transit | TRANSIT time (20 min before the 5 h reset), 5 h >= 80%, or turn cap | `handover --note "<next>"`, one docs ship, successor line | `supervisor.py handover --login L --note ..` |
 
 Login letter: the account email of this session against the CLOUD_ACCOUNTS.md LOGINS table (A jishu.sharma, B jishu.awgp, C jishusharma1985).

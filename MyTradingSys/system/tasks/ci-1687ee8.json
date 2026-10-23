@@ -16,12 +16,12 @@
   "live_path": false,
   "mutation_check": "",
   "note": "",
-  "pinned": true,
+  "pinned": false,
   "prio": 0,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
-  "result": "",
+  "result": "Superseded: the red CI was the F:-only formula_spec_text tape test (Step 3xt), fixed and skip-guarded in d4b59ba4; origin/green/fast-track advanced to d4b59ba4. DECISION (OURS): no new code, card closed.",
   "scope_in": [
     "the failing step of run 39600601462 (https://github.com/jishusharma/mts/actions/runs/39600601462) and the commit 1687ee8 that first broke it"
   ],
@@ -33,7 +33,7 @@
   "sources": [
     "CI run 39600601462"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git show 1687ee8: find what that commit changed; read the failing step in the run page (gh run view 39600601462 --log-failed)",
     "write the test that fails now, fix the cause (a merge interaction counts: the local gate is a smoke gate)",

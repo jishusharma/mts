@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-23T06:05:08Z",
   "commands": [
     "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/operator/cpu_cleanup.ps1 -Audit"
   ],
@@ -13,6 +14,12 @@
   "id": "cpu-audit-laptop-f7iu69n",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/cpu_audit_desktop-f7iu69n.md; claude 0.495 core is the only load; 2 ",
+      "ref": "353523d0",
+      "utc": "2026-10-23T06:05:08Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -29,7 +36,12 @@
   "refined_by": "",
   "refreshed": "2026-10-21T01:01:58Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/cpu_audit_desktop-f7iu69n.md; claude 0.495 core is the only load; 2 script bugs fixed (test 3/3, failed on old)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/operator/cpu_cleanup.ps1 (run -Audit only; extend its lists if the audit shows new safe items)",
     "scripts/operator/defender_exclusions.ps1 (read)",
@@ -46,7 +58,7 @@
     "scripts/operator/cpu_cleanup.ps1 header",
     "NUC result: MsMpEng 0.45 -> 0-0.12 core under stress, 57 items disabled"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git pull via sync.py start; confirm scripts/operator/cpu_cleanup.ps1 and defender_exclusions.ps1 exist",
     "Run the read-only audit (no admin needed) and keep the log",
@@ -54,6 +66,7 @@
     "Post the admin commands to the operator with desk.py (-Apply, -Lenovo where the audit shows Lenovo/OEM helpers); do not run them",
     "sync.py ship"
   ],
+  "taken": "2026-10-23T06:05:08Z",
   "tests": [
     "Fail-first: if a list is extended, a unit check that every name in the safe list is absent from the keep-list (Wi-Fi, Remote Desktop, Windows Update, Defender, MTS-*, AIBridge)"
   ],

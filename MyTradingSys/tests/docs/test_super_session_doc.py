@@ -60,6 +60,12 @@ class SuperSessionDoc(unittest.TestCase):
         start_title = next(t for t in sections(self.text) if t.startswith("Start"))
         self.assertNotRegex(start_title, r"model Opus,")
 
+    def test_rule_9_points_at_workers_rule_5(self):
+        """Turn budget text lives once (WORKERS.md rule 5): rule 9 must not restate the 4M / context formula."""
+        rule = re.search(r"^9\. .*?(?=^10\. )", self.text, flags=re.M | re.S).group(0)
+        self.assertNotIn("4M / context", rule)
+        self.assertIn("WORKERS.md rule 5", rule)
+
 
 if __name__ == "__main__":
     unittest.main()

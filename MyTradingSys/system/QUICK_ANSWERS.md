@@ -45,10 +45,10 @@ The operator is not a developer: do these, do not ask, do not re-investigate. Ha
 - A hook saves every pasted image and prints `[SCREENSHOT INTAKE] ... SAVED` with ids; no notice = nothing new landed. On the notice: `python scripts/dev/shot.py classify <id> --kind ... --why "<operator's meaning>"`, read, `shot.py read`, `shot.py done`. Never leave a shot `new` at session end (`shot.py status`, also in STATUS.md).
 - Charts of one moment are one set, read together; every claim is MATCH / MISMATCH / NOT_IN_DATA against files you read; file the last two. Process and per-surface rules: `MyTradingSys/methodology/screenshot_intake.md`. Project map (which group an item belongs to): `MyTradingSys/system/PROJECT_MAP.md`.
 
-## Interview Prep notes (claude.ai project path; belongs in F:/Interview Prep/CLAUDE.md, copy it there and delete this section)
-- When a thread or project message says "Note this for InterviewPrep", append one entry to `/mnt/project-files/interview_prep/NOTES.md` with date, source link, and status "not yet exported".
-- Jis manually decides when to push entries to F:\Interview Prep project.
-- This captures lightweight insights from MTS and CBP work without automation overhead.
+## Interview Prep notes
+- "Note this for InterviewPrep" / a "teach me" answer: save it as a note in `MyTradingSys/learning/` with front matter `interview: yes` (topic, level, date); design in RUN_MODEL.md section 7.
+- `python scripts/dev/interview_feed.py list` shows which notes may leave; `export --to <dir>` (or env MTS_INTERVIEW_DIR) copies them with an INDEX.md and skips any holding paths, secrets or runtime data.
+- Jis decides when to push the exported folder to the Interview Prep project.
 
 ## Ask Gemini or GPT directly (no desk row)
 `python scripts/dev/ask_model.py gemini|gpt "<prompt>" [--model flash|argon|sonnet|opus] [--effort low|medium|high] [--file PATH ...]` sends the prompt to the model and prints the answer (read-only, runs in a scratch folder under F:/MTS/ask, never a work tree). Gemini = Antigravity `agy` on the Google Pro login; GPT = Codex CLI on the lab login. Use it for questions, second opinions, frame reads. Work that must change the repo stays on cards (`gemini_queue.py`, `codex_run.py`). Quota error (429) means wait for the reset it prints; do not fall back to a desk row for a question.

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C1",
   "commands": [
     "python MyTradingSys/research/wavetrend_2026-10-17/repro_c1_spec_mismatch.py"
   ],
@@ -19,7 +20,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:results CLASS:C1 REVIEWER:none WEIGHT:IMPORTANT. Refined by gemini-yt-pipeliner from desk rows 20261018-042354 and 20261018-042953; T0 mechanical checks passed, awaiting non-Gemini Lab_Guy ACCEPT stamp for C1/IMPORTANT promotion.",
+  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:results CLASS:C1 REVIEWER:none WEIGHT:IMPORTANT. Refined by gemini-yt-pipeliner from desk rows 20261018-042354 and 20261018-042953; T0 mechanical checks passed, awaiting non-Gemini Lab_Guy ACCEPT stamp for C1/IMPORTANT promotion. DOCTOR 2026-10-23 (tasks.py twins): the 'new pre-registered trial card' this goal asks for already exists: wavetrend-c1-v2. Link to it; do not file another.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "gemini-yt-pipeliner",
@@ -54,6 +55,5 @@
   "tests": "python scripts/dev/verdicts.py check",
   "title": "WaveTrend: state report and disposition of AUDIT_2026-10-18 C1 + control-arm + manifest findings",
   "weight": "IMPORTANT",
-  "worker": "session",
-  "class": "C1"
+  "worker": "session"
 }

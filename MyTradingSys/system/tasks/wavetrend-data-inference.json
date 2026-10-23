@@ -18,6 +18,9 @@
   ],
   "live_path": false,
   "mutation_check": "",
+  "not_twin_of": [
+    "wavetrend-audit-c1-disposition"
+  ],
   "note": "REVIEWED:2026-10-19 T0-ONLY LAB:results CLASS:C1 REVIEWER:none WEIGHT:IMPORTANT. Refined by gemini-session-planner from AUDIT_2026-10-18 findings 2 & 3; T0 mechanical checks passed, awaiting non-Gemini Lab_Guy ACCEPT stamp for C1/IMPORTANT promotion.",
   "prio": 1,
   "refine_tries": 0,

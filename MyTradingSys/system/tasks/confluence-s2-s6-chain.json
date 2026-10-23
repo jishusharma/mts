@@ -1,0 +1,42 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-22T11:43:08Z",
+  "depends_on": [
+    "confluence-s1-context-counts"
+  ],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Run steps S2-S6 of research/krown_audit_2026-10-22/FABLE_CARD_CONFLUENCE.md in order; S2 and S5 on Fable 5.1 using the paste-ready prompt in its section 5 (the coordinator pastes it, not the operator).",
+  "hosts": [
+    "DESKTOP-F7IU69N",
+    "JIS-NB"
+  ],
+  "id": "confluence-s2-s6-chain",
+  "lane": "SONNET",
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Split into one card per step at refinement. Waits on S1 (depends_on).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Confluence S2-S6: Fable design, context read, DEV trials, verdict",
+  "weight": "",
+  "worker": ""
+}

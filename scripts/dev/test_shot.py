@@ -505,5 +505,19 @@ class MainRootOldGit(unittest.TestCase):
             self.assertEqual(shot.main_root(), Path("C:/x/MTS"))
 
 
+class HookStartupTest(unittest.TestCase):
+    def test_hook_path_does_not_import_heavy_modules(self):
+        """2026-10-22: shot.py hook cost 1.4 s per prompt; argparse/tempfile/traceback/hashlib are imported only when used."""
+        import subprocess
+        here = Path(__file__).resolve().parent
+        code = ("import sys, io; sys.path.insert(0, %r); sys.argv = ['shot.py', 'hook']; sys.stdin = io.TextIOWrapper(io.BytesIO(b'{}'));"
+                " import shot; shot.main(); heavy = [m for m in ('argparse', 'tempfile', 'traceback', 'hashlib', 'shutil') if m in sys.modules];"
+                " print(heavy)" % str(here))
+        with tempfile.TemporaryDirectory() as d:
+            env = {**os.environ, "MTS_SHOT_DIR": d, "MTS_SHOT_TEMP": d, "MTS_CLAUDE_HOME": d}
+            r = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, env=env)
+        self.assertEqual(r.stdout.strip().splitlines()[-1], "[]", r.stdout + r.stderr)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

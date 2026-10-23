@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/tests/test_role_loader.py -q"
+  ],
+  "created": "2026-10-22T19:26:55Z",
+  "depends_on": [],
+  "done_when": "role_loader emits the header; test proves original text is untouched and fails on the old code; A/B of 5 past prompts (raw vs header) scored on the criteria in the card, result recorded in the research file; lint green.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Every operator prompt reaches the session with a fixed header (TASK, CRITERIA, PROOF NEEDED, OUT OF SCOPE, DEFAULTS; \"not stated\" when absent) added as additionalContext, the original text untouched; a crash passes the raw prompt.",
+  "id": "prompt-header-role-loader",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "role_loader: file paths never score and Supervisor briefs get no fallback role (pilot 2026",
+      "ref": "8b4ea32a228c",
+      "utc": "2026-10-22T14:29:28Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "OPERATOR QUOTE: \"let us find a way that every time I go to a session and say something, then it automatically improves that prompt. And only then it proceeds ... the prompt guy ... following fixed rules and hooks to test those rules ... fail-safe.\" DEFAULT (OURS): option A (script header, no model) because hooks cannot replace prompt text (research file finding 1); A/B test is step 1 and can stop the card.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-22T19:27:07Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/role_loader.py; MyTradingSys/tests/test_role_loader.py; MyTradingSys/system/roles/*.md"
+  ],
+  "scope_out": [
+    "trading code; the live tree; any model-based rewriting"
+  ],
+  "scope_sha": "8b4ea32a228c",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/thinker/2026-10-23_prompt_quality_claude.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Run the A/B on 5 past prompts first; stop and report if header does not win",
+    "Write failing tests, then the header branch",
+    "Run role_loader lint and tests"
+  ],
+  "tests": "MyTradingSys/tests/test_role_loader.py::test_prompt_header_keeps_original and ::test_prompt_header_failsafe (fail on current role_loader.py, which has no header branch)",
+  "title": "Prompt header branch in role_loader: structure every casual prompt, keep original verbatim",
+  "weight": "",
+  "worker": "session"
+}

@@ -18,11 +18,23 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 QUOTE = re.compile(r'^>\s*"(.+)"\s*$')
 TIMESTAMP = re.compile(r"\[\d+:\d{2}(?::\d{2})?\]")
+CBP_EVIDENCE = re.compile(r'^(?:-\s*)?evidence:\s*"(.+)"\s*$')
+CBP_HEAD = re.compile(r"^###\s*[^|]*\|[^|]*\|\s*([A-Za-z0-9_-]{11})\s*\|")
 GPS = re.compile(r"Source GPS:\s*([A-Za-z0-9_-]{11})\s*\|\s*(BEGIN|MIDDLE|END)")
 
 
+FILLERS = {"uh", "um", "uhm", "er", "erm"}
+
+
 def norm(s: str) -> str:
-    return " ".join(re.sub(r"[^a-z0-9%]+", " ", s.lower()).split())
+    """Lowercase alphanumerics; auto-captions keep spoken fillers (uh, um) and stutters ("is is"),
+    which a clean quote drops, so both sides lose fillers and immediate word repeats."""
+    out = []
+    for w in re.sub(r"[^a-z0-9%]+", " ", s.lower()).split():
+        if w in FILLERS or (out and out[-1] == w):
+            continue
+        out.append(w)
+    return " ".join(out)
 
 
 def transcript_body(vid: str) -> str:
@@ -32,11 +44,58 @@ def transcript_body(vid: str) -> str:
     return TIMESTAMP.sub(" ", body)  # [m:ss] caption markers split verbatim quotes
 
 
+def cbp_transcript_body(vid: str, folder: Path) -> str:
+    """CBP keeps transcripts as <folder>/inbox/<Analyst>_<id>.txt next to extractions.md."""
+    hits = sorted((folder / "inbox").glob(f"*_{vid}.txt"))
+    if not hits:
+        raise OSError(vid)
+    return TIMESTAMP.sub(" ", hits[0].read_text(encoding="utf-8", errors="replace"))
+
+
+def check_cbp_evidence(path: Path, lines, i, m, cache) -> int:
+    """CBP block: `### <Short> | <date> | <video_id> | <title>` then ONE `evidence: "<quote>"`.
+    "..." / ellipsis inside the quote joins fragments that must each occur, in order. No position tag."""
+    nearest = next((l for l in reversed(lines[:i]) if l.startswith("#")), "")
+    head = CBP_HEAD.match(nearest)
+    if not head:
+        print(f"NO-HEADER {path.name}:{i + 1}")
+        return 1
+    vid = head.group(1)
+    if vid not in cache:
+        try:
+            cache[vid] = norm(transcript_body(vid))
+        except OSError:
+            try:
+                cache[vid] = norm(cbp_transcript_body(vid, path.parent))
+            except OSError:
+                cache[vid] = None
+    body = cache[vid]
+    if body is None:
+        print(f"NO-TRANSCRIPT {path.name}:{i + 1} {vid}")
+        return 1
+    at = 0
+    for frag in re.split(r"\.{3}|…", m.group(1)):
+        q = norm(frag)
+        if not q:
+            continue
+        at = body.find(q, at)
+        if at < 0:
+            print(f"MISSING  {path.name}:{i + 1} {frag.strip()[:60]!r}")
+            return 1
+        at += len(q)
+    print(f"OK       {path.name}:{i + 1}")
+    return 0
+
+
 def check(path: Path) -> int:
     lines = path.read_text(encoding="utf-8").splitlines()
     bad = 0
     cache = {}
     for i, line in enumerate(lines):
+        ev = CBP_EVIDENCE.match(line.strip())
+        if ev:
+            bad += check_cbp_evidence(path, lines, i, ev, cache)
+            continue
         m = QUOTE.match(line.strip())
         if not m:
             continue

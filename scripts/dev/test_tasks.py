@@ -301,6 +301,19 @@ class QueueTest(unittest.TestCase):
         self.run_cli("sweep", "--apply")
         self.assertEqual([T.get(self.repo, i)["state"] for i in ("C1", "C2", "C3")], ["done", "ready", "ready"])
 
+    def test_sweep_archive_moves_closed_cards_and_keeps_them_resolvable(self):
+        T.save(self.repo, good("C1"))
+        T.save(self.repo, good("C2"))
+        self.run_cli("apply-op", "C2", "drop")
+        self.run_cli("sweep", "--archive")
+        self.assertTrue((T.tdir(self.repo) / "C2.json").exists())          # dry run moves nothing
+        self.run_cli("sweep", "--archive", "--apply")
+        self.assertFalse((T.tdir(self.repo) / "C2.json").exists())
+        self.assertTrue((T.tdir(self.repo) / "archive" / "C2.json").exists())
+        self.assertTrue((T.tdir(self.repo) / "C1.json").exists())
+        self.assertEqual(T.get(self.repo, "C2")["state"], "dropped")
+        self.assertIn("C2", [c["id"] for c in T.load_all(self.repo)])
+
     def test_new_creates_a_raw_card_and_refuses_duplicates(self):
         rc, _ = self.run_cli("new", "Check the funding sign", "--id", "B950", "--ref", "B950", "--from-inbox", "abc")
         c = T.get(self.repo, "B950")
@@ -513,6 +526,15 @@ class RepoDataTest(unittest.TestCase):
                 self.assertEqual(c["id"] + ".json", T.path_of(T.REPO, c["id"]).name)
                 if c["state"] in T.LIVE:
                     self.assertEqual(T.problems(c, cards, reg), [])
+
+    def test_sized_open_model_cards_carry_worker_fields(self):
+        """card-worker-fields: an open SONNET/HAIKU/OPUS card with a size also has worker and est_turns (WORKERS.md)."""
+        for c in T.load_all(T.REPO):
+            if c["state"] in ("done", "dropped") or c.get("lane") not in ("SONNET", "HAIKU", "OPUS") or not c.get("size"):
+                continue
+            with self.subTest(card=c["id"]):
+                self.assertTrue(c.get("worker") and c.get("est_turns"))
+
 
 
 class LabMachineChecksTest(unittest.TestCase):
@@ -913,3 +935,126 @@ class ResultTrustTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class NeedTest(unittest.TestCase):
+    """Operator 2026-10-22: pre-run items live in the queue (tasks.py need), not in the operator's head."""
+    def setUp(self):
+        self.d = tempfile.TemporaryDirectory()
+        self.repo = Path(self.d.name)
+        self._repo = T.REPO
+        T.REPO = self.repo
+        T.save(self.repo, good("main-card"))
+
+    def tearDown(self):
+        T.REPO = self._repo
+        self.d.cleanup()
+
+    def test_need_makes_an_owned_prereq_card_and_blocks_the_main_card(self):
+        rc, _ = run_cli("need", "main-card", "Lab_Guy review stamp", "--lane", "SONNET", "--role", "Lab_Guy")
+        self.assertEqual(rc, 0)
+        main = T.get(self.repo, "main-card")
+        nid = "main-card-need-lab-guy-review-stamp"
+        self.assertEqual(main["depends_on"], [nid])
+        pre = T.get(self.repo, nid)
+        self.assertEqual((pre["lane"], pre["role"], pre["state"]), ("SONNET", "Lab_Guy", "raw"))
+        self.assertTrue(any(p.startswith("depends_on " + nid) for p in T.problems(main, T.load_all(self.repo), {})))
+        run_cli("need", "main-card", "Lab_Guy review stamp", "--lane", "SONNET")   # idempotent
+        self.assertEqual(T.get(self.repo, "main-card")["depends_on"], [nid])
+
+    def test_need_without_lane_is_refused(self):
+        rc, out = run_cli("need", "main-card", "stamp it")
+        self.assertNotEqual(rc, 0)
+        self.assertIn("--lane", out)
+
+    def test_host_pin_excludes_other_machines_and_shows_in_brief(self):
+        run_cli("need", "main-card", "--host", "JIS-NB", "--host", "DESKTOP-F7IU69N")
+        c = T.get(self.repo, "main-card")
+        self.assertEqual(c["hosts"], ["DESKTOP-F7IU69N", "JIS-NB"])
+        self.assertIn("Host: run only on DESKTOP-F7IU69N or JIS-NB", T.brief(c))
+        lane_st = {"status": "up"}
+        from datetime import datetime, timezone
+        now = datetime(2026, 10, 22, tzinfo=timezone.utc)
+        args = ([c], {}, [], {}, lane_st, now)
+        self.assertEqual(T.exclusion(c, *args[:5], now, "JIS-NUC", self.repo)[0], "host")
+        self.assertIsNone(T.exclusion(c, *args[:5], now, "JIS-NB", self.repo))
+
+
+class TwinCardTest(unittest.TestCase):
+    """Doctor 2026-10-23: two sessions filed one job as doctor-main-checkout-behind and jis-nb-fast-forward-the-main-checkout-to."""
+    REAL_A = ("Main checkout is 102 commits behind origin/fast-track so every session runs stale settings.json/turn_meter.py; "
+              "find why it does not auto-pull and fix (coordinator pulls ff-only)")
+    REAL_B = ("JIS-NB: fast-forward the main checkout to origin/fast-track so PC hooks run the event-turn guard (f47d4cae7) "
+              "and BOOT probe")
+    OTHERS = ["Trust re-check: lab-data-pin-hash", "Trust re-check: lab-dax-net-fee-verdict", "Krown pre-registration fire counts",
+              "Wire real funding into the RSI backtest rerun", "Gemini queue reads results back after each run",
+              "CI windows leg on a dev drive", "Fabio v3 grid fixtures for the lookahead lint", "Session levels for WLOW fixtures",
+              "Refresh the stale layer map page after a ship", "Codex spend guard counts 151 of 65 points on 3 runs"]
+
+    def cards(self):
+        out = [T.blank("a", self.REAL_A), T.blank("b", self.REAL_B)]
+        out += [T.blank(f"o{i}", t) for i, t in enumerate(self.OTHERS)]
+        out[0]["created"], out[1]["created"] = "2026-10-22T22:48:51Z", "2026-10-23T03:39:15Z"   # the real pair, 5 h apart
+        for i, c in enumerate(out[2:]):
+            c["created"] = f"2026-10-{10 + i:02d}T00:00:00Z"                                    # one per day: no batches
+        return out
+
+    def test_one_sessions_batch_is_not_a_twin(self):
+        cs = self.cards() + [T.blank("c", "Codex spend guard counts 151 of 65 points on 3 runs")]
+        for gap, flagged in (("00:00:00", False), ("00:30:00", False), ("00:31:00", True)):
+            cs[-1]["created"] = f"2026-10-19T{gap}Z"                                         # o9 was created 2026-10-19T00:00Z
+            self.assertEqual(("o9", "c") in self.ids(cs, only="c"), flagged, gap)
+        cs[-1]["created"] = "?"                                                           # no usable time: no silence
+        self.assertIn(("o9", "c"), self.ids(cs, only="c"))
+        cs[0]["created"] = "2026-10-23T03:20:00Z"                                         # the real pair, if filed 19 min apart
+        self.assertNotIn(("a", "b"), self.ids(cs))
+
+    def ids(self, cards, **kw):
+        return {(x, y) for _, x, y, _ in T.twin_pairs(cards, **kw)}
+
+    def test_the_real_pair_is_a_twin_and_a_series_is_not(self):
+        got = self.ids(self.cards())
+        self.assertIn(("a", "b"), got)
+        self.assertNotIn(("o0", "o1"), got)          # "Trust re-check: X" siblings differ in X
+        self.assertEqual(got, {("a", "b")})
+
+    def test_same_title_is_a_twin(self):
+        cs = self.cards() + [T.blank("c", "Codex spend guard counts 151 of 65 points on 3 runs")]
+        self.assertEqual(self.ids(cs, only="c"), {("o9", "c")})
+
+    def test_two_shared_rare_files_make_a_twin_but_a_file_and_its_test_do_not(self):
+        cs = self.cards()
+        cs[2]["scope_in"] = ["scripts/dev/shot.py", "scripts/dev/test_shot.py"]
+        cs[3]["scope_in"] = ["scripts/dev/shot.py", "MyTradingSys/tests/test_shot.py"]
+        self.assertNotIn(("o0", "o1"), self.ids(cs))
+        cs[2]["refs"] = ["MyTradingSys/research/x/SPEC.md"]
+        cs[3]["refs"] = ["MyTradingSys/research/x/SPEC.md"]
+        self.assertIn(("o0", "o1"), self.ids(cs))
+
+    def test_a_path_many_cards_share_is_not_evidence(self):
+        cs = self.cards()
+        for c in cs[2:7]:
+            c["refs"] = ["MyTradingSys/research/x/SPEC.md", "MyTradingSys/research/x/FRAMING.md"]
+        self.assertEqual(self.ids(cs), {("a", "b")})
+
+    def test_not_twin_of_depends_on_and_final_cards_silence_a_pair(self):
+        for change in ({"not_twin_of": ["b"]}, {"depends_on": ["b"]}, {"state": "dropped"}):
+            cs = self.cards()
+            cs[0].update(change)
+            self.assertNotIn(("a", "b"), self.ids(cs), change)
+
+    def test_new_warns_on_a_likely_twin(self):
+        with tempfile.TemporaryDirectory() as d:
+            repo, old = Path(d), T.REPO
+            T.REPO = repo
+            try:
+                for c in self.cards()[1:]:
+                    T.save(repo, c)
+                rc, out = run_cli("new", self.REAL_A, "--id", "a")
+                self.assertEqual(rc, 0)
+                self.assertIn("WARN likely twin of b", out)
+                self.assertTrue(T.path_of(repo, "a").exists())        # a warning, not a refusal
+                rc, out = run_cli("twins")
+                self.assertIn("TWIN a b", out)
+            finally:
+                T.REPO = old

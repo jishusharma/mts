@@ -24,3 +24,35 @@ ci.yml: `concurrency: ci-${{ github.ref }}`, `cancel-in-progress: false` on fast
 
 ## Open
 sync.py stage timings, `pytest --durations=30` on Windows, context token audit, path sweep, implement item 1 with test.
+
+## Built 2026-10-22 late (Admin_Guy, operator: "Can you finish this task end-to-end?")
+Measured before (run 0cf9fdf4, 23:37 IST): Linux 3m14s, Windows 14m00s (gate 12m54s), plus up to ~15 min queued behind the
+running fast-track run (fe6537de waited 10 min, then was superseded). Worst push-to-green ~30 min.
+1. One CI run per fast-track commit: `concurrency.group` carries the SHA on fast-track; a push starts at once. mark-green runs one
+   at a time, publishes only when the current green is an ancestor of the SHA, with `--force-with-lease` (never backwards).
+2. Windows leg in 3 parallel shards: `run_all_tests.py --shard K/N`, greedy longest-first on `shard_est` (OURS estimates:
+   SHARD_EST_S, SLOWEST_FIRST, STEP_EST); each step runs in exactly one shard; all shards must pass before mark-green.
+3. Windows temp on D: (`runner.temp`) and real-time Defender off on the throwaway runner (sources: runner-images #7320/#8755,
+   nextest Dev Drive notes, GitLab real-time-monitoring commit). Expected ~5-6 min push-to-green; retune SHARD_EST_S from the
+   first sharded runs' per-step times. Tests: scripts/dev/test_ci_split.py (fails on the pre-change code).
+Not built (operator's call): Windows leg only for live-path changes; test impact analysis (testmon) in CI.
+
+## Other gaps found the same night (for the record)
+- App worktrees (.claude/worktrees/<name>) were cut from a stale main checkout and skipped by session-start catch-up: fixed fe6537de.
+- A main checkout with local edits stayed behind silently: now named at session start (trunk_lag.py).
+- Cards: dispatch sorts prio before weight (tasks.py dispatch); Supervisor workers as in-session Agents die with the Supervisor;
+  signal notes cut long folder names as secrets (NB shows `[cut]`). Control room, home and layer-map pages lag the repo.
+
+## Under 2 minutes (operator 2026-10-22: "I want everything to be under 2 minutes.")
+Measured first: the 3-shard run on 788790ff went green in 5m50s. Gate per job: Linux 162 s, Windows 136/254/212 s; Windows setup 45-60 s
+(pip 30 s, Defender switch 7-30 s, checkout 8-18 s, Java 5-10 s). Locally the full gate is 120 s; one step, 3xt (121 extra test files),
+took 84 s and set the floor. Slowest single file: research/context_factors_2026-10-16/test_context_asof.py, 35 s.
+Built: `run_all_tests.py --shard` now splits 3xt, 5b and the MyTradingSys/tests pytest shards per file (measured seconds, CI_FILE_S) before
+the greedy split; Maven is pinned to shard 1. ci.yml: Linux 3 shards, Windows 8; setup-java only on shard 1; `uv pip install`; Defender
+switched off in a background process; mark-green uses the compare API and a fast-forward-only ref update, no checkout.
+Local wall per shard (4-core Linux): 8-way 10-39 s, 3-way 33-53 s. CI wall: to be read from the first run.
+Limits: 11 jobs per run; GitHub Free allows 20 concurrent jobs, so a third push landing inside the same 2 minutes queues. Windows job pickup
+and the slowest file on Windows (Linux 35 s) are the floor; if a run is still over 2 min, that file is the next target.
+Measured: 24399edc 4m00s, dbdb83ae 3m48s, 74889a99 (12 Windows shards, Windows-aware estimates) 2m56s push-to-green
+(run 39844407870: jobs 59-167 s; 14 of 15 jobs <=115 s). Slowest job windows 10/12 = 167 s, of which step 4.5 = 131 s and one file,
+MyTradingSys/tests/test_aibridge_payload.py, = 81 s on Windows. That single file is now the floor: next target is to split or speed it up.

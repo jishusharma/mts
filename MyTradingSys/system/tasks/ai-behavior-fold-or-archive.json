@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-22T14:06:19Z",
   "commands": [
     "python -m pytest -q MyTradingSys/tests/docs"
   ],
@@ -15,6 +16,12 @@
   "id": "ai-behavior-fold-or-archive",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/AI_BEHAVIOR_RULE_MAP_2026-10-22.md: rule map; file kept (critical fi",
+      "ref": "5333b7cf",
+      "utc": "2026-10-22T14:06:19Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -41,7 +48,12 @@
   "refs": [
     "MyTradingSys/system/ARCHITECTURE.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/AI_BEHAVIOR_RULE_MAP_2026-10-22.md: rule map; file kept (critical file, needs operator approval to cut)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/01_AI_BEHAVIOR.md",
     "DSA_SESSION_PROMPT.md"
@@ -52,12 +64,13 @@
   "scope_sha": "e2166cc3edcb",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Map every numbered rule to CLAUDE.md, a role or nothing.",
     "Archive or cut; update DSA_SESSION_PROMPT reference.",
     "Doc tests, test_dsa_direct_mode; ship."
   ],
+  "taken": "2026-10-22T14:06:19Z",
   "tests": "MyTradingSys/tests/test_dsa_direct_mode.py",
   "title": "01_AI_BEHAVIOR: fold live rules into CLAUDE.md or roles, archive the rest",
   "weight": "",

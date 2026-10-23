@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C1",
   "commands": [
     "python MyTradingSys/backtest/test_pre_reg_template.py"
   ],
@@ -19,6 +20,9 @@
   ],
   "live_path": false,
   "mutation_check": "",
+  "not_twin_of": [
+    "kurisko-prereg-fire-counts"
+  ],
   "note": "REVIEWED:2026-10-19 T0-ONLY LAB:results CLASS:C1 REVIEWER:none WEIGHT:IMPORTANT. Refined by gemini-yt-pipeliner per GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md s6.2 item 2. Deliverables implemented: PRE_REG_MALKAN_GFS_BTC.md shipped answering 12 items + gates 0a-0f; prereg_gate.py power check executed (BLOCK, N<100, MDE 1.46-2.75R); test_pre_reg_template.py 21 tests pass; decision rule executed cancelling remaining Malkan YT downloads on BTC.",
   "prio": 2,
   "refine_tries": 0,
@@ -55,6 +59,5 @@
   "tests": "python MyTradingSys/backtest/test_pre_reg_template.py (fails if any of the 12 readiness items is unanswered).",
   "title": "Malkan GFS on BTC 1D/4h: edge-before-extraction pre-registration and count/power gate before any further video ingestion",
   "weight": "IMPORTANT",
-  "worker": "session",
-  "class": "C1"
+  "worker": "session"
 }

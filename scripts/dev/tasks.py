@@ -36,7 +36,7 @@ REPO = Path(__file__).resolve().parents[2]
 DIR = "MyTradingSys/system/tasks"
 BUGS = "MyTradingSys/research/BUGS.md"
 LAYER_INDEX = "MyTradingSys/system/layer_index.json"
-MUTATING = ("new", "fill", "check", "take", "tried", "done", "apply-op", "sweep", "flag", "tag", "stale")
+MUTATING = ("new", "need", "fill", "check", "take", "tried", "done", "apply-op", "sweep", "flag", "tag", "stale")
 
 STATES = ("raw", "refined", "ready", "active", "blocked", "done", "dropped")
 LIVE = ("ready", "active")                      # states that must satisfy the Definition of Ready
@@ -83,7 +83,10 @@ def tdir(repo=REPO):
 
 
 def path_of(repo, cid):
-    return tdir(repo) / f"{cid}.json"
+    """Open card path; a retired card (tasks/archive/, `sweep --archive`) keeps resolving there."""
+    p = tdir(repo) / f"{cid}.json"
+    a = tdir(repo) / "archive" / f"{cid}.json"
+    return a if (not p.exists() and a.exists()) else p
 
 
 def promote_shared(repo):
@@ -118,7 +121,95 @@ def save(repo, card):
 
 def load_all(repo=REPO):
     d = tdir(repo)
-    return [json.loads(p.read_text(encoding="utf-8")) for p in sorted(d.glob("*.json"))] if d.is_dir() else []
+    return [json.loads(p.read_text(encoding="utf-8")) for p in sorted([*d.glob("*.json"), *d.glob("archive/*.json")])] if d.is_dir() else []
+
+
+# Twin cards (doctor 2026-10-23: doctor-main-checkout-behind and jis-nb-fast-forward-the-main-checkout-to sat open 10 h, one job).
+# OURS, tuned on the 172 open cards of 2026-10-23: the real pair scores 0.31 there and 0.25 in a 12-card corpus (title words
+# weighted by rarity, so the scale moves with the corpus); 0.25 catches it in both: a warning, never a refusal. Series titles ("Trust re-check: X") are compared after their shared "<series>:" head. A path
+# shared by more than TWIN_COMMON_PATH open cards is a family source (SPEC.md of a study), not a sign of a twin. A pair is
+# silenced by `not_twin_of` on either card. Cards created within TWIN_BATCH_MIN of each other are one session's batch (series
+# siblings: 15 of the 27 pairs on 2026-10-23); twins come from two sessions, the real pair was filed 5 h apart.
+TWIN_TITLE = 0.25
+TWIN_PATHS = 2
+TWIN_COMMON_PATH = 3
+TWIN_BATCH_MIN = 30
+TWIN_STOP = set("the a an of to and in on for with is by from per at or as be it this that its into than then not no all any one two each "
+                "card cards run runs use used new via when what which who so are was were has have only after before".split())
+
+
+def _title_words(title):
+    return [w for w in re.findall(r"[a-z][a-z0-9]+", title.lower()) if w not in TWIN_STOP and len(w) > 2]
+
+
+def _paths(card):
+    """Files a card names, one key per unit: `x.py` and its `test_x.py` count once; notes after the path are dropped."""
+    out = set()
+    for x in (card.get("refs") or []) + (card.get("scope_in") or []):
+        p = str(x).strip().split(" ", 1)[0].rstrip("/")
+        if "/" in p:
+            out.add(re.sub(r"^test_", "", p.rsplit("/", 1)[-1]) if p.endswith(".py") else p)
+    return out
+
+
+def _created(card):
+    try:
+        t = datetime.fromisoformat(str(card.get("created", "")).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return t if t.tzinfo else t.replace(tzinfo=timezone.utc)
+
+
+def _related(a, b):
+    """Parent/child, acknowledged or same-batch pairs are not twins."""
+    ia, ib = a.get("id", ""), b.get("id", "")
+    ta, tb = _created(a), _created(b)
+    return (ib in (a.get("not_twin_of") or []) or ia in (b.get("not_twin_of") or []) or ib in (a.get("depends_on") or [])
+            or ia in (b.get("depends_on") or []) or ia.startswith(ib + "-need-") or ib.startswith(ia + "-need-")
+            or bool(ta and tb and abs((ta - tb).total_seconds()) <= TWIN_BATCH_MIN * 60))
+
+
+def twin_pairs(cards, only=None):
+    """[(score, id_a, id_b, reason)] for likely twins among open cards; `only` = an id whose pairs alone are wanted."""
+    import math
+    from collections import Counter
+    live = [c for c in cards if c.get("state") not in FINAL and c.get("id")]
+    words = {c["id"]: _title_words(c.get("title", "")) for c in live}
+    df = Counter(w for ws in words.values() for w in set(ws))
+    pdf = Counter(p for c in live for p in _paths(c))
+    n = len(live)
+
+    def vec(ws):
+        v = {w: math.log((n + 1) / (df[w] + 1)) for w in set(ws)}
+        s = math.sqrt(sum(x * x for x in v.values())) or 1.0
+        return {w: x / s for w, x in v.items()}
+
+    def score(a, b):
+        ta, tb = a.get("title", ""), b.get("title", "")
+        ha, hb = ta.split(":", 1), tb.split(":", 1)
+        if len(ha) == 2 and len(hb) == 2 and ha[0].strip().lower() == hb[0].strip().lower():
+            ta, tb = ha[1], hb[1]                 # a series: compare the subjects
+        wa, wb = _title_words(ta), _title_words(tb)
+        if wa and wa == wb:
+            return 1.0
+        va, vb = vec(wa), vec(wb)
+        return sum(x * vb.get(w, 0.0) for w, x in va.items())
+
+    out = []
+    for i, a in enumerate(live):
+        for b in live[i + 1:]:
+            if only and only not in (a["id"], b["id"]) or _related(a, b):
+                continue
+            s = score(a, b)
+            shared = sorted(p for p in _paths(a) & _paths(b) if pdf[p] <= TWIN_COMMON_PATH)
+            why = []
+            if s >= TWIN_TITLE:
+                why.append(f"title {s:.2f}")
+            if len(shared) >= TWIN_PATHS:
+                why.append("same files " + ", ".join(shared[:3]))
+            if why:
+                out.append((round(s, 2), a["id"], b["id"], "; ".join(why)))
+    return sorted(out, key=lambda t: (-t[0], t[1], t[2]))
 
 
 def get(repo, cid):
@@ -352,6 +443,8 @@ def brief(card):
         L.append(f"Sources: {'; '.join(card['sources'])}")
     if card.get("refs"):
         L.append(f"Registry: {' '.join(card['refs'])}")
+    if card.get("hosts"):
+        L.append(f"Host: run only on {' or '.join(card['hosts'])} (data or tools there)")
     if card.get("layers"):
         L.append(f"Layer: {', '.join(card['layers'])}: read its section of MyTradingSys/system/LAYERS.md (spec, ledger, backtests, cards)")
     if card.get("flow"):
@@ -465,6 +558,46 @@ def cmd_new(a):
     if a.crucial:
         card["crucial"] = True
     print(f"wrote {save(REPO, card)} (state raw; refine it, then `tasks.py check {cid}`)")
+    for s, x, y, why in twin_pairs(load_all(REPO), only=cid):
+        other = y if x == cid else x
+        print(f"WARN likely twin of {other} ({why}): `tasks.py brief {other}`; if it is the same job, drop one; "
+              f"if not, add \"{other}\" to not_twin_of")
+
+
+def cmd_twins(a):
+    pairs = twin_pairs(load_all(REPO))
+    for s, x, y, why in pairs:
+        print(f"TWIN {x} {y} ({why})")
+    print(f"tasks twins: {len(pairs)} likely twin pair(s) among open cards")
+
+
+def cmd_need(a):
+    """Pre-run item of a card (operator 2026-10-22: "whatever needs to be done regarding a task before it is run, MTS must know").
+    `--host` pins the card to machines; `what` + `--lane` makes a raw prerequisite card an agent owns and adds it to depends_on,
+    so dispatch holds the card until the prerequisite is done. Enforced at session end by prereq_guard.py (Stop hook)."""
+    c = get(REPO, a.id)
+    if a.host:
+        c["hosts"] = sorted(set(c.get("hosts", [])) | set(a.host))
+        print(f"{c['id']}: hosts {', '.join(c['hosts'])}")
+    if a.what:
+        if not a.lane:
+            raise SystemExit("tasks: need with a description needs --lane (who does it); an operator-only item is not a card")
+        nid = (c["id"] + "-need-" + re.sub(r"[^a-z0-9]+", "-", a.what.lower()).strip("-"))[:60].rstrip("-")
+        if not path_of(REPO, nid).exists():
+            n = blank(nid, f"Prereq of {c['id']}: {a.what}"[:120], prio=min(c.get("prio", 3), 3), lane=a.lane, refs=[path_of(REPO, c["id"]).as_posix()])
+            n["goal"] = a.what[:MAX_FIELD]
+            n["note"] = f"PREREQ of {c['id']}: {c['id']} waits on this card (depends_on)."
+            if a.role:
+                n["role"] = a.role
+            save(REPO, n)
+            print(f"wrote {path_of(REPO, nid)} (state raw, lane {a.lane})")
+        if nid not in c.get("depends_on", []):
+            c["depends_on"] = list(c.get("depends_on", [])) + [nid]
+        print(f"{c['id']}: depends_on {', '.join(c['depends_on'])}")
+    if not (a.host or a.what):
+        raise SystemExit("tasks: need <id> [\"<what>\" --lane L] [--host H]")
+    save(REPO, c)
+    return 0
 
 
 def cmd_fill(a):
@@ -1124,7 +1257,24 @@ def cmd_apply_op(a):
     print(f"{a.id}: {a.op} -> {c['state']}")
 
 
+def archive_final(repo, apply=False):
+    """Move done/dropped cards from tasks/ to tasks/archive/ (never deletes); returns the ids moved."""
+    d = tdir(repo)
+    moved = []
+    for p in sorted(d.glob("*.json")):
+        if json.loads(p.read_text(encoding="utf-8")).get("state") in FINAL:
+            moved.append(p.stem)
+            if apply:
+                (d / "archive").mkdir(exist_ok=True)
+                p.replace(d / "archive" / p.name)
+    return moved
+
+
 def cmd_sweep(a):
+    if a.archive:
+        moved = archive_final(REPO, a.apply)
+        print(f"sweep --archive: {len(moved)} closed card(s) -> tasks/archive/" + ("" if a.apply else " (dry run)"))
+        return
     cards = load_all(REPO)
     reg = registry(REPO)
     hit = 0
@@ -1185,6 +1335,8 @@ def exclusion(card, cards, reg, holds, claims, lane_st, as_of, host=None, repo=R
         return ("lane_down", lane_health.why_down(lane_st))
     if host and card["lane"] == "JIS-NB" and host != "JIS-NB":
         return ("host", f"lane JIS-NB needs host JIS-NB, not {host}")
+    if host and card.get("hosts") and host not in card["hosts"]:
+        return ("host", f"needs host {' or '.join(card['hosts'])}, not {host}")
     if miss:
         return ("not_ready", "not ready: " + miss[0])
     if needs_review(card) == "hard" and stamp_kind(card) != "real":
@@ -1297,6 +1449,14 @@ def main(argv=None):
     n.add_argument("--layer", action="append", help="layer family id (layer_index.json); repeat for several")
     n.add_argument("--crucial", action="store_true", help="lane CODEX: when the GPT lane is down this card waits for GPT instead of moving to DSA/Claude")
     n.set_defaults(f=cmd_new)
+    sp.add_parser("twins", help="likely duplicate open cards (close title or same rare files)").set_defaults(f=cmd_twins)
+    ne = sp.add_parser("need", help="record a pre-run item: a prerequisite card an agent owns (depends_on) and/or a host pin")
+    ne.add_argument("id")
+    ne.add_argument("what", nargs="?")
+    ne.add_argument("--lane", choices=LANES)
+    ne.add_argument("--role", help="role that owns the prerequisite, e.g. Lab_Guy")
+    ne.add_argument("--host", action="append", help="machine the card must run on; repeat for several")
+    ne.set_defaults(f=cmd_need)
     fi = sp.add_parser("fill", help="set raw-card fields from flags and run check (promotes without hand JSON edits)")
     fi.add_argument("id")
     fi.add_argument("--size", choices=("S", "M"))
@@ -1377,6 +1537,7 @@ def main(argv=None):
     dp.set_defaults(f=cmd_dispatch)
     s = sp.add_parser("sweep")
     s.add_argument("--apply", action="store_true")
+    s.add_argument("--archive", action="store_true", help="move done/dropped cards to tasks/archive/")
     s.set_defaults(f=cmd_sweep)
     a = ap.parse_args(argv)
     rc = a.f(a) or 0
