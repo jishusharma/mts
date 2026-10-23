@@ -1,0 +1,1 @@
+{"t": "20261023T154355Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship host-legacy-tasks-unregister Result: 9 ranked root causes; top: app-drawn approval card (no hook can remove it), model_guard over-blocks, turn_meter misses Supervisor (49 false stops), role_loade", "login": "C", "sid": "b67c182851"}
