@@ -1,6 +1,6 @@
 # WORKERS: which worker runs a task, on which model (canonical; operator 2026-10-17)
 
-Every other file points here. Numbers come from `python scripts/dev/worker_cost_report.py --days 5` (311 transcripts, 2026-10-12..17;
+Every other file points here. Numbers come from a 5-day transcript count (`worker_cost_report.py`, removed 2026-10-24; 311 transcripts, 2026-10-12..17;
 "eq" = input-price-equivalent tokens: input 1, cache-write 1.25, cache-read 0.1, output 5; list-price ratios between models NOT applied).
 
 ## Evidence

@@ -54,7 +54,7 @@ the others fail silently, so run it by hand to see the error: `echo {} | python 
 ## 5. Cost and waste
 | Symptom | Command | Owner |
 |---|---|---|
-| sessions too expensive | `python scripts/dev/token_audit.py`; `python scripts/dev/worker_cost_report.py` | MTS_Doctor |
+| sessions too expensive | `python scripts/dev/token_audit.py` | MTS_Doctor |
 | coordination overhead | `python scripts/dev/traffic_report.py` | Traffic controller |
 | repo health score | `python scripts/dev/health_audit.py` | MTS_Doctor |
 | boot cost per role | `python scripts/dev/mts_doctor.py` (BOOT-COST rows); ARCHITECTURE.md section 3 | MTS_Doctor |
