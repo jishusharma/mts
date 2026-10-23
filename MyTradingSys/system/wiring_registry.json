@@ -283,15 +283,6 @@
       "disp": "TOOL",
       "why": "Options module (Deribit BTC options research); hand-run offline tool, covered by MyTradingSys/options/tests; see MyTradingSys/options/OPTIONS_PLAN.md. Not wired to live trading."
     },
-    "MyTradingSys/queue/cbp_adapter.py": {
-      "disp": "WIRE",
-      "ref": "B139",
-      "why": "Validating CBP->MTS adapter built and tested (c12990d), no live process runs it; B139 OPEN says the candidates file was never produced on the real queue (BUGS.md:237)."
-    },
-    "MyTradingSys/queue/consumer.py": {
-      "disp": "TOOL",
-      "why": "CBP queue ack-only consumer run by hand from the desktop (DSA_SESSION_PROMPT.md:275); by decision no live process imports it (TWO_CORES_READINESS_2026-10-01.md:16)."
-    },
     "MyTradingSys/research/b141_htf_stage1.py": {
       "disp": "REPRO",
       "ref": "B141",

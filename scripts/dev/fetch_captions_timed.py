@@ -61,6 +61,19 @@ def list_channel(handle, scan, cookies=None):
     return [(e["id"], e.get("title") or "") for e in (info.get("entries") or []) if e and e.get("id")][:scan]
 
 
+def video_date(vid, cookies=None):
+    """Upload date YYYY-MM-DD of one video (metadata only, no captions); "" when unknown."""
+    opts = {"quiet": True, "no_warnings": True, "skip_download": True}
+    if cookies:
+        opts["cookiefile"] = cookies
+    try:
+        with yt_dlp.YoutubeDL(opts) as y:
+            d = y.extract_info(f"https://www.youtube.com/watch?v={vid}", download=False).get("upload_date") or ""
+    except yt_dlp.utils.DownloadError:
+        return ""
+    return f"{d[:4]}-{d[4:6]}-{d[6:]}" if len(d) == 8 else ""
+
+
 def fetch(vid, analyst, langs, outdir, channel="", cookies=None):
     dest = outdir / f"{vid}_timed.txt"
     if dest.exists():
@@ -125,6 +138,9 @@ def fetch_channel(a):
         if (exc and exc.search(title)) or (inc and not inc.search(title)):
             print(f"{vid} SKIP_OFFTOPIC", flush=True)
             continue
+        if a.since and (video_date(vid, a.cookies) or "9") < a.since:
+            print(f"{vid} OLDER_THAN_{a.since}", flush=True)
+            break  # listing is newest-first: everything after is older too
         r = fetch(vid, a.analyst, a.langs.split(","), Path(a.out), a.channel, a.cookies)
         picked += r.startswith(("OK", "EXISTS"))
         print(f"{vid} {r}", flush=True)
@@ -148,6 +164,7 @@ def main(argv):
     ap.add_argument("--scan", type=int, default=12, help="uploads to look through when listing a channel")
     ap.add_argument("--include", default="", help="regex: keep only titles matching")
     ap.add_argument("--exclude", default="", help="regex: drop titles matching")
+    ap.add_argument("--since", default="", help="YYYY-MM-DD: with --channel, stop at the first video older than this")
     ap.add_argument("--cookies", default=None)
     ap.add_argument("--langs", default="en")
     ap.add_argument("videos", nargs="*")

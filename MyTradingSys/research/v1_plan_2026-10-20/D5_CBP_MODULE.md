@@ -1,13 +1,25 @@
-# D5. CBP as a module of MTS
+# D5. CBP as a module of MTS (amended 2026-10-24: query, not queue)
 
-Today: CryptoScrapper (F:/CryptoScrapper, own repo) fetches YouTube transcripts of listed analysts, extracts positions with
-an LLM, writes consensus.md, daily_actionable.md and analyst_feed.json, and offers alerts through mts_queue/
-(pending.json, consumed.json, schema.json, acks/). MTS reads it with queue/consumer.py (acks only, never orders) and
-cbp_adapter.py against cbp_contract_v1.schema.json. Item B139 ran twice (2026-10-06, 2026-10-17) and consumed 0:
-pending.json last changed 2026-09-30 and holds a rejected krown entry and a consumed handshake. A Claude scheduled task
-cbp-daily-workflow (Haiku, 3x per day since 2026-10-15, cbp_v2/PIPELINE.md) runs the pipeline; PIPELINE.md Q3 says MTS
-does not read the queue, contract only. So CBP produces, nothing consumes, and the producer runs on a schedule the MTS policy
-forbids. The module boundary fixes all three.
+Operator 2026-10-23: "CDP [CBP] will never run on its own. MTS will run it. That's what having control means." and
+"a very simple contract. Which will be maintained by MTS". 5 days of analyst bias, nothing older.
+
+## The module, as built
+- Run: `python scripts/dev/cbp_run.py --due` (coordinator, on each wake; runs only inside a UTC window, EU 09:00-11:00 or
+  pre-US 12:00-13:30, once per window; stamp file outside the repo) or `--force` (operator ask). No CBP scheduler, no
+  daemon, no routine, no queue.
+- It fetches only videos of the actionable analysts (analysts.json profile=actionable) from the last 5 days that the store
+  does not hold, one LLM pass per new video, quote-checks every quote with `scripts/dev/verify_extract_quotes.py` (the one
+  checker; a fabricated quote rejects the row), dedupes on (video_id, analyst), writes ONE store and prints one line.
+- Read: `import cbp; cbp.query(analyst=None, symbol=None, since_days=5)` (MyTradingSys/cbp/). One JSON read.
+  Row = {analyst, video_id, published, bias, quotes[], trades[], pointers[], symbols[], quote_verified, expires_at};
+  schema: MyTradingSys/cbp/schema.json (owned by MTS).
+- Data: F:/CryptoScrapper/cbp_store/rows.json (CBP_STORE), transcripts F:/CryptoScrapper/transcripts. Nothing of it enters
+  the public MTS repo.
+- Removed: queue/consumer.py, queue/cbp_adapter.py, their tests, cbp_contract_v1.schema.json, pending.json/acks use.
+- Rows are claims, not signals. Anything that trades still passes gate 5 (B139 backtest). Layers read the store;
+  targeted extraction per analyst layer (Krown, Jason+Michael) is each layer's own card.
+
+Everything below this line is the superseded queue design, kept as history.
 
 ## What MTS controls
 1. Schedule: the CBP pipeline runs when the MTS coordinator runs it (or as the one named exception in q-v1-cbp-routine).
