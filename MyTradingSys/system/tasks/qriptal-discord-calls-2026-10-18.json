@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-23T12:28:22Z",
   "commands": [],
   "created": "2026-10-18T18:28:38Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "qriptal-discord-calls-2026-10-18",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "CALL_LEDGER.csv 81 rows (11 Discord), 2 eligible, tests 24+27 pass",
+      "ref": "80c9df1a7",
+      "utc": "2026-10-23T12:28:22Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -41,7 +48,12 @@
   "refs": [
     "B162"
   ],
-  "result": "",
+  "result": "CALL_LEDGER.csv 81 rows (11 Discord), 2 eligible, tests 24+27 pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/items/B162_qriptal_signal_layer.md",
     "MyTradingSys/research/qriptal_2026-10-10/CALL_LEDGER.csv",
@@ -59,13 +71,14 @@
   "sources": [
     "MyTradingSys/items/B162_qriptal_signal_layer.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read B162_qriptal_signal_layer.md 2026-10-18 Discord section (2026-10-13..18 posts).",
     "Append new candidate rows into CALL_LEDGER.csv with exact quote, post time, levels or blank if unreadable, and eligibility verdict per RULES.md.",
     "Update test_ledger.py to verify new rows parse and validate against RULES.md.",
     "Run test_ledger.py and score_calls.py, recording candidate/eligible counts in LEDGER_NOTES.md."
   ],
+  "taken": "2026-10-23T12:28:22Z",
   "tests": "python -m unittest MyTradingSys/research/qriptal_2026-10-10/test_ledger.py",
   "title": "Qriptal: transcribe Habib's 2026-10-13..18 Discord calls into the call ledger (B162)",
   "weight": "ROUTINE",

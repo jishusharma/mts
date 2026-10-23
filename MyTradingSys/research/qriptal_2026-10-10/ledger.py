@@ -28,6 +28,11 @@ RAW_DIR = ROOT / RAW_REL
 ROWS_JSON = HERE / "ledger_rows.json"
 TIMES_TSV = HERE / "PUBLISH_TIMES.tsv"
 CSV_PATH = HERE / "CALL_LEDGER.csv"
+DISCORD_JSON = HERE / "discord_rows.json"
+DISCORD_ID = "discord"  # video_id column value for Discord rows -> call_id QRP-discord-NN
+# Discord post clock. B162 says "UTC+? the Discord clock"; the habib README (2026-10-20) states the operator clock is IST and
+# converts 10-18 23:52 IST to 18:22Z. DECISION (OURS): read every Discord time as IST (UTC+5:30).
+DISCORD_TZ = timezone(timedelta(hours=5, minutes=30))
 
 NOT_STATED = "NOT STATED"
 KINDS = ("PLAN", "RECAP", "HYPO", "VIEW")
@@ -186,6 +191,57 @@ def build_rows(rows_json=None, times=None, raw_dir=None):
     return out
 
 
+def locate_text(text, quote):
+    """Like locate() for a plain text file (no [m:ss] stamps): -> (first_line, last_line). Must occur exactly once."""
+    lines = [(i, "", t) for i, t in enumerate(text.split(chr(10)), 1)]
+    a, b, _ = locate(lines, quote)
+    return a, b
+
+
+def discord_utc(posted_local):
+    """'2026-10-13 16:30' (IST) -> '2026-10-13T11:00:00Z'; '' -> ''."""
+    if not (posted_local or "").strip():
+        return ""
+    t = datetime.strptime(posted_local, "%Y-%m-%d %H:%M").replace(tzinfo=DISCORD_TZ)
+    return t.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def build_discord_rows(path=None, root=None):
+    path = path or DISCORD_JSON
+    if not path.exists():
+        return []
+    root = root or ROOT
+    out, cache = [], {}
+    for n, e in enumerate(json.loads(path.read_text(encoding="utf-8")), 1):
+        src = e["src"]
+        if src not in cache:
+            cache[src] = (root / "MyTradingSys" / src).read_text(encoding="utf-8")
+        text = cache[src]
+        check_quote_length(e["q"])
+        l1, l2 = locate_text(text, e["q"])
+        aux = []
+        for field, q in e.get("aux", []):
+            check_quote_length(q)
+            a1, a2 = locate_text(text, q)
+            aux.append(f"{field}: L{_span(a1, a2)} \"{q}\"")
+        utc = discord_utc(e.get("posted_local", ""))
+        row = {
+            "call_id": f"QRP-{DISCORD_ID}-{n:02d}", "video_id": DISCORD_ID, "published_utc": utc,
+            "time_source": (f"Discord #trading-thoughts post {e['posted_local']} read as IST (UTC+5:30), DECISION OURS; "
+                            f"{src}") if utc else f"Discord post, time not recorded in {src}",
+            "file_line": f"MyTradingSys/{src}:{_span(l1, l2)}", "video_ts": "",
+            "quote": e["q"], "asset": e.get("asset", "BTC"), "direction": e.get("dir", NOT_STATED),
+            "entry": e.get("entry", NOT_STATED), "stop": e.get("stop", NOT_STATED),
+            "targets": e.get("targets", NOT_STATED), "aux_refs": " | ".join(aux), "kind": e["kind"], "note": e.get("note", ""),
+        }
+        ok, reason = classify(row)
+        row["eligible"] = "Y" if ok else "N"
+        row["reason"] = reason
+        row["window_split"] = window_split(utc)
+        out.append(row)
+    return out
+
+
 def render_csv(rows):
     buf = io.StringIO(newline="")
     w = csv.writer(buf, lineterminator="\n")
@@ -216,7 +272,7 @@ def summary(rows):
 
 def main(argv):
     cmd = argv[1] if len(argv) > 1 else "check"
-    rows = build_rows()
+    rows = build_rows() + build_discord_rows()
     text = render_csv(rows)
     if cmd == "build":
         with open(CSV_PATH, "w", encoding="utf-8", newline="") as f:
