@@ -17,6 +17,9 @@
   "latest": [],
   "layers": [],
   "live_path": false,
+  "not_twin_of": [
+    "tom-btc-validation"
+  ],
   "note": "[PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] HOLD A-20261018-5: reads an unchecked lab base; start only when the base carries a trust tag >= its class (lab-trust-tag) or the operator lifts it. Operator idea 2026-10-14; own layer (research only until LC3 passes); numbers OURS, printed in each report.\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C2 weight=CRUCIAL); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
   "prio": 2,
   "refine_tries": 0,
@@ -44,6 +47,6 @@
   ],
   "tests": "",
   "title": "LC4 Levels Confluence: run frozen_rule.json once on VALIDATION 2025-04..2025-06 and report",
-  "weight": "CRUCIAL",
-  "updated": "2026-10-18T10:00:00Z"
+  "updated": "2026-10-18T10:00:00Z",
+  "weight": "CRUCIAL"
 }

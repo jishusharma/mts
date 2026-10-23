@@ -126,13 +126,14 @@ def load_all(repo=REPO):
 
 # Twin cards (doctor 2026-10-23: doctor-main-checkout-behind and jis-nb-fast-forward-the-main-checkout-to sat open 10 h, one job).
 # OURS, tuned on the 172 open cards of 2026-10-23: the real pair scores 0.31 there and 0.25 in a 12-card corpus (title words
-# weighted by rarity, so the scale moves with the corpus); 0.25 catches it in both and lists ~20 pairs, mostly siblings: a
-# warning, never a refusal. Series titles ("Trust re-check: X") are compared after their shared "<series>:" head. A path
+# weighted by rarity, so the scale moves with the corpus); 0.25 catches it in both: a warning, never a refusal. Series titles ("Trust re-check: X") are compared after their shared "<series>:" head. A path
 # shared by more than TWIN_COMMON_PATH open cards is a family source (SPEC.md of a study), not a sign of a twin. A pair is
-# silenced by `not_twin_of` on either card.
+# silenced by `not_twin_of` on either card. Cards created within TWIN_BATCH_MIN of each other are one session's batch (series
+# siblings: 15 of the 27 pairs on 2026-10-23); twins come from two sessions, the real pair was filed 5 h apart.
 TWIN_TITLE = 0.25
 TWIN_PATHS = 2
 TWIN_COMMON_PATH = 3
+TWIN_BATCH_MIN = 30
 TWIN_STOP = set("the a an of to and in on for with is by from per at or as be it this that its into than then not no all any one two each "
                 "card cards run runs use used new via when what which who so are was were has have only after before".split())
 
@@ -151,11 +152,21 @@ def _paths(card):
     return out
 
 
+def _created(card):
+    try:
+        t = datetime.fromisoformat(str(card.get("created", "")).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return t if t.tzinfo else t.replace(tzinfo=timezone.utc)
+
+
 def _related(a, b):
-    """Parent/child or acknowledged pairs are not twins."""
+    """Parent/child, acknowledged or same-batch pairs are not twins."""
     ia, ib = a.get("id", ""), b.get("id", "")
+    ta, tb = _created(a), _created(b)
     return (ib in (a.get("not_twin_of") or []) or ia in (b.get("not_twin_of") or []) or ib in (a.get("depends_on") or [])
-            or ia in (b.get("depends_on") or []) or ia.startswith(ib + "-need-") or ib.startswith(ia + "-need-"))
+            or ia in (b.get("depends_on") or []) or ia.startswith(ib + "-need-") or ib.startswith(ia + "-need-")
+            or bool(ta and tb and abs((ta - tb).total_seconds()) <= TWIN_BATCH_MIN * 60))
 
 
 def twin_pairs(cards, only=None):
