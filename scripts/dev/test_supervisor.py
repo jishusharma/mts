@@ -473,6 +473,15 @@ def test_plan_lines_only_the_owner_runs_shared_lanes():
     assert "SPAWN 1: s1" not in red and "CI RED" in red
 
 
+def test_plan_lines_run_session_planner_when_raw_cards_are_old():
+    p = S.pace_plan(T0, _rd(10, 20), 95)
+    live = {"A": {"host": "JIS-NUC", "mode": "NORMAL", "run": 0, "free": 3, "at": "x", "dsa": "up"}}
+    ctx = {"ci": {"red": False}, "picks": [], "refine_raw": 4}
+    on = "\n".join(S.plan_lines("A", "JIS-NUC", p, live, ctx, gate_key=False))
+    off = "\n".join(S.plan_lines("A", "JIS-NUC", p, live, dict(ctx, refine_raw=0), gate_key=False))
+    assert "RUN Session_Planner (Agent, sonnet): refine 4 raw cards" in on and "RUN Session_Planner" not in off
+
+
 def test_plan_lines_ssh_gate_and_nuc_wake_only_when_allowed():
     p = S.pace_plan(T0, _rd(10, 20), 95)
     live = {"B": {"host": "JIS-NB", "mode": "NORMAL", "run": 0, "free": 3, "at": "x", "dsa": None}}
