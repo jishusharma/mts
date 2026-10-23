@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-23T05:53:58Z",
   "commands": [
     "python -m pytest scripts/dev/test_verify_extract_quotes.py -q"
   ],
@@ -15,6 +16,12 @@
   "id": "cbp-one-quote-checker",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "shipped in 1b3f14a1 by jis-nb",
+      "ref": "fb6479e1",
+      "utc": "2026-10-23T05:53:58Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refined_by": "",
   "refreshed": "2026-10-22T21:45:58Z",
   "refs": [],
-  "result": "",
+  "result": "shipped in 1b3f14a1 by jis-nb",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/verify_extract_quotes.py; scripts/dev/test_verify_extract_quotes.py; MyTradingSys/research/krown_capture_2026-10-16/check_quotes.py"
   ],
@@ -44,12 +56,13 @@
   "sources": [
     "MyTradingSys/research/thinker/2026-10-23_cbp_core_vs_adopt.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write the two failing tests with a real and an invented quote",
     "Add the CBP evidence-line branch to the verifier",
     "Remove check_quotes.py after grepping its callers"
   ],
+  "taken": "2026-10-23T05:53:58Z",
   "tests": "scripts/dev/test_verify_extract_quotes.py::test_cbp_evidence_line_verified and ::test_cbp_invented_quote_fails (fail on current verifier, which only parses > \"quote\" + Source GPS)",
   "title": "One quote checker: verify_extract_quotes.py accepts CBP evidence lines; delete check_quotes.py",
   "weight": "",
