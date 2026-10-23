@@ -25,7 +25,9 @@ forbids. The module boundary fixes all three.
   emitted (the MTS extraction gate, applied inside CBP).
 - expires_at set on every row; stop_loss may be null (contract README); order_eligible is always false from CBP.
 - source ids (video id, timestamp) on every row, so the analyst scorecard can score it later.
-- No MTS path, no MTS write: CBP writes only inside mts_queue/.
+- Write scope: CBP writes inside mts_queue/ and, as the one named exception (DECISION, OURS), to
+  raw_transcripts_canonical/ through the MTS fetcher (fetch_captions_timed), so the adapter and the quote gate read one
+  transcript store. No other MTS path, no other MTS write. CBP sha at amendment: 152726bec1208c27115a4042d52d6c741699ff2a.
 - Idempotent: the same video never produces two rows (dedupe on video id + analyst).
 
 ## How bad output is stopped before trading (five gates, in order)
@@ -54,3 +56,15 @@ the CBP sha).
 ## Stage
 S4 in D7. Entry: contract v1 promoted to the one Signal schema, scheduled task decided. Exit: one real analyst row flows
 producer -> queue -> consumer -> CANDIDATE_UNTESTED with an ack, and the golden-set harness is green on CI.
+
+## Status table (amended 2026-10-23; CBP sha 152726bec1208c27115a4042d52d6c741699ff2a)
+Placeholders: agent V (independent verify) fills MET / PARTIAL / NOT MET with pasted command output. Until then PENDING.
+| Item | Status | Evidence |
+|---|---|---|
+| Gate 1 Schema (producer side) | PENDING | |
+| Gate 2 Quote (single checker in MTS) | PENDING | |
+| Gate 3 Freshness (consumer) | PENDING | |
+| Gate 4 Scorecard (56 scored calls) | PENDING | |
+| Gate 5 Promotion (CANDIDATE_UNTESTED) | PENDING | |
+| Golden-set harness green on CI | PENDING | |
+| S4 exit: one real row producer -> queue -> consumer -> ack | PENDING | |

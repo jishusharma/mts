@@ -409,8 +409,29 @@ def nested_reason(tool, inp, transcript_path):
     import role_loader
     if not (role_loader.from_session(first_prompt(transcript_path)) or role_session(transcript_path)):
         return None
+    if interactive_role((inp or {}).get("prompt")):    # operator 2026-10-23: interactive roles are sessions, never background Agents
+        return None
     return ("a start_session from a role session waits for an operator approval in the app (the operator is away). Start the worker "
             "with the Agent tool instead: model='sonnet', run_in_background=true, the same brief (its first line `You are <Role>.`).")
+
+
+INTERACTIVE_ROLES = ("Eagle_Eyes",)   # roles that read the operator's screenshots/chat (only eagle_eyes.md says so); aliases come from role_loader
+AGENT_INTERACTIVE_FIX = "interactive roles start as sessions (start_session user_asked), never background Agents."
+
+
+def interactive_role(prompt):
+    """The interactive role named by the first `You are <Role>.` line of a start/Agent prompt (aliases included), else None."""
+    import role_loader
+    names = {n.lower(): n for n in INTERACTIVE_ROLES}
+    names.update({a: n for n, al in role_loader.ALIASES.items() if n in INTERACTIVE_ROLES for a in al})
+    m = ROLE_LINE.search(str(prompt or "")[:3000])
+    return names.get(m.group(1).lower()) if m else None
+
+
+def agent_role_reason(tool, inp):
+    if tool in AGENT_TOOLS and interactive_role((inp or {}).get("prompt")):
+        return AGENT_INTERACTIVE_FIX
+    return None
 
 
 def role_session(transcript_path):
@@ -465,7 +486,7 @@ def hook():
         return 0
     if tool in SEND_TOOLS:
         return 0
-    card = card_reason(tool, inp, ev.get("transcript_path")) or nested_reason(tool, inp, ev.get("transcript_path"))
+    card = agent_role_reason(tool, inp) or card_reason(tool, inp, ev.get("transcript_path")) or nested_reason(tool, inp, ev.get("transcript_path"))
     if card:
         print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
                                                  "permissionDecisionReason": "model_guard: " + card}}))

@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-10-23T13:38:20Z",
+  "depends_on": [],
+  "done_when": "new test passes, rules lines in supervisor.md and ROLES.md",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "model_guard lets a role session start Eagle_Eyes via start_session and refuses it as a background Agent",
+  "id": "bug-guard-blocks-interactive-roles",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "MTS_Doctor v3: diagnoses and proves fixes live, cards the cure; ROLES.md who does what",
+      "ref": "1f12330209a5",
+      "utc": "2026-10-23T09:39:48Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "1f12330209a5 MTS_Doctor v3: diagnoses and proves fixes live, cards the cure; ROLES.md who ",
+      "ref": "MyTradingSys/system/ROLES.md",
+      "utc": "2026-10-23T09:39:48Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-23T13:38:35Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/model_guard.py",
+    "MyTradingSys/tests/test_model_guard.py",
+    "MyTradingSys/system/ROLES.md"
+  ],
+  "scope_out": [
+    "worker role rule"
+  ],
+  "scope_sha": "1f12330209a5",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "add interactive role set",
+    "tests",
+    "rules text"
+  ],
+  "tests": "MyTradingSys/tests/test_model_guard.py::test_interactive_role_starts_as_a_session_from_a_role_session_and_never_as_an_agent",
+  "title": "model_guard refuses start_session for interactive roles (Eagle_Eyes) from role sessions",
+  "weight": "",
+  "worker": "agent"
+}
