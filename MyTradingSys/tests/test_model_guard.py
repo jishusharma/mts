@@ -107,6 +107,18 @@ class ModelGuardTest(unittest.TestCase):
         self.assertEqual(decision, "deny")
         self.assertIn("Agent tool", reason)
 
+    def test_interactive_role_starts_as_a_session_from_a_role_session_and_never_as_an_agent(self):
+        # operator 2026-10-23: a Supervisor could not start Eagle_Eyes as a session and was told to use a background Agent
+        sup = Path(self.tmp.name) / "sup.jsonl"
+        sup.write_text(json.dumps({"type": "user", "message": {"content": "You are Supervisor. Login B."}}) + "\n", encoding="utf-8")
+        inp = {"initiation": "user_asked", "title": "Eagle", "prompt": "You are Eagle_Eyes.\nRead the screenshots.",
+               "background": "b" * 90, "model": "claude-sonnet-5-5"}
+        self.assertEqual(fire(START, inp, sup), "allow")
+        self.assertEqual(fire(START, dict(inp, prompt="You are Builder.\nCard x."), sup), "deny")
+        decision, reason = fire_full("Agent", {"description": "d", "prompt": "You are Eagle_Eyes.", "model": "sonnet"}, sup)
+        self.assertEqual(decision, "deny")
+        self.assertIn("never background Agents", reason)
+
     def first(self, name, text):
         p = Path(self.tmp.name) / name
         p.write_text(json.dumps({"type": "user", "message": {"content": text}}) + "\n", encoding="utf-8")

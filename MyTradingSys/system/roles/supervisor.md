@@ -35,7 +35,8 @@ never dispatch raw/refined cards). Board STOP/HOLD and CI RED outrank everything
   work only in the printed WORKTREE.` Then defaults for open questions, `Ship once with sync.py ship --release <slug> after <earlier shipper, or none>`,
   `Run with zero operator input: never ask; take the conservative default, log DECISION (OURS), continue`, and
   `Your final report starts with your ROLE LOADED banner line, then Result: and the content sha, at most 6 lines.`
-- Workers are background Agents (`run_in_background: true`), never start_session: even `user_asked` showed the operator an approval card (NUC, 2026-10-22). Never leave a card.
+- Interactive roles (Eagle_Eyes; operator chats or sends screenshots) always start as a session with start_session user_asked, never as a background Agent (operator 2026-10-23).
+- Worker roles (Builder etc.) are background Agents (`run_in_background: true`), never start_session: even `user_asked` showed the operator an approval card (NUC, 2026-10-22). Never leave a card.
 - Every call passes `model` (sonnet; haiku for scoped work; opus only when the operator named it).
 - Never start or message a Fable session; message only session ids you started.
 
