@@ -1,1 +1,0 @@
-{"t": "20261016T191834Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship > $TEMP/ship_mh.txt 2>&1; echo rc=$?; grep -E \"shipped|FAIL|nothing|error\" $TEMP/ship_mh.txt | tail -5"}
