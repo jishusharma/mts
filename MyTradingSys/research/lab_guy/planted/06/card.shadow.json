@@ -1,0 +1,43 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-12T11:05:07Z",
+  "commands": [],
+  "created": "2026-10-12T05:43:40Z",
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "from_inbox": "",
+  "goal": "Every ledger row (date, side, entry, stop, target, exit, setup words) is MATCH / MISMATCH / NOT_IN_DATA against the frame or transcript line it cites. The v2 spec is written from this ledger, so a wrong row becomes a wrong rule. Frames are images under F:/MTS/data/tom_videos/frames: open them.",
+  "id": "lab-audit-tom-ledger-frames",
+  "kind": "audit",
+  "lane": "CODEX",
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refs": [],
+  "result": "FIX-FIRST: 37 rows, 65 cited plus 7 supplemental images; 4 HIGH and 4 MED; exact missing evidence per row; 4 repair cards. Report: MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md [slippage=0]",
+  "scope_in": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.md",
+    "F:/MTS/data/tom_videos"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "",
+  "title": "Audit Tom's trade ledger against his chart frames and transcripts"
+}

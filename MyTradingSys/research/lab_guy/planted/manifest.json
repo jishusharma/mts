@@ -1,0 +1,1469 @@
+{
+  "shadows": [
+    {
+      "n": 1,
+      "card": "context-factors-v3-crossvendor-review",
+      "report": "MyTradingSys/research/layer_lab/reports/2026-10-19_context-factors-v3-crossvendor-review.md",
+      "class": "wrong data copy",
+      "location": "card.result",
+      "original_value": "FIX-FIRST; report MyTradingSys/research/layer_lab/reports/2026-10-19_context-factors-v3-crossvendor-review.md: 437/319-day arithmetic and both frozen hashes MATCH; missing control/stratum dispositions and proxy F3 verdict require clarification",
+      "planted_value": "FIX-FIRST; report MyTradingSys/research/layer_lab/reports/2026-10-19_context-factors-v3-crossvendor-review.md: 437/319-day arithmetic and both frozen hashes MATCH; missing control/stratum dispositions and proxy F3 verdict require clarification [wrong data copy]",
+      "trial_rows": 0,
+      "run_rows": 0,
+      "caught": false,
+      "rejecting_checks": [],
+      "changed_hunks": 1
+    },
+    {
+      "n": 2,
+      "card": "gptb-bb-top-reversal-event-table",
+      "report": "MyTradingSys/research/layer_lab/reports/2026-10-17_gptb-bb-top-reversal-event-table.md",
+      "class": "one-bar shift",
+      "location": "card.result",
+      "original_value": "1577 DEV events; 4 tests pass; MyTradingSys/research/layer_lab/reports/2026-10-17_gptb-bb-top-reversal-event-table.md",
+      "planted_value": "1577 DEV events; 4 tests pass; MyTradingSys/research/layer_lab/reports/2026-10-17_gptb-bb-top-reversal-event-table.md [bar-open shifted +1]",
+      "trial_rows": 1,
+      "run_rows": 1,
+      "caught": false,
+      "rejecting_checks": [],
+      "changed_hunks": 1
+    },
+    {
+      "n": 3,
+      "card": "gptb-funding-extreme-event-table",
+      "report": "MyTradingSys/research/layer_lab/reports/2026-10-17_gptb-funding-extreme-event-table.md",
+      "class": "holdout leak",
+      "location": "card.result",
+      "original_value": "2736 rows, 726 extremes; MyTradingSys/research/layer_lab/reports/2026-10-17_gptb-funding-extreme-event-table.md",
+      "planted_value": "2736 rows, 726 extremes; MyTradingSys/research/layer_lab/reports/2026-10-17_gptb-funding-extreme-event-table.md [HOLDOUT read]",
+      "trial_rows": 1,
+      "run_rows": 1,
+      "caught": false,
+      "rejecting_checks": [],
+      "changed_hunks": 1
+    },
+    {
+      "n": 4,
+      "card": "krown-catalogue-gpt-audit",
+      "report": "MyTradingSys/research/layer_lab/reports/2026-10-17_krown-catalogue-gpt-audit.md",
+      "class": "expected value copied from code",
+      "location": "card.result",
+      "original_value": "SOUND: quotes verbatim, 0 HIGH, 2 MED 5 LOW; MyTradingSys/research/layer_lab/reports/2026-10-17_krown-catalogue-gpt-audit.md",
+      "planted_value": "SOUND: quotes verbatim, 0 HIGH, 2 MED 5 LOW; MyTradingSys/research/layer_lab/reports/2026-10-17_krown-catalogue-gpt-audit.md [expected value copied from code]",
+      "trial_rows": 0,
+      "run_rows": 0,
+      "caught": false,
+      "rejecting_checks": [],
+      "changed_hunks": 1
+    },
+    {
+      "n": 5,
+      "card": "gptb-session-levels-event-table",
+      "report": "MyTradingSys/research/layer_lab/reports/2026-10-16_gptb-session-levels-event-table.md",
+      "class": "deleted trial rows",
+      "location": "TRIALS excerpt",
+      "original_value": [
+        "| 2026-10-17 | gptb-session-levels-event-table | `python MyTradingSys/research/layer_lab/session_levels_event_table/event_table.py --output MyTradingSys/research/layer_lab/session_levels_event_table/events.csv` | DEV 2022-01..2024-06 only; event enumeration, no outcome inference; VALIDATION/HOLDOUT unread | 445 failed-break events (225 high, 220 low); all 445 four-hour windows complete; MFE/MAE in R; no fees/rules |"
+      ],
+      "planted_value": [],
+      "trial_rows": 1,
+      "run_rows": 1,
+      "caught": true,
+      "rejecting_checks": [
+        "tasks.trial_ledger_runs_count"
+      ],
+      "changed_hunks": 1
+    },
+    {
+      "n": 6,
+      "card": "lab-audit-tom-ledger-frames",
+      "report": "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md",
+      "class": "zero slippage",
+      "location": "card.result",
+      "original_value": "FIX-FIRST: 37 rows, 65 cited plus 7 supplemental images; 4 HIGH and 4 MED; exact missing evidence per row; 4 repair cards. Report: MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md",
+      "planted_value": "FIX-FIRST: 37 rows, 65 cited plus 7 supplemental images; 4 HIGH and 4 MED; exact missing evidence per row; 4 repair cards. Report: MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md [slippage=0]",
+      "trial_rows": 0,
+      "run_rows": 0,
+      "caught": false,
+      "rejecting_checks": [],
+      "changed_hunks": 1
+    },
+    {
+      "n": 7,
+      "card": "context-factors-v3-crossvendor-review",
+      "report": "MyTradingSys/research/layer_lab/reports/2026-10-19_context-factors-v3-crossvendor-review.md",
+      "class": "edited gate constant",
+      "location": "card.result",
+      "original_value": "FIX-FIRST; report MyTradingSys/research/layer_lab/reports/2026-10-19_context-factors-v3-crossvendor-review.md: 437/319-day arithmetic and both frozen hashes MATCH; missing control/stratum dispositions and proxy F3 verdict require clarification",
+      "planted_value": "FIX-FIRST; report MyTradingSys/research/layer_lab/reports/2026-10-19_context-factors-v3-crossvendor-review.md: 437/319-day arithmetic and both frozen hashes MATCH; missing control/stratum dispositions and proxy F3 verdict require clarification [gate constant=0]",
+      "trial_rows": 0,
+      "run_rows": 0,
+      "caught": false,
+      "rejecting_checks": [],
+      "changed_hunks": 1
+    },
+    {
+      "n": 8,
+      "card": "gptb-bb-top-reversal-event-table",
+      "report": "MyTradingSys/research/layer_lab/reports/2026-10-17_gptb-bb-top-reversal-event-table.md",
+      "class": "mislabelled SOURCED number",
+      "location": "card.result",
+      "original_value": "1577 DEV events; 4 tests pass; MyTradingSys/research/layer_lab/reports/2026-10-17_gptb-bb-top-reversal-event-table.md",
+      "planted_value": "1577 DEV events; 4 tests pass; MyTradingSys/research/layer_lab/reports/2026-10-17_gptb-bb-top-reversal-event-table.md SOURCED: 999 (source omitted)",
+      "trial_rows": 1,
+      "run_rows": 1,
+      "caught": false,
+      "rejecting_checks": [],
+      "changed_hunks": 1
+    }
+  ],
+  "clean_cards": [
+    "context-factors-v3-crossvendor-review",
+    "gptb-bb-top-reversal-event-table",
+    "gptb-funding-extreme-event-table",
+    "krown-catalogue-gpt-audit",
+    "gptb-session-levels-event-table",
+    "lab-audit-tom-ledger-frames"
+  ],
+  "machine_checks": [
+    "tasks.problems",
+    "lab_flow.gate",
+    "lab_flow.fingerprint",
+    "tasks.trial_ledger_runs_count"
+  ],
+  "skipped_candidates": [
+    {
+      "card": "aibridge-auto-run-accepts-read-only-scri",
+      "reason": "state=dropped lane="
+    },
+    {
+      "card": "aibridge-handsfree-unchecks",
+      "reason": "state=dropped lane=SONNET"
+    },
+    {
+      "card": "aibridge-live-selftest-flaky",
+      "reason": "state=dropped lane=SONNET"
+    },
+    {
+      "card": "aibridge-multi-block-f1-f7",
+      "reason": "state=dropped lane=SONNET"
+    },
+    {
+      "card": "analyst-ingest-bennett-dpa",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "analyst-ingest-cryptochase-x",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "analyst-ingest-rlinda-tv",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "audit-both-research-tracks-and-order-flo",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "audit-session-start-ritual-vs-ai-health-",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "audit-state-code-cvd-and-vwap-anchor",
+      "reason": "state=dropped lane=SONNET"
+    },
+    {
+      "card": "b-item-krown-core-rsi-returns-100-on-a-f",
+      "reason": "state=done lane=HAIKU"
+    },
+    {
+      "card": "B059",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "B066",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "B118",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "B122",
+      "reason": "state=done lane=HAIKU"
+    },
+    {
+      "card": "B124",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "B141",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "B142",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "B144",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "B149-capture",
+      "reason": "state=done lane=JIS-NB"
+    },
+    {
+      "card": "B160-followup",
+      "reason": "state=done lane=DSA-NB"
+    },
+    {
+      "card": "b172-template",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "b172-token-audit-of-the-sonnet-relay-rit",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "b172-trim",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "b173-hide-python-cmd-console-windows-of-",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "b177-control-room-layer-board-tab-per-ac",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "b178-ci-cd-speed-warm-gate-worktree-or-p",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "b179-tom-and-fabio-layers-story-as-a-sli",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "b180-dsa-picks-tasks-by-host-desk-py-nex",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "b181-control-room-show-status-reply-ref-",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "b187-prereg-v2-correction",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "backfill-t087-session-level-split-and-ve",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "backfill-t090-7h-split-and-inconclusive-",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "backtest-readiness-template",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "bb-top-reversal-candle-backtest",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "blind-monitor-halt-recovery",
+      "reason": "state=done lane=JIS-NB"
+    },
+    {
+      "card": "bt-engine-simulate-trade-fail-closed-on-",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "candle-close-cycle-labels",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "candle-close-independent-audit",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "candle-close-phase-encounter-design",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "candle-close-test-import-guard",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "catalog-audit-fabio-risk-scope",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "catalog-audit-tom3-source-fields",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "chart-verify-py-recompute-bb-rsi-stochrs",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "ci-919cc0f",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "ci-nowin-audit-linux-flags",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "codex-lab-unstick-nuc",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "confluence-read-encode",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "context-composite-dev-read",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "context-factors-pit-audit",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "context-factors-pre-reg-v3",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "control-room-layer-board-link",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "correct-verdict-registry-one-run-for-eur",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "cryptocred-home-fit-audit",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "cryptocred-htf-count-power",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "cryptocred-ledger-feasibility",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "cryptocred-prereg-4h-1d",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "deploy-runbook-manual-world",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "dispatcher-t0-precheck",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "dsa-aibridge-tasks-parallel-safe-with-nb",
+      "reason": "state=dropped lane="
+    },
+    {
+      "card": "dsa-audit-01-data-forensics",
+      "reason": "state=done lane=DSA-NB"
+    },
+    {
+      "card": "dsa-audit-02-lookahead-time",
+      "reason": "state=done lane=DSA-NB"
+    },
+    {
+      "card": "dsa-audit-03-planted-edges",
+      "reason": "state=done lane=DSA-NB"
+    },
+    {
+      "card": "dsa-claude-standin-prompt",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "encode-v1-only-kill-scope-for-weekly-low",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "eu-low-us-sweep-follow-ups-long-after-sw",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "exec-halt-entry-10031",
+      "reason": "state=done lane=JIS-NB"
+    },
+    {
+      "card": "fabio-audit-20261013-attribution",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "fabio-audit-20261013-counts",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "fabio-audit-20261013-dates",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "fabio-audit-20261013-exits",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "fabio-audit-20261013-prices",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "fabio-audit-20261013-rules",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "fabio-catalogue-merge-5-recovered-canoni",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "fabio-ledger-f13-outcome-provenance-2910",
+      "reason": "state=dropped lane=SONNET"
+    },
+    {
+      "card": "fabio-ledger-get-9i5vtvwsmbk-f398-not-av",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "fabio-ledger-minute-timestamps",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "fabio-ledger-recompute-entry-from-stp-la",
+      "reason": "state=dropped lane=SONNET"
+    },
+    {
+      "card": "fabio-ledger-replace-date-2026-with-unkn",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "fabio-ledger-scan-dys79eb92ug-is1hvdfqm5",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "fabio-prescreen-is1h-layout",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "fabio-session-date-price-match",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "fabio-trade-ledger",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "fabio-video-prescreen",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "fabio-xuyq-asr-extract",
+      "reason": "state=dropped lane=JIS-NB"
+    },
+    {
+      "card": "fable-audit-e1-count-before-freeze",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "fable-audit-e3-cost-in-r-gate",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "fable-audit-e4-promotion-variants",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "fable-h1-promotion-default-deny",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "fable-h2-demote-off-blocklist",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "fable-h3-deploy-fallback-ci-check",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "fable-run1-gate-audit",
+      "reason": "state=done lane=OPUS"
+    },
+    {
+      "card": "fable-run1-promote-mde-audit",
+      "reason": "state=done lane=OPUS"
+    },
+    {
+      "card": "fable-run2-regate-all-prereg",
+      "reason": "state=done lane=OPUS"
+    },
+    {
+      "card": "fast-gate-persist-deferred-list",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "fast-gate-run-3dl-on-any-py-change",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "fetch-ethusdt-perp-1h-klines-funding-202",
+      "reason": "state=done lane=DSA"
+    },
+    {
+      "card": "find-more-fabio-trade-recap-videos-yt-dl",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "find-more-tom-trade-recap-videos-yt-dlp-",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "funding-carry-with-real-spot-basis-margi",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "g3-align-fab4-break-in-prefilter-minimum",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "g3-align-mal-divergence-pre-filter-pivot",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "g3-assess-and-remove-visible-chart-side-",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "g3-blindness-audit-rerun",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "g3-chart-rebuild",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "g3-intraday-loader-must-enforce-timestam",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "g3-pack-audit-rerun",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "g3-pack-code-fixes",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "g3-remove-visible-chart-cues-that-disclo",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "gap-g1-power-mde-helper",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "gap-g1-prereg-power",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "gap-g2-dax-ask-candles",
+      "reason": "state=dropped lane=SONNET"
+    },
+    {
+      "card": "gap-g4-through-ticks-flag",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=2)"
+    },
+    {
+      "card": "gap-g6-trial-ledger",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "gate-fix-1-prereg-sd-in-r",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "gate-fix-2-mean-cost-column",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "gate-fix-3-one-m-source",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "gate-fix-4-verdicts-blocked-scope",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "gate-fix-5-one-trial-ledger",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "gate-quarantine-expiry-cap",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "gate-tiers-by-path",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "gemini-lab-query-tooling",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "gpt-catalog-notstated-audit",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "gpt-confluence-card-audit",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "gpt-fable-economics-recheck",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=2)"
+    },
+    {
+      "card": "gpt-formulas-rederive",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "gpt-g3-pack-audit",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "gpt-verdict-registry-audit-a",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "gpt-verdict-registry-audit-b",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "gpt-verdict-registry-audit",
+      "reason": "state=dropped lane=CODEX"
+    },
+    {
+      "card": "gptb-bigtrade-event-table",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "gptb-candle-pattern-event-table",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "gptb-cc-msb-event-table",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "gptb-context-v2-fix1-stop-strata",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "gptb-context-v2-fix2-mde-rule",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "gptb-dev-split-guard",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "gptb-fabio-escalation-event-table",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "gptb-fabio-lvn-touch-event-table",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "gptb-forward-excursion-helper",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "gptb-malkan-rsi-event-table",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "gptb-oi-delta-event-table",
+      "reason": "state=dropped lane=CODEX"
+    },
+    {
+      "card": "gptb-rsi-divergence-event-table",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "gptb-rsi-reclaim-event-table",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "gptb-session-momentum-event-table",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "gptb-turn-of-candle-event-table",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "gptb-volume-event-table",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "gross-effect-screen-dev",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "gross-screen-gpt-audit",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "gross-screen-refuse-a-changed-data-manif",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "identify-the-coinglass-net-delta-panel-u",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "imb-filter-audit-1-map",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "imb-filter-audit-2-challenge",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "imb-filter-on-levels",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "indicator-values-multi-model-audit",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "krown-data-daily-majors",
+      "reason": "state=done lane=DSA"
+    },
+    {
+      "card": "krown-foundations-ep08-follow-through",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "krown-layer-v0-detectors",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "krown-liquidation-cascades-fold",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "krown-recall-check",
+      "reason": "state=dropped lane=SONNET"
+    },
+    {
+      "card": "krown-ta101-extract-remaining-10",
+      "reason": "state=dropped lane=SONNET"
+    },
+    {
+      "card": "kurisko-module-crossvendor-review",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "kurisko-quad-rotation-module",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "kurisko-rsi-video-search",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "kurisko-transcript-extract",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "lab-audit-fabio-ledger-frames",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "lab-audit-tom-dax-bt",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "lab-candle-close-corrected",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "lab-candle-close-dev",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "lab-candle-close-research",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "lab-crossvendor-same-vendor-gate",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "lab-crossvendor-stage",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "lab-data-pin-hash",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "lab-dax-closed-executions",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "lab-dax-holdout-boundaries",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "lab-dax-net-fee-verdict",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "lab-dax-proof-parity",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "lab-dax-readiness-gate",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=6)"
+    },
+    {
+      "card": "lab-dax-session-null",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "lab-dax-trial-identity",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "lab-dax-unavailable-flow",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=6)"
+    },
+    {
+      "card": "lab-flow-contract-hardening",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "lab-guy-defect-lab-trust-tag-and-lab-cro",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "lab-guy-defect-q76-dev-ext-power-check-s",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "lab-holdout-access-control",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "lab-machine-checks-extra",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "lab-review-gate-harden",
+      "reason": "state=dropped lane=CODEX"
+    },
+    {
+      "card": "lab-review-gate-harden2",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "lab-review-gate-stamp-writer",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "lab-ship-failed-poisons-branch",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "lab-trust-tag",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "lab-unpoison-lc-event-table",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "lab-vendor-gate-harden",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "lab-vendor-gate-harden2",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "lab-weight-enforce",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=3)"
+    },
+    {
+      "card": "lc-event-table",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "lc-ladder-dev",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "lc-levels-hold",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=3)"
+    },
+    {
+      "card": "live-loop-one-owner-guard",
+      "reason": "state=done lane=JIS-NB"
+    },
+    {
+      "card": "live-mirror-stale-published-2026-10-11-2",
+      "reason": "state=done lane=JIS-NB"
+    },
+    {
+      "card": "mal-bb-mid-engulf-g5-dev-event-study",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "malkan-captions-fetch-noauth",
+      "reason": "state=dropped lane=HAIKU"
+    },
+    {
+      "card": "malkan-extract-5star-7star",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "malkan-hindi-rows-gpt-read",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "malkan-home-fit-audit",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "malkan-ledger-parity-feasibility",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "malkan-universe-data-power",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "mts-cbp-integration-land-one-cbp-candida",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "mts-doctor",
+      "reason": "state=done lane=JIS-NB"
+    },
+    {
+      "card": "nb-live-tree-deploy-cleanup",
+      "reason": "state=done lane=JIS-NB"
+    },
+    {
+      "card": "nb-sched-register-logon",
+      "reason": "state=dropped lane=JIS-NB"
+    },
+    {
+      "card": "one-timeframe-map-for-the-whole-toolchai",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "opr-bb-mtf-center-g5",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "opr-preopen-tops-g5-dev-event-study-brea",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "opr-weekly-low-round-sweep-g5",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "orderflow-restart-map",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "outcome-labeler-30s-timeouts-apparatus",
+      "reason": "state=dropped lane=JIS-NB"
+    },
+    {
+      "card": "outcome-labeler-timeout",
+      "reason": "state=done lane=JIS-NB"
+    },
+    {
+      "card": "pit-prior-va-failed-auction-dev",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "pitchfork-layer-java-execution",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "point-in-time-factor-design",
+      "reason": "state=dropped lane=CODEX"
+    },
+    {
+      "card": "positioning-c1-longwindow-count-power",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "positioning-flowhorse-ledger-feasibility",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "positioning-home-fit-audit",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "prob-dist-layer-design-brief",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "promote-rerun-oos-m5",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "q76-dev-ext-power-check",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "q79-touch-bar-look-ahead-fix-in-levels-c",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "qriptal-call-ledger",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "qriptal-score-binance",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "recipe-pilot-1-map",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "recipe-pilot-2-challenge",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "reg-close-stale-rows",
+      "reason": "state=done lane=DSA-NB"
+    },
+    {
+      "card": "relay-two-host-standby",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "resolve-missing-orderflow-divergence-kil",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "revalidate-strategy-audit-with-counterev",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "review-ground-layer-youtube-strategy-and",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "review-imbalance-analysts-report-and-imp",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "review-statecode-backfill-gpt",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "ru1-session-planner-tasks-py-dispatch-js",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "ru10-roles-fix-stale-texts-eagle-eyes-co",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "ru2-pipeliner-desk-py-sweep-dry-run-stal",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "ru3-eagle-eyes-shot-py-bundle-evidence-p",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "ru4-mts-doctor-role-policy-lint-roles-md",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "ru5-lab-guy-zero-token-lab-pre-check-in-",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "ru6-lab-guy-content-bound-review-receipt",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "ru7-q-a-helper-operator-questions-py-pen",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "ru8-network-admin-guy-nowin-py-spawn-dia",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "ru9-artifacts-guy-artifacts-py-audit-lin",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "rv-fix-tom-ledger-date-column",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "rv01-tom-ledger-repairs",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "rv02-dax-harness-fixes",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "rv02-fix-dax-full-dev-authorization",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "rv02-fix-dax-preprocessing-isolation",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "rv02-fix-dax-producer-data-binding",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "rv02-fix-dax-rounded-rr-gate",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "rv03-tidy-safety-revalidate-and-fix-sync",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "rv04-q33-matrix-rerun",
+      "reason": "state=dropped lane=CODEX"
+    },
+    {
+      "card": "rv05-fabio-ledger-frame-pass",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "rv05-h1-date-evidence",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "rv06-live-read-claims",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "rv07-layer-tooling-revalidate",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "rv08-relay-host-tag-edge-cases",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "session-planner-add-weight-field-routine",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "ship-cpu-cleanup-scripts",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "ship-gate-fast-path-under-60s",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "shipping-proof-doc-gaps",
+      "reason": "state=done lane=HAIKU"
+    },
+    {
+      "card": "shot-py-main-root-breaks-in-worktrees-on",
+      "reason": "state=dropped lane=SONNET"
+    },
+    {
+      "card": "shot-py-store-path-nuc",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "sim-desk-charts",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "sim-desk-core",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "simulator-validation-planted-edge",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "state-machine-vwap-cvd-vs-klines",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "sv2-supervisor-tick",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "sv3-ship-order-ticket",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "sv4-builder-role-and-brief",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "sv5-supervisor-wait",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "sv6-remeasure-overhead",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "sv7-host-gate-budget",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "sv8-guard-supervisor-messages",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "t02-f1-review-allowlist-chunk-2",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "t02-f1-review-allowlist-chunk-3",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "t02-f1-review-the-132-unreviewed-look-ah",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "t02-f3-event-forcing-fixtures-for-wlow-b",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "tasks-fill-raw-card-fields",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "tc6-lenovo-git-email",
+      "reason": "state=done lane=HAIKU"
+    },
+    {
+      "card": "tom-btc-chart-lab",
+      "reason": "trial rows count mismatch (TRIALS=0, runs.jsonl=1)"
+    },
+    {
+      "card": "tom-btc-data-check",
+      "reason": "state=done lane=DSA-NUC"
+    },
+    {
+      "card": "tom-btc-event-study",
+      "reason": "state=dropped lane=CODEX"
+    },
+    {
+      "card": "tom-catalogue-merge-8-unmerged-v2-extrac",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "tom-check-set-find-frames-only-tom-trade",
+      "reason": "state=dropped lane=SONNET"
+    },
+    {
+      "card": "tom-ctlong-below-zone-cvd-aligned-audit",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "tom-ctlong-zone-lost-state",
+      "reason": "state=dropped lane=SONNET"
+    },
+    {
+      "card": "tom-cvd-aligned-direction-blind",
+      "reason": "state=dropped lane=SONNET"
+    },
+    {
+      "card": "tom-dax-backtest",
+      "reason": "state=dropped lane=SONNET"
+    },
+    {
+      "card": "tom-dax-data",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "tom-dax-naked-chart-crosscheck",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "tom-dax-recall",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "tom-direction-health-vs-sources",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "tom-encode-fade-entry-paths",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "tom-encode-fade-profile-proofs",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "tom-encode-spike-fade",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "tom-gap-rules-extract",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "tom-holdout-clean-split",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "tom-layer-v2-cost",
+      "reason": "state=done lane=OPUS"
+    },
+    {
+      "card": "tom-layer-v2-spec",
+      "reason": "state=done lane=OPUS"
+    },
+    {
+      "card": "tom-ledger-add-the-losing-first-attempts",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "tom-ledger-canonical-identities",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "tom-ledger-instrument-identity",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "tom-ledger-management-provenance",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "tom-ledger-single-trade-date-used-column",
+      "reason": "state=dropped lane=SONNET"
+    },
+    {
+      "card": "tom-ledger-time-provenance",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "tom-probe-diag-btc",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "tom-profile-parity-check",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "tom-profile-shape-parity",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "tom-trade-ledger",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "tom-v2-btc-min-stop-width",
+      "reason": "missing or invalid report path in result"
+    },
+    {
+      "card": "tom-v2-dax-dev-backtest",
+      "reason": "state=dropped lane=SONNET"
+    },
+    {
+      "card": "tom-v2-recall-fire-rate",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "tom-verdict-fee-per-market",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "trendline-causal-module",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "trendline-contract-spec",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "trendline-count-only",
+      "reason": "state=done lane=DSA"
+    },
+    {
+      "card": "trendline-g3-marks-pack",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "trendline-priority-drawing-contract",
+      "reason": "state=dropped lane=SONNET"
+    },
+    {
+      "card": "trim-builder-cwd-and-prelaunch-worktree",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "trim-claudemd-re-read-guard",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "trim-sync-start-output-cap",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "wavetrend-dev-atlas",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "wavetrend-observation-module",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "wavetrend-prereg-counts",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "wavetrend-priority-source-parity",
+      "reason": "state=done lane=SONNET"
+    },
+    {
+      "card": "wlow-bounce-shadow-emitter",
+      "reason": "state=done lane=JIS-NB"
+    },
+    {
+      "card": "zone-profile-standard-ours",
+      "reason": "state=done lane=SONNET"
+    }
+  ],
+  "note": "6 clean cards available (not 10). 8 shadows generated round-robin per codex-unstick-2026-10-23.md decision."
+}
