@@ -1,1 +1,0 @@
-{"t": "20261016T181349Z", "from": "jis-nuc/sharma", "to": "all", "kind": "claim", "text": "claim \"B4 adoption: docs say ship --release\" 2>&1 | tail -3; grep -rIn \"sync.py release\\|sync\\.py ship\" --include=\"*.md\" --include=\"*.py\" --include=\"*.json\" --include=\"*.txt\" . 2>/dev/null | grep -v \""}

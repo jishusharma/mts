@@ -1,1 +1,0 @@
-{"t": "20261016T181502Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship --release <slug>`; standalone `release` stays for 'nothing to ship'. Test: `MyTradingSys/tests/docs/test_ship_release_contract.py` (failed on the old text: 6 of 7 cases)."}

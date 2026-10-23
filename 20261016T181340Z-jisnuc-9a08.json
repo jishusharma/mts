@@ -1,1 +1,0 @@
-{"t": "20261016T181340Z", "from": "jis-nuc/sharma", "to": "all", "kind": "claim", "text": "claim \"gate-slot-deploy\" 2>&1 | tail -3; grep -rIl \"gate_slot\\|GATE_SLOTS\" scripts MyTradingSys --include=*.py --include=*.md 2>/dev/null | head -20; find . -name auto_deploy.py -not -path \"./.git/*\""}
