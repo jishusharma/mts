@@ -9,7 +9,7 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "One rule for every author (Claude, Codex, Gemini; operator 2026-10-24: keep direct ships, revert on red). When CI on fast-track goes red, the first session that sees it runs `git revert <breaking sha>` and ships within 10 minutes, then files a card for the author's lane with the failing test and log; the author re-ships the fixed change. No forward-patching on trunk. The same text goes once into the rule file all three read (CLAUDE.md, AGENTS.md, CODEX_START.md, GEMINI_START.md point to it). Case: 23426b191 (GEM-BLD-lab-planted-error-trial) added a test that read a lab file, CI red 10-23 19:37 to about 20:09, two forward fixes (794e56d12, 7facabce8) instead of one revert.",
   "id": "red-trunk-revert-10-min",
   "lane": "SONNET",
   "layers": [],
