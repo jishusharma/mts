@@ -1,6 +1,14 @@
+# NEXT SESSION (2026-10-23, Sonnet)
+
+Done this super session: tc2, tc4-desk-done-once, tc3-budget-lines, tc5-lab-lane-dedupe, ci-919cc0f (stale) shipped.
+Next: `tasks.py next` -> dsa-audit-01-data-forensics (DSA lane: `desk.py post ... --target DSA`). Data-blocked on this machine: context-conditioned-session-flow-states, kurisko-prereg-fire-counts (need JIS-NB). Weekly quota of login C was 97% at 04:20Z (reset 09:00Z); after the reset take any pending card.
+
 # NEXT_SESSION
 
 Older blocks (2026-10-18/19): `MyTradingSys/system/handoff_history/2026-10-21_next_session_trim.md`. A session reads only its own block.
+
+## Next card: tc4-desk-done-once (hand-over, super session DESKTOP-F7IU69N, 2026-10-23)
+Task: tc4-desk-done-once (`python scripts/dev/tasks.py brief tc4-desk-done-once`). Not started (turn cap hit, weekly quota 97%). Steps: `sync.py start tc4-desk-done-once`, claim; test first (two clones close one row, exactly one done commit lands; red on old desk.py); fix `finish`/`take` in scripts/dev/desk.py (lines 126-150) with a re-read inside the push retry, CAS pattern of lease._write; ship. Then tc3-budget-lines, tc5-lab-lane-dedupe. Data-blocked here: context-conditioned-session-flow-states, kurisko-prereg-fire-counts (need Dumps/metrics, F:/MTS klines).
 
 ## Next card: mid-turn-image-intake-gap (hand-over, plain pilot session on JIS-NB, 2026-10-22)
 Task: mid-turn-image-intake-gap (card on disk: `python scripts/dev/tasks.py brief mid-turn-image-intake-gap`).
