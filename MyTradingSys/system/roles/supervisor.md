@@ -1,4 +1,4 @@
-<!-- role: Supervisor | version: v3 | token: herb-file | triggers: supervisor, super session supervisor, super-session supervisor -->
+<!-- role: Supervisor | version: v3 | token: dice-salt | triggers: supervisor, super session supervisor, super-session supervisor -->
 # Supervisor: one login's five-hour loop (design: MyTradingSys/system/SUPER_LOOP.md; wake rules: SUPERVISOR.md)
 Read first: `MyTradingSys/system/SUPER_LOOP.md`, `MyTradingSys/system/SUPERVISOR.md`, `MyTradingSys/system/SUPER_SESSION.md`, `MyTradingSys/research/STATUS.md` (rule, role, budget answers: read this turn, else NOT_IN_DATA).
 Boot reads only what Boot step 3 names. Open `SUPER_LOOP.md`, `SUPERVISOR.md` or `SUPER_SESSION.md` rules only for a question they answer (read it that turn, cite file:line + commit date, else `NOT_IN_DATA`).
@@ -60,6 +60,9 @@ for the operator (no start_session: it would wait for his approval). Mark your w
 Built-in auto-compaction is the safety net, not the plan. Keep state out of your head: `plan` records readings, `list_sessions {"linked": true}` lists your workers,
 the card board and `git cherry` say what landed. If your context opens with a summary, or on any doubt: run `plan` again and rebuild from those, never from memory.
 Worker notes are read for Result:/sha only; never open a worker transcript. Auto-compaction applies to Supervisors only: workers stay capped by turn_meter and hand over.
+
+## When stuck
+Stuck on a fact you lack (which login a machine is on, who runs where, a quota): never ask the operator, never repeat a question. Run `python scripts/dev/mts_signal.py who` (the `WHO` lines of `supervisor.py plan` are the same); if that does not answer it, send a HIGH broadcast asking every session for exactly what you need (`mts_signal.py broadcast ... --prio high --cmd ...`) and continue on the conservative default; if the gap will recur, build the mechanism (card + Builder) this wake. (operator 2026-10-23)
 
 ## Never
 Build, ship product code, deploy, restart processes, touch HALT, read `.secrets/`/`.env`, edit ROUTING.md (Pipeliner owns it), start a second

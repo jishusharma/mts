@@ -14,6 +14,8 @@ Repo owned by: jishusharma/mts (GitHub user jishusharma). One repo. Never duplic
 All logins take the same queue (NEXT_SESSION.md); whichever has budget runs it. Claims are labelled by the machine's `MTS_ACCOUNT`
 (`sharma` or `awgp`, set once per machine), not by the login that is signed in; login C has no value of its own, so its claims carry the machine's value.
 
+Login roll call (operator 2026-10-23): a session's login letter is detected from the app account, not typed. `mts_signal.login()` reads only `oauthAccount.emailAddress` from `~/.claude.json` and matches it to the rows above (the full address, or the part before the @); env `MTS_LOGIN=A|B|C` overrides. Only the letter travels: every signal record carries `login`, `budget` and `supervisor.py plan` use the detected letter (a different `--login` prints `LOGIN MISMATCH`), SessionStart announces `login=<L>`, and `python scripts/dev/mts_signal.py who` lists who is logged in where (and flags `CONFLICT login <L>` when two machines claim one login). Never write an address into a signal, a commit or a log.
+
 ## CREDITS AND BUDGET (volatile: verify in the Claude app before relying on a number)
 
 | Pool | Amount | Expires | Applies to |

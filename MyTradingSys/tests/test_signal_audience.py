@@ -77,6 +77,7 @@ class LoginDedupeTest(unittest.TestCase):
     def test_no_login_set_keeps_per_host_behaviour(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop("MTS_LOGIN", None)
+            os.environ["MTS_CLAUDE_JSON"] = str(Path(__file__).parent / "no-such-claude.json")   # no login detection either
             self.assertEqual(mts_signal.own_state([self.B2, self.ACK], self.B2), "none")
 
 

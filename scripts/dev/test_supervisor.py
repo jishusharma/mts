@@ -764,3 +764,32 @@ def test_garbled_marker_files_never_kill_the_watcher_or_the_plan(tmp_path):
     (home / "idle_JIS-NB.last").write_bytes(b"\xff\xfe")
     assert S._woke_on("B", home) == ""
     assert S._idle_nag_due([("JIS-NB", ["B"], 1)], T0, home) == [("JIS-NB", ["B"], 1)]
+
+
+def test_who_block_caps_at_six_and_prefixes_who(monkeypatch):
+    import mts_signal
+    at = mts_signal.now()
+    rows = [{"t": mts_signal.stamp(at - timedelta(minutes=i)), "from": "h%d/A" % i, "login": "A", "to": "all", "kind": "note", "text": "start x"}
+            for i in range(9)]
+    out = S.who_block(rows)
+    assert len(out) == 6 and all(x.startswith("WHO login A h") for x in out)
+    assert S.who_block([]) == []
+
+
+def test_plan_login_mismatch_uses_detected_letter(monkeypatch, tmp_path, capsys):
+    import mts_signal
+    j = tmp_path / "claude.json"
+    md = tmp_path / "acc.md"
+    md.write_text("| A: alice.fake@example.test | x |\n", encoding="utf-8")
+    j.write_text(json.dumps({"oauthAccount": {"emailAddress": "alice.fake@example.test"}}), encoding="utf-8")
+    monkeypatch.delenv("MTS_LOGIN", raising=False)
+    monkeypatch.setenv("MTS_CLAUDE_JSON", str(j))
+    monkeypatch.setenv("MTS_LOGINS_MD", str(md))
+    mts_signal._LOGIN_CACHE.clear()
+    seen = {}
+    monkeypatch.setattr(S, "plan", lambda repo, login, *a, **k: (seen.setdefault("login", login), (["PLAN"], {}))[1])
+    rc = S.main(["plan", "--login", "C", "--five", "1", "--five-reset", "2026-10-23T09:00Z", "--week", "2",
+                 "--week-reset", "2026-10-27T09:00Z", "--no-send", "--no-fetch"])
+    assert rc == 0 and seen["login"] == "A"
+    assert "LOGIN MISMATCH: you passed C, this app is logged in as A; using A" in capsys.readouterr().out
+    mts_signal._LOGIN_CACHE.clear()
