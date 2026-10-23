@@ -1,5 +1,7 @@
 # DEVICES
 
+**Station** = one device with one login (e.g. JIS-NUC/A); operator 2026-10-23, d-station-term. Per-device chores (worktrees) are done once per device.
+
 > Scheduled tasks: none are allowed on any device (RETIRED 2026-10-17, see SCHEDULING_POLICY.md); mentions below of MTS-* tasks, dispatcher, AutoDeploy, Supervisor are the old design.
 
 Reference for every machine this project runs on: hostnames, addresses, disks, shares, and the rules that touch them. Read it before touching network
