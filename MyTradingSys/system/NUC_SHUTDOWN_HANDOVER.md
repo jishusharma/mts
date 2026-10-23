@@ -4,7 +4,9 @@ Brief for the card `nuc-unexpected-shutdown` (queued first in NEXT_SESSION.md). 
 
 ## Applied so far
 - 2026-10-23, step 1 (first half): display-off on AC set to Never (`powercfg /change monitor-timeout-ac 0`, High performance scheme). Before: AC 0x258 (600 s), DC 0xF0. After: AC 0, DC 0xF0. Last "Idle Timeout" event 506 was 2026-10-23 02:49:37, before the change; none at the 12:06 check (the NUC was in use, so not yet proof). Undo: `powercfg /change monitor-timeout-ac 10`.
-- Not done: Fast Startup off (needs admin), steps 2-7.
+- 2026-10-23, step 1 (second half, operator in admin shell): Fast Startup off, HiberbootEnabled = 0 (reg query confirms 0x0). Takes effect at the next shutdown.
+- 2026-10-23: Defender exclusions `-Check` = 0 missing; b-544817 acked done.
+- Not done: steps 2-7 (BIOS, CR2032, UPS, SSD firmware, BIOS update). Check event 506 after an idle night.
 
 ## Operator facts (2026-10-23)
 - BIOS "After Power Failure = Power On" (setup-nuc.ps1 step b): NOT done.
