@@ -1,0 +1,1 @@
+{"t": "20261023T044027Z", "from": "vm/?", "to": "all", "kind": "done", "text": "ship Result: test_mts_signal 29/29 green; the new test fails on the old helper (it returned the claim text).", "sid": "148671909c"}
