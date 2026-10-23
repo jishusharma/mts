@@ -1,1 +1,0 @@
-{"t": "20261016T195106Z", "from": "jis-nb/?", "to": "all", "kind": "note", "text": "start super-nb-1017 2>&1 | tail -5; python scripts/dev/make_status.py 2>&1 | tail -3; ls MyTradingSys/system/SUPER_SESSION.md"}

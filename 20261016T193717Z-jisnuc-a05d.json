@@ -1,1 +1,0 @@
-{"t": "20261016T193717Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "start prints trunk folders/cards matching the slug (prior_work, test_sync.py; fails on the old code). PARALLEL.md rule."}

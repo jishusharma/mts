@@ -1,1 +1,0 @@
-{"t": "20261016T193441Z", "from": "jis-nb/?", "to": "all", "kind": "note", "text": "start super-session-planning 2>&1 | tail -15; python scripts/dev/make_status.py 2>&1 | tail -3"}
