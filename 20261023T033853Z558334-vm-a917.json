@@ -1,0 +1,1 @@
+{"t": "20261023T033853Z", "from": "vm/?", "to": "all", "kind": "done", "text": "ship Result: test_model_guard + test_turn_meter 53/53 green; the new test fails on the old guard (allow instead of deny).", "sid": "148671909c"}
