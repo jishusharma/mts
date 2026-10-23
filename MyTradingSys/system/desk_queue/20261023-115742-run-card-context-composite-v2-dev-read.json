@@ -1,0 +1,10 @@
+{
+  "done_when": "RESULT_V2.md has one verdict word, VERDICTS.csv row, ship gate green",
+  "from": "JIS-NB",
+  "id": "20261023-115742-run-card-context-composite-v2-dev-read",
+  "need": "Needs F:/MTS raw funding + frame cache (laptop has none). Follow tasks.py brief context-composite-v2-dev-read to the end. [re-routed from DSA by Pipeliner 2026-10-23: DSA not taking rows; old row 20261023-055453-run-card-context-composite-v2-dev-read]",
+  "posted": "2026-10-23T11:57:42Z",
+  "status": "pending",
+  "target": "JIS-NUC",
+  "title": "Run card context-composite-v2-dev-read"
+}
