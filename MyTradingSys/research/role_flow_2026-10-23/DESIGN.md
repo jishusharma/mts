@@ -19,7 +19,24 @@ Supervisor verifies. Pipeliner is a separate singleton session with a trunk leas
 | 4 | any role -> owner | Only Admin_Guy (guardrail 3) and Thinker ("From choice to action") say "file a card"; the other roles list only "Never", and none says what to do when the operator wants out-of-role work done now. One doctor session built, triaged and fixed a machine itself. | roles/admin_guy.md:13, roles/thinker.md:46-54; grep of the rest: no hand-off rule |
 | 5 | hooks | Role identity differs per hook: `role_loader` counts a fallback-picked role, `model_guard.role_session` only an explicit `You are X.` line; a wrong fallback is re-injected after every compaction. | role_loader.py:478-485, model_guard.py:417-425 |
 | 6 | size | ~130 KB of coordination docs (SUPER_SESSION 17k, TRAFFIC_CONTROLLER 17k, ROUTING 14k, TASK_REFINEMENT 12k, SUPER_LOOP 11k, SUPERVISOR 10k, WORKERS 6k, roles ~45k) for 10 roles, 3 queues (cards, desk, signals). | file sizes 2026-10-23 |
-EVIDENCE_TABLE
+
+History 2026-10-13..23 (Sonnet scan of 4,232 trunk commits, BUGS.md B150-B200, OPERATOR_DECISIONS, review_2026-10-22; shas spot-checked):
+| Failure mode, as it recurred | Seen | Example fixes | Still open |
+|---|---|---|---|
+| Click cards / Allow prompts for asked work | 8+ commits | 779f909a2, f47d4cae7 (model_guard denials) | B200: the app shows "Allow once" even in Bypass; a hook can only deny |
+| Replies end "say go"; asked work lost | 3 | 8b17eb1f6 (offer_guard), a8d4fb2de | none known |
+| Workers via start_session block (60.6 min waits) or are refused; Agent fallback dies with its Supervisor | 6+ | 59882977, 779f909a2 | Agent-dies gap is a card only |
+| Wrong role loads (idea* matched IdeaProjects; fallback guesses) | 5+ | 8b4ea32a2, f3ac1d6c0 | this session: "revalidat" re-injects Lab_Guy after each compaction |
+| Stale role text / hooks from an old checkout | 6+ | 5e716d758, eb0a7a216 | B199 |
+| Prose fixes trip doc caps and lint, CI goes red | 93 commits | 52d9fb9ef (cap at edit time) | ad64537c5, 67c0aaf25 on 10-23 |
+| Coordination overhead: 61% of 2,257 commits; 9.8 Supervisor turns per worker spawned | structural | ship median 3-23 s for docs | turns per spawn never re-measured |
+| Cards stale or mis-ranked; ask signals unread | 10+ | a5bb9d7f6 (archive 339) | B194; refine trigger (row 2 above) |
+| Hand-over drops state | 4+ | | card only |
+
+Root cause the history shows: each failure was answered with more prose plus a hook that denies after the fact; the prose then broke size
+caps (fixes failed 2-3 times), and every hop between roles (Supervisor, Planner Agent, worker, verifier) is a cold start of 52-73k tokens.
+Coordination text is 275 KB counted wide (25 system docs 221 KB + 9 role files 54 KB; the 130 KB above is the core 8). SUPER_SESSION.md was
+edited 61 times in 7 days, role files 63. Option A removes hops and text instead of adding them.
 
 ## 3. Principle
 **The card board is the only hand-off.** A role never "asks" another role by message. It moves a card to a state; the owner of that state
