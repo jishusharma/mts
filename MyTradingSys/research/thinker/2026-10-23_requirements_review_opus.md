@@ -73,7 +73,7 @@ is never stopped as "unattended"; (R5) roles load; (R6) no re-asking: when stuck
 | # | Fix | Requirement | Commit | Evidence |
 |---|---|---|---|---|
 | 1 | role_line reads only the first line behind the wrappers; events never name a role; strict end for the Supervisor exemption; turn_meter reads only the first real user entry, never replaces another role, soft import; role_loader keeps its raw 300-char scan plus the first cleaned sentence | R3, R4, R5 | 26aca7f3b | 4 new tests fail on 9f0cb459c. Replay of 742 transcripts vs 9f0cb459c: 6 changed decisions, all explained below. Sonnet diff review: 7 findings, 1-5 fixed with tests, 6 rebutted, 7 intended. |
-| 2 | trunk_lag: a main checkout that cannot fast-forward still takes trunk's copy of each changed hook file (scripts/dev, .claude/settings.json) that has no local edit of its own; deletions and local edits left alone | R1, R4, R5 (hooks lagging made every fix late) | 436efe562 | New test fails on the old code (note lacked the update; files stayed old). Read-only dry run on the real JIS-NB main checkout: takes role_line, role_loader, turn_meter, run_extra_tests; leaves model_guard (already trunk) and SUPERVISOR_LOG.md. Sonnet diff review: pending at commit time, see follow-up commit if any. |
+| 2 | trunk_lag: a main checkout that cannot fast-forward still takes trunk's copy of each changed hook file (scripts/dev, .claude/settings.json) that has no local edit of its own; deletions and local edits left alone | R1, R4, R5 (hooks lagging made every fix late) | 436efe562, b4f6641bd | New test fails on the old code (note lacked the update; files stayed old). Read-only dry run on the real JIS-NB main checkout: takes role_line, role_loader, turn_meter, run_extra_tests; leaves model_guard (already trunk) and SUPERVISOR_LOG.md. Sonnet diff review of 436efe562: 2 bugs (a taken file never re-synced; taken files blocked later fast-forwards), 2 risks (0.3 s per file; paths with spaces), 1 nit: all fixed in b4f6641bd with fail-first tests. |
 | 3 | model_guard: a role session may start a session on his typed turn after its start brief (no word test); a /compact echo, an interrupt note, a compact summary or a compaction since his message do not count as his turn | R1, R2 | 16cabc477 | New test fails on 3d54646f6/e61c851df code. Replay of 787 transcripts: 14 decisions deny -> allow, each a role session whose newest entry is his typed ask (e.g. "start a super session for those", "i want to start a new haiku worker", "okay, let us pick up a small task"); the 10 /compact-echo cases of the first draft were removed. Sonnet diff review: 5 findings; 1, 3, 5 fixed with tests, 2 rebutted (mid-turn typed message counts as his turn, from e61c851df; residual risk in section 3), 4 nit. |
 | 4 | CI runs on `MyTradingSys/system/roles/**` | R3 | c218f9b2f | New test fails on the old ci.yml. |
 
@@ -86,7 +86,7 @@ equal to the independent truth (line starting "You are Supervisor") of the earli
 
 ## 5. Gate (d)
 
-`run_all_tests.py --quick`: pending at commit time; recorded in the follow-up commit..
+`run_all_tests.py --quick`: the background run printed nothing after 1 h+ (no result captured); `sync.py ship` runs the smoke gate on the shipped tree, and the touched suites pass: test_turn_meter + test_role_loader + test_model_guard + test_trunk_lag..
 
 ## 6. Still not fixed
 
