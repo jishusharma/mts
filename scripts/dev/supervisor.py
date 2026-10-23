@@ -852,6 +852,8 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
         if lane_owner(live, NUC) == login and ctx.get("codex_ready"):
             L.append(f"NOTE GPT lab: {ctx['codex_ready']} CODEX card(s) ready; owner unknown this wake")
         me_codex = me_any = False
+    if ctx.get("refine_raw") and claude_ok:
+        L.append(f"RUN Session_Planner (Agent, sonnet): refine {ctx['refine_raw']} raw cards")
     cx = ctx.get("codex_ready", 0)
     if me_codex and cx:
         if h == NUC:
@@ -1047,6 +1049,7 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
         cards, reg = tasks.load_all(repo), tasks.registry(repo)
         ready = [c for c in cards if c.get("state") == "ready" and not tasks.problems(c, cards, reg, repo)]
         ctx["codex_ready"] = sum(1 for c in ready if str(c.get("lane", "")).upper() == "CODEX")
+        ctx["refine_raw"] = len(tasks.stale_raw(cards))
         ctx["gemini_ready"] = sum(1 for c in ready if str(c.get("vendor", "")).lower() == "gemini")
         import desk
         rows = desk.trunk_rows(repo, TRUNK_REF)

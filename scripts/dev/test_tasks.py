@@ -6,6 +6,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -217,26 +218,38 @@ class QueueTest(unittest.TestCase):
         self.assertEqual(rc, 1)
         self.assertEqual(T.get(self.repo, "B1")["state"], "refined")
 
-    def test_status_line_refine_needed_only_when_work_waits_and_buffer_low(self):
-        T.save(self.repo, good("B1", state="raw"))
-        self.assertTrue(T.status_line(T.load_all(self.repo)).startswith("REFINE_NEEDED"))
-        for i in range(3):
+    def test_one_raw_card_two_hours_old_with_five_ready_is_refine_needed(self):
+        made = datetime(2026, 10, 23, 10, 0, tzinfo=timezone.utc)
+        T.save(self.repo, good("B1", state="raw", created="2026-10-23T10:00:00Z"))
+        for i in range(5):
+            T.save(self.repo, good(f"R{i}"))
+        cards = T.load_all(self.repo)
+        self.assertTrue(T.status_line(cards, made + timedelta(hours=2)).startswith("REFINE_NEEDED"))
+        self.assertTrue(T.status_line(cards, made + timedelta(minutes=30)).startswith("REFINE_OK"))   # too young
+
+    def test_no_raw_cards_is_refine_ok(self):
+        for i in range(5):
             T.save(self.repo, good(f"R{i}"))
         self.assertTrue(T.status_line(T.load_all(self.repo)).startswith("REFINE_OK"))
-        for i in range(3):
+        for i in range(5):
             (self.repo / T.DIR / f"R{i}.json").unlink()
-        (self.repo / T.DIR / "B1.json").unlink()
-        self.assertTrue(T.status_line(T.load_all(self.repo)).startswith("REFINE_OK"))   # nothing waiting
+        self.assertTrue(T.status_line(T.load_all(self.repo)).startswith("REFINE_OK"))   # nothing at all
+
+    def test_parked_raw_card_does_not_trigger_refine_needed(self):
+        T.save(self.repo, good("B1", state="raw", created="2020-01-01T00:00:00Z", asks="Which year?"))
+        line = T.status_line(T.load_all(self.repo))
+        self.assertTrue(line.startswith("REFINE_OK"), line)
+        self.assertIn("parked=1", line)
 
     def test_ready_run_lane_cards_do_not_fill_the_builder_buffer(self):
-        T.save(self.repo, good("B1", state="raw"))
+        T.save(self.repo, good("B1", state="raw", created="2020-01-01T00:00:00Z"))
         for i in range(3):
             T.save(self.repo, good(f"D{i}", lane="DSA-NB"))
         self.assertTrue(T.status_line(T.load_all(self.repo)).startswith("REFINE_NEEDED"))
 
     def test_parked_cards_do_not_keep_the_refiner_firing(self):
         """The brake: a card the refiner cannot finish must not start a session every dispatcher tick."""
-        T.save(self.repo, good("B1", state="raw", goal=""))
+        T.save(self.repo, good("B1", state="raw", goal="", created="2020-01-01T00:00:00Z"))
         self.assertTrue(T.status_line(T.load_all(self.repo)).startswith("REFINE_NEEDED"))
         self.run_cli("tried", "B1")
         self.assertTrue(T.status_line(T.load_all(self.repo)).startswith("REFINE_NEEDED"))     # 1 of 2 tries used

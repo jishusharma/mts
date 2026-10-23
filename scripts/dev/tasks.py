@@ -66,6 +66,7 @@ WORKERS = ("agent", "session")                   # WORKERS.md: who runs the card
 AGENT_MAX_TURNS = 15                             # WORKERS.md: a one-use Agent only for <= 15 turns and size S
 SESSION_MAX_TURNS = 40                           # RELAY.md hand-over cap: a card needing more is split
 MAX_TRIES = 2                                    # refiner attempts per card; then it is parked, not retried every tick
+REFINE_AGE_H = 1                                 # a raw card older than this triggers REFINE_NEEDED
 BUFFER = 3                                       # ready cards to keep in stock before the refiner stops
 MAX_BRIEF = 30                                   # RELAY.md Task list standard: block <= 30 lines
 MAX_FIELD = 400                                  # chars per text field: a card is a prompt, not an essay
@@ -514,17 +515,30 @@ def refinable(card):
     return card["state"] in ("raw", "refined") and not card.get("asks") and card.get("refine_tries", 0) < MAX_TRIES
 
 
-def status_line(cards):
-    """REFINE_NEEDED only while work the refiner can actually do waits; parked cards (asked the operator, or tried
-    MAX_TRIES times) never keep it on, so a stuck card cannot start a session every tick."""
+def stale_raw(cards, at=None):
+    """Refinable raw cards older than REFINE_AGE_H (or with no readable date). Only this 1 h age rule: "created since the
+    last plan run" is not kept anywhere, so it is not used."""
+    at = at or datetime.now(timezone.utc)
+    out = []
+    for c in cards:
+        if c["state"] == "raw" and refinable(c):
+            t = _created(c)
+            if t is None or (at - t).total_seconds() > REFINE_AGE_H * 3600:
+                out.append(c)
+    return out
+
+
+def status_line(cards, at=None):
+    """REFINE_NEEDED while any refinable raw card is older than REFINE_AGE_H, however full the ready stock is. Parked
+    cards (asked the operator, or tried MAX_TRIES times) never count, so a stuck card cannot start a session every tick."""
     n = counts(cards)
     todo = sum(refinable(c) for c in cards)
     parked = n["raw"] + n["refined"] - todo
-    # The buffer is for relay builders: ready run-lane cards (DSA, JIS-NB) cannot be taken by them, so they do not count
-    # (2026-10-11: three ready DSA cards kept REFINE_OK while 17 cards waited and builders had one task).
+    # ready counts only relay-builder lanes: ready run-lane cards (DSA, JIS-NB) cannot be taken by them.
     ready = sum(c["state"] == "ready" and c.get("lane") in CODE_LANES for c in cards)
-    tail = f"refinable={todo} parked={parked} ready={n['ready']} builder_ready={ready} buffer={BUFFER}"
-    return ("REFINE_NEEDED " if todo > 0 and ready < BUFFER else "REFINE_OK ") + tail
+    stale = len(stale_raw(cards, at))
+    tail = f"refinable={todo} stale_raw={stale} parked={parked} ready={n['ready']} builder_ready={ready} buffer={BUFFER}"
+    return ("REFINE_NEEDED " if stale else "REFINE_OK ") + tail
 
 
 def summary(repo=REPO):
