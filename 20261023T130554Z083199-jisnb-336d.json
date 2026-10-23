@@ -1,0 +1,1 @@
+{"t": "20261023T130554Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "login detect shipped: run git merge --ff-only origin/fast-track in your main checkout, then mts_signal.py who", "login": "C", "id": "b-79ee5e", "prio": "high", "cmd": "git -C <main checkout> merge --ff-only origin/fast-track"}
