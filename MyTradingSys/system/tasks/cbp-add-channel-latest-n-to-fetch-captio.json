@@ -4,32 +4,48 @@
   "commands": [],
   "created": "2026-10-22T21:48:03Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "test_fetch_captions_channel passes (failed before change); CBP wrapper runs; cbp_v2 docs/scripts no longer read inbox; both repos committed",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "fetch_captions_timed.py takes --channel @handle --latest N; CBP fetch_latest.ps1 becomes a wrapper calling it, transcripts land in raw_transcripts_canonical keyed by video id",
   "id": "cbp-add-channel-latest-n-to-fetch-captio",
   "kind": "build",
   "lane": "SONNET",
-  "layers": [],
+  "latest": [],
+  "layers": [
+    "krown"
+  ],
   "live_path": false,
   "mutation_check": "",
   "note": "OPERATOR QUOTE: process earthing end to end (d-cbp-a2-end-to-end). Plan: MyTradingSys/research/thinker/2026-10-23_cbp_core_vs_adopt.md",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-22T22:19:35Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/fetch_captions_timed.py",
+    "scripts/dev/test_fetch_captions_channel.py",
+    ".gitignore",
+    "F:/CryptoScrapper/cbp_v2"
+  ],
+  "scope_out": [
+    "scripts/dev/verify_extract_quotes.py"
+  ],
+  "scope_sha": "",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "write failing test",
+    "add --channel/--latest",
+    "CBP wrapper + docs, commit in CBP repo"
+  ],
+  "tests": "scripts/dev/test_fetch_captions_channel.py (mocked yt_dlp, no network; fails on pre-change code)",
   "title": "CBP: add --channel --latest N to fetch_captions_timed.py, CBP writes into raw_transcripts_canonical, delete fetch_latest.ps1 and inbox",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }

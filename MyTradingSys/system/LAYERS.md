@@ -214,6 +214,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/krown_ta101_2026-10-13/reflexivity_log.md`; `MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md`; `MyTradingSys/options/research/KROWN_FREE_VS_PAID.md`
 - Roadmap: `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `cbp-add-channel-latest-n-to-fetch-captio` ready p2 SONNET: CBP: add --channel --latest N to fetch_captions_timed.py, CBP writes into raw_transcripts_canonical, delete fe
   - `confluence-s0-registry` raw p2 HAIKU: Confluence S0: Krown registry refresh
   - `confluence-s1-context-counts` raw p2 SONNET: Confluence S1: Krown context table and counts pass
   - `confluence-s2-s6-chain` raw p2 SONNET: Confluence S2-S6: Fable design, context read, DEV trials, verdict
