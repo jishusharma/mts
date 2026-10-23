@@ -33,6 +33,17 @@ def main():
           'expected':{'name':name,'value':float(value),'unit':unit}}
         if family: rows[ident]['formula_case']=ident
 
+    def add_synthetic(ident, name, inputs, value, unit='number', family=True):
+        rows[ident]={'id':ident,'synthetic':True,
+          'inputs':inputs,
+          'expected':{'name':name,'value':bool(value) if isinstance(value,bool) else float(value),'unit':unit}}
+        if family: rows[ident]['formula_case']=ident
+
+    def add_na(ident, quote, reason, family=True):
+        rows[ident]={'id':ident,'not_applicable':True,'quote':quote,'reason':reason,
+          'expected':{'name':'NOT_APPLICABLE','value':0.0,'unit':'none'}}
+        if family: rows[ident]['formula_case']=ident
+
     # F01: Wilder RSI, SMA-seeded from 14 consecutive close-to-close changes.
     best=None
     for end in range(14,len(c)):
@@ -71,9 +82,7 @@ def main():
             val=100 if z==0 and g>0 else 50 if z==0 else 100-100/(1+g/z)
         add(f'F{i:02}',ix,name,inp,val)
 
-    # The 8 execution subcases are each computed from their catalog equation.
-    # Use tape prices bracketing the reviewed arithmetic target; solve sizes from the
-    # inverse-contract harmonic-mean equation in FORMULAS.md (not from a producer).
+    # Section 11: Execution math (F11.1 - F11.8)
     near=sorted(range(len(c)),key=lambda j:abs(float(c[j])-62752.0))
     E=next(float(c[j]) for j in near if c[j]>62751.9875)
     P=next(float(c[j]) for j in near if c[j]<62751.9875)
@@ -91,59 +100,69 @@ def main():
       ('USD notional',{'size':20.0,'mark_price':None},20.0)]
     for n,(name,inp,val) in enumerate(cases,1): add(f'F11.{n}',[1],name,inp,val,family=True)
 
-    # Explicit distinct checks for each volume-profile, trendline, WaveTrend and Krown sub-id.
-    # Where a catalog detector requires a long contextual event, this is an arithmetic primitive
-    # from its stated definition, with all cited tape inputs retained.
-    tp=(h[0]+l[0]+c[0])/3; width=10.0
-    vp=[('bin index',float(np.floor(tp/width)),{'typical_price':float(tp),'bin_width':width}),
-        ('bin lower edge',float(np.floor(tp/width)*width),{'typical_price':float(tp),'bin_width':width}),
-        ('bin upper edge',float((np.floor(tp/width)+1)*width),{'typical_price':float(tp),'bin_width':width}),
-        ('typical price',float(tp),{'high':float(h[0]),'low':float(l[0]),'close':float(c[0])}),
-        ('bar volume assignment',float(v[0]),{'volume':float(v[0]),'bin_index':int(np.floor(tp/width))}),
-        ('two-bar profile volume',float(v[0]+v[1]),{'volumes':v[:2].astype(float).tolist()}),
-        ('profile bin share',float(v[0]/(v[0]+v[1])),{'bin_volume':float(v[0]),'total_volume':float(v[0]+v[1])})]
-    for j,(name,val,inp) in enumerate(vp,1): add(f'F18.{j}',[0,1],name,inp,val,family=True)
-    trend=[('strict low pivot test',bool(l[1]<l[0] and l[1]<l[2]),{'lows':l[:3].astype(float).tolist(),'k':1}),
-      ('linear interpolation',float(l[1]),{'anchors':[[1,float(l[1])],[2,float(l[2])]],'query_index':1}),
-      ('log interpolation',float(np.exp(np.log(l[1]))),{'anchor_price':float(l[1])}),
-      ('line slope',float(l[1]-l[0]),{'prices':l[:2].astype(float).tolist()}),
-      ('normalized slope',float((l[1]-l[0])/abs(l[0])),{'prices':l[:2].astype(float).tolist(),'atr':abs(float(l[0]))}),
-      ('touch threshold',float(.25*abs(l[0])),{'atr':abs(float(l[0])),'multiplier':.25}),
-      ('break threshold',float(.1*abs(l[0])),{'atr':abs(float(l[0])),'multiplier':.1}),
-      ('third anchor tolerance',float(.25*abs(l[0])),{'atr':abs(float(l[0])),'multiplier':.25})]
-    for j,(name,val,inp) in enumerate(trend,1): add(f'F19.{j}',[0,1,2],name,inp,val,family=True)
-    wt=[('ap',float(tp),{'high':float(h[0]),'low':float(l[0]),'close':float(c[0])}),
-        ('esa warmup',None,{'input_count':1,'length':10,'output':'unavailable'}),
-        ('ci guard',None,{'d':0.0,'threshold':1e-9,'output':'unavailable when d is too small'}),
-        ('wt2 warmup',None,{'valid_wt1_count':1,'length':4,'output':'unavailable'})]
-    for j,(name,val,inp) in enumerate(wt,1): add(f'F20.{j}',[0],name,inp,0.0 if val is None else val,family=True)
-    # Nine catalog primitive cases, computed on real adjacent bars.
-    first_delta=np.diff(c[:15]); first_gain=np.maximum(first_delta,0).mean(); first_loss=np.maximum(-first_delta,0).mean()
-    first_rsi=100 if first_loss==0 and first_gain>0 else 50 if first_loss==0 else 100-100/(1+first_gain/first_loss)
-    kr=[('volume ratio',float(v[1]/v[0]),{'current_volume':float(v[1]),'prior_volumes':[float(v[0])]}),
-        ('wick zone low',float(min(c[0],l[0])),{'close':float(c[0]),'wick_extreme':float(l[0])}),
-        ('wick zone high',float(max(c[0],l[0])),{'close':float(c[0]),'wick_extreme':float(l[0])}),
-        ('strict engulf test',bool(l[1]<l[0] and c[1]>h[0]),{'low':float(l[1]),'prior_low':float(l[0]),'close':float(c[1]),'prior_high':float(h[0])}),
-        ('candle body',float(abs(c[0]-o[0])),{'open':float(o[0]),'close':float(c[0])}),
-        ('RSI seed',first_rsi,{'period':14,'closes':c[:15].astype(float).tolist()}),
-        ('range position',float((c[1]-min(l[:2]))/(max(h[:2])-min(l[:2]))),{'close':float(c[1]),'highs':h[:2].astype(float).tolist(),'lows':l[:2].astype(float).tolist()}),
-        ('range width',float(max(h[:2])-min(l[:2])),{'highs':h[:2].astype(float).tolist(),'lows':l[:2].astype(float).tolist()}),
-        ('prior-volume mean ratio',float(v[1]/v[0]),{'current_volume':float(v[1]),'prior_volumes':[float(v[0])]})]
-    for j,(name,val,inp) in enumerate(kr,1): add(f'F21.{j}',[0,1],name,inp,val,family=True)
+    # Section 18: Volume profile (F18.1 - F18.7)
+    add_synthetic('F18.1', 'profile POC price', {'w': 1.0, 'bars': [[0.0, 2.0, 6.0], [1.0, 3.0, 4.0], [1.0, 2.0, 10.0]]}, 1.5)
+    add_synthetic('F18.2', 'fractal pivot high test', {'n': 1, 'highs': [1.0, 3.0, 2.0, 5.0, 4.0, 1.0, 2.0], 'test_index': 1}, True, unit='boolean')
+    add_synthetic('F18.3', 'meaningful pivot size filter', {'price_p': 110.0, 'price_q': 100.0, 'k': 1.0, 'atr': 5.0}, True, unit='boolean')
+    add_na('F18.4', 'levels refreshed on a 15-minute grid... Developing; need >= 12 bars... Each profile contributes three levels: POC, VAH, VAL',
+           'Defines bar window definitions and grid intervals for profile families; contains no standalone formula or worked numerical calculation.')
+    add_synthetic('F18.5', 'touch outcome net R', {'side': 1, 'L': 100.0, 'exit': 102.0, 'R': 2.0, 'fee_in': 0.0005, 'fee_out': 0.0005}, 0.9495)
+    add_synthetic('F18.6', 'placebo level', {'L': 100.0, 'R_ref': 2.0, 'refresh_index': 4}, 101.0)
+    add_synthetic('F18.7', 'day-block bootstrap mean', {'day_events': [[1.0, 3.0], [-2.0]], 'resample_indices': [0, 1]}, 2.0 / 3.0)
+
+    # Section 19: Trend-lines (F19.1 - F19.8)
+    add_synthetic('F19.1', 'strict pivot low test', {'k': 3, 'lows': [9.0, 8.0, 7.0, 5.0, 6.0, 7.0, 8.0], 'test_index': 3}, True, unit='boolean')
+    add_synthetic('F19.2', 'trendline anchor interpolation', {'ia': 10, 'pa': 100.0, 'ib': 20, 'pb': 110.0, 't': 25, 'geometry': 'linear'}, 115.0)
+    add_synthetic('F19.3', 'contract ATR', {'ranges': [2.0, 2.5, 2.0], 'length': 3}, 6.5 / 3.0)
+    add_synthetic('F19.4', 'slope atr', {'pa': 100.0, 'pb': 110.0, 'dt': 10, 'atr': 4.0}, 0.25)
+    add_synthetic('F19.5', 'touch tolerance test', {'L': 115.0, 'atr': 4.0, 'mult': 0.25, 'low': 115.8}, True, unit='boolean')
+    add_synthetic('F19.6', 'episode reset test', {'L': 115.0, 'atr': 4.0, 'mult': 1.0, 'low': 120.0}, True, unit='boolean')
+    add_synthetic('F19.7', 'volume anchor test ratio', {'V': 300.0, 'M': 140.0}, 300.0 / 140.0)
+    add_synthetic('F19.8', 'third anchor tolerance test', {'L': 120.0, 'price': 119.5, 'atr': 4.0, 'mult': 0.25}, True, unit='boolean')
+
+    # Section 20: WaveTrend (F20.1 - F20.4)
+    add('F20.1', [0], 'WaveTrend ap', {'high': float(h[0]), 'low': float(l[0]), 'close': float(c[0])}, (float(h[0]) + float(l[0]) + float(c[0])) / 3.0, family=True)
+    add_na('F20.2', 'EMA seeded with the first valid source value; output used only after WARMUP=200 bars... Zones from wt1: ob2 >= 60, ob1 >= 53... available_at = bar_open + timeframe',
+           'Conventions and event definitions without an inline numerical formula.')
+    add_synthetic('F20.3', 'WaveTrend hand ci', {'ap': [10.0, 12.0], 'n': 10}, 5.5 / 0.015)
+    add_na('F20.4', 'wavetrend/golden_wt_btcusdt_1h_dev_2022-01.csv: 400 BTCUSDT 1h bars... Compared at 1e-9 (OURS) after bar 200',
+           'Reference golden CSV comparison specification; no inline formula computation.')
+
+    # Section 21: Krown trading rules (F21.1 - F21.9)
+    add_synthetic('F21.1', 'wick zone high', {'close': 104.0, 'wick_extreme': 90.0}, 104.0)
+    add_synthetic('F21.2', 'prior-volume mean ratio', {'current_volume': 250.0, 'prior_mean': 100.0}, 2.5)
+    add_synthetic('F21.3', 'strict bullish engulf test', {'low': 99.0, 'prior_low': 100.0, 'close': 106.0, 'prior_high': 105.0}, True, unit='boolean')
+    add_synthetic('F21.4', 'dominant low level', {'bars': [[10,8,9],[12,9,11],[11,7,8],[14,9,13],[13,10,12],[12,8,9],[17,11,16],[15,12,13],[13,6,7.5]], 'k': 1, 'query_t': 7}, 8.0)
+    add_synthetic('F21.5', 'BBWP percentile', {'basis': 2, 'lookback': 3, 'closes': [10.0, 10.0, 12.0, 11.0, 15.0, 15.0, 14.0], 't': 4}, 100.0, unit='percent')
+    add_synthetic('F21.6', 'EMA seed step', {'n': 5, 'closes': [1.0, 2.0, 3.0, 4.0, 5.0, 6.0]}, 4.0)
+    add_synthetic('F21.7', 'Wilder RSI smoothed', {'period': 2, 'closes': [10.0, 11.0, 10.0, 12.0]}, 100.0 - 100.0 / 6.0, unit='percent')
+    add_synthetic('F21.8', 'range position', {'highs': [10.0, 11.0, 10.5, 11.0], 'lows': [9.0, 9.5, 9.0, 9.5], 'close': 9.4}, 0.2)
+    add_synthetic('F21.9', 'top signal count', {'window': 3, 'signals': {'candle': [5], 'volume': [6], 'bbwp': [7], 'momentum': []}, 't': 7}, 3.0, unit='count')
+
     (HERE/'examples.json').write_text(json.dumps(rows,indent=2,sort_keys=True,allow_nan=False)+'\n',encoding='utf-8',newline='\n')
+
     # Replace each existing worked-example row from the machine-readable generated record.
     import re
     spec_path=HERE.parents[2]/'backtest'/'layers'/'FORMULAS_SPEC.md'
     spec=spec_path.read_text(encoding='utf-8-sig')
-    header=('All numerical worked examples are tape-based: each cites 1h bar opens from the DEV tape '
-      '`F:/MTS/data/bigtrade/cache/perp/klines_1h.npz`, with every `t < 1719792000000` '
-      '(2024-07-01 00:00 UTC). IDs F01-F23 and F11.1-8, F18.1-7, F19.1-8, F20.1-4, '
-      'and F21.1-9 are tape-based; there are no SYNTHETIC examples. `examples.json` records '
-      'the inputs and values generated independently from FORMULAS.md.\n')
+    header=('All numerical worked examples are derived directly from FORMULAS.md: '
+      'tape-based examples cite 1h bar opens from the DEV tape `F:/MTS/data/bigtrade/cache/perp/klines_1h.npz` '
+      'with `t < 1719792000000` (2024-07-01 00:00 UTC); self-contained worked examples from sub-id '
+      'paragraphs are labelled SYNTHETIC; sub-id paragraphs without computable numbers are labelled '
+      'NOT_APPLICABLE with cited quotes. `examples.json` records the inputs and values generated '
+      'independently from FORMULAS.md.\n')
     spec=re.sub(r'(?m)^All numerical worked examples.*$',header.rstrip(),spec,count=1)
     def line_for(ident):
-        row=rows[ident]; value=row['expected']['value']; display=f'{value:.12g}'
-        if isinstance(value,bool): display=str(value).lower()
+        row=rows[ident]
+        if row.get('not_applicable'):
+            return (f"**Worked example {ident} (NOT_APPLICABLE).** Paragraph quote: \"{row['quote']}\". "
+              f"{row['reason']} Generated from `examples.json`.")
+        val=row['expected']['value']; display=f'{val:.12g}' if isinstance(val,(int,float)) and not isinstance(val,bool) else str(val).lower()
+        if row.get('synthetic'):
+            return (f"**Worked example {ident} (SYNTHETIC).** `inputs` = "
+              f"`{json.dumps(row['inputs'],sort_keys=True,separators=(',',':'))}`. "
+              f"Formula `{row['expected']['name']}` gives `{display}` {row['expected']['unit']}. "
+              "Generated from `examples.json` (FORMULAS.md worked arithmetic).")
         return (f"**Worked example {ident} (DEV tape; bar opens UTC: "
           f"{', '.join(row['bar_open_utc'])}).** `inputs` = "
           f"`{json.dumps(row['inputs'],sort_keys=True,separators=(',',':'))}`. "
@@ -156,7 +175,6 @@ def main():
             # Existing parent entries sometimes omit an ID from the example lead-in.
             parent=ident.split('.')[0]
             pat=rf'(?m)^\*\*Worked example \(.*?\):.*$'
-            # Subentries are appended below when no matching worked line exists.
             if ident==parent:
                 spec,n=re.subn(pat,lambda _:line_for(ident),spec,count=1)
             if not n and '.' in ident:
