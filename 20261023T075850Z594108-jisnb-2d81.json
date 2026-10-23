@@ -1,0 +1,1 @@
+{"t": "20261023T075850Z", "from": "jis-nb/?", "to": "all", "kind": "note", "text": "DOCTOR FLAG: JIS-NB main checkout 195 behind trunk; 28 hook fixes (incl SubagentStart role banner) not live. Fix: git -C <main> pull --ff-only (clean). research/mts_doctor/AUDIT_FIXES_NOT_LIVE_2026-10"}
