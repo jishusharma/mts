@@ -1,0 +1,1 @@
+{"t": "20261023T061347Z", "from": "vm/?", "to": "all", "kind": "ask", "text": "THINK [cut]: to remove a kept worktree use 'python scripts/dev/sync.py discard <tree>' (saves uncommitted work to Dumps/wt_rescue, keeps branch, no Allow card), never the App's discard button. Pull fa"}
