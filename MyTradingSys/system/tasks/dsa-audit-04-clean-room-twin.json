@@ -54,7 +54,7 @@
     "Read study.py; classify each difference (spec ambiguity, shipped bug, twin bug); fix twin bugs; measure mean, t and verdict on shipped vs twin vs corrected events.",
     "Time left: a third twin for opr_preopen_tops H2."
   ],
-  "tests": "",
+  "tests": "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T04/test_twin_diff.py::test_every_shipped_event_is_matched_or_listed (asserts matched + twin-only + shipped-only counts equal the shipped ledger.csv row count per study, and every difference row carries one class of spec ambiguity / shipped bug / twin bug; fails on pre-change code: scripts/T04/ does not exist yet)",
   "title": "DSA audit T04: clean-room twin of mal_bb and weekly-low sweep from PRE_REG only, diffed event by event",
   "weight": "IMPORTANT",
   "worker": "session"

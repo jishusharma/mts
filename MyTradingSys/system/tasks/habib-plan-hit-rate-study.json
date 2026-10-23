@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-23T12:28:27Z",
   "commands": [
     "python scripts/dev/tasks.py brief habib-plan-hit-rate-study"
   ],
@@ -14,7 +15,14 @@
   "goal": "Score each Habib weekly/Sunday plan as full, partial or miss (execution excluded from the score), then test whether his imbalance levels beat placebo levels on Binance BTCUSDT, fee-net.",
   "id": "habib-plan-hit-rate-study",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "BLOCKED on source: 9 priced plans all in holdout window, 0 scored; plan_score.py + PLAN_LE",
+      "ref": "80c9df1a7",
+      "utc": "2026-10-23T12:28:27Z"
+    }
+  ],
   "layers": [
     "callers"
   ],
@@ -28,7 +36,12 @@
   "refs": [
     "items/B162_qriptal_signal_layer.md"
   ],
-  "result": "",
+  "result": "BLOCKED on source: 9 priced plans all in holdout window, 0 scored; plan_score.py + PLAN_LEDGER.csv ready",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "research/habib_plan_imbalance_2026-10-20/"
   ],
@@ -41,13 +54,14 @@
     "MyTradingSys/research/habib_plan_imbalance_2026-10-20/README.md",
     "MyTradingSys/research/imbalance_qriptal_2026-10-16/README.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read README.md here and construct F note in imbalance_qriptal_2026-10-16",
     "Build plan ledger from operator-pasted posts (needs typed levels)",
     "Score full/partial/miss from 1m klines, DEV only",
     "Placebo level comparison, then one VALIDATION check"
   ],
+  "taken": "2026-10-23T12:28:27Z",
   "tests": "Placebo levels (random same-structure levels) must fail to be called a hit more often than his; scorer test fails on a plan with no data.",
   "title": "Habib plan-hit-rate study: score each Sunday/weekly plan full/partial/miss (execution excluded), then imbalance levels vs placebo levels (research/habib_plan_imbalance_2026-10-20)",
   "weight": "ROUTINE",

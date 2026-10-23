@@ -51,3 +51,9 @@ All thresholds above (times, 20:15Z, 80,622.0 etc.) are OURS, read from klines. 
 ## 7. Routing
 - `habib-plan-hit-rate-study` (new, lane DSA-NB: needs the 1m klines that live on JIS-NB): score each plan full / partial / miss, execution excluded; then test his imbalance levels against placebo levels. DEV only; one VALIDATION check; holdout read once.
 - `qriptal-discord-calls-2026-10-18` (existing, SONNET): transcription of the Discord calls feeds the study; extend its scope to include plan posts with levels.
+
+## 8. Build status (card habib-plan-hit-rate-study, 2026-10-23): BLOCKED on source, scorer and plan ledger ready
+Result: **0 plans scoreable on DEV; the hit-rate and placebo test were NOT run.** `PLAN_LEDGER.csv` lists the 9 plans in the call ledger with a spoken entry price and first target (`qriptal_2026-10-10/CALL_LEDGER.csv`, PLAN, BTC, direction known); all 9 are dated 2026-07-14..09-22, i.e. inside the holdout window (starts 2026-06-26, BACKTEST_PROTOCOL.md section 2), so no 1m candle was read. The 10-18 Sunday plan has no typed level (section 3). Done-when (>=12 plans with full/partial/miss) is not met: 9 candidates, 0 scored.
+- `plan_score.py`: pure scorer, execution excluded. Definitions OURS and fixed before any scoring: fill window 24 h, open window 7 d (same as qriptal RULES.md), full = entry then first target touched, partial = entry touched and at least 50% of the distance to target travelled, miss = otherwise, NO_DATA never a miss. `test_plan_score.py` (10 tests; fail on the old tree, which had no scorer or ledger).
+- Needed to unblock (operator): >=12 plans dated before 2026-06-26 with typed levels, or a pre-registration that releases the holdout/VALIDATION read for these 9 (one read, variants counted: scorer 1 variant; placebo test not yet defined, so 0 run). Section 5 list stands.
+- DECISION (OURS): conservative default, no holdout read without a pre-reg; placebo comparison deferred until >=12 scoreable plans exist.
