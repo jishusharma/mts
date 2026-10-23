@@ -11,6 +11,7 @@ CLAUDE.md is already in context; do not cat or Read it. Code mode only (DSA chat
 5. SHORT SESSIONS (unattended workers; an operator-driven session ends on his word, q-v1-turn-caps): one session = one task; hand over when it is done, after 10 operator turns or the tool-turn cap (WORKERS.md rule 5), whichever first (commit, then steps 3-4, one line, stop). Live market threads: after 5 screenshot reads.
 5b. After `get_usage`: `python scripts/dev/mts_signal.py budget --login <A|B|C> --five <%> --week <%> --reset <UTC>` (jishusharma1985=C).
 5b. Budget: once per session after `get_usage`: `python scripts/dev/mts_signal.py budget --login <A|B|C> --five <5h%> --week <wk%> --reset <UTC>` (logins: CLOUD_ACCOUNTS.md; jishusharma1985 = C).
+5c. Right after that: `python scripts/dev/exhaust.py plan --login <X> --week <wk%> --five <5h%> --reset <UTC> [--model name=pct ...]`. Phase plan/exhaust (top-level sessions only; subagents skip): follow `MyTradingSys/system/EXHAUST_PHASE.md` (spend all quota before the reset, one actor per login, work saved in steps).
 6. Task shipped: mark your own session completed in the sidebar (`mark_completed`); coordinators mark their workers (SUPER_SESSION.md).
 
 ## Cost and routing
