@@ -3,6 +3,7 @@
 Operator ask (2026-10-24): "Freeze new tooling, and collect the inventory (cost and catch of each hook, gate step and script;
 bug origins for the last 2 weeks; which machinery the research uses) as the brief for one simplification session."
 Freeze: ANNOUNCEMENTS.md A-20261024-1. Raw data: `inv_hooks_gate.md`, `inv_scripts_bugs.md`, `inv_research_needs.md` (this folder).
+Every decision from the operator chat, with owner and state: `DECISIONS.md` (this folder). It adds rules 4, 6, 7-9 and 13.
 
 ## 1. What the numbers say
 - Work mix, 14 days: 3,675 real commits; 135 (3.7%) touch trading code. About 9 in 10 are coordination or docs.
