@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-23T08:47:38Z",
   "commands": [],
   "created": "2026-10-23T06:54:09Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "turn_meter: first typed ask attended; Supervisor exempt from unattended stop; 4 tests (3 f",
+      "ref": "dff5118ba",
+      "utc": "2026-10-23T08:47:38Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,7 +40,12 @@
   "refs": [
     "MyTradingSys/research/thinker/2026-10-23_first_ask_driven.md"
   ],
-  "result": "",
+  "result": "turn_meter: first typed ask attended; Supervisor exempt from unattended stop; 4 tests (3 fail on old code)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/turn_meter.py, MyTradingSys/tests/test_turn_meter.py"
   ],
@@ -41,12 +53,13 @@
   "scope_sha": "6027c19d155c",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Apply the patch in research/thinker/2026-10-23_first_ask_driven.md",
     "Add the 3 new tests and widen the worker test; prove they fail with the patch stashed",
     "pytest test_turn_meter + test_model_guard; run_all_tests.py --quick; sync.py ship --release"
   ],
+  "taken": "2026-10-23T08:47:38Z",
   "tests": "test_his_own_first_ask_runs_to_the_end_while_he_is_there (fails on old code)",
   "title": "turn_meter: his first typed ask counts as attended unless it is a worker brief (spec research/thinker/2026-10-23_first_ask_driven.md)",
   "weight": "",
