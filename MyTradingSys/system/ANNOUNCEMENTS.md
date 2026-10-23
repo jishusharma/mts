@@ -13,6 +13,13 @@ Entry format: `### A-<yyyymmdd>-<n> <kind> <title>` with kind one of INFO, DO-NO
 
 ## ACTIVE
 
+### A-20261024-1 HOLD Tooling freeze (operator 2026-10-24)
+- Applies to: every session that would add to scripts/dev, .claude hooks or MyTradingSys/system.
+- Until: the simplification session in `research/mts_doctor/simplify_2026-10-24/BRIEF.md` reports done.
+- What: no new hooks, gate steps, roles, check scripts or rules. Allowed: deletions, one-line fixes, reverting a red trunk.
+  Trading code (layers, backtest, CBP, live path) is not affected.
+- Why: 79% of the last 14 days' fixes were in dev tooling, 42 of them in tooling under 14 days old; a ship took 16-22 min.
+
 ### A-20261023-1 DO-NOW Every station: save unshipped worktree work, then tidy (operator 2026-10-23)
 - Applies to: every station (station = one device with one login, operator 2026-10-23). The first session on each device to read this does it once for that device.
 - Until: each device (JIS-NB, JIS-NUC, DESKTOP-F7IU69N) has sent `STATION <device>/<login> worktrees: ...` done.
