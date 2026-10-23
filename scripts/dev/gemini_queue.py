@@ -12,6 +12,8 @@ from __future__ import annotations
 import os, subprocess, sys, time
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
 REPO = Path(__file__).resolve().parents[2]
 AGY = Path.home() / '.gemini' / 'bin' / 'agy.exe'
 ROOT = Path('F:/MTS/gq')
@@ -40,16 +42,32 @@ def child_env(card: str, brief: str, base=None) -> dict:
     return {**(os.environ if base is None else base), **lease.runner_env(brief, f'gemini-q-{card}-{int(time.time())}')}
 
 
+def claim_holder(card: str, claims) -> str:
+    """Who holds an open claim on `card` ('' = free): a lab lane never works a card another lane holds (tc5)."""
+    import sync
+    slug = sync.slugify(card)
+    for s, kv in claims:
+        if s == slug:
+            return kv.get('host') or kv.get('who') or 'unknown'
+    return ''
+
+
 def run_job(card: str, effort: str) -> None:
     wt = ROOT / card
     log = ROOT / f'{card}.log'
     ROOT.mkdir(parents=True, exist_ok=True)
     git('fetch', '-q', 'origin')
+    import sync
+    held = claim_holder(card, sync.open_claims(REPO))
+    if held:
+        log.write_text(f'SKIP {card}: already claimed by {held}\n', encoding='utf-8', newline='\n')
+        return
     if not wt.exists():
         r = git('worktree', 'add', '-b', f'gemini-q/{card}', str(wt), 'origin/fast-track')
         if r.returncode:
             log.write_text('worktree failed: ' + r.stderr, encoding='utf-8', newline='\n')
             return
+    subprocess.run([PY, 'scripts/dev/sync.py', 'claim', card], cwd=wt, capture_output=True, text=True)
     brief = subprocess.run([PY, 'scripts/dev/tasks.py', 'brief', card], cwd=wt, capture_output=True, text=True).stdout
     model = f'gemini-3.8-flash-{effort}'
     cmd = [str(AGY), '--print', RULES + brief, '--model', model, '--effort', effort,
