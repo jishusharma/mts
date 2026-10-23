@@ -9,6 +9,10 @@ HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import fetch_captions_timed as f  # noqa: E402
 
+if f.yt_dlp is None:   # CI has no yt_dlp: stub just what the module touches
+    import types
+    f.yt_dlp = types.SimpleNamespace(YoutubeDL=None, utils=types.SimpleNamespace(DownloadError=Exception))
+
 VTT = "WEBVTT\n\n00:00:01.000 --> 00:00:03.000\nhello world\n"
 LISTING = [("aaaaaaaaaaa", "BTC bottom"), ("bbbbbbbbbbb", "cooking #shorts"), ("ccccccccccc", "ETH cycle"),
            ("ddddddddddd", "BTC again"), ("eeeeeeeeeee", "BTC old")]

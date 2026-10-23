@@ -20,7 +20,10 @@ import tempfile
 import time
 from pathlib import Path
 
-import yt_dlp
+try:
+    import yt_dlp
+except ImportError:   # CI pip line lacks it; the fetcher is a desktop tool, tests inject a stub
+    yt_dlp = None
 
 ROOT = Path(__file__).resolve().parents[2]
 CANON = ROOT / "raw_transcripts_canonical"
@@ -134,6 +137,9 @@ def fetch_channel(a):
 
 
 def main(argv):
+    if yt_dlp is None:
+        print("yt_dlp not installed: pip install yt-dlp")
+        return 2
     ap = argparse.ArgumentParser()
     ap.add_argument("--analyst", required=True)
     ap.add_argument("--out", default=str(CANON))
