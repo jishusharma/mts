@@ -12,6 +12,7 @@ import planted_error_trial as pet
 
 
 class TestPlantedErrorTrial(unittest.TestCase):
+    @unittest.skipUnless(pet.RUNS.is_file(), "runs.jsonl lives on NUC F: drive only")
     def test_one_plant_per_shadow_and_clean_originals_pass(self):
         # Must run the harness and return manifest
         manifest = pet.run()

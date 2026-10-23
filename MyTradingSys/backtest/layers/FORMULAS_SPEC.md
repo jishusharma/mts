@@ -1,6 +1,6 @@
 # Formula re-derivation specs
 
-All numerical worked examples are derived directly from FORMULAS.md: tape-based examples cite 1h bar opens from the DEV tape `F:/MTS/data/bigtrade/cache/perp/klines_1h.npz` with `t < 1719792000000` (2024-07-01 00:00 UTC); self-contained worked examples from sub-id paragraphs are labelled SYNTHETIC; sub-id paragraphs without computable numbers are labelled NOT_APPLICABLE with cited quotes. `examples.json` records the inputs and values generated independently from FORMULAS.md.
+All numerical worked examples are derived directly from FORMULAS.md: tape-based examples cite 1h bar opens from the DEV tape `F:/MTS/data/bigtrade/cache/perp/klines_1h.npz` with `t < 1719792000000` (2024-07-01 00:00 UTC); the second F01 worked example and self-contained worked examples from sub-id paragraphs are labelled SYNTHETIC; sub-id paragraphs without computable numbers are labelled NOT_APPLICABLE with cited quotes. `examples.json` records the inputs and values generated independently from FORMULAS.md.
 
 Scope: formula IDs are the 23 numbered top-level entries in `FORMULAS.md`; numbered subentries (for example 11.1–11.8, 18.1–18.7, 19.1–19.8, 20.1–20.4 and 21.1–21.9) are covered by their parent entry and called out below. Numbers are computed without producer code. Unless specified, retain full precision during calculations and round only for display; the input archive stores binary floating point.
 
@@ -14,7 +14,7 @@ DEV fixture used for every tape example: `F:/MTS/data/bigtrade/cache/perp/klines
 | 3 | 03:00 | 46796.15 | 46888.00 | 46746.32 | 46789.56 | 4208.992 | 1928.027 |
 | 4 | 04:00 | 46789.55 | 46868.74 | 46605.00 | 46690.81 | 6149.298 | 2855.818 |
 
-Every worked example below is tape-based and cites its UTC bar opens. There are no synthetic examples. IDs F01-F23 and all listed sub-IDs are generated from the eligible DEV tape. “SOURCED” means the catalog ties the rule to an external, trader, or operator source; “OURS” marks a repo/operator mechanical convention or parameter. A mixed entry labels both parts.
+Worked examples below are tape-based and cite their UTC bar opens, except the second F01 example which is labelled SYNTHETIC (the classic +56, +40, -70 arithmetic check with RSI = 57.8313%, 48/83*100) and self-contained sub-ID illustrations. IDs F01-F23 and all listed sub-IDs are generated from the eligible DEV tape. “SOURCED” means the catalog ties the rule to an external, trader, or operator source; “OURS” marks a repo/operator mechanical convention or parameter. A mixed entry labels both parts.
 
 ## F01 ? Wilder RSI — SOURCED (Wilder); flat-series 50 is OURS
 
@@ -22,6 +22,8 @@ Inputs: ordered closes and integer period n. Close i becomes available only when
 
 
 **Worked example F01 (DEV tape; bar opens UTC: 2022-04-12 20:00 UTC, 2022-04-12 21:00 UTC, 2022-04-12 22:00 UTC, 2022-04-12 23:00 UTC, 2022-04-13 00:00 UTC, 2022-04-13 01:00 UTC, 2022-04-13 02:00 UTC, 2022-04-13 03:00 UTC, 2022-04-13 04:00 UTC, 2022-04-13 05:00 UTC, 2022-04-13 06:00 UTC, 2022-04-13 07:00 UTC, 2022-04-13 08:00 UTC, 2022-04-13 09:00 UTC, 2022-04-13 10:00 UTC).** `inputs` = `{"closes":[39495.8,39669.1,39809.3,40060.7,39917.0,39860.7,40037.4,40059.3,40112.9,40161.2,39929.9,40112.0,40143.9,40062.3,39788.1],"period":14}`. Formula `Wilder RSI at index 14` gives `57.8301634074` percent. Generated from `examples.json`; retain full precision until display.
+
+**Worked example F01 (SYNTHETIC; hand arithmetic).** Illustrative close changes [+56, +40, -70], period 3: seed gain mean = (56+40+0)/3 = 32, loss mean = (0+0+70)/3 = 23.333333, RS = 32/(70/3) = 48/35, RSI = 100 - 100/(1 + 48/35) = 4800/83 = 57.831325... percent (displayed as `57.8313` percent, replacing legacy 57.8125).
 ## F02 ? RMA/SMMA — SOURCED (Wilder)
 
 Inputs: numeric series and length n. Values align to the last input in each window; seed on the nth consecutive finite value with their arithmetic mean, then `R[i]=R[i-1]+(x[i]-R[i-1])/n`. Full precision internally; display 4 decimals. Earlier values and windows containing missing inputs are undefined; after a gap require a fresh n-value seed.
