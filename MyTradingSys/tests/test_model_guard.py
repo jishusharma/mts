@@ -131,6 +131,23 @@ class ModelGuardTest(unittest.TestCase):
         mention = self.first("mention.jsonl", "what does the Supervisor do? You are Supervisor-ish only in a quote")
         self.assertEqual(fire("AskUserQuestion", ask, mention), "allow")
 
+    def test_start_session_on_an_event_turn_is_denied_even_user_asked(self):
+        # operator 2026-10-23: "when i am away, this happens" - a coordinator woken by two child messages called start_session
+        # (user_asked, sonnet) and the app showed him an Allow card; typed turns keep starting at once
+        inp = {"initiation": "user_asked", "title": "x", "prompt": "p", "background": "b", "model": "sonnet"}
+        p = Path(self.tmp.name) / "ev.jsonl"
+        rows = [{"type": "user", "message": {"content": "start the CBP fetcher worker"}},
+                {"type": "assistant", "message": {"model": "claude-sonnet-5-5", "content": []}},
+                {"type": "user", "message": {"content": "<cross-session-message from=\"w\">shipped</cross-session-message>"}},
+                {"type": "user", "message": {"content": [{"type": "tool_result", "tool_use_id": "t", "content": "ok"}]}}]
+        with open(p, "w", encoding="utf-8", newline="\n") as f:
+            f.write("".join(json.dumps(r) + "\n" for r in rows))
+        decision, reason = fire_full(START, inp, p)
+        self.assertEqual(decision, "deny")
+        self.assertIn("Agent", reason)
+        self.assertEqual(fire(START, inp, self.transcript("claude-sonnet-5-5")), "allow")
+        self.assertEqual(fire(START, {**inp, "proposal_id": "p1"}, p), "allow")
+
     def test_agent_needs_cheap_model(self):
         self.assertEqual(fire("Agent", {"description": "d", "prompt": "p"}), "deny")
         self.assertEqual(fire("Agent", {"description": "d", "prompt": "p", "model": "opus"}), "deny")
