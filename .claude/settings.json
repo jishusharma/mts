@@ -16,11 +16,6 @@
           },
           {
             "type": "command",
-            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/turn_meter.py\" hook",
-            "timeout": 10
-          },
-          {
-            "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/mts_signal.py\" hook",
             "timeout": 12
           },
@@ -42,17 +37,6 @@
         ]
       }
     ],
-    "SubagentStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/role_loader.py\" hook",
-            "timeout": 15
-          }
-        ]
-      }
-    ],
     "UserPromptSubmit": [
       {
         "hooks": [
@@ -60,11 +44,6 @@
             "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/shot.py\" hook",
             "timeout": 15
-          },
-          {
-            "type": "command",
-            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/turn_meter.py\" hook",
-            "timeout": 10
           },
           {
             "type": "command",
@@ -90,15 +69,6 @@
       }
     ],
     "PostToolUse": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/turn_meter.py\" hook",
-            "timeout": 10
-          }
-        ]
-      },
       {
         "matcher": "Bash",
         "hooks": [
@@ -133,16 +103,6 @@
             "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/mts_signal.py\" hook",
             "timeout": 8
-          },
-          {
-            "type": "command",
-            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/prereq_guard.py\" hook",
-            "timeout": 10
-          },
-          {
-            "type": "command",
-            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/offer_guard.py\" hook",
-            "timeout": 10
           }
         ]
       }
@@ -155,26 +115,6 @@
             "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/preship.py\" hook-commit",
             "timeout": 180
-          }
-        ]
-      },
-      {
-        "matcher": "Agent|Task|mcp__ccd_session__start_session|AskUserQuestion|mcp__ccd_turn__wrap_up|mcp__ccd_directory__propose_branch|mcp__ccd_session_mgmt__set_session_model|SendMessage|mcp__ccd_session_mgmt__send_message|Workflow|ScheduleWakeup|CronCreate|RemoteTrigger|mcp__scheduled-tasks__create_scheduled_task",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/model_guard.py\" hook",
-            "timeout": 10
-          }
-        ]
-      },
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/turn_meter.py\" hook",
-            "timeout": 10
           }
         ]
       }

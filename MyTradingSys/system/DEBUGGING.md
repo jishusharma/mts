@@ -21,21 +21,17 @@ ARCHITECTURE.md. Test `MyTradingSys/tests/docs/test_debugging_spine.py` fails wh
 | new code is not wired | `python scripts/dev/wiring_scan.py --check` | `MyTradingSys/system/wiring_registry.json` | the shipping session |
 
 ## 2. Hooks (.claude/settings.json)
-A hook never blocks the turn. shot, turn_meter and mts_signal log their own errors to a `hook_errors.log` in their state folder;
+A hook never blocks the turn. shot and mts_signal log their own errors to a `hook_errors.log` in their state folder;
 the others fail silently, so run it by hand to see the error: `echo {} | python scripts/dev/<script> hook` (it may bump that hook's own counter).
 | Hook | Script | State |
 |---|---|---|
 | role not loaded / wrong role | `python scripts/dev/role_loader.py check`, then `verify` | `%TEMP%/mts_roles/<session>.json`; roles from origin/fast-track |
-| turn count wrong | `scripts/dev/turn_meter.py` | `~/.claude/mts-turn-meter/` (`hook_errors.log`) |
 | stop refused | `scripts/dev/stop_guard.py` | `~/.claude/mts-stop-guard.json` |
-| stop refused: pre-run items for the operator | `scripts/dev/prereq_guard.py` (`tasks.py need`) | `~/.claude/mts-prereq-guard.json` |
-| stop refused: reply ends asking the operator's leave ("want me to") | `scripts/dev/offer_guard.py` (`MTS_OFFER_GUARD=off`) | `~/.claude/mts-offer-guard.json` |
 | prompt notice "TRUNK LAG": tree behind origin/fast-track | `scripts/dev/trunk_lag.py` (`MTS_TRUNK_LAG=off`) | `<git dir>/mts_trunk_fetch` |
 | commit denied / edit note `PRESHIP` | `python scripts/dev/preship.py check` (rules: its RULES table) | `~/.claude/mts-preship-*.json` |
 | broadcast nobody reacted to | `python scripts/dev/mts_signal.py acks [<id>]` (hosts vs none/told/done); resend with `broadcast "<text>" --prio high --cmd "<command>"` | branch `mts-signals` | the sending session |
 | signal / git windows flash | `scripts/dev/mts_signal.py` | `~/.claude/mts-signals`, branch `mts-signals` |
 | screenshot not picked up | `scripts/dev/shot.py` | `~/.claude/uploads/manifest.jsonl` |
-| worker spawn refused | `scripts/dev/model_guard.py` | WORKERS.md (the rule it enforces) |
 | C: drive warning | `scripts/dev/c_drive_guard.py` | none |
 
 ## 3. Cards, desk, lanes

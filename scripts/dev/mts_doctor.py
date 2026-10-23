@@ -21,7 +21,7 @@ PATH_RE = re.compile(r"`((?:scripts|MyTradingSys)/[A-Za-z0-9_./-]+\.(?:py|ps1|md
 BARE_DOC_RE = re.compile(r"\b([A-Z][A-Z0-9_]{3,}\.md)\b")
 DUP_MIN = 80          # a duplicated line shorter than this is usually a heading or a table row
 KINDS = ("DEAD-REF", "DUPLICATE", "MEMORY", "CARD", "DUP-CARD", "SKILL", "HOOKS")
-HOOK_FILES = (".claude/settings.json", "scripts/dev/turn_meter.py")
+HOOK_FILES = (".claude/settings.json",)
 
 
 def tracked(repo):

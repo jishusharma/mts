@@ -63,8 +63,8 @@ def test_cadence_is_stated_the_same_everywhere():
 def test_relay_md_stays_current_truth_and_small():
     t = read(RELAY_MD)
     assert len(t.encode("utf-8")) <= 6144   # was 13222 B of history and contradictions; history is in archive/relay_2026-10-15/
-    # cited by name at runtime: relay.py (handoff refusal), handoff_lint.py, turn_meter.py
-    assert "## Task list standard" in t and "## Turn meter" in t
+    # cited by name at runtime: relay.py (handoff refusal), handoff_lint.py
+    assert "## Task list standard" in t
 
 
 def test_session_prompt_keeps_the_look_return_path():

@@ -1,7 +1,7 @@
 # RELAY - hand-over rules (the relay loop itself is RETIRED)
 
 > RETIRED 2026-10-17 (SCHEDULING_POLICY.md): nothing runs `tick`/`kick`, no dispatcher task exists; the operator or a coordinator starts every session.
-> STILL LIVE: **Task list standard** (`relay.py handoff`/`lint` check NEXT_SESSION.md) and **Turn meter** (hook). Pieces, The loop, Brakes, Tick and queue = how the retired loop worked, reference only. History: `archive/relay_2026-10-15/`.
+> STILL LIVE: **Task list standard** (`relay.py handoff`/`lint` check NEXT_SESSION.md). Pieces, The loop, Brakes, Tick and queue = how the retired loop worked, reference only. History: `archive/relay_2026-10-15/`.
 
 ## Pieces (retired loop)
 | Piece | Role |
@@ -24,9 +24,6 @@ Next tasks come from `python scripts/dev/tasks.py next --n 3` (a card's `brief` 
 - Tags right after `Qn.`, either order, one of each: `host=<machine|any>` (absent = any; `handoff`/`lint` ignore it unless `--host`; `kick` says `IDLE no unblocked task for host X` when every open task is another host's; OPUS-only work stays `(after ...)`) and `lane=CODEX` (GPT / Codex Layer Lab, JIS-NUC) or `lane=DSA` (AI Bridge). Operator 2026-10-14, "GPT and DSA for as much as possible": when curating, tag every task a lane can do alone (a re-run of an existing script, an inventory, a CODEX audit card) instead of leaving it for a Claude session. A bad lane value fails lint.
 - `relay.py lint --file <handoff> [--want stop]` checks without writing. Write the header with `handoff` only: it also writes the `relay_runs.jsonl` row.
 - `begin` takes a HAIKU or SONNET card (`tasks.CODE_LANES` minus OPUS) that no open claim holds (`tasks.py next` hides claimed cards; `--all` shows them).
-
-## Turn meter (2026-10-14)
-The 40 tool / 10 operator turn cap (operator q20, 2026-10-15) is a hook, `scripts/dev/turn_meter.py`: at the cap and every 5 tool turns after, it injects a 1-line hand-off reminder (<= 250 B). One assistant message = one turn (parallel calls count once); subagents are skipped; clear resets. Per-model caps: WORKERS.md rule 5.
 
 ## Brakes (retired loop; all fail closed)
 - no header, header says stop, no task this host can run, or only lane work left -> `kick` IDLE; `handoff --stop` ends a chain

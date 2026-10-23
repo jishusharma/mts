@@ -33,8 +33,7 @@ Every other file points here. Numbers come from `python scripts/dev/worker_cost_
 6. **Models.** Workers: Sonnet; Haiku for mechanical status/lookups. **Opus is the tight exception** (operator 2026-10-17: a session-spawned
    Opus can lose data on a bug or misreading, so only critical work): (a) the operator names it in their latest message, it is done;
    (b) a session starts it only for a task card in lane OPUS with `approved_by` and `crucial` (one line: live money, irreversible data,
-   or a no-undo design call), cited by id in the brief. Nothing else, not "recommended" and not "better quality". Hook `model_guard.py`
-   enforces both, and always denies a call without `model`. A cheap model first: Opus is for what Sonnet already got wrong or cannot undo.
+   or a no-undo design call), cited by id in the brief. Nothing else, not "recommended" and not "better quality". A cheap model first: Opus is for what Sonnet already got wrong or cannot undo.
 7. **No clicks.** `start_session` with `initiation: "user_asked"` on operator turns (max 4 workers at once); on event turns (a message or event started the turn) the app shows an Allow card, so `model_guard.py` denies it (2026-10-23):
-   use rule 3's Agent. Never an `offer` / `own_initiative` card, for any model: `model_guard.py` now denies them (operator 2026-10-18: nobody is at the screen to click).
+   use rule 3's Agent. Never an `offer` / `own_initiative` card, for any model: nobody is at the screen to click (operator 2026-10-18).
 8. **Cleanup.** A finished session marks itself completed; the coordinator marks each worker once its ship is verified.

@@ -7,7 +7,7 @@ Numbers below were measured on origin/fast-track 2026-10-19 (bytes/4 = tokens); 
 ## 1. Layers (each layer may call only the ones below it)
 | Layer | What | Where | Rule |
 |---|---|---|---|
-| 1 Hooks | run on every session event, inject a few lines | `.claude/settings.json` -> scripts/dev/{shot,turn_meter,mts_signal,ci_watch,c_drive_guard,role_loader,stop_guard,model_guard}.py | never block a turn; shot, turn_meter, mts_signal log errors to a `hook_errors.log` |
+| 1 Hooks | run on every session event, inject a few lines | `.claude/settings.json` -> scripts/dev/{shot,mts_signal,ci_watch,c_drive_guard,role_loader,stop_guard,trunk_lag,preship}.py | never block a turn; shot, turn_meter, mts_signal log errors to a `hook_errors.log` |
 | 2 Tools | deterministic scripts (T0) | scripts/dev/*.py; scripts/sched/ only for the live host | one script per concern; wired in wiring_registry.json |
 | 3 Roles | a workflow loaded by name | MyTradingSys/system/roles/*.md, index ROLES.md | a role calls tools and reads docs; it never restates a rule |
 | 4 Docs | the rules, one owner each | MyTradingSys/system/*.md | one source per concern (section 2); other files point, never copy |
