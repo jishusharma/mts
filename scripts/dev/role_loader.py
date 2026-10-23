@@ -252,6 +252,27 @@ def pick_role(text, repo=REPO):
     return {"name": scored[0][1], "reason": "task text says " + ", ".join(k.rstrip("*") for k in scored[0][2]), "tie": []}
 
 
+ROLE_LINE = re.compile(r"(?im)^\s*You are ([\w&]+)")
+
+
+def explicit_role(prompt, roles=None):
+    """THE definition of a role session (role_loader and model_guard.role_session both call this): the first prompt names the
+    role on its own line (`You are X.` in the first 3000 chars, or a trigger phrase such as `I need a pipeliner` starting a line
+    in the first 300). A role the fallback picks from task words is only a soft hint and is not a role session."""
+    prompt = prompt or ""
+    names = {n.lower(): n for n in KNOWN_ROLES}
+    names.update({a: n for n, al in ALIASES.items() for a in al})
+    for m in ROLE_LINE.finditer(prompt[:3000]):
+        if m.group(1).lower() in names:
+            return names[m.group(1).lower()]
+    head = prompt[:300].lower()
+    for name, trigs in (roles if roles is not None else local_roles()).items():
+        for t in trigs:
+            if re.search(r"^[ \t]*" + PREFIX + r"\s+" + _phrase(t) + r"(?![a-z0-9_])", head, re.M):
+                return name
+    return None
+
+
 def from_session(prompt):
     """A brief sent by another session: its sender names the role, the fallback stays out."""
     p = (prompt or "").lstrip()
@@ -277,6 +298,14 @@ def injected(sid):
     return _load(sid)["roles"]
 
 
+def explicit_injected(sid):
+    """Roles of this session that came from an explicit role line. State written before the flag existed counts as explicit."""
+    d = _load(sid)
+    if "explicit" not in d:
+        return list(d["roles"])
+    return [r for r in d["roles"] if r in d["explicit"]]
+
+
 def role_meta(sid, name):
     return _load(sid)["meta"].get(name)
 
@@ -291,10 +320,17 @@ def _save(sid, d):
         pass
 
 
-def mark_injected(sid, name, meta=None):
+def mark_injected(sid, name, meta=None, explicit=None):
+    """explicit True/False records whether the role came from the operator's own role line (False = fallback pick)."""
     d = _load(sid)
     if name not in d["roles"]:
         d["roles"].append(name)
+    if explicit is not None:
+        ex = d.setdefault("explicit", [])
+        if explicit and name not in ex:
+            ex.append(name)
+        elif not explicit and name in ex:
+            ex.remove(name)
     if meta:
         d["meta"][name] = meta
     _save(sid, d)
@@ -348,7 +384,9 @@ RULES_ANSWER = ("RULES ANSWERS (bug-haiku-stale-rule-answers): before any answer
                 "commit date (`git log -1 --format=%cs -- <file>`); a reading (budget, mirror, usage) gives its timestamp and age "
                 "and is called stale past 6 h; nothing read = `NOT_IN_DATA`, never memory or a first search hit.\n"
                 "ASKED WORK RUNS NOW (bug-ask-go-for-asked-work): work the operator already asked for is done this turn, "
-                "full depth; never end a reply asking him to say go. Ask only for a genuine option decision with no default.\n")
+                "full depth; never end a reply asking him to say go. Ask only for a genuine option decision with no default.\n"
+                "OUT OF YOUR ROLE: work outside your role's Job goes to its owner (ROLES.md Who does what): `tasks.py new` for the board, "
+                "or, if the operator asked for it now, a background Sonnet Agent whose brief starts `You are <Owner>.`; never ask first.\n")
 
 
 def build_text(name, repo, fetched_ok, fallback=None):
@@ -402,7 +440,7 @@ def _out(event, text):
 
 def _reminder(sid):
     """Compact per-prompt reminder for a session that already has a role (no git)."""
-    done = injected(sid)
+    done = explicit_injected(sid)       # a fallback-picked role is a soft hint: no reminder
     if not done:
         return ""
     name = done[-1]
@@ -476,7 +514,7 @@ def handle(payload, repo=REPO):
         return handle_subagent(payload, repo)
     sid = str(payload.get("session_id") or "nosession")
     if payload.get("hook_event_name") == "SessionStart":
-        done = injected(sid)
+        done = explicit_injected(sid)   # a fallback-picked role is not re-injected after compaction
         if not done:
             return ""
         text = build_text(done[-1], repo, git_fetch(repo))
@@ -490,6 +528,7 @@ def handle(payload, repo=REPO):
     roles = local_roles(repo)
     hits = match_roles(prompt, roles)
     fallback = None
+    explicit = True
     if len(hits) > 1:
         return _out("UserPromptSubmit", "ROLE LOADER (hook): the prompt names several roles (" + ", ".join(hits) +
                     "). Load none; ask the operator in one line which one, then stop.")
@@ -509,10 +548,11 @@ def handle(payload, repo=REPO):
         if not p["name"]:
             return ""
         name, fallback = p["name"], p["reason"]
+        explicit = False
     else:
         return _reminder(sid)
     text = build_text(name, repo, git_fetch(repo), fallback)
-    mark_injected(sid, name, dict(LAST_META))
+    mark_injected(sid, name, dict(LAST_META), explicit=explicit)
     return _out("UserPromptSubmit", text)
 
 
