@@ -1273,3 +1273,8 @@ Applied: 2026-10-22: scripts/dev/offer_guard.py (Stop hook, .claude/settings.jso
 ```json
 {"id": "d-station-term", "order": 44, "date": "2026-10-23", "status": "DECIDED", "question": "What is a station, and who cleans worktrees?", "options": {"A": "station = one device with one login; worktree rescue is one card for every station, broadcast"}, "recommended": "A", "answer": "I think you should create a task for this. And your task it for all stations. So going forward, station would mean a device, with a login. / And I meant broadcast. You have to broadcast it.", "done": "card every-station-save-unshipped-worktree-wo; ANNOUNCEMENTS A-20261023-1; term in DEVICES.md"}
 ```
+
+## d-jisnb-no-sched-tasks | decided 2026-10-23 | Thinker
+```json
+{"id": "d-jisnb-no-sched-tasks", "date": "2026-10-23", "status": "DECIDED", "question": "Are MTS scheduled tasks still enabled on JIS-NB (failure review row 7)?", "options": {"A": "no: operator removed them all; correct SCHEDULING_POLICY.md and withdraw row 7"}, "recommended": "A", "answer": "Actually, there are no 15 empty scheduled tasks, and I have gone and looked into the schedule settings, and I had actually already removed everything. I don't know what everyone is talking about. I tried to tell the same thing in the other chats which I'm telling you.", "done": "SCHEDULING_POLICY.md JIS-NB row = none; failure review row 7 withdrawn; claims about tasks need a same-turn schtasks paste"}
+```
