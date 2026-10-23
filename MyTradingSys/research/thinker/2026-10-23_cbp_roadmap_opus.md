@@ -53,3 +53,10 @@ Agree on everything except: Thinker's shipped list missed 152726b and the 22 Oct
 - D1, the 22 Oct run: commit as data after it passes the quote check.
 - D2, the three leftover routine files: delete them.
 - D3, store location: leave at `F:/CryptoScrapper`, MTS reads in place; do not copy into the public MTS repo.
+
+## 7. Scope amendment (operator 2026-10-23, verbatim quotes)
+- Window: "we will have a bias from the last 10 days of what the artists are saying. Analyst, I mean" and "5 days to 10 days of data is already good enough". Never more than 10 days.
+- Output per analyst: "extracting their quotes, their trades, their pointers, their bias, and filter them in such a way that we have a useful way of using it inside MTS".
+- Layers later: "extraction we will do individually, and it will be targeted on what we need to do". Analyst layers (Krown; Jason+Michael) get their own targeted extraction; CBP does not.
+- Where it plugs into MTS: "a later question". CBP's job now: "find the value which is in CBP that could be provided to MTS".
+Effect on the plan (OURS): `cbp.query` default `since` = 10 days; extraction profile = bias, quotes, trades, pointers only; anything older than 10 days is not extracted or kept in the query path; the 22 Oct run is inside the window (D1 stands). Step 1 adds: measure how many of the 10-day rows are tradable vs bias-only, so the value to MTS is a number, not a belief.
