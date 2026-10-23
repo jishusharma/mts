@@ -185,7 +185,7 @@ class Home(unittest.TestCase):
         self.assertEqual(recipes.count('<li><b>'), 8)
         self.assertIn('backlog', recipes.lower())
         self.assertTrue(d["superPrompt"].startswith("You are Supervisor."), d["superPrompt"][:60])
-        self.assertIn("Login <A|B|C>", d["superPrompt"])   # one-line start (SUPER_LOOP.md 2026-10-19)
+        self.assertIn("SUPER_SESSION.md", d["superPrompt"])   # one-line start (SUPER_SESSION.md 2026-10-24)
         import tempfile
         with tempfile.TemporaryDirectory() as tmp:
             self.assertEqual(mh.super_prompt(tmp), "")

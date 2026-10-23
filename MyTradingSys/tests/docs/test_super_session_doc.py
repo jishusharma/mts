@@ -1,7 +1,7 @@
 """SUPER_SESSION.md stays wired: rules that say the coordinator prompt carries their line really are in the prompt, the
 session log keeps its last 5, and no step tells the coordinator to call something retired or missing on every wake.
 
-Fail-first: SUPER_DOC=<copy of the 2026-10-18 file> python -m pytest this_file
+Fail-first: SUPER_DOC=<copy of the 2026-10-18 file> python -m pytest this_file (D1-D6 tests: the pre-2026-10-24 file)
 """
 import os
 import re
@@ -30,15 +30,19 @@ class SuperSessionDoc(unittest.TestCase):
     def setUp(self):
         self.text = DOC.read_text(encoding="utf-8")
 
-    def test_rules_that_claim_a_prompt_line_have_it(self):
-        rules = section(self.text, "Rules")
+    def test_decisions_d1_to_d6_and_opus_needs_approval(self):
+        """2026-10-24 design: one table D1-D6; Opus only when the operator names it or the card has approved_by."""
+        table = section(self.text, "Decisions")
+        for n in range(1, 7):
+            self.assertTrue(re.search(rf"^\| D{n} \|", table, re.M), f"D{n}")
+        d1 = re.search(r"^\| D1 \|.*$", table, re.M).group(0)
+        self.assertIn("approved_by", d1)
+
+    def test_prompt_is_one_supervisor_line(self):
         prompt = section(self.text, "Prompt: start a super session")
-        claim = re.compile(r"(Both|Every)\s+coordinator\s+prompts?\s+(\(below\)\s+)?carr(y|ies)\s+this\s+line", re.I)
-        rule_blocks = re.split(r"\n(?=\d+\. \*\*)", "\n" + rules)
-        claimed = [re.match(r"\s*(\d+)\.", b).group(1) for b in rule_blocks if re.match(r"\s*\d+\.", b) and claim.search(b)]
-        self.assertGreaterEqual(len(claimed), 3)
-        missing = [n for n in claimed if not re.search(rf"\bRule {n}\b", prompt, re.I)]
-        self.assertEqual(missing, [], "rule claims its line is in the coordinator prompt, but the prompt lacks 'Rule N'")
+        block = re.search(r"```\n(.*?)\n```", prompt, re.S).group(1)
+        self.assertTrue(block.startswith("You are Supervisor."))
+        self.assertEqual(len(block.splitlines()), 1)
 
     def test_every_numbered_rule_is_in_the_rules_section(self):
         for title, body in sections(self.text).items():
@@ -57,15 +61,14 @@ class SuperSessionDoc(unittest.TestCase):
 
     def test_start_model_follows_workers_rule_6(self):
         self.assertNotIn("new Opus session", self.text)
-        start_title = next(t for t in sections(self.text) if t.startswith("Start"))
+        start_title = next(t for t in sections(self.text) if t.startswith("Prompt"))
         self.assertNotRegex(start_title, r"model Opus,")
 
-    def test_rule_9_points_at_workers_rule_5(self):
-        """Turn budget text lives once (WORKERS.md rule 5): rule 9 must not restate the 4M / context formula."""
-        rule = re.search(r"^9\. .*?(?=^10\. )", self.text, flags=re.M | re.S).group(0)
-        self.assertNotIn("4M / context", rule)
-        self.assertIn("WORKERS.md rule 5", rule)
-
+    def test_compaction_rebuilds_from_notes_file(self):
+        """D5: state lives in the notes file, so a compaction cannot erase progress (10-15 audit: 39 of 68 lost work)."""
+        d5 = re.search(r"^\| D5 \|.*$", self.text, re.M).group(0)
+        self.assertIn("handover/SUPERVISOR_<L>.md", d5)
+        self.assertIn("never from memory", d5)
 
 if __name__ == "__main__":
     unittest.main()
