@@ -52,6 +52,21 @@ def cbp_transcript_body(vid: str, folder: Path) -> str:
     return TIMESTAMP.sub(" ", hits[0].read_text(encoding="utf-8", errors="replace"))
 
 
+def first_missing(quote: str, body_norm: str):
+    """None when `quote` occurs in the normalised transcript `body_norm`, else the first fragment that does not.
+    "..." / ellipsis joins fragments that must each occur, in order. The one matcher (CBP run, extract files)."""
+    at = 0
+    for frag in re.split(r"\.{3}|…", quote):
+        q = norm(frag)
+        if not q:
+            continue
+        at = body_norm.find(q, at)
+        if at < 0:
+            return frag
+        at += len(q)
+    return None
+
+
 def check_cbp_evidence(path: Path, lines, i, m, cache) -> int:
     """CBP block: `### <Short> | <date> | <video_id> | <title>` then ONE `evidence: "<quote>"`.
     "..." / ellipsis inside the quote joins fragments that must each occur, in order. No position tag."""
@@ -73,16 +88,10 @@ def check_cbp_evidence(path: Path, lines, i, m, cache) -> int:
     if body is None:
         print(f"NO-TRANSCRIPT {path.name}:{i + 1} {vid}")
         return 1
-    at = 0
-    for frag in re.split(r"\.{3}|…", m.group(1)):
-        q = norm(frag)
-        if not q:
-            continue
-        at = body.find(q, at)
-        if at < 0:
-            print(f"MISSING  {path.name}:{i + 1} {frag.strip()[:60]!r}")
-            return 1
-        at += len(q)
+    bad = first_missing(m.group(1), body)
+    if bad is not None:
+        print(f"MISSING  {path.name}:{i + 1} {bad.strip()[:60]!r}")
+        return 1
     print(f"OK       {path.name}:{i + 1}")
     return 0
 
