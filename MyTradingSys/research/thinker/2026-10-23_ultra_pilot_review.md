@@ -27,5 +27,12 @@ Pending: phase meters, per-agent table, verdict, findings.
 ## Krown run
 Not started: waits for the CBP run to end and for S1 (confluence-s1-context-counts) on trunk.
 
+## Comparison: single background Agents this session (same account, same hour)
+| worker | model | tokens | tool calls | minutes | outcome |
+|---|---|---|---|---|---|
+| Builder: Habib (Qriptal channel) ledger + plan scorer | sonnet | 108.6k | 35 | 34 | shipped 95fcdb20f; 81 rows, 2 eligible; plan study blocked (9 plans all in holdout) |
+| Haiku claim check of that ship | haiku | 53.2k | 5 | 1.1 | 5/5 claims confirmed |
+Lesson so far: a Haiku re-check costs about half a Sonnet card's tokens in 5 calls; most of it is the injected CLAUDE.md and tool schemas, not the work.
+
 ## Findings: right / wrong / improve
 Pending.
