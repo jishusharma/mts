@@ -1,1 +1,0 @@
-{"t": "20261016T193119Z", "from": "jis-nuc/sharma", "to": "all", "kind": "claim", "text": "claim \"context-compare-close: verify Fable COMPARISON, log Opus D1/D2/D5, gate V2 card\" 2>&1 | tail -3; ls MyTradingSys/research/context_factors_pit_2026-10-16/ MyTradingSys/research/context_factors_2"}
