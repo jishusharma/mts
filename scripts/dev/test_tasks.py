@@ -527,6 +527,15 @@ class RepoDataTest(unittest.TestCase):
                 if c["state"] in T.LIVE:
                     self.assertEqual(T.problems(c, cards, reg), [])
 
+    def test_sized_open_model_cards_carry_worker_fields(self):
+        """card-worker-fields: an open SONNET/HAIKU/OPUS card with a size also has worker and est_turns (WORKERS.md)."""
+        for c in T.load_all(T.REPO):
+            if c["state"] in ("done", "dropped") or c.get("lane") not in ("SONNET", "HAIKU", "OPUS") or not c.get("size"):
+                continue
+            with self.subTest(card=c["id"]):
+                self.assertTrue(c.get("worker") and c.get("est_turns"))
+
+
 
 class LabMachineChecksTest(unittest.TestCase):
     def setUp(self):
