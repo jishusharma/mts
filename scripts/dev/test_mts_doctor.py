@@ -102,3 +102,14 @@ def test_stale_main_checkout_hooks_are_reported(tmp_path):
     (tmp_path / D.HOOK_FILES[0]).write_text("old" + NL, encoding="utf-8", newline=NL)
     got = D.hook_drift(tmp_path)
     assert [(k, w) for k, w, _, _ in got] == [("HOOKS", str(tmp_path / D.HOOK_FILES[0]))]
+
+
+
+def test_twin_cards_are_reported(tmp_path):
+    make_repo(tmp_path)
+    (tmp_path / "scripts/dev/tasks.py").write_text(
+        "import sys" + NL + "print('TWIN a b (title 0.31)' if sys.argv[1:] == ['twins'] else 'tasks lint: 0 cards OK')" + NL,
+        encoding="utf-8", newline=NL)
+    got = D.dup_cards(tmp_path)
+    assert [(k, w) for k, w, _, _ in got] == [("DUP-CARD", "a + b")]
+    assert "DUP-CARD" in D.KINDS

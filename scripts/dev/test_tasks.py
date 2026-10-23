@@ -978,3 +978,70 @@ class NeedTest(unittest.TestCase):
         args = ([c], {}, [], {}, lane_st, now)
         self.assertEqual(T.exclusion(c, *args[:5], now, "JIS-NUC", self.repo)[0], "host")
         self.assertIsNone(T.exclusion(c, *args[:5], now, "JIS-NB", self.repo))
+
+
+class TwinCardTest(unittest.TestCase):
+    """Doctor 2026-10-23: two sessions filed one job as doctor-main-checkout-behind and jis-nb-fast-forward-the-main-checkout-to."""
+    REAL_A = ("Main checkout is 102 commits behind origin/fast-track so every session runs stale settings.json/turn_meter.py; "
+              "find why it does not auto-pull and fix (coordinator pulls ff-only)")
+    REAL_B = ("JIS-NB: fast-forward the main checkout to origin/fast-track so PC hooks run the event-turn guard (f47d4cae7) "
+              "and BOOT probe")
+    OTHERS = ["Trust re-check: lab-data-pin-hash", "Trust re-check: lab-dax-net-fee-verdict", "Krown pre-registration fire counts",
+              "Wire real funding into the RSI backtest rerun", "Gemini queue reads results back after each run",
+              "CI windows leg on a dev drive", "Fabio v3 grid fixtures for the lookahead lint", "Session levels for WLOW fixtures",
+              "Refresh the stale layer map page after a ship", "Codex spend guard counts 151 of 65 points on 3 runs"]
+
+    def cards(self):
+        out = [T.blank("a", self.REAL_A), T.blank("b", self.REAL_B)]
+        out += [T.blank(f"o{i}", t) for i, t in enumerate(self.OTHERS)]
+        return out
+
+    def ids(self, cards, **kw):
+        return {(x, y) for _, x, y, _ in T.twin_pairs(cards, **kw)}
+
+    def test_the_real_pair_is_a_twin_and_a_series_is_not(self):
+        got = self.ids(self.cards())
+        self.assertIn(("a", "b"), got)
+        self.assertNotIn(("o0", "o1"), got)          # "Trust re-check: X" siblings differ in X
+        self.assertEqual(got, {("a", "b")})
+
+    def test_same_title_is_a_twin(self):
+        cs = self.cards() + [T.blank("c", "Codex spend guard counts 151 of 65 points on 3 runs")]
+        self.assertEqual(self.ids(cs, only="c"), {("o9", "c")})
+
+    def test_two_shared_rare_files_make_a_twin_but_a_file_and_its_test_do_not(self):
+        cs = self.cards()
+        cs[2]["scope_in"] = ["scripts/dev/shot.py", "scripts/dev/test_shot.py"]
+        cs[3]["scope_in"] = ["scripts/dev/shot.py", "MyTradingSys/tests/test_shot.py"]
+        self.assertNotIn(("o0", "o1"), self.ids(cs))
+        cs[2]["refs"] = ["MyTradingSys/research/x/SPEC.md"]
+        cs[3]["refs"] = ["MyTradingSys/research/x/SPEC.md"]
+        self.assertIn(("o0", "o1"), self.ids(cs))
+
+    def test_a_path_many_cards_share_is_not_evidence(self):
+        cs = self.cards()
+        for c in cs[2:7]:
+            c["refs"] = ["MyTradingSys/research/x/SPEC.md", "MyTradingSys/research/x/FRAMING.md"]
+        self.assertEqual(self.ids(cs), {("a", "b")})
+
+    def test_not_twin_of_depends_on_and_final_cards_silence_a_pair(self):
+        for change in ({"not_twin_of": ["b"]}, {"depends_on": ["b"]}, {"state": "dropped"}):
+            cs = self.cards()
+            cs[0].update(change)
+            self.assertNotIn(("a", "b"), self.ids(cs), change)
+
+    def test_new_warns_on_a_likely_twin(self):
+        with tempfile.TemporaryDirectory() as d:
+            repo, old = Path(d), T.REPO
+            T.REPO = repo
+            try:
+                for c in self.cards()[1:]:
+                    T.save(repo, c)
+                rc, out = run_cli("new", self.REAL_A, "--id", "a")
+                self.assertEqual(rc, 0)
+                self.assertIn("WARN likely twin of b", out)
+                self.assertTrue(T.path_of(repo, "a").exists())        # a warning, not a refusal
+                rc, out = run_cli("twins")
+                self.assertIn("TWIN a b", out)
+            finally:
+                T.REPO = old

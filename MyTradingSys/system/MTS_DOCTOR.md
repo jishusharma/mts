@@ -11,7 +11,8 @@ Cadence: once per day by the pinned doctor session, and whenever CI is red or a 
 
 ## Part 1: AI health (deterministic for a repo state)
 DEAD-REF (a path or doc name in guidance that is not tracked), DUPLICATE (same 80+ char line in 2+ guidance files), MEMORY (index line
-without file, file without index line), CARD (`tasks.py lint` warnings), SKILL (no name/description frontmatter), BOOT-COST (CLAUDE.md
+without file, file without index line), CARD (`tasks.py lint` warnings), DUP-CARD (`tasks.py twins`: two open cards for one job; `tasks.py new` warns at filing; silence a
+false pair with `not_twin_of`), SKILL (no name/description frontmatter), BOOT-COST (CLAUDE.md
 bytes and the biggest guidance files). Each finding: file:line, what, suggested fix. It never edits; the doctor applies fixes in a normal
 claimed task.
 
