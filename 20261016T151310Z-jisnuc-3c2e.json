@@ -1,1 +1,0 @@
-{"t": "20261016T151310Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "start q79-touch-bar 2>&1 | tail -15; python scripts/dev/sync.py where 2>&1 | tail -10; python scripts/dev/mts_signal.py read --hours 3 2>&1 | tail -15"}

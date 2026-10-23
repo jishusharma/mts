@@ -1,1 +1,0 @@
-{"t": "20261016T151413Z", "from": "jis-nuc/sharma", "to": "jis-nb", "kind": "done", "text": "Q79 touch-bar: already fixed in 3b3ea9df (study, red-first tests) and W2a live adapter uses prev-bar close (7fd4462c); all 8 KEEP families survive on standard DEV (CI lower >0, +6.7..+11.7pp vs random"}

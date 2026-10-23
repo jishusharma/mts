@@ -1,1 +1,0 @@
-{"t": "20261016T151350Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "start no-click-rule 2>&1 | grep WORKTREE; W=$(git worktree list | grep \"no-click-rule\" | head -1 | awk '{print $1}'); grep -n -i \"card\\|start_session\" $W/MyTradingSys/system/SUPER_SESSION.md | head"}

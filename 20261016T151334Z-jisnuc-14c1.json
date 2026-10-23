@@ -1,1 +1,0 @@
-{"t": "20261016T151334Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "release q76-q77-prereg 2>&1 | tail -2; python scripts/dev/mts_signal.py send \"Q76+Q77: already done on fast-track (bbffceda, 6bd38b55); both cards pass tasks.py check; no new work\" --to jis-nb --kind "}
