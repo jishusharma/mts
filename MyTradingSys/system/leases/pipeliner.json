@@ -1,6 +1,6 @@
 {
  "acquired": 1792756385,
- "expires": 1792759085,
+ "expires": 1792756775,
  "holder": {
   "account": "?",
   "host": "JIS-NB",
@@ -8,10 +8,10 @@
   "session": "0f9e82246827"
  },
  "nonce": "72b554f36b07ea3a",
- "renewed": 1792756385,
+ "renewed": 1792756775,
  "role": "Pipeliner",
- "state": "held",
+ "state": "released",
  "took_over_from": null,
  "ttl": 2700,
- "write_id": "65e38369e996"
+ "write_id": "620e774be4a3"
 }
