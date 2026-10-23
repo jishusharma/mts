@@ -1,1 +1,0 @@
-{"t": "20261016T140024Z", "from": "jis-nuc/sharma", "to": "all", "kind": "claim", "text": "claim \"verify-layers-live\" 2>&1 | tail -2; git add MyTradingSys/research/layer_readiness_2026-10-16/LIVE_CHECK.md scripts/dev/auto_deploy.py scripts/dev/test_auto_deploy.py MyTradingSys/system/DEPLOY_"}
