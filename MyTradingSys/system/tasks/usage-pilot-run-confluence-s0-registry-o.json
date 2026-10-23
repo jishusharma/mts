@@ -28,6 +28,9 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "not_twin_of": [
+    "confluence-s0-registry"
+  ],
   "note": "REVIEWED:2026-10-23 T0-ONLY (weight ROUTINE: a CSV of readings, no decision number; spot-check by coordinator). Pilot work = confluence-s0-registry steps (its depends_on prereq card is a stamp only; that card already carries REVIEWED Opus 2026-10-22). After ship the coordinator runs tasks.py done confluence-s0-registry. DECISION (OURS): sampling points = step edges; no depends_on on usage-log-py (Thinker: % columns can start first, tokens fill later). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 1,
   "refine_tries": 0,

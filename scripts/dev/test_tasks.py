@@ -994,7 +994,20 @@ class TwinCardTest(unittest.TestCase):
     def cards(self):
         out = [T.blank("a", self.REAL_A), T.blank("b", self.REAL_B)]
         out += [T.blank(f"o{i}", t) for i, t in enumerate(self.OTHERS)]
+        out[0]["created"], out[1]["created"] = "2026-10-22T22:48:51Z", "2026-10-23T03:39:15Z"   # the real pair, 5 h apart
+        for i, c in enumerate(out[2:]):
+            c["created"] = f"2026-10-{10 + i:02d}T00:00:00Z"                                    # one per day: no batches
         return out
+
+    def test_one_sessions_batch_is_not_a_twin(self):
+        cs = self.cards() + [T.blank("c", "Codex spend guard counts 151 of 65 points on 3 runs")]
+        for gap, flagged in (("00:00:00", False), ("00:30:00", False), ("00:31:00", True)):
+            cs[-1]["created"] = f"2026-10-19T{gap}Z"                                         # o9 was created 2026-10-19T00:00Z
+            self.assertEqual(("o9", "c") in self.ids(cs, only="c"), flagged, gap)
+        cs[-1]["created"] = "?"                                                           # no usable time: no silence
+        self.assertIn(("o9", "c"), self.ids(cs, only="c"))
+        cs[0]["created"] = "2026-10-23T03:20:00Z"                                         # the real pair, if filed 19 min apart
+        self.assertNotIn(("a", "b"), self.ids(cs))
 
     def ids(self, cards, **kw):
         return {(x, y) for _, x, y, _ in T.twin_pairs(cards, **kw)}

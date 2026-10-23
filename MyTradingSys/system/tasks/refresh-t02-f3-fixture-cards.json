@@ -15,6 +15,9 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "not_twin_of": [
+    "t02-f3-fixtures-wlow-session-levels"
+  ],
   "note": "",
   "prio": 4,
   "refine_tries": 0,
