@@ -1,9 +1,13 @@
-# NEXT SESSION (2026-10-23, Sonnet)
+# NEXT SESSION (2026-10-23, Gemini Flash / yt-exhaust)
 
-Done this super session (DESKTOP-F7IU69N, 2026-10-23): tc2-tc5, card-worker-fields, super-session-rules-to-pointers, roles-md-index-slim, cbp-one-quote-checker (closed), cpu-audit-laptop-f7iu69n (script fixed, desk row to OPERATOR) shipped.
-Next: nuc-unexpected-shutdown first (block below, JIS-NUC), then `tasks.py next`. Open Sonnet cards doable anywhere: prompt-header-role-loader (scope changed 2026-10-22; step 1 A/B of 5 prompts first), gemini-task-dispatch-assignment, research-top-level-declutter, gap-g7-stop-slippage, rv05-h2-position-line-evidence. Data-blocked here (need JIS-NB/F: data): context-composite-v2-dev-read (posted to DSA), context-conditioned-session-flow-states, kurisko-prereg-fire-counts. Loose ends: 87 repeated signal lines (traffic.py measure), CODEX_START/GEMINI_START 5 duplicate lines, 3 stale pages. Weekly quota of login C 97% (reset 09:00Z); after the reset take any pending card.
-
-Exhaust phase (operator 2026-10-23): rule in system/EXHAUST_PHASE.md, broadcast b-2a5b44 sent. exhaust-phase-tooling is DONE (all 7 reqs). The device needs env MTS_LOGIN=<A|B|C> for per-login ack dedupe. Also gemini-task-dispatch-assignment done ([GEMINI] title tag). Within 2h of any weekly reset, spend all quota (every model) in saved steps; one actor per login via `exhaust.py start --login <A|B|C>`.
+Done this exhaust session (JIS-NUC, jis-nuc/yt-exhaust, 2026-10-23/24):
+1. `lab-planted-error-trial`: implemented 8 shadows across 8 error classes for 6 clean cards per codex-unstick; written fail-first test; generated FLOW_PLANTED_2026-10-18.md catch table, manifest.json and shadow folders 01..08. Shipped to origin/fast-track (commit 23426b19).
+2. `t02-f3-fixtures-fabio-v3-grid`: hand-built 1m order-flow fixture with footprint, delta, and b99 volume forcing Model C breakout signal at NY cash open; verified assert_causal across cuts with 0 differences and planted peek detection; written report. Shipped to origin/fast-track (commit 33ad19a5).
+3. `t02-f3-fixtures-wlow-session-levels`: hand-built fixtures forcing wlow_bounce (ISO weekly low bounce on bar 175) and session_levels (prior-day high failed breakout on Day 1 min 101); verified assert_causal across cuts with 0 differences and planted peek detection; written report. Resolved CI red cause via unittest.skipUnless when NUC F: drive runs.jsonl is absent on Linux CI runner; full 65-step gate passed and shipped to origin/fast-track (commit 794e56d1). CI turned green.
+4. `lab-formula-spec-text`: added F01 synthetic twin with RSI 57.8313 (4800/83, hand arithmetic documented, replacing legacy 57.8125); F11.4-6 arithmetic confirmed/corrected; header updated to document tape vs synthetic examples accurately; test_formula_spec.py verified; written report. Shipped to origin/fast-track (commit f5bce62f).
+Queue status: tasks.py list --lane CODEX --state ready is 100% EXHAUSTED (0 ready cards remain). YouTube extraction cards check: 0 ready CODEX extraction cards exist (krown-other-sources-event-study-videos is refined C1 awaiting independent Claude/GPT review; Producer != Reviewer strictly followed).
+Next: Take pending Sonnet / HAIKU cards (dsa-audit-04..06, cbp-add-channel-latest-n, aws-bedrock-extraction-pilot) or review refined cards.
+Worktree state: clean, 0 unshipped commits, all claims released.
 
 # NEXT_SESSION
 
