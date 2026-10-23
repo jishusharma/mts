@@ -84,6 +84,17 @@ class SyncTest(unittest.TestCase):
         self.assertEqual(seen, [["d.py"]])
         self.assertEqual(len(docs), 1)
 
+    def test_a_docs_only_ship_over_a_doc_size_cap_is_refused(self):
+        """2175ef80: a docs ship ran no gate and pushed CLAUDE.md over its cap; the default docs gate now checks the caps."""
+        cap = "MyTradingSys/tests/docs/test_integrity.py"
+        (self.a / cap).parent.mkdir(parents=True)
+        commit(self.a, cap, (Path(__file__).resolve().parents[2] / cap).read_text(encoding="utf-8"))
+        sync.ship(self.a, gate=lambda repo, files: None)
+        commit(self.a, "CLAUDE.md", "x" * 100_000)
+        with self.assertRaisesRegex(sync.SyncError, "doc size cap.*100000 <= "):
+            sync.ship(self.a, gate=self.gate)
+        self.assertNotIn("CLAUDE.md", self.head_files(self.a))
+
     def test_run_gate_picks_smoke_and_full_flag_forces_everything(self):
         calls = []
         real = sync.subprocess.run
@@ -495,6 +506,24 @@ class SyncTest(unittest.TestCase):
         self.assertTrue(dirty.exists())
         self.assertTrue(ahead.exists())
         self.assertTrue(self.a.exists())  # primary tree never touched
+
+    def test_discard_saves_uncommitted_work_removes_tree_keeps_branch(self):
+        # operator 2026-10-23: the App's discard action asked him 4-5 times; `sync.py discard` does it from Bash, no card
+        with contextlib.redirect_stdout(io.StringIO()):
+            wt = sync.new_worktree(self.a, "kept")
+        br = subprocess.run(["git", "-C", str(wt), "branch", "--show-current"], capture_output=True, text=True).stdout.strip()
+        (wt / "README.md").write_text("edited\n", newline="\n")
+        (wt / "new.txt").write_text("untracked\n", newline="\n")
+        with contextlib.redirect_stdout(io.StringIO()) as out:
+            self.assertEqual(sync.discard(self.a, [wt.name, str(self.a), "nope"]),
+                             [str(wt.resolve())])
+        self.assertFalse(wt.exists())
+        self.assertTrue(self.a.exists())                                  # the primary tree is never discarded
+        self.assertIn("skip  nope", out.getvalue())
+        rescue = self.a.resolve() / "Dumps" / "wt_rescue" / wt.name
+        self.assertIn("+edited", (rescue / "changes.patch").read_text())
+        self.assertEqual((rescue / "files" / "new.txt").read_text(), "untracked\n")
+        self.assertEqual(subprocess.run(["git", "-C", str(self.a), "rev-parse", "--verify", "-q", br]).returncode, 0)  # branch kept
 
     def test_tidy_apply_repairs_a_case_broken_head(self):
         with contextlib.redirect_stdout(io.StringIO()):

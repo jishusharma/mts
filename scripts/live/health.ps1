@@ -1,6 +1,6 @@
 # MTS live: health - java process, state file age, log tail
 # usage:    . .\scripts\load.ps1   then type: health
-$root = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
+$root = (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 "JAVA:"
 Get-Process java -ErrorAction SilentlyContinue | Select Id, StartTime, Path | Format-Table -AutoSize
 $sc = "$root\MyTradingSys\runtime\state_code.json"

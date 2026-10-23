@@ -226,10 +226,14 @@ def _kw_re(kw):
     return re.compile(r"(?<![a-z0-9])" + body + ("" if prefix else r"(?![a-z0-9])"))
 
 
+# A path inside a brief ("C:/Users/x/IdeaProjects/...") must not score: "idea*" matched IdeaProjects (pilot 2026-10-22).
+_PATH_RE = re.compile(r"[a-z]:[\\/][\w.~\\/-]*|[\w.~-]+(?:[\\/][\w.~-]+){2,}")
+
+
 def pick_role(text, repo=REPO):
     """Best operator role for a task text: 1 point per keyword, 0.5 per weak keyword (roster). A role needs one full
     keyword; embedded roles (Builder, Session_Planner) are never picked. Equal top scores = a tie, nothing is picked."""
-    low = (text or "").lower()
+    low = _PATH_RE.sub(" ", (text or "").lower())
     scored = []
     for r in load_roster(repo):
         if r.get("start") != "operator":
@@ -251,7 +255,8 @@ def pick_role(text, repo=REPO):
 def from_session(prompt):
     """A brief sent by another session: its sender names the role, the fallback stays out."""
     p = (prompt or "").lstrip()
-    return "<cross-session-message" in p[:400] or p.startswith("Another Claude session")
+    return ("<cross-session-message" in p[:400] or p.startswith("Another Claude session")
+            or p.startswith("Background (from the session that started this one)"))
 
 
 # ---------- session state ----------
@@ -310,9 +315,10 @@ def boot_step(body):
     lines = body.split("\n")
     for i, ln in enumerate(lines):
         s = ln.strip()
-        m = re.match(r"^(?:#+\s*)?boot\b[^:\n]*?(?::\s*(.*))?$", s, re.I)
+        # a Boot heading, or a short "Boot ...:" label; prose that merely starts with "Boot" is not a section
+        m = re.match(r"^(?:#+\s*boot\b[^:\n]*?(?::\s*(.*))?|boot\b[^:\n]{0,25}:\s*(.*)|boot\b[^.:\n]{0,40}())$", s, re.I)
         if m and not s.startswith("|"):
-            inline = (m.group(1) or "").strip()
+            inline = (m.group(1) or m.group(2) or "").strip()
             if len(inline) > 12:
                 return inline[:240]
             for nx in lines[i + 1:]:
@@ -340,7 +346,9 @@ def lease_suffix(name, repo):
 RULES_ANSWER = ("RULES ANSWERS (bug-haiku-stale-rule-answers): before any answer about current rules, roles, the super session "
                 "or budget, read the source file this turn (your role file's `Read first:` line names it); cite file:line and its "
                 "commit date (`git log -1 --format=%cs -- <file>`); a reading (budget, mirror, usage) gives its timestamp and age "
-                "and is called stale past 6 h; nothing read = `NOT_IN_DATA`, never memory or a first search hit.\n")
+                "and is called stale past 6 h; nothing read = `NOT_IN_DATA`, never memory or a first search hit.\n"
+                "ASKED WORK RUNS NOW (bug-ask-go-for-asked-work): work the operator already asked for is done this turn, "
+                "full depth; never end a reply asking him to say go. Ask only for a genuine option decision with no default.\n")
 
 
 def build_text(name, repo, fetched_ok, fallback=None):
@@ -411,16 +419,69 @@ def _reminder(sid):
                 f"have it in context, say ROLE CONTEXT LOST and re-read it with git show {TRUNK}:{path}.")
 
 
+# Built-in helper agents that never take a role.
+SUBAGENT_NO_ROLE = {"explore", "plan", "statusline-setup", "claude-code-guide"}
+
+
+def subagent_role(payload, roles):
+    """Role a SubagentStart payload names: the agent prompt text if the payload carries one, else agent_type, else description.
+    (Claude Code documents agent_id + agent_type only, so the prompt fields are read when present, never required.)"""
+    for key in ("prompt", "agent_prompt", "task_prompt", "description"):
+        v = payload.get(key)
+        if isinstance(v, str):
+            hits = match_roles(v, roles)
+            if len(hits) == 1:
+                return hits[0]
+    at = payload.get("agent_type")
+    if isinstance(at, str):
+        norm = re.sub(r"[_ -]+", "_", at.strip().lower())
+        for name in roles:
+            if norm == re.sub(r"[_ -]+", "_", name.lower()):
+                return name
+    return None
+
+
+def handle_subagent(payload, repo=REPO):
+    """SubagentStart: a background Agent gets role text like a session does. session_id is the PARENT's, so dedupe by agent_id.
+    Role unknown (the payload has no prompt text): a one-line pointer so the worker loads it itself when its brief says
+    'You are <Role>'. Built-in helper types and repeat starts get nothing."""
+    sid = str(payload.get("session_id") or "nosession")
+    aid = str(payload.get("agent_id") or "")
+    at = str(payload.get("agent_type") or "")
+    if at.strip().lower() in SUBAGENT_NO_ROLE:
+        return ""
+    d = _load(sid)
+    seen = d.setdefault("subagents", [])
+    if aid and aid in seen:
+        return ""
+    if aid:
+        seen.append(aid)
+        _save(sid, d)
+    roles = local_roles(repo)
+    name = subagent_role(payload, roles)
+    if name:
+        return _out("SubagentStart", build_text(name, repo, git_fetch(repo)))
+    names = ", ".join(sorted(roles)) or ", ".join(KNOWN_ROLES)
+    return _out("SubagentStart", f"ROLE LOADER (hook): if your task prompt begins `You are <Role>.` with <Role> one of "
+                f"{names}, your FIRST action is `git show {TRUNK}:{ROLES_REL}/<role lowercase>.md` (or read the file in the "
+                f"worktree); your FIRST reply line is then that role's banner (`python scripts/dev/role_loader.py banner <Role>`). "
+                f"If the file cannot be read, reply `ROLE NOT LOADED: <why>`. No role line in the prompt: ignore this.")
+
+
 def handle(payload, repo=REPO):
     """Return the hook JSON string, or '' when nothing is to be injected."""
     if not isinstance(payload, dict):
         return ""
+    if payload.get("hook_event_name") == "SubagentStart":
+        return handle_subagent(payload, repo)
     sid = str(payload.get("session_id") or "nosession")
     if payload.get("hook_event_name") == "SessionStart":
         done = injected(sid)
         if not done:
             return ""
         text = build_text(done[-1], repo, git_fetch(repo))
+        if LAST_META:                   # trunk may have changed the role since the first load: record what was served
+            mark_injected(sid, done[-1], dict(LAST_META))
         return _out("SessionStart", "Session resumed/compacted: re-confirm the role. " + text)
     prompt = payload.get("prompt")
     if not isinstance(prompt, str):

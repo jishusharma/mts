@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-22T11:07:08Z",
+  "depends_on": [
+    "confluence-s1-context-counts-need-lab-guy-review-stamp-roles"
+  ],
+  "done_when": "research/krown_audit_2026-10-22/run/COUNTS.md committed with n, ISO weeks and MDE per layer and cell; test_krown_context.py passes and its shifted-join test fails on a deliberately shifted join; ACCESS_LOG shows no bar >= 2024-07-01",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Build backtest/layers/krown/krown_context.py (point-in-time Krown context rows), backfill DEV + DEV_EXT, join with usable DEV event tables at decision time, and write run/COUNTS.md (shares, S histogram, ISO weeks, week-clustered MDE, cost/R) without reading any outcome column. Spec: FABLE_CARD_CONFLUENCE.md s4 S1.",
+  "hosts": [
+    "DESKTOP-F7IU69N",
+    "JIS-NB"
+  ],
+  "id": "confluence-s1-context-counts",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "confluence design v2 after Opus review; Fable card for role-based layer confluence; S0/S1 ",
+      "ref": "460c15e0bdff",
+      "utc": "2026-10-22T11:07:38Z"
+    }
+  ],
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Step S1 of FABLE_CARD_CONFLUENCE.md; S2 (Fable design + pre-reg) starts only after this ships. Reuse context_factors_pit_2026-10-16/context_asof.py. Needs F:/MTS/data (DESKTOP-F7IU69N or JIS-NB).\nREVIEWED: Opus 2026-10-22 (research/krown_audit_2026-10-22/REVIEW_OPUS.md, design SOUND WITH FIXES, amendments folded in) | class=C2\nREVIEWED: Lab_Guy 2026-10-23 ACCEPT-WITH-CONDITIONS (PRE_REG_S1_COUNTS.md addresses F2, F3, F8, F12 and requires a leak test that fails on a leaking variant; DECISION (OURS): C2 because it defines the context every later step reads; the non-Claude spec review of PRE_REG_S1_COUNTS.md must run before take per lab_guy.md C2 row, this stamp is not that review)",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-23T08:12:57Z",
+  "refs": [
+    "MyTradingSys/research/krown_audit_2026-10-22/FABLE_CARD_CONFLUENCE.md",
+    "MyTradingSys/research/krown_audit_2026-10-22/LAYER_CONFLUENCE_DESIGN.md",
+    "MyTradingSys/research/krown_audit_2026-10-22/PRE_REG_S1_COUNTS.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/krown/",
+    "MyTradingSys/research/krown_audit_2026-10-22/"
+  ],
+  "scope_out": [
+    "VALIDATION 2024-07..2025-06; HOLDOUT 2025-07..2026-09; live path; outcome columns"
+  ],
+  "scope_sha": "460c15e0bdff",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/krown_audit_2026-10-22/PRE_REG_S1_COUNTS.md (parameter table, SOURCED/OURS)",
+    "MyTradingSys/research/krown_audit_2026-10-22/REVIEW_OPUS.md F2,F3,F8,F12"
+  ],
+  "state": "ready",
+  "steps": [
+    "krown_context.py + tests (fail first)",
+    "DEV/DEV_EXT backfill to run/context_dev.csv",
+    "regenerate event tables, join at decision time, write COUNTS.md; freeze D2/D3 bands from counts only"
+  ],
+  "tests": "test_krown_context.py: hand numbers from FORMULAS.md (BBWP 21.5, RSI s1), fails on pre-change code, no-lookahead shifted-join test; pre-reg in PRE_REG_S1_COUNTS.md: ISO-week MDE and 3 regime sets (F2), cost% vs gross% wording (F3), real shares + MDE gate before bands (F8), OURS labels + naive trend baseline (F12); leak test must fail on a leaking variant",
+  "title": "Confluence S1: Krown context table and counts pass",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

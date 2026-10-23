@@ -1,0 +1,71 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-22T17:11:08Z",
+  "commands": [
+    "python scripts/dev/hook_bench.py -n 3"
+  ],
+  "created": "2026-10-22T15:10:24Z",
+  "depends_on": [],
+  "done_when": "hook_bench.py output lists model_guard.py, preship.py hook-edit and every SessionStart hook with a median; a test fails if a configured hook is missing from the bench; shipped",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "hook_bench.py times every hook in .claude/settings.json: PreToolUse for Agent/start_session (model_guard), PostToolUse for Edit (preship hook-edit), and SessionStart once, each with a payload its matcher accepts",
+  "id": "e2e-hook-bench-all-hooks",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "ab82fc75: hook_bench times all 20 hook rows; test fails on the old bench (3 failed)",
+      "ref": "e07d7879",
+      "utc": "2026-10-22T17:11:08Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Hooks: background post-tool hooks, lazy imports, away-flag fix; RUN_MODEL design; intervie",
+      "ref": "ce4a04a0fe70",
+      "utc": "2026-10-22T11:43:07Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-22T15:10:30Z",
+  "refs": [],
+  "result": "ab82fc75: hook_bench times all 20 hook rows; test fails on the old bench (3 failed)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/hook_bench.py",
+    "scripts/dev/test_hook_bench.py"
+  ],
+  "scope_out": [
+    ".claude/settings.json"
+  ],
+  "scope_sha": "ce4a04a0fe70",
+  "size": "S",
+  "sources": [
+    "E2E run 2026-10-22: bench printed 12 rows, settings.json has 16 hook commands"
+  ],
+  "state": "done",
+  "steps": [
+    "write the fail-first test",
+    "add per-matcher payloads (tool_name from the matcher) and a SessionStart row that does not send signals (state dirs in temp)",
+    "ship"
+  ],
+  "taken": "2026-10-22T17:11:08Z",
+  "tests": "test_hook_bench.py: a test that reads .claude/settings.json and asserts every configured command appears in the bench rows; fails on the current bench",
+  "title": "hook_bench.py skips matcher hooks (model_guard, preship hook-edit) and SessionStart",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

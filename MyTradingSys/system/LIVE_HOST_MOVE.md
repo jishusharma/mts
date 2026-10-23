@@ -19,6 +19,7 @@ and taking the loop off the NUC lets the NUC run backtests flat out with no "one
 | Windows Update active hours | 22:00-16:00 (local) | HKLM `...\WindowsUpdate\UX\Settings` |
 | Last boot | 2026-10-18 18:08 local | `Win32_OperatingSystem.LastBootUpTime` |
 | Public API round-trip, Wi-Fi, new TLS connection per call, n=15 each | Binance spot `/api/v3/time` median 205 ms (min 179); Binance futures `/fapi/v1/time` 201 ms (min 176); Deribit testnet `public/get_time` 323 ms (min 303) | probe in section 3 item 9 |
+| Probe 2026-10-21 17:38Z (laptop, Wi-Fi, n=15, section 3 item 9) | binance_time median 180 ms min 172; binance_fapi_time 180 / 174; deribit_test_get_time 304 / 298. JIS-NB (signal 17:48Z, same 15 min): binance_time 185 / 176, binance_fapi 196 / 171, deribit_test 312 / 295. OURS rule: PASS on every endpoint (laptop median and min <= JIS-NB + 20). Link was Wi-Fi: the SIM link required by s3 item 6 is NOT up (only Wi-Fi adapter present), so the probe must be repeated over the SIM before cutover; cutover NOT run | probe in section 3 item 9 |
 | Ethernet | built-in Intel I219-V, disconnected (no dongle needed) | `Get-NetAdapter` |
 | Backup internet | built-in LTE modem (Fibocom L830-EB), no SIM / disconnected | `Get-NetAdapter` |
 | Lid close | AC = do nothing, battery = SLEEP: a power cut with the lid shut would sleep the loop | `powercfg /qh` |
@@ -110,3 +111,6 @@ Grep before the cutover: `grep -rn "JIS-NB" scripts MyTradingSys --include=*.py 
 - Cutover window date. Default: none set; the move does not happen until the operator names it.
 </content>
 </invoke>
+
+**2026-10-21 Supervisor B (JIS-NUC):** `net share` on JIS-NUC shows NO MTS-* shares (only C$ F$ IPC$ ADMIN$), so s5 is not done. Operator: run `scripts\ops
+uc_create_mts_shares.ps1` elevated on the NUC once (asks the share password), then `cmdkey /add:192.168.29.110 /user:JIS-NUC\mtsshare /pass` on the laptop and JIS-NB. Cutover s4 step 2 waits for this.

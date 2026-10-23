@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-23T07:16:54Z",
+  "depends_on": [],
+  "done_when": "on every device (JIS-NB, JIS-NUC, DESKTOP-F7IU69N) sync.py where --all shows no UNSHIPPED row except lane trees and the live tree, and each device sent its STATION done line",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "No worktree on any station holds work that is not on origin; every clean, pushed tree is removed.",
+  "id": "every-station-save-unshipped-worktree-wo",
+  "kind": "run",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "OPERATOR QUOTE: I think you should create a task for this. And your task it for all stations. So going forward, station would mean a device, with a login. / And I meant broadcast. You have to broadcast it.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-23T07:17:22Z",
+  "refs": [
+    "MyTradingSys/system/ANNOUNCEMENTS.md A-20261023-1"
+  ],
+  "result": "",
+  "scope_in": [
+    "the worktrees of the repo on the station's own device (git worktree list)"
+  ],
+  "scope_out": [
+    "the live tree (.mts_live), lane trees mts-dsa/mts-relay/mts-app (their owners ship them), other sessions' running trees"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "python scripts/dev/sync.py where --all",
+    "for each UNSHIPPED tree: git -C <tree> status --short and git -C <tree> log --oneline origin/fast-track..HEAD; read what it is",
+    "real work (commits, notes, code): from inside that tree run python scripts/dev/sync.py ship (its own branch merges via PR/fast-track as usual)",
+    "runtime, order or account data, scratch: never commit (public repo); leave it, or python scripts/dev/sync.py discard <tree> (saves it to Dumps/wt_rescue/ first)",
+    "python scripts/dev/sync.py tidy --apply (removes only clean, pushed, idle trees), then where --all again",
+    "python scripts/dev/mts_signal.py send \"STATION <device>/<login> worktrees: <n> shipped, <n> discarded, <n> left (why)\" --to all --kind done"
+  ],
+  "tests": "none (run task); proof = where --all output before and after, pasted in the done line or the session's last reply",
+  "title": "Every station: save unshipped worktree work to origin, then tidy",
+  "weight": "",
+  "worker": "session"
+}

@@ -18,7 +18,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 
 sys.dont_write_bytecode = True
-R = Path(r"C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed")
+R = Path(__file__).resolve().parents[2]
 SNAPS = R / "runtime_data" / "snapshots"
 
 def parse_ts(s):

@@ -32,6 +32,14 @@ STATE_RE = re.compile(r"^##\s+State at handoff\s*$", re.M)
 HASH_RE = re.compile(r"(?<![0-9A-Za-z_.\-/])([0-9a-f]{7,40})(?![0-9A-Za-z_\-])")
 
 
+def dropped_blocks(old, new, history=""):
+    """`## ` headings of `old` that `new` lost and `history` (handoff_history text) does not hold. A session writing its own
+    hand-over replaced the whole file once (plain pilot 2026-10-22: 82 lines to 7), deleting every other session's block."""
+    heads = lambda t: re.findall(r"^##\s+(.+?)\s*$", t, re.M)
+    keep = set(heads(new))
+    return [h for h in heads(old) if h not in keep and h not in history]
+
+
 def first_block(lines):
     """Return the lines inside the first fenced block, or None."""
     start = None

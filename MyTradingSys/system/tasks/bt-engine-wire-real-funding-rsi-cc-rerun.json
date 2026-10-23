@@ -17,6 +17,15 @@
   "goal": "After the fail-closed fix the RSI and CryptoCred runners still run with funding=[] (no model). Load the real funding records (bt_data.load_funding) for the hold span, rerun both on DEV, and report the net change against the published rows before anyone quotes a net number (T03 handover item 4).",
   "id": "bt-engine-wire-real-funding-rsi-cc-rerun",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "bt_engine.simulate_trade: fail closed on funding, window t_in < s <= t_out (T03-F1/F2)",
+      "ref": "c736174008de",
+      "utc": "2026-10-19T07:08:49Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -24,6 +33,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-22T22:47:32Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -36,11 +46,12 @@
     "live path",
     "changing any stop, target or threshold"
   ],
+  "scope_sha": "c736174008de",
   "size": "M",
   "sources": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T03_planted_edges.md:129-133 (handover 1-5)"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read how each runner picks its bars and where it takes funding; add a funding argument fed by bt_data.load_funding for the DEV span",
     "Unit test with synthetic funding records that the runners pass them through (fails on the funding=[] code)",

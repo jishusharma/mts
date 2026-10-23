@@ -132,11 +132,13 @@ B171 | OPEN    | B171_imbalance_indicator_end_to_end.md | operator: profitable i
 B174 | OPEN    | B174_snapshot_oi_quantized.md | snapshot OI quantized to 0.01; full-precision series in backtest/raw/metrics unread; Claude decides consumer or display-only
 # END
 B175 | OPEN    | B175_defender_msmpeng_cpu.md | Defender MsMpEng ~0.94 core on JIS-NB; ordered fix plan (pid 3200, ext exclusions, Dev Drive), operator confirms host changes
-B177 | OPEN    | B177.md | operator: Control Room 'Layer Board' tab - per active layer: dev/test activity, combined indicators, step count, actionables only
-B178 | OPEN    | B178.md | operator: CI/CD end-to-end speed - deploy gate runs the full layer suite as one cold call; backup_snapshot competes for disk
-B179 | OPEN    | B179.md | operator: turn the Tom and Fabio layers story (principles and concepts) into a slide deck artifact so the operator can learn what they taught
-B180 | OPEN    | B180.md | operator: DSA picks its tasks by default from the machine it runs on, and something assigns DSA tasks on a schedule (cost)
-B181 | OPEN    | B181.md | operator: Control Room Inbox shows no progress per item; an item without a registry ref shows nothing
+B177 | OPEN    | B177_control_room_layer_board_tab.md | operator: Control Room 'Layer Board' tab - per active layer: dev/test activity, combined indicators, step count, actionables only
+B178 | OPEN    | B178_cicd_deploy_gate_speed.md | operator: CI/CD end-to-end speed - deploy gate runs the full layer suite as one cold call; backup_snapshot competes for disk
+B179 | OPEN    | B179_tom_fabio_layers_story_slides.md | operator: turn the Tom and Fabio layers story (principles and concepts) into a slide deck artifact so the operator can learn what they taught
+B180 | OPEN    | B180_dsa_host_routing_and_scheduler.md | operator: DSA picks its tasks by default from the machine it runs on, and something assigns DSA tasks on a schedule (cost)
+B181 | OPEN    | B181_control_room_inbox_progress.md | operator: Control Room Inbox shows no progress per item; an item without a registry ref shows nothing
+B182 | OPEN    | B182_dsa_parallel_sessions_nb_nuc_scope.md | DSA AIBridge tasks run in parallel with NB/NUC scope kept; split units, per-host lane, claim per task
+B183 | OPEN    | B183_session_start_ritual_audit.md | session start ritual audit after AI-health changes; measure boot reads against the B172 token plan
 T081 | OPEN    | T081_backtest_d_stop_tuning.md | Backtest D: walk-forward stop_buffer_atr; Tom part NO 2026-10-09, tight-stop layers blocked on B143
 T082 | OPEN    | T082_capture_matrix_rerun.md | re-run capture matrix + Tom core after Stage 1 data fixes
 T083 | OPEN    | T083_rsi_events_1h_lead_check.md | rsi_events 1h on full 2022-2026 history with fees
@@ -162,3 +164,8 @@ B158 | CLOSED  | B158_session_state_thesis_dead.md | thesis line removed from th
 B160 | CLOSED  | B160_engine_state_at_screenshot_time.md | shot.py engine replays the engine at the shot minute; landed 2026-10-10
 B185 | OPEN    | B185_silent_malformed_bugs_row.md | malformed BUGS.md row passes the parser silently; restore B141 + reject over-wide rows
 B186 | OPEN    | B186_write_discipline_stray_backup_and_dup_section.md | stray .bak + duplicate section passed all write checks; fix is one-line backup rule + post-write stray scan
+B194 | OPEN    | B194_gemini_dispatch_tagging.md | Claude dispatcher lacks explicit tagging/assignment for Gemini-tailored task cards in task queue
+B195 | OPEN    | B195_task_mode_block_silent_drop.md | task-mode gate block silently never ran; no receipt, no refusal on three sends; ack and duplicate-rid fix
+B196 | OPEN    | B196_aibridge_auto_off_operator_draft.md | auto-OFF on operator draft blocks runs silently; ignore drafts, post a receipt on auto-off
+B197 | OPEN    | B197_search_discipline_content_before_absence.md | content search before absence; lessons go in LESSONS_DIGEST.md not apparatus_fixes.md
+B198 | OPEN    | B198_aibridge_background_tab_stall.md | hands-free stalls when tab backgrounded; Chrome throttling pauses loop, misfires on wake

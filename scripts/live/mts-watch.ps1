@@ -13,7 +13,7 @@
 
 param([int]$IntervalSec = 30)
 $ErrorActionPreference = "Continue"
-$R = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
+$R = (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 Set-Location $R
 $stop = Join-Path $R "runtime_data\mts_watch_stop.flag"
 $log  = Join-Path $R "runtime_data\mts-watch.log"
