@@ -138,10 +138,12 @@ DOCS_SHIP_RULES = ("doc size cap", "role files", "task cards", "bug group map")
 
 
 def docs_ship_failures(root, paths):
-    """-> [(rule, failure texts)] of the DOCS_SHIP_RULES the paths reach; sync.py runs it on a docs-only ship."""
+    """-> [(rule, failure texts)] of the DOCS_SHIP_RULES the paths reach; sync.py runs it on a docs-only ship.
+    A rule whose checker script is not in `root` is not run (a repo without it: test_sync's scratch repos), as cap_failures did."""
     out = []
     for rule, ps in rules_for(paths):
-        if rule[0] in DOCS_SHIP_RULES:
+        scripts = [a for cmd in rule[2](root, ps) for a in cmd[1:] if a.endswith(".py")]
+        if rule[0] in DOCS_SHIP_RULES and all((Path(root) / s).exists() for s in scripts):
             fails = run_rule(rule, ps, root)
             if fails:
                 out.append((rule, fails))

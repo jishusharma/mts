@@ -156,6 +156,12 @@ class RealRulesTest(unittest.TestCase):
             with self.subTest(path=path):
                 self.assertTrue(set(self.names(path)) & set(P.DOCS_SHIP_RULES))
 
+    def test_a_repo_without_the_checkers_passes_a_docs_ship(self):
+        """Ship 2026-10-24: test_sync's scratch repos have no doc cap test; the docs ship check failed them on 'file not found'."""
+        with tempfile.TemporaryDirectory() as d:
+            self.assertEqual(P.docs_ship_failures(d, ["CLAUDE.md", "MyTradingSys/system/roles/supervisor.md",
+                                                      "MyTradingSys/system/tasks/x.json", "MyTradingSys/research/BUGS.md"]), [])
+
     def test_every_hook_mode_in_settings_exists(self):
         s = json.loads((Path(__file__).resolve().parents[2] / ".claude" / "settings.json").read_text(encoding="utf-8"))
         cmds = [h["command"] for g in s["hooks"].values() for grp in g for h in grp["hooks"] if "preship.py" in h["command"]]
