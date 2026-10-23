@@ -1,11 +1,22 @@
 # NEXT SESSION (2026-10-23, Sonnet)
 
 Done this super session: tc2, tc4-desk-done-once, tc3-budget-lines, tc5-lab-lane-dedupe, ci-919cc0f (stale) shipped.
-Next: `tasks.py next` -> dsa-audit-01-data-forensics (DSA lane: `desk.py post ... --target DSA`). Data-blocked on this machine: context-conditioned-session-flow-states, kurisko-prereg-fire-counts (need JIS-NB). Weekly quota of login C was 97% at 04:20Z (reset 09:00Z); after the reset take any pending card.
+Next: nuc-unexpected-shutdown first (block below, JIS-NUC), then `tasks.py next` -> dsa-audit-01-data-forensics (DSA lane: `desk.py post ... --target DSA`). Data-blocked on this machine: context-conditioned-session-flow-states, kurisko-prereg-fire-counts (need JIS-NB). Weekly quota of login C was 97% at 04:20Z (reset 09:00Z); after the reset take any pending card.
 
 # NEXT_SESSION
 
 Older blocks (2026-10-18/19): `MyTradingSys/system/handoff_history/2026-10-21_next_session_trim.md`. A session reads only its own block.
+
+## Next card: nuc-unexpected-shutdown (hand-over, JIS-NUC session, 2026-10-23)
+Task: nuc-unexpected-shutdown (no card on disk yet; the brief is `MyTradingSys/system/NUC_SHUTDOWN_HANDOVER.md`). Run with zero operator input; defaults for open questions.
+Steps:
+1. `python scripts/dev/sync.py start nuc-unexpected-shutdown`, then `python scripts/dev/sync.py claim "nuc-unexpected-shutdown"`.
+2. Re-read the NUC's event log before any change, for the last 7 days: Kernel-Power 41, event 6008, 1074, 13, WHEA-Logger, 37, and 506/507. Record the counts in the commit body, not from memory.
+3. Run the four internet queries listed in the brief (NUC10i7FNH shutdown reports; PlatformAoAcOverride status on Windows 10; newest BIOS for FNCML357; CMOS clock reset). Write the findings and their sources into the brief.
+4. Build `scripts/operator/nuc_power_fix.ps1`, modelled on `scripts/operator/defender_exclusions.ps1`: self-elevating; `-Check` changes nothing; sets `PlatformAoAcOverride = 0` and `HiberbootEnabled = 0`; runs `powercfg /hibernate off`; prints "reboot required"; never reboots. Test: `-Check` leaves registry and powercfg state unchanged. The test must fail before the script exists.
+5. Do not reboot the NUC, flash or change the BIOS, add a scheduled task (SCHEDULING_POLICY.md), or touch the live tree. Those are operator steps, listed in the brief.
+6. Ship with `python scripts/dev/sync.py ship --release nuc-unexpected-shutdown`. The commit body carries the event counts and the `-Check` output.
+7. Defaults: apply `PlatformAoAcOverride = 0`: yes. BIOS flash: no, until a UPS is in place. Leave the operator steps (Defender exclusions b-544817, BIOS settings, CMOS battery, UPS) in the brief and the recap.
 
 ## Next card: tc4-desk-done-once (hand-over, super session DESKTOP-F7IU69N, 2026-10-23)
 Task: tc4-desk-done-once (`python scripts/dev/tasks.py brief tc4-desk-done-once`). Not started (turn cap hit, weekly quota 97%). Steps: `sync.py start tc4-desk-done-once`, claim; test first (two clones close one row, exactly one done commit lands; red on old desk.py); fix `finish`/`take` in scripts/dev/desk.py (lines 126-150) with a re-read inside the push retry, CAS pattern of lease._write; ship. Then tc3-budget-lines, tc5-lab-lane-dedupe. Data-blocked here: context-conditioned-session-flow-states, kurisko-prereg-fire-counts (need Dumps/metrics, F:/MTS klines).
