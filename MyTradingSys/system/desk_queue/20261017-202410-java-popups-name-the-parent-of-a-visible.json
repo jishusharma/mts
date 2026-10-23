@@ -1,10 +1,13 @@
 {
   "done_when": "output pasted in result; parent process of the visible console identified",
+  "finished": "2026-10-23T11:56:23Z",
   "from": "JIS-NB",
+  "host": "JIS-NB",
   "id": "20261017-202410-java-popups-name-the-parent-of-a-visible",
   "need": "While a java.exe console popup or 0xc0000142 dialog is visible on NB run: powershell -NoProfile -Command \"Get-CimInstance Win32_Process | Where-Object {$_.Name -match 'java|cmd|pwsh|conhost|WindowsTerminal|OpenConsole'} | Select-Object ProcessId,ParentProcessId,Name,SessionId,CreationDate,CommandLine | Format-List\" and paste the output; the parent of the visible conhost/OpenConsole names the launch. Read only: kill nothing, touch no HALT file.",
   "posted": "2026-10-17T20:24:10Z",
-  "status": "pending",
+  "result": "obsolete: needs a popup visible at run time, untaken 135 h; Admin_Guy Part C owns console-window faults. Re-post when one recurs.",
+  "status": "failed",
   "target": "JIS-NB",
   "title": "java-popups: name the parent of a visible java/conhost popup (read-only)"
 }
