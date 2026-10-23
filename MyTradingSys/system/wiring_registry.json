@@ -884,6 +884,14 @@
       "disp": "TOOL",
       "why": "Krown v0 setup events S1-S9 ({i, side, setup, tags}) built on krown_core.py; covered by test_krown_events.py, no live imports; observation only."
     },
+    "MyTradingSys/backtest/layers/krown/krown_context.py": {
+      "disp": "TOOL",
+      "why": "Krown point-in-time context rows (trend 1d/1w, naive trend baselines, BBWP 1d/4h, zones, range) and the D1/D2/D3 context dimensions, all OURS impl. of KR-x; covered by test_krown_context.py (shifted-join leak test, truncation test); research only, no live imports; confluence S1 (FABLE_CARD_CONFLUENCE.md)."
+    },
+    "MyTradingSys/backtest/layers/krown/run_counts.py": {
+      "disp": "REPRO",
+      "why": "Regenerates research/krown_audit_2026-10-22/run/ (context_dev.csv, joined_events.csv, COUNTS.md, ACCESS_LOG.md, bands.json) from DEV daily/1h/15m bars and the regenerated DEV event tables in run/sealed/; counts only, reads no outcome column, no bar at or after 2024-07-01; run by hand (python run_counts.py), named in COUNTS.md."
+    },
     "MyTradingSys/backtest/layers/krown/run_fire_counts.py": {
       "disp": "REPRO",
       "why": "Regenerates krown/FIRE_COUNTS_BTC_DEV.md (fire counts per detector and setup, BTCUSDT DEV only, no VALIDATION/HOLDOUT); run by hand (python run_fire_counts.py), named in FORMULAS.md section 21."

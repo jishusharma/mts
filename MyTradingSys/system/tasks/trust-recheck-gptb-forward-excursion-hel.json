@@ -1,11 +1,13 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest MyTradingSys/research/layer_lab/forward_excursion/test_event_table.py -q"
+  ],
   "created": "2026-10-19T05:04:27Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-10-23_trust-recheck-gptb-forward-excursion-hel.md exists with reviewer vendor/model, 1-3 re-derived numbers marked MATCH or MISMATCH with file:line, the mutation result, and a tag proposal.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
@@ -15,23 +17,43 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "LAB:results CLASS:C2 WEIGHT:CRUCIAL. Raw follow-up only; no review or trust stamp. Refine to explicit original source/evidence files. Read the unchecked base as an audit target via refs, not as a trusted premise. No authority to rerun one-shot outcomes.",
+  "note": "DECISION (OURS) 2026-10-23: refined by Session_Planner worker (R1 size S est_turns 12, R2 scope, R3 path/host); no ACCEPT stamp, needs ONE batched Sonnet reviewer pass (or Lab_Guy for CODEX), then stamp REVIEWED:<date> ACCEPT and tasks.py check. LAB:results CLASS:C2 WEIGHT:CRUCIAL. Producer was CODEX/GPT; pure function over synthetic bars, no market data. Audit target, not a trusted premise. No outcome or holdout rerun. Different reviewer vendor than the producer (CODEX/GPT produced it, so Gemini or Claude re-derives). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the report.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [
-    "MyTradingSys/system/tasks/gptb-forward-excursion-helper.json",
+    "MyTradingSys/system/tasks/archive/gptb-forward-excursion-helper.json",
     "MyTradingSys/research/layer_lab/reports/2026-10-19_lab-trust-tag.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/forward_excursion/event_table.py",
+    "MyTradingSys/research/layer_lab/forward_excursion/test_event_table.py",
+    "MyTradingSys/research/layer_lab/forward_excursion/REPORT.md",
+    "MyTradingSys/research/layer_lab/reports/2026-10-16_gptb-forward-excursion-helper.md",
+    "MyTradingSys/research/layer_lab/reports/2026-10-23_trust-recheck-gptb-forward-excursion-hel.md"
+  ],
+  "scope_out": [
+    "outcome or holdout reruns",
+    "editing the audited source files",
+    "live path",
+    "data fetch beyond the read-only local DEV files named in scope_in"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/volume_2026-10-09/PRE_REG_VOLUME_2026-10-09.md:23 (split dates)",
+    "MyTradingSys/research/layer_lab/forward_excursion/REPORT.md (spec: a bar touching both counts stop first, OURS)"
+  ],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Read REPORT.md and the card goal, not the code: forward_excursion(bars, i_entry, side, r_price, horizon) -> mfe_r, mae_r, first_hit.",
+    "Re-derive by hand and with your own short script 3 cases: a long hitting +1R first (first_hit target_1R), a short hitting its stop first, and one bar touching both (first_hit stop_1R); compare with the function output; a difference is a MISMATCH with file:line, settled by calculation.",
+    "Read test_event_table.py: would it fail on a broken implementation? Mutate one line (the both-touch rule) in a scratch copy, run, record; leave the real file unchanged.",
+    "Write the report MyTradingSys/research/layer_lab/reports/2026-10-23_trust-recheck-gptb-forward-excursion-hel.md: reviewer vendor and model, the numbers, MATCH or MISMATCH per number, mutation result, tag proposal VERIFIED-C2 or DISPUTED."
+  ],
+  "tests": "Audit card: its fail-first is the one-line mutation in a scratch copy, which must turn a test red; recorded in the report.",
   "title": "Trust re-check: gptb-forward-excursion-helper",
   "weight": "CRUCIAL",
-  "worker": ""
+  "worker": "session",
+  "kind": "audit"
 }
