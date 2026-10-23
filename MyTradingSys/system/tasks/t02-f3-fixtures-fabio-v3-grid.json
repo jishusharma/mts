@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-23T19:49:13Z",
   "commands": [
     "python -m unittest MyTradingSys.backtest.layers.alerts.test_lookahead_forcing_fabio_v3"
   ],
@@ -19,11 +20,17 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "4 tests pass in 2.38s: hand-built 1m order-flow fixture forces Model C long signals on bar",
+      "ref": "8781a044",
+      "utc": "2026-10-23T19:49:13Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "T02 backtest audit: no look-ahead in 22 of 27 testnet layers on synthetic bars, 5 layers u",
-      "ref": "ee543e4fa842",
-      "utc": "2026-10-18T19:27:51Z"
+      "line": "T02-F3a: event-forcing look-ahead fixtures (shared harness, malkan_bull, funding_cvd_fade)",
+      "ref": "b9c448c728c8",
+      "utc": "2026-10-19T07:01:32Z"
     }
   ],
   "layers": [],
@@ -32,9 +39,14 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-22T22:47:42Z",
+  "refreshed": "2026-10-23T19:48:46Z",
   "refs": [],
-  "result": "",
+  "result": "4 tests pass in 2.38s: hand-built 1m order-flow fixture forces Model C long signals on bar 30; 0 look-ahead differences across 15 cuts; planted peeks detected.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/alerts/live_runner_cli.py",
     "MyTradingSys/backtest/layers/fabio/v3/signals.py",
@@ -48,12 +60,12 @@
     "other fabio layers (cvd_absorption etc. already PASS)",
     "DEV data"
   ],
-  "scope_sha": "ee543e4fa842",
+  "scope_sha": "b9c448c728c8",
   "size": "M",
   "sources": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T02_lookahead_time.md (T02-F3, table 3a)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read make_fabio_v3_layer (live_runner_cli.py:200) and the v3 signal trigger; reuse the order-flow bar fields from synth(with_flow=True) in t02_truncation.py",
     "Hand-build 1m bars (and session gate time) that force one v3_grid event",
@@ -62,6 +74,7 @@
     "Include test_planted_peek_is_detected: the same fixture run through a layer that peeks at the next bar must make assert_causal fail (use fwd_peek_next_bar_layer style from test_lookahead_forcing.py)",
     "Codex sandbox: write only the new test file and the report; run only that test file (python -m unittest ...); no git, no network; do not edit layer code or test_lookahead_forcing.py"
   ],
+  "taken": "2026-10-23T19:49:13Z",
   "tests": "events > 0 asserted (fails on random bars); 0 late/repaint/poison differences at 10+ cuts.",
   "title": "T02-F3 part c: event-forcing look-ahead fixture for fabio v3_grid",
   "weight": "ROUTINE",
