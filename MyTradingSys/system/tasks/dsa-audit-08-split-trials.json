@@ -56,7 +56,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "blocked",
+  "state": "refined",
   "steps": [
     "Read MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md sections 1-7, then section 8 'T08' (full method).",
     "Static split map: every date filter and split constant under backtest/ and research/ with file:line.",
