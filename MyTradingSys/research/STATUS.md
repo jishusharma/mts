@@ -1,19 +1,21 @@
 # Development Status
 
-Generated: 2026-10-22 01:55:11
+Generated: 2026-10-23 17:29:39
 
 ## Git Status
-CI green: 2ead83703 (2026-10-21 16:56:00 +0530, 9.0 h old), 9 trunk landing(s) / 12 commit(s) behind origin/fast-track: RED: oldest ungreen commit is 3.7 h old - CI is failing, auto-deploy is idle; fix CI first
-CI card: FILED; filed ci-1687ee8 (C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\.claude\worktrees\eloquent-lederberg-84d46c\MyTradingSys\system\tasks\ci-1687ee8.json); ship it: sync.py ship
+CI green: af7812362 (2026-10-23 15:33:49 +0530), 28 docs-only commit(s) ahead (no CI-gated path changed): OK
 LESSONS: digest in sync
 Pages stale: 1
 STALE mts_home https://claude.ai/artifact/8hKA1rhNRo6RAEdt5mtLg3
 
 ## Hand-over freshness (hand-overs are history: read disk and git, never quote them as current)
 ```
+STALE 2026-10-23 Next card: nuc-unexpected-shutdown (hand-over, JIS-NUC session, 2026-1: 5 newer commits touch files it names (newest 8580a4117 NUC brief: watchdog hang during SMB copy after step 1). Verify on disk and git before quoting it.
+FRESH 2026-10-23 Next card: tc4-desk-done-once (hand-over, super session DESKTOP-F7IU69
+FRESH 2026-10-22 Next card: mid-turn-image-intake-gap (hand-over, plain pilot session o
 FRESH 2026-10-21 Simulator desk R2: ETH 1m + symbol box (hand-over, Supervisor C, 2026-
-FRESH 2026-10-21 Live host move coordinator (laptop) 2026-10-21: cards done, cutover NO
-STALE 2026-10-21 Live host move JIS-NB -> DESKTOP-F7IU69N: STAGED 2026-10-21, cutover N: 6 newer commits touch files it names (newest 8a65d80d0 Live host move: JIS-NB probe passes, cutover blockers listed). Verify on disk and git before quoting it.
+FRESH 2026-10-22 Live host move coordinator (laptop) 2026-10-22: engine RUNNING from C:
+STALE 2026-10-21 Live host move JIS-NB -> DESKTOP-F7IU69N: STAGED 2026-10-21, cutover N: 7 newer commits touch files it names (newest ec677b3bd LIVE_HOST_MOVE: register nuc_create_mts_shares.ps1, record that no NUC). Verify on disk and git before quoting it.
 FRESH 2026-10-21 Simulator desk: RSI and WaveTrend studies shipped 2026-10-21 (hand-ove
 STALE 2026-10-21 Simulator desk: plug-in seam + Questions panel shipped 2026-10-21 (han: 3 newer commits touch files it names (newest 8fd2c71ac sim-desk: symbol box (BTC/ETH) on RSI and WaveTrend, ETH 1m fetcher; s). Verify on disk and git before quoting it.
 FRESH 2026-10-21 Simulator desk fixes shipped 2026-10-21 (hand-over, Opus lead; Fable r
@@ -21,39 +23,41 @@ FRESH 2026-10-21 LC3 ladder simulator (lc-ladder-dev) shipped 2026-10-21 (hand-o
 FRESH 2026-10-20 Gate tiers by path: shipped 2026-10-20 (hand-over, Sonnet)
 STALE 2026-10-20 Thinker hand-over 2026-10-20 (v1 plan written; nothing else changed): 2 newer commits touch files it names (newest 1d55f1a4e Thinker: D10 tuning to the operator's style (lean gates, claims off gi). Verify on disk and git before quoting it.
 FRESH 2026-10-18 NB tandem coordinator 2026-10-18 hand-over (NB at 81% weekly on 2026-1
+FRESH 2026-10-22 DOCTOR hand-over 2026-10-22
+FRESH 2026-10-22 E2E run 2 (2026-10-22, Supervisor B)
 ```
 
 ## Gate Board
 ```
-tom     G2  proof changed 75h ago | next: G3 blind marks (READER_PROTOCOL.md + g3_marks_2026-10-16) | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
-fabio   G2  proof changed 75h ago | next: G1 coverage check, then G3 | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
-malkan  G2  proof changed 143h ago | next: G3 blind marks MAL-2/5, MAL-16/17 (g3_marks_2026-10-16) | proof: MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md
-krown   G1  proof changed 70h ago | next: G2 (krown-g2: KROWN_SETUP_CATALOG.md) | proof: MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv
+tom     G2  proof changed 115h ago | next: G3 blind marks (READER_PROTOCOL.md + g3_marks_2026-10-16) | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
+fabio   G2  proof changed 115h ago | next: G1 coverage check, then G3 | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
+malkan  G2  proof changed 183h ago | next: G3 blind marks MAL-2/5, MAL-16/17 (g3_marks_2026-10-16) | proof: MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md
+krown   G2  proof not on trunk | next: G3 blind marks (not started) | proof: MyTradingSys/research/krown_ta101_2026-10-13/KROWN_SETUP_CATALOG.md (commit f4a5182a)
 NO GATE MOVED IN 24h: the next spawn targets a gate (LAYER_REBUILD_PLAN s5)
-commits 24h: 102 = research 32% | claim/release 8% | other 60%  OVER 30% CAP
+commits 24h: 229 = research 20% | claim/release 8% | other 72%  OVER 30% CAP
 ```
 
 **Last 3 commits on origin/fast-track:**
 ```
-b5d04c050 audit: promised-fixes report, CI test_7b fix, four SONNET cards
-59d64023f CLAUDE.md under its size cap (CI red); live host move status verified, SIM parked
-8a65d80d0 Live host move: JIS-NB probe passes, cutover blockers listed
+be5f161d1 lease pipeliner: release by JIS-NB/0f9e82246827
+0a42c104c Merge remote-tracking branch 'origin/fast-track' into claude/supervisor-c-machine-run-056dfd
+14e43d101 desk: failed 20261023-055453-run-card-context-composite-v2-dev-read
 ```
 
 ## In-Flight .new Files
-- MyTradingSys/backtest/layers/fabio/htf_context_live.py.new (270.1h)
-- MyTradingSys/backtest/layers/fabio/test_htf_context_live.py.new (270.1h)
+- MyTradingSys/backtest/layers/fabio/htf_context_live.py.new (309.6h)
+- MyTradingSys/backtest/layers/fabio/test_htf_context_live.py.new (309.6h)
 
 ## Recent Reports (newest 5, last 3 days)
-- MyTradingSys/research/mts_doctor/REPORT_2026-10-21.md (2026-10-22 01:54) # MTS doctor report 2026-10-21
+- MyTradingSys/research/mts_doctor/REPORT_2026-10-23.md (2026-10-23 11:29) # MTS doctor report 2026-10-23
+- MyTradingSys/research/mts_doctor/REPORT_2026-10-22.md (2026-10-23 04:19) # MTS doctor report 2026-10-22
+- MyTradingSys/research/krown_audit_2026-10-22/REPORT.md (2026-10-22 16:37) # Krown layer audit: where it stands, what it adds, how it feeds the other layers (2026-10
+- MyTradingSys/research/mts_doctor/REPORT_2026-10-21.md (2026-10-22 01:58) # MTS doctor report 2026-10-21
 - MyTradingSys/research/context_load/REPORT.md (2026-10-21 10:23) # Context load at session start: measured, then trimmed (2026-10-21)
-- MyTradingSys/research/layer_lab/candle_close_corrected_2026-10-14/REPORT.md (2026-10-21 03:14) # Corrected candle-close study — DEV findings
-- MyTradingSys/research/layer_lab/candle_close_corrected_2026-10-14/analysis_v1/REPORT.md (2026-10-21 03:14) # Corrected phase-first BTC candle study
-- MyTradingSys/research/gap_audit_2026-10-19/REPORT.md (2026-10-19 09:40) # MTS Critical-Gap Audit, Revalidation & End-to-End Roadmap (2026-10-19)
 
 ## Screenshots
 ```
-SHOTS landed 133: new 2, classified 30, read 1, done 100 | overdue(>24h) 29 | claims MATCH 992 MISMATCH 131 NOT_IN_DATA 238 | filed 17
+SHOTS landed 136: new 4, classified 31, read 1, done 100 | overdue(>24h) 35 | claims MATCH 992 MISMATCH 131 NOT_IN_DATA 238 | filed 17
   OVERDUE dfabf169cdc9 new        -                                    | 
   OVERDUE 19f84e6aa598 classified app                                  | Claude app: Mts dispatcher session (Haiku 5.5) showing TICK NOOP; operator asks why idle dispatcher keeps running every 10 min
   OVERDUE 11760405153e classified chart     BTCUSDT 1m   2026-10-15T14:13:00Z | Operator asks where a short with confluence/divergence would be: price spiked ~81,38x (upper BB) then slipped back under 81,146.6 top; OI 93.26K flat after drop, RSI 69 off 77, StochRSI crossing down
@@ -68,19 +72,18 @@ SHOTS landed 133: new 2, classified 30, read 1, done 100 | overdue(>24h) 29 | cl
 
 ## Layer Lab (Codex)
 ```
-Layer lab (Codex) at 2026-10-21 20:25Z: on
+Layer lab (Codex) at 2026-10-23 11:59Z: on
   This machine does not run the lab (it runs on JIS-NUC): the queue below is from the repo; allowance, runs and what needs a look are only known there.
-  Queue: 5 ready
-    lab-formula-spec-recount [build, gpt-6-luna / medium]
+  Queue: 4 ready
     lab-formula-spec-text [build, gpt-6-luna / medium]
     lab-planted-error-trial [build, gpt-6-luna / medium]
-    tom-btc-other-setups [build, gpt-6-luna / medium]
-    argon-blind-read-7-frames [run, gpt-6-luna / low]
+    t02-f3-fixtures-wlow-session-levels [build, gpt-6-luna / medium]
+    t02-f3-fixtures-fabio-v3-grid [build, gpt-6-luna / medium]
 ```
 
 ## Project Groups
 ```
-GROUPS DATA open 5 (HIGH 0) closed 30 | SRC open 4 (HIGH 0) closed 9 | CORE open 4 (HIGH 0) closed 30 | LAYR open 8 (HIGH 1) closed 7 | EVID open 14 (HIGH 2) closed 4 | EXEC open 7 (HIGH 3) closed 10 | VIS open 1 (HIGH 0) closed 1 | DESK open 2 (HIGH 1) closed 9 | OPS open 19 (HIGH 6) closed 26 | INFRA open 7 (HIGH 3) closed 13 | UNGROUPED 1
+GROUPS DATA open 5 (HIGH 0) closed 30 | SRC open 4 (HIGH 0) closed 9 | CORE open 4 (HIGH 0) closed 30 | LAYR open 8 (HIGH 1) closed 7 | EVID open 14 (HIGH 2) closed 4 | EXEC open 7 (HIGH 3) closed 10 | VIS open 1 (HIGH 0) closed 1 | DESK open 3 (HIGH 1) closed 9 | OPS open 24 (HIGH 11) closed 26 | INFRA open 7 (HIGH 3) closed 13 | UNGROUPED 1
 ```
 
 ## Open Findings

@@ -1,10 +1,13 @@
 {
   "done_when": "On a clean tree at origin/fast-track, python scripts/dev/test_wiring_scan.py prints OK and python -m pytest MyTradingSys/tests/docs/test_super_session_doc.py passes; TASK mts-gate then reports no failed steps.",
+  "finished": "2026-10-23T11:56:16Z",
   "from": "JIS-NB",
+  "host": "JIS-NB",
   "id": "20261020-192753-quick-gate-red-on-fast-track-test-wiring",
   "need": "Both reproduce on a clean detached worktree at origin/fast-track 999bb9d79 (C:\\Users\\E-ngineers\\IdeaProjects\\mts-verify-1021), not from any current change. (1) python scripts/dev/test_wiring_scan.py -> Ran 16 tests, FAILED (failures=4): test_dev_no_reader_lists_only_the_unread_file, test_naming_the_tool_in_an_entry_doc_clears_the_warning, test_unread_dev_tool_is_warned_and_the_gate_still_passes, test_cache_round_trip_and_a_corrupt_cache_recomputes; the no-reader scan reports doc_tool.py and driver.py from the real tree inside tmp fixtures. (2) python -m pytest MyTradingSys/tests/docs/test_super_session_doc.py -> SuperSessionDoc.test_session_log_keeps_last_five, AssertionError: 6 not less than or equal to 5; MyTradingSys/system/SUPER_SESSION.md 'Session log' carries 6 lines against the doc's own 'last 5' rule (commit 85c2c426d). Gate receipt: F:\\AIBridge\\run\\tasks\\0fd44437.log, TASK mts-gate 19:03:26Z, FAILED 2 steps (3w, 4d).",
   "posted": "2026-10-20T19:27:53Z",
-  "status": "pending",
+  "result": "obsolete: test_wiring_scan.py passes 16/16 on trunk 2026-10-23; current red CI is a different commit (STATUS.md)",
+  "status": "failed",
   "target": "CLAUDE",
   "title": "quick gate red on fast-track: test_wiring_scan 4 failures + SUPER_SESSION doc log 6 > 5"
 }

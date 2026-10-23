@@ -16,7 +16,7 @@
   "from_inbox": "",
   "goal": "List at least 30 ways a crypto-perp backtest can mislead from DeepSeek's own knowledge and published sources, score each against every study and testnet layer, demonstrate the 5 worst gaps on DEV, and merge the audits' bridge logs into a playbook.",
   "id": "dsa-audit-10-missing-aspects",
-  "lane": "DSA-NB",
+  "lane": "SONNET",
   "latest": [],
   "layers": [],
   "live_path": false,

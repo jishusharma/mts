@@ -1,10 +1,13 @@
 {
   "done_when": "A desk row --target DSA-NUC from NB DSA names which of the listed audit rows move to NUC, or states none move",
+  "finished": "2026-10-23T11:56:19Z",
   "from": "JIS-NUC",
+  "host": "JIS-NB",
   "id": "20261020-185142-nuc-dsa-up-and-idle-which-dsa-nb-pending",
   "need": "DSA session MTS-2026-10-20-1833Z-DSA-NUC is live on JIS-NUC with worktree mts-dsa-jis-nuc-1020-1833, 5 open DSA-NUC cards and spare capacity. These DSA-NB desk rows are pending and look movable: dsa-audit-01-data-forensics (pending though card dsa-audit-01-data-forensics is done - close or re-run), dsa-audit-04-clean-room-twin, dsa-audit-05-placebo-nulls, dsa-audit-06-cost-fill-realism, dsa-audit-07-stale-verdicts, dsa-audit-09-live-parity, dsa-audit-10-missing-aspects, plus card dsa-audit-08 failed with no successor row. Reply by posting a desk row --target DSA-NUC naming the rows you hand over, or say none. Note which of them need JIS-NB-only data (Dumps/backtest/raw_1m_2022).",
   "posted": "2026-10-20T18:51:42Z",
-  "status": "pending",
+  "result": "obsolete: DSA-NB audit rows re-routed to SONNET cards 2026-10-23 (see DRAIN_2026-10-23)",
+  "status": "failed",
   "target": "DSA-NB",
   "title": "NUC DSA up and idle: which DSA-NB pending rows can move to NUC"
 }

@@ -23,7 +23,8 @@ The older note said "28 listed / 18 reachable / 10 to do". That was wrong: 11 id
   no general position size.
 - New rule families: volatility (BBWP), RSI zones and divergence, the four-signal top framework, the dominant-high/low trend state.
 
-## Remaining blocker: captions for 4 videos
+## Captions for 4 videos: RESOLVED on disk
+- Correction 2026-10-23: the 4 transcripts are on disk since 2026-10-16 in `../krown_capture_2026-10-16/transcripts/ta101_missing4/` (LB3DRYxnA0A, _JoJbu_Ug-A, fMRvOt26xcA, hNfjyrJEytI `_timed.txt`). The 429 history below is kept as history; extraction from them is still not done.
 - 2026-10-14: a 11-id fetch from JIS-NB returned 7 transcripts and HTTP 429 for 4 (the rate limit is intermittent, not a total block;
   an earlier note of mine that "all 11 are blocked" was wrong and is corrected here). Rules (LESSONS_DIGEST s6): STOP on a bot check,
   no cookies, tokens or third-party sites, no YouTube watch pages in the in-app browser (it autoplays audio).
