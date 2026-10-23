@@ -234,9 +234,13 @@ def typed_texts(transcript_path):
             d = json.loads(line)
         except ValueError:
             continue
-        if d.get("type") != "user" or d.get("isMeta"):
+        att = d.get("attachment") if d.get("type") == "attachment" else None
+        if isinstance(att, dict) and att.get("type") == "queued_command" and isinstance(att.get("prompt"), str):
+            c = att["prompt"]      # typed while a turn ran: stored as a queued_command attachment, not a user entry (2026-10-23)
+        elif d.get("type") != "user" or d.get("isMeta"):
             continue
-        c = (d.get("message") or {}).get("content")
+        else:
+            c = (d.get("message") or {}).get("content")
         parts = [c] if isinstance(c, str) else [b.get("text", "") for b in (c or []) if isinstance(b, dict) and b.get("type") == "text"]
         parts = [t for t in parts if t and not t.lstrip().startswith(SKIP_PREFIX)]
         if not parts or turn_meter.is_event_text("".join(parts)):
@@ -330,9 +334,13 @@ def event_turn(transcript_path):
             d = json.loads(line)
         except ValueError:
             continue
-        if d.get("type") != "user" or d.get("isMeta"):
+        att = d.get("attachment") if d.get("type") == "attachment" else None
+        if isinstance(att, dict) and att.get("type") == "queued_command" and isinstance(att.get("prompt"), str):
+            c = att["prompt"]      # typed while a turn ran: stored as a queued_command attachment, not a user entry (2026-10-23)
+        elif d.get("type") != "user" or d.get("isMeta"):
             continue
-        c = (d.get("message") or {}).get("content")
+        else:
+            c = (d.get("message") or {}).get("content")
         parts = [c] if isinstance(c, str) else [b.get("text", "") for b in (c or []) if isinstance(b, dict) and b.get("type") == "text"]
         parts = [t for t in parts if t and not t.lstrip().startswith(SKIP_PREFIX)]
         if parts:
@@ -411,6 +419,9 @@ def nested_reason(tool, inp, transcript_path):
     if not (role_loader.from_session(first_prompt(transcript_path)) or role_session(transcript_path)):
         return None
     if interactive_role((inp or {}).get("prompt")):    # operator 2026-10-23: interactive roles are sessions, never background Agents
+        return None
+    # operator 2026-10-23: "start a new session which I can see": his own typed turn asks for a session, so he is at the screen
+    if not role_loader.from_session(first_prompt(transcript_path)) and operator_said(transcript_path, ("session",)):
         return None
     return ("a start_session from a role session waits for an operator approval in the app (the operator is away). Start the worker "
             "with the Agent tool instead: model='sonnet', run_in_background=true, the same brief (its first line `You are <Role>.`).")

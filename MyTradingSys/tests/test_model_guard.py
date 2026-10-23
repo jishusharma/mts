@@ -107,6 +107,22 @@ class ModelGuardTest(unittest.TestCase):
         self.assertEqual(decision, "deny")
         self.assertIn("Agent tool", reason)
 
+    def test_operator_typed_mid_turn_session_ask_reaches_the_guard(self):
+        # operator 2026-10-23, typed while a Supervisor turn ran: "issue another Opus session ... start a new session which I can see".
+        # The app stores such a message as a queued_command attachment; the guard read only user entries and denied the start.
+        sup = Path(self.tmp.name) / "sup_mid.jsonl"
+        rows = [{"type": "user", "message": {"content": "You are Supervisor. Login C."}},
+                {"type": "assistant", "message": {"model": "claude-opus-5-5", "content": []}},
+                {"type": "attachment", "attachment": {"type": "queued_command",
+                                                      "prompt": "So issue another Opus session. Start a new session which I can see."}}]
+        sup.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
+        inp = {"initiation": "user_asked", "title": "Opus review", "prompt": "You are Builder.\nStandby.", "background": "b" * 90,
+               "model": "claude-opus-5-5"}
+        self.assertEqual(fire(START, inp, sup), "allow")
+        rows[2]["attachment"]["prompt"] = "fix the report"         # no session asked, no Opus named: still denied
+        sup.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
+        self.assertEqual(fire(START, inp, sup), "deny")
+
     def test_interactive_role_starts_as_a_session_from_a_role_session_and_never_as_an_agent(self):
         # operator 2026-10-23: a Supervisor could not start Eagle_Eyes as a session and was told to use a background Agent
         sup = Path(self.tmp.name) / "sup.jsonl"
