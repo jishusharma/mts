@@ -103,6 +103,7 @@ CHEAP_STEPS = ("1", "2", "3", "3b", "3c", "3r", "3cv", "3cva", "3tm", "3s", "3f"
 PRECHECK_JOBS = 2
 TARGET_STEP = "4t"   # precheck pytest of the MyTradingSys/tests files that reference the change (they also run in their shard)
 TARGET_CAP = 12      # OURS: at most this many files (sorted), so the precheck stays about a minute
+LOCAL_SKIP = ("3k", "5b", "4f", "4", "3dk", "3ad", "3bk")   # OURS: BRIEF 3.3, dropped from the local ship gate only; every CI shard still runs them
 SLOW_FILE_S = 30     # files measured at >= this many seconds stay in their shard only
 CHEAP_STEPS += ("3qn", "3gi")
 # GATE_SPEED X2 (ship only, --fast, smoke mode): the fast path. One phase, tests chosen by gate_impact, a time budget, the rest left to CI.
@@ -977,6 +978,15 @@ def apply_shard(plan, spec):
     return plan
 
 
+def apply_local_skip(plan, args):
+    """A ship (--precheck, no --shard, not CI) leaves LOCAL_SKIP steps to the CI shards, which still run every step."""
+    if "--precheck" in args and "--shard" not in args and not os.environ.get("CI"):
+        for s in plan:
+            if s.num in LOCAL_SKIP and not s.skip:
+                s.skip = "ship: CI shards run it (simplify 2026-10-24)"
+    return plan
+
+
 def apply_selection(plan, args):
     """--changed-file F (one path per line, vs origin/fast-track) with --smoke: skip the steps gate_select.select does not pick.
     --smoke without --changed-file, or an unreadable file, runs everything (fail closed). Returns (plan, mode or None).
@@ -1172,6 +1182,7 @@ def main(argv=None):
 
     plan = build_plan(quick)
     plan, mode = apply_selection(plan, args)
+    apply_local_skip(plan, args)
     if "--shard" in args:
         spec = args[args.index("--shard") + 1]
         plan = apply_shard(plan, spec)

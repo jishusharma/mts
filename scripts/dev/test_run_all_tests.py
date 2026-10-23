@@ -17,6 +17,23 @@ import run_all_tests as rat
 os.environ["MTS_GATE_TIMING"] = os.path.join(tempfile.mkdtemp(prefix="gate_timing_test_"), "t.jsonl")
 
 
+class LocalSkip(unittest.TestCase):
+    def _skipped(self, args, env=None):
+        with mock.patch.dict(os.environ, env or {}, clear=False):
+            os.environ.pop("CI", None) if not env else None
+            plan = rat.apply_local_skip(rat.build_plan(True), args)
+        return {s.num for s in plan if s.skip and str(s.skip).startswith("ship:")}
+
+    def test_a_ship_leaves_the_slow_coordination_steps_to_ci(self):
+        self.assertEqual(self._skipped(["--precheck"]), set(rat.LOCAL_SKIP) & {s.num for s in rat.build_plan(True)})
+        self.assertTrue({"3k", "3dk", "3ad", "3bk"} <= self._skipped(["--precheck"]))
+
+    def test_ci_shards_and_plain_runs_keep_every_step(self):
+        self.assertEqual(self._skipped(["--precheck", "--shard", "1/15"]), set())
+        self.assertEqual(self._skipped([]), set())
+        self.assertEqual(self._skipped(["--precheck"], {"CI": "1"}), set())
+
+
 class GateCoverage(unittest.TestCase):
     def test_pytest_paths_cover_v3_and_live_writers(self):
         paths = getattr(rat, "PYTEST_LAYER_PATHS", [])
