@@ -78,6 +78,7 @@ def run_job(card: str, effort: str) -> None:
         f.flush()
         p = subprocess.run(cmd, cwd=wt, stdout=f, stderr=subprocess.STDOUT, text=True, env=child_env(card, brief))
         f.write(f'\nEXIT {p.returncode} after {int(time.time() - t0)}s\n')
+    subprocess.run([PY, 'scripts/dev/sync.py', 'release', card], cwd=wt, capture_output=True, text=True)
 
 
 def main(argv: list[str]) -> int:
