@@ -199,3 +199,7 @@ MyTradingSys/research/imbalance_qriptal_2026-10-16/events_*.csv
 .antigravity/
 .agent/
 .idx/
+/ship.log
+
+# CBP/MTS shared transcript store: public repo, never commit new transcripts (147 older ones are already tracked)
+raw_transcripts_canonical/

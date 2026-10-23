@@ -20,7 +20,7 @@ Design history (measured overhead, SV1-SV6, review): `handoff_history/supervisor
 ## Dispatch
 - Source of work: `tasks.py dispatch --json` (holds, claims, dependencies, reviewer slot resolved) plus `desk.py sweep` proposals.
   Never a `raw`/`refined` card; Session_Planner (foreground Sonnet Agent) refines when fewer than 4 ready cards fit the free slots.
-- **Spawn on operator turns.** The app refuses `start_session` on turns a note or event started. So on every operator turn the supervisor starts
+- **Spawn on operator turns.** On turns a note or event started, `start_session` shows the operator an Allow card (model_guard.py denies it, 2026-10-23). So on every operator turn the supervisor starts
   the whole next wave (max 4 sessions, one writer per file set) and **chains 2-3 cards per session in the brief** (same file cluster, in order),
   so the wave runs without new spawns. On event turns only size-S cards start, as one-use Agents (WORKERS.md rule 3).
 - Lanes: CODEX cards go to `codex_run.py` (the lab picks them itself; the supervisor only keeps 8+ ready), Gemini Flash cards to a Lab_Guy

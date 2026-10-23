@@ -9,7 +9,8 @@ Claude Code PreToolUse hook (project .claude/settings.json), on the calls that s
   mcp__ccd_session_mgmt__set_session_model   only sonnet or haiku
 No click cards (operator 2026-10-18: "I am not sitting in front of the screen"): start_session with initiation "offer" or "own_initiative"
 (or none) is denied for every model, Opus included, because the operator must click to start it and may be away. Use initiation
-"user_asked" (starts now), or the Agent tool with model='sonnet' when the app refuses that on an event turn. MTS_ALLOW_CARDS=1 allows.
+"user_asked" (starts now) on his typed turns; on a turn a message or event started even user_asked shows an Allow card
+(2026-10-23), so it is denied there: use the Agent tool with model='sonnet'. MTS_ALLOW_CARDS=1 allows.
 Spawn storms (review 2026-10-21, DECISION_OPUS.md): while the operator is away (turn_meter.attended), at most 4 start_session
 and 8 Agent/Task calls per hour, and no Workflow. Scheduling tools (ScheduleWakeup, CronCreate, RemoteTrigger, create_scheduled_task)
 are denied unless his latest typed message asks for it (SCHEDULING_POLICY.md: none exist). Anything else passes. A blocked call gets a deny with the fix in the reason, so the model retries with model=sonnet.
@@ -310,13 +311,44 @@ CARD_FIX = ("No click cards: the operator is away. Use initiation='user_asked' (
             "when the app refuses user_asked on an event turn; note the work in your log instead of offering it.")
 
 
-def card_reason(tool, inp):
+EVENT_TURN_FIX = ("start_session on a turn that a message or event started shows the operator an Allow card even with "
+                  "initiation='user_asked' (seen 2026-10-23: 'CBP module plan 2.0 status' waited on it while he was away). Use the Agent "
+                  "tool with model='sonnet' (run_in_background, isolation worktree) now, or leave the start brief for his next typed turn.")
+
+
+def event_turn(transcript_path):
+    """True when the newest prompt in the transcript (tool results skipped) is an app or session event, not his typed words."""
+    try:
+        with open(transcript_path, "rb") as f:
+            f.seek(0, 2)
+            f.seek(max(0, f.tell() - (1 << 20)))
+            lines = f.read().decode("utf-8", "replace").splitlines()
+    except (OSError, TypeError, ValueError):
+        return False
+    for line in reversed(lines):
+        try:
+            d = json.loads(line)
+        except ValueError:
+            continue
+        if d.get("type") != "user" or d.get("isMeta"):
+            continue
+        c = (d.get("message") or {}).get("content")
+        parts = [c] if isinstance(c, str) else [b.get("text", "") for b in (c or []) if isinstance(b, dict) and b.get("type") == "text"]
+        parts = [t for t in parts if t and not t.lstrip().startswith(SKIP_PREFIX)]
+        if parts:
+            return turn_meter.is_event_text("".join(parts))
+    return False
+
+
+def card_reason(tool, inp, transcript_path=None):
     """Deny reason when start_session would show the operator a card to click, else None."""
     if tool != START or os.environ.get("MTS_ALLOW_CARDS") == "1":
         return None
     inp = inp or {}
-    if inp.get("proposal_id") or inp.get("initiation") == "user_asked":
+    if inp.get("proposal_id"):
         return None
+    if inp.get("initiation") == "user_asked":
+        return EVENT_TURN_FIX if event_turn(transcript_path) else None
     return f"start_session with initiation={inp.get('initiation')!r} waits for an operator click. " + CARD_FIX
 
 
@@ -438,7 +470,7 @@ def hook():
         return 0
     if tool in SEND_TOOLS:
         return 0
-    card = card_reason(tool, inp) or nested_reason(tool, inp, ev.get("transcript_path"))
+    card = card_reason(tool, inp, ev.get("transcript_path")) or nested_reason(tool, inp, ev.get("transcript_path"))
     if card:
         print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
                                                  "permissionDecisionReason": "model_guard: " + card}}))

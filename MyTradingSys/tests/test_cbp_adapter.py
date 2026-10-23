@@ -68,3 +68,22 @@ def test_default_queue_is_f_tree_and_env_overrides(tmp_path):
         if saved:
             os.environ["MTS_CBP_QUEUE"] = saved
         importlib.reload(consumer)
+
+
+def test_quote_verified_row_is_consumed_and_unverifiable_quote_rejected(tmp_path):
+    tr = tmp_path / "inbox"
+    tr.mkdir()
+    (tr / "T_v.txt").write_text("header\n\nSo we're probably looking at 87,000 bucks, that is my line in the sand now.\n", encoding="utf-8")
+    ok = _good("ok", target={"type": "fixed_price", "note": '87,000 ("we\'re probably looking at 87,000 bucks")'},
+               invalidation='close below 79,700 ("that is my line in the sand now")')
+    fake = _good("fake", invalidation='close below 1 ("the analyst never said this sentence")')
+    noquote = _good("noquote")
+    q = _q(tmp_path, [ok, fake, noquote])
+    out = tmp_path / "cand"
+    r = cbp_adapter.ingest(q, out, transcript_dir=tr)
+    assert r["consumed"] == ["ok"] and sorted(r["rejected_invalid"]) == ["fake", "noquote"]
+    ack = json.loads((q / "acks" / "ok.json").read_text(encoding="utf-8"))
+    assert ack["decision"] == "consumed"
+    assert "never said" in json.loads((q / "acks" / "fake.json").read_text(encoding="utf-8"))["reason"]
+    rows = [json.loads(l) for l in (out / "cbp_candidates.jsonl").read_text(encoding="utf-8").splitlines()]
+    assert [c["cand_id"] for c in rows] == ["cbp:ok"] and rows[0]["order_eligible"] is False

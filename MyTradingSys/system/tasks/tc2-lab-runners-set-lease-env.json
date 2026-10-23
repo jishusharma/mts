@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-23T03:50:21Z",
   "commands": [],
   "created": "2026-10-18T21:54:58Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "lease.runner_env + child_env in gemini_queue/codex_run; test_runner_lease_env 6 pass (fail",
+      "ref": "b79c12c6",
+      "utc": "2026-10-23T03:50:21Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +47,12 @@
   "refs": [
     "MyTradingSys/system/TRAFFIC_CONTROLLER.md"
   ],
-  "result": "",
+  "result": "lease.runner_env + child_env in gemini_queue/codex_run; test_runner_lease_env 6 pass (fail on old), test_lease 27 pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/gemini_queue.py",
     "scripts/dev/codex_run.py",
@@ -56,12 +68,13 @@
   "scope_sha": "033ab93f70c8",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "When a card or brief names a role in SINGLETONS (lease.py), export MTS_ROLE=<role> and MTS_LEASE_SESSION=<run id> into the child env.",
     "Antigravity brief text (GEMINI_START.md): a role run starts with `python scripts/dev/lease.py acquire <Role>` and stops on non-zero.",
     "Test: a fake card naming Pipeliner gets both env vars; a normal card gets none."
   ],
+  "taken": "2026-10-23T03:50:21Z",
   "tests": "New test fails on the pre-change runner (env lacks MTS_ROLE) and passes after.",
   "title": "Lab runners set MTS_ROLE/MTS_LEASE_SESSION when a card runs a singleton role",
   "weight": "ROUTINE",

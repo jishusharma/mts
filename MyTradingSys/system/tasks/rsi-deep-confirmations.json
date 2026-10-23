@@ -8,7 +8,7 @@
     "rsi-deep-prob-tables"
   ],
   "done_when": "",
-  "est_turns": null,
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
@@ -37,5 +37,5 @@
   "tests": "fail-first: higher-TF feature must use the last completed bar (planted test: changing the current higher-TF bar leaves the signal unchanged)",
   "title": "RSI deep-buy Stage 3: causal confirmations at an RSI low (hook, structure shift, fall speed, HTF RSI, volume/delta) vs raw touch",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

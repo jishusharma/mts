@@ -111,3 +111,6 @@ Grep before the cutover: `grep -rn "JIS-NB" scripts MyTradingSys --include=*.py 
 - Cutover window date. Default: none set; the move does not happen until the operator names it.
 </content>
 </invoke>
+
+**2026-10-21 Supervisor B (JIS-NUC):** `net share` on JIS-NUC shows NO MTS-* shares (only C$ F$ IPC$ ADMIN$), so s5 is not done. Operator: run `scripts\ops
+uc_create_mts_shares.ps1` elevated on the NUC once (asks the share password), then `cmdkey /add:192.168.29.110 /user:JIS-NUC\mtsshare /pass` on the laptop and JIS-NB. Cutover s4 step 2 waits for this.

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-23T05:53:23Z",
   "commands": [],
   "created": "2026-10-18T21:55:00Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "shipped to fast-track; traffic.py measure 72h: 0 duplicates",
+      "ref": "f787c15f",
+      "utc": "2026-10-23T05:53:23Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +47,12 @@
   "refs": [
     "MyTradingSys/system/TRAFFIC_CONTROLLER.md"
   ],
-  "result": "",
+  "result": "shipped to fast-track; traffic.py measure 72h: 0 duplicates",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/roles/*.md",
     "scripts/dev/mts_signal.py",
@@ -55,12 +67,13 @@
   "scope_sha": "3a2095ccee94",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add the BUDGET line to the Boot of every role file and the Supervisor wake loop (after get_usage); login letters from traffic_inventory.json.",
     "mts_signal.py send: when MTS_ACCOUNT is unset, use the git user.name instead of `?` (no email).",
     "role_loader.py retoken + check exit 0."
   ],
+  "taken": "2026-10-23T05:53:23Z",
   "tests": "test for the sender fallback fails before (sender `?`), passes after.",
   "title": "BUDGET signal lines per Claude login so traffic.py can pace logins",
   "weight": "ROUTINE",

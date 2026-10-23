@@ -65,10 +65,9 @@ class VerifyQuotesTest(unittest.TestCase):
         self.assertEqual(bad, 1)
         self.assertIn("POSITION", out)
 
-    def _cbp(self, evidence):
+    def _cbp(self, evidence, cues=("[0:00] alpha beta gamma", "[0:02] delta epsilon zeta")):
         (self.root / "inbox").mkdir(exist_ok=True)
-        (self.root / "inbox" / f"Jala_{VID}.txt").write_text(
-            "\n".join(["[0:00] alpha beta gamma", "[0:02] delta epsilon zeta", ""]), encoding="utf-8")
+        (self.root / "inbox" / f"Jala_{VID}.txt").write_text(chr(10).join([*cues, ""]), encoding="utf-8")
         ex = self.root / "extractions.md"
         ex.write_text("\n".join([f"### Jala | 2026-09-27 | {VID} | Some title", "bottom_call: IN",
                                  f'evidence: "{evidence}"', "btc_levels: support=[1]", ""]), encoding="utf-8")
@@ -84,6 +83,19 @@ class VerifyQuotesTest(unittest.TestCase):
 
     def test_cbp_invented_quote_fails(self):
         bad, out = self._cbp("beta gamma invented words")
+        self.assertEqual(bad, 1)
+        self.assertIn("MISSING", out)
+
+    def test_cbp_quote_survives_caption_fillers_and_stutters(self):
+        # real CBP rows: transcript "see uh bitcoin below", "this is is really"; the clean quote omits them
+        cues = ("[0:00] i don t think that we see uh bitcoin below", "[0:03] if this is is really um a breakout")
+        bad, out = self._cbp("we see Bitcoin below... if this is really a breakout", cues)
+        self.assertEqual(bad, 0, out)
+
+    def test_cbp_spliced_quote_still_fails(self):
+        # restart in speech ("it s gonna it s going to be") is not a plain stutter: a stitched quote is not verbatim
+        cues = ("[0:00] it s gonna it s going to be going up",)
+        bad, out = self._cbp("it's gonna be going up", cues)
         self.assertEqual(bad, 1)
         self.assertIn("MISSING", out)
 
