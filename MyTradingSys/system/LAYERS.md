@@ -200,12 +200,12 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/analysts/SCORECARD.md`
 - Roadmap: `MyTradingSys/research/analysts/ROADMAP.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `habib-plan-hit-rate-study` ready p2 DSA-NB: Habib plan-hit-rate study: score each Sunday/weekly plan full/partial/miss (execution excluded), then imbalanc
+  - `habib-plan-hit-rate-study` ready p2 SONNET: Habib plan-hit-rate study: score each Sunday/weekly plan full/partial/miss (execution excluded), then imbalanc
   - `qriptal-discord-calls-2026-10-18` ready p2 SONNET: Qriptal: transcribe Habib's 2026-10-13..18 Discord calls into the call ledger (B162)
   - `analyst-ingest-roman-x` ready p3 SONNET: Implement Roman Trading volume-absorption social call listener
 
 ## Krown (TA 101: zones, volume, candles, averages, ranges) (`krown`)
-- Status: Spec v0.2 + 120-rule ledger from 15 of 19 reachable TA 101 videos (14 TA + 1 fees). 4 videos blocked on YouTube captions (429). One structural stop (compression breakout), no stop distance or size rule: the rest is OURS. Not built, not backtested.
+- Status: Spec v0.2 + 120-rule ledger from 15 of 19 reachable TA 101 videos (14 TA + 1 fees). The 4 missing transcripts are on disk since 2026-10-16 (krown_capture_2026-10-16/transcripts/ta101_missing4). Gate G2 reached: KROWN_SETUP_CATALOG.md (commit f4a5182a). One structural stop (compression breakout), no stop distance or size rule: the rest is OURS. Detectors not built, not backtested.
 - Tracks: Claude (extraction, ledger, spec, detectors), DSA (data runs)
 - Spec / sources: `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md`; `MyTradingSys/research/krown_ta101_2026-10-13/PRE_REG_KROWN.md`; `MyTradingSys/research/krown_ta101_2026-10-13/PROTOCOL.md`; `MyTradingSys/research/krown_ta101_2026-10-13/STATE.md`
 - Code: `MyTradingSys/research/krown_ta101_2026-10-13/tools/build_ledger.py`; `MyTradingSys/research/krown_ta101_2026-10-13/tools/check_numbers.py`
@@ -217,7 +217,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `confluence-s0-registry` ready p2 HAIKU: Confluence S0: Krown registry refresh
   - `confluence-s1-context-counts` ready p2 SONNET: Confluence S1: Krown context table and counts pass
   - `confluence-s2-s6-chain` raw p2 SONNET: Confluence S2-S6: Fable design, context read, DEV trials, verdict
-  - `krown-data-cme-btc-volume` refined p2 DSA: Krown CME BTC futures daily volume (public data only) as third volume arm
+  - `krown-data-cme-btc-volume` refined p2 SONNET: Krown CME BTC futures daily volume (public data only) as third volume arm
   - `krown-dev-event-study` refined p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
   - `trendline-audit-gaps-disposition` refined p2 SONNET: Trend-Line layer: disposition of AUDIT_2026-10-18 critical gaps (3 HIGH, 3 MED) and REGATE_AUDIT flip
   - `krown-other-sources-event-study-videos` refined p3 CODEX: Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigg

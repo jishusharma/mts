@@ -16,7 +16,7 @@
   "from_inbox": "",
   "goal": "For every published verdict find the code it came from and every later change to that code or its imports, rerun ten results and diff every number, check determinism and CI coverage, and list where docs disagree with result files.",
   "id": "dsa-audit-07-stale-verdicts",
-  "lane": "DSA-NB",
+  "lane": "SONNET",
   "latest": [],
   "layers": [],
   "live_path": false,

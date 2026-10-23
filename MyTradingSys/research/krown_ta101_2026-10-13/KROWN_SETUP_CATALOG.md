@@ -35,13 +35,13 @@ How to read the quotes
 |---|---|---|---|---|---|---|
 | KR-S1 | ZONE-TEST: a marked zone is tested and a proof candle appears | price returns to a wick-to-close zone that turned at least twice; a hammer, shooting star, strict engulfing or doji closes there, ideally on outsized volume, with the trend | 1d, 1w (first); 4h/6h timing | CLEAR | YES* | S1 |
 | KR-S2 | BREAK-CLOSE: a candle closes through a zone or range boundary | a close (not a wick) beyond the outer boundary, volume expanding, then either no retest or a retest that holds | zone's own timeframe; weekly and daily examples | OURS | YES* | S2 |
-| KR-S3 | RANGE-EDGE: trade the floor or the ceiling, never the middle | two zones with price stuck between; proof at an edge, or the close back inside after a poke beyond it (fake-out) | 1d, 1w | OURS | YES* | S3 |
+| KR-S3 | RANGE-EDGE: trade the floor or the ceiling, never the middle | two zones with price stuck between; proof at an edge, or the close back inside after a poke beyond it (fake-out) | 1d, 1w | CLEAR (close back inside / beyond the edge; distance OURS) | YES* | S3 |
 | KR-S4 | COIL-BREAK: a range on falling volume resolves | a range with every bounce quieter and the wedge tighter, volume down toward half its average, then the S2 close | 1d, 1w | OURS | YES* | S4 |
 | KR-S5 | MA-CONTEXT: averages as filter, band and first-touch level | 21/55 EMA cross against the 200, first touch of the 200 after a long absence, pullback into the 21-55 band, weekly 55 EMA bias, range break with the averages | 1d, 1w | OURS | YES | S5 |
 | KR-S6 | LEASH: whole candle floats above the 5 EMA | the candle low stays above the 5 EMA for about three closes; price tends to come back to the line | 1d (Bitcoin) | OURS | YES | S6 |
 | KR-S7 | CAPITULATION: hammer on the biggest volume bar | after a long downtrend one mega candle with a huge lower wick and a strong close on the biggest volume bar of the chart | 1w, 1d | OURS | YES* | S7 |
 | KR-S8 | VOL-COMPRESSION BREAKOUT (BBWP) | volatility percentile below about 25-35 and falling from a high; the first candle that breaks the range with volatility back above the 50th percentile | higher term (Bitcoin); his chart timeframe not named | CLEAR | YES | S8 |
-| KR-S9 | TOP-4 SELL FRAMEWORK for a long-term holding | three of four around the same weeks: reversal candle, volume at 2x the 30-day average, volatility above the 85th percentile, bearish RSI divergence or MACD cross | 1w (Bitcoin), 1M (traditional markets) | NOT STATED | PARTIAL | S9 |
+| KR-S9 | TOP-4 SELL FRAMEWORK for a long-term holding | three of four around the same weeks: reversal candle, volume at 2x the 30-bar (or 60-bar) average of the chart timeframe, volatility above the 85th percentile, bearish RSI divergence or MACD cross | 1w (Bitcoin), 1M (traditional markets) | NOT STATED | PARTIAL | S9 |
 | KR-S10 | TREND LINE, FIRST RETURN: reaction at a volume-anchored line | a line through two high-volume turning points (or three touches); price comes back to it for the first time | NOT STATED | NOT STATED | YES* | new (rule KR-L04) |
 | KR-S11 | TREND LINE BREAK, then buy the higher low on the broken line | a legitimate line breaks with follow-through; the line becomes a base for a higher low | NOT STATED | NOT STATED | YES | new (rules KR-L06, KR-Z09) |
 | KR-S12 | TREND REVERSAL CONFIRMED BY A CLOSE (dominant level) | price closes below the dominant higher low (or above the dominant lower high); the reclaim is the confirmation | every timeframe; higher outranks lower | NOT STATED | YES | new (rule KR-L10, a filter in the spec) |
@@ -50,7 +50,7 @@ How to read the quotes
 | KR-S15 | 200-WEEK SMA: buy at or below the line | price at or below the weekly 200 SMA (about four years of price in one line) | 1w | NOT STATED | PARTIAL | new (rule KR-M04) |
 | KR-S16 | COUNTER-TREND AT A VOLATILITY EXTREME | enter against the move when volatility is very high; exit as volatility comes down | NOT STATED | NOT STATED | YES | new (KCM-50, no rule id) |
 
-Counts: 16 setups = the nine of the older spec (KR-S1 to KR-S9) + 7 the extracts teach that S1-S9 miss (KR-S10 to KR-S16). Stop class: CLEAR 2, OURS 6, NOT STATED 8. BTC visible: YES 14 (of which 7 need volume, YES*), PARTIAL 2, NO 0. Cross-trader overlap: 17 pairs (STRONG 7, PARTIAL 10; quoted-both-sides 15, paraphrase 2); 6 rows have none (KR-S6, KR-S7, KR-S10, KR-S11, KR-S12, KR-S15).
+Counts: 16 setups = the nine of the older spec (KR-S1 to KR-S9) + 7 the extracts teach that S1-S9 miss (KR-S10 to KR-S16). Stop class: CLEAR 3, OURS 5, NOT STATED 8. BTC visible: YES 14 (of which 7 need volume, YES*), PARTIAL 2, NO 0. Cross-trader overlap: 17 pairs (STRONG 7, PARTIAL 10; quoted-both-sides 15, paraphrase 2); 6 rows have none (KR-S6, KR-S7, KR-S10, KR-S11, KR-S12, KR-S15).
 
 ## 1. Where the older S1-S9 went (duplicate map)
 
@@ -58,7 +58,7 @@ Counts: 16 setups = the nine of the older spec (KR-S1 to KR-S9) + 7 the extracts
 |---|---|---|
 | S1 ZONE-TEST | KR-S1 | stop re-read from his words: close-based exit (CLEAR); the 1.5 x ATR14 hard stop and the opposite-zone / 2R target stay OURS |
 | S2 BREAK-CLOSE | KR-S2 | stop is OURS (he gives none); the range-height target is his, and only for a range edge |
-| S3 RANGE-EDGE | KR-S3 | stop is OURS (the close-beyond-the-edge rule is his for S/R zones, not said for range edges) |
+| S3 RANGE-EDGE | KR-S3 | stop class CLEAR for the fake-out arm (6aA-P4Gvhrc t=00:13:04 "You need to see a closure above, in this case, the wick high of that initial range."; t=00:18:04 "Only act on the close back inside with proof."); the distance stays OURS (GPT audit F1) |
 | S4 COIL-BREAK | KR-S4 | the "volume near 50 % of average" cue is his, labelled an observation |
 | S5 MA-CONTEXT | KR-S5 | split into variants 5a-5f; none has an entry, stop or target in his words |
 | S6 LEASH, S7 CAPITULATION | KR-S6, KR-S7 | provisional (one or two videos); stops OURS |
@@ -346,7 +346,7 @@ The eye test "obvious" has no formula; it becomes a fire-rate ceiling at G5, not
 > "you could buy, you know, buy near the low side of the range, sell near the high side of the range, but not look for the breakout until you get an objective signal of a breakout."
 **Source GPS: kcMnnQr1VFg | MIDDLE | t=00:12:59**
 
-   - Stop [stop class: OURS]: NOT STATED for range trades. His only zone-failure rule is the close beyond the zone (KR-S1, SNR-21), which he says about support and resistance, not about range edges. The spec's stop is OURS (below).
+   - Stop [stop class: CLEAR, structure only]: he states a close rule for range edges in the range video: "You need to see a closure above, in this case, the wick high of that initial range." (6aA-P4Gvhrc t=00:13:04) and "Only act on the close back inside with proof." (t=00:18:04). No distance is given; the spec's stop distance is OURS (below). (GPT audit F1)
    - Target: NOT STATED (the range videos say "scalp the boundaries"; no exit price or level). The opposite edge is OURS.
 4. **Context and timeframe(s).** Read the mode first (trend tools fail in a range). A downside cross of the averages with no break of the range is a range play, not a reversal:
 
@@ -740,7 +740,7 @@ The eye test "obvious" has no formula; it becomes a fire-rate ceiling at G5, not
 5. **BTC visibility: PARTIAL.** All four signals are OHLCV-derived (YES\*, Binance volume). The weekly Bitcoin sample is a handful of tops (his examples: 2017, 2021); if the series we hold starts in 2017-08 (card k0) the 2017 top has no warm-up for the 100-bar BBWP lookback and the 30-bar volume average. Not verified against the disk here.
 6. **Evidence.** 0 trades in a ledger. Dated Bitcoin examples for the recall check (rule KR-P05): 2017 weekly, 2021 weekly.
 7. **Gaps and numbers.**
-   - SOURCED: 3 of 4 (extracts/extract_7IxfsuD2wCM.md:374 (TOP-35)); volume 2 x the 30-day average (extracts/extract_7IxfsuD2wCM.md:64 (TOP-05)); BBWP above 85 (extracts/extract_7IxfsuD2wCM.md:157 (TOP-14)); scale out 20-85 % (extracts/extract_7IxfsuD2wCM.md:32 (TOP-02)); signals 1-2 bars after the high (extracts/extract_7IxfsuD2wCM.md:44 (TOP-03)); three down bars (extracts/extract_7IxfsuD2wCM.md:222 (TOP-20)); weekly/monthly (extracts/extract_7IxfsuD2wCM.md:390 (TOP-37)).
+   - SOURCED: 3 of 4 (extracts/extract_7IxfsuD2wCM.md:374 (TOP-35)); volume 2 x the 30-bar average, or a 60-bar average as the stated alternative ("you could do a 60-period average. You could do a 30-period average." 7IxfsuD2wCM t=00:12:40; bars of the signal timeframe, weekly/monthly, not days; t=00:05:27-00:05:36) (extracts/extract_7IxfsuD2wCM.md:64 (TOP-05)); (GPT audit F2) BBWP above 85 (extracts/extract_7IxfsuD2wCM.md:157 (TOP-14)); scale out 20-85 % (extracts/extract_7IxfsuD2wCM.md:32 (TOP-02)); signals 1-2 bars after the high (extracts/extract_7IxfsuD2wCM.md:44 (TOP-03)); three down bars (extracts/extract_7IxfsuD2wCM.md:222 (TOP-20)); weekly/monthly (extracts/extract_7IxfsuD2wCM.md:390 (TOP-37)).
    - OURS (spec :51, :65): "a few bars" = {2, 3, 4}; which 3 of 4; MACD (12, 26, 9); the 1/3-per-signal scale-out arm.
    - NOT STATED: "a few bars", reversal-candle size, reset rule, reposition level.
 
