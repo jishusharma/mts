@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-23T19:29:27Z",
   "commands": [],
   "created": "2026-10-18T00:00:00Z",
   "depends_on": [
@@ -17,6 +18,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "8 shadows (1 caught, 7 missed); test_planted_error_trial.py passes; MyTradingSys/research/",
+      "ref": "e83578ac",
+      "utc": "2026-10-23T19:29:27Z"
+    },
+    {
       "auto": true,
       "kind": "report",
       "line": "6a6e60c72332 Merge remote-tracking branch 'origin/fast-track' into jis-nuc/codex-lab",
@@ -32,7 +39,12 @@
   "refined_by": "",
   "refreshed": "2026-10-18T03:35:21Z",
   "refs": [],
-  "result": "",
+  "result": "8 shadows (1 caught, 7 missed); test_planted_error_trial.py passes; MyTradingSys/research/layer_lab/reports/2026-10-23_lab-planted-error-trial.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/planted_error_trial.py (new)",
     "scripts/dev/test_planted_error_trial.py (new)",
@@ -54,7 +66,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "planted_error_trial.py exists but raises below 10 clean cards; 6 pass (list in MyTradingSys/system/card_specs/codex-unstick-2026-10-23.md). DECISION: MIN_CLEAN=6; 8 shadows, one per error class, clean cards round-robin (a card may carry two shadows, one plant each); 10 shadows only if 10 clean cards exist. Put skipped candidates and reasons in manifest.json",
     "Write scripts/dev/test_planted_error_trial.py FIRST (does not exist): it must fail on the current script (6 clean cards raise). Assert 8 shadows, one edit hunk each, clean originals pass the machine layer, a no-op plant is rejected. Quote the failure, then change the script",
@@ -63,6 +75,7 @@
     "FLOW_PLANTED_2026-10-18.md: catch table per class, shadows every machine check missed, empty columns for the cheap stack (Haiku + Flash) and expensive stack (Argon / GPT high) with tokens and effort cells, one packet per missed shadow; state that 6 clean cards, not 10, were available",
     "The trial is invalid if a clean original fails a machine check or a shadow differs from its original by more than the one plant (script asserts both)"
   ],
+  "taken": "2026-10-23T19:29:27Z",
   "tests": "scripts/dev/test_planted_error_trial.py::test_one_plant_per_shadow_and_clean_originals_pass: 8 shadows from 6 clean cards, each differs from its original in exactly one edit hunk, every clean original passes the machine layer, a dummy no-op plant is rejected as invalid; fails on the current script (it requires 10 clean cards)",
   "title": "Lab: planted-error trial on the finished cards that pass clean (6 found, 8 shadows), cheap stack vs Argon/GPT high",
   "weight": "IMPORTANT",
