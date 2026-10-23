@@ -1263,3 +1263,13 @@ Applied: 2026-10-22: scripts/dev/offer_guard.py (Stop hook, .claude/settings.jso
  "answer": "A",
  "done": "pending: card supervisor-handover-refuses-before-trans. Fact: supervisor.md:53 already says transit = TRANSIT time or 5h >= 80%; the early end broke it, so the fix is a guard (handover refuses before transit while ready cards exist, --early <reason> overrides) plus one line in supervisor.md. Review: research/thinker/2026-10-22_ship_context_review.md item 3"}
 ```
+
+## d-first-ask-driven | decided 2026-10-23 | Thinker
+```json
+{"id": "d-first-ask-driven", "order": 43, "date": "2026-10-23", "status": "DECIDED", "question": "His own first typed ask is metered as unattended (turn_meter.py:306, driven from the 2nd prompt); the NUC diagnosis was cut off half done. Fix?", "options": {"A": "his first typed prompt counts as him being there unless it is a worker brief", "B": "keep the budget but deny only writes/spend, not reads and web search", "C": "do nothing"}, "recommended": "A", "answer": "yes - do it - and revalidate eveything once done - test it - stress test it - list scenarios of edge cases - but use quota wisely now - we are 89% and reset happens on Sunday", "done": "pending: card below (builder; the Thinker's own edit was denied by the auto-mode classifier as self-modification). Spec, tests, 12 edge cases: research/thinker/2026-10-23_first_ask_driven.md"}
+```
+
+## d-station-term | decided 2026-10-23 | Thinker
+```json
+{"id": "d-station-term", "order": 44, "date": "2026-10-23", "status": "DECIDED", "question": "What is a station, and who cleans worktrees?", "options": {"A": "station = one device with one login; worktree rescue is one card for every station, broadcast"}, "recommended": "A", "answer": "I think you should create a task for this. And your task it for all stations. So going forward, station would mean a device, with a login. / And I meant broadcast. You have to broadcast it.", "done": "card every-station-save-unshipped-worktree-wo; ANNOUNCEMENTS A-20261023-1; term in DEVICES.md"}
+```

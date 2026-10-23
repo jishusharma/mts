@@ -7,7 +7,7 @@
     "rsi-deep-econ-floor"
   ],
   "done_when": "",
-  "est_turns": null,
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
@@ -35,5 +35,5 @@
   "tests": "",
   "title": "RSI deep-buy Phase 1A-C: per-TF RSI trough ladder per window, touch probability per level, rare-zone line (DEV only)",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

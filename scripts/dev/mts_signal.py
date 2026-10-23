@@ -235,15 +235,47 @@ CMD = re.compile(r"sync\.py\s+(claim|release|ship|start)\b([^|;&>\n]*)")      # 
 SLUG = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,60}$")
 
 
+BOOKKEEPING = ("claim ", "release ", "Merge ")
+
+
+CD_RE = re.compile(r"""(?:^|[;&|]\s*)(?:cd|pushd)\s+(?:/d\s+)?("[^"]+"|'[^']+'|[^\s;&|]+)""")
+SCRIPT_DIR_RE = re.compile(r"""("[^"]+"|'[^']+'|\S+?)[/\\]scripts[/\\]dev[/\\]sync\.py""")
+
+
+def ship_dir(cmd, cwd):
+    """The tree a ship command ran in: `cd <tree> && ... sync.py ship`, or `python <tree>/scripts/dev/sync.py ship`;
+    else the session cwd. The session cwd is usually the primary checkout, whose
+    newest commit is an old claim: DESKTOP-F7IU69N signalled "works on: gemini-yt-pipeliner" for every ship while its worktrees
+    shipped real Results (2026-10-23, 11 ships)."""
+    head = cmd[:cmd.find("sync.py")] if "sync.py" in cmd else cmd
+    found = [m.group(1).strip("\"'") for m in CD_RE.finditer(head)]
+    m = SCRIPT_DIR_RE.search(cmd)
+    script = m.group(1).strip("\"'") if m else ""
+    if script and Path(script).is_absolute():
+        p = Path(script)
+    elif found:
+        p = Path(found[-1]).expanduser()
+        p = p if p.is_absolute() or not cwd else Path(cwd) / p
+    else:
+        return cwd
+    return str(p) if p.is_dir() else cwd
+
+
 def last_result(cwd):
-    """The `Result:` line of the newest commit in cwd (what a ship delivered), else ''."""
+    """The `Result:` line of the newest work commit in cwd (what a ship delivered), else ''. Claim, release and merge commits
+    are skipped: a ship that ends on its claim commit sent the claim's "works on: <old task>" text as its Result (2026-10-23,
+    DESKTOP-F7IU69N, 9 ships in a row)."""
     try:
-        r = git(cwd, "log", "-1", "--format=%B", check=False, timeout=5)
+        r = git(cwd, "log", "-10", "--format=%x1e%B", check=False, timeout=5)
     except (OSError, subprocess.SubprocessError, RuntimeError):
         return ""
-    for ln in r.stdout.splitlines():
-        if ln.startswith("Result:"):
-            return ln.strip()
+    for body in r.stdout.split(chr(0x1e))[1:]:
+        if body.lstrip().startswith(BOOKKEEPING):
+            continue
+        for ln in body.splitlines():
+            if ln.startswith("Result:"):
+                return ln.strip()
+        return ""
     return ""
 
 
@@ -287,7 +319,7 @@ def auto_send_text(payload):
             kind = {"claim": "claim", "ship": "done", "release": "done", "start": "note"}[verb]
             text = ("%s %s" % (verb, slug)).strip()
             if verb == "ship":
-                res = last_result(cwd)
+                res = last_result(ship_dir(cmd, cwd))
                 if res:
                     text += " " + res
             return text, kind

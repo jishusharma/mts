@@ -1,6 +1,25 @@
+# NEXT SESSION (2026-10-23, Sonnet)
+
+Done this super session (DESKTOP-F7IU69N, 2026-10-23): tc2-tc5, card-worker-fields, super-session-rules-to-pointers, roles-md-index-slim, cbp-one-quote-checker (closed), cpu-audit-laptop-f7iu69n (script fixed, desk row to OPERATOR) shipped.
+Next: nuc-unexpected-shutdown first (block below, JIS-NUC), then `tasks.py next`. Open Sonnet cards doable anywhere: prompt-header-role-loader (scope changed 2026-10-22; step 1 A/B of 5 prompts first), gemini-task-dispatch-assignment, research-top-level-declutter, gap-g7-stop-slippage, rv05-h2-position-line-evidence. Data-blocked here (need JIS-NB/F: data): context-composite-v2-dev-read (posted to DSA), context-conditioned-session-flow-states, kurisko-prereg-fire-counts. Loose ends: 87 repeated signal lines (traffic.py measure), CODEX_START/GEMINI_START 5 duplicate lines, 3 stale pages. Weekly quota of login C 97% (reset 09:00Z); after the reset take any pending card.
+
 # NEXT_SESSION
 
 Older blocks (2026-10-18/19): `MyTradingSys/system/handoff_history/2026-10-21_next_session_trim.md`. A session reads only its own block.
+
+## Next card: nuc-unexpected-shutdown (hand-over, JIS-NUC session, 2026-10-23)
+Task: nuc-unexpected-shutdown (no card on disk yet; the brief is `MyTradingSys/system/NUC_SHUTDOWN_HANDOVER.md`). Run with zero operator input; defaults for open questions.
+Steps:
+1. `python scripts/dev/sync.py start nuc-unexpected-shutdown`, then `python scripts/dev/sync.py claim "nuc-unexpected-shutdown"`.
+2. Re-read the NUC's event log before any change, for the last 7 days: Kernel-Power 41, event 6008, 1074, 13, WHEA-Logger, 37, and 506/507. Record the counts in the commit body, not from memory.
+3. Research is done (brief, "What official support says" and "What users did", with sources). Follow its ranked plan; do not redo the searches.
+4. Build `scripts/operator/nuc_power_fix.ps1`, modelled on `scripts/operator/defender_exclusions.ps1`: `-Check` changes nothing; sets AC display-off to Never (`powercfg /change monitor-timeout-ac 0`) and Fast Startup off (`HiberbootEnabled = 0`, needs admin); prints what still needs the BIOS or hardware. Never reboots. Test: `-Check` leaves powercfg and registry state unchanged; the test must fail before the script exists.
+5. Never set `PlatformAoAcOverride` (Intel: switching the standby model needs an OS reinstall). Do not reboot the NUC, flash or change the BIOS, add a scheduled task (SCHEDULING_POLICY.md), or touch the live tree.
+6. Ship with `python scripts/dev/sync.py ship --release nuc-unexpected-shutdown`. The commit body carries the event counts and the `-Check` output.
+7. Defaults: BIOS flash: no, until a UPS is in place. Leave the operator steps (BIOS: After Power Failure = Power On, PCIe ASPM off; CR2032; UPS and adapter; KC600 firmware S4500109; Defender exclusions b-544817) in the brief and the recap.
+
+## Next card: tc4-desk-done-once (hand-over, super session DESKTOP-F7IU69N, 2026-10-23)
+Task: tc4-desk-done-once (`python scripts/dev/tasks.py brief tc4-desk-done-once`). Not started (turn cap hit, weekly quota 97%). Steps: `sync.py start tc4-desk-done-once`, claim; test first (two clones close one row, exactly one done commit lands; red on old desk.py); fix `finish`/`take` in scripts/dev/desk.py (lines 126-150) with a re-read inside the push retry, CAS pattern of lease._write; ship. Then tc3-budget-lines, tc5-lab-lane-dedupe. Data-blocked here: context-conditioned-session-flow-states, kurisko-prereg-fire-counts (need Dumps/metrics, F:/MTS klines).
 
 ## Next card: mid-turn-image-intake-gap (hand-over, plain pilot session on JIS-NB, 2026-10-22)
 Task: mid-turn-image-intake-gap (card on disk: `python scripts/dev/tasks.py brief mid-turn-image-intake-gap`).

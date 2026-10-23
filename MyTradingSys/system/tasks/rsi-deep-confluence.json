@@ -7,7 +7,7 @@
     "rsi-deep-prob-tables"
   ],
   "done_when": "",
-  "est_turns": null,
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
@@ -36,5 +36,5 @@
   "tests": "",
   "title": "RSI deep-buy Step H: other-layer + higher-TF confluence votes at the RSI low, effect on bounce vs continue-down",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

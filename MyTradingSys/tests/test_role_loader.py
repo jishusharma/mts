@@ -346,6 +346,11 @@ class BootStepTests(unittest.TestCase):
             self.assertNotIn("first step of the file", step, f.name)
             self.assertNotIn("Open `SUPER_LOOP.md`", step, f.name)
 
+    def test_roles_md_is_an_index_under_1200_tokens(self):
+        """roles-md-index-slim: ROLES.md holds the index, role prose lives in roles/*.md (~4 chars per token)."""
+        text = (REPO / "MyTradingSys/system/ROLES.md").read_text(encoding="utf-8")
+        self.assertLess(len(text) // 4, 1200)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -234,6 +234,36 @@ class SignalTest(unittest.TestCase):
         self.assertEqual((text, kind), ("ship Result: 5 layers live", "done"))
         self.assertNotIn("tail", text)
 
+    def test_ship_signal_reads_the_tree_that_shipped_not_the_session_cwd(self):
+        # 2026-10-23: DESKTOP-F7IU69N sessions sit in the primary checkout (newest commit: an old claim) and ship from a worktree;
+        # every ship signalled the primary's stale text instead of the worktree's Result
+        nl2 = chr(10) * 2
+        for name, msg in (("main", "E on PC" + nl2 + "Result: E on PC works on: old task"), ("wt", "feat" + nl2 + "Result: 8 cards sized")):
+            sh(self.tmp, "init", "-q", name)
+            sh(self.tmp / name, "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "--allow-empty", "-m", msg)
+        main, wt = str(self.tmp / "main"), (self.tmp / "wt").as_posix()
+        want = ("ship x Result: 8 cards sized", "done")
+        for cmd in ('cd "%s" && python scripts/dev/sync.py ship --release x' % wt,
+                    "python %s/scripts/dev/sync.py ship --release x 2>&1 | tail -4" % wt,
+                    "cd %s; python scripts/dev/sync.py ship --release x" % wt):
+            self.assertEqual(S.auto_send_text(self.bash(cmd, cwd=main)), want, cmd)
+        self.assertEqual(S.auto_send_text(self.bash("python scripts/dev/sync.py ship --release x", cwd=main))[0],
+                         "ship x Result: E on PC works on: old task")      # no tree named: the session cwd, as before
+        self.assertEqual(S.auto_send_text(self.bash("cd /no/such/dir && python scripts/dev/sync.py ship", cwd=main))[0],
+                         "ship Result: E on PC works on: old task")
+
+    def test_ship_signal_skips_claim_release_and_merge_commits(self):
+        # 2026-10-23: DESKTOP-F7IU69N ships all signalled the stale claim text "works on: gemini-yt-pipeliner ..."
+        sh(self.tmp, "init", "-q", "repo")
+        repo = self.tmp / "repo"
+        nl2 = chr(10) * 2
+        for msg in ("feat" + nl2 + "Result: lease env set", "claim old-task" + nl2 + "Result: E on PC works on: old task",
+                    "release tc2" + nl2 + "Result: claim tc2 closed", "Merge remote-tracking branch 'origin/fast-track' into x"):
+            sh(repo, "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "--allow-empty", "-m", msg)
+        self.assertEqual(S.last_result(str(repo)), "Result: lease env set")
+        sh(repo, "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "--allow-empty", "-m", "docs only")
+        self.assertEqual(S.last_result(str(repo)), "")      # the newest work commit states no Result: say nothing, not an old one
+
     def test_budget_command_sends_line_traffic_parses_and_writes_file(self):
         self.machine("nb", "sharma")
         os.environ["MTS_RELAY_HOME"] = str(self.tmp / "claudehome")
