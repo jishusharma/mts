@@ -123,9 +123,21 @@ def post(repo, title, need, done_when, target="JIS-NB", ship=True):
     return req["id"]
 
 
+def trunk_status(repo, rid, ref=f"origin/{TRUNK}"):
+    """Status of the row on `ref` (fresh fetch, best effort), None when absent: the re-read before a commit."""
+    sh(repo, "fetch", "--quiet", "origin", TRUNK, check=False)
+    blob = trunk_blobs(repo, ref, [f"{QUEUE}/{rid}.json"]).get(f"{QUEUE}/{rid}.json")
+    try:
+        return json.loads(blob)["status"] if blob else None
+    except (ValueError, KeyError):
+        return None
+
+
 def take(repo, rid, ship=True):
     with writable(repo, ship) as wt:
         req = get(wt, rid)
+        if trunk_status(wt, rid) in FINAL:
+            req["status"] = trunk_status(wt, rid)
         if req["status"] != "pending":
             raise SystemExit(f"desk: {rid} is {req['status']}, not pending")
         req.update(status="taken", taken_by=socket.gethostname(), taken=now())
@@ -137,6 +149,8 @@ def take(repo, rid, ship=True):
 def finish(repo, rid, result, failed=False, ship=True):
     with writable(repo, ship) as wt:
         req = get(wt, rid)
+        if trunk_status(wt, rid) in FINAL:
+            req["status"] = trunk_status(wt, rid)
         if req["status"] in FINAL:
             raise SystemExit(f"desk: {rid} already {req['status']}")
         req.update(status="failed" if failed else "done", result=result, host=socket.gethostname(), finished=now())
