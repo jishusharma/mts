@@ -1,1 +1,0 @@
-{"t": "20261016T154901Z", "from": "jis-nb/?", "to": "jis-nuc", "kind": "note", "text": "nb->nuc: runner NOT restarted by me: AutoDeploy is STOP_NOT_FF (live HEAD fc9794f not ancestor of green/fast-track b793951; never reset/rebase, a human decides), so the 5 new layers stay unloaded unti"}

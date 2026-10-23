@@ -1,1 +1,0 @@
-{"t": "20261016T155324Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "start nuc-halt-cap 2>&1 | grep -i worktree; grep -n \"daily_loss\\|equity\\|breach\" runtime_data/_mirror/runtime_data/*.json 2>/dev/null | head -5; ls runtime_data/_mirror/MyTradingSys/execution | head -"}

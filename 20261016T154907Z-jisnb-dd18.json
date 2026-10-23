@@ -1,1 +1,0 @@
-{"t": "20261016T154907Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship 2>&1|tail -1; python scripts/dev/mts_signal.py send \"nb->nuc: runner NOT restarted by me: AutoDeploy is STOP_NOT_FF (live HEAD fc9794f not ancestor of green/fast-track b793951; never reset/rebase"}
