@@ -54,7 +54,7 @@
     "Run each layer's backtest on the same days; diff signals (same bar, off by one, live-only, backtest-only).",
     "Exit-rule diff (auto_trader.py, position_manager.py, config) vs backtest exits; explain the 97% time exits with numbers."
   ],
-  "tests": "audit card, no production code: fail-first check = the done_when report file is absent before the run and present after, with every number re-derived independently of the audited code (AUDIT_BRIEF.md method)",
+  "tests": "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T09/test_layer_signal_parity.py::test_replay_signals_match_backtest (asserts the bar-by-bar replay of 30 DEV days through the live layer code gives the same entry and exit signals as the backtest code per layer, with no network calls; fails on pre-change code: scripts/T09/ does not exist yet)",
   "title": "DSA audit T09: replay DEV bars through the testnet layer code and diff signals and exits against the backtests",
   "weight": "IMPORTANT",
   "worker": "session"

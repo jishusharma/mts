@@ -1,3 +1,4 @@
+import json
 import os
 import shutil
 import subprocess
@@ -24,7 +25,14 @@ class SignalTest(unittest.TestCase):
         self.origin = self.tmp / "origin.git"
         sh(self.tmp, "init", "-q", "--bare", str(self.origin))
         self.keep = {k: os.environ.get(k) for k in
-                     ("MTS_SIGNALS_HOME", "MTS_SIGNALS_ORIGIN", "MTS_SIGNALS_HOST", "MTS_SIGNALS_SYNC", "MTS_ACCOUNT", "MTS_SIGNALS")}
+                     ("MTS_SIGNALS_HOME", "MTS_SIGNALS_ORIGIN", "MTS_SIGNALS_HOST", "MTS_SIGNALS_SYNC", "MTS_ACCOUNT", "MTS_SIGNALS",
+                      "MTS_LOGIN", "MTS_CLAUDE_JSON", "MTS_LOGINS_MD")}
+        os.environ.pop("MTS_LOGIN", None)       # no real login detection in tests: a fake claude.json and table when a test needs one
+        os.environ["MTS_CLAUDE_JSON"] = str(self.tmp / "none.json")
+        self.md = self.tmp / "ACCOUNTS.md"
+        self.md.write_text("| A: alice.fake@example.test | x |\n| B: bob.fake | y |\n| C: carol1985@example.test (Max) | z |\n", encoding="utf-8")
+        os.environ["MTS_LOGINS_MD"] = str(self.md)
+        S._LOGIN_CACHE.clear()
         os.environ["MTS_SIGNALS_ORIGIN"] = str(self.origin)
         os.environ["MTS_SIGNALS_SYNC"] = "1"
         os.environ.pop("MTS_SIGNALS", None)
@@ -343,7 +351,9 @@ class SignalTest(unittest.TestCase):
         self.assertIn(bid, start)
         self.assertNotIn("ACTION REQUIRED", start)
         self.assertEqual(S.main(["ack", bid, "done"]), 0)
-        self.assertEqual(S.handle(self.payload("SessionStart", sid="new2", source="startup")), "")
+        quiet = S.handle(self.payload("SessionStart", sid="new2", source="startup"))
+        self.assertNotIn("reminder", quiet)                                     # done is silent; only the LOGIN line remains
+        self.assertNotIn("ACTION", quiet)
 
     def test_acks_table_and_sender_status(self):
         import contextlib
@@ -429,6 +439,87 @@ class SignalTest(unittest.TestCase):
         self.assertIn("plain heads up", out)
         self.assertNotIn("ACTION REQUIRED", out)
         self.assertEqual(self.ups(), "")                     # shown once, as before
+
+    def as_login(self, email):
+        (self.tmp / "claude.json").write_text(json.dumps({"oauthAccount": {"emailAddress": email}, "other": "x"}), encoding="utf-8")
+        os.environ["MTS_CLAUDE_JSON"] = str(self.tmp / "claude.json")
+        S._LOGIN_CACHE.clear()
+
+    def test_login_detected_from_app_account_and_env_overrides(self):
+        self.assertEqual(S.login(), "")
+        self.as_login("alice.fake@example.test")
+        self.assertEqual(S.login(), "A")
+        self.as_login("bob.fake@example.test")                  # key = local part
+        self.assertEqual(S.login(), "B")
+        self.as_login("carol1985@example.test")                 # key = full address
+        self.assertEqual(S.login(), "C")
+        self.as_login("stranger@example.test")
+        self.assertEqual(S.login(), "")
+        os.environ["MTS_LOGIN"] = "b"
+        self.assertEqual(S.login(), "B")
+
+    def test_sender_id_uses_the_letter(self):
+        self.machine("lenovo", "")
+        os.environ.pop("MTS_ACCOUNT")
+        self.assertEqual(S.who(), "lenovo/?")
+        self.as_login("alice.fake@example.test")
+        self.assertEqual(S.who(), "lenovo/A")
+        os.environ["MTS_ACCOUNT"] = "sharma"
+        self.assertEqual(S.who(), "lenovo/sharma")             # an explicit account label still wins
+
+    def test_session_start_announces_login_and_tells_the_session(self):
+        self.machine("jis-nb", "")
+        self.as_login("carol1985@example.test")
+        self.assertEqual(S.auto_send_text(self.payload("SessionStart", source="startup")), ("session started in %s login=C" % self.tmp.name, "note"))
+        os.environ["MTS_SIGNALS_ORIGIN"] = ""                  # no clone: only the session's own LOGIN line, no network
+        os.environ["MTS_SIGNALS_HOME"] = str(self.tmp / "none")
+        os.environ["MTS_SIGNALS_SYNC"] = ""
+        out = S.handle(self.payload("SessionStart", sid="x", source="compact"))
+        self.assertEqual(out, "LOGIN: this session is login C on JIS-NB (from the app account)")
+        self.assertNotIn("example.test", out)
+        self.as_login("stranger@example.test")
+        self.assertIn("LOGIN: unknown on JIS-NB", S.handle(self.payload("SessionStart", sid="y", source="compact")))
+
+    def test_login_mismatch_uses_detected_letter_record_carries_login(self):
+        self.machine("lenovo", "")
+        os.environ.pop("MTS_ACCOUNT")
+        os.environ["MTS_RELAY_HOME"] = str(self.tmp / "claudehome")
+        self.as_login("alice.fake@example.test")
+        self.assertEqual(S.resolve_login("C"), ("A", "LOGIN MISMATCH: you passed C, this app is logged in as A; using A"))
+        self.assertEqual(S.resolve_login("a"), ("A", ""))
+        self.assertEqual(S.resolve_login(""), ("A", ""))
+        self.assertEqual(S.main(["budget", "--login", "C", "--five", "1", "--week", "2", "--reset", "2026-10-23T09:00Z"]), 0)
+        rec = S.load(S.ensure())[-1]
+        self.assertEqual(rec["text"], "BUDGET login=A 5h=1% week=2% reset=2026-10-23T09:00Z")
+        self.assertEqual((rec["login"], rec["from"]), ("A", "lenovo/A"))
+        self.assertNotIn("example.test", json.dumps(rec))      # the address never travels
+        os.environ.pop("MTS_RELAY_HOME")
+
+    def test_who_lines_stale_supervisor_note_and_conflict(self):
+        at = S.now()
+        def row(h, lg, text, ago_min, **kw):
+            return dict({"t": S.stamp(at - timedelta(minutes=ago_min)), "from": "%s/%s" % (h, lg or "?"), "to": "all", "kind": "note",
+                         "text": text, **({"login": lg} if lg else {})}, **kw)
+        rows = [row("lenovo", "A", "BUDGET login=C 5h=3% week=50% reset=2026-10-23T09:00Z", 10),
+                row("jis-nb", "C", "BUDGET login=C 5h=9% week=20% reset=2026-10-27T19:59Z sup=JIS-NB mode=SPEND run=1", 20),
+                row("jis-nb", "C", "ROLE LOADED: Builder", 5),
+                row("old-pc", "B", "BUDGET login=B 5h=1% week=2% reset=2026-10-25T00:00Z", 8 * 60)]
+        out = S.roll_lines(rows, 24, at)
+        text = " ".join(out)
+        self.assertEqual(len([x for x in out if x.startswith("CONFLICT")]), 1)
+        self.assertIn("CONFLICT login C: reset 2026-10-23T09:00 on lenovo vs 2026-10-27T19:59 on jis-nb", out[0])
+        nb = [x for x in out if "jis-nb" in x and x.startswith("login")][0]
+        self.assertIn("sup=JIS-NB mode=SPEND", nb)
+        self.assertIn("ROLE LOADED: Builder", nb)
+        self.assertIn("5h=9% week=20%", nb)
+        self.assertNotIn("STALE", nb)
+        self.assertIn("MISLABELLED login=C", [x for x in out if "lenovo" in x and x.startswith("login A")][0])
+        self.assertIn("STALE", [x for x in out if "old-pc" in x][0])      # 8 h old reading
+        self.assertEqual(len(S.roll_lines(rows, 1, at)), 3)                # old-pc is outside a 1 h window, CONFLICT line stays
+        self.assertNotIn("example.test", text)
+
+    def test_clean_cuts_email_addresses(self):
+        self.assertEqual(S.clean("mail alice.fake@example.test now"), "mail [cut] now")
 
 
 if __name__ == "__main__":
