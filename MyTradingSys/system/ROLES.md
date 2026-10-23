@@ -44,5 +44,4 @@ Boot line, output channel and rules: the role file (`role_loader.py check` ties 
 ## Rules for every role
 - Work in the `sync.py start <slug>` worktree, never the live tree; share only via `sync.py ship`; cross-machine messages only via `mts_signal.py send` (one line; long requests are a desk task).
 - Opus only as in WORKERS.md rule 6; scoped sub-work to Haiku Agents (rule 3a, at most 5). Turn budget: WORKERS.md rule 5 (a Supervisor runs unattended and may auto-compact; it rebuilds from `plan`, the card board and `git cherry`).
-- Interactive roles (Eagle_Eyes; operator chats or sends screenshots) always start as a session with start_session user_asked, never as a background Agent (operator 2026-10-23).
 - Roles report; they do not trade, deploy, restart, touch HALT files or read `.secrets/`.

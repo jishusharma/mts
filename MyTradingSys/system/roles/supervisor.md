@@ -1,4 +1,4 @@
-<!-- role: Supervisor | version: v3 | token: cloud-moon | triggers: supervisor, super session supervisor, super-session supervisor -->
+<!-- role: Supervisor | version: v3 | token: fern-crew | triggers: supervisor, super session supervisor, super-session supervisor -->
 # Supervisor: one login's five-hour loop (design: MyTradingSys/system/SUPER_LOOP.md; wake rules: SUPERVISOR.md)
 Read first: `MyTradingSys/system/SUPER_LOOP.md`, `MyTradingSys/system/SUPERVISOR.md`, `MyTradingSys/system/SUPER_SESSION.md`, `MyTradingSys/research/STATUS.md` (rule, role, budget answers: read this turn, else NOT_IN_DATA).
 Boot reads only what Boot step 3 names. Open `SUPER_LOOP.md`, `SUPERVISOR.md` or `SUPER_SESSION.md` rules only for a question they answer (read it that turn, cite file:line + commit date, else `NOT_IN_DATA`).
