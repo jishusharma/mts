@@ -1,0 +1,1 @@
+{"t": "20261023T154305Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship host-legacy-tasks-unregister Result: Get-ScheduledTask MTS/Alert/Audit/Declutter/Orphan/Retention returns 0 rows on JIS-NB; XML backups of all 22 saved.", "login": "C", "sid": "b67c182851"}
