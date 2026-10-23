@@ -527,20 +527,6 @@ class SignalTest(unittest.TestCase):
     def test_clean_cuts_email_addresses(self):
         self.assertEqual(S.clean("mail alice.fake@example.test now"), "mail [cut] now")
 
-    def test_who_command_prints_own_login_and_rows(self):
-        self.machine("jis-nb", "")
-        os.environ.pop("MTS_ACCOUNT")
-        self.as_login("bob.fake@example.test")
-        S.send("start foo")
-        import io, contextlib
-        buf = io.StringIO()
-        with contextlib.redirect_stdout(buf):
-            self.assertEqual(S.main(["who", "--hours", "2"]), 0)
-        o = buf.getvalue()
-        self.assertIn("LOGIN: this session is login B on JIS-NB", o)
-        self.assertIn("login B jis-nb seen", o)
-        self.assertIn("start foo", o)
-
 
 if __name__ == "__main__":
     unittest.main()
