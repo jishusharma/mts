@@ -476,6 +476,12 @@ def button_reason(tool, inp, transcript_path):
     return f"{role} is a role session; the operator is away and wants zero clicks, so {tool} cards are blocked. {fix}"
 
 
+def warn(text):
+    """Warning only, never a block (operator 2026-10-23: the guards stopped all work; the model reads this and decides)."""
+    print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse",
+                                             "additionalContext": "model_guard (warning, not a block): " + text}}))
+
+
 def hook():
     try:
         ev = json.loads(sys.stdin.read() or "{}")
@@ -488,27 +494,23 @@ def hook():
     if tool in BUTTON_TOOLS:
         button = button_reason(tool, inp, ev.get("transcript_path"))
         if button:
-            print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
-                                                     "permissionDecisionReason": "model_guard: " + button}}))
+            warn(button)
         return 0
     storm = storm_reason(tool, ev)
     if storm:
-        print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
-                                                 "permissionDecisionReason": "model_guard: " + storm}}))
+        warn(storm)
         return 0
     if tool in SCHEDULE_TOOLS or tool == WORKFLOW:
         return 0
     msg = message_reason(tool, inp, ev.get("transcript_path"))
     if msg:
-        print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
-                                                 "permissionDecisionReason": "model_guard: " + msg}}))
+        warn(msg)
         return 0
     if tool in SEND_TOOLS:
         return 0
     card = agent_role_reason(tool, inp) or card_reason(tool, inp, ev.get("transcript_path")) or nested_reason(tool, inp, ev.get("transcript_path"))
     if card:
-        print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
-                                                 "permissionDecisionReason": "model_guard: " + card}}))
+        warn(card)
         return 0
     if inp.get("model") and (operator_named_opus(ev.get("transcript_path"))
                              or crucial_card_cited(inp.get("title"), inp.get("prompt"), inp.get("background"), inp.get("description"))):
@@ -516,8 +518,7 @@ def hook():
     needs_parent = inp.get("subagent_type") == "fork" or inp.get("context") == "fork"
     reason = decide(tool, inp, parent_model(ev.get("transcript_path")) if needs_parent else None)
     if reason:
-        print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
-                                                 "permissionDecisionReason": "model_guard: " + reason}}))
+        warn(reason)
     return 0
 
 

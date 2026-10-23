@@ -30,7 +30,8 @@ def fire_full(tool, inp, transcript=None, tasks_dir=None, claude_home=None):
     if not out:
         return "allow", ""
     h = json.loads(out)["hookSpecificOutput"]
-    return h["permissionDecision"], h.get("permissionDecisionReason", "")
+    assert "permissionDecision" not in h, h   # warning only, never a block (operator 2026-10-23)
+    return "deny", h["additionalContext"]     # "deny" = the guard objected; the call still runs
 
 
 def fire(tool, inp, transcript=None, tasks_dir=None, claude_home=None):
