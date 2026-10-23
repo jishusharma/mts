@@ -1,0 +1,1 @@
+{"t": "20261023T063318Z", "from": "vm/?", "to": "all", "kind": "done", "text": "ship Result: new test fails on the old code (stale primary text), passes now; mts_signal + sync + model_guard tests 143/143.", "sid": "148671909c"}
