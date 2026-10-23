@@ -35,6 +35,9 @@
     "Build exhaust.py, then the mts_signal audience and dedupe changes",
     "Run test_mts_signal and the new tests; ship"
   ],
+  "tests": [
+    "MyTradingSys/tests/test_exhaust_phase.py::test_phase_boundaries (fails: exhaust.py does not exist)"
+  ],
   "title": "Exhaust-phase tooling: one actor per login, top-level only, spend all quota before reset",
-  "worker": "agent"
+  "worker": "session"
 }
