@@ -1,1 +1,0 @@
-{"t": "20261016T134946Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "start gpt-lane-watchdog 2>&1 | grep -E \"WORKTREE|branch\"; W=C:/Users/E-ngineers/IdeaProjects/mts-jis-nuc-gpt-lane-watchdog; cd $W && grep -n \"STALLED\" -B8 -A4 scripts/dev/codex_run.py | head -60; ls s"}
