@@ -27,11 +27,11 @@
   },
   {
    "layer": "krown",
-   "gate": "G1",
+   "gate": "G2",
    "proof": [
-    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv"
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_SETUP_CATALOG.md (commit f4a5182a)"
    ],
-   "next": "G2 (krown-g2: KROWN_SETUP_CATALOG.md)"
+   "next": "G3 blind marks (not started)"
   }
  ]
 }

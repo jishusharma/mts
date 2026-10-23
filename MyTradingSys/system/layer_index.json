@@ -632,7 +632,7 @@
       "id": "krown",
       "name": "Krown (TA 101: zones, volume, candles, averages, ranges)",
       "tracks": "Claude (extraction, ledger, spec, detectors), DSA (data runs)",
-      "status": "Spec v0.2 + 120-rule ledger from 15 of 19 reachable TA 101 videos (14 TA + 1 fees). 4 videos blocked on YouTube captions (429). One structural stop (compression breakout), no stop distance or size rule: the rest is OURS. Not built, not backtested.",
+      "status": "Spec v0.2 + 120-rule ledger from 15 of 19 reachable TA 101 videos (14 TA + 1 fees). The 4 missing transcripts are on disk since 2026-10-16 (krown_capture_2026-10-16/transcripts/ta101_missing4). Gate G2 reached: KROWN_SETUP_CATALOG.md (commit f4a5182a). One structural stop (compression breakout), no stop distance or size rule: the rest is OURS. Detectors not built, not backtested.",
       "plain": "Daily and weekly BTC swing method: trend state from dominant highs and lows, levels from wick to close, volume at 2x its average, a volatility (BBWP) regime, RSI 40/60 zones as confirmation, four candle patterns, 21/55 EMA + 200 SMA; a close, not a wick, is the verdict.",
       "spec": [
         "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md",
