@@ -90,3 +90,11 @@ Rules: no schedulers, no transcripts or runtime data in the MTS repo, never read
 Stop at 60 agent-turns or on any kill criterion in section (f) and report the number. Finish with sync.py ship, git cherry empty,
 then a plain status: done / not done / what V scored. Do not ask to proceed; take the defaults in the note.
 ```
+
+## (h) Pre-run checklist (added after the operator asked to "prepare", 2026-10-23; run before pasting (g))
+Found this turn: `sync.py claims` shows `cbp-one-acked-row-through-queue-consumer` claimed by JIS-NB/jishusharma, 14 h old. That card is the same outcome as phase A (same file `queue/cbp_adapter.py`): two writers. Also this tree was 87 commits behind trunk, and the STATUS CI line on origin/fast-track still reads RED.
+1. Before launch: ask the claim owner (JIS-NB) to ship or release that claim (`sync.py release`); the ultra run then SUPERSEDES the 5 cbp-* cards (retire, adapter, repo-commit, row-84, acked-row): mark them done by reference to the verdict file, not dispatched in parallel.
+2. Before launch: `python scripts/dev/sync.py start cbp-ultra` (merges trunk); then read the CI line. RED = the orchestrator claims the CI fix first; Phase 1 (CBP-repo only) may run meanwhile.
+3. Idle linked session `cbp-ship-fetcher-store-l` (local_8a9a8501-6771-42b8-ae96-893bef25b80a): confirm it holds no uncommitted CBP edits (`git -C F:/CryptoScrapper status`); the dirty CBP files today are exactly phase T's input.
+4. To watch the run: `/workflows`; after it ends read `research/thinker/2026-10-23_cbp_ultra_verdict.md` and the MET/PARTIAL/NOT MET table. Check: verdict has pasted command output; `git cherry origin/fast-track` empty; kill criteria numbers stated.
+5. PENDING OPERATOR still: kill numbers in (f).

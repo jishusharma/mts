@@ -13,7 +13,7 @@
   "from_inbox": "",
   "goal": "Score each Habib weekly/Sunday plan as full, partial or miss (execution excluded from the score), then test whether his imbalance levels beat placebo levels on Binance BTCUSDT, fee-net.",
   "id": "habib-plan-hit-rate-study",
-  "lane": "DSA-NB",
+  "lane": "SONNET",
   "latest": [],
   "layers": [
     "callers"

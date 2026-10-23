@@ -16,7 +16,7 @@
   "from_inbox": "",
   "goal": "Build an independent second implementation of two G5 studies from their PRE_REG.md alone, diff it event by event against the shipped study, and classify every difference as spec ambiguity, shipped bug or twin bug.",
   "id": "dsa-audit-04-clean-room-twin",
-  "lane": "DSA-NB",
+  "lane": "SONNET",
   "latest": [],
   "layers": [],
   "live_path": false,

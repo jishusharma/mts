@@ -1,10 +1,13 @@
 {
   "done_when": "replies_DSA.json exists for all 21 packets and the compare output (values, mismatches) is in the desk result",
+  "finished": "2026-10-23T11:56:10Z",
   "from": "DESKTOP-F7IU69N",
+  "host": "JIS-NB",
   "id": "20261019-230131-indicator-audit-dsa-deepseek-blind-packe",
   "need": "REVIEWER=DSA. Blind recompute of 21 indicator packets (RSI14, Bollinger 20/2, StochRSI 14/14/3/3) from MyTradingSys/research/indicator_audit_2026-10-14/packets/*.json on origin/fast-track (after the card ships; not the live tree). Each packet holds 500 closes + the FORMULAS.md definition text + the question; it holds NO engine value: do not look for ours and never show a model our number. Give each packet to the reviewer model alone, no repo access, and ask it to compute the answer_keys at the LAST close; save replies as {packet_id: {answer_key: number}} to MyTradingSys/research/indicator_audit_2026-10-14/replies_REVIEWER.json (full precision). Then run: python scripts/dev/indicator_audit_compare.py --packets MyTradingSys/research/indicator_audit_2026-10-14/packets --replies <replies file> --reviewer REVIEWER (tolerance is fixed in TOLERANCE.md: RSI/StochRSI abs 0.01, Bollinger rel 1e-6). Report mismatch count per packet in the result; do not edit the engine.",
   "posted": "2026-10-19T23:01:31Z",
-  "status": "pending",
+  "result": "done already: card indicator-values-multi-model-audit state done; duplicate of 20261019-230129",
+  "status": "done",
   "target": "DSA",
   "title": "indicator audit: DSA (DeepSeek) blind packet run"
 }

@@ -16,7 +16,7 @@
   "from_inbox": "",
   "goal": "Measure the real null for each recent screen with matched placebo events, correct for overlapping holds and the number of arms tried, check half-year stability, and rebuild the LC1 level-hold control as a fair null.",
   "id": "dsa-audit-05-placebo-nulls",
-  "lane": "DSA-NB",
+  "lane": "SONNET",
   "latest": [],
   "layers": [],
   "live_path": false,

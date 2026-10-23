@@ -1,11 +1,14 @@
 {
   "card": "dsa-audit-06-cost-fill-realism",
   "done_when": "T06_cost_fill_realism.md shipped: costs.csv, venue table, real-funding rerun per arm, engine x fill-rule table, break-even per arm, fee-to-stop per testnet layer, leads L1/L3 resolved, S1/S2 carded.",
+  "finished": "2026-10-23T11:55:40Z",
   "from": "JIS-NB",
+  "host": "JIS-NB",
   "id": "20261016-014229-dsa-audit-06-cost-fill-realism",
   "need": "python scripts/dev/sync.py claim \"dsa-audit-06-cost-fill-realism\"; python scripts/dev/tasks.py take dsa-audit-06-cost-fill-realism; git grep -n -E \"0\\.0005|0\\.0002|0\\.0007|0\\.0012|0\\.0014|fee_rt|slip|FUND_PCT|funding\" -- MyTradingSys/backtest MyTradingSys/research; Get-ChildItem C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed/Dumps/backtest/raw/fundingRate | Measure-Object; python scripts/dev/tasks.py done dsa-audit-06-cost-fill-realism --result \"<Tnn>: k findings (S1 a, S2 b, S3 c); <headline>\"; # AIRUN task=mts-ship repo=<WORKTREE> timeout=1800  (then git cherry origin/fast-track HEAD is empty) (full brief: python scripts/dev/tasks.py brief dsa-audit-06-cost-fill-realism)",
   "posted": "2026-10-16T01:45:05Z",
-  "status": "pending",
+  "result": "re-routed: DSA-NB bridge not taking rows (178 h); card dsa-audit-06-cost-fill-realism moved to lane SONNET (ROUTING C7, Pipeliner 2026-10-23)",
+  "status": "failed",
   "target": "DSA-NB",
   "title": "DSA audit T06: every cost, funding and fill assumption side by side, real funding rerun, break-even per arm"
 }

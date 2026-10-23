@@ -1,10 +1,13 @@
 {
   "done_when": "T02_lookahead_time.md table 3b has PASS or FAIL for each study detector, table 3d has changed-label counts, entry timing lists 10 events per study",
+  "finished": "2026-10-23T11:57:39Z",
   "from": "DESKTOP-F7IU69N",
+  "host": "JIS-NB",
   "id": "20261018-192706-t02-blocked-data-truncation-and-poison-t",
   "need": "Run on a machine with F:/MTS/data (JIS-NB): extend MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T02/t02_truncation.py to the study detectors in T02_lookahead_time.md table 3b (rows 1-5,7,9-16): 200 seeded DEV timestamps, cut and NaN/x10 poison; count DEV events whose session label changes between fixed-UTC and DST-aware; 10 hand-checked entries per study",
   "posted": "2026-10-18T19:27:06Z",
-  "status": "pending",
+  "result": "re-routed to JIS-NB (DSA not taking rows 85-125 h)",
+  "status": "failed",
   "target": "DSA",
   "title": "T02 BLOCKED-DATA: truncation and poison tests of 1b study detectors on DEV, clock changed-label counts, entry-timing hand check"
 }

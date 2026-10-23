@@ -16,7 +16,7 @@
   "from_inbox": "",
   "goal": "Map each testnet layer to the backtest that justified it, replay 30 DEV days bar by bar through the live layer code in the worktree with no network, diff signals and exit rules against the backtest code, and explain the 97% time exits.",
   "id": "dsa-audit-09-live-parity",
-  "lane": "DSA-NB",
+  "lane": "SONNET",
   "latest": [],
   "layers": [],
   "live_path": false,
