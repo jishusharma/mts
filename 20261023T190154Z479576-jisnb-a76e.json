@@ -1,0 +1,1 @@
+{"t": "20261023T190154Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship cbp-build-query Result: cbp.query reads one JSON store; cbp_run.py --due/--force fetch+extract+quote-check+dedupe; 7 new tests pass; consumer/adapter/tests removed; D5 amended.", "login": "C", "sid": "a9b0fb916b"}
