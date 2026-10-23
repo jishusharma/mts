@@ -53,7 +53,7 @@ class UnattendedBudgetTest(unittest.TestCase):
 
     def test_unattended_budget_denies_tools_but_lets_the_hand_off_through(self):
         s = self.tp("sonnet", 100_000)
-        fire(self.home, "UserPromptSubmit", sid="w", extra={**s, "prompt": "the brief"})
+        fire(self.home, "UserPromptSubmit", sid="w", extra={**s, "prompt": "You are Builder. The brief"})
         for _ in range(9):
             fire(self.home, "PostToolUse", sid="w", extra=s)
         self.assertFalse(denied(self.pre("w", extra=s)), "under 1M: allowed")
@@ -67,7 +67,7 @@ class UnattendedBudgetTest(unittest.TestCase):
 
     def test_events_never_reset_the_budget_ping_pong_is_bounded(self):
         s = self.tp("sonnet", 100_000)
-        fire(self.home, "UserPromptSubmit", sid="p", extra={**s, "prompt": "coordinate"})
+        fire(self.home, "UserPromptSubmit", sid="p", extra={**s, "prompt": "You are Builder. Coordinate"})
         for _ in range(12):
             fire(self.home, "UserPromptSubmit", sid="p", extra={**s, "prompt": "<side-sessions-event>child done</side-sessions-event>"})
             for _ in range(10):
@@ -89,31 +89,26 @@ class UnattendedBudgetTest(unittest.TestCase):
 
     def test_unattended_fable_gets_a_context_note_and_a_budget(self):
         f = self.tp("fable", 600_000)
-        fire(self.home, "UserPromptSubmit", sid="f", extra={**f, "prompt": "one brief"})
+        fire(self.home, "UserPromptSubmit", sid="f", extra={**f, "prompt": "You are Builder. One brief"})
         self.assertTrue(any(fire(self.home, "PostToolUse", sid="f", extra=f) for _ in range(5)))
         for _ in range(2):
             fire(self.home, "PostToolUse", sid="f", extra=f)                     # 2 x 600k = 1.2M > 1M
         self.assertTrue(denied(self.pre("f", extra=f)))
 
-    def test_supervisor_budget_is_6m_with_a_note_at_3m(self):
-        # 2026-10-22: at 1M the JIS-NB Supervisor (C) was denied every tool ~15 turns into its unattended run
+    def test_a_supervisor_is_never_stopped_or_nagged_by_the_unattended_budget(self):
+        # 2026-10-22: at 1M the JIS-NB Supervisor (C) was denied every tool ~15 turns in; 2026-10-23: at 557k context still denied
+        # (6M budget used up). roles/supervisor.md: Supervisors run on auto-compaction, so there is no unattended stop for them.
         o = self.tp("opus", 200_000)
         fire(self.home, "UserPromptSubmit", sid="sv", extra={**o, "prompt": "You are Supervisor. Login C."})
-        notes = [fire(self.home, "PostToolUse", sid="sv", extra=o) for _ in range(14)]     # 2.8M
+        notes = [fire(self.home, "PostToolUse", sid="sv", extra=o) for _ in range(40)]     # 8M of reads
         self.assertFalse(any("unattended read" in n for n in notes))
-        self.assertFalse(denied(self.pre("sv", extra=o)), "15 turns in: still working")
-        self.assertIn("unattended read 3000k of 6000k", fire(self.home, "PostToolUse", sid="sv", extra=o))   # 3M
-        for _ in range(14):
-            fire(self.home, "PostToolUse", sid="sv", extra=o)
-        self.assertFalse(denied(self.pre("sv", extra=o)))                               # 5.8M
-        fire(self.home, "PostToolUse", sid="sv", extra=o)                               # 6M
-        self.assertTrue(denied(self.pre("sv", extra=o)))
+        self.assertFalse(denied(self.pre("sv", extra=o)))
 
     def test_unknown_context_counts_as_250k(self):
         blank = self.home / "blank.jsonl"
         blank.write_text("", encoding="utf-8")
         b = {"transcript_path": str(blank)}
-        fire(self.home, "UserPromptSubmit", sid="u", extra={**b, "prompt": "x"})
+        fire(self.home, "UserPromptSubmit", sid="u", extra={**b, "prompt": "You are Builder. x"})
         for _ in range(4):
             fire(self.home, "PostToolUse", sid="u", extra=b)                     # 4 x 250k = 1M
         self.assertTrue(denied(self.pre("u", extra=b)))

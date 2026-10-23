@@ -17,7 +17,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "OPERATOR QUOTE: I think you should create a task for this. And your task it for all stations. So going forward, station would mean a device, with a login. / And I meant broadcast. You have to broadcast it.",
+  "note": "OPERATOR QUOTE: I think you should create a task for this. And your task it for all stations. So going forward, station would mean a device, with a login. / And I meant broadcast. You have to broadcast it. | 2026-10-23 builder thinker-followups-1023: JIS-NB done. NUC: 8 named commits are safe (argon on origin hold/argon-blind-read-7-frames). Still open, owner first JIS-NUC session or JIS-NB via NUC gate bundle (NUC ssh has no GitHub login): 14 NUC local branches on no origin ref (see research/thinker/OPEN_2026-10-23_followups.md row 2); DESKTOP-F7IU69N station line. Done when: those refs exist on origin and each device sent its STATION line.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",

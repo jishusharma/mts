@@ -507,6 +507,13 @@ class SyncTest(unittest.TestCase):
         self.assertTrue(ahead.exists())
         self.assertTrue(self.a.exists())  # primary tree never touched
 
+    def test_tidy_dry_run_hint_is_a_command_that_runs_on_windows(self):
+        # 2026-10-23: the hint printed `sync.py tidy --apply`, which Windows cannot run without `python scripts/dev/` in front
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            sync.tidy(self.a)
+        self.assertIn("`python scripts/dev/sync.py tidy --apply`", buf.getvalue())
+
     def test_discard_saves_uncommitted_work_removes_tree_keeps_branch(self):
         # operator 2026-10-23: the App's discard action asked him 4-5 times; `sync.py discard` does it from Bash, no card
         with contextlib.redirect_stdout(io.StringIO()):

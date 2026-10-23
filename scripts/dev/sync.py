@@ -1328,7 +1328,7 @@ def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS,
         git(repo, "worktree", "prune", check=False)
     counts = ", ".join(f"{k} {n}" for k, n in sorted(kept.items(), key=lambda kv: (-kv[1], kv[0])))
     print(f"{'removed' if apply else 'would remove'} {len(out)}; kept {sum(kept.values())}" + (f" ({counts})" if kept else "")
-          + ("" if apply else "; `sync.py tidy --apply` removes, `--all` also tries hand-named trees"))
+          + ("" if apply else "; `python scripts/dev/sync.py tidy --apply` removes, `--all` also tries hand-named trees"))
     return out
 
 

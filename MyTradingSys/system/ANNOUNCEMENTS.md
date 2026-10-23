@@ -16,7 +16,7 @@ Entry format: `### A-<yyyymmdd>-<n> <kind> <title>` with kind one of INFO, DO-NO
 ### A-20261023-1 DO-NOW Every station: save unshipped worktree work, then tidy (operator 2026-10-23)
 - Applies to: every station (station = one device with one login, operator 2026-10-23). The first session on each device to read this does it once for that device.
 - Until: each device (JIS-NB, JIS-NUC, DESKTOP-F7IU69N) has sent `STATION <device>/<login> worktrees: ...` done.
-- What: card `every-station-save-unshipped-worktree-wo`: `sync.py where --all`; ship real work from its own tree; never commit runtime data; `sync.py tidy --apply`.
+- What: card `every-station-save-unshipped-worktree-wo`: `sync.py where --all`; ship real work from its own tree; never commit runtime data; `python scripts/dev/sync.py tidy --apply`.
 - Why: JIS-NUC holds 8 commits on no origin branch (nuc-shares-script 4, argon-blind-read-7-frames 2, lab-formula-spec-recount 2); a lost disk loses them.
 
 ### A-20261018-1 INFO Lab_Guy workflow v3.1 is in force (design), enforcement is being built

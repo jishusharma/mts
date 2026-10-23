@@ -61,7 +61,7 @@ class RepeatTest(unittest.TestCase):
 
 class LoginDedupeTest(unittest.TestCase):
     B2 = dict(B, id="b-bbbbbb")
-    ACK = {"kind": "ack", "id": "b-bbbbbb", "state": "done", "host": "jis-nb", "login": "C", "t": "99991231T000001Z"}
+    ACK = {"kind": "ack", "id": "b-bbbbbb", "state": "done", "host": "some-other-pc", "login": "C", "t": "99991231T000001Z"}   # not jis-nb: the suite also runs on JIS-NB
 
     def test_ack_from_another_host_on_my_login_counts(self):
         with mock.patch.dict(os.environ, {"MTS_LOGIN": "C"}):
