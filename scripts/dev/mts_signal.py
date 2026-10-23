@@ -389,11 +389,16 @@ def action_text(b):
     return "ACTION FOR THIS MACHINE (%s): %s" % (host(), cmd)
 
 
+def is_subagent():
+    """True in a subagent or embedded worker (a Supervisor's Builder/Session_Planner): broadcasts sent with --audience top skip it."""
+    return bool(os.environ.get("MTS_SUBAGENT")) or os.environ.get("MTS_ROLE", "") in ("Builder", "Session_Planner")
+
+
 def action_block(rows, ev):
     """The [MTS ACTION REQUIRED] text for this host: state none on every turn, told once per session (SessionStart), done never."""
     out = []
     for b in high_open(rows):
-        if b.get("to") not in ("all", host()):
+        if b.get("to") not in ("all", host()) or (b.get("aud") == "top" and is_subagent()):
             continue
         st = ack_state(rows, b["id"], host())
         if st == "done" or (st == "told" and ev != "SessionStart"):
@@ -531,7 +536,7 @@ def stop_check(payload):
     if not (h / ".git").exists():
         return ""
     rows = load(h)
-    pending = [b for b in high_open(rows) if b.get("to") in ("all", host()) and ack_state(rows, b["id"], host()) == "none"]
+    pending = [b for b in high_open(rows) if b.get("to") in ("all", host()) and not (b.get("aud") == "top" and is_subagent()) and ack_state(rows, b["id"], host()) == "none"]
     if not pending:
         return ""
     reply = reply_text(payload)
@@ -622,12 +627,15 @@ def main(argv):
         ap.add_argument("message")
         ap.add_argument("--to", default="all")
         ap.add_argument("--prio", default="normal", choices=["normal", "high"])
+        ap.add_argument("--audience", default="all", choices=["all", "top"], help="top: subagents and embedded workers neither see nor block on it")
         ap.add_argument("--cmd", default="", help="high: the exact command the operator must run on each machine")
         a = ap.parse_args(argv[1:])
         extra, bid = None, ""
         if a.prio == "high":
             bid = "b-" + hashlib.sha1(("%s%s%s" % (time.time(), who(), a.message)).encode("utf-8")).hexdigest()[:6]
             extra = {"id": bid, "prio": "high", "cmd": clean(a.cmd, CMD_MAX)}
+            if a.audience == "top":
+                extra["aud"] = "top"
         ok = send(a.message, to=a.to, kind="broadcast", extra=extra)
         print("broadcast sent" if ok else "broadcast NOT sent (no origin or push failed)")
         if ok:
