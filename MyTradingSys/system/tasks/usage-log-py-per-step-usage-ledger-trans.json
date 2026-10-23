@@ -1,35 +1,53 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest scripts/dev/test_usage_log.py -q"
+  ],
   "created": "2026-10-23T07:12:25Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "usage_log.py has subcommands row, idle, summary; test_usage_log.py passes; a sample transcript gives tokens_in/out/cache; a row without both reads exits 1.",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Add scripts/dev/usage_log.py: append one row per step to a usage CSV, parse a transcript JSONL into token columns, and report idle lanes. Replaces the K_DEFAULT guess with measured rows.",
   "id": "usage-log-py-per-step-usage-ledger-trans",
   "kind": "build",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "DECISION (OURS) 2026-10-23: drafted and T0-checked; reviewer Agent blocked by spawn cap (8/h), so no ACCEPT stamp: needs ONE batched Sonnet reviewer pass (or Lab_Guy for CODEX), then stamp REVIEWED:<date> ACCEPT and tasks.py check. DECISION (OURS): thresholds 40% / 60 min from the Thinker note, tune after 30 rows. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
+  "scope_in": [
+    "scripts/dev/usage_log.py",
+    "scripts/dev/test_usage_log.py",
+    "MyTradingSys/research/USAGE_PILOT.csv (header only)"
+  ],
+  "scope_out": [
+    "supervisor.py",
+    "settings.json hooks",
+    "live path",
+    "any scheduler"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/thinker/2026-10-23_usage_metering.md (Pilot design, Check)"
+  ],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Row: usage_log.py row --card --step --lane --model --before 'five,week,fable' --after 'five,week,fable' [--transcript P --minutes N --source S]; refuses a row missing either read; writes the USAGE_PILOT.csv header if absent (columns in research/thinker/2026-10-23_usage_metering.md Pilot design).",
+    "Transcript parser: sum input, output, cache_read + cache_creation tokens per transcript JSONL (path under ~/.claude/projects/<slug>/<session>.jsonl); unreadable file gives empty token cells, never a crash.",
+    "idle: print IDLE <lane> when 5h < 40% and a ready card exists in that lane, or week room > pace with no worker, within 60 min of reset (thresholds OURS); summary: rows and mean tokens per card kind.",
+    "Write the test first, run it with no usage_log.py (fails), then build."
+  ],
+  "tests": "scripts/dev/test_usage_log.py::test_row_refuses_missing_after_read fails first (no module), passes after; plus parser and idle tests.",
   "title": "usage_log.py: per-step usage ledger, transcript token parser, idle-lane report",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

@@ -1,37 +1,57 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest MyTradingSys/research/layer_lab/dev_split_guard/test_event_table.py -q"
+  ],
   "created": "2026-10-19T05:04:25Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-10-23_trust-recheck-gptb-dev-split-guard.md exists with reviewer vendor/model, 1-3 re-derived numbers marked MATCH or MISMATCH with file:line, the mutation result, and a tag proposal.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Independently re-check the source definition, tests and 1-3 decisive numbers of gptb-dev-split-guard before a VERIFIED-C2 result tag is recorded. Establish producer identity and use a different reviewer vendor; no outcome or holdout rerun.",
+  "goal": "Independent re-check of gptb-dev-split-guard before a VERIFIED-C2 tag: re-derive 1-3 decisive numbers from the written spec only (never the producer code), and read its tests for a fail-first that bites.",
   "id": "trust-recheck-gptb-dev-split-guard",
+  "kind": "audit",
   "lane": "CODEX",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "LAB:results CLASS:C2 WEIGHT:CRUCIAL. Raw follow-up only; no review or trust stamp. Refine to explicit original source/evidence files. Read the unchecked base as an audit target via refs, not as a trusted premise. No authority to rerun one-shot outcomes.",
+  "note": "DECISION (OURS) 2026-10-23: drafted and T0-checked; reviewer Agent blocked by spawn cap (8/h), so no ACCEPT stamp: needs ONE batched Sonnet reviewer pass (or Lab_Guy for CODEX), then stamp REVIEWED:<date> ACCEPT and tasks.py check. LAB:results CLASS:C2 WEIGHT:CRUCIAL. Raw follow-up from 2026-10-19_lab-trust-tag.md. Audit target, not a trusted premise. No outcome or holdout rerun; no data fetch. Different reviewer vendor than the producer (CODEX/GPT produced it, so Gemini or Claude re-derives). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the report.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [
-    "MyTradingSys/system/tasks/gptb-dev-split-guard.json",
+    "MyTradingSys/system/tasks/archive/gptb-dev-split-guard.json",
     "MyTradingSys/research/layer_lab/reports/2026-10-19_lab-trust-tag.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/dev_split_guard/event_table.py",
+    "MyTradingSys/research/layer_lab/dev_split_guard/test_event_table.py",
+    "MyTradingSys/research/layer_lab/dev_split_guard/REPORT.md",
+    "MyTradingSys/research/layer_lab/reports/2026-10-23_trust-recheck-gptb-dev-split-guard.md"
+  ],
+  "scope_out": [
+    "outcome or holdout reruns",
+    "editing the audited source files",
+    "live path",
+    "data fetch"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/volume_2026-10-09/PRE_REG_VOLUME_2026-10-09.md:23 (split dates)"
+  ],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Read the spec/report line by line, not the code: REPORT.md (DEV = bar open 2022-01-01..2024-06-30).",
+    "Re-derive the keep/drop decision for 3 boundary rows (2024-06-30 23:00 kept, 2024-07-01 00:00 dropped, missing timestamp fails closed) with your own short script from the written definition and compare; a difference is a MISMATCH finding with file:line, settled by calculation not vote.",
+    "Read MyTradingSys/research/layer_lab/dev_split_guard/test_event_table.py: would it fail on a broken implementation? Mutate one line in a scratch copy, run, record; leave the real file unchanged.",
+    "Write the report: reviewer vendor and model, the numbers, MATCH or MISMATCH per number, tag proposal VERIFIED-C2 or DISPUTED."
+  ],
+  "tests": "Audit card: its fail-first is the one-line mutation in a scratch copy, which must turn a test red; recorded in the report.",
   "title": "Trust re-check: gptb-dev-split-guard",
   "weight": "CRUCIAL",
-  "worker": ""
+  "worker": "session"
 }
