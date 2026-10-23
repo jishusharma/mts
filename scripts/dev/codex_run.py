@@ -52,9 +52,9 @@ WEEK_STOP = 85            # % of the week used: the rest stays with the operator
 # week 14 points; the 85% pre-check above only looks at what is already used, so a card that starts at 16% may still empty the window.
 WINDOW_S = 5 * 3600
 WEEK_S = 7 * 86400
-LAB_WINDOW_PTS = 50       # points of one 5-hour window the lab may spend (the rest stays with the operator's own sessions)
-LAB_WEEK_PTS = 60         # points of the week the lab may spend (operator 2026-10-16: was 35; GPT sat at 24% of the week while dev waited)
-LAB_RUNS_PER_WINDOW = 10  # cards started per 5-hour window (operator 2026-10-16: was 4; luna/medium runs move 0-3 window pts, the 30-min tick allows 10)
+LAB_WINDOW_PTS = 65       # DECISION (OURS) 2026-10-21 Supervisor B: was 50, 65 is the most that keeps the 10-pt reserve and the tests; reading 3% window / 1% week on Plus; points of one 5-hour window the lab may spend (the rest stays with the operator's own sessions)
+LAB_WEEK_PTS = 90         # DECISION (OURS) 2026-10-21: was 60, ~90% of the week; points of the week the lab may spend (operator 2026-10-16: was 35; GPT sat at 24% of the week while dev waited)
+LAB_RUNS_PER_WINDOW = 14  # DECISION (OURS) 2026-10-21: was 10 (20-min gap allows 15); cards started per 5-hour window (operator 2026-10-16: was 4; luna/medium runs move 0-3 window pts, the 30-min tick allows 10)
 ASTRA_RUNS_PER_WINDOW = 1
 WINDOW_RESERVE = 10       # points of the window never planned away: a card starts only if its estimate fits below 100 - this
 WEEK_RESERVE = 15
@@ -604,6 +604,11 @@ def sh(wt, *args):
     return subprocess.run([sys.executable, *args], cwd=str(wt), capture_output=True, text=True)
 
 
+# a lab run is always its own change: the 10-minute second-ship guard is for sessions that should batch, and it refused
+# the lab-formula-spec-text run on 2026-10-22 (ship 528 s after a session shipped from the lab tree)
+SHIP_ARGS = ("ship", "--again")
+
+
 def boxed(cmd, cwd, timeout_s):
     """subprocess.run with a hard time box. On expiry the whole process tree is killed (a gate's pytest children hold the pipes, so killing
     only the parent would leave communicate() waiting) and the result has returncode 124 and a TIMEOUT line on stderr."""
@@ -634,6 +639,7 @@ def run_sweep(wt, runs, *flags):
 
 def refresh(wt):
     """Bring the lab work tree to origin/fast-track on its own branch. Refuses a dirty tree: unfinished work is never touched."""
+    abort_pending_merge(wt)   # Supervisor pilot 2026-10-22: `git switch` refuses "while merging", so the tick died before merge_trunk ran
     if git(wt, "status", "--porcelain").stdout.strip():
         dest, n = salvage(wt, codex_home(), "tick", utc())   # an unfinished run (limit, crash) must not block the lab for good
         print(f"salvaged {n} unfinished file(s) to {dest}")
@@ -646,24 +652,38 @@ def refresh(wt):
         merge_trunk(wt, f"origin/{sync.TRUNK}")
 
 
+def abort_pending_merge(wt):
+    if git(wt, "rev-parse", "-q", "--verify", "MERGE_HEAD", check=False).returncode == 0:   # not .git/MERGE_HEAD: the lab tree is a worktree (.git is a file)
+        git(wt, "merge", "--abort", check=False)
+
+
 def merge_trunk(wt, ref):
     """Merge `ref` into the lab branch. A clash only on the generated INDEX.md takes the trunk's copy (the next delivery
     regenerates it); any other clash aborts the merge so the tree stays clean and says which files need a session.
     JIS-NUC 2026-10-14: a merge stopped on INDEX.md left MERGE_HEAD behind and every later tick died on it."""
-    if git(wt, "rev-parse", "-q", "--verify", "MERGE_HEAD", check=False).returncode == 0:   # not .git/MERGE_HEAD: the lab tree is a worktree (.git is a file)
-        git(wt, "merge", "--abort", check=False)
+    abort_pending_merge(wt)
     m = git(wt, "merge", "--quiet", "--no-edit", ref, check=False)
     if m.returncode == 0:
         return
     clash = git(wt, "diff", "--name-only", "--diff-filter=U", check=False).stdout.split()
-    if clash and set(clash) <= {f"{LAB}/INDEX.md"}:
-        git(wt, "checkout", "--theirs", "--", *clash)
+    if clash and set(clash) <= {f"{LAB}/INDEX.md", lane_health.STATE}:
+        # lane_state.json keeps the lab's copy: the lab wrote it after its own run, a Supervisor heartbeat on trunk is older news.
+        # JIS-NUC 2026-10-21: this clash made the lab ship fail and the lab sat idle 34 h.
+        for f, side in ((f"{LAB}/INDEX.md", "--theirs"), (lane_health.STATE, "--ours")):
+            if f in clash:
+                git(wt, "checkout", side, "--", f)
         git(wt, "add", "--", *clash)
         git(wt, "commit", "--quiet", "--no-edit")
         return
     git(wt, "merge", "--abort", check=False)
     raise SystemExit(f"codex_run: merging {ref} into the lab tree clashes on {', '.join(clash) or m.stderr.strip()[-200:]}; "
                      "merge aborted, tree clean; a session merges by hand")
+
+
+def child_env(card, text, env):
+    """Singleton-role cards (lease.SINGLETONS) get MTS_ROLE + MTS_LEASE_SESSION so desk/sync writes are lease-guarded."""
+    import lease
+    return {**env, **lease.runner_env(text, f'codex-{card["id"]}-{int(time.time())}', role=card.get("role"))}
 
 
 def execute(cmd, text, log, timeout_s, env):
@@ -704,7 +724,7 @@ def run_card(card, dry=False, env=os.environ, probing=False):
         if c.returncode:
             print(f"IDLE claim refused for {cid}: {(c.stdout + c.stderr).strip()[-200:]}")
             return 0
-        code, secs = execute(cmd, text, log, int(env.get("MTS_CODEX_TIMEOUT_MIN") or 60) * 60, dict(env, CODEX_HOME=str(home)))
+        code, secs = execute(cmd, text, log, int(env.get("MTS_CODEX_TIMEOUT_MIN") or 60) * 60, child_env(card, text, dict(env, CODEX_HOME=str(home))))
         files = changed_files(wt)
         now = json.loads((wt / tasks.DIR / f"{cid}.json").read_text(encoding="utf-8"))
         reports = sorted(f for f in files if f.startswith(f"{LAB}/reports/") and f.endswith(f"_{cid}.md"))
@@ -742,7 +762,12 @@ def run_card(card, dry=False, env=os.environ, probing=False):
             git(wt, "add", "-A")
             result = now.get("result") if outcome == "DONE" else f"BLOCKED, card stays ready: see {reports[-1]}"
             git(wt, "commit", "-q", "-m", commit_message(card, outcome, result, when))
-            s = boxed([sys.executable, "scripts/dev/sync.py", "ship"], wt, SHIP_TIMEOUT_S)
+            try:   # trunk moved during the run: take its changes here, where the lane_state/INDEX clashes resolve themselves
+                git(wt, "fetch", "--quiet", "origin", sync.TRUNK)
+                merge_trunk(wt, f"origin/{sync.TRUNK}")
+            except SystemExit:
+                pass   # a real clash: sync.py ship below reports it as SHIP_FAILED
+            s = boxed([sys.executable, "scripts/dev/sync.py", *SHIP_ARGS], wt, SHIP_TIMEOUT_S)
             if s.returncode:
                 outcome, note = "SHIP_FAILED", (s.stdout + s.stderr).strip()[-300:]
                 Path(str(log) + ".ship.txt").write_text(s.stdout + s.stderr, encoding="utf-8", newline="\n")   # which gate step failed

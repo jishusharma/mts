@@ -1,0 +1,71 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-18T18:18:25Z",
+  "commands": [],
+  "created": "2026-10-18T09:59:00Z",
+  "depends_on": [],
+  "done_when": "Worker boot instructions clearly instruct workers that CLAUDE.md is already loaded in system context, and workers execute 0 re-reads of CLAUDE.md during startup.",
+  "est_turns": 5,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "B183 trim 2: Eliminate redundant CLAUDE.md re-reading by builder workers at startup.",
+  "id": "trim-claudemd-re-read-guard",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "CLAUDE.md, scripts/sched/relay_prompts/ (8 tests pass in test_relay_prompts.py)",
+      "ref": "2e96d337",
+      "utc": "2026-10-18T18:18:25Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "announcement board + tandem plan: ANNOUNCEMENTS.md read at boot, 6-7 h NUC/NB super-sessio",
+      "ref": "84d4cd8f4750",
+      "utc": "2026-10-17T20:12:26Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "84d4cd8f4750 announcement board + tandem plan: ANNOUNCEMENTS.md read at boot, 6-7 h NUC/NB",
+      "ref": "CLAUDE.md",
+      "utc": "2026-10-17T20:12:26Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T09:59:56Z",
+  "refs": [
+    "B183"
+  ],
+  "result": "CLAUDE.md, scripts/sched/relay_prompts/ (8 tests pass in test_relay_prompts.py)",
+  "scope_in": [
+    "scripts/sched/relay_prompts/",
+    "CLAUDE.md"
+  ],
+  "scope_out": [
+    "live tree",
+    ".secrets"
+  ],
+  "scope_sha": "84d4cd8f4750",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Update worker launch prompt template to specify 'CLAUDE.md is already in context; do not cat or Read CLAUDE.md'.",
+    "Verify builder transcripts show 0 tool turns spent reading CLAUDE.md."
+  ],
+  "taken": "2026-10-18T18:18:25Z",
+  "tests": "scripts/dev/test_relay_prompts.py",
+  "title": "trim-claudemd-re-read-guard",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

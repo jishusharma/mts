@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-22T13:56:19Z",
+  "commands": [],
+  "created": "2026-10-18T21:14:29Z",
+  "depends_on": [],
+  "done_when": "quarantine_problems rejects rows exceeding 14-day expiry and live tests under MyTradingSys/tests, with all tests passing.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Enforce a 14-day expiry cap on quarantine rows, expand live-code refusal to cover live tests under MyTradingSys/tests, and verify quarantine list is read from origin/fast-track.",
+  "id": "gate-quarantine-expiry-cap",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "already in c8e5fe3fd: 14-day cap + MyTradingSys/tests refusal; test_gate_impact 31 passed",
+      "ref": "8609db530",
+      "utc": "2026-10-22T13:56:19Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Fast ship gate: import-graph test selection inside a 30 s budget, CI-red fix-first block",
+      "ref": "bd1b0c7da6cd",
+      "utc": "2026-10-18T18:29:57Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-19 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "gemini-session-planner",
+  "refreshed": "2026-10-19T04:00:33Z",
+  "refs": [
+    "MyTradingSys/research/mts_doctor/REPORT_2026-10-19.md"
+  ],
+  "result": "already in c8e5fe3fd: 14-day cap + MyTradingSys/tests refusal; test_gate_impact 31 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/gate_impact.py",
+    "scripts/dev/test_gate_impact.py"
+  ],
+  "scope_out": [
+    "full-gate execution logic",
+    "live tree"
+  ],
+  "scope_sha": "bd1b0c7da6cd",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/mts_doctor/REPORT_2026-10-19.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Add fail-first tests in test_gate_impact.py for expiry date exceeding 14 days and for quarantining tests targeting live code under MyTradingSys/tests.",
+    "Update quarantine_problems in scripts/dev/gate_impact.py to reject rows where expiry > today + 14 days and rows matching live-path test prefixes.",
+    "Verify test_gate_impact.py and run_all_tests.py --quick pass."
+  ],
+  "taken": "2026-10-22T13:56:19Z",
+  "tests": "test_gate_impact.py tests for >14-day expiry rejection and live-path test rejection under MyTradingSys/tests.",
+  "title": "Gate quarantine: cap expiry, refuse live-code tests under MyTradingSys/tests, read list from fetched ref",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

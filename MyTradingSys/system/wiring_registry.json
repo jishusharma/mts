@@ -1,6 +1,10 @@
 {
   "_doc": "Files the wiring scan finds unrun (TEST-ONLY/ORPHAN), each declared with a disposition and evidence. Checked by scripts/dev/wiring_scan.py --check in the gate. Dispositions: TOOL, REPRO, PARKED, WIRE. A file that becomes LIVE/DEV-TOOL or disappears must be removed from here.",
   "entries": {
+    "scripts/ops/nuc_create_mts_shares.ps1": {
+      "disp": "TOOL",
+      "why": "Operator runs it once, elevated, on JIS-NUC to create the four LIVE_HOST_MOVE s5 shares (MTS-Data, MTS-Live, MTS-Mirror, MTS-Backup); named in LIVE_HOST_MOVE.md."
+    },
     "MyTradingSys/research/qriptal_2026-10-10/ledger.py": {
       "disp": "REPRO",
       "why": "Rebuilds research/qriptal_2026-10-10/CALL_LEDGER.csv from ledger_rows.json, verifying every quote against the staged raw transcripts (ledger.py build | check); run by hand, named in LEDGER_NOTES.md."
@@ -897,9 +901,13 @@
       "disp": "TOOL",
       "why": "Geometric Pitchfork channel and median line detection engine for Andrews, Schiff, and Modified Schiff variants; covered by test_pitchfork_detector.py; registered in layer_index.json and layer_map.json."
     },
-    "scripts/research/eval_btc_pitchfork_traders.py": {
+    "MyTradingSys/research/pitchfork_2026-10-19/eval_btc_pitchfork_traders.py": {
       "disp": "REPRO",
       "why": "Algorithmic benchmark evaluating YouTube and practitioner Pitchfork methodologies (Standard, Schiff, Modified Schiff, Fractal Flow, Morge, Operator stack) across historical BTC cycle swings; referenced in papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md; run manually."
+    },
+    "MyTradingSys/research/pitchfork_2026-10-19/run_pitchfork_event_study.py": {
+      "disp": "REPRO",
+      "why": "Executes multi-year Bitcoin (2020-2026) event study of pitchfork models, validating Andrews 80% rule, Schiff slope normalization, and Hagopian failures; writes PHASE1_EVENT_STUDY.md and TRIALS_PITCHFORK.csv; run manually."
     }
   },
   "MyTradingSys/research/layer_lab/candle_pattern_event_table/event_table.py": {

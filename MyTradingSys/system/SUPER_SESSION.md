@@ -36,8 +36,7 @@ only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once); histo
 8. **Agent workers (2026-10-16).** Briefs ask for: ship once then stop (a second `sync.py ship` only re-wakes the coordinator),
    the proof that new tests fail on the old code (run them against `git show <sha>^:<file>` copies), a final reply of at most
    N lines, long notes in the shared notes folder. Tasks touching the same file run one after the other; others run in parallel.
-9. **Turn budget by context size (operator 2026-10-18, replaces the 10-16 compaction-by-share rule).** The hook `turn_meter.py` allows 4M / context
-   tool turns to Sonnet/Haiku, no turn cap to Opus (hand over at 500k), and to Fable one operator message (hard). The coordinator's own
+9. **Turn budget: see WORKERS.md rule 5** (canonical: formula, caps, the operator override). The coordinator's own
    sweep on every wake: `get_usage` per running worker, reuse or `mark_completed` + `archive_session`. Keep working state in files
    (NEXT_SESSION.md, notes folder, task card), not in the context.
 10. **Signals between logins and machines (operator 2026-10-16).** The app cannot message across logins, so `scripts/dev/mts_signal.py`
@@ -92,11 +91,11 @@ only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once); histo
 - A worker that merges late hits VERDICTS.csv and wiring_registry.json conflicts: union both sides.
 
 ## Session log (newest first; one line each, last 5)
+- 2026-10-21 Supervisor B (JIS-NUC): GPT lane brought up, 5 cards back to CODEX; lab caps raised to window 65 / week 90 / 14 runs (DECISION (OURS), Plus plan read 5h 3% week 1%); pitchfork layer shipped 79da493c; DSA/DSA-NB chats still unarmed.
 - 2026-10-19 Supervisor A (JIS-NUC): weekly 93%/95 cap, mode=STOP all window, no workers; handover/SUPERVISOR_A.md; DSA/DSA-NB chats need arming.
 - SUPER-LENOVO-1019b (2026-10-19, Sonnet coordinator, 2 Agents): chunk 2 landed (4e88b6d1); gate-fix 6efd40e0 passed the full gate only with MTS_GATE_JOBS=2 and no concurrent ship; 3lh/3cx/4d = load timeouts, 5b = py3.14 exit-5 bug; chunk 3 f9497e45 and part a b9c448c7 left unshipped by operator stop. Lesson: on this laptop run ONE ship at a time with MTS_GATE_JOBS=2 and check for other sync.py ship processes first; start_session is refused on session-started turns, use Agents.
 - SUPERLOOP-NB-1019 (2026-10-19, Opus one-time agent, Sonnet + Haiku review Agents): five-hour loop on every device/login: `supervisor.py plan` (pacing vs weekly room, heartbeat, shard over live supervisors, one owner per lane, DSA down flag, nuc_wake gate) and `supervisor.py handover`; SUPER_LOOP.md replaces TANDEM_3LOGIN.md; role v3. Lesson: pacing in prose drifts; a T0 command per wake does not.
 - TANDEM-NB-1019 (2026-10-19, Sonnet one-time agent, 2 review Agents): three Supervisors at once (A/B/C); `mts_signal.py budget`, `tasks.py dispatch --login/--logins` shards cards, `supervisor.py tick` shows peers; one-line start; 5 h regime in roles/supervisor.md v2; TANDEM_3LOGIN.md. Lesson: the claim is the lock, but without a shard three supervisors start the same top cards.
-- DOCTOR-NB-1020 (2026-10-20, Sonnet one-time agent, 2 review Agents): roles 11 -> 7 (Traffic_Controller folded into Pipeliner, Q&A_Helper + Network_Admin_Guy -> Admin_Guy on Haiku high with backlog intake, Artifacts_Guy -> 1985Artifacts_Guy; old names stay aliases in role_loader.py), location wording fixed (Eagle_Eyes runs anywhere via live_mirror brief, super session any device/login), `traffic.py budget` = SPEND per login. Lesson: an alias list in code (ALIASES) keeps old pinned sessions working across a rename.
 
 
 ## Start (operator: open a new session, model Sonnet unless you name Opus (WORKERS.md rule 6), paste the prompt below)

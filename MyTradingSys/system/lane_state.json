@@ -1,13 +1,13 @@
 {
   "detail": "Codex run finished",
-  "fails": 0,
-  "heartbeat": "2026-10-19T15:16:59Z",
-  "last_error": "2026-10-19T14:25:18Z",
-  "last_ok": "2026-10-19T15:17:30Z",
+  "fails": 1,
+  "heartbeat": "2026-10-22T15:08:46Z",
+  "last_error": "2026-10-22T15:06:36Z",
+  "last_ok": "2026-10-22T18:57:09Z",
   "last_probe": "",
   "override": "",
   "reason": "",
-  "resumed": "2026-10-19T15:16:59Z",
+  "resumed": "2026-10-22T15:08:46Z",
   "since": "",
   "status": "up",
   "until": ""

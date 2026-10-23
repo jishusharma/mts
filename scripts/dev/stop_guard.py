@@ -9,6 +9,7 @@ Run by hand: python scripts/dev/stop_guard.py check   (prints the reason, or not
 """
 import json
 import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -18,8 +19,16 @@ import nowin  # noqa: E402
 nowin.install()
 
 
-def reason(path):
-    """Why `path` may not stop yet, or None."""
+def _top(path):
+    """Worktree root found by walking up to the first `.git` (dir or file), no git call; None when there is none."""
+    p = Path(path).resolve()
+    for d in (p, *p.parents):
+        if (d / ".git").exists():
+            return d
+    return None
+
+
+def _slow_reason(path):
     import sync
     top = sync.toplevel(Path(path))
     if (top / sync.LIVE_MARKER).exists():
@@ -29,6 +38,32 @@ def reason(path):
         return None
     state = sync.tree_state(top)
     t = dict(path=str(top), name=top.name, branch=branch, ahead=state[0], work=state[1], noise=state[2], fix="")
+    return sync.unshipped_reason(t)
+
+
+def reason(path):
+    """Why `path` may not stop yet, or None. Fast path (a clean tree with nothing ahead, the common stop): the tree root is found
+    without git, the three git calls run at once, and sync.py (a large import) is loaded only when there is something to judge.
+    Same answer as _slow_reason, which is the reference and the fallback."""
+    top = _top(path)
+    if top is None:
+        return _slow_reason(path)
+    if (top / ".mts_live").exists():
+        return None
+    cmds = (("branch", "--show-current"), ("rev-list", "--count", "origin/fast-track..HEAD"), ("--no-optional-locks", "status", "--short"))
+    procs = [subprocess.Popen(["git", "-C", str(top), *c], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) for c in cmds]
+    (branch, _), (ahead, _), (status, _) = [pr.communicate() for pr in procs]
+    branch = branch.strip()
+    if branch in ("fast-track", "master", "main") or branch.startswith("gemini-q/"):
+        return None
+    if procs[1].returncode != 0:
+        return None         # HEAD does not resolve: tree_state reports ahead=None, which never blocks
+    rows = [l for l in status.splitlines() if l]
+    if not rows and int(ahead.strip() or 0) == 0:
+        return None
+    import sync
+    t = dict(path=str(top), name=top.name, branch=branch, ahead=int(ahead.strip() or 0),
+             work=[l for l in rows if not sync.is_noise(l)], noise=[l for l in rows if sync.is_noise(l)], fix="")
     return sync.unshipped_reason(t)
 
 
@@ -50,7 +85,9 @@ def seen_before(session_id, why):
         d = {}
     if d.get(session_id) == why:
         return True
-    d = {session_id: why}      # one session at a time keeps the file tiny
+    d.pop(session_id, None)
+    d[session_id] = why
+    d = dict(list(d.items())[-50:])     # last 50 sessions: interleaved sessions no longer erase each other (review 2026-10-21)
     try:
         f.parent.mkdir(parents=True, exist_ok=True)
         f.write_text(json.dumps(d), encoding="utf-8", newline=chr(10))

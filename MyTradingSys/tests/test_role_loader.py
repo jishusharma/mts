@@ -146,6 +146,13 @@ class TestInject(Base):
         self.assertIn("ROLE CONTEXT LOST", t)
         self.assertEqual(self.hook("what is the BTC read?", sid="none"), "")
 
+    def test_reminder_is_not_repeated_every_prompt(self):
+        self.put_role()
+        self.hook("You are Eagle_Eyes.", sid="m2")
+        got = [bool(self.hook("what is the BTC read?", sid="m2")) for _ in range(2 * rl.REMIND_EVERY)]
+        self.assertEqual(sum(got), 2)
+        self.assertTrue(got[0])
+
     def test_session_start_reinjects_recorded_role(self):
         self.put_role()
         self.hook("You are Eagle_Eyes.", sid="r1")
@@ -153,9 +160,70 @@ class TestInject(Base):
         self.assertTrue(t.startswith("Session resumed/compacted: re-confirm"))
         self.assertIn("ROLE LOADED: Eagle_Eyes", t)
 
+    def test_session_start_records_the_token_it_served_when_trunk_changed(self):
+        self.put_role()
+        self.hook("You are Eagle_Eyes.", sid="r2")
+        old = rl.role_meta("r2", "Eagle_Eyes")["token"]
+        self.put_role(role_text(body=BODY + "A rule added after the session started.\n"))
+        t = self.hook("", sid="r2", event="SessionStart")
+        new = rl.compute_token(self.trunk[f"{rl.ROLES_REL}/eagle_eyes.md"].replace("\r\n", "\n"))
+        self.assertNotEqual(old, new)
+        self.assertIn(f"token {new}", t)
+        self.assertEqual(rl.role_meta("r2", "Eagle_Eyes")["token"], new)    # the reminder and banner verify read this
+        r = self.hook("what is the BTC read?", sid="r2")
+        self.assertIn(f"token {new}", r)
+
     def test_session_start_without_role_is_silent(self):
         self.put_role()
         self.assertEqual(self.hook("", sid="fresh", event="SessionStart"), "")
+
+
+class TestSubagentStart(Base):
+    """A background Agent ("You are Thinker.") got ROLE NOT LOADED: no SubagentStart hook existed (operator 2026-10-23)."""
+    def sub(self, sid="p1", **kw):
+        payload = {"session_id": sid, "hook_event_name": "SubagentStart", "agent_id": "a1", "agent_type": "general-purpose"}
+        payload.update(kw)
+        out = rl.handle(payload, self.repo)
+        return json.loads(out)["hookSpecificOutput"] if out else None
+
+    def test_prompt_text_injects_the_role_file_and_banner_instruction(self):
+        self.put_role()
+        o = self.sub(prompt="You are Eagle_Eyes. Read the chart.")
+        self.assertEqual(o["hookEventName"], "SubagentStart")
+        self.assertIn("ROLE LOADED: Eagle_Eyes", o["additionalContext"])
+        self.assertIn("BOOT (once)", o["additionalContext"])
+
+    def test_agent_type_names_the_role(self):
+        self.put_role()
+        o = self.sub(agent_type="eagle_eyes")
+        self.assertIn("ROLE LOADED: Eagle_Eyes", o["additionalContext"])
+
+    def test_no_prompt_gets_the_self_load_pointer_not_a_role(self):
+        self.put_role()
+        o = self.sub()
+        self.assertIn("You are <Role>", o["additionalContext"])
+        self.assertIn(rl.ROLES_REL, o["additionalContext"])
+        self.assertNotIn("BOOT (once)", o["additionalContext"])
+
+    def test_builtin_helper_agents_get_nothing(self):
+        self.assertIsNone(self.sub(agent_type="Explore", prompt="You are Eagle_Eyes."))
+
+    def test_same_agent_is_not_injected_twice(self):
+        self.put_role()
+        self.assertTrue(self.sub(prompt="You are Eagle_Eyes."))
+        self.assertIsNone(self.sub(prompt="You are Eagle_Eyes."))
+        self.assertTrue(self.sub(prompt="You are Eagle_Eyes.", agent_id="a2"))
+
+    def test_parent_role_state_is_untouched(self):
+        self.put_role()
+        self.hook("You are Eagle_Eyes.", sid="p9")
+        self.sub(sid="p9", prompt="You are Eagle_Eyes.")
+        self.assertEqual(rl.injected("p9"), ["Eagle_Eyes"])
+
+    def test_settings_wires_subagent_start(self):
+        d = json.loads((REPO / ".claude" / "settings.json").read_text(encoding="utf-8"))
+        cmds = [h["command"] for g in d["hooks"].get("SubagentStart", []) for h in g["hooks"]]
+        self.assertTrue(any("role_loader.py" in c and c.endswith("hook\"") or "role_loader.py\" hook" in c for c in cmds))
 
 
 class TestVerify(Base):
@@ -234,6 +302,18 @@ class TestRepoRoles(unittest.TestCase):
         for f in files:
             self.assertIsNotNone(rl.parse_header(f.read_bytes().decode("utf-8").replace("\r\n", "\n")), f.name)
 
+    def test_every_role_emits_under_the_hook_cap(self):
+        """Claude Code truncates hook-injected text at 10,000 chars; the rest of a role would be silently lost."""
+        def local_show(repo, rel):
+            p = REPO / rel
+            return p.read_bytes().decode("utf-8") if p.exists() else None
+        with mock.patch.object(rl, "git_show", local_show), mock.patch.object(rl, "git_sha8", lambda r: "abcd1234"), \
+                mock.patch.object(rl, "lease_suffix", lambda n, r: ""):
+            for f in rl.role_files(REPO):
+                h = rl.parse_header(f.read_bytes().decode("utf-8").replace("\r\n", "\n"))
+                n = len(rl.build_text(h["name"], REPO, True))
+                self.assertLess(n, 9500, f"{f.name} emits {n} chars")
+
     def test_check_passes_on_repo(self):
         self.assertEqual(rl.check(REPO, lambda x: None), 0)
 
@@ -265,8 +345,19 @@ class TestRepoRoles(unittest.TestCase):
 
     def test_admin_guy_file_carries_the_guardrails_and_backlog_flow(self):
         text = (REPO / rl.ROLES_REL / "admin_guy.md").read_text(encoding="utf-8")
-        for needle in ("VERBATIM", "Haiku 5.5", "effort high", "tasks.py new", "sync.py ship", "mts_signal.py send", "BACKLOG"):
+        for needle in ("VERBATIM", "Sonnet 5.5", "effort medium", "tasks.py new", "sync.py ship", "mts_signal.py send", "BACKLOG"):
             self.assertIn(needle, text)
+
+    def test_admin_guy_runs_on_sonnet_everywhere(self):
+        # operator 2026-10-21: Admin_Guy off Haiku (bug-haiku-stale-rule-answers; research/model_economics_2026-10-21.md)
+        role = next(r for r in rl.load_roster(REPO) if r["name"] == "Admin_Guy")
+        self.assertTrue(role["model"].startswith("Sonnet 5.5"), role["model"])
+        self.assertEqual(role["lane"], "SONNET")
+        for rel in ("MyTradingSys/system/START_HERE.txt", "MyTradingSys/system/ROLES.md", f"{rl.ROLES_REL}/admin_guy.md"):
+            text = (REPO / rel).read_text(encoding="utf-8")
+            admin = [ln for ln in text.splitlines() if "Admin_Guy" in ln or "Model :" in ln[:9]]
+            self.assertFalse([ln for ln in admin if "Haiku 5.5" in ln and "Admin_Guy" in ln], rel)
+        self.assertNotIn("Haiku 5.5, effort HIGH", (REPO / "MyTradingSys/system/START_HERE.txt").read_text(encoding="utf-8"))
 
     def test_thinker_role_registered_with_triggers_row_and_guardrails(self):
         """Operator 2026-10-20: a Thinker design-partner role; Opus-capable, never builds, records choices verbatim."""
@@ -286,6 +377,27 @@ class TestRepoRoles(unittest.TestCase):
         self.assertIn("You are Thinker.", (REPO / "MyTradingSys/system/START_HERE.txt").read_text(encoding="utf-8"))
         import role_hook_launcher as rhl
         self.assertIn("Thinker", rhl.KNOWN)
+
+
+class BootStepTests(unittest.TestCase):
+    """boot_step must find the Boot section, not prose that merely starts with the word Boot (review 2026-10-22)."""
+
+    def test_prose_line_before_heading_is_skipped(self):
+        body = ("# R\nBoot reads only what Boot step 3 names (cite file:line + commit date, else NOT_IN_DATA).\n\n"
+                "## Boot (once)\n1. `python scripts/dev/sync.py start x`.\n")
+        self.assertEqual(rl.boot_step(body), "1. `python scripts/dev/sync.py start x`.")
+
+    def test_every_real_role_names_its_first_command(self):
+        for f in sorted((REPO / rl.ROLES_REL).glob("*.md")):
+            step = rl.boot_step(f.read_text(encoding="utf-8"))
+            self.assertNotIn("NOT_IN_DATA", step, f.name)
+            self.assertNotIn("first step of the file", step, f.name)
+            self.assertNotIn("Open `SUPER_LOOP.md`", step, f.name)
+
+    def test_roles_md_is_an_index_under_1200_tokens(self):
+        """roles-md-index-slim: ROLES.md holds the index, role prose lives in roles/*.md (~4 chars per token)."""
+        text = (REPO / "MyTradingSys/system/ROLES.md").read_text(encoding="utf-8")
+        self.assertLess(len(text) // 4, 1200)
 
 
 if __name__ == "__main__":

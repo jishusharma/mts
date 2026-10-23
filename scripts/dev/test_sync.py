@@ -16,7 +16,7 @@ import sync
 
 
 def sh(cwd, *args):
-    subprocess.run(["git", *args], cwd=cwd, check=True, capture_output=True, text=True)
+    return subprocess.run(["git", *args], cwd=cwd, check=True, capture_output=True, text=True)
 
 
 def commit(repo, name, text):
@@ -57,10 +57,12 @@ class SyncTest(unittest.TestCase):
         self.slots_base = self.tmp / "slots_env"
         self.slots_base.mkdir(parents=True, exist_ok=True)
         os.environ["MTS_GATE_SLOTS_DIR"] = str(self.slots_base)
+        os.environ["SYNC_ALLOW_SECOND_SHIP"] = "1"   # tests ship repeatedly; TierTest turns the 10-minute rule on
         self.gated = []
 
     def tearDown(self):
         os.environ.pop("MTS_GATE_SLOTS_DIR", None)
+        os.environ.pop("SYNC_ALLOW_SECOND_SHIP", None)
         shutil.rmtree(self.tmp, ignore_errors=True)
 
     def gate(self, repo):
@@ -81,6 +83,17 @@ class SyncTest(unittest.TestCase):
         sync.ship(self.a, gate=lambda repo, files: seen.append(files), docs_gate=lambda r, f: docs.append(f))
         self.assertEqual(seen, [["d.py"]])
         self.assertEqual(len(docs), 1)
+
+    def test_a_docs_only_ship_over_a_doc_size_cap_is_refused(self):
+        """2175ef80: a docs ship ran no gate and pushed CLAUDE.md over its cap; the default docs gate now checks the caps."""
+        cap = "MyTradingSys/tests/docs/test_integrity.py"
+        (self.a / cap).parent.mkdir(parents=True)
+        commit(self.a, cap, (Path(__file__).resolve().parents[2] / cap).read_text(encoding="utf-8"))
+        sync.ship(self.a, gate=lambda repo, files: None)
+        commit(self.a, "CLAUDE.md", "x" * 100_000)
+        with self.assertRaisesRegex(sync.SyncError, "doc size cap.*100000 <= "):
+            sync.ship(self.a, gate=self.gate)
+        self.assertNotIn("CLAUDE.md", self.head_files(self.a))
 
     def test_run_gate_picks_smoke_and_full_flag_forces_everything(self):
         calls = []
@@ -124,13 +137,13 @@ class SyncTest(unittest.TestCase):
         sync.claim(self.a, "Build thing one", area="scripts/dev", gate=self.gate)
         self.assertEqual(self.gated, [])  # claim files are docs: no gate
         sh(self.b, "pull", "-q", "origin", "fast-track")
-        rows = sync.read_claims(self.b, "HEAD")
+        rows = sync.open_claims(self.b)
         self.assertEqual([r[0] for r in rows], ["build-thing-one"])
         with self.assertRaises(sync.SyncError):
             sync.claim(self.b, "Build thing one", gate=self.gate)
         sync.release(self.b, "build-thing-one", gate=self.gate)
         sh(self.a, "pull", "-q", "origin", "fast-track")
-        self.assertEqual(sync.read_claims(self.a, "HEAD"), [])
+        self.assertEqual(sync.open_claims(self.a), [])
 
     def test_claim_and_release_make_no_merge_commit_and_ship_nothing_else(self):
         # Traffic buster 2026-10-16: 246 of 600 daily commits were claim/release, each with a merge commit.
@@ -153,7 +166,7 @@ class SyncTest(unittest.TestCase):
         pushes = []
         real = sync.git
         def spy(repo, *args, **k):
-            if args and args[0] == "push":
+            if args and args[0] == "push" and "HEAD:refs/heads/fast-track" in args:   # the release on the claims branch is not a trunk push
                 pushes.append(args)
             return real(repo, *args, **k)
         sync.git = spy
@@ -163,13 +176,72 @@ class SyncTest(unittest.TestCase):
             sync.git = real
         self.assertEqual(len(pushes), 1)
         self.assertIn("y.py", self.head_files(self.a))
-        self.assertEqual(sync.read_claims(self.a, "origin/fast-track"), [])
+        self.assertEqual(sync.open_claims(self.a), [])
 
     def test_ship_release_with_nothing_to_ship_still_releases(self):
         sync.claim(self.a, "Task z", area="scripts/dev", gate=self.gate)
         sync.ship(self.a, gate=self.gate, release_slug="task-z")
         sh(self.a, "fetch", "-q", "origin")
-        self.assertEqual(sync.read_claims(self.a, "origin/fast-track"), [])
+        self.assertEqual(sync.open_claims(self.a), [])
+
+    def claim_files_on(self, ref):
+        sh(self.a, "fetch", "-q", "origin")
+        return [s for s, _ in sync.read_claims(self.a, ref)]
+
+    def test_docs_ship_runs_no_gate_at_all(self):
+        (self.a / "scripts" / "dev").mkdir(parents=True)
+        commit(self.a, "scripts/dev/run_all_tests.py", "pass" + chr(10))     # a repo with a gate script: the old docs gate ran it
+        sync.ship(self.a, gate=self.gate)
+        commit(self.a, "NOTE.md", "n" + chr(10))
+        with mock.patch.object(sync, "run_gate", side_effect=AssertionError("docs ship ran the gate")):
+            sync.ship(self.a, gate=self.gate)
+        self.assertIn("NOTE.md", self.head_files(self.a))
+
+    def test_claim_and_release_land_on_the_side_branch_not_on_trunk(self):
+        sh(self.a, "fetch", "-q", "origin")
+        before = sh(self.a, "rev-parse", "origin/fast-track").stdout.strip()
+        sync.claim(self.a, "Side one", area="scripts/dev", gate=self.gate)
+        sh(self.a, "fetch", "-q", "origin")
+        self.assertEqual(sh(self.a, "rev-parse", "origin/fast-track").stdout.strip(), before)   # no claim commit on trunk
+        self.assertEqual(self.claim_files_on("origin/claims"), ["side-one"])
+        self.assertEqual(self.claim_files_on("origin/fast-track"), [])
+        with self.assertRaises(sync.SyncError):                  # the side branch is what a collision check reads
+            sync.claim(self.b, "Side one", gate=self.gate)
+        sync.release(self.a, "side-one", gate=self.gate)
+        self.assertEqual(self.claim_files_on("origin/claims"), [])
+        self.assertEqual(sh(self.a, "rev-parse", "origin/fast-track").stdout.strip(), before)
+
+    def test_ship_release_closes_the_side_branch_claim_without_a_trunk_commit(self):
+        sync.claim(self.a, "Side two", area="scripts/dev", gate=self.gate)
+        commit(self.a, "two.py", "2" + chr(10))
+        sync.ship(self.a, gate=self.gate, release_slug="side-two")
+        self.assertEqual(self.claim_files_on("origin/claims"), [])
+        subjects = sh(self.a, "log", "--format=%s", "origin/fast-track").stdout.split(chr(10))
+        self.assertFalse([x for x in subjects if x.startswith(("claim ", "release "))])
+
+    def test_second_ship_from_one_tree_within_ten_minutes_is_refused(self):
+        os.environ.pop("SYNC_ALLOW_SECOND_SHIP", None)
+        commit(self.a, "one.py", "1" + chr(10))
+        sync.ship(self.a, gate=self.gate)
+        commit(self.a, "two.py", "2" + chr(10))
+        with self.assertRaises(sync.SyncError) as cm:
+            sync.ship(self.a, gate=self.gate)
+        self.assertIn("10 min", str(cm.exception))
+        self.assertNotIn("two.py", self.head_files(self.a))
+        with mock.patch.object(sync.time, "time", return_value=time.time() + 700):
+            sync.ship(self.a, gate=self.gate)                   # ten minutes later it is allowed
+        self.assertIn("two.py", self.head_files(self.a))
+
+    def test_again_flag_and_other_trees_are_not_refused(self):
+        os.environ.pop("SYNC_ALLOW_SECOND_SHIP", None)
+        commit(self.a, "one.py", "1" + chr(10))
+        sync.ship(self.a, gate=self.gate)
+        commit(self.b, "b.py", "b" + chr(10))
+        sync.ship(self.b, gate=self.gate)                       # another tree: its own clock
+        commit(self.a, "three.py", "3" + chr(10))
+        os.environ["SYNC_ALLOW_SECOND_SHIP"] = "1"
+        sync.ship(self.a, gate=self.gate)
+        self.assertIn("three.py", self.head_files(self.a))
 
     def card(self, cid, scope_in, **kw):
         import json
@@ -179,7 +251,7 @@ class SyncTest(unittest.TestCase):
 
     def claims_on_origin(self):
         sh(self.a, "fetch", "-q", "origin")
-        return [s for s, _ in sync.read_claims(self.a, "origin/fast-track")]
+        return [s for s, _ in sync.open_claims(self.a)]
 
     def test_claim_skips_itself_for_new_files_under_a_dated_folder(self):
         # B16 (B2 automatic): 51 claims + 56 standalone releases in 72 h, many for run-once report tasks.
@@ -233,7 +305,7 @@ class SyncTest(unittest.TestCase):
             sync.claim(self.a, "Task three", area="scripts/dev/sync.py", gate=self.gate)  # nested in task one's area
         self.assertIn("scripts/dev", str(cm.exception))
         sync.claim(self.a, "Task one", area="docs", gate=self.gate)  # same name, disjoint area: both may work
-        self.assertEqual(sorted(s for s, _ in sync.read_claims(self.a, "HEAD")),
+        self.assertEqual(sorted(s for s, _ in sync.open_claims(self.a)),
                          ["no-area-given", "task-one", "task-one-2", "task-two"])
         with self.assertRaises(sync.SyncError):
             sync.claim(self.a, "No area given", gate=self.gate)  # same name, no areas: still the same task
@@ -298,7 +370,7 @@ class SyncTest(unittest.TestCase):
     def test_claim_rejects_flag_like_name(self):
         with self.assertRaises(sync.SyncError):
             sync.claim(self.a, "--help", gate=self.gate)
-        self.assertEqual(sync.read_claims(self.a, "HEAD"), [])
+        self.assertEqual(sync.open_claims(self.a), [])
 
     def test_live_tree_refused(self):
         (self.a / sync.LIVE_MARKER).write_text("", newline="\n")
@@ -435,6 +507,24 @@ class SyncTest(unittest.TestCase):
         self.assertTrue(ahead.exists())
         self.assertTrue(self.a.exists())  # primary tree never touched
 
+    def test_discard_saves_uncommitted_work_removes_tree_keeps_branch(self):
+        # operator 2026-10-23: the App's discard action asked him 4-5 times; `sync.py discard` does it from Bash, no card
+        with contextlib.redirect_stdout(io.StringIO()):
+            wt = sync.new_worktree(self.a, "kept")
+        br = subprocess.run(["git", "-C", str(wt), "branch", "--show-current"], capture_output=True, text=True).stdout.strip()
+        (wt / "README.md").write_text("edited\n", newline="\n")
+        (wt / "new.txt").write_text("untracked\n", newline="\n")
+        with contextlib.redirect_stdout(io.StringIO()) as out:
+            self.assertEqual(sync.discard(self.a, [wt.name, str(self.a), "nope"]),
+                             [str(wt.resolve())])
+        self.assertFalse(wt.exists())
+        self.assertTrue(self.a.exists())                                  # the primary tree is never discarded
+        self.assertIn("skip  nope", out.getvalue())
+        rescue = self.a.resolve() / "Dumps" / "wt_rescue" / wt.name
+        self.assertIn("+edited", (rescue / "changes.patch").read_text())
+        self.assertEqual((rescue / "files" / "new.txt").read_text(), "untracked\n")
+        self.assertEqual(subprocess.run(["git", "-C", str(self.a), "rev-parse", "--verify", "-q", br]).returncode, 0)  # branch kept
+
     def test_tidy_apply_repairs_a_case_broken_head(self):
         with contextlib.redirect_stdout(io.StringIO()):
             wt = sync.new_worktree(self.a, "casey")
@@ -526,6 +616,7 @@ class SyncTest(unittest.TestCase):
         sync.claim(self.a, "Task one", area="scripts/dev,MyTradingSys/backtest", gate=self.gate)
         # claim() now refuses an overlapping area, so plant the colliding claim as a file (an old or racing one)
         two = self.a / sync.CLAIMS_DIR / "task-two.md"
+        two.parent.mkdir(parents=True, exist_ok=True)   # a legacy claim still on the trunk is read beside the side branch
         two.write_text("task: Task two\nhost: h\naccount: t\narea: scripts/dev/sync.py\nepoch: %d\n" % time.time(), newline="\n")
         sh(self.a, "add", sync.CLAIMS_DIR)
         sh(self.a, "commit", "-q", "-m", "claim task-two")

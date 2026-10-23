@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/make_status.py",
+    "grep -n krown MyTradingSys/system/gate_board.json"
+  ],
+  "created": "2026-10-23T07:12:25Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/USAGE_PILOT.csv has a baseline row 0 (two reads 5 min apart, no work) plus one row per step of the 3 confluence-s0 steps; the confluence-s0 done_when holds (grep krown G2 in gate_board.json).",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Run the confluence-s0-registry work (its card text) on Haiku as the metering pilot: one USAGE_PILOT.csv row per step, get_usage read before and after each step, so we see what a cheap step costs in plan percent and tokens.",
+  "id": "usage-pilot-run-confluence-s0-registry-o",
+  "kind": "run",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "krown: fold liquidation cascades extract into KROWN_RULES.csv and spec, close wavetrend de",
+      "ref": "1abed63bde65",
+      "utc": "2026-10-18T22:11:51Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-23 T0-ONLY (weight ROUTINE: a CSV of readings, no decision number; spot-check by coordinator). Pilot work = confluence-s0-registry steps (its depends_on prereq card is a stamp only; that card already carries REVIEWED Opus 2026-10-22). After ship the coordinator runs tasks.py done confluence-s0-registry. DECISION (OURS): sampling points = step edges; no depends_on on usage-log-py (Thinker: % columns can start first, tokens fill later). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-23T08:15:32Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/USAGE_PILOT.csv",
+    "MyTradingSys/system/gate_board.json",
+    "MyTradingSys/system/layer_index.json",
+    "MyTradingSys/research/krown_ta101_2026-10-13/"
+  ],
+  "scope_out": [
+    "live path",
+    "any backtest",
+    "other cards' files"
+  ],
+  "scope_sha": "1abed63bde65",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/thinker/2026-10-23_usage_metering.md (Pilot design)",
+    "MyTradingSys/system/tasks/confluence-s0-registry.json"
+  ],
+  "state": "ready",
+  "steps": [
+    "Run on Haiku in a session (get_usage is an MCP tool, an Agent cannot call it). Row 0: get_usage, wait 5 min, get_usage, one baseline row (usage_log.py row if merged, else append to the CSV by hand).",
+    "Per step of confluence-s0-registry (gate_board krown G2; layer_index + make_layers_md + make_status; STATE.md + catalogue F1/F2): get_usage, do the step, get_usage, one row (source=get_usage); token columns from the transcript if usage_log.py exists, else left empty.",
+    "Codex window points: one row, source=codex_status, from `ssh -i ~/.ssh/nuc_gate e-ngineers@192.168.29.110 ps` running codex_run.py status on the NUC (lab runs there only); copy the window pts, no run started.",
+    "Gemini/Antigravity quota: enter the figure by hand in the gemini column from what the app shows; if it cannot be read leave the column empty for the operator (never block). Pct is integer: a 0 delta is a valid row."
+  ],
+  "tests": "Run lane, no code: CSV rows are the evidence; grep krown in gate_board.json shows G2.",
+  "title": "Usage pilot: run confluence-s0-registry on Haiku and log one USAGE_PILOT.csv row per step",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

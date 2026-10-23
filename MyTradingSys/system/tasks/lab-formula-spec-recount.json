@@ -1,17 +1,24 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-22T23:35:24Z",
   "commands": [],
   "created": "2026-10-18T00:00:00Z",
   "depends_on": [],
-  "done_when": "test_formula_spec.py passes with no echo fallback and failed first; every sub-id has its own recount; run_all_tests --quick passes; no REVIEWED stamp",
+  "done_when": "test_formula_spec.py passes with no echo fallback; every sub-id has its own recount keyed to its paragraph; the expectedFailure marker is removed; run_all_tests --quick passes; no REVIEWED stamp. A sub-id paragraph with no computable number is NOT_APPLICABLE with the paragraph quoted: a finding, not BLOCKED",
   "est_turns": 30,
   "from_inbox": "",
-  "goal": "test_formula_spec.py independently recomputes every sub-id F11.1-8, F18.1-7, F19.1-8, F20.1-4, F21.1-9 from FORMULAS.md rules on the DEV tape; no fallback that echoes the expected value",
+  "goal": "test_formula_spec.py independently recomputes every sub-id F11.1-8, F18.1-7, F19.1-8, F20.1-4, F21.1-9 from the FORMULAS.md paragraph of that sub-id; no fallback that echoes the expected value. Sub-ids are the bold openers '**11.1 ' ... '**21.9 ' of FORMULAS.md",
   "id": "lab-formula-spec-recount",
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-10-22_lab-formula-spec-recount.md",
+      "ref": "c48b2585",
+      "utc": "2026-10-22T23:35:24Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,12 +37,18 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "MyTradingSys/research/layer_lab/formula_spec_text/test_formula_spec.py::test_shuffled_rsi_closes_are_rejected",
-  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive] | follow-up of lab-formula-spec-text run 3 (partial: families F01-F10 recounted, sub-ids F11/F18-F21 echo expected)",
-  "prio": 2,
+  "note": "REVIEWED:2026-10-23 ACCEPT reviewer:claude-sonnet-agent (independent, FIX round 1 applied) WEIGHT:IMPORTANT. [PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive] | follow-up of lab-formula-spec-text run 3 (partial: families F01-F10 recounted, sub-ids F11/F18-F21 echo expected) | UNSTICK 2026-10-23 (builder codex-unstick): run 2026-10-21: SHIP_FAILED (lane_state.json merge conflict, resolved) plus a wrong BLOCKED (sub-ids exist as numbered paragraphs). REOPENED row resets tries. Runs after lab-formula-spec-text (prio). Details: MyTradingSys/system/card_specs/codex-unstick-2026-10-23.md",
+  "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-10-17T22:16:18Z",
   "refs": [],
+  "result": "MyTradingSys/research/layer_lab/reports/2026-10-22_lab-formula-spec-recount.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/FORMULAS.md (read)",
     "MyTradingSys/backtest/layers/FORMULAS_SPEC.md",
@@ -49,13 +62,15 @@
   "scope_sha": "3c4addfa2e35",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
-    "REMOVE the fallback 'else: got=val' in test_formula_spec.py first and run it: it must fail (sub-id rows in examples.json copy their parent row); quote the failure",
-    "fix gen_examples.py so each sub-id has its own tape inputs and expected value computed from FORMULAS.md rules only (never producer code); regenerate examples.json",
-    "extend test_formula_spec.py with an independent recount per sub-id (F18 anchored profile, F19 trend-line contract, F20 WaveTrend, F21 Krown detectors); unknown names must raise, never fall back",
-    "update FORMULAS_SPEC.md worked examples for those sub-ids from examples.json (cite bar open UTC); scope: files under MyTradingSys/research/layer_lab/formula_spec_text/, FORMULAS_SPEC.md, report; FORMULAS.md read-only; no REVIEWED stamp"
+    "FIRST list the sub-ids: grep -n -E '^[*][*](11|18|19|20|21)[.][0-9]+ ' MyTradingSys/backtest/layers/FORMULAS.md. Each hit is one sub-id with its rule and worked example. The 2026-10-21 run searched the text 'F11.1' and wrongly found no mapping. See MyTradingSys/system/card_specs/codex-unstick-2026-10-23.md",
+    "Run test_formula_spec.py on the current gen_examples.py with the new per-sub-id recount added: it must fail (sub-id rows in examples.json copy their parent row); quote the failure. Remove any expectedFailure marker if one is present. A SKIPPED test (tape absent) is NOT a pass",
+    "Fix gen_examples.py: each sub-id gets its own inputs and expected value computed from ITS paragraph only, never producer code. DEV tape rows where bars are needed, else the paragraph's own worked numbers labelled SYNTHETIC. Regenerate examples.json",
+    "Extend test_formula_spec.py with one independent recount per sub-id (F11.1-8, F18, F19, F20, F21); unknown names raise, never fall back",
+    "Update FORMULAS_SPEC.md worked examples for those sub-ids from examples.json (bar open UTC or SYNTHETIC). Edit only formula_spec_text/, FORMULAS_SPEC.md and the report; FORMULAS.md is read-only; no REVIEWED stamp"
   ],
+  "taken": "2026-10-22T23:35:24Z",
   "tests": "remove the echo fallback first: the test must fail on the current examples.json, then pass after the fix",
   "title": "Lab: write the spec text of each FORMULAS.md entry a re-deriver needs (inputs, bar alignment, rounding, edge cases)",
   "weight": "IMPORTANT",

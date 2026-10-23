@@ -27,17 +27,22 @@ class Select(unittest.TestCase):
     def test_nothing(self):
         self.assertEqual(self.sel(), ("none", []))
 
-    def test_docs_only_runs_doc_invariants_only(self):
+    def test_docs_only_selects_no_steps(self):
+        # gate-tiers-by-path: docs/research/cards/pages push with no local gate; CI gates behind
         mode, steps = self.sel("MyTradingSys/system/RELAY.md", "MyTradingSys/system/tasks/x.json")
         self.assertEqual(mode, "docs")
-        self.assertEqual(steps, ["3tl", "3q", "3pc", "3c", "4d"])
+        self.assertEqual(steps, [])
+
+    def test_smoke_runs_the_task_card_lint_only_when_a_card_is_in_the_diff(self):
+        self.assertNotIn("3tl", self.sel("scripts/dev/dsa.py")[1])
+        self.assertIn("3tl", self.sel("scripts/dev/dsa.py", "MyTradingSys/system/tasks/x.json")[1])
 
     def test_non_live_code_is_smoke_with_its_own_test_and_the_shards_that_mention_it(self):
         mode, steps = self.sel("scripts/dev/dsa.py")
         self.assertEqual(mode, "smoke")
         self.assertIn("3ds", steps)          # name match survives the "(file, N shards)" command text
         self.assertNotIn("3k", steps)
-        self.assertTrue({"3w", "3x", "3tl", "4b"} <= set(steps))
+        self.assertTrue({"3w", "3x", "4b"} <= set(steps))
         self.assertNotIn("4", steps)         # a shard none of whose tests mention the module is not run
 
     def test_mentions_reads_the_tests_named_in_the_command(self):
@@ -117,10 +122,8 @@ class Select(unittest.TestCase):
     def test_one_live_file_among_docs_makes_it_full(self):
         self.assertEqual(self.sel("README.md", "MyTradingSys/execution/executor.py")[0], "full")
 
-    def test_docs_ride_along_with_code(self):
-        _, steps = self.sel("scripts/dev/dsa.py", "MyTradingSys/system/RELAY.md")
-        self.assertIn("4d", steps)
-        self.assertIn("3q", steps)
+    def test_docs_riding_along_with_code_add_no_steps(self):
+        self.assertEqual(self.sel("scripts/dev/dsa.py", "MyTradingSys/system/RELAY.md"), self.sel("scripts/dev/dsa.py"))
 
     def test_windows_separators(self):
         self.assertEqual(self.sel("MyTradingSys" + BS + "execution" + BS + "auto_trader.py")[0], "full")

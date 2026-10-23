@@ -1,0 +1,94 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-20T10:45:14Z",
+  "commands": [
+    "python -m pytest scripts/dev/test_gate_select.py MyTradingSys/tests/test_sync.py -q",
+    "python scripts/dev/sync.py ship"
+  ],
+  "created": "2026-10-20T10:18:39Z",
+  "depends_on": [],
+  "done_when": "A docs-only ship (12 .md files) completes in under 60 s on JIS-NB with other gates running, measured in the ship log; a code change outside the live path runs only its own test files; a live-path change still runs the quick gate (test proves fail-closed); git log shows no claim/release commits after the change; each new test fails on the pre-change code at least once (named in the commit body).",
+  "est_turns": 35,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Ship by path tier: docs/research/cards/pages push with no local gate (CI gates behind); non-live code runs only tests importing the changed module, 240 s cap; live-path quick gate unchanged. Lint and doc caps only on diff files. Claims on a side branch or skipped; no claim/release commit on trunk; second ship from one tree within 10 min refused. Detail: D10 'The tuning'.",
+  "id": "gate-tiers-by-path",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "gate tiers by path shipped; docs ship 0 local steps",
+      "ref": "ba46d25c",
+      "utc": "2026-10-20T10:45:14Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Indicator values multi-model audit: 21 blind RSI/BB/StochRSI values, Haiku and Sonnet 0 mi",
+      "ref": "ac0f4e6e6ad7",
+      "utc": "2026-10-19T23:05:20Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "6b8e2cd4615e sync: machine-wide gate slots, precheck slot, and ship timing (SV7)",
+      "ref": "MyTradingSys/system/GATE_SPEED.md",
+      "utc": "2026-10-19T07:17:41Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED: operator 2026-10-20 ACCEPT: the operator answered q-v1-gate-tiers and q-v1-claims-off-git himself and asked for this card (verbatim in OPERATOR_DECISIONS.md). CLASS:C1 process code, no live path.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-20T10:20:27Z",
+  "refs": [
+    "q-v1-gate-tiers"
+  ],
+  "result": "gate tiers by path shipped; docs ship 0 local steps",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/gate_select.py",
+    "scripts/dev/run_all_tests.py (CHEAP_STEPS, TARGET_STEP 4t, step 3tl)",
+    "scripts/dev/sync.py (ship, claim, release, push_claim_commit)",
+    "scripts/dev/test_gate_select.py",
+    "MyTradingSys/tests/test_sync.py",
+    "MyTradingSys/tests/docs/test_integrity.py",
+    "MyTradingSys/system/GATE_SPEED.md (one paragraph: the three tiers)"
+  ],
+  "scope_out": [
+    "any live-path step or test",
+    ".github/workflows/ci.yml",
+    "new gate steps, new lint, new rule docs"
+  ],
+  "scope_sha": "ac0f4e6e6ad7",
+  "size": "M",
+  "sources": [
+    "",
+    "MyTradingSys/research/v1_plan_2026-10-20/D10_OPERATOR_STYLE_TUNING.md (measured: docs ship 1025 s, 1027 s, 2329 s; step 4t 985/870/2150 s; 3tl 107-128 s)",
+    "MyTradingSys/system/OPERATOR_DECISIONS.md q-v1-gate-tiers, q-v1-claims-off-git (answered 2026-10-20)",
+    "MyTradingSys/system/TRAFFIC_BUSTERS.md B16, B17, B19",
+    "scripts/dev/run_all_tests.py:91-100 (CHEAP_STEPS, TARGET_STEP)"
+  ],
+  "state": "done",
+  "steps": [
+    "Write the failing tests first (docs mode = no steps; smoke = importing tests only; claim side branch; second-ship refusal; diff-scoped doc checks); run them on the old code and record the failures.",
+    "gate_select: docs mode returns no steps; smoke mode = tests that import the changed module (reuse references()); live path unchanged.",
+    "run_all_tests/sync: in docs mode skip the gate entirely (fetch, merge, push, record); drop 4t and 3tl unless a test file or a card is in the diff; 240 s cap on smoke.",
+    "sync.py claim/release: write to side branch claims (push_heartbeat pattern) or skip (B16); ship refuses a second ship from the same tree within 10 min.",
+    "Measure: one docs ship and one code ship on JIS-NB; write both wall times in the commit body as RESULT."
+  ],
+  "taken": "2026-10-20T10:45:14Z",
+  "tests": "test_gate_select.py: docs selects no steps; smoke selects only importing tests; live path still quick. test_sync.py: claim lands on the side branch; second ship within 10 min refused; docs ship skips the gate and pushes. test_integrity.py: banner/size checks limited to diff files. Each fails on old code first.",
+  "title": "Gate tiers by path: docs push with no local gate, code runs targeted tests only, claims off trunk",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

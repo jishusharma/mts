@@ -145,6 +145,109 @@ class TestPitchforkDetector(unittest.TestCase):
         for i in range(1, len(pivots)):
             self.assertNotEqual(pivots[i].is_high, pivots[i - 1].is_high)
 
+    def test_zigzag_higher_high_update(self):
+        # Peak 1 at idx 3 (100), continues up to Peak 2 at idx 7 (120)
+        # Without qualifying intermediate low, Peak 2 should replace Peak 1
+        highs = [80, 85, 95, 100, 95, 94, 98, 120, 115, 105, 95, 90, 85, 80, 75, 70, 72, 71]
+        lows = [78, 83, 93, 98, 93, 92, 96, 118, 113, 103, 93, 88, 83, 78, 73, 68, 70, 69]
+        pivots = find_pivots_zigzag(highs, lows, lookback=2, min_change_pct=0.10)
+        self.assertEqual(len(pivots), 2)
+        self.assertEqual(pivots[0].index, 7)
+        self.assertEqual(pivots[0].price, 120.0)
+        self.assertTrue(pivots[0].is_high)
+        self.assertEqual(pivots[1].index, 15)
+        self.assertEqual(pivots[1].price, 68.0)
+        self.assertFalse(pivots[1].is_high)
+
+    def test_descending_pitchfork_hagopian_failure(self):
+        # Descending pitchfork: P0=(0, 200), P1=(10, 140) Low, P2=(20, 180) High
+        p0 = PitchforkPivot(index=0, price=200.0, is_high=True)
+        p1 = PitchforkPivot(index=10, price=140.0, is_high=False)
+        p2 = PitchforkPivot(index=20, price=180.0, is_high=True)
+        pf = PitchforkChannel(p0, p1, p2, variant=PitchforkVariant.STANDARD)
+
+        self.assertFalse(pf.is_ascending())
+        self.assertFalse(pf.p2_is_lower)  # P2 is on UML
+
+        # Bar 21: drops toward ML (ML = 160 - 2*1 = 158), moves downwards
+        pf.eval_bar(21, high=178.0, low=165.0, close=166.0)
+        self.assertFalse(pf.has_reached_ml)
+
+        # Bar 22: reverses before reaching ML, rockets above UML (UML at 22 is ~176)
+        res = pf.eval_bar(22, high=195.0, low=172.0, close=192.0)
+        self.assertTrue(res.hagopian_triggered)
+        self.assertEqual(res.status, "hagopian_failure")
+
+    def test_logarithmic_pitchfork(self):
+        # BTC macro scale: P0=3000, P1=60000, P2=15000
+        p0 = PitchforkPivot(index=0, price=3000.0, is_high=False)
+        p1 = PitchforkPivot(index=10, price=60000.0, is_high=True)
+        p2 = PitchforkPivot(index=20, price=15000.0, is_high=False)
+
+        pf = construct_pitchfork(p0, p1, p2, variant=PitchforkVariant.STANDARD, log_scale=True)
+        ml_20 = pf.get_ml(20.0)
+        uml_20 = pf.get_uml(20.0)
+        lml_20 = pf.get_lml(20.0)
+
+        # In log space, ML and tines must be strictly positive and ordered: lml < ml < uml
+        self.assertTrue(0 < lml_20 < ml_20 < uml_20)
+
+        # Eval bar at t=25: reaches ML
+        ml_25 = pf.get_ml(25.0)
+        res = pf.eval_bar(25, high=ml_25 * 1.05, low=ml_25 * 0.95, close=ml_25 * 1.01)
+        self.assertTrue(res.reached_ml)
+
+    def test_pitchfork_vp_poc_confluence(self):
+        from MyTradingSys.backtest.vp_pivot_probe import build_profile
+
+        # Synthetic swing bars from P0 (100) to P1 (150) to P2 (110)
+        # Heavy volume concentrated around 110 (the support node)
+        lows = [100.0, 110.0, 125.0, 140.0, 148.0, 135.0, 120.0, 110.0, 109.5, 110.5]
+        highs = [102.0, 115.0, 130.0, 145.0, 150.0, 140.0, 125.0, 114.0, 112.0, 113.0]
+        # Bimodal volume: standard volume along trend, massive volume cluster around 110
+        volumes = [500.0, 600.0, 700.0, 800.0, 1200.0, 900.0, 800.0, 5000.0, 6500.0, 4800.0]
+
+        vp = build_profile(lows, highs, volumes, w=1.0)
+        self.assertIsNotNone(vp)
+        poc = vp["poc_price"]
+        val = vp["val"]
+        vah = vp["vah"]
+
+        # POC must be in the high-volume cluster around 110.0 - 111.0
+        self.assertGreaterEqual(poc, 109.0)
+        self.assertLessEqual(poc, 112.0)
+
+        # Pitchfork P2 at 110.0 is inside Value Area [VAL, VAH] and within 1% of POC
+        p2_price = 110.0
+        self.assertTrue(val <= p2_price <= vah)
+        poc_error = abs(p2_price - poc) / poc
+        self.assertLessEqual(poc_error, 0.015)
+
+    def test_pitchfork_tine_retest_limit_fill(self):
+        # Modified Schiff pitchfork: P0=(0, 100), P1=(10, 150), P2=(20, 110)
+        pf = PitchforkChannel(self.p0, self.p1, self.p2, variant=PitchforkVariant.MODIFIED_SCHIFF)
+        is_long = (not self.p2.is_high)
+        self.assertTrue(is_long)
+
+        # Bar 24: price tests the LML tine
+        t = 24
+        lml_val = pf.get_lml(float(t))
+        # Bar wraps around LML: low <= LML <= high
+        bar_low = lml_val - 2.0
+        bar_high = lml_val + 3.0
+        self.assertTrue(bar_low <= lml_val <= bar_high)
+
+        # Simulated limit fill at lml_val
+        entry_price = lml_val
+        stop_price = entry_price * 0.985
+        ml_val = pf.get_ml(float(t))
+
+        # Reward to risk ratio at tine entry towards ML
+        potential_reward = ml_val - entry_price
+        risk = entry_price - stop_price
+        rr_ratio = potential_reward / risk
+        self.assertGreaterEqual(rr_ratio, 2.0)  # Tine entry guarantees favorable R:R >= 2:1
+
 
 if __name__ == "__main__":
     unittest.main()

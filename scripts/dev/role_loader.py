@@ -6,9 +6,16 @@ Header = line 1 of every MyTradingSys/system/roles/*.md:
 The token is DERIVED from the file body (every line after line 1): sha256 -> two 16-bit chunks -> two words of WORDS.
 Any body edit changes the token, so a stale token is detectable (`check`). `token: PENDING` is a placeholder.
 
-  hook    UserPromptSubmit hook: on a role trigger, inject the role file from origin/fast-track + a banner instruction.
+Which roles exist, their files and how each starts: roles/ROSTER.json (the single source; KNOWN_ROLES and ALIASES come from it).
+
+  hook    UserPromptSubmit hook: on a role trigger, inject the role file from origin/fast-track + a banner instruction;
+          a session's first prompt with no role line gets the best-fitting operator role (`pick`), banner `(fallback: <why>)`.
+  list    print the roster (name, file, start, model, lane, job) and the aliases.
+  pick --text <task text | ->   the role the fallback would load for that text, and why (never an embedded role).
+  render [--check]   rewrite the roster blocks in ROLES.md and START_HERE.txt (--check: exit 1 when stale).
   retoken [--all | file...]   rewrite tokens in headers.
-  check   rows of ROLES.md vs files vs header validity vs token freshness (exit 1 on malformed or stale).
+  check   roster vs files, rows of ROLES.md vs files vs header validity vs token freshness, rendered blocks current
+          (exit 1 on malformed, stale or mismatched).
   lint    policy contradictions across roles/*.md and ROLES.md, dead commands, missing files + CI-red owner line (exit 1 on defect).
   banner <Name>   the expected first-reply banner line.
   verify --text <note|-> [--role Name] [--sid id]   supervisor trust check of a worker's banner (0 ok, 2 stale, 1 untrusted).
@@ -26,14 +33,32 @@ REPO = Path(__file__).resolve().parents[2]
 ROLES_REL = "MyTradingSys/system/roles"
 ROLES_MD_REL = "MyTradingSys/system/ROLES.md"
 TRUNK = "origin/fast-track"
-KNOWN_ROLES = ["Eagle_Eyes", "Lab_Guy", "Session_Planner", "MTS_Doctor", "1985Artifacts_Guy", "Admin_Guy",
-               "Pipeliner", "Supervisor", "Builder", "Thinker"]
+ROSTER_REL = f"{ROLES_REL}/ROSTER.json"
+START_HERE_REL = "MyTradingSys/system/START_HERE.txt"
+
+
+def load_roster(repo=None):
+    """Roles from roles/ROSTER.json, the single source of which roles exist: the local file, else the trunk copy (an old
+    checkout run through role_hook_launcher), else []."""
+    p = Path(repo or REPO) / ROSTER_REL
+    try:
+        if p.exists():
+            text = p.read_text(encoding="utf-8")
+        else:
+            r = subprocess.run(["git", "-C", str(repo or REPO), "show", f"{TRUNK}:{ROSTER_REL}"], capture_output=True,
+                               timeout=8, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0) if sys.platform == "win32" else 0)
+            text = r.stdout.decode("utf-8") if r.returncode == 0 else ""
+        return [r for r in json.loads(text)["roles"] if isinstance(r, dict) and r.get("name")]
+    except Exception:
+        return []
+
+
+# Only when no roster is readable anywhere, so a role request still triggers; test_role_roster.py keeps it equal to the roster.
+NO_ROSTER_NAMES = ["Admin_Guy", "Eagle_Eyes", "Thinker", "MTS_Doctor", "Pipeliner", "Supervisor", "Lab_Guy",
+                   "1985Artifacts_Guy", "Session_Planner", "Builder"]
+KNOWN_ROLES = [r["name"] for r in load_roster()] or list(NO_ROSTER_NAMES)
 # Old names that still open the merged/renamed role (operator 2026-10-20); work even when the role file is not local yet.
-ALIASES = {
-    "1985Artifacts_Guy": ["artifacts_guy", "artifacts guy"],
-    "Admin_Guy": ["q&a_helper", "q&a helper", "qa helper", "q and a helper", "network_admin_guy", "network admin guy"],
-    "Pipeliner": ["traffic_controller", "traffic controller", "traffic cop"],
-}
+ALIASES = {r["name"]: [a.lower() for a in r["aliases"]] for r in load_roster() if r.get("aliases")}
 SINGLETON_ROLES = ("Pipeliner",)  # one instance across all machines: scripts/dev/lease.py
 
 # Fixed list: index = 16-bit chunk % 256. Never reorder or edit (it would change every token); the length is asserted below.
@@ -85,9 +110,10 @@ def file_for(name):
     return re.sub(r"[^a-z0-9]+", "_", name.lower().replace("&", "")).strip("_") + ".md"
 
 
-def banner(name, version, token, fname, sha8, row_only=False):
+def banner(name, version, token, fname, sha8, row_only=False, fallback=None):
     tag = "ROLE LOADED (ROW ONLY)" if row_only else "ROLE LOADED"
-    return f"{tag}: {name} {version} · token {token} · {ROLES_REL}/{fname} @ {sha8}"
+    why = f" (fallback: {re.sub(r'[()]', '', fallback)})" if fallback else ""
+    return f"{tag}: {name}{why} {version} · token {token} · {ROLES_REL}/{fname} @ {sha8}"
 
 
 # ---------- git (monkeypatchable) ----------
@@ -190,6 +216,49 @@ def mentioned_role(prompt, roles):
     return None
 
 
+# ---------- best-role fallback (no role line) ----------
+def _kw_re(kw):
+    kw = kw.lower().strip()
+    if kw == "?":
+        return re.compile(r"\?")
+    prefix = kw.endswith("*")
+    body = r"[_ -]".join(re.escape(p) for p in re.split(r"[_ ]+", kw.rstrip("*")) if p)
+    return re.compile(r"(?<![a-z0-9])" + body + ("" if prefix else r"(?![a-z0-9])"))
+
+
+# A path inside a brief ("C:/Users/x/IdeaProjects/...") must not score: "idea*" matched IdeaProjects (pilot 2026-10-22).
+_PATH_RE = re.compile(r"[a-z]:[\\/][\w.~\\/-]*|[\w.~-]+(?:[\\/][\w.~-]+){2,}")
+
+
+def pick_role(text, repo=REPO):
+    """Best operator role for a task text: 1 point per keyword, 0.5 per weak keyword (roster). A role needs one full
+    keyword; embedded roles (Builder, Session_Planner) are never picked. Equal top scores = a tie, nothing is picked."""
+    low = _PATH_RE.sub(" ", (text or "").lower())
+    scored = []
+    for r in load_roster(repo):
+        if r.get("start") != "operator":
+            continue
+        strong = [k for k in r.get("keywords", []) if _kw_re(k).search(low)]
+        weak = [k for k in r.get("weak_keywords", []) if _kw_re(k).search(low)]
+        if strong:
+            scored.append((len(strong) + 0.5 * len(weak), r["name"], strong + weak))
+    if not scored:
+        return {"name": None, "reason": "no role keywords in the text", "tie": []}
+    scored.sort(key=lambda s: -s[0])
+    top = [s for s in scored if s[0] == scored[0][0]]
+    if len(top) > 1:
+        return {"name": None, "reason": "tie: " + "; ".join(f"{n} ({', '.join(k)})" for _, n, k in top),
+                "tie": [n for _, n, _ in top]}
+    return {"name": scored[0][1], "reason": "task text says " + ", ".join(k.rstrip("*") for k in scored[0][2]), "tie": []}
+
+
+def from_session(prompt):
+    """A brief sent by another session: its sender names the role, the fallback stays out."""
+    p = (prompt or "").lstrip()
+    return ("<cross-session-message" in p[:400] or p.startswith("Another Claude session")
+            or p.startswith("Background (from the session that started this one)"))
+
+
 # ---------- session state ----------
 def state_path(sid):
     base = Path(os.environ.get("MTS_ROLES_HOME") or Path(tempfile.gettempdir()) / "mts_roles")
@@ -212,19 +281,33 @@ def role_meta(sid, name):
     return _load(sid)["meta"].get(name)
 
 
-def mark_injected(sid, name, meta=None):
+def _save(sid, d):
     try:
         p = state_path(sid)
         p.parent.mkdir(parents=True, exist_ok=True)
-        d = _load(sid)
-        if name not in d["roles"]:
-            d["roles"].append(name)
-        if meta:
-            d["meta"][name] = meta
         with open(p, "w", encoding="utf-8", newline="\n") as fh:
             fh.write(json.dumps(d))
     except Exception:
         pass
+
+
+def mark_injected(sid, name, meta=None):
+    d = _load(sid)
+    if name not in d["roles"]:
+        d["roles"].append(name)
+    if meta:
+        d["meta"][name] = meta
+    _save(sid, d)
+
+
+def first_prompt(sid):
+    """True once per session: the first prompt the hook sees (the only one the fallback acts on)."""
+    d = _load(sid)
+    if d.get("seen"):
+        return False
+    d["seen"] = True
+    _save(sid, d)
+    return True
 
 
 # ---------- hook ----------
@@ -232,9 +315,10 @@ def boot_step(body):
     lines = body.split("\n")
     for i, ln in enumerate(lines):
         s = ln.strip()
-        m = re.match(r"^(?:#+\s*)?boot\b[^:\n]*?(?::\s*(.*))?$", s, re.I)
+        # a Boot heading, or a short "Boot ...:" label; prose that merely starts with "Boot" is not a section
+        m = re.match(r"^(?:#+\s*boot\b[^:\n]*?(?::\s*(.*))?|boot\b[^:\n]{0,25}:\s*(.*)|boot\b[^.:\n]{0,40}())$", s, re.I)
         if m and not s.startswith("|"):
-            inline = (m.group(1) or "").strip()
+            inline = (m.group(1) or m.group(2) or "").strip()
             if len(inline) > 12:
                 return inline[:240]
             for nx in lines[i + 1:]:
@@ -243,6 +327,7 @@ def boot_step(body):
     return "(first step of the file's boot section)"
 
 
+REMIND_EVERY = 6
 LAST_META = {}
 
 
@@ -258,8 +343,23 @@ def lease_suffix(name, repo):
         return f" · lease UNKNOWN ({type(e).__name__})"
 
 
-def build_text(name, repo, fetched_ok):
+RULES_ANSWER = ("RULES ANSWERS (bug-haiku-stale-rule-answers): before any answer about current rules, roles, the super session "
+                "or budget, read the source file this turn (your role file's `Read first:` line names it); cite file:line and its "
+                "commit date (`git log -1 --format=%cs -- <file>`); a reading (budget, mirror, usage) gives its timestamp and age "
+                "and is called stale past 6 h; nothing read = `NOT_IN_DATA`, never memory or a first search hit.\n"
+                "ASKED WORK RUNS NOW (bug-ask-go-for-asked-work): work the operator already asked for is done this turn, "
+                "full depth; never end a reply asking him to say go. Ask only for a genuine option decision with no default.\n")
+
+
+def build_text(name, repo, fetched_ok, fallback=None):
     LAST_META.clear()
+    pre = (f"ROLE LOADER (hook): the prompt has no role line; the best fit from the task text is {name} ({fallback}). "
+           f"After the banner, one line: if the operator meant another role, `You are <Role>.` switches "
+           f"(`python scripts/dev/role_loader.py list` shows all).\n") if fallback else ""
+    return pre + _build_text(name, repo, fetched_ok, fallback)
+
+
+def _build_text(name, repo, fetched_ok, fallback=None):
     sha8 = git_sha8(repo)
     stale = "" if fetched_ok else "STALE: fetch failed (using the local origin/fast-track ref; it may be old).\n"
     fname = file_for(name)
@@ -275,22 +375,24 @@ def build_text(name, repo, fetched_ok):
             stale += f"WARN: header token {h['token']} differs from the body token {tok}; the body is what you follow.\n"
         _, body = split_header(text)
         LAST_META.update(version=h["version"], token=tok, file=fname)
-        b = banner(h["name"], h["version"], tok, fname, sha8) + lease_suffix(h["name"], repo)
+        b = banner(h["name"], h["version"], tok, fname, sha8, fallback=fallback) + lease_suffix(h["name"], repo)
         return (f"{stale}ROLE LOADER (hook): you are {h['name']}. The file below is the authoritative workflow "
                 f"({ROLES_REL}/{fname} on {TRUNK} @ {sha8}).\n"
                 f"Your FIRST reply must begin with exactly this line:\n{b}\n"
                 f"then on the next line: FIRST ACTION: {boot_step(body)}\n"
                 f"If anything is missing or unreadable, reply `ROLE NOT LOADED: <why>` and stop.\n"
+                f"{RULES_ANSWER}"
                 f"----- {fname} -----\n{text}")
     rows = git_show(repo, ROLES_MD_REL) or ""
     row = next((ln for ln in rows.split("\n") if re.match(r"^\|\s*" + re.escape(name) + r"\s*\|", ln)), None)
     if row is None:
         return (f"{stale}ROLE LOADER (hook): role {name} has no file ({ROLES_REL}/{fname}) and no ROLES.md row on {TRUNK}. "
                 f"Reply `ROLE NOT LOADED: no file and no row for {name}` and stop.")
-    b = banner(name, "v?", "none", fname, sha8, row_only=True)
+    b = banner(name, "v?", "none", fname, sha8, row_only=True, fallback=fallback)
     return (f"{stale}ROLE LOADER (hook): you are {name}. No role file on {TRUNK}; the ROLES.md row below is all there is.\n"
             f"Your FIRST reply must begin with exactly this line:\n{b}\n"
             f"then follow the row's Boot column. If anything is missing, reply `ROLE NOT LOADED: <why>` and stop.\n"
+            f"{RULES_ANSWER}"
             f"----- ROLES.md row -----\n{row}")
 
 
@@ -307,27 +409,87 @@ def _reminder(sid):
     m = role_meta(sid, name)
     if not m:
         return ""
+    d = _load(sid)
+    d["n"] = d.get("n", 0) + 1       # the same ~230 chars on every prompt is re-read cost: repeat only every REMIND_EVERY-th prompt
+    _save(sid, d)
+    if (d["n"] - 1) % REMIND_EVERY:
+        return ""
     path = f"{ROLES_REL}/{m['file']}"
     return _out("UserPromptSubmit", f"Role: {name} {m['version']} (token {m['token']}, {path}). Follow that file; if you no longer "
                 f"have it in context, say ROLE CONTEXT LOST and re-read it with git show {TRUNK}:{path}.")
+
+
+# Built-in helper agents that never take a role.
+SUBAGENT_NO_ROLE = {"explore", "plan", "statusline-setup", "claude-code-guide"}
+
+
+def subagent_role(payload, roles):
+    """Role a SubagentStart payload names: the agent prompt text if the payload carries one, else agent_type, else description.
+    (Claude Code documents agent_id + agent_type only, so the prompt fields are read when present, never required.)"""
+    for key in ("prompt", "agent_prompt", "task_prompt", "description"):
+        v = payload.get(key)
+        if isinstance(v, str):
+            hits = match_roles(v, roles)
+            if len(hits) == 1:
+                return hits[0]
+    at = payload.get("agent_type")
+    if isinstance(at, str):
+        norm = re.sub(r"[_ -]+", "_", at.strip().lower())
+        for name in roles:
+            if norm == re.sub(r"[_ -]+", "_", name.lower()):
+                return name
+    return None
+
+
+def handle_subagent(payload, repo=REPO):
+    """SubagentStart: a background Agent gets role text like a session does. session_id is the PARENT's, so dedupe by agent_id.
+    Role unknown (the payload has no prompt text): a one-line pointer so the worker loads it itself when its brief says
+    'You are <Role>'. Built-in helper types and repeat starts get nothing."""
+    sid = str(payload.get("session_id") or "nosession")
+    aid = str(payload.get("agent_id") or "")
+    at = str(payload.get("agent_type") or "")
+    if at.strip().lower() in SUBAGENT_NO_ROLE:
+        return ""
+    d = _load(sid)
+    seen = d.setdefault("subagents", [])
+    if aid and aid in seen:
+        return ""
+    if aid:
+        seen.append(aid)
+        _save(sid, d)
+    roles = local_roles(repo)
+    name = subagent_role(payload, roles)
+    if name:
+        return _out("SubagentStart", build_text(name, repo, git_fetch(repo)))
+    names = ", ".join(sorted(roles)) or ", ".join(KNOWN_ROLES)
+    return _out("SubagentStart", f"ROLE LOADER (hook): if your task prompt begins `You are <Role>.` with <Role> one of "
+                f"{names}, your FIRST action is `git show {TRUNK}:{ROLES_REL}/<role lowercase>.md` (or read the file in the "
+                f"worktree); your FIRST reply line is then that role's banner (`python scripts/dev/role_loader.py banner <Role>`). "
+                f"If the file cannot be read, reply `ROLE NOT LOADED: <why>`. No role line in the prompt: ignore this.")
 
 
 def handle(payload, repo=REPO):
     """Return the hook JSON string, or '' when nothing is to be injected."""
     if not isinstance(payload, dict):
         return ""
+    if payload.get("hook_event_name") == "SubagentStart":
+        return handle_subagent(payload, repo)
     sid = str(payload.get("session_id") or "nosession")
     if payload.get("hook_event_name") == "SessionStart":
         done = injected(sid)
         if not done:
             return ""
         text = build_text(done[-1], repo, git_fetch(repo))
+        if LAST_META:                   # trunk may have changed the role since the first load: record what was served
+            mark_injected(sid, done[-1], dict(LAST_META))
         return _out("SessionStart", "Session resumed/compacted: re-confirm the role. " + text)
     prompt = payload.get("prompt")
     if not isinstance(prompt, str):
         return ""
+    first = first_prompt(sid)
     roles = local_roles(repo)
     hits = match_roles(prompt, roles)
+    fallback = None
     if len(hits) > 1:
         return _out("UserPromptSubmit", "ROLE LOADER (hook): the prompt names several roles (" + ", ".join(hits) +
                     "). Load none; ask the operator in one line which one, then stop.")
@@ -339,9 +501,17 @@ def handle(payload, repo=REPO):
         name = mentioned_role(prompt, roles) or (injected(sid) or [None])[-1]
         if not name:
             return ""
+    elif first and not injected(sid) and not from_session(prompt):
+        p = pick_role(prompt, repo)
+        if p["tie"]:
+            return _out("UserPromptSubmit", "ROLE LOADER (hook): the prompt has no role line and fits several roles equally ("
+                        + p["reason"] + "). Ask the operator once, in one line, which role (`You are <Role>.`), then stop.")
+        if not p["name"]:
+            return ""
+        name, fallback = p["name"], p["reason"]
     else:
         return _reminder(sid)
-    text = build_text(name, repo, git_fetch(repo))
+    text = build_text(name, repo, git_fetch(repo), fallback)
     mark_injected(sid, name, dict(LAST_META))
     return _out("UserPromptSubmit", text)
 
@@ -393,8 +563,97 @@ def row_names(repo=REPO):
     return names
 
 
-def check(repo=REPO, out=print):
+def list_lines(repo=REPO):
+    roster = load_roster(repo)
+    w = max([len(r["name"]) for r in roster] + [4])
+    out = [f"{'Role':<{w}}  {'File':<22} {'Start':<9} {'Model':<29} {'Lane':<6} Job"]
+    for r in roster:
+        out.append(f"{r['name']:<{w}}  {r['file']:<22} {r['start']:<9} {r['model']:<29} {r['lane']:<6} {r['job']}")
+    for r in roster:
+        if r.get("aliases"):
+            out.append(f"alias  {', '.join(r['aliases'])} -> {r['name']}")
+    emb = [r["name"] for r in roster if r["start"] != "operator"]
+    out.append(f"{len(roster)} roles ({len(roster) - len(emb)} operator-started, {len(emb)} embedded: {', '.join(emb)}; "
+               f"never picked by the fallback) from {ROSTER_REL}; files in {ROLES_REL}/")
+    return out
+
+
+def _roles_md_block(roster):
+    out = ["| Role | Start (paste) | Runs where | At most one at a time | Model | Job |", "|---|---|---|---|---|---|"]
+    for r in roster:
+        start = f"`{r['start_line']}`" if r["start"] == "operator" else f"embedded: {r['start_line'].strip('()')}"
+        out.append(f"| `{r['name']}` | {start} | {r['where']} | {r['limit']} | {r['model']} | {r['job']} |")
+    return out
+
+
+def _start_here_block(roster):
+    ops = [r for r in roster if r["start"] == "operator"]
+    w = max(len(r["name"]) for r in ops) + 9
+    out = []
+    for r in ops:
+        out.append(f"  {'You are ' + r['name'] + '.':<{w}}  {r['model']:<29} {r['job']}")
+        if r["start_line"] != f"You are {r['name']}.":
+            out.append(f"  {'':<{w}}    paste: {r['start_line']}")
+    out.append("  Inside the Supervisor (never by hand, never picked by fallback): "
+               + ", ".join(r["name"] for r in roster if r["start"] != "operator") + ".")
+    out.append("  Old names still work: " + "; ".join(f"{', '.join(r['aliases'])} -> {r['name']}"
+                                                     for r in roster if r.get("aliases")) + ".")
+    out.append("  No role line? The first prompt loads the best fit:  ROLE LOADED: <Name> (fallback: <why>) ...")
+    return out
+
+
+RENDER_TARGETS = ((ROLES_MD_REL, _roles_md_block), (START_HERE_REL, _start_here_block))
+
+
+def render(repo=REPO, write=True):
+    """Rewrite the lines between the roster:begin and roster:end markers from the roster; return the stale (or rewritten) paths."""
+    roster = load_roster(repo)
+    stale = []
+    for rel, fn in RENDER_TARGETS:
+        p = Path(repo) / rel
+        if not p.exists() or not roster:
+            stale.append(rel)
+            continue
+        lines = p.read_text(encoding="utf-8").split("\n")
+        b = next((i for i, ln in enumerate(lines) if "roster:begin" in ln), None)
+        e = next((i for i, ln in enumerate(lines) if "roster:end" in ln), None)
+        if b is None or e is None or e < b:
+            stale.append(rel)
+            continue
+        new = lines[:b + 1] + fn(roster) + lines[e:]
+        if new != lines:
+            stale.append(rel)
+            if write:
+                with open(p, "w", encoding="utf-8", newline="\n") as fh:
+                    fh.write("\n".join(new))
+    return stale
+
+
+def check_roster(repo=REPO, out=print):
+    roster = {r["name"]: r.get("file") for r in load_roster(repo)}
+    if not roster:
+        out(f"WARN roster: {ROSTER_REL} missing or unreadable (role headers still trigger)")
+        return 0
+    heads = {}
+    for f in role_files(repo):
+        h = parse_header(f.read_bytes().decode("utf-8").replace("\r\n", "\n"))
+        if h:
+            heads[h["name"]] = f.name
     bad = 0
+    for n in sorted(set(roster) | set(heads)):
+        if roster.get(n) != heads.get(n):
+            out(f"FAIL roster {n}: roster file {roster.get(n)}, role-file header in {heads.get(n)}")
+            bad = 1
+    for rel in render(repo, write=False):
+        out(f"FAIL {rel}: roster block missing or stale (run role_loader.py render)")
+        bad = 1
+    if not bad:
+        out(f"ok   roster: {len(roster)} roles = {len(heads)} role files; rendered blocks current")
+    return bad
+
+
+def check(repo=REPO, out=print):
+    bad = check_roster(repo, out)
     files = {f.name: f for f in role_files(repo)}
     seen = set()
     for name in row_names(repo):
@@ -431,7 +690,7 @@ def _check_one(f, name, out):
     return 0
 
 
-BANNER_RE = re.compile(r"ROLE LOADED(?P<row> \(ROW ONLY\))?: (?P<name>\S+) (?P<version>v\S+) \S token (?P<token>[a-z]+-[a-z?]+|none) \S "
+BANNER_RE = re.compile(r"ROLE LOADED(?P<row> \(ROW ONLY\))?: (?P<name>\S+)(?: \(fallback: [^)]*\))? (?P<version>v\S+) \S token (?P<token>[a-z]+-[a-z?]+|none) \S "
                        r"(?P<path>\S+) @ (?P<sha>[0-9a-f]{7,40}|unknown)")
 
 
@@ -632,6 +891,13 @@ def lint(repo=REPO, out=print, ci_runs=None):
                 if not (repo / full).exists():
                     findings.append(("MISSING-FILE", f"{rel}:{i}", f"missing referenced role file {full}"))
 
+    # 3. Every role file names the files its rule answers come from (bug-haiku-stale-rule-answers)
+    for f in role_files(repo):
+        head = f.read_text(encoding="utf-8", errors="replace").splitlines()[:8]
+        line = next((ln for ln in head if ln.startswith("Read first:")), None)
+        if line is None or not re.search(r"`[\w./-]+\.(?:md|py|json|txt)`", line):
+            findings.append(("READ-FIRST", f"{ROLES_REL}/{f.name}", "no `Read first:` line naming a source file in the first 8 lines"))
+
     for kind, where, msg in findings:
         out(f"FAIL [{kind}] {where}: {msg}")
     out(ci_red_owner(repo, runs=ci_runs))
@@ -656,6 +922,25 @@ def main(argv):
         return 0
     if c == "check":
         return check()
+    if c == "list":
+        sys.stdout.buffer.write(("\n".join(list_lines()) + "\n").encode("utf-8"))
+        return 0
+    if c == "render":
+        stale = render(write="--check" not in argv)
+        for rel in stale:
+            print(f"{'stale' if '--check' in argv else 'rendered'} {rel}")
+        return 1 if (stale and "--check" in argv) else 0
+    if c == "pick":
+        args = argv[2:]
+        if "--text" not in args or args.index("--text") + 1 >= len(args):
+            print("usage: role_loader.py pick --text <task text | ->")
+            return 2
+        text = args[args.index("--text") + 1]
+        if text == "-":
+            text = sys.stdin.buffer.read().decode("utf-8", "replace")
+        p = pick_role(text)
+        print(f"{p['name'] or 'NONE'}: {p['reason']}")
+        return 0 if p["name"] else 1
     if c == "lint":
         return lint()
     if c == "verify":

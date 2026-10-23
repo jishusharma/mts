@@ -301,6 +301,19 @@ class QueueTest(unittest.TestCase):
         self.run_cli("sweep", "--apply")
         self.assertEqual([T.get(self.repo, i)["state"] for i in ("C1", "C2", "C3")], ["done", "ready", "ready"])
 
+    def test_sweep_archive_moves_closed_cards_and_keeps_them_resolvable(self):
+        T.save(self.repo, good("C1"))
+        T.save(self.repo, good("C2"))
+        self.run_cli("apply-op", "C2", "drop")
+        self.run_cli("sweep", "--archive")
+        self.assertTrue((T.tdir(self.repo) / "C2.json").exists())          # dry run moves nothing
+        self.run_cli("sweep", "--archive", "--apply")
+        self.assertFalse((T.tdir(self.repo) / "C2.json").exists())
+        self.assertTrue((T.tdir(self.repo) / "archive" / "C2.json").exists())
+        self.assertTrue((T.tdir(self.repo) / "C1.json").exists())
+        self.assertEqual(T.get(self.repo, "C2")["state"], "dropped")
+        self.assertIn("C2", [c["id"] for c in T.load_all(self.repo)])
+
     def test_new_creates_a_raw_card_and_refuses_duplicates(self):
         rc, _ = self.run_cli("new", "Check the funding sign", "--id", "B950", "--ref", "B950", "--from-inbox", "abc")
         c = T.get(self.repo, "B950")
@@ -513,6 +526,15 @@ class RepoDataTest(unittest.TestCase):
                 self.assertEqual(c["id"] + ".json", T.path_of(T.REPO, c["id"]).name)
                 if c["state"] in T.LIVE:
                     self.assertEqual(T.problems(c, cards, reg), [])
+
+    def test_sized_open_model_cards_carry_worker_fields(self):
+        """card-worker-fields: an open SONNET/HAIKU/OPUS card with a size also has worker and est_turns (WORKERS.md)."""
+        for c in T.load_all(T.REPO):
+            if c["state"] in ("done", "dropped") or c.get("lane") not in ("SONNET", "HAIKU", "OPUS") or not c.get("size"):
+                continue
+            with self.subTest(card=c["id"]):
+                self.assertTrue(c.get("worker") and c.get("est_turns"))
+
 
 
 class LabMachineChecksTest(unittest.TestCase):
@@ -913,3 +935,46 @@ class ResultTrustTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class NeedTest(unittest.TestCase):
+    """Operator 2026-10-22: pre-run items live in the queue (tasks.py need), not in the operator's head."""
+    def setUp(self):
+        self.d = tempfile.TemporaryDirectory()
+        self.repo = Path(self.d.name)
+        self._repo = T.REPO
+        T.REPO = self.repo
+        T.save(self.repo, good("main-card"))
+
+    def tearDown(self):
+        T.REPO = self._repo
+        self.d.cleanup()
+
+    def test_need_makes_an_owned_prereq_card_and_blocks_the_main_card(self):
+        rc, _ = run_cli("need", "main-card", "Lab_Guy review stamp", "--lane", "SONNET", "--role", "Lab_Guy")
+        self.assertEqual(rc, 0)
+        main = T.get(self.repo, "main-card")
+        nid = "main-card-need-lab-guy-review-stamp"
+        self.assertEqual(main["depends_on"], [nid])
+        pre = T.get(self.repo, nid)
+        self.assertEqual((pre["lane"], pre["role"], pre["state"]), ("SONNET", "Lab_Guy", "raw"))
+        self.assertTrue(any(p.startswith("depends_on " + nid) for p in T.problems(main, T.load_all(self.repo), {})))
+        run_cli("need", "main-card", "Lab_Guy review stamp", "--lane", "SONNET")   # idempotent
+        self.assertEqual(T.get(self.repo, "main-card")["depends_on"], [nid])
+
+    def test_need_without_lane_is_refused(self):
+        rc, out = run_cli("need", "main-card", "stamp it")
+        self.assertNotEqual(rc, 0)
+        self.assertIn("--lane", out)
+
+    def test_host_pin_excludes_other_machines_and_shows_in_brief(self):
+        run_cli("need", "main-card", "--host", "JIS-NB", "--host", "DESKTOP-F7IU69N")
+        c = T.get(self.repo, "main-card")
+        self.assertEqual(c["hosts"], ["DESKTOP-F7IU69N", "JIS-NB"])
+        self.assertIn("Host: run only on DESKTOP-F7IU69N or JIS-NB", T.brief(c))
+        lane_st = {"status": "up"}
+        from datetime import datetime, timezone
+        now = datetime(2026, 10, 22, tzinfo=timezone.utc)
+        args = ([c], {}, [], {}, lane_st, now)
+        self.assertEqual(T.exclusion(c, *args[:5], now, "JIS-NUC", self.repo)[0], "host")
+        self.assertIsNone(T.exclusion(c, *args[:5], now, "JIS-NB", self.repo))

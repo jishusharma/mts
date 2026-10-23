@@ -1,0 +1,10 @@
+{
+  "done_when": "RESULT_V2.md has one verdict word, VERDICTS.csv row, ship gate green",
+  "from": "DESKTOP-F7IU69N",
+  "id": "20261023-055453-run-card-context-composite-v2-dev-read",
+  "need": "Needs F:/MTS raw funding + frame cache (laptop has none). Follow tasks.py brief context-composite-v2-dev-read to the end.",
+  "posted": "2026-10-23T05:54:53Z",
+  "status": "pending",
+  "target": "DSA",
+  "title": "Run card context-composite-v2-dev-read"
+}

@@ -3,13 +3,14 @@
   python scripts/dev/sync.py start [slug] [--quiet]  # up to date with origin/fast-track; in a shared/dirty tree makes your own worktree;
                                            # in a lane tree (mts-app, mts-relay, mts-dsa) `start <slug>` switches to branch <host>/<slug>
   python scripts/dev/sync.py health  # stale/overlapping claims, shared or orphan worktrees, branches never shipped
-  python scripts/dev/sync.py ship [--full] [--fix-ci] [--release <slug>] [--after <slug>]  # merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
+  python scripts/dev/sync.py ship [--full] [--fix-ci] [--again] [--release <slug>] [--after <slug>]  # a second ship from one tree within 10 min needs --again; docs-only ships run no gate; merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
                                            # ordinary code ships run the FAST gate (GATE_SPEED.md: ~60 s, tests chosen by import graph); a red CI blocks code ships until
                                            # fixed: --fix-ci ships the fix through it with the full gate; --after waits for predecessor order ticket
   python scripts/dev/sync.py news [hours=24]  # what shipped: feature + Result line per commit, no code
   python scripts/dev/sync.py claim "<task>" [--area <paths>]  # tell parallel sessions what you work on (shipped at once); refused only when --area overlaps an open claim
   python scripts/dev/sync.py claims  # open claims on origin/fast-track (host, account, task, age); release: `release <slug>`
   python scripts/dev/sync.py where [--all]  # trees holding work not on origin/fast-track (nothing lost?); --all lists every tree
+  python scripts/dev/sync.py discard <tree name|path>...  # the operator said discard: save uncommitted work to Dumps/wt_rescue/<tree>/, remove the tree, keep its branch (no app card)
   python scripts/dev/sync.py tidy [--apply] [--all]  # retire finished worktrees (session, App-named, mts-relay-*; clean + fully on origin/fast-track + idle 24 h); dry run by default
 
 Rules live in MyTradingSys/system/PARALLEL.md. The live tree (a checkout holding the gitignored marker
@@ -20,6 +21,7 @@ import json
 import os
 import random
 import re
+import shutil
 import socket
 import inspect
 import subprocess
@@ -35,6 +37,9 @@ LIVE_MARKER = ".mts_live"
 DOC_SUFFIXES = (".md", ".txt")
 PUSH_TRIES = 3
 CLAIMS_DIR = "MyTradingSys/system/claims"
+CLAIMS_BRANCH = "claims"   # gate-tiers-by-path (q-v1-claims-off-git): claim/release commits live here, never on the trunk
+SHIP_GAP_S = 600           # a second ship from one tree within this many seconds is refused (SYNC_ALLOW_SECOND_SHIP=1 / --again)
+SHIP_STAMP = "mts_last_ship"
 CARDS_DIR = "MyTradingSys/system/tasks"
 STALE_HOURS = 24
 # Generated or whole-file-rewritten files that every session touches. A collision here is never worth a
@@ -417,7 +422,7 @@ def health(repo):
     git(repo, "fetch", "--quiet", "origin", TRUNK)
     issues = []
     now = time.time()
-    claims = read_claims(repo, f"origin/{TRUNK}")
+    claims = open_claims(repo)
     areas = {}
     for slug, kv in claims:
         age_h = (now - int(kv.get("epoch", now))) / 3600
@@ -493,10 +498,37 @@ def call_gate(gate, repo, files):
 
 
 def run_docs_gate(repo, files):
-    """Docs/data-only ship: the cheap doc invariants (task cards, INDEX/BUGS, doc size and contract tests), no gate slot.
-    Skipped where the repo has no gate script (throwaway repos)."""
-    if (Path(repo) / "scripts" / "dev" / "run_all_tests.py").exists() and not os.environ.get("SYNC_NO_DOCS_GATE"):
-        run_gate(repo, files)
+    """Docs/data/cards/pages-only ship (gate-tiers-by-path, operator q-v1-gate-tiers 2026-10-20): no full local gate. Fetch, merge and
+    push; CI gates behind (the measured docs ships ran 1025-2329 s locally for checks CI repeats). Only the doc size caps run (under
+    1 s): 2175ef80 pushed CLAUDE.md over its cap on a docs ship and turned trunk red (operator 2026-10-22: "make a hook")."""
+    import preship
+    fails = preship.cap_failures(repo, files)
+    if fails:
+        raise SyncError("doc size cap: " + " / ".join(fails) + " -> FIX: " + preship.CAP_RULE[4])
+
+
+def ship_stamp(repo):
+    return Path(git(repo, "rev-parse", "--absolute-git-dir").stdout.strip()) / SHIP_STAMP
+
+
+def check_ship_gap(repo):
+    """Refuse a second ship from one tree within SHIP_GAP_S of the last pushed one (per worktree git dir). Bypass: --again / SYNC_ALLOW_SECOND_SHIP=1."""
+    if os.environ.get("SYNC_ALLOW_SECOND_SHIP"):
+        return
+    try:
+        age = time.time() - float(ship_stamp(repo).read_text().strip())
+    except (OSError, ValueError):
+        return
+    if 0 <= age < SHIP_GAP_S:
+        raise SyncError(f"second ship from this tree {age:.0f} s after the last one (limit 10 min between ships): batch the work into one ship, "
+                        f"or wait, or pass --again if this really is a separate change")
+
+
+def write_ship_stamp(repo):
+    try:
+        ship_stamp(repo).write_text(str(time.time()), encoding="utf-8")
+    except (OSError, SyncError):
+        pass
 
 
 def ci_state(fetch=None):
@@ -735,6 +767,7 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
                     print("nothing to ship")
                 return
             if attempt == 1:
+                check_ship_gap(repo)
                 if gate is run_gate and ci_applies(files):    # custom gates (tests, throwaway repos) stay hermetic: no network
                     ci = CiCheck()
                 if needs_gate(files):
@@ -765,6 +798,9 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
             r = git(repo, "push", "--quiet", "origin", f"HEAD:refs/heads/{TRUNK}", check=False)
             if r.returncode == 0:
                 ok = True
+                write_ship_stamp(repo)
+                if release_slug and not released:
+                    released = release_side(repo, release_slug)
                 print(f"shipped {len(files)} file(s) to origin/{TRUNK}" + (f"; released {release_slug}" if released else ""))
                 pages.report()
                 return
@@ -917,9 +953,30 @@ def read_claims(repo, ref):
     return rows
 
 
+def open_claims(repo, fetch=True):
+    """Open claims: the side branch origin/claims, plus any legacy claim file still on the trunk (claims made before the side branch)."""
+    if fetch:
+        git(repo, "fetch", "--quiet", "origin", CLAIMS_BRANCH, check=False)
+    rows = read_claims(repo, f"origin/{CLAIMS_BRANCH}")
+    have = {s for s, _ in rows}
+    return rows + [r for r in read_claims(repo, f"origin/{TRUNK}") if r[0] not in have]
+
+
+def release_side(repo, slug):
+    """Remove claim `slug` from the side branch (no trunk commit). True when something was removed; never raises (the ship already landed)."""
+    rel = f"{CLAIMS_DIR}/{slug}.md"
+    try:
+        git(repo, "fetch", "--quiet", "origin", CLAIMS_BRANCH, check=False)
+        if git(repo, "cat-file", "-e", f"origin/{CLAIMS_BRANCH}:{rel}", check=False).returncode != 0:
+            return False
+        push_claim_commit(repo, rel, None, f"release {slug}" + chr(10) * 2 + f"Result: claim {slug} closed with the ship", branch=CLAIMS_BRANCH)
+        return True
+    except SyncError:
+        return False
+
+
 def print_claims(repo, ref=None):
-    ref = ref or f"origin/{TRUNK}"
-    rows = read_claims(repo, ref)
+    rows = read_claims(repo, ref) if ref else open_claims(repo)
     if not rows:
         print("claims: none open")
         return
@@ -931,13 +988,15 @@ def print_claims(repo, ref=None):
               f"[area: {kv.get('area','-')}] {age_h:.0f}h old{stale}")
 
 
-def push_claim_commit(repo, rel, text, msg):
-    """Traffic buster (2026-10-16): put ONE claim-file change on origin/fast-track as a commit built with plumbing on
-    top of origin's tip: no merge commit, no gate, no dependence on this tree's state (dirty or ahead is fine). text=None
-    removes the file. Returns the pushed sha. Afterwards this branch is fast-forwarded to it when it can be (never a merge)."""
+def push_claim_commit(repo, rel, text, msg, branch=CLAIMS_BRANCH):
+    """Traffic buster (2026-10-16): put ONE claim-file change on origin/<branch> as a commit built with plumbing on top of origin's
+    tip: no merge commit, no gate, no dependence on this tree's state (dirty or ahead is fine). text=None removes the file. Default
+    branch is the claims side branch (gate-tiers-by-path: no claim/release commit on the trunk; created empty on first use); branch=TRUNK
+    serves legacy claims. Returns the pushed sha. On the trunk this branch is then fast-forwarded to it when it can be (never a merge)."""
     for attempt in range(1, PUSH_TRIES + 1):
-        git(repo, "fetch", "--quiet", "origin", TRUNK)
-        parent = git(repo, "rev-parse", f"origin/{TRUNK}").stdout.strip()
+        have = git(repo, "fetch", "--quiet", "origin", branch, check=False).returncode == 0 and \
+            git(repo, "rev-parse", "--verify", "--quiet", f"origin/{branch}", check=False).returncode == 0
+        parent = git(repo, "rev-parse", f"origin/{branch}").stdout.strip() if have else None
         idx = Path(git(repo, "rev-parse", "--absolute-git-dir").stdout.strip()) / f"claim-index-{os.getpid()}"
         env = {**os.environ, "GIT_INDEX_FILE": str(idx)}
 
@@ -947,17 +1006,18 @@ def push_claim_commit(repo, rel, text, msg):
                 raise SyncError(f"git {' '.join(args)} failed:" + chr(10) + f"{r.stdout}{r.stderr}".rstrip())
             return r.stdout.strip()
         try:
-            plumb("read-tree", parent)
+            plumb("read-tree", parent) if parent else plumb("read-tree", "--empty")
             if text is None:
                 plumb("update-index", "--force-remove", rel)
             else:
                 blob = plumb("hash-object", "-w", "--stdin", stdin=text)
                 plumb("update-index", "--add", "--cacheinfo", f"100644,{blob},{rel}")
-            commit = plumb("commit-tree", plumb("write-tree"), "-p", parent, "-m", msg)
+            commit = plumb("commit-tree", plumb("write-tree"), *(["-p", parent] if parent else []), "-m", msg)
         finally:
             idx.unlink(missing_ok=True)
-        if git(repo, "push", "--quiet", "origin", f"{commit}:refs/heads/{TRUNK}", check=False).returncode == 0:
-            git(repo, "merge", "--ff-only", "--quiet", commit, check=False)  # only when this branch has nothing unshipped
+        if git(repo, "push", "--quiet", "origin", f"{commit}:refs/heads/{branch}", check=False).returncode == 0:
+            if branch == TRUNK:
+                git(repo, "merge", "--ff-only", "--quiet", commit, check=False)  # only when this branch has nothing unshipped
             return commit
         print(f"push rejected (someone shipped first), retry {attempt}/{PUSH_TRIES}")
     raise SyncError(f"claim push still rejected after {PUSH_TRIES} tries")
@@ -1019,8 +1079,8 @@ def claim(repo, task, area="-", gate=run_gate, force=False):
     NL = chr(10)
     for attempt in range(1, PUSH_TRIES + 1):  # re-check on every retry: a racing claim may have landed
         git(repo, "fetch", "--quiet", "origin", TRUNK)
-        open_claims = read_claims(repo, f"origin/{TRUNK}")
-        for other, kv in open_claims:
+        open_rows = open_claims(repo)
+        for other, kv in open_rows:
             # With areas on both sides a claim blocks only on overlap (operator q20); a claim without --area cannot be compared,
             # so there only the same task name blocks.
             theirs = claim_areas(kv)
@@ -1028,7 +1088,7 @@ def claim(repo, task, area="-", gate=run_gate, force=False):
             if hit or (other == slug0 and not (mine and theirs)):
                 raise SyncError(f"already claimed by {kv.get('host')} / {kv.get('account')}: {kv.get('task')}"
                                 + (f" (area {hit[0]} ~ {hit[1]})" if hit else "") + ". Pick another task or area, or ask them (a claim over 24 h old is stale: release it).")
-        taken = {s for s, _ in open_claims}
+        taken = {s for s, _ in open_rows}
         slug, n = slug0, 1
         while slug in taken:  # same task name, disjoint areas: both may work
             n += 1
@@ -1049,13 +1109,15 @@ def claim(repo, task, area="-", gate=run_gate, force=False):
 def release(repo, slug, gate=run_gate):
     refuse_live(repo)
     git(repo, "fetch", "--quiet", "origin", TRUNK)
+    git(repo, "fetch", "--quiet", "origin", CLAIMS_BRANCH, check=False)
     rel = f"{CLAIMS_DIR}/{slug}.md"
-    if git(repo, "cat-file", "-e", f"origin/{TRUNK}:{rel}", check=False).returncode != 0:
-        raise SyncError(f"no claim {slug} on origin/{TRUNK}")
+    side = git(repo, "cat-file", "-e", f"origin/{CLAIMS_BRANCH}:{rel}", check=False).returncode == 0
+    if not side and git(repo, "cat-file", "-e", f"origin/{TRUNK}:{rel}", check=False).returncode != 0:
+        raise SyncError(f"no claim {slug} on origin/{CLAIMS_BRANCH}")
     ahead = git(repo, "rev-list", "--count", f"origin/{TRUNK}..HEAD", check=False).stdout.strip()
     if ahead.isdigit() and int(ahead) > 0:
         print(f"hint (B4): this tree has {ahead} unshipped commit(s); `sync.py ship --release {slug}` closes the claim in the same push and saves a commit")
-    push_claim_commit(repo, rel, None, f"release {slug}" + chr(10) * 2 + f"Result: claim {slug} closed")
+    push_claim_commit(repo, rel, None, f"release {slug}" + chr(10) * 2 + f"Result: claim {slug} closed", branch=CLAIMS_BRANCH if side else TRUNK)
     print(f"released {slug}")
 
 
@@ -1138,6 +1200,61 @@ def repair_heads(repo, apply=True):
             done.append(t["path"])
             print(f"{'repaired' if apply else 'would repair'}  {t['name']}: HEAD -> {m.group(1)}")
     return done
+
+
+def rescue_tree(p, dest):
+    """Copy what `git worktree remove --force` would destroy in tree `p` into `dest`: changes.patch (tracked edits, binary-safe),
+    untracked files and ignored data under files/. Returns the number of paths saved (0 = nothing to save, no dest made)."""
+    patch = git(p, "diff", "HEAD", "--binary", check=False).stdout
+    untracked = [l for l in git(p, "ls-files", "--others", "--exclude-standard", "-z", check=False).stdout.split(chr(0)) if l]
+    data = ignored_data(p)
+    tracked = [l for l in git(p, "diff", "HEAD", "--name-only", check=False).stdout.splitlines() if l]
+    if not (patch or untracked or data):
+        return 0
+    dest.mkdir(parents=True, exist_ok=True)
+    if patch:
+        with open(dest / "changes.patch", "w", encoding="utf-8", newline="\n") as f:
+            f.write(patch)
+    for rel in untracked + [d.strip('"').rstrip("/") for d in data]:
+        src, tgt = p / rel, dest / "files" / rel
+        tgt.parent.mkdir(parents=True, exist_ok=True)
+        if src.is_dir():
+            shutil.copytree(src, tgt, dirs_exist_ok=True)
+        elif src.exists():
+            shutil.copy2(src, tgt)
+    return len(tracked) + len(untracked) + len(data)
+
+
+def discard(repo, targets):
+    """Remove the worktrees the operator said to discard, from Bash, so no Allow card appears. The App's own "discard kept
+    worktree" action asks him in every permission mode, one card per tree (operator 2026-10-23, 4-5 cards: "it asked me to click on
+    buttons to do work that i already asked for"); model_guard denies it and points here. Safer than the App: uncommitted work is
+    first saved to <primary>/Dumps/wt_rescue/<tree>/ and the branch (its commits) is kept. Never the primary tree, the tree we run
+    in, the live tree or a lane tree. Returns the paths removed."""
+    rows = worktrees(repo)
+    primary = Path(rows[0][0]).resolve()
+    here = Path(repo).resolve()
+    out = []
+    for t in targets:
+        hit = [(Path(p).resolve(), b) for p, b in rows[1:] if Path(p).name == t or Path(p).resolve() == Path(t).resolve()]
+        if not hit:
+            print(f"skip  {t}: not a worktree of this repo (`sync.py where --all` lists them)")
+            continue
+        p, branch = hit[0]
+        if p in (primary, here) or (p / LIVE_MARKER).exists() or p.name in LANE_WORKTREES:
+            print(f"skip  {p.name}: primary, current, live or lane tree (never discarded)")
+            continue
+        dest = primary / "Dumps" / "wt_rescue" / p.name
+        n = rescue_tree(p, dest) if p.exists() else 0
+        r = git(primary, "worktree", "remove", "--force", str(p), check=False)
+        if r.returncode != 0 and p.exists():
+            print(f"skip  {p.name}: remove failed ({r.stderr.strip()[:80]})")
+            continue
+        print(f"discarded  {p.name} [{branch}]" + (f": {n} uncommitted path(s) saved to {dest}" if n else ": nothing uncommitted")
+              + "; branch kept")
+        out.append(str(p))
+    git(primary, "worktree", "prune", check=False)
+    return out
 
 
 def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS, now=None):
@@ -1229,6 +1346,29 @@ def lease_guard(argv):
     return 0
 
 
+def toplevel_or_none():
+    try:
+        return toplevel(Path.cwd())
+    except Exception:
+        return None
+
+
+def run_host_health(repo):
+    """Host-health preflight (host_health.py): reap dead gates/tickets, report strays, disk and CPU queue. Fail closed: never raises,
+    never blocks a ship; errors go to <temp>/mts_host_health/health.log."""
+    try:
+        if repo is None or not (Path(repo) / "scripts" / "dev" / "host_health.py").exists():
+            return []     # throwaway repos (tests, scratch clones) are not the host's ship tree: no host scan from them
+        import host_health
+        return host_health.run_safe(repo)
+    except Exception as e:
+        try:
+            print(f"host health skipped: {e!r}")
+        except Exception:
+            pass
+        return []
+
+
 def main(argv):
     cmds = {"start": start, "ship": ship, "news": news, "claims": print_claims, "health": health}
     extra = {"claim", "release"}
@@ -1238,6 +1378,13 @@ def main(argv):
     if argv and argv[0] == "where" and set(argv[1:]) <= {"--all"}:
         try:
             where(toplevel(Path.cwd()), "--all" in argv)
+        except SyncError as e:
+            print(f"sync: {e}", file=sys.stderr)
+            return 1
+        return 0
+    if argv and argv[0] == "discard" and len(argv) >= 2:
+        try:
+            discard(toplevel(Path.cwd()), argv[1:])
         except SyncError as e:
             print(f"sync: {e}", file=sys.stderr)
             return 1
@@ -1272,12 +1419,16 @@ def main(argv):
             return 1
         return 0
     if argv and argv[0] == "ship":
+        run_host_health(toplevel_or_none())
         try:
             if "--fix-ci" in argv:
                 # GATE_SPEED X6: the way through a red-CI block is the FULL gate (never the fast one), so it cannot be a cheap bypass
                 os.environ["SYNC_FIX_CI"] = "1"
                 os.environ["SYNC_FULL_GATE"] = "1"
                 argv = [a for a in argv if a != "--fix-ci"]
+            if "--again" in argv:
+                os.environ["SYNC_ALLOW_SECOND_SHIP"] = "1"
+                argv = [a for a in argv if a != "--again"]
             if "--full" in argv:
                 os.environ["SYNC_FULL_GATE"] = "1"
                 argv = [a for a in argv if a != "--full"]
@@ -1307,6 +1458,8 @@ def main(argv):
         return 2
     try:
         repo = toplevel(Path.cwd())
+        if argv[0] == "health":
+            run_host_health(repo)
         if argv[0] == "news":
             news(repo, *(int(a) for a in argv[1:2]))
         else:

@@ -1,37 +1,57 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest scripts/dev/test_lab_flow.py -q"
+  ],
   "created": "2026-10-19T05:04:29Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-10-23_trust-recheck-lab-data-pin-hash.md exists with reviewer vendor/model, 1-3 re-derived numbers marked MATCH or MISMATCH with file:line, the mutation result, and a tag proposal.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Independently re-check the source definition, tests and 1-3 decisive numbers of lab-data-pin-hash before a VERIFIED-C2 result tag is recorded. Establish producer identity and use a different reviewer vendor; no outcome or holdout rerun.",
+  "goal": "Independent re-check of lab-data-pin-hash before a VERIFIED-C2 tag: re-derive 1-3 decisive numbers from the written spec only (never the producer code), and read its tests for a fail-first that bites.",
   "id": "trust-recheck-lab-data-pin-hash",
+  "kind": "audit",
   "lane": "CODEX",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "LAB:results CLASS:C2 WEIGHT:CRUCIAL. Raw follow-up only; no review or trust stamp. Refine to explicit original source/evidence files. Read the unchecked base as an audit target via refs, not as a trusted premise. No authority to rerun one-shot outcomes.",
+  "note": "DECISION (OURS) 2026-10-23: drafted and T0-checked; reviewer Agent blocked by spawn cap (8/h), so no ACCEPT stamp: needs ONE batched Sonnet reviewer pass (or Lab_Guy for CODEX), then stamp REVIEWED:<date> ACCEPT and tasks.py check. LAB:results CLASS:C2 WEIGHT:CRUCIAL. Raw follow-up from 2026-10-19_lab-trust-tag.md. Audit target, not a trusted premise. No outcome or holdout rerun; no data fetch. Different reviewer vendor than the producer (CODEX/GPT produced it, so Gemini or Claude re-derives). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the report.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [
-    "MyTradingSys/system/tasks/lab-data-pin-hash.json",
+    "MyTradingSys/system/tasks/archive/lab-data-pin-hash.json",
     "MyTradingSys/research/layer_lab/reports/2026-10-19_lab-trust-tag.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
+  "scope_in": [
+    "scripts/dev/lab_flow.py",
+    "scripts/dev/test_lab_flow.py",
+    "MyTradingSys/research/layer_lab/reports/2026-10-17_lab-data-pin-hash.md",
+    "MyTradingSys/research/layer_lab/reports/2026-10-23_trust-recheck-lab-data-pin-hash.md"
+  ],
+  "scope_out": [
+    "outcome or holdout reruns",
+    "editing the audited source files",
+    "live path",
+    "data fetch"
+  ],
+  "size": "S",
+  "sources": [
+    "scripts/dev/lab_flow.py:31,101 (safe_file, fingerprint)"
+  ],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Read the spec/report line by line, not the code: report 2026-10-17_lab-data-pin-hash.md (fingerprint, safe_file at lab_flow.py:31,101).",
+    "Re-derive the sha256 of one small pinned file, computed with hashlib on your own, against the fingerprint entry; plus that a changed byte or a symlink/outside-repo path is refused with your own short script from the written definition and compare; a difference is a MISMATCH finding with file:line, settled by calculation not vote.",
+    "Read scripts/dev/test_lab_flow.py: would it fail on a broken implementation? Mutate one line in a scratch copy, run, record; leave the real file unchanged.",
+    "Write the report: reviewer vendor and model, the numbers, MATCH or MISMATCH per number, tag proposal VERIFIED-C2 or DISPUTED."
+  ],
+  "tests": "Audit card: its fail-first is the one-line mutation in a scratch copy, which must turn a test red; recorded in the report.",
   "title": "Trust re-check: lab-data-pin-hash",
   "weight": "CRUCIAL",
-  "worker": ""
+  "worker": "session"
 }

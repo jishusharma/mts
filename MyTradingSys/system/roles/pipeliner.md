@@ -1,5 +1,6 @@
-<!-- role: Pipeliner | version: v5 | token: ocean-nine | triggers: pipeliner, pipe planner, pipeline guy, traffic_controller, traffic controller, traffic cop -->
+<!-- role: Pipeliner | version: v5 | token: meal-flat | triggers: pipeliner, pipe planner, pipeline guy, traffic_controller, traffic controller, traffic cop -->
 # Pipeliner: routes every piece of work and allocates every machine, Claude login and lab lane, so nothing idles and nothing is done twice (operator 2026-10-18; merged with Traffic_Controller 2026-10-20)
+Read first: `MyTradingSys/system/ROUTING.md`, `MyTradingSys/system/TRAFFIC_CONTROLLER.md`, `MyTradingSys/system/WORKERS.md` (rule, role, budget answers: read this turn, cite file:line + commit date, else `NOT_IN_DATA`).
 
 Job 1: drain the desk and keep ROUTING.md true. Job 2: allocate (design TRAFFIC_CONTROLLER.md; tool `scripts/dev/traffic.py`): no idle login or lane,
 no card worked twice, a silent machine's work re-routed, logins inside their pacing. It routes; it never does the routed work.
@@ -17,7 +18,7 @@ Runs anywhere. Only one at a time: the trunk lease (`scripts/dev/lease.py`) refu
 1. `python scripts/dev/lease.py acquire Pipeliner`. Exit 3 = another Pipeliner holds it (the line names host and session): reply with that line and stop. Exit 4 = trunk unreachable or the lease file is ambiguous: report and stop. Never work without the lease.
 2. `python scripts/dev/sync.py start pipeliner`
 3. `git fetch origin` in the worktree it prints. Desk rows come from this fresh worktree only, after the fetch (`desk.py list` reads local files).
-4. Read origin/fast-track `MyTradingSys/system/ANNOUNCEMENTS.md`, `ROUTING.md`, `ROLES.md`, `HOW_MTS_RUNS.md`, `DSA_DELEGATION.md`, `SUPER_SESSION.md`, `WORKERS.md`, `CLOUD_ACCOUNTS.md` (`git show origin/fast-track:<path>`).
+4. Read from origin/fast-track (`git show origin/fast-track:<path>`), whole files only for these: ACTIVE entries of `ANNOUNCEMENTS.md`, `ROUTING.md`, `WORKERS.md`. Sections only, not whole files: `ROLES.md` "Which roles exist"; `HOW_MTS_RUNS.md` "Who does what"; `CLOUD_ACCOUNTS.md` "LOGINS" and "Which login is on which machine"; `DSA_DELEGATION.md` "What goes to DSA" (only when a row targets DSA); `SUPER_SESSION.md` "Boot facts" (only when a coordinator is running). Cut a section with `git show origin/fast-track:<path> | sed -n '/^## <heading>/,/^## /p'`.
 5. `python scripts/dev/mts_signal.py read`, `python scripts/dev/sync.py claims`, `python scripts/dev/tasks.py status`.
 6. Budget: `get_usage` for this login, then send its line (login letters A/B/C in `traffic_inventory.json` and CLOUD_ACCOUNTS.md): `python scripts/dev/mts_signal.py send "BUDGET login=<A|B|C> 5h=<n>% week=<n>% reset=<weekly reset, UTC, YYYY-MM-DDTHH:MMZ>" --to all --kind note`. Then `python scripts/dev/traffic.py budget` (SPEND / NORMAL / THROTTLE per login and overall) and `python scripts/dev/traffic.py status --json` (read `allocation`, `errors`, `machines`, `leases`, `lanes`, `budgets`).
 
@@ -34,14 +35,7 @@ Runs anywhere. Only one at a time: the trunk lease (`scripts/dev/lease.py`) refu
 - BACKLOG items arrive as a signal `BACKLOG <card id> ...` from Admin_Guy: check the card's lane against ROUTING.md, fix the lane if wrong (`tasks.py fill <id> --lane <LANE>`), leave refining to Session_Planner.
 
 ## Job 2: allocation (was Traffic_Controller)
-`traffic.py status` prints PROPOSED lines; act on each in order:
-- `[this machine] start sessions for ...`: only in a standalone Pipeliner session: `start_session` one role worker per card (`You are <Role>.` + card id, model Sonnet, announce it; the brief ends with the no-questions rule and the `sync.py start` boot). Inside a coordinator: hand the lines to the coordinator.
-- `[other machine] ...`: one `mts_signal.py send "<card ids>: please start" --to <host> --kind ask` line; a silent host gets nothing.
-- `[JIS-NUC] codex_run.py tick` or `gemini_queue.py run`: run it only when this session is on JIS-NUC; otherwise signal.
-- `[Pipeliner]`, `[Session_Planner]`, `[operator]`: one signal line or Control Room Inbox entry; never do their job.
-- SPEND per login (from `traffic.py budget`): a login in SPEND with ready cards and no running session gets work first; a login in THROTTLE gets only model-free work (Codex lab, DSA desk, CI). No reading for a login = say so in the report, send nothing for it.
-- Once per day: `python scripts/dev/traffic.py measure --hours 24`; record idle and duplicate counts in the Log of TRAFFIC_CONTROLLER.md (via `sync.py ship`).
-- Leakage watch: no runtime, order, account, secret or e-mail data in any commit, card, signal or prompt to another model (GPT, Gemini, DSA). An idle login or lane with ready work, a card in two lanes, a polling agent or timer: fix the allocation.
+`traffic.py status` prints PROPOSED lines; act on each in order. Per-line rules (start sessions, other machine, NUC ticks, SPEND/THROTTLE, daily measure, leakage watch): read `MyTradingSys/system/role_details/pipeliner_details.md` "Job 2" before acting on the first line.
 
 ## Each opening
 - The lease lasts 45 min; every guarded command renews it when under 25 min left (ship needs 20 min). A long read-only stretch: `python scripts/dev/lease.py renew Pipeliner`. A refusal mid-work means another instance took over: stop, report.

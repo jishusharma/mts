@@ -1,0 +1,59 @@
+{
+ "frozen_at": "2026-10-20T20:35Z",
+ "rule": {
+  "entry_filter": "E1",
+  "scale_in": "S2",
+  "stop": "K5",
+  "exit": "X0_2R"
+ },
+ "selection": "max mean net R among 240 variants with n >= 200 on standard DEV 2022-04-01..2024-06-30",
+ "dev": {
+  "n": 772,
+  "mean": -0.03945191036273119,
+  "lo": -0.12336523203296026,
+  "hi": 0.048115539710680506,
+  "maxdd": 40.32776041557476,
+  "win_rate": 0.13471502590673576,
+  "mean_fee_r": 0.11127712482734325,
+  "mean_gross_r": 0.07182521446461207
+ },
+ "power": {
+  "mde_sd": 0.0908923865094367,
+  "power_plausible_0.10R": 0.8691423491438188,
+  "power_mde": {
+   "rr": 8.795980694925206,
+   "mean_net_r": -0.1755849433846961,
+   "power": 0.30840074636766845,
+   "mde_net_r": 0.3372334987204968,
+   "trades_for_80_power": Infinity
+  }
+ },
+ "verdict": "INCONCLUSIVE by the card rule (power_mde.py power 31% < 50 %); FAIL by the sample-sd rule (+0.10 R excluded, power 87%)",
+ "parameters": {
+  "fees": "fees.py BINANCE maker/taker",
+  "margin_pct": 0.1,
+  "flat_frac": 0.25,
+  "bb": [
+   20,
+   2
+  ],
+  "rsi": [
+   14,
+   "5m closes from day start",
+   "40/60"
+  ],
+  "keep_families": [
+   "4h_fractal_high",
+   "4h_fractal_low",
+   "naked_poc",
+   "prior_day_high",
+   "prior_day_low",
+   "prior_day_poc",
+   "prior_week_high",
+   "round_1000"
+  ],
+  "seed": 20261020,
+  "bootstrap": 2000
+ },
+ "validation_card": "lc-validation: one run on VALIDATION 2024-07-01..2025-06-30, read once, no edits; only on PASS"
+}

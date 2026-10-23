@@ -515,7 +515,10 @@ def _pid_alive(pid):
         os.kill(pid, 0)
     except OSError:
         return False
-    return True
+    try:   # a zombie answers kill(0) but is dead; containers whose PID 1 is not an init never reap it (cloud gate 2026-10-22)
+        return Path(f"/proc/{pid}/stat").read_text().rsplit(")", 1)[1].split()[0] != "Z"
+    except (OSError, IndexError):
+        return True
 
 
 def acquire_lock(path=None, pid_alive=_pid_alive, now=time.time):

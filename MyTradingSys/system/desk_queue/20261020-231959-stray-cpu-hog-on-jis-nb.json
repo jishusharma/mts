@@ -1,0 +1,10 @@
+{
+  "done_when": "operator ran the stop command or allow-listed the pattern in MyTradingSys/system/STRAY_REAP_POLICY.md",
+  "from": "JIS-NB",
+  "id": "20261020-231959-stray-cpu-hog-on-jis-nb",
+  "need": "STRAY PID 5836 python.exe cpu=13765s age=3.9h chain: wscript.exe[5448] <- svchost.exe[1960] <- services.exe[688] <- wininit.exe[976] <- (parent gone)\n    cmd: \"C:\\Users\\E-ngineers\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe\"  scripts\\worker\\audit_rotation.py --t0\n    stop: taskkill /PID 5836 /PID 5448 /T /F",
+  "posted": "2026-10-20T23:19:59Z",
+  "status": "pending",
+  "target": "JIS-NB",
+  "title": "Stray CPU hog on JIS-NB"
+}

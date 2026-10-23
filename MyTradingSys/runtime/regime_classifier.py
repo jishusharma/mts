@@ -4,7 +4,7 @@ import json, os
 from datetime import datetime, timezone
 from pathlib import Path
 
-ROOT = Path(r"C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed")
+ROOT = Path(__file__).resolve().parents[2]
 SNAP_DIR = ROOT / "runtime_data" / "snapshots"
 STATE_CODE = ROOT / "MyTradingSys" / "runtime" / "state_code_regime.json"
 

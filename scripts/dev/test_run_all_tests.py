@@ -199,9 +199,7 @@ class TestShardedPytest(unittest.TestCase):
             f.write_text("MyTradingSys/system/RELAY.md\n", encoding="utf-8")
             plan, mode = rat.apply_selection(rat.build_plan(True), ["--smoke", "--changed-file", str(f)])
             self.assertEqual(mode, "docs")
-            ran = {s.num for s in plan if not s.skip}
-            self.assertLessEqual({"3tl", "3q", "3pc", "3c", "4d"}, ran)
-            self.assertLessEqual(ran - {"3tl", "3q", "3pc", "3c", "4d"}, {"3xt"})   # GATE_SPEED D6: extra tests that name RELAY.md
+            self.assertEqual({s.num for s in plan if not s.skip}, set())   # gate-tiers-by-path: a docs ship runs no step
             f.write_text("MyTradingSys/execution/executor.py\n", encoding="utf-8")
             plan, mode = rat.apply_selection(rat.build_plan(True), ["--smoke", "--changed-file", str(f)])
             self.assertEqual(mode, "full")
@@ -516,18 +514,27 @@ class TestGateSpeed(unittest.TestCase):
             self.assertEqual(rat.targeted_tests(["MyTradingSys/system/RELAY.md", "MyTradingSys/research/s/screen.py"], d),
                              ["MyTradingSys/tests/test_kit.py", "MyTradingSys/tests/test_relay.py"])
 
-    def test_precheck_flag_adds_the_targeted_step_in_every_mode(self):
+    def test_targeted_step_runs_only_when_a_test_file_is_in_the_diff(self):
         with tempfile.TemporaryDirectory() as d:
             lst = Path(d) / "changed.txt"
             lst.write_text("MyTradingSys/system/RELAY.md\n", encoding="utf-8")
             plan, mode = rat.apply_selection(rat.build_plan(True), ["--smoke", "--precheck", "--changed-file", str(lst)])
             self.assertEqual(mode, "docs")
+            self.assertFalse([s for s in plan if s.num == rat.TARGET_STEP])   # gate-tiers-by-path: a doc alone never pulls 4t
+            lst.write_text("MyTradingSys/tests/test_relay_prompts.py\n", encoding="utf-8")
+            plan, mode = rat.apply_selection(rat.build_plan(True), ["--smoke", "--precheck", "--changed-file", str(lst)])
             four_t = [s for s in plan if s.num == rat.TARGET_STEP]
             self.assertEqual(len(four_t), 1)
             self.assertIsNone(four_t[0].skip)
             self.assertIn("test_relay_prompts.py", four_t[0].cmd_text)
+            lst.write_text("MyTradingSys/system/RELAY.md\n", encoding="utf-8")
             plan, _ = rat.apply_selection(rat.build_plan(True), ["--smoke", "--changed-file", str(lst)])
             self.assertFalse([s for s in plan if s.num == rat.TARGET_STEP])   # CI / auto_deploy argv: no precheck step
+
+    def test_smoke_steps_are_capped_at_240_s_and_other_modes_are_not(self):
+        self.assertEqual(rat.step_timeout_for("smoke"), 240)
+        self.assertIsNone(rat.step_timeout_for("full"))
+        self.assertIsNone(rat.step_timeout_for(None))
 
     def test_config_check_is_a_cheap_gate_step(self):
         plan = {s.num: s for s in rat.build_plan(True)}

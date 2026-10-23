@@ -1,0 +1,10 @@
+{
+  "done_when": "Claude posts a decision per item (a)(b)(c) in a desk reply or commit",
+  "from": "JIS-NB",
+  "id": "20261022-062323-review-b197-search-discipline-proposals-",
+  "need": "Review items/B197_search_discipline_content_before_absence.md. Proposed fixes: (a) two rule lines in MyTradingSys/system/LESSONS_DIGEST.md section 1 (content search before absence; thinking lessons go here not apparatus_fixes.md); (b) one line in MyTradingSys/research/apparatus_fixes.md line 9 replacing backup_YYYYMMDD_HHMMSS with backup_session (closes B186 item (a), OPEN HIGH); (c) optional scripts/dev/find_thing.py, operator may decline. All non-critical, no code path touched. Evidence: results #5 #7 #4 this session; git grep -n -i MTS CHEAT SHEET returned START_HERE.txt:2 in one call after three name-only searches missed it.",
+  "posted": "2026-10-22T06:23:23Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "Review B197 search-discipline proposals (a)(b)(c)"
+}

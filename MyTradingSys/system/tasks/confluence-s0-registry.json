@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-22T11:06:49Z",
+  "depends_on": [
+    "confluence-s0-registry-need-lab-guy-review-stamp-roles-lab-g"
+  ],
+  "done_when": "make_status.py gate board shows krown G2; LAYERS.md krown status no longer says Not built; STATE.md names the on-disk transcripts; F1/F2 patched with file:line",
+  "est_turns": 5,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Bring the Krown registries in line with trunk: gate_board krown G1 -> G2 (proof KROWN_SETUP_CATALOG.md, commit f4a5182a), LAYERS.md status via layer_index.json + make_layers_md.py, STATUS regen; correct STATE.md (4 TA101 transcripts are on disk in krown_capture_2026-10-16/transcripts/ta101_missing4 since 2026-10-16); patch catalogue GPT-audit F1 (S3 stop wording) and F2 (S9 60-bar volume).",
+  "id": "confluence-s0-registry",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "krown: fold liquidation cascades extract into KROWN_RULES.csv and spec, close wavetrend de",
+      "ref": "1abed63bde65",
+      "utc": "2026-10-18T22:11:51Z"
+    }
+  ],
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "From research/krown_audit_2026-10-22/REPORT.md audit A1, A2, A6; step S0 of FABLE_CARD_CONFLUENCE.md\nREVIEWED: Opus 2026-10-22 (REVIEW_OPUS.md confirmed A1, A2) | class=C1\nREVIEWED: Lab_Guy 2026-10-23 ACCEPT (class C1: records shipped facts; proofs verified on disk: f4a5182a is a commit, KROWN_SETUP_CATALOG.md and gate_board.json:29-34 present; DECISION (OURS): C1 not C2 because no new definition or gate is created; escalate to C2 if the edit changes a gate rule)",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-23T08:12:55Z",
+  "refs": [
+    "MyTradingSys/research/krown_audit_2026-10-22/FABLE_CARD_CONFLUENCE.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/gate_board.json",
+    "MyTradingSys/system/layer_index.json",
+    "MyTradingSys/research/krown_ta101_2026-10-13/"
+  ],
+  "scope_out": [
+    "live path; any backtest"
+  ],
+  "scope_sha": "1abed63bde65",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/krown_audit_2026-10-22/REPORT.md:175-180",
+    "MyTradingSys/research/krown_audit_2026-10-22/REVIEW_OPUS.md (A1, A2 confirmed)"
+  ],
+  "state": "ready",
+  "steps": [
+    "edit gate_board.json krown entry",
+    "update layer_index.json krown status, run make_layers_md.py and make_status.py",
+    "fix STATE.md and KROWN_SETUP_CATALOG.md s5 + F1/F2"
+  ],
+  "tests": "python scripts/dev/make_status.py runs; grep shows krown G2 in system/gate_board.json",
+  "title": "Confluence S0: Krown registry refresh",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

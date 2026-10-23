@@ -1,9 +1,9 @@
-# Supervisor hand-over, login B (DESKTOP-F7IU69N, 2026-10-20T00:58Z)
+# Supervisor hand-over, login B (JIS-NUC, 2026-10-22T17:21Z)
 
-- Next: CI RED on fast-track since 83cd67a0: cause = my outcome_labeler open-budget check (> vs >= on Windows clock), fix 5d812463 on branch DESKTOP-F7IU69N/ci-red-4f-1020-2, ship 'ci-red-4f' was still in the gate (agent ac199aef); confirm on trunk, CI green, then ask NB to hand-deploy outcome_labeler (69326506+fix) and live-host untrack commit 1 (ee286acf; commit 2 GENERATED_RE removal after NB confirms), StateCode e4bcc09f only after GPT review card review-statecode-backfill-gpt (NUC). Indicator audit agent a6debb23 shipping (indicator-audit-1020). Done today: 4 stamps, statecode backfill, outcome-labeler, sim validation (no defect), gate quarantine cap, 11 sessions archived. Next cards: refresh sim card STALE, dsa-audit-02/03 stamps, t02-f3 raw cards, Pipeliner (15 desk rows), NUC idle (login A ended).
-- Budget at hand-over: 5h 37.0% (reset 2026-10-20T01:19Z), week 35.0% of cap 95 (reset 2026-10-25T16:59Z), mode NORMAL, k 0.12 (GUESS)
-- Peers live at hand-over: none
-- Last picks: indicator-values-multi-model-audit, review-ground-layer-youtube-strategy-and
-- Open claims from DESKTOP-F7IU69N: analyst-ingest-bennett-dpa, backfill-t087-session-level-split-and-ve, bt-engine-simulate-trade-fail-closed-on, encode-v1-only-kill-scope-for-weekly-low, indicator-values-multi-model-audit, move-live-host-generated-files-status-md, outcome-labeler-timeout, simulator-validation-planted-edge, state-code-accumulator-backfill, t02-f1-review-allowlist-chunk-2, t02-f1-review-allowlist-chunk-3, t02-f1-review-the-132-unreviewed-look-ah, t02-f3-event-forcing-fixtures-for-wlow-b (finish, hand over in the card, or release by the claim rules)
+- Next: Codex lane: tick ran lab-planted-error-trial -> BLOCKED (read its report/run log; no report file at layer_lab/reports/2026-10-22_*planted*). Skipped cards lab-formula-spec-recount (10-21 run said FORMULAS.md lacks sub-ID mappings, but F11.1-8/F18.1-7/F19.1-8/F20.1-4/F21.1-9 ARE numbered in it now: card steps need pointing at those line numbers) and lab-formula-spec-text (acceptance value F01 RSI 57.8313 not reproducible from DEV tape: best 15-close window gives 57.8302 -> card must say tape-derived value governs; F18-F21 need per-sub-ID worked cases from FORMULAS.md). Fix = edit cards MyTradingSys/system/tasks/<id>.json, then REOPENED row in F:/codex_home/lab_runs/runs.jsonl resets tries (see codex_run.py attempts()). Then tick tom-btc-other-setups, argon-blind-read-7-frames. CI RED (ab82fc75): one worker on ci-* card only. DSA rows 106h/160h untaken: post no more.
+- Budget at hand-over: 5h 55.0% (reset 2026-10-22T17:40Z), week 69.0% of cap 95 (reset 2026-10-25T17:00Z), mode NORMAL, k 0.157
+- Peers live at hand-over: A@DESKTOP-F7IU69N, C@JIS-NB
+- Last picks: ci-1687ee8, fable-setups-pack-prep
+- Open claims from JIS-NUC: funding-carry-with-real-spot-basis-margi (finish, hand over in the card, or release by the claim rules)
 
 Successor: `You are Supervisor. Login B. Continue from MyTradingSys/system/handover/SUPERVISOR_B.md`
