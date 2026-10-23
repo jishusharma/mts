@@ -432,6 +432,16 @@ class TestWrappedFirstPrompt(Base):
             self.assertNotIn("BOOT (once)", self.hook(p, sid=f"s{i}"), p)
 
 
+class TestCiRunsOnRoleFiles(unittest.TestCase):
+    def test_a_role_file_change_triggers_ci(self):
+        """Failure review 2026-10-23 cause 8: the CI path filter skipped MyTradingSys/system/**, so a role-file edit shipped untested."""
+        import fnmatch
+        lines = (REPO / ".github/workflows/ci.yml").read_text(encoding="utf-8").split("on:", 1)[1].split("pull_request:", 1)[0]
+        pats = [ln.split("- ", 1)[1].split("#")[0].strip().strip("'\"") for ln in lines.splitlines() if ln.strip().startswith("- ")]
+        for f in ("MyTradingSys/system/roles/builder.md", "MyTradingSys/system/roles/ROSTER.json"):
+            self.assertTrue(any(fnmatch.fnmatch(f, p) for p in pats), (f, pats))
+
+
 class TestRoleLineReview(Base):
     """Review of 9f0cb459c (2026-10-23_fix34_replay_and_review.md): the 300-char scan on the cleaned text reached later sentences."""
     NOTICE = "<system-reminder>\n" + "notice text " * 30 + "\n</system-reminder>\n"
