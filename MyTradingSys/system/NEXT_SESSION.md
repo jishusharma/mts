@@ -1,3 +1,8 @@
+# NEXT SESSION (2026-10-23, Sonnet)
+
+Done this super session: tc2, tc4-desk-done-once, tc3-budget-lines, tc5-lab-lane-dedupe, ci-919cc0f (stale) shipped.
+Next: `tasks.py next` -> dsa-audit-01-data-forensics (DSA lane: `desk.py post ... --target DSA`). Data-blocked on this machine: context-conditioned-session-flow-states, kurisko-prereg-fire-counts (need JIS-NB). Weekly quota of login C was 97% at 04:20Z (reset 09:00Z); after the reset take any pending card.
+
 # NEXT_SESSION
 
 Older blocks (2026-10-18/19): `MyTradingSys/system/handoff_history/2026-10-21_next_session_trim.md`. A session reads only its own block.
