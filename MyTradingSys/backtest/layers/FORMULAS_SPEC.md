@@ -1,6 +1,6 @@
 # Formula re-derivation specs
 
-All numerical worked examples are tape-based: each cites 1h bar opens from the DEV tape `F:/MTS/data/bigtrade/cache/perp/klines_1h.npz`, with every `t < 1719792000000` (2024-07-01 00:00 UTC). IDs F01-F23 and F11.1-8, F18.1-7, F19.1-8, F20.1-4, and F21.1-9 are tape-based; there are no SYNTHETIC examples. `examples.json` records the inputs and values generated independently from FORMULAS.md.
+All numerical worked examples are derived directly from FORMULAS.md: tape-based examples cite 1h bar opens from the DEV tape `F:/MTS/data/bigtrade/cache/perp/klines_1h.npz` with `t < 1719792000000` (2024-07-01 00:00 UTC); self-contained worked examples from sub-id paragraphs are labelled SYNTHETIC; sub-id paragraphs without computable numbers are labelled NOT_APPLICABLE with cited quotes. `examples.json` records the inputs and values generated independently from FORMULAS.md.
 
 Scope: formula IDs are the 23 numbered top-level entries in `FORMULAS.md`; numbered subentries (for example 11.1–11.8, 18.1–18.7, 19.1–19.8, 20.1–20.4 and 21.1–21.9) are covered by their parent entry and called out below. Numbers are computed without producer code. Unless specified, retain full precision during calculations and round only for display; the input archive stores binary floating point.
 
@@ -159,31 +159,31 @@ Inputs: OHLCV bar set, bin width w, UTC anchor family, confirmed pivots, refresh
 
 ### F18.1 worked example
 
-**Worked example F18.1 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC).** `inputs` = `{"bin_width":10.0,"typical_price":46530.09666666667}`. Formula `bin index` gives `4653` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F18.1 (SYNTHETIC).** `inputs` = `{"bars":[[0.0,2.0,6.0],[1.0,3.0,4.0],[1.0,2.0,10.0]],"w":1.0}`. Formula `profile POC price` gives `1.5` number. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 
 ### F18.2 worked example
 
-**Worked example F18.2 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC).** `inputs` = `{"bin_width":10.0,"typical_price":46530.09666666667}`. Formula `bin lower edge` gives `46530` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F18.2 (SYNTHETIC).** `inputs` = `{"highs":[1.0,3.0,2.0,5.0,4.0,1.0,2.0],"n":1,"test_index":1}`. Formula `fractal pivot high test` gives `true` boolean. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 
 ### F18.3 worked example
 
-**Worked example F18.3 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC).** `inputs` = `{"bin_width":10.0,"typical_price":46530.09666666667}`. Formula `bin upper edge` gives `46540` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F18.3 (SYNTHETIC).** `inputs` = `{"atr":5.0,"k":1.0,"price_p":110.0,"price_q":100.0}`. Formula `meaningful pivot size filter` gives `true` boolean. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 
 ### F18.4 worked example
 
-**Worked example F18.4 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC).** `inputs` = `{"close":46650.01,"high":46729.73,"low":46210.55}`. Formula `typical price` gives `46530.0966667` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F18.4 (NOT_APPLICABLE).** Paragraph quote: "levels refreshed on a 15-minute grid... Developing; need >= 12 bars... Each profile contributes three levels: POC, VAH, VAL". Defines bar window definitions and grid intervals for profile families; contains no standalone formula or worked numerical calculation. Generated from `examples.json`.
 
 ### F18.5 worked example
 
-**Worked example F18.5 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC).** `inputs` = `{"bin_index":4653,"volume":8957.464999999998}`. Formula `bar volume assignment` gives `8957.465` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F18.5 (SYNTHETIC).** `inputs` = `{"L":100.0,"R":2.0,"exit":102.0,"fee_in":0.0005,"fee_out":0.0005,"side":1}`. Formula `touch outcome net R` gives `0.9495` number. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 
 ### F18.6 worked example
 
-**Worked example F18.6 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC).** `inputs` = `{"volumes":[8957.464999999998,7276.249]}`. Formula `two-bar profile volume` gives `16233.714` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F18.6 (SYNTHETIC).** `inputs` = `{"L":100.0,"R_ref":2.0,"refresh_index":4}`. Formula `placebo level` gives `101` number. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 
 ### F18.7 worked example
 
-**Worked example F18.7 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC).** `inputs` = `{"bin_volume":8957.464999999998,"total_volume":16233.713999999998}`. Formula `profile bin share` gives `0.551781619413` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F18.7 (SYNTHETIC).** `inputs` = `{"day_events":[[1.0,3.0],[-2.0]],"resample_indices":[0,1]}`. Formula `day-block bootstrap mean` gives `0.666666666667` number. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 ## F19 ? Trend-line contract, subentries 19.1–19.8 — SOURCED trader concept; numeric tolerances/parameters OURS
 
 Inputs: closed OHLC bars, strict pivot side width k, two anchor indices/prices, linear or log mode, ATR14, volume history and contact thresholds. A low/high pivot beats every bar in k bars on both sides, confirmed at close i+k. Line is linear interpolation or exponential interpolation in log price. ATR is section 12; slope is price change per bar divided by ATR, or log-price change per bar. Touch/poke/break/episode and volume tests use contract multipliers: touch 0.25 ATR, poke 0.10 ATR, break by close through line, reset beyond 1 ATR, anchor volume >=2x mean of prior 20. Third anchor tolerance 0.25 ATR. No ties pass strict pivots; insufficient side bars means unavailable. Calculations full precision.
@@ -193,35 +193,35 @@ Inputs: closed OHLC bars, strict pivot side width k, two anchor indices/prices, 
 
 ### F19.1 worked example
 
-**Worked example F19.1 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC, 2022-01-01 02:00 UTC).** `inputs` = `{"k":1,"lows":[46210.55,46570.34,46709.44]}`. Formula `strict low pivot test` gives `0` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F19.1 (SYNTHETIC).** `inputs` = `{"k":3,"lows":[9.0,8.0,7.0,5.0,6.0,7.0,8.0],"test_index":3}`. Formula `strict pivot low test` gives `true` boolean. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 
 ### F19.2 worked example
 
-**Worked example F19.2 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC, 2022-01-01 02:00 UTC).** `inputs` = `{"anchors":[[1,46570.34],[2,46709.44]],"query_index":1}`. Formula `linear interpolation` gives `46570.34` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F19.2 (SYNTHETIC).** `inputs` = `{"geometry":"linear","ia":10,"ib":20,"pa":100.0,"pb":110.0,"t":25}`. Formula `trendline anchor interpolation` gives `115` number. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 
 ### F19.3 worked example
 
-**Worked example F19.3 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC, 2022-01-01 02:00 UTC).** `inputs` = `{"anchor_price":46570.34}`. Formula `log interpolation` gives `46570.34` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F19.3 (SYNTHETIC).** `inputs` = `{"length":3,"ranges":[2.0,2.5,2.0]}`. Formula `contract ATR` gives `2.16666666667` number. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 
 ### F19.4 worked example
 
-**Worked example F19.4 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC, 2022-01-01 02:00 UTC).** `inputs` = `{"prices":[46210.55,46570.34]}`. Formula `line slope` gives `359.79` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F19.4 (SYNTHETIC).** `inputs` = `{"atr":4.0,"dt":10,"pa":100.0,"pb":110.0}`. Formula `slope atr` gives `0.25` number. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 
 ### F19.5 worked example
 
-**Worked example F19.5 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC, 2022-01-01 02:00 UTC).** `inputs` = `{"atr":46210.55,"prices":[46210.55,46570.34]}`. Formula `normalized slope` gives `0.0077858843922` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F19.5 (SYNTHETIC).** `inputs` = `{"L":115.0,"atr":4.0,"low":115.8,"mult":0.25}`. Formula `touch tolerance test` gives `true` boolean. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 
 ### F19.6 worked example
 
-**Worked example F19.6 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC, 2022-01-01 02:00 UTC).** `inputs` = `{"atr":46210.55,"multiplier":0.25}`. Formula `touch threshold` gives `11552.6375` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F19.6 (SYNTHETIC).** `inputs` = `{"L":115.0,"atr":4.0,"low":120.0,"mult":1.0}`. Formula `episode reset test` gives `true` boolean. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 
 ### F19.7 worked example
 
-**Worked example F19.7 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC, 2022-01-01 02:00 UTC).** `inputs` = `{"atr":46210.55,"multiplier":0.1}`. Formula `break threshold` gives `4621.055` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F19.7 (SYNTHETIC).** `inputs` = `{"M":140.0,"V":300.0}`. Formula `volume anchor test ratio` gives `2.14285714286` number. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 
 ### F19.8 worked example
 
-**Worked example F19.8 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC, 2022-01-01 02:00 UTC).** `inputs` = `{"atr":46210.55,"multiplier":0.25}`. Formula `third anchor tolerance` gives `11552.6375` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F19.8 (SYNTHETIC).** `inputs` = `{"L":120.0,"atr":4.0,"mult":0.25,"price":119.5}`. Formula `third anchor tolerance test` gives `true` boolean. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 ## F20 ? WaveTrend, subentries 20.1–20.4 — SOURCED LazyBear equations; gap/zone/cross policy OURS
 
 Inputs: closed OHLC and periods (10,10,21,4); ap=(H+L+C)/3; ESA EMA(ap,10); d=EMA(abs(ap-ESA),10); ci=(ap-ESA)/(.015*d); WT1=EMA(ci,21); WT2=SMA(WT1,4). Catalog EMA here seeds from first valid input; unlike entry 4’s SMA-seeded EMA. Warmup 200 bars from start/gap/NaN; if d<=1e-9*abs(ap), ci unavailable. WT2 needs four valid WT1. Cross tracks last strict side, skips ties, resets at NaN; zones use inclusive bounds ±53/±60. HTF value is last bar whose close time<=query time. No rounding before crosses; golden comparison tolerance 1e-9 is OURS.
@@ -231,19 +231,19 @@ Inputs: closed OHLC and periods (10,10,21,4); ap=(H+L+C)/3; ESA EMA(ap,10); d=EM
 
 ### F20.1 worked example
 
-**Worked example F20.1 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC).** `inputs` = `{"close":46650.01,"high":46729.73,"low":46210.55}`. Formula `ap` gives `46530.0966667` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F20.1 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC).** `inputs` = `{"close":46650.01,"high":46729.73,"low":46210.55}`. Formula `WaveTrend ap` gives `46530.0966667` number. Generated from `examples.json`; retain full precision until display.
 
 ### F20.2 worked example
 
-**Worked example F20.2 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC).** `inputs` = `{"input_count":1,"length":10,"output":"unavailable"}`. Formula `esa warmup` gives `0` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F20.2 (NOT_APPLICABLE).** Paragraph quote: "EMA seeded with the first valid source value; output used only after WARMUP=200 bars... Zones from wt1: ob2 >= 60, ob1 >= 53... available_at = bar_open + timeframe". Conventions and event definitions without an inline numerical formula. Generated from `examples.json`.
 
 ### F20.3 worked example
 
-**Worked example F20.3 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC).** `inputs` = `{"d":0.0,"output":"unavailable when d is too small","threshold":1e-09}`. Formula `ci guard` gives `0` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F20.3 (SYNTHETIC).** `inputs` = `{"ap":[10.0,12.0],"n":10}`. Formula `WaveTrend hand ci` gives `366.666666667` number. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 
 ### F20.4 worked example
 
-**Worked example F20.4 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC).** `inputs` = `{"length":4,"output":"unavailable","valid_wt1_count":1}`. Formula `wt2 warmup` gives `0` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F20.4 (NOT_APPLICABLE).** Paragraph quote: "wavetrend/golden_wt_btcusdt_1h_dev_2022-01.csv: 400 BTCUSDT 1h bars... Compared at 1e-9 (OURS) after bar 200". Reference golden CSV comparison specification; no inline formula computation. Generated from `examples.json`.
 ## F21 ? Krown detectors, subentries 21.1–21.9 — mixed SOURCED KR ledger / OURS parameters
 
 Inputs: closed OHLCV bars, configured k/periods/tolerances/windows. Zones span pivot wick extreme to close, available only after k right bars; qualify by turns/volume and rank by heavy, turns, recency (max five). Volume ratio compares current V to mean of 20 PRIOR bars; same-slot baseline uses prior m weeks. Strict engulfing requires low<prior low and close>prior high (bearish mirror); candle shape ratios follow configured thresholds. Pivots are strict and confirmed i+k. Structural state uses latest two pivot highs/lows and tolerance; reversal requires trade-through and close-through. BBWP is 4*populationSD/SMA over basis 7 then strict prior-lookback percentile (default 100), regime thresholds as catalog. EMA5 uses SMA seed; leash threshold needs 3 prior closes beyond EMA, event when EMA touched. RSI is Wilder with configured 14; zones >60/<40, inclusive middle. Range uses prior 20 highs/lows; edge position <=.2 or >=.8; coil compares recent-five mean range with prior window and <.7. Tops combine 4 signal families in 3-bar window and fire on transition to count>=3. Missing warmup values produce no detector; strict comparisons and boundary inclusivity follow each rule; no early rounding.
@@ -253,39 +253,39 @@ Inputs: closed OHLCV bars, configured k/periods/tolerances/windows. Zones span p
 
 ### F21.1 worked example
 
-**Worked example F21.1 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC).** `inputs` = `{"current_volume":7276.249,"prior_volumes":[8957.464999999998]}`. Formula `volume ratio` gives `0.812311184024` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F21.1 (SYNTHETIC).** `inputs` = `{"close":104.0,"wick_extreme":90.0}`. Formula `wick zone high` gives `104` number. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 
 ### F21.2 worked example
 
-**Worked example F21.2 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC).** `inputs` = `{"close":46650.01,"wick_extreme":46210.55}`. Formula `wick zone low` gives `46210.55` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F21.2 (SYNTHETIC).** `inputs` = `{"current_volume":250.0,"prior_mean":100.0}`. Formula `prior-volume mean ratio` gives `2.5` number. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 
 ### F21.3 worked example
 
-**Worked example F21.3 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC).** `inputs` = `{"close":46650.01,"wick_extreme":46210.55}`. Formula `wick zone high` gives `46650.01` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F21.3 (SYNTHETIC).** `inputs` = `{"close":106.0,"low":99.0,"prior_high":105.0,"prior_low":100.0}`. Formula `strict bullish engulf test` gives `true` boolean. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 
 ### F21.4 worked example
 
-**Worked example F21.4 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC).** `inputs` = `{"close":46766.78,"low":46570.34,"prior_high":46729.73,"prior_low":46210.55}`. Formula `strict engulf test` gives `0` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F21.4 (SYNTHETIC).** `inputs` = `{"bars":[[10,8,9],[12,9,11],[11,7,8],[14,9,13],[13,10,12],[12,8,9],[17,11,16],[15,12,13],[13,6,7.5]],"k":1,"query_t":7}`. Formula `dominant low level` gives `8` number. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 
 ### F21.5 worked example
 
-**Worked example F21.5 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC).** `inputs` = `{"close":46650.01,"open":46210.57}`. Formula `candle body` gives `439.44` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F21.5 (SYNTHETIC).** `inputs` = `{"basis":2,"closes":[10.0,10.0,12.0,11.0,15.0,15.0,14.0],"lookback":3,"t":4}`. Formula `BBWP percentile` gives `100` percent. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 
 ### F21.6 worked example
 
-**Worked example F21.6 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC).** `inputs` = `{"closes":[46650.01,46766.78,46796.14,46789.56,46690.81,47184.18,46972.19,47186.83,47117.84,47137.37,46864.09,46755.01,47062.37,47005.55,46909.2],"period":14}`. Formula `RSI seed` gives `56.1627680266` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F21.6 (SYNTHETIC).** `inputs` = `{"closes":[1.0,2.0,3.0,4.0,5.0,6.0],"n":5}`. Formula `EMA seed step` gives `4` number. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 
 ### F21.7 worked example
 
-**Worked example F21.7 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC).** `inputs` = `{"close":46766.78,"highs":[46729.73,46944.56],"lows":[46210.55,46570.34]}`. Formula `range position` gives `0.75779621531` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F21.7 (SYNTHETIC).** `inputs` = `{"closes":[10.0,11.0,10.0,12.0],"period":2}`. Formula `Wilder RSI smoothed` gives `83.3333333333` percent. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 
 ### F21.8 worked example
 
-**Worked example F21.8 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC).** `inputs` = `{"highs":[46729.73,46944.56],"lows":[46210.55,46570.34]}`. Formula `range width` gives `734.01` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F21.8 (SYNTHETIC).** `inputs` = `{"close":9.4,"highs":[10.0,11.0,10.5,11.0],"lows":[9.0,9.5,9.0,9.5]}`. Formula `range position` gives `0.2` number. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 
 ### F21.9 worked example
 
-**Worked example F21.9 (DEV tape; bar opens UTC: 2022-01-01 00:00 UTC, 2022-01-01 01:00 UTC).** `inputs` = `{"current_volume":7276.249,"prior_volumes":[8957.464999999998]}`. Formula `prior-volume mean ratio` gives `0.812311184024` number. Generated from `examples.json`; retain full precision until display.
+**Worked example F21.9 (SYNTHETIC).** `inputs` = `{"signals":{"bbwp":[7],"candle":[5],"momentum":[],"volume":[6]},"t":7,"window":3}`. Formula `top signal count` gives `3` count. Generated from `examples.json` (FORMULAS.md worked arithmetic).
 ## F22 ? Bollinger Bands — SOURCED TradingView definition/defaults
 
 Inputs: closes, n=20 and multiplier=2 unless overridden. At bar close t use last n closes; middle=mean, standard deviation is population (divide squared deviations by n), upper/lower=middle±mult*sd. None before n observations; full precision, display per caller. A missing close invalidates the window; zero variance gives equal bands.

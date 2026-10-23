@@ -1,0 +1,10 @@
+{
+  "done_when": "operator ran both commands; cpu_cleanup.ps1 -Audit shows the services disabled",
+  "from": "DESKTOP-F7IU69N",
+  "id": "20261023-062833-apply-laptop-cpu-cleanup-on-desktop-f7iu",
+  "need": "Operator, admin PowerShell on DESKTOP-F7IU69N: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/operator/cpu_cleanup.ps1 -Apply -Lenovo ; then Unregister-ScheduledTask -TaskName MTS-Supervisor,MTS-Wrapper -Confirm:$false. Report: MyTradingSys/research/cpu_audit_desktop-f7iu69n.md. Undo: -Restore.",
+  "posted": "2026-10-23T06:28:33Z",
+  "status": "pending",
+  "target": "OPERATOR",
+  "title": "Apply laptop CPU cleanup on DESKTOP-F7IU69N"
+}

@@ -19,6 +19,9 @@
   ],
   "live_path": false,
   "mutation_check": "",
+  "not_twin_of": [
+    "tom-btc-dev-backtest"
+  ],
   "note": "Pre-registered in PRE_REG_ARMS.md. Evaluates M arms on dev sets under stop-width floor W_min.",
   "prio": 2,
   "refine_tries": 0,

@@ -482,8 +482,8 @@ def salvage(wt, home, cid, when, files=None):
 
 def pick(cards, claimed, tried, probe=False):
     """First ready CODEX card nobody holds and that has tries left. `cards` is already ranked and passes the Definition of Ready.
-    A card lane_health moved to DSA (`reroute`) is not ours while GPT is down. A probe run (lane down) takes a crucial card first."""
-    ok = [c for c in cards if c["lane"] == "CODEX" and not c.get("reroute") and sync.slugify(c["id"]) not in claimed and tried.get(c["id"], 0) < MAX_ATTEMPTS]
+    A `[GEMINI]`-titled card is for the Gemini lane (ROUTING.md), never GPT's. A card lane_health moved to DSA (`reroute`) is not ours while GPT is down. A probe run (lane down) takes a crucial card first."""
+    ok = [c for c in cards if c["lane"] == "CODEX" and not c.get("reroute") and not str(c.get("title", "")).startswith("[GEMINI]") and sync.slugify(c["id"]) not in claimed and tried.get(c["id"], 0) < MAX_ATTEMPTS]
     if probe:
         ok.sort(key=lambda c: not lane_health.is_crucial(c))
     return ok[0] if ok else None
@@ -680,6 +680,12 @@ def merge_trunk(wt, ref):
                      "merge aborted, tree clean; a session merges by hand")
 
 
+def child_env(card, text, env):
+    """Singleton-role cards (lease.SINGLETONS) get MTS_ROLE + MTS_LEASE_SESSION so desk/sync writes are lease-guarded."""
+    import lease
+    return {**env, **lease.runner_env(text, f'codex-{card["id"]}-{int(time.time())}', role=card.get("role"))}
+
+
 def execute(cmd, text, log, timeout_s, env):
     """Run Codex with the prompt on stdin, all output into `log`. Returns (exit code or 'TIMEOUT', seconds)."""
     t0 = time.time()
@@ -718,7 +724,7 @@ def run_card(card, dry=False, env=os.environ, probing=False):
         if c.returncode:
             print(f"IDLE claim refused for {cid}: {(c.stdout + c.stderr).strip()[-200:]}")
             return 0
-        code, secs = execute(cmd, text, log, int(env.get("MTS_CODEX_TIMEOUT_MIN") or 60) * 60, dict(env, CODEX_HOME=str(home)))
+        code, secs = execute(cmd, text, log, int(env.get("MTS_CODEX_TIMEOUT_MIN") or 60) * 60, child_env(card, text, dict(env, CODEX_HOME=str(home))))
         files = changed_files(wt)
         now = json.loads((wt / tasks.DIR / f"{cid}.json").read_text(encoding="utf-8"))
         reports = sorted(f for f in files if f.startswith(f"{LAB}/reports/") and f.endswith(f"_{cid}.md"))

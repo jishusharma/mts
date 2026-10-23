@@ -13,14 +13,14 @@ Design history (measured overhead, SV1-SV6, review): `handoff_history/supervisor
 2. Decide, in this order: CI RED -> stop dispatch, one `ci-<sha>` worker (pinned card). Budget THROTTLE -> no spawn. A note in -> verify it (below),
    mark the worker completed, take its next card if the brief chained one. Free slots -> fill from the dispatch list.
 3. Act in ONE message: every `start_session` / Agent / `mark_completed` / SendMessage call of this wake in parallel.
-4. Restart the one watcher (`supervisor.py wait --shas <reported> --timeout 50m`, background) and end the turn. No other waiting.
+4. Restart the one watcher (`supervisor.py wait --login <L> --shas <reported> --timeout 50m`, background) and end the turn. No other waiting.
    The watcher records a baseline when it starts and exits only on a TRANSITION (a listed sha newly on trunk, CI state change, a slot going
    busy -> free while a worker waits on it), never on a state that already held at start, so restarts cannot loop.
 
 ## Dispatch
 - Source of work: `tasks.py dispatch --json` (holds, claims, dependencies, reviewer slot resolved) plus `desk.py sweep` proposals.
   Never a `raw`/`refined` card; Session_Planner (foreground Sonnet Agent) refines when fewer than 4 ready cards fit the free slots.
-- **Spawn on operator turns.** The app refuses `start_session` on turns a note or event started. So on every operator turn the supervisor starts
+- **Spawn on operator turns.** On turns a note or event started, `start_session` shows the operator an Allow card (model_guard.py denies it, 2026-10-23). So on every operator turn the supervisor starts
   the whole next wave (max 4 sessions, one writer per file set) and **chains 2-3 cards per session in the brief** (same file cluster, in order),
   so the wave runs without new spawns. On event turns only size-S cards start, as one-use Agents (WORKERS.md rule 3).
 - Lanes: CODEX cards go to `codex_run.py` (the lab picks them itself; the supervisor only keeps 8+ ready), Gemini Flash cards to a Lab_Guy

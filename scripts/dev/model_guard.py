@@ -9,7 +9,8 @@ Claude Code PreToolUse hook (project .claude/settings.json), on the calls that s
   mcp__ccd_session_mgmt__set_session_model   only sonnet or haiku
 No click cards (operator 2026-10-18: "I am not sitting in front of the screen"): start_session with initiation "offer" or "own_initiative"
 (or none) is denied for every model, Opus included, because the operator must click to start it and may be away. Use initiation
-"user_asked" (starts now), or the Agent tool with model='sonnet' when the app refuses that on an event turn. MTS_ALLOW_CARDS=1 allows.
+"user_asked" (starts now) on his typed turns; on a turn a message or event started even user_asked shows an Allow card
+(2026-10-23), so it is denied there: use the Agent tool with model='sonnet'. MTS_ALLOW_CARDS=1 allows.
 Spawn storms (review 2026-10-21, DECISION_OPUS.md): while the operator is away (turn_meter.attended), at most 4 start_session
 and 8 Agent/Task calls per hour, and no Workflow. Scheduling tools (ScheduleWakeup, CronCreate, RemoteTrigger, create_scheduled_task)
 are denied unless his latest typed message asks for it (SCHEDULING_POLICY.md: none exist). Anything else passes. A blocked call gets a deny with the fix in the reason, so the model retries with model=sonnet.
@@ -39,6 +40,11 @@ SEND_TOOLS = ("SendMessage", "mcp__ccd_session_mgmt__send_message")
 WORKFLOW = "Workflow"
 SCHEDULE_TOOLS = ("ScheduleWakeup", "CronCreate", "RemoteTrigger", "mcp__scheduled-tasks__create_scheduled_task")
 SCHEDULE_WORDS = ("loop", "schedul", "remind", "cron", "wake")
+ASK = "AskUserQuestion"
+WRAP_UP = "mcp__ccd_turn__wrap_up"
+BRANCH_CARD = "mcp__ccd_directory__propose_branch"
+BUTTON_TOOLS = (ASK, WRAP_UP, BRANCH_CARD)
+ROLE_LINE = re.compile(r"(?im)^\s*You are ([\w&]+)")
 HOURLY = {START: 4, "Agent": 8, "Task": 8}
 REMINDER_BLOCK = re.compile(r"<system-reminder>.*?</system-reminder>", re.S)
 SESSION_ID_RE = re.compile(r'session_id["\s:=]+([A-Za-z0-9_.-]+)')
@@ -305,13 +311,44 @@ CARD_FIX = ("No click cards: the operator is away. Use initiation='user_asked' (
             "when the app refuses user_asked on an event turn; note the work in your log instead of offering it.")
 
 
-def card_reason(tool, inp):
+EVENT_TURN_FIX = ("start_session on a turn that a message or event started shows the operator an Allow card even with "
+                  "initiation='user_asked' (seen 2026-10-23: 'CBP module plan 2.0 status' waited on it while he was away). Use the Agent "
+                  "tool with model='sonnet' (run_in_background, isolation worktree) now, or leave the start brief for his next typed turn.")
+
+
+def event_turn(transcript_path):
+    """True when the newest prompt in the transcript (tool results skipped) is an app or session event, not his typed words."""
+    try:
+        with open(transcript_path, "rb") as f:
+            f.seek(0, 2)
+            f.seek(max(0, f.tell() - (1 << 20)))
+            lines = f.read().decode("utf-8", "replace").splitlines()
+    except (OSError, TypeError, ValueError):
+        return False
+    for line in reversed(lines):
+        try:
+            d = json.loads(line)
+        except ValueError:
+            continue
+        if d.get("type") != "user" or d.get("isMeta"):
+            continue
+        c = (d.get("message") or {}).get("content")
+        parts = [c] if isinstance(c, str) else [b.get("text", "") for b in (c or []) if isinstance(b, dict) and b.get("type") == "text"]
+        parts = [t for t in parts if t and not t.lstrip().startswith(SKIP_PREFIX)]
+        if parts:
+            return turn_meter.is_event_text("".join(parts))
+    return False
+
+
+def card_reason(tool, inp, transcript_path=None):
     """Deny reason when start_session would show the operator a card to click, else None."""
     if tool != START or os.environ.get("MTS_ALLOW_CARDS") == "1":
         return None
     inp = inp or {}
-    if inp.get("proposal_id") or inp.get("initiation") == "user_asked":
+    if inp.get("proposal_id"):
         return None
+    if inp.get("initiation") == "user_asked":
+        return EVENT_TURN_FIX if event_turn(transcript_path) else None
     return f"start_session with initiation={inp.get('initiation')!r} waits for an operator click. " + CARD_FIX
 
 
@@ -365,15 +402,43 @@ def first_prompt(transcript_path):
 
 def nested_reason(tool, inp, transcript_path):
     """E2E run 2026-10-22: a Supervisor that a session had started called start_session for its Builders; the app stopped each call
-    for an operator approval and the run sat waiting. A session started by another session starts its workers as background Agents."""
+    for an operator approval and the run sat waiting. A session started by another session starts its workers as background Agents.
+    Operator 2026-10-22: the operator-started login B Supervisor on the NUC got the same "Allow Claude to start the session" card
+    (user_asked, Sonnet). Any role session starts its workers as background Agents."""
     if tool != START or (inp or {}).get("target") == "cloud" or os.environ.get("MTS_ALLOW_NESTED") == "1":
         return None
     import role_loader
-    if not role_loader.from_session(first_prompt(transcript_path)):
+    if not (role_loader.from_session(first_prompt(transcript_path)) or role_session(transcript_path)):
         return None
-    return ("this session was started by another session, so a start_session from here waits for an operator approval in the app "
-            "(the operator is away). Start the worker with the Agent tool instead: model='sonnet', run_in_background=true, the same brief "
-            "(its first line `You are <Role>.`).")
+    return ("a start_session from a role session waits for an operator approval in the app (the operator is away). Start the worker "
+            "with the Agent tool instead: model='sonnet', run_in_background=true, the same brief (its first line `You are <Role>.`).")
+
+
+def role_session(transcript_path):
+    """The role named by a `You are <Role>.` line in the session's first prompt (start line or a started session's brief), else None."""
+    import role_loader
+    names = {n.lower(): n for n in role_loader.KNOWN_ROLES}
+    names.update({a: n for n, al in role_loader.ALIASES.items() for a in al})
+    for m in ROLE_LINE.finditer(first_prompt(transcript_path)[:3000]):
+        if m.group(1).lower() in names:
+            return names[m.group(1).lower()]
+    return None
+
+
+def button_reason(tool, inp, transcript_path):
+    """Operator 2026-10-22, login A Supervisor on the laptop showing buttons: "displaying me buttons to click!!!". A role session never
+    puts a card in front of the operator: no question card, no wrap_up question/buttons, no branch card. It decides and writes it down."""
+    if tool not in BUTTON_TOOLS or os.environ.get("MTS_ALLOW_CARDS") == "1":
+        return None
+    if tool == WRAP_UP and not ((inp or {}).get("ask") or (inp or {}).get("actions")):
+        return None
+    role = role_session(transcript_path)
+    if not role:
+        return None
+    fix = {ASK: "Do not ask: pick the option your role file and the card point to, do it, and note the choice in your log or hand-over.",
+           WRAP_UP: "Call wrap_up again with `recap` only (no `ask`, no `actions`); decide the next step yourself and do it.",
+           BRANCH_CARD: "Do not propose a branch: work where you are (a role session ships through `sync.py ship`)."}[tool]
+    return f"{role} is a role session; the operator is away and wants zero clicks, so {tool} cards are blocked. {fix}"
 
 
 def hook():
@@ -382,9 +447,15 @@ def hook():
     except ValueError:
         return 0
     tool = ev.get("tool_name") or ""
-    if tool not in AGENT_TOOLS + (START, SET_MODEL, WORKFLOW) + SEND_TOOLS + SCHEDULE_TOOLS:
+    if tool not in AGENT_TOOLS + (START, SET_MODEL, WORKFLOW) + SEND_TOOLS + SCHEDULE_TOOLS + BUTTON_TOOLS:
         return 0
     inp = ev.get("tool_input") or {}
+    if tool in BUTTON_TOOLS:
+        button = button_reason(tool, inp, ev.get("transcript_path"))
+        if button:
+            print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
+                                                     "permissionDecisionReason": "model_guard: " + button}}))
+        return 0
     storm = storm_reason(tool, ev)
     if storm:
         print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
@@ -399,7 +470,7 @@ def hook():
         return 0
     if tool in SEND_TOOLS:
         return 0
-    card = card_reason(tool, inp) or nested_reason(tool, inp, ev.get("transcript_path"))
+    card = card_reason(tool, inp, ev.get("transcript_path")) or nested_reason(tool, inp, ev.get("transcript_path"))
     if card:
         print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
                                                  "permissionDecisionReason": "model_guard: " + card}}))

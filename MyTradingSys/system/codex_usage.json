@@ -4,9 +4,9 @@
   "week_resets": 1793294390,
   "week_used": 0,
   "window_resets": 1792707590,
-  "window_used": 0
+  "window_used": 1.0
  },
- "at": "2026-10-22T17:20:19Z",
+ "at": "2026-10-22T19:48:48Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -19,10 +19,55 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 0.0,
-  "window_pts": 0.0,
-  "window_runs": 0
+  "window_pts": 1.0,
+  "window_runs": 3
  },
  "runs": [
+  {
+   "at": "2026-10-22T19:47:53Z",
+   "card": "argon-blind-read-7-frames",
+   "effort": "low",
+   "kind": "run",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "INCOMPLETE",
+   "seconds": 49,
+   "tokens_out": 1865,
+   "tokens_total": 394427,
+   "tokens_uncached": 33394,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
+  {
+   "at": "2026-10-22T18:57:09Z",
+   "card": "tom-btc-other-setups",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 326,
+   "tokens_out": 13533,
+   "tokens_total": 1818530,
+   "tokens_uncached": 68805,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
+  {
+   "at": "2026-10-22T18:04:19Z",
+   "card": "lab-planted-error-trial",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 141,
+   "tokens_out": 11048,
+   "tokens_total": 1280641,
+   "tokens_uncached": 60249,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-22T17:19:33Z",
    "card": "lab-planted-error-trial",
@@ -127,51 +172,6 @@
    "tokens_uncached": null,
    "week_pts": null,
    "window_pts": null
-  },
-  {
-   "at": "2026-10-17T22:48:24Z",
-   "card": "lab-review-gate-harden",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 163,
-   "tokens_out": 9326,
-   "tokens_total": 1446422,
-   "tokens_uncached": 52648,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-17T22:37:40Z",
-   "card": "lab-crossvendor-same-vendor-gate",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "test layer tests: SKIP\nStep 5: Maven tests: SKIP\nStep 5b: Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n==========================",
-   "outcome": "SHIP_FAILED",
-   "seconds": 107,
-   "tokens_out": 7773,
-   "tokens_total": 1063256,
-   "tokens_uncached": 50939,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-17T22:33:41Z",
-   "card": "lab-formula-spec-recount",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "test layer tests: SKIP\nStep 5: Maven tests: SKIP\nStep 5b: Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n==========================",
-   "outcome": "SHIP_FAILED",
-   "seconds": 102,
-   "tokens_out": 8360,
-   "tokens_total": 1074729,
-   "tokens_uncached": 70529,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }

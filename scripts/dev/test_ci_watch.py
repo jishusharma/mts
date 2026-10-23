@@ -63,6 +63,38 @@ def test_offline_is_remembered_so_the_next_prompt_does_not_wait(monkeypatch, tmp
     assert len(calls) == 1
 
 
+class _Resp:
+    def __init__(self, body): self.body = body
+    def __enter__(self): return self
+    def __exit__(self, *a): return False
+    def read(self, *a): return self.body
+
+
+def test_api_calls_log_in_and_a_refused_login_retries_without(monkeypatch):
+    """Logged in = 5000 calls/h instead of 60 per internet address (rate limited 2026-10-22); a bad token must not cost CI status."""
+    import io
+    import urllib.error
+    import urllib.request
+    monkeypatch.setenv("GH_TOKEN", "t0k")
+    seen = []
+
+    def urlopen(req, timeout):
+        seen.append(req.get_header("Authorization"))
+        if req.get_header("Authorization"):
+            raise urllib.error.HTTPError(req.full_url, 401, "Unauthorized", {}, io.BytesIO(b""))
+        return _Resp(b'{"workflow_runs": []}')
+    monkeypatch.setattr(urllib.request, "urlopen", urlopen)
+    assert W.fetch() == [] and seen == ["Bearer t0k", None]
+
+
+def test_no_login_found_calls_without_one(monkeypatch):
+    import subprocess
+    monkeypatch.delenv("GH_TOKEN", raising=False)
+    monkeypatch.delenv("GITHUB_TOKEN", raising=False)
+    monkeypatch.setattr(subprocess, "run", lambda *a, **k: subprocess.CompletedProcess(a, 1, b"", b""))
+    assert W.token() == ""
+
+
 def test_import_does_not_load_urllib_request():
     """urllib.request cost ~0.47 s per prompt even on a cache hit (measured 2026-10-22); it is imported inside fetch() only."""
     import subprocess
