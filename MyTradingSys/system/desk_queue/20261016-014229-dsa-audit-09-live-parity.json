@@ -1,11 +1,14 @@
 {
   "card": "dsa-audit-09-live-parity",
   "done_when": "T09_live_parity.md shipped: layer map with parameter diffs, deployed sha, per-layer signal diff on 30 DEV days, exit-rule diff, the 97% time exits explained; live-path findings posted --target CLAUDE.",
+  "finished": "2026-10-23T11:55:49Z",
   "from": "JIS-NB",
+  "host": "JIS-NB",
   "id": "20261016-014229-dsa-audit-09-live-parity",
   "need": "python scripts/dev/sync.py claim \"dsa-audit-09-live-parity\"; python scripts/dev/tasks.py take dsa-audit-09-live-parity; git -C C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed rev-parse HEAD; git grep -n -E \"def (build_default_registry|poll_once|fetch_closed_bars|default_fetch_klines)\" -- MyTradingSys/backtest/layers/alerts/live_runner_cli.py; python scripts/dev/tasks.py done dsa-audit-09-live-parity --result \"<Tnn>: k findings (S1 a, S2 b, S3 c); <headline>\"; # AIRUN task=mts-ship repo=<WORKTREE> timeout=1800  (then git cherry origin/fast-track HEAD is empty) (full brief: python scripts/dev/tasks.py brief dsa-audit-09-live-parity)",
   "posted": "2026-10-16T01:45:23Z",
-  "status": "pending",
+  "result": "re-routed: DSA-NB bridge not taking rows (178 h); card dsa-audit-09-live-parity moved to lane SONNET (ROUTING C7, Pipeliner 2026-10-23)",
+  "status": "failed",
   "target": "DSA-NB",
   "title": "DSA audit T09: replay DEV bars through the testnet layer code and diff signals and exits against the backtests"
 }
