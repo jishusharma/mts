@@ -14,7 +14,7 @@
   "goal": "Daily CME BTC futures volume for 2017-2026 from a free public source, next to the Binance and Coinbase daily series on F:/MTS/data/krown_daily, so Krown volume rules can be tested on all three (operator q-krown-volume-venue 2026-10-17: include CME).",
   "id": "krown-data-cme-btc-volume",
   "kind": "run",
-  "lane": "DSA",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
