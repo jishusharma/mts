@@ -568,6 +568,14 @@ def hook():
     return 0
 
 
+def budget_line(login, five, week, reset, models):
+    """The BUDGET signal text; models = {name: percent used} adds `models=opus:10,fable:3` (exhaust phase spends the model with headroom)."""
+    s = "BUDGET login=%s 5h=%d%% week=%d%% reset=%s" % (login, round(five), round(week), reset)
+    if models:
+        s += " models=" + ",".join("%s:%d" % (k, round(v)) for k, v in models.items())
+    return s
+
+
 def budget_cmd(args):
     """`budget --five 12 --week 40 --reset 2026-10-22T19:59Z [--login A]`: one call after get_usage. Sends the BUDGET line that
     traffic.py budget and supervisor.py tick read, and records the reading in ~/.claude/mts-budget.json (same file budget.py uses).
@@ -578,7 +586,9 @@ def budget_cmd(args):
     ap.add_argument("--five", type=float, required=True, help="5-hour window used, percent")
     ap.add_argument("--week", type=float, required=True, help="weekly all-models used, percent")
     ap.add_argument("--reset", required=True, help="weekly reset, UTC YYYY-MM-DDTHH:MMZ")
+    ap.add_argument("--model", action="append", default=[], help="per-model window used, name=percent (repeatable)")
     a = ap.parse_args(args)
+    models = {k.strip().lower(): float(v) for k, _, v in (s.partition("=") for s in a.model) if v}
     lg = a.login.strip().upper()
     if lg not in ("A", "B", "C"):
         print("login must be A, B or C (--login or env MTS_LOGIN)")
@@ -598,7 +608,7 @@ def budget_cmd(args):
         (budget_mod.home() / "mts-budget.json").write_text(json.dumps(rec, sort_keys=True), encoding="utf-8", newline=chr(10))
     except (OSError, ImportError) as e:
         print("budget file not written: %s" % e)
-    ok = send("BUDGET login=%s 5h=%d%% week=%d%% reset=%s" % (lg, round(a.five), round(a.week), reset), to="all", kind="note")
+    ok = send(budget_line(lg, a.five, a.week, reset, models), to="all", kind="note")
     print("BUDGET login=%s sent" % lg if ok else "BUDGET not sent (no origin or push failed)")
     return 0 if ok else 1
 

@@ -30,5 +30,20 @@ class AudienceTest(unittest.TestCase):
             self.assertTrue(mts_signal.is_worker_env())
 
 
+class BudgetModelsTest(unittest.TestCase):
+    def test_line_carries_per_model_windows(self):
+        line = mts_signal.budget_line("C", 13, 99, "2026-10-23T09:00Z", {"opus": 10, "fable": 3})
+        self.assertEqual(line, "BUDGET login=C 5h=13% week=99% reset=2026-10-23T09:00Z models=opus:10,fable:3")
+
+    def test_line_without_models_is_unchanged(self):
+        self.assertEqual(mts_signal.budget_line("A", 1, 2, "2026-10-23T09:00Z", {}), "BUDGET login=A 5h=1% week=2% reset=2026-10-23T09:00Z")
+
+
+class StopGuardSubagentTest(unittest.TestCase):
+    def test_subagent_stop_is_never_blocked(self):
+        p = {"session_id": "s", "hook_event_name": "Stop", "agent_id": "a1", "last_assistant_message": "done"}
+        self.assertEqual(mts_signal.handle(p), "")
+
+
 if __name__ == "__main__":
     unittest.main()

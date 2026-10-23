@@ -17,7 +17,7 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "Operator 2026-10-23: spend all paid quota (all models, incl. Fable) in the last 2h before reset; one actor per login; subagents ignore. PROGRESS 2026-10-23 08:50Z: shipped exhaust.py plan+start (req 1,2), mts_signal --audience top (req 3), 9 tests. TODO: req 4 per-login dedupe of the banner (ack is per host today, logins span hosts), req 5 (Stop guard already skips is_subagent(payload); add test), req 6 per-model BUDGET windows, req 7 boot hook calls exhaust.py plan.",
+  "note": "Operator 2026-10-23: spend all paid quota (all models, incl. Fable) in the last 2h before reset; one actor per login; subagents ignore. PROGRESS 2026-10-23 08:50Z: shipped exhaust.py plan+start (req 1,2), mts_signal --audience top (req 3), 9 tests. TODO: req 4 per-login dedupe of the banner (ack is per host today, logins span hosts), req 5 (Stop guard already skips is_subagent(payload); add test), req 6 per-model BUDGET windows, req 7 boot hook calls exhaust.py plan. PROGRESS 08:58Z: req 5 (regression test; handle() already skips subagents) and req 6 (budget --model, budget_line) shipped.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
