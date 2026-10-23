@@ -27,6 +27,7 @@ class LocalSkip(unittest.TestCase):
     def test_a_ship_leaves_the_slow_coordination_steps_to_ci(self):
         self.assertEqual(self._skipped(["--precheck"]), set(rat.LOCAL_SKIP) & {s.num for s in rat.build_plan(True)})
         self.assertTrue({"3k", "3dk", "3ad", "3bk"} <= self._skipped(["--precheck"]))
+        self.assertFalse({"5b", "4f"} & self._skipped(["--precheck"]))      # live-path layer tests stay in the local full gate
 
     def test_ci_shards_and_plain_runs_keep_every_step(self):
         self.assertEqual(self._skipped(["--precheck", "--shard", "1/15"]), set())
