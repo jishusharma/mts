@@ -10,7 +10,7 @@ import gate_select as gs
 
 STEPS = [("1", "python scripts/dev/run_staged_tests.py MyTradingSys/execution -- test_risk_guard"), ("3k", "python -m unittest (scripts/dev/test_sync.py, 3 shards)"),
          ("3ds", "python -m unittest (scripts/dev/test_dsa.py, 2 shards)"), ("3tl", "python scripts/dev/tasks.py lint"), ("3q", "x"), ("3pc", "x"),
-         ("3c", "x"), ("3w", "x"), ("3x", "x"), ("3gd", "x"), ("3dl", "x"), ("3xt", "x"), ("4", "pytest MyTradingSys/tests/a"), ("4b", "pytest MyTradingSys/tests/b"),
+         ("3c", "x"), ("3w", "x"), ("3x", "x"), ("3gd", "x"), ("3dl", "x"), ("3la", "python scripts/dev/lookahead_lint.py --new"), ("3xt", "x"), ("4", "pytest MyTradingSys/tests/a"), ("4b", "pytest MyTradingSys/tests/b"),
          ("4d", "pytest MyTradingSys/tests/docs"), ("5b", "unittest"), ("5c", "pytest options")]
 MENTIONED = {("dsa", "4b")}   # the pytest shard whose tests mention the module `dsa`
 BS = chr(92)
@@ -264,6 +264,32 @@ class GateSpeedRules(unittest.TestCase):
         self.assertFalse({"3xt", "5b"} & set(nums))
         with mock.patch.object(gs, "extra_subset", return_value=["t"]), mock.patch.object(gs, "layer_subset", return_value=["m"]):
             self.assertTrue({"3xt", "5b"} <= set(self.sel("MyTradingSys/backtest/layers/rsi/x.py", step_files=sf)[1]))
+
+
+class LookaheadStep(unittest.TestCase):
+    """62a05b2eb (run_rsi_backtest.py:111) added a look-ahead hit, passed the smoke ship (no shard named the module), and CI went red."""
+
+    def sel(self, *files, step_files=None):
+        return gs.explain(list(files), STEPS, mentioned=mentioned, named=lambda b, c: False, step_files=step_files)[:2]
+
+    def test_any_backtest_or_research_py_runs_the_lookahead_step(self):
+        for f in ("MyTradingSys/research/rsi_2026/run_rsi_backtest.py", "MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py",
+                  "MyTradingSys/backtest/engine.py", "MyTradingSys/options/x.py"):
+            mode, nums = self.sel(f)
+            self.assertNotEqual(mode, "docs", f)
+            self.assertIn("3la", nums, f)
+
+    def test_the_lint_its_allowlist_and_its_tests_run_the_lookahead_step(self):
+        for f in ("scripts/dev/lookahead_lint.py", "scripts/dev/lookahead_allowlist.tsv", "MyTradingSys/tests/test_lookahead_lint.py"):
+            self.assertIn("3la", self.sel(f)[1], f)
+
+    def test_unrelated_code_and_docs_do_not_pay_for_it(self):
+        self.assertNotIn("3la", self.sel("scripts/dev/dsa.py")[1])
+        self.assertNotIn("3la", self.sel("MyTradingSys/research/x/NOTES.md")[1])
+
+    def test_a_research_test_file_does_not_need_it(self):
+        self.assertNotIn("3la", self.sel("MyTradingSys/research/x/test_study.py")[1])
+
 
 if __name__ == "__main__":
     unittest.main()

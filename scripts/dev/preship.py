@@ -65,7 +65,7 @@ CAP_TEST = "MyTradingSys/tests/docs/test_integrity.py"
 CAP_RULE = ("doc size cap", _docs, lambda r, ps: [[PY, "-m", "pytest", "-q", CAP_TEST, "-k", "size_cap"]], True,
             "move detail out of the file into a MyTradingSys/system/ doc (B18: not one-line word trims); caps: SIZE_CAPS in " + CAP_TEST,
             "2175ef80: a docs-only ship (no local gate) pushed CLAUDE.md 100 B over its cap, trunk red; CI 39650507034/39638135365")
-ALWAYS_DENY = {CAP_RULE[0]}
+ALWAYS_DENY = {CAP_RULE[0], "look-ahead lint"}   # lint: --new only fails on a hit nobody reviewed, so a red trunk never traps a session (62a05b2eb)
 RULES = [
     CAP_RULE,
     ("doc caps and contracts", _docs, lambda r, ps: [[PY, "-m", "pytest", "-q", "-x", "MyTradingSys/tests/docs", "-k", "not size_cap"]], False,
