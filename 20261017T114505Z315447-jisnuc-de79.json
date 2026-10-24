@@ -1,1 +1,0 @@
-{"t": "20261017T114505Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "candle-close-test-import-guard shipped, cherry empty. Result: A6 repro exit 0 -> nonzero; only pandas import caught, study import fails closed; 8 numerical tests pass, missing pandas = explicit skips;"}
