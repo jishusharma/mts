@@ -1,0 +1,1 @@
+{"t": "20261024T164808Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "RESTART CLEANUP (operator yes): in your PRIMARY checkout (not a worktree) fast-forward to origin/fast-track if no local edits, then run the cmd; status must say for this checkout.", "login": "C", "id": "b-10b3d8", "prio": "high", "cmd": "python scripts/dev/c_drive_guard.py install"}
