@@ -76,6 +76,24 @@ def stats(res):
 START_USD, RISK_PCT = 1000.0, 1.0   # the page's money line: 1,000 USD, 1 % risked per trade, simple sum (as in the levels result)
 
 
+def numbers(res):
+    """Standard numbers over the FILLED trades in time order: n, win rate, mean net R, profit factor, max drawdown (R, peak to
+    trough of the running net R), and the fee split mean gross / fee / net R per trade."""
+    filled = np.asarray(res.get('filled', np.ones(len(res['net']), bool)), bool)
+    if not filled.any():
+        return {'n': 0}
+    order = np.argsort(np.asarray(res['touch_t'])[filled], kind='stable')
+    net, gross, fees = (np.asarray(res[k], float)[filled][order] for k in ('net', 'gross', 'fees'))
+    n = len(net)
+    if not n:
+        return {'n': 0}
+    win, loss = net[net > 0].sum(), -net[net < 0].sum()
+    cum = np.cumsum(net)
+    dd = float((np.maximum.accumulate(np.r_[0.0, cum])[1:] - cum).max())
+    return {'n': n, 'win_rate': float((net > 0).mean()), 'mean_net': float(net.mean()), 'mean_gross': float(gross.mean()),
+            'mean_fee': float(fees.mean()), 'profit_factor': float(win / loss) if loss > 0 else None, 'max_dd_r': dd}
+
+
 def curve(res, points=400):
     """Equity curve of the FILLED trades in time order: cumulative R and USD (start 1,000, 1 % risk, simple sum).
     At most `points` points (even stride, last trade always kept)."""
@@ -196,7 +214,7 @@ def run_setting(study, p, trials_path=TRIALS, cache_dir=CACHE, progress=print, c
            'label': study.label(q), 'settings': q, 'cond': cond, 'cond_label': conditions.label(cond), 'n_before_cond': before, 'n': st.get('n', 0), 'mean': st.get('mean'), 'lo': st.get('lo'),
            'hi': st.get('hi'), 'streak': st.get('streak', 0), 'win_rate': st.get('win_rate'),
            'try_no': count_tries(trials_path, study), 'prior_tries': len(_rows(trials_path, f"| {study.PRIOR_TAG} ")) if hasattr(study, 'PRIOR_TAG') else 0,
-           'stats': {k: v for k, v in st.items() if isinstance(v, (int, float))}, 'charts': [], 'curve': curve(res)}
+           'stats': {k: v for k, v in st.items() if isinstance(v, (int, float))}, 'charts': [], 'curve': curve(res), 'numbers': numbers(res)}
     out['run_seconds'] = round(time.perf_counter() - t0, 2)
     if charts:
         try:

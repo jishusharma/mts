@@ -249,6 +249,17 @@ function show(o) {
     const bb = document.createElement('b'); bb.textContent = b; const sp = document.createElement('span'); sp.textContent = t;
     d.append(bb, sp); $('nums').appendChild(d);
   }
+  const k = o.numbers || {};
+  if (k.n) {
+    const pf = k.profit_factor === null ? 'no losses' : k.profit_factor.toFixed(2);
+    const more = [[(k.win_rate * 100).toFixed(1) + ' %', 'trades that won'], [pf, 'profit factor (wins / losses)'], [k.max_dd_r.toFixed(1) + ' R', 'max drawdown (peak to trough)'],
+                  [`${fmt(k.mean_gross, 2)} / -${k.mean_fee.toFixed(2)} / ${fmt(k.mean_net, 2)} R`, 'per trade: before fees / fees / after fees']];
+    for (const [b, t] of more) {
+      const d = document.createElement('div'); d.className = 'num';
+      const bb = document.createElement('b'); bb.textContent = b; const sp = document.createElement('span'); sp.textContent = t;
+      d.append(bb, sp); $('nums').appendChild(d);
+    }
+  }
   $('charts').innerHTML = '';
   for (const c of o.charts) {
     const f = document.createElement('figure'); f.innerHTML = c.svg; f.title = 'typical ' + c.kind; $('charts').appendChild(f);

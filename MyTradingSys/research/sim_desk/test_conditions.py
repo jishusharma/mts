@@ -219,3 +219,15 @@ def test_export_result_standard_schema_and_page_builds(tmp_path):
     assert all(w['label'] in ('SOURCED', 'OURS') for w in t['what'])
     ba.main(['--results', str(tmp_path / 'res'), '--out', str(tmp_path / 'i.html')])
     assert 'curveEx' in (tmp_path / 'i.html').read_text(encoding='utf-8')
+
+
+def test_numbers_strip_by_hand():
+    """Filled nets in time order 2.0, -1.0, -1.0, 1.0 (+ one never-filled 0.0): wins 3.0, losses 2.0 -> PF 1.5;
+    running 2,1,0,1 -> peak 2, trough 0 -> max drawdown 2.0 R; win rate 2/4; fees 0.1 each; gross = net + 0.1."""
+    res = {'net': [-1.0, 0.0, 2.0, 1.0, -1.0], 'touch_t': [3, 9, 1, 4, 2], 'filled': [True, False, True, True, True],
+           'gross': [-0.9, 0.0, 2.1, 1.1, -0.9], 'fees': [0.1, 0.0, 0.1, 0.1, 0.1]}
+    k = desk.numbers(res)
+    assert k['n'] == 4 and k['win_rate'] == 0.5 and k['profit_factor'] == pytest.approx(1.5)
+    assert k['max_dd_r'] == pytest.approx(2.0) and k['mean_net'] == pytest.approx(0.25)
+    assert k['mean_gross'] == pytest.approx(0.35) and k['mean_fee'] == pytest.approx(0.1)
+    assert desk.numbers({'net': [], 'touch_t': [], 'filled': []}) == {'n': 0}

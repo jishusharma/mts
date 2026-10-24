@@ -51,6 +51,9 @@ def test_levels_default_matches_frozen_csv(tmp_path):
     assert out['n'] == 255 and out['nofill'] == 517
     assert out['mean'] == pytest.approx(float(np.mean(filled)), abs=2e-3)       # -0.119 R, fee-net
     assert out['win_rate'] == pytest.approx(sum(v > 0 for v in filled) / 255, abs=2e-3)
+    k = out['numbers']                                   # strip: +0.22 gross, -0.34 fees, -0.12 net (Fable review)
+    assert (k['mean_gross'], k['mean_fee'], k['mean_net']) == pytest.approx((0.217, 0.337, -0.119), abs=2e-3)
+    assert k['profit_factor'] == pytest.approx(sum(v for v in filled if v > 0) / -sum(v for v in filled if v < 0), abs=2e-3)
 
 
 @needs_bars
