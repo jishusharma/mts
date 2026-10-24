@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/research/trendlines_2026-10-17/g3_pack/test_g3_pack.py -q"
+  ],
+  "created": "2026-10-24T23:00:52Z",
+  "depends_on": [],
+  "done_when": "python -m pytest g3_pack/test_g3_pack.py passes; g3_pack.py has no literal C:/Users path (grep); INPUT_DIGESTS.csv lists each kline file with sha256.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Make every anchor of a G3 window visible on its chart, pin input file digests and take the daily-kline path from an argument, so the blind marking test measures the selector on what a reader can see.",
+  "id": "trendline-g3-pack-align",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "G3 trend-line marks pack: 40 blind windows (TL-4H, TL-1D), blank sheets, closed key, proto",
+      "ref": "c090df5b130e",
+      "utc": "2026-10-17T18:32:30Z"
+    }
+  ],
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-25 ACCEPT (independent Sonnet reviewer, fixes applied). DECISION (OURS): G3 stays an eye-read test of the selector at 4h/1d; a 1h unit is deferred (it would change the key and the reader load). Run order is free of the detector card.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-24T23:02:15Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/trendlines_2026-10-17/g3_pack/g3_pack.py",
+    "MyTradingSys/research/trendlines_2026-10-17/g3_pack/test_g3_pack.py",
+    "MyTradingSys/research/trendlines_2026-10-17/g3_pack/EXPOSURE_LEDGER_LINE.csv",
+    "MyTradingSys/research/trendlines_2026-10-17/g3_pack/INPUT_DIGESTS.csv"
+  ],
+  "scope_out": [
+    "marking the sheets (operator and blind reader do that)",
+    "adding a 1h window unit (follow-up card if the operator wants it)",
+    "regenerating KEY.csv unless windows change"
+  ],
+  "scope_sha": "c090df5b130e",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/trendlines_2026-10-17/AUDIT_2026-10-18.md gap 5"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read AUDIT gap 5 and g3_pack.py:32-41,110,138.",
+    "Fail-first test: a swing at offset -250 bars is not eligible for a 4h window that shows 200 bars. Then bound swings() to j >= i - shown + 1 + k, replace the hardcoded DAILY_DIR with a --daily argument (default env var, error if missing), write INPUT_DIGESTS.csv.",
+    "If WINDOWS.csv changes, regenerate it and the closed key and say so in the Result; else state windows unchanged."
+  ],
+  "tests": "test_g3_pack.py: no anchor outside the shown bars; missing --daily path raises; fails on pre-change code.",
+  "title": "Trend-line G3 pack: bound anchors to visible bars, pin kline digests, drop hardcoded live-tree path (audit gap 5)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

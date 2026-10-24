@@ -92,7 +92,7 @@ RULES = [
      "CI 39930461927/39932950182 B199 UNGROUPED"),
     ("test file not in the gate", _new_test,
      lambda r, ps: [[PY, "-m", "pytest", "-q", "MyTradingSys/tests/test_gate_discovery_b150.py"]], True,
-     "add the file to scripts/dev/run_extra_tests.py EXTRA (or a run_all_tests.py step)",
+     "add the path to scripts/dev/extra_tests.tsv (or a run_all_tests.py step)",
      "d62e5415, 5cfec9c1, fc41f20e, test_prereq_guard.py 2026-10-22"),
     ("look-ahead lint", _lookahead, lambda r, ps: [[PY, "scripts/dev/lookahead_lint.py", "--new"]], False,
      "fix the hit, or after review add a row to scripts/dev/lookahead_allowlist.tsv",
