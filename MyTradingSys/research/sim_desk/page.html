@@ -39,6 +39,12 @@
   .q .opts button.on { background:#2563eb; color:#fff; border-color:#2563eb; }
   .q textarea { width:100%; font:inherit; color:var(--ink); background:var(--bg); border:1px solid var(--line); border-radius:5px; padding:4px 6px; min-height:34px; }
   .err { color:var(--fail); }
+  #equity { display:none; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 12px; margin:10px 0; }
+  #equity svg { width:100%; height:180px; display:block; }
+  #equity .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; font-size:12px; color:var(--mute); }
+  #equity input[type=range] { flex:1; min-width:160px; }
+  #equity table { border-collapse:collapse; font-size:12px; margin-top:6px; }
+  #equity td, #equity th { border:1px solid var(--line); padding:2px 8px; text-align:right; }
 </style>
 </head>
 <body>
@@ -49,6 +55,12 @@
   <div class="say" id="say"></div>
   <div class="verdict" id="verdict"></div>
   <div class="nums" id="nums"></div>
+  <div id="equity"><div class="row"><b style="color:var(--ink)">Equity curve</b>
+    <select id="equnit"><option value="usd">$1,000, 1 % risked per trade</option><option value="r">cumulative R</option></select>
+    <button id="pinA">Keep this run as A</button><span id="eqread"></span></div>
+    <svg id="eqsvg" viewBox="0 0 600 180" preserveAspectRatio="none"></svg>
+    <div class="row"><input type="range" id="eqscrub" min="0" max="0" value="0"><span id="eqwhen"></span></div>
+    <table id="eqcmp"></table></div>
   <div class="charts" id="charts"></div>
   <footer id="foot"></footer>
   <section id="qs"><h2>Questions for you</h2><div id="qlist"></div></section>
@@ -184,9 +196,43 @@ async function run() {
   } finally { clearInterval(poll); $('run').disabled = false; }
 }
 
+let cur = null, pinned = null;
+function eqDraw() {
+  const box = $('equity');
+  if (!cur || !cur.curve || !cur.curve.n) { box.style.display = 'none'; return; }
+  box.style.display = 'block';
+  const u = $('equnit').value, runs = [[cur, 'var(--ink)', 'B (this run)']];
+  if (pinned) runs.unshift([pinned, '#2563eb', 'A (kept)']);
+  const ys = runs.flatMap(r => r[0].curve[u]).concat(u === 'usd' ? [cur.curve.start_usd] : [0]);
+  const lo = Math.min(...ys), hi = Math.max(...ys), span = hi - lo || 1;
+  const xmax = Math.max(...runs.map(r => r[0].curve.n));
+  const X = i => 600 * i / Math.max(xmax - 1, 1), Y = v => 175 - 170 * (v - lo) / span;
+  let svg = `<line x1="0" x2="600" y1="${Y(u === 'usd' ? cur.curve.start_usd : 0)}" y2="${Y(u === 'usd' ? cur.curve.start_usd : 0)}" stroke="var(--line)" stroke-dasharray="4"/>`;
+  for (const [o, col] of runs) {
+    const c = o.curve; svg += `<polyline fill="none" stroke="${col}" stroke-width="1.6" points="${c.idx.map((k, i) => X(k - 1) + ',' + Y(c[u][i])).join(' ')}"/>`;
+  }
+  svg += '<line id="eqcur" y1="0" y2="180" stroke="#d97706" stroke-width="1"/>';
+  $('eqsvg').innerHTML = svg;
+  const sc = $('eqscrub'); sc.max = cur.curve.idx.length - 1; sc.value = sc.max;
+  const move = () => {
+    const c = cur.curve, i = Number(sc.value), k = c.idx[i];
+    $('eqcur').setAttribute('x1', X(k - 1)); $('eqcur').setAttribute('x2', X(k - 1));
+    const day = new Date(c.t[i]).toISOString().slice(0, 10);
+    $('eqwhen').textContent = `trade ${k} of ${c.n}, ${day}`;
+    $('eqread').textContent = `${c.r[i] >= 0 ? '+' : ''}${c.r[i].toFixed(2)} R = $${c.usd[i].toFixed(0)}`;
+  };
+  sc.oninput = move; move();
+  const row = (o, name) => `<tr><th>${name}</th><td>${o.verdict}</td><td>${o.n}</td><td>${fmt(o.mean)} R</td><td>${fmt(o.lo)} to ${fmt(o.hi)}</td><td>$${o.curve.usd[o.curve.usd.length - 1].toFixed(0)}</td><td>${o.cond_label || 'no condition'}</td></tr>`;
+  $('eqcmp').innerHTML = '<tr><th></th><td>verdict</td><td>trades</td><td>average</td><td>95 % range</td><td>end $</td><td>condition</td></tr>' +
+    (pinned ? row(pinned, 'A') : '') + row(cur, pinned ? 'B' : 'this run');
+}
+$('equnit').onchange = eqDraw;
+$('pinA').onclick = () => { pinned = cur; eqDraw(); };
+
 function fmt(x, d = 3) { return x === null || x === undefined ? '-' : (x >= 0 ? '+' : '') + x.toFixed(d); }
 
 function show(o) {
+  cur = o; eqDraw();
   $('say').textContent = o.describe;
   const v = $('verdict');
   v.style.display = 'block'; v.style.background = COLORS[o.verdict] || 'var(--mute)';
