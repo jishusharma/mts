@@ -4,33 +4,49 @@
   "commands": [],
   "created": "2026-10-20T19:09:20Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Deliberate double task-mode send returns the live rid in the chat; a screened-out task returns a refusal receipt; bridge log has one line per send; receipts quoted in MyTradingSys/items/B195_task_mode_block_silent_drop.md and shipped via sync.py ship.",
+  "est_turns": 28,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Fix B195 in the AIBridge repo (F:/AIBridge, JIS-NB only): a task-mode send returns an ack or a reason receipt, never silence, and hands-free auto-off posts a chat-visible line instead of a small status card.",
   "id": "B195",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Needs JIS-NB (F:/AIBridge is that host only; separate git repo). REVIEWED:2026-10-25 T0-ONLY. Verify: content sha in F:/AIBridge plus git cherry origin/fast-track empty for the item-file edit.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-24T21:32:35Z",
   "refs": [
     "B195"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "F:/AIBridge/extension/content.js",
+    "F:/AIBridge/src/agent.ps1",
+    "F:/AIBridge/tests/b195_receipts.ps1"
+  ],
+  "scope_out": [
+    "MyTradingSys code, live tree, policy.json, any .pre_* backup file"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/items/B195_task_mode_block_silent_drop.md:45-60 (OURS fix shape, operator saw 3 silent sends 2026-10-20)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/items/B195_task_mode_block_silent_drop.md (Fix shape 1-7) and AIBRIDGE_LANE.md; work on a copy: cp each file to .pre_b195 first",
+    "agent.ps1 near line 350 (task=): add an immediate accepted ack with rid; refused/duplicate/busy/stale return a receipt with reason; same task+repo while live returns the live rid; one bridge log line per send",
+    "content.js stopAuto (line 398) and the idle check (lines 371-374): auto-off posts a chat line naming reason and re-arm; an operator draft does not disable the auto path; re-arm on next operator send",
+    "Add F:/AIBridge/tests/b195_receipts.ps1 (double send, screened-out send, draft in input); quote the receipts in the item file; commit in F:/AIBridge git"
+  ],
+  "tests": "F:/AIBridge/tests/b195_receipts.ps1 fails on the .pre_b195 copies (no ack, no duplicate rid, silent auto-off) and passes after the change; bridge_selftest.ps1 still prints SELFTEST: PASS",
   "title": "B195 task-mode gate block silently never ran; no receipt, no refusal on three sends",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }
