@@ -60,7 +60,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `oi-pivot-reversal-probability-by-tf` raw p2 SONNET: Causal pivot-candidate study: P(reversal) per TF from OI slope flip + price/OI divergence + delta + location, 
-  - `t09-f4-live-window-99-bars-swing-layers` raw p2 JIS-NB: T09-F4 S2: 99-bar live window misses 68 of 96 escalation signals; fetch more bars for swing layers
+  - `t09-f4-live-window-99-bars-swing-layers` refined p2 JIS-NB: T09-F4 S2: 99-bar live window misses 68 of 96 escalation signals; fetch more bars for swing layers
   - `rv05-h2-position-line-evidence` ready p3 SONNET: RV05 H2: read position lines and stop prices before applying existing Fabio entry repair
   - `rv05-h3-outcome-evidence` refined p3 SONNET: RV05 H3: incorporate partial stop coverage evidence into existing F13 outcome repair
   - `fabio-layer-v2-markets` refined p5 OPUS: Fabio layer v2 spec, part B: data plan per market, cost, stop width, build + recall cards (Opus research)
@@ -184,7 +184,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `statecode-invalid-publish-race` ready p1 JIS-NB: StateCodeEmitter: serialize invalidation with state publication
   - `statecode-late-seam-tick` ready p1 JIS-NB: StateCodeEmitter: exclude late pre-boundary ticks after backfill completion
   - `state-code-accumulator-backfill` ready p2 JIS-NB: StateCodeEmitter: backfill session CVD/cum_pv/cum_vol after restart and WS reconnect, fail closed on backfill 
-  - `statecode-backfill-race-coverage` raw p2 JIS-NB: StateCodeEmitter: cover in-flight rollover reconnect and retry scheduling
+  - `statecode-backfill-race-coverage` refined p2 JIS-NB: StateCodeEmitter: cover in-flight rollover reconnect and retry scheduling
   - `live-loop-timeouts-b191` refined p3 SONNET: Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)
   - `live-orderflow-state-line-1m-5m-15m-pric` refined p3 SONNET: Live read: one order-flow state line per TF (1m/5m/15m price swing vs Binance CVD swing vs OI change), descrip
   - `score-context-reads-automatically-carrie` refined p3 SONNET: Score context reads automatically: carried falsifier lines (HELD/BROKEN/UNTESTED) computed from klines at the 
@@ -210,9 +210,9 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `sim-dashboard-v1` ready p1 SONNET: Simulator dashboard v1: single-screen page from precomputed levels-confluence ladder results
-  - `confluence-s3-context-read` raw p2 SONNET: Confluence S3: standalone context read (D1 vs naive trend, BBWP to realised vol) per PRE_REG_CONFLUENCE
-  - `confluence-s4-dev-trials` raw p2 SONNET: Confluence S4: DEV and DEV_EXT trial runs (T2, sizing arm, pooled read, T4) per PRE_REG_CONFLUENCE
-  - `confluence-s5-fable-verdict` raw p2 SONNET: Confluence S5: Fable verdict on DEV results, what goes to the one VALIDATION read (then ship, S6)
+  - `confluence-s3-context-read` refined p2 SONNET: Confluence S3: standalone context read (D1 vs naive trend, BBWP to realised vol) per PRE_REG_CONFLUENCE
+  - `confluence-s4-dev-trials` refined p2 SONNET: Confluence S4: DEV and DEV_EXT trial runs (T2, sizing arm, pooled read, T4) per PRE_REG_CONFLUENCE
+  - `confluence-s5-fable-verdict` refined p2 SONNET: Confluence S5: Fable verdict on DEV results, what goes to the one VALIDATION read (then ship, S6)
   - `krown-data-cme-btc-volume` refined p2 SONNET: Krown CME BTC futures daily volume (public data only) as third volume arm
   - `krown-dev-event-study` refined p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
   - `trendline-audit-gaps-disposition` refined p2 SONNET: Trend-Line layer: disposition of AUDIT_2026-10-18 critical gaps (3 HIGH, 3 MED) and REGATE_AUDIT flip
