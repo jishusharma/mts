@@ -28,21 +28,26 @@ with numbers written down before it starts, compared with a measured baseline, o
 1. Main checkout fast-forwarded to trunk (card `main-checkout-stale-hooks-2026-10-24`), so the hooks running are the trimmed ones.
    Check: `git -C <main checkout> rev-list --count HEAD..origin/fast-track` = 0.
 2. CI green on the trunk tip.
-3. At least 6 `ready` SONNET/HAIKU cards on separate files after the Planner pass. Drop before the pilot: `bug-guard-blocks-interactive-roles`
-   (model_guard was deleted in 43d3bfc8f) and `hook-reminder-get-usage-before-after-age` (a new hook). Session_Planner decides; Doctor only flags.
+3. **A frozen list of 6 named card ids** in the coordinator's notes file before the first worker starts: each STATE ready, files disjoint,
+   runnable on JIS-NB. Independent review (2026-10-24) found only about 4 clean today: `cbp-one-acked-row-through-queue-consumer`,
+   `t02-f1-review-allowlist-chunk-4`, `find-gemini-antigravity-quota-command-an`, plus `mid-turn-image-intake-gap` after a refresh; the dsa-audit
+   cards need a disjoint-files check. Not for the pilot: `research-top-level-declutter` (moves 183 files), cards needing NUC/desktop data,
+   `context-composite-v2-dev-read` (one-shot outcome read). Flagged stale: `bug-guard-blocks-interactive-roles` (model_guard deleted in 43d3bfc8f),
+   `hook-reminder-get-usage-before-after-age` (a new hook), `analyst-ingest-roman-x`, `rv05-h2-position-line-evidence`. Session_Planner makes the
+   list (card supply is the biggest risk to the run); Doctor only flags.
 4. 5 h window under 30% at start.
 
 ## Pass / fail (decided now, read at the end by MTS_Doctor)
 | # | Measure | Pass |
 |---|---|---|
-| 1 | Cards shipped and verified (`git cherry` empty, `Result:` line, card done) | at least 6 in 4 h |
-| 2 | Non-live ship local gate | median under 2 min; wait for a gate slot median under 2 min |
-| 3 | CI | every red reverted within 10 min; at most 1 red |
-| 4 | Rework | 0 shipped cards reverted or re-fixed within 24 h |
-| 5 | Cost | 5 h window never over 80%; weekly use per verified card written down (first number, becomes the baseline) |
-| 6 | Context | worker sessions under 60 turns median; 0 cache misses on workers; coordinator compacts before any idle wait over 1 h |
+| 1 | Cards from the frozen list shipped and verified (`git cherry` empty, `Result:` line, card done) | at least 5 of the 6 in 4 h |
+| 2 | Non-live ship local gate | median under 2 min; wait for a gate slot median under 2 min (`wait_s`) |
+| 3 | CI | at most 1 red; red time on trunk under 15 min in total; reverted, not patched forward |
+| 4 | Rework (read 24 h after the end) | 0 pilot cards reverted or re-fixed |
+| 5 | Cost | 5 h window never over 80%. Weekly % per verified card is recorded only (first number, no threshold) |
+| 6 | Context | worker turns median under 60 (sessions and Agents); coordinator mid-session cache rewrites at most 2 |
 | 7 | Operator | 0 operator turns needed after the start prompt |
-| 8 | Machine | operator does not notice the notebook slow; 2 or fewer full gates at once (GATE_SLOTS) |
+| 8 | Machine | the operator does not report the notebook slow (row 2's gate wait is the measured proxy) |
 
 Pass on all 8: raise to 6 workers in the next run, then try ultracode on one hard card as its own pilot.
 Fail on any: the Doctor names the cause from transcripts and git, one fix, rerun the same pilot. Do not change two things at once.
@@ -52,4 +57,6 @@ CI red not reverted in 10 min; 5 h window over 80%; two workers stuck on the sam
 
 ## How the Doctor measures at the end
 `git log` / `git cherry` for ships; worktrees' gate_timing.jsonl ship rows; `gh run list` for CI; session transcripts for turns, context and
-cache rewrites (same method as context_cost_2026-10-24.md); `get_usage` before and after. Result goes in `REPORT_<date>.md`.
+cache rewrites (same method as context_cost_2026-10-24.md, plus the coordinator's subagent transcripts, because workers started on event turns
+are background Agents: SUPER_SESSION.md D3/step 4); `get_usage` before and after. Result goes in `REPORT_<date>.md`; row 4 a day later.
+Plan reviewed by an independent Sonnet agent 2026-10-24 (card supply, Agent workers, unmeasurable rows); fixes above.
