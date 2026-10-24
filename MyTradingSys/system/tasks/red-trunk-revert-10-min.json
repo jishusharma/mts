@@ -1,17 +1,40 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-24T09:52:52Z",
   "commands": [],
   "created": "2026-10-23T21:04:18Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "CLAUDE.md Boot 2 tells every author: first to see CI red git-reverts the breaking commit and ships within 10 min, no forward fix on trunk; a docs test pins it",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "One rule for every author (Claude, Codex, Gemini; operator 2026-10-24: keep direct ships, revert on red). When CI on fast-track goes red, the first session that sees it runs `git revert <breaking sha>` and ships within 10 minutes, then files a card for the author's lane with the failing test and log; the author re-ships the fixed change. No forward-patching on trunk. The same text goes once into the rule file all three read (CLAUDE.md, AGENTS.md, CODEX_START.md, GEMINI_START.md point to it). Case: 23426b191 (GEM-BLD-lab-planted-error-trial) added a test that read a lab file, CI red 10-23 19:37 to about 20:09, two forward fixes (794e56d12, 7facabce8) instead of one revert.",
+  "goal": "One revert-on-red rule for Claude, Codex and Gemini (operator 2026-10-24): first to see CI red git-reverts the breaking commit within 10 min, no forward fix on trunk. Case 23426b191: CI red 30 min under two forward fixes.",
   "id": "red-trunk-revert-10-min",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "CLAUDE.md Boot 2: first to see CI red git-reverts the breaking commit, ships in 10 min, ne",
+      "ref": "e2f7b1036",
+      "utc": "2026-10-24T09:52:52Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "CLAUDE.md 5c shortened: 7151 B, under the 7168 cap",
+      "ref": "6bfc5bafdff9",
+      "utc": "2026-10-23T08:41:22Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "6bfc5bafdff9 CLAUDE.md 5c shortened: 7151 B, under the 7168 cap",
+      "ref": "CLAUDE.md",
+      "utc": "2026-10-23T08:41:22Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,18 +42,33 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-24T09:52:51Z",
   "refs": [
-    "MyTradingSys/research/mts_doctor/simplify_2026-10-24/BRIEF.md"
+    "AGENTS.md",
+    "MyTradingSys/system/GEMINI_START.md"
   ],
-  "result": "",
-  "scope_in": [],
+  "result": "CLAUDE.md Boot 2: first to see CI red git-reverts the breaking commit, ships in 10 min, never forward-fixes trunk; Codex and Gemini read it through AGENTS.md / GEMINI.md; pinned by test_integrity test_8",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "CLAUDE.md",
+    "MyTradingSys/tests/docs/test_integrity.py"
+  ],
   "scope_out": [],
-  "size": "",
+  "scope_sha": "6bfc5bafdff9",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "done",
+  "steps": [
+    "edit the CLAUDE.md Boot 2 CI line, stay under the size cap",
+    "add test_8 and check it fails on the old line"
+  ],
+  "taken": "2026-10-24T09:52:52Z",
+  "tests": "MyTradingSys/tests/docs/test_integrity.py::test_8_red_trunk_is_reverted_not_forward_fixed",
   "title": "Red trunk: revert the breaking commit within 10 minutes, fix on a branch (rule text only, no new tool)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

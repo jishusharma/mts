@@ -182,3 +182,11 @@ def test_7_size_cap(rel):
     assert p.exists(), f"{rel} is missing"
     size = len(p.read_bytes().replace(b"\r\n", b"\n"))   # a Windows runner checks out CRLF; the cap is on the committed LF bytes
     assert size <= SIZE_CAPS[rel], f"{rel} is {size} B, cap {SIZE_CAPS[rel]} B"
+
+
+def test_8_red_trunk_is_reverted_not_forward_fixed():
+    """red-trunk-revert-10-min (operator 2026-10-24): one rule for Claude, Codex and Gemini (AGENTS.md and GEMINI.md point to
+    CLAUDE.md). Case: 23426b191 kept CI red about 30 min under two forward fixes instead of one revert."""
+    line = next(l for l in (REPO / "CLAUDE.md").read_text(encoding="utf-8").splitlines() if "CI RED" in l)
+    for want in ("git revert", "10 min", "never forward-fix"):
+        assert want in line, want
