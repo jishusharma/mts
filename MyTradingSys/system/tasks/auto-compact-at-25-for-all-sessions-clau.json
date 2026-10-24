@@ -4,34 +4,66 @@
   "commands": [],
   "created": "2026-10-24T10:20:36Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "WORKERS.md rule 5 has no reference to the absent turn_meter.py caps and states the rotation rule; SUPER_SESSION.md D5 states it too; part (b) recorded as open; no settings change.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Rewritten by MTS_Doctor 2026-10-24 from research/mts_doctor/compaction_long_runs_2026-10-24.md. Do NOT set a project-wide override (it would hit attended Thinker/Fable sessions; the percent override is reported broken, GitHub #63186/#82761). Instead, after pilot 1 ends, one cheap test session: (a) a Sonnet coordinator stand-in writes a notes file, its parent calls clear_session and sends 'rebuild from notes'; pass = it resumes the right state with 0 operator turns; (b) does autoCompactWindow in a settings file take effect in the desktop app (record the context size where compaction actually fires). Result decides the D5 rule for unattended coordinators: clear and rebuild at a natural break once context is over ~200K. Also fix WORKERS.md rule 5 text that describes the unwired turn_meter caps.",
+  "goal": "Fix WORKERS.md rule 5 so it no longer describes caps from scripts/dev/turn_meter.py, which is not on trunk or wired in settings; record that part (b) (autoCompactWindow in the desktop app) is still open and set the D5 rotation rule.",
   "id": "auto-compact-at-25-for-all-sessions-clau",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "scripts: delete gq_after_reset, wait_pid, worker_cost_report (no caller but docs, no tests",
+      "ref": "fb139c57cad5",
+      "utc": "2026-10-23T22:04:29Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "fb139c57cad5 scripts: delete gq_after_reset, wait_pid, worker_cost_report (no caller but d",
+      "ref": "MyTradingSys/system/WORKERS.md",
+      "utc": "2026-10-23T22:04:29Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator rule 2026-10-24: attended sessions grow as needed, only unattended sessions get a limit. Run after pilot 1, never mid-pilot.",
+  "note": "Refined by Session_Planner 2026-10-25. Rewritten scope: part (a) already PASS 2026-10-24; part (b) needs a live desktop-app run and is split off, not part of this card. turn_meter.py confirmed absent on origin/fast-track.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-24T21:35:31Z",
   "refs": [
     "MyTradingSys/research/mts_doctor/context_cost_2026-10-24.md",
     "MyTradingSys/research/mts_doctor/PILOT_super_session_2026-10-24.md"
   ],
   "result": "Part (a) PASS 2026-10-24 (research/mts_doctor/ROTATION_TEST_2026-10-24.md): clear_session + one rebuild message restored 9/9 state items and the right next action, 0 operator turns. Open: part (b) autoCompactWindow in the desktop app; WORKERS.md rule 5 text.",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/system/WORKERS.md",
+    "MyTradingSys/system/SUPER_SESSION.md"
+  ],
+  "scope_out": [
+    "any project-wide CLAUDE_AUTOCOMPACT_PCT_OVERRIDE or settings.json change, scripts/dev/*, attended Thinker/Fable sessions, running pilot sessions"
+  ],
+  "scope_sha": "fb139c57cad5",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/mts_doctor/compaction_long_runs_2026-10-24.md",
+    "MyTradingSys/research/mts_doctor/ROTATION_TEST_2026-10-24.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Confirm with git ls-tree origin/fast-track that scripts/dev/turn_meter.py is absent and .claude/settings.json has no turn_meter hook; cite the result in the commit body.",
+    "Edit WORKERS.md rule 5: replace the turn_meter-set caps sentence with the real state (no hook enforces a turn cap; the operator overrides; unattended coordinators rotate: clear_session plus a rebuild message from the notes file at a natural break once context is over about 200K, per ROTATION_TEST part (a) PASS 9/9). Keep the operator-override and facts sentences.",
+    "Add the same one-line rotation rule under D5 in SUPER_SESSION.md if D5 does not already say it (grep first).",
+    "State in the card result: part (b) autoCompactWindow in the desktop app stays open as its own test (needs a live app run); do not set any override.",
+    "Verify: content commit sha, git cherry origin/fast-track <sha> empty AND git ls-tree -r origin/fast-track --name-only shows both files."
+  ],
+  "tests": "Fail-first doc check: grep -c 'scripts/dev/turn_meter.py' MyTradingSys/system/WORKERS.md prints 1 before the edit and 0 after; python scripts/dev/run_all_tests.py --quick stays green",
   "title": "Auto-compact at 25% for all sessions (CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=25), after pilot 1",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

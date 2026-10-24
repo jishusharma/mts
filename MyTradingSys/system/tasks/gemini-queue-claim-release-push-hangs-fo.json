@@ -4,31 +4,54 @@
   "commands": [],
   "created": "2026-10-24T14:44:30Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "python -m pytest MyTradingSys/tests/test_gemini_claim_skip.py MyTradingSys/tests/test_runner_lease_env.py -q passes with 2 more tests than before, and grep shows no subprocess.run in gemini_queue.py without timeout except the agy call",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "gemini_queue.py never hangs on NUC: every git/sync.py subprocess it starts gets a timeout and GCM_INTERACTIVE=never GIT_TERMINAL_PROMPT=0, so a credential-manager prompt fails fast instead of blocking claim/release/fetch forever",
   "id": "gemini-queue-claim-release-push-hangs-fo",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "gemini_queue: release the claim after the run",
+      "ref": "e8c997c9691c",
+      "utc": "2026-10-23T04:21:08Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Hang seen on NUC 2026-10-24 (git credential-manager get). Do not touch running NUC jobs. REVIEWED:2026-10-25 T0-ONLY",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-24T21:33:26Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "scripts/dev/gemini_queue.py",
+    "MyTradingSys/tests/test_gemini_claim_skip.py"
+  ],
+  "scope_out": [
+    "agy run itself (--print-timeout 2400s already bounds it); sync.py; F:/MTS/gq/gx4-* and gb2-* job dirs on the NUC"
+  ],
+  "scope_sha": "e8c997c9691c",
+  "size": "S",
+  "sources": [
+    "scripts/dev/gemini_queue.py:35,70,71,81 (no timeout); commits 3cf1b833a, e8c997c96 added the claim/release calls"
+  ],
+  "state": "ready",
+  "steps": [
+    "gemini_queue.py: add NOPROMPT = {GCM_INTERACTIVE: never, GIT_TERMINAL_PROMPT: 0, GIT_ASKPASS: empty} and helper sh(cmd, cwd, timeout=120) = subprocess.run with env merged over os.environ, capture_output, catching TimeoutExpired (returns CompletedProcess rc 124, stderr text)",
+    "Route git() (line 35), the sync.py claim call (line 70), tasks.py brief (71) and sync.py release (81) through sh(); fetch gets timeout 60; the agy call at line 79 keeps its own env via child_env but merges NOPROMPT",
+    "run_job: if claim rc is nonzero write 'CLAIM FAILED/TIMEOUT <card>: <stderr>' to the log and return (no agy run on a failed claim); a release failure is logged, never raised",
+    "Add tests to test_gemini_claim_skip.py (mock subprocess.run): every call carries timeout and env GCM_INTERACTIVE=never; a TimeoutExpired on claim logs and skips agy"
+  ],
+  "tests": "MyTradingSys/tests/test_gemini_claim_skip.py: two new tests (timeout kwarg and GCM_INTERACTIVE=never on claim, release and git calls; claim TimeoutExpired -> log line, agy not run). Both fail on the current file (no timeout, no env).",
   "title": "gemini_queue claim/release push hangs forever on NUC (git credential-manager get, no timeout); add timeout + GCM_INTERACTIVE=never",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

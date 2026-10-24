@@ -1,7 +1,9 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest -q MyTradingSys/execution/test_auto_trader.py MyTradingSys/backtest/layers/alerts/test_live_runner_layers.py"
+  ],
   "created": "2026-10-24T19:50:04Z",
   "depends_on": [],
   "done_when": "New test red before / green after; test_auto_trader*.py and test_live_runner_layers.py pass; replay of the 30 DEV days (DSA desk task) shows RSI accepted alerts only support.",
@@ -11,7 +13,7 @@
   "from_inbox": "",
   "goal": "Live RSI trades only events a backtest covered: support@40 long (+ tested rejection@60 short once the layer watches level 60); cross, failure and rejection@40 become alert-only.",
   "id": "t09-f3-rsi-live-untested-events",
-  "lane": "SONNET",
+  "lane": "JIS-NB",
   "latest": [
     {
       "auto": true,
@@ -22,7 +24,7 @@
     }
   ],
   "layers": [],
-  "live_path": false,
+  "live_path": true,
   "mutation_check": "",
   "note": "REVIEWED:2026-10-25 ACCEPT\n(reviewer agent a3c19d17, different from drafter; its FIX items applied.) Live-path rules: tests for restart/reset state, non-trade balance moves and API errors; safety checks fail closed. Builder edits code in a worktree only; never deploys or touches the live tree. CRITICAL: coordinator spawns a review session before ship. Backtest side: BACKTEST_L1_REPORT D3 (support@40 long, rejection@60 short). Shares auto_trader.py with T09-F2: one worker, F2 first, or sequence them. Not live_path:true (means lane JIS-NB): a worktree code change; the live tree changes only by a later manual or coordinator deploy. Sequencing: same worker after T09-F2, or after it is done (same file auto_trader.py).",
   "prio": 1,

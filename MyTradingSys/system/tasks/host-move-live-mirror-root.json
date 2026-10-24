@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "STALE: shipped. c2b9f0200 (2026-10-21): live host read from MyTradingSys/system/live_host.txt (live_mirror.py:35-46), local root override MTS_MIRROR_LIVE_ROOT, default_root uses is_live_tree or hostname==LIVE_HOST (live_mirror.py:116-120); tests test_live_host_file_moves_the_share_and_local_folder_rule, test_live_host_file_missing_or_empty_means_jis_nb in scripts/dev/test_live_mirror.py. Do not dispatch.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
