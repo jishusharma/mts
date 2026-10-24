@@ -265,3 +265,43 @@ def test_trade_chart_follows_the_condition_filter(tmp_path, monkeypatch):
 def test_page_has_trade_list():
     h = (HERE / 'page.html').read_text(encoding='utf-8')
     assert 'id="tltab"' in h and '/api/trade' in h
+
+
+def test_luck_line_formula_by_hand():
+    """sd 1.0, n 100, 8 tries: 1.0 * sqrt(2 ln 8) / 10 = sqrt(4.1589)/10 = 0.20393; one try -> 0."""
+    assert desk.luck(1.0, 100, 8) == pytest.approx(0.20393, abs=1e-4)
+    assert desk.luck(1.0, 100, 1) == 0.0 and desk.luck(1.0, 1, 8) == 0.0
+    assert desk.luck(2.0, 400, 8) == pytest.approx(0.20393, abs=1e-4)          # sd x2, n x4 -> same
+
+
+def test_no_edge_sample_stays_inside_luck_line():
+    """Planted no-edge sample (mean 0): its mean is within the luck line for 50 tries."""
+    r = np.random.default_rng(3).normal(0, 1, 400)
+    assert abs(r.mean()) < desk.luck(r.std(ddof=1), 400, 50)
+
+
+def test_monte_carlo_band_and_drawdown_fixed_seed():
+    net = [1.0, -1.0] * 20
+    res = {'net': net, 'touch_t': list(range(40)), 'filled': [True] * 40}
+    a = desk.monte_carlo(res, [10, 40])
+    assert a == desk.monte_carlo(res, [10, 40])                               # fixed seed: repeatable
+    assert a['lo'][1] == a['hi'][1] == 0.0                                     # any order of 20 wins and 20 losses ends at 0
+    assert a['lo'][0] <= a['hi'][0] and 1 <= a['dd_lo'] <= a['dd_hi'] <= 20
+    assert desk.monte_carlo({'net': [1.0], 'touch_t': [1], 'filled': [True]}, [1]) is None
+
+
+def test_monte_carlo_is_fast():
+    import time
+    rng = np.random.default_rng(1)
+    res = {'net': rng.normal(0, 1, 400), 'touch_t': np.arange(400), 'filled': np.ones(400, bool)}
+    t0 = time.perf_counter()
+    desk.monte_carlo(res, list(range(1, 401, 4)))
+    assert time.perf_counter() - t0 < 1.0
+
+
+def test_run_returns_mc_and_luck(tmp_path):
+    trials = tmp_path / 'TRIALS.md'
+    trials.write_text('', encoding='utf-8')
+    o = desk.run_setting(SideStudy, {'x': 9}, trials_path=trials, cache_dir=tmp_path / 'c')
+    assert o['curve']['mc']['shuffles'] == 1000 and len(o['curve']['mc']['lo']) == len(o['curve']['idx'])
+    assert o['luck']['tries'] == 1 and o['luck']['r'] == 0.0

@@ -91,7 +91,32 @@ def numbers(res):
     cum = np.cumsum(net)
     dd = float((np.maximum.accumulate(np.r_[0.0, cum])[1:] - cum).max())
     return {'n': n, 'win_rate': float((net > 0).mean()), 'mean_net': float(net.mean()), 'mean_gross': float(gross.mean()),
-            'mean_fee': float(fees.mean()), 'profit_factor': float(win / loss) if loss > 0 else None, 'max_dd_r': dd}
+            'mean_fee': float(fees.mean()), 'sd': float(net.std(ddof=1)) if n > 1 else 0.0, 'profit_factor': float(win / loss) if loss > 0 else None, 'max_dd_r': dd}
+
+
+def luck(sd, n, tries):
+    """R per trade that pure luck reaches as the best of `tries` no-edge setups: sd * sqrt(2 ln N) / sqrt(n) (extreme-value
+    approximation for the maximum of N independent normal means). 0 for a single try."""
+    if n < 2 or tries < 2:
+        return 0.0
+    return float(sd * math.sqrt(2 * math.log(tries)) / math.sqrt(n))
+
+
+def monte_carlo(res, idx, shuffles=1000, seed=7):
+    """Reshuffle the filled trades' R `shuffles` times (fixed seed): 5-95 % band of the running R at the curve's trade
+    positions `idx` (1-based), and the 5-95 % range of the worst drawdown. Answers: how much of the path is order luck."""
+    filled = np.asarray(res.get('filled', np.ones(len(res['net']), bool)), bool)
+    net = np.asarray(res['net'], float)[filled]
+    if len(net) < 2:
+        return None
+    rng = np.random.default_rng(seed)
+    paths = np.cumsum(rng.permuted(np.tile(net, (shuffles, 1)), axis=1), axis=1)
+    peak = np.maximum.accumulate(np.concatenate([np.zeros((shuffles, 1)), paths], axis=1), axis=1)[:, 1:]
+    dd = (peak - paths).max(axis=1)
+    cols = np.asarray(idx) - 1
+    lo, hi = np.percentile(paths[:, cols], [5, 95], axis=0)
+    return {'lo': [round(float(x), 3) for x in lo], 'hi': [round(float(x), 3) for x in hi],
+            'dd_lo': round(float(np.percentile(dd, 5)), 2), 'dd_hi': round(float(np.percentile(dd, 95)), 2), 'shuffles': shuffles}
 
 
 def trade_list(res):
@@ -239,6 +264,10 @@ def run_setting(study, p, trials_path=TRIALS, cache_dir=CACHE, progress=print, c
            'hi': st.get('hi'), 'streak': st.get('streak', 0), 'win_rate': st.get('win_rate'),
            'try_no': count_tries(trials_path, study), 'prior_tries': len(_rows(trials_path, f"| {study.PRIOR_TAG} ")) if hasattr(study, 'PRIOR_TAG') else 0,
            'stats': {k: v for k, v in st.items() if isinstance(v, (int, float))}, 'charts': [], 'curve': curve(res), 'numbers': numbers(res), 'trades': trade_list(res)}
+    out['curve']['mc'] = monte_carlo(res, out['curve']['idx']) if out['curve'].get('n') else None
+    tries = out['try_no'] + out['prior_tries']
+    k = out['numbers']
+    out['luck'] = {'tries': tries, 'r': luck(k.get('sd', 0), k.get('n', 0), tries)} if k.get('n') else None
     out['run_seconds'] = round(time.perf_counter() - t0, 2)
     if charts:
         try:

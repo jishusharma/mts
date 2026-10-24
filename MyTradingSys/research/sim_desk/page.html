@@ -211,11 +211,16 @@ function eqDraw() {
   box.style.display = 'block';
   const u = $('equnit').value, runs = [[cur, 'var(--ink)', 'B (this run)']];
   if (pinned) runs.unshift([pinned, '#2563eb', 'A (kept)']);
-  const ys = runs.flatMap(r => r[0].curve[u]).concat(u === 'usd' ? [cur.curve.start_usd] : [0]);
+  const mc = cur.curve.mc, cv = r => u === 'usd' ? cur.curve.start_usd * (1 + cur.curve.risk_pct / 100 * r) : r;
+  const ys = runs.flatMap(r => r[0].curve[u]).concat(mc ? mc.lo.map(cv).concat(mc.hi.map(cv)) : []).concat(u === 'usd' ? [cur.curve.start_usd] : [0]);
   const lo = Math.min(...ys), hi = Math.max(...ys), span = hi - lo || 1;
   const xmax = Math.max(...runs.map(r => r[0].curve.n));
   const X = i => 600 * i / Math.max(xmax - 1, 1), Y = v => 175 - 170 * (v - lo) / span;
   let svg = `<line x1="0" x2="600" y1="${Y(u === 'usd' ? cur.curve.start_usd : 0)}" y2="${Y(u === 'usd' ? cur.curve.start_usd : 0)}" stroke="var(--line)" stroke-dasharray="4"/>`;
+  if (mc) { // 5-95 % band of 1,000 reshuffles of the same trades
+    const c = cur.curve, up = mc.hi.map((v, i) => X(c.idx[i] - 1) + ',' + Y(cv(v))), dn = mc.lo.map((v, i) => X(c.idx[i] - 1) + ',' + Y(cv(v))).reverse();
+    svg += `<polygon fill="#2563eb" opacity=".13" points="${up.join(' ')} ${dn.join(' ')}"/>`;
+  }
   { // drawdown shaded under the running peak of this run
     const c = cur.curve, v = c[u]; let peak = -Infinity; const top = [], bot = [];
     v.forEach((y, i) => { peak = Math.max(peak, y, u === 'usd' ? c.start_usd : 0); top.push(X(c.idx[i] - 1) + ',' + Y(peak)); bot.push(X(c.idx[i] - 1) + ',' + Y(y)); });
@@ -232,7 +237,7 @@ function eqDraw() {
     $('eqcur').setAttribute('x1', X(k - 1)); $('eqcur').setAttribute('x2', X(k - 1));
     const day = new Date(c.t[i]).toISOString().slice(0, 10);
     $('eqwhen').textContent = `trade ${k} of ${c.n}, ${day}`;
-    $('eqread').textContent = `${c.r[i] >= 0 ? '+' : ''}${c.r[i].toFixed(2)} R = $${c.usd[i].toFixed(0)}; worst drawdown ${(cur.numbers.max_dd_r).toFixed(1)} R (shaded)`;
+    $('eqread').textContent = `${c.r[i] >= 0 ? '+' : ''}${c.r[i].toFixed(2)} R = $${c.usd[i].toFixed(0)}; worst drawdown ${(cur.numbers.max_dd_r).toFixed(1)} R (shaded)` + (mc ? `; blue band: 90 % of ${mc.shuffles} reshuffles of these trades, worst drawdown ${mc.dd_lo} to ${mc.dd_hi} R` : '');
   };
   sc.oninput = move; move();
   const row = (o, name) => `<tr><th>${name}</th><td>${o.verdict}</td><td>${o.n}</td><td>${fmt(o.mean)} R</td><td>${fmt(o.lo)} to ${fmt(o.hi)}</td><td>$${o.curve.usd[o.curve.usd.length - 1].toFixed(0)}</td><td>${o.cond_label || 'no condition'}</td></tr>`;
@@ -273,7 +278,8 @@ function show(o) {
   v.innerHTML = '';
   v.append(o.verdict + ' ');
   const s = document.createElement('small');
-  s.textContent = o.reason + `. Try #${o.try_no} on this data: the best of many tries looks better than it is.`;
+  s.textContent = o.reason + `. Try #${o.try_no} on this data: the best of many tries looks better than it is.` +
+    (o.luck && o.luck.tries > 1 ? ` After ${o.luck.tries} tries, luck alone reaches about ${fmt(o.luck.r, 2)} R per trade.` : '');
   v.appendChild(s);
   $('nums').innerHTML = '';
   const nums = [[o.n, `trades (${o.nofill} ideas never filled)`], [fmt(o.mean) + ' R', `average per trade after fees (95 % range ${fmt(o.lo)} to ${fmt(o.hi)})`],
