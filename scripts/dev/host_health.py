@@ -401,8 +401,9 @@ def post_strays(repo, strays):
     return len(new)
 
 
-def run(repo, reap=True, post=True, procs=None, kill=kill_tree, now=None):
-    """All four checks. Returns report lines. Each part is isolated: an error in one is logged and the rest still run."""
+def run(repo, reap=True, post=True, procs=None, kill=kill_tree, now=None, disk=None, queue=None):
+    """All four checks. Returns report lines. Each part is isolated: an error in one is logged and the rest still run.
+    disk(repo) -> (lines, freed) and queue() -> lines default to check_disk / check_queue; tests inject stubs (the real disk scan hangs a test on a full C:)."""
     lines = []
     now = now or time.time()
 
@@ -468,8 +469,8 @@ def run(repo, reap=True, post=True, procs=None, kill=kill_tree, now=None):
     part("orphan gates", orphans)
     part("stale tickets", files)
     part("strays", strays)
-    part("disk", lambda: check_disk(repo)[0])
-    part("queue", check_queue)
+    part("disk", lambda: (disk or check_disk)(repo)[0])
+    part("queue", queue or check_queue)
     return lines
 
 
