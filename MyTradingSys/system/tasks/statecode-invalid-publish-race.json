@@ -14,15 +14,25 @@
   "goal": "Make invalidation and state publication atomic with respect to one another; prevent fresh valid output after socket-close invalidation.",
   "id": "statecode-invalid-publish-race",
   "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "StateCodeEmitter: kline backfill of session CVD/VWAP sums, fail closed; vwap_anchor_utc = ",
+      "ref": "e4bcc09fd3a3",
+      "utc": "2026-10-19T20:48:44Z"
+    }
+  ],
   "layers": [
     "live_engine"
   ],
   "live_path": true,
   "mutation_check": "",
-  "note": "Raw follow-up from GPT review; requires owning-lane refinement and review, no deploy authorization.",
+  "note": "REVIEWED:2026-10-25 ACCEPT Refined by Session_Planner 2026-10-25. Confirmed unfixed on trunk (last StateCodeEmitter commit e4bcc09fd). Weight raised CRUCIAL->CRITICAL (live path, publication of state read by alerts). Same file set as statecode-late-seam-tick: ONE session takes both, this card first. Independent GPT/Opus review before any deploy; builders never deploy.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-24T21:36:02Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -30,21 +40,26 @@
     "src/test/java/datafeed/StateCodeEmitterTest.java"
   ],
   "scope_out": [
-    "deploys, process restarts, HALT files, live tree",
-    "unrelated strategy logic"
+    "MarketDataSnapshot.java, other src/main files, scripts/*, deploys, process restarts, HALT files, live tree"
   ],
+  "scope_sha": "e4bcc09fd3a3",
   "size": "M",
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-20_review-statecode-backfill-gpt.md"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "Read the GPT review report and reproduce the cited scenario.",
-    "Pause an emit after snapshot, close the stream, resume publication; assert INVALID, null accumulator signals and sums. Test startup restored directional state and subsequent recovery.",
-    "Run the focused Maven tests, required live-path gates, and obtain a fresh independent review before deployment."
+    "Add a package-private test seam in StateCodeEmitter: a Runnable hook fired at the existing emit boundary between the BUFFER_LOCK snapshot (~l.423-432) and writeStateJson (~l.510), like the nowMsOverride seam. Default null, no production behaviour change.",
+    "FIRST write failing test closeBetweenSnapshotAndPublishStaysInvalid (setup as closeInvalidatesAndClearsTheCvdRing: fresh(src,NOW1), onStreamOpen(CONNECT), backfillNow(), trade() ticks). The hook calls e.onStreamClosed(\"ws_closed\") mid-emit.",
+    "Assert the written state is INVALID, session_accumulators_valid=false, cvd_slope and price_vs_vwap null, session_cvd/session_cum_pv/session_cum_vol null. Run on UNCHANGED code and record that it FAILS (GPT probe: state=A, valid=true).",
+    "Fix (default, OURS): re-check validity and accEpoch under BUFFER_LOCK and do writeStateJson inside that same lock hold (or a PUBLISH_LOCK that invalidateLocked also takes). Epoch mismatch publishes INVALID. Fail closed: any doubt means INVALID.",
+    "Restart test: restored directional state plus stale restored sums, close-before-publish stays INVALID, then onStreamOpen + backfillNow recovers VALID with kline totals. Retained L/S: state is INVALID, state_last_valid keeps it.",
+    "Non-trade test: a message without aggTrade during the paused emit leaves sums unchanged. API-error test: FakeKlines throws IOException on the recovery backfill, state stays INVALID with non-empty reason, a later retry recovers.",
+    "Run mvn -q test -Dtest=StateCodeEmitterTest,MarketDataSnapshotTest (28 + 22 existing tests stay green) and python scripts/dev/run_all_tests.py --quick. CRITICAL: review session mid-session and pre-ship; builder never deploys.",
+    "Verify: content commit sha, git cherry origin/fast-track <sha> empty AND git ls-tree -r origin/fast-track --name-only shows StateCodeEmitter.java and StateCodeEmitterTest.java."
   ],
-  "tests": "Pause an emit after snapshot, close the stream, resume publication; assert INVALID, null accumulator signals and sums. Test startup restored directional state and subsequent recovery.",
+  "tests": "StateCodeEmitterTest.closeBetweenSnapshotAndPublishStaysInvalid (new, fails on e4bcc09fd with state=A valid=true); plus restart, non-trade-message and API-error variants listed in steps; run: mvn -q test -Dtest=StateCodeEmitterTest,MarketDataSnapshotTest",
   "title": "StateCodeEmitter: serialize invalidation with state publication",
-  "weight": "CRUCIAL",
+  "weight": "CRITICAL",
   "worker": "session"
 }

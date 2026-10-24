@@ -14,15 +14,25 @@
   "goal": "Exclude every live tick older than the accepted backfill seam from session sums.",
   "id": "statecode-late-seam-tick",
   "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "StateCodeEmitter: kline backfill of session CVD/VWAP sums, fail closed; vwap_anchor_utc = ",
+      "ref": "e4bcc09fd3a3",
+      "utc": "2026-10-19T20:48:44Z"
+    }
+  ],
   "layers": [
     "live_engine"
   ],
   "live_path": true,
   "mutation_check": "",
-  "note": "Raw follow-up from GPT review; requires owning-lane refinement and review, no deploy authorization.",
+  "note": "REVIEWED:2026-10-25 ACCEPT Refined by Session_Planner 2026-10-25. Confirmed unfixed on trunk (last StateCodeEmitter commit e4bcc09fd). Weight raised CRUCIAL->CRITICAL (live path). Same files as statecode-invalid-publish-race: ONE session takes both; do invalid-publish-race first, then this.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-24T21:36:13Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -30,21 +40,26 @@
     "src/test/java/datafeed/StateCodeEmitterTest.java"
   ],
   "scope_out": [
-    "deploys, process restarts, HALT files, live tree",
-    "unrelated strategy logic"
+    "MarketDataSnapshot.java, other src/main files, scripts/*, deploys, process restarts, HALT files, live tree"
   ],
+  "scope_sha": "e4bcc09fd3a3",
   "size": "M",
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-20_review-statecode-backfill-gpt.md"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "Read the GPT review report and reproduce the cited scenario.",
-    "After a successful backfill, deliver T=M-1 and assert totals unchanged; deliver T=M and assert exactly one addition; repeat after reconnect and midnight.",
-    "Run the focused Maven tests, required live-path gates, and obtain a fresh independent review before deployment."
+    "FIRST write failing test lateFrameBeforeSeamIsIgnoredAfterBackfill in StateCodeEmitterTest (330-bar fixture BARS1/CONNECT/NOW1/M1, setup as restartReplacesStaleRestoredSumsWithBackfill): after backfillNow() deliver trade(M1-1, buy qty 2) and emit.",
+    "Assert session_cvd stays 1320, session_cum_vol stays 3300, valid=true. Run on UNCHANGED code and record that it FAILS (GPT probe LATE_PRE_M: 1322 / 3302).",
+    "Fix (default, OURS): store the accepted seam M in a field guarded by BUFFER_LOCK at completion (~l.367-371). In onMessage (~l.181-182) apply the tick to the session sums only if t.T >= seam while accValid. The rolling ticks buffer and signals are untouched.",
+    "Reset the seam in invalidateLocked and on a new connection or day, so each backfill sets its own. A failed backfill must not keep a seam.",
+    "Boundary tests: T=M-1 leaves totals unchanged; T=M adds exactly once; T=M seen in pending replay and again live counts once; repeat after reconnect (onStreamClosed, onStreamOpen, new backfillNow) and after midnight rollover with a new-day seam.",
+    "Safety tests: non-trade message after backfill leaves sums unchanged; restart with stale restored sums is still replaced by kline totals; backfill IOException keeps state INVALID and no tick is summed.",
+    "Run mvn -q test -Dtest=StateCodeEmitterTest,MarketDataSnapshotTest and python scripts/dev/run_all_tests.py --quick. CRITICAL: review session mid-session and pre-ship; builder never deploys.",
+    "Verify: content commit sha, git cherry origin/fast-track <sha> empty AND git ls-tree -r origin/fast-track --name-only shows both files."
   ],
-  "tests": "After a successful backfill, deliver T=M-1 and assert totals unchanged; deliver T=M and assert exactly one addition; repeat after reconnect and midnight.",
+  "tests": "StateCodeEmitterTest.lateFrameBeforeSeamIsIgnoredAfterBackfill (new, fails on e4bcc09fd: 1322/3302); plus T=M, reconnect, midnight, non-trade and API-error variants; run: mvn -q test -Dtest=StateCodeEmitterTest,MarketDataSnapshotTest",
   "title": "StateCodeEmitter: exclude late pre-boundary ticks after backfill completion",
-  "weight": "CRUCIAL",
+  "weight": "CRITICAL",
   "worker": "session"
 }
