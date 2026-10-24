@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/research/trendlines_2026-10-17/lint_contract.py",
+    "python scripts/dev/tasks.py lint"
+  ],
+  "created": "2026-10-24T23:00:54Z",
+  "depends_on": [],
+  "done_when": "lint_contract.py exits 0 with the ledger check; wiring_registry.json lists the 3 files; layer_index.json krown family names trendline_core.py and PRE_REG_TRENDLINES.md; LAYERS.md shows the module.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "New rows of daily/ledger.jsonl follow contract s8 schema v2 (checked by a lint), SELECTION_STRINGS.txt is the fixed list, and trendline_core.py, count_only.py, g3_pack.py are listed in wiring_registry.json and the krown family in layer_index.json.",
+  "id": "trendline-ledger-registry-hygiene",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "cbp: cbp.query + cbp_run.py (MTS runs CBP, 5-day store); delete queue consumer/adapter",
+      "ref": "f9fcf77b4a80",
+      "utc": "2026-10-23T18:57:08Z"
+    }
+  ],
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-25 ACCEPT (independent Sonnet reviewer, fixes applied). DECISION (OURS): old rows are exempted by a cutoff in daily/LEDGER_SCHEMA.json, never edited; contract s8 list wins over the 4-string prose file. Registry files are shared indexes: ship promptly, one writer.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-24T23:03:07Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/trendlines_2026-10-17/lint_contract.py",
+    "MyTradingSys/research/trendlines_2026-10-17/daily/SELECTION_STRINGS.txt",
+    "MyTradingSys/system/wiring_registry.json",
+    "MyTradingSys/system/layer_index.json",
+    "MyTradingSys/research/trendlines_2026-10-17/daily/LEDGER_SCHEMA.json"
+  ],
+  "scope_out": [
+    "editing or rewriting any existing ledger row (hash chain stays honest)",
+    "running the daily watch",
+    "detector changes"
+  ],
+  "scope_sha": "f9fcf77b4a80",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/trendlines_2026-10-17/AUDIT_2026-10-18.md gap 6",
+    "TRENDLINE_CONTRACT.md s8"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read AUDIT gap 6, contract s8 (lines 109-125), wiring_registry.json:879-882 and layer_index.json krown family.",
+    "Fail-first: extend lint_contract.py with a ledger check: rows after v2_from_line in daily/LEDGER_SCHEMA.json (47) need record_sha256, content_sha256, selection_string; earlier rows exempt. Must fail on a v1-shaped row appended after the cutoff.",
+    "SELECTION_STRINGS.txt: rewrite to contract s8's 6 strings (wins over the prose file), versioned. wiring_registry.json:890-893: trendline_core.py now run; add count_only.py, g3_pack.py. layer_index.json krown family: add the module and PRE_REG. Run make_status.py and the registry lint."
+  ],
+  "tests": "lint_contract.py ledger check fails on a v1-shaped row after the cutoff and passes on the current ledger (self-test or new test file).",
+  "title": "Trend-line daily ledger schema v2 enforcement + register the module in layer_index and wiring_registry (audit gap 6)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}
