@@ -211,6 +211,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/krown_ta101_2026-10-13/reflexivity_log.md`; `MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md`; `MyTradingSys/options/research/KROWN_FREE_VS_PAID.md`
 - Roadmap: `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `sim-dashboard-v1` ready p1 SONNET: Simulator dashboard v1: single-screen page from precomputed levels-confluence ladder results
   - `cbp-add-channel-latest-n-to-fetch-captio` ready p2 SONNET: CBP: add --channel --latest N to fetch_captions_timed.py, CBP writes into raw_transcripts_canonical, delete fe
   - `confluence-s0-registry` ready p2 HAIKU: Confluence S0: Krown registry refresh
   - `confluence-s1-context-counts` ready p2 SONNET: Confluence S1: Krown context table and counts pass
@@ -230,7 +231,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/wavetrend_2026-10-17/STATUS_2026-10-19.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `wavetrend-c1-v2` refined p1 SONNET: WaveTrend C1 detector correction and new count-only prereg
-  - `wavetrend-data-inference` refined p1 SONNET: WaveTrend DEV input manifest and matched inference
+  - `wavetrend-data-inference` ready p1 SONNET: WaveTrend DEV input manifest and matched inference
 
 ## Pitchfork (Andrews / Schiff / Morge median line) (`pitchfork`)
 - Status: Foundational study papers delivered (papers/01, 02, 03); detector, tests, and YouTube BTC evaluation benchmark built.
