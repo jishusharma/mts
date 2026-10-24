@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-24T17:32:44Z",
   "commands": [],
   "created": "2026-10-19T14:44:46Z",
   "depends_on": [
@@ -14,7 +15,14 @@
   "goal": "RSI depth map, DEV only (open < 2024-07-01): per TF the ranked RSI troughs per window, P_touch per integer level 5..50 with visit counts, and the rare-zone line for q 20/10/5/2%. Spec: SPEC.md s2 Steps A-C; scope: OPUS_FRAMING.md s2.3, s5. Reuse econ_floor.py loaders/RSI/events (do not edit).",
   "id": "rsi-deep-depth-map",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "DEPTH_MAP.csv/.md DEV 2022-01..2024-06, 22 TF x window cells, tests 8 pass",
+      "ref": "16058176a",
+      "utc": "2026-10-24T17:32:44Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -28,7 +36,12 @@
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md",
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/ECON_FLOOR.md"
   ],
-  "result": "",
+  "result": "DEPTH_MAP.csv/.md DEV 2022-01..2024-06, 22 TF x window cells, tests 8 pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/depth_map.py",
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/test_depth_map.py",
@@ -44,7 +57,7 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read SPEC.md s2 Steps A-C, OPUS_FRAMING.md s2.3/s5, ECON_FLOOR.md (verdict: 1m abs30/abs20/rel dead, 15m rel dead, abs10 inconclusive, 60m abs20 lead - a lead, not an edge).",
     "Write fail-first tests in test_depth_map.py on synthetic series (see tests field); run, see them fail.",
@@ -53,6 +66,7 @@
     "Write DEPTH_MAP.md: tables per TF, rare-zone lines, counts in independent days, FIXED vs VARIED parameter list with SOURCED/OURS labels; note R1 lead (60m abs20) without claiming edge.",
     "Run tests and run_all_tests --quick; commit the four new files only; ship via sync.py."
   ],
+  "taken": "2026-10-24T17:32:44Z",
   "tests": [
     "test_depth_map.py, fail-first on synthetic series: (1) planted troughs give exact rank1..5 order",
     "(2) hysteresis: wobble of +-1 around L is one visit; a rise of h+ then a dip is two",
