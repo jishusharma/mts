@@ -20,7 +20,7 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:results CLASS:C1 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report.",
+  "note": "REVIEWED:2026-10-24 ACCEPT by=sonnet-review-agent (pilot1-cards, reviewer saw card+evidence only). PILOT1: optional third twin (step 6) only if time left; stop at 3 h. REVIEWED-OLD LAB:results CLASS:C1 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
@@ -50,11 +50,11 @@
     "Read MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md sections 1-7, then section 8 'T04' (full method).",
     "Read only PRE_REG.md of mal_bb_mid_engulf (A1) and opr_weekly_low_round_sweep (RL); keep an ambiguity log; do not open study.py yet.",
     "Write scripts/T04/twin_<study>.py from the spec with your own loader; run on DEV; event lists with entry/exit/net.",
-    "Diff vs the shipped ledger.csv event by event (matched, twin-only, shipped-only, return differs): counts and 10 examples each.",
+    "Diff vs the shipped ledger.csv event by event (matched, twin-only, shipped-only, return differs): counts and 10 examples each. Shipped ledger.csv has no entry/exit prices: recompute net from the horizon-return column (G_short_h60).",
     "Read study.py; classify each difference (spec ambiguity, shipped bug, twin bug); fix twin bugs; measure mean, t and verdict on shipped vs twin vs corrected events.",
     "Time left: a third twin for opr_preopen_tops H2."
   ],
-  "tests": "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T04/test_twin_diff.py::test_every_shipped_event_is_matched_or_listed (asserts matched + twin-only + shipped-only counts equal the shipped ledger.csv row count per study, and every difference row carries one class of spec ambiguity / shipped bug / twin bug; fails on pre-change code: scripts/T04/ does not exist yet)",
+  "tests": "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T04/test_twin_diff.py::test_every_shipped_event_is_matched_or_listed (asserts matched + twin-only + shipped-only counts equal the shipped ledger.csv row count per study, and every difference row carries one class of spec ambiguity / shipped bug / twin bug; fails on pre-change code: test_twin_diff.py does not exist yet)",
   "title": "DSA audit T04: clean-room twin of mal_bb and weekly-low sweep from PRE_REG only, diffed event by event",
   "weight": "IMPORTANT",
   "worker": "session"

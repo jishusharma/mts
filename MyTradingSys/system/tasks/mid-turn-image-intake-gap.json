@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "score-context-reads-automatically-carrie: compute carried falsifiers from klines",
-      "ref": "bc97ca7421a9",
-      "utc": "2026-10-18T13:53:58Z"
+      "line": "shot: card: outcomes also resolve in tasks/archive/",
+      "ref": "3a9d8faafb92",
+      "utc": "2026-10-22T14:14:08Z"
     },
     {
       "auto": true,
@@ -31,11 +31,11 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Observed 2026-10-18: 5 shots pasted mid-turn ~14:57Z never reached disk; the operator re-pasted them as a normal prompt at 15:38Z and the hook landed all 5 (ffb3dd828daa, 5763ffcc7333, 33369d758139, df60707599d8, 4d1696e42656). Workaround confirmed: re-paste as a new prompt. Fix still open: the session should say 'NOT SAVED, re-paste' when it sees mid-turn images.",
+  "note": "Observed 2026-10-18: 5 shots pasted mid-turn ~14:57Z never reached disk; the operator re-pasted them as a normal prompt at 15:38Z and the hook landed all 5 (ffb3dd828daa, 5763ffcc7333, 33369d758139, df60707599d8, 4d1696e42656). Workaround confirmed: re-paste as a new prompt. Fix still open: the session should say 'NOT SAVED, re-paste' when it sees mid-turn images. PILOT1 2026-10-24: desktop claim (24 h stale) released via sync.py release; scope re-read, files unchanged by other cards (last change 3a9d8faaf is card-resolution only).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-18T15:47:01Z",
+  "refreshed": "2026-10-24T10:02:13Z",
   "refs": [
     "MyTradingSys/methodology/screenshot_intake.md"
   ],
@@ -50,7 +50,7 @@
     "the Claude app itself",
     "operator drawings"
   ],
-  "scope_sha": "bc97ca7421a9",
+  "scope_sha": "3a9d8faafb92",
   "size": "S",
   "sources": [
     "MyTradingSys/methodology/screenshot_intake.md:85 (KNOWN LIMITS section to extend)",
