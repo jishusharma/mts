@@ -8,7 +8,7 @@ Seen by `python scripts/dev/mts_signal.py who --hours 72` on 2026-10-24. Answers
 
 | Station | Last seen | C: free (roll call) | MTS scheduled tasks / HKCU Run | Restart cleanup (section 4) |
 |---|---|---|---|---|
-| JIS-NB / C | 2026-10-24 (this checkout) | 12.8 GB on 2026-10-24 (guard dry run) | no MTS task (`Get-ScheduledTask`, 2026-10-24); no MTS Run value | not registered: waits for the operator's yes (section 4) |
+| JIS-NB / C | 2026-10-24 (this checkout) | 12.8 GB on 2026-10-24 (guard dry run) | no MTS task (`Get-ScheduledTask`, 2026-10-24); no MTS Run value | not registered: primary checkout blocked by local changes (section 6) |
 | JIS-NUC / B | 12 min before the roll call | NOT CAPTURED | NOT CAPTURED | NOT CAPTURED |
 | DESKTOP-F7IU69N / A | 75 min | NOT CAPTURED | NOT CAPTURED | NOT CAPTURED |
 | DESKTOP-F7IU69N / C | 31 h | NOT CAPTURED | NOT CAPTURED | NOT CAPTURED |
@@ -56,9 +56,9 @@ Never pruned (state other code reads): `mts_roles` (role injection records, `rol
 
 Never touched by any cleanup: the repo and its worktrees (except the job in section 2), `.secrets`, `.env`, F:, the live tree `.mts_live`, `runtime_data/`, anything younger than its age limit.
 
-## 4. Restart cleanup (PROPOSED 2026-10-24: registration needs the operator's yes)
+## 4. Restart cleanup (operator yes 2026-10-24; install sent as broadcast b-10b3d8, HIGH)
 
-The operator asked for cleanup on every restart without a scheduler. Reviewers found that a logon launcher needs his explicit yes under SCHEDULING_POLICY.md, so nothing is registered until he says so. Mechanism: a per-user Run value `MTSTempGuard` in `HKCU\Software\Microsoft\Windows\CurrentVersion\Run`. Windows runs it at logon, `conhost --headless` (no window), it prunes once and exits. It has no timer and no repeat, and it needs no admin rights. It is not a scheduled task. The same launch already runs the Antigravity daemon on JIS-NUC (DEVICES.md section 7).
+The operator asked for cleanup on every restart without a scheduler, and said yes to the logon run on every station. Registration is per station, as each one acks. Mechanism: a per-user Run value `MTSTempGuard` in `HKCU\Software\Microsoft\Windows\CurrentVersion\Run`. Windows runs it at logon, `conhost --headless` (no window), it prunes once and exits. It has no timer and no repeat, and it needs no admin rights. It is not a scheduled task. The same launch already runs the Antigravity daemon on JIS-NUC (DEVICES.md section 7).
 
 Install once per station, from the primary checkout (a git worktree is refused, because tidy removes worktrees and the run would then point at nothing):
 
@@ -84,4 +84,5 @@ A signal is at most 200 characters (repo is public: no paths with account names,
 
 - 2026-10-24: inventory and this page. `c_drive_guard.py`: prefixes added (section 3), state dirs excluded, logon run added. Stations asked (roll call). JIS-NB/C: no MTS scheduled task; `wt_maint.py status` says the worktree job is NOT INSTALLED here, which contradicts DEVICES.md section 8b (fixed there).
 - 2026-10-24, later: reviewers found a junction under `%TEMP%\claude` that the shipped guard would follow (outside `%TEMP%`), `desk-*` git worktrees it would prune, and an unguarded directory scan. Fixed: junctions never followed, `.git` fails closed, `desk-` removed from the prefixes, scans never raise (tests: junction and worktree tests fail on the shipped version). The fix is the first commit after `df160f3fc`.
+- 2026-10-24, operator yes: fix on fast-track as `2ab5145ff`. Install broadcast `b-10b3d8` (HIGH) to every station. JIS-NB: told, not registered (primary 105 behind fast-track with 67 local changes, not ours; left alone; operator decides). Laptop, NUC and `vm`: acks pending (`mts_signal.py acks b-10b3d8`).
 - Open: the other stations' answers; `vm_bundles` size and whether it may move (operator); tests that leave their own `%TEMP%` dirs behind (follow-up: each test should remove its own scratch).
