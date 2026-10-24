@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-24T19:50:28Z",
+  "depends_on": [],
+  "done_when": "DEV-only fee-net result at 1h with n, mean net R and 95% CI; a TRIALS row; a sim_desk result JSON (filled trades only, percent distances, no prices); verdict line; shipped with git cherry empty.",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "T09 (446f6c503) found funding_cvd_fade was judged on 15m bars (run_t055.py:86-90) but live runs it on 1h (live_runner_cli.py:485): 0 of 34 signals coincide. Re-run the same rule on 1h bars on DEV only, fee-net, and export sim_desk/results/<id>.json so it shows on the simulator.",
+  "id": "t09-f5-funding-cvd-fade-backtest-at-1h",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "T09: chunk indices with array_split (same sums, clears fwd-index lint)",
+      "ref": "c725894dbf26",
+      "utc": "2026-10-24T19:19:43Z"
+    }
+  ],
+  "layers": [
+    "positioning"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-24T19:50:37Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/",
+    "MyTradingSys/research/sim_desk/results/"
+  ],
+  "scope_out": [
+    "Live tree, HALT, deploys, mainnet, account data, .secrets; VALIDATION and HOLDOUT windows; live_layers.py"
+  ],
+  "scope_sha": "c725894dbf26",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read T09 F5 and run_t055.py",
+    "Run at 1h on DEV",
+    "Write TRIALS row + sim result JSON",
+    "Ship"
+  ],
+  "tests": "A small fixture test that the 1h resample feeds the rule (fails on the 15m-only path); numbers recomputed from FORMULAS.md.",
+  "title": "T09-F5: re-test funding_cvd_fade on 1h bars (live runs 1h, verdict was on 15m)",
+  "weight": "",
+  "worker": "session"
+}
