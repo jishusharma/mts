@@ -16,7 +16,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "OPERATOR QUOTE: \"I am waiting for these fixes to be available already\" (2026-10-22, q-ci-speed-fixes). Source: CI_SPEED_DIAGNOSIS_2026-10-22.md item 2, version 1 only (same tests, more parallel GitHub Windows runners; public repo = free). Shard steps 4/4b/4c/4g/4h as a matrix; mark-green needs all shards. Version 2 (Linux-only full gate) is NOT approved.",
+  "note": "STALE: shipped. 7798f05c8 (3 Windows shards, run_all_tests --shard K/N, mark-green needs all), then ccb4c9bd2 and b72267ae9 (12 shards, CI under 2-3 min; 2f3cbbe42 measured 2m56s). Do not dispatch.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",

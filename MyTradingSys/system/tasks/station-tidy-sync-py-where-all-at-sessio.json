@@ -1,34 +1,60 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest scripts/dev/test_sync.py -q"
+  ],
   "created": "2026-10-23T09:38:51Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "python scripts/dev/sync.py station prints the all-trees list plus the tidy dry run; station --apply removes only clean shipped idle trees; test_sync.py passes.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Add 'sync.py station [--apply]': one command for session start and end that prints 'where --all' then the 'tidy' dry run (or tidy --apply), so the operator never visits machines.",
   "id": "station-tidy-sync-py-where-all-at-sessio",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "docs ships run the doc/data checks CI failed on: role files, task cards, BUGS.md group map",
+      "ref": "e2f1d72bddc2",
+      "utc": "2026-10-23T19:19:35Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-25 T0-ONLY S card, one file pair, T0 check clean; coordinator spot-checks after ship. DECISION (OURS): weight ROUTINE (dev tooling / triage doc). Verify: content sha, cherry check against origin/fast-track empty, ls-tree of origin/fast-track lists the delivered files.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-24T21:38:12Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "scripts/dev/sync.py",
+    "scripts/dev/test_sync.py"
+  ],
+  "scope_out": [
+    "live tree",
+    "CLAUDE.md",
+    "any scheduler or hook"
+  ],
+  "scope_sha": "e2f1d72bddc2",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/SUPER_PLAN_2026-10-23.md:9"
+  ],
+  "state": "ready",
+  "steps": [
+    "In scripts/dev/sync.py add station(repo, apply=False): call where(repo, all_=True) then tidy(repo, apply=apply); return tidy's list. Add 'station' to the module docstring usage block and to main() beside 'where'/'tidy' (accept only --apply).",
+    "Write the test first in scripts/dev/test_sync.py beside the where/tidy tests: station prints the 'where' summary line and lists a clean shipped idle tree as tidy candidate; --apply removes only that tree. Run it before the code exists (fails: no sync.station).",
+    "Run python -m pytest scripts/dev/test_sync.py -q; start and ship stay untouched."
+  ],
+  "tests": "scripts/dev/test_sync.py::test_station_runs_where_all_then_tidy fails first (no sync.station), passes after; second test: --apply removes only the clean shipped idle tree.",
   "title": "Station tidy: sync.py where --all at session start and end",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

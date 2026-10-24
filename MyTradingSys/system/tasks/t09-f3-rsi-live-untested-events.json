@@ -1,34 +1,62 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest -q MyTradingSys/execution/test_auto_trader.py MyTradingSys/backtest/layers/alerts/test_live_runner_layers.py"
+  ],
   "created": "2026-10-24T19:50:04Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "New test red before / green after; test_auto_trader*.py and test_live_runner_layers.py pass; replay of the 30 DEV days (DSA desk task) shows RSI accepted alerts only support.",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Live RSI trades only events a backtest covered: support@40 long (+ tested rejection@60 short once the layer watches level 60); cross, failure and rejection@40 become alert-only.",
   "id": "t09-f3-rsi-live-untested-events",
-  "lane": "SONNET",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "layer_signal: reject collection_only before the unmapped check",
+      "ref": "65d1be4afa08",
+      "utc": "2026-10-16T16:07:00Z"
+    }
+  ],
   "layers": [],
-  "live_path": false,
+  "live_path": true,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-25 ACCEPT\n(reviewer agent a3c19d17, different from drafter; its FIX items applied.) Live-path rules: tests for restart/reset state, non-trade balance moves and API errors; safety checks fail closed. Builder edits code in a worktree only; never deploys or touches the live tree. CRITICAL: coordinator spawns a review session before ship. Backtest side: BACKTEST_L1_REPORT D3 (support@40 long, rejection@60 short). Shares auto_trader.py with T09-F2: one worker, F2 first, or sequence them. Not live_path:true (means lane JIS-NB): a worktree code change; the live tree changes only by a later manual or coordinator deploy. Sequencing: same worker after T09-F2, or after it is done (same file auto_trader.py).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-24T21:34:12Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/execution/auto_trader.py",
+    "MyTradingSys/execution/test_auto_trader.py",
+    "MyTradingSys/backtest/layers/alerts/live_layers.py",
+    "MyTradingSys/backtest/layers/alerts/test_live_runner_layers.py"
+  ],
+  "scope_out": [
+    "exit/bracket logic (card T09-F2), rsi_events.py detector, deploy, live tree, other layers"
+  ],
+  "scope_sha": "65d1be4afa08",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T09_live_parity.md section 5 T09-F3 (5m 384 of 461, 15m 126 of 147, 1h 25 of 28 untested)",
+    "F:/MTS/gq/gx4-t09-* (GPT drafting fixes on the NUC night of 2026-10-25; not read here; compare its draft before building)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read live_layers.py rsi_level_layer (l.146-166) and auto_trader.py layer_rules (l.78-82); note that failure gets a side in live_layers and cross is mapped to level.",
+    "Add fail-first tests in test_auto_trader.py: rsi:cross, rsi:rejection@40 and rsi failure alerts return reject 'unmapped' / no side; rsi:support long still trades.",
+    "Fix: drop rsi:cross and rsi:rejection (rejection@40 is untested) from layer_rules, remove the failure side in rsi_level_layer; keep rsi:support long. rejection@60 stays alert-only until the layer watches level 60 (own card). Unknown or missing event rejects. Update test_rsi_cross_side_by_level (test_auto_trader.py:270) and failure-side tests in test_live_runner_layers.py.",
+    "Add tests: restart/reset gives the same decision; alert with no event key rejects; run test_auto_trader*.py and test_live_runner_layers.py."
+  ],
+  "tests": "test_auto_trader.py new test_rsi_untested_events_not_traded: cross, failure, rejection@40 rejected, support long accepted; red on current code (cross and rejection map to sides), green after.",
   "title": "T09-F3 S1: live RSI trades events no test covered (live_layers.py:146-166)",
-  "weight": "",
-  "worker": ""
+  "weight": "CRITICAL",
+  "worker": "agent"
 }

@@ -15,13 +15,23 @@
   "id": "usage-log-py-per-step-usage-ledger-trans",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "usage pilot + krown registry refresh: krown G1->G2, STATE.md transcripts, catalogue F1/F2",
+      "ref": "5025e79ba28d",
+      "utc": "2026-10-23T12:02:38Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS) 2026-10-23: drafted and T0-checked; reviewer Agent blocked by spawn cap (8/h), so no ACCEPT stamp: needs ONE batched Sonnet reviewer pass (or Lab_Guy for CODEX), then stamp REVIEWED:<date> ACCEPT and tasks.py check. DECISION (OURS): thresholds 40% / 60 min from the Thinker note, tune after 30 rows. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "note": "REVIEWED:2026-10-25 ACCEPT after Sonnet reviewer FIX 1-6 applied (header 19 cols, token field names, idle inputs, summary kind). DECISION (OURS): thresholds 40% / 60 min from the Thinker note, tune after 30 rows. Verify: content sha, cherry check against origin/fast-track empty, ls-tree of origin/fast-track lists the delivered files.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-24T21:38:45Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -35,18 +45,20 @@
     "live path",
     "any scheduler"
   ],
+  "scope_sha": "5025e79ba28d",
   "size": "M",
   "sources": [
     "MyTradingSys/research/thinker/2026-10-23_usage_metering.md (Pilot design, Check)"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "Row: usage_log.py row --card --step --lane --model --before 'five,week,fable' --after 'five,week,fable' [--transcript P --minutes N --source S]; refuses a row missing either read; writes the USAGE_PILOT.csv header if absent (columns in research/thinker/2026-10-23_usage_metering.md Pilot design).",
-    "Transcript parser: sum input, output, cache_read + cache_creation tokens per transcript JSONL (path under ~/.claude/projects/<slug>/<session>.jsonl); unreadable file gives empty token cells, never a crash.",
-    "idle: print IDLE <lane> when 5h < 40% and a ready card exists in that lane, or week room > pace with no worker, within 60 min of reset (thresholds OURS); summary: rows and mean tokens per card kind.",
-    "Write the test first, run it with no usage_log.py (fails), then build."
+    "Write the test first, run it with no usage_log.py (fails), then build. The test asserts the exact 19-column header line of MyTradingSys/research/USAGE_PILOT.csv (codex_5h_pct,codex_week_pct,gemini last; row takes optional --codex5h --codexweek --gemini, blank default).",
+    "row --card --step --lane --model --before 'five,week,fable' --after 'five,week,fable' [--transcript P --minutes N --source S]: exit 1 and no write if either read is missing; header written only if the file is absent.",
+    "Parser: per assistant line read message.usage input_tokens, output_tokens; tokens_cache = cache_read_input_tokens + cache_creation_input_tokens; dedupe by message.id, skip lines without usage. Unreadable or malformed file gives empty token cells and exit 0.",
+    "idle --reset <UTC ISO>: 5h% and week% from the newest CSV row of the lane (pct5h_after, pctweek_after); IDLE <lane> when 5h<40% and a task card with that lane is ready, or week% under pace (elapsed share of 7 days from --reset) with no claim in sync.py claims, within 60 min of reset. Thresholds OURS.",
+    "summary: row count and mean (tokens_in+out+cache) per card kind (kind = card worker field), over rows that have token cells."
   ],
-  "tests": "scripts/dev/test_usage_log.py::test_row_refuses_missing_after_read fails first (no module), passes after; plus parser and idle tests.",
+  "tests": "test_usage_log.py: test_row_refuses_missing_after_read fails first (no module); plus header-exact, parser sums on a hand-made JSONL, malformed file exits 0, idle fires/stays silent at the 40% and 60-minute edges.",
   "title": "usage_log.py: per-step usage ledger, transcript token parser, idle-lane report",
   "weight": "IMPORTANT",
   "worker": "session"

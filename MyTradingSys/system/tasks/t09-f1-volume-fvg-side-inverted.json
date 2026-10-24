@@ -1,34 +1,61 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest -q MyTradingSys/backtest/layers/alerts/test_live_runner_layers.py MyTradingSys/execution/test_auto_trader.py"
+  ],
   "created": "2026-10-24T19:50:02Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "New side test red before / green after; test_live_runner_layers.py and test_auto_trader.py pass; parity_core.py rerun (DSA desk task) shows 0 side-differs for volume_fvg 15m/1h.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Make live volume_fvg_layer take the same side as the backtested fabio run_fvg (bounce: long when closes[start] > mid), so live and backtest agree on the 24 matched DEV signals.",
   "id": "t09-f1-volume-fvg-side-inverted",
-  "lane": "SONNET",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "T09 backtest audit: live parity (volume_fvg side mirrored, RSI untested events, 94% time e",
+      "ref": "446f6c5030a8",
+      "utc": "2026-10-24T19:18:19Z"
+    }
+  ],
   "layers": [],
-  "live_path": false,
+  "live_path": true,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-25 ACCEPT\n(reviewer agent a3c19d17, different from drafter; its FIX items applied.) Live-path rules: tests for restart/reset state, non-trade balance moves and API errors; safety checks fail closed. Builder edits code in a worktree only; never deploys or touches the live tree. CRITICAL: coordinator spawns a review session before ship. Changes which trades testnet samples; both readings were no-edge (FABIO_L1_REPORT.md:49-58). Not live_path:true (means lane JIS-NB): a worktree code change; the live tree changes only by a later manual or coordinator deploy.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-24T21:34:10Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/alerts/live_layers.py",
+    "MyTradingSys/backtest/layers/alerts/test_live_runner_layers.py",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T09/test_layer_signal_parity.py"
+  ],
+  "scope_out": [
+    "auto_trader.py, deploy, live tree, other layers, backtest code"
+  ],
+  "scope_sha": "446f6c5030a8",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T09_live_parity.md section 5 T09-F1 and section 4 (0 of 24 same side)",
+    "F:/MTS/gq/gx4-t09-* (GPT drafting fixes on the NUC night of 2026-10-25; not read here; compare its draft before building)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read fabio/run_backtest.py run_fvg (l.176) and live_layers.py volume_fvg_layer (l.41-65); confirm the side rule and the range(start) vs range(start+1) scan (F7).",
+    "Add the fail-first test in test_live_runner_layers.py: fake bars where closes[start] > mid; assert volume_fvg_layer side equals the run_fvg side.",
+    "Fix the side line (l.61) to the backtest rule, align the scan start (F7), fix the docstring. Fail closed: empty or degenerate bars return [].",
+    "Add restart test (same bars twice give identical events, no kept state) and degenerate-input test (empty, 3 bars, flat bars return [] without raising; the layer has no fetch, API-error cases live in the runner tests); run test_live_runner_layers.py and test_auto_trader.py."
+  ],
+  "tests": "test_live_runner_layers.py new test_volume_fvg_side_matches_backtest: fails on current code (side inverted), passes after; T09 test_layer_signal_parity.py moves volume_fvg out of KNOWN_DIVERGENT.",
   "title": "T09-F1 S1: live volume_fvg trades the opposite side (0 of 24 agree; live_layers.py:61)",
-  "weight": "",
-  "worker": ""
+  "weight": "CRITICAL",
+  "worker": "agent"
 }
