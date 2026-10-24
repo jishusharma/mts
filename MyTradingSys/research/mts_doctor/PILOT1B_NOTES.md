@@ -24,3 +24,4 @@ Not mine: bt-engine-wire-real-funding-rsi-cc-rerun, Krown K1 GPT audit (yt-burn)
 - 15:08Z gate fix bd0fcf941 on trunk. W1 was already shipped by another host (4463a42e7); W1b started for manifest json.
 - 15:21Z FINDING: editing scripts/dev/run_extra_tests.py to register a new test makes sync.py ship run mode=FULL gate (shards 570-690 s, 25+ min with 3 ships at once). S1 and W1b gates killed at 15 min by workers; H1 ship (tree) ran on.
 - 15:21Z Lab_Guy ACCEPT R1 (second pass); R1 worker started, own worktree.
+- 15:25Z ROW-2 EVIDENCE (Doctor rule): (1) registering a new test in run_extra_tests.py forces the FULL gate (S1, W1b); (2) parallel full gates saturate JIS-NB (100% CPU, 19 python procs, shards 570-690 s). New rule: ONE ship at a time; queue behind `git cherry` empty; no hand-kills (report >30 min). W1b and S1 re-ships wait for H1 ship to land. Doctor cards the run_extra_tests trigger (not me).
