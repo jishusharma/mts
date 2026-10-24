@@ -1,3 +1,24 @@
+# OPERATOR OVERRIDE 2026-10-25 (read first; it outranks everything below)
+Verbatim: "make sure that cool and fun does not mean unnecessary efforts on unwanted/useless stuff - what is need - accuracy + performance + visualization capacity + user friendly + wired for firing back-testing with selectable params for each layer + condition (refer the old design and my verbatim when first model was built)."
+First-model verbatim (INPUTS.md 1): "a dashboard ... one page ... where I can click on things and choose, select, run"; "configure whatever layers we want to test and start the runs"; "free-form values ... hit and try ... room for more layers"; "very light ... no cluttering ... the most important and critical things first"; "simple, economical, and very, very powerful".
+
+**The product is the local desk** (`desk.py` + `page.html`, DESIGN.md / PLUGIN.md): it already has Run, per-layer settings, the DEV lock, the trial ledger, the verdict and 6 trade charts, with levels, RSI and WaveTrend on BTC/ETH. The hosted page is only a read-only export of the same result files.
+Build, in this order:
+1. **Accuracy.** Each study has a reference test that reproduces its known number (levels: 255 filled, -0.119 R). Results are fee-net and count filled trades only. Each new study gets an independent re-derivation. Live-vs-test parity comes from T09.
+2. **Selectable params per layer plus conditions.** One shared condition panel applies to any layer before scoring:
+   - side (long, short, both);
+   - UTC hour window;
+   - trend filter (price above or below an EMA, with the timeframe and length typed);
+   - volatility band (ATR percentile);
+   - day of week;
+   - "only when layer B also fired within N bars".
+   Values are free-form and labelled (ours). Each new setting adds one TRIALS row.
+3. **Performance.** A cached Run takes 10 s or less, with a progress line on the first build. The page shows the run time.
+4. **Visualization.** Per-trade candle charts (level, entry, stop, target, exit) and an equity curve in R and as $1,000, which you can scrub. Run A vs run B side by side. A breakdown table by family and condition, with n.
+5. **User friendly.** One screen, results first, plain labels marked (trader) or (ours), and plain errors on bad input.
+6. Every Run writes `results/<id>.json` in one schema, so the hosted page lists it.
+**Cut:** quiz, badges, scoreboard theatrics, play animation (scrub stays), polish of the static mockup, extra tabs. A thought experiment or audit gets one plain card: claim, method, finding, verdict.
+
 # MTS simulator: what to build (Thinker, 2026-10-25, Sonnet lite mode)
 
 Answer in one line: **one static page, five tabs (Tests, Result, Replay, Quiz, Compare), a verdict banner that cannot be hidden, and "if you put 1,000 USD in" as the first number. Clickable mockup: `mockup/index.html` (real numbers: levels ladder, 255 filled trades, -0.119 R, $1,000 -> $715).**
