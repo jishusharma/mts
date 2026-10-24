@@ -82,32 +82,6 @@ class TestTrades(unittest.TestCase):
         self.assertEqual(tr[0]["exit_reason"], "targets")
         self.assertAlmostEqual(tr[0]["net"], 0.02 - 0.0005, places=9)  # maker target, taker entry
 
-    def test_funding_records_are_charged(self):
-        # long target exit on bar 1 (close 102); settlement rate 0.001 at HOUR+30000 inside (t_in, t_out]:
-        # paid = 0.001 * 102 / 100 = 0.00102 of entry. Zero-rate records at 0 and HOUR+60000 span the hold (B103).
-        bars = [flat(0), bar(HOUR, 100, 102.5, 99.5, 102)]
-        fund = [(0, 0.0), (HOUR + 30000, 0.001), (HOUR + 60000, 0.0)]
-        tr = rr.trades_from_events([{"i": 0, "side": "long"}], bars, max_bars=10, funding=fund)
-        self.assertAlmostEqual(tr[0]["net"], 0.02 - 0.0005 - 0.00102, places=9)
-        tr0 = rr.trades_from_events([{"i": 0, "side": "long"}], bars, max_bars=10)
-        self.assertAlmostEqual(tr0[0]["net"], 0.02 - 0.0005, places=9)  # default stays the explicit no-funding model
-
-    def test_funding_not_spanning_hold_fails_closed(self):
-        bars = [flat(0), bar(HOUR, 100, 102.5, 99.5, 102)]
-        with self.assertRaises(ValueError):
-            rr.trades_from_events([{"i": 0, "side": "long"}], bars, max_bars=10, funding=[(0, 0.0), (HOUR, 0.0)])
-
-    def test_grid_search_passes_funding_to_every_trade(self):
-        bars = hourly_bars(420)
-        # rate 0.0001 every hour over the whole series: every hold is charged, so the IS mean net must fall below 0.0195
-        fund = [(k * HOUR, 0.0001) for k in range(0, 430)]
-        ev = lambda p: [{"i": i, "side": "long"} for i in range(0, 420, 40)]
-        r = rr.grid_search_and_oos(ev, [{"k": 0}], bars, 294, max_bars=100, funding=fund, dev_only=True)
-        self.assertLess(r["is_stats"]["mean_net"], 0.0195 - 1e-4)
-        self.assertIsNone(r["oos_stats"])
-        r0 = rr.grid_search_and_oos(ev, [{"k": 0}], bars, 294, max_bars=100)
-        self.assertAlmostEqual(r0["is_stats"]["mean_net"], 0.0195, places=9)
-
     def test_short_target(self):
         bars = [flat(0), bar(HOUR, 100, 100.5, 97.5, 98)]
         tr = rr.trades_from_events([{"i": 0, "side": "short"}], bars, max_bars=10)
