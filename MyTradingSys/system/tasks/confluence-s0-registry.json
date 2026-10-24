@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-24T15:49:31Z",
   "commands": [],
   "created": "2026-10-22T11:06:49Z",
   "depends_on": [
@@ -15,6 +16,12 @@
   "id": "confluence-s0-registry",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "5025e79ba28d (on origin/fast-track): gate_board krown G2, layer_index, STATE.md, KROWN_SET",
+      "ref": "d0a19438e",
+      "utc": "2026-10-24T15:49:31Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -36,7 +43,12 @@
   "refs": [
     "MyTradingSys/research/krown_audit_2026-10-22/FABLE_CARD_CONFLUENCE.md"
   ],
-  "result": "",
+  "result": "5025e79ba28d (on origin/fast-track): gate_board krown G2, layer_index, STATE.md, KROWN_SETUP_CATALOG F1/F2",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/gate_board.json",
     "MyTradingSys/system/layer_index.json",
@@ -51,12 +63,13 @@
     "MyTradingSys/research/krown_audit_2026-10-22/REPORT.md:175-180",
     "MyTradingSys/research/krown_audit_2026-10-22/REVIEW_OPUS.md (A1, A2 confirmed)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "edit gate_board.json krown entry",
     "update layer_index.json krown status, run make_layers_md.py and make_status.py",
     "fix STATE.md and KROWN_SETUP_CATALOG.md s5 + F1/F2"
   ],
+  "taken": "2026-10-24T15:49:31Z",
   "tests": "python scripts/dev/make_status.py runs; grep shows krown G2 in system/gate_board.json",
   "title": "Confluence S0: Krown registry refresh",
   "weight": "IMPORTANT",
