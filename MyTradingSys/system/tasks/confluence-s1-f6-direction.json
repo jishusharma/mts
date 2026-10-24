@@ -1,0 +1,52 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/backtest/layers/krown/test_krown_context.py -q"
+  ],
+  "created": "2026-10-24T21:59:50Z",
+  "depends_on": [],
+  "done_when": "krown_context.py uses F6; a hand-number test (FORMULAS.md) fails on the six-bar code and passes; COUNTS.md, joined_events.csv, counts_cells.csv regenerated with no outcome read; S>=+2 reads 351 (GPT_AUDIT_S1.md) or the difference is explained; gx2-confluence-s1/audit.py re-run on a host with run/sealed + krown_daily and its result noted.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "PRE_REG_CONFLUENCE.md s0 adopts F6 (sign since BBWP_4h last <= 50, REVIEW_OPUS.md:24) over the shipped six-bar diff at backtest/layers/krown/krown_context.py:181; S3 is blocked until the code and counts match F6.",
+  "id": "confluence-s1-f6-direction",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/krown_audit_2026-10-22/PRE_REG_CONFLUENCE.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/krown/",
+    "MyTradingSys/research/krown_audit_2026-10-22/run/"
+  ],
+  "scope_out": [
+    "run/sealed outcome columns; any bar >= 2024-07-01"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/krown_audit_2026-10-22/GPT_AUDIT_S1.md",
+    "MyTradingSys/research/krown_audit_2026-10-22/FABLE_DESIGN.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "Read PRE_REG_CONFLUENCE.md s0, REVIEW_OPUS.md:24 F6, GPT_AUDIT_S1.md finding 1",
+    "Write the F6 hand-number test in test_krown_context.py; run it on current code and show it fails",
+    "Change krown_context.py:181 exp_dir_4h_ours to F6; test passes",
+    "Regenerate COUNTS.md, joined_events.csv, counts_cells.csv with run_counts.py (no outcome column read); compare S>=+2 with 351",
+    "Re-run research/gpt_burn_2026-10-24/gx2-confluence-s1/audit.py where run/sealed + F:/MTS/data/krown_daily exist; note the result; sync.py ship"
+  ],
+  "tests": "test_krown_context.py F6 case",
+  "title": "Confluence S1: expansion direction to F6 and recount (S3 precondition)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
