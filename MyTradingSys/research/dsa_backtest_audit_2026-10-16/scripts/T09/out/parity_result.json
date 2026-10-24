@@ -1,0 +1,1066 @@
+{
+ "days": [
+  [
+   19078,
+   "trend"
+  ],
+  [
+   19117,
+   "highvol"
+  ],
+  [
+   19155,
+   "trend"
+  ],
+  [
+   19156,
+   "highvol"
+  ],
+  [
+   19157,
+   "highvol"
+  ],
+  [
+   19159,
+   "highvol"
+  ],
+  [
+   19256,
+   "highvol"
+  ],
+  [
+   19305,
+   "trend"
+  ],
+  [
+   19326,
+   "trend"
+  ],
+  [
+   19350,
+   "range"
+  ],
+  [
+   19351,
+   "range"
+  ],
+  [
+   19358,
+   "range"
+  ],
+  [
+   19364,
+   "range"
+  ],
+  [
+   19377,
+   "trend"
+  ],
+  [
+   19397,
+   "trend"
+  ],
+  [
+   19403,
+   "trend"
+  ],
+  [
+   19433,
+   "highvol"
+  ],
+  [
+   19466,
+   "trend"
+  ],
+  [
+   19567,
+   "range"
+  ],
+  [
+   19595,
+   "range"
+  ],
+  [
+   19609,
+   "range"
+  ],
+  [
+   19630,
+   "range"
+  ],
+  [
+   19653,
+   "highvol"
+  ],
+  [
+   19682,
+   "trend"
+  ],
+  [
+   19725,
+   "highvol"
+  ],
+  [
+   19734,
+   "highvol"
+  ],
+  [
+   19742,
+   "range"
+  ],
+  [
+   19743,
+   "range"
+  ],
+  [
+   19802,
+   "highvol"
+  ],
+  [
+   19846,
+   "trend"
+  ]
+ ],
+ "network_attempts": 0,
+ "per_key": {
+  "bb_top_reversal|bb_top_reversal|15m": {
+   "live_alerts": 70,
+   "live_tradable_side": 70,
+   "live_accepted": 70,
+   "reject_reasons": {},
+   "events": {
+    "bb": 70
+   },
+   "backtest": null
+  },
+  "cryptocred|failed_msb|15m": {
+   "live_alerts": 8,
+   "live_tradable_side": 8,
+   "live_accepted": 8,
+   "reject_reasons": {},
+   "events": {
+    "failed": 8
+   },
+   "backtest": {
+    "n": 8,
+    "same": 8,
+    "side_diff": 0,
+    "off_by_one": 0,
+    "live_only": 0,
+    "bt_only": 0,
+    "examples": {
+     "same": [],
+     "side_diff": [],
+     "off_by_one": [],
+     "live_only": [],
+     "bt_only": []
+    },
+    "live_only_by_event": {}
+   },
+   "tradable_by_event": {
+    "failed": 8
+   }
+  },
+  "cryptocred|failed_msb|1h": {
+   "live_alerts": 9,
+   "live_tradable_side": 9,
+   "live_accepted": 9,
+   "reject_reasons": {},
+   "events": {
+    "failed": 9
+   },
+   "backtest": {
+    "n": 9,
+    "same": 9,
+    "side_diff": 0,
+    "off_by_one": 0,
+    "live_only": 0,
+    "bt_only": 0,
+    "examples": {
+     "same": [],
+     "side_diff": [],
+     "off_by_one": [],
+     "live_only": [],
+     "bt_only": []
+    },
+    "live_only_by_event": {}
+   },
+   "tradable_by_event": {
+    "failed": 9
+   }
+  },
+  "cryptocred|fib_pullback|15m": {
+   "live_alerts": 85,
+   "live_tradable_side": 85,
+   "live_accepted": 85,
+   "reject_reasons": {},
+   "events": {
+    "fib": 85
+   },
+   "backtest": {
+    "n": 93,
+    "same": 85,
+    "side_diff": 0,
+    "off_by_one": 0,
+    "live_only": 0,
+    "bt_only": 8,
+    "examples": {
+     "same": [],
+     "side_diff": [],
+     "off_by_one": [],
+     "live_only": [],
+     "bt_only": [
+      [
+       1648347300000,
+       "short"
+      ],
+      [
+       1651761900000,
+       "long"
+      ],
+      [
+       1651763700000,
+       "long"
+      ],
+      [
+       1655388900000,
+       "long"
+      ],
+      [
+       1672601400000,
+       "short"
+      ]
+     ]
+    },
+    "live_only_by_event": {},
+    "bt_only_visible_in_99bar_window": 1,
+    "bt_only_needs_longer_history": 7
+   },
+   "tradable_by_event": {
+    "fib": 85
+   }
+  },
+  "cryptocred|fib_pullback|1h": {
+   "live_alerts": 26,
+   "live_tradable_side": 26,
+   "live_accepted": 26,
+   "reject_reasons": {},
+   "events": {
+    "fib": 26
+   },
+   "backtest": {
+    "n": 24,
+    "same": 23,
+    "side_diff": 0,
+    "off_by_one": 0,
+    "live_only": 0,
+    "bt_only": 1,
+    "examples": {
+     "same": [],
+     "side_diff": [],
+     "off_by_one": [],
+     "live_only": [],
+     "bt_only": [
+      [
+       1705078800000,
+       "long"
+      ]
+     ]
+    },
+    "live_only_by_event": {},
+    "bt_only_visible_in_99bar_window": 0,
+    "bt_only_needs_longer_history": 1
+   },
+   "tradable_by_event": {
+    "fib": 26
+   }
+  },
+  "cryptocred|sr_flip|15m": {
+   "live_alerts": 103,
+   "live_tradable_side": 103,
+   "live_accepted": 103,
+   "reject_reasons": {},
+   "events": {
+    "sr": 103
+   },
+   "backtest": {
+    "n": 102,
+    "same": 102,
+    "side_diff": 0,
+    "off_by_one": 0,
+    "live_only": 0,
+    "bt_only": 0,
+    "examples": {
+     "same": [],
+     "side_diff": [],
+     "off_by_one": [],
+     "live_only": [],
+     "bt_only": []
+    },
+    "live_only_by_event": {}
+   },
+   "tradable_by_event": {
+    "sr": 103
+   }
+  },
+  "cryptocred|sr_flip|1h": {
+   "live_alerts": 28,
+   "live_tradable_side": 28,
+   "live_accepted": 28,
+   "reject_reasons": {},
+   "events": {
+    "sr": 28
+   },
+   "backtest": {
+    "n": 28,
+    "same": 28,
+    "side_diff": 0,
+    "off_by_one": 0,
+    "live_only": 0,
+    "bt_only": 0,
+    "examples": {
+     "same": [],
+     "side_diff": [],
+     "off_by_one": [],
+     "live_only": [],
+     "bt_only": []
+    },
+    "live_only_by_event": {}
+   },
+   "tradable_by_event": {
+    "sr": 28
+   }
+  },
+  "fabio|cvd_absorption|15m": {
+   "live_alerts": 78,
+   "live_tradable_side": 78,
+   "live_accepted": 78,
+   "reject_reasons": {},
+   "events": {
+    "?": 78
+   },
+   "backtest": {
+    "n": 77,
+    "same": 77,
+    "side_diff": 0,
+    "off_by_one": 0,
+    "live_only": 0,
+    "bt_only": 0,
+    "examples": {
+     "same": [],
+     "side_diff": [],
+     "off_by_one": [],
+     "live_only": [],
+     "bt_only": []
+    },
+    "live_only_by_event": {}
+   },
+   "tradable_by_event": {
+    "?": 78
+   }
+  },
+  "fabio|cvd_absorption|1h": {
+   "live_alerts": 23,
+   "live_tradable_side": 23,
+   "live_accepted": 23,
+   "reject_reasons": {},
+   "events": {
+    "?": 23
+   },
+   "backtest": {
+    "n": 22,
+    "same": 22,
+    "side_diff": 0,
+    "off_by_one": 0,
+    "live_only": 0,
+    "bt_only": 0,
+    "examples": {
+     "same": [],
+     "side_diff": [],
+     "off_by_one": [],
+     "live_only": [],
+     "bt_only": []
+    },
+    "live_only_by_event": {}
+   },
+   "tradable_by_event": {
+    "?": 23
+   }
+  },
+  "fabio|escalation|15m": {
+   "live_alerts": 28,
+   "live_tradable_side": 28,
+   "live_accepted": 28,
+   "reject_reasons": {},
+   "events": {
+    "escalation": 28
+   },
+   "backtest": {
+    "n": 96,
+    "same": 28,
+    "side_diff": 0,
+    "off_by_one": 0,
+    "live_only": 0,
+    "bt_only": 68,
+    "examples": {
+     "same": [],
+     "side_diff": [],
+     "off_by_one": [],
+     "live_only": [],
+     "bt_only": [
+      [
+       1648384200000,
+       "short"
+      ],
+      [
+       1648384200000,
+       "short"
+      ],
+      [
+       1648395000000,
+       "long"
+      ],
+      [
+       1648413900000,
+       "long"
+      ],
+      [
+       1651759200000,
+       "short"
+      ]
+     ]
+    },
+    "live_only_by_event": {},
+    "bt_only_visible_in_99bar_window": 21,
+    "bt_only_needs_longer_history": 47
+   },
+   "tradable_by_event": {
+    "escalation": 28
+   }
+  },
+  "fabio|escalation|1h": {
+   "live_alerts": 0,
+   "live_tradable_side": 0,
+   "live_accepted": 0,
+   "reject_reasons": {},
+   "events": {},
+   "backtest": {
+    "n": 6,
+    "same": 0,
+    "side_diff": 0,
+    "off_by_one": 0,
+    "live_only": 0,
+    "bt_only": 6,
+    "examples": {
+     "same": [],
+     "side_diff": [],
+     "off_by_one": [],
+     "live_only": [],
+     "bt_only": [
+      [
+       1663783200000,
+       "long"
+      ],
+      [
+       1669770000000,
+       "long"
+      ],
+      [
+       1669770000000,
+       "long"
+      ],
+      [
+       1669770000000,
+       "long"
+      ],
+      [
+       1669770000000,
+       "long"
+      ]
+     ]
+    },
+    "live_only_by_event": {},
+    "bt_only_visible_in_99bar_window": 0,
+    "bt_only_needs_longer_history": 6
+   },
+   "tradable_by_event": {}
+  },
+  "fabio|volume_fvg|15m": {
+   "live_alerts": 16,
+   "live_tradable_side": 16,
+   "live_accepted": 16,
+   "reject_reasons": {},
+   "events": {
+    "fvg": 16
+   },
+   "backtest": {
+    "n": 19,
+    "same": 0,
+    "side_diff": 15,
+    "off_by_one": 1,
+    "live_only": 0,
+    "bt_only": 3,
+    "examples": {
+     "same": [],
+     "side_diff": [
+      1648389600000,
+      1655047800000,
+      1655093700000,
+      1655177400000,
+      1663782300000
+     ],
+     "off_by_one": [
+      [
+       1705051800000,
+       1705052700000
+      ]
+     ],
+     "live_only": [],
+     "bt_only": [
+      [
+       1651761000000,
+       "long"
+      ],
+      [
+       1672596900000,
+       "short"
+      ],
+      [
+       1704284100000,
+       "long"
+      ]
+     ]
+    },
+    "live_only_by_event": {},
+    "bt_only_visible_in_99bar_window": 0,
+    "bt_only_needs_longer_history": 3
+   },
+   "tradable_by_event": {
+    "fvg": 16
+   }
+  },
+  "fabio|volume_fvg|1h": {
+   "live_alerts": 4,
+   "live_tradable_side": 4,
+   "live_accepted": 4,
+   "reject_reasons": {},
+   "events": {
+    "fvg": 4
+   },
+   "backtest": {
+    "n": 5,
+    "same": 0,
+    "side_diff": 3,
+    "off_by_one": 1,
+    "live_only": 0,
+    "bt_only": 1,
+    "examples": {
+     "same": [],
+     "side_diff": [
+      1651737600000,
+      1681887600000,
+      1704286800000
+     ],
+     "off_by_one": [
+      [
+       1648393200000,
+       1648396800000
+      ]
+     ],
+     "live_only": [],
+     "bt_only": [
+      [
+       1714744800000,
+       "short"
+      ]
+     ]
+    },
+    "live_only_by_event": {},
+    "bt_only_visible_in_99bar_window": 0,
+    "bt_only_needs_longer_history": 1
+   },
+   "tradable_by_event": {
+    "fvg": 4
+   }
+  },
+  "positioning|funding_cvd_fade|1h": {
+   "live_alerts": 3,
+   "live_tradable_side": 3,
+   "live_accepted": 3,
+   "reject_reasons": {},
+   "events": {
+    "funding": 3
+   },
+   "backtest": {
+    "n": 34,
+    "same": 0,
+    "side_diff": 0,
+    "off_by_one": 1,
+    "live_only": 2,
+    "bt_only": 33,
+    "examples": {
+     "same": [],
+     "side_diff": [],
+     "off_by_one": [
+      [
+       1698076800000,
+       1698073200000
+      ]
+     ],
+     "live_only": [
+      [
+       1648342800000,
+       "short"
+      ],
+      [
+       1674180000000,
+       "short"
+      ]
+     ],
+     "bt_only": [
+      [
+       1648424700000,
+       "short"
+      ],
+      [
+       1648425600000,
+       "short"
+      ],
+      [
+       1651719600000,
+       "short"
+      ],
+      [
+       1655205300000,
+       "long"
+      ],
+      [
+       1668036600000,
+       "long"
+      ]
+     ]
+    },
+    "live_only_by_event": {
+     "funding": 2
+    }
+   },
+   "tradable_by_event": {
+    "funding": 3
+   }
+  },
+  "rsi_divergence|rsi_divergence|1h": {
+   "live_alerts": 17,
+   "live_tradable_side": 17,
+   "live_accepted": 17,
+   "reject_reasons": {},
+   "events": {
+    "rsi": 17
+   },
+   "backtest": null
+  },
+  "rsi|malkan_bear|1h": {
+   "live_alerts": 0,
+   "live_tradable_side": 0,
+   "live_accepted": 0,
+   "reject_reasons": {},
+   "events": {},
+   "backtest": {
+    "n": 0,
+    "same": 0,
+    "side_diff": 0,
+    "off_by_one": 0,
+    "live_only": 0,
+    "bt_only": 0,
+    "examples": {
+     "same": [],
+     "side_diff": [],
+     "off_by_one": [],
+     "live_only": [],
+     "bt_only": []
+    },
+    "live_only_by_event": {}
+   },
+   "tradable_by_event": {}
+  },
+  "rsi|malkan_bull|1h": {
+   "live_alerts": 0,
+   "live_tradable_side": 0,
+   "live_accepted": 0,
+   "reject_reasons": {},
+   "events": {},
+   "backtest": {
+    "n": 0,
+    "same": 0,
+    "side_diff": 0,
+    "off_by_one": 0,
+    "live_only": 0,
+    "bt_only": 0,
+    "examples": {
+     "same": [],
+     "side_diff": [],
+     "off_by_one": [],
+     "live_only": [],
+     "bt_only": []
+    },
+    "live_only_by_event": {}
+   },
+   "tradable_by_event": {}
+  },
+  "rsi|rsi_events|15m": {
+   "live_alerts": 237,
+   "live_tradable_side": 147,
+   "live_accepted": 147,
+   "reject_reasons": {
+    "unmapped rsi:cross": 90
+   },
+   "events": {
+    "cross": 180,
+    "failure": 22,
+    "support": 24,
+    "rejection": 11
+   },
+   "backtest": {
+    "n": 80,
+    "same": 21,
+    "side_diff": 0,
+    "off_by_one": 12,
+    "live_only": 114,
+    "bt_only": 47,
+    "examples": {
+     "same": [],
+     "side_diff": [],
+     "off_by_one": [
+      [
+       1655033400000,
+       1655034300000
+      ],
+      [
+       1663744500000,
+       1663745400000
+      ],
+      [
+       1671945300000,
+       1671946200000
+      ],
+      [
+       1671971400000,
+       1671972300000
+      ],
+      [
+       1671992100000,
+       1671993000000
+      ]
+     ],
+     "live_only": [
+      [
+       1648385100000,
+       "short"
+      ],
+      [
+       1651734000000,
+       "short"
+      ],
+      [
+       1651740300000,
+       "short"
+      ],
+      [
+       1651743000000,
+       "short"
+      ],
+      [
+       1651757400000,
+       "short"
+      ]
+     ],
+     "bt_only": [
+      [
+       1648376100000,
+       "long"
+      ],
+      [
+       1651728600000,
+       "short"
+      ],
+      [
+       1655194500000,
+       "short"
+      ],
+      [
+       1663739100000,
+       "short"
+      ],
+      [
+       1663776000000,
+       "short"
+      ]
+     ]
+    },
+    "live_only_by_event": {
+     "cross": 80,
+     "failure": 20,
+     "support": 2,
+     "rejection": 12
+    },
+    "bt_only_visible_in_99bar_window": 47,
+    "bt_only_needs_longer_history": 0
+   },
+   "tradable_by_event": {
+    "cross": 90,
+    "failure": 22,
+    "support": 24,
+    "rejection": 11
+   }
+  },
+  "rsi|rsi_events|1h": {
+   "live_alerts": 40,
+   "live_tradable_side": 28,
+   "live_accepted": 28,
+   "reject_reasons": {
+    "unmapped rsi:cross": 12
+   },
+   "events": {
+    "cross": 29,
+    "rejection": 3,
+    "failure": 5,
+    "support": 3
+   },
+   "backtest": {
+    "n": 17,
+    "same": 3,
+    "side_diff": 0,
+    "off_by_one": 0,
+    "live_only": 24,
+    "bt_only": 14,
+    "examples": {
+     "same": [],
+     "side_diff": [],
+     "off_by_one": [],
+     "live_only": [
+      [
+       1651759200000,
+       "short"
+      ],
+      [
+       1654999200000,
+       "short"
+      ],
+      [
+       1655067600000,
+       "short"
+      ],
+      [
+       1655208000000,
+       "short"
+      ],
+      [
+       1655215200000,
+       "long"
+      ]
+     ],
+     "bt_only": [
+      [
+       1648371600000,
+       "short"
+      ],
+      [
+       1655352000000,
+       "short"
+      ],
+      [
+       1663776000000,
+       "short"
+      ],
+      [
+       1673082000000,
+       "short"
+      ],
+      [
+       1673110800000,
+       "short"
+      ]
+     ]
+    },
+    "live_only_by_event": {
+     "cross": 16,
+     "rejection": 3,
+     "failure": 5
+    },
+    "bt_only_visible_in_99bar_window": 14,
+    "bt_only_needs_longer_history": 0
+   },
+   "tradable_by_event": {
+    "cross": 17,
+    "rejection": 3,
+    "failure": 5,
+    "support": 3
+   }
+  },
+  "rsi|rsi_events|5m": {
+   "live_alerts": 726,
+   "live_tradable_side": 461,
+   "live_accepted": 461,
+   "reject_reasons": {
+    "unmapped rsi:cross": 265
+   },
+   "events": {
+    "cross": 527,
+    "support": 78,
+    "failure": 85,
+    "rejection": 36
+   },
+   "backtest": {
+    "n": 143,
+    "same": 77,
+    "side_diff": 0,
+    "off_by_one": 1,
+    "live_only": 383,
+    "bt_only": 65,
+    "examples": {
+     "same": [],
+     "side_diff": [],
+     "off_by_one": [
+      [
+       1655413800000,
+       1655414100000
+      ]
+     ],
+     "live_only": [
+      [
+       1648355400000,
+       "short"
+      ],
+      [
+       1648356000000,
+       "short"
+      ],
+      [
+       1648369800000,
+       "short"
+      ],
+      [
+       1648374600000,
+       "short"
+      ],
+      [
+       1648375200000,
+       "short"
+      ]
+     ],
+     "bt_only": [
+      [
+       1648365900000,
+       "short"
+      ],
+      [
+       1648368600000,
+       "short"
+      ],
+      [
+       1648393200000,
+       "short"
+      ],
+      [
+       1651718400000,
+       "short"
+      ],
+      [
+       1651747800000,
+       "short"
+      ]
+     ]
+    },
+    "live_only_by_event": {
+     "cross": 261,
+     "failure": 85,
+     "rejection": 36,
+     "support": 1
+    },
+    "bt_only_visible_in_99bar_window": 63,
+    "bt_only_needs_longer_history": 2
+   },
+   "tradable_by_event": {
+    "cross": 262,
+    "support": 78,
+    "failure": 85,
+    "rejection": 36
+   }
+  },
+  "session|session_momentum|15m": {
+   "live_alerts": 30,
+   "live_tradable_side": 30,
+   "live_accepted": 30,
+   "reject_reasons": {},
+   "events": {
+    "session": 30
+   },
+   "backtest": {
+    "n": 30,
+    "same": 30,
+    "side_diff": 0,
+    "off_by_one": 0,
+    "live_only": 0,
+    "bt_only": 0,
+    "examples": {
+     "same": [],
+     "side_diff": [],
+     "off_by_one": [],
+     "live_only": [],
+     "bt_only": []
+    },
+    "live_only_by_event": {}
+   },
+   "tradable_by_event": {
+    "session": 30
+   }
+  },
+  "turn_of_candle|turn_of_candle|1m": {
+   "live_alerts": 2910,
+   "live_tradable_side": 2910,
+   "live_accepted": 2910,
+   "reject_reasons": {},
+   "events": {
+    "toc": 2910
+   },
+   "backtest": {
+    "n": 2880,
+    "same": 2880,
+    "side_diff": 0,
+    "off_by_one": 0,
+    "live_only": 0,
+    "bt_only": 0,
+    "examples": {
+     "same": [],
+     "side_diff": [],
+     "off_by_one": [],
+     "live_only": [],
+     "bt_only": []
+    },
+    "live_only_by_event": {}
+   },
+   "tradable_by_event": {
+    "toc": 2910
+   }
+  },
+  "wlow_bounce|bbrsi60|1h": {
+   "live_alerts": 1,
+   "live_tradable_side": 1,
+   "live_accepted": 1,
+   "reject_reasons": {},
+   "events": {
+    "wlow": 1
+   },
+   "backtest": null
+  }
+ },
+ "skipped": {
+  "session_levels|session_levels|1m": "needs 2.9k 1m bars of history per step (HistoryStore paging); no backtest twin in scope",
+  "candle_close|candle_close|1m": "needs 10.2k 1m bars per step (HistoryStore); study FAIL 0/126 arms (candle_close_2026-10-14)",
+  "levels|confluence|1m": "needs 24.5k 1m bars per step; footprint-window study only",
+  "fabio|v3_grid|1m": "needs order-flow columns (footprint 2024-12-02..2025-03-31 only), absent in DEV: silent on klines"
+ },
+ "errors": [],
+ "n_errors": 0,
+ "seed": 20261016,
+ "head_sha_note": "replay of worktree HEAD; layers/execution diff vs live checkout sha is empty (see report)"
+}
