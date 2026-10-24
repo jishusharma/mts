@@ -1,0 +1,54 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-24T19:50:00Z",
+  "depends_on": [],
+  "done_when": "test_lease.py runs under 30 s alone with the same 24 behaviours checked; no ship fails on it under parallel load; shipped with git cherry empty.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "MyTradingSys/tests/test_lease.py passes alone (24 tests, 108 s) but times out at the 240 s ship-gate limit when several ships run at once; sim-v2 lost 2 ship attempts to it on 2026-10-25. Make it fast or load-robust (cut real sleeps, fake the clock) without weakening what it checks.",
+  "id": "gate-test-lease-timeout-under-load",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "CI fix: lease.role_name(None) crash + f1_rows lint",
+      "ref": "a0e50314c92a",
+      "utc": "2026-10-19T03:25:10Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-24T19:50:01Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tests/test_lease.py",
+    "the lease module it tests (read only unless a clock hook is needed)"
+  ],
+  "scope_out": [
+    "Live tree, HALT, deploys, mainnet, account data, .secrets; gate timeout value"
+  ],
+  "scope_sha": "a0e50314c92a",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Profile where the 108 s goes",
+    "Replace real waits with a fake clock",
+    "Ship"
+  ],
+  "tests": "Every existing assertion kept; a timing check that the file runs under 30 s; any new test fails on the pre-change code.",
+  "title": "test_lease.py exceeds the 240 s gate limit at 100% CPU (sim-v2 lost 2 ships)",
+  "weight": "",
+  "worker": "agent"
+}
