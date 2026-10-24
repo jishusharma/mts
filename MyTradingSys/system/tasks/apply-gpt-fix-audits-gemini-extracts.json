@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py extracts/gemini_out/1xBWnyr1qe4_audit.md"
+  ],
+  "created": "2026-10-24T22:49:59Z",
+  "depends_on": [],
+  "done_when": "FIXES_APPLIED_audits.md lists items 1-8 each applied or REJECTED with a transcript line; verify_extract_quotes.py exits 0 on both audits.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Correct the two Gemini extract audits where GPT found false positives and misquotes (items 1-8 of the review), so their verdicts on the Tom extracts can be trusted.",
+  "id": "apply-gpt-fix-audits-gemini-extracts",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "yt-burn batch 2: Gemini audit 1xBWnyr1qe4 (verified), 4 GPT audit reports gx-* (file:line ",
+      "ref": "45ca080fa98e",
+      "utc": "2026-10-24T15:12:43Z"
+    },
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "45ca080fa98e yt-burn batch 2: Gemini audit 1xBWnyr1qe4 (verified), 4 GPT audit reports gx-",
+      "ref": "extracts/gemini_out/1xBWnyr1qe4_audit.md",
+      "utc": "2026-10-24T15:12:43Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-25 ACCEPT (independent Sonnet reviewer, fixes applied). DECISION (OURS): where GPT and the transcript disagree, the transcript line wins; record REJECTED with the line.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-24T22:51:24Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "extracts/gemini_out/-dMWA_bbm3o_audit.md",
+    "extracts/gemini_out/1xBWnyr1qe4_audit.md",
+    "extracts/gemini_out/FIXES_APPLIED_audits.md"
+  ],
+  "scope_out": [
+    "the Fabio notes (other card)",
+    "the Tom extracts themselves",
+    "the underlying extract_*_fresh.md files"
+  ],
+  "scope_sha": "45ca080fa98e",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/gpt_burn_2026-10-24/gx2-review-audits-fabio/report.md:31-58"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read gx2-review-audits-fabio/report.md 'Findings and required corrections' items 1-8 (lines 31-58) and open each cited raw_transcripts_canonical line and extract line.",
+    "Per item edit the audit: drop or reword false positives (floor-access, fabricated broker dialogue, euro USD interpolation), fix the misquote at -dMWA_bbm3o_audit.md:21, name the guest as addressed (Serge, no surname), keep the splice concern where valid.",
+    "Write FIXES_APPLIED_audits.md: one line per item (file:line, change). Run verify_extract_quotes.py on both audits until exit 0."
+  ],
+  "tests": "Verifier exit 0 on both audit files; every quote in an edited audit line is found in the cited raw transcript line.",
+  "title": "Apply GPT review FIX items 1-8 to the 2 Gemini extract audits (-dMWA_bbm3o, 1xBWnyr1qe4): remove false positives",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
