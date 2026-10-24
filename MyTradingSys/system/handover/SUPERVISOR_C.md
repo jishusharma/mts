@@ -21,11 +21,11 @@ Workers running (Sonnet Agents, own worktrees, started ~18:53Z; they commit only
 - a948ff46879f9b963 cbp-add-channel-latest-n-to-fetch-captio (spare 1, started ~19:00Z)
 - a8783e71ee944c683 tasks-py-check-rewrites-other-cards-mark: DONE, 6 turns, commit 753075e76, worktree agent-a8783e71ee944c683; SHIP IN PROGRESS ~19:05Z (log $TEMP/ship_tasks.log, bg task b8zk6p3r9); verify git cherry empty
 Worktrees: in each worker's final report (find via `sync.py where --all`).
-Central-file holders: none. Ship queue (one at a time): 1 T07 eb293abb5 (wt agent-a1089c4267107ce94, SHIPPING, bg b6outpvf3, log $TEMP/ship_t07.log; 55 turns; card NOT done: needs review stamp + A-20261018-5 hold) -> 2 T06 0d738711f (wt agent-a98795da9ab134b19; 36 turns; card NOT done, same stamp/hold; untracked out/g5_* left in wt) -> then T05, T09 when they finish.
+Central-file holders: none. Ship queue: empty. T07 SHIPPED (13 files, 3m23s, after I fixed one lint fwd-index false positive in t07_docdrift.py), T06 SHIPPED (10 files, 2m40s). Both cherry 0 at 19:11Z. Cards 06/07 not marked done (review stamp + A-20261018-5 hold).
 Shipped+verified earlier: t02 card-done, tasks.py fix, cbp, flow-states, notes.
 Registration batch (one ship at end; forces full gate, only if time): run_extra_tests.py EXTRA += T07/test_rerun_diff.py, T06/test_cost_inventory.py, session_flow_context_2026-10-18/test_build_rows.py (+T05, T09 tests).
 Cards needing a review stamp/clear of A-20261018-5 hold to mark done: dsa-audit-06, -07 (and likely 05, 09): report to Doctor.
-Running: T05 aeff7478879c89c20, T09 a401dace18fdc5813.
+Running: T05 aeff7478879c89c20, T09 a401dace18fdc5813 (workers 2 of 6 running; no spare cards). Gate times so far: 2m33, 43s, 56s, 3m23, 2m40; max gate wait 0; reverts 0; CI green.
 Decisions (OURS): ships serialised by me from worker worktrees; test registration batched into one ship at end.
 Usage 18:48Z: 5h 13% (reset 21:10Z), week 34%.
 Next action: wait for worker completions (notifications), then ship one at a time; Doctor report 20:00Z.
