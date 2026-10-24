@@ -4,7 +4,7 @@
 
 **HIGH — confirmed.** `MyTradingSys/backtest/layers/alerts/live_layers.py:61` maps a confirmation close above the FVG midpoint to `short`. The tested backtest reading in `MyTradingSys/backtest/layers/fabio/run_backtest.py:199-203` computes `from_above = closes[start] > mid`, then emits bounce as `long` when true. The parity worker reproduces the backtest rule at `MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T09/parity_core.py:~210` (search for `if layer == "fabio" and sub == "volume_fvg"`; it emits `"long" if closes[start] > mid else "short"`). Thus the live FVG event is exactly reversed relative to the bounce reading tested by parity. The audit reports 0 same-side matches among 24 live/backtest signals (`T09_live_parity.md`, section 4 and finding T09-F1).
 
-Reproduce the historical parity result with the audit script from the worktree root (requires its local DEV data): `python MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T09/parity_core.py --force`. The isolated fixed-fixture regression is reproducible without network or market data using: `$env:PYTHONPATH='.'; pytest -q MyTradingSys/research/gpt_burn_2026-10-24/gx4-t09-f1-fvg-side/test_volume_fvg_side.py`.
+Reproduce the historical parity result with the audit script from the worktree root (requires its local DEV data): `python MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T09/parity_core.py --force`. The isolated fixed-fixture regression is reproducible without network or market data using: `$env:PYTHONPATH='.'; pytest -q MyTradingSys/research/gpt_burn_2026-10-24/gx4-t09-f1-fvg-side/proposed_test_volume_fvg_side.py`.
 
 Before-fix test run: **1 failed** at the assertion, actual `short`, expected `long`. Fixture has a confirmation close 10.5 above midpoint 10.0 and a bar touching 10.0. Backtest bounce direction follows from those values: above -> long. Apply `fix.patch` to make the test pass.
 
@@ -30,6 +30,6 @@ Grep-equivalent source scan: `Get-ChildItem MyTradingSys/backtest/layers/alerts 
 ## Files
 
 - `fix.patch` — minimal unified diff.
-- `test_volume_fvg_side.py` — fixed, network-free red regression test.
+- `proposed_test_volume_fvg_side.py` — fixed, network-free red regression test.
 
 Result: Confirmed HIGH live volume_fvg inversion; fixed by one-line patch proposal; fixed fixture fails against current code.

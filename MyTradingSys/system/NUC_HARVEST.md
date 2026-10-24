@@ -18,6 +18,7 @@ Why: codex/agy runners on the NUC commit only to NUC-local branches (`gpt-q/<nam
 ## Check before trusting
 - Gemini notes: quotes only count if they pass `verify_extract_quotes.py`; "UNVERIFIED" notes (no captions) carry no quote marks. Gemini research reports cite sources it may have invented: spot-check one citation per file.
 - GPT outputs are proposals: `fix.patch` / `patch.diff` / `.java` copies live under `research/gpt_burn_<date>/<name>/` and are never applied from here. A fix goes through a normal card with its own fail-first test.
+- Renamed on harvest: a `test_*.py` under research/ is picked up by step 3xt (run_extra_tests.py) and a proposed test that fails on unpatched code breaks the ship gate; rename it `proposed_test_*.py`.
 - A job whose NUC worktree shows uncommitted source changes (e.g. `gx4-statecode-races`) is harvested from the committed copies only.
 - Numbers in reports are the runner's claim: re-run the stated command or recompute from FORMULAS.md before using them.
 - Still running = log has only START; harvest it next time, do not copy partial output.
