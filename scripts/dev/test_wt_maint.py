@@ -97,6 +97,14 @@ class Safety(Env):
         self.assertEqual(s["removed"], [])
         self.assertTrue(a.exists() and b.exists())
 
+    def test_gpt_trees_kept(self):
+        # GPT-lane trees are protected like Codex trees: merged + idle is not evidence the lab is done with them.
+        a = self.tree("mts-x-gpt-lab", branch="jis/x-lab")
+        b = self.tree("mts-x-run", branch="gpt/crucial")
+        s, _ = self.run_maint()
+        self.assertEqual(s["removed"], [])
+        self.assertTrue(a.exists() and b.exists())
+
     def test_recent_tree_kept(self):
         p = self.tree("mts-x-fresh")
         s, _ = self.run_maint(now=time.time())

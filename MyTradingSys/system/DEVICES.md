@@ -105,6 +105,13 @@ Backtest data (F:\MTS\data on the NUC) is not in git; it is copied after new rec
   Anything that must run unattended after power-on (the live loop, section 3) cannot assume a signed-in desktop; a startup task that runs whether or not a user is logged on needs a password on the account (the operator sets it once, never written here). Do not change this until the operator approves.
   BIOS power-on-after-power-failure is deliberately NOT set (operator switches both machines off/on manually).
 - The desktop firewall blocks inbound HTTP from the NUC; use the MTS-Queue share. Remote Desktop: the operator already connects to it; account and settings NOT CAPTURED.
+- Kept git worktrees (decided 2026-10-24; not permanent, removal needs the operator's yes). After the 26-tree cleanup these four stay on purpose:
+  - `IdeaProjects\mts-jis-nuc-wt-maint-job`: the nightly cleanup job runs from it.
+  - `F:\MTS\mts-gemini`: the Antigravity project folder; removing it brings back "Missing Folder".
+  - `F:\MTS\mts-codex`: the Codex app project root.
+  - `F:\MTS\mts-codex-lab`: the GPT lab runner works here.
+  Checked 2026-10-24 against origin/fast-track: no commits outside trunk in any of them. `mts-codex` has one untracked folder, `tmp/` (11 PDFs, 2.8 MB, dated 2026-10-12), left in place. `scripts/dev/wt_maint.py` (`protected_reason`) refuses to remove all four. To retire one: archive it with a verified bundle first, as the 26 were.
+- Antigravity daemon at login (changed 2026-10-24): the HKCU Run value `AntigravityCliDaemon` now launches `C:\WINDOWS\System32\conhost.exe --headless C:\Users\E-ngineers\.gemini\bin\agy.exe remote-control serve`, so it runs with no console window. The previous value was a direct launch; it is saved in the session scratchpad. Verified by a restart: no window, log shows "Connection status: Connected". Verified by a real sign-out and sign-in (2026-10-24): the Run value fired at logon, the daemon ran under conhost with no window, its log showed "Connection status: Connected", and the VS Code Antigravity hub started under Code.exe.
 
 ## 8. DESKTOP-F7IU69N (laptop) - next live testnet host (staged), travel
 

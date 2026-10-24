@@ -68,6 +68,8 @@ def protected_reason(p, branch, primary_tree, here, now, mtime_of=None):
         return "codex tree"
     if "gemini" in low or "gemini" in branch.lower():
         return "gemini tree"   # the Antigravity project opens this folder; removing it breaks the project
+    if "gpt" in low or "gpt" in branch.lower():
+        return "gpt tree"      # GPT lab trees: same protection as codex trees
     if branch in PROTECT_BRANCHES or branch == "(detached)":
         return f"branch {branch}"
     idle = sync.idle_hours(p, branch, now) if mtime_of is None else mtime_of(p)

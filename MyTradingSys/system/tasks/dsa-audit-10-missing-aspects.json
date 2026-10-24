@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-24T10:26:58Z",
   "commands": [
     "python scripts/dev/sync.py claim \"dsa-audit-10-missing-aspects\"",
     "python scripts/dev/tasks.py take dsa-audit-10-missing-aspects",
@@ -17,7 +19,14 @@
   "goal": "List at least 30 ways a crypto-perp backtest can mislead from DeepSeek's own knowledge and published sources, score each against every study and testnet layer, demonstrate the 5 worst gaps on DEV, and merge the audits' bridge logs into a playbook.",
   "id": "dsa-audit-10-missing-aspects",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "T10: 7 findings (S1 0, S2 4, S3 3); 45 failure modes x 43 columns, 540 NOT HANDLED cells; ",
+      "ref": "0de7f5405",
+      "utc": "2026-10-24T10:26:58Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "note": "REVIEWED:2026-10-24 ACCEPT by=sonnet-review-agent (pilot1-cards, reviewer saw card+evidence only). PILOT1: T04-T07,T09 reports not shipped yet: list them as missing in the playbook, do not wait. REVIEWED-OLD LAB:definitions CLASS:C2 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report.",
@@ -28,7 +37,12 @@
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md"
   ],
-  "result": "",
+  "result": "T10: 7 findings (S1 0, S2 4, S3 3); 45 failure modes x 43 columns, 540 NOT HANDLED cells; 12 placebo arms pass the gross screen 23.8%",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T10_missing_aspects.md and MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/ (new files only)",
     "read-only: repo code, result files, data under F:/MTS/data and Dumps (windows per brief section 5)",
@@ -45,7 +59,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md sections 1-7, then section 8 'T10' (full method).",
     "Write 30+ crypto-perp backtest failure modes (data, time, costs/fills, statistics, regime, selection, implementation, operations), each with how it shows and a test; cite web sources; mark those covered by brief section 2 or T01-T09.",
@@ -54,6 +68,7 @@
     "BRIDGE_PLAYBOOK.md from the bridge logs of every shipped T report (list the missing): patterns, failures and recoveries, 10 rules; DSA prompt changes proposed via desk.py --target CLAUDE.",
     "Card the S1/S2 findings with tasks.py new; cap the matrix columns at the brief 1b studies and the testnet layers listed, not every study ever run."
   ],
+  "taken": "2026-10-24T10:16:46Z",
   "tests": "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/test_failure_matrix.py::test_matrix_covers_every_study_and_layer (asserts matrix.csv has 30+ failure-mode rows, one column per brief 1b study and testnet layer, and every cell is HANDLED, NOT HANDLED, N/A or UNKNOWN; fails on pre-change code: scripts/T10/ does not exist yet)",
   "title": "DSA audit T10: 30+ backtest failure modes x every study, 5 demonstrations, and the DSA bridge playbook",
   "weight": "CRUCIAL",

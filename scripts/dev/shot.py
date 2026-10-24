@@ -251,6 +251,19 @@ def user_text(rec):
     return ""
 
 
+def paste_blocks(rec):
+    """(content blocks, operator text) of an operator paste. Two record shapes carry one: a plain user record, and an
+    attachment/queued_command record (a message sent while a turn was running; its blocks sit in attachment.prompt)."""
+    if rec.get("type") == "user":
+        return (rec.get("message") or {}).get("content"), user_text(rec)
+    a = rec.get("attachment")
+    if rec.get("type") == "attachment" and isinstance(a, dict) and a.get("type") == "queued_command":
+        p = a.get("prompt")
+        if isinstance(p, list):
+            return p, " ".join(b.get("text", "") for b in p if isinstance(b, dict) and b.get("type") == "text")
+    return None, ""
+
+
 def ingest_transcript(store, path, cursors):
     """Operator pastes: user records whose own content carries image blocks. Tool-result screenshots are not pastes."""
     import base64
@@ -276,9 +289,7 @@ def ingest_transcript(store, path, cursors):
             rec = json.loads(raw)
         except ValueError:
             continue
-        if rec.get("type") != "user":
-            continue
-        c = (rec.get("message") or {}).get("content")
+        c, text = paste_blocks(rec)
         if not isinstance(c, list):
             continue
         for b in c:
@@ -288,7 +299,7 @@ def ingest_transcript(store, path, cursors):
                 except Exception:
                     continue
                 r = land(store, data, "paste", rec.get("sessionId") or path.stem, rec.get("timestamp"),
-                         f"transcript:{path.name}", user_text(rec))
+                         f"transcript:{path.name}", text)
                 if r:
                     new.append(r)
     cursors[key] = off + end

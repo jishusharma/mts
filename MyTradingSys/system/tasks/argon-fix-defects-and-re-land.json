@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "git -C <work tree> show --stat origin/hold/argon-blind-read-7-frames",
+    "git -C <work tree> diff origin/fast-track origin/hold/argon-blind-read-7-frames -- MyTradingSys/research",
+    "python scripts/dev/sync.py ship --release argon-fix"
+  ],
+  "created": "2026-10-24T13:25:41Z",
+  "depends_on": [],
+  "done_when": "Each of the four defects is fixed with a verifiable check; headline numbers are recomputed from FORMULAS.md independently; the TRIALS row matches the results; reference base is verified or labelled UNVERIFIED; work is shipped via sync.py ship as a new commit with empty git cherry origin/fast-track <sha>.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fix the four defects that keep Argon (origin/hold/argon-blind-read-7-frames) off trunk, then re-land it as a new commit. Defects: (1) headline numbers stated more strongly than the data supports; (2) an invented-field count that does not match the actual fields; (3) a stale TRIALS row; (4) an unverified reference base.",
+  "id": "argon-fix-defects-and-re-land",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-24T13:25:48Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "the Argon files on origin/hold/argon-blind-read-7-frames; MyTradingSys/research/lab_guy/pilots/2026-10-18_gemini_frame_read/"
+  ],
+  "scope_out": [
+    "Live tree, HALT, deploys, mainnet, account data, .secrets; no merge of the hold branch as-is"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read the hold branch diff and the four defects",
+    "Fix each defect with a check",
+    "Recompute headline numbers from FORMULAS.md, independently",
+    "Ship as a new commit via sync.py ship"
+  ],
+  "tests": "Each defect fix has a check that fails on the hold branch content and passes after the fix; numbers recomputed from FORMULAS.md, not from existing code.",
+  "title": "argon-fix-defects-and-re-land",
+  "weight": "",
+  "worker": "session"
+}

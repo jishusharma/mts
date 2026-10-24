@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py extracts/gemini_out/WQ_OAdz-PJ8_gemini.md",
+    "python scripts/dev/verify_extract_quotes.py extracts/gemini_out/7BQPMJ39WpI_gemini.md",
+    "python scripts/dev/verify_extract_quotes.py extracts/gemini_out/96iPFDpXEcU_gemini.md"
+  ],
+  "created": "2026-10-24T14:21:17Z",
+  "depends_on": [],
+  "done_when": "3 files in extracts/gemini_out/ each passing verify_extract_quotes.py with 0 bad quotes",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gemini writes quote-verified extracts for Tom videos WQ_OAdz-PJ8, 7BQPMJ39WpI, 96iPFDpXEcU into extracts/gemini_out/<ID>_gemini.md.",
+  "id": "yt-gem-tom-extract-1",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Rules: PUBLIC transcripts only, local files, no web. Format per AWS_BEDROCK_PILOT.md Per-transcript prompt. Zero fabrication: quotes verbatim 8-40 words else NOT STATED; delete (never repair) non-verbatim quotes after verify_extract_quotes.py.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-24T14:21:55Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "extracts/gemini_out; extracts/pending_raw/tom/new_selected_10"
+  ],
+  "scope_out": [
+    "scripts; live tree; extracts/fresh"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/AWS_BEDROCK_PILOT.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "For WQ_OAdz-PJ8: read extracts/pending_raw/tom/new_selected_10/WQ_OAdz-PJ8_I_Tested_10_Trading_Strategies_Only_THIS_One_Actually_Works_for_Beginners.txt; write extracts/gemini_out/WQ_OAdz-PJ8_gemini.md",
+    "For 7BQPMJ39WpI: read extracts/pending_raw/tom/new_selected_10/transcript_7BQPMJ39WpI.txt; write extracts/gemini_out/7BQPMJ39WpI_gemini.md",
+    "For 96iPFDpXEcU: read extracts/pending_raw/tom/new_selected_10/transcript_96iPFDpXEcU.txt; write extracts/gemini_out/96iPFDpXEcU_gemini.md",
+    "Run python scripts/dev/verify_extract_quotes.py extracts/gemini_out/WQ_OAdz-PJ8_gemini.md; delete bad quotes; record bad-quote count before/after in the commit body",
+    "Run python scripts/dev/verify_extract_quotes.py extracts/gemini_out/7BQPMJ39WpI_gemini.md; delete bad quotes; record bad-quote count before/after in the commit body",
+    "Run python scripts/dev/verify_extract_quotes.py extracts/gemini_out/96iPFDpXEcU_gemini.md; delete bad quotes; record bad-quote count before/after in the commit body",
+    "Commit on your branch with a Result: line (files + verified quote counts)"
+  ],
+  "tests": "verify_extract_quotes.py exits 0 on each output file (files absent before this card, so it fails on the pre-change tree)",
+  "title": "[GEMINI] Tom extracts J1-J3 (WQ_OAdz-PJ8, 7BQPMJ39WpI, 96iPFDpXEcU)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
