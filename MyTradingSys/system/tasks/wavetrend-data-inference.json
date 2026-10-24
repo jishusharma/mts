@@ -1,7 +1,9 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
   "class": "C1",
+  "closed": "2026-10-24T14:55:17Z",
   "commands": [],
   "created": "2026-10-18T21:26:36Z",
   "depends_on": [],
@@ -14,6 +16,12 @@
   "id": "wavetrend-data-inference",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "input_manifest.py+paired_inference.py, 11 tests pass; manifest JSON not generated (F:/MTS ",
+      "ref": "908e1db0",
+      "utc": "2026-10-24T14:55:17Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +46,12 @@
   "refs": [
     "MyTradingSys/research/wavetrend_2026-10-17/AUDIT_2026-10-18.md"
   ],
-  "result": "",
+  "result": "input_manifest.py+paired_inference.py, 11 tests pass; manifest JSON not generated (F:/MTS klines absent)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/wavetrend_2026-10-17/",
     "MyTradingSys/backtest/research_kit.py"
@@ -54,13 +67,14 @@
     "MyTradingSys/research/wavetrend_2026-10-17/atlas.py",
     "MyTradingSys/backtest/research_kit.py"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Create a frozen manifest for the exact 30 pre-cutoff 1m DEV source files with names, sizes, SHA-256, timestamp coverage, duplicate and missing-minute counts, and usable bars by timeframe.",
     "Add a fail-first test for duplicate/gap detection and ensure the manifest generator refuses any input at or after the 2024-07-01 cutoff.",
     "Specify and test a matched day/block resampling or randomization method that preserves common-clock/event clustering for the event and control arms; record the method in a new analysis-version design without running outcomes.",
     "Create a new exposure-ledger entry only when a preregistration is ready; never rewrite historical rows."
   ],
+  "taken": "2026-10-24T14:50:59Z",
   "tests": "Add fail-first test_input_manifest.py covering cutoff refusal, duplicate timestamps, missing-minute count and file digest; add test_paired_inference.py with synthetic paired day blocks whose expected contrast is hand-computed.",
   "title": "WaveTrend DEV input manifest and matched inference",
   "weight": "IMPORTANT",

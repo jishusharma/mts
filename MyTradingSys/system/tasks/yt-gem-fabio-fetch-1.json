@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-24T15:07:03Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --help"
   ],
@@ -15,7 +16,14 @@
   "id": "yt-gem-fabio-fetch-1",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "outputs pass verify_extract_quotes, 0 problems",
+      "ref": "416a9c6e8",
+      "utc": "2026-10-24T15:07:03Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,7 +33,12 @@
   "refined_by": "",
   "refreshed": "2026-10-24T14:21:26Z",
   "refs": [],
-  "result": "",
+  "result": "outputs pass verify_extract_quotes, 0 problems",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "extracts/gemini_out/fabio; raw_transcripts_canonical (new files only)"
   ],
@@ -37,7 +50,7 @@
   "sources": [
     "MyTradingSys/research/fabio_video_search_2026-10-17/README.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "python scripts/dev/fetch_captions_timed.py pZai3k1e-Jg (see --help for the output path); if captions are unavailable write NO CAPTIONS and go on",
     "python scripts/dev/fetch_captions_timed.py feV6CATGUqo (see --help for the output path); if captions are unavailable write NO CAPTIONS and go on",
@@ -51,6 +64,7 @@
     "Write extracts/gemini_out/fabio/cLgdXZnLL_0_note.md: duration, speaker as stated, live trades Y/N/unknown with 2 verbatim quotes, duplicate-of if any",
     "Commit with a Result: line (n fetched, n no-caption)"
   ],
+  "taken": "2026-10-24T15:07:03Z",
   "tests": "each note quotes appear verbatim in the fetched transcript: verify_extract_quotes.py on the note (files absent before the card)",
   "title": "[GEMINI] Fabio caption fetch + live-trade note, HijoTrades/IQCapital/Cimi (5 videos)",
   "weight": "ROUTINE",

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-24T15:19:53Z",
   "commands": [],
   "created": "2026-10-19T20:49:38Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "ECON_FLOOR.md/csv: H1 not dead on any TF (1m abs30/abs20/rel dead, abs10 inconclusive; 15m",
+      "ref": "5d1a52fd5",
+      "utc": "2026-10-24T15:19:53Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "RSI deep-buy: apply SHOT_REVIEW patches C1-C12 to SPEC and rsi-deep cards",
@@ -24,13 +31,18 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator RSI deep-buy study. Design: SPEC.md + OPUS_FRAMING.md s1 (H1), s5 (Stage 0). Reuse rsi_core, forward_excursion helper. Raw: Session_Planner refines (done_when, steps, tests). LAB_GUY 2026-10-24 REJECT (insufficient spec, fix before take): (1) done_when omits the C12 trough-to-40/50/60 table and the H1 kill rule (every TF: upper day-clustered 95% CI of gross minus matched baseline < 0.10% = dead); (2) steps never state DEV cutoff 2024-07-01 (loader must refuse bars >= cutoff), fee 0.10% SOURCED backtest/fees.py, fill = next bar open, levels abs 30/20/10 + rel 2nd pct trailing 90d, horizons {1,4,16}, matched baseline (time of day, vol tercile); (3) tests lack cutoff-refusal and next-open-fill/fee-boundary cases (the two listed tests are fine, keep). Needs Session_Planner refine.",
+  "note": "Operator RSI deep-buy study. Design: SPEC.md + OPUS_FRAMING.md s1 (H1), s5 (Stage 0). Reuse rsi_core, forward_excursion helper. Raw: Session_Planner refines (done_when, steps, tests). LAB_GUY 2026-10-24 REJECT (insufficient spec, fix before take): (1) done_when omits the C12 trough-to-40/50/60 table and the H1 kill rule (every TF: upper day-clustered 95% CI of gross minus matched baseline < 0.10% = dead); (2) steps never state DEV cutoff 2024-07-01 (loader must refuse bars >= cutoff), fee 0.10% SOURCED backtest/fees.py, fill = next bar open, levels abs 30/20/10 + rel 2nd pct trailing 90d, horizons {1,4,16}, matched baseline (time of day, vol tercile); (3) tests lack cutoff-refusal and next-open-fill/fee-boundary cases (the two listed tests are fine, keep). Needs Session_Planner refine. LAB_GUY 2026-10-24 ACCEPT: done_when/steps/tests now cover C12 table, H1 kill rule, cutoff refusal, next-open and fee boundary; nit: OPUS_FRAMING s5 also asks bounce/MAE, P(lower low within N bars) and RSI-min to price-min lag in bars and % - include them.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-10-24T14:30:12Z",
   "refs": [],
-  "result": "",
+  "result": "ECON_FLOOR.md/csv: H1 not dead on any TF (1m abs30/abs20/rel dead, abs10 inconclusive; 15m,60m inconclusive/low n); study continues",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/"
   ],
@@ -38,13 +50,14 @@
   "scope_sha": "baea750d6f8c",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read OPUS_FRAMING s1,s5, SPEC, SHOT_REVIEW C12",
     "econ_floor.py: loader refuses any bar with open >= 2024-07-01; RSI14 on 1m/15m/1h; levels abs 30/20/10 + relative trailing-90d 2nd pct (causal); h=3 hysteresis; fill = next bar open; fee 0.10% SOURCED from backtest/fees.py; horizons {1,4,16} bars; matched baseline (time of day, trailing-vol tercile); day-clustered CI; MDE",
     "Write tests: future-bar change, no-recovery loss, cutoff refusal, next-open fill/fee boundary (fail first)",
     "Run; write ECON_FLOOR.csv and ECON_FLOOR.md"
   ],
+  "taken": "2026-10-24T15:19:53Z",
   "tests": "fail-first: planted future-bar change leaves earlier events unchanged; falling series never recovering shows a loss; loader refuses bars >= 2024-07-01; fill at next open and bounce exactly at 0.10% fee boundary",
   "title": "RSI deep-buy Stage 0: economic-floor kill test (gross forward return vs 0.10% fee at deep RSI, BTC 1m DEV, 1m/15m/1h)",
   "weight": "",
