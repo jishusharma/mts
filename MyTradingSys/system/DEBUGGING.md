@@ -32,7 +32,7 @@ the others fail silently, so run it by hand to see the error: `echo {} | python 
 | broadcast nobody reacted to | `python scripts/dev/mts_signal.py acks [<id>]` (hosts vs none/told/done); resend with `broadcast "<text>" --prio high --cmd "<command>"` | branch `mts-signals` | the sending session |
 | signal / git windows flash | `scripts/dev/mts_signal.py` | `~/.claude/mts-signals`, branch `mts-signals` |
 | screenshot not picked up | `scripts/dev/shot.py` | `~/.claude/uploads/manifest.jsonl` |
-| C: drive warning | `scripts/dev/c_drive_guard.py` | none |
+| C: drive warning or C: full after a restart | `python scripts/dev/c_drive_guard.py status`, then `python scripts/dev/c_drive_guard.py` (dry run) | `%LOCALAPPDATA%\MTS\logs\c_drive_guard.log`; per station: STATION_CLEANUP.md |
 
 ## 3. Cards, desk, lanes
 | Symptom | Command | State | Owner |
