@@ -82,3 +82,10 @@ Candle chart library; order entry or paper trading; parameter sliders that *run*
 | 9 | Why it failed, plainly | Verdict banner sentence + fee bars + level-family table |
 | 10 | Click and Run later, local, logged, sealed windows | Disabled "Run" button in the mockup; real only in the local JIS-NB desk; hosted page never runs; ledger row per run; VALIDATION/HOLDOUT locked. Left for after items 1-6 |
 Standing rules: every setting carries a SOURCED/OURS label (all OURS until a quote is attached; fees SOURCED); failed tests list first and red; fee-net only; percent distances only.
+
+## 7. Doctor follow-up (a)-(d), 2026-10-25
+- (a) **Audit / thought-experiment card kind.** Result JSON `kind: "audit"|"thought_experiment"|"backtest"`; audit fields `{claim, method, finding, verdict, example:{text, figure?}}`; same card, chip AUDIT. Mockup: T09 live-parity audit, opens in place (details tag). Source: `research/dsa_backtest_audit_2026-10-16/T09_live_parity.md`.
+- (b) **Parity per layer, plain words, with real T09 numbers** (Compare tab): 5 layers match entry for entry (turn of candle 2,880/2,880; session momentum 30/30; cvd absorption 99/99; sr flip 130/130; failed msb 17/17); fib pullback 108/117; rsi events 101/240; escalation 28/102; funding cvd fade 0/34; volume fvg 0/24 side flipped. Exits differ for all (one live bracket). Counts are sums of T09 section 4 rows. Schema: `parity:[{layer, entries_match:[x,y], exits_same:bool, note}]`.
+- (c) **Parameters in plain words with SOURCED/OURS**: Result tab table (done in the previous ship). Schema `settings:[{name, plain_value, label, quote?}]`; all OURS until a quote is attached, fees SOURCED.
+- (d) **Replay reasons as text**: entry reason, stop, target, exit reason on every replayed trade (public page, no prices). Schema addition per trade: none needed for levels (derived from family + r); other studies add `why:{entry,stop,target,exit}` text.
+Scoreboard now counts T09 audit and the zero-fee experiment as FAILED (3 failed).

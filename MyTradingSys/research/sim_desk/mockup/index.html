@@ -57,7 +57,7 @@ nav button.on{background:var(--bg);color:var(--ink);font-weight:700}
 
 <section class="pane on" id="p-tests">
  <div class="card"><h2>Scoreboard — honest count</h2>
-  <div class="badges"><div class="badge"><b class="pos">0</b>passed</div><div class="badge"><b class="neg">1</b>failed</div><div class="badge"><b style="color:var(--warn)">3</b>not enough data</div><div class="badge"><b class="mut">1</b>no result yet</div></div>
+  <div class="badges"><div class="badge"><b class="pos">0</b>passed</div><div class="badge"><b class="neg">3</b>failed</div><div class="badge"><b style="color:var(--warn)">3</b>not enough data</div><div class="badge"><b class="mut">1</b>no result yet</div></div>
   <div class="note">A pass only appears after the one sealed validation run. Zero passes is a true answer, not a bug.</div></div>
  <div class="grid two" style="margin-top:12px">
   <div class="card test f" onclick="go('over')"><span class="chip f">FAILED</span> <b>Levels ladder</b><div class="sub">Price touches a known level, enter, 2R target</div><div class="hero"><span class="big neg">−0.119</span><span class="mut">R per trade · 255 trades</span></div><div class="sub">$1,000 → <b class="neg">$715</b> on DEV after fees</div></div>
@@ -65,6 +65,12 @@ nav button.on{background:var(--bg);color:var(--ink);font-weight:700}
   <div class="card test n"><span class="chip n">NOT ENOUGH DATA</span> <b>RSI 1-hour</b><div class="sub">Same rule, faster chart</div><div class="hero"><span class="big">≈0</span><span class="mut">R · 75 trades</span></div><div class="sub">Still inside the noise</div></div>
   <div class="card test n"><span class="chip n">NOT ENOUGH DATA</span> <b>RSI daily</b><div class="sub">Same rule, slow chart</div><div class="hero"><span class="big">2</span><span class="mut">filled trades, both lost</span></div><div class="sub">5 setups in 27 months</div></div>
   <div class="card test f"><span class="chip f">FAILED</span> <span class="chip u">THOUGHT EXPERIMENT</span> <b>What if fees were zero?</b><div class="sub">Same levels ladder, no fees. Asks: is the idea or the cost the problem?</div><div class="hero"><span class="big pos">+0.072</span><span class="mut">R per trade, all ideas</span></div><div class="sub">Even free, the range still touches zero (low end −0.007): not an edge. SOURCED: REVIEW_FABLE.md</div></div>
+  <details class="card test f" style="grid-column:1/-1"><summary style="list-style:none;cursor:pointer"><span class="chip f">FAILED</span> <span class="chip u">AUDIT</span> <b>Does the live system trade what we tested?</b><div class="sub">Tap to open: claim, method, finding, verdict, example</div></summary>
+   <table style="margin-top:8px"><tr><td class="mut" style="width:90px">Claim</td><td>The testnet trades the same entries and exits the backtests judged.</td></tr>
+   <tr><td class="mut">Method</td><td>30 DEV days replayed bar by bar through the live layer code (no network), diffed against each layer's backtest code. Source: T09_live_parity.md.</td></tr>
+   <tr><td class="mut">Finding</td><td>5 layers match entry for entry. volume_fvg trades the opposite side (0 of 24 same). RSI trades events no test covered. Every layer exits by one 1% / 2% / 8-bar bracket that no test used.</td></tr>
+   <tr><td class="mut">Verdict</td><td><span class="neg"><b>Backtest verdicts do not describe what the testnet trades</b></span> for 5 layer families.</td></tr>
+   <tr><td class="mut">Example</td><td>volume_fvg 15m: backtest took 19 signals, live 16; 15 of them on the other side. <a href="#" onclick="go('cmp');return false">See the layer table</a></td></tr></table></details>
   <div class="card test u"><span class="chip u">NO RESULT YET</span> <b>WaveTrend</b><div class="sub">Study exists; its result is not in the catalogue yet</div></div>
  </div>
  <div class="note">Order: failed first, then not enough data, then the rest. Backtests and thought experiments share one card shape.</div><div class="note">Cards other than Levels show only what ROADMAP.md states (trade counts, "about 0"); sim-v2 fills real numbers from <code>results/&lt;id&gt;.json</code>.</div>
@@ -123,11 +129,19 @@ nav button.on{background:var(--bg);color:var(--ink);font-weight:700}
  <div class="card"><h2>Variants — slide the stop type (precomputed, all ideas)</h2>
   <div class="row"><input type="range" id="kv" min="0" max="4" value="4"><b id="kvt"></b></div>
   <div class="note">Each position is one stored run. No model runs in the page. All five are below zero.</div></div>
- <div class="card"><h2>Live vs test: do they take the same entries?</h2>
-  <table><tr><th>Layer</th><th>Same entries</th><th>Same exits</th></tr>
-  <tr><td>Levels ladder</td><td class="mut">not measured yet</td><td class="mut">not measured yet</td></tr>
-  <tr><td>RSI</td><td class="mut">not measured yet</td><td class="mut">not measured yet</td></tr></table>
-  <div class="note">Shape when measured: "yes, 41 of 43 entries match; 2 differ because live missed the touch". Needs the live mirror to export trades in the result schema; no live numbers are invented here.</div></div>
+ <div class="card"><h2>Live vs test: same entries? (30 DEV days, live code replayed)</h2>
+  <table><tr><th>Layer</th><th>Entries live took, same side</th><th>Exits</th></tr>
+  <tr><td>turn of candle 1m</td><td class="pos"><b>yes</b> 2,880 of 2,880</td><td class="neg">different</td></tr>
+  <tr><td>session momentum 15m</td><td class="pos"><b>yes</b> 30 of 30</td><td class="neg">different</td></tr>
+  <tr><td>cvd absorption 15m / 1h</td><td class="pos"><b>yes</b> 99 of 99</td><td class="neg">different</td></tr>
+  <tr><td>sr flip 15m / 1h</td><td class="pos"><b>yes</b> 130 of 130</td><td class="neg">different</td></tr>
+  <tr><td>failed msb 15m / 1h</td><td class="pos"><b>yes</b> 17 of 17</td><td class="neg">different</td></tr>
+  <tr><td>fib pullback 15m / 1h</td><td><b>mostly</b> 108 of 117</td><td class="neg">different</td></tr>
+  <tr><td>rsi events 5m / 15m / 1h</td><td class="neg"><b>no</b> 101 of 240</td><td class="neg">different</td></tr>
+  <tr><td>escalation 15m / 1h</td><td class="neg"><b>no</b> 28 of 102</td><td class="neg">different</td></tr>
+  <tr><td>funding cvd fade 1h</td><td class="neg"><b>no</b> 0 of 34</td><td class="neg">different</td></tr>
+  <tr><td>volume fvg 15m / 1h</td><td class="neg"><b>no</b> 0 of 24, side flipped</td><td class="neg">different</td></tr></table>
+  <div class="note">"X of Y" = backtest entries that live also took, same side. Exits: live uses one 1% stop / 2% target / 8-bar time exit for every layer; no test used it. Source (SOURCED): T09_live_parity.md section 4, audit 2026-10-16.</div></div>
  <div class="card"><h2>Which level types lost (filled trades)</h2><table id="fam"><tr><th>Level</th><th>n</th><th>Avg R</th></tr></table>
   <div class="note">Families with n below 20 are shown grey: too few to trust, and picking the best one would be a fresh overfit.</div></div>
 </section>
@@ -159,7 +173,7 @@ eq(N);$("sl").oninput=e=>eq(+e.target.value);
 let tm=null;$("play").onclick=()=>{if(tm){clearInterval(tm);tm=null;$("play").textContent="▶ Play";return}
  if(+$("sl").value>=N)$("sl").value=0;$("play").textContent="⏸ Pause";tm=setInterval(()=>{let v=+$("sl").value+2;if(v>=N){v=N;clearInterval(tm);tm=null;$("play").textContent="▶ Play"}$("sl").value=v;eq(v)},40)};
 // replay
-let ri=0;function rp(){const t=T[ri],r=t[3];$("rp").innerHTML="<div class='sub'>20"+t[0]+" · "+(t[1]>0?"long":"short")+" · level: "+t[2]+"</div><div class='hero'><span class='big "+(r>0?"pos":"neg")+"'>"+f2(r)+" R</span><span>"+(r>0?"hit target":"stopped out")+"</span></div><ol class='sub' style='margin:6px 0 0;padding-left:18px'><li>Price touched "+t[2]+"</li><li>Entry filter passed, order filled</li><li>"+(r>0?"Target (2R) reached first":"Stop reached first")+"</li></ol><div class='sub'>Money after this trade: $"+usd[ri+1].toFixed(0)+"</div>";$("rpc").textContent=(ri+1)+" / "+N}
+let ri=0;function rp(){const t=T[ri],r=t[3];$("rp").innerHTML="<div class='sub'>20"+t[0]+" · "+(t[1]>0?"long":"short")+" · level: "+t[2]+"</div><div class='hero'><span class='big "+(r>0?"pos":"neg")+"'>"+f2(r)+" R</span><span>"+(r>0?"hit target":"stopped out")+"</span></div><ol class='sub' style='margin:6px 0 0;padding-left:18px'><li><b>Entry reason:</b> price touched "+t[2]+"; entry filter passed; order filled</li><li><b>Stop:</b> just past today's extreme (loss = 1R)</li><li><b>Target:</b> 2R above the entry</li><li><b>Exit reason:</b> "+(r>0?"target reached before the stop":"stop reached before the target")+"</li></ol><div class='sub'>Money after this trade: $"+usd[ri+1].toFixed(0)+"</div>";$("rpc").textContent=(ri+1)+" / "+N}
 $("prv").onclick=()=>{ri=(ri+N-1)%N;rp()};$("nxt").onclick=()=>{ri=(ri+1)%N;rp()};rp();
 (function(){const s=T.slice(-40);$("strip").innerHTML=s.map((t,i)=>{const h=Math.abs(t[3])/2*30;return"<rect x='"+(i*14.9+4)+"' y='"+(t[3]>0?35-h:35)+"' width='11' height='"+h+"' rx='2' fill='"+(t[3]>0?"var(--good)":"var(--bad)")+"'/>"}).join("")+"<line x1='0' x2='600' y1='35' y2='35' stroke='var(--line)'/>"})();
 // quiz
