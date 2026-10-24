@@ -1,1 +1,0 @@
-{"t": "20261017T122109Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "start net-<topic>`, `python scripts/dev/tasks.py list` (cards titled `Network:`), `python scripts/dev/mts_signal.py read` | fix via `sync.py ship`; defect = `tasks.py new` card (BUGS.md row for bugs);"}
