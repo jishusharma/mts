@@ -17,3 +17,7 @@ Not mine: bt-engine-wire-real-funding-rsi-cc-rerun, Krown K1 GPT audit (yt-burn)
 
 ## Reports sent to Doctor
 (none yet)
+
+## Findings
+- 14:50Z FINDING: S1 and H1 workers were started as Agents in the coordinator's tree (no own worktree); risk: one ship carries the other's files (counts toward row 4). Rule from Doctor 14:58Z: commit only own paths, ship one at a time, W1/R1 get their own worktree (`isolation: worktree`).
+- 14:50Z gate poller #1 timed out at 20 min (no gate commit); poller #2 running.
