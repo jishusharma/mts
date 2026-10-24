@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-24T10:11:27Z",
   "commands": [
     "grep -ril antigravity scripts MyTradingSys/system",
     "python -m pytest scripts/dev/test_codex_status_parse.py -q"
@@ -18,6 +19,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "gemini NOT_IN_DATA (manual column); codex_status_parse.py 3 tests pass",
+      "ref": "595e4f52c",
+      "utc": "2026-10-24T10:11:27Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "gemini_queue: release the claim after the run",
@@ -34,7 +41,12 @@
   "refined_by": "",
   "refreshed": "2026-10-23T08:14:10Z",
   "refs": [],
-  "result": "",
+  "result": "gemini NOT_IN_DATA (manual column); codex_status_parse.py 3 tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/thinker/2026-10-23_gemini_quota_find.md",
     "scripts/dev/codex_status_parse.py (new)",
@@ -53,12 +65,13 @@
   "sources": [
     "MyTradingSys/research/thinker/2026-10-23_usage_metering.md (Pilot design, Other lanes)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "grep -ril antigravity scripts MyTradingSys/system; read gemini_queue.py and ask_model.py hits for a quota or usage call; record the command and a real output line, or NOT_IN_DATA.",
     "Parse `codex_run.py status` allowance text (window pts, week) into scripts/dev/codex_status_parse.py (standalone, no usage_log.py import); test on a pasted sample.",
     "Gemini unreadable: document the manual column, no network login."
   ],
+  "taken": "2026-10-24T10:11:27Z",
   "tests": "scripts/dev/test_codex_status_parse.py::test_parse_sample fails first (module absent), passes after.",
   "title": "Find Gemini/Antigravity quota command and parse Codex status over NUC gate",
   "weight": "ROUTINE",
