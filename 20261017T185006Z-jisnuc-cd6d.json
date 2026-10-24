@@ -1,1 +1,0 @@
-{"t": "20261017T185006Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship 2>&1 | tail -2; git fetch -q; git show origin/fast-track:MyTradingSys/system/roles/lab_guy.md | head -1 | cut -c1-50; git show origin/fast-track:MyTradingSys/system/ROLES.md | grep -c \"Lab_Guy\\|S"}
