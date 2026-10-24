@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-24T23:10:34Z",
+  "depends_on": [
+    "lead-role-core-and-modes"
+  ],
+  "done_when": "test_artifacts start-lines test green after failing first; mts_home.html regenerated and in the commit; test count flat; role/doc test files stay about 15 s; nothing new in run_extra_tests.py; docs lint green.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Docs and operator pages say Lead: make_home recipes and mts_home.html, test_artifacts start lines, SUPER_SESSION D2, ROLES.md, TRAFFIC_CONTROLLER.md, WORKERS.md:32, ARCHITECTURE.md:82. Old prompts already work after the core card, so this may lag.",
+  "id": "lead-docs-and-pages",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "OPERATOR QUOTE: 'whatever we have established as working good in the last pilot to run, those functionalities must not break ... tests so shipping time and test running time do not bloat'. Spec research/mts_doctor/LEAD_ROLE_SOLUTION.md s2/s3; one editor per file: runs after its depends_on, never parallel with role_loader.py cards.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/make_home.py:220-255 and MyTradingSys/system/artifacts/mts_home.html (regenerate)",
+    "MyTradingSys/tests/test_artifacts.py:181-182",
+    "MyTradingSys/system/SUPER_SESSION.md D2, ROLES.md, TRAFFIC_CONTROLLER.md, WORKERS.md:32, ARCHITECTURE.md:82"
+  ],
+  "scope_out": [
+    "Republishing mts_home (1985Artifacts_Guy desk row via artifacts.py publish-record)",
+    "role files, ROSTER.json, role_loader.py",
+    "test_super_session_doc.py (asserts no role name in D2/D4)",
+    "run_extra_tests.py"
+  ],
+  "size": "M",
+  "sources": [
+    "research/mts_doctor/LEAD_ROLE_SOLUTION.md s2-s4 (section 4 card table)",
+    "research/mts_doctor/LEAD_ROLE_IMPACT_MAP.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "make_home.py recipes -> 'You are Lead.' (+ say think / pipeline / doctor / a decision); run make_home.py to regenerate mts_home.html.",
+    "test_artifacts.py start lines -> the 4 remaining operator starts + Lead (fails first on old html/recipes).",
+    "SUPER_SESSION D2: the Lead is the separate session with the operator and starts this session as its wave worker; D4 unchanged. WORKERS.md:32 drop the turn_meter Thinker sentence. Update ROLES.md who-does-what, TRAFFIC_CONTROLLER.md, ARCHITECTURE.md:82.",
+    "Run role/doc test files and tests/docs; time them."
+  ],
+  "tests": "test_artifacts.py: start-lines test updated to the 4 operator starts + Lead; fails first on the old recipes/html. tests/docs (test_integrity, test_super_session_doc) stay green unchanged.",
+  "title": "Lead docs and pages: make_home, SUPER_SESSION D2, ROLES, WORKERS",
+  "weight": "ROUTINE",
+  "worker": "session"
+}
