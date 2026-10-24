@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "STALE: shipped. c2b9f0200 (2026-10-21): mts.ps1:348-351 resolves python.exe via Get-Command and fails closed (Bad + exit 1) when missing. Do not dispatch.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",

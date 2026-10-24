@@ -16,7 +16,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "STALE: shipped. eb0a7a216 names a stale main checkout (not silent); 436efe562 + b4f6641bd sync hook scripts even when the checkout is blocked; 086a1b257 measures the session folder. scripts/dev/trunk_lag.py wired in .claude/settings.json lines 9,65, tests test_trunk_lag.py. Main checkout fast-forwarded by hand 2026-10-23 (AUDIT_FIXES_NOT_LIVE). Do not dispatch.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
