@@ -1,1 +1,0 @@
-{"t": "20261017T142749Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "start gemini-antigravity 2>&1 | tail -3; grep -n \"Gemini CLI\\|Code Assist\\|Antigravity\\|VS Code\" MyTradingSys/system/GEMINI_START.md | cut -c1-170"}
