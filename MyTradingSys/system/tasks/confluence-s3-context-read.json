@@ -25,7 +25,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "Waits on confluence-s1-f6-direction (raw, needs Lab_Guy stamp; not touched here). DECISION (OURS): S2 already shipped (80413ab75) so no S2 card; old chain card confluence-s2-s6-chain dropped; S6 ship folded into each step. Host must have F:/MTS/data (DESKTOP-F7IU69N or JIS-NB).",
+  "note": "REVIEWED:2026-10-25 ACCEPT (independent Sonnet reviewer, fixes applied). Waits on confluence-s1-f6-direction (raw, needs Lab_Guy stamp; not touched here). DECISION (OURS): S2 already shipped (80413ab75) so no S2 card; old chain card confluence-s2-s6-chain dropped; S6 ship folded into each step. Host must have F:/MTS/data (DESKTOP-F7IU69N or JIS-NB). Complete and reviewed; promote with tasks.py check once depends_on is done.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -47,7 +47,7 @@
     "MyTradingSys/research/krown_audit_2026-10-22/PRE_REG_CONFLUENCE.md:50-70",
     "MyTradingSys/research/krown_audit_2026-10-22/FABLE_CARD_CONFLUENCE.md s4 row S3"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Check PRE_REG_CONFLUENCE.md s0 preconditions: F6 expansion direction shipped (card confluence-s1-f6-direction done) and COUNTS.md regenerated; if not, stop and hand back.",
     "Write run_context_read.py implementing s3.1 (D1 vs naive trend baseline, matched controls, week-clustered t, placebo) and s3.2 (BBWP to next-24h realised vol); note() aborts on any bar >= 2024-07-01; expected numbers for a toy fixture computed by hand from FORMULAS.md.",

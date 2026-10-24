@@ -14,13 +14,30 @@
   "goal": "Correct the 9 Fabio notes: replace nonexistent _timed.txt citations with the real _raw.txt files, fix speaker attribution, make the live-trade classification consistent, and stop asserting non-duplication without evidence.",
   "id": "apply-gpt-fix-fabio-notes-gemini",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "yt-burn: Gemini Tom extracts (9), audit -dMWA_bbm3o, Fabio notes (9) - quote-verified, 5 c",
+      "ref": "152df77163d3",
+      "utc": "2026-10-24T15:07:14Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "152df77163d3 yt-burn: Gemini Tom extracts (9), audit -dMWA_bbm3o, Fabio notes (9) - quote-",
+      "ref": "extracts/gemini_out/fabio/06R-ebyOhDI_note.md",
+      "utc": "2026-10-24T15:07:14Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS): live-trade class follows the raw transcript wording ('I took'): Y with source line, for both videos.",
+  "note": "REVIEWED:2026-10-25 ACCEPT (independent Sonnet reviewer, fixes applied). DECISION (OURS): live-trade class follows the raw transcript wording ('I took'): Y with source line, for both videos.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-24T22:51:26Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -40,11 +57,12 @@
     "FABIO_TRADE_LEDGER.md rows",
     "fetching new captions"
   ],
+  "scope_sha": "152df77163d3",
   "size": "M",
   "sources": [
     "MyTradingSys/research/gpt_burn_2026-10-24/gx2-review-audits-fabio/report.md:50-58,151"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read gx2-review-audits-fabio/report.md items 9-12 (lines 50-58) and the 'Metadata and availability cross-check' (line 151).",
     "Item 9: point the 4 notes' :4/:5(:6) citations to the existing raw_transcripts_canonical/<id>_raw.txt. Item 10: where no spoken name exists, write 'speaker not named in transcript' and cite candidates.csv for the channel. Item 12: replace 'does not duplicate' with 'no match found (no starting P/L)'.",

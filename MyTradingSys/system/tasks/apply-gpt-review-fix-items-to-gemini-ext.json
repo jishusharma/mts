@@ -14,13 +14,30 @@
   "goal": "Apply the GPT review FIX items F1-F6 to the 7 FIX Gemini Tom extracts (J1-J9 minus the 2 APPROVED) so summaries state only what the caption quotes support, before any layer uses them.",
   "id": "apply-gpt-review-fix-items-to-gemini-ext",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "yt-burn: Gemini Tom extracts (9), audit -dMWA_bbm3o, Fabio notes (9) - quote-verified, 5 c",
+      "ref": "152df77163d3",
+      "utc": "2026-10-24T15:07:14Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "152df77163d3 yt-burn: Gemini Tom extracts (9), audit -dMWA_bbm3o, Fabio notes (9) - quote-",
+      "ref": "extracts/gemini_out/7BQPMJ39WpI_gemini.md",
+      "utc": "2026-10-24T15:07:14Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS): fix summaries down to what quotes support (never add claims); when a rule is only inferred, label it INFERRED rather than delete it. Run order is free: if verify-extract-quotes-strip-nested-metad ships first, the verifier also flags F5.",
+  "note": "REVIEWED:2026-10-25 ACCEPT (independent Sonnet reviewer, fixes applied). DECISION (OURS): fix summaries down to what quotes support (never add claims); when a rule is only inferred, label it INFERRED rather than delete it. Run order is free: if verify-extract-quotes-strip-nested-metad ships first, the verifier also flags F5.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-24T22:51:22Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -39,11 +56,12 @@
     "verify_extract_quotes.py (separate card)",
     "any new claim not in the transcript"
   ],
+  "scope_sha": "152df77163d3",
   "size": "M",
   "sources": [
     "MyTradingSys/research/gpt_burn_2026-10-24/gx2-review-tom-extracts/report.md:21-118"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read MyTradingSys/research/gpt_burn_2026-10-24/gx2-review-tom-extracts/report.md sections Findings F1-F6 and the per-file table (lines 21-118); open the cited transcript lines in raw_transcripts_canonical/<id>_raw.txt.",
     "Per finding, edit the extract: F1/F3 restore the omitted condition in the key finding and summary; F2 say 32% is slightly profitable, not break-even; F4 mark the mirrored long-stop rule as inferred, not sourced; F5 replace gWjHq5UMisY lines 70 and 75 with real caption-body quotes or label them description metadata with no spoken GPS; F6 fix the 9 drifted Source GPS tags against the caption body.",

@@ -13,7 +13,7 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Give the live escalation and fib_pullback layers (15m, 1h) the longer bar history the backtest used, via the existing HistoryStore, so the 68 of 96 escalation backtest signals stop being invisible live; fail closed on any history error.",
+  "goal": "Give the live escalation and fib_pullback layers (15m, 1h) the longer bar history the backtest used, via the existing HistoryStore, so the 47 history-limited escalation 15m backtest signals (of 68 backtest-only; 21 more are visible but not emitted, out of scope) can fire live; fail closed on any history error.",
   "id": "t09-f4-live-window-99-bars-swing-layers",
   "lane": "JIS-NB",
   "layers": [
@@ -21,7 +21,7 @@
   ],
   "live_path": true,
   "mutation_check": "",
-  "note": "DECISION (OURS): need=1500 bars = backtest window (SOURCED T09_live_parity.md:29, chunked 1000/500), chosen over a smaller guess; first live poll after a deploy is slow (about 2 requests per tf). Live path: no deploy by the builder; needs a different reviewer session (CRITICAL). Depends on t09-f2 so the exits are fixed before more signals reach the trader.",
+  "note": "REVIEWED:2026-10-25 ACCEPT (independent Sonnet reviewer, fixes applied). DECISION (OURS): need=1500 bars = backtest window (SOURCED T09_live_parity.md:29, chunked 1000/500), chosen over a smaller guess; first live poll after a deploy is slow (about 2 requests per tf). Live path: no deploy by the builder; needs a different reviewer session (CRITICAL). Depends on t09-f2 so the exits are fixed before more signals reach the trader. Complete and reviewed; promote with tasks.py check once depends_on is done.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -41,11 +41,12 @@
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T09_live_parity.md:29,59,67",
     "MyTradingSys/backtest/layers/alerts/live_runner_cli.py:344-353"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Read T09_live_parity.md rows T09-F4 (line 67) and 29, live_runner_cli.py:344-430 (HistoryStore, make_history_layer) and 480-525 (registry tuples, the 'need' column).",
     "Write the fail-first test: fake history_fetch with 1,500 15m bars containing one escalation break older than 99 bars; build_default_registry; assert the escalation 15m entry sees it with the new 'need', and sees nothing (stderr line, no event) when the history fetch raises or leaves a gap. Fails today.",
     "Add HIST_NEED_BARS entries escalation=1500 and fib_pullback=1500 and pass them as 'need' on the four registry tuples (escalation 1h/15m, fib_pullback 1h/15m); history_layer must emit only events on the newest closed bar (no replay of old signals each poll).",
+    "Replay on the T09 parity days with the harness in research/dsa_backtest_audit_2026-10-16/scripts (fake fetch_fn, no network): count escalation 15m signals emitted live with 99 bars vs with need=1500; record both numbers.",
     "Add tests: restart (fresh HistoryStore, cold start) emits no stale events; a Binance API error returns [] and logs; run test_live_runner_*.py."
   ],
   "tests": "test_live_runner_cli.py: history reaches 1500 bars for escalation/fib_pullback, old events not re-emitted, cold start, fetch error and gap fail closed; fails on the pre-change code.",

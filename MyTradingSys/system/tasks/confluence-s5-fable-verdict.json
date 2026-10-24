@@ -21,7 +21,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "Model per the card: Fable 5.1 (coordinator pastes the prompt, operator not asked); lane SONNET is a placeholder, run it on Fable only if the weekly budget allows, else Sonnet medium with the same file. Depends on confluence-s4-dev-trials.",
+  "note": "REVIEWED:2026-10-25 ACCEPT (independent Sonnet reviewer, fixes applied). Model per the card: Fable 5.1 (coordinator pastes the prompt, operator not asked); lane SONNET is a placeholder, run it on Fable only if the weekly budget allows, else Sonnet medium with the same file. Depends on confluence-s4-dev-trials. Complete and reviewed; promote with tasks.py check once depends_on is done.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -40,7 +40,7 @@
   "sources": [
     "MyTradingSys/research/krown_audit_2026-10-22/FABLE_CARD_CONFLUENCE.md s4 row S5"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Read run/DEV_RESULTS.md, PRE_REG_CONFLUENCE.md s6-s7 and FABLE_DESIGN.md s5-s6; apply the frozen pass bars, no new bars.",
     "Write FABLE_VERDICT.md: per test PASS/FAIL/INCONCLUSIVE, the VALIDATION candidate list (one pooled trial, or none), the kill list with kill scope, confidence-tag proposal (gates nothing); every number SOURCED or OURS.",
