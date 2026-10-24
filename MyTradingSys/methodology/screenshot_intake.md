@@ -85,6 +85,7 @@ Recurring NOT_IN_DATA rows (operator drawings, net-delta series, footprint imbal
 ## KNOWN LIMITS (open)
 - The hook only exists in checkouts that contain `.claude/settings.json`. Sessions opened in the live tree (every one of the 13 pastes so far had that as its working folder) get it only after MTS-AutoDeploy updates the live tree;
   until then run `python scripts/dev/shot.py ingest` yourself (idempotent, about 1 s).
+- Images sent while a turn is running (mid-turn) are not user records: the app writes them to the transcript as `attachment` / `queued_command` (blocks in `attachment.prompt`). `ingest_transcript` lands that shape since 2026-10-24 (card mid-turn-image-intake-gap); the five 4h/1h/8h/12h/1D shots of 2026-10-18 ~14:57Z predate it and are recovered by `shot.py ingest` only if their transcript still exists. They were not found in Temp or uploads.
 - A set is "within 10 minutes". Charts of one question pasted in two messages hours apart (the 2026-10-02 pair: 4h+1d at 18:23Z, two 15m at 20:17Z) are two sets; read them together by hand.
 - The SessionStart backlog reminder repeats at most every 6 hours, so a real backlog does not become wallpaper.
 - Not yet observed on a live paste: whether the app writes the image before the UserPromptSubmit hook runs. Worst case the notice arrives with the next prompt. First real paste: confirm with `shot.py list`.

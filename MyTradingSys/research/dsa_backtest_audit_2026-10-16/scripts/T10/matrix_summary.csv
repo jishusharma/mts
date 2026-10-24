@@ -1,0 +1,90 @@
+axis,name,HANDLED,NOT HANDLED,N/A,UNKNOWN
+row,F01 Duplicate or missing bars,0,0,0,43
+row,F02 Time unit mix (microseconds read as milliseconds),0,0,0,43
+row,F03 Trade-price bars used where mark/index price decides stops or liquidation,0,0,30,13
+row,F04 Spot data standing in for perp data,0,1,42,0
+row,F05 Single-instrument universe (BTC only): result may be an instrument accident,0,43,0,0
+row,"F06 Point-in-time errors: OI, depth, funding or revised data used before it was published",0,1,0,42
+row,F07 Bad prints and flash wicks drive extremes,0,0,0,43
+row,"F08 Data venue differs from trading venue (Binance bars, Deribit fills)",0,43,0,0
+row,"T01 Look-ahead through resample labels, centred windows or pivot confirmation",22,0,0,21
+row,T02 Session clocks without DST or with fixed UTC,0,0,0,43
+row,T03 Funding settlement window and sign mishandled,1,1,30,11
+row,T04 Signal-to-fill latency: fill at the signal bar close,1,27,3,12
+row,T05 Weekend and holiday liquidity seasonality ignored,0,3,2,38
+row,T06 Higher-timeframe join keyed on bar open,22,0,0,21
+row,C01 Flat cost where spread and slippage scale with volatility,0,40,3,0
+row,C02 Maker orders filled on touch,0,1,3,39
+row,C03 Gap through the stop booked at the stop price,0,1,3,39
+row,C04 Funding charged flat or on the wrong side,1,1,30,11
+row,C05 Intrabar order ambiguity: stop and target both inside one bar,0,27,3,13
+row,C06 Market impact and queue position ignored,0,40,3,0
+row,"C07 Tick size, lot size and minimum notional ignored",0,40,3,0
+row,"C08 Fee tier, maker rebate and venue fee mismatch",0,6,3,34
+row,"C09 Liquidation, margin and auto-deleveraging not simulated",0,40,3,0
+row,"S01 Multiple testing across arms, horizons and variants (family-wise error)",2,11,30,0
+row,S02 Overlapping holds and autocorrelated events inflate n,1,0,30,12
+row,S03 Trial count not recorded (garden of forking paths),1,0,27,15
+row,S04 Fat tails and skew break the t-test,0,13,30,0
+row,S05 Low power: MDE bigger than the effect asked about,2,0,27,14
+row,S06 Control group that contains the signal,1,1,29,12
+row,S07 Out-of-sample reuse and split leakage,1,1,27,14
+row,R01 Regime drift: a long-biased arm rides the trend,0,8,30,5
+row,"R02 Structural breaks: listing, halving, ETF flows, fee-schedule changes",0,38,0,5
+row,"R03 Exchange outages and extreme days (e.g. 2022-11 FTX, 2023-03 USDC depeg)",0,16,0,27
+row,R04 Liquidation cascades make stops unfillable,0,40,3,0
+row,E01 Storytelling: rule invented after seeing the chart,6,0,0,37
+row,"E02 Selecting the timeframe, symbol or window after looking",1,0,27,15
+row,I01 Backtest code and live code are different implementations,0,27,0,16
+row,I02 Cost in percent but risk in R: cost in R-units ignored,0,27,3,13
+row,"I03 Duplicate loaders and split schemes (25+ loaders, 8 splits)",0,16,27,0
+row,O01 Exit reason misclassified in the ledger,0,0,16,27
+row,O02 Stale feed: writer behind klines,27,0,16,0
+row,O03 Restart or state loss mid-trade,0,0,16,27
+row,O04 API errors and rate limits,0,0,16,27
+row,O05 Testnet fills are synthetic and thin,0,27,16,0
+row,O06 Tests not in the CI gate,0,0,0,43
+column,S01 session_extreme_fade,6,17,6,16
+column,S02 preopen_tops,1,11,6,27
+column,S03 mal_bb_mid_engulf,2,14,6,23
+column,S04 bb_mtf_center,1,11,6,27
+column,S05 weekly_low_round_sweep,1,11,6,27
+column,S06 wlow_bounce_bbrsi60,2,14,6,23
+column,S07 krown_malkan_counts,1,6,25,13
+column,S08 qriptal_calls,0,5,26,14
+column,S09 candle_close,0,13,6,26
+column,S10 levels_sizing,0,14,6,25
+column,S11 level_hold_lc1,0,6,24,15
+column,S12 orderflow_views,0,15,6,24
+column,S13 eur_low_us_sweep,0,12,6,27
+column,S14 mfe_exits,2,14,6,23
+column,S15 published_strats,1,13,6,25
+column,S16 tom_fabio_matrix,1,13,6,25
+column,L rsi|rsi_events|1h,3,13,14,15
+column,L rsi|rsi_events|15m,3,13,14,15
+column,L rsi|rsi_events|5m,3,13,14,15
+column,L fabio|cvd_absorption|1h,3,13,14,15
+column,L fabio|cvd_absorption|15m,3,13,14,15
+column,L fabio|escalation|1h,3,13,14,15
+column,L fabio|volume_fvg|1h,3,13,14,15
+column,L session|session_momentum|15m,3,13,14,15
+column,L positioning|funding_cvd_fade|1h,1,13,14,17
+column,L rsi|malkan_bull|1h,1,13,14,17
+column,L rsi|malkan_bear|1h,3,13,14,15
+column,L cryptocred|sr_flip|1h,3,13,14,15
+column,L cryptocred|fib_pullback|1h,3,13,14,15
+column,L cryptocred|failed_msb|1h,3,13,14,15
+column,L turn_of_candle|turn_of_candle|1m,3,13,14,15
+column,L fabio|escalation|15m,3,13,14,15
+column,L fabio|volume_fvg|15m,3,13,14,15
+column,L cryptocred|sr_flip|15m,3,13,14,15
+column,L cryptocred|fib_pullback|15m,3,13,14,15
+column,L cryptocred|failed_msb|15m,3,13,14,15
+column,L fabio|v3_grid|1m,1,13,14,17
+column,L wlow_bounce|bbrsi60|1h,1,13,14,17
+column,L rsi_divergence|rsi_divergence|1h,3,13,14,15
+column,L bb_top_reversal|bb_top_reversal|15m,3,13,14,15
+column,L session_levels|session_levels|1m,1,13,14,17
+column,L candle_close|candle_close|1m,3,13,14,15
+column,L levels|confluence|1m,3,13,14,15
+total,all cells,89,540,531,775
