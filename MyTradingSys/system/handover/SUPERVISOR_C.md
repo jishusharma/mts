@@ -31,3 +31,9 @@ Decisions (OURS): ships serialised by me from worker worktrees; test registratio
 Usage 18:48Z: 5h 13% (reset 21:10Z), week 34%.
 Next action: wait for worker completions (notifications), then ship one at a time; Doctor report 20:00Z.
 Last Doctor contact: none yet. Reverts 0. Peak workers 6. Max gate wait 0.
+
+## Update 19:30Z
+T05 done (wt agent-aeff7478879c89c20, commit c7f5eefb8, 41 turns; card not closed: stamp+A-20261018-5 hold; lint pre-checked 0 new). S1: touched-only distance-matched random-line control makes all 12 LC1 families DROP (8 published KEEPs don't survive); raw card cmd in T05 report section 8, not created.
+Ship IN PROGRESS: argon-fix ad987950b + EXTRA registration of scripts/dev/test_argon_blind_read.py (wt agent-a0724398b018e0ac4, bg bzy6c6trg, log $TEMP/ship_argon.log; full-ish gate, 62 steps). Queue next: T05, then yt-fabio-fetch-retry (a8391044ff8788666 haiku, still fetching captions in bg).
+Shipped so far (7+notes): t02, tasks.py, cbp, flow-states, T07, T06, T09. Argon pending.
+Pending report items for Doctor: cards 05/06/07/09 need Lab_Guy REVIEWED stamp / A-20261018-5 hold cleared to close; T09 live-path follow-ups; T05 S1 raw card.
