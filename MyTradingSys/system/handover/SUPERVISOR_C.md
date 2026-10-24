@@ -21,9 +21,11 @@ Workers running (Sonnet Agents, own worktrees, started ~18:53Z; they commit only
 - a948ff46879f9b963 cbp-add-channel-latest-n-to-fetch-captio (spare 1, started ~19:00Z)
 - a8783e71ee944c683 tasks-py-check-rewrites-other-cards-mark: DONE, 6 turns, commit 753075e76, worktree agent-a8783e71ee944c683; SHIP IN PROGRESS ~19:05Z (log $TEMP/ship_tasks.log, bg task b8zk6p3r9); verify git cherry empty
 Worktrees: in each worker's final report (find via `sync.py where --all`).
-Central-file holders: none. Ship queue: empty. SHIPPED+verified (cherry 0): t02 card-done, tasks.py fix (gate 2m33s), cbp (43s), flow-states (56s). Flow-states test_build_rows.py NOT registered in run_extra_tests (batch registration ship at end if wanted; was marked 'needed' by worker).
-Awaiting: DSA T05 (aeff..), T06 (a987..), T07 (a108..), T09 (a401..) still running (4 workers). Clock check 18:55Z (sys clock).
-Spares exhausted: remaining dispatch candidates are NB-machine/lab cards or stale; consider none.
+Central-file holders: none. Ship queue (one at a time): 1 T07 eb293abb5 (wt agent-a1089c4267107ce94, SHIPPING, bg b6outpvf3, log $TEMP/ship_t07.log; 55 turns; card NOT done: needs review stamp + A-20261018-5 hold) -> 2 T06 0d738711f (wt agent-a98795da9ab134b19; 36 turns; card NOT done, same stamp/hold; untracked out/g5_* left in wt) -> then T05, T09 when they finish.
+Shipped+verified earlier: t02 card-done, tasks.py fix, cbp, flow-states, notes.
+Registration batch (one ship at end; forces full gate, only if time): run_extra_tests.py EXTRA += T07/test_rerun_diff.py, T06/test_cost_inventory.py, session_flow_context_2026-10-18/test_build_rows.py (+T05, T09 tests).
+Cards needing a review stamp/clear of A-20261018-5 hold to mark done: dsa-audit-06, -07 (and likely 05, 09): report to Doctor.
+Running: T05 aeff7478879c89c20, T09 a401dace18fdc5813.
 Decisions (OURS): ships serialised by me from worker worktrees; test registration batched into one ship at end.
 Usage 18:48Z: 5h 13% (reset 21:10Z), week 34%.
 Next action: wait for worker completions (notifications), then ship one at a time; Doctor report 20:00Z.
