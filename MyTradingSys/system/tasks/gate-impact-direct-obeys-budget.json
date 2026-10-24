@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "STALE (mostly shipped): a6b7f53bd direct tests fill the 30 s FAST_BUDGET_S, TEST_FILE_SECONDS estimates; run_all_tests.py:708 SLOW_FILE_S skips >=30 s files; 06f005cb0 trimmed local steps. Only 'estimates from gate_timing medians' left, deliberately not done (new code). Do not dispatch.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
