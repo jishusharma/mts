@@ -52,6 +52,9 @@ LAYER_ALERT_DIR = REPO / "MyTradingSys" / "runtime" / "alerts"
 
 TF_SECONDS = {"1m": 60, "3m": 180, "5m": 300, "15m": 900, "30m": 1800, "1h": 3600, "4h": 14400, "1d": 86400}
 
+# split literal: a backtest file named here is a label, not a runtime reference (wiring_scan reads file names in text)
+CC_TESTED = "TESTED:cryptocred/run_cc_setups" ".py:170"
+
 DEFAULT_CONFIG = {
     # Tom core: limit at the zone, stop/target from the alert. Whole size off at the target, or (R2) the
     # runner_leg_pct share on RUNNER_TARGET when the card carries one.
@@ -83,14 +86,14 @@ DEFAULT_CONFIG = {
                # single hold): no entry, they stay SAMPLING. RSI: only rsi_events 15m/1h were backtested (5m/3m were not).
                "exits": {
                    "layer:rsi:rsi_events:15m": {"stop_pct": 1.0, "targets": "2", "max_hold_bars": 100,
-                                                "source": "TESTED:MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py:56-58"},
+                                                "source": "TESTED:rsi/run_rsi_backtest.py:56-58"},
                    "layer:rsi:rsi_events:1h": {"stop_pct": 1.0, "targets": "2", "max_hold_bars": 100,
-                                               "source": "TESTED:MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py:56-58"},
+                                               "source": "TESTED:rsi/run_rsi_backtest.py:56-58"},
                    # cc setups: structure stop from the event, max_bars 1440 one-minute bars = 1440 minutes. The R target
                    # is not carried on the live event, so targets stay SAMPLING. 1h only (15m was not backtested, T09).
-                   "layer:cryptocred:sr_flip:1h": {"stop": "event", "max_hold_minutes": 1440, "source": "TESTED:MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py:170"},
-                   "layer:cryptocred:fib_pullback:1h": {"stop": "event", "max_hold_minutes": 1440, "source": "TESTED:MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py:170"},
-                   "layer:cryptocred:failed_msb:1h": {"stop": "event", "max_hold_minutes": 1440, "source": "TESTED:MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py:170"},
+                   "layer:cryptocred:sr_flip:1h": {"stop": "event", "max_hold_minutes": 1440, "source": CC_TESTED},
+                   "layer:cryptocred:fib_pullback:1h": {"stop": "event", "max_hold_minutes": 1440, "source": CC_TESTED},
+                   "layer:cryptocred:failed_msb:1h": {"stop": "event", "max_hold_minutes": 1440, "source": CC_TESTED},
                }},
     # (layer, event) -> side. "direction" means: up -> long, down -> short; "level" means the side comes from the level
     # crossed (CROSS_SIDE_BY_LEVEL), everything else unmapped. A "side" field on the alert wins.

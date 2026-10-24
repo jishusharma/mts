@@ -406,7 +406,7 @@ class CycleTest(unittest.TestCase):
         row = self.rows_of("trade_attempt")[0]
         self.assertTrue(row["source"].startswith("layer:"))
         # T09-F2: rsi_events 15m now trades its tested bracket and the row says which backtest line
-        self.assertEqual(row["bracket_source"], "TESTED:MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py:56-58")
+        self.assertEqual(row["bracket_source"], "TESTED:rsi/run_rsi_backtest.py:56-58")
         self.assertEqual(cfg()["layers"]["bracket_source"], "SAMPLING")      # the default bracket's own label is unchanged
 
     def test_tom_trade_row_has_no_bracket_source(self):
@@ -833,8 +833,8 @@ class LayerExitTest(unittest.TestCase):
     """T09-F2: per-layer exit table (rsi tested bracket, cc event stop), SAMPLING default, fail closed on bad entries."""
     T15 = LayerSignalTest.T15
     T1H = int(datetime(2026, 9, 28, 23, 0, tzinfo=timezone.utc).timestamp() * 1000)   # opens 23:00, closes 00:00 = NOW
-    RSI_SRC = "TESTED:MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py:56-58"
-    CC_SRC = "TESTED:MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py:170"
+    RSI_SRC = "TESTED:rsi/run_rsi_backtest.py:56-58"
+    CC_SRC = "TESTED:cryptocred/run_cc_setups.py:170"
 
     def rsi(self, c=None, tf="15m"):
         return at.layer_signal({"layer": "rsi", "sub": "rsi_events", "event": "support", "tf": tf,
