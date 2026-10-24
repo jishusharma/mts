@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-24T19:18:13Z",
   "commands": [
     "python scripts/dev/sync.py claim \"dsa-audit-09-live-parity\"",
     "python scripts/dev/tasks.py take dsa-audit-09-live-parity",
@@ -17,7 +19,14 @@
   "goal": "Map each testnet layer to the backtest that justified it, replay 30 DEV days bar by bar through the live layer code in the worktree with no network, diff signals and exit rules against the backtest code, and explain the 97% time exits.",
   "id": "dsa-audit-09-live-parity",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "T09: 7 findings (S1 3, S2 2, S3 2); volume_fvg trades the mirror side, RSI trades untested",
+      "ref": "5879e97d3",
+      "utc": "2026-10-24T19:18:13Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "note": "REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report.",
@@ -30,7 +39,12 @@
     "MyTradingSys/backtest/layers/alerts/live_runner_cli.py",
     "MyTradingSys/execution/auto_trader.py"
   ],
-  "result": "",
+  "result": "T09: 7 findings (S1 3, S2 2, S3 2); volume_fvg trades the mirror side, RSI trades untested events, 8-bar 1%/2% bracket gives 94% time exits",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T09_live_parity.md and MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T09/ (new files only)",
     "read-only: repo code, result files, data under F:/MTS/data and Dumps (windows per brief section 5)"
@@ -45,7 +59,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md sections 1-7, then section 8 'T09' (full method).",
     "Map every testnet account/layer to its live function (build_default_registry) and the backtest that justified it; parameter diff per layer.",
@@ -54,6 +68,7 @@
     "Run each layer's backtest on the same days; diff signals (same bar, off by one, live-only, backtest-only).",
     "Exit-rule diff (auto_trader.py, position_manager.py, config) vs backtest exits; explain the 97% time exits with numbers."
   ],
+  "taken": "2026-10-24T18:48:26Z",
   "tests": "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T09/test_layer_signal_parity.py::test_replay_signals_match_backtest (asserts the bar-by-bar replay of 30 DEV days through the live layer code gives the same entry and exit signals as the backtest code per layer, with no network calls; fails on pre-change code: scripts/T09/ does not exist yet)",
   "title": "DSA audit T09: replay DEV bars through the testnet layer code and diff signals and exits against the backtests",
   "weight": "IMPORTANT",
