@@ -1,1 +1,0 @@
-{"t": "20261017T180925Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "start gemini-setup-final 2>&1 | tail -1; sed -n 1,8p MyTradingSys/system/GEMINI_START.md | cut -c1-260; grep -n \"^## \\|^- It is an IDE\\|Install Antigravity\" MyTradingSys/system/GEMINI_START.md | cut -"}
