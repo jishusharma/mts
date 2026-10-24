@@ -1,0 +1,590 @@
+[MTF] Failed 5m: stub: no klines 5m
+[MTF] Failed 1h: stub: no klines 1h
+[MTF] Failed 1w: stub: no klines 1w
+[MTF] Failed 4h: stub: no klines 4h
+[MTF] Failed 1d: stub: no klines 1d
+[MTF] Failed 15m: stub: no klines 15m
+[MTF] Failed 1h: stub: no klines 1h
+[MTF] Failed 1w: stub: no klines 1w
+[MTF] Failed 4h: stub: no klines 4h
+[MTF] Failed 5m: stub: no klines 5m
+[MTF] Failed 1d: stub: no klines 1d
+[MTF] Failed 15m: stub: no klines 15m
+[MTF] Failed 1m: stub: no klines 1m
+Snapshot saved to F:\MTS\gq\gx4-statecode-races\runtime_data\snapshots\ZZTEST_historical_20261001T120000Z.json
+{
+  "timestamp_utc" : "2026-10-01T12:00:00Z",
+  "asset" : "ZZTEST",
+  "current_price" : 100.0,
+  "alignment_pass" : true,
+  "weekly_vp" : {
+    "poc" : 100.01,
+    "vah" : 100.24,
+    "val" : 99.78,
+    "shape" : "TWOPEAK",
+    "confidence" : "MEDIUM",
+    "prior_week_poc" : 100.01,
+    "two_week_ago_poc" : 100.01
+  },
+  "daily_vp" : {
+    "poc" : 100.01,
+    "vah" : 100.24,
+    "val" : 99.78,
+    "shape" : "TWOPEAK",
+    "confidence" : "MEDIUM",
+    "hvns" : [ 100.0 ],
+    "lvns" : [ ]
+  },
+  "post_funding_vp" : {
+    "poc" : 105.0,
+    "vah" : 110.0,
+    "val" : 100.0,
+    "shape" : "P",
+    "confidence" : "MEDIUM"
+  },
+  "intraday_4h_vp" : {
+    "poc" : 0.0,
+    "vah" : 0.0,
+    "val" : 0.0,
+    "shape" : "D",
+    "confidence" : "LOW"
+  },
+  "vwap" : {
+    "price" : 100.0,
+    "slope" : "flat",
+    "slope_pct" : 0.0,
+    "bands" : {
+      "+1s" : 100.0,
+      "+2s" : 100.0,
+      "-1s" : 100.0,
+      "-2s" : 100.0
+    },
+    "confidence" : "MEDIUM"
+  },
+  "cvd" : {
+    "value" : 0.0,
+    "slope" : "flat",
+    "last_3_delta" : [ "negative", "negative", "negative" ],
+    "cvd_recent" : {
+      "slope_1h" : "flat",
+      "slope_4h" : "flat",
+      "delta_1h" : 0.0,
+      "delta_4h" : 0.0
+    },
+    "confidence" : "MEDIUM",
+    "scope" : "session",
+    "gating_window" : "rolling_1m",
+    "session_start_utc" : "2026-10-01T00:00:00Z"
+  },
+  "trade_flow" : {
+    "net_delta_1m" : null,
+    "net_delta_5m" : null,
+    "net_delta_15m" : null,
+    "net_delta_1h" : null,
+    "confidence" : "UNAVAILABLE"
+  },
+  "structure" : {
+    "1w" : {
+      "swing_high" : 100.5,
+      "swing_low" : 99.5,
+      "stale" : false
+    },
+    "1d" : {
+      "swing_high" : 100.5,
+      "swing_low" : 99.5,
+      "stale" : false
+    },
+    "4h" : {
+      "swing_high" : 100.5,
+      "swing_low" : 99.5,
+      "stale" : false
+    },
+    "1h" : {
+      "swing_high" : 100.5,
+      "swing_low" : 99.5,
+      "stale" : false
+    },
+    "15m" : {
+      "swing_high" : 100.5,
+      "swing_low" : 99.5,
+      "stale" : false
+    },
+    "5m" : {
+      "swing_high" : 100.5,
+      "swing_low" : 99.5,
+      "stale" : false
+    }
+  },
+  "order_book_depth" : {
+    "bid_ask_ratio" : null,
+    "confidence" : "LOW"
+  },
+  "conditions" : {
+    "price_vs_poc" : "below",
+    "price_vs_va" : "in_va",
+    "vp_shape" : "TWOPEAK",
+    "vwap_slope" : "flat",
+    "cvd_slope" : "flat",
+    "cvd_trade_flow_aligned" : false,
+    "fvg_unfilled_count" : 0,
+    "fvg_nearest_unfilled" : null,
+    "book_imbalance" : null,
+    "funding_extreme" : false,
+    "oi_trend" : "flat",
+    "speed_picking_up" : false,
+    "rejection_wick_at_zone" : true,
+    "volume_spike_at_level" : false
+  },
+  "prior_day" : {
+    "poc" : 100.01,
+    "vah" : 100.24,
+    "val" : 99.78,
+    "shape" : "TWOPEAK",
+    "confidence" : "MEDIUM",
+    "close" : 100.0,
+    "high" : 100.5,
+    "low" : 99.5
+  },
+  "funding" : {
+    "current_rate" : null,
+    "extreme" : false,
+    "confidence" : "UNAVAILABLE"
+  },
+  "open_interest" : {
+    "direction" : "flat",
+    "change_1h_pct" : 0.0,
+    "delta_state" : "neutral",
+    "delta_state_price" : "neutral",
+    "confidence" : "LOW"
+  },
+  "session_timing" : {
+    "current_session" : "european",
+    "funding_reset_window" : false,
+    "us_equity_open_window" : false,
+    "us_equity_open_in_minutes" : 90
+  },
+  "spot_perp_basis" : {
+    "confidence" : "UNAVAILABLE",
+    "reason" : "historical snapshot: no live spot/mark data",
+    "spot_price" : null,
+    "mark_price" : null,
+    "basis_pct" : null,
+    "direction" : "unknown"
+  },
+  "liquidation_clusters" : {
+    "nearest_above" : {
+      "price" : 0.0
+    },
+    "nearest_below" : {
+      "price" : 0.0
+    },
+    "warning" : false
+  },
+  "oi_breakdown" : {
+    "confidence" : "UNAVAILABLE",
+    "reason" : "historical snapshot: no live long/short ratio data",
+    "retail" : null,
+    "whale" : null,
+    "topAccounts" : null
+  },
+  "liquidation_warning" : {
+    "status" : "none",
+    "nearest_cluster_distance_pct" : null,
+    "note" : "Historical snapshot; liquidation data not available."
+  },
+  "session" : {
+    "vwap_anchor_utc" : "2026-10-24T00:00:00Z",
+    "initial_balance_window_minutes" : 30,
+    "open_price" : 0.0,
+    "high" : 0.0,
+    "low" : 0.0,
+    "gap_from_prior_close" : 0.0,
+    "initial_balance_high" : 0.0,
+    "initial_balance_low" : 0.0,
+    "range_position_pct" : 0.0,
+    "gap_direction" : "flat",
+    "open_location" : "in_value",
+    "sweep_flag" : false,
+    "liquidity_sweep_direction" : "none",
+    "day_type" : "UNKNOWN",
+    "day_type_confidence" : "none"
+  },
+  "data_quality" : {
+    "unavailable_fields" : [ "spot_perp_basis", "oi_breakdown", "trade_flow.net_delta_1m", "trade_flow.net_delta_5m", "trade_flow.net_delta_15m", "trade_flow.net_delta_1h", "conditions.book_imbalance", "order_book_depth.bid_ask_ratio", "funding.current_rate" ],
+    "reason" : "historical reconstruction from klines only; live-only inputs are null/UNAVAILABLE, never 0.0"
+  },
+  "setup_candidates" : [ ],
+  "module_candidates" : [ ]
+}
+Snapshot saved to F:\MTS\gq\gx4-statecode-races\runtime_data\snapshots\ZZTEST_2026-10-25_1792881358009.json
+{
+  "timestamp_utc" : "2026-10-24T22:35:58.008532200Z",
+  "asset" : "ZZTEST",
+  "current_price" : 100.0,
+  "alignment_pass" : true,
+  "weekly_vp" : {
+    "poc" : 100.01,
+    "vah" : 100.24,
+    "val" : 99.78,
+    "shape" : "TWOPEAK",
+    "confidence" : "MEDIUM",
+    "prior_week_poc" : 100.01,
+    "two_week_ago_poc" : 100.01
+  },
+  "daily_vp" : {
+    "poc" : 100.01,
+    "vah" : 100.24,
+    "val" : 99.78,
+    "shape" : "TWOPEAK",
+    "confidence" : "MEDIUM",
+    "hvns" : [ 100.0 ],
+    "lvns" : [ ]
+  },
+  "post_funding_vp" : {
+    "poc" : 105.0,
+    "vah" : 110.0,
+    "val" : 100.0,
+    "shape" : "P",
+    "confidence" : "MEDIUM"
+  },
+  "intraday_4h_vp" : {
+    "poc" : 100.01,
+    "vah" : 100.24,
+    "val" : 99.78,
+    "shape" : "TWOPEAK",
+    "confidence" : "MEDIUM"
+  },
+  "vwap" : {
+    "price" : 100.0,
+    "slope" : "flat",
+    "slope_pct" : 0.0,
+    "bands" : {
+      "+1s" : 100.0,
+      "+2s" : 100.0,
+      "-1s" : 100.0,
+      "-2s" : 100.0
+    },
+    "confidence" : "MEDIUM"
+  },
+  "cvd" : {
+    "value" : 0.0,
+    "slope" : "flat",
+    "last_3_delta" : [ "negative", "negative", "negative" ],
+    "cvd_recent" : {
+      "slope_1h" : "flat",
+      "slope_4h" : "flat",
+      "delta_1h" : 0.0,
+      "delta_4h" : 0.0
+    },
+    "confidence" : "MEDIUM",
+    "scope" : "session",
+    "gating_window" : "rolling_1m",
+    "session_start_utc" : "2026-10-24T00:00:00Z"
+  },
+  "trade_flow" : {
+    "net_delta_1m" : 0.0,
+    "net_delta_5m" : 0.0,
+    "net_delta_15m" : 0.0,
+    "net_delta_1h" : 0.0,
+    "confidence" : "HIGH"
+  },
+  "structure" : {
+    "1w" : {
+      "swing_high" : 100.5,
+      "swing_low" : 99.5,
+      "stale" : false
+    },
+    "1d" : {
+      "swing_high" : 100.5,
+      "swing_low" : 99.5,
+      "stale" : false
+    },
+    "4h" : {
+      "swing_high" : 100.5,
+      "swing_low" : 99.5,
+      "stale" : false
+    },
+    "1h" : {
+      "swing_high" : 100.5,
+      "swing_low" : 99.5,
+      "stale" : false
+    },
+    "15m" : {
+      "swing_high" : 100.5,
+      "swing_low" : 99.5,
+      "stale" : false
+    },
+    "5m" : {
+      "swing_high" : 100.5,
+      "swing_low" : 99.5,
+      "stale" : false
+    }
+  },
+  "order_book_depth" : {
+    "bid_ask_ratio" : null,
+    "confidence" : "HIGH"
+  },
+  "conditions" : {
+    "price_vs_poc" : "below",
+    "price_vs_va" : "in_va",
+    "vp_shape" : "TWOPEAK",
+    "vwap_slope" : "flat",
+    "cvd_slope" : "flat",
+    "cvd_trade_flow_aligned" : false,
+    "fvg_unfilled_count" : 0,
+    "fvg_nearest_unfilled" : null,
+    "funding_extreme" : false,
+    "oi_trend" : "UNAVAILABLE",
+    "speed_picking_up" : false,
+    "volume_spike_at_level" : false,
+    "rejection_wick_at_zone" : true,
+    "book_imbalance" : null
+  },
+  "prior_day" : {
+    "poc" : 100.01,
+    "vah" : 100.24,
+    "val" : 99.78,
+    "shape" : "TWOPEAK",
+    "confidence" : "MEDIUM",
+    "close" : 100.0,
+    "high" : 100.5,
+    "low" : 99.5
+  },
+  "funding" : {
+    "current_rate" : 0.0,
+    "extreme" : false,
+    "confidence" : "HIGH"
+  },
+  "open_interest" : {
+    "direction" : "UNAVAILABLE",
+    "change_1h_pct" : null,
+    "delta_state" : "neutral",
+    "delta_state_price" : "neutral",
+    "confidence" : "LOW"
+  },
+  "session" : {
+    "vwap_anchor_utc" : "2026-10-24T00:00:00Z",
+    "initial_balance_window_minutes" : 30,
+    "open_price" : 100.0,
+    "high" : 100.5,
+    "low" : 99.5,
+    "gap_from_prior_close" : 0.0,
+    "initial_balance_high" : 0.0,
+    "initial_balance_low" : 0.0,
+    "range_position_pct" : 50.0,
+    "gap_direction" : "flat",
+    "open_location" : "in_value",
+    "sweep_flag" : false,
+    "liquidity_sweep_direction" : "none",
+    "day_type" : "UNKNOWN",
+    "day_type_confidence" : "none"
+  },
+  "session_timing" : {
+    "current_session" : "after_hours",
+    "funding_reset_window" : false,
+    "us_equity_open_window" : false,
+    "us_equity_open_in_minutes" : 895
+  },
+  "spot_perp_basis" : {
+    "spot_price" : 0.0,
+    "mark_price" : 0.0,
+    "basis_pct" : 0.0,
+    "direction" : "unknown",
+    "confidence" : "LOW"
+  },
+  "liquidation_clusters" : {
+    "nearest_above" : {
+      "price" : 0.0
+    },
+    "nearest_below" : {
+      "price" : 0.0
+    },
+    "warning" : false
+  },
+  "oi_breakdown" : {
+    "retail" : null,
+    "whale" : null,
+    "topAccounts" : null,
+    "confidence" : "UNAVAILABLE",
+    "note" : "OI breakdown unavailable"
+  },
+  "order_flow" : {
+    "trades_per_sec" : 0.0,
+    "volume_per_sec" : 0.0,
+    "speed_state" : "unknown",
+    "confidence" : "LOW",
+    "note" : "DSA_TASK_013 unavailable: stub: aggTrades not configured"
+  },
+  "setup_candidates" : [ ],
+  "module_candidates" : [ ]
+}
+[StateCode] backfill ok (BTCUSDT): 330 bars to 2026-10-20T05:30:00Z cvd=1320.0 vol=3300.0
+[StateCode WS] first message received
+[StateCode] backfill ok (BTCUSDT): 330 bars to 2026-10-20T05:30:00Z cvd=1320.0 vol=3300.0
+[StateCode] emit  state=A B=0 Bl=0 av=0 ticks=0
+[StateCode WS] Parse error (BTCUSDT): Unrecognized token 'not': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 4]
+[StateCode] emit  state=A B=0 Bl=0 av=0 ticks=0
+[StateCode] backfill ok (BTCUSDT): 330 bars to 2026-10-20T05:30:00Z cvd=1320.0 vol=3300.0
+[StateCode] backfill ok (BTCUSDT): 332 bars to 2026-10-20T05:32:00Z cvd=1328.0 vol=3320.0
+[StateCode WS] first message received
+[StateCode] emit  state=A B=0 Bl=1 av=2 ticks=1
+[StateCode] emit  state=A B=0 Bl=1 av=2 ticks=2
+[StateCode] Restored state from disk: A
+[StateCode] backfill ok (BTCUSDT): 1 bars to 2026-10-20T00:01:00Z cvd=4.0 vol=10.0
+[StateCode WS] first message received
+[StateCode] emit  state=A B=0 Bl=1 av=2 ticks=1
+[StateCode] emit  state=A B=0 Bl=1 av=2 ticks=2
+[StateCode] backfill ok (BTCUSDT): 330 bars to 2026-10-20T05:30:00Z cvd=1320.0 vol=3300.0
+[StateCode WS] first message received
+[StateCode] emit  state=A B=0 Bl=1 av=2 ticks=1
+[StateCode] emit  state=A B=0 Bl=1 av=2 ticks=2
+[StateCode] emit  state=A B=0 Bl=1 av=2 ticks=3
+[StateCode] emit  state=A B=0 Bl=1 av=2 ticks=4
+[StateCode] emit  state=A B=0 Bl=1 av=2 ticks=5
+[StateCode] emit  state=A B=0 Bl=1 av=2 ticks=6
+[StateCode] emit  state=A B=0 Bl=1 av=2 ticks=7
+[StateCode] emit  state=A B=0 Bl=1 av=2 ticks=8
+[StateCode] emit  state=A B=0 Bl=1 av=2 ticks=9
+[StateCode] emit  state=A B=0 Bl=2 av=3 ticks=10
+[StateCode] emit  state=A>L B=0 Bl=2 av=3 ticks=11
+[StateCode] emit  state=A>L B=0 Bl=2 av=3 ticks=12
+[StateCode] emit  state=A>L B=0 Bl=1 av=1 ticks=12 INVALID(ws_closed)
+[StateCode] backfill ok (BTCUSDT): 334 bars to 2026-10-20T05:34:00Z cvd=1336.0 vol=3340.0
+[StateCode] emit  state=A>L B=0 Bl=1 av=2 ticks=12
+[StateCode] Restored state from disk: S
+[StateCode WS] first message received
+[StateCode] emit  state=S B=0 Bl=1 av=1 ticks=3 INVALID(waiting_for_backfill_after_connect)
+[StateCode] backfill ok (BTCUSDT): 330 bars to 2026-10-20T05:30:00Z cvd=1320.0 vol=3300.0
+[StateCode] emit  state=S B=1 Bl=1 av=2 ticks=3
+[StateCode] backfill ok (BTCUSDT): 1430 bars to 2026-10-19T23:50:00Z cvd=5720.0 vol=14300.0
+[StateCode WS] first message received
+[StateCode] emit  state=A B=1 Bl=0 av=2 ticks=2
+[StateCode] backfill ok (BTCUSDT): 1 bars to 2026-10-20T00:01:00Z cvd=4.0 vol=10.0
+[StateCode] emit  state=A B=1 Bl=0 av=2 ticks=3
+[StateCode WS] first message received
+[StateCode] backfill not complete (BTCUSDT): backfill_error: IOException HTTP 429 | retry in 30000 ms
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: IOException HTTP 429)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: IOException HTTP 429)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: IOException HTTP 429)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: IOException HTTP 429)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: IOException HTTP 429)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: IOException HTTP 429)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: IOException HTTP 429)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: IOException HTTP 429)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: IOException HTTP 429)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: IOException HTTP 429)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: IOException HTTP 429)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: IOException HTTP 429)
+[StateCode] backfill not complete (BTCUSDT): backfill_error: SocketTimeoutException timeout | retry in 30000 ms
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: SocketTimeoutException timeout)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: SocketTimeoutException timeout)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: SocketTimeoutException timeout)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: SocketTimeoutException timeout)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: SocketTimeoutException timeout)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: SocketTimeoutException timeout)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: SocketTimeoutException timeout)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: SocketTimeoutException timeout)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: SocketTimeoutException timeout)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: SocketTimeoutException timeout)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: SocketTimeoutException timeout)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_error: SocketTimeoutException timeout)
+[StateCode] backfill not complete (BTCUSDT): backfill_bar_count 329 expected 330 | retry in 30000 ms
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 329 expected 330)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 329 expected 330)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 329 expected 330)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 329 expected 330)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 329 expected 330)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 329 expected 330)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 329 expected 330)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 329 expected 330)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 329 expected 330)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 329 expected 330)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 329 expected 330)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 329 expected 330)
+[StateCode] backfill not complete (BTCUSDT): backfill_bar_count 331 expected 330 | retry in 30000 ms
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 331 expected 330)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 331 expected 330)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 331 expected 330)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 331 expected 330)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 331 expected 330)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 331 expected 330)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 331 expected 330)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 331 expected 330)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 331 expected 330)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 331 expected 330)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 331 expected 330)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bar_count 331 expected 330)
+[StateCode] backfill not complete (BTCUSDT): backfill_bad_response | retry in 30000 ms
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bad_response)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bad_response)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bad_response)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bad_response)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bad_response)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bad_response)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bad_response)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bad_response)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bad_response)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bad_response)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bad_response)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_bad_response)
+[StateCode] backfill not complete (BTCUSDT): backfill_open_time_mismatch at bar 10 | retry in 30000 ms
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 10)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 10)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 10)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 10)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 10)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 10)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 10)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 10)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 10)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 10)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 10)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 10)
+[StateCode] backfill not complete (BTCUSDT): backfill_open_time_mismatch at bar 20 | retry in 30000 ms
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 20)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 20)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 20)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 20)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 20)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 20)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 20)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 20)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 20)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 20)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 20)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_open_time_mismatch at bar 20)
+[StateCode] backfill not complete (BTCUSDT): backfill_malformed_row 5 | retry in 30000 ms
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_malformed_row 5)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_malformed_row 5)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_malformed_row 5)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_malformed_row 5)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_malformed_row 5)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_malformed_row 5)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_malformed_row 5)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_malformed_row 5)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_malformed_row 5)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_malformed_row 5)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_malformed_row 5)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(backfill_malformed_row 5)
+[StateCode] backfill ok (BTCUSDT): 330 bars to 2026-10-20T05:30:00Z cvd=1320.0 vol=3300.0
+[StateCode] emit  state=A B=0 Bl=1 av=2 ticks=1
+[StateCode WS] first message received
+[StateCode] backfill ok (BTCUSDT): 330 bars to 2026-10-20T05:30:00Z cvd=-89.11700000000025 vol=44954.073
+[StateCode] emit  state=A B=0 Bl=2 av=3 ticks=216
+[StateCode WS] first message received
+[StateCode] backfill ok (BTCUSDT): 0 bars to 2026-10-20T00:00:00Z cvd=0.0 vol=0.0
+[StateCode] emit  state=A B=1 Bl=1 av=2 ticks=501
+[StateCode] backfill ok (BTCUSDT): 330 bars to 2026-10-20T05:30:00Z cvd=1320.0 vol=3300.0
+[StateCode WS] first message received
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=1 INVALID(ws_closed)
+[StateCode] emit  state=A B=0 Bl=1 av=1 ticks=2 INVALID(ws_closed)
+[StateCode] backfill ok (BTCUSDT): 333 bars to 2026-10-20T05:33:00Z cvd=1332.0 vol=3330.0
+[StateCode] emit  state=A B=0 Bl=1 av=3 ticks=5
+[StateCode] backfill ok (BTCUSDT): 330 bars to 2026-10-20T05:30:00Z cvd=1320.0 vol=3300.0
+[StateCode] emit  state=A B=0 Bl=0 av=0 ticks=0
+[StateCode WS] first message received
+[StateCode] emit  state=A B=0 Bl=1 av=2 ticks=1
+[StateCode] emit  state=A B=0 Bl=1 av=2 ticks=2
+[StateCode] emit  state=A B=0 Bl=0 av=0 ticks=0 INVALID(waiting_for_minute_boundary)
+[StateCode] backfill ok (BTCUSDT): 331 bars to 2026-10-20T05:31:00Z cvd=1324.0 vol=3310.0

@@ -1,0 +1,61 @@
+--- a/MyTradingSys/execution/auto_trader.py
++++ b/MyTradingSys/execution/auto_trader.py
+@@
+-    "layers": {"enabled": True, "size_usd": 100, "max_loss_usd": 10, "stop_pct": 1.0, "targets": "2",
+-               "bracket_source": "SAMPLING",
+-               "hours": 2.0, "max_age_bars": 1.2,
+-               "max_hold_bars": 8},
++    # No universal layer exit fallback. A layer without a valid params-file
++    # exits block cannot create an order.
++    "layers": {"enabled": True, "size_usd": 100, "max_loss_usd": 10,
++               "hours": 2.0, "max_age_bars": 1.2},
+@@
+ PROMOTED_SETUPS = _ROOT / "MyTradingSys" / "execution" / "promoted_setups.json"
++LAYER_PARAMS_ROOT = _ROOT / "MyTradingSys" / "backtest" / "layers"
++
++def load_layer_exits(layer: str, sub: str | None) -> dict:
++    """Load the reviewed per-layer params document; absent/invalid exits reject closed."""
++    # Resolver must enumerate each traded family/subfamily and its canonical params file.
++    # It must never build a path from untrusted alert text or select a default bracket.
++    param_path = LAYER_PARAMS_FILES.get((layer, sub))
++    if param_path is None:
++        raise ValueError(f"no params file registered for {layer}:{sub}")
++    try:
++        doc = json.loads(param_path.read_text(encoding="utf-8"))
++        exits = doc["exits"]
++        stop = float(exits["stop_pct"])
++        targets = exits["targets"]
++        max_hold_bars = int(exits["max_hold_bars"])
++        if not (0 < stop < 100) or not targets or max_hold_bars <= 0:
++            raise ValueError("invalid exit bounds")
++        return {"stop_pct": stop, "targets": targets,
++                "max_hold_bars": max_hold_bars,
++                "bracket_source": f"params:{param_path.relative_to(_ROOT)}"}
++    except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError) as exc:
++        raise ValueError(f"missing or invalid exits for {layer}:{sub}: {exc}") from exc
+@@
+ def layer_signal(alert: dict, cfg: dict, now: datetime) -> dict:
+@@
+-    c = cfg["layers"]
++    c = cfg["layers"]
+@@
+     else:
++        try:
++            exits = load_layer_exits(layer, alert.get("sub"))
++        except ValueError as exc:
++            sig["reject"] = f"layer exits unavailable: {exc}"
++            exits = None
+         t_close = alert.get("t_close")
+@@
+-    if "reject" not in sig:
++    if "reject" not in sig:
+         sig["plan_args"] = ["--side", side, "--entry", "market", "--size", str(size),
+-                            "--stop", str(c["stop_pct"]), "--targets", c["targets"],
++                            "--stop", str(exits["stop_pct"]), "--targets", str(exits["targets"]),
+                             "--max-loss", str(max_loss), "--hours", str(c["hours"])]
+-        if c.get("max_hold_bars"):
+-            sig["plan_args"] += ["--max-hold-minutes", f"{c['max_hold_bars'] * bar / 60:g}"]
++        sig["log"]["bracket_source"] = exits["bracket_source"]
++        sig["plan_args"] += ["--max-hold-minutes",
++                             f"{exits['max_hold_bars'] * bar / 60:g}"]
+     return sig
