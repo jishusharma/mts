@@ -21,8 +21,7 @@ def shares(close, high, low, hold, stride, side):
     idx = np.arange(0, n - hold - 1, stride)
     res = {"stop": 0, "target": 0, "time": 0}
     CH = 2000
-    for a in range(0, len(idx), CH):
-        ii = idx[a:a + CH]
+    for ii in np.array_split(idx, max(1, -(-len(idx) // CH))):
         e = close[ii][:, None]
         cols = ii[:, None] + 1 + np.arange(hold)[None, :]
         hi, lo = high[cols], low[cols]
