@@ -200,3 +200,6 @@ MyTradingSys/research/volume_2026-10-09/run_v1.py,23,COST,2,other,n/a,both,cost 
 MyTradingSys/research/volume_2026-10-09/run_v2.py,21,COST,2,other,n/a,both,cost in volume_2026-10-09,0,assign,COST = 2 * (0.0005 + 0.0002)
 MyTradingSys/research/volume_2026-10-09/run_v3.py,19,COST,2,other,n/a,both,cost in volume_2026-10-09,0,assign,COST = 2 * (0.0005 + 0.0002)
 MyTradingSys/research/volume_2026-10-09/run_v4.py,19,COST,2,other,n/a,both,cost in volume_2026-10-09,0,assign,COST = 2 * (0.0005 + 0.0002)
+MyTradingSys/research/sim_desk/studies/_bars.py,23,SLIP_DEFAULT,0.02,pct,per_side,taker,slip in sim_desk (OURS),0,assign,SLIP_DEFAULT = 0.02   # percent against every market and stop fill (ours); limit fills are not slipped
+MyTradingSys/research/sim_desk/studies/_bars.py,26,(literal),0.001,pct,n/a,n/a,slip in sim_desk (UI step of the slippage box),0,literal_in_text,{'name': 'slip_pct' ... 'step': 0.005} / taker_pct step 0.001
+MyTradingSys/research/sim_desk/studies/levels.py,42,slip_pct,0.02,pct,per_side,taker,slip in sim_desk (OURS),0,assign,'slip_pct': 0.02  # default slippage on market and stop fills (ours)
