@@ -179,9 +179,9 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/screenshots`
 - Roadmap: `MyTradingSys/system/NEXT_SESSION.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `live-read-from-any-device` raw p1 SONNET: Live engine readable from every device: laptop publishes the mirror (LIVE_HOST_MOVE s11) with no scheduler; mi
-  - `statecode-invalid-publish-race` raw p1 JIS-NB: StateCodeEmitter: serialize invalidation with state publication
-  - `statecode-late-seam-tick` raw p1 JIS-NB: StateCodeEmitter: exclude late pre-boundary ticks after backfill completion
+  - `live-read-from-any-device` ready p1 JIS-NB: Live engine readable from every device: laptop publishes the mirror (LIVE_HOST_MOVE s11) with no scheduler; mi
+  - `statecode-invalid-publish-race` ready p1 JIS-NB: StateCodeEmitter: serialize invalidation with state publication
+  - `statecode-late-seam-tick` ready p1 JIS-NB: StateCodeEmitter: exclude late pre-boundary ticks after backfill completion
   - `state-code-accumulator-backfill` ready p2 JIS-NB: StateCodeEmitter: backfill session CVD/cum_pv/cum_vol after restart and WS reconnect, fail closed on backfill 
   - `statecode-backfill-race-coverage` raw p2 JIS-NB: StateCodeEmitter: cover in-flight rollover reconnect and retry scheduling
   - `live-loop-timeouts-b191` refined p3 SONNET: Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)
