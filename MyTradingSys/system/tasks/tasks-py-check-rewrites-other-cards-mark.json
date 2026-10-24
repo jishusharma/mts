@@ -27,7 +27,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "First understand the intended B-SHARED rule: scripts/dev/tasks.py lines ~94-110 (Session_Planner Duty 5, cited-card marking) and ~1201. Confirm what the requirement is before changing it; do not just delete the marking.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
