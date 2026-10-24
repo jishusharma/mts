@@ -162,6 +162,15 @@ Example LEAD.md filled with today's real state: `context_files/EXAMPLE_LEAD.md`.
 - Removes: the fallback role pick for a prompt with no role line (one operator session means one role to load: the Lead); "Thinker inside a super session" (THINKER BLOCK) and the Thinker hand-over note `research/thinker/OPEN_<topic>.md` (LEAD.md Discussions and Open questions carry it); Admin_Guy's separate decision intake (the Lead writes OPERATOR_DECISIONS.md itself); the Doctor as a standing session (its measurement runs as `context_gap.py measure` + the health scripts, started by the Lead as a read Agent).
 - Card change: C4 stays as written (wave form); C6 depends on C4 and C2; C7 is independent. No change to C1, C3, C5.
 
+### 10g. The Lead loads its jobs one at a time (operator 2026-10-25, via MTS_Doctor)
+Operator: "if the lead will replace these roles ... the role should be loaded sequentially. Not all at once." Design (OURS, MTS_Doctor):
+- `roles/lead.md` is a small core only, always loaded: how to talk with the operator, how a discussion closes (10b), when to rotate (10c), and a mode table with one line per mode (name, when it applies, file).
+- Each former role becomes a mode file, loaded only when the talk turns to that kind of work, one at a time: `think` (Thinker: design, pros and cons), `admin` (Admin_Guy: decisions, inbox), `pipeline` (Pipeliner: cards to refine to wave), `doctor` (MTS_Doctor: health and cost measures, run by a read Agent).
+- Build it as Claude Code skills (`.claude/skills/lead-<mode>/SKILL.md`). Skills are this pattern natively: only the one-line descriptions sit in context at start, and the body loads when it is used. There is no new loader to write, and the role_loader hook injects only the core.
+- A loaded mode cannot be unloaded mid-session, because a model cannot forget selectively, so rotation is the reset. Add a third rotation trigger: 3 modes loaded in one Lead session.
+- Measure: start context of a Lead session (core only, target <= the worker median, about 71K) and modes loaded per session; both go into `context_gap.py measure`.
+- Card change: C6 builds `roles/lead.md` as the core plus 4 skills, instead of one merged file.
+
 ## 9. Defaults taken (no operator questions; change any by card note)
 - The fold runs at ship, not at Stop (a Stop-time write would dirty a just-shipped tree and trip stop_guard).
 - Reads before the first edit define a "miss"; reads after it are the work itself.
