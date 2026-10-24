@@ -602,13 +602,20 @@ class LabMachineChecksTest(unittest.TestCase):
         T.RUNS_JSONL.unlink()
         self.assertEqual(T.problems(card), [])
 
-    def test_cited_scope_automatically_marks_source_b_shared(self):
+    def test_save_of_citing_card_leaves_cited_card_bytes_untouched(self):
         source = good("BASE1")
         citing = good("USE1", scope_in=["BASE1 results.md"])
         T.save(self.repo, source)
+        before = T.path_of(self.repo, "BASE1").read_bytes()
         T.save(self.repo, citing)
+        self.assertEqual(T.path_of(self.repo, "BASE1").read_bytes(), before)
+        self.assertNotEqual(T.get(self.repo, "BASE1")["weight"], "B-SHARED")
+
+    def test_promote_shared_still_marks_when_called_explicitly(self):
+        T.save(self.repo, good("BASE1"))
+        T.save(self.repo, good("USE1", scope_in=["BASE1 results.md"]))
+        T.promote_shared(self.repo)
         self.assertEqual(T.get(self.repo, "BASE1")["weight"], "B-SHARED")
-        self.assertEqual(T.problems(T.get(self.repo, "BASE1")), [])
 
     def test_build_requires_a_dummy_or_shuffled_output_mutation_probe(self):
         card = good(lane="CODEX", kind="build", mutation_check="")
