@@ -1,0 +1,582 @@
+{
+ "id": "t09_live_parity",
+ "kind": "audit",
+ "parity": null,
+ "family": "Audit: backtest vs live",
+ "title": "Does the live code trade what was backtested?",
+ "what": [
+  {
+   "name": "Question",
+   "value_plain": "The testnet layers run their own code. Does that code fire the same signals, on the same bars and sides, as the backtest that justified each layer?",
+   "label": "OURS"
+  },
+  {
+   "name": "Days replayed",
+   "value_plain": "30 DEV days, seed 20261016 (10 trend, 10 range, 10 high-volatility), 3 h warm-up each, no network.",
+   "label": "OURS"
+  },
+  {
+   "name": "Live exit rule",
+   "value_plain": "Market entry, stop 1 %, target 2 %, close after 8 bars of the signal timeframe.",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Exit study",
+   "value_plain": "All DEV 1-minute bars, entry every 5 to 60 minutes, both sides; stop wins ties inside a bar.",
+   "label": "OURS"
+  }
+ ],
+ "how": "The live layer code is replayed bar by bar on the sampled days and each signal is matched to the backtest's own signal function (same time and side = same). Separately, the live 1 % / 2 % / 8-bar bracket is simulated on every DEV minute to see how trades end.",
+ "window": "DEV only, 2022-04-01 to 2024-06-30 (sealed VALIDATION and HOLDOUT windows were not read); 30 sampled days",
+ "verdict": {
+  "label": "Backtests do not describe live for 5 layer families",
+  "tone": "bad"
+ },
+ "why": [
+  "volume_fvg trades the opposite side of the backtested reading: 0 of 24 matched signals have the same side (18 side differences in the table).",
+  "The RSI layer trades events (cross, failure, rejection@40) that no backtest covered: 5m 384 of 461 signals, 15m 126 of 147, 1h 25 of 28.",
+  "Every layer exits by one fixed 1 % / 2 % / 8-bar bracket that no backtest used. About 94 % time exits follow from that bracket alone (5m), not from bad luck.",
+  "Good news: turn_of_candle, session_momentum, cvd_absorption, sr_flip and failed_msb match bit for bit (0 differences in 3,200+ signals)."
+ ],
+ "kpis": [
+  {
+   "label": "days replayed",
+   "value": "30"
+  },
+  {
+   "label": "layers with a backtest to compare",
+   "value": "20"
+  },
+  {
+   "label": "volume_fvg side differences",
+   "value": "18",
+   "tone": "bad"
+  },
+  {
+   "label": "5m time exits (bracket)",
+   "value": "94%"
+  },
+  {
+   "label": "network attempts",
+   "value": "0"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "table",
+   "title": "Per layer: live vs backtest signals",
+   "cols": [
+    "Layer",
+    "Live",
+    "Backtest",
+    "Same",
+    "Side differs",
+    "Off by 1 bar",
+    "Live-only",
+    "Backtest-only"
+   ],
+   "rows": [
+    [
+     "failed_msb 15m",
+     8,
+     8,
+     8,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     "failed_msb 1h",
+     9,
+     9,
+     9,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     "fib_pullback 15m",
+     85,
+     93,
+     85,
+     0,
+     0,
+     0,
+     8
+    ],
+    [
+     "fib_pullback 1h",
+     23,
+     24,
+     23,
+     0,
+     0,
+     0,
+     1
+    ],
+    [
+     "sr_flip 15m",
+     102,
+     102,
+     102,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     "sr_flip 1h",
+     28,
+     28,
+     28,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     "cvd_absorption 15m",
+     77,
+     77,
+     77,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     "cvd_absorption 1h",
+     22,
+     22,
+     22,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     "escalation 15m",
+     28,
+     96,
+     28,
+     0,
+     0,
+     0,
+     68
+    ],
+    [
+     "escalation 1h",
+     0,
+     6,
+     0,
+     0,
+     0,
+     0,
+     6
+    ],
+    [
+     "volume_fvg 15m",
+     16,
+     19,
+     0,
+     15,
+     1,
+     0,
+     3
+    ],
+    [
+     "volume_fvg 1h",
+     4,
+     5,
+     0,
+     3,
+     1,
+     0,
+     1
+    ],
+    [
+     "funding_cvd_fade 1h",
+     3,
+     34,
+     0,
+     0,
+     1,
+     2,
+     33
+    ],
+    [
+     "malkan_bear 1h",
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     "malkan_bull 1h",
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     "rsi_events 15m",
+     147,
+     80,
+     21,
+     0,
+     12,
+     114,
+     47
+    ],
+    [
+     "rsi_events 1h",
+     27,
+     17,
+     3,
+     0,
+     0,
+     24,
+     14
+    ],
+    [
+     "rsi_events 5m",
+     461,
+     143,
+     77,
+     0,
+     1,
+     383,
+     65
+    ],
+    [
+     "session_momentum 15m",
+     30,
+     30,
+     30,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     "turn_of_candle 1m",
+     2880,
+     2880,
+     2880,
+     0,
+     0,
+     0,
+     0
+    ]
+   ],
+   "caption": "Same = same bar and same side. Live-only = live trades it, no backtest ever did. Backtest-only = backtest had it, live never fires."
+  },
+  {
+   "kind": "table",
+   "title": "Live layers with no backtest located",
+   "cols": [
+    "Layer",
+    "Live alerts"
+   ],
+   "rows": [
+    [
+     "bb_top_reversal 15m",
+     70
+    ],
+    [
+     "rsi_divergence 1h",
+     17
+    ],
+    [
+     "bbrsi60 1h",
+     1
+    ]
+   ],
+   "caption": "Nothing to compare against."
+  },
+  {
+   "kind": "sides",
+   "title": "volume_fvg: same bar, opposite sides",
+   "caption": "Each row is a bar where both signal. Live goes the opposite way to the backtest (live code: short when the close is above mid; backtest: long). Which direction each bar had is not exported, so only 'opposite' is drawn.",
+   "rows": [
+    {
+     "when": "2022-03-27 14:00 UTC (15m)",
+     "live": "opposite",
+     "backtest": "reference"
+    },
+    {
+     "when": "2022-06-12 15:30 UTC (15m)",
+     "live": "opposite",
+     "backtest": "reference"
+    },
+    {
+     "when": "2022-06-13 04:15 UTC (15m)",
+     "live": "opposite",
+     "backtest": "reference"
+    },
+    {
+     "when": "2022-06-14 03:30 UTC (15m)",
+     "live": "opposite",
+     "backtest": "reference"
+    },
+    {
+     "when": "2022-09-21 17:45 UTC (15m)",
+     "live": "opposite",
+     "backtest": "reference"
+    },
+    {
+     "when": "2022-05-05 08:00 UTC (1h)",
+     "live": "opposite",
+     "backtest": "reference"
+    },
+    {
+     "when": "2023-04-19 07:00 UTC (1h)",
+     "live": "opposite",
+     "backtest": "reference"
+    },
+    {
+     "when": "2024-01-03 13:00 UTC (1h)",
+     "live": "opposite",
+     "backtest": "reference"
+    }
+   ]
+  },
+  {
+   "kind": "sides",
+   "title": "RSI: signals only live trades (3 per timeframe)",
+   "caption": "Backtest column empty = no backtest ever produced this event.",
+   "rows": [
+    {
+     "when": "2022-03-27 04:30 UTC (5m)",
+     "live": "short",
+     "backtest": null
+    },
+    {
+     "when": "2022-03-27 04:40 UTC (5m)",
+     "live": "short",
+     "backtest": null
+    },
+    {
+     "when": "2022-03-27 08:30 UTC (5m)",
+     "live": "short",
+     "backtest": null
+    },
+    {
+     "when": "2022-03-27 12:45 UTC (15m)",
+     "live": "short",
+     "backtest": null
+    },
+    {
+     "when": "2022-05-05 07:00 UTC (15m)",
+     "live": "short",
+     "backtest": null
+    },
+    {
+     "when": "2022-05-05 08:45 UTC (15m)",
+     "live": "short",
+     "backtest": null
+    },
+    {
+     "when": "2022-05-05 14:00 UTC (1h)",
+     "live": "short",
+     "backtest": null
+    },
+    {
+     "when": "2022-06-12 02:00 UTC (1h)",
+     "live": "short",
+     "backtest": null
+    },
+    {
+     "when": "2022-06-12 21:00 UTC (1h)",
+     "live": "short",
+     "backtest": null
+    }
+   ]
+  },
+  {
+   "kind": "table",
+   "title": "RSI live-only events by type",
+   "cols": [
+    "Timeframe",
+    "cross",
+    "failure",
+    "rejection",
+    "support"
+   ],
+   "rows": [
+    [
+     "5m",
+     261,
+     85,
+     36,
+     1
+    ],
+    [
+     "15m",
+     80,
+     20,
+     12,
+     2
+    ],
+    [
+     "1h",
+     16,
+     5,
+     3,
+     0
+    ]
+   ],
+   "caption": "Only 'support' at 40 (long) and 'rejection' at 60 (short) were ever backtested."
+  },
+  {
+   "kind": "stack",
+   "title": "How live trades end (1 % stop, 2 % target, 8 bars)",
+   "unit": "% of trades",
+   "rows": [
+    {
+     "label": "1m (hold 8 min)",
+     "parts": [
+      {
+       "name": "stop",
+       "value": 0.7,
+       "tone": "bad"
+      },
+      {
+       "name": "target",
+       "value": 0.1,
+       "tone": "good"
+      },
+      {
+       "name": "time",
+       "value": 99.2,
+       "tone": "mute"
+      }
+     ]
+    },
+    {
+     "label": "5m (hold 40 min)",
+     "parts": [
+      {
+       "name": "stop",
+       "value": 5.2,
+       "tone": "bad"
+      },
+      {
+       "name": "target",
+       "value": 0.9,
+       "tone": "good"
+      },
+      {
+       "name": "time",
+       "value": 93.9,
+       "tone": "mute"
+      }
+     ]
+    },
+    {
+     "label": "15m (hold 120 min)",
+     "parts": [
+      {
+       "name": "stop",
+       "value": 14.9,
+       "tone": "bad"
+      },
+      {
+       "name": "target",
+       "value": 3.8,
+       "tone": "good"
+      },
+      {
+       "name": "time",
+       "value": 81.4,
+       "tone": "mute"
+      }
+     ]
+    },
+    {
+     "label": "1h (hold 480 min)",
+     "parts": [
+      {
+       "name": "stop",
+       "value": 37.8,
+       "tone": "bad"
+      },
+      {
+       "name": "target",
+       "value": 13.8,
+       "tone": "good"
+      },
+      {
+       "name": "time",
+       "value": 48.4,
+       "tone": "mute"
+      }
+     ]
+    }
+   ],
+   "caption": "8-bar bracket: the position is closed at market after 8 candles of its own timeframe. A 1 % move rarely happens in 8 one-minute candles, so almost everything ends on the clock."
+  },
+  {
+   "kind": "stack",
+   "title": "Same bracket with the RSI backtest's long hold",
+   "unit": "% of trades",
+   "rows": [
+    {
+     "label": "15m backtest-style hold (1500 min)",
+     "parts": [
+      {
+       "name": "stop",
+       "value": 56.8,
+       "tone": "bad"
+      },
+      {
+       "name": "target",
+       "value": 26.2,
+       "tone": "good"
+      },
+      {
+       "name": "time",
+       "value": 17.0,
+       "tone": "mute"
+      }
+     ]
+    },
+    {
+     "label": "1h backtest-style hold (6000 min)",
+     "parts": [
+      {
+       "name": "stop",
+       "value": 66.0,
+       "tone": "bad"
+      },
+      {
+       "name": "target",
+       "value": 33.2,
+       "tone": "good"
+      },
+      {
+       "name": "time",
+       "value": 0.8,
+       "tone": "mute"
+      }
+     ]
+    }
+   ],
+   "caption": "The backtest held 100 bars; stops and targets decide most trades there."
+  }
+ ],
+ "source_files": [
+  "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T09_live_parity.md",
+  "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T09/out/parity_result.json",
+  "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T09/out/exit_result.json"
+ ],
+ "commit": "446f6c503"
+}

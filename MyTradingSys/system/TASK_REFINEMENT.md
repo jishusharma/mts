@@ -34,6 +34,7 @@ Optional card fields `latest` (list of `{kind: ship|report|audit|decision|signal
 ## Definition of Ready (`tasks.py check`, fail closed; also in the offline gate as `tasks.py lint`)
 A card is `ready` only if all hold, and the tool names every miss:
 1. goal, done_when (an observable: file, row count, number), at least one scope_in and one step.
+   Backtest and audit cards: done_when also says "exports `sim_desk/results/<id>.json`" (schema: research/sim_desk/DESIGN.md).
 2. lane valid; size S or M (an L card is split first); for SONNET/HAIKU/OPUS cards `est_turns` (whole number, <= 40, else split) and `worker`: agent only for size S and est_turns <= 15, else session (WORKERS.md; `tasks.py check` enforces it).
 3. Code lane: `tests` names the fail-first test. Run lane: copy-ready `commands`. OPUS: `approved_by`.
 4. `live_path` cards are lane JIS-NB only (builders never touch the live tree, restart, or open trades).

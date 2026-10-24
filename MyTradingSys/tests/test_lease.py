@@ -1,14 +1,18 @@
 """scripts/dev/lease.py (TRAFFIC_CONTROLLER.md Part A): a singleton role (Pipeliner) cannot run as two instances.
 Two clones of one bare 'origin' play two machines. Written to fail on the code before lease.py existed: there was no
 lease, so two Pipeliners on two machines both ran (2026-10-18: JIS-NUC ebfffe68/0efac858 and DESKTOP-F7IU69N 41c8a303)."""
+import atexit
 import json
 import os
+import re
+import shutil
 import subprocess
 import sys
 import tempfile
 import threading
 import time
 import unittest
+from unittest import mock
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
@@ -28,24 +32,51 @@ def git(d, *a, stdin=None):
     return r.stdout.decode("utf-8", errors="replace").strip()
 
 
+_TEMPLATE = {}
+
+
+def _template():
+    """Build origin + two full clones ONCE per run (about 12 git spawns); each test then copies the tree (no spawns).
+    Old setUp ran those spawns 24 times; at 100% CPU that alone outran the 240 s gate."""
+    if "root" not in _TEMPLATE:
+        root = Path(tempfile.mkdtemp(prefix="lease_tpl_"))
+        origin = root / "origin.git"
+        git(root, "init", "-q", "--bare", str(origin))
+        git(origin, "symbolic-ref", "HEAD", "refs/heads/fast-track")
+        b = git(origin, "hash-object", "-w", "--stdin", stdin="x\n")
+        tr = git(origin, "mktree", stdin=f"100644 blob {b}\tREADME.md\n")
+        c = git(origin, "commit-tree", tr, "-m", "seed")
+        git(origin, "update-ref", "refs/heads/fast-track", c)
+        for n in ("nuc", "lenovo"):
+            git(root, "clone", "-q", "-b", "fast-track", str(origin), str(root / n))
+            git(root / n, "config", "user.email", "t@t")
+            git(root / n, "config", "user.name", "t")
+        _TEMPLATE["root"] = root
+        atexit.register(shutil.rmtree, str(root), True)
+    return _TEMPLATE["root"]
+
+
 class Base(unittest.TestCase):
     def setUp(self):
+        # skip the machine's system/global git config (slow to parse on Windows, ~0.1 s per spawn x ~400 spawns); the test
+        # clones carry their own identity and nothing here needs the user's settings
+        p = mock.patch.dict(os.environ, {"GIT_CONFIG_NOSYSTEM": "1", "GIT_CONFIG_GLOBAL": os.devnull,
+                                         "GIT_OPTIONAL_LOCKS": "0"})
+        p.start()
+        self.addCleanup(p.stop)
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         t = Path(self.tmp.name)
+        tpl = _template()
         self.origin = t / "origin.git"
-        git(t, "init", "-q", "--bare", str(self.origin))
-        git(self.origin, "symbolic-ref", "HEAD", "refs/heads/fast-track")
-        b = git(self.origin, "hash-object", "-w", "--stdin", stdin="x\n")
-        tr = git(self.origin, "mktree", stdin=f"100644 blob {b}\tREADME.md\n")
-        c = git(self.origin, "commit-tree", tr, "-m", "seed")
-        git(self.origin, "update-ref", "refs/heads/fast-track", c)
         self.a = t / "nuc"
         self.b = t / "lenovo"
-        for d in (self.a, self.b):
-            git(t, "clone", "-s", "-q", "-b", "fast-track", str(self.origin), str(d))
-            git(d, "config", "user.email", "t@t")
-            git(d, "config", "user.name", "t")
+        for n in ("origin.git", "nuc", "lenovo"):
+            shutil.copytree(tpl / n, t / n, ignore=shutil.ignore_patterns("hooks", "info", "description"))
+        for d in (self.a, self.b):   # the copied clones still point at the template origin: repoint (text edit, no spawn)
+            cfg = d / ".git" / "config"
+            txt = re.sub(r"(?m)^(\s*url = ).*$", lambda m: m.group(1) + str(self.origin).replace(chr(92), "/"), cfg.read_text())
+            cfg.write_text(txt, newline="\n")
         self.ident_a = {"MTS_LEASE_HOST": "JIS-NUC", "MTS_LEASE_SESSION": "sess-a", "MTS_ACCOUNT": "sharma",
                         "MTS_LEASE_HOME": str(t / "home_nuc")}
         self.ident_b = {"MTS_LEASE_HOST": "DESKTOP-F7IU69N", "MTS_LEASE_SESSION": "sess-b", "MTS_ACCOUNT": "?",
@@ -180,13 +211,14 @@ class FailClosed(Base):
         """Review (Sonnet #1): renew kept the nonce, so an unlanded push looked landed and the holder trusted 45 more min."""
         self.as_(self.ident_a)
         lease.acquire(self.a, "Pipeliner")
-        real = lease.push
-        lease.push = lambda repo, commit: "error"
-        try:
+        calls = []
+        # every push "errors" and never lands; 2 CAS rounds and no back-off sleeps prove the same thing as 4 rounds + ~3 s of
+        # sleeps (each round is ~12 git spawns: at 100% CPU the 4-round version alone took 15 s+).
+        with mock.patch.object(lease, "push", lambda repo, commit: calls.append(commit) or "error"), \
+                mock.patch.object(lease, "CAS_TRIES", 2), mock.patch.object(lease.time, "sleep", lambda s: None):
             with self.assertRaises(lease.Unreachable):
                 lease.renew(self.a, "Pipeliner")
-        finally:
-            lease.push = real
+        self.assertEqual(len(calls), 2)
 
     def test_no_session_id_refused(self):
         """Review (Sonnet #3): two runners without a session id on one host shared HOST/nosession and both held it."""
