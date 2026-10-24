@@ -52,6 +52,15 @@ with numbers written down before it starts, compared with a measured baseline, o
 Pass on all 8: raise to 6 workers in the next run, then try ultracode on one hard card as its own pilot.
 Fail on any: the Doctor names the cause from transcripts and git, one fix, rerun the same pilot. Do not change two things at once.
 
+## Next pilots, one change each, each compared with the one before
+- **Pilot 2: 6 workers**, same login, if pilot 1 passes.
+- **Pilot 3: all three logins** (operator idea 2026-10-24, simplify-tooling hand-over): one super session hands out cards; the other logins take
+  them through the repo (cards + `sync.py claim`, the item 9 machinery, kept). Logins do not conflict, tasks do (same files, trunk, live tree,
+  ship queue), so lanes split by kind of work: one live-path writer, a research/backtest lane under `research/`, an audit/tooling lane; one
+  writer per area by claim; no new rules. One desktop app runs one login, so each extra login is another machine that must be on (NUC, desktop),
+  and caches are per machine. Pass rows as pilot 1, plus: 0 claim clashes, and each login's weekly % per verified card.
+- **Pilot 4: ultracode on one hard card**, against a normal Sonnet worker on a similar card.
+
 ## Stop early if
 CI red not reverted in 10 min; 5 h window over 80%; two workers stuck on the same file; the operator says the machine is slow.
 
