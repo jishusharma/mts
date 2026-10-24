@@ -4,31 +4,58 @@
   "commands": [],
   "created": "2026-10-24T15:21:20Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "rx.EXTRA is loaded from scripts/dev/extra_tests.tsv; len(all_tests()) identical before and after (both numbers in the commit Result line); gs.explain of the tsv is mode smoke (regression guard, already true); test_gate_select, test_run_extra_tests, test_gate_discovery_b150 pass",
+  "est_turns": 22,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Registering a new test no longer forces the full ship gate: EXTRA moves from scripts/dev/run_extra_tests.py (FULL_RE) to the data file scripts/dev/extra_tests.tsv (smoke), so a registration ship runs seconds not 570-690 s",
   "id": "registering-a-test-in-scripts-dev-run-ex",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "gate: register test_argon_blind_read.py in EXTRA",
+      "ref": "5e280d203c3e",
+      "utc": "2026-10-24T19:25:33Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-25 ACCEPT (Sonnet reviewer; fix applied: fail-first test moved to EXTRA-from-tsv). OURS design: data file in place of code edit. Live-host CPU pin 2026-10-24 15:23Z (3 parallel full gates on JIS-NB). Gate-machinery card: CRITICAL review session needed before ship.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-24T21:34:26Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "scripts/dev/run_extra_tests.py",
+    "scripts/dev/extra_tests.tsv",
+    "scripts/dev/test_gate_select.py",
+    "scripts/dev/test_run_extra_tests.py",
+    "scripts/dev/preship.py"
+  ],
+  "scope_out": [
+    "scripts/dev/gate_select.py FULL_RE (run_extra_tests.py stays full: it is gate machinery); run_all_tests.py; any live-path file"
+  ],
+  "scope_sha": "5e280d203c3e",
+  "size": "M",
+  "sources": [
+    "scripts/dev/gate_select.py:35 (FULL_RE names run_extra_tests); scripts/dev/gate_select.py:60-62 (_is_config: scripts/dev/*.tsv is smoke); scripts/dev/run_extra_tests.py:19 (EXTRA)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Create scripts/dev/extra_tests.tsv: one repo-relative path per line, same order as the EXTRA list now in run_extra_tests.py (copy, do not retype)",
+    "run_extra_tests.py: EXTRA = load of extra_tests.tsv (skip blank and # lines; missing file raises); name EXTRA and all_tests() unchanged so run_all_tests.py and test_gate_discovery_b150.py need no edit",
+    "test_gate_select.py: add regression test that gs.explain(['scripts/dev/extra_tests.tsv']) is smoke and picks 3gd; keep run_extra_tests.py in the full list at line 235",
+    "test_run_extra_tests.py: add the fail-first test (EXTRA equals tsv lines, no duplicates); preship.py:95 hint says add the path to scripts/dev/extra_tests.tsv",
+    "Run python scripts/dev/test_gate_select.py, test_run_extra_tests.py, MyTradingSys/tests/test_gate_discovery_b150.py; then python scripts/dev/run_all_tests.py --quick"
+  ],
+  "tests": "New test in scripts/dev/test_run_extra_tests.py: rx.EXTRA equals the non-blank non-# lines of scripts/dev/extra_tests.tsv, no duplicates. Fails on the old tree (the tsv does not exist, EXTRA is a code literal). Run it before the edit to see red.",
   "title": "registering a test in scripts/dev/run_extra_tests.py forces the full ship gate (570-690 s shards); 3 parallel full gates pinned JIS-NB (live host) at 100% CPU 2026-10-24 15:23Z",
-  "weight": "",
-  "worker": ""
+  "weight": "CRITICAL",
+  "worker": "session"
 }
