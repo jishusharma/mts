@@ -94,6 +94,30 @@ def numbers(res):
             'mean_fee': float(fees.mean()), 'profit_factor': float(win / loss) if loss > 0 else None, 'max_dd_r': dd}
 
 
+def trade_list(res):
+    """Filled trades in time order for the clickable list: i = position in the run's arrays (what /api/trade takes)."""
+    filled = np.flatnonzero(np.asarray(res.get('filled', np.ones(len(res['net']), bool)), bool))
+    filled = filled[np.argsort(np.asarray(res['touch_t'])[filled], kind='stable')]
+    net = np.asarray(res['net'], float)[filled]
+    side = np.asarray(res['side'])[filled] if 'side' in res else np.zeros(len(filled), int)
+    return {'i': filled.tolist(), 't': [int(x) for x in np.asarray(res['touch_t'])[filled]], 'side': [int(x) for x in side],
+            'r': [round(float(x), 3) for x in net], 'cum': [round(float(x), 3) for x in np.cumsum(net)]}
+
+
+def trade_chart(study, p, cond, i, cache_dir=CACHE, progress=print):
+    """SVG candle chart of trade i (index into the run's arrays after the condition filter), or None."""
+    import charts as ch
+    q = study.normalize(p)
+    res, _ = _raw(study, q, cache_dir, progress)
+    cond = conditions.normalize(cond)
+    if cond:
+        res = _apply_conditions(study, q, res, cond, cache_dir, progress)
+    if not 0 <= i < len(res['refs']) or not hasattr(study, 'chart_trade'):
+        return None
+    tr = study.chart_trade(res['refs'][i], q)
+    return ch.svg(tr) if tr else None
+
+
 def curve(res, points=400):
     """Equity curve of the FILLED trades in time order: cumulative R and USD (start 1,000, 1 % risk, simple sum).
     At most `points` points (even stride, last trade always kept)."""
@@ -214,7 +238,7 @@ def run_setting(study, p, trials_path=TRIALS, cache_dir=CACHE, progress=print, c
            'label': study.label(q), 'settings': q, 'cond': cond, 'cond_label': conditions.label(cond), 'n_before_cond': before, 'n': st.get('n', 0), 'mean': st.get('mean'), 'lo': st.get('lo'),
            'hi': st.get('hi'), 'streak': st.get('streak', 0), 'win_rate': st.get('win_rate'),
            'try_no': count_tries(trials_path, study), 'prior_tries': len(_rows(trials_path, f"| {study.PRIOR_TAG} ")) if hasattr(study, 'PRIOR_TAG') else 0,
-           'stats': {k: v for k, v in st.items() if isinstance(v, (int, float))}, 'charts': [], 'curve': curve(res), 'numbers': numbers(res)}
+           'stats': {k: v for k, v in st.items() if isinstance(v, (int, float))}, 'charts': [], 'curve': curve(res), 'numbers': numbers(res), 'trades': trade_list(res)}
     out['run_seconds'] = round(time.perf_counter() - t0, 2)
     if charts:
         try:
@@ -371,6 +395,17 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, save_answer(body.get('id'), body.get('choice'), body.get('text')))
             except ValueError as e:
                 return self._send(400, {'error': f'Not saved: {e}'})
+        if self.path == '/api/trade':
+            try:
+                body = json.loads(self.rfile.read(int(self.headers.get('Content-Length', 0))) or b'{}')
+                if body.get('study') not in STUDIES:
+                    raise ValueError('pick a study')
+                with LOCK:
+                    svg = trade_chart(STUDIES[body['study']], body.get('params', {}), body.get('cond'), int(body.get('i', -1)),
+                                      progress=lambda s: PROGRESS.update(line=s))
+                return self._send(200, {'svg': svg})
+            except (ValueError, KeyError, FileNotFoundError) as e:
+                return self._send(400, {'error': f'No chart: {e}'})
         if self.path != '/api/run':
             return self._send(404, {'error': 'not found'})
         try:

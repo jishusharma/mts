@@ -24,6 +24,12 @@
   .num { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 14px; min-width:150px; }
   .num b { display:block; font-size:20px; }
   .num span { font-size:12px; color:var(--mute); }
+  #tl { display:none; margin:10px 0; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 12px; }
+  #tl .scroll { max-height:220px; overflow:auto; }
+  #tl table { border-collapse:collapse; font-size:12px; width:100%; }
+  #tl td, #tl th { padding:2px 8px; text-align:right; border-bottom:1px solid var(--line); }
+  #tl tr.t { cursor:pointer; } #tl tr.t:hover, #tl tr.on { background:var(--bg); }
+  #tchart svg { width:100%; max-width:640px; height:auto; background:#fff; border:1px solid var(--line); border-radius:8px; }
   .charts { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:10px; }
   .charts figure { margin:0; background:#fff; border:1px solid var(--line); border-radius:8px; padding:4px; }
   .charts svg { width:100%; height:auto; display:block; }
@@ -61,6 +67,7 @@
     <svg id="eqsvg" viewBox="0 0 600 180" preserveAspectRatio="none"></svg>
     <div class="row"><input type="range" id="eqscrub" min="0" max="0" value="0"><span id="eqwhen"></span></div>
     <table id="eqcmp"></table></div>
+  <div id="tl"><b>Filled trades</b> <span class="mute" style="font-size:12px">click a row to see its candle chart</span><div class="scroll"><table id="tltab"></table></div><div id="tchart"></div></div>
   <div class="charts" id="charts"></div>
   <footer id="foot"></footer>
   <section id="qs"><h2>Questions for you</h2><div id="qlist"></div></section>
@@ -190,6 +197,7 @@ async function run() {
                                        body: JSON.stringify({ study: study.id, params: values(), cond: condValues() }) });
     const o = await r.json();
     if (!r.ok) throw new Error(o.error || r.statusText);
+    o.study_id = study.id; o.params_sent = values(); o.cond_sent = condValues();
     show(o);
   } catch (e) {
     $('say').className = 'say err'; $('say').textContent = e.message;
@@ -236,8 +244,29 @@ $('pinA').onclick = () => { pinned = cur; eqDraw(); };
 
 function fmt(x, d = 3) { return x === null || x === undefined ? '-' : (x >= 0 ? '+' : '') + x.toFixed(d); }
 
+function tradeList(o) {
+  const L = o.trades, box = $('tl');
+  if (!L || !L.t.length) { box.style.display = 'none'; return; }
+  box.style.display = 'block'; $('tchart').innerHTML = '';
+  let h = '<tr><th>#</th><th>date (UTC)</th><th>side</th><th>net R</th><th>running R</th></tr>';
+  L.t.forEach((t, k) => { h += `<tr class="t" data-k="${k}"><td>${k + 1}</td><td>${new Date(t).toISOString().slice(0, 16).replace('T', ' ')}</td><td>${L.side[k] > 0 ? 'long' : L.side[k] < 0 ? 'short' : '-'}</td><td>${fmt(L.r[k], 2)}</td><td>${fmt(L.cum[k], 2)}</td></tr>`; });
+  const tab = $('tltab'); tab.innerHTML = h;
+  tab.onclick = async e => {
+    const tr = e.target.closest('tr.t'); if (!tr) return;
+    for (const x of tab.querySelectorAll('tr.on')) x.className = 't';
+    tr.className = 't on'; $('tchart').textContent = 'Loading chart...';
+    try {
+      const r = await fetch('/api/trade', { method:'POST', headers:{'Content-Type':'application/json'},
+                                           body: JSON.stringify({ study: o.study_id, params: o.params_sent, cond: o.cond_sent, i: L.i[Number(tr.dataset.k)] }) });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error);
+      if (j.svg) $('tchart').innerHTML = j.svg; else $('tchart').textContent = 'No chart for this trade.';
+    } catch (err) { $('tchart').textContent = err.message; }
+  };
+}
+
 function show(o) {
-  cur = o; eqDraw();
+  cur = o; eqDraw(); tradeList(o);
   $('say').textContent = o.describe;
   const v = $('verdict');
   v.style.display = 'block'; v.style.background = COLORS[o.verdict] || 'var(--mute)';

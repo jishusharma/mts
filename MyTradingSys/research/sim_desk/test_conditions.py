@@ -231,3 +231,37 @@ def test_numbers_strip_by_hand():
     assert k['max_dd_r'] == pytest.approx(2.0) and k['mean_net'] == pytest.approx(0.25)
     assert k['mean_gross'] == pytest.approx(0.35) and k['mean_fee'] == pytest.approx(0.1)
     assert desk.numbers({'net': [], 'touch_t': [], 'filled': []}) == {'n': 0}
+
+
+def test_trade_list_by_hand():
+    """Filled only, time order: touch 10 (+2.0), 20 (-0.5), 30 (+1.0); the never-filled one at 15 is not listed."""
+    res = {'net': [-0.5, 0.0, 2.0, 1.0], 'touch_t': [20, 15, 10, 30], 'side': [-1, 1, 1, -1], 'filled': [True, False, True, True]}
+    L = desk.trade_list(res)
+    assert L['i'] == [2, 0, 3] and L['t'] == [10, 20, 30] and L['side'] == [1, -1, -1]
+    assert L['r'] == [2.0, -0.5, 1.0] and L['cum'] == [2.0, 1.5, 2.5]
+
+
+def test_trade_chart_follows_the_condition_filter(tmp_path, monkeypatch):
+    """Row i of the list opens the chart of THAT trade even after a condition removed others (refs are filtered too)."""
+    import charts as ch
+    seen = []
+
+    class CS(SideStudy):
+        ID = 'chartfake'
+
+        @staticmethod
+        def chart_trade(ref, q):
+            seen.append(ref)
+            return {'ref': ref}
+
+    monkeypatch.setattr(ch, 'svg', lambda tr: f"<svg>{tr['ref']}</svg>")
+    kw = dict(cache_dir=tmp_path / 'c', progress=lambda s: None)
+    out = desk.trade_chart(CS, {}, {'side': 'short'}, 0, **kw)       # short = odd original indexes: first is 1
+    assert out == '<svg>1</svg>' and seen == [1]
+    assert desk.trade_chart(CS, {}, {'side': 'short'}, 3, **kw) == '<svg>7</svg>'
+    assert desk.trade_chart(CS, {}, {'side': 'short'}, 999, **kw) is None
+
+
+def test_page_has_trade_list():
+    h = (HERE / 'page.html').read_text(encoding='utf-8')
+    assert 'id="tltab"' in h and '/api/trade' in h
