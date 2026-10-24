@@ -4,32 +4,65 @@
   "commands": [],
   "created": "2026-10-23T09:04:12Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "exhaust.py plan --read <11 min old> exits 2 with a STALE message; --read <fresh> prints read_utc and source; ExhaustReadTest green; EXHAUST_PHASE.md documents it; sha on origin/fast-track (git cherry empty)",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "B199 (BUGS.md:317): no quota number without source and read time. exhaust.py plan gets --read <UTC of the get_usage call>, rejects a reading older than 10 min (OURS) with exit 2 naming source and age, and echoes read_utc and source in its JSON; without --read it prints read_utc=unstated.",
   "id": "quota-source-numbers-bug",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Login roll call tests: fewer git round-trips so the signals gate fits its 240 s on a loade",
+      "ref": "8c00b0277095",
+      "utc": "2026-10-23T12:47:07Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "6cde343106e7 EXHAUST_PHASE policy and tooling card",
+      "ref": "MyTradingSys/system/EXHAUST_PHASE.md",
+      "utc": "2026-10-23T08:14:44Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Refined by Session_Planner 2026-10-25. BUGS.md B199 stays OPEN until this ships (other candidate fixes are rules, covered by the EXHAUST_PHASE.md sentence).\nREVIEWED:2026-10-25 T0-ONLY",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-24T21:37:21Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/exhaust.py",
+    "scripts/dev/test_mts_signal.py",
+    "MyTradingSys/system/EXHAUST_PHASE.md"
+  ],
+  "scope_out": [
+    "CLAUDE.md (size cap; boot line 5c stays as is)",
+    "scripts/dev/run_all_tests.py (test_mts_signal.py already registered at l.492)",
+    "mts_signal.py budget text and ~/.claude/mts-budget.json format"
+  ],
+  "scope_sha": "8c00b0277095",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read exhaust.py plan()/main() (l.21-70) and BUGS.md l.317",
+    "Add --read (UTC, same format as --reset) to main(); add READ_MAX_MIN = 10; in plan() add read_utc and source='get_usage' to the returned dict; add function check_read(read, now) returning age minutes",
+    "main(): if --read given and age > READ_MAX_MIN or read is in the future by > 2 min, print 'STALE quota reading: read <utc>, <n> min old, source get_usage; re-run get_usage' and return 2; if --read absent keep working and set read_utc to 'unstated'",
+    "Add class ExhaustReadTest in test_mts_signal.py: (a) read 11 min before now -> main returns 2, no phase JSON; (b) read 9 min before -> 0 and JSON has read_utc; (c) no --read -> 0 and read_utc == 'unstated'; (d) future read -> 2",
+    "EXHAUST_PHASE.md l.28: document --read and the 10 min rule; one sentence: every quota claim in a report names source (get_usage or UI panel) and read time; a UI window that has not started is unknown, not 99%",
+    "Run python scripts/dev/test_mts_signal.py; sync.py ship; verify git cherry origin/fast-track <sha> empty and ls-tree shows the 3 files"
+  ],
+  "tests": "scripts/dev/test_mts_signal.py ExhaustReadTest.test_stale_read_rejected (and cases b-d): fails on current code (exhaust.py has no --read and no STALE message), passes after the change",
   "title": "B199: quota numbers disagree by source; every claim names source and read time",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

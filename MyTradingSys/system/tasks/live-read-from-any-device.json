@@ -4,32 +4,66 @@
   "commands": [],
   "created": "2026-10-23T15:36:54Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "On the live host 'live_mirror.py ensure' leaves <root>/CURRENT with a manifest younger than 5 min, 'live_mirror.py brief' on another device shows mirror@<utc> under 15 min after one ensure, new tests green, run_all_tests --quick green, sha on origin/fast-track (git cherry empty)",
+  "est_turns": 22,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Any machine reads fresh live-engine state on demand with no scheduler (MTS-LiveMirror retired; mirror stale since 2026-10-19). live_mirror.py gets 'ensure' and brief self-publishes when run in the live tree and the published copy is older than 5 min; readers elsewhere get mirror@<utc> via the existing pull. Default (OURS): on-demand trigger, no daemon.",
   "id": "live-read-from-any-device",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Live host name in one file; auto-trader uses PATH python",
+      "ref": "c2b9f0200777",
+      "utc": "2026-10-21T00:18:34Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "65872e0dd272 docs: BUGS rows B190-B193 from commits; stale AutoDeploy statements marked RE",
+      "ref": "MyTradingSys/system/LIVE_MIRROR.md",
+      "utc": "2026-10-17T20:20:38Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Refined by Session_Planner 2026-10-25. Default (OURS): on-demand trigger, no daemon; live-tree deploy stays manual (DEPLOY_RUNBOOK.md).\nREVIEWED:2026-10-25 T0-ONLY",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-24T21:36:56Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/live_mirror.py",
+    "scripts/dev/test_live_mirror.py",
+    "MyTradingSys/system/LIVE_MIRROR.md"
+  ],
+  "scope_out": [
+    "scripts/sched/register_live_mirror.ps1 (retired scheduler, do not re-register)",
+    "any trading, gating or pause code (RepoContractTest forbids reading the mirror)",
+    "LIVE_HOST_MOVE.md cutover steps and live_host.txt"
+  ],
+  "scope_sha": "c2b9f0200777",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read live_mirror.py brief() (l.440), publish_recorded() (l.231), default_root() (l.116) and LIVE_MIRROR.md section 1 and 8",
+    "Add root_age_min(root, now): minutes since <root>/CURRENT's manifest utc, None if unreadable",
+    "Add ensure_fresh(repo, root, max_min=5, now): if is_live_tree(repo) and (root_age_min is None or > max_min) call publish_recorded; swallow and return a one-line note on failure (PUBLISH_FAIL.json already records it); never publish outside the live tree",
+    "brief(): call ensure_fresh first when is_live_tree(repo); add CLI command 'ensure' (prints 'mirror@<utc> fresh' or 'published <version>'); update the module docstring",
+    "Tests in test_live_mirror.py: (a) live tree, root age 10 min -> brief republishes (new version, age ~0); (b) age 2 min -> no new version; (c) non-live work tree never publishes; (d) publish error does not crash brief and writes PUBLISH_FAIL.json",
+    "LIVE_MIRROR.md: replace 'Scheduled by the supervisor every 5 min' with the on-demand rule; add one line: who runs 'live_mirror.py ensure' (any session starting on the live host)",
+    "Run python scripts/dev/test_live_mirror.py and python scripts/dev/run_all_tests.py --quick; ship with sync.py ship; verify content sha: git cherry origin/fast-track <sha> empty and git ls-tree -r origin/fast-track --name-only shows the 3 files"
+  ],
+  "tests": "scripts/dev/test_live_mirror.py new case test_brief_in_live_tree_republishes_when_copy_older_than_5_min: fails on current code (brief never publishes; stale copy stays stale), passes after the change",
   "title": "Live engine readable from every device: laptop publishes the mirror (LIVE_HOST_MOVE s11) with no scheduler; mirror stale 5200+ min since 2026-10-19 (OPERATOR 2026-10-23: any machine must read live data on demand)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }

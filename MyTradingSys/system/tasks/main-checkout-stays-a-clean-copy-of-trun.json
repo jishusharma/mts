@@ -4,14 +4,30 @@
   "commands": [],
   "created": "2026-10-24T06:39:37Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "PARALLEL.md carries the Main checkout rule (6 lines max), test_sync.py new test green and failed before the edit, sha on origin/fast-track (git cherry empty)",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Industry-standard worktree flow, written once in the rule file all sessions read: nobody edits or commits in the main checkout (C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed); all work happens in session worktrees and reaches trunk via sync.py ship; the main checkout only fast-forwards to origin/fast-track (git merge --ff-only), so the hooks every session runs from it stay current. Case 2026-10-24: 109 commits behind with 82 uncommitted files from other sessions, so tonight's hook removals and the trunk_lag fix were not live. One-time cleanup is card main-checkout-stale-hooks-2026-10-24; this card is the rule that stops it recurring.",
+  "goal": "Add to PARALLEL.md 'Two kinds of checkout' the rule: the main checkout (JIS-NB live tree, hooks run from it) is never edited or committed in; work goes through worktrees and sync.py ship; it moves only by an ff-only merge of origin/fast-track, as a deploy. Case 2026-10-24: 109 behind, 82 foreign dirty files. Rule text, no new tool.",
   "id": "main-checkout-stays-a-clean-copy-of-trun",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Thinker follow-ups 1023: tidy hint runs on Windows, argon card defects, open-items note, t",
+      "ref": "7d52fb744f06",
+      "utc": "2026-10-23T09:36:45Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "2cf166241a49 docs: drop retired-scheduler instructions that contradict SCHEDULING_POLICY",
+      "ref": "MyTradingSys/system/PARALLEL.md",
+      "utc": "2026-10-18T21:59:49Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,22 +35,36 @@
     "red-trunk-revert-10-min",
     "main-checkout-stale-hooks-2026-10-24"
   ],
-  "note": "",
+  "note": "Refined by Session_Planner 2026-10-25. Not a duplicate: PARALLEL.md:33-37 states who changes the live tree but says nothing on editing, staging or dirty/behind handling; CLAUDE.md already has 'live tree changes only by deploy'.\nREVIEWED:2026-10-25 T0-ONLY",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-24T21:38:08Z",
   "refs": [
     "MyTradingSys/research/mts_doctor/REPORT_2026-10-24.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/system/PARALLEL.md",
+    "scripts/dev/test_sync.py"
+  ],
+  "scope_out": [
+    "CLAUDE.md (doc size cap, preship.py)",
+    "any new hook or gate (hook-lag-gate is frozen under A-20261024-1)",
+    "the one-time cleanup (card main-checkout-stale-hooks-2026-10-24)"
+  ],
+  "scope_sha": "7d52fb744f06",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read PARALLEL.md l.33-42 (table 'Two kinds of checkout') and MyTradingSys/research/mts_doctor/REPORT_2026-10-24.md l.6-12",
+    "Add under the table a 'Main checkout rule' paragraph of at most 6 lines: (1) never edit, stage or commit in the main checkout; (2) a session that opens there makes a worktree (sync.py start) first; (3) it only moves by git merge --ff-only origin/fast-track as a deploy; (4) found dirty or behind: report, do not clean up foreign files; (5) cite the 2026-10-24 case numbers",
+    "Add test PARALLEL_MainCheckoutRuleTest in test_sync.py that reads PARALLEL.md and asserts it contains 'Main checkout rule', 'never edit' and 'merge --ff-only origin/fast-track'",
+    "Run python scripts/dev/test_sync.py (new test must fail before the PARALLEL.md edit: write the test first); sync.py ship; verify git cherry origin/fast-track <sha> empty and ls-tree shows both files"
+  ],
+  "tests": "scripts/dev/test_sync.py PARALLEL_MainCheckoutRuleTest.test_rule_present: fails on current PARALLEL.md (no 'Main checkout rule' heading), passes after the edit",
   "title": "Main checkout stays a clean copy of trunk: no edits there, fast-forward only (rule text, no new tool)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
