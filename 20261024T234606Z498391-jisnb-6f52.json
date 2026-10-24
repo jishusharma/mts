@@ -1,0 +1,1 @@
+{"t": "20261024T234606Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship sim_build1 Result: restores the catalogue test on trunk; smoke run can be redone after build_catalogue.py regenerates.", "login": "C", "sid": "9285295a55"}
