@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/tasks.py check argon-fix-defects-and-re-land",
+    "git -C <work tree> diff -- MyTradingSys/system/tasks/"
+  ],
+  "created": "2026-10-24T13:39:16Z",
+  "depends_on": [],
+  "done_when": "Running tasks.py check on a card whose scope_in names another card leaves that other card's file byte-identical; the B-SHARED marking is either removed or only written when the user asks for it; existing cards are unchanged by a check run.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "tasks.py check and fill change another card's weight to B-SHARED when the checked card names that card's path in scope_in. Seen 2026-10-24: argon-blind-read-7-frames.json went IMPORTANT -> B-SHARED when argon-fix-defects-and-re-land was checked. Cause: scripts/dev/tasks.py lines ~94-110 (and ~1201) mark cited cards B-SHARED and write them back. Fix so check edits only the named card.",
+  "id": "tasks-py-check-rewrites-other-cards-mark",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Role flow A1 e2e fix: keep the low-buffer refine rule; trunk test_tasks red from the 10-23",
+      "ref": "464110c710d8",
+      "utc": "2026-10-23T12:56:26Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-24T13:39:27Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/tasks.py; scripts/dev/test_tasks*.py (if present)"
+  ],
+  "scope_out": [
+    "card content and weights; no change to the card files themselves"
+  ],
+  "scope_sha": "464110c710d8",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Reproduce: copy argon-blind-read-7-frames.json, run check on argon-fix-defects-and-re-land, confirm the weight changes",
+    "Write a test that fails on the current code (other card's bytes change)",
+    "Fix tasks.py so check writes only the named card",
+    "Run the test and tasks.py check on both cards; ship"
+  ],
+  "tests": "New test fails on the current code (another card's file is rewritten by check) and passes after the fix.",
+  "title": "tasks.py check rewrites other cards: marks cited cards B-SHARED and edits their files",
+  "weight": "",
+  "worker": "session"
+}
