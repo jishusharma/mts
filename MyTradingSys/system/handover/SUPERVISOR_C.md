@@ -65,3 +65,6 @@ Still in flight at rotate: T05 ship (bg bam9ocivm, may die with the clear: check
 ## T09-F5 FINAL (worker ac8b2b68eddeaee06, ~30 turns): commit 2bd5dcdf2 in wt agent-ac8b2b68eddeaee06, NOT shipped (queue it after lease). Result: DEV 1h live config n 295 mean net R +0.201 CI [+0.015,+0.387] (overlapping holds, too narrow); non-overlapping n 177 +0.050 [-0.205,+0.306]; sim status FAILED; best of 144 variants +0.99R selection-biased. Test test_f5_funding_cvd_1h.py (5/5) not registered in EXTRA. Lint clean. All 3 workers done; no worker running now.
 
 ## T05 SHIPPED (verified cherry 0): 31 files, gate 28m59s (under the 30 min report line; the ship waited behind a push race, retry 2/5). Chain Monitor bdxkro7il now ships bt-engine-wire next (check its CHAIN lines / cherry in each wt).
+
+## 20:20Z (after compact, not cleared)
+bt-engine-wire SHIPPED (cherry 0, 114 s). Chain bdxkro7il now shipping lint then lease. Then ship t09-f5 (agent-ac8b2b68eddeaee06), then notes. 21:30Z report due.
