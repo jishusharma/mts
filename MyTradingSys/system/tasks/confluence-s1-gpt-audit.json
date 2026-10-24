@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/tasks.py brief confluence-s1-context-counts"
+  ],
+  "created": "2026-10-24T14:27:05Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/krown_audit_2026-10-22/GPT_AUDIT_S1.md exists with a match/mismatch verdict per count and for the leak test",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "GPT independently re-derives the Confluence S1 leak test and the 3 counts from run/COUNTS.md and PRE_REG_S1_COUNTS.md and reports match or mismatch per number.",
+  "id": "confluence-s1-gpt-audit",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Confluence S1: Krown point-in-time context table, join at decision time, counts pass (no o",
+      "ref": "e44b702c019b",
+      "utc": "2026-10-23T12:37:11Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-24T14:27:14Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/krown_audit_2026-10-22"
+  ],
+  "scope_out": [
+    "scripts; live tree; every file except GPT_AUDIT_S1.md"
+  ],
+  "scope_sha": "e44b702c019b",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/krown_audit_2026-10-22/PRE_REG_S1_COUNTS.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read PRE_REG_S1_COUNTS.md for the leak test and count definitions",
+    "Recompute the 3 counts and the leak test independently from the source data named there, without reusing the existing script output",
+    "Write GPT_AUDIT_S1.md: each number, COUNTS.md value, your value, verdict; commit with a Result: line"
+  ],
+  "tests": "GPT_AUDIT_S1.md lists each re-derived number next to the COUNTS.md number (file absent before this card)",
+  "title": "GPT audit: re-derive Confluence S1 leak test and 3 counts (non-Claude review)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
