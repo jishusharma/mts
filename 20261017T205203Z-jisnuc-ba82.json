@@ -1,1 +1,0 @@
-{"t": "20261017T205203Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship 2>&1 | tail -3; python scripts/dev/sync.py release nuc-tandem-1018 2>&1 | tail -2"}
