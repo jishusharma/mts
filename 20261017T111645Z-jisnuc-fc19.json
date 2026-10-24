@@ -1,1 +1,0 @@
-{"t": "20261017T111645Z", "from": "jis-nuc/sharma", "to": "all", "kind": "claim", "text": "claim \"model_guard: operator naming Opus lets it through\" 2>&1 | tail -3 && git add scripts/dev/model_guard.py MyTradingSys/tests/test_model_guard.py && git commit -q -m \"model_guard: Opus allowed whe"}
