@@ -17,16 +17,16 @@ def _kpi(doc, start):
 
 
 def _nums(text):
-    return [float(x) for x in re.findall(r'[-+]?\d+(?:\.\d+)?', text)]
+    return [float(x) for x in re.findall(r'[-+]?\d+(?:\.\d+)?', text.replace(',', ''))]
 
 
 def _in_dev(doc):
     ds = DATE_RE.findall(str(doc.get('window', '')))
-    return all(DEV_FIRST <= d <= DEV_LAST for d in ds[:2])
+    return len(ds) >= 2 and all(DEV_FIRST <= d <= DEV_LAST for d in ds[:2])   # no window stated = not shown (fail closed)
 
 
 def _row(doc):
-    m = ID_RE.match(str(doc.get('id', '')))
+    m = ID_RE.fullmatch(str(doc.get('id', '')))
     if not m or not _in_dev(doc):
         return None
     n = _nums(_kpi(doc, 'filled trades'))
@@ -54,7 +54,7 @@ def list_runs(results_dir):
 
 def get_run(results_dir, rid):
     """One saved run, full document; None when the id is not a desk run id or the file is missing."""
-    if not ID_RE.match(str(rid or '')):
+    if not ID_RE.fullmatch(str(rid or '')):
         return None
     try:
         doc = json.loads((Path(results_dir) / f'{rid}.json').read_text(encoding='utf-8'))

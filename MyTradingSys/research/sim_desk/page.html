@@ -354,21 +354,23 @@ async function loadRuns() {
   sideBySide();
 }
 function loadRunsChecks() { for (const cb of document.querySelectorAll('#runtab input[type=checkbox]')) cb.checked = picked.includes(cb.dataset.id); }
+let sbsSeq = 0;
 async function sideBySide() {
-  const box = $('sbs'); box.innerHTML = '';
-  if (picked.length < 2) return;
-  for (const id of picked) {
+  const seq = ++sbsSeq, box = $('sbs'), cards = [];
+  if (picked.length < 2) { box.innerHTML = ''; return; }
+  for (const id of picked.slice()) {
     let d = null;
     try { d = await (await fetch('/api/runs/' + encodeURIComponent(id))).json(); } catch (e) {}
     const c = document.createElement('div');
-    if (!d || d.error) { c.textContent = 'Could not read ' + id; box.appendChild(c); continue; }
+    if (!d || d.error || !d.verdict) { c.textContent = 'Could not read ' + id; cards.push(c); continue; }
     const b = document.createElement('b'); b.textContent = d.title; c.appendChild(b);
     const v = document.createElement('div'); v.className = 'v'; v.style.color = COLORS[d.verdict.label] || 'inherit'; v.textContent = d.verdict.label; c.appendChild(v);
     for (const w of (d.why || [])) { const p = document.createElement('div'); p.textContent = w; c.appendChild(p); }
     for (const k of (d.kpis || [])) { const p = document.createElement('div'); p.textContent = k.label + ': ' + k.value; c.appendChild(p); }
     for (const w of (d.what || [])) { const p = document.createElement('div'); p.style.color = 'var(--mute)'; p.textContent = w.name + ': ' + w.value_plain; c.appendChild(p); }
-    box.appendChild(c);
+    cards.push(c);
   }
+  if (seq === sbsSeq) box.replaceChildren(...cards);
 }
 init();
 </script>

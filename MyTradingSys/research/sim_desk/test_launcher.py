@@ -57,7 +57,7 @@ def test_first_page_names_the_wired_studies_and_dev_note():
 
 
 def _doc(rid, n, mean, lo, hi, verdict):
-    return {'id': rid, 'title': 'T ' + rid, 'verdict': {'label': verdict, 'tone': 'warn'}, 'why': ['because'],
+    return {'id': rid, 'title': 'T ' + rid, 'window': 'DEV only, 2022-04-01 to 2024-06-30', 'verdict': {'label': verdict, 'tone': 'warn'}, 'why': ['because'],
             'what': [{'name': 'Settings', 'value_plain': 'x', 'label': 'OURS'}],
             'kpis': [{'label': 'filled trades', 'value': str(n)}, {'label': 'ideas never filled', 'value': '0'},
                      {'label': 'average per trade, after fees', 'value': f'{mean:+.3f} R'},
@@ -96,3 +96,11 @@ def test_every_study_default_sits_inside_dev():
         q = s.normalize({})
         if 'start' in q:
             desk.check_dates(q['start'], q['end'])
+
+
+def test_run_without_window_is_not_listed_and_ids_are_exact(tmp_path):
+    import runs_view
+    d = _doc('desk-rsi-dddd4444', 5, 0, 0, 0, 'FAILED'); d.pop('window', None)
+    (tmp_path / 'desk-rsi-dddd4444.json').write_text(json.dumps(d))
+    assert runs_view.list_runs(tmp_path) == [] and runs_view.get_run(tmp_path, 'desk-rsi-dddd4444') is None
+    assert runs_view.get_run(tmp_path, 'desk-rsi-dddd4444' + chr(10)) is None

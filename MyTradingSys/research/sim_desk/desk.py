@@ -413,6 +413,7 @@ class Handler(BaseHTTPRequestHandler):
         pass
 
     def do_GET(self):
+        self.path = self.path.split('?', 1)[0]
         if self.path in ('/', '/index.html'):
             return self._send(200, render_page(), 'text/html; charset=utf-8')
         if self.path == '/api/runs':
