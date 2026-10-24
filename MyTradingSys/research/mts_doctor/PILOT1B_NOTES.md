@@ -63,3 +63,12 @@ Watcher bq92vcvq5 (cherry e65a368db empty, 19 min per run; re-arm when it expire
 2. Check W1b ships, then LAST ships (Haiku asked to verify each of confluence-s0-registry, confluence-s1-context-counts, wavetrend-audit-c1-disposition, malkan-gfs-btc-htf-prereg before done).
 3. Optional R2: refine rsi-deep-depth-map, Lab_Guy, worker after queue empty (serial, same folder as R1).
 4. Spot-check one claim (Haiku re-runs R1 test or count). Reports at 16:30Z/17:30Z/stop. Final notes ship, git cherry 0.
+
+## FINAL STATE (18:12Z, supersedes the tables above)
+All cards on trunk, card states done, CI success on the pilot ships checked (c18e132c4 CI still running at 18:10Z):
+W1 4463a42e7 + W1b 6e6a1609d (manifest, 30 files, 1,313,280 rows), R1 073019dfa, S1 0b13455c5 (Doctor publishes index.html), H1 e65a368db (holdout read needs operator release), LAST 6d1f28b09 (4 cards closed), R2 rsi-deep-depth-map c18e132c4 (refine 043f548a2, Lab_Guy ACCEPT c46b7bacf; 22 TF x window cells, 3564 rows DEV only; ~28 turns; final gate 734 s; first ship rejected by look-ahead lint on neighbour-slice patterns, rewritten, CSV byte-identical).
+Spot check (coordinator, run myself at 18:11Z): test_depth_map.py 8 passed, DEPTH_MAP.csv 3565 lines (3564 rows + header).
+R2 deviations (DECISION OURS, logged in DEPTH_MAP.md): non-overlapping UTC windows instead of trailing (card said trailing); windows start armed; weeks start Monday; trough needs full +-k neighbourhood. Doctor: card text and result differ on "trailing"; follow up if the trailing reading matters.
+Open nits: Malkan card gate 0f over-reach and Deribit fee cite (Lab_Guy), correct at next touch.
+Row evidence: row 2 full-gate trigger via run_extra_tests.py edits (R2 also edited it: 734 s gate); look-ahead lint gate worked as designed on R2 (new FAIL blocked ship). No reverts, no red CI from pilot ships. Workers all Sonnet Agents except LAST (Haiku).
+Not mine/untouched: bt-engine-wire-real-funding-rsi-cc-rerun, Krown K1/S2.
