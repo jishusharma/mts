@@ -9,6 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import host_health as h  # noqa: E402
 
 NOW = 1_000_000.0
+QUIET = dict(disk=lambda repo: ([], 0), queue=lambda: [])   # the real check_disk scans the largest folders and hangs a test when C: is under 15 GB free
 
 
 def P(pid, ppid, name, cmd="", age=10_000, cpu=1.0):
@@ -34,10 +35,10 @@ def test_run_reaps_only_orphan(monkeypatch, tmp_path):
     env(monkeypatch, tmp_path)
     killed = []
     procs = [P(10, 99, "python.exe", "python run_all_tests.py"), P(3, 1, "python.exe", "python run_all_tests.py"), P(1, 0, "claude.exe")]
-    lines = h.run(str(tmp_path), procs=procs, kill=lambda pid: killed.append(pid) or True, now=NOW, post=False)
+    lines = h.run(str(tmp_path), procs=procs, kill=lambda pid: killed.append(pid) or True, now=NOW, post=False, **QUIET)
     assert killed == [10] and any("REAPED gate tree PID 10" in ln for ln in lines)
     killed.clear()
-    h.run(str(tmp_path), procs=procs, kill=lambda pid: killed.append(pid) or True, now=NOW, reap=False, post=False)
+    h.run(str(tmp_path), procs=procs, kill=lambda pid: killed.append(pid) or True, now=NOW, reap=False, post=False, **QUIET)
     assert killed == []
 
 
@@ -61,8 +62,18 @@ def test_run_removes_dead_ticket(monkeypatch, tmp_path):
     d = sync.host_gate_slots_dir("ship-queue", str(tmp_path))
     t = d / "1-999999999.json"
     t.write_text(json.dumps({"pid": 999999999, "t": time.time()}))
-    h.run(str(tmp_path), procs=[], kill=lambda p: True, post=False)
+    h.run(str(tmp_path), procs=[], kill=lambda p: True, post=False, **QUIET)
     assert not t.exists()
+
+
+def test_run_never_reaches_the_real_disk_scan_or_queue_probe_when_they_are_injected(monkeypatch, tmp_path):
+    env(monkeypatch, tmp_path)
+    called = []
+    monkeypatch.setattr(h, "check_disk", lambda *a, **k: called.append("disk") or time.sleep(30))
+    monkeypatch.setattr(h, "check_queue", lambda *a, **k: called.append("queue") or time.sleep(30))
+    t0 = time.time()
+    h.run(str(tmp_path), procs=[], kill=lambda p: True, post=False, **QUIET)
+    assert called == [] and time.time() - t0 < 5
 
 
 def test_strays_reported_with_stop_command_not_killed():
@@ -87,10 +98,10 @@ def test_policy_allow_list_gates_the_kill(monkeypatch, tmp_path):
     pol.write_text(h.POLICY_TEXT)
     assert h.parse_policy(h.POLICY_TEXT) == []            # shipped policy: empty allow-list
     killed = []
-    out = h.run(str(tmp_path), procs=procs, kill=lambda p: killed.append(p) or True, now=NOW, post=False)
+    out = h.run(str(tmp_path), procs=procs, kill=lambda p: killed.append(p) or True, now=NOW, post=False, **QUIET)
     assert killed == [] and any("stop: taskkill /PID 21216" in ln for ln in out)
     pol.write_text(h.POLICY_TEXT + "- allow: python VP.py\n")
-    out = h.run(str(tmp_path), procs=procs, kill=lambda p: killed.append(p) or True, now=NOW, post=False)
+    out = h.run(str(tmp_path), procs=procs, kill=lambda p: killed.append(p) or True, now=NOW, post=False, **QUIET)
     assert killed == [21216] and any("REAPED stray PID 21216" in ln for ln in out)
 
 
