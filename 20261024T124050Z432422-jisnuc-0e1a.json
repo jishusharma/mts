@@ -1,0 +1,1 @@
+{"t": "20261024T124050Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship defender-agy-exclusions Result: nightly worktree job keeps trees whose name or branch contains gpt; test_gpt_trees_kept fails before the fix, all 17 wt_maint tests pass after.", "login": "B", "sid": "a7f5358c2c"}

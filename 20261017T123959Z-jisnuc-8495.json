@@ -1,1 +1,0 @@
-{"t": "20261017T123959Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "start eagle-eyes-role 2>&1 | tail -2; git branch --show-current; grep -rln \"Live_Chart_Runner\\|live_chart_runner\" --include=*.md --include=*.py --include=*.json . | grep -v research/"}
