@@ -46,6 +46,12 @@ def first_breaks(d, p, strict_cd=False):
     return keep, len(ir), len(iw)
 
 
+def reclaim_outcome(c, i, L, k, N):
+    """Index r <= k of the first 1m close above the level after the break bar i (bar 0 counts), else None.
+    The entry is taken at that close, so nothing after index r is used by the arm (outcome label, causal entry)."""
+    return next((r for r in range(0, k + 1) if i + r < N and c[i + r] > L), None)
+
+
 def run(d=None, p=0.001, k=5, strict_cd=False):
     d = d or load_dev()
     N = len(d["t"])
@@ -53,7 +59,7 @@ def run(d=None, p=0.001, k=5, strict_cd=False):
     c = d["c"]
     rl, ctl = [], []
     for i, fam, L in ev:
-        r = next((r for r in range(0, k + 1) if i + r < N and c[i + r] > L), None)
+        r = reclaim_outcome(c, i, L, k, N)
         j = i + r if r is not None else i + k
         e = j + 2
         x = e + H

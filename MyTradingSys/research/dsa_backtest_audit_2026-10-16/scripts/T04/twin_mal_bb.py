@@ -17,6 +17,8 @@ def build(d=None):
     mid = np.round(mid, 6) if ROUND_TIES else mid
     delta = 2 * b5["tbv"] - b5["v"]
     dcs = np.cumsum(np.insert(delta, 0, 0.0))
+    sum6 = np.full(len(delta), np.nan)
+    sum6[5:] = dcs[6:] - dcs[:-6]          # net taker delta of the 6 bars ending at each bar (signal bar included)
     rsi1, rsi4 = rsi_wilder(b1h["c"]), rsi_wilder(b4h["c"])
     mid1h, _, _ = bb(b1h["c"])
     mid1h = np.round(mid1h, 6) if ROUND_TIES else mid1h
@@ -27,7 +29,7 @@ def build(d=None):
     for i in range(30, n5):
         if np.isnan(mid[i]) or np.isnan(mid[i - 10]):
             continue
-        falling[i] = mid[i] < mid[i - 10] and (dcs[i + 1] - dcs[i - 5]) < 0
+        falling[i] = mid[i] < mid[i - 10] and sum6[i] < 0
         touch[i] = any(b5["h"][k] >= mid[k] for k in (i - 2, i - 1, i))
         j = (5 * i + 5) // 60 - 1       # last 1h bar closed by the signal bar close
         jj = (5 * i + 5) // 240 - 1
@@ -35,6 +37,11 @@ def build(d=None):
             htf[i] = rsi1[j] < 50 and rsi4[jj] < 50 and b5["c"][i] < mid1h[j]
         eng[i] = (b5["c"][i - 1] > b5["o"][i - 1]) and (b5["c"][i] < b5["o"][i]) and (b5["c"][i] < b5["o"][i - 1])
     return d, b5, dict(falling=falling, touch=touch, htf=htf, eng=eng)
+
+
+def second_break_outcome(lows, idx):
+    """Event ids whose NEXT 5m bar trades below the engulf-bar low (arm A2 membership; an outcome, not a signal)."""
+    return [i for i in idx if i + 1 < len(lows) and lows[i + 1] < lows[i]]
 
 
 def run(d=None, strict_cd=False):
@@ -58,7 +65,7 @@ def run(d=None, strict_cd=False):
         return rows
     a1 = events(a1_idx, 0, "A1")
     ct = events(ct_idx, 0, "CTL_A1")
-    sb = [i for i in a1_idx if i + 1 < len(b5["c"]) and b5["l"][i + 1] < b5["l"][i]]
+    sb = second_break_outcome(b5["l"], a1_idx)
     counts["a2"] = len(sb)
     return d, a1, ct, counts
 
