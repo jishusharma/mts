@@ -40,8 +40,11 @@ def escalation_layer(bars):
 
 def volume_fvg_layer(bars, n_bins=20):
     """Mirrors fabio/run_backtest.py run_fvg (real lowest-volume level in the 70% value area of each swing leg;
-    first touch of that level within 200 bars of leg confirmation). Side as in the backtest: price at leg
-    confirmation above the level -> "short", else "long". n_bins=20, VA 70% = backtest values."""
+    first touch of that level within 200 bars after leg confirmation, scan from confirmed_i+1 like run_fvg).
+    Side = the backtest 'bounce' reading (run_backtest.py:199,202): close at leg confirmation above the level ->
+    "long", else "short". n_bins=20, VA 70% = backtest values. Fail closed: fewer than 2*n_bins bars -> []."""
+    if len(bars) < 2 * n_bins:
+        return []
     legs = swing_legs(bars, left=2, right=2, use_body=True)
     closes = [b["c"] for b in bars]
     out = []
@@ -56,9 +59,9 @@ def volume_fvg_layer(bars, n_bins=20):
             continue
         start = leg["confirmed_i"]
         mid = (lvl["price_lo"] + lvl["price_hi"]) / 2.0
-        for i in range(start, min(start + 200, len(bars) - 1)):
+        for i in range(start + 1, min(start + 1 + 200, len(bars) - 1)):
             if bars[i]["l"] <= mid <= bars[i]["h"]:
-                side = "short" if closes[start] > mid else "long"
+                side = "long" if closes[start] > mid else "short"
                 out.append({"t": bars[i]["t"], "side": side, "level": round(mid, 2),
                             "event": "fvg_touch_%s_%s" % (side, round(mid, 2))})
                 break
