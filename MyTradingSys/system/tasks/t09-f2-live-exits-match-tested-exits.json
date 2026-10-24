@@ -1,7 +1,9 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest -q MyTradingSys/execution/test_auto_trader.py"
+  ],
   "created": "2026-10-24T19:50:03Z",
   "depends_on": [],
   "done_when": "New tests red before / green after; test_auto_trader*.py pass; each table entry quotes its backtest file:line (else OURS/SAMPLING); every layer log row has bracket_source in {SAMPLING, TESTED:<file:line>}.",
@@ -11,7 +13,7 @@
   "from_inbox": "",
   "goal": "Stop pretending the one 1%/2%/8-bar bracket is a tested exit: per layer, either use the exit its backtest used, or keep the bracket and make every layer log row and report say SAMPLING-only.",
   "id": "t09-f2-live-exits-match-tested-exits",
-  "lane": "SONNET",
+  "lane": "JIS-NB",
   "latest": [
     {
       "auto": true,
@@ -22,7 +24,7 @@
     }
   ],
   "layers": [],
-  "live_path": false,
+  "live_path": true,
   "mutation_check": "",
   "note": "REVIEWED:2026-10-25 ACCEPT\n(reviewer agent a3c19d17, different from drafter; its FIX items applied.) Live-path rules: tests for restart/reset state, non-trade balance moves and API errors; safety checks fail closed. Builder edits code in a worktree only; never deploys or touches the live tree. CRITICAL: coordinator spawns a review session before ship. 97% of testnet exits are time exits (94% by arithmetic). Per-layer exit values are OURS unless a backtest file:line is quoted. Not live_path:true (means lane JIS-NB): a worktree code change; the live tree changes only by a later manual or coordinator deploy.",
   "prio": 1,

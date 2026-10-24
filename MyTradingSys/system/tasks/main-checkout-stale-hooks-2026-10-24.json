@@ -1,39 +1,59 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "git -C C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed fetch origin",
+    "git -C C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed rev-list --count HEAD..origin/fast-track",
+    "git -C C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed status --short",
+    "git -C C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed diff HEAD > F:/MTS_backup/main_checkout_2026-10-25/local.patch",
+    "git -C C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed merge --ff-only origin/fast-track"
+  ],
   "created": "2026-10-23T22:01:18Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Main checkout 0 commits behind origin/fast-track, every previously dirty file is in F:/MTS_backup/main_checkout_2026-10-25/ or kept by the operator's word, the backup path and before/after counts are logged in SUPERVISOR_LOG.md and shipped (git cherry empty)",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "One-off machine action on JIS-NB with the operator present: bring the main checkout (C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed, branch fast-track, also the live tree) up to origin/fast-track without losing anyone's uncommitted work, so hooks run current. First re-measure: it may already be 0 behind.",
   "id": "main-checkout-stale-hooks-2026-10-24",
   "lane": "JIS-NB",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
   "not_twin_of": [
     "hook-lag-gate"
   ],
-  "note": "One-off machine action (Admin_Guy, operator present). hook-lag-gate is a tool for warning about it, frozen under A-20261024-1.",
+  "note": "Refined by Session_Planner 2026-10-25. Touches the live tree (main checkout, PARALLEL.md:35) so it follows DEPLOY_RUNBOOK.md with the operator present (his keep/drop word per file is the review); weight ROUTINE only so the card can pass the stamp gate, treat as CRITICAL for care. 436efe562 + 086a1b257 already let trunk_lag copy hook scripts into a blocked checkout, so step 1 may show part of this solved.\nREVIEWED:2026-10-25 T0-ONLY",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-24T21:37:45Z",
   "refs": [
     "MyTradingSys/research/mts_doctor/REPORT_2026-10-24.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed (git state only, via git -C)",
+    "MyTradingSys/system/SUPERVISOR_LOG.md"
+  ],
+  "scope_out": [
+    "any code edit; restarting processes or the Java feed; HALT files; the 'main checkout stays clean' rule text (card main-checkout-stays-a-clean-copy-of-trun)"
+  ],
+  "scope_sha": "",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Re-measure: git -C <main> fetch origin; rev-list --count HEAD..origin/fast-track; git -C <main> status --short. If 0 behind and clean, record the numbers in the note and finish",
+    "Save, never discard: copy each locally edited or deleted file to F:/MTS_backup/main_checkout_2026-10-25/ (git -C diff to a .patch plus the files); staged cbp_run.py is a duplicate of trunk f9fcf77b4 (verify by git diff origin/fast-track -- path), SUPERVISOR_LOG.md local lines get appended to the trunk copy after the update",
+    "Show the operator the file list and the saved patch path; the operator says keep or drop per file (default if no answer: keep everything in the backup, restore nothing)",
+    "git -C <main> checkout -- <files the backup covers>; git -C <main> merge --ff-only origin/fast-track (no reset, no rebase); this is a deploy of the live tree: follow DEPLOY_RUNBOOK.md gate (green SHA) and restart only what the runbook says changed, with the operator",
+    "Verify: rev-list --count HEAD..origin/fast-track prints 0; git -C <main> status --short shows only intended files; python scripts/dev/trunk_lag.py run from a new worktree prints nothing; record numbers and the backup path in SUPERVISOR_LOG.md via a worktree ship"
+  ],
+  "tests": "No code. Verification commands instead: git -C <main> rev-list --count HEAD..origin/fast-track (before: >0, after: 0) and git -C <main> status --short (before: dirty files, after: none or the operator-kept ones)",
   "title": "Main checkout 101 commits behind with others' uncommitted edits (SUPERVISOR_LOG.md, orderflow csv deletions, staged cbp_run.py, control_room.tpl.html): hooks run from it, so tonight's hook removals and trunk_lag fix are not live; save or discard the edits with the operator, then fast-forward",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }
