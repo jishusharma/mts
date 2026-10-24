@@ -17,10 +17,11 @@ Workers running (Sonnet Agents, own worktrees, started ~18:53Z; they commit only
 - a1089c4267107ce94 dsa-audit-07-stale-verdicts
 - a401dace18fdc5813 dsa-audit-09-live-parity
 - a0e64b1f86498d923 t02-f1-review-allowlist-chunk-4: DONE 19:0xZ, card was already reviewed (c68e93ced300), 4 turns, card-done commit 50b93be91 shipped
+- ae4cea31ac539a0b2 context-conditioned-session-flow-states (spare 2, started ~19:05Z, worktree: find via sync.py where --all)
 - a948ff46879f9b963 cbp-add-channel-latest-n-to-fetch-captio (spare 1, started ~19:00Z)
-- a8783e71ee944c683 tasks-py-check-rewrites-other-cards-mark (20-turn cap)
+- a8783e71ee944c683 tasks-py-check-rewrites-other-cards-mark: DONE, 6 turns, commit 753075e76, worktree agent-a8783e71ee944c683; SHIP IN PROGRESS ~19:05Z (log $TEMP/ship_tasks.log, bg task b8zk6p3r9); verify git cherry empty
 Worktrees: in each worker's final report (find via `sync.py where --all`).
-Central-file holders: none. Ship queue: empty. Awaiting verification: none.
+Central-file holders: none. Ship queue: tasks.py (in progress); then DSA audits as they finish. Awaiting verification: none.
 Decisions (OURS): ships serialised by me from worker worktrees; test registration batched into one ship at end.
 Usage 18:48Z: 5h 13% (reset 21:10Z), week 34%.
 Next action: wait for worker completions (notifications), then ship one at a time; Doctor report 20:00Z.
