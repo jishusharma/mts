@@ -1,1 +1,0 @@
-{"t": "20261017T142857Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship relay Result: one command writes a dated report (4 AI-health findings, process flags, delta vs the previous report); reviewed by a Haiku agent (4 numbers recomputed from raw git, all match) and a"}
