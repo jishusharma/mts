@@ -40,7 +40,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(REPO))
 
-from MyTradingSys.backtest.bt.bt_data import load_klines, load_funding
+from MyTradingSys.backtest.bt.bt_data import load_klines
 from MyTradingSys.backtest.bt.bt_engine import simulate_trade
 from MyTradingSys.backtest.bt.ref_pbo import ref_pbo_cscv
 from MyTradingSys.backtest.layers.timeframe.tf_resample import resample, bucket_end
@@ -93,13 +93,12 @@ def verdict(n_oos, mean_net_oos, pbo):
 # ---------------------------------------------------------------- scoring
 
 def trades_from_events(events, bars, stop_pct=STOP_PCT, target_pct=TARGET_PCT, max_bars=MAX_BARS,
-                       taker=None, maker=None, funding=None):
+                       taker=None, maker=None):
     """Bracket-simulate events {"i","side"} (entry = close of bar i). One position at a time: an event
     at or before the previous trade's exit bar is skipped. Trades still open at the end of `bars` are
     dropped. Returns [{"i","t","side","net","exit_reason","bars_held"}], net = fraction of entry price."""
     taker = TAKER_FEE if taker is None else taker
     maker = MAKER_FEE if maker is None else maker
-    funding = [] if funding is None else funding  # [] = explicit no-funding model; records = real funding (B103)
     trades, free_from = [], 0
     for e in sorted(events, key=lambda x: x["i"]):
         i, side = e["i"], e["side"]
@@ -108,7 +107,7 @@ def trades_from_events(events, bars, stop_pct=STOP_PCT, target_pct=TARGET_PCT, m
         px = bars[i]["c"]
         sgn = 1.0 if side == "long" else -1.0
         r = simulate_trade(side, px, bars[i]["t"], px * (1.0 - sgn * stop_pct), [(px * (1.0 + sgn * target_pct), 1.0)],
-                           bars[i + 1:i + 1 + max_bars], taker_fee=taker, maker_fee=maker, max_bars=max_bars, funding=funding)
+                           bars[i + 1:i + 1 + max_bars], taker_fee=taker, maker_fee=maker, max_bars=max_bars, funding=[])  # [] = explicit no-funding model (B103)
         if r["net_r"] is None:
             continue
         trades.append({"i": i, "t": bars[i]["t"], "side": side, "net": r["pnl_pct_net"] / 100.0,
@@ -157,11 +156,10 @@ def _fwd(events, closes):
 
 
 def grid_search_and_oos(events_fn, grid, bars, n_is, stop_pct=STOP_PCT, target_pct=TARGET_PCT,
-                        max_bars=MAX_BARS, taker=None, maker=None, min_events=5, S=12, funding=None, dev_only=False):
+                        max_bars=MAX_BARS, taker=None, maker=None, min_events=5, S=12):
     """events_fn(params) -> events over the FULL `bars` series. Chooses the IS-best variant by mean net
-    per trade (>= min_events IS trades), reports IS and OOS stats and PBO over the IS grid.
-    funding: records passed to every simulated trade. dev_only=True stops after the IS grid (no OOS bar is scored)."""
-    kw = dict(stop_pct=stop_pct, target_pct=target_pct, max_bars=max_bars, taker=taker, maker=maker, funding=funding)
+    per trade (>= min_events IS trades), reports IS and OOS stats and PBO over the IS grid."""
+    kw = dict(stop_pct=stop_pct, target_pct=target_pct, max_bars=max_bars, taker=taker, maker=maker)
     if n_is < 50 or len(bars) - n_is < 10:
         return {"chosen": None, "reason": "too_few_bars", "pbo": None, "n_variants": len(grid),
                 "verdict": "insufficient n"}
@@ -187,9 +185,6 @@ def grid_search_and_oos(events_fn, grid, bars, n_is, stop_pct=STOP_PCT, target_p
         return {"chosen": None, "reason": "no_variant_with_min_events", "pbo": pbo_val,
                 "n_variants": len(grid), "all_grid": summary, "verdict": "insufficient n"}
     best = max(ok, key=lambda r: r["mean_is"])
-    if dev_only:
-        return {"chosen": best["params"], "n_variants": len(grid), "is_stats": best["is_stats"], "oos_stats": None,
-                "pbo": pbo_val, "all_grid": summary, "verdict": "dev_only (OOS not scored)"}
     ev_oos = [e for e in events_fn(best["params"]) if e["i"] >= n_is]
     tr_oos = trades_from_events(ev_oos, bars, **kw)
     oos = trade_stats(tr_oos)
@@ -279,7 +274,7 @@ DEFAULT_TFS = {"malkan_40_60": ["1h", "4h", "1d"], "malkan_mtf": ["1d"], "rsi_ma
 
 def run_family(family, bars_1m, registry, tfs=None, grid=None, out_dir=None, **kw):
     """Returns {tf: {"n_bars","n_bars_is","n_bars_oos","baseline_oos","result": grid_search_and_oos(...)}}.
-    kw: stop_pct, target_pct, max_bars, taker, maker, min_events, funding, dev_only."""
+    kw: stop_pct, target_pct, max_bars, taker, maker, min_events."""
     if family not in GRIDS:
         raise ValueError("unknown family %r (expected one of %s)" % (family, ", ".join(GRIDS)))
     grid = grid or GRIDS[family]
@@ -295,7 +290,7 @@ def run_family(family, bars_1m, registry, tfs=None, grid=None, out_dir=None, **k
             htf = {t: resample(bars_1m, t, registry) for t in ("1w", "1M")}
             fn = lambda p, b=bars, h=htf: malkan_mtf_events(b, h, registry, p)
         res = {"n_bars": len(bars), "n_bars_is": n_is, "n_bars_oos": len(bars) - n_is}
-        if len(bars) - n_is > 0 and not kw.get("dev_only"):
+        if len(bars) - n_is > 0:
             res["baseline_oos"] = baseline_return_stats([b["c"] for b in bars[n_is:]], horizons=HORIZONS)
         res["result"] = grid_search_and_oos(fn, grid, bars, n_is, **kw)
         out[tf] = res
@@ -340,8 +335,6 @@ def main():
     ap.add_argument("--target-pct", type=float, default=TARGET_PCT)
     ap.add_argument("--max-bars", type=int, default=MAX_BARS)
     ap.add_argument("--min-events", type=int, default=5)
-    ap.add_argument("--no-funding", action="store_true", help="explicit no-funding model (old behaviour)")
-    ap.add_argument("--dev-only", action="store_true", help="score the IS (DEV) span only; OOS is not touched")
     args = ap.parse_args()
 
     out_dir = Path(args.out or REPO / "Dumps" / "backtest" / "runs" / ("rsi_" + args.family))
@@ -356,14 +349,11 @@ def main():
         print("No data found under --data-root/--data-root2", file=sys.stderr)
         return 2
 
-    funding = [] if args.no_funding else (load_funding(args.data_root2) or load_funding(args.data_root))
-    print("Loaded %d funding records" % len(funding), file=sys.stderr, flush=True)
     tfs = args.tfs.split(",") if args.tfs else None
     res = run_family(args.family, bars_1m, registry, tfs=tfs, out_dir=out_dir, stop_pct=args.stop_pct,
-                     target_pct=args.target_pct, max_bars=args.max_bars, min_events=args.min_events,
-                     funding=funding, dev_only=args.dev_only)
+                     target_pct=args.target_pct, max_bars=args.max_bars, min_events=args.min_events)
     summary = {"family": args.family, "fees": {"taker": TAKER_FEE, "maker": MAKER_FEE},
-               "n_funding": len(funding), "stop_pct": args.stop_pct, "target_pct": args.target_pct, "max_bars": args.max_bars, "tfs": res}
+               "stop_pct": args.stop_pct, "target_pct": args.target_pct, "max_bars": args.max_bars, "tfs": res}
     with open(out_dir / "summary.json", "w", newline="\n", encoding="utf-8") as f:
         json.dump(summary, f, indent=1, default=str)
     with open(out_dir / "REPORT.md", "w", newline="\n", encoding="utf-8") as f:

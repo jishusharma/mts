@@ -247,18 +247,11 @@ def evaluate(trades, split_t, key):
     return {"is": s_is, "oos": s_oos, "oos_years": yrs, "criteria": crit, "verdict": v}
 
 
-def run_setup(name, tf_bars, sim_bars, funding, tf_ms, is_frac=0.70, max_bars=1440, setup_fn=None, dev_only=False):
-    """dev_only=True scores the IS (DEV) span only: signals before the split, 1m bars only up to split + max_bars
-    (so a DEV trade still open at the split can close; no later trade is simulated, so funding records that end
-    before the OOS span cannot trip the B103 span check). The OOS block is then empty (n=0)."""
+def run_setup(name, tf_bars, sim_bars, funding, tf_ms, is_frac=0.70, max_bars=1440, setup_fn=None):
     fn = setup_fn or SETUPS[name]
     signals = fn(tf_bars)  # CURRENT defaults, no grid
     _, bars_oos, n_is = chronological_split(tf_bars, is_frac)
     split_t = bars_oos[0]["t"] if bars_oos else (tf_bars[-1]["t"] + 1 if tf_bars else 0)
-    if dev_only:
-        signals = [g for g in signals if g["entry_t"] < split_t]
-        end_t = split_t + max_bars * 60000
-        sim_bars = [b for b in sim_bars if b["t"] < end_t]
     has_fund = bool(funding)
     res = {"setup": name, "n_signals": len(signals), "split_t": split_t, "pbo": None,
            "pbo_note": "N/A: no parameter grid (defaults only; provenance audit forbids tuning)",
