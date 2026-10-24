@@ -33,7 +33,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "pilot1-cards: model_guard.py removed by 43d3bfc8f (hooks trim); bug no longer exists",
+  "pinned": false,
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -51,7 +52,7 @@
   "scope_sha": "1f12330209a5",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "add interactive role set",
     "tests",

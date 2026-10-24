@@ -28,7 +28,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-23 T0-ONLY. Priority 3 (Thinker); not blocking the pilot. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "note": "REVIEWED:2026-10-23 T0-ONLY. Priority 3 (Thinker); not blocking the pilot. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. PILOT1 2026-10-24: scope_in trimmed to files this card writes; usage_log.py is not in the repo, so no wiring step.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -37,15 +37,16 @@
   "result": "",
   "scope_in": [
     "MyTradingSys/research/thinker/2026-10-23_gemini_quota_find.md",
-    "scripts/dev/codex_status_parse.py",
-    "scripts/dev/test_codex_status_parse.py",
-    "scripts/dev/gemini_queue.py",
-    "scripts/dev/ask_model.py"
+    "scripts/dev/codex_status_parse.py (new)",
+    "scripts/dev/test_codex_status_parse.py (new)"
   ],
   "scope_out": [
     "any login or API-key use",
     "reading .secrets, .env or keys",
-    "starting a Gemini or Codex run"
+    "starting a Gemini or Codex run",
+    "edits to scripts/dev/gemini_queue.py and ask_model.py (read only)",
+    "usage_log.py (does not exist yet; parser stays standalone)",
+    "any network login"
   ],
   "scope_sha": "e8c997c9691c",
   "size": "S",
@@ -55,7 +56,7 @@
   "state": "ready",
   "steps": [
     "grep -ril antigravity scripts MyTradingSys/system; read gemini_queue.py and ask_model.py hits for a quota or usage call; record the command and a real output line, or NOT_IN_DATA.",
-    "Parse `codex_run.py status` allowance text (window pts, week) into scripts/dev/codex_status_parse.py (standalone, usage_log.py imports it later); test on a pasted sample or fixture.",
+    "Parse `codex_run.py status` allowance text (window pts, week) into scripts/dev/codex_status_parse.py (standalone, no usage_log.py import); test on a pasted sample.",
     "Gemini unreadable: document the manual column, no network login."
   ],
   "tests": "scripts/dev/test_codex_status_parse.py::test_parse_sample fails first (module absent), passes after.",

@@ -27,7 +27,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "OPERATOR QUOTE: process earthing end to end (d-cbp-a2-end-to-end). Plan: MyTradingSys/research/thinker/2026-10-23_cbp_core_vs_adopt.md",
+  "note": "pilot1-cards: done in 6fd789b81 (verify-quotes row acked); cbp_adapter.py deleted in f9fcf77b4, scope no longer exists",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -44,7 +45,7 @@
   "scope_sha": "dc31ca4d0ad8",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "write fail-first test",
     "add verify_quotes + CLI flag to adapter",

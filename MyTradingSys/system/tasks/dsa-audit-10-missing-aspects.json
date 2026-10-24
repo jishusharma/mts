@@ -20,7 +20,7 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:definitions CLASS:C2 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report.",
+  "note": "REVIEWED:2026-10-24 ACCEPT by=sonnet-review-agent (pilot1-cards, reviewer saw card+evidence only). PILOT1: T04-T07,T09 reports not shipped yet: list them as missing in the playbook, do not wait. REVIEWED-OLD LAB:definitions CLASS:C2 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
@@ -31,7 +31,9 @@
   "result": "",
   "scope_in": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T10_missing_aspects.md and MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/ (new files only)",
-    "read-only: repo code, result files, data under F:/MTS/data and Dumps (windows per brief section 5)"
+    "read-only: repo code, result files, data under F:/MTS/data and Dumps (windows per brief section 5)",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/matrix.csv and T10_BRIDGE_PLAYBOOK.md (new files only, never at folder root)",
+    "allowed writes: desk.py --target CLAUDE posts and the S1/S2 task cards (tasks.py new)"
   ],
   "scope_out": [
     "fixing what you find (cards instead)",
@@ -49,7 +51,8 @@
     "Write 30+ crypto-perp backtest failure modes (data, time, costs/fills, statistics, regime, selection, implementation, operations), each with how it shows and a test; cite web sources; mark those covered by brief section 2 or T01-T09.",
     "Matrix: failure mode x every brief 1b study and testnet layer = HANDLED (file:line) / NOT HANDLED / N/A / UNKNOWN; matrix.csv plus row and column summaries.",
     "Demonstrate the 5 worst NOT HANDLED cells with small DEV scripts that print a number.",
-    "BRIDGE_PLAYBOOK.md from the bridge logs of every shipped T report (list the missing): patterns, failures and recoveries, 10 rules; DSA prompt changes proposed via desk.py --target CLAUDE."
+    "BRIDGE_PLAYBOOK.md from the bridge logs of every shipped T report (list the missing): patterns, failures and recoveries, 10 rules; DSA prompt changes proposed via desk.py --target CLAUDE.",
+    "Card the S1/S2 findings with tasks.py new; cap the matrix columns at the brief 1b studies and the testnet layers listed, not every study ever run."
   ],
   "tests": "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/test_failure_matrix.py::test_matrix_covers_every_study_and_layer (asserts matrix.csv has 30+ failure-mode rows, one column per brief 1b study and testnet layer, and every cell is HANDLED, NOT HANDLED, N/A or UNKNOWN; fails on pre-change code: scripts/T10/ does not exist yet)",
   "title": "DSA audit T10: 30+ backtest failure modes x every study, 5 demonstrations, and the DSA bridge playbook",
