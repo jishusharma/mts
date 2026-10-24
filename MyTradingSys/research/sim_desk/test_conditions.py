@@ -163,3 +163,16 @@ def test_apply_keeps_arrays_and_refs_aligned():
     assert len(out['net']) == len(out['refs']) == 200 and set(out['side'].tolist()) == {-1}
     assert out['refs'] == [r for r in range(400) if r % 2 == 1]
     assert len(out['all_days']) == 100
+
+
+def test_run_time_is_reported_and_cached_run_is_fast(tmp_path):
+    """Step (c): every Run reports run_seconds; a cached Run is far under the 10 s budget."""
+    trials = tmp_path / 'TRIALS.md'
+    trials.write_text('', encoding='utf-8')
+    kw = dict(trials_path=trials, cache_dir=tmp_path / 'c')
+    SideStudy.calls = 0
+    a = desk.run_setting(SideStudy, {'x': 3}, **kw)
+    b = desk.run_setting(SideStudy, {'x': 3}, **kw)
+    assert a['run_seconds'] >= 0 and not a['cached']
+    assert b['cached'] and b['run_seconds'] < 10 and SideStudy.calls == 1
+    assert 'run_seconds' in (HERE / 'page.html').read_text(encoding='utf-8')
