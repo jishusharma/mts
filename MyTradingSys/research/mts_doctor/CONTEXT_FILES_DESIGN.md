@@ -4,7 +4,7 @@ Operator goal (2026-10-25): every session starts from a file that builds the rig
 Status: DESIGN. Nothing built except this file, one example coordinator file and the baseline measuring script (`context_files/`). The operator approves before any card runs.
 
 ## 1. One line
-The handover file is never written by the model: for a worker it is the card (`tasks.py brief`), for a coordinator it is `handover/SUPERVISOR_<L>.md` in a fixed 7-section form; a hook on `sync.py ship` reads the session's own transcript and folds what the file missed (files read before the first edit that the file never named) into that file, so the next session in the run inherits it; `tasks.py next` refuses cards whose work is already on trunk; one script measures cold start, misses, stale facts and cache rewrites and is the pass/fail gate.
+The handover file is never written by the model: for a worker it is the card (`tasks.py brief`), for a coordinator it is `handover/SUPERVISOR_<L>.md` in a fixed 7-section form; a hook on `sync.py ship` reads the session's own transcript and folds what the file missed (files read before the first edit that the file never named) into that file, so the next session in the run inherits it; `tasks.py next` refuses cards whose work is already on trunk; one script measures cold start, misses, stale facts and cache rewrites and is the pass/fail gate. The operator talks to one session, the Lead (section 10), whose file is vision and board state, never code; it rotates by context size or closed discussions, never by the clock.
 
 ## 2. What the evidence says (measured this session unless dated)
 | Fact | Number | Source |
@@ -119,6 +119,42 @@ Adds no gate the model must pass: the hook writes, the measure reads.
 | C5 `next-session-retire` (after C2-C4 ran one pilot) | NEXT_SESSION.md -> 5-line pointer, `relay.py lint/handoff` + `handoff_lint.py` removed, CLAUDE.md step 3-4 words, `make_status.py` drops Hand-over freshness, SUPER_SESSION End/D5 lines | 8 / agent | `git grep -l NEXT_SESSION` lists only the pointer and history; STATUS.md has no Hand-over freshness block; smoke gate green |
 
 Order: C1 first (the baseline is taken before anything changes), C3 same day (it alone stops the redo of shipped work), then C2 and C4 (one editor each: tasks.py vs supervisor.py), C5 after pilot 3 passes the gate. Pilot 3 (REPORT_pilots: Haiku on mechanical cards, after 12+ ready cards and the registration-gate fix) runs with C1-C4 on trunk and reports the section 5 table.
+
+## 10. The Lead (operator addition via MTS_Doctor, 2026-10-25): one session to talk to
+The operator wants one session: it discusses and designs a task with him (pros and cons), sends it to refinement at once, then into a super session. Roles stay minimal: **Lead, workers, one independent Checker**. Thinker, Admin_Guy, Pipeliner and the Doctor's judgement duties fold into the Lead; Builder, Session_Planner, Eagle_Eyes and the wave coordinator (today's Supervisor) are worker kinds the Lead starts; Lab_Guy plus the diff-only review Agent become the Checker (never the producer, reads only the diff or the result).
+
+### 10a. The Lead's context file: `handover/LEAD.md` (Thinker kind: vision and state, never code)
+Fixed form, 80 lines / 8 KB, rewrite only, same fold and `--verify` as 3b (`supervisor.py handover --kind lead`):
+```
+# Lead handover | written <utc> by <session> | discussions since last rotation: n | verify: supervisor.py handover --verify --kind lead
+## Vision          3 lines + pointer (PROJECT_VISION.md): what MTS is for, what decides what trades (fee-net OOS), what is banned (mainnet, schedulers)
+## Priorities now  <= 5, ranked, each with the number it moves and the card or wave that carries it
+## Decisions       last 10, `d-<slug> | date | one line` (full text in OPERATOR_DECISIONS.md); decisions older than 10 live only there
+## Open questions  <= 6, each with its default and who answers (operator / a run / a Checker)
+## Board           machine lines: ready/raw/active cards (`tasks.py list` counts), waves running (`list_sessions linked`), last ship sha, CI, budget per login
+## Ruled out       <= 8: options weighed and closed, with the reason (so the next Lead does not reopen them with the operator)
+## Discussions     since last rotation: title -> card ids -> refine status (one line each; the discussion text itself is NOT here)
+## Missed last time   machine-written by the fold
+```
+The Lead never reads code: a question about code goes to a one-use read Agent (Sonnet or Haiku) whose brief ends "reply in 5 lines". The REFINE run shows the cost: a coordinator that worked this way used 1% weekly across 28 cards with no compaction. The measure adds `code_reads` per Lead session (Read/cat/sed of .py/.java/.ps1 paths in the Lead's own transcript): target 0.
+
+### 10b. A discussion ends in output, then leaves the context
+Every design discussion closes the same way, in one turn, before the next topic: (1) decision record appended to OPERATOR_DECISIONS.md (the operator's exact words, or `DECISION (OURS)` with the default); (2) one card per outcome (`tasks.py new` + `fill --note "OPERATOR QUOTE: ..."`), raw; (3) the refine request now: a Session_Planner Agent on the new cards, 5-line reply; (4) when cards come back ready and the operator said go, the Lead starts the wave (a Supervisor worker session, `start_session user_asked`, allowed because the operator is present); (5) one line in `## Discussions`. The discussion text is dropped from the Lead's context at rotation (10c), never earlier: a model cannot forget selectively, so "drop" means the next Lead starts from LEAD.md, which holds the outcome and not the talk.
+
+### 10c. Lead -> fresh Lead: kind 2 handover, triggered by a measure, never by the clock
+Rotate when either holds, checked by the Lead with `get_usage` after each closed discussion: context >= 150K tokens, or 3 discussions closed since the last rotation (OURS; pilot 2's /compact brought 232K -> 93K, so 150K keeps the rebuild under one cold start). Never mid-discussion: finish 10b first. Then: rewrite LEAD.md, docs-only ship, `clear_session` on itself (possible here: the Lead holds no live ship or worker, those run in worker sessions; pilot 2's refusals came from live work in the same session), the role_loader SessionStart hook re-injects `roles/lead.md`, the first turn reads LEAD.md from trunk. If the clear is refused, the Lead prints the one-line start prompt `You are Lead.` and stops. Measure for the gate: Lead sessions' context p90 <= 160K, rewrites per Lead session <= 1, `code_reads` 0, every closed discussion has its card ids in LEAD.md.
+
+### 10d. Where I disagree, and why
+1. The Lead must not also be the live wave coordinator. Pilot evidence: the one session that both talked with the operator and woke on worker events (the Doctor) carried 84% of all context and 454 cache rewrites, because event wakes after >1 h gaps re-send a 200K+ history at write price. So the wave runs in a Supervisor worker session the Lead starts; the Lead reads its 5-line reports on the operator's turns and never wakes on events. Same single session for the operator; the coordination cost moves to a short-lived worker.
+2. Clock-free rotation is right, but "3 discussions" alone can hide a 300K context from one long topic: the context threshold stays as the second trigger.
+3. Model: Opus when the operator names it (the Thinker rule), Sonnet otherwise; the Lead's file, not its model, is what makes it good from turn one.
+
+### 10e. Cards added
+| Card | Owns | est_turns / worker | Done when |
+|---|---|---|---|
+| C6 `lead-role-and-handover` | `roles/lead.md` (Thinker + Admin_Guy + Pipeliner + Doctor-judgement Jobs; old files become one-line pointers), ROSTER.json, `supervisor.py handover --kind lead` (8 sections, caps, `--verify`), fold target for a Lead tree, `context_gap.py measure` `code_reads` and discussions-per-rotation | 20 / session | `You are Lead.` loads the file with its banner; `handover --kind lead` writes the 8 sections from a fixture and refuses a 9th heading; `EXAMPLE_LEAD.md` passes the shape check; test red before |
+| C7 `checker-role` | `roles/checker.md` = Lab_Guy stamp duties + the diff-only review Agent brief; the super session's rule 3 points at it | 10 / agent | review Agent and Lab_Guy pass both start `You are Checker.`; `role_loader.py check` green |
+Example LEAD.md filled with today's real state: `context_files/EXAMPLE_LEAD.md`.
 
 ## 9. Defaults taken (no operator questions; change any by card note)
 - The fold runs at ship, not at Stop (a Stop-time write would dirty a just-shipped tree and trip stop_guard).
