@@ -156,6 +156,12 @@ Rotate when either holds, checked by the Lead with `get_usage` after each closed
 | C7 `checker-role` | `roles/checker.md` = Lab_Guy stamp duties + the diff-only review Agent brief; the super session's rule 3 points at it | 10 / agent | review Agent and Lab_Guy pass both start `You are Checker.`; `role_loader.py check` green |
 Example LEAD.md filled with today's real state: `context_files/EXAMPLE_LEAD.md`.
 
+### 10f. Mapping onto what exists, and what it removes
+- `handover/SUPERVISOR_<L>.md` (3b) stays the wave coordinator's file, one per login per wave; `handover/LEAD.md` is one file, not per login (one Lead at a time; a second Lead on another login reads the same file from trunk). Both are written by `supervisor.py handover` (`--kind wave|lead`), both get the fold and `--verify`. C4 builds the writer and the wave form; C6 adds the lead form on top of it (no second writer).
+- ROLES.md roster: `Lead` replaces the operator-started rows Thinker, Admin_Guy, Pipeliner and MTS_Doctor (their Jobs move into `roles/lead.md`; the files become one-line pointers until the next role deletion pass); `Checker` replaces Lab_Guy and the unnamed review Agent; Supervisor, Builder, Session_Planner, Eagle_Eyes stay as worker kinds started only by the Lead (`start: embedded`). Roster 10 -> 6 roles; `role_loader.py render` regenerates the tables.
+- Removes: the fallback role pick for a prompt with no role line (one operator session means one role to load: the Lead); "Thinker inside a super session" (THINKER BLOCK) and the Thinker hand-over note `research/thinker/OPEN_<topic>.md` (LEAD.md Discussions and Open questions carry it); Admin_Guy's separate decision intake (the Lead writes OPERATOR_DECISIONS.md itself); the Doctor as a standing session (its measurement runs as `context_gap.py measure` + the health scripts, started by the Lead as a read Agent).
+- Card change: C4 stays as written (wave form); C6 depends on C4 and C2; C7 is independent. No change to C1, C3, C5.
+
 ## 9. Defaults taken (no operator questions; change any by card note)
 - The fold runs at ship, not at Stop (a Stop-time write would dirty a just-shipped tree and trip stop_guard).
 - Reads before the first edit define a "miss"; reads after it are the work itself.
