@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py <file>"
+  ],
+  "created": "2026-10-24T14:21:32Z",
+  "depends_on": [],
+  "done_when": "review report file exists with a verdict per Gemini output file",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "GPT reviews Gemini audits (*_audit.md) and Fabio notes (extracts/gemini_out/fabio/*_note.md): are the audit misses real per the transcript; are live-trade Y/N calls supported. Report: MyTradingSys/research/layer_lab/reports/2026-10-24_yt-gpt-review-audits-fabio.md",
+  "id": "yt-gpt-review-audits-fabio",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-24T14:22:01Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "extracts/gemini_out; raw_transcripts_canonical; MyTradingSys/research/layer_lab/reports"
+  ],
+  "scope_out": [
+    "scripts; live tree; edits to Gemini outputs"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/ROUTING.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read the listed Gemini files and their transcripts (they ship before this card runs)",
+    "Run verify_extract_quotes.py on each; check 5 random claims per file against the transcript",
+    "Write the review report with APPROVE/FIX per file and quoted evidence",
+    "Commit with a Result: line (n approved, n fix)"
+  ],
+  "tests": "report lists a verify result for every file reviewed (report absent before the card)",
+  "title": "Cross-vendor review: Gemini extract audits + Fabio notes (extracts/gemini_out)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
