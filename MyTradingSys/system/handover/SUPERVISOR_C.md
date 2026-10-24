@@ -21,7 +21,9 @@ Workers running (Sonnet Agents, own worktrees, started ~18:53Z; they commit only
 - a948ff46879f9b963 cbp-add-channel-latest-n-to-fetch-captio (spare 1, started ~19:00Z)
 - a8783e71ee944c683 tasks-py-check-rewrites-other-cards-mark: DONE, 6 turns, commit 753075e76, worktree agent-a8783e71ee944c683; SHIP IN PROGRESS ~19:05Z (log $TEMP/ship_tasks.log, bg task b8zk6p3r9); verify git cherry empty
 Worktrees: in each worker's final report (find via `sync.py where --all`).
-Central-file holders: none. Ship queue: 1 tasks.py (in progress, bg b8zk6p3r9, wt agent-a8783e71ee944c683) -> 2 cbp 18bd7fec4 (wt agent-a948ff46879f9b963; also CBP repo d20ae76 in F:/CryptoScrapper, ~24 ignored inbox files left on disk) -> 3 flow-states 80777df8a (wt agent-ae4cea31ac539a0b2; card work was already on branch 80c9df1a7, verdict INCONCLUSIVE; needs registration of session_flow_context_2026-10-18/test_build_rows.py, check if already in run_extra_tests) -> DSA audits T05/T06/T07/T09 as they finish. Spares both done (cbp, flow); no spare cards left except from dispatch. Awaiting verification: none.
+Central-file holders: none. Ship queue: empty. SHIPPED+verified (cherry 0): t02 card-done, tasks.py fix (gate 2m33s), cbp (43s), flow-states (56s). Flow-states test_build_rows.py NOT registered in run_extra_tests (batch registration ship at end if wanted; was marked 'needed' by worker).
+Awaiting: DSA T05 (aeff..), T06 (a987..), T07 (a108..), T09 (a401..) still running (4 workers). Clock check 18:55Z (sys clock).
+Spares exhausted: remaining dispatch candidates are NB-machine/lab cards or stale; consider none.
 Decisions (OURS): ships serialised by me from worker worktrees; test registration batched into one ship at end.
 Usage 18:48Z: 5h 13% (reset 21:10Z), week 34%.
 Next action: wait for worker completions (notifications), then ship one at a time; Doctor report 20:00Z.
