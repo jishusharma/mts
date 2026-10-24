@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-24T22:46:38Z",
   "commands": [],
   "created": "2026-10-24T15:21:20Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "registering-a-test-in-scripts-dev-run-ex",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "EXTRA loaded from scripts/dev/extra_tests.tsv; len(all_tests()) 142 -> 142",
+      "ref": "49bb2738f",
+      "utc": "2026-10-24T22:46:38Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,7 +37,12 @@
   "refined_by": "",
   "refreshed": "2026-10-24T21:34:26Z",
   "refs": [],
-  "result": "",
+  "result": "EXTRA loaded from scripts/dev/extra_tests.tsv; len(all_tests()) 142 -> 142",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/run_extra_tests.py",
     "scripts/dev/extra_tests.tsv",
@@ -46,7 +58,7 @@
   "sources": [
     "scripts/dev/gate_select.py:35 (FULL_RE names run_extra_tests); scripts/dev/gate_select.py:60-62 (_is_config: scripts/dev/*.tsv is smoke); scripts/dev/run_extra_tests.py:19 (EXTRA)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Create scripts/dev/extra_tests.tsv: one repo-relative path per line, same order as the EXTRA list now in run_extra_tests.py (copy, do not retype)",
     "run_extra_tests.py: EXTRA = load of extra_tests.tsv (skip blank and # lines; missing file raises); name EXTRA and all_tests() unchanged so run_all_tests.py and test_gate_discovery_b150.py need no edit",
@@ -54,6 +66,7 @@
     "test_run_extra_tests.py: add the fail-first test (EXTRA equals tsv lines, no duplicates); preship.py:95 hint says add the path to scripts/dev/extra_tests.tsv",
     "Run python scripts/dev/test_gate_select.py, test_run_extra_tests.py, MyTradingSys/tests/test_gate_discovery_b150.py; then python scripts/dev/run_all_tests.py --quick"
   ],
+  "taken": "2026-10-24T22:46:38Z",
   "tests": "New test in scripts/dev/test_run_extra_tests.py: rx.EXTRA equals the non-blank non-# lines of scripts/dev/extra_tests.tsv, no duplicates. Fails on the old tree (the tsv does not exist, EXTRA is a code literal). Run it before the edit to see red.",
   "title": "registering a test in scripts/dev/run_extra_tests.py forces the full ship gate (570-690 s shards); 3 parallel full gates pinned JIS-NB (live host) at 100% CPU 2026-10-24 15:23Z",
   "weight": "CRITICAL",
