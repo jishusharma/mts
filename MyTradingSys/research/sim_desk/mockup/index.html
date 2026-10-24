@@ -64,13 +64,23 @@ nav button.on{background:var(--bg);color:var(--ink);font-weight:700}
   <div class="card test n"><span class="chip n">NOT ENOUGH DATA</span> <b>RSI 4-hour</b><div class="sub">Buy 40 / sell 60 crossings</div><div class="hero"><span class="big">≈0</span><span class="mut">R · 20 trades</span></div><div class="sub">Too few trades to tell luck from edge</div></div>
   <div class="card test n"><span class="chip n">NOT ENOUGH DATA</span> <b>RSI 1-hour</b><div class="sub">Same rule, faster chart</div><div class="hero"><span class="big">≈0</span><span class="mut">R · 75 trades</span></div><div class="sub">Still inside the noise</div></div>
   <div class="card test n"><span class="chip n">NOT ENOUGH DATA</span> <b>RSI daily</b><div class="sub">Same rule, slow chart</div><div class="hero"><span class="big">2</span><span class="mut">filled trades, both lost</span></div><div class="sub">5 setups in 27 months</div></div>
+  <div class="card test f"><span class="chip f">FAILED</span> <span class="chip u">THOUGHT EXPERIMENT</span> <b>What if fees were zero?</b><div class="sub">Same levels ladder, no fees. Asks: is the idea or the cost the problem?</div><div class="hero"><span class="big pos">+0.072</span><span class="mut">R per trade, all ideas</span></div><div class="sub">Even free, the range still touches zero (low end −0.007): not an edge. SOURCED: REVIEW_FABLE.md</div></div>
   <div class="card test u"><span class="chip u">NO RESULT YET</span> <b>WaveTrend</b><div class="sub">Study exists; its result is not in the catalogue yet</div></div>
  </div>
- <div class="note">Cards other than Levels show only what ROADMAP.md states (trade counts, "about 0"); sim-v2 fills real numbers from <code>results/&lt;id&gt;.json</code>.</div>
+ <div class="note">Order: failed first, then not enough data, then the rest. Backtests and thought experiments share one card shape.</div><div class="note">Cards other than Levels show only what ROADMAP.md states (trade counts, "about 0"); sim-v2 fills real numbers from <code>results/&lt;id&gt;.json</code>.</div>
 </section>
 
 <section class="pane" id="p-over">
  <div class="verdict" id="vd"><div><b>FAILED on DEV</b><div id="why"></div></div></div>
+ <div class="card"><h2>How it was set up (plain words)</h2>
+  <table><tr><th>Setting</th><th>Value</th><th>Label</th></tr>
+  <tr><td>Enter when</td><td>price touches a known level (day high/low, 4h turn point, round number)</td><td>OURS</td></tr>
+  <tr><td>Add-in</td><td>one entry at the next level beyond</td><td>OURS (tuned on DEV)</td></tr>
+  <tr><td>Stop</td><td>just past today's extreme</td><td>OURS</td></tr>
+  <tr><td>Target</td><td>2 × the planned loss</td><td>OURS</td></tr>
+  <tr><td>Fees</td><td>real maker/taker, 0.111 R per trade</td><td>SOURCED (exchange fee table)</td></tr></table>
+  <div class="row"><button class="btn alt" disabled title="Needs the local desk on JIS-NB">▶ Run with new settings (local desk only)</button></div>
+  <div class="note">The hosted page only looks up stored results. The local desk runs new settings, logs each one to TRIALS.md, and keeps VALIDATION and HOLDOUT locked. Labels: I could not check the trader's words for each setting, so all are OURS until a quote is attached.</div></div>
  <div class="card"><h2>If you had put 1,000 USD in (risk 1% of money per trade, after fees)</h2>
   <div class="hero"><span class="big" id="usd"></span><span class="mut" id="usdp"></span></div>
   <div class="kpis" id="kpis"></div>
@@ -113,6 +123,11 @@ nav button.on{background:var(--bg);color:var(--ink);font-weight:700}
  <div class="card"><h2>Variants — slide the stop type (precomputed, all ideas)</h2>
   <div class="row"><input type="range" id="kv" min="0" max="4" value="4"><b id="kvt"></b></div>
   <div class="note">Each position is one stored run. No model runs in the page. All five are below zero.</div></div>
+ <div class="card"><h2>Live vs test: do they take the same entries?</h2>
+  <table><tr><th>Layer</th><th>Same entries</th><th>Same exits</th></tr>
+  <tr><td>Levels ladder</td><td class="mut">not measured yet</td><td class="mut">not measured yet</td></tr>
+  <tr><td>RSI</td><td class="mut">not measured yet</td><td class="mut">not measured yet</td></tr></table>
+  <div class="note">Shape when measured: "yes, 41 of 43 entries match; 2 differ because live missed the touch". Needs the live mirror to export trades in the result schema; no live numbers are invented here.</div></div>
  <div class="card"><h2>Which level types lost (filled trades)</h2><table id="fam"><tr><th>Level</th><th>n</th><th>Avg R</th></tr></table>
   <div class="note">Families with n below 20 are shown grey: too few to trust, and picking the best one would be a fresh overfit.</div></div>
 </section>
@@ -144,7 +159,7 @@ eq(N);$("sl").oninput=e=>eq(+e.target.value);
 let tm=null;$("play").onclick=()=>{if(tm){clearInterval(tm);tm=null;$("play").textContent="▶ Play";return}
  if(+$("sl").value>=N)$("sl").value=0;$("play").textContent="⏸ Pause";tm=setInterval(()=>{let v=+$("sl").value+2;if(v>=N){v=N;clearInterval(tm);tm=null;$("play").textContent="▶ Play"}$("sl").value=v;eq(v)},40)};
 // replay
-let ri=0;function rp(){const t=T[ri],r=t[3];$("rp").innerHTML="<div class='sub'>20"+t[0]+" · "+(t[1]>0?"long":"short")+" · level: "+t[2]+"</div><div class='hero'><span class='big "+(r>0?"pos":"neg")+"'>"+f2(r)+" R</span><span>"+(r>0?"hit target":"stopped out")+"</span></div><div class='sub'>Money after this trade: $"+usd[ri+1].toFixed(0)+"</div>";$("rpc").textContent=(ri+1)+" / "+N}
+let ri=0;function rp(){const t=T[ri],r=t[3];$("rp").innerHTML="<div class='sub'>20"+t[0]+" · "+(t[1]>0?"long":"short")+" · level: "+t[2]+"</div><div class='hero'><span class='big "+(r>0?"pos":"neg")+"'>"+f2(r)+" R</span><span>"+(r>0?"hit target":"stopped out")+"</span></div><ol class='sub' style='margin:6px 0 0;padding-left:18px'><li>Price touched "+t[2]+"</li><li>Entry filter passed, order filled</li><li>"+(r>0?"Target (2R) reached first":"Stop reached first")+"</li></ol><div class='sub'>Money after this trade: $"+usd[ri+1].toFixed(0)+"</div>";$("rpc").textContent=(ri+1)+" / "+N}
 $("prv").onclick=()=>{ri=(ri+N-1)%N;rp()};$("nxt").onclick=()=>{ri=(ri+1)%N;rp()};rp();
 (function(){const s=T.slice(-40);$("strip").innerHTML=s.map((t,i)=>{const h=Math.abs(t[3])/2*30;return"<rect x='"+(i*14.9+4)+"' y='"+(t[3]>0?35-h:35)+"' width='11' height='"+h+"' rx='2' fill='"+(t[3]>0?"var(--good)":"var(--bad)")+"'/>"}).join("")+"<line x1='0' x2='600' y1='35' y2='35' stroke='var(--line)'/>"})();
 // quiz

@@ -67,3 +67,18 @@ Candle chart library; order entry or paper trading; parameter sliders that *run*
 
 ## DECISION (OURS) defaults taken
 1% risk sizing for dollars; filled trades are the headline count; PASSED only after the one validation run; mockup uses ROADMAP counts for the RSI cards (no decimals invented) and marks WaveTrend "no result yet".
+
+## 6. Operator inputs, one line each (Doctor list 2026-10-25)
+| # | Input | Where covered |
+|---|---|---|
+| 1 | See all this in the simulator, built first | Whole page; build list item 1-2 |
+| 2 | Everything tested now is on it | Tests tab catalogue + backfill (item 2); mockup shows 5 cards |
+| 3 | Backtests and thought experiments, past and future | Same card shape with a THOUGHT EXPERIMENT chip; mockup card "What if fees were zero?" (real: +0.072 R gross) |
+| 4 | Light, powerful, fun, dashboards, app look, ROI | Sections 2 and 4; ROI hero first |
+| 5 | Research what people do | Section 1 |
+| 6 | "5 layers match exactly" in plain words | Compare tab "same entries / same exits" per layer; mockup shows "not measured yet" (no live export exists, nothing invented); build item 7 |
+| 7 | One screen, click a test, settings in plain words | Tests cards -> Result with "How it was set up" table |
+| 8 | Visual replay: entry, stop, target, exit, what was considered | Replay tab with 3-step "considered" list; candle chart with stop/target lines only on the local desk (charts.py) because the public repo holds percent distances, not prices; build item 4 |
+| 9 | Why it failed, plainly | Verdict banner sentence + fee bars + level-family table |
+| 10 | Click and Run later, local, logged, sealed windows | Disabled "Run" button in the mockup; real only in the local JIS-NB desk; hosted page never runs; ledger row per run; VALIDATION/HOLDOUT locked. Left for after items 1-6 |
+Standing rules: every setting carries a SOURCED/OURS label (all OURS until a quote is attached; fees SOURCED); failed tests list first and red; fee-net only; percent distances only.
