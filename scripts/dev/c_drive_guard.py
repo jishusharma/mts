@@ -29,7 +29,7 @@ from pathlib import Path
 TEMP = Path(os.environ.get("MTS_GUARD_TEMP") or os.path.expandvars(r"%LOCALAPPDATA%\Temp"))
 LOG = Path(os.environ.get("MTS_GUARD_LOG") or os.path.expandvars(r"%LOCALAPPDATA%\MTS\logs\c_drive_guard.log"))
 PREFIXES = ("tmp", "mts_", "r2_", "rmd_", "kill_switch_cli_", "staged_tests_", "gate_timing_test_", "aibridge_selftest_",
-            "pytest-of-", "gate_budget_test_", "dsa_tpl_", "e2e_a2_", "desk-", "dsa-boot-", "cicd_ps_", "lab_query_", "soak6_")
+            "pytest-of-", "gate_budget_test_", "dsa_tpl_", "e2e_a2_", "dsa-boot-", "cicd_ps_", "lab_query_", "soak6_")
 KEEP_NAMES = ("mts_roles", "mts_host_health", "mts_gate_slots", "mts_relay")
 TEMP_AGE_H = 24
 SESSION_AGE_H = 72
@@ -48,11 +48,34 @@ def free_gb(drive="C:\\"):
 FILE_ATTRIBUTE_REPARSE_POINT = 0x400     # junctions and symlinks: never walked, never pruned
 
 
+def is_reparse(st):
+    return bool(getattr(st, "st_file_attributes", 0) & FILE_ATTRIBUTE_REPARSE_POINT)
+
+
+def scan(path):
+    """Entries of a directory, or [] when it cannot be listed. Never raises."""
+    try:
+        with os.scandir(path) as it:
+            return list(it)
+    except OSError:
+        return []
+
+
+def dir_not_reparse(path):
+    """True for a real directory: not a junction, not a symlink, not a file."""
+    try:
+        st = os.lstat(path)
+    except OSError:
+        return False
+    return os.path.isdir(path) and not is_reparse(st)
+
+
 def stale_size(path, cutoff):
     """(stale, bytes) for one entry. stale: nothing under it is newer than cutoff. One pass that stops at the first newer
-    entry. Fails closed: a reparse point, or anything that cannot be read, counts as not stale."""
+    entry. Fails closed: a reparse point, a git worktree or clone (a `.git` inside), or anything that cannot be read,
+    counts as not stale."""
     st = os.lstat(path)
-    if st.st_mtime >= cutoff or getattr(st, "st_file_attributes", 0) & FILE_ATTRIBUTE_REPARSE_POINT:
+    if st.st_mtime >= cutoff or is_reparse(st):
         return False, 0
     if not os.path.isdir(path) or os.path.islink(path):
         return True, st.st_size
@@ -63,7 +86,7 @@ def stale_size(path, cutoff):
             with os.scandir(todo.pop()) as it:
                 for e in it:
                     s = e.stat(follow_symlinks=False)
-                    if s.st_mtime >= cutoff or getattr(s, "st_file_attributes", 0) & FILE_ATTRIBUTE_REPARSE_POINT:
+                    if e.name == ".git" or s.st_mtime >= cutoff or is_reparse(s):
                         return False, 0
                     if e.is_dir(follow_symlinks=False):
                         todo.append(e.path)
@@ -80,7 +103,7 @@ def candidates(now=None):
     out = []
     if TEMP.is_dir():
         cutoff = now - TEMP_AGE_H * 3600
-        for e in os.scandir(TEMP):
+        for e in scan(TEMP):
             if e.name == "claude" or e.name.lower() in KEEP_NAMES or not e.name.startswith(PREFIXES):
                 continue
             try:
@@ -90,12 +113,12 @@ def candidates(now=None):
             if stale:
                 out.append((e.path, size))
     cl = TEMP / "claude"
-    if cl.is_dir():
+    if dir_not_reparse(cl):
         cutoff = now - SESSION_AGE_H * 3600
-        for proj in os.scandir(cl):
-            if not proj.is_dir():
+        for proj in scan(cl):
+            if not proj.is_dir(follow_symlinks=False) or is_reparse(proj.stat(follow_symlinks=False)):
                 continue
-            for sess in os.scandir(proj.path):
+            for sess in scan(proj.path):
                 try:
                     stale, size = stale_size(sess.path, cutoff)
                 except OSError:

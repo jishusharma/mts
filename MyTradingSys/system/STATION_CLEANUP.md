@@ -8,7 +8,7 @@ Seen by `python scripts/dev/mts_signal.py who --hours 72` on 2026-10-24. Answers
 
 | Station | Last seen | C: free (roll call) | MTS scheduled tasks / HKCU Run | Restart cleanup (section 4) |
 |---|---|---|---|---|
-| JIS-NB / C | 2026-10-24 (this checkout) | 12.8 GB on 2026-10-24 (guard dry run) | no MTS task (`Get-ScheduledTask`, 2026-10-24); no MTS Run value | installed after ship, see section 6 |
+| JIS-NB / C | 2026-10-24 (this checkout) | 12.8 GB on 2026-10-24 (guard dry run) | no MTS task (`Get-ScheduledTask`, 2026-10-24); no MTS Run value | not registered: waits for the operator's yes (section 4) |
 | JIS-NUC / B | 12 min before the roll call | NOT CAPTURED | NOT CAPTURED | NOT CAPTURED |
 | DESKTOP-F7IU69N / A | 75 min | NOT CAPTURED | NOT CAPTURED | NOT CAPTURED |
 | DESKTOP-F7IU69N / C | 31 h | NOT CAPTURED | NOT CAPTURED | NOT CAPTURED |
@@ -43,7 +43,6 @@ Prefix, who writes it (checked by grep 2026-10-24):
 | `aibridge_selftest_` | `aibridge/tests/agent_live_selftest.py:44` |
 | `dsa_tpl_` | `test_dsa.py:92` |
 | `e2e_a2_` | `research/role_flow_2026-10-23/e2e/e2e_a2.py:9` |
-| `desk-` | `desk.py:104` |
 | `dsa-boot-` | `dsa.py:371` |
 | `cicd_ps_` | `cicd_run.py:355` |
 | `lab_query_` | `test_lab_query.py:58` |
@@ -51,13 +50,15 @@ Prefix, who writes it (checked by grep 2026-10-24):
 | `r2_`, `rmd_`, `kill_switch_cli_`, `pytest-of-` | older writers, owner not re-checked 2026-10-24 |
 | `claude\<project>\<session>` | Claude session scratch and background-task output (72 h) |
 
+Never pruned, even when the name matches: any entry with a `.git` inside (`desk-*` from `desk.py:104` is a `git worktree` under `%TEMP%`; a crashed post leaves its commits there, so leftovers are for a person to check, not for the guard). Junctions and symlinks are never followed, including a junction under `%TEMP%\claude`.
+
 Never pruned (state other code reads): `mts_roles` (role injection records, `role_loader.py:320`), `mts_host_health` (`host_health.py:63`), `mts_gate_slots` (`sync.py:184`), `mts_relay` (`scripts/sched/dispatch_gate.py:55`).
 
 Never touched by any cleanup: the repo and its worktrees (except the job in section 2), `.secrets`, `.env`, F:, the live tree `.mts_live`, `runtime_data/`, anything younger than its age limit.
 
-## 4. Restart cleanup (decision 2026-10-24)
+## 4. Restart cleanup (PROPOSED 2026-10-24: registration needs the operator's yes)
 
-The operator asked for cleanup on every restart without a scheduler. Mechanism: a per-user Run value `MTSTempGuard` in `HKCU\Software\Microsoft\Windows\CurrentVersion\Run`. Windows runs it at logon, `conhost --headless` (no window), it prunes once and exits. It has no timer and no repeat, and it needs no admin rights. It is not a scheduled task. The same launch already runs the Antigravity daemon on JIS-NUC (DEVICES.md section 7).
+The operator asked for cleanup on every restart without a scheduler. Reviewers found that a logon launcher needs his explicit yes under SCHEDULING_POLICY.md, so nothing is registered until he says so. Mechanism: a per-user Run value `MTSTempGuard` in `HKCU\Software\Microsoft\Windows\CurrentVersion\Run`. Windows runs it at logon, `conhost --headless` (no window), it prunes once and exits. It has no timer and no repeat, and it needs no admin rights. It is not a scheduled task. The same launch already runs the Antigravity daemon on JIS-NUC (DEVICES.md section 7).
 
 Install once per station, from the primary checkout (a git worktree is refused, because tidy removes worktrees and the run would then point at nothing):
 
@@ -82,4 +83,5 @@ A signal is at most 200 characters (repo is public: no paths with account names,
 ## 6. Status log
 
 - 2026-10-24: inventory and this page. `c_drive_guard.py`: prefixes added (section 3), state dirs excluded, logon run added. Stations asked (roll call). JIS-NB/C: no MTS scheduled task; `wt_maint.py status` says the worktree job is NOT INSTALLED here, which contradicts DEVICES.md section 8b (fixed there).
+- 2026-10-24, later: reviewers found a junction under `%TEMP%\claude` that the shipped guard would follow (outside `%TEMP%`), `desk-*` git worktrees it would prune, and an unguarded directory scan. Fixed: junctions never followed, `.git` fails closed, `desk-` removed from the prefixes, scans never raise (tests: junction and worktree tests fail on the shipped version). The fix is the first commit after `df160f3fc`.
 - Open: the other stations' answers; `vm_bundles` size and whether it may move (operator); tests that leave their own `%TEMP%` dirs behind (follow-up: each test should remove its own scratch).

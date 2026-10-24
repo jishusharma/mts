@@ -58,11 +58,20 @@ class GuardTest(unittest.TestCase):
         self.assertEqual([p.name for p in (self.root / "claude" / "proj").iterdir()], ["sess_new"])
 
     def test_prunes_the_gate_and_test_prefixes_seen_in_temp(self):
-        for name in ("gate_budget_test_abc", "dsa_tpl_x1", "e2e_a2_q", "desk-y_51efmr", "dsa-boot-3"):
+        for name in ("gate_budget_test_abc", "dsa_tpl_x1", "e2e_a2_q", "dsa-boot-3"):
             make(self.root, name + "/f.txt", 30)
         n, _ = g.prune(apply=True)
-        self.assertEqual(n, 5)
+        self.assertEqual(n, 4)
         self.assertEqual(list(self.root.iterdir()), [])
+
+    def test_git_worktrees_are_never_pruned(self):
+        # desk.py makes its scratch checkout with `git worktree add` under %TEMP%\desk-*: a crashed post leaves unshipped commits
+        make(self.root, "desk-y_51efmr/wt/.git", 30)
+        make(self.root, "gate_budget_test_wt/tree/.git", 30)
+        n, _ = g.prune(apply=True)
+        self.assertEqual(n, 0)
+        self.assertTrue((self.root / "desk-y_51efmr").exists())
+        self.assertTrue((self.root / "gate_budget_test_wt").exists())
 
     def test_state_dirs_other_code_reads_are_never_pruned(self):
         for name in ("mts_roles", "mts_host_health", "mts_gate_slots", "mts_relay"):
@@ -130,6 +139,23 @@ class GuardTest(unittest.TestCase):
         finally:
             if link.exists():
                 os.rmdir(link)     # removes the junction only
+            target.cleanup()
+
+    @unittest.skipUnless(os.name == "nt", "junctions are Windows reparse points")
+    def test_a_junction_under_claude_is_never_followed(self):
+        # a junction in %TEMP%\claude\<proj> pointing at a folder outside %TEMP% must not lead the guard into it
+        target = tempfile.TemporaryDirectory()
+        proj_link = self.root / "claude" / "projjunction"
+        try:
+            keep = make(Path(target.name), "sess_old/tasks/a.output", 100)
+            proj_link.parent.mkdir(parents=True)
+            subprocess.run(["cmd", "/c", "mklink", "/J", str(proj_link), target.name], check=True, capture_output=True)
+            n, _ = g.prune(apply=True)
+            self.assertEqual(n, 0)
+            self.assertTrue(keep.exists())
+        finally:
+            if proj_link.exists():
+                os.rmdir(proj_link)     # removes the junction only
             target.cleanup()
 
     def test_install_refuses_a_git_worktree(self):
