@@ -15,7 +15,7 @@
   "from_inbox": "",
   "goal": "Fix the four defects that keep Argon (origin/hold/argon-blind-read-7-frames) off trunk, then re-land it as a new commit. Defects: (1) headline numbers stated more strongly than the data supports; (2) an invented-field count that does not match the actual fields; (3) a stale TRIALS row; (4) an unverified reference base.",
   "id": "argon-fix-defects-and-re-land",
-  "lane": "DSA-NUC",
+  "lane": "SONNET",
   "latest": [],
   "layers": [],
   "live_path": false,
