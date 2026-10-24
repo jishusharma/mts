@@ -6,7 +6,7 @@
   "depends_on": [
     "role-loader-mode-command"
   ],
-  "done_when": "Net test count flat or lower (5 deleted, 5 added vs 99); role/doc test files stay about 15 s, new tests in-process only; nothing new in run_extra_tests.py; role_loader.py check and lint exit 0; 3 pilot-proven tests in s3 (wrapped brief, no-fallback brief, GATE_SLOTS) green and untouched.",
+  "done_when": "Net test count flat or lower vs 99; role/doc test files stay about 15 s (in-process tests only); nothing new in run_extra_tests.py; role_loader.py render leaves ROLES.md and START_HERE.txt current and check and lint exit 0; pilot tests in solution s3 (wrapped brief, no-fallback brief, GATE_SLOTS) green and untouched.",
   "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
@@ -17,21 +17,21 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "OPERATOR QUOTE: 'whatever we have established as working good in the last pilot to run, those functionalities must not break ... tests so shipping time and test running time do not bloat'. Spec research/mts_doctor/LEAD_ROLE_SOLUTION.md s2/s3; one editor per file: runs after its depends_on, never parallel with role_loader.py cards.",
+  "note": "OPERATOR QUOTE: 'whatever we have established as working good in the last pilot to run, those functionalities must not break ... tests so shipping time and test running time do not bloat'. Spec research/mts_doctor/LEAD_ROLE_SOLUTION.md s2/s3; (Sonnet Agent reviewed vs solution.)\nREVIEWED:2026-10-25 ACCEPT\n Runs after depends_on, never parallel with role_loader.py cards.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
   "scope_in": [
-    "MyTradingSys/system/roles/lead.md + roles/lead/*.md (new)",
+    "MyTradingSys/system/roles/lead.md + roles/lead/{think,admin,pipeline,doctor}.md (new)",
     "roles/thinker.md, admin_guy.md, pipeliner.md, mts_doctor.md (delete)",
-    "roles/ROSTER.json, roles/eagle_eyes.md (v5)",
+    "roles/ROSTER.json, roles/eagle_eyes.md:45 (v5)",
     "scripts/dev/role_loader.py:57-58, role_hook_launcher.py:26-27, mts_run.py:44",
-    "tests: test_role_budget.py, test_role_roster.py, test_role_loader.py"
+    "MyTradingSys/tests: test_role_budget.py, test_role_roster.py:63-65,208-211, test_role_loader.py:313,339,344,355"
   ],
   "scope_out": [
-    "tasks.py:1384-1390, supervisor.py:784,866,880,1086, traffic.py, lease.py, leases/pipeliner.json, .claude/settings.json (left on purpose, aliases absorb)",
+    "tasks.py:1384-1390, supervisor.py:784,866,880,1086, traffic.py:519,564,638, test_traffic.py, lease.py, leases/pipeliner.json, traffic_inventory.json:27, .claude/settings.json (left on purpose, aliases absorb)",
     "docs and pages (card lead-docs-and-pages)",
     "run_extra_tests.py"
   ],
@@ -40,14 +40,15 @@
     "research/mts_doctor/LEAD_ROLE_SOLUTION.md s2-s4 (section 4 card table)",
     "research/mts_doctor/LEAD_ROLE_IMPACT_MAP.md"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
-    "Write the tests below first and see them fail; then add lead.md core + 4 mode files (bodies moved, Pin/THINKER BLOCK/OPEN-note lines dropped, doctor rule reworded per s1); role_loader.py retoken lead.md; delete the 4 old files.",
-    "ROSTER.json: one Lead entry, aliases and keywords = union of the 4 old; NO_ROSTER_NAMES = 7 names; SINGLETON_ROLES stays (Pipeliner,); launcher KNOWN append Lead; mts_run ROLE_FILES Lead/MTS_Doctor/Pipeliner.",
-    "eagle_eyes.md:45 -> roles/lead/think.md, 'needs Opus Lead', v5, retoken. Budgets: BUDGET drop 4 add lead.md 4000; MODE_BUDGET think 7500 pipeline 8000 admin 5200 doctor 1800.",
-    "role_loader.py render, then check and lint exit 0. Delete 4 obsolete tests and replace per tests field. One commit."
+    "Write the tests first, see them fail; add lead.md core + 4 mode files (bodies moved; Pin/THINKER BLOCK/OPEN-note lines dropped; doctor rule reworded per solution s1); role_loader.py retoken lead.md; delete the 4 old files.",
+    "ROSTER.json: one Lead entry (start operator, 'You are Lead.', model 'Sonnet (Opus when named)', lane SONNET, limit 'one at a time; a second reads LEAD.md'); aliases = full list in LEAD_ROLE_SOLUTION s2 (thinker ... doctor); keywords = union of the 4 old.",
+    "NO_ROSTER_NAMES = 7 names; SINGLETON_ROLES stays (Pipeliner,); launcher KNOWN append Lead, keep old; mts_run.py:44 ROLE_FILES add \"Lead\":\"lead.md\", \"MTS_Doctor\":\"lead/doctor.md\", \"Pipeliner\":\"lead/pipeline.md\".",
+    "eagle_eyes.md:45 -> roles/lead/think.md, 'needs Opus Lead', v5, retoken. test_role_budget: BUDGET drop 4 add lead.md 4000, MODE_BUDGET think 7500 pipeline 8000 admin 5200 doctor 1800, eagle needles -> roles/lead/think.md, 'needs Opus Lead', '| version: v5 |'.",
+    "test_role_roster.py:63-65 ALIASES asserts -> rl.ALIASES['Lead']. role_loader.py render (ROLES.md, START_HERE.txt), then check and lint exit 0. One commit."
   ],
-  "tests": "Fail first on old code: test_lead_core_and_modes, test_pipeline_mode_marks_pipeliner_for_lease, test_old_role_lines_open_lead (13 old prompts -> Lead, You are Supervisor. -> Supervisor). Delete thinker_registered, admin_guy_file, admin_guy_sonnet, thinker_no_go_ahead, merged_roles. test_tie_asks_once unchanged.",
+  "tests": "Fail first on old code: test_lead_core_and_modes, test_pipeline_mode_marks_pipeliner_for_lease, test_old_role_lines_open_lead (replaces test_role_loader.py:313). Delete test_role_loader.py:355 thinker_registered, :339 admin_guy_file, :344 admin_guy_sonnet, test_role_roster.py:208-211 thinker_no_go_ahead. test_tie_asks_once unchanged.",
   "title": "Lead role core + 4 mode files, roster 10 to 7",
   "weight": "IMPORTANT",
   "worker": "session"

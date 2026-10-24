@@ -12,13 +12,23 @@
   "goal": "role_loader.py gets a `mode <name>` subcommand: prints roles/lead/<name>.md from trunk plus a MODE LOADED banner; mode pipeline marks Pipeliner for the lease; lint scans roles/lead/. No behaviour change for existing roles.",
   "id": "role-loader-mode-command",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "hooks: remove turn_meter, model_guard, offer_guard, prereq_guard, boot_probe and the role_",
+      "ref": "43d3bfc8f5e4",
+      "utc": "2026-10-23T21:54:06Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "OPERATOR QUOTE: 'whatever we have established as working good in the last pilot to run, those functionalities must not break ... tests so shipping time and test running time do not bloat'. Spec research/mts_doctor/LEAD_ROLE_SOLUTION.md s2/s3; one editor per file: runs after its depends_on, never parallel with role_loader.py cards.",
+  "note": "OPERATOR QUOTE: 'whatever we have established as working good in the last pilot to run, those functionalities must not break ... tests so shipping time and test running time do not bloat'. Spec research/mts_doctor/LEAD_ROLE_SOLUTION.md s2/s3; (Sonnet Agent reviewed vs solution.)\nREVIEWED:2026-10-25 ACCEPT\n Runs after depends_on, never parallel with role_loader.py cards.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-24T23:12:18Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -30,14 +40,15 @@
     "lease.py, sync.py, desk.py (read only)",
     "run_extra_tests.py (nothing new registered)"
   ],
+  "scope_sha": "43d3bfc8f5e4",
   "size": "M",
   "sources": [
     "research/mts_doctor/LEAD_ROLE_SOLUTION.md s2-s4 (section 4 card table)",
     "research/mts_doctor/LEAD_ROLE_IMPACT_MAP.md"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "Add `mode <name>`: git_show roles/lead/<name>.md, token from compute_token, print `MODE LOADED: <name> \u00b7 token x-y \u00b7 @sha8`; missing file prints `MODE NOT LOADED: <why>`, exit 1.",
+    "Add `mode <name>`: git_show roles/lead/<name>.md, token from compute_token, print `MODE LOADED: <name> · token x-y · @sha8`; missing file prints `MODE NOT LOADED: <why>`, exit 1.",
     "For `pipeline` only: mark_injected(CLAUDE_CODE_SESSION_ID, 'Pipeliner', explicit=False) so lease.current_role returns Pipeliner and explicit_injected stays [Lead].",
     "lint (role_loader.py ~799-929) also scans roles/lead/*.md for dead commands and missing files, no header check.",
     "Write both tests first, see them fail on old code, then implement; run the role/doc test files, time them."
