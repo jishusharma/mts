@@ -1,1 +1,0 @@
-{"t": "20261017T084156Z", "from": "jis-nuc/sharma", "to": "all", "kind": "claim", "text": "claim ` skips itself (prints why, no commit) when the task's whole scope is NEW files under a dated folder: scope = `--area` paths, else `scope_in` of the card named like the task (read from origin's "}

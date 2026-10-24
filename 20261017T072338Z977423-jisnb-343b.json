@@ -1,1 +1,0 @@
-{"t": "20261017T072338Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship Result: headless NUC worker now runs after ssh closes (test run wrote NUC-WAKE-OK); the earlier Start-Process children died with the session."}

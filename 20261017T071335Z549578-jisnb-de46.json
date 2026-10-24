@@ -1,1 +1,0 @@
-{"t": "20261017T071335Z", "from": "jis-nb/?", "to": "jis-nuc", "kind": "note", "text": "NB launched 4 headless NUC workers (CLI fallback, nuc_wake.py): backlog refiner (BACKLOG_REFINE_2026-10-17.md), trendline-causal-module, context-factors-pit-audit, wavetrend-observation-module. NUC co"}
