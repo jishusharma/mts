@@ -1,0 +1,189 @@
+{
+ "id": "t06_cost_fill",
+ "family": "Audit: costs and fills",
+ "title": "What would we really have paid and got?",
+ "what": [
+  {
+   "name": "Question",
+   "value_plain": "Are the fees, slippage, funding and fill rules used in the backtests realistic, and does fixing them flip any verdict?",
+   "label": "OURS"
+  },
+  {
+   "name": "Scan",
+   "value_plain": "Every fee, slippage and funding constant in backtest/ and research/: 201 hits in 70+ files.",
+   "label": "OURS"
+  },
+  {
+   "name": "Funding rerun",
+   "value_plain": "Five recent screens rerun with the real signed 8-hour funding instead of a flat 1 basis point (0.01 %).",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Fee reference",
+   "value_plain": "Deribit taker 0.05 %, maker 0 %; Binance taker 0.05 %, maker 0.02 % (fees.py).",
+   "label": "SOURCED"
+  }
+ ],
+ "how": "Constants are found by regex and tabulated; funding is swapped for the real series and each screen is rerun (the flat run first reproduces the published numbers). Break-even cost = the round-trip fee at which an arm's average gross result is zero.",
+ "window": "DEV only, 2022-04-01 to 2024-06-30 (sealed VALIDATION and HOLDOUT windows were not read)",
+ "verdict": {
+  "label": "No arm earns even the cheapest realistic fee",
+  "tone": "bad"
+ },
+ "why": [
+  "The funding data was never found (wrong folder), so every screen charged a flat 1 bp to both longs and shorts instead of the real signed rate. Fixing it flips no verdict (largest move +0.018 percentage points).",
+  "57 of the 70 files that set a cost define their own constant instead of importing fees.py, so net numbers are not comparable across studies (the same gross trade nets -0.10 % to -0.20 % depending on the file).",
+  "Costs, not funding, decide every verdict: the best measured gross edge is +3.6 bp, all-taker Deribit costs 10 bp round trip."
+ ],
+ "kpis": [
+  {
+   "label": "cost constants found",
+   "value": "201"
+  },
+  {
+   "label": "files with own constant",
+   "value": "57 of 70",
+   "tone": "warn"
+  },
+  {
+   "label": "verdicts changed by real funding",
+   "value": "0"
+  },
+  {
+   "label": "arms above a 10 bp break-even",
+   "value": "0",
+   "tone": "bad"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "table",
+   "title": "Break-even cost per arm (bp round trip)",
+   "cols": [
+    "Study",
+    "Arm",
+    "Trades",
+    "Gross mean %",
+    "Charged RT %",
+    "Break-even bp"
+   ],
+   "rows": [
+    [
+     "gross_effect_screen",
+     "arm T d=1 h=60",
+     "40",
+     "-0.0561",
+     "0.14",
+     "-5.61"
+    ],
+    [
+     "gross_effect_screen",
+     "arm notF d=1 h=60",
+     "1399",
+     "-0.00548",
+     "0.14",
+     "-0.55"
+    ],
+    [
+     "gross_effect_screen",
+     "arm C d=1 h=60",
+     "1439",
+     "-0.00688",
+     "0.14",
+     "-0.69"
+    ],
+    [
+     "mal_bb_mid_engulf_2026-10-16",
+     "A1: engulf (a) close, SHORT, h=60",
+     "1179",
+     "0.01379",
+     "0.14",
+     "1.38"
+    ],
+    [
+     "mal_bb_mid_engulf_2026-10-16",
+     "A2: second break close, SHORT, h=60",
+     "807",
+     "0.01591",
+     "0.14",
+     "1.59"
+    ],
+    [
+     "opr_bb_mtf_center_2026-10-16",
+     "AU: touch bar closes above its mid, LONG, h=120",
+     "194",
+     "0.02046",
+     "0.14",
+     "2.05"
+    ],
+    [
+     "opr_bb_mtf_center_2026-10-16",
+     "AD: touch bar closes below its mid, SHORT, h=120",
+     "282",
+     "0.03591",
+     "0.14",
+     "3.59"
+    ],
+    [
+     "opr_preopen_tops_2026-10-16",
+     "H1: S1 quick, SHORT at the break close, h=60",
+     "105",
+     "-0.01014",
+     "0.14",
+     "-1.01"
+    ],
+    [
+     "opr_preopen_tops_2026-10-16",
+     "H2: S1 slow, LONG at the break close, h=60",
+     "104",
+     "0.03801",
+     "0.14",
+     "3.8"
+    ],
+    [
+     "opr_weekly_low_round_sweep_2026-10-16",
+     "RL: reclaim within 5 min, LONG at the reclaim close, h=60",
+     "685",
+     "0.03177",
+     "0.14",
+     "3.18"
+    ],
+    [
+     "opr_weekly_low_round_sweep_2026-10-16",
+     "AS: first three closes below, SHORT at the third close, h=60",
+     "525",
+     "-0.03649",
+     "0.14",
+     "-3.65"
+    ],
+    [
+     "layer_lab/candle_close_2026-10-14",
+     "best of 126 arms (net -4.68 bp at 14 bp => gross +9.32 bp)",
+     "n/a",
+     "0.0932",
+     "0.14",
+     "9.32"
+    ],
+    [
+     "mfe_exit_2026-10-13",
+     "turn_of_candle gross about +0.3 bp",
+     "n/a",
+     "0.003",
+     "0.14",
+     "0.3"
+    ]
+   ],
+   "caption": "Compare the break-even with 10 bp (all-taker Deribit) or 14 bp (with slippage): every arm is below."
+  },
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported"
+  }
+ ],
+ "source_files": [
+  "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md",
+  "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/breakeven.csv"
+ ],
+ "commit": "0d738711f"
+}
