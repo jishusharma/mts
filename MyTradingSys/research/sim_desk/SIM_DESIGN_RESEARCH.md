@@ -76,9 +76,16 @@ Candle chart library; order entry or paper trading; parameter sliders that *run*
 | 3 | Backtests and thought experiments, past and future | Same card shape with a THOUGHT EXPERIMENT chip; mockup card "What if fees were zero?" (real: +0.072 R gross) |
 | 4 | Light, powerful, fun, dashboards, app look, ROI | Sections 2 and 4; ROI hero first |
 | 5 | Research what people do | Section 1 |
-| 6 | "5 layers match exactly" in plain words | Compare tab "same entries / same exits" per layer; mockup shows "not measured yet" (no live export exists, nothing invented); build item 7 |
+| 6 | "5 layers match exactly" in plain words | Compare tab, real T09 numbers (30 DEV days, live code replayed vs test code): 5 layers exact (turn of candle 2,880/2,880, session momentum 30/30, cvd absorption 99/99, sr flip 130/130, failed msb 17/17); volume_fvg 0 of 24, side flipped; RSI trades events never tested (101 of 240 match); funding_cvd_fade tested on 15m but runs on 1h (0 of 34); escalation misses 68 of 96 (15m); exits differ for every layer (one live 1%/2%/8-bar bracket, 94% timer exits). Source: T09_live_parity.md sections 1, 4, 5 |
 | 7 | One screen, click a test, settings in plain words | Tests cards -> Result with "How it was set up" table |
 | 8 | Visual replay: entry, stop, target, exit, what was considered | Replay tab with 3-step "considered" list; candle chart with stop/target lines only on the local desk (charts.py) because the public repo holds percent distances, not prices; build item 4 |
 | 9 | Why it failed, plainly | Verdict banner sentence + fee bars + level-family table |
 | 10 | Click and Run later, local, logged, sealed windows | Disabled "Run" button in the mockup; real only in the local JIS-NB desk; hosted page never runs; ledger row per run; VALIDATION/HOLDOUT locked. Left for after items 1-6 |
 Standing rules: every setting carries a SOURCED/OURS label (all OURS until a quote is attached; fees SOURCED); failed tests list first and red; fee-net only; percent distances only.
+
+## 7. Doctor follow-up (a)-(d), 2026-10-25
+- (a) **Audit / thought-experiment card kind.** Result JSON `kind: "audit"|"thought_experiment"|"backtest"`; audit fields `{claim, method, finding, verdict, example:{text, figure?}}`; same card, chip AUDIT. Mockup: T09 live-parity audit, opens in place (details tag). Source: `research/dsa_backtest_audit_2026-10-16/T09_live_parity.md`.
+- (b) **Parity per layer, plain words, with real T09 numbers** (Compare tab): 5 layers match entry for entry (turn of candle 2,880/2,880; session momentum 30/30; cvd absorption 99/99; sr flip 130/130; failed msb 17/17); fib pullback 108/117; rsi events 101/240; escalation 28/102; funding cvd fade 0/34; volume fvg 0/24 side flipped. Exits differ for all (one live bracket). Counts are sums of T09 section 4 rows. Schema: `parity:[{layer, entries_match:[x,y], exits_same:bool, note}]`.
+- (c) **Parameters in plain words with SOURCED/OURS**: Result tab table (done in the previous ship). Schema `settings:[{name, plain_value, label, quote?}]`; all OURS until a quote is attached, fees SOURCED.
+- (d) **Replay reasons as text**: entry reason, stop, target, exit reason on every replayed trade (public page, no prices). Schema addition per trade: none needed for levels (derived from family + r); other studies add `why:{entry,stop,target,exit}` text.
+Scoreboard now counts T09 audit and the zero-fee experiment as FAILED (3 failed).
