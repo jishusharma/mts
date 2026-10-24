@@ -1,34 +1,52 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/test_verify_extract_quotes.py",
+    "python scripts/dev/verify_extract_quotes.py extracts/gemini_out/gWjHq5UMisY_gemini.md"
+  ],
   "created": "2026-10-24T17:17:52Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "python scripts/dev/test_verify_extract_quotes.py exits 0; verifier on extracts/gemini_out/gWjHq5UMisY_gemini.md reports exactly the 2 quotes at lines 70 and 75 as failing; every other extract keeps its verdict (diff listed in Result).",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "verify_extract_quotes.py must search only the spoken caption body: skip nested metadata headers (incl. Description) after the first '# ---', so description-only quotes FAIL.",
   "id": "verify-extract-quotes-strip-nested-metad",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Source: MyTradingSys/research/gpt_burn_2026-10-24/gx2-review-tom-extracts/report.md F5. raw_transcripts_canonical/gWjHq5UMisY_raw.txt has an outer # --- then a nested metadata header (description at line 12); verify_extract_quotes.py:43 strips only the first header, so 2 description-only quotes in extracts/gemini_out/gWjHq5UMisY_gemini.md:70,75 pass as speech. Fail-first test: those 2 quotes must FAIL. Owner: Builder.",
+  "note": "DECISION (OURS): strip every leading '# ' block, not just the Description line, so later header fields cannot leak either. Expected side effect: gWjHq5UMisY extract goes red until card apply-gpt-fix-tom-extracts replaces lines 70/75; extracts are not in CI, so no gate breaks.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
+  "scope_in": [
+    "scripts/dev/verify_extract_quotes.py",
+    "scripts/dev/test_verify_extract_quotes.py"
+  ],
+  "scope_out": [
+    "editing any extracts/gemini_out file (card apply-gpt-fix-tom-extracts does that)",
+    "raw_transcripts_canonical files",
+    "CBP evidence path logic"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/gpt_burn_2026-10-24/gx2-review-tom-extracts/report.md F5",
+    "scripts/dev/verify_extract_quotes.py:43"
+  ],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Read transcript_body() (verify_extract_quotes.py:40-45) and raw_transcripts_canonical/gWjHq5UMisY_raw.txt lines 1-14 (outer header, '# ---', nested '# Video ID..# Description' block, second '# ---').",
+    "Write the fail-first test in test_verify_extract_quotes.py: temp transcript = header, '# ---', nested '# ' header with '# Description: <quote A>', '# ---', body containing quote B; assert quote A fails and B passes. Run it on current code: it must fail.",
+    "Fix transcript_body(): after the first '# ---', while the next non-blank line starts with '# ', drop lines through the next '# ---' (or the end of the '# ' run); body text itself is never touched.",
+    "Run the verifier on every extracts/gemini_out/*_gemini.md and extracts/gemini_out/*/*.md before and after; list any file whose verdict changed in the Result."
+  ],
+  "tests": "New test in scripts/dev/test_verify_extract_quotes.py (description-only quote fails, body quote passes, file with a single header unchanged); must fail on the pre-change code.",
   "title": "verify_extract_quotes: strip nested metadata header so description-only quotes fail (gWjHq5UMisY F5)",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }

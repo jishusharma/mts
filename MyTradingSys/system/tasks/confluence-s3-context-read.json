@@ -1,0 +1,60 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/backtest/layers/krown/run_context_read.py"
+  ],
+  "created": "2026-10-24T22:50:02Z",
+  "depends_on": [
+    "confluence-s1-f6-direction"
+  ],
+  "done_when": "run/CONTEXT_READ.md exists with s3.1 and s3.2 verdicts and year split; ACCESS_LOG.md shows no bar >= 2024-07-01; git order shows PRE_REG_CONFLUENCE.md (80413ab75) before it.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Run PRE_REG_CONFLUENCE.md s3.1-3.2 exactly as frozen on DEV and DEV_EXT (no VALIDATION/HOLDOUT bar) and write run/CONTEXT_READ.md with the pass/fail of the context read.",
+  "hosts": [
+    "DESKTOP-F7IU69N",
+    "JIS-NB"
+  ],
+  "id": "confluence-s3-context-read",
+  "lane": "SONNET",
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Waits on confluence-s1-f6-direction (raw, needs Lab_Guy stamp; not touched here). DECISION (OURS): S2 already shipped (80413ab75) so no S2 card; old chain card confluence-s2-s6-chain dropped; S6 ship folded into each step. Host must have F:/MTS/data (DESKTOP-F7IU69N or JIS-NB).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/krown_audit_2026-10-22/run/CONTEXT_READ.md",
+    "MyTradingSys/research/krown_audit_2026-10-22/run/ACCESS_LOG.md",
+    "MyTradingSys/backtest/layers/krown/run_context_read.py"
+  ],
+  "scope_out": [
+    "editing PRE_REG_CONFLUENCE.md or FABLE_DESIGN.md",
+    "VALIDATION 2024-07-01.. or HOLDOUT bars",
+    "trial runs (S4)",
+    "live wiring"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/krown_audit_2026-10-22/PRE_REG_CONFLUENCE.md:50-70",
+    "MyTradingSys/research/krown_audit_2026-10-22/FABLE_CARD_CONFLUENCE.md s4 row S3"
+  ],
+  "state": "raw",
+  "steps": [
+    "Check PRE_REG_CONFLUENCE.md s0 preconditions: F6 expansion direction shipped (card confluence-s1-f6-direction done) and COUNTS.md regenerated; if not, stop and hand back.",
+    "Write run_context_read.py implementing s3.1 (D1 vs naive trend baseline, matched controls, week-clustered t, placebo) and s3.2 (BBWP to next-24h realised vol); note() aborts on any bar >= 2024-07-01; expected numbers for a toy fixture computed by hand from FORMULAS.md.",
+    "Run on a host with F:/MTS/data; append ACCESS_LOG.md; write CONTEXT_READ.md with every pre-registered test reported, failures included, PASS/FAIL per the s3.1 bar."
+  ],
+  "tests": "run_context_read.py test: a fixture with a planted future-bar read raises; hand-computed toy t-statistic matches; fails on code that reads a bar >= 2024-07-01.",
+  "title": "Confluence S3: standalone context read (D1 vs naive trend, BBWP to realised vol) per PRE_REG_CONFLUENCE",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

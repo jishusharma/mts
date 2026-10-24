@@ -5,7 +5,9 @@
     "mvn -q test -Dtest=StateCodeEmitterTest,MarketDataSnapshotTest"
   ],
   "created": "2026-10-20T18:53:14Z",
-  "depends_on": [],
+  "depends_on": [
+    "statecode-invalid-publish-race"
+  ],
   "done_when": "Each rejection remains INVALID and retries the current connection/day; scheduled recovery succeeds and first recovered CVD slope is null.",
   "est_turns": 20,
   "formula_id": "",
@@ -19,7 +21,7 @@
   ],
   "live_path": true,
   "mutation_check": "",
-  "note": "Raw follow-up from GPT review; requires owning-lane refinement and review, no deploy authorization.",
+  "note": "DECISION (OURS): test-only card, no behaviour change unless a test exposes a defect; then file a bug card, do not widen scope. Same files as statecode-invalid-publish-race (depends_on): take it after that ships. Sourced from review-statecode-backfill-gpt (done). No deploy; deploy stays manual (DEPLOY_RUNBOOK.md).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

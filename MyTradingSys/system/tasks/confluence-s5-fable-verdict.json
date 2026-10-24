@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/verdicts.py check \"confluence krown context\""
+  ],
+  "created": "2026-10-24T22:50:05Z",
+  "depends_on": [
+    "confluence-s4-dev-trials"
+  ],
+  "done_when": "FABLE_VERDICT.md exists with one verdict per pre-registered test and the VALIDATION list (possibly empty); shipped, git cherry origin/fast-track empty.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "From DEV_RESULTS.md alone write FABLE_VERDICT.md: what goes to the single pooled VALIDATION read, what dies, and what alert-only tags testnet may carry; no VALIDATION read.",
+  "id": "confluence-s5-fable-verdict",
+  "lane": "SONNET",
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Model per the card: Fable 5.1 (coordinator pastes the prompt, operator not asked); lane SONNET is a placeholder, run it on Fable only if the weekly budget allows, else Sonnet medium with the same file. Depends on confluence-s4-dev-trials.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/krown_audit_2026-10-22/FABLE_VERDICT.md",
+    "MyTradingSys/research/layer_lab/TRIALS.md"
+  ],
+  "scope_out": [
+    "opening VALIDATION or HOLDOUT data",
+    "running new trials",
+    "live wiring or gates"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/krown_audit_2026-10-22/FABLE_CARD_CONFLUENCE.md s4 row S5"
+  ],
+  "state": "raw",
+  "steps": [
+    "Read run/DEV_RESULTS.md, PRE_REG_CONFLUENCE.md s6-s7 and FABLE_DESIGN.md s5-s6; apply the frozen pass bars, no new bars.",
+    "Write FABLE_VERDICT.md: per test PASS/FAIL/INCONCLUSIVE, the VALIDATION candidate list (one pooled trial, or none), the kill list with kill scope, confidence-tag proposal (gates nothing); every number SOURCED or OURS.",
+    "sync.py ship with a Result line naming the file and the verdict counts (S6)."
+  ],
+  "tests": "Docs card: verdicts.py check on the family words runs clean; every verdict row cites a DEV_RESULTS.md line; no number without SOURCED/OURS label.",
+  "title": "Confluence S5: Fable verdict on DEV results, what goes to the one VALIDATION read (then ship, S6)",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}
