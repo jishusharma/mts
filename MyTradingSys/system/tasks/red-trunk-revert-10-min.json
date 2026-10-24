@@ -19,20 +19,6 @@
       "line": "CLAUDE.md Boot 2: first to see CI red git-reverts the breaking commit, ships in 10 min, ne",
       "ref": "e2f7b1036",
       "utc": "2026-10-24T09:52:52Z"
-    },
-    {
-      "auto": true,
-      "kind": "ship",
-      "line": "CLAUDE.md 5c shortened: 7151 B, under the 7168 cap",
-      "ref": "6bfc5bafdff9",
-      "utc": "2026-10-23T08:41:22Z"
-    },
-    {
-      "auto": true,
-      "kind": "report",
-      "line": "6bfc5bafdff9 CLAUDE.md 5c shortened: 7151 B, under the 7168 cap",
-      "ref": "CLAUDE.md",
-      "utc": "2026-10-23T08:41:22Z"
     }
   ],
   "layers": [],

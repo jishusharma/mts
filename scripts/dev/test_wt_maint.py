@@ -88,6 +88,15 @@ class Safety(Env):
         self.assertEqual(s["removed"], [])
         self.assertTrue(a.exists() and b.exists() and c.exists())
 
+    def test_gemini_trees_kept(self):
+        # Gemini work trees (F:\MTS\mts-gemini) are finished-looking when idle and merged; the Gemini Antigravity project
+        # opens that folder, so the nightly job must never remove it (2026-10-23 it did, and the project broke).
+        a = self.tree("mts-gemini", branch="jis-nuc/gemini-start")
+        b = self.tree("mts-x-gemini-run", branch="gemini-q/x")
+        s, _ = self.run_maint()
+        self.assertEqual(s["removed"], [])
+        self.assertTrue(a.exists() and b.exists())
+
     def test_recent_tree_kept(self):
         p = self.tree("mts-x-fresh")
         s, _ = self.run_maint(now=time.time())
