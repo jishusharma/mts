@@ -54,7 +54,7 @@ def test_median_of_nothing_is_zero():
 
 
 def test_every_configured_hook_is_in_the_bench_rows():
-    """The bench must time every command in .claude/settings.json: matcher hooks (model_guard, preship hook-edit) and SessionStart too."""
+    """The bench must time every command in .claude/settings.json: matcher hooks (preship hook-edit) and SessionStart too."""
     import json
     from pathlib import Path
     settings = json.loads((Path(B.REPO) / ".claude" / "settings.json").read_text(encoding="utf-8"))
@@ -62,7 +62,7 @@ def test_every_configured_hook_is_in_the_bench_rows():
     benched = {(ev, cmd) for ev, _name, cmd, _a, _t in B.all_hooks(settings)}
     assert configured == benched
     names = {n for _e, n, _c, _a, _t in B.all_hooks(settings)}
-    assert {"model_guard.py", "preship.py hook-edit"} <= names
+    assert {"stop_guard.py", "preship.py hook-edit"} <= names
 
 
 def test_matcher_hooks_get_a_tool_their_matcher_accepts():

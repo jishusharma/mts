@@ -38,6 +38,5 @@ One line per change in TRAFFIC_BUSTERS.md (B-number, test name, date) and the be
 - Bookkeeping is a subject-regex count (an upper bound; "register" also appears in real feature commits).
 - B4 "folded" counts commit bodies saying `closed with the ship`; a release done another way shows as neither.
 - CI uses the unauthenticated API (60 calls/h); on a rate limit the report says `unavailable`; then use `gh run list`.
-- Commit counts measure traffic, not wall time. Wall time per task needs the gate timing log (`gate_select`) and session transcripts
-  (`worker_cost_report.py`): not in the report yet (next doctor task).
+- Commit counts measure traffic, not wall time. Wall time per task needs the gate timing log (`gate_select`) and session transcripts: not in the report yet (next doctor task).
 - DEAD-REF skips runtime-generated paths (`runtime/sched`, `orderflow`); other generated files can still show as false positives.

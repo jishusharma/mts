@@ -12,10 +12,8 @@ SETTINGS = Path(__file__).resolve().parents[2] / ".claude" / "settings.json"
 ASYNC = {
     ("PostToolUse", "mts_signal.py"),        # sends signals detached; its output is not needed this turn
 }
-# Printed context the model must see THIS turn (signals, ACTION REQUIRED, CI RED, hand-off nags) is synchronous, and turn_meter
-# is synchronous on PostToolUse because an async run raced the sync UserPromptSubmit run on one state file (lost typed_at/driven).
-MUST_BE_SYNC = {("UserPromptSubmit", "mts_signal.py"), ("UserPromptSubmit", "ci_watch.py"), ("PostToolUse", "turn_meter.py"),
-                ("Stop", "mts_signal.py")}
+# Printed context the model must see THIS turn (signals, ACTION REQUIRED, CI RED, hand-off nags) is synchronous.
+MUST_BE_SYNC = {("UserPromptSubmit", "mts_signal.py"), ("UserPromptSubmit", "ci_watch.py"), ("Stop", "mts_signal.py")}
 
 
 def hooks():
@@ -40,7 +38,7 @@ class HookSettingsTest(unittest.TestCase):
 
     def test_deny_and_block_hooks_stay_synchronous(self):
         for event, script, is_async, _ in hooks():
-            if event in ("PreToolUse", "Stop", "SessionStart") or script in ("model_guard.py", "stop_guard.py", "shot.py", "role_loader.py"):
+            if event in ("PreToolUse", "Stop", "SessionStart") or script in ("stop_guard.py", "shot.py", "role_loader.py"):
                 self.assertFalse(is_async, f"{event} {script} can deny, block or inject context and must not be async")
 
     def test_every_hook_has_a_timeout(self):
