@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-24T15:43:58Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py <file>"
   ],
@@ -15,7 +16,14 @@
   "id": "yt-gpt-review-audits-fabio",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "gx2-review-audits-fabio: 0 APPROVE 11 FIX",
+      "ref": "f31fe1653",
+      "utc": "2026-10-24T15:43:58Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,7 +33,12 @@
   "refined_by": "",
   "refreshed": "2026-10-24T14:22:01Z",
   "refs": [],
-  "result": "",
+  "result": "gx2-review-audits-fabio: 0 APPROVE 11 FIX",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "extracts/gemini_out; raw_transcripts_canonical; MyTradingSys/research/layer_lab/reports"
   ],
@@ -37,13 +50,14 @@
   "sources": [
     "MyTradingSys/system/ROUTING.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the listed Gemini files and their transcripts (they ship before this card runs)",
     "Run verify_extract_quotes.py on each; check 5 random claims per file against the transcript",
     "Write the review report with APPROVE/FIX per file and quoted evidence",
     "Commit with a Result: line (n approved, n fix)"
   ],
+  "taken": "2026-10-24T15:43:58Z",
   "tests": "report lists a verify result for every file reviewed (report absent before the card)",
   "title": "Cross-vendor review: Gemini extract audits + Fabio notes (extracts/gemini_out)",
   "weight": "ROUTINE",

@@ -1,6 +1,6 @@
 # DEVICES
 
-**Station** = one device with one login (e.g. JIS-NUC/A); operator 2026-10-23, d-station-term. Per-device chores (worktrees) are done once per device.
+**Station** = one device with one login (e.g. JIS-NUC/A); operator 2026-10-23, d-station-term. Per-device chores (worktrees) are done once per device. Every station's cleanups (what deletes what, restart cleanup, roll-call answers): STATION_CLEANUP.md.
 
 > Scheduled tasks: none are allowed on any device (RETIRED 2026-10-17, see SCHEDULING_POLICY.md); mentions below of MTS-* tasks, dispatcher, AutoDeploy, Supervisor are the old design.
 
@@ -141,6 +141,7 @@ python scripts/dev/wt_maint.py uninstall
 ```
 
 Operator line for the Lenovo session: `You are Builder. Install the worktree maintenance job on this device: pull origin/fast-track, run python scripts/dev/wt_maint.py install, run python scripts/dev/wt_maint.py status, ship.`
+Status 2026-10-24: JIS-NB NOT INSTALLED (`wt_maint.py status`, 2026-10-24; this section said installed before that check). JIS-NUC and DESKTOP-F7IU69N: NOT CAPTURED (roll call, STATION_CLEANUP.md section 1).
 
 ## 9. Router and home network
 
