@@ -54,12 +54,16 @@ Fail on any: the Doctor names the cause from transcripts and git, one fix, rerun
 
 ## Next pilots, one change each, each compared with the one before
 - **Pilot 2: 6 workers**, same login, if pilot 1 passes.
-- **Pilot 3: all three logins** (operator idea 2026-10-24, simplify-tooling hand-over): one super session hands out cards; the other logins take
+- **Pilot 3: economical mode** (operator 2026-10-24): Haiku workers on mechanical cards (card field `worker`), everything else as pilot 2.
+  Extra pass rows: weekly % per verified card lower than pilot 2's, and rework (row 4) still 0.
+- **Pilot 4: ultracode on one hard card**, against a normal Sonnet worker on a similar card (the old pilot 4; moved before logins because
+  modes are tested on one machine first).
+- **Pilot 5: all three logins** (operator idea 2026-10-24, simplify-tooling hand-over): one super session hands out cards; the other logins take
   them through the repo (cards + `sync.py claim`, the item 9 machinery, kept). Logins do not conflict, tasks do (same files, trunk, live tree,
   ship queue), so lanes split by kind of work: one live-path writer, a research/backtest lane under `research/`, an audit/tooling lane; one
   writer per area by claim; no new rules. One desktop app runs one login, so each extra login is another machine that must be on (NUC, desktop),
   and caches are per machine. Pass rows as pilot 1, plus: 0 claim clashes, and each login's weekly % per verified card.
-- **Pilot 4: ultracode on one hard card**, against a normal Sonnet worker on a similar card.
+- Each pilot runs as its own super session (a separate session, not inside the Doctor); the Doctor measures it afterwards.
 
 ## Stop early if
 CI red not reverted in 10 min; 5 h window over 80%; two workers stuck on the same file; the operator says the machine is slow.
