@@ -1,5 +1,7 @@
 {
  "id": "t06_cost_fill",
+ "kind": "audit",
+ "parity": null,
  "family": "Audit: costs and fills",
  "title": "What would we really have paid and got?",
  "what": [

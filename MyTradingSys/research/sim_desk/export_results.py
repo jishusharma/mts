@@ -57,7 +57,7 @@ def levels_result(data):
     d = data["dev"]
     n = data["n"]
     return {
-        "id": "levels_ladder", "family": "Price levels", "title": "Levels ladder (bounce at key levels)",
+        "id": "levels_ladder", "kind": "backtest", "parity": None, "family": "Price levels", "title": "Levels ladder (bounce at key levels)",
         "what": [
             W("Idea", "When price first touches a key level in a day (4h swing highs and lows, untested volume peaks, "
               "yesterday's high, low and volume peak, last week's high, round thousands), bet that it bounces.", "OURS"),
@@ -92,6 +92,8 @@ def levels_result(data):
             {"label": "mean R before fees", "value": "%+.3f" % d["mean_gross_r"]},
             {"label": "mean fee R", "value": "-%.3f" % d["mean_fee_r"]},
             {"label": "worst drawdown", "value": "%.1f R" % d["maxdd"]},
+            {"label": "ROI: 1,000 USD start, 1 %% risk per trade, simple sum (OURS), %s to %s" % (data["trades"][0]["d"], data["trades"][-1]["d"]),
+             "value": "%d USD" % round(1000 * (1 + 0.01 * data["cum"][-1])), "tone": "bad" if data["cum"][-1] < 0 else "good"},
         ],
         "examples": [
             {"kind": "replay", "title": "Trade replay (filled trades only, in time order)",
@@ -149,7 +151,7 @@ def t09_result():
     bt_stack = [stack("%s backtest-style hold (%d min)" % (tf, r["hold_minutes"]), r) for tf, r in ex["backtest_rsi_rule"].items()]
     srcs = [rel(os.path.join(AUDIT, "T09_live_parity.md")), rel(os.path.join(out, "parity_result.json")), rel(os.path.join(out, "exit_result.json"))]
     return {
-        "id": "t09_live_parity", "family": "Audit: backtest vs live", "title": "Does the live code trade what was backtested?",
+        "id": "t09_live_parity", "kind": "audit", "parity": None, "family": "Audit: backtest vs live", "title": "Does the live code trade what was backtested?",
         "what": [
             W("Question", "The testnet layers run their own code. Does that code fire the same signals, on the same bars and sides, as the backtest that justified each layer?", "OURS"),
             W("Days replayed", "%d DEV days, seed %d (10 trend, 10 range, 10 high-volatility), 3 h warm-up each, no network." % (len(par["days"]), par["seed"]), "OURS"),
@@ -203,7 +205,7 @@ def t06_result():
     rows = [[r["study"], r["arm"], r["n"], r["gross_pct"], r["charged_rt_pct"], r["breakeven_rt_cost_bp"]] for r in be]
     pos = sum(1 for r in be if float(r["breakeven_rt_cost_bp"]) > 10)
     return {
-        "id": "t06_cost_fill", "family": "Audit: costs and fills", "title": "What would we really have paid and got?",
+        "id": "t06_cost_fill", "kind": "audit", "parity": None, "family": "Audit: costs and fills", "title": "What would we really have paid and got?",
         "what": [
             W("Question", "Are the fees, slippage, funding and fill rules used in the backtests realistic, and does fixing them flip any verdict?", "OURS"),
             W("Scan", "Every fee, slippage and funding constant in backtest/ and research/: 201 hits in 70+ files.", "OURS"),
@@ -251,7 +253,7 @@ def t07_result():
     rows.append(["published_strats", "-", "-", "-", "could not rerun (data folders absent)"])
     good = sum(1 for r in rows if r[4] == "reproduces")
     return {
-        "id": "t07_stale_verdicts", "family": "Audit: reruns", "title": "Do the published numbers still come out of today's code?",
+        "id": "t07_stale_verdicts", "kind": "audit", "parity": None, "family": "Audit: reruns", "title": "Do the published numbers still come out of today's code?",
         "what": [
             W("Question", "For 16 published verdicts: has the code behind each one changed since, and does a rerun on today's code give the same numbers?", "OURS"),
             W("Reruns", "10 results rerun on today's code in a sandbox copy; counts must match exactly, returns within 1e-6.", "OURS"),
@@ -282,6 +284,43 @@ def t07_result():
     }
 
 
+# ---------- WaveTrend atlas (parsed from the committed RESULT.md table) ----------
+def wavetrend_result():
+    p = os.path.join(RESEARCH, "wavetrend_2026-10-17", "RESULT.md")
+    txt = open(p, encoding="utf-8").read()
+    ver = next(l for l in txt.splitlines() if l.startswith("Verdict:"))
+    sec = txt.split("## Primary arms", 1)[1].split(chr(10) + "## ", 1)[0]
+    rows = []
+    for l in sec.splitlines():
+        c = [x.strip() for x in l.strip().strip("|").split("|")]
+        if len(c) == 5 and c[0].startswith("W"):
+            rows.append(c)
+    fails = sum(1 for r in rows if r[4] == "FAIL")
+    return {
+        "id": "wavetrend_atlas", "kind": "backtest", "parity": None, "family": "WaveTrend",
+        "title": "WaveTrend behaviour atlas (9 frozen cells)",
+        "what": [
+            W("Idea", "WaveTrend (LazyBear) oscillator events on BTCUSDT: touches of the +/-53 band, crosses and pivots, each in a context of trend, higher-timeframe zone, volatility or time of day.", "OURS"),
+            W("Oscillator settings", "hlc3, EMA 10, EMA 21, SMA 4, 0.015, bands +/-53 and +/-60", "SOURCED"),
+            W("Outcome", "Signed return from the open after the event to the close 12 bars later, in the direction the event implies, before fees and funding.", "OURS"),
+            W("Cells and tests", "9 cells frozen before the run, Holm correction over 9 (no tuning after the result).", "OURS"),
+            W("Costs", "None: this is a gross behaviour table, not a strategy test.", "OURS"),
+        ],
+        "how": "Count events, then measure the gross 12-bar outcome for each frozen cell and compare with the same events without the context, the indicator alone and a random clock. Nothing is adopted from it.",
+        "window": DEV_TXT,
+        "verdict": {"label": "INCONCLUSIVE: 0 of 9 cells pass the gross screen", "tone": "warn"},
+        "why": ["%d of %d primary arms are marked FAIL; the other cells carry no tuned rule." % (fails, len(rows)),
+                "Every mean is within a few hundredths of a percent and mostly inside its standard error, so there is no sign of an edge even before fees.",
+                "Verdict as written: " + ver[len("Verdict:"):].replace("**", "").strip()[:260]],
+        "kpis": [{"label": "primary arms", "value": str(len(rows))}, {"label": "arms failing", "value": str(fails), "tone": "bad"},
+                 {"label": "arms passing", "value": str(len(rows) - fails)}],
+        "examples": [{"kind": "table", "title": "Primary arms (gross, % per event)", "cols": ["Arm", "Events", "Mean %", "Std error %", "Verdict"],
+                      "rows": [[r[0], r[1], r[2], r[3], r[4]] for r in rows],
+                      "caption": "Gross mean of the 12-bar signed return. No example trades exported: this study counts events, it has no trade list."}],
+        "source_files": [rel(p)], "commit": commit_of([p]),
+    }
+
+
 def write(out_dir, res):
     os.makedirs(out_dir, exist_ok=True)
     p = os.path.join(out_dir, res["id"] + ".json")
@@ -299,7 +338,7 @@ def main(argv=None):
     ap.add_argument("--out", default=DEFAULT_OUT)
     a = ap.parse_args(argv)
     rule, rows = ba.load(ba.DEFAULT_SRC)
-    outs = [levels_result(ba.build_data(rule, rows)), t09_result(), t06_result(), t07_result()]
+    outs = [levels_result(ba.build_data(rule, rows)), t09_result(), t06_result(), t07_result(), wavetrend_result()]
     return [write(a.out, r) for r in outs]
 
 

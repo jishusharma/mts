@@ -1,5 +1,7 @@
 {
  "id": "t07_stale_verdicts",
+ "kind": "audit",
+ "parity": null,
  "family": "Audit: reruns",
  "title": "Do the published numbers still come out of today's code?",
  "what": [

@@ -129,12 +129,37 @@ class Page(unittest.TestCase):
 
     def test_committed_results_build(self):
         names = sorted(os.listdir(ba.RESULTS_DIR))
-        for need in ("levels_ladder.json", "t09_live_parity.json", "t06_cost_fill.json", "t07_stale_verdicts.json"):
+        for need in ("levels_ladder.json", "t09_live_parity.json", "t06_cost_fill.json", "t07_stale_verdicts.json", "wavetrend_atlas.json", "_catalogue.json"):
             self.assertIn(need, names)
-        tests = ba.collect(ba.RESULTS_DIR)
+        tests = ba.collect(ba.RESULTS_DIR)  # skips _catalogue.json
+        self.assertNotIn("_catalogue", [t["id"] for t in tests])
         for t in tests:
+            self.assertIn(t.get("kind"), ("backtest", "audit", "thought_experiment"), t["id"])
             self.assertTrue(t["examples"], t["id"])
             self.assertNotRegex(json.dumps(t), r"\b\d{5}\.\d")  # no raw price like 44375.0
+
+    def test_catalogue_lists_every_row_and_flags_exported(self):
+        cat = ba.load_catalogue(ba.RESULTS_DIR)
+        rows = cat["rows"]
+        self.assertGreater(len(rows), 100)
+        have = {t["id"] for t in ba.collect(ba.RESULTS_DIR)}
+        for r in rows:
+            for k in ("id", "family", "title", "kind", "verdict", "source", "exported"):
+                self.assertIn(k, r, r.get("id"))
+            self.assertIn(r["kind"], ("backtest", "audit", "thought_experiment"))
+            self.assertEqual(r["exported"], r.get("result_id") in have, r["id"])
+        self.assertEqual({r["result_id"] for r in rows if r["exported"]}, have)
+        self.assertEqual(len({r["id"] for r in rows}), len(rows))
+        d = _results_dir(_result("aa"))
+        out = os.path.join(d, "index.html")
+        with open(os.path.join(d, "_catalogue.json"), "w", encoding="utf-8", newline=chr(10)) as f:
+            json.dump({"rows": [{"id": "old1", "family": "F", "title": "Old test", "kind": "thought_experiment", "verdict": "v",
+                                 "source": "x.md", "exported": False, "result_id": None}]}, f)
+        ba.main(["--results", d, "--out", out])
+        h = open(out, encoding="utf-8").read()
+        self.assertIn("Old test", h)  # unexported row on the page
+        self.assertIn("charts not exported yet", h)
+        self.assertIn("Title aa", h)  # exported test still added
 
 
 if __name__ == "__main__":

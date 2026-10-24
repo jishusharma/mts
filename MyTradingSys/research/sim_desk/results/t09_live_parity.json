@@ -1,5 +1,7 @@
 {
  "id": "t09_live_parity",
+ "kind": "audit",
+ "parity": null,
  "family": "Audit: backtest vs live",
  "title": "Does the live code trade what was backtested?",
  "what": [

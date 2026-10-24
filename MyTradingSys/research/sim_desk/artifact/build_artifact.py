@@ -93,7 +93,7 @@ def collect(results_dir):
     """Every results/*.json (standard schema, DESIGN.md) in file-name order; a malformed file stops the build."""
     out = []
     for fn in sorted(os.listdir(results_dir)):
-        if not fn.endswith(".json"):
+        if not fn.endswith(".json") or fn.startswith("_"):
             continue
         with open(os.path.join(results_dir, fn), encoding="utf-8") as f:
             r = json.load(f)
@@ -119,6 +119,7 @@ TEMPLATE = r'''<!doctype html>
 body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
 header{padding:12px 16px;border-bottom:1px solid var(--line)}
 h1{font-size:18px;margin:0}
+#lst{max-height:calc(100vh - 150px);overflow:auto}
 .sub{color:var(--mute);font-size:12px;margin-top:2px}
 main{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;padding:12px 16px}
 @media(min-width:900px){main{grid-template-columns:280px minmax(0,1fr);align-items:start}nav{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto}}
@@ -127,6 +128,7 @@ nav h2{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--
 nav h2:first-child{margin-top:0}
 nav button{display:block;width:100%;text-align:left;margin:2px 0;padding:6px 8px;border:1px solid transparent;border-radius:6px;background:none;color:var(--ink);cursor:pointer;font:inherit}
 nav button[aria-current=true]{border-color:var(--acc);background:var(--bg)}
+nav input[type=search]{width:100%;padding:6px;margin-bottom:6px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit}
 nav button small{display:block;color:var(--mute)}
 h2.s{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--mute);margin:18px 0 6px}
 h3{font-size:14px;margin:14px 0 4px}
@@ -154,15 +156,24 @@ ul{margin:4px 0;padding-left:20px}li{margin:3px 0}
 <main><nav id="nav" aria-label="Tests"></nav><article id="view" aria-live="polite"></article></main>
 <script>
 const TESTS=/*__DATA__*/null;
+const CAT=/*__CAT__*/[];
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const f2=x=>(x>=0?"+":"")+x.toFixed(3);
 const tone=t=>t==="bad"||t==="good"||t==="warn"?t:"";
 const COL={bad:"var(--bad)",good:"var(--good)",mute:"var(--line)",warn:"var(--warn)"};
 let tm=null;
-function buildNav(){const fam={};TESTS.forEach(t=>(fam[t.family]=fam[t.family]||[]).push(t));
-$("nav").innerHTML=Object.keys(fam).map(f=>"<h2>"+esc(f)+"</h2>"+fam[f].map(t=>'<button data-id="'+esc(t.id)+'">'+esc(t.title)+"<small>"+esc(t.verdict.label)+"</small></button>").join("")).join("");
+const KIND={backtest:"backtest",audit:"audit",thought_experiment:"thought experiment"};
+function buildNav(){const q=($("q")?$("q").value:"").toLowerCase(),only=$("onlyx")&&$("onlyx").checked,fam={};
+CAT.filter(r=>(!only||r.exported)&&(!q||(r.title+" "+r.family+" "+r.verdict+" "+r.kind).toLowerCase().includes(q))).forEach(r=>(fam[r.family]=fam[r.family]||[]).push(r));
+const fl=Object.keys(fam).sort((a,b)=>(fam[b].some(r=>r.exported)-fam[a].some(r=>r.exported))||a.localeCompare(b));
+const list=fl.map(f=>"<h2>"+esc(f)+"</h2>"+fam[f].sort((a,b)=>(b.status==="FAILED")-(a.status==="FAILED")||b.exported-a.exported).map(r=>'<button data-id="'+esc(r.exported?r.result_id:r.id)+'">'+(r.status==="FAILED"?'<span class="bad">&#9679;</span> ':"")+esc(r.title)+"<small>"+esc(KIND[r.kind]||r.kind)+(r.exported?"":" · charts not exported yet")+"</small></button>").join("")).join("");
+$("nav").innerHTML='<input id="q" type="search" placeholder="Search '+CAT.length+' tests" aria-label="Search tests" value="'+esc(q)+'"><label class="note"><input id="onlyx" type="checkbox"'+(only?" checked":"")+'> with charts only ('+CAT.filter(r=>r.exported).length+")</label><div id=\"lst\">"+list+"</div>";
+$("q").oninput=refilter;$("onlyx").onchange=refilter;
 $("nav").onclick=e=>{const b=e.target.closest("button");if(b){location.hash=b.dataset.id}};}
+function refilter(){const q=$("q").value,o=$("onlyx").checked;buildNav();$("q").value=q;$("onlyx").checked=o;$("q").focus();}
+function stub(r){return '<h1 style="font-size:20px;margin:0 0 6px">'+esc(r.title)+'</h1><span class="pill '+(r.status==="FAILED"?"bad":"")+'">'+esc(KIND[r.kind]||r.kind)+"</span> <span class=\"pill\">charts not exported yet</span>"+
+'<h2 class="s">Verdict as written</h2><p>'+esc(r.verdict)+'</p><h2 class="s">Where it lives</h2><p class="src">'+esc(r.source)+'</p><p class="note">Family: '+esc(r.family)+". The kind ("+esc(r.kind_source||"")+") and the verdict line were read from the file automatically, so check them against the source. No numbers or examples are shown until this test is exported to sim_desk/results/.</p>";}
 function table(x){return '<div class="tw"><table><tr>'+x.cols.map(c=>"<th>"+esc(c)+"</th>").join("")+"</tr>"+x.rows.map(r=>"<tr>"+r.map(c=>"<td>"+esc(c)+"</td>").join("")+"</tr>").join("")+"</table></div>";}
 function stack(x){const W=600,rh=30;let s='<svg viewBox="0 0 '+W+" "+(x.rows.length*rh+34)+'" role="img" aria-label="'+esc(x.title)+'">';
 x.rows.forEach((r,i)=>{const y=i*rh+4;s+='<text x="0" y="'+(y+14)+'" font-size="11" fill="var(--ink)">'+esc(r.label)+"</text>";let cx=190;const sc=(W-196)/100;
@@ -199,7 +210,9 @@ if(x.kind==="table")h+=table(x);else if(x.kind==="stack")h+=stack(x);else if(x.k
 else if(x.kind==="replay"){const r=replay(x);h+=r.html;inits.push(r.init);}
 else h+='<p class="note">no example trades exported</p>';
 if(x.caption)h+='<p class="note">'+esc(x.caption)+"</p>";return {html:h+"</div>",inits};}
-function render(id){if(tm){clearInterval(tm);tm=null}const t=TESTS.find(x=>x.id===id)||TESTS[0];
+function render(id){if(tm){clearInterval(tm);tm=null}const t=TESTS.find(x=>x.id===id);
+if(!t){const r=CAT.find(x=>x.id===id);if(r){document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-current",b.dataset.id===id));$("view").innerHTML=stub(r);return}}
+if(!t){render(TESTS[0].id);return}
 document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-current",b.dataset.id===t.id));
 let h='<h1 style="font-size:20px;margin:0 0 6px">'+esc(t.title)+'</h1><span class="pill '+tone(t.verdict.tone)+'">'+esc(t.verdict.label)+"</span>";
 h+='<div class="kpis">'+t.kpis.map(k=>'<div class="kpi"><b class="'+tone(k.tone)+'">'+esc(k.value)+"</b><span>"+esc(k.label)+"</span></div>").join("")+"</div>";
@@ -215,9 +228,25 @@ buildNav();window.onhashchange=()=>render(location.hash.slice(1));render(locatio
 '''
 
 
-def render(tests):
-    blob = json.dumps(tests, separators=(",", ":"), ensure_ascii=False).replace("</", "<" + chr(92) + "/")
-    return TEMPLATE.replace("/*__DATA__*/null", blob)
+def load_catalogue(results_dir):
+    p = os.path.join(results_dir, "_catalogue.json")
+    if not os.path.isfile(p):
+        return {"count": 0, "exported": 0, "rows": []}
+    with open(p, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def render(tests, catalogue=None):
+    def blob(o):
+        return json.dumps(o, separators=(",", ":"), ensure_ascii=False).replace("</", "<" + chr(92) + "/")
+    cat = (catalogue or {}).get("rows", [])
+    ids = {r.get("result_id") for r in cat}
+    for t in tests:  # an exported result missing from the catalogue still gets a row
+        if t["id"] not in ids:
+            cat.append({"id": t["id"], "family": t["family"], "title": t["title"], "kind": t.get("kind", "backtest"),
+                        "verdict": t["verdict"]["label"], "source": t["source_files"][0], "exported": True, "result_id": t["id"],
+                        "status": "FAILED" if t["verdict"].get("tone") == "bad" else "SEE_VERDICT"})
+    return TEMPLATE.replace("/*__DATA__*/null", blob(tests)).replace("/*__CAT__*/[]", blob(cat))
 
 
 def main(argv=None):
@@ -229,7 +258,7 @@ def main(argv=None):
     if not tests:
         raise ValueError("no result files in %s" % a.results)
     with open(a.out, "w", encoding="utf-8", newline="\n") as f:
-        f.write(render(tests))
+        f.write(render(tests, load_catalogue(a.results)))
     return a.out
 
 
