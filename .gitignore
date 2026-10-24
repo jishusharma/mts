@@ -206,3 +206,6 @@ raw_transcripts_canonical/
 
 # Krown confluence S1: regenerated outcome-bearing event tables (never committed)
 MyTradingSys/research/krown_audit_2026-10-22/run/sealed/
+
+# mts_run.py headless-worker ledger (runtime)
+runtime_data/mts_run/
