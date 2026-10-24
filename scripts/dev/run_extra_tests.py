@@ -22,6 +22,7 @@ EXTRA = [
     "scripts/dev/test_ci_split.py",
     "scripts/dev/test_no_syntax_warnings.py",
     "scripts/dev/test_preship.py",
+    "scripts/dev/test_argon_blind_read.py",
     "MyTradingSys/research/gap_g3_shadow_fills_2026-10-18/test_shadow_fills.py",
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T04/test_twin_diff.py",
     "MyTradingSys/research/layer_lab/formula_spec_text/test_formula_spec.py",

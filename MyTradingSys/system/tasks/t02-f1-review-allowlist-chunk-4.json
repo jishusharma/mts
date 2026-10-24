@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-24T18:49:18Z",
   "commands": [
     "python MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T02/f1_rows.py c4 --count",
     "python MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T02/f1_rows.py c4 --show 0 6",
@@ -18,6 +19,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already shipped c68e93ced300: c4 count 0, lint exit 0 (30 SAFE, 0 UNSAFE)",
+      "ref": "5879e97d3",
+      "utc": "2026-10-24T18:49:18Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Merge remote-tracking branch 'origin/fast-track' into claude/epic-poincare-91fc2b",
@@ -34,7 +41,12 @@
   "refined_by": "",
   "refreshed": "2026-10-24T10:02:15Z",
   "refs": [],
-  "result": "",
+  "result": "already shipped c68e93ced300: c4 count 0, lint exit 0 (30 SAFE, 0 UNSAFE)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/lookahead_allowlist.tsv",
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T02/f1_rows.py",
@@ -53,7 +65,7 @@
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T02_lookahead_time.md (T02-F1: 132 rows)",
     "scripts/dev/lookahead_lint.py docstring (pattern definitions)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Baseline: run f1_rows.py c4 --count (fail-first number); read rows 6 at a time with --show START 6 (about 5-6 calls)",
     "Per row classify SAFE (index reads past data only, confirmed lag, window end) or UNSAFE (decision bar reads a later bar); keep a python list of (row, verdict, reason) as you go",
@@ -61,6 +73,7 @@
     "UNSAFE rows: do not fix code; append file:line and the verdict study to MyTradingSys/research/dsa_backtest_audit_2026-10-16/T02_F1_unsafe.md (one line each)",
     "Run the lint and the lint tests; ship"
   ],
+  "taken": "2026-10-24T18:49:18Z",
   "tests": "Fail-first count: f1_rows.py c4 --count prints 30 before and 0 after; lookahead_lint.py --new reports 0 new hits, exit 0.",
   "title": "T02-F1 chunk 4: review 30 unreviewed look-ahead allowlist rows in older research scripts",
   "weight": "ROUTINE",
