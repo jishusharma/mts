@@ -349,6 +349,32 @@ class TestEndToEndStub(unittest.TestCase):
         self.assertEqual(v["n_trades"], 1)
         self.assertAlmostEqual(v["is"]["mean_r"], 1.899, places=9)
 
+    def test_run_setup_passes_funding_through(self):
+        # same trade as the nofund test plus a 0.001 settlement inside the hold: net falls by 0.102R, nofund stays 1.899
+        bars = target_bars(0) + [bar(i * MIN, 102, 102, 102, 102) for i in range(3, 20)]
+        fund = [(0, 0.0), (MIN + MIN // 2, 0.001), (30 * MIN, 0.0)]
+        res = R.run_setup("stub", bars, bars, fund, MIN, setup_fn=lambda b: [one_signal(0)])
+        v = res["variants"]["all_taker"]
+        self.assertTrue(res["funding_included"])
+        self.assertAlmostEqual(v["is"]["mean_r"], 1.899 - 0.102, places=9)
+        self.assertAlmostEqual(v["nofund"]["is"]["mean_r"], 1.899, places=9)
+
+    def test_dev_only_skips_post_split_trades_and_funding_span(self):
+        # tf bars 0..9 min -> split at 7 min. Trade A at 0 (in DEV), trade B at 8 min (OOS) lies beyond the funding
+        # records (end 5 min): the full run must fail closed (B103), the dev_only run must not touch B.
+        bars = (target_bars(0) + [bar(i * MIN, 102, 102, 102, 102) for i in range(3, 8)]
+                + target_bars(8 * MIN) + [bar(i * MIN, 102, 102, 102, 102) for i in range(11, 20)])
+        tf = [bar(i * MIN, 100, 100, 100, 100) for i in range(10)]
+        fund = [(0, 0.0), (MIN + MIN // 2, 0.001), (5 * MIN, 0.0)]
+        fn = lambda b: [one_signal(0), one_signal(8 * MIN)]
+        with self.assertRaises(ValueError):
+            R.run_setup("stub", tf, bars, fund, MIN, setup_fn=fn)
+        res = R.run_setup("stub", tf, bars, fund, MIN, setup_fn=fn, dev_only=True)
+        v = res["variants"]["all_taker"]
+        self.assertEqual(v["n_trades"], 1)
+        self.assertEqual(v["oos"]["n"], 0)
+        self.assertAlmostEqual(v["is"]["mean_r"], 1.899 - 0.102, places=9)
+
     def test_markdown_and_json_written_outside_repo(self):
         bars = target_bars(0) + [bar(i * MIN, 102, 102, 102, 102) for i in range(3, 20)]
         res = R.run_setup("stub", bars, bars, [], MIN, setup_fn=lambda b: [one_signal(0)])

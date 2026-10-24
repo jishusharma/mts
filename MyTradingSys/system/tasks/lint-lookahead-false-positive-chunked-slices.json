@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-24T19:49:58Z",
+  "depends_on": [],
+  "done_when": "The 3 Pilot 2 patterns pass the lint; real forward reads (x[i+1] used at bar i, shift(-1)) still fail; shipped with git cherry empty.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The preship look-ahead lint flags chunked slices such as x[i*k:(i+1)*k] as forward indexing. Pilot 2 hit it 3 times (c18e132c4 depth_map, T07 t07_docdrift.py, T09 exit_analysis.py:25 before c725894db); workers rewrote correct code to dodge it. Stop the false positive without hiding real look-ahead.",
+  "id": "lint-lookahead-false-positive-chunked-slices",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "GATE: a new look-ahead FAIL blocks the ship (step 3la + preship deny every time)",
+      "ref": "bd0fcf941a45",
+      "utc": "2026-10-24T13:48:33Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-24T19:49:59Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/preship.py",
+    "scripts/dev/test_preship.py",
+    "scripts/dev/lookahead_allowlist.tsv"
+  ],
+  "scope_out": [
+    "Live tree, HALT, deploys, mainnet, account data, .secrets"
+  ],
+  "scope_sha": "bd0fcf941a45",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Find the look-ahead rule in preship.py",
+    "Add failing tests for the 3 patterns",
+    "Narrow the rule",
+    "Ship"
+  ],
+  "tests": "New test cases in scripts/dev/test_preship.py: the 3 chunk patterns fail on the pre-change lint and pass after; 2 real look-ahead patterns fail both before and after.",
+  "title": "Look-ahead lint fires falsely on chunked slices (3 hits in Pilot 2)",
+  "weight": "",
+  "worker": "agent"
+}

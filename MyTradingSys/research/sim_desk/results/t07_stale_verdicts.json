@@ -1,0 +1,160 @@
+{
+ "id": "t07_stale_verdicts",
+ "kind": "audit",
+ "parity": null,
+ "family": "Audit: reruns",
+ "title": "Do the published numbers still come out of today's code?",
+ "what": [
+  {
+   "name": "Question",
+   "value_plain": "For 16 published verdicts: has the code behind each one changed since, and does a rerun on today's code give the same numbers?",
+   "label": "OURS"
+  },
+  {
+   "name": "Reruns",
+   "value_plain": "10 results rerun on today's code in a sandbox copy; counts must match exactly, returns within 1e-6.",
+   "label": "OURS"
+  },
+  {
+   "name": "Data",
+   "value_plain": "DEV bars only.",
+   "label": "OURS"
+  }
+ ],
+ "how": "Git history says which code made each verdict and whether it changed. Each result is rerun and every published number is compared with the new one (3098 numbers compared).",
+ "window": "DEV only, 2022-04-01 to 2024-06-30 (sealed VALIDATION and HOLDOUT windows were not read)",
+ "verdict": {
+  "label": "No verdict flips; mfe_exit does not reproduce, published_strats could not be rerun",
+  "tone": "warn"
+ },
+ "why": [
+  "9 results reproduce every number exactly (7 had code changes since publishing, none moved a number). The audit text says 8 of 10; its own comparison file shows 9 matching, so the table below is used.",
+  "mfe_exit does not reproduce: today's fire files label a different TRAIN window, so the published DEV-only rerun is not repeatable (its 'nothing survives' verdict is untested by it).",
+  "published_strats cannot be rerun on this machine because its data folders are absent.",
+  "A determinism check (one study run twice) gave identical outputs."
+ ],
+ "kpis": [
+  {
+   "label": "numbers compared",
+   "value": "3098"
+  },
+  {
+   "label": "results reproducing exactly",
+   "value": "9",
+   "tone": "good"
+  },
+  {
+   "label": "not reproducing",
+   "value": "1 (mfe_exit)",
+   "tone": "bad"
+  },
+  {
+   "label": "could not rerun",
+   "value": "1",
+   "tone": "warn"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "table",
+   "title": "Rerun results",
+   "cols": [
+    "Result",
+    "Numbers compared",
+    "Match",
+    "Differ",
+    "Status"
+   ],
+   "rows": [
+    [
+     "gross_effect_screen",
+     70,
+     70,
+     0,
+     "reproduces"
+    ],
+    [
+     "opr_preopen_tops",
+     634,
+     634,
+     0,
+     "reproduces"
+    ],
+    [
+     "mal_bb_mid_engulf",
+     397,
+     397,
+     0,
+     "reproduces"
+    ],
+    [
+     "opr_bb_mtf_center",
+     265,
+     265,
+     0,
+     "reproduces"
+    ],
+    [
+     "opr_weekly_low_round_sweep",
+     244,
+     244,
+     0,
+     "reproduces"
+    ],
+    [
+     "wlow_bounce_bbrsi60",
+     109,
+     109,
+     0,
+     "reproduces"
+    ],
+    [
+     "krown_malkan_g3",
+     178,
+     178,
+     0,
+     "reproduces"
+    ],
+    [
+     "qriptal_scorecard",
+     9,
+     9,
+     0,
+     "reproduces"
+    ],
+    [
+     "orderflow_views",
+     144,
+     144,
+     0,
+     "reproduces"
+    ],
+    [
+     "mfe_exit",
+     1048,
+     82,
+     966,
+     "does NOT reproduce"
+    ],
+    [
+     "published_strats",
+     "-",
+     "-",
+     "-",
+     "could not rerun (data folders absent)"
+    ]
+   ],
+   "caption": "mfe_exit return values are withheld in the source (they touched a sealed window by accident); only counts are shown."
+  },
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported"
+  }
+ ],
+ "source_files": [
+  "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T07_stale_verdicts.md",
+  "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T07/out/rerun_diff.csv"
+ ],
+ "commit": "eb293abb5"
+}
