@@ -42,3 +42,8 @@ Pending report items for Doctor: cards 05/06/07/09 need Lab_Guy REVIEWED stamp /
 Argon SHIPPED 19:47Z (~20 min gate incl. EXTRA registration of test_argon_blind_read.py; cherry 0). yt-fabio-fetch-retry: 0/3 (HTTP 429 all videos), no commit, card left open (its worktree has an uncommitted wrong 'done' on the card json: discard, do not ship). T05 SHIPPING (bg bam9ocivm, log $TEMP/ship_t05.log).
 Doctor 19:48Z asked to fill slots. Ready queue is nearly empty of eligible cards (rest: JIS-NB/CODEX/DSA lanes, review-stamp-needing, new-hook, stale-flagged, declutter). Started bt-engine-wire-real-funding-rsi-cc-rerun (sonnet, 19:52Z). gap-g7-stop-slippage deferred (shares bt_data.py with it). No sim-v2 backfill cards seen on board.
 For score: test_lease.py exceeds the 240 s gate limit when CPU is at 100% (sim-v2 lost 2 ships); Fabio fetch 429 on all 3 videos.
+
+## Update ~19:58Z
+bt-engine-wire DONE (wt agent-a578ee348d9a30577, commits c0c5b7ea0 reapply + 9be3f415e lint fix; 8 turns); NOT yet shipped: queue = T05 (in flight, bg bam9ocivm) -> bt-engine-wire. Card not marked done.
+Doctor-supplied cards started (sonnet, own worktrees): lint-lookahead-false-positive-chunked-slices ab98e197a6a0059b8; gate-test-lease-timeout-under-load af05c70c26fd93566; t09-f5-funding-cvd-fade-backtest-at-1h ac8b2b68eddeaee06 (told not to touch bt_data.py). 3 workers running.
+T09-F1..F4 raw live-path cards: leave alone. Report at 20:00Z due.
