@@ -16,7 +16,8 @@ Workers running (Sonnet Agents, own worktrees, started ~18:53Z; they commit only
 - a98795da9ab134b19 dsa-audit-06-cost-fill-realism
 - a1089c4267107ce94 dsa-audit-07-stale-verdicts
 - a401dace18fdc5813 dsa-audit-09-live-parity
-- a0e64b1f86498d923 t02-f1-review-allowlist-chunk-4
+- a0e64b1f86498d923 t02-f1-review-allowlist-chunk-4: DONE 19:0xZ, card was already reviewed (c68e93ced300), 4 turns, card-done commit 50b93be91 shipped
+- a948ff46879f9b963 cbp-add-channel-latest-n-to-fetch-captio (spare 1, started ~19:00Z)
 - a8783e71ee944c683 tasks-py-check-rewrites-other-cards-mark (20-turn cap)
 Worktrees: in each worker's final report (find via `sync.py where --all`).
 Central-file holders: none. Ship queue: empty. Awaiting verification: none.
