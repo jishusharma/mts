@@ -15,6 +15,15 @@
   "goal": "New rows of daily/ledger.jsonl follow contract s8 schema v2 (checked by a lint), SELECTION_STRINGS.txt is the fixed list, and trendline_core.py, count_only.py, g3_pack.py are listed in wiring_registry.json and the krown family in layer_index.json.",
   "id": "trendline-ledger-registry-hygiene",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "cbp: cbp.query + cbp_run.py (MTS runs CBP, 5-day store); delete queue consumer/adapter",
+      "ref": "f9fcf77b4a80",
+      "utc": "2026-10-23T18:57:08Z"
+    }
+  ],
   "layers": [
     "krown"
   ],
@@ -24,6 +33,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-24T23:03:07Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -38,16 +48,17 @@
     "running the daily watch",
     "detector changes"
   ],
+  "scope_sha": "f9fcf77b4a80",
   "size": "S",
   "sources": [
     "MyTradingSys/research/trendlines_2026-10-17/AUDIT_2026-10-18.md gap 6",
     "TRENDLINE_CONTRACT.md s8"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read AUDIT gap 6, contract s8 (lines 109-125), wiring_registry.json:879-882 and layer_index.json krown family.",
-    "Fail-first: extend lint_contract.py with a ledger check: rows after daily/LEDGER_SCHEMA.json v2_from_line (set to the current row count + 1, 47) must have record_sha256, content_sha256, selection_string; earlier rows are exempt. It must fail on a v1-shaped row appended after the cutoff.",
-    "SELECTION_STRINGS.txt: contract s8's 6-string list wins (trendline, trend line, channel, triangle, wedge, diagonal); rewrite the file to it with a version. Update the wiring_registry row for trendline_core.py (lines 890-893, ref trendline-count-only, now run), add count_only.py and g3_pack.py; add the trendlines module and PRE_REG to the krown family in layer_index.json; run make_status.py and the registry lint."
+    "Fail-first: extend lint_contract.py with a ledger check: rows after v2_from_line in daily/LEDGER_SCHEMA.json (47) need record_sha256, content_sha256, selection_string; earlier rows exempt. Must fail on a v1-shaped row appended after the cutoff.",
+    "SELECTION_STRINGS.txt: rewrite to contract s8's 6 strings (wins over the prose file), versioned. wiring_registry.json:890-893: trendline_core.py now run; add count_only.py, g3_pack.py. layer_index.json krown family: add the module and PRE_REG. Run make_status.py and the registry lint."
   ],
   "tests": "lint_contract.py ledger check fails on a v1-shaped row after the cutoff and passes on the current ledger (self-test or new test file).",
   "title": "Trend-line daily ledger schema v2 enforcement + register the module in layer_index and wiring_registry (audit gap 6)",
