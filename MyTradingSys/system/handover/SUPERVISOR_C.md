@@ -71,3 +71,6 @@ bt-engine-wire SHIPPED (cherry 0, 114 s). Chain bdxkro7il now shipping lint then
 
 ## 20:22Z CLEAR-OK (chain monitor stopped on Doctor order)
 SHIPPED cherry 0: T05, bt-engine-wire, lint-chunked. The lease ship (wt agent-af05c70c26fd93566) was mid-gate when the chain was stopped: check `ps`/cherry; if cherry 1 and no sync.py ship running, re-ship it. Then ship t09-f5 (agent-ac8b2b68eddeaee06), then notes (10 commits). 21:30Z report due; stop 22:50Z. No live watchers.
+
+## 20:35Z STATE (compact, not cleared; all ships done)
+SHIPPED cherry 0: T05, bt-engine-wire, lint-chunked, test_lease, T09-F5 (result json moved to dsa_backtest_audit/out/ after gate 3xt failed on the sim_desk artifact schema; f5 script still writes the old path: tell Doctor), notes. No workers, no ships running. Card supply empty (dispatch shows only sim-dashboard-v1 = sim-v2's, JIS-NB/Doctor cards). Waiting for 21:30Z report (watcher), then stop report by 22:50Z. Optional EXTRA registration batch (T05/06/07/09 tests) if time.
