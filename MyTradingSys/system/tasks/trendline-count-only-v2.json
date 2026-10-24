@@ -26,7 +26,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "Depends on trendline-v11-detector-fixes. DECISION (OURS): m comes from prereg_gate --m auto at freeze time, not from the REGATE figure (78); the B-break drop is expected, not assumed. Needs a host with the DEV klines (JIS-NB or DESKTOP-F7IU69N).",
+  "note": "REVIEWED:2026-10-25 ACCEPT (independent Sonnet reviewer, fixes applied). Depends on trendline-v11-detector-fixes. DECISION (OURS): m comes from prereg_gate --m auto at freeze time, not from the REGATE figure (78); the B-break drop is expected, not assumed. Needs a host with the DEV klines (JIS-NB or DESKTOP-F7IU69N). Complete and reviewed; promote with tasks.py check once depends_on is done.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -49,7 +49,7 @@
     "MyTradingSys/research/trendlines_2026-10-17/AUDIT_2026-10-18.md gap 4",
     "MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md:41"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Confirm trendline-v11-detector-fixes is done; read AUDIT gap 4, REGATE_AUDIT.md line 41 and count_only.py:115-132.",
     "Fail-first tests: first_touch counted once per eligible line (not every touch), retested/reclaimed cells exist, slope tercile of a line uses only lines known before it (expanding). Then edit count_only.py; write counts/KLINE_DIGESTS.csv (sha256 of every kline file read).",

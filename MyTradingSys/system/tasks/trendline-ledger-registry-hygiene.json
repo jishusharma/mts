@@ -20,7 +20,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS): old rows are marked schema 1, not rewritten (hash chain stays honest). Registry files are shared indexes: ship promptly, one writer.",
+  "note": "REVIEWED:2026-10-25 ACCEPT (independent Sonnet reviewer, fixes applied). DECISION (OURS): old rows are exempted by a cutoff in daily/LEDGER_SCHEMA.json, never edited; contract s8 list wins over the 4-string prose file. Registry files are shared indexes: ship promptly, one writer.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -30,10 +30,11 @@
     "MyTradingSys/research/trendlines_2026-10-17/lint_contract.py",
     "MyTradingSys/research/trendlines_2026-10-17/daily/SELECTION_STRINGS.txt",
     "MyTradingSys/system/wiring_registry.json",
-    "MyTradingSys/system/layer_index.json"
+    "MyTradingSys/system/layer_index.json",
+    "MyTradingSys/research/trendlines_2026-10-17/daily/LEDGER_SCHEMA.json"
   ],
   "scope_out": [
-    "rewriting old ledger rows (append-only; old rows stay, flagged schema 1)",
+    "editing or rewriting any existing ledger row (hash chain stays honest)",
     "running the daily watch",
     "detector changes"
   ],
@@ -45,10 +46,10 @@
   "state": "raw",
   "steps": [
     "Read AUDIT gap 6, contract s8 (lines 109-125), wiring_registry.json:879-882 and layer_index.json krown family.",
-    "Fail-first: extend lint_contract.py with a ledger check that fails on a row missing record_sha256, content_sha256 or selection_string unless it is marked schema 1; it must fail on the unmarked 2026-10-18 rows, then mark them.",
-    "Confirm SELECTION_STRINGS.txt matches the contract list; update the wiring_registry row for trendline_core.py (ref trendline-count-only, now run) and add count_only.py and g3_pack.py; add the trendlines module and PRE_REG to the krown family in layer_index.json; run make_status.py and the registry lint."
+    "Fail-first: extend lint_contract.py with a ledger check: rows after daily/LEDGER_SCHEMA.json v2_from_line (set to the current row count + 1, 47) must have record_sha256, content_sha256, selection_string; earlier rows are exempt. It must fail on a v1-shaped row appended after the cutoff.",
+    "SELECTION_STRINGS.txt: contract s8's 6-string list wins (trendline, trend line, channel, triangle, wedge, diagonal); rewrite the file to it with a version. Update the wiring_registry row for trendline_core.py (lines 890-893, ref trendline-count-only, now run), add count_only.py and g3_pack.py; add the trendlines module and PRE_REG to the krown family in layer_index.json; run make_status.py and the registry lint."
   ],
-  "tests": "lint_contract.py ledger check fails on a v1-shaped row not marked schema 1 (self-test or new test file) and passes on the current ledger after marking.",
+  "tests": "lint_contract.py ledger check fails on a v1-shaped row after the cutoff and passes on the current ledger (self-test or new test file).",
   "title": "Trend-line daily ledger schema v2 enforcement + register the module in layer_index and wiring_registry (audit gap 6)",
   "weight": "IMPORTANT",
   "worker": "agent"

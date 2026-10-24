@@ -215,10 +215,10 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `confluence-s5-fable-verdict` refined p2 SONNET: Confluence S5: Fable verdict on DEV results, what goes to the one VALIDATION read (then ship, S6)
   - `krown-data-cme-btc-volume` refined p2 SONNET: Krown CME BTC futures daily volume (public data only) as third volume arm
   - `krown-dev-event-study` refined p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
-  - `trendline-count-only-v2` raw p2 SONNET: Trend-line count-only v2 and PRE_REG v2: first_touch vs all_touches, retest/reclaim counts, causal terciles, k
-  - `trendline-v11-detector-fixes` raw p2 SONNET: Trend-line contract v1.1 + detector fixes: close-arm penetration, pre-availability replay, E11 anchor ban (aud
+  - `trendline-count-only-v2` refined p2 SONNET: Trend-line count-only v2 and PRE_REG v2: first_touch vs all_touches, retest/reclaim counts, causal terciles, k
+  - `trendline-v11-detector-fixes` ready p2 SONNET: Trend-line contract v1.1 + detector fixes: close-arm penetration, pre-availability replay, E11 anchor ban (aud
   - `krown-other-sources-event-study-videos` refined p3 CODEX: Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigg
-  - `trendline-g3-pack-align` raw p3 SONNET: Trend-line G3 pack: bound anchors to visible bars, pin kline digests, drop hardcoded live-tree path (audit gap
+  - `trendline-g3-pack-align` ready p3 SONNET: Trend-line G3 pack: bound anchors to visible bars, pin kline digests, drop hardcoded live-tree path (audit gap
   - `trendline-ledger-registry-hygiene` raw p3 SONNET: Trend-line daily ledger schema v2 enforcement + register the module in layer_index and wiring_registry (audit 
 
 ## WaveTrend (LazyBear oscillator) (`wavetrend`)
