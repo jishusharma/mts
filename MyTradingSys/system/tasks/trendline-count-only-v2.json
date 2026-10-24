@@ -1,0 +1,62 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/research/trendlines_2026-10-17/test_count_only.py -q",
+    "python MyTradingSys/research/trendlines_2026-10-17/count_only.py"
+  ],
+  "created": "2026-10-24T23:00:49Z",
+  "depends_on": [
+    "trendline-v11-detector-fixes"
+  ],
+  "done_when": "counts/CELLS.csv has first_touch, all_touches, retested, reclaimed columns; KLINE_DIGESTS.csv exists; PRE_REG_TRENDLINES.md v2 lists carried cells at the gate's m and states the 1h B-break drop; no outcome read.",
+  "est_turns": 22,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Rerun the DEV count-only pass on the v1.1 detector with the audit gap 4 fixes and freeze PRE_REG_TRENDLINES.md v2, including the REGATE flip (1h B break MDE 0.314 > 0.30 SD at m=78: dropped).",
+  "hosts": [
+    "DESKTOP-F7IU69N",
+    "JIS-NB"
+  ],
+  "id": "trendline-count-only-v2",
+  "lane": "SONNET",
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Depends on trendline-v11-detector-fixes. DECISION (OURS): m comes from prereg_gate --m auto at freeze time, not from the REGATE figure (78); the B-break drop is expected, not assumed. Needs a host with the DEV klines (JIS-NB or DESKTOP-F7IU69N).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/trendlines_2026-10-17/count_only.py",
+    "MyTradingSys/research/trendlines_2026-10-17/test_count_only.py",
+    "MyTradingSys/research/trendlines_2026-10-17/PRE_REG_TRENDLINES.md",
+    "MyTradingSys/research/trendlines_2026-10-17/counts/CELLS.csv",
+    "MyTradingSys/research/trendlines_2026-10-17/counts/KLINE_DIGESTS.csv"
+  ],
+  "scope_out": [
+    "any outcome column or return (counts only)",
+    "VALIDATION/HOLDOUT bars",
+    "detector changes (card trendline-v11-detector-fixes)"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/trendlines_2026-10-17/AUDIT_2026-10-18.md gap 4",
+    "MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md:41"
+  ],
+  "state": "raw",
+  "steps": [
+    "Confirm trendline-v11-detector-fixes is done; read AUDIT gap 4, REGATE_AUDIT.md line 41 and count_only.py:115-132.",
+    "Fail-first tests: first_touch counted once per eligible line (not every touch), retested/reclaimed cells exist, slope tercile of a line uses only lines known before it (expanding). Then edit count_only.py; write counts/KLINE_DIGESTS.csv (sha256 of every kline file read).",
+    "Run DEV only, regenerate CELLS.csv; run prereg_gate.py with m from verdicts.py count; rewrite PRE_REG_TRENDLINES.md as v2: carried cells at the new m (the B-break cell drops at m=78), underpowered list, v1 kept as history."
+  ],
+  "tests": "test_count_only.py: first_touch vs all_touches, retest/reclaim cells present, expanding-tercile no-lookahead; fails on pre-change code.",
+  "title": "Trend-line count-only v2 and PRE_REG v2: first_touch vs all_touches, retest/reclaim counts, causal terciles, kline digests, 1h B-break flip",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

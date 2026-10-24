@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C1",
   "commands": [
     "python MyTradingSys/research/trendlines_2026-10-17/repro_trendline_gaps.py"
   ],
@@ -19,7 +20,8 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:results CLASS:C1 REVIEWER:none WEIGHT:IMPORTANT. Created by Pipeliner from wrong-channel desk row 20261018-162016 (ROUTING.md: review/build work is a card, never a desk row). T0 mechanical checks passed, awaiting non-Gemini Lab_Guy ACCEPT stamp for C1/IMPORTANT promotion.",
+  "note": "Split into trendline-v11-detector-fixes, -count-only-v2, -g3-pack-align, -ledger-registry-hygiene (planner 2026-10-25); REGATE flip owned by count-only-v2",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "gemini-yt-pipeliner",
@@ -46,7 +48,7 @@
   "sources": [
     "MyTradingSys/research/trendlines_2026-10-17/AUDIT_2026-10-18.md"
   ],
-  "state": "refined",
+  "state": "dropped",
   "steps": [
     "Run python MyTradingSys/research/trendlines_2026-10-17/repro_trendline_gaps.py and read AUDIT_2026-10-18.md.",
     "Write MyTradingSys/research/trendlines_2026-10-17/DISPOSITION_2026-10-19.md recording the contract v1.1 + trendline_core/count_only/g3_pack/registry disposition and the REGATE_AUDIT.md 1h|B|ALL|break flip.",
@@ -55,6 +57,5 @@
   "tests": "python MyTradingSys/research/trendlines_2026-10-17/repro_trendline_gaps.py",
   "title": "Trend-Line layer: disposition of AUDIT_2026-10-18 critical gaps (3 HIGH, 3 MED) and REGATE_AUDIT flip",
   "weight": "IMPORTANT",
-  "worker": "session",
-  "class": "C1"
+  "worker": "session"
 }
