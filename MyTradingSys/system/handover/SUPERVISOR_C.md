@@ -51,3 +51,10 @@ Last Doctor contact: ROTATE message (~19:55Z). Doctor asked: start no new worker
 1. Rebuild: read this file, `python scripts/dev/sync.py where --all`, list_sessions {"linked": true}, `git cherry` per worktree, gh run list.
 2. Verify T05 shipped (cherry 0); ship bt-engine-wire; ship finished new workers one at a time; ship notes.
 3. Send 20:00Z report if not sent; 21:30Z; stop report by 22:50Z. No new workers after 22:20Z. Keep a live background wake every turn.
+
+## Update 20:02Z (supersedes queue above)
+lint-lookahead-false-positive-chunked-slices DONE: wt agent-ab98e197a6a0059b8, commit 14f1703b9 (lookahead_lint.py + MyTradingSys/tests/test_lookahead_lint.py), 17 turns.
+gate-test-lease-timeout-under-load DONE (partly: 117s -> 80s, target 30s missed): wt agent-af05c70c26fd93566, commit 11850c8c7, 22 turns.
+t09-f5 worker (ac8b2b68eddeaee06) waiting on its backtest run (interim notice), will report again.
+SHIP CHAIN running as Monitor task bdxkro7il (script $TEMP/chain.sh): waits for T05 cherry 0, then ships sequentially bt-engine-wire (agent-a578ee348d9a30577), lint (agent-ab98e197a6a0059b8), lease (agent-af05c70c26fd93566); prints CHAIN lines per ship, stops on first failure. After chain: ship t09-f5 when its worker finishes, then notes, then reply ROTATE-READY. 20:00Z report SENT (queued to Doctor).
+Operator rule 2026-10-25 via Doctor: ALL YouTube work goes to Gemini (lane CODEX, gemini_queue.py on JIS-NUC); no Claude worker for YouTube. Doctor rewrites yt-fabio-fetch-retry.
