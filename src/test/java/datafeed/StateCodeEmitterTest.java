@@ -594,4 +594,99 @@ public class StateCodeEmitterTest {
         assertTrue(j.get("session_accumulators_valid").asBoolean());
         assertTrue(j.get("signals").get("cvd_slope").isNull());         // fresh ring: 1 sample
     }
+
+    // ---------- invalidate vs publish race (statecode-invalid-publish-race) ----------
+
+    /** One-shot hook: runs the action once, in the window between the emit snapshot and the publish. */
+    private static void once(StateCodeEmitter e, Runnable action) {
+        e.beforePublishHook = () -> { e.beforePublishHook = null; action.run(); };
+    }
+
+    private void reopenAndBackfill(StateCodeEmitter e) throws Exception {
+        e.onStreamOpen(M1 + 3 * MIN);
+        e.nowMsOverride = M1 + 4 * MIN + 20_000L;                       // M = 05:34:00 > connect
+    }
+
+    // a socket close landing between the emit snapshot and the publish must not be overwritten by a valid state
+    @Test
+    public void closeBetweenSnapshotAndPublishStaysInvalid() throws Exception {
+        FakeKlines src = new FakeKlines();
+        StateCodeEmitter e = fresh(src, NOW1);
+        e.onStreamOpen(CONNECT);
+        assertTrue(e.backfillNow());
+        for (int i = 0; i < 12; i++) e.onMessage(trade(M1 + 1_000L + i * 1_000L, 100.0, 5.0 * (i + 1), false));
+        once(e, () -> e.onStreamClosed("ws_closed"));
+        JsonNode j = emit(e);
+        assertInvalid(j);
+        assertEquals("ws_closed", j.get("session_accumulators_reason").asText());
+        assertNull(e.beforePublishHook);
+        assertInvalid(emit(e));                                          // the next emit stays INVALID too
+    }
+
+    // restart: restored directional state + stale sums, close before publish stays INVALID, state_last_valid keeps the
+    // retained letter, then a reopen + backfill recovers VALID with kline totals
+    @Test
+    public void restartThenCloseBeforePublishStaysInvalidThenRecovers() throws Exception {
+        Files.writeString(tmp.resolve("state_code.json"),
+                "{\"state\":\"S\",\"state_last_valid\":\"S\",\"timestamp_utc\":\"2026-10-20T05:20:00Z\","
+                        + "\"session_day_start_ms\":" + D0 + ",\"session_cvd\":999.0,\"session_cum_pv\":9.9E9,"
+                        + "\"session_cum_vol\":5000.0}");
+        FakeKlines src = new FakeKlines();
+        StateCodeEmitter e = fresh(src, NOW1);
+        e.onStreamOpen(CONNECT);
+        assertTrue(e.backfillNow());
+        once(e, () -> e.onStreamClosed("ws_closed"));
+        JsonNode j = emit(e);
+        assertInvalid(j);
+        assertEquals("S", j.get("state_last_valid").asText());
+        reopenAndBackfill(e);
+        assertTrue(e.backfillNow());
+        j = emit(e);
+        assertTrue(j.get("session_accumulators_valid").asBoolean());
+        assertEquals(334 * 4.0, j.get("session_cvd").asDouble(), 1e-6);
+        assertEquals(3340.0, j.get("session_cum_vol").asDouble(), 1e-6);
+        assertEquals(334 * 1000.0, j.get("session_cum_pv").asDouble(), 1e-6);
+    }
+
+    // non-trade traffic during the paused emit changes nothing: still VALID, sums identical
+    @Test
+    public void nonTradeMessageDuringPausedEmitLeavesSumsUnchanged() throws Exception {
+        FakeKlines src = new FakeKlines();
+        StateCodeEmitter e = fresh(src, NOW1);
+        e.onStreamOpen(CONNECT);
+        assertTrue(e.backfillNow());
+        JsonNode before = emit(e);
+        once(e, () -> {
+            e.onMessage("{\"e\":\"markPriceUpdate\",\"T\":" + (M1 + 2_000L) + ",\"p\":\"77\",\"q\":\"9\",\"m\":true}");
+            e.onMessage("{\"result\":null,\"id\":1}");
+            e.onMessage("not json at all");
+        });
+        JsonNode after = emit(e);
+        assertTrue(after.get("session_accumulators_valid").asBoolean());
+        assertEquals(before.get("session_cvd").asDouble(), after.get("session_cvd").asDouble(), 0.0);
+        assertEquals(before.get("session_cum_vol").asDouble(), after.get("session_cum_vol").asDouble(), 0.0);
+        assertEquals(before.get("session_cum_pv").asDouble(), after.get("session_cum_pv").asDouble(), 0.0);
+    }
+
+    // API error on the recovery backfill after a close-before-publish: INVALID with a reason, a later retry recovers
+    @Test
+    public void apiErrorOnRecoveryBackfillAfterRaceStaysInvalidThenRecovers() throws Exception {
+        FakeKlines src = new FakeKlines();
+        StateCodeEmitter e = fresh(src, NOW1);
+        e.onStreamOpen(CONNECT);
+        assertTrue(e.backfillNow());
+        once(e, () -> e.onStreamClosed("ws_closed"));
+        assertInvalid(emit(e));
+        reopenAndBackfill(e);
+        src.behaviour = (st, en) -> { throw new IOException("HTTP 503"); };
+        assertFalse(e.backfillNow());
+        JsonNode j = emit(e);
+        assertInvalid(j);
+        assertFalse(j.get("session_accumulators_reason").asText().isEmpty());
+        src.behaviour = (st, en) -> constBars(st, (int) ((en + 1 - st) / MIN));
+        assertTrue(e.backfillNow());
+        j = emit(e);
+        assertTrue(j.get("session_accumulators_valid").asBoolean());
+        assertEquals(334 * 4.0, j.get("session_cvd").asDouble(), 1e-6);
+    }
 }
