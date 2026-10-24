@@ -39,7 +39,7 @@ STOP = {'K1': 'just past the deepest entry', 'K2': 'just past the next level bey
 EXIT = {'X0_1R': 'target 1 x risk', 'X0_2R': 'target 2 x risk', 'X1': 'target the first level in favour',
         'X2': 'half at the first level in favour, rest by order flow', 'R': 'target at a chosen multiple of risk'}
 DEFAULT = {'entry': 'E1', 'scale': 'S2', 'stop': 'K5', 'stop_pct': ld.MARGIN * 100, 'exit': 'X0_2R', 'target_r': 2.0,
-           'maker_pct': ld.MAKER * 100, 'taker_pct': ld.TAKER * 100, 'start': DEV_FIRST, 'end': DEV_LAST}
+           'maker_pct': ld.MAKER * 100, 'taker_pct': ld.TAKER * 100, 'slip_pct': 0.02, 'start': DEV_FIRST, 'end': DEV_LAST}
 
 
 def params():
@@ -53,6 +53,7 @@ def params():
         {'name': 'target_r', 'label': 'Target, x risk (for "chosen multiple")', 'number': True, 'min': 0.1, 'max': 20.0, 'step': 0.1},
         {'name': 'maker_pct', 'label': 'Limit fee, %', 'number': True, 'min': 0.0, 'max': 1.0, 'step': 0.001},
         {'name': 'taker_pct', 'label': 'Market fee, %', 'number': True, 'min': 0.0, 'max': 1.0, 'step': 0.001},
+        {'name': 'slip_pct', 'label': 'Slippage on market and stop fills, % (ours)', 'number': True, 'min': 0.0, 'max': 1.0, 'step': 0.005},
         {'name': 'start', 'label': 'From', 'date': True, 'min': DEV_FIRST, 'max': DEV_LAST},
         {'name': 'end', 'label': 'To', 'date': True, 'min': DEV_FIRST, 'max': DEV_LAST},
     ]
@@ -84,7 +85,7 @@ def normalize(p):
 def label(q):
     """Short code for the ledger row (codes are the study's own pre-registered names)."""
     ex = f"target {q['target_r']:g}R" if q['exit'] == 'R' else q['exit']
-    return (f"{q['entry']} {q['scale']} {q['stop']} {ex} stop+{q['stop_pct']:g}% fees {q['maker_pct']:g}/{q['taker_pct']:g}% "
+    return (f"{q['entry']} {q['scale']} {q['stop']} {ex} stop+{q['stop_pct']:g}% fees {q['maker_pct']:g}/{q['taker_pct']:g}% slip {q['slip_pct']:g}% "
             f"{q['start']}..{q['end']}")
 
 
@@ -92,7 +93,7 @@ def describe(q):
     """Plain words, no study codes."""
     ex = f"target {q['target_r']:g} x risk" if q['exit'] == 'R' else EXIT[q['exit']]
     return (f"Trade {ENTRY[q['entry']]}; {SCALE[q['scale']]}; stop {STOP[q['stop']]} (+{q['stop_pct']:g} %); {ex}; "
-            f"fees {q['maker_pct']:g} % limit / {q['taker_pct']:g} % market; {q['start']} to {q['end']}.")
+            f"fees {q['maker_pct']:g} % limit / {q['taker_pct']:g} % market, plus {q['slip_pct']:g} % slippage on market and stop fills; {q['start']} to {q['end']}.")
 
 
 # ---- idea cache ----
@@ -165,7 +166,7 @@ def _daybars(arr):
 
 def _fees(q):
     maker = ld.MAKER if q['maker_pct'] == DEFAULT['maker_pct'] else q['maker_pct'] / 100
-    taker = ld.TAKER if q['taker_pct'] == DEFAULT['taker_pct'] else q['taker_pct'] / 100
+    taker = (ld.TAKER if q['taker_pct'] == DEFAULT['taker_pct'] else q['taker_pct'] / 100) + q['slip_pct'] / 100   # slippage on a market fill costs exactly like extra fee
     return {'entry': maker, 'add': taker, 'target': maker, 'stop': taker, 'market': taker}
 
 
