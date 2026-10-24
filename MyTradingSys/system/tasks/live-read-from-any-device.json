@@ -1,7 +1,9 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest scripts/dev/test_live_mirror.py -q"
+  ],
   "created": "2026-10-23T15:36:54Z",
   "depends_on": [],
   "done_when": "On the live host 'live_mirror.py ensure' leaves <root>/CURRENT with a manifest younger than 5 min, 'live_mirror.py brief' on another device shows mirror@<utc> under 15 min after one ensure, new tests green, run_all_tests --quick green, sha on origin/fast-track (git cherry empty)",
@@ -12,7 +14,7 @@
   "goal": "Any machine reads fresh live-engine state on demand with no scheduler (MTS-LiveMirror retired; mirror stale since 2026-10-19). live_mirror.py gets 'ensure' and brief self-publishes when run in the live tree and the published copy is older than 5 min; readers elsewhere get mirror@<utc> via the existing pull. Default (OURS): on-demand trigger, no daemon.",
   "id": "live-read-from-any-device",
   "kind": "build",
-  "lane": "SONNET",
+  "lane": "JIS-NB",
   "latest": [
     {
       "auto": true,
@@ -30,9 +32,9 @@
     }
   ],
   "layers": [],
-  "live_path": false,
+  "live_path": true,
   "mutation_check": "",
-  "note": "Refined by Session_Planner 2026-10-25. Default (OURS): on-demand trigger, no daemon; live-tree deploy stays manual (DEPLOY_RUNBOOK.md).\nREVIEWED:2026-10-25 T0-ONLY",
+  "note": "Refined by Session_Planner 2026-10-25. Default (OURS): on-demand trigger, no daemon; live-tree deploy stays manual (DEPLOY_RUNBOOK.md).\nlive_path set true + lane JIS-NB per Doctor correction 2026-10-25 (mirror reads live-engine state).\nREVIEWED:2026-10-25 T0-ONLY",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
