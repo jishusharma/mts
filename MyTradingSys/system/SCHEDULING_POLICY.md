@@ -27,7 +27,7 @@ A one-shot task created by `scripts/dev/nuc_wake.py` to wake a headless worker f
 `MTS-WorktreeMaint-<device>`: daily headless worktree/branch cleanup, `scripts/dev/wt_maint.py`, same on every device (DEVICES.md s8b). DECISION (OURS): it reverses nothing else; no revival, deploy or relay is implied. Remove with `wt_maint.py uninstall`.
 
 ## 4c. Logon guard (operator 2026-10-24: cleanup on every restart, no scheduler)
-A per-user Run value `MTSTempGuard` (HKCU\Software\Microsoft\Windows\CurrentVersion\Run) runs `scripts/dev/c_drive_guard.py logon` once at each logon, headless (`conhost --headless`). It prunes the %TEMP% set in STATION_CLEANUP.md section 3 and exits. It has no timer, no repeat and no admin rights, so it is not a scheduled task. Register with `c_drive_guard.py install` from the primary checkout; remove with `uninstall`. PROPOSED (OURS), not registered anywhere until the operator says yes; if he says no, keep the SessionStart hook only.
+A per-user Run value `MTSTempGuard` (HKCU\Software\Microsoft\Windows\CurrentVersion\Run) runs `scripts/dev/c_drive_guard.py logon` once at each logon, headless (`conhost --headless`). It prunes the %TEMP% set in STATION_CLEANUP.md section 3 and exits. It has no timer, no repeat and no admin rights, so it is not a scheduled task. Register with `c_drive_guard.py install` from the primary checkout; remove with `uninstall`. Operator yes 2026-10-24 (OURS); registered per station as each acks (STATION_CLEANUP.md section 4).
 
 ## 5. Current state (update this table whenever it changes)
 | Device | State |
