@@ -73,6 +73,25 @@ def stats(res):
     return c
 
 
+START_USD, RISK_PCT = 1000.0, 1.0   # the page's money line: 1,000 USD, 1 % risked per trade, simple sum (as in the levels result)
+
+
+def curve(res, points=400):
+    """Equity curve of the FILLED trades in time order: cumulative R and USD (start 1,000, 1 % risk, simple sum).
+    At most `points` points (even stride, last trade always kept)."""
+    filled = np.asarray(res.get('filled', np.ones(len(res['net']), bool)), bool)
+    net = np.asarray(res['net'], float)[filled]
+    t = np.asarray(res['touch_t'])[filled]
+    order = np.argsort(t, kind='stable')
+    net, t = net[order], t[order]
+    cum = np.cumsum(net)
+    idx = np.arange(len(net))
+    if len(net) > points:
+        idx = np.unique(np.r_[np.linspace(0, len(net) - 1, points).astype(int), len(net) - 1])
+    return {'n': int(len(net)), 'idx': (idx + 1).tolist(), 't': [int(x) for x in t[idx]], 'r': [round(float(x), 4) for x in cum[idx]],
+            'usd': [round(START_USD * (1 + RISK_PCT / 100 * float(x)), 2) for x in cum[idx]], 'start_usd': START_USD, 'risk_pct': RISK_PCT}
+
+
 def verdict(st):
     """(word, reason) from the spread of the actual filled trades (Fable review C2; the two-point model is not used here)."""
     n = st.get('n', 0)
@@ -177,7 +196,7 @@ def run_setting(study, p, trials_path=TRIALS, cache_dir=CACHE, progress=print, c
            'label': study.label(q), 'settings': q, 'cond': cond, 'cond_label': conditions.label(cond), 'n_before_cond': before, 'n': st.get('n', 0), 'mean': st.get('mean'), 'lo': st.get('lo'),
            'hi': st.get('hi'), 'streak': st.get('streak', 0), 'win_rate': st.get('win_rate'),
            'try_no': count_tries(trials_path, study), 'prior_tries': len(_rows(trials_path, f"| {study.PRIOR_TAG} ")) if hasattr(study, 'PRIOR_TAG') else 0,
-           'stats': {k: v for k, v in st.items() if isinstance(v, (int, float))}, 'charts': []}
+           'stats': {k: v for k, v in st.items() if isinstance(v, (int, float))}, 'charts': [], 'curve': curve(res)}
     out['run_seconds'] = round(time.perf_counter() - t0, 2)
     if charts:
         try:

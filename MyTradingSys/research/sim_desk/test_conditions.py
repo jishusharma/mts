@@ -163,3 +163,38 @@ def test_apply_keeps_arrays_and_refs_aligned():
     assert len(out['net']) == len(out['refs']) == 200 and set(out['side'].tolist()) == {-1}
     assert out['refs'] == [r for r in range(400) if r % 2 == 1]
     assert len(out['all_days']) == 100
+
+
+def test_run_time_is_reported_and_cached_run_is_fast(tmp_path):
+    """Step (c): every Run reports run_seconds; a cached Run is far under the 10 s budget."""
+    trials = tmp_path / 'TRIALS.md'
+    trials.write_text('', encoding='utf-8')
+    kw = dict(trials_path=trials, cache_dir=tmp_path / 'c')
+    SideStudy.calls = 0
+    a = desk.run_setting(SideStudy, {'x': 3}, **kw)
+    b = desk.run_setting(SideStudy, {'x': 3}, **kw)
+    assert a['run_seconds'] >= 0 and not a['cached']
+    assert b['cached'] and b['run_seconds'] < 10 and SideStudy.calls == 1
+    assert 'run_seconds' in (HERE / 'page.html').read_text(encoding='utf-8')
+
+
+def test_equity_curve_filled_only_in_time_order():
+    """Step (d): hand-worked: filled nets in time order 1.0, -0.5, 2.0 (the never-filled 0.0 and the early-filed order are handled)."""
+    res = {'net': [-0.5, 0.0, 1.0, 2.0], 'touch_t': [20, 15, 10, 30], 'filled': [True, False, True, True]}
+    c = desk.curve(res)
+    assert c['n'] == 3 and c['idx'] == [1, 2, 3] and c['t'] == [10, 20, 30]
+    assert c['r'] == [1.0, 0.5, 2.5]
+    assert c['usd'] == [1010.0, 1005.0, 1025.0]          # 1,000 USD, 1 % risk per R, simple sum
+
+
+def test_equity_curve_downsamples_and_keeps_last_point():
+    n = 2000
+    res = {'net': [0.1] * n, 'touch_t': list(range(n)), 'filled': [True] * n}
+    c = desk.curve(res, points=100)
+    assert len(c['idx']) <= 101 and c['idx'][-1] == n and c['r'][-1] == pytest.approx(200.0)
+
+
+def test_page_has_equity_and_compare():
+    h = (HERE / 'page.html').read_text(encoding='utf-8')
+    for need in ('id="eqscrub"', 'Keep this run as A', 'id="equnit"'):
+        assert need in h
