@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "2026-10-24 doctor: NOT a deadlock. Each temp-clone git op is slow under load (parallel suites, %TEMP% on a nearly full C:); test_sync.FastShipTest also crawls (spawns worktree add/fetch slowly for 10+ min). On trunk, test_lease.py + test_ship_fast_path.py = 34 passed in 204 s vs the 240 s fast-step budget. Fix: per-file budget or fewer/cheaper git ops in these tests, plus a loud timeout in lease.git(). Ship d8d6f22c7 passed 4b/4c once load dropped.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",

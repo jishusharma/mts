@@ -74,6 +74,6 @@
   ],
   "tests": "No software test: run card. Check each prompt has required nullable fields and contains no claim/truth values; check comparison code counts numeric outputs for truth-null fields as invented and reports only descriptive 7-frame counts.",
   "title": "Run Argon blind-read with null option on the 7 Gemini-pilot frames; settle 25200 vs 25206 and the T6hDJcHrVBM_0550 stop from a larger crop",
-  "weight": "IMPORTANT",
+  "weight": "B-SHARED",
   "worker": "session"
 }
