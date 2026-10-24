@@ -76,7 +76,7 @@ Candle chart library; order entry or paper trading; parameter sliders that *run*
 | 3 | Backtests and thought experiments, past and future | Same card shape with a THOUGHT EXPERIMENT chip; mockup card "What if fees were zero?" (real: +0.072 R gross) |
 | 4 | Light, powerful, fun, dashboards, app look, ROI | Sections 2 and 4; ROI hero first |
 | 5 | Research what people do | Section 1 |
-| 6 | "5 layers match exactly" in plain words | Compare tab "same entries / same exits" per layer; mockup shows "not measured yet" (no live export exists, nothing invented); build item 7 |
+| 6 | "5 layers match exactly" in plain words | Compare tab, real T09 numbers (30 DEV days, live code replayed vs test code): 5 layers exact (turn of candle 2,880/2,880, session momentum 30/30, cvd absorption 99/99, sr flip 130/130, failed msb 17/17); volume_fvg 0 of 24, side flipped; RSI trades events never tested (101 of 240 match); funding_cvd_fade tested on 15m but runs on 1h (0 of 34); escalation misses 68 of 96 (15m); exits differ for every layer (one live 1%/2%/8-bar bracket, 94% timer exits). Source: T09_live_parity.md sections 1, 4, 5 |
 | 7 | One screen, click a test, settings in plain words | Tests cards -> Result with "How it was set up" table |
 | 8 | Visual replay: entry, stop, target, exit, what was considered | Replay tab with 3-step "considered" list; candle chart with stop/target lines only on the local desk (charts.py) because the public repo holds percent distances, not prices; build item 4 |
 | 9 | Why it failed, plainly | Verdict banner sentence + fee bars + level-family table |

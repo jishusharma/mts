@@ -139,9 +139,9 @@ nav button.on{background:var(--bg);color:var(--ink);font-weight:700}
   <tr><td>fib pullback 15m / 1h</td><td><b>mostly</b> 108 of 117</td><td class="neg">different</td></tr>
   <tr><td>rsi events 5m / 15m / 1h</td><td class="neg"><b>no</b> 101 of 240</td><td class="neg">different</td></tr>
   <tr><td>escalation 15m / 1h</td><td class="neg"><b>no</b> 28 of 102</td><td class="neg">different</td></tr>
-  <tr><td>funding cvd fade 1h</td><td class="neg"><b>no</b> 0 of 34</td><td class="neg">different</td></tr>
+  <tr><td>funding cvd fade (tested 15m, runs 1h)</td><td class="neg"><b>no</b> 0 of 34</td><td class="neg">different</td></tr>
   <tr><td>volume fvg 15m / 1h</td><td class="neg"><b>no</b> 0 of 24, side flipped</td><td class="neg">different</td></tr></table>
-  <div class="note">"X of Y" = backtest entries that live also took, same side. Exits: live uses one 1% stop / 2% target / 8-bar time exit for every layer; no test used it. Source (SOURCED): T09_live_parity.md section 4, audit 2026-10-16.</div></div>
+  <div class="note">"X of Y" = backtest entries that live also took, same side. Exits: live uses one 1% stop / 2% target / 8-bar time exit for every layer; no test used it, and about 94% of exits come out as timer exits. Source (SOURCED): T09_live_parity.md section 4, audit 2026-10-16.</div></div>
  <div class="card"><h2>Which level types lost (filled trades)</h2><table id="fam"><tr><th>Level</th><th>n</th><th>Avg R</th></tr></table>
   <div class="note">Families with n below 20 are shown grey: too few to trust, and picking the best one would be a fresh overfit.</div></div>
 </section>
