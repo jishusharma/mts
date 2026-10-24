@@ -1,1 +1,0 @@
-{"t": "20261017T124951Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "start qa-<topic>`, read `CONTROL_ROOM.md` | decision record in `OPERATOR_DECISIONS.md` via `sync.py ship`; blocked data or build work becomes a card (`tasks.py new`) and bug row; one-line `mts_signal."}
