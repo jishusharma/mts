@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --help"
+  ],
+  "created": "2026-10-24T15:40:16Z",
+  "depends_on": [],
+  "done_when": "raw_transcripts_canonical holds the 3 transcripts (or NO CAPTIONS recorded with a non-429 reason) and extracts/gemini_out/fabio/<ID>_note.md passes verify_extract_quotes.py",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Re-run timed caption fetch for 3 Fabio candidate videos that hit HTTP 429 and write a live-trades note per video, quotes verbatim.",
+  "id": "yt-fabio-fetch-retry",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-24T15:40:19Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "raw_transcripts_canonical; extracts/gemini_out/fabio"
+  ],
+  "scope_out": [
+    "scripts; live tree"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/fabio_video_search_2026-10-17/README.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "python scripts/dev/fetch_captions_timed.py HUYBdYnXUNc agjftXPkLUE cLgdXZnLL_0 (see --help; stop on 429 and retry later)",
+    "Overwrite the three notes with 2 verbatim quotes each if captions fetched; commit with Result: line"
+  ],
+  "tests": "verify_extract_quotes.py extracts/gemini_out/fabio/<ID>_note.md exits 0 (notes currently say NO CAPTIONS, so a quote-bearing note fails before)",
+  "title": "Fabio caption retry: HUYBdYnXUNc, agjftXPkLUE, cLgdXZnLL_0 (HTTP 429 in Gemini run; feV6CATGUqo, pZai3k1e-Jg are Video unavailable)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

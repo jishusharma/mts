@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-24T15:07:01Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py extracts/fresh/extract_-dMWA_bbm3o_fresh.md"
   ],
@@ -15,7 +16,14 @@
   "id": "yt-gem-audit-a1",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "outputs pass verify_extract_quotes, 0 problems",
+      "ref": "416a9c6e8",
+      "utc": "2026-10-24T15:07:01Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,7 +33,12 @@
   "refined_by": "",
   "refreshed": "2026-10-24T14:21:50Z",
   "refs": [],
-  "result": "",
+  "result": "outputs pass verify_extract_quotes, 0 problems",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "extracts/gemini_out; extracts/fresh/extract_-dMWA_bbm3o_fresh.md; raw_transcripts_canonical/-dMWA_bbm3o_raw.txt"
   ],
@@ -37,13 +50,14 @@
   "sources": [
     "MyTradingSys/system/AWS_BEDROCK_PILOT.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run python scripts/dev/verify_extract_quotes.py extracts/fresh/extract_-dMWA_bbm3o_fresh.md and record the result",
     "Read transcript and extract; write extracts/gemini_out/-dMWA_bbm3o_audit.md with three bullet lists (unsupported claims, non-verbatim quotes, missed rules), one line per item with a verbatim transcript quote",
     "Check every listed miss against the transcript yourself; drop any you cannot quote",
     "Commit on your branch with a Result: line (counts per list)"
   ],
+  "taken": "2026-10-24T15:07:01Z",
   "tests": "verify_extract_quotes.py extracts/gemini_out/-dMWA_bbm3o_audit.md: every quote in the audit verifies (file absent before this card)",
   "title": "[GEMINI] Extract audit -dMWA_bbm3o",
   "weight": "ROUTINE",
