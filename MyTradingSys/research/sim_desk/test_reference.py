@@ -47,7 +47,7 @@ def test_levels_default_matches_frozen_csv(tmp_path):
     sel = [float(r['S2_K5_X0_2R']) for r in rows if r['E1'] == 'True' and r['S2_K5_X0_2R'] not in ('', 'nan')]
     filled = [v for v in sel if v != 0.0]
     assert (len(sel), len(filled)) == (772, 255)          # the number the old page called "trades"
-    out = _run('levels', tmp_path, {'slip_pct': 0})           # the frozen csv has no slippage
+    out = _run('levels', tmp_path)
     assert out['n'] == 255 and out['nofill'] == 517
     assert out['mean'] == pytest.approx(float(np.mean(filled)), abs=2e-3)       # -0.119 R, fee-net
     assert out['win_rate'] == pytest.approx(sum(v > 0 for v in filled) / 255, abs=2e-3)
@@ -59,7 +59,7 @@ def test_levels_default_matches_frozen_csv(tmp_path):
 @needs_bars
 @pytest.mark.parametrize('sid,n', [('rsi', 2), ('wavetrend', 369)])
 def test_bar_studies_default_counts(sid, n, tmp_path):
-    out = _run(sid, tmp_path)         # slippage changes R, never the trade count
+    out = _run(sid, tmp_path)
     assert out['n'] == n
 
 
@@ -73,22 +73,3 @@ def test_net_is_gross_minus_fees_and_unfilled_is_zero(sid, tmp_path):
     assert f.sum() > 0
     assert np.allclose(net[f], gross[f] - fees[f], atol=1e-9)
     assert np.all(net[~f] == 0.0)
-
-
-@needs_bars
-def test_slippage_hits_market_and_stop_legs_only(tmp_path):
-    """0.1 % slippage lowers levels net by more than 0.05 R; a limit-only leg set (maker fee, no market fills) is unchanged.
-    Hand check: slip s on a market/stop fill costs s * price / risk in R, the same as that much extra fee."""
-    levels = desk.STUDIES['levels']
-    if not levels.cache_ready():
-        pytest.skip('levels idea cache not built')
-    a = _run('levels', tmp_path, {'slip_pct': 0})
-    b = _run('levels', tmp_path, {'slip_pct': 0.1})
-    assert a['n'] == b['n'] and a['mean'] - b['mean'] > 0.05
-    assert desk.numbers  # strip exists
-    s = desk.STUDIES['wavetrend']
-    r0 = s.run(s.normalize({'slip_pct': 0}), progress=lambda x: None)
-    r1 = s.run(s.normalize({'slip_pct': 0.1}), progress=lambda x: None)
-    f = r0['filled']
-    assert (r1['filled'] == f).all() and (r1['gross'][f] == r0['gross'][f]).all()          # prices unchanged
-    assert (r1['fees'][f] > r0['fees'][f]).all()                                           # cost enters through the market legs

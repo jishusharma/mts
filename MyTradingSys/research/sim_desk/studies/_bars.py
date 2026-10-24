@@ -20,11 +20,9 @@ BAR_CACHE = HERE / 'cache' / 'bars'
 MIN, DAY = 60000, 86400000
 WARMUP_FROM = '2022-01'       # indicator warm-up only; trades start inside the DEV window
 LAST_MONTH = '2024-06'        # DEV ends 2024-06-30: nothing later is ever read
-SLIP_DEFAULT = 0.02   # percent against every market and stop fill (ours); limit fills are not slipped
-FEE_DEFAULT = {'maker_pct': BINANCE_MAKER * 100, 'taker_pct': BINANCE_TAKER * 100, 'slip_pct': SLIP_DEFAULT}
+FEE_DEFAULT = {'maker_pct': BINANCE_MAKER * 100, 'taker_pct': BINANCE_TAKER * 100}
 FEE_PARAMS = [{'name': 'maker_pct', 'label': 'Limit fee, %', 'number': True, 'min': 0.0, 'max': 1.0, 'step': 0.001},
-              {'name': 'taker_pct', 'label': 'Market fee, %', 'number': True, 'min': 0.0, 'max': 1.0, 'step': 0.001},
-              {'name': 'slip_pct', 'label': 'Slippage on market and stop fills, % (ours)', 'number': True, 'min': 0.0, 'max': 1.0, 'step': 0.005}]
+              {'name': 'taker_pct', 'label': 'Market fee, %', 'number': True, 'min': 0.0, 'max': 1.0, 'step': 0.001}]
 
 
 def _months(first, last):
@@ -173,7 +171,7 @@ def chart(a, ref, tr, level):
 def collect(signals, a, q, make):
     """Run signals in time order, one position at a time. make(sig) -> (side, t_from, trig, stop, target,
     t_window_end, t_exit, t_hold_end, level). Returns the desk's result dict; refs replay a trade exactly."""
-    taker, maker = (q['taker_pct'] + q['slip_pct']) / 100, q['maker_pct'] / 100
+    taker, maker = q['taker_pct'] / 100, q['maker_pct'] / 100
     lo, hi = day_ms(q['start']), day_ms(q['end']) + DAY
     out = {k: [] for k in ('day', 'touch_t', 'side', 'net', 'gross', 'fees', 'filled', 'refs')}
     busy_until = -1
@@ -204,4 +202,4 @@ def collect(signals, a, q, make):
 
 
 def replay(a, ref, q):
-    return run_trade(a, *ref[:8], (q['taker_pct'] + q['slip_pct']) / 100, q['maker_pct'] / 100)
+    return run_trade(a, *ref[:8], q['taker_pct'] / 100, q['maker_pct'] / 100)

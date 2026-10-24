@@ -66,7 +66,7 @@ def normalize(p):
 def label(q):
     ex = f"target {q['target_r']:g}R" if q['exit'] == 'R' else 'RSI 60/40'
     return (f"{q['tf']} {q['entry']} {ex} band {q['tolerance']:g} trend {q['lookback']} "
-            f"fees {q['maker_pct']:g}/{q['taker_pct']:g}% slip {q['slip_pct']:g}% {q['start']}..{q['end']}{_bars.coin_tag(q)}")
+            f"fees {q['maker_pct']:g}/{q['taker_pct']:g}% {q['start']}..{q['end']}{_bars.coin_tag(q)}")
 
 
 def describe(q):
@@ -74,7 +74,7 @@ def describe(q):
     return (f"{_bars.SYMBOLS[_bars.symbol_of(q)].split(' (')[0]}, {TF[q['tf']].split(' (')[0]} RSI {PERIOD}: long when RSI dips to within {q['tolerance']:g} of 40 "
             f"and turns up on a green candle in an up-trend (short: mirror at 60); "
             f"{ENTRY[q['entry']].split(' (')[0]}, stop past the signal candle, exit on {ex} or after {MAX_HOLD} bars; "
-            f"fees {q['maker_pct']:g} % limit / {q['taker_pct']:g} % market, plus {q['slip_pct']:g} % slippage on market and stop fills; {q['start']} to {q['end']}.")
+            f"fees {q['maker_pct']:g} % limit / {q['taker_pct']:g} % market; {q['start']} to {q['end']}.")
 
 
 def _signals(q, a):

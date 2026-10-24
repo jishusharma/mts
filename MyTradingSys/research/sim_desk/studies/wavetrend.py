@@ -66,7 +66,7 @@ def normalize(p):
 
 def label(q):
     ex = f"target {q['target_r']:g}R" if q['exit'] == 'R' else 'opposite cross'
-    return (f"{q['tf']} band {q['band']} {q['sides']} {ex} fees {q['maker_pct']:g}/{q['taker_pct']:g}% slip {q['slip_pct']:g}% "
+    return (f"{q['tf']} band {q['band']} {q['sides']} {ex} fees {q['maker_pct']:g}/{q['taker_pct']:g}% "
             f"{q['start']}..{q['end']}{_bars.coin_tag(q)}")
 
 
@@ -76,7 +76,7 @@ def describe(q):
     short = '' if q['sides'] == 'LONG' else f"; short on a down-cross above +{q['band']}"
     return (f"{_bars.SYMBOLS[_bars.symbol_of(q)].split(' (')[0]}, {TF[q['tf']].split(' (')[0]} WaveTrend: {who} WT1 crosses up through WT2 below -{q['band']}{short}; "
             f"market entry at the next bar, stop past the last 3 bars, exit on {ex} or after {MAX_HOLD} bars; "
-            f"fees {q['maker_pct']:g} % limit / {q['taker_pct']:g} % market, plus {q['slip_pct']:g} % slippage on market and stop fills; {q['start']} to {q['end']}.")
+            f"fees {q['maker_pct']:g} % limit / {q['taker_pct']:g} % market; {q['start']} to {q['end']}.")
 
 
 def run(q, progress=print):

@@ -21,7 +21,7 @@ FROZEN = json.loads((STUDY_DIR / 'frozen_rule.json').read_text(encoding='utf-8')
 import desk  # noqa: E402
 from studies import levels as study_levels  # noqa: E402
 
-FROZEN_P = {'entry': 'E1', 'scale': 'S2', 'stop': 'K5', 'exit': 'X0_2R', 'slip_pct': 0}   # the frozen study has no slippage
+FROZEN_P = {'entry': 'E1', 'scale': 'S2', 'stop': 'K5', 'exit': 'X0_2R'}
 
 
 # ---- verdict (the study runner's rule order) ----
