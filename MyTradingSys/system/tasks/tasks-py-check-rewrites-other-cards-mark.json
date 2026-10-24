@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-24T18:50:24Z",
   "commands": [
     "python scripts/dev/tasks.py check argon-fix-defects-and-re-land",
     "git -C <work tree> diff -- MyTradingSys/system/tasks/"
@@ -16,6 +17,12 @@
   "id": "tasks-py-check-rewrites-other-cards-mark",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "save() no longer rewrites cited cards; test_tasks 102 pass",
+      "ref": "5879e97d3",
+      "utc": "2026-10-24T18:50:24Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,7 +40,12 @@
   "refined_by": "",
   "refreshed": "2026-10-24T13:39:27Z",
   "refs": [],
-  "result": "",
+  "result": "save() no longer rewrites cited cards; test_tasks 102 pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/tasks.py; scripts/dev/test_tasks*.py (if present)"
   ],
@@ -43,13 +55,14 @@
   "scope_sha": "464110c710d8",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Reproduce: copy argon-blind-read-7-frames.json, run check on argon-fix-defects-and-re-land, confirm the weight changes",
     "Write a test that fails on the current code (other card's bytes change)",
     "Fix tasks.py so check writes only the named card",
     "Run the test and tasks.py check on both cards; ship"
   ],
+  "taken": "2026-10-24T18:50:24Z",
   "tests": "New test fails on the current code (another card's file is rewritten by check) and passes after the fix.",
   "title": "tasks.py check rewrites other cards: marks cited cards B-SHARED and edits their files",
   "weight": "",
