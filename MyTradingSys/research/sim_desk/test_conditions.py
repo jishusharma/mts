@@ -196,7 +196,7 @@ def test_equity_curve_downsamples_and_keeps_last_point():
 
 def test_page_has_equity_and_compare():
     h = (HERE / 'page.html').read_text(encoding='utf-8')
-    for need in ('id="eqscrub"', 'Keep this run as A', 'id="equnit"'):
+    for need in ('id="eqscrub"', 'Keep this run as A', 'id="equnit"', 'worst drawdown', 'drawdown shaded'):
         assert need in h
 
 
