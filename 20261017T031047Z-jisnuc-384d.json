@@ -1,1 +1,0 @@
-{"t": "20261017T031047Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "release split-alignment 2>&1 | tail -3; python $W/scripts/dev/sync.py release [cut] 2>&1 | tail -2; wc -l $W/MyTradingSys/system/NEXT_SESSION.md $W/MyTradingSys/system/SUPER_SESSION.md; sed -n 1,40p $"}

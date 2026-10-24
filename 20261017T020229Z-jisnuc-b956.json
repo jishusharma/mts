@@ -1,1 +1,0 @@
-{"t": "20261017T020229Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship --release lab-ship-5 2>&1 | grep -E \"^ +E |FAILED|PASSED|shipped|Step 4c\" | head -12"}

@@ -1,1 +1,0 @@
-{"t": "20261017T034604Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship dsa-bridge-keepalive Result: link health + reconnect logic unit-tested (14 node tests, 5 new fail on old loop.js); decision in research/dsa_bridge_keepalive_2026-10-17/DECISION.md; needs operator"}
