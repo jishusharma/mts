@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-24T20:16:18Z",
   "commands": [],
   "created": "2026-10-24T19:50:28Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "t09-f5-funding-cvd-fade-backtest-at-1h",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "1h DEV live cfg n295 net R +0.201 [0.015,0.387]; non-overlap n177 +0.050 [-0.205,0.306]; s",
+      "ref": "9198c7e72",
+      "utc": "2026-10-24T20:16:18Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refined_by": "",
   "refreshed": "2026-10-24T19:50:37Z",
   "refs": [],
-  "result": "",
+  "result": "1h DEV live cfg n295 net R +0.201 [0.015,0.387]; non-overlap n177 +0.050 [-0.205,0.306]; sim_desk/results/t09-f5-funding-cvd-fade-1h.json",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/",
     "MyTradingSys/research/sim_desk/results/"
@@ -43,13 +55,14 @@
   "scope_sha": "c725894dbf26",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read T09 F5 and run_t055.py",
     "Run at 1h on DEV",
     "Write TRIALS row + sim result JSON",
     "Ship"
   ],
+  "taken": "2026-10-24T20:16:18Z",
   "tests": "A small fixture test that the 1h resample feeds the rule (fails on the 15m-only path); numbers recomputed from FORMULAS.md.",
   "title": "T09-F5: re-test funding_cvd_fade on 1h bars (live runs 1h, verdict was on 15m)",
   "weight": "",
