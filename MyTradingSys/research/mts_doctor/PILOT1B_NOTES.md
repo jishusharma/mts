@@ -21,3 +21,6 @@ Not mine: bt-engine-wire-real-funding-rsi-cc-rerun, Krown K1 GPT audit (yt-burn)
 ## Findings
 - 14:50Z FINDING: S1 and H1 workers were started as Agents in the coordinator's tree (no own worktree); risk: one ship carries the other's files (counts toward row 4). Rule from Doctor 14:58Z: commit only own paths, ship one at a time, W1/R1 get their own worktree (`isolation: worktree`).
 - 14:50Z gate poller #1 timed out at 20 min (no gate commit); poller #2 running.
+- 15:08Z gate fix bd0fcf941 on trunk. W1 was already shipped by another host (4463a42e7); W1b started for manifest json.
+- 15:21Z FINDING: editing scripts/dev/run_extra_tests.py to register a new test makes sync.py ship run mode=FULL gate (shards 570-690 s, 25+ min with 3 ships at once). S1 and W1b gates killed at 15 min by workers; H1 ship (tree) ran on.
+- 15:21Z Lab_Guy ACCEPT R1 (second pass); R1 worker started, own worktree.
