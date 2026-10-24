@@ -91,7 +91,7 @@ def path_of(repo, cid):
 
 
 def promote_shared(repo):
-    """Mark a cited card B-SHARED when another card names it in scope_in."""
+    """Mark a cited card B-SHARED when another card names it in scope_in. Explicit call only: save() must write just its own card (DECISION OURS 2026-10-25)."""
     d = tdir(repo)
     if not d.is_dir():
         return
@@ -116,7 +116,6 @@ def save(repo, card):
     p = path_of(repo, card["id"])
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(card, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
-    promote_shared(repo)
     return p
 
 

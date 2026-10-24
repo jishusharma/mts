@@ -23,7 +23,7 @@
     "MyTradingSys/research/mts_doctor/context_cost_2026-10-24.md",
     "MyTradingSys/research/mts_doctor/PILOT_super_session_2026-10-24.md"
   ],
-  "result": "",
+  "result": "Part (a) PASS 2026-10-24 (research/mts_doctor/ROTATION_TEST_2026-10-24.md): clear_session + one rebuild message restored 9/9 state items and the right next action, 0 operator turns. Open: part (b) autoCompactWindow in the desktop app; WORKERS.md rule 5 text.",
   "scope_in": [],
   "scope_out": [],
   "size": "",
