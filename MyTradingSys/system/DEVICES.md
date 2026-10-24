@@ -73,6 +73,17 @@ Backtest data (F:\MTS\data on the NUC) is not in git; it is copied after new rec
 
 ## 6. JIS-NB (desktop) - primary, source of truth for the repository
 
+### 2026-10-25 status (cleanup session, login C; operator)
+- Disk: C: 12 GB free of 121. C: and F: are both partitions on one Kingston SSD (224 GB); a 0.6 GB Recovery partition sits between them, so C: cannot grow without a partition tool. Pagefile moved to F: (fixed 8192-16384 MB), none on C:; takes effect after restart (pending at time of writing).
+- Claude VM image: `Claude-Data\claude_pzs8sxrjxfjjc\vm_bundles` is a junction to `F:\ClaudeVM\vm_bundles` (11.8 GB on F:, not C:). The earlier "11.6 GB on C:" note was wrong.
+- Outlook cache: `%LOCALAPPDATA%\Microsoft\Outlook` is a junction to `F:\Outlook` (1.29 GB). The old copy was deleted by the operator.
+- Thunderbolt: software, services and driver package (`oem163.inf`) removed. No Thunderbolt hardware (MSI H87-G43).
+- Removed: Intel Documentation Manager; the stale Kimi uninstall entry (Kimi's files were already gone).
+- Kept on purpose: Docker Desktop and WSL (operator's projects), Zoom, Free Snipping Tool, WinRAR (operator uses them).
+- Undecided, operator to answer: Intel Driver & Support Assistant, NVIDIA Ansel (no uninstall entry), Araxis Merge, Discord, classic Teams, GoTo, OpenVPN, TeamViewer, Documentum, IntelliJ, PuTTY, Intel Software Installer. Firefox: operator reports removed; not re-verified.
+- Logon guard (`c_drive_guard.py install`): approved; not registered here yet, because the primary checkout is 105 commits behind fast-track with 67 local changes that are not ours.
+- Station cleanup detail and the roll-call status: STATION_CLEANUP.md.
+
 - Live loop: runs here until the cutover in LIVE_HOST_MOVE.md section 4; after it this tree's `.mts_live` is renamed `.mts_live.retired-<date>`, the tree is kept unchanged 14 days as the rollback copy, and JIS-NB is the operator screen + cold standby only (one-owner rule, section 3).
 
 - Hardware: i7-4770K, 32 GB RAM; domain eng.e-ngineers.com. Windows account (interactive, own login): E-ngineers.

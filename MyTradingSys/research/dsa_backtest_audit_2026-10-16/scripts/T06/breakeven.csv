@@ -1,0 +1,14 @@
+study,arm,n,gross_pct,source,charged_rt_pct,breakeven_rt_cost_bp,headroom_vs_charged_bp,breakeven_slip_per_fill_bp_A_all_taker_deribit_10bp,breakeven_slip_per_fill_bp_B_maker_in_time_exit_taker_5bp,breakeven_slip_per_fill_bp_C_all_maker_deribit_0bp,breakeven_slip_per_fill_bp_D_binance_maker_4bp
+gross_effect_screen,arm T d=1 h=60,40,-0.0561,"measured, real funding",0.14,-5.61,-19.61,-7.81,-5.31,-2.81,-4.81
+gross_effect_screen,arm notF d=1 h=60,1399,-0.00548,"measured, real funding",0.14,-0.55,-14.55,-5.27,-2.77,-0.27,-2.27
+gross_effect_screen,arm C d=1 h=60,1439,-0.00688,"measured, real funding",0.14,-0.69,-14.69,-5.34,-2.84,-0.34,-2.34
+mal_bb_mid_engulf_2026-10-16,"A1: engulf (a) close, SHORT, h=60",1179,0.01379,"measured, real funding",0.14,1.38,-12.62,-4.31,-1.81,0.69,-1.31
+mal_bb_mid_engulf_2026-10-16,"A2: second break close, SHORT, h=60",807,0.01591,"measured, real funding",0.14,1.59,-12.41,-4.2,-1.7,0.8,-1.2
+opr_bb_mtf_center_2026-10-16,"AU: touch bar closes above its mid, LONG, h=120",194,0.02046,"measured, real funding",0.14,2.05,-11.95,-3.98,-1.48,1.02,-0.98
+opr_bb_mtf_center_2026-10-16,"AD: touch bar closes below its mid, SHORT, h=120",282,0.03591,"measured, real funding",0.14,3.59,-10.41,-3.2,-0.7,1.8,-0.2
+opr_preopen_tops_2026-10-16,"H1: S1 quick, SHORT at the break close, h=60",105,-0.01014,"measured, real funding",0.14,-1.01,-15.01,-5.51,-3.01,-0.51,-2.51
+opr_preopen_tops_2026-10-16,"H2: S1 slow, LONG at the break close, h=60",104,0.03801,"measured, real funding",0.14,3.8,-10.2,-3.1,-0.6,1.9,-0.1
+opr_weekly_low_round_sweep_2026-10-16,"RL: reclaim within 5 min, LONG at the reclaim close, h=60",685,0.03177,"measured, real funding",0.14,3.18,-10.82,-3.41,-0.91,1.59,-0.41
+opr_weekly_low_round_sweep_2026-10-16,"AS: first three closes below, SHORT at the third close, h=60",525,-0.03649,"measured, real funding",0.14,-3.65,-17.65,-6.82,-4.32,-1.82,-3.82
+layer_lab/candle_close_2026-10-14,best of 126 arms (net -4.68 bp at 14 bp => gross +9.32 bp),n/a,0.0932,derived from AUDIT_BRIEF 1b row 9,0.14,9.32,-4.68,-0.34,2.16,4.66,2.66
+mfe_exit_2026-10-13,turn_of_candle gross about +0.3 bp,n/a,0.003,AUDIT_BRIEF 1b row 14,0.14,0.3,-13.7,-4.85,-2.35,0.15,-1.85
