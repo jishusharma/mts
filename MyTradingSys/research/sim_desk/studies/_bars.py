@@ -173,7 +173,7 @@ def collect(signals, a, q, make):
     t_window_end, t_exit, t_hold_end, level). Returns the desk's result dict; refs replay a trade exactly."""
     taker, maker = q['taker_pct'] / 100, q['maker_pct'] / 100
     lo, hi = day_ms(q['start']), day_ms(q['end']) + DAY
-    out = {k: [] for k in ('day', 'touch_t', 'net', 'gross', 'fees', 'filled', 'refs')}
+    out = {k: [] for k in ('day', 'touch_t', 'side', 'net', 'gross', 'fees', 'filled', 'refs')}
     busy_until = -1
     for s in signals:
         ref = make(s)
@@ -190,10 +190,11 @@ def collect(signals, a, q, make):
             busy_until = r['exit'][0] + MIN
         out['day'].append(ref[1] // DAY)
         out['touch_t'].append(ref[1])
+        out['side'].append(int(ref[0]))
         out['net'].append(r['net_r']); out['gross'].append(r['gross_r']); out['fees'].append(r['fee_r'])
         out['filled'].append(r['filled'])
         out['refs'].append(ref)
-    res = {k: np.array(v, dtype=np.int64 if k in ('day', 'touch_t') else bool if k == 'filled' else float)
+    res = {k: np.array(v, dtype=np.int64 if k in ('day', 'touch_t', 'side') else bool if k == 'filled' else float)
            for k, v in out.items() if k != 'refs'}
     res['refs'] = out['refs']
     res['all_days'] = list(range(lo // DAY, hi // DAY))

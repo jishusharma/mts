@@ -15,6 +15,7 @@ import json
 import math
 import sys
 import threading
+import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -22,6 +23,7 @@ import numpy as np
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+import conditions  # noqa: E402
 TRIALS = HERE.parent / 'layer_lab' / 'TRIALS.md'
 CACHE = HERE / 'cache' / 'results'
 DEV_FIRST, DEV_LAST = dt.date(2022, 4, 1), dt.date(2024, 6, 30)
@@ -101,7 +103,7 @@ def count_tries(trials_path, study):
     return len(_rows(trials_path, f'| sim-desk {study.ID} '))
 
 
-RESULT_VERSION = 2   # 2: results carry the per-idea filled flag
+RESULT_VERSION = 3   # 3: results carry the per-idea side (conditions need it)
 
 
 def _key(study, q):
@@ -110,14 +112,15 @@ def _key(study, q):
     return hashlib.sha256(raw.encode()).hexdigest()[:20]
 
 
-def _tag(study, q):
-    return f'| sim-desk {study.ID} {study.label(q)} |'
+def _tag(study, q, cond=None):
+    c = conditions.label(cond) if cond else ''
+    return f'| sim-desk {study.ID} {study.label(q)}{" ~ if " + c if c else ""} |'
 
 
-def _append_row(trials_path, study, q, st, word):
+def _append_row(trials_path, study, q, st, word, cond=None):
     res = (f"filled n {st['n']} ({st.get('nofill', 0)} never filled), mean net R {st['mean']:+.3f} [{st['lo']:+.3f}, {st['hi']:+.3f}], worst losing streak {st['streak']}; {word}"
            if st.get('n') else f'n 0; {word}')
-    row = (f"| {dt.date.today():%Y-%m-%d} {_tag(study, q)} {CMD} | DEV {q['start']}..{q['end']}; "
+    row = (f"| {dt.date.today():%Y-%m-%d} {_tag(study, q, cond)} {CMD} | DEV {q['start']}..{q['end']}; "
            f"VALIDATION/HOLDOUT never offered | {res} |")
     p = Path(trials_path)
     text = p.read_text(encoding='utf-8') if p.exists() else ''
@@ -126,29 +129,56 @@ def _append_row(trials_path, study, q, st, word):
     p.write_text(text + row + NL, encoding='utf-8', newline=NL)
 
 
-def run_setting(study, p, trials_path=TRIALS, cache_dir=CACHE, progress=print, charts=False):
-    """Normalize p, run (or read the cache), ledger row for a new setting, verdict. Returns a JSON-ready dict."""
-    q = study.normalize(p)
+def _raw(study, q, cache_dir, progress):
+    """(result arrays, from_cache) for normalized settings q; conditions are not part of the key."""
     cache_dir = Path(cache_dir)
     f = cache_dir / f'{study.ID}_{_key(study, q)}.json'
-    cached = f.exists()
-    if cached:
+    if f.exists():
         res = json.loads(f.read_text(encoding='utf-8'))
-        res = {k: (np.array(v) if k != 'refs' else v) for k, v in res.items()}
-    else:
-        res = study.run(q, progress=progress)
-        cache_dir.mkdir(parents=True, exist_ok=True)
-        f.write_text(json.dumps({k: (v.tolist() if isinstance(v, np.ndarray) else v) for k, v in res.items()}), encoding='utf-8')
+        return {k: (np.array(v) if k != 'refs' else v) for k, v in res.items()}, True
+    res = study.run(q, progress=progress)
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    f.write_text(json.dumps({k: (v.tolist() if isinstance(v, np.ndarray) else v) for k, v in res.items()}), encoding='utf-8')
+    return res, False
+
+
+def _apply_conditions(study, q, res, cond, cache_dir, progress):
+    minute = None
+    if 'ema_rel' in cond or 'atr_lo' in cond:
+        from studies import _bars
+        minute = _bars.load_1m(progress, q.get('symbol', 'BTCUSDT'))
+    b_times = None
+    if 'layer_b' in cond:
+        if cond['layer_b'] not in STUDIES:
+            raise ValueError(f"layer B: no study called {cond['layer_b']!r} (have {', '.join(STUDIES)})")
+        b = STUDIES[cond['layer_b']]
+        b_res, _ = _raw(b, b.normalize({}), cache_dir, progress)
+        b_times = b_res['touch_t']
+    from studies import _bars as bars_mod
+    keep = conditions.mask(cond, res['touch_t'], res['side'], minute, b_times, bars_mod.resample)
+    return conditions.apply(res, keep)
+
+
+def run_setting(study, p, trials_path=TRIALS, cache_dir=CACHE, progress=print, charts=False, cond=None):
+    """Normalize p, run (or read the cache), ledger row for a new setting, verdict. Returns a JSON-ready dict."""
+    t0 = time.perf_counter()
+    q = study.normalize(p)
+    cond = conditions.normalize(cond)
+    res, cached = _raw(study, q, cache_dir, progress)
+    before = int(np.asarray(res['filled']).sum()) if 'filled' in res else None
+    if cond:
+        res = _apply_conditions(study, q, res, cond, cache_dir, progress)
     st = stats(res)
     word, reason = verdict(st)
-    tried = any(_tag(study, q) in ln for ln in _rows(trials_path, '| sim-desk '))   # keyed on the ledger, not this tree's cache
+    tried = any(_tag(study, q, cond) in ln for ln in _rows(trials_path, '| sim-desk '))   # keyed on the ledger, not this tree's cache
     if not tried:
-        _append_row(trials_path, study, q, st, word)   # the ledger row lands before the result is shown
+        _append_row(trials_path, study, q, st, word, cond)   # the ledger row lands before the result is shown
     out = {'verdict': word, 'reason': reason, 'cached': cached, 'already_tried': tried, 'nofill': st.get('nofill', 0), 'describe': study.describe(q),
-           'label': study.label(q), 'settings': q, 'n': st.get('n', 0), 'mean': st.get('mean'), 'lo': st.get('lo'),
+           'label': study.label(q), 'settings': q, 'cond': cond, 'cond_label': conditions.label(cond), 'n_before_cond': before, 'n': st.get('n', 0), 'mean': st.get('mean'), 'lo': st.get('lo'),
            'hi': st.get('hi'), 'streak': st.get('streak', 0), 'win_rate': st.get('win_rate'),
            'try_no': count_tries(trials_path, study), 'prior_tries': len(_rows(trials_path, f"| {study.PRIOR_TAG} ")) if hasattr(study, 'PRIOR_TAG') else 0,
            'stats': {k: v for k, v in st.items() if isinstance(v, (int, float))}, 'charts': []}
+    out['run_seconds'] = round(time.perf_counter() - t0, 2)
     if charts:
         try:
             import charts as ch
@@ -255,6 +285,8 @@ class Handler(BaseHTTPRequestHandler):
         if self.path == '/api/studies':
             return self._send(200, [{'id': s.ID, 'title': s.TITLE, 'params': s.params(), 'defaults': s.normalize({}),
                                      'tries': count_tries(TRIALS, s)} for s in STUDIES.values()])
+        if self.path == '/api/conditions':
+            return self._send(200, {'fields': conditions.FIELDS, 'defaults': conditions.DEFAULT, 'layers': list(STUDIES)})
         if self.path == '/api/progress':
             return self._send(200, PROGRESS)
         if self.path == '/api/questions':
@@ -277,7 +309,7 @@ class Handler(BaseHTTPRequestHandler):
             study = STUDIES[body['study']]
             with LOCK:
                 PROGRESS['line'] = 'running...'
-                out = run_setting(study, body.get('params', {}), progress=lambda s: PROGRESS.update(line=s), charts=True)
+                out = run_setting(study, body.get('params', {}), progress=lambda s: PROGRESS.update(line=s), charts=True, cond=body.get('cond'))
                 PROGRESS['line'] = ''
             self._send(200, out)
         except (ValueError, KeyError) as e:

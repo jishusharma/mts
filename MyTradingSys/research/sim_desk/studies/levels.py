@@ -196,7 +196,7 @@ def _run_month(args):
     m_start, q = args
     blob = _load_month(m_start)
     d0, d1 = _day_num(q['start']), _day_num(q['end'])
-    out = {'day': [], 'touch_t': [], 'net': [], 'gross': [], 'fees': [], 'filled': [], 'refs': [], 'all_days': set()}
+    out = {'day': [], 'touch_t': [], 'side': [], 'net': [], 'gross': [], 'fees': [], 'filled': [], 'refs': [], 'all_days': set()}
     ctxs = {}
     for k, idea in enumerate(blob['ideas']):
         d = idea['day']
@@ -212,7 +212,7 @@ def _run_month(args):
         r = simulate_one(db, idea, q, ctx)
         if r is None:
             continue
-        out['day'].append(d); out['touch_t'].append(idea['touch_t'])
+        out['day'].append(d); out['touch_t'].append(idea['touch_t']); out['side'].append(int(idea['side']))
         out['net'].append(r['net_r']); out['gross'].append(r['gross_r']); out['fees'].append(r['fees_r'])
         out['filled'].append(r['filled_qty'] > 0)
         out['refs'].append([m_start, k])
@@ -227,13 +227,13 @@ def run(q, progress=print):
     todo = [(a, q) for a, b in _months() if a // DAY <= d1 and (b - 1) // DAY >= d0]
     with ProcessPoolExecutor(max_workers=max(1, min(len(todo), (os.cpu_count() or 2) - 1))) as ex:
         parts = list(ex.map(_run_month, todo))
-    res = {k: [] for k in ('day', 'touch_t', 'net', 'gross', 'fees', 'filled', 'refs')}
+    res = {k: [] for k in ('day', 'touch_t', 'side', 'net', 'gross', 'fees', 'filled', 'refs')}
     days = set()
     for p in parts:
         for k in res:
             res[k] += p[k]
         days |= p['all_days']
-    out = {k: np.array(v, dtype=np.int64 if k in ('day', 'touch_t') else bool if k == 'filled' else float)
+    out = {k: np.array(v, dtype=np.int64 if k in ('day', 'touch_t', 'side') else bool if k == 'filled' else float)
            for k, v in res.items() if k != 'refs'}
     out['refs'] = res['refs']
     out['all_days'] = np.array(sorted(days), dtype=np.int64)
