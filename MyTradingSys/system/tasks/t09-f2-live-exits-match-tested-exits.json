@@ -4,31 +4,56 @@
   "commands": [],
   "created": "2026-10-24T19:50:03Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "New tests red before / green after; test_auto_trader*.py pass; each table entry quotes its backtest file:line (else OURS/SAMPLING); every layer log row has bracket_source in {SAMPLING, TESTED:<file:line>}.",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Stop pretending the one 1%/2%/8-bar bracket is a tested exit: per layer, either use the exit its backtest used, or keep the bracket and make every layer log row and report say SAMPLING-only.",
   "id": "t09-f2-live-exits-match-tested-exits",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "layer_signal: reject collection_only before the unmapped check",
+      "ref": "65d1be4afa08",
+      "utc": "2026-10-16T16:07:00Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-25 ACCEPT\n(reviewer agent a3c19d17, different from drafter; its FIX items applied.) Live-path rules: tests for restart/reset state, non-trade balance moves and API errors; safety checks fail closed. Builder edits code in a worktree only; never deploys or touches the live tree. CRITICAL: coordinator spawns a review session before ship. 97% of testnet exits are time exits (94% by arithmetic). Per-layer exit values are OURS unless a backtest file:line is quoted. Not live_path:true (means lane JIS-NB): a worktree code change; the live tree changes only by a later manual or coordinator deploy.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-24T21:34:11Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/execution/auto_trader.py",
+    "MyTradingSys/execution/auto_trader_config.json",
+    "MyTradingSys/execution/test_auto_trader.py"
+  ],
+  "scope_out": [
+    "position_manager.py, executor.py, live_layers.py signal code, deploy, live tree, size_overrides values"
+  ],
+  "scope_sha": "65d1be4afa08",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T09_live_parity.md section 5 T09-F2, F6 and section 6",
+    "F:/MTS/gq/gx4-t09-* (GPT drafting fixes on the NUC night of 2026-10-25; not read here; compare its draft before building)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read auto_trader.py l.69-75 and layer_signal l.433-445 plus the backtest exits in T09 section 6; list per layer family its tested exit (RSI 1%/2%/100 bars, cc structure stop + R target, Fabio/T055 fixed horizon).",
+    "Add fail-first tests in test_auto_trader.py: layer_signal for a cc event with a stop uses the event stop (F6); an rsi alert gets the RSI tested bracket; an unknown layer with no per-layer exit fails closed to the labelled SAMPLING bracket.",
+    "Add an optional per-layer exit table read by layer_signal: stop as % of entry (an event stop price is converted to % of the market entry; missing, zero or wrong-side stop rejects). Layers with no tested stop/target (Fabio, T055: fixed horizon only) keep the SAMPLING bracket and take only the tested hold. Default unchanged.",
+    "Add tests: config reload/restart gives the same plan_args; a bad exit table entry rejects the signal (fail closed); non-trade balance moves and API errors do not reach layer_signal (no state); run test_auto_trader*.py."
+  ],
+  "tests": "test_auto_trader.py new test_layer_exit_per_layer (rsi 1%/2%, cc uses event stop, unknown layer SAMPLING, bad table rejected): red on current code (one flat bracket), green after.",
   "title": "T09-F2 S1: live uses one 1%/2%/8-bar bracket for all layers; no layer traded with its tested exit (auto_trader.py:69-75, 439-444)",
-  "weight": "",
-  "worker": ""
+  "weight": "CRITICAL",
+  "worker": "session"
 }

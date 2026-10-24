@@ -4,31 +4,59 @@
   "commands": [],
   "created": "2026-10-24T13:45:03Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "python -m pytest scripts/dev/test_supervisor.py -q passes with 5 more tests; 'supervisor.py watchcheck' with no watcher exits 4 and prints NO WAKE SOURCE; SUPER_SESSION.md step 5 names watchcheck",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "A coordinator turn cannot end silently with no wake source: supervisor.py wait records a live watcher marker, new 'supervisor.py watchcheck' exits 4 and prints NO WAKE SOURCE when none is alive, and SUPER_SESSION.md makes it the last call of every turn",
   "id": "super-session-coordinator-stalls-when-it",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "super session: workers default 2, more on operator word or logged budget check (operator 2",
+      "ref": "fa583502a1d7",
+      "utc": "2026-10-23T21:58:24Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "fa583502a1d7 super session: workers default 2, more on operator word or logged budget chec",
+      "ref": "MyTradingSys/system/SUPER_SESSION.md",
+      "utc": "2026-10-23T21:58:24Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-25 ACCEPT (Sonnet reviewer). Pilot 1 transcript local_1251084b. OURS: marker file instead of a Stop hook (hooks come from the main checkout).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-24T21:34:27Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "scripts/dev/supervisor.py",
+    "scripts/dev/test_supervisor.py",
+    "MyTradingSys/system/SUPER_SESSION.md"
+  ],
+  "scope_out": [
+    "wake interval logic, plan/_actionable, any hook or settings.json, roles/supervisor.md"
+  ],
+  "scope_sha": "fa583502a1d7",
+  "size": "M",
+  "sources": [
+    "SUPER_SESSION.md:14 D6 and :23 step 5 already say 'start the watcher' (design commit a79655393) yet pilot 1 stalled 2026-10-24 11:51Z-13:28Z: the rule had no check; scripts/dev/supervisor.py:474 wait_for_transition"
+  ],
+  "state": "ready",
+  "steps": [
+    "supervisor.py main(): add watchcheck to the login-resolution tuple (about line 1228, next to plan/handover/wait/tick)"
+  ],
+  "tests": "scripts/dev/test_supervisor.py: five new tests above (watchcheck no marker / live / dead pid / expired / marker removed after wait). All fail on the current tree: no watchcheck subcommand exists.",
   "title": "Super-session coordinator stalls when its turn ends with no wake source: pilot 1 coordinator idle 11:51Z-13:28Z (97 min of a 4 h pilot) after the card-4 revert, card 5 unshipped, until the Doctor messaged it. Every coordinator turn must end with a live wake (background watcher on a ship, worker or CI run); a turn ending with none is a defect it reports. Source: pilot 1 transcript local_1251084b.",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
