@@ -1,0 +1,55 @@
+# Pilot: one super session, 4 hours, measured (MTS_Doctor, 2026-10-24)
+
+Operator ask (2026-10-24): test the new way of working before running super sessions at full speed, "without burning our tokens".
+Why a pilot and not mock tests: the rules (SUPER_SESSION.md D1-D6, smoke gate, revert on red, context rules) are about how sessions behave
+together; a mock cannot show cache misses, ship queueing or file clashes. Industry practice for a process change is a short, bounded real run
+with numbers written down before it starts, compared with a measured baseline, one change at a time. This file is that plan.
+
+## Baseline (measured 2026-10-24, before the pilot)
+| Measure | Baseline | Source |
+|---|---|---|
+| Local ship gate, all ships after the smoke fix | 69% under 2 min, p90 9.6 min (13 ships) | worktrees' gate_timing.jsonl |
+| Local ship gate before the fix | 61% under 2 min, p90 26.7 min (18 ships) | same |
+| CI red | 10 of 30 runs on 10-23; 0 since 10-23 19:51Z | `gh run list` |
+| Session start context | 75k tokens (system tools 40k, MCP tools 11k, system prompt 10k, skills 6k, memory 4k) | transcripts; `get_usage` categories |
+| Context per turn | median 125k; sessions over 200 turns = 39% of all context | context_cost_2026-10-24.md |
+| Mid-session cache misses | 126 in 7 days over 134 sessions (~14% of cost) | same |
+| Budget at plan time | login C: 5 h 4%, week 27%, resets 2026-10-27 20:00Z | `get_usage` 2026-10-24 ~09:20Z |
+
+## What runs
+- One super session per SUPER_SESSION.md (start prompt at its end), coordinator on Sonnet, effort as set by the app (no change).
+- **4 Sonnet workers** at once, each on a `ready` card whose files no other worker holds (D3: more than 2 needs one logged line: get_usage this
+  turn, 5 h under 60%, own card, own files, last smoke under 5 min). At most 1 live-path card in the pilot.
+- No ultracode, no fast mode, no Opus, no model switch mid-session. One change at a time: this pilot tests the workflow; ultracode and
+  connector trimming are later pilots, each compared with this one.
+- Length: 4 hours from the first worker start.
+
+## Before starting (all must be true)
+1. Main checkout fast-forwarded to trunk (card `main-checkout-stale-hooks-2026-10-24`), so the hooks running are the trimmed ones.
+   Check: `git -C <main checkout> rev-list --count HEAD..origin/fast-track` = 0.
+2. CI green on the trunk tip.
+3. At least 6 `ready` SONNET/HAIKU cards on separate files after the Planner pass. Drop before the pilot: `bug-guard-blocks-interactive-roles`
+   (model_guard was deleted in 43d3bfc8f) and `hook-reminder-get-usage-before-after-age` (a new hook). Session_Planner decides; Doctor only flags.
+4. 5 h window under 30% at start.
+
+## Pass / fail (decided now, read at the end by MTS_Doctor)
+| # | Measure | Pass |
+|---|---|---|
+| 1 | Cards shipped and verified (`git cherry` empty, `Result:` line, card done) | at least 6 in 4 h |
+| 2 | Non-live ship local gate | median under 2 min; wait for a gate slot median under 2 min |
+| 3 | CI | every red reverted within 10 min; at most 1 red |
+| 4 | Rework | 0 shipped cards reverted or re-fixed within 24 h |
+| 5 | Cost | 5 h window never over 80%; weekly use per verified card written down (first number, becomes the baseline) |
+| 6 | Context | worker sessions under 60 turns median; 0 cache misses on workers; coordinator compacts before any idle wait over 1 h |
+| 7 | Operator | 0 operator turns needed after the start prompt |
+| 8 | Machine | operator does not notice the notebook slow; 2 or fewer full gates at once (GATE_SLOTS) |
+
+Pass on all 8: raise to 6 workers in the next run, then try ultracode on one hard card as its own pilot.
+Fail on any: the Doctor names the cause from transcripts and git, one fix, rerun the same pilot. Do not change two things at once.
+
+## Stop early if
+CI red not reverted in 10 min; 5 h window over 80%; two workers stuck on the same file; the operator says the machine is slow.
+
+## How the Doctor measures at the end
+`git log` / `git cherry` for ships; worktrees' gate_timing.jsonl ship rows; `gh run list` for CI; session transcripts for turns, context and
+cache rewrites (same method as context_cost_2026-10-24.md); `get_usage` before and after. Result goes in `REPORT_<date>.md`.
