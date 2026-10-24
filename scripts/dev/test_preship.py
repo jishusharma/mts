@@ -40,6 +40,7 @@ class PreshipTest(unittest.TestCase):
         return P.hook("hook-commit", json.dumps({"session_id": sid, "cwd": str(self.root), "tool_input": {"command": command}}))
 
     def stage(self, name="CLAUDE.md"):
+        (self.root / name).parent.mkdir(parents=True, exist_ok=True)
         (self.root / name).write_text("x", encoding="utf-8")
         git(self.root, "add", name)
 
@@ -96,6 +97,16 @@ class PreshipTest(unittest.TestCase):
             out = json.loads(self.commit_hook('git commit -m "x"'))["hookSpecificOutput"]
             self.assertEqual(out["permissionDecision"], "deny")
             self.assertIn("doc size cap", out["permissionDecisionReason"])
+
+    def test_a_new_lookahead_hit_is_denied_every_time(self):
+        # 62a05b2eb: the lint rule was denied once per session, then allowed; the hit reached trunk
+        rule = next(r for r in self._rules if r[0] == "look-ahead lint")
+        P.RULES = [rule[:2] + (lambda r, ps: [FAIL],) + rule[3:]]
+        self.stage("MyTradingSys/research/x/run_rsi_backtest.py")
+        for _ in range(3):
+            out = json.loads(self.commit_hook('git commit -m "x"'))["hookSpecificOutput"]
+            self.assertEqual(out["permissionDecision"], "deny")
+            self.assertIn("look-ahead lint", out["permissionDecisionReason"])
 
     def test_cap_failures_runs_the_real_cap_test_on_the_shipped_files_only(self):
         real = Path(__file__).resolve().parents[2] / P.CAP_TEST
