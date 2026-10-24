@@ -1,0 +1,1 @@
+{"t": "20261024T133653Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "ASSIGN login C: card argon-fix-defects-and-re-land (SONNET lane) is ready on trunk (cd29c620). Fix the four Argon defects in origin/hold/argon-blind-read-7-frames, then re-land as a new commit; do not", "login": "B"}
