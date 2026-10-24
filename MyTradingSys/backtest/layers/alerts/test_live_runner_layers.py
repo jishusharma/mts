@@ -119,8 +119,49 @@ class TestVolumeFvg(unittest.TestCase):
         self.assertIn(ev[0]["side"], ("long", "short"))
         self.assertEqual(ev[0]["event"], "fvg_touch_%s_%s" % (ev[0]["side"], ev[0]["level"]))
         mid = ev[0]["level"]
-        expected = "short" if bars[31]["c"] > mid else "long"
+        expected = "long" if bars[31]["c"] > mid else "short"   # run_backtest.py:199,202 'bounce'
         self.assertEqual(ev[0]["side"], expected)
+
+    def _flat_close_bars(self, close, n=40):
+        return [{"t": T0 + i * H, "o": 10.0, "h": 11.0, "l": 9.0, "c": close, "v": 1.0, "tbv": 0.5}
+                for i in range(n)]
+
+    def _fvg_events(self, bars, confirmed_i=20):
+        leg = {"a_i": 0, "b_i": 20, "confirmed_i": confirmed_i}
+        with mock.patch.object(ll, "swing_legs", return_value=[leg]),                 mock.patch.object(ll, "build_profile", return_value=object()),                 mock.patch.object(ll, "value_area", return_value=object()),                 mock.patch.object(ll, "lowest_volume_level", return_value={"price_lo": 9.9, "price_hi": 10.1}):
+            return ll.volume_fvg_layer(bars)
+
+    def test_volume_fvg_side_matches_backtest(self):
+        """close at confirmation above the level (mid 10.0) -> long; below -> short (run_fvg bounce)."""
+        up = self._fvg_events(self._flat_close_bars(10.5))
+        dn = self._fvg_events(self._flat_close_bars(9.5))
+        self.assertEqual([e["side"] for e in up], ["long"])
+        self.assertEqual([e["side"] for e in dn], ["short"])
+
+    def test_volume_fvg_scan_starts_after_confirmation(self):
+        """run_fvg scans range(start+1, ...): a touch on the confirmation bar itself is not an event (F7)."""
+        bars = self._flat_close_bars(10.5)
+        for i, b in enumerate(bars):
+            if i != 20:
+                b["l"], b["h"] = 12.0, 13.0      # never touches mid 10.0 except on bar 20
+        self.assertEqual(self._fvg_events(bars), [])
+        bars[21]["l"], bars[21]["h"] = 9.0, 11.0
+        ev = self._fvg_events(bars)
+        self.assertEqual([e["t"] for e in ev], [bars[21]["t"]])
+
+    def test_volume_fvg_restart_same_bars_same_events(self):
+        bars = self._bars()
+        leg = {"a_i": 0, "b_i": 30, "a_price": 100, "b_price": 104, "confirmed_i": 31}
+        with mock.patch.object(ll, "swing_legs", return_value=[leg]):
+            first = ll.volume_fvg_layer(bars)
+            second = ll.volume_fvg_layer(bars)
+        self.assertEqual(first, second)
+
+    def test_volume_fvg_degenerate_inputs_return_empty(self):
+        self.assertEqual(ll.volume_fvg_layer([]), [])
+        self.assertEqual(ll.volume_fvg_layer(self._flat_close_bars(10.0, n=3)), [])
+        self.assertEqual(ll.volume_fvg_layer(self._flat_close_bars(10.0, n=39)), [])   # < 2*n_bins=40
+        self.assertEqual(ll.volume_fvg_layer(self._flat_close_bars(10.0, n=60)), [])   # flat: no legs / no profile
 
     def test_too_few_bars(self):
         self.assertEqual(ll.volume_fvg_layer(self._bars()[:3]), [])

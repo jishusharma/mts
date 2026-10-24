@@ -32,8 +32,20 @@ CARD:
 """
 
 
-def git(*a, cwd=REPO):
-    return subprocess.run(['git', '-C', str(cwd), *a], capture_output=True, text=True)
+# A credential-manager prompt must fail fast, never block the queue (NUC 2026-10-24: claim/release push hung on `git credential-manager get`).
+NOPROMPT = {'GCM_INTERACTIVE': 'never', 'GIT_TERMINAL_PROMPT': '0', 'GIT_ASKPASS': ''}
+
+
+def sh(cmd, cwd=REPO, timeout=120):
+    """subprocess.run with NOPROMPT in the env and a timeout; a timeout comes back as rc 124 with the reason in stderr."""
+    try:
+        return subprocess.run(cmd, cwd=str(cwd), capture_output=True, text=True, timeout=timeout, env={**os.environ, **NOPROMPT})
+    except subprocess.TimeoutExpired as e:
+        return subprocess.CompletedProcess(cmd, 124, '', f'timeout after {timeout}s: {" ".join(map(str, cmd))} {e}')
+
+
+def git(*a, cwd=REPO, timeout=120):
+    return sh(['git', '-C', str(cwd), *a], cwd=cwd, timeout=timeout)
 
 
 def child_env(card: str, brief: str, base=None) -> dict:
@@ -56,7 +68,7 @@ def run_job(card: str, effort: str) -> None:
     wt = ROOT / card
     log = ROOT / f'{card}.log'
     ROOT.mkdir(parents=True, exist_ok=True)
-    git('fetch', '-q', 'origin')
+    git('fetch', '-q', 'origin', timeout=60)
     import sync
     held = claim_holder(card, sync.open_claims(REPO))
     if held:
@@ -67,8 +79,11 @@ def run_job(card: str, effort: str) -> None:
         if r.returncode:
             log.write_text('worktree failed: ' + r.stderr, encoding='utf-8', newline='\n')
             return
-    subprocess.run([PY, 'scripts/dev/sync.py', 'claim', card], cwd=wt, capture_output=True, text=True)
-    brief = subprocess.run([PY, 'scripts/dev/tasks.py', 'brief', card], cwd=wt, capture_output=True, text=True).stdout
+    c = sh([PY, 'scripts/dev/sync.py', 'claim', card], cwd=wt)
+    if c.returncode:
+        log.write_text(f'CLAIM FAILED/TIMEOUT {card}: {c.stderr}\n', encoding='utf-8', newline='\n')
+        return
+    brief = sh([PY, 'scripts/dev/tasks.py', 'brief', card], cwd=wt).stdout
     model = f'gemini-3.8-flash-{effort}'
     cmd = [str(AGY), '--print', RULES + brief, '--model', model, '--effort', effort,
            '--mode', 'accept-edits', '--dangerously-skip-permissions', '--print-timeout', '2400s']
@@ -76,9 +91,12 @@ def run_job(card: str, effort: str) -> None:
     with open(log, 'w', encoding='utf-8', newline='\n') as f:
         f.write(f'START {card} {model}\n')
         f.flush()
-        p = subprocess.run(cmd, cwd=wt, stdout=f, stderr=subprocess.STDOUT, text=True, env=child_env(card, brief))
+        p = subprocess.run(cmd, cwd=wt, stdout=f, stderr=subprocess.STDOUT, text=True, env={**child_env(card, brief), **NOPROMPT})
         f.write(f'\nEXIT {p.returncode} after {int(time.time() - t0)}s\n')
-    subprocess.run([PY, 'scripts/dev/sync.py', 'release', card], cwd=wt, capture_output=True, text=True)
+    r = sh([PY, 'scripts/dev/sync.py', 'release', card], cwd=wt)
+    if r.returncode:
+        with open(log, 'a', encoding='utf-8', newline='\n') as f:
+            f.write(f'RELEASE FAILED/TIMEOUT {card}: {r.stderr}\n')
 
 
 def main(argv: list[str]) -> int:
