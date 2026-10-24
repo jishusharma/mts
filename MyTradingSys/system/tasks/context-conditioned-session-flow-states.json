@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-24T18:51:50Z",
   "commands": [
     "python MyTradingSys/research/session_flow_context_2026-10-18/test_build_rows.py"
   ],
@@ -14,7 +15,14 @@
   "goal": "Test the operator's claim (2026-10-18): price/CVD/OI behaviour is stable only inside a context (HTF balance vs trend, 10-20d range position, vol percentile, OI trend, weekday), not across the year. Per-session rows (ASIA/LDN/US/LATE): price chg, taker delta, OI chg, range position, sweep-reclaim; quadrant label; outcome = next-session return/range.",
   "id": "context-conditioned-session-flow-states",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "INCONCLUSIVE (underpowered): 604 DEV rows, 12 tests pass, MyTradingSys/research/session_fl",
+      "ref": "67a8462b7",
+      "utc": "2026-10-24T18:51:50Z"
+    }
+  ],
   "layers": [
     "fabio"
   ],
@@ -29,7 +37,12 @@
   "refs": [
     "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/SET_41f213b5bea3_188135336af0.md"
   ],
-  "result": "",
+  "result": "INCONCLUSIVE (underpowered): 604 DEV rows, 12 tests pass, MyTradingSys/research/session_flow_context_2026-10-18/REPORT.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "NEW MyTradingSys/research/session_flow_context_2026-10-18/ (PRE_REG.md, build_rows.py, test_build_rows.py, REPORT.md)",
     "reads Dumps/backtest/raw/metrics (5m OI) and the 1m klines taker data via MyTradingSys/backtest/bt_data.py",
@@ -51,13 +64,14 @@
     "MyTradingSys/research/context_factors_pit_2026-10-16/CONTEXT_FACTORS_SPEC.md:192 (OI NOT_IN_DATA on disk: no long OI exists yet)",
     "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/SET_41f213b5bea3_188135336af0.md (worked example, 3 windows)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Gate: ls Dumps/backtest/raw/metrics; need daily files from 2020-09-01 (fetched by desk task 20261013-143640-gap-g5-fetch-binance-btcusdt-futures-met, target DSA-NUC). If missing: stop, hand back as refined.",
     "Write PRE_REG.md first: freeze context defs (HTF balance/trend, 10-20d range position, vol percentile, OI trend, weekday), quadrant labels, outcome; run verdicts.py check and prereg_gate.py; label every number SOURCED/OURS.",
     "build_rows.py: per-session rows (ASIA/LDN/US/LATE) with price chg, taker delta (FORMULAS s.14), 5m OI chg, range position, sweep-reclaim; next-session return/range; DEV only.",
     "Event table: day-clustered SE per pattern x context; within-context vs across-context stability test; verdict on the operator's claim; trial ledger row; REPORT.md Result line."
   ],
+  "taken": "2026-10-24T18:51:50Z",
   "tests": "test_build_rows.py: hand-computed 2-day fixture (expected numbers from FORMULAS.md s.14, not from code) for delta, OI change and quadrant label; must fail before build_rows.py exists",
   "title": "Context-conditioned session flow states: per-session price/delta/OI quadrant + sweep-reclaim, next-session outcome, stable within context vs across contexts (operator 10-18)",
   "weight": "B-SHARED",
