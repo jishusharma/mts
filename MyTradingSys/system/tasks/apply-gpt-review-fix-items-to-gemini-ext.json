@@ -1,34 +1,74 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py extracts/gemini_out/gWjHq5UMisY_gemini.md"
+  ],
   "created": "2026-10-24T15:44:44Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "FIXES_APPLIED_tom.md lists F1-F6 each fixed with file:line; verify_extract_quotes.py exits 0 for the 7 files; caption-body audit reports 0 non-body quotes in gWjHq5UMisY_gemini.md.",
+  "est_turns": 18,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Apply the GPT review FIX items F1-F6 to the 7 FIX Gemini Tom extracts (J1-J9 minus the 2 APPROVED) so summaries state only what the caption quotes support, before any layer uses them.",
   "id": "apply-gpt-review-fix-items-to-gemini-ext",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "yt-burn: Gemini Tom extracts (9), audit -dMWA_bbm3o, Fabio notes (9) - quote-verified, 5 c",
+      "ref": "152df77163d3",
+      "utc": "2026-10-24T15:07:14Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "152df77163d3 yt-burn: Gemini Tom extracts (9), audit -dMWA_bbm3o, Fabio notes (9) - quote-",
+      "ref": "extracts/gemini_out/7BQPMJ39WpI_gemini.md",
+      "utc": "2026-10-24T15:07:14Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-25 ACCEPT (independent Sonnet reviewer, fixes applied). DECISION (OURS): fix summaries down to what quotes support (never add claims); when a rule is only inferred, label it INFERRED rather than delete it. Run order is free: if verify-extract-quotes-strip-nested-metad ships first, the verifier also flags F5.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-24T22:51:22Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Apply GPT review FIX items to Gemini extracts before any layer uses them: Tom 7/9 FIX, audits+Fabio 11/11 FIX (summaries add rules the quotes do not state; verify_extract_quotes checks quotes only). Reports: MyTradingSys/research/gpt_burn_2026-10-24/gx2-review-*/report.md",
-  "weight": "",
-  "worker": ""
+  "scope_in": [
+    "extracts/gemini_out/7BQPMJ39WpI_gemini.md",
+    "extracts/gemini_out/96iPFDpXEcU_gemini.md",
+    "extracts/gemini_out/gWjHq5UMisY_gemini.md",
+    "extracts/gemini_out/hQ8sOq67x5o_gemini.md",
+    "extracts/gemini_out/HySZZSjMxF8_gemini.md",
+    "extracts/gemini_out/WQ_OAdz-PJ8_gemini.md",
+    "extracts/gemini_out/zAwEX_tRUfE_gemini.md",
+    "extracts/gemini_out/FIXES_APPLIED_tom.md"
+  ],
+  "scope_out": [
+    "aursfDVYzUk and pgdmKLJ0hhA extracts (APPROVE)",
+    "the audit and Fabio files (other cards)",
+    "verify_extract_quotes.py (separate card)",
+    "any new claim not in the transcript"
+  ],
+  "scope_sha": "152df77163d3",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/gpt_burn_2026-10-24/gx2-review-tom-extracts/report.md:21-118"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/gpt_burn_2026-10-24/gx2-review-tom-extracts/report.md sections Findings F1-F6 and the per-file table (lines 21-118); open the cited transcript lines in raw_transcripts_canonical/<id>_raw.txt.",
+    "Per finding, edit the extract: F1/F3 restore the omitted condition in the key finding and summary; F2 say 32% is slightly profitable, not break-even; F4 mark the mirrored long-stop rule as inferred, not sourced; F5 replace gWjHq5UMisY lines 70 and 75 with real caption-body quotes or label them description metadata with no spoken GPS; F6 fix the 9 drifted Source GPS tags against the caption body.",
+    "Write FIXES_APPLIED_tom.md: one line per finding (file:line, before, after). Run python scripts/dev/verify_extract_quotes.py on each edited file until exit 0, then the report's audit command (Reproduce, F5) for the caption-body match."
+  ],
+  "tests": "Verifier exit 0 on all 7 edited files; the report's caption-body audit shows 107/107 matches (was 105/107); no new quote text outside the transcript.",
+  "title": "Apply GPT review FIX items F1-F6 to the 7 FIX Gemini Tom extracts (J1-J9 minus 2 APPROVE)",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
