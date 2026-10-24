@@ -1,0 +1,1 @@
+{"t": "20261024T221054Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship context-files-design Result: roster 10 -> 6 roles (Lead, Checker + 4 worker kinds); one handover writer with --kind wave|lead; C4 unchanged, C6 depends on C4+C2.", "login": "C", "sid": "4713b07b90"}
