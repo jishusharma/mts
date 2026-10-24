@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --help"
+  ],
+  "created": "2026-10-24T14:21:25Z",
+  "depends_on": [],
+  "done_when": "one note per id (5) in extracts/gemini_out/fabio/, transcripts fetched or NO CAPTIONS recorded",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fetch timed captions for Fabio-related videos pZai3k1e-Jg, feV6CATGUqo, HUYBdYnXUNc, agjftXPkLUE, cLgdXZnLL_0 (captions only, no video download, max 5 per run, stop on HTTP 429) and write a short per-video note saying whether it shows live trades, with a duplicate check vs MyTradingSys/research/FABIO_TRADE_LEDGER.md (dedupe by daily P/L at start).",
+  "id": "yt-gem-fabio-fetch-1",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-24T14:21:26Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "extracts/gemini_out/fabio; raw_transcripts_canonical (new files only)"
+  ],
+  "scope_out": [
+    "scripts; live tree; FABIO_TRADE_LEDGER.md edits"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/fabio_video_search_2026-10-17/README.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "python scripts/dev/fetch_captions_timed.py pZai3k1e-Jg (see --help for the output path); if captions are unavailable write NO CAPTIONS and go on",
+    "python scripts/dev/fetch_captions_timed.py feV6CATGUqo (see --help for the output path); if captions are unavailable write NO CAPTIONS and go on",
+    "python scripts/dev/fetch_captions_timed.py HUYBdYnXUNc (see --help for the output path); if captions are unavailable write NO CAPTIONS and go on",
+    "python scripts/dev/fetch_captions_timed.py agjftXPkLUE (see --help for the output path); if captions are unavailable write NO CAPTIONS and go on",
+    "python scripts/dev/fetch_captions_timed.py cLgdXZnLL_0 (see --help for the output path); if captions are unavailable write NO CAPTIONS and go on",
+    "Write extracts/gemini_out/fabio/pZai3k1e-Jg_note.md: duration, speaker as stated, live trades Y/N/unknown with 2 verbatim quotes, duplicate-of if any",
+    "Write extracts/gemini_out/fabio/feV6CATGUqo_note.md: duration, speaker as stated, live trades Y/N/unknown with 2 verbatim quotes, duplicate-of if any",
+    "Write extracts/gemini_out/fabio/HUYBdYnXUNc_note.md: duration, speaker as stated, live trades Y/N/unknown with 2 verbatim quotes, duplicate-of if any",
+    "Write extracts/gemini_out/fabio/agjftXPkLUE_note.md: duration, speaker as stated, live trades Y/N/unknown with 2 verbatim quotes, duplicate-of if any",
+    "Write extracts/gemini_out/fabio/cLgdXZnLL_0_note.md: duration, speaker as stated, live trades Y/N/unknown with 2 verbatim quotes, duplicate-of if any",
+    "Commit with a Result: line (n fetched, n no-caption)"
+  ],
+  "tests": "each note quotes appear verbatim in the fetched transcript: verify_extract_quotes.py on the note (files absent before the card)",
+  "title": "[GEMINI] Fabio caption fetch + live-trade note, HijoTrades/IQCapital/Cimi (5 videos)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

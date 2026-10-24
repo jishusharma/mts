@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py extracts/fresh/extract_-dMWA_bbm3o_fresh.md"
+  ],
+  "created": "2026-10-24T14:21:22Z",
+  "depends_on": [],
+  "done_when": "extracts/gemini_out/-dMWA_bbm3o_audit.md exists with 3 lists and every quoted line verifies",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Audit extracts/fresh/extract_-dMWA_bbm3o_fresh.md against raw_transcripts_canonical/-dMWA_bbm3o_raw.txt: list unsupported claims, non-verbatim quotes and missed rules. The output is a lead, not a verdict; do not edit the extract.",
+  "id": "yt-gem-audit-a1",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-24T14:21:50Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "extracts/gemini_out; extracts/fresh/extract_-dMWA_bbm3o_fresh.md; raw_transcripts_canonical/-dMWA_bbm3o_raw.txt"
+  ],
+  "scope_out": [
+    "scripts; live tree; edits to extracts/fresh"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/AWS_BEDROCK_PILOT.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Run python scripts/dev/verify_extract_quotes.py extracts/fresh/extract_-dMWA_bbm3o_fresh.md and record the result",
+    "Read transcript and extract; write extracts/gemini_out/-dMWA_bbm3o_audit.md with three bullet lists (unsupported claims, non-verbatim quotes, missed rules), one line per item with a verbatim transcript quote",
+    "Check every listed miss against the transcript yourself; drop any you cannot quote",
+    "Commit on your branch with a Result: line (counts per list)"
+  ],
+  "tests": "verify_extract_quotes.py extracts/gemini_out/-dMWA_bbm3o_audit.md: every quote in the audit verifies (file absent before this card)",
+  "title": "[GEMINI] Extract audit -dMWA_bbm3o",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
