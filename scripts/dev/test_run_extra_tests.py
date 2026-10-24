@@ -27,6 +27,14 @@ def test_no_test_file_is_listed_twice():
     assert not dup, dup
 
 
+def test_extra_is_loaded_from_the_tsv_data_file():
+    # a registration must be a smoke-gate data edit (extra_tests.tsv), not an edit of run_extra_tests.py (full gate, 570-690 s)
+    tsv = os.path.join(os.path.dirname(os.path.abspath(__file__)), "extra_tests.tsv")
+    lines = [ln.strip() for ln in open(tsv, encoding="utf-8").read().splitlines() if ln.strip() and not ln.lstrip().startswith("#")]
+    assert lines and rx.EXTRA == lines
+    assert len(set(lines)) == len(lines)
+
+
 def test_study_folder_tests_are_discovered_without_an_entry(tmp_path):
     import subprocess
     (tmp_path / "scripts" / "dev").mkdir(parents=True)

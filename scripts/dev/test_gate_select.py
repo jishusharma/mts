@@ -90,6 +90,11 @@ class Select(unittest.TestCase):
         self.assertEqual(mode, "smoke")
         self.assertIn("3gd", steps)
 
+    def test_registering_an_extra_test_in_the_tsv_is_smoke_and_runs_the_discovery_check(self):
+        mode, steps = self.sel("scripts/dev/extra_tests.tsv")
+        self.assertEqual(mode, "smoke")
+        self.assertIn("3gd", steps)
+
     def test_a_new_research_test_file_runs_the_ci_deps_lint(self):
         # 2026-10-16: research tests imported pandas, ci.yml did not install it; only CI saw it (the desktop has every package)
         mode, steps = self.sel("MyTradingSys/research/x_2026-10-16/test_x.py")
