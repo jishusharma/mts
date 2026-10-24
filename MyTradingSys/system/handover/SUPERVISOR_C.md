@@ -25,7 +25,8 @@ Central-file holders: none. Ship queue: empty. T07 SHIPPED (13 files, 3m23s, aft
 Shipped+verified earlier: t02 card-done, tasks.py fix, cbp, flow-states, notes.
 Registration batch (one ship at end; forces full gate, only if time): run_extra_tests.py EXTRA += T07/test_rerun_diff.py, T06/test_cost_inventory.py, session_flow_context_2026-10-18/test_build_rows.py (+T05, T09 tests).
 Cards needing a review stamp/clear of A-20261018-5 hold to mark done: dsa-audit-06, -07 (and likely 05, 09): report to Doctor.
-Running: T05 aeff7478879c89c20, T09 a401dace18fdc5813 (workers 2 of 6 running; no spare cards). Gate times so far: 2m33, 43s, 56s, 3m23, 2m40; max gate wait 0; reverts 0; CI green.
+T09 SHIPPED 19:20Z (7 files, 35s, after lint fix in exit_analysis.py), cherry 0. T09 follow-ups for Doctor/board: raw cards for F4,F5; desk row for F1-F3 (live-path: volume_fvg mirror side 0/24, RSI uncovered events, unbacktested 1%/2%/8-bar bracket) - not created yet.
+Running (19:21Z): T05 aeff7478879c89c20; extra cards added to use slots: argon-fix-defects-and-re-land a0724398b018e0ac4 (sonnet), yt-fabio-fetch-retry a8391044ff8788666 (haiku). 3 of 6 running. Gate times so far: 2m33, 43s, 56s, 3m23, 2m40; max gate wait 0; reverts 0; CI green.
 Decisions (OURS): ships serialised by me from worker worktrees; test registration batched into one ship at end.
 Usage 18:48Z: 5h 13% (reset 21:10Z), week 34%.
 Next action: wait for worker completions (notifications), then ship one at a time; Doctor report 20:00Z.
