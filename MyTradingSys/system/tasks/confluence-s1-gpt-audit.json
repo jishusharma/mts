@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-24T15:43:54Z",
   "commands": [
     "python scripts/dev/tasks.py brief confluence-s1-context-counts"
   ],
@@ -16,6 +17,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "GPT_AUDIT_S1.md: 3/3 counts MATCH conditional, leak test PASS, 1 HIGH F6 spec discrepancy",
+      "ref": "f31fe1653",
+      "utc": "2026-10-24T15:43:54Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,7 +40,12 @@
   "refined_by": "",
   "refreshed": "2026-10-24T14:27:14Z",
   "refs": [],
-  "result": "",
+  "result": "GPT_AUDIT_S1.md: 3/3 counts MATCH conditional, leak test PASS, 1 HIGH F6 spec discrepancy",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/krown_audit_2026-10-22"
   ],
@@ -45,12 +57,13 @@
   "sources": [
     "MyTradingSys/research/krown_audit_2026-10-22/PRE_REG_S1_COUNTS.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read PRE_REG_S1_COUNTS.md for the leak test and count definitions",
     "Recompute the 3 counts and the leak test independently from the source data named there, without reusing the existing script output",
     "Write GPT_AUDIT_S1.md: each number, COUNTS.md value, your value, verdict; commit with a Result: line"
   ],
+  "taken": "2026-10-24T15:43:54Z",
   "tests": "GPT_AUDIT_S1.md lists each re-derived number next to the COUNTS.md number (file absent before this card)",
   "title": "GPT audit: re-derive Confluence S1 leak test and 3 counts (non-Claude review)",
   "weight": "ROUTINE",
