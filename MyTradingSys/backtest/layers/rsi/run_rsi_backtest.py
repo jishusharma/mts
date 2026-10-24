@@ -107,8 +107,9 @@ def trades_from_events(events, bars, stop_pct=STOP_PCT, target_pct=TARGET_PCT, m
             continue
         px = bars[i]["c"]
         sgn = 1.0 if side == "long" else -1.0
+        fwd_bars = bars[i + 1:i + 1 + max_bars]  # hold-span bars strictly after the entry bar i (entry at close of i)
         r = simulate_trade(side, px, bars[i]["t"], px * (1.0 - sgn * stop_pct), [(px * (1.0 + sgn * target_pct), 1.0)],
-                           bars[i + 1:i + 1 + max_bars], taker_fee=taker, maker_fee=maker, max_bars=max_bars, funding=funding)
+                           fwd_bars, taker_fee=taker, maker_fee=maker, max_bars=max_bars, funding=funding)
         if r["net_r"] is None:
             continue
         trades.append({"i": i, "t": bars[i]["t"], "side": side, "net": r["pnl_pct_net"] / 100.0,
