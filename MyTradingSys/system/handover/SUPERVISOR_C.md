@@ -68,3 +68,6 @@ Still in flight at rotate: T05 ship (bg bam9ocivm, may die with the clear: check
 
 ## 20:20Z (after compact, not cleared)
 bt-engine-wire SHIPPED (cherry 0, 114 s). Chain bdxkro7il now shipping lint then lease. Then ship t09-f5 (agent-ac8b2b68eddeaee06), then notes. 21:30Z report due.
+
+## 20:22Z CLEAR-OK (chain monitor stopped on Doctor order)
+SHIPPED cherry 0: T05, bt-engine-wire, lint-chunked. The lease ship (wt agent-af05c70c26fd93566) was mid-gate when the chain was stopped: check `ps`/cherry; if cherry 1 and no sync.py ship running, re-ship it. Then ship t09-f5 (agent-ac8b2b68eddeaee06), then notes (10 commits). 21:30Z report due; stop 22:50Z. No live watchers.
