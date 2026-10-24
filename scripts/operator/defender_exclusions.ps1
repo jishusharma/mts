@@ -42,7 +42,8 @@ $paths = @(
     'F:\MTS',                                # every lane tree: mts-gemini, mts-codex, mts-codex-lab, mts-dsa, data, backups
     "$up\IdeaProjects",
     "$up\.claude",                           # Claude Code transcripts, hook state (turn meter, signals), plugins
-    "$up\.gemini",                           # Gemini CLI / Antigravity state, logs, tmp
+    "$up\.gemini",                           # Gemini CLI / Antigravity state, logs, tmp, agy.exe (Antigravity agent)
+    "$la\cloud-code",                        # cloudcode_cli.exe (Cloud Code agent process, seen at 35 CPU-s in Task Manager)
     "$up\.cache\codex-runtimes",             # Codex node runtime + dependencies
     "$la\OpenAI\Codex",                      # codex.exe, cua_node, sandbox service
     "$up\.codex",
@@ -61,7 +62,7 @@ $procs = @(
     'node.exe', 'node_repl.exe', 'npx.cmd',
     'codex.exe', 'codex-windows-sandbox-service.exe', 'codex-computer-use-swift.exe',
     'java.exe', 'javaw.exe', 'mvn.cmd',
-    'gemini.exe',
+    'gemini.exe', 'agy.exe', 'cloudcode_cli.exe',
     'sh.exe', 'bash.exe', 'Code.exe', 'claude.exe', 'ChatGPT.exe'
 )
 
