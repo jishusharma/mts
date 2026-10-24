@@ -31,7 +31,8 @@ for dn, rel in DOCS.items():
     for study, rx, nums in KEYS:
         mentions = [m.start() for m in re.finditer(rx, t, re.I)]
         for label, num in nums:
-            near = any(re.search(r"(?<![\d.])" + re.escape(num) + r"(?![\d])", t[max(0, q - 400):q + 600]) for q in mentions)
+            numrx = re.compile(r"(?<![\d.])" + re.escape(num) + r"(?![\d])")
+            near = any(numrx.search(t, max(0, q - 400), q + 600) for q in mentions)
             st = "PRESENT_NEAR_MENTION" if near else ("STUDY_NOT_MENTIONED" if not mentions else "NUMBER_NOT_NEAR_MENTION")
             rows.append([study, dn, label, num, len(mentions), st])
 with open(Path(__file__).parent / "out" / "doc_drift.csv", "w", newline="\n", encoding="utf-8") as f:
