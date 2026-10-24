@@ -29,6 +29,7 @@ EXTRA = [
     "MyTradingSys/research/wavetrend_2026-10-17/test_count_events.py",
     "MyTradingSys/research/wavetrend_2026-10-17/test_input_manifest.py",
     "MyTradingSys/research/wavetrend_2026-10-17/test_paired_inference.py",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/test_econ_floor.py",
     "scripts/dev/test_trial_ledger.py",
     "scripts/dev/test_soak_six_slots.py",
     "scripts/dev/test_hook_bench.py",
