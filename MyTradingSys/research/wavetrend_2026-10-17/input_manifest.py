@@ -106,7 +106,7 @@ def build_manifest(files):
         e, idx = scan_file(f)
         entries.append(e)
         allidx |= idx
-    n_min = (_month_bounds_ms(entries[-1]["name"][12:19])[1] - TS0) // MS if entries else 0
+    n_min = (_month_bounds_ms(entries[-1]["name"][11:18])[1] - TS0) // MS if entries else 0
     firsts = [e["first_ms"] for e in entries if e["first_ms"] is not None]
     lasts = [e["last_ms"] for e in entries if e["last_ms"] is not None]
     return {
