@@ -1,0 +1,15 @@
+T05 LC1 fair null SEED=20261016 K_LINES=20 boot=2000
+bars 1199520 dev bars 1183680
+published run reproduced: {'prior_day_low': (345, 0.409, 0.333, 'KEEP'), 'prior_day_poc': (583, 0.527, 0.439, 'KEEP'), 'prior_day_val': (539, 0.523, 0.435, 'KEEP'), 'daily_open': (822, 0.493, 0.48, 'DROP'), 'naked_poc': (732, 0.531, 0.414, 'KEEP'), '4h_fractal_high': (1984, 0.463, 0.364, 'KEEP'), '4h_fractal_low': (1963, 0.449, 0.349, 'KEEP'), 'round_1000': (831, 0.45, 0.359, 'KEEP'), 'prior_day_high': (380, 0.376, 0.309, 'KEEP'), 'prior_day_vah': (537, 0.482, 0.425, 'KEEP'), 'prior_week_high': (150, 0.447, 0.341, 'KEEP'), 'prior_week_low': (124, 0.435, 0.342, 'KEEP')}
+4h_fractal_high 1984 0.463 fair 0.498 diff -0.035 [-0.059,-0.010] DROP (pub KEEP +0.099) eq=0.50 untouched=0.71
+4h_fractal_low 1963 0.449 fair 0.500 diff -0.051 [-0.073,-0.026] DROP (pub KEEP +0.100) eq=0.50 untouched=0.71
+daily_open 822 0.493 fair 0.494 diff -0.001 [-0.031,+0.028] DROP (pub DROP +0.013) eq=0.77 untouched=0.00
+naked_poc 732 0.531 fair 0.506 diff +0.026 [-0.008,+0.061] DROP (pub KEEP +0.117) eq=0.51 untouched=0.65
+prior_day_high 380 0.376 fair 0.495 diff -0.119 [-0.165,-0.071] DROP (pub KEEP +0.067) eq=0.51 untouched=0.53
+prior_day_low 345 0.409 fair 0.497 diff -0.088 [-0.141,-0.037] DROP (pub KEEP +0.076) eq=0.50 untouched=0.57
+prior_day_poc 583 0.527 fair 0.511 diff +0.016 [-0.023,+0.055] DROP (pub KEEP +0.087) eq=0.50 untouched=0.32
+prior_day_vah 537 0.482 fair 0.507 diff -0.024 [-0.066,+0.018] DROP (pub KEEP +0.058) eq=0.50 untouched=0.35
+prior_day_val 539 0.523 fair 0.509 diff +0.014 [-0.028,+0.054] DROP (pub KEEP +0.088) eq=0.49 untouched=0.37
+prior_week_high 150 0.447 fair 0.501 diff -0.054 [-0.135,+0.026] DROP (pub KEEP +0.105) eq=0.50 untouched=0.82
+prior_week_low 124 0.435 fair 0.482 diff -0.046 [-0.131,+0.037] DROP (pub KEEP +0.094) eq=0.49 untouched=0.85
+round_1000 831 0.450 fair 0.503 diff -0.053 [-0.083,-0.018] DROP (pub KEEP +0.091) eq=0.50 untouched=0.59

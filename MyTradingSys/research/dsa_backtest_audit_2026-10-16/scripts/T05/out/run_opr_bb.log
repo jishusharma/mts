@@ -1,0 +1,8 @@
+T05 run study=opr_bb SEED=20261016 sets=1000 boot=2000
+0 AU h=60 194 mean=0.0121 p=0.395 sdr=0.69
+1 AU h=120 194 mean=0.0196 p=0.450 sdr=0.73
+2 AU h=240 194 mean=-0.0112 p=0.591 sdr=0.77
+3 AD h=60 282 mean=-0.0098 p=0.711 sdr=1.30
+4 AD h=120 282 mean=0.0322 p=0.240 sdr=1.25
+5 AD h=240 282 mean=0.0243 p=0.305 sdr=1.09
+wrote C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\.claude\worktrees\agent-aeff7478879c89c20\MyTradingSys\research\dsa_backtest_audit_2026-10-16\scripts\T05\out\placebo_opr_bb.csv

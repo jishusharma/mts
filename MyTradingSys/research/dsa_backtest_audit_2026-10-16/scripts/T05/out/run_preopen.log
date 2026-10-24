@@ -1,0 +1,8 @@
+T05 run study=preopen SEED=20261016 sets=1000 boot=2000
+0 H1 h=60 105 mean=-0.0111 p=0.587 sdr=0.85
+1 H1 h=180 105 mean=0.0126 p=0.575 sdr=0.79
+2 H1 h=390 105 mean=-0.0646 p=0.628 sdr=0.80
+3 H2 h=60 104 mean=0.0373 p=0.289 sdr=0.89
+4 H2 h=180 104 mean=0.0714 p=0.297 sdr=0.95
+5 H2 h=390 104 mean=0.2913 p=0.101 sdr=0.81
+wrote C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\.claude\worktrees\agent-aeff7478879c89c20\MyTradingSys\research\dsa_backtest_audit_2026-10-16\scripts\T05\out\placebo_preopen.csv
