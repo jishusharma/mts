@@ -74,3 +74,9 @@ SHIPPED cherry 0: T05, bt-engine-wire, lint-chunked. The lease ship (wt agent-af
 
 ## 20:35Z STATE (compact, not cleared; all ships done)
 SHIPPED cherry 0: T05, bt-engine-wire, lint-chunked, test_lease, T09-F5 (result json moved to dsa_backtest_audit/out/ after gate 3xt failed on the sim_desk artifact schema; f5 script still writes the old path: tell Doctor), notes. No workers, no ships running. Card supply empty (dispatch shows only sim-dashboard-v1 = sim-v2's, JIS-NB/Doctor cards). Waiting for 21:30Z report (watcher), then stop report by 22:50Z. Optional EXTRA registration batch (T05/06/07/09 tests) if time.
+
+## STOP REPORT (Doctor ended Pilot 2 at ~20:50Z sys clock)
+Cards (state, sha, turns): t02-f1 done 50b93be91 4t; tasks-py-check-rewrites 753075e76 6t; cbp-add-channel 18bd7fec4 12t; session-flow-states 80777df8a 5t; T07 eb293abb5 ~55t (card open, stamp); T06 0d738711f ~36t (open); T09 446f6c503 ~40t (open); Argon ad987950b 20t; T05 c7f5eefb8 ~41t (open); bt-engine-wire c0c5b7ea0+9be3f415e 8t; lint-chunked 14f1703b9 17t; test_lease 11850c8c7 22t (117s->80s, target 30s missed); T09-F5 2bd5dcdf2 ~30t (FAILED status); yt-fabio-fetch-retry no commit (429, Gemini route). All shipped, cherry 0.
+Peak workers 6. Longest gate 28m59s (T05, push-race retry); gate wait 0. My reverts 0. CI green on every run seen. Gate failures fixed: 2 lint false positives, 1 EXTRA registration, 1 artifact-schema (T09-F5 json moved).
+Usage: start 5h 13% / week 34%; end 5h 42% / week 38% (cap 45%).
+Open: T05/06/07/09 review stamps; EXTRA registration of 6 study tests; f5 script writes old sim_desk path.
