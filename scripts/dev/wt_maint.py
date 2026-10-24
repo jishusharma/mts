@@ -66,6 +66,8 @@ def protected_reason(p, branch, primary_tree, here, now, mtime_of=None):
         return "lane tree"
     if "codex" in low or "codex" in branch.lower():
         return "codex tree"
+    if "gemini" in low or "gemini" in branch.lower():
+        return "gemini tree"   # the Antigravity project opens this folder; removing it breaks the project
     if branch in PROTECT_BRANCHES or branch == "(detached)":
         return f"branch {branch}"
     idle = sync.idle_hours(p, branch, now) if mtime_of is None else mtime_of(p)
