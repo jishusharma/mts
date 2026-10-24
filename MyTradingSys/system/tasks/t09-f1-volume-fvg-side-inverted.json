@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-24T22:48:17Z",
   "commands": [
     "python -m pytest -q MyTradingSys/backtest/layers/alerts/test_live_runner_layers.py MyTradingSys/execution/test_auto_trader.py"
   ],
@@ -15,6 +16,12 @@
   "id": "t09-f1-volume-fvg-side-inverted",
   "lane": "JIS-NB",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "live volume_fvg side = backtest bounce (live_layers.py:61), scan start+1; tests red before",
+      "ref": "5603ff871",
+      "utc": "2026-10-24T22:48:17Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refined_by": "",
   "refreshed": "2026-10-24T21:34:10Z",
   "refs": [],
-  "result": "",
+  "result": "live volume_fvg side = backtest bounce (live_layers.py:61), scan start+1; tests red before/green after",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/alerts/live_layers.py",
     "MyTradingSys/backtest/layers/alerts/test_live_runner_layers.py",
@@ -47,13 +59,14 @@
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T09_live_parity.md section 5 T09-F1 and section 4 (0 of 24 same side)",
     "F:/MTS/gq/gx4-t09-* (GPT drafting fixes on the NUC night of 2026-10-25; not read here; compare its draft before building)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read fabio/run_backtest.py run_fvg (l.176) and live_layers.py volume_fvg_layer (l.41-65); confirm the side rule and the range(start) vs range(start+1) scan (F7).",
     "Add the fail-first test in test_live_runner_layers.py: fake bars where closes[start] > mid; assert volume_fvg_layer side equals the run_fvg side.",
     "Fix the side line (l.61) to the backtest rule, align the scan start (F7), fix the docstring. Fail closed: empty or degenerate bars return [].",
     "Add restart test (same bars twice give identical events, no kept state) and degenerate-input test (empty, 3 bars, flat bars return [] without raising; the layer has no fetch, API-error cases live in the runner tests); run test_live_runner_layers.py and test_auto_trader.py."
   ],
+  "taken": "2026-10-24T22:48:17Z",
   "tests": "test_live_runner_layers.py new test_volume_fvg_side_matches_backtest: fails on current code (side inverted), passes after; T09 test_layer_signal_parity.py moves volume_fvg out of KNOWN_DIVERGENT.",
   "title": "T09-F1 S1: live volume_fvg trades the opposite side (0 of 24 agree; live_layers.py:61)",
   "weight": "CRITICAL",

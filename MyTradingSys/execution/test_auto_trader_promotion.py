@@ -34,7 +34,8 @@ TODAYS_SOURCES = [
 
 def alert(layer, sub, tf="15m"):
     t = T15 if tf == "15m" else int((NOW.timestamp() - at.TF_SECONDS[tf] * 1.1) * 1000)
-    return {"layer": layer, "sub": sub, "tf": tf, "side": "long", "event": "x", "t_close": t}
+    return {"layer": layer, "sub": sub, "tf": tf, "side": "long", "event": "x", "t_close": t,
+            "entry_price": 100.0, "stop": 99.0}      # cc rows trade on the event stop (T09-F2): fixture carries one
 
 
 def shipped_cfg():

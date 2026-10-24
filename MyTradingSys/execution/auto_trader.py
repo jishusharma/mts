@@ -72,7 +72,26 @@ DEFAULT_CONFIG = {
     "layers": {"enabled": True, "size_usd": 100, "max_loss_usd": 10, "stop_pct": 1.0, "targets": "2",
                "bracket_source": "SAMPLING",
                "hours": 2.0, "max_age_bars": 1.2,
-               "max_hold_bars": 8},   # time exit = 8 bars of the signal timeframe (minutes derived per alert tf)
+               "max_hold_bars": 8,    # time exit = 8 bars of the signal timeframe (minutes derived per alert tf)
+               # T09-F2: optional per-layer exit table, longest source prefix wins; no entry = the SAMPLING bracket above
+               # (unchanged). Entry: source "TESTED:<file:line>" (required), exactly one of stop_pct (percent of entry,
+               # 0-100 exclusive) / stop "event" (the alert's own stop price vs its entry_price, converted to percent;
+               # missing, zero or wrong-side rejects), optional targets (comma list of percents), optional max_hold_bars
+               # or max_hold_minutes. Fields an entry omits keep the SAMPLING value and are listed in the row's
+               # sampling_fields. A malformed table or entry rejects the layer signal (fail closed).
+               # Fabio / T055 are scored on forward-return horizons only (fabio/run_backtest.py:43, three horizons, no
+               # single hold): no entry, they stay SAMPLING. RSI: only rsi_events 15m/1h were backtested (5m/3m were not).
+               "exits": {
+                   "layer:rsi:rsi_events:15m": {"stop_pct": 1.0, "targets": "2", "max_hold_bars": 100,
+                                                "source": "TESTED:MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py:56-58"},
+                   "layer:rsi:rsi_events:1h": {"stop_pct": 1.0, "targets": "2", "max_hold_bars": 100,
+                                               "source": "TESTED:MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py:56-58"},
+                   # cc setups: structure stop from the event, max_bars 1440 one-minute bars = 1440 minutes. The R target
+                   # is not carried on the live event, so targets stay SAMPLING. 1h only (15m was not backtested, T09).
+                   "layer:cryptocred:sr_flip:1h": {"stop": "event", "max_hold_minutes": 1440, "source": "TESTED:MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py:170"},
+                   "layer:cryptocred:fib_pullback:1h": {"stop": "event", "max_hold_minutes": 1440, "source": "TESTED:MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py:170"},
+                   "layer:cryptocred:failed_msb:1h": {"stop": "event", "max_hold_minutes": 1440, "source": "TESTED:MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py:170"},
+               }},
     # (layer, event) -> side. "direction" means: up -> long, down -> short; "level" means the side comes from the level
     # crossed (CROSS_SIDE_BY_LEVEL), everything else unmapped. A "side" field on the alert wins.
     "layer_rules": {
@@ -396,6 +415,72 @@ def size_override(source: str, cfg: dict):
         raise ValueError(f"{e} for {max(hits, key=len)}")
 
 
+LAYER_EXIT_KEYS = {"stop_pct", "stop", "targets", "max_hold_bars", "max_hold_minutes", "source"}
+_NUM_RE = re.compile(r"\d+(\.\d+)?")
+
+
+def _pos_num(v, what, below=None):
+    if isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(v) or v <= 0:
+        raise ValueError(f"{what} must be a positive number")
+    if below is not None and v >= below:
+        raise ValueError(f"{what} must be below {below}")
+    return float(v)
+
+
+def layer_exit(source: str, alert: dict, side: str, cfg: dict, bar: int):
+    """T09-F2: None when no exit-table entry matches source (SAMPLING bracket), else {"stop", "targets"?, "hold_min"?,
+    "log"}. Raises ValueError on a malformed table/entry or an unusable event stop (caller rejects: fail closed)."""
+    table = cfg["layers"].get("exits")
+    if table is None:
+        return None
+    if not isinstance(table, dict):
+        raise ValueError("exits is not an object")
+    hits = [p for p in table if isinstance(p, str) and p and source.startswith(p)]
+    if not hits:
+        return None
+    prefix = max(hits, key=len)
+    e = table[prefix]
+    if not isinstance(e, dict) or not set(e) <= LAYER_EXIT_KEYS:
+        raise ValueError(f"entry {prefix} is not an object of known keys")
+    src = e.get("source")
+    if not isinstance(src, str) or not src.startswith("TESTED:") or len(src) <= len("TESTED:"):
+        raise ValueError(f"entry {prefix} has no TESTED:<file:line> source")
+    if ("stop_pct" in e) == ("stop" in e):
+        raise ValueError(f"entry {prefix} needs exactly one of stop_pct / stop")
+    out = {"log": {"bracket_source": src}}
+    if "stop_pct" in e:
+        out["stop"] = _pos_num(e["stop_pct"], f"{prefix} stop_pct", below=100)
+    else:
+        if e["stop"] != "event":
+            raise ValueError(f"entry {prefix} stop must be 'event'")
+        entry, stop = alert.get("entry_price"), alert.get("stop")
+        for v, n in ((entry, "entry_price"), (stop, "stop")):
+            if isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(v) or v <= 0:
+                raise ValueError(f"event {n} missing or not a positive number")
+        if (stop >= entry) if side == "long" else (stop <= entry):
+            raise ValueError(f"event stop {stop} is on the wrong side of entry {entry} for a {side}")
+        out["stop"] = _pos_num(round(abs(entry - stop) / entry * 100, 4), "event stop distance", below=100)
+    sampling = []
+    if "targets" in e:
+        t = e["targets"]
+        if (not isinstance(t, str) or not all(_NUM_RE.fullmatch(x) and float(x) > 0 for x in t.split(","))):
+            raise ValueError(f"entry {prefix} targets must be a comma list of positive numbers")
+        out["targets"] = t
+    else:
+        sampling.append("targets")
+    if "max_hold_bars" in e and "max_hold_minutes" in e:
+        raise ValueError(f"entry {prefix} sets both max_hold_bars and max_hold_minutes")
+    if "max_hold_bars" in e:
+        out["hold_min"] = _pos_num(e["max_hold_bars"], f"{prefix} max_hold_bars") * bar / 60
+    elif "max_hold_minutes" in e:
+        out["hold_min"] = _pos_num(e["max_hold_minutes"], f"{prefix} max_hold_minutes")
+    else:
+        sampling.append("max_hold")
+    if sampling:
+        out["log"]["sampling_fields"] = sampling
+    return out
+
+
 def layer_signal(alert: dict, cfg: dict, now: datetime) -> dict:
     c = cfg["layers"]
     layer, tf = alert.get("layer"), alert.get("tf")
@@ -436,12 +521,24 @@ def layer_signal(alert: dict, cfg: dict, now: datetime) -> dict:
             size, max_loss = size_override(sig["source"], cfg) or (size, max_loss)
         except ValueError as e:
             sig["reject"] = f"bad size_overrides: {e}"
+    ex = None
     if "reject" not in sig:
+        try:
+            ex = layer_exit(sig["source"], alert, side, cfg, bar)
+        except ValueError as e:
+            sig["reject"] = f"bad layers.exits: {e}"
+    if "reject" not in sig:
+        stop, targets = str(c["stop_pct"]), c["targets"]
+        hold = c["max_hold_bars"] * bar / 60 if c.get("max_hold_bars") else None
+        if ex:
+            stop, targets = f"{ex['stop']:g}", ex.get("targets", targets)
+            hold = ex.get("hold_min", hold)
+            sig["log"].update(ex["log"])
         sig["plan_args"] = ["--side", side, "--entry", "market", "--size", str(size),
-                            "--stop", str(c["stop_pct"]), "--targets", c["targets"],
+                            "--stop", stop, "--targets", targets,
                             "--max-loss", str(max_loss), "--hours", str(c["hours"])]
-        if c.get("max_hold_bars"):
-            sig["plan_args"] += ["--max-hold-minutes", f"{c['max_hold_bars'] * bar / 60:g}"]
+        if hold:
+            sig["plan_args"] += ["--max-hold-minutes", f"{hold:g}"]
     return sig
 
 
