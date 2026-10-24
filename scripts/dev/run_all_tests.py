@@ -103,7 +103,7 @@ TARGET_STEP = "4t"   # precheck pytest of the MyTradingSys/tests files that refe
 TARGET_CAP = 12      # OURS: at most this many files (sorted), so the precheck stays about a minute
 LOCAL_SKIP = ("3k", "4", "3dk", "3ad", "3bk")   # OURS: BRIEF 3.3, dropped from the local ship gate only; every CI shard still runs them. Not 5b/4f: live-path layer files (FULL_RE) need them locally
 SLOW_FILE_S = 30     # files measured at >= this many seconds stay in their shard only
-CHEAP_STEPS += ("3qn", "3gi")
+CHEAP_STEPS += ("3qn", "3gi")   # 3la (11 s) is not cheap: it runs with the main phase
 # GATE_SPEED X2 (ship only, --fast, smoke mode): the fast path. One phase, tests chosen by gate_impact, a time budget, the rest left to CI.
 FAST_STEP_TIMEOUT_S = 240     # OURS: a fast-gate step still running after this is hung (a held slot would block every later ship)
 FAST_BASE_S = 6              # OURS: seconds of ALWAYS-step work counted against the budget before any test is added
@@ -519,6 +519,9 @@ def build_plan(quick):
     add("3gd", "Gate discovery: every tracked test file is gated (B150)", [sys.executable, "MyTradingSys/tests/test_gate_discovery_b150.py"], "Step 3gd: Gate discovery")
     # Step 3dl: CI deps lint (2026-10-16: pandas imported by research tests, missing from the ci.yml pip line; the desktop has every package, so
     # only CI saw ModuleNotFoundError at collection, three red rounds in 3 h). Always runs, ~5 s.
+    # Step 3la: look-ahead lint (2026-10-24: 62a05b2eb added a run_rsi_backtest.py hit; no smoke shard named the module, the ship passed, CI
+    # went red 17 min). ~11 s, picked by gate_select.LOOKAHEAD_RE; exit 1 on a new FAIL hit.
+    add("3la", "Look-ahead lint: no new unreviewed FAIL hit (lookahead_lint.py --new)", [sys.executable, "scripts/dev/lookahead_lint.py", "--new"], "Step 3la: Look-ahead lint")
     add("3dl", "CI deps lint: no gated test hard-imports a package the ci.yml pip line lacks", [sys.executable, "scripts/dev/ci_deps_lint.py"], "Step 3dl: CI deps lint")
 
     # Step 4: pytest (math + doc tests), sharded so the slowest step no longer sets the gate's wall time (2026-10-16: one process
