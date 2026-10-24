@@ -83,7 +83,7 @@ Backtest data (F:\MTS\data on the NUC) is not in git; it is copied after new rec
 - Also on F: of this machine: F:\MTS\dsa (DSA worker), F:\MTS\Dumps (copy, B138), F:\AIBridge.
 - Dumps (B138): C:\...\Dumps is canonical. F:\MTS\Dumps is a stale copy: do not write to it. Operator 2026-10-06: do the C: to F: move; script ready: scripts\dev\move_dumps_to_F.ps1
   (dry run by default, -Apply moves; renames the old folder, never deletes; the junction keeps the share path working). Held until the flashing fix is confirmed; never while a writer holds Dumps\workers\NUC-QUEUE.
-- Claude vm_bundles (11.6 GB on C:): the Claude app's workspace image; left alone (the thread "Fix desktop Claude app and flashing shells" owns it). Revisit if C: runs short.
+- Claude vm_bundles: the Claude app's workspace image, a junction `Claude-Data\claude_pzs8sxrjxfjjc\vm_bundles` to `F:\ClaudeVM\vm_bundles` since 2026-10-10 (11.8 GB on F:, not C:; verified 2026-10-24: the junction's target is F:). Left alone (the thread "Fix desktop Claude app and flashing shells" owns it).
 - Remote Desktop host: NOT SET UP (section 4).
 - After the cutover the mirror share and the backup bare repo (F:\MTS\Mirror, F:\MTS_backup.git) move to the NUC (LIVE_HOST_MOVE s5); until then they stay here.
 

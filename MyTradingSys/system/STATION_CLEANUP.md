@@ -25,7 +25,7 @@ Seen by `python scripts/dev/mts_signal.py who --hours 72` on 2026-10-24. Answers
 | Retention | by hand, weekly (RETENTION_POLICY.md) | repo backup and staging files listed in RETENTION_POLICY.md | stdout | `scripts/dev/retention.py` |
 | Backup archive | by hand | moves, never deletes, backups to `Dumps/_archive/` | stdout | `scripts/dev/declutter_backups.py --apply` |
 | Operator: Windows Disk Cleanup or Explorer | by hand | anything the operator picks | none | DISK_CARE.md |
-| Claude app `vm_bundles` (JIS-NB, about 11.6 GB on C:, DEVICES.md section 6) | never automatic | nothing; app-owned image, operator decision | none | DEVICES.md section 6 |
+| Claude app `vm_bundles` (JIS-NB: a junction to `F:\ClaudeVM\vm_bundles`, 11.8 GB on F:, not C:) | never automatic | nothing; app-owned image | none | DEVICES.md section 6, DISK_CARE.md |
 
 ## 3. The prune set (`c_drive_guard.py`)
 
@@ -85,4 +85,5 @@ A signal is at most 200 characters (repo is public: no paths with account names,
 - 2026-10-24: inventory and this page. `c_drive_guard.py`: prefixes added (section 3), state dirs excluded, logon run added. Stations asked (roll call). JIS-NB/C: no MTS scheduled task; `wt_maint.py status` says the worktree job is NOT INSTALLED here, which contradicts DEVICES.md section 8b (fixed there).
 - 2026-10-24, later: reviewers found a junction under `%TEMP%\claude` that the shipped guard would follow (outside `%TEMP%`), `desk-*` git worktrees it would prune, and an unguarded directory scan. Fixed: junctions never followed, `.git` fails closed, `desk-` removed from the prefixes, scans never raise (tests: junction and worktree tests fail on the shipped version). The fix is the first commit after `df160f3fc`.
 - 2026-10-24, operator yes: fix on fast-track as `2ab5145ff`. Install broadcast `b-10b3d8` (HIGH) to every station. JIS-NB: told, not registered (primary 105 behind fast-track with 67 local changes, not ours; left alone; operator decides). Laptop, NUC and `vm`: acks pending (`mts_signal.py acks b-10b3d8`).
-- Open: the other stations' answers; `vm_bundles` size and whether it may move (operator); tests that leave their own `%TEMP%` dirs behind (follow-up: each test should remove its own scratch).
+- 2026-10-24, correction: `vm_bundles` was reported as 11.8 GB on C:. It is a junction to F:, so the 11.8 GB is on F:. The C: loss since 2026-10-10 (32.4 GB free then, 11.8 GB now) is not the VM image; pagefile 4.75 to 9 GB, Windows folder 23.7 to 25.2 GB, worktrees 4.8 to 5.0 GB account for about 6 GB. The rest is not measured (shadow storage needs an elevated shell).
+- Open: the other stations' answers; tests that leave their own `%TEMP%` dirs behind (follow-up: each test should remove its own scratch).
