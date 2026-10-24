@@ -1,7 +1,9 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
   "class": "C1",
+  "closed": "2026-10-24T14:55:17Z",
   "commands": [],
   "created": "2026-10-18T21:26:36Z",
   "depends_on": [],
@@ -13,6 +15,21 @@
   "goal": "Make future WaveTrend DEV results reproducible by content-pinning the exact input bars and freezing a matched day/block inference method before any new outcomes are read.",
   "id": "wavetrend-data-inference",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "input_manifest.py+paired_inference.py, 11 tests pass; manifest JSON not generated (F:/MTS ",
+      "ref": "908e1db0",
+      "utc": "2026-10-24T14:55:17Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "WaveTrend status and Q3 disposition",
+      "ref": "e0ebe1cdc452",
+      "utc": "2026-10-18T21:36:35Z"
+    }
+  ],
   "layers": [
     "wavetrend"
   ],
@@ -21,15 +38,20 @@
   "not_twin_of": [
     "wavetrend-audit-c1-disposition"
   ],
-  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:results CLASS:C1 REVIEWER:none WEIGHT:IMPORTANT. Refined by gemini-session-planner from AUDIT_2026-10-18 findings 2 & 3; T0 mechanical checks passed, awaiting non-Gemini Lab_Guy ACCEPT stamp for C1/IMPORTANT promotion.",
+  "note": "REVIEWED:2026-10-24 ACCEPT LAB:results CLASS:C1 REVIEWER:lab_guy-claude-sonnet WEIGHT:IMPORTANT. Checked vs AUDIT_2026-10-18 findings 2 and 3 (spec matches; 30 DEV files matches PRE_REG s.1); new tests target new modules so fail on old code; no outcome/VALIDATION/HOLDOUT reads; scope disjoint from wavetrend-c1-v2 and context-factors-one-run (research_kit.py only read). Caveat for builder: register the two new tests in scripts/dev/run_extra_tests.py (not in scope_in; add it).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "gemini-session-planner",
-  "refreshed": "2026-10-19T03:55:00Z",
+  "refreshed": "2026-10-24T14:31:09Z",
   "refs": [
     "MyTradingSys/research/wavetrend_2026-10-17/AUDIT_2026-10-18.md"
   ],
-  "result": "",
+  "result": "input_manifest.py+paired_inference.py, 11 tests pass; manifest JSON not generated (F:/MTS klines absent)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/wavetrend_2026-10-17/",
     "MyTradingSys/backtest/research_kit.py"
@@ -37,6 +59,7 @@
   "scope_out": [
     "Do not read or calculate any returns/outcomes; do not read VALIDATION/HOLDOUT; do not modify frozen atlas outputs or ledger rows."
   ],
+  "scope_sha": "e0ebe1cdc452",
   "size": "M",
   "sources": [
     "MyTradingSys/research/wavetrend_2026-10-17/AUDIT_2026-10-18.md",
@@ -44,13 +67,14 @@
     "MyTradingSys/research/wavetrend_2026-10-17/atlas.py",
     "MyTradingSys/backtest/research_kit.py"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "Create a frozen manifest for the exact 30 pre-cutoff 1m DEV source files with names, sizes, SHA-256, timestamp coverage, duplicate and missing-minute counts, and usable bars by timeframe.",
     "Add a fail-first test for duplicate/gap detection and ensure the manifest generator refuses any input at or after the 2024-07-01 cutoff.",
     "Specify and test a matched day/block resampling or randomization method that preserves common-clock/event clustering for the event and control arms; record the method in a new analysis-version design without running outcomes.",
     "Create a new exposure-ledger entry only when a preregistration is ready; never rewrite historical rows."
   ],
+  "taken": "2026-10-24T14:50:59Z",
   "tests": "Add fail-first test_input_manifest.py covering cutoff refusal, duplicate timestamps, missing-minute count and file digest; add test_paired_inference.py with synthetic paired day blocks whose expected contrast is hand-computed.",
   "title": "WaveTrend DEV input manifest and matched inference",
   "weight": "IMPORTANT",

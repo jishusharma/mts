@@ -4,34 +4,48 @@
   "commands": [],
   "created": "2026-10-19T20:49:38Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "econ_floor.py, ECON_FLOOR.csv, ECON_FLOOR.md in research/rsi_deep_buy_2026-10-19/ with: per-TF gross forward return table, C12 trough-to-RSI40/50/60 table (% and fee multiples), H1 verdict (every TF: upper day-clustered 95% CI of gross minus matched baseline < 0.10% = dead; all dead = stop study); DEV only; tests pass",
   "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "One script + one CSV + one table per OPUS_FRAMING s5 Stage 0: BTCUSDT 1m DEV only (open < 2024-07-01), RSI14 on 1m, 15m, 1h; episode start = close at or below level after h=3 hysteresis; levels abs 30/20/10 plus relative (trailing-90d 2nd percentile, causal); fill next open; gross forward return at {1,4,16} bars of t, MFE/MAE, P(price lower low than fill within N bars), bars and % between RSI minimum and price minimum, bounce > 0.10% fee; matched random baseline (same time of day, trailing-vol tercile); day-clustered CI; MDE. Verdict H1: dead TFs listed; all dead = stop the study. SHOT_REVIEW C12 (same pass, descriptive, does not enter the H1 kill): per TF, gross move from the RSI trough close to the first close at RSI 40/50/60, in % and in multiples of the 0.10% fee (SPEC s3 X1-X3 note, C9; one 1m example: +0.26/+0.44/+0.58%, X1 about 2.6 fees).",
+  "goal": "Stage 0 economic-floor kill test per OPUS_FRAMING.md s5 plus SHOT_REVIEW.md C12 (BTC 1m DEV only, RSI14 on 1m/15m/1h, gross forward return vs 0.10% fee); spec in SPEC.md.",
   "id": "rsi-deep-econ-floor",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "RSI deep-buy: apply SHOT_REVIEW patches C1-C12 to SPEC and rsi-deep cards",
+      "ref": "baea750d6f8c",
+      "utc": "2026-10-20T00:00:53Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator RSI deep-buy study. Design: SPEC.md + OPUS_FRAMING.md s1 (H1), s5 (Stage 0). Reuse rsi_core, forward_excursion helper. Raw: Session_Planner refines (done_when, steps, tests).",
+  "note": "Operator RSI deep-buy study. Design: SPEC.md + OPUS_FRAMING.md s1 (H1), s5 (Stage 0). Reuse rsi_core, forward_excursion helper. Raw: Session_Planner refines (done_when, steps, tests). LAB_GUY 2026-10-24 REJECT (insufficient spec, fix before take): (1) done_when omits the C12 trough-to-40/50/60 table and the H1 kill rule (every TF: upper day-clustered 95% CI of gross minus matched baseline < 0.10% = dead); (2) steps never state DEV cutoff 2024-07-01 (loader must refuse bars >= cutoff), fee 0.10% SOURCED backtest/fees.py, fill = next bar open, levels abs 30/20/10 + rel 2nd pct trailing 90d, horizons {1,4,16}, matched baseline (time of day, vol tercile); (3) tests lack cutoff-refusal and next-open-fill/fee-boundary cases (the two listed tests are fine, keep). Needs Session_Planner refine.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-24T14:30:12Z",
   "refs": [],
   "result": "",
   "scope_in": [
-    "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md",
-    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md",
-    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SHOT_REVIEW.md"
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/"
   ],
   "scope_out": [],
+  "scope_sha": "baea750d6f8c",
   "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "fail-first: planted series with a future-bar change must leave earlier events unchanged; falling series that never recovers shows a loss",
+  "state": "ready",
+  "steps": [
+    "Read OPUS_FRAMING s1,s5, SPEC, SHOT_REVIEW C12",
+    "econ_floor.py: loader refuses any bar with open >= 2024-07-01; RSI14 on 1m/15m/1h; levels abs 30/20/10 + relative trailing-90d 2nd pct (causal); h=3 hysteresis; fill = next bar open; fee 0.10% SOURCED from backtest/fees.py; horizons {1,4,16} bars; matched baseline (time of day, trailing-vol tercile); day-clustered CI; MDE",
+    "Write tests: future-bar change, no-recovery loss, cutoff refusal, next-open fill/fee boundary (fail first)",
+    "Run; write ECON_FLOOR.csv and ECON_FLOOR.md"
+  ],
+  "tests": "fail-first: planted future-bar change leaves earlier events unchanged; falling series never recovering shows a loss; loader refuses bars >= 2024-07-01; fill at next open and bounce exactly at 0.10% fee boundary",
   "title": "RSI deep-buy Stage 0: economic-floor kill test (gross forward return vs 0.10% fee at deep RSI, BTC 1m DEV, 1m/15m/1h)",
   "weight": "",
   "worker": "agent"
