@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-24T18:51:19Z",
   "commands": [],
   "created": "2026-10-22T21:48:03Z",
   "depends_on": [],
@@ -13,7 +14,14 @@
   "id": "cbp-add-channel-latest-n-to-fetch-captio",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/test_fetch_captions_channel.py 4/4 pass; fetch_latest.py wrapper; CBP inbox de",
+      "ref": "67a8462b7",
+      "utc": "2026-10-24T18:51:19Z"
+    }
+  ],
   "layers": [
     "krown"
   ],
@@ -25,7 +33,12 @@
   "refined_by": "",
   "refreshed": "2026-10-22T22:19:35Z",
   "refs": [],
-  "result": "",
+  "result": "scripts/dev/test_fetch_captions_channel.py 4/4 pass; fetch_latest.py wrapper; CBP inbox deleted (d20ae76)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/fetch_captions_timed.py",
     "scripts/dev/test_fetch_captions_channel.py",
@@ -38,12 +51,13 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write failing test",
     "add --channel/--latest",
     "CBP wrapper + docs, commit in CBP repo"
   ],
+  "taken": "2026-10-24T18:51:19Z",
   "tests": "scripts/dev/test_fetch_captions_channel.py (mocked yt_dlp, no network; fails on pre-change code)",
   "title": "CBP: add --channel --latest N to fetch_captions_timed.py, CBP writes into raw_transcripts_canonical, delete fetch_latest.ps1 and inbox",
   "weight": "",
