@@ -37,3 +37,8 @@ T05 done (wt agent-aeff7478879c89c20, commit c7f5eefb8, 41 turns; card not close
 Ship IN PROGRESS: argon-fix ad987950b + EXTRA registration of scripts/dev/test_argon_blind_read.py (wt agent-a0724398b018e0ac4, bg bzy6c6trg, log $TEMP/ship_argon.log; full-ish gate, 62 steps). Queue next: T05, then yt-fabio-fetch-retry (a8391044ff8788666 haiku, still fetching captions in bg).
 Shipped so far (7+notes): t02, tasks.py, cbp, flow-states, T07, T06, T09. Argon pending.
 Pending report items for Doctor: cards 05/06/07/09 need Lab_Guy REVIEWED stamp / A-20261018-5 hold cleared to close; T09 live-path follow-ups; T05 S1 raw card.
+
+## Update 19:52Z
+Argon SHIPPED 19:47Z (~20 min gate incl. EXTRA registration of test_argon_blind_read.py; cherry 0). yt-fabio-fetch-retry: 0/3 (HTTP 429 all videos), no commit, card left open (its worktree has an uncommitted wrong 'done' on the card json: discard, do not ship). T05 SHIPPING (bg bam9ocivm, log $TEMP/ship_t05.log).
+Doctor 19:48Z asked to fill slots. Ready queue is nearly empty of eligible cards (rest: JIS-NB/CODEX/DSA lanes, review-stamp-needing, new-hook, stale-flagged, declutter). Started bt-engine-wire-real-funding-rsi-cc-rerun (sonnet, 19:52Z). gap-g7-stop-slippage deferred (shares bt_data.py with it). No sim-v2 backfill cards seen on board.
+For score: test_lease.py exceeds the 240 s gate limit when CPU is at 100% (sim-v2 lost 2 ships); Fabio fetch 429 on all 3 videos.
