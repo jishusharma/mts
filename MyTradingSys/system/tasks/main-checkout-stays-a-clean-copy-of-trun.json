@@ -1,0 +1,40 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-24T06:39:37Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Industry-standard worktree flow, written once in the rule file all sessions read: nobody edits or commits in the main checkout (C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed); all work happens in session worktrees and reaches trunk via sync.py ship; the main checkout only fast-forwards to origin/fast-track (git merge --ff-only), so the hooks every session runs from it stay current. Case 2026-10-24: 109 commits behind with 82 uncommitted files from other sessions, so tonight's hook removals and the trunk_lag fix were not live. One-time cleanup is card main-checkout-stale-hooks-2026-10-24; this card is the rule that stops it recurring.",
+  "id": "main-checkout-stays-a-clean-copy-of-trun",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "red-trunk-revert-10-min",
+    "main-checkout-stale-hooks-2026-10-24"
+  ],
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/mts_doctor/REPORT_2026-10-24.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Main checkout stays a clean copy of trunk: no edits there, fast-forward only (rule text, no new tool)",
+  "weight": "",
+  "worker": ""
+}
