@@ -286,6 +286,40 @@ def _clean(o):
     return o
 
 
+RESULTS = HERE / 'results'
+
+
+def export_result(out, study, results_dir=RESULTS):
+    """Write one run as results/desk-<study>-<hash>.json in the standard schema (DESIGN.md) so the hosted page lists it.
+    Percent and R only (public repo). Same settings and condition -> same file name, overwritten."""
+    key = hashlib.sha256(json.dumps([study.ID, out['settings'], out.get('cond')], sort_keys=True, default=str).encode()).hexdigest()[:8]
+    rid = f'desk-{study.ID}-{key}'
+    tone = {'FAILED': 'bad', 'PASSED': 'good'}.get(out['verdict'], 'warn')
+    c = out.get('curve') or {}
+    what = [{'name': 'Study', 'value_plain': f"{study.TITLE}: {out['describe']}", 'label': 'OURS'},
+            {'name': 'Settings', 'value_plain': out['label'], 'label': 'OURS'},
+            {'name': 'Condition', 'value_plain': out.get('cond_label') or 'none', 'label': 'OURS'}]
+    ex = [{'kind': 'curve', 'title': 'Running total of net R, filled trades in time order', 'r': c['r'], 'usd': c['usd'],
+           'start_usd': c['start_usd'], 'risk_pct': c['risk_pct']}] if c.get('n') else [{'kind': 'none', 'title': 'no filled trades'}]
+    doc = {'id': rid, 'kind': 'backtest', 'parity': None, 'family': 'Desk runs', 'title': f"{study.TITLE}: {out['label']}" + (f" ~ {out['cond_label']}" if out.get('cond_label') else ''),
+           'what': what, 'how': 'Run on the local simulator desk: the study re-simulates every idea on development data; the optional condition then keeps only matching trades (post-filter on the cached run). Fees are included; a never-filled idea is not a trade.',
+           'window': f"DEV only, {out['settings'].get('start')} to {out['settings'].get('end')} (VALIDATION and HOLDOUT never offered)",
+           'verdict': {'label': out['verdict'], 'tone': tone}, 'why': [out['reason']],
+           'kpis': [{'label': 'filled trades', 'value': str(out['n'])}, {'label': 'ideas never filled', 'value': str(out['nofill'])},
+                    {'label': 'average per trade, after fees', 'value': f"{out['mean']:+.3f} R" if out.get('mean') is not None else '-', 'tone': tone if out['verdict'] != 'NOT ENOUGH DATA' else None},
+                    {'label': '95 % range', 'value': f"{out['lo']:+.3f} to {out['hi']:+.3f} R" if out.get('lo') is not None else '-'},
+                    {'label': 'if you put in $1,000', 'value': f"${c['usd'][-1]:.0f}" if c.get('n') else '-'},
+                    {'label': 'try number', 'value': str(out['try_no'])}],
+           'examples': ex, 'source_files': ['MyTradingSys/research/sim_desk/desk.py'], 'commit': 'local desk run'}
+    for k in doc['kpis']:
+        if k.get('tone') is None:
+            k.pop('tone', None)
+    d = Path(results_dir)
+    d.mkdir(parents=True, exist_ok=True)
+    (d / f'{rid}.json').write_text(json.dumps(doc, indent=1, ensure_ascii=False) + NL, encoding='utf-8', newline=NL)
+    return rid
+
+
 class Handler(BaseHTTPRequestHandler):
     def _send(self, code, body, ctype='application/json'):
         data = body if isinstance(body, bytes) else json.dumps(_clean(body)).encode()
@@ -330,6 +364,10 @@ class Handler(BaseHTTPRequestHandler):
                 PROGRESS['line'] = 'running...'
                 out = run_setting(study, body.get('params', {}), progress=lambda s: PROGRESS.update(line=s), charts=True, cond=body.get('cond'))
                 PROGRESS['line'] = ''
+            try:
+                out['result_id'] = export_result(out, study)
+            except OSError as e:
+                print(f'result file not written: {e!r}', flush=True)
             self._send(200, out)
         except (ValueError, KeyError) as e:
             PROGRESS['line'] = ''

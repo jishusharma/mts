@@ -41,3 +41,5 @@ Added fields: `kind` (backtest | audit | thought_experiment), `parity` (null, or
 
 ## Conditions (shared panel, any layer)
 `conditions.py` filters a study's trades before scoring: side, UTC hour window, EMA trend (timeframe and length typed), ATR-percentile band, weekday, "layer B fired within N bars". All values are free-form and OURS. Features use the last bar closed before the trade's touch time (causal). It is a post-filter: the cached run is reused, so a changed condition costs well under a second; each new condition adds one TRIALS row (`... ~ if <condition label>`). Exact for independent trades (levels); for rsi/wavetrend, which hold one position at a time, the filtered set is a subset of the unfiltered run, not a re-run. POST `/api/run` takes `cond`; GET `/api/conditions` lists the fields. Every result dict now carries `side`.
+
+Every desk Run writes `results/desk-<study>-<hash>.json` (same settings and condition overwrite one file; example kind `curve` = running net R and USD). The static builder lists it under family "Desk runs". Percent and R only.

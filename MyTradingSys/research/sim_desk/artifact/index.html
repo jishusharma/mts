@@ -96,8 +96,12 @@ sl.oninput=()=>show(sl.value);$("prev").onclick=()=>show(+sl.value-1);$("next").
 $("pick").onchange=e=>{if(e.target.value!=="")show(e.target.value)};
 $("play").onclick=()=>{if(tm){clearInterval(tm);tm=null;$("play").textContent="Play";return}$("play").textContent="Pause";tm=setInterval(()=>{if(+sl.value>=n-1){$("play").onclick();return}show(+sl.value+1)},120)};
 show(0);}};}
+function curveEx(x){const r=x.r,n=r.length,W=600,H=160,mn=Math.min(0,...r),mx=Math.max(0,...r),sp=(mx-mn)||1;
+const X=i=>8+i*(W-16)/(n-1||1),Y=v=>H-8-(v-mn)/sp*(H-16);
+return '<svg viewBox="0 0 600 160" role="img" aria-label="Running total of net R"><line x1="8" x2="592" y1="'+Y(0)+'" y2="'+Y(0)+'" stroke="var(--line)"/><polyline fill="none" stroke="var(--acc)" stroke-width="1.5" points="'+r.map((v,i)=>X(i).toFixed(1)+","+Y(v).toFixed(1)).join(" ")+'"/></svg><p class="note">'+n+" points; ends at "+r[n-1].toFixed(2)+" R = $"+x.usd[n-1].toFixed(0)+" from $"+x.start_usd+" ("+x.risk_pct+" % risked per trade, simple sum).</p>";}
 function example(x){const inits=[];let h='<div class="ex"><h3>'+esc(x.title||"Example")+"</h3>";
 if(x.kind==="table")h+=table(x);else if(x.kind==="stack")h+=stack(x);else if(x.kind==="sides")h+=sides(x);
+else if(x.kind==="curve"&&x.r&&x.r.length)h+=curveEx(x);
 else if(x.kind==="replay"){const r=replay(x);h+=r.html;inits.push(r.init);}
 else h+='<p class="note">no example trades exported</p>';
 if(x.caption)h+='<p class="note">'+esc(x.caption)+"</p>";return {html:h+"</div>",inits};}

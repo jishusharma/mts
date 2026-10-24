@@ -198,3 +198,24 @@ def test_page_has_equity_and_compare():
     h = (HERE / 'page.html').read_text(encoding='utf-8')
     for need in ('id="eqscrub"', 'Keep this run as A', 'id="equnit"'):
         assert need in h
+
+
+def test_export_result_standard_schema_and_page_builds(tmp_path):
+    """Step (e): a Run's result file is in the standard schema and the static builder turns it into a test."""
+    sys.path.insert(0, str(HERE / 'artifact'))
+    import build_artifact as ba
+    trials = tmp_path / 'TRIALS.md'
+    trials.write_text('', encoding='utf-8')
+    SideStudy.TITLE = 'Side fake'
+    out = desk.run_setting(SideStudy, {}, trials_path=trials, cache_dir=tmp_path / 'c', cond={'side': 'long'})
+    rid = desk.export_result(out, SideStudy, tmp_path / 'res')
+    assert rid.startswith('desk-sidefake-') and (tmp_path / 'res' / (rid + '.json')).exists()
+    assert desk.export_result(out, SideStudy, tmp_path / 'res') == rid            # same run -> same file
+    tests = ba.collect(str(tmp_path / 'res'))
+    assert [t['id'] for t in tests] == [rid]
+    t = tests[0]
+    assert t['examples'][0]['kind'] == 'curve' and len(t['examples'][0]['r']) == out['n']
+    assert 'long only' in t['title'] and t['verdict']['label'] == out['verdict']
+    assert all(w['label'] in ('SOURCED', 'OURS') for w in t['what'])
+    ba.main(['--results', str(tmp_path / 'res'), '--out', str(tmp_path / 'i.html')])
+    assert 'curveEx' in (tmp_path / 'i.html').read_text(encoding='utf-8')
