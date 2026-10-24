@@ -5,7 +5,9 @@
     "mvn -q test -Dtest=StateCodeEmitterTest,MarketDataSnapshotTest"
   ],
   "created": "2026-10-20T18:53:14Z",
-  "depends_on": [],
+  "depends_on": [
+    "statecode-invalid-publish-race"
+  ],
   "done_when": "Each rejection remains INVALID and retries the current connection/day; scheduled recovery succeeds and first recovered CVD slope is null.",
   "est_turns": 20,
   "formula_id": "",
@@ -18,8 +20,8 @@
     "live_engine"
   ],
   "live_path": true,
-  "mutation_check": "",
-  "note": "Raw follow-up from GPT review; requires owning-lane refinement and review, no deploy authorization.",
+  "mutation_check": "Break the retry scheduling, then the INVALID-on-rejection handling in StateCodeEmitter (one at a time); the matching new test must go red; restore the code.",
+  "note": "REVIEWED:2026-10-25 ACCEPT (independent Sonnet reviewer, fixes applied). DECISION (OURS): test-only card, no behaviour change unless a test exposes a defect; then file a bug card, do not widen scope. Same files as statecode-invalid-publish-race (depends_on): take it after that ships. Sourced from review-statecode-backfill-gpt (done). No deploy; deploy stays manual (DEPLOY_RUNBOOK.md). Complete and reviewed; promote with tasks.py check once depends_on is done.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -37,10 +39,11 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-20_review-statecode-backfill-gpt.md"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Read the GPT review report and reproduce the cited scenario.",
     "Change clock across UTC midnight during fetch; reconnect during fetch; fail a scheduled attempt then recover; close/reopen without intermediate emit and assert cvd ring restarts.",
+    "Mutation check: revert each behaviour under test in turn (retry schedule, INVALID on rejection, cvd ring reset) and show the matching new test fails; restore.",
     "Run the focused Maven tests, required live-path gates, and obtain a fresh independent review before deployment."
   ],
   "tests": "Change clock across UTC midnight during fetch; reconnect during fetch; fail a scheduled attempt then recover; close/reopen without intermediate emit and assert cvd ring restarts.",

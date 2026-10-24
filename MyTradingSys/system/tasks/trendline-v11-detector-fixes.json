@@ -1,0 +1,77 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/backtest/layers/trendlines -q",
+    "python MyTradingSys/research/trendlines_2026-10-17/repro_trendline_gaps.py",
+    "python MyTradingSys/research/trendlines_2026-10-17/lint_contract.py"
+  ],
+  "created": "2026-10-24T23:00:48Z",
+  "depends_on": [],
+  "done_when": "python -m pytest MyTradingSys/backtest/layers/trendlines -q passes; repro_trendline_gaps.py shows gaps 1-3 fixed; TRENDLINE_CONTRACT.md reads v1.1 with a changelog section of 3 rows and the rewritten E11; lint_contract.py exits 0.",
+  "est_turns": 28,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fix the 3 HIGH gaps of AUDIT_2026-10-18 in trendline_core.py and amend TRENDLINE_CONTRACT.md to v1.1: close arm tests closes, replay bars ib+1..ib+k grant no touch/eligibility and a line broken in them is rejected, E11 stops banning anchor ia for outer lines.",
+  "id": "trendline-v11-detector-fixes",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Audit Trend-Line layer status and reproduce 6 critical gaps",
+      "ref": "95039ceff98b",
+      "utc": "2026-10-18T16:20:02Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "dd001f2a7902 kurisko: causal Quad Rotation layer module (stochastic arm + RSI hypothesis a",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-10-18T06:39:54Z"
+    }
+  ],
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-25 ACCEPT (independent Sonnet reviewer, fixes applied). DECISION (OURS): E11 narrowed (second anchor of a broken line cannot be reused; first anchor may start outer lines that pass the L6 penetration test); e11=strict kept as a named arm so v1 counts reproduce. Truncation (repaint) safety is the acceptance gate: any change that breaks it is wrong. Not live path.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-24T23:02:12Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/trendlines/trendline_core.py",
+    "MyTradingSys/backtest/layers/trendlines/test_trendline_core.py",
+    "MyTradingSys/research/trendlines_2026-10-17/TRENDLINE_CONTRACT.md",
+    "MyTradingSys/research/trendlines_2026-10-17/repro_trendline_gaps.py",
+    "MyTradingSys/backtest/layers/FORMULAS.md"
+  ],
+  "scope_out": [
+    "count_only.py and PRE_REG (card trendline-count-only-v2)",
+    "g3_pack, daily ledger, registries (other cards)",
+    "any market data read beyond synthetic series",
+    "live wiring"
+  ],
+  "scope_sha": "95039ceff98b",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/trendlines_2026-10-17/AUDIT_2026-10-18.md gaps 1-3",
+    "TRENDLINE_CONTRACT.md P5, P6, E11"
+  ],
+  "state": "ready",
+  "steps": [
+    "Run repro_trendline_gaps.py and read AUDIT_2026-10-18.md gaps 1-3 with trendline_core.py:105-109, 177-204, 225-262.",
+    "Write 3 fail-first tests in test_trendline_core.py from the synthetic repros: (1) close-arm line survives where only a wick pokes through; (2) a touch on ib+1 gives no Arm A eligibility at known_at=ib+k and a line closing beyond L in ib+1..ib+k is rejected as broken_before_available; (3) after inner line (ia,ib1) breaks, outer (ia,ib2) is still proposed. Each must fail on current code.",
+    "Fix _penetration_ok/_advance for price_arm=close; restrict post-birth events to j>ib+k; narrow _broken_anchor to the broken line's second anchor ib1 (new param e11 = narrow by default, strict keeps v1 behaviour for count replication).",
+    "Bump CONTRACT_VERSION; in TRENDLINE_CONTRACT.md add a changelog section with 3 rows (one per gap, OURS), rewrite the E11 text (line 71) to the narrowed rule, add a FORMULAS.md note; run test_trendline_core.py (29 tests, truncation green) and lint_contract.py."
+  ],
+  "tests": "3 new tests in test_trendline_core.py, each failing on pre-change code; 29 existing tests incl. truncation green; repro_trendline_gaps.py gaps 1-3 report FIXED.",
+  "title": "Trend-line contract v1.1 + detector fixes: close-arm penetration, pre-availability replay, E11 anchor ban (audit gaps 1-3)",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}
