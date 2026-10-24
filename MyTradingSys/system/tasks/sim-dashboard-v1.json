@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-24T14:29:46Z",
+  "depends_on": [],
+  "done_when": "research/sim_desk/artifact/index.html built by build_artifact.py from precomputed ladder results; has plain-words parameters, trade replay, why-it-failed; test_artifact.py passes; desk.py and studies/ untouched",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "One-screen HTML page built from the precomputed levels-confluence ladder results: plain-words parameters, trade replay, why-it-failed section. Doctor publishes it.",
+  "id": "sim-dashboard-v1",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-24T14:30:10Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/artifact/"
+  ],
+  "scope_out": [
+    "Do not touch desk.py or studies/; no VALIDATION/HOLDOUT; no price data committed"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read research/sim_desk/ROADMAP.md; locate precomputed levels-confluence ladder results",
+    "Write build_artifact.py -> self-contained single-screen index.html",
+    "Add test_artifact.py; register per run_all_tests rules"
+  ],
+  "tests": "test_artifact.py: fixture build fails before build_artifact.py exists; html has params, replay, why-failed sections",
+  "title": "Simulator dashboard v1: single-screen page from precomputed levels-confluence ladder results",
+  "weight": "",
+  "worker": "session"
+}
