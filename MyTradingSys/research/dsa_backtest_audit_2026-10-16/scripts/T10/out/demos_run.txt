@@ -1,0 +1,28 @@
+seed 20261024; DEV bars 1313280; first 1640995200000 last 1719791940000 (< 1719792000000)
+
+D1 entry timing: 60-bar breakout, hold 30 bars, n=14672, gross % per trade (cost 0.14 not subtracted)
+  fill at signal close (same-bar)    mean -0.0090%  se 0.0037
+  next bar open                      mean -0.0089%  se 0.0037
+  open +1 bar delay                  mean -0.0083%  se 0.0036
+
+D2 intrabar order ambiguity: share of 1m bars where a long entered at the bar open could hit BOTH stop and target inside that one bar
+  stop 0.044% target 0.088%: both-in-bar 3.27% of bars; stop-reachable-in-bar 30.61%
+  stop 0.1% target 0.2%: both-in-bar 0.37% of bars; stop-reachable-in-bar 10.47%
+  stop 0.13% target 0.26%: both-in-bar 0.16% of bars; stop-reachable-in-bar 6.45%
+
+D3 multiple arms under a placebo null (random entry, random sign, hold 390 bars, n=200/arm, 1000 reps, seed 20261024)
+  K= 1 arms: P(any arm passes gross>=0.14 & t_gross>=2) = 1.4%;  P(any arm t_net>=2) = 0.00%
+  K= 4 arms: P(any arm passes gross>=0.14 & t_gross>=2) = 7.8%;  P(any arm t_net>=2) = 0.10%
+  K=12 arms: P(any arm passes gross>=0.14 & t_gross>=2) = 23.8%;  P(any arm t_net>=2) = 0.10%
+  K=40 arms: P(any arm passes gross>=0.14 & t_gross>=2) = 60.5%;  P(any arm t_net>=2) = 1.00%
+
+D4 regime drift: mean 390-bar forward return (long-only, %) per calendar year, and a 70/30 long/short random-sign arm
+  2022: long-only mean -0.0626%  70/30 arm expected -0.0251%  (pass bar needs +0.14)
+  2023: long-only mean +0.0768%  70/30 arm expected +0.0307%  (pass bar needs +0.14)
+  2024: long-only mean +0.0665%  70/30 arm expected +0.0266%  (pass bar needs +0.14)
+  all DEV: long-only mean +0.0189%  70/30 arm +0.0076%
+
+D5 flat 2 bp slippage vs entry-bar range, breakout entries n=14672
+  all-bars median 1m range 5.8 bp; entry-bar median 8.4 bp, mean 12.5 bp
+  slippage = 10% of entry-bar range per fill => 1.25 bp per fill vs flat 2.0 bp; round-trip extra -0.0150% on top of the 0.14%
+  share of entries whose bar range exceeds the whole 14 bp round-trip cost: 27.7% (all bars 15.0%)
