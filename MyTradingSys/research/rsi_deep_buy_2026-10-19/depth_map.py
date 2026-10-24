@@ -68,12 +68,12 @@ def ranked_troughs(R, k, n=NRANK):
     at or below the k bars after it, all inside the row (an edge bar is never confirmed)."""
     R = np.asarray(R, dtype="float64")
     rows, w = R.shape
-    P = np.full((rows, w + 2 * k), -np.inf)
-    P[:, k:k + w] = R
+    P = np.concatenate([np.full((rows, k), -np.inf), R, np.full((rows, k), -np.inf)], axis=1)
+    from numpy.lib.stride_tricks import sliding_window_view
+    nb = sliding_window_view(P, 2 * k + 1, axis=1)          # nb[:, i, :] = bars i-k .. i+k of the row (padded)
     is_t = ~np.isnan(R)
-    for dd in range(1, k + 1):
-        is_t &= R < P[:, k - dd:k - dd + w]
-        is_t &= R <= P[:, k + dd:k + dd + w]
+    is_t &= (R[:, :, None] < nb[:, :, :k]).all(axis=2)       # strictly below the k bars before
+    is_t &= (R[:, :, None] <= nb[:, :, -k:]).all(axis=2)     # at or below the k bars after
     V = np.where(is_t, R, np.inf)
     V.sort(axis=1)
     out = np.full((rows, n), np.nan)

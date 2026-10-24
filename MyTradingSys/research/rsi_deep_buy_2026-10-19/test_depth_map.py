@@ -91,8 +91,9 @@ def test_rare_zone_line_is_monotone_in_q():
     # defined as the highest level whose P_touch < q
     for q, v in ln.items():
         assert stats[v]["p_touch"] < q
-        if v + 1 in stats:
-            assert stats[v + 1]["p_touch"] >= q
+        nxt = v + 1
+        if nxt in stats:
+            assert stats[nxt]["p_touch"] >= q
 
 
 def test_windows_built_only_from_complete_utc_groups():
