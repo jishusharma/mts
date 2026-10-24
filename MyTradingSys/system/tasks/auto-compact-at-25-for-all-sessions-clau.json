@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "HOLD (MTS_Doctor 2026-10-24): operator rule: attended sessions (Thinker, monitored Fable runs) may grow as the work needs, compaction by the operator watching live; only unattended sessions (super session, workers) get a compaction limit. A project-wide env override would also hit attended sessions, so do not apply it as written. Waiting on the Doctor's research (Anthropic + community) on per-session compaction; the card is rewritten from that result.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
