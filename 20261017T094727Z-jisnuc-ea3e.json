@@ -1,1 +1,0 @@
-{"t": "20261017T094727Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "start no-sched-policy 2>&1 | tail -20; ls \"C:/Users/E-ngineers/AppData/Roaming/Claude/side-session-notes/[cut]\"; wc -c CLAUDE.md"}
