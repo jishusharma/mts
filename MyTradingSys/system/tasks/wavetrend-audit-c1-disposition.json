@@ -2,6 +2,7 @@
   "approved_by": "",
   "asks": "",
   "class": "C1",
+  "closed": "2026-10-24T15:52:38Z",
   "commands": [
     "python MyTradingSys/research/wavetrend_2026-10-17/repro_c1_spec_mismatch.py"
   ],
@@ -15,22 +16,49 @@
   "goal": "Reproduce research/wavetrend_2026-10-17/repro_c1_spec_mismatch.py; decide whether C1 needs paired confirmed WT pivots under the frozen spec (if yes, a new pre-registered trial card before any rerun); disposition the control-arm inference and raw-input manifest findings; update VERDICTS.csv W04-W08 to INCONCLUSIVE per REGATE_AUDIT.md Q3; write one repo-visible status note.",
   "id": "wavetrend-audit-c1-disposition",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "e0ebe1cdc (on origin/fast-track): research/wavetrend_2026-10-17/DISPOSITION_2026-10-19.md",
+      "ref": "867dc2dab",
+      "utc": "2026-10-24T15:52:38Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "WaveTrend status and Q3 disposition",
+      "ref": "e0ebe1cdc452",
+      "utc": "2026-10-18T21:36:35Z"
+    },
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "6b91eecc2647 Audit latest WaveTrend atlas for critical gaps",
+      "ref": "MyTradingSys/research/wavetrend_2026-10-17/AUDIT_2026-10-18.md",
+      "utc": "2026-10-18T04:29:09Z"
+    }
+  ],
   "layers": [
     "rsi"
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:results CLASS:C1 REVIEWER:none WEIGHT:IMPORTANT. Refined by gemini-yt-pipeliner from desk rows 20261018-042354 and 20261018-042953; T0 mechanical checks passed, awaiting non-Gemini Lab_Guy ACCEPT stamp for C1/IMPORTANT promotion. DOCTOR 2026-10-23 (tasks.py twins): the 'new pre-registered trial card' this goal asks for already exists: wavetrend-c1-v2. Link to it; do not file another.",
+  "note": "REVIEWED:2026-10-24 ACCEPT LAB:Lab_Guy CLASS:C1 (done_when met, no outcome/VALIDATION/HOLDOUT reads) REVIEWED:2026-10-19 T0-ONLY LAB:results CLASS:C1 REVIEWER:none WEIGHT:IMPORTANT. Refined by gemini-yt-pipeliner from desk rows 20261018-042354 and 20261018-042953; T0 mechanical checks passed, awaiting non-Gemini Lab_Guy ACCEPT stamp for C1/IMPORTANT promotion. DOCTOR 2026-10-23 (tasks.py twins): the 'new pre-registered trial card' this goal asks for already exists: wavetrend-c1-v2. Link to it; do not file another.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "gemini-yt-pipeliner",
-  "refreshed": "2026-10-18T21:03:00Z",
+  "refreshed": "2026-10-24T15:52:30Z",
   "refs": [
     "MyTradingSys/research/wavetrend_2026-10-17/AUDIT_2026-10-18.md",
     "MyTradingSys/research/wavetrend_2026-10-17/repro_c1_spec_mismatch.py",
     "MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md"
   ],
-  "result": "",
+  "result": "e0ebe1cdc (on origin/fast-track): research/wavetrend_2026-10-17/DISPOSITION_2026-10-19.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/wavetrend_2026-10-17/AUDIT_2026-10-18.md",
     "MyTradingSys/research/wavetrend_2026-10-17/repro_c1_spec_mismatch.py",
@@ -41,17 +69,18 @@
     "live tree",
     "VALIDATION and HOLDOUT reads"
   ],
-  "scope_sha": "60c1b88e5269",
+  "scope_sha": "e0ebe1cdc452",
   "size": "M",
   "sources": [
     "MyTradingSys/research/wavetrend_2026-10-17/AUDIT_2026-10-18.md"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "Run python MyTradingSys/research/wavetrend_2026-10-17/repro_c1_spec_mismatch.py and read AUDIT_2026-10-18.md.",
     "Update VERDICTS.csv rows W04-W08 of wavetrend_2026-10-17 from FAIL to INCONCLUSIVE (cost 0.14, one_run yes) per REGATE_AUDIT.md Q3.",
     "Write DISPOSITION_2026-10-19.md recording the C1 paired-pivot ruling, control-arm and input-manifest disposition, and current WaveTrend layer status."
   ],
+  "taken": "2026-10-24T15:52:38Z",
   "tests": "python scripts/dev/verdicts.py check",
   "title": "WaveTrend: state report and disposition of AUDIT_2026-10-18 C1 + control-arm + manifest findings",
   "weight": "IMPORTANT",
