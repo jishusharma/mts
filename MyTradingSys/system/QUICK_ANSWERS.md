@@ -16,6 +16,7 @@ The operator is not a developer: do these, do not ask, do not re-investigate. Ha
 - Writing tasks into NEXT_SESSION.md: RELAY.md "Task list standard" (curated, one session each, `DONE when:`); check it with `python scripts/sched/relay.py lint --file MyTradingSys/system/NEXT_SESSION.md`; no dispatcher reads it, the coordinator does (SCHEDULING_POLICY.md).
 - Surface fallback (operator 2026-10-08): only if a task truly cannot run in the Claude Code Win App (e.g. needs a process this App cannot reach) file a card (lane JIS-NB) or a desk row with the exact commands, why forced and the expected result, and say so in one line. Never stay silent.
 - Archive backups/rejects with `python scripts/dev/declutter_backups.py --apply` (moves, never deletes).
+- C: low or `%TEMP%` full: nothing to do by hand. The logon run (`c_drive_guard.py install`, once per station) and the SessionStart hook prune it; what each station cleans and why: `MyTradingSys/system/STATION_CLEANUP.md`.
 - "What did study X lead to?" (its card, VERDICTS.csv row, pre-registration, follow-up cards, commits, LAYERS.md, open claim): `python scripts/dev/trace.py <study_dir | card id | layer id>`; one read-only call, report only (T043 stays WONTFIX).
 - "Is this stat already in research_kit?" (Holm, day-clustered SE): `MyTradingSys/backtest/research_kit.py` (tests: `test_research_kit.py`); `python scripts/dev/research_kit_lint.py` lists scripts that re-implement it (new ones under NEW; known ones in `research_kit_lint_allow.tsv`); report only.
 

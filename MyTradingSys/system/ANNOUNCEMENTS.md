@@ -13,6 +13,12 @@ Entry format: `### A-<yyyymmdd>-<n> <kind> <title>` with kind one of INFO, DO-NO
 
 ## ACTIVE
 
+### A-20261024-1 DO-NOW Every station: restart cleanup and a cleanup roll call (operator 2026-10-24)
+- Applies to: every station (device + login, STATION_CLEANUP.md section 1). The first session on each device to read this does it once for that device.
+- Until: the station has sent `STATION <device>/<login> cleanup: ...` (mts_signal send) and `python scripts/dev/c_drive_guard.py status` shows "for this checkout".
+- What: from the primary checkout (never a worktree): fast-forward it to origin/fast-track if it has no local edits (if it has, leave them and say so), then `python scripts/dev/c_drive_guard.py install`, then `status`. Then send the roll-call answer (STATION_CLEANUP.md section 5).
+- Why: JIS-NB fell to 12.8 GB free on 2026-10-24; tests stalled on low C: (jis-nb, 16:03Z, test_run_removes_dead_ticket >300 s). The guard's old prefix list missed the test dirs filling %TEMP%.
+
 ### A-20261023-1 DO-NOW Every station: save unshipped worktree work, then tidy (operator 2026-10-23)
 - Applies to: every station (station = one device with one login, operator 2026-10-23). The first session on each device to read this does it once for that device.
 - Until: each device (JIS-NB, JIS-NUC, DESKTOP-F7IU69N) has sent `STATION <device>/<login> worktrees: ...` done.
