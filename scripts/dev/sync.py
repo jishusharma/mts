@@ -142,6 +142,17 @@ def needs_gate(files):
     return any(not f.endswith(DOC_SUFFIXES) for f in files)
 
 
+def code_ship(files):
+    """A ship runs the code gate only when gate_select (the CI/gate rule) sees a non-doc path: a role .md plus a card .json is a docs ship
+    that must run preship's docs checks, not a 'code' ship that gate_select then maps to zero steps (5f12bc06c went red that way)."""
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import gate_select
+        return any(not gate_select._is_doc(f.replace(chr(92), "/")) or f.replace(chr(92), "/") == gate_select.WIRING_REGISTRY for f in files)   # the registry is data, but its wiring steps (3x, 3w) need the code path
+    except Exception:
+        return needs_gate(files)
+
+
 GATE_SLOTS = 2
 GATE_WAIT_NOTE_S = 60
 
@@ -771,7 +782,7 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
                 check_ship_gap(repo)
                 if gate is run_gate and ci_applies(files):    # custom gates (tests, throwaway repos) stay hermetic: no network
                     ci = CiCheck()
-                if needs_gate(files):
+                if code_ship(files):
                     t_gate_0 = time.monotonic()
                     call_gate(gate, repo, files)
                     run_s += time.monotonic() - t_gate_0
@@ -783,7 +794,7 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
             else:
                 after = git(repo, "rev-parse", "HEAD").stdout.strip()
                 hit = race_overlap(repo, changed_between(repo, before, after), shipped_before) if after != before else []
-                if hit and regates < REGATES and needs_gate(files):
+                if hit and regates < REGATES and code_ship(files):
                     regates += 1
                     print(f"incoming commits touch what we ship ({', '.join(hit[:5])}); re-running the gate")
                     t_gate_0 = time.monotonic()
