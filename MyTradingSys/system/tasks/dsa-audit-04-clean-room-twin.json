@@ -12,7 +12,7 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-25T19:14:21Z",
+    "folded": "2026-10-25T19:18:04Z",
     "misses": 18,
     "reads": [
       "scripts/dev/codex_run.py",
