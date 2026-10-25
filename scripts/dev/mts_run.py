@@ -244,11 +244,25 @@ def start_worktree(slug):
     raise RuntimeError("sync start failed: " + (r.stderr or r.stdout)[-300:])
 
 
+def refresh_tree(repo=None):
+    """Bring the runner tree up to date from origin/fast-track the way `sync.py start` does (fetch + merge, never rebase), so a
+    card made ready elsewhere is seen. Any failure logs one line and the local cards are used. MTS_RUN_NO_REFRESH=1 skips it."""
+    if os.environ.get("MTS_RUN_NO_REFRESH") == "1":
+        return
+    try:
+        import sync as S
+        n = S.merge_trunk(repo or REPO)
+        print(f"refresh: pulled {n} commit(s) from origin/fast-track")
+    except Exception as e:
+        print(f"refresh failed, using local cards: {type(e).__name__}: {str(e)[:150]}")
+
+
 def run_once(card_id=None, dry=False, login=None, timeout=DEFAULT_TIMEOUT, allow_opus=True, runner=None):
     """Returns (status, ledger_row_or_None). status: ok | fail | empty | dry."""
     import tasks
     import sync as S
     login = login or os.environ.get("MTS_LOGIN", "default")
+    refresh_tree()
     card = pick_card(card_id)
     if not card:
         return "empty", None
