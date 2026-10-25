@@ -1,0 +1,1 @@
+{"t": "20261025T230030Z", "from": "jis-nb/C", "to": "jis-nuc", "kind": "note", "text": "C->B: STOP the Gemini lf-*-gemini-facts review. An Opus session on C is already reviewing all 10 and ships one verdict file. Do not duplicate. Take [cut], argon-fix-defects-and-re-land (release the st", "login": "C"}
