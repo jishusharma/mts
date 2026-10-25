@@ -71,17 +71,17 @@ def waiting(repo):
     return out
 
 
-RECIPES = [  # (name, when, line to paste, what comes back); Admin_Guy covers question, decision and backlog idea in one row
-    ("Ask, decide, add to backlog", "Any time, any machine or login.", "You are Admin_Guy.",
-     "then your words: the answer from the repo, your decision recorded, or one scoped backlog card."),
+RECIPES = [  # (name, when, line to paste, what comes back); the Lead covers question, decision and backlog idea in one row
+    ("Ask, decide, add to backlog", "Any time, any machine or login.", "You are Lead.",
+     "then your words (say think / pipeline / doctor / a decision): the answer from the repo, your decision recorded, or one scoped backlog card."),
     ("Read a chart screenshot", "Market hours; JIS-NB reads live files, other devices a mirror copy.", "You are Eagle_Eyes.",
      "then the screenshot: a logged read against the engine and a flag if live money looks wrong."),
-    ("Spend spare budget", "Weekly meter says SPEND (used 10+ points below the share of week gone).", "Start the Pipeliner.",
+    ("Spend spare budget", "Weekly meter says SPEND (used 10+ points below the share of week gone).", "You are Lead. Run pipeline mode.",
      "shows every login's state; then paste the super-session prompt below with your login letter and tasks."),
-    ("Health check", "About weekly, or when something feels off.", "You are MTS_Doctor.", "a dated report and one task card per defect."),
-    ("Lab work and routing", "Lab_Guy on JIS-NUC; Pipeliner anywhere.", "You are Lab_Guy.",
-     "or You are Pipeliner.: a flow table or desk-queue drain table, cards for what is wrong."),
-    ("Think: design, optimise, economise", "When a process feels heavy.", "You are Thinker.",
+    ("Health check", "About weekly, or when something feels off.", "You are Lead. Run doctor mode.", "a dated report and one task card per defect."),
+    ("Lab work and routing", "Lab_Guy on JIS-NUC; the Lead's pipeline mode anywhere.", "You are Lab_Guy.",
+     "or the Lead in pipeline mode: a flow table or desk-queue drain table, cards for what is wrong."),
+    ("Think: design, optimise, economise", "When a process feels heavy.", "You are Lead. Run think mode.",
      "then a topic: scan waste, budget, automation, tests, scale, speed, ideas, cut."),
     ("A page or link is wrong", "On the jishusharma1985 login.", "You are 1985Artifacts_Guy.", "a republished page or a fix card."),
 ]

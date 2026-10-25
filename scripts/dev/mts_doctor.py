@@ -158,7 +158,7 @@ def boot_cost(repo, docs):
 # ---- checklist (operator 2026-10-25): each fix of 10-23..10-25 leaves one check. Status OK / WARN / unavailable; never fails, never edits.
 HEADROOM_MIN_PCT = 3        # OURS
 CI_FIX_MIN = 10             # OURS: CLAUDE.md "ships in 10 min"
-SHIP_MAX_MIN = 15           # OURS
+SHIP_MAX_S = 120            # OURS: the operator's 2-minute ship; WARN when the median or p90 of ship_wall rows (24 h) is over it
 HOOKS_BEHIND_MAX = 50       # OURS
 DISK_MIN_GB = 15            # OURS
 HOOK_NAMES = ("role_loader", "ci_watch")
@@ -241,9 +241,14 @@ def _median(v):
     return v[n // 2] if n % 2 else (v[n // 2 - 1] + v[n // 2]) / 2
 
 
-def ship_time(log, now=None, hours=72):
+def _p90(v):
+    s = sorted(v)
+    return s[min(len(s) - 1, int(0.9 * len(s)))]
+
+
+def ship_time(log, now=None, hours=24):
     """gate_timing.jsonl (written by sync.record_ship_timing for ships, run_all_tests.record_timing for gate steps). Ship = one `ship`
-    row's secs; gate = wall time of one run of step rows (same sha). WARN when the max of either is over SHIP_MAX_MIN."""
+    row's secs; gate = wall time of one run of step rows (same sha). WARN when the median or p90 of ship_wall rows is over SHIP_MAX_S."""
     log = Path(log)
     if not log.is_file():
         return "unavailable", f"{log.as_posix()} missing (written by sync.py record_ship_timing / run_all_tests.py record_timing on this machine)"
@@ -258,8 +263,10 @@ def ship_time(log, now=None, hours=72):
             continue
         if now.timestamp() - t > hours * 3600:
             continue
-        if r.get("step") == "ship":
+        if r.get("step") == "ship_wall":
             ships.append(secs)
+            continue
+        if r.get("step") == "ship":
             continue
         c = cur.setdefault(r.get("sha", ""), [set(), t - secs, t])
         if r.get("step") in c[0]:
@@ -270,12 +277,10 @@ def ship_time(log, now=None, hours=72):
     g = gates + [c[2] - c[1] for c in cur.values() if c[0]]
     if not ships and not g:
         return "unavailable", f"no rows in the last {hours} h of {log.as_posix()}"
-    parts = []
-    for label, v in (("ship", ships), ("gate", g)):
-        parts.append(f"{label} n={len(v)} median {_median(v) / 60:.1f} max {max(v) / 60:.1f} min" if v else f"{label} no rows")
-    over = [lab for lab, v in (("ship", ships), ("gate", g)) if v and max(v) / 60 > SHIP_MAX_MIN]
-    if over:
-        return "WARN", f"{'; '.join(parts)}; {'/'.join(over)} max over {SHIP_MAX_MIN} min: profile the slowest gate steps in {log.as_posix()}"
+    parts = [f"ship_wall n={len(ships)} median {_median(ships):.0f}s p90 {_p90(ships):.0f}s" if ships else "ship_wall no rows"]
+    parts.append(f"gate n={len(g)} median {_median(g) / 60:.1f} max {max(g) / 60:.1f} min" if g else "gate no rows")
+    if ships and max(_median(ships), _p90(ships)) > SHIP_MAX_S:
+        return "WARN", f"{'; '.join(parts)}; ship over {SHIP_MAX_S}s: profile the slowest gate steps in {log.as_posix()}"
     return "OK", "; ".join(parts)
 
 

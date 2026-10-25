@@ -575,6 +575,67 @@ class SyncTest(unittest.TestCase):
             self.assertEqual(sync.tidy(self.a, apply=True), [])
         self.assertTrue(fresh.exists())
 
+    def test_tidy_retires_a_shipped_clean_tree_after_one_hour_not_24(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            done = sync.new_worktree(self.a, "shipped-hr")
+            self.assertEqual(sync.tidy(self.a, now=time.time() + 0.5 * 3600), [])
+            self.assertEqual(sync.tidy(self.a, apply=True, now=time.time() + 2 * 3600), [str(done.resolve())])
+        self.assertFalse(done.exists())
+
+    def test_tidy_two_hours_still_keeps_dirty_unshipped_live_and_stranger_trees(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            dirty = sync.new_worktree(self.a, "d2")
+            ahead = sync.new_worktree(self.a, "a2")
+            live = sync.new_worktree(self.a, "l2")
+        (dirty / "scratch.txt").write_text("wip\n", newline="\n")
+        commit(ahead, "unshipped.py", "u\n")
+        (live / sync.LIVE_MARKER).write_text("", newline="\n")
+        stranger = self.a.parent / "stranger-tree"
+        sh(self.a, "worktree", "add", "-q", str(stranger), "-b", "stranger", "origin/fast-track")
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(sync.tidy(self.a, apply=True, now=time.time() + 2 * 3600), [])
+        for t in (dirty, ahead, live, stranger, self.a):
+            self.assertTrue(t.exists(), t)
+
+    def test_start_reuses_a_finished_same_slug_tree_instead_of_dash_2(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            first = sync.new_worktree(self.a, "again")
+            real_idle = sync.idle_hours
+            sync.idle_hours = lambda *a, **k: 5.0
+            try:
+                second = sync.new_worktree(self.a, "again")
+            finally:
+                sync.idle_hours = real_idle
+        self.assertEqual(second.resolve(), first.resolve())
+        self.assertFalse(second.with_name(second.name + "-2").exists())
+
+    def test_start_makes_dash_2_when_the_same_slug_tree_is_dirty_unshipped_or_busy(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            busy = sync.new_worktree(self.a, "busy")
+            dirty = sync.new_worktree(self.a, "dirt")
+            ahead = sync.new_worktree(self.a, "ahd")
+            (dirty / "x.txt").write_text("wip\n", newline="\n")
+            commit(ahead, "u.py", "u\n")
+            self.assertNotEqual(sync.new_worktree(self.a, "busy").resolve(), busy.resolve())   # just started: a session may be in it
+            real_idle = sync.idle_hours
+            sync.idle_hours = lambda *a, **k: 5.0
+            try:
+                self.assertNotEqual(sync.new_worktree(self.a, "dirt").resolve(), dirty.resolve())
+                self.assertNotEqual(sync.new_worktree(self.a, "ahd").resolve(), ahead.resolve())
+            finally:
+                sync.idle_hours = real_idle
+
+    def test_tidy_and_reuse_work_under_any_hostname(self):
+        real = sync.socket.gethostname
+        sync.socket.gethostname = lambda: "DESKTOP-F7IU69N"
+        try:
+            with contextlib.redirect_stdout(io.StringIO()):
+                wt = sync.new_worktree(self.a, "lenovo-job")
+                self.assertTrue(wt.name.startswith("mts-desktop-f7iu69n-"))
+                self.assertEqual(sync.tidy(self.a, apply=True, now=time.time() + 2 * 3600), [str(wt.resolve())])
+        finally:
+            sync.socket.gethostname = real
+
     def test_tidy_keeps_a_worktree_holding_ignored_data(self):
         (self.a / ".gitignore").write_text("Dumps/*\n", newline="\n")
         sh(self.a, "add", ".gitignore")
@@ -1256,15 +1317,25 @@ class FastShipTest(unittest.TestCase):
         self.assertNotIn("--fast", self.run_gate_cmd(["scripts/dev/example_tool.py"], {"SYNC_FULL_GATE": "1"}))
         self.assertNotIn("--fast", self.run_gate_cmd(["scripts/dev/example_tool.py"], {"SYNC_NO_FAST": "1"}))
 
-    def test_fix_ci_flag_sets_the_full_gate(self):
+    def test_fix_ci_flag_keeps_the_fast_gate(self):
         with mock.patch.object(sync, "ship"), mock.patch.object(sync, "toplevel", return_value=Path(".")), \
                 mock.patch.object(sync, "run_host_health"), mock.patch.dict(os.environ, {}, clear=False):   # the real host scan took 38-70 s here
             os.environ.pop("SYNC_FULL_GATE", None)
             os.environ.pop("SYNC_FIX_CI", None)
             self.assertEqual(sync.main(["ship", "--fix-ci"]), 0)
-            self.assertEqual((os.environ.get("SYNC_FIX_CI"), os.environ.get("SYNC_FULL_GATE")), ("1", "1"))
+            self.assertEqual((os.environ.get("SYNC_FIX_CI"), os.environ.get("SYNC_FULL_GATE")), ("1", None))
             os.environ.pop("SYNC_FULL_GATE", None)
             os.environ.pop("SYNC_FIX_CI", None)
+
+    def test_pure_revert_skips_the_local_gate_only_when_every_commit_is_a_revert(self):
+        def fake(subjects):
+            return mock.patch.object(sync, "git", return_value=mock.Mock(stdout=subjects))
+        with fake('Revert "x"\nRevert "y"\n'):
+            self.assertTrue(sync.pure_revert(Path(".")))
+        with fake('Revert "x"\nfix: y\n'):
+            self.assertFalse(sync.pure_revert(Path(".")))
+        with fake(""):
+            self.assertFalse(sync.pure_revert(Path(".")))
 
     def test_fast_slots_use_their_own_folder_and_an_empty_slot_file_is_busy(self):
         tmp = Path(tempfile.mkdtemp())

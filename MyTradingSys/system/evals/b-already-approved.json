@@ -1,6 +1,6 @@
 {
   "id": "b-already-approved",
-  "role": "thinker",
+  "role": "lead",
   "state": [
     "You are writing a design note for a new health check.",
     "Two hours ago the operator wrote: 'yes build that health check, I want it'.",

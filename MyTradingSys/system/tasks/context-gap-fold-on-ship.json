@@ -1,17 +1,40 @@
 {
-  "approved_by": "",
+  "approved_by": "operator 2026-10-25 via MTS_Doctor",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 15,
+    "folded": "2026-10-25T13:47:26Z",
+    "misses": 28,
+    "reads": [
+      "scripts/dev/test_tasks.py",
+      "scripts/dev/test_context_gap.py",
+      ".claude/settings.json",
+      "scripts/dev/test_preship.py",
+      "scripts/dev/extra_tests.tsv",
+      "scripts/dev/task_state.py"
+    ],
+    "session": "agent-a8f30f7dfd89a9c30"
+  },
   "created": "2026-10-25T08:00:35Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Fixture transcript+card: after fold the card carries context.reads (<=8, trunk paths only) and brief prints Read first/Ruled out/Traps/First commands; test red on old code; one real ship folds a real card; fold adds <3 s.",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "A hook on sync.py ship folds the files a session read before its first edit into its card (context.reads, paths only); tasks.py brief prints them.",
   "id": "context-gap-fold-on-ship",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tasks.py stop_tag: a never-refreshed card is not stale work",
+      "ref": "9135c745c08b",
+      "utc": "2026-10-25T12:02:20Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,18 +42,31 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-25T12:09:14Z",
   "refs": [
     "MyTradingSys/research/mts_doctor/CONTEXT_FILES_DESIGN.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/context_gap.py fold",
+    "scripts/dev/preship.py hook seam on sync.py ship",
+    "scripts/dev/tasks.py brief lines + card field context"
+  ],
+  "scope_out": [
+    "sync.py, gate_select.py, run_all_tests.py, supervisor.py, roles, CLAUDE.md"
+  ],
+  "scope_sha": "9135c745c08b",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "context_gap.py fold: parse transcript, paths only, cap 8, trunk paths, write card.context, commit",
+    "preship.py: on sync.py ship call fold; failure never blocks",
+    "tasks.py brief: Read first, Ruled out, Traps, First commands; keep under 30 lines",
+    "tests red on old code; ship; measure added time"
+  ],
+  "tests": "scripts/dev/test_context_gap.py fold tests and scripts/dev/test_tasks.py brief test; red on old code",
   "title": "context-gap-fold-on-ship (C2): fold card context on ship",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }

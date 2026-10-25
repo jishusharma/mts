@@ -65,6 +65,7 @@ WEIGHTS = ("ROUTINE", "IMPORTANT", "CRUCIAL", "CRITICAL", "B-SHARED")   # option
 WORKERS = ("agent", "session")                   # WORKERS.md: who runs the card; set during refinement
 AGENT_MAX_TURNS = 15                             # WORKERS.md: a one-use Agent only for <= 15 turns and size S
 SESSION_MAX_TURNS = 40                           # RELAY.md hand-over cap: a card needing more is split
+MAX_READS = 8                                    # card.context.reads cap (context_gap.py fold)
 MAX_TRIES = 2                                    # refiner attempts per card; then it is parked, not retried every tick
 REFINE_AGE_H = 1                                 # a raw card older than this triggers REFINE_NEEDED
 BUFFER = 3                                       # ready cards to keep in stock before the refiner stops
@@ -421,9 +422,36 @@ def problems(card, cards=None, reg=None, repo=None):
             producer = str(card.get("producer") or card.get("refined_by") or "").strip().casefold()
             if producer and reviewer == producer:
                 p.append(f"producer {producer!r} cannot self-review")
+    ctx = card.get("context")
+    if ctx is not None and not (isinstance(ctx, dict) and isinstance(ctx.get("reads", []), list) and len(ctx.get("reads", [])) <= MAX_READS
+                                and all(isinstance(x, str) for x in ctx.get("reads", []))):
+        p.append(f"context must be an object whose reads is a list of <= {MAX_READS} paths (written by context_gap.py fold)")
     if len(brief(card).splitlines()) > MAX_BRIEF:
         p.append(f"brief is over {MAX_BRIEF} lines: fewer steps or split the card")
     return sorted(set(p))
+
+
+def context_lines(card):
+    """Read first / Ruled out / Traps / First commands (CONTEXT_FILES_DESIGN.md 3a), each only when its source field has content.
+    Read first: card.context.reads (written by context_gap.py fold at ship). Ruled out: LATEST decisions + note lines starting
+    'tried'/'ruled out'. Traps: note lines starting HOLD/TRAP. First commands: the start/claim pair and commands[0]."""
+    ctx = card.get("context") or {}
+    reads = [str(x) for x in ctx.get("reads", [])][:MAX_READS]
+    note = [x.strip() for x in str(card.get("note", "")).splitlines()]
+    ruled = [str(e.get("line", "")) for e in card.get("latest", []) if e.get("kind") == "decision" and e.get("line")][:3]
+    ruled += [x for x in note if re.match(r"(?i)(tried|ruled out)\b", x)]
+    traps = [x for x in note if re.match(r"(?i)(hold|trap)\b", x)]
+    L = []
+    if reads:
+        L.append("Read first: " + ", ".join(reads))
+    if ruled:
+        L.append("Ruled out: " + " | ".join(ruled))
+    if traps:
+        L.append("Traps: " + " | ".join(traps))
+    first = [f"python scripts/dev/sync.py start {card['id']}", f'python scripts/dev/sync.py claim "{card['id']}"'] + list(card.get("commands", []))[:1]
+    if card.get("lane") != "CODEX":   # the lab runner claims and ships for a CODEX card and its prompt must not say sync.py claim (test_codex_run)
+        L.append("First commands: " + "; ".join(first))
+    return L
 
 
 def brief(card):
@@ -434,6 +462,7 @@ def brief(card):
     if card.get("weight"):
         L.insert(2, f"Weight: {card['weight']}")
     L += [f"{i}. {s}" for i, s in enumerate(card.get("steps", []), 1)]
+    L += context_lines(card)
     if card.get("commands"):
         L += ["Commands:"] + [f"  {c}" for c in card["commands"]]
     if card.get("tests"):
