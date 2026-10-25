@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T11:22:01Z",
   "commands": [
     "python -m pytest -q scripts/dev/test_sync.py -k role_md_plus"
   ],
@@ -14,7 +15,14 @@
   "goal": "A ship of a role .md plus a card .json runs preship docs checks",
   "id": "ship-docs-checks-on-mixed-ships",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "f581b9d20 on trunk, CI green",
+      "ref": "651b9b988",
+      "utc": "2026-10-25T11:22:01Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -26,7 +34,12 @@
   "refs": [
     "MyTradingSys/research/mts_doctor/CI_RED_AND_FLOW_REVIEW_2026-10-25.md"
   ],
-  "result": "",
+  "result": "f581b9d20 on trunk, CI green",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/sync.py,scripts/dev/test_sync.py"
   ],
@@ -34,11 +47,12 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "add code_ship using gate_select._is_doc",
     "use it in ship()"
   ],
+  "taken": "2026-10-25T11:22:01Z",
   "tests": "scripts/dev/test_sync.py::SyncTest::test_role_md_plus_card_json_is_a_docs_ship_not_a_code_ship",
   "title": "ship-docs-checks-on-mixed-ships: sync.py uses gate_select docs rule so mixed role md + card json runs docs checks",
   "weight": "",
