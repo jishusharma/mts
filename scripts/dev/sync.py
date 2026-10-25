@@ -142,6 +142,13 @@ def needs_gate(files):
     return any(not f.endswith(DOC_SUFFIXES) for f in files)
 
 
+def pure_revert(repo):
+    """True when every non-merge commit this ship carries is a `git revert` (subject 'Revert ...'): a red trunk's fix goes out
+    in about a minute, with no local gate; CI runs the full suite on the push (operator 2026-10-25, revert-first)."""
+    subs = git(repo, "log", "--no-merges", "--format=%s", f"origin/{TRUNK}..HEAD", check=False).stdout.splitlines()
+    return bool(subs) and all(s.startswith("Revert ") for s in subs)
+
+
 def code_ship(files):
     """A ship runs the code gate only when gate_select (the CI/gate rule) sees a non-doc path: a role .md plus a card .json is a docs ship
     that must run preship's docs checks, not a 'code' ship that gate_select then maps to zero steps (5f12bc06c went red that way)."""
@@ -848,7 +855,9 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
                 check_ship_gap(repo)
                 if gate is run_gate and ci_applies(files):    # custom gates (tests, throwaway repos) stay hermetic: no network
                     ci = CiCheck()
-                if code_ship(files):
+                if code_ship(files) and pure_revert(repo):
+                    print("pure revert: no local gate (the tree goes back to code CI already ran); CI checks the push")
+                elif code_ship(files):
                     t_gate_0 = time.monotonic()
                     call_gate(gate, repo, files)
                     run_s += time.monotonic() - t_gate_0
@@ -1505,9 +1514,9 @@ def main(argv):
         run_host_health(toplevel_or_none())
         try:
             if "--fix-ci" in argv:
-                # GATE_SPEED X6: the way through a red-CI block is the FULL gate (never the fast one), so it cannot be a cheap bypass
+                # Operator 2026-10-25: a fix must be the fastest ship, not the slowest. --fix-ci passes the red-CI block on the
+                # normal 2-minute fast gate (the X6 full gate made a one-commit revert wait 40+ min); CI still runs everything.
                 os.environ["SYNC_FIX_CI"] = "1"
-                os.environ["SYNC_FULL_GATE"] = "1"
                 argv = [a for a in argv if a != "--fix-ci"]
             if "--again" in argv:
                 os.environ["SYNC_ALLOW_SECOND_SHIP"] = "1"
