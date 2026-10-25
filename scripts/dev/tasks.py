@@ -743,7 +743,8 @@ def stop_tag(c, repo=None):
     """The STATE tag when the card's work is already on trunk (SHIPPED) or its scope moved on (STALE), else ''."""
     repo = repo or REPO
     tag = TS.state_tag(c, repo, claim_of(c, open_claims(repo)), registry(repo))
-    return tag if tag.startswith(("SHIPPED", "STALE")) else ""
+    # DECISION (OURS): "latest never refreshed" is a fresh card without pointers, not stale work: it stays dispatchable
+    return tag if tag.startswith(("SHIPPED", "STALE")) and "never refreshed" not in tag else ""
 
 
 def cmd_next(a):
