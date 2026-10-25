@@ -214,7 +214,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/analysts/SCORECARD.md`
 - Roadmap: `MyTradingSys/research/analysts/ROADMAP.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `lf-callers-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: callers (file:line facts only, no verdict)
   - `lf-callers-gpt-rederive` ready p2 CODEX: Layer re-derive: callers (independent recount of the headline numbers behind the fact sheet)
   - `analyst-ingest-roman-x` ready p3 SONNET: Implement Roman Trading volume-absorption social call listener
 
