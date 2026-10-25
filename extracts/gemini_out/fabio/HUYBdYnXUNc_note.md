@@ -4,7 +4,7 @@
 - **Title**: Worlds Number 1 Scalper Just Gave Away His ENTIRE New Strategy for FREE (Live On Chart)
 - **Channel**: IQCapital
 - **Duration**: 1990 seconds [SOURCED: MyTradingSys/research/fabio_video_search_2026-10-17/candidates.csv:3]
-- **Speaker as stated**: Fabio Valentini [SOURCED: MyTradingSys/research/fabio_video_search_2026-10-17/candidates.csv:3]
+- **Speaker as stated**: Fabio Valentini [SOURCED: MyTradingSys/research/fabio_video_search_2026-10-17/candidates.csv:3] (uploader/title attribution from candidates.csv, which has no speaker field; unverified, not transcript self-identification)
 - **Captions**: NO CAPTIONS (fetch returned HTTP Error 429 Too Many Requests)
 - **Live trades**: Y [OURS; live chart demonstration and orderflow execution breakdown on NQ futures]
 - **Verbatim quotes**: None (NO CAPTIONS; transcript unavailable)
