@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "C:/Users/E-ngineers/.gemini/bin/agy.exe --print \"Follow the steps of card argon-med-formulas-vs-bars-drift (python scripts/dev/tasks.py brief argon-med-formulas-vs-bars-drift). Write only MyTradingSys/research/design_cards_2026-10-26/argon_formulas_vs_bars.md. Facts with file:line or NOT_IN_DATA; no verdicts.\" --model gemini-4-argon-medium"
+  ],
+  "created": "2026-10-26T22:50:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/design_cards_2026-10-26/argon_formulas_vs_bars.md exists: one row per formula, FORMULAS.md quote with line, code quote with file:line, SAME, DIFFERENT or NOT_IN_DATA",
+  "effort": "medium",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "List every place where the sim desk stats or fill rules (_bars.py, desk.py stats) differ from the definition in FORMULAS.md (R, fee, filled-only counting, drawdown, win rate). Quote both sides; report differences, do not choose which is right.",
+  "id": "argon-med-formulas-vs-bars-drift",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "model": "gemini-4-argon-medium",
+  "mutation_check": "",
+  "note": "REVIEWED: sonnet-reviewer-a89035 2026-10-26",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "super-c-design",
+  "refreshed": "2026-10-25T22:50:14Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/design_cards_2026-10-26/argon_formulas_vs_bars.md (new file only)"
+  ],
+  "scope_out": [
+    "live tree; deploys; any verdict to keep, drop, demote or park a layer; VALIDATION and HOLDOUT data"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/backtest/layers/FORMULAS.md",
+    "MyTradingSys/research/sim_desk/studies/_bars.py",
+    "MyTradingSys/research/sim_desk/desk.py"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/backtest/layers/FORMULAS.md fully",
+    "Read MyTradingSys/research/sim_desk/studies/_bars.py and the stats function in MyTradingSys/research/sim_desk/desk.py",
+    "No FORMULAS.md definition for a quantity means NOT_IN_DATA, never a guess",
+    "One row per formula; mark SAME, DIFFERENT or NOT_IN_DATA; copy numbers, never recompute",
+    "Commit with a Result: line (rows, DIFFERENT count)"
+  ],
+  "tests": "none (run card); proof = every row has two quotes with line numbers",
+  "title": "[GEMINI] Argon-medium: FORMULAS.md definitions vs sim_desk stats and fill code (differences, file:line)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}
