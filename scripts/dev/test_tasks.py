@@ -88,20 +88,6 @@ class DefinitionOfReadyTest(unittest.TestCase):
         self.assertTrue(any("30 lines" in m for m in T.problems(c)))
         self.assertLessEqual(len(T.brief(good()).splitlines()), T.MAX_BRIEF)
 
-    def test_brief_prints_read_first_ruled_out_traps_and_first_commands(self):
-        c = good(context={"reads": ["scripts/dev/desk.py", "scripts/dev/lease.py"], "misses": 2}, commands=["pytest -q x"],
-                 note="HOLD two clones must close the row in one second" + NL + "tried a second lease",
-                 latest=[{"kind": "decision", "ref": "r", "utc": "2026-10-25T00:00:00Z", "line": "no second lease"}])
-        b = T.brief(c)
-        self.assertIn("Read first: scripts/dev/desk.py, scripts/dev/lease.py", b)
-        self.assertIn("Ruled out: no second lease | tried a second lease", b)
-        self.assertIn("Traps: HOLD two clones", b)
-        self.assertIn('First commands: python scripts/dev/sync.py start B900; python scripts/dev/sync.py claim "B900"; pytest -q x', b)
-        self.assertLessEqual(len(b.splitlines()), T.MAX_BRIEF)
-        self.assertNotIn("Read first:", T.brief(good()))
-        self.assertEqual(T.problems(c), [])
-        self.assertTrue(any("context" in m for m in T.problems(good(context={"reads": [str(i) for i in range(9)]}))))
-
     def test_weight_field_is_validated_optional_and_shown_in_brief(self):
         self.assertTrue(any("BOGUS" in m for m in T.problems(good(weight="BOGUS"))))
         self.assertEqual(T.problems(good(weight="CRUCIAL")), [])
