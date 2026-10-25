@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T11:22:02Z",
   "commands": [
     "grep -n tasks .github/workflows/ci.yml"
   ],
@@ -15,6 +16,12 @@
   "id": "ci-paths-task-cards",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "shipped in this commit",
+      "ref": "651b9b988",
+      "utc": "2026-10-25T11:22:02Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,7 +41,12 @@
   "refs": [
     "MyTradingSys/research/mts_doctor/CI_RED_AND_FLOW_REVIEW_2026-10-25.md"
   ],
-  "result": "",
+  "result": "shipped in this commit",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     ".github/workflows/ci.yml"
   ],
@@ -42,10 +54,11 @@
   "scope_sha": "c218f9b2f918",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "add one paths line"
   ],
+  "taken": "2026-10-25T11:22:02Z",
   "tests": "grep -c 'system/tasks/' .github/workflows/ci.yml returns 1 or more",
   "title": "ci-paths-task-cards: add MyTradingSys/system/tasks/** to ci.yml paths",
   "weight": "",
