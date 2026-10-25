@@ -20,7 +20,7 @@ mechanics; cutting them to pointers is a follow-up after the tooling freeze, ANN
 2. Verify notes from workers: `git cherry origin/fast-track <sha>` empty, commit body has `Result:`, CI moved `origin/green/fast-track` past it; one other-model spot check (a Haiku Agent re-runs the named test or count). Then `mark_completed` + `archive_session`.
 3. Doctor due (D2)? Ready cards < 6 (D4)? Run those Agents.
 4. Start workers for free slots (D3): on an operator turn as sessions (`start_session` user_asked); on an event turn as background Agents (the app refuses sessions there). Interactive roles (Eagle_Eyes) are always sessions.
-5. Rewrite the notes file, start the watcher, end the turn.
+5. Rewrite the notes file, start the watcher (`supervisor.py wait`, background), then run `supervisor.py watchcheck` as the LAST call of the turn: exit 4 / `NO WAKE SOURCE` = start the watcher again; a turn that ends without exit 0 is a defect to report.
 
 ## Rules
 1. **Thin coordinator.** It reads results, decides, spot-checks one claim per worker, archives. Batch tool calls in one message.
