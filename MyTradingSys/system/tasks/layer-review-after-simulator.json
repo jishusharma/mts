@@ -2,6 +2,22 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 67,
+    "folded": "2026-10-25T19:54:46Z",
+    "misses": 39,
+    "reads": [
+      "MyTradingSys/research/mts_doctor/MAINNET_PATH_2026-10-25.md",
+      "MyTradingSys/system/ANNOUNCEMENTS.md",
+      "MyTradingSys/system/LAYERS.md",
+      "MyTradingSys/research/LAYER_PROVENANCE_AUDIT.md",
+      "MyTradingSys/research/VERDICTS.csv",
+      "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T09_live_parity.md",
+      "MyTradingSys/research/STATUS.md",
+      "MyTradingSys/research/krown_audit_2026-10-22/LAYER_CONFLUENCE_DESIGN.md"
+    ],
+    "session": "eacbf3f7-94d0-4613-ac2e-cca2526c683a"
+  },
   "created": "2026-10-25T14:48:25Z",
   "depends_on": [],
   "done_when": "",

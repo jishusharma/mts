@@ -3,9 +3,10 @@
   python scripts/dev/sync.py start [slug] [--quiet]  # up to date with origin/fast-track; in a shared/dirty tree makes your own worktree;
                                            # in a lane tree (mts-app, mts-relay, mts-dsa) `start <slug>` switches to branch <host>/<slug>
   python scripts/dev/sync.py health  # stale/overlapping claims, shared or orphan worktrees, branches never shipped
-  python scripts/dev/sync.py ship [--full] [--fix-ci] [--again] [--release <slug>] [--after <slug>]  # a second ship within 10 min only prints a note (--again still accepted); docs-only ships run no gate; merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
+  python scripts/dev/sync.py ship [--full] [--fix-ci] [--again] [--no-ci-wait] [--release <slug>] [--after <slug>]  # a second ship within 10 min only prints a note (--again still accepted); docs-only ships run no gate; merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
                                            # ordinary code ships run the FAST gate (GATE_SPEED.md: ~60 s, tests chosen by import graph); a red CI blocks code ships until
                                            # fixed: --fix-ci ships the fix through it with the full gate; --after waits for predecessor order ticket
+                                           # after the push it waits (up to 10 min) for the CI run of its own sha and prints CI RED at once (exit 3); --no-ci-wait / SYNC_NO_CI_WAIT=1 skips (unattended callers)
   python scripts/dev/sync.py news [hours=24]  # what shipped: feature + Result line per commit, no code
   python scripts/dev/sync.py claim "<task>" [--area <paths>]  # tell parallel sessions what you work on (shipped at once); refused only when --area overlaps an open claim
   python scripts/dev/sync.py claims  # open claims on origin/fast-track (host, account, task, age); release: `release <slug>`
@@ -29,8 +30,12 @@ import tempfile
 import threading
 import time
 import sys
+from collections import namedtuple
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import hosts  # noqa: E402  (machine names: old and new both match)
 
 TRUNK = "fast-track"
 LIVE_MARKER = ".mts_live"
@@ -638,6 +643,135 @@ def enforce_ci(check):
     print(line if state == "unknown" else f"CI {state}: {line}")
 
 
+# ship-waits-own-ci (CI red and flow review 2026-10-25, claim 1): ci_watch needs two red runs and only speaks on a prompt, so the author's OWN
+# first red run was silent and nobody owns trunk once the author goes idle. After the push the ship shell waits for the run of the sha it
+# just pushed and prints CI RED at once; red exits CI_RED_EXIT so a `sync.py ship && ...` chain stops. No `gh` (JIS-NUC has none): ci_watch's API login.
+Pushed = namedtuple("Pushed", "sha files")   # what ship() returns after a push: the sha now on origin/fast-track, and the files it carried
+CI_START_S = 90      # OURS: a pushed sha that shows no CI run by now will not get one (ci.yml path filter, offline) - say so and go on
+CI_WAIT_S = 600      # OURS: cap on the whole wait; a run took ~4-6 min on 2026-10-22 (15 jobs). Past it: "still running", never a verdict
+CI_POLL_S = 20       # OURS: 30 calls at most per ship; logged in (ci_watch.token) the API allows 5000 an hour
+CI_RED_EXIT = 3      # `sync.py ship` exit code when the pushed sha's own CI run failed (the push itself succeeded)
+CI_RED_STATES = ("failure", "timed_out", "startup_failure")
+CI_MISSES = 3        # consecutive API failures before the wait gives up as "unknown"
+
+
+def ci_path_filter(repo):
+    """The `push: paths:` globs of .github/workflows/ci.yml, or None when the file or list is not found (then every ship is assumed to start a run)."""
+    try:
+        lines = (Path(repo) / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return None
+    globs, in_push, collecting = [], False, False
+    for ln in lines:
+        s = ln.strip()
+        if collecting:
+            if s.startswith("- "):
+                globs.append(s[2:].split(" #")[0].strip().strip("'\""))
+            elif s and not s.startswith("#"):
+                break
+        elif in_push and s.startswith("paths:"):
+            collecting = True
+        elif in_push and re.match(r"(pull_request|workflow_dispatch|permissions|concurrency|jobs):", s):
+            break
+        elif s == "push:":
+            in_push = True
+    return globs or None
+
+
+def glob_regex(g):
+    """GitHub's path globs: `*` stays inside a folder, `**` crosses folders (`a/**/b` also matches `a/b`), `?` is one character."""
+    out, i = "", 0
+    while i < len(g):
+        if g.startswith("**/", i):
+            out, i = out + "(?:.*/)?", i + 3
+        elif g.startswith("**", i):
+            out, i = out + ".*", i + 2
+        elif g[i] == "*":
+            out, i = out + "[^/]*", i + 1
+        elif g[i] == "?":
+            out, i = out + "[^/]", i + 1
+        else:
+            out, i = out + re.escape(g[i]), i + 1
+    return re.compile(out + r"\Z")
+
+
+def ci_starts(files, globs):
+    """True when a push of `files` starts a CI run under ci.yml's path filter (always True when the filter is unknown)."""
+    if globs is None:
+        return True
+    rx = [glob_regex(g) for g in globs]
+    return any(r.match(f.replace(chr(92), "/")) for f in files for r in rx)
+
+
+def ci_runs_for(sha):
+    """Push-event CI runs of one commit, newest first, as small dicts. Raises on any API failure (wait_own_ci counts the misses)."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import ci_watch
+    d = ci_watch.get_json(f"{ci_watch.API.split('?')[0]}?head_sha={sha}&event=push&per_page=10") or {}
+    return [{k: r.get(k) for k in ("id", "status", "conclusion", "html_url")} for r in d.get("workflow_runs", [])]
+
+
+def ci_failed_jobs(run_id):
+    """Names of the failed jobs of one run (a red line names the failing shard); raises on API failure."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import ci_watch
+    d = ci_watch.get_json(f"{ci_watch.API.split('/workflows/')[0]}/runs/{run_id}/jobs?per_page=50") or {}
+    return [j.get("name") or "?" for j in d.get("jobs", []) if j.get("conclusion") in CI_RED_STATES]
+
+
+def wait_own_ci(pushed, fetch=None, failed_jobs=None, sleep=time.sleep, now_fn=time.monotonic, start_s=CI_START_S,
+                wait_s=CI_WAIT_S, poll=CI_POLL_S, globs=None):
+    """Wait for the CI run of the sha this ship pushed and print the verdict line. Returns 'red', 'green', 'none' (no run started: ci.yml path
+    filter or nothing within start_s), 'timeout' (still running after wait_s) or 'unknown' (API down three polls in a row, or the run was
+    cancelled); only 'red' is a verdict against the author. fetch(sha) -> runs newest first; never raises."""
+    sha = pushed.sha
+    short = sha[:8]
+    if not ci_starts(pushed.files, globs):
+        print(f"CI: no CI run for {short}: the ci.yml path filter skips these files")
+        return "none"
+    get = fetch or ci_runs_for
+    print(f"waiting for the CI run of {short} (up to {wait_s // 60} min; `ship --no-ci-wait` skips)", flush=True)
+    t0 = now_fn()
+    seen, misses = False, 0
+    while True:
+        run = None
+        try:
+            runs = get(sha) or []
+            misses = 0
+            run = runs[0] if runs else None
+        except Exception as e:      # offline / rate limited: a watcher must never break a ship that already pushed
+            misses += 1
+            if misses >= CI_MISSES:
+                print(f"CI: state of {short} unknown ({type(e).__name__}: {e})")
+                return "unknown"
+        if run:
+            seen = True
+            if run.get("status") == "completed":
+                c, url = run.get("conclusion"), run.get("html_url") or ""
+                if c == "success":
+                    print(f"CI green {short} {url}".rstrip())
+                    return "green"
+                if c in CI_RED_STATES:
+                    try:
+                        names = (failed_jobs or ci_failed_jobs)(run.get("id")) if run.get("id") else []
+                    except Exception:
+                        names = []
+                    named = ", ".join(names[:4]) + (f" +{len(names) - 4} more" if len(names) > 4 else "")
+                    print(f"CI RED {short}: {c}{' in ' + named if named else ''} {url}".rstrip())
+                    print("Revert the breaking commit now (`git revert`, then `sync.py ship --fix-ci`); CLAUDE.md boot step 2. Never forward-fix trunk.")
+                    return "red"
+                print(f"CI: the run of {short} ended {c}, no verdict {url}".rstrip())
+                return "unknown"
+        elapsed = now_fn() - t0
+        if not seen and misses == 0 and elapsed >= start_s:
+            print(f"CI: no CI run for {short} {int(elapsed)} s after the push (path filter, or nothing queued); not waiting longer")
+            return "none"
+        if elapsed >= wait_s:
+            print(f"CI: the run of {short} is still going after {int(elapsed)} s; not waiting longer {(run or {}).get('html_url') or ''}".rstrip())
+            return "timeout"
+        sleep(poll)
+
+
 def stale_pages_lines(repo):
     """STALE lines from artifacts.py (published pages whose repo build differs from the last publish); raises on tool failure."""
     r = subprocess.run([sys.executable, str(Path(repo) / "scripts" / "dev" / "artifacts.py"), "stale"],
@@ -819,7 +953,8 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
     same push as the work (no separate fetch + push). Nothing to ship: falls back to the plumbing release.
     after_slug (SV3): wait for predecessor order ticket to finish or lapse before running the gate; never holds a gate slot while waiting.
     A lost push race (GATE_SPEED D4) re-merges and pushes again after a 1-5 s jitter, up to SHIP_PUSH_TRIES; it re-runs the gate
-    only when the incoming commits overlap what we ship (race_overlap), at most REGATES times."""
+    only when the incoming commits overlap what we ship (race_overlap), at most REGATES times.
+    Returns Pushed(sha, files) after a push, None when there was nothing to ship (ship-waits-own-ci: main() waits for that sha's CI run)."""
     refuse_live(repo)  # only commits are pushed; uncommitted files stay where they are
     t_ship_0 = time.monotonic()
     try:
@@ -890,7 +1025,7 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
                     released = release_side(repo, release_slug)
                 print(f"shipped {len(files)} file(s) to origin/{TRUNK}" + (f"; released {release_slug}" if released else ""))
                 pages.report()
-                return
+                return Pushed(git(repo, "rev-parse", "HEAD").stdout.strip(), list(files))   # main() waits for this sha's CI after the timing rows are written
             print(f"push rejected (someone shipped first), retry {attempt}/{SHIP_PUSH_TRIES}")
             if attempt < SHIP_PUSH_TRIES:
                 t_retry_0 = time.monotonic()
@@ -1375,7 +1510,7 @@ def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS,
         p = Path(path).resolve()
         if p == here or not p.exists() or (p / LIVE_MARKER).exists():
             continue
-        auto = (re.match(r"mts-.+-s\d{4}-\d{6}(-\d+)?$", p.name) or p.name.startswith((f"mts-{socket.gethostname().lower()}-", "mts-relay-"))
+        auto = (re.match(r"mts-.+-s\d{4}-\d{6}(-\d+)?$", p.name) or p.name.startswith(tuple(f"mts-{n.lower()}-" for n in hosts.aliases(socket.gethostname())) + ("mts-relay-",))
                 or is_app_tree(p))
         if p.name in LANE_WORKTREES:
             keep(p, "lane", "named lane")
@@ -1524,23 +1659,31 @@ def main(argv):
             if "--full" in argv:
                 os.environ["SYNC_FULL_GATE"] = "1"
                 argv = [a for a in argv if a != "--full"]
+            no_ci_wait = bool(os.environ.get("SYNC_NO_CI_WAIT")) or "--no-ci-wait" in argv
+            argv = [a for a in argv if a != "--no-ci-wait"]
             release_slug = None
             if "--release" in argv:
                 i = argv.index("--release")
                 if i + 1 >= len(argv) or argv[i + 1].startswith("--"):
-                    raise SyncError("usage: sync.py ship [--full] [--fix-ci] [--release <slug>] [--after <slug>]")
+                    raise SyncError("usage: sync.py ship [--full] [--fix-ci] [--no-ci-wait] [--release <slug>] [--after <slug>]")
                 release_slug = argv[i + 1]
                 argv = argv[:i] + argv[i + 2:]
             after_slug = None
             if "--after" in argv:
                 i = argv.index("--after")
                 if i + 1 >= len(argv) or argv[i + 1].startswith("--"):
-                    raise SyncError("usage: sync.py ship [--full] [--fix-ci] [--release <slug>] [--after <slug>]")
+                    raise SyncError("usage: sync.py ship [--full] [--fix-ci] [--no-ci-wait] [--release <slug>] [--after <slug>]")
                 after_slug = argv[i + 1]
                 argv = argv[:i] + argv[i + 2:]
             if len(argv) != 1:
                 raise SyncError(f"unknown arguments to ship: {' '.join(argv[1:])}")
-            ship(toplevel(Path.cwd()), release_slug=release_slug, after_slug=after_slug)
+            repo = toplevel(Path.cwd())
+            pushed = ship(repo, release_slug=release_slug, after_slug=after_slug)
+            if isinstance(pushed, Pushed) and not no_ci_wait:
+                try:
+                    return CI_RED_EXIT if wait_own_ci(pushed, globs=ci_path_filter(repo)) == "red" else 0
+                except KeyboardInterrupt:
+                    print("stopped waiting for CI; the push is done")
         except SyncError as e:
             print(f"sync: {e}", file=sys.stderr)
             return 1

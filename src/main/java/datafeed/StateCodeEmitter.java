@@ -83,6 +83,7 @@ public class StateCodeEmitter extends WebSocketClient {
     private static final long PENDING_KEEP_MS = 5L * 60_000L;
     private static final int  KLINE_LIMIT = 1500;           // fapi max rows; one UTC day is <= 1440 bars
     private boolean accValid = false;
+    private long acceptedSeamMs = Long.MIN_VALUE;            // boundary M of the accepted backfill; MIN = none (OURS)
     private String accReason = "startup_no_backfill";
     private long accEpoch = 0L;                              // bumped on every invalidate / completion
     private long connectedAtMs = Long.MAX_VALUE;             // local time of the latest onOpen; MAX = not connected
@@ -182,7 +183,8 @@ public class StateCodeEmitter extends WebSocketClient {
                 long cutoff = T - TICK_BUFFER_MS;
                 while (!ticks.isEmpty() && ticks.peekFirst().T < cutoff) ticks.pollFirst();
                 if (accValid) {
-                    applySessionAccumulator(t);
+                    // A frame older than the accepted seam M is already inside the klines: never sum it again.
+                    if (T >= acceptedSeamMs) applySessionAccumulator(t);
                 } else {
                     // Gap or no backfill yet: hold the tick for the seam, keep only what a later backfill can need.
                     pendingTicks.addLast(t);
@@ -269,6 +271,7 @@ public class StateCodeEmitter extends WebSocketClient {
         accValid = false;
         accReason = reason;
         accEpoch++;
+        acceptedSeamMs = Long.MIN_VALUE;
         sessionCvd = 0.0;
         sessionCumPV = 0.0;
         sessionCumVol = 0.0;
@@ -369,6 +372,7 @@ public class StateCodeEmitter extends WebSocketClient {
             sessionCumVol = vol;
             for (Tick t : pendingTicks) if (t.T >= m) applySessionAccumulator(t);
             pendingTicks.clear();
+            acceptedSeamMs = m;
             accValid = true;
             accReason = "ok";
             accEpoch++;

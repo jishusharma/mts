@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T20:00:47Z",
   "commands": [
     "python -m pytest scripts/dev/test_lab_flow.py -q"
   ],
@@ -16,6 +17,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "DISPUTED; MyTradingSys/research/layer_lab/reports/2026-10-25_trust-recheck-lab-data-pin-ha",
+      "ref": "96b81ecc",
+      "utc": "2026-10-25T20:00:47Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -43,13 +50,12 @@
     "MyTradingSys/system/tasks/archive/lab-data-pin-hash.json",
     "MyTradingSys/research/layer_lab/reports/2026-10-19_lab-trust-tag.md"
   ],
-  "reroute": {
-    "at": "2026-10-25T16:59:17Z",
-    "desk": "20261025-165917-trust-recheck-lab-data-pin-hash",
-    "to": "DSA",
-    "why": "failing"
+  "result": "DISPUTED; MyTradingSys/research/layer_lab/reports/2026-10-25_trust-recheck-lab-data-pin-hash.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
   },
-  "result": "",
   "scope_in": [
     "scripts/dev/lab_flow.py",
     "scripts/dev/test_lab_flow.py",
@@ -67,13 +73,14 @@
   "sources": [
     "scripts/dev/lab_flow.py:31,101 (safe_file, fingerprint)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the spec/report line by line, not the code: report 2026-10-17_lab-data-pin-hash.md (fingerprint, safe_file at lab_flow.py:31,101).",
     "Re-derive the sha256 of one small pinned file, computed with hashlib on your own, against the fingerprint entry; plus that a changed byte or a symlink/outside-repo path is refused with your own short script from the written definition and compare; a difference is a MISMATCH finding with file:line, settled by calculation not vote.",
     "Read scripts/dev/test_lab_flow.py: would it fail on a broken implementation? Mutate one line in a scratch copy, run, record; leave the real file unchanged.",
     "Write the report: reviewer vendor and model, the numbers, MATCH or MISMATCH per number, tag proposal VERIFIED-C2 or DISPUTED."
   ],
+  "taken": "2026-10-25T20:00:47Z",
   "tests": "Audit card: its fail-first is the one-line mutation in a scratch copy, which must turn a test red; recorded in the report.",
   "title": "Trust re-check: lab-data-pin-hash",
   "weight": "CRUCIAL",

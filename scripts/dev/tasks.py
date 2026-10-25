@@ -32,6 +32,7 @@ from pathlib import Path
 sys.dont_write_bytecode = True
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import task_state as TS
+import hosts  # noqa: E402
 REPO = Path(__file__).resolve().parents[2]
 DIR = "MyTradingSys/system/tasks"
 BUGS = "MyTradingSys/research/BUGS.md"
@@ -1403,9 +1404,9 @@ def exclusion(card, cards, reg, holds, claims, lane_st, as_of, host=None, repo=R
         return ("dependency", dep[0])
     if card["lane"] == "CODEX" and lane_st["status"] == "down" and lane_health.allow(lane_st, as_of) == "":
         return ("lane_down", lane_health.why_down(lane_st))
-    if host and card["lane"] == "JIS-NB" and host != "JIS-NB":
+    if host and card["lane"] == "JIS-NB" and not hosts.same_host(host, "JIS-NB"):
         return ("host", f"lane JIS-NB needs host JIS-NB, not {host}")
-    if host and card.get("hosts") and host not in card["hosts"]:
+    if host and card.get("hosts") and not any(hosts.same_host(host, x) for x in card["hosts"]):
         return ("host", f"needs host {' or '.join(card['hosts'])}, not {host}")
     if miss:
         return ("not_ready", "not ready: " + miss[0])

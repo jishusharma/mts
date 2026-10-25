@@ -56,7 +56,7 @@ fees.py values (cited): Deribit taker 0.0005, maker 0.0 (fees.py:23-24, verified
 Resolved L3: CONFIRMED (section 3, T06-F2).
 
 ## 5. Funding rerun (lead L1)
-Path miss CONFIRMED: screen.py:349 and :451 look for `F:/MTS/Dumps/backtest/raw_fund`; common.py:19 comments the same. The data sit in Dumps/backtest/raw/fundingRate (81 monthly files; 2,736 settlements from 2022-01-01 to 2024-06-30, all 8 h). In DEV: rate -11.92..+8.81 bp per 8h, mean +0.73 bp, 13.4 % negative, 37 % exactly +1 bp. 1,215 of the 2,736 are stamped 1 to 5 ms after the 00/08/16 boundary.
+Path miss CONFIRMED: screen.py:349 and :451 look for `F:/MTS/Dumps/backtest/raw_fund`; common.py:19 comments the same. The data sit in Dumps/backtest/raw/fundingRate (81 monthly files; 2,736 settlements from 2022-01-01 to 2024-06-30, all 8 h). In DEV: rate -11.92..+8.81 bp per 8h, mean +0.73 bp, 13.4 % negative, 37 % exactly +1 bp. 1,215 of the 2,736 are stamped 1 to 31 ms after the 00/08/16 boundary (424 of them within 5 ms; recounted 2026-10-26, the first version said "1 to 5 ms").
 
 Method: cost to a trade of side s = s x sum(rate of settlements with entry < t <= exit) x 100 % (long pays a positive rate, short receives it). The flat rule counts boundaries crossed (tx//8h - te//8h) x 1 bp for both sides. Because the real stamps are a few ms after the boundary, a trade exiting exactly on a boundary minute is charged by the flat rule and not by the real rule; this is part of the difference.
 

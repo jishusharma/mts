@@ -32,17 +32,17 @@ DECISION (OURS): decision_ts = event bar open + event tf (checked per table agai
 | layer | tf | event type | events | duplicates dropped | status != OK dropped (value: count) | usable (D1, D2, D3 all available) | distinct ISO weeks (usable) | distinct days | verdict (MDE gate) |
 |---|---|---|---|---|---|---|---|---|---|
 | bb_top_reversal | 15m | fade | 1577 | 0 | 0 | 1553 | 128 | 742 | DESCRIPTIVE (mde_slope 0.213 R/S) |
-| malkan_rsi | 1h | breakout (OURS) | 132 | 0 | 0 | 127 | 81 | 116 | DESCRIPTIVE (mde_slope 0.634 R/S) |
-| rsi_reclaim | 1h | breakout (OURS) | 982 | 0 | 0 | 960 | 128 | 651 | DESCRIPTIVE (mde_slope 0.248 R/S) |
-| cc_msb | 1h | breakout (OURS) | 830 | 0 | 1 (NOT_IN_DATA: 1) | 807 | 128 | 627 | DESCRIPTIVE (mde_slope 0.264 R/S) |
-| fabio_escalation | 1h | breakout | 294 | 355 | 3 (NOT_IN_DATA: 3) | 294 | 102 | 248 | DESCRIPTIVE (mde_slope 0.374 R/S) |
-| session_momentum | 5m | breakout (OURS) | 911 | 0 | 1 (NOT_IN_DATA: 1) | 894 | 128 | 894 | DESCRIPTIVE (mde_slope 0.251 R/S) |
+| malkan_rsi | 1h | breakout (OURS) | 132 | 0 | 0 | 127 | 81 | 116 | DESCRIPTIVE (mde_slope 0.614 R/S) |
+| rsi_reclaim | 1h | breakout (OURS) | 982 | 0 | 0 | 960 | 128 | 651 | DESCRIPTIVE (mde_slope 0.244 R/S) |
+| cc_msb | 1h | breakout (OURS) | 830 | 0 | 1 (NOT_IN_DATA: 1) | 807 | 128 | 627 | DESCRIPTIVE (mde_slope 0.267 R/S) |
+| fabio_escalation | 1h | breakout | 294 | 355 | 3 (NOT_IN_DATA: 3) | 294 | 102 | 248 | DESCRIPTIVE (mde_slope 0.372 R/S) |
+| session_momentum | 5m | breakout (OURS) | 911 | 0 | 1 (NOT_IN_DATA: 1) | 894 | 128 | 894 | DESCRIPTIVE (mde_slope 0.253 R/S) |
 | rsi_divergence_1h | 1h | fade (OURS) | 502 | 0 | 2 (NOT_IN_DATA: 2) | 498 | 125 | 370 | DESCRIPTIVE (mde_slope 0.272 R/S) |
-| rsi_divergence_4h | 4h | fade (OURS) | 138 | 0 | 1 (NOT_IN_DATA: 1) | 137 | 81 | 130 | DESCRIPTIVE (mde_slope 0.507 R/S) |
-| candle_pattern_1h | 1h | fade (OURS) | 10906 | 1289 | 24 (NOT_IN_DATA: 24) | 10718 | 128 | 895 | DESCRIPTIVE (mde_slope 0.172 R/S) |
+| rsi_divergence_4h | 4h | fade (OURS) | 138 | 0 | 1 (NOT_IN_DATA: 1) | 137 | 81 | 130 | DESCRIPTIVE (mde_slope 0.504 R/S) |
+| candle_pattern_1h | 1h | fade (OURS) | 10906 | 1289 | 24 (NOT_IN_DATA: 24) | 10718 | 128 | 895 | DESCRIPTIVE (mde_slope 0.171 R/S) |
 | candle_pattern_4h | 4h | fade (OURS) | 2902 | 396 | 10 (NOT_IN_DATA: 10) | 2835 | 128 | 885 | DESCRIPTIVE (mde_slope 0.191 R/S) |
 | volume_1h | 1h | breakout (OURS) | 3388 | 0 | 4 (NOT_IN_DATA: 4) | 3388 | 123 | 720 | DESCRIPTIVE (mde_slope 0.202 R/S) |
-| volume_4h | 4h | breakout (OURS) | 643 | 0 | 2 (NOT_IN_DATA: 2) | 643 | 109 | 346 | DESCRIPTIVE (mde_slope 0.294 R/S) |
+| volume_4h | 4h | breakout (OURS) | 643 | 0 | 2 (NOT_IN_DATA: 2) | 643 | 109 | 346 | DESCRIPTIVE (mde_slope 0.293 R/S) |
 | wlow_bounce | 1h | fade (OURS) | 8 | 0 | 0 | 8 | 8 | 8 | DESCRIPTIVE (mde_slope 2.439 R/S) |
 | fabio_lvn_touch | | | | | | | | | NO_SIDE: regenerated; table has no side column (long_* and short_* excursions both written): D1/D3 need a side |
 | funding_extreme | | | | | | | | | NOT_RUN: input F:/MTS/data/candle_close_dev_2022_2024 funding zips absent on JIS-NB: 0 rows written |
@@ -64,20 +64,20 @@ PASS: may freeze
 ## 3. Shares and S histogram per layer (usable events)
 | layer | n | D1 -1/0/+1 % | D2 -1/0/+1 % | D3 -1/0/+1 % | S=-3 | -2 | -1 | 0 | +1 | +2 | +3 |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| bb_top_reversal | 1553 | 46.6/50.2/3.2 | 15.5/79.4/5.2 | 16.9/52.5/30.6 | 28 | 169 | 484 | 625 | 215 | 28 | 4 |
-| malkan_rsi | 127 | 43.3/52.0/4.7 | 1.6/92.9/5.5 | 15.0/60.6/24.4 | 0 | 6 | 43 | 57 | 19 | 2 | 0 |
-| rsi_reclaim | 960 | 41.9/52.5/5.6 | 29.5/69.6/0.9 | 16.9/47.4/35.7 | 20 | 109 | 307 | 387 | 130 | 7 | 0 |
-| cc_msb | 807 | 39.2/54.2/6.7 | 13.5/83.8/2.7 | 17.8/53.8/28.4 | 11 | 68 | 253 | 327 | 139 | 8 | 1 |
-| fabio_escalation | 294 | 34.7/58.2/7.1 | 2.7/85.7/11.6 | 18.7/57.5/23.8 | 0 | 20 | 91 | 103 | 69 | 11 | 0 |
-| session_momentum | 894 | 41.6/51.8/6.6 | 14.5/77.7/7.7 | 16.6/56.4/27.1 | 11 | 77 | 280 | 359 | 148 | 18 | 1 |
-| rsi_divergence_1h | 498 | 40.2/55.6/4.2 | 19.9/64.9/15.3 | 16.9/37.1/46.0 | 7 | 45 | 113 | 194 | 112 | 26 | 1 |
-| rsi_divergence_4h | 137 | 54.0/44.5/1.5 | 15.3/70.8/13.9 | 10.9/38.0/51.1 | 0 | 10 | 43 | 46 | 32 | 6 | 0 |
-| candle_pattern_1h | 10718 | 38.7/54.6/6.7 | 16.7/78.3/5.0 | 17.1/54.1/28.8 | 164 | 962 | 3328 | 4149 | 1914 | 196 | 5 |
-| candle_pattern_4h | 2835 | 39.3/53.6/7.1 | 16.7/78.1/5.2 | 16.9/53.8/29.3 | 43 | 265 | 863 | 1085 | 521 | 57 | 1 |
-| volume_1h | 3388 | 41.6/48.9/9.5 | 15.6/74.0/10.5 | 12.5/60.2/27.3 | 24 | 236 | 1000 | 1424 | 623 | 81 | 0 |
-| volume_4h | 643 | 40.0/48.8/11.2 | 14.8/70.9/14.3 | 11.0/61.9/27.1 | 3 | 34 | 187 | 264 | 131 | 24 | 0 |
+| bb_top_reversal | 1553 | 46.6/50.2/3.2 | 15.5/79.3/5.2 | 16.9/52.5/30.6 | 28 | 169 | 481 | 630 | 213 | 28 | 4 |
+| malkan_rsi | 127 | 43.3/52.0/4.7 | 6.3/90.6/3.1 | 15.0/60.6/24.4 | 0 | 9 | 44 | 55 | 17 | 2 | 0 |
+| rsi_reclaim | 960 | 41.9/52.5/5.6 | 28.1/70.1/1.8 | 16.9/47.4/35.7 | 21 | 106 | 300 | 388 | 135 | 10 | 0 |
+| cc_msb | 807 | 39.2/54.2/6.7 | 12.1/84.5/3.3 | 17.8/53.8/28.4 | 9 | 65 | 253 | 329 | 141 | 9 | 1 |
+| fabio_escalation | 294 | 34.7/58.2/7.1 | 4.1/85.0/10.9 | 18.7/57.5/23.8 | 0 | 21 | 93 | 102 | 67 | 11 | 0 |
+| session_momentum | 894 | 41.6/51.8/6.6 | 13.8/78.4/7.8 | 16.6/56.4/27.1 | 10 | 77 | 276 | 362 | 151 | 17 | 1 |
+| rsi_divergence_1h | 498 | 40.2/55.6/4.2 | 19.9/65.5/14.7 | 16.9/37.1/46.0 | 7 | 45 | 115 | 193 | 111 | 26 | 1 |
+| rsi_divergence_4h | 137 | 54.0/44.5/1.5 | 15.3/70.1/14.6 | 10.9/38.0/51.1 | 0 | 10 | 43 | 45 | 33 | 6 | 0 |
+| candle_pattern_1h | 10718 | 38.7/54.6/6.7 | 16.7/78.1/5.2 | 17.1/54.1/28.8 | 164 | 969 | 3305 | 4152 | 1928 | 195 | 5 |
+| candle_pattern_4h | 2835 | 39.3/53.6/7.1 | 16.7/78.0/5.3 | 16.9/53.8/29.3 | 43 | 264 | 863 | 1083 | 526 | 55 | 1 |
+| volume_1h | 3388 | 41.6/48.9/9.5 | 15.6/73.9/10.4 | 12.5/60.2/27.3 | 23 | 238 | 997 | 1426 | 628 | 76 | 0 |
+| volume_4h | 643 | 40.0/48.8/11.2 | 15.9/70.6/13.5 | 11.0/61.9/27.1 | 5 | 32 | 192 | 262 | 130 | 22 | 0 |
 | wlow_bounce | 8 | 50.0/50.0/0.0 | 12.5/87.5/0.0 | 12.5/37.5/50.0 | 0 | 1 | 1 | 5 | 1 | 0 | 0 |
-| POOLED (unique) | 18247 | 39.7/53.6/6.7 | 16.3/77.8/5.9 | 16.4/54.9/28.7 | 260 | 1589 | 5628 | 7230 | 3187 | 341 | 12 |
+| POOLED (unique) | 18247 | 39.7/53.6/6.7 | 16.2/77.7/6.1 | 16.4/54.9/28.7 | 256 | 1593 | 5600 | 7242 | 3205 | 339 | 12 |
 
 Pooled shares against the review's expected shares (OURS approximations, REVIEW_OPUS F8): S=+3 **0.07 %** (expected about 1.6 %), S>=+2 **1.9 %** (about 12 %), S<=-2 **10.1 %** (about 13 %).
 
@@ -104,13 +104,13 @@ Usable share (every context field available at decision time): bb_top_reversal 9
 | bb_top_reversal | S=+3 | DEV_EXT | 0 | 0 | n/a | |
 | bb_top_reversal | S=+3 | DEV (pooled) | 4 | 1 | 3.261 | |
 | malkan_rsi | S<=-2 | 2022 | 3 | 2 | 3.384 | |
-| malkan_rsi | S<=-2 | 2023-24H1 | 3 | 3 | 3.303 | |
+| malkan_rsi | S<=-2 | 2023-24H1 | 6 | 5 | 2.359 | |
 | malkan_rsi | S<=-2 | DEV_EXT | 0 | 0 | n/a | |
-| malkan_rsi | S<=-2 | DEV (pooled) | 6 | 5 | 2.359 | |
+| malkan_rsi | S<=-2 | DEV (pooled) | 9 | 7 | 1.934 | |
 | malkan_rsi | S in -1..1 | 2022 | 46 | 30 | 0.866 | |
-| malkan_rsi | S in -1..1 | 2023-24H1 | 73 | 49 | 0.686 | |
+| malkan_rsi | S in -1..1 | 2023-24H1 | 70 | 47 | 0.700 | |
 | malkan_rsi | S in -1..1 | DEV_EXT | 0 | 0 | n/a | |
-| malkan_rsi | S in -1..1 | DEV (pooled) | 119 | 79 | 0.538 | |
+| malkan_rsi | S in -1..1 | DEV (pooled) | 116 | 77 | 0.544 | |
 | malkan_rsi | S>=2 | 2022 | 0 | 0 | n/a | |
 | malkan_rsi | S>=2 | 2023-24H1 | 2 | 1 | 4.243 | |
 | malkan_rsi | S>=2 | DEV_EXT | 0 | 0 | n/a | |
@@ -119,46 +119,46 @@ Usable share (every context field available at decision time): bb_top_reversal 9
 | malkan_rsi | S=+3 | 2023-24H1 | 0 | 0 | n/a | |
 | malkan_rsi | S=+3 | DEV_EXT | 0 | 0 | n/a | |
 | malkan_rsi | S=+3 | DEV (pooled) | 0 | 0 | n/a | |
-| rsi_reclaim | S<=-2 | 2022 | 53 | 24 | 0.832 | |
-| rsi_reclaim | S<=-2 | 2023-24H1 | 76 | 41 | 0.684 | |
+| rsi_reclaim | S<=-2 | 2022 | 52 | 23 | 0.842 | |
+| rsi_reclaim | S<=-2 | 2023-24H1 | 75 | 41 | 0.687 | |
 | rsi_reclaim | S<=-2 | DEV_EXT | 0 | 0 | n/a | |
-| rsi_reclaim | S<=-2 | DEV (pooled) | 129 | 65 | 0.528 | |
+| rsi_reclaim | S<=-2 | DEV (pooled) | 127 | 64 | 0.532 | |
 | rsi_reclaim | S in -1..1 | 2022 | 337 | 50 | 0.391 | |
-| rsi_reclaim | S in -1..1 | 2023-24H1 | 487 | 78 | 0.320 | |
+| rsi_reclaim | S in -1..1 | 2023-24H1 | 486 | 78 | 0.320 | |
 | rsi_reclaim | S in -1..1 | DEV_EXT | 0 | 0 | n/a | |
-| rsi_reclaim | S in -1..1 | DEV (pooled) | 824 | 128 | 0.248 | |
-| rsi_reclaim | S>=2 | 2022 | 3 | 2 | 3.384 | |
-| rsi_reclaim | S>=2 | 2023-24H1 | 4 | 3 | 2.908 | |
+| rsi_reclaim | S in -1..1 | DEV (pooled) | 823 | 128 | 0.248 | |
+| rsi_reclaim | S>=2 | 2022 | 4 | 3 | 2.908 | |
+| rsi_reclaim | S>=2 | 2023-24H1 | 6 | 5 | 2.359 | |
 | rsi_reclaim | S>=2 | DEV_EXT | 0 | 0 | n/a | |
-| rsi_reclaim | S>=2 | DEV (pooled) | 7 | 5 | 2.205 | |
+| rsi_reclaim | S>=2 | DEV (pooled) | 10 | 8 | 1.832 | |
 | rsi_reclaim | S=+3 | 2022 | 0 | 0 | n/a | |
 | rsi_reclaim | S=+3 | 2023-24H1 | 0 | 0 | n/a | |
 | rsi_reclaim | S=+3 | DEV_EXT | 0 | 0 | n/a | |
 | rsi_reclaim | S=+3 | DEV (pooled) | 0 | 0 | n/a | |
-| cc_msb | S<=-2 | 2022 | 31 | 19 | 1.059 | |
-| cc_msb | S<=-2 | 2023-24H1 | 48 | 35 | 0.841 | |
+| cc_msb | S<=-2 | 2022 | 29 | 17 | 1.099 | |
+| cc_msb | S<=-2 | 2023-24H1 | 45 | 33 | 0.868 | |
 | cc_msb | S<=-2 | DEV_EXT | 0 | 0 | n/a | |
-| cc_msb | S<=-2 | DEV (pooled) | 79 | 54 | 0.658 | |
-| cc_msb | S in -1..1 | 2022 | 280 | 50 | 0.413 | |
-| cc_msb | S in -1..1 | 2023-24H1 | 439 | 79 | 0.329 | |
+| cc_msb | S<=-2 | DEV (pooled) | 74 | 50 | 0.681 | |
+| cc_msb | S in -1..1 | 2022 | 281 | 50 | 0.413 | |
+| cc_msb | S in -1..1 | 2023-24H1 | 442 | 79 | 0.329 | |
 | cc_msb | S in -1..1 | DEV_EXT | 0 | 0 | n/a | |
-| cc_msb | S in -1..1 | DEV (pooled) | 719 | 128 | 0.258 | |
-| cc_msb | S>=2 | 2022 | 1 | 1 | 5.721 | |
+| cc_msb | S in -1..1 | DEV (pooled) | 723 | 128 | 0.258 | |
+| cc_msb | S>=2 | 2022 | 2 | 2 | 4.045 | |
 | cc_msb | S>=2 | 2023-24H1 | 8 | 7 | 2.037 | |
 | cc_msb | S>=2 | DEV_EXT | 0 | 0 | n/a | |
-| cc_msb | S>=2 | DEV (pooled) | 9 | 8 | 1.919 | |
+| cc_msb | S>=2 | DEV (pooled) | 10 | 9 | 1.819 | |
 | cc_msb | S=+3 | 2022 | 0 | 0 | n/a | |
 | cc_msb | S=+3 | 2023-24H1 | 1 | 1 | 5.721 | |
 | cc_msb | S=+3 | DEV_EXT | 0 | 0 | n/a | |
 | cc_msb | S=+3 | DEV (pooled) | 1 | 1 | 5.721 | |
 | fabio_escalation | S<=-2 | 2022 | 11 | 11 | 1.725 | |
-| fabio_escalation | S<=-2 | 2023-24H1 | 9 | 9 | 1.907 | |
+| fabio_escalation | S<=-2 | 2023-24H1 | 10 | 10 | 1.809 | |
 | fabio_escalation | S<=-2 | DEV_EXT | 0 | 0 | n/a | |
-| fabio_escalation | S<=-2 | DEV (pooled) | 20 | 20 | 1.279 | |
+| fabio_escalation | S<=-2 | DEV (pooled) | 21 | 21 | 1.248 | |
 | fabio_escalation | S in -1..1 | 2022 | 70 | 33 | 0.721 | |
-| fabio_escalation | S in -1..1 | 2023-24H1 | 193 | 66 | 0.450 | |
+| fabio_escalation | S in -1..1 | 2023-24H1 | 192 | 66 | 0.451 | |
 | fabio_escalation | S in -1..1 | DEV_EXT | 0 | 0 | n/a | |
-| fabio_escalation | S in -1..1 | DEV (pooled) | 263 | 99 | 0.381 | |
+| fabio_escalation | S in -1..1 | DEV (pooled) | 262 | 99 | 0.381 | |
 | fabio_escalation | S>=2 | 2022 | 1 | 1 | 5.721 | |
 | fabio_escalation | S>=2 | 2023-24H1 | 10 | 8 | 1.832 | |
 | fabio_escalation | S>=2 | DEV_EXT | 0 | 0 | n/a | |
@@ -168,17 +168,17 @@ Usable share (every context field available at decision time): bb_top_reversal 9
 | fabio_escalation | S=+3 | DEV_EXT | 0 | 0 | n/a | |
 | fabio_escalation | S=+3 | DEV (pooled) | 0 | 0 | n/a | |
 | session_momentum | S<=-2 | 2022 | 28 | 18 | 1.111 | |
-| session_momentum | S<=-2 | 2023-24H1 | 60 | 38 | 0.760 | |
+| session_momentum | S<=-2 | 2023-24H1 | 59 | 37 | 0.767 | |
 | session_momentum | S<=-2 | DEV_EXT | 0 | 0 | n/a | |
-| session_momentum | S<=-2 | DEV (pooled) | 88 | 56 | 0.627 | |
-| session_momentum | S in -1..1 | 2022 | 312 | 50 | 0.400 | |
-| session_momentum | S in -1..1 | 2023-24H1 | 475 | 79 | 0.322 | |
+| session_momentum | S<=-2 | DEV (pooled) | 87 | 55 | 0.631 | |
+| session_momentum | S in -1..1 | 2022 | 313 | 50 | 0.399 | |
+| session_momentum | S in -1..1 | 2023-24H1 | 476 | 79 | 0.321 | |
 | session_momentum | S in -1..1 | DEV_EXT | 0 | 0 | n/a | |
-| session_momentum | S in -1..1 | DEV (pooled) | 787 | 128 | 0.251 | |
-| session_momentum | S>=2 | 2022 | 7 | 4 | 2.242 | |
+| session_momentum | S in -1..1 | DEV (pooled) | 789 | 128 | 0.251 | |
+| session_momentum | S>=2 | 2022 | 6 | 4 | 2.393 | |
 | session_momentum | S>=2 | 2023-24H1 | 12 | 12 | 1.651 | |
 | session_momentum | S>=2 | DEV_EXT | 0 | 0 | n/a | |
-| session_momentum | S>=2 | DEV (pooled) | 19 | 16 | 1.325 | |
+| session_momentum | S>=2 | DEV (pooled) | 18 | 16 | 1.357 | |
 | session_momentum | S=+3 | 2022 | 0 | 0 | n/a | |
 | session_momentum | S=+3 | 2023-24H1 | 1 | 1 | 5.721 | |
 | session_momentum | S=+3 | DEV_EXT | 0 | 0 | n/a | |
@@ -216,65 +216,65 @@ Usable share (every context field available at decision time): bb_top_reversal 9
 | rsi_divergence_4h | S=+3 | DEV_EXT | 0 | 0 | n/a | |
 | rsi_divergence_4h | S=+3 | DEV (pooled) | 0 | 0 | n/a | |
 | candle_pattern_1h | S<=-2 | 2022 | 472 | 38 | 0.385 | |
-| candle_pattern_1h | S<=-2 | 2023-24H1 | 654 | 58 | 0.319 | |
+| candle_pattern_1h | S<=-2 | 2023-24H1 | 661 | 58 | 0.318 | |
 | candle_pattern_1h | S<=-2 | DEV_EXT | 0 | 0 | n/a | |
-| candle_pattern_1h | S<=-2 | DEV (pooled) | 1126 | 96 | 0.245 | |
+| candle_pattern_1h | S<=-2 | DEV (pooled) | 1133 | 96 | 0.245 | |
 | candle_pattern_1h | S in -1..1 | 2022 | 3577 | 50 | 0.271 | |
-| candle_pattern_1h | S in -1..1 | 2023-24H1 | 5814 | 79 | 0.216 | |
+| candle_pattern_1h | S in -1..1 | 2023-24H1 | 5808 | 79 | 0.216 | |
 | candle_pattern_1h | S in -1..1 | DEV_EXT | 0 | 0 | n/a | |
-| candle_pattern_1h | S in -1..1 | DEV (pooled) | 9391 | 128 | 0.169 | |
+| candle_pattern_1h | S in -1..1 | DEV (pooled) | 9385 | 128 | 0.169 | |
 | candle_pattern_1h | S>=2 | 2022 | 63 | 13 | 0.848 | |
-| candle_pattern_1h | S>=2 | 2023-24H1 | 138 | 29 | 0.571 | |
+| candle_pattern_1h | S>=2 | 2023-24H1 | 137 | 28 | 0.576 | |
 | candle_pattern_1h | S>=2 | DEV_EXT | 0 | 0 | n/a | |
-| candle_pattern_1h | S>=2 | DEV (pooled) | 201 | 42 | 0.474 | |
+| candle_pattern_1h | S>=2 | DEV (pooled) | 200 | 41 | 0.477 | |
 | candle_pattern_1h | S=+3 | 2022 | 3 | 1 | 3.618 | |
 | candle_pattern_1h | S=+3 | 2023-24H1 | 2 | 1 | 4.243 | |
 | candle_pattern_1h | S=+3 | DEV_EXT | 0 | 0 | n/a | |
 | candle_pattern_1h | S=+3 | DEV (pooled) | 5 | 2 | 2.744 | |
 | candle_pattern_4h | S<=-2 | 2022 | 124 | 32 | 0.583 | |
-| candle_pattern_4h | S<=-2 | 2023-24H1 | 184 | 50 | 0.475 | |
+| candle_pattern_4h | S<=-2 | 2023-24H1 | 183 | 50 | 0.476 | |
 | candle_pattern_4h | S<=-2 | DEV_EXT | 0 | 0 | n/a | |
-| candle_pattern_4h | S<=-2 | DEV (pooled) | 308 | 82 | 0.368 | |
+| candle_pattern_4h | S<=-2 | DEV (pooled) | 307 | 82 | 0.369 | |
 | candle_pattern_4h | S in -1..1 | 2022 | 915 | 50 | 0.312 | |
-| candle_pattern_4h | S in -1..1 | 2023-24H1 | 1554 | 79 | 0.246 | |
+| candle_pattern_4h | S in -1..1 | 2023-24H1 | 1557 | 79 | 0.246 | |
 | candle_pattern_4h | S in -1..1 | DEV_EXT | 0 | 0 | n/a | |
-| candle_pattern_4h | S in -1..1 | DEV (pooled) | 2469 | 128 | 0.194 | |
+| candle_pattern_4h | S in -1..1 | DEV (pooled) | 2472 | 128 | 0.194 | |
 | candle_pattern_4h | S>=2 | 2022 | 17 | 9 | 1.448 | |
-| candle_pattern_4h | S>=2 | 2023-24H1 | 41 | 19 | 0.944 | |
+| candle_pattern_4h | S>=2 | 2023-24H1 | 39 | 19 | 0.963 | |
 | candle_pattern_4h | S>=2 | DEV_EXT | 0 | 0 | n/a | |
-| candle_pattern_4h | S>=2 | DEV (pooled) | 58 | 28 | 0.790 | |
+| candle_pattern_4h | S>=2 | DEV (pooled) | 56 | 28 | 0.802 | |
 | candle_pattern_4h | S=+3 | 2022 | 1 | 1 | 5.721 | |
 | candle_pattern_4h | S=+3 | 2023-24H1 | 0 | 0 | n/a | |
 | candle_pattern_4h | S=+3 | DEV_EXT | 0 | 0 | n/a | |
 | candle_pattern_4h | S=+3 | DEV (pooled) | 1 | 1 | 5.721 | |
-| volume_1h | S<=-2 | 2022 | 70 | 25 | 0.743 | |
-| volume_1h | S<=-2 | 2023-24H1 | 190 | 46 | 0.476 | |
+| volume_1h | S<=-2 | 2022 | 73 | 25 | 0.731 | |
+| volume_1h | S<=-2 | 2023-24H1 | 188 | 45 | 0.479 | |
 | volume_1h | S<=-2 | DEV_EXT | 0 | 0 | n/a | |
-| volume_1h | S<=-2 | DEV (pooled) | 260 | 71 | 0.399 | |
-| volume_1h | S in -1..1 | 2022 | 1104 | 45 | 0.315 | |
-| volume_1h | S in -1..1 | 2023-24H1 | 1943 | 78 | 0.239 | |
+| volume_1h | S<=-2 | DEV (pooled) | 261 | 70 | 0.400 | |
+| volume_1h | S in -1..1 | 2022 | 1105 | 45 | 0.315 | |
+| volume_1h | S in -1..1 | 2023-24H1 | 1946 | 78 | 0.239 | |
 | volume_1h | S in -1..1 | DEV_EXT | 0 | 0 | n/a | |
-| volume_1h | S in -1..1 | DEV (pooled) | 3047 | 123 | 0.190 | |
-| volume_1h | S>=2 | 2022 | 9 | 4 | 2.023 | |
-| volume_1h | S>=2 | 2023-24H1 | 72 | 21 | 0.752 | |
+| volume_1h | S in -1..1 | DEV (pooled) | 3051 | 123 | 0.190 | |
+| volume_1h | S>=2 | 2022 | 5 | 4 | 2.590 | |
+| volume_1h | S>=2 | 2023-24H1 | 71 | 21 | 0.755 | |
 | volume_1h | S>=2 | DEV_EXT | 0 | 0 | n/a | |
-| volume_1h | S>=2 | DEV (pooled) | 81 | 25 | 0.703 | |
+| volume_1h | S>=2 | DEV (pooled) | 76 | 25 | 0.720 | |
 | volume_1h | S=+3 | 2022 | 0 | 0 | n/a | |
 | volume_1h | S=+3 | 2023-24H1 | 0 | 0 | n/a | |
 | volume_1h | S=+3 | DEV_EXT | 0 | 0 | n/a | |
 | volume_1h | S=+3 | DEV (pooled) | 0 | 0 | n/a | |
 | volume_4h | S<=-2 | 2022 | 10 | 9 | 1.819 | |
-| volume_4h | S<=-2 | 2023-24H1 | 27 | 17 | 1.133 | |
+| volume_4h | S<=-2 | 2023-24H1 | 27 | 18 | 1.128 | |
 | volume_4h | S<=-2 | DEV_EXT | 0 | 0 | n/a | |
-| volume_4h | S<=-2 | DEV (pooled) | 37 | 26 | 0.960 | |
-| volume_4h | S in -1..1 | 2022 | 191 | 34 | 0.500 | |
-| volume_4h | S in -1..1 | 2023-24H1 | 391 | 71 | 0.348 | |
+| volume_4h | S<=-2 | DEV (pooled) | 37 | 27 | 0.958 | |
+| volume_4h | S in -1..1 | 2022 | 192 | 34 | 0.500 | |
+| volume_4h | S in -1..1 | 2023-24H1 | 392 | 71 | 0.348 | |
 | volume_4h | S in -1..1 | DEV_EXT | 0 | 0 | n/a | |
-| volume_4h | S in -1..1 | DEV (pooled) | 582 | 105 | 0.286 | |
-| volume_4h | S>=2 | 2022 | 1 | 1 | 5.721 | |
-| volume_4h | S>=2 | 2023-24H1 | 23 | 12 | 1.246 | |
+| volume_4h | S in -1..1 | DEV (pooled) | 584 | 105 | 0.286 | |
+| volume_4h | S>=2 | 2022 | 0 | 0 | n/a | |
+| volume_4h | S>=2 | 2023-24H1 | 22 | 12 | 1.269 | |
 | volume_4h | S>=2 | DEV_EXT | 0 | 0 | n/a | |
-| volume_4h | S>=2 | DEV (pooled) | 24 | 13 | 1.216 | |
+| volume_4h | S>=2 | DEV (pooled) | 22 | 12 | 1.269 | |
 | volume_4h | S=+3 | 2022 | 0 | 0 | n/a | |
 | volume_4h | S=+3 | 2023-24H1 | 0 | 0 | n/a | |
 | volume_4h | S=+3 | DEV_EXT | 0 | 0 | n/a | |
@@ -295,18 +295,18 @@ Usable share (every context field available at decision time): bb_top_reversal 9
 | wlow_bounce | S=+3 | 2023-24H1 | 0 | 0 | n/a | |
 | wlow_bounce | S=+3 | DEV_EXT | 0 | 0 | n/a | |
 | wlow_bounce | S=+3 | DEV (pooled) | 0 | 0 | n/a | |
-| POOLED | S<=-2 | 2022 | 729 | 42 | 0.344 | |
-| POOLED | S<=-2 | 2023-24H1 | 1120 | 63 | 0.280 | |
+| POOLED | S<=-2 | 2022 | 727 | 42 | 0.344 | |
+| POOLED | S<=-2 | 2023-24H1 | 1122 | 63 | 0.280 | |
 | POOLED | S<=-2 | DEV_EXT | 0 | 0 | n/a | |
 | POOLED | S<=-2 | DEV (pooled) | 1849 | 105 | 0.217 | |
-| POOLED | S in -1..1 | 2022 | 6155 | 50 | 0.265 | |
-| POOLED | S in -1..1 | 2023-24H1 | 9890 | 79 | 0.211 | |
+| POOLED | S in -1..1 | 2022 | 6158 | 50 | 0.265 | |
+| POOLED | S in -1..1 | 2023-24H1 | 9889 | 79 | 0.211 | |
 | POOLED | S in -1..1 | DEV_EXT | 0 | 0 | n/a | |
-| POOLED | S in -1..1 | DEV (pooled) | 16045 | 128 | 0.166 | |
-| POOLED | S>=2 | 2022 | 101 | 15 | 0.714 | |
-| POOLED | S>=2 | 2023-24H1 | 252 | 38 | 0.451 | |
+| POOLED | S in -1..1 | DEV (pooled) | 16047 | 128 | 0.166 | |
+| POOLED | S>=2 | 2022 | 100 | 17 | 0.698 | |
+| POOLED | S>=2 | 2023-24H1 | 251 | 38 | 0.451 | |
 | POOLED | S>=2 | DEV_EXT | 0 | 0 | n/a | |
-| POOLED | S>=2 | DEV (pooled) | 353 | 53 | 0.381 | |
+| POOLED | S>=2 | DEV (pooled) | 351 | 55 | 0.379 | |
 | POOLED | S=+3 | 2022 | 8 | 1 | 2.637 | |
 | POOLED | S=+3 | 2023-24H1 | 4 | 2 | 3.000 | |
 | POOLED | S=+3 | DEV_EXT | 0 | 0 | n/a | |
@@ -382,11 +382,11 @@ Pass 1 rule, written before the numbers were looked at: D3 = smallest `near_atr`
 
 | D2 bbwp_high | pooled n | D2=+1 % | D2=-1 % | D2=0 % |
 |---|---|---|---|---|
-| 80 | 22862 | 7.4 | 16.4 | 76.2 |
-| 85 | 22862 | 6.3 | 16.5 | 77.1 |
-| 90 | 22862 | 5.3 | 16.9 | 77.8 |
+| 80 | 22862 | 7.5 | 16.3 | 76.3 |
+| 85 | 22862 | 6.4 | 16.5 | 77.1 |
+| 90 | 22862 | 5.4 | 16.8 | 77.8 |
 
-**FROZEN D3:** near_atr = 0.25, range edge = 0.1 (pooled D3=+1 29.3 %, D3=-1 16.2 %); **FROZEN D2:** bbwp_high = 85 (pooled D2=+1 6.3 %, D2=-1 16.5 %). D2 fresh-expansion rule: BBWP_4h min of the previous 6 bars <= 30 and now > 50 (OURS / SOURCED KR-Q02 confirm 50). No band changes after this file is committed.
+**FROZEN D3:** near_atr = 0.25, range edge = 0.1 (pooled D3=+1 29.3 %, D3=-1 16.2 %); **FROZEN D2:** bbwp_high = 85 (pooled D2=+1 6.4 %, D2=-1 16.5 %). D2 fresh-expansion rule: BBWP_4h min of the previous 6 bars <= 30 and now > 50 (OURS / SOURCED KR-Q02 confirm 50). No band changes after this file is committed.
 
 ## 7. Context-day counts (all calendar days, no events): DEV_EXT and DEV
 | set | days with a full daily row | trend_1d up/range/down % | trend_1w up/range/down % | naive SMA200 up/down % | naive ret20 up/down % | ISO weeks |

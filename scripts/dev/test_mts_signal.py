@@ -1,3 +1,5 @@
+import contextlib
+import io
 import json
 import os
 import shutil
@@ -6,10 +8,11 @@ import sys
 import tempfile
 import time
 import unittest
-from datetime import timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import exhaust as E
 import mts_signal as S
 
 
@@ -438,7 +441,7 @@ class SignalTest(unittest.TestCase):
             self.assertEqual(S.main(["acks", bid]), 0)
             self.assertEqual(S.main(["acks"]), 0)
         table = buf.getvalue()
-        self.assertRegex(table, r"jis-nb\s+done\s+ok")
+        self.assertRegex(table, r"jis-desktop\s+done\s+ok")   # acks list the canonical name (hosts.py); the ack was written as jis-nb
         self.assertRegex(table, r"jis-lab\s+told")
         self.assertRegex(table, r"jis-nuc\s+none")
         self.assertEqual(table.count(bid + " HIGH"), 2)      # with id and the all-open listing
@@ -542,10 +545,10 @@ class SignalTest(unittest.TestCase):
         os.environ["MTS_SIGNALS_HOME"] = str(self.tmp / "none")
         os.environ["MTS_SIGNALS_SYNC"] = ""
         out = S.handle(self.payload("SessionStart", sid="x", source="compact"))
-        self.assertEqual(out, "LOGIN: this session is login C on JIS-NB (the desktop) (from the app account)")
+        self.assertEqual(out, "LOGIN: this session is login C on JIS-DESKTOP (the desktop) (from the app account)")
         self.assertNotIn("example.test", out)
         self.as_login("stranger@example.test")
-        self.assertIn("LOGIN: unknown on JIS-NB", S.handle(self.payload("SessionStart", sid="y", source="compact")))
+        self.assertIn("LOGIN: unknown on JIS-DESKTOP", S.handle(self.payload("SessionStart", sid="y", source="compact")))
 
     def test_login_mismatch_uses_detected_letter_record_carries_login(self):
         self.machine("lenovo", "")
@@ -587,6 +590,60 @@ class SignalTest(unittest.TestCase):
 
     def test_clean_cuts_email_addresses(self):
         self.assertEqual(S.clean("mail alice.fake@example.test now"), "mail [cut] now")
+
+
+class ExhaustReadTest(unittest.TestCase):
+    """B199 (BUGS.md): a quota number names its source and read time; exhaust.py plan --read <UTC of the get_usage call>
+    refuses a reading older than 10 min. Expected values are hand-counted minutes on a fixed clock, not read from exhaust.py."""
+
+    NOW = datetime(2026, 10, 26, 8, 0, 0, tzinfo=timezone.utc)
+    RESET = "2026-10-26T09:30Z"          # 90 min after NOW: phase plan (120 >= 90 > 60)
+    BASE = ["plan", "--login", "C", "--week", "40", "--five", "10", "--reset", RESET, "--model", "opus=10", "--model", "sonnet=30"]
+
+    def run_main(self, *extra):
+        out, err = io.StringIO(), io.StringIO()
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            code = E.main(self.BASE + list(extra), now=self.NOW)
+        return code, out.getvalue(), err.getvalue()
+
+    def read_at(self, minutes_ago):
+        return (self.NOW - timedelta(minutes=minutes_ago)).strftime("%Y-%m-%dT%H:%MZ")
+
+    def test_stale_read_rejected(self):
+        code, out, err = self.run_main("--read", self.read_at(11))       # 07:49Z, 11 min old
+        self.assertEqual(code, 2)
+        self.assertNotIn("{", out)                                       # no phase JSON for a stale number
+        self.assertIn("STALE quota reading", err)
+        self.assertIn("read 2026-10-26T07:49Z", err)                     # names the read time
+        self.assertIn("11 min old", err)                                 # names the age
+        self.assertIn("get_usage", err)                                  # names the source and the cure
+
+    def test_fresh_read_echoed_with_source(self):
+        code, out, err = self.run_main("--read", self.read_at(9))        # 07:51Z, 9 min old
+        self.assertEqual(code, 0)
+        rec = json.loads(out)
+        self.assertEqual(rec["read_utc"], "2026-10-26T07:51Z")
+        self.assertEqual(rec["source"], "get_usage")
+        self.assertEqual((rec["phase"], rec["minutes_to_reset"], rec["models"]), ("plan", 90, ["opus", "sonnet"]))
+
+    def test_exactly_ten_minutes_still_accepted(self):
+        code, out, err = self.run_main("--read", self.read_at(10))       # 07:50Z: the limit is "older than 10 min"
+        self.assertEqual(code, 0)
+        self.assertEqual(json.loads(out)["read_utc"], "2026-10-26T07:50Z")
+
+    def test_no_read_is_unstated_not_refused(self):
+        code, out, err = self.run_main()
+        self.assertEqual(code, 0)
+        rec = json.loads(out)
+        self.assertEqual((rec["read_utc"], rec["source"]), ("unstated", "unstated"))
+
+    def test_future_read_rejected(self):
+        code, out, err = self.run_main("--read", (self.NOW + timedelta(minutes=3)).strftime("%Y-%m-%dT%H:%MZ"))   # 08:03Z
+        self.assertEqual(code, 2)
+        self.assertNotIn("{", out)
+        self.assertIn("in the future", err)
+        code, out, err = self.run_main("--read", (self.NOW + timedelta(minutes=2)).strftime("%Y-%m-%dT%H:%MZ"))   # 2 min of clock skew is allowed
+        self.assertEqual(code, 0)
 
 
 if __name__ == "__main__":

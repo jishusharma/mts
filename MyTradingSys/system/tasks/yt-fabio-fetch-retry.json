@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T20:14:36Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py extracts/gemini_out/fabio/HUYBdYnXUNc_note.md"
   ],
@@ -15,7 +16,14 @@
   "id": "yt-fabio-fetch-retry",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "3 notes in extracts/gemini_out/fabio/ headed UNVERIFIED (HTTP 429), mm:ss trade summary, 0",
+      "ref": "6b9f9dbe",
+      "utc": "2026-10-25T20:14:36Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,13 +33,12 @@
   "refined_by": "",
   "refreshed": "2026-10-24T15:40:19Z",
   "refs": [],
-  "reroute": {
-    "at": "2026-10-25T16:59:17Z",
-    "desk": "20261025-165917-yt-fabio-fetch-retry",
-    "to": "DSA",
-    "why": "failing"
+  "result": "3 notes in extracts/gemini_out/fabio/ headed UNVERIFIED (HTTP 429), mm:ss trade summary, 0 quote marks",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
   },
-  "result": "",
   "scope_in": [
     "raw_transcripts_canonical",
     "extracts/gemini_out/fabio"
@@ -44,13 +51,14 @@
   "sources": [
     "MyTradingSys/research/fabio_video_search_2026-10-17/README.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "python scripts/dev/fetch_captions_timed.py --analyst fabio <ID> once per video; on 429 do not retry",
     "Captions fetched: rewrite the note with live trades and 2 verbatim quotes; run verify_extract_quotes.py until exit 0",
     "Captions failed: read https://www.youtube.com/watch?v=<ID> yourself and write the UNVERIFIED trade summary, no quotes",
     "Commit with a Result: line"
   ],
+  "taken": "2026-10-25T20:14:36Z",
   "tests": "verify_extract_quotes.py exits 0 on every note that carries quotes; an UNVERIFIED note carries no quote marks. The Claude reviewer spot-checks 1 trade per video before shipping.",
   "title": "Fabio caption retry: HUYBdYnXUNc, agjftXPkLUE, cLgdXZnLL_0 (HTTP 429 in Gemini run; feV6CATGUqo, pZai3k1e-Jg are Video unavailable)",
   "weight": "ROUTINE",

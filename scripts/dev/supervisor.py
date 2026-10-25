@@ -577,7 +577,15 @@ K_DEFAULT = 0.12                # weekly points per 5 h point until two readings
 TRANSIT_MIN = 20                # write the hand-over this many minutes before the 5 h window resets (OURS)
 DSA_DOWN_H = 24                 # a DSA target whose oldest pending row is older than this has no working bridge (OURS)
 CLAUDE_LANES = ("SONNET", "HAIKU")
-NB, NUC = "JIS-NB", "JIS-NUC"
+import hosts  # noqa: E402  (canonical machine names: JIS-NB is JIS-DESKTOP since the rename)
+
+
+def CN(h):
+    """Canonical upper-case machine name; every host compare below uses it (hosts.py)."""
+    return str(hosts.canonical(h or "")).upper()
+
+
+NB, NUC = CN("JIS-NB"), "JIS-NUC"
 LIVE_HOST_FILE = REPO / "MyTradingSys" / "system" / "live_host.txt"   # one line, the host that holds the live tree (LIVE_HOST_MOVE.md); same file as live_mirror.py
 
 
@@ -587,7 +595,7 @@ def live_host() -> str:
         name = LIVE_HOST_FILE.read_text(encoding="utf-8").strip().upper()
     except OSError:
         name = ""
-    return name or NB
+    return CN(name) or NB
 
 
 HANDOVER_REL = "MyTradingSys/system/handover/SUPERVISOR_{}.md"
@@ -611,7 +619,7 @@ LAST_DAY_CAP = 99    # operator 2026-10-22, login A at 97% with 15 h to reset: "
 def weekly_cap(login: str, host: str, h_to_reset: float | None = None) -> int:
     """SUPER_SESSION.md rule 12: logins B and C stop at 75% of the week when they run on JIS-NB (operator choice); else 95%, raised to
     LAST_DAY_CAP in the last LAST_DAY_H before the weekly reset, so the last points are spent slowly instead of lost (pace_plan spreads them)."""
-    if host.upper() == NB and login in ("B", "C"):
+    if CN(host) == NB and login in ("B", "C"):
         return 75
     return LAST_DAY_CAP if h_to_reset is not None and 0 < h_to_reset <= LAST_DAY_H else 95
 
@@ -767,19 +775,19 @@ def live_supervisors(sigs, now: datetime, minutes: int = HEARTBEAT_MIN) -> dict:
 def lane_owner(live: dict, host: str | None = None) -> str | None:
     """Who runs a shared lane action this wake: the lowest login letter among live supervisors on `host` (if any), else the lowest
     live login anywhere. Same answer on every machine from the same signals, so exactly one supervisor acts."""
-    on = sorted(l for l, h in live.items() if host and h["host"] == host.upper())
+    on = sorted(l for l, h in live.items() if host and CN(h["host"]) == CN(host))
     return on[0] if on else (sorted(live)[0] if live else None)
 
 
 def pick_cards(rows, host: str, n: int, crucial_only: bool = False, live: str | None = None) -> list:
     """The first n dispatch rows a Claude worker on `host` can run: lanes SONNET/HAIKU (JIS-NB lane only on the live host), Lab_Guy cards only on
     JIS-NUC, CRUCIAL/CRITICAL only when the window says so. Rows are already ranked (pinned CI first, own shard first)."""
-    h = host.upper()
-    live = (live or live_host()).upper()
+    h = CN(host)
+    live = CN(live or live_host())
     ok = []
     for r in rows:
         lane = str(r.get("lane", "")).upper()
-        if not (lane in CLAUDE_LANES or (lane == NB and h == live)):
+        if not (lane in CLAUDE_LANES or (CN(lane) == NB and h == live)):
             continue
         if r.get("role") == "Lab_Guy" and h != NUC:
             continue
@@ -892,7 +900,7 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
 
 
 def _local_bridge(host: str) -> str | None:
-    if host.upper() not in (NB, NUC):
+    if CN(host) not in (NB, NUC):
         return None
     import socket as _s
     try:
@@ -1011,7 +1019,7 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
     import tasks
     import traffic
     now = now or _now_utc()
-    host = (host or socket.gethostname()).upper()
+    host = CN(host or socket.gethostname())
     login = login.strip().upper()[:1]
     rd = {**rd, "at": now.strftime("%Y-%m-%dT%H:%M:%SZ")}
     hist = record_reading(login, rd, home)
@@ -1165,14 +1173,14 @@ def handover(repo: Path, login: str, note: str = "", host: str | None = None, ho
              send: bool = False) -> Path:
     import sync
     now = now or _now_utc()
-    host = (host or socket.gethostname()).upper()
+    host = CN(host or socket.gethostname())
     login = login.strip().upper()[:1]
     try:
         last = json.loads((loop_home(home) / f"{login}-last-plan.json").read_text(encoding="utf-8"))
     except (OSError, ValueError):
         last = {}
     try:
-        claims = [s for s, kv in sync.read_claims(repo, TRUNK_REF) if (kv.get("host") or "").upper() == host]
+        claims = [s for s, kv in sync.read_claims(repo, TRUNK_REF) if CN(kv.get("host") or "") == host]
     except Exception:
         claims = ["(claims unreadable)"]
     p = Path(repo) / HANDOVER_REL.format(login)

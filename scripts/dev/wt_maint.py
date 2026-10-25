@@ -27,6 +27,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import sync  # noqa: E402
+import hosts  # noqa: E402
 
 REPO = Path(__file__).resolve().parents[2]
 SUPERVISOR_LOG_REL = "MyTradingSys/research/fast_track_2026-09-27/SUPERVISOR_LOG.md"
@@ -35,13 +36,13 @@ IDLE_HOURS = sync.TIDY_IDLE_HOURS
 PROTECT_BRANCHES = ("fast-track", "main", "master")
 TASK_PREFIX = "MTS-WorktreeMaint"
 # hostname (lower) -> canonical device name; the Lenovo laptop reports DESKTOP-F7IU69N (DEVICES.md s0)
-KNOWN_DEVICES = {"jis-nb": "JIS-NB", "jis-nuc": "JIS-NUC", "desktop-f7iu69n": "Lenovo laptop"}
+KNOWN_DEVICES = {"jis-desktop": "JIS-NB", "jis-nuc": "JIS-NUC", "jis-laptop": "Lenovo laptop"}   # keyed by hosts.key(): old and new names both land here; device names (task names) stay
 
 
 def device_name(hostname=None):
     """Canonical device name from the machine's hostname; an unknown host keeps its own (upper-cased) name."""
     h = (hostname or socket.gethostname()).strip()
-    return KNOWN_DEVICES.get(h.lower(), h.upper() or "UNKNOWN")
+    return KNOWN_DEVICES.get(str(hosts.key(h)), h.upper() or "UNKNOWN")
 
 
 def task_name(device=None):

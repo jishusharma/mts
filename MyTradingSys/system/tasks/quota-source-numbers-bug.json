@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T19:28:02Z",
   "commands": [],
   "created": "2026-10-23T09:04:12Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/exhaust.py plan --read: reading older than 10 min or >2 min in future exits 2 ",
+      "ref": "3e34268c5",
+      "utc": "2026-10-25T19:28:02Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +45,12 @@
   "refined_by": "",
   "refreshed": "2026-10-24T21:37:21Z",
   "refs": [],
-  "result": "",
+  "result": "scripts/dev/exhaust.py plan --read: reading older than 10 min or >2 min in future exits 2 with STALE message; read_utc+source echoed; ExhaustReadTest 5/5 green (fails on pre-change code); EXHAUST_PHASE.md documents it",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/exhaust.py",
     "scripts/dev/test_mts_signal.py",
@@ -52,7 +64,7 @@
   "scope_sha": "8c00b0277095",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read exhaust.py plan()/main() (l.21-70) and BUGS.md l.317",
     "Add --read (UTC, same format as --reset) to main(); add READ_MAX_MIN = 10; in plan() add read_utc and source='get_usage' to the returned dict; add function check_read(read, now) returning age minutes",
@@ -61,6 +73,7 @@
     "EXHAUST_PHASE.md l.28: document --read and the 10 min rule; one sentence: every quota claim in a report names source (get_usage or UI panel) and read time; a UI window that has not started is unknown, not 99%",
     "Run python scripts/dev/test_mts_signal.py; sync.py ship; verify git cherry origin/fast-track <sha> empty and ls-tree shows the 3 files"
   ],
+  "taken": "2026-10-25T19:28:02Z",
   "tests": "scripts/dev/test_mts_signal.py ExhaustReadTest.test_stale_read_rejected (and cases b-d): fails on current code (exhaust.py has no --read and no STALE message), passes after the change",
   "title": "B199: quota numbers disagree by source; every claim names source and read time",
   "weight": "ROUTINE",

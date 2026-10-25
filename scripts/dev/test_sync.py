@@ -84,6 +84,15 @@ class SyncTest(unittest.TestCase):
         self.assertEqual(seen, [["d.py"]])
         self.assertEqual(len(docs), 1)
 
+    def test_ship_returns_the_pushed_sha_and_files_so_the_shell_can_wait_for_that_sha_s_ci(self):
+        commit(self.a, "p.py", "p\n")
+        pushed = sync.ship(self.a, gate=self.gate)
+        sh(self.a, "fetch", "-q", "origin")
+        self.assertEqual(pushed.sha, sh(self.a, "rev-parse", "origin/fast-track").stdout.strip())
+        self.assertEqual(pushed.files, ["p.py"])
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertIsNone(sync.ship(self.a, gate=self.gate))     # nothing left to ship: no sha, no wait
+
     def test_role_md_plus_card_json_is_a_docs_ship_not_a_code_ship(self):
         """5f12bc06c: a role .md plus card .json took the code path, which gate_select maps to zero steps, so the role byte budget never ran."""
         seen, docs = [], []
@@ -1363,6 +1372,170 @@ class FastShipTest(unittest.TestCase):
         (tmp / "theirs.py").write_text("import mine\n")
         (tmp / "unrelated.py").write_text("Y = 1\n")
         self.assertEqual(sync.race_overlap(tmp, ["theirs.py", "unrelated.py"], ["mine.py"]), ["theirs.py"])
+
+
+class OwnCiWaitTest(unittest.TestCase):
+    """ship-waits-own-ci (CI red and flow review 2026-10-25, claim 1): after the push the ship shell waits for the CI run of ITS OWN sha and
+    prints CI RED at once, so the author (the one person who knows what they just shipped) sees a red run in the same shell."""
+    SHA = "deadbeef" + "0" * 32
+    RED_RUN = {"id": 7, "status": "completed", "conclusion": "failure", "html_url": "https://github.com/o/r/actions/runs/7"}
+    GREEN_RUN = {"id": 8, "status": "completed", "conclusion": "success", "html_url": "https://github.com/o/r/actions/runs/8"}
+
+    def setUp(self):
+        self.pushed = sync.Pushed(self.SHA, ["scripts/dev/example_tool.py"])
+        self.t = 0.0
+        self.slept = []
+        self.asked = []
+
+    def now(self):
+        return self.t
+
+    def sleep(self, s):
+        self.slept.append(s)
+        self.t += s
+
+    def run_wait(self, runs, pushed=None, **kw):
+        """runs: one answer per poll (the last one repeats); an Exception instance is raised instead of returned."""
+        seq = list(runs)
+
+        def fetch(sha):
+            self.asked.append(sha)
+            a = seq.pop(0) if len(seq) > 1 else seq[0]
+            if isinstance(a, Exception):
+                raise a
+            return a
+        kw.setdefault("failed_jobs", lambda run_id: [])
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            state = sync.wait_own_ci(pushed or self.pushed, fetch=fetch, sleep=self.sleep, now_fn=self.now, poll=20, **kw)
+        return state, out.getvalue()
+
+    def test_a_red_run_of_the_shipped_sha_prints_CI_RED_at_once_with_the_failed_job(self):
+        state, out = self.run_wait([[self.RED_RUN]], failed_jobs=lambda run_id: ["offline gate (windows-latest 4/12)"] if run_id == 7 else [])
+        self.assertEqual(state, "red")
+        self.assertIn("CI RED deadbeef", out)
+        self.assertIn("offline gate (windows-latest 4/12)", out)
+        self.assertIn(self.RED_RUN["html_url"], out)
+        self.assertEqual(self.asked, [self.SHA])       # asked about its own sha, nobody else's
+        self.assertEqual(self.slept, [])               # red is reported on the first poll that sees it, no extra wait
+
+    def test_a_run_that_is_still_going_is_polled_until_it_goes_green(self):
+        state, out = self.run_wait([[], [{"status": "queued"}], [{"status": "in_progress"}], [self.GREEN_RUN]])
+        self.assertEqual(state, "green")
+        self.assertIn("CI green deadbeef", out)
+        self.assertNotIn("CI RED", out)
+        self.assertEqual(self.slept, [20, 20, 20])
+
+    def test_a_run_that_goes_red_after_polling_is_still_red(self):
+        state, out = self.run_wait([[{"status": "in_progress"}], [self.RED_RUN]])
+        self.assertEqual((state, self.slept), ("red", [20]))
+        self.assertIn("CI RED deadbeef", out)
+
+    def test_other_failure_kinds_are_red_and_cancelled_is_not_a_verdict(self):
+        for c in ("timed_out", "startup_failure"):
+            self.assertEqual(self.run_wait([[dict(self.RED_RUN, conclusion=c)]])[0], "red", c)
+        state, out = self.run_wait([[dict(self.RED_RUN, conclusion="cancelled")]])
+        self.assertEqual(state, "unknown")
+        self.assertNotIn("CI RED", out)
+
+    def test_no_run_ever_appearing_gives_up_after_the_start_window_and_says_so(self):
+        state, out = self.run_wait([[]], start_s=90, wait_s=600)
+        self.assertEqual(state, "none")
+        self.assertIn("no CI run for deadbeef", out)
+        self.assertTrue(90 <= self.t < 90 + 20 + 1, self.t)
+
+    def test_a_run_that_never_finishes_stops_at_the_cap_and_is_not_called_red(self):
+        state, out = self.run_wait([[{"status": "in_progress", "html_url": "https://x/9"}]], start_s=90, wait_s=100)
+        self.assertEqual(state, "timeout")
+        self.assertIn("deadbeef", out)
+        self.assertNotIn("CI RED", out)
+        self.assertTrue(100 <= self.t < 100 + 20 + 1, self.t)
+
+    def test_offline_or_rate_limited_is_unknown_and_never_raises(self):
+        state, out = self.run_wait([OSError("offline")])
+        self.assertEqual(state, "unknown")
+        self.assertNotIn("CI RED", out)
+        self.assertEqual(len(self.asked), 3)           # three misses in a row, then stop; one blip does not
+        state, out = self.run_wait([OSError("blip"), [self.GREEN_RUN]])
+        self.assertEqual(state, "green")
+
+    def test_a_failed_jobs_lookup_that_breaks_still_prints_red(self):
+        def boom(run_id):
+            raise OSError("jobs api down")
+        state, out = self.run_wait([[self.RED_RUN]], failed_jobs=boom)
+        self.assertEqual(state, "red")
+        self.assertIn("CI RED deadbeef", out)
+
+    def test_a_ship_the_ci_path_filter_skips_does_not_wait_or_ask(self):
+        globs = ["scripts/**", "MyTradingSys/system/tasks/**"]
+        docs = sync.Pushed(self.SHA, ["MyTradingSys/system/NEXT_SESSION.md"])
+        state, out = self.run_wait([AssertionError("must not ask GitHub for a push CI never starts")], pushed=docs, globs=globs)
+        self.assertEqual((state, self.asked, self.slept), ("none", [], []))
+        self.assertIn("path filter", out)
+        state, out = self.run_wait([[self.GREEN_RUN]], pushed=sync.Pushed(self.SHA, ["MyTradingSys/system/tasks/x.json"]), globs=globs)
+        self.assertEqual(state, "green")
+
+    def test_ci_path_filter_is_read_from_the_workflow_and_matches_like_github(self):
+        tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, tmp, ignore_errors=True)
+        (tmp / ".github" / "workflows").mkdir(parents=True)
+        (tmp / ".github" / "workflows" / "ci.yml").write_text(
+            "name: CI\non:\n  push:\n    branches: [fast-track]\n    paths:\n      - 'src/**'\n      # a comment line\n"
+            "      - 'MyTradingSys/research/**/*.py'   # trailing comment\n      - '.gitignore'\n      - scripts/*.sh\n"
+            "  pull_request:\n    types: [opened]\njobs:\n  x:\n    runs-on: y\n", encoding="utf-8", newline="\n")
+        globs = sync.ci_path_filter(tmp)
+        self.assertEqual(globs, ["src/**", "MyTradingSys/research/**/*.py", ".gitignore", "scripts/*.sh"])
+        yes = ["src/a/b.java", "MyTradingSys/research/x.py", "MyTradingSys/research/a/b/c.py", ".gitignore", "scripts/run.sh"]
+        no = ["MyTradingSys/research/x/out.tsv", "MyTradingSys/system/NEXT_SESSION.md", "scripts/dev/run.sh", "docs/src/a.md", "xgitignore"]
+        for f in yes:
+            self.assertTrue(sync.ci_starts([f], globs), f)
+        for f in no:
+            self.assertFalse(sync.ci_starts([f], globs), f)
+        self.assertTrue(sync.ci_starts(["src" + chr(92) + "a.java"], globs))   # Windows separators
+        self.assertTrue(sync.ci_starts(["whatever.md"], None))                 # no filter known: assume a run starts (wait, then say none)
+        self.assertIsNone(sync.ci_path_filter(tmp / "nowhere"))
+
+    def test_the_real_ci_yml_filter_starts_a_run_for_code_and_cards_but_not_notes(self):
+        globs = sync.ci_path_filter(Path(__file__).resolve().parents[2])
+        self.assertTrue(globs, "ci.yml push paths not found")
+        self.assertTrue(sync.ci_starts(["scripts/dev/sync.py", "MyTradingSys/system/NEXT_SESSION.md"], globs))
+        self.assertTrue(sync.ci_starts(["MyTradingSys/system/tasks/some-card.json"], globs))
+        self.assertFalse(sync.ci_starts(["MyTradingSys/system/NEXT_SESSION.md", "MyTradingSys/research/STATUS.md"], globs))
+
+    def test_cli_ship_waits_for_its_own_sha_and_exits_3_on_red(self):
+        for state, rc in (("red", sync.CI_RED_EXIT), ("green", 0), ("none", 0), ("unknown", 0), ("timeout", 0)):
+            with mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "run_host_health"), \
+                    mock.patch.object(sync, "ship", return_value=self.pushed) as mock_ship, \
+                    mock.patch.object(sync, "ci_path_filter", return_value=["scripts/**"]), \
+                    mock.patch.object(sync, "wait_own_ci", return_value=state) as mock_wait:
+                self.assertEqual(sync.main(["ship", "--release", "my-slug"]), rc, state)
+                mock_ship.assert_called_once_with(Path("."), release_slug="my-slug", after_slug=None)
+                self.assertEqual(mock_wait.call_args[0][0], self.pushed)
+                self.assertEqual(mock_wait.call_args[1]["globs"], ["scripts/**"])
+        self.assertEqual(sync.CI_RED_EXIT, 3)
+
+    def test_no_ci_wait_flag_env_and_a_ship_that_pushed_nothing_skip_the_wait(self):
+        with mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "run_host_health"), \
+                mock.patch.object(sync, "ship", return_value=self.pushed) as mock_ship, \
+                mock.patch.object(sync, "wait_own_ci", return_value="red") as mock_wait:
+            self.assertEqual(sync.main(["ship", "--no-ci-wait"]), 0)
+            mock_ship.assert_called_once_with(Path("."), release_slug=None, after_slug=None)   # the flag never reaches ship()
+            with mock.patch.dict(os.environ, {"SYNC_NO_CI_WAIT": "1"}):
+                self.assertEqual(sync.main(["ship"]), 0)
+            mock_wait.assert_not_called()
+        with mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "run_host_health"), \
+                mock.patch.object(sync, "ship", return_value=None), \
+                mock.patch.object(sync, "wait_own_ci", return_value="red") as mock_wait:
+            self.assertEqual(sync.main(["ship"]), 0)       # nothing shipped: nobody's sha to wait for
+            mock_wait.assert_not_called()
+
+    def test_unattended_callers_of_ship_opt_out_of_the_wait(self):
+        root = Path(__file__).resolve().parent
+        for name in ("desk.py", "lane_health.py"):
+            self.assertIn('"ship", "--no-ci-wait"', (root / name).read_text(encoding="utf-8"), name)
+        import codex_run
+        self.assertIn("--no-ci-wait", codex_run.SHIP_ARGS)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -689,4 +689,87 @@ public class StateCodeEmitterTest {
         assertTrue(j.get("session_accumulators_valid").asBoolean());
         assertEquals(334 * 4.0, j.get("session_cvd").asDouble(), 1e-6);
     }
+
+    // late-seam-tick: a live frame older than the accepted backfill boundary M is already inside the klines
+    @Test
+    public void lateFrameBeforeSeamIsIgnoredAfterBackfill() throws Exception {
+        FakeKlines src = new FakeKlines();
+        StateCodeEmitter e = fresh(src, NOW1);
+        e.onStreamOpen(CONNECT);
+        assertTrue(e.backfillNow());
+        e.onMessage(trade(M1 - 1, 100.0, 2.0, false));               // delayed pre-M buy
+        JsonNode j = emit(e);
+        assertTrue(j.get("session_accumulators_valid").asBoolean());
+        assertEquals(1320.0, j.get("session_cvd").asDouble(), 1e-9);
+        assertEquals(3300.0, j.get("session_cum_vol").asDouble(), 1e-9);
+        assertEquals(330 * 1000.0, j.get("session_cum_pv").asDouble(), 1e-6);
+    }
+
+    @Test
+    public void tickExactlyAtSeamCountsOnceAndPendingReplayIsNotRepeated() throws Exception {
+        FakeKlines src = new FakeKlines();
+        StateCodeEmitter e = fresh(src, NOW1);
+        e.onStreamOpen(CONNECT);
+        e.onMessage(trade(M1, 100.0, 1.0, false));                    // pending, T == M: replayed once
+        e.onMessage(trade(M1 - 1, 100.0, 5.0, false));                // pending, T < M: dropped
+        assertTrue(e.backfillNow());
+        e.onMessage(trade(M1 - 1, 100.0, 7.0, false));                // live late: dropped
+        e.onMessage(trade(M1, 100.0, 2.0, true));                     // live, T == M: counted
+        JsonNode j = emit(e);
+        assertEquals(1320.0 + 1.0 - 2.0, j.get("session_cvd").asDouble(), 1e-9);
+        assertEquals(3300.0 + 3.0, j.get("session_cum_vol").asDouble(), 1e-9);
+    }
+
+    @Test
+    public void lateFrameIsIgnoredAgainstTheNewSeamAfterReconnect() throws Exception {
+        FakeKlines src = new FakeKlines();
+        StateCodeEmitter e = fresh(src, NOW1);
+        e.onStreamOpen(CONNECT);
+        assertTrue(e.backfillNow());
+        e.onStreamClosed("ws_closed");
+        long reopen = M1 + 2 * MIN + 5_000L;
+        e.onStreamOpen(reopen);
+        long m2 = M1 + 3 * MIN;
+        e.nowMsOverride = m2 + 12_000L;
+        assertTrue(e.backfillNow());
+        e.onMessage(trade(m2 - 1, 100.0, 2.0, false));                // < M2 although > M1: dropped
+        e.onMessage(trade(M1 + 5_000L, 100.0, 2.0, false));           // < M2: dropped
+        e.onMessage(trade(m2, 100.0, 3.0, false));                    // counted
+        int bars = (int) ((m2 - D0) / MIN);
+        JsonNode j = emit(e);
+        assertEquals(bars * 4.0 + 3.0, j.get("session_cvd").asDouble(), 1e-9);
+        assertEquals(bars * 10.0 + 3.0, j.get("session_cum_vol").asDouble(), 1e-9);
+    }
+
+    @Test
+    public void failedBackfillKeepsNoSeamAndNoTickIsSummed() throws Exception {
+        FakeKlines src = new FakeKlines();
+        StateCodeEmitter e = fresh(src, NOW1);
+        e.onStreamOpen(CONNECT);
+        assertTrue(e.backfillNow());
+        e.onStreamClosed("ws_closed");
+        e.onStreamOpen(M1 + 3 * MIN);
+        e.nowMsOverride = M1 + 4 * MIN + 20_000L;
+        src.behaviour = (st, en) -> { throw new IOException("HTTP 503"); };
+        assertFalse(e.backfillNow());
+        e.onMessage(trade(M1 + 4 * MIN, 100.0, 9.0, false));
+        assertInvalid(emit(e));
+        src.behaviour = (st, en) -> constBars(st, (int) ((en + 1 - st) / MIN));
+        assertTrue(e.backfillNow());                                  // the tick (T >= M=05:34) is replayed once
+        JsonNode j = emit(e);
+        assertEquals(334 * 4.0 + 9.0, j.get("session_cvd").asDouble(), 1e-9);
+    }
+
+    @Test
+    public void newDayTickAfterBackfillOnPreviousDayIsCounted() throws Exception {
+        long prev = D0 - 86_400_000L;
+        FakeKlines src = new FakeKlines();
+        StateCodeEmitter e = fresh(src, prev + 23 * 3_600_000L + 50 * MIN + 20_000L);
+        e.onStreamOpen(prev + 23 * 3_600_000L);
+        assertTrue(e.backfillNow());
+        e.onMessage(trade(D0 + 5_000L, 100.0, 3.0, true));
+        JsonNode j = emit(e);
+        assertEquals(-3.0, j.get("session_cvd").asDouble(), 1e-9);
+        assertEquals(D0, j.get("session_day_start_ms").asLong());
+    }
 }

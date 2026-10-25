@@ -13,6 +13,7 @@ The table below is the one place for machine x login x lane x model x may-touch;
 | See each layer's progress, what is stuck, the roadmap and what is missing | MTS Layers page (this page) |
 | Start work | RETIRED 2026-10-17, see SCHEDULING_POLICY.md: no dispatcher starts sessions. A super-session coordinator starts them (SUPER_SESSION.md); to start one by hand, open the Claude app and give it the block in NEXT_SESSION.md |
 | Check the live testnet system | JIS-NB: `mts status` |
+| Names | New name JIS-DESKTOP = old JIS-NB (the desktop); JIS-LAPTOP = old DESKTOP-F7IU69N (the Lenovo laptop); JIS-NUC stays (the NUC). Table and aliases: `scripts/dev/hosts.py`; rename steps: MACHINE_RENAME.md |
 
 ## Who does what (machine, login, lane, model, may touch)
 | Machine | Login / worker | Lane and what runs by itself | Model | May touch |
