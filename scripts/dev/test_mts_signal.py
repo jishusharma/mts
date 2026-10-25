@@ -389,6 +389,12 @@ class SignalTest(unittest.TestCase):
         self.assertEqual(S.main(["ack", bid, "told", "--note", "   "]), 2)
         self.assertEqual(S.ack_state(S.load(S.ensure()), bid, "jis-nb"), "none")
         self.assertEqual(S.main(["ack", bid, "told", "--note", "no admin rights"]), 0)
+        import contextlib
+        import io
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            self.assertEqual(S.main(["pending", "--host", "jis-nb", "--json"]), 0)
+        self.assertEqual(json.loads(buf.getvalue()), [])                  # told just now: not pending
         self.assertEqual(S.main(["ack", bid, "done"]), 0)
         self.machine("jis-nuc", "sharma")                                     # a broadcast without --cmd keeps the old rule
         S.main(["broadcast", "fyi", "--prio", "high"])
@@ -399,21 +405,22 @@ class SignalTest(unittest.TestCase):
     def test_pending_lists_none_and_expired_told_per_host(self):
         import contextlib
         import io
-        bid = self.high(back_min=7 * 60)
-        self.machine("jis-lenovo", "live")
-        S.send("loop alive", kind="note")                                     # seen, never acks
-        self.machine("jis-nb", "pro")
-        self.ack_back(bid, "told", 10 * 60, "no admin")
-        rows = S.load(S.ensure())
-        got = {p["host"]: p for p in (q for h in ("jis-lenovo", "jis-nb") for q in S.pending(rows, h))}
-        self.assertEqual(got["jis-lenovo"]["state"], "none")
-        self.assertGreater(got["jis-lenovo"]["hours"], 6.5)
-        self.assertEqual(got["jis-nb"]["state"], "expired-told")
-        self.assertEqual(got["jis-nb"]["note"], "no admin")
-        buf = io.StringIO()
-        with contextlib.redirect_stdout(buf):
-            self.assertEqual(S.main(["pending", "--host", "jis-lenovo", "--json"]), 0)
-        self.assertEqual(json.loads(buf.getvalue())[0]["id"], bid)
+        at = S.now()
+
+        def t(h):
+            return S.stamp(at - timedelta(hours=h))
+        b = {"t": t(7), "from": "jis-nuc/C", "to": "all", "kind": "broadcast", "prio": "high", "id": "b-aaaaaa", "cmd": "x", "text": "t"}
+        told = {"t": t(10), "from": "jis-nb/B", "kind": "ack", "id": "b-aaaaaa", "state": "told", "host": "jis-nb", "note": "no admin"}
+        rows = [b, told, {"t": t(1), "from": "jis-lenovo/C", "to": "all", "kind": "note", "text": "loop alive"}]
+        self.assertIn("jis-lenovo", S.hosts_active(rows))
+        len_ = S.pending(rows, "jis-lenovo", at)[0]
+        self.assertEqual((len_["state"], len_["id"]), ("none", "b-aaaaaa"))
+        self.assertAlmostEqual(len_["hours"], 7, delta=0.1)
+        nb = S.pending(rows, "jis-nb", at)[0]
+        self.assertEqual((nb["state"], nb["note"]), ("expired-told", "no admin"))
+        fresh = [b, {**told, "t": t(1)}]
+        self.assertEqual(S.pending(fresh, "jis-nb", at), [])               # told inside the TTL is not pending
+        self.assertEqual(S.pending([b, {**told, "state": "done"}], "jis-nb", at), [])
 
     def test_acks_table_and_sender_status(self):
         import contextlib
