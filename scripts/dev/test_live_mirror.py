@@ -330,7 +330,7 @@ class DefaultRootTest(unittest.TestCase):
         self.addCleanup(env.stop)
         os.environ.pop("MTS_MIRROR_ROOT", None)
         os.environ.pop("MTS_LIVE_OWNER_DIR", None)
-        os.environ.pop("MTS_MIRROR_LIVE_ROOT", None)
+        os.environ["MTS_MIRROR_LIVE_ROOT"] = str(self.local)   # the owner-host folder; never the real F:/C: one
 
     def owned_by(self, name):
         p = mock.patch.object(lm, "resolve_owner", return_value={"state": "OWNER", "host": name, "age": 5, "reason": ""})
