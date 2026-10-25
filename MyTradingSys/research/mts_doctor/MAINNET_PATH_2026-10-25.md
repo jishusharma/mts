@@ -31,7 +31,8 @@ Honest read (OURS): items 4-6 are built or scheduled. The whole path waits on it
 6. Does the settlement/funding P&L logic match the exchange (B149)? Test: `execution/capture_txlog_settlement.py` on a captured testnet log (STATUS.md:90).
 
 ## 3. Stop or delete (does not move the path)
-DECISION (OURS), all reversible, none touch the live tree; operator approves, a builder demotes via `promote.py demote`:
+OPERATOR DECISION 2026-10-25: NO to every layer, lab-fixture and blind-mark item below. Nothing is demoted, parked or deleted; no layer is dropped until he has looked at it in the simulator. Layers are reviewed by card `layer-review-after-simulator` (starts after the backtest simulator ships; output: one integration map of how layers combine and the confluence rule that decides which trades fire). Releasing stale claims and the commit-churn cleanup stay allowed (dev hygiene).
+Original proposal (not adopted), all reversible, none touch the live tree:
 - Stop all work on DEAD layers (8 of them, LAYER_REALITY:3): RSI divergence, funding/CVD fade, cross-guidance/volume/candle patterns/ma_daily/bigtrade, session_momentum, turn_of_candle (71% of live alerts, DEAD, LAYER_REALITY:20), Tom's old BTC encoding (holdout -0.32 R, n=254, :7).
 - Stop the Codex lab fixtures for provisional-dead layers: t02-f3-fixtures-wlow-session-levels, t02-f3-fixtures-fabio-v3-grid (STATUS.md:79-81; layers listed DEAD at LAYER_REALITY:21).
 - Park Tom/Fabio/Malkan/Krown G3 blind-mark work until item 1 returns (no gate moved in 24h, STATUS.md:36). Keep Krown only if the DEV study is cheap.
