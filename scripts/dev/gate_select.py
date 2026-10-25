@@ -32,9 +32,20 @@ WIRING_REGISTRY = "MyTradingSys/system/wiring_registry.json"
 # Live path (CLAUDE.md "Gates"): always the full quick gate.
 FULL_RE = re.compile(
     r"^(MyTradingSys/execution/|MyTradingSys/runtime/|scripts/sched/|src/|pom\.xml$|\.github/|"
-    r"scripts/dev/(sync|run_all_tests|gate_select|run_extra_tests|auto_deploy|live_mirror|cloud_setup|wiring_scan|ci_watch|config_check|"
-    r"ci_deps_lint|run_staged_tests|gate_impact)\.py$|scripts/dev/gate_quarantine\.tsv$|"
+    r"scripts/dev/(auto_deploy|live_mirror|cloud_setup)\.py$|"
     r"MyTradingSys/backtest/layers/[^/]+/[^/]*(live|writer)[^/]*\.py$)")
+# DECISION (OURS, operator 2026-10-25 "every ship under 2 minutes"): the gate's own machinery is no longer a full gate. A change to one of
+# these files runs the smoke gate plus only the tests that import or name it (is_gate_file; run_all_tests gives it GATE_BUDGET_S); the full
+# suite runs in CI behind the push and a red CI is reverted within 10 min. Deploy/live-ops scripts (auto_deploy, live_mirror, cloud_setup) stay full.
+GATE_RE = re.compile(r"^scripts/dev/(sync|run_all_tests|gate_select|run_extra_tests|wiring_scan|ci_watch|config_check|"
+                     r"ci_deps_lint|run_staged_tests|gate_impact)\.py$|^scripts/dev/gate_quarantine\.tsv$")
+GATE_BUDGET_S = 40    # OURS: estimated wall-second budget for a gate-file change; real wall ran ~2-3x the estimate on JIS-NB (2026-10-25), a step cap backs it up
+
+
+def is_gate_file(f):
+    return bool(GATE_RE.match(f.replace("\\", "/")))
+
+
 # Non-live code folders: smoke with name-matched steps + the pytest shards + extras
 CODE_DIRS = ("scripts/dev/", "scripts/worker/", "MyTradingSys/tests/", "MyTradingSys/backtest/", "MyTradingSys/research/",
              "MyTradingSys/options/", "MyTradingSys/observation/")

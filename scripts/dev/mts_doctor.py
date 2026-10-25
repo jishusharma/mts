@@ -162,7 +162,7 @@ SHIP_MAX_MIN = 15           # OURS
 HOOKS_BEHIND_MAX = 50       # OURS
 DISK_MIN_GB = 15            # OURS
 HOOK_NAMES = ("role_loader", "ci_watch")
-CHECK_NAMES = ("SIZE-HEADROOM", "CI-REVERT", "SHIP-TIME", "HOOK-REG", "DISK")
+CHECK_NAMES = ("SIZE-HEADROOM", "CI-REVERT", "SHIP-TIME", "HOOK-REG", "DISK", "CONTEXT-GAP", "WAITING-ON-OPERATOR")
 
 
 def _load(path, name):
@@ -310,6 +310,64 @@ def disk(repo, free_gb=None):
     return "OK", f"{gb:.0f} GB free"
 
 
+def context_gap(repo, runs=None):
+    """WARN when the median unnamed_reads (files a session read that its prompt never named) rose against the previous row of context_gap_runs.jsonl."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import context_gap as G
+    rs = G.rows(str(runs or Path(repo) / "MyTradingSys/research/mts_doctor/context_gap_runs.jsonl"))
+    if len(rs) < 2:
+        return "OK", f"{len(rs)} row(s) in context_gap_runs.jsonl; python scripts/dev/context_gap.py measure adds one"
+    a, b = rs[-1].get("unnamed_reads_median"), rs[-2].get("unnamed_reads_median")
+    if a is not None and b is not None and a > b:
+        return "WARN", f"median unnamed_reads rose {b} -> {a} ({rs[-1]['utc']}): sessions read more files than their start prompt named"
+    return "OK", f"median unnamed_reads {a} (previous {b})"
+
+
+WAIT_HOURS = 24
+WAIT_RE = re.compile(r"approv|until the operator|ask the operator", re.I)
+WAIT_FIX = "decide on the default and continue; only money, mainnet, going private, deleting data or a live-tree change wait for him"
+
+
+def _parse_utc(t):
+    try:
+        d = datetime.fromisoformat(str(t).replace("Z", "+00:00"))
+        return d if d.tzinfo else d.replace(tzinfo=timezone.utc)
+    except ValueError:
+        return None
+
+
+def waiting_on_operator(repo, now=None, questions=None):
+    """WARN when a raw/ready card older than 24 h has a note or approved_by that waits for the operator, or when an operator question
+    has been open longer than 24 h. `questions` = list of {utc, id, prompt} (default: operator_questions.pending_questions())."""
+    now = now or datetime.now(timezone.utc)
+    cards = []
+    for p in sorted((Path(repo) / "MyTradingSys" / "system" / "tasks").glob("*.json")):
+        try:
+            c = json.loads(p.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        t = _parse_utc(c.get("created"))
+        if c.get("state") in ("raw", "ready") and t and (now - t).total_seconds() > WAIT_HOURS * 3600                 and WAIT_RE.search(f"{c.get('note', '')} {c.get('approved_by', '')}"):
+            cards.append(c.get("id", p.stem))
+    if questions is None:
+        try:
+            sys.path.insert(0, str(Path(__file__).resolve().parent))
+            import operator_questions
+            questions = operator_questions.pending_questions()
+        except Exception:
+            questions = []
+    qs = [q.get("id") or str(q.get("utc", ""))[:16] for q in questions
+          if _parse_utc(q.get("utc")) and (now - _parse_utc(q.get("utc"))).total_seconds() > WAIT_HOURS * 3600]
+    if not cards and not qs:
+        return "OK", "nothing waits on the operator for more than 24 h"
+    parts = []
+    if cards:
+        parts.append(f"{len(cards)} card(s): {', '.join(cards[:10])}")
+    if qs:
+        parts.append(f"{len(qs)} open question(s): {', '.join(qs[:10])}")
+    return "WARN", "; ".join(parts) + f" | fix: {WAIT_FIX}"
+
+
 def checklist(repo, process=True, now=None):
     """[(name, status, detail)] for CHECK_NAMES. A check that raises is reported unavailable, never fatal."""
     repo = Path(repo)
@@ -321,7 +379,9 @@ def checklist(repo, process=True, now=None):
         return ("unavailable", f"GitHub API: {runs}") if isinstance(runs, str) else ci_revert(runs, now)
     fns = (("SIZE-HEADROOM", lambda: size_headroom(repo)), ("CI-REVERT", ci),
            ("SHIP-TIME", lambda: ship_time(repo / "runtime_data" / "gate_timing.jsonl", now)),
-           ("HOOK-REG", lambda: hook_reg(repo)), ("DISK", lambda: disk(repo)))
+           ("HOOK-REG", lambda: hook_reg(repo)), ("DISK", lambda: disk(repo)),
+           ("CONTEXT-GAP", lambda: context_gap(repo)),
+           ("WAITING-ON-OPERATOR", lambda: waiting_on_operator(repo, now)))
     out = []
     for name, fn in fns:
         try:

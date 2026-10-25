@@ -469,6 +469,35 @@ class TestGateTimingLog(unittest.TestCase):
 
 
 
+class TestGateFileShipBudget(unittest.TestCase):
+    """Operator 2026-10-25: a gate-file ship finishes in under 2 minutes; a step over the cap is left to CI, not failed."""
+
+    SLOW = [sys.executable, "-c", "import time; time.sleep(30)"]
+
+    def test_a_step_over_the_cap_is_deferred_to_ci_on_a_gate_file_ship(self):
+        with mock.patch.object(rat, "STEP_TIMEOUT_S", 1), mock.patch.object(rat, "TIMEOUT_DEFERS", True):
+            ok, out = rat.exec_step(self.SLOW)
+        self.assertTrue(ok)
+        self.assertIn("DEFERRED TO CI", out)
+
+    def test_a_step_over_the_cap_still_fails_on_an_ordinary_fast_ship(self):
+        with mock.patch.object(rat, "STEP_TIMEOUT_S", 1), mock.patch.object(rat, "TIMEOUT_DEFERS", False):
+            ok, _ = rat.exec_step(self.SLOW)
+        self.assertFalse(ok)
+
+    def test_the_deadline_caps_a_step_queued_behind_others(self):
+        with mock.patch.object(rat, "STEP_TIMEOUT_S", 60), mock.patch.object(rat, "TIMEOUT_DEFERS", True),                 mock.patch.object(rat, "GATE_DEADLINE", time.monotonic() + 1):
+            t0 = time.monotonic()
+            ok, out = rat.exec_step(self.SLOW)
+        self.assertLess(time.monotonic() - t0, 10)
+        self.assertIn("DEFERRED TO CI", out)
+
+    def test_gate_file_budget_is_inside_the_two_minute_goal(self):
+        import gate_select
+        self.assertLess(rat.GATE_HARD_STEP_S + 25, 120)
+        self.assertTrue(gate_select.is_gate_file("scripts/dev/sync.py"))
+
+
 class TestGateSpeed(unittest.TestCase):
     """GATE_SPEED.md D1-D3 (2026-10-18): precheck, fail-fast, slot around the main phase only, same-tree pass record."""
 
@@ -526,11 +555,11 @@ class TestGateSpeed(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             t = Path(d) / "MyTradingSys" / "tests"
             t.mkdir(parents=True)
-            (t / "test_relay.py").write_text("RELAY = 'MyTradingSys/system/RELAY.md'\n", encoding="utf-8")
+            (t / "test_relay_doc.py").write_text("RELAY = 'MyTradingSys/system/RELAY.md'\n", encoding="utf-8")
             (t / "test_kit.py").write_text("import screen\n", encoding="utf-8")
             (t / "test_none.py").write_text("x = 1\n", encoding="utf-8")
             self.assertEqual(rat.targeted_tests(["MyTradingSys/system/RELAY.md", "MyTradingSys/research/s/screen.py"], d),
-                             ["MyTradingSys/tests/test_kit.py", "MyTradingSys/tests/test_relay.py"])
+                             ["MyTradingSys/tests/test_kit.py", "MyTradingSys/tests/test_relay_doc.py"])
 
     def test_targeted_step_runs_only_when_a_test_file_is_in_the_diff(self):
         with tempfile.TemporaryDirectory() as d:
@@ -553,7 +582,7 @@ class TestGateSpeed(unittest.TestCase):
         """Ship 2026-10-24: a full gate ran 4t (12 files, 303 s) serially before the main gate, then ran the same files in their shard."""
         with tempfile.TemporaryDirectory() as d:
             lst = Path(d) / "changed.txt"
-            lst.write_text("scripts/dev/sync.py\nMyTradingSys/tests/test_relay_prompts.py\n", encoding="utf-8")
+            lst.write_text("scripts/dev/auto_deploy.py\nMyTradingSys/tests/test_relay_prompts.py\n", encoding="utf-8")
             plan, mode = rat.apply_selection(rat.build_plan(True), ["--smoke", "--precheck", "--changed-file", str(lst)])
             self.assertEqual(mode, "full")
             self.assertFalse([s for s in plan if s.num == rat.TARGET_STEP])

@@ -130,6 +130,23 @@ def test_disk_warn_prunes_only_own_prefixes(monkeypatch, tmp_path):
     assert any("DISK WARN" in ln and "3.0 GB free" in ln for ln in lines) and any("largest in temp" in ln for ln in lines)
 
 
+def test_disk_warn_folder_scan_has_one_total_budget(monkeypatch, tmp_path):
+    """2026-10-25: 7785 temp folders made every ship's disk warning scan for 36 s; the scan now has one total budget (ship under 2 min)."""
+    env(monkeypatch, tmp_path)
+    temp = tmp_path / "tmp"
+    for i in range(40):
+        (temp / f"d{i}").mkdir(parents=True)
+    monkeypatch.setattr(h, "DISK_SCAN_TOTAL_S", 0.5)
+
+    def slow(path, budget=15):
+        time.sleep(0.2)
+        return 1
+    t0 = time.monotonic()
+    lines, _ = h.check_disk(str(tmp_path), temp=temp, now=time.time(), free=3.0, size=slow)
+    assert time.monotonic() - t0 < 3, "40 folders x 0.2 s = 8 s without a total budget"
+    assert any("DISK WARN" in ln for ln in lines)
+
+
 def test_disk_ok_is_silent_and_growth_warns(monkeypatch, tmp_path):
     env(monkeypatch, tmp_path)
     assert h.check_disk(str(tmp_path), temp=tmp_path, now=NOW, free=500.0)[0] == []
