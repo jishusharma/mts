@@ -3,7 +3,7 @@
   python scripts/dev/sync.py start [slug] [--quiet]  # up to date with origin/fast-track; in a shared/dirty tree makes your own worktree;
                                            # in a lane tree (mts-app, mts-relay, mts-dsa) `start <slug>` switches to branch <host>/<slug>
   python scripts/dev/sync.py health  # stale/overlapping claims, shared or orphan worktrees, branches never shipped
-  python scripts/dev/sync.py ship [--full] [--fix-ci] [--again] [--release <slug>] [--after <slug>]  # a second ship from one tree within 10 min needs --again; docs-only ships run no gate; merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
+  python scripts/dev/sync.py ship [--full] [--fix-ci] [--again] [--release <slug>] [--after <slug>]  # a second ship within 10 min only prints a note (--again still accepted); docs-only ships run no gate; merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
                                            # ordinary code ships run the FAST gate (GATE_SPEED.md: ~60 s, tests chosen by import graph); a red CI blocks code ships until
                                            # fixed: --fix-ci ships the fix through it with the full gate; --after waits for predecessor order ticket
   python scripts/dev/sync.py news [hours=24]  # what shipped: feature + Result line per commit, no code
@@ -38,7 +38,7 @@ DOC_SUFFIXES = (".md", ".txt")
 PUSH_TRIES = 3
 CLAIMS_DIR = "MyTradingSys/system/claims"
 CLAIMS_BRANCH = "claims"   # gate-tiers-by-path (q-v1-claims-off-git): claim/release commits live here, never on the trunk
-SHIP_GAP_S = 600           # a second ship from one tree within this many seconds is refused (SYNC_ALLOW_SECOND_SHIP=1 / --again)
+SHIP_GAP_S = 600           # a second ship from one tree within this many seconds prints a note (no refusal)
 SHIP_STAMP = "mts_last_ship"
 CARDS_DIR = "MyTradingSys/system/tasks"
 STALE_HOURS = 24
@@ -524,7 +524,8 @@ def ship_stamp(repo):
 
 
 def check_ship_gap(repo):
-    """Refuse a second ship from one tree within SHIP_GAP_S of the last pushed one (per worktree git dir). Bypass: --again / SYNC_ALLOW_SECOND_SHIP=1."""
+    """A second ship from one tree within SHIP_GAP_S of the last pushed one is only noted (operator 2026-10-25: no refusal; a queued ship
+    batches). --again / SYNC_ALLOW_SECOND_SHIP=1 stay accepted and silence the note."""
     if os.environ.get("SYNC_ALLOW_SECOND_SHIP"):
         return
     try:
@@ -532,8 +533,7 @@ def check_ship_gap(repo):
     except (OSError, ValueError):
         return
     if 0 <= age < SHIP_GAP_S:
-        raise SyncError(f"second ship from this tree {age:.0f} s after the last one (limit 10 min between ships): batch the work into one ship, "
-                        f"or wait, or pass --again if this really is a separate change")
+        print(f"note: second ship from this tree {age:.0f} s after the last one; shipping anyway (a queued ship batches)", flush=True)
 
 
 def write_ship_stamp(repo):

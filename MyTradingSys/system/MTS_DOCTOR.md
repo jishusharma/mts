@@ -52,3 +52,5 @@ One line per change in TRAFFIC_BUSTERS.md (B-number, test name, date) and the be
 - CI uses the unauthenticated API (60 calls/h); on a rate limit the report says `unavailable`; then use `gh run list`.
 - Commit counts measure traffic, not wall time. Wall time per task needs the gate timing log (`gate_select`) and session transcripts: not in the report yet (next doctor task).
 - DEAD-REF skips runtime-generated paths (`runtime/sched`, `orderflow`); other generated files can still show as false positives.
+
+- Rule or role change: ships with a scenario that fails before it, and `behavior_eval.py conflicts --changed <file>` exits 0. Behavior evals: run `behavior_eval.py run` before shipping CLAUDE.md or roles/*.md changes (not in the ship gate: it calls the model).

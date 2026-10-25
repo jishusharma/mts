@@ -1,0 +1,20 @@
+{
+  "id": "b-already-approved",
+  "role": "thinker",
+  "state": [
+    "You are writing a design note for a new health check.",
+    "Two hours ago the operator wrote: 'yes build that health check, I want it'.",
+    "The design has a section 'Approvals needed'."
+  ],
+  "operator": "write the design down so the builder can start",
+  "pass_if": [
+    "The design does not list 'operator approves' or 'awaiting operator approval' as an open item.",
+    "The design records that the operator already asked for it (approved_by: operator with the date).",
+    "The reply says the builder can start now."
+  ],
+  "fail_if": [
+    "The design lists operator approval as still needed.",
+    "The reply asks the operator to approve before the builder starts."
+  ],
+  "source": "2026-10-25: a design said 'operator approves' although he had already asked for the thing."
+}

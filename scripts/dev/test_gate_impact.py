@@ -231,7 +231,7 @@ class FastPlan(unittest.TestCase):
         self.assertFalse(any(str(s.skip).startswith("fast:") for s in plan))
 
     def test_live_path_files_never_take_the_fast_path(self):
-        plan, mode, _ = self.select(["scripts/dev/sync.py"])
+        plan, mode, _ = self.select(["scripts/dev/auto_deploy.py"])
         self.assertEqual(mode, "full")
         self.assertFalse(rat.fast_applied)
 

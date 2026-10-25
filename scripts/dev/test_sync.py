@@ -240,18 +240,17 @@ class SyncTest(unittest.TestCase):
         subjects = sh(self.a, "log", "--format=%s", "origin/fast-track").stdout.split(chr(10))
         self.assertFalse([x for x in subjects if x.startswith(("claim ", "release "))])
 
-    def test_second_ship_from_one_tree_within_ten_minutes_is_refused(self):
+    def test_second_ship_from_one_tree_within_ten_minutes_is_only_a_note(self):
+        import contextlib, io
         os.environ.pop("SYNC_ALLOW_SECOND_SHIP", None)
         commit(self.a, "one.py", "1" + chr(10))
         sync.ship(self.a, gate=self.gate)
         commit(self.a, "two.py", "2" + chr(10))
-        with self.assertRaises(sync.SyncError) as cm:
-            sync.ship(self.a, gate=self.gate)
-        self.assertIn("10 min", str(cm.exception))
-        self.assertNotIn("two.py", self.head_files(self.a))
-        with mock.patch.object(sync.time, "time", return_value=time.time() + 700):
-            sync.ship(self.a, gate=self.gate)                   # ten minutes later it is allowed
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            sync.ship(self.a, gate=self.gate)                   # operator 2026-10-25: no refusal, one note line
         self.assertIn("two.py", self.head_files(self.a))
+        self.assertIn("second ship from this tree", buf.getvalue())
 
     def test_again_flag_and_other_trees_are_not_refused(self):
         os.environ.pop("SYNC_ALLOW_SECOND_SHIP", None)
@@ -1259,7 +1258,7 @@ class FastShipTest(unittest.TestCase):
 
     def test_fix_ci_flag_sets_the_full_gate(self):
         with mock.patch.object(sync, "ship"), mock.patch.object(sync, "toplevel", return_value=Path(".")), \
-                mock.patch.dict(os.environ, {}, clear=False):
+                mock.patch.object(sync, "run_host_health"), mock.patch.dict(os.environ, {}, clear=False):   # the real host scan took 38-70 s here
             os.environ.pop("SYNC_FULL_GATE", None)
             os.environ.pop("SYNC_FIX_CI", None)
             self.assertEqual(sync.main(["ship", "--fix-ci"]), 0)
