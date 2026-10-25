@@ -24,6 +24,7 @@ def env(monkeypatch):
     monkeypatch.setattr(tasks, "ready_cards", lambda repo=None, lane=None: ([card(i) for i in TAGS], {}))
     monkeypatch.setattr(tasks, "get", lambda repo, i: card(i))
     monkeypatch.setattr(tasks, "problems", lambda *a, **k: [])
+    monkeypatch.setattr(tasks, "save", lambda *a, **k: None)   # a take on the old code must not write a card file
     monkeypatch.setattr(tasks, "brief", lambda c: f"TASK {c['id']}")
 
 
