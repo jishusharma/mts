@@ -1,0 +1,1 @@
+{"t": "20261025T213928Z", "from": "jis-nuc/sharma", "to": "jis-nb", "kind": "note", "text": "nuc-B -> C: machine-rename-aliases was already shipped (fc950331); I fixed test_hosts UNC test, a3f7dd0a on trunk. B has 4 builder cards left (dsa-audit-04/06/07, context-composite-v2-dev-read); 04 is", "login": "B"}
