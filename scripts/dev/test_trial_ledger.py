@@ -69,7 +69,7 @@ def test_temp_registries_and_stable_sort(tmp_path):
     assert len(rows) == 3
 
     # Check headers
-    assert list(rows[0].keys()) == ["study", "variant", "date", "split", "verdict"]
+    assert list(rows[0].keys()) == ["study", "variant", "date", "split", "verdict", "count_only"]
 
     # Check byte-identical on rerun
     hash1 = hash_file(out_ledger)
@@ -125,3 +125,62 @@ def test_live_repo_trial_ledger_built():
         reader = csv.reader(f)
         header = next(reader)
     assert header == ["timestamp_utc", "study", "holdout_window", "accessor", "reason", "verdict"]
+
+
+
+LOWERCASE_FIXTURES = {
+    "context_factors": (
+        "study,factor,definition,side,count_of,n,split,outcome_read\n"
+        "ctx,F1,def a,long,cnt,1.0,DEV,no\nctx,F1,def a,short,cnt,2.0,DEV,no\n", True),
+    "context_factors_pit": (
+        "trial_id,factor,primary,alternative,reason,n_primary_long,n_primary_short,n_alt_long,n_alt_short,outcome_read\n"
+        "T1,F1,p,a,r,1,2,3,4,no\nT2,F2,p,a,r,1,2,3,4,no\n", True),
+    "eur_low_us": (
+        "cell,side,h,n,mean_G,se,net,t_net,diff_vs_ctrl,t_diff,verdict\n"
+        "A,1,120,133,none,none,none,none,none,none,BLOCKED\n"
+        "A,-1,120,133,none,none,none,none,none,none,BLOCKED\n", True),
+    "imbalance": (
+        "cell,block,rr,n,net_R,se\nIMB,H1,1,10,-0.3,0.02\nIMB,H1,2,10,-0.2,0.02\n", False),
+    "mal_bb_mid": (
+        "cell,h,n,mean_G,se,net,t_net,diff_vs_ctrl,t_diff,verdict\nA1,60,9,0.01,0.02,-0.1,-6,0.01,0.6,FAIL\nA1,120,9,0.01,0.02,-0.1,-6,0.01,0.6,FAIL\n", False),
+    "opr_bb_mtf": (
+        "cell,side,h,n,mean_G,se,net,t_net,diff_vs_ctrl,t_diff,verdict\n"
+        "AU,1,120,19,0.02,0.08,-0.12,-1.4,0.003,0.04,INCONCLUSIVE\nAU,-1,120,19,0.02,0.08,-0.12,-1.4,0.003,0.04,FAIL\n", False),
+}
+
+
+def test_lowercase_trials_adapters(tmp_path):
+    files = []
+    for name, (text, _) in LOWERCASE_FIXTURES.items():
+        f = tmp_path / "research" / f"{name}_2026-10-16" / "trials.csv"
+        f.parent.mkdir(parents=True)
+        f.write_text(text, encoding="utf-8", newline="\n")
+        files.append(f)
+    out = tmp_path / "BUILT.csv"
+    stats, total = trial_ledger.build_ledger(
+        registry_files=files, out_built_path=out,
+        out_holdout_path=tmp_path / "h.csv", repo_root=tmp_path)
+    assert total == 12
+    rows = list(csv.DictReader(open(out, encoding="utf-8")))
+    keys = [(r["study"], r["variant"]) for r in rows]
+    assert all(v for _, v in keys)
+    assert len(set(keys)) == len(keys)
+    for name, (_, count_only) in LOWERCASE_FIXTURES.items():
+        study = "ctx" if name == "context_factors" else f"{name}_2026-10-16"
+        mine = [r for r in rows if r["study"] == study]
+        assert len(mine) == 2, name
+        assert all((r["count_only"] == "True") == count_only for r in mine), name
+
+
+def test_live_repo_includes_lowercase_trials():
+    files = trial_ledger.find_registry_files(REPO)
+    low = [f for f in files if f.name == "trials.csv"]
+    assert len(low) == 8
+    path = REPO / "MyTradingSys" / "research" / "TRIAL_LEDGER_BUILT.csv"
+    rows = list(csv.DictReader(open(path, encoding="utf-8")))
+    prefixes = ("context_factors", "eur_low_us", "imbalance_qriptal", "mal_bb_mid", "opr_bb_mtf",
+                "opr_preopen", "opr_weekly_low")
+    low_rows = [r for r in rows if r["study"].startswith(prefixes)]
+    keys = [(r["study"], r["variant"]) for r in low_rows]
+    assert len(low_rows) >= 176
+    assert len(set(keys)) == len(keys)

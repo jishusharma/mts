@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T23:31:46Z",
   "commands": [],
   "created": "2026-10-19T04:32:23Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "t08-ledger-lowercase-trial-coverage",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "built ledger +176 rows from 8 lowercase trials.csv with unique variant keys and count_only",
+      "ref": "eed627e25",
+      "utc": "2026-10-25T23:31:46Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T08_split_trials.md"
   ],
-  "result": "",
+  "result": "built ledger +176 rows from 8 lowercase trials.csv with unique variant keys and count_only flag; verdicts.py count m unchanged DEV 76 / VALIDATION 24 (reads TRIAL_LEDGER.csv, not the built ledger)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/trial_ledger.py",
     "scripts/dev/test_trial_ledger.py",
@@ -49,13 +61,14 @@
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T08_split_trials.md (T08-F2)",
     "scripts/dev/trial_ledger.py:31-88"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read T08-F2 and the 8 headers (context_factors, context_factors_pit, eur_low_us, imbalance_qriptal/filter, mal_bb_mid, opr_bb_mtf, opr_preopen, opr_weekly_low); run verdicts.py count and record m.",
     "Write failing tests: one fixture per header family asserts study, variant key and count-only flag.",
     "Extend find_registry_files with trials.csv and add the adapters; keep sorting stable and output byte-identical on rerun.",
     "Rebuild the ledger, rerun verdicts.py count, put before/after m in the Result line; review Agent before ship."
   ],
+  "taken": "2026-10-25T23:31:46Z",
   "tests": "scripts/dev/test_trial_ledger.py::test_lowercase_trials_adapters: every one of the 8 headers yields rows with a non-empty unique variant key; fails on the current finder (0 rows).",
   "title": "T08: include lowercase trials files in consolidated ledger with full variant identity",
   "weight": "CRUCIAL",

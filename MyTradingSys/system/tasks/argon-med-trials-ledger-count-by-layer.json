@@ -27,6 +27,12 @@
   "refined_by": "super-c-design",
   "refreshed": "2026-10-25T22:50:17Z",
   "refs": [],
+  "reroute": {
+    "at": "2026-10-25T23:42:10Z",
+    "desk": "20261025-234210-argon-med-trials-ledger-count-by-layer",
+    "to": "DSA",
+    "why": "credits"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/design_cards_2026-10-26/argon_trials_by_layer.md (new file only)"

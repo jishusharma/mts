@@ -26,7 +26,7 @@ def find_registry_files(repo_root: Path = REPO_ROOT):
     """Find all TRIAL_REGISTRY*.csv files tracked by git, or fallback to filesystem glob."""
     try:
         res = subprocess.run(
-            ["git", "-C", str(repo_root), "ls-files", "*TRIAL_REGISTRY*.csv"],
+            ["git", "-C", str(repo_root), "ls-files", "*TRIAL_REGISTRY*.csv", "*/trials.csv"],
             capture_output=True,
             text=True,
             check=True,
@@ -37,7 +37,7 @@ def find_registry_files(repo_root: Path = REPO_ROOT):
         files = []
 
     if not files:
-        files = list(repo_root.glob("**/TRIAL_REGISTRY*.csv"))
+        files = list(repo_root.glob("**/TRIAL_REGISTRY*.csv")) + list(repo_root.glob("**/trials.csv"))
 
     # Filter to files under MyTradingSys/research if running in the full repo
     # Keep deterministic sorted order
@@ -72,7 +72,50 @@ def derive_study_name(file_path: Path, row: dict, repo_root: Path = REPO_ROOT) -
     return file_path.parent.name
 
 
+def _clean(row: dict, key: str) -> str:
+    val = row.get(key)
+    return val.strip() if val is not None else ""
+
+
+def _numeric(val: str) -> bool:
+    try:
+        float(val)
+        return True
+    except (TypeError, ValueError):
+        return False
+
+
+def lowercase_trials_adapter(row: dict):
+    """Schema adapter for the lowercase per-study trials.csv files.
+
+    Returns (variant_key, count_only) or None when the header is not one of the known families.
+    Variant identity joins every column that distinguishes a trial; count_only is True when the row
+    carries counts but no measured outcome (no numeric net / net_R).
+    """
+    keys = set(row)
+    if {"factor", "definition", "side", "count_of"} <= keys:  # context_factors
+        v = "|".join(_clean(row, k) for k in ("factor", "definition", "side", "count_of"))
+        return v, True
+    if "trial_id" in keys and "primary" in keys:  # context_factors_pit
+        v = "|".join([_clean(row, "trial_id"), _clean(row, "factor"),
+                      _clean(row, "primary") + " vs " + _clean(row, "alternative")])
+        return v, True
+    if {"cell", "block", "rr"} <= keys:  # imbalance_qriptal filter
+        v = "|".join(_clean(row, k) for k in ("cell", "block")) + "|rr=" + _clean(row, "rr")
+        return v, not _numeric(_clean(row, "net_R"))
+    if {"cell", "side", "h"} <= keys:  # eur_low_us, opr_*
+        v = _clean(row, "cell") + "|side=" + _clean(row, "side") + "|h=" + _clean(row, "h")
+        return v, not _numeric(_clean(row, "net"))
+    if {"cell", "h"} <= keys:  # mal_bb_mid
+        v = _clean(row, "cell") + "|h=" + _clean(row, "h")
+        return v, not _numeric(_clean(row, "net"))
+    return None
+
+
 def extract_variant(row: dict) -> str:
+    ad = lowercase_trials_adapter(row)
+    if ad is not None:
+        return ad[0]
     for key in ("variant", "event", "signature", "run_id"):
         val = row.get(key)
         if val is not None and val.strip():
@@ -134,6 +177,10 @@ def build_ledger(
                 date = extract_date(r)
                 split = extract_split(r)
                 verdict = extract_verdict(r)
+                ad = lowercase_trials_adapter(r)
+                count_only = bool(ad[1]) if ad is not None else False
+                if ad is not None and not verdict:
+                    verdict = _clean(r, "outcome_read")
 
                 extracted_rows.append({
                     "study": study,
@@ -141,6 +188,7 @@ def build_ledger(
                     "date": date,
                     "split": split,
                     "verdict": verdict,
+                    "count_only": "True" if count_only else "",
                     # Internal sort keys
                     "_file": str(fpath),
                     "_idx": file_rows,
@@ -153,7 +201,7 @@ def build_ledger(
     extracted_rows.sort(key=lambda r: (r["study"], r["date"], r["variant"], r["_file"], r["_idx"]))
 
     # Write TRIAL_LEDGER_BUILT.csv
-    fieldnames = ["study", "variant", "date", "split", "verdict"]
+    fieldnames = ["study", "variant", "date", "split", "verdict", "count_only"]
     with open(out_built_path, "w", newline="", encoding="utf-8") as fp:
         writer = csv.DictWriter(fp, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
