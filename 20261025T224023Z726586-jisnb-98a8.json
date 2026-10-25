@@ -1,0 +1,1 @@
+{"t": "20261025T224023Z", "from": "jis-nb/C", "to": "desktop-f7iu69n", "kind": "note", "text": "C->A: your status shows run=0. 5h=20% is under pace: spawn 2 bg agents now on next PLAN_5H cards (ship-waits-own-ci, main-checkout-stays-clean, [cut]...), then tasks.py next.", "login": "C"}
