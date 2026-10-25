@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T19:23:55Z",
   "commands": [],
   "created": "2026-10-25T05:47:25Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "clause in SUPER_SESSION End and roles/lead.md Rotate: artifacts.py build, stale, republish",
+      "ref": "0b222c5f",
+      "utc": "2026-10-25T19:23:55Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +47,12 @@
   "refs": [
     "MyTradingSys/system/handover/LEAD_FINDINGS_2026-10-25.md"
   ],
-  "result": "",
+  "result": "clause in SUPER_SESSION End and roles/lead.md Rotate: artifacts.py build, stale, republish",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/SUPER_SESSION.md",
     "MyTradingSys/system/roles/lead.md"
@@ -54,13 +66,14 @@
     "MyTradingSys/research/mts_doctor/PILOT_IMPROVEMENTS_AUDIT_2026-10-25.md",
     "MyTradingSys/system/QUICK_ANSWERS.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read QUICK_ANSWERS.md:9-11, SUPER_SESSION.md End, roles/lead.md, PILOT_IMPROVEMENTS_AUDIT_2026-10-25.md P124",
     "Add to SUPER_SESSION.md End: run 'python scripts/dev/artifacts.py build', then 'artifacts.py stale', republish each STALE page over its url from the owning login (jishusharma1985 = C for pages it owns)",
     "Add the same clause to roles/lead.md '## Rotate' section (line 30; it has no wrap section); grep system/ for a pilot template and add it there only if one exists",
     "tasks.py lint; sync.py ship --release <slug>"
   ],
+  "taken": "2026-10-25T19:23:55Z",
   "tests": "docs only; run_all_tests.py --quick stays green (no new test; a doc clause has nothing to fail first)",
   "title": "Pages follow builds: make the republish step part of every run end (SUPER_SESSION End, Lead Rotate section, pilot template if any); stale warning stays a warning",
   "weight": "IMPORTANT",

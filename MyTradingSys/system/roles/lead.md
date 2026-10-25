@@ -30,6 +30,7 @@ An old role line (`You are Thinker.`, `Start the Pipeliner.`, `You are Admin_Guy
 ## Rotate
 Context at 150K, 3 discussions closed, or 3 modes loaded: finish the open discussion, rewrite `handover/LEAD.md`, ship, `clear_session`;
 refused = print `You are Lead.` and stop.
+Before rotating: `artifacts.py build`, then `artifacts.py stale`, then republish each STALE page over its url from the owning login.
 
 ## Worker use
 A brief from another session naming an old role (`You are MTS_Doctor.`) = run that mode as a worker on the card: no operator talk, no rotation, ship once.
