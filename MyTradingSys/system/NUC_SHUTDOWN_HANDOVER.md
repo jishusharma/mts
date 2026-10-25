@@ -70,3 +70,11 @@ Event 6008 count is 0 over 7 days after steps 1-4, and no "Idle Timeout" standby
 - Intel Community NUC10i7FNH over-temperature thread: https://community.intel.com/t5/Intel-NUCs/NUC10i7FNH-and-Shutting-Off-Over-Temperature-Condition-Message/m-p/1187532
 - Intel Community NUC10i7FNK Modern Standby thread: https://community.intel.com/t5/Intel-NUCs/NUC10i7FNK-amp-Win-10-Modern-Standby-Sleep-and-restart-issues/td-p/1237097
 - Microsoft Q&A, WHEA with STORPORT/storahci: https://learn.microsoft.com/en-us/answers/questions/2239883/how-to-isolate-what-hardware-error-according-to-wh
+
+## Update 2026-10-26 02:20 - the plug fix did not stop it (JIS-NUC, login B)
+- nuc_health.ps1 -Days 3: 7 watchdog resets (event 142) since 10-23 02:28. After the plug fix (~22:00 on 10-24) there were 3 more: 10-25 01:09, 07:52, 14:22. Rate before fix 4 in 43 h, after 3 in 28 h: no clear change. Up since 10-25 14:22 (12 h clean so far, but a 12 h clean gap also happened on 10-23).
+- Logger (nuc_watch.csv) caught the 01:09 hang: last row 01:03:23, CPU 2%, 44 C, 21.9 GB free, disk idle, network 0. So the freeze happens at IDLE and cool, not under load. Heat, memory pressure, disk saturation, selenium and the Codex app are not what triggered it at that moment.
+- System log, 14 min before every reset: no stornvme/disk error, no WHEA, no warning of any kind. The machine goes silent and the watchdog resets it. That fits a power-delivery drop or a hardware/firmware hang, not a driver or a program.
+- Settings seen: High performance plan, max processor state 85% on AC (already below turbo), PCIe link-state power management Off. So a turbo cap is already in place and it still hangs: peak CPU power is a weak suspect.
+- Logger was not running after the 10-25 reboot (no autostart by design); restarted by hand 10-26 02:18.
+- Next, in order: (1) adapter swap, 19 V 6.32 A / 120 W, 5.5x2.5 mm, centre +; (2) BIOS 0067 (UPS or short, attended flash); (3) mdsched RAM test; (4) CR2032 + BIOS settings (After Power Failure = Power On, ASPM off, Network Boot off); (5) SSD firmware. After a swap, 48 h with nuc_health.ps1 -Days 2.
