@@ -6,7 +6,7 @@
   "window_resets": 1792962879,
   "window_used": 0
  },
- "at": "2026-10-25T17:43:49Z",
+ "at": "2026-10-25T18:06:47Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,9 +20,24 @@
   "astra_runs": 0,
   "week_pts": 0.0,
   "window_pts": 0.0,
-  "window_runs": 3
+  "window_runs": 4
  },
  "runs": [
+  {
+   "at": "2026-10-25T18:05:24Z",
+   "card": "trust-recheck-gptb-dev-split-guard",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 76,
+   "tokens_out": 5831,
+   "tokens_total": 592895,
+   "tokens_uncached": 38968,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-25T17:42:55Z",
    "card": "trust-recheck-gap-g1-power-mde-helper",
@@ -157,21 +172,6 @@
    "tokens_uncached": 68805,
    "week_pts": 0.0,
    "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-22T18:04:19Z",
-   "card": "lab-planted-error-trial",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 141,
-   "tokens_out": 11048,
-   "tokens_total": 1280641,
-   "tokens_uncached": 60249,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }

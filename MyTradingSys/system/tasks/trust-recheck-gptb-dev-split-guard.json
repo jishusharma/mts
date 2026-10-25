@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T18:06:31Z",
   "commands": [
     "python -m pytest MyTradingSys/research/layer_lab/dev_split_guard/test_event_table.py -q"
   ],
@@ -16,6 +17,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "VERIFIED-C2; 3 boundary checks MATCH; report MyTradingSys/research/layer_lab/reports/2026-",
+      "ref": "80398f89",
+      "utc": "2026-10-25T18:06:31Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -43,7 +50,12 @@
     "MyTradingSys/system/tasks/archive/gptb-dev-split-guard.json",
     "MyTradingSys/research/layer_lab/reports/2026-10-19_lab-trust-tag.md"
   ],
-  "result": "",
+  "result": "VERIFIED-C2; 3 boundary checks MATCH; report MyTradingSys/research/layer_lab/reports/2026-10-25_trust-recheck-gptb-dev-split-guard.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/dev_split_guard/event_table.py",
     "MyTradingSys/research/layer_lab/dev_split_guard/test_event_table.py",
@@ -63,13 +75,14 @@
     "MyTradingSys/research/volume_2026-10-09/PRE_REG_VOLUME_2026-10-09.md:23 (split dates)",
     "MyTradingSys/research/context_factors_pit_2026-10-16/PRE_REG.md:104 (independent statement of DEV start 2022-01-01 and end 2024-06-30)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the spec line by line, not the code: PRE_REG_VOLUME:23 (DEV = bar open < 2024-07-01) and context_factors_pit PRE_REG.md:104 (DEV start 2022-01-01); the producer REPORT.md is the claim under test, not the spec.",
     "Re-derive the keep/drop decision for 3 boundary rows (2024-06-30 23:00 kept, 2024-07-01 00:00 dropped, missing timestamp fails closed) with your own short script from the written definition and compare; a difference is a MISMATCH finding with file:line, settled by calculation not vote.",
     "Read MyTradingSys/research/layer_lab/dev_split_guard/test_event_table.py: would it fail on a broken implementation? Mutate one line in a scratch copy, run, record; leave the real file unchanged.",
     "Write the report: reviewer vendor and model, the numbers, MATCH or MISMATCH per number, tag proposal VERIFIED-C2 or DISPUTED."
   ],
+  "taken": "2026-10-25T18:06:31Z",
   "tests": "Audit card: its fail-first is the one-line mutation in a scratch copy, which must turn a test red; recorded in the report.",
   "title": "Trust re-check: gptb-dev-split-guard",
   "weight": "CRUCIAL",
