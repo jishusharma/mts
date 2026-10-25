@@ -4,6 +4,16 @@
   "commands": [
     "mvn -q test -Dtest=StateCodeEmitterTest,MarketDataSnapshotTest"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-25T15:45:47Z",
+    "misses": 23,
+    "reads": [
+      "src/test/java/datafeed/StateCodeEmitterTest.java",
+      "src/main/java/datafeed/StateCodeEmitter.java"
+    ],
+    "session": "agent-a201cdb16cfa367b2"
+  },
   "created": "2026-10-20T18:53:09Z",
   "depends_on": [],
   "done_when": "330-bar fixture stays CVD 1320 and volume 3300 after delayed pre-M buy quantity 2; boundary and reconnect cases pass.",
