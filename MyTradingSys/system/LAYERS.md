@@ -131,7 +131,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Code: `MyTradingSys/backtest/layers/positioning`
 - Other results: `MyTradingSys/research/OI_DIVERGENCE_V2_2026-10-10.md`; `MyTradingSys/research/OI_EVENT_STUDY_2026-10-10.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `lf-positioning-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: positioning (file:line facts only, no verdict)
   - `lf-positioning-gpt-rederive` ready p2 CODEX: Layer re-derive: positioning (independent recount of the headline numbers behind the fact sheet)
   - `positioning-c1-prereg-no-source` raw p4 SONNET: Positioning C1: pre-registration labelled NO-SOURCE (items 1/6/8/9/11/12, gates 0a/0f)
 
