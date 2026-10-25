@@ -12,9 +12,9 @@
 3. Traders must always pay attention to candle closing prices to confirm directional rejection.
 4. Trend structure is defined objectively through sequences of lower highs and lower lows.
 5. Defining structural swing levels allows traders to establish favorable risk-reward ratios.
-6. Stop losses are placed above swing highs for short trades or below swing lows for long trades.
+6. Stop losses are placed above swing highs for short trades (the long-side mirror below swing lows is INFERRED from the short example, not sourced).
 7. Volume exhaustion at pre-located high points confirms reversals before entering counter trades.
-8. If price fails to trade back down through elevated spike volume, the trade setup must be abandoned.
+8. If price does not yet trade back down through elevated spike volume, wait for confirmation; the setup is abandoned only on the structural break above the swing high (see negative rule 3).
 
 ## DETAILED CLAIMS WITH TIER TAGS
 

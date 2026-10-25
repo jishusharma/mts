@@ -29,7 +29,7 @@
 
 ## VIDEO CONTEXT
 
-The speaker dispels the retail myth that all market gaps eventually close and explains how to differentiate between breakaway gaps and gaps likely to fill. Gaps opening inside the prior day's range follow the 80% value rule and fill with high probability, whereas gaps accompanied by substantial volume indicate institutional acceptance and form breakaway gaps. Fundamental economic and commodity hedging gaps rarely close quickly, while political news gaps have short legs and typically close around day three once liquidity dries up and reverses.
+The speaker dispels the retail myth that all market gaps eventually close and explains how to differentiate between breakaway gaps and gaps likely to fill. Gaps opening inside the prior day's range follow the 80% value rule and fill with high probability, whereas gaps accompanied by substantial volume indicate institutional acceptance, and become breakaway gaps only if price then breaks out upward. Fundamental economic and commodity hedging gaps rarely close quickly, while political news gaps have short legs and typically close around day three once liquidity dries up and reverses.
 
 ---
 
@@ -37,7 +37,7 @@ The speaker dispels the retail myth that all market gaps eventually close and ex
 
 1. Not all market gaps close; assuming every gap closes causes traders to lose money on runaway breakaway gaps.
 2. Gaps opening within the previous day's range have a significantly higher fill probability under the 80% value rule than gaps outside the range.
-3. Substantial volume at an opening gap confirms price acceptance and signals a breakaway gap rather than a gap fill.
+3. Substantial volume at an opening gap confirms price acceptance (P structure); it signals a breakaway only once price breaks out upward, and the direction of the subsequent breakout must still be observed.
 4. Commodity futures gaps driven by commercial hedger activity rarely close quickly due to mandatory hedging flows.
 5. Fundamental economic and inflation news gaps typically do not close, whereas political market gaps have short legs and usually close.
 6. Political news gaps typically close on the third day (one day after the gap forms) once initial market reactions subside.
