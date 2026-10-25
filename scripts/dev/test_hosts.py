@@ -1,5 +1,6 @@
 """hosts.py: the machine rename (JIS-NB -> JIS-DESKTOP, DESKTOP-F7IU69N -> JIS-LAPTOP) must not break any old state."""
 import json
+from unittest import mock
 import os
 import sys
 import tempfile
@@ -38,7 +39,10 @@ class HostsTest(unittest.TestCase):
 
     def test_unc_tries_new_name_first_old_second(self):
         self.assertEqual(hosts.unc_hosts("JIS-NB"), ["JIS-DESKTOP", "JIS-NB"])
-        self.assertEqual(hosts.unc_path("JIS-NB", "MTS-Queue"), chr(92) * 2 + "JIS-DESKTOP" + chr(92) + "MTS-Queue")   # neither reachable: new name
+        with mock.patch.object(hosts.os.path, "isdir", return_value=False):
+            self.assertEqual(hosts.unc_path("JIS-NB", "MTS-Queue"), chr(92) * 2 + "JIS-DESKTOP" + chr(92) + "MTS-Queue")   # neither reachable: new name
+        with mock.patch.object(hosts.os.path, "isdir", side_effect=lambda p: p.endswith("JIS-NB" + chr(92) + "MTS-Queue")):
+            self.assertEqual(hosts.unc_path("JIS-NB", "MTS-Queue"), chr(92) * 2 + "JIS-NB" + chr(92) + "MTS-Queue")      # only old name reachable
 
     def test_owner_file_written_under_old_name_matches_new_host(self):
         with tempfile.TemporaryDirectory() as d:

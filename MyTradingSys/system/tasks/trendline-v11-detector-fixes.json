@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T21:17:25Z",
   "commands": [
     "python -m pytest MyTradingSys/backtest/layers/trendlines -q",
     "python MyTradingSys/research/trendlines_2026-10-17/repro_trendline_gaps.py",
@@ -17,6 +18,12 @@
   "id": "trendline-v11-detector-fixes",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "trendline_core contract v1.1: 6 new tests (35 pass), repro gaps 1-3 FIXED, lint rows=48 pr",
+      "ref": "a3f7dd0a",
+      "utc": "2026-10-25T21:17:25Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -43,7 +50,12 @@
   "refined_by": "",
   "refreshed": "2026-10-24T23:02:12Z",
   "refs": [],
-  "result": "",
+  "result": "trendline_core contract v1.1: 6 new tests (35 pass), repro gaps 1-3 FIXED, lint rows=48 problems=0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/trendlines/trendline_core.py",
     "MyTradingSys/backtest/layers/trendlines/test_trendline_core.py",
@@ -63,13 +75,14 @@
     "MyTradingSys/research/trendlines_2026-10-17/AUDIT_2026-10-18.md gaps 1-3",
     "TRENDLINE_CONTRACT.md P5, P6, E11"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run repro_trendline_gaps.py and read AUDIT_2026-10-18.md gaps 1-3 with trendline_core.py:105-109, 177-204, 225-262.",
     "Write 3 fail-first tests in test_trendline_core.py from the synthetic repros: (1) close-arm line survives where only a wick pokes through; (2) a touch on ib+1 gives no Arm A eligibility at known_at=ib+k and a line closing beyond L in ib+1..ib+k is rejected as broken_before_available; (3) after inner line (ia,ib1) breaks, outer (ia,ib2) is still proposed. Each must fail on current code.",
     "Fix _penetration_ok/_advance for price_arm=close; restrict post-birth events to j>ib+k; narrow _broken_anchor to the broken line's second anchor ib1 (new param e11 = narrow by default, strict keeps v1 behaviour for count replication).",
     "Bump CONTRACT_VERSION; in TRENDLINE_CONTRACT.md add a changelog section with 3 rows (one per gap, OURS), rewrite the E11 text (line 71) to the narrowed rule, add a FORMULAS.md note; run test_trendline_core.py (29 tests, truncation green) and lint_contract.py."
   ],
+  "taken": "2026-10-25T21:17:25Z",
   "tests": "3 new tests in test_trendline_core.py, each failing on pre-change code; 29 existing tests incl. truncation green; repro_trendline_gaps.py gaps 1-3 report FIXED.",
   "title": "Trend-line contract v1.1 + detector fixes: close-arm penetration, pre-availability replay, E11 anchor ban (audit gaps 1-3)",
   "weight": "CRUCIAL",
