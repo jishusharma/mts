@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T23:15:06Z",
   "commands": [
     "python scripts/dev/test_verify_extract_quotes.py",
     "python scripts/dev/verify_extract_quotes.py extracts/gemini_out/gWjHq5UMisY_gemini.md"
@@ -16,6 +17,12 @@
   "id": "verify-extract-quotes-strip-nested-metad",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "b4eced01 already on origin/fast-track: test_verify_extract_quotes.py 11 pass; nested-heade",
+      "ref": "f2d8c9fb",
+      "utc": "2026-10-25T23:15:06Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,7 +40,12 @@
   "refined_by": "",
   "refreshed": "2026-10-24T22:51:19Z",
   "refs": [],
-  "result": "",
+  "result": "b4eced01 already on origin/fast-track: test_verify_extract_quotes.py 11 pass; nested-header test fails on old code; gWjHq5UMisY 2 quotes fail",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/verify_extract_quotes.py",
     "scripts/dev/test_verify_extract_quotes.py"
@@ -49,13 +61,14 @@
     "MyTradingSys/research/gpt_burn_2026-10-24/gx2-review-tom-extracts/report.md F5",
     "scripts/dev/verify_extract_quotes.py:43"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read transcript_body() (verify_extract_quotes.py:40-45) and raw_transcripts_canonical/gWjHq5UMisY_raw.txt lines 1-14 (outer header, '# ---', nested '# Video ID..# Description' block, second '# ---').",
     "Write the fail-first test in test_verify_extract_quotes.py: temp transcript = header, '# ---', nested '# ' header with '# Description: <quote A>', '# ---', body containing quote B; assert quote A fails and B passes. Run it on current code: it must fail.",
     "Fix transcript_body(): after the first '# ---', while the next non-blank line starts with '# ', drop lines through the next '# ---' (or the end of the '# ' run); body text itself is never touched.",
     "Run the verifier on every extracts/gemini_out/*_gemini.md and extracts/gemini_out/*/*.md before and after; list any file whose verdict changed in the Result."
   ],
+  "taken": "2026-10-25T23:15:06Z",
   "tests": "New test in scripts/dev/test_verify_extract_quotes.py (description-only quote fails, body quote passes, file with a single header unchanged); must fail on the pre-change code.",
   "title": "verify_extract_quotes: strip nested metadata header so description-only quotes fail (gWjHq5UMisY F5)",
   "weight": "IMPORTANT",
