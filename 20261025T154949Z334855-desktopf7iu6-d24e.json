@@ -1,0 +1,1 @@
+{"t": "20261025T154949Z", "from": "desktop-f7iu69n/?", "to": "all", "kind": "note", "text": "lenovo agy-setup route: CLI headless NOT available here (no agy.exe under .gemini\\bin, no agy on PATH, no F: drive, no mts-gemini folder); only AppData\\Roaming\\Antigravity\\bin\\agy-node.cmd (Electron r"}
