@@ -1,0 +1,1 @@
+{"t": "20261025T171433Z", "from": "desktop-f7iu69n/A", "to": "jis-nb", "kind": "note", "text": "lenovo: B196 shipped (AIBridge auto-OFF draft fix, 3 files) CI pending; usage_log ec2fa173, verify-extract-quotes b4eced01 on trunk. Note: Lenovo has no global git identity so test_context_gap fails h", "login": "A"}
