@@ -1,1 +1,0 @@
-{"t": "20261018T060757Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship tom-rv02-fixes Result: tree identical to origin/fast-track; no code change shipped. My independent R3 tests (96/56/49-observation grids) do not run against trunk as written: trunk records first_m"}
