@@ -13,14 +13,32 @@
   "from_inbox": "",
   "goal": "Independently re-check the source definition, tests and 1-3 decisive numbers of gpt-formulas-rederive before a VERIFIED-C2 result tag is recorded. Establish producer identity and use a different reviewer vendor; no outcome or holdout rerun.",
   "id": "trust-recheck-gpt-formulas-rederive",
+  "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "kurisko: causal Quad Rotation layer module (stochastic arm + RSI hypothesis arm), FORMULAS",
+      "ref": "dd001f2a7902",
+      "utc": "2026-10-18T06:39:54Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "dd001f2a7902 kurisko: causal Quad Rotation layer module (stochastic arm + RSI hypothesis a",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-10-18T06:39:54Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS) 2026-10-23: refined by Session_Planner worker (R1 size S est_turns 12, R2 scope, R3 path/host); no ACCEPT stamp, needs ONE batched Sonnet reviewer pass (or Lab_Guy for CODEX), then stamp REVIEWED:<date> ACCEPT and tasks.py check. LAB:results CLASS:C2 WEIGHT:CRUCIAL. Producer was CODEX/GPT. Audit target, not a trusted premise. No outcome or holdout rerun. Different reviewer vendor than the producer (CODEX/GPT produced it, so Gemini or Claude re-derives). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the report.",
+  "note": "REVIEWED:2026-10-25 ACCEPT after FIX (fees.py scope, sections 13/17) applied by planner, not re-read (Sonnet reviewer Agent a15133e0, DECISION OURS). DECISION (OURS) 2026-10-23: refined by Session_Planner worker (R1 size S est_turns 12, R2 scope, R3 path/host); no ACCEPT stamp, needs ONE batched Sonnet reviewer pass (or Lab_Guy for CODEX), then stamp REVIEWED:<date> ACCEPT and tasks.py check. LAB:results CLASS:C2 WEIGHT:CRUCIAL. Producer was CODEX/GPT. Audit target, not a trusted premise. No outcome or holdout rerun. Different reviewer vendor than the producer (CODEX/GPT produced it, so Gemini or Claude re-derives). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the report.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-25T15:29:24Z",
   "refs": [
     "MyTradingSys/system/tasks/archive/gpt-formulas-rederive.json",
     "MyTradingSys/research/layer_lab/reports/2026-10-19_lab-trust-tag.md"
@@ -31,6 +49,7 @@
     "MyTradingSys/research/layer_lab/gpt-formulas-rederive/FORMULAS_REDERIVE.md",
     "MyTradingSys/research/layer_lab/gpt-formulas-rederive/rederive.py.txt",
     "MyTradingSys/runtime/mts_math.py",
+    "MyTradingSys/backtest/fees.py",
     "MyTradingSys/backtest/layers/positioning/trade_costs.py",
     "MyTradingSys/backtest/layers/positioning/test_trade_costs.py",
     "MyTradingSys/tests/test_mts_math.py",
@@ -42,21 +61,21 @@
     "live path",
     "data fetch beyond the read-only local DEV files named in scope_in"
   ],
+  "scope_sha": "dd001f2a7902",
   "size": "S",
   "sources": [
     "MyTradingSys/backtest/layers/FORMULAS.md:353 (S13 worked example)",
-    "MyTradingSys/backtest/layers/FORMULAS.md sections 7, 12, 13, 17"
+    "MyTradingSys/backtest/layers/FORMULAS.md sections 13, 17"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "Read FORMULAS.md sections 7, 12, 13, 17 only, not the code: write down your own value for net_rr 100/104/98 (expected 1.857143) and the S13 long 100->101 net (0.0084) before opening any code.",
+    "Read FORMULAS.md sections 13 and 17 only, not the code: write down your own value for net_rr 100/104/98 (expected 1.857143) and the S13 long 100->101 net (0.0084) before opening any code.",
     "Re-derive both with your own short stdlib script, then compare with the table rows in FORMULAS_REDERIVE.md and with the repo calculate_net_rr / trade_costs; the recorded S13 MISMATCH (FORMULAS.md:353 vs trade_costs.py:27 B103 guard) must be confirmed or refuted by calculation, not vote.",
-    "Read test_mts_math.py and test_trade_costs.py: would they fail on a broken fee constant? Mutate one line (DERIBIT_TAKER) in a scratch copy, run, record; leave the real files unchanged.",
+    "Read test_mts_math.py and test_trade_costs.py: would they fail on a broken fee constant? Mutate one line (DERIBIT_TAKER in backtest/fees.py) in a scratch copy, run, record; leave the real files unchanged.",
     "Write the report MyTradingSys/research/layer_lab/reports/2026-10-23_trust-recheck-gpt-formulas-rederive.md: reviewer vendor and model, the numbers, MATCH or MISMATCH per number, mutation result, tag proposal VERIFIED-C2 or DISPUTED."
   ],
   "tests": "Audit card: its fail-first is the one-line mutation in a scratch copy, which must turn a test red; recorded in the report.",
   "title": "Trust re-check: gpt-formulas-rederive",
   "weight": "CRUCIAL",
-  "worker": "session",
-  "kind": "audit"
+  "worker": "session"
 }
