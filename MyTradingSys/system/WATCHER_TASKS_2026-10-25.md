@@ -5,8 +5,10 @@ A **station** is one device plus one login (Desktop-A, Desktop-C, Laptop-A, NUC-
 How it governs: the repo is the one plan (task files, cards, broadcasts, signals). The watcher is its only writer of plans. Workers read their file, work, and report each ship with `mts_signal.py send ... --to jis-nb`.
 Heavy work goes to the desktop's Max login through Sonnet Builders. The laptop and NUC Pro logins take read-only, review and card work.
 
-## Start line (operator types this in a new desktop session, login A)
-`You are Supervisor. Login A. Tasks: MyTradingSys/system/WATCHER_TASKS_2026-10-25.md`
+## Start lines (chain: operator -> Lead -> Supervisor -> Builders; ROLES.md)
+- Operator types in a new desktop session: `You are Lead. Start the watcher: a Supervisor session on login A with MyTradingSys/system/WATCHER_TASKS_2026-10-25.md.`
+- The Lead starts the watcher session with: `You are Supervisor. Login A. Tasks: MyTradingSys/system/WATCHER_TASKS_2026-10-25.md`
+- The Lead talks with the operator and never watches workers or builds (roles/lead.md). The Supervisor watches, starts Builders and reports to the Lead.
 
 ## Every wake
 1. `cd C:\MTS\mts-jisnb; git pull`, then `python scripts/dev/mts_signal.py read --hours 1`, `mts_signal.py who` and `mts_signal.py acks`.
