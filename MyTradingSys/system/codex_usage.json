@@ -6,7 +6,7 @@
   "window_resets": 1792962879,
   "window_used": 1.0
  },
- "at": "2026-10-25T19:37:57Z",
+ "at": "2026-10-25T20:00:56Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,9 +20,24 @@
   "astra_runs": 0,
   "week_pts": 0.0,
   "window_pts": 1.0,
-  "window_runs": 8
+  "window_runs": 9
  },
  "runs": [
+  {
+   "at": "2026-10-25T19:59:31Z",
+   "card": "trust-recheck-lab-data-pin-hash",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 76,
+   "tokens_out": 5655,
+   "tokens_total": 492030,
+   "tokens_uncached": 49383,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-25T19:37:00Z",
    "card": "trust-recheck-gptb-forward-excursion-hel",
@@ -157,21 +172,6 @@
    "tokens_uncached": 14735,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-22T23:12:40Z",
-   "card": "lab-planted-error-trial",
-   "effort": null,
-   "kind": "build",
-   "model": null,
-   "note": "codex-unstick 2026-10-23: card scope fixed",
-   "outcome": "REOPENED",
-   "seconds": null,
-   "tokens_out": null,
-   "tokens_total": null,
-   "tokens_uncached": null,
-   "week_pts": null,
-   "window_pts": null
   }
  ]
 }
