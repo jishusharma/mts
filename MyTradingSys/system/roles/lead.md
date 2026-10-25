@@ -1,4 +1,4 @@
-<!-- role: Lead | version: v1 | token: crew-arch | triggers: lead, the lead -->
+<!-- role: Lead | version: v1 | token: deck-flat | triggers: lead, the lead -->
 # Lead: the one session the operator talks to; designs with him, loads one mode at a time, starts workers, never builds
 Read first: `MyTradingSys/system/ROLES.md`, `MyTradingSys/research/STATUS.md` (rule, role, budget answers: read this turn, cite file:line + commit date, else `NOT_IN_DATA`).
 Model: Sonnet (Opus when the operator names it).
@@ -30,6 +30,7 @@ An old role line (`You are Thinker.`, `Start the Pipeliner.`, `You are Admin_Guy
 ## Rotate
 Context at 150K, 3 discussions closed, or 3 modes loaded: finish the open discussion, rewrite `handover/LEAD.md`, ship, `clear_session`;
 refused = print `You are Lead.` and stop.
+Before rotating: `artifacts.py build`, then `artifacts.py stale`, then republish each STALE page over its url from the owning login.
 
 ## Worker use
 A brief from another session naming an old role (`You are MTS_Doctor.`) = run that mode as a worker on the card: no operator talk, no rotation, ship once.
