@@ -1,7 +1,6 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-10-25T14:17:51Z",
   "commands": [
     "python scripts/dev/role_loader.py retoken"
   ],
@@ -15,14 +14,7 @@
   "goal": "roles/supervisor.md under 90 percent of 7500 bytes",
   "id": "supervisor-role-trim",
   "lane": "HAIKU",
-  "latest": [
-    {
-      "kind": "ship",
-      "line": "this ship: roles/supervisor.md 6677 bytes, retoken run",
-      "ref": "02cc60b98",
-      "utc": "2026-10-25T14:17:51Z"
-    }
-  ],
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -34,12 +26,7 @@
   "refs": [
     "MyTradingSys/research/mts_doctor/CI_RED_AND_FLOW_REVIEW_2026-10-25.md"
   ],
-  "result": "this ship: roles/supervisor.md 6677 bytes, retoken run",
-  "result_receipt": {
-    "trust": {
-      "tag": "UNCHECKED"
-    }
-  },
+  "result": "",
   "scope_in": [
     "MyTradingSys/system/roles/supervisor.md,MyTradingSys/system/roles/ROSTER.json"
   ],
@@ -47,12 +34,11 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "done",
+  "state": "ready",
   "steps": [
     "trim wording, keep rules",
     "run role_loader.py retoken"
   ],
-  "taken": "2026-10-25T14:17:51Z",
   "tests": "python -m pytest -q MyTradingSys/tests/test_role_loader.py",
   "title": "supervisor-role-trim: roles/supervisor.md under 90% of its 7500-byte budget",
   "weight": "",
