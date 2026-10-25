@@ -5,11 +5,12 @@ Uses the repo's own layer code unchanged: backtest/layers/krown/krown_core.py + 
 and params/krown_params.json. The desk bars carry no volume, so only price-bar detectors are offered.
 SOURCED (research/krown_ta101_2026-10-13/KROWN_RULES.csv): S5 = 21 EMA crosses 55 EMA with price on the 200 SMA side
 (KR-M02, krown_params ma_fast/ma_slow/ma_long); S8 = BBWP basis 7 / lookback 100 (KR-Q01), low <= 30 (KR-Q02 gives
-25-35), first bar above the 50th percentile (KR-Q02), stop on the opposite side of the compression zone (KR-Q05).
+25-35), first bar above the 50th percentile (KR-Q02). KR-Q05 only says the stop sits on the far side of the compression zone: no distance, so ours below.
 OURS: every entry, stop distance and exit (no source gives one: KR-X01, KR-Z14): market entry at the open of the bar after
 the signal bar; stop = the far side of the last 10 bars including the signal bar; target 2 x risk; a trade is closed after
-100 bars; the timeframe (4h or daily); S8 recent/break windows and S4 (coil break, range 20, coil < 0.7), all OURS in krown_params.json.
+100 bars; the timeframe (4h or daily; daily has only ~90 warm-up bars, so S5 daily has no signal before ~July 2022); the target is measured from the signal bar's close, so after a gap at the next open the realised multiple differs a little; S8 recent/break windows and S4 (coil break, range 20, coil < 0.7), all OURS in krown_params.json.
 """
+import hashlib
 import sys
 from pathlib import Path
 
@@ -24,7 +25,7 @@ TITLE = 'Krown (exploratory desk try, not the pre-registered study): S5 MA cross
 MAX_HOLD, STOP_BARS = 100, 10
 TF = {'4h': '4 hours (ours)', '1d': 'daily (ours)'}
 TF_MIN = {'4h': 240, '1d': 1440}
-SETUP = {'S5': 'S5: 21/55 EMA cross on the 200 side (trader: KR-M02)', 'S8': 'S8: squeeze then break (trader: KR-Q05)',
+SETUP = {'S5': 'S5: 21/55 EMA cross on the 200 side (trader: KR-M02)', 'S8': 'S8: squeeze then break (trader: KR-Q02 numbers, entry and stop ours)',
          'S4': 'S4: coil then range break (ours)'}
 EXIT = {'R': 'target at a multiple of risk (ours)', 'HOLD': 'no target, close after 100 bars (ours)'}
 DEFAULT = {'symbol': 'BTCUSDT', 'setup': 'S5', 'tf': '4h', 'exit': 'R', 'target_r': 2.0,
@@ -32,6 +33,15 @@ DEFAULT = {'symbol': 'BTCUSDT', 'setup': 'S5', 'tf': '4h', 'exit': 'R', 'target_
 SKIPPED = ('S1 zone test, S2 zone break and S7 capitulation need volume (the desk bars have none; the trader quotes CME volume); '
            'S9 tops need volume; S3 range edge needs candle-pattern wicks (all OURS); S6 leash fires at the reconnect bar, after the '
            'move, and names no entry direction (provisional, one video)')
+
+
+def _code_hash():
+    """Cache key part: an edit to the Krown detectors or their params must not serve old cached numbers."""
+    d = Path(kc.__file__).resolve().parent
+    h = hashlib.sha256()
+    for f in (Path(__file__), d / 'krown_core.py', d / 'krown_events.py', d / 'params' / 'krown_params.json'):
+        h.update(f.read_bytes())
+    return h.hexdigest()[:10]
 
 
 def params():

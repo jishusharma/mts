@@ -86,3 +86,24 @@ def test_run_end_to_end_ledger_and_consistency(tmp_path):
     assert np.allclose(net[f], gross[f] - fees[f], atol=1e-9) and np.all(net[~f] == 0.0)
     lo, hi = _bars.day_ms('2022-04-01'), _bars.day_ms('2024-06-30') + _bars.DAY
     assert (np.asarray(res['touch_t']) >= lo).all() and (np.asarray(res['touch_t']) < hi).all()
+
+
+def test_cache_key_follows_the_krown_code():
+    assert len(study()._code_hash()) == 10
+
+
+@needs_data
+def test_trade_construction_stop_entry_time_and_target():
+    s = study()
+    q = s.normalize({})
+    res = s.run(q, progress=lambda x: None)
+    b = _bars.resample(_bars.load_1m(), 240)
+    idx = {int(t): i for i, t in enumerate(b[:, 0])}
+    assert res['refs']
+    for ref in res['refs'][:10]:
+        side, t0, trig, stop, target = ref[:5]
+        i = idx[t0 - 240 * _bars.MIN]                       # the signal bar closed exactly at t0
+        assert trig is None
+        win = b[i - 9:i + 1]
+        assert stop == (win[:, 3].min() if side > 0 else win[:, 2].max())
+        assert target == pytest.approx(b[i, 4] + side * 2.0 * abs(b[i, 4] - stop))
