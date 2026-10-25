@@ -1,0 +1,1 @@
+{"t": "20261025T224739Z", "from": "jis-nb/C", "to": "jis-nuc", "kind": "ask", "text": "C->B: Gemini lane gq14 status? No gemini-q/lf-* branch on origin and NUC shows no worker. Check F:/MTS/gq/gq14.log, push finished gemini-q/lf-* branches to origin, and tell me the count. If it died, r", "login": "C"}
