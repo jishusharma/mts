@@ -4,32 +4,65 @@
   "commands": [],
   "created": "2026-10-25T05:47:25Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "SUPER_SESSION.md End section and roles/lead.md each contain one clause naming 'artifacts.py build' then 'artifacts.py stale' then republish over the url; python scripts/dev/tasks.py lint and run_all_tests.py --quick pass.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Make 'pages follow builds' (QUICK_ANSWERS.md:9, operator 2026-10-12) a named run-end step in SUPER_SESSION.md End (lines 47-49) and roles/lead.md, so stale pages are republished instead of only warned at ship (sync.py:641 stale_pages_lines).",
   "id": "pages-follow-builds-make-the-republish-s",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "CLAUDE.md: author-first revert wording, voice/never-wait/fleet-wide/reply-format principle",
+      "ref": "dec473ccb525",
+      "utc": "2026-10-25T14:18:13Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "dec473ccb525 CLAUDE.md: author-first revert wording, voice/never-wait/fleet-wide/reply-for",
+      "ref": "MyTradingSys/system/SUPER_SESSION.md",
+      "utc": "2026-10-25T14:18:13Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-25 ACCEPT\nDECISION (OURS): stale pages stay a ship warning; gx2 audit.py absent so not re-run. Verify: sha, git cherry empty, ls-tree shows files.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": [],
+  "refreshed": "2026-10-25T15:52:45Z",
+  "refs": [
+    "MyTradingSys/system/handover/LEAD_FINDINGS_2026-10-25.md"
+  ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Pages follow builds: make the republish step part of every run end (SUPER_SESSION End, Lead wrap, pilot template) with a stale-pages gate",
-  "weight": "",
-  "worker": ""
+  "scope_in": [
+    "MyTradingSys/system/SUPER_SESSION.md",
+    "MyTradingSys/system/roles/lead.md"
+  ],
+  "scope_out": [
+    "scripts/dev/sync.py and any gate behaviour change (stale warning stays a WARNING: DECISION (OURS) conservative default, no new hard gate per operator no-paperwork-gates); republishing pages itself"
+  ],
+  "scope_sha": "dec473ccb525",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/mts_doctor/PILOT_IMPROVEMENTS_AUDIT_2026-10-25.md",
+    "MyTradingSys/system/QUICK_ANSWERS.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read QUICK_ANSWERS.md:9-11, SUPER_SESSION.md End, roles/lead.md, PILOT_IMPROVEMENTS_AUDIT_2026-10-25.md P124",
+    "Add to SUPER_SESSION.md End: run 'python scripts/dev/artifacts.py build', then 'artifacts.py stale', republish each STALE page over its url from the owning login (jishusharma1985 = C for pages it owns)",
+    "Add the same clause to roles/lead.md '## Rotate' section (line 30; it has no wrap section); grep system/ for a pilot template and add it there only if one exists",
+    "tasks.py lint; sync.py ship --release <slug>"
+  ],
+  "tests": "docs only; run_all_tests.py --quick stays green (no new test; a doc clause has nothing to fail first)",
+  "title": "Pages follow builds: make the republish step part of every run end (SUPER_SESSION End, Lead Rotate section, pilot template if any); stale warning stays a warning",
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }
