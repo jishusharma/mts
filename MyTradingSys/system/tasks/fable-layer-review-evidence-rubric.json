@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-26T22:50:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/design_cards_2026-10-26/FABLE_LAYER_REVIEW_RUBRIC.md exists: <= 12 rows, each with where the number appears on the desk today or NEW, and a line stating no row decides a layer",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "One rubric of the questions and numbers the operator looks at per layer in the simulator before deciding anything (n, fee-net R, window, tries, label coverage, known bugs). It lists what to look at; it never says keep or drop.",
+  "id": "fable-layer-review-evidence-rubric",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Model: Fable 5.1, run only by the handover feedback session or the operator (no session starts Fable); the coordinator pastes `tasks.py brief` into it.\nREVIEWED: sonnet-reviewer-a89035 2026-10-26",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "super-c-design",
+  "refreshed": "2026-10-25T22:50:22Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/design_cards_2026-10-26/FABLE_LAYER_REVIEW_RUBRIC.md (new file only)"
+  ],
+  "scope_out": [
+    "live tree; deploys; any verdict to keep, drop, demote or park a layer; VALIDATION and HOLDOUT data"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/tasks/layer-review-after-simulator.json",
+    "MyTradingSys/system/LAYERS.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read the layer-review-after-simulator card and LAYERS.md headings",
+    "Draft rows; mark desk location or NEW",
+    "Ship"
+  ],
+  "tests": "Docs card: no row names keep, drop, demote or park as an outcome",
+  "title": "Fable: evidence rubric the operator uses when he reviews each layer in the simulator",
+  "weight": "CRUCIAL",
+  "worker": "agent"
+}

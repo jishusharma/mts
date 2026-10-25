@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-26T22:50:00Z",
+  "crucial": "The fee-versus-stop finding drives every later stop-width decision; a wrong number here misleads all layers.",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/design_cards_2026-10-26/astra_levels_recompute.md exists: five recomputed numbers with the formula line used, MATCH or gap per number, method written before the comparison",
+  "effort": "low",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Recompute from raw ledger rows and FORMULAS.md, without running the study code, the levels study headline: filled count, gross R, fee R per trade, net R, win rate. Compare with the Fable review numbers and say MATCH or the exact gap.",
+  "id": "astra-low-levels-fee-drag-recompute",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "model": "astra",
+  "mutation_check": "",
+  "note": "REVIEWED: sonnet-reviewer-a89035 2026-10-26",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "super-c-design",
+  "refreshed": "2026-10-25T22:50:18Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/design_cards_2026-10-26/astra_levels_recompute.md (new file only)"
+  ],
+  "scope_out": [
+    "live tree; deploys; any verdict to keep, drop, demote or park a layer; VALIDATION and HOLDOUT data"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/sim_desk/REVIEW_FABLE_2026-10-25.md",
+    "MyTradingSys/backtest/layers/FORMULAS.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read FORMULAS.md for R, fee and filled-only rules; write the method down first",
+    "Load the levels run trades from sim_desk/results (or the runs ledger) with a short throwaway script kept out of the repo",
+    "Compute the five numbers, then compare with REVIEW_FABLE_2026-10-25.md section 1",
+    "Commit the report with a Result: line (MATCH or gaps)"
+  ],
+  "tests": "Throwaway script checked once on a hand-made 3-trade sample with known answers before the real data",
+  "title": "Astra-low: independently recompute the levels study fee drag (+0.22 R gross, -0.12 R net, 255 fills)",
+  "weight": "CRUCIAL",
+  "worker": "agent"
+}

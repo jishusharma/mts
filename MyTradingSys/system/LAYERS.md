@@ -29,6 +29,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-22_tom-btc-other-setups.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `tom-btc-eye-read` blocked p1 SONNET: Tom on BTC T3: eye read of the 80 lab charts by two readers (Claude + Jis), blind; agreement per Tom concept
+  - `argon-med-sim-layer-coverage-matrix` ready p2 CODEX: [GEMINI] Argon-medium: which sim-desk study covers which layer family (file:line matrix)
   - `lf-tom-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: tom (file:line facts only, no verdict)
   - `lf-tom-gpt-rederive` ready p2 CODEX: Layer re-derive: tom (independent recount of the headline numbers behind the fact sheet)
   - `tom-btc-dev-backtest` blocked p2 CODEX: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
@@ -99,6 +100,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `kurisko-dev-event-study` refined p2 SONNET: Kurisko Quad Rotation: DEV event study, fee-net, same-window placebo
   - `lf-rsi-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: rsi (file:line facts only, no verdict)
   - `lf-rsi-gpt-rederive` ready p2 CODEX: Layer re-derive: rsi (independent recount of the headline numbers behind the fact sheet)
+  - `argon-med-param-label-sweep` ready p3 CODEX: [GEMINI] Argon-medium: list layer parameters with no SOURCED/OURS label (file:line)
   - `malkan-w1hr-local-whisper-asr` ready p3 JIS-NB: Malkan W1HrDl70Lhk: local Whisper ASR on JIS-NB to recover Hinglish 5-Star RSI stop wording (no YouTube captio
   - `rsi-cross-unmapped-and-pivot-stack` ready p3 SONNET: RSI cross events are rejected as unmapped in the auto-trader (no layer_rules entry); and no layer stacks level
   - `malkan-prereg-dwm-equities` refined p4 SONNET: Malkan: pre-registration for the D/W/M equity home test (items 6/7/8/9/11/12, gates 0a/0f)
@@ -227,7 +229,10 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/krown_ta101_2026-10-13/reflexivity_log.md`; `MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md`; `MyTradingSys/options/research/KROWN_FREE_VS_PAID.md`
 - Roadmap: `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `astra-low-confluence-prereg-leak-hunt` ready p1 CODEX: Astra-low: hunt for one look-ahead or reuse leak in PRE_REG_CONFLUENCE frozen tests
+  - `astra-low-levels-fee-drag-recompute` ready p1 CODEX: Astra-low: independently recompute the levels study fee drag (+0.22 R gross, -0.12 R net, 255 fills)
   - `sim-dashboard-v1` ready p1 SONNET: Simulator dashboard v1: single-screen page from precomputed levels-confluence ladder results
+  - `argon-med-sim-layer-coverage-matrix` ready p2 CODEX: [GEMINI] Argon-medium: which sim-desk study covers which layer family (file:line matrix)
   - `confluence-s3-context-read` refined p2 SONNET: Confluence S3: standalone context read (D1 vs naive trend, BBWP to realised vol) per PRE_REG_CONFLUENCE
   - `confluence-s4-dev-trials` refined p2 SONNET: Confluence S4: DEV and DEV_EXT trial runs (T2, sizing arm, pooled read, T4) per PRE_REG_CONFLUENCE
   - `confluence-s5-fable-verdict` refined p2 SONNET: Confluence S5: Fable verdict on DEV results, what goes to the one VALIDATION read (then ship, S6)
@@ -236,6 +241,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `lf-krown-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: krown (file:line facts only, no verdict)
   - `lf-krown-gpt-rederive` ready p2 CODEX: Layer re-derive: krown (independent recount of the headline numbers behind the fact sheet)
   - `trendline-count-only-v2` refined p2 SONNET: Trend-line count-only v2 and PRE_REG v2: first_touch vs all_touches, retest/reclaim counts, causal terciles, k
+  - `argon-med-param-label-sweep` ready p3 CODEX: [GEMINI] Argon-medium: list layer parameters with no SOURCED/OURS label (file:line)
   - `krown-other-sources-event-study-videos` refined p3 CODEX: Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigg
   - `trendline-ledger-registry-hygiene` ready p3 SONNET: Trend-line daily ledger schema v2 enforcement + register the module in layer_index and wiring_registry (audit 
 
@@ -251,6 +257,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `wavetrend-c1-v2` refined p1 SONNET: WaveTrend C1 detector correction and new count-only prereg
   - `lf-wavetrend-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: wavetrend (file:line facts only, no verdict)
   - `lf-wavetrend-gpt-rederive` ready p2 CODEX: Layer re-derive: wavetrend (independent recount of the headline numbers behind the fact sheet)
+  - `argon-med-param-label-sweep` ready p3 CODEX: [GEMINI] Argon-medium: list layer parameters with no SOURCED/OURS label (file:line)
 
 ## Pitchfork (Andrews / Schiff / Morge median line) (`pitchfork`)
 - Status: Foundational study papers delivered (papers/01, 02, 03); detector, tests, and YouTube BTC evaluation benchmark built.
