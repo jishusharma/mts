@@ -1,0 +1,50 @@
+{
+  "approved_by": "operator 2026-10-25 via MTS_Doctor",
+  "asks": "",
+  "commands": [
+    "python -m pytest scripts/dev/test_live_mirror.py -q"
+  ],
+  "created": "2026-10-25T12:04:14Z",
+  "depends_on": [],
+  "done_when": "python -m pytest scripts/dev/test_live_mirror.py scripts/dev/test_loop_supervisor_grace.py passes; brief from JIS-NB names desktop-f7iu69n and refuses stale numbers",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "live_mirror publish/pull/brief follow the host live_owner.py names as owner; brief line 1 states the owner; no owner = UNCONFIRMED, no numbers",
+  "id": "eagle-eyes-follows-live-owner",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/system/LIVE_MIRROR.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/live_mirror.py",
+    "scripts/core/loop-supervisor.ps1",
+    "MyTradingSys/system/LIVE_MIRROR.md"
+  ],
+  "scope_out": [
+    "roles/eagle_eyes.md (other builder)",
+    "allowlist and denylist"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "resolve owner via live_owner marker",
+    "publish only on owner, plus copy to owner dir",
+    "brief/pull fail closed",
+    "supervisor tick hook"
+  ],
+  "tests": "scripts/dev/test_live_mirror.py OwnerFollowTest + scripts/dev/test_loop_supervisor_grace.py (fail on old code)",
+  "title": "eagle-eyes-follows-live-owner",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

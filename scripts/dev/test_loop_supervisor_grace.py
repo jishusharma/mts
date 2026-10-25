@@ -13,6 +13,13 @@ class LoopSupervisorGrace(unittest.TestCase):
     def setUp(self):
         self.src = SUP.read_text(encoding="utf-8")
 
+    def test_mirror_publish_runs_each_tick_after_owner_claim_and_is_never_fatal(self):
+        claim = self.src.index('live_owner.py") claim')
+        pub = self.src.index('live_mirror.py") publish --every-min')
+        self.assertLess(claim, pub)                      # only after this host has (re)claimed the loop
+        self.assertLess(pub, self.src.index("Watch-Aux -InGrace"))
+        self.assertRegex(self.src[pub - 200:pub + 400], re.compile(r"try \{.*catch", re.S))   # a publish error never stops the supervisor
+
     def test_grace_covers_slow_startup(self):
         m = re.search(r"\$RestartGraceSec\s*=\s*(\d+)", self.src)
         self.assertGreaterEqual(int(m.group(1)), 360)
