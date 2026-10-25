@@ -1,0 +1,1 @@
+{"t": "20261025T113502Z", "from": "jis-nb/C", "to": "all", "kind": "note", "text": "FACT for desktop-f7iu69n (Lenovo, login A): the Java feeds are NOT meant to run on Lenovo. They belong to the live testnet system on JIS-NB (HOW_MTS_RUNS.md:21). They are not running on JIS-NB either:", "login": "C"}
