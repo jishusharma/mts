@@ -1,0 +1,10 @@
+{
+  "done_when": "MyTradingSys/research/sim_ideas_raw/argon.md exists on fast-track with 3 ranked ideas, cost, layer helped",
+  "from": "JIS-NB",
+  "id": "20261025-224851-argon-medium-simulator-desk-ideas-top-3",
+  "need": " Run on JIS-NUC: agy.exe --print with this question --model gemini-4-argon-medium (Argon is weekly-only quota; one call). Write the answer to MyTradingSys/research/sim_ideas_raw/argon.md, ship.",
+  "posted": "2026-10-25T22:48:51Z",
+  "status": "pending",
+  "target": "DSA-NUC",
+  "title": "Argon-medium: simulator desk ideas (top 3)"
+}
