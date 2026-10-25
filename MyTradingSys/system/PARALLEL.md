@@ -38,6 +38,11 @@ other sessions' uncommitted files and unshipped commits) and a handful of hot fi
 `sync.py` refuses to run in the live tree, so a session that opens there is told to make a worktree:
 `git worktree add ../mts-<slug> -b <host>/<slug> origin/fast-track`.
 
+**Main checkout rule.** The main checkout (JIS-NB live tree, hooks run from it) is a clean copy of trunk:
+(1) never edit, stage or commit there; (2) a session that opens there runs `sync.py start` and works in the worktree;
+(3) it moves only by `git merge --ff-only origin/fast-track`, as a deploy; (4) found dirty or behind: report it, do not
+clean up foreign files. Case 2026-10-24: 109 commits behind, 82 foreign dirty files (mts_doctor REPORT_2026-10-24.md).
+
 ## A session's whole protocol
 1. `python scripts/dev/sync.py start` (from a work tree, never the live tree) - pull everyone else's work; it prints the open claims.
 2. Pick ONE task not in the claims list (`system/NEXT_SESSION.md`, or `tasks.py next`) and

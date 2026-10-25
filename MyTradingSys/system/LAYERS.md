@@ -237,7 +237,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `lf-krown-gpt-rederive` ready p2 CODEX: Layer re-derive: krown (independent recount of the headline numbers behind the fact sheet)
   - `trendline-count-only-v2` refined p2 SONNET: Trend-line count-only v2 and PRE_REG v2: first_touch vs all_touches, retest/reclaim counts, causal terciles, k
   - `krown-other-sources-event-study-videos` refined p3 CODEX: Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigg
-  - `trendline-g3-pack-align` ready p3 SONNET: Trend-line G3 pack: bound anchors to visible bars, pin kline digests, drop hardcoded live-tree path (audit gap
   - `trendline-ledger-registry-hygiene` ready p3 SONNET: Trend-line daily ledger schema v2 enforcement + register the module in layer_index and wiring_registry (audit 
 
 ## WaveTrend (LazyBear oscillator) (`wavetrend`)

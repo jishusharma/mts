@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T22:02:10Z",
   "commands": [],
   "created": "2026-10-24T19:50:00Z",
   "depends_on": [],
@@ -14,11 +15,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "test_lease.py: ~60 fewer git spawns (330->270), held-lease template, 1-round push-error te",
+      "ref": "a1c750df",
+      "utc": "2026-10-25T22:02:10Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "CI fix: lease.role_name(None) crash + f1_rows lint",
-      "ref": "a0e50314c92a",
-      "utc": "2026-10-19T03:25:10Z"
+      "line": "test_lease: build repos once per run, trim 4-round push-error test (no sleeps), skip globa",
+      "ref": "11850c8c776e",
+      "utc": "2026-10-24T20:05:41Z"
     }
   ],
   "layers": [],
@@ -28,9 +35,14 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-24T19:50:01Z",
+  "refreshed": "2026-10-25T21:45:58Z",
   "refs": [],
-  "result": "",
+  "result": "test_lease.py: ~60 fewer git spawns (330->270), held-lease template, 1-round push-error test; still spawn-bound, not <30 s under 98% CPU",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tests/test_lease.py",
     "the lease module it tests (read only unless a clock hook is needed)"
@@ -38,15 +50,16 @@
   "scope_out": [
     "Live tree, HALT, deploys, mainnet, account data, .secrets; gate timeout value"
   ],
-  "scope_sha": "a0e50314c92a",
+  "scope_sha": "11850c8c776e",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Profile where the 108 s goes",
     "Replace real waits with a fake clock",
     "Ship"
   ],
+  "taken": "2026-10-25T22:02:10Z",
   "tests": "Every existing assertion kept; a timing check that the file runs under 30 s; any new test fails on the pre-change code.",
   "title": "test_lease.py exceeds the 240 s gate limit at 100% CPU (sim-v2 lost 2 ships)",
   "weight": "",
