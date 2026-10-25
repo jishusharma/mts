@@ -43,7 +43,7 @@ def read_live_host():
         name = LIVE_HOST_FILE.read_text(encoding="utf-8").strip().upper()
     except OSError:
         name = ""
-    return str(hosts.canonical(name or "JIS-NB")).upper()
+    return name or "JIS-NB"   # the raw spelling in the file; every compare and the share path go through hosts.py
 
 
 LIVE_HOST = read_live_host()
@@ -163,7 +163,14 @@ def default_root(repo, owner=None):
             return share_root()
     if is_live_tree(repo) or (hosts.same_host(socket.gethostname(), LIVE_HOST) and Path(LIVE_ROOT).is_dir()):
         return LIVE_ROOT
-    return hosts.unc_path(LIVE_HOST, "MTS-Mirror")   # new name first, the old one as fallback
+    for h in hosts.unc_hosts(LIVE_HOST):   # new share host name first, the old one as fallback (machine rename)
+        cand = "\\\\" + h + "\\MTS-Mirror"
+        try:
+            if os.path.isdir(cand):
+                return cand
+        except OSError:
+            pass
+    return DEFAULT_ROOT
 
 
 def denied(rel):
