@@ -1,1 +1,0 @@
-{"t": "20261018T130557Z", "from": "jis-nuc/sharma", "to": "all", "kind": "claim", "text": "claim \"gemini-q batch 2 group 1 review ship\" 2>&1 | tail -1; for p in \"context-factors-pre-reg-v3|PRE_REG_V3.md: 437/319 days, FAIL/INCONCLUSIVE clauses\" \"[cut]|LEDGER_FEASIBILITY.md: 0 scoreable BTC "}
