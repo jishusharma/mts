@@ -9,7 +9,7 @@ Go-live bar for real money: written, operator-signed criteria (proposal = Contro
 
 ## State
 
-Filed 2026-10-09. No receipt.
+Filed 2026-10-09. The bar was accepted by the operator on the Control Room page, decision D06-gate, 2026-10-09 (system/GO_LIVE_BAR.md:3). The row stays OPEN because no line of the bar is met yet (no layer has a positive fee-net out-of-sample result).
 
 ## Updates
 
