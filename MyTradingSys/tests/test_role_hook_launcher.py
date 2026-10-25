@@ -12,15 +12,15 @@ REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / "scripts" / "dev"))
 import role_hook_launcher as rhl  # noqa: E402
 
-ROLE = ("<!-- role: Pipeliner | version: v1 | token: PENDING | triggers: pipeliner -->\n# Pipeliner\n\nBOOT (once)\n"
-        "1. `python scripts/dev/sync.py start pipeliner`. Work in the worktree.\n")
+ROLE = ("<!-- role: Lead | version: v1 | token: PENDING | triggers: lead -->\n# Lead\n\nBOOT (once)\n"
+        "1. `python scripts/dev/sync.py start lead`. Work in the worktree.\n")
 
 
 def git(d, *a):
     subprocess.run(["git", "-C", str(d), "-c", "user.email=t@t", "-c", "user.name=t", *a], check=True, capture_output=True)
 
 
-def payload(cwd, sid="s", prompt="You are Pipeliner."):
+def payload(cwd, sid="s", prompt="You are Lead."):
     return {"hook_event_name": "UserPromptSubmit", "session_id": sid, "cwd": str(cwd), "prompt": prompt}
 
 
@@ -41,7 +41,7 @@ class T(unittest.TestCase):
             (REPO / "scripts" / "dev" / "role_loader.py").read_text(encoding="utf-8"), encoding="utf-8")
         d = self.repo / "MyTradingSys" / "system" / "roles"
         d.mkdir(parents=True)
-        (d / "pipeliner.md").write_text(ROLE, encoding="utf-8", newline="\n")
+        (d / "lead.md").write_text(ROLE, encoding="utf-8", newline="\n")
         git(self.repo, "add", "-A")
         git(self.repo, "commit", "-qm", "trunk")
         git(self.repo, "update-ref", "refs/remotes/origin/fast-track", "HEAD")
@@ -49,7 +49,7 @@ class T(unittest.TestCase):
 
     def test_old_checkout_loads_from_trunk(self):
         out = json.loads(rhl.run(payload(self.repo)))["hookSpecificOutput"]["additionalContext"]
-        self.assertIn("you are Pipeliner", out)
+        self.assertIn("you are Lead", out)
         self.assertIn("ROLE LOADED", out)
 
     def test_non_role_prompt_silent(self):
