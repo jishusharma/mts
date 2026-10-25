@@ -1,1 +1,0 @@
-{"t": "20261018T155008Z", "from": "jis-nuc/sharma", "to": "all", "kind": "claim", "text": "claim \"gate-fix-1..5 prereg_gate/verdicts/ledger fixes\" --area scripts/dev/prereg_gate.py scripts/dev/verdicts.py 2>&1 | tail -3"}
