@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T19:26:15Z",
   "commands": [],
   "created": "2026-10-24T10:20:36Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "auto-compact-at-25-for-all-sessions-clau",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "WORKERS.md rule 5 and SUPER_SESSION.md D5 rewritten 2026-10-26: no turn_meter/model_guard ",
+      "ref": "3e34268c5",
+      "utc": "2026-10-25T19:26:15Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +47,12 @@
     "MyTradingSys/research/mts_doctor/context_cost_2026-10-24.md",
     "MyTradingSys/research/mts_doctor/PILOT_super_session_2026-10-24.md"
   ],
-  "result": "Part (a) PASS 2026-10-24 (research/mts_doctor/ROTATION_TEST_2026-10-24.md): clear_session + one rebuild message restored 9/9 state items and the right next action, 0 operator turns. Open: part (b) autoCompactWindow in the desktop app; WORKERS.md rule 5 text.",
+  "result": "WORKERS.md rule 5 and SUPER_SESSION.md D5 rewritten 2026-10-26: no turn_meter/model_guard caps (both removed on trunk 43d3bfc8f), rotation rule (clear_session + rebuild message at ~200K, ROTATION_TEST part (a) PASS 9/9) stated in both. Part (b) autoCompactWindow in the desktop app stays open as its own test; no CLAUDE_AUTOCOMPACT_PCT_OVERRIDE or settings change.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/WORKERS.md",
     "MyTradingSys/system/SUPER_SESSION.md"
@@ -54,7 +66,7 @@
     "MyTradingSys/research/mts_doctor/compaction_long_runs_2026-10-24.md",
     "MyTradingSys/research/mts_doctor/ROTATION_TEST_2026-10-24.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Confirm with git ls-tree origin/fast-track that scripts/dev/turn_meter.py is absent and .claude/settings.json has no turn_meter hook; cite the result in the commit body.",
     "Edit WORKERS.md rule 5: replace the turn_meter-set caps sentence with the real state (no hook enforces a turn cap; the operator overrides; unattended coordinators rotate: clear_session plus a rebuild message from the notes file at a natural break once context is over about 200K, per ROTATION_TEST part (a) PASS 9/9). Keep the operator-override and facts sentences.",
@@ -62,6 +74,7 @@
     "State in the card result: part (b) autoCompactWindow in the desktop app stays open as its own test (needs a live app run); do not set any override.",
     "Verify: content commit sha, git cherry origin/fast-track <sha> empty AND git ls-tree -r origin/fast-track --name-only shows both files."
   ],
+  "taken": "2026-10-25T19:26:15Z",
   "tests": "Fail-first doc check: grep -c 'scripts/dev/turn_meter.py' MyTradingSys/system/WORKERS.md prints 1 before the edit and 0 after; python scripts/dev/run_all_tests.py --quick stays green",
   "title": "Auto-compact at 25% for all sessions (CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=25), after pilot 1",
   "weight": "ROUTINE",

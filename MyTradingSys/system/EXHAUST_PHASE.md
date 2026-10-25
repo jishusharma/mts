@@ -25,7 +25,7 @@ Unused quota is lost money. Rule, in force until the operator says otherwise: **
 Trade, deploy, restart, touch HALT files, read `.secrets/`, add a scheduler (SCHEDULING_POLICY.md).
 
 ## Requirements to build (card `exhaust-phase-tooling`)
-1. `scripts/dev/exhaust.py plan --login <A|B|C> --week --five --reset --model name=pct`: prints phase (none/plan/exhaust/done), minutes to reset, per-model headroom, model order.
+1. `scripts/dev/exhaust.py plan --login <A|B|C> --week --five --reset --read <UTC of the get_usage call> --model name=pct`: prints phase (none/plan/exhaust/done), minutes to reset, per-model headroom, model order, and echoes `read_utc` and `source` (`get_usage`). `--read` older than 10 min (OURS) or more than 2 min in the future exits 2 with `STALE quota reading: read <utc>, <n> min old, source get_usage; re-run get_usage` and prints no phase; without `--read` the JSON says `read_utc: unstated`. Every quota claim in a report names its source (`get_usage` or the UI panel) and its read time (B199); a UI window that has not started is unknown, not 99%.
 2. `exhaust.py start`: takes the `exhaust-<login>` claim; a second caller on the login is refused with the holder's name.
 3. `mts_signal.py` `--audience top`: a subagent or worker session neither shows nor acks it.
 4. Per-login dedupe: the ACTION banner stops once any session on that login acked; siblings see "held by X".

@@ -6,7 +6,7 @@
   "window_resets": 1792962879,
   "window_used": 1.0
  },
- "at": "2026-10-25T18:52:40Z",
+ "at": "2026-10-25T19:37:57Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,9 +20,39 @@
   "astra_runs": 0,
   "week_pts": 0.0,
   "window_pts": 1.0,
-  "window_runs": 6
+  "window_runs": 8
  },
  "runs": [
+  {
+   "at": "2026-10-25T19:37:00Z",
+   "card": "trust-recheck-gptb-forward-excursion-hel",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 49,
+   "tokens_out": 3967,
+   "tokens_total": 279243,
+   "tokens_uncached": 30540,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
+  {
+   "at": "2026-10-25T19:14:14Z",
+   "card": "trust-recheck-gpt-formulas-rederive",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 60,
+   "tokens_out": 4603,
+   "tokens_total": 556449,
+   "tokens_uncached": 52390,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-25T18:51:02Z",
    "card": "trust-recheck-gpt-formulas-rederive",
@@ -131,36 +161,6 @@
   {
    "at": "2026-10-22T23:12:40Z",
    "card": "lab-planted-error-trial",
-   "effort": null,
-   "kind": "build",
-   "model": null,
-   "note": "codex-unstick 2026-10-23: card scope fixed",
-   "outcome": "REOPENED",
-   "seconds": null,
-   "tokens_out": null,
-   "tokens_total": null,
-   "tokens_uncached": null,
-   "week_pts": null,
-   "window_pts": null
-  },
-  {
-   "at": "2026-10-22T23:12:40Z",
-   "card": "lab-formula-spec-recount",
-   "effort": null,
-   "kind": "build",
-   "model": null,
-   "note": "codex-unstick 2026-10-23: card scope fixed",
-   "outcome": "REOPENED",
-   "seconds": null,
-   "tokens_out": null,
-   "tokens_total": null,
-   "tokens_uncached": null,
-   "week_pts": null,
-   "window_pts": null
-  },
-  {
-   "at": "2026-10-22T23:12:40Z",
-   "card": "lab-formula-spec-text",
    "effort": null,
    "kind": "build",
    "model": null,

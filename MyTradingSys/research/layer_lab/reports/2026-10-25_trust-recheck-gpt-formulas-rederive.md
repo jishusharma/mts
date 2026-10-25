@@ -1,43 +1,28 @@
-# Trust re-check: gpt-formulas-rederive ? 2026-10-25
+# Trust re-check: gpt-formulas-rederive (2026-10-25)
 
-**BLOCKED ? cross-vendor reviewer requirement is unmet.** The independent arithmetic, source comparison, test run, and scratch mutation are complete. The result cannot receive VERIFIED-C2 because the producer and reviewer are both CODEX/GPT (OpenAI); the read-only task brief requires a different vendor (Gemini or Claude). The exact producer model is not recorded in the available provenance.
+**Verdict: BLOCKED - independent vendor requirement is unmet.** The available reviewer in this session is Codex / GPT, the same vendor family as the producer. The task requires a different reviewer vendor (Gemini or Claude), so these local findings cannot support a VERIFIED-C2 tag. No holdout or outcome data was read or rerun; no audited source file was edited.
 
-## Provenance and reviewer
+## Identity and independent calculations
 
-- Producer: CODEX/GPT, established by the supplied read-only task pack, `trust-recheck-gpt-formulas-rederive.md:26`; the original result is titled GPT re-derivation (`FORMULAS_REDERIVE.md:1`). The producer's exact model ID is not recorded there.
-- Reviewer: OpenAI Codex, GPT-6 family for this session. This is the same vendor as the producer, so it does not meet the brief's cross-vendor independence condition. A Gemini or Claude review is still required.
-- No outcomes, holdout data, or market data were read or rerun.
+Producer: CODEX / GPT, identified in the read-only task pack and registry context. Reviewer: Codex / GPT (this session); same vendor, therefore not an eligible independent reviewer. No Gemini or Claude reviewer/model is available in this session.
 
-## Independent values and comparison
+Before comparing to implementation, I derived these values directly from FORMULAS.md sections 13 and 17 using exact rational arithmetic in a short Python stdlib calculation:
 
-Before opening code, I read only `FORMULAS.md` sections 13 and 17 and wrote the arithmetic to `MyTradingSys/research/layer_lab/trust_recheck_gpt_formulas_rederive_calc.py.txt`. The stdlib script produced `net_rr=1.857142857142857` and `s13_long_net=0.008400000000000`.
+| Example | Independent derivation | Repo/table comparison | Status |
+|---|---:|---|---|
+| S17 net R:R, entry 100 / target 104 / stop 98 | cost = 2 * 0.0005 * 100 = 0.1; (4 - 0.1) / (2 + 0.1) = 13/7 = 1.857142857... | Section 17 and `calculate_net_rr` default agree; prior table row is 1.85714. [FORMULAS.md:400-404](../backtest/layers/FORMULAS.md); [mts_math.py:78-85](../../runtime/mts_math.py); [fees.py:23](../../backtest/fees.py); [FORMULAS_REDERIVE.md:17](../gpt-formulas-rederive/FORMULAS_REDERIVE.md) | MATCH |
+| S13 long 100 to 101, t_in=0, t_out=16h, funding at 8h=0.0001 and 16h=0.0003 | 0.01 - 0.0010 - 0.0002 - (0.0001+0.0003) = 0.0084 | Formula and table arithmetic agree, but repo call rejects the exact example: first funding time is 8h, so `t_in < funding[0][0]` triggers B103. A zero-rate record at t=0 satisfies the span guard and yields 0.0084 without changing the open-closed interval sum. [FORMULAS.md:343-353](../backtest/layers/FORMULAS.md); [trade_costs.py:20-29](../../backtest/layers/positioning/trade_costs.py); [FORMULAS_REDERIVE.md:13-14](../gpt-formulas-rederive/FORMULAS_REDERIVE.md) | MISMATCH (example input vs guard; calculated, not a vote) |
 
-| Check | Independent value | Repo / recorded value | Result and evidence |
-|---|---:|---:|---|
-| S17 net R:R, entry/target/stop 100/104/98 | 1.857142857142857 | Repo `1.857142857142857`; prior table `1.85714` | **MATCH** ? `FORMULAS.md:403-405`; `mts_math.py:78-85`; `FORMULAS_REDERIVE.md:17`. |
-| S13 long 100?101, records exactly as printed at t=8h and t=16h | 0.0084 | `net_return` raises `ValueError` because loaded funding begins at 8h while the hold begins at 0 | **MISMATCH (input-span guard)** ? arithmetic is `0.01 - 0.0010 - 0.0002 - (0.0001 + 0.0003) = 0.0084` (`FORMULAS.md:350-353`). The exact input is rejected by `trade_costs.py:24-29`; same mismatch is recorded at `FORMULAS_REDERIVE.md:13,24`. Adding a zero-rate t=0 record satisfies the guard and returns `0.0084`, matching arithmetic (`FORMULAS_REDERIVE.md:14`). |
-| Test fixture coverage for S13 | n/a | Fixture includes a t=0 funding record | **MATCH** ? `test_trade_costs.py:5-7,40-47` tests the numeric result with a covered span; it does not test the exact two-record worked input. |
+This confirms the existing S13 mismatch. It is an input coverage contradiction between the worked example and the fail-closed span guard, not an arithmetic disagreement. The zero-rate padding control reproduces the expected formula result.
 
-The section 13 mismatch is confirmed by calculation: the value itself is correct, but the exact worked input is outside the implementation's accepted coverage span. The zero-rate pad is outside `(t_in, t_out]`, so it does not change the funding sum.
+## Tests and fee mutation
 
-## Tests and mutation
+The requested real-tree command passed: `python -m pytest MyTradingSys/tests/test_mts_math.py MyTradingSys/backtest/layers/positioning/test_trade_costs.py -q` -> **93 passed**. Pytest emitted a cache-path warning only.
 
-Unmodified command:
+The math tests pin the default fee indirectly through the S17 long and short expected results and the tight-stop case (`test_mts_math.py:227-250`). The positioning cost tests exercise their own Binance-style `fee_rt` default/arguments and do not import `DERIBIT_TAKER` (`test_trade_costs.py:41-55`), so they are not a direct guard on that constant.
 
-```text
-python -m pytest MyTradingSys/tests/test_mts_math.py MyTradingSys/backtest/layers/positioning/test_trade_costs.py -q
-93 passed, 1 warning in 0.22s
-```
+For the fail-first probe, I copied the relevant `MyTradingSys/tests`, `runtime`, and `backtest` trees under a temporary directory inside the lab research tree, changed only the scratch `DERIBIT_TAKER` from 0.0005 to 0.0006, then ran the same two test modules. Result: **3 failed, 90 passed**; failures were `test_net_rr_fee_model_long`, `test_net_rr_fee_model_short_mirrors_long`, and `test_net_rr_tight_stop_costs_more_r`. The scratch tree was removed in the same script; the real fee file remained 0.0005.
 
-The warning was pytest cache creation (`WinError 183`); test execution passed.
+## Tag decision
 
-Scratch-copy mutation: copied only the relevant runtime, fee, trade-cost, and test files to a temporary directory; changed the scratch `fees.py:23` constant from `DERIBIT_TAKER = 0.0005` to `0.0006`; then ran the same two test files with `-p no:cacheprovider`. Result: **exit 1; 3 failed, 90 passed**. The failures were `test_net_rr_fee_model_long`, `test_net_rr_fee_model_short_mirrors_long`, and `test_net_rr_tight_stop_costs_more_r` in `test_mts_math.py` (expected constants at lines 225-250). Thus the tests catch this fee-constant mutation. The workspace `fees.py` was not changed.
-
-## Findings
-
-| Severity | File:line | Finding | Evidence | Proposed disposition |
-|---|---|---|---|---|
-| MED | `FORMULAS.md:353`; `trade_costs.py:24-29` | Worked S13 funding records do not span the hold under B103's guard. | Exact input raises; zero-rate t=0 pad returns the independently computed 0.0084. | Keep as a documented spec/guard mismatch for the cross-vendor reviewer; no audited source edited. |
-| HIGH | `trust-recheck-gpt-formulas-rederive.md:26` (read-only pack) | Same-vendor review cannot satisfy the stated trust check. | Producer is CODEX/GPT; this reviewer is OpenAI Codex/GPT-6. | Obtain Gemini or Claude re-derivation before proposing VERIFIED-C2. |
-
-**Tag proposal: DISPUTED pending the required cross-vendor re-check.** This is not a positive trust receipt. No audited source files were edited. The requested `tasks.py done` step was withheld because the instructions explicitly say not to mark a blocked card done.
+**Tag proposal: no VERIFIED-C2; BLOCKED pending a different-vendor reviewer.** The calculations and mutation probe support the stated MATCH/MISMATCH findings, but the required cross-vendor review cannot be claimed from this Codex/GPT session. Accordingly, this card is not marked done.
