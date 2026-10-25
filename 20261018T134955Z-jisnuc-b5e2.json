@@ -1,1 +1,0 @@
-{"t": "20261018T134955Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship > /tmp/ship.out 2>&1; tail -8 /tmp/ship.out)"}

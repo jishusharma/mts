@@ -1,1 +1,0 @@
-{"t": "20261018T134916Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship > /tmp/ship2.log 2>&1; tail -5 /tmp/ship2.log; git fetch -q origin; git cherry origin/fast-track HEAD"}
