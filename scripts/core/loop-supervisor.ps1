@@ -280,12 +280,6 @@ while ($true) {
 
     & python (Join-Path $R "scripts\dev\live_owner.py") claim | ForEach-Object { SupLog "  owner: $_" }
 
-    # Live mirror follows the owner: publish at most every 5 min, only when live_owner.py names this host (it refuses elsewhere).
-    # Bounded and never fatal: a publish problem is written to PUBLISH_FAIL.json by live_mirror.py and must not stop the loop.
-    try {
-        & python (Join-Path $R "scripts\dev\live_mirror.py") publish --every-min 5 2>&1 | ForEach-Object { SupLog "  mirror: $_" }
-    } catch { SupLog "  mirror: publish error $($_.Exception.Message)" }
-
     Watch-Aux -InGrace:$inGrace
 
     Start-Sleep -Seconds $CheckIntervalSec

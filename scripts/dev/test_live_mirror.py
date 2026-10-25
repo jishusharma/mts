@@ -253,9 +253,7 @@ class MirrorTest(unittest.TestCase):
         self.assertIsNone(lm.publish_fail_line(self.root))
 
     def test_main_publish_unexpected_error_exits_nonzero_and_records(self):
-        me = lm.socket.gethostname().lower()
-        mine = {"state": "OWNER", "host": me, "age": 5, "reason": ""}
-        with mock.patch.object(lm, "resolve_owner", return_value=mine), mock.patch.object(lm, "publish", side_effect=OSError("disk full")):
+        with mock.patch.object(lm, "publish", side_effect=OSError("disk full")):
             rc = lm.main(["publish", "--repo", str(self.live), "--root", str(self.root)])
         self.assertEqual(rc, 3)
         self.assertIn("disk full", lm.publish_fail_line(self.root))
@@ -329,13 +327,6 @@ class DefaultRootTest(unittest.TestCase):
         env.start()
         self.addCleanup(env.stop)
         os.environ.pop("MTS_MIRROR_ROOT", None)
-        os.environ.pop("MTS_LIVE_OWNER_DIR", None)
-        os.environ.pop("MTS_MIRROR_LIVE_ROOT", None)
-
-    def owned_by(self, name):
-        p = mock.patch.object(lm, "resolve_owner", return_value={"state": "OWNER", "host": name, "age": 5, "reason": ""})
-        p.start()
-        self.addCleanup(p.stop)
 
     def host(self, name):
         p = mock.patch.object(lm.socket, "gethostname", return_value=name)
@@ -388,7 +379,6 @@ class DefaultRootTest(unittest.TestCase):
 
     def test_main_pull_in_worktree_on_jis_nb_reads_local_folder(self):
         self.host("JIS-NB")
-        self.owned_by("jis-nb")
         live = make_live(self.tmp)
         lm.publish(live, self.local, now=T0)
         self.assertEqual(lm.main(["pull", "--repo", str(self.work)]), 0)
@@ -396,7 +386,6 @@ class DefaultRootTest(unittest.TestCase):
 
     def test_main_env_override_wins(self):
         self.host("JIS-NB")
-        self.owned_by("jis-nb")
         other = Path(self.tmp) / "other"
         other.mkdir()
         os.environ["MTS_MIRROR_ROOT"] = str(other)
@@ -407,7 +396,6 @@ class DefaultRootTest(unittest.TestCase):
 
     def test_main_explicit_root_wins_over_default(self):
         self.host("JIS-NB")
-        self.owned_by("jis-nb")
         elsewhere = Path(self.tmp) / "elsewhere"
         elsewhere.mkdir()
         self.assertEqual(lm.main(["pull", "--repo", str(self.work), "--root", str(elsewhere)]), 2)
@@ -415,144 +403,6 @@ class DefaultRootTest(unittest.TestCase):
     def test_auto_trades_stays_a_500_line_tail(self):
         modes = dict(lm.ALLOW)
         self.assertEqual(modes["MyTradingSys/execution/auto_trades.jsonl"], ("tail", 500))
-
-
-class OwnerFollowTest(unittest.TestCase):
-    """The mirror follows the host live_owner.py names: publish only there, pull and brief read that host, and a missing,
-    stale or foreign owner gives UNCONFIRMED and no numbers. Temp dirs only."""
-
-    def setUp(self):
-        self.tmp = tempfile.mkdtemp()
-        self.addCleanup(shutil.rmtree, self.tmp, True)
-        self.odir = Path(self.tmp) / "ownerdir"
-        self.odir.mkdir()
-        self.live = make_live(self.tmp)
-        self.work = Path(self.tmp) / "work"
-        self.work.mkdir()
-        env = mock.patch.dict(os.environ, {"MTS_LIVE_OWNER_DIR": str(self.odir), "MTS_MIRROR_LIVE_ROOT": str(Path(self.tmp) / "local")})
-        env.start()
-        self.addCleanup(env.stop)
-        os.environ.pop("MTS_MIRROR_ROOT", None)
-
-    def host(self, name):
-        p = mock.patch.object(lm.socket, "gethostname", return_value=name)
-        p.start()
-        self.addCleanup(p.stop)
-
-    def marker(self, host, age_s=10):
-        hb = (lm.utcnow() - dt.timedelta(seconds=age_s)).isoformat()
-        (self.odir / "live_owner.json").write_text(json.dumps({"host": host, "heartbeat": hb}))
-
-    def old_copy(self):
-        """A copy published by JIS-NB (the old owner) and pulled into the work tree."""
-        self.host("JIS-NB")
-        root = Path(self.tmp) / "oldshare"
-        root.mkdir()
-        lm.publish(self.live, root, now=lm.utcnow())
-        lm.pull(self.work, root)
-        return root
-
-    def test_resolve_owner_states(self):
-        self.assertEqual(lm.resolve_owner(self.odir)["state"], "NONE")
-        self.marker("desktop-f7iu69n", 10)
-        o = lm.resolve_owner(self.odir)
-        self.assertEqual((o["state"], o["host"]), ("OWNER", "desktop-f7iu69n"))
-        self.marker("desktop-f7iu69n", 900)
-        self.assertEqual(lm.resolve_owner(self.odir)["state"], "STALE")
-        (self.odir / "live_owner.json").write_text("{not json")
-        self.assertEqual(lm.resolve_owner(self.odir)["state"], "UNKNOWN")
-        self.assertEqual(lm.resolve_owner(Path(self.tmp) / "gone")["state"], "UNKNOWN")
-
-    def test_publish_refused_when_another_host_owns_the_loop(self):
-        self.host("JIS-NB")
-        self.marker("desktop-f7iu69n")
-        root = Path(self.tmp) / "out"
-        self.assertEqual(lm.main(["publish", "--repo", str(self.live), "--root", str(root)]), 2)
-        self.assertFalse(root.exists())
-
-    def test_publish_refused_without_a_fresh_owner(self):
-        self.host("DESKTOP-F7IU69N")
-        root = Path(self.tmp) / "out"
-        self.assertEqual(lm.main(["publish", "--repo", str(self.live), "--root", str(root)]), 2)   # no marker
-        self.marker("desktop-f7iu69n", 900)
-        self.assertEqual(lm.main(["publish", "--repo", str(self.live), "--root", str(root)]), 2)   # stale
-        (self.odir / "live_owner.json").write_text("{bad")
-        self.assertEqual(lm.main(["publish", "--repo", str(self.live), "--root", str(root)]), 2)   # unreadable
-        self.assertFalse(root.exists())
-
-    def test_owner_publishes_locally_and_to_the_shared_copy_and_throttle_skips(self):
-        self.host("DESKTOP-F7IU69N")
-        self.marker("desktop-f7iu69n")
-        local = Path(self.tmp) / "local"
-        self.assertEqual(lm.main(["publish", "--repo", str(self.live), "--root", str(local)]), 0)
-        self.assertTrue((local / "CURRENT").exists())
-        self.assertTrue((self.odir / "mirror" / "CURRENT").exists())
-        self.assertEqual(lm.main(["publish", "--repo", str(self.live), "--root", str(local), "--every-min", "5"]), 0)
-        self.assertEqual(len([p for p in local.iterdir() if p.name.startswith("v")]), 1)  # throttled: no second version
-
-    def test_share_failure_does_not_fail_local_publish(self):
-        self.host("DESKTOP-F7IU69N")
-        self.marker("desktop-f7iu69n")
-        local = Path(self.tmp) / "local"
-        real = lm.publish_recorded
-
-        def flaky(repo, root, now=None):
-            if Path(root) == self.odir / "mirror":
-                raise OSError("share down")
-            return real(repo, root, now=now)
-
-        with mock.patch.object(lm, "publish_recorded", side_effect=flaky):
-            self.assertEqual(lm.main(["publish", "--repo", str(self.live), "--root", str(local)]), 0)
-        self.assertTrue((local / "CURRENT").exists())
-
-    def test_default_root_follows_the_owner(self):
-        self.host("JIS-NB")
-        other = {"state": "OWNER", "host": "desktop-f7iu69n", "age": 5, "reason": ""}
-        self.assertEqual(lm.default_root(self.work, other), str(self.odir / "mirror"))
-        mine = {"state": "OWNER", "host": "jis-nb", "age": 5, "reason": ""}
-        self.assertEqual(lm.default_root(self.work, mine), str(Path(self.tmp) / "local"))
-
-    def test_brief_first_line_names_owner_and_shows_numbers_when_copy_matches(self):
-        self.host("DESKTOP-F7IU69N")
-        self.marker("desktop-f7iu69n")
-        lm.main(["publish", "--repo", str(self.live), "--root", str(Path(self.tmp) / "local")])
-        self.host("JIS-NB")
-        self.assertEqual(lm.main(["pull", "--repo", str(self.work)]), 0)
-        out = lm.brief(self.work, self.odir / "mirror", owner=lm.resolve_owner(self.odir), pull_timeout=5)
-        self.assertTrue(out[0].startswith("LIVE OWNER: desktop-f7iu69n"))
-        self.assertTrue(any("vwap=82600.5" in l for l in out))
-
-    def test_brief_copy_from_old_host_is_unconfirmed_read_on_owner(self):
-        self.old_copy()
-        self.marker("desktop-f7iu69n")
-        out = lm.brief(self.work, Path(self.tmp) / "nowhere", owner=lm.resolve_owner(self.odir), pull_timeout=5)
-        self.assertIn("desktop-f7iu69n", out[0])
-        self.assertTrue(any("read on desktop-f7iu69n" in l for l in out))
-        self.assertFalse(any("vwap" in l for l in out))
-
-    def test_brief_no_numbers_when_owner_missing_stale_or_unreadable(self):
-        root = self.old_copy()
-        for case in ("none", "stale", "bad"):
-            if case == "stale":
-                self.marker("jis-nb", 900)
-            if case == "bad":
-                (self.odir / "live_owner.json").write_text("{bad")
-            out = lm.brief(self.work, root, owner=lm.resolve_owner(self.odir), pull_timeout=5)
-            self.assertIn("LIVE OWNER: UNCONFIRMED", out[0])
-            self.assertFalse(any("vwap" in l or "mirror@" in l for l in out), out)
-
-    def test_pull_refuses_a_copy_from_a_host_that_is_not_the_owner(self):
-        self.host("JIS-NB")
-        root = Path(self.tmp) / "oldshare"
-        root.mkdir()
-        lm.publish(self.live, root, now=lm.utcnow())
-        self.marker("desktop-f7iu69n")
-        self.assertEqual(lm.main(["pull", "--repo", str(self.work), "--root", str(root)]), 2)
-
-    def test_allowlist_and_denylist_unchanged(self):
-        self.assertEqual(lm.DENY_NAMES, [".env*", "*.pem", "*secret*", "*credential*", "*apikey*", "*api_key*", "*.key"])
-        self.assertEqual(lm.DENY_DIRS, {".secrets", ".git"})
-        self.assertEqual(len(lm.ALLOW), 28)
 
 
 class RepoContractTest(unittest.TestCase):

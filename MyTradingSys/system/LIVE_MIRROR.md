@@ -64,12 +64,3 @@ into `research/missed_trades/observations/<host>_<date>.jsonl` for the next `syn
 
 ## Publish failure record (2026-10-15)
 A failing scheduled publish writes `<root>/PUBLISH_FAIL.json` (since, last, error) and exits 3; a good publish clears it. `live_mirror.py brief` prints `PUBLISHER FAILING for N min` when it exists. Task MTS-LiveMirror is registered (launcher F:\MTS\launchers\launch-live-mirror.vbs, 5-min repeat, 5-min limit).
-
-## The mirror follows the live owner (2026-10-25, card eagle-eyes-follows-live-owner)
-The loop moved to DESKTOP-F7IU69N; the mirror no longer assumes JIS-NB. The owner is whoever `live_owner.py` names (marker `live_owner.json` in MTS_LIVE_OWNER_DIR, heartbeat younger than 180 s).
-- PUBLISH: `live_mirror.py publish` refuses (exit 2) unless the marker names THIS host with a fresh heartbeat; missing, stale or unreadable marker also refuses (fail closed). It writes the local folder (`F:\MTS\Mirror` on JIS-NB, `C:\MTS\Mirror` elsewhere, env MTS_MIRROR_LIVE_ROOT) and a second copy to `<MTS_LIVE_OWNER_DIR>\mirror` (the share both hosts already reach for the owner marker; no new share needed). A failure of the second copy is recorded in that folder's PUBLISH_FAIL.json and never fails the local publish.
-- REPEAT: no scheduled task. `scripts/core/loop-supervisor.ps1` calls `live_mirror.py publish --every-min 5` on its 30 s tick right after `live_owner.py claim` (try/catch, never fatal). It takes effect when the live tree runs the new supervisor (next deploy + `mts start`).
-- PULL / BRIEF: default root = the local folder when this host is the owner, else `<MTS_LIVE_OWNER_DIR>\mirror`. The first line of `brief` is `LIVE OWNER: <host> (heartbeat Ns ago)`. Owner missing, stale or unreadable -> `LIVE OWNER: UNCONFIRMED (...)` and no numbers. A copy whose manifest host is not the owner (e.g. the old JIS-NB copy) -> `UNCONFIRMED ... read on <owner>` and no numbers; `pull` refuses such a copy.
-- Allowlist, deny names, deny dirs and the key-line redaction are unchanged (tests pin them). The old live_host.txt rule stays only as the fallback when no owner is resolved.
-- DECISION (OURS): the share copy lives in MTS_LIVE_OWNER_DIR (change-access for both hosts) instead of a read-only MTS-Mirror share on the laptop; the mirror is data, never authority, sha256 is verified on pull, and a new share would need an elevated step. Signal heartbeats (`mts_signal.py who`) show session hosts, not the loop, so the owner comes from live_owner.py only.
-

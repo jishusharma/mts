@@ -1,8 +1,6 @@
 """One-way read-only mirror of the desktop's live state, so any work tree (JIS-NUC, laptop) can read it.
 
-  python scripts/dev/live_mirror.py publish [--root DIR] [--every-min N]
-                                                           # live tree on the host live_owner.py names as owner (refuses elsewhere); copies the
-                                                           # ALLOWLIST to <root>/v<utc>/, then moves CURRENT; also to <MTS_LIVE_OWNER_DIR>/mirror
+  python scripts/dev/live_mirror.py publish [--root DIR]   # JIS-NB live tree only; copies the ALLOWLIST to <root>/v<utc>/, then moves CURRENT
   python scripts/dev/live_mirror.py pull    [--root DIR]   # any work tree; verifies sha256, lands in runtime_data/_mirror/
   python scripts/dev/live_mirror.py brief                  # one screen: how old, flags, last alert, trades; every line says mirror@<utc>
                                                            # (a work tree whose copy is missing or older than WARN_MIN pulls first)
@@ -12,7 +10,6 @@ Design, review (Opus, 2026-10-10) and fail-closed rules: MyTradingSys/system/LIV
 The mirror is data, never authority: no trading, gating or pause code may read runtime_data/_mirror.
 runtime_data/_mirror* is git-ignored: the share is the only channel, so a pull never dirties a tree.
 """
-import live_owner
 import nowin  # B173: no console flash from git/python children under pythonw
 nowin.install()
 import argparse
@@ -116,48 +113,8 @@ def is_live_tree(repo):
     return (Path(repo) / LIVE_MARKER).exists()
 
 
-def local_root(host=None):
-    """The mirror folder on the host that owns the loop (JIS-NB keeps F:, any other host C:)."""
-    h = (host or socket.gethostname()).lower()
-    return os.environ.get("MTS_MIRROR_LIVE_ROOT") or (r"F:\MTS\Mirror" if h == "jis-nb" else r"C:\MTS\Mirror")
-
-
-def resolve_owner(owner_dir=None, now=None):
-    """Who owns the live loop right now, from the live_owner.py marker (the file the loop guard uses).
-    -> {"state": OWNER|STALE|NONE|UNKNOWN, "host", "age", "reason"}. Anything unreadable is UNKNOWN: fail closed, never a guess."""
-    m, err = live_owner._read(live_owner.marker_path(owner_dir))
-    if err:
-        return {"state": "UNKNOWN", "host": None, "age": None, "reason": err}
-    if m is None:
-        return {"state": "NONE", "host": None, "age": None, "reason": "no owner marker"}
-    age = int(((now or utcnow()) - m["heartbeat"]).total_seconds())
-    if age >= live_owner.STALE_SEC:
-        return {"state": "STALE", "host": m["host"], "age": age, "reason": f"heartbeat {age}s old (limit {live_owner.STALE_SEC}s)"}
-    return {"state": "OWNER", "host": m["host"], "age": age, "reason": ""}
-
-
-def owner_line(o):
-    if o["state"] == "OWNER":
-        return f"LIVE OWNER: {o['host']} (heartbeat {o['age']}s ago)"
-    why = f"last owner {o['host']}, {o['reason']}" if o["host"] else o["reason"]
-    return f"LIVE OWNER: UNCONFIRMED ({why}); no live numbers"
-
-
-def share_root():
-    """Where the owner also publishes so every host can read it: the mirror folder inside MTS_LIVE_OWNER_DIR (the share both hosts already use for the owner marker)."""
-    d = os.environ.get("MTS_LIVE_OWNER_DIR")
-    return str(Path(d) / "mirror") if d else None
-
-
-def default_root(repo, owner=None):
-    """The live tree and every work tree on the owner host use the local folder; other machines read the owner's copy.
-    `owner` (from resolve_owner) names the host that owns the loop now; without it the old live_host.txt rule applies."""
-    me = socket.gethostname().lower()
-    if owner and owner["state"] == "OWNER":
-        if owner["host"] == me:
-            return local_root(me)
-        if share_root():
-            return share_root()
+def default_root(repo):
+    """The live tree and every work tree on JIS-NB use the local folder; other machines go through the share."""
     if is_live_tree(repo) or (socket.gethostname().upper() == LIVE_HOST and Path(LIVE_ROOT).is_dir()):
         return LIVE_ROOT
     return DEFAULT_ROOT
@@ -304,15 +261,6 @@ def publish_fail_line(root, now=None):
         return f"PUBLISHER FAILING for {mins:.0f} min (since {since.strftime('%Y-%m-%d %H:%MZ')}): {f['error']}"
     except (OSError, ValueError, KeyError):
         return None
-
-
-def recent_version(root, minutes, now=None):
-    """True when CURRENT under root names a version younger than `minutes` (throttle for the supervisor hook)."""
-    try:
-        v = (Path(root) / "CURRENT").read_text(encoding="utf-8").strip()
-        return ((now or utcnow()) - parse_stamp(v)).total_seconds() < minutes * 60
-    except (OSError, ValueError):
-        return False
 
 
 def prune(root, current):
@@ -489,29 +437,15 @@ def try_pull(repo, root, timeout=PULL_TIMEOUT_S):
     return f"mirror: pulled {m['version']} ({len(m['files'])} files)" if state == "pulled" else None
 
 
-def brief(repo, root, now=None, pull_timeout=PULL_TIMEOUT_S, owner=None):
+def brief(repo, root, now=None, pull_timeout=PULL_TIMEOUT_S):
     """The brief a session prints. A work tree whose copy is missing or older than WARN_MIN pulls first, because trees made
-    by the App never run `sync.py start`; the live tree owns the data and never pulls. Lines are clipped to one screen.
-    With `owner` (resolve_owner) the first line names the owner host; a missing, stale or unreadable owner, or a copy that
-    came from another host, prints UNCONFIRMED and no numbers (fail closed)."""
+    by the App never run `sync.py start`; the live tree owns the data and never pulls. Lines are clipped to one screen."""
     lines = []
-    if owner is not None:
-        lines.append(owner_line(owner))
-        if owner["state"] != "OWNER":
-            return [clip(l) for l in lines + ["do NOT present any mirror numbers as live; ask the operator which host runs the loop"]]
     age = mirror_age_min(repo, now)
     if not is_live_tree(repo) and (age is None or age > WARN_MIN):
         note = try_pull(repo, root, pull_timeout)
         if note:
             lines.append(note)
-    if owner is not None:
-        try:
-            mh = json.loads((Path(repo) / MIRROR_DIR / "manifest.json").read_text(encoding="utf-8"))["host"].lower()
-        except (OSError, ValueError, KeyError):
-            mh = None
-        if mh != owner["host"]:
-            seen = f"the copy here is from {mh}" if mh else "no copy could be read from the owner"
-            return [clip(l) for l in lines + [f"LIVE OWNER: UNCONFIRMED ({seen}); read on {owner['host']}, no live numbers from this host"]]
     fail = publish_fail_line(root, now)
     if fail:
         lines.append(fail)
@@ -550,37 +484,18 @@ def main(argv=None):
     ap.add_argument("cmd", choices=["publish", "pull", "brief", "export-obs"])
     ap.add_argument("--root", default=os.environ.get("MTS_MIRROR_ROOT"))  # unset: default_root(repo)
     ap.add_argument("--repo", default=str(REPO))
-    ap.add_argument("--every-min", type=float, default=0, help="publish: skip when the newest version is younger than this")
     a = ap.parse_args(argv)
-    owner = resolve_owner()
     if not a.root:
-        a.root = default_root(a.repo, owner)
+        a.root = default_root(a.repo)
     try:
         if a.cmd == "publish":
-            me = socket.gethostname().lower()
-            if owner["state"] != "OWNER" or owner["host"] != me:
-                raise MirrorError(f"publish runs only on the host live_owner.py names as owner; {owner_line(owner)}; this host is {me}")
-            if a.every_min and recent_version(a.root, a.every_min):
-                print(f"skipped: newest version under {a.root} is younger than {a.every_min:g} min")
-                return 0
             m = publish_recorded(a.repo, a.root)
             print(f"published {m['version']}: {len(m['files'])} files, flags raised {[k for k, v in m['flags'].items() if v]}")
-            sr = share_root()
-            if sr and Path(sr).resolve() != Path(a.root).resolve() and not os.environ.get("MTS_MIRROR_ROOT"):
-                try:  # the second copy is the one other hosts read; its failure is recorded there and never fails the local publish
-                    publish_recorded(a.repo, sr)
-                    print(f"also published to {sr}")
-                except Exception as e:
-                    print(f"share publish FAILED: {type(e).__name__}: {e}", file=sys.stderr)
         elif a.cmd == "pull":
-            if owner["state"] != "OWNER":
-                raise MirrorError(owner_line(owner))
             state, m = pull(a.repo, a.root)
-            if m["host"].lower() != owner["host"]:
-                raise MirrorError(f"copy is from {m['host']} but the owner is {owner['host']}; read on {owner['host']}")
             print(f"{state}: mirror of {m['host']} {m['utc']} ({len(m['files'])} files)")
         elif a.cmd == "brief":
-            print("\n".join(brief(a.repo, a.root, owner=owner)))
+            print("\n".join(brief(a.repo, a.root)))
         else:
             n, dest = export_obs(a.repo)
             print(f"exported {n} new capture(s) to {dest}")
