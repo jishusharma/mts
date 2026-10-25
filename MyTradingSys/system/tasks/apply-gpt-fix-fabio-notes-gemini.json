@@ -4,6 +4,17 @@
   "commands": [
     "python scripts/dev/verify_extract_quotes.py extracts/gemini_out/fabio/Pz8f0wWW12M_note.md"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-25T23:16:13Z",
+    "misses": 20,
+    "reads": [
+      "MyTradingSys/research/gpt_burn_2026-10-24/gx2-review-audits-fabio/report.md",
+      "MyTradingSys/research/fabio_video_search_2026-10-17/candidates.csv",
+      "scripts/dev/verify_extract_quotes.py"
+    ],
+    "session": "agent-ac94b8d7983cc196f"
+  },
   "created": "2026-10-24T22:50:01Z",
   "depends_on": [],
   "done_when": "FIXES_APPLIED.md in extracts/gemini_out/fabio lists items 9-12 per file; verify_extract_quotes.py exits 0 on the 9 notes; no nonexistent file cited.",
