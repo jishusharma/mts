@@ -383,25 +383,24 @@ class SignalTest(unittest.TestCase):
         self.assertFalse(S.needs_action([bc, told], bc))                       # told inside the TTL stays quiet
         self.assertTrue(S.needs_action([bc, {**told, "t": S.stamp(S.now() - timedelta(minutes=S.TOLD_TTL_H * 60 + 5))}], bc))
 
-    def test_told_on_a_cmd_broadcast_needs_a_note_but_done_does_not(self):
+    def test_told_on_a_cmd_broadcast_needs_a_note_a_plain_one_does_not(self):
         bid = self.high()
         self.machine("jis-nb", "pro")
         self.assertEqual(S.main(["ack", bid, "told"]), 2)
         self.assertEqual(S.main(["ack", bid, "told", "--note", "   "]), 2)
         self.assertEqual(S.ack_state(S.load(S.ensure()), bid, "jis-nb"), "none")
         self.assertEqual(S.main(["ack", bid, "told", "--note", "no admin rights"]), 0)
-        import contextlib
-        import io
-        buf = io.StringIO()
-        with contextlib.redirect_stdout(buf):
-            self.assertEqual(S.main(["pending", "--host", "jis-nb", "--json"]), 0)
-        self.assertEqual(json.loads(buf.getvalue()), [])                  # told just now: not pending
-        self.assertEqual(S.main(["ack", bid, "done"]), 0)
         self.machine("jis-nuc", "sharma")                                     # a broadcast without --cmd keeps the old rule
         S.main(["broadcast", "fyi", "--prio", "high"])
         nid = [r for r in S.load(S.ensure()) if r.get("prio") == "high"][-1]["id"]
         self.machine("jis-nb", "pro")
         self.assertEqual(S.main(["ack", nid, "told"]), 0)
+        import contextlib
+        import io
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            self.assertEqual(S.main(["pending", "--host", "jis-nb", "--json"]), 0)
+        self.assertEqual(json.loads(buf.getvalue()), [])                  # both told just now: nothing pending
 
     def test_pending_lists_none_and_expired_told_per_host(self):
         import contextlib
