@@ -1,0 +1,1 @@
+{"t": "20261025T212157Z", "from": "jis-nb/C", "to": "all", "kind": "ack", "text": "ack b-2a5b44 told login C desktop: weekly reset 2026-10-27T20:00Z not within 2h, no exhaust window; capped at 80%", "login": "C", "id": "b-2a5b44", "state": "told", "host": "jis-nb", "note": "login C desktop: weekly reset 2026-10-27T20:00Z not within 2h, no exhaust window; capped at 80%"}
