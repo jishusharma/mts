@@ -81,8 +81,11 @@ TEST_FILE_SECONDS = {
     "test_aibridge_selftest_concurrent.py": 50,      # the concurrent pair there, so two shards share it
     "test_b091_build_check_tiers.py": 60,
     "test_build_check_report_reasons.py": 32,
-    "test_relay_tick.py": 32,
-    "test_relay.py": 25,
+    "test_relay_tick.py": 36,
+    "test_relay.py": 60,                              # 2026-10-25 measured alone on JIS-NB (git-heavy, Windows)
+    "test_lease.py": 60,
+    "test_cicd_run.py": 27,
+    "test_gate_budget.py": 15,
     "test_tom_profile_parity.py": 12,
     "test_net_rr_floor_single_source.py": 8,
     "test_sync_where_unborn.py": 6,
@@ -106,12 +109,15 @@ SLOW_FILE_S = 30     # files measured at >= this many seconds stay in their shar
 CHEAP_STEPS += ("3qn", "3gi")   # 3la (11 s) is not cheap: it runs with the main phase
 # GATE_SPEED X2 (ship only, --fast, smoke mode): the fast path. One phase, tests chosen by gate_impact, a time budget, the rest left to CI.
 FAST_STEP_TIMEOUT_S = 240     # OURS: a fast-gate step still running after this is hung (a held slot would block every later ship)
+GATE_HARD_STEP_S = 90         # OURS: per-step cap of a gate-file ship; the ship's own fetch/merge/push adds ~15-25 s, total stays under 120 s
+GATE_DEADLINE = None          # monotonic time by which a gate-file ship's steps must be done
+TIMEOUT_DEFERS = False        # gate-file ship: a step over the cap is left to CI (reported, not failed); set in main()
 FAST_BASE_S = 6              # OURS: seconds of ALWAYS-step work counted against the budget before any test is added
 UNIT_DEFAULT_S = 8            # OURS: estimated seconds of a script-style test step that is not in STEP_EST
 EXTRA_FILE_S = 4              # OURS: estimated seconds per step-3xt file (one pytest process each) and per step-5b module
 # Estimated CPU seconds of the script-style test steps a change can reach (each run alone on JIS-NB, 2026-10-18; 3k/3ds/3dk/3bk run as
 # 2-3 shards, the figure is their sum); a step above the budget is deferred to CI unless a changed file names it.
-STEP_EST = {"3k": 200, "3ds": 30, "3bk": 25, "3dk": 14, "3ad": 24, "3sig": 21, "3cx": 11, "3tk": 13, "3lh": 9, "3ms": 13, "3sg": 9,
+STEP_EST = {"3k": 200, "3ds": 30, "3bk": 25, "3dk": 14, "3ad": 24, "3sig": 150, "3cx": 11, "3tk": 13, "3lh": 9, "3ms": 13, "3sg": 9,
             "3cr": 8, "3lm": 4, "3hy": 1, "3w": 9, "3x": 3}
 RECORD_NAME = "mts_gate_record.json"   # GATE_SPEED D3: per-worktree git dir, never shared between trees or machines
 RECORD_MAX_AGE_S = 24 * 3600
@@ -216,12 +222,17 @@ STEP_TIMEOUT_S = None   # set by the fast path (FAST_STEP_TIMEOUT_S); None = no 
 def exec_step(cmd, cwd=None):
     """Run one command to completion. Returns (ok, output): ok is True/False, or None with a reason when the executable is missing.
     A step over STEP_TIMEOUT_S (fast path only) fails: a hung step must not hold a gate slot for ever."""
+    limit = STEP_TIMEOUT_S
+    if GATE_DEADLINE is not None and limit is not None:
+        limit = max(1.0, min(limit, GATE_DEADLINE - time.monotonic()))   # a step queued behind others gets only what is left of the budget
     try:
         result = subprocess.run(cmd, cwd=cwd or str(REPO), capture_output=True, text=True, errors="replace",
-                                shell=isinstance(cmd, str), timeout=STEP_TIMEOUT_S)
+                                shell=isinstance(cmd, str), timeout=limit)
     except FileNotFoundError as e:
         return None, f"not found: {e}"
     except subprocess.TimeoutExpired:
+        if TIMEOUT_DEFERS:
+            return True, f"step over the {STEP_TIMEOUT_S} s ship budget: DEFERRED TO CI (a gate-file ship must finish in 2 minutes; CI runs the whole suite)"
         return False, f"step timed out after {STEP_TIMEOUT_S} s (fast gate limit): treated as a failure"
     return result.returncode == 0, result.stdout + result.stderr
 
@@ -805,10 +816,11 @@ def apply_fast(plan, files, nums, jobs):
     direct = [k for k, (e, d) in units.items() if d]
     others = [k for k, (e, d) in units.items() if not d]
     workers = min(jobs, gate_impact.EFFECTIVE_WORKERS)
-    kept, deferred = gate_impact.plan_budget(direct, others, lambda k: units[k][0], workers, base_s=FAST_BASE_S, budget=gate_impact.FAST_BUDGET_S)
+    budget = gate_select.GATE_BUDGET_S if any(gate_select.is_gate_file(f) for f in files) else gate_impact.FAST_BUDGET_S   # a gate-file change gets the 2-minute ship's budget
+    kept, deferred = gate_impact.plan_budget(direct, others, lambda k: units[k][0], workers, base_s=FAST_BASE_S, budget=budget)
     kept = set(kept)
     info["deferred"] = sorted(("/".join(k[1:]) for k in deferred))
-    info["kept"], info["budget"] = len(kept), gate_impact.FAST_BUDGET_S
+    info["kept"], info["budget"], info["gate_file"] = len(kept), budget, budget == gate_select.GATE_BUDGET_S
     info["est_s"] = round((FAST_BASE_S + sum(units[k][0] for k in kept)) / max(1, workers))
     deselect = gate_impact.active_deselects(gate_impact.trunk_quarantine())
     info["quarantined"] = deselect
@@ -1197,10 +1209,13 @@ def main(argv=None):
     if mode:
         print(f"Gate mode: {mode} ({sum(1 for s in plan if not s.skip)} steps); CI runs the full suite behind the push", flush=True)
         print(f"Gate reason: {gate_reason}", flush=True)
-    global STEP_TIMEOUT_S
+    global STEP_TIMEOUT_S, TIMEOUT_DEFERS, GATE_DEADLINE
     STEP_TIMEOUT_S = step_timeout_for(mode)
     if fast_applied:
         STEP_TIMEOUT_S = FAST_STEP_TIMEOUT_S
+        if fast_info.get("gate_file"):   # gate-file change: a hard cap, so the whole ship stays under 120 s
+            STEP_TIMEOUT_S, TIMEOUT_DEFERS = GATE_HARD_STEP_S, True
+            GATE_DEADLINE = time.monotonic() + GATE_HARD_STEP_S   # the whole step phase, not only each step
         print(f"Fast gate (GATE_SPEED X2): {fast_info['reached']} test files reached ({fast_info['direct']} direct), {fast_info['kept']} units kept, "
               f"estimated {fast_info['est_s']} s (budget {fast_info['budget']} s) on {fast_jobs()} workers; {len(fast_info['deferred'])} deferred to CI (budget)", flush=True)
         if fast_info["deferred"]:

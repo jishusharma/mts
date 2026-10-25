@@ -1,36 +1,64 @@
 {
-  "approved_by": "",
+  "approved_by": "operator 2026-10-25 via MTS_Doctor",
   "asks": "",
-  "commands": [],
+  "closed": "2026-10-25T11:47:55Z",
+  "commands": [
+    "python scripts/dev/context_gap.py measure --hours 24"
+  ],
   "created": "2026-10-25T08:00:34Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "The 6 metrics print for the last 24 h; baseline row committed (no transcript text, no account data); --gate exits 1 on a fixture where misses rose; mts_doctor CONTEXT-GAP WARNs when median unnamed_reads rose vs the previous row; tests green; shipped.",
+  "est_turns": 15,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Build scripts/dev/context_gap.py measure: the 6 per-session metrics (base, calls_to_edit, ctx_at_edit, unnamed_reads, stale, rewrites) from the session jsonl files, one metrics-only row appended to research/mts_doctor/context_gap_runs.jsonl, --gate, and a CONTEXT-GAP check in mts_doctor.py. Reuse context_files/coldstart_baseline.py and health24_baseline.py.",
   "id": "context-gap-measure",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "context_gap.py measure + baseline row (24h: calls_to_edit median 26, unnamed_reads median ",
+      "ref": "9c97cef2e",
+      "utc": "2026-10-25T11:47:55Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "approved_by operator 2026-10-25 via MTS_Doctor. Spec CONTEXT_FILES_DESIGN.md sections 2, 5, 8 (C1).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-25T11:45:47Z",
   "refs": [
     "MyTradingSys/research/mts_doctor/CONTEXT_FILES_DESIGN.md"
   ],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "result": "context_gap.py measure + baseline row (24h: calls_to_edit median 26, unnamed_reads median 7, stale 17, rewrites/session 1.53); doctor CONTEXT-GAP check",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/context_gap.py; scripts/dev/test_context_gap.py; scripts/dev/mts_doctor.py; scripts/dev/test_mts_doctor.py; MyTradingSys/research/mts_doctor/context_gap_runs.jsonl"
+  ],
+  "scope_out": [
+    "sync.py; gate_select.py; run_all_tests.py; roles; ROSTER.json; role_loader.py; CLAUDE.md; supervisor.py; preship.py; live tree; .secrets/.env"
+  ],
+  "scope_sha": "",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "done",
+  "steps": [
+    "Port coldstart_baseline.py and health24_baseline.py into context_gap.py as functions over one jsonl parse",
+    "Add measure (--hours/--since/--gate), append the metrics row, print the table",
+    "Add the CONTEXT-GAP check to mts_doctor.checklist and tests",
+    "Run measure for 24 h and commit the baseline row"
+  ],
+  "taken": "2026-10-25T11:47:55Z",
+  "tests": "scripts/dev/test_context_gap.py: fixture jsonl gives the expected metrics; gate fixture with misses up exits 1 and fails on a stub without --gate; doctor check WARN fixture. Fail on pre-change code (module absent).",
   "title": "context-gap-measure (C1): context_gap.py measure, 6 metrics for last 24h",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }

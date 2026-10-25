@@ -1,7 +1,7 @@
 # Context files that heal inside the run (design, Fable 5.1, 2026-10-25)
 
 Operator goal (2026-10-25): every session starts from a file that builds the right context from turn one and guides its thinking; a mechanism watches each run, learns from it and improves those files during the same run. "Both kinds of handover, healing within the same run ... simple, guaranteed to work."
-Status: DESIGN. Nothing built except this file, one example coordinator file and the baseline measuring script (`context_files/`). The operator approves before any card runs.
+Status: DESIGN. Nothing built except this file, one example coordinator file and the baseline measuring script (`context_files/`). Approved by the operator 2026-10-25 (MTS_Doctor session); C1 and C3 building.
 
 ## 1. One line
 The handover file is never written by the model: for a worker it is the card (`tasks.py brief`), for a coordinator it is `handover/SUPERVISOR_<L>.md` in a fixed 7-section form; a hook on `sync.py ship` reads the session's own transcript and folds what the file missed (files read before the first edit that the file never named) into that file, so the next session in the run inherits it; `tasks.py next` refuses cards whose work is already on trunk; one script measures cold start, misses, stale facts and cache rewrites and is the pass/fail gate. The operator talks to one session, the Lead (section 10), whose file is vision and board state, never code; it rotates by context size or closed discussions, never by the clock.
@@ -109,7 +109,7 @@ Adds no gate the model must pass: the hook writes, the measure reads.
 | Coordinator cannot be restarted unattended | by design: the wave ends, the file is on trunk, the start line is one paste; auto-compaction stays on as the fallback and the file makes it lossless |
 | Two sessions fold into one card | the claim is the lock (one active claim per card); a fold on an unclaimed card writes nothing |
 
-## 8. Build plan (cards, raw until the operator approves; all Sonnet; est. 1.5% weekly in total, OURS from pilot 2's 0.3% per card)
+## 8. Build plan (cards, approved 2026-10-25; all Sonnet; est. 1.5% weekly in total, OURS from pilot 2's 0.3% per card)
 | Card | Owns | est_turns / worker | Done when |
 |---|---|---|---|
 | C1 `context-gap-measure` | `scripts/dev/context_gap.py measure`, `test_context_gap.py` (fixture jsonl), `research/mts_doctor/context_gap_runs.jsonl` | 15 / agent | the 6 metrics print for the last 24 h and match the baseline row above within rounding; `--gate` exits 1 on a fixture where misses rose; baseline row committed |

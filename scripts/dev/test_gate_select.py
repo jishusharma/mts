@@ -112,7 +112,7 @@ class Select(unittest.TestCase):
         self.assertIn("5b", steps)
 
     def test_live_path_is_full(self):
-        for f in ("MyTradingSys/execution/auto_trader.py", "scripts/dev/sync.py", "scripts/dev/run_all_tests.py",
+        for f in ("MyTradingSys/execution/auto_trader.py", "scripts/dev/live_mirror.py",
                   "scripts/dev/auto_deploy.py", "scripts/sched/relay.py", "src/main/java/A.java", "pom.xml",
                   ".github/workflows/ci.yml", "MyTradingSys/runtime/x.py", "MyTradingSys/backtest/layers/fabio/orderflow_live.py"):
             mode, steps = self.sel(f)
@@ -194,10 +194,16 @@ class FastGateRules(unittest.TestCase):
     def sel(self, *files):
         return gs.explain(list(files), STEPS, mentioned=mentioned, named=lambda b, c: False)[:2]
 
-    def test_the_gate_machinery_is_full_gate(self):
-        for f in ("wiring_scan", "ci_watch", "config_check", "ci_deps_lint", "run_staged_tests", "gate_impact"):
+    def test_the_gate_machinery_is_a_budgeted_smoke_gate(self):
+        # operator 2026-10-25 (ship under 2 min): a gate-file change runs smoke + the tests that name it; CI runs the rest
+        for f in ("sync", "run_all_tests", "gate_select", "run_extra_tests", "wiring_scan", "ci_watch", "config_check", "ci_deps_lint",
+                  "run_staged_tests", "gate_impact"):
+            self.assertEqual(self.sel(f"scripts/dev/{f}.py")[0], "smoke", f)
+            self.assertTrue(gs.is_gate_file(f"scripts/dev/{f}.py"), f)
+        self.assertEqual(self.sel("scripts/dev/gate_quarantine.tsv")[0], "smoke")
+        self.assertIn("3k", self.sel("scripts/dev/sync.py")[1])    # test_sync.py is named by step 3k
+        for f in ("auto_deploy", "live_mirror", "cloud_setup"):
             self.assertEqual(self.sel(f"scripts/dev/{f}.py")[0], "full", f)
-        self.assertEqual(self.sel("scripts/dev/gate_quarantine.tsv")[0], "full")
 
     def test_an_ordinary_dev_script_is_still_smoke(self):
         self.assertEqual(self.sel("scripts/dev/example_tool.py")[0], "smoke")
@@ -237,7 +243,7 @@ class GateSpeedRules(unittest.TestCase):
         self.assertIn("4b", nums)
 
     def test_live_and_unknown_config_still_full(self):
-        for f in (".gitattributes", ".github/workflows/ci.yml", "mts.ps1", "scripts/core/x.json", "scripts/dev/run_extra_tests.py",
+        for f in (".gitattributes", ".github/workflows/ci.yml", "mts.ps1", "scripts/core/x.json", "scripts/dev/auto_deploy.py",
                   "MyTradingSys/runtime/run_list.txt", "scripts/dev/sub/x.tsv"):
             self.assertEqual(self.sel(f)[0], "full", f)
 
