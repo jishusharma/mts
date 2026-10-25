@@ -1,6 +1,6 @@
 {
   "detail": "Codex run finished",
-  "fails": 0,
+  "fails": 1,
   "heartbeat": "2026-10-22T15:08:46Z",
   "last_error": "2026-10-25T16:37:20Z",
   "last_ok": "2026-10-25T19:59:31Z",
