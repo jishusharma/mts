@@ -157,6 +157,50 @@ class GuardTest(unittest.TestCase):
             os.environ.pop("MTS_C_MIN_FREE_GB", None)
         self.assertEqual(started, [1])
 
+    def test_low_disk_hook_starts_at_most_one_run_per_hour(self):
+        started = []
+        old = g.start_apply_detached
+        g.start_apply_detached = lambda: started.append(1)
+        os.environ["MTS_C_MIN_FREE_GB"] = "100000"     # every drive is "low"
+        try:
+            t = time.time() - 2 * 3600
+            os.utime(g.STAMP, (t, t))
+            with contextlib.redirect_stdout(io.StringIO()):
+                for _ in range(5):                     # 5 session starts in a row
+                    g.main(["hook"])
+        finally:
+            g.start_apply_detached = old
+            os.environ.pop("MTS_C_MIN_FREE_GB", None)
+        self.assertEqual(started, [1])
+
+    def test_second_apply_run_skips_while_the_first_holds_the_lock(self):
+        old_lock, old_apply = g.LOCK, g.apply_all
+        g.LOCK = Path(self.logdir.name) / "c_drive_guard.lock"
+        ran = []
+        g.apply_all = lambda mode: (ran.append(1), (0, 0, 0))[1]
+        try:
+            g.LOCK.write_text(str(os.getpid()), encoding="utf-8")     # a live run holds it
+            with contextlib.redirect_stdout(io.StringIO()):
+                g.main(["--apply"])
+            self.assertEqual(ran, [])
+            g.LOCK.write_text("999999", encoding="utf-8")             # stale: that pid is gone
+            with contextlib.redirect_stdout(io.StringIO()):
+                g.main(["--apply"])
+            self.assertEqual(ran, [1])
+            self.assertFalse(g.LOCK.exists())
+        finally:
+            g.LOCK, g.apply_all = old_lock, old_apply
+
+    def test_tidy_child_runs_without_a_console_window(self):
+        seen = {}
+        old = subprocess.run
+        subprocess.run = lambda *a, **k: (seen.update(k), subprocess.CompletedProcess(a, 0, "", ""))[1]
+        try:
+            g.run_tidy(False)
+        finally:
+            subprocess.run = old
+        self.assertEqual(seen.get("creationflags"), getattr(subprocess, "CREATE_NO_WINDOW", 0))
+
     def test_apply_logs_one_line_with_the_gb_freed(self):
         make(self.root, "mts_s4_old/f.txt", 30)
         old, old_note = g.run_tidy, g.main_checkout_note

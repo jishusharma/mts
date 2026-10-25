@@ -32,6 +32,9 @@ from pathlib import Path
 
 TEMP = Path(os.environ.get("MTS_GUARD_TEMP") or os.path.expandvars(r"%LOCALAPPDATA%\Temp"))
 LOG = Path(os.environ.get("MTS_GUARD_LOG") or os.path.expandvars(r"%LOCALAPPDATA%\MTS\logs\c_drive_guard.log"))
+LOCK = LOG.parent / "c_drive_guard.lock"
+NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)   # a console-less parent otherwise gives each child python a visible window
+LOW_GAP_S = 3600
 PREFIXES = ("tmp", "mts_", "r2_", "rmd_", "kill_switch_cli_", "staged_tests_", "gate_timing_test_", "aibridge_selftest_",
             "pytest-of-", "gate_budget_test_", "dsa_tpl_", "e2e_a2_", "dsa-boot-", "cicd_ps_", "lab_query_", "soak6_")
 KEEP_NAMES = ("mts_roles", "mts_host_health", "mts_gate_slots", "mts_relay")
@@ -155,7 +158,8 @@ def run_tidy(apply):
     """`sync.py tidy [--apply]` for the checkout this script lives in. Returns its output lines ([] on any failure: never raises)."""
     try:
         r = subprocess.run([sys.executable, str(sync_script()), "tidy"] + (["--apply"] if apply else []),
-                           capture_output=True, text=True, timeout=600, cwd=str(Path(__file__).resolve().parents[2]))
+                           capture_output=True, text=True, timeout=600, cwd=str(Path(__file__).resolve().parents[2]),
+                           stdin=subprocess.DEVNULL, creationflags=NO_WINDOW)
         return (r.stdout or "").splitlines()
     except (OSError, subprocess.SubprocessError):
         return []
@@ -302,8 +306,60 @@ def touch_stamp():
         pass
 
 
+def low_due(now=None):
+    """Low-disk path: True when no run started in the last LOW_GAP_S (every session start was spawning one)."""
+    try:
+        return (now or time.time()) - STAMP.stat().st_mtime > LOW_GAP_S
+    except OSError:
+        return True
+
+
+def take_lock():
+    """One --apply run per host: O_EXCL lock file holding our pid; a lock whose pid is gone is replaced. False = another run holds it."""
+    for _ in range(2):
+        try:
+            fd = os.open(str(LOCK), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            os.write(fd, str(os.getpid()).encode())
+            os.close(fd)
+            return True
+        except FileExistsError:
+            try:
+                pid = int(LOCK.read_text(encoding="utf-8").strip() or "0")
+            except (OSError, ValueError):
+                pid = 0
+            if pid and pid_alive(pid):
+                return False
+            try:
+                LOCK.unlink()
+            except OSError:
+                return False
+        except OSError:
+            return True        # no lock dir: run unlocked rather than never
+    return False
+
+
+def pid_alive(pid):
+    if os.name == "nt":
+        r = subprocess.run(["tasklist", "/FI", f"PID eq {pid}", "/NH"], capture_output=True, text=True,
+                           stdin=subprocess.DEVNULL, creationflags=NO_WINDOW)
+        return str(pid) in (r.stdout or "")
+    try:
+        os.kill(pid, 0)
+        return True
+    except OSError:
+        return False
+
+
+def release_lock():
+    try:
+        if LOCK.read_text(encoding="utf-8").strip() == str(os.getpid()):
+            LOCK.unlink()
+    except OSError:
+        pass
+
+
 def start_apply_detached():
-    flags = getattr(subprocess, "DETACHED_PROCESS", 0) | getattr(subprocess, "CREATE_NO_WINDOW", 0)
+    flags = getattr(subprocess, "DETACHED_PROCESS", 0) | NO_WINDOW
     try:
         subprocess.Popen([sys.executable, str(Path(__file__).resolve()), "--apply"], creationflags=flags,
                          stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, close_fds=True)
@@ -400,12 +456,15 @@ def main(argv):
                 touch_stamp()
                 start_apply_detached()
             return 0
-        touch_stamp()
-        msg = "LOW: " + ", ".join(f"{d} {g:.1f} GB free" for d, g in low) + f" (< {limit:g}); c_drive_guard --apply started in the background."
+        due = low_due()
+        msg = "LOW: " + ", ".join(f"{d} {g:.1f} GB free" for d, g in low) + f" (< {limit:g}); " + (
+            "c_drive_guard --apply started in the background." if due else "c_drive_guard ran in the last hour.")
         for p, mb in runaways():
             msg += f" RUNAWAY task output {mb:.0f} MB: {p}"
         print(msg)
-        start_apply_detached()
+        if due:
+            touch_stamp()
+            start_apply_detached()
         return 0
     if argv[:1] == ["plan"]:
         rows = plan()
@@ -427,7 +486,13 @@ def main(argv):
     for p, mb in runaways():
         print(f"RUNAWAY task output {mb:.0f} MB (stop its process, then delete): {p}")
     if apply:
-        n, freed, trees = apply_all("apply")
+        if not take_lock():
+            print("another c_drive_guard --apply is running on this host; skipped")
+            return 0
+        try:
+            n, freed, trees = apply_all("apply")
+        finally:
+            release_lock()
         print(f"pruned {n} temp entries, {freed / 1e9:.2f} GB; retired {trees} worktrees")
         print(f"C: free now {free_gb():.2f} GB")
         return 0
