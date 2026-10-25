@@ -2,8 +2,7 @@
 
 One session in the Win App that runs up to 24 h: it refines cards, starts scoped workers, checks what they ship, and runs the
 Supervisor and Doctor duties itself. Start it on any device and login (start prompt at the end). It builds nothing itself.
-**This file wins** where SUPERVISOR.md, SUPER_LOOP.md or `roles/supervisor.md` disagree (they still hold the `supervisor.py plan`
-mechanics; cutting them to pointers is a follow-up after the tooling freeze, ANNOUNCEMENTS A-20261024-1).
+SUPERVISOR.md and SUPER_LOOP.md are pointers to this file (merged 2026-10-26); `roles/supervisor.md` holds the `supervisor.py plan` wake steps and this file wins where they disagree.
 
 ## Decisions (2026-10-24 design session; the operator agreed D1-D6 in chat)
 | # | Question | Decision | Why (data) |
@@ -31,6 +30,19 @@ mechanics; cutting them to pointers is a follow-up after the tooling freeze, ANN
 6. **Stuck worker**: no note, commit or gate slot for 45 min -> one SendMessage; still nothing next wake -> `stop_session`, check trunk for a late ship, `tasks.py tried <id>`.
 7. **Stuck on a fact**: never ask the operator; `mts_signal.py who`, else a HIGH broadcast, continue on the default.
 8. **Learning loop**: before it ends, it corrects Boot facts (under ~25 lines) and adds one Session log line (last 5 kept).
+
+## Mechanics (merged 2026-10-26 from SUPERVISOR.md and SUPER_LOOP.md; their full old text: `handoff_history/SUPERVISOR_full_2026-10-26.md`, `handoff_history/SUPER_LOOP_full_2026-10-26.md`)
+Supervisor and super session are ONE role. Code: `scripts/dev/supervisor.py plan|tick|wait|watchcheck|handover`; role file `roles/supervisor.md`.
+- **Turn caps.** The 40 tool-turn / 10 operator-turn cap (CLAUDE.md step 5) applies to workers and to a plain Supervisor, NOT to the super session: it runs up to 24 h and ends only on a D6 stop or context rotation (D5). A worker's "stop at 40 turns" (size S: 20) is the worker's cap.
+- **Login / heartbeat.** Login letter from the account email (CLOUD_ACCOUNTS.md LOGINS); one BUDGET signal line per `plan` on branch `mts-signals`; `sup=` older than 75 min = gone, `mode=ENDED` = gone at once. One coordinator per login.
+- **Pacing (OURS).** Weekly cap 75% for B/C on JIS-NB else 95%; slots by room >= 40 -> 4, >= 20 -> 3, >= 10 -> 2, >= 4 -> 1; modes STOP (5 h >= 80), SUPERVISOR-ONLY (>= 70), CRUCIAL-ONLY (>= 60), SPEND, NORMAL; model-free lanes (DSA, GPT lab, CI) always run. D3 caps workers at 2 unless justified.
+- **Partition.** Card shard = crc32(id) over live supervisors with free > 0 (`tasks.py dispatch --login L --logins ..`); lock stays `sync.py claim`. Shared lanes have one owner (lowest live login). Hand-over file `handover/SUPERVISOR_<L>.md` via `supervisor.py handover`.
+- **Dispatch.** `tasks.py dispatch --json` + `desk.py sweep`; never raw/refined cards; sessions on operator turns, Agents on event turns; chained cards revalidated by the worker with `tasks.py check` and `sync.py claim`.
+- **Roles.** A worker starts `You are <Role>.` then `Card: <id>`; Builder for build cards. Version receipt: `role_loader.py verify --text "<note>"` (0 genuine, 2 role changed, 1 untrusted); it is a receipt, not proof of correct work.
+- **Models.** Build/judgement Sonnet; scoped mechanical Haiku (max 5 Agents); CODEX via codex_run.py; Gemini Flash via gemini_queue.py; never start or message Fable.
+- **Verification** per claim: sha on trunk (`git merge-base --is-ancestor`), `Result:` present, one other-model check, CI green contains the sha within 60 min.
+- **Failure handling.** Stuck worker (45 min) -> one SendMessage then `stop_session`; messages only to sessions this coordinator started; red CI -> one ci worker, no other ships; gate contention max 2 per machine, `ship after <slug>` ticket cancellable after 60 min; registry merge conflicts: union both sides.
+- **Hard limits.** No schedulers; no operator questions; testnet only; public repo; never deploy, restart processes or touch HALT; ROUTING.md belongs to the Pipeliner.
 
 ## Boot facts (read, do not re-look-up; every super session corrects this list)
 - Live tree = main checkout `C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed` (`.mts_live` marker file), read-only; deploy result `MyTradingSys/runtime/sched/auto_deploy_last.json`; HALT `MyTradingSys/execution/HALT`. State: `live_mirror.py brief`, `scripts/sched/check_live_health.py`. Live-tree work goes to a JIS-NB desk row.
