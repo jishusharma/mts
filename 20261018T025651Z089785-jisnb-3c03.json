@@ -1,1 +1,0 @@
-{"t": "20261018T025651Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship rv02-fix-dax-rounded-rr-gate Result: E=100 stop=99 target=101.25 (1249/1001=1.2478) -> WAIT_RR after JSON round trip, both directions; 1.26 stays eligible; 84 tests pass."}

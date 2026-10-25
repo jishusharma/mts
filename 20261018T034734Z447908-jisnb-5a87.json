@@ -1,1 +1,0 @@
-{"t": "20261018T034734Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship Result: coordinators can no longer present session cards that wait for an operator click; user_asked or Agent(model=sonnet) is the path. 12 guard tests pass; the new test fails on the old guard."}

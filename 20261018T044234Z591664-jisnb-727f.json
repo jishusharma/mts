@@ -1,1 +1,0 @@
-{"t": "20261018T044234Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship tom-encode-fade-entry-paths Result: spec section 18 and test comments no longer claim restart safety; card tom-v2-recall-entry-paths-t2b has goal, scope_in, scope_out (T2b only, no holdout)."}
