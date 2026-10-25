@@ -8,6 +8,7 @@ Writes ONE file, <out>/REPORT_<utc date>.md (default MyTradingSys/research/mts_d
 memory, cards or the live tree. Part 1 is deterministic for a given repo state; Part 2 reads trunk and CI at run time.
 """
 import argparse
+import json
 import re
 import subprocess
 import sys
@@ -154,6 +155,187 @@ def boot_cost(repo, docs):
     return f"Boot cost: CLAUDE.md {claude} B loaded every turn; largest guidance files: {top}. Trim only if the cap test fails (the cache makes the prefix cheap)."
 
 
+# ---- checklist (operator 2026-10-25): each fix of 10-23..10-25 leaves one check. Status OK / WARN / unavailable; never fails, never edits.
+HEADROOM_MIN_PCT = 3        # OURS
+CI_FIX_MIN = 10             # OURS: CLAUDE.md "ships in 10 min"
+SHIP_MAX_MIN = 15           # OURS
+HOOKS_BEHIND_MAX = 50       # OURS
+DISK_MIN_GB = 15            # OURS
+HOOK_NAMES = ("role_loader", "ci_watch")
+CHECK_NAMES = ("SIZE-HEADROOM", "CI-REVERT", "SHIP-TIME", "HOOK-REG", "DISK")
+
+
+def _load(path, name):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(name, str(path))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def size_headroom(repo):
+    """CLAUDE.md etc. vs SIZE_CAPS (tests/docs/test_integrity.py, LF bytes) and roles/*.md vs BUDGET (tests/test_role_budget.py, CRLF
+    bytes via its own crlf_size). Caps are imported from the tests, never copied."""
+    repo = Path(repo)
+    cap_file = repo / "MyTradingSys" / "tests" / "docs" / "test_integrity.py"
+    bud_file = repo / "MyTradingSys" / "tests" / "test_role_budget.py"
+    rows, warns = [], []
+    try:
+        rows += [(rel, len((repo / rel).read_bytes().replace(b"\r\n", b"\n")), cap, f"{cap_file.relative_to(repo).as_posix()} SIZE_CAPS")
+                 for rel, cap in sorted(_load(cap_file, "_doc_caps").SIZE_CAPS.items())]
+    except Exception as e:
+        return "unavailable", f"caps not readable ({type(e).__name__}: {str(e)[:60]})"
+    try:
+        b = _load(bud_file, "_role_budget")
+        rows += [(f"MyTradingSys/system/roles/{n}", b.crlf_size((repo / "MyTradingSys" / "system" / "roles" / n).read_bytes()), cap,
+                  f"{bud_file.relative_to(repo).as_posix()} BUDGET") for n, cap in sorted(b.BUDGET.items())]
+    except Exception as e:
+        return "unavailable", f"role budgets not readable ({type(e).__name__}: {str(e)[:60]})"
+    for rel, size, cap, src in rows:
+        head = (cap - size) * 100.0 / cap
+        if head < HEADROOM_MIN_PCT:
+            warns.append(f"{rel} {size}/{cap} B ({head:.1f}% headroom, {src})")
+    if warns:
+        return "WARN", "; ".join(warns) + "; fix: move detail to a system/ doc, never raise the cap"
+    tight = min(rows, key=lambda r: (r[2] - r[1]) / r[2])
+    return "OK", f"{len(rows)} files, tightest {tight[0]} {tight[1]}/{tight[2]} B"
+
+
+def ci_revert(runs, now=None, hours=72):
+    """runs: GitHub workflow runs of fast-track (any order). Minutes from each first red to the next green; WARN when > CI_FIX_MIN or red now."""
+    now = now or datetime.now(timezone.utc)
+
+    def ts(s):
+        return datetime.fromisoformat(s.replace("Z", "+00:00"))
+    done = sorted((r for r in runs if r.get("conclusion") in ("success", "failure")), key=lambda r: r["created_at"])
+    if not done:
+        return "unavailable", "no completed runs returned"
+    gaps, red_since, warns = [], None, []
+    for r in done:
+        t = ts(r["created_at"])
+        if r["conclusion"] == "failure":
+            red_since = red_since or (t, r["head_sha"][:8])
+        elif red_since:
+            if (now - red_since[0]).total_seconds() <= hours * 3600:
+                gaps.append((red_since[1], (t - red_since[0]).total_seconds() / 60))
+            red_since = None
+    for sha, m in gaps:
+        if m > CI_FIX_MIN:
+            warns.append(f"red {sha} took {m:.0f} min to green (limit {CI_FIX_MIN})")
+    if red_since:
+        warns.append(f"trunk is red now since {red_since[1]} ({(now - red_since[0]).total_seconds() / 60:.0f} min): git revert the breaking commit")
+    if warns:
+        return "WARN", "; ".join(warns)
+    return "OK", f"{len(gaps)} red streak(s) in {hours} h" + (f", slowest {max(m for _, m in gaps):.0f} min" if gaps else "") + ", trunk green"
+
+
+def ci_fetch():
+    import health_audit
+    d = health_audit.fetch_json(f"{health_audit.API}/runs?branch=fast-track&per_page=100")
+    return d["workflow_runs"] if "workflow_runs" in d else d.get("_error", "no data")
+
+
+def _median(v):
+    v = sorted(v)
+    n = len(v)
+    return v[n // 2] if n % 2 else (v[n // 2 - 1] + v[n // 2]) / 2
+
+
+def ship_time(log, now=None, hours=72):
+    """gate_timing.jsonl (written by sync.record_ship_timing for ships, run_all_tests.record_timing for gate steps). Ship = one `ship`
+    row's secs; gate = wall time of one run of step rows (same sha). WARN when the max of either is over SHIP_MAX_MIN."""
+    log = Path(log)
+    if not log.is_file():
+        return "unavailable", f"{log.as_posix()} missing (written by sync.py record_ship_timing / run_all_tests.py record_timing on this machine)"
+    now = now or datetime.now(timezone.utc)
+    ships, gates, cur = [], [], {}      # cur: sha -> [steps seen, first start, last end]; a repeated step number is a new gate run
+    for ln in log.read_text(encoding="utf-8", errors="ignore").splitlines():
+        try:
+            r = json.loads(ln)
+            t = datetime.strptime(r["utc"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc).timestamp()
+            secs = float(r["secs"])
+        except (ValueError, KeyError, TypeError):
+            continue
+        if now.timestamp() - t > hours * 3600:
+            continue
+        if r.get("step") == "ship":
+            ships.append(secs)
+            continue
+        c = cur.setdefault(r.get("sha", ""), [set(), t - secs, t])
+        if r.get("step") in c[0]:
+            gates.append(c[2] - c[1])
+            c[:] = [set(), t - secs, t]
+        c[0].add(r.get("step"))                      # steps run in parallel shards: wall time = first start to last end
+        c[1], c[2] = min(c[1], t - secs), max(c[2], t)
+    g = gates + [c[2] - c[1] for c in cur.values() if c[0]]
+    if not ships and not g:
+        return "unavailable", f"no rows in the last {hours} h of {log.as_posix()}"
+    parts = []
+    for label, v in (("ship", ships), ("gate", g)):
+        parts.append(f"{label} n={len(v)} median {_median(v) / 60:.1f} max {max(v) / 60:.1f} min" if v else f"{label} no rows")
+    over = [lab for lab, v in (("ship", ships), ("gate", g)) if v and max(v) / 60 > SHIP_MAX_MIN]
+    if over:
+        return "WARN", f"{'; '.join(parts)}; {'/'.join(over)} max over {SHIP_MAX_MIN} min: profile the slowest gate steps in {log.as_posix()}"
+    return "OK", "; ".join(parts)
+
+
+def hook_reg(repo, ref="origin/fast-track"):
+    """Worktree sessions take hooks from the MAIN checkout: it must register HOOK_NAMES and not be far behind trunk."""
+    common = subprocess.run(["git", "-C", str(repo), "rev-parse", "--git-common-dir"], capture_output=True, text=True).stdout.strip()
+    if not common:
+        return "unavailable", "not a git checkout"
+    main = (Path(repo) / common).resolve().parent
+    try:
+        text = (main / ".claude" / "settings.json").read_text(encoding="utf-8", errors="ignore")
+    except OSError:
+        return "WARN", f"{main / '.claude' / 'settings.json'} missing: git -C {main} pull --ff-only"
+    warns = [f"{n} not registered in {main / '.claude' / 'settings.json'}" for n in HOOK_NAMES if n not in text]
+    r = subprocess.run(["git", "-C", str(main), "rev-list", "--count", f"HEAD..{ref}"], capture_output=True, text=True)
+    behind = int(r.stdout.strip()) if r.returncode == 0 and r.stdout.strip().isdigit() else None
+    if behind is not None and behind > HOOKS_BEHIND_MAX:
+        warns.append(f"main checkout is {behind} commits behind {ref} (limit {HOOKS_BEHIND_MAX})")
+    if warns:
+        return "WARN", "; ".join(warns) + f"; fix: git -C {main} pull --ff-only"
+    return "OK", f"{'+'.join(HOOK_NAMES)} registered in {main.name}, " + (f"{behind} behind {ref}" if behind is not None else f"behind-count unavailable (no {ref})")
+
+
+def disk(repo, free_gb=None):
+    import shutil
+    try:
+        gb = free_gb if free_gb is not None else shutil.disk_usage(str(repo)).free / 1e9
+    except OSError as e:
+        return "unavailable", str(e)[:80]
+    if gb < DISK_MIN_GB:
+        return "WARN", f"{gb:.1f} GB free on the repo drive (limit {DISK_MIN_GB}): scripts/dev/declutter_backups.py --apply, c_drive_guard"
+    return "OK", f"{gb:.0f} GB free"
+
+
+def checklist(repo, process=True, now=None):
+    """[(name, status, detail)] for CHECK_NAMES. A check that raises is reported unavailable, never fatal."""
+    repo = Path(repo)
+
+    def ci():
+        if not process:
+            return "unavailable", "skipped (--no-process, no network)"
+        runs = ci_fetch()
+        return ("unavailable", f"GitHub API: {runs}") if isinstance(runs, str) else ci_revert(runs, now)
+    fns = (("SIZE-HEADROOM", lambda: size_headroom(repo)), ("CI-REVERT", ci),
+           ("SHIP-TIME", lambda: ship_time(repo / "runtime_data" / "gate_timing.jsonl", now)),
+           ("HOOK-REG", lambda: hook_reg(repo)), ("DISK", lambda: disk(repo)))
+    out = []
+    for name, fn in fns:
+        try:
+            out.append((name, *fn()))
+        except Exception as e:
+            out.append((name, "unavailable", f"{type(e).__name__}: {str(e)[:80]}"))
+    return out
+
+
+def health_line(results):
+    bad = [n for n, s, _ in results if s == "WARN"]
+    return "HEALTH: GREEN" if not bad else f"HEALTH: {len(bad)} WARN: {', '.join(bad)}"
+
+
 def previous_metrics(out, day):
     """METRICS line of the newest report older than `day`, as a dict; {} when there is none."""
     older = sorted(p for p in Path(out).glob("REPORT_*.md") if p.stem[7:] < day)
@@ -171,7 +353,10 @@ def run(repo=REPO, out_dir=None, memory_dir=None, process=True, hours=72, now=No
                 + dup_cards(repo) + skills(repo, docs) + hook_drift(repo))
     day = (now or datetime.now(timezone.utc)).strftime("%Y-%m-%d")
     out = Path(out_dir) if out_dir else repo / OUT_REL
-    lines = [f"# MTS doctor report {day}", "", f"Part 1: AI health ({len(docs)} guidance files checked). Reports only; nothing was edited.", "",
+    checks = checklist(repo, process, now)
+    lines = [health_line(checks), "", f"# MTS doctor report {day}", "", "Checklist (OK / WARN / unavailable)", ""]
+    lines += [f"- [{s}] {n}: {d}" for n, s, d in checks]
+    lines += ["", f"Part 1: AI health ({len(docs)} guidance files checked). Reports only; nothing was edited.", "",
              boot_cost(repo, docs), f"Memory: {memory_dir if memory_dir and Path(memory_dir).is_dir() else 'skipped (no memory dir on this machine)'}", ""]
     counts = {k: sum(1 for f in findings if f[0] == k) for k in KINDS}
     lines += ["Findings: " + ", ".join(f"{k} {v}" for k, v in counts.items()), ""]
@@ -210,4 +395,5 @@ if __name__ == "__main__":
     a = ap.parse_args()
     sys.stdout.reconfigure(errors="replace")
     p, f = run(REPO, a.out, a.memory or default_memory(), not a.no_process, a.hours)
+    print(p.read_text(encoding="utf-8").splitlines()[0])
     print(f"{p}: {len(f)} findings")

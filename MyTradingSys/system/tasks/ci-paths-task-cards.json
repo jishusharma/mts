@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "grep -n tasks .github/workflows/ci.yml"
+  ],
+  "created": "2026-10-25T10:58:59Z",
+  "depends_on": [],
+  "done_when": "ci.yml paths list contains MyTradingSys/system/tasks/**",
+  "est_turns": 3,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "CI starts on pushes that touch task cards",
+  "id": "ci-paths-task-cards",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ci: run on role files (failure review 2026-10-23 cause 8)",
+      "ref": "c218f9b2f918",
+      "utc": "2026-10-23T18:17:21Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-25T10:59:23Z",
+  "refs": [
+    "MyTradingSys/research/mts_doctor/CI_RED_AND_FLOW_REVIEW_2026-10-25.md"
+  ],
+  "result": "",
+  "scope_in": [
+    ".github/workflows/ci.yml"
+  ],
+  "scope_out": [],
+  "scope_sha": "c218f9b2f918",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "add one paths line"
+  ],
+  "tests": "grep -c 'system/tasks/' .github/workflows/ci.yml returns 1 or more",
+  "title": "ci-paths-task-cards: add MyTradingSys/system/tasks/** to ci.yml paths",
+  "weight": "",
+  "worker": "agent"
+}

@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/preship.py check"
+  ],
+  "created": "2026-10-25T10:59:01Z",
+  "depends_on": [],
+  "done_when": "two pointer files, 40-turn wording fixed, docs tests green",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Supervisor and super session are one role, SUPERVISOR.md and SUPER_LOOP.md pointers",
+  "id": "one-coordinator-doc",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-25T10:59:35Z",
+  "refs": [
+    "MyTradingSys/research/mts_doctor/CI_RED_AND_FLOW_REVIEW_2026-10-25.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/SUPERVISOR.md,MyTradingSys/system/SUPER_LOOP.md,MyTradingSys/system/SUPER_SESSION.md,CLAUDE.md"
+  ],
+  "scope_out": [],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "merge into SUPER_SESSION.md",
+    "leave pointers"
+  ],
+  "tests": "python scripts/dev/preship.py check",
+  "title": "one-coordinator-doc: Supervisor and super session are one role; pointers; fix 40-turn wording",
+  "weight": "",
+  "worker": "session"
+}

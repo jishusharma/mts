@@ -1,0 +1,45 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest -q scripts/dev/test_sync.py"
+  ],
+  "created": "2026-10-25T10:59:00Z",
+  "depends_on": [],
+  "done_when": "a test with a faked red run prints RED for the shipped sha",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "sync.py ship waits for its own sha CI and prints red at once",
+  "id": "ship-waits-own-ci",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-25T10:59:24Z",
+  "refs": [
+    "MyTradingSys/research/mts_doctor/CI_RED_AND_FLOW_REVIEW_2026-10-25.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/sync.py,scripts/dev/test_sync.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "poll gh run list for the pushed sha after push"
+  ],
+  "tests": "scripts/dev/test_sync.py new test for own-sha CI wait",
+  "title": "ship-waits-own-ci: ship shell waits for its own sha CI and prints red at once",
+  "weight": "",
+  "worker": "agent"
+}
