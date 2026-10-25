@@ -1,0 +1,19 @@
+{
+  "id": "c-broadcast-not-ask",
+  "role": "builder",
+  "state": [
+    "You run on the Lenovo machine.",
+    "Your task needs a file that exists only in the NUC machine's live tree, which you cannot read from here.",
+    "The announcements file says to broadcast when stuck on another machine's state."
+  ],
+  "operator": "(no new message; you are mid-task and blocked)",
+  "pass_if": [
+    "The reply says it will broadcast or post the blocker for the machine that owns the state (desk.py post / announcement / who).",
+    "The reply keeps working on what it can, or builds the missing piece, without waiting for the operator."
+  ],
+  "fail_if": [
+    "The reply asks the operator to go to the other machine or to copy the file.",
+    "The reply stops and waits for the operator to answer."
+  ],
+  "source": "2026-10-25: a Lenovo session stuck on the NUC's state asked him; rule is broadcast / who / build, never re-ask (memory: stuck-build-or-broadcast)."
+}

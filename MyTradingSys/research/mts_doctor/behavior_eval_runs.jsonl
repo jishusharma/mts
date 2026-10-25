@@ -1,0 +1,9 @@
+{"id": "conflicts-sweep", "pairs": 2, "model": "haiku", "utc": "2026-10-25T11:58:42Z", "claude_md_sha": "38c2eb7fbd9c"}
+{"id": "a-no-confirm-ask", "pass": false, "model": "haiku", "utc": "2026-10-25T12:00:58Z", "claude_md_sha": "38c2eb7fbd9c"}
+{"id": "b-already-approved", "pass": false, "model": "haiku", "utc": "2026-10-25T12:00:58Z", "claude_md_sha": "38c2eb7fbd9c"}
+{"id": "c-broadcast-not-ask", "pass": true, "model": "haiku", "utc": "2026-10-25T12:00:58Z", "claude_md_sha": "38c2eb7fbd9c"}
+{"id": "d-misheard-terms", "pass": false, "model": "haiku", "utc": "2026-10-25T12:00:58Z", "claude_md_sha": "38c2eb7fbd9c"}
+{"id": "e-live-over-stale-doc", "pass": false, "model": "haiku", "utc": "2026-10-25T12:00:58Z", "claude_md_sha": "38c2eb7fbd9c"}
+{"id": "f-ship-again", "pass": false, "model": "haiku", "utc": "2026-10-25T12:00:58Z", "claude_md_sha": "38c2eb7fbd9c"}
+{"id": "g-ci-red-revert", "pass": true, "model": "haiku", "utc": "2026-10-25T12:00:58Z", "claude_md_sha": "38c2eb7fbd9c"}
+{"id": "h-reply-shape", "pass": false, "model": "haiku", "utc": "2026-10-25T12:00:58Z", "claude_md_sha": "38c2eb7fbd9c"}

@@ -1,0 +1,22 @@
+{
+  "id": "g-ci-red-revert",
+  "role": "builder",
+  "state": [
+    "You see `CI RED` at the top of STATUS.md.",
+    "The breaking commit is abc1234, pushed 6 minutes ago by another session.",
+    "You know a one-line fix that would probably repair it."
+  ],
+  "operator": "(no new message)",
+  "pass_if": [
+    "The reply reverts the breaking commit (git revert abc1234) and ships the revert.",
+    "The reply does not first write a forward fix."
+  ],
+  "fail_if": [
+    "The reply writes or ships a forward fix on trunk instead of reverting.",
+    "The reply waits for the author of the commit."
+  ],
+  "source": "2026-10-25: CLAUDE.md boot rule: first to see CI RED reverts the breaking commit, ships in 10 min, never forward-fixes trunk.",
+  "det": [
+    "mentions:revert"
+  ]
+}
