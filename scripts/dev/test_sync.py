@@ -536,6 +536,30 @@ class SyncTest(unittest.TestCase):
         self.assertTrue(ahead.exists())
         self.assertTrue(self.a.exists())  # primary tree never touched
 
+    def test_station_runs_where_all_then_tidy(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            done = sync.new_worktree(self.a, "done")
+        later = time.time() + 48 * 3600
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            res = sync.station(self.a, now=later)
+        self.assertIn("worktree(s) hold work", buf.getvalue())
+        self.assertEqual(res, [str(done.resolve())])
+        self.assertTrue(done.exists())  # dry run removes nothing
+
+    def test_station_apply_removes_only_the_clean_shipped_idle_tree(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            done = sync.new_worktree(self.a, "done")
+            ahead = sync.new_worktree(self.a, "ahead")
+        commit(ahead, "unshipped.py", "u\n")
+        later = time.time() + 48 * 3600
+        with contextlib.redirect_stdout(io.StringIO()):
+            res = sync.station(self.a, apply=True, now=later)
+        self.assertEqual(res, [str(done.resolve())])
+        self.assertFalse(done.exists())
+        self.assertTrue(ahead.exists())
+        self.assertTrue(self.a.exists())
+
     def test_tidy_dry_run_hint_is_a_command_that_runs_on_windows(self):
         # 2026-10-23: the hint printed `sync.py tidy --apply`, which Windows cannot run without `python scripts/dev/` in front
         buf = io.StringIO()
