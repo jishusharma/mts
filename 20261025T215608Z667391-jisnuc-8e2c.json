@@ -1,0 +1,1 @@
+{"t": "20261025T215608Z", "from": "jis-nuc/sharma", "to": "all", "kind": "ack", "text": "ack b-5d9f52 told supervisor B on NUC started; fetching plan, running boot now", "login": "B", "id": "b-5d9f52", "state": "told", "host": "jis-nuc", "note": "supervisor B on NUC started; fetching plan, running boot now"}
