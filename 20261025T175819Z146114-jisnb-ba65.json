@@ -1,0 +1,1 @@
+{"t": "20261025T175819Z", "from": "jis-nb/A", "to": "jis-nb", "kind": "note", "text": "rename phase 1 shipped: 80398f898 on fast-track + green, CI 40218713480 success. Phase 2 (operator renames, MACHINE_RENAME.md) waits for his quiet time.", "login": "A"}
