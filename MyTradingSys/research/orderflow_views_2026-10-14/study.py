@@ -211,8 +211,28 @@ def trade(A1, e, ext, side):
     return fw + [res - FEE_RT]
 
 
-# Rerun 2026-10-17 (OFV_DEV_ONLY=1): repo split, DEV = before 2024-07-01. Later rows (VALIDATION, HOLDOUT) are never evaluated.
-DEV_ONLY = os.environ.get("OFV_DEV_ONLY") == "1"
+# DEV-only by default (T08-F1; was OFV_DEV_ONLY=1 opt-in): repo split, DEV = before 2024-07-01. Later rows (VALIDATION, HOLDOUT) are never evaluated.
+READS_PATH = HERE.parent / "holdout_reads.csv"
+
+
+def guard_phases(env, reads_path=None):
+    """['DEV'] by default. VALIDATION/HOLDOUT bars need OFV_PROTECTED_AUTH = a timestamp_utc id present in holdout_reads.csv."""
+    if "OFV_PROTECTED_AUTH" not in env:
+        return ["DEV"]
+    auth = (env["OFV_PROTECTED_AUTH"] or "").strip()
+    if not auth:
+        raise PermissionError("OFV_PROTECTED_AUTH is empty: protected phases need a holdout_reads.csv authorization id")
+    path = Path(reads_path) if reads_path is not None else READS_PATH
+    ids = set()
+    if path.exists():
+        with open(path, newline="", encoding="utf-8") as f:
+            ids = {(r.get("timestamp_utc") or "").strip() for r in csv.DictReader(f)}
+    if auth not in ids:
+        raise PermissionError("OFV_PROTECTED_AUTH %r is not in %s" % (auth, path.name))
+    return ["DEV", "VAL", "HOLDOUT"]
+
+
+DEV_ONLY = guard_phases(os.environ) == ["DEV"]
 DEV_END_MS = int(dt.datetime(2024, 7, 1, tzinfo=dt.timezone.utc).timestamp() * 1000)
 
 
