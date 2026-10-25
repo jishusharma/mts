@@ -109,7 +109,7 @@ SLOW_FILE_S = 30     # files measured at >= this many seconds stay in their shar
 CHEAP_STEPS += ("3qn", "3gi")   # 3la (11 s) is not cheap: it runs with the main phase
 # GATE_SPEED X2 (ship only, --fast, smoke mode): the fast path. One phase, tests chosen by gate_impact, a time budget, the rest left to CI.
 FAST_STEP_TIMEOUT_S = 240     # OURS: a fast-gate step still running after this is hung (a held slot would block every later ship)
-GATE_HARD_STEP_S = 90         # OURS: per-step cap of a gate-file ship; the ship's own fetch/merge/push adds ~15-25 s, total stays under 120 s
+GATE_HARD_STEP_S = 60         # OURS: step-phase deadline of every fast ship; ship overhead measured ~45-80 s on a loaded JIS-NB (2026-10-25: 171 s wall at 90), total stays under 120 s
 GATE_DEADLINE = None          # monotonic time by which a gate-file ship's steps must be done
 TIMEOUT_DEFERS = False        # gate-file ship: a step over the cap is left to CI (reported, not failed); set in main()
 FAST_BASE_S = 6              # OURS: seconds of ALWAYS-step work counted against the budget before any test is added
@@ -1212,10 +1212,10 @@ def main(argv=None):
     global STEP_TIMEOUT_S, TIMEOUT_DEFERS, GATE_DEADLINE
     STEP_TIMEOUT_S = step_timeout_for(mode)
     if fast_applied:
-        STEP_TIMEOUT_S = FAST_STEP_TIMEOUT_S
-        if fast_info.get("gate_file"):   # gate-file change: a hard cap, so the whole ship stays under 120 s
-            STEP_TIMEOUT_S, TIMEOUT_DEFERS = GATE_HARD_STEP_S, True
-            GATE_DEADLINE = time.monotonic() + GATE_HARD_STEP_S   # the whole step phase, not only each step
+        # Operator 2026-10-25 "every ship under 2 minutes": EVERY fast ship gets the hard cap (it was gate-file ships only, so a
+        # signals change hit the 240 s step timeout and failed); what does not finish by the deadline is deferred to CI, not failed.
+        STEP_TIMEOUT_S, TIMEOUT_DEFERS = GATE_HARD_STEP_S, True
+        GATE_DEADLINE = time.monotonic() + GATE_HARD_STEP_S   # the whole step phase, not only each step
         print(f"Fast gate (GATE_SPEED X2): {fast_info['reached']} test files reached ({fast_info['direct']} direct), {fast_info['kept']} units kept, "
               f"estimated {fast_info['est_s']} s (budget {fast_info['budget']} s) on {fast_jobs()} workers; {len(fast_info['deferred'])} deferred to CI (budget)", flush=True)
         if fast_info["deferred"]:
