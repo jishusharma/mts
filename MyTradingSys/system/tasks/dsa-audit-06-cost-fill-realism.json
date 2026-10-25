@@ -20,7 +20,7 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:definitions CLASS:C2 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report.",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:definitions CLASS:C2 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report. HOLD-CLEARED A-20261018-5 (lifted by the operator 2026-10-18, see ANNOUNCEMENTS.md). CLOSE-PENDING 2026-10-26: the deliverable is on trunk as 0d738711f (2026-10-25) and was re-checked 2026-10-26 by the closing Builder: test_cost_inventory.py 2 passed; t06_funding.py rerun end to end exits 0 and out/funding_rerun.json is byte-identical; DEV funding facts recomputed from the raw CSVs match (2,736 settlements, -11.92..+8.81 bp, mean +0.728 bp, 13.4 % negative, 37.1 % exactly +1 bp, 1,215 off-boundary; stamp offsets run 1 to 31 ms, report corrected from 1 to 5 ms); fee-to-stop rows recomputed by hand from auto_trader_config.json match. S2 cards filed: fix-screen-real-funding, fix-single-cost-module, fix-fill-rules-shared. tasks.py done still refuses: CRUCIAL/C2 needs a real review stamp from Lab_Guy (GPT spec review + Haiku re-derive, as named above), which a builder must not write. After the stamp: tasks.py done dsa-audit-06-cost-fill-realism --result ...",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",

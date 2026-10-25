@@ -9,6 +9,22 @@
     "python scripts/dev/tasks.py done dsa-audit-05-placebo-nulls --result \"<Tnn>: k findings (S1 a, S2 b, S3 c); <headline>\"",
     "# AIRUN task=mts-ship repo=<WORKTREE> timeout=1800  (then git cherry origin/fast-track HEAD is empty)"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-25T19:24:28Z",
+    "misses": 25,
+    "reads": [
+      "scripts/dev/codex_run.py",
+      "scripts/dev/gemini_queue.py",
+      "scripts/dev/tasks.py",
+      "scripts/dev/mts_signal.py",
+      "scripts/dev/role_loader.py",
+      "MyTradingSys/system/GEMINI_START.md",
+      "MyTradingSys/system/ROLES.md",
+      "scripts/dev/sync.py"
+    ],
+    "session": "8bde350e-7628-4a31-b5a0-974378275dbd"
+  },
   "created": "2026-10-15T23:28:58Z",
   "depends_on": [],
   "done_when": "T05_placebo_nulls.md shipped: per-arm empirical p, SD ratio, overlap and bootstrap t; best-of-N bar per study; half-year signs; fair LC1 rerun; leads L7/L8 resolved; S1/S2 carded.",
