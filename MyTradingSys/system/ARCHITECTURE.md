@@ -79,7 +79,7 @@ Numbers below were measured on origin/fast-track 2026-10-19 (bytes/4 = tokens); 
 | Card | Worker | Turns | Why not here |
 |---|---|---|---|
 | retire-relay-machinery: archive scripts/sched relay files and relay_prompts/, full gate | session | 30 | needs `host-legacy-tasks-unregister` first |
-| pipeliner-boot-diet: boot reads to pointers, target under 12k | agent | 10 | pipeliner.md is in the traffic-controller lane |
+| pipeliner-boot-diet: boot reads to pointers, target under 12k | agent | 10 | roles/lead/pipeline.md is in the traffic-controller lane |
 | super-session-rules-to-pointers, numbering kept | agent | 12 | collision with the traffic-controller lane |
 | roles-md-index-slim | session | 15 | after traffic-controller and ru4 |
 | tasks-sweep-closed-cards (`tasks.py sweep --apply`) | agent | 8 | 275 closed cards; separate ship |

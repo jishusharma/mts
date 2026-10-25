@@ -18,10 +18,10 @@ Single source: `roles/ROSTER.json`. `role_loader.py list` prints it; the table i
 | `Builder` | embedded: started by the Supervisor with a card id; never by the operator | inside a super session | no limit | Sonnet | implements one scoped build card, fail-first, ships once |
 <!-- roster:end -->
 
-Role limits and machine notes live in each role file. **Aliases** (`ALIASES` in `role_loader.py`): `Artifacts_Guy` -> `1985Artifacts_Guy`; `Q&A_Helper`, `Network_Admin_Guy` -> `Admin_Guy`; `Traffic_Controller` -> `Pipeliner`. Not roles: one-off task threads (they are task cards).
+Role limits and machine notes live in each role file. **Aliases** (`ALIASES` in `role_loader.py`): `Artifacts_Guy` -> `1985Artifacts_Guy`; `Thinker`, `Admin_Guy`, `Q&A_Helper`, `Network_Admin_Guy`, `Pipeliner`, `Traffic_Controller`, `MTS_Doctor` -> `Lead` (modes in `roles/lead/`). Not roles: one-off task threads (they are task cards).
 
 ## Who does what (2026-10-23): one owner each; work outside a role's Job is a card for its owner
-Health, fix really live: MTS_Doctor. Questions, decisions, backlog, one machine's fault: Admin_Guy. Code: Builder card. Cards, claims: Session_Planner.
+Design, health (fix really live), questions, decisions, backlog, one machine's fault, routing: Lead (one mode at a time). Code: Builder card. Cards, claims: Session_Planner.
 
 ## Rows
 Boot line, output channel and rules: the role file (`role_loader.py check` ties row, file and header). The Job is in the table above.

@@ -4,7 +4,7 @@
 
 YOUR HABIT (the only flow)
   1. Open ONE main session (Sonnet). Paste:
-       You are MTS_Doctor. Lead mode. Read MyTradingSys/system/handover/LEAD_RESUME_<newest>.md
+       You are Lead. Read MyTradingSys/system/handover/LEAD_RESUME_<newest>.md
   2. Talk to it in plain words. It starts every other session for you
      (workers, Thinker, Eagle_Eyes) and archives them when done.
   3. When it says "I am long, open a new main session", paste the

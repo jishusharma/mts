@@ -177,7 +177,7 @@ class Home(unittest.TestCase):
         self.assertNotIn('id="where"', html)  # the duplicate "where to answer" box is gone: one link in the needs-you strip
 
     def test_home_has_session_recipes_without_duplicates(self):
-        """One row per role; Admin_Guy covers question, decision and backlog (they were two rows). The super-session prompt is the
+        """One row per role; the Lead covers question, decision and backlog (they were two rows). The super-session prompt is the
         one in SUPER_SESSION.md and line 1 loads the Supervisor role."""
         import make_home as mh
         d = mh.build(self.reg)
@@ -185,8 +185,8 @@ class Home(unittest.TestCase):
         lines = [r["line"] for r in d["recipes"]]
         self.assertEqual(len(lines), len(set(lines)))
         self.assertEqual(len(lines), 7)
-        for line in ("You are Admin_Guy.", "You are Eagle_Eyes.", "You are MTS_Doctor.", "You are Lab_Guy.", "Start the Pipeliner.",
-                     "You are Thinker.", "You are 1985Artifacts_Guy."):
+        for line in ("You are Lead.", "You are Eagle_Eyes.", "You are Lead. Run doctor mode.", "You are Lab_Guy.",
+                     "You are Lead. Run pipeline mode.", "You are Lead. Run think mode.", "You are 1985Artifacts_Guy."):
             self.assertIn(line, lines)
             self.assertIn(line, html)
         self.assertIn("backlog", d["recipes"][0]["name"].lower())
