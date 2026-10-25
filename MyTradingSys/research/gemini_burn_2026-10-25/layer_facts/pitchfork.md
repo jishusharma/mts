@@ -1,5 +1,7 @@
 # Layer Fact Sheet: Pitchfork (`pitchfork`)
 
+> **Claude review 2026-10-26** (`MyTradingSys/research/layer_lab/reports/2026-10-26_gemini-facts-review.md`): content errors below are fixed; about 25 (pitchfork LAYERS.md section is :262-267) line cites drift from trunk (content true, line off) and are listed in that report, not rewritten here. Treat any line number as approximate (+-15).
+
 **Card:** `lf-pitchfork-gemini-facts` [SOURCED: `MyTradingSys/system/tasks/lf-pitchfork-gemini-facts.json:16`]  
 **Date:** 2026-10-26 [SOURCED: system clock UTC]  
 **Layer Family:** `pitchfork` [SOURCED: `MyTradingSys/system/LAYERS.md:256`, `python scripts/dev/lab_query.py layers`]  
@@ -12,14 +14,16 @@
 
 ## 1. ORIGIN (Quoted Source)
 
+> Reviewer note: the biographies and book titles below come from one LLM-written synthesis (`papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md`) with no external reference; treat as single-source, unverified. `SET_362293de1b70_pitchfork.md:25` (TradingView) defines Schiff vs Modified Schiff the opposite way to papers/01 and `pitchfork_detector.py:68-75`.
+
 - **Primary Historical Inventor:** Dr. Alan Hall Andrews (1900–1985), private Babson Action-Reaction Course (1960–1975) [SOURCED: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md:26-28`].
   - *Quoted Source:* "Dr. Alan Hall Andrews (1900–1985), an MIT-educated engineer, mathematician, and Babson attendee, refined Babson’s macroeconomic observations into micro-level chart geometry... The cornerstone of Andrews' teachings was the Median Line Method—a three-point geometric vector construction that market participants colloquially termed the 'Pitchfork' due to its distinctive three-pronged appearance." [SOURCED: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md:26-28`].
   - *Quoted 80% Rule:* "Prices will reach the Median Line approximately 80% of the time following the completion of Pivot 2." [SOURCED: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md:83`, citing Alan H. Andrews, *The Babson Action-Reaction Course*, Section 2, p. 12 via `MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md:34`].
   - *Quoted Hagopian's Rule:* "If price reverses before reaching the Median Line, it signals an acute imbalance of order flow. Price will accelerate violently in the opposite direction and break completely out of the pitchfork channel through the opposite parallel line." [SOURCED: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md:97`, citing Alan H. Andrews, Section 4 via `MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md:39`].
 - **Schiff Pitchfork Modification:** Jerome Schiff [SOURCED: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md:121-128`, `MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py:9`].
   - *Quoted Source:* "Jerome Schiff observed that after an impulsive breakout, the initial retracement ($P_1 \to P_2$) is often shallow, causing a standard $P_0 \to M$ vector to possess a steep angle ($> 60^\circ$)... Schiff solved this by displacing the origin point $P_0$ 50% of the distance toward $P_1$ in both time and price: $t_{0,\text{Schiff}} = \frac{t_0 + t_1}{2}, p_{0,\text{Schiff}} = \frac{p_0 + p_1}{2}$." [SOURCED: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md:121-128`].
-- **Modified Schiff Pitchfork:** Mircea Dologa and modern futures/technical analysis literature [SOURCED: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md:130-136`, `MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md:28`].
-  - *Quoted Source:* "Popularized in modern futures and algorithmic charting, the Modified Schiff Pitchfork maintains the original time coordinate $t_0$, but shifts the price coordinate $p_0$ to the vertical midpoint between $P_0$ and $P_1$: $t_{0,\text{ModSchiff}} = t_0, p_{0,\text{ModSchiff}} = \frac{p_0 + p_1}{2}$." [SOURCED: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md:131-134`, citing Mircea Dologa, *Integrated Pitchfork Analysis*, Vol 1, p. 65 via `MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md:28`].
+- **Modified Schiff Pitchfork:** attribution not stated (paper: "Popularized in modern futures and algorithmic charting") [SOURCED: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md:130-136`, `MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md:28`].
+  - *Quoted Source:* "Popularized in modern futures and algorithmic charting, the Modified Schiff Pitchfork maintains the original time coordinate $t_0$, but shifts the price coordinate $p_0$ to the vertical midpoint between $P_0$ and $P_1$: $t_{0,\text{ModSchiff}} = t_0, p_{0,\text{ModSchiff}} = \frac{p_0 + p_1}{2}$." [SOURCED: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md:131-134`; no author named in the source paragraph; RESEARCH_PITCHFORK_LAYER.md:27-28 cites Dologa for the slope-switch rule P-02, not this construction].
 - **Institutional Median Line & Channel Extensions:** Timothy Morge (1954–2020), *Trading with Median Lines: Mapping the Markets* (2002) [SOURCED: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md:141-152`].
   - *Quoted Source:* Formulated quartile lines (25%, 50%, 75% inner parallels), warning lines ($WL_1, WL_2, WL_3$), sliding parallel lines, and energy coils around the median line [SOURCED: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md:144-152`].
 - **Algorithmic Codification & Confirmation Delay:** Patrick Mikula, *The Best Trendline Methods of Alan Andrews and Five New Techniques* (2002) [SOURCED: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md:153-157`, `MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md:23`].
@@ -43,9 +47,9 @@
 - **Median Line Reach criteria (price low $\le ML \le$ high or directional close across ML):** SOURCED [SOURCED: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md:82-85`, Alan H. Andrews; implemented in `MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py:169-176`].
 - **Hagopian failure minimum approach threshold ($15\%$ distance towards ML from origin tine before rollover):** OURS [SOURCED: `MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py:201-204`].
 - **Hagopian failure target (measured move equal to channel width $W = |p_{UML} - p_{ML}|$):** SOURCED [SOURCED: `MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md:42`, citing Alan H. Andrews, Section 4; Timothy Morge, p. 74].
-- **Stop-loss level for tine bounces (1.0 ATR beyond Pivot 2):** SOURCED [SOURCED: `MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md:52-53`, `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md:186`].
+- **Stop-loss level for tine bounces (1.0 ATR beyond Pivot 2):** SOURCED [SOURCED: `MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md:52-53`, `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md:186`]. The backtests used fixed % stops instead: 1.5% (1D, `MyTradingSys/research/pitchfork_2026-10-19/run_pitchfork_event_study.py:242`; 4H tine entry, `MyTradingSys/research/pitchfork_2026-10-19/run_pitchfork_4h_poc_study.py:278`), 2.0% (4H confirm entry, `:249`).
 - **Logarithmic pitchfork transformation ($y = \ln(p)$, geometric midpoint $M_{\ln} = \sqrt{p_1 \cdot p_2}$):** OURS [SOURCED: `papers/02_PITCHFORK_APPLICATION_ON_BTC.md:43-58`, `MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py:231-250`].
-- **Volume Profile Value Area Confluence ($P_2$ inside 70% Value Area $[VAL, VAH]$):** SOURCED [SOURCED: `MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md:83`, `papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md:20-22, 51-55`, citing Fractal Flow].
+- **Volume Profile Value Area Confluence ($P_2$ inside 70% Value Area $[VAL, VAH]$):** OURS (study design, `MyTradingSys/research/pitchfork_2026-10-19/PHASE2_4H_POC_STUDY.md:26,80-82`; papers/03:20-22,51-55 describe only a POC/HVN idea, not a 70% VA filter).
 - **Volume Profile POC alignment tolerance ($\pm 0.35\%$ or $\pm 0.75\%$ or $\pm 1.5\%$):** [OURS: see sub-items]
   - $\pm 0.35\%$: OURS [SOURCED: `papers/02_PITCHFORK_APPLICATION_ON_BTC.md:207`, `papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md:138`].
   - $\pm 0.75\%$ and $\pm 1.5\%$: OURS [SOURCED: `MyTradingSys/research/pitchfork_2026-10-19/PHASE2_4H_POC_STUDY.md:27-28`].
@@ -61,9 +65,9 @@
 - **Runner Script:** `MyTradingSys/research/pitchfork_2026-10-19/run_pitchfork_event_study.py:1-40` [SOURCED: file exists]
 - **Ledger/Trial Path:** `MyTradingSys/research/pitchfork_2026-10-19/TRIALS_PITCHFORK.csv:1-5` [SOURCED: file exists]
 - **Data Period & Span:** 2020-01-01 to 2026-09-26, 2,461 daily bars [SOURCED: `MyTradingSys/research/pitchfork_2026-10-19/PHASE1_EVENT_STUDY.md:4`]
-- **In-Sample / Out-of-Sample (Split):** `DEV` split (`F:/MTS/data/tom_raw + dev_ext`) [SOURCED: `MyTradingSys/research/pitchfork_2026-10-19/TRIALS_PITCHFORK.csv:2-5`]; HOLDOUT unread / NOT_IN_DATA
+- **In-Sample / Out-of-Sample (Split):** `DEV` split (`F:/MTS/data/tom_raw + dev_ext`) [`MyTradingSys/research/pitchfork_2026-10-19/TRIALS_PITCHFORK.csv:2-5`]; the DEV label is hard-coded (`MyTradingSys/research/pitchfork_2026-10-19/run_pitchfork_event_study.py:372`) and the data window runs to 2026-09-26 (`MyTradingSys/research/pitchfork_2026-10-19/PHASE1_EVENT_STUDY.md:4`), overlapping the 2026-06-26.. holdout other layers use: holdout status NOT_IN_DATA, not "unread"
 - **Fee Model:** Net of fees ($0.10\%$ round-trip taker fee + $0.02\%$ slippage hurdle) [SOURCED: `MyTradingSys/research/pitchfork_2026-10-19/PHASE1_EVENT_STUDY.md:6`]
-- **Sample Size ($n$ Setups):** $n = 361$ confirmed swing structures across all 4 geometric models [SOURCED: `MyTradingSys/research/pitchfork_2026-10-19/PHASE1_EVENT_STUDY.md:16-20`, `TRIALS_PITCHFORK.csv:2-5`]
+- **Sample Size ($n$ Setups):** $n = 361$ setups per model (same 361 forks for each of the 4 models) [SOURCED: `MyTradingSys/research/pitchfork_2026-10-19/PHASE1_EVENT_STUDY.md:16-20`, `MyTradingSys/research/pitchfork_2026-10-19/TRIALS_PITCHFORK.csv:2-5`]
 - **Reported Numbers per Variant ($n = 361$):** [SOURCED: see sub-items]
   1. *Standard Andrews:* ML Reach Rate = $55.96\%$, Avg Bars to ML = $6.5$, Premature Breaches = $50.97\%$, Hagopian Hit Rate = $33.88\%$, Win Rate = $36.84\%$, Mean Net Return = $+0.86\%$ [SOURCED: `MyTradingSys/research/pitchfork_2026-10-19/PHASE1_EVENT_STUDY.md:17`].
   2. *Schiff:* ML Reach Rate = $86.15\%$, Avg Bars to ML = $4.7$, Premature Breaches = $19.11\%$, Hagopian Hit Rate = $33.9\%$, Win Rate = $34.9\%$, Mean Net Return = $-1.12\%$ [SOURCED: `MyTradingSys/research/pitchfork_2026-10-19/PHASE1_EVENT_STUDY.md:18`].
@@ -75,7 +79,7 @@
 - **Runner Script:** `MyTradingSys/research/pitchfork_2026-10-19/run_pitchfork_4h_poc_study.py:1-40` [SOURCED: file exists]
 - **Ledger/Trial Path:** `MyTradingSys/research/pitchfork_2026-10-19/TRIALS_PITCHFORK_4H.csv:1-33` [SOURCED: file exists]
 - **Data Period & Span:** 2020-01-01 00:00:00 to 2026-09-26 20:00:00, 14,766 4-hour bars [SOURCED: `MyTradingSys/research/pitchfork_2026-10-19/PHASE2_4H_POC_STUDY.md:4`]
-- **In-Sample / Out-of-Sample (Split):** `DEV` dataset; HOLDOUT unread / NOT_IN_DATA [SOURCED: `MyTradingSys/research/pitchfork_2026-10-19/PHASE2_4H_POC_STUDY.md:4`, `TRIALS_PITCHFORK.csv:2`]
+- **In-Sample / Out-of-Sample (Split):** no split column in `MyTradingSys/research/pitchfork_2026-10-19/TRIALS_PITCHFORK_4H.csv`; window to 2026-09-26 (`MyTradingSys/research/pitchfork_2026-10-19/PHASE2_4H_POC_STUDY.md:4`), overlapping the 2026-06-26.. holdout: holdout status NOT_IN_DATA
 - **Fee Model:** Net of fees (Binance VIP0: $0.02\%$ maker entry + $0.05\%$ taker exit + $0.02\%$ slippage = $0.09\%$ limit round-trip; $0.12\%$ market round-trip) [SOURCED: `MyTradingSys/research/pitchfork_2026-10-19/PHASE2_4H_POC_STUDY.md:7`]
 - **Sample Size ($n$ Setups):** $n = 1,273$ alternating 3-pivot swing structures across 32 experimental conditions [SOURCED: `MyTradingSys/research/pitchfork_2026-10-19/PHASE2_4H_POC_STUDY.md:6, 36-70`]
 - **Key Reported Conditions & Numbers ($n$ fills / trades):** [SOURCED: see sub-items]
@@ -95,9 +99,10 @@
 - **Report Path:** `papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md:86-111` [SOURCED: file exists]
 - **Runner Script:** `MyTradingSys/research/pitchfork_2026-10-19/eval_btc_pitchfork_traders.py:1-40` [SOURCED: file exists]
 - **Data Period & Span:** Macro Bitcoin swings 2017 to 2026 [SOURCED: `papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md:86-88`]
+- **NOT REPRODUCIBLE:** the figures in this block appear only in `papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md:93-110`; `MyTradingSys/research/pitchfork_2026-10-19/eval_btc_pitchfork_traders.py` runs 2 synthetic-path setups and computes none of these metrics.
 - **Fee Model:** NOT_IN_DATA (Evaluates geometric channel metrics: slope angle, ML reach rate, premature breach rate, and edge score) [SOURCED: `papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md:89-111`]
 - **In-Sample / Out-of-Sample:** NOT_IN_DATA
-- **Sample Size ($n$):** NOT_IN_DATA (Evaluated across canonical 1W macro swings) [SOURCED: `MyTradingSys/research/pitchfork_2026-10-19/eval_btc_pitchfork_traders.py:34-40`]
+- **Sample Size ($n$):** NOT_IN_DATA (script uses 2 hand-typed synthetic weekly paths) [SOURCED: `MyTradingSys/research/pitchfork_2026-10-19/eval_btc_pitchfork_traders.py:34-40`]
 - **Results Summary Table:** [SOURCED: see sub-items]
   1. *Fractal Flow (Mod. Schiff, Vol Profile Confluence):* Slope = $28^\circ - 35^\circ$, ML Reach = $81.2\%$, Premature Breach = $8.4\%$, Algorithmic Edge Score = $92/100$ [SOURCED: `papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md:93-95`].
   2. *MTS Operator Model (Stacked Schiff Grid, TV Style):* Slope = $32^\circ - 42^\circ$, ML Reach = $78.5\%$, Premature Breach = $11.2\%$, Algorithmic Edge Score = $90/100$ [SOURCED: `papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md:96-98`].
@@ -129,7 +134,7 @@ The pitchfork layer is designed as a **Layer 1 Dynamic Location & Horizon Filter
 2. **Volume Profile Layers (Anchored POC / Value Area High & Low):** [SOURCED: `MyTradingSys/research/pitchfork_2026-10-19/PHASE2_4H_POC_STUDY.md:25-29`]
    - *Value Area Confluence (`VA_CONFLUENT`):* Swing origin pivot $P_2$ must reside within the 70% Value Area $[VAL, VAH]$ of the foundational impulse swing [SOURCED: `MyTradingSys/research/pitchfork_2026-10-19/PHASE2_4H_POC_STUDY.md:26, 80-82`].
    - *Point of Control Confluence (`POC_1.5PCT` / `POC_0.75PCT`):* Tine touches aligning within $\pm 0.75\%$ to $\pm 1.5\%$ of the Point of Control [SOURCED: `MyTradingSys/research/pitchfork_2026-10-19/PHASE2_4H_POC_STUDY.md:27-28, 88-92`].
-   - Confluence with high-volume POC or prior session VAH/VAL increases reaction probability from $77.7\%$ to $86.4\%-88.4\%$ [SOURCED: `papers/02_PITCHFORK_APPLICATION_ON_BTC.md:206-208`, `papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md:124-125`].
+   - Confluence with high-volume POC or prior session VAH/VAL reaction probability: papers/02:207 says 77.7% -> 86.4%; papers/03:125 says 77.8% -> 88.4%; two inconsistent unbacked claims, no run in the repo supports either [SOURCED: `papers/02_PITCHFORK_APPLICATION_ON_BTC.md:206-208`, `papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md:124-125`].
 3. **CryptoCred Dynamic Channels & Swing Failure:** [SOURCED: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md:169-172`]
    - Treats the pitchfork Median Line as dynamic Fair Value / Point of Control, and outer tines as dynamic support/resistance corridors aligned with swing failure patterns [SOURCED: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md:169-172`, `papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md:36-38`].
 4. **Positioning / Open Interest Delta:** [SOURCED: `papers/02_PITCHFORK_APPLICATION_ON_BTC.md:156-163`]

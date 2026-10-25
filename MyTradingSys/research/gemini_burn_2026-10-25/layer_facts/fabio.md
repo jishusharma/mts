@@ -1,5 +1,7 @@
 # Layer Fact Sheet: fabio (order-flow layer family)
 
+> **Claude review 2026-10-26** (`MyTradingSys/research/layer_lab/reports/2026-10-26_gemini-facts-review.md`): content errors below are fixed; about 75; the analyst name "Fabio Valentini" is sourced at `MyTradingSys/research/fabio_asr_2026-10-16/ASR_EXTRACTION_ADDENDUM.md:14`, not at the code lines cited next to it line cites drift from trunk (content true, line off) and are listed in that report, not rewritten here. Treat any line number as approximate (+-15).
+
 Facts compiled from repository files only for the layer review (card `layer-review-after-simulator`).
 No verdict is given on keeping, dropping, demoting, or parking any layer.
 Every fact line is tagged with its concrete repo `file:line` or marked `NOT_IN_DATA`.
@@ -12,7 +14,7 @@ Every fact line is tagged with its concrete repo `file:line` or marked `NOT_IN_D
 - Analyst/source: Fabio Valentini [SOURCED: `MyTradingSys/backtest/layers/fabio/fabio_cvd_absorption.py:3-4`]
 - Quoted source: "FAB-007 CVD-vs-price divergence absorption detector. This implements FAB-007 from the extract verbatim: 'CVD makes a lower low while price is still on the same level as before' = passive buyers absorbing aggressive sellers (bullish)." [SOURCED: `MyTradingSys/backtest/layers/fabio/fabio_cvd_absorption.py:3-6`]
 - Secondary quote / rule catalog: FAB-007 (o-w5Gxss6T0) cited in rule FR-16 ("Absorption: delta in, price flat; CVD divergence; heavy absorption") [SOURCED: `MyTradingSys/research/fast_track_2026-09-27/FABIO_RULEBOOK.md:22`]
-- Symmetric extension: Bearish absorption ("CVD makes a higher high while price does not confirm a new high") is documented as an unstated symmetric extension [SOURCED: `MyTradingSys/backtest/layers/fabio/fabio_cvd_absorption.py:5-7`, `MyTradingSys/backtest/layers/fabio/fabio_cvd_absorption.py:57-61`]
+- Symmetric extension: "The mirror case (CVD higher high, price holds the prior high -> bearish) is implemented as a documented symmetric extension." [SOURCED: `MyTradingSys/backtest/layers/fabio/fabio_cvd_absorption.py:6-7`; bearish rule at `:65-68`]
 
 ### Parameters
 - `left`: swing width lookback left, default 2 [OURS: `MyTradingSys/backtest/layers/fabio/fabio_cvd_absorption.py:46`]
@@ -97,7 +99,7 @@ Every fact line is tagged with its concrete repo `file:line` or marked `NOT_IN_D
 
 ### Parameters
 - `n_bins`: number of bins for profile, default 20 [OURS: `MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py:46`]
-- `va_pct`: value area percentage, default 0.70 (70%) [OURS / SOURCED concept: `MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py:65`]
+- `pct` (argument of `value_area`): value area percentage, default 0.70 (70%) [OURS / SOURCED concept: `MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py:116`; the name `va_pct` exists only in `fabio_of_model.py:74`]
 - `left`, `right`: swing lookback, default 2, 2 [OURS: `MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py:18`]
 - `use_body`: whether to use bar body for swings, default True [OURS: `MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py:18`]
 - `touch_bars`: first touch within 200 bars [OURS: `MyTradingSys/backtest/layers/fabio/FABIO_L1_REPORT.md:14`]
@@ -136,7 +138,7 @@ Every fact line is tagged with its concrete repo `file:line` or marked `NOT_IN_D
 - Analyst/source: Fabio Valentini [SOURCED: `MyTradingSys/research/fast_track_2026-09-27/FABIO_V3_SPEC.md:8-12`]
 - Quoted source: "FABIO V3 SPEC - trade model as a layer module (location -> context -> trigger -> management). Version: v3.1 (2026-09-30): folds in FABIO_LINE_BY_LINE_fZlNGWvd2Ko.md 5.4 (M1-M8, M10) and the operator decisions on the v3.0 open items... Transcripts raw_transcripts_canonical/<id>_raw.txt: fZ = fZlNGWvd2Ko, ja = jasv3L-d8ZE, 0j = 0jM5Y31YJak, 8C = 8CWKfoSJu3c, LQ = LQvv5xgy_ik." [SOURCED: `MyTradingSys/research/fast_track_2026-09-27/FABIO_V3_SPEC.md:1-10`]
 - Trade walkthrough quotes:
-  - 0jM5Y31YJak: "the market was balanced at this time... the market is clearly building pressure down... where the big players are pushing the price... confirmation from price was exactly this candle" [SOURCED: `MyTradingSys/research/fast_track_2026-09-27/FABIO_V3_SPEC.md:192-199`]
+  - 0jM5Y31YJak: "the market is balanced at this time... the market is clearly building pressure down... where the big players are pushing the price... confirmation from price was exactly this candle" [SOURCED: `MyTradingSys/research/fast_track_2026-09-27/FABIO_V3_SPEC.md:192-199`]
   - 8CWKfoSJu3c: "the punch to the wall... the last point of aggression of the sellers... to raise the exposure low in the curve... take back control, I want to be out of the market" [SOURCED: `MyTradingSys/research/fast_track_2026-09-27/FABIO_V3_SPEC.md:195-206`]
   - fZlNGWvd2Ko: "capitalize on the failed auction of the seller and then aggression of the level of the buyers... stop loss to zero. Why? Because we already saw that the sellers got stopped again" [SOURCED: `MyTradingSys/research/fast_track_2026-09-27/FABIO_V3_SPEC.md:200-208`]
 
@@ -188,7 +190,7 @@ Every fact line is tagged with its concrete repo `file:line` or marked `NOT_IN_D
 - Pre-registration and result document: `MyTradingSys/research/fast_track_2026-09-27/PRE_REG_FABIO_V3.md` [SOURCED: `MyTradingSys/research/fast_track_2026-09-27/PRE_REG_FABIO_V3.md:4`]
 - Status review document: `MyTradingSys/research/P2_FABIO_V3_HOLDOUT_STATUS.md` [SOURCED: `MyTradingSys/research/P2_FABIO_V3_HOLDOUT_STATUS.md:1`]
 - Data: Binance USD-M BTCUSDT 1m order flow bars, IS 266 windows, OOS 120 windows [SOURCED: `MyTradingSys/research/fast_track_2026-09-27/PRE_REG_FABIO_V3.md:38`]
-- Fee-net: Evaluated at 2 bps net (with 0 bps and 5 bps sensitivity checks) [SOURCED: `MyTradingSys/research/fast_track_2026-09-27/PRE_REG_FABIO_V3.md:21`, `MyTradingSys/research/fast_track_2026-09-27/PRE_REG_FABIO_V3.md:41`]
+- Fee-net: Yes. Maker 0.0, taker 0.0005, plus 2 bps slippage per taker leg for the primary figure; 0 and 5 bps slippage also reported (`MyTradingSys/research/fast_track_2026-09-27/PRE_REG_FABIO_V3.md:8-9,43-47`) [SOURCED: `MyTradingSys/research/fast_track_2026-09-27/PRE_REG_FABIO_V3.md:21`, `MyTradingSys/research/fast_track_2026-09-27/PRE_REG_FABIO_V3.md:41`]
 - Results by model (IS selection frozen; primary readout OOS):
   - Model A (`A|N60|p0.05|f0.003|rest|g0.8`): IS mean +0.0061 (1 trade day); OOS mean 0.0000 at 2 bps, 0 trade days, CI95 [0.0000, 0.0000], DSR 2.43e-27, PBO 0.500 (NOT EVALUABLE / absence of trades) [SOURCED: `MyTradingSys/research/fast_track_2026-09-27/PRE_REG_FABIO_V3.md:39`, `MyTradingSys/research/P2_FABIO_V3_HOLDOUT_STATUS.md:19`]
   - Model B (`B|N60|z2|f0.003|rest`): IS mean 0.0000 (0 trade days); OOS mean 0.0000 at 2 bps, 0 trade days, CI95 [0.0000, 0.0000], PBO 1.000 (NOT EVALUABLE / absence of trades) [SOURCED: `MyTradingSys/research/fast_track_2026-09-27/PRE_REG_FABIO_V3.md:40`, `MyTradingSys/research/P2_FABIO_V3_HOLDOUT_STATUS.md:20`]
@@ -219,7 +221,7 @@ Every fact line is tagged with its concrete repo `file:line` or marked `NOT_IN_D
 - Quoted source: "Fabio on true order flow (aggTrades) - conditional-model test. Modules: orderflow_bars.py (aggTrades -> 1m order-flow bars), fabio_of_model.py (state/location/trigger/management simulator)... Replaces the fixed-horizon 'every trigger fire' test of FABIO_L1 with the model the videos describe (state -> location -> trigger -> management), simulated bar by bar on 1m." [SOURCED: `MyTradingSys/backtest/layers/fabio/FABIO_OF_REPORT.md:6-8`, `MyTradingSys/backtest/layers/fabio/fabio_of_model.py:4-6`]
 
 ### Parameters
-- `TICK`: 0.1 USD [SOURCED: `MyTradingSys/backtest/layers/fabio/fabio_of_model.py:27`]
+- `TICK`: 0.1 USD [OURS / SIM (Binance BTCUSDT tick): `MyTradingSys/backtest/layers/fabio/fabio_of_model.py:34`; `MyTradingSys/research/fast_track_2026-09-27/FABIO_V3_SPEC.md:33,232`]
 - `TOL`: 0.001 (0.1% location tolerance) [OURS: `MyTradingSys/backtest/layers/fabio/fabio_of_model.py:28`]
 - `BIN`: 10.0 USD profile bin size [OURS: `MyTradingSys/backtest/layers/fabio/fabio_of_model.py:29`]
 - `STATE_MIN`: first 15 minutes of session determine balance vs imbalance [OURS: `MyTradingSys/backtest/layers/fabio/fabio_of_model.py:30`]

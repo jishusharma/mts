@@ -1,5 +1,7 @@
 # Layer Family Fact Sheet: Tom (`tom`)
 
+> **Claude review 2026-10-26** (`MyTradingSys/research/layer_lab/reports/2026-10-26_gemini-facts-review.md`): content errors below are fixed; about 30 (every `layer_map.json` line) line cites drift from trunk (content true, line off) and are listed in that report, not rewritten here. Treat any line number as approximate (+-15).
+
 Generated per `MyTradingSys/system/ANTIGRAVITY_LAPTOP.md` item C for the layer review (card `layer-review-after-simulator`).
 Scope: Layer family `tom` consisting of layers `tom_core`, `tom_proofs`, and `tom_vp_pivot` (`MyTradingSys/system/LAYERS.md:10-15`, `MyTradingSys/system/layer_index.json:40-43`).
 Rules: Repo files only; every fact line carries `file:line` or `NOT_IN_DATA`; parameters labelled `SOURCED` or `OURS`; no verdict on keeping, dropping, demoting, or parking any layer (`MyTradingSys/system/ANTIGRAVITY_LAPTOP.md:16,27-33`).
@@ -33,12 +35,12 @@ Rules: Repo files only; every fact line carries `file:line` or `NOT_IN_DATA`; pa
 1. **TOM-CORE-0929**
    - Report path: `MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT.md` (`MyTradingSys/system/LAYERS.md:23`, `MyTradingSys/system/layer_map.json:415-429`).
    - Fee-net: Evaluated both gross and net; net of fees using Deribit schedule (maker 0 / taker 0.05%) and stress variants (`MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT.md:6,41-47`).
-   - In-sample / Out-of-sample: In-sample 2022-01-20..2026-06-25; Out-of-sample holdout 2026-06-26..2026-09-26 (`MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT.md:6,10`).
+   - In-sample / Out-of-sample: hist 2022-01..2025-08, dev 2025-09-01..2026-06-25, holdout 2026-06-26..2026-09-26 (no fitted parameter, so every period is out-of-sample; `MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT.md:20`).
    - n trades: Live rule `SETUP_FORMING` (proof >= 5) had 19 signals, 17 filled trades (0 in holdout); sensitivity `watch_episode` (proof >= 3) had 4,417 filled trades total (254 in holdout) (`MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT.md:6,14,35-40`).
 2. **TOM-CORE-1007** (run `tom_core_20261007`)
    - Report path: `MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT_RERUN_2026-10-06.md` and full report `MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT_RERUN_2026-10-06_full.md` (`MyTradingSys/system/LAYERS.md:21-22`, `MyTradingSys/system/layer_map.json:430-444`).
    - Fee-net: Evaluated gross and net; fee cost ~2.76 R per trade after stop-floor removal (`MyTradingSys/system/layer_map.json:436`, `MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT_RERUN_2026-10-06.md:1-15`).
-   - In-sample / Out-of-sample: In-sample 2022-01-20..2026-06-25; holdout 2026-06-26..2026-09-26 (`MyTradingSys/system/layer_map.json:435`, `MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT_RERUN_2026-10-06.md:9`).
+   - In-sample / Out-of-sample: hist 2022-01..2025-08, dev 2025-09-01..2026-06-25, holdout 2026-06-26..2026-09-26 (no fitted parameter, so every period is out-of-sample; `MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT.md:20`) (`MyTradingSys/system/layer_map.json:876`, `MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT_RERUN_2026-10-06.md:9`).
    - n trades: Live rule `SETUP_FORMING` had 0 filled trades (17 -> 0); sensitivity episodes had 2,880 filled trades total, 181 in holdout (`MyTradingSys/system/layer_map.json:437-438`, `MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT_RERUN_2026-10-06.md:15`).
 3. **DAX-SMOKE** (run `dax_bt_20261010_SMOKE`)
    - Report path: `MyTradingSys/research/tom_transfer_2026-10-11/DAX_BT_REPORT.md` (`MyTradingSys/system/LAYERS.md:18`, `MyTradingSys/system/layer_map.json:460-474`).
@@ -96,23 +98,23 @@ Rules: Repo files only; every fact line carries `file:line` or `NOT_IN_DATA`; pa
 1. **TOM-CORE-0929**
    - Report path: `MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT.md` (`MyTradingSys/system/layer_map.json:415-429`).
    - Fee-net: Evaluated net of Deribit fees (`MyTradingSys/system/layer_map.json:420`, `MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT.md:6`).
-   - In-sample / Out-of-sample: In-sample 2022-01-20..2026-06-25; Holdout 2026-06-26..2026-09-26 (`MyTradingSys/system/layer_map.json:419`, `MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT.md:6`).
+   - In-sample / Out-of-sample: hist 2022-01..2025-08, dev 2025-09-01..2026-06-25, holdout 2026-06-26..2026-09-26 (no fitted parameter, so every period is out-of-sample; `MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT.md:20`).
    - n trades: Evaluated proof >= 3 (4,417 trades) and proof >= 4 (`p4_episode`); live proof >= 5 had 17 filled trades (`MyTradingSys/system/layer_map.json:423-424`, `MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT.md:6,14`).
 2. **TOM-CORE-1007**
    - Report path: `MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT_RERUN_2026-10-06.md` (`MyTradingSys/system/layer_map.json:430-444`).
    - Fee-net: Evaluated net of fees (`MyTradingSys/system/layer_map.json:436`).
-   - In-sample / Out-of-sample: In-sample 2022-01-20..2026-06-25; holdout 2026-06-26.. (n=181) (`MyTradingSys/system/layer_map.json:435`).
+   - In-sample / Out-of-sample: hist 2022-01..2025-08, dev 2025-09-01..2026-06-25, holdout 2026-06-26..2026-09-26 (no fitted parameter, so every period is out-of-sample; `MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT.md:20`); rerun holdout n=181 (`MyTradingSys/system/layer_map.json:876`).
    - n trades: 2,880 filled episodes at proof >= 3 (`MyTradingSys/system/layer_map.json:438`).
 3. **DAX-SMOKE**
    - Report path: `MyTradingSys/research/tom_transfer_2026-10-11/DAX_BT_REPORT.md` (`MyTradingSys/system/layer_map.json:460-474`).
    - Fee-net: Evaluated under `FEES_FDAX` vs BTC fees (`MyTradingSys/system/layer_map.json:466`).
    - In-sample / Out-of-sample: Dev only (GER40 2026-01 smoke); holdout unread (`MyTradingSys/system/layer_map.json:464`).
-   - n trades: Matched-proof BTC arm masked order-flow proofs across 1,818 candidates; DAX order-flow mask changed proof count on 0 candidates (`MyTradingSys/system/layer_map.json:467`, `MyTradingSys/research/tom_transfer_2026-10-11/DAX_BT_REPORT.md:11-15`).
+   - n trades: Matched-proof BTC arm 1800 rows, mask changed 1818 candidates; DAX order-flow mask changed proof count on 0 candidates (`MyTradingSys/system/layer_map.json:467`, `MyTradingSys/research/tom_transfer_2026-10-11/DAX_BT_REPORT.md:11-15`).
 
 ### 2.4 KNOWN BUGS, FABRICATIONS, ASSUMPTIONS (Rulings)
 - Ruling **B131** [CLOSED, MED]: Proof-5 candidate pool skewed 215 short : 105 long; `book_imbalance` gave +1 to shorts and +0 to longs (`scripts/dev/lab_query.py rulings tom`, `src/main/java/datafeed/SetupCandidatesBuilder.java:633-634`).
 - Ruling **B135** [CLOSED, LOW]: `start-trading-day.ps1` proof-count thresholds after `book_imbalance` removal (`scripts/dev/lab_query.py rulings tom`).
-- Ruling **B147** [CLOSED, HIGH]: Missing raw data in historical snapshots capped max proof count at 6 instead of 7 (`scripts/dev/lab_query.py rulings tom`, `MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT.md:14`).
+- Ruling **B147** [CLOSED, HIGH]: Tom live-rule evidence is unreliable: rerun shows 0 SETUP_FORMING signals vs 19 (all short) in the older run on the same history; the 'history lacks data' explanation is contradicted; holdout read twice; Oct-7 run not on HEAD (`scripts/dev/lab_query.py rulings tom`). Separate fact: historical snapshots lack some proof inputs, max proof 6 vs 7 (`MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT.md:14`).
 
 ### 2.5 CONFLUENCE
 - Confirms candidate setups generated by `tom_core` (gating setups into `WATCH` or `SETUP_FORMING` states) (`src/main/java/datafeed/SetupCandidatesBuilder.java:619-636`, `MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT.md:14`).
@@ -141,9 +143,9 @@ Rules: Repo files only; every fact line carries `file:line` or `NOT_IN_DATA`; pa
 ### 3.3 BACKTESTS
 1. **TOM-VP-PHASE2**
    - Report path: `MyTradingSys/research/tom_core_bt_2026-10-09/PHASE2_RESULT.md` (`MyTradingSys/system/LAYERS.md:19`, `MyTradingSys/system/layer_map.json:445-459`).
-   - Fee-net: Evaluated gross and net; taker fee ~0.19 R per round trip, maker variant (-0.10..-0.16 R) (`MyTradingSys/system/layer_map.json:451`, `MyTradingSys/research/tom_core_bt_2026-10-09/PHASE2_RESULT.md:10-12`).
+   - Fee-net: Evaluated gross and net; taker fee ~0.19 R per round trip, maker-variant net R -0.10..-0.16 (`MyTradingSys/system/layer_map.json:451`, `MyTradingSys/research/tom_core_bt_2026-10-09/PHASE2_RESULT.md:10-12`).
    - In-sample / Out-of-sample: Full span 2022-01-01..2026-10-07 (1,741 days, 2,507,040 1m bars); tested per-year 2022-2026 (`MyTradingSys/system/layer_map.json:448,450`, `MyTradingSys/research/tom_core_bt_2026-10-09/PHASE2_RESULT.md:5,15`).
-   - n trades: n >= 1,055 per stream across 48 family x level streams (thousands per stream) (`MyTradingSys/system/layer_map.json:453-454`, `MyTradingSys/research/tom_core_bt_2026-10-09/phase2/results.md:7-15`).
+   - n trades: n >= 1,055 per stream across 48 family x level streams (min n 1,055) (`MyTradingSys/system/layer_map.json:453-454`, `MyTradingSys/research/tom_core_bt_2026-10-09/phase2/results.md:7-15`).
 2. **VP-PIVOT-P2**
    - Report path: `MyTradingSys/research/tom_core_bt_2026-10-09/phase2/results.md` (`MyTradingSys/system/LAYERS.md:20`, `MyTradingSys/system/layer_map.json:511-523`).
    - Fee-net: Net evaluated under taker 0.0005 / maker 0.0002 (`MyTradingSys/system/layer_map.json:517`, `MyTradingSys/research/tom_core_bt_2026-10-09/phase2/results.md:4`).
@@ -152,10 +154,10 @@ Rules: Repo files only; every fact line carries `file:line` or `NOT_IN_DATA`; pa
 
 ### 3.4 KNOWN BUGS, FABRICATIONS, ASSUMPTIONS (Rulings)
 - Ruling **B154** [OPEN, MED]: No regime-stratified backtest verdict exists; every reported edge is one aggregate number (`scripts/dev/lab_query.py rulings tom`).
-- Ruling **B146** [CLOSED, HIGH]: Stop distance and fees in raw level-touch setups: fixed ATR barrier with taker fees produced net negative returns across all levels (`scripts/dev/lab_query.py rulings tom`, `MyTradingSys/research/tom_core_bt_2026-10-09/PHASE2_RESULT.md:10-12`).
+- Ruling **B146** [CLOSED, HIGH]: No minimum stop width since 0c34a2d removed the NO-SOURCE 0.1% floor: Tom backtest median stop 0.082%, fees dominate (`scripts/dev/lab_query.py rulings tom`). Not about vp_pivot.
 - Fixed barrier assumption [OURS / NO-SOURCE]: +-1R ATR14 barrier and 48-bar timeout assumed without source from Tom (`MyTradingSys/system/layer_map.json:173`, `MyTradingSys/research/tom_core_bt_2026-10-09/phase2/results.md:4`).
 
 ### 3.5 CONFLUENCE
-- Confirms `tom_core`: Intended to provide anchor levels (POC, VAH, VAL) for setup zones (`ct_short` at VAH / swing high, `scalp` at VWAP/POC) in `SetupCandidatesBuilder.java` (`MyTradingSys/system/layer_map.json:442`, `src/main/java/datafeed/SetupCandidatesBuilder.java:417-438`).
-- Confirms pitchfork / guidance layers: Pitchfork tine bounce with Volume Profile confluence (`MyTradingSys/system/LAYERS.md:13`, commit `91d2e43c31`).
+- Confirms `tom_core`: NOT_IN_DATA (no repo line says vp_pivot feeds tom_core). VAH zones and setup-type mapping live in `src/main/java/datafeed/SetupCandidatesBuilder.java:332-340,463-496`.
+- Confirms pitchfork / guidance layers: NOT_IN_DATA. (Commit `91d2e43c31` wires pitchfork + VP into SetupCandidatesBuilder, but it is the latest_commit of tom_core/tom_proofs, not of tom_vp_pivot: `scripts/dev/lab_query.py layers`.)
 - Confirmation from other layers: NOT_IN_DATA (tested as isolated level touch vs placebo in Phase 2) (`MyTradingSys/research/tom_core_bt_2026-10-09/PHASE2_RESULT.md:8-14`).
