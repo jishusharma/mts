@@ -239,3 +239,23 @@ def test_waiting_on_operator_lists_old_cards_and_questions(tmp_path):
     assert D.waiting_on_operator(tmp_path, DAY, [])[0] == "WARN"
     (d / "old-wait.json").unlink()
     assert D.waiting_on_operator(tmp_path, DAY, [])[0] == "OK"
+
+
+def test_broadcast_warns_on_unacked_and_expired_told_for_a_seen_host():
+    import mts_signal as S
+    now = datetime(2026, 10, 25, 12, 0, tzinfo=timezone.utc)
+
+    def t(h):
+        return (now.replace(tzinfo=None) - __import__("datetime").timedelta(hours=h)).strftime("%Y%m%dT%H%M%SZ")
+    b = {"t": t(30), "from": "jis-nuc/C", "to": "all", "kind": "broadcast", "prio": "high", "id": "b-aaaaaa", "cmd": "x", "text": "t"}
+    seen = {"t": t(1), "from": "desktop-lenovo/C", "to": "all", "kind": "note", "text": "loop"}
+    told = {"t": t(25), "from": "jis-nb/B", "kind": "ack", "id": "b-aaaaaa", "state": "told", "host": "jis-nb", "note": "no admin"}
+    nb = {"t": t(2), "from": "jis-nb/B", "to": "all", "kind": "note", "text": "hi"}
+    status, detail = D.broadcast_check(".", rows=[b, seen, told, nb], now=now)
+    assert status == "WARN" and "desktop-lenovo b-aaaaaa" in detail and "jis-nb b-aaaaaa" in detail
+    done = {**told, "state": "done", "t": t(3)}
+    assert D.broadcast_check(".", rows=[b, seen, told, nb, done], now=now)[0] == "WARN"   # lenovo still none
+    ack_l = {"t": t(1), "from": "desktop-lenovo/C", "kind": "ack", "id": "b-aaaaaa", "state": "done", "host": "desktop-lenovo"}
+    assert D.broadcast_check(".", rows=[b, seen, told, nb, done, ack_l], now=now)[0] == "OK"
+    fresh = {**b, "t": t(5)}                                                                 # under 6 h: not yet
+    assert D.broadcast_check(".", rows=[fresh, seen], now=now)[0] == "OK"

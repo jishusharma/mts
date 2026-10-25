@@ -20,7 +20,12 @@ HIGH broadcasts (operator 2026-10-22: a "every machine needs X" broadcast was sh
       to KEEP_DAYS, not only the last FIRST_LOOK_MIN minutes) until THAT HOST acks it. It tells the model to put the operator
       line first in its reply and to ack. A Stop with the reply lacking the id / "ACTION FOR THIS MACHINE" is blocked once.
   python scripts/dev/mts_signal.py ack <id> told|done [--note "..."]
-      told = the operator was told (host shown a reminder once per session only); done = it ran or a check passed (silent).
+      told = the operator was told (a quiet reminder once per session for TOLD_TTL_H = 2 h); done = it ran or a check passed (silent).
+      Told EXPIRES (operator 2026-10-25: b-10b3d8 sat `told` ~25 h, nobody ran the command): after 2 h a told HIGH broadcast is
+      loud again on every prompt ("TOLD n h AGO, NOT DONE" plus the blocker note) and the Stop hook blocks it like state none.
+      A broadcast with --cmd refuses `ack <id> told` without --note naming the blocker.
+  python scripts/dev/mts_signal.py pending [--host <h>] [--json]   HIGH broadcasts needing action on a host (state none, or told
+      expired) with hours waiting; for hosts that run no Claude session (the live Lenovo): mts_doctor.py BROADCAST warns on it.
   python scripts/dev/mts_signal.py acks [<id>]   hosts seen in the last KEEP_DAYS vs none/told/done; no id = all open high
       broadcasts. The sending machine's sessions also get a one-line ack status on their prompts while any host is not done.
 A record stamped more than 10 minutes in the future (wrong clock) is ignored for display and for the seen marker.
@@ -66,6 +71,7 @@ FIRST_LOOK_MIN = 30     # a session seeing the branch for the first time looks b
 CMD_MAX = 300           # the operator command of a HIGH broadcast
 FUTURE_MIN = 10        # a record stamped later than now + this is a wrong clock: ignored
 DOT = chr(183)
+TOLD_TTL_H = 2          # OURS: a HIGH broadcast acked `told` goes loud again after this many hours (operator 2026-10-25: b-10b3d8 sat `told` ~25 h)
 RANK = {"none": 0, "told": 1, "done": 2}
 
 
@@ -459,6 +465,64 @@ def ack_state(rows, bid, hostname):
     return best
 
 
+def _ack_dt(r):
+    t = _t(r)
+    return t if t and t <= now() + timedelta(minutes=FUTURE_MIN) else None
+
+
+def told_ack(rows, b, hostname, login_letter=""):
+    """The newest `told` ack record for broadcast b by this host (or, with a login letter, any host on that login), else None."""
+    best = None
+    for r in rows:
+        if r.get("kind") != "ack" or r.get("id") != b["id"] or r.get("state") != "told":
+            continue
+        mine = str(r.get("host", "")).lower() == hostname or (login_letter and str(r.get("login", "")).upper() == login_letter)
+        if mine and _ack_dt(r) and (best is None or r["t"] > best["t"]):
+            best = r
+    return best
+
+
+def told_expired(rows, b, hostname=None, at=None):
+    """The newest told ack of this host when it is older than TOLD_TTL_H (the blocker was parked, not cleared), else None."""
+    at = at or now()
+    hostname = hostname or host()
+    a = told_ack(rows, b, hostname, login() if b.get("aud") == "top" and hostname == host() else "")
+    if a and (at - _ack_dt(a)).total_seconds() > TOLD_TTL_H * 3600:
+        return a
+    return None
+
+
+def needs_action(rows, b, hostname=None, at=None):
+    """True when this host owes the broadcast an action: nothing acked, or acked only `told` more than TOLD_TTL_H ago."""
+    st = own_state(rows, b) if hostname is None else ack_state(rows, b["id"], hostname)
+    return st == "none" or (st == "told" and told_expired(rows, b, hostname, at) is not None)
+
+
+def pending(rows, hostname, at=None):
+    """HIGH broadcasts for `hostname` that need action (state none, or told expired): [{id, host, state, since, hours, cmd, note}].
+    `since` is when it began to need action (broadcast time, or told-ack time + TOLD_TTL_H); `hours` = how long it has waited since."""
+    at = at or now()
+    out = []
+    for b in high_open(rows):
+        if b.get("to") not in ("all", hostname) or not needs_action(rows, b, hostname, at):
+            continue
+        exp = told_expired(rows, b, hostname, at)
+        t0 = (_ack_dt(exp) + timedelta(hours=TOLD_TTL_H)) if exp else (_t(b) or at)
+        out.append({"id": b["id"], "host": hostname, "state": "expired-told" if exp else "none", "since": t0.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "hours": round(max(0.0, (at - t0).total_seconds() / 3600), 1), "cmd": b.get("cmd", ""),
+                    "note": (exp or {}).get("note", "")})
+    return out
+
+
+def hosts_active(rows, hours=24, at=None):
+    """Hosts with any record in the last `hours` (a future-stamped record does not count)."""
+    at = at or now()
+    since, lim = stamp(at - timedelta(hours=hours)), stamp(at + timedelta(minutes=FUTURE_MIN))
+    out = {str(r.get("host") or str(r.get("from", "")).split("/")[0]).lower() for r in rows if since <= r.get("t", "") <= lim}
+    out.discard("")
+    return out
+
+
 def own_state(rows, b):
     """This host's ack state for broadcast b; for an `--audience top` broadcast an ack from ANY host on my login (env MTS_LOGIN)
     counts too, so two sessions or machines on one login do not both act (EXHAUST_PHASE.md: one actor per login)."""
@@ -486,6 +550,11 @@ def targets(rows, b):
     return {b["to"]} if b.get("to") not in (None, "all") else hosts_seen(rows) | {host()}
 
 
+def told_flag(b):
+    """The ack-told suffix: a broadcast with a --cmd needs a note naming the blocker."""
+    return ' --note "<what blocks it here>"' if b.get("cmd") else ""
+
+
 def action_text(b):
     cmd = b.get("cmd") or b.get("text", "")
     return "ACTION FOR THIS MACHINE (%s): %s" % (host(), cmd)
@@ -503,16 +572,23 @@ def action_block(rows, ev):
         if b.get("to") not in ("all", host()) or (b.get("aud") == "top" and is_worker_env()):
             continue
         st = own_state(rows, b)
-        if st == "done" or (st == "told" and ev != "SessionStart"):
+        old = told_expired(rows, b) if st == "told" else None
+        if st == "done" or (st == "told" and ev != "SessionStart" and not old):
             continue
-        if st == "told":
+        if st == "told" and not old:
             out.append("[MTS reminder %s HIGH %s] this machine was told, not yet confirmed done: %s (when it ran: python scripts/dev/mts_signal.py ack %s done)"
                        % (DOT, b["id"], b.get("cmd") or b.get("text", ""), b["id"]))
             continue
         out.append("[MTS ACTION REQUIRED %s prio HIGH %s %s from %s at %s] %s" % (DOT, DOT, b["id"], b.get("from", "?"), b["t"][9:13] + "Z", b.get("text", "")))
+        if old:
+            hrs = (now() - _ack_dt(old)).total_seconds() / 3600
+            out.append("TOLD %.0f h AGO, NOT DONE (told expires after %d h). Blocker noted then: %s. Clear that blocker or run the command, then: "
+                       'python scripts/dev/mts_signal.py ack %s done; still blocked: ack %s told --note "<blocker>".'
+                       % (hrs, TOLD_TTL_H, old.get("note") or "(none given)", b["id"], b["id"]))
         out.append('Do now, before the current task: put this as the FIRST line of your reply to the operator: "%s". Then run: '
-                   "python scripts/dev/mts_signal.py ack %s told. When the operator confirms it ran (or a check passes): ack %s done."
-                   % (action_text(b), b["id"], b["id"]))
+                   "python scripts/dev/mts_signal.py ack %s told%s. When the operator confirms it ran (or a check passes): ack %s done. "
+                   "Told is parked only %d h, then this returns."
+                   % (action_text(b), b["id"], told_flag(b), b["id"], TOLD_TTL_H))
     return "\n".join(out)
 
 
@@ -646,7 +722,7 @@ def stop_check(payload):
     if not (h / ".git").exists():
         return ""
     rows = load(h)
-    pending = [b for b in high_open(rows) if b.get("to") in ("all", host()) and not (b.get("aud") == "top" and is_worker_env()) and own_state(rows, b) == "none"]
+    pending = [b for b in high_open(rows) if b.get("to") in ("all", host()) and not (b.get("aud") == "top" and is_worker_env()) and needs_action(rows, b)]
     if not pending:
         return ""
     reply = reply_text(payload)
@@ -654,7 +730,7 @@ def stop_check(payload):
         return ""
     reason = ("[MTS ACTION REQUIRED] unacked HIGH broadcast for this machine and your reply does not tell the operator. Reply again with "
               + " ; ".join('"%s" as the FIRST line (%s)' % (action_text(b), b["id"]) for b in pending)
-              + ", then run: " + " ; ".join("python scripts/dev/mts_signal.py ack %s told" % b["id"] for b in pending) + ".")
+              + ", then run: " + " ; ".join("python scripts/dev/mts_signal.py ack %s told%s" % (b["id"], told_flag(b)) for b in pending) + ".")
     return json.dumps({"decision": "block", "reason": reason}, ensure_ascii=False)
 
 
@@ -865,6 +941,27 @@ def main(argv):
             if bid:
                 print("id %s (HIGH): every host shows it on every prompt until it acks. Follow it with: python scripts/dev/mts_signal.py acks %s" % (bid, bid))
         return 0 if ok else 1
+    if cmd == "pending":
+        import argparse
+        ap = argparse.ArgumentParser(prog="mts_signal.py pending")
+        ap.add_argument("--host", default="")
+        ap.add_argument("--json", action="store_true")
+        a = ap.parse_args(argv[1:])
+        h = ensure()
+        if h is None:
+            print("no origin")
+            return 1
+        rows = load(h)
+        hs = [a.host.lower()] if a.host else sorted(hosts_active(rows) | {host()})
+        res = [p for t in hs for p in pending(rows, t)]
+        if a.json:
+            print(json.dumps(res))
+        else:
+            for p in res:
+                print("%s %-16s %-12s waiting %.1f h  %s" % (p["id"], p["host"], p["state"], p["hours"], p["note"]))
+            if not res:
+                print("nothing pending")
+        return 0
     if cmd == "ack":
         import argparse
         ap = argparse.ArgumentParser(prog="mts_signal.py ack")
@@ -876,8 +973,13 @@ def main(argv):
         if h is None:
             print("no origin")
             return 1
-        if a.id not in {b["id"] for b in high_open(load(h))}:
+        known = {b["id"]: b for b in high_open(load(h))}
+        if a.id not in known:
             print("unknown or expired broadcast id %s (python scripts/dev/mts_signal.py acks)" % a.id)
+            return 2
+        if a.state == "told" and known[a.id].get("cmd") and not clean(a.note).strip():
+            print("ack %s told needs --note naming the blocker (what stops the command running here); told expires after %d h. "
+                  "Or run the command and ack done." % (a.id, TOLD_TTL_H))
             return 2
         ok = send("ack %s %s %s" % (a.id, a.state, a.note), kind="ack", extra={"id": a.id, "state": a.state, "host": host(), "login": login(), "note": clean(a.note, 100)})
         print("ack %s %s (%s)" % (a.id, a.state, host()) if ok else "ack NOT sent (push failed)")

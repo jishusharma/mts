@@ -344,7 +344,7 @@ class SignalTest(unittest.TestCase):
     def test_told_is_a_reminder_once_per_session_done_is_silent(self):
         bid = self.high()
         self.machine("jis-nb", "pro")
-        self.assertEqual(S.main(["ack", bid, "told"]), 0)
+        self.assertEqual(S.main(["ack", bid, "told", "--note", "blocked"]), 0)
         self.assertNotIn("ACTION REQUIRED", self.ups())
         start = S.handle(self.payload("SessionStart", sid="new", source="startup"))
         self.assertIn("[MTS reminder", start)
@@ -355,6 +355,66 @@ class SignalTest(unittest.TestCase):
         self.assertNotIn("reminder", quiet)                                     # done is silent; only the LOGIN line remains
         self.assertNotIn("ACTION", quiet)
 
+    def ack_back(self, bid, state, back_min, note=""):
+        """Ack as the current machine, stamped back_min minutes in the past."""
+        orig = S.now
+        S.now = lambda: orig() - timedelta(minutes=back_min)
+        try:
+            args = ["ack", bid, state] + (["--note", note] if note else [])
+            self.assertEqual(S.main(args), 0)
+        finally:
+            S.now = orig
+
+    def test_told_expires_after_ttl_and_is_loud_with_the_blocker_note(self):
+        bid = self.high()
+        self.machine("jis-nb", "pro")
+        self.ack_back(bid, "told", 60, "needs admin shell")
+        self.assertNotIn("ACTION REQUIRED", self.ups())                       # inside the TTL: quiet
+        self.machine("jis-lab", "x")
+        self.ack_back(bid, "told", S.TOLD_TTL_H * 60 + 30, "needs admin shell")
+        loud = self.ups()
+        self.assertIn("ACTION REQUIRED", loud)                                # every prompt, not only SessionStart
+        self.assertIn("h AGO, NOT DONE", loud)
+        self.assertIn("needs admin shell", loud)
+        self.assertIn("ACTION REQUIRED", S.handle(self.payload("UserPromptSubmit", sid="s1")))
+        self.assertEqual(json.loads(S.handle(self.payload("Stop", last_assistant_message="all done")))["decision"], "block")
+        self.assertEqual(S.main(["ack", bid, "done"]), 0)
+        self.assertNotIn("ACTION REQUIRED", self.ups())
+        self.assertEqual(S.handle(self.payload("Stop", last_assistant_message="all done")), "")
+
+    def test_told_on_a_cmd_broadcast_needs_a_note_but_done_does_not(self):
+        bid = self.high()
+        self.machine("jis-nb", "pro")
+        self.assertEqual(S.main(["ack", bid, "told"]), 2)
+        self.assertEqual(S.main(["ack", bid, "told", "--note", "   "]), 2)
+        self.assertEqual(S.ack_state(S.load(S.ensure()), bid, "jis-nb"), "none")
+        self.assertEqual(S.main(["ack", bid, "told", "--note", "no admin rights"]), 0)
+        self.assertEqual(S.main(["ack", bid, "done"]), 0)
+        self.machine("jis-nuc", "sharma")                                     # a broadcast without --cmd keeps the old rule
+        S.main(["broadcast", "fyi", "--prio", "high"])
+        nid = [r for r in S.load(S.ensure()) if r.get("prio") == "high"][-1]["id"]
+        self.machine("jis-nb", "pro")
+        self.assertEqual(S.main(["ack", nid, "told"]), 0)
+
+    def test_pending_lists_none_and_expired_told_per_host(self):
+        import contextlib
+        import io
+        bid = self.high(back_min=7 * 60)
+        self.machine("jis-lenovo", "live")
+        S.send("loop alive", kind="note")                                     # seen, never acks
+        self.machine("jis-nb", "pro")
+        self.ack_back(bid, "told", 10 * 60, "no admin")
+        rows = S.load(S.ensure())
+        got = {p["host"]: p for p in (q for h in ("jis-lenovo", "jis-nb") for q in S.pending(rows, h))}
+        self.assertEqual(got["jis-lenovo"]["state"], "none")
+        self.assertGreater(got["jis-lenovo"]["hours"], 6.5)
+        self.assertEqual(got["jis-nb"]["state"], "expired-told")
+        self.assertEqual(got["jis-nb"]["note"], "no admin")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            self.assertEqual(S.main(["pending", "--host", "jis-lenovo", "--json"]), 0)
+        self.assertEqual(json.loads(buf.getvalue())[0]["id"], bid)
+
     def test_acks_table_and_sender_status(self):
         import contextlib
         import io
@@ -364,7 +424,7 @@ class SignalTest(unittest.TestCase):
         self.assertEqual(S.main(["ack", bid, "done", "--note", "ok"]), 0)
         self.machine("jis-lab", "x")
         S.send("hello", kind="note")
-        self.assertEqual(S.main(["ack", bid, "told"]), 0)
+        self.assertEqual(S.main(["ack", bid, "told", "--note", "blocked"]), 0)
         self.machine("jis-nuc", "sharma")
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
@@ -402,7 +462,7 @@ class SignalTest(unittest.TestCase):
             {"type": "assistant", "message": {"content": [{"type": "tool_use", "name": "Bash"}]}}]), encoding="utf-8", newline="\n")
         self.assertEqual(stop(transcript_path=str(tp)), "")
         self.assertEqual(json.loads(stop(transcript_path=str(self.tmp / "none.jsonl")))["decision"], "block")
-        self.assertEqual(S.main(["ack", bid, "told"]), 0)
+        self.assertEqual(S.main(["ack", bid, "told", "--note", "blocked"]), 0)
         self.assertEqual(stop(last_assistant_message="all done"), "")
 
     def test_stop_ignores_normal_broadcasts(self):
