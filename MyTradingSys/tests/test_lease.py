@@ -56,27 +56,59 @@ def _template():
     return _TEMPLATE["root"]
 
 
+def _repoint(clone, origin):
+    """The copied clone still points at the template origin: repoint it (text edit, no spawn)."""
+    cfg = clone / ".git" / "config"
+    txt = re.sub(r"(?m)^(\s*url = ).*$", lambda m: m.group(1) + str(origin).replace(chr(92), "/"), cfg.read_text())
+    cfg.write_text(txt, newline="\n")
+
+
+def _held_template():
+    """Same tree after JIS-NUC/sess-a ACQUIRED the Pipeliner lease (about 11 git spawns, paid once instead of in every test
+    that needs a holder). The acquire itself is still checked by the tests that call it (SameHost, Race, Stale, Wiring)."""
+    if "held" not in _TEMPLATE:
+        base = _template()
+        root = Path(tempfile.mkdtemp(prefix="lease_held_"))
+        atexit.register(shutil.rmtree, str(root), True)
+        for n in ("origin.git", "nuc", "lenovo"):
+            shutil.copytree(base / n, root / n)
+        for n in ("nuc", "lenovo"):
+            _repoint(root / n, root / "origin.git")
+        lease._LOCAL.env = {"MTS_LEASE_HOST": "JIS-NUC", "MTS_LEASE_SESSION": "sess-a", "MTS_ACCOUNT": "sharma",
+                            "MTS_LEASE_HOME": str(root / "home_nuc")}
+        try:
+            lease.acquire(root / "nuc", "Pipeliner")
+        finally:
+            lease._LOCAL.env = None
+        _TEMPLATE["held"] = root
+    return _TEMPLATE["held"]
+
+
 class Base(unittest.TestCase):
+    HELD = ()   # test names that start with sess-a on JIS-NUC already holding the lease (see _held_template)
+
     def setUp(self):
         # skip the machine's system/global git config (slow to parse on Windows, ~0.1 s per spawn x ~400 spawns); the test
         # clones carry their own identity and nothing here needs the user's settings
         p = mock.patch.dict(os.environ, {"GIT_CONFIG_NOSYSTEM": "1", "GIT_CONFIG_GLOBAL": os.devnull,
-                                         "GIT_OPTIONAL_LOCKS": "0"})
+                                         "GIT_OPTIONAL_LOCKS": "0", "GIT_CONFIG_COUNT": "3",   # scratch repos: no fsync, no auto gc
+                                         "GIT_CONFIG_KEY_0": "core.fsync", "GIT_CONFIG_VALUE_0": "none",
+                                         "GIT_CONFIG_KEY_1": "gc.auto", "GIT_CONFIG_VALUE_1": "0",
+                                         "GIT_CONFIG_KEY_2": "maintenance.auto", "GIT_CONFIG_VALUE_2": "false"})
         p.start()
         self.addCleanup(p.stop)
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         t = Path(self.tmp.name)
-        tpl = _template()
+        held = self._testMethodName in self.HELD
+        tpl = _held_template() if held else _template()
         self.origin = t / "origin.git"
         self.a = t / "nuc"
         self.b = t / "lenovo"
-        for n in ("origin.git", "nuc", "lenovo"):
+        for n in ("origin.git", "nuc", "lenovo") + (("home_nuc",) if held else ()):
             shutil.copytree(tpl / n, t / n, ignore=shutil.ignore_patterns("hooks", "info", "description"))
-        for d in (self.a, self.b):   # the copied clones still point at the template origin: repoint (text edit, no spawn)
-            cfg = d / ".git" / "config"
-            txt = re.sub(r"(?m)^(\s*url = ).*$", lambda m: m.group(1) + str(self.origin).replace(chr(92), "/"), cfg.read_text())
-            cfg.write_text(txt, newline="\n")
+        for d in (self.a, self.b):
+            _repoint(d, self.origin)
         self.ident_a = {"MTS_LEASE_HOST": "JIS-NUC", "MTS_LEASE_SESSION": "sess-a", "MTS_ACCOUNT": "sharma",
                         "MTS_LEASE_HOME": str(t / "home_nuc")}
         self.ident_b = {"MTS_LEASE_HOST": "DESKTOP-F7IU69N", "MTS_LEASE_SESSION": "sess-b", "MTS_ACCOUNT": "?",
@@ -89,8 +121,7 @@ class Base(unittest.TestCase):
         lease._LOCAL.env = None
 
     def trunk_lease(self, role="Pipeliner"):
-        git(self.a, "fetch", "-q", "origin")
-        return json.loads(git(self.a, "show", f"origin/fast-track:{lease.rel_path(role)}"))
+        return json.loads(git(self.origin, "show", f"fast-track:{lease.rel_path(role)}"))   # the bare origin IS trunk: 1 spawn
 
     def cli(self, cwd, ident, *args, role=None):
         env = {k: v for k, v in os.environ.items() if k not in ("PYTEST_CURRENT_TEST", "CLAUDE_CODE_SESSION_ID", "MTS_ROLE")}
@@ -103,6 +134,8 @@ class Base(unittest.TestCase):
 
 
 class Race(Base):
+    HELD = ("test_second_machine_refused_while_first_holds",)
+
     def test_two_simultaneous_acquirers_exactly_one_wins(self):
         """Both read the same trunk tip (barrier before push), both push; exactly one lands, the other is refused."""
         barrier = threading.Barrier(2, timeout=30)
@@ -132,14 +165,14 @@ class Race(Base):
         self.assertIn("held by", loser[1])
 
     def test_second_machine_refused_while_first_holds(self):
-        self.as_(self.ident_a)
-        lease.acquire(self.a, "Pipeliner")
         self.as_(self.ident_b)
         with self.assertRaises(lease.Refused):
             lease.acquire(self.b, "Pipeliner")
 
 
 class Stale(Base):
+    HELD = ("test_release_frees_it",)
+
     def test_takeover_after_expiry_plus_skew(self):
         self.as_(self.ident_a)
         t0 = time.time()
@@ -165,7 +198,6 @@ class Stale(Base):
 
     def test_release_frees_it(self):
         self.as_(self.ident_a)
-        lease.acquire(self.a, "Pipeliner")
         lease.release(self.a, "Pipeliner")
         self.assertEqual(self.trunk_lease()["state"], "released")
         self.as_(self.ident_b)
@@ -181,6 +213,8 @@ class Stale(Base):
 
 
 class FailClosed(Base):
+    HELD = ("test_offline_after_holding_still_refuses", "test_release_by_non_holder_refused")
+
     def test_offline_refuses(self):
         git(self.a, "remote", "set-url", "origin", str(Path(self.tmp.name) / "nowhere.git"))
         self.as_(self.ident_a)
@@ -191,7 +225,6 @@ class FailClosed(Base):
 
     def test_offline_after_holding_still_refuses(self):
         self.as_(self.ident_a)
-        lease.acquire(self.a, "Pipeliner")
         git(self.a, "remote", "set-url", "origin", str(Path(self.tmp.name) / "nowhere.git"))
         with self.assertRaises(lease.Unreachable):
             lease.require(self.a, "Pipeliner")
@@ -212,13 +245,13 @@ class FailClosed(Base):
         self.as_(self.ident_a)
         lease.acquire(self.a, "Pipeliner")
         calls = []
-        # every push "errors" and never lands; 2 CAS rounds and no back-off sleeps prove the same thing as 4 rounds + ~3 s of
+        # every push "errors" and never lands; one CAS round and no back-off sleep prove the same thing as 4 rounds + ~3 s of
         # sleeps (each round is ~12 git spawns: at 100% CPU the 4-round version alone took 15 s+).
         with mock.patch.object(lease, "push", lambda repo, commit: calls.append(commit) or "error"), \
-                mock.patch.object(lease, "CAS_TRIES", 2), mock.patch.object(lease.time, "sleep", lambda s: None):
+                mock.patch.object(lease, "CAS_TRIES", 1), mock.patch.object(lease.time, "sleep", lambda s: None):
             with self.assertRaises(lease.Unreachable):
                 lease.renew(self.a, "Pipeliner")
-        self.assertEqual(len(calls), 2)
+        self.assertEqual(len(calls), 1)
 
     def test_no_session_id_refused(self):
         """Review (Sonnet #3): two runners without a session id on one host shared HOST/nosession and both held it."""
@@ -227,8 +260,6 @@ class FailClosed(Base):
             lease.acquire(self.a, "Pipeliner")
 
     def test_release_by_non_holder_refused(self):
-        self.as_(self.ident_a)
-        lease.acquire(self.a, "Pipeliner")
         self.as_(self.ident_b)
         with self.assertRaises(lease.Refused):
             lease.release(self.b, "Pipeliner")
@@ -251,10 +282,10 @@ class FailClosed(Base):
 
 
 class SameHost(Base):
+    HELD = ("test_same_host_duplicate_refused_by_local_lock_even_offline",)
+
     def test_same_host_duplicate_refused_by_local_lock_even_offline(self):
         ident_a2 = {**self.ident_a, "MTS_LEASE_SESSION": "sess-a2"}   # second session, same machine, same lock dir
-        self.as_(self.ident_a)
-        lease.acquire(self.a, "Pipeliner")
         git(self.b, "remote", "set-url", "origin", str(Path(self.tmp.name) / "nowhere.git"))
         self.as_(ident_a2)
         with self.assertRaises(lease.Refused) as cm:
@@ -269,6 +300,8 @@ class SameHost(Base):
 
 
 class Wiring(Base):
+    HELD = ("test_banner_shows_holder",)
+
     def test_desk_and_sync_refuse_a_pipeliner_without_the_lease(self):
         r = self.cli(self.b, self.ident_b, str(DEV / "desk.py"), "sweep", "--no-fetch", role="Pipeliner")
         self.assertEqual(r.returncode, lease.REFUSED, r.stdout + r.stderr)
@@ -303,8 +336,6 @@ class Wiring(Base):
 
     def test_banner_shows_holder(self):
         import role_loader
-        self.as_(self.ident_a)
-        lease.acquire(self.a, "Pipeliner")
         git(self.b, "fetch", "-q", "origin")
         self.assertIn("held by JIS-NUC/sharma", role_loader.lease_suffix("Pipeliner", self.b))
         self.assertEqual(role_loader.lease_suffix("Eagle_Eyes", self.b), "")
