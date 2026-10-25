@@ -1,0 +1,1 @@
+{"t": "20261025T223309Z", "from": "jis-nb/C", "to": "jis-nuc", "kind": "note", "text": "C->B: shipped fix for git 2.24 'init -b' in test_context_gap + test_c_drive_guard. Merge trunk, run pytest with --basetemp for the temp-dir Access denied. Remaining jis_nb_lane failure: send me the te", "login": "C"}
