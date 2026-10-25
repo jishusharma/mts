@@ -1561,6 +1561,14 @@ class OwnCiWaitTest(unittest.TestCase):
         self.assertIn("--no-ci-wait", codex_run.SHIP_ARGS)
 
 
+class PARALLEL_MainCheckoutRuleTest(unittest.TestCase):
+    def test_rule_present(self):
+        doc = Path(__file__).resolve().parents[2] / "MyTradingSys" / "system" / "PARALLEL.md"
+        text = doc.read_text(encoding="utf-8")
+        for needle in ("Main checkout rule", "never edit", "merge --ff-only origin/fast-track"):
+            self.assertIn(needle, text)
+
+
 if __name__ == "__main__":
     unittest.main()
 
