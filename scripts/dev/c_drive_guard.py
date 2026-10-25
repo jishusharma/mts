@@ -32,9 +32,6 @@ from pathlib import Path
 
 TEMP = Path(os.environ.get("MTS_GUARD_TEMP") or os.path.expandvars(r"%LOCALAPPDATA%\Temp"))
 LOG = Path(os.environ.get("MTS_GUARD_LOG") or os.path.expandvars(r"%LOCALAPPDATA%\MTS\logs\c_drive_guard.log"))
-LOCK = LOG.parent / "c_drive_guard.lock"
-NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)   # a console-less parent otherwise gives each child python a visible window
-LOW_GAP_S = 3600
 PREFIXES = ("tmp", "mts_", "r2_", "rmd_", "kill_switch_cli_", "staged_tests_", "gate_timing_test_", "aibridge_selftest_",
             "pytest-of-", "gate_budget_test_", "dsa_tpl_", "e2e_a2_", "dsa-boot-", "cicd_ps_", "lab_query_", "soak6_")
 KEEP_NAMES = ("mts_roles", "mts_host_health", "mts_gate_slots", "mts_relay")
@@ -150,6 +147,64 @@ def reason(path):
                                                                       next(x for x in PREFIXES if name.startswith(x)), TEMP_AGE_H)
 
 
+NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)   # every child: no console window on the operator's screen, ever
+LOCK = LOG.parent / "c_drive_guard.lock"                 # one copy per host and user (LOG lives under LOCALAPPDATA)
+LOCK_STALE_H = 2
+
+
+def pid_alive(pid):
+    """True when process `pid` exists. Windows: OpenProcess (os.kill(pid, 0) would send CTRL_C_EVENT there)."""
+    if pid <= 0:
+        return False
+    if os.name == "nt":
+        import ctypes
+        h = ctypes.windll.kernel32.OpenProcess(0x1000, False, pid)
+        if not h:
+            return False
+        code = ctypes.c_ulong()
+        ok = ctypes.windll.kernel32.GetExitCodeProcess(h, ctypes.byref(code))
+        ctypes.windll.kernel32.CloseHandle(h)
+        return bool(ok) and code.value == 259
+    try:
+        os.kill(pid, 0)
+        return True
+    except OSError:
+        return False
+
+
+def take_lock():
+    """Create the lock with O_EXCL and our pid. A lock whose pid is dead (or older than LOCK_STALE_H) is stale: replaced once.
+    Returns True when we hold it, False when another live copy does."""
+    LOCK.parent.mkdir(parents=True, exist_ok=True)
+    for _ in range(2):
+        try:
+            fd = os.open(str(LOCK), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            os.write(fd, str(os.getpid()).encode())
+            os.close(fd)
+            return True
+        except FileExistsError:
+            try:
+                pid = int(LOCK.read_text(encoding="utf-8").strip() or 0)
+                age_h = (time.time() - LOCK.stat().st_mtime) / 3600
+            except (OSError, ValueError):
+                pid, age_h = 0, 99
+            if pid_alive(pid) and age_h < LOCK_STALE_H:
+                return False
+            try:
+                LOCK.unlink()
+            except OSError:
+                return False
+    return False
+
+
+def drop_lock():
+    try:
+        if LOCK.read_text(encoding="utf-8").strip() == str(os.getpid()):
+            LOCK.unlink()
+    except OSError:
+        pass
+
+
 def sync_script():
     return Path(__file__).resolve().parent / "sync.py"
 
@@ -159,7 +214,7 @@ def run_tidy(apply):
     try:
         r = subprocess.run([sys.executable, str(sync_script()), "tidy"] + (["--apply"] if apply else []),
                            capture_output=True, text=True, timeout=600, cwd=str(Path(__file__).resolve().parents[2]),
-                           stdin=subprocess.DEVNULL, creationflags=NO_WINDOW)
+                           creationflags=NO_WINDOW)
         return (r.stdout or "").splitlines()
     except (OSError, subprocess.SubprocessError):
         return []
@@ -241,7 +296,7 @@ def main_checkout():
     """The primary checkout of this repo (parent of the shared .git dir), or None. Works from any worktree on any host."""
     try:
         r = subprocess.run(["git", "-C", str(repo_root()), "rev-parse", "--path-format=absolute", "--git-common-dir"],
-                           capture_output=True, text=True, timeout=30)
+                           capture_output=True, text=True, timeout=30, creationflags=NO_WINDOW)
         common = Path(r.stdout.strip())
         return common.parent if r.returncode == 0 and common.name == ".git" else None
     except (OSError, subprocess.SubprocessError):
@@ -257,7 +312,7 @@ def main_checkout_note(pull=True):
         return "main checkout unknown"
 
     def git(*a, t=120):
-        return subprocess.run(["git", "-C", str(main), *a], capture_output=True, text=True, timeout=t)
+        return subprocess.run(["git", "-C", str(main), *a], capture_output=True, text=True, timeout=t, creationflags=NO_WINDOW)
     try:
         git("fetch", "--quiet", "origin", "fast-track")
         behind = git("rev-list", "--count", "HEAD..origin/fast-track").stdout.strip() or "?"
@@ -306,63 +361,15 @@ def touch_stamp():
         pass
 
 
-def low_due(now=None):
-    """Low-disk path: True when no run started in the last LOW_GAP_S (every session start was spawning one)."""
-    try:
-        return (now or time.time()) - STAMP.stat().st_mtime > LOW_GAP_S
-    except OSError:
-        return True
-
-
-def take_lock():
-    """One --apply run per host: O_EXCL lock file holding our pid; a lock whose pid is gone is replaced. False = another run holds it."""
-    for _ in range(2):
-        try:
-            fd = os.open(str(LOCK), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-            os.write(fd, str(os.getpid()).encode())
-            os.close(fd)
-            return True
-        except FileExistsError:
-            try:
-                pid = int(LOCK.read_text(encoding="utf-8").strip() or "0")
-            except (OSError, ValueError):
-                pid = 0
-            if pid and pid_alive(pid):
-                return False
-            try:
-                LOCK.unlink()
-            except OSError:
-                return False
-        except OSError:
-            return True        # no lock dir: run unlocked rather than never
-    return False
-
-
-def pid_alive(pid):
-    if os.name == "nt":
-        r = subprocess.run(["tasklist", "/FI", f"PID eq {pid}", "/NH"], capture_output=True, text=True,
-                           stdin=subprocess.DEVNULL, creationflags=NO_WINDOW)
-        return str(pid) in (r.stdout or "")
-    try:
-        os.kill(pid, 0)
-        return True
-    except OSError:
-        return False
-
-
-def release_lock():
-    try:
-        if LOCK.read_text(encoding="utf-8").strip() == str(os.getpid()):
-            LOCK.unlink()
-    except OSError:
-        pass
-
-
 def start_apply_detached():
-    flags = getattr(subprocess, "DETACHED_PROCESS", 0) | NO_WINDOW
+    """Detached --apply run. CREATE_NO_WINDOW only: with DETACHED_PROCESS the child has no console and every console program
+    it starts (git, python) opens its own visible window (operator 2026-10-25). Output goes to a log, never a console."""
+    flags = NO_WINDOW | getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0)
     try:
-        subprocess.Popen([sys.executable, str(Path(__file__).resolve()), "--apply"], creationflags=flags,
-                         stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, close_fds=True)
+        LOG.parent.mkdir(parents=True, exist_ok=True)
+        with open(LOG.parent / "c_drive_guard.out", "ab") as out:
+            subprocess.Popen([sys.executable, str(Path(__file__).resolve()), "--apply"], creationflags=flags,
+                             stdin=subprocess.DEVNULL, stdout=out, stderr=out, close_fds=True)
     except OSError:
         pass
 
@@ -456,15 +463,12 @@ def main(argv):
                 touch_stamp()
                 start_apply_detached()
             return 0
-        due = low_due()
-        msg = "LOW: " + ", ".join(f"{d} {g:.1f} GB free" for d, g in low) + f" (< {limit:g}); " + (
-            "c_drive_guard --apply started in the background." if due else "c_drive_guard ran in the last hour.")
+        touch_stamp()
+        msg = "LOW: " + ", ".join(f"{d} {g:.1f} GB free" for d, g in low) + f" (< {limit:g}); c_drive_guard --apply started in the background."
         for p, mb in runaways():
             msg += f" RUNAWAY task output {mb:.0f} MB: {p}"
         print(msg)
-        if due:
-            touch_stamp()
-            start_apply_detached()
+        start_apply_detached()
         return 0
     if argv[:1] == ["plan"]:
         rows = plan()
@@ -487,12 +491,12 @@ def main(argv):
         print(f"RUNAWAY task output {mb:.0f} MB (stop its process, then delete): {p}")
     if apply:
         if not take_lock():
-            print("another c_drive_guard --apply is running on this host; skipped")
+            print("another c_drive_guard run holds %s; exiting" % LOCK)
             return 0
         try:
             n, freed, trees = apply_all("apply")
         finally:
-            release_lock()
+            drop_lock()
         print(f"pruned {n} temp entries, {freed / 1e9:.2f} GB; retired {trees} worktrees")
         print(f"C: free now {free_gb():.2f} GB")
         return 0
