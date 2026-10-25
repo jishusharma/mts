@@ -6,7 +6,7 @@
   "window_resets": 1792962879,
   "window_used": 0
  },
- "at": "2026-10-25T16:14:50Z",
+ "at": "2026-10-25T16:37:46Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,9 +20,24 @@
   "astra_runs": 0,
   "week_pts": 0.0,
   "window_pts": 0.0,
-  "window_runs": 0
+  "window_runs": 1
  },
  "runs": [
+  {
+   "at": "2026-10-25T16:37:20Z",
+   "card": "trust-recheck-gpt-formulas-rederive",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "INCOMPLETE",
+   "seconds": 17,
+   "tokens_out": 524,
+   "tokens_total": 105596,
+   "tokens_uncached": 19312,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-25T16:14:25Z",
    "card": "trust-recheck-gap-g1-power-mde-helper",
@@ -155,21 +170,6 @@
    "tokens_out": 20309,
    "tokens_total": 3086569,
    "tokens_uncached": 86932,
-   "week_pts": 0.0,
-   "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-21T04:39:23Z",
-   "card": "lab-formula-spec-recount",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "host health: ok\nsync: merge of origin/fast-track conflicts; resolve, `git commit`, then run ship again.\nAuto-merging MyTradingSys/system/lane_state.json\nCONFLIC",
-   "outcome": "SHIP_FAILED",
-   "seconds": 82,
-   "tokens_out": 4474,
-   "tokens_total": 977086,
-   "tokens_uncached": 61252,
    "week_pts": 0.0,
    "window_pts": 1.0
   }
