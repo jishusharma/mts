@@ -11,7 +11,7 @@ import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * T3 ruling (MyTradingSys/research/T3_STOP_RULING_2026-10-01.md), provenance rows A03/A04: no 0.2% fallback stop
+ * T3 ruling (MyTradingSys/research/_archive/loose_2026-10/T3_STOP_RULING_2026-10-01.md), provenance rows A03/A04: no 0.2% fallback stop
  * and no 0.1% minimum stop floor; matches the Python path (no swing-based stop -> candidate rejected).
  * Scenario: short at daily_vah 100.0 (price_vs_poc above -> short only), floor pinned to 1.25.
  * Fee model (B070): cost = 2*0.0005*100 = 0.1; net = (reward - 0.1) / (risk + 0.1).
