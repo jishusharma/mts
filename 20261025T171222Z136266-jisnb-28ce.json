@@ -1,0 +1,1 @@
+{"t": "20261025T171222Z", "from": "jis-nb/A", "to": "jis-nb", "kind": "note", "text": "GPT lane NUC: killed hung leftovers (git-remote-https x2, python lane_health, powershell). Root cause confirmed: .sandbox-bin ACL has WRITE_DAC only for SYSTEM; e-ngineers via the ssh gate is not admi", "login": "A"}
