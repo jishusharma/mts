@@ -30,6 +30,12 @@
   "refined_by": "super-c-design",
   "refreshed": "2026-10-25T22:50:16Z",
   "refs": [],
+  "reroute": {
+    "at": "2026-10-25T23:42:10Z",
+    "desk": "20261025-234210-argon-med-sim-layer-coverage-matrix",
+    "to": "DSA",
+    "why": "credits"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/design_cards_2026-10-26/argon_sim_layer_coverage.md (new file only)"
