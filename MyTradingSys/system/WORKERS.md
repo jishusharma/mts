@@ -23,7 +23,7 @@ Every other file points here. Numbers come from a 5-day transcript count (`worke
 3a. **Haiku for scoped work (operator 2026-10-17: Haiku is underused).** A task is *scoped* when the brief can name the files, the
    exact change or command, and a check that says done (a test, a count, a diff to compare): mechanical edits, lookups, recomputing
    numbers, spec-derived tests, doc and registry upkeep, running a script and reporting. Scoped work goes to a one-use Haiku Agent,
-   not to the session itself and not to Sonnet. Brief = files + change + done check + "stop at 15 turns and report". A session spawns
+   not to the session itself and not to Sonnet. Brief = files + change + done check + "stop at 15 turns and report" + "scratch files, ship and CI-wait logs and temp scripts go to the session scratchpad directory by absolute path, never the worktree (rm is denied there; the repo is public)". A session spawns
    **at most 5 Haiku Agents at a time**; the session reads each result and spot-checks one claim (`git cherry`, a re-run). Needing
    more than 5 in parallel means the work is a wave: make that session a super session (SUPER_SESSION.md), which budgets turns as in
    rule 5. Unscoped or judgment work (design, a bug nobody has located, anything touching live money) is not Haiku work.
