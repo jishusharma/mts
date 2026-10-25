@@ -254,6 +254,9 @@ def fmt_stray(s):
 
 # ---- disk ----
 
+DISK_SCAN_TOTAL_S = 6   # OURS: wall seconds for all folder-size scans of one disk warning (measured 36 s with 7785 temp folders, 2026-10-25)
+
+
 def dir_size(path, budget_s=15):
     end, total = time.monotonic() + budget_s, 0
     for root, dirs, files in os.walk(path):
@@ -309,17 +312,20 @@ def check_disk(repo, temp=None, drive=None, now=None, free=None, size=dir_size):
         why.append(f"free space falling {rate:.1f} GB/h" + (f" (empty in {free_gb / rate:.0f} h)" if rate > 0 else ""))
     lines.append(f"DISK WARN {drive}: " + "; ".join(why))
     rows = []
+    end = time.monotonic() + DISK_SCAN_TOTAL_S   # operator 2026-10-25 (ship under 2 min): the folder-size scan is advice, so it gets one total budget
+    left = lambda: max(0.2, min(5, end - time.monotonic()))   # noqa: E731
     if temp.is_dir():
         for e in os.scandir(temp):
             if e.is_dir(follow_symlinks=False):
-                rows.append((size(e.path, 5), e.path))
+                # past the scan budget a folder is listed unmeasured (size 0): it can still be pruned, it just is not ranked
+                rows.append((size(e.path, left()) if time.monotonic() < end else 0, e.path))
     rows.sort(reverse=True)
     if rows:
         lines.append("  largest in temp: " + "; ".join(f"{p} {b / 1e9:.2f} GB" for b, p in rows[:5]))
     wt = []
     for base in {Path(repo) / ".claude" / "worktrees", *[Path(repo).parent]}:
         if base.name == "worktrees" and base.is_dir():
-            wt += [(size(e.path, 5), e.path) for e in os.scandir(base) if e.is_dir(follow_symlinks=False)]
+            wt += [(size(e.path, left()), e.path) for e in os.scandir(base) if e.is_dir(follow_symlinks=False) and time.monotonic() < end]
     wt.sort(reverse=True)
     if wt:
         lines.append("  largest worktrees: " + "; ".join(f"{p} {b / 1e9:.2f} GB" for b, p in wt[:5])
