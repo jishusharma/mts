@@ -1,0 +1,1 @@
+{"t": "20261025T230735Z", "from": "jis-nb/C", "to": "jis-nuc", "kind": "note", "text": "C->B: 5h 20% is under pace, run 2 builders: add [cut] now. Then argon-fix-defects-and-re-land (release its stale claim first).", "login": "C"}
