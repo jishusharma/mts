@@ -4,6 +4,15 @@
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --help"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-25T16:20:27Z",
+    "misses": 5,
+    "reads": [
+      "extracts/gemini_out/fabio/06R-ebyOhDI_note.md"
+    ],
+    "session": "agent-acda20f04c7896c0d"
+  },
   "created": "2026-10-24T14:21:27Z",
   "depends_on": [],
   "done_when": "one note per id (5) in extracts/gemini_out/fabio/, transcripts fetched or NO CAPTIONS recorded",

@@ -15,13 +15,30 @@
   "id": "trust-recheck-gptb-dev-split-guard",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab gptb-dev-split-guard: DONE (build)",
+      "ref": "34ee7d627280",
+      "utc": "2026-10-16T20:00:56Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "34ee7d627280 lab gptb-dev-split-guard: DONE (build)",
+      "ref": "MyTradingSys/research/layer_lab/dev_split_guard/REPORT.md",
+      "utc": "2026-10-16T20:00:56Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS) 2026-10-23: drafted and T0-checked; reviewer Agent blocked by spawn cap (8/h), so no ACCEPT stamp: needs ONE batched Sonnet reviewer pass (or Lab_Guy for CODEX), then stamp REVIEWED:<date> ACCEPT and tasks.py check. LAB:results CLASS:C2 WEIGHT:CRUCIAL. Raw follow-up from 2026-10-19_lab-trust-tag.md. Audit target, not a trusted premise. No outcome or holdout rerun; no data fetch. Different reviewer vendor than the producer (CODEX/GPT produced it, so Gemini or Claude re-derives). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the report.",
+  "note": "REVIEWED:2026-10-25 ACCEPT after FIX (independent DEV-start source) applied by planner, not re-read (Sonnet reviewer Agent a15133e0, DECISION OURS). DECISION (OURS) 2026-10-23: drafted and T0-checked; reviewer Agent blocked by spawn cap (8/h), so no ACCEPT stamp: needs ONE batched Sonnet reviewer pass (or Lab_Guy for CODEX), then stamp REVIEWED:<date> ACCEPT and tasks.py check. LAB:results CLASS:C2 WEIGHT:CRUCIAL. Raw follow-up from 2026-10-19_lab-trust-tag.md. Audit target, not a trusted premise. No outcome or holdout rerun; no data fetch. Different reviewer vendor than the producer (CODEX/GPT produced it, so Gemini or Claude re-derives). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the report.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-25T15:29:27Z",
   "refs": [
     "MyTradingSys/system/tasks/archive/gptb-dev-split-guard.json",
     "MyTradingSys/research/layer_lab/reports/2026-10-19_lab-trust-tag.md"
@@ -31,6 +48,7 @@
     "MyTradingSys/research/layer_lab/dev_split_guard/event_table.py",
     "MyTradingSys/research/layer_lab/dev_split_guard/test_event_table.py",
     "MyTradingSys/research/layer_lab/dev_split_guard/REPORT.md",
+    "MyTradingSys/research/context_factors_pit_2026-10-16/PRE_REG.md",
     "MyTradingSys/research/layer_lab/reports/2026-10-23_trust-recheck-gptb-dev-split-guard.md"
   ],
   "scope_out": [
@@ -39,13 +57,15 @@
     "live path",
     "data fetch"
   ],
+  "scope_sha": "34ee7d627280",
   "size": "S",
   "sources": [
-    "MyTradingSys/research/volume_2026-10-09/PRE_REG_VOLUME_2026-10-09.md:23 (split dates)"
+    "MyTradingSys/research/volume_2026-10-09/PRE_REG_VOLUME_2026-10-09.md:23 (split dates)",
+    "MyTradingSys/research/context_factors_pit_2026-10-16/PRE_REG.md:104 (independent statement of DEV start 2022-01-01 and end 2024-06-30)"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "Read the spec/report line by line, not the code: REPORT.md (DEV = bar open 2022-01-01..2024-06-30).",
+    "Read the spec line by line, not the code: PRE_REG_VOLUME:23 (DEV = bar open < 2024-07-01) and context_factors_pit PRE_REG.md:104 (DEV start 2022-01-01); the producer REPORT.md is the claim under test, not the spec.",
     "Re-derive the keep/drop decision for 3 boundary rows (2024-06-30 23:00 kept, 2024-07-01 00:00 dropped, missing timestamp fails closed) with your own short script from the written definition and compare; a difference is a MISMATCH finding with file:line, settled by calculation not vote.",
     "Read MyTradingSys/research/layer_lab/dev_split_guard/test_event_table.py: would it fail on a broken implementation? Mutate one line in a scratch copy, run, record; leave the real file unchanged.",
     "Write the report: reviewer vendor and model, the numbers, MATCH or MISMATCH per number, tag proposal VERIFIED-C2 or DISPUTED."
