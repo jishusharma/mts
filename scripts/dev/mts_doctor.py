@@ -162,7 +162,7 @@ SHIP_MAX_S = 120            # OURS: the operator's 2-minute ship; WARN when the 
 HOOKS_BEHIND_MAX = 50       # OURS
 DISK_MIN_GB = 15            # OURS
 HOOK_NAMES = ("role_loader", "ci_watch")
-CHECK_NAMES = ("SIZE-HEADROOM", "CI-REVERT", "SHIP-TIME", "HOOK-REG", "DISK", "CONTEXT-GAP", "WAITING-ON-OPERATOR")
+CHECK_NAMES = ("SIZE-HEADROOM", "CI-REVERT", "SHIP-TIME", "HOOK-REG", "DISK", "CONTEXT-GAP", "WAITING-ON-OPERATOR", "BROADCAST")
 
 
 def _load(path, name):
@@ -373,6 +373,32 @@ def waiting_on_operator(repo, now=None, questions=None):
     return "WARN", "; ".join(parts) + f" | fix: {WAIT_FIX}"
 
 
+BROADCAST_WARN_H = 6     # OURS: a HIGH broadcast needing action (never acked, or `told` expired) on a recently seen host this long = WARN
+BROADCAST_SEEN_H = 24
+
+
+def broadcast_check(repo, rows=None, now=None):
+    """WARN when a host seen in the last 24 h has a HIGH broadcast at `none` or expired `told` for over 6 h (operator 2026-10-25:
+    broadcasts are only delivered by Claude prompt hooks, so a host without a session, like the live Lenovo, never acked one).
+    rows = mts_signal records (default: fetched from the signals branch). Names host and id; `aud top` broadcasts are skipped."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import mts_signal as S
+    if rows is None:
+        h = S.ensure(repo)
+        if h is None:
+            return "unavailable", "no origin for the signals branch"
+        rows = S.load(h)
+    at = now or datetime.now(timezone.utc)
+    stale = []
+    for host in sorted(S.hosts_active(rows, BROADCAST_SEEN_H, at)):
+        for p in S.pending([r for r in rows if r.get("aud") != "top"], host, at):
+            if p["hours"] > BROADCAST_WARN_H:
+                stale.append(f"{host} {p['id']} ({p['state']}, {p['hours']:.0f} h)")
+    if not stale:
+        return "OK", f"no HIGH broadcast waits over {BROADCAST_WARN_H} h on a host seen in the last {BROADCAST_SEEN_H} h"
+    return "WARN", "; ".join(stale[:8]) + " | fix: python scripts/dev/mts_signal.py pending --host <host>; run the cmd there, then ack <id> done (no session on that host: run it by hand)"
+
+
 def checklist(repo, process=True, now=None):
     """[(name, status, detail)] for CHECK_NAMES. A check that raises is reported unavailable, never fatal."""
     repo = Path(repo)
@@ -386,7 +412,8 @@ def checklist(repo, process=True, now=None):
            ("SHIP-TIME", lambda: ship_time(repo / "runtime_data" / "gate_timing.jsonl", now)),
            ("HOOK-REG", lambda: hook_reg(repo)), ("DISK", lambda: disk(repo)),
            ("CONTEXT-GAP", lambda: context_gap(repo)),
-           ("WAITING-ON-OPERATOR", lambda: waiting_on_operator(repo, now)))
+           ("WAITING-ON-OPERATOR", lambda: waiting_on_operator(repo, now)),
+           ("BROADCAST", lambda: broadcast_check(repo, now=now) if process else ("unavailable", "skipped (--no-process, no network)")))
     out = []
     for name, fn in fns:
         try:
