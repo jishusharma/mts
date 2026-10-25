@@ -210,3 +210,11 @@ def test_health_line_and_report_top(tmp_path):
     text = D.run(tmp_path, tmp_path / "out", mem, process=False, now=DAY)[0].read_text(encoding="utf-8")
     assert text.splitlines()[0].startswith("HEALTH: ") and "CI-REVERT: skipped" in text
     assert [n for n, _, _ in D.checklist(tmp_path, process=False)] == list(D.CHECK_NAMES)
+
+
+def test_context_gap_warns_when_unnamed_reads_rose(tmp_path):
+    f = tmp_path / "runs.jsonl"
+    f.write_text(json.dumps({"utc": "a", "unnamed_reads_median": 1}) + NL + json.dumps({"utc": "b", "unnamed_reads_median": 3}) + NL)
+    assert D.context_gap(tmp_path, f)[0] == "WARN"
+    f.write_text(json.dumps({"utc": "a", "unnamed_reads_median": 3}) + NL + json.dumps({"utc": "b", "unnamed_reads_median": 3}) + NL)
+    assert D.context_gap(tmp_path, f)[0] == "OK"

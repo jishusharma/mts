@@ -162,7 +162,7 @@ SHIP_MAX_MIN = 15           # OURS
 HOOKS_BEHIND_MAX = 50       # OURS
 DISK_MIN_GB = 15            # OURS
 HOOK_NAMES = ("role_loader", "ci_watch")
-CHECK_NAMES = ("SIZE-HEADROOM", "CI-REVERT", "SHIP-TIME", "HOOK-REG", "DISK")
+CHECK_NAMES = ("SIZE-HEADROOM", "CI-REVERT", "SHIP-TIME", "HOOK-REG", "DISK", "CONTEXT-GAP")
 
 
 def _load(path, name):
@@ -310,6 +310,19 @@ def disk(repo, free_gb=None):
     return "OK", f"{gb:.0f} GB free"
 
 
+def context_gap(repo, runs=None):
+    """WARN when the median unnamed_reads (files a session read that its prompt never named) rose against the previous row of context_gap_runs.jsonl."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import context_gap as G
+    rs = G.rows(str(runs or Path(repo) / "MyTradingSys/research/mts_doctor/context_gap_runs.jsonl"))
+    if len(rs) < 2:
+        return "OK", f"{len(rs)} row(s) in context_gap_runs.jsonl; python scripts/dev/context_gap.py measure adds one"
+    a, b = rs[-1].get("unnamed_reads_median"), rs[-2].get("unnamed_reads_median")
+    if a is not None and b is not None and a > b:
+        return "WARN", f"median unnamed_reads rose {b} -> {a} ({rs[-1]['utc']}): sessions read more files than their start prompt named"
+    return "OK", f"median unnamed_reads {a} (previous {b})"
+
+
 def checklist(repo, process=True, now=None):
     """[(name, status, detail)] for CHECK_NAMES. A check that raises is reported unavailable, never fatal."""
     repo = Path(repo)
@@ -321,7 +334,8 @@ def checklist(repo, process=True, now=None):
         return ("unavailable", f"GitHub API: {runs}") if isinstance(runs, str) else ci_revert(runs, now)
     fns = (("SIZE-HEADROOM", lambda: size_headroom(repo)), ("CI-REVERT", ci),
            ("SHIP-TIME", lambda: ship_time(repo / "runtime_data" / "gate_timing.jsonl", now)),
-           ("HOOK-REG", lambda: hook_reg(repo)), ("DISK", lambda: disk(repo)))
+           ("HOOK-REG", lambda: hook_reg(repo)), ("DISK", lambda: disk(repo)),
+           ("CONTEXT-GAP", lambda: context_gap(repo)))
     out = []
     for name, fn in fns:
         try:
