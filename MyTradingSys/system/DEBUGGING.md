@@ -27,6 +27,7 @@ the others fail silently, so run it by hand to see the error: `echo {} | python 
 |---|---|---|
 | role not loaded / wrong role | `python scripts/dev/role_loader.py check`, then `verify` | `%TEMP%/mts_roles/<session>.json`; roles from origin/fast-track |
 | stop refused | `scripts/dev/stop_guard.py` | `~/.claude/mts-stop-guard.json` |
+| no USAGE: reminder around Agent/Task/Workflow | `scripts/dev/usage_reminder.py` (stdin hook JSON, prints only for those tools) | none (stateless) |
 | prompt notice "TRUNK LAG": tree behind origin/fast-track | `scripts/dev/trunk_lag.py` (`MTS_TRUNK_LAG=off`) | `<git dir>/mts_trunk_fetch` |
 | commit denied / edit note `PRESHIP` | `python scripts/dev/preship.py check` (rules: its RULES table) | `~/.claude/mts-preship-*.json` |
 | broadcast nobody reacted to | `python scripts/dev/mts_signal.py acks [<id>]` (hosts vs none/told/done); resend with `broadcast "<text>" --prio high --cmd "<command>"` | branch `mts-signals` | the sending session |
