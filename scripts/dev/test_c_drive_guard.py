@@ -37,10 +37,13 @@ class GuardTest(unittest.TestCase):
         g.TEMP = self.root
         g.LOG = Path(self.logdir.name) / "c_drive_guard.log"
         g.STAMP = Path(self.logdir.name) / "c_drive_guard.stamp"
+        self.old_lock = g.LOCK
+        g.LOCK = Path(self.logdir.name) / "c_drive_guard.lock"
         g.STAMP.write_text("x", encoding="utf-8")      # daily run not due unless a test ages this
 
     def tearDown(self):
         g.TEMP, g.LOG, g.STAMP = self.old_temp, self.old_log, self.old_stamp
+        g.LOCK = self.old_lock
         self.d.cleanup()
         self.logdir.cleanup()
 
@@ -171,6 +174,43 @@ class GuardTest(unittest.TestCase):
         self.assertIn("freed", lines[0])
         self.assertIn("1 worktrees retired", lines[0])
         self.assertIn("main checkout 3 behind; hook may be stale", lines[0])
+
+    def test_two_guards_at_once_only_one_runs_tidy(self):
+        calls = []
+        old, old_note = g.run_tidy, g.main_checkout_note
+
+        def tidy(apply):
+            calls.append(apply)
+            if len(calls) == 1:
+                g.main(["--apply"])        # the second copy starts while the first is inside tidy
+            return []
+        g.run_tidy = tidy
+        g.main_checkout_note = lambda pull=True: "x"
+        try:
+            g.main(["--apply"])
+        finally:
+            g.run_tidy, g.main_checkout_note = old, old_note
+        self.assertEqual(calls, [True])
+        self.assertFalse(g.LOCK.exists())          # released at the end
+
+    def test_a_stale_lock_of_a_dead_pid_is_replaced(self):
+        g.LOCK.write_text("999999999", encoding="utf-8")
+        self.assertTrue(g.take_lock())
+        self.assertFalse(g.take_lock())            # our own live pid now holds it
+        g.drop_lock()
+
+    def test_every_child_is_started_without_a_console_window(self):
+        seen = []
+        real = subprocess.Popen
+        g.subprocess.Popen = lambda *a, **k: seen.append(k) or None
+        try:
+            g.start_apply_detached()
+        finally:
+            g.subprocess.Popen = real
+        self.assertEqual(len(seen), 1)
+        self.assertTrue(seen[0]["creationflags"] & g.NO_WINDOW or os.name != "nt")
+        self.assertFalse(seen[0]["creationflags"] & getattr(subprocess, "DETACHED_PROCESS", 0))
+        self.assertNotEqual(seen[0]["stdout"], subprocess.DEVNULL)
 
     def test_low_space_on_the_repo_drive_counts_not_only_c(self):
         old_free, old_drive = g.free_gb, g.repo_drive

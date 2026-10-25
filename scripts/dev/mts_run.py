@@ -312,7 +312,7 @@ def guard_tick():
     """Once per cycle: the C: drive guard's hook (once-a-day and low-space runs; stamp file keeps it cheap). Best effort, never raises."""
     try:
         subprocess.run([sys.executable, str(Path(__file__).resolve().parent / "c_drive_guard.py"), "hook"],
-                       capture_output=True, timeout=30)
+                       capture_output=True, timeout=30, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     except Exception:
         pass
 
