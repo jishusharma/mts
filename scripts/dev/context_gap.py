@@ -20,7 +20,6 @@ import json
 import os
 import re
 import statistics
-import subprocess
 import sys
 from datetime import datetime, timedelta, timezone
 
@@ -47,9 +46,8 @@ def _repo_path(p):
     return bool(p) and not any(s in p for s in SKIP_PATH)
 
 
-def parse_session(path, min_turns=MIN_TURNS, sidechain=False):
-    """Metrics dict for one jsonl file, or None when it is not a main-thread session of min_turns+ turns.
-    Also carries `prompt` and `read_args` (raw args of the reads before the first edit) for fold; measure never stores them."""
+def parse_session(path):
+    """Metrics dict for one jsonl file, or None when it is not a main-thread session of 5+ turns."""
     prompt, started = None, None
     turns, calls, reads = 0, 0, []
     edit_ctx, rewrites, stale, first = None, 0, 0, None
@@ -64,7 +62,7 @@ def parse_session(path, min_turns=MIN_TURNS, sidechain=False):
                 m = json.loads(line)
             except ValueError:
                 continue
-            if m.get("isSidechain") and not sidechain:   # a subagent file (fold) is all sidechain
+            if m.get("isSidechain"):
                 continue
             started = started or m.get("timestamp")
             t = m.get("type")
@@ -102,14 +100,13 @@ def parse_session(path, min_turns=MIN_TURNS, sidechain=False):
                 calls += 1
                 if name == "Read" or (name == "Bash" and READ_CMD.search(arg)):
                     reads.append(arg)
-    if turns < min_turns or not prompt:
+    if turns < MIN_TURNS or not prompt:
         return None
     named = {os.path.basename(x) for x in re.findall(r"[\w./\\-]+\.(?:md|py|json|java|tsv|csv|txt|yaml|yml|ps1)", prompt)}
     unnamed = [a for a in reads if _repo_path(a) and not any(b in a for b in named)]
     return {"id": os.path.splitext(os.path.basename(path))[0][:36], "started": started or "", "turns": turns, "base": first or 0,
             "calls_to_edit": calls if edited else None, "ctx_at_edit": edit_ctx, "unnamed_reads": len(unnamed) if edited else None,
-            "stale": stale, "rewrites": rewrites,
-            "prompt": prompt, "read_args": reads, "unnamed_list": unnamed}
+            "stale": stale, "rewrites": rewrites}
 
 
 def _p90(v):
@@ -197,112 +194,6 @@ def render(row, bad):
     return "\n".join(L)
 
 
-# ---- fold (CONTEXT_FILES_DESIGN.md section 4): the files a session had to go and find, written into its card ----
-TASKS_REL = "MyTradingSys/system/tasks"
-FOLD_MAX = 8
-WORD_SPLIT = re.compile(r"[\s'\"`;|&<>()=,]+")   # a Bash command is split into words first: no regex runs over the whole (maybe huge) command
-PATH_WORD = re.compile(r"(?:[A-Za-z]:)?[\w.@~+-]*(?:[/\\][\w.@~+-]+)*\.\w{1,8}")
-MAX_CMD_WORDS = 400
-NL = chr(10)
-
-
-def _rel(arg, tree):
-    """Repo-relative form of a path read by the session (absolute paths under this tree or any worktree of it), or ''."""
-    p = arg.replace(chr(92), "/").strip().strip("\"'")
-    t = tree.replace(chr(92), "/").rstrip("/")
-    if p.lower().startswith(t.lower() + "/"):
-        return p[len(t) + 1:]
-    m = re.search(r"/\.claude/worktrees/[^/]+/(.+)$", p)
-    if m:
-        return m.group(1)
-    if re.match(r"^(?:[A-Za-z]:|/)", p):
-        return ""
-    return p[2:] if p.startswith("./") else p
-
-
-def _candidates(read_args, tree):
-    """Repo paths in read order, one per mention (Read -> its file_path; Bash read command -> every path-like word)."""
-    out = []
-    for a in read_args:
-        words = [a] if (re.match(r"^(?:[A-Za-z]:|/)", a) and " " not in a.strip()) else [w for w in WORD_SPLIT.split(a[:20000])[:MAX_CMD_WORDS] if len(w) < 260 and PATH_WORD.fullmatch(w)]
-        for w in words:
-            r = _rel(w, tree)
-            if r and _repo_path(r):
-                out.append(r)
-    return out
-
-
-def _on_trunk(paths, tree, ref="origin/fast-track"):
-    """Subset of `paths` that exist on `ref`, one git call."""
-    if not paths:
-        return set()
-    r = subprocess.run(["git", "-C", tree, "cat-file", "--batch-check"], input="".join(f"{ref}:{p}{NL}" for p in paths),
-                       capture_output=True, text=True, timeout=20)
-    return {p for p, line in zip(paths, r.stdout.splitlines()) if not line.endswith("missing")}
-
-
-def fold_reads(transcript, tree, ref="origin/fast-track"):
-    """{reads, misses, calls_to_edit, session, prompt} from one transcript: trunk paths read before the first edit that the first
-    prompt did not name, most-read first, at most FOLD_MAX. `prompt` only finds the card id; it is never written anywhere."""
-    s = parse_session(transcript, min_turns=1, sidechain="subagents" in transcript.replace(chr(92), "/"))
-    if not s:
-        return None
-    named = {os.path.basename(x) for x in re.findall(r"[\w./\\-]+\.(?:md|py|json|java|tsv|csv|txt|yaml|yml|ps1)", s["prompt"])}
-    cand = [c for c in _candidates(s["read_args"], tree) if os.path.basename(c) not in named and not c.startswith(TASKS_REL + "/")]   # the card itself is not a file to read first
-    counts = {}
-    for c in cand:
-        counts[c] = counts.get(c, 0) + 1
-    order = sorted(counts, key=lambda c: (-counts[c], cand.index(c)))
-    keep = _on_trunk(order, tree, ref)
-    reads = [c for c in order if c in keep][:FOLD_MAX]
-    return {"reads": reads, "misses": len(counts), "calls_to_edit": s["calls_to_edit"], "session": s["id"], "prompt": s["prompt"]}
-
-
-def card_for(prompt, tree, slug=""):
-    """Card id this session works on: the card (in the tree's tasks dir) named earliest in the first prompt. '' when none."""
-    best = ("", None)
-    d = os.path.join(tree, *TASKS_REL.split("/"))
-    try:
-        ids = [f[:-5] for f in os.listdir(d) if f.endswith(".json")]
-    except OSError:
-        return ""
-    for cid in ids:
-        m = re.search(r"(?<![\w-])" + re.escape(cid) + r"(?![\w-])", prompt)
-        if m and (best[1] is None or m.start() < best[1]):
-            best = (cid, m.start())
-    if best[0] or not slug:
-        return best[0]
-    hit = [c for c in ids if slug in c]   # no card named in the prompt (a parent session): the tree's branch slug, when it picks exactly one
-    return hit[0] if len(hit) == 1 else ""
-
-
-def fold(transcript, tree, now=None, commit=True):
-    """Write context={reads, misses, calls_to_edit, session, folded} into the card this session works on (replace, never append)
-    and commit just that card. -> ('folded', card id) | ('unfolded', why). Never raises."""
-    try:
-        f = fold_reads(transcript, tree)
-        if not f:
-            return "unfolded", "no readable transcript"
-        br = subprocess.run(["git", "-C", tree, "branch", "--show-current"], capture_output=True, text=True, timeout=20).stdout.strip()
-        cid = card_for(f["prompt"], tree, re.sub(r"-\d+$", "", br.split("/")[-1]) if br else "")
-        if not cid:
-            return "unfolded", "no card id in the first prompt"
-        rel = f"{TASKS_REL}/{cid}.json"
-        path = os.path.join(tree, *rel.split("/"))
-        card = json.load(open(path, encoding="utf-8"))
-        card["context"] = {"reads": f["reads"], "misses": f["misses"], "calls_to_edit": f["calls_to_edit"], "session": f["session"],
-                           "folded": (now or datetime.now(timezone.utc)).strftime("%Y-%m-%dT%H:%M:%SZ")}
-        with open(path, "w", encoding="utf-8", newline=NL) as fh:
-            fh.write(json.dumps(card, indent=2, sort_keys=True, ensure_ascii=False) + NL)
-        if commit and subprocess.run(["git", "-C", tree, "status", "--porcelain", "--", rel], capture_output=True, text=True, timeout=20).stdout.strip():
-            subprocess.run(["git", "-C", tree, "add", "--", rel], capture_output=True, timeout=20, check=True)
-            subprocess.run(["git", "-C", tree, "commit", "-q", "-m", f"fold context into card {cid}{NL}{NL}Result: {cid} carries {len(f['reads'])} read-first path(s)",
-                            "--", rel], capture_output=True, timeout=20, check=True)
-        return "folded", cid
-    except Exception as e:
-        return "unfolded", f"{type(e).__name__}: {e}"[:120]
-
-
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="context_gap.py", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -314,15 +205,7 @@ def main(argv=None):
     m.add_argument("--runs", default=RUNS)
     m.add_argument("--projects", default=PROJECTS)
     m.add_argument("--no-append", action="store_true")
-    fo = sub.add_parser("fold", help="write the files the session read before its first edit into its card")
-    fo.add_argument("--transcript", required=True)
-    fo.add_argument("--tree", default=REPO)
-    fo.add_argument("--no-commit", action="store_true")
     a = ap.parse_args(argv)
-    if a.cmd == "fold":
-        status, what = fold(a.transcript, a.tree, commit=not a.no_commit)
-        print(f"{status}: {what}")
-        return 0 if status == "folded" else 1
     since = datetime.fromisoformat(a.since.replace("Z", "+00:00")) if a.since else datetime.now(timezone.utc) - timedelta(hours=a.hours)
     if since.tzinfo is None:
         since = since.replace(tzinfo=timezone.utc)

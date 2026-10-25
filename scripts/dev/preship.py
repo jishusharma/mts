@@ -30,7 +30,6 @@ except Exception:
 
 PY = sys.executable
 COLLECTED = ("MyTradingSys/tests/", "MyTradingSys/backtest/", "MyTradingSys/options/tests/")   # test_gate_discovery_b150.py
-SHIP = re.compile(r"(?<![\w.-])sync\.py\s+ship(?![-\w])")
 COMMIT = re.compile(r"(^|[;&|(]\s*|\s)git(\s+-C\s+(\"[^\"]+\"|'[^']+'|\S+))?\s+commit(?![-\w])")
 
 
@@ -216,36 +215,8 @@ def hook_edit(data):
     return json.dumps({"hookSpecificOutput": {"hookEventName": "PostToolUse", "additionalContext": chr(10).join(notes)}})
 
 
-def hook_ship(data, cmd):
-    """`sync.py ship`: fold what this session read before its first edit into its card (context_gap.py fold; the fold commit rides
-    the ship). Never blocks: any failure is only the word `unfolded` in the hook's context note (CONTEXT_FILES_DESIGN.md section 4)."""
-    cwd = data.get("cwd") or os.getcwd()
-    m = re.match(r"\s*cd\s+(\"[^\"]+\"|'[^']+'|[^\s;&]+)\s*(?:&&|;)", cmd)   # `cd <tree> && ... sync.py ship`: the ship runs there
-    if m:
-        cwd = str(Path(cwd) / m.group(1).strip("\"'"))
-    root = toplevel(cwd)
-    tp = data.get("transcript_path")
-    if tp and data.get("agent_id"):   # a subagent's own file: <session>/subagents/agent-<id>.jsonl beside the parent transcript
-        own = os.path.join(os.path.splitext(tp)[0], "subagents", "agent-" + str(data["agent_id"]) + ".jsonl")
-        tp = own if os.path.isfile(own) else tp
-    if not root or not tp or not os.path.isfile(tp):
-        return "unfolded (no tree or transcript)"
-    br = git_lines(root, "branch", "--show-current")
-    if not br or br[0] in ("master", "main", "fast-track"):
-        return "unfolded (trunk branch)"
-    import context_gap
-    status, what = context_gap.fold(tp, root)
-    return f"{status}: {what}"
-
-
 def hook_commit(data):
     cmd = str((data.get("tool_input") or {}).get("command") or "")
-    if SHIP.search(cmd):
-        try:
-            note = hook_ship(data, cmd)
-        except Exception as e:
-            note = f"unfolded ({type(e).__name__})"
-        return json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "additionalContext": "CONTEXT FOLD " + note}})
     m = COMMIT.search(cmd)
     if not m:
         return ""
