@@ -250,7 +250,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/wavetrend_2026-10-17/STATUS_2026-10-19.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `wavetrend-c1-v2` refined p1 SONNET: WaveTrend C1 detector correction and new count-only prereg
-  - `lf-wavetrend-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: wavetrend (file:line facts only, no verdict)
   - `lf-wavetrend-gpt-rederive` ready p2 CODEX: Layer re-derive: wavetrend (independent recount of the headline numbers behind the fact sheet)
 
 ## Pitchfork (Andrews / Schiff / Morge median line) (`pitchfork`)
