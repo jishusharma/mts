@@ -4,7 +4,7 @@
 - **Title**: Fabio Valentini Explains His EXACT Order Flow Strategy | Full Trading Breakdown
 - **Channel**: HijoTrades
 - **Duration**: 6971 seconds [SOURCED: `MyTradingSys/research/fabio_video_search_2026-10-17/candidates.csv:27`]
-- **Speaker as stated**: Fabio Valentini [SOURCED: `MyTradingSys/research/fabio_video_search_2026-10-17/candidates.csv:27`]
+- **Speaker as stated**: Fabio Valentini [SOURCED: `MyTradingSys/research/fabio_video_search_2026-10-17/candidates.csv:27`] (uploader/title attribution from candidates.csv, which has no speaker field; unverified, not transcript self-identification)
 - **Captions**: NO CAPTIONS (fetch returned: `ERROR: [youtube] pZai3k1e-Jg: Video unavailable`)
 - **Live trades**: unknown (video unavailable on YouTube; cannot verify on screen)
 - **Verbatim quotes**: None (NO CAPTIONS; transcript unavailable)

@@ -188,6 +188,7 @@
 - Hindi original: "एंड स्टॉप लॉस विल बी ब्लॉक प्रिंटेड नॉट रिटारडेड चिल्ड्रन"
 - Translation status: MACHINE-MADE
 - Inferred: INFERRED: the stop level is not recoverable. "block printed" may be a stop at a candle low or high, but that is a guess and is not used.
+- ASR (local Whisper large-v3, raw_transcripts_canonical/W1HrDl70Lhk_asr_raw.txt [5:23]; ASR quote, misheard words possible): stop loss will be at the high of the green candle and stop loss will be below the low of green candle. The two halves contradict; the buy-side logic and the repeats later in the video ([8:27], [9:03], [12:20]: "stop loss will be below the low of the candle") support below the low of the signal candle. Target [5:33]: stop at the RSI touching 60.
 
 ### M-W1HrDl70Lhk-17 First entry type: target (garbled)
 - Type: EXIT/STOP
@@ -592,6 +593,7 @@
 - Hindi original: "स्टॉप लॉस विल बी या बुद्ध हाय"
 - Translation status: MACHINE-MADE
 - Inferred: INFERRED: "Buddha Hi" is "above high" (the same garble as "abodh" earlier), so for this down-side example the stop is above the high of the candle.
+- ASR (local Whisper large-v3, raw_transcripts_canonical/W1HrDl70Lhk_asr_raw.txt [14:49]; ASR quote): sell below the low of the candle, stop loss above the high of the candle, risk reward one to two. The caption garble "Buddha Hi" is "above the high".
 
 ### M-W1HrDl70Lhk-54 Sell example 2: RSI comes down through the 60k line, sell
 - Type: ENTRY-TRIGGER

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T21:03:36Z",
   "commands": [
     "python scripts/dev/lab_query.py layers",
     "python scripts/dev/lab_query.py rulings callers"
@@ -16,7 +17,14 @@
   "id": "lf-callers-gemini-facts",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/callers.md (49 facts counted)",
+      "ref": "d261d7a4e",
+      "utc": "2026-10-25T21:03:36Z"
+    }
+  ],
   "layers": [
     "callers"
   ],
@@ -30,7 +38,12 @@
   "refs": [
     "MyTradingSys/system/ANTIGRAVITY_LAPTOP.md item C"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/callers.md (49 facts counted)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/callers.md (new file only)"
   ],
@@ -46,7 +59,7 @@
     "MyTradingSys/research/_archive/loose_2026-10/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md",
     "MyTradingSys/research/analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "python scripts/dev/lab_query.py layers (rows with family callers); read the callers section of MyTradingSys/system/LAYERS.md and its spec/results files in layer_index.json",
     "python scripts/dev/lab_query.py rulings callers",
@@ -54,6 +67,7 @@
     "Write NOT_IN_DATA where the repo has no answer; never fill from memory; give no verdict",
     "Commit with a Result: line (layers covered, facts counted)"
   ],
+  "taken": "2026-10-25T21:03:36Z",
   "tests": "none (run card); proof = file exists and every fact line carries file:line or NOT_IN_DATA",
   "title": "[GEMINI] Layer fact sheet: callers (file:line facts only, no verdict)",
   "weight": "ROUTINE",

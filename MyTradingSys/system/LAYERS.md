@@ -26,11 +26,10 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Ledger: `MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv`; `MyTradingSys/research/tom_transfer_2026-10-11/TOM_LEDGER_CANONICAL_GROUPS.csv`
 - Other results: `MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md`
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`; `MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md`
-- Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-22_tom-btc-other-setups.md`
+- Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-tom-gemini-facts.md`; `MyTradingSys/research/layer_lab/reports/2026-10-22_tom-btc-other-setups.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `tom-btc-eye-read` blocked p1 SONNET: Tom on BTC T3: eye read of the 80 lab charts by two readers (Claude + Jis), blind; agreement per Tom concept
   - `argon-med-sim-layer-coverage-matrix` ready p2 CODEX: [GEMINI] Argon-medium: which sim-desk study covers which layer family (file:line matrix)
-  - `lf-tom-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: tom (file:line facts only, no verdict)
   - `lf-tom-gpt-rederive` ready p2 CODEX: Layer re-derive: tom (independent recount of the headline numbers behind the fact sheet)
   - `tom-btc-dev-backtest` blocked p2 CODEX: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
   - `tom-btc-encode` blocked p2 CODEX: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
@@ -61,8 +60,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Ledger: `MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv`; `MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md`
 - Other results: `MyTradingSys/research/_archive/loose_2026-10/P2_FABIO_V3_HOLDOUT_STATUS.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-fabio-ledger-frames.md`; `MyTradingSys/research/orderflow_views_2026-10-14`
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`
+- Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-fabio-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `lf-fabio-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: fabio (file:line facts only, no verdict)
   - `lf-fabio-gpt-rederive` ready p2 CODEX: Layer re-derive: fabio (independent recount of the headline numbers behind the fact sheet)
   - `oi-pivot-reversal-probability-by-tf` ready p2 SONNET: Causal pivot-candidate study: P(reversal) per TF from OI slope flip + price/OI divergence + delta + location, 
   - `t09-f4-live-window-99-bars-swing-layers` refined p2 JIS-NB: T09-F4 S2: 99-bar live window misses 68 of 96 escalation signals; fetch more bars for swing layers
@@ -80,7 +79,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `MyTradingSys/research/tom_fabio_guidance_2026-10-12/GUIDANCE_AUDIT.md`; `MyTradingSys/research/tom_fabio_guidance_2026-10-12/PRE_REG_Q33.md`
 - Code: `MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py`; `MyTradingSys/backtest/layers/test_layer_boundaries.py`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `lf-guidance-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: guidance (file:line facts only, no verdict)
   - `lf-guidance-gpt-rederive` ready p2 CODEX: Layer re-derive: guidance (independent recount of the headline numbers behind the fact sheet)
 
 ## RSI / Malkan / Kurisko (`rsi`)
@@ -96,9 +94,9 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md`; `MyTradingSys/backtest/layers/FORMULAS.md`
 - Code: `MyTradingSys/backtest/layers/rsi/malkan_40_60.py`; `MyTradingSys/backtest/layers/rsi/malkan_mtf.py`; `MyTradingSys/backtest/layers/kurisko/quad_rotation.py`; `MyTradingSys/backtest/layers/kurisko/stoch_core.py`
 - Other results: `MyTradingSys/research/rsi_divergence_mtf_2026-10-09`
+- Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-26_lf-rsi-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `kurisko-dev-event-study` refined p2 SONNET: Kurisko Quad Rotation: DEV event study, fee-net, same-window placebo
-  - `lf-rsi-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: rsi (file:line facts only, no verdict)
   - `lf-rsi-gpt-rederive` ready p2 CODEX: Layer re-derive: rsi (independent recount of the headline numbers behind the fact sheet)
   - `argon-med-param-label-sweep` ready p3 CODEX: [GEMINI] Argon-medium: list layer parameters with no SOURCED/OURS label (file:line)
   - `malkan-w1hr-local-whisper-asr` ready p3 JIS-NB: Malkan W1HrDl70Lhk: local Whisper ASR on JIS-NB to recover Hinglish 5-Star RSI stop wording (no YouTube captio
@@ -116,8 +114,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `MyTradingSys/items/B143_cryptocred_stop_buffer_and_target_unsourced.md`; `MyTradingSys/backtest/layers/FORMULAS.md`
 - Code: `MyTradingSys/backtest/layers/cryptocred`
 - Other results: `MyTradingSys/research/cryptocred_stop_2026-10-10`
+- Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-cryptocred-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `lf-cryptocred-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: cryptocred (file:line facts only, no verdict)
   - `lf-cryptocred-gpt-rederive` ready p2 CODEX: Layer re-derive: cryptocred (independent recount of the headline numbers behind the fact sheet)
 
 ## Positioning (funding, OI, whale / FlowHorse) (`positioning`)
@@ -133,7 +131,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Code: `MyTradingSys/backtest/layers/positioning`
 - Other results: `MyTradingSys/research/_archive/loose_2026-10/OI_DIVERGENCE_V2_2026-10-10.md`; `MyTradingSys/research/_archive/loose_2026-10/OI_EVENT_STUDY_2026-10-10.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `lf-positioning-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: positioning (file:line facts only, no verdict)
   - `lf-positioning-gpt-rederive` ready p2 CODEX: Layer re-derive: positioning (independent recount of the headline numbers behind the fact sheet)
   - `positioning-c1-prereg-no-source` ready p4 SONNET: Positioning C1: pre-registration labelled NO-SOURCE (items 1/6/8/9/11/12, gates 0a/0f)
 
@@ -216,7 +213,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/analysts/SCORECARD.md`
 - Roadmap: `MyTradingSys/research/analysts/ROADMAP.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `lf-callers-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: callers (file:line facts only, no verdict)
   - `lf-callers-gpt-rederive` ready p2 CODEX: Layer re-derive: callers (independent recount of the headline numbers behind the fact sheet)
   - `analyst-ingest-roman-x` ready p3 SONNET: Implement Roman Trading volume-absorption social call listener
 
@@ -228,6 +224,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Ledger: `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv`; `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_CONSOLIDATED.md`; `MyTradingSys/research/krown_ta101_2026-10-13/MANIFEST.csv`
 - Other results: `MyTradingSys/research/krown_ta101_2026-10-13/reflexivity_log.md`; `MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md`; `MyTradingSys/options/research/KROWN_FREE_VS_PAID.md`
 - Roadmap: `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md`
+- Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-krown-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `astra-low-confluence-prereg-leak-hunt` ready p1 CODEX: Astra-low: hunt for one look-ahead or reuse leak in PRE_REG_CONFLUENCE frozen tests
   - `astra-low-levels-fee-drag-recompute` ready p1 CODEX: Astra-low: independently recompute the levels study fee drag (+0.22 R gross, -0.12 R net, 255 fills)
@@ -238,7 +235,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `confluence-s5-fable-verdict` refined p2 SONNET: Confluence S5: Fable verdict on DEV results, what goes to the one VALIDATION read (then ship, S6)
   - `krown-data-cme-btc-volume` refined p2 SONNET: Krown CME BTC futures daily volume (public data only) as third volume arm
   - `krown-dev-event-study` refined p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
-  - `lf-krown-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: krown (file:line facts only, no verdict)
   - `lf-krown-gpt-rederive` ready p2 CODEX: Layer re-derive: krown (independent recount of the headline numbers behind the fact sheet)
   - `trendline-count-only-v2` refined p2 SONNET: Trend-line count-only v2 and PRE_REG v2: first_touch vs all_touches, retest/reclaim counts, causal terciles, k
   - `argon-med-param-label-sweep` ready p3 CODEX: [GEMINI] Argon-medium: list layer parameters with no SOURCED/OURS label (file:line)
@@ -255,7 +251,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/wavetrend_2026-10-17/STATUS_2026-10-19.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `wavetrend-c1-v2` refined p1 SONNET: WaveTrend C1 detector correction and new count-only prereg
-  - `lf-wavetrend-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: wavetrend (file:line facts only, no verdict)
   - `lf-wavetrend-gpt-rederive` ready p2 CODEX: Layer re-derive: wavetrend (independent recount of the headline numbers behind the fact sheet)
   - `argon-med-param-label-sweep` ready p3 CODEX: [GEMINI] Argon-medium: list layer parameters with no SOURCED/OURS label (file:line)
 
@@ -266,7 +261,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md`; `papers/02_PITCHFORK_APPLICATION_ON_BTC.md`; `MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md`; `papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md`
 - Code: `MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `lf-pitchfork-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: pitchfork (file:line facts only, no verdict)
   - `lf-pitchfork-gpt-rederive` ready p2 CODEX: Layer re-derive: pitchfork (independent recount of the headline numbers behind the fact sheet)
 
 ## Cross-cutting
