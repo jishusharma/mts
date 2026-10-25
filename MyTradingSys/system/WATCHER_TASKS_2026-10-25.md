@@ -6,8 +6,8 @@ How it governs: the repo is the one plan (task files, cards, broadcasts, signals
 Heavy work goes to the desktop's Max login through Sonnet Builders. The laptop and NUC Pro logins take read-only, review and card work.
 
 ## Start lines (chain: operator -> Lead -> Supervisor -> Builders; ROLES.md)
-- Operator types in a new desktop session: `You are Lead. Start the watcher: a Supervisor session on login A with MyTradingSys/system/WATCHER_TASKS_2026-10-25.md.`
-- The Lead starts the watcher session with: `You are Supervisor. Login A. Tasks: MyTradingSys/system/WATCHER_TASKS_2026-10-25.md`
+- Operator types in a new desktop session, whatever login it has: `You are Lead. Start the watcher with MyTradingSys/system/WATCHER_TASKS_2026-10-25.md.`
+- The Lead reads its own login from the session-start LOGIN line (never assumes one) and starts the watcher session with: `You are Supervisor. Login <that login>. Tasks: MyTradingSys/system/WATCHER_TASKS_2026-10-25.md`
 - The Lead talks with the operator and never watches workers or builds (roles/lead.md). The Supervisor watches, starts Builders and reports to the Lead.
 
 ## Every wake
