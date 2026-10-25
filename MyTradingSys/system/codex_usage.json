@@ -6,7 +6,7 @@
   "window_resets": 1792962879,
   "window_used": 1.0
  },
- "at": "2026-10-25T18:29:28Z",
+ "at": "2026-10-25T18:52:40Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,9 +20,24 @@
   "astra_runs": 0,
   "week_pts": 0.0,
   "window_pts": 1.0,
-  "window_runs": 5
+  "window_runs": 6
  },
  "runs": [
+  {
+   "at": "2026-10-25T18:51:02Z",
+   "card": "trust-recheck-gpt-formulas-rederive",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 90,
+   "tokens_out": 7186,
+   "tokens_total": 619536,
+   "tokens_uncached": 50046,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-25T18:28:26Z",
    "card": "trust-recheck-gptb-forward-excursion-hel",
@@ -157,21 +172,6 @@
    "tokens_uncached": null,
    "week_pts": null,
    "window_pts": null
-  },
-  {
-   "at": "2026-10-22T19:47:53Z",
-   "card": "argon-blind-read-7-frames",
-   "effort": "low",
-   "kind": "run",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "INCOMPLETE",
-   "seconds": 49,
-   "tokens_out": 1865,
-   "tokens_total": 394427,
-   "tokens_uncached": 33394,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }
