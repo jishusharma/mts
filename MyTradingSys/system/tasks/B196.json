@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T17:14:41Z",
   "commands": [
     "node scripts/aibridge/tests/handsfree.test.js",
     "node scripts/aibridge/tests/loop.test.js"
@@ -16,6 +17,12 @@
   "id": "B196",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "handsfree.test.js 13 pass, loop.test.js 14 pass",
+      "ref": "2798700d",
+      "utc": "2026-10-25T17:14:41Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -35,7 +42,12 @@
   "refs": [
     "B196"
   ],
-  "result": "",
+  "result": "handsfree.test.js 13 pass, loop.test.js 14 pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/aibridge/extension/loop.js",
     "scripts/aibridge/extension/content.js",
@@ -50,7 +62,7 @@
     "MyTradingSys/items/B196_aibridge_auto_off_operator_draft.md",
     "MyTradingSys/research/AIBRIDGE_STABILITY_AUDIT_20261021.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read content.js postToChat (~l.366-388): it waits for inputText(el)==='' and on timeout sets lastPostErr 'the chat never became idle (or an operator draft sits in the input)'; runBatch (~l.449) then calls stopAuto. That is the defect.",
     "FIRST add pure function L.postGate({idle,draft,waitedMs,maxMs}) to loop.js (module.exports already used by tests) returning wait | send_keep_draft | stop_busy. Draft present + chat idle must return send_keep_draft, never stop. Add tests in handsfree.test.js (node scripts/aibridge/tests/handsfree.test.js): they FAIL first because L.postGate is undefined.",
@@ -60,6 +72,7 @@
     "Run node scripts/aibridge/tests/handsfree.test.js and node scripts/aibridge/tests/loop.test.js (both green), then python scripts/dev/run_all_tests.py --quick. Mark B196 FIXED in research/BUGS.md and items/INDEX.md only if CI is green. Do NOT install the extension; ask for a desk task to install.",
     "Verify: content commit sha, git cherry origin/fast-track <sha> empty AND git ls-tree -r origin/fast-track --name-only shows loop.js, content.js, handsfree.test.js."
   ],
+  "taken": "2026-10-25T17:14:41Z",
   "tests": "scripts/aibridge/tests/handsfree.test.js: new postGate and stopNotice cases fail first (L.postGate undefined), then pass; loop.test.js stays green. Run: node scripts/aibridge/tests/handsfree.test.js",
   "title": "B196 AIBridge auto-OFF on operator draft",
   "weight": "IMPORTANT",

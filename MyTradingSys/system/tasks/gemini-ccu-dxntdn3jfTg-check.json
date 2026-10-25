@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T05:45:58Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst CCU DXntdN3jfTg",
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/cbp/ccu_DXntdN3jfTg_extract.md"
@@ -16,7 +17,14 @@
   "id": "gemini-ccu-dxntdn3jfTg-check",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/cbp/ccu_DXntdN3jfTg_extract.md",
+      "ref": "c9067ef5",
+      "utc": "2026-10-25T05:45:58Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -26,7 +34,12 @@
   "refined_by": "",
   "refreshed": "2026-10-25T05:39:59Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/cbp/ccu_DXntdN3jfTg_extract.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/cbp/ccu_DXntdN3jfTg_extract.md"
   ],
@@ -37,13 +50,14 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run the fetch command. On HTTP 429 or no captions write the exact error into the extract file, commit, stop. Never summarise from guessing the video.",
     "Read the transcript, write the extract file: header (title, published, id), then per claim: > \"<verbatim quote>\" then **Source GPS: DXntdN3jfTg | BEGIN|MIDDLE|END** (thirds). Cover BTC call, levels, bottom-thesis vote, entry/stop/target; if none write 'no BTC call'.",
     "Run python scripts/dev/verify_extract_quotes.py MyTradingSys/research/cbp/ccu_DXntdN3jfTg_extract.md until exit 0 (fix quotes, never loosen the checker).",
     "Commit the extract only (not the transcript, which is git-ignored) with body line Result: ..."
   ],
+  "taken": "2026-10-25T05:45:58Z",
   "tests": "verify_extract_quotes.py exit 0",
   "title": "[GEMINI] CCU video DXntdN3jfTg: fetch captions, extract BTC calls, verify quotes",
   "weight": "ROUTINE",

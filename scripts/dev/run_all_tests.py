@@ -515,6 +515,7 @@ def build_plan(quick):
     add("3lh", "GPT lane health tests (down/up rules, reroute, pause, resume, DSA prompt)", [sys.executable, "scripts/dev/test_lane_health.py"], "Step 3lh: GPT lane health tests")
     add("3rb", "Claude-GPT relay board tests (shared notes, lanes, pack)", [sys.executable, "scripts/dev/test_relay_board.py"], "Step 3rb: Relay board tests")
     add("3af", "Artifact registry tests (one url per page per account)", [sys.executable, "scripts/dev/test_artifacts.py"], "Step 3af: Artifact registry tests")
+    add("3ul", "Usage ledger tests (usage_log.py row, parser, idle, summary)", pytest_cmd(["scripts/dev/test_usage_log.py"]), "Step 3ul: Usage ledger tests")
     plan.append(Step("3bk", "Backup snapshot tests (dirty/untracked work reaches the remote)", "Step 3bk: Backup snapshot tests", run=lambda: exec_unittest_shards("scripts/dev/test_backup_snapshot.py", gate_jobs() if gate_jobs() == 1 else 2), cmd_text="python -m unittest (scripts/dev/test_backup_snapshot.py, 2 shards)", tail=None))
     add("3vd", "Verdict registry override tests (sourced hand corrections survive backfill)", [sys.executable, "scripts/dev/test_verdicts.py"], "Step 3vd: Verdict registry tests")
     add("3lm", "Live mirror tests (read-only desktop->work-tree data, fail-closed)", [sys.executable, "scripts/dev/test_live_mirror.py"], "Step 3lm: Live mirror tests")
