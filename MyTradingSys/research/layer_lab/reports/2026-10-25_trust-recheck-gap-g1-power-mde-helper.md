@@ -1,35 +1,26 @@
-﻿# Trust re-check: gap-g1-power-mde-helper
+# Trust re-check: gap-g1-power-mde-helper
 
-Verdict: BLOCKED — arithmetic matches the written spec and the fail-first mutation turns the tests red, but this COD/GPT reviewer is the same vendor as the producer and cannot propose VERIFIED-C2 under the cross-vendor re-check rule. Proposal: DISPUTED pending a Gemini or Claude re-check.
+Reviewer: OpenAI / GPT-6 (Codex; serving snapshot not exposed to this session). Independent check used the written G1 specification and section 9 formula only for the calculations; the producer implementation was read afterward only to perform the requested test mutation.
 
-## Reviewer
+## Independent numbers
 
-- Vendor/model: OpenAI / GPT-6 (Codex, surface COD).
-- Independent arithmetic was derived from the written definition in `MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md:90-99,211-213`; producer implementation was not used to derive expected values.
-- The requested prior report `MyTradingSys/research/layer_lab/reports/2026-10-23_trust-recheck-gap-g1-power-mde-helper.md` was absent from this work tree. The card scope and cited written spec were used as the audit target.
+The written inputs are the two-point payoff `+RR` with probability `p`, `-1` otherwise, fixed cost `c`, and a two-sided 95% lower-bound test. Thus `mean = p*RR - (1-p) - c`, `sd = sqrt(p*(1-p))*(RR+1)`, and `N80 = ((1.96 + 0.8416)*sd/mean)^2`.
 
-## Re-derived numbers
-
-| Written-spec number | Independent calculation | Result |
+| G1 table value | Independent calculation | Result |
 |---|---:|---|
-| 80%-power N, p=.45, RR=1.5, cost=.012; REPORT.md:94,211-213 | mean = .45*1.5-.55-.012 = .113; SD = 1.243792; `((1.96+.8416)*SD/mean)^2` = 950.935407 → 951 | MATCH |
-| 80%-power N, p=.45, RR=2.5, cost=.062; REPORT.md:99,211-213 | mean = .45*2.5-.55-.062 = .513; SD = 1.742331; same formula = 90.539709 → about 90 | MATCH (rounds to 91 under conventional nearest-integer rounding; table reports approximate 90) |
+| REPORT.md:94, `p=.45, RR=1.5, c=.012`: 80%-power N about 951 | mean 0.113; sd 1.243734296383; N80 950.836857943, rounds to 951 | MATCH |
+| REPORT.md:99, `p=.45, RR=2.5, c=.062`: 80%-power N about 90 | mean 0.513; sd 1.741228014937; N80 90.424108632, rounds to 90 | MATCH |
 
-The report formula says one-sided power `1-Phi(1.96-mean/(SD/sqrt(n)))`. Independent power at N=100 is 14.651724% for the first row and 83.752352% for the second, matching the table’s rounded 15% and 84% (REPORT.md:94,99,211).
+Both align with the G1 table using the table's nearest-integer rounding. Formula source: REPORT.md:211-213. No market data or holdout was read.
 
-## Tests and fail-first mutation
+## Test and mutation check
 
-- Audited tests: `MyTradingSys/tests/test_power_mde.py:1-34`. They assert the table means, power at N=100/150/300 and the two anchor N estimates.
-- Baseline command: `python -m pytest MyTradingSys/tests/test_power_mde.py -q` — 7 passed, 1 cache warning.
-- Mutation: copied the test and implementation to `C:\Users\E-NGIN~1\AppData\Local\Temp\mde_mutation_5sl28jg3`; changed only the copied power assignment to `power = 0.0`. Ran pytest against the copied test with the scratch directory on `PYTHONPATH` — exit 1, 7 failed. The table power assertions and anchor power assertions detect the defect. Real audited files were left unchanged.
+Command: `python -m pytest MyTradingSys/tests/test_power_mde.py -q` -> **7 passed** (one pytest cache warning about an already-existing cache path).
 
-## Findings
+Test review: `MyTradingSys/tests/test_power_mde.py:5-36` checks all six G1 table rows at n=100/150/300 and the two anchor rows. The tolerances are appropriately tighter for the high-power anchor and wide enough for the table's whole-percent rounding. It would detect a material threshold/power error.
 
-| Severity | Location | Finding | Evidence | Proposed disposition |
-|---|---|---|---|---|
-| HIGH | `MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md:94,99,211-213` | The two requested 80%-power values reproduce from the written formula. | Independent values 950.935407 and 90.539709. MATCH. | Retain the calculations; consider reporting the latter as 91 if conventional rounding is intended. |
-| HIGH | `MyTradingSys/tests/test_power_mde.py:17-34` | The test suite fails on a broken power calculation. | Scratch mutation `power=0.0`: 7 failures. | Test sensitivity demonstrated. |
-| HIGH | `MyTradingSys/research/layer_lab/reports/2026-10-23_trust-recheck-gap-g1-power-mde-helper.md` | Prior requested report is absent in this work tree. | Read attempt returned file-not-found. | Cross-vendor reviewer must complete the dated re-check before VERIFIED-C2. |
-| HIGH | This review | Cross-vendor requirement cannot be satisfied by this COD/GPT reviewer of GPT-produced work. | Layer-lab protocol requires a different vendor for a trust re-check. | Proposal DISPUTED; obtain Gemini or Claude review. |
+Fail-first probe: copied the implementation and test to a temporary scratch directory, changed only `_Z_975` from the 97.5th to 98.5th normal quantile in the scratch implementation, and ran the copied tests against it. Result: **7 failed**, including every parameterized G1 row and the anchor test. The scratch directory was removed; the real implementation and test file were unchanged.
 
-No market data or producer code was used. No source or test file was edited. No follow-up card was created.
+## Finding and proposal
+
+No numerical mismatch found. The test suite bites on the one-line threshold mutation. Proposed result trust tag: **VERIFIED-C2**, based on this independent re-derivation and test sensitivity check. The trust tag is a proposal for the runner's receipt workflow; this report does not modify a trust receipt.

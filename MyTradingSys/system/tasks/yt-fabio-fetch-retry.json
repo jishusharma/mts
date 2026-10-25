@@ -25,12 +25,6 @@
   "refined_by": "",
   "refreshed": "2026-10-24T15:40:19Z",
   "refs": [],
-  "reroute": {
-    "at": "2026-10-25T16:59:17Z",
-    "desk": "20261025-165917-yt-fabio-fetch-retry",
-    "to": "DSA",
-    "why": "failing"
-  },
   "result": "",
   "scope_in": [
     "raw_transcripts_canonical",
