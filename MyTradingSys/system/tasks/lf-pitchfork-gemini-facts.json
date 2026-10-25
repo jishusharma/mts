@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T21:37:38Z",
   "commands": [
     "python scripts/dev/lab_query.py layers",
     "python scripts/dev/lab_query.py rulings pitchfork"
@@ -16,7 +17,14 @@
   "id": "lf-pitchfork-gemini-facts",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/pitchfork.md (1 layer, 117 facts:",
+      "ref": "2147bfc57",
+      "utc": "2026-10-25T21:37:38Z"
+    }
+  ],
   "layers": [
     "pitchfork"
   ],
@@ -30,7 +38,12 @@
   "refs": [
     "MyTradingSys/system/ANTIGRAVITY_LAPTOP.md item C"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/pitchfork.md (1 layer, 117 facts: 98 SOURCED, 13 OURS, 6 NOT_IN_DATA)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/pitchfork.md (new file only)"
   ],
@@ -46,7 +59,7 @@
     "papers/02_PITCHFORK_APPLICATION_ON_BTC.md",
     "MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "python scripts/dev/lab_query.py layers (rows with family pitchfork); read the pitchfork section of MyTradingSys/system/LAYERS.md and its spec/results files in layer_index.json",
     "python scripts/dev/lab_query.py rulings pitchfork",
@@ -54,6 +67,7 @@
     "Write NOT_IN_DATA where the repo has no answer; never fill from memory; give no verdict",
     "Commit with a Result: line (layers covered, facts counted)"
   ],
+  "taken": "2026-10-25T21:37:38Z",
   "tests": "none (run card); proof = file exists and every fact line carries file:line or NOT_IN_DATA",
   "title": "[GEMINI] Layer fact sheet: pitchfork (file:line facts only, no verdict)",
   "weight": "ROUTINE",

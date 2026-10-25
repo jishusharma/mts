@@ -14,7 +14,7 @@
 
 ## 1. ORIGIN (Quoted Source)
 
-> Reviewer note: the biographies and book titles below come from one LLM-written synthesis (`papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md`) with no external reference; treat as single-source, unverified. `SET_362293de1b70_pitchfork.md:25` (TradingView) defines Schiff vs Modified Schiff the opposite way to papers/01 and `pitchfork_detector.py:68-75`.
+> Reviewer note: the biographies and book titles below come from one LLM-written synthesis (`papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md`) with no external reference; treat as single-source, unverified. `MyTradingSys/research/live_reads/2026-10-17_live_market_1017/SET_362293de1b70_pitchfork.md:25` (TradingView) defines Schiff vs Modified Schiff the opposite way to papers/01 and `MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py:68-75`.
 
 - **Primary Historical Inventor:** Dr. Alan Hall Andrews (1900–1985), private Babson Action-Reaction Course (1960–1975) [SOURCED: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md:26-28`].
   - *Quoted Source:* "Dr. Alan Hall Andrews (1900–1985), an MIT-educated engineer, mathematician, and Babson attendee, refined Babson’s macroeconomic observations into micro-level chart geometry... The cornerstone of Andrews' teachings was the Median Line Method—a three-point geometric vector construction that market participants colloquially termed the 'Pitchfork' due to its distinctive three-pronged appearance." [SOURCED: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md:26-28`].

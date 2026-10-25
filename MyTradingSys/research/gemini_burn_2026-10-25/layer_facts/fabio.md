@@ -99,7 +99,7 @@ Every fact line is tagged with its concrete repo `file:line` or marked `NOT_IN_D
 
 ### Parameters
 - `n_bins`: number of bins for profile, default 20 [OURS: `MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py:46`]
-- `pct` (argument of `value_area`): value area percentage, default 0.70 (70%) [OURS / SOURCED concept: `MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py:116`; the name `va_pct` exists only in `fabio_of_model.py:74`]
+- `pct` (argument of `value_area`): value area percentage, default 0.70 (70%) [OURS / SOURCED concept: `MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py:116`; the name `va_pct` exists only in `MyTradingSys/backtest/layers/fabio/fabio_of_model.py:74`]
 - `left`, `right`: swing lookback, default 2, 2 [OURS: `MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py:18`]
 - `use_body`: whether to use bar body for swings, default True [OURS: `MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py:18`]
 - `touch_bars`: first touch within 200 bars [OURS: `MyTradingSys/backtest/layers/fabio/FABIO_L1_REPORT.md:14`]

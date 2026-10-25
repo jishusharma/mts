@@ -1,5 +1,7 @@
 # Layer Fact Sheet: callers
 
+> **Claude review 2026-10-26** (`MyTradingSys/research/layer_lab/reports/2026-10-26_gemini-facts-review.md`): content errors below are fixed; about 22 line cites drift from trunk (content true, line off) and are listed in that report, not rewritten here. Treat any line number as approximate (+-15).
+
 **Family**: `callers` (Posted trade calls: Qriptal, RLinda, Bennett, Crypto Chase, Roman)  
 **Layer IDs**: `callers` (family container / multi-analyst ingestion & scoring)  
 **Reference Specification**: `ANTIGRAVITY_LAPTOP.md` Item C  
@@ -48,7 +50,7 @@
 - **Trade Direction (`direction`)**: `LONG` or `SHORT` (SOURCED: `MyTradingSys/research/analysts/schema.py:19-21`)
 - **Entry Price (`entry_price`)**: Numerical execution level; limit or trigger level directly stated by the caller (SOURCED: `MyTradingSys/research/analysts/schema.py:46-47`)
 - **Stop Loss (`stop_loss`)**: Explicit structural invalidation price stated by the caller; mandatory non-null (SOURCED: `MyTradingSys/research/analysts/schema.py:48-49`)
-- **Profit Targets (`targets`)**: List of 1 to 5 target prices stated by the caller (SOURCED: `MyTradingSys/research/analysts/schema.py:50-51`)
+- **Profit Targets (`targets`)**: List of one or more target prices (non-empty, each > 0) stated by the caller (SOURCED: `MyTradingSys/research/analysts/schema.py:59-63`)
 - **Price Geometry Validation**:
   - For `LONG`: `stop_loss < entry_price < targets[0]` (OURS: `MyTradingSys/research/analysts/schema.py:65-68`)
   - For `SHORT`: `stop_loss > entry_price > targets[0]` (OURS: `MyTradingSys/research/analysts/schema.py:70-73`)
@@ -56,12 +58,12 @@
 - **Slippage**: `2 bps` (OURS: `MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md:359`)
 - **Fill Window**: `24 hours` (`1440` minutes) from `published_utc`; unreached limits expire as `NOT_FILLED` (OURS: `MyTradingSys/research/analysts/score_analysts.py:28`; `MyTradingSys/research/qriptal_2026-10-10/score_calls.py:30`)
 - **Max Holding Period / Timeout Window**: `7 days` (`10080` minutes); unresolved positions close at market (OURS: `MyTradingSys/research/analysts/score_analysts.py:29`; `MyTradingSys/research/qriptal_2026-10-10/score_calls.py:31`)
-- **Bar Collision Resolution**: Intra-candle collision between stop loss and profit target resolves to `LOSS` first (SOURCED: `MyTradingSys/research/analysts/score_analysts.py:126-128`; `MyTradingSys/research/qriptal_2026-10-10/score_calls.py:83-84`)
+- **Bar Collision Resolution**: Intra-candle collision between stop loss and profit target resolves to `LOSS` first (OURS: `MyTradingSys/research/qriptal_2026-10-10/RULES.md:3` "All numbers OURS"; `MyTradingSys/research/analysts/score_analysts.py:84-90`; `MyTradingSys/research/qriptal_2026-10-10/score_calls.py:83-84`)
 - **Target Exit Policy**: Primary metric exits 100% position at Target 1 (`target_1`) (OURS: `MyTradingSys/research/analysts/score_analysts.py:129-130`; `MyTradingSys/research/qriptal_2026-10-10/SCORECARD.md:59`)
 - **Statistical Power Thresholds**:
-  - Alpha: `0.05` one-sided exact binomial test against `H0 = 50%` coin flip (SOURCED: `MyTradingSys/research/qriptal_2026-10-10/SCORECARD.md:38`)
+  - Alpha: `0.05` one-sided exact binomial (OURS: `MyTradingSys/research/qriptal_2026-10-10/score_calls.py:37`). Two orientations exist: `MyTradingSys/research/analysts/SCORECARD.md:11` uses H0 = 50% (power to detect a 67.1% claim); `MyTradingSys/research/qriptal_2026-10-10/SCORECARD.md:38` uses H0 = his 67.1% claim, H1 = 50%.
   - Minimum sample for triage ($60.5\%$ power): `n = 30` resolved trades (OURS: `MyTradingSys/research/analysts/SCORECARD.md:18`; `MyTradingSys/research/analysts/ROADMAP.md:68`)
-  - Minimum sample for promotion gate ($80\%$ - $81\%$ power): `n = 56` resolved trades (SOURCED: `MyTradingSys/research/analysts/SCORECARD.md:19,22`; `MyTradingSys/research/qriptal_2026-10-10/SCORECARD.md:48,51`)
+  - Minimum sample for promotion gate: `n = 56` first reaches 80% power: 81.0% (analysts SCORECARD) or 82.5% (qriptal SCORECARD) depending on orientation (OURS: `MyTradingSys/research/analysts/SCORECARD.md:19,22`; `MyTradingSys/research/qriptal_2026-10-10/SCORECARD.md:48,51`)
 
 ---
 
@@ -77,12 +79,12 @@
   - Report path: `MyTradingSys/research/imbalance_qriptal_2026-10-16/README.md:1-95`
   - Fee-net: Fee drag `0.09` to `0.38 R`; net edge after fees is flat to negative (SOURCED: `MyTradingSys/research/imbalance_qriptal_2026-10-16/README.md:81-83`)
   - In-sample / Out-of-sample: 22 named historical candles evaluated on Binance klines (SOURCED: `MyTradingSys/items/B162_qriptal_signal_layer.md:41`)
-  - Trades count ($n$): $n = 22$ volume anomaly candles (SOURCED: `MyTradingSys/items/B162_qriptal_signal_layer.md:41`)
-  - Result: Candle anomaly statistically above chance ($p = 0.003$), but pure mechanical fade has NO EDGE after fees (SOURCED: `MyTradingSys/items/B162_qriptal_signal_layer.md:41`; `MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md:32`)
+  - Trades count ($n$): 22 labelled volume anomaly candles (labels); the fade backtest event counts are in the thousands (e.g. 2011/375 at 30m, `MyTradingSys/research/imbalance_qriptal_2026-10-16/README.md:74-78`) (SOURCED: `MyTradingSys/items/B162_qriptal_signal_layer.md:41`)
+  - Result: Candle anomaly statistically above chance ($p = 0.003$), but pure mechanical fade has NO EDGE after fees (SOURCED: `MyTradingSys/items/B162_qriptal_signal_layer.md:41`; `MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md:32`). Caveats: p = 0.003 is the k=3 Binance-perp cell only (spot p = 0.001, `MyTradingSys/research/imbalance_qriptal_2026-10-16/README.md:51`); the README calls the p-values rough (`:61`); labels sit in the holdout window (`:62`); windows 2024-07..2026-06-25 are not clean OOS (`:98-101`).
 - **Multi-Provider Analysts Scorecard (RLinda, Justin Bennett, Crypto Chase, Roman Trading)**:
   - Report path: `MyTradingSys/research/analysts/SCORECARD.md:1-33`
   - Fee-net: Evaluated at `0.05%` per side (SOURCED: `MyTradingSys/research/analysts/SCORECARD.md:4`)
-  - In-sample / Out-of-sample: NOT_IN_DATA (kline evaluation run pending real ledger ingestion; `SAMPLE_CALL_LEDGER.csv` maintained header-only per `ROADMAP.md:14`)
+  - In-sample / Out-of-sample: NOT_IN_DATA (kline evaluation run pending real ledger ingestion; `SAMPLE_CALL_LEDGER.csv` maintained header-only per `MyTradingSys/research/analysts/ROADMAP.md:14`)
   - Trades count ($n$): $n = 0$ evaluated trades in canonical `SCORECARD.md` (SOURCED: `MyTradingSys/research/analysts/SCORECARD.md:8-9`; `MyTradingSys/research/analysts/ROADMAP.md:14-15`)
 
 ---
@@ -91,7 +93,7 @@
 
 - **Rulings Query**:
   - `python scripts/dev/lab_query.py rulings callers` returns 1 closed ruling:
-    - `B190` (Opened `2026-10-16`, Closed, Severity `LOW`): *"MTS-Backup git children flash visible console windows under the vbs/Store python.exe launcher"* (SOURCED: `lab_query.py rulings callers`)
+    - `B190` (Opened `2026-10-16`, Closed, Severity `LOW`): *"MTS-Backup git children flash visible console windows under the vbs/Store python.exe launcher"* (SOURCED: `MyTradingSys/research/BUGS.md:303`). Keyword hit only (its text mentions "the git callers"); unrelated to this layer. Bug rows for the callers layer: NOT_IN_DATA.
 - **Self-Reported Performance Assumptions**:
   - Qriptal claims `86 setups, 67.1% win rate, 49 W / 13 BE / 24 L, avg winner 3.99%, avg loser 0.63%` on `qriptal.com`: unverified and not backed by public entry/stop/target timestamps in repo data (SOURCED: `MyTradingSys/items/B162_qriptal_signal_layer.md:23-24`; `MyTradingSys/research/qriptal_2026-10-10/SCORECARD.md:28-34`)
   - Unstated whether claimed percentages represent raw price movements or unleveraged/leveraged account equity changes (SOURCED: `MyTradingSys/research/qriptal_2026-10-10/SCORECARD.md:34`)
@@ -109,7 +111,7 @@
 - **Confirming Other Layers**:
   - External caller setups act as discretionary confluence over raw mechanical imbalance occurrences (such as volume anomalies, Fair Value Gaps, and order-book delta imbalances) (SOURCED: `MyTradingSys/research/analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md:17`)
 - **Confirmed By Other Layers**:
-  - `live_engine` / Binance USD-M klines: Every ingested signal is verified against historical 1m price bars for fill feasibility and strict stop-loss checking before targets (SOURCED: `MyTradingSys/research/analysts/score_analysts.py:114-135`)
+  - Binance USD-M 1m klines (data input, not a confirming layer; no live layer confirms callers: NOT_IN_DATA): Every ingested signal is verified against historical 1m price bars for fill feasibility and strict stop-loss checking before targets (SOURCED: `MyTradingSys/research/analysts/score_analysts.py:114-135`)
   - Key HTF Horizontal Support / Resistance & Order Flow: Callers' entries rely on confluence with pre-planned horizontal levels, value-area rotations, and wick sweeps (SOURCED: `MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md:28,120`)
   - Testnet Shadow Account Isolation: Intended to operate on isolated testnet subaccounts (`layer:callers:<analyst_id>`), confirmed by live engine risk limits and `fail_closed` guards (SOURCED: `MyTradingSys/items/B162_qriptal_signal_layer.md:32`; `MyTradingSys/research/analysts/ROADMAP.md:81-84`)
 - **Inter-analyst Correlation**:
