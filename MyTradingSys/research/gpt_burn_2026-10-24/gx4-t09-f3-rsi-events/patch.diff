@@ -1,0 +1,60 @@
+--- a/MyTradingSys/execution/auto_trader.py
++++ b/MyTradingSys/execution/auto_trader.py
+@@
+ def layer_signal(alert: dict, cfg: dict, now: datetime) -> dict:
+     c = cfg["layers"]
+     layer, tf = alert.get("layer"), alert.get("tf")
+     event = alert.get("event") or alert.get("kind") or alert.get("sub")
+@@
+     sig = {"source": f"layer:{layer}:{alert.get('sub')}:{tf}", "key": key, "detail": alert}
+     sig["log"] = {"bracket_source": c.get("bracket_source", "SAMPLING")}
+     side = layer_side(alert, cfg)
+     sig["side"] = side
+-    if not c["enabled"] or layer in cfg["disabled_layers"]:
++    if layer == "rsi" and not rsi_event_tested(alert):
++        sig["reject"] = "untested RSI event (fail closed)"
++    elif not c["enabled"] or layer in cfg["disabled_layers"]:
+@@
+     return sig
++
++
++def rsi_event_tested(alert: dict) -> bool:
++    """Only permit an RSI tuple with a matching backtest/study cell."""
++    try:
++        key = (
++            alert["tf"], alert["event"], float(alert["level_value"]),
++            float(alert["tolerance_used"]),
++        )
++    except (KeyError, TypeError, ValueError):
++        return False
++    return key in {("1h", "support", 40.0, 0.5)}
+--- /dev/null
++++ b/MyTradingSys/execution/test_rsi_tested_event_gate.py
+@@
++from MyTradingSys.execution.auto_trader import layer_signal
++
++
++def _signal(alert):
++    # Minimal shape used by layer_signal before its later policy checks.
++    cfg = {"layers": {"enabled": True}, "disabled_layers": set(),
++           "layer_rules": {"rsi:cross": "short", "rsi:support": "long"}}
++    from datetime import datetime, timezone
++    return layer_signal(alert, cfg, datetime.now(timezone.utc))
++
++
++def test_cross_with_valid_side_fails_closed_before_promotion_check():
++    # Fail-first: before the gate, this alert proceeds to promotion policy;
++    # after the gate it is rejected specifically as untested.
++    sig = _signal({"layer": "rsi", "tf": "1h", "event": "cross",
++                   "level_value": 40, "tolerance_used": 0.5,
++                   "side": "short", "t_close": 1_800_000_000_000})
++    assert sig["reject"] == "untested RSI event (fail closed)"
++
++
++def test_only_exact_studied_tuple_passes_coverage_gate():
++    from MyTradingSys.execution.auto_trader import rsi_event_tested
++    assert rsi_event_tested({"tf": "1h", "event": "support", "level_value": 40,
++                             "tolerance_used": 0.5})
++    assert not rsi_event_tested({"tf": "15m", "event": "support", "level_value": 40,
++                                "tolerance_used": 0.5})
++    assert not rsi_event_tested({"tf": "1h", "event": "failure"})
