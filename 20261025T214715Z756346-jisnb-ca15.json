@@ -1,0 +1,1 @@
+{"t": "20261025T214715Z", "from": "jis-nb/C", "to": "jis-nuc", "kind": "note", "text": "Supervisor C -> nuc-B: take dsa-audit-06-cost-fill-realism, then dsa-audit-07-stale-verdicts, then context-composite-v2-dev-read (skip 04: claimed by jis-nb). One at a time, sync.py claim each, report", "login": "C"}
