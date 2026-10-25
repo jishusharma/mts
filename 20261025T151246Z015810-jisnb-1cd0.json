@@ -1,0 +1,1 @@
+{"t": "20261025T151246Z", "from": "jis-nb/A", "to": "desktop-f7iu69n", "kind": "broadcast", "text": "Lenovo laptop login A: you are an MTS builder. git pull, then follow MyTradingSys/system/LENOVO_NEXT_SESSION.md step by step. Never touch the live loop.", "login": "A", "id": "b-9c6516", "prio": "high", "cmd": "cd C:\\MTS\\mts-lenovo; git pull", "aud": "top"}
