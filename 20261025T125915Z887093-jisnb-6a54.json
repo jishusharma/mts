@@ -1,0 +1,1 @@
+{"t": "20261025T125915Z", "from": "jis-nb/A", "to": "all", "kind": "done", "text": "ship Result: a HIGH broadcast acked told goes loud again after TOLD_TTL_H=2 h (prompt line plus Stop block); ack told on a --cmd broadcast without --note is refused; mts_signal pending --host --json a", "login": "A", "sid": "c68c43fe77"}
