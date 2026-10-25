@@ -802,3 +802,54 @@ def test_plan_login_mismatch_uses_detected_letter(monkeypatch, tmp_path, capsys)
     assert rc == 0 and seen["login"] == "A"
     assert "LOGIN MISMATCH: you passed C, this app is logged in as A; using A" in capsys.readouterr().out
     mts_signal._LOGIN_CACHE.clear()
+
+
+# ---------- watchcheck: a coordinator turn must not end with no wake source ----------
+@pytest.fixture(autouse=True)
+def _relay_home(monkeypatch, tmp_path):
+    monkeypatch.setenv("MTS_RELAY_HOME", str(tmp_path / "relay"))
+
+
+def _marker(home, pid, expires):
+    home.mkdir(parents=True, exist_ok=True)
+    (home / "C-watcher.json").write_text(json.dumps({"pid": pid, "expires": expires}), encoding="utf-8")
+
+
+_NOW = datetime(2026, 10, 26, 12, 0, tzinfo=timezone.utc)
+
+
+def test_watchcheck_no_marker_exits_4(tmp_path):
+    rc, msg = S.watchcheck("C", home=tmp_path, now=_NOW)
+    assert rc == 4 and "NO WAKE SOURCE" in msg
+
+
+def test_watchcheck_live_watcher_exits_0(tmp_path):
+    _marker(tmp_path, 4242, "2026-10-26T13:00Z")
+    rc, msg = S.watchcheck("C", home=tmp_path, now=_NOW, alive=lambda pid: pid == 4242)
+    assert rc == 0 and "NO WAKE SOURCE" not in msg
+
+
+def test_watchcheck_dead_pid_exits_4(tmp_path):
+    _marker(tmp_path, 4242, "2026-10-26T13:00Z")
+    rc, msg = S.watchcheck("C", home=tmp_path, now=_NOW, alive=lambda pid: False)
+    assert rc == 4 and "NO WAKE SOURCE" in msg
+
+
+def test_watchcheck_expired_marker_exits_4(tmp_path):
+    _marker(tmp_path, 4242, "2026-10-26T11:00Z")
+    rc, msg = S.watchcheck("C", home=tmp_path, now=_NOW, alive=lambda pid: True)
+    assert rc == 4 and "NO WAKE SOURCE" in msg
+
+
+def test_wait_records_marker_and_removes_it_after(tmp_path):
+    seen = []
+
+    def probe(repo, shas):
+        seen.append((tmp_path / "C-watcher.json").exists())
+        return {"shas": {}, "ci_red": False, "busy_slots": 0}
+
+    rc, _ = S.wait_for_transition(repo=tmp_path, timeout=10, interval=5, probe=probe, fetcher=lambda r: None,
+                                  sleeper=lambda s: None, login="C", home=tmp_path)
+    assert rc == 3 and seen and all(seen)
+    assert not (tmp_path / "C-watcher.json").exists()
+    assert S.watchcheck("C", home=tmp_path)[0] == 4
