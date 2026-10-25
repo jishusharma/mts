@@ -4,6 +4,21 @@
   "commands": [
     "python -m pytest MyTradingSys/backtest/layers/krown/test_krown_context.py -q"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-25T18:22:32Z",
+    "misses": 31,
+    "reads": [
+      "MyTradingSys/backtest/layers/krown/run_counts.py",
+      "MyTradingSys/backtest/layers/krown/test_krown_context.py",
+      "MyTradingSys/backtest/layers/krown/krown_context.py",
+      "MyTradingSys/research/krown_audit_2026-10-22/run/COUNTS.md",
+      "MyTradingSys/research/krown_audit_2026-10-22/run/ACCESS_LOG.md",
+      "MyTradingSys/research/krown_audit_2026-10-22/run/bands.json",
+      "MyTradingSys/research/krown_audit_2026-10-22/run/joined_events.csv"
+    ],
+    "session": "agent-a9dcfbdca42f68fa1"
+  },
   "created": "2026-10-24T21:59:50Z",
   "depends_on": [],
   "done_when": "krown_context.py uses F6; a hand-number test (FORMULAS.md) fails on the six-bar code and passes; COUNTS.md, joined_events.csv, counts_cells.csv regenerated with no outcome read; S>=+2 reads 351 (GPT_AUDIT_S1.md) or the difference is explained. gx2 audit.py re-run dropped (script absent from repo; DECISION OURS 2026-10-25).",
