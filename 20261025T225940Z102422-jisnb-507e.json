@@ -1,0 +1,1 @@
+{"t": "20261025T225940Z", "from": "jis-nb/C", "to": "jis-nuc", "kind": "note", "text": "Supervisor C -> nuc-B: all your shas verified (cherry empty, CI green). Ready cards are exhausted except JIS-NB ones. Next for B: Claude review (diff-only Agent per branch, producer is not reviewer) o", "login": "C"}
