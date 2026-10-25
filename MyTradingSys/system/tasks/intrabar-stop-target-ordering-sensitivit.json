@@ -4,33 +4,62 @@
   "commands": [],
   "created": "2026-10-24T10:24:27Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/dsa_backtest_audit_2026-10-16/INTRABAR_BOUNDS.md has, per sim, trades, bars holding both, net R stop-first, net R target-first and the gap in R; scripts/T10/test_intrabar_bounds.py passes; a one-line verdict says whether any published net R changes sign under the stop-first bound.",
+  "est_turns": 24,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "For the 1m sims with stops under 0.15% (Tom, Fabio v3, bt_engine) report stop-first vs target-first bounds: on bars that hold both the stop and the target (3.27% at 0.044/0.088 in T10 D2), compute net R with every such bar resolved stop-first and target-first, and state the gap.",
   "id": "intrabar-stop-target-ordering-sensitivit",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "bt_engine.simulate_trade: fail closed on funding, window t_in < s <= t_out (T03-F1/F2)",
+      "ref": "c736174008de",
+      "utc": "2026-10-19T07:08:49Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): scoped from the audit finding; DECISION (OURS): scope is tom_bt.py, fabio v3 and bt_engine only (the 'every 1m sim' of the finding is the follow-up). Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:29:38Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T10_missing_aspects.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/intrabar_bounds.py",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/test_intrabar_bounds.py",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/INTRABAR_BOUNDS.md",
+    "MyTradingSys/backtest/tom_bt.py",
+    "MyTradingSys/backtest/layers/fabio/v3/manage.py",
+    "MyTradingSys/backtest/bt/bt_engine.py"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "restating any published verdict, ledger row or pre-registered bar",
+    "live path"
+  ],
+  "scope_sha": "c736174008de",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T10_missing_aspects.md (T10-F2, D2)",
+    "MyTradingSys/backtest/tom_bt.py"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read T10-F2 and demo D2 in t10_demos.py; list where tom_bt.py, fabio v3 manage.py and bt_engine.py resolve a both-hit bar.",
+    "Add a default-off resolve_both flag ('stop' | 'target') to each sim (edit nothing else; default output byte-identical) or wrap the resolver if a sim has no seam.",
+    "Write intrabar_bounds.py calling each sim on DEV with both settings; write INTRABAR_BOUNDS.md; if any published net R changes sign, file a card with tasks.py new."
+  ],
+  "tests": "test_intrabar_bounds.py: a planted bar holding stop and target gives -1R stop-first and +target R target-first; both fail if the resolver is not forced.",
   "title": "Intrabar stop/target ordering sensitivity for tight-stop sims on 1m bars (T10-F2, D2: 3.27% of bars hold both at 0.044/0.088)",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

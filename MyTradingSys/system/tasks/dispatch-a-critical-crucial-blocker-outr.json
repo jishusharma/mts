@@ -4,31 +4,56 @@
   "commands": [],
   "created": "2026-10-22T18:21:40Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/test_tasks.py has a test: a prio-3 CRUCIAL blocker of a ready card ranks above a prio-1 ROUTINE card, a CRUCIAL card nobody depends on keeps its prio order; python -m pytest scripts/dev/test_tasks.py -q passes; the dispatch table shows rank unchanged for cards without dependants.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "tasks.py dispatch (tasks.py:1472) ranks a CRITICAL or CRUCIAL card that other open cards depend on ahead of priority: sort key becomes (pinned, own shard, not blocker-of-heavy, prio, weight, created, id).",
   "id": "dispatch-a-critical-crucial-blocker-outr",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Machine rename: repo works under old and new host names (hosts.py)",
+      "ref": "fc950331b605",
+      "utc": "2026-10-25T15:36:18Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "OPERATOR QUOTE: What other mistakes do you see? That we have missed.",
+  "note": "REVIEWED:2026-10-26 T0-ONLY | DRAFT 2026-10-26 Session_Planner (OURS): blocker = an open card named in another open card's depends_on (SUPER_SESSION rule 13). Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:17:41Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "scripts/dev/test_tasks.py"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "live path, orders, deploy, restarts",
+    "new hooks, gate steps or rules beyond the card"
+  ],
+  "scope_sha": "fc950331b605",
+  "size": "S",
+  "sources": [
+    "scripts/dev/tasks.py:1472",
+    "MyTradingSys/system/SUPER_SESSION.md rule 13"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read dispatch() and effective_weight; compute dependants = ids appearing in depends_on of non-final cards.",
+    "Write the failing ordering test first, then add the blocker flag to the sort key.",
+    "Run test_tasks.py and tasks.py dispatch on the live board to compare the top 10."
+  ],
+  "tests": "scripts/dev/test_tasks.py::test_dispatch_heavy_blocker_outranks_prio fails on the current key (prio first) and passes after.",
   "title": "Dispatch: a CRITICAL/CRUCIAL blocker outranks prio (tasks.py dispatch sorts prio before weight)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

@@ -3,32 +3,59 @@
   "asks": "",
   "commands": [],
   "created": "2026-10-22T22:41:51Z",
-  "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "depends_on": [
+    "mts-signal-session-start-note-keeps-the-"
+  ],
+  "done_when": "test_mts_signal.py has 3 cases: shipped output -> done; 'push rejected' or CI RED output -> note; same done twice in 15 min -> one row; existing ship tests still pass.",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "A ship signal is kind done only when sync.py printed 'shipped N file(s)' (sync.py:1026) and no 'CI RED'/'push rejected' as the last result; otherwise kind note 'ship failed'; an identical done text from the same sender within 15 minutes is dropped (REPEAT_SEC applies to done too for ships).",
   "id": "ship-signal-send-done-only-on-a-complete",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "exhaust.py plan --read: a quota reading older than 10 min is refused (B199)",
+      "ref": "8020042ba48c",
+      "utc": "2026-10-25T19:28:15Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-26 T0-ONLY | DRAFT 2026-10-26 Session_Planner (OURS): mts_signal.auto_send_text (mts_signal.py:390-425) sends kind done for any 'sync.py ship' command, including a failed one. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | CLUSTER: same file set as mts-signal-session-start-note (one editor per file); r",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:18:15Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "scripts/dev/mts_signal.py",
+    "scripts/dev/test_mts_signal.py"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "live path, orders, deploy, restarts",
+    "new hooks, gate steps or rules beyond the card"
+  ],
+  "scope_sha": "8020042ba48c",
+  "size": "S",
+  "sources": [
+    "scripts/dev/mts_signal.py:390-425,242-256",
+    "scripts/dev/sync.py:1026"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read how the PostToolUse payload exposes tool_response (grep tool_response in the hook payload tests) and the ship tests at test_mts_signal.py:164-270.",
+    "Write the 3 failing cases first.",
+    "Branch on the tool output for verb == ship; extend is_repeat to ship done rows with a 900 s window."
+  ],
+  "tests": "scripts/dev/test_mts_signal.py::test_failed_ship_is_not_done and ::test_repeat_ship_done_dropped fail on the current hook and pass after.",
   "title": "Ship signal: send done only on a completed ship; failed ship = note; drop repeats within 15 min",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

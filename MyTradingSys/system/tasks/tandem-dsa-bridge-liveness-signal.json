@@ -3,7 +3,9 @@
   "asks": "",
   "commands": [],
   "created": "2026-10-19T11:21:54Z",
-  "depends_on": [],
+  "depends_on": [
+    "idle-lane-check-in-supervisor-plan-repla"
+  ],
   "done_when": "tick --json has lanes.dsa per host with last_call_age_min from the newest BRIDGE signal; a stale (> 24 h) bridge sets dsa_down true; fail-first test with a fixture signal list.",
   "est_turns": 14,
   "formula_id": "",
@@ -12,13 +14,23 @@
   "goal": "aibridge_health.py checks only the local agent, so a supervisor on the third device (or NB for the NUC bridge) cannot tell if DSA rows will ever be taken. Add: a model-free script that reads the last audit.jsonl call age on a host and sends one signal line BRIDGE host=<h> last_call_age_min=<n> up=<0|1>; supervisor.py tick shows it per host.",
   "id": "tandem-dsa-bridge-liveness-signal",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Machine rename: repo works under old and new host names (hosts.py)",
+      "ref": "fc950331b605",
+      "utc": "2026-10-25T15:36:18Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "from the TANDEM_3LOGIN.md gap list (2026-10-19), now SUPER_LOOP.md",
+  "note": "REVIEWED:2026-10-26 T0-ONLY | DRAFT 2026-10-26 Session_Planner (OURS): model-free script; supervisor tick shows it per host. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | CLUSTER: same file set as idle-lane-check (one editor per file); runs after it",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:18:29Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -26,13 +38,22 @@
     "scripts/dev/supervisor.py",
     "scripts/dev/test_supervisor.py"
   ],
-  "scope_out": [],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "live path, orders, deploy, restarts",
+    "new hooks, gate steps or rules beyond the card"
+  ],
+  "scope_sha": "fc950331b605",
   "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
+  "state": "refined",
+  "steps": [
+    "Read aibridge_health.py and supervisor.tick lanes output (tick --json).",
+    "Write the fixture-signal test (BRIDGE host=NUC last_call_age_min=30 up=1; one 30 h old).",
+    "Add the BRIDGE sender to aibridge_health.py and the lanes.dsa reader to supervisor.py tick."
+  ],
   "tests": "tick --json has lanes.dsa per host with last_call_age_min from the newest BRIDGE signal; a stale (> 24 h) bridge sets dsa_down true; fail-first test with a fixture signal list.",
   "title": "Tandem: DSA bridge liveness visible to supervisors on other devices",
-  "weight": "IMPORTANT",
-  "worker": "session"
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

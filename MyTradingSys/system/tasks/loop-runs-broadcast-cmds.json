@@ -1,7 +1,9 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest scripts/dev/test_mts_signal.py scripts/dev/test_loop_broadcast.py -q"
+  ],
   "context": {
     "calls_to_edit": 12,
     "folded": "2026-10-25T13:49:51Z",
@@ -24,10 +26,10 @@
   "layers": [],
   "live_path": true,
   "mutation_check": "",
-  "note": "Operator 2026-10-25: broadcast is a feature that needs immediate acknowledgement. Guardrails shipped (told expires after 2 h; pending verb; mts_doctor BROADCAST). This card is the LIVE-PATH half and was deliberately left out of that ship. Approach: allowlist file MyTradingSys/system/BROADCAST_CMD_ALLOWLIST.json of exact command strings or regexes (e.g. `python scripts/dev/c_drive_guard.py install`); each loop tick (low frequency, e.g. every 10 min) runs `mts_signal.py pending --host <h> --json`, runs a cmd only when it matches the allowlist exactly, with a timeout, no shell metacharacters, logging to runtime_data/broadcast_cmds.log, then `ack <id> done --note` (or `told --note <exit code/blocker>` on failure). A cmd not on the allowlist is never run: it stays pending so mts_doctor BROADCAST warns. Fail closed: any parse/network error skips the tick; never touches orders, HALT files or the trading loop state. Live-path rules apply: tests for restart/reset state, non-trade balance moves and API errors; deploy only by the manual runbook.",
+  "note": "DRAFT 2026-10-26 Session_Planner (OURS): CRITICAL live-path: plan review and diff review sessions; builder in a worktree only; deploy stays manual. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
   "refs": [
     "scripts/dev/mts_signal.py",
     "scripts/dev/mts_doctor.py"
@@ -39,20 +41,21 @@
     "live loop tick hook (find with grep mts_run loop)"
   ],
   "scope_out": [
-    "executing any cmd not on the allowlist",
-    "orders, accounts, HALT files",
-    "changing ack semantics (told TTL stays 2 h)"
+    "VALIDATION or HOLDOUT bars",
+    "live path, orders, deploy, restarts",
+    "new hooks, gate steps or rules beyond the card"
   ],
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "refined",
   "steps": [
-    "Write the allowlist file and a loader that fails closed",
-    "Add a loop-tick function calling pending --host --json and running only allowlisted cmds",
-    "Write the five tests, then hand the deploy to the manual runbook"
+    "Post 'REVIEW loop-runs-broadcast-cmds PLAN <branch>' with the allowlist format and test list before code.",
+    "Write failing tests: allowlisted cmd runs once and acks done; non-allowlisted never runs and shows in mts_doctor BROADCAST; failing cmd acks told with a note; repeat tick runs it once; restart mid-run does not rerun.",
+    "Add BROADCAST_CMD_ALLOWLIST.json (exact strings), the loop tick hook (grep mts_run loop), timeout, no shell metacharacters, log line.",
+    "Post 'REVIEW loop-runs-broadcast-cmds DIFF <sha>' and ship only on APPROVE."
   ],
   "tests": "New tests: allowlisted cmd runs once; non-allowlisted never runs; failing cmd acks told with note; restart does not rerun a done id; network error skips the tick.",
   "title": "loop-runs-broadcast-cmds: live loop executes allowlisted HIGH broadcast cmds on hosts with no session",
-  "weight": "",
+  "weight": "CRITICAL",
   "worker": "session"
 }

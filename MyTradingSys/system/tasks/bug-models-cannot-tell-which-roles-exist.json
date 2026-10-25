@@ -19,7 +19,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "OPERATOR QUOTE: \"create a bug to clear this confusion so that it never happens to any model. So that everyone knows what roles are, where they are, and to always... this is the best feature that I need. If roles are not provided, given from the task, the model should be able to load the best role.\"",
+  "note": "DROPPED 2026-10-26 Session_Planner: shipped: roles/ROSTER.json single roster, role_loader.py list/pick/render, test_role_roster.py exist; roster 10 to 7 (2c9bbaf9) | OPERATOR QUOTE: \"create a bug to clear this confusion so that it never happens to any model. So that everyone knows what roles are, where they are, and to always... this is the best feature that I need. If roles are not provided, give",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -35,7 +36,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [
     "Write the roster file: name, file, start (operator line | embedded | alias), model, lane, one-line job, triggers",
     "Add role_loader.py list and the best-role fallback with the banner note",

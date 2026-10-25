@@ -12,26 +12,37 @@
   "goal": "codex_run.py tick and gemini_queue.py only work on JIS-NUC; a supervisor on JIS-NB or the laptop must hand-type an ssh command. Add scripts/dev/nuc_lab.py (tick|status|gemini <card>:<effort>) that wraps the nuc_gate ssh verb ps, exits 0 with 'no gate key' on a device without ~/.ssh/nuc_gate, and never starts a second run (lab.lock and 20 min gap already guard).",
   "id": "tandem-nuc-lab-from-other-devices",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "from the TANDEM_3LOGIN.md gap list (2026-10-19), now SUPER_LOOP.md",
+  "note": "REVIEWED:2026-10-26 T0-ONLY | DRAFT 2026-10-26 Session_Planner (OURS): hosts JIS-NUC owns the lab; this is the wrapper other devices call. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:18:32Z",
   "refs": [],
   "result": "",
   "scope_in": [
     "scripts/dev/nuc_lab.py",
     "scripts/dev/test_nuc_lab.py"
   ],
-  "scope_out": [],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "live path, orders, deploy, restarts",
+    "new hooks, gate steps or rules beyond the card"
+  ],
+  "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
+  "state": "ready",
+  "steps": [
+    "Read SUPER_SESSION.md line 42 (the hand-typed ssh command) and the nuc_gate ssh verb.",
+    "Write test_nuc_lab.py with a fake ssh executable on PATH (status prints codex_run status; no key -> exit 0 'no gate key').",
+    "Write nuc_lab.py (tick|status|gemini <card>:<effort>); never start a second run (lab.lock, 20 min gap guard)."
+  ],
   "tests": "nuc_lab.py status prints codex_run status from NB; on a machine without the key it exits 0 saying so; test with a fake ssh executable.",
   "title": "Tandem: run codex_run tick and gemini_queue from a supervisor on another device",
-  "weight": "IMPORTANT",
+  "weight": "ROUTINE",
   "worker": "agent"
 }

@@ -6,34 +6,51 @@
   "depends_on": [
     "rsi-deep-prob-tables"
   ],
-  "done_when": "",
-  "est_turns": 12,
+  "done_when": "The two CSVs and CONTEXT_REPORT.md exist; a context counts only if it beats the level-only table in log-loss on VALIDATION (read once); each context cell has at least 30 independent days or is shrunk to its parent; test_context_tables.py passes; labels SOURCED or OURS.",
+  "est_turns": 18,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Write context_tables_dev.csv, context_tables_val.csv and CONTEXT_REPORT.md per SPEC s2 Step F: tables of Steps B-E conditioned on macro phase (max 3 schemes) and trailing windows L (4h..1w), relative-to-floor coordinates, shrinkage to the unconditional cell, causal-feature test, calibration vs F0 on VALIDATION (read once). Scope change (OPUS_FRAMING s2.2): macro labels need pre-2022 history; default is labels from 2023-01 only (2022 = warm-up). Primary coordinate = RSI relative to trailing floor; context kept only if it beats level-only in log-loss on VALIDATION (H2).",
+  "goal": "Write context_tables_dev.csv, context_tables_val.csv and CONTEXT_REPORT.md for SPEC s2 Step F: Steps B-E tables conditioned on macro phase (max 3 schemes, labels from 2023-01, 2022 warm-up per OPUS_FRAMING s2.2) and trailing windows L 4h..1w, relative-to-floor coordinates, shrinkage to the unconditional cell, VALIDATION calibration vs F0.",
   "id": "rsi-deep-context-tables",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator RSI deep-buy study 2026-10-19. Full design: MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md. Chain: depth-map -> prereg -> engine -> run-dev -> crossvendor review (Gemini) -> VALIDATION once. Raw: Session_Planner refines (done_when, steps, tests), Lab_Guy stamps C1+. OPUS_FRAMING.md (2026-10-20) changes scope/order: Stage 0 economic-floor kill test first, then depth map, hazard+context, confirmations, then prereg/engine. Cards stay raw.",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): scoped from SPEC/OPUS_FRAMING/SHOT_REVIEW; needs the batched review stamp, then tasks.py check. Waits on rsi-deep-prob-tables (done first). Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
   "refs": [],
   "result": "",
   "scope_in": [
-    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md",
-    "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md"
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/context_tables.py",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/test_context_tables.py",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/context_tables_dev.csv",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/context_tables_val.csv",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/CONTEXT_REPORT.md",
+    "MyTradingSys/research/layer_lab/TRIALS.md"
   ],
-  "scope_out": [],
-  "size": "S",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_out": [
+    "VALIDATION read more than once",
+    "any HOLDOUT bar (2025-07 onward)",
+    "live path, orders, VALIDATION-tuned parameters"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/APPLIED.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read SPEC s2 Step F and OPUS_FRAMING s2.2/s4.3; reuse prob_tables.py cells (card rsi-deep-prob-tables) and econ_floor.py loader.",
+    "Build F0 unconditional, F1 macro phase (at most 3 schemes, thresholds OURS, causal), F2 trailing-window features (floor, touches, bounce record) per RSI TF.",
+    "Shrink each context cell to its parent by empirical Bayes; drop cells under 30 independent days; Holm over the pre-registered grid.",
+    "Run DEV, freeze, read VALIDATION once; write CONTEXT_REPORT.md with the log-loss comparison and the keep/drop list; ledger rows first."
+  ],
+  "tests": "test_context_tables.py fail-first: planting a future bar leaves every context feature at the event bar unchanged; empirical-Bayes shrinkage equals a hand-computed two-cell example; a cell under 30 days returns its parent value; macro labels before 2023-01 are NA.",
   "title": "RSI deep-buy Phase 1F: context-conditioned tables (macro phase, trailing floor and bounce record, memory length), walk-forward",
-  "weight": "",
-  "worker": "agent"
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

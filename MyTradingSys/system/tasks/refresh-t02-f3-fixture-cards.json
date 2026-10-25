@@ -18,7 +18,8 @@
   "not_twin_of": [
     "t02-f3-fixtures-wlow-session-levels"
   ],
-  "note": "",
+  "note": "DROPPED 2026-10-26 Session_Planner: both cards shipped (STATE SHIPPED@794e56d1) and neither is in tasks.py stale | ",
+  "pinned": false,
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
@@ -28,7 +29,7 @@
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "Refresh STALE t02-f3-fixtures-wlow-session-levels and -fabio-v3-grid (moved to CODEX 2026-10-23) after scope check",

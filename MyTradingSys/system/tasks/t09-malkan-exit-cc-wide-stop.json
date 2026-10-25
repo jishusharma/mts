@@ -1,7 +1,9 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest MyTradingSys/execution/test_auto_trader.py -q"
+  ],
   "created": "2026-10-25T06:52:06Z",
   "depends_on": [],
   "done_when": "layer_signal for layer:rsi:malkan_bull:1h and :malkan_bear:1h returns the backtest exit (1% stop, 2% target, 100 bars), not bracket_source SAMPLING; a cc 1h event whose stop is wider than the size_overrides cap (2.0% of size) is sized down or logged as skipped, never handed to the executor to be refused silently; both new tests fail on the pre-change code.",
@@ -15,10 +17,10 @@
   "layers": [],
   "live_path": true,
   "mutation_check": "",
-  "note": "Source: Lead review workflow wf_f2b6913d-74d (45 findings, 2 confirmed by 2-3 skeptics each, reproduced on trunk). (1) auto_trader.py:87-97 exit table has rsi_events 15m/1h and three cryptocred 1h keys, none for layer:rsi:malkan_; live_runner_cli.py:486-487 registers malkan_bull/bear 1h; run_rsi_backtest.py:278 and T09_live_parity.md:25 give the backtest bracket 1%/2%/100 bars; layer_exit (about line 450) returns None on no prefix match, so they trade --stop 1.0 --max-hold-minutes 480 SAMPLING. (2) auto_trader.py:465 turns a cc 1h event stop into a percent with no ceiling; size_overrides cap loss at 2.0% of size (sr_flip 600/12, fib_pullback 800/16, failed_msb 200/4); stop 3% gives --size 600 --stop 3 --max-loss 12 and executor.py:273-276 refuses (18 > 12). Fails closed (entry_failed, no unsafe trade); tests use only a 1.5% stop (test_auto_trader.py LayerExitTest.cc). Live-path rules: tests for restart/reset, non-trade balance moves, API errors; fail closed; builders never deploy. Label the malkan exit SOURCED with file:line. Session_Planner: refine, then ready.",
+  "note": "DRAFT 2026-10-26 Session_Planner (OURS): CRITICAL live-path (orders, sizing); plan and diff review sessions; builder never deploys. Malkan exit label SOURCED with file:line from run_rsi_backtest.py:278. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
   "refs": [
     "MyTradingSys/execution/auto_trader.py:87",
     "MyTradingSys/execution/auto_trader.py:465",
@@ -27,19 +29,24 @@
   "result": "",
   "scope_in": [
     "MyTradingSys/execution/auto_trader.py",
-    "MyTradingSys/tests/test_auto_trader.py"
+    "MyTradingSys/execution/test_auto_trader.py"
   ],
   "scope_out": [
-    "MyTradingSys/execution/executor.py",
-    "MyTradingSys/execution/auto_trader_config.json",
-    "any deploy, restart or HALT file"
+    "VALIDATION or HOLDOUT bars",
+    "live path, orders, deploy, restarts",
+    "new hooks, gate steps or rules beyond the card"
   ],
   "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "python -m pytest MyTradingSys/tests/test_auto_trader.py -q; two new tests (malkan 1h exit entry; cc 1h 3% stop vs 2% cap), each fails on today's code",
+  "state": "refined",
+  "steps": [
+    "Post 'REVIEW t09-malkan-exit-cc-wide-stop PLAN <branch>' with the two tests before code.",
+    "Write failing tests: layer_signal for layer:rsi:malkan_bull:1h and :malkan_bear:1h returns 1% stop, 2% target, 100 bars (not SAMPLING); a cc 1h event with stop wider than the 2.0% size cap is sized down or logged skipped, never handed to the executor.",
+    "Add the malkan exit-table entry (auto_trader.py:87-97) and the cc ceiling at :465 fail closed; keep restart, reset and API-error tests green.",
+    "Post 'REVIEW ... DIFF <sha>'; ship only on APPROVE."
+  ],
+  "tests": "python -m pytest MyTradingSys/execution/test_auto_trader.py -q; two new tests (malkan 1h exit entry; cc 1h 3% stop vs 2% cap), each fails on today's code",
   "title": "t09 live exits: add malkan 1h exit-table entry, handle cc stops wider than 2% size cap",
-  "weight": "",
-  "worker": ""
+  "weight": "CRITICAL",
+  "worker": "session"
 }

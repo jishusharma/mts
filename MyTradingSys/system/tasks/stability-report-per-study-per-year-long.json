@@ -4,33 +4,61 @@
   "commands": [],
   "created": "2026-10-24T10:24:32Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/dsa_backtest_audit_2026-10-16/STABILITY.md has one row per study x year x side plus the top-5-days-removed mean; a line says which study changes sign when the top 5 days go; scripts/T10/test_stability.py passes; DEV bars only.",
+  "est_turns": 26,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Stability table per study on DEV: per-year net mean, long/short split, and the mean with the top-5 days removed, for gross_effect_screen, levels_hold LC1 and the RSI runner, against the 0.14% bar (T10 D4: drift -0.06..+0.08% per year).",
   "id": "stability-report-per-study-per-year-long",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "rsi/cc: re-land real-funding DEV rerun with lint-clean forward slice",
+      "ref": "9be3f415e0e5",
+      "utc": "2026-10-24T19:50:37Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): scoped from the audit finding; DECISION (OURS): start with the three studies that still carry a PASS/KEEP label; the rest follow if the table shows a sign change. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:29:45Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T10_missing_aspects.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/stability.py",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/test_stability.py",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/STABILITY.md",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py (read only)",
+    "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.py (read only)",
+    "MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py (read only)"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "restating any published verdict, ledger row or pre-registered bar",
+    "live path"
+  ],
+  "scope_sha": "9be3f415e0e5",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T10_missing_aspects.md (T10-F4, D4)"
+  ],
+  "state": "ready",
+  "steps": [
+    "First confirm per-trade rows (day, side, net) exist for each of the three studies; if one has signal-level output only, regenerate its DEV trades with its own script (no edits) and say so in STABILITY.md.",
+    "Read T10-F4 and demo D4; write stability.py reading trade rows and printing the three cuts (per year, long/short, top-5-days-removed); no new backtest logic.",
+    "Run on the three studies, write STABILITY.md, file a card for any sign change against the 0.14% bar."
+  ],
+  "tests": "test_stability.py: on 20 planted trades where one day holds 90% of profit, the top-5-days-removed mean is negative and the per-year split sums to the total.",
   "title": "Stability report per study: per-year, long/short split, top-5 days removed (T10-F4, D4 drift -0.06..+0.08% per year)",
-  "weight": "",
-  "worker": ""
+  "weight": "CRUCIAL",
+  "worker": "session"
 }
