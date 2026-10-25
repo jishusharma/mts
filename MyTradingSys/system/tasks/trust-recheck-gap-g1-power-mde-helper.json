@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T17:43:44Z",
   "commands": [
     "python -m pytest MyTradingSys/tests/test_power_mde.py -q"
   ],
@@ -16,6 +17,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MATCH 951/90; report MyTradingSys/research/layer_lab/reports/2026-10-25_trust-recheck-gap-",
+      "ref": "e4d17aad",
+      "utc": "2026-10-25T17:43:44Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -43,13 +50,12 @@
     "MyTradingSys/system/tasks/archive/gap-g1-power-mde-helper.json",
     "MyTradingSys/research/layer_lab/reports/2026-10-19_lab-trust-tag.md"
   ],
-  "reroute": {
-    "at": "2026-10-25T16:59:17Z",
-    "desk": "20261025-165917-trust-recheck-gap-g1-power-mde-helper",
-    "to": "DSA",
-    "why": "failing"
+  "result": "MATCH 951/90; report MyTradingSys/research/layer_lab/reports/2026-10-25_trust-recheck-gap-g1-power-mde-helper.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
   },
-  "result": "",
   "scope_in": [
     "MyTradingSys/backtest/power_mde.py",
     "MyTradingSys/tests/test_power_mde.py",
@@ -67,13 +73,14 @@
   "sources": [
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md:210-213 (formula)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the spec/report line by line, not the code: REPORT.md:85-107 (G1 table) and :210-213 (section 9 formula).",
     "Re-derive two G1 table powers (the 80%-power Ns about 951 and 90) with your own short script from the written definition and compare; a difference is a MISMATCH finding with file:line, settled by calculation not vote.",
     "Read MyTradingSys/tests/test_power_mde.py: would it fail on a broken implementation? Mutate one line in a scratch copy, run, record; leave the real file unchanged.",
     "Write the report: reviewer vendor and model, the numbers, MATCH or MISMATCH per number, tag proposal VERIFIED-C2 or DISPUTED."
   ],
+  "taken": "2026-10-25T17:43:44Z",
   "tests": "Audit card: its fail-first is the one-line mutation in a scratch copy, which must turn a test red; recorded in the report.",
   "title": "Trust re-check: gap-g1-power-mde-helper",
   "weight": "CRUCIAL",
