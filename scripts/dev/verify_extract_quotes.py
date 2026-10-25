@@ -41,6 +41,17 @@ def transcript_body(vid: str) -> str:
     p = ROOT / "raw_transcripts_canonical" / f"{vid}_raw.txt"
     text = p.read_text(encoding="utf-8", errors="replace")
     body = text.split("# ---", 1)[1] if "# ---" in text else text
+    # a nested metadata block (Video ID .. Description) after the first '# ---' is not speech: drop its '# ' run and the closing '# ---'
+    lines = body.split("\n")
+    i = 0
+    while i < len(lines) and not lines[i].strip():
+        i += 1
+    if i < len(lines) and lines[i].startswith("# "):
+        while i < len(lines) and lines[i].startswith("# "):
+            i += 1
+        if i < len(lines) and lines[i].strip() == "# ---":
+            i += 1
+        body = "\n".join(lines[i:])
     return TIMESTAMP.sub(" ", body)  # [m:ss] caption markers split verbatim quotes
 
 
