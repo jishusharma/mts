@@ -15,6 +15,7 @@ Answer every operator message in order, plain words, no jargon, no paperwork gat
 5. Sessions: `start_session` is refused on turns started by an automated event; it works on operator-typed turns. Opus only when the operator names it: standby prompt, `set_session_model claude-opus-5-5`, read back with `get_session`, then send the task.
 6. Ultracode workflows are for live-path ships only. Today two workflows spent 12.9 M subagent tokens (about 20 points of the 5 h window) to find 2 real bugs and a backlog; docs and extracts need the verifier plus one Sonnet read.
 7. Write prompt files for the NUC without a BOM (`[System.IO.File]::WriteAllText(path, text, (New-Object System.Text.UTF8Encoding($false)))`); `Set-Content -Encoding UTF8` in Windows PowerShell adds one and cburn crashed on it. Check the runner log for START and EXIT lines before relaying.
+9. After every ship do not go idle on "CI still running": wait for that commit's CI result (one background shell polling `gh run list --branch fast-track` for the sha) and `git revert` at once if red. Role files have byte budgets (test_role_budget, 7500 for roles/supervisor.md): run `python scripts/dev/preship.py check` before shipping a role-file edit.
 8. Host health in the ship log suggests `taskkill` on `explorer.exe`: that is the Windows shell, never run it.
 
 ## Open items, in order
