@@ -1,0 +1,1 @@
+{"t": "20261025T221656Z", "from": "jis-nb/C", "to": "jis-nuc", "kind": "note", "text": "C->B: A re-reviews the voided cards. Meanwhile skip voided ones; work ready cards: analyst-ingest-roman-x, gap-g7-stop-slippage, [cut], argon-blind-read-7-frames. Verify 'ready' via tasks.py check, no", "login": "C"}
