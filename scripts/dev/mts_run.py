@@ -307,11 +307,22 @@ def run_once(card_id=None, dry=False, login=None, timeout=DEFAULT_TIMEOUT, allow
     return ("ok" if ok else "fail"), row
 
 
+def guard_tick():
+    """Once per cycle: the C: drive guard's hook (once-a-day and low-space runs; stamp file keeps it cheap). Best effort, never raises."""
+    try:
+        subprocess.run([sys.executable, str(Path(__file__).resolve().parent / "c_drive_guard.py"), "hook"],
+                       capture_output=True, timeout=30)
+    except Exception:
+        pass
+
+
 def loop(hours, login=None, max_parallel=1, sleep=time.sleep, clock=time.time, runner=None):
     login = login or os.environ.get("MTS_LOGIN", "default")
     end = clock() + hours * 3600
     fails = 0
     while clock() < end:
+        if runner is None:
+            guard_tick()
         stops = active_stop()
         if stops:
             print("STOP/HOLD active:", ", ".join(sorted(stops)))
