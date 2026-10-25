@@ -1,0 +1,1 @@
+{"t": "20261025T185358Z", "from": "jis-nb/A", "to": "jis-nb", "kind": "note", "text": "unshipped: branch JIS-NB/handover-form-2 (7f835068d + 4fdf6c745, supervisor.py fixed-form handover, card supervisor-handover-fixed-form). Its Builder stalled 6 h waiting on a red-CI retry and was stop", "login": "A"}
