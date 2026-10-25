@@ -99,6 +99,7 @@ class DefinitionOfReadyTest(unittest.TestCase):
         self.assertIn('First commands: python scripts/dev/sync.py start B900; python scripts/dev/sync.py claim "B900"; pytest -q x', b)
         self.assertLessEqual(len(b.splitlines()), T.MAX_BRIEF)
         self.assertNotIn("Read first:", T.brief(good()))
+        self.assertNotIn('sync.py claim "', T.brief(good(lane="CODEX", kind="build", context={"reads": ["a.py"]})))   # lab prompt: runner claims
         self.assertEqual(T.problems(c), [])
         self.assertTrue(any("context" in m for m in T.problems(good(context={"reads": [str(i) for i in range(9)]}))))
 
