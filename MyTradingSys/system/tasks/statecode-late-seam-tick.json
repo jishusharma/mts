@@ -6,11 +6,12 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-25T16:11:15Z",
-    "misses": 23,
+    "folded": "2026-10-25T17:18:13Z",
+    "misses": 24,
     "reads": [
       "src/test/java/datafeed/StateCodeEmitterTest.java",
-      "src/main/java/datafeed/StateCodeEmitter.java"
+      "src/main/java/datafeed/StateCodeEmitter.java",
+      "scripts/dev/test_trunk_lag.py"
     ],
     "session": "agent-a201cdb16cfa367b2"
   },
