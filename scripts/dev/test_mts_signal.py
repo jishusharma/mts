@@ -367,9 +367,6 @@ class SignalTest(unittest.TestCase):
 
     def test_told_expires_after_ttl_and_is_loud_with_the_blocker_note(self):
         bid = self.high()
-        self.machine("jis-nb", "pro")
-        self.ack_back(bid, "told", 60, "needs admin shell")
-        self.assertNotIn("ACTION REQUIRED", self.ups())                       # inside the TTL: quiet
         self.machine("jis-lab", "x")
         self.ack_back(bid, "told", S.TOLD_TTL_H * 60 + 30, "needs admin shell")
         loud = self.ups()
@@ -381,6 +378,10 @@ class SignalTest(unittest.TestCase):
         self.assertEqual(S.main(["ack", bid, "done"]), 0)
         self.assertNotIn("ACTION REQUIRED", self.ups())
         self.assertEqual(S.handle(self.payload("Stop", last_assistant_message="all done")), "")
+        bc = {"t": S.stamp(S.now() - timedelta(hours=5)), "kind": "broadcast", "prio": "high", "id": "b-fresh1", "to": "all", "from": "x/C"}
+        told = {"t": S.stamp(S.now() - timedelta(minutes=60)), "kind": "ack", "id": "b-fresh1", "state": "told", "host": "jis-lab"}
+        self.assertFalse(S.needs_action([bc, told], bc))                       # told inside the TTL stays quiet
+        self.assertTrue(S.needs_action([bc, {**told, "t": S.stamp(S.now() - timedelta(minutes=S.TOLD_TTL_H * 60 + 5))}], bc))
 
     def test_told_on_a_cmd_broadcast_needs_a_note_but_done_does_not(self):
         bid = self.high()
