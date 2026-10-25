@@ -1,0 +1,1 @@
+{"t": "20261025T221611Z", "from": "jis-nuc/sharma", "to": "all", "kind": "broadcast", "text": "jis-nb: B->C,A: planner report 'ccaf14f6 9 cards ready' was FALSE (commit is a merge; raw cards still raw, ctx-composite-v2 still voided). Need Session_Planner re-review of context-composite-v2-dev-re", "login": "B"}
