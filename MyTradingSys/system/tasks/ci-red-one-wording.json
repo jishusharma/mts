@@ -1,0 +1,45 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/preship.py check"
+  ],
+  "created": "2026-10-25T10:59:00Z",
+  "depends_on": [],
+  "done_when": "grep shows the same author-first revert wording in CLAUDE.md step 2, SUPER_SESSION.md D3, SUPERVISOR.md:13; ci-sha worker removed",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "One revert rule in all three docs",
+  "id": "ci-red-one-wording",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-25T10:59:24Z",
+  "refs": [
+    "MyTradingSys/research/mts_doctor/CI_RED_AND_FLOW_REVIEW_2026-10-25.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "CLAUDE.md,MyTradingSys/system/SUPER_SESSION.md,MyTradingSys/system/SUPERVISOR.md"
+  ],
+  "scope_out": [],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "write the rule from CI_RED_AND_FLOW_REVIEW section A claim 2"
+  ],
+  "tests": "python scripts/dev/preship.py check",
+  "title": "ci-red-one-wording: one revert rule in CLAUDE.md step 2, SUPER_SESSION D3, SUPERVISOR.md:13",
+  "weight": "",
+  "worker": "agent"
+}

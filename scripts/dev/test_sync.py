@@ -84,6 +84,27 @@ class SyncTest(unittest.TestCase):
         self.assertEqual(seen, [["d.py"]])
         self.assertEqual(len(docs), 1)
 
+    def test_role_md_plus_card_json_is_a_docs_ship_not_a_code_ship(self):
+        """5f12bc06c: a role .md plus card .json took the code path, which gate_select maps to zero steps, so the role byte budget never ran."""
+        seen, docs = [], []
+        for d in ("roles", "tasks"):
+            (self.a / "MyTradingSys/system" / d).mkdir(parents=True)
+        commit(self.a, "MyTradingSys/system/roles/x.md", "r" + chr(10))
+        commit(self.a, "MyTradingSys/system/tasks/x.json", "{}" + chr(10))
+        sync.ship(self.a, gate=lambda repo, files: seen.append(files), docs_gate=lambda r, f: docs.append(f))
+        self.assertEqual(seen, [])
+        self.assertEqual(len(docs), 1)
+        self.assertEqual(sorted(docs[0]), ["MyTradingSys/system/roles/x.md", "MyTradingSys/system/tasks/x.json"])
+
+    def test_wiring_registry_alone_still_runs_the_code_gate(self):
+        seen, docs = [], []
+        reg = "MyTradingSys/system/wiring_registry.json"
+        (self.a / reg).parent.mkdir(parents=True, exist_ok=True)
+        commit(self.a, reg, "{}" + chr(10))
+        sync.ship(self.a, gate=lambda repo, files: seen.append(files), docs_gate=lambda r, f: docs.append(f))
+        self.assertEqual(seen, [[reg]])
+        self.assertEqual(docs, [])
+
     def test_a_docs_only_ship_over_a_doc_size_cap_is_refused(self):
         """2175ef80: a docs ship ran no gate and pushed CLAUDE.md over its cap; the default docs gate now checks the caps."""
         cap = "MyTradingSys/tests/docs/test_integrity.py"
