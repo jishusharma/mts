@@ -789,7 +789,7 @@ def roll_lines(rows, hours=24, at=None):
         if not since < r.get("t", "") <= lim or r.get("kind") == "ack":
             continue
         frm = str(r.get("from", ""))
-        h = hosts.key(r.get("host") or frm.split("/")[0])
+        h = str(r.get("host") or frm.split("/")[0]).lower()
         txt = str(r.get("text", ""))
         bm = BUDGET_KV.match(txt)
         lg = r.get("login") or (frm.split("/")[1] if "/" in frm and frm.split("/")[1] in LOGIN_LETTERS else "") \

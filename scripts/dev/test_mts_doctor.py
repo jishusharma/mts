@@ -252,7 +252,7 @@ def test_broadcast_warns_on_unacked_and_expired_told_for_a_seen_host():
     told = {"t": t(25), "from": "jis-nb/B", "kind": "ack", "id": "b-aaaaaa", "state": "told", "host": "jis-nb", "note": "no admin"}
     nb = {"t": t(2), "from": "jis-nb/B", "to": "all", "kind": "note", "text": "hi"}
     status, detail = D.broadcast_check(".", rows=[b, seen, told, nb], now=now)
-    assert status == "WARN" and "desktop-lenovo b-aaaaaa" in detail and "jis-nb b-aaaaaa" in detail
+    assert status == "WARN" and "desktop-lenovo b-aaaaaa" in detail and "jis-desktop b-aaaaaa" in detail
     done = {**told, "state": "done", "t": t(3)}
     assert D.broadcast_check(".", rows=[b, seen, told, nb, done], now=now)[0] == "WARN"   # lenovo still none
     ack_l = {"t": t(1), "from": "desktop-lenovo/C", "kind": "ack", "id": "b-aaaaaa", "state": "done", "host": "desktop-lenovo"}

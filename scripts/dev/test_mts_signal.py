@@ -438,7 +438,7 @@ class SignalTest(unittest.TestCase):
             self.assertEqual(S.main(["acks", bid]), 0)
             self.assertEqual(S.main(["acks"]), 0)
         table = buf.getvalue()
-        self.assertRegex(table, r"jis-nb\s+done\s+ok")
+        self.assertRegex(table, r"jis-desktop\s+done\s+ok")   # acks list the canonical name (hosts.py); the ack was written as jis-nb
         self.assertRegex(table, r"jis-lab\s+told")
         self.assertRegex(table, r"jis-nuc\s+none")
         self.assertEqual(table.count(bid + " HIGH"), 2)      # with id and the all-open listing
@@ -542,10 +542,10 @@ class SignalTest(unittest.TestCase):
         os.environ["MTS_SIGNALS_HOME"] = str(self.tmp / "none")
         os.environ["MTS_SIGNALS_SYNC"] = ""
         out = S.handle(self.payload("SessionStart", sid="x", source="compact"))
-        self.assertEqual(out, "LOGIN: this session is login C on JIS-NB (the desktop) (from the app account)")
+        self.assertEqual(out, "LOGIN: this session is login C on JIS-DESKTOP (the desktop) (from the app account)")
         self.assertNotIn("example.test", out)
         self.as_login("stranger@example.test")
-        self.assertIn("LOGIN: unknown on JIS-NB", S.handle(self.payload("SessionStart", sid="y", source="compact")))
+        self.assertIn("LOGIN: unknown on JIS-DESKTOP", S.handle(self.payload("SessionStart", sid="y", source="compact")))
 
     def test_login_mismatch_uses_detected_letter_record_carries_login(self):
         self.machine("lenovo", "")
