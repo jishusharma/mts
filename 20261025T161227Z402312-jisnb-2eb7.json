@@ -1,0 +1,1 @@
+{"t": "20261025T161227Z", "from": "jis-nb/A", "to": "all", "kind": "done", "text": "ship revert-usage-log-files Result: trunk tree back to last-green df4dd610 content for scripts/dev; usage_log re-lands with its gate step and the scratch-ignore glob in one commit.", "login": "A", "sid": "f143ff59d3"}
