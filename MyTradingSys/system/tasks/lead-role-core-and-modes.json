@@ -2,6 +2,22 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 21,
+    "folded": "2026-10-25T12:48:57Z",
+    "misses": 65,
+    "reads": [
+      "scripts/dev/role_loader.py",
+      "scripts/dev/role_hook_launcher.py",
+      "scripts/dev/mts_run.py",
+      "MyTradingSys/system/ROLES.md",
+      "MyTradingSys/system/roles/ROSTER.json",
+      "MyTradingSys/system/roles/eagle_eyes.md",
+      "MyTradingSys/research/STATUS.md",
+      "MyTradingSys/tests/test_role_loader.py"
+    ],
+    "session": "agent-ab0dd8817d47c01ab"
+  },
   "created": "2026-10-24T23:10:33Z",
   "depends_on": [
     "role-loader-mode-command"
