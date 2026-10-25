@@ -15,13 +15,30 @@
   "id": "trust-recheck-lab-data-pin-hash",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "codex_run: raise lab caps (window 65, week 90, 14 runs)",
+      "ref": "8bc0ade5a86b",
+      "utc": "2026-10-21T04:49:34Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "26a97049d2bf lab lab-data-pin-hash: DONE (build)",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-17_lab-data-pin-hash.md",
+      "utc": "2026-10-17T20:19:01Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS) 2026-10-23: drafted and T0-checked; reviewer Agent blocked by spawn cap (8/h), so no ACCEPT stamp: needs ONE batched Sonnet reviewer pass (or Lab_Guy for CODEX), then stamp REVIEWED:<date> ACCEPT and tasks.py check. LAB:results CLASS:C2 WEIGHT:CRUCIAL. Raw follow-up from 2026-10-19_lab-trust-tag.md. Audit target, not a trusted premise. No outcome or holdout rerun; no data fetch. Different reviewer vendor than the producer (CODEX/GPT produced it, so Gemini or Claude re-derives). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the report.",
+  "note": "REVIEWED:2026-10-25 ACCEPT (Sonnet reviewer Agent a15133e0, DECISION OURS). DECISION (OURS) 2026-10-23: drafted and T0-checked; reviewer Agent blocked by spawn cap (8/h), so no ACCEPT stamp: needs ONE batched Sonnet reviewer pass (or Lab_Guy for CODEX), then stamp REVIEWED:<date> ACCEPT and tasks.py check. LAB:results CLASS:C2 WEIGHT:CRUCIAL. Raw follow-up from 2026-10-19_lab-trust-tag.md. Audit target, not a trusted premise. No outcome or holdout rerun; no data fetch. Different reviewer vendor than the producer (CODEX/GPT produced it, so Gemini or Claude re-derives). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the report.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-25T15:29:22Z",
   "refs": [
     "MyTradingSys/system/tasks/archive/lab-data-pin-hash.json",
     "MyTradingSys/research/layer_lab/reports/2026-10-19_lab-trust-tag.md"
@@ -39,11 +56,12 @@
     "live path",
     "data fetch"
   ],
+  "scope_sha": "8bc0ade5a86b",
   "size": "S",
   "sources": [
     "scripts/dev/lab_flow.py:31,101 (safe_file, fingerprint)"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read the spec/report line by line, not the code: report 2026-10-17_lab-data-pin-hash.md (fingerprint, safe_file at lab_flow.py:31,101).",
     "Re-derive the sha256 of one small pinned file, computed with hashlib on your own, against the fingerprint entry; plus that a changed byte or a symlink/outside-repo path is refused with your own short script from the written definition and compare; a difference is a MISMATCH finding with file:line, settled by calculation not vote.",

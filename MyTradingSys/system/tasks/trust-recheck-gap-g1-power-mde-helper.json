@@ -15,13 +15,30 @@
   "id": "trust-recheck-gap-g1-power-mde-helper",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "gap review follow-up: merge origin, D-a/D-b/D-c decisions, source-verify desk row done",
+      "ref": "29c786e65c84",
+      "utc": "2026-10-14T11:27:35Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "5a839bfb4430 gap review follow-up: sources checked, G2 spread measured, cards G1-G8 filed",
+      "ref": "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md",
+      "utc": "2026-10-14T11:26:35Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS) 2026-10-23: drafted and T0-checked; reviewer Agent blocked by spawn cap (8/h), so no ACCEPT stamp: needs ONE batched Sonnet reviewer pass (or Lab_Guy for CODEX), then stamp REVIEWED:<date> ACCEPT and tasks.py check. LAB:results CLASS:C2 WEIGHT:CRUCIAL. Raw follow-up from 2026-10-19_lab-trust-tag.md. Audit target, not a trusted premise. No outcome or holdout rerun; no data fetch. Different reviewer vendor than the producer (CODEX/GPT produced it, so Gemini or Claude re-derives). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the report.",
+  "note": "REVIEWED:2026-10-25 ACCEPT (Sonnet reviewer Agent a15133e0, DECISION OURS). DECISION (OURS) 2026-10-23: drafted and T0-checked; reviewer Agent blocked by spawn cap (8/h), so no ACCEPT stamp: needs ONE batched Sonnet reviewer pass (or Lab_Guy for CODEX), then stamp REVIEWED:<date> ACCEPT and tasks.py check. LAB:results CLASS:C2 WEIGHT:CRUCIAL. Raw follow-up from 2026-10-19_lab-trust-tag.md. Audit target, not a trusted premise. No outcome or holdout rerun; no data fetch. Different reviewer vendor than the producer (CODEX/GPT produced it, so Gemini or Claude re-derives). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the report.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-25T15:29:20Z",
   "refs": [
     "MyTradingSys/system/tasks/archive/gap-g1-power-mde-helper.json",
     "MyTradingSys/research/layer_lab/reports/2026-10-19_lab-trust-tag.md"
@@ -39,11 +56,12 @@
     "live path",
     "data fetch"
   ],
+  "scope_sha": "29c786e65c84",
   "size": "S",
   "sources": [
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md:210-213 (formula)"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read the spec/report line by line, not the code: REPORT.md:85-107 (G1 table) and :210-213 (section 9 formula).",
     "Re-derive two G1 table powers (the 80%-power Ns about 951 and 90) with your own short script from the written definition and compare; a difference is a MISMATCH finding with file:line, settled by calculation not vote.",
