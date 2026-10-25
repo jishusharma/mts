@@ -6,35 +6,52 @@
   "depends_on": [
     "rsi-deep-prob-tables"
   ],
-  "done_when": "",
-  "est_turns": 12,
+  "done_when": "DIVERGENCE_REPORT.md, divergence_dev.csv (_val.csv after one VALIDATION read) and the detector module exist; the K1-K10 fixture test in SHOT_REVIEW.md (d) passes within +-0.5 RSI; the planted 20-30-25 test passes; no table uses the HOLDOUT fixture windows; labels SOURCED or OURS.",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Per SPEC s2 Step I: causal divergence events (stamped at confirmation), matched no-divergence control, fixed 8-feature context vector, forward % and ATR move, walk-forward shallow model vs Step G level-only and Step H confluence; also Step J (pairing rules P-adj/P-anchor/P-any, RSI regime band, causal reversal scales, session-normalised phase key). SHOT_REVIEW patches (SPEC Steps I/J as patched 2026-10-20): P-anchor is the primary pairing rule with an episode/anchor-reset rule (end above 50; 40/60 trials) and the P-anchor-split variant (C1); close (primary) vs wick price basis, eps tolerance, min RSI diff trials, FAILURE_SWING rows (C2); every firing is an event with firing number against the same anchor and in the decline (C3); trailing-24h-low sweep merged into context feature (2) (C4); weekly floor per TF and higher-TF regime-break flag (C6); exchange-local session buckets (C7); short mirror only on Stage-0 survivor TFs (C8).",
+  "goal": "SPEC s2 Steps I and J as patched by SHOT_REVIEW C1-C10 (see APPLIED.md): causal divergence events stamped at confirmation, matched no-divergence control, 8-feature context vector, walk-forward shallow model vs Step G and H, plus pairing rules (P-anchor primary), RSI regime band, reversal scales, session-normalised phase key.",
   "id": "rsi-deep-divergence-context",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator RSI deep-buy study 2026-10-19. Full design: MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md. Chain: depth-map -> prereg -> engine -> run-dev -> crossvendor review (Gemini) -> VALIDATION once. Raw: Session_Planner refines (done_when, steps, tests), Lab_Guy stamps C1+. OPUS_FRAMING.md (2026-10-20) changes scope/order: Stage 0 economic-floor kill test first, then depth map, hazard+context, confirmations, then prereg/engine. Cards stay raw.",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): scoped from SPEC/OPUS_FRAMING/SHOT_REVIEW; needs the batched review stamp, then tasks.py check. Waits on rsi-deep-prob-tables. The 10 fixture windows are HOLDOUT: detector output only. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
   "refs": [],
   "result": "",
   "scope_in": [
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/divergence_context.py",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/test_divergence_context.py",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/divergence_dev.csv",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/divergence_val.csv",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/DIVERGENCE_REPORT.md",
+    "MyTradingSys/research/layer_lab/TRIALS.md"
+  ],
+  "scope_out": [
+    "VALIDATION read more than once",
+    "any HOLDOUT bar (2025-07 onward)",
+    "live path, orders, VALIDATION-tuned parameters"
+  ],
+  "size": "M",
+  "sources": [
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md",
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/APPLIED.md",
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/SHOT_REVIEW.md"
   ],
-  "scope_out": [],
-  "size": "S",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "Fixture test (SHOT_REVIEW C10): Known-answer cases K1-K10 (SHOT_REVIEW.md (d); expected values from the review's independent public Binance USD-M perp BTCUSDT computation, not from repo code): UTC bar-open times, close pivots, RSI14 Wilder on close, tolerance +-0.5 RSI. K1 1m A 10-09 13:36 c82506.1 r15.4, B 10-09 14:01 c82459.5 r35.4: P-adj F (13:56 r45.5), P-anchor T (26 bars), P-any T 3/8, Malkan max 10 bars F. K2 1m A 10-09 13:40 c82493.2 r28.3, B 13:42 c82468.0 r30.9: P-adj T, P-anchor T, chain 2 with 13:36->13:40, v1 module stamps 13:43 (regression guard). K3 1m bear A 10-09 14:21 c83180.8 r74.5, B 14:34 c83266.0 r70.0: P-adj F (14:30 r66.6), P-anchor T, 14 bars. K4 30m anchor 10-07 02:00 r19.9 replaced by 10-07 14:30 c82978.1 r17.9, B 10-08 03:30 c82717.3 r31.3: P-anchor T against 14:30 (27 bars), firing #1 of 9, P-adj F (01:30 r38.7). K5 30m A 10-07 14:30, B 10-08 17:00 c80700.0 r26.9: P-adj T (15:30 r25.8), P-anchor T, 54 bars; firing #9 if the episode does not end at RSI 50.9 (10-08 09:30), firing #4 of a new episode under 'end above 50'; P-anchor-split second reading (price A 10-08 03:30 c82717.3, RSI A 10-07 14:30 r17.9) T. K6 5m A 10-15 13:25 c80192.6 r29.1, B 13:50 c79842.4 r30.7: all rules T at min RSI diff 0, F at min diff 2. K7 1m bear A 10-15 14:11 c81250.4 r76.9 (wick 14:10 81390.5), B 14:19 c81270.0 r69.1 (wick 81325.4): close basis T, wick basis F. K8 15m A 10-18 14:45 c81060.2 r23.2, B 20:30 c80818.5 r31.5: P-adj T (20:00 r28.2), P-anchor T firing #5 (15:30, 16:45, 19:30, 20:00 before), P-any 4/7; 16:45 P-adj F. K9 5m A 10-19 10:30 c82118.3 r24.6 (wick 82058.0), B 11:30 c82115.8 r32.3 (wick 82089.0): P-anchor T at eps 0 (close -2.5 USD), P-adj F (11:10 r32.7), wick basis F. K10 5m bear A 10-19 07:30 c83090.1 r73.1, B 09:35 c83037.3 r62.9: every rule F, label FAILURE_SWING. Fixture = public Binance perp 1m klines for these windows resampled UTC, with warm-up from 2026-08-25 or at least 300 bars of the TF before A (Wilder seed, OPUS_FRAMING s2.1); no account data. Assert detector outputs only (pivots, RSI, pairing T/F, firing numbers, labels), never forward returns: the windows lie in the HOLDOUT period, so no study table may use them. The planted 20 -> 30 -> 25 test of SPEC Step J stays; K1, K4, K8 are its real-data versions.",
+  "state": "refined",
+  "steps": [
+    "Read SPEC Steps I-J and SHOT_REVIEW (c)/(d); check rsi_divergence.py stamp is not earlier than the confirming bar (OPUS_FRAMING s2.2 item 5) before reuse.",
+    "Implement the detector (pairing rules, close vs wick, eps, min RSI diff, FAILURE_SWING, firing numbers) and pass K1-K10 first.",
+    "Build events, matched control and the 8-feature vector on DEV; fit the walk-forward model; compare with Step G level-only and Step H score.",
+    "Freeze, read VALIDATION once, keep only what beats level-only on log-loss and fee-net EV; trial rows C1-C8 first."
+  ],
+  "tests": "MyTradingSys/research/rsi_deep_buy_2026-10-19/test_divergence_context.py: fixture cases K1-K10 of SHOT_REVIEW.md (d), values from its independent public-data computation (tolerance +-0.5 RSI), assert detector outputs only; planted RSI lows 20-30-25 under P-adj, P-anchor, P-any; fails on a detector that stamps at the low.",
   "title": "RSI deep-buy Step I: causal bullish divergence at RSI lows + speed/volatility context, matched vs no-divergence",
-  "weight": "",
-  "worker": "agent"
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

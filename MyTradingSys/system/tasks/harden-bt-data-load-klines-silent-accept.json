@@ -4,33 +4,58 @@
   "commands": [],
   "created": "2026-10-19T07:20:44Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "test_bt_data.py has the 5 torture cases (micro, dup identical, dup conflicting, gap, unsorted) and passes; existing callers still get the same list of bars for clean data; the conflicting-duplicate case raises; scripts/T01/t01_torture.py matrix shows no silent accept.",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "bt_data.load_klines converts microsecond stamps (t > 1e14) to ms, raises ValueError when two rows with the same open time differ in OHLCV, sorts with a counted warning, and returns a report (dups, micro, unsorted, gaps) through an optional dict argument, so no study silently reads a bad tree.",
   "id": "harden-bt-data-load-klines-silent-accept",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Backtest harness promoted: bt_data, bt_engine, bt_ladder, bt_stats, ref_pbo + tests (31 OK",
+      "ref": "7248ab17bc27",
+      "utc": "2026-09-28T04:13:49Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): scoped from the audit finding; DECISION (OURS): microsecond stamps are converted, conflicting duplicates raise, gaps and dups are reported (T01-F1 fix list). Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:29:33Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/backtest/bt/bt_data.py",
+    "MyTradingSys/backtest/bt/test_bt_data.py"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "restating any published verdict, ledger row or pre-registered bar",
+    "live path"
+  ],
+  "scope_sha": "7248ab17bc27",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md (T01-F1, T01-F4)",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T01/t01_torture.py"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read bt_data.py:10-47 and the torture matrix; write failing tests for the 5 cases first.",
+    "Add the microsecond conversion, conflict raise and report dict (default None keeps the signature).",
+    "Run test_bt_data.py and the RSI/CC runner tests that import bt_data."
+  ],
+  "tests": "MyTradingSys/backtest/bt/test_bt_data.py: microsecond CSV returns ms stamps; two rows same t different close raises ValueError; both fail on the current loader.",
   "title": "Harden bt_data.load_klines: silent accept on microsecond stamps, duplicates, gaps and unsorted rows",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }

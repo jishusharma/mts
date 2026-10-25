@@ -133,3 +133,30 @@ def test_published_window_list_and_readme_do_not_reveal_the_half():
         txt = (HERE / "README.md").read_text(encoding="utf-8").lower()
         assert "enriched" not in txt and "pre-filter" not in txt and "prefilter" not in txt and "10 random" not in txt
         assert (HERE / "ANSWER_KEY_CLOSED" / "SELECTION_RULES.md").exists()
+
+
+def test_swing_outside_the_shown_bars_is_not_eligible():
+    """Audit gap 5: a swing at offset -250 is invisible on a 200-bar chart, so it cannot anchor a line."""
+    B = [dict(t=T0 + k * 4 * g.HOUR, o=100.0, h=101.0 + (k % 10) * 0.1, l=99.0 - (k % 10 == 0) * 1.0, c=100.0, vol=1.0) for k in range(700)]  # a swing low every 10 bars
+    i = 650
+    plain = g.swings(B, i, "support")
+    assert any(j < i - 199 for j in plain)  # the unbounded search does reach off-chart bars
+    bounded = g.swings(B, i, "support", shown=200)
+    assert bounded and all(j >= i - 200 + 1 + g.K_SWING for j in bounded)
+    assert bounded == [j for j in plain if j >= i - 200 + 1 + g.K_SWING]
+    # a planted line whose first anchor is 250 bars back is not found when only 200 bars are shown
+    L = line_bars(300)
+    assert g.pf_line(L, 299) is None or g.pf_line(L, 299, 200) is None
+
+
+def test_daily_dir_comes_from_argument_or_env_and_errors_if_missing(tmp_path, monkeypatch):
+    monkeypatch.delenv(g.DAILY_ENV, raising=False)
+    import pytest
+    with pytest.raises(SystemExit):
+        g.daily_dir(None)
+    with pytest.raises(SystemExit):
+        g.daily_dir(str(tmp_path / "nope"))
+    assert g.daily_dir(str(tmp_path)) == str(tmp_path)
+    monkeypatch.setenv(g.DAILY_ENV, str(tmp_path))
+    assert g.daily_dir(None) == str(tmp_path)
+    assert "C:/Users" not in (HERE / "g3_pack.py").read_text(encoding="utf-8").replace(chr(92), "/")

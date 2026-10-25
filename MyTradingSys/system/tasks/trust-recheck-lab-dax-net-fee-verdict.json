@@ -21,7 +21,7 @@
   "note": "DECISION (OURS) 2026-10-23: drafted and T0-checked; reviewer Agent blocked by spawn cap (8/h), so no ACCEPT stamp: needs ONE batched Sonnet reviewer pass (or Lab_Guy for CODEX), then stamp REVIEWED:<date> ACCEPT and tasks.py check. LAB:results CLASS:C2 WEIGHT:CRUCIAL. Raw follow-up from 2026-10-19_lab-trust-tag.md. Audit target, not a trusted premise. No outcome or holdout rerun; no data fetch. Different reviewer vendor than the producer (CODEX/GPT produced it, so Gemini or Claude re-derives). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the report.",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
   "refs": [
     "MyTradingSys/system/tasks/archive/lab-dax-net-fee-verdict.json",
     "MyTradingSys/research/layer_lab/reports/2026-10-19_lab-trust-tag.md"
@@ -43,7 +43,7 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-net-fee-verdict.md:20 (independent formula)"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Read the spec/report line by line, not the code: report line 20 (H5 net RR for GER40).",
     "Re-derive GER40 net RR: cost = 2 * 0.000005 * 100 = 0.001; net = (1.25-0.001)/(1+0.001) = 1.247752 < 1.25 and the WAIT_RR outcome with your own short script from the written definition and compare; a difference is a MISMATCH finding with file:line, settled by calculation not vote.",

@@ -227,7 +227,8 @@ class GuardTest(unittest.TestCase):
         def sh(cwd, *a):
             subprocess.run(["git", "-C", str(cwd), *a], check=True, capture_output=True)
         origin, main = Path(tmp) / "origin.git", Path(tmp) / "main"
-        sh(tmp, "init", "-q", "--bare", "-b", "fast-track", str(origin))
+        sh(tmp, "init", "-q", "--bare", str(origin))
+        sh(origin, "symbolic-ref", "HEAD", "refs/heads/fast-track")
         sh(tmp, "clone", "-q", str(origin), str(main))
         for c in (main,):
             sh(c, "config", "user.email", "a@b.c")

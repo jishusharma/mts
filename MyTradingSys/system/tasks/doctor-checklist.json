@@ -4,31 +4,68 @@
   "commands": [],
   "created": "2026-10-25T11:14:07Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "research/mts_doctor/DOCTOR_COVERAGE_2026-10-26.md has one row per fix: commit, check name or none, decision; each new check in mts_doctor.py has a fail-first test in test_mts_doctor.py; python scripts/dev/mts_doctor.py --no-process still prints one HEALTH line.",
+  "est_turns": 24,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "List every fix shipped 2026-10-23..10-25 (REPORT_2026-10-23..25.md, CI_RED_AND_FLOW_REVIEW) and name the mts_doctor check that would catch its regression (SIZE-HEADROOM, CI-REVERT, SHIP-TIME, HOOK-REG, DISK, CONTEXT-GAP, WAITING-ON-OPERATOR, BROADCAST) or 'none'; add a check for at most 3 'none' fixes that had a measured regression.",
   "id": "doctor-checklist",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Machine rename: tests follow canonical display name (who keeps raw hosts)",
+      "ref": "9d26d7eb9dd8",
+      "utc": "2026-10-25T17:16:22Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "ce3b392f0e40 Behavior evals: 8 scenarios, run + conflicts modes, first Haiku results",
+      "ref": "MyTradingSys/system/MTS_DOCTOR.md",
+      "utc": "2026-10-25T12:01:14Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): A-20261024-1 says a new check needs a measured catch; add at most 3 and only where a fix has none. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 1,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:29:54Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/mts_doctor/DOCTOR_COVERAGE_2026-10-26.md",
+    "scripts/dev/mts_doctor.py",
+    "scripts/dev/test_mts_doctor.py",
+    "MyTradingSys/system/MTS_DOCTOR.md"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "live path, orders, deploy, restarts",
+    "new hooks, gate steps or rules beyond the card"
+  ],
+  "scope_sha": "9d26d7eb9dd8",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/mts_doctor/REPORT_2026-10-24.md",
+    "MyTradingSys/system/MTS_DOCTOR.md",
+    "MyTradingSys/research/mts_doctor/REPORT_2026-10-23.md",
+    "MyTradingSys/research/mts_doctor/REPORT_2026-10-25.md",
+    "MyTradingSys/research/mts_doctor/CI_RED_AND_FLOW_REVIEW_2026-10-25.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read REPORT_2026-10-23/24/25 fix lists and git log --since=2026-10-23 --grep Result; one row per fix.",
+    "Map each to an existing check or none; for none, keep only those with a recorded regression.",
+    "Implement at most 3 checks with tests; update MTS_DOCTOR.md checklist table in place."
+  ],
+  "tests": "scripts/dev/test_mts_doctor.py: each new check returns WARN on a fixture that reproduces the regression and OK on a clean one; fails before the check exists.",
   "title": "Doctor checklist: every 10-23..10-25 fix leaves a check",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

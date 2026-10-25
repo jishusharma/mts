@@ -4,36 +4,72 @@
   "commands": [],
   "created": "2026-10-19T14:44:46Z",
   "depends_on": [
-    "rsi-deep-depth-map"
+    "rsi-deep-depth-map",
+    "rsi-deep-econ-floor"
   ],
-  "done_when": "",
-  "est_turns": 12,
+  "done_when": "prob_tables_dev.csv, prob_tables_val.csv and PROB_REPORT.md exist in research/rsi_deep_buy_2026-10-19/; every cell shows n events, n days and a Wilson CI; VALIDATION is read once, after the DEV tables are frozen; test_prob_tables.py passes; every parameter is labelled SOURCED or OURS.",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Write prob_tables_dev.csv, prob_tables_val.csv and PROB_REPORT.md per SPEC s2 Steps D-E: P(deeper by d | touch, visit n), P(RSI bounce), P(price bounce > fee), bounce-size quantiles and MAE, Wilson CIs, effective N in days, predicted-vs-realised calibration on VALIDATION (read once). Scope change (OPUS_FRAMING s4): add survival curve S(n)=P(no lower price low within n bars), P(deeper by d), rarity",
+  "goal": "Write prob_tables_dev.csv, prob_tables_val.csv and PROB_REPORT.md for SPEC s2 Steps D-E plus OPUS_FRAMING s4 (survival S(n), P(deeper by d), rarity): P(deeper | touch, visit n), P(RSI bounce), P(price bounce above the 0.10% fee), bounce quantiles, MAE, Wilson 95% CI, effective N in days, VALIDATION calibration.",
   "id": "rsi-deep-prob-tables",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim desk: Krown study (S5/S8/S4), exploratory, DEV only",
+      "ref": "60f53e24c9d6",
+      "utc": "2026-10-25T05:51:40Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "60f53e24c9d6 sim desk: Krown study (S5/S8/S4), exploratory, DEV only",
+      "ref": "MyTradingSys/research/layer_lab/TRIALS.md",
+      "utc": "2026-10-25T05:51:40Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator RSI deep-buy study 2026-10-19. Full design: MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md. Chain: depth-map -> prereg -> engine -> run-dev -> crossvendor review (Gemini) -> VALIDATION once. Raw: Session_Planner refines (done_when, steps, tests), Lab_Guy stamps C1+. OPUS_FRAMING.md (2026-10-20) changes scope/order: Stage 0 economic-floor kill test first, then depth map, hazard+context, confirmations, then prereg/engine. Cards stay raw.",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): scoped from SPEC/OPUS_FRAMING/SHOT_REVIEW; needs the batched review stamp, then tasks.py check. Depth-map is done; no other dependency. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:29:11Z",
   "refs": [],
   "result": "",
   "scope_in": [
-    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md",
-    "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md"
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/prob_tables.py",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/test_prob_tables.py",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/prob_tables_dev.csv",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/prob_tables_val.csv",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/PROB_REPORT.md",
+    "MyTradingSys/research/layer_lab/TRIALS.md"
   ],
-  "scope_out": [],
+  "scope_out": [
+    "VALIDATION read more than once",
+    "any HOLDOUT bar (2025-07 onward)",
+    "live path, orders, VALIDATION-tuned parameters"
+  ],
+  "scope_sha": "60f53e24c9d6",
   "size": "S",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "sources": [
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/APPLIED.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read SPEC s2 Steps D-E and OPUS_FRAMING s4; reuse econ_floor.py (loader refuses bars from 2024-07-01 on DEV) and depth_map.py (troughs, visits).",
+    "Write prob_tables.py: per RSI TF x anchor window x level x visit n compute P(deeper by d), P(RSI bounce), P(price bounce above fee after H), bounce quantiles, MAE, S(n), Wilson CIs, day-clustered N.",
+    "Run the DEV pass (open < 2024-07-01) into prob_tables_dev.csv, commit it, then read VALIDATION once into prob_tables_val.csv and compare predicted with realised per cell.",
+    "Write PROB_REPORT.md: tables, rarity, which cells drift outside their DEV interval (not tradeable), SOURCED/OURS labels; trial rows go to layer_lab/TRIALS.md before the VALIDATION read."
+  ],
+  "tests": "test_prob_tables.py fail-first on synthetic series: planted deeper-by-d share equals the hand count; Wilson CI equals an independent formula; altering bars after t leaves the row at t unchanged; a bar at or after 2024-07-01 is refused in the DEV pass; S(n) never rises.",
   "title": "RSI deep-buy Phase 1D-E: depth-given-touch and bounce probability tables with VALIDATION calibration",
-  "weight": "",
+  "weight": "IMPORTANT",
   "worker": "agent"
 }

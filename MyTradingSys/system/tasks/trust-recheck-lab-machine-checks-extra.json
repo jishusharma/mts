@@ -13,6 +13,7 @@
   "from_inbox": "",
   "goal": "Independently re-check the source definition, tests and 1-3 decisive numbers of lab-machine-checks-extra before a VERIFIED-C2 result tag is recorded. Establish producer identity and use a different reviewer vendor; no outcome or holdout rerun.",
   "id": "trust-recheck-lab-machine-checks-extra",
+  "kind": "audit",
   "lane": "CODEX",
   "layers": [],
   "live_path": false,
@@ -20,7 +21,7 @@
   "note": "DECISION (OURS) 2026-10-23: refined by Session_Planner worker (R1 size S est_turns 12, R2 scope, R3 path/host); no ACCEPT stamp, needs ONE batched Sonnet reviewer pass (or Lab_Guy for CODEX), then stamp REVIEWED:<date> ACCEPT and tasks.py check. LAB:results CLASS:C2 WEIGHT:CRUCIAL. Producer was CODEX/GPT; checks run on seeded cards, no market data. Audit target, not a trusted premise. No outcome or holdout rerun. Different reviewer vendor than the producer (CODEX/GPT produced it, so Gemini or Claude re-derives). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the report.",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
   "refs": [
     "MyTradingSys/system/tasks/archive/lab-machine-checks-extra.json",
     "MyTradingSys/research/layer_lab/reports/2026-10-19_lab-trust-tag.md"
@@ -44,7 +45,7 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-17_lab-machine-checks-extra.md (73 passed, 307 subtests; four seeded bad/good cards)"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Read the four check definitions in the 2026-10-17 report, not the code: (1) formula id must exist in FORMULAS.md, (2) trial-ledger count equals runs.jsonl runs, (3) a card cited in another card's scope_in is raised to B-shared, (4) mutation check fails on dummy or shuffled output.",
     "Build one bad and one good seeded card per check in a scratch dir with your own short script and run the check entry points; the bad ones must be refused and the good ones pass (record 4 refused / 4 passed or the difference with file:line).",
@@ -54,6 +55,5 @@
   "tests": "Audit card: its fail-first is the one-line mutation in a scratch copy, which must turn a test red; recorded in the report.",
   "title": "Trust re-check: lab-machine-checks-extra",
   "weight": "CRUCIAL",
-  "worker": "session",
-  "kind": "audit"
+  "worker": "session"
 }

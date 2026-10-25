@@ -4,33 +4,71 @@
   "commands": [],
   "created": "2026-10-25T19:25:12Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "A funding_rerun table (old flat-1bp vs real) is written next to the screens; test_screen.py and chart_read_g5 test_common.py pass; no published verdict, ledger row or pre-registered bar is edited; the loader raises when both folders are missing; numbers match scripts/T06/out/funding_rerun.json.",
+  "est_turns": 24,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Every screen that needs funding loads the real signed 8h rates from Dumps/backtest/raw/fundingRate through one shared loader and charges side x sum(rate of settlements in (entry, exit]) instead of the flat 1 bp to both sides (screen.py:32,:177,:349,:451; chart_read_g5_2026-10-16/common.py:18-19,:148-151). Keep the old number beside the new one; change no verdict, ledger or pre-registered bar.",
+  "goal": "One shared funding loader (bt_data.load_funding + funding_rate_at) that tries Dumps/backtest/raw_fund/fundingRate then raw/fundingRate and fails closed if neither exists; gross_effect_screen screen.py:32,:177,:349,:451 and chart_read_g5 common.py:18-19,:148-151 charge side x sum(rate of settlements in (entry, exit]) instead of the flat 1 bp. Old number kept beside the new one.",
+  "hosts": [
+    "JIS-NB",
+    "JIS-NUC"
+  ],
   "id": "fix-screen-real-funding",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "T06 backtest audit: costs, fills, real funding",
+      "ref": "0d738711fd58",
+      "utc": "2026-10-24T19:03:33Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "From T06-F1 (S2, CONFIRMED, 2026-10-24). Measured on DEV: no verdict flips; gross screen T -0.0568 -> -0.0561 %, G5 primary arms move +0.0001..+0.0037 pp, largest secondary move +0.0181 pp (preopen S1 quick SHORT h=180); 46 of 83 G5 arms change more than 10 % relative. Rerun: scripts/T06/t06_funding.py (about 5 min). Overlaps raw card fix-dumps-backtest-raw-fundingrate-path- (T01-F3: raw/ vs raw_fund/ path drift is host-specific): pick one canonical funding path for both. Needs a data host (F:/MTS/data).",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): scoped from the audit finding; absorbs fix-dumps-backtest-raw-fundingrate-path (host path drift raw vs raw_fund). Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:29:24Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/backtest/bt/bt_data.py",
+    "MyTradingSys/backtest/bt/test_bt_data.py",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py",
+    "MyTradingSys/research/chart_read_g5_2026-10-16/common.py",
+    "MyTradingSys/research/chart_read_g5_2026-10-16/test_common.py",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/FUNDING_RERUN.md",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/t06_funding.py"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "restating any published verdict, ledger row or pre-registered bar",
+    "live path"
+  ],
+  "scope_sha": "0d738711fd58",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md (T06-F1)",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md (T01-F3)",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/t06_funding.py",
+    "Dumps/backtest/raw_fund and raw/fundingRate are untracked: run on JIS-NB or JIS-NUC; the loader fails closed elsewhere"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read T06-F1 and T01-F3; reuse bt_data.load_funding and funding_rate_at; add a path resolver (raw_fund first) that raises if no folder exists.",
+    "Replace FUND_PCT in screen.py and common.py with side x sum(rate) over settlements in (entry, exit]; keep the flat 1 bp as a column named old_flat_1bp.",
+    "Rerun the screen on DEV with scripts/T06/t06_funding.py (about 5 min) and write the old-vs-new table; expect no verdict flip and largest move +0.0181 pp.",
+    "Add a fail-first test that a short pays +rate and a long pays -rate on a planted 3-settlement window."
+  ],
+  "tests": "MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py new test: a planted long across one +0.01% settlement nets -0.01%, a short +0.01%; fails on the flat-1bp code. bt_data test: both folders missing raises.",
   "title": "Fix T06-F1: screens charge a flat 1 bp funding to both sides; load Dumps/backtest/raw/fundingRate in one shared loader and charge side x sum(rate) (largest published move +0.018 pp, no verdict flips)",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

@@ -21,7 +21,7 @@
   "note": "DECISION (OURS) 2026-10-23: drafted and T0-checked; reviewer Agent blocked by spawn cap (8/h), so no ACCEPT stamp: needs ONE batched Sonnet reviewer pass (or Lab_Guy for CODEX), then stamp REVIEWED:<date> ACCEPT and tasks.py check. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. Lab_Guy owns the review stamp.",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -39,7 +39,7 @@
     "scripts/dev/lab_flow.py:158,211-217",
     "commit ea73852f4 (card filed from review BLOCK)"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Tamper test (test_lab_flow.py:198): revert the vendor check in scratch copy of lab_flow.py:211-212 and show the test turns red; today it also accepts the 'drifted' message so it passes on old code: assert the exact vendor-normalized message only.",
     "V5 mutant tests (:171-196) call normalize_vendor/validate_hardened_recipe directly: rewrite each to go through F.launch or F.gate so a weakened gate (not just a helper) is caught; record which mutant each test kills.",

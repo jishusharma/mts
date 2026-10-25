@@ -3,32 +3,71 @@
   "asks": "",
   "commands": [],
   "created": "2026-10-25T21:00:59Z",
-  "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "depends_on": [
+    "red-trunk-revert-within-10-min-rule-miss",
+    "tandem-dispatch-host-lanes"
+  ],
+  "done_when": "roles/builder.md carries the rule (net lines not higher, the removed line named); tasks.py list --prefix 'Q:' lists open Q: cards; test_tasks.py covers it; AGENTS.md points at the rule without copying; CLAUDE.md untouched.",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Make blocking or decision-changing questions durable: one rule (a question you cannot answer now that blocks or changes a decision is filed before session end with tasks.py new 'Q: ...' and evidence; chat-only does not count; proceeding on a default files the assumed default), plus tasks.py list --prefix Q: for planners; guard against card spam.",
   "id": "q-rule-file-open-questions",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lead.md: retoken after pages-follow-builds clause",
+      "ref": "4647498a1e88",
+      "utc": "2026-10-25T19:24:54Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "4647498a1e88 lead.md: retoken after pages-follow-builds clause",
+      "ref": "MyTradingSys/system/roles/lead.md",
+      "utc": "2026-10-25T19:24:54Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): DECISION (OURS): steps (1),(3),(5) ship; (4) stop_guard flag only if a measured gap shows; (2) default-leaves-no-trail folded into (1); CLAUDE.md is at its cap so the rule goes to SUPER_SESSION/role files, not CLAUDE.md. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only l",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:30:03Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Q-rule: every LLM files unanswerable questions as cards (not only in reports). Review and implement what is meaningful. Today: Operator: commit line, Control Room decisions, mts_signal [ask], CLAUDE.md line 9 defaults-for-open-questions, final chat report; no mandatory rule, defaults leave no trail, no owner/state/follow-up. Proposal: (1) one rule in CLAUDE.md: a question you cannot answer now and that blocks or changes a decision is filed before session end via tasks.py new (title prefix Q:) with evidence; report-only or chat-only does not count; (2) when proceeding on a default, also file the card naming the assumed default; (3) cards are the durable record, Control Room decision only for operator-only choices; (4) check whether stop_guard.py can flag Operator: or [ask] text with no matching card; (5) tasks.py list view of open Q: cards for planner/supervisor. Guard against card spam (only blocking or decision-changing questions). Ensure rule reaches Gemini/Codex via AGENTS.md/GEMINI.md pointers without copying rules. Review the proposal first, drop what has no value, ship the rest",
-  "weight": "",
-  "worker": ""
+  "scope_in": [
+    "MyTradingSys/system/roles/builder.md",
+    "MyTradingSys/system/roles/lead.md",
+    "scripts/dev/tasks.py",
+    "scripts/dev/test_tasks.py",
+    "AGENTS.md"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "live path, orders, deploy, restarts",
+    "new hooks, gate steps or rules beyond the card"
+  ],
+  "scope_sha": "4647498a1e88",
+  "size": "M",
+  "sources": [
+    "card goal text (Q-rule proposal)",
+    "CLAUDE.md: defaults-for-open-questions line"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read card text points 1-5 and roles/builder.md existing question lines; choose roles/builder.md as the one rule file (workers file the card at end of task).",
+    "Write the failing test for a 'Q:' title-prefix filter in tasks.py list; add the filter.",
+    "Write the rule line in builder.md and remove the least useful existing line (name it in the Result line) so net lines do not rise; add the AGENTS.md pointer.",
+    "Skip point 4 unless stop_guard.py already sees [ask] text cheaply."
+  ],
+  "tests": "python -m pytest scripts/dev/test_tasks.py::test_list_title_prefix MyTradingSys/tests/docs/test_integrity.py -q: the first fails now (no filter) and passes after.",
+  "title": "Q-rule: blocking questions are filed as cards (Q: prefix), not only in reports",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

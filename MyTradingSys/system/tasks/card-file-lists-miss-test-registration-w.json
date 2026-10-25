@@ -4,33 +4,64 @@
   "commands": [],
   "created": "2026-10-24T11:38:52Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "session_planner_details.md step 2 carries the rule with the LAYER_LAB.md:114 pointer; the file stays under its size cap (test_role_budget passes); no other file changes.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Add one line to role_details/session_planner_details.md Refinement step 2: a card that adds a test_*.py lists scripts/dev/run_extra_tests.py (EXTRA) or the shard list in run_all_tests.py in scope_in, as LAYER_LAB.md:114 already says for build cards (pilot 1 cards 2 and 5).",
   "id": "card-file-lists-miss-test-registration-w",
-  "lane": "SONNET",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "context-leaks: keep every role under the 10k hook cap, remind less often",
+      "ref": "220ec4619d65",
+      "utc": "2026-10-21T04:53:21Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "220ec4619d65 context-leaks: keep every role under the 10k hook cap, remind less often",
+      "ref": "MyTradingSys/system/role_details/session_planner_details.md",
+      "utc": "2026-10-21T04:53:21Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-26 T0-ONLY | DRAFT 2026-10-26 Session_Planner (OURS): LAYER_LAB.md:114 already says it for lab build cards; extend it to the refinement steps. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:17:22Z",
   "refs": [
     "MyTradingSys/research/mts_doctor/PILOT1_CARDS.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/system/role_details/session_planner_details.md"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "live path, orders, deploy, restarts",
+    "new hooks, gate steps or rules beyond the card"
+  ],
+  "scope_sha": "220ec4619d65",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/LAYER_LAB.md:114",
+    "MyTradingSys/research/mts_doctor/PILOT1_CARDS.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Open session_planner_details.md Refinement steps, row 2 T0 gate.",
+    "Append one clause: a card that adds tests lists run_extra_tests.py or run_all_tests.py in scope_in (B150 discovery, LAYER_LAB.md:114).",
+    "Run python -m pytest MyTradingSys/system -q -k role_budget or the role size tests."
+  ],
+  "tests": "python -m pytest MyTradingSys/tests/docs/test_integrity.py -q passes; the line is present (grep 'run_extra_tests' in the file).",
   "title": "Card file lists miss test registration: when a card adds tests, list run_all_tests.py/run_extra_tests.py in its files (pilot 1 cards 2 and 5 edited them out of scope) (Session_Planner)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

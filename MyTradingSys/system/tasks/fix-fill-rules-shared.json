@@ -4,33 +4,51 @@
   "commands": [],
   "created": "2026-10-25T19:25:15Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/dsa_backtest_audit_2026-10-16/FILL_CANARY.md lists, per engine, the fill price on a planted gap-through-stop bar and the entry/stop slippage charged, with file:line; test_fill_canary.py passes; a one-line verdict says how many engines fill a gap at the stop price; a follow-up card is filed with tasks.py new if more than one does.",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "One shared fill module with a gap-at-open stop rule (min/max(open, stop)) and a slippage default for bt_engine.py, run_rsi_backtest.py, sim.py and fabio v3 manage.py:141, so every engine fills a gapped stop at the open and charges the same slippage.",
+  "goal": "Size T06-F3: a planted-gap canary run through bt_engine.py, run_rsi_backtest.py, sim.py, fabio v3 manage.py:141 and tom_bt.py:212 showing where a gapped stop fills (stop price vs the open) and what slippage each charges, written to FILL_CANARY.md. No engine is changed.",
   "id": "fix-fill-rules-shared",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "From T06-F3 (S2, SUSPECTED, 2026-10-24): not measured. bt_engine.py:57 and run_rsi_backtest.py:109-110 charge no slippage on entry or stop; sim.py:77 none; fabio v3 manage.py:141 fills a fill-bar stop at the stop price, not the open (tom_bt.py:212 uses the worse open); run_variant (tom_bt.py:260-261) never passes through_ticks. Every difference is optimistic. First step: a planted-gap canary (T03 owns the harness) to size it before changing any engine. Engine x fill-rule table: T06 section 6.",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): scoped from the audit finding; DECISION (OURS): step 1 only, a planted-gap canary that sizes the effect (T06-F3 is SUSPECTED, not measured); the shared module is a follow-up card after the numbers. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:29:30Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Fix T06-F3 (suspected): one shared fill module with a gap-at-open stop rule and a slippage default for bt_engine, RSI runner, sim.py and fabio v3 manage.py:141",
-  "weight": "",
-  "worker": ""
+  "scope_in": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/fill_canary.py",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/test_fill_canary.py",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/FILL_CANARY.md"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "restating any published verdict, ledger row or pre-registered bar",
+    "live path"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md (T06-F3)",
+    "MyTradingSys/backtest/tom_bt.py:212"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read T06 section 6 and the five file:lines in the finding; build one planted series: entry bar, then a bar whose open is 1% beyond the stop.",
+    "Call each engine's fill path read-only on that series (import, no edits) and record fill price and slippage.",
+    "Write FILL_CANARY.md with one row per engine and the optimism direction; file the follow-up card if more than one engine fills at the stop."
+  ],
+  "tests": "scripts/T06/test_fill_canary.py: on the planted gap the Tom path fills at the open (worse) and the canary reports it; the canary fails if an engine import path changes its fill function signature.",
+  "title": "Size T06-F3: planted-gap fill canary across five backtest engines (no engine change)",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
