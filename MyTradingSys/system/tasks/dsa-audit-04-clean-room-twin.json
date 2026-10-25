@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T19:14:00Z",
   "commands": [
     "python scripts/dev/sync.py claim \"dsa-audit-04-clean-room-twin\"",
     "python scripts/dev/tasks.py take dsa-audit-04-clean-room-twin",
@@ -9,6 +10,21 @@
     "python scripts/dev/tasks.py done dsa-audit-04-clean-room-twin --result \"<Tnn>: k findings (S1 a, S2 b, S3 c); <headline>\"",
     "# AIRUN task=mts-ship repo=<WORKTREE> timeout=1800  (then git cherry origin/fast-track HEAD is empty)"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-25T19:14:21Z",
+    "misses": 18,
+    "reads": [
+      "scripts/dev/codex_run.py",
+      "scripts/dev/gemini_queue.py",
+      "scripts/dev/tasks.py",
+      "scripts/dev/mts_signal.py",
+      "MyTradingSys/system/GEMINI_START.md",
+      "MyTradingSys/system/ROLES.md",
+      "MyTradingSys/system/ROUTING.md"
+    ],
+    "session": "efa59332-f287-47b5-8b8a-8477b1e1fd60"
+  },
   "created": "2026-10-15T23:28:58Z",
   "depends_on": [],
   "done_when": "T04_clean_room_twin.md shipped: ambiguity log, per-study diff by class, every difference classified, verdict on shipped vs twin vs corrected events, twins in scripts/T04/, S1/S2 carded.",
@@ -17,10 +33,17 @@
   "goal": "Build an independent second implementation of two G5 studies from their PRE_REG.md alone, diff it event by event against the shipped study, and classify every difference as spec ambiguity, shipped bug or twin bug.",
   "id": "dsa-audit-04-clean-room-twin",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "T04: 3 findings (S1 0, S2 0, S3 3); twins reproduce A1 1,179 and RL 685 events from PRE_RE",
+      "ref": "cc47ba65b",
+      "utc": "2026-10-25T19:14:00Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-24 ACCEPT by=sonnet-review-agent (pilot1-cards, reviewer saw card+evidence only). PILOT1: optional third twin (step 6) only if time left; stop at 3 h. REVIEWED-OLD LAB:results CLASS:C1 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report.",
+  "note": "REVIEWED:2026-10-24 ACCEPT by=sonnet-review-agent (pilot1-cards, reviewer saw card+evidence only). PILOT1: optional third twin (step 6) only if time left; stop at 3 h. REVIEWED-OLD LAB:results CLASS:C1 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report. HOLD-CLEARED A-20261018-5 (lifted by the operator 2026-10-18, see ANNOUNCEMENTS.md; the T04 work shipped 2026-10-24 as 2dadb1b0d, this close-out only records it).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
@@ -30,7 +53,12 @@
     "MyTradingSys/research/mal_bb_mid_engulf_2026-10-16/PRE_REG.md",
     "MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/PRE_REG.md"
   ],
-  "result": "",
+  "result": "T04: 3 findings (S1 0, S2 0, S3 3); twins reproduce A1 1,179 and RL 685 events from PRE_REG; 25 diffs = 24 cooldown-boundary spec ambiguity + 1 twin bug, 0 shipped bug; all verdicts FAIL; rerun 2026-10-26 byte-identical",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T04_clean_room_twin.md and MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T04/ (new files only)",
     "read-only: repo code, result files, data under F:/MTS/data and Dumps (windows per brief section 5)"
@@ -45,7 +73,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md sections 1-7, then section 8 'T04' (full method).",
     "Read only PRE_REG.md of mal_bb_mid_engulf (A1) and opr_weekly_low_round_sweep (RL); keep an ambiguity log; do not open study.py yet.",
@@ -54,6 +82,7 @@
     "Read study.py; classify each difference (spec ambiguity, shipped bug, twin bug); fix twin bugs; measure mean, t and verdict on shipped vs twin vs corrected events.",
     "Time left: a third twin for opr_preopen_tops H2."
   ],
+  "taken": "2026-10-25T19:14:00Z",
   "tests": "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T04/test_twin_diff.py::test_every_shipped_event_is_matched_or_listed (asserts matched + twin-only + shipped-only counts equal the shipped ledger.csv row count per study, and every difference row carries one class of spec ambiguity / shipped bug / twin bug; fails on pre-change code: test_twin_diff.py does not exist yet)",
   "title": "DSA audit T04: clean-room twin of mal_bb and weekly-low sweep from PRE_REG only, diffed event by event",
   "weight": "IMPORTANT",
