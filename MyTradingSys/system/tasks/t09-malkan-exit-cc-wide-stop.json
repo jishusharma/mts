@@ -1,0 +1,45 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-25T06:52:06Z",
+  "depends_on": [],
+  "done_when": "layer_signal for layer:rsi:malkan_bull:1h and :malkan_bear:1h returns the backtest exit (1% stop, 2% target, 100 bars), not bracket_source SAMPLING; a cc 1h event whose stop is wider than the size_overrides cap (2.0% of size) is sized down or logged as skipped, never handed to the executor to be refused silently; both new tests fail on the pre-change code.",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fix two confirmed T09 live-exit gaps in auto_trader.py (details in note): malkan 1h layers have no exit-table entry and trade the generic 8-bar bracket; cc 1h stops wider than 2% of size are refused by the executor and silently narrow the traded sample.",
+  "id": "t09-malkan-exit-cc-wide-stop",
+  "lane": "JIS-NB",
+  "layers": [],
+  "live_path": true,
+  "mutation_check": "",
+  "note": "Source: Lead review workflow wf_f2b6913d-74d (45 findings, 2 confirmed by 2-3 skeptics each, reproduced on trunk). (1) auto_trader.py:87-97 exit table has rsi_events 15m/1h and three cryptocred 1h keys, none for layer:rsi:malkan_; live_runner_cli.py:486-487 registers malkan_bull/bear 1h; run_rsi_backtest.py:278 and T09_live_parity.md:25 give the backtest bracket 1%/2%/100 bars; layer_exit (about line 450) returns None on no prefix match, so they trade --stop 1.0 --max-hold-minutes 480 SAMPLING. (2) auto_trader.py:465 turns a cc 1h event stop into a percent with no ceiling; size_overrides cap loss at 2.0% of size (sr_flip 600/12, fib_pullback 800/16, failed_msb 200/4); stop 3% gives --size 600 --stop 3 --max-loss 12 and executor.py:273-276 refuses (18 > 12). Fails closed (entry_failed, no unsafe trade); tests use only a 1.5% stop (test_auto_trader.py LayerExitTest.cc). Live-path rules: tests for restart/reset, non-trade balance moves, API errors; fail closed; builders never deploy. Label the malkan exit SOURCED with file:line. Session_Planner: refine, then ready.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/execution/auto_trader.py:87",
+    "MyTradingSys/execution/auto_trader.py:465",
+    "MyTradingSys/execution/executor.py:273"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/execution/auto_trader.py",
+    "MyTradingSys/tests/test_auto_trader.py"
+  ],
+  "scope_out": [
+    "MyTradingSys/execution/executor.py",
+    "MyTradingSys/execution/auto_trader_config.json",
+    "any deploy, restart or HALT file"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "python -m pytest MyTradingSys/tests/test_auto_trader.py -q; two new tests (malkan 1h exit entry; cc 1h 3% stop vs 2% cap), each fails on today's code",
+  "title": "t09 live exits: add malkan 1h exit-table entry, handle cc stops wider than 2% size cap",
+  "weight": "",
+  "worker": ""
+}

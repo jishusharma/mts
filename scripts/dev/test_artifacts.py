@@ -71,7 +71,8 @@ class Registry(unittest.TestCase):
         import make_control_room as mc
         rows = mc.page_index()
         self.assertEqual({r["title"] for r in rows}, {"MTS Control Room", "MTS Layers", "Tom and Fabio: what they taught", "CBP Monday Desk",
-                                                      "CBP Consensus Desk", "MTS Home", "MTS Research Map", "MTS Session Planner"})
+                                                      "CBP Consensus Desk", "MTS Home", "MTS Research Map", "MTS Session Planner", "MTS Sim Desk",
+                                                   "CBP Analyst Desk"})
         own = {r["title"]: r["owner"] for r in rows}
         self.assertEqual(own["MTS Control Room"], "jishusharma1985")
         self.assertEqual(own["Tom and Fabio: what they taught"], "jishusharma1985")
@@ -144,7 +145,8 @@ class Home(unittest.TestCase):
                 "# OPERATOR DECISIONS\n\n"
                 "## q-open | asked 2026-10-15 | Process | NO AUTO-APPLY\n\nRetire old tasks?\n\nRecommended: Yes\nAnswer: (none yet)\n\n"
                 "## q-done | asked 2026-10-13 | Process\n\nDone one?\n\nRecommended: Yes\nAnswer: Yes\n\n"
-                "## q-json | asked 2026-10-16 | Research\n\nOnly json?\n\n```json\n{\"answer\": \"No\"}\n```\n", encoding="utf-8")
+                "## q-json | asked 2026-10-16 | Research\n\nOnly json?\n\n```json\n{\"answer\": \"No\"}\n```\n\n"
+                "## q-decided (2026-10-22, Admin_Guy)\n```json\n{\"id\": \"q-decided\", \"status\": \"DECIDED\"}\n```\n", encoding="utf-8")
             (root / mh.TASKS / "c1.json").write_text('{"id": "c1", "state": "raw", "asks": "May the monitor clear it?", "title": "Halt"}', encoding="utf-8")
             (root / mh.TASKS / "c2.json").write_text('{"id": "c2", "state": "done", "asks": "Old?", "title": "x"}', encoding="utf-8")
             d = mh.build(self.reg, repo=root)
@@ -152,7 +154,7 @@ class Home(unittest.TestCase):
         self.assertEqual(d["waiting"][0]["title"], "Retire old tasks?")
         self.assertTrue(d["waiting"][0]["explicit"])
         self.assertEqual(d["answerAt"]["owner"], "jishusharma1985")
-        self.assertIn("Waiting for you", mh.render(d))
+        self.assertIn("waiting for you", mh.render(d))
 
     def test_every_page_opens_on_the_home_login(self):
         """Operator 2026-10-17: 'make a copy of everything from GitHub and publish everything from this account'."""
@@ -161,34 +163,72 @@ class Home(unittest.TestCase):
         off = [p["title"] for p in d["pages"] if p["owner"] != self.reg["home_login"]]
         self.assertEqual(off, [])
 
-    def test_hub_explains_failing_links_first(self):
-        """Operator 2026-10-17: links to pages owned by another login fail; the reason and fix come before the lists."""
+    def test_hub_folds_link_help_and_stays_compact(self):
+        """Operator 2026-10-25: MTS Home was too big to navigate. The link-failure help and the old copies are folded, and the
+        three live blocks (needs you, pages, sessions) come before them."""
         import make_home as mh
         html = mh.render(mh.build(self.reg))
-        self.assertLess(html.index('id="h-how"'), html.index('id="h-wait"'))
-        self.assertIn("Link fails? Why, and the one-time fix", html)
-        self.assertIn("only after", html)
+        self.assertLess(html.index('aria-labelledby="h-wait"'), html.index('id="h-pages"'))
+        self.assertLess(html.index('id="h-pages"'), html.index('id="h-use"'))
+        self.assertLess(html.index('id="h-use"'), html.index('id="linkfix"'))
+        self.assertIn('<details class="fold" id="linkfix">', html)
+        self.assertIn('<details class="fold" id="retirebox">', html)
+        self.assertLess(len(html), 30000)  # the 2026-10-19 page was 31 KB and five screens tall
+        self.assertNotIn('id="where"', html)  # the duplicate "where to answer" box is gone: one link in the needs-you strip
 
-    def test_how_to_use_is_on_top_with_recipes_and_the_super_prompt(self):
-        """Operator 2026-10-19: the user workflows (when, where, the line to paste) open the page; the super-session prompt
-        is the one in SUPER_SESSION.md and its line 1 loads the Supervisor role."""
+    def test_home_has_session_recipes_without_duplicates(self):
+        """One row per role; Admin_Guy covers question, decision and backlog (they were two rows). The super-session prompt is the
+        one in SUPER_SESSION.md and line 1 loads the Supervisor role."""
         import make_home as mh
         d = mh.build(self.reg)
         html = mh.render(d)
-        self.assertLess(html.index('id="h-use"'), html.index('class="rule"'))
-        self.assertLess(html.index('id="h-use"'), html.index('id="h-how"'))
-        self.assertIn("What do I do today?", html)
-        for line in ("You are Admin_Guy.", "You are Eagle_Eyes.", "You are MTS_Doctor.", "You are Lab_Guy.", "You are Pipeliner.",
-                     "Start the Pipeliner.", "You are 1985Artifacts_Guy.", "You are Thinker."):
+        lines = [r["line"] for r in d["recipes"]]
+        self.assertEqual(len(lines), len(set(lines)))
+        self.assertEqual(len(lines), 7)
+        for line in ("You are Admin_Guy.", "You are Eagle_Eyes.", "You are MTS_Doctor.", "You are Lab_Guy.", "Start the Pipeliner.",
+                     "You are Thinker.", "You are 1985Artifacts_Guy."):
+            self.assertIn(line, lines)
             self.assertIn(line, html)
-        recipes = html.split('<ol class="recipes">', 1)[1].split('</ol>', 1)[0]
-        self.assertEqual(recipes.count('<li><b>'), 8)
-        self.assertIn('backlog', recipes.lower())
+        self.assertIn("backlog", d["recipes"][0]["name"].lower())
         self.assertTrue(d["superPrompt"].startswith("You are Supervisor."), d["superPrompt"][:60])
         self.assertIn("SUPER_SESSION.md", d["superPrompt"])   # one-line start (SUPER_SESSION.md 2026-10-24)
         import tempfile
         with tempfile.TemporaryDirectory() as tmp:
             self.assertEqual(mh.super_prompt(tmp), "")
+
+    def test_new_pages_are_wired_into_home(self):
+        """Operator 2026-10-25: every new development/page must show on MTS Home. A page shows when it is in registry.json."""
+        import make_home as mh
+        titles = [p["title"] for p in mh.build(self.reg)["pages"]]
+        for t in ("MTS Sim Desk", "CBP Analyst Desk", "MTS Layers", "MTS Control Room"):
+            self.assertIn(t, titles)
+        reg = copy.deepcopy(self.reg)
+        extra = copy.deepcopy(next(p for p in reg["pages"] if p["slug"] == "sim_desk"))
+        extra.update(slug="zz_new", title="ZZ New Page", urls={"jishusharma1985": "https://claude.ai/artifact/zzzNewPage0000000000000"})
+        reg["pages"].append(extra)
+        self.assertIn("ZZ New Page", [p["title"] for p in mh.build(reg)["pages"]])
+
+    def test_every_published_artifact_url_in_the_repo_is_registered(self):
+        """A claude.ai/artifact link in a tracked doc or script that registry.json does not know is a page MTS Home cannot show."""
+        import json
+        import re
+        import subprocess
+        known = set(re.findall(r"claude\.ai/artifact/([A-Za-z0-9]+)", json.dumps(self.reg)))
+        files = subprocess.run(["git", "-C", str(af.REPO), "ls-files", "*.md", "*.py", "*.json", "*.txt"],
+                               capture_output=True, text=True).stdout.split("\n")
+        skip = ("registry.json", "test_artifacts.py", "test_artifacts_audit_links.py")
+        loose = {}
+        for f in files:
+            if not f or f.endswith(skip) or "/tasks/" in f:
+                continue
+            try:
+                text = (af.REPO / f).read_text(encoding="utf-8")
+            except (OSError, ValueError):
+                continue
+            for m in re.findall(r"claude\.ai/artifact/([A-Za-z0-9]{12,})", text):
+                if m not in known:
+                    loose.setdefault(m, f)
+        self.assertEqual(loose, {}, "register these pages in artifacts/registry.json so MTS Home lists them")
 
 
 class Stale(unittest.TestCase):

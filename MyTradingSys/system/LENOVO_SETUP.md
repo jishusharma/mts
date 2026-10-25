@@ -1,4 +1,4 @@
-# LENOVO SETUP (DESKTOP-F7IU69N, third Claude login jishusharma1985)
+# LENOVO SETUP (DESKTOP-F7IU69N, Claude login A, jishu.sharma@gmail.com)
 
 Goal: a clean repo clone that syncs from `origin/fast-track`, works on committed data only, and ships with `sync.py ship`. State from DEVICES.md section 8: Lenovo 20L90025RT, Windows 11 Pro, Java 21, Maven 3.9.11, Python 3.14.7, Git 2.24.1 (too old, update), the old clone `C:\Users\e-ngineers\IdeaProjects\BinanceDataFeed` is on `master` and stale: do not reuse it.
 Hostname check first (never the username): PowerShell `$env:COMPUTERNAME` must print `DESKTOP-F7IU69N`. If it prints JIS-NB or JIS-NUC you are in an RDP window: stop.
@@ -9,12 +9,14 @@ Rules: testnet only, never read `.secrets/` `.env` keys, no scheduled tasks, no 
 2. GitHub login on this machine: `gh auth login` as the account that has push rights to `jishusharma/mts` (JIS-NB pushes as `jishusharma`). If only login C has been invited, first accept the invite (CLOUD_ACCOUNTS.md "Login C" steps 1-2, done on JIS-NB by a session). A session cannot create the GitHub user or enter passwords: you do those.
 3. Clone to a new folder: `git clone https://github.com/jishusharma/mts.git C:\MTS\mts-lenovo` then `git -C C:\MTS\mts-lenovo checkout fast-track`. (If the repo URL differs, copy the `origin` URL from JIS-NB: `git -C C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed remote get-url origin`.)
 4. Machine identity: `setx MTS_ACCOUNT sharma1985` (claims then say who holds a task). Close and reopen the terminal.
-5. Sign the Claude Code app in with jishusharma1985@gmail.com, open the folder `C:\MTS\mts-lenovo`, paste the first-message prompt below.
+5. Sign the Claude Code app in with jishu.sharma@gmail.com (login A), open the folder `C:\MTS\mts-lenovo`, paste the first-message prompt below.
 6. MTS Home page: it is an artifact on login C (read `MyTradingSys/system/artifacts/registry.json`, key `jishusharma1985`). Check it opens from the Claude app; a desk row (`send-jishu-sharma-pages-to-the-repo`) is with the NUC for the latest content.
+7. One-time check (after a pull; PowerShell opens in system32, so start with the cd): `cd C:\MTS\mts-lenovo; git pull; setx MTS_GATE_JOBS 2; python scripts/dev/mts_run.py once --dry-run --login A`
+8. Start the worker loop (a PowerShell window left open, no scheduler; it ends by itself after 10 hours or when an ANNOUNCEMENTS HOLD is active): `cd C:\MTS\mts-lenovo; python scripts/dev/mts_run.py loop --hours 10 --login A`
 
 ## First-message prompt (paste into the Lenovo Claude Code session)
 ```
-You are an MTS builder session on DESKTOP-F7IU69N (Lenovo laptop), login jishusharma1985. Work only in C:\MTS\mts-lenovo. Never read .secrets/, .env or keys; never run or stop live processes; testnet only.
+You are an MTS builder session on DESKTOP-F7IU69N (Lenovo laptop), login A. Work only in C:\MTS\mts-lenovo. Never read .secrets/, .env or keys; never run or stop live processes; testnet only.
 0. `$env:COMPUTERNAME` must be DESKTOP-F7IU69N. `git --version` must be 2.40+.
 1. `python scripts/dev/sync.py start lenovo-<slug>`, then `python scripts/dev/sync.py where`. Read MyTradingSys/research/STATUS.md (regenerate: `python scripts/dev/make_status.py`) and the ACTIVE entries of MyTradingSys/system/ANNOUNCEMENTS.md. Read MyTradingSys/system/PLAN_4H_2026-10-18.md and PARALLEL.md "Devices and accounts".
 2. Check the toolchain and report one line each: `python --version` (3.14+), `java -version` (21), `mvn -v`, `git --version`. Run `python scripts/dev/run_all_tests.py --quick` once; if it is red for a missing tool, say which.
