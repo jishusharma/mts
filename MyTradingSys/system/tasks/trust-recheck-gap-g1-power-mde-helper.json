@@ -43,12 +43,6 @@
     "MyTradingSys/system/tasks/archive/gap-g1-power-mde-helper.json",
     "MyTradingSys/research/layer_lab/reports/2026-10-19_lab-trust-tag.md"
   ],
-  "reroute": {
-    "at": "2026-10-25T16:59:17Z",
-    "desk": "20261025-165917-trust-recheck-gap-g1-power-mde-helper",
-    "to": "DSA",
-    "why": "failing"
-  },
   "result": "",
   "scope_in": [
     "MyTradingSys/backtest/power_mde.py",

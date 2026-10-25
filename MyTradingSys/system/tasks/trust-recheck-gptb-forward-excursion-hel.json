@@ -43,12 +43,6 @@
     "MyTradingSys/system/tasks/archive/gptb-forward-excursion-helper.json",
     "MyTradingSys/research/layer_lab/reports/2026-10-19_lab-trust-tag.md"
   ],
-  "reroute": {
-    "at": "2026-10-25T16:59:17Z",
-    "desk": "20261025-165917-trust-recheck-gptb-forward-excursion-hel",
-    "to": "DSA",
-    "why": "failing"
-  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/layer_lab/forward_excursion/event_table.py",
