@@ -46,7 +46,7 @@ card["steps"] = [
     "try ONE id first, highest rank first: python scripts/dev/fetch_captions_timed.py --analyst Malkan --out raw_transcripts_canonical <id> (also try the JIS-NB host if the NUC is rate-limited); Hindi videos --langs hi,en",
     "on success fetch the next selected id (RANKED_MALKAN.csv order), at least 60 s apart; on 429 STOP for today and record the attempt in the card note (retry once a day, 3 days max, then NOT AVAILABLE)",
     "fetch ONLY include=Y ids; never the NOT SELECTED ones, even if a fetch is working (re-rank with video_priority_2026-10-15/score.py first if a new video appears)",
-    "update the Malkan selected-ids row in MyTradingSys/research/transcript_inventory_2026-10-09.md for each id (fetched / NOT AVAILABLE + reason)",
+    "update the Malkan selected-ids row in MyTradingSys/research/_archive/loose_2026-10/transcript_inventory_2026-10-09.md for each id (fetched / NOT AVAILABLE + reason)",
 ]
 card["note"] = (card["note"] + " 2026-10-15 (video-priority session): the card is restricted to the ranked top. Selected (include=Y): " + sel_txt +
                 f". Method and validation: research/video_priority_2026-10-15/METHOD.md. {len(dropped)} shortlisted ids are NOT SELECTED (inventory). "
@@ -57,7 +57,7 @@ card["scope_in"] = sorted(set(card["scope_in"] + ["MyTradingSys/research/video_p
 out = json.dumps(card, indent=2, sort_keys=True, ensure_ascii=False) + ("\n" if raw.endswith(b"\n") else "")
 card_p.write_bytes(out.encode("utf-8").replace(b"\r\n", b"\n"))
 
-inv_p = ROOT / "MyTradingSys/research/transcript_inventory_2026-10-09.md"
+inv_p = ROOT / "MyTradingSys/research/_archive/loose_2026-10/transcript_inventory_2026-10-09.md"
 inv = inv_p.read_text(encoding="utf-8")
 new_rows = [
     "| Malkan | " + ", ".join(sel_ids) + f" | - | PENDING_CAPTIONS | SELECTED by video_priority_2026-10-15 (ranked top {len(sel)}; HTTP 429 still the blocker, anonymous, no cookies); retry once a day, 3 days max, then NOT AVAILABLE; order = RANKED_MALKAN.csv |",

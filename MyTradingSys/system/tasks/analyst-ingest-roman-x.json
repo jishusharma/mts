@@ -41,7 +41,7 @@
   "refined_by": "gemini-4-argon",
   "refreshed": "2026-10-18T16:30:17Z",
   "refs": [
-    "MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md",
+    "MyTradingSys/research/_archive/loose_2026-10/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md",
     "MyTradingSys/research/analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md",
     "MyTradingSys/research/analysts/ROADMAP.md",
     "MyTradingSys/research/analysts/schema.py",
@@ -60,7 +60,7 @@
   "scope_sha": "1e405a57e967",
   "size": "M",
   "sources": [
-    "MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md:116-135"
+    "MyTradingSys/research/_archive/loose_2026-10/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md:116-135"
   ],
   "state": "ready",
   "steps": [

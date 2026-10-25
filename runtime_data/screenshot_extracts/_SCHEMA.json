@@ -2,7 +2,7 @@
   "$schema": "local",
   "version": "1.0.0",
   "purpose": "Screenshot extraction output. Worker writes one file per image. Main session reads and reconciles against DSA snapshot. Field names follow VVP-002 sections; no invented field names.",
-  "canonical_by": "MyTradingSys/research/visual_validation_protocol_vvp002.md",
+  "canonical_by": "MyTradingSys/research/_archive/loose_2026-10/visual_validation_protocol_vvp002.md",
   "file_naming": "runtime_data/screenshot_extracts/{SYMBOL}_{TF}_{YYYYMMDDTHHMMSSZ}.json",
   "required": [
     "version",

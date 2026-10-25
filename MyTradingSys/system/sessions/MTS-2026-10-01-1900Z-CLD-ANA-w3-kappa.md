@@ -15,7 +15,7 @@ commits: 77003ff (reader CSV), second commit with first CSV, report, record, ind
 handoff: none. Operator merges the branch; CLOUD_INBOX, SUPERVISOR_INBOX and SUPERVISOR_LOG deliberately untouched (two-cores session collision).
 
 ## Work
-Task: W3 kappa as clean second reader (CLOUD_PROMPT_W3_KAPPA_2026-10-02.md). Blind condition held. kappa 0.446 (observed 0.662), threshold 0.6 not met; 25 of 74 rows disagree. Details: research/W3_KAPPA_REPORT_2026-10-01.md.
+Task: W3 kappa as clean second reader (CLOUD_PROMPT_W3_KAPPA_2026-10-02.md). Blind condition held. kappa 0.446 (observed 0.662), threshold 0.6 not met; 25 of 74 rows disagree. Details: research/_archive/loose_2026-10/W3_KAPPA_REPORT_2026-10-01.md.
 
 ## Decision log
 - 2026-10-01 | this session | usage unreadable -> assumed 85 percent; blind reads only, no subagents.

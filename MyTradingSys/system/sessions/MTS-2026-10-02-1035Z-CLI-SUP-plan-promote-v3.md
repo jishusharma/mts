@@ -12,4 +12,4 @@ started: 2026-10-02 10:35Z
 ended: 2026-10-02 10:41Z
 status: closed
 commits: eddd237
-handoff: none; plan at MyTradingSys/research/OPUS_PLAN_2026-10-02.md, item 2 prompt in its section 5 awaits operator (token cap placeholder OPERATOR_SET_TOKEN_CAP)
+handoff: none; plan at MyTradingSys/research/_archive/loose_2026-10/OPUS_PLAN_2026-10-02.md, item 2 prompt in its section 5 awaits operator (token cap placeholder OPERATOR_SET_TOKEN_CAP)

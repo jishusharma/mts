@@ -1,7 +1,7 @@
 # T054 - US SESSION / PRE-MARKET ALERT, US-EQUITY CORRELATION, NEWS SENTIMENT
 
 Convention: one item, one doc. Verbatim ask at top. Updates appended, newest last.
-Related: T040 tick anomalies; research/event_probability_layer_DESIGN.md (parked; liquidity-run event).
+Related: T040 tick anomalies; research/_archive/loose_2026-10/event_probability_layer_DESIGN.md (parked; liquidity-run event).
 
 ## VERBATIM ASK (operator, 2026-09-28)
 in tick based system our goal is not to store data but rather identify the known list of anomalies when they occur - and thus we poll for anomalies of diff thresholds. Then we need to research how we can use these with any other indicator or idea like liquidity runs around the US session start.

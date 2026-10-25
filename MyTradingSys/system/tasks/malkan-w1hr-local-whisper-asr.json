@@ -42,7 +42,7 @@
   "refined_by": "gemini-yt-pipeliner",
   "refreshed": "2026-10-18T21:10:10Z",
   "refs": [
-    "MyTradingSys/research/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md",
+    "MyTradingSys/research/_archive/loose_2026-10/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md",
     "MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md",
     "MyTradingSys/research/layer_lab/reports/2026-10-17_malkan-hindi-rows-gpt-read.md"
   ],
@@ -60,7 +60,7 @@
   "scope_sha": "ecc5bebc038b",
   "size": "S",
   "sources": [
-    "MyTradingSys/research/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md"
+    "MyTradingSys/research/_archive/loose_2026-10/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md"
   ],
   "state": "ready",
   "steps": [

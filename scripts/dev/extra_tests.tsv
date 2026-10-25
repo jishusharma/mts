@@ -79,8 +79,8 @@ scripts/dev/test_make_layers_board.py
 scripts/dev/test_session_log.py
 scripts/dev/test_codex_pack.py
 scripts/dev/test_token_audit.py
-MyTradingSys/research/test_b141_htf_stage1.py
-MyTradingSys/research/test_b141_htf_stage2.py
+MyTradingSys/research/loose_code/test_b141_htf_stage1.py
+MyTradingSys/research/loose_code/test_b141_htf_stage2.py
 MyTradingSys/execution/tests/test_deribit_orders_phase3.py
 MyTradingSys/execution/tests/test_executor_reject_diag.py
 MyTradingSys/observation/tests/test_observation.py

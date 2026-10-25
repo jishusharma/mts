@@ -14,7 +14,7 @@
   "prio": 3,
   "refined_by": "",
   "refs": [],
-  "result": "Already done 2026-10-10 12:20Z: research/txlog_capture_2026-10-10_jishu_11.json; mainnet_pnl.py now includes settlement (B149 item Receipt). Restart by supervisor pending. Card was stale.",
+  "result": "Already done 2026-10-10 12:20Z: research/loose_code/txlog_capture_2026-10-10_jishu_11.json; mainnet_pnl.py now includes settlement (B149 item Receipt). Restart by supervisor pending. Card was stale.",
   "scope_in": [],
   "scope_out": [],
   "size": "S",

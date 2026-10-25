@@ -3,7 +3,7 @@
 **Date:** 2026-10-20  
 **Card:** `malkan-gfs-btc-htf-prereg` (SONNET, priority 2)  
 **Task Goal:** Implement the 'Edge-Before-Extraction' pre-registration on Malkan GFS (Grandfather-Father-Son: Monthly RSI > 60, Weekly RSI > 60, Daily RSI support at 60) on historical Binance 1D/4h BTC DEV klines (count-only + `prereg_gate.py` power check first).  
-**Strategic Directive:** `MyTradingSys/research/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md:87-97` (Section 6.2 item 2: Edge-Before-Extraction Decision Rule).  
+**Strategic Directive:** `MyTradingSys/research/_archive/loose_2026-10/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md:87-97` (Section 6.2 item 2: Edge-Before-Extraction Decision Rule).  
 **Template:** `MyTradingSys/backtest/PRE_REG_TEMPLATE.md:1-78`  
 **Provenance Rule:** Every number is labeled SOURCED (quote + file:line) or OURS (engineering/design choice). No P&L backtest run; no tuning; edits to live code out of scope.
 

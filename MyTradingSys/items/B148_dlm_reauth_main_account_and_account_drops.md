@@ -1,7 +1,7 @@
 # B148 - Daily-loss monitor re-authenticates as the MAIN account when a named subaccount token expires; it also silently drops accounts on a config read error; orphan sweep can miss orphans and never reports a halt
 
 Status: IN-FIX. Severity: HIGH. Opened 2026-10-09.
-Session: MTS-2026-10-09-APP-ANA-major-gaps-audit. Source: research/AUDIT_MAJOR_GAPS_2026-10-09.md (audit revalidated by four read-only workers; no code edited).
+Session: MTS-2026-10-09-APP-ANA-major-gaps-audit. Source: research/_archive/loose_2026-10/AUDIT_MAJOR_GAPS_2026-10-09.md (audit revalidated by four read-only workers; no code edited).
 
 ## Defect
 
@@ -21,7 +21,7 @@ Failing-first tests, then fixes: (1) make re-auth account-explicit (pass the lab
 
 ## Related
 
-- MyTradingSys/research/AUDIT_MAJOR_GAPS_2026-10-09.md
+- MyTradingSys/research/_archive/loose_2026-10/AUDIT_MAJOR_GAPS_2026-10-09.md
 
 ## Receipt
 

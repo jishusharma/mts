@@ -19,7 +19,7 @@ previous read (cite the shot id or log entry), (4) what the live system did or s
    the `MTS-Mirror` share): it shows age (WARN > 15 min, STALE > 60 min, NO MIRROR). Say `MIRROR READ`, never call mirror numbers live, give no
    HALT or engine-vs-chart verdict from a STALE or missing mirror (write UNCONFIRMED, ask for a JIS-NB read), skip the shot-engine rebuild.
 3. Read MyTradingSys/system/QUICK_ANSWERS.md (screenshot rules) and MyTradingSys/methodology/screenshot_intake.md.
-4. Gap sweep: `python scripts/dev/eagle_gaps.py --write MyTradingSys/research/EAGLE_GAPS.md` (again after any read that hits NOT_IN_DATA).
+4. Gap sweep: `python scripts/dev/eagle_gaps.py --write MyTradingSys/research/_archive/loose_2026-10/EAGLE_GAPS.md` (again after any read that hits NOT_IN_DATA).
    Cite the gap line when a read lands on a layer with a gap; each new gap kind/object = one card, never a fix here.
 
 ## Per screenshot set (the hook prints `[SCREENSHOT INTAKE] ... SAVED` with ids; no notice = nothing new)

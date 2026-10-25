@@ -41,7 +41,7 @@
   ],
   "result": "",
   "scope_in": [
-    "MyTradingSys/research/deribit_api_research.md",
+    "MyTradingSys/research/_archive/loose_2026-10/deribit_api_research.md",
     "MyTradingSys/backtest/bt/bt_data.py",
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
   ],

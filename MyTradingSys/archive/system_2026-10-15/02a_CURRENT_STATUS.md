@@ -62,8 +62,8 @@
 | 11 | mts/research/htf_structure_audit_2026-08-28.md | ~27KB | COMPLETE | HTF structure audit: 47 extracts, 28 claims, 8 engine gaps, 9 DSA schema changes |
 | 12 | mts/research/validation_prompt_gpt.md | ~8KB | REFERENCE | GPT validation prompt template |
 | 13 | mts/research/validation_prompt_grok.md | ~7KB | REFERENCE | Grok validation prompt template |
-| 14 | mts/research/unclear_extractions.md | ~2KB | ACTIVE | Parking lot for extractions not ready for engine integration
-| 15 | mts/research/visual_validation_protocol_vvp001.md | ~9KB | ACTIVE | Screenshot reading protocol: cursor rules, indicator tiers, proof detection, cross-TF conflict resolution. Created 2026-08-31. |
+| 14 | mts/research/_archive/loose_2026-10/unclear_extractions.md | ~2KB | ACTIVE | Parking lot for extractions not ready for engine integration
+| 15 | mts/research/_archive/loose_2026-10/visual_validation_protocol_vvp001.md | ~9KB | ACTIVE | Screenshot reading protocol: cursor rules, indicator tiers, proof detection, cross-TF conflict resolution. Created 2026-08-31. |
 
 **Archived (moved to mts/archive/):** session_timing_evidence, session_timing_recommendations, validation_run_2026-08-27, compiled_engine_validation_2026-08-28, multi_tf_rule_redesign_2026-08-28, consolidated_task_list_2026-08-29, data_driven_revalidation_report_2026-08-29.
 
@@ -216,7 +216,7 @@
 
 ### Workflow Change (2026-08-30)
 **Previous workflow:** Extract + tag vs Tom's engine in same session (discarded).
-**New workflow:** 4-phase integration plan (see mts/research/cross_trader_integration_plan.md).
+**New workflow:** 4-phase integration plan (see mts/research/_archive/loose_2026-10/cross_trader_integration_plan.md).
 - Phase 1: Pure extraction (Source GPS + quotes only) — COMPLETE
 - Phase 2: Consolidation (group, dedupe, catalog) — COMPLETE
 - Phase 3: Integration Planning (5-step check per rule) — COMPLETE
@@ -254,7 +254,7 @@
 ### Files Created / Modified This Session
 | File | Purpose |
 |------|---------|
-| `mts/research/cross_trader_integration_plan.md` | NEW — 4-phase integration workflow with 5-step check + Appendix A rule catalog (CT-001 to CT-046) |
+| `mts/research/_archive/loose_2026-10/cross_trader_integration_plan.md` | NEW — 4-phase integration workflow with 5-step check + Appendix A rule catalog (CT-001 to CT-046) |
 | `mts/extracts/the_flow_horse/extracted/extract_Oy2Z-FQ77NM.md` | REPROCESSED — pure format, tags removed |
 | `mts/extracts/the_flow_horse/extracted/extract_zMM9QgxfEFI.md` | REPROCESSED — pure format, tags removed |
 | `mts/extracts/cryptocred/extracted/extract_BHwoN7VPrBE.md` | REPROCESSED — pure format, tags removed |
@@ -283,7 +283,7 @@
 **Trigger:** Bounce from 76,853 → retest of broken weekly VAL at ~77,900
 **Status:** FLAGGED — EXTRACTION UNCLEAR. NOT READY FOR ENGINE INTEGRATION.
 **Why:** This concept was AI-derived from extractions, not a clear Tom rule. No extracted video defines: (a) what TF tracks the breakdown, (b) what defines "breakdown" vs "retest", (c) what setup type applies on retest, (d) what invalidates the flag. Without these, any engine rule would be AI interpolation, not Tom-validated.
-**Action:** Store in `mts/research/unclear_extractions.md`. Revisit when new extractions provide clarity. Do NOT patch engine until validated against 3 live snapshots per Rule 35.
+**Action:** Store in `mts/research/_archive/loose_2026-10/unclear_extractions.md`. Revisit when new extractions provide clarity. Do NOT patch engine until validated against 3 live snapshots per Rule 35.
 
 ### Task 3: Prior Day H/L + London Range in DSA (MEDIUM PRIORITY) — CANCELLED
 **Status:** CANCELLED — same reason as DSA_TASK_008.
@@ -619,7 +619,7 @@ self-collects on next contradiction snapshot. Do not force it.
 | `mts/runtime/build_mo_cli.py` | Proof-direction helper |
 | `DSA_SESSION_PROMPT.md` | First-read entry doc for new sessions |
 | `mts/research/apparatus_fixes.md` | Fix log + |
-| `mts/research/event_probability_layer_DESIGN.md` | 4-AI research, parked |
+| `mts/research/_archive/loose_2026-10/event_probability_layer_DESIGN.md` | 4-AI research, parked |
 | `start_trading_day.ps1` | Apparatus loop |
 | `mode.ps1`, `stop_day.ps1`, `show_alert.ps1` | Process control |
 | `mts/tests/test_session_state.py` | 8 unit tests, all pass |

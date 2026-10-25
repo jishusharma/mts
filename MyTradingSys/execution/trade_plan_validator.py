@@ -2,7 +2,7 @@
 MyTradingSys/execution/trade_plan_validator.py
 
 Step 2 of the T050 execution-layer roadmap (see
-MyTradingSys/research/execution_system_architecture.md). Validates a
+MyTradingSys/research/_archive/loose_2026-10/execution_system_architecture.md). Validates a
 trade-plan JSON file (MyTradingSys/execution/trade_plan_schema.json)
 against structural rules AND business caps before it reaches
 plan_compiler.py (step 3).
@@ -14,7 +14,7 @@ and this file is the enforcement - keep them in sync by hand.
 
 Conservative defaults (caps ceiling, ladder size) are the T050 dependency
 list's placeholders, not operator-confirmed numbers. Flagged in
-research/opus_handoff_context.md as pending operator/Opus decision.
+research/_archive/loose_2026-10/opus_handoff_context.md as pending operator/Opus decision.
 
 Run directly against one file:
     python MyTradingSys/execution/trade_plan_validator.py path/to/plan.json

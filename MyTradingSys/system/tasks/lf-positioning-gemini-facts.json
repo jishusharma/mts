@@ -42,7 +42,7 @@
   "sources": [
     "MyTradingSys/system/LAYERS.md",
     "MyTradingSys/system/layer_index.json",
-    "MyTradingSys/research/whale_positioning_evidence_2026-09-12.md",
+    "MyTradingSys/research/_archive/loose_2026-10/whale_positioning_evidence_2026-09-12.md",
     "MyTradingSys/backtest/layers/FORMULAS.md"
   ],
   "state": "ready",

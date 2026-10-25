@@ -15,11 +15,11 @@ Source per layer (the "trader" whose words count):
 | rsi (malkan) | Vishal B Malkan (MalkanView), blog/chartink text | research/malkan_rsi_2026-09-28/WEB_RESEARCH.md (WR) |
 | rsi (generic) | none named; params say "source": "operator" | backtest/layers/rsi/params/default.json:3 |
 | cryptocred | CryptoCred, videos BHwoN7VPrBE, inqHN8q57X4 | extracts/processed/cryptocred/extract_BHwoN7VPrBE.md (BH), extract_inqHN8q57X4.md (INQ) |
-| positioning | Memon 2026 (T2), He/Manela/Ross/von Wachter (T2); CVD leg = internal T055a H2 | research/whale_positioning_evidence_2026-09-12.md:30; backtest/layers/FORMULAS.md:356-370 |
+| positioning | Memon 2026 (T2), He/Manela/Ross/von Wachter (T2); CVD leg = internal T055a H2 | research/_archive/loose_2026-10/whale_positioning_evidence_2026-09-12.md:30; backtest/layers/FORMULAS.md:356-370 |
 | session | Shen, Urquhart, Wang 2022 (T1) | research/fast_track_2026-09-27/T055b_PROVEN_SETUPS.md:30; FORMULAS.md:372-383 |
 | turn_of_candle | Shanaev, Vasenin, Stepanov, Heliyon (T1) | T055b_PROVEN_SETUPS.md:38,51; FORMULAS.md:385-398 |
 | tick | operator spec (T040), verbatim operator text | MyTradingSys/items/T040_tick_delta_layer.md (T040) |
-| consensus | operator architecture doc | research/ARCHITECTURE_TWO_CORES_2026-10-01.md:29-43 |
+| consensus | operator architecture doc | research/_archive/loose_2026-10/ARCHITECTURE_TWO_CORES_2026-10-01.md:29-43 |
 
 Quote rule used: a SOURCED row cites a line that carries the source's own words (in quotes in that file). A summary
 bullet written by our researcher is not a quote; rows resting only on one are CONCEPT-ONLY.

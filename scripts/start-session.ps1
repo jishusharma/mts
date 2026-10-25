@@ -179,17 +179,17 @@ foreach ($f in ($m.boot_files + $m.boot_supplemental)) {
 
 # Reference index. Files on disk not pasted. Request by path + line range.
 $refPaths = @(
-    @{ path='MyTradingSys/research/AUDIT_2026-09-17_TRACKER.md'; role='audit_work' },
-    @{ path='MyTradingSys/research/LOOP_LIFECYCLE_DESIGN_2026-09-19.md'; role='plan' },
-    @{ path='MyTradingSys/research/EXTRACTION_TO_ALERT_AUDIT_2026-09-19.md'; role='audit' },
+    @{ path='MyTradingSys/research/_archive/loose_2026-10/AUDIT_2026-09-17_TRACKER.md'; role='audit_work' },
+    @{ path='MyTradingSys/research/_archive/loose_2026-10/LOOP_LIFECYCLE_DESIGN_2026-09-19.md'; role='plan' },
+    @{ path='MyTradingSys/research/_archive/loose_2026-10/EXTRACTION_TO_ALERT_AUDIT_2026-09-19.md'; role='audit' },
     @{ path='MyTradingSys/runtime/SESSION_RESUME.md'; role='historical' },
-    @{ path='MyTradingSys/research/L_ITEMS_MASTER.md'; role='frozen' },
-    @{ path='MyTradingSys/research/INDICATOR_IMPLEMENTATION_HANDOFF.md'; role='research' },
+    @{ path='MyTradingSys/research/_archive/loose_2026-10/L_ITEMS_MASTER.md'; role='frozen' },
+    @{ path='MyTradingSys/research/_archive/loose_2026-10/INDICATOR_IMPLEMENTATION_HANDOFF.md'; role='research' },
     @{ path='MyTradingSys/PROJECT_VISION.md'; role='direction' },
     @{ path='MyTradingSys/research/TOM_VERBATIM_INDEX.md'; role='citation_index' },
-    @{ path='MyTradingSys/research/schema_v5.1.0_spec.md'; role='schema' },
-    @{ path='MyTradingSys/research/open_loops_status.md'; role='stale_loops' },
-    @{ path='MyTradingSys/research/compiled_output_audit_20260915.md'; role='audit' }
+    @{ path='MyTradingSys/research/_archive/loose_2026-10/schema_v5.1.0_spec.md'; role='schema' },
+    @{ path='MyTradingSys/research/_archive/loose_2026-10/open_loops_status.md'; role='stale_loops' },
+    @{ path='MyTradingSys/research/_archive/loose_2026-10/compiled_output_audit_20260915.md'; role='audit' }
 )
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("### REFERENCE INDEX (not pasted; request by path + line range) ###")

@@ -42,7 +42,7 @@
   "sources": [
     "MyTradingSys/system/LAYERS.md",
     "MyTradingSys/system/layer_index.json",
-    "MyTradingSys/research/TURN_OF_CANDLE_ORIGIN_2026-10-09.md"
+    "MyTradingSys/research/_archive/loose_2026-10/TURN_OF_CANDLE_ORIGIN_2026-10-09.md"
   ],
   "state": "ready",
   "steps": [

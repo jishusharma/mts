@@ -25,9 +25,9 @@ Branch: harness assigns claude/<name>. Record as branch_alias.
 
 ## READ (paths verified at HEAD)
 
-- MyTradingSys/research/ARCHITECTURE_TWO_CORES_2026-10-01.md
-- MyTradingSys/research/TWO_CORES_READINESS_2026-10-01.md
-- MyTradingSys/research/TWO_CORES_SCAFFOLD_2026-10-01.md
+- MyTradingSys/research/_archive/loose_2026-10/ARCHITECTURE_TWO_CORES_2026-10-01.md
+- MyTradingSys/research/_archive/loose_2026-10/TWO_CORES_READINESS_2026-10-01.md
+- MyTradingSys/research/_archive/loose_2026-10/TWO_CORES_SCAFFOLD_2026-10-01.md
 - MyTradingSys/research/fast_track_2026-09-27/FABIO_V3_SPEC.md
 - MyTradingSys/research/fast_track_2026-09-27/FABIO_TRADE_MODEL.md
 - MyTradingSys/backtest/layers/alerts/live_runner_cli.py
@@ -52,7 +52,7 @@ once. Include the failing run in the fix description.
    MyTradingSys/execution/auto_trader.py:47 (TF_SECONDS). Add 3m where
    missing. Confirm 1d is present where the RSI block needs it. Stage
    both .new.
-3. MyTradingSys/research/MTS_LAUNCHER_SPEC_2026-10-02.md. Spec for an
+3. MyTradingSys/research/_archive/loose_2026-10/MTS_LAUNCHER_SPEC_2026-10-02.md. Spec for an
    mts.ps1 launcher + status line for live_runner_cli and
    orphan_watchdog_cli. Do not edit scripts/mts.ps1.
 4. MyTradingSys/runtime/test_quad_classify.py.new and
@@ -113,7 +113,7 @@ Commit checkpoint 3 with trailer. Push.
 
 ## WAVE 4. Switchability spec (spec only, no code)
 
-One Sonnet subagent. MyTradingSys/research/TWO_CORES_SWITCHABILITY_2026-10-02.md:
+One Sonnet subagent. MyTradingSys/research/_archive/loose_2026-10/TWO_CORES_SWITCHABILITY_2026-10-02.md:
 - Config block shape: cores {tom: on, fabio: on}; modules {rsi_obs: on,
   consensus: on}. One file, one loader.
 - Where it lands: MyTradingSys/runtime/cores_config.json (new).

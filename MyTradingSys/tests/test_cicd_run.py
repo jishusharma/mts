@@ -1,7 +1,7 @@
 import sys; sys.dont_write_bytecode = True
 """test_cicd_run.py - one test per stage of scripts/dev/cicd_run.py (stages 2.1 to 2.9) plus runner mechanics.
 
-Expected values come from the design, MyTradingSys/research/CICD_PIPELINE_2026-10-03.md, not from the code under test:
+Expected values come from the design, MyTradingSys/research/_archive/loose_2026-10/CICD_PIPELINE_2026-10-03.md, not from the code under test:
   - section 1 rule 2 and 4: no stage stops the run; exit code 0 all PASS/SKIP, 1 any WARN, 2 any FAIL/CRASH.
   - section 2.1: flags ID-ONLY-IN-ONE-SOURCE, STATUS-DISAGREE, STALE pipeline rows, PIPELINE-LOCAL rows are never orphans.
   - section 2.2: M3 Python compile + PowerShell parse of changed files, M4 T3 line, M5 gate map; dirty allowlist from 2.7.

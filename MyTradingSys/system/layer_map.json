@@ -615,7 +615,7 @@
    "id": "oi_delta",
    "family": "Positioning",
    "name": "OI delta 4-state classifier (volume-delta vs price school)",
-   "module": "research/OI_DELTA_4STATE_BACKTEST_2026-09-21.md",
+   "module": "research/_archive/loose_2026-10/OI_DELTA_4STATE_BACKTEST_2026-09-21.md",
    "status": "descriptive study",
    "params": [
     {
@@ -1026,7 +1026,7 @@
    "effects": "not recorded",
    "n": "not recorded",
    "verdict": "table in report not read for this map",
-   "report": "MyTradingSys/research/MARKET_GUIDE_RESULTS_2026-10-07.md",
+   "report": "MyTradingSys/research/_archive/loose_2026-10/MARKET_GUIDE_RESULTS_2026-10-07.md",
    "read": "header"
   },
   {
@@ -1044,7 +1044,7 @@
    "effects": "state counts per school recorded",
    "n": "6362 rows",
    "verdict": "descriptive; no verdict line in the head of the file",
-   "report": "MyTradingSys/research/OI_DELTA_4STATE_BACKTEST_2026-09-21.md",
+   "report": "MyTradingSys/research/_archive/loose_2026-10/OI_DELTA_4STATE_BACKTEST_2026-09-21.md",
    "read": "header"
   },
   {

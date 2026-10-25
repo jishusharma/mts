@@ -194,7 +194,7 @@ Source: runtime_data/outcome_labels.json (last written 2026-09-27, 10,289 labels
 Sources:
 - runtime_data/label_count.json, outcome_labels.json:line 1-10 (labels inventory)
 - Dumps/backtest/raw/klines/{BTCUSDT-1m-*.csv}:sorted (data availability)
-- MyTradingSys/research/cross_trader_consolidated.md:line 1-986 (rule catalog & testability mapping)
+- MyTradingSys/research/_archive/loose_2026-10/cross_trader_consolidated.md:line 1-986 (rule catalog & testability mapping)
 
 ## CORRECTION (coordinator, 2026-09-28)
 - Section 2 was wrong: monthly RSI does not need to wait for October 2026 data. data.binance.vision has

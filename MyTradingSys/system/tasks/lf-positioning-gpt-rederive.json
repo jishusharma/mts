@@ -35,10 +35,10 @@
   "scope_sha": "",
   "size": "S",
   "sources": [
-    "MyTradingSys/research/whale_positioning_evidence_2026-09-12.md",
+    "MyTradingSys/research/_archive/loose_2026-10/whale_positioning_evidence_2026-09-12.md",
     "MyTradingSys/backtest/layers/FORMULAS.md",
-    "MyTradingSys/research/OI_DIVERGENCE_V2_2026-10-10.md",
-    "MyTradingSys/research/OI_EVENT_STUDY_2026-10-10.md"
+    "MyTradingSys/research/_archive/loose_2026-10/OI_DIVERGENCE_V2_2026-10-10.md",
+    "MyTradingSys/research/_archive/loose_2026-10/OI_EVENT_STUDY_2026-10-10.md"
   ],
   "state": "ready",
   "steps": [

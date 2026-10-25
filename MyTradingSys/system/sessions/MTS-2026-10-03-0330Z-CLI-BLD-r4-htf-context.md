@@ -2,7 +2,7 @@
 surface: CLI | role: BLD | model: claude-sonnet-5-5 | branch: fast-track | lanes: none | status: closed
 
 ## T0 contract (quoted)
-(a) `MyTradingSys/research/WHY_ENGINE_SILENT_2026-10-03.md:47`: "| R4 | HTF context layer (separate layer, never a Tom filter): 4H/1D balance (Fabio S1), failed-breakout flag, OI delta from Binance openInterestHist | collection-only log for 14 days, then measure | daily row per state; report vs next-day range |"
+(a) `MyTradingSys/research/_archive/loose_2026-10/WHY_ENGINE_SILENT_2026-10-03.md:47`: "| R4 | HTF context layer (separate layer, never a Tom filter): 4H/1D balance (Fabio S1), failed-breakout flag, OI delta from Binance openInterestHist | collection-only log for 14 days, then measure | daily row per state; report vs next-day range |"
     Cause #5 (:25): "No higher-timeframe context: the verdict chain never sees multi-day balance, failed breakout, OI".
 (b) `balance(bars, i, N, k_bal=0.8, bin_size=50)` signals.py:183 returns `{"H": H, "L": L, "R": R, "poc": poc}` or None
     (R <= k_bal*sqrt(N)*ATR_N(i) AND |c[i]-poc| <= 0.25*R). It works on 1m bars only (contiguity t[i]-t[a]==(i-a)*60000,

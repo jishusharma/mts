@@ -27,10 +27,10 @@
   "refined_by": "",
   "refreshed": "2026-10-17T07:16:43Z",
   "refs": [
-    "MyTradingSys/research/event_probability_layer_DESIGN.md",
+    "MyTradingSys/research/_archive/loose_2026-10/event_probability_layer_DESIGN.md",
     "MyTradingSys/PROJECT_VISION.md",
     "MyTradingSys/backtest/prob_table.py",
-    "MyTradingSys/research/T064_TF_CONFIRMATION_EXTRACT.md",
+    "MyTradingSys/research/_archive/loose_2026-10/T064_TF_CONFIRMATION_EXTRACT.md",
     "MyTradingSys/system/tasks/candle-close-independent-audit.json"
   ],
   "result": "research/prob_dist_layer_brief_2026-10-16/BRIEF.md: prior-work map with file:line, 3 designs, 8 open questions",

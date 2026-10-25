@@ -99,7 +99,7 @@ After EVERY web_search:
 ## SECTION 3: EXTRACTION RULES
 
 **Canonical source:** methodology/playbook.md Part J
-**Cross-trader integration plan:** mts/research/cross_trader_integration_plan.md
+**Cross-trader integration plan:** mts/research/_archive/loose_2026-10/cross_trader_integration_plan.md
 
 AI obligation: Read methodology/playbook.md Part J BEFORE every extraction session.
 

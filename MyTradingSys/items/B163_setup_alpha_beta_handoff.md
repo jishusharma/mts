@@ -30,10 +30,10 @@ part (e.g. Fabio's sweep/CVD rules, research/fast_track_2026-09-27/FABIO_RULEBOO
 
 ## What exists
 
-- research/BTC_MA_SETUPS_RESEARCH_2026-10-03.md:64-75: 1d close x SMA200 gives 52 events 2020-01..2026-09 (18 OOS), below
+- research/_archive/loose_2026-10/BTC_MA_SETUPS_RESEARCH_2026-10-03.md:64-75: 1d close x SMA200 gives 52 events 2020-01..2026-09 (18 OOS), below
   the 30-event gate, so Alpha needs a position-series test (daily returns while in), not an event test.
 - research/btc_ma_2026-10-03/Q_ALL_ma_findings.md F1: crossover/momentum rules not robust out of sample after snooping control.
-- research/T5_CVD_DEFINITION_2026-10-01.md (CVD definition), research/session_sweeps/ (session-open study).
+- research/_archive/loose_2026-10/T5_CVD_DEFINITION_2026-10-01.md (CVD definition), research/session_sweeps/ (session-open study).
 - Kline taker-buy volume gives a per-bar CVD proxy; true multi-venue aggTrades are not on disk.
 
 ## Plan (waits on decision D22)

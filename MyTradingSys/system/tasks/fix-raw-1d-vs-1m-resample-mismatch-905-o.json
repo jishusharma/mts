@@ -44,7 +44,7 @@
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md",
     "MyTradingSys/research/candle_patterns_2026-10-04/pilot/cdata.py",
     "MyTradingSys/research/volume_2026-10-09/vdata.py",
-    "MyTradingSys/research/oi_divergence_v2_2026-10-10.py",
+    "MyTradingSys/research/loose_code/oi_divergence_v2_2026-10-10.py",
     "MyTradingSys/research/trendlines_2026-10-17/g3_pack/g3_pack.py",
     "MyTradingSys/backtest/layers/timeframe/tf_realdata_gate.py"
   ],

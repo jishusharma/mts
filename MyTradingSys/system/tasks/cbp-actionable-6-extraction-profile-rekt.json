@@ -16,7 +16,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DROPPED 2026-10-26 Session_Planner: shipped: CBP 50e71c3, research/cbp_profile6_result.md; CBP_STATUS_2026-10-25.md s3 | DONE: CBP 50e71c3; see MyTradingSys/research/cbp_profile6_result.md",
+  "note": "DROPPED 2026-10-26 Session_Planner: shipped: CBP 50e71c3, research/_archive/loose_2026-10/cbp_profile6_result.md; CBP_STATUS_2026-10-25.md s3 | DONE: CBP 50e71c3; see MyTradingSys/research/_archive/loose_2026-10/cbp_profile6_result.md",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,

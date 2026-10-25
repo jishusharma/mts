@@ -9,7 +9,7 @@ Check if the vision doc is updated - assign Opus to this task. What is missing i
 
 ## State
 
-Opus review on disk: research/VISION_GAP_2026-10-10.md (10 gaps: no goal/stages/go-live bar, Fabio second core missing, no no-edge doctrine, provenance exceptions, economics/risk, testnet role, source admission rule, old operating model, evidence standard, data integrity). Draft addendum is in section (c) of the report, NOT applied: the operator approves vision changes (decision D23).
+Opus review on disk: research/_archive/loose_2026-10/VISION_GAP_2026-10-10.md (10 gaps: no goal/stages/go-live bar, Fabio second core missing, no no-edge doctrine, provenance exceptions, economics/risk, testnet role, source admission rule, old operating model, evidence standard, data integrity). Draft addendum is in section (c) of the report, NOT applied: the operator approves vision changes (decision D23).
 
 ## Updates
 

@@ -12,4 +12,4 @@ started: 2026-10-02 10:50Z
 ended: 2026-10-02 11:15Z
 status: closed
 commits: eddd237, 6bfb704, 837b16d
-handoff: operator, 4 decisions in research/DIRECTION_REVIEW_2026-10-02.md section 6
+handoff: operator, 4 decisions in research/_archive/loose_2026-10/DIRECTION_REVIEW_2026-10-02.md section 6

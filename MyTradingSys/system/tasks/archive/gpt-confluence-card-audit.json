@@ -21,7 +21,7 @@
     "MyTradingSys/system/tasks/confluence-read-encode.json",
     "MyTradingSys/system/tasks/prob-dist-layer-design-brief.json",
     "MyTradingSys/methodology/operator_chart_checklist.md",
-    "MyTradingSys/research/event_probability_layer_DESIGN.md"
+    "MyTradingSys/research/_archive/loose_2026-10/event_probability_layer_DESIGN.md"
   ],
   "result": "FIX-FIRST; MyTradingSys/research/layer_lab/reports/2026-10-16_gpt-confluence-card-audit.md",
   "scope_in": [

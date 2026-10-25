@@ -26,8 +26,8 @@
     "MyTradingSys/research/layer_lab/oi_delta_event_table/REPORT.md",
     "MyTradingSys/system/wiring_registry.json",
     "scripts/dev/run_extra_tests.py",
-    "MyTradingSys/research/OI_EVENT_STUDY_2026-10-10.md (read only)",
-    "MyTradingSys/research/oi_event_study_2026-10-10.py (read only)"
+    "MyTradingSys/research/_archive/loose_2026-10/OI_EVENT_STUDY_2026-10-10.md (read only)",
+    "MyTradingSys/research/loose_code/oi_event_study_2026-10-10.py (read only)"
   ],
   "scope_out": [
     "live path (alerts/live_*, execution/)",

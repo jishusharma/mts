@@ -17,11 +17,11 @@ two buckets and names the precondition per contingent item.
 ## Evidence (revalidated 2026-10-03)
 
 Paths verified 2026-10-04; committed at a8b8fcf:
-  research/REVALIDATION_ACTIONS_2026-10-01.md                       270 lines
-  research/TWO_CORES_READINESS_2026-10-01.md                         63 lines
+  research/_archive/loose_2026-10/REVALIDATION_ACTIONS_2026-10-01.md                       270 lines
+  research/_archive/loose_2026-10/TWO_CORES_READINESS_2026-10-01.md                         63 lines
   research/fast_track_2026-09-27/MAINTAINER_REPORT_2026-09-29.md
   research/fast_track_2026-09-27/MAINTAINER_REPORT_2026-09-30.md
-  research/W3_KAPPA_REPORT_2026-10-01.md                            147 lines
+  research/_archive/loose_2026-10/W3_KAPPA_REPORT_2026-10-01.md                            147 lines
   Fabio v3 tree, 14 files, plus pending_test_fabio_v3.py
   T054, T055, T058, T060, T061 item docs
 

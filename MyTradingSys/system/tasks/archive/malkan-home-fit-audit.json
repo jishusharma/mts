@@ -51,7 +51,7 @@
   "scope_in": [
     "MyTradingSys/research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md",
     "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
-    "MyTradingSys/research/MARKET_GUIDE_RESULTS_2026-10-07.md"
+    "MyTradingSys/research/_archive/loose_2026-10/MARKET_GUIDE_RESULTS_2026-10-07.md"
   ],
   "scope_out": [
     "any backtest run",

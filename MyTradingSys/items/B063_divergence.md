@@ -66,7 +66,7 @@ Files that change on the DEPRECATE path (nothing changed this session):
 - MyTradingSys/market_data/data_state_document.md L20, L151 (CVD field list; TC pullback row)
 - MyTradingSys/market_data/sample_btc_snapshot.json L109 (divergence: false)
 - MyTradingSys/research/MTS_DICTIONARY.md L200-213 (DIVERGENCE section: state deprecated, point to the Tom guard)
-- MyTradingSys/research/compiled_output_audit_20260915.md L104 (close the "restore or deprecate" action)
+- MyTradingSys/research/_archive/loose_2026-10/compiled_output_audit_20260915.md L104 (close the "restore or deprecate" action)
 - MyTradingSys/research/BUGS.md B063 row (close). Detectors tape-watch.ps1 and divergence_monitor.py are tooling, left as is.
 Files that would change on the RESTORE path (blocked: needs a sourced Tom definition first):
 - MarketDataSnapshot.java (cvd emitter), data_schema_v1.2.0.md, a conditions/*.md rule, math_object_builder.py,

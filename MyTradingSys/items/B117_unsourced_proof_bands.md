@@ -1,7 +1,7 @@
 # B117 - Unsourced proof bands 3 and 5 gate WAIT_PROOF, WATCH and SETUP_FORMING in start-trading-day.ps1
 
 Status: OPEN. Severity: MED. Opened 2026-10-04.
-Session: MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup. Group (b) from MyTradingSys/research/AUDIT_RECONCILE_2026-10-04.md.
+Session: MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup. Group (b) from MyTradingSys/research/_archive/loose_2026-10/AUDIT_RECONCILE_2026-10-04.md.
 
 ## Defect
 
@@ -9,7 +9,7 @@ Unsourced proof bands 3 and 5 gate WAIT_PROOF, WATCH and SETUP_FORMING in start-
 
 ## Findings
 
-- RA-W4-V02 | audit source MyTradingSys/research/REVALIDATION_ACTIONS_2026-10-01.md:214 | C1 verdict NOT | Bands remain at scripts/core/start-trading-day.ps1:225-230; test_b076 only pins them.
+- RA-W4-V02 | audit source MyTradingSys/research/_archive/loose_2026-10/REVALIDATION_ACTIONS_2026-10-01.md:214 | C1 verdict NOT | Bands remain at scripts/core/start-trading-day.ps1:225-230; test_b076 only pins them.
 
 ## Evidence
 
@@ -27,7 +27,7 @@ Filing only. No code or doc edit was made for this item.
 
 ## Related
 
-- MyTradingSys/research/AUDIT_RECONCILE_2026-10-04.md
+- MyTradingSys/research/_archive/loose_2026-10/AUDIT_RECONCILE_2026-10-04.md
 - MyTradingSys/system/sessions/MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup.md
 
 ## Receipt

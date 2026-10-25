@@ -27,7 +27,7 @@ TWITTER_PROFILE_URL = "https://x.com/Crypto_Chase"
 YOUTUBE_CHANNEL_URL = "https://youtube.com/@Crypto_Chase"
 
 # SOURCED: Real public setups published by Crypto Chase (@Crypto_Chase) with exact status URLs and UTC timestamps.
-# Ingestion references: MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md:95-113
+# Ingestion references: MyTradingSys/research/_archive/loose_2026-10/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md:95-113
 CURATED_CRYPTO_CHASE_POSTS: List[Dict[str, Any]] = [
     {
         "post_id": "1847240182941016320",

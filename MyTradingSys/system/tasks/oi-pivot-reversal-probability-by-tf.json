@@ -43,7 +43,7 @@
   "refs": [
     "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/SHOT_163af24365f3.md",
     "MyTradingSys/research/layer_lab/candle_close_2026-10-14/CYCLE_DESIGN.md",
-    "MyTradingSys/research/OI_EVENT_STUDY_2026-10-10.md"
+    "MyTradingSys/research/_archive/loose_2026-10/OI_EVENT_STUDY_2026-10-10.md"
   ],
   "result": "",
   "scope_in": [
@@ -62,7 +62,7 @@
   "size": "M",
   "sources": [
     "MyTradingSys/research/layer_lab/candle_close_2026-10-14/CYCLE_DESIGN.md",
-    "MyTradingSys/research/OI_EVENT_STUDY_2026-10-10.md",
+    "MyTradingSys/research/_archive/loose_2026-10/OI_EVENT_STUDY_2026-10-10.md",
     "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/SHOT_163af24365f3.md"
   ],
   "state": "ready",

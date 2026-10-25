@@ -10,7 +10,7 @@ remaining work on other layers with a session plan; put the work into the CI/CD 
 No process stopped or restarted; no live-imported file edited; no HALT or trade touched.
 
 ## Output files
-- MyTradingSys/research/TOM_FABIO_REVIEW_2026-10-03.md (new)
+- MyTradingSys/research/_archive/loose_2026-10/TOM_FABIO_REVIEW_2026-10-03.md (new)
 - MyTradingSys/runtime/BUILD_PIPELINE.md: rows 1.3-1.10 (TF1-TF8), 7.1 R7 BLOCKED -> QUEUED (blocker 4.1, 4.6, 4.7, 1.7), wave 8 rows 8.1-8.5
 - MyTradingSys/system/03_FILE_INDEX.md: two rows appended
 - this record
