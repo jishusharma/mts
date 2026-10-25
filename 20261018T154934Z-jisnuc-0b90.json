@@ -1,1 +1,0 @@
-{"t": "20261018T154934Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "start kurisko-rsi-card 2>&1 | grep -E \"WORKTREE|branch\" ; python scripts/dev/sync.py where 2>&1 | tail -4"}
