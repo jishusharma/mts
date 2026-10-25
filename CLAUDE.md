@@ -7,20 +7,20 @@ CLAUDE.md is already in context; do not cat or Read it. Code mode only (DSA chat
 2. Read `MyTradingSys/research/STATUS.md` (rebuild: `scripts/dev/make_status.py`), not what it summarises; `LESSONS_DIGEST.md` only for live-path or backtest work. RED `CI green:` / `CI RED`: first to see it (the author above all) `git revert`s the breaking commit, ships in 10 min; putting the failing file back to its last-green bytes is a revert, a new line is a forward-fix (never forward-fix trunk). A hand-over (NEXT_SESSION.md) is history: current state comes from disk or git this turn. Read the ACTIVE entries of `MyTradingSys/system/ANNOUNCEMENTS.md` (STOP/HOLD there outranks the queue). `[MTS ACTION REQUIRED]` outranks the current task: do it first. Where a kind of work goes (machine, channel, model, checker): `MyTradingSys/system/ROUTING.md`.
 3. ONE task from NEXT_SESSION.md or `tasks.py next`; `sync.py claim "<task>"`, work, `sync.py ship --release <slug>`, `sync.py where` (own tree clean).
 4. Hand-over: no schedulers or routines anywhere (SCHEDULING_POLICY.md). Overwrite NEXT_SESSION.md, `sync.py ship`; the coordinator (SUPER_SESSION.md) starts the next. Zero operator input: defaults for open questions.
-5a. Role sessions ("You are Eagle_Eyes"): the `role_loader.py` hook injects `roles/<role>.md`; the first reply is its `ROLE LOADED: ...` banner. Without the injected text, say `ROLE NOT LOADED` and stop.
+5a. Role sessions ("You are Eagle_Eyes"): the `role_loader.py` hook injects `roles/<role>.md`; the first reply is its `ROLE LOADED: ...` banner. Without it, say `ROLE NOT LOADED` and stop.
 5. SHORT SESSIONS (unattended workers; an operator-driven session ends on his word): one session = one task; hand over when done, after 10 operator turns or the tool-turn cap (WORKERS.md rule 5): commit, steps 3-4, one line, stop.
-5b. After `get_usage`, once: `mts_signal.py budget ...` then `exhaust.py plan ...` (flags, phases: MOVED_RULES.md; `EXHAUST_PHASE.md`).
+5b. After `get_usage`, once: `mts_signal.py budget --login <A|B|C> --five <%> --week <%> --reset <UTC>` (jishusharma1985=C), then `scripts/dev/exhaust.py plan --login <X> --week <%> --five <%> --reset <UTC>`; phase plan/exhaust: `EXHAUST_PHASE.md`.
 6. Task shipped: mark your own session completed in the sidebar (`mark_completed`); coordinators mark their workers (SUPER_SESSION.md).
 
 ## Cost and routing
-- Interactive sessions and subagents: Sonnet, Opus only when the operator names it; Haiku for mechanical work; worker type + model: WORKERS.md. Wait on a queue with one background shell; spot-check one worker claim.
+- Interactive sessions and subagents: Sonnet, Opus only when the operator names it; Haiku for mechanical work; worker type + model: WORKERS.md. Wait on a queue with one background shell; spot-check a worker claim.
 - No "want me to?" offers for implied work: do it now, full depth. Free public market data, YouTube: pre-approved.
 - T0 script first, then by card lane (HOW_MTS_RUNS.md): run-and-report goes to DSA (`desk.py post ... --target DSA`; low on budget: post the rest to DSA, then hand over).
 - Logins share one repo and queue (CLOUD_ACCOUNTS.md): whoever has budget takes NEXT_SESSION.md; never idle for a weekly reset.
 - The operator dictates by voice: expect misheard words. Read for intent: take the reading that fits the project, act on it, and name it in one line only if it changes the work.
 - Never wait on a question. Ask who started you: an Agent ends its report with the question and its default; a session uses SendMessage. Only money, mainnet, going private, deleting data or a live-tree change reach the operator; work goes on at the safe default. Stuck on another machine's state: `mts_signal.py who`, then broadcast.
-- Fleet-wide by default: what one machine needs, all need. Put it in the repo; send a per-machine step as `mts_signal.py broadcast --cmd ...` (each host runs it and acks); never leave it to the operator.
-- Operator replies: result line; What|Status|Proof table; always a "Waiting for you" table (need, exact button or `cd <full path>;` command, if nothing) or "Nothing waiting for you."; Who|Doing|Done when table. Plain words, ~25 lines (OPERATOR_REPLY_FORMAT.md).
+- Fleet-wide by default: what one machine needs, all need. Put it in the repo; send a per-machine step as `mts_signal.py broadcast --cmd ...`; never leave it to the operator.
+- Operator replies: result line, What|Status|Proof table, always a "Waiting for you" table (or "Nothing waiting for you."), Who|Doing|Done when table, plain words (OPERATOR_REPLY_FORMAT.md).
 - Surface: Win App only; never tell the operator to "use the CLI" or hand work back. Permission block: report the call, try the allowed equivalent.
 
 ## Gates (before any commit touching the area)
