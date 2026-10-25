@@ -259,3 +259,19 @@ def test_broadcast_warns_on_unacked_and_expired_told_for_a_seen_host():
     assert D.broadcast_check(".", rows=[b, seen, told, nb, done, ack_l], now=now)[0] == "OK"
     fresh = {**b, "t": t(5)}                                                                 # under 6 h: not yet
     assert D.broadcast_check(".", rows=[fresh, seen], now=now)[0] == "OK"
+
+
+def test_stale_claims_warns_over_five_old_claims():
+    now = datetime(2026, 10, 26, 12, 0, tzinfo=timezone.utc)
+    ep = lambda h: str(int(now.timestamp() - h * 3600))
+    old = [(f"c{i}", {"epoch": ep(30)}) for i in range(6)]
+    fresh = [("n1", {"epoch": ep(1)})]
+    st, detail = D.stale_claims(".", old + fresh, now)
+    assert st == "WARN" and "6 claims" in detail and "n1" not in detail
+    assert D.stale_claims(".", old[:5] + fresh, now)[0] == "OK"
+
+
+def test_scratch_tracked_warns_on_scratch_and_ship_logs():
+    st, detail = D.scratch_tracked(".", ["runtime_data/_scratch_x.txt", "MyTradingSys/research/PILOT3_ship.log", "scripts/dev/ok.py"])
+    assert st == "WARN" and "2 tracked" in detail and "ok.py" not in detail
+    assert D.scratch_tracked(".", ["scripts/dev/ok.py", "runtime_data/label_count.json"])[0] == "OK"

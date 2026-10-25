@@ -162,7 +162,7 @@ SHIP_MAX_S = 120            # OURS: the operator's 2-minute ship; WARN when the 
 HOOKS_BEHIND_MAX = 50       # OURS
 DISK_MIN_GB = 15            # OURS
 HOOK_NAMES = ("role_loader", "ci_watch")
-CHECK_NAMES = ("SIZE-HEADROOM", "CI-REVERT", "SHIP-TIME", "HOOK-REG", "DISK", "CONTEXT-GAP", "WAITING-ON-OPERATOR", "BROADCAST")
+CHECK_NAMES = ("SIZE-HEADROOM", "CI-REVERT", "SHIP-TIME", "HOOK-REG", "DISK", "CONTEXT-GAP", "WAITING-ON-OPERATOR", "BROADCAST", "STALE-CLAIMS", "SCRATCH-TRACKED")
 
 
 def _load(path, name):
@@ -398,6 +398,32 @@ def broadcast_check(repo, rows=None, now=None):
         return "OK", f"no HIGH broadcast waits over {BROADCAST_WARN_H} h on a host seen in the last {BROADCAST_SEEN_H} h"
     return "WARN", "; ".join(stale[:8]) + " | fix: python scripts/dev/mts_signal.py pending --host <host>; run the cmd there, then ack <id> done (no session on that host: run it by hand)"
 
+STALE_CLAIM_H = 24       # same as sync.py STALE_HOURS
+STALE_CLAIM_MAX = 5      # OURS: reports 10-23..10-25 counted 18, 18 and 22 stale claims; each one blocks its task for every login
+SCRATCH_RE = re.compile(r"(^|/)_scratch[^/]*$|(^runtime_data|^MyTradingSys/research)/.*ship[^/]*\.log$|(^|/)[^/]*_ship\.log$")
+
+
+def stale_claims(repo, claims=None, now=None):
+    """WARN when more than 5 open claims are over 24 h old. claims = [(slug, {epoch, host, account})] (default: sync.open_claims)."""
+    if claims is None:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import sync as Y
+        claims = Y.open_claims(Path(repo))
+    t = (now or datetime.now(timezone.utc)).timestamp()
+    old = sorted((slug for slug, kv in claims if kv.get("epoch") and (t - int(kv["epoch"])) / 3600 > STALE_CLAIM_H))
+    if len(old) > STALE_CLAIM_MAX:
+        return "WARN", f"{len(old)} claims over {STALE_CLAIM_H} h old (limit {STALE_CLAIM_MAX}): {', '.join(old[:6])} | fix: python scripts/dev/sync.py release <slug> from the owner host, or ask the owner"
+    return "OK", f"{len(old)} stale claim(s) of {len(claims)} open"
+
+
+def scratch_tracked(repo, files=None):
+    """WARN when a scratch or ship-log file is tracked (the repo is public; PILOT3 committed scratch ship logs, removed in f97ecc125)."""
+    files = tracked(repo) if files is None else files
+    bad = sorted(f for f in files if SCRATCH_RE.search(f))
+    if bad:
+        return "WARN", f"{len(bad)} tracked scratch/ship-log file(s): {', '.join(bad[:5])} | fix: git rm them (public repo, never commit runtime data)"
+    return "OK", "no tracked scratch or ship-log files"
+
 
 def checklist(repo, process=True, now=None):
     """[(name, status, detail)] for CHECK_NAMES. A check that raises is reported unavailable, never fatal."""
@@ -413,7 +439,9 @@ def checklist(repo, process=True, now=None):
            ("HOOK-REG", lambda: hook_reg(repo)), ("DISK", lambda: disk(repo)),
            ("CONTEXT-GAP", lambda: context_gap(repo)),
            ("WAITING-ON-OPERATOR", lambda: waiting_on_operator(repo, now)),
-           ("BROADCAST", lambda: broadcast_check(repo, now=now) if process else ("unavailable", "skipped (--no-process, no network)")))
+           ("BROADCAST", lambda: broadcast_check(repo, now=now) if process else ("unavailable", "skipped (--no-process, no network)")),
+           ("STALE-CLAIMS", lambda: stale_claims(repo, now=now) if process else ("unavailable", "skipped (--no-process, no network)")),
+           ("SCRATCH-TRACKED", lambda: scratch_tracked(repo)))
     out = []
     for name, fn in fns:
         try:
