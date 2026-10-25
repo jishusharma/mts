@@ -34,6 +34,12 @@
   "refined_by": "",
   "refreshed": "2026-10-24T14:21:29Z",
   "refs": [],
+  "reroute": {
+    "at": "2026-10-25T16:59:17Z",
+    "desk": "20261025-165917-yt-gem-fabio-fetch-2",
+    "to": "DSA",
+    "why": "failing"
+  },
   "result": "",
   "scope_in": [
     "extracts/gemini_out/fabio; raw_transcripts_canonical (new files only)"

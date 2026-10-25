@@ -1,0 +1,12 @@
+{
+  "card": "yt-fabio-fetch-retry",
+  "done_when": "Per video: captions in raw_transcripts_canonical/<ID>_raw.txt and a note with live trades + 2 quotes passing verify_extract_quotes.py; or, if captions fail, a note headed UNVERIFIED (gemini-video-read) with a [mm:ss] trade summary and no quotes. Committed with a Result: line.",
+  "from": "lane_health",
+  "id": "20261025-165917-yt-fabio-fetch-retry",
+  "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card yt-fabio-fetch-retry: Fabio caption retry: HUYBdYnXUNc, agjftXPkLUE, cLgdXZnLL_0 (HTTP 429 in Gemini run; feV6CATGUqo, pZai3k1e-Jg are Vi\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief yt-fabio-fetch-retry\nGoal: Operator 2026-10-25: YouTube work goes to Gemini (saves Claude budget). 3 Fabio videos: HUYBdYnXUNc agjftXPkLUE cLgdXZnLL_0. Quotes must come from captions on disk: Gemini watching a video inven\nRead: raw_transcripts_canonical; extracts/gemini_out/fabio\nStep 1: python scripts/dev/fetch_captions_timed.py --analyst fabio <ID> once per video; on 429 do not retry\nStep 2: Captions fetched: rewrite the note with live trades and 2 verbatim quotes; run verify_extract_quotes.py until exit 0\nStep 3: Captions failed: read https://www.youtube.com/watch?v=<ID> yourself and write the UNVERIFIED trade summary, no quotes\nStep 4: Commit with a Result: line\nRun exactly:\n  python scripts/dev/verify_extract_quotes.py extracts/gemini_out/fabio/HUYBdYnXUNc_note.md\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-10-25_yt-fabio-fetch-retry.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-10-25_yt-fabio-fetch-retry.md>\".",
+  "posted": "2026-10-25T16:59:17Z",
+  "rerouted_from": "CODEX",
+  "status": "pending",
+  "target": "DSA",
+  "title": "Fabio caption retry: HUYBdYnXUNc, agjftXPkLUE, cLgdXZnLL_0 (HTTP 429 in Gemini run; feV6CATGUqo, pZai3k1e-Jg are Video unavailable)"
+}
