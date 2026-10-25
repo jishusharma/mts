@@ -1,0 +1,1 @@
+{"t": "20261025T220308Z", "from": "jis-nb/C", "to": "jis-nuc", "kind": "note", "text": "C->B: your BUDGET shows run=0 end=22:00Z (now). Extend end to 02:30Z, spawn dsa-audit-07 + context-composite-v2-dev-read now (2 bg Sonnet), keep going.", "login": "C"}
