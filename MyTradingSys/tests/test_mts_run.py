@@ -3,6 +3,8 @@ not from the code. subprocess is mocked; no real claude is ever launched."""
 import json
 import subprocess
 import sys
+
+import pytest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from types import SimpleNamespace
@@ -11,6 +13,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts" / "dev"))
 import mts_run as m  # noqa: E402
 
 UTC = timezone.utc
+
+
+@pytest.fixture(autouse=True)
+def _no_refresh(monkeypatch):
+    monkeypatch.setenv("MTS_RUN_NO_REFRESH", "1")   # no test touches real git; the refresh tests clear it
 
 
 def card(**kw):
@@ -179,6 +186,30 @@ def test_loop_empty_queue_exits_when_hours_end(monkeypatch):
         t[0] += s
     assert m.loop(0.5, "A", sleep=sleep, clock=lambda: t[0]) == "empty"
     assert sleeps and all(s == 600 for s in sleeps)
+
+
+def test_run_once_refreshes_before_pick_and_survives_failure(monkeypatch, tmp_path, capsys):
+    import sync as S
+    monkeypatch.delenv("MTS_RUN_NO_REFRESH", raising=False)
+    order = []
+    monkeypatch.setattr(S, "merge_trunk", lambda repo: order.append("refresh") or 2)
+    monkeypatch.setattr(m, "pick_card", lambda cid=None, repo=None: order.append("pick"))
+    assert m.run_once(login="A")[0] == "empty" and order == ["refresh", "pick"]
+    order.clear()
+
+    def boom(repo):
+        order.append("refresh")
+        raise S.SyncError("fetch failed")
+    monkeypatch.setattr(S, "merge_trunk", boom)
+    assert m.run_once(login="A")[0] == "empty" and order == ["refresh", "pick"]   # failure: local cards still picked
+    assert "refresh failed" in capsys.readouterr().out
+
+
+def test_refresh_skipped_by_env(monkeypatch):
+    import sync as S
+    monkeypatch.setenv("MTS_RUN_NO_REFRESH", "1")
+    monkeypatch.setattr(S, "merge_trunk", lambda repo: (_ for _ in ()).throw(AssertionError("must not refresh")))
+    m.refresh_tree()
 
 
 def test_loop_pace_stop(monkeypatch):

@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
-"count": 151,
-"exported": 5,
+"count": 154,
+"exported": 6,
 "rows": [
 {
 "id": "t09_live_parity",
@@ -37,6 +37,18 @@
 "source": "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T07_stale_verdicts.md",
 "exported": true,
 "result_id": "t07_stale_verdicts",
+"status": "SEE_VERDICT"
+},
+{
+"id": "desk-krown-634f1a37",
+"family": "Desk runs",
+"title": "Krown (exploratory desk try, not the pre-registered study): S5 MA cross, S8 squeeze break, S4 coil break, BTCUSDT or ETHUSDT: S5 4h target 2R fees 0.02/0.05% slip 0.02% 2022-04-01..2024-06-30",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "NOT ENOUGH DATA",
+"source": "MyTradingSys/research/sim_desk/results/desk-krown-634f1a37.json",
+"exported": true,
+"result_id": "desk-krown-634f1a37",
 "status": "SEE_VERDICT"
 },
 {
@@ -122,6 +134,18 @@
 "exported": false,
 "result_id": null,
 "status": "FAILED"
+},
+{
+"id": "audit-t05_placebo_nulls",
+"family": "Audit: DSA backtest audit",
+"title": "T05 Placebo nulls: what does chance alone produce here? (card dsa-audit-05-placebo-nulls)",
+"kind": "audit",
+"kind_source": "path",
+"verdict": "s stand; the LC1 KEEP list must be re-stated on the fair control before any layer uses it.",
+"source": "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T05_placebo_nulls.md",
+"exported": false,
+"result_id": null,
+"status": "SEE_VERDICT"
 },
 {
 "id": "audit-t08_split_trials",
@@ -743,6 +767,19 @@
 "status": "SEE_VERDICT"
 },
 {
+"id": "dir-gemini_burn_2026-10-25",
+"family": "gemini burn",
+"title": "Monte Carlo Backtesting & Robustness Presentation: Industry Benchmark & Single-Screen Beginner Design",
+"kind": "backtest",
+"kind_source": "inferred from text",
+"verdict": "Sentence [OURS]: A single generated sentence that translates the mathematics into immediate operational guidance.",
+"source": "MyTradingSys/research/gemini_burn_2026-10-25/monte_carlo_presentation.md",
+"exported": false,
+"result_id": null,
+"folder_files": 3,
+"status": "SEE_VERDICT"
+},
+{
 "id": "dir-gpt_burn_2026-10-24",
 "family": "gpt burn",
 "title": "GPT cross-vendor review: Gemini Tom extracts J1-J9",
@@ -752,7 +789,7 @@
 "source": "MyTradingSys/research/gpt_burn_2026-10-24/gx2-review-tom-extracts/report.md",
 "exported": false,
 "result_id": null,
-"folder_files": 15,
+"folder_files": 20,
 "status": "SEE_VERDICT"
 },
 {
@@ -841,7 +878,7 @@
 "source": "MyTradingSys/research/krown_audit_2026-10-22/REPORT.md",
 "exported": false,
 "result_id": null,
-"folder_files": 10,
+"folder_files": 12,
 "status": "SEE_VERDICT"
 },
 {
@@ -1691,7 +1728,7 @@
 "source": "MyTradingSys/research/trendlines_2026-10-17/REPORT.md",
 "exported": false,
 "result_id": null,
-"folder_files": 19,
+"folder_files": 21,
 "status": "SEE_VERDICT"
 },
 {
@@ -1748,7 +1785,7 @@
 "title": "Trial ledger: layer lab",
 "kind": "backtest",
 "kind_source": "path",
-"verdict": "274 trial rows logged (every variant tried)",
+"verdict": "277 trial rows logged (every variant tried)",
 "source": "MyTradingSys/research/layer_lab/TRIALS.md",
 "exported": false,
 "result_id": null,
