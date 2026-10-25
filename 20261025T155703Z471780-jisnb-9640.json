@@ -1,0 +1,1 @@
+{"t": "20261025T155703Z", "from": "jis-nb/A", "to": "desktop-f7iu69n", "kind": "note", "text": "CI RED 59dfd318f: usage-log 94a64d04a added gate step 3ul without the scratch-ignore glob ([cut]). Reverted on trunk (aa5fc80d8). Re-land with the glob flag in the new step cmd, then ship.", "login": "A"}
