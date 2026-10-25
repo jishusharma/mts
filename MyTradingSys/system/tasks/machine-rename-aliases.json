@@ -1,49 +1,65 @@
 {
- "approved_by": "operator 2026-10-25 via MTS_Doctor",
- "asks": "",
- "commands": [
-  "python scripts/dev/test_hosts.py"
- ],
- "created": "2026-10-25T15:10:08Z",
- "depends_on": [],
- "done_when": "test_hosts.py passes, run_all_tests.py --quick green, old-name owner/ack/branch state matches new names",
- "est_turns": 20,
- "formula_id": "",
- "formula_ids": [],
- "from_inbox": "",
- "goal": "Repo works under JIS-NB/JIS-DESKTOP and DESKTOP-F7IU69N/JIS-LAPTOP: one hosts.py table, host compares go through canonical()",
- "id": "machine-rename-aliases",
- "lane": "SONNET",
- "latest": [],
- "layers": [],
- "live_path": false,
- "mutation_check": "",
- "note": "approved_by: operator 2026-10-25 via MTS_Doctor",
- "prio": 2,
- "refine_tries": 0,
- "refined_by": "",
- "refreshed": "2026-10-25T15:10:31Z",
- "refs": [],
- "result": "",
- "scope_in": [
-  "scripts/dev/hosts.py, host compares in mts_signal live_owner live_mirror supervisor tasks desk lease wt_maint relay handoff_lint, MACHINE_RENAME.md, Names rows"
- ],
- "scope_out": [
-  "renaming any machine, mass doc edits, lane names, live tree"
- ],
- "scope_sha": "",
- "size": "M",
- "sources": [
-  "operator 2026-10-25 via MTS_Doctor"
- ],
- "state": "ready",
- "steps": [
-  "add hosts.py",
-  "route host compares through it",
-  "tests and docs"
- ],
- "tests": "scripts/dev/test_hosts.py",
- "title": "Machine rename aliases: repo works under old and new host names",
- "weight": "ROUTINE",
- "worker": "session"
+  "approved_by": "operator 2026-10-25 via MTS_Doctor",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/test_hosts.py"
+  ],
+  "context": {
+    "calls_to_edit": 15,
+    "folded": "2026-10-25T15:36:24Z",
+    "misses": 26,
+    "reads": [
+      "scripts/dev/live_mirror.py",
+      "scripts/dev/supervisor.py",
+      "scripts/dev/test_live_owner.py",
+      "scripts/dev/test_mts_signal.py",
+      "scripts/dev/lease.py",
+      "scripts/dev/wt_maint.py",
+      "scripts/sched/relay.py",
+      "scripts/sched/handoff_lint.py"
+    ],
+    "session": "agent-a1c47a4e61ac5d765"
+  },
+  "created": "2026-10-25T15:10:08Z",
+  "depends_on": [],
+  "done_when": "test_hosts.py passes, run_all_tests.py --quick green, old-name owner/ack/branch state matches new names",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Repo works under JIS-NB/JIS-DESKTOP and DESKTOP-F7IU69N/JIS-LAPTOP: one hosts.py table, host compares go through canonical()",
+  "id": "machine-rename-aliases",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "approved_by: operator 2026-10-25 via MTS_Doctor",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-25T15:10:31Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/hosts.py, host compares in mts_signal live_owner live_mirror supervisor tasks desk lease wt_maint relay handoff_lint, MACHINE_RENAME.md, Names rows"
+  ],
+  "scope_out": [
+    "renaming any machine, mass doc edits, lane names, live tree"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "operator 2026-10-25 via MTS_Doctor"
+  ],
+  "state": "ready",
+  "steps": [
+    "add hosts.py",
+    "route host compares through it",
+    "tests and docs"
+  ],
+  "tests": "scripts/dev/test_hosts.py",
+  "title": "Machine rename aliases: repo works under old and new host names",
+  "weight": "ROUTINE",
+  "worker": "session"
 }
