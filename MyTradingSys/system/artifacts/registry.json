@@ -29,12 +29,12 @@
       "last_published": {
         "jishu.sharma": "2026-10-17",
         "jishu.awgp": "moved 2026-10-17",
-        "jishusharma1985": "2026-10-20"
+        "jishusharma1985": "2026-10-25"
       },
       "note": "One Inbox: the jishu.sharma page (q21; db seeded from OPERATOR_DECISIONS.md and OPERATOR_INBOX.md 2026-10-15, existing answers kept). Publish the other copies without writing to their db. Carries the Claude-GPT cycle section (system/RELAY_NOTES.md). Republished by the NUC pickup, built with the trade ledger. The jishusharma1985 copy is published WITHOUT capabilities (2026-10-14): the page's own code shows 'Read-only view', so that login has no second Inbox nobody picks up. Republish it without passing capabilities.",
       "purpose": "Decisions waiting on you (Inbox), testnet health, road to profitability.",
       "notes_go_to": "Inbox answers save to this page's decisions list. One Inbox only (q21).",
-      "published_sha": "c56484ca5035d92462a7ebff2c7cbe98ba176e515a979395a80886df23a4acbc"
+      "published_sha": "731daef688143d494d9a08a5b74a330b25fe9c3d78f4ce42ebf929db75035b90"
     },
     {
       "slug": "mts_layer_map",
@@ -56,12 +56,12 @@
       "last_published": {
         "jishu.sharma": "2026-10-13",
         "jishu.awgp": "2026-10-14",
-        "jishusharma1985": "2026-10-20"
+        "jishusharma1985": "2026-10-25"
       },
       "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Published on all three logins.",
       "purpose": "Every trading layer's road and where it is stuck.",
       "notes_go_to": "Read only. Put notes on the Research Map.",
-      "published_sha": "52116cb49c8e7d7be2a0ae62ced5e4a9ade908441dfeb75e9f0fd7487acf96da"
+      "published_sha": "80c9679a2562d252437f522590c8432428f34e082437cb2dff84260db6a87284"
     },
     {
       "slug": "tom_fabio_deck",
@@ -182,7 +182,7 @@
       "last_published": {
         "jishu.sharma": "never",
         "jishu.awgp": "never",
-        "jishusharma1985": "2026-10-20"
+        "jishusharma1985": "2026-10-25"
       },
       "title": "MTS Home",
       "html": "MyTradingSys/system/artifacts/mts_home.html",
@@ -192,7 +192,7 @@
       "purpose": "This list: every MTS page, its owner login, where your notes go, and how to open it from any login.",
       "notes_go_to": "Nothing to write here.",
       "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login.",
-      "published_sha": "1f0ab374b5d8636a63aa7a8afce9906c93f40bda81706e40e2abb44de5adde2b"
+      "published_sha": "d7e3be2ac2ff56f5b1174354c2554ffd5a1272d0fb5dc7990099173c16baa56d"
     },
     {
       "slug": "research_map",
