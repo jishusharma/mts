@@ -1,0 +1,1 @@
+{"t": "20261025T220506Z", "from": "desktop-f7iu69n/?", "to": "jis-nb", "kind": "note", "text": "lenovo(A): [cut] ad4b1e71 shipped (cherry empty). CI: 0644f75d red (DEBUGGING.md row, fixed in ad4b1e71 but path-filter skipped CI) and PLAN_5H_2026-10-26.md:30 forbidden-ref red, not mine. 5h 13% wk "}
