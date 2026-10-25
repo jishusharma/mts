@@ -13,7 +13,7 @@
 4. Weekly market profile and VPOC establish the higher-level equilibrium and directional weakness or strength.
 5. Intraday 5-minute charts define balance ranges where reversal trades (short at top, long at bottom) are located.
 6. Footprint charts and order book depth verify turnover, market speed, and liquidity before trade commitment.
-7. A swing trade setup with a 2.2 risk-reward ratio breaks even theoretically without fees at a 32% win rate.
+7. A swing trade setup with a 2.2 risk-reward ratio is slightly profitable at a 32% win rate before fees (exact break-even 31.25% under fixed-payoff assumptions).
 8. At a 50% win rate and 2.2 risk-reward ratio, the expected return is 0.6R per trade.
 
 ## DETAILED CLAIMS WITH TIER TAGS
@@ -67,13 +67,13 @@
 
 ### Negative Rule 1
 Do not conflate day trading and swing trading without recognizing their fundamentally different mathematical structures.
-> "Most traders completely mix up these two concepts without realizing that the mathematical foundations behind them are fundamentally different."
+> "Because many people mix up these concepts."
 **Source GPS: gWjHq5UMisY | BEGIN**
 
 ### Negative Rule 2
 Do not execute trades without understanding the mathematical interaction of win rate and payoff ratio.
-> "If you don't understand this one point, you won't make money long-term, even with the best setup."
-**Source GPS: gWjHq5UMisY | BEGIN**
+> "the next thing that is absolutely crucial to understand is this."
+**Source GPS: gWjHq5UMisY | MIDDLE**
 
 ### Negative Rule 3
 Do not focus on chasing high hit rates instead of establishing mathematical advantage and positive expectancy.
