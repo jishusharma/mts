@@ -34,7 +34,7 @@
       "note": "One Inbox: the jishu.sharma page (q21; db seeded from OPERATOR_DECISIONS.md and OPERATOR_INBOX.md 2026-10-15, existing answers kept). Publish the other copies without writing to their db. Carries the Claude-GPT cycle section (system/RELAY_NOTES.md). Republished by the NUC pickup, built with the trade ledger. The jishusharma1985 copy is published WITHOUT capabilities (2026-10-14): the page's own code shows 'Read-only view', so that login has no second Inbox nobody picks up. Republish it without passing capabilities.",
       "purpose": "Decisions waiting on you (Inbox), testnet health, road to profitability.",
       "notes_go_to": "Inbox answers save to this page's decisions list. One Inbox only (q21).",
-      "published_sha": "731daef688143d494d9a08a5b74a330b25fe9c3d78f4ce42ebf929db75035b90"
+      "published_sha": "9fb2247c2021e4a365ed42533e805ae84357db67899ccf5ca484d73bba77f9f0"
     },
     {
       "slug": "mts_layer_map",
@@ -61,7 +61,7 @@
       "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Published on all three logins.",
       "purpose": "Every trading layer's road and where it is stuck.",
       "notes_go_to": "Read only. Put notes on the Research Map.",
-      "published_sha": "80c9679a2562d252437f522590c8432428f34e082437cb2dff84260db6a87284"
+      "published_sha": "6be0bf2c38d8219c345fc67c404b45f986ffd303cdf45ded6bcd762bb91dce8f"
     },
     {
       "slug": "tom_fabio_deck",
@@ -169,6 +169,54 @@
       "published_sha": null
     },
     {
+      "slug": "sim_desk",
+      "title": "MTS Sim Desk",
+      "status": "canonical",
+      "pinned": false,
+      "generator": "MyTradingSys/research/sim_desk/artifact/build_artifact.py",
+      "html": null,
+      "single_owner": "jishusharma1985",
+      "owner_app": "sim-desk build sessions (Sim_Desk builder)",
+      "refresh": "when a sim-desk build ships",
+      "db": [],
+      "urls": {
+        "jishu.sharma": "",
+        "jishu.awgp": "",
+        "jishusharma1985": "https://claude.ai/artifact/KaPy7f5BKFsvmqin84DpyF"
+      },
+      "last_published": {
+        "jishusharma1985": "2026-10-24"
+      },
+      "purpose": "Simulator desk: what each study tested, verdicts and example trades. The runnable desk itself is the local app (research/sim_desk/desk.py).",
+      "notes_go_to": "Read only.",
+      "note": "Added to the registry 2026-10-25 (operator: new development must show on MTS Home). No repo html path: the sim-desk sessions publish it; staleness is not tracked here.",
+      "published_sha": null
+    },
+    {
+      "slug": "cbp_analyst_desk",
+      "title": "CBP Analyst Desk",
+      "status": "canonical",
+      "pinned": false,
+      "generator": "CBP daily workflow routine (CryptoScrapper tree, not in this repo)",
+      "html": null,
+      "single_owner": "jishusharma1985",
+      "owner_app": "CBP",
+      "refresh": "per CBP workflow",
+      "db": [],
+      "urls": {
+        "jishu.sharma": "",
+        "jishu.awgp": "",
+        "jishusharma1985": "https://claude.ai/artifact/EsvscEYpcnzjQ231AzcDZC"
+      },
+      "last_published": {
+        "jishusharma1985": "2026-10-23"
+      },
+      "purpose": "CBP analyst desk, published by the CBP workflow.",
+      "notes_go_to": "Read only.",
+      "note": "Added to the registry 2026-10-25 (was published but unlisted on MTS Home). Repo has no copy.",
+      "published_sha": null
+    },
+    {
       "slug": "mts_home",
       "status": "canonical",
       "pinned": true,
@@ -192,7 +240,7 @@
       "purpose": "This list: every MTS page, its owner login, where your notes go, and how to open it from any login.",
       "notes_go_to": "Nothing to write here.",
       "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login.",
-      "published_sha": "d7e3be2ac2ff56f5b1174354c2554ffd5a1272d0fb5dc7990099173c16baa56d"
+      "published_sha": "ec17952dd0f2a7f3a677d57e01fc390837d2daedbc23a0f7b213ac5abaca5c87"
     },
     {
       "slug": "research_map",
