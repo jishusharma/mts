@@ -1,8 +1,8 @@
 # TRAFFIC_CONTROLLER: one allocator for every machine, login and lane, and a lease that keeps singletons single (design 2026-10-19)
 
-**FOLDED 2026-10-20 (operator): Traffic_Controller is no longer a role. Its allocator job is Job 2 of `roles/pipeliner.md` (`You are Pipeliner.` anywhere, or `Start the Pipeliner.` inside a top-level session); `You are Traffic_Controller.` is an alias. This file stays as the design record. Per-login SPEND state: `python scripts/dev/traffic.py budget`.**
+**FOLDED 2026-10-20 (operator): Traffic_Controller is no longer a role. Its allocator job is Job 2 of the Lead's pipeline mode (`roles/lead/pipeline.md`; `You are Lead.` then `role_loader.py mode pipeline`); `You are Traffic_Controller.` is an alias. This file stays as the design record. Per-login SPEND state: `python scripts/dev/traffic.py budget`.**
 
-Role file: `roles/pipeliner.md` (was `traffic_controller.md`). Tools: `scripts/dev/lease.py` (Part A), `scripts/dev/traffic.py` (Part B),
+Role file: `roles/lead/pipeline.md` (was `traffic_controller.md`, then `pipeliner.md`). Tools: `scripts/dev/lease.py` (Part A), `scripts/dev/traffic.py` (Part B),
 inventory `MyTradingSys/system/traffic_inventory.json`. Extends SUPERVISOR.md (cards SV2-SV8 stay its own; nothing here
 repeats them). Order: Pipeliner as allocator (24 h allocation across machines, logins, lanes) > Supervisor (one super session's
 workers) and the desk/routing rules > workers.
@@ -124,7 +124,7 @@ pushes a lease renew. Exit 1 when a source failed (the error is listed, never re
 
 **`traffic.py measure [--hours N] [--json]`**: the table and duplicate list above.
 
-**How it runs.** A session started as `You are Pipeliner.` (or `Start the Pipeliner.` inside one); boot = acquire lease, `traffic.py status --json`, BUDGET
+**How it runs.** A session started as `You are Lead.` and loading pipeline mode (the old `You are Pipeliner.` still opens it); boot = acquire lease, `traffic.py status --json`, BUDGET
 line. Each wake (note, signal, operator turn, the one background watcher): renew, status, act on PROPOSED in one message,
 end the turn. No scheduler, no polling agent, no timer. Never messages Fable sessions, never deploys, restarts, touches HALT,
 trades or releases others' claims. Leakage both ways: no runtime/order/account/secret/email data in commits, cards, signals or

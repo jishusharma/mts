@@ -45,9 +45,8 @@ class RosterMatchesFiles(unittest.TestCase):
         names = [r["name"] for r in rl.load_roster(REPO)]
         self.assertEqual(sorted(rl.KNOWN_ROLES), sorted(names))
         self.assertEqual(sorted(rl.NO_ROSTER_NAMES), sorted(names), "no-roster fallback list drifted from the roster")
-        self.assertIn("q&a_helper", rl.ALIASES["Admin_Guy"])
-        self.assertIn("network_admin_guy", rl.ALIASES["Admin_Guy"])
-        self.assertIn("traffic_controller", rl.ALIASES["Pipeliner"])
+        for old in ("q&a_helper", "network_admin_guy", "traffic_controller", "thinker", "mts_doctor", "pipeliner", "admin_guy"):
+            self.assertIn(old, rl.ALIASES["Lead"])
 
     def test_list_command_prints_every_role_with_file_and_start(self):
         r = run("list")
@@ -100,11 +99,11 @@ class ReadFirstRule(unittest.TestCase):
             self.assertTrue(any("READ-FIRST" in ln for ln in lines), lines)
 
     def test_boot_text_carries_the_rules_answer_rule(self):
-        text = (ROLES_DIR / "admin_guy.md").read_text(encoding="utf-8")
+        text = (ROLES_DIR / "lead.md").read_text(encoding="utf-8")
         with mock.patch.object(rl, "git_sha8", lambda repo: "abcd1234"), \
-                mock.patch.object(rl, "git_show", lambda repo, rel: text if rel.endswith("admin_guy.md") else None), \
+                mock.patch.object(rl, "git_show", lambda repo, rel: text if rel.endswith("lead.md") else None), \
                 mock.patch.object(rl, "lease_suffix", lambda name, repo: ""):
-            boot = rl.build_text("Admin_Guy", REPO, True)
+            boot = rl.build_text("Lead", REPO, True)
         for must in ("read the source file this turn", "file:line", "commit date", "age", "NOT_IN_DATA"):
             self.assertIn(must, boot)
 
@@ -118,9 +117,9 @@ class BestRoleFallback(unittest.TestCase):
         self.assertEqual(p["name"], "Eagle_Eyes")
         self.assertIn("screenshot", p["reason"])
 
-    def test_plain_question_picks_admin_guy(self):
-        self.assertEqual(self.pick("I have a question about the Deribit testnet fee setting")["name"], "Admin_Guy")
-        self.assertEqual(self.pick("Where is the decision about the weekly low layer recorded?")["name"], "Admin_Guy")
+    def test_plain_question_picks_lead(self):
+        self.assertEqual(self.pick("I have a question about the Deribit testnet fee setting")["name"], "Lead")
+        self.assertEqual(self.pick("Where is the decision about the weekly low layer recorded?")["name"], "Lead")
 
     def test_bare_question_words_pick_no_role(self):
         # review 2026-10-22 (R1): "what/why/how/where/?" alone made every chat session Admin_Guy
@@ -129,9 +128,9 @@ class BestRoleFallback(unittest.TestCase):
                      "where is the report?"):
             self.assertIsNone(self.pick(text)["name"], text)
 
-    def test_design_question_picks_thinker(self):
-        self.assertEqual(self.pick("How should we design the layer combiner so it scales to 20 layers?")["name"], "Thinker")
-        self.assertEqual(self.pick("What are our options to optimise token spend?")["name"], "Thinker")
+    def test_design_question_picks_lead(self):
+        self.assertEqual(self.pick("How should we design the layer combiner so it scales to 20 layers?")["name"], "Lead")
+        self.assertEqual(self.pick("What are our options to optimise token spend?")["name"], "Lead")
 
     def test_builder_and_session_planner_never_picked(self):
         for text in ("Build card t02-f1, implement it with fail-first tests and ship",
@@ -147,7 +146,7 @@ class BestRoleFallback(unittest.TestCase):
         for text in ("Boot: python C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed/scripts/dev/sync.py start",
                      r"Work in C:\Users\E-ngineers\IdeaProjects\mts and run scripts/dev/sync.py"):
             self.assertIsNone(self.pick(text)["name"], text)
-        self.assertEqual(self.pick("I have an idea about the layer combiner")["name"], "Thinker")
+        self.assertEqual(self.pick("I have an idea about the layer combiner")["name"], "Lead")
 
     def test_no_signal_picks_nothing(self):
         p = self.pick("Fix the typo in line 4 of foo.py")
@@ -155,9 +154,9 @@ class BestRoleFallback(unittest.TestCase):
         self.assertEqual(p.get("tie", []), [])
 
     def test_tie_names_both_and_picks_none(self):
-        p = self.pick("chart screenshot design options")  # 2 Eagle_Eyes words vs 2 Thinker words
+        p = self.pick("chart screenshot design options")  # 2 Eagle_Eyes words vs 2 Lead words
         self.assertIsNone(p["name"])
-        self.assertEqual(sorted(p["tie"]), ["Eagle_Eyes", "Thinker"])
+        self.assertEqual(sorted(p["tie"]), ["Eagle_Eyes", "Lead"])
 
 
 class FallbackHook(unittest.TestCase):
@@ -205,11 +204,6 @@ class FallbackHook(unittest.TestCase):
 
 class AskedWorkRunsNow(unittest.TestCase):
     # bug-ask-go-for-asked-work: asked work runs this turn; no "say go" gate
-    def test_thinker_no_go_ahead_request(self):
-        text = (ROLES_DIR / "thinker.md").read_text(encoding="utf-8")
-        self.assertIn("ASKED WORK RUNS NOW", text)
-        self.assertIn("never end a reply asking the operator to say go", text)
-
     def test_boot_text_has_asked_work_rule(self):
         self.assertIn("ASKED WORK RUNS NOW", rl.RULES_ANSWER)
 
