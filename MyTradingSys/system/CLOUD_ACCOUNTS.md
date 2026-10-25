@@ -6,7 +6,7 @@
 
 | Login | GitHub identity | Machines (relay_runs.jsonl, artifacts/registry.json) | Claude GitHub App | Role |
 |---|---|---|---|---|
-| A: jishu.sharma@gmail.com | jishusharma (repo owner) | JIS-NUC (checked 2026-10-15) | installed, cloud sessions only | Control Room Inbox and decisions owner (q21); all artifacts belong here |
+| A: jishu.sharma@gmail.com | jishusharma (repo owner) | Lenovo DESKTOP-F7IU69N (roll call `mts_signal.py who`, 2026-10-25; was JIS-NUC on 2026-10-15) | installed, cloud sessions only | Control Room Inbox and decisions owner (q21); all artifacts belong here |
 | B: jishu.awgp | jishu-awgp (write collaborator, checked 2026-10-14) | JIS-NB (inferred 2026-10-15, not checked) | not installed yet | second login; its pages are read-only copies |
 | C: jishusharma1985@gmail.com (Claude Max, 2026-10-14) | jishusharma1985 (write invite sent 2026-10-14, accept pending) | JIS-NB and JIS-NUC | not installed yet | third login, same queue and ritual |
 

@@ -9,7 +9,7 @@ Plan: PILOT3_HAIKU.md. Run 05:46Z-06:00Z (about 14 min). Two workers, not three:
 | Minutes | about 8 | about 8 | - |
 | Verifier exit | 0 on both audits (supervisor re-ran) | 0 on all 7 (supervisor re-ran) | - |
 | Review | Sonnet Agent, 3 sampled lines + REJECTED entries: SUPPORTED (1 footer line untestable, "73 words" not recounted, item-8 REJECTED entry unchecked) | not sampled (H1 clean); supervisor hand-checked both F5 quotes in transcript_gWjHq5UMisY.txt (split across caption lines 14-15, 186-188): found | - |
-| Scope (git diff --stat) | 3 files, in scope | 4 files (3 extracts + FIXES_APPLIED_tom.md), in scope | - |
+| Scope (the diff stat) | 3 files, in scope | 4 files (3 extracts + FIXES_APPLIED_tom.md), in scope | - |
 | Deferred | none | F6 (9 GPS tags): re-tagging breaks verifier thirds convention; needs verifier card | - |
 
 Ship: ONE combined ship of both commits (ece3e75ff, 38dfe0116) from the supervisor tree: exit 0, "shipped 8 files", `git cherry origin/fast-track` empty. First attempt refused by sync.py (second ship within 10 min; used --again, legit batch). Gate wait: ship command total under 3 min (not timed separately).
@@ -31,3 +31,9 @@ Weekly: 44% start, 44% end (rounded; under 1 point). 5h window: 3% start, 7% end
 2. Agents are bound to the supervisor's worktree by the edit hook; their own `sync.py start` worktree is refused (each lost 13-14 turns). Fix: brief Agent workers to edit in the supervisor worktree from the start with explicit-path commits, or run them as sessions.
 3. Shared tree forces one combined ship and sync.py's 10-min limit needs --again; scratch ship log cannot be deleted (rm denied) so stop guard nags.
 4. F6 needs a verifier-convention card (thirds computed from body after first `# ---`).
+
+## Addendum (Doctor request, from the agent transcripts)
+- (a) Denial: both Agents ran with cwd `...\.claude\worktrees\blissful-antonelli-a1669c` (the supervisor tree; all 94 transcript cwd entries). `sync.py start p3h1/p3h3` printed WORKTREE `...\worktrees\mts-jis-nb-p3h1` / `mts-jis-nb-p3h3`; the first Edit/Write there was refused by the edit hook: "This session is running in an isolated git worktree at `...\blissful-antonelli-a1669c`, but `...\mts-jis-nb-p3h1\extracts\gemini_out\-dMWA_bbm3o_audit.md` belongs to a different worktree. Do not write to other worktrees' files from this session." Same text for p3h3 (gWjHq5UMisY_gemini.md). An Agent shares the parent session's worktree identity, so it can only write there.
+- (b) Model confirmed from the transcript `message.model` field: H1 `claude-haiku-5-5` on 61 assistant records, H3 `claude-haiku-5-5` on 93; the single `claude-opus-5-5` hit in each is a tool-schema listing, not a reply. Commit trailers say Haiku 5.5 (self-written, not proof). Tool uses reported by the runtime: H1 14 + 8 = 22 (runs: 14, then 22 total reported 22), H3 18 then 39 total (runtime counts: H1 22, H3 39 cumulative incl. blocked runs). Subagent tokens (cumulative per run report): H1 93,331 then 106,304; H3 85,064 then 103,609.
+- (c) H2 dropped: `tasks.py brief` showed `STATE STALE: scope changed 8e56554c1543 2026-10-24T23:12:02Z after refresh 2026-10-24T22:51:26Z`; that harvest commit rewrote 3 of H2's 9 notes (HUYBdYnXUNc, agjftXPkLUE, cLgdXZnLL_0), so its line references were no longer trustworthy (plan rule 6).
+- Scratch ship logs (ship_sup1.log, ship_pilot3.log, ship_pilot3b.log) are committed beside the notes per Doctor, not deleted (rm was denied). Future scratch goes to the scratchpad dir.
