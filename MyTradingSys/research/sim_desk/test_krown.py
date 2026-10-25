@@ -49,9 +49,8 @@ def test_planted_leak_signals_use_only_past_bars(setup):
     base = s.signals(setup, o, h, l, c)
     assert len(base) > 0
     cut = 400
-    o2, h2, l2, c2 = (x.copy() for x in (o, h, l, c))
-    for x in (o2, h2, l2, c2):
-        x[cut + 1:] = np.random.default_rng(9).normal(500, 300, len(x) - cut - 1)
+    garbage = np.random.default_rng(9).normal(500, 300, (4, len(c) - cut - 1))
+    o2, h2, l2, c2 = (np.concatenate([x[:cut + 1], g]) for x, g in zip((o, h, l, c), garbage))   # deliberate planted leak
     again = s.signals(setup, o2, h2, l2, c2)
     assert [x for x in base if x[0] <= cut] == [x for x in again if x[0] <= cut]
 
