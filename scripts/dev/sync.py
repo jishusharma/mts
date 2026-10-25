@@ -350,10 +350,36 @@ def switch_lane_branch(repo, slug):
     return branch
 
 
+def reuse_finished_tree(repo, path):
+    """The tree `path` (from an earlier `start <slug>`) brought up to origin/fast-track and returned, when it is a finished one: a
+    worktree of this repo, not live, clean, no ignored data, branch fully on origin/fast-track, idle REUSE_IDLE_HOURS. Else None
+    (the caller then makes `-2`). Stops the `-2`, `-3` pile of 0.25 GB duplicates (JIS-NB 2026-10-25)."""
+    path = Path(path)
+    if not path.exists() or (path / LIVE_MARKER).exists():
+        return None
+    mine = {Path(p).resolve(): b for p, b in worktrees(repo)[1:]}
+    branch = mine.get(path.resolve())
+    if not branch or branch in ("(detached)", TRUNK, "master", "main"):
+        return None
+    git(repo, "fetch", "--quiet", "origin", TRUNK)
+    if any(not is_noise(l) for l in git(path, "status", "--short", check=False).stdout.splitlines() if l):
+        return None
+    if git(repo, "merge-base", "--is-ancestor", branch, f"origin/{TRUNK}", check=False).returncode != 0:
+        return None
+    if ignored_data(path) or idle_hours(path, branch, time.time()) < REUSE_IDLE_HOURS:
+        return None
+    if git(path, "switch", "-q", "-C", branch, f"origin/{TRUNK}", check=False).returncode != 0:
+        return None
+    return path
+
+
 def new_worktree(repo, slug=None):
     host = socket.gethostname().lower()
     slug = slugify(slug) if slug else time.strftime("s%m%d-%H%M%S", time.gmtime())
     path = Path(repo).resolve().parent / f"mts-{host}-{slug}"
+    reused = reuse_finished_tree(repo, path)
+    if reused:
+        return reused
     n = 1
     while path.exists():
         n += 1
@@ -1139,7 +1165,10 @@ def release(repo, slug, gate=run_gate):
 LANE_WORKTREES = ("mts-push", "mts-refiner", "mts-codex-lab", "mts-codex", "mts-dsa", "mts-relay", "mts-control-room", "mts-app")
 
 
-TIDY_IDLE_HOURS = 24
+# 2026-10-25 (operator: C: must not fill): a tree that is clean, holds no ignored data and whose branch is fully on
+# origin/fast-track has nothing left to lose, so 1 h idle is enough (was 24 h). DECISION (OURS): 1 h, as the card said.
+TIDY_IDLE_HOURS = 1
+REUSE_IDLE_HOURS = 0.5   # DECISION (OURS): `start` reuses a finished same-slug tree only when idle this long, so two live sessions never share one
 TIDY_KEEP_LINES = 10  # keep-reasons listed one per line; the rest only counted in the last line
 QUIET_KEEPS = ("lane", "hand-named")  # decided by the name alone: counted, never listed
 # Ignored paths that are rebuilt for free; anything else ignored (Dumps/, runtime_data/, fetched klines) is data.
@@ -1334,7 +1363,8 @@ def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS,
                 keep(p, "remove-failed", f"remove failed ({r.stderr.strip()[:80]})")
                 continue
             git(repo, "branch", "-d", branch, check=False)
-        print(f"{'removed' if apply else 'would remove'}  {p.name} [{branch}]")
+        print(f"{'removed' if apply else 'would remove'}  {p.name} [{branch}]: clean, no ignored data, on origin/{TRUNK}, "
+              f"idle {idle:.1f} h")
         out.append(str(p))
     if apply:
         git(repo, "worktree", "prune", check=False)
