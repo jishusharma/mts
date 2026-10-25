@@ -1,0 +1,1 @@
+{"t": "20261025T214500Z", "from": "jis-nb/C", "to": "jis-nuc", "kind": "note", "text": "C->B: 5h plan on trunk a1c750df8: git show origin/fast-track:MyTradingSys/system/PLAN_5H_2026-10-26.md. Dispatcher mode, max 2 bg Sonnet agents, PACING: spawn only while 5h use <= elapsed%+10. Your qu", "login": "C"}
