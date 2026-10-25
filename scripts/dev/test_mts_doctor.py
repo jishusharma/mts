@@ -165,13 +165,18 @@ def test_ship_time_median_max_missing_log(tmp_path):
     assert D.ship_time(tmp_path / "none.jsonl", now)[0] == "unavailable"
     log = tmp_path / "t.jsonl"
     row = lambda step, secs, utc, sha: json.dumps({"step": step, "secs": secs, "utc": utc, "sha": sha})
-    log.write_text("\n".join([row("ship", 60, "2026-10-25T10:00:00Z", "a"), row("ship", 120, "2026-10-25T10:10:00Z", "b"),
+    log.write_text("\n".join([row("ship_wall", 60, "2026-10-25T10:00:00Z", "a"), row("ship_wall", 110, "2026-10-25T10:10:00Z", "b"),
                               row("4", 300, "2026-10-25T10:20:00Z", "c"), row("5b", 100, "2026-10-25T10:21:00Z", "c"),
-                              row("ship", 9999, "2026-10-01T10:00:00Z", "old"), "not json"]) + "\n", encoding="utf-8")
+                              row("ship_wall", 9999, "2026-10-24T10:00:00Z", "old"), row("ship", 9999, "2026-10-25T10:00:00Z", "z"), "not json"]) + "\n", encoding="utf-8")
     st, msg = D.ship_time(log, now)
-    assert st == "OK" and "ship n=2 median 1.5 max 2.0" in msg and "gate n=1" in msg      # gate wall: 10:15 -> 10:21 = 6 min
+    assert st == "OK" and "ship_wall n=2 median 85s p90 110s" in msg and "gate n=1" in msg      # gate wall: 10:15 -> 10:21 = 6 min
+    log.write_text(row("ship_wall", 130, "2026-10-25T10:00:00Z", "a") + "\n", encoding="utf-8")
+    st, msg = D.ship_time(log, now)
+    assert st == "WARN" and "120s" in msg                                                  # 2-minute ship: median over 120 s warns
+    log.write_text("\n".join(row("ship_wall", s, "2026-10-25T10:00:00Z", "a") for s in [50] * 8 + [200, 200]) + "\n", encoding="utf-8")
+    assert D.ship_time(log, now)[0] == "WARN"                                                  # median fine, p90 over 120 s warns
     log.write_text(row("ship", 16 * 60, "2026-10-25T10:00:00Z", "a") + "\n", encoding="utf-8")
-    assert D.ship_time(log, now)[0] == "WARN"
+    assert D.ship_time(log, now)[0] == "unavailable"                                                    # the old per-sync row no longer decides
 
 
 def test_hook_reg_missing_hooks_and_behind(tmp_path):

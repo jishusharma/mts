@@ -772,6 +772,41 @@ def record_ship_timing(repo, wait_s, run_s, retry_s, ok=True, sha=None, path=Non
         pass
 
 
+SHIP_SLOW_S = 120   # OURS: the operator's "ship in 2 minutes"; over it, ship prints one SHIP SLOW line (never fails the ship)
+
+
+def _timing_path(repo):
+    return Path(os.environ.get("MTS_GATE_TIMING") or (Path(repo) / "runtime_data" / "gate_timing.jsonl"))
+
+
+def record_ship_wall(repo, wall_s, offset=0, path=None):
+    """Append one `ship_wall` row (the whole ship, start to end) to gate_timing.jsonl; over SHIP_SLOW_S print one
+    `SHIP SLOW <n>s: top 3 steps <name secs>` line from the step rows this ship wrote after byte `offset`. Never raises."""
+    try:
+        p = Path(path) if path else _timing_path(repo)
+        p.parent.mkdir(parents=True, exist_ok=True)
+        steps = []
+        if wall_s > SHIP_SLOW_S and p.is_file():
+            with open(p, "rb") as fh:
+                fh.seek(offset)
+                for ln in fh.read().decode("utf-8", "ignore").splitlines():
+                    try:
+                        r = json.loads(ln)
+                        steps.append((float(r["secs"]), str(r.get("name") or r.get("step"))))
+                    except (ValueError, KeyError, TypeError):
+                        continue
+        r = git(repo, "rev-parse", "--short=8", "HEAD", check=False)
+        row = {"step": "ship_wall", "name": "sync.ship_wall", "secs": round(float(wall_s), 2), "ok": True,
+               "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "sha": r.stdout.strip() if r.returncode == 0 else ""}
+        with open(p, "a", encoding="utf-8", newline="\n") as fh:
+            fh.write(json.dumps(row) + "\n")
+        if wall_s > SHIP_SLOW_S:
+            top = ", ".join(f"{n} {s:.0f}s" for s, n in sorted(steps, reverse=True)[:3]) or "no step rows"
+            print(f"SHIP SLOW {wall_s:.0f}s: top 3 steps {top}")
+    except Exception:
+        pass
+
+
 def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_slug=None, sleep=time.sleep):
     """release_slug (traffic buster B4): the claim file is deleted in a commit on this branch, so the release rides the
     same push as the work (no separate fetch + push). Nothing to ship: falls back to the plumbing release.
@@ -779,6 +814,11 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
     A lost push race (GATE_SPEED D4) re-merges and pushes again after a 1-5 s jitter, up to SHIP_PUSH_TRIES; it re-runs the gate
     only when the incoming commits overlap what we ship (race_overlap), at most REGATES times."""
     refuse_live(repo)  # only commits are pushed; uncommitted files stay where they are
+    t_ship_0 = time.monotonic()
+    try:
+        log_off = _timing_path(repo).stat().st_size
+    except OSError:
+        log_off = 0
     wait_s = 0.0
     run_s = 0.0
     retry_s = 0.0
@@ -851,6 +891,7 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
     finally:
         if files:
             record_ship_timing(repo, wait_s=wait_s, run_s=run_s, retry_s=retry_s, ok=ok)
+            record_ship_wall(repo, time.monotonic() - t_ship_0, offset=log_off)
 
 
 def news(repo, hours=24):
