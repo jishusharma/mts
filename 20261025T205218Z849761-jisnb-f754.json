@@ -1,0 +1,1 @@
+{"t": "20261025T205218Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "ULTRA LESSON 10-26: ultracode fan-out of ~17 Sonnet agents on login C burned the 5h window (to 100%) and +10% weekly, most returned nothing. RULE: never Workflow/fan-out without (1) get_usage: 5h<=60%", "login": "C"}
