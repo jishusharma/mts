@@ -41,7 +41,8 @@ EMPTY_SLEEP = 600
 MAX_FAILS = 3
 STOP_PCT = 90.0
 WEEK_S = 7 * 86400
-ROLE_FILES = {"Builder": "builder.md", "Lab_Guy": "lab_guy.md", "MTS_Doctor": "mts_doctor.md", "Pipeliner": "pipeliner.md"}
+ROLE_FILES = {"Builder": "builder.md", "Lab_Guy": "lab_guy.md", "MTS_Doctor": "lead/doctor.md", "Pipeliner": "lead/pipeline.md",
+              "Lead": "lead.md"}
 HOLD_ID = re.compile(r"^### (A-\d{8}-\d+) (?:HOLD|STOP)(?!.*(?:LIFTED|RETIRED|CLOSED))", re.M)
 
 

@@ -54,8 +54,7 @@ def load_roster(repo=None):
 
 
 # Only when no roster is readable anywhere, so a role request still triggers; test_role_roster.py keeps it equal to the roster.
-NO_ROSTER_NAMES = ["Admin_Guy", "Eagle_Eyes", "Thinker", "MTS_Doctor", "Pipeliner", "Supervisor", "Lab_Guy",
-                   "1985Artifacts_Guy", "Session_Planner", "Builder"]
+NO_ROSTER_NAMES = ["Lead", "Eagle_Eyes", "Supervisor", "Lab_Guy", "1985Artifacts_Guy", "Session_Planner", "Builder"]
 KNOWN_ROLES = [r["name"] for r in load_roster()] or list(NO_ROSTER_NAMES)
 # Old names that still open the merged/renamed role (operator 2026-10-20); work even when the role file is not local yet.
 ALIASES = {r["name"]: [a.lower() for a in r["aliases"]] for r in load_roster() if r.get("aliases")}
