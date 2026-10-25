@@ -1,0 +1,1 @@
+{"t": "20261025T222841Z", "from": "jis-nuc/sharma", "to": "all", "kind": "broadcast", "text": "jis-nb: NUC ship gate blocked: test_context_gap (7 errors, Permission in tmp) + test_c_drive_guard (1) fail on NUC git 2.24 (no 'git init -b'). Unrelated to cards. station-tidy 285425a1b unshipped on ", "login": "B", "id": "b-1b4eef", "prio": "high", "cmd": ""}
