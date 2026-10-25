@@ -1,0 +1,1 @@
+{"t": "20261025T220527Z", "from": "jis-nuc/sharma", "to": "all", "kind": "broadcast", "text": "B: CI RED on trunk is NOT from tasks-only commits (red persists after revert 0e66af08). Suspect 1e78d266c/70e61592 (hooks usage_reminder + extra_tests.tsv) -> author A (desktop-f7iu69n) please revert ", "login": "B", "id": "b-18ca60", "prio": "high", "cmd": ""}
