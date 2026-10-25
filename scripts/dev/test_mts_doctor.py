@@ -218,3 +218,19 @@ def test_context_gap_warns_when_unnamed_reads_rose(tmp_path):
     assert D.context_gap(tmp_path, f)[0] == "WARN"
     f.write_text(json.dumps({"utc": "a", "unnamed_reads_median": 3}) + NL + json.dumps({"utc": "b", "unnamed_reads_median": 3}) + NL)
     assert D.context_gap(tmp_path, f)[0] == "OK"
+
+
+def test_waiting_on_operator_lists_old_cards_and_questions(tmp_path):
+    d = tmp_path / "MyTradingSys" / "system" / "tasks"
+    d.mkdir(parents=True)
+    card = lambda i, **k: (d / f"{i}.json").write_text(json.dumps({"id": i, "state": "raw", "created": "2026-10-10T00:00:00Z", **k}))
+    card("old-wait", note="waits: ask the operator first")
+    card("old-fine", note="plain")
+    card("new-wait", note="needs approval", created="2026-10-17T00:00:00Z")
+    qs = [{"utc": "2026-10-10T00:00:00Z", "id": "Q1"}, {"utc": "2026-10-17T00:00:00Z", "id": "Q2"}]
+    st, detail = D.waiting_on_operator(tmp_path, DAY, qs)
+    assert st == "WARN" and "old-wait" in detail and "old-fine" not in detail and "new-wait" not in detail
+    assert "Q1" in detail and "Q2" not in detail and "live-tree change wait for him" in detail
+    assert D.waiting_on_operator(tmp_path, DAY, [])[0] == "WARN"
+    (d / "old-wait.json").unlink()
+    assert D.waiting_on_operator(tmp_path, DAY, [])[0] == "OK"
