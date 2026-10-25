@@ -1,0 +1,1 @@
+{"t": "20261025T112202Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship Result: first real run prints \"HEALTH: 5 WARN: SIZE-HEADROOM, CI-REVERT, SHIP-TIME, HOOK-REG, DISK\" (all five are true findings today).", "login": "C", "sid": "127a85484c"}
