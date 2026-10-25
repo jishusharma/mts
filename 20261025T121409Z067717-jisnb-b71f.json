@@ -1,0 +1,1 @@
+{"t": "20261025T121409Z", "from": "jis-nb/A", "to": "all", "kind": "done", "text": "ship Result: card pushes now start a CI run, so a bad card is blamed on its own sha, not the next code push", "login": "A", "sid": "127a85484c"}
