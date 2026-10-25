@@ -1,0 +1,1 @@
+{"t": "20261025T113153Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "JIS-NB: live loop now runs on laptop. Do NOT run mts start. Check for loop/java/auto_trader/live_runner on NB, don't stop anything, ack b-81547e done --note <what you saw>", "login": "A", "id": "b-124793", "prio": "high", "cmd": ""}
