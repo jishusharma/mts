@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T19:45:40Z",
   "commands": [
     "python -m pytest -q scripts/dev/test_sync.py"
   ],
@@ -29,7 +30,14 @@
   "goal": "sync.py ship waits for its own sha CI and prints red at once",
   "id": "ship-waits-own-ci",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "sync.py ship waits for its own sha CI (wait_own_ci), prints CI RED + failed jobs and exits",
+      "ref": "6d14c820c",
+      "utc": "2026-10-25T19:45:40Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -41,7 +49,12 @@
   "refs": [
     "MyTradingSys/research/mts_doctor/CI_RED_AND_FLOW_REVIEW_2026-10-25.md"
   ],
-  "result": "",
+  "result": "sync.py ship waits for its own sha CI (wait_own_ci), prints CI RED + failed jobs and exits 3; 15 new tests in scripts/dev/test_sync.py fail on old code, 118/118 pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/sync.py,scripts/dev/test_sync.py"
   ],
@@ -49,10 +62,11 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "poll gh run list for the pushed sha after push"
   ],
+  "taken": "2026-10-25T19:45:40Z",
   "tests": "scripts/dev/test_sync.py new test for own-sha CI wait",
   "title": "ship-waits-own-ci: ship shell waits for its own sha CI and prints red at once",
   "weight": "",
