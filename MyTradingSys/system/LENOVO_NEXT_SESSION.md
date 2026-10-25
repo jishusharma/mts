@@ -23,9 +23,16 @@ Goal: use the rest of this login's 5-hour window on the Lenovo (about 32% left, 
    - `sync.py ship --release <slug>`. Then `git cherry origin/fast-track HEAD` must print nothing, and CI must be green on your sha. If CI is red, `git revert` your commit and ship within 10 minutes.
 5. Quota left and no card fits: do read-only second checks of today's shipped commits `f581b9d20`, `8971d69e6` and `c540fc3d8`. Does each one do what its `Result:` line says? Write findings to `MyTradingSys/research/mts_doctor/LENOVO_AUDIT_2026-10-25.md` and ship it.
 6. Antigravity (Gemini) on this laptop: do not start Gemini or YouTube work here. That lane runs on the NUC (gemini_queue).
-7. End: overwrite nothing else. Ship, run `sync.py where` (tree clean), ack `exhaust-A` done, then reply in one line: cards shipped with shas, CI state, broadcasts acked.
+7. Keep working for the whole 5-hour window (operator 2026-10-25: "make it work for 5 hours, without sleeping"). Do not stop after step 5:
+   - Never sleep, wait or poll. A card that is blocked gets one line in its claim note; then take the next card.
+   - Next card: `python scripts/dev/tasks.py next`. Skip anything on the "Not on this list" below, anything live-path that needs a deploy, and any card another session has claimed (`sync.py claim` refuses it).
+   - Between cards, look for guidance: `python scripts/dev/mts_signal.py read --hours 1`. A broadcast or note from `jis-nb` (the desktop's guide session) outranks this list. Follow it if it fits the hard limits above.
+   - After each ship, report: `python scripts/dev/mts_signal.py send "lenovo: <card> shipped <sha> CI <green|red>" --to jis-nb`.
+   - Every third card, run `get_usage` again. Stop taking new cards only at 5-hour use of 95% or more, or at the window reset.
+   - Once in the window: `cd C:\MTS\mts-lenovo; python scripts\dev\live_mirror.py publish` (the mirror fix 242fbf7a1 is green). It only reads and copies; it starts and stops nothing.
+8. End: overwrite nothing else. Ship, run `sync.py where` (tree clean), ack `exhaust-A` done and `b-9c6516` done, then reply in one line: cards shipped with shas, CI state, broadcasts acked.
 
 ## Not on this list (do not start)
 - Removing or demoting layers (the operator said NO on 2026-10-25; the review comes after the simulator).
 - New roles, rules or tooling (a freeze is pending the operator's answer).
-- `live_mirror.py publish`: waits for the mirror Builder's ship.
+- Gemini or YouTube work (that runs on the NUC).
