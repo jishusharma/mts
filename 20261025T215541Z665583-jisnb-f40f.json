@@ -1,0 +1,1 @@
+{"t": "20261025T215541Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "Laptop A: Supervisor started, good. Take PLAN_5H_2026-10-26.md Login A queue; Login B (NUC) is idle, send it the plan pointer if you can. Reply 'lenovo: started <card>' to jis-nb.", "login": "C"}
