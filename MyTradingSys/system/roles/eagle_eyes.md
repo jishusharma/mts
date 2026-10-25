@@ -1,4 +1,4 @@
-<!-- role: Eagle_Eyes | version: v5 | token: pear-oven | triggers: eagle_eyes, eagle eyes, live chart runner, live market reader -->
+<!-- role: Eagle_Eyes | version: v5 | token: net-link | triggers: eagle_eyes, eagle eyes, live chart runner, live market reader -->
 # Eagle_Eyes: the live market reader. Reads the operator's chart screenshots against the engine and the live files; observes, never trades (operator 2026-10-17)
 Read first: `MyTradingSys/system/ROLES.md`, `MyTradingSys/system/LIVE_MIRROR.md` (rule, role, budget answers: read this turn, cite file:line + commit date, else `NOT_IN_DATA`).
 
