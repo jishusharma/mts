@@ -23,7 +23,7 @@ import json
 import math
 from pathlib import Path
 
-CONTRACT_VERSION = "trendline_contract_v1"
+CONTRACT_VERSION = "trendline_contract_v1.1"
 ATR_LEN = 14
 VOL_LEN = 20
 PEN_TOL = 0.10      # L6 / E7 poke
@@ -75,21 +75,24 @@ class TrendlineDetector:
     per line (events carry `arm`); max_age=None is the no-cap arm."""
 
     def __init__(self, tf="1h", k=3, transform="log", price_arm="wick", max_age=500,
-                 min_spacing=10, max_spacing=200):
+                 min_spacing=10, max_spacing=200, e11="narrow"):
         if transform not in ("log", "linear"):
             raise ValueError("transform must be log or linear")
         if price_arm not in ("wick", "close"):
             raise ValueError("price_arm must be wick or close")
+        if e11 not in ("narrow", "strict"):
+            raise ValueError("e11 must be narrow or strict")
         if k < 1:
             raise ValueError("k must be >= 1")
         self.tf, self.k, self.transform, self.price_arm = tf, k, transform, price_arm
         self.max_age, self.min_spacing, self.max_spacing = max_age, min_spacing, max_spacing
+        self.e11 = e11      # narrow (v1.1): a broken line bans only its second anchor; strict (v1): both anchors
         self.bars = []
         self.atr = []
         self.pivots = []    # {side,i,price,available_at}
         self.lines = {}     # id -> line record
         self.events = []    # append-only
-        self.rejects = []   # append-only: tie, flat, penetration, spacing
+        self.rejects = []   # append-only: tie, flat, penetration, spacing, broken_before_available
 
     # ---- helpers
     def _ev(self, line, state, bar, **kw):
@@ -190,18 +193,31 @@ class TrendlineDetector:
             if not self._penetration_ok(ln):
                 self._rej("penetration", side=side, ia=ia, ib=ib)
                 continue
+            if self._broken_before_available(ln, t):
+                self._rej("broken_before_available", side=side, ia=ia, ib=ib)
+                continue
             self.lines[lid] = ln
             self._ev(ln, "proposed", t, ia=ia, ib=ib, slope_atr=ln["slope_atr"], slope_log=ln["slope_log"],
                      atr_b=atr_b, line_tf=self.tf, price_arm=self.price_arm, transform=self.transform)
             if self._volume_ok(ia) and self._volume_ok(ib):
                 ln["eligible"].add("V")
                 self._ev(ln, "eligible", t, arm="V")
-            for j in range(ib + 1, t + 1):   # replay bars already closed at availability of b
-                self._advance(ln, j)
+            # bars ib+1..t (t = ib+k) were closed before b was knowable: no touch, reset or break is credited
+            # to them; the line is first advanced at t+1 (v1.1, P5/P6)
 
     def _broken_anchor(self, side, ia):
-        return any(ln["side"] == side and ln["broken_at"] is not None and ia in (ln["ia"], ln["ib"])
+        return any(ln["side"] == side and ln["broken_at"] is not None
+                   and (ia == ln["ib"] if self.e11 == "narrow" else ia in (ln["ia"], ln["ib"]))
                    for ln in self.lines.values())
+
+    def _broken_before_available(self, ln, t):
+        """v1.1: a close beyond L in ib+1..t (before b was knowable) means the line was never usable."""
+        sup = ln["side"] == "support"
+        for j in range(ln["ib"] + 1, t + 1):
+            c, L = self.bars[j]["c"], self._L(ln, j)
+            if (c < L) if sup else (c > L):
+                return True
+        return False
 
     def _penetration_ok(self, ln):
         """L6: strict external test over anchor bars ia..ib only."""
@@ -209,10 +225,11 @@ class TrendlineDetector:
         for j in range(ln["ia"], ln["ib"] + 1):
             L = self._L(ln, j)
             bar = self.bars[j]
+            wick = self.price_arm == "wick"   # the close arm tests closes only (v1.1)
             if ln["side"] == "support":
-                if bar["l"] < L - tol or bar["c"] < L:
+                if (wick and bar["l"] < L - tol) or bar["c"] < L:
                     return False
-            elif bar["h"] > L + tol or bar["c"] > L:
+            elif (wick and bar["h"] > L + tol) or bar["c"] > L:
                 return False
         return True
 
