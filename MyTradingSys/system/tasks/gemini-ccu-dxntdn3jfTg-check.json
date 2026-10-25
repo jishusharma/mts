@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst CCU DXntdN3jfTg",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/cbp/ccu_DXntdN3jfTg_extract.md"
+  ],
+  "created": "2026-10-25T05:39:39Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/cbp/ccu_DXntdN3jfTg_extract.md exists and `python scripts/dev/verify_extract_quotes.py` on it exits 0; or the file states exactly why captions were unavailable (429/no captions) and what was tried.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Report what CCU video https://www.youtube.com/watch?v=DXntdN3jfTg contains: title, date, any BTC call, levels, bottom-thesis vote, entry/stop/target. Quotes must be verbatim from fetched captions.",
+  "id": "gemini-ccu-dxntdn3jfTg-check",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-25T05:39:59Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/cbp/ccu_DXntdN3jfTg_extract.md"
+  ],
+  "scope_out": [
+    ".secrets",
+    "live tree"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Run the fetch command. On HTTP 429 or no captions write the exact error into the extract file, commit, stop. Never summarise from guessing the video.",
+    "Read the transcript, write the extract file: header (title, published, id), then per claim: > \"<verbatim quote>\" then **Source GPS: DXntdN3jfTg | BEGIN|MIDDLE|END** (thirds). Cover BTC call, levels, bottom-thesis vote, entry/stop/target; if none write 'no BTC call'.",
+    "Run python scripts/dev/verify_extract_quotes.py MyTradingSys/research/cbp/ccu_DXntdN3jfTg_extract.md until exit 0 (fix quotes, never loosen the checker).",
+    "Commit the extract only (not the transcript, which is git-ignored) with body line Result: ..."
+  ],
+  "tests": "verify_extract_quotes.py exit 0",
+  "title": "[GEMINI] CCU video DXntdN3jfTg: fetch captions, extract BTC calls, verify quotes",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}

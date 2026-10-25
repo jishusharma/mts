@@ -104,6 +104,9 @@ public class StateCodeEmitter extends WebSocketClient {
     // Real runtime leaves this at -1 (uses System.currentTimeMillis).
     volatile long nowMsOverride = -1L;
 
+    // Test seam: fired in evaluateAndEmit after the BUFFER_LOCK snapshot and before the publish. Null in production.
+    volatile Runnable beforePublishHook = null;
+
     long nowMs() {
         long o = nowMsOverride;
         return o >= 0 ? o : System.currentTimeMillis();
@@ -430,6 +433,19 @@ public class StateCodeEmitter extends WebSocketClient {
             dayStartSnap = sessionDayStartMs;
             epochSnap = accEpoch;
         }
+        Runnable hook = beforePublishHook;
+        if (hook != null) hook.run();
+        // Publish atomically with invalidation: re-check under BUFFER_LOCK and write the file inside the same lock hold
+        // (onStreamOpen/onStreamClosed/backfill take it too), so an older snapshot can never overwrite a newer INVALID.
+        // Fail closed: any epoch/validity change since the snapshot means INVALID this round (the next emit recovers).
+        synchronized (BUFFER_LOCK) {
+        if (accEpoch != epochSnap || accValid != validSnap) {
+            validSnap = false;
+            reasonSnap = accValid ? "state_changed_during_emit" : accReason;
+            sessionCvdSnap = 0.0; sessionCumPVSnap = 0.0; sessionCumVolSnap = 0.0;
+            dayStartSnap = -1L;
+            epochSnap = accEpoch;
+        }
         nowT = lastTickMs > 0 ? lastTickMs : System.currentTimeMillis();
 
         Dir nd1m = computeNetDelta1m(snapshot, nowT);
@@ -509,6 +525,7 @@ public class StateCodeEmitter extends WebSocketClient {
 
         writeStateJson(signals, bearish, bullish, available, nowMs, validSnap, reasonSnap, dayStartSnap,
                 sessionCvdSnap, sessionCumPVSnap, sessionCumVolSnap);
+        }
     }
 
     private Dir computeNetDelta1m(List<Tick> snap, long nowT) {

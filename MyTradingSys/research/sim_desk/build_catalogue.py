@@ -90,11 +90,14 @@ def tag(row):
 
 def main(argv=None):
     ap = argparse.ArgumentParser()
-    ap.add_argument("--out", default=os.path.join(RESULTS, "_catalogue.json"))
+    ap.add_argument("--results", default=RESULTS, help="folder holding the results/*.json files (default: the committed one)")
+    ap.add_argument("--out", default=None)
     a = ap.parse_args(argv)
+    results = a.results
+    a.out = a.out or os.path.join(results, "_catalogue.json")
     files = tracked()
     fset = set(files)
-    have = {f[:-5] for f in os.listdir(RESULTS) if f.endswith(".json") and not f.startswith("_")}
+    have = {f[:-5] for f in os.listdir(results) if f.endswith(".json") and not f.startswith("_")}
     rows, seen = [], set()
 
     def add(id_, family, title, kind, kind_source, verdict, source, extra=None):
@@ -110,7 +113,7 @@ def main(argv=None):
 
     # 1. exported first: make sure their source is claimed
     for src, rid in EXPORTED_BY_SOURCE.items():
-        p = os.path.join(RESULTS, rid + ".json")
+        p = os.path.join(results, rid + ".json")
         if os.path.isfile(p):
             d = json.load(open(p, encoding="utf-8"))
             add(rid, d["family"], d["title"], d.get("kind", "backtest"), "result file", d["verdict"]["label"], src)
@@ -158,6 +161,11 @@ def main(argv=None):
         v = verdict_of(t)
         add("dir-" + re.sub(r"\W+", "-", d).strip("-").lower(), family_of(best), title_of(t, d), kind_of(best, t, v), "inferred from text", v, best,
             {"folder_files": len(ps)})
+    # 7. runs saved by the local desk (results/desk-*.json): one row each, so a saved run is never uncatalogued
+    for rid in sorted(h for h in have if h.startswith("desk-")):
+        d = json.load(open(os.path.join(results, rid + ".json"), encoding="utf-8"))
+        add(rid, d.get("family", "Desk runs"), d.get("title", rid), d.get("kind", "backtest"), "result file", d["verdict"]["label"],
+            "MyTradingSys/research/sim_desk/results/" + rid + ".json", {"exported": True, "result_id": rid})
     rows.sort(key=lambda r: (not r["exported"], r["family"].lower(), r["title"].lower()))
     doc = {"_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
            "count": len(rows), "exported": sum(1 for r in rows if r["exported"]), "rows": rows}

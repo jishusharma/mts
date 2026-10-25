@@ -1,6 +1,6 @@
 """Simulator desk: one local page. Pick settings (free-form numbers allowed), Run, get a plain verdict and example trades.
 
-  python MyTradingSys/research/sim_desk/desk.py            # serves http://127.0.0.1:8765 until Ctrl+C (started by hand)
+  python MyTradingSys/research/sim_desk/desk.py            # one command: starts on a free port, opens the browser, prints the URL (--no-browser to skip)
   python MyTradingSys/research/sim_desk/desk.py --build    # only build the local data cache (once, about a minute)
 
 DEV window only (2022-04-01..2024-06-30); VALIDATION and HOLDOUT are never offered. Every new setting appends one
@@ -16,6 +16,7 @@ import math
 import sys
 import threading
 import time
+import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -24,6 +25,7 @@ import numpy as np
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import conditions  # noqa: E402
+import runs_view  # noqa: E402
 TRIALS = HERE.parent / 'layer_lab' / 'TRIALS.md'
 CACHE = HERE / 'cache' / 'results'
 DEV_FIRST, DEV_LAST = dt.date(2022, 4, 1), dt.date(2024, 6, 30)
@@ -127,6 +129,34 @@ def trade_list(res):
     side = np.asarray(res['side'])[filled] if 'side' in res else np.zeros(len(filled), int)
     return {'i': filled.tolist(), 't': [int(x) for x in np.asarray(res['touch_t'])[filled]], 'side': [int(x) for x in side],
             'r': [round(float(x), 3) for x in net], 'cum': [round(float(x), 3) for x in np.cumsum(net)]}
+
+
+MIN_BUCKET = 30   # a row under this many filled trades is marked 'too few trades'
+
+
+def breakdown(res):
+    """Filled trades split by year, side and UTC hour bucket: {group: [{'k', 'n', 'mean', 'few'}]}. Reads the run's own arrays only.
+    The trade rows carry no exit or no-fill reason, so there are no reason columns."""
+    L = trade_list(res)
+    t = np.asarray(L['t'], dtype='int64')
+    r = np.asarray(L['r'], float)
+    sd = np.asarray(L['side'])
+    ts = t.astype('datetime64[ms]')
+    year = ts.astype('datetime64[Y]').astype(int) + 1970
+    hour = (t // 3_600_000) % 24
+
+    def rows(keys, names):
+        out = []
+        for k, name in names:
+            m = keys == k
+            n = int(m.sum())
+            if n:
+                out.append({'k': name, 'n': n, 'mean': round(float(r[m].mean()), 3), 'few': n < MIN_BUCKET})
+        return out
+    ys = sorted(set(year.tolist()))
+    return {'year': rows(year, [(y, str(y)) for y in ys]),
+            'side': rows(np.sign(sd), [(1, 'long'), (-1, 'short'), (0, 'unknown')]),
+            'hour': rows(hour // 4, [(b, f'{b * 4:02d}-{b * 4 + 4:02d} UTC') for b in range(6)])}
 
 
 def trade_chart(study, p, cond, i, cache_dir=CACHE, progress=print):
@@ -263,7 +293,7 @@ def run_setting(study, p, trials_path=TRIALS, cache_dir=CACHE, progress=print, c
            'label': study.label(q), 'settings': q, 'cond': cond, 'cond_label': conditions.label(cond), 'n_before_cond': before, 'n': st.get('n', 0), 'mean': st.get('mean'), 'lo': st.get('lo'),
            'hi': st.get('hi'), 'streak': st.get('streak', 0), 'win_rate': st.get('win_rate'),
            'try_no': count_tries(trials_path, study), 'prior_tries': len(_rows(trials_path, f"| {study.PRIOR_TAG} ")) if hasattr(study, 'PRIOR_TAG') else 0,
-           'stats': {k: v for k, v in st.items() if isinstance(v, (int, float))}, 'charts': [], 'curve': curve(res), 'numbers': numbers(res), 'trades': trade_list(res)}
+           'stats': {k: v for k, v in st.items() if isinstance(v, (int, float))}, 'charts': [], 'curve': curve(res), 'numbers': numbers(res), 'trades': trade_list(res), 'breakdown': breakdown(res)}
     out['curve']['mc'] = monte_carlo(res, out['curve']['idx']) if out['curve'].get('n') else None
     tries = out['try_no'] + out['prior_tries']
     k = out['numbers']
@@ -388,7 +418,24 @@ def export_result(out, study, results_dir=RESULTS):
     d = Path(results_dir)
     d.mkdir(parents=True, exist_ok=True)
     (d / f'{rid}.json').write_text(json.dumps(doc, indent=1, ensure_ascii=False) + NL, encoding='utf-8', newline=NL)
+    refresh_catalogue(d)
     return rid
+
+
+def refresh_catalogue(results_dir=RESULTS):
+    """Rebuild results/_catalogue.json so a saved run always has its row (the artifact test fails on an uncatalogued result file)."""
+    try:
+        import build_catalogue
+        build_catalogue.main(['--results', str(results_dir)])
+    except Exception as e:   # a run is never lost over the catalogue; the test catches a missing row
+        print(f'catalogue not refreshed: {e!r}', flush=True)
+
+
+def render_page():
+    """page.html with the wired studies named in the HTML itself (works before any script runs); built from STUDIES, no study is named here."""
+    import html
+    names = ''.join(f'<span class="chip" data-study="{html.escape(s.ID)}">{html.escape(s.TITLE)}</span>' for s in STUDIES.values())
+    return (HERE / 'page.html').read_text(encoding='utf-8').replace('<!--STUDIES-->', names).encode('utf-8')
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -404,8 +451,14 @@ class Handler(BaseHTTPRequestHandler):
         pass
 
     def do_GET(self):
+        self.path = self.path.split('?', 1)[0]
         if self.path in ('/', '/index.html'):
-            return self._send(200, (HERE / 'page.html').read_bytes(), 'text/html; charset=utf-8')
+            return self._send(200, render_page(), 'text/html; charset=utf-8')
+        if self.path == '/api/runs':
+            return self._send(200, runs_view.list_runs(RESULTS))
+        if self.path.startswith('/api/runs/'):
+            doc = runs_view.get_run(RESULTS, self.path[len('/api/runs/'):])
+            return self._send(200 if doc else 404, doc or {'error': 'no such run'})
         if self.path == '/api/studies':
             return self._send(200, [{'id': s.ID, 'title': s.TITLE, 'params': s.params(), 'defaults': s.normalize({}),
                                      'tries': count_tries(TRIALS, s)} for s in STUDIES.values()])
@@ -463,9 +516,32 @@ class Handler(BaseHTTPRequestHandler):
             self._send(500, {'error': 'Something went wrong in the run; nothing was logged. Details are in the desk window.'})
 
 
+class DeskServer(ThreadingHTTPServer):
+    allow_reuse_address = False   # on Windows reuse lets two desks share one port
+    daemon_threads = True
+
+
+def start_server(port=8765, open_browser=True):
+    """Bind 127.0.0.1 on `port`, or the next free one (port 0 = any free port). Returns (server, url); the caller serves."""
+    srv = None
+    for p in ([0] if port == 0 else range(port, port + 30)):
+        try:
+            srv = DeskServer(('127.0.0.1', p), Handler)
+            break
+        except OSError:
+            continue
+    if srv is None:
+        srv = DeskServer(('127.0.0.1', 0), Handler)
+    url = f'http://127.0.0.1:{srv.server_address[1]}'
+    if open_browser:
+        threading.Timer(0.5, lambda: webbrowser.open(url)).start()
+    return srv, url
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--port', type=int, default=8765)
+    ap.add_argument('--port', type=int, default=8765, help='first port to try (the next free one is used if busy)')
+    ap.add_argument('--no-browser', action='store_true', help='do not open the browser')
     ap.add_argument('--build', action='store_true', help='only build the data cache, then exit')
     a = ap.parse_args()
     if a.build:
@@ -473,8 +549,8 @@ def main():
             if hasattr(s, 'build_cache'):
                 s.build_cache()
         return
-    srv = ThreadingHTTPServer(('127.0.0.1', a.port), Handler)
-    print(f'Simulator desk on http://127.0.0.1:{a.port}  (Ctrl+C stops it)', flush=True)
+    srv, url = start_server(a.port, open_browser=not a.no_browser)
+    print(f'Simulator desk on {url}  (Ctrl+C stops it)', flush=True)
     try:
         srv.serve_forever()
     except KeyboardInterrupt:

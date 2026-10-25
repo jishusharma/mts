@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-24T23:31:35Z",
   "commands": [
     "python -m pytest -q MyTradingSys/execution/test_auto_trader.py"
   ],
@@ -15,6 +16,12 @@
   "id": "t09-f2-live-exits-match-tested-exits",
   "lane": "JIS-NB",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "per-layer exit table in auto_trader.py: rsi 15m/1h tested bracket, cc 1h event stop, rest ",
+      "ref": "e587164a8",
+      "utc": "2026-10-24T23:31:35Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refined_by": "",
   "refreshed": "2026-10-24T21:34:11Z",
   "refs": [],
-  "result": "",
+  "result": "per-layer exit table in auto_trader.py: rsi 15m/1h tested bracket, cc 1h event stop, rest SAMPLING; fail closed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/execution/auto_trader.py",
     "MyTradingSys/execution/auto_trader_config.json",
@@ -47,13 +59,14 @@
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T09_live_parity.md section 5 T09-F2, F6 and section 6",
     "F:/MTS/gq/gx4-t09-* (GPT drafting fixes on the NUC night of 2026-10-25; not read here; compare its draft before building)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read auto_trader.py l.69-75 and layer_signal l.433-445 plus the backtest exits in T09 section 6; list per layer family its tested exit (RSI 1%/2%/100 bars, cc structure stop + R target, Fabio/T055 fixed horizon).",
     "Add fail-first tests in test_auto_trader.py: layer_signal for a cc event with a stop uses the event stop (F6); an rsi alert gets the RSI tested bracket; an unknown layer with no per-layer exit fails closed to the labelled SAMPLING bracket.",
     "Add an optional per-layer exit table read by layer_signal: stop as % of entry (an event stop price is converted to % of the market entry; missing, zero or wrong-side stop rejects). Layers with no tested stop/target (Fabio, T055: fixed horizon only) keep the SAMPLING bracket and take only the tested hold. Default unchanged.",
     "Add tests: config reload/restart gives the same plan_args; a bad exit table entry rejects the signal (fail closed); non-trade balance moves and API errors do not reach layer_signal (no state); run test_auto_trader*.py."
   ],
+  "taken": "2026-10-24T23:31:35Z",
   "tests": "test_auto_trader.py new test_layer_exit_per_layer (rsi 1%/2%, cc uses event stop, unknown layer SAMPLING, bad table rejected): red on current code (one flat bracket), green after.",
   "title": "T09-F2 S1: live uses one 1%/2%/8-bar bracket for all layers; no layer traded with its tested exit (auto_trader.py:69-75, 439-444)",
   "weight": "CRITICAL",
