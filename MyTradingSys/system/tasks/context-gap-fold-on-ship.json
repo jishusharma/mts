@@ -2,6 +2,20 @@
   "approved_by": "operator 2026-10-25 via MTS_Doctor",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 15,
+    "folded": "2026-10-25T12:40:54Z",
+    "misses": 28,
+    "reads": [
+      "scripts/dev/test_tasks.py",
+      "scripts/dev/test_context_gap.py",
+      ".claude/settings.json",
+      "scripts/dev/test_preship.py",
+      "scripts/dev/extra_tests.tsv",
+      "scripts/dev/task_state.py"
+    ],
+    "session": "agent-a8f30f7dfd89a9c30"
+  },
   "created": "2026-10-25T08:00:35Z",
   "depends_on": [],
   "done_when": "Fixture transcript+card: after fold the card carries context.reads (<=8, trunk paths only) and brief prints Read first/Ruled out/Traps/First commands; test red on old code; one real ship folds a real card; fold adds <3 s.",
