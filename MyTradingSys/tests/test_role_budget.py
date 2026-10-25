@@ -11,9 +11,10 @@ REPO = Path(__file__).resolve().parents[2]
 ROLES = REPO / "MyTradingSys" / "system" / "roles"
 
 BUDGET = {  # bytes, OURS
-    "1985artifacts_guy.md": 2200, "admin_guy.md": 5200, "builder.md": 1500, "eagle_eyes.md": 7100, "lab_guy.md": 8300,
-    "mts_doctor.md": 1700, "pipeliner.md": 9200, "session_planner.md": 11500, "supervisor.md": 7500, "thinker.md": 9300,
+    "1985artifacts_guy.md": 2200, "builder.md": 1500, "eagle_eyes.md": 7100, "lab_guy.md": 8300,
+    "lead.md": 4000, "session_planner.md": 11500, "supervisor.md": 7500,
 }
+MODE_BUDGET = {"think.md": 7500, "pipeline.md": 8000, "admin.md": 5200, "doctor.md": 1800}  # roles/lead/, bytes with CRLF, OURS = size + ~5%
 
 RETIRED = [  # (pattern, why it is retired)
     (r"<=\s*40 turns", "turn caps replaced by context caps (WORKERS.md rule 5)"),
@@ -39,6 +40,11 @@ class TestRoleBudget(unittest.TestCase):
         for name in files:
             size = crlf_size((ROLES / name).read_bytes())
             self.assertLessEqual(size, BUDGET[name], f"{name} is {size} bytes with CRLF, budget {BUDGET[name]}")
+        modes = sorted(p.name for p in (ROLES / "lead").glob("*.md"))
+        self.assertEqual(sorted(MODE_BUDGET), modes)
+        for name in modes:
+            size = crlf_size((ROLES / "lead" / name).read_bytes())
+            self.assertLessEqual(size, MODE_BUDGET[name], f"lead/{name} is {size} bytes with CRLF, budget {MODE_BUDGET[name]}")
 
     def test_size_is_counted_as_on_windows(self):
         self.assertEqual(crlf_size(b"ab\ncd\n"), 8)
@@ -62,11 +68,11 @@ class TestRoleBudget(unittest.TestCase):
 
     def test_eagle_eyes_v4_think_mode(self):
         text = (ROLES / "eagle_eyes.md").read_text(encoding="utf-8")
-        self.assertIn("| version: v4 |", text.splitlines()[0])
+        self.assertIn("| version: v5 |", text.splitlines()[0])
         self.assertIn("## Think mode", text)
         sect = text.split("## Think mode", 1)[1].split("\n## ", 1)[0]
-        for needle in ("MISMATCH or NOT_IN_DATA", "roles/thinker.md", "LITE", "RECOMMEND", "Cost", "ROI", "Risk",
-                       "PENDING OPERATOR: needs Opus Thinker", "OPERATOR_DECISIONS.md", "tasks.py new", "STALE mirror",
+        for needle in ("MISMATCH or NOT_IN_DATA", "roles/lead/think.md", "LITE", "RECOMMEND", "Cost", "ROI", "Risk",
+                       "PENDING OPERATOR: needs Opus Lead", "OPERATOR_DECISIONS.md", "tasks.py new", "STALE mirror",
                        "no trade advice", "7 days"):
             self.assertIn(needle, sect, needle)
 

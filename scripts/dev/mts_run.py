@@ -41,7 +41,8 @@ EMPTY_SLEEP = 600
 MAX_FAILS = 3
 STOP_PCT = 90.0
 WEEK_S = 7 * 86400
-ROLE_FILES = {"Builder": "builder.md", "Lab_Guy": "lab_guy.md", "MTS_Doctor": "mts_doctor.md", "Pipeliner": "pipeliner.md"}
+ROLE_FILES = {"Builder": "builder.md", "Lab_Guy": "lab_guy.md", "MTS_Doctor": "lead/doctor.md", "Pipeliner": "lead/pipeline.md",
+              "Lead": "lead.md"}
 HOLD_ID = re.compile(r"^### (A-\d{8}-\d+) (?:HOLD|STOP)(?!.*(?:LIFTED|RETIRED|CLOSED))", re.M)
 
 
@@ -307,11 +308,22 @@ def run_once(card_id=None, dry=False, login=None, timeout=DEFAULT_TIMEOUT, allow
     return ("ok" if ok else "fail"), row
 
 
+def guard_tick():
+    """Once per cycle: the C: drive guard's hook (once-a-day and low-space runs; stamp file keeps it cheap). Best effort, never raises."""
+    try:
+        subprocess.run([sys.executable, str(Path(__file__).resolve().parent / "c_drive_guard.py"), "hook"],
+                       capture_output=True, timeout=30, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+    except Exception:
+        pass
+
+
 def loop(hours, login=None, max_parallel=1, sleep=time.sleep, clock=time.time, runner=None):
     login = login or os.environ.get("MTS_LOGIN", "default")
     end = clock() + hours * 3600
     fails = 0
     while clock() < end:
+        if runner is None:
+            guard_tick()
         stops = active_stop()
         if stops:
             print("STOP/HOLD active:", ", ".join(sorted(stops)))

@@ -1,5 +1,6 @@
 """scripts/dev/role_loader.py: role triggers, derived tokens, banner injection, SessionStart re-inject, check."""
 import json
+import re
 import subprocess
 import sys
 import tempfile
@@ -310,18 +311,31 @@ class TestRepoRoles(unittest.TestCase):
     def test_check_passes_on_repo(self):
         self.assertEqual(rl.check(REPO, lambda x: None), 0)
 
-    def test_merged_roles_and_aliases_open_the_new_role(self):
-        """Operator 2026-10-20: 7 top-level roles; old names stay aliases; a name may start with a digit."""
+    def test_old_role_lines_open_lead(self):
+        """Operator 2026-10-25: Thinker, Admin_Guy, Pipeliner, MTS_Doctor (and every old alias) are one Lead; 7 roles."""
         roles = rl.local_roles(REPO)
-        for new_name in ("1985Artifacts_Guy", "Admin_Guy", "Pipeliner", "Eagle_Eyes", "Lab_Guy", "MTS_Doctor", "Supervisor"):
-            self.assertIn(new_name, roles)
-        for gone in ("Artifacts_Guy", "Q&A_Helper", "Network_Admin_Guy", "Traffic_Controller"):
+        for name in ("Lead", "1985Artifacts_Guy", "Eagle_Eyes", "Lab_Guy", "Supervisor"):
+            self.assertIn(name, roles)
+        for gone in ("Thinker", "Admin_Guy", "Pipeliner", "MTS_Doctor", "Artifacts_Guy", "Q&A_Helper", "Traffic_Controller"):
             self.assertNotIn(gone, roles)
-        want = {"You are 1985Artifacts_Guy.": "1985Artifacts_Guy", "You are Artifacts_Guy.": "1985Artifacts_Guy",
-                "You are Admin_Guy.": "Admin_Guy", "You are Q&A_Helper.": "Admin_Guy", "You are Network_Admin_Guy.": "Admin_Guy",
-                "You are Traffic_Controller.": "Pipeliner", "You are Pipeliner.": "Pipeliner", "Start the Pipeliner.": "Pipeliner"}
+        want = {"You are Lead.": "Lead", "You are Thinker.": "Lead", "I need a thinker": "Lead", "You are Think_Guy.": "Lead",
+                "You are Admin_Guy.": "Lead", "You are Q&A_Helper.": "Lead", "You are Network_Admin_Guy.": "Lead",
+                "You are Pipeliner.": "Lead", "Start the Pipeliner.": "Lead", "You are Traffic_Controller.": "Lead",
+                "You are MTS_Doctor.": "Lead", "You are doctor.": "Lead", "be the think guy": "Lead",
+                "You are Supervisor.": "Supervisor", "You are Artifacts_Guy.": "1985Artifacts_Guy"}
         for prompt, name in want.items():
             self.assertEqual(rl.match_roles(prompt, roles), [name], prompt)
+
+    def test_lead_core_and_modes(self):
+        core = (REPO / rl.ROLES_REL / "lead.md").read_bytes().decode("utf-8").replace(chr(13) + chr(10), chr(10))
+        self.assertLessEqual(len(core) + core.count(chr(10)), 4000)
+        self.assertIn("ASKED WORK RUNS NOW", core)
+        self.assertIn("First message each day: run python scripts/dev/mts_doctor.py and show its HEALTH line in the reply.", core)
+        files = sorted(p.stem for p in (REPO / rl.ROLES_REL / "lead").glob("*.md"))
+        self.assertEqual(files, ["admin", "doctor", "pipeline", "think"])
+        self.assertEqual(sorted(re.findall(r"`roles/lead/(\w+)\.md`", core)), files)
+        pipe = (REPO / rl.ROLES_REL / "lead" / "pipeline.md").read_text(encoding="utf-8")
+        self.assertIn("lease.py acquire Pipeliner", pipe)
 
     def test_every_role_and_alias_has_a_file_and_banner(self):
         for name in rl.KNOWN_ROLES:
@@ -335,41 +349,6 @@ class TestRepoRoles(unittest.TestCase):
         for alias_of, olds in rl.ALIASES.items():
             self.assertIn(alias_of, rl.KNOWN_ROLES)
             self.assertTrue(olds)
-
-    def test_admin_guy_file_carries_the_guardrails_and_backlog_flow(self):
-        text = (REPO / rl.ROLES_REL / "admin_guy.md").read_text(encoding="utf-8")
-        for needle in ("VERBATIM", "Sonnet 5.5", "effort medium", "tasks.py new", "sync.py ship", "mts_signal.py send", "BACKLOG"):
-            self.assertIn(needle, text)
-
-    def test_admin_guy_runs_on_sonnet_everywhere(self):
-        # operator 2026-10-21: Admin_Guy off Haiku (bug-haiku-stale-rule-answers; research/model_economics_2026-10-21.md)
-        role = next(r for r in rl.load_roster(REPO) if r["name"] == "Admin_Guy")
-        self.assertTrue(role["model"].startswith("Sonnet 5.5"), role["model"])
-        self.assertEqual(role["lane"], "SONNET")
-        for rel in ("MyTradingSys/system/START_HERE.txt", "MyTradingSys/system/ROLES.md", f"{rl.ROLES_REL}/admin_guy.md"):
-            text = (REPO / rel).read_text(encoding="utf-8")
-            admin = [ln for ln in text.splitlines() if "Admin_Guy" in ln or "Model :" in ln[:9]]
-            self.assertFalse([ln for ln in admin if "Haiku 5.5" in ln and "Admin_Guy" in ln], rel)
-        self.assertNotIn("Haiku 5.5, effort HIGH", (REPO / "MyTradingSys/system/START_HERE.txt").read_text(encoding="utf-8"))
-
-    def test_thinker_role_registered_with_triggers_row_and_guardrails(self):
-        """Operator 2026-10-20: a Thinker design-partner role; Opus-capable, never builds, records choices verbatim."""
-        self.assertIn("Thinker", rl.KNOWN_ROLES)
-        roles = rl.local_roles(REPO)
-        self.assertIn("Thinker", roles)
-        for prompt in ("You are Thinker.", "I need a thinker", "You are thinker_guy", "You are Think_Guy.", "be the think guy"):
-            self.assertEqual(rl.match_roles(prompt, roles), ["Thinker"], prompt)
-        self.assertEqual(rl.banner("Thinker", "v1", "a-b", "thinker.md", "abc12345").split(":")[0], "ROLE LOADED")
-        self.assertIn("Thinker", rl.row_names(REPO))
-        text = (REPO / rl.ROLES_REL / "thinker.md").read_text(encoding="utf-8")
-        for needle in ("Opus", "LITE", "no cap", "traffic.py budget", "OPERATOR_DECISIONS.md", "tasks.py new",
-                       "Improvement scan", "`waste`", "Never"):   # RECOMMEND / PENDING OPERATOR left the role in c2c2a3f14 (10k hook cap)
-            self.assertIn(needle, text)
-        rolesmd = (REPO / rl.ROLES_MD_REL).read_text(encoding="utf-8")
-        self.assertIn("| `Thinker` |", rolesmd)
-        self.assertIn("You are Thinker.", (REPO / "MyTradingSys/system/START_HERE.txt").read_text(encoding="utf-8"))
-        import role_hook_launcher as rhl
-        self.assertIn("Thinker", rhl.KNOWN)
 
 
 class BootStepTests(unittest.TestCase):
