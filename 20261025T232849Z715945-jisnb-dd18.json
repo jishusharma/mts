@@ -1,0 +1,1 @@
+{"t": "20261025T232849Z", "from": "jis-nb/C", "to": "jis-nuc", "kind": "note", "text": "C->B: free slot: take argon-fix-defects-and-re-land (release its stale claim first), then tasks.py next --lane SONNET. Also review Gemini output only if a card asks; Opus review of the 10 lf branches ", "login": "C"}
