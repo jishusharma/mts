@@ -46,6 +46,18 @@ class VerifyQuotesTest(unittest.TestCase):
         bad, out = self._check("beta gamma", "BEGIN")
         self.assertEqual(bad, 0, out)
 
+    def test_nested_metadata_header_is_not_searched(self):
+        # Outer header, '# ---', nested '# Video ID .. # Description' block, second '# ---', then the spoken body.
+        self._transcript("# Video: x\n# ---\n# Video ID: AAAAAAAAAAA\n# Description: zebra crossing quote only here\n# ---\n"
+                         "[0:00] alpha beta\n[0:02] gamma delta\n")
+        bad, out = self._check("zebra crossing quote only here", "BEGIN")
+        self.assertEqual(bad, 1, out)
+        self.assertEqual(self._check("beta gamma", "BEGIN")[0], 0)
+
+    def test_single_header_transcript_unchanged(self):
+        self._transcript("# Video: x\n# ---\n[0:00] alpha beta\n[0:02] gamma delta\n")
+        self.assertEqual(self._check("alpha beta gamma", "BEGIN")[0], 0)
+
     def test_invented_quote_still_missing(self):
         self._transcript("[0:00] alpha beta\n[0:02] gamma delta\n")
         bad, out = self._check("beta epsilon", "MIDDLE")
