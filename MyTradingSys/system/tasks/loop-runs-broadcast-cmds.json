@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": 12,
+    "folded": "2026-10-25T12:50:41Z",
+    "misses": 11,
+    "reads": [
+      "scripts/dev/test_mts_signal.py"
+    ],
+    "session": "agent-a018f46c4135896b2"
+  },
+  "created": "2026-10-25T12:50:17Z",
+  "depends_on": [],
+  "done_when": "A test broadcast with an allowlisted cmd, sent while only the loop runs on a host, is executed once and acked done within 15 minutes; a non-allowlisted cmd is not run and shows in mts_doctor BROADCAST; tests cover failure, repeat-run and restart.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "A host that runs the live `mts_run loop` but no Claude session (the Lenovo) acks and runs HIGH broadcast commands that are on an allowlist, so a broadcast no longer waits for a session that never comes.",
+  "id": "loop-runs-broadcast-cmds",
+  "lane": "JIS-NB",
+  "layers": [],
+  "live_path": true,
+  "mutation_check": "",
+  "note": "Operator 2026-10-25: broadcast is a feature that needs immediate acknowledgement. Guardrails shipped (told expires after 2 h; pending verb; mts_doctor BROADCAST). This card is the LIVE-PATH half and was deliberately left out of that ship. Approach: allowlist file MyTradingSys/system/BROADCAST_CMD_ALLOWLIST.json of exact command strings or regexes (e.g. `python scripts/dev/c_drive_guard.py install`); each loop tick (low frequency, e.g. every 10 min) runs `mts_signal.py pending --host <h> --json`, runs a cmd only when it matches the allowlist exactly, with a timeout, no shell metacharacters, logging to runtime_data/broadcast_cmds.log, then `ack <id> done --note` (or `told --note <exit code/blocker>` on failure). A cmd not on the allowlist is never run: it stays pending so mts_doctor BROADCAST warns. Fail closed: any parse/network error skips the tick; never touches orders, HALT files or the trading loop state. Live-path rules apply: tests for restart/reset state, non-trade balance moves and API errors; deploy only by the manual runbook.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "scripts/dev/mts_signal.py",
+    "scripts/dev/mts_doctor.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/mts_signal.py",
+    "MyTradingSys/system/BROADCAST_CMD_ALLOWLIST.json",
+    "live loop tick hook (find with grep mts_run loop)"
+  ],
+  "scope_out": [
+    "executing any cmd not on the allowlist",
+    "orders, accounts, HALT files",
+    "changing ack semantics (told TTL stays 2 h)"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "Write the allowlist file and a loader that fails closed",
+    "Add a loop-tick function calling pending --host --json and running only allowlisted cmds",
+    "Write the five tests, then hand the deploy to the manual runbook"
+  ],
+  "tests": "New tests: allowlisted cmd runs once; non-allowlisted never runs; failing cmd acks told with note; restart does not rerun a done id; network error skips the tick.",
+  "title": "loop-runs-broadcast-cmds: live loop executes allowlisted HIGH broadcast cmds on hosts with no session",
+  "weight": "",
+  "worker": "session"
+}
