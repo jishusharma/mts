@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T18:16:45Z",
   "commands": [
     "mvn -q test -Dtest=StateCodeEmitterTest,MarketDataSnapshotTest"
   ],
@@ -27,6 +28,12 @@
   "lane": "JIS-NB",
   "latest": [
     {
+      "kind": "ship",
+      "line": "code shipped b795342b0, review ACCEPT",
+      "ref": "a98dcf13c",
+      "utc": "2026-10-25T18:16:45Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "StateCodeEmitter: kline backfill of session CVD/VWAP sums, fail closed; vwap_anchor_utc = ",
@@ -45,7 +52,12 @@
   "refined_by": "",
   "refreshed": "2026-10-24T21:36:13Z",
   "refs": [],
-  "result": "",
+  "result": "code shipped b795342b0, review ACCEPT",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "src/main/java/datafeed/StateCodeEmitter.java",
     "src/test/java/datafeed/StateCodeEmitterTest.java"
@@ -58,7 +70,7 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-20_review-statecode-backfill-gpt.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "FIRST write failing test lateFrameBeforeSeamIsIgnoredAfterBackfill in StateCodeEmitterTest (330-bar fixture BARS1/CONNECT/NOW1/M1, setup as restartReplacesStaleRestoredSumsWithBackfill): after backfillNow() deliver trade(M1-1, buy qty 2) and emit.",
     "Assert session_cvd stays 1320, session_cum_vol stays 3300, valid=true. Run on UNCHANGED code and record that it FAILS (GPT probe LATE_PRE_M: 1322 / 3302).",
@@ -69,6 +81,7 @@
     "Run mvn -q test -Dtest=StateCodeEmitterTest,MarketDataSnapshotTest and python scripts/dev/run_all_tests.py --quick. CRITICAL: review session mid-session and pre-ship; builder never deploys.",
     "Verify: content commit sha, git cherry origin/fast-track <sha> empty AND git ls-tree -r origin/fast-track --name-only shows both files."
   ],
+  "taken": "2026-10-25T18:16:45Z",
   "tests": "StateCodeEmitterTest.lateFrameBeforeSeamIsIgnoredAfterBackfill (new, fails on e4bcc09fd: 1322/3302); plus T=M, reconnect, midnight, non-trade and API-error variants; run: mvn -q test -Dtest=StateCodeEmitterTest,MarketDataSnapshotTest",
   "title": "StateCodeEmitter: exclude late pre-boundary ticks after backfill completion",
   "weight": "CRITICAL",

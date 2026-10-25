@@ -74,3 +74,14 @@ A second task-mode send while one is live returns the live rid in the chat; a sc
 ## Not the fix
 
 Pressing the block again by hand. That worked around it once and cost the operator three waits.
+
+## Built 2026-10-25 (Builder, JIS-NB; F:\AIBridge commit 7650182)
+
+Changes (agent.ps1, content.js; test tests\b195_receipts.ps1, throwaway agent on its own port):
+- Agent: every task-mode send writes one line to src\bridge.log (rid, task, repo, accepted|duplicate|refused, reason); an accepted run carries ack=accepted and its rid; a second send of the same task+repo (inline: same plan) while one is live is refused with receipt=duplicate, reason "duplicate_rid: ... already running as rid <live>", live_rid=<live>.
+- Extension: auto-off now posts "[AIRUN AUTO-OFF] hands-free turned itself off: <reason> ... Re-arm: ..." into the chat (plus the card); an operator draft no longer blocks our post (draft is set aside and put back); the next real (trusted) operator Enter or send click re-arms an auto-off.
+- DECISION (OURS): the accepted ack is the ack field on the response plus the bridge.log line (HTTP is one call per block; a separate early chat post would add a message DSA answers). DECISION (OURS): extension checks are source checks, not a live chat run; the live agent needs a restart and extension reload to pick this up (operator/coordinator step, not done here). DECISION (OURS): stale/busy receipts rely on the existing refusal path (busy already 403 with a reason).
+
+Receipts (live HTTP against the throwaway agent):
+- NEW code: 15 checks PASS, "B195 RECEIPTS: PASS". Duplicate: second send returned receipt=duplicate, live_rid equal to the first rid; first run returned ack=accepted and its output; screened-out plan returned HTTP 403 receipt=refused with "denied_path"; bridge.log held exactly one line per rid (accepted, duplicate, refused).
+- OLD code (.pre_b195 copies): "B195 RECEIPTS: FAIL (11)": the duplicate ran a second time (no reason, no live rid), no ack, no receipt field, no bridge.log, none of the four extension behaviours present.
