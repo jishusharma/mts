@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T22:40:02Z",
   "commands": [
     "python -m pytest scripts/dev/test_usage_log.py -q"
   ],
@@ -16,6 +17,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "already delivered in ec2fa173e (usage_log.py + test_usage_log.py 11/11)",
+      "ref": "7e79e4dab",
+      "utc": "2026-10-25T22:40:02Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,7 +40,12 @@
   "refined_by": "",
   "refreshed": "2026-10-24T21:38:45Z",
   "refs": [],
-  "result": "",
+  "result": "already delivered in ec2fa173e (usage_log.py + test_usage_log.py 11/11)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/usage_log.py",
     "scripts/dev/test_usage_log.py",
@@ -50,7 +62,7 @@
   "sources": [
     "MyTradingSys/research/thinker/2026-10-23_usage_metering.md (Pilot design, Check)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write the test first, run it with no usage_log.py (fails), then build. The test asserts the exact 19-column header line of MyTradingSys/research/USAGE_PILOT.csv (codex_5h_pct,codex_week_pct,gemini last; row takes optional --codex5h --codexweek --gemini, blank default).",
     "row --card --step --lane --model --before 'five,week,fable' --after 'five,week,fable' [--transcript P --minutes N --source S]: exit 1 and no write if either read is missing; header written only if the file is absent.",
@@ -58,6 +70,7 @@
     "idle --reset <UTC ISO>: 5h% and week% from the newest CSV row of the lane (pct5h_after, pctweek_after); IDLE <lane> when 5h<40% and a task card with that lane is ready, or week% under pace (elapsed share of 7 days from --reset) with no claim in sync.py claims, within 60 min of reset. Thresholds OURS.",
     "summary: row count and mean (tokens_in+out+cache) per card kind (kind = card worker field), over rows that have token cells."
   ],
+  "taken": "2026-10-25T22:40:02Z",
   "tests": "test_usage_log.py: test_row_refuses_missing_after_read fails first (no module); plus header-exact, parser sums on a hand-made JSONL, malformed file exits 0, idle fires/stays silent at the 40% and 60-minute edges.",
   "title": "usage_log.py: per-step usage ledger, transcript token parser, idle-lane report",
   "weight": "IMPORTANT",
