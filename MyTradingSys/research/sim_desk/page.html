@@ -33,6 +33,14 @@
   .charts { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:10px; }
   .charts figure { margin:0; background:#fff; border:1px solid var(--line); border-radius:8px; padding:4px; }
   .charts svg { width:100%; height:auto; display:block; }
+  .fold { margin:10px 0; } .fold > summary { cursor:pointer; color:var(--mute); font-size:13px; }
+  #bd { display:none; margin:10px 0; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 12px; }
+  #bd h2 { font-size:14px; margin:0 0 4px; }
+  #bd .grp { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:10px; }
+  #bd table { border-collapse:collapse; font-size:12px; width:100%; }
+  #bd td, #bd th { padding:2px 8px; text-align:right; border-bottom:1px solid var(--line); }
+  #bd td:first-child, #bd th:first-child { text-align:left; }
+  #bd .few { color:var(--wait); }
   footer { color:var(--mute); font-size:12px; margin-top:10px; }
   #qs { margin-top:14px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 12px; }
   #qs h2 { font-size:14px; margin:0 0 4px; }
@@ -84,8 +92,9 @@
     <div class="row"><input type="range" id="eqscrub" min="0" max="0" value="0"><span id="eqwhen"></span></div>
     <table id="eqcmp"></table></div>
   <div id="tl"><b>Filled trades</b> <span class="mute" style="font-size:12px">click a row to see its candle chart</span><div class="scroll"><table id="tltab"></table></div><div id="tchart"></div></div>
-  <div class="charts" id="charts"></div>
-  <footer id="foot"></footer>
+  <section id="bd"></section>
+  <details id="chartbox" class="fold"><summary>Example trade charts</summary><div class="charts" id="charts"></div></details>
+  <details id="ledgerbox" class="fold"><summary>Trial ledger and run details</summary><footer id="foot"></footer></details>
   <section id="runs"><h2>Saved runs</h2><div class="say">Every run you do is saved here. Tick two to see them side by side. Read-only: nothing is fetched or re-run.</div>
     <table id="runtab"></table><div id="sbs"></div></section>
   <section id="qs"><h2>Questions for you</h2><div id="qlist"></div></section>
@@ -322,6 +331,7 @@ function show(o) {
       d.append(bb, sp); $('nums').appendChild(d);
     }
   }
+  breakdown(o.breakdown);
   $('charts').innerHTML = '';
   for (const c of o.charts) {
     const f = document.createElement('figure'); f.innerHTML = c.svg; f.title = 'typical ' + c.kind; $('charts').appendChild(f);
@@ -332,6 +342,23 @@ function show(o) {
     `Run time ${o.run_seconds} s${o.cached ? ' (cached)' : ''}. ` +
     (o.already_tried ? 'Same settings as an earlier try: not logged again. ' : `Trial #${o.try_no} logged. `) +
     `Setups tried on this data so far: ${o.try_no} here + ${o.prior_tries} by the original study.`;
+}
+function breakdown(B) {
+  const box = $('bd'); box.innerHTML = '';
+  if (!B || !['year', 'side', 'hour'].some(g => (B[g] || []).length)) { box.style.display = 'none'; return; }
+  box.style.display = 'block';
+  const h = document.createElement('h2'); h.textContent = 'Where the trades came from (filled trades, average net R)'; box.appendChild(h);
+  const grp = document.createElement('div'); grp.className = 'grp'; box.appendChild(grp);
+  for (const [g, name] of [['year', 'Year'], ['side', 'Side'], ['hour', 'Hour of day']]) {
+    const t = document.createElement('table'), hr = t.insertRow();
+    for (const x of [name, 'trades', 'avg net R', '']) { const c = document.createElement('th'); c.textContent = x; hr.appendChild(c); }
+    for (const r of B[g] || []) {
+      const tr = t.insertRow();
+      tr.insertCell().textContent = r.k; tr.insertCell().textContent = r.n; tr.insertCell().textContent = fmt(r.mean);
+      const f = tr.insertCell(); if (r.few) { f.textContent = 'too few trades'; f.className = 'few'; tr.title = 'under 30 trades: do not read anything into it'; }
+    }
+    grp.appendChild(t);
+  }
 }
 const picked = [];
 async function loadRuns() {

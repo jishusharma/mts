@@ -131,6 +131,34 @@ def trade_list(res):
             'r': [round(float(x), 3) for x in net], 'cum': [round(float(x), 3) for x in np.cumsum(net)]}
 
 
+MIN_BUCKET = 30   # a row under this many filled trades is marked 'too few trades'
+
+
+def breakdown(res):
+    """Filled trades split by year, side and UTC hour bucket: {group: [{'k', 'n', 'mean', 'few'}]}. Reads the run's own arrays only.
+    The trade rows carry no exit or no-fill reason, so there are no reason columns."""
+    L = trade_list(res)
+    t = np.asarray(L['t'], dtype='int64')
+    r = np.asarray(L['r'], float)
+    sd = np.asarray(L['side'])
+    ts = t.astype('datetime64[ms]')
+    year = ts.astype('datetime64[Y]').astype(int) + 1970
+    hour = (t // 3_600_000) % 24
+
+    def rows(keys, names):
+        out = []
+        for k, name in names:
+            m = keys == k
+            n = int(m.sum())
+            if n:
+                out.append({'k': name, 'n': n, 'mean': round(float(r[m].mean()), 3), 'few': n < MIN_BUCKET})
+        return out
+    ys = sorted(set(year.tolist()))
+    return {'year': rows(year, [(y, str(y)) for y in ys]),
+            'side': rows(np.sign(sd), [(1, 'long'), (-1, 'short'), (0, 'unknown')]),
+            'hour': rows(hour // 4, [(b, f'{b * 4:02d}-{b * 4 + 4:02d} UTC') for b in range(6)])}
+
+
 def trade_chart(study, p, cond, i, cache_dir=CACHE, progress=print):
     """SVG candle chart of trade i (index into the run's arrays after the condition filter), or None."""
     import charts as ch
@@ -265,7 +293,7 @@ def run_setting(study, p, trials_path=TRIALS, cache_dir=CACHE, progress=print, c
            'label': study.label(q), 'settings': q, 'cond': cond, 'cond_label': conditions.label(cond), 'n_before_cond': before, 'n': st.get('n', 0), 'mean': st.get('mean'), 'lo': st.get('lo'),
            'hi': st.get('hi'), 'streak': st.get('streak', 0), 'win_rate': st.get('win_rate'),
            'try_no': count_tries(trials_path, study), 'prior_tries': len(_rows(trials_path, f"| {study.PRIOR_TAG} ")) if hasattr(study, 'PRIOR_TAG') else 0,
-           'stats': {k: v for k, v in st.items() if isinstance(v, (int, float))}, 'charts': [], 'curve': curve(res), 'numbers': numbers(res), 'trades': trade_list(res)}
+           'stats': {k: v for k, v in st.items() if isinstance(v, (int, float))}, 'charts': [], 'curve': curve(res), 'numbers': numbers(res), 'trades': trade_list(res), 'breakdown': breakdown(res)}
     out['curve']['mc'] = monte_carlo(res, out['curve']['idx']) if out['curve'].get('n') else None
     tries = out['try_no'] + out['prior_tries']
     k = out['numbers']
@@ -390,7 +418,17 @@ def export_result(out, study, results_dir=RESULTS):
     d = Path(results_dir)
     d.mkdir(parents=True, exist_ok=True)
     (d / f'{rid}.json').write_text(json.dumps(doc, indent=1, ensure_ascii=False) + NL, encoding='utf-8', newline=NL)
+    refresh_catalogue(d)
     return rid
+
+
+def refresh_catalogue(results_dir=RESULTS):
+    """Rebuild results/_catalogue.json so a saved run always has its row (the artifact test fails on an uncatalogued result file)."""
+    try:
+        import build_catalogue
+        build_catalogue.main(['--results', str(results_dir)])
+    except Exception as e:   # a run is never lost over the catalogue; the test catches a missing row
+        print(f'catalogue not refreshed: {e!r}', flush=True)
 
 
 def render_page():
