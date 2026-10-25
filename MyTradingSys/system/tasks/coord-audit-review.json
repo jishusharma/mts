@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-25T23:11:24Z",
+  "depends_on": [],
+  "done_when": "CLAUDE_REVIEW.md has a verdict and proof for all seven findings, reviewed repair order, and shipped content revision.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independently validate the seven findings and repair order in coordination_audit_20261026/REPORT.md. Operator explicitly requested high-priority Claude review.",
+  "id": "coord-audit-review",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "HIGH PRIORITY operator request 2026-10-26. Review only. Assertions in reproduce.py demonstrate defects; they are not regression tests for fixed behavior.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "Codex audit; operator requested independent Claude review",
+  "refreshed": "2026-10-25T23:11:24Z",
+  "refs": [],
+  "result": "",
+  "role": "Lead",
+  "scope_in": [
+    "MyTradingSys/research/coordination_audit_20261026/CLAUDE_REVIEW.md"
+  ],
+  "scope_out": [
+    "Production code changes, deploys, restarts, deleting claims, new schedulers"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/coordination_audit_20261026/REPORT.md",
+    "MyTradingSys/research/coordination_audit_20261026/reproduce.py"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read REPORT.md and reproductions.json; audited revision ec00608e96a2249bb9fadf310ddd4199ecd3f6ef.",
+    "Run reproduce.py from a worktree; it uses local temporary remotes and asserts observed defects. Compare current trunk before calling an issue still open.",
+    "Write ACCEPT / REJECT / ALREADY FIXED per finding with file:line and reproduction evidence; prioritize smallest end-to-end repairs. Reuse existing cards.",
+    "Ship the review report; no implementation in this task."
+  ],
+  "tests": "Rerun the supplied hermetic demonstrations and relevant existing tests; report exact pass/fail counts and any environment limitation.",
+  "title": "Priority review: proven cross-station task-flow defects",
+  "weight": "ROUTINE",
+  "worker": "session"
+}
