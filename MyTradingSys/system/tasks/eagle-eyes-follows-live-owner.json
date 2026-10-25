@@ -4,6 +4,22 @@
   "commands": [
     "python -m pytest scripts/dev/test_live_mirror.py -q"
   ],
+  "context": {
+    "calls_to_edit": 16,
+    "folded": "2026-10-25T13:21:21Z",
+    "misses": 13,
+    "reads": [
+      "scripts/dev/test_live_mirror.py",
+      "scripts/core/loop-supervisor.ps1",
+      "scripts/dev/supervisor.py",
+      "MyTradingSys/system/live_host.txt",
+      "scripts/dev/shot.py",
+      "MyTradingSys/system/LIVE_HOST_MOVE.md",
+      "mts.ps1",
+      "scripts/dev/run_all_tests.py"
+    ],
+    "session": "agent-a44fc1a9a8b35a84e"
+  },
   "created": "2026-10-25T12:04:14Z",
   "depends_on": [],
   "done_when": "python -m pytest scripts/dev/test_live_mirror.py scripts/dev/test_loop_supervisor_grace.py passes; brief from JIS-NB names desktop-f7iu69n and refuses stale numbers",
