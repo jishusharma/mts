@@ -10,7 +10,7 @@ Design history (measured overhead, SV1-SV6, review): `handoff_history/supervisor
 ## The wake loop (every wake: operator turn, session note, or the watcher exiting)
 1. `python scripts/dev/supervisor.py tick --json` (until SV2: `tasks.py dispatch --json`, `desk.py sweep --json`, `ci_watch.py`). Read nothing else
    unless the tick names it. `get_usage` once (MCP; write `~/.claude/mts-budget.json`, tick reads it).
-2. Decide, in this order: CI RED -> stop dispatch, one `ci-<sha>` worker (pinned card). Budget THROTTLE -> no spawn. A note in -> verify it (below),
+2. Decide, in this order: CI RED -> stop dispatch; the author reverts, else you revert (CLAUDE.md boot step 2); no `ci-<sha>` worker. Budget THROTTLE -> no spawn. A note in -> verify it (below),
    mark the worker completed, take its next card if the brief chained one. Free slots -> fill from the dispatch list.
 3. Re-channel: a finished result may go to Codex lab / DSA desk / Gemini / Haiku checker when that lane is better; the Thinker names the lane, the coordinator runs `desk.py post` / `tasks.py apply-op`.
    Act in ONE message: every `start_session` / Agent / `mark_completed` / SendMessage call of this wake in parallel.
@@ -99,3 +99,7 @@ Stay out of ROUTING.md (Pipeliner owns it).
 | sv6-remeasure | commit `coord_overhead.py` (scripts/dev + test + wiring entry), rerun per session on the next 2 super sessions | agent, Sonnet | 12 |
 | sv7-host-gate-budget | gate slots machine-wide (not per git dir), prechecks counted, queue/service/retry times logged | session, Sonnet (CRUCIAL: gate) | 25 |
 | sv8-guard-supervisor-messages | model_guard: deny SendMessage/send_message to a Fable session or a session this one did not start | agent, Sonnet | 12 |
+
+## Long runs and compaction (operator 2026-10-21)
+Auto-compaction is the safety net, not the plan: `plan` records readings, `list_sessions {"linked": true}` lists your workers, the card board and `git cherry` say what landed.
+After a summary, or on doubt: run `plan` again and rebuild from those, never memory. Read worker notes for Result:/sha only, never a transcript. Workers stay capped by turn_meter and hand over.
