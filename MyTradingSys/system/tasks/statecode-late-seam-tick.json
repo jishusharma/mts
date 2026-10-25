@@ -6,7 +6,7 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-25T15:45:47Z",
+    "folded": "2026-10-25T16:11:01Z",
     "misses": 23,
     "reads": [
       "src/test/java/datafeed/StateCodeEmitterTest.java",
