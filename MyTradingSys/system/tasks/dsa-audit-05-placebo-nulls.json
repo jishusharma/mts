@@ -11,18 +11,19 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-25T19:18:32Z",
-    "misses": 18,
+    "folded": "2026-10-25T19:24:28Z",
+    "misses": 25,
     "reads": [
       "scripts/dev/codex_run.py",
       "scripts/dev/gemini_queue.py",
       "scripts/dev/tasks.py",
       "scripts/dev/mts_signal.py",
+      "scripts/dev/role_loader.py",
       "MyTradingSys/system/GEMINI_START.md",
       "MyTradingSys/system/ROLES.md",
-      "MyTradingSys/system/ROUTING.md"
+      "scripts/dev/sync.py"
     ],
-    "session": "efa59332-f287-47b5-8b8a-8477b1e1fd60"
+    "session": "8bde350e-7628-4a31-b5a0-974378275dbd"
   },
   "created": "2026-10-15T23:28:58Z",
   "depends_on": [],
