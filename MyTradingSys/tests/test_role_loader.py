@@ -462,10 +462,6 @@ class TestRoleLineReview(Base):
         self.assertEqual(rl.match_roles(5, roles), [])
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class TestModeCommand(Base):
     """K1 role-loader-mode-command: `role_loader.py mode <name>` serves roles/lead/<name>.md from trunk, fails closed."""
     REL = f"{rl.ROLES_REL}/lead/think.md"
@@ -501,3 +497,7 @@ class TestModeCommand(Base):
             self.assertEqual(rc, 1, name)
             self.assertIn("MODE NOT LOADED", out)
             self.assertNotIn("MODE LOADED:", out)
+
+
+if __name__ == "__main__":
+    unittest.main()
