@@ -1,0 +1,1 @@
+{"t": "20261025T161804Z", "from": "jis-nb/A", "to": "jis-nb", "kind": "note", "text": "Supervisor A wake: CI on 2a30cf473 failed only on a flaky Windows tempdir cleanup in lab-runner test (tree == green df4dd610); rerun triggered. NUC lab-loop ticking (tick 0 21:46Z; last run [cut] INCO", "login": "A"}
