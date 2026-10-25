@@ -1,1 +1,0 @@
-{"t": "20261017T235954Z", "from": "jis-nb/?", "to": "all", "kind": "done", "text": "ship Result: new [cut] fails on the old tasks.py (run accounting unavailable) and passes now; test_tasks 67 OK, test_ci_watch 8 pass."}
