@@ -739,8 +739,16 @@ def cmd_status(a):
     print(status_line(cards))
 
 
+def stop_tag(c, repo=None):
+    """The STATE tag when the card's work is already on trunk (SHIPPED) or its scope moved on (STALE), else ''."""
+    repo = repo or REPO
+    tag = TS.state_tag(c, repo, claim_of(c, open_claims(repo)), registry(repo))
+    return tag if tag.startswith(("SHIPPED", "STALE")) else ""
+
+
 def cmd_next(a):
     cs, _ = ready_cards(REPO, a.lane)
+    cs = [c for c in cs if not stop_tag(c)]   # C3: never hand out a card whose work is on trunk or whose scope is stale
     if not a.lane:   # CODEX cards belong to the layer-lab runner; a Claude session asking "what next" never sees them
         cs = [c for c in cs if c["lane"] != "CODEX"]
     held = open_claims(REPO)
@@ -763,6 +771,9 @@ def cmd_brief(a):
     miss = problems(c, load_all(REPO), registry(REPO))
     if miss:
         raise SystemExit(f"tasks: {a.id} is not ready: " + "; ".join(miss))
+    stop = stop_tag(c)
+    if stop:
+        print(f"STOP: STATE {stop}. Nothing to build from this card; check `tasks.py tag {a.id}`, then `tasks.py done` or `tasks.py tag --refresh`.")
     print(brief(c))
     print(chr(10).join(TS.latest_block(c, REPO, TS.state_tag(c, REPO, claim_of(c, open_claims(REPO)), registry(REPO)))))
 
@@ -1207,6 +1218,9 @@ def cmd_take(a):
     c = get(REPO, a.id)
     if c["state"] != "ready":
         raise SystemExit(f"tasks: {a.id} is {c['state']}, only a ready card can be taken")
+    stop = stop_tag(c)
+    if stop:
+        raise SystemExit(f"tasks: {a.id} cannot be taken: STATE {stop} (work already on trunk or scope stale)")
     mark_shared_bases(c, REPO)
     gate = review_gate(c, repo=REPO)
     if gate:

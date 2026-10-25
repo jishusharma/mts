@@ -1,6 +1,7 @@
 {
   "approved_by": "operator 2026-10-25 via MTS_Doctor",
   "asks": "",
+  "closed": "2026-10-25T11:57:14Z",
   "commands": [
     "python scripts/dev/tasks.py brief tc4-desk-done-once"
   ],
@@ -15,6 +16,12 @@
   "id": "tasks-next-hides-shipped-stale",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "next hides, take refuses, brief opens STOP for SHIPPED/STALE; tc4-desk-done-once brief sta",
+      "ref": "5ffbd2337",
+      "utc": "2026-10-25T11:57:14Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,7 +41,12 @@
   "refs": [
     "MyTradingSys/research/mts_doctor/CONTEXT_FILES_DESIGN.md"
   ],
-  "result": "",
+  "result": "next hides, take refuses, brief opens STOP for SHIPPED/STALE; tc4-desk-done-once brief starts with STOP",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/tasks.py; MyTradingSys/tests/test_tasks_stop.py"
   ],
@@ -44,12 +56,13 @@
   "scope_sha": "753075e764a5",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add stop_reason(card) from task_state.state_tag",
     "Filter next, refuse in take, STOP first line in brief",
     "Tests, then check tc4-desk-done-once"
   ],
+  "taken": "2026-10-25T11:57:14Z",
   "tests": "MyTradingSys/tests/test_tasks_stop.py in-process fixtures: shipped/stale ready card absent from next, take refuses, brief first line STOP. Fail on old tasks.py.",
   "title": "tasks-next-hides-shipped-stale (C3): next hides, take refuses SHIPPED/STALE cards",
   "weight": "ROUTINE",
