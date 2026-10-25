@@ -1,0 +1,54 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-25T11:31:27Z",
+  "depends_on": [],
+  "done_when": "A ship touching sync.py logs under 120 s in runtime_data/gate_timing.jsonl; the 10-min second-ship refusal is a note.",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Every sync.py ship finishes in under 2 minutes, including a change to a gate file.",
+  "id": "ship-under-2-min",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sync.py ship: decide docs vs code with gate_select's rule so mixed role md + card json run",
+      "ref": "94da8e585fd5",
+      "utc": "2026-10-25T11:02:04Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-25T11:54:29Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/sync.py",
+    "scripts/dev/gate_select.py",
+    "scripts/dev/run_all_tests.py",
+    "scripts/dev/host_health.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "94da8e585fd5",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "gate files run smoke + tests naming them under a budget",
+    "second-ship refusal becomes a note",
+    "time-box host_health disk scan"
+  ],
+  "tests": "scripts/dev/test_gate_select.py, test_run_all_tests.py (TestGateFileShipBudget), test_host_health.py, test_sync.py",
+  "title": "ship-under-2-min",
+  "weight": "",
+  "worker": "session"
+}
