@@ -1,12 +1,12 @@
 {
  "allowance": {
   "plan": "plus",
-  "week_resets": 1793514999,
-  "week_used": 4.0,
-  "window_resets": 1792981854,
-  "window_used": 23.0
+  "week_resets": 1793427295,
+  "week_used": 16.0,
+  "window_resets": 1792988461,
+  "window_used": 0
  },
- "at": "2026-10-25T22:59:25Z",
+ "at": "2026-10-25T23:21:01Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -18,18 +18,33 @@
  "host": "JIS-NUC",
  "lab": {
   "astra_runs": 0,
-  "week_pts": 9.5,
-  "window_pts": 51.0,
-  "window_runs": 4
+  "week_pts": 10.5,
+  "window_pts": 59.0,
+  "window_runs": 14
  },
  "runs": [
+  {
+   "at": "2026-10-25T23:20:58Z",
+   "card": "lf-rsi-gpt-rederive",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "Codex credits ran out; the card stays ready, is not charged a try, and the GPT lane is marked down",
+   "outcome": "LIMIT",
+   "seconds": 2,
+   "tokens_out": null,
+   "tokens_total": null,
+   "tokens_uncached": null,
+   "week_pts": null,
+   "window_pts": null
+  },
   {
    "at": "2026-10-25T22:59:22Z",
    "card": "astra-low-confluence-prereg-leak-hunt",
    "effort": "low",
    "kind": "audit",
    "model": "astra",
-   "note": "",
+   "note": " | release failed: sync: no claim astra-low-confluence-prereg-leak-hunt on origin/claims",
    "outcome": "INCOMPLETE",
    "seconds": 2,
    "tokens_out": null,
@@ -155,21 +170,6 @@
    "tokens_out": 5655,
    "tokens_total": 492030,
    "tokens_uncached": 49383,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-25T19:37:00Z",
-   "card": "trust-recheck-gptb-forward-excursion-hel",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 49,
-   "tokens_out": 3967,
-   "tokens_total": 279243,
-   "tokens_uncached": 30540,
    "week_pts": 0.0,
    "window_pts": 0.0
   }

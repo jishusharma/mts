@@ -13,10 +13,10 @@ GARBLED = a stop sentence exists but the translation is unreadable; CHART-POINT 
 
 | id | video | setup | side | stop class |
 |---|---|---|---|---|
-| MAL-1 | W1HrDl70Lhk | First entry type: weekly and monthly RSI both above the level | long | GARBLED |
+| MAL-1 | W1HrDl70Lhk | First entry type: weekly and monthly RSI both above the level | long | CLEAR-ASR |
 | MAL-2 | W1HrDl70Lhk | Second entry type: RSI takes support at the sixty line (buy signal) | long | CLEAR |
 | MAL-3 | W1HrDl70Lhk | Second entry type, mirrored wording ("similarly for celebrity") | short | NOT STATED |
-| MAL-4 | W1HrDl70Lhk | Sell examples: weekly and monthly both below, sell on the candle | short | GARBLED |
+| MAL-4 | W1HrDl70Lhk | Sell examples: weekly and monthly both below, sell on the candle | short | CLEAR-ASR |
 | MAL-5 | W1HrDl70Lhk | Buy example: order on the high, stop below the lowest | long | CLEAR |
 | MAL-6 | W1HrDl70Lhk | Buy example with a stated target 2068 | long | GARBLED |
 | MAL-7 | A-CQiV_UFB4 | Positive reverse divergence buy in an uptrend | long | NOT STATED |
@@ -34,7 +34,7 @@ GARBLED = a stop sentence exists but the translation is unreadable; CHART-POINT 
 | MAL-19 | Wvq1TZh8aF0 | Seven star: monthly RSI above 60, daily RSI below 40, divergence, double target | long | INHERITED |
 | MAL-20 | A-CQiV_UFB4 | Reverse divergence graded three, five and seven star (conditions withheld) | both | NOT STATED |
 
-Totals: 6 videos, 19 setups plus MAL-20 (a grade, not a trade). Setups with a stated stop: 7 (6 CLEAR + 1 INHERITED). Not counted: 3 GARBLED, 1 CHART-POINT, 8 NOT STATED, MAL-20 NOT STATED.
+Totals: 6 videos, 19 setups plus MAL-20 (a grade, not a trade). Setups with a stated stop: 7 (6 CLEAR + 1 INHERITED) plus 2 recovered by local ASR (MAL-1, MAL-4: CLEAR-ASR). Not counted: 1 GARBLED (MAL-6, ASR-NOT-RECOVERED), 1 CHART-POINT, 8 NOT STATED, MAL-20 NOT STATED.
 Each row carries a `Source lines` item (item 8) with the extract line of every quote; the 5-star and 7-star rules are compared to the web research, RSI_2A_SPEC and the code in COMPARE.md.
 No target is a number except MAL-6 (target 2068, a price on a stock chart, machine-translated).
 
@@ -62,6 +62,7 @@ CHANNEL_LIST.md). When transcripts land, add them with the same template (one fr
 **Source GPS: W1HrDl70Lhk | MIDDLE**
 - Hindi original: "एंड स्टॉप लॉस विल बी ब्लॉक प्रिंटेड नॉट रिटारडेड चिल्ड्रन"
 - Translation status: MACHINE-MADE
+- ASR (local Whisper large-v3, raw_transcripts_canonical/W1HrDl70Lhk_asr_raw.txt [5:23]; ASR quote, misheard words possible): stop loss will be at the high of the green candle and stop loss will be below the low of green candle. The two halves contradict; the buy-side logic and the repeats later in the video ([8:27], [9:03], [12:20]: "stop loss will be below the low of the candle") support below the low of the signal candle. Target [5:33]: stop at the RSI touching 60.
    - Target: 
 > "against vacancies video target as soon as subscribe"
 **Source GPS: W1HrDl70Lhk | MIDDLE**
@@ -162,6 +163,7 @@ CHANNEL_LIST.md). When transcripts land, add them with the same template (one fr
 **Source GPS: W1HrDl70Lhk | END**
 - Hindi original: "स्टॉप लॉस विल बी या बुद्ध हाय"
 - Translation status: MACHINE-MADE
+- ASR (local Whisper large-v3, raw_transcripts_canonical/W1HrDl70Lhk_asr_raw.txt [14:49]; ASR quote): sell below the low of the candle, stop loss above the high of the candle, risk reward one to two. The caption garble "Buddha Hi" is "above the high".
    - Target: NOT STATED
 
 4. **Context / settings.** Timeframe and indicator settings:
@@ -219,6 +221,7 @@ NOT STATED
 **Source GPS: W1HrDl70Lhk | MIDDLE**
 - Hindi original: "बहुत ही अ को स्टॉप लॉस विल बी दिलों दलों के पेंडल"
 - Translation status: MACHINE-MADE
+- ASR (local Whisper large-v3): not recovered. The ASR text has no "2068" and no "pendulum" line; the nearest buy stop wording is [12:20] "stop loss will be below the low of the candle and target will be 60 RSI". The MAL-6 stop stays GARBLED, label ASR-NOT-RECOVERED.
    - Target: 
 > "target is 2068 solar heater go"
 **Source GPS: W1HrDl70Lhk | END**
