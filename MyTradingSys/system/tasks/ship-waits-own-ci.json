@@ -4,6 +4,21 @@
   "commands": [
     "python -m pytest -q scripts/dev/test_sync.py"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-25T19:13:19Z",
+    "misses": 18,
+    "reads": [
+      "scripts/dev/codex_run.py",
+      "scripts/dev/gemini_queue.py",
+      "scripts/dev/tasks.py",
+      "scripts/dev/mts_signal.py",
+      "MyTradingSys/system/GEMINI_START.md",
+      "MyTradingSys/system/ROLES.md",
+      "MyTradingSys/system/ROUTING.md"
+    ],
+    "session": "efa59332-f287-47b5-8b8a-8477b1e1fd60"
+  },
   "created": "2026-10-25T10:59:00Z",
   "depends_on": [],
   "done_when": "a test with a faked red run prints RED for the shipped sha",
