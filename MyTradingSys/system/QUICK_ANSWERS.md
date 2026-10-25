@@ -53,6 +53,7 @@ The operator is not a developer: do these, do not ask, do not re-investigate. Ha
 
 ## Ask Gemini or GPT directly (no desk row)
 `python scripts/dev/ask_model.py gemini|gpt "<prompt>" [--model flash|argon|sonnet|opus] [--effort low|medium|high] [--file PATH ...]` sends the prompt to the model and prints the answer (read-only, runs in a scratch folder under F:/MTS/ask, never a work tree). Gemini = Antigravity `agy` on the Google Pro login; GPT = Codex CLI on the lab login. Use it for questions, second opinions, frame reads. Work that must change the repo stays on cards (`gemini_queue.py`, `codex_run.py`). Quota error (429) means wait for the reset it prints; do not fall back to a desk row for a question.
+- HIGH broadcast stuck (operator 2026-10-25: b-10b3d8 sat `told` ~25 h): `told` expires after 2 h (`TOLD_TTL_H` in mts_signal.py): loud again on every prompt, Stop blocks it; a broadcast with `--cmd` takes `ack <id> told --note "<blocker>"` only. Hosts without a session (live Lenovo): `python scripts/dev/mts_signal.py pending --host <h> --json`; mts_doctor BROADCAST warns after 6 h naming host and id; run the cmd there by hand, then `ack <id> done`.
 
 ## Archive, then delete
 Research or runtime data goes to F:/MTS_backup first (local backup repo only), never deleted outright; the cleanup guard (`c_drive_guard.py plan` lists what it would delete and why) touches only finished worktrees and this repo's own temp prefixes.
