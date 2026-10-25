@@ -4,7 +4,7 @@
   "commands": [],
   "context": {
     "calls_to_edit": 12,
-    "folded": "2026-10-25T12:50:41Z",
+    "folded": "2026-10-25T12:59:22Z",
     "misses": 11,
     "reads": [
       "scripts/dev/test_mts_signal.py"
