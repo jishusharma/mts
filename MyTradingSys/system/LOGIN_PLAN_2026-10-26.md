@@ -32,13 +32,13 @@ Start line:
 Start line:
 `You are Builder. Login B. Tasks: machine-rename-aliases, dsa-audit-04-clean-room-twin, dsa-audit-05-placebo-nulls, dsa-audit-06-cost-fill-realism, dsa-audit-07-stale-verdicts, context-composite-v2-dev-read. Boot: python scripts/dev/sync.py start <slug>; work only in the printed WORKTREE. One task per session, then hand over; report each ship with mts_signal.py send "nuc-B: <card> <sha>" --to jis-nb.`
 
-### Login C desktop (JIS-NB; capped at 80% through Monday; Thinker, design and the cards that need F:/JIS-NB; Fable included)
-1. layer-review-after-simulator (p3 M): Thinker brief (confluence, agreement trades, what old backtests got wrong); input `layer_facts/` (lands from the lf-*-gemini-facts cards); never discard, demote or park a layer.
+### Login C desktop (JIS-NB; capped at 80% through Monday; layer review (the old Thinker job; no role line, see the start line below), design and the cards that need F:/JIS-NB; Fable included)
+1. layer-review-after-simulator (p3 M): layer-review brief (confluence, agreement trades, what old backtests got wrong); input `layer_facts/` (lands from the lf-*-gemini-facts cards); never discard, demote or park a layer.
 2. sim-dashboard-v1 and the sim-desk cards (launcher, Krown plug-in, side-by-side) once the sim-v2 Builder has shipped.
 3. JIS-NB-lane cards: live-read-from-any-device (p1), host-legacy-tasks-unregister (p1), state-code-accumulator-backfill (p2), t09-f3-rsi-live-untested-events (p1).
 4. Claude review of each Gemini `layer_facts` branch before it ships (producer is not the reviewer).
 Start line:
-`You are Thinker. Login C. Card: layer-review-after-simulator. Never discard, demote or park a layer.`
+`Work card layer-review-after-simulator: python scripts/dev/sync.py start layer-review, read MyTradingSys/system/tasks/layer-review-after-simulator.json and MyTradingSys/system/WATCHER_TASKS_2026-10-25.md task 4; never discard, demote or park a layer before the operator reviews it in the simulator; ship with sync.py ship --release layer-review.`
 
 ### Not Claude: NUC lanes (kept busy by the Supervisor's wake)
 - GPT lab (`codex_run.py tick`, one every ~21 min): lf-*-gpt-rederive (13 families), trust-recheck-*.
