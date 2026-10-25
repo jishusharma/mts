@@ -1,0 +1,1 @@
+{"t": "20261025T220735Z", "from": "jis-nb/C", "to": "all", "kind": "ack", "text": "ack b-18ca60 done C fixed plan line 30 (68d50f82); A fixed DEBUGGING row; needs a CI-triggering push to confirm green", "login": "C", "id": "b-18ca60", "state": "done", "host": "jis-nb", "note": "C fixed plan line 30 (68d50f82); A fixed DEBUGGING row; needs a CI-triggering push to confirm green"}
