@@ -26,6 +26,7 @@ LATENCY_MS = 60_000                 # OURS: REVIEW_OPUS F17 (write latency 1 min
 ATR_N = 14                          # OURS period; plain SMA ATR is SOURCED (FORMULAS.md:324, operator decision 2026-09-28)
 SMA_LONG = 200                      # OURS naive baseline (REVIEW_OPUS F12)
 RET_N = 20                          # OURS naive baseline (REVIEW_OPUS F12)
+EXP_BASE = 50                      # OURS (REVIEW_OPUS F6 amendment: "BBWP_4h last <= 50"; PRE_REG_CONFLUENCE s0.1)
 FRESH_LOOKBACK = 6                  # OURS (design s3 D2: "rose from <= 30 within 6 bars")
 FRESH_FROM = 30                     # OURS (= bbwp_low)
 FRESH_TO = 50                       # SOURCED bbwp_confirm 50 (KR-Q02), params json
@@ -168,17 +169,20 @@ def build_daily_rows(t, o, h, l, c, v, p=None):
 
 
 def build_h4_rows(t, o, h, l, c, p=None):
-    """One row per CLOSED 4h bar: BBWP_4h (OURS tf, REVIEW_OPUS F6), min of the previous 6 BBWP values, 6-bar price direction."""
+    """One row per CLOSED 4h bar: BBWP_4h (OURS tf, REVIEW_OPUS F6), min of the previous 6 BBWP values, F6 expansion direction = sign(close[i] - close[j]), j = latest bar <= i with BBWP_4h <= 50 (None if none; REVIEW_OPUS.md:24)."""
     p = p or kc.load_params()
     bb = kc.bbwp(c, p["bbwp_basis"], p["bbwp_lookback"], p["bbwp_mult"])
     rows = []
+    j = None                                                    # latest bar <= i with BBWP_4h <= EXP_BASE (F6)
     for i in range(len(t)):
+        if bb[i] is not None and bb[i] <= EXP_BASE:
+            j = i
         prev = [x for x in bb[max(0, i - FRESH_LOOKBACK):i] if x is not None]
         full = i >= FRESH_LOOKBACK and len(prev) == FRESH_LOOKBACK
         rows.append({
             "open_ms": t[i], "available_at": t[i] + H4_MS + LATENCY_MS,
             "bbwp_4h_ours": bb[i], "bbwp_4h_min6_ours": min(prev) if full else None,
-            "exp_dir_4h_ours": _sign(c[i] - c[i - FRESH_LOOKBACK]) if i >= FRESH_LOOKBACK else None,
+            "exp_dir_4h_ours": _sign(c[i] - c[j]) if j is not None else None,
             "close_4h": c[i],
         })
     return rows

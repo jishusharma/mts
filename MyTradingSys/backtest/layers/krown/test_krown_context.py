@@ -204,6 +204,20 @@ class TestJoinNoLookahead(unittest.TestCase):
                 caught += 1
         self.assertGreaterEqual(caught, 3)
 
+    def test_exp_dir_f6_since_bbwp_last_le_50(self):
+        # FORMULAS.md 21.5 closes [10,10,12,11,15,15,14] extended by two closes 12, 13 (hand values, basis=2, lookback=3):
+        # bbw t7 = 4*|14-12|/26 = 0.30769; previous t4..t6 = 0.61538, 0, 0.13793; below it: 0 and 0.13793 -> BBWP[7] = 66.667
+        # bbw t8 = 4*|12-13|/25 = 0.16;    previous t5..t7 = 0, 0.13793, 0.30769; below it: 0 and 0.13793 -> BBWP[8] = 66.667
+        # BBWP t4..t8 = 100, 0, 33.33, 66.67, 66.67. F6 (REVIEW_OPUS.md:24): j = latest bar <= i with BBWP <= 50, dir = sign(c[i]-c[j]):
+        # t4 None (no bar yet), t5 j=5 -> 0, t6 j=6 -> 0, t7 j=6: sign(12-14) = -1, t8 j=6: sign(13-14) = -1.
+        # The six-bar difference gives +1 at t7 (12-10) and t8 (13-12), so this fails on the old code.
+        cl = [10, 10, 12, 11, 15, 15, 14, 12, 13]
+        n = len(cl)
+        rows = kx.build_h4_rows([i * kx.H4_MS for i in range(n)], cl, cl, cl, cl, small_params(bbwp_basis=2, bbwp_lookback=3))
+        self.assertAlmostEqual(rows[7]["bbwp_4h_ours"], 200.0 / 3, places=4)
+        self.assertAlmostEqual(rows[8]["bbwp_4h_ours"], 200.0 / 3, places=4)
+        self.assertEqual([r["exp_dir_4h_ours"] for r in rows], [None, None, None, None, None, 0, 0, -1, -1])
+
     def test_h4_truncation(self):
         rng = random.Random(3)
         n = 400

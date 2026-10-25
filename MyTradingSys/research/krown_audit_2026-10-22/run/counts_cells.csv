@@ -16,13 +16,13 @@ bb_top_reversal,S=+3,2023-24H1,0,0,
 bb_top_reversal,S=+3,DEV_EXT,0,0,
 bb_top_reversal,S=+3,DEV (pooled),4,1,3.2613
 malkan_rsi,S<=-2,2022,3,2,3.3844
-malkan_rsi,S<=-2,2023-24H1,3,3,3.3029
+malkan_rsi,S<=-2,2023-24H1,6,5,2.3587
 malkan_rsi,S<=-2,DEV_EXT,0,0,
-malkan_rsi,S<=-2,DEV (pooled),6,5,2.3587
+malkan_rsi,S<=-2,DEV (pooled),9,7,1.9340
 malkan_rsi,S in -1..1,2022,46,30,0.8657
-malkan_rsi,S in -1..1,2023-24H1,73,49,0.6858
+malkan_rsi,S in -1..1,2023-24H1,70,47,0.7003
 malkan_rsi,S in -1..1,DEV_EXT,0,0,
-malkan_rsi,S in -1..1,DEV (pooled),119,79,0.5375
+malkan_rsi,S in -1..1,DEV (pooled),116,77,0.5444
 malkan_rsi,S>=2,2022,0,0,
 malkan_rsi,S>=2,2023-24H1,2,1,4.2426
 malkan_rsi,S>=2,DEV_EXT,0,0,
@@ -31,46 +31,46 @@ malkan_rsi,S=+3,2022,0,0,
 malkan_rsi,S=+3,2023-24H1,0,0,
 malkan_rsi,S=+3,DEV_EXT,0,0,
 malkan_rsi,S=+3,DEV (pooled),0,0,
-rsi_reclaim,S<=-2,2022,53,24,0.8319
-rsi_reclaim,S<=-2,2023-24H1,76,41,0.6836
+rsi_reclaim,S<=-2,2022,52,23,0.8419
+rsi_reclaim,S<=-2,2023-24H1,75,41,0.6874
 rsi_reclaim,S<=-2,DEV_EXT,0,0,
-rsi_reclaim,S<=-2,DEV (pooled),129,65,0.5279
+rsi_reclaim,S<=-2,DEV (pooled),127,64,0.5320
 rsi_reclaim,S in -1..1,2022,337,50,0.3910
-rsi_reclaim,S in -1..1,2023-24H1,487,78,0.3201
+rsi_reclaim,S in -1..1,2023-24H1,486,78,0.3203
 rsi_reclaim,S in -1..1,DEV_EXT,0,0,
-rsi_reclaim,S in -1..1,DEV (pooled),824,128,0.2476
-rsi_reclaim,S>=2,2022,3,2,3.3844
-rsi_reclaim,S>=2,2023-24H1,4,3,2.9076
+rsi_reclaim,S in -1..1,DEV (pooled),823,128,0.2477
+rsi_reclaim,S>=2,2022,4,3,2.9076
+rsi_reclaim,S>=2,2023-24H1,6,5,2.3587
 rsi_reclaim,S>=2,DEV_EXT,0,0,
-rsi_reclaim,S>=2,DEV (pooled),7,5,2.2051
+rsi_reclaim,S>=2,DEV (pooled),10,8,1.8315
 rsi_reclaim,S=+3,2022,0,0,
 rsi_reclaim,S=+3,2023-24H1,0,0,
 rsi_reclaim,S=+3,DEV_EXT,0,0,
 rsi_reclaim,S=+3,DEV (pooled),0,0,
-cc_msb,S<=-2,2022,31,19,1.0594
-cc_msb,S<=-2,2023-24H1,48,35,0.8409
+cc_msb,S<=-2,2022,29,17,1.0992
+cc_msb,S<=-2,2023-24H1,45,33,0.8682
 cc_msb,S<=-2,DEV_EXT,0,0,
-cc_msb,S<=-2,DEV (pooled),79,54,0.6584
-cc_msb,S in -1..1,2022,280,50,0.4131
-cc_msb,S in -1..1,2023-24H1,439,79,0.3294
+cc_msb,S<=-2,DEV (pooled),74,50,0.6808
+cc_msb,S in -1..1,2022,281,50,0.4126
+cc_msb,S in -1..1,2023-24H1,442,79,0.3287
 cc_msb,S in -1..1,DEV_EXT,0,0,
-cc_msb,S in -1..1,DEV (pooled),719,128,0.2579
-cc_msb,S>=2,2022,1,1,5.7207
+cc_msb,S in -1..1,DEV (pooled),723,128,0.2575
+cc_msb,S>=2,2022,2,2,4.0452
 cc_msb,S>=2,2023-24H1,8,7,2.0370
 cc_msb,S>=2,DEV_EXT,0,0,
-cc_msb,S>=2,DEV (pooled),9,8,1.9188
+cc_msb,S>=2,DEV (pooled),10,9,1.8191
 cc_msb,S=+3,2022,0,0,
 cc_msb,S=+3,2023-24H1,1,1,5.7207
 cc_msb,S=+3,DEV_EXT,0,0,
 cc_msb,S=+3,DEV (pooled),1,1,5.7207
 fabio_escalation,S<=-2,2022,11,11,1.7249
-fabio_escalation,S<=-2,2023-24H1,9,9,1.9069
+fabio_escalation,S<=-2,2023-24H1,10,10,1.8091
 fabio_escalation,S<=-2,DEV_EXT,0,0,
-fabio_escalation,S<=-2,DEV (pooled),20,20,1.2792
+fabio_escalation,S<=-2,DEV (pooled),21,21,1.2484
 fabio_escalation,S in -1..1,2022,70,33,0.7211
-fabio_escalation,S in -1..1,2023-24H1,193,66,0.4497
+fabio_escalation,S in -1..1,2023-24H1,192,66,0.4505
 fabio_escalation,S in -1..1,DEV_EXT,0,0,
-fabio_escalation,S in -1..1,DEV (pooled),263,99,0.3809
+fabio_escalation,S in -1..1,DEV (pooled),262,99,0.3814
 fabio_escalation,S>=2,2022,1,1,5.7207
 fabio_escalation,S>=2,2023-24H1,10,8,1.8315
 fabio_escalation,S>=2,DEV_EXT,0,0,
@@ -80,17 +80,17 @@ fabio_escalation,S=+3,2023-24H1,0,0,
 fabio_escalation,S=+3,DEV_EXT,0,0,
 fabio_escalation,S=+3,DEV (pooled),0,0,
 session_momentum,S<=-2,2022,28,18,1.1107
-session_momentum,S<=-2,2023-24H1,60,38,0.7596
+session_momentum,S<=-2,2023-24H1,59,37,0.7666
 session_momentum,S<=-2,DEV_EXT,0,0,
-session_momentum,S<=-2,DEV (pooled),88,56,0.6270
-session_momentum,S in -1..1,2022,312,50,0.3998
-session_momentum,S in -1..1,2023-24H1,475,79,0.3216
+session_momentum,S<=-2,DEV (pooled),87,55,0.6309
+session_momentum,S in -1..1,2022,313,50,0.3994
+session_momentum,S in -1..1,2023-24H1,476,79,0.3214
 session_momentum,S in -1..1,DEV_EXT,0,0,
-session_momentum,S in -1..1,DEV (pooled),787,128,0.2510
-session_momentum,S>=2,2022,7,4,2.2419
+session_momentum,S in -1..1,DEV (pooled),789,128,0.2508
+session_momentum,S>=2,2022,6,4,2.3932
 session_momentum,S>=2,2023-24H1,12,12,1.6514
 session_momentum,S>=2,DEV_EXT,0,0,
-session_momentum,S>=2,DEV (pooled),19,16,1.3247
+session_momentum,S>=2,DEV (pooled),18,16,1.3568
 session_momentum,S=+3,2022,0,0,
 session_momentum,S=+3,2023-24H1,1,1,5.7207
 session_momentum,S=+3,DEV_EXT,0,0,
@@ -128,65 +128,65 @@ rsi_divergence_4h,S=+3,2023-24H1,0,0,
 rsi_divergence_4h,S=+3,DEV_EXT,0,0,
 rsi_divergence_4h,S=+3,DEV (pooled),0,0,
 candle_pattern_1h,S<=-2,2022,472,38,0.3854
-candle_pattern_1h,S<=-2,2023-24H1,654,58,0.3185
+candle_pattern_1h,S<=-2,2023-24H1,661,58,0.3178
 candle_pattern_1h,S<=-2,DEV_EXT,0,0,
-candle_pattern_1h,S<=-2,DEV (pooled),1126,96,0.2455
+candle_pattern_1h,S<=-2,DEV (pooled),1133,96,0.2451
 candle_pattern_1h,S in -1..1,2022,3577,50,0.2715
-candle_pattern_1h,S in -1..1,2023-24H1,5814,79,0.2156
+candle_pattern_1h,S in -1..1,2023-24H1,5808,79,0.2156
 candle_pattern_1h,S in -1..1,DEV_EXT,0,0,
-candle_pattern_1h,S in -1..1,DEV (pooled),9391,128,0.1694
+candle_pattern_1h,S in -1..1,DEV (pooled),9385,128,0.1694
 candle_pattern_1h,S>=2,2022,63,13,0.8481
-candle_pattern_1h,S>=2,2023-24H1,138,29,0.5712
+candle_pattern_1h,S>=2,2023-24H1,137,28,0.5761
 candle_pattern_1h,S>=2,DEV_EXT,0,0,
-candle_pattern_1h,S>=2,DEV (pooled),201,42,0.4738
+candle_pattern_1h,S>=2,DEV (pooled),200,41,0.4765
 candle_pattern_1h,S=+3,2022,3,1,3.6181
 candle_pattern_1h,S=+3,2023-24H1,2,1,4.2426
 candle_pattern_1h,S=+3,DEV_EXT,0,0,
 candle_pattern_1h,S=+3,DEV (pooled),5,2,2.7436
 candle_pattern_4h,S<=-2,2022,124,32,0.5829
-candle_pattern_4h,S<=-2,2023-24H1,184,50,0.4749
+candle_pattern_4h,S<=-2,2023-24H1,183,50,0.4758
 candle_pattern_4h,S<=-2,DEV_EXT,0,0,
-candle_pattern_4h,S<=-2,DEV (pooled),308,82,0.3682
+candle_pattern_4h,S<=-2,DEV (pooled),307,82,0.3686
 candle_pattern_4h,S in -1..1,2022,915,50,0.3125
-candle_pattern_4h,S in -1..1,2023-24H1,1554,79,0.2457
+candle_pattern_4h,S in -1..1,2023-24H1,1557,79,0.2456
 candle_pattern_4h,S in -1..1,DEV_EXT,0,0,
-candle_pattern_4h,S in -1..1,DEV (pooled),2469,128,0.1936
+candle_pattern_4h,S in -1..1,DEV (pooled),2472,128,0.1936
 candle_pattern_4h,S>=2,2022,17,9,1.4478
-candle_pattern_4h,S>=2,2023-24H1,41,19,0.9437
+candle_pattern_4h,S>=2,2023-24H1,39,19,0.9631
 candle_pattern_4h,S>=2,DEV_EXT,0,0,
-candle_pattern_4h,S>=2,DEV (pooled),58,28,0.7904
+candle_pattern_4h,S>=2,DEV (pooled),56,28,0.8018
 candle_pattern_4h,S=+3,2022,1,1,5.7207
 candle_pattern_4h,S=+3,2023-24H1,0,0,
 candle_pattern_4h,S=+3,DEV_EXT,0,0,
 candle_pattern_4h,S=+3,DEV (pooled),1,1,5.7207
-volume_1h,S<=-2,2022,70,25,0.7428
-volume_1h,S<=-2,2023-24H1,190,46,0.4756
+volume_1h,S<=-2,2022,73,25,0.7310
+volume_1h,S<=-2,2023-24H1,188,45,0.4790
 volume_1h,S<=-2,DEV_EXT,0,0,
-volume_1h,S<=-2,DEV (pooled),260,71,0.3992
-volume_1h,S in -1..1,2022,1104,45,0.3153
-volume_1h,S in -1..1,2023-24H1,1943,78,0.2390
+volume_1h,S<=-2,DEV (pooled),261,70,0.3995
+volume_1h,S in -1..1,2022,1105,45,0.3152
+volume_1h,S in -1..1,2023-24H1,1946,78,0.2389
 volume_1h,S in -1..1,DEV_EXT,0,0,
-volume_1h,S in -1..1,DEV (pooled),3047,123,0.1905
-volume_1h,S>=2,2022,9,4,2.0226
-volume_1h,S>=2,2023-24H1,72,21,0.7516
+volume_1h,S in -1..1,DEV (pooled),3051,123,0.1904
+volume_1h,S>=2,2022,5,4,2.5902
+volume_1h,S>=2,2023-24H1,71,21,0.7554
 volume_1h,S>=2,DEV_EXT,0,0,
-volume_1h,S>=2,DEV (pooled),81,25,0.7032
+volume_1h,S>=2,DEV (pooled),76,25,0.7200
 volume_1h,S=+3,2022,0,0,
 volume_1h,S=+3,2023-24H1,0,0,
 volume_1h,S=+3,DEV_EXT,0,0,
 volume_1h,S=+3,DEV (pooled),0,0,
 volume_4h,S<=-2,2022,10,9,1.8191
-volume_4h,S<=-2,2023-24H1,27,17,1.1329
+volume_4h,S<=-2,2023-24H1,27,18,1.1281
 volume_4h,S<=-2,DEV_EXT,0,0,
-volume_4h,S<=-2,DEV (pooled),37,26,0.9602
-volume_4h,S in -1..1,2022,191,34,0.5005
-volume_4h,S in -1..1,2023-24H1,391,71,0.3485
+volume_4h,S<=-2,DEV (pooled),37,27,0.9577
+volume_4h,S in -1..1,2022,192,34,0.4997
+volume_4h,S in -1..1,2023-24H1,392,71,0.3482
 volume_4h,S in -1..1,DEV_EXT,0,0,
-volume_4h,S in -1..1,DEV (pooled),582,105,0.2860
-volume_4h,S>=2,2022,1,1,5.7207
-volume_4h,S>=2,2023-24H1,23,12,1.2463
+volume_4h,S in -1..1,DEV (pooled),584,105,0.2857
+volume_4h,S>=2,2022,0,0,
+volume_4h,S>=2,2023-24H1,22,12,1.2695
 volume_4h,S>=2,DEV_EXT,0,0,
-volume_4h,S>=2,DEV (pooled),24,13,1.2161
+volume_4h,S>=2,DEV (pooled),22,12,1.2695
 volume_4h,S=+3,2022,0,0,
 volume_4h,S=+3,2023-24H1,0,0,
 volume_4h,S=+3,DEV_EXT,0,0,
@@ -207,18 +207,18 @@ wlow_bounce,S=+3,2022,0,0,
 wlow_bounce,S=+3,2023-24H1,0,0,
 wlow_bounce,S=+3,DEV_EXT,0,0,
 wlow_bounce,S=+3,DEV (pooled),0,0,
-POOLED,S<=-2,2022,729,42,0.3440
-POOLED,S<=-2,2023-24H1,1120,63,0.2797
+POOLED,S<=-2,2022,727,42,0.3441
+POOLED,S<=-2,2023-24H1,1122,63,0.2796
 POOLED,S<=-2,DEV_EXT,0,0,
 POOLED,S<=-2,DEV (pooled),1849,105,0.2170
-POOLED,S in -1..1,2022,6155,50,0.2650
-POOLED,S in -1..1,2023-24H1,9890,79,0.2107
+POOLED,S in -1..1,2022,6158,50,0.2650
+POOLED,S in -1..1,2023-24H1,9889,79,0.2107
 POOLED,S in -1..1,DEV_EXT,0,0,
-POOLED,S in -1..1,DEV (pooled),16045,128,0.1655
-POOLED,S>=2,2022,101,15,0.7140
-POOLED,S>=2,2023-24H1,252,38,0.4506
+POOLED,S in -1..1,DEV (pooled),16047,128,0.1655
+POOLED,S>=2,2022,100,17,0.6979
+POOLED,S>=2,2023-24H1,251,38,0.4511
 POOLED,S>=2,DEV_EXT,0,0,
-POOLED,S>=2,DEV (pooled),353,53,0.3810
+POOLED,S>=2,DEV (pooled),351,55,0.3787
 POOLED,S=+3,2022,8,1,2.6371
 POOLED,S=+3,2023-24H1,4,2,3.0000
 POOLED,S=+3,DEV_EXT,0,0,
