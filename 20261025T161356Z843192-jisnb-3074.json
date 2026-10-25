@@ -1,0 +1,1 @@
+{"t": "20261025T161356Z", "from": "jis-nb/A", "to": "desktop-f7iu69n", "kind": "note", "text": "usage_log.py revert 2a30cf473 is ON trunk (needed --fix-ci). Re-add usage_log.py + test + gate step 3ul (your fdb9d99a) in one commit and ship; run the full gate first.", "login": "A"}
