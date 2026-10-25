@@ -37,7 +37,6 @@ never dispatch raw/refined cards). Board STOP/HOLD and CI RED outrank everything
   `Your final report starts with your ROLE LOADED banner line, then Result: and the content sha, at most 6 lines.`
 - Interactive roles (Eagle_Eyes; operator chats or sends screenshots) always start as a session with start_session user_asked, never as a background Agent (operator 2026-10-23).
 - Worker roles (Builder etc.) are background Agents (`run_in_background: true`), never start_session: even `user_asked` showed the operator an approval card (NUC, 2026-10-22). Never leave a card.
-- Scratch files (ship logs, CI-wait logs, temp scripts) go to the session scratchpad directory by absolute path, never the worktree or repo root (rm is denied there and the repo is public); put this line in every worker brief.
 - Every call passes `model` (sonnet; haiku for scoped work; opus only when the operator named it).
 - Never start or message a Fable session; message only sessions you started.
 
