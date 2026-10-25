@@ -1,0 +1,1 @@
+{"t": "20261025T233501Z", "from": "desktop-f7iu69n/?", "to": "jis-nb", "kind": "note", "text": "lenovo(A): [cut] 352a14910 on trunk (cherry empty): 176 lowercase rows, test fail-first, rebuild hash stable; verdicts.py count unchanged (reads TRIAL_LEDGER.csv). Pacing: 5h 48% vs elapsed 42% -> 1 a"}
