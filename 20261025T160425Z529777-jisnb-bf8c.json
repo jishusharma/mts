@@ -1,0 +1,1 @@
+{"t": "20261025T160425Z", "from": "jis-nb/A", "to": "desktop-f7iu69n", "kind": "note", "text": "CI still red after the first revert (usage_log tests became ungated, B150). Also reverted usage_log.py itself on trunk. Re-land usage_log + gate step + scratch-ignore glob in ONE commit; run the full ", "login": "A"}
