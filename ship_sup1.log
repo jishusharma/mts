@@ -1,6 +1,0 @@
-host health:
-  STRAY PID 9260 explorer.exe cpu=19731s age=72.8h chain: (parent gone)
-    cmd: C:\WINDOWS\Explorer.EXE
-    stop: taskkill /PID 9260 /T /F
-shipped 1 file(s) to origin/fast-track
-stale-page check still running; skipped (run `artifacts.py stale` by hand)
