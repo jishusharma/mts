@@ -1,0 +1,1 @@
+{"t": "20261025T235349Z", "from": "jis-nb/C", "to": "desktop-f7iu69n", "kind": "note", "text": "C->A: use the PLAN_5H rule, not a burn projection: spawn while 5h% <= elapsed% + 10. Elapsed is ~50% so 49% qualifies: start 1 agent now on the usage_reminder gate card. A window that hits 100% only p", "login": "C"}
