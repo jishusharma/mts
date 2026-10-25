@@ -51,11 +51,27 @@
   #equity input[type=range] { flex:1; min-width:160px; }
   #equity table { border-collapse:collapse; font-size:12px; margin-top:6px; }
   #equity td, #equity th { border:1px solid var(--line); padding:2px 8px; text-align:right; }
+  .banner { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--wait); border-radius:8px; padding:6px 12px; margin:0 0 8px; font-size:12px; color:var(--mute); }
+  .chips { display:flex; gap:6px; flex-wrap:wrap; margin:0 0 8px; }
+  .chip { cursor:pointer; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:3px 12px; font-size:13px; }
+  .chip.on { background:#2563eb; color:#fff; border-color:#2563eb; }
+  #runs { margin-top:14px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 12px; }
+  #runs h2 { font-size:14px; margin:0 0 4px; }
+  #runs table { border-collapse:collapse; font-size:12px; width:100%; }
+  #runs td, #runs th { padding:3px 8px; text-align:right; border-bottom:1px solid var(--line); }
+  #runs td:first-child, #runs th:first-child, #runs td:nth-child(2) { text-align:left; }
+  #runs td.pick { text-align:center; }
+  #sbs { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:8px; }
+  #sbs > div { border:1px solid var(--line); border-radius:8px; padding:6px 10px; font-size:12px; }
+  #sbs .v { font-weight:600; }
+  @media (max-width:640px) { #sbs { grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
 <main>
   <h1 id="title">Simulator desk</h1>
+  <div class="banner"><b>DEV window only</b> (2022-04-01 to 2024-06-30). Later data is sealed and never offered here. Pick a study, check the settings (already filled in), press Run.</div>
+  <div class="chips" id="chips"><!--STUDIES--></div>
   <div class="strip" id="form"></div>
   <details class="strip" id="cond"><summary>Conditions (optional, apply to any layer; all values are ours)</summary><div id="condfields"></div></details>
   <div class="say" id="say"></div>
@@ -70,6 +86,8 @@
   <div id="tl"><b>Filled trades</b> <span class="mute" style="font-size:12px">click a row to see its candle chart</span><div class="scroll"><table id="tltab"></table></div><div id="tchart"></div></div>
   <div class="charts" id="charts"></div>
   <footer id="foot"></footer>
+  <section id="runs"><h2>Saved runs</h2><div class="say">Every run you do is saved here. Tick two to see them side by side. Read-only: nothing is fetched or re-run.</div>
+    <table id="runtab"></table><div id="sbs"></div></section>
   <section id="qs"><h2>Questions for you</h2><div id="qlist"></div></section>
 </main>
 <script>
@@ -101,16 +119,19 @@ function field(f, v) {
 let studies = [];
 async function init() {
   studies = await (await fetch('/api/studies')).json();
+  for (const c of document.querySelectorAll('#chips .chip')) c.onclick = () => pickStudy(c.dataset.study);
   pickStudy(studies[0].id);
+  loadRuns();
   buildConditions();
   loadQuestions();
 }
 
 function pickStudy(id) {
   study = studies.find(s => s.id === id);
+  for (const c of document.querySelectorAll('#chips .chip')) c.classList.toggle('on', c.dataset.study === id);
   $('title').textContent = 'Simulator desk: ' + study.title;
   const form = $('form'); form.innerHTML = '';
-  if (studies.length > 1) {            // a picker only once there is a second study
+  if (false) {            // the chips above are the picker
     const l = document.createElement('label'); l.textContent = 'Study';
     const sel = document.createElement('select');
     for (const s of studies) { const o = document.createElement('option'); o.value = s.id; o.textContent = s.title; sel.appendChild(o); }
@@ -199,6 +220,7 @@ async function run() {
     if (!r.ok) throw new Error(o.error || r.statusText);
     o.study_id = study.id; o.params_sent = values(); o.cond_sent = condValues();
     show(o);
+    loadRuns();
   } catch (e) {
     $('say').className = 'say err'; $('say').textContent = e.message;
   } finally { clearInterval(poll); $('run').disabled = false; }
@@ -310,6 +332,45 @@ function show(o) {
     `Run time ${o.run_seconds} s${o.cached ? ' (cached)' : ''}. ` +
     (o.already_tried ? 'Same settings as an earlier try: not logged again. ' : `Trial #${o.try_no} logged. `) +
     `Setups tried on this data so far: ${o.try_no} here + ${o.prior_tries} by the original study.`;
+}
+const picked = [];
+async function loadRuns() {
+  let rows = [];
+  try { rows = await (await fetch('/api/runs')).json(); } catch (e) {}
+  const t = $('runtab'); t.innerHTML = '';
+  if (!rows.length) { t.innerHTML = '<tr><td>No runs yet: press Run above.</td></tr>'; $('sbs').innerHTML = ''; return; }
+  const h = t.insertRow();
+  for (const x of ['Study', 'Settings id', 'Trades', 'Avg net R', '95 % range', 'Verdict', 'Compare']) { const c = document.createElement('th'); c.textContent = x; h.appendChild(c); }
+  for (const r of rows) {
+    const tr = t.insertRow();
+    const cells = [r.study, r.hash, r.n ?? '-', fmt(r.mean), r.lo === null ? '-' : fmt(r.lo) + ' to ' + fmt(r.hi), r.verdict || '-'];
+    for (const v of cells) tr.insertCell().textContent = v;
+    tr.cells[5].style.color = COLORS[r.verdict] || 'inherit';
+    const k = tr.insertCell(); k.className = 'pick';
+    const cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = picked.includes(r.id);
+    cb.onchange = () => { const i = picked.indexOf(r.id); if (cb.checked && i < 0) picked.push(r.id); if (!cb.checked && i >= 0) picked.splice(i, 1); while (picked.length > 2) picked.shift(); sideBySide(); loadRunsChecks(); };
+    cb.dataset.id = r.id; k.appendChild(cb);
+  }
+  sideBySide();
+}
+function loadRunsChecks() { for (const cb of document.querySelectorAll('#runtab input[type=checkbox]')) cb.checked = picked.includes(cb.dataset.id); }
+let sbsSeq = 0;
+async function sideBySide() {
+  const seq = ++sbsSeq, box = $('sbs'), cards = [];
+  if (picked.length < 2) { box.innerHTML = ''; return; }
+  for (const id of picked.slice()) {
+    let d = null;
+    try { d = await (await fetch('/api/runs/' + encodeURIComponent(id))).json(); } catch (e) {}
+    const c = document.createElement('div');
+    if (!d || d.error || !d.verdict) { c.textContent = 'Could not read ' + id; cards.push(c); continue; }
+    const b = document.createElement('b'); b.textContent = d.title; c.appendChild(b);
+    const v = document.createElement('div'); v.className = 'v'; v.style.color = COLORS[d.verdict.label] || 'inherit'; v.textContent = d.verdict.label; c.appendChild(v);
+    for (const w of (d.why || [])) { const p = document.createElement('div'); p.textContent = w; c.appendChild(p); }
+    for (const k of (d.kpis || [])) { const p = document.createElement('div'); p.textContent = k.label + ': ' + k.value; c.appendChild(p); }
+    for (const w of (d.what || [])) { const p = document.createElement('div'); p.style.color = 'var(--mute)'; p.textContent = w.name + ': ' + w.value_plain; c.appendChild(p); }
+    cards.push(c);
+  }
+  if (seq === sbsSeq) box.replaceChildren(...cards);
 }
 init();
 </script>

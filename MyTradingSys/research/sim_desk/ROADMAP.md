@@ -38,3 +38,5 @@ Rule: economical. One thinker, at most 2 workers at once on C, 1 lab card at a t
 
 ## 5. Hard limits for every session here
 Testnet only; no secrets; DEV window only on the desk; VALIDATION/HOLDOUT never read unless a card says so; repo is public (no price data committed); no live tree; ship only through `sync.py ship`; one writer per file set; typed operator prompts are never blocked and sessions never tell him about caps or compaction.
+
+- 2026-10-25 sim_build1: one-command launcher (`python MyTradingSys/research/sim_desk/desk.py`: free port, opens browser, prints URL), study chips + DEV-only banner on first page, Saved runs table with side-by-side of two runs (runs_view.py, read-only). Tests: test_launcher.py.
