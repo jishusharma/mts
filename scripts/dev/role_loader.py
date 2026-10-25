@@ -777,6 +777,9 @@ def cmd_verify(args):
     return verify(text, REPO, role=role, sid=sid)
 
 
+LEAD_MODES_DIR = "lead"
+
+
 def cmd_banner(name):
     f = Path(REPO) / ROLES_REL / file_for(name)
     if not f.exists():
@@ -789,6 +792,26 @@ def cmd_banner(name):
         return 1
     line = banner(h["name"], h["version"], compute_token(text), f.name, git_sha8(REPO))
     sys.stdout.buffer.write((line + "\n").encode("utf-8"))
+    return 0
+
+
+def cmd_mode(name):
+    """Print roles/lead/<name>.md from trunk plus a MODE LOADED banner; any failure prints MODE NOT LOADED, exit 1."""
+    if not re.fullmatch(r"[a-z0-9_]+", name or ""):
+        print(f"MODE NOT LOADED: bad mode name {name!r}")
+        return 1
+    rel = f"{ROLES_REL}/{LEAD_MODES_DIR}/{name}.md"
+    git_fetch(REPO)
+    text = git_show(REPO, rel)
+    if not text:
+        print(f"MODE NOT LOADED: {rel} not found on {TRUNK}")
+        return 1
+    text = text.replace("\r\n", "\n")
+    if name == "pipeline" and os.environ.get("CLAUDE_CODE_SESSION_ID"):
+        # soft mark: lease.current_role sees Pipeliner, explicit_injected stays [Lead]
+        mark_injected(os.environ["CLAUDE_CODE_SESSION_ID"], "Pipeliner", explicit=False)
+    line = f"MODE LOADED: {name} · token {compute_token(chr(10) + text)} · {rel} @ {git_sha8(REPO)}"
+    sys.stdout.buffer.write((text.rstrip("\n") + "\n\n" + line + "\n").encode("utf-8"))
     return 0
 
 
@@ -870,7 +893,9 @@ def lint(repo=REPO, out=print, ci_runs=None):
     findings = []
     roles_md_path = repo / ROLES_MD_REL
     roles_md_text = roles_md_path.read_text(encoding="utf-8", errors="replace") if roles_md_path.exists() else ""
-    docs = ([roles_md_path] if roles_md_path.exists() else []) + role_files(repo)
+    lead_dir = repo / ROLES_REL / LEAD_MODES_DIR
+    mode_files = sorted(lead_dir.glob("*.md")) if lead_dir.is_dir() else []
+    docs = ([roles_md_path] if roles_md_path.exists() else []) + role_files(repo) + mode_files
 
     # 1. Policy contradictions across ROLES.md and roles/*.md
     active_rules = [r for r in POLICY_RULES if not roles_md_text or r[1].search(roles_md_text)]
@@ -886,7 +911,7 @@ def lint(repo=REPO, out=print, ci_runs=None):
 
     # 2. Dead commands and missing files in ROLES.md and roles/*.md
     for doc in docs:
-        rel = ROLES_MD_REL if doc == roles_md_path else f"{ROLES_REL}/{doc.name}"
+        rel = ROLES_MD_REL if doc == roles_md_path else f"{ROLES_REL}/{doc.parent.name + '/' if doc.parent.name == LEAD_MODES_DIR else ''}{doc.name}"
         for i, line in enumerate(doc.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
             if line.strip().startswith("<!--"):
                 continue
@@ -969,6 +994,8 @@ def main(argv):
         return lint()
     if c == "verify":
         return cmd_verify(argv[2:])
+    if c == "mode" and len(argv) > 2:
+        return cmd_mode(argv[2])
     if c == "banner" and len(argv) > 2:
         return cmd_banner(argv[2])
     print(__doc__)

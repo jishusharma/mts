@@ -464,3 +464,40 @@ class TestRoleLineReview(Base):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestModeCommand(Base):
+    """K1 role-loader-mode-command: `role_loader.py mode <name>` serves roles/lead/<name>.md from trunk, fails closed."""
+    REL = f"{rl.ROLES_REL}/lead/think.md"
+
+    def run_mode(self, name, sid="sm1"):
+        import contextlib
+        import io
+        buf = io.TextIOWrapper(io.BytesIO(), encoding="utf-8", newline="\n")
+        with mock.patch.object(rl, "REPO", self.repo), mock.patch.dict("os.environ", {"CLAUDE_CODE_SESSION_ID": sid}), \
+                contextlib.redirect_stdout(buf):
+            rc = rl.main(["role_loader.py", "mode", name])
+            buf.flush()
+        return rc, buf.buffer.getvalue().decode("utf-8")
+
+    def test_mode_prints_trunk_file_and_banner(self):
+        body = "# Think mode\nREAD ME 123\n"
+        self.trunk[self.REL] = body
+        rc, out = self.run_mode("think")
+        self.assertEqual(rc, 0)
+        self.assertIn("READ ME 123", out)
+        self.assertIn(f"MODE LOADED: think · token {rl.compute_token(chr(10) + body)} · {self.REL} @ abcd1234", out)
+        self.assertEqual(rl.injected("sm1"), [])  # only pipeline marks the lease role
+        # pipeline: soft Pipeliner mark for the lease, Lead stays the only explicit role (compaction re-injects lead.md)
+        self.trunk[f"{rl.ROLES_REL}/lead/pipeline.md"] = "# Pipeline\nbody\n"
+        rl.mark_injected("sm1", "Lead", explicit=True)
+        self.assertEqual(self.run_mode("pipeline")[0], 0)
+        self.assertIn("Pipeliner", rl.injected("sm1"))
+        self.assertEqual(rl.explicit_injected("sm1"), ["Lead"])
+
+    def test_mode_missing_fails_closed(self):
+        for name in ("nope", "../builder", ""):
+            rc, out = self.run_mode(name)
+            self.assertEqual(rc, 1, name)
+            self.assertIn("MODE NOT LOADED", out)
+            self.assertNotIn("MODE LOADED:", out)
