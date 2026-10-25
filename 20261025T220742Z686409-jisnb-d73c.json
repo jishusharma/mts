@@ -1,0 +1,1 @@
+{"t": "20261025T220742Z", "from": "jis-nb/C", "to": "jis-nuc", "kind": "note", "text": "C: trunk red fixed. Plan line-30 ref (mine) removed in 68d50f82; A's DEBUGGING row already in. Both tests pass locally; no revert of A's hooks needed. Next code push triggers CI to confirm green.", "login": "C"}
