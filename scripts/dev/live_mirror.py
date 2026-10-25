@@ -30,6 +30,9 @@ import threading
 import time
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import hosts  # noqa: E402
+
 REPO = Path(__file__).resolve().parents[2]
 LIVE_MARKER = ".mts_live"
 LIVE_HOST_FILE = REPO / "MyTradingSys" / "system" / "live_host.txt"  # one line: the live host's name; changed in the cutover (LIVE_HOST_MOVE.md)
@@ -40,13 +43,13 @@ def read_live_host():
         name = LIVE_HOST_FILE.read_text(encoding="utf-8").strip().upper()
     except OSError:
         name = ""
-    return name or "JIS-NB"
+    return str(hosts.canonical(name or "JIS-NB")).upper()
 
 
 LIVE_HOST = read_live_host()
 DEFAULT_ROOT = "\\\\" + LIVE_HOST + "\\MTS-Mirror"
 # the folder behind that share; sessions on the live host may not be on the share ACL but can read the folder
-LIVE_ROOT = os.environ.get("MTS_MIRROR_LIVE_ROOT") or (r"F:\MTS\Mirror" if LIVE_HOST == "JIS-NB" else r"C:\MTS\Mirror")
+LIVE_ROOT = os.environ.get("MTS_MIRROR_LIVE_ROOT") or (r"F:\MTS\Mirror" if hosts.same_host(LIVE_HOST, "JIS-DESKTOP") else r"C:\MTS\Mirror")
 MIRROR_DIR = "runtime_data/_mirror"
 KEEP_VERSIONS = 3
 WARN_MIN, STALE_MIN = 15, 60
@@ -119,7 +122,7 @@ def is_live_tree(repo):
 def local_root(host=None):
     """The mirror folder on the host that owns the loop (JIS-NB keeps F:, any other host C:)."""
     h = (host or socket.gethostname()).lower()
-    return os.environ.get("MTS_MIRROR_LIVE_ROOT") or (r"F:\MTS\Mirror" if h == "jis-nb" else r"C:\MTS\Mirror")
+    return os.environ.get("MTS_MIRROR_LIVE_ROOT") or (r"F:\MTS\Mirror" if hosts.same_host(h, "JIS-DESKTOP") else r"C:\MTS\Mirror")
 
 
 def resolve_owner(owner_dir=None, now=None):
@@ -154,13 +157,13 @@ def default_root(repo, owner=None):
     `owner` (from resolve_owner) names the host that owns the loop now; without it the old live_host.txt rule applies."""
     me = socket.gethostname().lower()
     if owner and owner["state"] == "OWNER":
-        if owner["host"] == me:
+        if hosts.same_host(owner["host"], me):
             return local_root(me)
         if share_root():
             return share_root()
-    if is_live_tree(repo) or (socket.gethostname().upper() == LIVE_HOST and Path(LIVE_ROOT).is_dir()):
+    if is_live_tree(repo) or (hosts.same_host(socket.gethostname(), LIVE_HOST) and Path(LIVE_ROOT).is_dir()):
         return LIVE_ROOT
-    return DEFAULT_ROOT
+    return hosts.unc_path(LIVE_HOST, "MTS-Mirror")   # new name first, the old one as fallback
 
 
 def denied(rel):
@@ -558,7 +561,7 @@ def main(argv=None):
     try:
         if a.cmd == "publish":
             me = socket.gethostname().lower()
-            if owner["state"] != "OWNER" or owner["host"] != me:
+            if owner["state"] != "OWNER" or not hosts.same_host(owner["host"], me):
                 raise MirrorError(f"publish runs only on the host live_owner.py names as owner; {owner_line(owner)}; this host is {me}")
             if a.every_min and recent_version(a.root, a.every_min):
                 print(f"skipped: newest version under {a.root} is younger than {a.every_min:g} min")

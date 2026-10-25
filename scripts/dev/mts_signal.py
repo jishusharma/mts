@@ -59,6 +59,7 @@ import socket
 import subprocess
 import sys
 import time
+import hosts
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -85,6 +86,11 @@ def state_dir():
 
 def host():
     return (os.environ.get("MTS_SIGNALS_HOST") or socket.gethostname()).lower()
+
+
+def to_me(to, hostname=None):
+    """A record addressed `all` or to this host under ANY of its names (JIS-NB and JIS-DESKTOP are one machine, hosts.py)."""
+    return to == "all" or hosts.same_host(to, hostname or host())
 
 
 LOGIN_LETTERS = ("A", "B", "C")
@@ -300,7 +306,7 @@ def unseen_for(rows, since, sid=""):
     broadcast from any session but this one (all sessions on one machine share one sender id). Acks and HIGH broadcasts are
     not news (the action block handles them); a record stamped in the future is ignored."""
     me, tag, lim = who(), sid_tag(sid), future_limit()
-    return [r for r in rows if since < r.get("t", "") <= lim and r.get("to") in ("all", host())
+    return [r for r in rows if since < r.get("t", "") <= lim and to_me(r.get("to"))
             and r.get("kind") != "ack" and r.get("prio") != "high"
             and (r.get("from") != me or (r.get("kind") == "broadcast" and r.get("sid", "") != tag))]
 
@@ -459,7 +465,7 @@ def ack_state(rows, bid, hostname):
     """Best state this host reached for broadcast bid: none < told < done."""
     best = "none"
     for r in rows:
-        if r.get("kind") == "ack" and r.get("id") == bid and str(r.get("host", "")).lower() == hostname \
+        if r.get("kind") == "ack" and r.get("id") == bid and hosts.same_host(r.get("host", ""), hostname) \
                 and RANK.get(r.get("state"), 0) > RANK[best]:
             best = r["state"]
     return best
@@ -476,7 +482,7 @@ def told_ack(rows, b, hostname, login_letter=""):
     for r in rows:
         if r.get("kind") != "ack" or r.get("id") != b["id"] or r.get("state") != "told":
             continue
-        mine = str(r.get("host", "")).lower() == hostname or (login_letter and str(r.get("login", "")).upper() == login_letter)
+        mine = hosts.same_host(r.get("host", ""), hostname) or (login_letter and str(r.get("login", "")).upper() == login_letter)
         if mine and _ack_dt(r) and (best is None or r["t"] > best["t"]):
             best = r
     return best
@@ -486,7 +492,7 @@ def told_expired(rows, b, hostname=None, at=None):
     """The newest told ack of this host when it is older than TOLD_TTL_H (the blocker was parked, not cleared), else None."""
     at = at or now()
     hostname = hostname or host()
-    a = told_ack(rows, b, hostname, login() if b.get("aud") == "top" and hostname == host() else "")
+    a = told_ack(rows, b, hostname, login() if b.get("aud") == "top" and hosts.same_host(hostname, host()) else "")
     if a and (at - _ack_dt(a)).total_seconds() > TOLD_TTL_H * 3600:
         return a
     return None
@@ -504,7 +510,7 @@ def pending(rows, hostname, at=None):
     at = at or now()
     out = []
     for b in high_open(rows):
-        if b.get("to") not in ("all", hostname) or not needs_action(rows, b, hostname, at):
+        if not to_me(b.get("to"), hostname) or not needs_action(rows, b, hostname, at):
             continue
         exp = told_expired(rows, b, hostname, at)
         t0 = (_ack_dt(exp) + timedelta(hours=TOLD_TTL_H)) if exp else (_t(b) or at)
@@ -518,7 +524,7 @@ def hosts_active(rows, hours=24, at=None):
     """Hosts with any record in the last `hours` (a future-stamped record does not count)."""
     at = at or now()
     since, lim = stamp(at - timedelta(hours=hours)), stamp(at + timedelta(minutes=FUTURE_MIN))
-    out = {str(r.get("host") or str(r.get("from", "")).split("/")[0]).lower() for r in rows if since <= r.get("t", "") <= lim}
+    out = {hosts.key(r.get("host") or str(r.get("from", "")).split("/")[0]) for r in rows if since <= r.get("t", "") <= lim}
     out.discard("")
     return out
 
@@ -541,13 +547,13 @@ def hosts_seen(rows):
     out = set()
     for r in rows:
         if cutoff <= r.get("t", "") <= lim:
-            out.add(str(r.get("host") or str(r.get("from", "")).split("/")[0]).lower())
+            out.add(hosts.key(r.get("host") or str(r.get("from", "")).split("/")[0]))
     out.discard("")
     return out
 
 
 def targets(rows, b):
-    return {b["to"]} if b.get("to") not in (None, "all") else hosts_seen(rows) | {host()}
+    return {hosts.key(b["to"])} if b.get("to") not in (None, "all") else hosts_seen(rows) | {hosts.key(host())}
 
 
 def told_flag(b):
@@ -569,7 +575,7 @@ def action_block(rows, ev):
     """The [MTS ACTION REQUIRED] text for this host: state none on every turn, told once per session (SessionStart), done never."""
     out = []
     for b in high_open(rows):
-        if b.get("to") not in ("all", host()) or (b.get("aud") == "top" and is_worker_env()):
+        if not to_me(b.get("to")) or (b.get("aud") == "top" and is_worker_env()):
             continue
         st = own_state(rows, b)
         old = told_expired(rows, b) if st == "told" else None
@@ -596,7 +602,7 @@ def sender_status(rows):
     """One line for the machine that sent a HIGH broadcast while any target host is not done."""
     out = []
     for b in high_open(rows):
-        if str(b.get("from", "")).split("/")[0].lower() != host():
+        if not hosts.same_host(str(b.get("from", "")).split("/")[0], host()):
             continue
         hs = sorted(targets(rows, b))
         open_ = ["%s=%s" % (h, ack_state(rows, b["id"], h)) for h in hs if ack_state(rows, b["id"], h) != "done"]
@@ -722,7 +728,7 @@ def stop_check(payload):
     if not (h / ".git").exists():
         return ""
     rows = load(h)
-    pending = [b for b in high_open(rows) if b.get("to") in ("all", host()) and not (b.get("aud") == "top" and is_worker_env()) and needs_action(rows, b)]
+    pending = [b for b in high_open(rows) if to_me(b.get("to")) and not (b.get("aud") == "top" and is_worker_env()) and needs_action(rows, b)]
     if not pending:
         return ""
     reply = reply_text(payload)
@@ -783,7 +789,7 @@ def roll_lines(rows, hours=24, at=None):
         if not since < r.get("t", "") <= lim or r.get("kind") == "ack":
             continue
         frm = str(r.get("from", ""))
-        h = str(r.get("host") or frm.split("/")[0]).lower()
+        h = hosts.key(r.get("host") or frm.split("/")[0])
         txt = str(r.get("text", ""))
         bm = BUDGET_KV.match(txt)
         lg = r.get("login") or (frm.split("/")[1] if "/" in frm and frm.split("/")[1] in LOGIN_LETTERS else "") \
@@ -834,11 +840,12 @@ def roll_lines(rows, hours=24, at=None):
 
 
 # Hostnames mislead (DEVICES.md:19-21): JIS-NB is the desktop, DESKTOP-F7IU69N the laptop; say both.
-MACHINE_NOUN = {"JIS-NB": "the desktop", "JIS-NUC": "the NUC", "DESKTOP-F7IU69N": "the Lenovo laptop"}
+# built from hosts.py: every name of a machine (new and old) maps to its noun
+MACHINE_NOUN = {n.upper(): v[1] for c, v in hosts.HOSTS.items() for n in (c,) + tuple(a for a in v[0] if not a.startswith("the "))}
 
 
 def host_named():
-    h = host().upper()
+    h = str(hosts.canonical(host())).upper()
     return "%s (%s)" % (h, MACHINE_NOUN[h]) if h in MACHINE_NOUN else h
 
 
@@ -961,7 +968,7 @@ def main(argv):
             print("no origin")
             return 1
         rows = load(h)
-        hs = [a.host.lower()] if a.host else sorted(hosts_active(rows) | {host()})
+        hs = [hosts.key(a.host)] if a.host else sorted(hosts_active(rows) | {hosts.key(host())})
         res = [p for t in hs for p in pending(rows, t)]
         if a.json:
             print(json.dumps(res))
@@ -1005,7 +1012,7 @@ def main(argv):
         for b in bs:
             print("%s HIGH from %s at %s: %s" % (b["id"], b.get("from", "?"), b["t"], b.get("text", "")))
             for t in sorted(targets(rows, b)):
-                notes = [r.get("note") for r in rows if r.get("kind") == "ack" and r.get("id") == b["id"] and r.get("host") == t and r.get("note")]
+                notes = [r.get("note") for r in rows if r.get("kind") == "ack" and r.get("id") == b["id"] and hosts.same_host(r.get("host"), t) and r.get("note")]
                 print("  %-16s %s%s" % (t, ack_state(rows, b["id"], t), "  " + notes[-1] if notes else ""))
         if not bs:
             print("no such broadcast" if want else "no open HIGH broadcasts")

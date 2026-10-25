@@ -39,6 +39,15 @@ import uuid
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+sys.path.append(str(Path(__file__).resolve().parents[1] / "dev"))
+try:
+    import hosts  # noqa: E402  (scripts/dev/hosts.py: old and new machine names are one host)
+except ImportError:   # run from a copy without scripts/dev: plain case-insensitive compare
+    class hosts:   # noqa: N801
+        @staticmethod
+        def same_host(a, b):
+            return bool(a) and str(a).lower() == str(b).lower()
+
 sys.dont_write_bytecode = True
 ACTIVE_MIN = 45  # kick: a launch younger than this means a session is probably still working
 STALE_H = 1  # kick: the same handoff id launched this long ago and never rewritten = the session died or never started, retry
@@ -279,7 +288,7 @@ def cmd_kick(a):
         return idle("handoff says stop: " + (reason or "no reason"))
     if a.peer_quiet_min:
         who, when = handoff_owner(a, hid)
-        if who not in (host(), "unknown") and when is not None and now() - when < timedelta(minutes=a.peer_quiet_min):
+        if who != "unknown" and not hosts.same_host(who, host()) and when is not None and now() - when < timedelta(minutes=a.peer_quiet_min):
             return idle("peer %s wrote handoff %s %d min ago (< %d): its chain is moving, this host stays out"
                         % (who, hid, (now() - when).total_seconds() // 60, a.peer_quiet_min))
     # host awareness: a go whose open tasks all belong to other hosts is not work for this one (b1de4866, 2026-10-12)

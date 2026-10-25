@@ -33,6 +33,9 @@ from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import hosts  # noqa: E402
+
 QUEUE = "MyTradingSys/system/desk_queue"
 TRUNK = "fast-track"
 LIVE_MARKER = ".mts_live"
@@ -169,7 +172,9 @@ def finish(repo, rid, result, failed=False, ship=True):
 def dsa_targets(host=None):
     """Targets the DSA bridge on this host may take: its own lane (JIS-NUC -> DSA-NUC) and the shared DSA lane.
     A row addressed to the host itself (JIS-NB) is live-host work for a Claude session, never DSA's."""
-    host = (host or socket.gethostname()).upper()
+    host = str(hosts.canonical(host or socket.gethostname())).upper()
+    if host == "JIS-DESKTOP":   # the DSA-NB lane keeps its name through the rename
+        return ("DSA-NB", "DSA")
     return ("DSA-" + host.split("-", 1)[-1], "DSA")
 
 

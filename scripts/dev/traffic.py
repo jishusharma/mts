@@ -21,6 +21,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import hosts  # noqa: E402
 REPO = Path(__file__).resolve().parents[2]
 INVENTORY = "MyTradingSys/system/traffic_inventory.json"
 TRUNK = "fast-track"
@@ -550,7 +551,7 @@ def allocate(state, inv):
         free = max(0, inv["slots_per_machine"] - m["open_claims"])
         if b is None:
             free = min(free, 1)   # no BUDGET line for this machine's logins: one session at a time until one arrives (tc3)
-        lane_ok = ("SONNET", "HAIKU") + (("JIS-NB",) if h == "JIS-NB" else ())
+        lane_ok = ("SONNET", "HAIKU") + (("JIS-NB",) if hosts.same_host(h, "JIS-NB") else ())
         crucial_only = b is not None and b >= pace["normal_below"]
         picks = [c for c in queue if c["id"] not in used and c["lane"] in lane_ok
                  and (not crucial_only or c.get("weight") in ("CRUCIAL", "CRITICAL"))][:free]

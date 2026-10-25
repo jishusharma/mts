@@ -19,6 +19,7 @@ Check the HOSTNAME, never the username: the desktop and the laptop both run as `
 | JIS-NB | Desktop (tower, the operator's main screen) | `$env:COMPUTERNAME` | `socket.gethostname()` |
 | JIS-NUC | NUC (mostly headless, reached by Remote Desktop) | same | same |
 | DESKTOP-F7IU69N | Laptop (travel + infrastructure; the name is misleading) | same | same |
+| Names | New name JIS-DESKTOP = old JIS-NB (the desktop); new name JIS-LAPTOP = old DESKTOP-F7IU69N (the Lenovo laptop); JIS-NUC unchanged (the NUC). Operator rename 2026-10-25 (DECISION, OURS); the repo works under both names | steps: MACHINE_RENAME.md | table: `scripts/dev/hosts.py` |
 
 Inside a Remote Desktop window the hostname is the REMOTE machine: a session started in an RDP window on the laptop that shows JIS-NB is a desktop session.
 `F:\MTS` exists on both JIS-NB and JIS-NUC and they are different disks.

@@ -19,6 +19,16 @@ following lines indented deeper belong to the same task.
 """
 import re
 from pathlib import Path
+import sys
+
+sys.path.append(str(Path(__file__).resolve().parents[1] / "dev"))
+try:
+    import hosts  # noqa: E402  (scripts/dev/hosts.py: old and new machine names are one host)
+except ImportError:   # run from a copy without scripts/dev: plain case-insensitive compare
+    class hosts:   # noqa: N801
+        @staticmethod
+        def same_host(a, b):
+            return bool(a) and str(a).lower() == str(b).lower()
 
 MAX_BLOCK = 30
 MAX_TASK_LINES = 6
@@ -85,7 +95,7 @@ def short(name):
 
 
 def runs_on(t, host):
-    return not host or not t.get("host") or short(t["host"]) in ("any", short(host))
+    return not host or not t.get("host") or short(t["host"]) == "any" or hosts.same_host(short(t["host"]), short(host))
 
 
 def lint(text, root, want="go", host=None):

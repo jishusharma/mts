@@ -32,6 +32,9 @@ import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import hosts  # noqa: E402  (machine names: old and new both match)
+
 TRUNK = "fast-track"
 LIVE_MARKER = ".mts_live"
 DOC_SUFFIXES = (".md", ".txt")
@@ -1375,7 +1378,7 @@ def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS,
         p = Path(path).resolve()
         if p == here or not p.exists() or (p / LIVE_MARKER).exists():
             continue
-        auto = (re.match(r"mts-.+-s\d{4}-\d{6}(-\d+)?$", p.name) or p.name.startswith((f"mts-{socket.gethostname().lower()}-", "mts-relay-"))
+        auto = (re.match(r"mts-.+-s\d{4}-\d{6}(-\d+)?$", p.name) or p.name.startswith(tuple(f"mts-{n.lower()}-" for n in hosts.aliases(socket.gethostname())) + ("mts-relay-",))
                 or is_app_tree(p))
         if p.name in LANE_WORKTREES:
             keep(p, "lane", "named lane")
