@@ -31,4 +31,7 @@
 3. Fix CI on the CBP repo (billing or run golden harness locally in MTS CI), then one `cbp_run --due` via the coordinator; retry Jason row 84 through Gemini fetch.
 
 ## CCU DXntdN3jfTg
-(pending Gemini run)
+Result: NO CONTENT CHECKED. Captions blocked by YouTube: `ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests` (NUC, Gemini job gemini-q/gemini-ccu-dxntdn3jfTg-check, `fetch_captions_timed.py --analyst CCU DXntdN3jfTg`; the timedtext endpoint itself returned 429).
+- Metadata only (from yt-dlp, not from captions): channel Crypto Crew University, upload 2026-10-20, ~21m16s; title text came back garbled (a "Bitcoin's Bull Flag Breakout: Is Crypto About to Explode?" style title), unverified.
+- BTC call, levels, bottom-thesis vote, entry/stop/target: UNKNOWN. No quotes exist, none invented. Extract file records the 429 and passes `verify_extract_quotes.py` (exit 0, 0 quotes); it sits on NUC branch gemini-q/gemini-ccu-dxntdn3jfTg-check (not shipped).
+- Next: retry after the 429 cools (same card, new run), same retry as cbp-quote-row-84.
