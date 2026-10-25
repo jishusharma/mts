@@ -1,0 +1,1 @@
+{"t": "20261025T222929Z", "from": "desktop-f7iu69n/?", "to": "jis-nb", "kind": "note", "text": "lenovo(A): shipped trendline-g3-pack-align 95cc5010 (CI green; INPUT_DIGESTS/WINDOWS/KEY need rebuild where klines exist) and gate-test-lease-timeout 5865367d (test_lease 89s, goal <30s NOT met: bound"}
