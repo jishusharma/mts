@@ -1,3 +1,4 @@
+import json
 import os
 import subprocess
 import sys
@@ -113,3 +114,99 @@ def test_twin_cards_are_reported(tmp_path):
     got = D.dup_cards(tmp_path)
     assert [(k, w) for k, w, _, _ in got] == [("DUP-CARD", "a + b")]
     assert "DUP-CARD" in D.KINDS
+
+
+# ---- checklist (2026-10-25): one test per check, fixture inputs
+def _w(tmp_path, rel, text):
+    f = tmp_path / rel
+    f.parent.mkdir(parents=True, exist_ok=True)
+    f.write_bytes(text.encode())
+    return f
+
+
+def _size_repo(tmp_path, claude_bytes, role_bytes):
+    _w(tmp_path, "CLAUDE.md", "x" * claude_bytes)
+    _w(tmp_path, "MyTradingSys/tests/docs/test_integrity.py", 'SIZE_CAPS = {"CLAUDE.md": 1000}')
+    _w(tmp_path, "MyTradingSys/system/roles/a.md", "y" * role_bytes)
+    _w(tmp_path, "MyTradingSys/tests/test_role_budget.py",
+       'BUDGET = {"a.md": 500}\ndef crlf_size(d):\n    lf = d.replace(b"\\r\\n", b"\\n")\n    return len(lf) + lf.count(b"\\n")\n')
+
+
+def test_size_headroom_ok_warn_and_unavailable(tmp_path):
+    _size_repo(tmp_path, 900, 400)
+    assert D.size_headroom(tmp_path)[0] == "OK"
+    _size_repo(tmp_path, 990, 400)                       # 1% headroom under SIZE_CAPS
+    st, msg = D.size_headroom(tmp_path)
+    assert st == "WARN" and "CLAUDE.md 990/1000" in msg
+    _size_repo(tmp_path, 900, 400)
+    _w(tmp_path, "MyTradingSys/system/roles/a.md", "\n".join(["z" * 8] * 55))   # 54 LF -> 54 more CRLF bytes: 494 + 54 > 485 limit
+    st, msg = D.size_headroom(tmp_path)
+    assert st == "WARN" and "roles/a.md" in msg and "BUDGET" in msg
+    st, msg = D.size_headroom(tmp_path / "nope")
+    assert st == "unavailable" and "caps not readable" in msg
+
+
+def _run(sha, conclusion, minute):
+    return {"head_sha": sha * 8, "conclusion": conclusion, "created_at": f"2026-10-25T10:{minute:02d}:00Z"}
+
+
+def test_ci_revert_fast_slow_and_red_now():
+    now = datetime(2026, 10, 25, 12, 0, tzinfo=timezone.utc)
+    assert D.ci_revert([_run("a", "success", 0), _run("b", "failure", 5), _run("c", "success", 12)], now)[0] == "OK"
+    st, msg = D.ci_revert([_run("b", "failure", 5), _run("c", "success", 30)], now)
+    assert st == "WARN" and "25 min" in msg
+    st, msg = D.ci_revert([_run("a", "success", 0), _run("b", "failure", 5)], now)
+    assert st == "WARN" and "red now" in msg
+    assert D.ci_revert([], now)[0] == "unavailable"
+
+
+def test_ship_time_median_max_missing_log(tmp_path):
+    now = datetime(2026, 10, 25, 12, 0, tzinfo=timezone.utc)
+    assert D.ship_time(tmp_path / "none.jsonl", now)[0] == "unavailable"
+    log = tmp_path / "t.jsonl"
+    row = lambda step, secs, utc, sha: json.dumps({"step": step, "secs": secs, "utc": utc, "sha": sha})
+    log.write_text("\n".join([row("ship", 60, "2026-10-25T10:00:00Z", "a"), row("ship", 120, "2026-10-25T10:10:00Z", "b"),
+                              row("4", 300, "2026-10-25T10:20:00Z", "c"), row("5b", 100, "2026-10-25T10:21:00Z", "c"),
+                              row("ship", 9999, "2026-10-01T10:00:00Z", "old"), "not json"]) + "\n", encoding="utf-8")
+    st, msg = D.ship_time(log, now)
+    assert st == "OK" and "ship n=2 median 1.5 max 2.0" in msg and "gate n=1" in msg      # gate wall: 10:15 -> 10:21 = 6 min
+    log.write_text(row("ship", 16 * 60, "2026-10-25T10:00:00Z", "a") + "\n", encoding="utf-8")
+    assert D.ship_time(log, now)[0] == "WARN"
+
+
+def test_hook_reg_missing_hooks_and_behind(tmp_path):
+    git = lambda *a: subprocess.run(["git", "-C", str(tmp_path), "-c", "user.name=t", "-c", "user.email=t@t", *a], check=True, capture_output=True)
+    git("init", "-q")
+    assert D.hook_reg(tmp_path)[0] == "WARN"                                       # no settings.json
+    _w(tmp_path, ".claude/settings.json", '{"hooks": "role_loader.py ci_watch.py"}')
+    git("add", "-A")
+    git("commit", "-qm", "x")
+    assert D.hook_reg(tmp_path)[0] == "OK"
+    _w(tmp_path, ".claude/settings.json", '{"hooks": "role_loader.py"}')
+    st, msg = D.hook_reg(tmp_path)
+    assert st == "WARN" and "ci_watch not registered" in msg
+    D.HOOKS_BEHIND_MAX, old = -1, D.HOOKS_BEHIND_MAX                              # force the behind rule with one commit of lag
+    try:
+        git("commit", "-qam", "y")
+        git("update-ref", "refs/remotes/origin/fast-track", "HEAD~1")
+        git("tag", "t")
+        git("reset", "-q", "--hard", "HEAD~1")
+        git("update-ref", "refs/remotes/origin/fast-track", "t")
+        _w(tmp_path, ".claude/settings.json", '{"hooks": "role_loader.py ci_watch.py"}')
+        assert "behind" in D.hook_reg(tmp_path)[1]
+    finally:
+        D.HOOKS_BEHIND_MAX = old
+
+
+def test_disk_warns_under_limit(tmp_path):
+    assert D.disk(tmp_path, free_gb=14.9)[0] == "WARN"
+    assert D.disk(tmp_path, free_gb=15.1)[0] == "OK"
+
+
+def test_health_line_and_report_top(tmp_path):
+    assert D.health_line([("A", "OK", ""), ("B", "unavailable", "")]) == "HEALTH: GREEN"
+    assert D.health_line([("A", "WARN", ""), ("B", "OK", ""), ("C", "WARN", "")]) == "HEALTH: 2 WARN: A, C"
+    mem = make_repo(tmp_path)
+    text = D.run(tmp_path, tmp_path / "out", mem, process=False, now=DAY)[0].read_text(encoding="utf-8")
+    assert text.splitlines()[0].startswith("HEALTH: ") and "CI-REVERT: skipped" in text
+    assert [n for n, _, _ in D.checklist(tmp_path, process=False)] == list(D.CHECK_NAMES)

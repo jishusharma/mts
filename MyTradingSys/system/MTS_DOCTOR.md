@@ -9,6 +9,18 @@ Goal: less dev time and fewer tokens per shipped task. Security is not a goal he
 `--no-process` = AI health only (no network). `python scripts/dev/health_audit.py 24` = the process part alone (day-over-day check).
 Cadence: once per day by the pinned doctor session, and whenever CI is red or a buster ships. Do not rebuild these numbers by hand.
 
+## Checklist (the first lines of the report; detail stays in `mts_doctor.py`)
+Line 1 is `HEALTH: GREEN` or `HEALTH: <n> WARN: <names>`. Each check is OK / WARN / `unavailable: <why>`; none fails or edits.
+| Check | Proves |
+|---|---|
+| SIZE-HEADROOM | CLAUDE.md and each role file keep 3% under their cap (caps read from the tests) |
+| CI-REVERT | red runs on fast-track went green within 10 min; trunk is not red now |
+| SHIP-TIME | ship and gate wall time, 72 h, max under 15 min (`runtime_data/gate_timing.jsonl`) |
+| HOOK-REG | main checkout registers role_loader and ci_watch and is under 50 commits behind trunk |
+| DISK | 15 GB free on the repo drive |
+
+Cadence: the main session runs it in its first message each day and shows the HEALTH line.
+
 ## Part 1: AI health (deterministic for a repo state)
 DEAD-REF (a path or doc name in guidance that is not tracked), DUPLICATE (same 80+ char line in 2+ guidance files), MEMORY (index line
 without file, file without index line), CARD (`tasks.py lint` warnings), DUP-CARD (`tasks.py twins`: two open cards for one job; `tasks.py new` warns at filing; cards created within 30 min of
