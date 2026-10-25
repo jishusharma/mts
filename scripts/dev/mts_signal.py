@@ -833,11 +833,20 @@ def roll_lines(rows, hours=24, at=None):
     return conflicts + out
 
 
+# Hostnames mislead (DEVICES.md:19-21): JIS-NB is the desktop, DESKTOP-F7IU69N the laptop; say both.
+MACHINE_NOUN = {"JIS-NB": "the desktop", "JIS-NUC": "the NUC", "DESKTOP-F7IU69N": "the Lenovo laptop"}
+
+
+def host_named():
+    h = host().upper()
+    return "%s (%s)" % (h, MACHINE_NOUN[h]) if h in MACHINE_NOUN else h
+
+
 def login_line():
     lg = login()
     if lg:
-        return "LOGIN: this session is login %s on %s (from the app account)" % (lg, host().upper())
-    return "LOGIN: unknown on %s (the app account is not in CLOUD_ACCOUNTS.md LOGINS; set env MTS_LOGIN=A|B|C)" % host().upper()
+        return "LOGIN: this session is login %s on %s (from the app account)" % (lg, host_named())
+    return "LOGIN: unknown on %s (the app account is not in CLOUD_ACCOUNTS.md LOGINS; set env MTS_LOGIN=A|B|C)" % host_named()
 
 
 def who_cmd(args):

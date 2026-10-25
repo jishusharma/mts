@@ -542,7 +542,7 @@ class SignalTest(unittest.TestCase):
         os.environ["MTS_SIGNALS_HOME"] = str(self.tmp / "none")
         os.environ["MTS_SIGNALS_SYNC"] = ""
         out = S.handle(self.payload("SessionStart", sid="x", source="compact"))
-        self.assertEqual(out, "LOGIN: this session is login C on JIS-NB (from the app account)")
+        self.assertEqual(out, "LOGIN: this session is login C on JIS-NB (the desktop) (from the app account)")
         self.assertNotIn("example.test", out)
         self.as_login("stranger@example.test")
         self.assertIn("LOGIN: unknown on JIS-NB", S.handle(self.payload("SessionStart", sid="y", source="compact")))

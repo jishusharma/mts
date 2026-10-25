@@ -19,9 +19,14 @@ class GateCap(unittest.TestCase):
     KNOWN_RUNNERS = {"_short_sha", "exec_step", "exec_layer_chunks", "exec_unittest_shards", "run_mvn", "_git_out"}
 
     def test_time_cap_constants_stay_inside_the_two_minute_ship(self):
-        self.assertLessEqual(rat.GATE_HARD_STEP_S, 90)
+        self.assertLessEqual(rat.GATE_HARD_STEP_S, 60)      # 90 gave a 171 s ship on a loaded JIS-NB (2026-10-25)
         self.assertLessEqual(gate_select.GATE_BUDGET_S, 40)
         self.assertLess(rat.GATE_HARD_STEP_S + 25, sync.SHIP_SLOW_S)
+
+    def test_every_fast_ship_gets_the_hard_deadline_not_only_gate_file_ships(self):
+        src = Path(rat.__file__).read_text(encoding="utf-8")
+        self.assertNotIn('if fast_info.get("gate_file"):   # gate-file change: a hard cap', src)
+        self.assertIn("STEP_TIMEOUT_S, TIMEOUT_DEFERS = GATE_HARD_STEP_S, True", src)
 
     def test_a_new_gate_step_runner_must_be_acknowledged(self):
         tree = ast.parse((Path(rat.__file__)).read_text(encoding="utf-8"))

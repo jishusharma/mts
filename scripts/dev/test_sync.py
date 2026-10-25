@@ -1317,15 +1317,25 @@ class FastShipTest(unittest.TestCase):
         self.assertNotIn("--fast", self.run_gate_cmd(["scripts/dev/example_tool.py"], {"SYNC_FULL_GATE": "1"}))
         self.assertNotIn("--fast", self.run_gate_cmd(["scripts/dev/example_tool.py"], {"SYNC_NO_FAST": "1"}))
 
-    def test_fix_ci_flag_sets_the_full_gate(self):
+    def test_fix_ci_flag_keeps_the_fast_gate(self):
         with mock.patch.object(sync, "ship"), mock.patch.object(sync, "toplevel", return_value=Path(".")), \
                 mock.patch.object(sync, "run_host_health"), mock.patch.dict(os.environ, {}, clear=False):   # the real host scan took 38-70 s here
             os.environ.pop("SYNC_FULL_GATE", None)
             os.environ.pop("SYNC_FIX_CI", None)
             self.assertEqual(sync.main(["ship", "--fix-ci"]), 0)
-            self.assertEqual((os.environ.get("SYNC_FIX_CI"), os.environ.get("SYNC_FULL_GATE")), ("1", "1"))
+            self.assertEqual((os.environ.get("SYNC_FIX_CI"), os.environ.get("SYNC_FULL_GATE")), ("1", None))
             os.environ.pop("SYNC_FULL_GATE", None)
             os.environ.pop("SYNC_FIX_CI", None)
+
+    def test_pure_revert_skips_the_local_gate_only_when_every_commit_is_a_revert(self):
+        def fake(subjects):
+            return mock.patch.object(sync, "git", return_value=mock.Mock(stdout=subjects))
+        with fake('Revert "x"\nRevert "y"\n'):
+            self.assertTrue(sync.pure_revert(Path(".")))
+        with fake('Revert "x"\nfix: y\n'):
+            self.assertFalse(sync.pure_revert(Path(".")))
+        with fake(""):
+            self.assertFalse(sync.pure_revert(Path(".")))
 
     def test_fast_slots_use_their_own_folder_and_an_empty_slot_file_is_busy(self):
         tmp = Path(tempfile.mkdtemp())

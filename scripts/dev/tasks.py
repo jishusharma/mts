@@ -449,7 +449,8 @@ def context_lines(card):
     if traps:
         L.append("Traps: " + " | ".join(traps))
     first = [f"python scripts/dev/sync.py start {card['id']}", f'python scripts/dev/sync.py claim "{card['id']}"'] + list(card.get("commands", []))[:1]
-    L.append("First commands: " + "; ".join(first))
+    if card.get("lane") != "CODEX":   # the lab runner claims and ships for a CODEX card and its prompt must not say sync.py claim (test_codex_run)
+        L.append("First commands: " + "; ".join(first))
     return L
 
 
