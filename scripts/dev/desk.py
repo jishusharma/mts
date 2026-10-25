@@ -83,7 +83,7 @@ def get(repo, rid):
 
 
 def run_ship(repo):
-    subprocess.run([sys.executable, str(Path(repo) / "scripts/dev/sync.py"), "ship"], cwd=repo, check=True)
+    subprocess.run([sys.executable, str(Path(repo) / "scripts/dev/sync.py"), "ship", "--no-ci-wait"], cwd=repo, check=True)
 
 
 def commit_ship(repo, req, msg, ship=True):

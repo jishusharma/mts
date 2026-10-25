@@ -606,7 +606,7 @@ def sh(wt, *args):
 
 # a lab run is always its own change: the 10-minute second-ship guard is for sessions that should batch, and it refused
 # the lab-formula-spec-text run on 2026-10-22 (ship 528 s after a session shipped from the lab tree)
-SHIP_ARGS = ("ship", "--again")
+SHIP_ARGS = ("ship", "--again", "--no-ci-wait")   # unattended: the lab ship must not sit in the 10-minute CI wait (SHIP_TIMEOUT_S)
 
 
 def boxed(cmd, cwd, timeout_s):

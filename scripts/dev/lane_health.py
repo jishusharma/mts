@@ -383,7 +383,7 @@ def commit_ship(repo, paths, msg):
         return True   # nothing changed
     git(repo, "add", "--", *paths)
     git(repo, "commit", "-q", "-m", msg, "--", *paths)
-    return subprocess.run([sys.executable, str(Path(repo) / "scripts/dev/sync.py"), "ship"], cwd=str(repo)).returncode == 0
+    return subprocess.run([sys.executable, str(Path(repo) / "scripts/dev/sync.py"), "ship", "--no-ci-wait"], cwd=str(repo)).returncode == 0
 
 
 def read_claimed(repo):
