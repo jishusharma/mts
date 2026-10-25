@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T23:19:36Z",
   "commands": [],
   "created": "2026-10-19T04:32:21Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "t08-orderflow-default-dev-guard",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "test_study_guard.py 5 pass; study.py DEV-only default + guard_phases",
+      "ref": "c1c3c045",
+      "utc": "2026-10-25T23:19:36Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T08_split_trials.md"
   ],
-  "result": "",
+  "result": "test_study_guard.py 5 pass; study.py DEV-only default + guard_phases",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/orderflow_views_2026-10-14/study.py",
     "MyTradingSys/research/orderflow_views_2026-10-14/test_study_guard.py"
@@ -49,12 +61,13 @@
     "MyTradingSys/research/orderflow_views_2026-10-14/study.py:214-221,240,252,287",
     "MyTradingSys/research/holdout_reads.csv"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read study.py:214-292; extract the phase selection into guard_phases(env, reads_path) with no data load or side effect at import (study.py runs as a script).",
     "Write the failing tests with a temp holdout_reads.csv: default gives ['DEV']; protected with no id raises; an id not in the file raises; an id in the file is accepted.",
     "Switch the DEV_ONLY default and call the guard; do not rerun the study."
   ],
+  "taken": "2026-10-25T23:19:36Z",
   "tests": "MyTradingSys/research/orderflow_views_2026-10-14/test_study_guard.py: guard_phases({}) == ['DEV']; guard_phases({'OFV_PROTECTED_AUTH': ''}) raises; fails before the function exists.",
   "title": "T08: make orderflow study DEV-only by default and guard protected phases",
   "weight": "IMPORTANT",
