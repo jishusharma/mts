@@ -13,14 +13,14 @@ Plan: PILOT3_HAIKU.md. Run 05:46Z-06:00Z (about 14 min). Two workers, not three:
 | Deferred | none | F6 (9 GPS tags): re-tagging breaks verifier thirds convention; needs verifier card | - |
 
 Ship: ONE combined ship of both commits (ece3e75ff, 38dfe0116) from the supervisor tree: exit 0, "shipped 8 files", `git cherry origin/fast-track` empty. First attempt refused by sync.py (second ship within 10 min; used --again, legit batch). Gate wait: ship command total under 3 min (not timed separately).
-CI: latest success before ship; CI run on the ship commit read at end of notes below.
+CI: no run exists for the ship, by design: extracts/gemini_out/*.md is outside the ci.yml push paths. Latest push run 40165863178 success on 67426492d; 0 red since the pilot start (read by the Lead 2026-10-25).
 Weekly: 44% start, 44% end (rounded; under 1 point). 5h window: 3% start, 7% end. Supervisor context 127k at end.
 
 ## Pass rows
 1 All cards shipped: PARTIAL - 2 of 3 (H2 stale-dropped by design rule 6); cherry empty, Result: lines present. PASS for shipped ones.
 2 Verifier 0 + review 0 unsupported: PASS (review sample small).
 3 Gate median under 2 min: NOT SEPARATELY MEASURED (combined ship, whole call under 3 min incl. refusal retry).
-4 CI <=1 red, 0 reverts: 0 reverts; see CI line.
+4 CI <=1 red, 0 reverts: PASS - 0 reverts, 0 red (no CI run for the md-only ship, see CI line).
 5 Weekly under 2 points, 5h under 60%: PASS (0 points visible, 7%).
 6 Turns median under 25: FAIL on count (22 and 39 incl. 13-14 wasted on the block); after fix 8 and 21.
 7 0 operator turns: PASS for the pilot work (stop-guard nags only).

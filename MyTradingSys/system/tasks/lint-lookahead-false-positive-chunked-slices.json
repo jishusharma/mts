@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T08:00:00Z",
   "commands": [],
   "created": "2026-10-24T19:49:58Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "lint-lookahead-false-positive-chunked-slices",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "14f1703b9 on trunk",
+      "ref": "e652aff98",
+      "utc": "2026-10-25T08:00:00Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,7 +37,12 @@
   "refined_by": "",
   "refreshed": "2026-10-24T19:49:59Z",
   "refs": [],
-  "result": "",
+  "result": "14f1703b9 on trunk",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/preship.py",
     "scripts/dev/test_preship.py",
@@ -42,13 +54,14 @@
   "scope_sha": "bd0fcf941a45",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Find the look-ahead rule in preship.py",
     "Add failing tests for the 3 patterns",
     "Narrow the rule",
     "Ship"
   ],
+  "taken": "2026-10-25T08:00:00Z",
   "tests": "New test cases in scripts/dev/test_preship.py: the 3 chunk patterns fail on the pre-change lint and pass after; 2 real look-ahead patterns fail both before and after.",
   "title": "Look-ahead lint fires falsely on chunked slices (3 hits in Pilot 2)",
   "weight": "",

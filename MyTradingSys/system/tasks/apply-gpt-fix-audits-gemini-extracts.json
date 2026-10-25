@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T08:00:00Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py extracts/gemini_out/1xBWnyr1qe4_audit.md"
   ],
@@ -15,6 +16,12 @@
   "id": "apply-gpt-fix-audits-gemini-extracts",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "ece3e75ff on trunk",
+      "ref": "e652aff98",
+      "utc": "2026-10-25T08:00:00Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,12 @@
   "refined_by": "",
   "refreshed": "2026-10-24T22:51:24Z",
   "refs": [],
-  "result": "",
+  "result": "ece3e75ff on trunk",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "extracts/gemini_out/-dMWA_bbm3o_audit.md",
     "extracts/gemini_out/1xBWnyr1qe4_audit.md",
@@ -55,12 +67,13 @@
   "sources": [
     "MyTradingSys/research/gpt_burn_2026-10-24/gx2-review-audits-fabio/report.md:31-58"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read gx2-review-audits-fabio/report.md 'Findings and required corrections' items 1-8 (lines 31-58) and open each cited raw_transcripts_canonical line and extract line.",
     "Per item edit the audit: drop or reword false positives (floor-access, fabricated broker dialogue, euro USD interpolation), fix the misquote at -dMWA_bbm3o_audit.md:21, name the guest as addressed (Serge, no surname), keep the splice concern where valid.",
     "Write FIXES_APPLIED_audits.md: one line per item (file:line, change). Run verify_extract_quotes.py on both audits until exit 0."
   ],
+  "taken": "2026-10-25T08:00:00Z",
   "tests": "Verifier exit 0 on both audit files; every quote in an edited audit line is found in the cited raw transcript line.",
   "title": "Apply GPT review FIX items 1-8 to the 2 Gemini extract audits (-dMWA_bbm3o, 1xBWnyr1qe4): remove false positives",
   "weight": "IMPORTANT",

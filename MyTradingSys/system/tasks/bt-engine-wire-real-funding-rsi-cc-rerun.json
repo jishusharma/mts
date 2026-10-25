@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T07:59:59Z",
   "commands": [
     "python -m unittest discover -s MyTradingSys/backtest/layers/rsi -p test_run_rsi_backtest.py",
     "python -m unittest discover -s MyTradingSys/backtest/layers/cryptocred -p test_run_cc_setups.py"
@@ -19,6 +20,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "c0c5b7ea0 + 9be3f415e on trunk",
+      "ref": "e652aff98",
+      "utc": "2026-10-25T07:59:59Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "bt_engine.simulate_trade: fail closed on funding, window t_in < s <= t_out (T03-F1/F2)",
@@ -35,7 +42,12 @@
   "refined_by": "",
   "refreshed": "2026-10-22T22:47:32Z",
   "refs": [],
-  "result": "",
+  "result": "c0c5b7ea0 + 9be3f415e on trunk",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py",
     "MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py",
@@ -51,13 +63,14 @@
   "sources": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T03_planted_edges.md:129-133 (handover 1-5)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read how each runner picks its bars and where it takes funding; add a funding argument fed by bt_data.load_funding for the DEV span",
     "Unit test with synthetic funding records that the runners pass them through (fails on the funding=[] code)",
     "Run both on DEV (needs F:/MTS/data: JIS-NB or JIS-NUC, not the Lenovo); write RERUN_FUNDING.md with old vs new net mean per row",
     "Label the delta SOURCED (funding files) and flag every published RSI/CC net row that moves"
   ],
+  "taken": "2026-10-25T07:59:59Z",
   "tests": "Synthetic-funding pass-through tests in test_run_rsi_backtest.py and test_run_cc_setups.py; fail before the wiring, pass after.",
   "title": "bt_engine follow-up: RSI and CryptoCred runners load real funding and DEV rerun vs published rows",
   "weight": "IMPORTANT",

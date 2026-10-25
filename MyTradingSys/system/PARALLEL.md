@@ -59,7 +59,7 @@ other sessions' uncommitted files and unshipped commits) and a handful of hot fi
    `sync.py where` must be clean; overwrite NEXT_SESSION.md if you are the last session of the day (hand-over: RELAY.md; session length: CLAUDE.md SHORT SESSIONS).
 5. CI (`.github/workflows/ci.yml`) runs the full gate on both OSes after every push and publishes the passing SHA as `green/fast-track`;
    MTS-AutoDeploy (`scripts/dev/auto_deploy.py`, RETIRED 2026-10-17, see SCHEDULING_POLICY.md) deployed only that branch (fast-track only after 90 min without a green advance, gated by the
-   local gate). So a defect reaches testnet never; at worst fast-track is red for one CI cycle. Red CI: `make_status.py` files ONE pinned
+   local gate). So a defect reaches testnet never; at worst fast-track is red for one CI cycle. A revert of a json/md-only push has no CI run (outside the ci.yml path list): run `gh workflow run CI --ref fast-track`. Red CI: `make_status.py` files ONE pinned
    card `ci-<first failing sha7>` (`scripts/dev/ci_red_card.py`, one per failure chain), which tops `tasks.py next`; ship it with your next ship.
 6. Worktree hygiene (2026-10-12): a session that made a `../mts-<host>-<slug>` worktree and shipped everything
    ends with `sync.py where` (own tree clean); the next session of any lane runs `sync.py tidy` (dry run) then `tidy --apply`,
