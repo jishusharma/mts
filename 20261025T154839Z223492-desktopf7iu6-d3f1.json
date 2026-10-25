@@ -1,0 +1,1 @@
+{"t": "20261025T154839Z", "from": "desktop-f7iu69n/?", "to": "all", "kind": "note", "text": "lenovo agy-setup: partial - Terminal allow 'python scripts/dev/gemini_queue.py' + Network read allow youtube.com, youtu.be, *.googlevideo.com set; Gemini answers OK in mts-gemini but folder mts-gemini"}
