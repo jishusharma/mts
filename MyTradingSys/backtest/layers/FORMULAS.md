@@ -580,3 +580,5 @@ plan numbers required correction. The one correction made was to `layers/rsi/TES
 (Case C1 provenance claim, which described deriving from `bt/bt_rsi.py.new` — against the "never derive
 from code" rule even though the module's own math turned out to match textbook Wilder); see that file's
 diff and the audit report for detail.
+
+**19.9 Contract v1.1 notes (2026-10-26).** Close arm penetration over ia..ib uses closes only: anchors (15,100), (27,106), L(20) = 100 + 6*5/12 = 102.5; close 101 fails (1.5 below, tolerance 1.0), a wick at 95 with close 100 on the anchor bar passes. Availability window: pivot b at ib = 27, k = 3, available at 30; bars 28..30 grant no contact/reset/eligibility; a close below L(28) = 106.5 on bar 28 (close 106.4) rejects the line as `broken_before_available`. E11: inner line (15,27) breaks; pivot at 40 pairs with 15 (outer line) but not with 27.
