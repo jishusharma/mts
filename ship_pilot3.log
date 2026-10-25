@@ -1,0 +1,10 @@
+host health:
+  STRAY PID 9260 explorer.exe cpu=19735s age=72.9h chain: (parent gone)
+    cmd: C:\WINDOWS\Explorer.EXE
+    stop: taskkill /PID 9260 /T /F
+  DISK WARN C:\: 14.5 GB free < 15
+    largest in temp: C:\Users\E-NGIN~1\AppData\Local\Temp\claude 0.01 GB; C:\Users\E-NGIN~1\AppData\Local\Temp\F57FB98E-DB46-401B-9D42-785BC84C7674 0.01 GB; C:\Users\E-NGIN~1\AppData\Local\Temp\B32F8F2D-0939-4C8C-94D6-CAF40ADAAFBF 0.01 GB; C:\Users\E-NGIN~1\AppData\Local\Temp\866A1959-7587-47E9-8295-2EE77AD5152E 0.01 GB; C:\Users\E-NGIN~1\AppData\Local\Temp\119C47EF-ED51-4E31-BFA8-CA20B74FE252 0.01 GB
+    largest worktrees: C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\.claude\worktrees\thinker-loader-c62751 0.29 GB; C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\.claude\worktrees\mts-device-cleanup-5bfbdf 0.29 GB; C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\.claude\worktrees\mts-doctor-role-7762ef 0.22 GB; C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\.claude\worktrees\laughing-driscoll-407205 0.22 GB; C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\.claude\worktrees\gallant-mayer-ea7007 0.22 GB  (remove idle ones with `python scripts/dev/sync.py tidy --apply`)
+  QUEUE WARN: processor queue 39 > 4 x 8 CPUs; top consumers over 10 s: svchost.exe[2228] 0.98 cores ''; chrome.exe[15968] 0.60 cores '"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe" --ty'; claude.exe[17852] 0.39 cores '"C:\\Program Files\\WindowsApps\\Claude_3.6556.1.0_x64__pzs8sxr'; claude.exe[25264] 0.37 cores '"C:\\Program Files\\WindowsApps\\Claude_3.6556.1.0_x64__pzs8sxr'; WmiPrvSE.exe[6644] 0.37 cores ''
+shipped 8 file(s) to origin/fast-track
+stale-page check still running; skipped (run `artifacts.py stale` by hand)
