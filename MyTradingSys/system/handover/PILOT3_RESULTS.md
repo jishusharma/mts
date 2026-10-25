@@ -9,7 +9,7 @@ Plan: PILOT3_HAIKU.md. Run 05:46Z-06:00Z (about 14 min). Two workers, not three:
 | Minutes | about 8 | about 8 | - |
 | Verifier exit | 0 on both audits (supervisor re-ran) | 0 on all 7 (supervisor re-ran) | - |
 | Review | Sonnet Agent, 3 sampled lines + REJECTED entries: SUPPORTED (1 footer line untestable, "73 words" not recounted, item-8 REJECTED entry unchecked) | not sampled (H1 clean); supervisor hand-checked both F5 quotes in transcript_gWjHq5UMisY.txt (split across caption lines 14-15, 186-188): found | - |
-| Scope (git diff --stat) | 3 files, in scope | 4 files (3 extracts + FIXES_APPLIED_tom.md), in scope | - |
+| Scope (the diff stat) | 3 files, in scope | 4 files (3 extracts + FIXES_APPLIED_tom.md), in scope | - |
 | Deferred | none | F6 (9 GPS tags): re-tagging breaks verifier thirds convention; needs verifier card | - |
 
 Ship: ONE combined ship of both commits (ece3e75ff, 38dfe0116) from the supervisor tree: exit 0, "shipped 8 files", `git cherry origin/fast-track` empty. First attempt refused by sync.py (second ship within 10 min; used --again, legit batch). Gate wait: ship command total under 3 min (not timed separately).

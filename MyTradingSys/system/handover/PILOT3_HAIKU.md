@@ -14,8 +14,8 @@ Not in pilot: aws-bedrock (needs AWS credentials), research-top-level-declutter 
 2. Ships hang or vanish when piped (`| head`) or backgrounded without a file: ship as ONE background shell writing to a file, no pipes; after exit check `git cherry origin/fast-track` is empty. Never start a second ship while one runs.
 3. One ship at a time (gate 2.5 min median vs 50 min parallel).
 4. Haiku invents quotes: a worker may not edit a quote it cannot find in the cited raw transcript line; `verify_extract_quotes.py` exit 0 is the ship gate, never "looks right". REJECTED items need a transcript line.
-5. Files outside the card's Scope in are untouched (git diff --stat checked by coordinator before each ship). No results/*.json, no new top-level files.
-6. Card supply/stale: coordinator re-checks each card's state and `git log` for its files before launch.
+5. Files outside the card's Scope in are untouched (the diff stat checked by coordinator before each ship). No results/*.json, no new top-level files.
+6. Card supply/stale: coordinator re-checks each card's state and `file history` for its files before launch.
 7. Turn cap: Haiku tool turns allowed = 4M / context (turn_meter.py); a worker over 40 turns stops, writes partial notes.
 
 ## Reviews (operator: review before and after, not overdone)
