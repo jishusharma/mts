@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/tasks.py brief bug-instruction-conflicts-not-logged"
+  ],
+  "created": "2026-10-26T18:43:29Z",
+  "depends_on": [],
+  "done_when": "tasks.py conflict 'A | B' makes or bumps one bug-conflict-<hash> card per pair; CLAUDE.md has a precedence rule (operator latest > CLAUDE.md > hook) and says: log a conflict card the same turn, one line to operator; TURN METER stops saying hand off after an operator keep-going order; test passes",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "AI sessions resolve contradicting instructions silently, so they recur. Seen 2026-10-27: CLAUDE.md step 5 and TURN METER say hand off after 10 operator or 40 tool turns, operator says keep working; role_loader said Pipeliner has no file while session was Lead; TURN METER cap changed 27 to 40. Make logging a conflict card automatic and deduplicated.",
+  "id": "bug-instruction-conflicts-not-logged",
+  "kind": "build",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "CLAUDE.md",
+    "MyTradingSys/system/TRAFFIC_BUSTERS.md",
+    "hook script for TURN METER and role_loader",
+    "tests for tasks.py conflict"
+  ],
+  "scope_out": [
+    "live tree",
+    "deciding which of the two instructions is right (operator decides)"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Add tasks.py conflict subcommand: args A and B text, normalise, hash, write or bump bug-conflict-<hash> card (prio 1, lane SONNET, counts seen, last session)",
+    "Fail-first test: same pair twice gives one card with seen=2; a different pair gives a second card",
+    "CLAUDE.md: add Precedence section (latest operator order > CLAUDE.md > hook text > card text) and the conflict rule: resolve by precedence, run tasks.py conflict same turn, one line to operator, never stop for it",
+    "Fix the four known conflicts: TURN METER ignores the cap when the operator ordered keep going; CLAUDE.md steps 4-5 name the loop exception; role_loader accepts Lead mode Pipeliner after compaction; one cap value in one place",
+    "Hook: in the TURN METER and role_loader texts, append: if this contradicts an instruction you hold, run tasks.py conflict instead of silently picking",
+    "Doctor check CONFLICT-OPEN: count open bug-conflict cards, warn over 3; ship with --release"
+  ],
+  "tests": "tests/test_tasks_conflict.py",
+  "title": "Instruction conflicts are silently resolved, never logged as bugs",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
