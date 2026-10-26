@@ -386,7 +386,7 @@ class TestExtraTestsRunConcurrently(unittest.TestCase):
         import threading
         import run_extra_tests as rx
         seen, live, peak, lock = [], [0], [0], threading.Lock()
-        overlap = threading.Barrier(2, timeout=10)
+        overlap = threading.Barrier(2, timeout=10)  # a dummy sequential runner must fail this overlap oracle
 
         def one(rel, basetemp):
             with lock:

@@ -15,7 +15,7 @@
   "lane": "CODEX",
   "layers": [],
   "live_path": false,
-  "mutation_check": "scripts/dev/test_sync.py::SyncTest::test_fixture_repositories_disable_background_git_maintenance",
+  "mutation_check": "scripts/dev/test_run_all_tests.py::test_files_overlap_each_gets_own_basetemp_and_failures_keep_list_order",
   "note": "",
   "prio": 1,
   "refine_tries": 0,
