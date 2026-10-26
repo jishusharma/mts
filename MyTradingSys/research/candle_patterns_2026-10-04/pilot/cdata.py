@@ -1,4 +1,3 @@
-# T01-F2: raw_1d is a distinct snapshot, NOT the 1m resample (905 of 912 DEV days differ on open, 847 on volume, max 12.01%); derive daily bars from 1m for new work. See MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md
 """Pilot data layer. Stdlib only. Reuses backtest/bt/bt_data.py loaders (raw archive CSVs).
 
 DEV-only guard (PRE_REG_CANDLE_PILOT.md section 1): every loader refuses an end date after DEV_END_MS

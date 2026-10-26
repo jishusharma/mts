@@ -1,4 +1,3 @@
-# T01-F2: raw_1d is a distinct snapshot, NOT the 1m resample (905 of 912 DEV days differ on open, 847 on volume, max 12.01%); derive daily bars from 1m for new work. See MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md
 """Volume study data layer (PRE_REG_VOLUME_2026-10-09.md section 1). numpy + stdlib.
 
 Bars are dicts of numpy arrays: t (open time epoch ms UTC), o, h, l, c, v (base volume), tbv (taker-buy base volume).

@@ -1,4 +1,3 @@
-# T01-F2: raw_1d is a distinct snapshot, NOT the 1m resample (905 of 912 DEV days differ on open, 847 on volume, max 12.01%); derive daily bars from 1m for new work. See MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md
 """G3 trend-line marking pack: seeded windows, a causal pre-filter, blind candle charts, marking sheets.
 
 Question the readers answer: "is there an obvious legitimate trend line on this chart?" (READER_PROTOCOL.md section 4).
