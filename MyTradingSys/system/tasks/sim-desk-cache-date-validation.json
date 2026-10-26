@@ -1,8 +1,20 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-10-26T22:54:09Z",
+  "closed": "2026-10-26T21:25:38Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-26T21:26:12Z",
+    "misses": 44,
+    "reads": [
+      "MyTradingSys/research/sim_desk/studies/levels.py",
+      "MyTradingSys/research/design_cards_2026-10-26/astra_sealed_guard.md",
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/run_extra_tests.py"
+    ],
+    "session": "agent-aba0ec9de831f576e"
+  },
   "created": "2026-10-26T18:53:04Z",
   "depends_on": [],
   "done_when": "sim_desk/test_sealed_cache.py holds 7 tests (L1-L7), each red on the old code and green after; test_desk.py, test_charts.py, test_conditions.py still pass; run_all_tests.py --quick green.",
@@ -16,9 +28,9 @@
   "latest": [
     {
       "kind": "ship",
-      "line": "shipped 11ddfd25a; 8 sealed-cut tests red on old code, green now; sim_desk + T06 110 passe",
-      "ref": "5a96d9e49",
-      "utc": "2026-10-26T22:54:09Z"
+      "line": "MyTradingSys/research/sim_desk/test_sealed_cache.py L1-L7 green",
+      "ref": "11ddfd25a",
+      "utc": "2026-10-26T21:25:38Z"
     },
     {
       "auto": true,
@@ -39,7 +51,7 @@
   "refs": [
     "MyTradingSys/research/design_cards_2026-10-26/astra_sealed_guard.md"
   ],
-  "result": "shipped 11ddfd25a; 8 sealed-cut tests red on old code, green now; sim_desk + T06 110 passed",
+  "result": "MyTradingSys/research/sim_desk/test_sealed_cache.py L1-L7 green",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -68,7 +80,7 @@
     "Replace the assert at _bars.py:91 with an explicit raise (assert vanishes under -O); refuse, never silently sanitise",
     "Run the sim_desk tests and run_all_tests.py --quick; commit with a Result: line"
   ],
-  "taken": "2026-10-26T22:54:09Z",
+  "taken": "2026-10-26T21:25:38Z",
   "tests": "New sim_desk/test_sealed_cache.py: 7 tests (L1-L7) fail on the pre-change code (reproducer proves each leak), pass after.",
   "title": "Simulator desk: validate cache and fetched bar timestamps before study and replay",
   "weight": "CRUCIAL",

@@ -267,21 +267,64 @@ class LayerSignalTest(unittest.TestCase):
         s = at.layer_signal({"layer": "rsi", "sub": "rsi_events", "event": "support", "tf": "3m", "t_close": t}, cfg(), NOW)
         self.assertIn("stale", s.get("reject", ""))
 
-    def test_rsi_cross_side_by_level(self):
-        # B128 M29-11 (operator 2026-10-08): side comes from the level crossed, not the direction alone. Source MLK-R1
-        # (malkan_40_60.py): a bull regime cannot cross 40 downward, a bear regime cannot cross 60 upward, so a cross
-        # down through 40 -> short and a cross up through 60 -> long. Every other cross (incl. unknown level) -> no side.
-        def sig(level, direction):
-            alert = {"layer": "rsi", "event": "cross", "direction": direction, "tf": "15m", "t_close": self.T15}
-            if level is not None:
-                alert["level_value"] = level
+    def test_rsi_untested_events_not_traded(self):
+        # T09-F3: rsi_events live trades only what a backtest covered: support@40 long. cross (any level/direction),
+        # failure and rejection@40 are alert-only (T09_live_parity.md sec 5), also when the alert carries a "side".
+        def sig(event, **extra):
+            alert = {"layer": "rsi", "sub": "rsi_events", "event": event, "tf": "15m", "t_close": self.T15}
+            alert.update(extra)
             return at.layer_signal(alert, cfg(), NOW)
-        self.assertEqual(sig(40.0, "down")["side"], "short")
-        self.assertEqual(sig(60.0, "up")["side"], "long")
-        for level, direction in ((40.0, "up"), (60.0, "down"), (50.0, "up"), (50.0, "down"), (None, "up"), (None, "down")):
-            s = sig(level, direction)
+        for level, direction in ((40.0, "down"), (60.0, "up"), (40.0, "up"), (60.0, "down"), (50.0, "up"), (None, "up")):
+            extra = {"direction": direction}
+            if level is not None:
+                extra["level_value"] = level
+            s = sig("cross", **extra)
             self.assertIsNone(s["side"], (level, direction))
             self.assertIn("unmapped", s["reject"], (level, direction))
+        for event in ("rejection", "failure", "cross"):
+            for side in (None, "long", "short"):
+                s = sig(event, level_value=40.0, **({"side": side} if side else {}))
+                self.assertIsNone(s["side"], (event, side))
+                self.assertIn("unmapped", s["reject"], (event, side))
+        s = sig("support", level_value=40.0)
+        self.assertEqual(s["side"], "long")
+        self.assertNotIn("reject", s)
+
+    def test_rsi_events_without_event_key_rejects(self):
+        for extra in ({}, {"event": None}, {"event": ""}, {"event": "Support"}, {"event": "support "}, {"kind": "support"}):
+            alert = {"layer": "rsi", "sub": "rsi_events", "tf": "15m", "t_close": self.T15, "side": "long"}
+            alert.update(extra)
+            s = at.layer_signal(alert, cfg(), NOW)
+            self.assertIn("unmapped", s.get("reject", ""), extra)
+
+    def test_rsi_rule_stays_closed_after_restart_and_old_config_file(self):
+        # restart / reset: a fresh process rebuilds cfg from DEFAULT_CONFIG + the config file on disk. A file written
+        # before T09-F3 still carries rsi:cross / rsi:rejection rules; the code gate must reject regardless.
+        old = {"layer_rules": {"rsi:cross": "level", "rsi:rejection": "short", "rsi:support": "long"}}
+        with tempfile.TemporaryDirectory() as d:
+            f = Path(d) / "auto_trader_config.json"
+            f.write_text(json.dumps(old), encoding="utf-8")
+            decisions = []
+            for _ in range(2):                                  # two "process starts" give the same decisions
+                c = at.load_config(f)
+                c["pre_pipeline_sources"] = {"layer:": {"reason": "fixture", "review_by": "2026-10-23"}}
+                row = []
+                for event, extra in (("cross", {"level_value": 40.0, "direction": "down"}),
+                                     ("rejection", {"level_value": 40.0}), ("failure", {"side": "short"}),
+                                     ("support", {})):
+                    s = at.layer_signal({"layer": "rsi", "sub": "rsi_events", "event": event, "tf": "15m",
+                                         "t_close": self.T15, **extra}, c, NOW)
+                    row.append((event, s["side"], "reject" in s))
+                decisions.append(row)
+            self.assertEqual(decisions[0], decisions[1])
+            self.assertEqual(decisions[0], [("cross", None, True), ("rejection", None, True),
+                                            ("failure", None, True), ("support", "long", False)])
+
+    def test_rsi_malkan_sublayers_keep_their_side_field(self):
+        # the gate is for rsi_events only: malkan bull/bear (layer "rsi", own sub) still trade on the alert's side
+        s = at.layer_signal({"layer": "rsi", "sub": "malkan_bear", "event": "malkan_resistance", "side": "short",
+                             "tf": "1h", "t_close": self.T15}, cfg(), NOW)
+        self.assertEqual(s["side"], "short")
 
     def test_side_field_wins_for_new_layers(self):
         s = at.layer_signal({"layer": "brand_new_layer", "kind": "x", "side": "short", "tf": "1h",

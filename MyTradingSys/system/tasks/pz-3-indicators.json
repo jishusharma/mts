@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T21:58:27Z",
   "commands": [
     "python scripts/dev/run_all_tests.py --quick"
   ],
@@ -18,6 +19,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "pizzino_indicators.py + 32 fail-first tests (SPEC examples 1-6) green; family pizzino in l",
+      "ref": "e7dfdab68",
+      "utc": "2026-10-26T21:58:27Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -37,7 +44,12 @@
   "refs": [
     "MyTradingSys/research/pizzino_layer_2026-10-27/PLAN.md"
   ],
-  "result": "",
+  "result": "pizzino_indicators.py + 32 fail-first tests (SPEC examples 1-6) green; family pizzino in layer_index/layer_map",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/pizzino*.py",
     "tests/test_pizzino_*.py",
@@ -49,13 +61,14 @@
   "scope_sha": "f8d0799de2bc",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write tests first from SPEC.md worked examples; confirm they fail on a stub",
     "Implement pivot detection, 50% correction, retest, 1/2/3 bar count as pure functions",
     "Grep every TF and layer-family map and add family pizzino to layer_index.json",
     "Run run_all_tests.py --quick; commit with a Result: line (tests added, all green)"
   ],
+  "taken": "2026-10-26T21:58:27Z",
   "tests": "tests/test_pizzino_*.py",
   "title": "Pizzino layer: indicator module (pivots, 50% correction, retest, 1-2-3 bar) with fail-first tests",
   "weight": "ROUTINE",
