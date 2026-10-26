@@ -30,14 +30,15 @@
     "fabio"
   ],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT LAB:data CLASS:C1 REVIEWER:GPT medium blind re-read of the CONTESTED fields (desk row) + Lab_Guy Sonnet 5.5 (labguy-pass-b) WEIGHT:IMPORTANT. Fixes lab data (ledger); image-read rules A-7 apply. rv05-h3 follows in the same ledger. LAB_GUY 2026-10-18 fixes: (1) done_when 'five rows adjudicated' did not say what adjudicated means (E4): now a status per field; (2) three of the five cells are already repaired by H1 and two earlier reads disagree (F12 25105.78 vs 25105.18, F12-m2 stop, F13 entry 25106.50 vs 25108.90), so a third read by the same model family cannot settle them: CONTESTED goes to a non-Claude blind read (A-7); (3) 'full resolution' had no method: only lowres sheets exist locally, cv2 reads the mp4; (4) check script and READS file named, existing ledger tests kept green. Class C1: the Fabio layer cards read this ledger (B-shared data).",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:data CLASS:C1 REVIEWER:GPT medium blind re-read of the CONTESTED fields (desk row) + Lab_Guy Sonnet 5.5 (labguy-pass-b) WEIGHT:IMPORTANT. Fixes lab data (ledger); image-read rules A-7 apply. rv05-h3 follows in the same ledger. LAB_GUY 2026-10-18 fixes: (1) done_when 'five rows adjudicated' did not say what adjudicated means (E4): now a status per field; (2) three of the five cells are already repaired by H1 and two earlier reads disagree (F12 25105.78 vs 25105.18, F12-m2 stop, F13 entry 25106.50 vs 25108.90), so a third read by the same model family cannot settle them: CONTESTED goes to a non-Claude blind read (A-7); (3) 'full resolution' had no method: only lowres sheets exist locally, cv2 reads the mp4; (4) check script and READS file named, existing ledger tests kept green. Class C1: the Fabio layer cards read this ledger (B-shared data).\n2026-10-26 worktree disposition: archived local evidence and exact SHAs in MyTradingSys/research/worktree_disposition_20261026/REPORT.md. Recover only relevant missing proofs; do not rerun or merge stale producer branches. Existing task ownership unchanged.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-10-17T21:38:12Z",
   "refs": [
     "MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md",
-    "MyTradingSys/research/lab_guy/specs/rv05-h2-position-line-evidence.md"
+    "MyTradingSys/research/lab_guy/specs/rv05-h2-position-line-evidence.md",
+    "MyTradingSys/research/worktree_disposition_20261026/REPORT.md"
   ],
   "result": "",
   "scope_in": [

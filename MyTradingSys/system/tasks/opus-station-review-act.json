@@ -25,13 +25,15 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator explicitly requested Opus review then action on 2026-10-26. Pinned priority 1; do not mark repairs complete from audit output. Weight covers this non-lab review intake; implementation cards must assign their own risk class.",
+  "note": "Operator explicitly requested Opus review then action on 2026-10-26. Pinned priority 1; do not mark repairs complete from audit output. Weight covers this non-lab review intake; implementation cards must assign their own risk class.\n2026-10-26 worktree disposition: archived local evidence and exact SHAs in MyTradingSys/research/worktree_disposition_20261026/REPORT.md. Recover only relevant missing proofs; do not rerun or merge stale producer branches. Existing task ownership unchanged.",
   "pinned": true,
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-10-26T10:37:44Z",
-  "refs": [],
+  "refs": [
+    "MyTradingSys/research/worktree_disposition_20261026/REPORT.md"
+  ],
   "result": "",
   "scope_in": [
     "scripts/dev",
