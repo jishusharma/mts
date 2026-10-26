@@ -1,10 +1,11 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T16:15:48Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-26T16:04:02Z",
+    "folded": "2026-10-26T16:15:51Z",
     "misses": 16,
     "reads": [
       "scripts/dev/test_auto_deploy.py",
@@ -24,6 +25,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "exact-PID tasklist match + bounded poll + 8s timeout; tests red on old code, 5/5 green; sh",
+      "ref": "82d49af5e",
+      "utc": "2026-10-26T16:15:48Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "auto_deploy: a zombie process counts as dead (cloud gate step 3ad)",
@@ -40,7 +47,12 @@
   "refined_by": "",
   "refreshed": "2026-10-26T15:45:26Z",
   "refs": [],
-  "result": "",
+  "result": "exact-PID tasklist match + bounded poll + 8s timeout; tests red on old code, 5/5 green; shipped 4942f9e95, CI green 82d49af5",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/auto_deploy.py",
     "scripts/dev/test_auto_deploy.py"
@@ -51,7 +63,7 @@
   "scope_sha": "f22763caa7a8",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read auto_deploy.py:508 _pid_alive and test_auto_deploy.py:538. Suspect (a): on nt _pid_alive does 'str(pid) in tasklist out', also matching memory columns; parse 'tasklist /FO CSV /NH' and compare the PID column exactly",
     "Suspect (b): replace the fixed time.sleep(1) after sh() by a bounded poll (10 s, 0.2 s step) for not _pid_alive. Suspect (c): pid file may not exist yet at the 3 s timeout on slow CI; raise sh timeout to 8 and assert the file exists with its own message",
@@ -60,6 +72,7 @@
     "Mutation check: stub kill_tree to only proc.kill(); the tree test must still FAIL. Then run python -m unittest scripts.dev.test_auto_deploy 5 times, all green",
     "Verify line: content commit sha; git cherry origin/fast-track <sha> empty AND git ls-tree -r origin/fast-track --name-only shows both files"
   ],
+  "taken": "2026-10-26T16:15:48Z",
   "tests": "New test in scripts/dev/test_auto_deploy.py: _pid_alive exact PID match (fails on old substring code); tree-kill test fails when kill_tree is reduced to proc.kill()",
   "title": "CI flake: test_sh_timeout_kills_the_whole_process_tree fails on windows shard 1/12 (grandchild alive after timeout, run 40251828458); make deterministic",
   "weight": "ROUTINE",
