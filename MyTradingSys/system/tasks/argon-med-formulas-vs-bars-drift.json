@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T10:43:14Z",
   "commands": [
     "C:/Users/E-ngineers/.gemini/bin/agy.exe --print \"Follow the steps of card argon-med-formulas-vs-bars-drift (python scripts/dev/tasks.py brief argon-med-formulas-vs-bars-drift). Write only MyTradingSys/research/design_cards_2026-10-26/argon_formulas_vs_bars.md. Facts with file:line or NOT_IN_DATA; no verdicts.\" --model gemini-4-argon-medium"
   ],
@@ -16,7 +17,14 @@
   "id": "argon-med-formulas-vs-bars-drift",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/design_cards_2026-10-26/argon_formulas_vs_bars.md: 16 formula rows (",
+      "ref": "0e4b72767",
+      "utc": "2026-10-26T10:43:14Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "model": "gemini-4-argon-medium",
@@ -33,7 +41,12 @@
     "to": "DSA",
     "why": "credits"
   },
-  "result": "",
+  "result": "MyTradingSys/research/design_cards_2026-10-26/argon_formulas_vs_bars.md: 16 formula rows (3 SAME, 7 DIFFERENT, 6 NOT_IN_DATA)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/design_cards_2026-10-26/argon_formulas_vs_bars.md (new file only)"
   ],
@@ -47,7 +60,7 @@
     "MyTradingSys/research/sim_desk/studies/_bars.py",
     "MyTradingSys/research/sim_desk/desk.py"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/backtest/layers/FORMULAS.md fully",
     "Read MyTradingSys/research/sim_desk/studies/_bars.py and the stats function in MyTradingSys/research/sim_desk/desk.py",
@@ -55,6 +68,7 @@
     "One row per formula; mark SAME, DIFFERENT or NOT_IN_DATA; copy numbers, never recompute",
     "Commit with a Result: line (rows, DIFFERENT count)"
   ],
+  "taken": "2026-10-26T10:43:14Z",
   "tests": "none (run card); proof = every row has two quotes with line numbers",
   "title": "[GEMINI] Argon-medium: FORMULAS.md definitions vs sim_desk stats and fill code (differences, file:line)",
   "weight": "IMPORTANT",

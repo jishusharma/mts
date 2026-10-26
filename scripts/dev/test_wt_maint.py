@@ -114,10 +114,50 @@ class Safety(Env):
     def test_dirty_tree_kept_and_reported(self):
         p = self.tree("mts-x-dirty")
         (p / "a.txt").write_text("changed")
-        s, _ = self.run_maint()
+        s, _ = self.run_maint(now=time.time() + 10 * 3600)   # idle 10 h: under DIRTY_IDLE_HOURS
         self.assertTrue(p.exists())
         self.assertEqual([r["name"] for r in s["held"]], ["mts-x-dirty"])
         self.assertIn("mts-x-dirty", (self.prim / "Dumps" / "worktree_report.txt").read_text())
+
+    def test_dirty_shipped_tree_idle_a_day_is_patch_saved_then_removed(self):
+        p = self.tree("mts-x-olddirty")
+        (p / "a.txt").write_text("changed")
+        (p / "scratch.txt").write_text("untracked work")
+        s, out = self.run_maint()   # now = +48 h
+        self.assertFalse(p.exists())
+        self.assertEqual(s["held"], [])
+        dest = self.prim / "Dumps" / "wt_rescue" / "mts-x-olddirty"
+        self.assertIn("+changed", (dest / "uncommitted.patch").read_text())
+        self.assertEqual((dest / "untracked" / "scratch.txt").read_text(), "untracked work")
+        self.assertTrue(any("saved to Dumps/wt_rescue/mts-x-olddirty" in l for l in out))
+
+    def test_dirty_tree_with_unshipped_commits_is_never_removed_however_idle(self):
+        p = self.tree("mts-x-aheaddirty", commit=True)
+        (p / "a.txt").write_text("changed")
+        s, _ = self.run_maint()
+        self.assertTrue(p.exists())
+        self.assertEqual([r["name"] for r in s["held"]], ["mts-x-aheaddirty"])
+
+    def test_dirty_tree_with_a_huge_untracked_file_stays(self):
+        p = self.tree("mts-x-big")
+        (p / "big.bin").write_bytes(b"x" * 2000)
+        old = wt_maint.BIG_UNTRACKED_MB
+        wt_maint.BIG_UNTRACKED_MB = 0.001
+        try:
+            s, _ = self.run_maint()
+        finally:
+            wt_maint.BIG_UNTRACKED_MB = old
+        self.assertTrue(p.exists())
+        self.assertFalse((self.prim / "Dumps" / "wt_rescue" / "mts-x-big").exists())
+
+    def test_no_log_flag_leaves_the_supervisor_log_alone(self):
+        log = self.prim / wt_maint.SUPERVISOR_LOG_REL
+        log.parent.mkdir(parents=True)
+        log.write_text("head" + chr(10))
+        self.tree("mts-x-done")
+        out = []
+        wt_maint.run(self.prim, apply=True, now=time.time() + FAR, log=out.append, host="JIS-NUC", write_log=False)
+        self.assertEqual(log.read_text(), "head" + chr(10))
 
     def test_unshipped_commits_kept_and_reported(self):
         p = self.tree("mts-x-ahead", commit=True)

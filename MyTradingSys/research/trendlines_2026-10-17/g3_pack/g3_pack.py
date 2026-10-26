@@ -415,3 +415,4 @@ if __name__ == "__main__":
     ap.add_argument("--out", default=r"F:\MTS\data\g3_trendline_pack_2026-10-17\charts")
     a = ap.parse_args()
     {"counts": cmd_counts, "build": cmd_build, "draw": cmd_draw}[a.cmd](a)
+# T01-F2: raw_1d is a distinct snapshot, NOT the 1m resample (905 of 912 DEV days differ on open, 847 on volume, max 12.01%); derive daily bars from 1m for new work. See MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md

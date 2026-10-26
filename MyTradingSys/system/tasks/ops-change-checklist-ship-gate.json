@@ -1,0 +1,71 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest -q scripts/dev/test_preship.py",
+    "python scripts/dev/preship.py check"
+  ],
+  "created": "2026-10-26T15:32:15Z",
+  "depends_on": [],
+  "done_when": "test_preship.py passes with the new reach tests (each fails on the pre-change preship.py); a staged scripts/dev/role_loader.py commit without a Reach line is denied and with it allowed; preship.py check exits 0 on trunk; REVIEW DIFF APPROVE logged in the card note",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "preship.py denies a git commit whose staged paths include scripts/dev/role_*, mts_signal.py, sync.py, .claude/settings.json or MyTradingSys/system/roles/*.md unless the commit text has a 'Reach: Q1-Q8' line (OPS_CHANGE_CHECK.md); check mode flags unpushed commits missing it. Fails closed on parse error.",
+  "id": "ops-change-checklist-ship-gate",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "OPS_CHANGE_CHECK.md: 8-question reach test, cited by Lead and DEBUGGING",
+      "ref": "512cb754b985",
+      "utc": "2026-10-26T15:36:10Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "512cb754b985 OPS_CHANGE_CHECK.md: 8-question reach test, cited by Lead and DEBUGGING",
+      "ref": "MyTradingSys/system/OPS_CHANGE_CHECK.md",
+      "utc": "2026-10-26T15:36:10Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer a9113afd018ea56c9; CRITICAL still needs plan+diff review session). Split from ops-change-edge-case-check (done; OPS_CHANGE_CHECK.md is on trunk). Gate code: plan+diff review session per CRITICAL protocol. DECISION (OURS): rule lives in preship.py hook_commit (reads the git commit command text) plus check mode over origin/fast-track..HEAD bodies; no change to sync.py.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-26T17:26:22Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/preship.py",
+    "scripts/dev/test_preship.py",
+    "MyTradingSys/system/OPS_CHANGE_CHECK.md"
+  ],
+  "scope_out": [
+    "sync.py ship logic and the live tree",
+    "run_all_tests.py",
+    "rules for other paths"
+  ],
+  "scope_sha": "512cb754b985",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/system/OPS_CHANGE_CHECK.md (Reach line format, 8 questions)",
+    "scripts/dev/preship.py:34 COMMIT regex, :241 hook_commit"
+  ],
+  "state": "ready",
+  "steps": [
+    "Post 'REVIEW ops-change-checklist-ship-gate PLAN <branch>' via mts_signal.py send --kind ask once plan and test list exist; wait for APPROVE",
+    "Write failing tests in test_preship.py: commit text touching role_loader.py without Reach is denied; with 'Reach: Q1-Q8 ok' allowed; unrelated paths allowed; heredoc and -m forms both parsed; garbage input denies (fail closed) only when a reach path is staged; MTS_PRESHIP=off still bypasses",
+    "Implement REACH_PATHS and a reach check in hook_commit and in check mode (git log origin/fast-track..HEAD --format=%B for commits touching those paths); deny text names OPS_CHANGE_CHECK.md and the exact line to add",
+    "Run python -m pytest -q scripts/dev/test_preship.py and python scripts/dev/preship.py check; post 'REVIEW ops-change-checklist-ship-gate DIFF <sha>' and wait for APPROVE before sync.py ship"
+  ],
+  "tests": "scripts/dev/test_preship.py: reach tests written first, fail on current preship.py (role_loader.py commit without Reach is allowed today); cover restart-free state, API-free paths, parse error fails closed",
+  "title": "Ship gate: preship rule that fails a commit touching role_*, mts_signal.py or hooks without a Reach line",
+  "weight": "CRITICAL",
+  "worker": "session"
+}

@@ -19,9 +19,9 @@ Seen by `python scripts/dev/mts_signal.py who --hours 72` on 2026-10-24. Answers
 
 | Mechanism | Runs when | Deletes | Log / report | Code |
 |---|---|---|---|---|
-| SessionStart hook `c_drive_guard.py hook` | every Claude session start; acts only when C: has < 15 GB free (OURS) | the prune set (section 3), detached | one warning line in the session | `.claude/settings.json`, `scripts/dev/c_drive_guard.py` |
-| Logon run `MTSTempGuard` (HKCU Run, section 4) | every logon, so every restart with auto sign-in; prunes whatever the free space | the same prune set | `%LOCALAPPDATA%\MTS\logs\c_drive_guard.log`, one line per logon | `scripts/dev/c_drive_guard.py logon` |
-| Worktree job `MTS-WorktreeMaint-<device>` | 07:15 daily (the one allowed standing task, SCHEDULING_POLICY.md section 4b) | finished worktrees and merged local branches; never uncommitted or unshipped work | `Dumps/worktree_report.txt` (gitignored), one line in SUPERVISOR_LOG | `scripts/dev/wt_maint.py` (DEVICES.md section 8b) |
+| SessionStart hook `c_drive_guard.py hook` | every Claude session start: once a day, and whenever C: has < 15 GB free (OURS) | the prune set (section 3) and the worktree job below, detached | one warning line in the session | `.claude/settings.json`, `scripts/dev/c_drive_guard.py` |
+| Logon run `MTSTempGuard` (HKCU Run, section 4) | every logon, so every restart with auto sign-in; prunes whatever the free space | the same prune set and the worktree job below | `%LOCALAPPDATA%\MTS\logs\c_drive_guard.log`, one line per logon | `scripts/dev/c_drive_guard.py logon` |
+| Worktree job `MTS-WorktreeMaint-<device>` | 07:15 daily (the one allowed standing task, SCHEDULING_POLICY.md section 4b) | finished worktrees and merged local branches; never unshipped commits; a tree with uncommitted files only when its branch is on trunk and it is idle 24 h (OURS), patch saved to `Dumps/wt_rescue/<tree>/` first | `Dumps/worktree_report.txt` (gitignored), one line in SUPERVISOR_LOG | `scripts/dev/wt_maint.py` (DEVICES.md section 8b) |
 | Retention | by hand, weekly (RETENTION_POLICY.md) | repo backup and staging files listed in RETENTION_POLICY.md | stdout | `scripts/dev/retention.py` |
 | Backup archive | by hand | moves, never deletes, backups to `Dumps/_archive/` | stdout | `scripts/dev/declutter_backups.py --apply` |
 | Operator: Windows Disk Cleanup or Explorer | by hand | anything the operator picks | none | DISK_CARE.md |
@@ -73,6 +73,10 @@ python scripts/dev/c_drive_guard.py status
 ```bash
 python scripts/dev/c_drive_guard.py uninstall
 ```
+
+## 4b. One worktree rule on every station (operator 2026-10-26: same mechanism on all devices, periodic, wired today)
+
+The hook (daily) and the logon run both call `wt_maint.py --apply --no-log`, the one worktree job, so no station needs the standing task to stay clean. Hand-named sibling trees (`../mts-*`) are covered too: `sync.py tidy` alone skipped them, which left 32 finished trees (5.2 GB) on JIS-NB on 2026-10-26. Per station, once: `git pull --ff-only` in the checkout the Run value points at, then `c_drive_guard.py install` from it (section 4). The hook reads the primary checkout's `.claude/settings.json`: a primary that is behind or dirty keeps the old rule, which is why the logon run is the reliable path. When the Run value's checkout is a different clone from the one holding the worktrees (JIS-NB: Run value in `C:\MTS\mts-jisnb`, trees in `IdeaProjects\BinanceDataFeed`), add `--repo <the clone with the trees>` to `install`. Check with `c_drive_guard.py status`; the log line shows `N worktrees retired`.
 
 ## 5. Roll-call answer format
 

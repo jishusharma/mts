@@ -29,14 +29,15 @@
   "not_twin_of": [
     "dsa-audit-05-placebo-nulls"
   ],
-  "note": "REVIEWED:2026-10-26 ACCEPT | Source: T05-F5 (S1) of card dsa-audit-05-placebo-nulls. DECISION (OURS): LC1 rerun was on standard DEV, not the footprint window 2024-12-02..2025-03-31 (inside VALIDATION); re-running on the footprint window needs an EXPOSURE_LEDGER row and the operator's say.",
+  "note": "REVIEWED:2026-10-26 ACCEPT | Source: T05-F5 (S1) of card dsa-audit-05-placebo-nulls. DECISION (OURS): LC1 rerun was on standard DEV, not the footprint window 2024-12-02..2025-03-31 (inside VALIDATION); re-running on the footprint window needs an EXPOSURE_LEDGER row and the operator's say.\n2026-10-26 worktree disposition: archived local evidence and exact SHAs in MyTradingSys/research/worktree_disposition_20261026/REPORT.md. Recover only relevant missing proofs; do not rerun or merge stale producer branches. Existing task ownership unchanged.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
   "refreshed": "2026-10-25T22:30:24Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T05_placebo_nulls.md",
-    "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.py"
+    "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.py",
+    "MyTradingSys/research/worktree_disposition_20261026/REPORT.md"
   ],
   "result": "",
   "scope_in": [

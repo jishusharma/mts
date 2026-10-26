@@ -207,11 +207,21 @@ def clean_prompt(prompt):
     return rl.clean(prompt) if rl else str(prompt or "")
 
 
+BARE_LOGIN = re.compile(r"(?i)^\s*login\s+[abc]\s*[.!]?\s*$")
+
+
+def rl_first_line(prompt):
+    rl = _role_line()
+    return rl.first_line(prompt) if rl else (str(prompt or "").strip().splitlines() or [""])[0]
+
+
 def match_roles(prompt, roles):
     """Distinct role names asked for. A `You are <Role>.` first line behind the app's wrappers (role_line.py) names exactly one;
     else the first 300 raw chars: the phrase must start a line or sentence (a quote, a negation or a mid-sentence mention does
     not count). The 300-char scan stays on the raw text: on the cleaned text it reached later sentences (review of 9f0cb459c:
     "Supervisor. Login C. ..." also matched Session_Planner, a quoted "What about a thinker?" loaded Thinker)."""
+    if "Supervisor" in roles and BARE_LOGIN.match(str(rl_first_line(prompt))):     # operator 2026-10-26: "login C" alone starts the Supervisor
+        return ["Supervisor"]
     rl = _role_line()
     if rl:
         names = {}

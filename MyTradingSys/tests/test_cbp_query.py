@@ -1,5 +1,6 @@
 """cbp.query + scripts/dev/cbp_run.py: window logic, 5-day filter, dedupe, fabricated quote, empty store."""
 import json
+import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -44,14 +45,14 @@ def test_query_five_day_filter_and_filters(tmp_path):
 
 def test_window_logic_injected_clock():
     assert cbp_run.open_window(at(9)) == "EU" and cbp_run.open_window(at(10, 59)) == "EU"
-    assert cbp_run.open_window(at(11)) is None and cbp_run.open_window(at(8, 59)) is None
-    assert cbp_run.open_window(at(12)) == "PRE_US" and cbp_run.open_window(at(13, 29)) == "PRE_US"
-    assert cbp_run.open_window(at(13, 30)) is None
+    assert cbp_run.open_window(at(11)) == "EU" and cbp_run.open_window(at(8, 59)) is None
+    assert cbp_run.open_window(at(12, 59)) == "EU" and cbp_run.open_window(at(13)) == "PRE_US"
+    assert cbp_run.open_window(at(23, 59)) == "PRE_US"
     assert cbp_run.is_due(at(10), {}) == "EU"
     assert cbp_run.is_due(at(10), {"done": ["2026-10-24:EU"]}) is None  # done in this window today
-    assert cbp_run.is_due(at(12, 30), {"done": ["2026-10-24:EU"]}) == "PRE_US"
+    assert cbp_run.is_due(at(13), {"done": ["2026-10-24:EU"]}) == "PRE_US"
     assert cbp_run.is_due(at(10), {"done": ["2026-10-23:EU"]}) == "EU"  # yesterday's run does not count
-    assert cbp_run.is_due(at(15), {}) is None
+    assert cbp_run.is_due(at(8), {}) is None
 
 
 def test_main_due_and_force(tmp_path, monkeypatch):
@@ -59,7 +60,7 @@ def test_main_due_and_force(tmp_path, monkeypatch):
     monkeypatch.setenv("CBP_STORE", str(tmp_path / "s.json"))
     calls = []
     monkeypatch.setattr(cbp_run, "run_once", lambda now: calls.append(now) or (0, 0, 0))
-    assert cbp_run.main(["--due"], now=at(15)) == 0 and calls == []  # no window open
+    assert cbp_run.main(["--due"], now=at(8)) == 0 and calls == []  # no window open
     cbp_run.main(["--due"], now=at(10))
     cbp_run.main(["--due"], now=at(10, 30))  # same window, already done
     assert len(calls) == 1
@@ -94,6 +95,7 @@ def test_run_adds_dedupes_and_skips_known(tmp_path, monkeypatch):
 
 
 def test_fabricated_quote_rejected(tmp_path, monkeypatch):
+    # A dummy model output with invented evidence must never reach the query store.
     st = _setup(tmp_path, monkeypatch)
     fake = dict(GOOD, quotes=["bitcoin will moon to 500K tomorrow"])
     assert cbp_run.run_once(NOW, fetch=lambda *a: None, extract=lambda v, b: fake, store=st) == (0, 0, 1)
@@ -109,3 +111,44 @@ def test_old_videos_never_extracted(tmp_path, monkeypatch):
     called = []
     out = cbp_run.run_once(NOW, fetch=lambda *a: None, extract=lambda v, b: called.append(1) or GOOD, store=st)
     assert out == (0, 0, 0) and called == []
+
+
+def test_fetch_failure_propagates(monkeypatch):
+    monkeypatch.setattr(cbp_run, "analysts", lambda: ({"exclude_regex": ""},
+                       [{"short": "Krown", "channel": "@x"}]))
+    import pytest
+    with pytest.raises(subprocess.CalledProcessError):
+        cbp_run.fetch_new("2026-10-19", set(), run=lambda cmd, **kw: subprocess.CompletedProcess(cmd, 1))
+
+
+def test_unavailable_extractor_does_not_stamp_success(tmp_path, monkeypatch):
+    st = _setup(tmp_path, monkeypatch)
+    monkeypatch.setenv("CBP_STAMP", str(tmp_path / "stamp.json"))
+    monkeypatch.setenv("CBP_STORE", str(st))
+    def unavailable(*args):
+        raise OSError("extractor unavailable")
+    original = cbp_run.run_once
+    monkeypatch.setattr(cbp_run, "run_once", lambda now: original(
+        now, fetch=lambda *a: None, extract=unavailable, store=st))
+    assert cbp_run.main(["--due"], now=at(10)) != 0
+    assert cbp_run.is_due(at(10), cbp_run.read_stamp()) == "EU"
+
+
+def test_raw_canonical_transcript_is_read(tmp_path, monkeypatch):
+    tr = tmp_path / "raw_transcripts_canonical"
+    tr.mkdir()
+    monkeypatch.setattr(cbp_run, "TRANSCRIPTS", tr)
+    vid = "W" * 11
+    (tr / (vid + "_raw.txt")).write_text(
+        "# Video ID: %s\n# Published: 2026-10-23\n# Analyst: Krown\n# ---\n%s" % (vid, BODY), encoding="utf-8")
+    st = tmp_path / "store.json"
+    assert cbp_run.run_once(NOW, fetch=lambda *a: None, extract=lambda *a: GOOD, store=st) == (1, 1, 0)
+    assert cbp.query(store=st, now=NOW)[0]["video_id"] == vid
+
+
+def test_extractor_nonzero_json_is_failure():
+    import pytest
+    video = ("V" * 11, "Krown", "2026-10-23", "T", None)
+    with pytest.raises(subprocess.CalledProcessError):
+        cbp_run.llm_extract(video, BODY, run=lambda *a, **kw: subprocess.CompletedProcess(
+            a, 1, stdout=json.dumps(GOOD), stderr="failed"))

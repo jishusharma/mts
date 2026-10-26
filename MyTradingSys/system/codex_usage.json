@@ -1,12 +1,12 @@
 {
  "allowance": {
   "plan": "plus",
-  "week_resets": 1793427295,
-  "week_used": 16.0,
-  "window_resets": 1792988461,
+  "week_resets": 1793614697,
+  "week_used": 6.0,
+  "window_resets": 1793045897,
   "window_used": 0
  },
- "at": "2026-10-25T23:21:01Z",
+ "at": "2026-10-26T17:04:27Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -18,18 +18,33 @@
  "host": "JIS-NUC",
  "lab": {
   "astra_runs": 0,
-  "week_pts": 10.5,
-  "window_pts": 59.0,
-  "window_runs": 14
+  "week_pts": 8.5,
+  "window_pts": 50.0,
+  "window_runs": 1
  },
  "runs": [
+  {
+   "at": "2026-10-26T17:04:19Z",
+   "card": "astra-low-confluence-prereg-leak-hunt",
+   "effort": "low",
+   "kind": "audit",
+   "model": "astra",
+   "note": "",
+   "outcome": "INCOMPLETE",
+   "seconds": 5,
+   "tokens_out": null,
+   "tokens_total": null,
+   "tokens_uncached": null,
+   "week_pts": null,
+   "window_pts": null
+  },
   {
    "at": "2026-10-25T23:20:58Z",
    "card": "lf-rsi-gpt-rederive",
    "effort": "medium",
    "kind": "audit",
    "model": "gpt-6-luna",
-   "note": "Codex credits ran out; the card stays ready, is not charged a try, and the GPT lane is marked down",
+   "note": "Codex credits ran out; the card stays ready, is not charged a try, and the GPT lane is marked down | release failed: sync: no claim lf-rsi-gpt-rederive on origi",
    "outcome": "LIMIT",
    "seconds": 2,
    "tokens_out": null,
@@ -157,21 +172,6 @@
    "tokens_uncached": 66990,
    "week_pts": 0.0,
    "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-25T19:59:31Z",
-   "card": "trust-recheck-lab-data-pin-hash",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 76,
-   "tokens_out": 5655,
-   "tokens_total": 492030,
-   "tokens_uncached": 49383,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }
