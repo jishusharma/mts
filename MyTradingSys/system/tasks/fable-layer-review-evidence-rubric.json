@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T15:49:44Z",
   "commands": [],
   "created": "2026-10-26T22:50:00Z",
   "depends_on": [],
@@ -12,7 +13,14 @@
   "goal": "One rubric of the questions and numbers the operator looks at per layer in the simulator before deciding anything (n, fee-net R, window, tries, label coverage, known bugs). It lists what to look at; it never says keep or drop.",
   "id": "fable-layer-review-evidence-rubric",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/design_cards_2026-10-26/FABLE_LAYER_REVIEW_RUBRIC.md: 12 rows (rows ",
+      "ref": "dd3f311c1",
+      "utc": "2026-10-26T15:49:44Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -22,7 +30,12 @@
   "refined_by": "super-c-design",
   "refreshed": "2026-10-25T22:50:22Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/design_cards_2026-10-26/FABLE_LAYER_REVIEW_RUBRIC.md: 12 rows (rows 1-10 on the simulator desk today, rows 11-12 NEW), no row decides a layer",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/design_cards_2026-10-26/FABLE_LAYER_REVIEW_RUBRIC.md (new file only)"
   ],
@@ -35,12 +48,13 @@
     "MyTradingSys/system/tasks/layer-review-after-simulator.json",
     "MyTradingSys/system/LAYERS.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the layer-review-after-simulator card and LAYERS.md headings",
     "Draft rows; mark desk location or NEW",
     "Ship"
   ],
+  "taken": "2026-10-26T15:49:44Z",
   "tests": "Docs card: no row names keep, drop, demote or park as an outcome",
   "title": "Fable: evidence rubric the operator uses when he reviews each layer in the simulator",
   "weight": "CRUCIAL",
