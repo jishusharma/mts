@@ -145,10 +145,10 @@ def build_points(t, o, c, av, sides, horizon=HORIZON, cost=COST):
     n = len(t)
     k = np.arange(0, n - horizon)
     dec = t[k] + H1
-    gross = (c[k + horizon] / o[k + 1] - 1.0) * 100.0
+    fwd_gross = (c[k + horizon] / o[k + 1] - 1.0) * 100.0
     pos = np.searchsorted(av, dec, side="left") - 1          # last index with av < dec
     ok = pos >= 0
-    out = {"k": k[ok], "dec": dec[ok], "gross": gross[ok]}
+    out = {"k": k[ok], "dec": dec[ok], "gross": fwd_gross[ok]}
     for name, arr in sides.items():
         out["side_" + name] = arr[pos[ok]]
     out["net"] = {nm: out["side_" + nm] * out["gross"] - cost * (out["side_" + nm] != 0) for nm in sides}
@@ -253,7 +253,8 @@ def read_32(t, c, h4):
         if j is None or j + HORIZON > len(t):
             continue
         bb.append(float(r["bbwp_4h_ours"]))
-        rv.append(float(np.sqrt(cs[j + HORIZON] - cs[j])))  # returns of bars j..j+23, the first measured from the close of bar j-1 (= decision)
+        fwd_rv = float(np.sqrt(cs[j + HORIZON] - cs[j]))    # returns of bars j..j+23, the first measured from the close of bar j-1 (= decision)
+        rv.append(fwd_rv)
         dec.append(d)
     bb, rv, dec = np.array(bb), np.array(rv), np.array(dec, dtype=np.int64)
     wk = week_of(dec)
