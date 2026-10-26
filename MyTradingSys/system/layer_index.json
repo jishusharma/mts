@@ -834,6 +834,61 @@
           "s": "later"
         }
       }
+    },
+    {
+      "id": "pizzino",
+      "name": "Pizzino (Jason bar count + Michael nested swing states)",
+      "tracks": "Claude",
+      "status": "Indicator module built with fail-first tests from SPEC worked examples. No backtest, no live wiring (pz-4 next).",
+      "spec": [
+        "MyTradingSys/research/pizzino_layer_2026-10-27/SPEC.md",
+        "MyTradingSys/research/pizzino_layer_2026-10-27/PLAN.md"
+      ],
+      "code": [
+        "MyTradingSys/backtest/layers/pizzino/pizzino_indicators.py"
+      ],
+      "ledger": [],
+      "results": [],
+      "roadmap": [],
+      "cards": [
+        "pz-*"
+      ],
+      "layers": [
+        "pizzino_indicators"
+      ],
+      "plain": "Pivots, 50% correction line, retest, Jason 3-bar count and Michael 1/2/3-bar nested trend states as pure functions; fee-net value untested.",
+      "path": {
+        "idea": {
+          "s": "done",
+          "note": "SPEC.md pz-2 from method_extraction.md"
+        },
+        "inputs": {
+          "s": "planned",
+          "note": "BTC daily/3D/weekly klines in pz-4"
+        },
+        "fees": {
+          "s": "planned",
+          "note": "applied in pz-4 backtest"
+        },
+        "charts": {
+          "s": "planned"
+        },
+        "built": {
+          "s": "done",
+          "note": "pizzino_indicators.py + test_pizzino_indicators.py"
+        },
+        "dev": {
+          "s": "planned",
+          "note": "pz-4-backtest"
+        },
+        "oos": {
+          "s": "planned"
+        },
+        "testnet": {
+          "s": "later",
+          "note": "no strategy has passed any gate"
+        }
+      }
     }
   ],
   "cross_cutting": [
