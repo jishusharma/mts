@@ -1,20 +1,21 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T15:51:32Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-26T15:46:38Z",
-    "misses": 34,
+    "folded": "2026-10-26T15:51:37Z",
+    "misses": 38,
     "reads": [
+      "scripts/dev/perm_audit.py",
+      "scripts/dev/extra_tests.tsv",
       "MyTradingSys/system/SURFACE_POLICY.md",
       "MyTradingSys/system/DEBUGGING.md",
       ".claude/settings.json",
-      ".claude",
-      "MyTradingSys/tests/docs/test_integrity.py",
       "MyTradingSys/tests/test_gate_discovery_b150.py",
-      "scripts/dev/run_all_tests.py",
-      "scripts/dev/run_extra_tests.py"
+      ".claude",
+      "MyTradingSys/tests/docs/test_integrity.py"
     ],
     "session": "agent-a6c7c2506c1f545e0"
   },
@@ -30,6 +31,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "perm_audit.py + test shipped (7164cc8e4); SURFACE_POLICY 3997 B; DEBUGGING row added; broa",
+      "ref": "098d69b02",
+      "utc": "2026-10-26T15:51:32Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -54,7 +61,12 @@
   "refined_by": "",
   "refreshed": "2026-10-26T15:32:16Z",
   "refs": [],
-  "result": "",
+  "result": "perm_audit.py + test shipped (7164cc8e4); SURFACE_POLICY 3997 B; DEBUGGING row added; broadcast not sent",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/SURFACE_POLICY.md",
     "scripts/dev/perm_audit.py",
@@ -70,7 +82,7 @@
   "scope_sha": "6b92b6984482",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read SURFACE_POLICY.md and the DEBUGGING.md section 2 row format; read the shape of .claude/settings.local.json (permissions.allow / permissions.deny).",
     "Fail-first: write scripts/dev/test_perm_audit.py with a settings dict that denies Bash(git merge:*) -> FINDING, and one that does not -> OK; run, confirm FAIL (module missing).",
@@ -79,6 +91,7 @@
     "Add a DEBUGGING.md section 2 row: symptom 'Allow once dialog in unattended run' -> python scripts/dev/perm_audit.py -> owner.",
     "Ship, then mts_signal.py broadcast --cmd with the audit command (message under the 200-char cap) and quote each machine's output in the card note."
   ],
+  "taken": "2026-10-26T15:51:32Z",
   "tests": "scripts/dev/test_perm_audit.py (fails first); MyTradingSys/tests/docs/test_integrity.py size caps pass. Verify: content commit sha, `git cherry origin/fast-track <sha>` empty, `git ls-tree -r origin/fast-track --name-only` lists the files.",
   "title": "BUG: app permission dialogs and silent denials block unattended Supervisor/worker runs",
   "weight": "IMPORTANT",
