@@ -25,7 +25,7 @@ def at(h, m=0):
 
 def row(vid, pub, analyst="Krown", sym="BTC", trades=()):
     return {"analyst": analyst, "video_id": vid, "published": pub, "bias": "BULLISH", "quotes": [], "trades": list(trades),
-            "pointers": [], "symbols": [sym], "quote_verified": True, "expires_at": pub + "T00:00:00Z"}
+            "pointers": [], "symbols": [sym], "quote_verified": True, "expires_at": "2026-12-31T00:00:00Z"}
 
 
 def test_query_empty_store(tmp_path):
@@ -164,7 +164,6 @@ def test_planted_trade_without_quote_is_rejected():
     assert built is None and "empty quote" in reason
 
 
-@pytest.mark.xfail(strict=True, reason="cbp-row-schema-expiry-gaps: runtime validator omits direction enum")
 def test_planted_wrong_direction_is_rejected():
     got = copy.deepcopy(GOOD)
     got["trades"][0]["direction"] = "SIDEWAYS"  # schema allows only LONG or SHORT
@@ -172,7 +171,6 @@ def test_planted_wrong_direction_is_rejected():
     assert built is None
 
 
-@pytest.mark.xfail(strict=True, reason="cbp-row-schema-expiry-gaps: query ignores expires_at")
 def test_planted_expired_row_is_not_returned(tmp_path):
     built, _ = cbp_run.build_row(("P" * 11, "Krown", "2026-10-23", "fixture", None), GOOD, BODY)
     built["expires_at"] = "2026-10-24T09:00:00Z"  # publication recent; explicit expiry already passed
@@ -193,7 +191,6 @@ def test_planted_duplicate_video_id_is_not_extracted_again(tmp_path, monkeypatch
     assert len(cbp.load(st)["rows"]) == 1
 
 
-@pytest.mark.xfail(strict=True, reason="cbp-row-schema-expiry-gaps: query does not validate stored rows")
 def test_planted_missing_expiry_is_not_returned(tmp_path):
     built, _ = cbp_run.build_row(("P" * 11, "Krown", "2026-10-23", "fixture", None), GOOD, BODY)
     del built["expires_at"]
@@ -201,3 +198,33 @@ def test_planted_missing_expiry_is_not_returned(tmp_path):
     st = tmp_path / "synthetic.json"
     cbp.save({"rows": [built]}, st)
     assert cbp.query(store=st, now=NOW) == []  # read path must not trust a malformed stored row
+
+
+def _stored(tmp_path, **chg):
+    built, _ = cbp_run.build_row(("P" * 11, "Krown", "2026-10-23", "fixture", None), GOOD, BODY)
+    built.update(chg)
+    st = tmp_path / "synthetic.json"
+    cbp.save({"rows": [built]}, st)
+    return st
+
+
+def test_valid_row_is_returned(tmp_path):
+    st = _stored(tmp_path, expires_at="2026-10-24T10:00:01Z")
+    assert len(cbp.query(store=st, now=NOW)) == 1
+
+
+def test_boundary_expiry_is_expired(tmp_path):
+    assert cbp.query(store=_stored(tmp_path, expires_at="2026-10-24T10:00:00Z"), now=NOW) == []
+
+
+def test_malformed_expiry_is_not_returned(tmp_path):
+    for bad in ("tomorrow", "", None, 12345):
+        assert cbp.query(store=_stored(tmp_path, expires_at=bad), now=NOW) == []
+
+
+def test_stored_row_with_bad_direction_is_not_returned(tmp_path):
+    built, _ = cbp_run.build_row(("P" * 11, "Krown", "2026-10-23", "fixture", None), GOOD, BODY)
+    built["trades"][0]["direction"] = "SIDEWAYS"
+    st = tmp_path / "s.json"
+    cbp.save({"rows": [built]}, st)
+    assert cbp.query(store=st, now=NOW) == []

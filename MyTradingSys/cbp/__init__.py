@@ -22,6 +22,18 @@ ROW_FIELDS = ("analyst", "video_id", "published", "bias", "quotes", "trades", "p
               "symbols", "quote_verified", "expires_at")
 BIASES = ("BULLISH", "BEARISH", "NEUTRAL", "NO_VIEW")
 TRADE_FIELDS = ("asset", "direction", "entry", "target", "invalidation", "quote")
+DIRECTIONS = ("LONG", "SHORT")
+
+
+def parse_expiry(v):
+    """expires_at (ISO-8601, 'Z' or offset; naive = UTC) as an aware UTC datetime, or None when malformed."""
+    if not isinstance(v, str) or not v.strip():
+        return None
+    try:
+        d = datetime.fromisoformat(v.strip().replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return d.replace(tzinfo=timezone.utc) if d.tzinfo is None else d.astimezone(timezone.utc)
 
 
 def store_path(path=None):
@@ -59,6 +71,10 @@ def validate_row(r):
     for t in r.get("trades") or []:
         if not isinstance(t, dict) or any(k not in t for k in TRADE_FIELDS):
             errs.append("trade needs %s" % (TRADE_FIELDS,))
+        elif t.get("direction") not in DIRECTIONS:
+            errs.append("trade direction must be one of %s" % (DIRECTIONS,))
+    if "expires_at" in r and parse_expiry(r["expires_at"]) is None:
+        errs.append("expires_at malformed")
     return errs
 
 
@@ -69,12 +85,17 @@ def is_tradable(r):
 
 
 def query(analyst=None, symbol=None, since_days=WINDOW_DAYS, now=None, store=None):
-    """Rows published within the last since_days, newest first; optional analyst / symbol filter."""
+    """Rows published within the last since_days, newest first; optional analyst / symbol filter.
+    Fail closed: rows that fail validate_row, or whose expires_at is not after now, are never returned."""
     now = now or datetime.now(timezone.utc)
     cutoff = (now - timedelta(days=since_days)).date().isoformat()
     sym = symbol.upper() if symbol else None
     out = []
     for r in load(store)["rows"]:
+        if validate_row(r) or not isinstance(r.get("published"), str):
+            continue  # fail closed: a malformed stored row is no signal
+        if parse_expiry(r["expires_at"]) <= now:
+            continue  # expired (boundary: expires_at == now is expired)
         if (r.get("published") or "") < cutoff:
             continue
         if analyst and r.get("analyst", "").lower() != analyst.lower():
