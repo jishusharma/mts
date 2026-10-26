@@ -4,7 +4,7 @@ import subprocess
 import sys
 import copy
 import pytest
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.dont_write_bytecode = True
@@ -25,7 +25,7 @@ def at(h, m=0):
 
 def row(vid, pub, analyst="Krown", sym="BTC", trades=()):
     return {"analyst": analyst, "video_id": vid, "published": pub, "bias": "BULLISH", "quotes": [], "trades": list(trades),
-            "pointers": [], "symbols": [sym], "quote_verified": True, "expires_at": pub + "T00:00:00Z"}
+            "pointers": [], "symbols": [sym], "quote_verified": True, "expires_at": (datetime.fromisoformat(pub) + timedelta(days=5)).strftime("%Y-%m-%dT00:00:00Z")}
 
 
 def test_query_empty_store(tmp_path):
@@ -39,8 +39,8 @@ def test_query_five_day_filter_and_filters(tmp_path):
     cbp.save({"rows": [row("a" * 11, "2026-10-23"), row("b" * 11, "2026-10-19"), row("c" * 11, "2026-10-18"),
                        row("d" * 11, "2026-10-22", analyst="Rekt", sym="ETH")]}, st)
     ids = [r["video_id"][0] for r in cbp.query(store=st, now=NOW)]
-    assert ids == ["a", "d", "b"]  # 10-19 is exactly 5 days old: in; 10-18: out; newest first
-    assert [r["video_id"][0] for r in cbp.query(analyst="krown", store=st, now=NOW)] == ["a", "b"]
+    assert ids == ["a", "d"]  # 10-19 expires 10-24T00:00Z (published+5d) so it is out at NOW; 10-18 out; newest first
+    assert [r["video_id"][0] for r in cbp.query(analyst="krown", store=st, now=NOW)] == ["a"]
     assert [r["video_id"][0] for r in cbp.query(symbol="eth", store=st, now=NOW)] == ["d"]
     assert len(cbp.query(since_days=2, store=st, now=NOW)) == 2
 
@@ -164,7 +164,6 @@ def test_planted_trade_without_quote_is_rejected():
     assert built is None and "empty quote" in reason
 
 
-@pytest.mark.xfail(strict=True, reason="cbp-row-schema-expiry-gaps: runtime validator omits direction enum")
 def test_planted_wrong_direction_is_rejected():
     got = copy.deepcopy(GOOD)
     got["trades"][0]["direction"] = "SIDEWAYS"  # schema allows only LONG or SHORT
@@ -172,7 +171,6 @@ def test_planted_wrong_direction_is_rejected():
     assert built is None
 
 
-@pytest.mark.xfail(strict=True, reason="cbp-row-schema-expiry-gaps: query ignores expires_at")
 def test_planted_expired_row_is_not_returned(tmp_path):
     built, _ = cbp_run.build_row(("P" * 11, "Krown", "2026-10-23", "fixture", None), GOOD, BODY)
     built["expires_at"] = "2026-10-24T09:00:00Z"  # publication recent; explicit expiry already passed
@@ -193,7 +191,6 @@ def test_planted_duplicate_video_id_is_not_extracted_again(tmp_path, monkeypatch
     assert len(cbp.load(st)["rows"]) == 1
 
 
-@pytest.mark.xfail(strict=True, reason="cbp-row-schema-expiry-gaps: query does not validate stored rows")
 def test_planted_missing_expiry_is_not_returned(tmp_path):
     built, _ = cbp_run.build_row(("P" * 11, "Krown", "2026-10-23", "fixture", None), GOOD, BODY)
     del built["expires_at"]
@@ -201,3 +198,26 @@ def test_planted_missing_expiry_is_not_returned(tmp_path):
     st = tmp_path / "synthetic.json"
     cbp.save({"rows": [built]}, st)
     assert cbp.query(store=st, now=NOW) == []  # read path must not trust a malformed stored row
+
+
+def _stored(tmp_path, expires):
+    built, _ = cbp_run.build_row(("P" * 11, "Krown", "2026-10-23", "fixture", None), GOOD, BODY)
+    built["expires_at"] = expires
+    st = tmp_path / "synthetic.json"
+    cbp.save({"rows": [built]}, st)
+    return st
+
+
+def test_valid_row_is_returned(tmp_path):
+    assert len(cbp.query(store=_stored(tmp_path, "2026-10-28T00:00:00Z"), now=NOW)) == 1
+
+
+def test_expiry_boundary_is_expired(tmp_path):
+    st = _stored(tmp_path, "2026-10-24T10:00:00Z")
+    assert cbp.query(store=st, now=NOW) == []
+    assert len(cbp.query(store=st, now=datetime(2026, 10, 24, 9, 59, 59, tzinfo=timezone.utc))) == 1
+
+
+@pytest.mark.parametrize("bad", ["tomorrow", "", None, 5, "2026-10-28", "2026-10-28T00:00:00+00:00"])
+def test_malformed_expiry_is_not_returned(tmp_path, bad):
+    assert cbp.query(store=_stored(tmp_path, bad), now=NOW) == []
