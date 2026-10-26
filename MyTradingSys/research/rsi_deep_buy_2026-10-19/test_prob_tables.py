@@ -94,6 +94,26 @@ def test_event_at_t_unchanged_when_later_bars_change():
     assert a == b and len(a) > 0
 
 
+def test_event_unchanged_when_only_bars_beyond_its_window_change():
+    # 1m bars, 1h windows, 4 windows. Event in window 1; only bars of window 3 change (incl. a NaN that drops window 3).
+    # Window membership needs the whole window complete, so the window id and the event (index, visit) of earlier windows must not move.
+    rng = np.random.default_rng(5)
+    n = 240
+    t = np.arange(n, dtype="int64") * 60_000
+    r = 50 + 25 * np.sin(np.arange(n) / 7.0) + rng.normal(0, 1, n)
+    wid1, _ = pt.window_ids(t, r, 1, 60)
+    idx1, vn1 = pt.visit_events(r, wid1, 30.0, 3.0)
+    r2 = r.copy()
+    r2[180:] = rng.uniform(0, 100, 60)
+    r2[200] = np.nan
+    wid2, _ = pt.window_ids(t, r2, 1, 60)
+    idx2, vn2 = pt.visit_events(r2, wid2, 30.0, 3.0)
+    assert (wid1[:180] == wid2[:180]).all() and wid2[200] == -1
+    a = [(i, v) for i, v in zip(idx1, vn1) if i < 180]
+    b = [(i, v) for i, v in zip(idx2, vn2) if i < 180]
+    assert a == b and len(a) > 0
+
+
 def test_dev_pass_refuses_bar_at_or_after_cutoff():
     ok = {"open_time": np.array([pt.CUTOFF_MS - 60_000])}
     pt.assert_dev(ok)

@@ -86,7 +86,9 @@ A cell is `outside` when the VALIDATION proportion falls outside the DEV 95% int
 | S | 15m | 196 | 143 | 73.0% |
 | S | 1h | 108 | 70 | 64.8% |
 
-All metrics: 3508 cells compared, 1320 outside (37.6%).
+Non-survival metrics (day-based Wilson interval): 2668 cells compared, 736 outside (27.6%). The 584 outside S rows compare a Kaplan-Meier survival value against an event-count Wilson interval (different estimators), so they are not comparable with the other rows.
+
+All rows incl. S: 3508 cells compared, 1320 outside (37.6%).
 
 Price-bounce cells (the tradeable probability): 1217 compared, 314 outside (25.8%).
 

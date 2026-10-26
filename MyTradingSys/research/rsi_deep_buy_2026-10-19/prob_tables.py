@@ -406,7 +406,12 @@ def write_report(out):
                 o = sum(x["outside"] for x in c)
                 L.append(f"| {m} | {TFN[tf]} | {len(c)} | {o} | {o / len(c):.1%} |")
     tot_o = sum(x["outside"] for x in cmp_)
-    L.append(f"\nAll metrics: {len(cmp_)} cells compared, {tot_o} outside ({tot_o / max(len(cmp_), 1):.1%}).\n")
+    ns = [x for x in cmp_ if x["key"][4] != "S"]
+    no = sum(x["outside"] for x in ns)
+    so = sum(x["outside"] for x in cmp_ if x["key"][4] == "S")
+    L.append(f"\nNon-survival metrics (day-based Wilson interval): {len(ns)} cells compared, {no} outside ({no / max(len(ns), 1):.1%}). "
+             f"The {so} outside S rows compare a Kaplan-Meier survival value against an event-count Wilson interval (different estimators), so they are not comparable with the other rows.\n")
+    L.append(f"All rows incl. S: {len(cmp_)} cells compared, {tot_o} outside ({tot_o / max(len(cmp_), 1):.1%}).\n")
     pb = [x for x in cmp_ if x["key"][4] == "p_price_bounce"]
     po = sum(x["outside"] for x in pb)
     L.append(f"Price-bounce cells (the tradeable probability): {len(pb)} compared, {po} outside ({po / max(len(pb), 1):.1%}).\n")
