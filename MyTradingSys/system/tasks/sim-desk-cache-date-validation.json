@@ -2,6 +2,18 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-26T21:25:37Z",
+    "misses": 44,
+    "reads": [
+      "MyTradingSys/research/sim_desk/studies/levels.py",
+      "MyTradingSys/research/design_cards_2026-10-26/astra_sealed_guard.md",
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/run_extra_tests.py"
+    ],
+    "session": "agent-aba0ec9de831f576e"
+  },
   "created": "2026-10-26T18:53:04Z",
   "depends_on": [],
   "done_when": "sim_desk/test_sealed_cache.py holds 7 tests (L1-L7), each red on the old code and green after; test_desk.py, test_charts.py, test_conditions.py still pass; run_all_tests.py --quick green.",
