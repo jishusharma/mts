@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T02:08:04Z",
   "commands": [],
   "context": {
     "calls_to_edit": 24,
@@ -23,6 +24,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "INTRABAR_BOUNDS.md in 7e72e3432: 0 of 22 slices flip sign stop-first vs target-first; max ",
+      "ref": "68d598923",
+      "utc": "2026-10-26T02:08:04Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "bt_engine.simulate_trade: fail closed on funding, window t_in < s <= t_out (T03-F1/F2)",
@@ -41,7 +48,12 @@
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T10_missing_aspects.md"
   ],
-  "result": "",
+  "result": "INTRABAR_BOUNDS.md in 7e72e3432: 0 of 22 slices flip sign stop-first vs target-first; max gap +0.0010 R (Tom); DEV/VALIDATION only",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/intrabar_bounds.py",
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/test_intrabar_bounds.py",
@@ -61,12 +73,13 @@
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T10_missing_aspects.md (T10-F2, D2)",
     "MyTradingSys/backtest/tom_bt.py"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read T10-F2 and demo D2 in t10_demos.py; list where tom_bt.py, fabio v3 manage.py and bt_engine.py resolve a both-hit bar.",
     "Add a default-off resolve_both flag ('stop' | 'target') to each sim (edit nothing else; default output byte-identical) or wrap the resolver if a sim has no seam.",
     "Write intrabar_bounds.py calling each sim on DEV with both settings; write INTRABAR_BOUNDS.md; if any published net R changes sign, file a card with tasks.py new."
   ],
+  "taken": "2026-10-26T02:08:04Z",
   "tests": "test_intrabar_bounds.py: a planted bar holding stop and target gives -1R stop-first and +target R target-first; both fail if the resolver is not forced.",
   "title": "Intrabar stop/target ordering sensitivity for tight-stop sims on 1m bars (T10-F2, D2: 3.27% of bars hold both at 0.044/0.088)",
   "weight": "IMPORTANT",
