@@ -34,6 +34,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `tom-btc-dev-backtest` blocked p2 CODEX: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
   - `tom-btc-encode` blocked p2 CODEX: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
   - `tom-btc-validation` refined p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
+  - `tom-corr-divergence-backtest` raw p2 DSA: Pre-registered backtest of Tom correlation-divergence filter (H1 DAX vs ES/Nikkei/BTC, H2 BTC vs ES/NQ/DXY), s
+  - `tom-corr-live-captions` raw p2 CODEX: Fetch captions of Tom live 'DAX Short Using My Correlation Trick' via gemini_queue on JIS-NUC once the stream 
   - `tom-probe-prereg` refined p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
   - `tom-probe-runner` refined p2 SONNET: Run pre-registered Tom management arms on DAX and BTC
   - `tom-short-coverage-above-vah` refined p2 SONNET: Tom short coverage on trend-down days: no candidate above VAH, ct_short at VAH killed by POC-only target (2026
