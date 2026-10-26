@@ -4,14 +4,17 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-26T15:46:03Z",
-    "misses": 30,
+    "folded": "2026-10-26T15:46:38Z",
+    "misses": 34,
     "reads": [
       "MyTradingSys/system/SURFACE_POLICY.md",
       "MyTradingSys/system/DEBUGGING.md",
       ".claude/settings.json",
       ".claude",
-      "MyTradingSys/tests/docs/test_integrity.py"
+      "MyTradingSys/tests/docs/test_integrity.py",
+      "MyTradingSys/tests/test_gate_discovery_b150.py",
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/run_extra_tests.py"
     ],
     "session": "agent-a6c7c2506c1f545e0"
   },
