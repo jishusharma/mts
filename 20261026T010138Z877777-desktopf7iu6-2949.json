@@ -1,0 +1,1 @@
+{"t": "20261026T010138Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "A: failing step on f02dc2fa = windows-latest 1/12 auto-deploy test [cut] (grandchild alive after timeout), run 40251828458. Not from lesson/sync tests (those pass). Needs its own card; A session at tu", "login": "A"}
