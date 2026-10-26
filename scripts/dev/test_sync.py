@@ -34,11 +34,17 @@ class SyncTest(unittest.TestCase):
         origin = cls.tpl / "origin.git"
         sh(cls.tpl, "init", "-q", "--bare", str(origin))
         sh(origin, "symbolic-ref", "HEAD", "refs/heads/fast-track")  # git < 2.28 has no init -b
+        # The template must be quiescent while copytree snapshots it. A pull/push
+        # can otherwise leave background maintenance removing files during a copy.
+        sh(origin, "config", "gc.auto", "0")
+        sh(origin, "config", "maintenance.auto", "false")
         a, b = cls.tpl / "a", cls.tpl / "b"
         for c in (a, b):
             sh(cls.tpl, "clone", "-q", str(origin), str(c))
             sh(c, "config", "user.email", "t@t")
             sh(c, "config", "user.name", "t")
+            sh(c, "config", "gc.auto", "0")
+            sh(c, "config", "maintenance.auto", "false")
         commit(a, "README.md", "x\n")
         sh(a, "push", "-q", "origin", "HEAD:fast-track")
         sh(b, "pull", "-q", "origin", "fast-track")
@@ -73,6 +79,12 @@ class SyncTest(unittest.TestCase):
         r = subprocess.run(["git", "ls-tree", "--name-only", "origin/fast-track"], cwd=repo,
                            capture_output=True, text=True)
         return set(r.stdout.split())
+
+    def test_fixture_repositories_disable_background_git_maintenance(self):
+        for repo in (self.tmp / "origin.git", self.a, self.b):
+            with self.subTest(repo=repo.name):
+                self.assertEqual(sh(repo, "config", "--local", "gc.auto").stdout.strip(), "0")
+                self.assertEqual(sh(repo, "config", "--local", "maintenance.auto").stdout.strip(), "false")
 
     def test_gate_with_files_param_gets_the_changed_paths_and_docs_get_the_docs_gate(self):
         seen, docs = [], []

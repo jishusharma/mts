@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T19:00:26Z",
   "commands": [
     "python scripts/dev/tasks.py brief sim-ideas-astra-low"
   ],
@@ -17,7 +18,14 @@
   "id": "sim-ideas-astra-low",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "sim_ideas_raw/astra.md: 3 ranked proposals within 12 lines, OURS cost S/M and layer famili",
+      "ref": "da2b95ef1",
+      "utc": "2026-10-26T19:00:26Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "model": "astra",
@@ -28,7 +36,12 @@
   "refined_by": "super-c-design",
   "refreshed": "2026-10-25T22:50:24Z",
   "refs": [],
-  "result": "",
+  "result": "sim_ideas_raw/astra.md: 3 ranked proposals within 12 lines, OURS cost S/M and layer families; provenance drawer, separate cost/exit evidence, explicit condition subset vs replay",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/sim_ideas_raw/astra.md (new file only)"
   ],
@@ -40,12 +53,13 @@
   "sources": [
     "MyTradingSys/research/sim_desk/DESIGN.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/sim_desk/DESIGN.md and PLUGIN.md",
     "Write the top 3 ideas into astra.md",
     "Commit with a Result: line"
   ],
+  "taken": "2026-10-26T19:00:26Z",
   "tests": "none (run card); proof = file with 3 ranked ideas",
   "title": "Astra-low: simulator desk improvement ideas (top 3, cost, layer helped)",
   "weight": "ROUTINE",
