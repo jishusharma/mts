@@ -7,7 +7,7 @@
   ],
   "context": {
     "calls_to_edit": 16,
-    "folded": "2026-10-26T17:45:29Z",
+    "folded": "2026-10-26T17:46:47Z",
     "misses": 15,
     "reads": [
       "MyTradingSys/research/krown_audit_2026-10-22/run/context_dev.csv",
