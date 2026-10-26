@@ -1,0 +1,75 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/tasks.py brief bug-station-session-stops-after-one-task"
+  ],
+  "created": "2026-10-26T17:13:20Z",
+  "depends_on": [],
+  "done_when": "a fresh laptop session started with the Login A start line loads its role/queue file, claims a card, ships it, then takes the next card without operator input, and checks signals/claims for duplicates first",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "A Claude station session (laptop login A, 2026-10-26) did one task and stopped, although the operator wants stations kept alive looping the queue, without duplicating other stations. Find why and fix it so the next start does not stop after one task.",
+  "id": "bug-station-session-stops-after-one-task",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "da41ea95521c claim bug-station-session-stops-after-one-task",
+      "ref": "MyTradingSys/system/claims/bug-station-session-stops-after-one-task.md",
+      "utc": "2026-10-26T17:13:35Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "supervisor: login C weekly cap 85 on JIS-NB (operator 2026-10-26)",
+      "ref": "3c3c8fe5c29a",
+      "utc": "2026-10-26T15:22:47Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-26T17:14:07Z",
+  "refs": [
+    "MyTradingSys/system/SUPER_SESSION.md",
+    "MyTradingSys/system/ROUTING.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "CLAUDE.md boot steps 3-5",
+    "MyTradingSys/system/LENOVO_NEXT_SESSION.md",
+    "MyTradingSys/system/LOGIN_PLAN_2026-10-26.md",
+    "MyTradingSys/system/SUPER_SESSION.md",
+    "MyTradingSys/system/ROLES.md",
+    "scripts/dev/role_loader.py"
+  ],
+  "scope_out": [
+    "live tree; processes; deploys"
+  ],
+  "scope_sha": "3c3c8fe5c29a",
+  "size": "M",
+  "sources": [
+    "operator message 2026-10-26: keep alive and keep working, load roles, know super sessions, pick tasks without duplicating"
+  ],
+  "state": "ready",
+  "steps": [
+    "Observed (the session itself, honest): it received a free-text 'find worktrees, pick the most important task, ship, report' prompt with no 'You are Builder. Login A' line, so role_loader injected no role and no ROLE LOADED banner appeared.",
+    "Observed: CLAUDE.md boot step 5 says one session = one task then hand over; the session obeyed that and stopped after one ship. Nothing in a free-text prompt tells it to loop tasks.py next. Decide the intended rule: loop within budget, or stop.",
+    "Observed: the session worked from a checkout of fast-track that lacked LENOVO_NEXT_SESSION.md (present on origin), because it read the local tree before git fetch. Make boot fetch first.",
+    "Observed: the session did not read LOGIN_PLAN_2026-10-26.md until late, so it missed its own Login A queue (about 20 cards) and picked a p0 card that was already closed.",
+    "Fix: one boot rule that any laptop session without a role line behaves as the Login A Builder: fetch, read LENOVO_NEXT_SESSION.md and the login plan, claim, ship, loop to the next card until budget or queue ends, check signals and claims for duplicates before each claim. Add a test or doctor check that fails on the old boot text."
+  ],
+  "tests": "boot-text check fails before the rule exists and passes after",
+  "title": "BUG p1: a Claude station session stops after one task instead of staying alive and looping the queue (no role loaded, queue file not read, no cross-station dedupe)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
