@@ -24,12 +24,12 @@ class TestH1(unittest.TestCase):
         self.assertTrue(r['F8']['entry'].startswith('25034.50'))
         self.assertTrue(r['F9']['stop'].startswith('25019.44'))
         self.assertTrue(r['F10']['entry'].startswith('~25040.00'))
-        self.assertTrue(r['F12']['entry'].startswith('25105.78'))
+        self.assertTrue(r['F12']['entry'].startswith('25105.18'))  # RV05 H2 t=3100
         self.assertTrue(r['F12']['stop'].startswith('25089.75'))
         self.assertTrue(r['F12-m2']['entry'].startswith('25108.50'))
         self.assertTrue(r['F12-m2']['stop'].startswith('25098.75'))
         self.assertTrue(r['F12-m2']['target'].startswith('25148.75'))
-        self.assertTrue(r['F13']['entry'].startswith('25106.50'))
+        self.assertTrue(r['F13']['entry'].startswith('25108.90'))  # RV05 H2 t=3375
         self.assertTrue(r['F13-m1']['entry'].startswith('25108.00'))
 
     def test_f13_add_is_buy_and_old_values_gone(self):
