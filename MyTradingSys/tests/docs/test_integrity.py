@@ -190,3 +190,16 @@ def test_8_red_trunk_is_reverted_not_forward_fixed():
     line = next(l for l in (REPO / "CLAUDE.md").read_text(encoding="utf-8").splitlines() if "CI RED" in l)
     for want in ("git revert", "10 min", "never forward-fix"):
         assert want in line, want
+
+
+def test_9_ops_change_check_has_8_questions_and_lead_cites_it():
+    """ops-change-edge-case-check: the reach test for start/hook/broadcast/role changes (NUC 2026-10-26, bbd808f4a)."""
+    f = MTS / "system" / "OPS_CHANGE_CHECK.md"
+    assert f.exists(), "OPS_CHANGE_CHECK.md missing"
+    lines = f.read_text(encoding="utf-8").splitlines()
+    assert len(lines) <= 40, len(lines)
+    nums = [int(m.group(1)) for l in lines if (m := re.match(r"^(\d+)\. ", l))]
+    assert nums == list(range(1, 9)), nums
+    assert "Reach: Q1-Q8 ok|n/a <why>" in f.read_text(encoding="utf-8")
+    assert "OPS_CHANGE_CHECK" in (MTS / "system" / "roles" / "lead.md").read_text(encoding="utf-8")
+    assert "OPS_CHANGE_CHECK" in (MTS / "system" / "DEBUGGING.md").read_text(encoding="utf-8")
