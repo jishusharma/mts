@@ -213,3 +213,4 @@ runtime_data/mts_run/
 # scratch files (public repo: never commit runtime data)
 runtime_data/_scratch_*
 scratch_*.py
+MyTradingSys/research/pipeliner/STATION_WATCH_*.log
