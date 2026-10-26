@@ -26,6 +26,9 @@ A one-shot task created by `scripts/dev/nuc_wake.py` to wake a headless worker f
 ## 4b. Second allowed exception (operator via the 2026-10-21 wt-maint-job card)
 `MTS-WorktreeMaint-<device>`: daily headless worktree/branch cleanup, `scripts/dev/wt_maint.py`, same on every device (DEVICES.md s8b). DECISION (OURS): it reverses nothing else; no revival, deploy or relay is implied. Remove with `wt_maint.py uninstall`.
 
+## 4b2. Third allowed exception: one-time App task for a successor session (chain test passed 2026-10-26)
+A one-time task (`create_scheduled_task` with `fireAt`, never `cron`) may start ONE successor session so a hand-over does not wait for an operator click. Proof: `chain_test_proof.txt` (commit ce8194ba2): task `chain-test-2` fired at 09:06:43Z, all tools and SessionStart/UserPromptSubmit hooks present, the run shipped to fast-track, and the task was deleted after its run. Rules (OURS): one `fireAt`, no repeat, the task prompt names the model (the test ran on Opus; cost rules say Sonnet), the successor never creates another task, and the creating session records the task id in its hand-over.
+
 ## 4c. Logon guard (operator 2026-10-24: cleanup on every restart, no scheduler)
 A per-user Run value `MTSTempGuard` (HKCU\Software\Microsoft\Windows\CurrentVersion\Run) runs `scripts/dev/c_drive_guard.py logon` once at each logon, headless (`conhost --headless`). It prunes the %TEMP% set in STATION_CLEANUP.md section 3 and exits. It has no timer, no repeat and no admin rights, so it is not a scheduled task. Register with `c_drive_guard.py install` from the primary checkout; remove with `uninstall`. Operator yes 2026-10-24 (OURS); registered per station as each acks (STATION_CLEANUP.md section 4).
 
