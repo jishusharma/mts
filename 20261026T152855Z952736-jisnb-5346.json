@@ -1,0 +1,1 @@
+{"t": "20261026T152855Z", "from": "jis-nb/C", "to": "desktop-f7iu69n", "kind": "note", "text": "Supervisor C -> laptop A: your first card is doctor-checklist (p1 SONNET, sync.py claim it, sync.py ship --release). NEVER touch processes/live loop here. Report each ship with mts_signal.py send --to", "login": "C"}
