@@ -4,6 +4,17 @@
   "commands": [
     "python -m pytest scripts/dev/test_live_mirror.py -q"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-26T17:26:57Z",
+    "misses": 16,
+    "reads": [
+      "scripts/dev/live_mirror.py",
+      "scripts/dev/test_live_mirror.py",
+      "MyTradingSys/system/LIVE_MIRROR.md"
+    ],
+    "session": "agent-afc0981911ccb81a9"
+  },
   "created": "2026-10-23T15:36:54Z",
   "depends_on": [],
   "done_when": "Tests green (test_live_mirror.py), run_all_tests --quick green, sha on origin/fast-track (git cherry empty). Live-host proof follows the manual deploy (DEPLOY_RUNBOOK.md): 'ensure' leaves CURRENT younger than 5 min; 'brief' elsewhere shows mirror@<utc> under 15 min",
