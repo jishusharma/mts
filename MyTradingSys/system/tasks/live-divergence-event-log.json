@@ -1,0 +1,52 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/live_cross_read.py --help"
+  ],
+  "created": "2026-10-26T14:56:56Z",
+  "depends_on": [],
+  "done_when": "CSV with the 2026-10-26 event (BTC -0.10% vs ES +0.32% NQ +0.36% at 14:36Z, convergence start 14:33-14:36) and its +30/60/120 outcomes from public data; schema documented; labelled descriptive, never used to select parameters",
+  "est_turns": 16,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Forward log of intraday BTC vs ES/NQ/VIX divergence events from live reads (time, since-open moves, 1h r, footprint delta, +30/60/120 min outcome) as descriptive forward evidence for the Tom correlation-divergence test; the 2026-10-26 US open is event 1",
+  "id": "live-divergence-event-log",
+  "lane": "DSA",
+  "latest": [],
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "OPERATOR QUOTE (2026-10-26): \"whatever tricks that we are recording today, whatever we are observing, that is why I call you Eagle Eyes, because you have to find a way for doing the right comparisons and making the right observations ... and how it will be utilized later on to put the things into right perspective, move the things through the right pipeline and queues.\"",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-26T14:57:37Z",
+  "refs": [
+    "MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md",
+    "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/READ.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "research/live_reads, one CSV and a small appender"
+  ],
+  "scope_out": [
+    "changing TOM-DIV parameters, any holdout read, live tree"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Create research/live_reads/divergence_events.csv with columns utc,btc_since_open,es_since_open,nq_since_open,vix,r5m_1h_es,r5m_1h_nq,footprint_delta_note,out_30m,out_60m,out_120m",
+    "Add event 1 (2026-10-26 14:36Z) and fill outcomes from Binance spot and Yahoo 5m once 120 min have passed",
+    "Document in the file header: descriptive only, feeds tom-corr-divergence-backtest as forward evidence, no parameter picked from it"
+  ],
+  "tests": "",
+  "title": "Live divergence event log: record each BTC vs ES/NQ divergence read with outcomes at +30/60/120 min (forward evidence for tom-corr-divergence-backtest)",
+  "weight": "",
+  "worker": "agent"
+}
