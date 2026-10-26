@@ -1,6 +1,6 @@
 {
   "approved_by": "",
-  "asks": "",
+  "asks": "Which machine is the authoritative CBP data host (NUC paths fail preflight)? Default: leave unactivated, record 'data host missing'.",
   "commands": [],
   "created": "2026-10-26T18:29:41Z",
   "depends_on": [],
@@ -11,13 +11,14 @@
   "from_inbox": "",
   "goal": "Repair canonical ingestion, propagate transient errors and supply an explicit twice-daily CBP-only Windows task.",
   "id": "cbp-ingestion",
+  "kind": "build",
   "lane": "CODEX",
   "layers": [],
   "live_path": false,
   "mutation_check": "MyTradingSys/tests/test_cbp_query.py::test_fabricated_quote_rejected",
-  "note": "",
+  "note": "Planner 2026-10-27: 1b23396e9 'Repair CBP ingestion and wire twice-daily task' is on the card's scope paths. Remaining: activation (data host missing, NUC paths fail preflight) + independent review. DEFAULT if unanswered: leave the CBP task unactivated and record 'data host missing' in the activation status (matches done_when).",
   "prio": 1,
-  "refine_tries": 0,
+  "refine_tries": 1,
   "refined_by": "",
   "refs": [],
   "result": "31 focused tests pass; implementation ready. Activation pending authoritative CBP data host from Claude; current NUC paths fail preflight. Card remains open pending activation and review.",
@@ -43,6 +44,5 @@
   "tests": "pytest focused CBP suites, regression tests red before repair",
   "title": "CBP twice-daily ingestion: schedule, canonical paths, retry and health",
   "weight": "IMPORTANT",
-  "worker": "session",
-  "kind": "build"
+  "worker": "session"
 }

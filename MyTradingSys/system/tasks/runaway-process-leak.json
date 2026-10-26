@@ -2,45 +2,68 @@
   "approved_by": "",
   "asks": "",
   "commands": [
+    "python scripts/dev/mts_signal.py broadcast --cmd \"powershell -File scripts/operator/runaway_check.ps1\"",
     "powershell -File scripts/operator/runaway_check.ps1"
   ],
   "created": "2026-10-26T10:24:53Z",
   "depends_on": [],
-  "done_when": "Every device ran scripts/operator/runaway_check.ps1 and acked; the spawner of find.exe is named with evidence; a guard (or a ban on bare find/grep over the repo in agent shells) is shipped; JIS-NUC 48 h clean-test verdict recorded in NUC_SHUTDOWN_HANDOVER.md.",
-  "est_turns": 20,
+  "done_when": "Every device that answers within 24 h ran runaway_check.ps1 and its line is in RUNAWAY_GUARD.md s6 (silent devices listed); spawner confirmed or corrected with evidence; guard or bare find/grep ban shipped; JIS-NUC 48 h clean-test verdict in NUC_SHUTDOWN_HANDOVER.md.",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
   "goal": "On JIS-NUC 2026-10-26 a Git-Bash find.exe (no args, started 06:39, sibling grep.exe, parent gone) ran 9 h, held 10.9M handles, paged pool 9.7 GB, 0 MB free, CPU at the 100 C limit. It may also explain NUC hangs (7 watchdog resets since 10-23). Find which session/tool call spawns it, check every device for the same, add a guard.",
   "id": "runaway-process-leak",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "runaway-guard: root cause (find / orphaned by timed-out agent shell), design for review, r",
+      "ref": "8936953ea652",
+      "utc": "2026-10-26T10:31:56Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8936953ea652 runaway-guard: root cause (find / orphaned by timed-out agent shell), design ",
+      "ref": "MyTradingSys/system/RUNAWAY_GUARD.md",
+      "utc": "2026-10-26T10:31:56Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-27 ACCEPT (after FIX applied) DECISION (OURS): Sonnet session; the card does not wait past 24 h for silent devices. Guard build waits for the design review ACCEPT.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-26T20:58:49Z",
   "refs": [
     "MyTradingSys/system/NUC_SHUTDOWN_HANDOVER.md"
   ],
   "result": "",
   "scope_in": [
     "scripts/operator/runaway_check.ps1",
-    "MyTradingSys/system/NUC_SHUTDOWN_HANDOVER.md"
+    "scripts/dev/test_runaway_check.py (new)",
+    "MyTradingSys/system/RUNAWAY_GUARD.md",
+    "MyTradingSys/system/NUC_SHUTDOWN_HANDOVER.md",
+    "MyTradingSys/system/QUICK_ANSWERS.md"
   ],
   "scope_out": [
-    "live tree, trading processes, deploys"
+    "live tree, trading processes, deploys; -Stop never ends anything but find/grep/sort"
   ],
+  "scope_sha": "8936953ea652",
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "each device: powershell -File scripts/operator/runaway_check.ps1 and post the output",
-    "search agent shell transcripts and logs on JIS-NUC around 06:39 on 2026-10-26 for a bare find/grep call (Codex lab, Claude Bash tool, Selenium)",
-    "propose and ship the guard; record the verdict"
+    "Broadcast runaway_check.ps1 to every device (mts_signal.py broadcast); record one OK/RUNAWAY line per device in RUNAWAY_GUARD.md s6, silent ones as no reply",
+    "Verify the spawner RUNAWAY_GUARD.md s1 names (session b548c0a6, subagent af27dbcb, bare find /) against JIS-NUC transcripts near 06:39 on 2026-10-26",
+    "Add a -ProcessJson input to runaway_check.ps1 so the test can feed fake rows; write test_runaway_check.py red first, then green",
+    "Ship the guard after runaway-guard-design-review ACCEPT (else only the bare find/grep ban line in QUICK_ANSWERS.md); record the 48 h JIS-NUC verdict in NUC_SHUTDOWN_HANDOVER.md"
   ],
-  "tests": "runaway_check.ps1 reports OK on a clean host and RUNAWAY for a process with over 100k handles or find/grep/sort over 10 CPU minutes; -Stop ends only those tool names.",
+  "tests": "Fail-first: new scripts/dev/test_runaway_check.py feeds fake process rows to runaway_check.ps1: OK on clean, RUNAWAY on >100k handles or find/grep/sort >10 CPU min; -Stop touches only those names.",
   "title": "HIGHEST: runaway find.exe (10.9M handles, 0 MB free, CPU 100 C 9 h) on JIS-NUC - find who spawns it, check every device, add a guard",
   "weight": "IMPORTANT",
   "worker": "session"

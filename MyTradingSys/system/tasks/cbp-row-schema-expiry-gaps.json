@@ -12,13 +12,23 @@
   "goal": "Repair runtime direction validation and fail-closed expiry/schema checks on the CBP query boundary, using the five synthetic gate probes. No analyst verdict or trading integration.",
   "id": "cbp-row-schema-expiry-gaps",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Audit five planted CBP rows and preserve three known validation failures",
+      "ref": "4b2e525dd997",
+      "utc": "2026-10-26T19:12:06Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-27 ACCEPT DECISION (OURS): Sonnet session, one writer for MyTradingSys/cbp/__init__.py and test_cbp_query.py (cluster with pz-5-confluence-and-live, which waits on this card). Fail closed: unclear row = no signal.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-26T20:58:47Z",
   "refs": [
     "MyTradingSys/research/cbp/GATES_TRIAL_GPT.md"
   ],
@@ -30,17 +40,20 @@
   "scope_out": [
     "CBP repo; real claim rows/transcripts; live tree; orders; extraction model"
   ],
+  "scope_sha": "4b2e525dd997",
   "size": "S",
   "sources": [
     "MyTradingSys/research/cbp/GATES_TRIAL_GPT.md",
     "MyTradingSys/research/v1_plan_2026-10-20/D5_CBP_MODULE.md"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "Run planted tests with --runxfail to reproduce the three current gaps.",
-    "Reconcile publication-age and explicit UTC expiry semantics with the contract, then repair validation and update fixtures transparently."
+    "pytest MyTradingSys/tests/test_cbp_query.py --runxfail; record the 3 failing strict-xfail tests (lines 167, 175, 196)",
+    "Read GATES_TRIAL_GPT.md and D5_CBP_MODULE.md; write the contract in 3 lines: direction enum, UTC expires_at boundary, publication-age rule",
+    "Implement fail-closed validation in MyTradingSys/cbp/__init__.py; remove the 3 xfail markers; add boundary-expiry and malformed-expiry controls",
+    "Run test_cbp_query.py and run_all_tests.py --quick; commit with a Result: line"
   ],
-  "tests": "All five planted safety expectations pass without xfail; valid-row, boundary-expiry and malformed-expiry controls pass; existing CBP suite passes.",
+  "tests": "Fail-first: the 3 strict-xfail tests in test_cbp_query.py (lines 167,175,196) fail on old code with markers removed; plus valid-row, boundary-expiry, malformed-expiry controls; full CBP suite passes.",
   "title": "CBP read path: reject invalid direction and expired or malformed stored rows",
   "weight": "IMPORTANT",
   "worker": "session"

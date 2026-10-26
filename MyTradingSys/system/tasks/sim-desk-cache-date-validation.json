@@ -4,33 +4,60 @@
   "commands": [],
   "created": "2026-10-26T18:53:04Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "sim_desk/test_sealed_cache.py holds 7 tests (L1-L7), each red on the old code and green after; test_desk.py, test_charts.py, test_conditions.py still pass; run_all_tests.py --quick green.",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Refuse any cached, result-cached or fetched bar/trade timestamp at or after the sealed cut (2024-07-01 UTC) before it reaches a study, replay or chart; close leak paths L1-L7 of astra_sealed_guard.md.",
   "id": "sim-desk-cache-date-validation",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim desk: breakdown table, folded charts and ledger, catalogue-safe run saving",
+      "ref": "67426492d1bd",
+      "utc": "2026-10-25T05:29:23Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-27 ACCEPT DECISION (OURS): scope derived from the title and the 34-case audit; CUT=1719792000000 is SOURCED (astra_sealed_guard.md, desk DEV bound). Sonnet session, review Agent before ship (CRUCIAL: guards sealed data). Audit is UNCHECKED; trust only the reproducer.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-26T20:58:48Z",
   "refs": [
     "MyTradingSys/research/design_cards_2026-10-26/astra_sealed_guard.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/studies/_bars.py",
+    "MyTradingSys/research/sim_desk/desk.py",
+    "MyTradingSys/research/sim_desk/studies/levels.py",
+    "MyTradingSys/research/sim_desk/fetch_klines.py",
+    "MyTradingSys/research/sim_desk/test_sealed_cache.py (new)"
+  ],
+  "scope_out": [
+    "reading real VALIDATION or HOLDOUT bars; existing caches (temp dirs only); live tree; any layer verdict"
+  ],
+  "scope_sha": "67426492d1bd",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/design_cards_2026-10-26/astra_sealed_guard.md",
+    "MyTradingSys/research/sim_desk/DESIGN.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Copy the synthetic fixture from astra_sealed_guard.md Reproducer into test_sealed_cache.py; assert the desired safety (max ts < CUT) per the L1-L7 table; confirm all 7 red",
+    "Validate content dates at each boundary: _month and hot _ALL (_bars.py), cached result arrays (desk.py run_setting), bar times before simulate_one and trade_bars (levels.py), parsed ZIP rows (fetch_klines.py)",
+    "Replace the assert at _bars.py:91 with an explicit raise (assert vanishes under -O); refuse, never silently sanitise",
+    "Run the sim_desk tests and run_all_tests.py --quick; commit with a Result: line"
+  ],
+  "tests": "New sim_desk/test_sealed_cache.py: 7 tests (L1-L7) fail on the pre-change code (reproducer proves each leak), pass after.",
   "title": "Simulator desk: validate cache and fetched bar timestamps before study and replay",
-  "weight": "",
-  "worker": ""
+  "weight": "CRUCIAL",
+  "worker": "session"
 }

@@ -13,13 +13,15 @@
   "id": "runaway-guard-design-review",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-27 ACCEPT (after FIX applied) DECISION (OURS): CODEX lane (another model than the author, as required); read-only, the experiment must be self-terminating. Blocks the guard build in runaway-process-leak (RUNAWAY_GUARD.md s5: nothing built before the review).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-26T20:58:48Z",
   "refs": [
     "MyTradingSys/system/RUNAWAY_GUARD.md"
   ],
@@ -30,15 +32,17 @@
   "scope_out": [
     "installing anything, killing processes, NUC settings, live tree"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "read RUNAWAY_GUARD.md and the NUC_SHUTDOWN_HANDOVER.md update of 2026-10-26 16:00",
-    "verify root cause from the transcript quote and a timeout experiment",
-    "answer questions 1-7 and write the verdict"
+    "Read RUNAWAY_GUARD.md s1-5 and NUC_SHUTDOWN_HANDOVER.md update of 2026-10-26 16:00",
+    "Root-cause test, bounded: run find on a small scratch dir in an agent shell call with a hard 60 s kill and 5-minute handle/CPU watch; NEVER run find / and never leave it running",
+    "Answer questions 1-7 of section 5, each with pasted command output or a quoted line; Q4 peaks: JIS-NUC plus any host that answers a broadcast within 24 h, else mark the second host NOT_IN_DATA",
+    "Write RUNAWAY_GUARD_REVIEW.md: ACCEPT or CHANGES with a numbered list; commit with a Result: line"
   ],
-  "tests": "Review reproduces or refutes the claim that a timed-out agent shell call leaves find.exe running (scratch host, evidence pasted).",
+  "tests": "Audit: the review reproduces or refutes 'a timed-out agent shell call leaves find.exe running' with a bounded scratch run (output pasted); policy fit checked against SCHEDULING_POLICY.md.",
   "title": "Independent review of RUNAWAY_GUARD.md: root cause (find / orphaned by a timed-out agent shell call), guard layers, thresholds, policy fit",
   "weight": "IMPORTANT",
   "worker": "session"

@@ -227,7 +227,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Codex lab reports (newest 3 of 3): `MyTradingSys/research/layer_lab/reports/2026-10-26_astra-low-levels-fee-drag-recompute.md`; `MyTradingSys/research/layer_lab/reports/2026-10-26_astra-low-confluence-prereg-leak-hunt.md`; `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-krown-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `astra-low-levels-fee-drag-recompute` blocked p1 CODEX: Astra-low: independently recompute the levels study fee drag (+0.22 R gross, -0.12 R net, 255 fills)
-  - `astra-low-levels-fee-drag-recompute-need-export-the-original` raw p1 SONNET: Prereq of astra-low-levels-fee-drag-recompute: Export the original 2026-10-25 levels default-run DEV trade led
+  - `astra-low-levels-fee-drag-recompute-need-export-the-original` ready p1 SONNET: Prereq of astra-low-levels-fee-drag-recompute: Export the original 2026-10-25 levels default-run DEV trade led
   - `confluence-s4-dev-trials` refined p2 SONNET: Confluence S4: DEV and DEV_EXT trial runs (T2, sizing arm, pooled read, T4) per PRE_REG_CONFLUENCE
   - `confluence-s5-fable-verdict` refined p2 SONNET: Confluence S5: Fable verdict on DEV results, what goes to the one VALIDATION read (then ship, S6)
   - `krown-data-cme-btc-volume` refined p2 SONNET: Krown CME BTC futures daily volume (public data only) as third volume arm
