@@ -478,5 +478,18 @@ class TestModeCommand(Base):
             self.assertNotIn("MODE LOADED:", out)
 
 
+class TestBareLoginStart(Base):
+    """Operator 2026-10-26: the whole start is one word per login: `login A|B|C` loads the Supervisor."""
+    ROLES = {"Supervisor": ["supervisor"], "Eagle_Eyes": ["eagle_eyes"]}
+
+    def test_login_letter_alone_loads_supervisor(self):
+        for p in ("login C", "Login a.", "  LOGIN B  ", "<system-reminder>" + chr(10) + "x" + chr(10) + "</system-reminder>" + chr(10) + "login A"):
+            self.assertEqual(rl.match_roles(p, self.ROLES), ["Supervisor"], p)
+
+    def test_login_inside_a_sentence_or_other_letter_does_not(self):
+        for p in ("hello login c", "login D", "login C and fix the bug", "what is login A for?"):
+            self.assertEqual(rl.match_roles(p, self.ROLES), [], p)
+
+
 if __name__ == "__main__":
     unittest.main()
