@@ -542,9 +542,10 @@ class TestGateTimeAndTimeout(unittest.TestCase):
         gc = "import os,time,pathlib; pathlib.Path(r'%s').write_text(str(os.getpid())); time.sleep(40)" % pidf
         parent = "import subprocess,sys,time; subprocess.Popen([sys.executable,'-c',%r]); time.sleep(40)" % gc
         t0 = time.monotonic()
-        rc, out = ad.sh([sys.executable, "-c", parent], timeout=3)
+        rc, out = ad.sh([sys.executable, "-c", parent], timeout=8)
         took = time.monotonic() - t0
-        pid = int(pidf.read_text()) if pidf.exists() else 0
+        self.assertTrue(pidf.exists(), "grandchild never wrote its pid file within the sh timeout (slow runner, not a kill bug)")
+        pid = int(pidf.read_text())
 
         def reap():
             if pid and os.name == "nt":
@@ -557,8 +558,17 @@ class TestGateTimeAndTimeout(unittest.TestCase):
         self.addCleanup(reap)
         self.assertEqual(rc, 124)
         self.assertLess(took, 20, "sh waited for the surviving grandchild")
-        time.sleep(1)
+        deadline = time.monotonic() + 10   # bounded poll: windows needs a moment to retire a killed process
+        while ad._pid_alive(pid) and time.monotonic() < deadline:
+            time.sleep(0.2)
         self.assertTrue(pid and not ad._pid_alive(pid), "grandchild still alive after the timeout")
+
+    def test_tasklist_pid_match_is_exact_not_a_substring_of_other_columns(self):
+        out = '"python.exe","999","Console","1","1,234 K"'
+        self.assertFalse(ad._tasklist_has_pid(out, 234))
+        self.assertFalse(ad._tasklist_has_pid("INFO: No tasks are running which match the specified criteria.", 234))
+        self.assertTrue(ad._tasklist_has_pid(out, 999))
+        self.assertTrue(ad._pid_alive(os.getpid()))
 
     def test_timed_out_gate_record_holds_the_last_six_lines_and_says_so(self):
         lines = [f"[Step {i}] something" for i in range(1, 10)] + ["", "  Elapsed: 1.0s (9/56 done, +90s)", "Step 9: PASS"]
