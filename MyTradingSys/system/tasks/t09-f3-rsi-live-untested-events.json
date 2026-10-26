@@ -4,6 +4,22 @@
   "commands": [
     "python -m pytest -q MyTradingSys/execution/test_auto_trader.py MyTradingSys/backtest/layers/alerts/test_live_runner_layers.py"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-26T21:02:31Z",
+    "misses": 35,
+    "reads": [
+      "MyTradingSys/execution/test_auto_trader.py",
+      "MyTradingSys/backtest/layers/alerts/test_live_runner_layers.py",
+      "MyTradingSys/execution/test_auto_trader_blocklist.py",
+      "MyTradingSys/execution/test_auto_trader_promotion.py",
+      "MyTradingSys/backtest/layers/alerts/test_live_runner_wiring.py",
+      "MyTradingSys/backtest/layers/alerts/live_runner_cli.py",
+      "MyTradingSys/backtest/layers/rsi/rsi_events.py",
+      "MyTradingSys/backtest/layers/rsi/test_observation.py"
+    ],
+    "session": "agent-aae01d22f69bbb805"
+  },
   "created": "2026-10-24T19:50:04Z",
   "depends_on": [],
   "done_when": "New test red before / green after; test_auto_trader*.py and test_live_runner_layers.py pass; replay of the 30 DEV days (DSA desk task) shows RSI accepted alerts only support.",
