@@ -5,7 +5,7 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-26T23:50:34Z",
+    "folded": "2026-10-26T23:56:39Z",
     "misses": 17,
     "reads": [
       "MyTradingSys/tests/test_cbp_query.py",
