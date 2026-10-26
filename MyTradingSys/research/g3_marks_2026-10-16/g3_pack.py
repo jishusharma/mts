@@ -1,3 +1,4 @@
+# T01-F2: raw_1d is a distinct snapshot, NOT the 1m resample (905 of 912 DEV days differ on open, 847 on volume, max 12.01%); derive daily bars from 1m for new work. See MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md
 """G3 marking pack: seeded windows, causal pre-filters, blind chart drawing, marking sheets.
 
 DEV only. Definitions live in research/layer_rebuild_2026-10-15/READER_PROTOCOL.md; every number here is OURS
