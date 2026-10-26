@@ -981,6 +981,33 @@ class ResultTrustTest(unittest.TestCase):
             T.REPO = previous
 
 
+
+class DispatchBlockerTest(unittest.TestCase):
+    def snap(self, cards):
+        orig = T.exclusion
+        T.exclusion = lambda *a, **k: None
+        try:
+            now = datetime(2026, 10, 26, tzinfo=timezone.utc)
+            return [r["id"] for r in T.dispatch(cards, {}, [], {}, {}, now)["dispatch"]]
+        finally:
+            T.exclusion = orig
+
+    def c(self, i, prio, weight="ROUTINE", dep=()):
+        return {"id": i, "title": "t", "lane": "SONNET", "state": "ready", "prio": prio, "weight": weight,
+                "depends_on": list(dep), "created": "2026-10-20"}
+
+    def test_dispatch_heavy_blocker_outranks_prio(self):
+        cards = [self.c("routine-p1", 1), self.c("blocker-p3", 3, "CRUCIAL"), self.c("waiter", 3, dep=["blocker-p3"])]
+        self.assertEqual(self.snap(cards)[0], "blocker-p3")
+
+    def test_dispatch_heavy_without_dependants_keeps_prio_order(self):
+        cards = [self.c("routine-p1", 1), self.c("crucial-p3", 3, "CRUCIAL")]
+        self.assertEqual(self.snap(cards), ["routine-p1", "crucial-p3"])
+
+    def test_dispatch_routine_blocker_keeps_prio_order(self):
+        cards = [self.c("routine-p1", 1), self.c("blocker-p3", 3), self.c("waiter", 3, dep=["blocker-p3"])]
+        self.assertEqual(self.snap(cards)[0], "routine-p1")
+
 if __name__ == "__main__":
     unittest.main()
 
