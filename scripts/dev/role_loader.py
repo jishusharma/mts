@@ -433,12 +433,15 @@ RULES_ANSWER = ("RULES ANSWERS (bug-haiku-stale-rule-answers): before any answer
                 "or, if the operator asked for it now, a background Sonnet Agent whose brief starts `You are <Owner>.`; never ask first.\n")
 
 
+CONFLICT_HINT = (chr(10) + "Conflict with an instruction you hold? Follow precedence (CLAUDE.md), run `tasks.py conflict 'A | B'`, keep working." + chr(10))
+
+
 def build_text(name, repo, fetched_ok, fallback=None):
     LAST_META.clear()
     pre = (f"ROLE LOADER (hook): the prompt has no role line; the best fit from the task text is {name} ({fallback}). "
            f"After the banner, one line: if the operator meant another role, `You are <Role>.` switches "
            f"(`python scripts/dev/role_loader.py list` shows all).\n") if fallback else ""
-    return pre + _build_text(name, repo, fetched_ok, fallback)
+    return pre + _build_text(name, repo, fetched_ok, fallback) + CONFLICT_HINT
 
 
 def _build_text(name, repo, fetched_ok, fallback=None):

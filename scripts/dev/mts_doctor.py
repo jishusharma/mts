@@ -162,7 +162,7 @@ SHIP_MAX_S = 120            # OURS: the operator's 2-minute ship; WARN when the 
 HOOKS_BEHIND_MAX = 50       # OURS
 DISK_MIN_GB = 15            # OURS
 HOOK_NAMES = ("role_loader", "ci_watch")
-CHECK_NAMES = ("SIZE-HEADROOM", "CI-REVERT", "SHIP-TIME", "HOOK-REG", "DISK", "CONTEXT-GAP", "WAITING-ON-OPERATOR", "BROADCAST", "STALE-CLAIMS", "SCRATCH-TRACKED")
+CHECK_NAMES = ("SIZE-HEADROOM", "CI-REVERT", "SHIP-TIME", "HOOK-REG", "DISK", "CONTEXT-GAP", "WAITING-ON-OPERATOR", "BROADCAST", "STALE-CLAIMS", "SCRATCH-TRACKED", "CONFLICT-OPEN")
 
 
 def _load(path, name):
@@ -373,6 +373,24 @@ def waiting_on_operator(repo, now=None, questions=None):
     return "WARN", "; ".join(parts) + f" | fix: {WAIT_FIX}"
 
 
+CONFLICT_WARN = 3   # OURS: more open bug-conflict cards than this = WARN
+
+
+def conflict_open(repo):
+    """WARN when more than CONFLICT_WARN bug-conflict-* cards are open (not done): contradicting instructions nobody settled."""
+    open_ids = []
+    for p in sorted((Path(repo) / "MyTradingSys" / "system" / "tasks").glob("bug-conflict-*.json")):
+        try:
+            c = json.loads(p.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        if c.get("state") != "done":
+            open_ids.append(c.get("id", p.stem))
+    if len(open_ids) > CONFLICT_WARN:
+        return "WARN", f"{len(open_ids)} open conflict card(s) (limit {CONFLICT_WARN}): {', '.join(open_ids[:6])} | fix: operator picks the winner, then fix the loser's text and tasks.py done"
+    return "OK", f"{len(open_ids)} open conflict card(s)"
+
+
 BROADCAST_WARN_H = 6     # OURS: a HIGH broadcast needing action (never acked, or `told` expired) on a recently seen host this long = WARN
 BROADCAST_SEEN_H = 24
 
@@ -441,7 +459,7 @@ def checklist(repo, process=True, now=None):
            ("WAITING-ON-OPERATOR", lambda: waiting_on_operator(repo, now)),
            ("BROADCAST", lambda: broadcast_check(repo, now=now) if process else ("unavailable", "skipped (--no-process, no network)")),
            ("STALE-CLAIMS", lambda: stale_claims(repo, now=now) if process else ("unavailable", "skipped (--no-process, no network)")),
-           ("SCRATCH-TRACKED", lambda: scratch_tracked(repo)))
+           ("SCRATCH-TRACKED", lambda: scratch_tracked(repo)), ("CONFLICT-OPEN", lambda: conflict_open(repo)))
     out = []
     for name, fn in fns:
         try:

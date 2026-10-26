@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T23:39:53Z",
   "commands": [
     "python scripts/dev/tasks.py brief bug-instruction-conflicts-not-logged"
   ],
@@ -17,18 +18,24 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "tasks.py conflict + CONFLICT-OPEN doctor check + hook hint + CLAUDE.md precedence + TRAFFI",
+      "ref": "3e3f6e84c",
+      "utc": "2026-10-26T23:39:53Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "WORKERS rule 9: Blocked - solve it, then report AND continue",
-      "ref": "59424d8d7d29",
-      "utc": "2026-10-26T15:39:21Z"
+      "line": "station sessions loop the queue instead of stopping after one task (re-ship)",
+      "ref": "e4acda18a619",
+      "utc": "2026-10-26T23:33:34Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "59424d8d7d29 WORKERS rule 9: Blocked - solve it, then report AND continue",
-      "ref": "MyTradingSys/system/WORKERS.md",
-      "utc": "2026-10-26T15:39:21Z"
+      "line": "e4acda18a619 station sessions loop the queue instead of stopping after one task (re-ship)",
+      "ref": "CLAUDE.md",
+      "utc": "2026-10-26T23:33:34Z"
     }
   ],
   "layers": [],
@@ -38,9 +45,14 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-26T23:11:59Z",
+  "refreshed": "2026-10-26T23:37:00Z",
   "refs": [],
-  "result": "",
+  "result": "tasks.py conflict + CONFLICT-OPEN doctor check + hook hint + CLAUDE.md precedence + TRAFFIC_BUSTERS B20; test_tasks_conflict.py 5 tests",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/role_loader.py",
@@ -56,10 +68,10 @@
     "re-adding turn_meter.py (removed 43d3bfc8f)",
     "raising the CLAUDE.md size cap"
   ],
-  "scope_sha": "59424d8d7d29",
+  "scope_sha": "e4acda18a619",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add tasks.py conflict subcommand: args A and B text, normalise (case, whitespace, order), hash, write or bump bug-conflict-<hash> (prio 1, lane SONNET, seen count, last session).",
     "Fail-first test in scripts/dev/test_tasks_conflict.py: same pair twice (also swapped) gives one card with seen=2; a different pair gives a second card.",
@@ -68,6 +80,7 @@
     "role_loader injected text appends: if this contradicts an instruction you hold, run tasks.py conflict instead of silently picking.",
     "mts_doctor.py check CONFLICT-OPEN: count open bug-conflict cards, WARN over 3; ship --release."
   ],
+  "taken": "2026-10-26T23:39:53Z",
   "tests": "scripts/dev/test_tasks_conflict.py (same file layout as scripts/dev/test_tasks.py); fail-first: subcommand absent on old code",
   "title": "Instruction conflicts are silently resolved, never logged as bugs",
   "weight": "IMPORTANT",
