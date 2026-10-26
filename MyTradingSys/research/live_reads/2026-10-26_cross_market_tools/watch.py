@@ -55,6 +55,8 @@ def states(r):
     return {
         "BTC>=80250": r["btc"] >= BTC_TOP,
         "BTC<=79451": r["btc"] <= BTC_BOT,
+        "BTC<=79836": r["btc"] <= 79836.0,      # OURS: 2H forming low 20:40Z
+        "BTC<=79923": r["btc"] <= 79923.0,      # OURS: 16:40Z 5m low, lost 20:15Z
         "ES>7698.5": r["es"] > ES_HI,
         "ES<7683.5": r["es"] < ES_OPEN,
         "GAP<=0.15(converged)": r["gap_es_minus_btc"] <= GAP_CLOSED,

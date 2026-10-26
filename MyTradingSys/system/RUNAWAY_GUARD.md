@@ -1,6 +1,6 @@
 # RUNAWAY PROCESS GUARD (card `runaway-process-leak`, priority 1, JIS-NUC 2026-10-26)
 
-Status: DESIGN FOR REVIEW. Nothing here is installed. No setting on any device is changed by this file.
+Status: design ACCEPTED (runaway-guard-design-review, 2026-10-27). Shipped 2026-10-27: Layer 1 ban line in QUICK_ANSWERS.md; runaway_check.ps1 `-ProcessJson` test input, `-Stop` limited to find/grep/sort (thresholds OURS); scripts/dev/test_runaway_check.py. Not built: hook, Job Object wrapper, Layer 4 watcher; broadcast and per-device lines (section 6) still pending. Nothing is installed on any device. No setting on any device is changed by this file.
 
 ## 1. What happened (evidence, JIS-NUC)
 - 2026-10-26 06:39:28 local: a Git-Bash `find.exe` + `grep.exe` pair started. By 15:50 `find.exe` had used 33,000 CPU seconds (9 h of one core), held **10.9 million handles**, paged pool was 9.7 GB, **available memory 0 MB of 32 GB**, CPU temperature averaged 96-99 C (max 100 C, 517 min at 95 C or more). Stopped by hand at ~15:55; memory back to 19 GB free.
@@ -50,8 +50,10 @@ Reviewer returns ACCEPT / CHANGES with a numbered list. Nothing is built until t
 ## 6. Per-device results (fill in; one line each)
 | Device | Runaway seen | When / command | Worst free MB | Checked by |
 |---|---|---|---|---|
-| JIS-NUC | yes | 10-26 06:39 `find /` from builder b-oi-pivot subagent; 9 h, 10.9M handles, 0 MB free | 0 | B 10-26 |
-| JIS-NB | ? | | | |
-| JIS-DESKTOP | ? | | | |
-| JIS-LAPTOP | ? | | | |
-| vm | ? | | | |
+| JIS-NUC | yes (re-check 10-27: OK, 19,941 MB free, no process over 100k handles) | 10-26 06:39 `find /` from builder b-oi-pivot subagent; 9 h, 10.9M handles, 0 MB free | 0 | B 10-26 |
+| JIS-NB | no reply | broadcast b-8ce4da sent 10-27, no answer yet | | B 10-27 |
+| JIS-DESKTOP | no reply | broadcast b-8ce4da, no answer yet | | B 10-27 |
+| JIS-LAPTOP | no reply | broadcast b-8ce4da, no answer yet | | B 10-27 |
+| vm | no reply | broadcast b-8ce4da, no answer yet | | B 10-27 |
+
+Broadcast b-8ce4da (HIGH, `--cmd powershell -File scripts/operator/runaway_check.ps1`) sent 2026-10-27. Replies: `python scripts/dev/mts_signal.py acks b-8ce4da`; add each device's OK/RUNAWAY line here when it answers.

@@ -30,7 +30,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "HELD: set ready (tasks.py tag --refresh) when pz-4-backtest and cbp-row-schema-expiry-gaps are done (same cbp/__init__.py, one writer at a time). DECISION (OURS): weight raised ROUTINE->CRUCIAL (a bias input that later feeds trading; read-only, behind B139). Review Agent before ship.",
+  "note": "HELD: set ready (tasks.py tag --refresh) when pz-4-backtest and cbp-row-schema-expiry-gaps are done (same cbp/__init__.py, one writer at a time). DECISION (OURS): weight raised ROUTINE->CRUCIAL (a bias input that later feeds trading; read-only, behind B139). Review Agent before ship. | Planner-B2 2026-10-27: card content passes scope review; stays raw: depends_on pz-4-backtest and cbp-row-schema-expiry-gaps are both ready, not done. DECISION (OURS): no stamp, no promotion until they are done; CRUCIAL needs Lab_Guy stamp + review Agent.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

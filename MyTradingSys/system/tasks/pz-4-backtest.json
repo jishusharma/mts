@@ -6,6 +6,21 @@
     "python scripts/dev/prereg_gate.py --n <days> --sd <sd> --cost <cost_R> --m auto",
     "python scripts/dev/tasks.py brief pz-4-backtest"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-26T21:27:58Z",
+    "misses": 15,
+    "reads": [
+      "MyTradingSys/system/LAYERS.md",
+      "scripts/dev/cbp_run.py",
+      "scripts/dev/cbp_schedule.py",
+      "MyTradingSys/tests/test_cbp_query.py",
+      "scripts/dev/test_sync.py",
+      "scripts/dev/test_run_all_tests.py",
+      "MyTradingSys/system/SCHEDULING_POLICY.md"
+    ],
+    "session": "agent-a3373db6f65852a3d"
+  },
   "created": "2026-10-26T19:08:24Z",
   "depends_on": [
     "pz-3-indicators"
@@ -27,7 +42,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-26T19:08:44Z",
+  "refreshed": "2026-10-26T21:58:27Z",
   "refs": [
     "MyTradingSys/research/pizzino_layer_2026-10-27/PLAN.md"
   ],
@@ -44,7 +59,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Freeze PRE_REG.md first: verdicts.py check, prereg_gate.py exit 0, SPEC.md defaults + listed OURS variants",
     "Follow LAYER_LAB.md for the harness; run DEV only, one TRIALS.md row per run",
