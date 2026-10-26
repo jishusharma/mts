@@ -40,9 +40,11 @@ import hosts  # noqa: E402  (machine names: old and new both match)
 
 TRUNK = "fast-track"
 LIVE_MARKER = ".mts_live"
+GATEWAY_MARKER = ".gateway_owner"   # GATEWAY_NUC.md rule 7: no remover (tidy, wt_maint, c_drive_guard, reuse) touches a tree holding this
 DOC_SUFFIXES = (".md", ".txt")
 PUSH_TRIES = 3
 CLAIMS_DIR = "MyTradingSys/system/claims"
+QUEUE_DIR = "MyTradingSys/system/desk_queue"   # desk rows (desk.py QUEUE)
 CLAIMS_BRANCH = "claims"   # gate-tiers-by-path (q-v1-claims-off-git): claim/release commits live here, never on the trunk
 SHIP_GAP_S = 600           # a second ship from one tree within this many seconds prints a note (no refusal)
 SHIP_STAMP = "mts_last_ship"
@@ -368,7 +370,7 @@ def reuse_finished_tree(repo, path):
     worktree of this repo, not live, clean, no ignored data, branch fully on origin/fast-track, idle REUSE_IDLE_HOURS. Else None
     (the caller then makes `-2`). Stops the `-2`, `-3` pile of 0.25 GB duplicates (JIS-NB 2026-10-25)."""
     path = Path(path)
-    if not path.exists() or (path / LIVE_MARKER).exists():
+    if not path.exists() or (path / LIVE_MARKER).exists() or (path / GATEWAY_MARKER).exists():
         return None
     mine = {Path(p).resolve(): b for p, b in worktrees(repo)[1:]}
     branch = mine.get(path.resolve())
@@ -442,6 +444,14 @@ def doctor_top_warnings(repo, n=3, checklist=None):
         return []
 
 
+def mark_gateway(repo):
+    """On the gateway profile (env MTS_GATEWAY=1) write GATEWAY_MARKER into the tree so no cleanup removes it. Returns True if marked."""
+    if os.environ.get("MTS_GATEWAY") != "1":
+        return False
+    (Path(repo) / GATEWAY_MARKER).write_text("gateway session tree: never remove (GATEWAY_NUC.md rule 7)\n", encoding="utf-8", newline="\n")
+    return True
+
+
 def start(repo, slug=None, here=False, quiet=False):
     """Bring a tree up to date. Returns the tree the session must work in: `repo` when it is clean, else a
     fresh worktree off origin/fast-track (printed as `WORKTREE: <path>`); never touches the other files."""
@@ -457,6 +467,7 @@ def start(repo, slug=None, here=False, quiet=False):
         print(f"WORKTREE: {path}")
         print(f"work ONLY there: cd {path}")
         repo = path
+    mark_gateway(repo)
     n = merge_trunk(repo)
     branch = git(repo, "branch", "--show-current").stdout.strip() or "(detached)"
     print(f"host={socket.gethostname()} branch={branch} pulled={n} head={git(repo, 'rev-parse', '--short', 'HEAD').stdout.strip()}")
@@ -1528,6 +1539,9 @@ def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS,
         p = Path(path).resolve()
         if p == here or not p.exists() or (p / LIVE_MARKER).exists():
             continue
+        if (p / GATEWAY_MARKER).exists():
+            keep(p, "gateway", "gateway session's own tree (GATEWAY_NUC.md rule 7)")
+            continue
         auto = (re.match(r"mts-.+-s\d{4}-\d{6}(-\d+)?$", p.name) or p.name.startswith(tuple(f"mts-{n.lower()}-" for n in hosts.aliases(socket.gethostname())) + ("mts-relay-",))
                 or is_app_tree(p))
         if p.name in LANE_WORKTREES:
@@ -1577,6 +1591,24 @@ def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS,
     return out
 
 
+def ship_is_cards_docs_only(repo, argv):
+    """A ship whose outgoing diff is only task cards and .md/.txt docs touches no desk row, claim or queue, so the Pipeliner lease does
+    not guard it (2026-10-26: a Lead that loaded pipeline mode was blocked 45 min by another machine's lease). Fail closed: --release
+    (a claim write), no outgoing files, any other path, or any git error keeps the guard."""
+    if "--release" in argv:
+        return False
+    try:
+        files = outgoing_files(repo)
+    except Exception:
+        return False
+
+    def ok(f):
+        if f.startswith((QUEUE_DIR, CLAIMS_DIR)):
+            return False
+        return f.endswith(DOC_SUFFIXES) or (f.startswith(CARDS_DIR + "/") and f.endswith(".json"))
+    return bool(files) and all(ok(f) for f in files)
+
+
 def lease_guard(argv):
     """TRAFFIC_CONTROLLER.md Part A: a singleton-role session (Pipeliner) ships, claims and releases
     only while it holds its lease (scripts/dev/lease.py); fails closed. Any other session: no-op, no network."""
@@ -1584,6 +1616,8 @@ def lease_guard(argv):
         return 0
     import lease
     try:
+        if argv[0] == "ship" and ship_is_cards_docs_only(toplevel(Path.cwd()), argv):
+            return 0
         lease.guard(toplevel(Path.cwd()), lease.MIN_FOR_SHIP if argv[0] == "ship" else 0)
     except (lease.LeaseError, SyncError) as e:
         print(f"sync: LEASE {'REFUSED' if getattr(e, 'code', 4) == lease.REFUSED else 'UNREACHABLE'}: {e}", file=sys.stderr)
