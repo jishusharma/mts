@@ -1165,13 +1165,13 @@ class SyncTest(unittest.TestCase):
         with mock.patch.object(sync, "toplevel", return_value=self.a), \
                 mock.patch.object(sync, "ship") as mock_ship:
             self.assertEqual(sync.main(["ship", "--after", "pred-slug"]), 0)
-            mock_ship.assert_called_once_with(self.a, release_slug=None, after_slug="pred-slug")
+            mock_ship.assert_called_once_with(self.a, release_slug=None, after_slug="pred-slug", lesson=None)
 
     def test_ship_cli_after_and_release_flags(self):
         with mock.patch.object(sync, "toplevel", return_value=self.a), \
                 mock.patch.object(sync, "ship") as mock_ship:
             self.assertEqual(sync.main(["ship", "--release", "my-slug", "--after", "pred-slug"]), 0)
-            mock_ship.assert_called_once_with(self.a, release_slug="my-slug", after_slug="pred-slug")
+            mock_ship.assert_called_once_with(self.a, release_slug="my-slug", after_slug="pred-slug", lesson=None)
 
 
 
@@ -1583,7 +1583,7 @@ class OwnCiWaitTest(unittest.TestCase):
                     mock.patch.object(sync, "ci_path_filter", return_value=["scripts/**"]), \
                     mock.patch.object(sync, "wait_own_ci", return_value=state) as mock_wait:
                 self.assertEqual(sync.main(["ship", "--release", "my-slug"]), rc, state)
-                mock_ship.assert_called_once_with(Path("."), release_slug="my-slug", after_slug=None)
+                mock_ship.assert_called_once_with(Path("."), release_slug="my-slug", after_slug=None, lesson=None)
                 self.assertEqual(mock_wait.call_args[0][0], self.pushed)
                 self.assertEqual(mock_wait.call_args[1]["globs"], ["scripts/**"])
         self.assertEqual(sync.CI_RED_EXIT, 3)
@@ -1593,7 +1593,7 @@ class OwnCiWaitTest(unittest.TestCase):
                 mock.patch.object(sync, "ship", return_value=self.pushed) as mock_ship, \
                 mock.patch.object(sync, "wait_own_ci", return_value="red") as mock_wait:
             self.assertEqual(sync.main(["ship", "--no-ci-wait"]), 0)
-            mock_ship.assert_called_once_with(Path("."), release_slug=None, after_slug=None)   # the flag never reaches ship()
+            mock_ship.assert_called_once_with(Path("."), release_slug=None, after_slug=None, lesson=None)   # the flag never reaches ship()
             with mock.patch.dict(os.environ, {"SYNC_NO_CI_WAIT": "1"}):
                 self.assertEqual(sync.main(["ship"]), 0)
             mock_wait.assert_not_called()
