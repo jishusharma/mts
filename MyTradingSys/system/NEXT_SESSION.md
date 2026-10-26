@@ -1,3 +1,7 @@
+# NEXT SESSION (2026-10-27, Fable 5.1 / fable-confluence-map)
+
+Done: fable-confluence-integration-map. Wrote `MyTradingSys/research/design_cards_2026-10-26/FABLE_CONFLUENCE_MAP.md`: 13 families x (role, inputs, outputs, overlaps), every non-UNKNOWN cell sourced from layer_index.json, LAYERS.md or PRE_REG_CONFLUENCE.md (role words from its section 8). No verdicts, no discards, no live-tree or data touch. Card closed with tasks.py done --result. Next reviewer: start the confluence review from this map; pairs to deduplicate are listed at the bottom of it.
+
 # NEXT SESSION (2026-10-23, Gemini Flash / yt-exhaust)
 
 Done this exhaust session (JIS-NUC, jis-nuc/yt-exhaust, 2026-10-23/24):

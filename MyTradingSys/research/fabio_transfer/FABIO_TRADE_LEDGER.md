@@ -149,8 +149,8 @@ Definitions. PARENT TRADE = one position from flat to flat (scale-ins and re-siz
 | P10 | NQ | F9 | 14.81 pt = 0.059% (row F9) | frame-read average ~ |
 | P11 | NQ | F10 | 20.50 pt = 0.082% (row F10) | frame-read average ~ |
 | P12 | NQ | F11 | 10.00 pt = 0.040% (row F11) | entry and stop both approximate (~) |
-| P13 | NQ | F12 | 16.03 pt = 0.064% (row F12) | frame-read average and stop at t=3100 |
-| P14 | NQ | F13 | 9.50 pt = 0.038% (row F13) | frame-read average |
+| P13 | NQ | F12 | 15.43 pt = 0.061% (row F12) | frame-read average and stop at t=3100 |
+| P14 | NQ | F13 | 11.90 pt = 0.047% (row F13) | frame-read average |
 | P15 | NQ | F14 | 15.13 pt = 0.060% (row F14) | frame-read |
 
 Excluded from every count: F15-draft-6975-7025: drawing (DyS79Eb92Ug.txt:2854-2855), not a submitted order, no fill.
@@ -158,8 +158,8 @@ Excluded from every count: F15-draft-6975-7025: drawing (DyS79Eb92Ug.txt:2854-28
 Counts (replace the earlier "14 filled trades, 13 NQ / 1 ES" and "all available"): 15 parent rows listed = 13 with a frame-read initial stop (NQ), 1 partial teaching example (P2, NQ), 1 unresolved ES grouping (P5: 1 or 2 parents). So NQ frame-read parent trades = 13; ES = 1-2 parents with no stop; total 14 to 15 parents.
 Row classes in the CSV (73 rows): drawing 1; fill (entry row) 17; flat-state observation (exit) 13; management observation 21; no-trade window (sampled frames only) 21.
 
-Stop-width statistic (initial stop, 13 NQ parents with a read stop; entry/stop = first number of the CSV cells, so F7 and F11 are approximate): median 14.81 pt, mean 14.35 pt, min 3.38 pt, max 30.83 pt.
-The old "min 1.5pt (0.006%)" came from the F12 initial stop read (~25105.50 vs ~25107) that the audit rejects (F12 stop is 25089.75 at t=3100); tightened management stops (F5 2.07 pt after the tighten, F12-m1 8.83 pt) are management rows, not initial stops, and are not in this statistic. Members of the statistic: F1=15.75, F3b=8.88, F3c=3.38, F5=9.47, F6=30.83, F7=19.5, F8=12.75, F9=14.81, F10=20.5, F11=10.0, F12=16.03, F13=9.5, F14=15.13.
+Stop-width statistic (initial stop, 13 NQ parents with a read stop; entry/stop = first number of the CSV cells, so F7 and F11 are approximate): median 14.81 pt, mean 14.49 pt, min 3.38 pt, max 30.83 pt.
+The old "min 1.5pt (0.006%)" came from the F12 initial stop read (~25105.50 vs ~25107) that the audit rejects (F12 stop is 25089.75 at t=3100); tightened management stops (F5 2.07 pt after the tighten, F12-m1 8.83 pt) are management rows, not initial stops, and are not in this statistic. Members of the statistic: F1=15.75, F3b=8.88, F3c=3.38, F5=9.47, F6=30.83, F7=19.5, F8=12.75, F9=14.81, F10=20.5, F11=10.0, F12=15.43, F13=11.9, F14=15.13.
 
 Coverage is PARTIAL, not "all available": 8CWKfoSJu3c, fZlNGWvd2Ko, jasv3L-d8ZE, Jpd96fLqr5M sheets read; 0jM5Y31YJak sheets 00/03/04 were unread in the first pass; 9IliXww64uM has no stop/TP labels; DyS79Eb92Ug read in 250 s windows where each no-trade window cites only 2-4 sampled frames, so "no trade" holds for the sampled frames only; Is1HvdfQm5c has frames to t=500 and an ASR extract with no confirmed live position; xUyqIjCfZzg (3.8 h) is unread in this ledger; 9I5vTvwsMBk downloaded (f298 720p60) and read (t=0-140 interview clip has hypothetical trade sketch only, rest is 3rd-party review; no live Fabio trade). F2 omits at least the positions named in 0jM5Y31YJak.en.vtt:1026-1058 and 1234-1258.
 UNRESOLVED (H4): the P3/P5 grouping rule for F3b/F4 (no flat frame between fills), the F2 position count and prices, and the unread videos; counts above are a definition applied to the current rows, not ground truth.
@@ -200,3 +200,21 @@ Rule: execution date is UNKNOWN unless a same-session source is on screen. A 202
 Rows: F6, F6-m1, F6-m2, F6-m3, F6-x, F7, F7-m1, F7-x, F8, F8-x, F9, F9-m1, F9-x, F10, F10-m1, F10-x, F10-z, F11, F11-m1, F11-x, F12, F12-m1, F12-m2, F12-x, F13, F13-m1, F13-x, F-noTrade-3575-3750, F14, F14-x, F-noTrade-4025-4275, F-noTrade-4275-4525, F-noTrade-4775-5025, F-noTrade-5025-5275, F-noTrade-5275-5525, F-noTrade-5525-5775, F-noTrade-5775-6025, F-noTrade-6025-6275, F-noTrade-6275-6525, F-noTrade-6525-6775, F15-draft-6975-7025, F-noTrade-7025-7275, F-noTrade-7275-7525, F-noTrade-7525-7775, F-noTrade-7775-8025, F-noTrade-8025-8275, F-noTrade-8275-8493.
 Finding (RV05 report, H1, HIGH, CONFIRMED for the 47-row unsupported-date problem): the DyS frames show NQ-202512 (CSV lines 29-71 carry that contract); the Jpd sheet does not expose its contract header. Recording or review date is kept separate from execution date. The stronger claim that every source frame proves a pre-2026 date is NOT_IN_DATA.
 Source: MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md (H1 row, line 34; detail line 44).
+
+## RV05 H2 adjudication (card rv05-h2-position-line-evidence, 2026-10-26)
+Source: full-resolution 1280x720 frames of DyS79Eb92Ug.f398.mp4 (cv2, 4x crops of the position and STP tags), reads in RV05_H2_READS.csv. DECISION (OURS): the card was flagged STALE (H1/H3 edits landed after refresh); the current CSV is the baseline and statuses are computed by check_rv05_h2.py from READS.csv, earlier reads and the CSV. Caveat: the reader had seen the CSV values before reading, so the reads are pixel reads of the tags, not a blind protocol. Rule (OURS): the displayed position-line average outranks a label-derived value; the label-derived value stays in the CSV note as a cross-check.
+Earlier reads compared: AUDIT H1 (2026-10-13_lab-audit-fabio-ledger-frames.md) and RV05 (2026-10-13_rv05-fabio-ledger-frame-pass.md).
+| Row | Field | Status | Frame t | CSV before | Read | Earlier reads | Note |
+|---|---|---|---|---|---|---|---|
+| F8 | entry | KEPT | t=1325 | 25034.50 | 25034.53 | AUDIT 25034.53, RV05 25034.53 | within 0.25 pt |
+| F8 | stop | KEPT | t=1325 | 25021.75 | 25021.75 | AUDIT 25021.75 | |
+| F12 | entry | CHANGED | t=3100 | 25105.78 | 25105.18 | AUDIT 25105.78, RV05 25105.18 | read agrees with RV05; open P/L 127.56 = 6 x 20 x (25106.25-25105.18) |
+| F12 | stop | KEPT | t=3100 | 25089.75 | 25089.75 | AUDIT 25089.75 | |
+| F12-m2 | entry | KEPT | t=3150 | 25108.50 | 25108.50 | AUDIT 25108.50, RV05 25108.50 | |
+| F12-m2 | stop | CONTESTED | t=3150 | 25098.75 | 25098.25 | AUDIT 25098.75, RV05 about 25098.75 | read matches neither earlier read (it matches the STP -2050$ label arithmetic and the w9_00 value); own read never settles: CSV stays 25098.75; desk row 20261026-153028-blind-read-f12-m2-stop-price-tag-at-t-31 (--target DSA-NUC) asks a non-Claude reader |
+| F13 | entry | CHANGED | t=3375 | 25106.50 | 25108.90 | AUDIT 25108.90, RV05 25108.90 | label-derived 25106.50 (STP -1520$) kept in the note; the t=3375 STP label reads -1920$ (8 x 12 x 20), which ties to 25108.90 |
+| F13 | stop | KEPT | t=3375 | 25097.00 | 25097.00 | AUDIT 25097.00 | |
+| F13-m1 | entry | KEPT | t=3400 | 25108.00 | 25108.05 | AUDIT 25108.05, RV05 25108.05 | within 0.25 pt |
+| F13-m1 | stop | KEPT | t=3400 | 25097.00 | 25097.00 | AUDIT 25097.00 | |
+Counts: 7 KEPT, 2 CHANGED (F12 entry, F13 entry), 1 CONTESTED (F12-m2 stop), 0 NOT_IN_DATA.
+Coverage and denominators: F13 at t=3375 shows +8 QTY open against an -8 STP (8 covered); F13-m1 at t=3400 shows +10 QTY against the same -8 STP (8 covered vs 10 open, 2 lots unprotected on the frame); F12-m2 shows +10 QTY against a -10 STP (10 covered). Dollar labels use 20 USD per point per lot; a label-derived entry divides by the covered size (8), not the open size (10).

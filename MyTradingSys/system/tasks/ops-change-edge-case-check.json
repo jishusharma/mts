@@ -1,34 +1,81 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T15:43:40Z",
   "commands": [],
   "created": "2026-10-26T14:49:59Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/system/OPS_CHANGE_CHECK.md (<= 40 lines, 8 numbered questions each with a one-line pass proof, plus the commit-body line format 'Reach: Q1-Q8 ok|n/a <why>') exists; roles/lead.md cites it within its 4000 B budget (now 2912 B); DEBUGGING.md links it; a test asserts exactly 8 numbered questions and that lead.md names the file; the test fails before the file exists.",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Write OPS_CHANGE_CHECK.md: an 8-question reach test (stale checkout, target open, length cap, who wakes it, dirty tree, first-reply proof, out-of-folder write, diverged checkout) cited by the Lead role. Evidence and question wording: MyTradingSys/research/planner_20261026b/EVIDENCE.md section 3. Gate enforcement is card ops-change-checklist-ship-gate.",
   "id": "ops-change-edge-case-check",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "OPS_CHANGE_CHECK.md shipped 512cb754b",
+      "ref": "b713e5235",
+      "utc": "2026-10-26T15:43:40Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "usage-reminder-gate: take upstream gate (a506ea249); keep scratch untrack + gitignore",
+      "ref": "6b92b6984482",
+      "utc": "2026-10-26T00:22:47Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "6b92b6984482 usage-reminder-gate: take upstream gate (a506ea249); keep scratch untrack + g",
+      "ref": "MyTradingSys/system/DEBUGGING.md",
+      "utc": "2026-10-26T00:22:47Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer a431f000395c00b14). Edits test_integrity.py, same as bug-ai-health-stops-at-first-blocker: one worker takes both in order (this card first).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-26T15:32:17Z",
   "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "result": "OPS_CHANGE_CHECK.md shipped 512cb754b",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/system/OPS_CHANGE_CHECK.md",
+    "MyTradingSys/system/roles/lead.md",
+    "MyTradingSys/system/DEBUGGING.md",
+    "MyTradingSys/tests/docs/test_integrity.py"
+  ],
+  "scope_out": [
+    "scripts/dev/sync.py",
+    "scripts/dev/preship.py (gate change: card ops-change-checklist-ship-gate)",
+    "roles/builder.md (1454 of 1500 B)",
+    "CLAUDE.md (12 B headroom)"
+  ],
+  "scope_sha": "6b92b6984482",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Ops-change edge-case check: any change to start/hook/broadcast/role mechanisms must pass a written 6-question reach test before ship (stale checkout? target session open? message length cap? who wakes it? dirty tree? first-reply proof). Add it to the Builder/Lead role files and to sync.py ship as a docs-checked line for paths in scripts/dev/role_*, mts_signal.py, hooks. DONE when: checklist file shipped, a test fails on a change touching those paths without the checklist line in the commit body, and the Lead role cites it Add question 7: does a step write outside the session's folders (e.g. F:/), which prompts even in Bypass? Use paths inside the checkout. Also 8: has the target checkout diverged (local unpushed commits), so ff-only fails? Evidence: NUC 2026-10-26, commit bbd808f4a, screenshot 3c19a6836b52 (see NUC card bug-app-permission-prompts-unattended).",
-  "weight": "",
-  "worker": ""
+  "state": "done",
+  "steps": [
+    "Read DEBUGGING.md and ROLES.md; grep mts_signal.py for the message length cap and cite file:line for Q3.",
+    "Fail-first test in test_integrity.py: OPS_CHANGE_CHECK.md exists with 8 numbered questions and lead.md contains 'OPS_CHANGE_CHECK'; run, confirm FAIL.",
+    "Write OPS_CHANGE_CHECK.md: the 8 questions with pass proofs (Q7 pass = every path inside the checkout; Q8 pass = git rev-list origin/fast-track..HEAD empty on the target).",
+    "Add one cite line to roles/lead.md; run role_loader.py retoken/check/lint and test_role_budget.py.",
+    "Link from DEBUGGING.md; run the test; ship."
+  ],
+  "taken": "2026-10-26T15:43:40Z",
+  "tests": "MyTradingSys/tests/docs/test_integrity.py new test (fails first); MyTradingSys/tests/test_role_budget.py passes. Verify: content commit sha, `git cherry origin/fast-track <sha>` empty, `git ls-tree -r origin/fast-track --name-only` lists the files.",
+  "title": "Ops-change edge-case check: 8-question reach test for start/hook/broadcast/role changes",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

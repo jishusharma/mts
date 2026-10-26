@@ -37,3 +37,8 @@ Every other file points here. Numbers come from a 5-day transcript count (`worke
 7. **No clicks.** `start_session` with `initiation: "user_asked"` on operator turns (max 4 workers at once); on event turns (a message or event started the turn) the app shows an Allow card, so `model_guard.py` denies it (2026-10-23):
    use rule 3's Agent. Never an `offer` / `own_initiative` card, for any model: nobody is at the screen to click (operator 2026-10-18).
 8. **Cleanup.** A finished session marks itself completed; the coordinator marks each worker once its ship is verified.
+9. **Blocked: solve it, then report.** A git or permission refusal is a task, not an ending. (1) List 2-3 non-destructive fixes. (2) Try the safest. (3) Verify the repo state (branch, clean tree, both histories present). (4) Report. "Report and stop" means report AND continue unless the order says HALT; never end a turn on a question or "complain then idle" (CLAUDE.md: never wait on a question).
+   Example: ff-only pull refused (local commit) -> options: merge origin/fast-track in a worktree, push first, new worktree -> merge -> both histories present -> report.
+   Example: merge refused on a dirty file with a backup -> commit the file, then merge. "No reset/rebase" bans those, not commits or merges.
+   Example: a write outside the checkout prompts -> use a path inside the checkout or scratchpad (OPS_CHANGE_CHECK.md Q7).
+   Brief template (copy into briefs): `Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report; report AND continue unless I say HALT.`

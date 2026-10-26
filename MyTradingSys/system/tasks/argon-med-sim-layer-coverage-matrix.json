@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T15:43:29Z",
   "commands": [
     "C:/Users/E-ngineers/.gemini/bin/agy.exe --print \"Follow the steps of card argon-med-sim-layer-coverage-matrix (python scripts/dev/tasks.py brief argon-med-sim-layer-coverage-matrix). Write only MyTradingSys/research/design_cards_2026-10-26/argon_sim_layer_coverage.md. Facts with file:line or NOT_IN_DATA; no verdicts.\" --model gemini-4-argon-medium"
   ],
@@ -16,7 +17,14 @@
   "id": "argon-med-sim-layer-coverage-matrix",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/design_cards_2026-10-26/argon_sim_layer_coverage.md: 13 families (3 ",
+      "ref": "b713e5235",
+      "utc": "2026-10-26T15:43:29Z"
+    }
+  ],
   "layers": [
     "krown",
     "tom"
@@ -36,7 +44,12 @@
     "to": "DSA",
     "why": "credits"
   },
-  "result": "",
+  "result": "MyTradingSys/research/design_cards_2026-10-26/argon_sim_layer_coverage.md: 13 families (3 dedicated studies, 2 partial via levels.py, 8 NOT_IN_DATA)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/design_cards_2026-10-26/argon_sim_layer_coverage.md (new file only)"
   ],
@@ -50,13 +63,14 @@
     "MyTradingSys/research/sim_desk/PLUGIN.md",
     "MyTradingSys/research/sim_desk/studies/"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/system/layer_index.json families and MyTradingSys/research/sim_desk/PLUGIN.md, studies/*.py",
     "For each family grep the study modules for its detectors and parameters; record file:line",
     "Write the table; NOT_IN_DATA where the desk has no path; no keep/drop wording",
     "Commit with a Result: line (families covered, families with no desk path)"
   ],
+  "taken": "2026-10-26T15:43:29Z",
   "tests": "none (run card); proof = 13 rows, every cell has file:line or NOT_IN_DATA",
   "title": "[GEMINI] Argon-medium: which sim-desk study covers which layer family (file:line matrix)",
   "weight": "IMPORTANT",
