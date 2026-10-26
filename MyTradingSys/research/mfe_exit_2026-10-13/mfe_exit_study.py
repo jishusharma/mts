@@ -24,7 +24,8 @@ from numpy.lib.stride_tricks import sliding_window_view as swv
 D = "F:/MTS/data/bigtrade"
 FUND = "C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed/Dumps/backtest/raw_fund/fundingRate"
 FEE_RT = 0.0010
-DEV_ONLY = os.environ.get("MFE_DEV_ONLY") == "1"   # rerun 2026-10-17 on relabelled fires: only split == TRAIN rows are loaded
+DEV_ONLY = os.environ.get("MFE_DEV_ONLY") == "1"   # DEV-only rerun: only fires before DEV_END_MS are loaded, whatever the file's split label says
+DEV_END_MS = 1719792000000  # 2024-07-01 00:00 UTC; the fire files' split label is stale (T07-F1), so DEV is cut by time
 RUN_ID = "MFEX-RERUN-DEV-2026-10-17" if DEV_ONLY else "MFEX-2026-10-13"
 K = 32                      # max hold in signal-TF bars (fixed, declared before any result)
 STOP_ATR = 2.0              # wide protective stop, same in every arm
@@ -183,7 +184,7 @@ def read_fires(fname):
     out = []
     with open(os.path.join(D, "fires", fname), newline="") as fh:
         for r in csv.DictReader(fh):
-            if r["tradable"] == "1" and r["side"] in ("long", "short") and r["split"] in (("TRAIN",) if DEV_ONLY else ("TRAIN", "VALIDATE", "HOLDOUT")):
+            if r["tradable"] == "1" and r["side"] in ("long", "short") and r["split"] in ("TRAIN", "VALIDATE", "HOLDOUT")                     and not (DEV_ONLY and int(r["t_fire_ms"]) >= DEV_END_MS):
                 out.append((int(r["t_fire_ms"]), 1 if r["side"] == "long" else -1, float(r["atr"]), r["split"]))
     out.sort()
     return out
