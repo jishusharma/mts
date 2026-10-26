@@ -6,7 +6,7 @@ handoff: supervisor via SUPERVISOR_LOG.md (CLAIM line of this session) and CC_TA
 
 ## Scope
 Task A: TF5 (BUILD_PIPELINE row 1.7) = EXEC_PROVENANCE_AUDIT.md H5 items 1-3, staged as .new in MyTradingSys/execution/ only.
-Task B: research/CC_TASK_LIST_2026-10-03.md (read-only). Task C: research/CL_PROMPT_TEMPLATE_REVIEW_2026-10-03.md (read-only).
+Task B: research/_archive/loose_2026-10/CC_TASK_LIST_2026-10-03.md (read-only). Task C: research/CL_PROMPT_TEMPLATE_REVIEW_2026-10-03.md (read-only).
 No live file edited in place, no process stopped or restarted, no HALT/AUTO_PAUSE/plan/order touched, no promote.
 
 ## T0 PASS

@@ -52,7 +52,7 @@
   "refined_by": "gemini-yt-pipeliner",
   "refreshed": "2026-10-24T15:52:32Z",
   "refs": [
-    "MyTradingSys/research/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md",
+    "MyTradingSys/research/_archive/loose_2026-10/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md",
     "MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md",
     "MyTradingSys/research/krown_malkan_g3_2026-10-16/EVENT_COUNTS.md",
     "MyTradingSys/backtest/PRE_REG_TEMPLATE.md"
@@ -75,7 +75,7 @@
   "scope_sha": "b0e31e9eb31e",
   "size": "M",
   "sources": [
-    "MyTradingSys/research/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md",
+    "MyTradingSys/research/_archive/loose_2026-10/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md",
     "MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md"
   ],
   "state": "done",

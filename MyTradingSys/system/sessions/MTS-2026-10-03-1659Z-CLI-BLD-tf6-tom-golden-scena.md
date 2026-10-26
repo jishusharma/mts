@@ -4,7 +4,7 @@ started: 2026-10-03 16:59Z | status: closed | commits: the commit history --grep
 handoff: none. Test-only; no execution/ file touched, no process stopped, no HALT/plan/order touched. The 6 gaps below go to the supervisor / CC_TASK_LIST.
 
 ## T0 PASS
-- Row: runtime/BUILD_PIPELINE.md:47 (1.8 TF6, QUEUED, blocker 1.6 = TF4 LANDED at :45). Spec: research/TOM_FABIO_REVIEW_2026-10-03.md:89 (failing scenarios listed, not fixed).
+- Row: runtime/BUILD_PIPELINE.md:47 (1.8 TF6, QUEUED, blocker 1.6 = TF4 LANDED at :45). Spec: research/_archive/loose_2026-10/TOM_FABIO_REVIEW_2026-10-03.md:89 (failing scenarios listed, not fixed).
 - Code under test: execution/auto_trader.py parse_tom_alert :121-139, runner_split :142-161, tom_signal :174-220 (limit entry :210-212, time exit :215-219, breakeven flag :213-214). Live config execution/auto_trader_config.json:9-18 (tom.size_usd 10).
 - Sources: extracts/v2/tom/4MoNjEQ2Dd8_v2.md decision rows (line 23+N); research/fast_track_2026-09-27/ANGLE_TRADE_CATALOG.md rows 3, 13, 37 and Q-quotes of EXEC_PROVENANCE_AUDIT.md.
 - MyTradingSys/tests/test_tom_golden.py did not exist before this session (the prompt's READ FIRST lists it).

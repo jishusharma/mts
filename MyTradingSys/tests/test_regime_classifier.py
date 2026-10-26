@@ -4,7 +4,7 @@ Staged as .new 2026-10-02 (TWO_CORES_FIX_PASS_2026-10-02.md item 4). Promoted 20
 Run directly:  python MyTradingSys/tests/test_regime_classifier.py
 
 Expected values come from ONE document, never from the code under test:
-  [R] MyTradingSys/research/TREND_REGIME_DETECTOR_SPEC.md
+  [R] MyTradingSys/research/_archive/loose_2026-10/TREND_REGIME_DETECTOR_SPEC.md
         L12-13  vwap_slope / cvd_slope take rising | falling | sideways;   L19  vp_shape takes B | P | D
         L27-34  votes: vwap_slope rising/falling -> up/down; cvd_slope rising/falling -> up/down;
                 net_delta_1h > 0 / < 0 -> up/down; vp_shape == "P" -> up, == "D" -> down   (B, sideways, 0 = no vote)
@@ -15,7 +15,7 @@ Expected values come from ONE document, never from the code under test:
                 consecutive_cycles, entered_at_utc;   L56 initial label = UNKNOWN until first publish
         L76-77  debug fields votes_up, votes_down, cycles_in_candidate_state are exposed
   Spec/audit note, not tested away: the spec maps vp_shape "D" to a DOWN vote (L34) although MarketDataSnapshot defines
-  D as balanced (research/AUDIT_2026-09-17_TRACKER.md regime row 4; fast_track_2026-09-27/TOM_LINE_BY_LINE_4MoNjEQ2Dd8.md:133).
+  D as balanced (research/_archive/loose_2026-10/AUDIT_2026-09-17_TRACKER.md regime row 4; fast_track_2026-09-27/TOM_LINE_BY_LINE_4MoNjEQ2Dd8.md:133).
   The test follows the spec; whether the spec should change is not decided here.
 
 NOT TESTED (no document defines them) - recorded as "unknown (code-only)" in TWO_CORES_FIX_PASS_2026-10-02.md:

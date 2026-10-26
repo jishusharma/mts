@@ -2,7 +2,7 @@
 
 Session: MTS-2026-10-01-1604Z-CLD-ANA-revalidate-tom-fabio. Format: ANGLE_HYPOTHESES.md:77-112 (fields 1-10 committed BEFORE the run; the
 result block is appended later; a change means a new ID with `supersedes:`). Task: DSA_TASKS_2026-10-01.md T2
-[disk: MyTradingSys/research/DSA_TASKS_2026-10-01.md:12-16]. T2 does not run until this file is committed.
+[disk: MyTradingSys/research/_archive/loose_2026-10/DSA_TASKS_2026-10-01.md:12-16]. T2 does not run until this file is committed.
 Status: REGISTERED BY THIS FILE. Nothing has been run. The cloud cannot run T2 (no F: snapshots).
 
 ## The four required fields (summary; detail in the block below)
@@ -12,7 +12,7 @@ Status: REGISTERED BY THIS FILE. Nothing has been run. The cloud cannot run T2 (
 - Stopping condition: one run per (option, config hash); stop on n < 100 in either set, or on any change to the code under test after registration; no parameter is re-tuned after a result.
 
 ## Why the WAIT_RR rate is not the metric
-The HANDOFF suggested "reduce WAIT_RR from 67 percent to below X percent". [disk: MyTradingSys/research/REVALIDATION_REQUEST_2026-10-01.md:348] WAIT_RR was 80,847 of 120,892 rows, 66.9 percent. [disk: TOM_CORE_BT.md:14]
+The HANDOFF suggested "reduce WAIT_RR from 67 percent to below X percent". [disk: MyTradingSys/research/_archive/loose_2026-10/REVALIDATION_REQUEST_2026-10-01.md:348] WAIT_RR was 80,847 of 120,892 rows, 66.9 percent. [disk: TOM_CORE_BT.md:14]
 Removing the R:R gate sets that share to 0 by construction, so a threshold on it cannot be missed and cannot falsify anything. It is reported as a funnel
 figure and is never decisive.
 

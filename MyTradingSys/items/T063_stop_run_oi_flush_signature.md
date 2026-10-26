@@ -1,6 +1,6 @@
 # T063 - Opposite-extreme sweep + OI flush + CVD in step: reversal vs continuation (operator observation)
 
-Opened 2026-10-05 by MTS-2026-10-05-1500Z-APP-ANA-operator-asks. Status OPEN. Verbatim ask: research/OPERATOR_ASKS_2026-10-05.md section 0, ask 1. Related: T058, G12, B136, T055a.
+Opened 2026-10-05 by MTS-2026-10-05-1500Z-APP-ANA-operator-asks. Status OPEN. Verbatim ask: research/_archive/loose_2026-10/OPERATOR_ASKS_2026-10-05.md section 0, ask 1. Related: T058, G12, B136, T055a.
 Tag: [OPERATOR] hypothesis. Separate layer if it survives; never a Tom filter. Parameters research-only until sourced.
 
 ## Hypothesis (operator, to be tested)

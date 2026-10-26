@@ -26,7 +26,7 @@ Paths are relative to `MyTradingSys/` unless prefixed. `WR` = `research/malkan_r
 | Date | Event | Source |
 |---|---|---|
 | 2026-08-29 | "Malkans RSI 40/60 integrated" into the Tom chart layout (E4) | system/COMPILED_DECISIONS.md:40 |
-| 2026-09-01 | VVP-001 demotes RSI: removed from default layout, "NEVER let RSI or BB override a Tom-validated setup" | research/visual_validation_protocol_vvp001.md:116,119; BUGS.md T019 (line 105) |
+| 2026-09-01 | VVP-001 demotes RSI: removed from default layout, "NEVER let RSI or BB override a Tom-validated setup" | research/_archive/loose_2026-10/visual_validation_protocol_vvp001.md:116,119; BUGS.md T019 (line 105) |
 | 2026-09-28 | Operator directive (verbatim): Malkan 40-60 is private to its own sub-layer; RSI MA support; "slippage" tolerance around 40/60 to be measured; alerts per timeframe incl. 1,2,3,10 min and 2d,3d,5d; fine-tune later on testnet | PROJECT_VISION.md:189-203 |
 | 2026-09-28 | Opus design D1-D7 (timeframe layer + rsi_core / rsi_ma / rsi_events / malkan_40_60) | research/fast_track_2026-09-27/RSI_TF_LAYER_DESIGN.md |
 | 2026-09-28 | Web research on Malkan (secondary sources: eLearnMarkets blog, Chartink screeners, YouTube titles). 10 gaps listed | WR (400 lines) |
@@ -35,8 +35,8 @@ Paths are relative to `MyTradingSys/` unless prefixed. `WR` = `research/malkan_r
 | 2026-09-29 | Live runner: RSI-40 tol 0.5 on 1h/15m (0817968); malkan_bull / malkan_bear added (4d1bc36); failure-event side (adc75b3). 5m added 2026-09-30 (7058bc2) | NEXT_SESSION_PLAN.md:145; SUPERVISOR_LOG.md:185,221 |
 | 2026-09-30 | Cloud Sonnet writes `run_rsi_backtest.py` (35 tests) with families malkan_40_60, malkan_mtf, rsi_ma_events | research/fast_track_2026-09-27/DSA_BACKLOG.md:23-24 |
 | 2026-10-04 | Layer provenance audit: rsi = 4 SOURCED, 10 CONCEPT-ONLY, 12 NO-SOURCE | research/LAYER_PROVENANCE_AUDIT.md:46 |
-| 2026-10-07 | Desktop runs malkan_40_60 and rsi_ma_events; both NO-EDGE. malkan_mtf not run. Verdict table written | research/MARKET_GUIDE_RESULTS_2026-10-07.md:20-22,36 |
-| 2026-10-08 | Closeout: rsi:cross now side-by-level (40 down = short, 60 up = long, else no side); the trade blocklist is emptied for testnet data collection and parked | items/B128 row M29-11; research/AUDIT_CLOSEOUT_2026-10-07.md:53; execution/auto_trader_config.json:2,104-111 |
+| 2026-10-07 | Desktop runs malkan_40_60 and rsi_ma_events; both NO-EDGE. malkan_mtf not run. Verdict table written | research/_archive/loose_2026-10/MARKET_GUIDE_RESULTS_2026-10-07.md:20-22,36 |
+| 2026-10-08 | Closeout: rsi:cross now side-by-level (40 down = short, 60 up = long, else no side); the trade blocklist is emptied for testnet data collection and parked | items/B128 row M29-11; research/_archive/loose_2026-10/AUDIT_CLOSEOUT_2026-10-07.md:53; execution/auto_trader_config.json:2,104-111 |
 | 2026-10-09 | Volume study re-tests RSI 40/60 cross events with volume: one 4h DEV pass, failed VALIDATION (n=50, net -2 bp) | research/volume_2026-10-09/VOLUME_RESEARCH_REPORT_2026-10-09.md:96 |
 
 ## 3. What exists (built)

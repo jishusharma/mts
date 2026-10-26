@@ -1,7 +1,7 @@
 # B146 - No minimum stop width exists since 0c34a2d removed the NO-SOURCE 0.1 % floor and nothing replaced it: Tom backtest median stop 0.082 %, planned gross R:R 79, fees dominate
 
 Status: CLOSED. Severity: HIGH. Opened 2026-10-09.
-Session: MTS-2026-10-09-APP-ANA-major-gaps-audit. Source: research/AUDIT_MAJOR_GAPS_2026-10-09.md (audit revalidated by four read-only workers; no code edited).
+Session: MTS-2026-10-09-APP-ANA-major-gaps-audit. Source: research/_archive/loose_2026-10/AUDIT_MAJOR_GAPS_2026-10-09.md (audit revalidated by four read-only workers; no code edited).
 
 ## Defect
 
@@ -20,7 +20,7 @@ Do NOT re-add 0.1 % (NO-SOURCE). Measure instead, pre-registered: net R by stop-
 
 ## Related
 
-- MyTradingSys/research/AUDIT_MAJOR_GAPS_2026-10-09.md
+- MyTradingSys/research/_archive/loose_2026-10/AUDIT_MAJOR_GAPS_2026-10-09.md
 
 ## Receipt
 

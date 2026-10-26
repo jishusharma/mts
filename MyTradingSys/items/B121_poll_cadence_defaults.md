@@ -1,7 +1,7 @@
 # B121 - Bar-aligned polling and 5 s auto_trader poll not landed; live_runner_cli 60 s and auto_trader 20 s defaults unchanged
 
 Status: OPEN. Severity: LOW. Opened 2026-10-04.
-Session: MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup. Group (c) from MyTradingSys/research/AUDIT_RECONCILE_2026-10-04.md.
+Session: MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup. Group (c) from MyTradingSys/research/_archive/loose_2026-10/AUDIT_RECONCILE_2026-10-04.md.
 
 ## Defect
 
@@ -29,7 +29,7 @@ Filing only. No code or doc edit was made for this item.
 
 ## Related
 
-- MyTradingSys/research/AUDIT_RECONCILE_2026-10-04.md
+- MyTradingSys/research/_archive/loose_2026-10/AUDIT_RECONCILE_2026-10-04.md
 - MyTradingSys/system/sessions/MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup.md
 
 ## Receipt

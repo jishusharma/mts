@@ -22,7 +22,7 @@ quad_classify.py reads change_1h_pct for a regime label.
 ## Evidence from the research pass
 
 Three OI divergence tests ran 2026-10-10. The last is pre-registered, cost-aware, regime-stratified,
-walk-forward: research/PRE_REG_OI_DIVERGENCE_2026-10-10.md, result appended. 2350 events, 24 cells,
+walk-forward: research/_archive/loose_2026-10/PRE_REG_OI_DIVERGENCE_2026-10-10.md, result appended. 2350 events, 24 cells,
 Bonferroni divisor 24. Every cell negative after fees, slippage and funding; magnitude at the cost
 floor. VERDICT: NO REPLICATION for OI divergence as a directional signal on 15-minute bars.
 
@@ -37,7 +37,7 @@ any precision-sensitive test, and the usable series sits idle.
 
 ## Detail files
 
-- research/PRE_REG_OI_DIVERGENCE_2026-10-10.md
-- research/OI_DIVERGENCE_V2_2026-10-10.md
-- research/OI_DIVERGENCE_2026-10-10.md, research/OI_EVENT_STUDY_2026-10-10.md
-- research/oi_divergence_v2_2026-10-10.py (reusable: 15m bars, cost wiring, regime labels)
+- research/_archive/loose_2026-10/PRE_REG_OI_DIVERGENCE_2026-10-10.md
+- research/_archive/loose_2026-10/OI_DIVERGENCE_V2_2026-10-10.md
+- research/_archive/loose_2026-10/OI_DIVERGENCE_2026-10-10.md, research/_archive/loose_2026-10/OI_EVENT_STUDY_2026-10-10.md
+- research/loose_code/oi_divergence_v2_2026-10-10.py (reusable: 15m bars, cost wiring, regime labels)

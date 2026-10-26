@@ -4,7 +4,7 @@
 - MTS side: `scripts/dev/cbp_run.py` (single entry, `--due`/`--force`) and `MyTradingSys/cbp/{__init__.py,schema.json}` (`cbp.query(analyst, symbol, since_days=5)`), per D5 "as built" (v1_plan_2026-10-20/D5_CBP_MODULE.md:6-20). Queue/consumer/adapter removed (D5:18); B139 item still says OPEN and describes the old adapter (items/B139_cbp_adapter.md:3,8): stale.
 - CBP repo F:/CryptoScrapper (branch cloud/work): first `cbp_run --force` stored 13 rows, 1 rejected (commit d184752); queue retired (7d2937b); one dashboard from `cbp_store/rows.json` (296e318); inbox deleted, transcripts in `raw_transcripts_canonical/` (d20ae76). `cbp_store/rows.json` exists.
 - One quote checker: `verify_extract_quotes.py` accepts CBP `evidence:` lines; filler/stutter fix (thinker/2026-10-23_cbp_quote_problems.md:18-19). Card cbp-one-quote-checker = done.
-- Actionable-6 profile (Rekt, Jason, Krown, Michael, Michaal, Qriptal) on; thesis-only analysts (Benjamin, Bob, Jala, CCU) off by default; -85% bytes in the store vs all-enabled (research/cbp_profile6_result.md:4-6). CBP commit 50e71c3.
+- Actionable-6 profile (Rekt, Jason, Krown, Michael, Michaal, Qriptal) on; thesis-only analysts (Benjamin, Bob, Jala, CCU) off by default; -85% bytes in the store vs all-enabled (research/_archive/loose_2026-10/cbp_profile6_result.md:4-6). CBP commit 50e71c3.
 - Fetcher has `--channel --latest N` (fetch_captions_timed.py:5-9; card done).
 - Golden set + producer gates + 26 CBP tests pass (thinker/2026-10-23_cbp_ultra_verdict.md:9,17).
 

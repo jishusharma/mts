@@ -28,7 +28,7 @@ Filing only. No code or doc edit was made for this item.
 
 ## Related
 
-- MyTradingSys/research/AUDIT_RERUNS_2026-10-06.md (step 3)
+- MyTradingSys/research/_archive/loose_2026-10/AUDIT_RERUNS_2026-10-06.md (step 3)
 - MyTradingSys/system/sessions/MTS-2026-10-07-1002Z-APP-BLD-research-closeout.md
 
 ## Receipt

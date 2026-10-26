@@ -48,7 +48,7 @@ non-destructive .new files myself from the worker's verified-good content
 and deribit_api_research.md to a handful of lines):
 - research/BUGS.md.new (+5 rows: B072-B076, receipt cells normalized)
 - items/B072..B076_*.md.new (5 new stub docs)
-- research/deribit_api_research.md.new (error table + heartbeat note)
+- research/_archive/loose_2026-10/deribit_api_research.md.new (error table + heartbeat note)
 - system/03_FILE_INDEX.md.new (two new sections inserted after MTS/RUNTIME/)
 All await your review/commit per the four-step proof, same as B1's files.
 

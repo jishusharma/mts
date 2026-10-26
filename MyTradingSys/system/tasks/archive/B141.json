@@ -16,9 +16,9 @@
   "refs": [
     "B141"
   ],
-  "result": "Already executed 2026-10-10: Stage 1+2 scripts research/b141_htf_stage1.py, b141_htf_stage2.py (results in PRE_REG section 9); no candidate; writer .new staged (788b186), awaits supervisor promote. Card was stale.",
+  "result": "Already executed 2026-10-10: Stage 1+2 scripts research/loose_code/b141_htf_stage1.py, b141_htf_stage2.py (results in PRE_REG section 9); no candidate; writer .new staged (788b186), awaits supervisor promote. Card was stale.",
   "scope_in": [
-    "MyTradingSys/research/PRE_REG_HTF_REPLACE_2026-10-07.md"
+    "MyTradingSys/research/_archive/loose_2026-10/PRE_REG_HTF_REPLACE_2026-10-07.md"
   ],
   "scope_out": [],
   "size": "M",

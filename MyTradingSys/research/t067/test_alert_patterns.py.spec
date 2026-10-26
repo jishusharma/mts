@@ -1,5 +1,5 @@
 """T067 failing-first tests for MyTradingSys/backtest/layers/alerts/alert_patterns.py (module does not exist yet).
-Hand-computed fixtures; every expected number is derived in the comments from the spec in research/T067_ALERT_SPEC.md,
+Hand-computed fixtures; every expected number is derived in the comments from the spec in research/_archive/loose_2026-10/T067_ALERT_SPEC.md,
 not from the implementation. Install by copying to backtest/layers/alerts/test_alert_patterns.py when the module is staged."""
 import unittest
 

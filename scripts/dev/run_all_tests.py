@@ -491,8 +491,8 @@ def build_plan(quick):
     add("3cy", "ask_model tests", [sys.executable, "scripts/dev/test_ask_model.py"], "Step 3cy: ask_model tests")
     add("3tl", "Task cards meet the Definition of Ready", [sys.executable, "scripts/dev/tasks.py", "lint"], "Step 3tl: Task card lint")   # a ready/active card that fails the Definition of Ready is an error
     add("3q", "INDEX/BUGS consistency", [sys.executable, "scripts/dev/test_registry_consistency.py"], "Step 3q: INDEX/BUGS consistency")
-    add("3p", "P4 corrected script tests", [sys.executable, "MyTradingSys/research/test_p4_corrected.py"], "Step 3p: P4 corrected script tests")
-    add("3t", "T093 turn-of-candle imbalance tests", [sys.executable, "MyTradingSys/research/test_t093_toc_imbalance_klines.py"], "Step 3t: T093 imbalance tests")
+    add("3p", "P4 corrected script tests", [sys.executable, "MyTradingSys/research/loose_code/test_p4_corrected.py"], "Step 3p: P4 corrected script tests")
+    add("3t", "T093 turn-of-candle imbalance tests", [sys.executable, "MyTradingSys/research/loose_code/test_t093_toc_imbalance_klines.py"], "Step 3t: T093 imbalance tests")
     add("3d", "Extract quote checker tests", [sys.executable, "scripts/dev/test_verify_extract_quotes.py"], "Step 3d: Quote checker tests")
     add("3h", "Launcher verb static tests (runner, orphans)", [sys.executable, "scripts/dev/test_mts_launcher.py"], "Step 3h: Launcher static tests")
     add("3g", "Gate coverage tests (Fabio v3 + live writers)", [sys.executable, "scripts/dev/test_run_all_tests.py"], "Step 3g: Gate coverage tests")

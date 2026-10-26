@@ -40,7 +40,7 @@
   "steps": [
     "Run the git show commands; confirm each commit's Result line matches its row (T087 913 failed first breaks, no edge; T088 4m/3h/7h in registry.json; B125 hook.py writer wired into live_runner_cli).",
     "Edit only Status and Receipt: T087, T088, B125 -> CLOSED, Receipt = '2026-10-10: <hash> <Result line>'.",
-    "B141 stays OPEN: replace the Receipt text 'runner not written yet' with the PRE_REG_HTF_REPLACE_2026-10-07.md section 9 outcome and the scripts research/b141_htf_stage1.py, b141_htf_stage2.py.",
+    "B141 stays OPEN: replace the Receipt text 'runner not written yet' with the PRE_REG_HTF_REPLACE_2026-10-07.md section 9 outcome and the scripts research/loose_code/b141_htf_stage1.py, b141_htf_stage2.py.",
     "Run the quick gate, then `tasks.py sweep --apply`, then sync.py ship."
   ],
   "tests": "",

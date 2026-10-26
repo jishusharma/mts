@@ -3,7 +3,7 @@
 # P4 QUARTER-HOUR OPENING IMBALANCE - INCOMPLETE
 
 Session: MTS-2026-10-06-1254Z-APP-ANA-research-agenda  
-Pre-registration: MyTradingSys/research/PRE_REG_P4_QUARTER_HOUR_IMBALANCE_2026-10-06.md  
+Pre-registration: MyTradingSys/research/_archive/loose_2026-10/PRE_REG_P4_QUARTER_HOUR_IMBALANCE_2026-10-06.md  
 Status: **PARTIAL** — Data loaded, metrics ready; key tests pending
 
 ## Completed
@@ -62,4 +62,4 @@ Implement in p4_complete.py:
 4. Placebo shuffle control
 5. Write results to P4_QUARTER_HOUR_IMBALANCE_20261006_FINAL.md
 
-**Pre-registration file:** MyTradingSys/research/PRE_REG_P4_QUARTER_HOUR_IMBALANCE_2026-10-06.md (unchanged)
+**Pre-registration file:** MyTradingSys/research/_archive/loose_2026-10/PRE_REG_P4_QUARTER_HOUR_IMBALANCE_2026-10-06.md (unchanged)

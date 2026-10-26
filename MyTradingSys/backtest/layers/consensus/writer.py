@@ -1,7 +1,7 @@
 """
 Consensus-row writer: one JSON line per call, appended to Dumps/consensus/consensus_<UTC-date>.jsonl.
 
-OBSERVATION ONLY (research/ARCHITECTURE_TWO_CORES_2026-10-01.md:29-43): a consensus row never gates, vetoes or
+OBSERVATION ONLY (research/_archive/loose_2026-10/ARCHITECTURE_TWO_CORES_2026-10-01.md:29-43): a consensus row never gates, vetoes or
 delays a core. This module only reads what its caller hands it, builds a new row, and appends it to a file.
 It never edits a core's state, never touches the network, takes no locks, and imports nothing from execution/.
 

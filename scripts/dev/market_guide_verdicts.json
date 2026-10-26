@@ -1,9 +1,9 @@
 {
   "fabio": {"tag": "NO-EDGE", "source": "MyTradingSys/backtest/layers/fabio/FABIO_L1_REPORT.md:33-38"},
-  "cryptocred": {"tag": "NO-EDGE", "source": "MyTradingSys/research/AUDIT_CLOSEOUT_2026-10-07.md:25"},
-  "positioning": {"tag": "NO-EDGE", "source": "MyTradingSys/research/AUDIT_CLOSEOUT_2026-10-07.md:23 (T055 C1 funding_cvd_fade)"},
-  "session": {"tag": "NO-EDGE", "source": "MyTradingSys/research/AUDIT_CLOSEOUT_2026-10-07.md:24 (T055 C2 session_momentum)"},
-  "rsi": {"tag": "NO-EDGE", "source": "MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md:16-25 (level events, OOS gross < 14 bps cost); MyTradingSys/research/MARKET_GUIDE_RESULTS_2026-10-07.md (malkan_40_60, rsi_ma_events)"},
+  "cryptocred": {"tag": "NO-EDGE", "source": "MyTradingSys/research/_archive/loose_2026-10/AUDIT_CLOSEOUT_2026-10-07.md:25"},
+  "positioning": {"tag": "NO-EDGE", "source": "MyTradingSys/research/_archive/loose_2026-10/AUDIT_CLOSEOUT_2026-10-07.md:23 (T055 C1 funding_cvd_fade)"},
+  "session": {"tag": "NO-EDGE", "source": "MyTradingSys/research/_archive/loose_2026-10/AUDIT_CLOSEOUT_2026-10-07.md:24 (T055 C2 session_momentum)"},
+  "rsi": {"tag": "NO-EDGE", "source": "MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md:16-25 (level events, OOS gross < 14 bps cost); MyTradingSys/research/_archive/loose_2026-10/MARKET_GUIDE_RESULTS_2026-10-07.md (malkan_40_60, rsi_ma_events)"},
   "ma": {"tag": "UNTESTED", "source": "MyTradingSys/research/btc_ma_2026-10-03/Q_ALL_ma_findings.md s5 (literature: only 1w price/MA ratio has OOS net evidence)"},
   "candles": {"tag": "NO-EDGE", "source": "MyTradingSys/research/candle_patterns_2026-10-04/P1_RESULTS.md (0 of 108 pass triage, DEV)"},
   "volume": {"tag": "NO-EDGE", "source": "MyTradingSys/research/volume_2026-10-09/VOLUME_RESEARCH_REPORT_2026-10-09.md (553 trials, 0 survive VALIDATION; volume predicts next-bar range, not direction)"}

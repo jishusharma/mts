@@ -28,9 +28,9 @@ Wikipedia, GitHub refused or unreachable through the egress proxy (doi.org and g
 - 2026-10-01 | this session | W3 blind condition broken by this session (verdict column read before re-deriving); kappa NOT computed, blind packet written for a clean reader instead.
 
 ## Deliverables (all on branch claude/focused-faraday-xnxqms)
-- research/REVALIDATION_REQUEST_2026-10-01.md (citation status in place), research/REVALIDATION_ACTIONS_2026-10-01.md (W1-W8, meta-research, tiers)
-- research/FABIO_PROVENANCE_AUDIT_2026-10-01.md, research/fast_track_2026-09-27/PRE_REG_T2.md, research/fast_track_2026-09-27/W3_BLIND_PACKET_2026-10-01.md
-- research/EXTRACTION_ROUND2_2026-10-01.md, extracts/v2/tom/*_v2.md (5), scripts/dev/kappa_check.py (new, self-test passes)
+- research/_archive/loose_2026-10/REVALIDATION_REQUEST_2026-10-01.md (citation status in place), research/_archive/loose_2026-10/REVALIDATION_ACTIONS_2026-10-01.md (W1-W8, meta-research, tiers)
+- research/_archive/loose_2026-10/FABIO_PROVENANCE_AUDIT_2026-10-01.md, research/fast_track_2026-09-27/PRE_REG_T2.md, research/fast_track_2026-09-27/W3_BLIND_PACKET_2026-10-01.md
+- research/_archive/loose_2026-10/EXTRACTION_ROUND2_2026-10-01.md, extracts/v2/tom/*_v2.md (5), scripts/dev/kappa_check.py (new, self-test passes)
 - SUPERVISOR_INBOX.md: W7 entry appended. CLOUD_INBOX.md: one line appended; no note addressed to this session was present.
 
 ## Gates run

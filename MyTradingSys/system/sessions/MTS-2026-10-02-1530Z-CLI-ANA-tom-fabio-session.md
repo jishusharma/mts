@@ -16,4 +16,4 @@ handoff: SUPERVISOR - read MARKET_ANALYSIS_2026-10-02.md 4.5; key items: alerts 
 
 scope: independent market analysis of the current session vs Tom core rules and Fabio v3 layer;
 context 2026-10-01 and week 2026-09-25..2026-10-01. Read-only; no live-path edits.
-deliverable: MyTradingSys/research/MARKET_ANALYSIS_2026-10-02.md (operator confirmed)
+deliverable: MyTradingSys/research/_archive/loose_2026-10/MARKET_ANALYSIS_2026-10-02.md (operator confirmed)

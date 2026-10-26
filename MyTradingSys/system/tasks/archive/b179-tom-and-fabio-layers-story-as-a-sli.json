@@ -20,7 +20,7 @@
   ],
   "result": "15-slide Slides deck https://claude.ai/artifact/2DXWotLraL8te3xNqo4hWV, link in items/B179_tom_fabio_layers_story_slides.md",
   "scope_in": [
-    "MyTradingSys/research/TOM_FABIO_STORY_2026-10-05.md (only source)",
+    "MyTradingSys/research/_archive/loose_2026-10/TOM_FABIO_STORY_2026-10-05.md (only source)",
     "Artifact Slides type (quickstart intent=slides)",
     "Control Room inbox item ggw2vehlbhdnlc4uhd1w (reply with the link)"
   ],
@@ -32,7 +32,7 @@
   ],
   "size": "S",
   "sources": [
-    "MyTradingSys/research/TOM_FABIO_STORY_2026-10-05.md",
+    "MyTradingSys/research/_archive/loose_2026-10/TOM_FABIO_STORY_2026-10-05.md",
     "MyTradingSys/items/B179_tom_fabio_layers_story_slides.md"
   ],
   "state": "done",

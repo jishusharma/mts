@@ -1,4 +1,4 @@
-"""Tests for consensus/writer.py. Expected values are hand-derived from research/ARCHITECTURE_TWO_CORES_2026-10-01.md
+"""Tests for consensus/writer.py. Expected values are hand-derived from research/_archive/loose_2026-10/ARCHITECTURE_TWO_CORES_2026-10-01.md
 (row fields :33-41, append-only :42, acceptance :80-81, :82-83), not copied from the code under test.
 Every test writes only under a temp dir (base_dir=...); none touches <repo>/Dumps."""
 import contextlib

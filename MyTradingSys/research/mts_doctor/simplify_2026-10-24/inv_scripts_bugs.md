@@ -45,12 +45,12 @@ Caveat: callers built at run time (f-strings, config lists, subprocess of a name
 | interview_feed.py | 126 | 1 | 2 (MyTradingSys/system/QUICK_ANSWERS.md) | direct |
 | lab_query.py | 162 | 1 | 1 (MyTradingSys/system/GEMINI_START.md) | direct |
 | research_kit_lint.py | 90 | 1 | 2 (MyTradingSys/system/QUICK_ANSWERS.md) | direct |
-| task_state.py | 172 | 1 | 2 (MyTradingSys/system/TASK_REFINEMENT.md, MyTradingSys/research/BACKLOG_REFINEMENT_GAPS_2026-10-18.md) | indirect |
+| task_state.py | 172 | 1 | 2 (MyTradingSys/system/TASK_REFINEMENT.md, MyTradingSys/research/_archive/loose_2026-10/BACKLOG_REFINEMENT_GAPS_2026-10-18.md) | indirect |
 | traffic_report.py | 38 | 1 | 6 (MyTradingSys/system/DEBUGGING.md, MyTradingSys/research/v1_plan_2026-10-20/D8_OPERATIONS.md) | none |
 | wait_pid.py | 17 | 1 | 2 (MyTradingSys/system/handoff_history/2026-10-21_next_session_trim.md, MyTradingSys/research/mts_doctor/REPORT_2026-10-18.md) | none |
 | worker_cost_report.py | 162 | 1 | 4 (MyTradingSys/system/DEBUGGING.md) | none |
 | wt_maint.py | 307 | 1 | 2 (MyTradingSys/system/DEVICES.md) | direct |
-| funnel_report.py | 146 | 0 | 5 (MyTradingSys/system/03_FILE_INDEX.md, MyTradingSys/research/CC_TASK_LIST_2026-10-03.md) | direct |
+| funnel_report.py | 146 | 0 | 5 (MyTradingSys/system/03_FILE_INDEX.md, MyTradingSys/research/_archive/loose_2026-10/CC_TASK_LIST_2026-10-03.md) | direct |
 Of these 15, 5 have no test at all: deploy_untrack_backup, gq_after_reset, traffic_report, wait_pid, worker_cost_report.
 
 ## Full table, sorted by churn (all 111 non-test scripts)

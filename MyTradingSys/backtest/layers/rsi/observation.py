@@ -4,7 +4,7 @@ RSI observation block: the latest RSI reading per timeframe, READ from what the 
 READ-ONLY, NO NEW COMPUTATION: nothing here computes an RSI or an MA, fetches klines, writes a file, or imports any
 execution code. It tails MyTradingSys/runtime/alerts/<tf>.jsonl (written by alerts/live_runner_cli.py:263-273 via
 alert_emitter.append_alerts_jsonl) and copies fields that already exist in an alert record. A field or timeframe with
-no source stays None. Consensus is an observation (research/ARCHITECTURE_TWO_CORES_2026-10-01.md:29-43): this block
+no source stays None. Consensus is an observation (research/_archive/loose_2026-10/ARCHITECTURE_TWO_CORES_2026-10-01.md:29-43): this block
 never gates, vetoes or delays a core.
 
 WHERE THE DATA LIVES (investigated 2026-10-01):

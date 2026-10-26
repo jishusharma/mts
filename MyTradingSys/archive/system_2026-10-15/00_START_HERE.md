@@ -137,7 +137,7 @@ Every new session MUST read this block. These errors corrupt files.
 
 **Current state:** v4.2.0-p3, 6 patches LIVE, 2 open bugs, 0 open DSA tasks, math layer COMPILED, cross-trader Phase 3 COMPLETE.
 
-**For full details:** See `system/02a_CURRENT_STATUS.md` (system status) and `mts/research/cross_trader_integration_plan.md` Section 3 (Phase 3 output).
+**For full details:** See `system/02a_CURRENT_STATUS.md` (system status) and `mts/research/_archive/loose_2026-10/cross_trader_integration_plan.md` Section 3 (Phase 3 output).
 
 ---
 

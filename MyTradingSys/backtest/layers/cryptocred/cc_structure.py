@@ -5,7 +5,7 @@ Interpretation choices:
 - Fixed-width fractal for swing detection (C08-Rule1)
 - "Break most recent lower-high/higher-low by close" as minimal mechanical form of sequence-violation definition (C08-E01, C08-E05)
 - Range-extreme close as proxy for "not noise" (C08-E03)
-Implements cluster C08 (MSB Definition & Significance) from MyTradingSys/research/cross_trader_consolidated.md.
+Implements cluster C08 (MSB Definition & Significance) from MyTradingSys/research/_archive/loose_2026-10/cross_trader_consolidated.md.
 """
 
 def find_swings(bars: list, left: int = 2, right: int = 2, use_body: bool = True) -> list:

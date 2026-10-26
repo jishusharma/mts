@@ -9,27 +9,27 @@ Every prior claim below cites file:line. "Unverified" means I could not reproduc
 ## 2. What exists
 | Thing | Where | State |
 |---|---|---|
-| Parked design (4-AI study, 2026-09-12/13) | research/event_probability_layer_DESIGN.md:1-4 | header says "DESIGN ONLY. Not implemented"; stale, code below exists |
+| Parked design (4-AI study, 2026-09-12/13) | research/_archive/loose_2026-10/event_probability_layer_DESIGN.md:1-4 | header says "DESIGN ONLY. Not implemented"; stale, code below exists |
 | Core finding: named events (bull trap, absorption) are intent labels, not verifiable on snapshots; use observable forward kline outcomes | event_probability_layer_DESIGN.md:16-30 | still sound |
 | MVP choice: Dirichlet-smoothed frequency table on coarse buckets; no HMM/ML; raw P threshold REJECTED (:53); EV+costs and fractional Kelly SUPPORTED | event_probability_layer_DESIGN.md:46-56, DO NOT BUILD :66 | design only |
 | Frequency table code | backtest/prob_table.py:27 build_table (alpha=1 Dirichlet), :95 evaluate (log-loss vs baseline, min_n=100 at :101), :174 main (70/30 chronological split at :185) | exists |
 | Its tests | backtest/test_prob_table.py, test_prob_table_edge.py (12 + 9 tests) | passed the 2026-09-29 gate: research/fast_track_2026-09-27/GATE_REPORT_2026-09-29.md:19 (2 bugs fixed: ts None skip; log-loss averaged over scored, not len(test)) |
 | Outcome labeler | runtime/outcome_labeler.py:3 (+30/60/120m forward return per snapshot); :12-13 reads runtime_data/snapshots, writes runtime_data/outcome_labels.json | exists, hardcoded live-tree path |
 | Label count | PROJECT_VISION.md:103 "10,289 labels; 5,000 gate met"; commit 7279cf8e message | claim only. outcome_labels.json is not in this checkout: unverified |
-| Stale claim | "frequency-table MVP queued (NUC 033)" PROJECT_VISION.md:103; the NUC queue is gone (research/VISION_GAP_2026-10-10.md:23) | text needs fixing |
+| Stale claim | "frequency-table MVP queued (NUC 033)" PROJECT_VISION.md:103; the NUC queue is gone (research/_archive/loose_2026-10/VISION_GAP_2026-10-10.md:23) | text needs fixing |
 
 ## 3. What failed or never happened
 1. The MVP never produced a result. No run of prob_table.py on current labels is recorded, and research/VERDICTS.csv has no prob_table row (grep for "prob_table"/"probab" returns nothing). Passing unit tests (GATE_REPORT_2026-09-29.md:19) is not an evidence run.
 2. Why the 09-13 design stalled: it was data-gated ("Awaiting data prerequisite", event_probability_layer_DESIGN.md:4; 5,000-label gate at :41). The gate was declared met on 2026-09-28 (PROJECT_VISION.md:103), but the follow-up was a queue item that vanished with the NUC queue (VISION_GAP_2026-10-10.md:23). Nobody owned the run. This is my reading, not a recorded cause.
-3. Label counts overstate sample size. Labels are per snapshot at ~716/day (event_probability_layer_DESIGN.md:38) with 30/60/120m forward windows (outcome_labeler.py:3), so neighbours overlap heavily. The OI event study on the same label file had 66 and 48 events over only 17 and 15 days (research/OI_EVENT_STUDY_2026-10-10.md:12,20); no horizon had |t| above 1.3. Independent units are days, not labels.
+3. Label counts overstate sample size. Labels are per snapshot at ~716/day (event_probability_layer_DESIGN.md:38) with 30/60/120m forward windows (outcome_labeler.py:3), so neighbours overlap heavily. The OI event study on the same label file had 66 and 48 events over only 17 and 15 days (research/_archive/loose_2026-10/OI_EVENT_STUDY_2026-10-10.md:12,20); no horizon had |t| above 1.3. Independent units are days, not labels.
 4. Sibling probability work found nothing pooled. Candle-close study: 126 conditional arms on 1.31M BTC minutes, zero pooled candidates (commit 6f904aa6 message); every pooled arm negative after the 14bp cost screen (research/layer_lab/candle_close_2026-10-14/REPORT.md:11). Its audit: the 912-day DEV window gives at most 5 disjoint 180-day blocks, so macro probability claims are underpowered by design (research/layer_lab/candle_close_2026-10-14/CYCLE_DESIGN.md:29-31; system/tasks/candle-close-independent-audit.json).
 5. Win rate misleads: a 53.2% hit rate with -10.13bp mean after costs (REPORT.md:38). Any layer must show EV after cost next to probability.
 
 ## 4. Worked case: screenshot c5e7b5c17d90 (research/screenshots/2026-10-16_BTCUSDT_c5e7b5c17d90.md)
 Sequence: sweep toward the rays 81,800 / 82,459.8 / 82,900.5, volume spike, CVD up-step, OI drop on the wick (read as a short squeeze, "Reading notes" section, unproven), then a ladder-like bear-flag channel from the upper Bollinger band through the middle band to a bounce near 81,270.
 - Every check is NOT_IN_DATA (rows A-01..A-04, B-01..B-06): no 1m OI candles stored; OI is a 1-per-minute REST poll since 2026-10-05 with gaps (row B-02); no ray or flag files.
-- "Ladder selling" has no OI/CVD definition in either extract set (research/T064_TF_CONFIRMATION_EXTRACT.md:226). Tom's discriminator is behaviour after the poke: acceptance beyond the level = continuation; absorption and quick return = failed auction (same line).
-- Operator point B-06: these moves recur everywhere, yet backtests find nothing. A probability layer is the place to ask "of all sweep + spike + OI-drop events, what happened next, and how wide is the spread?" The narrow earlier version (research/T063_STOP_RUN_OI_FLUSH.md:65, arm A0: 78 events over 5 days) was tiny.
+- "Ladder selling" has no OI/CVD definition in either extract set (research/_archive/loose_2026-10/T064_TF_CONFIRMATION_EXTRACT.md:226). Tom's discriminator is behaviour after the poke: acceptance beyond the level = continuation; absorption and quick return = failed auction (same line).
+- Operator point B-06: these moves recur everywhere, yet backtests find nothing. A probability layer is the place to ask "of all sweep + spike + OI-drop events, what happened next, and how wide is the spread?" The narrow earlier version (research/_archive/loose_2026-10/T063_STOP_RUN_OI_FLUSH.md:65, arm A0: 78 events over 5 days) was tiny.
 - The case is a sequence (spike, then channel), not a single-bar state. A frequency table over a static state cannot express it; an outcome-after-event table can.
 
 ## 5. Three candidate designs

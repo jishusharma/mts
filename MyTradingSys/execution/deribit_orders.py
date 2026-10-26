@@ -7,7 +7,7 @@ v3 (G-h fix, 2026-09-28): order-CREATING calls (private/buy, private/sell,
   private/close_position) no longer auto-retry on an ambiguous-outcome error
   code - a lost response does not mean the exchange rejected the order, and
   resending private/buy|sell|close_position can double the position. Only
-  error codes CONFIRMED by repo docs (research/deribit_api_research.md) to
+  error codes CONFIRMED by repo docs (research/_archive/loose_2026-10/deribit_api_research.md) to
   mean "rejected before processing" (10028 rate-limited, 10047 portfolio
   queue full) still auto-retry for order-creating calls. 10050 (queue/request
   timeout) has NO documented meaning anywhere in this repo - its old comment
@@ -87,7 +87,7 @@ KILL_CONFIRMATION = "kill"   # typed word for the mainnet KILL SWITCH only (kill
 MAINNET_MAX_NOTIONAL_USD = 50.0
 _ACTIVE_ENV = DEFAULT_ENV
 
-# Confirmed by MyTradingSys/research/deribit_api_research.md ("Critical Error
+# Confirmed by MyTradingSys/research/_archive/loose_2026-10/deribit_api_research.md ("Critical Error
 # Codes & Handling" table) as rejected BEFORE the order reached processing -
 # safe to retry even for order-creating calls: the exchange never acted.
 CONFIRMED_PRE_PROCESSING_REJECT_CODES = {10028, 10047}  # rate limited; portfolio queue full
@@ -263,7 +263,7 @@ def _call(method: str, params: dict, token: str = None, retry: bool = True,
     OrderStateUnknown instead, because we cannot confirm the exchange didn't
     already accept the order. CONFIRMED_PRE_PROCESSING_REJECT_CODES (10028,
     10047) still retry even for order-creating calls: those are confirmed
-    (research/deribit_api_research.md) to mean the request never reached
+    (research/_archive/loose_2026-10/deribit_api_research.md) to mean the request never reached
     processing."""
     attempt, backoff, reauthed = 0, INITIAL_BACKOFF_SECONDS, False
     while True:

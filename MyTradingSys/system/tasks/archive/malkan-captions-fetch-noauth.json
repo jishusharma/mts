@@ -30,7 +30,7 @@
       "auto": true,
       "kind": "report",
       "line": "49f57cf63a48 malkan-captions-fetch-noauth: record attempt 5, HTTP 429 on -2uZSqKKrFQ",
-      "ref": "MyTradingSys/research/transcript_inventory_2026-10-09.md",
+      "ref": "MyTradingSys/research/_archive/loose_2026-10/transcript_inventory_2026-10-09.md",
       "utc": "2026-10-17T10:58:51Z"
     }
   ],
@@ -45,14 +45,14 @@
   "refined_by": "",
   "refreshed": "2026-10-17T18:16:01Z",
   "refs": [
-    "MyTradingSys/research/transcript_inventory_2026-10-09.md",
+    "MyTradingSys/research/_archive/loose_2026-10/transcript_inventory_2026-10-09.md",
     "MyTradingSys/research/video_priority_2026-10-15/METHOD.md",
     "MyTradingSys/research/video_priority_2026-10-15/RANKED_MALKAN.csv",
     "MyTradingSys/system/desk_queue/20261012-085022-d11b-follow-up-claude-malkan-captions-42.json"
   ],
   "result": "0 of 12 OK; -2uZSqKKrFQ RATELIMIT (4 spaced 429s); 11 NOT TRIED (stop for the day); next allowed try 2026-10-19 (last)",
   "scope_in": [
-    "MyTradingSys/research/transcript_inventory_2026-10-09.md",
+    "MyTradingSys/research/_archive/loose_2026-10/transcript_inventory_2026-10-09.md",
     "MyTradingSys/research/video_priority_2026-10-15/",
     "raw_transcripts_canonical/"
   ],
@@ -69,7 +69,7 @@
     "try ONE id first, highest rank first: python scripts/dev/fetch_captions_timed.py --analyst Malkan --out raw_transcripts_canonical <id> (also try the JIS-NB host if the NUC is rate-limited); Hindi videos --langs hi,en",
     "on success fetch the next selected id (RANKED_MALKAN.csv order), at least 60 s apart; on 429 STOP for today and record the attempt in the card note (retry once a day, 3 days max, then NOT AVAILABLE)",
     "fetch ONLY include=Y ids; never the NOT SELECTED ones, even if a fetch is working (re-rank with video_priority_2026-10-15/score.py first if a new video appears)",
-    "update the Malkan selected-ids row in MyTradingSys/research/transcript_inventory_2026-10-09.md for each id (fetched / NOT AVAILABLE + reason)"
+    "update the Malkan selected-ids row in MyTradingSys/research/_archive/loose_2026-10/transcript_inventory_2026-10-09.md for each id (fetched / NOT AVAILABLE + reason)"
   ],
   "taken": "2026-10-18T04:14:38Z",
   "tests": "docs lane, no code: files present or NOT AVAILABLE line per id",

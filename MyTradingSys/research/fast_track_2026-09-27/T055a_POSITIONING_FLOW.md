@@ -6,8 +6,8 @@
 Source item: `MyTradingSys/items/T055_positioning_flow_and_proven_setups.md`, part (a).
 Superseded: the pre-gate version (ad-hoc A/B/C grades) is backed up at
 `T055a_POSITIONING_FLOW.md.pre_gate3`. This version applies playbook.md Part I v3.0.
-Reused prior gated research (not re-derived): `research/whale_positioning_evidence_2026-09-12.md`
-(order-flow and funding tiers), `research/OI_DELTA_4STATE_BACKTEST_2026-09-21.md` (our own
+Reused prior gated research (not re-derived): `research/_archive/loose_2026-10/whale_positioning_evidence_2026-09-12.md`
+(order-flow and funding tiers), `research/_archive/loose_2026-10/OI_DELTA_4STATE_BACKTEST_2026-09-21.md` (our own
 backtest, outranks external sources per gate Step 3e).
 
 ## STEP 1 - METHOD NOTES
@@ -77,7 +77,7 @@ not whether they work.
 |---|---|---|
 | Opening order imbalance predicts BTC/ETH/XRP/SOL/DOGE/ADA perp returns at 4-12h, much weaker at fine clock-time frequencies | T2 \| single preprint, OOS claimed in-paper, no independent replication yet, cost model not shown in abstract \| M | Kim & Hansen, arXiv 2607.09426, verified 2026-09-28 (replaces the mis-cited EuropePMC source) |
 | Bitcoin option-expiry OI + gamma exposure -> spot reversal, concentrated on high-ATM-OI/negative-gamma days | T1 \| peer-reviewed event study, expiry-day conditional, no explicit cost model in abstract \| M | Weiss et al., *Finance Research Letters* 2026, verified 2026-09-28 |
-| Order flow (daily/weekly horizon, 84 cryptocurrencies) has directional predictive power | T1 (already gated) | `research/whale_positioning_evidence_2026-09-12.md` section 3 - reused, not re-derived; different horizon than the Quarter-Hour result above, both point the same direction |
+| Order flow (daily/weekly horizon, 84 cryptocurrencies) has directional predictive power | T1 (already gated) | `research/_archive/loose_2026-10/whale_positioning_evidence_2026-09-12.md` section 3 - reused, not re-derived; different horizon than the Quarter-Hour result above, both point the same direction |
 | DEX-specific: unexpected OI changes move perp returns more than expected changes | Discarded - not testable on Binance/Deribit CEX data | arXiv 2402.03953 |
 
 **No source found gives a direct, numbered backtest of the retail OI-4-state heuristic itself**

@@ -121,7 +121,7 @@
       "results": [
         "MyTradingSys/backtest/layers/fabio/FABIO_L1_REPORT.md",
         "MyTradingSys/backtest/layers/fabio/FABIO_OF_REPORT.md",
-        "MyTradingSys/research/P2_FABIO_V3_HOLDOUT_STATUS.md",
+        "MyTradingSys/research/_archive/loose_2026-10/P2_FABIO_V3_HOLDOUT_STATUS.md",
         "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-fabio-ledger-frames.md",
         "MyTradingSys/research/orderflow_views_2026-10-14"
       ],
@@ -357,7 +357,7 @@
       "tracks": "Claude",
       "status": "T055 C1 FAIL; OI/long-short unused as filters.",
       "spec": [
-        "MyTradingSys/research/whale_positioning_evidence_2026-09-12.md",
+        "MyTradingSys/research/_archive/loose_2026-10/whale_positioning_evidence_2026-09-12.md",
         "MyTradingSys/backtest/layers/FORMULAS.md"
       ],
       "code": [
@@ -365,8 +365,8 @@
       ],
       "ledger": [],
       "results": [
-        "MyTradingSys/research/OI_DIVERGENCE_V2_2026-10-10.md",
-        "MyTradingSys/research/OI_EVENT_STUDY_2026-10-10.md"
+        "MyTradingSys/research/_archive/loose_2026-10/OI_DIVERGENCE_V2_2026-10-10.md",
+        "MyTradingSys/research/_archive/loose_2026-10/OI_EVENT_STUDY_2026-10-10.md"
       ],
       "roadmap": [],
       "cards": [
@@ -418,7 +418,7 @@
       "tracks": "Claude",
       "status": "T055 C2/C3 closed; T087 failed prior-day-high fade FAIL.",
       "spec": [
-        "MyTradingSys/research/TURN_OF_CANDLE_ORIGIN_2026-10-09.md"
+        "MyTradingSys/research/_archive/loose_2026-10/TURN_OF_CANDLE_ORIGIN_2026-10-09.md"
       ],
       "code": [
         "MyTradingSys/backtest/layers/session",
@@ -562,7 +562,7 @@
       "plain": "Traders who post entries, stops and targets: score their record first, then trade their calls on a testnet account.",
       "spec": [
         "MyTradingSys/items/B162_qriptal_signal_layer.md",
-        "MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md",
+        "MyTradingSys/research/_archive/loose_2026-10/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md",
         "MyTradingSys/research/analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md"
       ],
       "code": [

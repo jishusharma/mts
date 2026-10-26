@@ -12,4 +12,4 @@ started: 2026-10-02 14:22Z
 ended: 2026-10-02 14:50Z
 status: closed
 commits: pending (report, session record, index rows); tom_bt_diag.py itself landed earlier inside 123ce1e (another session's close commit)
-handoff: supervisor inbox: report MyTradingSys/research/TOM_BT_SHORT_DIAGNOSIS_2026-10-02.md section 6 (regenerate rows cache after 13295c8; rerun report; gate 13295c8 which is WIP/unverified)
+handoff: supervisor inbox: report MyTradingSys/research/_archive/loose_2026-10/TOM_BT_SHORT_DIAGNOSIS_2026-10-02.md section 6 (regenerate rows cache after 13295c8; rerun report; gate 13295c8 which is WIP/unverified)

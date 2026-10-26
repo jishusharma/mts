@@ -124,7 +124,7 @@ CONFIRM_LAG_BARS = {"volume_fvg": 1}
 
 
 # ---- Fabio v3 live emitter (staged MTS-2026-10-02-1930Z-CLI-BLD-fabio-v3-shadow) -----------------------------------
-# Decision per grid parameter, from research/FABIO_V3_SOURCING_2026-10-02.md: SOURCE = a Fabio quote gives the numeric
+# Decision per grid parameter, from research/_archive/loose_2026-10/FABIO_V3_SOURCING_2026-10-02.md: SOURCE = a Fabio quote gives the numeric
 # value; SHADOW = it does not (NS-grid). A cell is SOURCE only if every parameter it uses is SOURCE. A SOURCE signal is
 # an ordinary fabio.* alert (has "side", the auto-trader maps it). A SHADOW signal is collection-only: tagged
 # `collection_only`, carries `shadow_side` and NO "side" and no layer_rules entry, so the auto-trader's layer_side()
@@ -608,7 +608,7 @@ def main(argv=None) -> int:
             append_alerts_jsonl(group, pathlib.Path(args.alerts_dir) / f"{tf}.jsonl")
 
         # Consensus row (observation only: never gates a core, never raises). One row per poll in which the Fabio
-        # core emitted an alert or the Tom card advanced (research/ARCHITECTURE_TWO_CORES_2026-10-01.md:29-43).
+        # core emitted an alert or the Tom card advanced (research/_archive/loose_2026-10/ARCHITECTURE_TWO_CORES_2026-10-01.md:29-43).
         # Runs after the alert files are written because the rsi block is read back from them.
         try:
             from MyTradingSys.backtest.layers.consensus.hook import consensus_after_poll

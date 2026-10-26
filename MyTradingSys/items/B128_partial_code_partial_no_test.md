@@ -7,7 +7,7 @@ Session: MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup. References T037 
 
 Eighteen audit findings have code that is incomplete, unwired or only config/doc, with no test (or a test that does not cover the residual). Config and doc items are included because the audit rated them PARTIAL; they may need a non-test receipt.
 
-Source: MyTradingSys/research/AUDIT_RECONCILE_2026-10-04.md PARTIAL rows. Java tests were not executed by C1; presence of a test is not proof it passes.
+Source: MyTradingSys/research/_archive/loose_2026-10/AUDIT_RECONCILE_2026-10-04.md PARTIAL rows. Java tests were not executed by C1; presence of a test is not proof it passes.
 
 ## Findings (18)
 
@@ -43,7 +43,7 @@ Filing only. No code or test was written.
 ## Related
 
 - T037 | MyTradingSys/items/T037_test_coverage_gap.md
-- MyTradingSys/research/AUDIT_RECONCILE_2026-10-04.md
+- MyTradingSys/research/_archive/loose_2026-10/AUDIT_RECONCILE_2026-10-04.md
 - MyTradingSys/system/sessions/MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup.md
 
 ## Receipt

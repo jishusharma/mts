@@ -1,7 +1,7 @@
 # B150 - The test gate is a hand-maintained allow-list: new live-path safety tests (dlm_failure_cap, auto_trader_blocklist, auto_trader_sizes) are not in it; the calibration test pins an empty blocklist; nothing in code enforces restoring the parked blocklist
 
 Status: CLOSED. Severity: MED. Opened 2026-10-09.
-Session: MTS-2026-10-09-APP-ANA-major-gaps-audit. Source: research/AUDIT_MAJOR_GAPS_2026-10-09.md (audit revalidated by four read-only workers; no code edited).
+Session: MTS-2026-10-09-APP-ANA-major-gaps-audit. Source: research/_archive/loose_2026-10/AUDIT_MAJOR_GAPS_2026-10-09.md (audit revalidated by four read-only workers; no code edited).
 
 ## Defect
 
@@ -19,7 +19,7 @@ Make the gate discover tests (glob test_*.py, with an explicit skip-list that ne
 
 ## Related
 
-- MyTradingSys/research/AUDIT_MAJOR_GAPS_2026-10-09.md
+- MyTradingSys/research/_archive/loose_2026-10/AUDIT_MAJOR_GAPS_2026-10-09.md
 
 ## Receipt
 

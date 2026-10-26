@@ -20,7 +20,7 @@
   "refs": [
     "B172"
   ],
-  "result": "research/TOKEN_AUDIT_2026-10-12.md: kick session 21 turns, ~65k always-loaded = ~82% of cache reads",
+  "result": "research/_archive/loose_2026-10/TOKEN_AUDIT_2026-10-12.md: kick session 21 turns, ~65k always-loaded = ~82% of cache reads",
   "scope_in": [
     "scripts/dev/token_audit.py (new)",
     "scripts/dev/test_token_audit.py (new)",

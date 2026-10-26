@@ -37,7 +37,7 @@ V2 replaces v1 because v1 produced 40+ codes per video, each with one quote, but
 
 **Direct explanation in prompt:** Neither v1 nor v2 explicitly explains why narrative rules dominate (72.4% of 602 extracted sentences are narrative; 31 numeric [5.1%], 143 conditional [23.7%], 436 narrative).
 
-**Source:** MyTradingSys/research/CONSOLIDATION_REPORT_2026-10-01.md:8
+**Source:** MyTradingSys/research/_archive/loose_2026-10/CONSOLIDATION_REPORT_2026-10-01.md:8
 
 **Implicit explanation:** EXTRACTION_METHOD_V2 Section 1 states the problem v1 could not solve: v1 extractions produced one quote per rule and could not rebuild a single trade. V2 was designed to capture narrative context (sequence, rejections, management, reasoning) because a rule is inert without its operational context.
 

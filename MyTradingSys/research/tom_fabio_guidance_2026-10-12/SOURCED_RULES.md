@@ -6,7 +6,7 @@ Tom's files are one long paragraph, so line 19 or 7 is the whole transcript body
 
 ## 0. The saffron story is NOT a source
 "Price moves fast through prices where nobody wants to trade" is the narrator's sentence in
-`research/TOM_FABIO_STORY_2026-10-05.md:13-16`. It paraphrases balance/imbalance [TOM-030]. Neither trader says it.
+`research/_archive/loose_2026-10/TOM_FABIO_STORY_2026-10-05.md:13-16`. It paraphrases balance/imbalance [TOM-030]. Neither trader says it.
 The sourced version of the idea is split in three, and they point in different directions (section 1).
 
 ## 1. Sourced rules (S = source id used in the catalogue)

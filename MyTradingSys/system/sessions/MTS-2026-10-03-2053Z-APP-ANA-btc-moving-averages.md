@@ -15,7 +15,7 @@ commits: records named MTS-Session: MTS-2026-10-03-2053Z-APP-ANA-btc-moving-aver
 handoff: next APP-ANA session (this record). Resume steps below.
 
 ## Done
-- research/BTC_MA_SETUPS_RESEARCH_2026-10-03.md: sections 1 (method notes) + 2 (tier plan) frozen before search;
+- research/_archive/loose_2026-10/BTC_MA_SETUPS_RESEARCH_2026-10-03.md: sections 1 (method notes) + 2 (tier plan) frozen before search;
   section 4 (data coverage, event counts per setup, reuse file map, build list) complete.
 - BUGS B103 filed (funding_paid silent 0 outside loaded funding; archive funding exists from 2020-01).
 - research/btc_ma_2026-10-03/WORKER_BRIEFS.md: the three worker briefs, re-runnable.

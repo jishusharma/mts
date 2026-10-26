@@ -10,7 +10,7 @@ After the book_imbalance fix (13295c8), the proof-5 pool is still
 ## Evidence
 
 - MyTradingSys/system/sessions/MTS-2026-10-02-1422Z-CLI-BLD-tom-diag.md
-- MyTradingSys/research/TOM_BT_SHORT_DIAGNOSIS_2026-10-02.md
+- MyTradingSys/research/_archive/loose_2026-10/TOM_BT_SHORT_DIAGNOSIS_2026-10-02.md
 - F:\MTS\data\tom_bt\allshorts.diag.jsonl row 2: proof-5 long,
   proof_dir aligned, proof_dir_all contradiction,
   pd_details [last_3_delta=neg,neg,neg vs LONG], verdict WAIT_RR.

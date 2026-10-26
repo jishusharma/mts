@@ -19,7 +19,7 @@
   "result": "FABIO_TRADE_LEDGER.csv 70 rows / 14 filled trades (<20; all available), stats in .md",
   "scope_in": [
     "MyTradingSys/research/fast_track_2026-09-27/FABIO_TRADE_MODEL.md",
-    "MyTradingSys/research/P2_FABIO_V3_HOLDOUT_STATUS.md"
+    "MyTradingSys/research/_archive/loose_2026-10/P2_FABIO_V3_HOLDOUT_STATUS.md"
   ],
   "scope_out": [
     "engine code",

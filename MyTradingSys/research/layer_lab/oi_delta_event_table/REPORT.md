@@ -16,7 +16,7 @@ Command: `python MyTradingSys/research/layer_lab/oi_delta_event_table/event_tabl
 | Funding | 78 | 0 |
 | Whale | 0 | 0 |
 
-No empirical events or forward outcomes can be produced. The 2026-10-10 read-only study uses snapshot files under `runtime_data/snapshots` and `runtime_data/outcome_labels.json` (`MyTradingSys/research/oi_event_study_2026-10-10.py`, `SNAPS`/`LABELS` assignments); those raw inputs are not present in this checkout. Funding archives do not supply OI. The affected period is `NOT_IN_DATA`.
+No empirical events or forward outcomes can be produced. The 2026-10-10 read-only study uses snapshot files under `runtime_data/snapshots` and `runtime_data/outcome_labels.json` (`MyTradingSys/research/loose_code/oi_event_study_2026-10-10.py`, `SNAPS`/`LABELS` assignments); those raw inputs are not present in this checkout. Funding archives do not supply OI. The affected period is `NOT_IN_DATA`.
 
 ## Test-first record
 

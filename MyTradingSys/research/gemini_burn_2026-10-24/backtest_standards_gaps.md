@@ -12,7 +12,7 @@
 This document delivers an exhaustive, rigorous gap analysis benchmarking the backtesting methodology, simulation engines, and research infrastructure of `MyTradingSys` (MTS) against quantitative finance industry standards and peer-reviewed literature.
 
 The analysis evaluates four mandatory baseline files:
-1. `MyTradingSys/research/BACKTEST_METHOD_2026-09-21.md` (historical snapshot replay & forward-return join methodology)
+1. `MyTradingSys/research/_archive/loose_2026-10/BACKTEST_METHOD_2026-09-21.md` (historical snapshot replay & forward-return join methodology)
 2. `MyTradingSys/research/sim_desk/` (including `DESIGN.md`, `INPUTS.md`, `PLUGIN.md`, `ROADMAP.md`, `REVIEW_FABLE.md`, `desk.py`, and `studies/_bars.py`)
 3. `MyTradingSys/backtest/layers/FORMULAS_SPEC.md` (re-derivation specifications F01–F23)
 4. `MyTradingSys/research/TRIAL_LEDGER.csv` (pre-registered trial ledger headers and variant rows)
@@ -140,7 +140,7 @@ Every parameter, threshold, and formula across the literature and the repo is ex
 
 ## 3. Detailed Audit of Repository Baseline Files
 
-### 3.1 `MyTradingSys/research/BACKTEST_METHOD_2026-09-21.md`
+### 3.1 `MyTradingSys/research/_archive/loose_2026-10/BACKTEST_METHOD_2026-09-21.md`
 - **What it covers:** Outlines an Option A approach to backtesting by replaying historical verdicts from snapshot files (`runtime_data\snapshots\BTCUSDT_*.json`, ~6,200 snapshots spanning 2026-09-13 to 2026-09-21) and joining them to forward-return outcome labels (`runtime_data\outcome_labels.json`, containing 30m, 60m, 120m forward returns).
 - **Look-Ahead Protections:** L38 explicitly acknowledges *Label leakage*: *"fwd_return_pct at 30m, 60m, and 120m is future information relative to snapshot time; features at time t must not use labels from t+30m or later."*
 - **Known Deficiencies Identified in the File:** L14 notes missing persisted historical verdicts, missing label fields (`verdict`, `setup_type`, `zone`, `net_rr`, `proof`), and cadence irregularities (0.48 files/min vs. stated 1 file/min).
@@ -293,7 +293,7 @@ Every parameter, threshold, and formula across the literature and the repo is ex
     ```
   - `MyTradingSys/research/sim_desk/PLUGIN.md:21`:
     > *"Under 30 filled trades it always reads NOT ENOUGH DATA: PASSED when the whole range is above zero... FAILED when the whole range is below zero..."*
-  - `MyTradingSys/research/BACKTEST_METHOD_2026-09-21.md:33`:
+  - `MyTradingSys/research/_archive/loose_2026-10/BACKTEST_METHOD_2026-09-21.md:33`:
     > *"Bucket minimum: each primary verdict bucket... should have n >= 30 for reporting; sparse buckets must be flagged."*
   - `MyTradingSys/research/sim_desk/ROADMAP.md:13`: Daily RSI yielded only 2 filled trades; 4h yielded 20 trades; 1h yielded 75 trades.
 - **The Gap:**

@@ -9,7 +9,7 @@
 
 | UTC / Local (+05:30) | Commit | Summary of Changes |
 |---|---|---|
-| `05:29Z` (`10:59 +05:30`) | `60a8d94a` | **Market Survey Shipped**: `MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md` categorized 11 verified analysts across 4 imbalance constructs (Construct 1: Volume Anomaly/Absorption, Construct 2: Fair Value Gaps, Construct 3: Footprint/Order-Flow Delta, Construct 4: Market/Volume Profile) and created card `review-imbalance-analysts-report-and-imp`. |
+| `05:29Z` (`10:59 +05:30`) | `60a8d94a` | **Market Survey Shipped**: `MyTradingSys/research/_archive/loose_2026-10/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md` categorized 11 verified analysts across 4 imbalance constructs (Construct 1: Volume Anomaly/Absorption, Construct 2: Fair Value Gaps, Construct 3: Footprint/Order-Flow Delta, Construct 4: Market/Volume Profile) and created card `review-imbalance-analysts-report-and-imp`. |
 | `13:09Z` (`18:39 +05:30`) | `1e405a57` | **Review & Engine Built**: Delivered `MyTradingSys/research/analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md`, implemented the modular ingestion and kline-scoring stack (`schema.py`, `ingest_analysts.py`, `score_analysts.py`, `run_scorecard.py`, `test_analysts_ingestion_and_scorecard.py` — 9/9 unit tests passing), and created 3 ready build cards (`analyst-ingest-rlinda-tv`, `analyst-ingest-bennett-dpa`, `analyst-ingest-cryptochase-x`). |
 | `14:01Z` (`19:31 +05:30`) | `e544506d` | **Strict Provenance Cleanup**: Purged the 4 illustrative sample rows from `MyTradingSys/research/analysts/SAMPLE_CALL_LEDGER.csv` so the ledger is strictly header-only until genuine, timestamped public calls are ingested (`NO ASSUMPTIONS, NO FABRICATIONS`). |
 | `16:28Z` (`21:58 +05:30`) | *Current* | **Roadmap & Sync**: Regenerated `SCORECARD.md` from the clean header-only `SAMPLE_CALL_LEDGER.csv` (removing stale sample rows), closed completed card `review-imbalance-analysts-report-and-imp`, added `analyst-ingest-roman-x` (Construct 1 Volume Absorption peer to Habib), wired all `analyst-ingest-*` cards and `MyTradingSys/research/analysts/` into family `callers` in `layer_index.json` / `LAYERS.md`, and shipped this `ROADMAP.md`. |
@@ -30,7 +30,7 @@ Phase 0 (DONE)             Phase 1 (READY NOW)               Phase 2 (GATE)     
 ```
 
 ### Phase 0: Survey, Evaluation & Core Scoring Engine (`DONE`)
-- **Survey Report**: `MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md`
+- **Survey Report**: `MyTradingSys/research/_archive/loose_2026-10/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md`
 - **Technical Evaluation**: `MyTradingSys/research/analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md`
 - **Codebase (`MyTradingSys/research/analysts/`)**:
   - `schema.py`: Enforces directional price geometry (`LONG`: `stop_loss < entry_price < targets`; `SHORT`: `stop_loss > entry_price > targets`).

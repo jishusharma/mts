@@ -11,7 +11,7 @@ Each signal is a dict with top-level keys required by bt_engine.simulate_trade:
 "stop" (float), "targets" (list with exactly one tuple: [(target_price, 1.0)]) — plus a nested "meta" dict
 holding everything else ("setup", "rule_id", "msb_i", "target_r").
 
-Module source: MyTradingSys/research/cross_trader_consolidated.md, cluster C10 (Setup Types).
+Module source: MyTradingSys/research/_archive/loose_2026-10/cross_trader_consolidated.md, cluster C10 (Setup Types).
 Design constraint: [C10-E03 "cut and reverse trap"] - this module never auto-chains a setup-1/2 stop-out into a setup-3 entry;
 each function only looks at MSB structure independently.
 """

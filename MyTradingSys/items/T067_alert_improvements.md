@@ -1,6 +1,6 @@
 # T067 - Alert improvements (incl. "buy detection")
 
-Opened 2026-10-05 by MTS-2026-10-05-1500Z-APP-ANA-operator-asks. Status OPEN. Verbatim ask: research/OPERATOR_ASKS_2026-10-05.md section 0, ask 5.
+Opened 2026-10-05 by MTS-2026-10-05-1500Z-APP-ANA-operator-asks. Status OPEN. Verbatim ask: research/_archive/loose_2026-10/OPERATOR_ASKS_2026-10-05.md section 0, ask 5.
 
 ## Scope
 a. Inputs first: B136 (OI), G12 (zone touch on 1m high/low), G2 (feed watchdog).
