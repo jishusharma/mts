@@ -2,33 +2,68 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-26T15:45:34Z",
+    "misses": 10,
+    "reads": [
+      "scripts/dev/tasks.py",
+      "scripts/dev/auto_deploy.py",
+      "MyTradingSys/system/TASK_REFINEMENT.md",
+      "scripts/dev/test_auto_deploy.py"
+    ],
+    "session": "agent-ae3eec7d005e2af50"
+  },
   "created": "2026-10-26T15:36:59Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "5 consecutive python -m unittest scripts.dev.test_auto_deploy runs green locally, new _pid_alive test red on old code, tree-kill test red with kill_tree stubbed, then CI windows shard 1/12 green on 5 later runs",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Make test_sh_timeout_kills_the_whole_process_tree_not_only_the_direct_child deterministic on windows-latest (flaked on 1/12 shard, run 40251828458) without weakening what it proves.",
   "id": "ci-flaky-sh-timeout-process-tree-windows",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "auto_deploy: a zombie process counts as dead (cloud gate step 3ad)",
+      "ref": "f22763caa7a8",
+      "utc": "2026-10-22T12:57:09Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "DECISION (OURS): root cause unprovable from one CI run; fix all 3 race suspects, no quarantine (it would hide the tree-kill proof). Test-only change, so ROUTINE. REVIEWED:2026-10-26 T0-ONLY",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-26T15:45:26Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/auto_deploy.py",
+    "scripts/dev/test_auto_deploy.py"
+  ],
+  "scope_out": [
+    "kill_tree/sh behaviour for callers; any file outside these two"
+  ],
+  "scope_sha": "f22763caa7a8",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "CI flake: test_sh_timeout_kills_the_whole_process_tree_not_only_the_direct_child fails on windows-latest shard 1/12 (grandchild still alive after the timeout; red on 50fb62ac, docs/launcher-only change, and earlier on trunk). Make it deterministic (wait for process exit with a bounded poll) or quarantine with a reason. DONE when: 5 consecutive CI runs green on that shard, test still fails when the tree-kill code is removed",
-  "weight": "",
-  "worker": ""
+  "state": "ready",
+  "steps": [
+    "Read auto_deploy.py:508 _pid_alive and test_auto_deploy.py:538. Suspect (a): on nt _pid_alive does 'str(pid) in tasklist out', also matching memory columns; parse 'tasklist /FO CSV /NH' and compare the PID column exactly",
+    "Suspect (b): replace the fixed time.sleep(1) after sh() by a bounded poll (10 s, 0.2 s step) for not _pid_alive. Suspect (c): pid file may not exist yet at the 3 s timeout on slow CI; raise sh timeout to 8 and assert the file exists with its own message",
+    "Add fail-first unit test: _pid_alive(234) with tasklist stdout containing PID 999 and '1,234 K' must be False (fails on old substring code); a real alive pid (os.getpid()) must be True",
+    "Apply fixes a/b/c, keep the tree-kill assertion and rc==124 and took<20; keep the reap cleanup",
+    "Mutation check: stub kill_tree to only proc.kill(); the tree test must still FAIL. Then run python -m unittest scripts.dev.test_auto_deploy 5 times, all green",
+    "Verify line: content commit sha; git cherry origin/fast-track <sha> empty AND git ls-tree -r origin/fast-track --name-only shows both files"
+  ],
+  "tests": "New test in scripts/dev/test_auto_deploy.py: _pid_alive exact PID match (fails on old substring code); tree-kill test fails when kill_tree is reduced to proc.kill()",
+  "title": "CI flake: test_sh_timeout_kills_the_whole_process_tree fails on windows shard 1/12 (grandchild alive after timeout, run 40251828458); make deterministic",
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
