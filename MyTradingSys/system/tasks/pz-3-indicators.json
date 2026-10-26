@@ -29,7 +29,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Held raw on purpose: set state ready (tasks.py tag --refresh) when its depends_on cards are done.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -49,7 +49,7 @@
   "scope_sha": "f8d0799de2bc",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "raw",
   "steps": [
     "Write tests first from SPEC.md worked examples; confirm they fail on a stub",
     "Implement pivot detection, 50% correction, retest, 1/2/3 bar count as pure functions",

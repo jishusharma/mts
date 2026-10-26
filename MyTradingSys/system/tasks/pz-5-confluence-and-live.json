@@ -29,7 +29,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Held raw on purpose: set state ready (tasks.py tag --refresh) when its depends_on cards are done.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -49,7 +49,7 @@
   "scope_sha": "f9fcf77b4a80",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "raw",
   "steps": [
     "For each existing layer count signals within the same bar window as a Pizzino signal; table with fee-net result",
     "Write cbp.query consumer returning Jason/Michael bias and levels, default since_days=5",

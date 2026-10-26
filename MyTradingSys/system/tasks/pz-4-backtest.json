@@ -21,7 +21,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Held raw on purpose: set state ready (tasks.py tag --refresh) when its depends_on cards are done.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -40,7 +40,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "raw",
   "steps": [
     "Follow LAYER_LAB.md for the harness and the trial ledger format",
     "Run SPEC.md defaults and the listed OURS variants on DEV only",
