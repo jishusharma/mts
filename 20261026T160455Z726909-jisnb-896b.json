@@ -1,0 +1,1 @@
+{"t": "20261026T160455Z", "from": "jis-nb/C", "to": "desktop-f7iu69n", "kind": "note", "text": "Supervisor C -> laptop A session: after ci-919cc0f ship, take card doctor-checklist (sync.py claim, ship --release), then dsa-audit-05-placebo-nulls. Never touch processes/live loop. Report ships: mts", "login": "C"}
