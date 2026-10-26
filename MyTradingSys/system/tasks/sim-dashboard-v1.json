@@ -4,14 +4,20 @@
   "closed": "2026-10-26T16:24:50Z",
   "commands": [],
   "context": {
-    "calls_to_edit": null,
-    "folded": "2026-10-26T16:20:18Z",
-    "misses": 7,
+    "calls_to_edit": 51,
+    "folded": "2026-10-26T20:21:18Z",
+    "misses": 9,
     "reads": [
-      "scripts/dev/run_all_tests.py",
-      "MyTradingSys/system/LAYERS.md"
+      "MyTradingSys/research/sim_desk/results/_catalogue.json",
+      "MyTradingSys/research/sim_desk/results/desk-krown-634f1a37.json",
+      "scripts/dev/test_artifacts.py",
+      "MyTradingSys/research/sim_desk/artifact/test_artifact.py",
+      "MyTradingSys/research/sim_desk/artifact/build_artifact.py",
+      "MyTradingSys/research/sim_desk/test_build2.py",
+      "MyTradingSys/system/artifacts/registry.json",
+      "MyTradingSys/research/sim_desk/artifact/index.html"
     ],
-    "session": "agent-a54dc90729f39fb4b"
+    "session": "c1426bff-1e0c-4c8c-8c61-2e7d78a9fe98"
   },
   "created": "2026-10-24T14:29:46Z",
   "depends_on": [],
