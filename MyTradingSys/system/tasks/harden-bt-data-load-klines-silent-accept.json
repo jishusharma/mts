@@ -1,10 +1,11 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T00:55:49Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-26T00:52:59Z",
+    "folded": "2026-10-26T00:56:23Z",
     "misses": 11,
     "reads": [
       "MyTradingSys/backtest/bt/test_bt_data.py",
@@ -24,6 +25,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "8f8a52814: load_klines converts micro stamps, raises on conflicting dups, reports dups/gap",
+      "ref": "2499449a3",
+      "utc": "2026-10-26T00:55:49Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Backtest harness promoted: bt_data, bt_engine, bt_ladder, bt_stats, ref_pbo + tests (31 OK",
@@ -42,7 +49,12 @@
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md"
   ],
-  "result": "",
+  "result": "8f8a52814: load_klines converts micro stamps, raises on conflicting dups, reports dups/gaps/unsorted; 43 bt tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/bt/bt_data.py",
     "MyTradingSys/backtest/bt/test_bt_data.py"
@@ -58,12 +70,13 @@
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md (T01-F1, T01-F4)",
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T01/t01_torture.py"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read bt_data.py:10-47 and the torture matrix; write failing tests for the 5 cases first.",
     "Add the microsecond conversion, conflict raise and report dict (default None keeps the signature).",
     "Run test_bt_data.py and the RSI/CC runner tests that import bt_data."
   ],
+  "taken": "2026-10-26T00:55:49Z",
   "tests": "MyTradingSys/backtest/bt/test_bt_data.py: microsecond CSV returns ms stamps; two rows same t different close raises ValueError; both fail on the current loader.",
   "title": "Harden bt_data.load_klines: silent accept on microsecond stamps, duplicates, gaps and unsorted rows",
   "weight": "IMPORTANT",
