@@ -1,0 +1,1 @@
+{"t": "20261026T151834Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "GATEWAY on JIS-NUC (login B off there): send Fable/heavy cards to NUC (desk --target JIS-NUC); NUC takes next card when done. Public files only, worktree. Read system/GATEWAY_NUC.md + ANNOUNCE A-20261", "login": "C", "id": "b-74e5db", "prio": "high", "cmd": ""}
