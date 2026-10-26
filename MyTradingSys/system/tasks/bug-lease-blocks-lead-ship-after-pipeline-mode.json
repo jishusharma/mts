@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T20:56:25Z",
   "commands": [],
   "created": "2026-10-26T19:42:55Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "bug-lease-blocks-lead-ship-after-pipeline-mode",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "sync.py ship_is_cards_docs_only + 5 tests in MyTradingSys/tests/test_lease.py (29 pass)",
+      "ref": "ba3d1803f",
+      "utc": "2026-10-26T20:56:25Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,7 +37,12 @@
   "refined_by": "",
   "refreshed": "2026-10-26T19:43:00Z",
   "refs": [],
-  "result": "",
+  "result": "sync.py ship_is_cards_docs_only + 5 tests in MyTradingSys/tests/test_lease.py (29 pass)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/lease.py; scripts/dev/sync.py; scripts/dev/role_loader.py; scripts/dev/test_lease.py; MyTradingSys/system/roles/lead/pipeline.md"
   ],
@@ -40,13 +52,14 @@
   "scope_sha": "331b854fe289",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read lease.py:22-30 and :435 and sync.py ship guard; list which commands call the guard",
     "limit the guard to desk/claim/queue writes; ship of non-queue paths passes; or add 'lease.py unload' to drop the Pipeliner role for the session",
     "fail-first tests: ship with foreign lease passes for a cards-only diff, desk post refuses",
     "note in pipeline.md: load pipeline mode only when draining the desk"
   ],
+  "taken": "2026-10-26T20:56:25Z",
   "tests": "scripts/dev/test_lease.py::test_ship_of_cards_passes_with_foreign_lease (fail-first)",
   "title": "BUG p1: loading Lead pipeline mode makes every ship need the Pipeliner lease; another machine's lease blocks all my ships for up to 45 min",
   "weight": "",

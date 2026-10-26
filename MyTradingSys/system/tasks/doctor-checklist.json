@@ -1,17 +1,18 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T21:20:23Z",
   "commands": [],
   "context": {
-    "calls_to_edit": null,
-    "folded": "2026-10-26T18:17:34Z",
-    "misses": 17,
+    "calls_to_edit": 12,
+    "folded": "2026-10-26T20:58:19Z",
+    "misses": 13,
     "reads": [
-      "scripts/dev/tasks.py",
-      "MyTradingSys/system/NEXT_SESSION.md",
-      "MyTradingSys/system/CLOUD_ACCOUNTS.md"
+      "scripts/dev/wt_maint.py",
+      "scripts/dev/c_drive_guard.py",
+      "scripts/dev/dsa.py"
     ],
-    "session": "7c7e3003-0fc7-496b-85d7-8cc69beafdb4"
+    "session": "4259065d-612b-4736-8283-146da85367aa"
   },
   "created": "2026-10-25T11:14:07Z",
   "depends_on": [],
@@ -24,6 +25,12 @@
   "id": "doctor-checklist",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "9f53406dc: STALE-CLAIMS and SCRATCH-TRACKED checks + coverage table, 19 tests",
+      "ref": "376cd1a65",
+      "utc": "2026-10-26T21:20:23Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -48,7 +55,12 @@
   "refined_by": "Session_Planner",
   "refreshed": "2026-10-25T22:29:54Z",
   "refs": [],
-  "result": "",
+  "result": "9f53406dc: STALE-CLAIMS and SCRATCH-TRACKED checks + coverage table, 19 tests",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/mts_doctor/DOCTOR_COVERAGE_2026-10-26.md",
     "scripts/dev/mts_doctor.py",
@@ -69,12 +81,13 @@
     "MyTradingSys/research/mts_doctor/REPORT_2026-10-25.md",
     "MyTradingSys/research/mts_doctor/CI_RED_AND_FLOW_REVIEW_2026-10-25.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read REPORT_2026-10-23/24/25 fix lists and git log --since=2026-10-23 --grep Result; one row per fix.",
     "Map each to an existing check or none; for none, keep only those with a recorded regression.",
     "Implement at most 3 checks with tests; update MTS_DOCTOR.md checklist table in place."
   ],
+  "taken": "2026-10-26T21:20:23Z",
   "tests": "scripts/dev/test_mts_doctor.py: each new check returns WARN on a fixture that reproduces the regression and OK on a clean one; fails before the check exists.",
   "title": "Doctor checklist: every 10-23..10-25 fix leaves a check",
   "weight": "IMPORTANT",

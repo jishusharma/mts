@@ -1,0 +1,12 @@
+{
+  "card": "cbp-scorecard-recount",
+  "done_when": "A table analyst/calls/hits/hit-rate in research/cbp/SCORECARD_GPT.md with each count reproducible by a command; analysts under 56 calls marked NOT ENOUGH CALLS; no weights proposed.",
+  "from": "lane_health",
+  "id": "20261026-210153-cbp-scorecard-recount",
+  "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card cbp-scorecard-recount: CBP analyst scorecard: independent recount of scored calls (D5 gate 4)\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief cbp-scorecard-recount\nGoal: Recount, from cbp_store rows and daily price data, how many scored calls each analyst has and the hit rate after fee, without reading any producer figure.\nRead: MyTradingSys/research/cbp/; MyTradingSys/cbp/__init__.py; scripts/dev/cbp_run.py\nStep 1: write a failing test that fails on a row with missing direction, count rows with python over rows.json, join to daily closes, score at expiry\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-10-26_cbp-scorecard-recount.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-10-26_cbp-scorecard-recount.md>\".",
+  "posted": "2026-10-26T21:01:53Z",
+  "rerouted_from": "CODEX",
+  "status": "pending",
+  "target": "DSA",
+  "title": "CBP analyst scorecard: independent recount of scored calls (D5 gate 4)"
+}

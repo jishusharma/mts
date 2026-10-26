@@ -19,9 +19,9 @@ import numpy as np
 
 HERE = Path(__file__).resolve().parents[1]   # sim_desk/
 STUDY = HERE.parent / 'levels_confluence_2026-10-14'
-sys.path.insert(0, str(STUDY))
+sys.path[:0] = [str(STUDY), str(HERE / 'studies')]   # study code + the sealed-cut guard (_bars)
 import ladder as ld  # noqa: E402
-import ladder_run as lr  # noqa: E402
+import ladder_run as lr; import _bars  # noqa: E402,E702
 
 ID = 'levels'
 TITLE = 'Price levels: first touch of a level, BTCUSDT 1m'
@@ -161,6 +161,7 @@ def _load_month(m_start):
 
 
 def _daybars(arr):
+    _bars.guard_ms(np.asarray(arr)[:, 0], 'levels day bars')   # cached bar times are never trusted by idea.day alone
     return [{'t': int(r[0]), 'o': r[1], 'h': r[2], 'l': r[3], 'c': r[4], 'v': r[5], 'tbv': r[6]} for r in arr]
 
 
@@ -203,6 +204,7 @@ def _run_month(args):
         d = idea['day']
         if not d0 <= d <= d1:
             continue
+        _bars.guard_ms([idea['touch_t']], 'levels idea touch_t')
         out['all_days'].add(d)
         if q['entry'] != 'E0' and idea[q['entry']] is not True:
             continue
@@ -246,6 +248,7 @@ def trade_bars(ref, q):
     m_start, k = ref
     blob = _load_month(m_start)
     idea = blob['ideas'][k]
+    _bars.guard_ms([idea['touch_t']], 'levels idea touch_t')
     db = _daybars(blob['bars'][idea['day']])
     return db, idea, simulate_one(db, idea, q)
 

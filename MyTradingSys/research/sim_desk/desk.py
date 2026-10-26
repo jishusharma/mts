@@ -245,14 +245,26 @@ def _append_row(trials_path, study, q, st, word, cond=None):
     p.write_text(text + row + NL, encoding='utf-8', newline=NL)
 
 
+def _guard_result(res, what):
+    """A cached result is trusted by key only: refuse any trade time at or after the sealed cut (or outside DEV days)."""
+    from studies import _bars
+    if 'touch_t' in res:
+        _bars.guard_ms(res['touch_t'], f'result {what} touch_t')
+    if 'day' in res and len(res['day']):
+        _bars.guard_ms(np.asarray(res['day'], dtype=float) * _bars.DAY, f'result {what} day')
+
+
 def _raw(study, q, cache_dir, progress):
     """(result arrays, from_cache) for normalized settings q; conditions are not part of the key."""
     cache_dir = Path(cache_dir)
     f = cache_dir / f'{study.ID}_{_key(study, q)}.json'
     if f.exists():
         res = json.loads(f.read_text(encoding='utf-8'))
-        return {k: (np.array(v) if k != 'refs' else v) for k, v in res.items()}, True
+        res = {k: (np.array(v) if k != 'refs' else v) for k, v in res.items()}
+        _guard_result(res, f.name)
+        return res, True
     res = study.run(q, progress=progress)
+    _guard_result(res, 'fresh result')
     cache_dir.mkdir(parents=True, exist_ok=True)
     f.write_text(json.dumps({k: (v.tolist() if isinstance(v, np.ndarray) else v) for k, v in res.items()}), encoding='utf-8')
     return res, False

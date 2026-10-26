@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T20:46:45Z",
   "commands": [
     "python scripts/dev/tasks.py brief pz-2-layer-spec"
   ],
@@ -17,7 +18,14 @@
   "id": "pz-2-layer-spec",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "SPEC.md shipped: 14 SOURCED, 18 OURS, 6 hand-computed examples",
+      "ref": "318ee373a",
+      "utc": "2026-10-26T20:46:45Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -29,7 +37,12 @@
   "refs": [
     "MyTradingSys/research/pizzino_layer_2026-10-27/PLAN.md"
   ],
-  "result": "",
+  "result": "SPEC.md shipped: 14 SOURCED, 18 OURS, 6 hand-computed examples",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/pizzino_layer_2026-10-27/SPEC.md (new file)"
   ],
@@ -39,7 +52,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md and MyTradingSys/backtest/layers/FORMULAS.md",
     "Write SPEC.md: one section per concept (1/2/3 bar, pivot, 50% correction, retest) with exact definition and ambiguity list",
@@ -47,6 +60,7 @@
     "Add worked examples with numbers computed by hand, not from code",
     "Commit with a Result: line (rules written, SOURCED count, OURS count)"
   ],
+  "taken": "2026-10-26T20:46:45Z",
   "tests": "none (spec card); proof = hand-computed examples in SPEC.md",
   "title": "Pizzino layer: write SPEC.md (rules from their words, SOURCED or OURS)",
   "weight": "ROUTINE",
