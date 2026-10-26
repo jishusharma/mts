@@ -1,9 +1,11 @@
-# Supervisor hand-over, login C (JIS-NB desktop, 2026-10-26T01:45Z)
+# Supervisor hand-over, login C (JIS-DESKTOP, 2026-10-26T23:06Z)
 
-- Next: Watch NUC-B/laptop-A ships (git cherry + CI); C week 74% cap 80, hard stop 79, no C Builders; ready cards left are JIS-NB-lane only (host-legacy-tasks-unregister, main-checkout-stale-hooks); context-composite-v2-dev-read voided, laptop planner re-review pending; flaky windows test_sh_timeout process-tree needs a card; DeepSeek DSA-NUC chat needs operator arming; broadcast b-2a5b44 ack done after window
-- Budget at hand-over (get_usage 2026-10-26T01:44Z): 5h 17% (reset 01:50Z), week 74% (cap 80; hard stop 79; reset 2026-10-27T20:00Z), Fable 11%
-- Peers live at hand-over: none
-- Last picks: none
+- Next: Next: spawn Builder on runaway-process-leak (planner-refined, ready), check tasks.py check first; pz-4/pz-5 held raw; cbp-ingestion parked (Lead asking operator whether he requested the twice-daily CBP task; data host JIS-NB; yes = decision record + install card on JIS-NB, no = revert card for SCHEDULING_POLICY.md CBP-only exception; install nothing meanwhile); follow-up cards to file: T09-F3 hardening (pin rsi:support to long at auto_trader.py:371, case/empty-sub match at :368) and 30-DEV-day RSI replay as DSA desk task; DeepSeek DSA-NUC row 87h untaken needs operator; C week 78 cap 85
+- Budget at hand-over: 5h 8.0% (reset 2026-10-26T23:30Z), week 78.0% of cap 85 (reset 2026-10-27T20:00Z), mode NORMAL, k 0.136
+- Peers live at hand-over: B@JIS-NUC
+- Last picks: runaway-process-leak
 - Open claims from JIS-DESKTOP: ship-root-cause (finish, hand over in the card, or release by the claim rules)
 
 Successor: `You are Supervisor. Login C. Continue from MyTradingSys/system/handover/SUPERVISOR_C.md`
+
+- Successor task (SCHEDULING_POLICY 4b2, one-time): id supervisor-c-successor-20261027, fireAt 2026-10-26T23:36:00Z (05:06 IST), Sonnet. It starts without a saved permission mode and may pause on prompts. The successor creates at most ONE more such task (fireAt, never cron), none on a hard stop (STOP/HOLD, CI red, C week >= 85).
