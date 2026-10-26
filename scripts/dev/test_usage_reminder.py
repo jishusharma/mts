@@ -2,91 +2,81 @@ import json
 import os
 import subprocess
 import sys
-import time
 from pathlib import Path
+
+import pytest
 
 SCRIPT = Path(__file__).with_name("usage_reminder.py")
 
 
-def run(mode, tool, d, gate=None, stdin=None, extra=()):
-    env = dict(os.environ, MTS_USAGE_DIR=str(d))
-    env.pop("MTS_USAGE_GATE", None)
-    if gate:
-        env["MTS_USAGE_GATE"] = gate
+@pytest.fixture
+def env(tmp_path):
+    e = dict(os.environ)
+    e["MTS_USAGE_STATE"] = str(tmp_path / "state.json")
+    return e
+
+
+def run(env, mode, tool="Agent", *extra):
     return subprocess.run([sys.executable, str(SCRIPT), mode, *extra],
-                          input=json.dumps({"tool_name": tool}) if stdin is None else stdin,
+                          input=json.dumps({"tool_name": tool}),
                           capture_output=True, text=True, env=env)
 
 
-def reading(d, five, el, age=0):
-    (d / "usage_reading.json").write_text(
-        json.dumps({"ts": time.time() - age, "five": five, "elapsed": el}))
+def record(env, five, elapsed):
+    p = run(env, "record", "Bash", "--five", str(five), "--elapsed", str(elapsed))
+    assert p.returncode == 0, p.stderr
 
 
-def test_post_prints_reminder(tmp_path):
+def test_agent_call_prints_reminder_when_gate_open(env):
     for tool in ("Agent", "Task", "Workflow"):
-        p = run("post", tool, tmp_path)
-        assert p.returncode == 0 and p.stdout.startswith("USAGE:") and "after" in p.stdout
+        record(env, 20, 30)
+        p = run(env, "pre", tool)
+        assert p.returncode == 0 and p.stdout.startswith("USAGE:") and "before" in p.stdout
+        p = run(env, "post", tool)
+        assert p.returncode == 0 and "after" in p.stdout
 
 
-def test_other_tool_silent(tmp_path):
-    for mode in ("pre", "post"):
-        p = run(mode, "Bash", tmp_path)
-        assert p.returncode == 0 and p.stdout == ""
+def test_other_tool_silent(env):
+    assert run(env, "pre", "Bash").stdout == "" and run(env, "pre", "Bash").returncode == 0
+    assert run(env, "post", "Bash").stdout == ""
 
 
-def test_bad_stdin_never_raises(tmp_path):
-    p = run("pre", "Agent", tmp_path, stdin="not json")
+def test_bad_stdin_never_raises(env):
+    p = subprocess.run([sys.executable, str(SCRIPT), "pre"], input="not json",
+                       capture_output=True, text=True, env=env)
     assert p.returncode == 0 and p.stdout == ""
 
 
-def test_blocks_without_reading(tmp_path):
-    p = run("pre", "Agent", tmp_path)
-    assert p.returncode == 2 and "usage_reminder.py record" in p.stderr
+def test_no_reading_refuses(env):
+    p = run(env, "pre")
+    assert p.returncode == 2 and "no get_usage reading" in p.stderr
 
 
-def test_blocks_stale_reading(tmp_path):
-    reading(tmp_path, 10, 10, age=700)
-    p = run("pre", "Workflow", tmp_path)
-    assert p.returncode == 2 and "old" in p.stderr
+def test_stale_reading_refuses(env):
+    sp = Path(env["MTS_USAGE_STATE"])
+    sp.write_text(json.dumps({"reading": {"five": 10, "elapsed": 50, "ts": 1.0}}))
+    p = run(env, "pre")
+    assert p.returncode == 2 and "stale" in p.stderr
 
 
-def test_blocks_overspend(tmp_path):
-    reading(tmp_path, 40, 29)
-    assert run("pre", "Agent", tmp_path).returncode == 2
-    reading(tmp_path, 39, 29)
-    assert run("pre", "Agent", tmp_path).returncode == 0
+def test_over_pace_refuses_and_boundary_passes(env):
+    record(env, 41, 30)
+    p = run(env, "pre")
+    assert p.returncode == 2 and "above elapsed" in p.stderr
+    record(env, 40, 30)
+    assert run(env, "pre").returncode == 0
 
 
-def test_blocks_more_than_two_running(tmp_path):
-    reading(tmp_path, 10, 10)
-    for _ in range(3):
-        assert run("pre", "Agent", tmp_path).returncode == 0
-    assert run("pre", "Agent", tmp_path).returncode == 2
-    run("post", "Agent", tmp_path)
-    assert run("pre", "Agent", tmp_path).returncode == 0
+def test_third_agent_refused_until_one_finishes(env):
+    record(env, 10, 30)
+    assert run(env, "pre").returncode == 0
+    assert run(env, "pre").returncode == 0
+    p = run(env, "pre")
+    assert p.returncode == 2 and "already run" in p.stderr
+    assert run(env, "post").returncode == 0
+    assert run(env, "pre").returncode == 0
 
 
-def test_stale_spawns_expire(tmp_path):
-    reading(tmp_path, 10, 10)
-    old = time.time() - 4000
-    (tmp_path / "agent_spawns.json").write_text(json.dumps({"running": [old] * 5}))
-    assert run("pre", "Agent", tmp_path).returncode == 0
-
-
-def test_env_bypass(tmp_path):
-    assert run("pre", "Agent", tmp_path, gate="off").returncode == 0
-
-
-def test_record_writes_reading(tmp_path):
-    p = run("record", "Agent", tmp_path, extra=("--five", "12", "--elapsed", "20"))
-    assert p.returncode == 0
-    r = json.loads((tmp_path / "usage_reading.json").read_text())
-    assert r["five"] == 12 and r["elapsed"] == 20
-    assert run("pre", "Agent", tmp_path).returncode == 0
-
-
-def test_internal_error_exits_zero(tmp_path):
-    (tmp_path / "usage_reading.json").write_text(
-        json.dumps({"ts": time.time(), "five": "x", "elapsed": 1}))
-    assert run("pre", "Agent", tmp_path).returncode == 0
+def test_corrupt_state_fails_closed(env):
+    Path(env["MTS_USAGE_STATE"]).write_text("{not json")
+    assert run(env, "pre").returncode == 2
