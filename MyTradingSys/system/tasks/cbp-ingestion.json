@@ -16,7 +16,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "MyTradingSys/tests/test_cbp_query.py::test_fabricated_quote_rejected",
-  "note": "Planner 2026-10-27: 1b23396e9 'Repair CBP ingestion and wire twice-daily task' is on the card's scope paths. Remaining: activation (data host missing, NUC paths fail preflight) + independent review. DEFAULT if unanswered: leave the CBP task unactivated and record 'data host missing' in the activation status (matches done_when).",
+  "note": "Planner-B 2026-10-27: same re-run: 9 errors in test_cbp_query.py, unexplained here. DECISION (OURS): activation stays off ('data host missing'); only the reviewer stamp remains. AWAITING Lab_Guy REVIEWED stamp then tasks.py check + done; no stamp fabricated. | Planner 2026-10-27: 1b23396e9 'Repair CBP ingestion and wire twice-daily task' is on the card's scope paths. Remaining: activation (data host missing, NUC paths fail preflight) + independent review. DEFAULT if unanswered: leave the CBP task unactivated and record 'data host missing' in the activation status (matches done_when).",
   "prio": 1,
   "refine_tries": 1,
   "refined_by": "",
