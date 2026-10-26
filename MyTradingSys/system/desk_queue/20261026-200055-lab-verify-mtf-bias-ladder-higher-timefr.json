@@ -1,0 +1,10 @@
+{
+  "done_when": "REPORT.md with event counts, 4/8/16-bar fee-net returns vs baseline, t-stat, verdict worth-a-layer or closed",
+  "from": "JIS-NB",
+  "id": "20261026-200055-lab-verify-mtf-bias-ladder-higher-timefr",
+  "need": "Run card MyTradingSys/system/tasks/lab-verify-mtf-bias-ladder.json (operator's grandfather/father/son bias idea, 10-26 20:00Z). Binance spot klines, build 2d/4d/5d from 1d, DEV then VALIDATION once, trial ledger.",
+  "posted": "2026-10-26T20:00:55Z",
+  "status": "pending",
+  "target": "DSA",
+  "title": "lab-verify-mtf-bias-ladder: higher-timeframe bias ladder + Malkan RSI 40-60 on BTC, fee-net"
+}
