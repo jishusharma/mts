@@ -1,0 +1,1 @@
+{"t": "20261026T162936Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship supervisor-C-2026-10-26 Result: trunk CI red since c6dd8980 (test_integrity test_2_no_forbidden_refs, NEXT_SESSION.md lines 8/11/14); file restored to last-green content", "login": "C", "sid": "bc5d67b7df"}
