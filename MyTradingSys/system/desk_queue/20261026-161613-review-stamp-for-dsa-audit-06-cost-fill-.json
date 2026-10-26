@@ -1,0 +1,10 @@
+{
+  "done_when": "Card carries a review stamp and is marked done",
+  "from": "JIS-NB",
+  "id": "20261026-161613-review-stamp-for-dsa-audit-06-cost-fill-",
+  "need": "Card is CRUCIAL; report MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md is on trunk (7 findings: S1 0, S2 3, S3 4). Independent Lab_Guy/cross-vendor review, add 'REVIEWED: <reviewer> <date>', then tasks.py done dsa-audit-06-cost-fill-realism --result ...",
+  "posted": "2026-10-26T16:16:13Z",
+  "status": "pending",
+  "target": "DSA",
+  "title": "Review stamp for dsa-audit-06-cost-fill-realism (T06 report shipped 78c23c8e9)"
+}
