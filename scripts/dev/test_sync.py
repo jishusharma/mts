@@ -571,6 +571,26 @@ class SyncTest(unittest.TestCase):
         self.assertTrue(ahead.exists())
         self.assertTrue(self.a.exists())  # primary tree never touched
 
+    def test_tidy_skips_gateway_marked_worktree(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            marked = sync.new_worktree(self.a, "gw")
+            plain = sync.new_worktree(self.a, "plain")
+        (marked / sync.GATEWAY_MARKER).write_text('x', newline=chr(10))
+        later = time.time() + 48 * 3600
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(sync.tidy(self.a, apply=True, now=later), [str(plain.resolve())])
+            self.assertIsNone(sync.reuse_finished_tree(self.a, marked))
+        self.assertTrue(marked.exists())
+        self.assertFalse(plain.exists())
+
+    def test_start_writes_gateway_marker_only_on_gateway_profile(self):
+        with mock.patch.dict(os.environ, {"MTS_GATEWAY": "1"}):
+            self.assertTrue(sync.mark_gateway(self.a))
+        self.assertTrue((self.a / sync.GATEWAY_MARKER).exists())
+        (self.a / sync.GATEWAY_MARKER).unlink()
+        with mock.patch.dict(os.environ, {"MTS_GATEWAY": "0"}):
+            self.assertFalse(sync.mark_gateway(self.a))
+
     def test_station_runs_where_all_then_tidy(self):
         with contextlib.redirect_stdout(io.StringIO()):
             done = sync.new_worktree(self.a, "done")
