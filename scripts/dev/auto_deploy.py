@@ -505,12 +505,21 @@ def run(ops=None, check=False, state=None, save=True):
     return _finish(res, save, state)
 
 
+def _tasklist_has_pid(out, pid):
+    """True when a `tasklist /FO CSV /NH` row has exactly this PID in its PID column (a bare substring also hit memory columns like '1,234 K')."""
+    import csv
+    for row in csv.reader(out.splitlines()):
+        if len(row) > 1 and row[1].strip() == str(pid):
+            return True
+    return False
+
+
 def _pid_alive(pid):
     if pid <= 0:
         return False
     if os.name == "nt":
-        out = subprocess.run(["tasklist", "/FI", f"PID eq {pid}", "/NH"], capture_output=True, text=True).stdout
-        return str(pid) in out
+        out = subprocess.run(["tasklist", "/FI", f"PID eq {pid}", "/FO", "CSV", "/NH"], capture_output=True, text=True).stdout
+        return _tasklist_has_pid(out, pid)
     try:
         os.kill(pid, 0)
     except OSError:
