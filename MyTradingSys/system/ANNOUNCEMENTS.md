@@ -13,6 +13,12 @@ Entry format: `### A-<yyyymmdd>-<n> <kind> <title>` with kind one of INFO, DO-NO
 
 ## ACTIVE
 
+### A-20261026-1 DO-NOW NUC runs on a Gateway profile: login B is off there, send the heavy load to the NUC (operator 2026-10-26)
+- Applies to: every session; coordinators route work, NUC sessions work the queue.
+- Until: the operator posts the end of it.
+- What: read `GATEWAY_NUC.md` (routing, rules, switch on/off). Fable-lane and heavy card work with no private data goes to JIS-NUC (card or `desk.py post ... --target JIS-NUC`); NUC sessions take the next card when one ships. Gateway sessions touch public tracked files only, run in a worktree, never read `.secrets`, `.env`, runtime or the live tree.
+- Why: the gateway has no weekly cap, login B is not available on the NUC while it runs, and the other logins are capped.
+
 ### A-20261024-1 DO-NOW Every station: restart cleanup and a cleanup roll call (operator yes 2026-10-24)
 - Applies to: every station (device + login, STATION_CLEANUP.md section 1). The first session on each device to read this does it once for that device.
 - Until: the station has sent `STATION <device>/<login> cleanup: ...` (mts_signal send) and `python scripts/dev/c_drive_guard.py status` shows "for this checkout".

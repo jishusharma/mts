@@ -679,7 +679,9 @@ LAST_DAY_CAP = 99    # operator 2026-10-22, login A at 97% with 15 h to reset: "
 def weekly_cap(login: str, host: str, h_to_reset: float | None = None) -> int:
     """SUPER_SESSION.md rule 12: logins B and C stop at 75% of the week when they run on JIS-NB (operator choice); else 95%, raised to
     LAST_DAY_CAP in the last LAST_DAY_H before the weekly reset, so the last points are spent slowly instead of lost (pace_plan spreads them)."""
-    if CN(host) == NB and login in ("B", "C"):
+    if CN(host) == NB and login == "C":
+        return 85    # operator 2026-10-26: raised from 75
+    if CN(host) == NB and login == "B":
         return 75
     return LAST_DAY_CAP if h_to_reset is not None and 0 < h_to_reset <= LAST_DAY_H else 95
 

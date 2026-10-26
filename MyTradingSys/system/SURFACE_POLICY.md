@@ -30,6 +30,9 @@ Subagents: one child per task by default; at most 3 per call and 3 in a cloud se
 each checkpoint. Every launch prompt names Ultracode on/off, the total subagent cap, the batch size and "commit and push between batches" (LESSONS_LEARNED 2026-10-02).
 Cloud: no routines or always-on sessions; one session per task; nothing live depends on it.
 
+## 3b. Unattended permissions (OURS)
+Sessions need git merge/commit/pull/fetch (sync.py); deny only rebase, reset, force-push. Writes outside the checkout (F:/) prompt even in Bypass: backups only via sync.py. Check: `python scripts/dev/perm_audit.py`.
+
 ## 4. Naming
 Session ID: MTS-YYYY-MM-DD-HHMMZ-<SURF>-<ROLE>[-<slug>] (UTC start; slug <=20 chars, lowercase kebab).
 SURF: APP CLI CLD DSA COD GEM. ROLE: SUP BLD ANA EXT MON COO WRK (SUP = operator-driven supervising session; it deploys nothing; deploys are by hand, DEPLOY_RUNBOOK.md). Chat title = session ID.
