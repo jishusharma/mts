@@ -60,6 +60,8 @@ the others fail silently, so run it by hand to see the error: `echo {} | python 
 | repo health score | `python scripts/dev/health_audit.py` | MTS_Doctor |
 | boot cost per role | `python scripts/dev/mts_doctor.py` (BOOT-COST rows); ARCHITECTURE.md section 3 | MTS_Doctor |
 
+Changed a start, hook, broadcast or role mechanism? Run the 8-question reach test first: OPS_CHANGE_CHECK.md.
+
 ## 6. Escalation
 Anything off: report -> independent audit -> fix (CLAUDE.md). A fault you cannot fix becomes a card
 (`python scripts/dev/tasks.py new "<title>"`) with the symptom, the command you ran and its full output path.
