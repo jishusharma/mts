@@ -2,6 +2,8 @@
 import json
 import subprocess
 import sys
+import copy
+import pytest
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -152,3 +154,50 @@ def test_extractor_nonzero_json_is_failure():
     with pytest.raises(subprocess.CalledProcessError):
         cbp_run.llm_extract(video, BODY, run=lambda *a, **kw: subprocess.CompletedProcess(
             a, 1, stdout=json.dumps(GOOD), stderr="failed"))
+
+
+# Planted-row audit: synthetic data only, never the CBP store or external transcripts.
+def test_planted_trade_without_quote_is_rejected():
+    got = copy.deepcopy(GOOD)
+    got["trades"][0]["quote"] = ""
+    built, reason = cbp_run.build_row(("P" * 11, "Krown", "2026-10-23", "fixture", None), got, BODY)
+    assert built is None and "empty quote" in reason
+
+
+@pytest.mark.xfail(strict=True, reason="cbp-row-schema-expiry-gaps: runtime validator omits direction enum")
+def test_planted_wrong_direction_is_rejected():
+    got = copy.deepcopy(GOOD)
+    got["trades"][0]["direction"] = "SIDEWAYS"  # schema allows only LONG or SHORT
+    built, _ = cbp_run.build_row(("P" * 11, "Krown", "2026-10-23", "fixture", None), got, BODY)
+    assert built is None
+
+
+@pytest.mark.xfail(strict=True, reason="cbp-row-schema-expiry-gaps: query ignores expires_at")
+def test_planted_expired_row_is_not_returned(tmp_path):
+    built, _ = cbp_run.build_row(("P" * 11, "Krown", "2026-10-23", "fixture", None), GOOD, BODY)
+    built["expires_at"] = "2026-10-24T09:00:00Z"  # publication recent; explicit expiry already passed
+    st = tmp_path / "synthetic.json"
+    cbp.save({"rows": [built]}, st)
+    assert cbp.query(store=st, now=NOW) == []
+
+
+def test_planted_duplicate_video_id_is_not_extracted_again(tmp_path, monkeypatch):
+    st = _setup(tmp_path, monkeypatch, vid="P" * 11)
+    built, _ = cbp_run.build_row(("P" * 11, "Krown", "2026-10-23", "fixture", None), GOOD, BODY)
+    cbp.save({"rows": [built]}, st)
+
+    def must_not_extract(*args):
+        pytest.fail("duplicate video must be stopped before extraction")
+
+    assert cbp_run.run_once(NOW, fetch=lambda *a: None, extract=must_not_extract, store=st) == (0, 1, 0)
+    assert len(cbp.load(st)["rows"]) == 1
+
+
+@pytest.mark.xfail(strict=True, reason="cbp-row-schema-expiry-gaps: query does not validate stored rows")
+def test_planted_missing_expiry_is_not_returned(tmp_path):
+    built, _ = cbp_run.build_row(("P" * 11, "Krown", "2026-10-23", "fixture", None), GOOD, BODY)
+    del built["expires_at"]
+    assert "missing expires_at" in cbp.validate_row(built)  # gate 1 knows it is invalid
+    st = tmp_path / "synthetic.json"
+    cbp.save({"rows": [built]}, st)
+    assert cbp.query(store=st, now=NOW) == []  # read path must not trust a malformed stored row
