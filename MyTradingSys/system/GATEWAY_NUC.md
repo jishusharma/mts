@@ -21,6 +21,8 @@ Public repo: no key, no URL with credentials, no account data in this file or an
 5. No mic button in gateway mode (dictation is an Anthropic-account feature). The operator dictates with Windows voice typing or a local dictation tool.
 6. Ship as usual: `sync.py ship --release <slug>`, commit body carries `Result:`. Never commit the registry file the operator exported; it holds the key and lives outside the repo.
 
+7. **Its worktree is its own (operator 2026-10-26).** A gateway session's worktree and branch belong to that session alone. No other session, login, station, Lead, tidy or cleanup script removes, resets, merges into or edits it; a cleanup touches only worktrees its own session made. Every login on a station that may run on the gateway reads this at boot.
+
 ## Switching a station on or off (operator only)
 - On: merge the exported registry file on that machine, fully quit and reopen the app.
 - Off: merge the matching removal file, reopen the app. Both files stay outside the repo in the operator's Documents folder.
