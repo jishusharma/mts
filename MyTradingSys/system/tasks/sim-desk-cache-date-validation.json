@@ -1,10 +1,11 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T21:25:38Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-26T21:25:37Z",
+    "folded": "2026-10-26T21:26:12Z",
     "misses": 44,
     "reads": [
       "MyTradingSys/research/sim_desk/studies/levels.py",
@@ -26,6 +27,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/sim_desk/test_sealed_cache.py L1-L7 green",
+      "ref": "11ddfd25a",
+      "utc": "2026-10-26T21:25:38Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "sim desk: breakdown table, folded charts and ledger, catalogue-safe run saving",
@@ -44,7 +51,12 @@
   "refs": [
     "MyTradingSys/research/design_cards_2026-10-26/astra_sealed_guard.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/sim_desk/test_sealed_cache.py L1-L7 green",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/sim_desk/studies/_bars.py",
     "MyTradingSys/research/sim_desk/desk.py",
@@ -61,13 +73,14 @@
     "MyTradingSys/research/design_cards_2026-10-26/astra_sealed_guard.md",
     "MyTradingSys/research/sim_desk/DESIGN.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Copy the synthetic fixture from astra_sealed_guard.md Reproducer into test_sealed_cache.py; assert the desired safety (max ts < CUT) per the L1-L7 table; confirm all 7 red",
     "Validate content dates at each boundary: _month and hot _ALL (_bars.py), cached result arrays (desk.py run_setting), bar times before simulate_one and trade_bars (levels.py), parsed ZIP rows (fetch_klines.py)",
     "Replace the assert at _bars.py:91 with an explicit raise (assert vanishes under -O); refuse, never silently sanitise",
     "Run the sim_desk tests and run_all_tests.py --quick; commit with a Result: line"
   ],
+  "taken": "2026-10-26T21:25:38Z",
   "tests": "New sim_desk/test_sealed_cache.py: 7 tests (L1-L7) fail on the pre-change code (reproducer proves each leak), pass after.",
   "title": "Simulator desk: validate cache and fetched bar timestamps before study and replay",
   "weight": "CRUCIAL",
