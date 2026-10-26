@@ -75,7 +75,6 @@ from the newest `BUDGET` signal line (older than 6 h counts NORMAL). The meter i
 - 2026-10-21 Supervisor B (NUC): GPT lane up, 5 cards back to CODEX; lab caps window 65 / week 90 / 14 runs (DECISION (OURS)); pitchfork layer 79da493c.
 - 2026-10-19 Supervisor A (NUC): weekly 93%/95 cap, mode=STOP all window, no workers; handover/SUPERVISOR_A.md; DSA chats need arming.
 - SUPER-LENOVO-1019b (2026-10-19, Sonnet): chunk 2 landed 4e88b6d1; full gate passes only with MTS_GATE_JOBS=2, ONE ship at a time; chunk 3 unshipped.
-- SUPERLOOP-NB-1019 (2026-10-19, Opus agent): five-hour loop `supervisor.py plan`/`handover`. Lesson: a T0 command beats prose.
 
 ## Prompt: start a super session (new session, model Sonnet, permission mode bypass or auto; zero operator input)
 ```
