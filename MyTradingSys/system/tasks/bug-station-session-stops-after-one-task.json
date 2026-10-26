@@ -6,14 +6,17 @@
     "python scripts/dev/tasks.py brief bug-station-session-stops-after-one-task"
   ],
   "context": {
-    "calls_to_edit": null,
-    "folded": "2026-10-26T23:33:29Z",
-    "misses": 34,
+    "calls_to_edit": 51,
+    "folded": "2026-10-26T23:39:51Z",
+    "misses": 51,
     "reads": [
       "MyTradingSys/system/WORKERS.md",
+      "scripts/dev/role_loader.py",
       "MyTradingSys/tests/docs/test_integrity.py",
       "MyTradingSys/system/ROLES.md",
+      "MyTradingSys/tests/docs/test_boot_loop_rule.py",
       "scripts/dev/test_auto_deploy.py",
+      "scripts/dev/mts_doctor.py",
       "scripts/dev/ci_red_card.py"
     ],
     "session": "agent-a19a0445c87ee844f"
