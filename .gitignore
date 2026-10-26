@@ -209,3 +209,8 @@ MyTradingSys/research/krown_audit_2026-10-22/run/sealed/
 
 # mts_run.py headless-worker ledger (runtime)
 runtime_data/mts_run/
+
+# scratch + usage gate runtime state (public repo: never commit runtime data)
+runtime_data/_scratch_*
+runtime_data/usage_reading.json
+runtime_data/agent_spawns.json
