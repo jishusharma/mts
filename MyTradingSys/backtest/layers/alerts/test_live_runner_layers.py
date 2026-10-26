@@ -255,3 +255,29 @@ class TestRegistry(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestRsiLevelLayerAlertOnly(unittest.TestCase):
+    """T09-F3: rsi_level_layer gives NO side to any event (failure included). Live trades only support@40 long, which
+    auto_trader maps by rule; cross / failure / rejection are alert-only (not covered by a backtest)."""
+
+    def _run(self, rsi_series):
+        bars = [{"t": i * 1000, "c": 1.0} for i in range(len(rsi_series))]
+        with mock.patch.object(ll, "rsi_core", return_value=rsi_series):
+            return ll.rsi_level_layer(bars)
+
+    def test_failure_has_no_side_either_way(self):
+        for series in ([45, 45, 40.2, 38, 38], [35, 35, 40.2, 42, 42]):
+            ev = self._run(series)
+            self.assertEqual([e["event"] for e in ev], ["failure"], series)
+            self.assertNotIn("side", ev[0], series)
+
+    def test_no_event_of_any_kind_carries_a_side(self):
+        seen = set()
+        for series in ([45, 40.2, 45], [35, 40.2, 35], [45, 45, 35], [35, 35, 45], [45, 45, 40.2, 38, 38],
+                       [35, 35, 40.2, 42, 42]):
+            for e in self._run(series):
+                seen.add(e["event"])
+                self.assertNotIn("side", e, (series, e))
+        self.assertTrue({"support", "rejection", "cross", "failure"} <= seen, seen)
+

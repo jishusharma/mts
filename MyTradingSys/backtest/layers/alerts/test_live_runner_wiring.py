@@ -45,13 +45,14 @@ class TestRsiFailureSide(unittest.TestCase):
         with mock.patch.object(ll, "rsi_core", return_value=rsi_series):
             return ll.rsi_level_layer(bars)
 
-    def test_support_from_above_fails_below_is_short(self):
+    def test_support_from_above_fails_below_is_alert_only(self):
+        # T09-F3: failure no longer carries a side (untested as a live trade)
         ev = self._run([45, 45, 40.2, 38, 38])
-        self.assertEqual([(e["event"], e.get("side")) for e in ev], [("failure", "short")])
+        self.assertEqual([(e["event"], e.get("side")) for e in ev], [("failure", None)])
 
-    def test_resistance_from_below_fails_above_is_long(self):
+    def test_resistance_from_below_fails_above_is_alert_only(self):
         ev = self._run([35, 35, 40.2, 42, 42])
-        self.assertEqual([(e["event"], e.get("side")) for e in ev], [("failure", "long")])
+        self.assertEqual([(e["event"], e.get("side")) for e in ev], [("failure", None)])
 
     def test_support_rejection_cross_have_no_side(self):
         for series in ([45, 40.2, 45], [35, 40.2, 35], [45, 45, 35]):

@@ -80,6 +80,7 @@ runtime_data/screenshot_extracts/img/
 
 # --- Live tree marker (only in the JIS-NB checkout the live system runs from; see system/PARALLEL.md) ---
 .mts_live
+.gateway_owner
 
 # --- Backups / rejected worker output (archive via scripts/dev/declutter_backups.py) ---
 *.pre_*

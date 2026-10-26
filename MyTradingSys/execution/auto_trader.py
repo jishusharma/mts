@@ -98,9 +98,9 @@ DEFAULT_CONFIG = {
     # (layer, event) -> side. "direction" means: up -> long, down -> short; "level" means the side comes from the level
     # crossed (CROSS_SIDE_BY_LEVEL), everything else unmapped. A "side" field on the alert wins.
     "layer_rules": {
+        # T09-F3: rsi_events trades only support@40 long (the one event a backtest covered); cross / failure /
+        # rejection@40 are alert-only. rejection@60 short stays alert-only until the layer watches level 60 (own card).
         "rsi:support": "long",
-        "rsi:rejection": "short",
-        "rsi:cross": "level",
     },
     "disabled_layers": [],
     # source prefix -> named testnet account (credentials .secrets/testnet_<label>.secret.json).
@@ -358,8 +358,18 @@ def apply_venue_price(sig: dict, mark_fn=None):
 CROSS_SIDE_BY_LEVEL = {(40.0, "down"): "short", (60.0, "up"): "long"}
 
 
+# T09-F3: events of the rsi_events layer that live may trade (alert "side" field and layer_rules overlays in the config
+# file cannot widen this). Anything else, a missing or odd event included, is alert-only = no side = rejected.
+RSI_EVENTS_TRADED = frozenset({"support"})
+
+
 def layer_side(alert: dict, cfg: dict):
     """Side for a layer alert, or None if no rule maps it."""
+    if alert.get("layer") == "rsi" and alert.get("sub") in (None, "rsi_events"):
+        if alert.get("event") not in RSI_EVENTS_TRADED:
+            return None                                   # fail closed: untested / unknown / missing event
+        rule = cfg["layer_rules"].get("rsi:support")
+        return rule if rule in ("long", "short") else None
     if alert.get("side") in ("long", "short"):
         return alert["side"]
     rule = cfg["layer_rules"].get(f"{alert.get('layer')}:{alert.get('event')}")
