@@ -25,14 +25,3 @@ Event-table files are read with pandas `usecols` for timestamp, side, status, en
 Maximum bar/decision time used: 2024-06-30 23:45 (1719791100000) <= 1719792000000 (a decision time equal to the cut is the close of a bar that opened before it). PASS.
 
 DEV_EXT 1m files (F:/MTS/data/dev_ext_2019_2021) are absent on this machine (JIS-NB): not opened.
-
-## S3 context read run 2026-10-26 17:44 UTC (run_context_read.py)
-
-| file | min bar/ts used | max bar/ts used | rows | note |
-|---|---|---|---|---|
-| bigtrade/cache/perp/klines_1h.npz | 2022-01-01 00:00 | 2024-06-30 23:00 | 21888 | np.load reads whole arrays; mask t < cut applied before any value is used |
-| run/context_dev.csv (1d rows) | 2020-01-01 00:00 | 2024-06-30 00:00 | 1643 | context rows incl. DEV_EXT days; only used where available_at < decision_ts |
-| run/context_dev.csv (4h rows) | 2022-01-01 00:00 | 2024-06-30 20:00 | 5472 | BBWP_4h only |
-| decision times (3.1 points) | 2022-01-01 01:00 | 2024-06-30 00:00 | 21864 | decision = bar close; a time equal to the cut is the close of a bar that opened before it |
-
-Maximum bar/decision time used: 2024-06-30 23:00 (1719788400000) < 1719792000000. PASS. DEV_EXT perp 1h bars (2020-21): absent, not opened.
