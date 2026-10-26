@@ -7,11 +7,15 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-26T22:57:36Z",
-    "misses": 16,
+    "folded": "2026-10-26T23:04:49Z",
+    "misses": 21,
     "reads": [
       "scripts/operator/runaway_check.ps1",
+      "scripts/dev/test_runaway_check.py",
       "scripts/dev/run_extra_tests.py",
+      "scripts/dev/mts_signal.py",
+      "MyTradingSys/system/NUC_SHUTDOWN_HANDOVER.md",
+      "scripts/operator/nuc_health.ps1",
       "MyTradingSys/system/RUNAWAY_GUARD.md",
       "MyTradingSys/system/QUICK_ANSWERS.md"
     ],
