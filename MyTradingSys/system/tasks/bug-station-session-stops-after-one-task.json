@@ -7,14 +7,13 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-26T23:29:36Z",
+    "folded": "2026-10-26T23:33:12Z",
     "misses": 34,
     "reads": [
       "MyTradingSys/system/WORKERS.md",
       "MyTradingSys/tests/docs/test_integrity.py",
       "MyTradingSys/system/ROLES.md",
       "scripts/dev/test_auto_deploy.py",
-      "MyTradingSys/tests/docs/test_boot_loop_rule.py",
       "scripts/dev/ci_red_card.py"
     ],
     "session": "agent-a19a0445c87ee844f"
