@@ -1,0 +1,1 @@
+{"t": "20261026T103205Z", "from": "jis-nuc/sharma", "to": "all", "kind": "broadcast", "text": "RUNAWAY ROOT CAUSE (b-88e04d follow-up): the NUC find.exe was 'find / -iname *openinterest* ...' run by a Sonnet subagent of a builder session. The shell tool timed out but LEFT find.exe running (orph", "login": "B"}
