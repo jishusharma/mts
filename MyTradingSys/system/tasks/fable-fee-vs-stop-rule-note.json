@@ -1,7 +1,24 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T16:19:15Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": 30,
+    "folded": "2026-10-26T16:19:22Z",
+    "misses": 13,
+    "reads": [
+      "MyTradingSys/backtest/layers/FORMULAS.md",
+      "MyTradingSys/research/sim_desk/REVIEW_FABLE_2026-10-25.md",
+      "MyTradingSys/research/cryptocred_htf_2026-10/PRE_REG_CRYPTOCRED_HTF.md",
+      "MyTradingSys/research/sim_desk/studies/levels.py",
+      "MyTradingSys/research/fast_track_2026-09-27/T080_MAKER_MODEL_2026-10-09.md",
+      "MyTradingSys/research/sim_desk/desk.py",
+      "MyTradingSys/backtest/fees.py",
+      "MyTradingSys/research/cryptocred_htf_2026-10/COUNT_POWER.md"
+    ],
+    "session": "5af5324d-ee5b-44eb-af4f-b438293d74af"
+  },
   "created": "2026-10-26T22:50:00Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/design_cards_2026-10-26/FABLE_FEE_STOP_RULE.md exists: rule, table of fee share of risk by stop width, SOURCED/OURS label per number, and which sim-desk study should show it",
@@ -12,7 +29,14 @@
   "goal": "Turn the finding that a tight stop makes a 0.07 % round trip a third of the risk into one short rule and table: the minimum stop width (percent, and fee share in R) a layer idea needs before its gross edge can survive fees. Label each number SOURCED or OURS.",
   "id": "fable-fee-vs-stop-rule-note",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "FABLE_FEE_STOP_RULE.md: stop width >= 4x RT fee (fee share of R <= 0.25 R, SOURCED gate 6)",
+      "ref": "91170f43c",
+      "utc": "2026-10-26T16:19:15Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -22,7 +46,12 @@
   "refined_by": "super-c-design",
   "refreshed": "2026-10-25T22:50:22Z",
   "refs": [],
-  "result": "",
+  "result": "FABLE_FEE_STOP_RULE.md: stop width >= 4x RT fee (fee share of R <= 0.25 R, SOURCED gate 6); floors 0.40% taker / 0.20% maker entry (SOURCED gate 0a); 3-mix table cross-checked vs CryptoCred cost_r; surface on levels study",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/design_cards_2026-10-26/FABLE_FEE_STOP_RULE.md (new file only)"
   ],
@@ -35,13 +64,14 @@
     "MyTradingSys/research/sim_desk/REVIEW_FABLE_2026-10-25.md",
     "MyTradingSys/backtest/layers/FORMULAS.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read REVIEW_FABLE_2026-10-25.md section 1 (0.07 % round trip) and FORMULAS.md sections 17 and 19 (taker 0.0005 per side = 0.10 % round trip, maker 0.0002); show both and label which is SOURCED",
     "Stop floors 0.40 % taker / 0.20 % maker: cite cryptocred_htf_2026-10/PRE_REG_CRYPTOCRED_HTF.md or fast_track_2026-09-27/T080_MAKER_MODEL_2026-10-09.md, whichever has them; do not attribute them to Tom unless a Tom file says so",
     "Compute the table from FORMULAS.md fee definitions, independent of study code",
     "Write the rule; ship"
   ],
+  "taken": "2026-10-26T16:19:15Z",
   "tests": "Docs card: table numbers recomputable by hand from the fee and stop inputs shown",
   "title": "Fable: one-page rule for minimum stop width versus fees across layers",
   "weight": "CRUCIAL",

@@ -16,7 +16,7 @@ ARCHITECTURE.md. Test `MyTradingSys/tests/docs/test_debugging_spine.py` fails wh
 | ship refused / gate red | re-read the full `sync.py ship` output; `python scripts/dev/run_all_tests.py --quick` | `runtime_data/gate_timing.jsonl` (per step), gate record in the worktree git dir | the shipping session |
 | gate picked the wrong tests | `python scripts/dev/gate_select.py`; `python scripts/dev/gate_impact.py` | GATE_SPEED.md | MTS_Doctor |
 | CI red on fast-track | `python scripts/dev/ci_watch.py`; `python scripts/dev/ci_red_card.py` (dry run; `--apply` files the card) | `~/.claude/mts-ci-watch.json` | whoever takes the `ci-<sha>` card |
-| Allow once dialog / silent denial in an unattended run | `python scripts/dev/perm_audit.py` (read-only; exit 1 = FINDING) | `.claude/settings.local.json` (untracked, per machine) | the machine's operator session; fix via `mts_signal.py broadcast --cmd` |
+| Allow once dialog / silent denial in an unattended run | `python scripts/dev/perm_audit.py` (read-only; exit 1 = FINDING); `python scripts/dev/perm_hook.py status`; UNATTENDED_PERMISSIONS.md | `.claude/settings.local.json` (untracked, per machine) | the machine's operator session; fix via `mts_signal.py broadcast --cmd` |
 | work seems lost | `python scripts/dev/sync.py where --all` | every worktree | the session that made it |
 | claim blocks you | `python scripts/dev/sync.py claims` | `MyTradingSys/system/claims/` | claim holder; `sync.py release <slug>` |
 | new code is not wired | `python scripts/dev/wiring_scan.py --check` | `MyTradingSys/system/wiring_registry.json` | the shipping session |

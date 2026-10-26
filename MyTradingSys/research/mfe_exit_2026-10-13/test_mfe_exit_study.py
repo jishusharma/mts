@@ -88,5 +88,27 @@ class TradeMatrix(unittest.TestCase):
             self.assertAlmostEqual(tm["net"][0, 3], gross[3] - M.FEE_RT - 0.001 * sign, places=12)
 
 
+class DevOnlyFilter(unittest.TestCase):
+    def test_dev_pass_excludes_fire_after_2024_07_01_whatever_its_label(self):
+        import csv, tempfile
+        hdr = ["t_fire_ms", "tradable", "side", "atr", "split"]
+        rows = [[1719791999000, "1", "long", "1.0", "TRAIN"],       # 2024-06-30 23:59:59 UTC, kept
+                [1722470400000, "1", "long", "1.0", "TRAIN"],       # 2024-08-01, stale TRAIN label (T07-F1), dropped
+                [1722470400000, "1", "short", "1.0", "VALIDATE"]]   # 2024-08-01, dropped
+        with tempfile.TemporaryDirectory() as d:
+            os.makedirs(os.path.join(d, "fires"))
+            with open(os.path.join(d, "fires", "f.csv"), "w", newline="") as fh:
+                w = csv.writer(fh)
+                w.writerow(hdr)
+                w.writerows(rows)
+            old = (M.DEV_ONLY, M.D)
+            M.DEV_ONLY, M.D = True, d
+            try:
+                got = M.read_fires("f.csv")
+            finally:
+                M.DEV_ONLY, M.D = old
+        self.assertEqual([f[0] for f in got], [1719791999000])
+
+
 if __name__ == "__main__":
     unittest.main()
