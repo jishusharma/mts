@@ -42,6 +42,17 @@ class FakeYDL:
 
 
 class T(unittest.TestCase):
+    def test_partial_rate_limit_fails_even_with_cached_video(self):
+        with mock.patch.object(f, "list_channel", return_value=LISTING[:2]), \
+                mock.patch.object(f, "fetch", side_effect=["EXISTS", "RATELIMIT"]), \
+                mock.patch.object(f.time, "sleep"):
+            self.assertEqual(f.main(["--analyst", "Krown", "--channel", "@x", "--latest", "2"]), 1)
+
+    def test_no_recent_videos_is_success(self):
+        with mock.patch.object(f, "list_channel", return_value=LISTING[:1]), \
+                mock.patch.object(f, "video_date", return_value="2026-10-01"):
+            self.assertEqual(f.main(["--analyst", "Krown", "--channel", "@x", "--since", "2026-10-22"]), 0)
+
     def run_main(self, args, nosubs=()):
         FakeYDL.nosubs = set(nosubs)
         with tempfile.TemporaryDirectory() as td:
