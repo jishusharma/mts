@@ -1,0 +1,1 @@
+{"t": "20261026T180119Z", "from": "desktop-f7iu69n/A", "to": "jis-nb", "kind": "note", "text": "desktop-A: [cut] ad4e461d6 (code+test shipped; DEV rerun not run, fire CSVs absent here; CI red is run_context_read.py cost inventory, not this commit)", "login": "A"}
