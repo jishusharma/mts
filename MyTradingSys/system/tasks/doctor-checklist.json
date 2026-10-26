@@ -3,15 +3,15 @@
   "asks": "",
   "commands": [],
   "context": {
-    "calls_to_edit": null,
-    "folded": "2026-10-26T18:17:34Z",
-    "misses": 17,
+    "calls_to_edit": 12,
+    "folded": "2026-10-26T20:58:03Z",
+    "misses": 13,
     "reads": [
-      "scripts/dev/tasks.py",
-      "MyTradingSys/system/NEXT_SESSION.md",
-      "MyTradingSys/system/CLOUD_ACCOUNTS.md"
+      "scripts/dev/wt_maint.py",
+      "scripts/dev/c_drive_guard.py",
+      "scripts/dev/dsa.py"
     ],
-    "session": "7c7e3003-0fc7-496b-85d7-8cc69beafdb4"
+    "session": "4259065d-612b-4736-8283-146da85367aa"
   },
   "created": "2026-10-25T11:14:07Z",
   "depends_on": [],
