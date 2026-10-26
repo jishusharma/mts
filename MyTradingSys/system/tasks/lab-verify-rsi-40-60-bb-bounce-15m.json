@@ -1,0 +1,52 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/shot.py status"
+  ],
+  "created": "2026-10-26T18:20:00Z",
+  "depends_on": [],
+  "done_when": "event table for the RSI 40-60 + lower-Bollinger bounce rule on BTCUSDT 15m (events, 4/8/16-bar forward return gross and after 0.2% round-trip fee, unconditional baseline, t-stat), DEV/VALIDATION split stated, trial count logged, verdict worth-a-layer or not",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Test the operator's 2026-10-26 live teaching: in an uptrend RSI(14) holds 40 on pullbacks, breaks under 40 for 2-3 candles then returns and takes support on 40 while price tags the lower Bollinger band, and the mirror at RSI 60 and the upper band; also RSI higher low against price wick lows (divergence). Does it beat the unconditional forward return after fees?",
+  "id": "lab-verify-rsi-40-60-bb-bounce-15m",
+  "lane": "DSA",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "SOURCED (operator, live chat 2026-10-26 18:12Z, shot a3330d10c427): \"when it is on an uptrend, it will take support on 40 most of the time. When it becomes negative, it will stay negative for 2-3 candles, and then it will try to jump back inside and take support on 40 and then move up.\" and \"if they are happening there [lower time frames], then expect them to happen in higher time frames\". Worked examples marked by him on 15m BTCUSDT 2026-10-26: 04:00Z, 07:30Z, 14:15Z (buys), ~05:15Z and ~15:30Z (sells at upper band, RSI crossed 60 briefly). OURS (judgement, to be tuned on DEV only): RSI 14, BB 20/2, 'broke 40' = RSI under 40 for 1 to 3 bars, 'tags band' = low at or under lower band within 3 bars, trend filter = close above SMA200 on 15m or 1h, exits at 4/8/16 bars. Mirror the sell side. Multi-timeframe claim (lower TF first) is a second test, 5m event preceding 15m event.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-26T18:20:00Z",
+  "refs": [
+    "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/READ.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "read-only: Binance spot BTCUSDT 15m and 5m klines from data-api.binance.vision, shot a3330d10c427"
+  ],
+  "scope_out": [
+    "any code change outside the new research folder",
+    "live path"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Pull 15m (and 5m) klines for as many days as the API gives, compute RSI14 Wilder and BB20/2 independently",
+    "Mark the three examples from the shot first; confirm the rule fires on 04:00, 07:30 and 14:15Z before anything else",
+    "Count events, forward returns 4/8/16 bars, baseline, fee-net, t-stat; split DEV then VALIDATION once, log variants in the trial ledger",
+    "Divergence arm: RSI higher low vs price lower low across two swing lows, same table",
+    "Write REPORT.md in a new research folder, verdict: worth a layer card or closed"
+  ],
+  "tests": "",
+  "title": "LAB-VERIFY: RSI 40-60 range plus Bollinger-band bounce rule (operator live teaching) on BTC 15m, fee-net",
+  "weight": "",
+  "worker": "agent"
+}
