@@ -179,7 +179,7 @@ Select-String -Path .\MyTradingSys\research\MTS_DICTIONARY.md -Pattern 'WATCH|SE
 
 ### Verify VVP-001 vs COMPILED_DECISIONS RSI conflict
 ```powershell
-Select-String -Path .\MyTradingSys\research\visual_validation_protocol_vvp001.md -Pattern 'RSI' -Context 2,2
+Select-String -Path .\MyTradingSys\research\_archive\loose_2026-10\visual_validation_protocol_vvp001.md -Pattern 'RSI' -Context 2,2
 Select-String -Path .\MyTradingSys\system\COMPILED_DECISIONS.md -Pattern 'RSI|Malkans' -Context 2,2
 ```
 

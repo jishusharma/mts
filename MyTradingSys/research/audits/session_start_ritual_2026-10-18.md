@@ -3,14 +3,14 @@
 Date: 2026-10-18
 Author: Gemini Flash worker (MTS session start audit)
 Registry: B183 (follow-up to B172)
-Reference goals: `MyTradingSys/research/TOKEN_AUDIT_2026-10-12.md` (B172)
+Reference goals: `MyTradingSys/research/_archive/loose_2026-10/TOKEN_AUDIT_2026-10-12.md` (B172)
 Source data: `~/.claude/projects/*/*.jsonl` transcripts (last 3 days)
 
 ---
 
 ## 1. Executive Summary & First-Turn Input by Session Class
 
-Under B172 (`MyTradingSys/research/TOKEN_AUDIT_2026-10-12.md:53-55`), the measured always-loaded context across all sessions was 63k-73k tokens (mean dispatcher-kick: 65,188 tokens). The goal of AI-health optimizations was to reduce always-loaded context and eliminate unnecessary prompt & ritual re-reads.
+Under B172 (`MyTradingSys/research/_archive/loose_2026-10/TOKEN_AUDIT_2026-10-12.md:53-55`), the measured always-loaded context across all sessions was 63k-73k tokens (mean dispatcher-kick: 65,188 tokens). The goal of AI-health optimizations was to reduce always-loaded context and eliminate unnecessary prompt & ritual re-reads.
 
 Over the last 3 days (measured via `scripts/dev/token_audit.py --days 3`), session classes exhibit distinct input profiles:
 
@@ -109,7 +109,7 @@ The startup ritual prescribed in `CLAUDE.md:5-11` specifies:
 
 ## 5. Comparison to B172 Goals
 
-In `MyTradingSys/research/TOKEN_AUDIT_2026-10-12.md:60-68`, B172 set 5 ranked cuts:
+In `MyTradingSys/research/_archive/loose_2026-10/TOKEN_AUDIT_2026-10-12.md:60-68`, B172 set 5 ranked cuts:
 
 | B172 Goal / Ranked Cut | B172 Target | Current Status in Transcripts (2026-10-18) | Assessment |
 |---|---|---|---|

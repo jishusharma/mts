@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T22:43:30Z",
   "commands": [],
   "created": "2026-10-24T13:45:03Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "super-session-coordinator-stalls-when-it",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "shipped 5d9748041 (supervisor.py watchcheck), CI green",
+      "ref": "acc22c560",
+      "utc": "2026-10-25T22:43:30Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -37,7 +44,12 @@
   "refined_by": "",
   "refreshed": "2026-10-24T21:34:27Z",
   "refs": [],
-  "result": "",
+  "result": "shipped 5d9748041 (supervisor.py watchcheck), CI green",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/supervisor.py",
     "scripts/dev/test_supervisor.py",
@@ -51,10 +63,11 @@
   "sources": [
     "SUPER_SESSION.md:14 D6 and :23 step 5 already say 'start the watcher' (design commit a79655393) yet pilot 1 stalled 2026-10-24 11:51Z-13:28Z: the rule had no check; scripts/dev/supervisor.py:474 wait_for_transition"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "supervisor.py main(): add watchcheck to the login-resolution tuple (about line 1228, next to plan/handover/wait/tick)"
   ],
+  "taken": "2026-10-25T22:43:30Z",
   "tests": "scripts/dev/test_supervisor.py: five new tests above (watchcheck no marker / live / dead pid / expired / marker removed after wait). All fail on the current tree: no watchcheck subcommand exists.",
   "title": "Super-session coordinator stalls when its turn ends with no wake source: pilot 1 coordinator idle 11:51Z-13:28Z (97 min of a 4 h pilot) after the card-4 revert, card 5 unshipped, until the Doctor messaged it. Every coordinator turn must end with a live wake (background watcher on a ship, worker or CI run); a turn ending with none is a defect it reports. Source: pilot 1 transcript local_1251084b.",
   "weight": "IMPORTANT",

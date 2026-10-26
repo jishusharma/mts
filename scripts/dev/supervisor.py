@@ -471,6 +471,49 @@ def _detect_transition(baseline: dict, current: dict) -> str | None:
     return None
 
 
+def _watcher_file(login: str | None, home=None) -> Path:
+    return loop_home(home) / f"{(login or 'any')}-watcher.json"
+
+
+def _pid_alive(pid: int) -> bool:
+    if pid <= 0:
+        return False
+    if os.name == "nt":      # os.kill(pid, 0) would TERMINATE the process on Windows
+        import ctypes
+        k = ctypes.windll.kernel32
+        h = k.OpenProcess(0x1000, False, pid)      # PROCESS_QUERY_LIMITED_INFORMATION
+        if not h:
+            return False
+        code = ctypes.c_ulong()
+        ok = k.GetExitCodeProcess(h, ctypes.byref(code))
+        k.CloseHandle(h)
+        return bool(ok) and code.value == 259      # STILL_ACTIVE
+    try:
+        os.kill(pid, 0)
+        return True
+    except PermissionError:
+        return True
+    except OSError:
+        return False
+
+
+def watchcheck(login: str | None = None, home=None, now: datetime | None = None, alive=None) -> tuple[int, str]:
+    """Last call of every coordinator turn: exit 0 when a live, unexpired `wait` watcher marker exists, else (4, NO WAKE SOURCE ...). Fails closed."""
+    now = now or datetime.now(timezone.utc)
+    alive_fn = alive or _pid_alive
+    try:
+        d = json.loads(_watcher_file(login, home).read_text(encoding="utf-8"))
+        pid = int(d["pid"])
+        exp = _utc(str(d["expires"]))
+    except (OSError, ValueError, KeyError, TypeError):
+        return 4, "NO WAKE SOURCE: no watcher marker; start `supervisor.py wait` in the background before ending the turn"
+    if exp is None or exp <= now:
+        return 4, "NO WAKE SOURCE: watcher marker expired; start `supervisor.py wait` in the background before ending the turn"
+    if not alive_fn(pid):
+        return 4, f"NO WAKE SOURCE: watcher pid {pid} is not running; start `supervisor.py wait` in the background before ending the turn"
+    return 0, f"WAKE SOURCE OK: watcher pid {pid} until {d['expires']}"
+
+
 def wait_for_transition(
     repo: Path = REPO,
     shas: list[str] | None = None,
@@ -487,6 +530,23 @@ def wait_for_transition(
     with `login`, also exits (0, ACTIONABLE ...) from the first poll on when that login's last plan left a worker slot and ready cards
     unused (_actionable), at most once per plan (`<login>-woke.txt`); exits (3, reason) when `timeout` seconds elapse with no transition.
     """
+    marker = _watcher_file(login, home)
+    try:
+        marker.parent.mkdir(parents=True, exist_ok=True)
+        exp = datetime.now(timezone.utc) + timedelta(seconds=parse_duration(timeout) + 120)
+        marker.write_text(json.dumps({"pid": os.getpid(), "expires": exp.strftime("%Y-%m-%dT%H:%MZ")}), encoding="utf-8", newline=chr(10))
+    except OSError:
+        pass
+    try:
+        return _wait_loop(repo, shas, timeout, interval, probe, fetcher, sleeper, login, home)
+    finally:
+        try:
+            marker.unlink()
+        except OSError:
+            pass
+
+
+def _wait_loop(repo, shas, timeout, interval, probe, fetcher, sleeper, login, home) -> tuple[int, str]:
     sha_list = parse_shas_arg(shas)
     timeout_s = parse_duration(timeout)
     interval_s = max(1, parse_duration(interval))
@@ -1211,6 +1271,9 @@ def main(argv: list[str] | None = None) -> int:
     p_wait.add_argument("--interval", default="300", help="poll interval in seconds or with s/m/h suffix (default 300)")
     p_wait.add_argument("--login", default=None, help="A|B|C (default: detected from the app account): also wake when its last plan left a slot and cards unused")
 
+    p_wc = sub.add_parser("watchcheck", help="last call of a coordinator turn: exit 4 + NO WAKE SOURCE when no live watcher")
+    p_wc.add_argument("--login", default=None, help="A|B|C (default: detected from the app account)")
+
     p_brief = sub.add_parser("brief", help="generate exact start prompt text for a worker session")
     p_brief.add_argument("card", help="card id to brief")
     p_brief.add_argument("--role", default=None, help="role to start worker as (defaults to Builder)")
@@ -1233,7 +1296,7 @@ def main(argv: list[str] | None = None) -> int:
     p_ho.add_argument("--no-send", action="store_true", help="do not send the ENDED heartbeat")
 
     args = ap.parse_args(argv)
-    if args.cmd in ("plan", "handover", "wait", "tick"):
+    if args.cmd in ("plan", "handover", "wait", "tick", "watchcheck"):
         try:
             import mts_signal      # the account is the truth: a typed letter that differs is overridden (operator 2026-10-23)
             det, mism = mts_signal.resolve_login(args.login or "")
@@ -1276,6 +1339,10 @@ def main(argv: list[str] | None = None) -> int:
             login=(args.login or "").strip().upper()[:1] or None,
         )
         print(reason)
+        return rc
+    if args.cmd == "watchcheck":
+        rc, msg = watchcheck((args.login or "").strip().upper()[:1] or None)
+        print(msg)
         return rc
     if args.cmd == "brief":
         out = brief(args.card, role=args.role, repo=REPO)

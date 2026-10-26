@@ -4,32 +4,58 @@
   "commands": [],
   "created": "2026-10-22T15:42:31Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "python scripts/dev/make_status.py prints 'GO-PRIVATE: A=0 B=2 (carry_basis_2026-10-18, not a layer: operator judges)' on today's trunk; test_make_status.py covers 0/0, A=1, and B rows; the line never touches repo settings.",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "make_status.py prints one GO-PRIVATE line in STATUS.md: A = entries in MyTradingSys/execution/promoted_setups.json; B = PASS rows in research/VERDICTS.csv whose split_read includes VALIDATION or HOLDOUT, listed by study_dir. Any A or B above zero reads TRIGGER with the ids and first-seen date.",
   "id": "go-private-trigger-notify-operator-when-",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "STATUS.md: Hand-over freshness (flags NEXT_SESSION blocks that newer commits overtook); CL",
+      "ref": "1687ee80309d",
+      "utc": "2026-10-21T12:28:48Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "OPERATOR QUOTE: \"when we have some edge, there is a hook that triggers a threshold when I am notified that okay, maybe it's time to go private\" (2026-10-22, q-go-private-on-edge). Fire on the first entry in MyTradingSys/execution/promoted_setups.json or a fee-net OOS PASS in research/VERDICTS.csv; notify only (Inbox/STATUS line), never change repo visibility; fail-first test.",
+  "note": "REVIEWED:2026-10-26 T0-ONLY | DRAFT 2026-10-26 Session_Planner (OURS): notify only, never changes visibility (operator 2026-10-22 q-go-private-on-edge). DECISION (OURS): carry_basis PASS rows are shown but labelled not-a-layer. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:18:03Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "scripts/dev/make_status.py",
+    "scripts/dev/test_make_status.py"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "live path, orders, deploy, restarts",
+    "new hooks, gate steps or rules beyond the card"
+  ],
+  "scope_sha": "1687ee80309d",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/execution/promoted_setups.json",
+    "MyTradingSys/research/VERDICTS.csv",
+    "card note: operator quote 2026-10-22"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read make_status.py get_ci_line and main to see how lines are assembled.",
+    "Write the failing test with fixture promoted_setups.json and VERDICTS.csv rows.",
+    "Add get_go_private_line() and print it under the CI green line."
+  ],
+  "tests": "scripts/dev/test_make_status.py::test_go_private_line fails now (no function) and passes: entries=[] and no OOS PASS gives A=0 B=0 NO TRIGGER; one entry gives TRIGGER.",
   "title": "Go-private trigger: notify operator when a layer first passes its fee-net OOS gate",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

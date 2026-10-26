@@ -69,7 +69,7 @@
     "bytes": 14406,
     "lines": 115
   },
-  "MyTradingSys/research/MARKET_GUIDE_RESULTS_2026-10-07.md": {
+  "MyTradingSys/research/_archive/loose_2026-10/MARKET_GUIDE_RESULTS_2026-10-07.md": {
     "sha256": "eca6ff01506f101723ef9f20f40120236a5f493fb8963292cd3fd82a112471e9",
     "bytes": 4277,
     "lines": 48
@@ -129,7 +129,7 @@
     "bytes": 1703,
     "lines": 48
   },
-  "MyTradingSys/research/T065_LAZYBEAR_SURVEY.md": {
+  "MyTradingSys/research/_archive/loose_2026-10/T065_LAZYBEAR_SURVEY.md": {
     "sha256": "3d97b2addb017eeacae617a83035a18083fd032ce44dd211a7e1d0f1a8ee7ac4",
     "bytes": 8589,
     "lines": 71
@@ -159,7 +159,7 @@
     "bytes": 2298,
     "lines": 36
   },
-  "MyTradingSys/research/AUDIT_CLOSEOUT_2026-10-07.md": {
+  "MyTradingSys/research/_archive/loose_2026-10/AUDIT_CLOSEOUT_2026-10-07.md": {
     "sha256": "b9dd755a3b5cb35e2739c8365c1df763abd5f539b37786e21d3ccdd62e6fa995",
     "bytes": 6658,
     "lines": 67

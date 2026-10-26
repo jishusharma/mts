@@ -4,33 +4,64 @@
   "commands": [],
   "created": "2026-10-24T09:07:39Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "The three rules are present in the named rule files in at most as many lines as were removed elsewhere in the same files; CLAUDE.md stays under its size cap (test_integrity 7 passes); no new file.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Write recommendations 1-3 of research/mts_doctor/context_cost_2026-10-24.md into the existing rule files (SUPER_SESSION.md D5, CLAUDE.md step 5), net line count not higher: (1) a session about to idle over 1 h with context over ~100k compacts first; never switch model or fast mode mid-session; (2) operator chats: a new topic starts a fresh session; (3) wide reading goes to a subagent that returns counts, not dumps. Measured 7 days: mid-session cache misses about 14% of cost (126 full rewrites), sessions over 200 turns 39% of context.",
+  "goal": "Write recommendations 1-3 of research/mts_doctor/context_cost_2026-10-24.md into the existing rule files (SUPER_SESSION.md D5, CLAUDE.md step 5 or the Lead/Supervisor role): compact before idling over 1 h at over ~100k context, never switch model or fast mode mid-session, a new operator topic starts a fresh session, wide reading goes to a subagent that returns counts.",
   "id": "context-cost-rules-compact-before-idle-o",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nb/auto-compact-at-25-for-all-se",
+      "ref": "80e8e1cef938",
+      "utc": "2026-10-25T19:30:06Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "80e8e1cef938 Merge remote-tracking branch 'origin/fast-track' into jis-nb/auto-compact-at-",
+      "ref": "MyTradingSys/system/SUPER_SESSION.md",
+      "utc": "2026-10-25T19:30:06Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-26 T0-ONLY | DRAFT 2026-10-26 Session_Planner (OURS): docs only; net line count not higher. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:17:37Z",
   "refs": [
     "MyTradingSys/research/mts_doctor/context_cost_2026-10-24.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/system/SUPER_SESSION.md",
+    "MyTradingSys/system/roles/lead.md",
+    "MyTradingSys/research/mts_doctor/context_cost_2026-10-24.md"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "live path, orders, deploy, restarts",
+    "new hooks, gate steps or rules beyond the card"
+  ],
+  "scope_sha": "80e8e1cef938",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/mts_doctor/context_cost_2026-10-24.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read context_cost_2026-10-24.md recommendations 1-3 and the existing D5 and lead.md lines; find an existing line each can replace.",
+    "Edit in place (replace, do not append); run test_integrity and role size tests."
+  ],
+  "tests": "python -m pytest MyTradingSys/tests/docs/test_integrity.py MyTradingSys/system/roles/test_role_budget.py -q passes; git diff --stat shows added lines <= removed lines.",
   "title": "Context cost rules: compact before idle over 1h, no mid-session model switch, fresh session per operator topic (rule text, no tool)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

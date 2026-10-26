@@ -1,7 +1,7 @@
 # Imbalance Analysts Survey Review & Ingestion Strategy Evaluation
 **Date**: 2026-10-18  
 **Author**: Gemini Flash Worker (Session `review-imbalance-analysts-report-and-imp`)  
-**Scope Ref**: `MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md`  
+**Scope Ref**: `MyTradingSys/research/_archive/loose_2026-10/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md`  
 **Related Items**: `MyTradingSys/items/B162_qriptal_signal_layer.md`, `MyTradingSys/research/imbalance_qriptal_2026-10-16/README.md`  
 **Status**: REVIEW COMPLETE & INGESTION ARCHITECTURE SPECIFIED  
 
@@ -9,7 +9,7 @@
 
 ## 1. Executive Review of Survey Report
 
-We conducted a thorough technical review of `MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md` across sections 5, 6, 7, and 8.
+We conducted a thorough technical review of `MyTradingSys/research/_archive/loose_2026-10/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md` across sections 5, 6, 7, and 8.
 
 ### 1.1 Alignment with MTS Baseline (`B162` & `imbalance_qriptal_2026-10-16`)
 - **Baseline Context**: In MTS, Habib (Qriptal) was evaluated under `B162` and `imbalance_qriptal_2026-10-16/README.md`. Habib's core construct is the **Volume Anomaly Candle** (high volume spike with narrow candle body, indicating trapped aggressive traders or absorption).

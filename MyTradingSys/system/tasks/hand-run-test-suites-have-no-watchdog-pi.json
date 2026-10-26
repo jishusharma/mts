@@ -15,9 +15,9 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "PARKED 2026-10-26 Session_Planner: CRITICAL gate code (run_all_tests.py); the full gate keeps no step cap on purpose (step_timeout_for); one 50 min hang is the only catch; ship-under-2-min owns that file now; re-file after it ships | ",
   "prio": 2,
-  "refine_tries": 0,
+  "refine_tries": 1,
   "refined_by": "",
   "refs": [
     "MyTradingSys/research/mts_doctor/PILOT_super_session_2026-10-24.md"
@@ -27,7 +27,7 @@
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "refined",
   "steps": [],
   "tests": "",
   "title": "Hand-run test suites have no watchdog: pilot 1 card 2's run_all_tests hung 50 min (1.4 s CPU) unnoticed; add a timeout/no-progress kill or forbid hand-runs outside sync.py ship (Builder)",

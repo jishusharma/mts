@@ -108,14 +108,14 @@ execution/reconciler.py) written but syntax-checked only - zero network
 calls have succeeded because no testnet key exists. executor.py has a
 hard refusal guard in main() specifically because it has never touched a
 real order book. Full gap list and four questions for Opus 5.5 in
-MyTradingSys/research/OPUS_REVIEW_REQUEST.md. Known real gaps (not
+MyTradingSys/research/_archive/loose_2026-10/OPUS_REVIEW_REQUEST.md. Known real gaps (not
 cosmetic): trailing_percent and breakeven_after_fills stop types have no
 execution logic yet; reconciler's position-size check doesn't net out
 stop/target fills against entry fills; cancel_all_by_label is a stub
 that cancels ALL orders for the currency (Deribit doesn't filter by
 label server-side). Step 6 (multi-account) deliberately not started -
 its exit criterion needs steps 1-5 proven on testnet first; see
-research/step6_multi_account_design_note.md.
+research/_archive/loose_2026-10/step6_multi_account_design_note.md.
 
 2026-09-27 (parallel operator session, 06:32-06:43Z): Phase 2 crossed.
 Testnet API key created at test.deribit.com (client_id iwOlM5A7, Account=read,

@@ -84,7 +84,7 @@ Every event described in the 5 sources is catalogued below:
    - Sub-minute execution speed: Event 2 was entered 1 second after release (08:30:01 EDT) and exited 15-30 seconds later into the ask [SOURCED: extracts/fresh/extract_izZyd-HrTSE_the_flow_horse.txt:812-814, 901-902, 964-966]. This intra-second execution cannot be scored on 1-minute BTC klines without orderbook depth and latency feeds.
    - Missing execution log: Events 3-8 have no minute timestamps, no exact fills, and constitute discretionary scalping/scratching with oatmeal breaks [SOURCED: extracts/fresh/extract_izZyd-HrTSE_the_flow_horse.txt:1198].
    - Required inputs NOT_IN_DATA for 2022-09-02:
-     - Open interest (OI 5m) in the repo covers only 2025-09-01..2026-09-26 [SOURCED: MyTradingSys/research/PRE_REG_OI_DIVERGENCE_2026-10-10.md:10-11; HOME_FIT_AUDIT_POSITIONING.md:47]. On 2022-09-02, OI is completely NOT_IN_DATA.
+     - Open interest (OI 5m) in the repo covers only 2025-09-01..2026-09-26 [SOURCED: MyTradingSys/research/_archive/loose_2026-10/PRE_REG_OI_DIVERGENCE_2026-10-10.md:10-11; HOME_FIT_AUDIT_POSITIONING.md:47]. On 2022-09-02, OI is completely NOT_IN_DATA.
      - Live S&P equity-index jump feed (SPX), tape speed, and L2 spreads are NOT_IN_DATA.
 
 ## Data Feasibility Check (Step 2)
@@ -92,7 +92,7 @@ Every event described in the 5 sources is catalogued below:
 | Data Type | Repo Coverage | FlowHorse Setup Requirement | Feasibility Verdict |
 |---|---|---|---|
 | BTC 1m klines | 2022-01..2026-09 [SOURCED: MyTradingSys/backtest/vp_pivot_probe.py:46; HOME_FIT_AUDIT_POSITIONING.md:87] | FHR-20, FHR-23, FHR-29 | Present for BTC, but FlowHorse traded ETH on 2022-09-02 and gave no dates for BTC cascade |
-| BTC OI 5m | 2025-09-01..2026-09-26 [SOURCED: MyTradingSys/research/PRE_REG_OI_DIVERGENCE_2026-10-10.md:10-11; HOME_FIT_AUDIT_POSITIONING.md:47] | FHR-19, FHR-21 ("sharp OI jump in a short time") | NOT_IN_DATA for 2022-09-02 (zero coverage before 2025-09) |
+| BTC OI 5m | 2025-09-01..2026-09-26 [SOURCED: MyTradingSys/research/_archive/loose_2026-10/PRE_REG_OI_DIVERGENCE_2026-10-10.md:10-11; HOME_FIT_AUDIT_POSITIONING.md:47] | FHR-19, FHR-21 ("sharp OI jump in a short time") | NOT_IN_DATA for 2022-09-02 (zero coverage before 2025-09) |
 | Liquidation history | None (live forceOrder socket only with $100 price buckets) [SOURCED: src/main/java/datafeed/BinanceLiquidationAccumulator.java:14-15, 31; HOME_FIT_AUDIT_POSITIONING.md:47-48] | FHR-19 ("record liquidation/OI wipe with a blown-out low") | NOT_IN_DATA |
 | Tick & L2 orderbook | None (repo has klines and live feeds, no historic L2/tick) [SOURCED: HOME_FIT_AUDIT_POSITIONING.md:47-48; CROSS_TRADER_RULEBOOK.md:115] | FHR-22 ("spreads blown out, basis dislocated"), FHR-24, FHR-31 | NOT_IN_DATA |
 | Real-time SPX feed | None [SOURCED: CROSS_TRADER_RULEBOOK.md:89] | FHR-24 ("market in on the direction of equity-index jump") | NOT_IN_DATA |

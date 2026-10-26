@@ -30,14 +30,15 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED: gemini-4-argon-low 2026-10-18 - Independent cross-vendor Lab_Guy(GEM-NUC) review (producer=SONNET, class=C2, weight=IMPORTANT): ACCEPT.",
+  "note": "REVIEWED: gemini-4-argon-low 2026-10-18 - Independent cross-vendor Lab_Guy(GEM-NUC) review (producer=SONNET, class=C2, weight=IMPORTANT): ACCEPT.\n2026-10-26 worktree disposition: archived local evidence and exact SHAs in MyTradingSys/research/worktree_disposition_20261026/REPORT.md. Recover only relevant missing proofs; do not rerun or merge stale producer branches. Existing task ownership unchanged.",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-10-18T05:12:41Z",
   "refs": [
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md",
-    "MyTradingSys/research/lab_guy/specs/gap-g7-stop-slippage.md"
+    "MyTradingSys/research/lab_guy/specs/gap-g7-stop-slippage.md",
+    "MyTradingSys/research/worktree_disposition_20261026/REPORT.md"
   ],
   "result": "",
   "scope_in": [

@@ -1,7 +1,7 @@
 file,reason,columns
 MyTradingSys/research/VERDICTS_OVERRIDES.csv,no recognized timestamp column; schema only,study_dir;arm;column;value;source
-MyTradingSys/research/W3_KAPPA_FIRST_2026-10-01.csv,no recognized timestamp column; schema only,id;verdict
-MyTradingSys/research/W3_KAPPA_READER_2026-10-01.csv,no recognized timestamp column; schema only,id;verdict
+MyTradingSys/research/_archive/loose_2026-10/W3_KAPPA_FIRST_2026-10-01.csv,no recognized timestamp column; schema only,id;verdict
+MyTradingSys/research/_archive/loose_2026-10/W3_KAPPA_READER_2026-10-01.csv,no recognized timestamp column; schema only,id;verdict
 MyTradingSys/research/context_factors_2026-10-16/counts_dev_ext.csv,no recognized timestamp column; schema only,factor;value;long_n;long_days;long_days_dev;long_days_ext;short_n;short_days;short_days_dev;short_days_ext;powered_m1;powered_m37
 MyTradingSys/research/context_factors_2026-10-16/trials.csv,no recognized timestamp column; schema only,study;factor;definition;side;count_of;n;split;outcome_read
 MyTradingSys/research/context_factors_pit_2026-10-16/trials.csv,no recognized timestamp column; schema only,trial_id;factor;primary;alternative;reason;n_primary_long;n_primary_short;n_alt_long;n_alt_short;outcome_read

@@ -1,6 +1,6 @@
 """Fabio v3 live emitter (live_runner_cli.py.new, staged MTS-2026-10-02-1930Z-CLI-BLD-fabio-v3-shadow).
 
-Spec: research/FABIO_V3_SOURCING_2026-10-02.md (decision per parameter) and the T5 behaviour in the session brief:
+Spec: research/_archive/loose_2026-10/FABIO_V3_SOURCING_2026-10-02.md (decision per parameter) and the T5 behaviour in the session brief:
   (a) a SHADOW v3 signal is written with a `collection_only` tag;
   (b) a SHADOW v3 signal produces zero orders (the auto-trader's own layer_signal() rejects it, no plan args);
   (c) a SOURCE v3 signal flows like any other fabio.* layer (carries "side", the auto-trader plans it).

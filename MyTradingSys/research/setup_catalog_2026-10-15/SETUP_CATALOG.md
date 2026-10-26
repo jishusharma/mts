@@ -1519,7 +1519,7 @@ Source files (raw promoted by cc3d27bf; V2 extracts all PASS the quote checker):
 | Fabio stop in words | "initial stop is always 'here' on the chart" (the old tally, 0 of 8) | below the protection level, DyS79Eb92Ug (FAB-5); FawPr gives below-reload / below-next-liquidity for the heat-map variants |
 
 ## 6. Unread sources and which gaps they could fill
-From research/transcript_inventory_2026-10-09.md (counts parsed by `transcript_inventory.py`): Tom 84 raw transcripts: 11 V2,
+From research/_archive/loose_2026-10/transcript_inventory_2026-10-09.md (counts parsed by `transcript_inventory.py`): Tom 84 raw transcripts: 11 V2,
 47 V1 only (9 of them gate PASS with anchors), 26 never extracted. Fabio 8 raw, all V1 only, 0 V2. Unread Fabio sessions:
 FABIO_TRADE_LEDGER.md:48 and :90.
 

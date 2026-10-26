@@ -6,7 +6,8 @@
   ],
   "created": "2026-10-23T07:12:27Z",
   "depends_on": [
-    "usage-log-py-per-step-usage-ledger-trans"
+    "usage-log-py-per-step-usage-ledger-trans",
+    "supervisor-handover-fixed-form"
   ],
   "done_when": "supervisor.py plan prints an IDLE line for a fixture with 5h 3% and a ready SONNET card; pace_plan uses the measured k from rows and says (GUESS) only on fallback; tests pass.",
   "est_turns": 20,
@@ -20,10 +21,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS) 2026-10-23: drafted and T0-checked; reviewer Agent blocked by spawn cap (8/h), so no ACCEPT stamp: needs ONE batched Sonnet reviewer pass (or Lab_Guy for CODEX), then stamp REVIEWED:<date> ACCEPT and tasks.py check. Supervisor code is not the live trading path, but the pace logic is shared by all logins: keep the fallback. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): drafted 2026-10-23, unchanged; queued behind supervisor-handover-fixed-form (one editor of supervisor.py) and usage-log-py-per-step-usage-ledger-trans. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -41,7 +42,7 @@
     "scripts/dev/supervisor.py:576 (K_DEFAULT GUESS)",
     "MyTradingSys/research/thinker/2026-10-23_usage_metering.md (Check)"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Add usage_log.measured_k(rows): weekly delta / 5h delta over rows in one window with 5h delta >= 3 points; else None.",
     "estimate_k (supervisor.py:~660) also consults those rows; k_meas or K_DEFAULT stays the fallback.",

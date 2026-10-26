@@ -25,6 +25,12 @@
   "refined_by": "",
   "refreshed": "2026-10-25T20:07:01Z",
   "refs": [],
+  "reroute": {
+    "at": "2026-10-25T23:42:10Z",
+    "desk": "20261025-234210-lf-positioning-gpt-rederive",
+    "to": "DSA",
+    "why": "credits"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/positioning.md (new file only)"
@@ -35,10 +41,10 @@
   "scope_sha": "",
   "size": "S",
   "sources": [
-    "MyTradingSys/research/whale_positioning_evidence_2026-09-12.md",
+    "MyTradingSys/research/_archive/loose_2026-10/whale_positioning_evidence_2026-09-12.md",
     "MyTradingSys/backtest/layers/FORMULAS.md",
-    "MyTradingSys/research/OI_DIVERGENCE_V2_2026-10-10.md",
-    "MyTradingSys/research/OI_EVENT_STUDY_2026-10-10.md"
+    "MyTradingSys/research/_archive/loose_2026-10/OI_DIVERGENCE_V2_2026-10-10.md",
+    "MyTradingSys/research/_archive/loose_2026-10/OI_EVENT_STUDY_2026-10-10.md"
   ],
   "state": "ready",
   "steps": [

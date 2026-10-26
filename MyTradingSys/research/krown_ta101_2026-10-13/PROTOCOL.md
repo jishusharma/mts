@@ -2,8 +2,8 @@
 
 Written before any further extraction, at the operator's request: "check all the lessons we learned in extractions, make sure
 everything is structured from the beginning." Sources read in full: methodology/extraction.md, methodology/playbook.md (Part I),
-research/fast_track_2026-09-27/EXTRACTION_METHOD_V2.md, research/EXTRACTION_ROUND2_2026-10-01.md,
-research/EXTRACTION_TO_ALERT_AUDIT_2026-09-19.md, system/LESSONS_DIGEST.md, system/LESSONS_LEARNED.md (2026-10-12 entry),
+research/fast_track_2026-09-27/EXTRACTION_METHOD_V2.md, research/_archive/loose_2026-10/EXTRACTION_ROUND2_2026-10-01.md,
+research/_archive/loose_2026-10/EXTRACTION_TO_ALERT_AUDIT_2026-09-19.md, system/LESSONS_DIGEST.md, system/LESSONS_LEARNED.md (2026-10-12 entry),
 backtest/PRE_REG_TEMPLATE.md, research/tom_transfer_2026-10-11/ROADMAP.md (F2) and RECALL_DAX.md section 1. The research gate for briefs is methodology/playbook.md Part I (T1-T3/REJECT, verified citations); the former memory notes research-gate-in-briefs and tom-fabio-redefine-direction were retired 2026-10-15.
 
 ## 1. Lessons and how each one applies to Krown

@@ -38,12 +38,12 @@ Do not create cloud/work. Operator cherry-picks.
 
 ## READ THESE (architecture + audits)
 
-- MyTradingSys/research/ARCHITECTURE_TWO_CORES_2026-10-01.md (doctrine).
+- MyTradingSys/research/_archive/loose_2026-10/ARCHITECTURE_TWO_CORES_2026-10-01.md (doctrine).
 - MyTradingSys/PROJECT_VISION.md (ADD-ON, ISOLATE FIRST, PEERS).
 - MyTradingSys/research/fast_track_2026-09-27/WIRING_MAINTENANCE_AUDIT_2026-10-01.md.
-- MyTradingSys/research/REVALIDATION_ACTIONS_2026-10-01.md (W1-W8).
-- MyTradingSys/research/HANDOFF_FOR_CLAUDE_2026-10-01.md (W1-W8 work items).
-- MyTradingSys/research/FABIO_PROVENANCE_AUDIT_2026-10-01.md.
+- MyTradingSys/research/_archive/loose_2026-10/REVALIDATION_ACTIONS_2026-10-01.md (W1-W8).
+- MyTradingSys/research/_archive/loose_2026-10/HANDOFF_FOR_CLAUDE_2026-10-01.md (W1-W8 work items).
+- MyTradingSys/research/_archive/loose_2026-10/FABIO_PROVENANCE_AUDIT_2026-10-01.md.
 - MyTradingSys/research/fast_track_2026-09-27/FABIO_V3_SPEC.md.
 - MyTradingSys/execution/auto_trader.py (lines 1-100 for config and
   source routing).

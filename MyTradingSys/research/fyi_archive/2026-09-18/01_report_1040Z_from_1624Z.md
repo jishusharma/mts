@@ -24,7 +24,7 @@ H3. SESSION_MANIFEST.json boot_supplemental missing mts-dashboard.
 
 H4. 0456Z session has 9 uncommitted files.
     git status --short: 8 M, 1 ??.
-    ?? MyTradingSys\research\session_anchor_options_note.md
+    ?? MyTradingSys\research\_archive\loose_2026-10\session_anchor_options_note.md
      M MyTradingSys\methodology\live_session_protocol.md
      M MyTradingSys\runtime\live_session_journal.md
      M MyTradingSys\system\03_FILE_INDEX.md

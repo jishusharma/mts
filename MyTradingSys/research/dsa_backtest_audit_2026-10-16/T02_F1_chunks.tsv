@@ -55,4 +55,4 @@ c4	1	MyTradingSys/research/video_priority_2026-10-15/apply_selection.py
 c4	1	MyTradingSys/research/volume_2026-10-09/run_v1.py
 c4	1	MyTradingSys/research/volume_2026-10-09/run_v4.py
 c4	8	MyTradingSys/research/volume_2026-10-09/vstats.py
-c4	1	MyTradingSys/research/vpin_dayclustered_2026-10-10.py
+c4	1	MyTradingSys/research/loose_code/vpin_dayclustered_2026-10-10.py

@@ -5,16 +5,31 @@ from pathlib import Path
 from bisect import bisect_right
 from datetime import datetime, timezone
 import itertools
+import warnings
 
 
-def load_klines(root, dataset="klines", start_ms=None, end_ms=None):
-    """Load kline data from CSV files in root/dataset."""
+MICRO_THRESHOLD = 10 ** 14  # DECISION (OURS): an open time above this is microseconds (ms 1e14 = year 5138)
+
+
+def load_klines(root, dataset="klines", start_ms=None, end_ms=None, report=None):
+    """Load kline data from CSV files in root/dataset.
+
+    Hardening (T01-F1/F4): microsecond stamps are converted to ms; two rows with
+    the same open time that differ in OHLCV raise ValueError (identical repeats
+    are dropped and counted); out-of-order rows are sorted with a counted
+    warning. If `report` is a dict it is filled with dups, conflicts(0),
+    micro, unsorted and gaps (list of (prev_t, next_t)).
+    """
     root = Path(root)
     dataset_path = root / dataset
+    rep = {"dups": 0, "micro": 0, "unsorted": 0, "gaps": []}
+    if report is not None:
+        report.update(rep)
     if not dataset_path.exists():
         return []
 
     bars = {}
+    prev_t = None
     for csv_file in sorted(dataset_path.glob("*.csv")):
         with open(csv_file, newline='', encoding='utf-8') as f:
             reader = csv.reader(f)
@@ -26,13 +41,14 @@ def load_klines(root, dataset="klines", start_ms=None, end_ms=None):
                 reader = itertools.chain([first_row], reader)
             for row in reader:
                 t = int(row[0])  # open_time
+                if t > MICRO_THRESHOLD:
+                    t //= 1000
+                    rep["micro"] += 1
                 if start_ms is not None and t < start_ms:
                     continue
                 if end_ms is not None and t >= end_ms:
                     continue
-                if t in bars:
-                    continue  # Skip duplicates (keep first)
-                bars[t] = {
+                bar = {
                     't': t,
                     'o': float(row[1]),
                     'h': float(row[2]),
@@ -41,8 +57,25 @@ def load_klines(root, dataset="klines", start_ms=None, end_ms=None):
                     'v': float(row[5]),
                     'tbv': float(row[9])
                 }
+                if prev_t is not None and t < prev_t:
+                    rep["unsorted"] += 1
+                prev_t = t
+                if t in bars:
+                    if bars[t] != bar:
+                        raise ValueError(
+                            "load_klines: conflicting duplicate open_time %d in %s" % (t, csv_file))
+                    rep["dups"] += 1
+                    continue  # identical repeat: keep first
+                bars[t] = bar
     result = list(bars.values())
     result.sort(key=lambda x: x['t'])
+    if rep["unsorted"]:
+        warnings.warn("load_klines: %d out-of-order rows sorted" % rep["unsorted"])
+    if len(result) > 1:
+        step = min(b['t'] - a['t'] for a, b in zip(result, result[1:]))
+        rep["gaps"] = check_gaps(result, step)
+    if report is not None:
+        report.update(rep)
     return result
 
 

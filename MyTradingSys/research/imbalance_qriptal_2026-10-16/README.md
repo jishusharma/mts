@@ -6,8 +6,8 @@ Result: **NO EDGE.** A Qriptal-style imbalance fade (volume-anomaly candle with 
 
 | Work | What "imbalance" meant there | Result |
 |---|---|---|
-| P4 quarter-hour imbalance (2026-10-06/08, `research/P4_QUARTER_HOUR_IMBALANCE_CORRECTED_2026-10-08.md`) | taker-buy minus taker-sell volume of the first 1m bar of each quarter hour (Kim and Hansen paper) | NO REPLICATION |
-| T093 turn-of-candle imbalance (2026-10-10, `research/T093_TOC_IMBALANCE_KLINES_2026-10-10.md`, `items/T093_*`) | same taker-delta proxy, held 4/8/12 h, 2022-2026, n about 166,000 | NO REPLICATION: gross +0.5 bp vs 10 bp fee, sign flips by year |
+| P4 quarter-hour imbalance (2026-10-06/08, `research/_archive/loose_2026-10/P4_QUARTER_HOUR_IMBALANCE_CORRECTED_2026-10-08.md`) | taker-buy minus taker-sell volume of the first 1m bar of each quarter hour (Kim and Hansen paper) | NO REPLICATION |
+| T093 turn-of-candle imbalance (2026-10-10, `research/_archive/loose_2026-10/T093_TOC_IMBALANCE_KLINES_2026-10-10.md`, `items/T093_*`) | same taker-delta proxy, held 4/8/12 h, 2022-2026, n about 166,000 | NO REPLICATION: gross +0.5 bp vs 10 bp fee, sign flips by year |
 | `backtest/layers/run_t055_c3_imbalance.py` | same quarter-hour taker delta, momentum and contrarian | research only, never a layer |
 | Order-book imbalance research (2026-10-10, `research/imbalance_2026-10-10/RESEARCH.md`) | depth OBI / OFI / VPIN | literature: real but seconds-scale and smaller than retail fees; no fee-net strategy found |
 | B171 imbalance indicator end to end (`items/B171_*`, 2026-10-10) | "no sourced rule" | parked as NO-SOURCE, but its search only grepped Tom's 113 transcripts, not Qriptal's |

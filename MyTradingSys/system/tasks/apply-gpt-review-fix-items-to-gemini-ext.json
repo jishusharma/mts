@@ -33,12 +33,14 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-25 ACCEPT (independent Sonnet reviewer, fixes applied). DECISION (OURS): fix summaries down to what quotes support (never add claims); when a rule is only inferred, label it INFERRED rather than delete it. Run order is free: if verify-extract-quotes-strip-nested-metad ships first, the verifier also flags F5.",
+  "note": "REVIEWED:2026-10-25 ACCEPT (independent Sonnet reviewer, fixes applied). DECISION (OURS): fix summaries down to what quotes support (never add claims); when a rule is only inferred, label it INFERRED rather than delete it. Run order is free: if verify-extract-quotes-strip-nested-metad ships first, the verifier also flags F5.\n2026-10-26 worktree disposition: archived local evidence and exact SHAs in MyTradingSys/research/worktree_disposition_20261026/REPORT.md. Recover only relevant missing proofs; do not rerun or merge stale producer branches. Existing task ownership unchanged.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-10-24T22:51:22Z",
-  "refs": [],
+  "refs": [
+    "MyTradingSys/research/worktree_disposition_20261026/REPORT.md"
+  ],
   "result": "",
   "scope_in": [
     "extracts/gemini_out/7BQPMJ39WpI_gemini.md",

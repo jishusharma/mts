@@ -15,7 +15,7 @@ commits: 368397b
 handoff: none; follow-ups below
 
 ## Scope
-Design plan only: MyTradingSys/research/SCHEDULER_PLAN_2026-10-02.md answering the eight questions of
+Design plan only: MyTradingSys/research/_archive/loose_2026-10/SCHEDULER_PLAN_2026-10-02.md answering the eight questions of
 SCHEDULER_DESIGN_2026-10-02.md section 8 (bullet 1 split into two to reach eight).
 
 ## Outcome

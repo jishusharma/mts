@@ -1,7 +1,7 @@
 # B116 - Unsourced 0.1 percent minimum stop floor and 0.2 percent fallback stop are still live in SetupCandidatesBuilder
 
 Status: CLOSED 2026-10-06 (receipt in BUGS.md, MTS-2026-10-06-2122Z-APP-COO-registry-fix). Severity: MED. Opened 2026-10-04.
-Session: MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup. Group (b) from MyTradingSys/research/AUDIT_RECONCILE_2026-10-04.md.
+Session: MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup. Group (b) from MyTradingSys/research/_archive/loose_2026-10/AUDIT_RECONCILE_2026-10-04.md.
 
 ## Defect
 
@@ -9,8 +9,8 @@ Unsourced 0.1 percent minimum stop floor and 0.2 percent fallback stop are still
 
 ## Findings
 
-- RA-W4-A03 | audit source MyTradingSys/research/REVALIDATION_ACTIONS_2026-10-01.md:209-210 | C1 verdict NOT | Floor still live at SetupCandidatesBuilder.java:48,126-128; unsourced value not removed or tested.
-- RA-W4-A04-M11 | audit source MyTradingSys/research/REVALIDATION_ACTIONS_2026-10-01.md:212 | C1 verdict NOT | Fallback stop still present at SetupCandidatesBuilder.java:129; not removed.
+- RA-W4-A03 | audit source MyTradingSys/research/_archive/loose_2026-10/REVALIDATION_ACTIONS_2026-10-01.md:209-210 | C1 verdict NOT | Floor still live at SetupCandidatesBuilder.java:48,126-128; unsourced value not removed or tested.
+- RA-W4-A04-M11 | audit source MyTradingSys/research/_archive/loose_2026-10/REVALIDATION_ACTIONS_2026-10-01.md:212 | C1 verdict NOT | Fallback stop still present at SetupCandidatesBuilder.java:129; not removed.
 
 ## Evidence
 
@@ -29,7 +29,7 @@ Filing only. No code or doc edit was made for this item.
 
 ## Related
 
-- MyTradingSys/research/AUDIT_RECONCILE_2026-10-04.md
+- MyTradingSys/research/_archive/loose_2026-10/AUDIT_RECONCILE_2026-10-04.md
 - MyTradingSys/system/sessions/MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup.md
 
 ## Receipt

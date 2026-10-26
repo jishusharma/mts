@@ -71,7 +71,8 @@ def fold_repo(tmp_path):
     (root / "MyTradingSys/system/tasks/card-a.json").write_text(json.dumps({"id": "card-a", "state": "ready"}) + chr(10), encoding="utf-8")
     for f in ("scripts/dev/desk.py", "scripts/dev/lease.py", "scripts/dev/named.py"):
         (root / f).write_text("x=1" + chr(10), encoding="utf-8")
-    _git(root, "init", "-q", "-b", "work")
+    _git(root, "init", "-q")
+    _git(root, "symbolic-ref", "HEAD", "refs/heads/work")
     _git(root, "-c", "user.name=t", "-c", "user.email=t@t", "add", "-A")
     _git(root, "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", "base")
     _git(root, "update-ref", "refs/remotes/origin/fast-track", "HEAD")

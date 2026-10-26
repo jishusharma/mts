@@ -33,7 +33,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "DROPPED 2026-10-26 Session_Planner: shipped: live_mirror.py resolve_owner/owner_line (merge JIS-NB/mirror-owner-2), test_live_mirror.py OwnerFollowTest | ",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -52,7 +53,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [
     "resolve owner via live_owner marker",
     "publish only on owner, plus copy to owner dir",

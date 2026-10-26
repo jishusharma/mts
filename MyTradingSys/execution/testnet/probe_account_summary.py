@@ -77,7 +77,7 @@ def main(argv=None):
     print("     (BTC-denominated) vs. equity * mark_price (a USD-scale number).")
     print("  3. If get_position returned 'unrealized_pnl', does its short-window")
     print("     delta roughly match (equity_now - equity_before) * mark_price?")
-    print("  Record the answer in research/deribit_api_research.md so the next")
+    print("  Record the answer in research/_archive/loose_2026-10/deribit_api_research.md so the next")
     print("  reader does not have to re-run this probe.")
     return 0
 

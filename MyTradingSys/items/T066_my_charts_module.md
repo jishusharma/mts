@@ -1,6 +1,6 @@
 # T066 - "My charts": read the operator's TradingView layouts into MTS
 
-Opened 2026-10-05 by MTS-2026-10-05-1500Z-APP-ANA-operator-asks. Status OPEN. Verbatim ask: research/OPERATOR_ASKS_2026-10-05.md section 0, ask 4.
+Opened 2026-10-05 by MTS-2026-10-05-1500Z-APP-ANA-operator-asks. Status OPEN. Verbatim ask: research/_archive/loose_2026-10/OPERATOR_ASKS_2026-10-05.md section 0, ask 4.
 Tag: [OPERATOR] (operator's own ideas; separate layer).
 
 ## Route (recommended)

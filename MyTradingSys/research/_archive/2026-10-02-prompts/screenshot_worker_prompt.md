@@ -1,6 +1,6 @@
 # SCREENSHOT WORKER PROMPT (VVP-002 extractor)
 # Scope: one image per turn. Read the image, output one JSON file.
-# Authority: MyTradingSys/research/visual_validation_protocol_vvp002.md
+# Authority: MyTradingSys/research/_archive/loose_2026-10/visual_validation_protocol_vvp002.md
 # Schema: runtime_data/screenshot_extracts/_SCHEMA.json
 # Do not reason about trades. Do not issue verdicts. Extract values only.
 

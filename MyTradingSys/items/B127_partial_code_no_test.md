@@ -7,7 +7,7 @@ Session: MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup. References T037 
 
 Thirteen audit findings have working or present code but no collected test: either none exists, or the test is staged as .new and not collected by the runner.
 
-Source: MyTradingSys/research/AUDIT_RECONCILE_2026-10-04.md PARTIAL rows. Java tests were not executed by C1; presence of a test is not proof it passes.
+Source: MyTradingSys/research/_archive/loose_2026-10/AUDIT_RECONCILE_2026-10-04.md PARTIAL rows. Java tests were not executed by C1; presence of a test is not proof it passes.
 
 ## Findings (13)
 
@@ -38,7 +38,7 @@ Filing only. No code or test was written.
 ## Related
 
 - T037 | MyTradingSys/items/T037_test_coverage_gap.md
-- MyTradingSys/research/AUDIT_RECONCILE_2026-10-04.md
+- MyTradingSys/research/_archive/loose_2026-10/AUDIT_RECONCILE_2026-10-04.md
 - MyTradingSys/system/sessions/MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup.md
 
 ## Receipt

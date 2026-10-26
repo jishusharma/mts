@@ -162,7 +162,7 @@ close, `h` = max high, `l` = min low, `v` = sum of volumes; a bucket is only emi
 
 ## 9. CryptoCred swing / MSB / retest / R-target math (`layers/cryptocred/*`)
 
-Source: `MyTradingSys/research/cross_trader_consolidated.md` cluster C08 (MSB Definition &
+Source: `MyTradingSys/research/_archive/loose_2026-10/cross_trader_consolidated.md` cluster C08 (MSB Definition &
 Significance), C07 (Retests) and C10 (Setup Types) — these are verbatim-quote-verified transcript
 extracts (per repo convention, higher confidence than the Malkan web research), and the module
 docstrings already cite the specific rule IDs (C08-Rule1, C08-E01/E03/E05, C07-E01/E04/E05, C10-E01/
@@ -355,7 +355,7 @@ funding term = -1 * 0.0004 = -0.0004, `net = 0.01 - 0.0012 + 0.0004 = 0.0092`.
 
 ## 14. T055 C1 - funding-extreme reversion + CVD/price divergence fade (`layers/positioning/funding_cvd_fade.py`)
 
-Sources: funding-extreme reversion T2, Memon 2026 (7y Binance) via `research/whale_positioning_evidence_2026-09-12.md`
+Sources: funding-extreme reversion T2, Memon 2026 (7y Binance) via `research/_archive/loose_2026-10/whale_positioning_evidence_2026-09-12.md`
 (the percentile threshold is NOT given there: UNDEFINED in source, so it is a grid parameter); mechanism
 He/Manela/Ross/von Wachter arXiv 2212.06888 (T2); CVD/price divergence = same CVD as `bt_data.cvd_delta`
 (section above, `delta = 2*tbv - v`, running sum). Merge decision: supervisor 2026-09-29 (T055a H2 + T055b funding-extreme).
@@ -580,3 +580,5 @@ plan numbers required correction. The one correction made was to `layers/rsi/TES
 (Case C1 provenance claim, which described deriving from `bt/bt_rsi.py.new` — against the "never derive
 from code" rule even though the module's own math turned out to match textbook Wilder); see that file's
 diff and the audit report for detail.
+
+**19.9 Contract v1.1 notes (2026-10-26).** Close arm penetration over ia..ib uses closes only: anchors (15,100), (27,106), L(20) = 100 + 6*5/12 = 102.5; close 101 fails (1.5 below, tolerance 1.0), a wick at 95 with close 100 on the anchor bar passes. Availability window: pivot b at ib = 27, k = 3, available at 30; bars 28..30 grant no contact/reset/eligibility; a close below L(28) = 106.5 on bar 28 (close 106.4) rejects the line as `broken_before_available`. E11: inner line (15,27) breaks; pivot at 40 pairs with 15 (outer line) but not with 27.

@@ -26,6 +26,6 @@ Build one regime x session stratified backtest harness on committed data. Regime
 ## Related
 
 - MyTradingSys/methodology/playbook.md PART I (research gate)
-- MyTradingSys/research/AUDIT_MAJOR_GAPS_2026-10-09.md (B146-B153)
+- MyTradingSys/research/_archive/loose_2026-10/AUDIT_MAJOR_GAPS_2026-10-09.md (B146-B153)
 
 ## Receipt

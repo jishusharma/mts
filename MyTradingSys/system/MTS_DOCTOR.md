@@ -18,6 +18,8 @@ Line 1 is `HEALTH: GREEN` or `HEALTH: <n> WARN: <names>`. Each check is OK / WAR
 | SHIP-TIME | ship and gate wall time, 72 h, max under 15 min (`runtime_data/gate_timing.jsonl`) |
 | HOOK-REG | main checkout registers role_loader and ci_watch and is under 50 commits behind trunk |
 | DISK | 15 GB free on the repo drive |
+| STALE-CLAIMS | at most 5 open claims over 24 h old (reports 10-23..25: 18, 18, 22) |
+| SCRATCH-TRACKED | no tracked `_scratch*` or `*ship.log` file (public repo; PILOT3 logs, f97ecc125) |
 
 Cadence: the main session runs it in its first message each day and shows the HEALTH line.
 

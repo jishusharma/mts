@@ -164,15 +164,15 @@ MyTradingSys/research/malkan_universe_2026-10/universe_power.py,113,cost_r,0.024
 MyTradingSys/research/malkan_universe_2026-10/universe_power.py,120,cost_r,0.016,other,n/a,both,cost in malkan_universe_2026-10,0,assign,def evaluate_universe_cell(n_events; rr=RR; cost_r=0.016):
 MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py,12,Costs,0.10,other,round_trip,taker,cost in mfe_exit_2026-10-13,0,assign,Costs: 0.10% round-trip taker (operator-set; 2 x 0.05%) + funding actually paid at the 8h marks held.
 MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py,26,FEE_RT,0.0010,fraction,round_trip,both,fee in mfe_exit_2026-10-13,0,assign,FEE_RT = 0.0010
-MyTradingSys/research/oi_divergence_v2_2026-10-10.py,23,FEE_RT,0.0010,fraction,round_trip,both,fee in oi_divergence_v2_2026-10-10.py,0,assign,FEE_RT = 0.0010
-MyTradingSys/research/oi_divergence_v2_2026-10-10.py,24,SLIP_RT,0.0002,fraction,round_trip,n/a,slip in oi_divergence_v2_2026-10-10.py,0,assign,SLIP_RT = 0.0002
-MyTradingSys/research/oi_divergence_v2_2026-10-10.py,150,skipped_fund,0,fraction,n/a,n/a,fund in oi_divergence_v2_2026-10-10.py,0,assign,skipped_fund = 0
+MyTradingSys/research/loose_code/oi_divergence_v2_2026-10-10.py,23,FEE_RT,0.0010,fraction,round_trip,both,fee in oi_divergence_v2_2026-10-10.py,0,assign,FEE_RT = 0.0010
+MyTradingSys/research/loose_code/oi_divergence_v2_2026-10-10.py,24,SLIP_RT,0.0002,fraction,round_trip,n/a,slip in oi_divergence_v2_2026-10-10.py,0,assign,SLIP_RT = 0.0002
+MyTradingSys/research/loose_code/oi_divergence_v2_2026-10-10.py,150,skipped_fund,0,fraction,n/a,n/a,fund in oi_divergence_v2_2026-10-10.py,0,assign,skipped_fund = 0
 MyTradingSys/research/orderflow_views_2026-10-14/study.py,47,FEE_RT,0.10,other,round_trip,both,fee in orderflow_views_2026-10-14,0,assign,FEE_RT = 0.10
 MyTradingSys/research/p1_cost_floor/p1_cost_floor.py,19,taker,2,other,per_side,taker,fee in p1_cost_floor,1,assign,"""Binance taker/taker"":      2*BINANCE_TAKER;"
 MyTradingSys/research/p1_cost_floor/p1_cost_floor.py,21,maker,2,other,per_side,maker,fee in p1_cost_floor,1,assign,"""Binance maker/maker"":      2*BINANCE_MAKER;"
 MyTradingSys/research/p1_cost_floor/p1_cost_floor.py,22,taker,2,other,per_side,taker,fee in p1_cost_floor,1,assign,"""Deribit taker/taker"":      2*DERIBIT_TAKER;"
 MyTradingSys/research/p1_cost_floor/p1_cost_floor.py,24,maker,2,other,per_side,maker,fee in p1_cost_floor,1,assign,"""Deribit maker/maker"":      2*DERIBIT_MAKER;"
-MyTradingSys/research/p4_corrected.py,29,FEE_BP,10.0,bp,n/a,both,fee in p4_corrected.py,0,assign,FEE_BP = 10.0
+MyTradingSys/research/loose_code/p4_corrected.py,29,FEE_BP,10.0,bp,n/a,both,fee in p4_corrected.py,0,assign,FEE_BP = 10.0
 MyTradingSys/research/pit_levels_2026-10-16/count_prior_va.py,32,COST_MAKER,0.14,other,round_trip,maker,fee in pit_levels_2026-10-16,0,assign,COST_TAKER; COST_MAKER = 0.14; 0.09      # % round trip; PRE_REG 2026-10-15 section 1
 MyTradingSys/research/positioning_c1_2026-10/count_power.py,42,RT_COST_PCT,0.0012,pct,round_trip,both,cost in positioning_c1_2026-10,0,assign,RT_COST_PCT = 0.0012  # 10 bps fee + 2 bps slippage
 MyTradingSys/research/positioning_c1_2026-10/count_power.py,249,cost_r,0.0916,other,n/a,both,cost in positioning_c1_2026-10,0,assign,cost_r = 0.0916
@@ -180,11 +180,11 @@ MyTradingSys/research/published_strats_2026-10-13/run_pub.py,15,(literal),0.001,
 MyTradingSys/research/published_strats_2026-10-13/run_pub.py,479,fee,0.0,fraction,per_side,both,fee in published_strats_2026-10-13,0,assign,gross = stats(net_series(b; held; k2; off; fee=0.0)[mask]; BPY[tf]) if True else None
 MyTradingSys/research/qriptal_2026-10-10/score_calls.py,28,FEE_PER_SIDE,0.0005,fraction,per_side,both,fee in qriptal_2026-10-10,0,assign,FEE_PER_SIDE = 0.0005                      # FORMULAS.md s17: 0.05% per side
 MyTradingSys/research/qriptal_2026-10-10/score_calls.py,276,fee_r,2,other,n/a,both,fee in qriptal_2026-10-10,0,assign,"""expect_r"": expect_pct / c[""avg_loss_pct""]; ""fee_r"": 2 * FEE_PER_SIDE * 100 / c[""avg_loss_pct""]}"
-MyTradingSys/research/replay_2026_10_04_05.py,3,cost,2,other,n/a,both,cost in replay_2026_10_04_05.py,0,assign,net_rr per backtest/layers/FORMULAS.md section 17 (written independently here): cost = 2*0.0005*entry;
-MyTradingSys/research/replay_2026_10_04_05.py,5,TAKER,0.0005,fraction,per_side,taker,fee in replay_2026_10_04_05.py,0,assign,TAKER = 0.0005
-MyTradingSys/research/replay_2026_10_04_05.py,9,cost,2,other,n/a,taker,cost in replay_2026_10_04_05.py,0,assign,cost = 2 * TAKER * entry
-MyTradingSys/research/replay_full_2026_10_04_05.py,8,TAKER,0.0005,fraction,per_side,taker,fee in replay_full_2026_10_04_05.py,0,assign,TAKER = 0.0005
-MyTradingSys/research/replay_full_2026_10_04_05.py,14,cost,2,other,n/a,taker,cost in replay_full_2026_10_04_05.py,0,assign,cost = 2 * TAKER * e
+MyTradingSys/research/loose_code/replay_2026_10_04_05.py,3,cost,2,other,n/a,both,cost in replay_2026_10_04_05.py,0,assign,net_rr per backtest/layers/FORMULAS.md section 17 (written independently here): cost = 2*0.0005*entry;
+MyTradingSys/research/loose_code/replay_2026_10_04_05.py,5,TAKER,0.0005,fraction,per_side,taker,fee in replay_2026_10_04_05.py,0,assign,TAKER = 0.0005
+MyTradingSys/research/loose_code/replay_2026_10_04_05.py,9,cost,2,other,n/a,taker,cost in replay_2026_10_04_05.py,0,assign,cost = 2 * TAKER * entry
+MyTradingSys/research/loose_code/replay_full_2026_10_04_05.py,8,TAKER,0.0005,fraction,per_side,taker,fee in replay_full_2026_10_04_05.py,0,assign,TAKER = 0.0005
+MyTradingSys/research/loose_code/replay_full_2026_10_04_05.py,14,cost,2,other,n/a,taker,cost in replay_full_2026_10_04_05.py,0,assign,cost = 2 * TAKER * e
 MyTradingSys/research/rsi_deep_buy_2026-10-19/econ_floor.py,29,FEE,2,other,round_trip,taker,fee in rsi_deep_buy_2026-10-19,1,assign,FEE = 2 * fees.BINANCE_TAKER            # 0.10% round trip; SOURCED backtest/fees.py (taker both sides)
 MyTradingSys/research/session_flow_context_2026-10-18/event_table.py,21,MDE_MAX_BPS,50.0,bp,round_trip,n/a,cost in session_flow_context_2026-10-18,0,assign,"MDE_MAX_BPS = 50.0           # OURS: a cell is ""powered"" only if its MDE is <= 50 bps (about 4x the 12 bps round-trip co"
 MyTradingSys/research/setup_alpha_beta_2026-10-10/alpha_backtest.py,117,fee,0.0005,fraction,per_side,both,fee in setup_alpha_beta_2026-10-10,0,assign,def run_series(bars; fund; signal; stop_mult=2.0; trail_mult=2.0; fee=0.0005):
@@ -195,7 +195,7 @@ MyTradingSys/research/sim_desk/studies/_bars.py,24,(literal),0.001,pct,n/a,maker
 MyTradingSys/research/sim_desk/studies/_bars.py,25,(literal),0.001,pct,n/a,taker,cost in sim_desk,1,literal_in_text,{'name': 'taker_pct'; 'label': 'Market fee; %'; 'number': True; 'min': 0.0; 'max': 1.0; 'step': 0.001}]
 MyTradingSys/research/sim_desk/studies/levels.py,54,(literal),0.001,pct,n/a,maker,cost in sim_desk,0,literal_in_text,{'name': 'maker_pct'; 'label': 'Limit fee; %'; 'number': True; 'min': 0.0; 'max': 1.0; 'step': 0.001};
 MyTradingSys/research/sim_desk/studies/levels.py,55,(literal),0.001,pct,n/a,taker,cost in sim_desk,0,literal_in_text,{'name': 'taker_pct'; 'label': 'Market fee; %'; 'number': True; 'min': 0.0; 'max': 1.0; 'step': 0.001};
-MyTradingSys/research/t093_toc_imbalance_klines.py,8,(literal),0.0005,fraction,n/a,taker,cost in t093_toc_imbalance_klines.py,0,literal_in_text,(taker 0.0005 x 2 legs; backtest/fees.py); PASS needs stable gross sign across years AND net CI95 lower bound > 0. Nothi
+MyTradingSys/research/loose_code/t093_toc_imbalance_klines.py,8,(literal),0.0005,fraction,n/a,taker,cost in t093_toc_imbalance_klines.py,0,literal_in_text,(taker 0.0005 x 2 legs; backtest/fees.py); PASS needs stable gross sign across years AND net CI95 lower bound > 0. Nothi
 MyTradingSys/research/volume_2026-10-09/run_v1.py,23,COST,2,other,n/a,both,cost in volume_2026-10-09,0,assign,COST = 2 * (0.0005 + 0.0002)
 MyTradingSys/research/volume_2026-10-09/run_v2.py,21,COST,2,other,n/a,both,cost in volume_2026-10-09,0,assign,COST = 2 * (0.0005 + 0.0002)
 MyTradingSys/research/volume_2026-10-09/run_v3.py,19,COST,2,other,n/a,both,cost in volume_2026-10-09,0,assign,COST = 2 * (0.0005 + 0.0002)

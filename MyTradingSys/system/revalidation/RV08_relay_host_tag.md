@@ -4,7 +4,7 @@ Rules and output format: `MyTradingSys/system/revalidation/_COMMON.md` (read it 
 Prompt id: RV08. Report: `MyTradingSys/research/revalidation/RV08_<UTC date>.md`.
 
 Scope in: scripts/sched/relay.py, scripts/sched/handoff_lint.py, MyTradingSys/tests/test_relay.py, MyTradingSys/system/RELAY.md,
-MyTradingSys/system/NEXT_SESSION.md, MyTradingSys/research/DISPATCHER_MODEL_CHECK_2026-10-12.md, MyTradingSys/system/relay_runs.jsonl.
+MyTradingSys/system/NEXT_SESSION.md, MyTradingSys/research/_archive/loose_2026-10/DISPATCHER_MODEL_CHECK_2026-10-12.md, MyTradingSys/system/relay_runs.jsonl.
 Scope out: edits, firing kick/handoff for real, scheduled tasks.
 Why: a wrong IDLE leaves a host without work; a wrong KICK launches a paid session with nothing to do.
 Checks: write the missing cases as tests in the scratchpad and run them: lowercase / mixed-case `host=jis-nuc`; `host=any`;

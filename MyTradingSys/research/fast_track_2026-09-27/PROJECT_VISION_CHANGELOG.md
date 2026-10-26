@@ -4,7 +4,7 @@ Every edit to MyTradingSys/PROJECT_VISION.md must be logged in this file with th
 
 | date | section | old text | new text | reason | commit |
 |------|---------|----------|----------|--------|--------|
-| 2026-10-10 | DIRECTION UPDATE (new section before # END) | (none) | addendum from research/VISION_GAP_2026-10-10.md (c), as drafted; heading DRAFT label replaced by approval note | operator decision D23-vision (Control Room, answered 2026-10-10T11:40Z) | this commit |
+| 2026-10-10 | DIRECTION UPDATE (new section before # END) | (none) | addendum from research/_archive/loose_2026-10/VISION_GAP_2026-10-10.md (c), as drafted; heading DRAFT label replaced by approval note | operator decision D23-vision (Control Room, answered 2026-10-10T11:40Z) | this commit |
 
 ## Guidelines
 

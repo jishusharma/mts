@@ -230,7 +230,7 @@ S4 prove it on testnet, S5 go-live gate. Status today: S1-S2 in progress; no sou
 
 ### Cores and layers
 Two cores since 2026-10-01: Tom and Fabio, each compiled independently with its own verdicts, plans and ledger
-source flag (research/ARCHITECTURE_TWO_CORES_2026-10-01.md). Every other system (RSI/Malkan, CryptoCred,
+source flag (research/_archive/loose_2026-10/ARCHITECTURE_TWO_CORES_2026-10-01.md). Every other system (RSI/Malkan, CryptoCred,
 session, positioning, probability, tick, timeframe, options, analyst/caller feeds) is a switchable layer that
 never gates a core. A core or layer that fails S3 on fixed data is parked (alerts kept for data), not tuned
 into passing. Promotion to core uses the S3 bar, never opinion.

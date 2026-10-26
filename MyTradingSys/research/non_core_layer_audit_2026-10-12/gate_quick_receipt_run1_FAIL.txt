@@ -70,12 +70,12 @@ Step 3tl: PASS
 Step 3q: PASS
 
 [Step 3p] P4 corrected script tests
-  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe MyTradingSys/research/test_p4_corrected.py
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe MyTradingSys/research/loose_code/test_p4_corrected.py
   Elapsed: 0.3s
 Step 3p: PASS
 
 [Step 3t] T093 turn-of-candle imbalance tests
-  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe MyTradingSys/research/test_t093_toc_imbalance_klines.py
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe MyTradingSys/research/loose_code/test_t093_toc_imbalance_klines.py
   Elapsed: 0.3s
 Step 3t: PASS
 

@@ -3,35 +3,56 @@
   "asks": "",
   "commands": [],
   "created": "2026-10-19T13:43:35Z",
-  "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "depends_on": [
+    "oi-pivot-reversal-probability-by-tf"
+  ],
+  "done_when": "research/one_minute_bars_2026-10-26/PRE_REG.md frozen first (thresholds OURS, prereg_gate.py line pasted); bars.py + test_bars.py pass; events.csv and RESULT.md give n, day-clustered SE, forward 5/15-bar mean vs base rate, fee-net; trial ledger rows exist; DEV only.",
+  "est_turns": 24,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Pre-register and test two 1m bar-close candidates: (a) max-volume bar with strong negative taker delta but a small price move (absorption), (b) large delta on lower volume that reverses next bar (thin push); forward 5 and 15 bar returns vs the same-hour base rate, with the OI-pivot context columns.",
   "id": "one-minute-absorption-and-thin-delta-bars",
   "lane": "SONNET",
   "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): reuses the candidate machinery and context columns of oi-pivot-reversal-probability-by-tf, so it runs after it. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
   "refreshed": "2026-10-19T13:44:02Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
+  "scope_in": [
+    "MyTradingSys/research/one_minute_bars_2026-10-26/PRE_REG.md",
+    "MyTradingSys/research/one_minute_bars_2026-10-26/bars.py",
+    "MyTradingSys/research/one_minute_bars_2026-10-26/test_bars.py",
+    "MyTradingSys/research/one_minute_bars_2026-10-26/RESULT.md",
+    "MyTradingSys/research/one_minute_bars_2026-10-26/events.csv",
+    "MyTradingSys/research/layer_lab/TRIALS.md"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars before the pre-registration is frozen",
+    "live path, orders, deploy",
+    "restating published verdicts"
+  ],
   "scope_sha": "",
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "size": "M",
+  "sources": [
+    "card title (shots 10-19 13:34 and 13:37)",
+    "MyTradingSys/research/oi_pivot_2026-10-26/candidates.py (card oi-pivot)"
+  ],
+  "state": "refined",
+  "steps": [
+    "Run verdicts.py check 'absorption thin delta 1m' and paste it; define (a) and (b) with numeric thresholds labelled OURS from DEV percentiles (decile of volume, delta/volume ratio, range/ATR).",
+    "Run python scripts/dev/prereg_gate.py with n, sd (sd-source cited) and cost; paste the line; exit 1 means do not freeze. Write PRE_REG.md and freeze it, then bars.py with look-ahead tests.",
+    "Run DEV 1m with taker-buy columns; report forward 5/15-bar returns against the base rate at the same UTC hour; add the oi-pivot context columns.",
+    "Write RESULT.md with the verdict rule from the pre-registration; ledger rows first."
+  ],
+  "tests": "research/one_minute_bars_2026-10-26/test_bars.py: a planted absorption bar fires, a trending bar with the same volume does not; changing bars after the event leaves the flag unchanged; bars from 2024-07-01 are refused.",
   "title": "1m bar-close candidates after the 10-19 13:34 and 13:37 bars: (a) max-volume bar with strong negative delta but small price move (absorption), (b) large delta on lower volume that reverses next bar (thin push); forward 5/15-bar returns vs base rate, context columns from oi-pivot-reversal-probability-by-tf",
-  "weight": "",
-  "worker": ""
+  "weight": "CRUCIAL",
+  "worker": "session"
 }

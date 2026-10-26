@@ -453,7 +453,7 @@ Merge TRANSLATION_POSTMORTEM_2026-10-12.md into fast-track?
 Recommended: Yes
 Answer: Yes (Control Room db, 2026-10-14/15)
 Operator note (verbatim): (none)
-Applied: 2026-10-15 research/TRANSLATION_POSTMORTEM_2026-10-12.md taken from origin/claude/sharp-carson-3xkd36 (commit 45fa300e) into fast-track.
+Applied: 2026-10-15 research/_archive/loose_2026-10/TRANSLATION_POSTMORTEM_2026-10-12.md taken from origin/claude/sharp-carson-3xkd36 (commit 45fa300e) into fast-track.
 
 ```json
 {

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T22:40:02Z",
   "commands": [
     "python -m pytest MyTradingSys/backtest/layers/krown/test_krown_context.py -q"
   ],
@@ -31,6 +32,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already shipped in 612fc6338; 21 tests pass",
+      "ref": "7e79e4dab",
+      "utc": "2026-10-25T22:40:02Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "krown_context test: build the planted-leak row list without a forward index (lookahead lin",
@@ -49,7 +56,12 @@
   "refs": [
     "MyTradingSys/research/krown_audit_2026-10-22/PRE_REG_CONFLUENCE.md"
   ],
-  "result": "",
+  "result": "already shipped in 612fc6338; 21 tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/krown/",
     "MyTradingSys/research/krown_audit_2026-10-22/run/"
@@ -63,7 +75,7 @@
     "MyTradingSys/research/krown_audit_2026-10-22/GPT_AUDIT_S1.md",
     "MyTradingSys/research/krown_audit_2026-10-22/FABLE_DESIGN.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read PRE_REG_CONFLUENCE.md s0, REVIEW_OPUS.md:24 F6, GPT_AUDIT_S1.md finding 1",
     "Write the F6 hand-number test in test_krown_context.py; run it on current code and show it fails",
@@ -71,6 +83,7 @@
     "Regenerate COUNTS.md, joined_events.csv, counts_cells.csv with run_counts.py (no outcome column read); compare S>=+2 with 351",
     "Compare regenerated S>=+2 with 351 (GPT_AUDIT_S1.md) and explain any difference in COUNTS.md; gx2-confluence-s1/audit.py is not in the repo (only report.md), so do not re-run it; sync.py ship"
   ],
+  "taken": "2026-10-25T22:40:02Z",
   "tests": "test_krown_context.py F6 case",
   "title": "Confluence S1: expansion direction to F6 and recount (S3 precondition)",
   "weight": "IMPORTANT",

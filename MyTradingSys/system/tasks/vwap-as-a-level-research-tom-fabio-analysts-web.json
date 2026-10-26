@@ -4,34 +4,58 @@
   "commands": [],
   "created": "2026-10-19T14:19:55Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "research/vwap_level_2026-10-26/VWAP_SOURCES.md has a table (source, anchor, bands, retest/rejection rule, quote, file:line) with at least the traders already in extracts/processed; every quote passes verify_extract_quotes.py; a follow-up PRE_REG card for the causal BTC test is filed with tasks.py new.",
+  "est_turns": 22,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Write VWAP_SOURCES.md: what Tom, Fabio, our analysts (extracts/processed, analysts REVIEW) and public sources say about VWAP as a trading level (anchors, +-1s/+-2s bands, retest and rejection rules), each rule with a verbatim quote and file:line, SOURCED vs NOT STATED, and the definition our snapshot uses.",
   "id": "vwap-as-a-level-research-tom-fabio-analysts-web",
-  "lane": "DSA",
-  "latest": [],
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "layer review: 13 layer sheets (idea, source, params, backtests, errors, combines-with)",
+      "ref": "cb903f9dc550",
+      "utc": "2026-10-25T21:33:00Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): DECISION (OURS): Part A only (what the sources say). The causal BTC test (P(touch/rejection), forward return after a flush >100 pts under the day VWAP) is a follow-up card filed at the end, because it must use the VWAP definition of card formulas-md-definitions (snapshot VWAP) and needs a PRE_REG. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
-  "refreshed": "2026-10-19T14:20:19Z",
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:30:35Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "scope_sha": "",
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "VWAP as a trading level: what Tom, Fabio, our analysts and public sources say (anchors, bands, retest/rejection rules), then a causal test on BTC 1m/5m: P(touch/rejection) and forward return when price is >100 pts under the day VWAP after a flush (evidence: 10-19 14:16 shots, price 135 under VWAP 82,402)",
-  "weight": "",
-  "worker": ""
+  "scope_in": [
+    "MyTradingSys/research/vwap_level_2026-10-26/VWAP_SOURCES.md",
+    "extracts/processed/",
+    "MyTradingSys/research/"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars before the pre-registration is frozen",
+    "live path, orders, deploy",
+    "restating published verdicts"
+  ],
+  "scope_sha": "cb903f9dc550",
+  "size": "M",
+  "sources": [
+    "card title (shots 2026-10-19 14:16, price 135 under VWAP 82,402)",
+    "src/main/java/datafeed/MarketDataSnapshot.java:688-726"
+  ],
+  "state": "ready",
+  "steps": [
+    "grep -ril vwap extracts/processed MyTradingSys/research to list candidate sources; keep only those with a trader's words.",
+    "Per source copy the verbatim quote and file:line; mark NOT STATED where the trader is silent on anchor, bands or retest rule.",
+    "Read card formulas-md-definitions (snapshot VWAP) and cite MarketDataSnapshot.java:688-726 for the definition our snapshot uses; add public-source rows only with a URL and quote.",
+    "Run python scripts/dev/verify_extract_quotes.py on the file; file the PRE_REG card for the causal BTC test (weight CRUCIAL, depends_on this card) with tasks.py new."
+  ],
+  "tests": "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/vwap_level_2026-10-26/VWAP_SOURCES.md exits 0; grep -c 'file:line' is at least the number of table rows.",
+  "title": "VWAP as a trading level, Part A: what Tom, Fabio, our analysts and public sources say (causal BTC test is a follow-up card)",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

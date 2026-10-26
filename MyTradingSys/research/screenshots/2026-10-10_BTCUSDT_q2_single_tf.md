@@ -47,7 +47,7 @@ Prior: none
 
 | Id | Check | Chart claim | Data check and evidence |
 |---|---|---|---|
-| 23416389787e-01 | MATCH | D01 shows answer "Cap it to one slot (recommended)", applied note "researched (research/TURN_OF_CANDLE_ORIGIN_2026-10-09.md) ... one slot (own account jishu_1)" | decisions D01-toc: answer "Cap it to one slot", applied text identical |
+| 23416389787e-01 | MATCH | D01 shows answer "Cap it to one slot (recommended)", applied note "researched (research/_archive/loose_2026-10/TURN_OF_CANDLE_ORIGIN_2026-10-09.md) ... one slot (own account jishu_1)" | decisions D01-toc: answer "Cap it to one slot", applied text identical |
 | 23416389787e-02 | MATCH | D02 "Yes, build it" and applied note "1m ground truth (legs_1m.csv 51 MB, labels_1m.csv 264 MB) exists on F:\MTS\data\bigtrade" | decisions D02-gt1m: same answer and text |
 | 23416389787e-03 | MATCH | D03 "Ask me when ready" with the operator note "right now! next time u need a java engine restart - do it right away", applied "restarted now ... 2m20s without snapshots" | decisions D03-java: same |
 | 23416389787e-04 | MATCH | D04 keep awake, D05 approve, D06 accept the bar, each with its applied line (sleep timeouts 'never'; T081/T080 handed to two Sonnet workers; GO_LIVE_BAR.md T086) | decisions D04-uptime, D05-priority, D06-gate: same answers and applied text |

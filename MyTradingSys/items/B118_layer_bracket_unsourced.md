@@ -1,7 +1,7 @@
 # B118 - Layer bracket in auto_trader.py is a fixed unsourced stop_pct 1.0, targets 2, size 100 for every layer alert
 
 Status: CLOSED 2026-10-11 (option 1, label only). Severity: MED. Opened 2026-10-04.
-Session: MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup. Group (b) from MyTradingSys/research/AUDIT_RECONCILE_2026-10-04.md.
+Session: MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup. Group (b) from MyTradingSys/research/_archive/loose_2026-10/AUDIT_RECONCILE_2026-10-04.md.
 
 ## Defect
 
@@ -27,7 +27,7 @@ Filing only. No code or doc edit was made for this item.
 
 ## Related
 
-- MyTradingSys/research/AUDIT_RECONCILE_2026-10-04.md
+- MyTradingSys/research/_archive/loose_2026-10/AUDIT_RECONCILE_2026-10-04.md
 - MyTradingSys/system/sessions/MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup.md
 
 ## Receipt

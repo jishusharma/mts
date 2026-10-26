@@ -1,6 +1,6 @@
 """
 candidate C1. Funding-extreme mean reversion (T2, Memon 2026, 7y Binance, via
-research/whale_positioning_evidence_2026-09-12.md; that source does NOT give the percentile threshold, so
+research/_archive/loose_2026-10/whale_positioning_evidence_2026-09-12.md; that source does NOT give the percentile threshold, so
 `hi`/`lo`/`lookback` are UNDEFINED in source and are grid parameters) merged with a CVD/price divergence
 fade (T055a H2). It is an independent layer, never a filter on the Tom core. Signals fade the crowded side:
 extreme high funding -> short, extreme low funding -> long. Events use the shape

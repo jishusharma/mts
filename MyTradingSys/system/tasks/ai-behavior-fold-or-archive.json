@@ -18,7 +18,7 @@
   "latest": [
     {
       "kind": "ship",
-      "line": "MyTradingSys/research/AI_BEHAVIOR_RULE_MAP_2026-10-22.md: rule map; file kept (critical fi",
+      "line": "MyTradingSys/research/_archive/loose_2026-10/AI_BEHAVIOR_RULE_MAP_2026-10-22.md: rule map; file kept (critical fi",
       "ref": "5333b7cf",
       "utc": "2026-10-22T14:06:19Z"
     },
@@ -48,7 +48,7 @@
   "refs": [
     "MyTradingSys/system/ARCHITECTURE.md"
   ],
-  "result": "MyTradingSys/research/AI_BEHAVIOR_RULE_MAP_2026-10-22.md: rule map; file kept (critical file, needs operator approval to cut)",
+  "result": "MyTradingSys/research/_archive/loose_2026-10/AI_BEHAVIOR_RULE_MAP_2026-10-22.md: rule map; file kept (critical file, needs operator approval to cut)",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"

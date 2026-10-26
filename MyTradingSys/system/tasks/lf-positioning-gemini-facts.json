@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T21:41:46Z",
   "commands": [
     "python scripts/dev/lab_query.py layers",
     "python scripts/dev/lab_query.py rulings positioning"
@@ -16,7 +17,14 @@
   "id": "lf-positioning-gemini-facts",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/positioning.md",
+      "ref": "f6b1b7794",
+      "utc": "2026-10-25T21:41:46Z"
+    }
+  ],
   "layers": [
     "positioning"
   ],
@@ -30,7 +38,12 @@
   "refs": [
     "MyTradingSys/system/ANTIGRAVITY_LAPTOP.md item C"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/positioning.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/positioning.md (new file only)"
   ],
@@ -42,10 +55,10 @@
   "sources": [
     "MyTradingSys/system/LAYERS.md",
     "MyTradingSys/system/layer_index.json",
-    "MyTradingSys/research/whale_positioning_evidence_2026-09-12.md",
+    "MyTradingSys/research/_archive/loose_2026-10/whale_positioning_evidence_2026-09-12.md",
     "MyTradingSys/backtest/layers/FORMULAS.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "python scripts/dev/lab_query.py layers (rows with family positioning); read the positioning section of MyTradingSys/system/LAYERS.md and its spec/results files in layer_index.json",
     "python scripts/dev/lab_query.py rulings positioning",
@@ -53,6 +66,7 @@
     "Write NOT_IN_DATA where the repo has no answer; never fill from memory; give no verdict",
     "Commit with a Result: line (layers covered, facts counted)"
   ],
+  "taken": "2026-10-25T21:41:46Z",
   "tests": "none (run card); proof = file exists and every fact line carries file:line or NOT_IN_DATA",
   "title": "[GEMINI] Layer fact sheet: positioning (file:line facts only, no verdict)",
   "weight": "ROUTINE",

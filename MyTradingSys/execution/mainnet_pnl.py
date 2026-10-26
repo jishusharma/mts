@@ -5,7 +5,7 @@
   - account summary `futures_session_upl`: "Session unrealized profit and loss for open futures and perpetual positions." `session_upl` is the all-instrument version.
 So a futures trade's realized P/L is invisible in `change` (only the fee is there) until the daily 08:00 UTC settlement; it is in `cashflow` while profit_as_cashflow is true.
 
-ALLOWED_TX_TYPES = frozenset({"trade", "settlement"}). Allow-list, not deny-list: every other type (deposit, withdrawal, transfer, swap, correction, reward, insurance and anything new) is ignored. `settlement` is INCLUDED (B149, captured testnet log research/txlog_capture_2026-10-10_jishu_11.json): at the 08:00 UTC settlement Deribit books the pre-08:00 session P/L of a held position as a settlement entry (change == cashflow, e.g. -1.59e-06), and the later closing trade carries only the rest (cashflow -4e-08); the two sum to the position's whole P/L, so there is no double count. A settlement entry contributes `change` only (its cashflow equals change and is never added again)."""
+ALLOWED_TX_TYPES = frozenset({"trade", "settlement"}). Allow-list, not deny-list: every other type (deposit, withdrawal, transfer, swap, correction, reward, insurance and anything new) is ignored. `settlement` is INCLUDED (B149, captured testnet log research/loose_code/txlog_capture_2026-10-10_jishu_11.json): at the 08:00 UTC settlement Deribit books the pre-08:00 session P/L of a held position as a settlement entry (change == cashflow, e.g. -1.59e-06), and the later closing trade carries only the rest (cashflow -4e-08); the two sum to the position's whole P/L, so there is no double count. A settlement entry contributes `change` only (its cashflow equals change and is never added again)."""
 import sys
 sys.dont_write_bytecode = True
 

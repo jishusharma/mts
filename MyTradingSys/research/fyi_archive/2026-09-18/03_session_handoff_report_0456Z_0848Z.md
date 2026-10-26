@@ -221,7 +221,7 @@ Get-ChildItem .\raw_transcripts_canonical\ -Recurse -File | ForEach-Object { $h 
 Select-String -Path .\src\main\java\datafeed\*.java, .\scripts\core\*.ps1, .\scripts\live\*.ps1, .\MyTradingSys\runtime\*.py -Pattern "state_code_regime" -ErrorAction SilentlyContinue | ForEach-Object { "$($_.Path.Substring($_.Path.LastIndexOf('\')+1)) : $($_.LineNumber): $($_.Line.Trim())" }
 
 ### Verify RSI conflict
-Select-String -Path .\MyTradingSys\research\visual_validation_protocol_vvp001.md -Pattern "RSI" -Context 2,2
+Select-String -Path .\MyTradingSys\research\_archive\loose_2026-10\visual_validation_protocol_vvp001.md -Pattern "RSI" -Context 2,2
 Select-String -Path .\MyTradingSys\system\COMPILED_DECISIONS.md -Pattern "RSI|Malkans" -Context 2,2
 
 ### Verify persistent defects

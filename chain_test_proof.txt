@@ -1,0 +1,9 @@
+CHAIN TEST 2 proof
+UTC: 2026-10-26T09:07:23Z
+Host: JIS-NB (hostname; JIS-NB = desktop machine). Hook banner said login A
+Session started by: scheduled task chain-test-2 (Claude desktop app, Code tab), model claude-opus-5-5
+Tools: Bash YES, PowerShell YES, ToolSearch YES, Read/Edit/Write/Glob/Grep YES, Agent YES, Artifact YES, Skill YES
+Scheduled-tasks tools: YES (deferred, loadable via ToolSearch: create/list/update/delete/run_scheduled_task, list_task_runs); CronCreate also deferred
+Could create a scheduled task: YES, tool available (NOT created, per instructions)
+SessionStart hooks ran: YES - banners visible: c_drive_guard (C: 9.7 GB free), LOGIN banner (login A on JIS-DESKTOP), MTS reminder b-2a5b44, budget table; UserPromptSubmit hooks: TRUNK LAG (776 behind), MTS BROADCAST status lines
+Note: sync.py start in main checkout refused (live tree .mts_live); made worktree ../mts-chain-test-2 per its advice.

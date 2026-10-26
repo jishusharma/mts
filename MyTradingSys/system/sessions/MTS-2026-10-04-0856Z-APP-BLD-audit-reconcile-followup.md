@@ -15,7 +15,7 @@ status: closed
 commits: the fast-track commit that adds this file
 handoff: none; code edits for B116-B118 and every OPEN row go to follow-up sessions
 
-Task: process MyTradingSys/research/AUDIT_RECONCILE_2026-10-04.md. Pass 1: 45 NOT rows grouped a-d. Pass 2: 31 PARTIAL rows rolled into B127 (e, 13) and B128 (f, 18), both referencing T037.
+Task: process MyTradingSys/research/_archive/loose_2026-10/AUDIT_RECONCILE_2026-10-04.md. Pass 1: 45 NOT rows grouped a-d. Pass 2: 31 PARTIAL rows rolled into B127 (e, 13) and B128 (f, 18), both referencing T037.
 
 Outcome: BUGS.md gains B105-B128 (24 rows: 11 WONTFIX, 13 OPEN) and 8 existing rows get a C1-confirms note (B084, B085, B090, B097, B100, B102, B103, B104). 13 item docs B116-B128, 13 INDEX rows, 14 03_FILE_INDEX rows. No code, test or live-path file touched.
 

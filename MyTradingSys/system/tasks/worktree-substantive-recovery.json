@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T22:47:16Z",
   "commands": [],
   "created": "2026-10-19T04:07:30Z",
   "depends_on": [],
@@ -14,11 +15,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/worktree_recovery/2026-10-25_triage.md: 10 rows, 5 LANDED... ",
+      "ref": "39b5969e",
+      "utc": "2026-10-25T22:47:16Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into worktree-agent-afc18a90fa77dd5c4",
-      "ref": "85d922d3bd84",
-      "utc": "2026-10-24T21:36:45Z"
+      "line": "tasks: close three cards delivered by B builders",
+      "ref": "39b5969e2429",
+      "utc": "2026-10-25T22:43:31Z"
     }
   ],
   "layers": [],
@@ -28,11 +35,16 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-24T21:38:14Z",
+  "refreshed": "2026-10-25T22:45:10Z",
   "refs": [
     "MyTradingSys/research/worktree_recovery/2026-10-19.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/worktree_recovery/2026-10-25_triage.md: 10 rows, 5 LANDED... ",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/worktree_recovery/2026-10-25_triage.md",
     "MyTradingSys/system/tasks/"
@@ -43,16 +55,17 @@
     "deleting or stashing any worktree",
     "bulk-closing or ACCEPT-stamping results"
   ],
-  "scope_sha": "85d922d3bd84",
+  "scope_sha": "39b5969e2429",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run python scripts/dev/sync.py where --all (read-only); for each of the 10 branch rows in MyTradingSys/research/worktree_recovery/2026-10-19.md 'Still requires substantive recovery' run the cherry check of that branch against origin/fast-track and git diff --stat of its delivery files.",
     "Write 2026-10-25_triage.md: one table row per branch: verdict LANDED (cherry empty, sha) | STILL_UNSHIPPED (files, commit count) | GONE (branch missing, say so); no row without a command output behind it.",
     "For each STILL_UNSHIPPED row file one raw card with python scripts/dev/tasks.py new '<title>' (title names the branch and its next action from the 2026-10-19 table); never merge or integrate in this card.",
     "A branch whose tree is not on this machine: list it as OTHER_HOST with the host from the survey; do not guess."
   ],
+  "taken": "2026-10-25T22:47:16Z",
   "tests": "python -c check: the triage file has 10 table rows, each with LANDED, STILL_UNSHIPPED, GONE or OTHER_HOST; fails first because the file does not exist (python scripts/dev/tasks.py lint passes after).",
   "title": "Recover remaining substantive worktree deliveries after history reconciliation",
   "weight": "ROUTINE",

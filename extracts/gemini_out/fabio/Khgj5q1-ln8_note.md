@@ -1,10 +1,10 @@
 # Fabio Video Note: Khgj5q1-ln8
 
 - **Video ID**: Khgj5q1-ln8
-- **Duration**: 692 seconds (SOURCED: `raw_transcripts_canonical/Khgj5q1-ln8_timed.txt:6` `# Duration_s:692`)
-- **Speaker as stated**: Fabio Valentini (Fabervaale ENG) (SOURCED: `raw_transcripts_canonical/Khgj5q1-ln8_timed.txt:4` `# Source: yt_dlp captions (manual); uploader: Fabervaale ENG`; `raw_transcripts_canonical/Khgj5q1-ln8_timed.txt:10-12` "our proprietary trading model that I built after years and years of research")
-- **Live trades**: N (OURS; teaching walk-through and chart breakdown of the proprietary "deep effort" model on historical Nasdaq charts; 0 live trades executed)
-- **Duplicate-of**: None (OURS; no live trades shown; no matching daily P/L at start in `MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md`)
+- **Duration**: 692 seconds (SOURCED: `MyTradingSys/research/fabio_video_search_2026-10-17/candidates.csv:21`)
+- **Speaker as stated**: speaker not named in transcript (SOURCED: `raw_transcripts_canonical/Khgj5q1-ln8_raw.txt:2-3` Raw excerpt: "our proprietary trading model that I built after years and years of research"; channel Fabervaale ENG per `MyTradingSys/research/fabio_video_search_2026-10-17/candidates.csv:21`; the Fabio Valentini identity is an uploader/title attribution, unverified)
+- **Live trades**: N (OURS; teaching walk-through and chart breakdown of the proprietary "deep effort" model on historical Nasdaq charts; no live execution found in transcript text; on-screen frames not checked)
+- **Duplicate-of**: not established / unverified (OURS; no starting daily P/L shown or stated, so no match against `MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md` could be performed; no ledger addition)
 
 ## Verbatim Transcript Quotes
 

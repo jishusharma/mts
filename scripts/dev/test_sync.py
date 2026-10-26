@@ -348,6 +348,29 @@ class SyncTest(unittest.TestCase):
     def branch_of(self, tree):
         return subprocess.run(["git", "-C", str(tree), "branch", "--show-current"], capture_output=True, text=True).stdout.strip()
 
+    def test_doctor_top_warnings_keeps_three_warn_rows_in_order(self):
+        rows = [("A", "OK", "x"), ("B", "WARN", "b1"), ("C", "unavailable", "c"), ("D", "WARN", "d1"), ("E", "WARN", "e1"), ("F", "WARN", "f1")]
+        out = sync.doctor_top_warnings(self.a, checklist=lambda: rows)
+        self.assertEqual(len(out), 3)
+        self.assertTrue(out[0].startswith("doctor WARN B:") and out[2].startswith("doctor WARN E:"))
+
+    def test_doctor_top_warnings_fails_soft_when_the_doctor_errors(self):
+        def boom():
+            raise RuntimeError("doctor down")
+        self.assertEqual(sync.doctor_top_warnings(self.a, checklist=boom), [])
+        self.assertEqual(sync.doctor_top_warnings(self.a), [])  # throwaway repo has no doctor: nothing, no raise
+
+    def test_start_prints_doctor_warnings_but_not_when_quiet(self):
+        with mock.patch.object(sync, "doctor_top_warnings", return_value=["doctor WARN DISK: low"]):
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                sync.start(self.a, here=True)
+            self.assertIn("doctor WARN DISK: low", buf.getvalue())
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                sync.start(self.a, here=True, quiet=True)
+            self.assertNotIn("doctor WARN", buf.getvalue())
+
     def test_start_slug_in_a_lane_tree_switches_branch_instead_of_making_a_worktree(self):
         lane = self.make_lane()
         commit(self.a, "later.txt", "l\n")
@@ -535,6 +558,30 @@ class SyncTest(unittest.TestCase):
         self.assertTrue(dirty.exists())
         self.assertTrue(ahead.exists())
         self.assertTrue(self.a.exists())  # primary tree never touched
+
+    def test_station_runs_where_all_then_tidy(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            done = sync.new_worktree(self.a, "done")
+        later = time.time() + 48 * 3600
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            res = sync.station(self.a, now=later)
+        self.assertIn("worktree(s) hold work", buf.getvalue())
+        self.assertEqual(res, [str(done.resolve())])
+        self.assertTrue(done.exists())  # dry run removes nothing
+
+    def test_station_apply_removes_only_the_clean_shipped_idle_tree(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            done = sync.new_worktree(self.a, "done")
+            ahead = sync.new_worktree(self.a, "ahead")
+        commit(ahead, "unshipped.py", "u\n")
+        later = time.time() + 48 * 3600
+        with contextlib.redirect_stdout(io.StringIO()):
+            res = sync.station(self.a, apply=True, now=later)
+        self.assertEqual(res, [str(done.resolve())])
+        self.assertFalse(done.exists())
+        self.assertTrue(ahead.exists())
+        self.assertTrue(self.a.exists())
 
     def test_tidy_dry_run_hint_is_a_command_that_runs_on_windows(self):
         # 2026-10-23: the hint printed `sync.py tidy --apply`, which Windows cannot run without `python scripts/dev/` in front
@@ -1535,6 +1582,14 @@ class OwnCiWaitTest(unittest.TestCase):
             self.assertIn('"ship", "--no-ci-wait"', (root / name).read_text(encoding="utf-8"), name)
         import codex_run
         self.assertIn("--no-ci-wait", codex_run.SHIP_ARGS)
+
+
+class PARALLEL_MainCheckoutRuleTest(unittest.TestCase):
+    def test_rule_present(self):
+        doc = Path(__file__).resolve().parents[2] / "MyTradingSys" / "system" / "PARALLEL.md"
+        text = doc.read_text(encoding="utf-8")
+        for needle in ("Main checkout rule", "never edit", "merge --ff-only origin/fast-track"):
+            self.assertIn(needle, text)
 
 
 if __name__ == "__main__":

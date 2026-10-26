@@ -11,10 +11,10 @@ Expected values come from DOCUMENTS, never from the code under test:
   [Q2] Label names for those sign tuples: quad_classify.py docstring (header, lines 6-9 and 12-13): trend up = new_longs,
        short squeeze = short_cover, trend down = new_shorts; distribution / long_liquidation / accumulation keep their names.
        The sign tuples in [Q1] and in the docstring agree on all six rows; [Q2] is only the label-name mapping.
-  [Q3] Price x OI readings (T3 practitioner convention): research/INDICATOR_IMPLEMENTATION_HANDOFF.md:44-47
+  [Q3] Price x OI readings (T3 practitioner convention): research/_archive/loose_2026-10/INDICATOR_IMPLEMENTATION_HANDOFF.md:44-47
        (rising OI + rising price = new longs; rising OI + falling price = new shorts; falling OI + rising price = short
-       covering; falling OI + falling price = long liquidation); research/DIVERGENCE_AUDIT_AND_RESEARCH.md:53.
-  [Q4] "flat" is one of the nine labels (research/AUDIT_2026-09-17_TRACKER.md:331). [Q1] has only price-up / price-down
+       covering; falling OI + falling price = long liquidation); research/_archive/loose_2026-10/DIVERGENCE_AUDIT_AND_RESEARCH.md:53.
+  [Q4] "flat" is one of the nine labels (research/_archive/loose_2026-10/AUDIT_2026-09-17_TRACKER.md:331). [Q1] has only price-up / price-down
        rows, so an unchanged price matches no row.
   [Q5] "nearest ~1h-ago snapshot": quad_classify.py docstring line 2; the quad window is 1 h: research/
        visual_validation_protocol_vvp002.md:160 ("quad's 1h window").
@@ -27,7 +27,7 @@ NOT TESTED (no document defines them) - recorded as "unknown (code-only)" in TWO
     so only the SIGN decides; no boundary is pinned.
   - the two labels that only the module's own docstring defines: weak_rally (price up, cvd down, oi down) and weak_sell
     (price down, cvd up, oi down); and any row where CVD or OI sits inside its dead band (falls to "flat" in the code).
-  - delta_aligned / long_bias / short_bias sets (only described by research/AUDIT_2026-09-17_TRACKER.md:364-367, which
+  - delta_aligned / long_bias / short_bias sets (only described by research/_archive/loose_2026-10/AUDIT_2026-09-17_TRACKER.md:364-367, which
     quotes the code), the None returns for missing inputs, load_all() and main() (hard-coded Windows paths, print I/O).
   - price_past == 0 raises ZeroDivisionError (AUDIT_2026-09-17_TRACKER.md row 2 flags it as a defect); not pinned.
 """

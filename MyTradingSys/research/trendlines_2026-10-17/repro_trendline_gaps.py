@@ -28,8 +28,8 @@ def gap1_close_arm_wick_penetration():
     bars[27]["c"], bars[27]["l"] = 106.0, 101.0
     det = detect(bars, price_arm="close", transform="linear")
     rej = [r for r in det.rejects if r["reject"] == "penetration" and r["ia"] == 15 and r["ib"] == 27]
-    assert det.lines == {} and len(rej) == 1, (det.lines, rej)
-    print("Gap 1 reproduced: close_arm='close' line rejected by wick penetration on its own anchor bars:", rej[0])
+    assert "1h|support|close|linear|15|27" in det.lines and not rej, (det.lines, rej)
+    print("Gap 1 FIXED (contract v1.1): close-arm line survives wicks through it; no penetration reject")
 
 
 def gap2_pre_availability_replay_events():
@@ -42,9 +42,9 @@ def gap2_pre_availability_replay_events():
     lid = "1h|support|wick|linear|15|27"
     evs = [e for e in det.events if e["line"] == lid]
     _, counted, _, _ = co.count_detector(det, det.bars)
-    assert any(e["state"] == "eligible" and e.get("arm") == "A" and e["bar"] == 29 and e["known_at"] == 30 for e in evs)
-    assert ("A", "break", "support", "T1", 31) in counted
-    print("Gap 2 reproduced: pre-availability bars 28..29 grant Arm A eligibility at birth (bar=29, known_at=30); counted:", counted)
+    assert not any(e["state"] == "eligible" and e.get("arm") == "A" and e["bar"] < 31 for e in evs), evs
+    assert ("A", "break", "support", "T1", 31) not in counted
+    print("Gap 2 FIXED (contract v1.1): bars 28..29 grant no Arm A eligibility; counted:", counted)
 
 
 def gap3_e11_cross_line_anchor_block():
@@ -59,8 +59,8 @@ def gap3_e11_cross_line_anchor_block():
     det = detect(bars, transform="linear")
     assert "1h|support|wick|linear|15|27" in det.lines
     assert det.lines["1h|support|wick|linear|15|27"]["broken_at"] == 35
-    assert "1h|support|wick|linear|15|40" not in det.lines
-    print("Gap 3 reproduced: broken inner line (15,27) blocks formation of outer fan line (15,40); lines:", list(det.lines))
+    assert "1h|support|wick|linear|15|40" in det.lines
+    print("Gap 3 FIXED (contract v1.1): broken inner line (15,27) no longer blocks outer fan line (15,40); lines:", list(det.lines))
 
 
 def gap4_count_only_multi_touch_and_lookahead_terciles():

@@ -1,14 +1,14 @@
 {
-  "detail": "Codex run finished",
-  "fails": 0,
+  "detail": "ERROR: You\u2019ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/settings/usage to purchase more credits or try again at 8:00 AM.",
+  "fails": 1,
   "heartbeat": "2026-10-22T15:08:46Z",
-  "last_error": "2026-10-25T16:37:20Z",
+  "last_error": "2026-10-25T23:20:58Z",
   "last_ok": "2026-10-25T19:59:31Z",
   "last_probe": "",
   "override": "",
-  "reason": "",
+  "reason": "credits",
   "resumed": "2026-10-25T17:13:25Z",
-  "since": "",
-  "status": "up",
+  "since": "2026-10-25T23:20:58Z",
+  "status": "down",
   "until": ""
 }

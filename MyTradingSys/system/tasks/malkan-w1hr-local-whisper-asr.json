@@ -2,6 +2,7 @@
   "approved_by": "",
   "asks": "",
   "class": "C0",
+  "closed": "2026-10-25T23:24:01Z",
   "commands": [
     "F:/MTS/tools/asr-venv/Scripts/python.exe scripts/dev/asr_transcribe.py --audio F:/MTS/data/malkan_videos/audio/W1HrDl70Lhk.f251.webm --out F:/MTS/data/malkan_videos/asr/W1HrDl70Lhk.jsonl --model large-v3 --beam 5"
   ],
@@ -16,6 +17,12 @@
   "id": "malkan-w1hr-local-whisper-asr",
   "lane": "JIS-NB",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "dd5aa09fb: local ASR transcript; MAL-1/MAL-4 stops recovered (CLEAR-ASR), MAL-6 not recove",
+      "ref": "dd5aa09fb",
+      "utc": "2026-10-25T23:24:01Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -42,11 +49,16 @@
   "refined_by": "gemini-yt-pipeliner",
   "refreshed": "2026-10-18T21:10:10Z",
   "refs": [
-    "MyTradingSys/research/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md",
+    "MyTradingSys/research/_archive/loose_2026-10/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md",
     "MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md",
     "MyTradingSys/research/layer_lab/reports/2026-10-17_malkan-hindi-rows-gpt-read.md"
   ],
-  "result": "",
+  "result": "dd5aa09fb: local ASR transcript; MAL-1/MAL-4 stops recovered (CLEAR-ASR), MAL-6 not recovered",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md",
     "MyTradingSys/research/malkan_extract_2026-10-15/extracts/extract_W1HrDl70Lhk.md",
@@ -60,14 +72,15 @@
   "scope_sha": "ecc5bebc038b",
   "size": "S",
   "sources": [
-    "MyTradingSys/research/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md"
+    "MyTradingSys/research/_archive/loose_2026-10/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run scripts/dev/asr_transcribe.py on JIS-NB at low priority on W1HrDl70Lhk audio (18 min) and convert to raw_transcripts_canonical/W1HrDl70Lhk_asr_raw.txt via scripts/dev/asr_to_canonical.py.",
     "Update the GARBLED stop lines in extract_W1HrDl70Lhk.md and SETUP_SUMMARY.md (MAL-1, MAL-4, MAL-6) with the clean ASR quotes, labelled ASR.",
     "Run scripts/dev/verify_extract_quotes.py on extract_W1HrDl70Lhk.md until PASS and ship."
   ],
+  "taken": "2026-10-25T23:24:01Z",
   "tests": "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/malkan_extract_2026-10-15/extracts/extract_W1HrDl70Lhk.md",
   "title": "Malkan W1HrDl70Lhk: local Whisper ASR on JIS-NB to recover Hinglish 5-Star RSI stop wording (no YouTube caption scraping)",
   "weight": "ROUTINE",

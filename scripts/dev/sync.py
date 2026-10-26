@@ -12,6 +12,7 @@
   python scripts/dev/sync.py claims  # open claims on origin/fast-track (host, account, task, age); release: `release <slug>`
   python scripts/dev/sync.py where [--all]  # trees holding work not on origin/fast-track (nothing lost?); --all lists every tree
   python scripts/dev/sync.py discard <tree name|path>...  # the operator said discard: save uncommitted work to Dumps/wt_rescue/<tree>/, remove the tree, keep its branch (no app card)
+  python scripts/dev/sync.py station [--apply]  # session start/end: where --all, then the tidy dry run (or tidy --apply)
   python scripts/dev/sync.py tidy [--apply] [--all]  # retire finished worktrees (session, App-named, mts-relay-*; clean + fully on origin/fast-track + idle 24 h); dry run by default
 
 Rules live in MyTradingSys/system/PARALLEL.md. The live tree (a checkout holding the gitignored marker
@@ -426,6 +427,21 @@ def prior_work(repo, slug, ref=f"origin/{TRUNK}"):
     return hits
 
 
+def doctor_top_warnings(repo, n=3, checklist=None):
+    """Top n WARN rows of the MTS doctor checklist for this host, as printable lines. Fail soft: [] when the doctor is absent or errors;
+    never raises, never blocks a start. No network (process=False)."""
+    try:
+        if checklist is None:
+            if repo is None or not (Path(repo) / "scripts" / "dev" / "mts_doctor.py").exists():
+                return []
+            import mts_doctor
+            checklist = lambda: mts_doctor.checklist(repo, process=False)
+        rows = [r for r in checklist() if r[1] == "WARN"][:n]
+        return [f"doctor WARN {name}: {detail[:200]}" for name, _s, detail in rows]
+    except Exception:
+        return []
+
+
 def start(repo, slug=None, here=False, quiet=False):
     """Bring a tree up to date. Returns the tree the session must work in: `repo` when it is clean, else a
     fresh worktree off origin/fast-track (printed as `WORKTREE: <path>`); never touches the other files."""
@@ -446,6 +462,8 @@ def start(repo, slug=None, here=False, quiet=False):
     print(f"host={socket.gethostname()} branch={branch} pulled={n} head={git(repo, 'rev-parse', '--short', 'HEAD').stdout.strip()}")
     if not quiet:
         print_claims(repo)
+        for line in doctor_top_warnings(repo):
+            print(line)
     prior = prior_work(repo, slug)
     if prior:
         print(f"prior work on {TRUNK} matching '{slug}' (read it before building; same task twice = compare, never overwrite):")
@@ -1596,6 +1614,12 @@ def run_host_health(repo):
         return []
 
 
+def station(repo, apply=False, now=None):
+    """Session start/end in one command: every tree (where --all), then the tidy dry run (or --apply)."""
+    where(repo, all_=True)
+    return tidy(repo, apply=apply, now=now)
+
+
 def main(argv):
     cmds = {"start": start, "ship": ship, "news": news, "claims": print_claims, "health": health}
     extra = {"claim", "release"}
@@ -1605,6 +1629,13 @@ def main(argv):
     if argv and argv[0] == "where" and set(argv[1:]) <= {"--all"}:
         try:
             where(toplevel(Path.cwd()), "--all" in argv)
+        except SyncError as e:
+            print(f"sync: {e}", file=sys.stderr)
+            return 1
+        return 0
+    if argv and argv[0] == "station" and set(argv[1:]) <= {"--apply"}:
+        try:
+            station(toplevel(Path.cwd()), "--apply" in argv)
         except SyncError as e:
             print(f"sync: {e}", file=sys.stderr)
             return 1

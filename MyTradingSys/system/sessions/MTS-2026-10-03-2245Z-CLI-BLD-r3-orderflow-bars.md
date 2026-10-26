@@ -3,9 +3,9 @@ surface: CLI | role: BLD | model: claude-sonnet-5-5 | branch: fast-track | lanes
 predecessor: MTS-2026-10-03-CLI-BLD-r2-runner-exit (its layers/alerts/ claim is still open; this session only touches the staged .new there)
 
 ## T0 contract (quoted)
-(a) R3, `MyTradingSys/research/WHY_ENGINE_SILENT_2026-10-03.md:46`: "| R3 | Live order-flow bar writer (aggTrades -> 1m OF bars with b99/fp/thr_days); live runner `--limit` >= 300 | Binance aggTrades websocket | v3 shadow rows appear in runtime/alerts with `collection_only` |"
+(a) R3, `MyTradingSys/research/_archive/loose_2026-10/WHY_ENGINE_SILENT_2026-10-03.md:46`: "| R3 | Live order-flow bar writer (aggTrades -> 1m OF bars with b99/fp/thr_days); live runner `--limit` >= 300 | Binance aggTrades websocket | v3 shadow rows appear in runtime/alerts with `collection_only` |"
     Cause row :27: "Fabio has no live input: v3 needs 1m order-flow bars, live runner feeds klines; OF files stop 2026-09-28".
-    `research/fast_track_2026-09-27/OPUS_PLAN_2026-10-02.md` (the brief's path was wrong; real path is research/OPUS_PLAN_2026-10-02.md) has no R3 / order-flow text.
+    `research/fast_track_2026-09-27/OPUS_PLAN_2026-10-02.md` (the brief's path was wrong; real path is research/_archive/loose_2026-10/OPUS_PLAN_2026-10-02.md) has no R3 / order-flow text.
 (b) "Order-flow bar" = the schema of `backtest/layers/fabio/orderflow_bars.py:10-17,39-42` (27 COLUMNS, 1m, USD-M aggTrades,
     10 USD fp bins, causal prior-30-day b99/b999 thresholds, thr_days). Spec: FABIO_V3_SPEC.md:25-29.
 (c) Emitter: `backtest/layers/alerts/live_runner_cli.py.new` (staged; live file has no v3). Missing source consumed in

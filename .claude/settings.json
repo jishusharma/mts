@@ -89,6 +89,16 @@
             "timeout": 30
           }
         ]
+      },
+      {
+        "matcher": "Agent|Task|Workflow",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/usage_reminder.py\" post",
+            "timeout": 8
+          }
+        ]
       }
     ],
     "Stop": [
@@ -115,6 +125,16 @@
             "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/preship.py\" hook-commit",
             "timeout": 180
+          }
+        ]
+      },
+      {
+        "matcher": "Agent|Task|Workflow",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/usage_reminder.py\" pre",
+            "timeout": 8
           }
         ]
       }

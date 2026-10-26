@@ -35,7 +35,7 @@ none has been written to `backtest/layers/FORMULAS.md`. Any setup found becomes 
 | Gervais, Kaniel & Mingelgrin 2001, *J. Finance* 56(3):877-919 | abnormal volume predicts next-month returns | PARTIAL. Wiley/RePEc/EconPapers listings appear in search, abstract from the search index; page not opened. Context only. |
 | Seuma, arXiv 2607.27070 (29 Jul 2026), https://arxiv.org/abs/2607.27070 | early-warning signals across seven BTC liquidation cascades | Verified (abstract opened). Does NOT study post-cascade price reversal. |
 | Bookmap blog "Stop hunt or just noise" (8 Jul 2025), https://bookmap.com/blog/stop-hunt-or-just-noise-how-to-read-the-real-intent-behind-a-move | practitioner stop-hunt signals | Opened. No author, no quantified evidence. T3 (vendor content). |
-| Repo: `research/OI_DELTA_4STATE_BACKTEST_2026-09-21.md`, `research/whale_positioning_evidence_2026-09-12.md` | our own OI/funding prior work | Read. Outranks external per gate 3e, but sample is only 8-9 days of snapshots and is not event-conditioned on breaks. |
+| Repo: `research/_archive/loose_2026-10/OI_DELTA_4STATE_BACKTEST_2026-09-21.md`, `research/_archive/loose_2026-10/whale_positioning_evidence_2026-09-12.md` | our own OI/funding prior work | Read. Outranks external per gate 3e, but sample is only 8-9 days of snapshots and is not event-conditioned on breaks. |
 
 ## Q1. CONTINUATION vs SWEEP - EVIDENCE
 

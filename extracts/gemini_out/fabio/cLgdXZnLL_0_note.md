@@ -4,7 +4,7 @@
 - **Title**: I Traded with a Professional Scalper
 - **Channel**: Andrea Cimi and Fabervaale ENG
 - **Duration**: 2056 seconds [SOURCED: MyTradingSys/research/fabio_video_search_2026-10-17/candidates.csv:38]
-- **Speaker as stated**: Andrea Cimi and Fabio Valentini [SOURCED: MyTradingSys/research/fabio_video_search_2026-10-17/candidates.csv:38]
+- **Speaker as stated**: Andrea Cimi and Fabio Valentini [SOURCED: MyTradingSys/research/fabio_video_search_2026-10-17/candidates.csv:38] (uploader/title attribution from candidates.csv, which has no speaker field; unverified, not transcript self-identification)
 - **Captions**: NO CAPTIONS (fetch stopped on HTTP Error 429 Too Many Requests per task instructions)
 - **Live trades**: Y [OURS; live orderflow trading session documenting real-time executions by Fabio Valentini]
 - **Verbatim quotes**: None (NO CAPTIONS; transcript unavailable)
