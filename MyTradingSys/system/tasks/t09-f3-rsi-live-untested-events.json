@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T21:12:30Z",
   "commands": [
     "python -m pytest -q MyTradingSys/execution/test_auto_trader.py MyTradingSys/backtest/layers/alerts/test_live_runner_layers.py"
   ],
@@ -32,6 +33,12 @@
   "lane": "JIS-NB",
   "latest": [
     {
+      "kind": "ship",
+      "line": "rsi_events trades support long only; 182 tests pass",
+      "ref": "d25ccb3a2",
+      "utc": "2026-10-26T21:12:30Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "T09-F2: label paths relative, cc label split so wiring_scan sees no runtime reference",
@@ -48,7 +55,12 @@
   "refined_by": "",
   "refreshed": "2026-10-26T20:51:10Z",
   "refs": [],
-  "result": "",
+  "result": "rsi_events trades support long only; 182 tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/execution/auto_trader.py",
     "MyTradingSys/execution/test_auto_trader.py",
@@ -64,13 +76,14 @@
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T09_live_parity.md section 5 T09-F3 (5m 384 of 461, 15m 126 of 147, 1h 25 of 28 untested)",
     "F:/MTS/gq/gx4-t09-* (GPT drafting fixes on the NUC night of 2026-10-25; not read here; compare its draft before building)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read live_layers.py rsi_level_layer (l.146-166) and auto_trader.py layer_rules (l.78-82); note that failure gets a side in live_layers and cross is mapped to level.",
     "Add fail-first tests in test_auto_trader.py: rsi:cross, rsi:rejection@40 and rsi failure alerts return reject 'unmapped' / no side; rsi:support long still trades.",
     "Fix: drop rsi:cross and rsi:rejection (rejection@40 is untested) from layer_rules, remove the failure side in rsi_level_layer; keep rsi:support long. rejection@60 stays alert-only until the layer watches level 60 (own card). Unknown or missing event rejects. Update test_rsi_cross_side_by_level (test_auto_trader.py:270) and failure-side tests in test_live_runner_layers.py.",
     "Add tests: restart/reset gives the same decision; alert with no event key rejects; run test_auto_trader*.py and test_live_runner_layers.py."
   ],
+  "taken": "2026-10-26T21:12:30Z",
   "tests": "test_auto_trader.py new test_rsi_untested_events_not_traded: cross, failure, rejection@40 rejected, support long accepted; red on current code (cross and rejection map to sides), green after.",
   "title": "T09-F3 S1: live RSI trades events no test covered (live_layers.py:146-166)",
   "weight": "CRITICAL",
