@@ -78,6 +78,34 @@ class T(unittest.TestCase):
         rc, raws, _ = self.run_main(["--channel", "@x", "--latest", "9", "--scan", "3", "--exclude", "#shorts"])
         self.assertEqual(raws, ["aaaaaaaaaaa_raw.txt", "ccccccccccc_raw.txt"])
 
+    def test_timedtext_429_falls_back_to_transcript_api(self):
+        class Blocked(FakeYDL):
+            def extract_info(self, url, download=True):
+                if download and not self.opts.get("extract_flat"):
+                    raise f.yt_dlp.utils.DownloadError("HTTP Error 429: Too Many Requests")
+                return {"title": "t", "upload_date": "20261020", "duration": 60, "uploader": "U"}
+
+        with tempfile.TemporaryDirectory() as td:
+            canon = pathlib.Path(td) / "canon"
+            with mock.patch.object(f.yt_dlp, "YoutubeDL", Blocked), mock.patch.object(f, "CANON", canon), \
+                    mock.patch.object(f.time, "sleep"), \
+                    mock.patch.object(f, "transcript_api_cues", return_value=([(1, "hello api")], "auto")):
+                r = f.fetch("zzzzzzzzzzz", "Krown", ["en"], canon)
+            self.assertEqual(r, "OK auto 2w")
+            self.assertIn("youtube_transcript_api", (canon / "zzzzzzzzzzz_timed.txt").read_text())
+            self.assertIn("hello api", (canon / "zzzzzzzzzzz_raw.txt").read_text())
+
+    def test_429_without_fallback_still_rate_limits(self):
+        class Blocked(FakeYDL):
+            def extract_info(self, url, download=True):
+                raise f.yt_dlp.utils.DownloadError("HTTP Error 429: Too Many Requests")
+
+        with tempfile.TemporaryDirectory() as td:
+            canon = pathlib.Path(td) / "canon"
+            with mock.patch.object(f.yt_dlp, "YoutubeDL", Blocked), mock.patch.object(f, "CANON", canon), \
+                    mock.patch.object(f.time, "sleep"), mock.patch.object(f, "transcript_api_cues", return_value=None):
+                self.assertEqual(f.fetch("zzzzzzzzzzz", "Krown", ["en"], canon), "RATELIMIT")
+
     def test_video_ids_still_work(self):
         rc, raws, _ = self.run_main(["zzzzzzzzzzz"])
         self.assertEqual((rc, raws), (0, ["zzzzzzzzzzz_raw.txt"]))
