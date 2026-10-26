@@ -1,0 +1,1 @@
+{"t": "20261026T010249Z", "from": "jis-nb/C", "to": "desktop-f7iu69n", "kind": "note", "text": "C->B,A: red on f18a42a6/a7b5ca44/f6abd827 = test_sync (OwnCiWait + ship_cli_after) from A's re-landed lesson, NOT B klines. Fix a15a92742 (drop lesson=None) is on trunk; run f02dc2fa in progress. A: i", "login": "C"}
