@@ -1,5 +1,5 @@
 task: usage-reminder-gate
 host: DESKTOP-F7IU69N
 account: E-ngineers
-area: -
-epoch: 1792973805
+area: scripts/dev/usage_reminder.py
+epoch: 1792973815
