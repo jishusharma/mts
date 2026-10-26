@@ -30,14 +30,13 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-26T10:35:46Z",
+  "refreshed": "2026-10-26T10:37:44Z",
   "refs": [],
   "result": "",
   "scope_in": [
-    "MyTradingSys/research/opus_station_review_20261026",
     "scripts/dev",
     "scripts/sched",
-    "MyTradingSys/system/tasks"
+    "MyTradingSys/research/opus_station_review_20261026/REVIEW.md"
   ],
   "scope_out": [
     "Live trading processes, HALT, orders, secrets, deployments; unattended fleet scheduler installation"
