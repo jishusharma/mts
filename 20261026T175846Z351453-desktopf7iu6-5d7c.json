@@ -1,0 +1,1 @@
+{"t": "20261026T175846Z", "from": "desktop-f7iu69n/?", "to": "all", "kind": "done", "text": "ship mfe-exit Result: planted 2024-08 TRAIN-labelled fire is excluded from DEV pass (new test fails on old code, 7/7 pass); DEV rerun not run here (fire CSVs absent on this station), noted in REPORT.m"}
