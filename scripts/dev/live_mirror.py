@@ -6,6 +6,8 @@
   python scripts/dev/live_mirror.py pull    [--root DIR]   # any work tree; verifies sha256, lands in runtime_data/_mirror/
   python scripts/dev/live_mirror.py brief                  # one screen: how old, flags, last alert, trades; every line says mirror@<utc>
                                                            # (a work tree whose copy is missing or older than WARN_MIN pulls first)
+  python scripts/dev/live_mirror.py ensure                 # on demand, no scheduler: in the live tree republish when the published copy is older than
+                                                           # ENSURE_MAX_MIN (5); prints 'published <version>' or 'mirror fresh'; elsewhere a no-op
   python scripts/dev/live_mirror.py export-obs             # copy this machine's observation captures into git-tracked research/ (dedup by obs_id)
 
 Design, review (Opus, 2026-10-10) and fail-closed rules: MyTradingSys/system/LIVE_MIRROR.md.
@@ -476,6 +478,34 @@ def mirror_age_min(repo, now=None):
         return None
 
 
+ENSURE_MAX_MIN = 5
+
+
+def root_age_min(root, now=None):
+    """Minutes since the manifest utc of the version CURRENT names under root; None when unreadable (missing, corrupt)."""
+    try:
+        v = (Path(root) / "CURRENT").read_text(encoding="utf-8").strip()
+        m = json.loads((Path(root) / v / "manifest.json").read_text(encoding="utf-8"))
+        return ((now or utcnow()) - dt.datetime.fromisoformat(m["utc"])).total_seconds() / 60
+    except (OSError, ValueError, KeyError, TypeError):
+        return None
+
+
+def ensure_fresh(repo, root, max_min=ENSURE_MAX_MIN, now=None):
+    """Live tree only: republish when the copy under root is missing, unreadable or older than max_min. Returns a one-line note.
+    Never raises (publish_recorded writes PUBLISH_FAIL.json); outside the live tree it does nothing. Read-only on the live tree."""
+    if not is_live_tree(repo):
+        return None
+    age = root_age_min(root, now)
+    if age is not None and age <= max_min:
+        return "mirror fresh (%.0f min old)" % age
+    try:
+        m = publish_recorded(repo, root, now=now)
+        return f"published {m['version']}"
+    except Exception as e:
+        return f"publish FAILED ({type(e).__name__}: {e}); see {FAIL_FILE}"[:200]
+
+
 def try_pull(repo, root, timeout=PULL_TIMEOUT_S):
     """One best-effort pull, capped at `timeout` s. Returns the status line to print, or None when nothing changed."""
     res = {}
@@ -505,6 +535,10 @@ def brief(repo, root, now=None, pull_timeout=PULL_TIMEOUT_S, owner=None):
     With `owner` (resolve_owner) the first line names the owner host; a missing, stale or unreadable owner, or a copy that
     came from another host, prints UNCONFIRMED and no numbers (fail closed)."""
     lines = []
+    if is_live_tree(repo):
+        note = ensure_fresh(repo, root, now=now)
+        if note and not note.startswith("mirror fresh"):
+            lines.append(note)
     if owner is not None:
         lines.append(owner_line(owner))
         if owner["state"] != "OWNER":
@@ -557,7 +591,7 @@ def export_obs(repo):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("cmd", choices=["publish", "pull", "brief", "export-obs"])
+    ap.add_argument("cmd", choices=["publish", "pull", "brief", "ensure", "export-obs"])
     ap.add_argument("--root", default=os.environ.get("MTS_MIRROR_ROOT"))  # unset: default_root(repo)
     ap.add_argument("--repo", default=str(REPO))
     ap.add_argument("--every-min", type=float, default=0, help="publish: skip when the newest version is younger than this")
@@ -589,6 +623,9 @@ def main(argv=None):
             if m["host"].lower() != owner["host"]:
                 raise MirrorError(f"copy is from {m['host']} but the owner is {owner['host']}; read on {owner['host']}")
             print(f"{state}: mirror of {m['host']} {m['utc']} ({len(m['files'])} files)")
+        elif a.cmd == "ensure":
+            note = ensure_fresh(a.repo, a.root)
+            print(note or "not the live tree: nothing to publish (readers use `brief`)")
         elif a.cmd == "brief":
             print("\n".join(brief(a.repo, a.root, owner=owner)))
         else:

@@ -59,6 +59,42 @@ class MirrorTest(unittest.TestCase):
     def pub(self, now=T0):
         return lm.publish(self.live, self.root, now=now)
 
+    # --- on-demand freshness (no scheduler)
+    def test_brief_in_live_tree_republishes_when_copy_older_than_5_min(self):
+        self.pub(now=T0)
+        later = T0 + dt.timedelta(minutes=10)
+        out = lm.brief(self.live, self.root, now=later)
+        self.assertTrue(any(l.startswith("published ") for l in out), out)
+        self.assertEqual(lm.root_age_min(self.root, now=later), 0.0)
+
+    def test_fresh_copy_not_republished(self):
+        self.pub(now=T0)
+        before = (self.root / "CURRENT").read_text()
+        lm.brief(self.live, self.root, now=T0 + dt.timedelta(minutes=2))
+        self.assertEqual((self.root / "CURRENT").read_text(), before)
+
+    def test_non_live_tree_never_publishes(self):
+        self.assertIsNone(lm.ensure_fresh(self.nuc, self.root, now=T0))
+        self.assertFalse((self.root / "CURRENT").exists())
+
+    def test_publish_error_does_not_crash_brief_and_records_fail(self):
+        put(self.live, "MyTradingSys/execution/plans/x.secret.json", "{}")
+        out = lm.brief(self.live, self.root, now=T0)
+        self.assertTrue(any("publish FAILED" in l for l in out), out)
+        self.assertTrue((self.root / lm.FAIL_FILE).exists())
+
+    def test_corrupt_current_republishes(self):
+        self.pub(now=T0)
+        (self.root / "CURRENT").write_text("garbage")
+        self.assertIsNone(lm.root_age_min(self.root, now=T0))
+        self.assertTrue(lm.ensure_fresh(self.live, self.root, now=T0 + dt.timedelta(minutes=1)).startswith("published"))
+
+    def test_ensure_leaves_halt_flags_alone(self):
+        pause = self.live / "MyTradingSys/execution/AUTO_PAUSE"
+        before = pause.read_text()
+        lm.ensure_fresh(self.live, self.root, now=T0)
+        self.assertEqual(pause.read_text(), before)
+
     # --- who may run what
     def test_publish_refuses_outside_live_tree(self):
         with self.assertRaises(lm.MirrorError):
