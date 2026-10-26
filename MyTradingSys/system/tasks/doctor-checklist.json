@@ -4,8 +4,8 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-26T18:06:34Z",
-    "misses": 14,
+    "folded": "2026-10-26T18:17:34Z",
+    "misses": 17,
     "reads": [
       "scripts/dev/tasks.py",
       "MyTradingSys/system/NEXT_SESSION.md",
