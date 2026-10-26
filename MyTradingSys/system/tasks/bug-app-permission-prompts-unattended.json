@@ -2,6 +2,19 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-26T15:45:43Z",
+    "misses": 30,
+    "reads": [
+      "MyTradingSys/system/SURFACE_POLICY.md",
+      "MyTradingSys/system/DEBUGGING.md",
+      ".claude/settings.json",
+      ".claude",
+      "MyTradingSys/tests/docs/test_integrity.py"
+    ],
+    "session": "agent-a6c7c2506c1f545e0"
+  },
   "created": "2026-10-26T14:52:01Z",
   "depends_on": [],
   "done_when": "SURFACE_POLICY.md gains <= 350 B (cap 4096, now 3743) on unattended permissions; scripts/dev/perm_audit.py (read-only) reports denied git merge/commit/pull; fail-first test_perm_audit.py; broadcast output quoted in note.",
