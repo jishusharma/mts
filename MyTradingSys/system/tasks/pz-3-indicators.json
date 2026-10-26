@@ -1,0 +1,63 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-10-26T19:08:24Z",
+  "depends_on": [
+    "pz-2-layer-spec"
+  ],
+  "done_when": "module and tests/test_pizzino_*.py pass; each test uses SPEC.md hand-computed numbers and fails on a stub; run_all_tests.py --quick green",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Implement SPEC.md as a pure function module returning signals per bar for any TF; grep every TF and layer-family map for the new family.",
+  "id": "pz-3-indicators",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research/ top level: 189 -> 14 files; 176 dated loose files into _archive/loose_2026-10 an",
+      "ref": "f8d0799de2bc",
+      "utc": "2026-10-25T23:02:12Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-26T19:08:42Z",
+  "refs": [
+    "MyTradingSys/research/pizzino_layer_2026-10-27/PLAN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/pizzino*.py",
+    "tests/test_pizzino_*.py",
+    "MyTradingSys/system/layer_index.json"
+  ],
+  "scope_out": [
+    "live tree; wiring into the live runner"
+  ],
+  "scope_sha": "f8d0799de2bc",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Write tests first from SPEC.md worked examples; confirm they fail on a stub",
+    "Implement pivot detection, 50% correction, retest, 1/2/3 bar count as pure functions",
+    "Grep every TF and layer-family map and add family pizzino to layer_index.json",
+    "Run run_all_tests.py --quick; commit with a Result: line (tests added, all green)"
+  ],
+  "tests": "tests/test_pizzino_*.py",
+  "title": "Pizzino layer: indicator module (pivots, 50% correction, retest, 1-2-3 bar) with fail-first tests",
+  "weight": "ROUTINE",
+  "worker": "session"
+}
