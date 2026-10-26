@@ -2,6 +2,16 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-26T00:52:59Z",
+    "misses": 11,
+    "reads": [
+      "MyTradingSys/backtest/bt/test_bt_data.py",
+      "MyTradingSys/system/LAYERS.md"
+    ],
+    "session": "agent-a0fc3344b65b8f291"
+  },
   "created": "2026-10-19T07:20:44Z",
   "depends_on": [],
   "done_when": "test_bt_data.py has the 5 torture cases (micro, dup identical, dup conflicting, gap, unsorted) and passes; existing callers still get the same list of bars for clean data; the conflicting-duplicate case raises; scripts/T01/t01_torture.py matrix shows no silent accept.",
