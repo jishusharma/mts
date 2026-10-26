@@ -43,6 +43,7 @@ LIVE_MARKER = ".mts_live"
 DOC_SUFFIXES = (".md", ".txt")
 PUSH_TRIES = 3
 CLAIMS_DIR = "MyTradingSys/system/claims"
+QUEUE_DIR = "MyTradingSys/system/desk_queue"   # desk rows (desk.py QUEUE)
 CLAIMS_BRANCH = "claims"   # gate-tiers-by-path (q-v1-claims-off-git): claim/release commits live here, never on the trunk
 SHIP_GAP_S = 600           # a second ship from one tree within this many seconds prints a note (no refusal)
 SHIP_STAMP = "mts_last_ship"
@@ -1577,6 +1578,24 @@ def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS,
     return out
 
 
+def ship_is_cards_docs_only(repo, argv):
+    """A ship whose outgoing diff is only task cards and .md/.txt docs touches no desk row, claim or queue, so the Pipeliner lease does
+    not guard it (2026-10-26: a Lead that loaded pipeline mode was blocked 45 min by another machine's lease). Fail closed: --release
+    (a claim write), no outgoing files, any other path, or any git error keeps the guard."""
+    if "--release" in argv:
+        return False
+    try:
+        files = outgoing_files(repo)
+    except Exception:
+        return False
+
+    def ok(f):
+        if f.startswith((QUEUE_DIR, CLAIMS_DIR)):
+            return False
+        return f.endswith(DOC_SUFFIXES) or (f.startswith(CARDS_DIR + "/") and f.endswith(".json"))
+    return bool(files) and all(ok(f) for f in files)
+
+
 def lease_guard(argv):
     """TRAFFIC_CONTROLLER.md Part A: a singleton-role session (Pipeliner) ships, claims and releases
     only while it holds its lease (scripts/dev/lease.py); fails closed. Any other session: no-op, no network."""
@@ -1584,6 +1603,8 @@ def lease_guard(argv):
         return 0
     import lease
     try:
+        if argv[0] == "ship" and ship_is_cards_docs_only(toplevel(Path.cwd()), argv):
+            return 0
         lease.guard(toplevel(Path.cwd()), lease.MIN_FOR_SHIP if argv[0] == "ship" else 0)
     except (lease.LeaseError, SyncError) as e:
         print(f"sync: LEASE {'REFUSED' if getattr(e, 'code', 4) == lease.REFUSED else 'UNREACHABLE'}: {e}", file=sys.stderr)

@@ -300,7 +300,7 @@ class SameHost(Base):
 
 
 class Wiring(Base):
-    HELD = ("test_banner_shows_holder",)
+    HELD = ("test_banner_shows_holder", "test_ship_of_cards_passes_with_foreign_lease", "test_ship_of_queue_claims_code_or_release_still_refused_with_foreign_lease", "test_ship_mixed_cards_and_code_refused_with_foreign_lease", "test_ship_release_refused_with_foreign_lease", "test_desk_post_take_done_refuse_with_foreign_lease")
 
     def test_desk_and_sync_refuse_a_pipeliner_without_the_lease(self):
         r = self.cli(self.b, self.ident_b, str(DEV / "desk.py"), "sweep", "--no-fetch", role="Pipeliner")
@@ -310,6 +310,43 @@ class Wiring(Base):
         self.assertEqual(r.returncode, lease.REFUSED, r.stdout + r.stderr)
         r = self.cli(self.b, self.ident_b, str(DEV / "sync.py"), "claim", "x", role="Pipeliner")
         self.assertEqual(r.returncode, lease.REFUSED, r.stdout + r.stderr)
+
+    def _guard_with_commit(self, files, *flags):
+        """sync.lease_guard(['ship', ...]) in the lenovo clone (foreign Pipeliner lease held by sess-a) after one local commit of `files`."""
+        for rel in files:
+            f = self.b / rel
+            f.parent.mkdir(parents=True, exist_ok=True)
+            f.write_text("x"+chr(10), newline=chr(10))
+        git(self.b, "add", "-A")
+        git(self.b, "commit", "-q", "-m", "t")
+        import sync
+        env = {k: v for k, v in os.environ.items() if k not in ("PYTEST_CURRENT_TEST", "CLAUDE_CODE_SESSION_ID")}
+        env.update(self.ident_b)
+        env.update({"MTS_LEASE_TEST_FORCE": "1", "MTS_ROLE": "Pipeliner"})
+        old = os.getcwd()
+        os.chdir(self.b)
+        try:
+            with mock.patch.dict(os.environ, env, clear=True), mock.patch("sys.stderr"):
+                return sync.lease_guard(["ship", *flags])
+        finally:
+            os.chdir(old)
+
+    def test_ship_of_cards_passes_with_foreign_lease(self):
+        self.assertEqual(self._guard_with_commit(["MyTradingSys/system/tasks/c.json", "MyTradingSys/system/roles/x.md"]), 0)
+
+    def test_ship_of_queue_claims_code_or_release_still_refused_with_foreign_lease(self):
+        self.assertEqual(self._guard_with_commit(["MyTradingSys/system/desk_queue/r.json"]), lease.REFUSED)
+
+    def test_ship_mixed_cards_and_code_refused_with_foreign_lease(self):
+        self.assertEqual(self._guard_with_commit(["MyTradingSys/system/tasks/c.json", "scripts/dev/x.py"]), lease.REFUSED)
+
+    def test_ship_release_refused_with_foreign_lease(self):
+        self.assertEqual(self._guard_with_commit(["MyTradingSys/system/tasks/c.json"], "--release", "s"), lease.REFUSED)
+
+    def test_desk_post_take_done_refuse_with_foreign_lease(self):
+        for args in (("post", "t", "--need", "n", "--done-when", "d", "--no-ship"), ("take", "x", "--no-ship"), ("done", "x", "--result", "r", "--no-ship")):
+            r = self.cli(self.b, self.ident_b, str(DEV / "desk.py"), *args, role="Pipeliner")
+            self.assertEqual(r.returncode, lease.REFUSED, r.stdout + r.stderr)
 
     def test_holder_passes_guard_and_other_machine_does_not(self):
         r = self.cli(self.a, self.ident_a, str(DEV / "lease.py"), "acquire", "Pipeliner")
