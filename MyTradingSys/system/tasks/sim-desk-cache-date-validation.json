@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T22:54:09Z",
   "commands": [],
   "created": "2026-10-26T18:53:04Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "sim-desk-cache-date-validation",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "shipped 11ddfd25a; 8 sealed-cut tests red on old code, green now; sim_desk + T06 110 passe",
+      "ref": "5a96d9e49",
+      "utc": "2026-10-26T22:54:09Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refs": [
     "MyTradingSys/research/design_cards_2026-10-26/astra_sealed_guard.md"
   ],
-  "result": "",
+  "result": "shipped 11ddfd25a; 8 sealed-cut tests red on old code, green now; sim_desk + T06 110 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/sim_desk/studies/_bars.py",
     "MyTradingSys/research/sim_desk/desk.py",
@@ -49,13 +61,14 @@
     "MyTradingSys/research/design_cards_2026-10-26/astra_sealed_guard.md",
     "MyTradingSys/research/sim_desk/DESIGN.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Copy the synthetic fixture from astra_sealed_guard.md Reproducer into test_sealed_cache.py; assert the desired safety (max ts < CUT) per the L1-L7 table; confirm all 7 red",
     "Validate content dates at each boundary: _month and hot _ALL (_bars.py), cached result arrays (desk.py run_setting), bar times before simulate_one and trade_bars (levels.py), parsed ZIP rows (fetch_klines.py)",
     "Replace the assert at _bars.py:91 with an explicit raise (assert vanishes under -O); refuse, never silently sanitise",
     "Run the sim_desk tests and run_all_tests.py --quick; commit with a Result: line"
   ],
+  "taken": "2026-10-26T22:54:09Z",
   "tests": "New sim_desk/test_sealed_cache.py: 7 tests (L1-L7) fail on the pre-change code (reproducer proves each leak), pass after.",
   "title": "Simulator desk: validate cache and fetched bar timestamps before study and replay",
   "weight": "CRUCIAL",
