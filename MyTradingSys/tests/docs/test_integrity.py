@@ -203,3 +203,9 @@ def test_9_ops_change_check_has_8_questions_and_lead_cites_it():
     assert "Reach: Q1-Q8 ok|n/a <why>" in f.read_text(encoding="utf-8")
     assert "OPS_CHANGE_CHECK" in (MTS / "system" / "roles" / "lead.md").read_text(encoding="utf-8")
     assert "OPS_CHANGE_CHECK" in (MTS / "system" / "DEBUGGING.md").read_text(encoding="utf-8")
+
+
+def test_10_workers_blocked_solve_it_rule():
+    """bug-ai-health-stops-at-first-blocker (NUC 2026-10-26): a refusal is solved and verified, then reported."""
+    t = (MTS / "system" / "WORKERS.md").read_text(encoding="utf-8")
+    assert "Blocked" in t and "report AND continue" in t and "brief template" in t.lower()
