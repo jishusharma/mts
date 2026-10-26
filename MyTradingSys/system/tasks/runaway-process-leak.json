@@ -7,10 +7,11 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-26T22:56:46Z",
-    "misses": 15,
+    "folded": "2026-10-26T22:57:36Z",
+    "misses": 16,
     "reads": [
       "scripts/operator/runaway_check.ps1",
+      "scripts/dev/run_extra_tests.py",
       "MyTradingSys/system/RUNAWAY_GUARD.md",
       "MyTradingSys/system/QUICK_ANSWERS.md"
     ],
