@@ -1,7 +1,21 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T21:05:33Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-26T21:05:39Z",
+    "misses": 61,
+    "reads": [
+      "MyTradingSys/research/levels_confluence_2026-10-14/ladder_ideas_dev.csv",
+      "MyTradingSys/research/levels_confluence_2026-10-14/ladder.py",
+      "MyTradingSys/research/levels_confluence_2026-10-14/ladder_run.py",
+      "MyTradingSys/backtest/fees.py",
+      "MyTradingSys/backtest/layers/FORMULAS.md"
+    ],
+    "session": "agent-a2ded1ef760cf5cc1"
+  },
   "created": "2026-10-26T18:35:16Z",
   "depends_on": [],
   "done_when": "levels_raw_ledger/ledger.csv has 255 filled + 517 unfilled rows, all ts before 2024-07-01, plus provenance.md and reconcile.py output; OR, if the original run is not reproducible, provenance.md + a diff report saying why. Unexplained differences listed.",
@@ -12,7 +26,14 @@
   "goal": "Recover or reproduce original 2026-10-25 zero-slippage E1 S2 K5 X0_2R DEV run as a public historical fill ledger; export entry/exit prices, quantities, fees, stop/R distance, explicit unfilled status, timestamps and source commit. Do not use current changed defaults.",
   "id": "astra-low-levels-fee-drag-recompute-need-export-the-original",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "levels_raw_ledger/ledger.csv 255 filled + 517 unfilled, reconcile ok",
+      "ref": "acd3b4fc9",
+      "utc": "2026-10-26T21:05:33Z"
+    }
+  ],
   "layers": [
     "krown"
   ],
@@ -26,7 +47,12 @@
   "refs": [
     "F:/MTS/mts-jis-nuc-next-priority/MyTradingSys/system/tasks/astra-low-levels-fee-drag-recompute.json"
   ],
-  "result": "",
+  "result": "levels_raw_ledger/ledger.csv 255 filled + 517 unfilled, reconcile ok",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/design_cards_2026-10-26/levels_raw_ledger/ (new files only)"
   ],
@@ -41,13 +67,14 @@
     "MyTradingSys/research/levels_confluence_2026-10-14/frozen_rule.json",
     "MyTradingSys/research/levels_confluence_2026-10-14/ladder_ideas_dev.csv"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Find the 2026-10-25 run: git log --since=2026-10-25 over research/levels_confluence_2026-10-14/ and sim_desk/studies/levels.py; note source sha",
     "Load frozen settings from frozen_rule.json (E1 S2 K5 X0_2R, zero slippage, DEV only, ts < 2024-07-01); never import today's changed defaults",
     "Export levels_raw_ledger/ledger.csv: id, side, entry_t, entry, exit_t, exit, qty, fee_in, fee_out, R_dist, filled(Y/N), src_sha; 255 filled + 517 unfilled",
     "Write provenance.md (sha, command, settings) and reconcile.py (net=gross-fees, 3 hand rows); list unexplained diffs; if not reproducible, ship that report only"
   ],
+  "taken": "2026-10-26T21:05:33Z",
   "tests": "New levels_raw_ledger/reconcile.py: fails on a stub ledger; passes 3 hand-computed rows (gross_R=s*(X-E)/R, FORMULAS.md:468-470); asserts ts < 2024-07-01 and net=gross-fees.",
   "title": "Prereq of astra-low-levels-fee-drag-recompute: Export the original 2026-10-25 levels default-run DEV trade ledger for in",
   "weight": "CRUCIAL",
