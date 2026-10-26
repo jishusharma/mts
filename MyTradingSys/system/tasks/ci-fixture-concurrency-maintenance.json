@@ -16,12 +16,12 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "scripts/dev/test_run_all_tests.py::test_files_overlap_each_gets_own_basetemp_and_failures_keep_list_order",
-  "note": "",
+  "note": "Implementation shipped (8da805e73, ab1cd588e); 183 tests and 3 subtests pass. Closure pending required independent Lab_Guy review stamp under TASK_REFINEMENT.md Promotion gate. No reviewer identity fabricated.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
-  "result": "",
+  "result": "Fixture repair shipped; local affected suites and smoke gate pass. Keep card raw until required review stamp and CI confirmation are recorded.",
   "scope_in": [
     "scripts/dev/test_sync.py",
     "scripts/dev/test_run_all_tests.py"
