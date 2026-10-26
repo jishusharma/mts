@@ -196,7 +196,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/screenshots`
 - Roadmap: `MyTradingSys/system/NEXT_SESSION.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `live-read-from-any-device` ready p1 JIS-NB: Live engine readable from every device: laptop publishes the mirror (LIVE_HOST_MOVE s11) with no scheduler; mi
   - `lf-live_engine-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: live_engine (file:line facts only, no verdict)
   - `lf-live_engine-gpt-rederive` ready p2 CODEX: Layer re-derive: live_engine (independent recount of the headline numbers behind the fact sheet)
   - `state-code-accumulator-backfill` ready p2 JIS-NB: StateCodeEmitter: backfill session CVD/cum_pv/cum_vol after restart and WS reconnect, fail closed on backfill 
