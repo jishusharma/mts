@@ -34,4 +34,4 @@ Heavy work goes to the desktop's Max login through Sonnet Builders. The laptop a
 Mainnet anything. Removing layers. Deploys or live-tree changes (manual or coordinator-run only, DEPLOY_RUNBOOK.md). Schedulers.
 
 ## State (overwrite at each hand-over)
-- 2026-10-25 ~15:40Z: trunk head 402f4693b; last CI run 242fbf7a1, green. Laptop-A Claude working B196. Antigravity not started yet. Rename Builder running.
+- 2026-10-26 ~01:45Z: trunk green f02dc2fa. A and B Builders running, cherry+CI checked every wake. C week 74% (hard stop 79), no C Builders. Hand-over: MyTradingSys/system/handover/SUPERVISOR_C.md. Open: JIS-NB-lane cards, context-composite-v2 re-review, flaky windows process-tree test card.
