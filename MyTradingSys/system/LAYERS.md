@@ -224,7 +224,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Ledger: `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv`; `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_CONSOLIDATED.md`; `MyTradingSys/research/krown_ta101_2026-10-13/MANIFEST.csv`
 - Other results: `MyTradingSys/research/krown_ta101_2026-10-13/reflexivity_log.md`; `MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md`; `MyTradingSys/options/research/KROWN_FREE_VS_PAID.md`
 - Roadmap: `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md`
-- Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-krown-gemini-facts.md`
+- Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-26_astra-low-confluence-prereg-leak-hunt.md`; `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-krown-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `astra-low-levels-fee-drag-recompute` ready p1 CODEX: Astra-low: independently recompute the levels study fee drag (+0.22 R gross, -0.12 R net, 255 fills)
   - `confluence-s4-dev-trials` refined p2 SONNET: Confluence S4: DEV and DEV_EXT trial runs (T2, sizing arm, pooled read, T4) per PRE_REG_CONFLUENCE
