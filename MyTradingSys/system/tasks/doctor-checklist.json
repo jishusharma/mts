@@ -2,6 +2,16 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-26T15:29:23Z",
+    "misses": 3,
+    "reads": [
+      "scripts/dev/tasks.py",
+      "MyTradingSys/system/CLOUD_ACCOUNTS.md"
+    ],
+    "session": "7c7e3003-0fc7-496b-85d7-8cc69beafdb4"
+  },
   "created": "2026-10-25T11:14:07Z",
   "depends_on": [],
   "done_when": "research/mts_doctor/DOCTOR_COVERAGE_2026-10-26.md has one row per fix: commit, check name or none, decision; each new check in mts_doctor.py has a fail-first test in test_mts_doctor.py; python scripts/dev/mts_doctor.py --no-process still prints one HEALTH line.",
