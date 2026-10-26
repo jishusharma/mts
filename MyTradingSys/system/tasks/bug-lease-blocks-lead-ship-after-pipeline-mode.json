@@ -9,9 +9,18 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "A Lead session that loaded pipeline mode only to look at the desk cannot ship cards or docs while another machine's Pipeliner lease runs (2026-10-26: 5 commits stuck, lease held by DESKTOP-F7IU69N until 19:53Z; a background wait loop is the workaround and dies at the 10-min tool cap). Design: the lease guards desk/claim/queue writes only; docs, cards and bug cards ship without it; lease.py gains an 'unload' or per-command role.",
+  "goal": "A Lead session that loaded pipeline mode only to look at the desk cannot ship cards or docs while another machine holds the Pipeliner lease (2026-10-26: 6 commits stuck up to 45 min). The lease should guard desk, claim and queue writes only; cards and docs ship without it.",
   "id": "bug-lease-blocks-lead-ship-after-pipeline-mode",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tc2: lab runners export MTS_ROLE/MTS_LEASE_SESSION for singleton-role cards",
+      "ref": "331b854fe289",
+      "utc": "2026-10-23T03:50:55Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,6 +28,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-26T19:43:00Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -27,9 +37,10 @@
   "scope_out": [
     "live tree; the lease file format used by other machines"
   ],
+  "scope_sha": "331b854fe289",
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "read lease.py:22-30 and :435 and sync.py ship guard; list which commands call the guard",
     "limit the guard to desk/claim/queue writes; ship of non-queue paths passes; or add 'lease.py unload' to drop the Pipeliner role for the session",
