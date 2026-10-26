@@ -348,6 +348,56 @@ class SyncTest(unittest.TestCase):
     def branch_of(self, tree):
         return subprocess.run(["git", "-C", str(tree), "branch", "--show-current"], capture_output=True, text=True).stdout.strip()
 
+    def test_doctor_top_warnings_keeps_three_warn_rows_in_order(self):
+        rows = [("A", "OK", "x"), ("B", "WARN", "b1"), ("C", "unavailable", "c"), ("D", "WARN", "d1"), ("E", "WARN", "e1"), ("F", "WARN", "f1")]
+        out = sync.doctor_top_warnings(self.a, checklist=lambda: rows)
+        self.assertEqual(len(out), 3)
+        self.assertTrue(out[0].startswith("doctor WARN B:") and out[2].startswith("doctor WARN E:"))
+
+    def test_doctor_top_warnings_fails_soft_when_the_doctor_errors(self):
+        def boom():
+            raise RuntimeError("doctor down")
+        self.assertEqual(sync.doctor_top_warnings(self.a, checklist=boom), [])
+        self.assertEqual(sync.doctor_top_warnings(self.a), [])  # throwaway repo has no doctor: nothing, no raise
+
+    def test_start_prints_doctor_warnings_but_not_when_quiet(self):
+        with mock.patch.object(sync, "doctor_top_warnings", return_value=["doctor WARN DISK: low"]):
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                sync.start(self.a, here=True)
+            self.assertIn("doctor WARN DISK: low", buf.getvalue())
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                sync.start(self.a, here=True, quiet=True)
+            self.assertNotIn("doctor WARN", buf.getvalue())
+
+    def test_ship_release_lesson_lands_in_the_tracked_log_with_the_work(self):
+        sync.claim(self.a, "Task L", area="scripts/dev", gate=self.gate)
+        commit(self.a, "l.py", "l" + chr(10))
+        sync.ship(self.a, gate=self.gate, release_slug="task-l", lesson="gate was slow |  retry" + chr(10) + "once")
+        self.assertEqual(subprocess.run(["git", "-C", str(self.a), "cat-file", "-e", "origin/fast-track:" + sync.LESSONS_FILE]).returncode, 0)
+        got = sync.last_lessons(self.a)
+        self.assertEqual(len(got), 1)
+        self.assertTrue(got[0].endswith("| task-l | gate was slow / retry once"), got)
+
+    def test_start_prints_only_the_last_five_lessons(self):
+        for i in range(7):
+            sync.add_lesson(self.a, "s", f"lesson number {i}")
+        self.assertEqual(sync.last_lessons(self.a), sync.last_lessons(self.a, 5))
+        self.assertEqual(len(sync.last_lessons(self.a)), 5)
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            sync.start(self.a, here=True)
+        out = buf.getvalue()
+        self.assertIn("lesson number 6", out)
+        self.assertIn("lesson number 2", out)
+        self.assertNotIn("lesson number 1", out)
+
+    def test_lesson_flag_needs_text_and_missing_log_is_empty(self):
+        self.assertEqual(sync.last_lessons(self.a), [])
+        with self.assertRaises(sync.SyncError):
+            sync.add_lesson(self.a, "s", "   ")
+
     def test_start_slug_in_a_lane_tree_switches_branch_instead_of_making_a_worktree(self):
         lane = self.make_lane()
         commit(self.a, "later.txt", "l\n")

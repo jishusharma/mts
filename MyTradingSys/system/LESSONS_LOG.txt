@@ -1,0 +1,1 @@
+2026-10-26 | sync-hygiene | sync.py start now shows doctor warnings and recent lessons; log one line per task at ship
