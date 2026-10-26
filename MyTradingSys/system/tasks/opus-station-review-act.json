@@ -1,0 +1,70 @@
+{
+  "approved_by": "operator",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-26T10:34:05Z",
+  "crucial": "Operator explicitly names Claude Opus for an independent coordination review and action on accepted findings.",
+  "depends_on": [],
+  "done_when": "Review verdicts and first accepted repair shipped with before/after proof (or every finding independently disproved/already fixed); remaining work linked to ready deduped cards.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independently verify GPT coordination and AI-health evidence, then ship the first accepted repair and actionable deduped successors.",
+  "id": "opus-station-review-act",
+  "lane": "OPUS",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "rsi-deep-prob-tables fix: report non-survival share first, relabel window-selection allowl",
+      "ref": "9d61cb293ff1",
+      "utc": "2026-10-26T02:14:15Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Operator explicitly requested Opus review then action on 2026-10-26. Pinned priority 1; do not mark repairs complete from audit output. Weight covers this non-lab review intake; implementation cards must assign their own risk class.",
+  "pinned": true,
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-26T10:35:46Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/opus_station_review_20261026",
+    "scripts/dev",
+    "scripts/sched",
+    "MyTradingSys/system/tasks"
+  ],
+  "scope_out": [
+    "Live trading processes, HALT, orders, secrets, deployments; unattended fleet scheduler installation"
+  ],
+  "scope_sha": "9d61cb293ff1",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/coordination_audit_20261026/REPORT.md",
+    "MyTradingSys/research/coordination_audit_20261026/CLAUDE_REVIEW.md",
+    "MyTradingSys/research/coordination_audit_20261026/reproduce.py",
+    "MyTradingSys/research/cloud_ai_health_2026-10-26/REPORT.md",
+    "MyTradingSys/research/cloud_ai_health_2026-10-26/VALIDATION.md",
+    "MyTradingSys/research/station_c_rolling_audit_20261026/REPORT.md",
+    "MyTradingSys/research/station_c_rolling_audit_20261026/evidence.json",
+    "MyTradingSys/research/station_c_rolling_audit_20261026/reproductions.json",
+    "chain_test_proof.txt",
+    "MyTradingSys/research/opus_station_review_20261026/BRIEF.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read the attached BRIEF.md and hash manifest; compare audited SHAs with current trunk.",
+    "Reproduce and disposition findings, reusing existing cards.",
+    "Implement first accepted repair with fail-first tests; ship and record current CI evidence.",
+    "Create bounded ready successors for remaining accepted repairs and rolling-session pilot."
+  ],
+  "tests": "Inspect and rerun coordination_audit_20261026/reproduce.py in isolated fixtures; accepted repair tests must fail before and pass after; include affected CI suite.",
+  "title": "Opus review station coordination evidence and implement accepted repairs",
+  "weight": "ROUTINE",
+  "worker": "session"
+}
