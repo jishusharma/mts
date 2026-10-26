@@ -290,6 +290,21 @@ class GuardTest(unittest.TestCase):
         self.assertIn("--apply", seen[0])
         self.assertIn("--no-log", seen[0])
 
+    def test_the_run_value_can_name_another_clone_whose_worktrees_it_retires(self):
+        cmd = g.logon_command(python="py", script="s.py", repos=[r"C:\other\repo"])
+        self.assertTrue(cmd.endswith(' logon --repo "C:\\other\\repo"'))
+        self.assertEqual(g.repo_args(["logon", "--repo", "A", "--repo", "B"]), ["A", "B"])
+        seen = []
+        old = g.subprocess.run
+        g.subprocess.run = lambda c, **kw: seen.append(c) or type("R", (), {"stdout": ""})()
+        try:
+            self.real_tidy(True, ["A"])
+        finally:
+            g.subprocess.run = old
+        self.assertEqual(len(seen), 2)
+        self.assertNotIn("--repo", seen[0])
+        self.assertEqual(seen[1][-2:], ["--repo", "A"])
+
     def test_logon_command_is_headless_and_runs_the_logon_mode(self):
         cmd = g.logon_command(python=r"C:\Py\python.exe", script=r"C:\repo\scripts\dev\c_drive_guard.py")
         self.assertIn("--headless", cmd)

@@ -8,7 +8,8 @@ Usage:
                                                  or one warning line when low
   python scripts/dev/c_drive_guard.py plan       dry run: every item it would delete, one line each with the reason
   python scripts/dev/c_drive_guard.py logon      logon run: prunes at every logon, whatever the free space; one line to the log
-  python scripts/dev/c_drive_guard.py install    register `logon` under HKCU Run (no admin, no scheduled task); run from the primary checkout
+  python scripts/dev/c_drive_guard.py install [--repo PATH ...]   register `logon` under HKCU Run (no admin, no scheduled task); run from the
+                                                 primary checkout; --repo: also retire the worktrees of that other clone (JIS-NB: IdeaProjects)
   python scripts/dev/c_drive_guard.py status     registered or not, for which checkout, last logon line
   python scripts/dev/c_drive_guard.py uninstall  remove the logon run
 
@@ -215,16 +216,26 @@ def maint_script():
     return Path(__file__).resolve().parent / "wt_maint.py"
 
 
-def run_tidy(apply):
+def run_tidy(apply, repos=()):
     """`wt_maint.py [--apply --no-log]` for the checkout this script lives in (--no-log: the guard must not dirty the primary
-    tree with a SUPERVISOR_LOG line). Returns its output lines ([] on any failure: never raises)."""
-    try:
-        r = subprocess.run([sys.executable, str(maint_script())] + (["--apply", "--no-log"] if apply else []),
-                           capture_output=True, text=True, timeout=600, cwd=str(Path(__file__).resolve().parents[2]),
-                           creationflags=NO_WINDOW)
-        return (r.stdout or "").splitlines()
-    except (OSError, subprocess.SubprocessError):
-        return []
+    tree with a SUPERVISOR_LOG line). `repos`: other clones whose trees the job also covers (`--repo`; the logon Run value may point
+    at a checkout that is not the one holding the worktrees). Returns its output lines ([] on any failure: never raises)."""
+    out = []
+    for repo in [None, *repos]:
+        try:
+            r = subprocess.run([sys.executable, str(maint_script())] + (["--apply", "--no-log"] if apply else [])
+                               + (["--repo", str(repo)] if repo else []),
+                               capture_output=True, text=True, timeout=600, cwd=str(Path(__file__).resolve().parents[2]),
+                               creationflags=NO_WINDOW)
+            out += (r.stdout or "").splitlines()
+        except (OSError, subprocess.SubprocessError):
+            pass
+    return out
+
+
+def repo_args(argv):
+    """Values of every `--repo PATH` in argv."""
+    return [argv[i + 1] for i, a in enumerate(argv[:-1]) if a == "--repo"]
 
 
 def plan():
@@ -381,12 +392,12 @@ def start_apply_detached():
         pass
 
 
-def logon():
+def logon(repos=()):
     """Logon run: prune now whatever the free space and log one line. A failure is logged, and the run still returns 0."""
     try:
         before = free_gb()
         n, freed = prune(apply=True)
-        gone = [l for l in run_tidy(True) if l.startswith("removed  ")]
+        gone = [l for l in (run_tidy(True, repos) if repos else run_tidy(True)) if l.startswith("removed  ")]
         log("logon: C free %.1f GB -> %.1f GB; pruned %d temp entries, %.2f GB; %d worktrees retired; runaway outputs %d"
             % (before, free_gb(), n, freed / 1e9, len(gone), len(runaways())))
     except Exception as e:     # the log says why; a restart must not show an error box
@@ -394,11 +405,11 @@ def logon():
     return 0
 
 
-def logon_command(python=None, script=None):
+def logon_command(python=None, script=None, repos=()):
     """The HKCU Run command line. conhost --headless: no console window at logon (same launch as the Antigravity daemon)."""
     conhost = os.path.join(os.environ.get("SystemRoot", r"C:\Windows"), "System32", "conhost.exe")
     return '"%s" --headless "%s" "%s" logon' % (conhost, python or sys.executable,
-                                             script or str(Path(__file__).resolve()))
+                                             script or str(Path(__file__).resolve())) + "".join(' --repo "%s"' % r for r in repos)
 
 
 def installed_command(key=RUN_KEY, name=RUN_NAME):
@@ -411,7 +422,7 @@ def installed_command(key=RUN_KEY, name=RUN_NAME):
         return None
 
 
-def install(checkout=None, key=RUN_KEY, name=RUN_NAME):
+def install(checkout=None, key=RUN_KEY, name=RUN_NAME, repos=()):
     """Register `logon` for one checkout. Refuses a git worktree: tidy removes those and the run would point at nothing."""
     root = Path(checkout) if checkout else Path(__file__).resolve().parents[2]
     if (root / ".git").is_file():
@@ -425,7 +436,7 @@ def install(checkout=None, key=RUN_KEY, name=RUN_NAME):
         print("refused: Windows only")
         return 2
     import winreg
-    cmd = logon_command(script=str(script))
+    cmd = logon_command(script=str(script), repos=repos)
     with winreg.CreateKeyEx(winreg.HKEY_CURRENT_USER, key, 0, winreg.KEY_SET_VALUE) as k:
         winreg.SetValueEx(k, name, 0, winreg.REG_SZ, cmd)
     print("installed: HKCU\\%s  %s = %s" % (key, name, cmd))
@@ -451,7 +462,7 @@ def status(key=RUN_KEY, name=RUN_NAME):
     if cur is None:
         print("logon run: not installed (python scripts/dev/c_drive_guard.py install, from the primary checkout)")
     else:
-        print("logon run: installed" + (" for this checkout" if cur == logon_command() else "; NOT this checkout: " + cur))
+        print("logon run: installed" + (" for this checkout" if cur.startswith(logon_command()) else "; NOT this checkout: " + cur))
         print("command: " + cur)
     try:
         last = LOG.read_text(encoding="utf-8").splitlines()[-1]
@@ -485,9 +496,9 @@ def main(argv):
         print("would delete %d item(s); nothing deleted (--apply deletes)" % len(rows))
         return 0
     if argv[:1] == ["logon"]:
-        return logon()
+        return logon(repo_args(argv))
     if argv[:1] == ["install"]:
-        return install()
+        return install(repos=repo_args(argv))
     if argv[:1] == ["uninstall"]:
         return uninstall()
     if argv[:1] == ["status"]:

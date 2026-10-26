@@ -361,8 +361,9 @@ def main(argv):
     if argv and argv[0] == "uninstall":
         return cmd_uninstall()
     apply = "--apply" in argv and "--dry-run" not in argv
+    repo = Path(argv[argv.index("--repo") + 1]) if "--repo" in argv else REPO   # another clone's trees, e.g. the Run-value checkout is not the one holding the worktrees
     try:
-        run(REPO, apply=apply, write_log="--no-log" not in argv)
+        run(repo, apply=apply, write_log="--no-log" not in argv)
     except sync.SyncError as e:
         print(f"wt_maint: {e}", file=sys.stderr)
         return 1
