@@ -76,7 +76,7 @@ class BlocklistCycleTest(unittest.TestCase):
                 f.write_text("", encoding="utf-8")
         at.read_new_layer_alerts(st)
         for al in alerts:
-            a = {**al, "event": al.get("event", "x"), "t_close": self.t_close(al["tf"])}
+            a = {**al, "event": al.get("event", "support" if al.get("sub") == "rsi_events" else "x"), "t_close": self.t_close(al["tf"])}
             with open(files[al["tf"]], "a", encoding="utf-8") as fh:
                 fh.write(json.dumps(a) + "\n")
 
@@ -166,7 +166,7 @@ class BlocklistCycleTest(unittest.TestCase):
         c = shipped_cfg()
         st = {"tom_last_alert_no": 43}
         self.feed({"layer": "turn_of_candle", "sub": "turn_of_candle", "tf": "1m", "side": "long"},
-                  {"layer": "rsi", "sub": "rsi_events", "tf": "1h", "side": "short"}, st=st)
+                  {"layer": "rsi", "sub": "rsi_events", "tf": "1h", "side": "long"}, st=st)
         active = at.cycle(st, c, False, {}, NOW)
         self.assertEqual(active["source"], "layer:rsi:rsi_events:1h")
 
