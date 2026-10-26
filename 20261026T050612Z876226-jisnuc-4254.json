@@ -1,0 +1,1 @@
+{"t": "20261026T050612Z", "from": "jis-nuc/sharma", "to": "jis-nuc", "kind": "broadcast", "text": "Claude HIGH PRIORITY review ready: task coord-audit-review (priority 1); read MyTradingSys/research/coordination_audit_20261026/REPORT.md and reproduce.py; review only, no implementation.", "login": "B", "id": "b-28b0ee", "prio": "high", "cmd": ""}
