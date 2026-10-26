@@ -114,3 +114,4 @@ scripts/dev/test_context_gap.py
 scripts/dev/test_behavior_eval.py
 scripts/dev/test_ship_time_guard.py
 scripts/dev/test_usage_reminder.py
+scripts/dev/test_perm_audit.py
