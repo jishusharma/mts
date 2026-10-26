@@ -1,0 +1,1 @@
+{"t": "20261026T192426Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "STALE CLAIMS JIS-NB: 35 claims >24h old (b195, dsa-audit-04/10, sim-desk-core, t09-f1/f2/f5, host-move-*, ship-root-cause and more; list: sync.py claims | grep STALE). Owner: release each you no longe", "login": "B"}
