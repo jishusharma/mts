@@ -35,8 +35,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `tom-btc-dev-backtest` blocked p2 CODEX: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
   - `tom-btc-encode` blocked p2 CODEX: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
   - `tom-btc-validation` refined p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
-  - `tom-corr-divergence-backtest` raw p2 DSA: Pre-registered backtest of Tom correlation-divergence filter (H1 DAX vs ES/Nikkei/BTC, H2 BTC vs ES/NQ/DXY), s
-  - `tom-corr-live-captions` raw p2 CODEX: Fetch captions of Tom live 'DAX Short Using My Correlation Trick' via gemini_queue on JIS-NUC once the stream 
+  - `tom-corr-divergence-backtest` ready p2 DSA: Pre-registered backtest of Tom correlation-divergence filter (H1 DAX vs ES/Nikkei/BTC, H2 BTC vs ES/NQ/DXY), s
+  - `tom-corr-live-captions` ready p2 CODEX: Fetch captions of Tom live 'DAX Short Using My Correlation Trick' via gemini_queue on JIS-NUC once the stream 
   - `tom-probe-prereg` refined p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
   - `tom-probe-runner` refined p2 SONNET: Run pre-registered Tom management arms on DAX and BTC
   - `tom-short-coverage-above-vah` refined p2 SONNET: Tom short coverage on trend-down days: no candidate above VAH, ct_short at VAH killed by POC-only target (2026
@@ -67,7 +67,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `lf-fabio-gpt-rederive` ready p2 CODEX: Layer re-derive: fabio (independent recount of the headline numbers behind the fact sheet)
   - `t09-f4-live-window-99-bars-swing-layers` refined p2 JIS-NB: T09-F4 S2: 99-bar live window misses 68 of 96 escalation signals; fetch more bars for swing layers
-  - `oi-pivot-1h-4h-long-oi-followup` raw p3 SONNET: OI pivot candidates at 1h/4h: aggregate the 5m metrics archive 2022-01..2024-06 (DEV), same candidates/outcome
+  - `oi-pivot-1h-4h-long-oi-followup` ready p3 SONNET: OI pivot candidates at 1h/4h: aggregate the 5m metrics archive 2022-01..2024-06 (DEV), same candidates/outcome
   - `rv05-h3-outcome-evidence` refined p3 SONNET: RV05 H3: incorporate partial stop coverage evidence into existing F13 outcome repair
   - `fabio-layer-v2-markets` refined p5 OPUS: Fabio layer v2 spec, part B: data plan per market, cost, stop width, build + recall cards (Opus research)
   - `fabio-layer-v2-spec` blocked p5 OPUS: Fabio layer v2 spec, part A: setup families + sourced rules from his ledger (Opus research)
