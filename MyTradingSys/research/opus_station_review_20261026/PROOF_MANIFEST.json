@@ -1,0 +1,38 @@
+[
+  {
+    "path": "MyTradingSys/research/coordination_audit_20261026/REPORT.md",
+    "sha256": "4d630536dd4112b1734169dafc170c69b9a170c4c8b475f67cf63dadef93d194"
+  },
+  {
+    "path": "MyTradingSys/research/coordination_audit_20261026/CLAUDE_REVIEW.md",
+    "sha256": "24130a621991572d0fe56aece1b60e6369eaa967c19482400e427d05e6282772"
+  },
+  {
+    "path": "MyTradingSys/research/coordination_audit_20261026/reproduce.py",
+    "sha256": "ec3fd1dd0558dfdbf6574eadf439c1e1f3667bdd1963e26137d30c1460044f02"
+  },
+  {
+    "path": "MyTradingSys/research/cloud_ai_health_2026-10-26/REPORT.md",
+    "sha256": "1cbeed087b6e191ef690a55a202fbb3d2ed41ce967108b6d3ac0d1ab8d7dc2f0"
+  },
+  {
+    "path": "MyTradingSys/research/cloud_ai_health_2026-10-26/VALIDATION.md",
+    "sha256": "77428484d6dffe8d0e32b52d825341fdb24ebc085b39e273c499b8ba92546091"
+  },
+  {
+    "path": "MyTradingSys/research/station_c_rolling_audit_20261026/REPORT.md",
+    "sha256": "86fd2dd530dbae2ad627bce0ed246a633a32165043ab71b2209f5ab24e332f53"
+  },
+  {
+    "path": "MyTradingSys/research/station_c_rolling_audit_20261026/evidence.json",
+    "sha256": "e246239c6ad7e624de16ce7b505ed215cd48b1869bbac29a9efdd815d67b220e"
+  },
+  {
+    "path": "MyTradingSys/research/station_c_rolling_audit_20261026/reproductions.json",
+    "sha256": "44d91e81b1664b926166ad5651a9230052ce055c4b849e4930dd793882147aff"
+  },
+  {
+    "path": "chain_test_proof.txt",
+    "sha256": "8a70eaa8afffa0b0dcdf4c44237e84f5e44c74273aa39f910ffc1b968ed3f651"
+  }
+]
