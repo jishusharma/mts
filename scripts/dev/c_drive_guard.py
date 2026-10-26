@@ -15,7 +15,9 @@ Usage:
 What it prunes (only entries whose newest file is older than the age limit; locked entries are skipped):
   %TEMP%/<prefix>*            test and gate scratch dirs (PREFIXES): 24 h
   %TEMP%/mts_s4_* mts_s5c_* mts_changed_*   this repo's own gate basetemps (OWN_PREFIXES): 6 h
-  worktrees                   `sync.py tidy --apply`: clean, shipped, no ignored data, idle 1 h (the rules live in sync.py)
+  worktrees                   `wt_maint.py --apply --no-log`, the same job on every device: finished trees (hand-named too) idle 1 h; trees with
+                              uncommitted files only when their branch is on trunk and they are idle 24 h, patch saved to Dumps/wt_rescue first;
+                              never unshipped commits, lane, codex, gemini, gpt or live trees; merged local branches deleted
   %TEMP%/claude/<proj>/<sid>  Claude session scratch + background-task output: 3 days
 What it never prunes: KEEP_NAMES (state other code reads: role injection records, host health, gate slots, relay).
 What it only reports: a Claude background-task .output file over 500 MB (a runaway, e.g. a bare `python -` REPL looping on
@@ -209,10 +211,15 @@ def sync_script():
     return Path(__file__).resolve().parent / "sync.py"
 
 
+def maint_script():
+    return Path(__file__).resolve().parent / "wt_maint.py"
+
+
 def run_tidy(apply):
-    """`sync.py tidy [--apply]` for the checkout this script lives in. Returns its output lines ([] on any failure: never raises)."""
+    """`wt_maint.py [--apply --no-log]` for the checkout this script lives in (--no-log: the guard must not dirty the primary
+    tree with a SUPERVISOR_LOG line). Returns its output lines ([] on any failure: never raises)."""
     try:
-        r = subprocess.run([sys.executable, str(sync_script()), "tidy"] + (["--apply"] if apply else []),
+        r = subprocess.run([sys.executable, str(maint_script())] + (["--apply", "--no-log"] if apply else []),
                            capture_output=True, text=True, timeout=600, cwd=str(Path(__file__).resolve().parents[2]),
                            creationflags=NO_WINDOW)
         return (r.stdout or "").splitlines()
@@ -379,8 +386,9 @@ def logon():
     try:
         before = free_gb()
         n, freed = prune(apply=True)
-        log("logon: C free %.1f GB -> %.1f GB; pruned %d temp entries, %.2f GB; runaway outputs %d"
-            % (before, free_gb(), n, freed / 1e9, len(runaways())))
+        gone = [l for l in run_tidy(True) if l.startswith("removed  ")]
+        log("logon: C free %.1f GB -> %.1f GB; pruned %d temp entries, %.2f GB; %d worktrees retired; runaway outputs %d"
+            % (before, free_gb(), n, freed / 1e9, len(gone), len(runaways())))
     except Exception as e:     # the log says why; a restart must not show an error box
         log("logon: error %r" % (e,))
     return 0

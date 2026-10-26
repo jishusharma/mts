@@ -10,8 +10,10 @@
 One run: fetch origin/fast-track; retire finished worktrees (sync.py tidy's rules, with `--all`: hand-named trees too);
 `git worktree prune`; delete local branches fully merged into origin/fast-track; write the trees that still hold work to
 Dumps/worktree_report.txt (gitignored) and append one line to the SUPERVISOR_LOG.
+A tree with uncommitted files whose branch is fully on origin/fast-track and that has been idle DIRTY_IDLE_HOURS is patch-saved
+(Dumps/wt_rescue/<tree>/uncommitted.patch + untracked/) and then removed. `--no-log` skips the SUPERVISOR_LOG line (the guard uses it).
 Never touched: the primary tree, the tree we run in, the live tree (.mts_live), lane trees, Codex trees, any tree changed in the
-last 30 minutes, any tree with uncommitted files or commits not on origin/fast-track. Never stash / reset / force-push. Idempotent.
+last 30 minutes, any tree with commits not on origin/fast-track, or with uncommitted files that are recent, conflicted or too big to save. Never stash / reset / force-push. Idempotent.
 Ignored data worth keeping (not regenerable, see sync.REGENERABLE) is moved to <primary>/Dumps/wt_rescue/<tree>/ before removal.
 """
 import json
@@ -33,6 +35,9 @@ REPO = Path(__file__).resolve().parents[2]
 SUPERVISOR_LOG_REL = "MyTradingSys/research/fast_track_2026-09-27/SUPERVISOR_LOG.md"
 RECENT_MIN = 30
 IDLE_HOURS = sync.TIDY_IDLE_HOURS
+DIRTY_IDLE_HOURS = 24      # DECISION (OURS, operator 2026-10-26 "same mechanism on all devices, periodically"): a tree whose branch is fully on trunk
+                           # but holds uncommitted files is patch-saved and removed only after this many idle hours; unshipped commits never
+BIG_UNTRACKED_MB = 50      # an untracked file this large is not copied into the rescue: the tree stays
 PROTECT_BRANCHES = ("fast-track", "main", "master")
 TASK_PREFIX = "MTS-WorktreeMaint"
 # hostname (lower) -> canonical device name; the Lenovo laptop reports DESKTOP-F7IU69N (DEVICES.md s0)
@@ -92,6 +97,51 @@ def newest_file_mtime(p, limit=4000):
     return best
 
 
+def dirty_removable(repo, p, branch, work, now):
+    """True when a tree with uncommitted files may be patch-saved and removed: branch fully on origin/<trunk>, no merge conflict,
+    tree and every dirty file idle DIRTY_IDLE_HOURS, no untracked file over BIG_UNTRACKED_MB."""
+    if any(l[:2] in ("UU", "AA", "DD", "AU", "UA", "DU", "UD") for l in work):
+        return False
+    if sync.git(repo, "merge-base", "--is-ancestor", branch, f"origin/{sync.TRUNK}", check=False).returncode != 0:
+        return False
+    if sync.idle_hours(p, branch, now) < DIRTY_IDLE_HOURS or now - newest_file_mtime(p) < DIRTY_IDLE_HOURS * 3600:
+        return False
+    for f in untracked_files(p):
+        try:
+            if (Path(p) / f).stat().st_size > BIG_UNTRACKED_MB * 1e6:
+                return False
+        except OSError:
+            pass
+    return True
+
+
+def untracked_files(p):
+    return [l for l in sync.git(p, "ls-files", "--others", "--exclude-standard", check=False).stdout.splitlines() if l]
+
+
+def rescue_patch(repo, row):
+    """Save what the tree holds uncommitted before it is removed: uncommitted.patch (tracked changes, binary-safe), the untracked
+    files under their own paths, STATUS.txt. -> destination dir, or None when the patch could not be written (the tree stays)."""
+    p = Path(row["path"])
+    dest = primary(repo) / "Dumps" / "wt_rescue" / row["name"]
+    try:
+        dest.mkdir(parents=True, exist_ok=True)
+        diff = sync.git(p, "diff", "--binary", "HEAD", check=False)
+        if diff.returncode != 0:
+            return None
+        (dest / "uncommitted.patch").write_bytes(diff.stdout.encode("utf-8", "surrogateescape"))
+        head = f"{row['name']} [{row['branch']}] {datetime.now(timezone.utc):%Y-%m-%d %H:%MZ}"
+        (dest / "STATUS.txt").write_text(head + chr(10) + sync.git(p, "status", "--short", check=False).stdout,
+                                         encoding="utf-8", newline=chr(10))
+        for f in untracked_files(p):
+            tgt = dest / "untracked" / f
+            tgt.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(p / f, tgt)
+        return dest
+    except OSError:
+        return None
+
+
 def classify(repo, now=None):
     """-> list of dicts {path, name, branch, action: 'remove'|'keep', why, data}. One per non-primary worktree."""
     now = time.time() if now is None else now
@@ -113,6 +163,10 @@ def classify(repo, now=None):
         if work:
             row["why"] = f"{len(work)} uncommitted file(s)"
             row["report"] = True
+            if dirty_removable(repo, p, branch, work, now):
+                row["action"], row["save_patch"], row["report"] = "remove", True, False
+                row["why"] = f"{len(work)} uncommitted file(s), branch on origin/{sync.TRUNK}, idle {DIRTY_IDLE_HOURS} h+: patch saved first"
+                row["data"] = sync.ignored_data(p)
             continue
         if time.time() - newest_file_mtime(p) < RECENT_MIN * 60 and status:
             row["why"] = "files changed in the last 30 min"
@@ -172,7 +226,7 @@ def rescue_data(repo, row):
 
 
 def remove_tree(repo, row):
-    force = ["--force"] if row.get("noise") else []
+    force = ["--force"] if row.get("noise") or row.get("save_patch") else []
     r = sync.git(repo, "worktree", "remove", *force, row["path"], check=False)
     if r.returncode != 0:
         row["action"], row["why"] = "keep", f"remove failed ({r.stderr.strip()[:80]})"
@@ -181,7 +235,7 @@ def remove_tree(repo, row):
     return True
 
 
-def run(repo=REPO, apply=False, now=None, log=print, host=None):
+def run(repo=REPO, apply=False, now=None, log=print, host=None, write_log=True):
     """-> summary dict. Dry run unless apply."""
     repo = Path(repo)
     sync.git(repo, "fetch", "--quiet", "origin", sync.TRUNK, check=False)
@@ -193,11 +247,19 @@ def run(repo=REPO, apply=False, now=None, log=print, host=None):
         if r["action"] != "remove":
             continue
         if apply:
+            if r.get("save_patch"):
+                saved = rescue_patch(repo, r)
+                if saved is None:
+                    log(f"kept  {r['name']}: could not save its uncommitted files")
+                    continue
+                rescued.append(str(saved))
             if r["data"]:
                 rescued.append(str(rescue_data(repo, r)))
             if not remove_tree(repo, r):
                 continue
-        log(f"{'removed' if apply else 'would remove'}  {r['name']} [{r['branch']}]" + (f"  (data -> Dumps/wt_rescue)" if r["data"] else ""))
+        log(f"{'removed' if apply else 'would remove'}  {r['name']} [{r['branch']}]"
+            + (f": uncommitted files saved to Dumps/wt_rescue/{r['name']}" if r.get("save_patch") else "")
+            + (f"  (data -> Dumps/wt_rescue)" if r["data"] else ""))
         removed.append(r["name"])
     if apply:
         sync.git(repo, "worktree", "prune", check=False)
@@ -213,7 +275,7 @@ def run(repo=REPO, apply=False, now=None, log=print, host=None):
     s = dict(device=device_name(host), apply=apply, removed=removed, branches=deleted, held=held,
              kept=sum(1 for r in rows if r["action"] == "keep"), rescued=rescued)
     write_report(repo, s)
-    if apply:
+    if apply and write_log:
         append_log(repo, s)
     log(f"{s['device']}: {'removed' if apply else 'would remove'} {len(removed)} tree(s), {'deleted' if apply else 'would delete'} "
         f"{len(deleted)} branch(es), kept {s['kept']}, {len(held)} hold unshipped work -> Dumps/worktree_report.txt")
@@ -300,7 +362,7 @@ def main(argv):
         return cmd_uninstall()
     apply = "--apply" in argv and "--dry-run" not in argv
     try:
-        run(REPO, apply=apply)
+        run(REPO, apply=apply, write_log="--no-log" not in argv)
     except sync.SyncError as e:
         print(f"wt_maint: {e}", file=sys.stderr)
         return 1

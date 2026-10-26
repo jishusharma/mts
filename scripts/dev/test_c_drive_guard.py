@@ -40,10 +40,13 @@ class GuardTest(unittest.TestCase):
         self.old_lock = g.LOCK
         g.LOCK = Path(self.logdir.name) / "c_drive_guard.lock"
         g.STAMP.write_text("x", encoding="utf-8")      # daily run not due unless a test ages this
+        self.real_tidy = g.run_tidy
+        g.run_tidy = lambda apply: []                  # never run the real worktree job against this checkout from a test
 
     def tearDown(self):
         g.TEMP, g.LOG, g.STAMP = self.old_temp, self.old_log, self.old_stamp
         g.LOCK = self.old_lock
+        g.run_tidy = self.real_tidy
         self.d.cleanup()
         self.logdir.cleanup()
 
@@ -269,6 +272,23 @@ class GuardTest(unittest.TestCase):
         self.assertEqual(len(lines), 1)
         self.assertIn("logon: C free", lines[0])
         self.assertIn("pruned 1 temp entries", lines[0])
+
+    def test_logon_also_retires_finished_worktrees_with_the_maintenance_job(self):
+        g.run_tidy = lambda apply: ["removed  mts-old [b]", "kept  x"] if apply else []
+        g.logon()
+        self.assertIn("1 worktrees retired", g.LOG.read_text(encoding="utf-8"))
+
+    def test_worktree_retirement_runs_wt_maint_with_no_log(self):
+        seen = []
+        old = g.subprocess.run
+        g.subprocess.run = lambda cmd, **kw: seen.append(cmd) or type("R", (), {"stdout": ""})()
+        try:
+            self.real_tidy(True)
+        finally:
+            g.subprocess.run = old
+        self.assertTrue(seen[0][1].endswith("wt_maint.py"))
+        self.assertIn("--apply", seen[0])
+        self.assertIn("--no-log", seen[0])
 
     def test_logon_command_is_headless_and_runs_the_logon_mode(self):
         cmd = g.logon_command(python=r"C:\Py\python.exe", script=r"C:\repo\scripts\dev\c_drive_guard.py")
