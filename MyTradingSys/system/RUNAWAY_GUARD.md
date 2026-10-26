@@ -50,8 +50,10 @@ Reviewer returns ACCEPT / CHANGES with a numbered list. Nothing is built until t
 ## 6. Per-device results (fill in; one line each)
 | Device | Runaway seen | When / command | Worst free MB | Checked by |
 |---|---|---|---|---|
-| JIS-NUC | yes | 10-26 06:39 `find /` from builder b-oi-pivot subagent; 9 h, 10.9M handles, 0 MB free | 0 | B 10-26 |
-| JIS-NB | ? | | | |
-| JIS-DESKTOP | ? | | | |
-| JIS-LAPTOP | ? | | | |
-| vm | ? | | | |
+| JIS-NUC | yes (re-check 10-27: OK, 19,941 MB free, no process over 100k handles) | 10-26 06:39 `find /` from builder b-oi-pivot subagent; 9 h, 10.9M handles, 0 MB free | 0 | B 10-26 |
+| JIS-NB | no reply | broadcast b-8ce4da sent 10-27, no answer yet | | B 10-27 |
+| JIS-DESKTOP | no reply | broadcast b-8ce4da, no answer yet | | B 10-27 |
+| JIS-LAPTOP | no reply | broadcast b-8ce4da, no answer yet | | B 10-27 |
+| vm | no reply | broadcast b-8ce4da, no answer yet | | B 10-27 |
+
+Broadcast b-8ce4da (HIGH, `--cmd powershell -File scripts/operator/runaway_check.ps1`) sent 2026-10-27. Replies: `python scripts/dev/mts_signal.py acks b-8ce4da`; add each device's OK/RUNAWAY line here when it answers.

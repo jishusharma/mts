@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T23:04:50Z",
   "commands": [
     "python scripts/dev/mts_signal.py broadcast --cmd \"powershell -File scripts/operator/runaway_check.ps1\"",
     "powershell -File scripts/operator/runaway_check.ps1"
@@ -33,6 +34,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "guard shipped; broadcast b-8ce4da sent, no device replies yet; NUC 48h verdict FAILED (3 r",
+      "ref": "c55c0aae6",
+      "utc": "2026-10-26T23:04:50Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "runaway-guard: root cause (find / orphaned by timed-out agent shell), design for review, r",
@@ -58,7 +65,12 @@
   "refs": [
     "MyTradingSys/system/NUC_SHUTDOWN_HANDOVER.md"
   ],
-  "result": "",
+  "result": "guard shipped; broadcast b-8ce4da sent, no device replies yet; NUC 48h verdict FAILED (3 resets after find stopped)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/operator/runaway_check.ps1",
     "scripts/dev/test_runaway_check.py (new)",
@@ -72,13 +84,14 @@
   "scope_sha": "8936953ea652",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Broadcast runaway_check.ps1 to every device (mts_signal.py broadcast); record one OK/RUNAWAY line per device in RUNAWAY_GUARD.md s6, silent ones as no reply",
     "Verify the spawner RUNAWAY_GUARD.md s1 names (session b548c0a6, subagent af27dbcb, bare find /) against JIS-NUC transcripts near 06:39 on 2026-10-26",
     "Add a -ProcessJson input to runaway_check.ps1 so the test can feed fake rows; write test_runaway_check.py red first, then green",
     "Ship the guard after runaway-guard-design-review ACCEPT (else only the bare find/grep ban line in QUICK_ANSWERS.md); record the 48 h JIS-NUC verdict in NUC_SHUTDOWN_HANDOVER.md"
   ],
+  "taken": "2026-10-26T23:04:50Z",
   "tests": "Fail-first: new scripts/dev/test_runaway_check.py feeds fake process rows to runaway_check.ps1: OK on clean, RUNAWAY on >100k handles or find/grep/sort >10 CPU min; -Stop touches only those names.",
   "title": "HIGHEST: runaway find.exe (10.9M handles, 0 MB free, CPU 100 C 9 h) on JIS-NUC - find who spawns it, check every device, add a guard",
   "weight": "IMPORTANT",
