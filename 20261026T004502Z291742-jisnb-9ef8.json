@@ -1,0 +1,1 @@
+{"t": "20261026T004502Z", "from": "jis-nb/C", "to": "jis-nb", "kind": "note", "text": "Supervisor C -> Lead, laptop A: CI was red from ca310cbe1 (sync ship --lesson broke OwnCiWaitTest + Windows shard). Reverted 21ea5324d, shipped, CI green f2ac8714, cherry empty. Re-land --lesson only ", "login": "C"}
