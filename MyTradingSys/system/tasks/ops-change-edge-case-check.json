@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T15:43:40Z",
   "commands": [],
   "created": "2026-10-26T14:49:59Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "ops-change-edge-case-check",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "OPS_CHANGE_CHECK.md shipped 512cb754b",
+      "ref": "b713e5235",
+      "utc": "2026-10-26T15:43:40Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -37,7 +44,12 @@
   "refined_by": "",
   "refreshed": "2026-10-26T15:32:17Z",
   "refs": [],
-  "result": "",
+  "result": "OPS_CHANGE_CHECK.md shipped 512cb754b",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/OPS_CHANGE_CHECK.md",
     "MyTradingSys/system/roles/lead.md",
@@ -53,7 +65,7 @@
   "scope_sha": "6b92b6984482",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read DEBUGGING.md and ROLES.md; grep mts_signal.py for the message length cap and cite file:line for Q3.",
     "Fail-first test in test_integrity.py: OPS_CHANGE_CHECK.md exists with 8 numbered questions and lead.md contains 'OPS_CHANGE_CHECK'; run, confirm FAIL.",
@@ -61,6 +73,7 @@
     "Add one cite line to roles/lead.md; run role_loader.py retoken/check/lint and test_role_budget.py.",
     "Link from DEBUGGING.md; run the test; ship."
   ],
+  "taken": "2026-10-26T15:43:40Z",
   "tests": "MyTradingSys/tests/docs/test_integrity.py new test (fails first); MyTradingSys/tests/test_role_budget.py passes. Verify: content commit sha, `git cherry origin/fast-track <sha>` empty, `git ls-tree -r origin/fast-track --name-only` lists the files.",
   "title": "Ops-change edge-case check: 8-question reach test for start/hook/broadcast/role changes",
   "weight": "IMPORTANT",

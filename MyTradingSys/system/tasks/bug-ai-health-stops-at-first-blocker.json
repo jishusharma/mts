@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T15:43:40Z",
   "commands": [],
   "created": "2026-10-26T15:00:55Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "WORKERS rule 9 shipped 59424d8d7",
+      "ref": "b713e5235",
+      "utc": "2026-10-26T15:43:40Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +45,12 @@
   "refined_by": "",
   "refreshed": "2026-10-26T15:32:16Z",
   "refs": [],
-  "result": "",
+  "result": "WORKERS rule 9 shipped 59424d8d7",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/WORKERS.md",
     "MyTradingSys/tests/docs/test_integrity.py"
@@ -53,7 +65,7 @@
   "scope_sha": "3d0768186400",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read WORKERS.md 'The rule' and the supervisor.md brief template; grep scripts/dev/*.py and system/*.md for 'report and stop' / 'stop and report' orders and list each file:line in the card note.",
     "Write the failing test first: a test in test_integrity.py asserting WORKERS.md contains the heading 'Blocked' and the words 'report AND continue'; run it, confirm FAIL.",
@@ -61,6 +73,7 @@
     "Rewrite any 'report and stop' orders found in step 1 that are not HALT to 'report and continue' (docs only; skip role files).",
     "Run the test, ship with sync.py ship --release <slug>."
   ],
+  "taken": "2026-10-26T15:43:40Z",
   "tests": "MyTradingSys/tests/docs/test_integrity.py new test (fails on old WORKERS.md); MyTradingSys/tests/test_role_budget.py passes; python scripts/dev/role_loader.py check and lint pass. Verify: content commit sha, `git cherry origin/fast-track <sha>` empty, `git ls-tree -r origin/fast-track --name-only` lists the files.",
   "title": "BUG (AI health, HIGH): agent stops at the first refusal instead of solving it (NUC 2026-10-26)",
   "weight": "IMPORTANT",
