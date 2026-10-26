@@ -7,7 +7,7 @@ Limits: it cannot browse or fetch YouTube, cannot read repo files; everything it
 ## Rules (Session_Planner scoped this; do not widen)
 - PUBLIC transcripts and public extracts only. Never paste runtime, order, account, `.secrets/`, `.env` or live-tree data (repo is public).
 - No AWS key, no IAM user, no code, no Billing change. Stop on 2026-10-25 (or when credits hit $0): close the tab, nothing to clean up.
-- Model: **Claude Haiku 5.5** for jobs 1-9 (cheap, text-only); **Claude Opus 5.5** only for jobs A1-A2. If the picker shows access denied, stop and report that line.
+- Model: **Claude Haiku 5.5** for jobs 1-9 (cheap, text-only); **Claude Opus 5.5** only for jobs A1-A2. If the picker shows access denied, report that line and continue with the jobs that need no Opus (WORKERS.md rule 9).
 - Output is a DRAFT. A Claude session runs `python scripts/dev/verify_extract_quotes.py <file>` on every extract; any quote not verbatim in
   `raw_transcripts_canonical/<ID>_raw.txt` is deleted, never repaired. Nothing from Bedrock enters a layer, rule or number without that check.
 - Save each answer as `extracts/bedrock_out/<ID>_bedrock.md` (new folder, one file per job), then tell the Haiku helper `done <ID>`.
