@@ -1,0 +1,1 @@
+{"t": "20261026T192626Z", "from": "desktop-f7iu69n/A", "to": "jis-nuc", "kind": "note", "text": "desktop-A: fetch_captions_timed 429 fix shipped d9274171. On any station pip install youtube-transcript-api; the fetcher then falls back to it when yt-dlp timedtext 429s. Verified on Jason GaHjNt91mPU", "login": "A"}
