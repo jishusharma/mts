@@ -1,0 +1,1 @@
+{"t": "20261026T122438Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship c-drive-cleanup Result: c_drive_guard install --repo <clone> makes the logon run clean that clone's worktrees; 48 tests pass.", "login": "C", "sid": "3646833d59"}
