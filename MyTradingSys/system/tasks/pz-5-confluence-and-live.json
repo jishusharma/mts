@@ -1,0 +1,63 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/tasks.py brief pz-5-confluence-and-live"
+  ],
+  "created": "2026-10-26T19:08:25Z",
+  "depends_on": [
+    "pz-4-backtest"
+  ],
+  "done_when": "MyTradingSys/research/pizzino_layer_2026-10-27/CONFLUENCE.md has per-layer agreement counts and fee-net deltas; cbp.query consumer has restart and API-error tests; nothing trades without B139",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Measure which existing layers agree with Pizzino pivots/retests (hit rate, fee-net), and add Pizzino bias and levels from cbp.query (5-day window) as a read-only input behind the B139 gate.",
+  "id": "pz-5-confluence-and-live",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "cbp: cbp.query + cbp_run.py (MTS runs CBP, 5-day store); delete queue consumer/adapter",
+      "ref": "f9fcf77b4a80",
+      "utc": "2026-10-23T18:57:08Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Held raw on purpose: set state ready (tasks.py tag --refresh) when its depends_on cards are done.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-26T19:08:46Z",
+  "refs": [
+    "MyTradingSys/research/pizzino_layer_2026-10-27/PLAN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/pizzino_layer_2026-10-27/CONFLUENCE.md",
+    "MyTradingSys/cbp/",
+    "tests"
+  ],
+  "scope_out": [
+    "live tree deploy; order placement"
+  ],
+  "scope_sha": "f9fcf77b4a80",
+  "size": "M",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "For each existing layer count signals within the same bar window as a Pizzino signal; table with fee-net result",
+    "Write cbp.query consumer returning Jason/Michael bias and levels, default since_days=5",
+    "Fail-first tests: store missing, stale row, API error return no signal (fail closed)",
+    "Commit with a Result: line"
+  ],
+  "tests": "tests for the cbp.query consumer",
+  "title": "Pizzino layer: confluence table with other layers; cbp.query bias and levels as live input",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

@@ -39,3 +39,6 @@ Every parameter is SOURCED (quote + file:line) or OURS.
 
 ## Missed last time
 (fold not built yet: C2)
+
+## Discussions
+- 2026-10-27 guide GPT for CBP: research/cbp/GPT_CBP_GUIDE.md + CODEX cards cbp-scorecard-recount, cbp-quote-gate-review, cbp-gates-planted-bad-row (GPT lane down on credits since 10-25; cards wait for the probe or move to DSA).

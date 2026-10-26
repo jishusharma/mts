@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "powershell -File scripts/operator/runaway_check.ps1"
+  ],
+  "created": "2026-10-26T10:24:53Z",
+  "depends_on": [],
+  "done_when": "Every device ran scripts/operator/runaway_check.ps1 and acked; the spawner of find.exe is named with evidence; a guard (or a ban on bare find/grep over the repo in agent shells) is shipped; JIS-NUC 48 h clean-test verdict recorded in NUC_SHUTDOWN_HANDOVER.md.",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "On JIS-NUC 2026-10-26 a Git-Bash find.exe (no args, started 06:39, sibling grep.exe, parent gone) ran 9 h, held 10.9M handles, paged pool 9.7 GB, 0 MB free, CPU at the 100 C limit. It may also explain NUC hangs (7 watchdog resets since 10-23). Find which session/tool call spawns it, check every device for the same, add a guard.",
+  "id": "runaway-process-leak",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/system/NUC_SHUTDOWN_HANDOVER.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/operator/runaway_check.ps1",
+    "MyTradingSys/system/NUC_SHUTDOWN_HANDOVER.md"
+  ],
+  "scope_out": [
+    "live tree, trading processes, deploys"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "each device: powershell -File scripts/operator/runaway_check.ps1 and post the output",
+    "search agent shell transcripts and logs on JIS-NUC around 06:39 on 2026-10-26 for a bare find/grep call (Codex lab, Claude Bash tool, Selenium)",
+    "propose and ship the guard; record the verdict"
+  ],
+  "tests": "runaway_check.ps1 reports OK on a clean host and RUNAWAY for a process with over 100k handles or find/grep/sort over 10 CPU minutes; -Stop ends only those tool names.",
+  "title": "HIGHEST: runaway find.exe (10.9M handles, 0 MB free, CPU 100 C 9 h) on JIS-NUC - find who spawns it, check every device, add a guard",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

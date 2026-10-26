@@ -236,8 +236,9 @@ class GuardTest(unittest.TestCase):
         for c in (main,):
             sh(c, "config", "user.email", "a@b.c")
             sh(c, "config", "user.name", "t")
+        sh(main, "symbolic-ref", "HEAD", "refs/heads/fast-track")  # git 2.24 clones an empty repo onto master
         (main / "a.txt").write_text("1", newline="\n")
-        sh(main, "add", "."); sh(main, "commit", "-q", "-m", "one"); sh(main, "push", "-q", "origin", "HEAD:fast-track")
+        sh(main, "add", "."); sh(main, "commit", "-q", "-m", "one"); sh(main, "push", "-q", "-u", "origin", "fast-track")
         other = Path(tmp) / "other"
         sh(tmp, "clone", "-q", str(origin), str(other))
         sh(other, "config", "user.email", "a@b.c"); sh(other, "config", "user.name", "t")

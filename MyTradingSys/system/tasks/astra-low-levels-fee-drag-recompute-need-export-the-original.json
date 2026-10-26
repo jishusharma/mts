@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-26T18:35:16Z",
+  "depends_on": [],
+  "done_when": "Tracked dated DEV-only raw ledger and provenance allow independent gross and fee recomputation for 255 fills plus 517 unfilled ideas; unexplained differences explicitly reported.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Recover or reproduce original 2026-10-25 zero-slippage E1 S2 K5 X0_2R DEV run as a public historical fill ledger; export entry/exit prices, quantities, fees, stop/R distance, explicit unfilled status, timestamps and source commit. Do not use current changed defaults.",
+  "id": "astra-low-levels-fee-drag-recompute-need-export-the-original",
+  "lane": "SONNET",
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "PREREQ of astra-low-levels-fee-drag-recompute: astra-low-levels-fee-drag-recompute waits on this card (depends_on).",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "F:/MTS/mts-jis-nuc-next-priority/MyTradingSys/system/tasks/astra-low-levels-fee-drag-recompute.json"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/design_cards_2026-10-26/levels_raw_ledger/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; deploys; runtime/order/account data; VALIDATION and HOLDOUT"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/design_cards_2026-10-26/astra_levels_recompute.md",
+    "MyTradingSys/research/sim_desk/REVIEW_FABLE_2026-10-25.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "Locate the original historical run or recover its exact frozen settings and source revision.",
+    "Export raw DEV fill and exit legs, explicit filled state, R distance and fee rates with provenance; report if original cannot be reproduced."
+  ],
+  "tests": "Validate every exported timestamp before 2024-07-01; independently reconcile fills, quantities and net=gross-fees; no headline-based tuning.",
+  "title": "Prereq of astra-low-levels-fee-drag-recompute: Export the original 2026-10-25 levels default-run DEV trade ledger for in",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}
