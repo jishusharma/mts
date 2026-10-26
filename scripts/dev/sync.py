@@ -43,8 +43,6 @@ LIVE_MARKER = ".mts_live"
 DOC_SUFFIXES = (".md", ".txt")
 PUSH_TRIES = 3
 CLAIMS_DIR = "MyTradingSys/system/claims"
-LESSONS_FILE = "MyTradingSys/system/LESSONS_LOG.txt"   # tracked, one line per lesson: <date> | <slug> | <text>; no runtime/account data
-LESSON_MAX = 200
 CLAIMS_BRANCH = "claims"   # gate-tiers-by-path (q-v1-claims-off-git): claim/release commits live here, never on the trunk
 SHIP_GAP_S = 600           # a second ship from one tree within this many seconds prints a note (no refusal)
 SHIP_STAMP = "mts_last_ship"
@@ -429,30 +427,6 @@ def prior_work(repo, slug, ref=f"origin/{TRUNK}"):
     return hits
 
 
-def add_lesson(repo, slug, text):
-    """Append a one-line lesson to LESSONS_FILE and commit it, so it rides the ship. Returns the line written."""
-    text = " ".join(str(text).split())[:LESSON_MAX]
-    if not text:
-        raise SyncError("--lesson needs a non-empty one-line text")
-    line = f"{time.strftime('%Y-%m-%d', time.gmtime())} | {slug or '-'} | {text.replace('|', '/')}"
-    path = Path(repo) / LESSONS_FILE
-    path.parent.mkdir(parents=True, exist_ok=True)
-    old = path.read_text(encoding="utf-8") if path.exists() else ""
-    path.write_text(old + line + chr(10), encoding="utf-8", newline=chr(10))
-    git(repo, "add", LESSONS_FILE)
-    git(repo, "commit", "--quiet", "-m", f"lesson {slug or ''}".strip() + chr(10) * 2 + "Result: one-line lesson logged for the next session boot")
-    return line
-
-
-def last_lessons(repo, n=5):
-    """The last n lines of LESSONS_FILE; [] when absent or unreadable (never raises)."""
-    try:
-        lines = (Path(repo) / LESSONS_FILE).read_text(encoding="utf-8").splitlines()
-        return [l for l in lines if l.strip()][-n:]
-    except Exception:
-        return []
-
-
 def doctor_top_warnings(repo, n=3, checklist=None):
     """Top n WARN rows of the MTS doctor checklist for this host, as printable lines. Fail soft: [] when the doctor is absent or errors;
     never raises, never blocks a start. No network (process=False)."""
@@ -490,11 +464,6 @@ def start(repo, slug=None, here=False, quiet=False):
         print_claims(repo)
         for line in doctor_top_warnings(repo):
             print(line)
-        lessons = last_lessons(repo)
-        if lessons:
-            print(f"last {len(lessons)} lesson(s) ({LESSONS_FILE}):")
-            for l in lessons:
-                print(f"  {l}")
     prior = prior_work(repo, slug)
     if prior:
         print(f"prior work on {TRUNK} matching '{slug}' (read it before building; same task twice = compare, never overwrite):")
@@ -997,17 +966,14 @@ def record_ship_wall(repo, wall_s, offset=0, path=None):
         pass
 
 
-def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_slug=None, sleep=time.sleep, lesson=None):
-    """lesson: one line appended to LESSONS_FILE and committed first, so it ships with the work.
-    release_slug (traffic buster B4): the claim file is deleted in a commit on this branch, so the release rides the
+def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_slug=None, sleep=time.sleep):
+    """release_slug (traffic buster B4): the claim file is deleted in a commit on this branch, so the release rides the
     same push as the work (no separate fetch + push). Nothing to ship: falls back to the plumbing release.
     after_slug (SV3): wait for predecessor order ticket to finish or lapse before running the gate; never holds a gate slot while waiting.
     A lost push race (GATE_SPEED D4) re-merges and pushes again after a 1-5 s jitter, up to SHIP_PUSH_TRIES; it re-runs the gate
     only when the incoming commits overlap what we ship (race_overlap), at most REGATES times.
     Returns Pushed(sha, files) after a push, None when there was nothing to ship (ship-waits-own-ci: main() waits for that sha's CI run)."""
     refuse_live(repo)  # only commits are pushed; uncommitted files stay where they are
-    if lesson:
-        print(f"lesson logged: {add_lesson(repo, release_slug, lesson)}")
     t_ship_0 = time.monotonic()
     try:
         log_off = _timing_path(repo).stat().st_size
@@ -1733,13 +1699,6 @@ def main(argv):
                     raise SyncError("usage: sync.py ship [--full] [--fix-ci] [--no-ci-wait] [--release <slug>] [--after <slug>]")
                 release_slug = argv[i + 1]
                 argv = argv[:i] + argv[i + 2:]
-            lesson = None
-            if "--lesson" in argv:
-                i = argv.index("--lesson")
-                if i + 1 >= len(argv) or argv[i + 1].startswith("--"):
-                    raise SyncError("usage: sync.py ship --release <slug> --lesson \"<one line>\"")
-                lesson = argv[i + 1]
-                argv = argv[:i] + argv[i + 2:]
             after_slug = None
             if "--after" in argv:
                 i = argv.index("--after")
@@ -1750,7 +1709,7 @@ def main(argv):
             if len(argv) != 1:
                 raise SyncError(f"unknown arguments to ship: {' '.join(argv[1:])}")
             repo = toplevel(Path.cwd())
-            pushed = ship(repo, release_slug=release_slug, after_slug=after_slug, lesson=lesson)
+            pushed = ship(repo, release_slug=release_slug, after_slug=after_slug)
             if isinstance(pushed, Pushed) and not no_ci_wait:
                 try:
                     return CI_RED_EXIT if wait_own_ci(pushed, globs=ci_path_filter(repo)) == "red" else 0
