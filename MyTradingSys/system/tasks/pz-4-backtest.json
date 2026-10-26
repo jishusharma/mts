@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/tasks.py brief pz-4-backtest"
+  ],
+  "created": "2026-10-26T19:08:24Z",
+  "depends_on": [
+    "pz-3-indicators"
+  ],
+  "done_when": "MyTradingSys/research/pizzino_layer_2026-10-27/RESULT.md lists n trades, mean R, fee-net Y/N, split, for each variant, and the ledger rows; no keep or drop verdict",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Backtest the Pizzino signals standalone and as a filter on existing layers; fee-net; DEV tuning, one VALIDATION check, holdout read once; every variant in the trial ledger.",
+  "id": "pz-4-backtest",
+  "kind": "run",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Held raw on purpose: set state ready (tasks.py tag --refresh) when its depends_on cards are done.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-26T19:08:44Z",
+  "refs": [
+    "MyTradingSys/research/pizzino_layer_2026-10-27/PLAN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/pizzino_layer_2026-10-27/RESULT.md",
+    "trial ledger rows"
+  ],
+  "scope_out": [
+    "live tree; deciding the layer's fate"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "Follow LAYER_LAB.md for the harness and the trial ledger format",
+    "Run SPEC.md defaults and the listed OURS variants on DEV only",
+    "One VALIDATION run of the chosen variant; holdout read once",
+    "Write RESULT.md with the numbers and an independent recount of n and mean R",
+    "Commit with a Result: line"
+  ],
+  "tests": "none (run card); proof = RESULT.md recount matches",
+  "title": "Pizzino layer: BTC backtest DEV/VALIDATION/holdout, fee-net, trial ledger",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

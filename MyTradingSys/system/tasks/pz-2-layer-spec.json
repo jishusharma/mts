@@ -1,0 +1,54 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/tasks.py brief pz-2-layer-spec"
+  ],
+  "created": "2026-10-26T19:08:24Z",
+  "depends_on": [
+    "pz-1c-method-merge"
+  ],
+  "done_when": "MyTradingSys/research/pizzino_layer_2026-10-27/SPEC.md exists; every rule has an input, output and one worked example with numbers computed by hand; every parameter labelled SOURCED or OURS",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Turn method_extraction.md into a testable layer spec: bar counting, pivot detection, 50% correction, retest, entry/stop/target, timeframe. Each parameter SOURCED (quote + file:line) or OURS.",
+  "id": "pz-2-layer-spec",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Held raw on purpose: set state ready (tasks.py tag --refresh) when its depends_on cards are done.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-26T19:08:40Z",
+  "refs": [
+    "MyTradingSys/research/pizzino_layer_2026-10-27/PLAN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/pizzino_layer_2026-10-27/SPEC.md (new file)"
+  ],
+  "scope_out": [
+    "code; live tree"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "Read MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md and MyTradingSys/backtest/layers/FORMULAS.md",
+    "Write SPEC.md: one section per concept (1/2/3 bar, pivot, 50% correction, retest) with exact definition and ambiguity list",
+    "Resolve each ambiguity with a default labelled OURS and list it as a trial-ledger variant",
+    "Add worked examples with numbers computed by hand, not from code",
+    "Commit with a Result: line (rules written, SOURCED count, OURS count)"
+  ],
+  "tests": "none (spec card); proof = hand-computed examples in SPEC.md",
+  "title": "Pizzino layer: write SPEC.md (rules from their words, SOURCED or OURS)",
+  "weight": "ROUTINE",
+  "worker": "session"
+}
