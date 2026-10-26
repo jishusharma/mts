@@ -4,32 +4,65 @@
   "commands": [],
   "created": "2026-10-26T15:00:55Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "WORKERS.md has the new rule (<= 8 lines) with a 4-line worked example and a 'brief template' line workers copy into briefs; no role file or CLAUDE.md edited; the new test fails on the old WORKERS.md and passes after.",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Add a Blocked-Solve-It rule: on a git or permission refusal, list 2-3 non-destructive fixes, try the safest, verify, then report; report-and-stop means report AND continue unless the order says HALT. Evidence and quotes: MyTradingSys/research/planner_20261026b/EVIDENCE.md section 1.",
   "id": "bug-ai-health-stops-at-first-blocker",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "WORKERS rule 5 / SUPER_SESSION D5: drop removed turn_meter/model_guard caps, state the rot",
+      "ref": "3d0768186400",
+      "utc": "2026-10-25T19:29:31Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "3d0768186400 WORKERS rule 5 / SUPER_SESSION D5: drop removed turn_meter/model_guard caps, ",
+      "ref": "MyTradingSys/system/WORKERS.md",
+      "utc": "2026-10-25T19:29:31Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer a431f000395c00b14, FIX applied: supervisor.md dropped). Edits test_integrity.py: run after ops-change-edge-case-check, not in parallel.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-26T15:32:16Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/system/WORKERS.md",
+    "MyTradingSys/tests/docs/test_integrity.py"
+  ],
+  "scope_out": [
+    "CLAUDE.md (size cap headroom 12 B)",
+    "roles/builder.md (1454 of 1500 B budget)",
+    "any live-path or product code",
+    ".claude/settings.local.json (card bug-app-permission-prompts-unattended)",
+    "roles/supervisor.md (OWNED_ELSEWHERE in test_role_budget.py, rewritten on branch super-5h-no-cap)"
+  ],
+  "scope_sha": "3d0768186400",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "BUG (AI health, HIGH): agent reports a blocker and stops instead of solving it. 2026-10-26 NUC: ff-only pull refused (local commit bbd808f4a) -> I stopped; merge refused (dirty SUPERVISOR_LOG.md, already backed up) -> I stopped and handed the operator a choice. Solution was non-destructive and in reach: commit the file, git merge origin/fast-track; it worked first try when the operator pushed. Contradictions: (1) the order 'if git refuses because of SUPERVISOR_LOG.md, report and stop' vs CLAUDE.md 'never wait on a question, take the safe default, zero operator input' and 'no want-me-to offers'; I obeyed the stop clause literally and read 'do not discard or reset' as 'do nothing'; (2) 'no rebase/reset/stash' read as a ban on all merges/commits; (3) end-of-turn wrap_up/ask habit turns every blocker into a question. Fix: rule in CLAUDE.md/roles: on a refusal list 2-3 non-destructive fixes (backup exists -> commit, merge, worktree), try the safest, verify, and only report after trying; 'report and stop' orders mean report AND continue unless it says HALT; add a test/checklist in STANDING rules and brief templates. Also stop pattern: complain then idle.",
-  "weight": "",
-  "worker": ""
+  "state": "ready",
+  "steps": [
+    "Read WORKERS.md 'The rule' and the supervisor.md brief template; grep scripts/dev/*.py and system/*.md for 'report and stop' / 'stop and report' orders and list each file:line in the card note.",
+    "Write the failing test first: a test in test_integrity.py asserting WORKERS.md contains the heading 'Blocked' and the words 'report AND continue'; run it, confirm FAIL.",
+    "Add the rule to WORKERS.md: on a refusal (1) list 2-3 non-destructive fixes (backup exists -> commit the file; diverged -> git merge origin/fast-track in a worktree; blocked path -> path inside the checkout), (2) try the safest, (3) verify with git status/log, (4) only then report; non-HALT orders never end a turn on a question; never end 'complain then idle'.",
+    "Rewrite any 'report and stop' orders found in step 1 that are not HALT to 'report and continue' (docs only; skip role files).",
+    "Run the test, ship with sync.py ship --release <slug>."
+  ],
+  "tests": "MyTradingSys/tests/docs/test_integrity.py new test (fails on old WORKERS.md); MyTradingSys/tests/test_role_budget.py passes; python scripts/dev/role_loader.py check and lint pass. Verify: content commit sha, `git cherry origin/fast-track <sha>` empty, `git ls-tree -r origin/fast-track --name-only` lists the files.",
+  "title": "BUG (AI health, HIGH): agent stops at the first refusal instead of solving it (NUC 2026-10-26)",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
