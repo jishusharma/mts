@@ -4,14 +4,23 @@
   "commands": [],
   "created": "2026-10-26T19:13:34Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "A test with a hub whose .git/HEAD is all NUL bytes passes: ensure() returns a working hub and ack succeeds; fails on pre-change code.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "mts_signal.ensure() self-heals when the hub clone's .git is unreadable (HEAD zeroed after a power loss, seen on JIS-NUC 2026-10-27): move the broken hub aside and re-clone instead of crashing on git add -A.",
   "id": "bug-nuc-signal-hub-not-a-git-repo",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Machine rename: tests follow canonical display name (who keeps raw hosts)",
+      "ref": "9d26d7eb9dd8",
+      "utc": "2026-10-25T17:16:22Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,16 +28,25 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-26T19:23:50Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/mts_signal.py; scripts/dev/test_mts_signal.py"
+  ],
+  "scope_out": [
+    "live tree; other machines' hubs"
+  ],
+  "scope_sha": "9d26d7eb9dd8",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "write fail-first test with NUL HEAD",
+    "in ensure(): if .git exists but 'git rev-parse HEAD' fails, rename hub to mts-signals.corrupt-<date> and re-create"
+  ],
+  "tests": "scripts/dev/test_mts_signal.py::test_ensure_recovers_from_zeroed_hub_head (fail-first)",
   "title": "BUG: mts_signal.py ack fails on JIS-NUC: hub dir is not a git repo (git add -A)",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }
