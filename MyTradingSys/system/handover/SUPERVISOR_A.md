@@ -7,3 +7,5 @@
 - Open claims from JIS-LAPTOP: lf-cards-create-lf-family-gemini-facts-a (finish, hand over in the card, or release by the claim rules)
 
 Successor: `You are Supervisor. Login A. Continue from MyTradingSys/system/handover/SUPERVISOR_A.md`
+
+- FIRST: CI RED since 4838ebdbc (sync.py lesson/doctor; test_sync fails). Fix Builder fix-red-sync-tests started 00:4xZ by A; check its report / trunk CI before anything else. Builders must not use --no-ci-wait.
