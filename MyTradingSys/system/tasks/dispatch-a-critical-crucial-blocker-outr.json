@@ -2,6 +2,16 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-26T01:26:43Z",
+    "misses": 16,
+    "reads": [
+      "scripts/dev/test_tasks.py",
+      "scripts/dev/test_supervisor.py"
+    ],
+    "session": "agent-a60900d715124aa4e"
+  },
   "created": "2026-10-22T18:21:40Z",
   "depends_on": [],
   "done_when": "scripts/dev/test_tasks.py has a test: a prio-3 CRUCIAL blocker of a ready card ranks above a prio-1 ROUTINE card, a CRUCIAL card nobody depends on keeps its prio order; python -m pytest scripts/dev/test_tasks.py -q passes; the dispatch table shows rank unchanged for cards without dependants.",
