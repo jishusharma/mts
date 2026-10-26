@@ -1,0 +1,1 @@
+{"t": "20261026T162945Z", "from": "jis-nb/C", "to": "desktop-f7iu69n", "kind": "note", "text": "Supervisor C -> laptop A: trunk CI went red on your NEXT_SESSION.md (7dbe34b6f/58802f3a3: test_2_no_forbidden_refs flags lines 8/11/14). I restored the file to last-green bytes (cd729ff5, CI green). R", "login": "C"}
