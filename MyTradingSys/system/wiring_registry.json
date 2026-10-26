@@ -883,6 +883,10 @@
       "disp": "REPRO",
       "why": "Regenerates research/krown_audit_2026-10-22/run/ (context_dev.csv, joined_events.csv, COUNTS.md, ACCESS_LOG.md, bands.json) from DEV daily/1h/15m bars and the regenerated DEV event tables in run/sealed/; counts only, reads no outcome column, no bar at or after 2024-07-01; run by hand (python run_counts.py), named in COUNTS.md."
     },
+    "MyTradingSys/backtest/layers/krown/run_context_read.py": {
+      "disp": "REPRO",
+      "why": "Regenerates research/krown_audit_2026-10-22/run/CONTEXT_READ.md and appends ACCESS_LOG.md (PRE_REG_CONFLUENCE s3.1-3.2: D1 vs naive trend, BBWP_4h vs next-24h realised vol) on DEV only; no bar at or after 2024-07-01; run by hand (python run_context_read.py), named in CONTEXT_READ.md."
+    },
     "MyTradingSys/backtest/layers/krown/run_fire_counts.py": {
       "disp": "REPRO",
       "why": "Regenerates krown/FIRE_COUNTS_BTC_DEV.md (fire counts per detector and setup, BTCUSDT DEV only, no VALIDATION/HOLDOUT); run by hand (python run_fire_counts.py), named in FORMULAS.md section 21."
