@@ -33,6 +33,19 @@ A one-time task (`create_scheduled_task` with `fireAt`, never `cron`) may start 
 A per-user Run value `MTSTempGuard` (HKCU\Software\Microsoft\Windows\CurrentVersion\Run) runs `scripts/dev/c_drive_guard.py logon` once at each logon, headless (`conhost --headless`). It prunes the %TEMP% set in STATION_CLEANUP.md section 3 and exits. It has no timer, no repeat and no admin rights, so it is not a scheduled task. Register with `c_drive_guard.py install` from the primary checkout; remove with `uninstall`. Operator yes 2026-10-24 (OURS); registered per station as each acks (STATION_CLEANUP.md section 4).
 
 ## 5. Current state (update this table whenever it changes)
+
+### CBP-only exception (operator request 2026-10-26)
+The operator explicitly requested automatic CBP inputs twice daily. `scripts/dev/cbp_schedule.py`
+owns ONE task `MTS-CBP-Ingestion`: 09:00 and 13:00 UTC (14:30 and 18:30 IST, OURS), daily including
+weekends because crypto analysts publish every day. It runs only fetch -> extract -> quote check ->
+CBP store; no session dispatcher, trading process, deploy or revival is authorized by this exception.
+Install only on the host holding the configured CBP home, from a durable non-live MTS checkout.
+It requires an existing signed-in Windows session, Claude login and yt-dlp. Failed prerequisites refuse
+installation. Retry: three times at 15-minute intervals; missed starts run when available in today's
+remaining window. The task ignores overlapping scheduled invocations. Until installation and a real
+successful run are recorded, this is prepared wiring, not an operating feed.
+2026-10-27 NUC verification: NOT INSTALLED; `F:/CryptoScrapper/cbp_v2/analysts.json` absent. Claude
+has been asked to identify the current host/path via the desk board.
 | Device | State |
 |---|---|
 | JIS-NUC | none (0 MTS scheduled tasks, verified 2026-10-17 after the operator removed `MTS-NUC-Worker` and the nine `MTS-Wake-*`). `MTS-CodexLab`, `MTS-DailyHygiene`, `MTS-DispatchGate` were unregistered earlier the same day; XML backups: `F:/MTS/backups/sched_tasks_2026-10-17_NUC` (restore with `Register-ScheduledTask -Xml`, only on operator say-so) |

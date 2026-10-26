@@ -4,16 +4,20 @@
   "closed": "2026-10-26T15:25:40Z",
   "commands": [],
   "context": {
-    "calls_to_edit": 18,
-    "folded": "2026-10-26T15:30:36Z",
-    "misses": 4,
+    "calls_to_edit": 37,
+    "folded": "2026-10-26T20:16:36Z",
+    "misses": 26,
     "reads": [
-      "MyTradingSys/research/sim_desk/desk.py",
-      "MyTradingSys/research/sim_desk/DESIGN.md",
-      "MyTradingSys/research/sim_desk/runs_view.py",
-      "MyTradingSys/research/sim_desk/results/desk-krown-634f1a37.json"
+      "MyTradingSys/research/wavetrend_2026-10-17/RESULT.md",
+      "MyTradingSys/research/_archive/loose_2026-10/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md",
+      "MyTradingSys/research/t087_session_levels_2026-10-09/RESULT.md",
+      "MyTradingSys/research/fast_track_2026-09-27/PROVENANCE_AUDIT_TOM.md",
+      "MyTradingSys/research/layer_review_2026-10-26/BACKTEST_ERRORS.md",
+      "MyTradingSys/research/STATUS.md",
+      "MyTradingSys/system/LAYERS.md",
+      "MyTradingSys/research/LAYER_PROVENANCE_AUDIT.md"
     ],
-    "session": "d2a0b86b-84b1-48d9-be4f-dc5767d9f3ad"
+    "session": "ee68a2fa-19da-4409-ae29-622efc20c0f6"
   },
   "created": "2026-10-26T22:50:00Z",
   "depends_on": [],

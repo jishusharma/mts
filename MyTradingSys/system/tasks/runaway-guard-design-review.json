@@ -1,0 +1,45 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-26T10:31:55Z",
+  "depends_on": [],
+  "done_when": "A review file MyTradingSys/system/RUNAWAY_GUARD_REVIEW.md exists with verdict and numbered findings; each of the 7 questions answered with a command output or a quoted line; policy fit stated.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Review MyTradingSys/system/RUNAWAY_GUARD.md as an independent checker (another model than the author). Answer the 7 questions in its section 5 with evidence, and return ACCEPT or CHANGES with a numbered list. Read-only: do not build, install or change any device.",
+  "id": "runaway-guard-design-review",
+  "kind": "audit",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/system/RUNAWAY_GUARD.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/RUNAWAY_GUARD_REVIEW.md"
+  ],
+  "scope_out": [
+    "installing anything, killing processes, NUC settings, live tree"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "read RUNAWAY_GUARD.md and the NUC_SHUTDOWN_HANDOVER.md update of 2026-10-26 16:00",
+    "verify root cause from the transcript quote and a timeout experiment",
+    "answer questions 1-7 and write the verdict"
+  ],
+  "tests": "Review reproduces or refutes the claim that a timed-out agent shell call leaves find.exe running (scratch host, evidence pasted).",
+  "title": "Independent review of RUNAWAY_GUARD.md: root cause (find / orphaned by a timed-out agent shell call), guard layers, thresholds, policy fit",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

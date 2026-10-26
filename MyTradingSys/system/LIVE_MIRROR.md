@@ -20,7 +20,7 @@ Files: `scripts/dev/live_mirror.py` (publish | pull | brief | status), `scripts/
 1. PUBLISH (desktop only, refuses unless `.mts_live` exists): copies an ALLOWLIST into
    `<share>\live_mirror\<stage>` then swaps to `current` by rename; writes `manifest.json`
    {host, utc, git head, files[{rel,size,sha256,mtime}], excluded_count}. Read-only: never writes into the live tree,
-   never touches processes, HALT, orders. Scheduled by the supervisor every 5 min (task install = desk task, not done from here).
+   never touches processes, HALT, orders. On demand, no scheduler: `live_mirror.py brief` or `ensure` run in the live tree republishes when the copy is older than 5 min (any session starting on the live host runs `python scripts/dev/live_mirror.py ensure`); readers elsewhere get mirror@<utc> via pull.
 2. ALLOWLIST (relative to repo root; patterns in code, deny wins): `runtime_data/snapshots/` newest 48 `*.json` + any `*latest*`,
    `runtime_data/last_alert.json`, `alert_counter.txt`, `loop_state.json`, `canary_state.json`, `naked_pocs/*.json`,
    tail 3000 lines of `live_runner.log`, `execution/auto_trades.jsonl` tail 500, `MyTradingSys/runtime/alerts/*.jsonl` today+yesterday,

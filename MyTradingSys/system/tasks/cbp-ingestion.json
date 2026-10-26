@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-26T18:29:41Z",
+  "depends_on": [],
+  "done_when": "Focused ingestion and scheduler tests pass; changes shipped; activation status records missing data host honestly.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Repair canonical ingestion, propagate transient errors and supply an explicit twice-daily CBP-only Windows task.",
+  "id": "cbp-ingestion",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "MyTradingSys/tests/test_cbp_query.py::test_fabricated_quote_rejected",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "31 focused tests pass; implementation ready. Activation pending authoritative CBP data host from Claude; current NUC paths fail preflight. Card remains open pending activation and review.",
+  "scope_in": [
+    "scripts/dev/cbp_run.py",
+    "scripts/dev/cbp_schedule.py",
+    "scripts/dev/fetch_captions_timed.py",
+    "MyTradingSys/tests/test_cbp_query.py"
+  ],
+  "scope_out": [
+    "trading activation",
+    "live tree"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "Write failing regressions",
+    "Fix canonical reads and error propagation",
+    "Add CBP-only scheduled task and validate",
+    "Ship and record activation blocker"
+  ],
+  "tests": "pytest focused CBP suites, regression tests red before repair",
+  "title": "CBP twice-daily ingestion: schedule, canonical paths, retry and health",
+  "weight": "IMPORTANT",
+  "worker": "session",
+  "kind": "build"
+}

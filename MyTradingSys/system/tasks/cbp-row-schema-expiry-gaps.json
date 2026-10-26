@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-26T19:10:41Z",
+  "depends_on": [],
+  "done_when": "Bad directions and expired or malformed stored rows are refused, five audit probes pass without known-failure markers, and quote/dedupe controls remain green.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Repair runtime direction validation and fail-closed expiry/schema checks on the CBP query boundary, using the five synthetic gate probes. No analyst verdict or trading integration.",
+  "id": "cbp-row-schema-expiry-gaps",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/cbp/GATES_TRIAL_GPT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/cbp/__init__.py",
+    "MyTradingSys/tests/test_cbp_query.py"
+  ],
+  "scope_out": [
+    "CBP repo; real claim rows/transcripts; live tree; orders; extraction model"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/cbp/GATES_TRIAL_GPT.md",
+    "MyTradingSys/research/v1_plan_2026-10-20/D5_CBP_MODULE.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "Run planted tests with --runxfail to reproduce the three current gaps.",
+    "Reconcile publication-age and explicit UTC expiry semantics with the contract, then repair validation and update fixtures transparently."
+  ],
+  "tests": "All five planted safety expectations pass without xfail; valid-row, boundary-expiry and malformed-expiry controls pass; existing CBP suite passes.",
+  "title": "CBP read path: reject invalid direction and expired or malformed stored rows",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

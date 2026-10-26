@@ -12,6 +12,9 @@ header carries `# Channel:` and `# Analyst:`). Exit 0 when every wanted video is
 Writes DIR/<id>_timed.txt: header lines (# Video ID/Title/Published/Source/Analyst) then one cue per line
 as `[HH:MM:SS] text`. Also writes raw_transcripts_canonical/<id>_raw.txt (untimed, same format as
 fetch_captions.py) unless it exists. Existing timed files are skipped. One 20 s pause between videos.
+When yt-dlp gets HTTP 429 on the timedtext endpoint (IP-level, still happens with impersonation), the fetch falls back to
+the youtube-transcript-api package (pip install youtube-transcript-api) which uses a different endpoint; the title/date
+still come from yt-dlp metadata. Header `# Source:` says which path produced the file.
 """
 import argparse
 import re
@@ -74,6 +77,49 @@ def video_date(vid, cookies=None):
     return f"{d[:4]}-{d[4:6]}-{d[6:]}" if len(d) == 8 else ""
 
 
+def transcript_api_cues(vid, langs):
+    """([(start_s, text)], "auto"|"manual") from youtube-transcript-api, or None (not installed, no captions, blocked)."""
+    try:
+        from youtube_transcript_api import YouTubeTranscriptApi
+        t = YouTubeTranscriptApi().fetch(vid, languages=list(langs))
+        cues = [(int(s.start), " ".join(s.text.split())) for s in t.snippets if s.text.strip()]
+    except Exception:   # library errors are many classes; any failure means "no fallback"
+        return None
+    return (cues, "auto" if t.is_generated else "manual") if cues else None
+
+
+def meta(vid, cookies=None):
+    """Title/date/uploader/duration of one video (metadata only); {} when YouTube refuses."""
+    opts = {"quiet": True, "no_warnings": True, "skip_download": True}
+    if cookies:
+        opts["cookiefile"] = cookies
+    try:
+        with yt_dlp.YoutubeDL(opts) as y:
+            return y.extract_info(f"https://www.youtube.com/watch?v={vid}", download=False) or {}
+    except yt_dlp.utils.DownloadError:
+        return {}
+
+
+def store(vid, analyst, outdir, channel, info, kind, cues, source):
+    """Write DIR/<id>_timed.txt and the shared raw store file; returns the OK status string."""
+    d = info.get("upload_date") or ""
+    pub = f"{d[:4]}-{d[4:6]}-{d[6:]}" if len(d) == 8 else ""
+    words = sum(len(t.split()) for _, t in cues)
+    head = (f"# Video ID: {vid}\n# Title: {info.get('title', '')}\n# Published: {pub}\n"
+            f"# Source: {source} ({kind}); uploader: {info.get('uploader', '')}\n"
+            f"# Analyst: {analyst}\n" + (f"# Channel: {channel}\n" if channel else "")
+            + f"# Duration_s:{info.get('duration')}\n# Word count: {words}\n# ---\n")
+    body = "\n".join(f"[{s // 3600:02d}:{s % 3600 // 60:02d}:{s % 60:02d}] {t}" for s, t in cues)
+    outdir.mkdir(parents=True, exist_ok=True)
+    (outdir / f"{vid}_timed.txt").write_text(head + body + "\n", encoding="utf-8", newline="\n")
+    canon = CANON / f"{vid}_raw.txt"
+    if not canon.exists():
+        CANON.mkdir(exist_ok=True)
+        canon.write_text(head.split("# Duration_s")[0] + f"# Word count: {words}\n# ---\n"
+                         + " ".join(t for _, t in cues) + "\n", encoding="utf-8", newline="\n")
+    return f"OK {kind} {words}w"
+
+
 def fetch(vid, analyst, langs, outdir, channel="", cookies=None):
     dest = outdir / f"{vid}_timed.txt"
     if dest.exists():
@@ -95,28 +141,16 @@ def fetch(vid, analyst, langs, outdir, channel="", cookies=None):
                     return "NOCAPS"
                 kind = "manual" if (info.get("subtitles") or {}) else "auto"
                 cues = parse_vtt(vtts[0].read_text(encoding="utf-8", errors="replace"))
-            d = info.get("upload_date") or ""
-            pub = f"{d[:4]}-{d[4:6]}-{d[6:]}" if len(d) == 8 else ""
-            words = sum(len(t.split()) for _, t in cues)
-            head = (f"# Video ID: {vid}\n# Title: {info.get('title', '')}\n# Published: {pub}\n"
-                    f"# Source: yt_dlp captions ({kind}); uploader: {info.get('uploader', '')}\n"
-                    f"# Analyst: {analyst}\n" + (f"# Channel: {channel}\n" if channel else "")
-                    + f"# Duration_s:{info.get('duration')}\n# Word count: {words}\n# ---\n")
-            body = "\n".join(f"[{s // 3600:02d}:{s % 3600 // 60:02d}:{s % 60:02d}] {t}" for s, t in cues)
-            outdir.mkdir(parents=True, exist_ok=True)
-            dest.write_text(head + body + "\n", encoding="utf-8", newline="\n")
-            canon = CANON / f"{vid}_raw.txt"
-            if not canon.exists():
-                CANON.mkdir(exist_ok=True)
-                canon.write_text(head.replace("# Duration_s", "# Duration_s").split("# Duration_s")[0]
-                                 + f"# Word count: {words}\n# ---\n" + " ".join(t for _, t in cues) + "\n",
-                                 encoding="utf-8", newline="\n")
-            return f"OK {kind} {words}w"
+            return store(vid, analyst, outdir, channel, info, kind, cues, "yt_dlp captions")
         except yt_dlp.utils.DownloadError as e:
             msg = str(e)
             if "429" in msg or "Too Many Requests" in msg or "Sign in to confirm" in msg:
                 if "Sign in to confirm" in msg:
                     return "BOTCHECK"
+                got = transcript_api_cues(vid, langs)   # other endpoint; not blocked when timedtext 429s
+                if got:
+                    return store(vid, analyst, outdir, channel, meta(vid, cookies), got[1], got[0],
+                                 "youtube_transcript_api")
                 time.sleep(delay)
                 delay *= 2
                 continue
@@ -132,33 +166,43 @@ def fetch_channel(a):
         return 1
     inc, exc = re.compile(a.include) if a.include else None, re.compile(a.exclude) if a.exclude else None
     picked = 0
+    failed = False
     for vid, title in rows:
         if picked >= a.latest:
             break
         if (exc and exc.search(title)) or (inc and not inc.search(title)):
             print(f"{vid} SKIP_OFFTOPIC", flush=True)
             continue
-        if a.since and (video_date(vid, a.cookies) or "9") < a.since:
-            print(f"{vid} OLDER_THAN_{a.since}", flush=True)
-            break  # listing is newest-first: everything after is older too
+        if a.since:
+            published = video_date(vid, a.cookies)
+            if not published:
+                print(f"{vid} DATE_FAILED", flush=True)
+                failed = True
+                continue
+            if published < a.since:
+                print(f"{vid} OLDER_THAN_{a.since}", flush=True)
+                continue  # pinned uploads need not be in date order
         r = fetch(vid, a.analyst, a.langs.split(","), Path(a.out), a.channel, a.cookies)
         picked += r.startswith(("OK", "EXISTS"))
+        failed |= not r.startswith(("OK", "EXISTS"))
         print(f"{vid} {r}", flush=True)
-        if r == "BOTCHECK":
+        if r in ("BOTCHECK", "RATELIMIT"):
             return 1
         if not r.startswith("EXISTS"):
             time.sleep(20)
     print(f"{a.channel}: {picked} of {a.latest}")
-    return 0 if picked else 1
+    return 1 if failed else 0
 
 
 def main(argv):
+    global CANON
     if yt_dlp is None:
         print("yt_dlp not installed: pip install yt-dlp")
         return 2
     ap = argparse.ArgumentParser()
     ap.add_argument("--analyst", required=True)
     ap.add_argument("--out", default=str(CANON))
+    ap.add_argument("--canonical-out", type=Path, help="shared raw transcript store (default: MTS canonical store)")
     ap.add_argument("--channel", help="@handle; fetch its newest --latest on-topic videos")
     ap.add_argument("--latest", type=int, default=3)
     ap.add_argument("--scan", type=int, default=12, help="uploads to look through when listing a channel")
@@ -169,6 +213,8 @@ def main(argv):
     ap.add_argument("--langs", default="en")
     ap.add_argument("videos", nargs="*")
     a = ap.parse_args(argv)
+    if a.canonical_out:
+        CANON = a.canonical_out
     bad = 0
     if a.channel:
         return fetch_channel(a)
