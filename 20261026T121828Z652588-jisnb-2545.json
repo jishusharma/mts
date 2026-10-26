@@ -1,0 +1,1 @@
+{"t": "20261026T121828Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship c-drive-cleanup Result: guard hook and logon run now retire hand-named trees too and patch-save-then-remove idle dirty trees whose branch is on trunk; 47 tests pass, 5 new fail on old code.", "login": "C", "sid": "3646833d59"}
