@@ -5,7 +5,7 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-26T00:56:16Z",
+    "folded": "2026-10-26T00:56:23Z",
     "misses": 11,
     "reads": [
       "MyTradingSys/backtest/bt/test_bt_data.py",
