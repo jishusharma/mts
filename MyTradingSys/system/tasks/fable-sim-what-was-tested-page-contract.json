@@ -5,7 +5,7 @@
   "commands": [],
   "context": {
     "calls_to_edit": 18,
-    "folded": "2026-10-26T15:25:38Z",
+    "folded": "2026-10-26T15:30:36Z",
     "misses": 4,
     "reads": [
       "MyTradingSys/research/sim_desk/desk.py",
