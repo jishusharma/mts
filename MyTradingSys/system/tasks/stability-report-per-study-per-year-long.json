@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T02:10:25Z",
   "commands": [],
   "context": {
     "calls_to_edit": 13,
@@ -23,6 +24,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "STABILITY.md in e77be3a0d: malkan_40_60 4h and 1d flip sign without top 5 days; others do ",
+      "ref": "e77be3a0d",
+      "utc": "2026-10-26T02:10:25Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "rsi/cc: re-land real-funding DEV rerun with lint-clean forward slice",
@@ -41,7 +48,12 @@
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T10_missing_aspects.md"
   ],
-  "result": "",
+  "result": "STABILITY.md in e77be3a0d: malkan_40_60 4h and 1d flip sign without top 5 days; others do not",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/stability.py",
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/test_stability.py",
@@ -60,12 +72,13 @@
   "sources": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T10_missing_aspects.md (T10-F4, D4)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "First confirm per-trade rows (day, side, net) exist for each of the three studies; if one has signal-level output only, regenerate its DEV trades with its own script (no edits) and say so in STABILITY.md.",
     "Read T10-F4 and demo D4; write stability.py reading trade rows and printing the three cuts (per year, long/short, top-5-days-removed); no new backtest logic.",
     "Run on the three studies, write STABILITY.md, file a card for any sign change against the 0.14% bar."
   ],
+  "taken": "2026-10-26T02:10:25Z",
   "tests": "test_stability.py: on 20 planted trades where one day holds 90% of profit, the top-5-days-removed mean is negative and the per-year split sums to the total.",
   "title": "Stability report per study: per-year, long/short split, top-5 days removed (T10-F4, D4 drift -0.06..+0.08% per year)",
   "weight": "CRUCIAL",
