@@ -8,7 +8,7 @@ class C(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             k = Path(td, "klines"); k.mkdir()
             (k / "a.csv").write_text(H + row(120000, 3) + row(0, 1))
-            (k / "b.csv").write_text(row(60000, 2) + row(120000, 99) + row(240000, 5))
+            (k / "b.csv").write_text(row(60000, 2) + row(120000, 3) + row(240000, 5))
             bars = d.load_klines(td)
             self.assertEqual([b["t"] for b in bars], [0, 60000, 120000, 240000])
             self.assertEqual(len({b["t"] for b in bars}), 4)
@@ -22,4 +22,40 @@ class C(unittest.TestCase):
             (f / "y.csv").write_text("calc_time,funding_interval_hours,last_funding_rate\n1000,8,0.0001\n2000,8,0.0002\n")
             fr = d.load_funding(td)
             self.assertEqual(d.funding_rate_at(fr, 500), 0.0); self.assertEqual(d.funding_rate_at(fr, 1500), 0.0001)
+def _mk(td, text):
+    k = Path(td, "klines"); k.mkdir(exist_ok=True)
+    (k / "a.csv").write_text(text)
+class Hard(unittest.TestCase):
+    def test_micro(self):
+        with tempfile.TemporaryDirectory() as td:
+            _mk(td, row(1700000000000000, 1) + row(1700000060000000, 2))
+            rp = {}
+            bars = d.load_klines(td, report=rp)
+            self.assertEqual([b["t"] for b in bars], [1700000000000, 1700000060000])
+            self.assertEqual(rp["micro"], 2)
+    def test_dup_identical(self):
+        with tempfile.TemporaryDirectory() as td:
+            _mk(td, row(0, 1) + row(0, 1) + row(60000, 2))
+            rp = {}
+            self.assertEqual(len(d.load_klines(td, report=rp)), 2)
+            self.assertEqual(rp["dups"], 1)
+    def test_dup_conflicting_raises(self):
+        with tempfile.TemporaryDirectory() as td:
+            _mk(td, row(0, 1) + row(0, 9))
+            with self.assertRaises(ValueError):
+                d.load_klines(td)
+    def test_gap_reported(self):
+        with tempfile.TemporaryDirectory() as td:
+            _mk(td, row(0, 1) + row(60000, 2) + row(240000, 3))
+            rp = {}
+            d.load_klines(td, report=rp)
+            self.assertEqual(rp["gaps"], [(60000, 240000)])
+    def test_unsorted_warns_counted(self):
+        with tempfile.TemporaryDirectory() as td:
+            _mk(td, row(120000, 3) + row(0, 1) + row(60000, 2))
+            rp = {}
+            with self.assertWarns(UserWarning):
+                bars = d.load_klines(td, report=rp)
+            self.assertEqual([b["t"] for b in bars], [0, 60000, 120000])
+            self.assertEqual(rp["unsorted"], 1)
 if __name__ == "__main__": unittest.main()
