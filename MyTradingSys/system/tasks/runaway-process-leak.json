@@ -5,6 +5,17 @@
     "python scripts/dev/mts_signal.py broadcast --cmd \"powershell -File scripts/operator/runaway_check.ps1\"",
     "powershell -File scripts/operator/runaway_check.ps1"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-26T22:55:58Z",
+    "misses": 15,
+    "reads": [
+      "scripts/operator/runaway_check.ps1",
+      "MyTradingSys/system/RUNAWAY_GUARD.md",
+      "MyTradingSys/system/QUICK_ANSWERS.md"
+    ],
+    "session": "agent-a2f5546faf5f6a6e6"
+  },
   "created": "2026-10-26T10:24:53Z",
   "depends_on": [],
   "done_when": "Every device that answers within 24 h ran runaway_check.ps1 and its line is in RUNAWAY_GUARD.md s6 (silent devices listed); spawner confirmed or corrected with evidence; guard or bare find/grep ban shipped; JIS-NUC 48 h clean-test verdict in NUC_SHUTDOWN_HANDOVER.md.",
