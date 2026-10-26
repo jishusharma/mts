@@ -63,8 +63,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-fabio-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `lf-fabio-gpt-rederive` ready p2 CODEX: Layer re-derive: fabio (independent recount of the headline numbers behind the fact sheet)
-  - `oi-pivot-reversal-probability-by-tf` ready p2 SONNET: Causal pivot-candidate study: P(reversal) per TF from OI slope flip + price/OI divergence + delta + location, 
   - `t09-f4-live-window-99-bars-swing-layers` refined p2 JIS-NB: T09-F4 S2: 99-bar live window misses 68 of 96 escalation signals; fetch more bars for swing layers
+  - `oi-pivot-1h-4h-long-oi-followup` raw p3 SONNET: OI pivot candidates at 1h/4h: aggregate the 5m metrics archive 2022-01..2024-06 (DEV), same candidates/outcome
   - `rv05-h2-position-line-evidence` ready p3 SONNET: RV05 H2: read position lines and stop prices before applying existing Fabio entry repair
   - `rv05-h3-outcome-evidence` refined p3 SONNET: RV05 H3: incorporate partial stop coverage evidence into existing F13 outcome repair
   - `fabio-layer-v2-markets` refined p5 OPUS: Fabio layer v2 spec, part B: data plan per market, cost, stop width, build + recall cards (Opus research)
@@ -99,7 +99,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `kurisko-dev-event-study` refined p2 SONNET: Kurisko Quad Rotation: DEV event study, fee-net, same-window placebo
   - `lf-rsi-gpt-rederive` ready p2 CODEX: Layer re-derive: rsi (independent recount of the headline numbers behind the fact sheet)
   - `argon-med-param-label-sweep` ready p3 CODEX: [GEMINI] Argon-medium: list layer parameters with no SOURCED/OURS label (file:line)
-  - `malkan-w1hr-local-whisper-asr` ready p3 JIS-NB: Malkan W1HrDl70Lhk: local Whisper ASR on JIS-NB to recover Hinglish 5-Star RSI stop wording (no YouTube captio
   - `rsi-cross-unmapped-and-pivot-stack` ready p3 SONNET: RSI cross events are rejected as unmapped in the auto-trader (no layer_rules entry); and no layer stacks level
   - `malkan-prereg-dwm-equities` refined p4 SONNET: Malkan: pre-registration for the D/W/M equity home test (items 6/7/8/9/11/12, gates 0a/0f)
 

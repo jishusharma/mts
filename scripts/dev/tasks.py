@@ -1468,11 +1468,14 @@ def dispatch(cards, reg, holds, claims, lane_st, as_of, host=None, repo=REPO, lo
         if sharded:
             inc[-1]["shard"] = shard_of(c["id"], logins)
             inc[-1]["own"] = inc[-1]["shard"] == login
-    # CI red first (pinned), then (sharded) own shard, then priority, then heavier weight first, then oldest, then id (total order = deterministic)
-    inc.sort(key=lambda r: (not r["pinned"], not r.get("own", True), r["prio"], -WEIGHT_ORDER.get(r["weight"], 0), r["created"], r["id"]))
+    # CI red first (pinned), then (sharded) own shard, then a CRITICAL/CRUCIAL card other open cards wait on, then priority, then heavier weight first, then oldest, then id (total order = deterministic)
+    needed = {d for c in cards if c["state"] not in FINAL for d in c.get("depends_on", [])}   # open cards' blockers (SUPER_SESSION rule 13)
+    for r in inc:
+        r["blocker"] = r["weight"] in ("CRITICAL", "CRUCIAL") and r["id"] in needed
+    inc.sort(key=lambda r: (not r["pinned"], not r.get("own", True), not r["blocker"], r["prio"], -WEIGHT_ORDER.get(r["weight"], 0), r["created"], r["id"]))
     for n, r in enumerate(inc, 1):
         r["rank"] = n
-        del r["created"]
+        del r["created"], r["blocker"]
     exc.sort(key=lambda r: (r["reason_code"], r["id"]))
     return {"as_of": as_of.strftime("%Y-%m-%dT%H:%M:%SZ"), "host": host or "", "dispatch": inc, "excluded": exc}
 

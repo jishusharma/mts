@@ -1,7 +1,18 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T01:26:44Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-26T01:26:43Z",
+    "misses": 16,
+    "reads": [
+      "scripts/dev/test_tasks.py",
+      "scripts/dev/test_supervisor.py"
+    ],
+    "session": "agent-a60900d715124aa4e"
+  },
   "created": "2026-10-22T18:21:40Z",
   "depends_on": [],
   "done_when": "scripts/dev/test_tasks.py has a test: a prio-3 CRUCIAL blocker of a ready card ranks above a prio-1 ROUTINE card, a CRUCIAL card nobody depends on keeps its prio order; python -m pytest scripts/dev/test_tasks.py -q passes; the dispatch table shows rank unchanged for cards without dependants.",
@@ -13,6 +24,12 @@
   "id": "dispatch-a-critical-crucial-blocker-outr",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Shipped 3734b9809: dispatch sort key ranks CRITICAL/CRUCIAL blockers of open cards above p",
+      "ref": "3734b9809",
+      "utc": "2026-10-26T01:26:44Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,7 +47,12 @@
   "refined_by": "Session_Planner",
   "refreshed": "2026-10-25T22:17:41Z",
   "refs": [],
-  "result": "",
+  "result": "Shipped 3734b9809: dispatch sort key ranks CRITICAL/CRUCIAL blockers of open cards above prio; DispatchBlockerTest (3 tests) passes, outrank test failed on old key",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/test_tasks.py"
@@ -46,12 +68,13 @@
     "scripts/dev/tasks.py:1472",
     "MyTradingSys/system/SUPER_SESSION.md rule 13"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read dispatch() and effective_weight; compute dependants = ids appearing in depends_on of non-final cards.",
     "Write the failing ordering test first, then add the blocker flag to the sort key.",
     "Run test_tasks.py and tasks.py dispatch on the live board to compare the top 10."
   ],
+  "taken": "2026-10-26T01:26:44Z",
   "tests": "scripts/dev/test_tasks.py::test_dispatch_heavy_blocker_outranks_prio fails on the current key (prio first) and passes after.",
   "title": "Dispatch: a CRITICAL/CRUCIAL blocker outranks prio (tasks.py dispatch sorts prio before weight)",
   "weight": "ROUTINE",

@@ -71,10 +71,10 @@ from the newest `BUDGET` signal line (older than 6 h counts NORMAL). The meter i
 
 ## Session log (newest first; one line each, last 5)
 - 2026-10-26 Supervisor B (NUC, Sonnet): 10 cards shipped via 8 Sonnet bg agents (klines, oi-pivot, rsi, intrabar, stability, dispatch, coord-audit, malkan); a diff-only review Agent per CRUCIAL card caught 2 defects. Lesson: builders report merge shas, verify the own commit with show --stat.
+- 2026-10-26 Supervisor C (desktop): watched A/B stations 10 h; reverted ca310cbe1 (sync ship --lesson, 21ea5324d); trunk green f02dc2fa; handed over (handover/SUPERVISOR_C.md).
 - 2026-10-24 design session (Opus): this file rewritten from 137 lines; D1-D6 above.
 - 2026-10-21 Supervisor B (NUC): GPT lane up, 5 cards back to CODEX; lab caps window 65 / week 90 / 14 runs (DECISION (OURS)); pitchfork layer 79da493c.
 - 2026-10-19 Supervisor A (NUC): weekly 93%/95 cap, mode=STOP all window, no workers; handover/SUPERVISOR_A.md; DSA chats need arming.
-- SUPER-LENOVO-1019b (2026-10-19, Sonnet): chunk 2 landed 4e88b6d1; full gate passes only with MTS_GATE_JOBS=2, ONE ship at a time; chunk 3 unshipped.
 
 ## Prompt: start a super session (new session, model Sonnet, permission mode bypass or auto; zero operator input)
 ```
