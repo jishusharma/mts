@@ -78,3 +78,9 @@ Event 6008 count is 0 over 7 days after steps 1-4, and no "Idle Timeout" standby
 - Settings seen: High performance plan, max processor state 85% on AC (already below turbo), PCIe link-state power management Off. So a turbo cap is already in place and it still hangs: peak CPU power is a weak suspect.
 - Logger was not running after the 10-25 reboot (no autostart by design); restarted by hand 10-26 02:18.
 - Next, in order: (1) adapter swap, 19 V 6.32 A / 120 W, 5.5x2.5 mm, centre +; (2) BIOS 0067 (UPS or short, attended flash); (3) mdsched RAM test; (4) CR2032 + BIOS settings (After Power Failure = Power On, ASPM off, Network Boot off); (5) SSD firmware. After a swap, 48 h with nuc_health.ps1 -Days 2.
+
+## Update 2026-10-26 16:00 - runaway find.exe found (JIS-NUC, login B)
+- 24 h CPU check: logger shows CPU temp averaging 96-99 C (max 100 C, 517 min at 95 C or more) from 07:00 on, with CPU ~46% steady and free memory falling from 18 GB to 5 GB.
+- Cause: a Git-Bash `find.exe` (no arguments, started 06:39:28 with a `grep.exe` sibling; parent already gone) spun a core for 9 h and held 10.9 million handles. Paged pool was 9.7 GB and available memory 0 MB, i.e. the box was about to run out of memory. Stopped it by hand at ~15:55; memory back to 19 GB free.
+- Not proven to explain the 7 resets (they began 10-23, before this process), but a leaking handle/pool process can hang or reset a machine, and it kept the CPU at the thermal limit. The 25 h clean stretch ended with this process pegging the box, so "stable" was not "quiet".
+- Next: find which session ran `find` at 06:39 (an agent shell tool call is likely) and guard against it. Keep the 48 h clean test going from 15:55 on 10-26.
