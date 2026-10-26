@@ -132,33 +132,43 @@ def fetch_channel(a):
         return 1
     inc, exc = re.compile(a.include) if a.include else None, re.compile(a.exclude) if a.exclude else None
     picked = 0
+    failed = False
     for vid, title in rows:
         if picked >= a.latest:
             break
         if (exc and exc.search(title)) or (inc and not inc.search(title)):
             print(f"{vid} SKIP_OFFTOPIC", flush=True)
             continue
-        if a.since and (video_date(vid, a.cookies) or "9") < a.since:
-            print(f"{vid} OLDER_THAN_{a.since}", flush=True)
-            break  # listing is newest-first: everything after is older too
+        if a.since:
+            published = video_date(vid, a.cookies)
+            if not published:
+                print(f"{vid} DATE_FAILED", flush=True)
+                failed = True
+                continue
+            if published < a.since:
+                print(f"{vid} OLDER_THAN_{a.since}", flush=True)
+                continue  # pinned uploads need not be in date order
         r = fetch(vid, a.analyst, a.langs.split(","), Path(a.out), a.channel, a.cookies)
         picked += r.startswith(("OK", "EXISTS"))
+        failed |= not r.startswith(("OK", "EXISTS"))
         print(f"{vid} {r}", flush=True)
-        if r == "BOTCHECK":
+        if r in ("BOTCHECK", "RATELIMIT"):
             return 1
         if not r.startswith("EXISTS"):
             time.sleep(20)
     print(f"{a.channel}: {picked} of {a.latest}")
-    return 0 if picked else 1
+    return 1 if failed else 0
 
 
 def main(argv):
+    global CANON
     if yt_dlp is None:
         print("yt_dlp not installed: pip install yt-dlp")
         return 2
     ap = argparse.ArgumentParser()
     ap.add_argument("--analyst", required=True)
     ap.add_argument("--out", default=str(CANON))
+    ap.add_argument("--canonical-out", type=Path, help="shared raw transcript store (default: MTS canonical store)")
     ap.add_argument("--channel", help="@handle; fetch its newest --latest on-topic videos")
     ap.add_argument("--latest", type=int, default=3)
     ap.add_argument("--scan", type=int, default=12, help="uploads to look through when listing a channel")
@@ -169,6 +179,8 @@ def main(argv):
     ap.add_argument("--langs", default="en")
     ap.add_argument("videos", nargs="*")
     a = ap.parse_args(argv)
+    if a.canonical_out:
+        CANON = a.canonical_out
     bad = 0
     if a.channel:
         return fetch_channel(a)

@@ -3,8 +3,9 @@
     python scripts/dev/cbp_run.py --due     # only if a UTC window is open and not yet done in it
     python scripts/dev/cbp_run.py --force   # whenever the operator asks
 
-Windows (UTC, OURS): EU 09:00-11:00, pre-US 12:00-13:30. The coordinator calls --due on each wake;
-the stamp file lives outside the repo (CBP_STAMP, default ~/.mts_cbp_stamp.json).
+Windows (UTC, OURS): EU 09:00-13:00, pre-US 13:00-midnight. Scheduled starts: 09:00 and 13:00;
+windows stay open for retries and catch-up. A coordinator may also call --due on each wake;
+the stamp file lives outside the repo (CBP_STAMP, default CBP_HOME/cbp_store/stamp.json).
 Only the actionable analysts in F:/CryptoScrapper/cbp_v2/analysts.json are fetched; videos already in the store
 (or already rejected) are skipped; nothing older than 5 days is fetched. One LLM pass per new video.
 Output: one line "cbp: +<added> rows, <total> total, window end <date>[, <n> rejected]".
@@ -28,8 +29,8 @@ import cbp  # noqa: E402
 import verify_extract_quotes as vq  # noqa: E402
 
 CBP_HOME = Path(os.environ.get("CBP_HOME", "F:/CryptoScrapper"))
-TRANSCRIPTS = CBP_HOME / "transcripts"
-WINDOWS = (("EU", time(9, 0), time(11, 0)), ("PRE_US", time(12, 0), time(13, 30)))
+TRANSCRIPTS = Path(os.environ.get("CBP_TRANSCRIPTS", str(CBP_HOME / "raw_transcripts_canonical")))
+WINDOWS = (("EU", time(9, 0), time(13, 0)), ("PRE_US", time(13, 0), None))
 MODEL = os.environ.get("CBP_MODEL", "claude-sonnet-5-5")
 PROMPT = """You extract what ONE crypto analyst says in ONE video. Output ONLY a JSON object, nothing else:
 {"bias": "BULLISH|BEARISH|NEUTRAL|NO_VIEW", "symbols": ["BTC",...],
@@ -44,14 +45,14 @@ Transcript of %(analyst)s, %(published)s, "%(title)s":
 
 
 def stamp_path():
-    return Path(os.environ.get("CBP_STAMP") or Path.home() / ".mts_cbp_stamp.json")
+    return Path(os.environ.get("CBP_STAMP") or CBP_HOME / "cbp_store" / "stamp.json")
 
 
 def open_window(now):
     """Name of the UTC window that is open at `now`, else None."""
     t = now.astimezone(timezone.utc).time()
     for name, a, b in WINDOWS:
-        if a <= t < b:
+        if a <= t and (b is None or t < b):
             return name
     return None
 
@@ -75,7 +76,10 @@ def write_stamp(now, window):
     s = read_stamp()
     day = now.astimezone(timezone.utc).date().isoformat()
     done = (s.get("done", []) + [day + ":" + window])[-4:] if window else s.get("done", [])
-    stamp_path().write_text(json.dumps({"done": done, "last_run": now.isoformat()}), encoding="utf-8", newline="\n")
+    stamp_path().parent.mkdir(parents=True, exist_ok=True)
+    tmp = stamp_path().with_suffix(".tmp")
+    tmp.write_text(json.dumps({"done": done, "last_run": now.isoformat()}), encoding="utf-8", newline="\n")
+    os.replace(tmp, stamp_path())
 
 
 def analysts():
@@ -91,12 +95,13 @@ def fetch_new(cutoff, store, run=subprocess.run):
     for an in ans:
         cmd = [sys.executable, str(HERE / "fetch_captions_timed.py"), "--analyst", an["short"],
                "--channel", an["channel"], "--latest", "6", "--scan", "8", "--since", cutoff,
-               "--out", str(TRANSCRIPTS), "--exclude", cfg["exclude_regex"]]
+               "--out", str(TRANSCRIPTS), "--canonical-out", str(TRANSCRIPTS), "--exclude", cfg["exclude_regex"]]
         if an.get("topic_filter"):
             cmd += ["--include", cfg["include_regex"]]
         if cookies.exists():
             cmd += ["--cookies", str(cookies)]
-        run(cmd, check=False)
+        result = run(cmd, check=False)
+        result.check_returncode()
 
 
 def parse_transcript(path):
@@ -114,10 +119,14 @@ def parse_transcript(path):
 def local_videos(cutoff):
     """[(video_id, analyst, published, title, path)] of transcripts on disk published on/after cutoff."""
     out = []
-    for p in sorted(TRANSCRIPTS.glob("*_timed.txt")):
+    seen = set()
+    for p in sorted(TRANSCRIPTS.glob("*_timed.txt")) + sorted(TRANSCRIPTS.glob("*_raw.txt")):
         meta, _ = parse_transcript(p)
-        if meta.get("published", "") >= cutoff and meta.get("analyst"):
+        if meta.get("video id") in seen:
+            continue
+        if meta.get("published", "") >= cutoff and meta.get("analyst") and meta.get("video id"):
             out.append((meta["video id"], meta["analyst"], meta["published"], meta.get("title", ""), p))
+            seen.add(meta["video id"])
     return out
 
 
@@ -127,6 +136,7 @@ def llm_extract(video, body, run=subprocess.run):
     prompt = PROMPT % {"analyst": analyst, "published": published, "title": title.replace('"', "'")}
     r = run(["claude", "-p", "--model", MODEL, "--tools", "", "--no-session-persistence"],
             input=prompt + body, capture_output=True, text=True, encoding="utf-8", timeout=600)
+    r.check_returncode()
     m = re.search(r"\{.*\}", r.stdout or "", re.S)
     if not m:
         raise ValueError("no JSON from extractor: " + (r.stderr or r.stdout or "")[:120])
@@ -163,16 +173,16 @@ def run_once(now, fetch=fetch_new, extract=llm_extract, store=None):
     known = {(r["video_id"], r["analyst"]) for r in data["rows"]} | {(x[0], x[1]) for x in data["rejected"]}
     fetch(cutoff, known)
     added = rejected = 0
+    failures = []
     for video in local_videos(cutoff):
         if (video[0], video[1]) in known:
             continue
         _, body = parse_transcript(video[4])
         try:
             row, why = build_row(video, extract(video, body), body)
-        except (ValueError, OSError, subprocess.SubprocessError) as e:
-            row, why = None, "extract failed: %s" % str(e)[:100]
-            if isinstance(e, (OSError, subprocess.SubprocessError)):
-                continue  # extractor unavailable: retry next run, do not mark rejected
+        except (ValueError, TypeError, AttributeError, OSError, subprocess.SubprocessError):
+            failures.append(video[0])
+            continue  # temporary errors must not become permanent rejections
         if row:
             data["rows"].append(row)
             added += 1
@@ -182,6 +192,8 @@ def run_once(now, fetch=fetch_new, extract=llm_extract, store=None):
         known.add((video[0], video[1]))
     data["rows"] = [r for r in data["rows"] if r["published"] >= cutoff]  # nothing older than 5 days is kept
     cbp.save(data, store)
+    if failures:
+        raise RuntimeError("extraction incomplete for %d video(s); retry required" % len(failures))
     return added, len(data["rows"]), rejected
 
 
@@ -198,7 +210,11 @@ def main(argv=None, now=None):
         if not window:
             print("cbp: not due")
             return 0
-    added, total, rejected = run_once(now)
+    try:
+        added, total, rejected = run_once(now)
+    except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as e:
+        print("cbp: FAILED (%s); window not marked complete" % type(e).__name__, file=sys.stderr)
+        return 1
     write_stamp(now, window or open_window(now))
     end = now.astimezone(timezone.utc).date().isoformat()  # window = the 5 days up to today
     print("cbp: +%d rows, %d total, window end %s%s" % (added, total, end, ", %d rejected" % rejected if rejected else ""))
