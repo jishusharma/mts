@@ -42,6 +42,7 @@ class T(unittest.TestCase):
         d = self.repo / "MyTradingSys" / "system" / "roles"
         d.mkdir(parents=True)
         (d / "lead.md").write_text(ROLE, encoding="utf-8", newline="\n")
+        (d / "supervisor.md").write_text(ROLE.replace("Lead", "Supervisor").replace("lead", "supervisor"), encoding="utf-8", newline="\n")
         git(self.repo, "add", "-A")
         git(self.repo, "commit", "-qm", "trunk")
         git(self.repo, "update-ref", "refs/remotes/origin/fast-track", "HEAD")
@@ -59,6 +60,24 @@ class T(unittest.TestCase):
         (self.repo / ".claude").mkdir()
         (self.repo / ".claude" / "settings.json").write_text('{"hooks": {"x": "role_loader.py hook"}}')
         self.assertEqual(rhl.run(payload(self.repo)), "")
+
+    def test_stale_project_loader_still_gets_bare_login_from_trunk(self):
+        """Operator 2026-10-26: `login A` did nothing on the stale laptop/NUC: its own hook ran an old loader and the launcher stood aside."""
+        (self.repo / ".claude").mkdir()
+        (self.repo / ".claude" / "settings.json").write_text('{"hooks": {"x": "role_loader.py hook"}}')
+        (self.repo / "scripts" / "dev").mkdir(parents=True, exist_ok=True)
+        (self.repo / "scripts" / "dev" / "role_loader.py").write_text("# old loader without the bare-login rule")
+        out = json.loads(rhl.run(payload(self.repo, prompt="login A")))["hookSpecificOutput"]["additionalContext"]
+        self.assertIn("ROLE LOADED", out)
+        self.assertEqual(rhl.run(payload(self.repo, prompt="hello")), "")           # other prompts: no double run
+        self.assertEqual(rhl.run(payload(self.repo, prompt="You are Lead.")), "")
+
+    def test_current_project_loader_keeps_launcher_out_of_bare_login(self):
+        (self.repo / ".claude").mkdir()
+        (self.repo / ".claude" / "settings.json").write_text('{"hooks": {"x": "role_loader.py hook"}}')
+        (self.repo / "scripts" / "dev").mkdir(parents=True, exist_ok=True)
+        (self.repo / "scripts" / "dev" / "role_loader.py").write_text("BARE_LOGIN = 1")
+        self.assertEqual(rhl.run(payload(self.repo, prompt="login A")), "")
 
     def test_no_trunk_loader_says_not_loaded(self):
         git(self.repo, "update-ref", "-d", "refs/remotes/origin/fast-track")
