@@ -20,7 +20,7 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
-  "result": "",
+  "result": "31 focused tests pass; implementation ready. Activation pending authoritative CBP data host from Claude; current NUC paths fail preflight. Card remains open pending activation and review.",
   "scope_in": [
     "scripts/dev/cbp_run.py",
     "scripts/dev/cbp_schedule.py",
