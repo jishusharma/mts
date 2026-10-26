@@ -2,6 +2,16 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-26T23:51:04Z",
+    "misses": 4,
+    "reads": [
+      "scripts/dev/cbp_run.py",
+      "MyTradingSys/cbp/schema.json"
+    ],
+    "session": "agent-a72e57febd1ddcb9f"
+  },
   "created": "2026-10-26T19:10:41Z",
   "depends_on": [],
   "done_when": "Bad directions and expired or malformed stored rows are refused, five audit probes pass without known-failure markers, and quote/dedupe controls remain green.",
