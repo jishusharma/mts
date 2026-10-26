@@ -334,7 +334,7 @@ def _rd(five, week, five_reset="2026-10-19T14:00Z", week_reset="2026-10-23T16:00
 
 def test_pace_over_weekly_cap_is_stop():
     """B/C on JIS-NB stop at 75% of the week (rule 12): 88% used -> no room, no Claude worker."""
-    assert S.weekly_cap("C", "JIS-NB") == 75 and S.weekly_cap("C", "JIS-NUC") == 95 and S.weekly_cap("A", "JIS-NB") == 95
+    assert S.weekly_cap("C", "JIS-NB") == 85 and S.weekly_cap("B", "JIS-NB") == 75 and S.weekly_cap("C", "JIS-NUC") == 95 and S.weekly_cap("A", "JIS-NB") == 95
     p = S.pace_plan(T0, _rd(7, 88, week_reset="2026-10-20T20:00Z"), 75)
     assert p["mode"] == "STOP" and p["slots"] == 0 and p["new"] == 0 and p["room"] == 0
 
@@ -343,7 +343,7 @@ def test_last_day_before_the_weekly_reset_spends_the_last_points_slowly():
     """Operator 2026-10-22: A at 97% with 15 h to its reset. Cap 95 -> STOP (points lost); last-day cap 99 over 3 windows ->
     2/3 wk pt here / 0.12 = 5.6 pts of 5 h -> 1 Claude worker, NORMAL. NB B/C keep their 75."""
     assert S.weekly_cap("A", "DESKTOP-F7IU69N", 15) == 99 and S.weekly_cap("A", "DESKTOP-F7IU69N", 30) == 95
-    assert S.weekly_cap("A", "DESKTOP-F7IU69N") == 95 and S.weekly_cap("C", "JIS-NB", 15) == 75
+    assert S.weekly_cap("A", "DESKTOP-F7IU69N") == 95 and S.weekly_cap("C", "JIS-NB", 15) == 85
     assert S.pace_plan(T0, _rd(2, 97, week_reset="2026-10-20T03:00Z"), 95)["mode"] == "STOP"
     p = S.pace_plan(T0, _rd(2, 97, week_reset="2026-10-20T03:00Z"), S.weekly_cap("A", "DESKTOP-F7IU69N", 15))
     assert p["room"] == 5.6 and p["slots"] == 1 and p["mode"] == "NORMAL"
