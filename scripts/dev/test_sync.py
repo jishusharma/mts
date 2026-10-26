@@ -348,6 +348,29 @@ class SyncTest(unittest.TestCase):
     def branch_of(self, tree):
         return subprocess.run(["git", "-C", str(tree), "branch", "--show-current"], capture_output=True, text=True).stdout.strip()
 
+    def test_doctor_top_warnings_keeps_three_warn_rows_in_order(self):
+        rows = [("A", "OK", "x"), ("B", "WARN", "b1"), ("C", "unavailable", "c"), ("D", "WARN", "d1"), ("E", "WARN", "e1"), ("F", "WARN", "f1")]
+        out = sync.doctor_top_warnings(self.a, checklist=lambda: rows)
+        self.assertEqual(len(out), 3)
+        self.assertTrue(out[0].startswith("doctor WARN B:") and out[2].startswith("doctor WARN E:"))
+
+    def test_doctor_top_warnings_fails_soft_when_the_doctor_errors(self):
+        def boom():
+            raise RuntimeError("doctor down")
+        self.assertEqual(sync.doctor_top_warnings(self.a, checklist=boom), [])
+        self.assertEqual(sync.doctor_top_warnings(self.a), [])  # throwaway repo has no doctor: nothing, no raise
+
+    def test_start_prints_doctor_warnings_but_not_when_quiet(self):
+        with mock.patch.object(sync, "doctor_top_warnings", return_value=["doctor WARN DISK: low"]):
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                sync.start(self.a, here=True)
+            self.assertIn("doctor WARN DISK: low", buf.getvalue())
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                sync.start(self.a, here=True, quiet=True)
+            self.assertNotIn("doctor WARN", buf.getvalue())
+
     def test_start_slug_in_a_lane_tree_switches_branch_instead_of_making_a_worktree(self):
         lane = self.make_lane()
         commit(self.a, "later.txt", "l\n")
