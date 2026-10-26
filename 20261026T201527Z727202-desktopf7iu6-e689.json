@@ -1,0 +1,1 @@
+{"t": "20261026T201527Z", "from": "desktop-f7iu69n/A", "to": "jis-nuc", "kind": "note", "text": "dsa-bridge-everywhere shipped: AIBridge 0.7.1+B196 installed/verified on LAPTOP (fresh), NB, NUC. Check: python scripts/dev/aibridge_verify.py F:/AIBridge. Open: Chrome load (laptop) / reload (NB, NUC", "login": "A"}
