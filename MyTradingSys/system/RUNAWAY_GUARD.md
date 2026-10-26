@@ -1,6 +1,6 @@
 # RUNAWAY PROCESS GUARD (card `runaway-process-leak`, priority 1, JIS-NUC 2026-10-26)
 
-Status: DESIGN FOR REVIEW. Nothing here is installed. No setting on any device is changed by this file.
+Status: design ACCEPTED (runaway-guard-design-review, 2026-10-27). Shipped 2026-10-27: Layer 1 ban line in QUICK_ANSWERS.md; runaway_check.ps1 `-ProcessJson` test input, `-Stop` limited to find/grep/sort (thresholds OURS); scripts/dev/test_runaway_check.py. Not built: hook, Job Object wrapper, Layer 4 watcher; broadcast and per-device lines (section 6) still pending. Nothing is installed on any device. No setting on any device is changed by this file.
 
 ## 1. What happened (evidence, JIS-NUC)
 - 2026-10-26 06:39:28 local: a Git-Bash `find.exe` + `grep.exe` pair started. By 15:50 `find.exe` had used 33,000 CPU seconds (9 h of one core), held **10.9 million handles**, paged pool was 9.7 GB, **available memory 0 MB of 32 GB**, CPU temperature averaged 96-99 C (max 100 C, 517 min at 95 C or more). Stopped by hand at ~15:55; memory back to 19 GB free.
