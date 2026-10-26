@@ -386,13 +386,16 @@ class TestExtraTestsRunConcurrently(unittest.TestCase):
         import threading
         import run_extra_tests as rx
         seen, live, peak, lock = [], [0], [0], threading.Lock()
+        overlap = threading.Barrier(2, timeout=10)
 
         def one(rel, basetemp):
             with lock:
                 live[0] += 1
                 peak[0] = max(peak[0], live[0])
                 seen.append(str(basetemp))
-            time.sleep(0.1)
+            # Require two workers to arrive; elapsed sleep did not prove overlap
+            # when a loaded CI runner scheduled the tasks more than 0.1 s apart.
+            overlap.wait()
             with lock:
                 live[0] -= 1
             return (rel not in ("b.py", "d.py")), ("missing" if rel == "d.py" else "1 passed")

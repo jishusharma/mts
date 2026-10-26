@@ -1,0 +1,45 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-26T19:01:38Z",
+  "depends_on": [],
+  "done_when": "Affected suites pass and CI advances on the fix commit.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Make the two failing CI fixture checks deterministic: worker overlap must use synchronization and Git template snapshots must not race background maintenance.",
+  "id": "ci-fixture-concurrency-maintenance",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "scripts/dev/test_sync.py::SyncTest::test_fixture_repositories_disable_background_git_maintenance",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/test_sync.py",
+    "scripts/dev/test_run_all_tests.py"
+  ],
+  "scope_out": [
+    "production runtime; actual user Git configuration; live tree"
+  ],
+  "size": "S",
+  "sources": [
+    "https://github.com/jishusharma/mts/actions/runs/40382326578"
+  ],
+  "state": "raw",
+  "steps": [
+    "Add a fixture-local maintenance regression and confirm red before the fix.",
+    "Disable auto maintenance in temporary repositories and synchronize concurrent test workers."
+  ],
+  "tests": "Run both affected test modules; fixture regression red before change; original CI annotations identify both races.",
+  "title": "CI: remove timing and Git maintenance races in test fixtures",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
