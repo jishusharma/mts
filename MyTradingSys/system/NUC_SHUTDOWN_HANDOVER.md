@@ -85,6 +85,14 @@ Event 6008 count is 0 over 7 days after steps 1-4, and no "Idle Timeout" standby
 - Not proven to explain the 7 resets (they began 10-23, before this process), but a leaking handle/pool process can hang or reset a machine, and it kept the CPU at the thermal limit. The 25 h clean stretch ended with this process pegging the box, so "stable" was not "quiet".
 - Next: find which session ran `find` at 06:39 (an agent shell tool call is likely) and guard against it. Keep the 48 h clean test going from 15:55 on 10-26.
 
+## Update 2026-10-27 18:20 - 14th watchdog reset in 4 days; logger restarted (JIS-NUC, login B, Lead/admin)
+- 14 event-142 resets in 4 days: 10-23 02:28, 14:38, 17:42; 10-24 21:38; 10-25 01:09, 07:52, 14:22; 10-26 17:34, 23:27; 10-27 00:49, 12:14, 12:55, 13:47, 14:17. The 4 afternoon resets (12:14-14:17) happened while the machine was in use (RDP: Claude, Discord, ChatGPT) - no telemetry captured because the logger had been dead since the 00:49 reset.
+- Logger restarted 18:22 (nuc_watch.ps1, 5 s rows, CSV at %LOCALAPPDATA%\MTS\logs\nuc_watch.csv; first live row 18:22:13 confirms it is running). Next reset: read the last row for state.
+- Still ruled out, on the 10-25 idle-logger data: heat (44 C), idle, CPU peak power (turbo cap in place), disk saturation, runaway process (runaway_check.ps1 OK, 22.5 GB free, pool normal). The DC delivery chain (adapter, wall socket, DC jack) remains the leading suspect; the socket fix 10-24 did not change the rate (3 in 28 h after vs 4 in 43 h before).
+- Decided now (DECISION, OURS, OPERATOR_DECISIONS.md d-nuc-hw-verdict): sequence = adapter swap (19 V 120 W, 5.5x2.5, centre +), 48 h verdict via nuc_health.ps1 -Days 2; if resets continue -> BIOS 0067 on the APC UPS + dead CR2032 (documented 09-25 clock reset) in the same attended session; if still resets -> board DC-DC/VRM failure -> sell with full disclosure or replace. No heavy-load routing to this NUC until the adapter verdict (signal to all hosts sent; overrides A-20261026-1's routing while the machine is unstable).
+- Data-loss check 10-27: main checkout has NO unshipped commits vs origin (all local branches contained in origin/fast-track); F:\MTS\data is not in git - a dead disk loses only backtest data, restorable by re-copy from JIS-NB (DEVICES.md section 7).
+- Next: after a reset, read the last nuc_watch.csv row; verify the next 48 h with nuc_health.ps1 -Days 2; check event 506 after an idle night.
+
 ## Update 2026-10-27 - runaway guard verdict (JIS-NUC)
 - After the runaway find.exe was stopped (10-26 15:55) nuc_health.ps1 shows 3 more event-142 resets: 10-26 17:34:45, 23:27:49, 10-27 00:49:39. Last 2 days: 5 resets, 5 unclean boots. runaway_check.ps1 now reads OK (19.9 GB free, paged pool 1.8 GB).
 - Verdict: the 48 h clean test FAILED. The runaway find did not cause the resets; hardware path (adapter swap, BIOS, RAM test) stays open. DECISION (OURS): count the clean window from the last reset, 10-27 00:49.
