@@ -532,8 +532,9 @@ def test_handover_round_trip(tmp_path, monkeypatch):
                                                         "picks": ["s1"]}), encoding="utf-8")
     p = S.handover(tmp_path, "c", note="ship s1 then take s2", host="JIS-NB", home=home, now=T0)
     t = p.read_text(encoding="utf-8")
-    assert p.name == "SUPERVISOR_C.md" and "- Next: ship s1 then take s2" in t and "card-a" in t and "card-b" not in t
-    assert "A@JIS-NUC" in t and "You are Supervisor. Login C." in t and "\r" not in t
+    assert p.name == "SUPERVISOR_C.md" and "2. ship s1 then take s2" in t and "card-a" in t and "card-b" not in t
+    assert "A@JIS-NUC" in t and "\r" not in t and S.validate_form(t) == []
+    assert S.next_line(t).startswith("1. `python scripts/dev/sync.py start")
 
 
 # ---------- review fixes (Sonnet + Haiku review 2026-10-19) ----------
@@ -872,3 +873,121 @@ def test_wait_records_marker_and_removes_it_after(tmp_path):
     assert rc == 3 and seen and all(seen)
     assert not (tmp_path / "C-watcher.json").exists()
     assert S.watchcheck("C", home=tmp_path)[0] == 4
+
+
+# ---------- C4 supervisor-handover-fixed-form ----------
+import subprocess as _sp
+EXDIR = Path(__file__).resolve().parents[2] / "MyTradingSys" / "research" / "mts_doctor" / "context_files"
+SEVEN = ["Goal", "Truth", "Ruled out", "Next 3 steps", "Traps", "Open", "Missed last time"]
+
+
+def _form(**over):
+    body = {"Goal": ["run, window, stops"], "Truth": ["- claim | `git rev-parse HEAD` | ok"], "Ruled out": ["- x"],
+            "Next 3 steps": ["1. `python scripts/dev/sync.py start s`"], "Traps": ["- t"], "Open": ["- o"], "Missed last time": ["(none)"]}
+    body.update(over)
+    out = ["# Supervisor C handover | written x | verify: y   (STALE 0 at last boot)", ""]
+    for h in SEVEN:
+        out += [f"## {h}", *body[h], ""]
+    return "\n".join(out)
+
+
+def test_handover_writes_seven_fixed_sections(tmp_path, monkeypatch):
+    import sync
+    monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
+    home = tmp_path / "h"
+    home.mkdir()
+    p = S.handover(tmp_path, "c", note="n", host="JIS-NB", home=home, now=T0)
+    t = p.read_text(encoding="utf-8")
+    assert [h for h, _ in S.split_sections(t)[1]] == SEVEN and S.validate_form(t) == []
+    assert len(t.splitlines()) <= 60 and len(t.encode()) <= 6144
+
+
+def test_handover_refuses_update_extra_heading_and_caps(tmp_path):
+    assert S.validate_form(_form()) == []
+    upd = _form() + "\n## Update 2026-10-25\n- more\n"
+    assert any("Update" in x for x in S.validate_form(upd))
+    with pytest.raises(ValueError):
+        S.handover(tmp_path, "c", text=upd, now=T0)
+    assert not (tmp_path / "MyTradingSys").exists()                       # refused: nothing written
+    assert any("cap" in x for x in S.validate_form(_form(Traps=["- t"] * 7)))
+    long = _form(Goal=["g"] * 2, Truth=["- c%d | `git rev-parse HEAD` | ok" % i for i in range(15)], Traps=["- t"] * 6, Open=["- o"] * 5,
+                 **{"Ruled out": ["- r"] * 6, "Next 3 steps": ["1. a", "2. b", "3. c"], "Missed last time": ["m"] * 6})
+    assert S.validate_form(long) == []                                    # every section at its cap = 58 lines: fits
+    long = long.replace("\n\n## Goal", "\nnote one\nnote two\n\n\n## Goal", 1)
+    assert any("lines > cap 60" in x for x in S.validate_form(long))      # 61 lines overall
+    assert any("missing heading" in x for x in S.validate_form(_form().replace("## Traps", "## Misc")))
+    assert any("Truth line" in x for x in S.validate_form(_form(Truth=["- claim without a check"])))
+
+
+def test_examples_pass_shape_check():
+    assert S.validate_form((EXDIR / "EXAMPLE_SUPERVISOR_C.md").read_text(encoding="utf-8"), "supervisor") == []
+    assert S.validate_form((EXDIR / "EXAMPLE_LEAD.md").read_text(encoding="utf-8"), "lead") == []
+
+
+def _git_repo(tmp_path):
+    r = tmp_path / "r"
+    r.mkdir()
+    g = lambda *a: _sp.run(["git", "-C", str(r), *a], capture_output=True, text=True, check=True).stdout.strip()
+    g("init", "-q")
+    g("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "--allow-empty", "-m", "a")
+    on = g("rev-parse", "HEAD")
+    g("update-ref", "refs/remotes/origin/fast-track", on)
+    g("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "--allow-empty", "-m", "b")
+    return r, on, g("rev-parse", "HEAD")
+
+
+def test_verify_marks_sha_not_on_trunk_stale(tmp_path):
+    r, on, off = _git_repo(tmp_path)
+    chk = "`git merge-base --is-ancestor <sha> origin/fast-track`"
+    t = _form(Truth=[f"- shipped {on[:9]} | {chk} | exit 0", f"- unshipped {off[:9]} | {chk} | exit 0", "- cannot run | `get_usage` | x"])
+    new, res = S.verify_text(t, r)
+    assert (res["ok"], res["stale"], res["unchecked"]) == (1, 1, 1)
+    assert f"- STALE: unshipped {off[:9]}" in new and f"- shipped {on[:9]}" in new and "(STALE 1 at last boot)" in new
+    again, res2 = S.verify_text(new, r)       # a line that still fails keeps its mark, once
+    assert again.count("STALE: ") == 1 and res2["stale"] == 1
+    cnt = S.verify_text(_form(Truth=["- ready | `git rev-list --count HEAD` | 2", "- wrong | `git rev-list --count HEAD` | 5"]), r)[1]
+    assert (cnt["ok"], cnt["stale"]) == (1, 1)
+
+
+def test_verify_cli_writes_stale(tmp_path, capsys, monkeypatch):
+    r, on, off = _git_repo(tmp_path)
+    f = r / "h.md"
+    f.write_text(_form(Truth=[f"- gone {off[:9]} | `git merge-base --is-ancestor <sha> origin/fast-track` | exit 0"]), encoding="utf-8", newline="\n")
+    monkeypatch.chdir(r)
+    (r / "MyTradingSys").mkdir()
+    assert S.main(["handover", "--verify", "--file", str(f), "--login", "C"]) == 0
+    out = capsys.readouterr().out
+    assert "STALE 1" in out and "STALE: gone" in f.read_text(encoding="utf-8")
+
+
+def test_transit_at_150k_context_or_3h():
+    start = T0 - timedelta(hours=3, minutes=1)
+    assert S.transit_reason(150_000, None, T0).startswith("context 150K") and S.transit_reason(149_999, None, T0) == ""
+    assert "3.0 h" in S.transit_reason(None, start, T0) and S.transit_reason(10, T0 - timedelta(hours=2), T0) == ""
+    pl = S.pace_plan(T0, _rd(10, 20), 95)
+    hot = "\n".join(S.plan_lines("C", "JIS-NB", pl, {}, {"ci": {}, "picks": [], "transit_now": "context 160K >= 150K"}, False))
+    cold = "\n".join(S.plan_lines("C", "JIS-NB", pl, {}, {"ci": {}, "picks": []}, False))
+    assert "TRANSIT NOW (context 160K" in hot and "TRANSIT NOW" not in cold
+    hist = [{"at": "2026-10-19T05:00:00Z"}, {"at": "2026-10-19T09:00:00Z"}, {"at": "2026-10-19T10:30:00Z"}, {"at": "2026-10-19T12:00:00Z"}]
+    assert S.wave_start_from(hist, T0) == datetime(2026, 10, 19, 9, 0, tzinfo=timezone.utc)   # 05:00 is a gap > 90 min earlier
+
+
+def test_lead_role_same_form_other_file(tmp_path):
+    p = S.handover(tmp_path, "", role="lead", host="JIS-NB", now=T0)
+    t = p.read_text(encoding="utf-8")
+    assert p.name == "LEAD_RESUME_2026-10-19.md" and S.validate_form(t, "lead") == []
+    assert len(S.split_sections(t)[1]) == 8
+    with pytest.raises(ValueError):
+        S.handover(tmp_path, "", role="lead", now=T0, text=t + "\n## Ninth\n- x\n")
+    assert S.verify_text(t, tmp_path, "lead")[1]["problems"] == []
+
+
+def test_fold_target_card_else_handover(tmp_path):
+    cards = tmp_path / "MyTradingSys" / "system" / "tasks"
+    cards.mkdir(parents=True)
+    (cards / "abc.json").write_text("{}", encoding="utf-8")
+    assert S.fold_target(tmp_path, "abc", "c") == cards / "abc.json"
+    assert S.fold_target(tmp_path, None, "c").name == "SUPERVISOR_C.md" and S.fold_target(tmp_path, "nope", "c").name == "SUPERVISOR_C.md"
+    assert S.fold_target(tmp_path, None, None, "lead", T0).name == "LEAD_RESUME_2026-10-19.md"
+    t = S.set_missed(_form(), ["a.md", "b.md"])
+    assert "a.md" in t and "(none)" not in t and S.validate_form(t) == []
