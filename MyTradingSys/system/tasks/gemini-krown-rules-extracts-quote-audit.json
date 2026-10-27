@@ -1,0 +1,76 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst Krown https://www.youtube.com/watch?v=UHY740h3e-Y https://www.youtube.com/watch?v=SOaAP9vBgM4 https://www.youtube.com/watch?v=-9rAJNUpMsk https://www.youtube.com/watch?v=EQy4HouRMMk",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/krown_audit_2026-10-22/GEMINI_RULES_QUOTE_AUDIT.md"
+  ],
+  "created": "2026-10-25T19:24:44Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/krown_audit_2026-10-22/GEMINI_RULES_QUOTE_AUDIT.md exists with one row per SOURCED quote of the 4 extracts (count stated) classed MATCH / ALTERED / NOT-IN-CAPTIONS, or the exact 429 / no-captions error per video; verify_extract_quotes.py on it exits 0.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The 4 Krown rule extracts in extracts/gemini_out/krown/ carry SOURCED quotes with a URL and mm:ss but no caption file in the repo, and verify_extract_quotes.py passes them with 0 problems only because it sees no checkable quote lines. Fetch the captions once and classify every SOURCED quote MATCH / ALTERED / NOT-IN-CAPTIONS.",
+  "id": "gemini-krown-rules-extracts-quote-audit",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "yt-burn batch 3: 8 Krown rule extracts, 4 Gemini research notes, 2 GPT audit reports (quot",
+      "ref": "4ec1f1492231",
+      "utc": "2026-10-24T15:28:44Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "4ec1f1492231 yt-burn batch 3: 8 Krown rule extracts, 4 Gemini research notes, 2 GPT audit ",
+      "ref": "extracts/gemini_out/krown/UHY740h3e-Y_rules.md",
+      "utc": "2026-10-24T15:28:44Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 T0-ONLY (planner, machine checks only). DRAFTED 2026-10-26 (drafter E): verify_extract_quotes.py passes these extracts with 0 problems only because they carry no checkable quote lines and no caption file is in the repo. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-25T19:30:00Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "extracts/gemini_out/krown/UHY740h3e-Y_rules.md",
+    "extracts/gemini_out/krown/SOaAP9vBgM4_rules.md",
+    "extracts/gemini_out/krown/-9rAJNUpMsk_rules.md",
+    "extracts/gemini_out/krown/EQy4HouRMMk_rules.md",
+    "MyTradingSys/research/krown_audit_2026-10-22/GEMINI_RULES_QUOTE_AUDIT.md"
+  ],
+  "scope_out": [
+    "the 4 halted Krown ids (strategy s6.1.2)",
+    "editing the extracts",
+    "any video or audio download",
+    ".secrets",
+    "live tree"
+  ],
+  "scope_sha": "4ec1f1492231",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/options/research/KROWN_FREE_VS_PAID.md:151 (the 4 ids are the transcript-queue priority list)",
+    "MyTradingSys/research/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md s6.1.2 (the other 4 Krown ids LB3DRYxnA0A _JoJbu_Ug-A fMRvOt26xcA hNfjyrJEytI are halted: not in this card)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Run the fetch command once (full URLs because -9rAJNUpMsk starts with a dash). One try per video, no loop: on the first HTTP 429 write the exact error for that video and every unfetched one into the audit file, mark them NOT CHECKED, stop fetching.",
+    "For each fetched video list every SOURCED: \"...\" quote in extracts/gemini_out/krown/<id>_rules.md and search it in raw_transcripts_canonical/<id>_raw.txt (case/punctuation normalised). Class: MATCH, ALTERED (list differing words) or NOT-IN-CAPTIONS.",
+    "Write GEMINI_RULES_QUOTE_AUDIT.md: table id | quote # | class | caption line; re-emit each MATCH as > \"<verbatim caption text>\" then **Source GPS: <id> | BEGIN|MIDDLE|END**. Never summarise from watching the video. Do not edit the extracts.",
+    "Run python scripts/dev/verify_extract_quotes.py on the audit file until exit 0; commit the audit only (transcripts are git-ignored) with a Result: line giving matches / altered / not-in-captions counts."
+  ],
+  "tests": "verify_extract_quotes.py exit 0 on MyTradingSys/research/krown_audit_2026-10-22/GEMINI_RULES_QUOTE_AUDIT.md (command exits non-zero before the run: file absent)",
+  "title": "[GEMINI] Krown 4 yt-burn rule extracts (UHY740h3e-Y SOaAP9vBgM4 -9rAJNUpMsk EQy4HouRMMk): fetch captions, check every SOURCED quote",
+  "weight": "ROUTINE",
+  "worker": ""
+}

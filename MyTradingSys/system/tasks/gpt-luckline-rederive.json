@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-25T19:23:44Z",
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Recompute sqrt(2 ln 9)=2.0963 and 0.533*2.0963/sqrt(255)=+0.0700 R (file lines 186-195), then the DSR and PBO worked examples; flag every wrong step. Producer: Gemini Flash. Do NOT read: sim_desk/desk.py luck() and test_conditions.py. Report: MyTradingSys/research/layer_lab/reports/2026-10-26_gpt-luckline-rederive.md",
+  "id": "gpt-luckline-rederive",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research: harvest NUC overnight burn (3 Gemini gb2, Fabio retry notes, 6 GPT gx4) + NUC_HA",
+      "ref": "8e56554c1543",
+      "utc": "2026-10-24T23:12:02Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8e56554c1543 research: harvest NUC overnight burn (3 Gemini gb2, Fabio retry notes, 6 GPT ",
+      "ref": "MyTradingSys/research/gemini_burn_2026-10-25/deflated_sharpe_luck_line.md",
+      "utc": "2026-10-24T23:12:02Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 T0-ONLY (planner, machine checks only). Producer vendor: Gemini Flash. Reviewer vendor: GPT gpt-6-luna (codex_run.py); producer != reviewer. Reviewer must NOT read: sim_desk/desk.py luck() and test_conditions.py. Read-only audit: no product code, no live path, DEV data only (bars before 2024-07-01), no VALIDATION or HOLDOUT. DECISION (OURS) 2026-10-26: weight ROUTINE so the card is READY now; the planner may raise it (formula or verdict checks = CRUCIAL, needs a review stamp). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-25T19:25:56Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_burn_2026-10-25/deflated_sharpe_luck_line.md"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "scope_sha": "8e56554c1543",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "",
+  "title": "GPT re-derives the luck-line worked example in Gemini's deflated_sharpe_luck_line.md",
+  "weight": "ROUTINE",
+  "worker": ""
+}
