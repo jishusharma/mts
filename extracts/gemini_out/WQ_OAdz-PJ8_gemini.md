@@ -76,7 +76,7 @@ The speaker discusses why beginners struggle with overly complex indicator layou
 ### Claim 6: Impulse and sideways acceptance predicts retest
 **T4 recommendation**
 > "if you now have such an impulse again with a subsequent sideways phase, meaning acceptance of this price range, then you will also realize that there is a high probability that the market will trade through here again"
-**Source GPS: WQ_OAdz-PJ8 | END**
+**Source GPS: WQ_OAdz-PJ8 | MIDDLE**
 
 ### Claim 7: P and B profile structures are mirrored logic
 **T4 recommendation**
