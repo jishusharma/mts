@@ -14,6 +14,22 @@
   "goal": "Write context_tables_dev.csv, context_tables_val.csv and CONTEXT_REPORT.md for SPEC s2 Step F: Steps B-E tables conditioned on macro phase (max 3 schemes, labels from 2023-01, 2022 warm-up per OPUS_FRAMING s2.2) and trailing windows L 4h..1w, relative-to-floor coordinates, shrinkage to the unconditional cell, VALIDATION calibration vs F0.",
   "id": "rsi-deep-context-tables",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "RSI deep-buy Phase 1D-E: depth/bounce probability tables, DEV then VALIDATION",
+      "ref": "28565f801b92",
+      "utc": "2026-10-26T01:31:25Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "28565f801b92 RSI deep-buy Phase 1D-E: depth/bounce probability tables, DEV then VALIDATION",
+      "ref": "MyTradingSys/research/layer_lab/TRIALS.md",
+      "utc": "2026-10-26T01:31:25Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -21,6 +37,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
+  "refreshed": "2026-10-27T22:51:53Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -36,13 +53,14 @@
     "any HOLDOUT bar (2025-07 onward)",
     "live path, orders, VALIDATION-tuned parameters"
   ],
+  "scope_sha": "28565f801b92",
   "size": "M",
   "sources": [
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md",
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md",
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/APPLIED.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read SPEC s2 Step F and OPUS_FRAMING s2.2/s4.3; reuse prob_tables.py cells (card rsi-deep-prob-tables) and econ_floor.py loader.",
     "Build F0 unconditional, F1 macro phase (at most 3 schemes, thresholds OURS, causal), F2 trailing-window features (floor, touches, bounce record) per RSI TF.",
