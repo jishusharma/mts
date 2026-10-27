@@ -1,0 +1,1 @@
+{"t": "20261027T211435Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship Result: usage guard closed out at 12% context (122,741/1,000,000 tokens); plan limits not applicable on this provider, so the 4-pt weekly guard fell back to the context-window signal and no stop ", "login": "B", "sid": "ae18934f28"}
