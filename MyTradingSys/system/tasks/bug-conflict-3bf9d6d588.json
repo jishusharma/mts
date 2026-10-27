@@ -1,37 +1,67 @@
 {
   "approved_by": "",
-  "asks": "Which holds: Hard rule: no scheduled tasks anywhere or operator: unrestricted gateway incl. scheduled jobs?",
+  "asks": "",
   "commands": [],
   "created": "2026-10-27T06:52:34Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Active announcement and GATEWAY_NUC.md agree with SCHEDULING_POLICY.md on scheduled tasks; test_integrity passes. Verify: content commit sha, git cherry origin/fast-track <sha> empty AND git ls-tree -r origin/fast-track --name-only shows the files.",
+  "est_turns": 6,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Two instructions contradict: A = Hard rule: no scheduled tasks anywhere | B = operator: unrestricted gateway incl. scheduled jobs. The operator decides which holds; then fix the loser's text.",
+  "goal": "Remove the apparent clash between 'no scheduled tasks anywhere' and 'gateway unrestricted incl. scheduled jobs' by one clarifying line in ANNOUNCEMENTS A-20261026-1 pointing to GATEWAY_NUC.md:31 and the CBP-only exception.",
   "id": "bug-conflict-3bf9d6d588",
+  "kind": "build",
   "lane": "SONNET",
   "last_seen": "2026-10-27T06:52:34Z",
   "last_session": "b3c88f60-c6a6-456b-a09a-5d5d5f50a9aa",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "gateway unrestricted mode: machine flag disables usage gate and marks trees",
+      "ref": "f6f4a70d49e5",
+      "utc": "2026-10-27T06:52:39Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "f6f4a70d49e5 gateway unrestricted mode: machine flag disables usage gate and marks trees",
+      "ref": "MyTradingSys/system/GATEWAY_NUC.md",
+      "utc": "2026-10-27T06:52:39Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Planner 2026-10-28 DECISION (OURS): no real conflict left. SCHEDULING_POLICY.md keeps 'no standing scheduled tasks'; the only exception is the operator-requested CBP-only task (SCHEDULING_POLICY.md 'CBP-only exception', 2026-10-26, prepared wiring, not installed). The 'unrestricted gateway' text is the NUC Gateway profile (ANNOUNCEMENTS A-20261026-1), and GATEWAY_NUC.md:19,31 already say scheduled tasks OFF and hard rules outrank an order. Default: hard rule holds; no operator question. | REVIEWED:2026-10-28 T0-ONLY",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-27T21:31:44Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
+  "scope_in": [
+    "MyTradingSys/system/ANNOUNCEMENTS.md",
+    "MyTradingSys/system/GATEWAY_NUC.md"
+  ],
+  "scope_out": [
+    "CLAUDE.md",
+    "SCHEDULING_POLICY.md meaning",
+    "any scheduled task creation"
+  ],
+  "scope_sha": "f6f4a70d49e5",
   "seen": 1,
-  "size": "",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "grep 'scheduled' in ANNOUNCEMENTS.md, GATEWAY_NUC.md, SCHEDULING_POLICY.md and list every sentence that reads as permitting scheduled jobs",
+    "Add one line to the active gateway announcement: gateway lifts the weekly cap only; scheduled tasks stay OFF except the CBP-only exception",
+    "Run test_integrity"
+  ],
+  "tests": "python -m pytest MyTradingSys/tests/docs/test_integrity.py -q (must pass; fail-first: a grep test is not needed for a doc line)",
   "title": "Instruction conflict: Hard rule: no scheduled tasks anywhere vs operator: unrestricted gateway incl. scheduled job",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
