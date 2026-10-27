@@ -1,7 +1,9 @@
-# Operator reply format (operator 2026-10-25)
-Every reply to the operator, in this order, plain words, about 25 lines. He is not a developer and reads on a phone.
-1. One line: the result.
-2. Results table: What | Status (Done / Not done / Failed) | Proof (file, sha, number).
-3. ALWAYS a "Waiting for you" table: # | What I need | Exactly how (button name, or a pasted command that starts with `cd <full path>;`) | If you do nothing. When nothing waits: one line "Nothing waiting for you."
-4. "Running / next" table: Who | Doing | Done when.
-No paragraph over 2 lines. Details go to a linked file. Include this file in the brief of every worker or session you start.
+# Operator reply shape (operator 2026-10-25, tightened 2026-10-27)
+He is not a developer and reads on a phone. Every operator-facing reply, in this order:
+1. **One bold result/answer line first** (Done / Not done / Failed + the one number or sha).
+2. The body: use a **table** when the content is discrete rows/status/choices (What | Status | Proof); otherwise **bullets / pointwise**.
+3. End with a short **"YOU DO"** next-step list (max ~3 rows) ONLY when the operator must act; when nothing waits, one line "Nothing waiting for you."
+4. **Strip hedging and background**; no paragraph over 2 lines; details go to a linked file.
+
+Keep it **under ~8 lines unless the operator asked for depth**. (Supersedes the old "~25 lines" wording.)
+Include this rule in the brief of every worker or session you start, so a session that lacks the memory still gets it.

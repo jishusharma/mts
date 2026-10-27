@@ -45,7 +45,17 @@ Start 2026-10-27T12:50Z. Worktree claude/supervisor-c-jis-nb-ce71af (HEAD = orig
 - HIGHs b-2a5b44 (exhaust) + b-4c2dfe (c_drive_guard ff-only): both acked told ~15:25Z; b-4c2dfe's operator-run line blocked on main checkout dirty state, in flight via the re-dispatched worker.
 - NUC Codex lab: lead says GPT steady loop relaunched on NB (12/65 pts); tick next wake.
 
-## 2026-10-27 ~16:10Z Builder card main-checkout-stale-hooks-2026-10-24 (2nd attempt, agent ac1c2638): backup DONE, ff-only BLOCKED on the wip commit
+## 2026-10-27 ~15:45Z wake (NORMAL, RAMP new=1)
+- Running: ac1c2638 (Builder main-checkout-stale-hooks, re-dispatch ~15:30), ab4705a8 (HAIKU card-file-lists-miss-test-registration-w, ROUTINE docs line).
+- CI CONFIRMED GREEN on trunk tip fde1d108d: ci_watch "CI ok", run 40531995203 in progress passing; 66990cb05 red was flaky (subsequent runs passed). Planner's p1 card ci-66990cb05-red-on-auto-deploy-tests is STALE/resolved; its card file was orphaned in the dead planner worktree - no dispatch needed. Note for Planner runs: re-check CI before dispatching red-trunk cards.
+- Doctor acb1104e2 (40 findings) on trunk, verified.
+- NUC Codex tick: IDLE lock-held (steady loop pacing), not stuck.
+- My notes d082db411 landed on trunk via a worker merge.
+
+## 2026-10-27 ~15:41Z status note (builder ac1c2638)
+- main-checkout-stale-hooks: SAVE step done+verified (F:/MTS_backup/main_checkout_2026-10-25/: local.patch, wip_commit.patch, dirty list, stash ref). FF-ONLY step STALLED: wip commit 0ac18c3fb (1 ahead) blocks `pull --ff-only` on the live tree. Builder filed `tasks.py tried ... --asks "operator to reset/drop the wip commit on the live tree"` (the only permitted primitive is ff-only; moving HEAD otherwise is an operator/live-tree action). Per Lead routing: this single question reaches the operator; loop continues meanwhile. Ship of builder's note pending its gate slot.
+
+## 2026-10-27 ~16:10Z Builder card main-checkout-stale-hooks-2026-10-24 (agent ac1c2638, 2nd attempt after the quota kill; same session as the 15:41Z note - reconcile: that save state is the verified one, this attempt re-verified it and added the missing wip_commit.patch)
 - Main checkout state re-measured after fetch: HEAD = refs/heads/fast-track at 0ac18c3fb, 1 ahead / 1197 behind origin/fast-track (was 1188 behind at 15:24Z, origin moved to f012928d0). Dirty: 54 untracked + 4 deleted orderflow CSVs (porcelain).
 - Backup COMPLETE at F:/MTS_backup/main_checkout_2026-10-25/ (45 MB total):
   - wip_commit.patch (11,298 lines = diff 4662684a3..0ac18c3fb, 83 files) - NEW this attempt
