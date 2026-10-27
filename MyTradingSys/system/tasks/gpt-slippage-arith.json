@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-27T18:53:00Z",
   "commands": [],
   "created": "2026-10-25T19:24:54Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "SOUND / NOT_IN_DATA adjacent claims; MyTradingSys/research/layer_lab/reports/2026-10-27_gp",
+      "ref": "080dc3400",
+      "utc": "2026-10-27T18:53:00Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +45,12 @@
   "refined_by": "codex_run.py ask",
   "refreshed": "2026-10-25T19:26:02Z",
   "refs": [],
-  "result": "",
+  "result": "SOUND / NOT_IN_DATA adjacent claims; MyTradingSys/research/layer_lab/reports/2026-10-27_gpt-slippage-arith.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-25/slippage_sources.md"
   ],
@@ -50,7 +62,7 @@
   "scope_sha": "8e56554c1543",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
     "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
@@ -58,6 +70,7 @@
     "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
     "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
   ],
+  "taken": "2026-10-27T18:53:00Z",
   "tests": "",
   "title": "GPT rechecks the arithmetic in Gemini's slippage_sources.md (tick, bp, ticks)",
   "weight": "ROUTINE",
