@@ -759,7 +759,10 @@ def pace_plan(now: datetime, rd: dict, cap: float, hist=(), running: int = 0) ->
            f"{'' if k_meas else ' (GUESS)'} -> room {room:.0f} pts of 5 h"]
     if projected is not None:
         if projected > target + 3:
-            slots = min(slots, max(0, running - 1))
+            # floor 1, never 0: over-target burn throttles workers down but must never fully stop dispatch while
+            # there's still room (room >= 4 kept slots >= 1 above); the STOP/SUPERVISOR-ONLY bands below still
+            # zero it out when usage itself (not the burn projection) says to stop (operator 2026-10-27, bug-burn-cap-stops-all-work).
+            slots = min(slots, max(1, running - 1))
             why.append(f"burn {burn:.1f}/h projects {projected:.0f}% > target {target:.0f}%: shrink")
         elif projected < target - 10 and running < 4:
             slots = max(slots, min(4, running + 1))
