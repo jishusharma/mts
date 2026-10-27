@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-27T11:06:32Z",
   "commands": [],
   "created": "2026-10-26T19:40:56Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "bug-youtube-gemini-only-rule-is-a-preference",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "ROUTING.md YouTube row split (CBP known-channel fetch any machine; Gemini stays required o",
+      "ref": "d456f001b",
+      "utc": "2026-10-27T11:06:32Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -37,7 +44,12 @@
   "refined_by": "",
   "refreshed": "2026-10-26T19:41:01Z",
   "refs": [],
-  "result": "",
+  "result": "ROUTING.md YouTube row split (CBP known-channel fetch any machine; Gemini stays required only for open-ended search); LENOVO_NEXT_SESSION.md + CBP_STATUS_2026-10-27.md corrected; cbp_run.py CBP_HOME now falls back under the checkout when F:/CryptoScrapper is absent (default_cbp_home, injectable for tests); test_cbp_run_works_without_fixed_machine_paths added (fails on pre-change code: AttributeError). Shipped d456f001b.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/ROUTING.md; MyTradingSys/system/LENOVO_NEXT_SESSION.md; scripts/dev/cbp_run.py; scripts/dev/fetch_captions_timed.py; MyTradingSys/tests/test_cbp_query.py; MyTradingSys/research/cbp/"
   ],
@@ -47,13 +59,14 @@
   "scope_sha": "d3f6b8b11c85",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "find every place the rule is written (git grep 'Gemini' near YouTube in system/ and research/cbp/) and cite file:line",
     "reword to preference; keep Gemini as an option for search and grounding",
     "make cbp_run path settings per machine (env CBP_HOME/CBP_STORE, default under the checkout when F:/CryptoScrapper is absent) and add the fail-first test",
     "run one cbp_run --force dry on a machine without the CBP repo, record the result"
   ],
+  "taken": "2026-10-27T11:06:32Z",
   "tests": "MyTradingSys/tests/test_cbp_query.py::test_cbp_run_works_without_fixed_machine_paths (fail-first)",
   "title": "BUG: rule 'YouTube only via Gemini on the NUC' is a preference, not a limit; CBP must run from any device",
   "weight": "",

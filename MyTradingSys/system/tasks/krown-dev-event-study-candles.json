@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-25T19:44:23Z",
+  "depends_on": [
+    "krown-dev-event-study-levels"
+  ],
+  "done_when": "DEV_RESULTS.md has a section per H-id (C1, C2) with N, power or MDE, effect with CI, placebo, strata, 'underpowered' where N < 100; H-T1 listed NOT RUN with its reason; new variants in research/TRIAL_LEDGER.csv; no VALIDATION or HOLDOUT bar opened.",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Run the DEV event studies H-C1 (hammer, shooting star and strict engulfing at a zone versus away from zones) and H-C2 (his strict engulfing versus the loose one) from KROWN_CONSOLIDATED.md:239-249, using the addendum, loader and test of card krown-dev-event-study. BTC DEV 2017-08..2024-06 only, fee-net, same-window placebo, power first.",
+  "id": "krown-dev-event-study-candles",
+  "kind": "build",
+  "lane": "SONNET",
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer Agent a894c6f7 verified, planner DECISION OURS). Split from krown-dev-event-study 2026-10-26 (drafter E). DECISION (OURS 2026-10-26): recall waiver is the safe default - DEV only, every result NO-RECALL-CLEARANCE, nothing promoted. Needs a real review stamp (CRUCIAL). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/",
+    "MyTradingSys/backtest/layers/krown/",
+    "MyTradingSys/backtest/power_mde.py",
+    "MyTradingSys/research/TRIAL_LEDGER.csv"
+  ],
+  "scope_out": [
+    "VALIDATION 2024-07..2025-06",
+    "HOLDOUT 2025-07..2026-09",
+    "live path",
+    "freezing new grids (card 1 did)"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_CONSOLIDATED.md:239-249",
+    "MyTradingSys/research/krown_ta101_2026-10-13/RECALL.md (Result: RECALL FAIL)"
+  ],
+  "state": "raw",
+  "steps": [
+    "Read the addendum in PRE_REG_KROWN.md (grids for C1, C2 frozen there) and the loader from card 1; freeze nothing new.",
+    "Add the two failing tests first and run them: they fail.",
+    "H-C1: forward return fee-net at a zone versus elsewhere, same window, same patterns. H-C2: KR-C06 strict engulfing (trades beyond the prior extreme AND closes beyond the opposite extreme) versus the loose one on the same bars. Expected N and MDE with power_mde.py; same-window placebo; strata.",
+    "Append the two sections to DEV_RESULTS.md (NO-RECALL-CLEARANCE label), list H-T1 as NOT RUN (needs v0 signals, strict recall 0 of 3), add variants to TRIAL_LEDGER.csv; tests pass."
+  ],
+  "tests": "Fail-first: test_dev_study.py gains one test per H-id (C1, C2) that DEV_RESULTS.md holds its table with N, MDE, CI and the NO-RECALL-CLEARANCE label; the tests fail before this card runs (no such tables).",
+  "title": "Krown DEV event study 3/3: candle hypotheses H-C1, H-C2 (H-T1 not run); DONE when: DEV_RESULTS.md has N, power, CI per H-id",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

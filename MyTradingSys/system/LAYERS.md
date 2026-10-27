@@ -30,7 +30,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `tom-btc-eye-read` blocked p1 SONNET: Tom on BTC T3: eye read of the 80 lab charts by two readers (Claude + Jis), blind; agreement per Tom concept
   - `lf-tom-gpt-rederive` ready p2 CODEX: Layer re-derive: tom (independent recount of the headline numbers behind the fact sheet)
-  - `live-cross-market-read-script` ready p2 SONNET: Live cross-market read script: BTC vs ES/NQ/VIX since-open table, rolling 5m r, legend check (tested, reproduc
   - `live-divergence-event-log` ready p2 DSA: Live divergence event log: record each BTC vs ES/NQ divergence read with outcomes at +30/60/120 min (forward e
   - `tom-btc-dev-backtest` blocked p2 CODEX: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
   - `tom-btc-encode` blocked p2 CODEX: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
@@ -151,6 +150,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `MyTradingSys/research/_archive/loose_2026-10/TURN_OF_CANDLE_ORIGIN_2026-10-09.md`
 - Code: `MyTradingSys/backtest/layers/session`; `MyTradingSys/backtest/layers/session_levels`; `MyTradingSys/backtest/layers/turn_of_candle`
 - Other results: `MyTradingSys/research/t087_session_levels_2026-10-09`; `MyTradingSys/research/eur_low_us_sweep_2026-10-14`
+- Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-27_lf-session_timing-gpt-rederive.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `lf-session_timing-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: session_timing (file:line facts only, no verdict)
   - `lf-session_timing-gpt-rederive` ready p2 CODEX: Layer re-derive: session_timing (independent recount of the headline numbers behind the fact sheet)

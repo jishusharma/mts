@@ -13,6 +13,7 @@ MyTradingSys/research/wavetrend_2026-10-17/test_wt_parity_ref.py
 MyTradingSys/research/wavetrend_2026-10-17/test_count_events.py
 MyTradingSys/research/wavetrend_2026-10-17/test_input_manifest.py
 MyTradingSys/research/wavetrend_2026-10-17/test_paired_inference.py
+MyTradingSys/research/wavetrend_2026-10-17/test_c1_v2.py
 MyTradingSys/research/rsi_deep_buy_2026-10-19/test_econ_floor.py
 MyTradingSys/research/rsi_deep_buy_2026-10-19/test_depth_map.py
 scripts/dev/test_trial_ledger.py
@@ -112,6 +113,7 @@ scripts/dev/test_c_drive_guard.py
 scripts/dev/test_host_health.py
 scripts/dev/test_context_gap.py
 scripts/dev/test_behavior_eval.py
+scripts/dev/test_reply_shape_check.py
 scripts/dev/test_ship_time_guard.py
 scripts/dev/test_usage_reminder.py
 scripts/dev/test_perm_audit.py
@@ -119,3 +121,4 @@ scripts/dev/test_perm_hook.py
 scripts/dev/test_cbp_schedule.py
 scripts/dev/test_runaway_check.py
 scripts/dev/test_tasks_conflict.py
+scripts/dev/test_live_cross_read.py

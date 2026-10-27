@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-27T10:51:31Z",
   "commands": [],
   "created": "2026-10-22T15:42:31Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "make_status.py get_go_private_line() ffc522a39; STATUS.md prints GO-PRIVATE: A=0 B=1 TRIGG",
+      "ref": "a84bd1944",
+      "utc": "2026-10-27T10:51:31Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -31,7 +38,12 @@
   "refined_by": "Session_Planner",
   "refreshed": "2026-10-25T22:18:03Z",
   "refs": [],
-  "result": "",
+  "result": "make_status.py get_go_private_line() ffc522a39; STATUS.md prints GO-PRIVATE: A=0 B=1 TRIGGER B:carry_basis_2026-10-18 (2026-10-18) on trunk",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/make_status.py",
     "scripts/dev/test_make_status.py"
@@ -48,12 +60,13 @@
     "MyTradingSys/research/VERDICTS.csv",
     "card note: operator quote 2026-10-22"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read make_status.py get_ci_line and main to see how lines are assembled.",
     "Write the failing test with fixture promoted_setups.json and VERDICTS.csv rows.",
     "Add get_go_private_line() and print it under the CI green line."
   ],
+  "taken": "2026-10-27T10:51:31Z",
   "tests": "scripts/dev/test_make_status.py::test_go_private_line fails now (no function) and passes: entries=[] and no OOS PASS gives A=0 B=0 NO TRIGGER; one entry gives TRIGGER.",
   "title": "Go-private trigger: notify operator when a layer first passes its fee-net OOS gate",
   "weight": "ROUTINE",

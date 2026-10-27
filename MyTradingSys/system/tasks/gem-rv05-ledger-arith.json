@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-25T19:25:29Z",
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Entry = stop + |STP$| / (contracts x $20/pt), FABIO_TRADE_LEDGER.md:110-114,181-192: GPT gets F8 25034.50, F12-m2 25108.50, F13 25106.50, F13-m1 25108.00; flag F13 vs 25108.90. Text only. Producer: GPT gpt-6-luna. Do NOT read: ledger_adjudication.md until done. Report: MyTradingSys/research/layer_lab/reports/2026-10-26_gem-rv05-ledger-arith.md",
+  "id": "gem-rv05-ledger-arith",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "yt-burn batch 6: GPT wave-3 reports for gap-g7-stop-slippage and rv05-h2 (both BLOCKED; ca",
+      "ref": "5623ccdfec54",
+      "utc": "2026-10-24T15:53:58Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "5623ccdfec54 yt-burn batch 6: GPT wave-3 reports for gap-g7-stop-slippage and rv05-h2 (bot",
+      "ref": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-rv05-h2/ledger_adjudication.md",
+      "utc": "2026-10-24T15:53:58Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 T0-ONLY (planner, machine checks only). Producer vendor: GPT gpt-6-luna. Reviewer vendor: Gemini Flash (agy via gemini_queue.py); producer != reviewer. Reviewer must NOT read: ledger_adjudication.md until your own numbers are written. Read-only audit: no product code, no live path, DEV data only (bars before 2024-07-01), no VALIDATION or HOLDOUT. DECISION (OURS) 2026-10-26: weight ROUTINE so the card is READY now; the planner may raise it (formula or verdict checks = CRUCIAL, needs a review stamp). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-25T19:28:45Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
+    "MyTradingSys/research/gpt_burn_2026-10-24/gx3-rv05-h2/ledger_adjudication.md",
+    "MyTradingSys/research/gpt_burn_2026-10-24/gx3-rv05-h2/report.md"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "scope_sha": "5623ccdfec54",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "",
+  "title": "[GEMINI] Recompute GPT's Fabio ledger entry prices from stop labels (F8, F12-m2, F13)",
+  "weight": "ROUTINE",
+  "worker": ""
+}

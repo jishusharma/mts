@@ -55,6 +55,7 @@ import os
 import random
 import re
 import shlex
+import shutil
 import socket
 import subprocess
 import sys
@@ -192,6 +193,14 @@ def origin_url(cwd=None):
 def ensure(cwd=None):
     """The local clone of the signals branch; created (and the orphan branch pushed) on first use. None if impossible."""
     h = home()
+    if (h / ".git").exists() and git(h, "rev-parse", "--git-dir", check=False).returncode != 0:
+        # the clone's .git is unreadable (HEAD zeroed after a power loss, seen on JIS-NUC 2026-10-27): move the broken
+        # hub aside and fall through to a fresh init/clone below, instead of every later git call (send()'s `git add -A`)
+        # crashing with "fatal: not a git repository"
+        try:
+            h.rename(h.parent / ("%s.corrupt-%s" % (h.name, stamp())))
+        except OSError:
+            shutil.rmtree(h, ignore_errors=True)
     if not (h / ".git").exists():
         url = origin_url(cwd)
         if not url:

@@ -162,3 +162,10 @@ Status: one snapshot, no count of how often the higher ladder won. Routed to car
 - Last row 06:41Z: BTC 79,769, ES +0.36%, gap +0.59, r1h +0.60 (re-coupled). Event 4 still open in events.md.
 - Open: 16 unclosed chart shots (B201); score the 80,250 / break / cancel calls against klines; cards lab-verify-mtf-bias-ladder, lab-verify-rsi-40-60-bb-bounce-15m, timeframes-add-2d-3d-4d-5d wait for workers.
 - This session was compacted several times, against roles/eagle_eyes.md ("never compacted"); next Eagle_Eyes starts fresh from this log.
+
+## 2026-10-27 13:50Z: fresh load, bias read (shot 7332e351db75, 15m BTCUSDT CoinGlass)
+- Host JIS-DESKTOP, mirror not read: no HALT or engine verdict. Data: Binance spot 5m klines (closed bars), chart legend 80,153 at 13:48Z.
+- Call scoring (OURS, from klines): break call (BTC under 79,836) was cancelled at 08:00Z by the first 5m close above 79,923 (79,948), then price fell again: 5m low 79,506 at 10:15Z (target 79,583 hit, 79,451 not reached, no 5m close under 79,451, lowest close 79,510 at 10:10Z). Bounce to 80,497 high at 12:50Z. Now 80,114 (13:50Z 5m close).
+- Chart: price above BB mid 79,935 and day VWAP 79,967 (hlc3 from 00:00Z), RSI 58 (SMA 58.8, under the 60 line), Stoch RSI 54.7/69.4 turning down, OI flat 98.0K, CVD -1.04K flat, bar net delta -524. Higher low 79,506 vs the 06:41Z low 79,649; highs capped at 80,250-80,497.
+- Bias: 15m neutral to mildly up while above 79,967; flips to down on a 5m close under 79,948 then 79,729. Higher timeframe ladder (10-26 20:00Z: 1w..1d red, 12h/8h/4h RSI under 40) not re-read today: NOT_IN_DATA. Observation only, nothing here is a tested rule.
+- Status: shot 7332e351db75 classified chart.

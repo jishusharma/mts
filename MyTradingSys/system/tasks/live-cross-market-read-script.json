@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-27T11:13:59Z",
   "commands": [],
   "created": "2026-10-26T14:56:56Z",
   "depends_on": [],
@@ -13,7 +14,14 @@
   "id": "live-cross-market-read-script",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/live_cross_read.py: ports live.py/chk1m.py into since_open()/rolling_r()/legen",
+      "ref": "67f805ec8",
+      "utc": "2026-10-27T11:13:59Z"
+    }
+  ],
   "layers": [
     "tom"
   ],
@@ -28,7 +36,12 @@
     "MyTradingSys/research/live_reads/2026-10-26_cross_market_tools/README.md",
     "MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md"
   ],
-  "result": "",
+  "result": "scripts/dev/live_cross_read.py: ports live.py/chk1m.py into since_open()/rolling_r()/legend_check(), fixing the since-open baseline (prior bar close, not the open-stamped bar's own close which is 5m later); --fixture for offline/test runs. scripts/dev/test_live_cross_read.py: 11 tests; test_since_open_uses_prior_bar_close fails on the old baseline (+0.02% vs correct -0.35%, verified against the literal ported bug).",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/live_cross_read.py, its test, reference tools in MyTradingSys/research/live_reads/2026-10-26_cross_market_tools"
   ],
@@ -38,13 +51,14 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Port MyTradingSys/research/live_reads/2026-10-26_cross_market_tools/live.py and chk1m.py into scripts/dev/live_cross_read.py with functions since_open(), rolling_r(), legend_check()",
     "Fix since-open baseline to the close of the bar before the open (bar stamped T closes at T+5m)",
     "Write the test first: a fixture of 5m bars where the old baseline gives +0.02% and the correct one gives -0.35%",
     "Run run_all_tests.py --quick and ship"
   ],
+  "taken": "2026-10-27T11:13:59Z",
   "tests": "scripts/dev/test_live_cross_read.py::test_since_open_uses_prior_bar_close fails on the old baseline",
   "title": "Live cross-market read script: BTC vs ES/NQ/VIX since-open table, rolling 5m r, legend check (tested, reproducible)",
   "weight": "",

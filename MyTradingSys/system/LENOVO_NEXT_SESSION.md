@@ -22,7 +22,9 @@ Goal: use the rest of this login's 5-hour window on the Lenovo (about 32% left, 
    - Before shipping, run every test that reads a file you changed (`git grep -l <filename> -- '*test*'`).
    - `sync.py ship --release <slug>`. Then `git cherry origin/fast-track HEAD` must print nothing, and CI must be green on your sha. If CI is red, `git revert` your commit and ship within 10 minutes.
 5. Quota left and no card fits: do read-only second checks of today's shipped commits `f581b9d20`, `8971d69e6` and `c540fc3d8`. Does each one do what its `Result:` line says? Write findings to `MyTradingSys/research/mts_doctor/LENOVO_AUDIT_2026-10-25.md` and ship it.
-6. Antigravity (Gemini) on this laptop: do not start Gemini or YouTube work here. That lane runs on the NUC (gemini_queue).
+6. Antigravity (Gemini) on this laptop: do not start Gemini *search* work here (open-ended video search runs on
+   the NUC, gemini_queue). CBP's own caption fetch for known analyst channels (`cbp_run.py`) is not a Gemini
+   dependency and may run on this laptop like any other card (ROUTING.md, bug-youtube-gemini-only-rule-is-a-preference).
 7. Keep working for the whole 5-hour window (operator 2026-10-25: "make it work for 5 hours, without sleeping"). Do not stop after step 5:
    - Never sleep, wait or poll. A card that is blocked gets one line in its claim note; then take the next card.
    - Next card: `python scripts/dev/tasks.py next`. Skip anything on the "Not on this list" below, anything live-path that needs a deploy, and any card another session has claimed (`sync.py claim` refuses it).
@@ -35,4 +37,5 @@ Goal: use the rest of this login's 5-hour window on the Lenovo (about 32% left, 
 ## Not on this list (do not start)
 - Removing or demoting layers (the operator said NO on 2026-10-25; the review comes after the simulator).
 - New roles, rules or tooling (a freeze is pending the operator's answer).
-- Gemini or YouTube work (that runs on the NUC).
+- Gemini *search* work (open-ended video search runs on the NUC). CBP's own caption fetch (`cbp_run.py`) is fine
+  here; it does not use Gemini (bug-youtube-gemini-only-rule-is-a-preference, 2026-10-27).

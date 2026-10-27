@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-27T11:30:35Z",
   "commands": [],
   "created": "2026-10-19T11:22:03Z",
   "depends_on": [],
@@ -12,7 +13,14 @@
   "goal": "codex_run.py tick and gemini_queue.py only work on JIS-NUC; a supervisor on JIS-NB or the laptop must hand-type an ssh command. Add scripts/dev/nuc_lab.py (tick|status|gemini <card>:<effort>) that wraps the nuc_gate ssh verb ps, exits 0 with 'no gate key' on a device without ~/.ssh/nuc_gate, and never starts a second run (lab.lock and 20 min gap already guard).",
   "id": "tandem-nuc-lab-from-other-devices",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/nuc_lab.py (status/tick/gemini over the nuc_gate ssh verb); 6 tests in test_nu",
+      "ref": "81435c019",
+      "utc": "2026-10-27T11:30:35Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -22,7 +30,12 @@
   "refined_by": "Session_Planner",
   "refreshed": "2026-10-25T22:18:32Z",
   "refs": [],
-  "result": "",
+  "result": "scripts/dev/nuc_lab.py (status/tick/gemini over the nuc_gate ssh verb); 6 tests in test_nuc_lab.py all pass; registered as gate step 3nl",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/nuc_lab.py",
     "scripts/dev/test_nuc_lab.py"
@@ -35,12 +48,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read SUPER_SESSION.md line 42 (the hand-typed ssh command) and the nuc_gate ssh verb.",
     "Write test_nuc_lab.py with a fake ssh executable on PATH (status prints codex_run status; no key -> exit 0 'no gate key').",
     "Write nuc_lab.py (tick|status|gemini <card>:<effort>); never start a second run (lab.lock, 20 min gap guard)."
   ],
+  "taken": "2026-10-27T11:30:35Z",
   "tests": "nuc_lab.py status prints codex_run status from NB; on a machine without the key it exits 0 saying so; test with a fake ssh executable.",
   "title": "Tandem: run codex_run tick and gemini_queue from a supervisor on another device",
   "weight": "ROUTINE",

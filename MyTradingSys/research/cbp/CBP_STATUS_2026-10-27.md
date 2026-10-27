@@ -21,7 +21,10 @@
 - ready CODEX: cbp-scorecard-recount, cbp-quote-gate-review, cbp-gates-planted-bad-row. raw: cbp-ingestion (p1, CODEX).
 ## 4. Blockers
 - Quote problems (quote_problems.md:8-14): 5 remain in old extractions.md: 2 non-verbatim preamble digests, 2 altered/spliced Jala quotes, 1 missing transcript (Jason bO88AeBojf8, HTTP 429). Old-block problems predate the 22 Oct run.
-- YouTube 429 on caption fetch (row 84). All YouTube work now Gemini on NUC only (operator 2026-10-25).
+- YouTube 429 on caption fetch (row 84, Jason bO88AeBojf8). The 2026-10-25 "all YouTube work Gemini on NUC only" note
+  was a preference, not a limit (bug-youtube-gemini-only-rule-is-a-preference, 2026-10-27; ROUTING.md updated):
+  `fetch_captions_timed.py` already falls back to `youtube-transcript-api` on a 429, so `cbp_run.py` can be retried
+  on any machine; it is not blocked on Gemini/NUC specifically.
 - Golden CI on CBP repo blocked by GitHub billing (ultra_verdict.md:11). Routine file `~/.claude/scheduled-tasks/cbp-daily-workflow/SKILL.md` still on disk (ultra_verdict.md:13; roadmap_opus.md:12).
 - No scorecard, so no analyst weight is justified (D5:51).
 

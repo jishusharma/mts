@@ -488,6 +488,7 @@ def build_plan(quick):
     add("3sq", "Spec quote checker tests", [sys.executable, "scripts/dev/test_check_spec_quotes.py"], "Step 3sq: Spec quote checker tests")   # spec quotes verbatim in the cited transcript lines
     add("3ly", "Layer index tests", [sys.executable, "scripts/dev/test_make_layers_md.py"], "Step 3ly: Layer index tests")   # LAYERS.md: no dead pointer, every layer owned
     add("3cx", "Layer lab runner tests", [sys.executable, "scripts/dev/test_codex_run.py"], "Step 3cx: Layer lab runner tests")
+    add("3nl", "NUC lab wrapper tests (tick/status/gemini over the ssh gate)", [sys.executable, "scripts/dev/test_nuc_lab.py"], "Step 3nl: NUC lab wrapper tests")
     add("3cy", "ask_model tests", [sys.executable, "scripts/dev/test_ask_model.py"], "Step 3cy: ask_model tests")
     add("3tl", "Task cards meet the Definition of Ready", [sys.executable, "scripts/dev/tasks.py", "lint"], "Step 3tl: Task card lint")   # a ready/active card that fails the Definition of Ready is an error
     add("3q", "INDEX/BUGS consistency", [sys.executable, "scripts/dev/test_registry_consistency.py"], "Step 3q: INDEX/BUGS consistency")

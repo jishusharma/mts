@@ -148,6 +148,33 @@ def test_raw_canonical_transcript_is_read(tmp_path, monkeypatch):
     assert cbp.query(store=st, now=NOW)[0]["video_id"] == vid
 
 
+def test_cbp_run_works_without_fixed_machine_paths(tmp_path, monkeypatch):
+    """bug-youtube-gemini-only-rule-is-a-preference: CBP must not assume one machine. With CBP_HOME unset
+    and no legacy F:/CryptoScrapper, the default falls back under this checkout, never a dead drive path."""
+    monkeypatch.delenv("CBP_HOME", raising=False)
+    home = cbp_run.default_cbp_home(exists=lambda p: False)
+    assert home == cbp_run.ROOT / "runtime_data" / "cbp"
+    assert not str(home).startswith("F:")
+    legacy_present = cbp_run.default_cbp_home(exists=lambda p: True)
+    assert legacy_present == Path("F:/CryptoScrapper")  # still honored when actually present
+    monkeypatch.setenv("CBP_HOME", str(tmp_path / "other_machine_home"))
+    assert cbp_run.default_cbp_home() == tmp_path / "other_machine_home"  # explicit override always wins
+
+    # End-to-end on a per-machine CBP_HOME (no F:/CryptoScrapper read anywhere): fetch, extract, store.
+    home2 = tmp_path / "cbp_home"
+    tr = home2 / "raw_transcripts_canonical"
+    tr.mkdir(parents=True)
+    vid = "Z" * 11
+    (tr / (vid + "_timed.txt")).write_text(
+        "# Video ID: %s\n# Title: T\n# Published: 2026-10-23\n# Analyst: Krown\n# ---\n%s" % (vid, BODY),
+        encoding="utf-8")
+    monkeypatch.setattr(cbp_run, "CBP_HOME", home2)
+    monkeypatch.setattr(cbp_run, "TRANSCRIPTS", tr)
+    st = tmp_path / "s2.json"
+    ext = lambda v, b: GOOD  # noqa: E731
+    assert cbp_run.run_once(NOW, fetch=lambda *a: None, extract=ext, store=st) == (1, 1, 0)
+
+
 def test_extractor_nonzero_json_is_failure():
     import pytest
     video = ("V" * 11, "Krown", "2026-10-23", "T", None)

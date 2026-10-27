@@ -1,0 +1,95 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/lab_query.py layers rsi",
+    "python -c \"import json;d=json.load(open('MyTradingSys/system/layer_index.json'));n=sum(len(f.get('layers') or [1]) for f in d['families'] if f['id'] in ('rsi','cryptocred','pitchfork','live_engine',));h=sum(x.startswith('## ') for x in open('MyTradingSys/research/layer_lab/reports/layer_review_rsi_cc_pitchfork_engine.md',encoding='utf8'));assert h==n==5,(h,n);print('sections',n)\"",
+    "python -c \"L=open('MyTradingSys/research/layer_lab/reports/layer_review_rsi_cc_pitchfork_engine.md',encoding='utf8').read().splitlines();W=('Idea','Parameters','Backtests','Bugs','Confluence');assert all(sum(x.startswith('### '+w) for x in L)==5 for w in W) and not any(v in x.lower() for x in L for v in ('should be dropped','should be demoted','should be parked'));print('headings OK')\""
+  ],
+  "created": "2026-10-25T19:24:41Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/layer_review_rsi_cc_pitchfork_engine.md exists with 5 '## ' sections (layer ids of rsi, cryptocred, pitchfork, live_engine from layer_index.json, the family id where a family lists none), exactly five '### ' headings in each, file:line facts and NOT_IN_DATA where silent; both check commands in `commands` pass.",
+  "est_turns": 18,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Write one fact sheet per layer of families rsi, cryptocred, pitchfork, live_engine: idea with a quoted source, each parameter labelled SOURCED or OURS, every backtest run (report path, fee-net or not, in-sample or OOS, n), known bugs and assumptions, confluence role. No keep, drop, demote or park wording (operator NO 2026-10-25).",
+  "id": "layer-review-rsi-cc-pitchfork-engine",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ANTIGRAVITY_LAPTOP.md: laptop Antigravity runs Gemini cards, cross-vendor review of today'",
+      "ref": "402f4693b0f3",
+      "utc": "2026-10-25T15:23:36Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "402f4693b0f3 ANTIGRAVITY_LAPTOP.md: laptop Antigravity runs Gemini cards, cross-vendor rev",
+      "ref": "MyTradingSys/system/ANTIGRAVITY_LAPTOP.md",
+      "utc": "2026-10-25T15:23:36Z"
+    }
+  ],
+  "layers": [
+    "rsi",
+    "cryptocred",
+    "pitchfork",
+    "live_engine"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "layer-review-after-simulator"
+  ],
+  "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer Agent a05bebab verified, planner DECISION OURS). Input for card layer-review-after-simulator. DECISION (OURS 2026-10-26): facts are repo-only and do not wait for the simulator. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-25T19:52:35Z",
+  "refs": [
+    "MyTradingSys/research/mts_doctor/MAINNET_PATH_2026-10-25.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/reports/layer_review_rsi_cc_pitchfork_engine.md",
+    "MyTradingSys/system/layer_index.json",
+    "MyTradingSys/system/layer_map.json",
+    "MyTradingSys/system/LAYERS.md",
+    "MyTradingSys/system/wiring_registry.json",
+    "MyTradingSys/research/BUGS.md",
+    "MyTradingSys/research/VERDICTS.csv",
+    "scripts/dev/lab_query.py",
+    "MyTradingSys/system/ANTIGRAVITY_LAPTOP.md",
+    "MyTradingSys/research/mts_doctor/LAYER_REALITY_2026-10-25.md",
+    "MyTradingSys/research/sim_desk/PLUGIN.md",
+    "MyTradingSys/research/TRIAL_LEDGER.csv"
+  ],
+  "scope_out": [
+    "any keep, drop, demote or park verdict on a layer",
+    "recomputing a backtest (copy the number with its file:line)",
+    "VALIDATION and HOLDOUT reads",
+    "layer_map.json, layer_index.json or code edits"
+  ],
+  "scope_sha": "402f4693b0f3",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/system/ANTIGRAVITY_LAPTOP.md section C (fact-sheet format)",
+    "MyTradingSys/research/mts_doctor/LAYER_REALITY_2026-10-25.md",
+    "MyTradingSys/research/mts_doctor/MAINNET_PATH_2026-10-25.md:34 (operator NO 2026-10-25)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Run python scripts/dev/lab_query.py layers <family> and read layer_index.json for each of: rsi cryptocred pitchfork live_engine. If MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/<family>.md exists (Antigravity input) start from it and re-verify every file:line; else build from the scope_in files.",
+    "Per layer write '## <layer id>' (the family id where a family lists no layers) with exactly five '### ' headings in this order: '### Idea and source' (verbatim quote + file:line), '### Parameters' (each SOURCED with quote, or OURS), '### Backtests' (report path, fee-net yes/no, in-sample or OOS, n trades; lab_query.py backtests <family>, TRIAL_LEDGER.csv).",
+    "Same sections, last two headings: '### Bugs and assumptions' (python scripts/dev/lab_query.py rulings <family>, BUGS.md ids) and '### Confluence' (layers it confirms or is confirmed by; wiring_registry.json).",
+    "Write NOT_IN_DATA where the repo has no answer; copy numbers with their file:line, never recompute; never write 'should be dropped', 'should be demoted' or 'should be parked'.",
+    "Add one plain line per layer (not a heading): wired in the simulator (MyTradingSys/research/sim_desk/PLUGIN.md) yes or no.",
+    "Run the two python -c commands in `commands` (section count; headings and wording). Both must print their OK line; then sync.py ship."
+  ],
+  "tests": "Fail-first: both python -c commands in `commands` (section count == 5; five headings each, no verdict phrase) fail while the sheet is absent and pass once it is complete.",
+  "title": "Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
