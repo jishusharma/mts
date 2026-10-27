@@ -1,7 +1,20 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T23:48:49Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-26T23:56:59Z",
+    "misses": 17,
+    "reads": [
+      "MyTradingSys/tests/test_cbp_query.py",
+      "MyTradingSys/cbp/__init__.py",
+      "scripts/dev/cbp_run.py",
+      "MyTradingSys/cbp/schema.json"
+    ],
+    "session": "agent-a730dcd301b4cbf50"
+  },
   "created": "2026-10-26T19:10:41Z",
   "depends_on": [],
   "done_when": "Bad directions and expired or malformed stored rows are refused, five audit probes pass without known-failure markers, and quote/dedupe controls remain green.",
@@ -13,6 +26,12 @@
   "id": "cbp-row-schema-expiry-gaps",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "cbp/__init__.py fail-closed direction enum + expires_at validation in query; 3 xfails remo",
+      "ref": "abcf80590",
+      "utc": "2026-10-26T23:48:49Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +51,12 @@
   "refs": [
     "MyTradingSys/research/cbp/GATES_TRIAL_GPT.md"
   ],
-  "result": "",
+  "result": "cbp/__init__.py fail-closed direction enum + expires_at validation in query; 3 xfails removed, 24 tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/cbp/__init__.py",
     "MyTradingSys/tests/test_cbp_query.py"
@@ -46,13 +70,14 @@
     "MyTradingSys/research/cbp/GATES_TRIAL_GPT.md",
     "MyTradingSys/research/v1_plan_2026-10-20/D5_CBP_MODULE.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "pytest MyTradingSys/tests/test_cbp_query.py --runxfail; record the 3 failing strict-xfail tests (lines 167, 175, 196)",
     "Read GATES_TRIAL_GPT.md and D5_CBP_MODULE.md; write the contract in 3 lines: direction enum, UTC expires_at boundary, publication-age rule",
     "Implement fail-closed validation in MyTradingSys/cbp/__init__.py; remove the 3 xfail markers; add boundary-expiry and malformed-expiry controls",
     "Run test_cbp_query.py and run_all_tests.py --quick; commit with a Result: line"
   ],
+  "taken": "2026-10-26T23:48:49Z",
   "tests": "Fail-first: the 3 strict-xfail tests in test_cbp_query.py (lines 167,175,196) fail on old code with markers removed; plus valid-row, boundary-expiry, malformed-expiry controls; full CBP suite passes.",
   "title": "CBP read path: reject invalid direction and expired or malformed stored rows",
   "weight": "IMPORTANT",

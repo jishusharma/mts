@@ -1,11 +1,9 @@
-# Supervisor hand-over, login C (JIS-DESKTOP, 2026-10-26T23:06Z)
+# Supervisor hand-over, login C (JIS-DESKTOP, 2026-10-27)
 
-- Next: Next: spawn Builder on runaway-process-leak (planner-refined, ready), check tasks.py check first; pz-4/pz-5 held raw; cbp-ingestion parked (Lead asking operator whether he requested the twice-daily CBP task; data host JIS-NB; yes = decision record + install card on JIS-NB, no = revert card for SCHEDULING_POLICY.md CBP-only exception; install nothing meanwhile); follow-up cards to file: T09-F3 hardening (pin rsi:support to long at auto_trader.py:371, case/empty-sub match at :368) and 30-DEV-day RSI replay as DSA desk task; DeepSeek DSA-NUC row 87h untaken needs operator; C week 78 cap 85
-- Budget at hand-over: 5h 8.0% (reset 2026-10-26T23:30Z), week 78.0% of cap 85 (reset 2026-10-27T20:00Z), mode NORMAL, k 0.136
-- Peers live at hand-over: B@JIS-NUC
-- Last picks: runaway-process-leak
-- Open claims from JIS-DESKTOP: ship-root-cause (finish, hand over in the card, or release by the claim rules)
+- Next: cbp-row-schema-expiry-gaps looks already shipped on trunk (81b3c256c "CBP read path rejects bad directions and expired or malformed rows"): verify with tasks.py, mark the card done, and discard the redundant worktree ../mts-b-cbp-rows (branch jis-desktop/cbp-rows, 1 unshipped commit, same fix). Then take tasks.py next.
+- Still open: CBP ingestion decision with operator; DeepSeek DSA-NUC row needs operator; file follow-up cards T09-F3 hardening and 30-DEV-day RSI replay (DSA desk task); ship-root-cause claim from JIS-DESKTOP.
+- Budget: 5h ~0%, week 78% of cap 85 (reset 2026-10-27T20:00Z), mode NORMAL. No hard stop, CI green.
+- Note: Builder ship failed once on test_7b (CLAUDE.md cap number); trunk fixed it (revert-fix-card-B).
+- Successor task: none created this run (idle backlog; Lead/operator can start one).
 
 Successor: `You are Supervisor. Login C. Continue from MyTradingSys/system/handover/SUPERVISOR_C.md`
-
-- Successor task (SCHEDULING_POLICY 4b2, one-time): id supervisor-c-successor-20261027, fireAt 2026-10-26T23:36:00Z (05:06 IST), Sonnet. It starts without a saved permission mode and may pause on prompts. The successor creates at most ONE more such task (fireAt, never cron), none on a hard stop (STOP/HOLD, CI red, C week >= 85).
