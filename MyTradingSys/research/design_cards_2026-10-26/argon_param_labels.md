@@ -209,3 +209,8 @@ Goal: Sweep the detector and study code of three layer families (`krown`, `wavet
 | `krown` | `EDGE_FRAC` | `MyTradingSys/backtest/layers/krown/krown_context.py:34` | `0.2` | OURS | Edge fraction of range; `krown_context.py:34` notes `OURS = params range_edge`. |
 | `krown` | `MID_LO` | `MyTradingSys/backtest/layers/krown/krown_context.py:35` | `0.333333` | OURS | Middle range lower bound; `krown_context.py:35` notes `1.0 / 3 ... "middle third of a daily range" (design s3 D3)`. |
 | `krown` | `MID_HI` | `MyTradingSys/backtest/layers/krown/krown_context.py:35` | `0.666667` | OURS | Middle range upper bound; `krown_context.py:35` notes `2.0 / 3 ... "middle third of a daily range" (design s3 D3)`. |
+
+## Claude review 2026-10-27 (JIS-DESKTOP session, independent recount)
+- Table rows recounted: 115; labels 52 SOURCED / 59 OURS / 4 OPERATOR-HYPOTHESIS / 0 UNLABELED: matches the header.
+- file:line check: 112 of 115 cited code locations contain the named parameter within 3 lines. N1, N2, SMA_N, K cite wavetrend.py:16; they sit on line 15 (off by one).
+- Quoted Pine lines exist in the source snapshot, but the cited line numbers are wrong (n1/n2 are lines 7/8, cited 14/15). Use the quotes, re-find the line numbers before relying on them. Trust stays UNCHECKED beyond this spot-check.
