@@ -25,12 +25,6 @@
   "refined_by": "",
   "refreshed": "2026-10-25T20:06:44Z",
   "refs": [],
-  "reroute": {
-    "at": "2026-10-25T23:42:10Z",
-    "desk": "20261025-234210-lf-fabio-gpt-rederive",
-    "to": "DSA",
-    "why": "credits"
-  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/fabio.md (new file only)"

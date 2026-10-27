@@ -43,12 +43,6 @@
   "refined_by": "",
   "refreshed": "2026-10-26T17:25:06Z",
   "refs": [],
-  "reroute": {
-    "at": "2026-10-26T17:41:28Z",
-    "desk": "20261026-174128-tom-corr-live-captions",
-    "to": "DSA",
-    "why": "credits"
-  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md",

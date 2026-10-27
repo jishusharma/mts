@@ -30,12 +30,6 @@
   "refs": [
     "MyTradingSys/system/ANTIGRAVITY_LAPTOP.md item C"
   ],
-  "reroute": {
-    "at": "2026-10-25T23:42:10Z",
-    "desk": "20261025-234210-lf-session-timing-gemini-facts",
-    "to": "DSA",
-    "why": "credits"
-  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/session_timing.md (new file only)"

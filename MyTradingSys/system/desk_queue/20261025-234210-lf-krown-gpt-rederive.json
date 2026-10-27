@@ -1,12 +1,15 @@
 {
   "card": "lf-krown-gpt-rederive",
   "done_when": "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/krown.md lists each quoted number, the recomputed number, and MATCH or MISMATCH with file:line",
+  "finished": "2026-10-27T08:36:27Z",
   "from": "lane_health",
+  "host": "lane_health",
   "id": "20261025-234210-lf-krown-gpt-rederive",
   "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card lf-krown-gpt-rederive: Layer re-derive: krown (independent recount of the headline numbers behind the fact sheet)\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief lf-krown-gpt-rederive\nGoal: Independently re-derive the headline backtest numbers (n trades, mean R, fee-net or not, split used) quoted for layer family krown in its result reports, from the raw ledger/data, and list every\nRead: MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/krown.md (new file only)\nStep 1: List the result files for krown in layer_index.json (results, ledger) and pick the headline numbers each states\nStep 2: Recompute each from the ledger or raw data with an independent script (formulas from MyTradingSys/backtest/layers/FORMULAS.md, not from the code under check)\nStep 3: Write MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/krown.md: quoted number, recomputed number, MATCH/MISMATCH, file:line, script path\nStep 4: Commit with a Result: line (n checked, n mismatches)\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-10-25_lf-krown-gpt-rederive.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-10-25_lf-krown-gpt-rederive.md>\".",
   "posted": "2026-10-25T23:42:10Z",
   "rerouted_from": "CODEX",
-  "status": "pending",
+  "result": "cancelled: GPT lane is back, card returned to CODEX",
+  "status": "failed",
   "target": "DSA",
   "title": "Layer re-derive: krown (independent recount of the headline numbers behind the fact sheet)"
 }

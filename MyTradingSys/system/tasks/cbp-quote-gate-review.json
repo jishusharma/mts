@@ -33,12 +33,6 @@
   "refs": [
     "MyTradingSys/research/cbp/GPT_CBP_GUIDE.md"
   ],
-  "reroute": {
-    "at": "2026-10-26T21:01:53Z",
-    "desk": "20261026-210153-cbp-quote-gate-review",
-    "to": "DSA",
-    "why": "credits"
-  },
   "result": "",
   "scope_in": [
     "scripts/dev/verify_extract_quotes.py; MyTradingSys/research/cbp/"

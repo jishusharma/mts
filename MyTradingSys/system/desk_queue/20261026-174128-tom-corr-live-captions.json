@@ -1,12 +1,15 @@
 {
   "card": "tom-corr-live-captions",
   "done_when": "raw_transcripts_canonical/<id>_raw.txt exists; EXTRACT.md has section 1b with new quotes and verify_extract_quotes.py exits 0; each numeric threshold Tom states is listed against our OURS value, or the line 'no thresholds stated'",
+  "finished": "2026-10-27T08:36:27Z",
   "from": "lane_health",
+  "host": "lane_health",
   "id": "20261026-174128-tom-corr-live-captions",
   "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card tom-corr-live-captions: Fetch captions of Tom live 'DAX Short Using My Correlation Trick' via gemini_queue on JIS-NUC once the stream end\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief tom-corr-live-captions\nGoal: Get the captions of Tom's live stream 'LIVE TRADING: DAX Short Using My Correlation Trick!' once ended, add EXTRACT.md section 1b with verified quotes, and list any numeric threshold Tom states \nRead: MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md; raw_transcripts_canonical\nStep 1: Find the video id of the stream (Gemini search grounding via the queue; EXTRACT.md:3 has the title); confirm it has ended\nStep 2: Fetch captions: python scripts/dev/fetch_captions.py --analyst Tom <id> (manual track first); a NOCAPS result parks the card\nStep 3: Add EXTRACT.md section 1b (SOURCED quotes with timestamps), then a table of every threshold Tom states vs our OURS value in section 4\nStep 4: Run verify_extract_quotes.py on EXTRACT.md until exit 0; commit with a Result: line\nRun exactly:\n  python scripts/dev/gemini_queue.py run tom-corr-live-captions:medium\n  python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-10-26_tom-corr-live-captions.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-10-26_tom-corr-live-captions.md>\".",
   "posted": "2026-10-26T17:41:28Z",
   "rerouted_from": "CODEX",
-  "status": "pending",
+  "result": "cancelled: GPT lane is back, card returned to CODEX",
+  "status": "failed",
   "target": "DSA",
   "title": "Fetch captions of Tom live 'DAX Short Using My Correlation Trick' via gemini_queue on JIS-NUC once the stream ends. DONE when: raw_transcripts_canonical/<id>_raw.txt exists, EXTRACT.md in MyTradingSys/research/tom_correlation_trick_2026-10-26/ gets a section 1b with new quotes and verify_extract_quotes.py exits 0, and any numeric threshold Tom states is listed vs our OURS values"
 }

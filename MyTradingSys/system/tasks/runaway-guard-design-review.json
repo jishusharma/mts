@@ -25,12 +25,6 @@
   "refs": [
     "MyTradingSys/system/RUNAWAY_GUARD.md"
   ],
-  "reroute": {
-    "at": "2026-10-26T21:01:53Z",
-    "desk": "20261026-210153-runaway-guard-design-review",
-    "to": "DSA",
-    "why": "credits"
-  },
   "result": "",
   "scope_in": [
     "MyTradingSys/system/RUNAWAY_GUARD_REVIEW.md"
