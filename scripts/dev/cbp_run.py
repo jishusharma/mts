@@ -6,10 +6,14 @@
 Windows (UTC, OURS): EU 09:00-13:00, pre-US 13:00-midnight. Scheduled starts: 09:00 and 13:00;
 windows stay open for retries and catch-up. A coordinator may also call --due on each wake;
 the stamp file lives outside the repo (CBP_STAMP, default CBP_HOME/cbp_store/stamp.json).
-Only the actionable analysts in F:/CryptoScrapper/cbp_v2/analysts.json are fetched; videos already in the store
+Only the actionable analysts in <CBP_HOME>/cbp_v2/analysts.json are fetched; videos already in the store
 (or already rejected) are skipped; nothing older than 5 days is fetched. One LLM pass per new video.
 Output: one line "cbp: +<added> rows, <total> total, window end <date>[, <n> rejected]".
-Rows are read by MyTradingSys/cbp (cbp.query). Data stays in F:/CryptoScrapper (CBP_STORE, CBP_HOME).
+Rows are read by MyTradingSys/cbp (cbp.query). Data stays outside the repo (CBP_STORE, CBP_HOME).
+CBP_HOME: the CBP_HOME env var when set; else the legacy F:/CryptoScrapper when that folder exists on this
+machine; else a folder under this checkout (runtime_data/cbp). No step in this script assumes a fixed
+machine or Gemini: the fetcher is yt-dlp (fetch_captions_timed.py) with a youtube-transcript-api fallback;
+Gemini (gemini_queue.py) is a separate, optional path for open-ended search/grounding, not a dependency here.
 """
 import argparse
 import json
@@ -28,7 +32,21 @@ sys.path.insert(0, str(ROOT / "MyTradingSys"))
 import cbp  # noqa: E402
 import verify_extract_quotes as vq  # noqa: E402
 
-CBP_HOME = Path(os.environ.get("CBP_HOME", "F:/CryptoScrapper"))
+
+def default_cbp_home(exists=None):
+    """CBP_HOME env var if set; else legacy F:/CryptoScrapper if it exists on this machine; else a folder
+    under this checkout. Keeps cbp_run runnable on a device that never had F:/CryptoScrapper (card
+    bug-youtube-gemini-only-rule-is-a-preference): no step here is tied to one machine or to Gemini.
+    `exists` is injectable for tests; defaults to a real directory check."""
+    exists = exists or (lambda p: p.is_dir())
+    env = os.environ.get("CBP_HOME")
+    if env:
+        return Path(env)
+    legacy = Path("F:/CryptoScrapper")
+    return legacy if exists(legacy) else ROOT / "runtime_data" / "cbp"
+
+
+CBP_HOME = default_cbp_home()
 TRANSCRIPTS = Path(os.environ.get("CBP_TRANSCRIPTS", str(CBP_HOME / "raw_transcripts_canonical")))
 WINDOWS = (("EU", time(9, 0), time(13, 0)), ("PRE_US", time(13, 0), None))
 MODEL = os.environ.get("CBP_MODEL", "claude-sonnet-5-5")
