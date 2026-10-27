@@ -66,11 +66,30 @@ class SyncError(Exception):
     pass
 
 
+class PushFailed(SyncError):
+    """A push that failed for a reason other than a lost race (auth, network, timeout, hook): never retried."""
+
+
+# bg-process-audit 2026-10-28: a network git call with no deadline hung sessions for hours (credential prompt, dead link).
+# Network verbs get a deadline and never prompt; a timeout comes back as rc 124 with a TIMEOUT line in stderr.
+GIT_NET_VERBS = ("fetch", "push", "pull", "ls-remote", "clone")
+GIT_NET_TIMEOUT_S = int(os.environ.get("MTS_GIT_NET_TIMEOUT_S") or 180)   # OURS: a fetch/push here takes 1-20 s; 180 s = dead
+GIT_NOPROMPT = {"GCM_INTERACTIVE": "never", "GIT_TERMINAL_PROMPT": "0"}
+
+
 def git(repo, *args, check=True):
     # `status` refreshes and rewrites the index under index.lock; where/health/tidy run it in other sessions' trees,
     # where that can break their `git add` and reset the idle clock tidy reads, so status never takes optional locks.
     opts = ["--no-optional-locks"] if args and args[0] == "status" else []
-    r = subprocess.run(["git", "-C", str(repo), *opts, *args], capture_output=True, text=True)
+    cmd = ["git", "-C", str(repo), *opts, *args]
+    if args and args[0] in GIT_NET_VERBS:
+        try:
+            r = subprocess.run(cmd, capture_output=True, text=True, timeout=GIT_NET_TIMEOUT_S, env={**os.environ, **GIT_NOPROMPT})
+        except subprocess.TimeoutExpired:
+            r = subprocess.CompletedProcess(cmd, 124, "", f"TIMEOUT git {args[0]} after {GIT_NET_TIMEOUT_S}s (network down or a credential prompt)")
+            print(r.stderr, file=sys.stderr)
+    else:
+        r = subprocess.run(cmd, capture_output=True, text=True)
     if check and r.returncode != 0:
         raise SyncError(f"git {' '.join(args)} failed:\n{r.stdout}{r.stderr}".rstrip())
     return r
@@ -1056,6 +1075,8 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
                 print(f"shipped {len(files)} file(s) to origin/{TRUNK}" + (f"; released {release_slug}" if released else ""))
                 pages.report()
                 return Pushed(git(repo, "rev-parse", "HEAD").stdout.strip(), list(files))   # main() waits for this sha's CI after the timing rows are written
+            if not push_race_lost(r):     # auth/network/timeout: another merge + gate would fail the same way
+                raise PushFailed(f"push FAILED (not a race, no retry): {push_reason(r)}")
             print(f"push rejected (someone shipped first), retry {attempt}/{SHIP_PUSH_TRIES}")
             if attempt < SHIP_PUSH_TRIES:
                 t_retry_0 = time.monotonic()
@@ -1241,6 +1262,21 @@ def print_claims(repo, ref=None):
               f"[area: {kv.get('area','-')}] {age_h:.0f}h old{stale}")
 
 
+PUSH_RACE_RE = re.compile(r"\[rejected\]|fetch first|non-fast-forward|stale info|cannot lock ref|incorrect old value")
+
+
+def push_race_lost(r):
+    """True only when a failed push lost a race (the remote moved): worth a re-fetch and retry. Auth, network, hook or
+    timeout failures are not: bg-process-audit 2026-10-28 found 5 Gemini claims that retried 18 pushes each on a
+    non-race failure printed as 'someone shipped first'."""
+    return bool(PUSH_RACE_RE.search((r.stderr or "") + (r.stdout or "")))
+
+
+def push_reason(r):
+    t = " | ".join(l.strip() for l in ((r.stderr or "") + (r.stdout or "")).splitlines() if l.strip())
+    return (t or f"git push exit {r.returncode}, no output")[:300]
+
+
 def push_claim_commit(repo, rel, text, msg, branch=CLAIMS_BRANCH, guard=None):
     """Traffic buster (2026-10-16): put ONE claim-file change on origin/<branch> as a commit built with plumbing on top of origin's
     tip: no merge commit, no gate, no dependence on this tree's state (dirty or ahead is fine). text=None removes the file. Default
@@ -1273,10 +1309,13 @@ def push_claim_commit(repo, rel, text, msg, branch=CLAIMS_BRANCH, guard=None):
             commit = plumb("commit-tree", plumb("write-tree"), *(["-p", parent] if parent else []), "-m", msg)
         finally:
             idx.unlink(missing_ok=True)
-        if git(repo, "push", "--quiet", "origin", f"{commit}:refs/heads/{branch}", check=False).returncode == 0:
+        r = git(repo, "push", "--quiet", "origin", f"{commit}:refs/heads/{branch}", check=False)
+        if r.returncode == 0:
             if branch == TRUNK:
                 git(repo, "merge", "--ff-only", "--quiet", commit, check=False)  # only when this branch has nothing unshipped
             return commit
+        if not push_race_lost(r):
+            raise PushFailed(f"claim push FAILED (not a race, no retry): {push_reason(r)}")
         print(f"push rejected (someone shipped first), retry {attempt}/{PUSH_TRIES}")
     raise SyncError(f"claim push still rejected after {PUSH_TRIES} tries")
 
@@ -1370,6 +1409,8 @@ def claim(repo, task, area="-", gate=run_gate, force=False):
         msg = NL.join([f"claim {slug}", "", f"Result: {account(repo)} on {socket.gethostname()} works on: {task}"])
         try:
             push_claim_commit(repo, f"{CLAIMS_DIR}/{slug}.md", body, msg, guard=still_free)
+        except PushFailed:
+            raise
         except SyncError:
             if attempt == PUSH_TRIES:
                 raise
