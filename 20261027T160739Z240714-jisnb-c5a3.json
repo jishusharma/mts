@@ -1,0 +1,1 @@
+{"t": "20261027T160739Z", "from": "jis-nb/C", "to": "A", "kind": "note", "text": "DIVERT 2026-10-27 16:00Z (operator): login C at 85% week / 39% window (OpusMax read). CODEX-lane cards stay on the GPT lane (codex_run.py loop btdbn802l, own 65-pt meter) - do NOT take them on Claude.", "login": "C"}
