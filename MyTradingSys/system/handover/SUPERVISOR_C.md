@@ -85,3 +85,10 @@ Start 2026-10-27T12:50Z. Worktree claude/supervisor-c-jis-nb-ce71af (HEAD = orig
 - Posted divert signals per Lead: host-legacy-tasks-unregister, docker-vs-windows-test-speed, main-checkout-stale-hooks (parked).
 - Eagle stays on live-market thread (now Sonnet/medium, cheap) - not C-budget churn.
 - Net: C stops spending on card churn; GPT + A carry it. Watcher still armed; D6 stop conditions unchanged.
+
+## 2026-10-27 ~16:40Z divert CONFIRMED (2nd directive from Start Lead; fleet broadcast)
+- Login C at 79% week / 39% of 5h window -> C BUDGET-HOLD: no new C-budget card-builder spawns from the next wake; watcher goes quiet instead of dispatching.
+- CODEX-lane cards -> GPT only (codex_run.py btdbn802l, own meter). Claude-lane cards (live-host move, desk R2 ETH, live-path, RU* items) -> left on shared board for login A; C does not claim them.
+- Directive 4 carve-out: docker-vs-windows-test-speed was in-flight on C -> completed by a8d067c84 (Haiku, minimal cost), ship it, then hold.
+- Verified GPT-ship lane stays on C: sha + Result: + green 60 min + one other-model spot-check.
+- main-checkout-stale-hooks still parked on operator's wip 0ac18c3fb call.
