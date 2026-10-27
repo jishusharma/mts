@@ -1,0 +1,98 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-26T23:56:50Z",
+  "commands": [
+    "python -m pytest scripts/dev/test_tasks_conflict.py MyTradingSys/tests/docs/test_integrity.py -q",
+    "python scripts/dev/mts_doctor.py --no-process"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-26T23:57:04Z",
+    "misses": 13,
+    "reads": [
+      "scripts/dev/test_tasks_conflict.py"
+    ],
+    "session": "agent-ab871c5fc1e2adcb9"
+  },
+  "created": "2026-10-26T23:45:19Z",
+  "depends_on": [],
+  "done_when": "Pytest passes (incl. a test that CLAUDE.md Precedence names Hard rules as outranking the operator order); doctor shows CLAUDE.md headroom >=3%; tasks.py done closes a fresh bug-conflict card; one B20 in TRAFFIC_BUSTERS.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fix the 6 findings of the Haiku diff review of e4acda18a/523f59baa (instruction-conflict cards): precedence line must not outrank Hard rules, CLAUDE.md back to >=3% headroom, conflict cards closable and not refined, B20 clash, real hint test, WORKERS rule 10 limits.",
+  "id": "fix-conflict-cards-review-findings",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "CLAUDE.md 3% under cap; conflict cards closable; B21 renumber; tests in test_tasks_conflic",
+      "ref": "25d6b20ad",
+      "utc": "2026-10-26T23:56:50Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "log instruction conflicts as deduplicated bug-conflict cards",
+      "ref": "523f59baabfe",
+      "utc": "2026-10-26T23:39:53Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "523f59baabfe log instruction conflicts as deduplicated bug-conflict cards",
+      "ref": "CLAUDE.md",
+      "utc": "2026-10-26T23:39:53Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DECISION OURS (planner 2026-10-27): conflict cards parked via asks, not a new state; cap not raised (B18). Side effects: make_home.py shows them in the Inbox; apply-op retry clears asks (card refinable again).\nREVIEWED:2026-10-27 ACCEPT\nreviewer: independent Sonnet agent, corrections applied",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-26T23:48:17Z",
+  "refs": [],
+  "result": "CLAUDE.md 3% under cap; conflict cards closable; B21 renumber; tests in test_tasks_conflict.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "CLAUDE.md",
+    "scripts/dev/tasks.py",
+    "scripts/dev/test_tasks_conflict.py",
+    "MyTradingSys/system/TRAFFIC_BUSTERS.md",
+    "MyTradingSys/system/WORKERS.md",
+    "MyTradingSys/system/EXHAUST_PHASE.md"
+  ],
+  "scope_out": [
+    "MyTradingSys/tests/docs/test_integrity.py SIZE_CAPS (the cap is NOT raised: B18)",
+    "live tree, any runtime/order code"
+  ],
+  "scope_sha": "523f59baabfe",
+  "size": "M",
+  "sources": [
+    "OURS: ordering Hard rules > operator order (conservative; testnet-only/live-tree limits must not be waivable by a voice misreading)",
+    "OURS: HEADROOM_MIN_PCT=3 from mts_doctor.py:159",
+    "review: Haiku diff-only 2026-10-27"
+  ],
+  "state": "done",
+  "steps": [
+    "1 CLAUDE.md Precedence line: Hard rules and Gates outrank an operator order and everything below (testnet only, no mainnet, live tree); order > CLAUDE.md > hook > card applies to the rest. Keep B20 ref.",
+    "2 Trim CLAUDE.md to at least 3% under the cap, LF bytes ( measure with mts_doctor SIZE-HEADROOM, not wc: CRLF). Net cut >=198 B after step 1 adds ~100: move >=320 B into system/ docs (step 5b budget commands to EXHAUST_PHASE.md, keep a pointer: MOVED_RULES cites 5b; plus one Cost bullet to WORKERS.md). Never raise SIZE_CAPS.",
+    "3 tasks.py: log_conflict sets asks='Which holds: <A> or <B>?' (<=300 chars; Inbox shows only asks) so refinable() skips conflict cards; cmd_done accepts raw when id starts bug-conflict-. Other raw cards still refused.",
+    "4 TRAFFIC_BUSTERS.md: the Ship-drift row (B20, 2026-10-25) becomes B21; update refs to it (grep 'B20' in system/, scripts/, tests/); the conflict row keeps B20 (CLAUDE.md cites it).",
+    "5 test_role_loader_text_carries_conflict_hint: call RL.build_text(...) on a fixture role and assert the hint is in its output, not the constant.",
+    "6 WORKERS.md rule 10: add one clause that the loop never overrides CLAUDE.md Hard rules (testnet only, live tree, no deploy/restart/HALT/open trade)."
+  ],
+  "taken": "2026-10-26T23:56:50Z",
+  "tests": "scripts/dev/test_tasks_conflict.py: add test_done_closes_raw_conflict_card (real state raw via log_conflict then cmd_done; fails on old code: 'only a ready or active card'), test_conflict_card_not_refinable, and the build_text hint test (fails if hint removed from build_text).",
+  "title": "Fix 6 review findings of conflict-card commits e4acda18a/523f59baa (precedence vs Hard rules, CLAUDE.md headroom, closable cards, B20 clash, hint test, WORKERS rule 10)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
