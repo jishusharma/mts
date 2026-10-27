@@ -1,7 +1,15 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-27T15:38:55Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": 11,
+    "folded": "2026-10-27T15:39:05Z",
+    "misses": 0,
+    "reads": [],
+    "session": "agent-ab4705a81a7370626"
+  },
   "created": "2026-10-24T11:38:52Z",
   "depends_on": [],
   "done_when": "session_planner_details.md step 2 carries the rule with the LAYER_LAB.md:114 pointer; the file stays under its size cap (test_role_budget passes); no other file changes.",
@@ -13,6 +21,12 @@
   "id": "card-file-lists-miss-test-registration-w",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "rule added at step 2 (T0 gate row): test-adding cards list run_extra_tests.py (EXTRA) or t",
+      "ref": "fde1d108d",
+      "utc": "2026-10-27T15:38:55Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +53,12 @@
   "refs": [
     "MyTradingSys/research/mts_doctor/PILOT1_CARDS.md"
   ],
-  "result": "",
+  "result": "rule added at step 2 (T0 gate row): test-adding cards list run_extra_tests.py (EXTRA) or the run_all_tests.py shard list in scope_in, pointing at LAYER_LAB.md:114; test_integrity.py passed, file 3712 B",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/role_details/session_planner_details.md"
   ],
@@ -54,12 +73,13 @@
     "MyTradingSys/system/LAYER_LAB.md:114",
     "MyTradingSys/research/mts_doctor/PILOT1_CARDS.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Open session_planner_details.md Refinement steps, row 2 T0 gate.",
     "Append one clause: a card that adds tests lists run_extra_tests.py or run_all_tests.py in scope_in (B150 discovery, LAYER_LAB.md:114).",
     "Run python -m pytest MyTradingSys/system -q -k role_budget or the role size tests."
   ],
+  "taken": "2026-10-27T15:38:55Z",
   "tests": "python -m pytest MyTradingSys/tests/docs/test_integrity.py -q passes; the line is present (grep 'run_extra_tests' in the file).",
   "title": "Card file lists miss test registration: when a card adds tests, list run_all_tests.py/run_extra_tests.py in its files (pilot 1 cards 2 and 5 edited them out of scope) (Session_Planner)",
   "weight": "ROUTINE",
