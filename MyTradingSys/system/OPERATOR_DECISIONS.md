@@ -4,6 +4,14 @@ The Control Room db holds the live copy (collection `decisions`, one doc per que
 a session that adds a question appends it here; the pickup that applies an answer writes the answer and the note here,
 word for word (CONTROL_ROOM.md step 4). Seed a wiped or second db from the JSON blocks below.
 
+## d-restart-c-a-supervisors | decided 2026-10-27 | Lead (admin, JIS-NUC login B)
+```json
+{"id": "d-restart-c-a-supervisors", "order": 46, "date": "2026-10-27", "status": "DECIDED",
+ "question": "Both supervisor loops are mode=ENDED (C on JIS-NB, A on the laptop), 117 ready cards queued, C's 5h/weekly reset at 2026-10-27T20:00Z and A's at 22:30Z. Restart the loops to drain the ready cards into the reset windows?",
+ "answer": "OPERATOR VERBATIM: 'Start a fresh Supervisor on JIS-NB (login C) and DESKTOP-F7IU69N (login A) so the ENDED loops resume and ready cards drain into the 19:59Z reset window.' (2026-10-27, JIS-NUC, login B seat)",
+ "done": "pending: card one-shot-successor-wake-task-4b2-no-human - successor_wake.py (4b2 one-time task, zero-operator-click restart). Design + open question (chain vs manual default) at research/lead/2026-10-27_successor-wake-design.md. Interim: a live session on A (desktop-f7iu69n) can take a restart signal; C (JIS-NB) has no live session - parked until the card ships, or the operator starts the successor line by hand once."}
+```
+
 ## q1-one-control-room | asked 2026-10-13 | Process
 
 Which Control Room page holds your questions and Inbox?
