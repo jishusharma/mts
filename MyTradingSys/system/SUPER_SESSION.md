@@ -55,6 +55,7 @@ Supervisor and super session are ONE role. Code: `scripts/dev/supervisor.py plan
 - Research Map: `Artifact read` first, edit the one `const DATA = ` line by script in `system/artifacts/research_map.html`, republish to claude.ai/artifact/9nqpZeMeEehadoBoYopZU3 from the jishusharma1985 login. Backtest = fee check at the stated stop first (fee R = 0.14% / stop%), then PRE_REG on DEV only.
 - A worker that merges late hits VERDICTS.csv and wiring_registry.json conflicts: union both sides.
 - Login letters: A jishu.sharma, B jishu.awgp, C jishusharma1985.
+- Spawn gate: after `get_usage` run `python scripts/dev/usage_reminder.py record --five <5h%> --elapsed <% of 5 h elapsed>` or the Agent hook refuses (reading older than 10 min). Start Builder/Planner Agents with `isolation: "worktree"`; without it they edit the Supervisor's own tree. `supervisor.py wait` takes no `--running`.
 
 ## End (any D6 stop)
 Stop spawning; every worker shipped (`git cherry` empty) or its partial work written into NEXT_SESSION.md; workers archived; `get_usage` in the
@@ -70,11 +71,11 @@ from the newest `BUDGET` signal line (older than 6 h counts NORMAL). The meter i
 | THROTTLE | U > 100 f + 5, or the 5-hour window > 80 % | only model-free work: Codex lab, DSA desk, CI |
 
 ## Session log (newest first; one line each, last 5)
+- 2026-10-27 Supervisor C (desktop, Sonnet): T09-F3 live RSI support-long-only shipped (f04a3cbad) after a diff-only review Agent; planner refined 13 cards; cbp-ingestion parked (unverified operator request for the CBP scheduled task); handed over with one 4b2 successor task. Lesson: Agents started without isolation worktree share this tree and dirty it for the stop guard.
 - 2026-10-26 Supervisor B (NUC, Sonnet): 10 cards shipped via 8 Sonnet bg agents (klines, oi-pivot, rsi, intrabar, stability, dispatch, coord-audit, malkan); a diff-only review Agent per CRUCIAL card caught 2 defects. Lesson: builders report merge shas, verify the own commit with show --stat.
 - 2026-10-26 Supervisor C (desktop): watched A/B stations 10 h; reverted ca310cbe1 (sync ship --lesson, 21ea5324d); trunk green f02dc2fa; handed over (handover/SUPERVISOR_C.md).
 - 2026-10-24 design session (Opus): this file rewritten from 137 lines; D1-D6 above.
 - 2026-10-21 Supervisor B (NUC): GPT lane up, 5 cards back to CODEX; lab caps window 65 / week 90 / 14 runs (DECISION (OURS)); pitchfork layer 79da493c.
-- 2026-10-19 Supervisor A (NUC): weekly 93%/95 cap, mode=STOP all window, no workers; handover/SUPERVISOR_A.md; DSA chats need arming.
 
 ## Prompt: start a super session (new session, model Sonnet, permission mode bypass or auto; zero operator input)
 ```

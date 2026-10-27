@@ -1278,7 +1278,7 @@ def cmd_done(a):
     c = get(REPO, a.id)
     if c.get("flow"):
         raise SystemExit("tasks: flow cards close through lab_flow.py finish (evidence receipt required)")
-    if c.get("state") not in ("ready", "active"):
+    if c.get("state") not in ("ready", "active") and not (c.get("state") == "raw" and a.id.startswith("bug-conflict-")):
         raise SystemExit(f"tasks: {a.id} is {c.get('state')}, only a ready or active card can be marked done")
     mark_shared_bases(c, REPO)
     gate = review_gate(c, finishing=True, result=a.result, repo=REPO)
@@ -1294,6 +1294,42 @@ def cmd_done(a):
         TS.add_entry(c, "ship", head, c["closed"], a.result)
     save(REPO, c)
     print(f"{a.id}: done")
+
+
+def conflict_key(a, b):
+    """Order- and case-insensitive key of two conflicting instruction texts: whitespace collapsed, sides sorted, sha1[:10]."""
+    norm = sorted(" ".join(str(x).lower().split()) for x in (a, b))
+    return hashlib.sha1(chr(10).join(norm).encode("utf-8")).hexdigest()[:10]
+
+
+def log_conflict(repo, a, b, session=""):
+    """Make or bump the bug-conflict-<hash> card for one pair of contradicting instructions (same pair, any order = one card, seen+1)."""
+    cid = f"bug-conflict-{conflict_key(a, b)}"
+    p = path_of(repo, cid)
+    if p.exists():
+        c = json.loads(p.read_text(encoding="utf-8"))
+        c["seen"] = int(c.get("seen", 1)) + 1
+    else:
+        sa, sb = sorted((" ".join(str(a).split()), " ".join(str(b).split())), key=str.lower)
+        c = blank(cid, f"Instruction conflict: {sa[:50]} vs {sb[:50]}", prio=1, lane="SONNET")
+        c["goal"] = f"Two instructions contradict: A = {sa} | B = {sb}. The operator decides which holds; then fix the loser's text."
+        c["asks"] = f"Which holds: {sa[:120]} or {sb[:120]}?"   # open question: refinable() skips the card
+        c["seen"] = 1
+    c["last_session"] = session or os.environ.get("CLAUDE_CODE_SESSION_ID", "")
+    c["last_seen"] = now()
+    save(repo, c)
+    return cid, c["seen"]
+
+
+def cmd_conflict(a):
+    """tasks.py conflict 'A | B' (or two args): log a conflict between two instructions, deduplicated."""
+    parts = [" ".join(a.text)] if len(a.text) == 1 else a.text
+    if len(parts) == 1:
+        parts = parts[0].split("|", 1)
+    if len(parts) != 2 or not all(x.strip() for x in parts):
+        raise SystemExit("usage: tasks.py conflict 'A | B'")
+    cid, seen = log_conflict(REPO, parts[0], parts[1], a.session)
+    print(f"{cid}: seen={seen}")
 
 
 def cmd_flag(a):
@@ -1583,6 +1619,10 @@ def main(argv=None):
     d.add_argument("id")
     d.add_argument("--result", required=True)
     d.set_defaults(f=cmd_done)
+    cf = sp.add_parser("conflict", help="log two contradicting instructions as one deduplicated bug-conflict-<hash> card (seen count)")
+    cf.add_argument("text", nargs="+", help="'A | B' or two args")
+    cf.add_argument("--session", default="")
+    cf.set_defaults(f=cmd_conflict)
     fl = sp.add_parser("flag")
     fl.add_argument("id")
     fl.add_argument("flag", choices=("crucial", "gpt_only"))

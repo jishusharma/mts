@@ -34,11 +34,17 @@ class SyncTest(unittest.TestCase):
         origin = cls.tpl / "origin.git"
         sh(cls.tpl, "init", "-q", "--bare", str(origin))
         sh(origin, "symbolic-ref", "HEAD", "refs/heads/fast-track")  # git < 2.28 has no init -b
+        # The template must be quiescent while copytree snapshots it. A pull/push
+        # can otherwise leave background maintenance removing files during a copy.
+        sh(origin, "config", "gc.auto", "0")
+        sh(origin, "config", "maintenance.auto", "false")
         a, b = cls.tpl / "a", cls.tpl / "b"
         for c in (a, b):
             sh(cls.tpl, "clone", "-q", str(origin), str(c))
             sh(c, "config", "user.email", "t@t")
             sh(c, "config", "user.name", "t")
+            sh(c, "config", "gc.auto", "0")
+            sh(c, "config", "maintenance.auto", "false")
         commit(a, "README.md", "x\n")
         sh(a, "push", "-q", "origin", "HEAD:fast-track")
         sh(b, "pull", "-q", "origin", "fast-track")
@@ -73,6 +79,12 @@ class SyncTest(unittest.TestCase):
         r = subprocess.run(["git", "ls-tree", "--name-only", "origin/fast-track"], cwd=repo,
                            capture_output=True, text=True)
         return set(r.stdout.split())
+
+    def test_fixture_repositories_disable_background_git_maintenance(self):
+        for repo in (self.tmp / "origin.git", self.a, self.b):
+            with self.subTest(repo=repo.name):
+                self.assertEqual(sh(repo, "config", "--local", "gc.auto").stdout.strip(), "0")
+                self.assertEqual(sh(repo, "config", "--local", "maintenance.auto").stdout.strip(), "false")
 
     def test_gate_with_files_param_gets_the_changed_paths_and_docs_get_the_docs_gate(self):
         seen, docs = [], []
@@ -558,6 +570,26 @@ class SyncTest(unittest.TestCase):
         self.assertTrue(dirty.exists())
         self.assertTrue(ahead.exists())
         self.assertTrue(self.a.exists())  # primary tree never touched
+
+    def test_tidy_skips_gateway_marked_worktree(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            marked = sync.new_worktree(self.a, "gw")
+            plain = sync.new_worktree(self.a, "plain")
+        (marked / sync.GATEWAY_MARKER).write_text('x', newline=chr(10))
+        later = time.time() + 48 * 3600
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(sync.tidy(self.a, apply=True, now=later), [str(plain.resolve())])
+            self.assertIsNone(sync.reuse_finished_tree(self.a, marked))
+        self.assertTrue(marked.exists())
+        self.assertFalse(plain.exists())
+
+    def test_start_writes_gateway_marker_only_on_gateway_profile(self):
+        with mock.patch.dict(os.environ, {"MTS_GATEWAY": "1"}):
+            self.assertTrue(sync.mark_gateway(self.a))
+        self.assertTrue((self.a / sync.GATEWAY_MARKER).exists())
+        (self.a / sync.GATEWAY_MARKER).unlink()
+        with mock.patch.dict(os.environ, {"MTS_GATEWAY": "0"}):
+            self.assertFalse(sync.mark_gateway(self.a))
 
     def test_station_runs_where_all_then_tidy(self):
         with contextlib.redirect_stdout(io.StringIO()):

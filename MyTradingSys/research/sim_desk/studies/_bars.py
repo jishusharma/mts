@@ -60,7 +60,9 @@ def coin_tag(q):
 def _month(m, symbol='BTCUSDT'):
     f = BAR_CACHE / f'{symbol}-1m-{m}.npy'
     if f.exists():
-        return np.load(f)
+        a = np.load(f)
+        guard_ms(a[:, 0], f'bar cache {f.name}')
+        return a
     src = ROOT / f'{symbol}-1m-{m}.csv'
     if not src.exists():
         raise FileNotFoundError(src)
@@ -69,17 +71,30 @@ def _month(m, symbol='BTCUSDT'):
     a = np.loadtxt(src, delimiter=',', skiprows=skip, usecols=(0, 1, 2, 3, 4), ndmin=2)
     a = a[np.unique(a[:, 0], return_index=True)[1]]
     BAR_CACHE.mkdir(parents=True, exist_ok=True)
+    guard_ms(a[:, 0], f'bar file {src.name}')
     np.save(f, a)
     return a
 
 
 _ALL = {}
 
+CUT_MS = (dt.date(2024, 7, 1) - dt.date(1970, 1, 1)).days * DAY   # first sealed millisecond (VALIDATION starts)
+
+
+def guard_ms(values, what):
+    """Refuse (never sanitise) any timestamp at or after the sealed cut. `values` is an array or list of ms times."""
+    a = np.asarray(values, dtype=float)
+    if a.size and not (a.max() < CUT_MS):
+        raise ValueError(f'{what}: timestamp {int(a.max())} is at or after the sealed cut {CUT_MS} (2024-07-01 UTC); refusing')
+    return values
+
 
 def load_1m(progress=None, symbol='BTCUSDT'):
     """All 1m bars from the warm-up month to the end of DEV, sorted, no duplicates."""
     if symbol not in SYMBOLS:
         raise ValueError(f'symbol: unknown choice {symbol!r}')
+    if symbol in _ALL:
+        guard_ms(_ALL[symbol][:, 0], f'hot bar cache {symbol}')   # memory is mutable: revalidate every read
     if symbol not in _ALL:
         parts = []
         for m in _months(WARMUP_FROM, LAST_MONTH):
@@ -88,7 +103,7 @@ def load_1m(progress=None, symbol='BTCUSDT'):
             parts.append(_month(m, symbol))
         a = np.concatenate(parts)
         a = a[np.argsort(a[:, 0], kind='stable')]
-        assert a[-1, 0] < (dt.date(2024, 7, 1) - dt.date(1970, 1, 1)).days * DAY, 'read past DEV'
+        guard_ms(a[:, 0], f'bars {symbol}')
         _ALL[symbol] = a
     return _ALL[symbol]
 

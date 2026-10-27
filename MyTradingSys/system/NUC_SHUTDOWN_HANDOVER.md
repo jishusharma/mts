@@ -84,3 +84,8 @@ Event 6008 count is 0 over 7 days after steps 1-4, and no "Idle Timeout" standby
 - Cause: a Git-Bash `find.exe` (no arguments, started 06:39:28 with a `grep.exe` sibling; parent already gone) spun a core for 9 h and held 10.9 million handles. Paged pool was 9.7 GB and available memory 0 MB, i.e. the box was about to run out of memory. Stopped it by hand at ~15:55; memory back to 19 GB free.
 - Not proven to explain the 7 resets (they began 10-23, before this process), but a leaking handle/pool process can hang or reset a machine, and it kept the CPU at the thermal limit. The 25 h clean stretch ended with this process pegging the box, so "stable" was not "quiet".
 - Next: find which session ran `find` at 06:39 (an agent shell tool call is likely) and guard against it. Keep the 48 h clean test going from 15:55 on 10-26.
+
+## Update 2026-10-27 - runaway guard verdict (JIS-NUC)
+- After the runaway find.exe was stopped (10-26 15:55) nuc_health.ps1 shows 3 more event-142 resets: 10-26 17:34:45, 23:27:49, 10-27 00:49:39. Last 2 days: 5 resets, 5 unclean boots. runaway_check.ps1 now reads OK (19.9 GB free, paged pool 1.8 GB).
+- Verdict: the 48 h clean test FAILED. The runaway find did not cause the resets; hardware path (adapter swap, BIOS, RAM test) stays open. DECISION (OURS): count the clean window from the last reset, 10-27 00:49.
+

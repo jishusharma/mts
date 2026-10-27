@@ -68,6 +68,8 @@ def protected_reason(p, branch, primary_tree, here, now, mtime_of=None):
         return "this tree"
     if (p / sync.LIVE_MARKER).exists():
         return "live tree"
+    if (p / sync.GATEWAY_MARKER).exists():
+        return "gateway tree"   # GATEWAY_NUC.md rule 7
     if p.name in sync.LANE_WORKTREES or low.startswith(("mts-relay", "mts-push", "mts-refiner", "mts-control-room")):
         return "lane tree"
     if "codex" in low or "codex" in branch.lower():

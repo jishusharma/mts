@@ -1,0 +1,10 @@
+{
+  "done_when": "aibridge_verify.py prints extension_loaded PASS on the machine; panel shows v0.7.1",
+  "from": "DESKTOP-F7IU69N",
+  "id": "20261026-200004-chrome-load-reload-the-aibridge-extensio",
+  "need": "AIBridge files are installed and verified on all three machines (research/dsa_bridge_2026-10-27/STATUS.md); Chrome itself must load them. LAPTOP (JIS-LAPTOP): chrome://extensions > Developer mode > Load unpacked > F:\\AIBridge\\extension (expected id kgighilgkdgkdghegpibjbjcidcmejkg), then log in to chat.deepseek.com. NB and NUC: chrome://extensions > Reload AIBridge, then F5 the DeepSeek tab (picks up B196 draft-keep). Check: python scripts/dev/aibridge_verify.py F:/AIBridge",
+  "posted": "2026-10-26T20:00:04Z",
+  "status": "pending",
+  "target": "OPERATOR",
+  "title": "Chrome: load/reload the AIBridge extension (laptop, NB, NUC)"
+}

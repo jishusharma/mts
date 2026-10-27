@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T18:56:52Z",
   "commands": [],
   "created": "2026-10-26T22:50:00Z",
   "crucial": "The bar decides what trades on fee-net OOS; a loose bar lets luck through, a tight one kills real layers.",
@@ -15,7 +16,14 @@
   "id": "astra-low-trials-multiplicity-bar",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "astra_multiplicity_bar.md: 281 rows independently reconciled; per-family Bonferroni row-sc",
+      "ref": "d82fa0d63",
+      "utc": "2026-10-26T18:56:52Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "model": "astra",
@@ -26,7 +34,12 @@
   "refined_by": "super-c-design",
   "refreshed": "2026-10-25T22:50:20Z",
   "refs": [],
-  "result": "",
+  "result": "astra_multiplicity_bar.md: 281 rows independently reconciled; per-family Bonferroni row-scenario normal bars 1.959964..3.722029, global281 3.748443; full t/SE formulas; hidden grids and prior validation reuse prevent unconditional luck-exclusion claim; toy PASS",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/design_cards_2026-10-26/astra_multiplicity_bar.md (new file only)"
   ],
@@ -39,12 +52,13 @@
     "MyTradingSys/research/layer_lab/TRIALS.md",
     "MyTradingSys/backtest/layers/FORMULAS.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read TRIALS.md and FORMULAS.md; state the correction method and its source before any number",
     "Count tries per family; compute the bar; worked example with every step",
     "Commit with a Result: line (bar per family)"
   ],
+  "taken": "2026-10-26T18:56:52Z",
   "tests": "Worked example reproduced by hand on a 3-trial toy set with a known answer",
   "title": "Astra-low: independent multiple-testing bar for the number of layer tries on DEV",
   "weight": "CRUCIAL",

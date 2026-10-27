@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-26T20:56:25Z",
+  "commands": [],
+  "created": "2026-10-26T19:42:55Z",
+  "depends_on": [],
+  "done_when": "With another host holding the Pipeliner lease, a Lead session that loaded pipeline mode ships a card-only commit with sync.py ship; desk.py post/take/done still refuse; a fail-first test covers both; ROLES/lead pipeline.md states the rule.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "A Lead session that loaded pipeline mode only to look at the desk cannot ship cards or docs while another machine holds the Pipeliner lease (2026-10-26: 6 commits stuck up to 45 min). The lease should guard desk, claim and queue writes only; cards and docs ship without it.",
+  "id": "bug-lease-blocks-lead-ship-after-pipeline-mode",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "sync.py ship_is_cards_docs_only + 5 tests in MyTradingSys/tests/test_lease.py (29 pass)",
+      "ref": "ba3d1803f",
+      "utc": "2026-10-26T20:56:25Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tc2: lab runners export MTS_ROLE/MTS_LEASE_SESSION for singleton-role cards",
+      "ref": "331b854fe289",
+      "utc": "2026-10-23T03:50:55Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "OPERATOR QUOTE: is this an limitation or part of the design? what is a better solution if this is an overhead? File a bug for this on priority.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-26T19:43:00Z",
+  "refs": [],
+  "result": "sync.py ship_is_cards_docs_only + 5 tests in MyTradingSys/tests/test_lease.py (29 pass)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/lease.py; scripts/dev/sync.py; scripts/dev/role_loader.py; scripts/dev/test_lease.py; MyTradingSys/system/roles/lead/pipeline.md"
+  ],
+  "scope_out": [
+    "live tree; the lease file format used by other machines"
+  ],
+  "scope_sha": "331b854fe289",
+  "size": "M",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "read lease.py:22-30 and :435 and sync.py ship guard; list which commands call the guard",
+    "limit the guard to desk/claim/queue writes; ship of non-queue paths passes; or add 'lease.py unload' to drop the Pipeliner role for the session",
+    "fail-first tests: ship with foreign lease passes for a cards-only diff, desk post refuses",
+    "note in pipeline.md: load pipeline mode only when draining the desk"
+  ],
+  "taken": "2026-10-26T20:56:25Z",
+  "tests": "scripts/dev/test_lease.py::test_ship_of_cards_passes_with_foreign_lease (fail-first)",
+  "title": "BUG p1: loading Lead pipeline mode makes every ship need the Pipeliner lease; another machine's lease blocks all my ships for up to 45 min",
+  "weight": "",
+  "worker": "session"
+}

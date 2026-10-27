@@ -115,3 +115,7 @@ scripts/dev/test_behavior_eval.py
 scripts/dev/test_ship_time_guard.py
 scripts/dev/test_usage_reminder.py
 scripts/dev/test_perm_audit.py
+scripts/dev/test_perm_hook.py
+scripts/dev/test_cbp_schedule.py
+scripts/dev/test_runaway_check.py
+scripts/dev/test_tasks_conflict.py
