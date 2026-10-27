@@ -111,6 +111,27 @@ class VerifyQuotesTest(unittest.TestCase):
         self.assertEqual(bad, 1)
         self.assertIn("MISSING", out)
 
+    def test_cbp_empty_ellipsis_fails(self):
+        # quote normalizes to no spoken words: must fail
+        cues = ("[0:00] alpha beta gamma",)
+        bad, out = self._cbp("...", cues)
+        self.assertEqual(bad, 1, out)
+        self.assertIn("MISSING", out)
+
+    def test_cbp_punctuation_only_fails(self):
+        # punctuation only normalizes to empty: must fail
+        cues = ("[0:00] alpha beta gamma",)
+        bad, out = self._cbp("!?!", cues)
+        self.assertEqual(bad, 1, out)
+        self.assertIn("MISSING", out)
+
+    def test_cbp_partial_word_fails(self):
+        # transcript has 'belong', evidence 'long' must not match partial word
+        cues = ("[0:00] these assets belong together",)
+        bad, out = self._cbp("long", cues)
+        self.assertEqual(bad, 1, out)
+        self.assertIn("MISSING", out)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=1)

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-27T21:47:03Z",
   "commands": [],
   "created": "2026-10-27T21:07:48Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "cbp-quote-empty-fragment-word-boundary",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "verify_extract_quotes.py: require non-empty normalized fragment and word-boundary matching",
+      "ref": "560a44358",
+      "utc": "2026-10-27T21:47:03Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refs": [
     "MyTradingSys/research/cbp/QUOTE_REVIEW_GPT.md"
   ],
-  "result": "",
+  "result": "verify_extract_quotes.py: require non-empty normalized fragment and word-boundary matching; 3 regression tests in test_verify_extract_quotes.py (14 passed)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/verify_extract_quotes.py",
     "scripts/dev/test_verify_extract_quotes.py"
@@ -45,12 +57,13 @@
   "sources": [
     "MyTradingSys/research/cbp/QUOTE_REVIEW_GPT.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Reproduce empty/punctuation and long-inside-belong acceptance from quote_review_repro.py.txt using isolated fixtures.",
     "Add fail-first regressions for empty normalized content and word-boundary matching, then implement the smallest repair.",
     "Run verifier tests and the existing CBP quote tests; record exact behavior and ship."
   ],
+  "taken": "2026-10-27T21:47:03Z",
   "tests": "python -m pytest scripts/dev/test_verify_extract_quotes.py -q; python -m pytest MyTradingSys/tests/test_cbp_query.py -k quote -q with an isolated basetemp",
   "title": "CBP quote checker accepts empty fragments and partial words",
   "weight": "ROUTINE",
