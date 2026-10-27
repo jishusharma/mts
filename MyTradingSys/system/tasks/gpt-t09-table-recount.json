@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-27T20:23:37Z",
   "commands": [],
   "created": "2026-10-25T19:25:01Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "FIX-FIRST; 3,156 exact, volume_fvg 24 split verified, report MyTradingSys/research/layer_l",
+      "ref": "cafdf458d",
+      "utc": "2026-10-27T20:23:37Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +45,12 @@
   "refined_by": "codex_run.py ask",
   "refreshed": "2026-10-25T19:26:28Z",
   "refs": [],
-  "result": "",
+  "result": "FIX-FIRST; 3,156 exact, volume_fvg 24 split verified, report MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-t09-table-recount.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T09_live_parity.md",
     "MyTradingSys/research/sim_desk/results/t09_live_parity.json",
@@ -52,7 +64,7 @@
   "scope_sha": "bd11ebf782e0",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
     "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
@@ -60,6 +72,7 @@
     "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
     "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
   ],
+  "taken": "2026-10-27T20:23:37Z",
   "tests": "",
   "title": "GPT recounts the T09 live-vs-backtest signal table and its sim-desk export text",
   "weight": "ROUTINE",

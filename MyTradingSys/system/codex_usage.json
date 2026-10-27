@@ -4,9 +4,9 @@
   "week_resets": 1793614696,
   "week_used": 18.0,
   "window_resets": 1793133535,
-  "window_used": 2.0
+  "window_used": 3.0
  },
- "at": "2026-10-27T20:01:03Z",
+ "at": "2026-10-27T20:23:44Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -19,10 +19,25 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 9.5,
-  "window_pts": 2.0,
-  "window_runs": 5
+  "window_pts": 3.0,
+  "window_runs": 6
  },
  "runs": [
+  {
+   "at": "2026-10-27T20:22:39Z",
+   "card": "gpt-t09-table-recount",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 56,
+   "tokens_out": 4893,
+   "tokens_total": 510725,
+   "tokens_uncached": 50664,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-10-27T20:00:10Z",
    "card": "gpt-t07-rerun-recount",
@@ -155,21 +170,6 @@
    "tokens_out": 6762,
    "tokens_total": 954157,
    "tokens_uncached": 71875,
-   "week_pts": 0.0,
-   "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-27T10:18:42Z",
-   "card": "lf-cryptocred-gpt-rederive",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "2 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/cryptocred.md | release failed: sync: no claim ",
-   "outcome": "OUT_OF_SCOPE",
-   "seconds": 114,
-   "tokens_out": 9082,
-   "tokens_total": 757981,
-   "tokens_uncached": 71779,
    "week_pts": 0.0,
    "window_pts": 1.0
   }
