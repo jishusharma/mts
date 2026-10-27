@@ -4,14 +4,23 @@
   "commands": [],
   "created": "2026-10-27T21:07:48Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Synthetic empty ellipsis, punctuation-only and partial-word evidence fail; exact quotes and valid ellipsis still pass; regression tests fail before repair and pass after; no production transcript/store edits.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Reject CBP evidence that normalizes to no spoken words or matches only part of a word, while retaining valid filler/stutter normalization and ordered ellipsis matching.",
   "id": "cbp-quote-empty-fragment-word-boundary",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "verify_extract_quotes: skip nested metadata header so description-only quotes fail",
+      "ref": "b4eced018d26",
+      "utc": "2026-10-25T15:41:36Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,18 +28,31 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-27T21:13:33Z",
   "refs": [
     "MyTradingSys/research/cbp/QUOTE_REVIEW_GPT.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "scripts/dev/verify_extract_quotes.py",
+    "scripts/dev/test_verify_extract_quotes.py"
+  ],
+  "scope_out": [
+    "CBP checkout; real rows/transcripts; live tree; semantic model calls; zero-quote CLI policy changes"
+  ],
+  "scope_sha": "b4eced018d26",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/cbp/QUOTE_REVIEW_GPT.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Reproduce empty/punctuation and long-inside-belong acceptance from quote_review_repro.py.txt using isolated fixtures.",
+    "Add fail-first regressions for empty normalized content and word-boundary matching, then implement the smallest repair.",
+    "Run verifier tests and the existing CBP quote tests; record exact behavior and ship."
+  ],
+  "tests": "python -m pytest scripts/dev/test_verify_extract_quotes.py -q; python -m pytest MyTradingSys/tests/test_cbp_query.py -k quote -q with an isolated basetemp",
   "title": "CBP quote checker accepts empty fragments and partial words",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }
