@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-25T19:32:22Z",
+  "depends_on": [
+    "rsi-deep-engine-ladders"
+  ],
+  "done_when": "X4 and X5 pass test_episode_exits.py; planted K1, K2, K4, K8 pairs give the SHOT_REVIEW (d) T/F per P-adj and P-anchor, K4 firing #1 and K8 firing #5; X4 breaks at bar 8 on the planted path; the X5 stamp is never earlier than the confirming bar; no kline bar of the HOLDOUT windows 2026-10-07..19 is read",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Add exit arms X4 (hold while the RSI loop holds, leave when it breaks) and X5 (X3 plus bearish divergence on D in {entry TF, one TF up}) to episode_sim.py using backtest/layers/rsi/rsi_divergence.py; the divergence stamps at the confirming bar and fills at the next open. Acceptance: SHOT_REVIEW (d) K1, K2, K4, K8, detector outputs only.",
+  "id": "rsi-deep-engine-exits",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "MyTradingSys/research/layer_lab/formula_spec_text/test_formula_spec.py::test_shuffled_rsi_closes_are_rejected",
+  "not_twin_of": [
+    "rsi-deep-engine",
+    "rsi-deep-run-dev",
+    "rsi-deep-engine-ladders"
+  ],
+  "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer Agent reviewers, after 2nd FIX applied once, not re-read, planner DECISION OURS). Drafted 2026-10-26 (split of the old engine M card). DECISION (OURS) 2026-10-26 (FIX): K1/K2/K4/K8 windows are 2026-10-07..19 = HOLDOUT and the local klines end 2026-09-26, so tests use planted pivot/RSI pairs built from the SHOT_REVIEW (d) numbers. The same planted pairs appear in rsi-deep-divergence-context (no shared helper, file sets stay disjoint). est_turns 14. Chain wired 2026-10-26: prereg -> engine -> ladders -> exits -> run-dev; prereg -> prob-tables -> context/confirmations/confluence/divergence. Tables read no grid output, so they wait on prereg, not on run-dev. OPUS_FRAMING.md wins over SPEC.md. FIX r2 2026-10-26: K4 firing #1 and K8 firing #5 planted (earlier K8 firing prices and RSI are planted values, only the count is asserted); X4 path and break bar given so the cross-vendor card can re-derive them. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/episode_sim.py",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/test_episode_exits.py",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SHOT_REVIEW.md",
+    "MyTradingSys/backtest/layers/rsi/rsi_divergence.py"
+  ],
+  "scope_out": [
+    "rsi_divergence.py is read-only; the K numbers come from SHOT_REVIEW.md (d), no klines of the HOLDOUT windows 2026-10-07..19 are read and the local klines end 2026-09-26; no forward return, no committed price files; no live path"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SHOT_REVIEW.md section (d) K1-K10 (independent public Binance USD-M BTCUSDT computation)",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md section 3 (X4, X5 definitions)"
+  ],
+  "state": "raw",
+  "steps": [
+    "Read SHOT_REVIEW (d) K1, K2, K4, K8, SPEC Step J pairing rules and rsi_divergence.py",
+    "Write test_episode_exits.py first, planted pairs from SHOT_REVIEW (d): K1, K2; K4 (RSI pivot 19.9 at 10-07 02:00 replaced by 17.9 at 14:30; B r31.3 at 10-08 03:30 is firing #1); K8 (A r23.2 at 14:45; earlier firings 15:30, 16:45, 19:30, 20:00 planted, only the count asserted; B r31.5 at 20:30 is firing #5); see it fail",
+    "X4 test path: RSI 29,22,35,44,52,48,43,41,38,45 (crosses 50 at bar 4, closes below 40 at bar 8, exit fill at bar 9 open); with 48 instead of 52 it never breaks",
+    "Add X4 and X5 to episode_sim.py; stamp divergence at the confirming bar, fill at the next open",
+    "Run the tests and lookahead_lint.py; GPT lab ships through its branch flow"
+  ],
+  "tests": "Fail-first, planted pairs from SHOT_REVIEW (d), no bars read: K1 (P-adj F, P-anchor T), K2 (both T), K4 (P-anchor T, firing #1, P-adj F), K8 with planted earlier firings 15:30, 16:45, 19:30, 20:00 (B at 20:30 = firing #5); X4 on RSI 29,22,35,44,52,48,43,41,38,45 breaks at bar 8, exit bar 9 open, with 48 for 52 it never breaks; X5 stamp not before the confirming bar.",
+  "title": "RSI deep-buy engine 3 of 3: exits X4 (Malkan loop) and X5 (X3 plus bearish divergence) with the K1, K2, K4, K8 acceptance cases",
+  "weight": "CRUCIAL",
+  "worker": ""
+}
