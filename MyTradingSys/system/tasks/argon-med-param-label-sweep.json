@@ -1,0 +1,71 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-27T09:02:21Z",
+  "commands": [
+    "C:/Users/E-ngineers/.gemini/bin/agy.exe --print \"Follow the steps of card argon-med-param-label-sweep (python scripts/dev/tasks.py brief argon-med-param-label-sweep). Write only MyTradingSys/research/design_cards_2026-10-26/argon_param_labels.md. Facts with file:line or NOT_IN_DATA; no verdicts.\" --model gemini-4-argon-medium"
+  ],
+  "created": "2026-10-26T22:50:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/design_cards_2026-10-26/argon_param_labels.md exists: one row per parameter, file:line, SOURCED(quote+path)|OURS|UNLABELED, UNLABELED count in the first line",
+  "effort": "medium",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Sweep the detector and study code of three layer families (krown, wavetrend, rsi) and list each numeric parameter default with its label (SOURCED with quote, OURS) or UNLABELED, so the layer review can see what is borrowed and what is invented. No tuning, no verdict.",
+  "id": "argon-med-param-label-sweep",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/design_cards_2026-10-26/argon_param_labels.md (115 parameter default",
+      "ref": "6fc6fa4d9",
+      "utc": "2026-10-27T09:02:21Z"
+    }
+  ],
+  "layers": [
+    "krown",
+    "wavetrend",
+    "rsi"
+  ],
+  "live_path": false,
+  "model": "gemini-4-argon-medium",
+  "mutation_check": "",
+  "note": "REVIEWED: sonnet-reviewer-a89035 2026-10-26",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "super-c-design",
+  "refreshed": "2026-10-25T22:50:15Z",
+  "refs": [],
+  "result": "MyTradingSys/research/design_cards_2026-10-26/argon_param_labels.md (115 parameter default rows: 52 SOURCED, 59 OURS, 4 OPERATOR-HYPOTHESIS, 0 UNLABELED)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/design_cards_2026-10-26/argon_param_labels.md (new file only)"
+  ],
+  "scope_out": [
+    "live tree; deploys; any verdict to keep, drop, demote or park a layer; VALIDATION and HOLDOUT data"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/layer_index.json",
+    "MyTradingSys/research/sim_desk/studies/"
+  ],
+  "state": "done",
+  "steps": [
+    "Read MyTradingSys/research/sim_desk/studies/krown.py, wavetrend.py, rsi.py and the specs named in layer_index.json for these families",
+    "One row per numeric default; SOURCED only with a quote and path, else OURS or UNLABELED",
+    "Commit with a Result: line (parameters, UNLABELED count)"
+  ],
+  "taken": "2026-10-27T09:02:21Z",
+  "tests": "none (run card); proof = every SOURCED row carries a quote and a path",
+  "title": "[GEMINI] Argon-medium: list layer parameters with no SOURCED/OURS label (file:line)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

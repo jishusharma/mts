@@ -1,0 +1,5 @@
+T05 run study=screen SEED=20261016 sets=1000 boot=2000
+0 T (flow-confirmed) d=1 h=60 40 mean=-0.0568 p=0.706 sdr=0.75
+1 notF d=1 h=60 1399 mean=-0.0067 p=0.630 sdr=0.67
+2 C (all encounters) d=1 h=60 1439 mean=-0.0081 p=0.654 sdr=0.66
+wrote C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\.claude\worktrees\agent-aeff7478879c89c20\MyTradingSys\research\dsa_backtest_audit_2026-10-16\scripts\T05\out\placebo_screen.csv

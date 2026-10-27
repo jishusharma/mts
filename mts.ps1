@@ -345,7 +345,10 @@ switch ($Verb.ToLower()) {
     "auto" {
         if ((Get-Procs "auto_trader" "Name='python.exe'").Count) { Ok "auto-trader already running"; break }
         if ((Test-Path $Halt) -or (Test-Path $HaltLoss)) { Show-Brakes; Say "Brakes are set - the auto-trader logs signals but places nothing until: mts resume" Yellow }
-        Open-Window "MTS auto-trader" "& 'C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe' -m MyTradingSys.execution.auto_trader"
+        # the same python.exe the shell resolves on this machine (was a hardcoded user path); no python = refuse, never start half-configured
+        $autoPy = (Get-Command python.exe -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1).Source
+        if (-not $autoPy) { Bad "python.exe not found on PATH: the auto-trader was not started"; exit 1 }
+        Open-Window "MTS auto-trader" "& '$autoPy' -m MyTradingSys.execution.auto_trader"
         Ok "auto-trader started in its own window - it trades Tom + layer signals on TESTNET; mts pause stops new trades"
     }
 

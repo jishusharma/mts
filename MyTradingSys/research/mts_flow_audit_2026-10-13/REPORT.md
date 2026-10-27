@@ -113,7 +113,7 @@ AI-translated captions, became priority 1.
 ### Step 6. Backtest
 | # | Mistake | Evidence | Status |
 |---|---|---|---|
-| 6a | The main simulators have never been shown to find a planted edge. Every "no edge" from them assumes they would see one. | Planted-edge tests exist only in research/test_p4_corrected.py and the candle pilot. There are none in backtest/ (tom_bt.py, tom_dax_bt.py, sim.py) [checked by search]. | Known (postmortem 8.3). Card never filed [checked] |
+| 6a | The main simulators have never been shown to find a planted edge. Every "no edge" from them assumes they would see one. | Planted-edge tests exist only in research/loose_code/test_p4_corrected.py and the candle pilot. There are none in backtest/ (tom_bt.py, tom_dax_bt.py, sim.py) [checked by search]. | Known (postmortem 8.3). Card never filed [checked] |
 | 6b | Touch fills, bid-only DAX bars, testnet fills taken as truth, stop slippage 0, backtest venue differs from execution venue. | Gap review G2-G4, G7, G8 | Known. Cards ready for G1, G4, G6 |
 | 6c | Tests run away from the trader's market were filed as verdicts. | Postmortem P11 | Known |
 

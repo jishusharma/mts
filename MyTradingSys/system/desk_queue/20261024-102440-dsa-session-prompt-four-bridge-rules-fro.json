@@ -1,0 +1,10 @@
+{
+  "done_when": "the four lines are in DSA_SESSION_PROMPT.md and the next DSA chat's bridge log shows no repeat of results #1, #5-#6, #50",
+  "from": "JIS-NB",
+  "id": "20261024-102440-dsa-session-prompt-four-bridge-rules-fro",
+  "need": "Add to DSA_SESSION_PROMPT.md: P1 if task=mts-boot fails boot by hand once and log it (T01 result #1); P2 blocks are PowerShell 5.1, never edit a report with .Replace(char) or a high-range regex, rewrite the file (T01 #50); P3 a brief path missing on this host is a candidate finding, check raw_fund and raw_1m_2022 siblings (T01 #38-#41); P4 write the bridge table while working. Source: MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/T10_BRIDGE_PLAYBOOK.md sections 3-5",
+  "posted": "2026-10-24T10:24:40Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "DSA_SESSION_PROMPT: four bridge rules from the T01 log (T10 playbook)"
+}

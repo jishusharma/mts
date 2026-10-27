@@ -1,7 +1,20 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T15:33:43Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": 28,
+    "folded": "2026-10-26T15:33:49Z",
+    "misses": 28,
+    "reads": [
+      "scripts/dev/desk.py",
+      "MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md",
+      "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
+      "MyTradingSys/research/fabio_transfer/test_ledger_audit.py"
+    ],
+    "session": "agent-af66ba192e815ca5d"
+  },
   "created": "2026-10-13T05:35:47Z",
   "depends_on": [],
   "done_when": "10 fields (5 rows x entry, stop) each with status KEPT/CHANGED/CONTESTED/NOT_IN_DATA + frame time in the .md; RV05_H2_READS.csv holds the blind reads (NULL where unreadable); CHANGED cells in the CSV; CONTESTED keep the CSV value + desk row id; check_rv05_h2.py exits 0; test_ledger_audit.py green. Verify: sha, empty git cherry, git ls-tree.",
@@ -11,6 +24,12 @@
   "id": "rv05-h2-position-line-evidence",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "RV05_H2_READS.csv + ledger .md table: 7 KEPT, 2 CHANGED (F12 entry 25105.18, F13 entry 251",
+      "ref": "21136eab1",
+      "utc": "2026-10-26T15:33:43Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,16 +49,22 @@
     "fabio"
   ],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT LAB:data CLASS:C1 REVIEWER:GPT medium blind re-read of the CONTESTED fields (desk row) + Lab_Guy Sonnet 5.5 (labguy-pass-b) WEIGHT:IMPORTANT. Fixes lab data (ledger); image-read rules A-7 apply. rv05-h3 follows in the same ledger. LAB_GUY 2026-10-18 fixes: (1) done_when 'five rows adjudicated' did not say what adjudicated means (E4): now a status per field; (2) three of the five cells are already repaired by H1 and two earlier reads disagree (F12 25105.78 vs 25105.18, F12-m2 stop, F13 entry 25106.50 vs 25108.90), so a third read by the same model family cannot settle them: CONTESTED goes to a non-Claude blind read (A-7); (3) 'full resolution' had no method: only lowres sheets exist locally, cv2 reads the mp4; (4) check script and READS file named, existing ledger tests kept green. Class C1: the Fabio layer cards read this ledger (B-shared data).",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:data CLASS:C1 REVIEWER:GPT medium blind re-read of the CONTESTED fields (desk row) + Lab_Guy Sonnet 5.5 (labguy-pass-b) WEIGHT:IMPORTANT. Fixes lab data (ledger); image-read rules A-7 apply. rv05-h3 follows in the same ledger. LAB_GUY 2026-10-18 fixes: (1) done_when 'five rows adjudicated' did not say what adjudicated means (E4): now a status per field; (2) three of the five cells are already repaired by H1 and two earlier reads disagree (F12 25105.78 vs 25105.18, F12-m2 stop, F13 entry 25106.50 vs 25108.90), so a third read by the same model family cannot settle them: CONTESTED goes to a non-Claude blind read (A-7); (3) 'full resolution' had no method: only lowres sheets exist locally, cv2 reads the mp4; (4) check script and READS file named, existing ledger tests kept green. Class C1: the Fabio layer cards read this ledger (B-shared data).\n2026-10-26 worktree disposition: archived local evidence and exact SHAs in MyTradingSys/research/worktree_disposition_20261026/REPORT.md. Recover only relevant missing proofs; do not rerun or merge stale producer branches. Existing task ownership unchanged.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-10-17T21:38:12Z",
   "refs": [
     "MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md",
-    "MyTradingSys/research/lab_guy/specs/rv05-h2-position-line-evidence.md"
+    "MyTradingSys/research/lab_guy/specs/rv05-h2-position-line-evidence.md",
+    "MyTradingSys/research/worktree_disposition_20261026/REPORT.md"
   ],
-  "result": "",
+  "result": "RV05_H2_READS.csv + ledger .md table: 7 KEPT, 2 CHANGED (F12 entry 25105.18, F13 entry 25108.90), 1 CONTESTED (F12-m2 stop, desk row 20261026-153028-blind-read-f12-m2-stop-price-tag-at-t-31); check_rv05_h2.py exits 0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
@@ -53,13 +78,14 @@
   "scope_sha": "61cf8a7d3634",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Blind reads first. Rows = CSV lines 33 F8, 45 F12, 47 F12-m2, 49 F13, 50 F13-m1 (header = line 1); fields entry (position-line average) and stop. Full-res frame at each cited t from F:/MTS/data/fabio_videos/DyS79Eb92Ug.f398.mp4 via cv2.VideoCapture (no ffmpeg); record row, field, frame_t, value|NULL in RV05_H2_READS.csv BEFORE opening CSV values or the RV05 table (A-7). Spec item 1.",
     "Status in code: KEPT (read within 0.25 pt of CSV), CHANGED (read agrees within 0.25 with one earlier read, differs from CSV), CONTESTED (all three differ: F12 entry 25105.78 vs 25105.18, F12-m2 stop 25098.75 vs 25098.25, F13 entry 25106.50 vs 25108.90), NOT_IN_DATA. Own read never settles CONTESTED: CSV stays, ONE desk row --target DSA-NUC for a non-Claude blind read. Spec item 2.",
     "Write the status table with frame times into the ledger .md (F13 entry, F12-m2 stop, 8-covered vs 10-open, label denominator explicit; DEFAULT OURS: displayed position-line average outranks a label-derived value, which stays in the note). Apply CHANGED cells to the CSV with the frame time in the note.",
     "check_rv05_h2.py (new, fabio_transfer/): every row x field has a status; every CHANGED cell has a frame time or NOT_IN_DATA; READS.csv has a reading (NULL ok) per field; CHANGED count equals the CSV cells differing from git HEAD."
   ],
+  "taken": "2026-10-26T15:33:43Z",
   "tests": "check_rv05_h2.py fails before the adjudication (no RV05_H2_READS.csv, no status table) and exits 0 after; a planted CSV edit with no frame time is caught; python -m pytest MyTradingSys/research/fabio_transfer/test_ledger_audit.py -q stays green",
   "title": "RV05 H2: read position lines and stop prices before applying existing Fabio entry repair",
   "weight": "IMPORTANT",

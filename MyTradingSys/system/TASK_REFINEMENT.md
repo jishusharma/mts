@@ -34,6 +34,7 @@ Optional card fields `latest` (list of `{kind: ship|report|audit|decision|signal
 ## Definition of Ready (`tasks.py check`, fail closed; also in the offline gate as `tasks.py lint`)
 A card is `ready` only if all hold, and the tool names every miss:
 1. goal, done_when (an observable: file, row count, number), at least one scope_in and one step.
+   Backtest and audit cards: done_when also says "exports `sim_desk/results/<id>.json`" (schema: research/sim_desk/DESIGN.md).
 2. lane valid; size S or M (an L card is split first); for SONNET/HAIKU/OPUS cards `est_turns` (whole number, <= 40, else split) and `worker`: agent only for size S and est_turns <= 15, else session (WORKERS.md; `tasks.py check` enforces it).
 3. Code lane: `tests` names the fail-first test. Run lane: copy-ready `commands`. OPUS: `approved_by`.
 4. `live_path` cards are lane JIS-NB only (builders never touch the live tree, restart, or open trades).
@@ -48,7 +49,7 @@ A ready card that later fails (a dependency reopens, someone edits it) is not se
    read the registry row and its evidence, grep for the files and the source quote, fill the card, run `tasks.py check <id>`. Anything that is
    "run it and read numbers" it delegates as a DSA desk task instead of scoping the answer itself. A question only the operator can answer
    becomes a Control Room decision, and the card waits as `refined` with the reason in `note`.
-3. **Trigger**: `tasks.py status` prints `REFINE_NEEDED` when cards wait and fewer than 3 are ready, else `REFINE_OK`. `relay.py tick` computes
+3. **Trigger**: `tasks.py status` prints `REFINE_NEEDED` when a raw card is over 1 h old, or cards wait and fewer than 3 are ready, else `REFINE_OK`. `relay.py tick` computes
    that line hourly (T0); at NEEDED the dispatcher runs the refiner, not a builder. A relay session also runs `tasks.py next` at
    hand-over: no ready card = refine first, never hand over a vague task.
 4. **Builder session**: `tasks.py next` -> `tasks.py brief <id>` is its whole prompt -> `sync.py claim` -> work -> `tasks.py done <id> --result` -> ship -> release.
@@ -72,6 +73,12 @@ Per card: Move to top, Hold, Drop, and Approve Opus where a card names Opus. A c
 to the artifact db, exactly like a decision. Pickup applies each unapplied one with `tasks.py apply-op <id> bump|hold|drop|approve [--note ..]`
 and sets `applied: "<date>"` on the doc. A held card comes back with `apply-op <id> release`. A card parked on a question (`asks`) shows it on the page; the operator answers in the Inbox, pickup copies the answer into the card `note` and runs `apply-op <id> retry`. Adding a task is the Inbox (kind Task): the
 pickup turns it into a raw card and replies with the card id. The operator never edits a card.
+
+## Promotion gate (tasks.py, enforced since commit 35c10e93, 2026-10-18, Opus review of planner batch 3; Lab_Guy owns the stamp for C1+)
+- Stamp grammar (both accepted): `REVIEWED:<date> <ACCEPT|T0-ONLY>` (planner) and `REVIEWED: <reviewer> <date>` (legacy). T0-ONLY is machine checks only, not a review.
+- `tasks.py check` promotes a card to ready only if: no active HOLD/STOP announcement is named in the note (`HOLD A-...`; clear it with `HOLD-CLEARED A-...` once lifted), and IMPORTANT/C1+ cards carry a real stamp (ACCEPT or reviewer-date). ROUTINE/C0 may stay T0-ONLY.
+- `take` and `done` additionally refuse CRUCIAL/CRITICAL or C2/C3 cards without a real stamp; a `live_path: true` card counts as C3.
+- Order: planner drafts and proposes weight and class; ONE batched Lab_Guy pass (up to 5 cards, Sonnet, Google pool) confirms or raises the class and writes the real stamp; C2 also needs a non-Claude spec review; C3 also the coordinator. A random sample of C0 cards is checked for under-classification.
 
 ## Rules
 - The card text is the contract: a builder that needs to ask a question hands the card back as `refined` with the question in `note`.

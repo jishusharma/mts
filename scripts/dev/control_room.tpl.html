@@ -306,7 +306,7 @@ const OPLBL = {bump:"Move to top", hold:"Hold", drop:"Drop", approve:"Approve Op
 function drawBacklog(){
   const c = BL.counts || {};
   $("#blline").textContent = BL.rows.length ? `${c.ready||0} ready · ${c.refined||0} being refined · ${c.raw||0} need scoping · ${c.active||0} running. ` +
-    (BL.line.startsWith("REFINE_NEEDED") ? "The ready stock is low, so a refiner session is due." : "Enough ready work is in stock.") : "";
+    (BL.line.startsWith("REFINE_NEEDED") ? "A raw card has waited over an hour, so a refiner run is due." : "No raw card is waiting.") : "";
   $("#bllist").innerHTML = BL.rows.map(r => {
     const [lbl, pill] = BLSTATE[r.state] || [r.state, "sev-LOW"];
     const pend = (blOps[r.id]||[]).map(o => `<span class="dstate">${esc(OPLBL[o]||o)} requested, applied at the next pickup</span>`).join(" ");

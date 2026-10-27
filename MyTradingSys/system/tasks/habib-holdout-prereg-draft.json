@@ -1,0 +1,44 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-24T14:29:47Z",
+  "depends_on": [],
+  "done_when": "PRE_REG_HABIB_PLANS.md exists with DRAFT banner, placebo definition, variant count; no holdout data read",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "DRAFT pre-registration for Habib plan-imbalance hold-out: placebo definition and variant count. Reads no holdout data. Operator approves later.",
+  "id": "habib-holdout-prereg-draft",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-24T14:30:00Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/habib_plan_imbalance_2026-10-20/PRE_REG_HABIB_PLANS.md"
+  ],
+  "scope_out": [
+    "No holdout data; do not edit plan_score.py or PLAN_LEDGER.csv"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read README.md, plan_score.py, PLAN_LEDGER.csv",
+    "Write DRAFT pre-reg; label params SOURCED/OURS"
+  ],
+  "tests": "doc only: grep for DRAFT banner and variant count",
+  "title": "Habib plan-imbalance hold-out pre-registration (DRAFT, operator approves later)",
+  "weight": "",
+  "worker": "agent"
+}

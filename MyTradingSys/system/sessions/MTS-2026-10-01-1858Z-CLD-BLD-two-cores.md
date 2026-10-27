@@ -18,7 +18,7 @@ handoff: SUPERVISOR_INBOX (top-5 fix list) + CLOUD_INBOX queue note for the fix 
 Usage unreadable, "85 assumed". Per brief: no subagents, three tables in one parent pass, scaffold written, fix pass (wave 2) NOT run, queue note appended.
 
 ## Deliverables
-research/TWO_CORES_READINESS_2026-10-01.md, research/TWO_CORES_SCAFFOLD_2026-10-01.md. Gate: docs only, run_all_tests.py --quick not run.
+research/_archive/loose_2026-10/TWO_CORES_READINESS_2026-10-01.md, research/_archive/loose_2026-10/TWO_CORES_SCAFFOLD_2026-10-01.md. Gate: docs only, run_all_tests.py --quick not run.
 
 ## Notes
 - CLOUD_INBOX held one note, from MTS-2026-10-01-1604Z-CLD-ANA-revalidate-tom-fabio (a completion line, not addressed to this session): no note addressed to this session, none removed.

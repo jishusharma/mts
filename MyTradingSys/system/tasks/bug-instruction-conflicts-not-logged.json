@@ -1,0 +1,88 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-26T23:39:53Z",
+  "commands": [
+    "python scripts/dev/tasks.py brief bug-instruction-conflicts-not-logged"
+  ],
+  "created": "2026-10-26T18:43:29Z",
+  "depends_on": [],
+  "done_when": "tasks.py conflict 'A | B' makes or bumps one bug-conflict-<hash> card per pair (seen count); CLAUDE.md has a one-line precedence rule (operator latest > CLAUDE.md > hook text > card text) and the same-turn conflict-log rule, within SIZE_CAPS; role_loader text appends the conflict hint; doctor warns when over 3 open conflict cards; test_tasks_conflict.py passes",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "AI sessions resolve contradicting instructions silently, so they recur. Seen 2026-10-27: CLAUDE.md step 5 and TURN METER say hand off after 10 operator or 40 tool turns, operator says keep working; role_loader said Pipeliner has no file while session was Lead; TURN METER cap changed 27 to 40. Make logging a conflict card automatic and deduplicated.",
+  "id": "bug-instruction-conflicts-not-logged",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "tasks.py conflict + CONFLICT-OPEN doctor check + hook hint + CLAUDE.md precedence + TRAFFI",
+      "ref": "3e3f6e84c",
+      "utc": "2026-10-26T23:39:53Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "station sessions loop the queue instead of stopping after one task (re-ship)",
+      "ref": "e4acda18a619",
+      "utc": "2026-10-26T23:33:34Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "e4acda18a619 station sessions loop the queue instead of stopping after one task (re-ship)",
+      "ref": "CLAUDE.md",
+      "utc": "2026-10-26T23:33:34Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-27 ACCEPT reviewer=sonnet-reviewer-add27d6c card=ddb14c7ca6e5 (independent Sonnet reviewer; its FIX on overlap applied as an order rule). DECISION (OURS): ordering by note not depends_on, so the card stays dispatchable; run it only after bug-station-session-stops-after-one-task ships (same CLAUDE.md steps 4-5, WORKERS.md rule 5, role_loader.py); the claim file-overlap check enforces it.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-26T23:37:00Z",
+  "refs": [],
+  "result": "tasks.py conflict + CONFLICT-OPEN doctor check + hook hint + CLAUDE.md precedence + TRAFFIC_BUSTERS B20; test_tasks_conflict.py 5 tests",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "scripts/dev/role_loader.py",
+    "scripts/dev/mts_doctor.py",
+    "CLAUDE.md",
+    "MyTradingSys/system/TRAFFIC_BUSTERS.md",
+    "MyTradingSys/system/WORKERS.md",
+    "scripts/dev/test_tasks_conflict.py"
+  ],
+  "scope_out": [
+    "live tree",
+    "deciding which of two conflicting instructions is right (operator decides)",
+    "re-adding turn_meter.py (removed 43d3bfc8f)",
+    "raising the CLAUDE.md size cap"
+  ],
+  "scope_sha": "e4acda18a619",
+  "size": "M",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Add tasks.py conflict subcommand: args A and B text, normalise (case, whitespace, order), hash, write or bump bug-conflict-<hash> (prio 1, lane SONNET, seen count, last session).",
+    "Fail-first test in scripts/dev/test_tasks_conflict.py: same pair twice (also swapped) gives one card with seen=2; a different pair gives a second card.",
+    "CLAUDE.md: one-line Precedence (latest operator order > CLAUDE.md > hook text > card text) and 'conflict: resolve by precedence, run tasks.py conflict the same turn, one line to operator, never stop'; detail in TRAFFIC_BUSTERS.md; trim CLAUDE.md to stay within SIZE_CAPS.",
+    "Fix the known conflicts that still exist: CLAUDE.md steps 4-5 name the keep-going exception (operator override already in WORKERS.md rule 5); role_loader accepts Lead mode Pipeliner after compaction (check the soft mark near role_loader.py:820); one cap value, in WORKERS.md rule 5 only. TURN METER hook is gone (43d3bfc8f): skip it.",
+    "role_loader injected text appends: if this contradicts an instruction you hold, run tasks.py conflict instead of silently picking.",
+    "mts_doctor.py check CONFLICT-OPEN: count open bug-conflict cards, WARN over 3; ship --release."
+  ],
+  "taken": "2026-10-26T23:39:53Z",
+  "tests": "scripts/dev/test_tasks_conflict.py (same file layout as scripts/dev/test_tasks.py); fail-first: subcommand absent on old code",
+  "title": "Instruction conflicts are silently resolved, never logged as bugs",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

@@ -1,0 +1,86 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-20T19:27:31Z",
+  "commands": [],
+  "created": "2026-10-18T04:10:19Z",
+  "depends_on": [],
+  "done_when": "COUNT_POWER.md with N, fire rate, gross-vs-cost and MDE per grid cell (DEV only) and the null spec.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Count-only check of funding_cvd_fade (NO-SOURCE research test, VISION exception 2) on the DEV window 2022-01..2024-06, which C1 never read: events per month, fire rate, N and MDE (power_mde.py), gross move at 4/16/48 bars vs 2x the 0.12% round-trip cost (gate 0b), and the random-entry null spec. No net P&L, no VALIDATE or HOLDOUT read.",
+  "id": "positioning-c1-longwindow-count-power",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Lab_Guy 2026-10-21 delivery check: commit on origin/fast-track, tests pass on trunk (61 pa",
+      "ref": "63166659",
+      "utc": "2026-10-20T19:27:31Z"
+    },
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "8faa3c298787 claim positioning-home-fit-audit",
+      "ref": "MyTradingSys/system/claims/positioning-home-fit-audit.md",
+      "utc": "2026-10-18T04:02:50Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Control Room pickup 2026-10-15: copy and apply 9 operator decisions (q-gap-a/b/c, q-pub-tr",
+      "ref": "d7749d092236",
+      "utc": "2026-10-15T09:54:44Z"
+    }
+  ],
+  "layers": [
+    "positioning"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DRAFT by positioning-home-fit-audit 2026-10-18; not yet REVIEWED. Lab result is untagged until reviewed. WEIGHT:ROUTINE. Independent of positioning-flowhorse-ledger-feasibility.",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "positioning-home-fit-audit 2026-10-18",
+  "refreshed": "2026-10-18T04:13:07Z",
+  "refs": [
+    "positioning-home-fit-audit"
+  ],
+  "result": "Lab_Guy 2026-10-21 delivery check: commit on origin/fast-track, tests pass on trunk (61 passed); left open by a cherry-pick without the done commit. (655d1074)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/backtest/layers/positioning/",
+    "MyTradingSys/backtest/layers/run_t055.py (import only)",
+    "MyTradingSys/backtest/power_mde.py",
+    "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
+    "MyTradingSys/research/positioning_c1_2026-10/ (new: count_power.py, test_count_power.py, COUNT_POWER.md)"
+  ],
+  "scope_out": [
+    "any P&L backtest run",
+    "tuning",
+    "edits to live-path code",
+    "edits to run_t055.py or funding_cvd_fade.py"
+  ],
+  "scope_sha": "d7749d092236",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_POSITIONING.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Write MyTradingSys/research/positioning_c1_2026-10/count_power.py (imports funding_cvd_fade_events; does not edit run_t055.py) and run it on 15m bars built from raw_1m_2022 klines with the 2020+ funding, DEV window only, for the 36 grid cells of run_t055.c1_grid().",
+    "Report per cell: events per month, fire rate (events per 1000 bars), per-year counts, and gross mean move at 4/16/48 bars versus 2 x 0.12% (gate 0b); compute N and MDE with power_mde.py; write INCONCLUSIVE in advance where N < 100.",
+    "Write MyTradingSys/research/positioning_c1_2026-10/COUNT_POWER.md incl. the random-entry null spec (same side mix, holds, taker cost, matched by funding regime and calendar) and the regime strata proposal for B154."
+  ],
+  "taken": "2026-10-20T19:27:31Z",
+  "tests": "A unit test (test_count_power.py) that the count script reproduces len(funding_cvd_fade_events(...)) on a fixed fixture and refuses any bar dated 2024-07-01 or later; fails before the script exists.",
+  "title": "Positioning C1 (NO-SOURCE): count-only events on the DEV window, fire rate, power, null spec (items 3/9/10/12)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

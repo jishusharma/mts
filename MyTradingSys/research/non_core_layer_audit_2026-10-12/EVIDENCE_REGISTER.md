@@ -166,11 +166,11 @@ Machine-readable twin: `EVIDENCE_REGISTER.json`; check with `verify_register.py`
 **ER-07**
 - spec: `MyTradingSys/items/T061_wavetrend_lazybear.md:28` `wt2   = SMA(wt1, 4)`
 - spec: `MyTradingSys/items/T061_wavetrend_lazybear.md:16` `Overbought Level 2 = 53`
-- survey: `MyTradingSys/research/T065_LAZYBEAR_SURVEY.md:5` `## 0. Evidence status`
+- survey: `MyTradingSys/research/_archive/loose_2026-10/T065_LAZYBEAR_SURVEY.md:5` `## 0. Evidence status`
 - board: `MyTradingSys/system/control_room.json:254` `"id": "wavetrend",`
 
 **ER-08**
-- survey: `MyTradingSys/research/T065_LAZYBEAR_SURVEY.md:9` `Not verified: the Squeeze Momentum author's *updated* source`
+- survey: `MyTradingSys/research/_archive/loose_2026-10/T065_LAZYBEAR_SURVEY.md:9` `Not verified: the Squeeze Momentum author's *updated* source`
 
 **ER-09**
 - code: `MyTradingSys/backtest/layers/cryptocred/cc_setups.py:53` `target_r: float = 1.5`

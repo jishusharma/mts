@@ -1,6 +1,6 @@
 # MTS live: trend - last 15 snapshots, side by side
 # usage:    . .\scripts\load.ps1   then type: trend
-$root = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
+$root = (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 Get-ChildItem "$root\runtime_data\snapshots\BTCUSDT_*.json" | Sort LastWriteTime -Desc | Select -First 15 | Sort LastWriteTime |
 ForEach-Object {
   $jj = Get-Content $_.FullName -Raw | ConvertFrom-Json

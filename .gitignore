@@ -80,6 +80,8 @@ runtime_data/screenshot_extracts/img/
 
 # --- Live tree marker (only in the JIS-NB checkout the live system runs from; see system/PARALLEL.md) ---
 .mts_live
+.gateway_owner
+.scratch_*.ps1
 
 # --- Backups / rejected worker output (archive via scripts/dev/declutter_backups.py) ---
 *.pre_*
@@ -177,6 +179,13 @@ MyTradingSys/runtime/orderflow_live/*.csv
 MyTradingSys/runtime/orderflow_live/_qhist/*.json
 MyTradingSys/runtime/oi_live/*.csv
 
+# Live-host generated files (card move-live-host-generated-files-status-md): rewritten by jobs on the live host, never committed (public repo).
+# STATUS.md stays tracked: make_status.py writes runtime_data/STATUS_live.md instead when it runs in the live tree.
+MyTradingSys/research/audits/AUDIT_DIGEST.md
+MyTradingSys/research/audits/T0_CHECKS.md
+MyTradingSys/runtime/BUILD_REPORT.md
+runtime_data/STATUS_live.md
+
 # wlow-bounce forward sample (runtime readings, never committed)
 MyTradingSys/runtime/wlow_bounce_forward.jsonl
 MyTradingSys/research/imbalance_qriptal_2026-10-16/events_*.csv
@@ -186,3 +195,25 @@ MyTradingSys/research/imbalance_qriptal_2026-10-16/events_*.csv
 .secrets/
 .env
 .env.*
+
+# --- Gemini / Antigravity tool-local folders ---
+.gemini/
+.antigravity/
+.agent/
+.idx/
+/ship.log
+
+# CBP/MTS shared transcript store: public repo, never commit new transcripts (147 older ones are already tracked)
+raw_transcripts_canonical/
+
+# Krown confluence S1: regenerated outcome-bearing event tables (never committed)
+MyTradingSys/research/krown_audit_2026-10-22/run/sealed/
+
+# mts_run.py headless-worker ledger (runtime)
+runtime_data/mts_run/
+
+# scratch files (public repo: never commit runtime data)
+runtime_data/_scratch_*
+scratch_*.py
+scratch_*.ps1
+MyTradingSys/research/pipeliner/STATION_WATCH_*.log

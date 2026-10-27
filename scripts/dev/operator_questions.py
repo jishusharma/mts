@@ -18,10 +18,13 @@ from collections import Counter
 from pathlib import Path
 
 DEFAULT_LOG = Path.home() / ".claude" / "operator_questions.jsonl"
+DEFAULT_DECISIONS = Path(__file__).resolve().parents[2] / "MyTradingSys" / "system" / "OPERATOR_DECISIONS.md"
 TAG_RE = re.compile(r"(?<![\w&])#([A-Za-z][\w-]{0,40})")
 AUTOMATED_HEADS = ("This session is being continued from a previous conversation", "<task-notification>",
                    "<system-reminder>", "<cross-session-message", "You are the MTS OVERNIGHT SUPER-SESSION COORDINATOR")
 MAX_TYPED_CHARS = 3000  # a typed question is short; longer prompts are pasted reports or briefs
+
+WEIGHT_ORDER = {"ROUTINE": 0, "IMPORTANT": 1, "CRUCIAL": 2, "CRITICAL": 3, "B-SHARED": 4}
 
 
 def is_automated(text):
@@ -31,6 +34,147 @@ def is_automated(text):
 
 def log_path():
     return Path(os.environ.get("OPERATOR_QUESTIONS_FILE") or DEFAULT_LOG)
+
+
+def decisions_path():
+    return Path(os.environ.get("OPERATOR_DECISIONS_FILE") or DEFAULT_DECISIONS)
+
+
+def parse_decisions(path=None):
+    """Parse OPERATOR_DECISIONS.md. Returns list of dicts:
+    {id, asked, stage, question, recommended, answer, state, weight, options, raw_json}"""
+    p = Path(path) if path else decisions_path()
+    if not p.is_file():
+        return []
+    rows = []
+    text = p.read_text(encoding="utf-8")
+    for block in re.split(r"^## ", text, flags=re.M)[1:]:
+        lines = block.splitlines()
+        head = [x.strip() for x in lines[0].split("|")]
+        if len(head) < 2 or not head[1].startswith("asked "):
+            continue
+        qid = head[0]
+        asked = head[1][6:].strip()
+        stage = head[2] if len(head) > 2 else ""
+
+        # Extract JSON block if present
+        meta = {}
+        m_json = re.search(r"```json\s*(\{.*?\})\s*```", block, re.DOTALL)
+        if m_json:
+            try:
+                meta = json.loads(m_json.group(1))
+            except Exception:
+                pass
+
+        fields = {k: v.strip() for k, v in re.findall(r"^(Recommended|Answer|Applied|Operator note \(verbatim\)):\s*(.*)$", block, re.M)}
+        question = next((x.strip() for x in lines[1:] if x.strip() and not x.startswith("Recommended:") and not x.startswith("Answer:")), "")
+        answer = fields.get("Answer", "")
+
+        # State resolution
+        if not answer or answer.startswith("(none yet)"):
+            state = "open"
+        elif fields.get("Applied", "").startswith("(not yet"):
+            state = "answered, not applied"
+        else:
+            state = "applied"
+
+        weight = str(meta.get("weight") or "").upper()
+        if not weight:
+            # fallback: Stage Live testnet defaults high, else ROUTINE
+            weight = "CRITICAL" if stage.lower() == "live testnet" else "ROUTINE"
+
+        rows.append({
+            "id": qid,
+            "asked": asked,
+            "stage": stage,
+            "question": question,
+            "title": meta.get("title", question),
+            "recommended": fields.get("Recommended", ""),
+            "answer": answer,
+            "state": state,
+            "weight": weight,
+            "no_auto": "NO AUTO-APPLY" in lines[0] or meta.get("no_auto_apply", False),
+        })
+    return rows
+
+
+def pending_questions(log_path=None, decisions_path=None):
+    """Typed operator questions with no recorded decision in OPERATOR_DECISIONS.md, ranked,
+    with pasted reports and harness events filtered out (RU7).
+    Also includes questions already in OPERATOR_DECISIONS.md with state == 'open'."""
+    lp = Path(log_path) if log_path else globals()["log_path"]()
+    dec_rows = parse_decisions(decisions_path)
+
+    # Decisions with an answer recorded (applied or answered)
+    answered_decisions = [d for d in dec_rows if d["state"] in ("applied", "answered, not applied")]
+    open_decisions = [d for d in dec_rows if d["state"] == "open"]
+
+    answered_texts = [d["title"].lower().strip() for d in answered_decisions if d["title"]]
+    answered_texts += [d["question"].lower().strip() for d in answered_decisions if d["question"]]
+
+    def is_decision_answered(prompt):
+        low = prompt.lower().strip()
+        for at in answered_texts:
+            if at and (at in low or low in at):
+                return True
+        return False
+
+    def match_open_decision(prompt):
+        low = prompt.lower().strip()
+        for od in open_decisions:
+            ot = od["title"].lower().strip()
+            oq = od["question"].lower().strip()
+            if (ot and (ot in low or low in ot)) or (oq and (oq in low or low in oq)):
+                return od
+        return None
+
+    raw_rows = read_rows(lp)
+    # Filter out automated, pasted, or overlong items
+    typed_rows = [r for r in raw_rows if not is_automated(r.get("prompt", ""))]
+
+    matched_open_ids = set()
+    result = []
+
+    for r in typed_rows:
+        prompt = r.get("prompt", "").strip()
+        if is_decision_answered(prompt):
+            continue
+        od = match_open_decision(prompt)
+        weight = "ROUTINE"
+        qid = ""
+        stage = ""
+        if od:
+            weight = od.get("weight", "ROUTINE")
+            qid = od.get("id", "")
+            stage = od.get("stage", "")
+            matched_open_ids.add(od.get("id"))
+        result.append({
+            "utc": r.get("utc", ""),
+            "session_id": r.get("session_id", ""),
+            "tags": r.get("tags", []),
+            "prompt": prompt,
+            "weight": weight,
+            "id": qid,
+            "stage": stage,
+        })
+
+    # Include any open questions in OPERATOR_DECISIONS.md that didn't appear in the local log file
+    for od in open_decisions:
+        if od["id"] not in matched_open_ids:
+            result.append({
+                "utc": od.get("asked", ""),
+                "session_id": "",
+                "tags": [od.get("stage", "").lower()] if od.get("stage") else [],
+                "prompt": od.get("question") or od.get("title", ""),
+                "weight": od.get("weight", "ROUTINE"),
+                "id": od["id"],
+                "stage": od.get("stage", ""),
+            })
+
+    # Rank by weight (higher weight first), then date/utc
+    result.sort(key=lambda x: (-WEIGHT_ORDER.get(x.get("weight", "ROUTINE"), 0), x.get("utc", "")))
+    return result
+
 
 
 def read_rows(path):
@@ -126,6 +270,20 @@ def cmd_prune(args):
     print(f"{'removed' if args.apply else 'would remove'} {len(removed)}, keep {len(keep)} in {path}")
 
 
+def cmd_pending(args):
+    """Typed operator questions with no recorded decision in OPERATOR_DECISIONS.md, ranked (RU7)."""
+    pending = pending_questions()
+    if args.json:
+        print(json.dumps(pending, indent=2, ensure_ascii=False))
+        return
+    print(f"{len(pending)} pending question(s) for the operator:")
+    for n, r in enumerate(pending, 1):
+        tags = ",".join(r.get("tags", [])) or "-"
+        qid = f" [{r['id']}]" if r.get("id") else ""
+        print(f"{n}. [{r.get('weight', 'ROUTINE')}]{qid} {r.get('utc', '')} tags={tags}")
+        print(f"   {r.get('prompt', '')}")
+
+
 def main(argv=None):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # Windows consoles default to cp1251/cp1252
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -145,6 +303,9 @@ def main(argv=None):
     pr.add_argument("--apply", action="store_true", help="write the pruned log (default: dry run)")
     pr.add_argument("--out", help="file to receive the removed rows, for audit")
     pr.set_defaults(fn=cmd_prune)
+    pend = sub.add_parser("pending", help="typed operator questions with no recorded decision, ranked")
+    pend.add_argument("--json", action="store_true", help="print JSON array")
+    pend.set_defaults(fn=cmd_pending)
     args = p.parse_args(argv)
     args.fn(args)
     return 0

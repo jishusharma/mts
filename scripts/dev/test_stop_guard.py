@@ -107,6 +107,28 @@ class StopGuardTest(unittest.TestCase):
             "terminationReason": "NO_TOOL_CALL",
         })), "")
 
+    def test_fast_path_matches_reference_in_every_state(self):
+        for step in ("clean", "wip", "ahead", "live"):
+            if step == "wip":
+                (self.a / "wip.py").write_text("x\n", newline="\n")
+            elif step == "ahead":
+                sh(self.a, "add", "wip.py")
+                sh(self.a, "commit", "-q", "-m", "w")
+            elif step == "live":
+                (self.a / ".mts_live").write_text("", newline="\n")
+            self.assertEqual(stop_guard.reason(self.a), stop_guard._slow_reason(self.a), step)
+        sh(self.a, "checkout", "-q", "fast-track")
+        self.assertEqual(stop_guard.reason(self.a), stop_guard._slow_reason(self.a))
+        sub = self.a / "deep" / "er"
+        sub.mkdir(parents=True)
+        self.assertEqual(stop_guard.reason(sub), stop_guard._slow_reason(sub))
+
+    def test_clean_tree_does_not_import_sync(self):
+        code = ("import sys, json; sys.path.insert(0, %r); import stop_guard; r = stop_guard.reason(%r); "
+                "print(json.dumps([r, 'sync' in sys.modules]))" % (str(Path(__file__).resolve().parent), str(self.a)))
+        r = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True)
+        self.assertEqual(json.loads(r.stdout.strip().splitlines()[-1]), [None, False], r.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()

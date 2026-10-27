@@ -13,6 +13,24 @@ Entry format: `### A-<yyyymmdd>-<n> <kind> <title>` with kind one of INFO, DO-NO
 
 ## ACTIVE
 
+### A-20261026-1 DO-NOW NUC runs on a Gateway profile: login B is off there, send the heavy load to the NUC (operator 2026-10-26)
+- Applies to: every session; coordinators route work, NUC sessions work the queue.
+- Until: the operator posts the end of it.
+- What: read `GATEWAY_NUC.md` (routing, rules, switch on/off). Fable-lane and heavy card work with no private data goes to JIS-NUC (card or `desk.py post ... --target JIS-NUC`); NUC sessions take the next card when one ships. Gateway sessions touch public tracked files only, run in a worktree, never read `.secrets`, `.env`, runtime or the live tree.
+- Why: the gateway has no weekly cap, login B is not available on the NUC while it runs, and the other logins are capped.
+
+### A-20261024-1 DO-NOW Every station: restart cleanup and a cleanup roll call (operator yes 2026-10-24)
+- Applies to: every station (device + login, STATION_CLEANUP.md section 1). The first session on each device to read this does it once for that device.
+- Until: the station has sent `STATION <device>/<login> cleanup: ...` (mts_signal send) and `python scripts/dev/c_drive_guard.py status` shows "for this checkout".
+- What: roll call first (STATION_CLEANUP.md section 5). Install only after the operator's yes. From the primary checkout (never a worktree): fast-forward it to origin/fast-track if it has no local edits (if it has, leave them and say so). Then `python scripts/dev/c_drive_guard.py install` and `status`. `status` must say "for this checkout"; an older primary has no `install` mode and would print a dry run instead, so if `status` does not say so, the install did nothing: say so.
+- Why: JIS-NB fell to 12.8 GB free on 2026-10-24; tests stalled on low C: (jis-nb, 16:03Z, test_run_removes_dead_ticket >300 s). The guard's old prefix list missed the test dirs filling %TEMP%.
+
+### A-20261023-1 DO-NOW Every station: save unshipped worktree work, then tidy (operator 2026-10-23)
+- Applies to: every station (station = one device with one login, operator 2026-10-23). The first session on each device to read this does it once for that device.
+- Until: each device (JIS-NB, JIS-NUC, DESKTOP-F7IU69N) has sent `STATION <device>/<login> worktrees: ...` done.
+- What: card `every-station-save-unshipped-worktree-wo`: `sync.py where --all`; ship real work from its own tree; never commit runtime data; `python scripts/dev/sync.py tidy --apply`.
+- Why: JIS-NUC holds 8 commits on no origin branch (nuc-shares-script 4, argon-blind-read-7-frames 2, lab-formula-spec-recount 2); a lost disk loses them.
+
 ### A-20261018-1 INFO Lab_Guy workflow v3.1 is in force (design), enforcement is being built
 - Applies to: every session that creates or refines a card, or reads a lab result.
 - Until: replaced by the machine gate (card `lab-trust-tag`).
@@ -47,6 +65,14 @@ Entry format: `### A-<yyyymmdd>-<n> <kind> <title>` with kind one of INFO, DO-NO
 - Operator answers wanted: ROUTING.md conflicts C1-C7 (bottom of that file).
 
 ## EXPIRED
+### A-20261024-1 HOLD Tooling freeze (operator 2026-10-24)
+- Applies to: every session that would add to scripts/dev, .claude hooks or MyTradingSys/system.
+- Until: the simplification session in `research/mts_doctor/simplify_2026-10-24/BRIEF.md` reports done.
+- What: no new hooks, gate steps, roles, check scripts or rules. Allowed: deletions, one-line fixes, reverting a red trunk.
+  Trading code (layers, backtest, CBP, live path) is not affected.
+- ENDED 2026-10-24 by MTS_Doctor: done-when met. Non-live ship fb139c57c passed its local gate in 11.3 s (goal < 2 min);
+  hook cost 0.27 s per tool call (goal < 0.5 s, hook_bench.py -n 3); CI green; -3,265 lines. See `research/mts_doctor/REPORT_2026-10-24.md`.
+  Prefer deleting over adding: a new hook or gate step still needs a measured catch.
 ### A-20261018-5 HOLD No new consumers of unchecked lab bases (operator OK 2026-10-18)
 - Applies to: every session creating or starting a card that reads a lab event table, the Q76 / B187 chain or another lab result as its base.
 - Until: that result carries a trust tag at or above the card's class (card `lab-trust-tag`), or the operator lifts it.

@@ -1,5 +1,6 @@
 """scripts/dev/role_loader.py: role triggers, derived tokens, banner injection, SessionStart re-inject, check."""
 import json
+import re
 import subprocess
 import sys
 import tempfile
@@ -146,6 +147,13 @@ class TestInject(Base):
         self.assertIn("ROLE CONTEXT LOST", t)
         self.assertEqual(self.hook("what is the BTC read?", sid="none"), "")
 
+    def test_reminder_is_not_repeated_every_prompt(self):
+        self.put_role()
+        self.hook("You are Eagle_Eyes.", sid="m2")
+        got = [bool(self.hook("what is the BTC read?", sid="m2")) for _ in range(2 * rl.REMIND_EVERY)]
+        self.assertEqual(sum(got), 2)
+        self.assertTrue(got[0])
+
     def test_session_start_reinjects_recorded_role(self):
         self.put_role()
         self.hook("You are Eagle_Eyes.", sid="r1")
@@ -153,9 +161,63 @@ class TestInject(Base):
         self.assertTrue(t.startswith("Session resumed/compacted: re-confirm"))
         self.assertIn("ROLE LOADED: Eagle_Eyes", t)
 
+    def test_session_start_records_the_token_it_served_when_trunk_changed(self):
+        self.put_role()
+        self.hook("You are Eagle_Eyes.", sid="r2")
+        old = rl.role_meta("r2", "Eagle_Eyes")["token"]
+        self.put_role(role_text(body=BODY + "A rule added after the session started.\n"))
+        t = self.hook("", sid="r2", event="SessionStart")
+        new = rl.compute_token(self.trunk[f"{rl.ROLES_REL}/eagle_eyes.md"].replace("\r\n", "\n"))
+        self.assertNotEqual(old, new)
+        self.assertIn(f"token {new}", t)
+        self.assertEqual(rl.role_meta("r2", "Eagle_Eyes")["token"], new)    # the reminder and banner verify read this
+        r = self.hook("what is the BTC read?", sid="r2")
+        self.assertIn(f"token {new}", r)
+
     def test_session_start_without_role_is_silent(self):
         self.put_role()
         self.assertEqual(self.hook("", sid="fresh", event="SessionStart"), "")
+
+
+class TestFallbackIsASoftHint(Base):
+    """Flow A2 (operator 2026-10-23): a fallback-picked role (the word "revalidat" gave a doctor session Lab_Guy) came back after
+    every compaction. Only an explicit `You are X.` line is a role session; role_loader and model_guard.role_session agree."""
+    FALLBACK = "Here is a chart screenshot of BTC 15m, what do you see?"
+
+    def fb(self, sid):
+        pick = {"name": "Eagle_Eyes", "reason": "task text says screenshot", "tie": []}
+        with mock.patch.object(rl, "pick_role", return_value=pick):
+            return self.hook(self.FALLBACK, sid=sid)
+
+    def test_fallback_role_is_not_reinjected_after_compaction(self):
+        self.put_role()
+        self.assertIn("(fallback: ", self.fb("f1"))
+        self.assertEqual(self.hook("", sid="f1", event="SessionStart"), "")
+
+    def test_fallback_role_gets_no_every_6th_prompt_reminder(self):
+        self.put_role()
+        self.fb("f2")
+        got = [self.hook("what is the BTC read?", sid="f2") for _ in range(2 * rl.REMIND_EVERY)]
+        self.assertEqual([g for g in got if g], [])
+
+    def test_explicit_role_is_reinjected_and_reminded(self):
+        self.put_role()
+        self.hook("You are Eagle_Eyes.", sid="f3")
+        self.assertIn("ROLE LOADED: Eagle_Eyes", self.hook("", sid="f3", event="SessionStart"))
+        self.assertIn("Role: Eagle_Eyes", self.hook("what is the BTC read?", sid="f3"))
+
+    def test_explicit_after_fallback_upgrades_the_role(self):
+        self.put_role()
+        self.fb("f4")
+        self.hook("reload role Eagle_Eyes", sid="f4")
+        self.assertIn("ROLE LOADED: Eagle_Eyes", self.hook("", sid="f4", event="SessionStart"))
+
+    def test_rules_text_carries_the_out_of_role_rule(self):
+        self.put_role()
+        t = self.hook("You are Eagle_Eyes.", sid="f5")
+        self.assertIn("OUT OF YOUR ROLE", t)
+        self.assertIn("tasks.py new", t)
+        self.assertIn("You are <Owner>.", t)
 
 
 class TestVerify(Base):
@@ -234,8 +296,199 @@ class TestRepoRoles(unittest.TestCase):
         for f in files:
             self.assertIsNotNone(rl.parse_header(f.read_bytes().decode("utf-8").replace("\r\n", "\n")), f.name)
 
+    def test_every_role_emits_under_the_hook_cap(self):
+        """Claude Code truncates hook-injected text at 10,000 chars; the rest of a role would be silently lost."""
+        def local_show(repo, rel):
+            p = REPO / rel
+            return p.read_bytes().decode("utf-8") if p.exists() else None
+        with mock.patch.object(rl, "git_show", local_show), mock.patch.object(rl, "git_sha8", lambda r: "abcd1234"), \
+                mock.patch.object(rl, "lease_suffix", lambda n, r: ""):
+            for f in rl.role_files(REPO):
+                h = rl.parse_header(f.read_bytes().decode("utf-8").replace("\r\n", "\n"))
+                n = len(rl.build_text(h["name"], REPO, True))
+                self.assertLess(n, 9500, f"{f.name} emits {n} chars")
+
     def test_check_passes_on_repo(self):
         self.assertEqual(rl.check(REPO, lambda x: None), 0)
+
+    def test_old_role_lines_open_lead(self):
+        """Operator 2026-10-25: Thinker, Admin_Guy, Pipeliner, MTS_Doctor (and every old alias) are one Lead; 7 roles."""
+        roles = rl.local_roles(REPO)
+        for name in ("Lead", "1985Artifacts_Guy", "Eagle_Eyes", "Lab_Guy", "Supervisor"):
+            self.assertIn(name, roles)
+        for gone in ("Thinker", "Admin_Guy", "Pipeliner", "MTS_Doctor", "Artifacts_Guy", "Q&A_Helper", "Traffic_Controller"):
+            self.assertNotIn(gone, roles)
+        want = {"You are Lead.": "Lead", "You are Thinker.": "Lead", "I need a thinker": "Lead", "You are Think_Guy.": "Lead",
+                "You are Admin_Guy.": "Lead", "You are Q&A_Helper.": "Lead", "You are Network_Admin_Guy.": "Lead",
+                "You are Pipeliner.": "Lead", "Start the Pipeliner.": "Lead", "You are Traffic_Controller.": "Lead",
+                "You are MTS_Doctor.": "Lead", "You are doctor.": "Lead", "be the think guy": "Lead",
+                "You are Supervisor.": "Supervisor", "You are Artifacts_Guy.": "1985Artifacts_Guy"}
+        for prompt, name in want.items():
+            self.assertEqual(rl.match_roles(prompt, roles), [name], prompt)
+
+    def test_lead_core_and_modes(self):
+        core = (REPO / rl.ROLES_REL / "lead.md").read_bytes().decode("utf-8").replace(chr(13) + chr(10), chr(10))
+        self.assertLessEqual(len(core) + core.count(chr(10)), 4000)
+        self.assertIn("ASKED WORK RUNS NOW", core)
+        self.assertIn("First message each day: run python scripts/dev/mts_doctor.py and show its HEALTH line in the reply.", core)
+        files = sorted(p.stem for p in (REPO / rl.ROLES_REL / "lead").glob("*.md"))
+        self.assertEqual(files, ["admin", "doctor", "pipeline", "think"])
+        self.assertEqual(sorted(re.findall(r"`roles/lead/(\w+)\.md`", core)), files)
+        pipe = (REPO / rl.ROLES_REL / "lead" / "pipeline.md").read_text(encoding="utf-8")
+        self.assertIn("lease.py acquire Pipeliner", pipe)
+
+    def test_every_role_and_alias_has_a_file_and_banner(self):
+        for name in rl.KNOWN_ROLES:
+            f = REPO / rl.ROLES_REL / rl.file_for(name)
+            self.assertTrue(f.exists(), name)
+            h = rl.parse_header(f.read_bytes().decode("utf-8").replace("\r\n", "\n"))
+            self.assertEqual(h["name"], name)
+        import lease
+        self.assertEqual(tuple(rl.SINGLETON_ROLES), tuple(lease.SINGLETONS))   # the loader and the lease agree on who is single
+        self.assertEqual(lease.SINGLETONS, ("Pipeliner",))
+        for alias_of, olds in rl.ALIASES.items():
+            self.assertIn(alias_of, rl.KNOWN_ROLES)
+            self.assertTrue(olds)
+
+
+class BootStepTests(unittest.TestCase):
+    """boot_step must find the Boot section, not prose that merely starts with the word Boot (review 2026-10-22)."""
+
+    def test_prose_line_before_heading_is_skipped(self):
+        body = ("# R\nBoot reads only what Boot step 3 names (cite file:line + commit date, else NOT_IN_DATA).\n\n"
+                "## Boot (once)\n1. `python scripts/dev/sync.py start x`.\n")
+        self.assertEqual(rl.boot_step(body), "1. `python scripts/dev/sync.py start x`.")
+
+    def test_every_real_role_names_its_first_command(self):
+        for f in sorted((REPO / rl.ROLES_REL).glob("*.md")):
+            step = rl.boot_step(f.read_text(encoding="utf-8"))
+            self.assertNotIn("NOT_IN_DATA", step, f.name)
+            self.assertNotIn("first step of the file", step, f.name)
+            self.assertNotIn("Open `SUPER_LOOP.md`", step, f.name)
+
+    def test_roles_md_is_an_index_under_1200_tokens(self):
+        """roles-md-index-slim: ROLES.md holds the index, role prose lives in roles/*.md (~4 chars per token)."""
+        text = (REPO / "MyTradingSys/system/ROLES.md").read_text(encoding="utf-8")
+        self.assertLess(len(text) // 4, 1200)
+
+
+class TestWrappedFirstPrompt(Base):
+    """Failure review 2026-10-23 (cause 4): start_session wraps the brief; the role line was at char 644, behind a system-reminder."""
+    WRAPPED = ("<system-reminder>\nThis is a git worktree: an isolated copy of the repository. Run all commands from this directory. "
+               "Do NOT cd to the original repository root. The git stash stack is shared with the main checkout and all other "
+               "worktrees; never use bare git stash. Is a git repository: true. Primary working directory: C:/x/.claude/worktrees/a-b-c1\n"
+               "</system-reminder>\nBackground (from the session that started this one): the operator asked for a live chart read; "
+               "the supervisor wants the Admin_Guy queue and a pipeliner check left alone, and the tokens, charts and files under runtime_data untouched.\nTask:\n"
+               "You are Eagle_Eyes. Read the live BTC chart and report.\n")
+
+    def test_fixture_is_realistic(self):
+        self.assertGreater(self.WRAPPED.index("You are Eagle_Eyes"), 600)
+
+    def test_role_line_past_char_600_behind_a_reminder_loads_the_role(self):
+        self.put_role()
+        out = self.hook(self.WRAPPED)
+        self.assertIn("Eagle_Eyes", out)
+        self.assertIn("BOOT (once)", out)
+
+    def test_pasted_wrapper_and_reminder_then_role_line(self):
+        self.put_role()
+        out = self.hook('<system-reminder>notice</system-reminder>\n<pasted_content id="1">\nYou are Eagle_Eyes.\nGo\n</pasted_content>')
+        self.assertIn("BOOT (once)", out)
+
+    def test_role_words_inside_a_sentence_never_switch_roles(self):
+        self.put_role()
+        for i, p in enumerate((
+                "<system-reminder>n</system-reminder>\nBackground: x\nTask:\nPlease tell me why you are Eagle_Eyes in the log.",
+                "<system-reminder>n</system-reminder>\nreview: he said you are Eagle_Eyes",
+                "<system-reminder>n</system-reminder>\n" + ("filler line " * 6 + "\n") * 8 + "You are Eagle_Eyes.")):
+            self.assertNotIn("BOOT (once)", self.hook(p, sid=f"s{i}"), p)
+
+
+class TestCiRunsOnRoleFiles(unittest.TestCase):
+    def test_a_role_file_change_triggers_ci(self):
+        """Failure review 2026-10-23 cause 8: the CI path filter skipped MyTradingSys/system/**, so a role-file edit shipped untested."""
+        import fnmatch
+        lines = (REPO / ".github/workflows/ci.yml").read_text(encoding="utf-8").split("on:", 1)[1].split("pull_request:", 1)[0]
+        pats = [ln.split("- ", 1)[1].split("#")[0].strip().strip("'\"") for ln in lines.splitlines() if ln.strip().startswith("- ")]
+        for f in ("MyTradingSys/system/roles/builder.md", "MyTradingSys/system/roles/ROSTER.json"):
+            self.assertTrue(any(fnmatch.fnmatch(f, p) for p in pats), (f, pats))
+
+
+class TestRoleLineReview(Base):
+    """Review of 9f0cb459c (2026-10-23_fix34_replay_and_review.md): the 300-char scan on the cleaned text reached later sentences."""
+    NOTICE = "<system-reminder>\n" + "notice text " * 30 + "\n</system-reminder>\n"
+
+    def test_only_the_named_role_loads_when_a_later_sentence_names_another(self):
+        roles = {"Supervisor": ["supervisor"], "Session_Planner": ["session_planner", "session planner"], "Thinker": ["thinker"]}
+        p = self.NOTICE + "You are Supervisor. Login C. Two hours. Start a session planner for the cards."
+        self.assertEqual(rl.match_roles(p, roles), ["Supervisor"])
+        quote = self.NOTICE + 'Operator request (verbatim intent, 2026-10-20): "What about a thinker? I need a thinker for this."'
+        self.assertEqual(rl.match_roles(quote, roles), [])
+
+    def test_real_wrapped_briefs_with_text_after_the_name_load(self):
+        """Replay 2026-10-23 (transcripts 35162ba1, 1672df64): the role name is followed by words or a digit-led name."""
+        roles = {"Lab_Guy": ["lab_guy"], "1985Artifacts_Guy": ["1985artifacts_guy"]}
+        wrap = "Background (from the session that started this one): " + "context " * 60 + "\n\nTask:\n"
+        self.assertEqual(rl.match_roles(wrap + "You are Lab_Guy for ONE batched review pass.", roles), ["Lab_Guy"])
+        self.assertEqual(rl.match_roles(wrap + "You are 1985Artifacts_Guy (roles/ file via role loader).", roles),
+                         ["1985Artifacts_Guy"])
+
+    def test_other_role_phrases_behind_long_wrappers_still_load(self):
+        """Diff review of this fix, finding 1: "I need a pipeliner" behind a 300+ char wrapper; finding 2: a non-str prompt."""
+        roles = {"Pipeliner": ["pipeliner"], "Thinker": ["thinker"]}
+        for p in (self.NOTICE + "I need a pipeliner", "Background (from x): " + "context " * 60 + "\n\nTask:\nI need a pipeliner for this"):
+            self.assertEqual(rl.match_roles(p, roles), ["Pipeliner"], p[-40:])
+        self.assertEqual(rl.match_roles(5, roles), [])
+
+
+class TestModeCommand(Base):
+    """K1 role-loader-mode-command: `role_loader.py mode <name>` serves roles/lead/<name>.md from trunk, fails closed."""
+    REL = f"{rl.ROLES_REL}/lead/think.md"
+
+    def run_mode(self, name, sid="sm1"):
+        import contextlib
+        import io
+        buf = io.TextIOWrapper(io.BytesIO(), encoding="utf-8", newline="\n")
+        with mock.patch.object(rl, "REPO", self.repo), mock.patch.dict("os.environ", {"CLAUDE_CODE_SESSION_ID": sid}), \
+                contextlib.redirect_stdout(buf):
+            rc = rl.main(["role_loader.py", "mode", name])
+            buf.flush()
+        return rc, buf.buffer.getvalue().decode("utf-8")
+
+    def test_mode_prints_trunk_file_and_banner(self):
+        body = "# Think mode\nREAD ME 123\n"
+        self.trunk[self.REL] = body
+        rc, out = self.run_mode("think")
+        self.assertEqual(rc, 0)
+        self.assertIn("READ ME 123", out)
+        self.assertIn(f"MODE LOADED: think · token {rl.compute_token(chr(10) + body)} · {self.REL} @ abcd1234", out)
+        self.assertEqual(rl.injected("sm1"), [])  # only pipeline marks the lease role
+        # pipeline: soft Pipeliner mark for the lease, Lead stays the only explicit role (compaction re-injects lead.md)
+        self.trunk[f"{rl.ROLES_REL}/lead/pipeline.md"] = "# Pipeline\nbody\n"
+        rl.mark_injected("sm1", "Lead", explicit=True)
+        self.assertEqual(self.run_mode("pipeline")[0], 0)
+        self.assertIn("Pipeliner", rl.injected("sm1"))
+        self.assertEqual(rl.explicit_injected("sm1"), ["Lead"])
+
+    def test_mode_missing_fails_closed(self):
+        for name in ("nope", "../builder", ""):
+            rc, out = self.run_mode(name)
+            self.assertEqual(rc, 1, name)
+            self.assertIn("MODE NOT LOADED", out)
+            self.assertNotIn("MODE LOADED:", out)
+
+
+class TestBareLoginStart(Base):
+    """Operator 2026-10-26: the whole start is one word per login: `login A|B|C` loads the Supervisor."""
+    ROLES = {"Supervisor": ["supervisor"], "Eagle_Eyes": ["eagle_eyes"]}
+
+    def test_login_letter_alone_loads_supervisor(self):
+        for p in ("login C", "Login a.", "  LOGIN B  ", "<system-reminder>" + chr(10) + "x" + chr(10) + "</system-reminder>" + chr(10) + "login A"):
+            self.assertEqual(rl.match_roles(p, self.ROLES), ["Supervisor"], p)
+
+    def test_login_inside_a_sentence_or_other_letter_does_not(self):
+        for p in ("hello login c", "login D", "login C and fix the bug", "what is login A for?"):
+            self.assertEqual(rl.match_roles(p, self.ROLES), [], p)
 
 
 if __name__ == "__main__":

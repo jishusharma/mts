@@ -1,0 +1,10 @@
+{
+  "done_when": "DIFF, SE, t from the independent diff_se() match RESULT.md (0.0111, t 0.61) to 4 decimals, or the difference is written into T03_planted_edges.md",
+  "from": "JIS-NB",
+  "id": "20261023-115730-t03-blocked-data-mal-bb-a1-diff-vs-contr",
+  "need": "Rebuild mal_bb_mid_engulf A1 control set (n 2486, bounce-state bars with no engulf, SHORT h=60) from F:/MTS/data/tom_raw/klines (DEV only, before 2024-07-01) and recompute DIFF, SE and t with scripts/T03/t03_stats.py diff_se(); published DIFF +0.0111, t 0.61. The control events are in no committed file; this machine (Lenovo) has no F: drive. [re-routed from DSA by Pipeliner 2026-10-23: DSA not taking rows; old row 20261018-183805-t03-blocked-data-mal-bb-a1-diff-vs-contr]",
+  "posted": "2026-10-23T11:57:30Z",
+  "status": "pending",
+  "target": "JIS-NB",
+  "title": "T03 BLOCKED-DATA: mal_bb A1 DIFF vs control rebuild"
+}

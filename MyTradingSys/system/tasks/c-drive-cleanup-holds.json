@@ -1,0 +1,70 @@
+{
+  "approved_by": "operator 2026-10-25 via MTS_Doctor",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-25T12:15:53Z",
+  "depends_on": [],
+  "done_when": "tidy/reuse/guard tests pass and one real guard run reports GB freed",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "C: must not fill: finished worktrees retire after 1 h, same-slug trees are reused, repo temp dirs go after 6 h, guard runs daily from the hook",
+  "id": "c-drive-cleanup-holds",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Ship under 2 minutes: gate-file changes run a budgeted smoke gate, second ship is a note",
+      "ref": "092925c0ca56",
+      "utc": "2026-10-25T11:54:35Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "df160f3fc5fc station cleanup: prune the test dirs that fill %TEMP%, keep state dirs, logon",
+      "ref": "MyTradingSys/system/QUICK_ANSWERS.md",
+      "utc": "2026-10-24T16:27:10Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-25T12:23:23Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/sync.py (start/tidy only)",
+    "scripts/dev/c_drive_guard.py",
+    "scripts/dev/mts_run.py",
+    "MyTradingSys/system/QUICK_ANSWERS.md"
+  ],
+  "scope_out": [
+    "roles/*.md",
+    "CLAUDE.md",
+    "tasks.py",
+    "preship.py",
+    "supervisor.py",
+    "mts_doctor.py"
+  ],
+  "scope_sha": "092925c0ca56",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "tidy idle 1 h",
+    "start reuse",
+    "guard daily+plan+main pull",
+    "tests",
+    "ship"
+  ],
+  "tests": "test_sync tidy_retires_a_shipped_clean_tree_after_one_hour_not_24; test_c_drive_guard own_gate_basetemps_go_after_6_h",
+  "title": "c-drive-cleanup-holds",
+  "weight": "",
+  "worker": "session"
+}

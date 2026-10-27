@@ -1,6 +1,6 @@
 # WORKERS: which worker runs a task, on which model (canonical; operator 2026-10-17)
 
-Every other file points here. Numbers come from `python scripts/dev/worker_cost_report.py --days 5` (311 transcripts, 2026-10-12..17;
+Every other file points here. Numbers come from a 5-day transcript count (`worker_cost_report.py`, removed 2026-10-24; 311 transcripts, 2026-10-12..17;
 "eq" = input-price-equivalent tokens: input 1, cache-write 1.25, cache-read 0.1, output 5; list-price ratios between models NOT applied).
 
 ## Evidence
@@ -15,32 +15,31 @@ Every other file points here. Numbers come from `python scripts/dev/worker_cost_
 ## The rule
 1. **Worker type is set before the work starts**, on the task card: `est_turns` (whole number) and `worker` (`agent` | `session`);
    `tasks.py check` enforces it for SONNET/HAIKU/OPUS-lane cards (TASK_REFINEMENT.md). Run lanes (DSA, JIS-NB) are not Claude-worker cards.
-2. **Session** (`start_session`, visible in the sidebar) is the default: anything over 15 expected turns, size M, anything the
+2. **Session** (`start_session`, visible in the sidebar) is the default: anything over 30 expected turns, anything the
    operator may want to open or steer, any build wave or watch.
-3. **One-use Agent** (background, Sonnet, used once, never SendMessage'd) only for size S with `est_turns` <= 15: a read, a single
-   fix, a card. The brief says "stop at 20 turns and report". Also the fallback on event turns where `start_session` is refused.
+3. **One-use Agent** (background, Sonnet, used once, never SendMessage'd) for size S or M with `est_turns` <= 30 (same cost per ship as a session; overrun p90 55, so
+   the brief says "stop at 40 turns and report", size S 20): a read, a fix, a card. On event turns where `start_session` is refused EVERY card runs as an Agent (chained cards allowed).
    Name every Agent in one line to the operator (invisible in the sidebar).
 3a. **Haiku for scoped work (operator 2026-10-17: Haiku is underused).** A task is *scoped* when the brief can name the files, the
    exact change or command, and a check that says done (a test, a count, a diff to compare): mechanical edits, lookups, recomputing
    numbers, spec-derived tests, doc and registry upkeep, running a script and reporting. Scoped work goes to a one-use Haiku Agent,
-   not to the session itself and not to Sonnet. Brief = files + change + done check + "stop at 15 turns and report". A session spawns
+   not to the session itself and not to Sonnet. Brief = files + change + done check + "stop at 15 turns and report" + "scratch files, ship and CI-wait logs and temp scripts go to the session scratchpad directory by absolute path, never the worktree (rm is denied there; the repo is public)". A session spawns
    **at most 5 Haiku Agents at a time**; the session reads each result and spot-checks one claim (`git cherry`, a re-run). Needing
    more than 5 in parallel means the work is a wave: make that session a super session (SUPER_SESSION.md), which budgets turns as in
    rule 5. Unscoped or judgment work (design, a bug nobody has located, anything touching live money) is not Haiku work.
 4. **Over 40 expected turns: split the card.** A running worker hands over at the 40 tool-turn cap (RELAY.md) to a fresh worker;
    state lives in files (task card, notes folder), not context.
-5. **Turn budget, no compaction (operator 2026-10-18).** Nobody runs `/compact` and `.claude/settings.json` sets no auto-compact override (Claude Code's own built-in auto-compact near the full window still exists; the caps below keep sessions well short of it). A turn costs the whole context, so the limit is turns per context size, set per model by the hook
-   `scripts/dev/turn_meter.py` (RELAY.md): Sonnet/Haiku: tool turns allowed = 4M / context (100k = 40, 250k = 16, floor 5), 10 operator turns;
-   **Opus: no turn cap, hand over at 500k context**; **Fable: no cap of any kind except ONE operator message per session, a HARD rule**
-   (the hook blocks the 2nd prompt and ignores `MTS_TURN_METER=off` and the cap env vars; nobody changes it). Long single-message
-   Opus/Fable sessions are wanted. The super session owns this: on every wake it reads each running worker's `get_usage` (context),
-   REUSES a session only when its next card needs the same files and its budget has room, and otherwise marks it completed and
-   `archive_session`s it (delete_session needs the operator's click: never). Agents are always use-and-throw, never reused.
+5. **Turn budget (operator 2026-10-18); the operator overrides every cap (operator 2026-10-21).** No hook ever blocks a prompt the operator types: "when I am telling sessions to do something ... that hook should never stop you". From his 2nd typed prompt a session is his: no hand-off nag, he compacts when he wants, it ends on his word (q-v1-turn-caps). Messages from child sessions, CI and the app are not his turns. No hook enforces a turn cap, a context budget or a start rate (state 2026-10-26): `turn_meter.py` and `model_guard.py` were removed from trunk on 2026-10-24 (43d3bfc8f) and `.claude/settings.json` has no turn hook, so the old per-model tool-turn caps, the 1M read budget with its hand-off-only hard stop and the start_session 4/h, Agent 8/h rate caps no longer exist. Unattended coordinators rotate instead of growing (SUPER_SESSION.md D5): at a natural break (after a wake's notes rewrite), once the coordinator's context is over about 200K, its parent session runs `clear_session` on the idle coordinator and sends one rebuild message carrying the role line (`You are Supervisor.`), the notes path and the limits; a coordinator cannot clear itself (research/mts_doctor/ROTATION_TEST_2026-10-24.md part (a): PASS, 9 of 9 state items and the right next action restored, 0 operator turns). Open, its own test: part (b), whether `autoCompactWindow` in a settings file takes effect in the desktop app (needs a live app run); no CLAUDE_AUTOCOMPACT_PCT_OVERRIDE or settings change is made. Facts (2026-10-21): 43 of 46 Opus compactions were manual `/compact`; auto-compaction fires at the window set by the MAIN checkout's `.claude/settings.json` (a stale one forced ~250k for every model). The super session owns worker reuse: on every wake it reads each running worker's `get_usage` (context), REUSES a session only when its next card needs the same files and its budget has room, and otherwise marks it completed and `archive_session`s it (delete_session needs the operator's click: never). Agents are always use-and-throw, never reused. Scheduling tools only when his latest message asks (SCHEDULING_POLICY.md).
 6. **Models.** Workers: Sonnet; Haiku for mechanical status/lookups. **Opus is the tight exception** (operator 2026-10-17: a session-spawned
    Opus can lose data on a bug or misreading, so only critical work): (a) the operator names it in their latest message, it is done;
    (b) a session starts it only for a task card in lane OPUS with `approved_by` and `crucial` (one line: live money, irreversible data,
-   or a no-undo design call), cited by id in the brief. Nothing else, not "recommended" and not "better quality". Hook `model_guard.py`
-   enforces both, and always denies a call without `model`. A cheap model first: Opus is for what Sonnet already got wrong or cannot undo.
-7. **No clicks.** `start_session` with `initiation: "user_asked"` on operator turns (max 4 workers at once); on event turns where it is
-   refused use rule 3's Agent. Never an `offer` / `own_initiative` card, for any model: `model_guard.py` now denies them (operator 2026-10-18: nobody is at the screen to click).
+   or a no-undo design call), cited by id in the brief. Nothing else, not "recommended" and not "better quality". A cheap model first: Opus is for what Sonnet already got wrong or cannot undo.
+7. **No clicks.** `start_session` with `initiation: "user_asked"` on operator turns (max 4 workers at once); on event turns (a message or event started the turn) the app shows an Allow card, so `model_guard.py` denies it (2026-10-23):
+   use rule 3's Agent. Never an `offer` / `own_initiative` card, for any model: nobody is at the screen to click (operator 2026-10-18).
 8. **Cleanup.** A finished session marks itself completed; the coordinator marks each worker once its ship is verified.
+9. **Blocked: solve it, then report.** A git or permission refusal is a task, not an ending. (1) List 2-3 non-destructive fixes. (2) Try the safest. (3) Verify the repo state (branch, clean tree, both histories present). (4) Report. "Report and stop" means report AND continue unless the order says HALT; never end a turn on a question or "complain then idle" (CLAUDE.md: never wait on a question).
+   Example: ff-only pull refused (local commit) -> options: merge origin/fast-track in a worktree, push first, new worktree -> merge -> both histories present -> report.
+   Example: merge refused on a dirty file with a backup -> commit the file, then merge. "No reset/rebase" bans those, not commits or merges.
+   Example: a write outside the checkout prompts -> use a path inside the checkout or scratchpad (OPS_CHANGE_CHECK.md Q7).
+   Brief template (copy into briefs): `Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report; report AND continue unless I say HALT.`
+10. **Station loop (DECISION OURS, 2026-10-27; bug-station-session-stops-after-one-task).** A station session is an operator-started session on a login (laptop, NUC, Lenovo), not an unattended single-task worker. Evidence 2026-10-26: a free-text prompt without a `You are Builder` line got no banner, rule 5 / CLAUDE.md step 5 made it stop after one ship, and it read a stale checkout that lacked `LENOVO_NEXT_SESSION.md`, so it took an already closed p0 card. Rule: no role line = it acts as Builder (ROLES.md fallback banner). Boot: `git fetch` first (the queue file may exist only on origin/fast-track: `git show origin/fast-track:<path>`), read the machine's queue file (`LENOVO_NEXT_SESSION.md` or `NEXT_SESSION.md`) and the login plan (`LOGIN_PLAN_<date>.md`), then loop `tasks.py next` until the budget (`get_usage`) or the queue ends. Before EACH claim run `sync.py claims` and `mts_signal.py read --hours 1` and skip any card another station claimed or announced. After each ship: `sync.py where`, mark nothing completed until the queue is empty, then take the next card. Only a brief that says single-task worker, or the rule-5 tool-turn cap, ends the session early (hand over: commit, NEXT_SESSION.md, ship, one line). The loop never overrides CLAUDE.md Hard rules (testnet only, live tree, no deploy/restart/HALT/open trade). Logins share one repo and queue (CLOUD_ACCOUNTS.md): whoever has budget takes NEXT_SESSION.md; never idle for a weekly reset.

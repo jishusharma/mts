@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-25T19:25:20Z",
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Count rows: context_dev.csv 7,115 (1,643 daily + 5,472 4h; 21,888/4 = 5,472), joined_events.csv 23,213 with 22,862 usable; compare PRE_REG_S1_COUNTS.md:11 cells S=+3, S>=+2, S<=-2. DEV only. Producer: GPT gpt-6-luna over Claude data. Do NOT read: outcome columns. Report: MyTradingSys/research/layer_lab/reports/2026-10-26_gem-confluence-s1-counts.md",
+  "id": "gem-confluence-s1-counts",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "confluence-s1-f6-direction: exp_dir_4h_ours to F6 (sign since BBWP_4h last <= 50), recount",
+      "ref": "612fc633878c",
+      "utc": "2026-10-25T18:22:34Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "01ace2d251c4 yt-burn batch 5: 6 GPT cross-vendor reports (gx2-*), GPT_AUDIT_S1.md, 3 revie",
+      "ref": "MyTradingSys/research/gpt_burn_2026-10-24/gx2-confluence-s1/report.md",
+      "utc": "2026-10-24T15:44:13Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 T0-ONLY (planner, machine checks only). Producer vendor: GPT gpt-6-luna over Claude data. Reviewer vendor: Gemini Flash (agy via gemini_queue.py); producer != reviewer. Reviewer must NOT read: outcome columns (forward returns) of any csv. Read-only audit: no product code, no live path, DEV data only (bars before 2024-07-01), no VALIDATION or HOLDOUT. DECISION (OURS) 2026-10-26: weight ROUTINE so the card is READY now; the planner may raise it (formula or verdict checks = CRUCIAL, needs a review stamp). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-25T19:28:03Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/krown_audit_2026-10-22/PRE_REG_S1_COUNTS.md",
+    "MyTradingSys/research/krown_audit_2026-10-22/run/context_dev.csv",
+    "MyTradingSys/research/krown_audit_2026-10-22/run/joined_events.csv",
+    "MyTradingSys/research/gpt_burn_2026-10-24/gx2-confluence-s1/report.md"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "scope_sha": "612fc633878c",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "",
+  "title": "[GEMINI] Recount Confluence S1 rows: 7,115 context, 23,213 events, 22,862 usable",
+  "weight": "ROUTINE",
+  "worker": ""
+}

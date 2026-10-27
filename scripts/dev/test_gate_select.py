@@ -10,7 +10,7 @@ import gate_select as gs
 
 STEPS = [("1", "python scripts/dev/run_staged_tests.py MyTradingSys/execution -- test_risk_guard"), ("3k", "python -m unittest (scripts/dev/test_sync.py, 3 shards)"),
          ("3ds", "python -m unittest (scripts/dev/test_dsa.py, 2 shards)"), ("3tl", "python scripts/dev/tasks.py lint"), ("3q", "x"), ("3pc", "x"),
-         ("3c", "x"), ("3w", "x"), ("3x", "x"), ("3gd", "x"), ("3dl", "x"), ("3xt", "x"), ("4", "pytest MyTradingSys/tests/a"), ("4b", "pytest MyTradingSys/tests/b"),
+         ("3c", "x"), ("3w", "x"), ("3x", "x"), ("3gd", "x"), ("3dl", "x"), ("3la", "python scripts/dev/lookahead_lint.py --new"), ("3xt", "x"), ("4", "pytest MyTradingSys/tests/a"), ("4b", "pytest MyTradingSys/tests/b"),
          ("4d", "pytest MyTradingSys/tests/docs"), ("5b", "unittest"), ("5c", "pytest options")]
 MENTIONED = {("dsa", "4b")}   # the pytest shard whose tests mention the module `dsa`
 BS = chr(92)
@@ -27,17 +27,22 @@ class Select(unittest.TestCase):
     def test_nothing(self):
         self.assertEqual(self.sel(), ("none", []))
 
-    def test_docs_only_runs_doc_invariants_only(self):
+    def test_docs_only_selects_no_steps(self):
+        # gate-tiers-by-path: docs/research/cards/pages push with no local gate; CI gates behind
         mode, steps = self.sel("MyTradingSys/system/RELAY.md", "MyTradingSys/system/tasks/x.json")
         self.assertEqual(mode, "docs")
-        self.assertEqual(steps, ["3tl", "3q", "3pc", "3c", "4d"])
+        self.assertEqual(steps, [])
+
+    def test_smoke_runs_the_task_card_lint_only_when_a_card_is_in_the_diff(self):
+        self.assertNotIn("3tl", self.sel("scripts/dev/dsa.py")[1])
+        self.assertIn("3tl", self.sel("scripts/dev/dsa.py", "MyTradingSys/system/tasks/x.json")[1])
 
     def test_non_live_code_is_smoke_with_its_own_test_and_the_shards_that_mention_it(self):
         mode, steps = self.sel("scripts/dev/dsa.py")
         self.assertEqual(mode, "smoke")
         self.assertIn("3ds", steps)          # name match survives the "(file, N shards)" command text
         self.assertNotIn("3k", steps)
-        self.assertTrue({"3w", "3x", "3tl", "4b"} <= set(steps))
+        self.assertTrue({"3w", "3x", "4b"} <= set(steps))
         self.assertNotIn("4", steps)         # a shard none of whose tests mention the module is not run
 
     def test_mentions_reads_the_tests_named_in_the_command(self):
@@ -85,6 +90,11 @@ class Select(unittest.TestCase):
         self.assertEqual(mode, "smoke")
         self.assertIn("3gd", steps)
 
+    def test_registering_an_extra_test_in_the_tsv_is_smoke_and_runs_the_discovery_check(self):
+        mode, steps = self.sel("scripts/dev/extra_tests.tsv")
+        self.assertEqual(mode, "smoke")
+        self.assertIn("3gd", steps)
+
     def test_a_new_research_test_file_runs_the_ci_deps_lint(self):
         # 2026-10-16: research tests imported pandas, ci.yml did not install it; only CI saw it (the desktop has every package)
         mode, steps = self.sel("MyTradingSys/research/x_2026-10-16/test_x.py")
@@ -102,7 +112,7 @@ class Select(unittest.TestCase):
         self.assertIn("5b", steps)
 
     def test_live_path_is_full(self):
-        for f in ("MyTradingSys/execution/auto_trader.py", "scripts/dev/sync.py", "scripts/dev/run_all_tests.py",
+        for f in ("MyTradingSys/execution/auto_trader.py", "scripts/dev/live_mirror.py",
                   "scripts/dev/auto_deploy.py", "scripts/sched/relay.py", "src/main/java/A.java", "pom.xml",
                   ".github/workflows/ci.yml", "MyTradingSys/runtime/x.py", "MyTradingSys/backtest/layers/fabio/orderflow_live.py"):
             mode, steps = self.sel(f)
@@ -117,10 +127,8 @@ class Select(unittest.TestCase):
     def test_one_live_file_among_docs_makes_it_full(self):
         self.assertEqual(self.sel("README.md", "MyTradingSys/execution/executor.py")[0], "full")
 
-    def test_docs_ride_along_with_code(self):
-        _, steps = self.sel("scripts/dev/dsa.py", "MyTradingSys/system/RELAY.md")
-        self.assertIn("4d", steps)
-        self.assertIn("3q", steps)
+    def test_docs_riding_along_with_code_add_no_steps(self):
+        self.assertEqual(self.sel("scripts/dev/dsa.py", "MyTradingSys/system/RELAY.md"), self.sel("scripts/dev/dsa.py"))
 
     def test_windows_separators(self):
         self.assertEqual(self.sel("MyTradingSys" + BS + "execution" + BS + "auto_trader.py")[0], "full")
@@ -186,10 +194,16 @@ class FastGateRules(unittest.TestCase):
     def sel(self, *files):
         return gs.explain(list(files), STEPS, mentioned=mentioned, named=lambda b, c: False)[:2]
 
-    def test_the_gate_machinery_is_full_gate(self):
-        for f in ("wiring_scan", "ci_watch", "config_check", "ci_deps_lint", "run_staged_tests", "gate_impact"):
+    def test_the_gate_machinery_is_a_budgeted_smoke_gate(self):
+        # operator 2026-10-25 (ship under 2 min): a gate-file change runs smoke + the tests that name it; CI runs the rest
+        for f in ("sync", "run_all_tests", "gate_select", "run_extra_tests", "wiring_scan", "ci_watch", "config_check", "ci_deps_lint",
+                  "run_staged_tests", "gate_impact"):
+            self.assertEqual(self.sel(f"scripts/dev/{f}.py")[0], "smoke", f)
+            self.assertTrue(gs.is_gate_file(f"scripts/dev/{f}.py"), f)
+        self.assertEqual(self.sel("scripts/dev/gate_quarantine.tsv")[0], "smoke")
+        self.assertIn("3k", self.sel("scripts/dev/sync.py")[1])    # test_sync.py is named by step 3k
+        for f in ("auto_deploy", "live_mirror", "cloud_setup"):
             self.assertEqual(self.sel(f"scripts/dev/{f}.py")[0], "full", f)
-        self.assertEqual(self.sel("scripts/dev/gate_quarantine.tsv")[0], "full")
 
     def test_an_ordinary_dev_script_is_still_smoke(self):
         self.assertEqual(self.sel("scripts/dev/example_tool.py")[0], "smoke")
@@ -229,7 +243,7 @@ class GateSpeedRules(unittest.TestCase):
         self.assertIn("4b", nums)
 
     def test_live_and_unknown_config_still_full(self):
-        for f in (".gitattributes", ".github/workflows/ci.yml", "mts.ps1", "scripts/core/x.json", "scripts/dev/run_extra_tests.py",
+        for f in (".gitattributes", ".github/workflows/ci.yml", "mts.ps1", "scripts/core/x.json", "scripts/dev/auto_deploy.py",
                   "MyTradingSys/runtime/run_list.txt", "scripts/dev/sub/x.tsv"):
             self.assertEqual(self.sel(f)[0], "full", f)
 
@@ -261,6 +275,32 @@ class GateSpeedRules(unittest.TestCase):
         self.assertFalse({"3xt", "5b"} & set(nums))
         with mock.patch.object(gs, "extra_subset", return_value=["t"]), mock.patch.object(gs, "layer_subset", return_value=["m"]):
             self.assertTrue({"3xt", "5b"} <= set(self.sel("MyTradingSys/backtest/layers/rsi/x.py", step_files=sf)[1]))
+
+
+class LookaheadStep(unittest.TestCase):
+    """62a05b2eb (run_rsi_backtest.py:111) added a look-ahead hit, passed the smoke ship (no shard named the module), and CI went red."""
+
+    def sel(self, *files, step_files=None):
+        return gs.explain(list(files), STEPS, mentioned=mentioned, named=lambda b, c: False, step_files=step_files)[:2]
+
+    def test_any_backtest_or_research_py_runs_the_lookahead_step(self):
+        for f in ("MyTradingSys/research/rsi_2026/run_rsi_backtest.py", "MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py",
+                  "MyTradingSys/backtest/engine.py", "MyTradingSys/options/x.py"):
+            mode, nums = self.sel(f)
+            self.assertNotEqual(mode, "docs", f)
+            self.assertIn("3la", nums, f)
+
+    def test_the_lint_its_allowlist_and_its_tests_run_the_lookahead_step(self):
+        for f in ("scripts/dev/lookahead_lint.py", "scripts/dev/lookahead_allowlist.tsv", "MyTradingSys/tests/test_lookahead_lint.py"):
+            self.assertIn("3la", self.sel(f)[1], f)
+
+    def test_unrelated_code_and_docs_do_not_pay_for_it(self):
+        self.assertNotIn("3la", self.sel("scripts/dev/dsa.py")[1])
+        self.assertNotIn("3la", self.sel("MyTradingSys/research/x/NOTES.md")[1])
+
+    def test_a_research_test_file_does_not_need_it(self):
+        self.assertNotIn("3la", self.sel("MyTradingSys/research/x/test_study.py")[1])
+
 
 if __name__ == "__main__":
     unittest.main()

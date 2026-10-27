@@ -1,6 +1,6 @@
 """Transcript inventory: raw transcripts vs extracts, with the quote gate run on every extract.
 
-Usage (repo root):  python scripts/dev/transcript_inventory.py [--out research/transcript_inventory_2026-10-09.md]
+Usage (repo root):  python scripts/dev/transcript_inventory.py [--out research/_archive/loose_2026-10/transcript_inventory_2026-10-09.md]
 
 T0 script. Reads raw_transcripts_canonical/*_raw.txt and every extract file under extracts/
 (fresh, processed, v2, pending_raw; _staged is listed separately), runs

@@ -17,6 +17,7 @@ import csv
 import hashlib
 import json
 import math
+import os
 import random
 import subprocess
 import tempfile
@@ -29,7 +30,7 @@ SEED = 20261017
 N_HALF = 10
 MIN, HOUR, DAY = 60_000, 3_600_000, 86_400_000
 KLINES_1M = r"F:\MTS\data\tom_raw\klines"
-DAILY_DIR = r"C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\Dumps\backtest\raw_1d\klines"
+DAILY_ENV = "G3_DAILY_DIR"  # daily kline folder comes from --daily or this env var; no machine path is baked in
 # standard DEV: 1m store from 2022-01-01 (DEV_EXT daily from 2021-03-01), last day 2024-06-30; VALIDATION/HOLDOUT never opened
 DEV_LAST = date(2024, 6, 30)
 H4_FIRST, H4_EDGE0 = date(2022, 1, 1), date(2022, 3, 1)
@@ -85,7 +86,15 @@ def load_4h(klines=KLINES_1M):
     return out
 
 
-def load_daily(dir_path=DAILY_DIR):
+def daily_dir(arg=None):
+    """--daily argument, else the G3_DAILY_DIR env var; an error if neither names an existing folder."""
+    d = arg or os.environ.get(DAILY_ENV)
+    if not d or not Path(d).is_dir():
+        raise SystemExit(f"daily kline folder missing: pass --daily DIR or set {DAILY_ENV} (got {d!r})")
+    return d
+
+
+def load_daily(dir_path):
     bars, end = {}, ms_of(DEV_LAST) + DAY
     for p in sorted(Path(dir_path).glob("BTCUSDT-1d-*.csv")):
         with open(p, newline="") as f:
@@ -103,11 +112,15 @@ def atr_sma(B, j):
     return sum(max(B[q]["h"] - B[q]["l"], abs(B[q]["h"] - B[q - 1]["c"]), abs(B[q]["l"] - B[q - 1]["c"])) for q in range(j - ATR_N + 1, j + 1)) / ATR_N
 
 
-def swings(B, i, side, k=K_SWING):
-    """Confirmed swing indices j with j + k <= i: strict extremum against k bars on both sides (ties disqualify)."""
+def swings(B, i, side, k=K_SWING, shown=None):
+    """Confirmed swing indices j with j + k <= i: strict extremum against k bars on both sides (ties disqualify).
+    With shown (bars on the chart) every bar of the swing, its k left neighbours included, lies on the chart: j >= i - shown + 1 + k."""
     key = "l" if side == "support" else "h"
     out = []
-    for j in range(max(k, i - SPAN_MAX - 60), i - k + 1):
+    first = max(k, i - SPAN_MAX - 60)
+    if shown is not None:
+        first = max(first, i - shown + 1 + k)
+    for j in range(first, i - k + 1):
         v = B[j][key]
         side_vals = [B[q][key] for q in list(range(j - k, j)) + list(range(j + 1, j + k + 1))]
         if (side == "support" and all(v < x for x in side_vals)) or (side == "resistance" and all(v > x for x in side_vals)):
@@ -138,13 +151,13 @@ def line_ok(B, i, side, ia, ib, ics):
     return any(ic > ib and abs(B[ic][key] - L(ic)) <= TOUCH_ATR * atr for ic in ics)
 
 
-def pf_line(B, i):
+def pf_line(B, i, shown=None):
     """'support' / 'resistance' / 'both' when a three-swing legitimate line exists at bar i, else None."""
     if i < 2 * K_SWING + ATR_N + 20:
         return None
     found = set()
     for side in ("support", "resistance"):
-        sw = swings(B, i, side)
+        sw = swings(B, i, side, shown=shown)
         for x, ib in enumerate(sw):
             for ia in sw[:x]:
                 if line_ok(B, i, side, ia, ib, sw[x + 1:]):
@@ -298,11 +311,11 @@ def edge_end(code, B, i):
     return B[i]["t"] + (4 * HOUR if UNITS[code]["tf"] == "4h" else DAY)
 
 
-def build_windows(h4, daily):
+def build_windows(h4, daily):  # anchors are bounded to the bars the chart shows
     recs = []
     for code in UNITS:
         B, elig = unit_series(code, h4, daily)
-        for r in pick(code, elig, lambda i, B=B: pf_line(B, i)):
+        for r in pick(code, elig, lambda i, B=B, n=UNITS[code]["shown"]: pf_line(B, i, n)):
             recs.append(dict(r, unit=code, end=edge_end(code, B, r["edge"])))
     return recs
 
@@ -334,8 +347,23 @@ def write_csv(path, cols, rows):
         w.writerows(rows)
 
 
+def write_digests(args):
+    """INPUT_DIGESTS.csv: sha256 of every kline file read (DEV-fenced file set), so the pack is reproducible."""
+    rows = []
+    for tag, d, pat in (("1m", args.klines, "BTCUSDT-1m-????-??.csv"), ("1d", daily_dir(args.daily), "BTCUSDT-1d-*.csv")):
+        for p in sorted(Path(d).glob(pat)):
+            if tag == "1m":
+                y, m = (int(x) for x in p.stem.split("-")[2:4])
+                if (y, m) < (H4_FIRST.year, H4_FIRST.month) or (y, m) > (DEV_LAST.year, DEV_LAST.month):
+                    continue
+            rows.append(dict(kind=tag, file=p.name, bytes=p.stat().st_size, sha256=hashlib.sha256(p.read_bytes()).hexdigest()))
+    write_csv(HERE / "INPUT_DIGESTS.csv", ["kind", "file", "bytes", "sha256"], rows)
+    return len(rows)
+
+
 def cmd_build(args):
-    recs = build_windows(load_4h(args.klines), load_daily(args.daily))
+    recs = build_windows(load_4h(args.klines), load_daily(daily_dir(args.daily)))
+    print("input_digests_rows=", write_digests(args))
     order = {c: n for n, c in enumerate(UNITS)}
     recs.sort(key=lambda r: (order[r["unit"]], r["window_id"]))
     win = [dict(window_id=r["window_id"], row=UNITS[r["unit"]]["label"], timeframe=UNITS[r["unit"]]["tf"], bars_shown=UNITS[r["unit"]]["shown"],
@@ -357,15 +385,15 @@ def cmd_build(args):
 
 
 def cmd_counts(args):
-    h4, daily = load_4h(args.klines), load_daily(args.daily)
+    h4, daily = load_4h(args.klines), load_daily(daily_dir(args.daily))
     for code in UNITS:
         B, elig = unit_series(code, h4, daily)
-        tags = [pf_line(B, i) for i in elig]
+        tags = [pf_line(B, i, UNITS[code]["shown"]) for i in elig]
         print(code, "bars", len(B), "eligible", len(elig), "candidates", sum(1 for t in tags if t), {t: tags.count(t) for t in set(tags) if t})
 
 
 def cmd_draw(args):
-    h4, daily = load_4h(args.klines), load_daily(args.daily)
+    h4, daily = load_4h(args.klines), load_daily(daily_dir(args.daily))
     label_to_code = {u["label"]: c for c, u in UNITS.items()}
     jobs = []
     Path(args.out).mkdir(parents=True, exist_ok=True)
@@ -383,7 +411,8 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=["counts", "build", "draw"])
     ap.add_argument("--klines", default=KLINES_1M)
-    ap.add_argument("--daily", default=DAILY_DIR)
+    ap.add_argument("--daily", default=None, help=f"daily kline folder (default: env {DAILY_ENV}; error if missing)")
     ap.add_argument("--out", default=r"F:\MTS\data\g3_trendline_pack_2026-10-17\charts")
     a = ap.parse_args()
     {"counts": cmd_counts, "build": cmd_build, "draw": cmd_draw}[a.cmd](a)
+# T01-F2: raw_1d is a distinct snapshot, NOT the 1m resample (905 of 912 DEV days differ on open, 847 on volume, max 12.01%); derive daily bars from 1m for new work. See MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md

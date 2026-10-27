@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-19T11:22:17Z",
+  "depends_on": [
+    "dispatch-a-critical-crucial-blocker-outr"
+  ],
+  "done_when": "dispatch --host JIS-NB|DESKTOP-F7IU69N excludes lane CODEX and role Lab_Guy with reason_code host; --host JIS-NUC keeps them; fail-first test in test_tasks.py.",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "tasks.py exclusion() excludes lane CODEX, lane DSA-NB/DSA-NUC and role Lab_Guy cards when --host is not the host that runs them, with reason_code host; --host JIS-NUC keeps CODEX and Lab_Guy.",
+  "id": "tandem-dispatch-host-lanes",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Machine rename: repo works under old and new host names (hosts.py)",
+      "ref": "fc950331b605",
+      "utc": "2026-10-25T15:36:18Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 T0-ONLY | DRAFT 2026-10-26 Session_Planner (OURS): supervisor.pick_cards already skips Lab_Guy off the NUC; this moves the rule into tasks.py dispatch so every caller (tick top-8) agrees. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | CLUSTER: same file set as dispatch-a-critical (one editor per fil",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:18:26Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "scripts/dev/test_tasks.py"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "live path, orders, deploy, restarts",
+    "new hooks, gate steps or rules beyond the card"
+  ],
+  "scope_sha": "fc950331b605",
+  "size": "S",
+  "sources": [],
+  "state": "refined",
+  "steps": [
+    "Read exclusion() (tasks.py:1384-1416) and supervisor.pick_cards.",
+    "Write the failing tests for hosts JIS-NB, DESKTOP-F7IU69N and JIS-NUC.",
+    "Add the host rule next to the existing JIS-NB lane rule; run tasks.py dispatch --host JIS-NB and compare."
+  ],
+  "tests": "dispatch --host JIS-NB|DESKTOP-F7IU69N excludes lane CODEX and role Lab_Guy with reason_code host; --host JIS-NUC keeps them; fail-first test in test_tasks.py.",
+  "title": "Tandem: dispatch must not offer a Claude worker the cards its host cannot run",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

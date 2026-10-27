@@ -1,0 +1,73 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/gemini_queue.py run tom-corr-live-captions:medium",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md"
+  ],
+  "created": "2026-10-26T13:27:03Z",
+  "depends_on": [],
+  "done_when": "raw_transcripts_canonical/<id>_raw.txt exists; EXTRACT.md has section 1b with new quotes and verify_extract_quotes.py exits 0; each numeric threshold Tom states is listed against our OURS value, or the line 'no thresholds stated'",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Get the captions of Tom's live stream 'LIVE TRADING: DAX Short Using My Correlation Trick!' once ended, add EXTRACT.md section 1b with verified quotes, and list any numeric threshold Tom states against our OURS values.",
+  "id": "tom-corr-live-captions",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tom: apply Fable review to correlation-trick extract (A-C4 partial, convergence-start trig",
+      "ref": "0d90152a1141",
+      "utc": "2026-10-26T14:14:18Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "0d90152a1141 tom: apply Fable review to correlation-trick extract (A-C4 partial, convergen",
+      "ref": "MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md",
+      "utc": "2026-10-26T14:14:18Z"
+    }
+  ],
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DECISION (OURS): video id is NOT_IN_DATA (EXTRACT.md:3 names the title only); step 1 finds it. If captions are still absent when run, park with tasks.py tried (live streams get none until they end), retry next day, no yt-dlp loop (429).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-26T17:25:06Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md",
+    "raw_transcripts_canonical"
+  ],
+  "scope_out": [
+    "changing section 4 pre-registered test",
+    "the live tree",
+    "running any backtest"
+  ],
+  "scope_sha": "0d90152a1141",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md:3 (stream not yet read)",
+    "MyTradingSys/system/ROUTING.md:44 (YouTube work on Gemini)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Find the video id of the stream (Gemini search grounding via the queue; EXTRACT.md:3 has the title); confirm it has ended",
+    "Fetch captions: python scripts/dev/fetch_captions.py --analyst Tom <id> (manual track first); a NOCAPS result parks the card",
+    "Add EXTRACT.md section 1b (SOURCED quotes with timestamps), then a table of every threshold Tom states vs our OURS value in section 4",
+    "Run verify_extract_quotes.py on EXTRACT.md until exit 0; commit with a Result: line"
+  ],
+  "tests": "",
+  "title": "Fetch captions of Tom live 'DAX Short Using My Correlation Trick' via gemini_queue on JIS-NUC once the stream ends. DONE when: raw_transcripts_canonical/<id>_raw.txt exists, EXTRACT.md in MyTradingSys/research/tom_correlation_trick_2026-10-26/ gets a section 1b with new quotes and verify_extract_quotes.py exits 0, and any numeric threshold Tom states is listed vs our OURS values",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

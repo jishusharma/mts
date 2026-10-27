@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-22T22:48:48Z",
+  "depends_on": [],
+  "done_when": "python scripts/dev/mts_doctor.py --no-process shows DUPLICATE 0 for these two files; GEMINI_START.md has one pointer line to CODEX_START.md; both files stay under size caps; a laptop-only fact is not removed.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Remove the 5 lines shared by CODEX_START.md and GEMINI_START.md (tasks.py next --lane codex, tasks.py brief/claim, provenance rule, skip opus/next_session, claim is the lock): keep each in CODEX_START.md and point GEMINI_START.md at it in one line.",
+  "id": "doctor-dedupe-codex-gemini-start",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "GEMINI_START: laptop agy CLI installed, gemini_queue F: gap, account naming, approval re-c",
+      "ref": "c5639ca90c70",
+      "utc": "2026-10-25T20:50:19Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "c5639ca90c70 GEMINI_START: laptop agy CLI installed, gemini_queue F: gap, account naming, ",
+      "ref": "MyTradingSys/system/GEMINI_START.md",
+      "utc": "2026-10-25T20:50:19Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 T0-ONLY | DRAFT 2026-10-26 Session_Planner (OURS): the doctor DUPLICATE findings of 2026-10-25 list the 5 shared lines. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "prio": 5,
+  "refine_tries": 0,
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:17:47Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/CODEX_START.md",
+    "MyTradingSys/system/GEMINI_START.md"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "live path, orders, deploy, restarts",
+    "new hooks, gate steps or rules beyond the card"
+  ],
+  "scope_sha": "c5639ca90c70",
+  "size": "S",
+  "sources": [
+    "scripts/dev/mts_doctor.py DUPLICATE check"
+  ],
+  "state": "ready",
+  "steps": [
+    "Run mts_doctor.py --no-process and read the 5 DUPLICATE lines (git checkout the report after).",
+    "Delete the lines from GEMINI_START.md, add the pointer.",
+    "Rerun the doctor and test_integrity."
+  ],
+  "tests": "python scripts/dev/mts_doctor.py --no-process reports no DUPLICATE between the two files; python -m pytest MyTradingSys/tests/docs/test_integrity.py -q passes.",
+  "title": "Dedupe 5 shared lines between CODEX_START.md and GEMINI_START.md (keep one, point the other at it)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

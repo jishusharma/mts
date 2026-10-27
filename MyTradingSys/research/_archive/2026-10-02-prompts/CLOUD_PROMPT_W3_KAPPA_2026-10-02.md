@@ -19,10 +19,10 @@ work.
 
 Until your CSV is written and committed, do NOT open any of:
 - MyTradingSys/research/fast_track_2026-09-27/PROVENANCE_AUDIT_TOM.md
-- MyTradingSys/research/AUDIT_REVIEW_2026-10-01.md
-- MyTradingSys/research/REVALIDATION_REQUEST_2026-10-01.md
-- MyTradingSys/research/REVALIDATION_ACTIONS_2026-10-01.md
-- MyTradingSys/research/HANDOFF_FOR_CLAUDE_2026-10-01.md
+- MyTradingSys/research/_archive/loose_2026-10/AUDIT_REVIEW_2026-10-01.md
+- MyTradingSys/research/_archive/loose_2026-10/REVALIDATION_REQUEST_2026-10-01.md
+- MyTradingSys/research/_archive/loose_2026-10/REVALIDATION_ACTIONS_2026-10-01.md
+- MyTradingSys/research/_archive/loose_2026-10/HANDOFF_FOR_CLAUDE_2026-10-01.md
 - any file under extracts/ that carries a TOM verdict.
 If you open any of these, stop and write 'blind condition broken' in
 the report. A biased kappa is worse than no kappa.

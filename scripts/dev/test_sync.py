@@ -16,7 +16,7 @@ import sync
 
 
 def sh(cwd, *args):
-    subprocess.run(["git", *args], cwd=cwd, check=True, capture_output=True, text=True)
+    return subprocess.run(["git", *args], cwd=cwd, check=True, capture_output=True, text=True)
 
 
 def commit(repo, name, text):
@@ -34,11 +34,17 @@ class SyncTest(unittest.TestCase):
         origin = cls.tpl / "origin.git"
         sh(cls.tpl, "init", "-q", "--bare", str(origin))
         sh(origin, "symbolic-ref", "HEAD", "refs/heads/fast-track")  # git < 2.28 has no init -b
+        # The template must be quiescent while copytree snapshots it. A pull/push
+        # can otherwise leave background maintenance removing files during a copy.
+        sh(origin, "config", "gc.auto", "0")
+        sh(origin, "config", "maintenance.auto", "false")
         a, b = cls.tpl / "a", cls.tpl / "b"
         for c in (a, b):
             sh(cls.tpl, "clone", "-q", str(origin), str(c))
             sh(c, "config", "user.email", "t@t")
             sh(c, "config", "user.name", "t")
+            sh(c, "config", "gc.auto", "0")
+            sh(c, "config", "maintenance.auto", "false")
         commit(a, "README.md", "x\n")
         sh(a, "push", "-q", "origin", "HEAD:fast-track")
         sh(b, "pull", "-q", "origin", "fast-track")
@@ -54,9 +60,15 @@ class SyncTest(unittest.TestCase):
         self.a, self.b = self.tmp / "a", self.tmp / "b"
         for c in (self.a, self.b):
             sh(c, "remote", "set-url", "origin", str(origin))
+        self.slots_base = self.tmp / "slots_env"
+        self.slots_base.mkdir(parents=True, exist_ok=True)
+        os.environ["MTS_GATE_SLOTS_DIR"] = str(self.slots_base)
+        os.environ["SYNC_ALLOW_SECOND_SHIP"] = "1"   # tests ship repeatedly; TierTest turns the 10-minute rule on
         self.gated = []
 
     def tearDown(self):
+        os.environ.pop("MTS_GATE_SLOTS_DIR", None)
+        os.environ.pop("SYNC_ALLOW_SECOND_SHIP", None)
         shutil.rmtree(self.tmp, ignore_errors=True)
 
     def gate(self, repo):
@@ -68,6 +80,12 @@ class SyncTest(unittest.TestCase):
                            capture_output=True, text=True)
         return set(r.stdout.split())
 
+    def test_fixture_repositories_disable_background_git_maintenance(self):
+        for repo in (self.tmp / "origin.git", self.a, self.b):
+            with self.subTest(repo=repo.name):
+                self.assertEqual(sh(repo, "config", "--local", "gc.auto").stdout.strip(), "0")
+                self.assertEqual(sh(repo, "config", "--local", "maintenance.auto").stdout.strip(), "false")
+
     def test_gate_with_files_param_gets_the_changed_paths_and_docs_get_the_docs_gate(self):
         seen, docs = [], []
         commit(self.a, "NOTE.md", "n\n")
@@ -78,6 +96,47 @@ class SyncTest(unittest.TestCase):
         self.assertEqual(seen, [["d.py"]])
         self.assertEqual(len(docs), 1)
 
+    def test_ship_returns_the_pushed_sha_and_files_so_the_shell_can_wait_for_that_sha_s_ci(self):
+        commit(self.a, "p.py", "p\n")
+        pushed = sync.ship(self.a, gate=self.gate)
+        sh(self.a, "fetch", "-q", "origin")
+        self.assertEqual(pushed.sha, sh(self.a, "rev-parse", "origin/fast-track").stdout.strip())
+        self.assertEqual(pushed.files, ["p.py"])
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertIsNone(sync.ship(self.a, gate=self.gate))     # nothing left to ship: no sha, no wait
+
+    def test_role_md_plus_card_json_is_a_docs_ship_not_a_code_ship(self):
+        """5f12bc06c: a role .md plus card .json took the code path, which gate_select maps to zero steps, so the role byte budget never ran."""
+        seen, docs = [], []
+        for d in ("roles", "tasks"):
+            (self.a / "MyTradingSys/system" / d).mkdir(parents=True)
+        commit(self.a, "MyTradingSys/system/roles/x.md", "r" + chr(10))
+        commit(self.a, "MyTradingSys/system/tasks/x.json", "{}" + chr(10))
+        sync.ship(self.a, gate=lambda repo, files: seen.append(files), docs_gate=lambda r, f: docs.append(f))
+        self.assertEqual(seen, [])
+        self.assertEqual(len(docs), 1)
+        self.assertEqual(sorted(docs[0]), ["MyTradingSys/system/roles/x.md", "MyTradingSys/system/tasks/x.json"])
+
+    def test_wiring_registry_alone_still_runs_the_code_gate(self):
+        seen, docs = [], []
+        reg = "MyTradingSys/system/wiring_registry.json"
+        (self.a / reg).parent.mkdir(parents=True, exist_ok=True)
+        commit(self.a, reg, "{}" + chr(10))
+        sync.ship(self.a, gate=lambda repo, files: seen.append(files), docs_gate=lambda r, f: docs.append(f))
+        self.assertEqual(seen, [[reg]])
+        self.assertEqual(docs, [])
+
+    def test_a_docs_only_ship_over_a_doc_size_cap_is_refused(self):
+        """2175ef80: a docs ship ran no gate and pushed CLAUDE.md over its cap; the default docs gate now checks the caps."""
+        cap = "MyTradingSys/tests/docs/test_integrity.py"
+        (self.a / cap).parent.mkdir(parents=True)
+        commit(self.a, cap, (Path(__file__).resolve().parents[2] / cap).read_text(encoding="utf-8"))
+        sync.ship(self.a, gate=lambda repo, files: None)
+        commit(self.a, "CLAUDE.md", "x" * 100_000)
+        with self.assertRaisesRegex(sync.SyncError, "doc size cap.*100000 <= "):
+            sync.ship(self.a, gate=self.gate)
+        self.assertNotIn("CLAUDE.md", self.head_files(self.a))
+
     def test_run_gate_picks_smoke_and_full_flag_forces_everything(self):
         calls = []
         real = sync.subprocess.run
@@ -87,6 +146,7 @@ class SyncTest(unittest.TestCase):
                 return type("R", (), {"returncode": 0})()
             return real(cmd, **k)
         sync.subprocess.run = fake
+        old_full = os.environ.pop("SYNC_FULL_GATE", None)
         try:
             sync.run_gate(self.a, ["MyTradingSys/system/X.md"])
             self.assertIn("--smoke", calls[-1])
@@ -95,7 +155,10 @@ class SyncTest(unittest.TestCase):
             self.assertNotIn("--smoke", calls[-1])
         finally:
             sync.subprocess.run = real
-            os.environ.pop("SYNC_FULL_GATE", None)
+            if old_full is not None:
+                os.environ["SYNC_FULL_GATE"] = old_full
+            else:
+                os.environ.pop("SYNC_FULL_GATE", None)
 
     def test_concurrent_ships_both_land(self):
         commit(self.a, "a.py", "a\n")
@@ -116,13 +179,13 @@ class SyncTest(unittest.TestCase):
         sync.claim(self.a, "Build thing one", area="scripts/dev", gate=self.gate)
         self.assertEqual(self.gated, [])  # claim files are docs: no gate
         sh(self.b, "pull", "-q", "origin", "fast-track")
-        rows = sync.read_claims(self.b, "HEAD")
+        rows = sync.open_claims(self.b)
         self.assertEqual([r[0] for r in rows], ["build-thing-one"])
         with self.assertRaises(sync.SyncError):
             sync.claim(self.b, "Build thing one", gate=self.gate)
         sync.release(self.b, "build-thing-one", gate=self.gate)
         sh(self.a, "pull", "-q", "origin", "fast-track")
-        self.assertEqual(sync.read_claims(self.a, "HEAD"), [])
+        self.assertEqual(sync.open_claims(self.a), [])
 
     def test_claim_and_release_make_no_merge_commit_and_ship_nothing_else(self):
         # Traffic buster 2026-10-16: 246 of 600 daily commits were claim/release, each with a merge commit.
@@ -145,7 +208,7 @@ class SyncTest(unittest.TestCase):
         pushes = []
         real = sync.git
         def spy(repo, *args, **k):
-            if args and args[0] == "push":
+            if args and args[0] == "push" and "HEAD:refs/heads/fast-track" in args:   # the release on the claims branch is not a trunk push
                 pushes.append(args)
             return real(repo, *args, **k)
         sync.git = spy
@@ -155,13 +218,71 @@ class SyncTest(unittest.TestCase):
             sync.git = real
         self.assertEqual(len(pushes), 1)
         self.assertIn("y.py", self.head_files(self.a))
-        self.assertEqual(sync.read_claims(self.a, "origin/fast-track"), [])
+        self.assertEqual(sync.open_claims(self.a), [])
 
     def test_ship_release_with_nothing_to_ship_still_releases(self):
         sync.claim(self.a, "Task z", area="scripts/dev", gate=self.gate)
         sync.ship(self.a, gate=self.gate, release_slug="task-z")
         sh(self.a, "fetch", "-q", "origin")
-        self.assertEqual(sync.read_claims(self.a, "origin/fast-track"), [])
+        self.assertEqual(sync.open_claims(self.a), [])
+
+    def claim_files_on(self, ref):
+        sh(self.a, "fetch", "-q", "origin")
+        return [s for s, _ in sync.read_claims(self.a, ref)]
+
+    def test_docs_ship_runs_no_gate_at_all(self):
+        (self.a / "scripts" / "dev").mkdir(parents=True)
+        commit(self.a, "scripts/dev/run_all_tests.py", "pass" + chr(10))     # a repo with a gate script: the old docs gate ran it
+        sync.ship(self.a, gate=self.gate)
+        commit(self.a, "NOTE.md", "n" + chr(10))
+        with mock.patch.object(sync, "run_gate", side_effect=AssertionError("docs ship ran the gate")):
+            sync.ship(self.a, gate=self.gate)
+        self.assertIn("NOTE.md", self.head_files(self.a))
+
+    def test_claim_and_release_land_on_the_side_branch_not_on_trunk(self):
+        sh(self.a, "fetch", "-q", "origin")
+        before = sh(self.a, "rev-parse", "origin/fast-track").stdout.strip()
+        sync.claim(self.a, "Side one", area="scripts/dev", gate=self.gate)
+        sh(self.a, "fetch", "-q", "origin")
+        self.assertEqual(sh(self.a, "rev-parse", "origin/fast-track").stdout.strip(), before)   # no claim commit on trunk
+        self.assertEqual(self.claim_files_on("origin/claims"), ["side-one"])
+        self.assertEqual(self.claim_files_on("origin/fast-track"), [])
+        with self.assertRaises(sync.SyncError):                  # the side branch is what a collision check reads
+            sync.claim(self.b, "Side one", gate=self.gate)
+        sync.release(self.a, "side-one", gate=self.gate)
+        self.assertEqual(self.claim_files_on("origin/claims"), [])
+        self.assertEqual(sh(self.a, "rev-parse", "origin/fast-track").stdout.strip(), before)
+
+    def test_ship_release_closes_the_side_branch_claim_without_a_trunk_commit(self):
+        sync.claim(self.a, "Side two", area="scripts/dev", gate=self.gate)
+        commit(self.a, "two.py", "2" + chr(10))
+        sync.ship(self.a, gate=self.gate, release_slug="side-two")
+        self.assertEqual(self.claim_files_on("origin/claims"), [])
+        subjects = sh(self.a, "log", "--format=%s", "origin/fast-track").stdout.split(chr(10))
+        self.assertFalse([x for x in subjects if x.startswith(("claim ", "release "))])
+
+    def test_second_ship_from_one_tree_within_ten_minutes_is_only_a_note(self):
+        import contextlib, io
+        os.environ.pop("SYNC_ALLOW_SECOND_SHIP", None)
+        commit(self.a, "one.py", "1" + chr(10))
+        sync.ship(self.a, gate=self.gate)
+        commit(self.a, "two.py", "2" + chr(10))
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            sync.ship(self.a, gate=self.gate)                   # operator 2026-10-25: no refusal, one note line
+        self.assertIn("two.py", self.head_files(self.a))
+        self.assertIn("second ship from this tree", buf.getvalue())
+
+    def test_again_flag_and_other_trees_are_not_refused(self):
+        os.environ.pop("SYNC_ALLOW_SECOND_SHIP", None)
+        commit(self.a, "one.py", "1" + chr(10))
+        sync.ship(self.a, gate=self.gate)
+        commit(self.b, "b.py", "b" + chr(10))
+        sync.ship(self.b, gate=self.gate)                       # another tree: its own clock
+        commit(self.a, "three.py", "3" + chr(10))
+        os.environ["SYNC_ALLOW_SECOND_SHIP"] = "1"
+        sync.ship(self.a, gate=self.gate)
+        self.assertIn("three.py", self.head_files(self.a))
 
     def card(self, cid, scope_in, **kw):
         import json
@@ -171,7 +292,7 @@ class SyncTest(unittest.TestCase):
 
     def claims_on_origin(self):
         sh(self.a, "fetch", "-q", "origin")
-        return [s for s, _ in sync.read_claims(self.a, "origin/fast-track")]
+        return [s for s, _ in sync.open_claims(self.a)]
 
     def test_claim_skips_itself_for_new_files_under_a_dated_folder(self):
         # B16 (B2 automatic): 51 claims + 56 standalone releases in 72 h, many for run-once report tasks.
@@ -225,7 +346,7 @@ class SyncTest(unittest.TestCase):
             sync.claim(self.a, "Task three", area="scripts/dev/sync.py", gate=self.gate)  # nested in task one's area
         self.assertIn("scripts/dev", str(cm.exception))
         sync.claim(self.a, "Task one", area="docs", gate=self.gate)  # same name, disjoint area: both may work
-        self.assertEqual(sorted(s for s, _ in sync.read_claims(self.a, "HEAD")),
+        self.assertEqual(sorted(s for s, _ in sync.open_claims(self.a)),
                          ["no-area-given", "task-one", "task-one-2", "task-two"])
         with self.assertRaises(sync.SyncError):
             sync.claim(self.a, "No area given", gate=self.gate)  # same name, no areas: still the same task
@@ -238,6 +359,29 @@ class SyncTest(unittest.TestCase):
 
     def branch_of(self, tree):
         return subprocess.run(["git", "-C", str(tree), "branch", "--show-current"], capture_output=True, text=True).stdout.strip()
+
+    def test_doctor_top_warnings_keeps_three_warn_rows_in_order(self):
+        rows = [("A", "OK", "x"), ("B", "WARN", "b1"), ("C", "unavailable", "c"), ("D", "WARN", "d1"), ("E", "WARN", "e1"), ("F", "WARN", "f1")]
+        out = sync.doctor_top_warnings(self.a, checklist=lambda: rows)
+        self.assertEqual(len(out), 3)
+        self.assertTrue(out[0].startswith("doctor WARN B:") and out[2].startswith("doctor WARN E:"))
+
+    def test_doctor_top_warnings_fails_soft_when_the_doctor_errors(self):
+        def boom():
+            raise RuntimeError("doctor down")
+        self.assertEqual(sync.doctor_top_warnings(self.a, checklist=boom), [])
+        self.assertEqual(sync.doctor_top_warnings(self.a), [])  # throwaway repo has no doctor: nothing, no raise
+
+    def test_start_prints_doctor_warnings_but_not_when_quiet(self):
+        with mock.patch.object(sync, "doctor_top_warnings", return_value=["doctor WARN DISK: low"]):
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                sync.start(self.a, here=True)
+            self.assertIn("doctor WARN DISK: low", buf.getvalue())
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                sync.start(self.a, here=True, quiet=True)
+            self.assertNotIn("doctor WARN", buf.getvalue())
 
     def test_start_slug_in_a_lane_tree_switches_branch_instead_of_making_a_worktree(self):
         lane = self.make_lane()
@@ -290,7 +434,7 @@ class SyncTest(unittest.TestCase):
     def test_claim_rejects_flag_like_name(self):
         with self.assertRaises(sync.SyncError):
             sync.claim(self.a, "--help", gate=self.gate)
-        self.assertEqual(sync.read_claims(self.a, "HEAD"), [])
+        self.assertEqual(sync.open_claims(self.a), [])
 
     def test_live_tree_refused(self):
         (self.a / sync.LIVE_MARKER).write_text("", newline="\n")
@@ -427,6 +571,81 @@ class SyncTest(unittest.TestCase):
         self.assertTrue(ahead.exists())
         self.assertTrue(self.a.exists())  # primary tree never touched
 
+    def test_tidy_skips_gateway_marked_worktree(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            marked = sync.new_worktree(self.a, "gw")
+            plain = sync.new_worktree(self.a, "plain")
+        (marked / sync.GATEWAY_MARKER).write_text('x', newline=chr(10))
+        later = time.time() + 48 * 3600
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(sync.tidy(self.a, apply=True, now=later), [str(plain.resolve())])
+            self.assertIsNone(sync.reuse_finished_tree(self.a, marked))
+        self.assertTrue(marked.exists())
+        self.assertFalse(plain.exists())
+
+    def test_start_writes_gateway_marker_only_on_gateway_profile(self):
+        with mock.patch.dict(os.environ, {"MTS_GATEWAY": "1"}):
+            self.assertTrue(sync.mark_gateway(self.a))
+        self.assertTrue((self.a / sync.GATEWAY_MARKER).exists())
+        (self.a / sync.GATEWAY_MARKER).unlink()
+        no_flag = str(self.a / "no_such_flag")
+        with mock.patch.dict(os.environ, {"MTS_GATEWAY": "0", "MTS_GATEWAY_FLAG": no_flag}):
+            self.assertFalse(sync.mark_gateway(self.a))
+        flag = self.a / "flag_file"
+        flag.write_text("on", encoding="utf-8")
+        with mock.patch.dict(os.environ, {"MTS_GATEWAY": "0", "MTS_GATEWAY_FLAG": str(flag)}):
+            self.assertTrue(sync.mark_gateway(self.a))
+        (self.a / sync.GATEWAY_MARKER).unlink()
+
+    def test_station_runs_where_all_then_tidy(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            done = sync.new_worktree(self.a, "done")
+        later = time.time() + 48 * 3600
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            res = sync.station(self.a, now=later)
+        self.assertIn("worktree(s) hold work", buf.getvalue())
+        self.assertEqual(res, [str(done.resolve())])
+        self.assertTrue(done.exists())  # dry run removes nothing
+
+    def test_station_apply_removes_only_the_clean_shipped_idle_tree(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            done = sync.new_worktree(self.a, "done")
+            ahead = sync.new_worktree(self.a, "ahead")
+        commit(ahead, "unshipped.py", "u\n")
+        later = time.time() + 48 * 3600
+        with contextlib.redirect_stdout(io.StringIO()):
+            res = sync.station(self.a, apply=True, now=later)
+        self.assertEqual(res, [str(done.resolve())])
+        self.assertFalse(done.exists())
+        self.assertTrue(ahead.exists())
+        self.assertTrue(self.a.exists())
+
+    def test_tidy_dry_run_hint_is_a_command_that_runs_on_windows(self):
+        # 2026-10-23: the hint printed `sync.py tidy --apply`, which Windows cannot run without `python scripts/dev/` in front
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            sync.tidy(self.a)
+        self.assertIn("`python scripts/dev/sync.py tidy --apply`", buf.getvalue())
+
+    def test_discard_saves_uncommitted_work_removes_tree_keeps_branch(self):
+        # operator 2026-10-23: the App's discard action asked him 4-5 times; `sync.py discard` does it from Bash, no card
+        with contextlib.redirect_stdout(io.StringIO()):
+            wt = sync.new_worktree(self.a, "kept")
+        br = subprocess.run(["git", "-C", str(wt), "branch", "--show-current"], capture_output=True, text=True).stdout.strip()
+        (wt / "README.md").write_text("edited\n", newline="\n")
+        (wt / "new.txt").write_text("untracked\n", newline="\n")
+        with contextlib.redirect_stdout(io.StringIO()) as out:
+            self.assertEqual(sync.discard(self.a, [wt.name, str(self.a), "nope"]),
+                             [str(wt.resolve())])
+        self.assertFalse(wt.exists())
+        self.assertTrue(self.a.exists())                                  # the primary tree is never discarded
+        self.assertIn("skip  nope", out.getvalue())
+        rescue = self.a.resolve() / "Dumps" / "wt_rescue" / wt.name
+        self.assertIn("+edited", (rescue / "changes.patch").read_text())
+        self.assertEqual((rescue / "files" / "new.txt").read_text(), "untracked\n")
+        self.assertEqual(subprocess.run(["git", "-C", str(self.a), "rev-parse", "--verify", "-q", br]).returncode, 0)  # branch kept
+
     def test_tidy_apply_repairs_a_case_broken_head(self):
         with contextlib.redirect_stdout(io.StringIO()):
             wt = sync.new_worktree(self.a, "casey")
@@ -449,6 +668,67 @@ class SyncTest(unittest.TestCase):
             fresh = sync.new_worktree(self.a, "fresh")      # clean and on origin, but a session may be about to use it
             self.assertEqual(sync.tidy(self.a, apply=True), [])
         self.assertTrue(fresh.exists())
+
+    def test_tidy_retires_a_shipped_clean_tree_after_one_hour_not_24(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            done = sync.new_worktree(self.a, "shipped-hr")
+            self.assertEqual(sync.tidy(self.a, now=time.time() + 0.5 * 3600), [])
+            self.assertEqual(sync.tidy(self.a, apply=True, now=time.time() + 2 * 3600), [str(done.resolve())])
+        self.assertFalse(done.exists())
+
+    def test_tidy_two_hours_still_keeps_dirty_unshipped_live_and_stranger_trees(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            dirty = sync.new_worktree(self.a, "d2")
+            ahead = sync.new_worktree(self.a, "a2")
+            live = sync.new_worktree(self.a, "l2")
+        (dirty / "scratch.txt").write_text("wip\n", newline="\n")
+        commit(ahead, "unshipped.py", "u\n")
+        (live / sync.LIVE_MARKER).write_text("", newline="\n")
+        stranger = self.a.parent / "stranger-tree"
+        sh(self.a, "worktree", "add", "-q", str(stranger), "-b", "stranger", "origin/fast-track")
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(sync.tidy(self.a, apply=True, now=time.time() + 2 * 3600), [])
+        for t in (dirty, ahead, live, stranger, self.a):
+            self.assertTrue(t.exists(), t)
+
+    def test_start_reuses_a_finished_same_slug_tree_instead_of_dash_2(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            first = sync.new_worktree(self.a, "again")
+            real_idle = sync.idle_hours
+            sync.idle_hours = lambda *a, **k: 5.0
+            try:
+                second = sync.new_worktree(self.a, "again")
+            finally:
+                sync.idle_hours = real_idle
+        self.assertEqual(second.resolve(), first.resolve())
+        self.assertFalse(second.with_name(second.name + "-2").exists())
+
+    def test_start_makes_dash_2_when_the_same_slug_tree_is_dirty_unshipped_or_busy(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            busy = sync.new_worktree(self.a, "busy")
+            dirty = sync.new_worktree(self.a, "dirt")
+            ahead = sync.new_worktree(self.a, "ahd")
+            (dirty / "x.txt").write_text("wip\n", newline="\n")
+            commit(ahead, "u.py", "u\n")
+            self.assertNotEqual(sync.new_worktree(self.a, "busy").resolve(), busy.resolve())   # just started: a session may be in it
+            real_idle = sync.idle_hours
+            sync.idle_hours = lambda *a, **k: 5.0
+            try:
+                self.assertNotEqual(sync.new_worktree(self.a, "dirt").resolve(), dirty.resolve())
+                self.assertNotEqual(sync.new_worktree(self.a, "ahd").resolve(), ahead.resolve())
+            finally:
+                sync.idle_hours = real_idle
+
+    def test_tidy_and_reuse_work_under_any_hostname(self):
+        real = sync.socket.gethostname
+        sync.socket.gethostname = lambda: "DESKTOP-F7IU69N"
+        try:
+            with contextlib.redirect_stdout(io.StringIO()):
+                wt = sync.new_worktree(self.a, "lenovo-job")
+                self.assertTrue(wt.name.startswith("mts-desktop-f7iu69n-"))
+                self.assertEqual(sync.tidy(self.a, apply=True, now=time.time() + 2 * 3600), [str(wt.resolve())])
+        finally:
+            sync.socket.gethostname = real
 
     def test_tidy_keeps_a_worktree_holding_ignored_data(self):
         (self.a / ".gitignore").write_text("Dumps/*\n", newline="\n")
@@ -518,6 +798,7 @@ class SyncTest(unittest.TestCase):
         sync.claim(self.a, "Task one", area="scripts/dev,MyTradingSys/backtest", gate=self.gate)
         # claim() now refuses an overlapping area, so plant the colliding claim as a file (an old or racing one)
         two = self.a / sync.CLAIMS_DIR / "task-two.md"
+        two.parent.mkdir(parents=True, exist_ok=True)   # a legacy claim still on the trunk is read beside the side branch
         two.write_text("task: Task two\nhost: h\naccount: t\narea: scripts/dev/sync.py\nepoch: %d\n" % time.time(), newline="\n")
         sh(self.a, "add", sync.CLAIMS_DIR)
         sh(self.a, "commit", "-q", "-m", "claim task-two")
@@ -842,14 +1123,80 @@ class SyncTest(unittest.TestCase):
                if len(re.findall(r'"[\w/.-]+\.py"', l)) >= 2 and "sys.executable" not in l]
         self.assertEqual(bad, [])
 
+    def test_ship_after_predecessor_shipped_proceeds(self):
+        # When predecessor has shipped (claim removed or status done/released), wait_after returns 'shipped'
+        (self.b / "MyTradingSys/system/claims").mkdir(parents=True, exist_ok=True)
+        commit(self.b, f"MyTradingSys/system/claims/pred-task.md", "claimed\n")
+        sh(self.b, "push", "-q", "origin", "HEAD:fast-track")
+        now = [1000.0]
+        # Simulate predecessor shipping
+        commit(self.b, "pred-done.txt", "done\n")
+        sh(self.b, "rm", "-q", "MyTradingSys/system/claims/pred-task.md")
+        sh(self.b, "commit", "-q", "-m", "release pred-task")
+        sh(self.b, "push", "-q", "origin", "HEAD:fast-track")
+        res = sync.wait_after(self.a, "pred-task", timeout=3600, poll=1.0, sleep=lambda s: None, now_fn=lambda: now[0])
+        self.assertEqual(res, "shipped")
+
+    def test_ship_after_predecessor_failed_proceeds(self):
+        # When predecessor card is marked failed, wait_after returns 'failed'
+        import json
+        card = {"id": "pred-fail", "status": "failed"}
+        (self.b / "MyTradingSys/system/tasks").mkdir(parents=True, exist_ok=True)
+        (self.b / "MyTradingSys/system/claims").mkdir(parents=True, exist_ok=True)
+        commit(self.b, "MyTradingSys/system/claims/pred-fail.md", "claimed\n")
+        commit(self.b, "MyTradingSys/system/tasks/pred-fail.json", json.dumps(card))
+        sh(self.b, "push", "-q", "origin", "HEAD:fast-track")
+        res = sync.wait_after(self.a, "pred-fail", timeout=3600, poll=1.0, sleep=lambda s: None, now_fn=lambda: 1000.0)
+        self.assertEqual(res, "failed")
+
+    def test_ship_after_timeout_lapses_proceeds(self):
+        # When timeout (60 min default) is reached without signal, ticket lapses
+        (self.b / "MyTradingSys/system/claims").mkdir(parents=True, exist_ok=True)
+        commit(self.b, "MyTradingSys/system/claims/pred-slow.md", "claimed\n")
+        sh(self.b, "push", "-q", "origin", "HEAD:fast-track")
+        now = [1000.0]
+        def advance_sleep(s):
+            now[0] += 3601.0
+        res = sync.wait_after(self.a, "pred-slow", timeout=3600, poll=1.0, sleep=advance_sleep, now_fn=lambda: now[0])
+        self.assertEqual(res, "lapsed")
+
+    def test_ship_after_waiting_holds_no_gate_slot(self):
+        # While waiting for predecessor, no gate slot is acquired
+        (self.b / "MyTradingSys/system/claims").mkdir(parents=True, exist_ok=True)
+        commit(self.b, "MyTradingSys/system/claims/pred-hold.md", "claimed\n")
+        sh(self.b, "push", "-q", "origin", "HEAD:fast-track")
+        slot_dir = sync.gate_slot(self.a)._dir()
+        now = [1000.0]
+        def check_no_slot(s):
+            self.assertFalse(slot_dir.exists() and any(slot_dir.iterdir()))
+            now[0] += 3601.0
+        sync.wait_after(self.a, "pred-hold", timeout=3600, poll=1.0, sleep=check_no_slot, now_fn=lambda: now[0])
+
+    def test_ship_cli_after_flag_calls_ship(self):
+        with mock.patch.object(sync, "toplevel", return_value=self.a), \
+                mock.patch.object(sync, "ship") as mock_ship:
+            self.assertEqual(sync.main(["ship", "--after", "pred-slug"]), 0)
+            mock_ship.assert_called_once_with(self.a, release_slug=None, after_slug="pred-slug")
+
+    def test_ship_cli_after_and_release_flags(self):
+        with mock.patch.object(sync, "toplevel", return_value=self.a), \
+                mock.patch.object(sync, "ship") as mock_ship:
+            self.assertEqual(sync.main(["ship", "--release", "my-slug", "--after", "pred-slug"]), 0)
+            mock_ship.assert_called_once_with(self.a, release_slug="my-slug", after_slug="pred-slug")
+
+
 
 class GateSlotTest(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp())
         sh(self.tmp, "init", "-q")
-        self.slots = self.tmp / ".git" / "gate-slots"
+        self.slots_base = self.tmp / "slots_env"
+        self.slots_base.mkdir(parents=True, exist_ok=True)
+        os.environ["MTS_GATE_SLOTS_DIR"] = str(self.slots_base)
+        self.slots = self.slots_base / "gate-slots"
 
     def tearDown(self):
+        os.environ.pop("MTS_GATE_SLOTS_DIR", None)
         shutil.rmtree(self.tmp, ignore_errors=True)
 
     def test_third_acquirer_waits_while_two_slots_held(self):
@@ -898,8 +1245,15 @@ class GateSlotTest(unittest.TestCase):
                 seen.append((list(cmd), self.slots.exists() and list(self.slots.iterdir())))
                 return type("R", (), {"returncode": 0})()
             return real(cmd, *a, **k)
-        with mock.patch.object(sync.subprocess, "run", side_effect=fake):
-            sync.run_gate(self.tmp, ["scripts/dev/x.py"])
+        old_full = os.environ.pop("SYNC_FULL_GATE", None)
+        try:
+            with mock.patch.object(sync.subprocess, "run", side_effect=fake):
+                sync.run_gate(self.tmp, ["scripts/dev/x.py"])
+        finally:
+            if old_full is not None:
+                os.environ["SYNC_FULL_GATE"] = old_full
+            else:
+                os.environ.pop("SYNC_FULL_GATE", None)
         cmd, held = seen[0]
         self.assertFalse(held)
         for flag in ("--precheck", "--fail-fast", "--slot", "--record", "--smoke", "--changed-file"):
@@ -1057,26 +1411,40 @@ class FastShipTest(unittest.TestCase):
         self.assertNotIn("--fast", self.run_gate_cmd(["scripts/dev/example_tool.py"], {"SYNC_FULL_GATE": "1"}))
         self.assertNotIn("--fast", self.run_gate_cmd(["scripts/dev/example_tool.py"], {"SYNC_NO_FAST": "1"}))
 
-    def test_fix_ci_flag_sets_the_full_gate(self):
+    def test_fix_ci_flag_keeps_the_fast_gate(self):
         with mock.patch.object(sync, "ship"), mock.patch.object(sync, "toplevel", return_value=Path(".")), \
-                mock.patch.dict(os.environ, {}, clear=False):
+                mock.patch.object(sync, "run_host_health"), mock.patch.dict(os.environ, {}, clear=False):   # the real host scan took 38-70 s here
             os.environ.pop("SYNC_FULL_GATE", None)
             os.environ.pop("SYNC_FIX_CI", None)
             self.assertEqual(sync.main(["ship", "--fix-ci"]), 0)
-            self.assertEqual((os.environ.get("SYNC_FIX_CI"), os.environ.get("SYNC_FULL_GATE")), ("1", "1"))
+            self.assertEqual((os.environ.get("SYNC_FIX_CI"), os.environ.get("SYNC_FULL_GATE")), ("1", None))
             os.environ.pop("SYNC_FULL_GATE", None)
             os.environ.pop("SYNC_FIX_CI", None)
+
+    def test_pure_revert_skips_the_local_gate_only_when_every_commit_is_a_revert(self):
+        def fake(subjects):
+            return mock.patch.object(sync, "git", return_value=mock.Mock(stdout=subjects))
+        with fake('Revert "x"\nRevert "y"\n'):
+            self.assertTrue(sync.pure_revert(Path(".")))
+        with fake('Revert "x"\nfix: y\n'):
+            self.assertFalse(sync.pure_revert(Path(".")))
+        with fake(""):
+            self.assertFalse(sync.pure_revert(Path(".")))
 
     def test_fast_slots_use_their_own_folder_and_an_empty_slot_file_is_busy(self):
         tmp = Path(tempfile.mkdtemp())
         self.addCleanup(shutil.rmtree, tmp, ignore_errors=True)
         sh(tmp, "init", "-q")
+        slots_base = tmp / "slots_base"
+        os.environ["MTS_GATE_SLOTS_DIR"] = str(slots_base)
+        self.addCleanup(lambda: os.environ.pop("MTS_GATE_SLOTS_DIR", None))
+        fast_d = sync.host_gate_slots_dir("gate-slots-fast")
+        main_d = sync.host_gate_slots_dir("gate-slots")
         with sync.gate_slot(tmp, slots=1, name="gate-slots-fast", alive=lambda p: True):
-            self.assertTrue((tmp / ".git" / "gate-slots-fast" / "slot-0").is_file())
-        d = tmp / ".git" / "gate-slots"
-        d.mkdir(exist_ok=True)
-        (d / "slot-0").write_text("")           # creator is mid-write: another gate must not take it over
-        (d / "slot-1").write_text("")
+            self.assertTrue((fast_d / "slot-0").is_file())
+        main_d.mkdir(parents=True, exist_ok=True)
+        (main_d / "slot-0").write_text("")           # creator is mid-write: another gate must not take it over
+        (main_d / "slot-1").write_text("")
         with self.assertRaises(sync.GateSlotTimeout):
             with sync.gate_slot(tmp, alive=lambda p: False, timeout=0.2, poll=0.05, note_every=99):
                 pass
@@ -1091,5 +1459,177 @@ class FastShipTest(unittest.TestCase):
         self.assertEqual(sync.race_overlap(tmp, ["theirs.py", "unrelated.py"], ["mine.py"]), ["theirs.py"])
 
 
+class OwnCiWaitTest(unittest.TestCase):
+    """ship-waits-own-ci (CI red and flow review 2026-10-25, claim 1): after the push the ship shell waits for the CI run of ITS OWN sha and
+    prints CI RED at once, so the author (the one person who knows what they just shipped) sees a red run in the same shell."""
+    SHA = "deadbeef" + "0" * 32
+    RED_RUN = {"id": 7, "status": "completed", "conclusion": "failure", "html_url": "https://github.com/o/r/actions/runs/7"}
+    GREEN_RUN = {"id": 8, "status": "completed", "conclusion": "success", "html_url": "https://github.com/o/r/actions/runs/8"}
+
+    def setUp(self):
+        self.pushed = sync.Pushed(self.SHA, ["scripts/dev/example_tool.py"])
+        self.t = 0.0
+        self.slept = []
+        self.asked = []
+
+    def now(self):
+        return self.t
+
+    def sleep(self, s):
+        self.slept.append(s)
+        self.t += s
+
+    def run_wait(self, runs, pushed=None, **kw):
+        """runs: one answer per poll (the last one repeats); an Exception instance is raised instead of returned."""
+        seq = list(runs)
+
+        def fetch(sha):
+            self.asked.append(sha)
+            a = seq.pop(0) if len(seq) > 1 else seq[0]
+            if isinstance(a, Exception):
+                raise a
+            return a
+        kw.setdefault("failed_jobs", lambda run_id: [])
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            state = sync.wait_own_ci(pushed or self.pushed, fetch=fetch, sleep=self.sleep, now_fn=self.now, poll=20, **kw)
+        return state, out.getvalue()
+
+    def test_a_red_run_of_the_shipped_sha_prints_CI_RED_at_once_with_the_failed_job(self):
+        state, out = self.run_wait([[self.RED_RUN]], failed_jobs=lambda run_id: ["offline gate (windows-latest 4/12)"] if run_id == 7 else [])
+        self.assertEqual(state, "red")
+        self.assertIn("CI RED deadbeef", out)
+        self.assertIn("offline gate (windows-latest 4/12)", out)
+        self.assertIn(self.RED_RUN["html_url"], out)
+        self.assertEqual(self.asked, [self.SHA])       # asked about its own sha, nobody else's
+        self.assertEqual(self.slept, [])               # red is reported on the first poll that sees it, no extra wait
+
+    def test_a_run_that_is_still_going_is_polled_until_it_goes_green(self):
+        state, out = self.run_wait([[], [{"status": "queued"}], [{"status": "in_progress"}], [self.GREEN_RUN]])
+        self.assertEqual(state, "green")
+        self.assertIn("CI green deadbeef", out)
+        self.assertNotIn("CI RED", out)
+        self.assertEqual(self.slept, [20, 20, 20])
+
+    def test_a_run_that_goes_red_after_polling_is_still_red(self):
+        state, out = self.run_wait([[{"status": "in_progress"}], [self.RED_RUN]])
+        self.assertEqual((state, self.slept), ("red", [20]))
+        self.assertIn("CI RED deadbeef", out)
+
+    def test_other_failure_kinds_are_red_and_cancelled_is_not_a_verdict(self):
+        for c in ("timed_out", "startup_failure"):
+            self.assertEqual(self.run_wait([[dict(self.RED_RUN, conclusion=c)]])[0], "red", c)
+        state, out = self.run_wait([[dict(self.RED_RUN, conclusion="cancelled")]])
+        self.assertEqual(state, "unknown")
+        self.assertNotIn("CI RED", out)
+
+    def test_no_run_ever_appearing_gives_up_after_the_start_window_and_says_so(self):
+        state, out = self.run_wait([[]], start_s=90, wait_s=600)
+        self.assertEqual(state, "none")
+        self.assertIn("no CI run for deadbeef", out)
+        self.assertTrue(90 <= self.t < 90 + 20 + 1, self.t)
+
+    def test_a_run_that_never_finishes_stops_at_the_cap_and_is_not_called_red(self):
+        state, out = self.run_wait([[{"status": "in_progress", "html_url": "https://x/9"}]], start_s=90, wait_s=100)
+        self.assertEqual(state, "timeout")
+        self.assertIn("deadbeef", out)
+        self.assertNotIn("CI RED", out)
+        self.assertTrue(100 <= self.t < 100 + 20 + 1, self.t)
+
+    def test_offline_or_rate_limited_is_unknown_and_never_raises(self):
+        state, out = self.run_wait([OSError("offline")])
+        self.assertEqual(state, "unknown")
+        self.assertNotIn("CI RED", out)
+        self.assertEqual(len(self.asked), 3)           # three misses in a row, then stop; one blip does not
+        state, out = self.run_wait([OSError("blip"), [self.GREEN_RUN]])
+        self.assertEqual(state, "green")
+
+    def test_a_failed_jobs_lookup_that_breaks_still_prints_red(self):
+        def boom(run_id):
+            raise OSError("jobs api down")
+        state, out = self.run_wait([[self.RED_RUN]], failed_jobs=boom)
+        self.assertEqual(state, "red")
+        self.assertIn("CI RED deadbeef", out)
+
+    def test_a_ship_the_ci_path_filter_skips_does_not_wait_or_ask(self):
+        globs = ["scripts/**", "MyTradingSys/system/tasks/**"]
+        docs = sync.Pushed(self.SHA, ["MyTradingSys/system/NEXT_SESSION.md"])
+        state, out = self.run_wait([AssertionError("must not ask GitHub for a push CI never starts")], pushed=docs, globs=globs)
+        self.assertEqual((state, self.asked, self.slept), ("none", [], []))
+        self.assertIn("path filter", out)
+        state, out = self.run_wait([[self.GREEN_RUN]], pushed=sync.Pushed(self.SHA, ["MyTradingSys/system/tasks/x.json"]), globs=globs)
+        self.assertEqual(state, "green")
+
+    def test_ci_path_filter_is_read_from_the_workflow_and_matches_like_github(self):
+        tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, tmp, ignore_errors=True)
+        (tmp / ".github" / "workflows").mkdir(parents=True)
+        (tmp / ".github" / "workflows" / "ci.yml").write_text(
+            "name: CI\non:\n  push:\n    branches: [fast-track]\n    paths:\n      - 'src/**'\n      # a comment line\n"
+            "      - 'MyTradingSys/research/**/*.py'   # trailing comment\n      - '.gitignore'\n      - scripts/*.sh\n"
+            "  pull_request:\n    types: [opened]\njobs:\n  x:\n    runs-on: y\n", encoding="utf-8", newline="\n")
+        globs = sync.ci_path_filter(tmp)
+        self.assertEqual(globs, ["src/**", "MyTradingSys/research/**/*.py", ".gitignore", "scripts/*.sh"])
+        yes = ["src/a/b.java", "MyTradingSys/research/x.py", "MyTradingSys/research/a/b/c.py", ".gitignore", "scripts/run.sh"]
+        no = ["MyTradingSys/research/x/out.tsv", "MyTradingSys/system/NEXT_SESSION.md", "scripts/dev/run.sh", "docs/src/a.md", "xgitignore"]
+        for f in yes:
+            self.assertTrue(sync.ci_starts([f], globs), f)
+        for f in no:
+            self.assertFalse(sync.ci_starts([f], globs), f)
+        self.assertTrue(sync.ci_starts(["src" + chr(92) + "a.java"], globs))   # Windows separators
+        self.assertTrue(sync.ci_starts(["whatever.md"], None))                 # no filter known: assume a run starts (wait, then say none)
+        self.assertIsNone(sync.ci_path_filter(tmp / "nowhere"))
+
+    def test_the_real_ci_yml_filter_starts_a_run_for_code_and_cards_but_not_notes(self):
+        globs = sync.ci_path_filter(Path(__file__).resolve().parents[2])
+        self.assertTrue(globs, "ci.yml push paths not found")
+        self.assertTrue(sync.ci_starts(["scripts/dev/sync.py", "MyTradingSys/system/NEXT_SESSION.md"], globs))
+        self.assertTrue(sync.ci_starts(["MyTradingSys/system/tasks/some-card.json"], globs))
+        self.assertFalse(sync.ci_starts(["MyTradingSys/system/NEXT_SESSION.md", "MyTradingSys/research/STATUS.md"], globs))
+
+    def test_cli_ship_waits_for_its_own_sha_and_exits_3_on_red(self):
+        for state, rc in (("red", sync.CI_RED_EXIT), ("green", 0), ("none", 0), ("unknown", 0), ("timeout", 0)):
+            with mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "run_host_health"), \
+                    mock.patch.object(sync, "ship", return_value=self.pushed) as mock_ship, \
+                    mock.patch.object(sync, "ci_path_filter", return_value=["scripts/**"]), \
+                    mock.patch.object(sync, "wait_own_ci", return_value=state) as mock_wait:
+                self.assertEqual(sync.main(["ship", "--release", "my-slug"]), rc, state)
+                mock_ship.assert_called_once_with(Path("."), release_slug="my-slug", after_slug=None)
+                self.assertEqual(mock_wait.call_args[0][0], self.pushed)
+                self.assertEqual(mock_wait.call_args[1]["globs"], ["scripts/**"])
+        self.assertEqual(sync.CI_RED_EXIT, 3)
+
+    def test_no_ci_wait_flag_env_and_a_ship_that_pushed_nothing_skip_the_wait(self):
+        with mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "run_host_health"), \
+                mock.patch.object(sync, "ship", return_value=self.pushed) as mock_ship, \
+                mock.patch.object(sync, "wait_own_ci", return_value="red") as mock_wait:
+            self.assertEqual(sync.main(["ship", "--no-ci-wait"]), 0)
+            mock_ship.assert_called_once_with(Path("."), release_slug=None, after_slug=None)   # the flag never reaches ship()
+            with mock.patch.dict(os.environ, {"SYNC_NO_CI_WAIT": "1"}):
+                self.assertEqual(sync.main(["ship"]), 0)
+            mock_wait.assert_not_called()
+        with mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "run_host_health"), \
+                mock.patch.object(sync, "ship", return_value=None), \
+                mock.patch.object(sync, "wait_own_ci", return_value="red") as mock_wait:
+            self.assertEqual(sync.main(["ship"]), 0)       # nothing shipped: nobody's sha to wait for
+            mock_wait.assert_not_called()
+
+    def test_unattended_callers_of_ship_opt_out_of_the_wait(self):
+        root = Path(__file__).resolve().parent
+        for name in ("desk.py", "lane_health.py"):
+            self.assertIn('"ship", "--no-ci-wait"', (root / name).read_text(encoding="utf-8"), name)
+        import codex_run
+        self.assertIn("--no-ci-wait", codex_run.SHIP_ARGS)
+
+
+class PARALLEL_MainCheckoutRuleTest(unittest.TestCase):
+    def test_rule_present(self):
+        doc = Path(__file__).resolve().parents[2] / "MyTradingSys" / "system" / "PARALLEL.md"
+        text = doc.read_text(encoding="utf-8")
+        for needle in ("Main checkout rule", "never edit", "merge --ff-only origin/fast-track"):
+            self.assertIn(needle, text)
+
+
 if __name__ == "__main__":
     unittest.main()
+

@@ -41,7 +41,7 @@ results 12-month-only until rerun.
 
 ## Related
 
-- research/BTC_MA_SETUPS_RESEARCH_2026-10-03.md section 4
+- research/_archive/loose_2026-10/BTC_MA_SETUPS_RESEARCH_2026-10-03.md section 4
 - MyTradingSys/system/sessions/MTS-2026-10-03-2053Z-APP-ANA-btc-moving-averages.md
 
 ## Receipt

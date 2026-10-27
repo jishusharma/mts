@@ -149,7 +149,7 @@ def bars_list(mk):
     return [dict(t=TS0 + i * MS, o=float(mk.O[i]), h=float(mk.H[i]), l=float(mk.L[i]), c=float(mk.C[i])) for i in range(N)]
 
 
-def bt_run(B, bars, mk, e, s, stop, targets, funding=None, mark=None, hold=HOLD):
+def bt_run(B, bars, mk, e, s, stop, targets, funding=(), mark=None, hold=HOLD):   # () = explicit no-funding model (B103)
     side = "long" if s > 0 else "short"
     entry = float(mk.O[e])
     r = B.simulate_trade(side, entry, TS0 + (e - 1) * MS, stop, targets, bars[e:e + hold + 4], mark_bars=mark, funding=funding,
@@ -316,12 +316,14 @@ def run_all(mods, tag=""):
                 r, *_ = bt_run(B, bl, mk, e, s, 100.0 * (1 - s * 0.05), [], funding=frec)
                 got.append(r["funding_paid_pct"])
             tb.cmp("bt_engine.simulate_trade", tag_, expf, got)
-            got_n = []
-            for e, s in ev:
-                r, *_ = bt_run(B, bl, mk, e, s, 100.0 * (1 - s * 0.05), [], funding=None)
-                got_n.append(r["funding_paid_pct"])
             if kind == "interior":
-                tb.cmp("bt_engine.simulate_trade (funding=None)", tag_, expf, got_n, note="L5: None means 0 with no error")
+                raised_n = 0
+                for e, s in ev:
+                    try:
+                        bt_run(B, bl, mk, e, s, 100.0 * (1 - s * 0.05), [], funding=None)
+                    except ValueError:
+                        raised_n += 1
+                tb.scalar("bt_engine.simulate_trade (funding=None)", tag_, len(ev), raised_n, note="expected fail-closed (B103): funding=None must raise on every event; got = events that raised")
             got = [100.0 * TC.funding_paid("long" if s > 0 else "short", TS0 + e * MS, TS0 + (e + HOLD) * MS, frec) for e, s in ev]
             tb.cmp("trade_costs.funding_paid", tag_, expf, got, tol=1e-9)
             bars = [dict(t=TS0 + i * MS, c=float(mk.C[i])) for i in range(N)]

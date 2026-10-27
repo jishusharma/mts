@@ -124,11 +124,11 @@ class TestReviewedRows(unittest.TestCase):
             self.assertLessEqual(len(r["quote"].split()), 25)
 
     def test_csv_matches_rebuild(self):
-        self.assertEqual(L.read_csv_text(), L.render_csv(L.build_rows()))
+        self.assertEqual(L.read_csv_text(), L.render_csv(L.build_rows() + L.build_discord_rows()))
 
     def test_crlf_checkout_of_the_csv_matches_but_a_content_change_does_not(self):
         # windows-latest checks the file out with core.autocrlf=true: same content, CRLF line ends
-        want = L.render_csv(L.build_rows())
+        want = L.render_csv(L.build_rows() + L.build_discord_rows())
         tampered = want.replace("QRP-", "QRX-", 1)
         self.assertNotEqual(tampered, want)
 
@@ -149,13 +149,50 @@ class TestReviewedRows(unittest.TestCase):
         self.assertEqual(check(tampered.replace("\n", "\r\n")), (tampered, 1))
 
     def test_eligible_rows_have_all_three_fields_and_a_time(self):
-        for r in L.build_rows():
+        for r in L.build_rows() + L.build_discord_rows():
             if r["eligible"] == "Y":
                 self.assertEqual(r["asset"], "BTC")
                 self.assertEqual(r["kind"], "PLAN")
                 for f in ("entry", "stop", "targets"):
                     self.assertFalse(r[f].startswith(NS), (r["video_id"], f))
                 self.assertTrue(r["published_utc"])
+
+
+class TestDiscordRows(unittest.TestCase):
+    """Discord rows (card qriptal-discord-calls-2026-10-18): quotes verbatim in the evidence files, times converted from IST."""
+
+    def test_ist_to_utc(self):
+        self.assertEqual(L.discord_utc("2026-10-18 23:52"), "2026-10-18T18:22:00Z")  # habib README converts the same post
+        self.assertEqual(L.discord_utc("2026-10-13 16:30"), "2026-10-13T11:00:00Z")
+        self.assertEqual(L.discord_utc(""), "")
+
+    def test_discord_rows_verify_and_are_in_csv(self):
+        rows = L.build_discord_rows()
+        self.assertGreaterEqual(len(rows), 10)
+        csv_text = L.read_csv_text()
+        for r in rows:
+            self.assertRegex(r["file_line"], r"^MyTradingSys/.+\.md:\d+(-\d+)?$")
+            self.assertIn(r["call_id"], csv_text)
+            self.assertLessEqual(len(r["quote"].split()), 25)
+
+    def test_quote_not_in_evidence_is_rejected(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "MyTradingSys").mkdir()
+            (root / "MyTradingSys" / "ev.md").write_text("he said buy the dip here\n", encoding="utf-8")
+            j = root / "rows.json"
+            j.write_text('[{"src": "ev.md", "posted_local": "", "kind": "VIEW", "q": "he said sell the rip"}]', encoding="utf-8")
+            with self.assertRaises(L.QuoteError):
+                L.build_discord_rows(j, root)
+
+    def test_no_discord_row_is_eligible_without_entry_stop_target(self):
+        # RULES.md: eligible needs entry + stop + target, all typed. None of the 2026-10-13..18 posts types an entry and a stop.
+        for r in L.build_discord_rows():
+            self.assertEqual(r["eligible"], "N", r["quote"])
+
+    def test_unrecorded_post_time_is_no_time(self):
+        r = [x for x in L.build_discord_rows() if "73k could get offered" in x["quote"]][0]
+        self.assertEqual((r["published_utc"], r["window_split"], r["reason"]), ("", "NO_TIME", "NO_TIME"))
 
 
 if __name__ == "__main__":

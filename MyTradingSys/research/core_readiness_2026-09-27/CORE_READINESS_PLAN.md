@@ -4,7 +4,7 @@
 # Status: FRESH
 # Canonical path: C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\research/core_readiness_2026-09-27/
 # Author: Opus 5.5 session 2026-09-27. Design only: nothing live was edited. All numbers below were measured, not estimated.
-# Supersedes as the "what next" source: research/OPUS_REVIEW_REQUEST.md, opus_handoff_context.md, operator_summary.md, SESSION_HANDOFF_2026-09-27.md, execution_system_architecture.md (see task G2).
+# Supersedes as the "what next" source: research/_archive/loose_2026-10/OPUS_REVIEW_REQUEST.md, opus_handoff_context.md, operator_summary.md, SESSION_HANDOFF_2026-09-27.md, execution_system_architecture.md (see task G2).
 
 ## 0. ONE-PARAGRAPH VERDICT
 
@@ -130,14 +130,14 @@ D1-L0 [Sonnet] MarketDataSnapshot.fetchHistoricalSnapshot: no live calls (remove
 PHASE E - execution layer corrections (last session's code; required before any testnet order)
 E1 [Sonnet build, Opus review] executor.py: protective stop is type stop_market with trigger_price and trigger mark_price, reduce_only, placed right after the FIRST entry fill and resized (private/edit amount) after every further fill. Today it is a reduce-only LIMIT at the stop price: for a long that is a sell limit below market, which fills immediately and closes the position. Today it is also placed only after every rung resolves (up to 10 minutes unprotected).
 E2 [Sonnet] deribit_orders.cancel_all_by_label calls private/cancel_all_by_currency (cancels every BTC order). Replace with private/cancel_by_label (label, currency) - endpoint verified in Deribit docs 2026-09-27.
-E3 [Haiku or NUC worker] research/deribit_api_research.md error table is wrong: 10002 is qty_too_low, not insufficient funds; not_enough_funds is 10009; 11005 amount_too_large; 13009 unauthorized; 11006 post_only_reject; 11007 reduce_only_reject. Mark the heartbeat section unverified (method names not confirmed). Amount for BTC-PERPETUAL is USD, multiples of 10.
+E3 [Haiku or NUC worker] research/_archive/loose_2026-10/deribit_api_research.md error table is wrong: 10002 is qty_too_low, not insufficient funds; not_enough_funds is 10009; 11005 amount_too_large; 13009 unauthorized; 11006 post_only_reject; 11007 reduce_only_reject. Mark the heartbeat section unverified (method names not confirmed). Amount for BTC-PERPETUAL is USD, multiples of 10.
 E4 [Sonnet] plan_compiler targets: sizes rounded up can exceed the position (valid_ladder_four_rung: 40 + 40 > 70). Floor each target to 10 and give the remainder to the last target; sum must equal position.
 E5 [Sonnet] trade_plan_validator: amount is USD notional, so the check is total_units <= max_notional exactly (remove the 1.5x slack).
 E6 [Sonnet] Any execution or assistant consumer selects the rank-1 candidate by rank, never setup_candidates[0] (F6), and refuses verdict SETUP_CONFIRMED (F9) until D6 lands.
 
 PHASE G - governance (non-critical, any model, NUC-suitable)
 G1 Add 03_FILE_INDEX.md rows for: execution\ (deribit_orders.py, executor.py, journal.py, reconciler.py, plan_compiler.py, trade_plan_validator.py, trade_plan_schema.json, examples\), backtest\ (six files), research\core_readiness_2026-09-27\ (this folder).
-G2 Archive to MyTradingSys\archive\ (log in 02b): research\opus_handoff_context.md, operator_summary.md, SESSION_HANDOFF_2026-09-27.md, execution_system_architecture.md, OPUS_REVIEW_REQUEST.md, step6_multi_account_design_note.md (content folded into this plan). Keep deribit_api_research.md after E3.
+G2 Archive to MyTradingSys\archive\ (log in 02b): research\_archive\loose_2026-10\opus_handoff_context.md, operator_summary.md, SESSION_HANDOFF_2026-09-27.md, execution_system_architecture.md, OPUS_REVIEW_REQUEST.md, step6_multi_account_design_note.md (content folded into this plan). Keep deribit_api_research.md after E3.
 G3 Delete the stray root file named `=====\"` (untracked, 16 KB) after a backup.
 G4 BUGS.md rows (append, one per finding not already covered): F1 (link B058), F3, F5 (link B063), F6, F7, F8, F9, F10, E1, E2. Each needs an items\ doc (Build-Check enforces it); one shared doc pointing at this plan is enough per ID.
 

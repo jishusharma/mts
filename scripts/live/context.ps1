@@ -1,7 +1,7 @@
 # context.ps1 - rolling 24h per-TF envelope. Read-only. Binance REST.
 # usage: . .\scripts\live\context.ps1   (or via load.ps1 as: context)
 # slope_word threshold: +/-0.05 pct/hr. Provisional, not Tom-derived.
-$root = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
+$root = (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 $sym  = "BTCUSDT"
 
 function Fmt($v, $d) {

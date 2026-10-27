@@ -1,0 +1,76 @@
+import json, glob, os, sys, collections, datetime
+from pathlib import Path
+
+root = Path.home() / ".claude" / "projects"
+since = datetime.datetime(2026, 10, 19).timestamp()
+files = [f for f in root.glob("*/*.jsonl") if f.stat().st_mtime >= since and "scratch-2026-10-22-70544e" not in str(f)]
+
+
+def ts(s):
+    return datetime.datetime.fromisoformat(s.replace("Z", "+00:00")).timestamp()
+
+
+tot = collections.Counter()
+slow = []
+inits = collections.Counter()
+rows = []
+for f in files:
+    uses = {}
+    first_in = None
+    n_user = n_tool = n_comp = n_hooknote = 0
+    t_first = t_last = None
+    lat = collections.defaultdict(list)
+    for line in f.open(encoding="utf-8", errors="ignore"):
+        try:
+            e = json.loads(line)
+        except Exception:
+            continue
+        t = e.get("timestamp")
+        tt = ts(t) if t else None
+        if tt:
+            t_first = t_first or tt
+            t_last = tt
+        if e.get("isCompactSummary") or e.get("subtype") == "compact_boundary":
+            n_comp += 1
+        m = e.get("message") or {}
+        c = m.get("content")
+        if e.get("type") == "assistant" and isinstance(c, list):
+            u = m.get("usage") or {}
+            if first_in is None and u:
+                first_in = (u.get("input_tokens", 0) + u.get("cache_read_input_tokens", 0) + u.get("cache_creation_input_tokens", 0))
+            for b in c:
+                if b.get("type") == "tool_use":
+                    n_tool += 1
+                    uses[b["id"]] = (b.get("name"), tt, json.dumps(b.get("input"))[:160])
+                    if b.get("name", "").endswith("start_session"):
+                        inits[(b.get("input") or {}).get("initiation")] += 1
+        elif e.get("type") == "user":
+            if isinstance(c, list):
+                for b in c:
+                    if b.get("type") == "tool_result" and b.get("tool_use_id") in uses:
+                        nm, t0, inp = uses.pop(b["tool_use_id"])
+                        if tt and t0:
+                            d = tt - t0
+                            lat[nm].append(d)
+                            slow.append((d, nm, inp, f.name[:8]))
+            s = c if isinstance(c, str) else " ".join(b.get("text", "") for b in c if isinstance(b, dict) and b.get("type") == "text")
+            if s and not e.get("isMeta"):
+                n_user += 1
+                if "turn_meter" in s or "[SIGNALS" in s or "CI RED" in s or "ROLE LOADER" in s:
+                    n_hooknote += 1
+    wall = (t_last - t_first) if t_first else 0
+    tool_wait = sum(sum(v) for v in lat.values())
+    rows.append((f.parent.name[-22:], f.name[:8], datetime.datetime.fromtimestamp(f.stat().st_mtime).strftime("%m-%d %H:%M"), round(wall / 60), n_user, n_tool, n_comp, first_in, round(tool_wait / 60), n_hooknote))
+    for k, v in lat.items():
+        tot[k] += sum(v)
+
+print("session(proj tail) id mtime wall_min user_msgs tool_calls compactions first_ctx_tokens tool_wait_min hook_msgs")
+for r in sorted(rows, key=lambda r: r[2]):
+    print(r)
+print("\nstart_session initiation values:", dict(inits))
+print("\ntotal wait by tool (min):")
+for k, v in tot.most_common(12):
+    print(f"  {k:45} {v/60:8.1f}")
+print("\nslowest 15 tool calls:")
+for d, nm, inp, sid in sorted(slow, reverse=True)[:15]:
+    print(f"  {d/60:6.1f} min {sid} {nm} {inp[:120]}")

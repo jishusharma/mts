@@ -157,7 +157,7 @@ MyTradingSys/options/collector/deribit_opt_backfill.py:251:def backfill_delivery
 MyTradingSys/options/collector/deribit_opt_backfill.py:407:def backfill_trades(client, hist_dir, date_from, date_to, workers, count, soft_deadline, hard_deadline,
 MyTradingSys/options/collector/deribit_opt_backfill.py:632:        guarded("delivery", lambda: backfill_delivery(live, hist, cursors, soft))
 MyTradingSys/options/collector/deribit_opt_backfill.py:651:            return backfill_trades(history, hist, d_from, d_to, a.workers, a.trade_count, soft, hard)
-MyTradingSys/research/b141_htf_stage2.py:63:    return float(vals_sorted[np.searchsorted(np.cumsum(w_sorted), tot / 2.0)])
+MyTradingSys/research/loose_code/b141_htf_stage2.py:63:    return float(vals_sorted[np.searchsorted(np.cumsum(w_sorted), tot / 2.0)])
 MyTradingSys/research/candle_patterns_2026-10-04/d19_4h_test.py:3:import csv, math, bisect
 MyTradingSys/research/candle_patterns_2026-10-04/d19_4h_test.py:92:            entry = bars4h[i+1]["o"]
 MyTradingSys/research/candle_patterns_2026-10-04/d19_4h_test.py:96:            exit_px = bars4h[i+1]["o"]
@@ -253,14 +253,14 @@ MyTradingSys/research/levels_sizing_2026-10-14/probe.py:31:        right = volum
 MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py:67:    return fc[np.searchsorted(ft, t_ms, side="right")]
 MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py:83:        out[i + 1] = 100.0 if al == 0 else 100 - 100 / (1 + ag / al)
 MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py:210:        i0 = int(np.searchsorted(t1, tf_))
-MyTradingSys/research/oi_divergence_v2_2026-10-10.py:8:from bisect import bisect_right
+MyTradingSys/research/loose_code/oi_divergence_v2_2026-10-10.py:8:from bisect import bisect_right
 MyTradingSys/research/opr_bb_mtf_center_2026-10-16/study.py:27:M_N, M_X, M_HH = 48, 0.005, 24    # primary range window / zone tolerance / look-ahead bars for the M tests (OURS)
 MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/study.py:49:    m = pd.Series(Cl).rolling(prev).min().shift(1).to_numpy()
 MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/study.py:55:    m = pd.Series(Cl).rolling(prev).min().shift(1).to_numpy()
 MyTradingSys/research/orderflow_views_2026-10-14/study.py:314:                    "delta": round(float(d[k:k + 5].sum()), 1), "cvd22_close": round(float(cvd22[k + 4]), 1),
 MyTradingSys/research/p1_cost_floor/p1_cost_floor.py:51:                nxt_hit = lo[i+1] <= px if side==1 else hi[i+1] >= px
 MyTradingSys/research/p1_cost_floor/p1_cost_floor.py:52:                strict  = lo[i+1] <  px if side==1 else hi[i+1] >  px
-MyTradingSys/research/p4_corrected.py:62:    j = np.searchsorted(t, exit_t)
+MyTradingSys/research/loose_code/p4_corrected.py:62:    j = np.searchsorted(t, exit_t)
 MyTradingSys/research/pit_levels_2026-10-16/count_prior_va.py:72:        vh = vol[hi_ + 1] if hi_ < len(vol) - 1 else -1
 MyTradingSys/research/published_strats_2026-10-13/run_pub.py:75:        j = np.searchsorted(self.t, fund[:, 0] - fund[:, 0] % 1, side="right") - 1
 MyTradingSys/research/published_strats_2026-10-13/run_pub.py:117:        out[i + 1] = 100 if ad == 0 else 100 - 100 / (1 + au / ad)

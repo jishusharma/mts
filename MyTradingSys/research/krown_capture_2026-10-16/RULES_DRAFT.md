@@ -4,7 +4,7 @@ Scope: pilot of 6 transcripts that are NOT in the TA 101 corpus (that corpus is 
 This file adds the **daily-video method**: event-study "setups", targets as median-return arithmetic, probability statements, invalidation levels.
 Videos: V0gjxlaW2Qk (2026-10-06), wvu0onib6WU (2026-10-13), BvxLX8FL3bg (2026-10-14), SOaAP9vBgM4 and 7CFrrRm5hLw (shorts, 2026-10-07), dzH7m9cQeZA (2026-09-27).
 Not mined for rules: qwjU2jI2D-0 (accumulation theory, execution/slippage education, no numbers), 0F-WBBd5M3s (2024 Meta Signals NFT interview/promo).
-Every quote is machine-checked by `check_quotes.py` against `transcripts/<id>_timed.txt` (auto-captions; case and punctuation normalised, timestamps are the caption line where the quote starts).
+Every quote is machine-checked by `scripts/dev/verify_extract_quotes.py` (replaced the deleted check_quotes.py) against the transcripts (auto-captions; case and punctuation normalised, timestamps are the caption line where the quote starts).
 Tags: **SOURCED** = his words, **OURS** = our reading. Nothing here is an MTS rule; no edge is claimed. Captions carry stutter ("the the"), so quotes are cut at clean spans.
 
 ## A. How he states odds (the probability framing)

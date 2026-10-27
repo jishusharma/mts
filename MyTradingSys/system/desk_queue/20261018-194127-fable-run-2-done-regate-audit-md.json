@@ -1,10 +1,13 @@
 {
   "done_when": "cards created; pending-read cards updated",
+  "finished": "2026-10-18T21:06:59Z",
   "from": "JIS-NB",
+  "host": "DESKTOP-F7IU69N",
   "id": "20261018-194127-fable-run-2-done-regate-audit-md",
   "need": "triage fix list and go/no-go into cards",
   "posted": "2026-10-18T19:41:27Z",
-  "status": "pending",
+  "result": "done: REGATE_AUDIT.md shipped 8429a7b2; card fable-run2-regate-all-prereg marked done; 8 fixes triaged -> card fable-run2-regate-fixes-1to8 (SONNET, CRUCIAL); fable-setups-pack-prep unblocked",
+  "status": "done",
   "target": "DSA",
   "title": "Fable run 2 done: REGATE_AUDIT.md"
 }

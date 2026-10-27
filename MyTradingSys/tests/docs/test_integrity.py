@@ -1,5 +1,6 @@
 # test_integrity.py - doc/project integrity checks (test_6: no bannered docs in system/; test_7: size caps)
 # Run: python -m pytest MyTradingSys/tests/docs -v
+import os
 import re
 from pathlib import Path
 
@@ -124,12 +125,28 @@ def test_5_no_stray_cleanup_candidates():
     assert not bad, f"Stray cleanup candidates: {bad}"
 
 
+def in_gate_diff(rel):
+    """gate-tiers-by-path: a ship gate sets MTS_GATE_CHANGED_FILES (newline-separated repo paths, run_all_tests.apply_selection); the doc
+    caps and banner checks then look at the files of the diff only. Unset (CI, deploy, a full gate) = every file."""
+    raw = os.environ.get("MTS_GATE_CHANGED_FILES")
+    return raw is None or rel in {x.strip().replace("\\", "/") for x in raw.splitlines()}
+
+
+def test_gate_diff_scope_helper(monkeypatch):
+    monkeypatch.delenv("MTS_GATE_CHANGED_FILES", raising=False)
+    assert in_gate_diff("CLAUDE.md")
+    monkeypatch.setenv("MTS_GATE_CHANGED_FILES", "MyTradingSys/system/RELAY.md" + chr(10) + "x.py")
+    assert in_gate_diff("MyTradingSys/system/RELAY.md") and not in_gate_diff("CLAUDE.md")
+
+
 def test_6_no_banner_docs_in_system():
     """A system/ doc that opens with a SUPERSEDED / HISTORICAL / STALE banner is dead weight in every glob, grep and
     accidental Read. Move it with git mv to MyTradingSys/archive/<topic>_<date>/ (archive/ is skipped by _live_files)
     instead of leaving it bannered."""
     hits = []
     for p in sorted((MTS / "system").glob("*.md")):
+        if not in_gate_diff(p.relative_to(REPO).as_posix()):
+            continue
         head = p.read_text(encoding="utf-8", errors="ignore").splitlines()[:5]
         for i, line in enumerate(head, 1):
             if BANNER_RE.search(line):
@@ -159,7 +176,36 @@ def test_7_size_cap(rel):
     """Boot and pickup files stay small. Over the cap: trim the file (CLAUDE.md, SURFACE_POLICY.md, RELAY.md) or rotate
     it (OPERATOR_INBOX.md: CONTROL_ROOM.md step 3) instead of raising the number; CLAUDE.md moves detail into a system/ doc
     before it grows, it is not word-trimmed one line at a time (B18)."""
+    if not in_gate_diff(rel):
+        pytest.skip("not in the ship's diff (CI checks every cap)")
     p = REPO / rel
     assert p.exists(), f"{rel} is missing"
     size = len(p.read_bytes().replace(b"\r\n", b"\n"))   # a Windows runner checks out CRLF; the cap is on the committed LF bytes
     assert size <= SIZE_CAPS[rel], f"{rel} is {size} B, cap {SIZE_CAPS[rel]} B"
+
+
+def test_8_red_trunk_is_reverted_not_forward_fixed():
+    """red-trunk-revert-10-min (operator 2026-10-24): one rule for Claude, Codex and Gemini (AGENTS.md and GEMINI.md point to
+    CLAUDE.md). Case: 23426b191 kept CI red about 30 min under two forward fixes instead of one revert."""
+    line = next(l for l in (REPO / "CLAUDE.md").read_text(encoding="utf-8").splitlines() if "CI RED" in l)
+    for want in ("git revert", "10 min", "never forward-fix"):
+        assert want in line, want
+
+
+def test_9_ops_change_check_has_8_questions_and_lead_cites_it():
+    """ops-change-edge-case-check: the reach test for start/hook/broadcast/role changes (NUC 2026-10-26, bbd808f4a)."""
+    f = MTS / "system" / "OPS_CHANGE_CHECK.md"
+    assert f.exists(), "OPS_CHANGE_CHECK.md missing"
+    lines = f.read_text(encoding="utf-8").splitlines()
+    assert len(lines) <= 40, len(lines)
+    nums = [int(m.group(1)) for l in lines if (m := re.match(r"^(\d+)\. ", l))]
+    assert nums == list(range(1, 9)), nums
+    assert "Reach: Q1-Q8 ok|n/a <why>" in f.read_text(encoding="utf-8")
+    assert "OPS_CHANGE_CHECK" in (MTS / "system" / "roles" / "lead.md").read_text(encoding="utf-8")
+    assert "OPS_CHANGE_CHECK" in (MTS / "system" / "DEBUGGING.md").read_text(encoding="utf-8")
+
+
+def test_10_workers_blocked_solve_it_rule():
+    """bug-ai-health-stops-at-first-blocker (NUC 2026-10-26): a refusal is solved and verified, then reported."""
+    t = (MTS / "system" / "WORKERS.md").read_text(encoding="utf-8")
+    assert "Blocked" in t and "report AND continue" in t and "brief template" in t.lower()

@@ -207,16 +207,6 @@ def parse_social_call(
 ) -> AnalystSignal:
     """Parses unstructured social / X calls (Crypto Chase or Roman Trading)."""
     upper_text = text.upper()
-    direction = SignalDirection.LONG if "LONG" in upper_text else SignalDirection.SHORT
-
-    # Imbalance construct detection
-    if "FVG" in upper_text or "GAP" in upper_text:
-        construct = ImbalanceConstruct.FVG_DISPLACEMENT
-    elif "ABSORPTION" in upper_text or "VOLUME" in upper_text or "CVD" in upper_text:
-        construct = ImbalanceConstruct.VOLUME_ABSORPTION
-    else:
-        construct = ImbalanceConstruct.FVG_DISPLACEMENT
-
     # Search for numbers associated with keywords
     entry_m = re.search(r"(?:long|short|entry|retest|limit)\s+(?:at\s+)?([0-9,]+(?:\.[0-9]+)?)", text, re.IGNORECASE)
     stop_m = re.search(r"(?:stop|invalidation|sl|below|above)\s+(?:below\s+|above\s+|at\s+)?([0-9,]+(?:\.[0-9]+)?)", text, re.IGNORECASE)
@@ -228,6 +218,21 @@ def parse_social_call(
     entry_price = float(entry_m.group(1).replace(",", ""))
     stop_loss = float(stop_m.group(1).replace(",", ""))
     targets = [float(target_m.group(1).replace(",", ""))]
+
+    if re.search(r"\b(LONG|BUY|BULLISH)\b", upper_text):
+        direction = SignalDirection.LONG
+    elif re.search(r"\b(SHORT|SELL|BEARISH)\b", upper_text):
+        direction = SignalDirection.SHORT
+    else:
+        direction = SignalDirection.LONG if stop_loss < entry_price else SignalDirection.SHORT
+
+    # Imbalance construct detection
+    if "FVG" in upper_text or "GAP" in upper_text:
+        construct = ImbalanceConstruct.FVG_DISPLACEMENT
+    elif "ABSORPTION" in upper_text or "VOLUME" in upper_text or "CVD" in upper_text:
+        construct = ImbalanceConstruct.VOLUME_ABSORPTION
+    else:
+        construct = ImbalanceConstruct.FVG_DISPLACEMENT
 
     cid = call_id or f"SOC-{analyst.upper().replace(' ', '')}-{published_utc[:10]}-{int(entry_price)}"
 

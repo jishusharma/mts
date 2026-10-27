@@ -1,0 +1,74 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-25T21:24:58Z",
+  "commands": [
+    "python scripts/dev/lab_query.py layers",
+    "python scripts/dev/lab_query.py rulings guidance"
+  ],
+  "created": "2026-10-25T20:05:34Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/guidance.md exists with the five sections, every fact has file:line or NOT_IN_DATA",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "One fact sheet for layer family guidance, from repo files only, each fact with file:line, for the layer review (card layer-review-after-simulator). No verdict on keeping or dropping a layer.",
+  "id": "lf-guidance-gemini-facts",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/guidance.md",
+      "ref": "9483299e9",
+      "utc": "2026-10-25T21:24:58Z"
+    }
+  ],
+  "layers": [
+    "guidance"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-25T20:06:45Z",
+  "refs": [
+    "MyTradingSys/system/ANTIGRAVITY_LAPTOP.md item C"
+  ],
+  "result": "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/guidance.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/guidance.md (new file only)"
+  ],
+  "scope_out": [
+    "scripts; live tree; LAYERS.md; any verdict to keep, drop, demote or park a layer"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/LAYERS.md",
+    "MyTradingSys/system/layer_index.json",
+    "MyTradingSys/research/tom_fabio_guidance_2026-10-12/GUIDANCE_AUDIT.md",
+    "MyTradingSys/research/tom_fabio_guidance_2026-10-12/PRE_REG_Q33.md"
+  ],
+  "state": "done",
+  "steps": [
+    "python scripts/dev/lab_query.py layers (rows with family guidance); read the guidance section of MyTradingSys/system/LAYERS.md and its spec/results files in layer_index.json",
+    "python scripts/dev/lab_query.py rulings guidance",
+    "Write MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/guidance.md per ANTIGRAVITY_LAPTOP.md item C: per layer ORIGIN (quoted source), PARAMETERS (SOURCED or OURS), BACKTESTS (path, fee-net, IS/OOS, n), KNOWN BUGS (rulings), CONFLUENCE",
+    "Write NOT_IN_DATA where the repo has no answer; never fill from memory; give no verdict",
+    "Commit with a Result: line (layers covered, facts counted)"
+  ],
+  "taken": "2026-10-25T21:24:58Z",
+  "tests": "none (run card); proof = file exists and every fact line carries file:line or NOT_IN_DATA",
+  "title": "[GEMINI] Layer fact sheet: guidance (file:line facts only, no verdict)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

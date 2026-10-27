@@ -44,5 +44,5 @@ where a quote exists; the rest run shadow-only (collection_only signals, no orde
 
 ## Not done / notes
 - SUPERVISOR_LOG.md has this session's claim line appended (uncommitted: not in the brief's three-path commit list).
-- Other uncommitted paths in the tree (runtime/BUILD_REPORT.md, research/OPERATOR_RULINGS_2026-10-02.md) are not this session's.
+- Other uncommitted paths in the tree (runtime/BUILD_REPORT.md, research/_archive/loose_2026-10/OPERATOR_RULINGS_2026-10-02.md) are not this session's.
 - Claim on layers/alerts/ is released when the supervisor promotes or abandons the .new.

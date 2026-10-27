@@ -2,17 +2,17 @@
   "approved_by": "",
   "asks": "",
   "commands": [
-    "git -C C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed\\.claude\\worktrees\\mts-jis-nb-planner-runlanes-1018 grep -n -E \"Start-Process|CreateNoWindow|WindowStyle|exec:java\" -- scripts/core/start-trading-day.ps1 scripts/core/loop-supervisor.ps1",
-    "powershell -NoProfile -Command \"Get-CimInstance Win32_Process -Filter \\\"Name='java.exe'\\\" | Select-Object ProcessId,ParentProcessId,SessionId,CommandLine | Format-List\"",
+    "git grep -n -E \"Start-Process|CreateNoWindow|WindowStyle|exec:java\" -- scripts/core/start-trading-day.ps1 scripts/core/loop-supervisor.ps1",
+    "powershell -NoProfile -Command \"Get-CimInstance Win32_Process | Where-Object {$_.Name -match 'java|cmd|pwsh|conhost|WindowsTerminal|OpenConsole'} | Select-Object ProcessId,ParentProcessId,Name,SessionId,CreationDate,CommandLine | Format-List\"",
     "python scripts/dev/test_start_trading_day_hidden.py",
     "python scripts/dev/run_all_tests.py --quick"
   ],
   "created": "2026-10-17T12:20:31Z",
   "depends_on": [],
-  "done_when": "test_every_java_launch_is_windowless fails before and passes after the fix, run_all_tests --quick green, and no java/mvn launch in the two .ps1 files lacks CreateNoWindow or -WindowStyle Hidden.",
-  "est_turns": 30,
+  "done_when": "Outcome A (offender found) or B (not reproduced) as defined in the spec (done_when section). Both: no java/mvn launch in the two .ps1 files lacks CreateNoWindow or -WindowStyle Hidden; guard test mutation-checked; run_all_tests --quick green; no deploy, no process stopped.",
+  "est_turns": 25,
   "from_inbox": "",
-  "goal": "No visible java.exe/mvn console window appears on NB: every java or mvn launch in the trading-day launcher and supervisor is windowless.",
+  "goal": "No visible java.exe/mvn console window appears on NB: every java or mvn launch in the launcher and supervisor is windowless, shown either by a found-and-fixed offender or by a recorded NOT-REPRODUCED desk check plus a guard test that can fail.",
   "id": "java-popups",
   "lane": "JIS-NB",
   "latest": [
@@ -26,7 +26,7 @@
   ],
   "layers": [],
   "live_path": true,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C3 REVIEWER:review SESSION DECISION (OURS): built in a worktree only, deploy manual; step 1 is read-only diagnosis on NB, the fail-first test is written from its finding (default: statemachine launch via ProcessStartInfo CreateNoWindow instead of Start-Process pwsh). Real launcher is PowerShell (scripts/core/start-trading-day.ps1 and the supervisor), live path: JIS-NB lane only, not a builder card. Re-scope as a JIS-NB desk task. DIAGNOSIS 2026-10-18 (code read, no process touched): DECISION (OURS): cause NOT nameable from code, no fix shipped. Every java/mvn launch found: start-trading-day.ps1 L447 Start-Process pwsh -WindowStyle Hidden (mvn exec:java statemachine; mvn.cmd->cmd->java inherit that console), L127-150 Invoke-WithTimeout ProcessStartInfo CreateNoWindow=true (direct snapshot java, mvn snapshot via cmd /c, build_classpath), loop-supervisor.ps1 L270 Start-Process pwsh -WindowStyle Hidden (loop), L93 wscript Hidden. All already hidden or CreateNoWindow; no DETACHED_PROCESS anywhere; python shims (nowin.py) cover Popen of git/mvn; cicd_run.py/shot.py run mvn/java without nowin but have no scheduled caller. Suspect (unproven): Start-Process -WindowStyle Hidden of pwsh from a windowless parent (wscript style 0) with Windows Terminal as default terminal app can still surface a console/WT window, and java.exe 0xc0000142 (bfa91af3c34c) is the classic sign of a console child started in a non-interactive/exhausted desktop heap. Desk check (read-only, on NB while a popup is visible): powershell -NoProfile -Command \"Get-CimInstance Win32_Process | Where-Object {$_.Name -match 'java|cmd|pwsh|conhost|WindowsTerminal|OpenConsole'} | Select-Object ProcessId,ParentProcessId,Name,SessionId,CreationDate,CommandLine | Format-List\"; the parent of the visible conhost/OpenConsole names the launch. If a WindowsTerminal/OpenConsole parent is the statemachine pwsh, fix = launch via ProcessStartInfo CreateNoWindow (default), fail-first test from that finding.",
+  "note": "REVIEWED:2026-10-19 ACCEPT REVIEWER:Lab_Guy-Sonnet-5.5 card=18b2624c818c scope=46f977327b5c CLASS:C3 WEIGHT:CRITICAL LAB:none Lab_Guy pass 2026-10-19 (Sonnet 5.5). CONFIRMED C3/CRITICAL (launcher / supervisor = live path, process lifecycle). SPEC REVIEW: E4 contradiction in the old card: done_when demanded a test that 'fails before and passes after', but the 2026-10-18 code-read DIAGNOSIS (kept below) found every java/mvn launch already hidden (start-trading-day.ps1 L447 -WindowStyle Hidden, ProcessStartInfo CreateNoWindow=true in Invoke-WithTimeout, loop-supervisor.ps1 L270/L93 Hidden), re-confirmed 2026-10-19 by grep; test_start_trading_day_hidden.py does not exist yet. A static 'launches are hidden' test cannot fail on current code, and step 3 'fix the offending launch' had no offender. Fixed by splitting the outcome: (A) desk check on NB shows the parent of a visible console -> targeted fix + test that fails on the real offender; (B) not reproduced -> close as NOT-REPRODUCED with the CIM output, plus a guard test that is mutation-checked (the checker function is run on synthetic bad snippets, so the test can fail). The desk check is read-only on the live host and needs a visible popup: it is the operator-side/JIS-NB desk step, not a worktree builder step; if no popup is visible the builder takes outcome B. Live-path checks added for outcome A (changing the statemachine launch alters PID tracking and kill): $StateMachinePID still set and used by the cleanup path, the stale-java kill before launch (~L436) still runs, a spawn failure fails closed (logged SPAWN_FAIL, loop exits non-zero so the supervisor restarts it; never continues with a null PID). API errors / non-trade balance moves N/A. Stale worktree path removed from the first command. C3 coordinator step: approved by default by Supervisor B (login B), DECISION (OURS) 2026-10-19. SPEC FILE: MyTradingSys/system/card_specs/java-popups.md. | PRIOR: REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C3 REVIEWER:review SESSION DECISION (OURS): built in a worktree only, deploy manual; step 1 is read-only diagnosis on NB, the fail-first test is written from its finding (default: statemachine launch via ProcessStartInfo CreateNoWindow instead of Start-Process pwsh). Real launcher is PowerShell (scripts/core/start-trading-day.ps1 and the supervisor), live path: JIS-NB lane only, not a builder card. Re-scope as a JIS-NB desk task. DIAGNOSIS 2026-10-18 (code read, no process touched): DECISION (OURS): cause NOT nameable from code, no fix shipped. Every java/mvn launch found: start-trading-day.ps1 L447 Start-Process pwsh -WindowStyle Hidden (mvn exec:java statemachine; mvn.cmd->cmd->java inherit that console), L127-150 Invoke-WithTimeout ProcessStartInfo CreateNoWindow=true (direct snapshot java, mvn snapshot via cmd /c, build_classpath), loop-supervisor.ps1 L270 Start-Process pwsh -WindowStyle Hidden (loop), L93 wscript Hidden. All already hidden or CreateNoWindow; no DETACHED_PROCESS anywhere; python shims (nowin.py) cover Popen of git/mvn; cicd_run.py/shot.py run mvn/java without nowin but have no scheduled caller. Suspect (unproven): Start-Process -WindowStyle Hidden of pwsh from a windowless parent (wscript style 0) with Windows Terminal as default terminal app can still surface a console/WT window, and java.exe 0xc0000142 (bfa91af3c34c) is the classic sign of a console child started in a non-interactive/exhausted desktop heap. Desk check (read-only, on NB while a popup is visible): powershell -NoProfile -Command \"Get-CimInstance Win32_Process | Where-Object {$_.Name -match 'java|cmd|pwsh|conhost|WindowsTerminal|OpenConsole'} | Select-Object ProcessId,ParentProcessId,Name,SessionId,CreationDate,CommandLine | Format-List\"; the parent of the visible conhost/OpenConsole names the launch. If a WindowsTerminal/OpenConsole parent is the statemachine pwsh, fix = launch via ProcessStartInfo CreateNoWindow (default), fail-first test from that finding.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -36,7 +36,8 @@
   "scope_in": [
     "scripts/core/start-trading-day.ps1",
     "scripts/core/loop-supervisor.ps1",
-    "scripts/dev/test_start_trading_day_hidden.py"
+    "scripts/dev/test_start_trading_day_hidden.py",
+    "MyTradingSys/system/card_specs/java-popups.md (spec, read only)"
   ],
   "scope_out": [
     "live tree",
@@ -49,12 +50,13 @@
   "sources": [],
   "state": "ready",
   "steps": [
-    "Run the 3 grep/Get-CimInstance commands: list every Start-Process/ProcessStartInfo launch of java or mvn and the parent of any java.exe with a visible console (read-only).",
-    "Write the fail-first test test_every_java_launch_is_windowless in scripts/dev/test_start_trading_day_hidden.py: each java/mvn launch is CreateNoWindow=true or -WindowStyle Hidden, never DETACHED_PROCESS; it must fail on current code.",
-    "Fix the offending launch in start-trading-day.ps1 or loop-supervisor.ps1; add restart/reset-state and fail-closed checks per CLAUDE.md live-path rule; run_all_tests --quick; ship. Deploy stays manual."
+    "Read card_specs/java-popups.md first. Desk check (read-only, needs a visible popup on NB): the git grep and the Get-CimInstance command; no popup visible = outcome B.",
+    "Write test_start_trading_day_hidden.py with find_visible_launches(); test it on synthetic bad and good snippets, then on the real files.",
+    "Outcome A only: fix the launch the CIM parent names (default: statemachine via ProcessStartInfo CreateNoWindow) keeping PID tracking, stale-java kill, cleanup and fail-closed spawn error.",
+    "run_all_tests --quick; ship. Deploy stays manual (coordinator)."
   ],
-  "tests": "scripts/dev/test_start_trading_day_hidden.py::JavaLaunchHidden.test_every_java_launch_is_windowless (fails on the pre-change launcher)",
+  "tests": "test_start_trading_day_hidden.py::JavaLaunchHidden.test_every_java_launch_is_windowless (checker run on synthetic bad/good snippets, then on the real .ps1 files); outcome A adds a test for the found offender that fails on the pre-change launcher.",
   "title": "JIS-NB desk: java.exe console popups on NB (launcher is PowerShell, live path)",
-  "weight": "CRITICAL",
+  "weight": "B-SHARED",
   "worker": "session"
 }

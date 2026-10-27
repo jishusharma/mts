@@ -1,0 +1,6 @@
+Daily BTC idea discovery rule v1, frozen 2026-10-20 UTC.
+Feed: TradingView BTCUSD Ideas, first ten displayed cards, platform order “Most popular”.
+Match: case-insensitive title or visible preview contains one of: trendline; trend line; triangle; channel.
+Exclude a card only when its visible text is explicitly moving-average-only. Retain denominator and ordering caveat.
+This is a discovery rule, not a representative sample or efficacy filter. Hyphenated “trend-line” does not match.
+Version applies prospectively from 2026-10-20. Earlier ledger records retain their original selection protocol/schema; no retroactive recoding is claimed.

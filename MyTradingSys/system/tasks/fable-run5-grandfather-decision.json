@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-19T22:04:13Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/fable_audit_2026-10-20/GRANDFATHER_DECISION.md shipped with the layer table, answers to Q1-6 and the card list; git cherry empty",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator runs one Fable 5.1 session on fable_run_5_brief.md: per distinct layer KEEP/SHADOW/DROP/RE-TEST for the 27 pre_pipeline_sources with quoted evidence, closest-to-promotable candidates, max 5 follow-up cards.",
+  "id": "fable-run5-grandfather-decision",
+  "lane": "OPUS",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Operator-run Fable only; no session may start or message it. Cap 3 weekly points. IMPORTANT: coordinator reads Result line and file list. Planner 2026-10-20. Parked refined: lane OPUS needs operator approved_by; the operator running Fable by hand is the approval. Not dispatchable.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/execution/auto_trader_config.json"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/fable_audit_2026-10-20/GRANDFATHER_DECISION.md"
+  ],
+  "scope_out": [
+    "MyTradingSys/execution/auto_trader_config.json",
+    "VALIDATION and HOLDOUT reads",
+    "live tree"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/gap_audit_2026-10-19/REPORT.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "Operator opens a new Code session on Fable 5.1 in a worktree of latest fast-track and sends the one-line prompt at the top of fable_run_5_brief.md",
+    "Fable reads the 8 listed inputs, answers Q1-6, writes GRANDFATHER_DECISION.md",
+    "Fable runs sync.py ship --release fable-grandfather-1020 and verifies git cherry origin/fast-track is empty"
+  ],
+  "tests": "File exists; every table row has a quote with file:line and a recommendation; every number QUOTED or RE-DERIVED; every proposed parameter SOURCED or OURS; no edit to auto_trader_config.json (git diff shows only the new file).",
+  "title": "Fable run 5: decision memo on the 27 grandfathered testnet sources (operator runs Fable by hand)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

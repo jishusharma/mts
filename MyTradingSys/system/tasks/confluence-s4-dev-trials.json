@@ -1,0 +1,63 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/backtest/layers/krown/run_dev_trials.py"
+  ],
+  "created": "2026-10-24T22:50:03Z",
+  "depends_on": [
+    "confluence-s3-context-read"
+  ],
+  "done_when": "run/DEV_RESULTS.md reports all 18 family tests (PASS/FAIL/INCONCLUSIVE/NOT_RUN with reason); TRIALS.md rows added; ACCESS_LOG.md shows no bar >= 2024-07-01.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Run the pre-registered trials s3.3-3.6 (pooled conditional read only if S3 passed, sizing arm, T2, T4) on DEV and DEV_EXT and write run/DEV_RESULTS.md with every test, placebo, year split and cost scenario.",
+  "hosts": [
+    "DESKTOP-F7IU69N",
+    "JIS-NB"
+  ],
+  "id": "confluence-s4-dev-trials",
+  "lane": "SONNET",
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-25 ACCEPT (independent Sonnet reviewer, fixes applied). Depends on confluence-s3-context-read. DECISION (OURS): if S3 fails, run only the layer-free arms (T2, T4) and mark the D1 arms NOT_RUN as the PRE_REG says. Host with F:/MTS/data. Complete and reviewed; promote with tasks.py check once depends_on is done.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/krown_audit_2026-10-22/run/DEV_RESULTS.md",
+    "MyTradingSys/research/krown_audit_2026-10-22/run/ACCESS_LOG.md",
+    "MyTradingSys/backtest/layers/krown/run_dev_trials.py",
+    "MyTradingSys/research/layer_lab/TRIALS.md",
+    "MyTradingSys/research/krown_audit_2026-10-22/run/COUNTS_T2.md"
+  ],
+  "scope_out": [
+    "PRE_REG_CONFLUENCE.md changes",
+    "VALIDATION or HOLDOUT bars",
+    "any threshold or band changed after an outcome is seen",
+    "live wiring"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/krown_audit_2026-10-22/PRE_REG_CONFLUENCE.md:35-113",
+    "FABLE_CARD_CONFLUENCE.md s4 row S4"
+  ],
+  "state": "refined",
+  "steps": [
+    "Confirm run/CONTEXT_READ.md exists and read its s3.1 verdict; skip s3.3 and the sizing arm's D1 multiplier if s3.1 did not PASS (PRE_REG s3.2-3.3).",
+    "Before any T2 outcome: write run/COUNTS_T2.md (n, weeks, median range height) as PRE_REG s3.5-3.6 require; commit it, then run T2.",
+    "Write run_dev_trials.py per PRE_REG s3.3-3.6 with Holm m=18 from the frozen family; hand-computed expected values for a toy fixture from FORMULAS.md; run on DEV and DEV_EXT; append ACCESS_LOG.md; add the declared TRIALS.md rows.",
+    "Write DEV_RESULTS.md: each test with n, mean net % at 0.10/0.14 %, week-clustered t, 20-day block bootstrap, placebo, 2022 vs 2023-24H1 sign, DEV_EXT sign; failures included."
+  ],
+  "tests": "run_dev_trials.py test: toy fixture reproduces hand-computed means and Holm-adjusted p; placebo shift test fails on a leaking variant; aborts on a bar >= 2024-07-01.",
+  "title": "Confluence S4: DEV and DEV_EXT trial runs (T2, sizing arm, pooled read, T4) per PRE_REG_CONFLUENCE",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

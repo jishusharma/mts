@@ -1,0 +1,78 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-26T15:43:29Z",
+  "commands": [
+    "C:/Users/E-ngineers/.gemini/bin/agy.exe --print \"Follow the steps of card argon-med-sim-layer-coverage-matrix (python scripts/dev/tasks.py brief argon-med-sim-layer-coverage-matrix). Write only MyTradingSys/research/design_cards_2026-10-26/argon_sim_layer_coverage.md. Facts with file:line or NOT_IN_DATA; no verdicts.\" --model gemini-4-argon-medium"
+  ],
+  "created": "2026-10-26T22:50:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/design_cards_2026-10-26/argon_sim_layer_coverage.md has 13 rows (one per family), each cell with file:line or NOT_IN_DATA, no verdict column",
+  "effort": "medium",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "One matrix: for each of the 13 layer families in layer_index.json, which sim_desk study/plugin runs it, which parameters it exposes, and which are not reachable from the desk. Facts only, so the operator knows what the simulator can and cannot show before any layer review.",
+  "id": "argon-med-sim-layer-coverage-matrix",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/design_cards_2026-10-26/argon_sim_layer_coverage.md: 13 families (3 ",
+      "ref": "b713e5235",
+      "utc": "2026-10-26T15:43:29Z"
+    }
+  ],
+  "layers": [
+    "krown",
+    "tom"
+  ],
+  "live_path": false,
+  "model": "gemini-4-argon-medium",
+  "mutation_check": "",
+  "note": "REVIEWED: sonnet-reviewer-a89035 2026-10-26",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "super-c-design",
+  "refreshed": "2026-10-25T22:50:16Z",
+  "refs": [],
+  "reroute": {
+    "at": "2026-10-25T23:42:10Z",
+    "desk": "20261025-234210-argon-med-sim-layer-coverage-matrix",
+    "to": "DSA",
+    "why": "credits"
+  },
+  "result": "MyTradingSys/research/design_cards_2026-10-26/argon_sim_layer_coverage.md: 13 families (3 dedicated studies, 2 partial via levels.py, 8 NOT_IN_DATA)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/design_cards_2026-10-26/argon_sim_layer_coverage.md (new file only)"
+  ],
+  "scope_out": [
+    "live tree; deploys; any verdict to keep, drop, demote or park a layer; VALIDATION and HOLDOUT data"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/layer_index.json",
+    "MyTradingSys/research/sim_desk/PLUGIN.md",
+    "MyTradingSys/research/sim_desk/studies/"
+  ],
+  "state": "done",
+  "steps": [
+    "Read MyTradingSys/system/layer_index.json families and MyTradingSys/research/sim_desk/PLUGIN.md, studies/*.py",
+    "For each family grep the study modules for its detectors and parameters; record file:line",
+    "Write the table; NOT_IN_DATA where the desk has no path; no keep/drop wording",
+    "Commit with a Result: line (families covered, families with no desk path)"
+  ],
+  "taken": "2026-10-26T15:43:29Z",
+  "tests": "none (run card); proof = 13 rows, every cell has file:line or NOT_IN_DATA",
+  "title": "[GEMINI] Argon-medium: which sim-desk study covers which layer family (file:line matrix)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

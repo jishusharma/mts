@@ -21,6 +21,7 @@ Runtime:         F:\AIBridge\src\agent.ps1 on 127.0.0.1:7181
 Config, policy, audit: same folder.
 Extension:       F:\AIBridge\extension, Chrome MV3, loaded unpacked.
 
+State 2026-10-19: extension/agent 0.7.1 installed on JIS-NB (aibridge_install.py; reload extension + F5 chat pending), NUC install pending; task fit table and evidence: SUPER_LOOP.md.
 State 2026-10-01: P1, P2, P3a, P3b part 1 done. P3b part 2 blocked on the Chrome extension ID.
 Bridge hard rules (its own project): loopback only, denials always win, audit every request,
 no BOM, LF only, no emoji, read before write. A bridge-development session does not write into

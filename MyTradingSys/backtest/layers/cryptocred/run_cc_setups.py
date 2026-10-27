@@ -141,7 +141,7 @@ def _limit_trade(sig, hit, sim_bars, taker, maker, entry_refund, funding, max_ba
            else {"t": fb["t"], "o": fill, "h": fb["h"], "l": fill, "c": fill})
     seq = [syn] + sim_bars[k + 1:]
     call = {kk: v for kk, v in sig.items() if kk not in ("meta", "entry_price", "entry_t")}
-    tr = simulate_trade(entry_price=fill, entry_t=fb["t"] - 1, bars=seq, funding=funding or None,
+    tr = simulate_trade(entry_price=fill, entry_t=fb["t"] - 1, bars=seq, funding=funding or [],
                         taker_fee=taker, maker_fee=maker, max_bars=max_bars, stop_first=True,
                         target_through=tick, **call)
     if tr.get("net_r") is None:
@@ -159,7 +159,7 @@ def _market_trade(sig, sim_bars, by_t, tf_ms, taker, maker, entry_refund, fundin
         if c != sig["entry_price"]:
             s2["entry_price"] = c
             s2["targets"] = [(_r_target(c, sig["stop"], sig["side"], sig["meta"]["target_r"]), 1.0)]
-    r = signals_to_trades([s2], sim_bars, funding=funding or None, taker_fee=taker,
+    r = signals_to_trades([s2], sim_bars, funding=funding or [], taker_fee=taker,
                           maker_fee=maker, max_bars=max_bars, target_through=tick)[0]["trade_result"]
     if r.get("net_r") is None:  # open at end of data
         return None
@@ -247,11 +247,18 @@ def evaluate(trades, split_t, key):
     return {"is": s_is, "oos": s_oos, "oos_years": yrs, "criteria": crit, "verdict": v}
 
 
-def run_setup(name, tf_bars, sim_bars, funding, tf_ms, is_frac=0.70, max_bars=1440, setup_fn=None):
+def run_setup(name, tf_bars, sim_bars, funding, tf_ms, is_frac=0.70, max_bars=1440, setup_fn=None, dev_only=False):
+    """dev_only=True scores the IS (DEV) span only: signals before the split, 1m bars only up to split + max_bars
+    (so a DEV trade still open at the split can close; no later trade is simulated, so funding records that end
+    before the OOS span cannot trip the B103 span check). The OOS block is then empty (n=0)."""
     fn = setup_fn or SETUPS[name]
     signals = fn(tf_bars)  # CURRENT defaults, no grid
     _, bars_oos, n_is = chronological_split(tf_bars, is_frac)
     split_t = bars_oos[0]["t"] if bars_oos else (tf_bars[-1]["t"] + 1 if tf_bars else 0)
+    if dev_only:
+        signals = [g for g in signals if g["entry_t"] < split_t]
+        end_t = split_t + max_bars * 60000
+        sim_bars = [b for b in sim_bars if b["t"] < end_t]
     has_fund = bool(funding)
     res = {"setup": name, "n_signals": len(signals), "split_t": split_t, "pbo": None,
            "pbo_note": "N/A: no parameter grid (defaults only; provenance audit forbids tuning)",

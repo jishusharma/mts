@@ -11,6 +11,7 @@ copies the open notes addressed to gpt/all into every pack. The Control Room ren
 import argparse
 import json
 import re
+import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -105,14 +106,27 @@ def tail_jsonl(path, n):
     return rows
 
 
+def _claim_row(stem, text):
+    kv = dict(l.split(": ", 1) for l in text.splitlines() if ": " in l)
+    return {"task": kv.get("task", stem), "host": kv.get("host", "?"), "account": kv.get("account", "?"),
+            "epoch": int(kv["epoch"]) if kv.get("epoch", "").isdigit() else 0}
+
+
 def claims(repo):
-    out = []
+    """Open claims: the worktree folder (legacy) plus the side branch origin/claims, where sync.py claim/release write them."""
+    rows = {}
     d = Path(repo) / "MyTradingSys/system/claims"
     for f in sorted(d.glob("*.md")) if d.exists() else []:
-        kv = dict(l.split(": ", 1) for l in f.read_text(encoding="utf-8").splitlines() if ": " in l)
-        out.append({"task": kv.get("task", f.stem), "host": kv.get("host", "?"), "account": kv.get("account", "?"),
-                    "epoch": int(kv["epoch"]) if kv.get("epoch", "").isdigit() else 0})
-    return out
+        rows[f.stem] = _claim_row(f.stem, f.read_text(encoding="utf-8"))
+    ls = subprocess.run(["git", "-C", str(repo), "ls-tree", "--name-only", "origin/claims", "MyTradingSys/system/claims/"],
+                        capture_output=True, text=True, encoding="utf-8", check=False)
+    for rel in ls.stdout.split() if ls.returncode == 0 else []:
+        if rel.endswith(".md"):
+            show = subprocess.run(["git", "-C", str(repo), "show", f"origin/claims:{rel}"], capture_output=True, text=True,
+                                  encoding="utf-8", check=False)
+            if show.returncode == 0:
+                rows[Path(rel).stem] = _claim_row(Path(rel).stem, show.stdout)
+    return list(rows.values())
 
 
 def gpt_lane(repo, now):

@@ -1,6 +1,6 @@
 # consensus: one observation row per core alert
 
-Doctrine: `MyTradingSys/research/ARCHITECTURE_TWO_CORES_2026-10-01.md` :29-43 (consensus row), :76-83 (acceptance).
+Doctrine: `MyTradingSys/research/_archive/loose_2026-10/ARCHITECTURE_TWO_CORES_2026-10-01.md` :29-43 (consensus row), :76-83 (acceptance).
 Consensus is an observation. It never gates, vetoes or delays a core, and nothing in this directory edits core state.
 Every claim below cites file:line; "unknown" means the clone shows nothing.
 

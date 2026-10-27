@@ -1,0 +1,74 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-27T11:06:32Z",
+  "commands": [],
+  "created": "2026-10-26T19:40:56Z",
+  "depends_on": [],
+  "done_when": "ROUTING.md:44 and LENOVO_NEXT_SESSION.md:25 name Gemini on the NUC as one option, not the only path; cbp_run.py fetches captions itself (yt-dlp, then youtube-transcript-api) with per-machine CBP_HOME/CBP_STORE; a fail-first test runs it on a machine without F:/CryptoScrapper.",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Remove the wrong 'YouTube only through Gemini on the NUC' rule from routing and CBP docs; it was written as a limit but is a preference. CBP fetched captions with yt-dlp in its legacy version. Any Claude session on any device must be able to run cbp_run.py (fetch, extract, quote-check, store) with no dependency on a particular machine.",
+  "id": "bug-youtube-gemini-only-rule-is-a-preference",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "ROUTING.md YouTube row split (CBP known-channel fetch any machine; Gemini stays required o",
+      "ref": "d456f001b",
+      "utc": "2026-10-27T11:06:32Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Pipeliner drain 1023: DSA-NB audit cards and two study cards to SONNET, drain note",
+      "ref": "d3f6b8b11c85",
+      "utc": "2026-10-23T12:02:27Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d3f6b8b11c85 Pipeliner drain 1023: DSA-NB audit cards and two study cards to SONNET, drain",
+      "ref": "MyTradingSys/system/ROUTING.md",
+      "utc": "2026-10-23T12:02:27Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "OPERATOR QUOTE: File a bug - wrong rule. It is preference not limitation. CBP was doing that long before in legacy using yldt so make Claude should be able to work on CBP modules without ant dependency from eny device.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-26T19:41:01Z",
+  "refs": [],
+  "result": "ROUTING.md YouTube row split (CBP known-channel fetch any machine; Gemini stays required only for open-ended search); LENOVO_NEXT_SESSION.md + CBP_STATUS_2026-10-27.md corrected; cbp_run.py CBP_HOME now falls back under the checkout when F:/CryptoScrapper is absent (default_cbp_home, injectable for tests); test_cbp_run_works_without_fixed_machine_paths added (fails on pre-change code: AttributeError). Shipped d456f001b.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/system/ROUTING.md; MyTradingSys/system/LENOVO_NEXT_SESSION.md; scripts/dev/cbp_run.py; scripts/dev/fetch_captions_timed.py; MyTradingSys/tests/test_cbp_query.py; MyTradingSys/research/cbp/"
+  ],
+  "scope_out": [
+    "live tree; the CBP repo history; Gemini queue itself (stays as an option)"
+  ],
+  "scope_sha": "d3f6b8b11c85",
+  "size": "M",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "find every place the rule is written (git grep 'Gemini' near YouTube in system/ and research/cbp/) and cite file:line",
+    "reword to preference; keep Gemini as an option for search and grounding",
+    "make cbp_run path settings per machine (env CBP_HOME/CBP_STORE, default under the checkout when F:/CryptoScrapper is absent) and add the fail-first test",
+    "run one cbp_run --force dry on a machine without the CBP repo, record the result"
+  ],
+  "taken": "2026-10-27T11:06:32Z",
+  "tests": "MyTradingSys/tests/test_cbp_query.py::test_cbp_run_works_without_fixed_machine_paths (fail-first)",
+  "title": "BUG: rule 'YouTube only via Gemini on the NUC' is a preference, not a limit; CBP must run from any device",
+  "weight": "",
+  "worker": "session"
+}

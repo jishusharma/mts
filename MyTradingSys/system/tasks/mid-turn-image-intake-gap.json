@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-25T19:12:03Z",
   "commands": [],
   "created": "2026-10-18T15:30:42Z",
   "depends_on": [],
@@ -14,11 +15,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already shipped d696c8c6: ingest_transcript lands attachment/queued_command; test_shot pas",
+      "ref": "b277bb68",
+      "utc": "2026-10-25T19:12:03Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "score-context-reads-automatically-carrie: compute carried falsifiers from klines",
-      "ref": "bc97ca7421a9",
-      "utc": "2026-10-18T13:53:58Z"
+      "line": "shot: card: outcomes also resolve in tasks/archive/",
+      "ref": "3a9d8faafb92",
+      "utc": "2026-10-22T14:14:08Z"
     },
     {
       "auto": true,
@@ -31,15 +38,20 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Observed 2026-10-18: 5 shots pasted mid-turn ~14:57Z never reached disk; the operator re-pasted them as a normal prompt at 15:38Z and the hook landed all 5 (ffb3dd828daa, 5763ffcc7333, 33369d758139, df60707599d8, 4d1696e42656). Workaround confirmed: re-paste as a new prompt. Fix still open: the session should say 'NOT SAVED, re-paste' when it sees mid-turn images.",
+  "note": "Observed 2026-10-18: 5 shots pasted mid-turn ~14:57Z never reached disk; the operator re-pasted them as a normal prompt at 15:38Z and the hook landed all 5 (ffb3dd828daa, 5763ffcc7333, 33369d758139, df60707599d8, 4d1696e42656). Workaround confirmed: re-paste as a new prompt. Fix still open: the session should say 'NOT SAVED, re-paste' when it sees mid-turn images. PILOT1 2026-10-24: desktop claim (24 h stale) released via sync.py release; scope re-read, files unchanged by other cards (last change 3a9d8faaf is card-resolution only).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-18T15:47:01Z",
+  "refreshed": "2026-10-24T10:02:13Z",
   "refs": [
     "MyTradingSys/methodology/screenshot_intake.md"
   ],
-  "result": "",
+  "result": "already shipped d696c8c6: ingest_transcript lands attachment/queued_command; test_shot passes",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/shot.py",
     "scripts/dev/test_shot.py",
@@ -50,7 +62,7 @@
     "the Claude app itself",
     "operator drawings"
   ],
-  "scope_sha": "bc97ca7421a9",
+  "scope_sha": "3a9d8faafb92",
   "size": "S",
   "sources": [
     "MyTradingSys/methodology/screenshot_intake.md:85 (KNOWN LIMITS section to extend)",
@@ -58,12 +70,13 @@
     "scripts/dev/shot.py:807 (hook: SessionStart/UserPromptSubmit)",
     "scripts/dev/test_shot.py:83 (paste fixture pattern)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Find the 2026-10-18 14:57Z session transcript jsonl and check whether the 5 mid-turn images are in it (queued-command or attachment record type) and how they differ from the normal user record shot.py:246 accepts.",
     "If present: extend ingest_transcript to land that record type, with a fixture test. If absent: add a KNOWN LIMITS row (mid-turn images never reach disk; re-paste as a new prompt, confirmed 2026-10-18) and the notice line.",
     "Run python scripts/dev/test_shot.py; ship."
   ],
+  "taken": "2026-10-25T19:12:03Z",
   "tests": "scripts/dev/test_shot.py: new test with a mid-turn image fixture lands one shot (fails before the ingest change); in the absent case a test that the notice text exists",
   "title": "Intake gap: images pasted mid-turn never reach disk (5 shots 4h/1h/8h/12h/1D on 10-18 ~14:57Z lost; not in Temp, not ingested)",
   "weight": "",

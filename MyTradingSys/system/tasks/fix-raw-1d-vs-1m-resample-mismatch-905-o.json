@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-19T07:20:42Z",
+  "depends_on": [],
+  "done_when": "Each of the 8 loaders named in T01-F2 carries a comment line with the numbers and the path of the audit; MyTradingSys/system/DATA_NOTES.md (or the existing data index) has a raw_1d entry; test_raw_1d_label.py greps that all 8 files carry the label and passes.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Document and label that Dumps/backtest/raw_1d is a distinct snapshot, not the 1m resample (905 of 912 DEV days differ on open, 847 on volume, max 12%): add the finding to every loader that reads raw_1d and to a data note, and tell new studies to derive daily bars from 1m.",
+  "id": "fix-raw-1d-vs-1m-resample-mismatch-905-o",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "T01 backtest audit: data forensics on DEV 1m bars, loader torture matrix, 1m-vs-1d resampl",
+      "ref": "3a9b389a8104",
+      "utc": "2026-10-19T07:21:57Z"
+    },
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "3a9b389a8104 T01 backtest audit: data forensics on DEV 1m bars, loader torture matrix, 1m-",
+      "ref": "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md",
+      "utc": "2026-10-19T07:21:57Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 T0-ONLY | DRAFT 2026-10-26 Session_Planner (OURS): scoped from the audit finding; DECISION (OURS): label, do not regenerate (data host not here); regenerating raw_1d is a DSA run if the operator wants it. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:07:53Z",
+  "refs": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md",
+    "MyTradingSys/research/candle_patterns_2026-10-04/pilot/cdata.py",
+    "MyTradingSys/research/volume_2026-10-09/vdata.py",
+    "MyTradingSys/research/loose_code/oi_divergence_v2_2026-10-10.py",
+    "MyTradingSys/research/trendlines_2026-10-17/g3_pack/g3_pack.py",
+    "MyTradingSys/backtest/layers/timeframe/tf_realdata_gate.py"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "restating any published verdict, ledger row or pre-registered bar",
+    "live path"
+  ],
+  "scope_sha": "3a9b389a8104",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md (T01-F2)",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T01/out/resample_summary.txt"
+  ],
+  "state": "ready",
+  "steps": [
+    "Open T01-F2 and take the 8 loader paths; verify each still reads raw_1d with grep.",
+    "Add one comment line per loader: raw_1d differs from the 1m resample (905 open / 847 volume days of 912), derive daily bars from 1m for new work (T01-F2).",
+    "Add the data note entry and a small test that greps the 8 files for the label."
+  ],
+  "tests": "MyTradingSys/tests/test_raw_1d_label.py: every loader file that mentions raw_1d also contains 'T01-F2'; fails now (label absent).",
+  "title": "Fix raw_1d vs 1m resample mismatch: 905 open and 847 volume days disagree, max volume rel-diff 12%",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

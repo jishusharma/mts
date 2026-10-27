@@ -322,6 +322,7 @@
     }
     return best;
   }
+  function rawInput(el) { return el ? ((el.value !== undefined ? el.value : el.textContent) || '') : ''; }
   function inputText(el) { return ((el.value !== undefined ? el.value : el.textContent) || '').trim(); }
   function liveInput(el) { return el ? { node: el, attached: el.isConnected, text: inputText(el) } : null; }
   function nowInput() { var e = findInput(); return e ? { node: e, text: inputText(e) } : null; }
@@ -370,21 +371,30 @@
       if (myToken !== token) return false;
       if (Date.now() - t0 > CFG.aibridge_wait_ms) { lastPostErr = 'the chat never became idle (or an operator draft sits in the input)'; return false; }
       var el = findInput();
-      var idle = textQuiet() >= CFG.aibridge_quiet_ms;
-      if (el && idle && inputText(el) === '') break;   // never overwrite an operator draft
+      var idle = !!el && textQuiet() >= CFG.aibridge_quiet_ms;
+      if (L.postGate({ idle: idle, draft: el ? inputText(el) : '', waitedMs: Date.now() - t0, maxMs: CFG.aibridge_wait_ms }) === 'send_keep_draft') break;
       await sleep(400);
     }
     var el2 = findInput();
+    var draft = rawInput(el2);   // B196: an operator draft is saved, never overwritten or lost
     setInput(el2, text);
     await sleep(400);
     lastSend = Date.now();
     pressEnter(el2);
     // DeepSeek can replace the input node after a send: judge by the chat's current input, not only the node we typed into
-    for (var i = 0; i < 8; i++) { await sleep(250); if (L.postLanded(liveInput(el2), nowInput())) return true; }
-    clickSend(el2);
-    for (var j = 0; j < 12; j++) { await sleep(250); if (L.postLanded(liveInput(el2), nowInput())) return true; }
-    lastPostErr = 'the chat input did not clear after sending';
-    return false;
+    var landed = false;
+    for (var i = 0; i < 8 && !landed; i++) { await sleep(250); landed = L.postLanded(liveInput(el2), nowInput()); }
+    if (!landed) {
+      clickSend(el2);
+      for (var j = 0; j < 12 && !landed; j++) { await sleep(250); landed = L.postLanded(liveInput(el2), nowInput()); }
+    }
+    if (!landed) { lastPostErr = 'the chat input did not clear after sending'; return false; }
+    if (draft.trim() !== '') {
+      var el3 = findInput();
+      if (el3) setInput(el3, draft);
+      if (!el3 || inputText(el3) !== draft.trim()) setStatus('could not restore your draft; it was: ' + draft.slice(0, 200));
+    }
+    return true;
   }
 
   // ---- auto loop ----
@@ -398,7 +408,21 @@
   function stopAuto(why) {
     autoRun = false; stopHold = true; token++; pending = [];
     setStatus(why || 'stopped');
+    showStopBanner(L.stopNotice(why));
     refreshUi();
+  }
+  // visible banner (extension DOM element, not a sent message) so a silent auto-off is impossible
+  function showStopBanner(msg) {
+    try {
+      var b = document.getElementById('aibridge-stop-banner');
+      if (!b) {
+        b = document.createElement('div'); b.id = 'aibridge-stop-banner';
+        b.style.cssText = 'position:fixed;left:50%;bottom:90px;transform:translateX(-50%);z-index:2147483647;max-width:560px;padding:10px 14px;background:#7a1f1f;color:#fff;font:13px/1.4 sans-serif;border-radius:6px;box-shadow:0 2px 10px rgba(0,0,0,.4);cursor:pointer';
+        b.title = 'click to dismiss'; b.addEventListener('click', function () { b.remove(); });
+        document.body.appendChild(b);
+      }
+      b.textContent = msg;
+    } catch (e) { }
   }
   // preflight: prove extension -> agent round trip and say which host/shell answers
   async function preflight(prefix) {

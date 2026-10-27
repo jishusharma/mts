@@ -1,11 +1,14 @@
 {
   "card": "dsa-audit-04-clean-room-twin",
   "done_when": "T04_clean_room_twin.md shipped: ambiguity log, per-study diff by class, every difference classified, verdict on shipped vs twin vs corrected events, twins in scripts/T04/, S1/S2 carded.",
+  "finished": "2026-10-23T11:55:31Z",
   "from": "JIS-NB",
+  "host": "JIS-NB",
   "id": "20261016-014229-dsa-audit-04-clean-room-twin",
   "need": "python scripts/dev/sync.py claim \"dsa-audit-04-clean-room-twin\"; python scripts/dev/tasks.py take dsa-audit-04-clean-room-twin; Get-Content MyTradingSys/research/mal_bb_mid_engulf_2026-10-16/PRE_REG.md; Get-Content MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/PRE_REG.md; python scripts/dev/tasks.py done dsa-audit-04-clean-room-twin --result \"<Tnn>: k findings (S1 a, S2 b, S3 c); <headline>\"; # AIRUN task=mts-ship repo=<WORKTREE> timeout=1800  (then git cherry origin/fast-track HEAD is empty) (full brief: python scripts/dev/tasks.py brief dsa-audit-04-clean-room-twin)",
   "posted": "2026-10-16T01:44:51Z",
-  "status": "pending",
+  "result": "re-routed: DSA-NB bridge not taking rows (178 h); card dsa-audit-04-clean-room-twin moved to lane SONNET (ROUTING C7, Pipeliner 2026-10-23)",
+  "status": "failed",
   "target": "DSA-NB",
   "title": "DSA audit T04: clean-room twin of mal_bb and weekly-low sweep from PRE_REG only, diffed event by event"
 }

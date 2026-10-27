@@ -9,7 +9,7 @@ Five hand-authored layers: transcript -> extract -> condition file -> compiled_e
 
 ## EVIDENCE OF PRIOR DISCOVERY
 
-- MyTradingSys/research/EXTRACTION_TO_ALERT_AUDIT_2026-09-19.md L10: Phase 4 landed in the engine document only. Zero traceability links exist from the engine document to Java, to Python runtime, to the watch script, or to the verdict script. Audit was a one-time pass. No mechanism followed.
+- MyTradingSys/research/_archive/loose_2026-10/EXTRACTION_TO_ALERT_AUDIT_2026-09-19.md L10: Phase 4 landed in the engine document only. Zero traceability links exist from the engine document to Java, to Python runtime, to the watch script, or to the verdict script. Audit was a one-time pass. No mechanism followed.
 - MyTradingSys/system/COMPILED_DECISIONS.md A5 (2026-08-30): Compiled engine 93% compileable. 55 functions mapped. 51 = deterministic compiled code. 2 = AI-only visual flags. 2 = hybrid. Mapping was a one-time pass.
 - MyTradingSys/tests/compiled_code_opportunities.md: Status ACTIVE v4.2.0-p5, dated 2026-08-30. Artifact of the A5 pass. Not refreshed since.
 - MyTradingSys/methodology/extraction.md: 4-phase lifecycle defined. Safeguards 1-5. No mechanism enforces any of it.

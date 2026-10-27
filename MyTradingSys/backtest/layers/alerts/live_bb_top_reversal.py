@@ -11,7 +11,7 @@ The card defines ONLY the top (short) side, so there is no mirror: short only.
 Detector at bar i (all inputs <= bar i, causal):
   prior bar i-1 green (c>o) and its high >= upper_{i-1} - K*(upper_{i-1}-lower_{i-1});
   bar i red (c<o), closes below the prior green open (E2), and closes back inside (c_i <= upper_i).
-Bollinger bands: SMA(20) of close +/- 2 * POPULATION stdev (Bollinger's own definition); FORMULAS.md has no BB section.
+Bollinger bands: SMA(20) of close +/- 2 * POPULATION stdev (Bollinger's own definition; FORMULAS.md section 22).
 
 DECISION (OURS): BB 20/2 (card default; 24/7 candidates have no backtested source, SOURCES.md sec 1).
 DECISION (OURS): K = 0.05 of bandwidth for "close enough" (no source gives a number, SOURCES.md sec 1).

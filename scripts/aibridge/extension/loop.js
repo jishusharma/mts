@@ -162,6 +162,18 @@
     return !before || !before.attached || before.node !== now.node || before.text === '';
   };
 
+  // B196: may the result be posted now? An operator draft in the input never blocks a post (the draft is saved and put back
+  // after the send); only a chat that stays busy past maxMs stops hands-free (fail closed). Anything unreadable = busy.
+  L.postGate = function (o) {
+    if (!o) return 'stop_busy';
+    if (o.idle) return 'send_keep_draft';
+    return o.waitedMs > o.maxMs ? 'stop_busy' : 'wait';
+  };
+  // visible banner text for every auto-off (shown in the page next to the chat, not sent as a message)
+  L.stopNotice = function (why) {
+    return 'AIBridge hands-free is OFF: ' + (why || 'stopped') + ' Tick the box to re-arm.';
+  };
+
   root.AIBridgeLoop = L;
   if (typeof module !== 'undefined') module.exports = L;
 })(typeof window !== 'undefined' ? window : globalThis);

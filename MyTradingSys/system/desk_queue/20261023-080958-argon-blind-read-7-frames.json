@@ -1,0 +1,11 @@
+{
+  "card": "argon-blind-read-7-frames",
+  "done_when": "Dated Layer Lab report and results_argon-low.json contain 7-frame/crop blind responses, reader identity, code comparison against UNCHECKED pilot references, descriptive counts and CONTESTED/unreadable labels. Executor final reply records content commit SHA, empty git cherry origin/fast-track <sha>, and upstream git ls-tree report/results existence.",
+  "from": "JIS-NB",
+  "id": "20261023-080958-argon-blind-read-7-frames",
+  "need": "C:/Users/E-ngineers/.gemini/bin/agy.exe --print \"Open image <filename> in this folder. Return ONLY JSON {position,entry,stop,target}; each is a number or null. Use null if unreadable or absent. Never infer hidden values.\" --model gemini-4-argon-low --effort low (full brief: python scripts/dev/tasks.py brief argon-blind-read-7-frames)",
+  "posted": "2026-10-23T08:09:58Z",
+  "status": "pending",
+  "target": "DSA-NUC",
+  "title": "Run Argon blind-read with null option on the 7 Gemini-pilot frames; settle 25200 vs 25206 and the T6hDJcHrVBM_0550 stop from a larger crop"
+}

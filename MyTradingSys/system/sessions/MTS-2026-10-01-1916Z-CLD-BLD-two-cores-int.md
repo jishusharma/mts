@@ -12,7 +12,7 @@ started: 2026-10-01 19:16Z
 ended: 2026-10-01 19:40Z
 status: handed-off
 commits: 9695b36, febe8e5 (wave 3), b008097, aa8933a (WIP snapshots); trailer MTS-Session: MTS-2026-10-01-1916Z-CLD-BLD-two-cores-int, plus the handoff commit
-handoff: research/TWO_CORES_INT_HANDOFF_2026-10-01.md (pending-task list) + a CLOUD_INBOX note; waves 1, 2, 4 unfinished or unreviewed
+handoff: research/_archive/loose_2026-10/TWO_CORES_INT_HANDOFF_2026-10-01.md (pending-task list) + a CLOUD_INBOX note; waves 1, 2, 4 unfinished or unreviewed
 
 ## Notes
 - Operator stopped the session for budget ("3 $s left - save tasks - commits"). Wave 3 done and verified; waves 1, 2, 4 left as WIP snapshots; see the handoff doc.

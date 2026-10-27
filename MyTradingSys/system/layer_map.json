@@ -615,7 +615,7 @@
    "id": "oi_delta",
    "family": "Positioning",
    "name": "OI delta 4-state classifier (volume-delta vs price school)",
-   "module": "research/OI_DELTA_4STATE_BACKTEST_2026-09-21.md",
+   "module": "research/_archive/loose_2026-10/OI_DELTA_4STATE_BACKTEST_2026-09-21.md",
    "status": "descriptive study",
    "params": [
     {
@@ -708,6 +708,59 @@
      "values": [
       "4H",
       "1D"
+     ],
+     "src": "code"
+    }
+   ]
+  },
+  {
+   "id": "pizzino_indicators",
+   "family": "pizzino",
+   "name": "Pizzino indicators (pivots, nested swing states, 3-bar count, 50% line, retest)",
+   "module": "MyTradingSys/backtest/layers/pizzino/pizzino_indicators.py",
+   "status": "Pure-function module built with tests; not backtested, not wired",
+   "params": [
+    {
+     "k": "swing_degrees",
+     "label": "fractal n per nested degree",
+     "kind": "choice",
+     "values": [
+      "1,2,3",
+      "2,5,13",
+      "3,8,21"
+     ],
+     "src": "code"
+    },
+    {
+     "k": "significance_window",
+     "label": "significance window W (bars)",
+     "kind": "choice",
+     "values": [
+      "50",
+      "20",
+      "100"
+     ],
+     "src": "code"
+    },
+    {
+     "k": "break_closes",
+     "label": "closes to confirm a break N",
+     "kind": "choice",
+     "values": [
+      "2",
+      "1",
+      "3"
+     ],
+     "src": "code"
+    },
+    {
+     "k": "retest_tol",
+     "label": "retest tolerance",
+     "kind": "choice",
+     "values": [
+      "0.5%",
+      "0.25%",
+      "1.0%"
      ],
      "src": "code"
     }
@@ -1026,7 +1079,7 @@
    "effects": "not recorded",
    "n": "not recorded",
    "verdict": "table in report not read for this map",
-   "report": "MyTradingSys/research/MARKET_GUIDE_RESULTS_2026-10-07.md",
+   "report": "MyTradingSys/research/_archive/loose_2026-10/MARKET_GUIDE_RESULTS_2026-10-07.md",
    "read": "header"
   },
   {
@@ -1044,7 +1097,7 @@
    "effects": "state counts per school recorded",
    "n": "6362 rows",
    "verdict": "descriptive; no verdict line in the head of the file",
-   "report": "MyTradingSys/research/OI_DELTA_4STATE_BACKTEST_2026-09-21.md",
+   "report": "MyTradingSys/research/_archive/loose_2026-10/OI_DELTA_4STATE_BACKTEST_2026-09-21.md",
    "read": "header"
   },
   {

@@ -23,7 +23,7 @@ KEY_FILES = ("REPORT", "RESULT", "PRE_REG", "PREREG", "README", "PRE-REG")
 
 def load_cards(root):
     cards = {}
-    for p in sorted((root / "MyTradingSys/system/tasks").glob("*.json")):
+    for p in sorted([*(root / "MyTradingSys/system/tasks").glob("*.json"), *(root / "MyTradingSys/system/tasks").glob("archive/*.json")]):
         try:
             text = p.read_text(encoding="utf-8")
             d = json.loads(text)

@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-19T14:44:55Z",
+  "depends_on": [
+    "rsi-deep-depth-map",
+    "rsi-deep-prob-tables",
+    "rsi-deep-context-tables",
+    "rsi-deep-confirmations",
+    "rsi-deep-divergence-context",
+    "rsi-deep-confluence"
+  ],
+  "done_when": "research/rsi_deep_buy_2026-10-19/PRE_REG.md exists and is committed before grid_dev.csv; it states the higher-TF last-completed-bar rule, bankroll cap B, catastrophe exit, per-year regime split, survivorship assets; verdicts.py check output and one prereg_gate.py line (m auto) are pasted; trial rows are in layer_lab/TRIALS.md.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Write PRE_REG.md freezing the grid (entry arms E1/E2/E3 defined explicitly, exits X1-X6, ladders S0-S3, divergence TF D), verdict rules and the SHOT_REVIEW C1-C8 trial rows (primary first, others exploratory inside Holm/BH) from SPEC s2-s5, OPUS_FRAMING s2.3 and the Stage 0-3 survivors, committed before any outcome file.",
+  "id": "rsi-deep-prereg",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): scoped from SPEC/OPUS_FRAMING/SHOT_REVIEW; needs the batched review stamp, then tasks.py check. CRUCIAL: review Agent on the diff before ship. Waits on prob-tables, context-tables, confirmations. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "Session_Planner",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/PRE_REG.md",
+    "MyTradingSys/research/layer_lab/TRIALS.md"
+  ],
+  "scope_out": [
+    "VALIDATION read more than once",
+    "any HOLDOUT bar (2025-07 onward)",
+    "live path, orders, VALIDATION-tuned parameters"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/APPLIED.md",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SHOT_REVIEW.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "Run python scripts/dev/verdicts.py check 'rsi deep buy' and paste the output; read SPEC s5 trial table and OPUS_FRAMING s2.3, s5.",
+    "Cut the grid to the Stage 0-3 survivors (ECON_FLOOR.md, DEPTH_MAP.md, prob/context/confirmation reports); define E1/E2/E3; X5 only as X3 + divergence.",
+    "Run python scripts/dev/prereg_gate.py --n <days> --sd <sd> --cost <cost> --m auto --new-cells <N> with sd source cited; exit 1 means do not freeze.",
+    "Append the trial rows (labels SOURCED/OURS) to layer_lab/TRIALS.md, then commit PRE_REG.md before any outcome file."
+  ],
+  "tests": "No code. Check: python scripts/dev/prereg_gate.py exits 0 with the pasted arguments; python scripts/dev/tasks.py lint passes; PRE_REG.md contains every C1-C8 row of SPEC s5.",
+  "title": "RSI deep-buy: freeze grid, verdict rules and trial rows in PRE_REG.md before any outcome",
+  "weight": "CRUCIAL",
+  "worker": "agent"
+}

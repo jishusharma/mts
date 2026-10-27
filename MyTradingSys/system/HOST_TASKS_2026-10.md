@@ -17,3 +17,7 @@ No daily job points at an archived script; MTS_Monitor_4h is the only task whose
 Skip on battery: Live-Health, Feed-Watchdog, OI-Recorder, Scheduler-Tick, Supervisor, Wrapper, Retention, testnet status.
 OK, no action: testnet canary, testnet status, AutoDeploy, CDriveCare (mts-dsa), DailyHygiene, Feed-Watchdog, LiveMirror,
 Make-Status, OI-Recorder, Supervisor and Wrapper (logon start).
+
+## JIS-NB unregister, 2026-10-23 (host-legacy-tasks-unregister, operator order same day)
+Exported 22 tasks to F:/MTS/backups/sched_tasks_2026-10-17_NB (XML), unregistered all: MTS testnet canary, MTS testnet status, Alert-Rate-Check, Audit-Digest, Audit-Rotation, AutoDeploy, Backup, CDriveCare, DailyHygiene, Declutter-Backups, DispatchGate, Feed-Watchdog, Live-Health, LiveMirror, Make-Status, OI-Recorder, Orphan-Watchdog, Retention, Scheduler-Tick, Supervisor, Wrapper, MTS_Monitor_4h. Remaining matching tasks: 0 (read-only check). Cause of the stale "MTS live health RED" alert: MTS-Live-Health kept checking the old live tree after the loop moved to the laptop.
+NOT done (permission denied): stop orphan feed processes started by those tasks (orderflow_live x2, oi_recorder x2, htf_context_live x2) and delete runtime_data/live_health_alert.json in the old live tree.

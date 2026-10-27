@@ -1,7 +1,7 @@
 """gate_impact.py - which tests a change can reach, for the 60-second ship gate (GATE_SPEED.md X1, X2, X5).
 
   reach(changed, root)        -> Reach: the test files an import-graph reaches from the changed files, whether live code imports them
-  plan_budget(...)            -> (kept, deferred): fills a time budget, direct tests of the change are never deferred
+  plan_budget(...)            -> (kept, deferred): fills a time budget, direct tests first; what does not fit goes to CI
   balance(files, est, k)      -> the files split into at most k chunks of about equal estimated seconds
   quarantine_rows / quarantine_problems / active_deselects: the flaky-test list scripts/dev/gate_quarantine.tsv
 
@@ -17,7 +17,7 @@ import re
 import subprocess
 import sys
 from collections import defaultdict
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path, PurePosixPath
 
 REPO = Path(__file__).resolve().parents[2]
@@ -29,7 +29,8 @@ DATA_SKIP = (".md", ".txt")            # docs are the doc steps' job (a ride-alo
 FAST_BUDGET_S = 30                     # OURS: selection budget in wall seconds; a ship has ~12-15 s of its own (fetch, merge, push) in a 60 s target
 EFFECTIVE_WORKERS = 3                  # OURS: measured 2026-10-18 on 4 cores / 8 threads with other sessions running: 6 workers gave a 2-3x speedup, not 6x
 QUARANTINE = "scripts/dev/gate_quarantine.tsv"
-NO_QUARANTINE = ("MyTradingSys/execution/", "MyTradingSys/runtime/")   # live-path tests are never deselected
+NO_QUARANTINE = ("MyTradingSys/execution/", "MyTradingSys/runtime/", "MyTradingSys/tests/")   # live-path tests are never deselected (MyTradingSys/tests/ holds the live-code tests: DECISION OURS, whole dir refused)
+QUARANTINE_MAX_DAYS = 14   # OURS: a quarantine row may expire at most this many days from today, so a flaky test cannot be parked for good
 
 _IMPORT_RE = re.compile(r"^[ \t]*(?:from[ \t]+([\w.]+)[ \t]+import[ \t]+(\([^)]*\)|[^\n#;]*)|import[ \t]+([^\n#;]+))", re.M)
 _NAME_RE = re.compile(r"[A-Za-z_]\w*")
@@ -150,13 +151,12 @@ def estimate(f, table, default=2):
 
 
 def plan_budget(direct, others, est, workers, base_s=0, budget=FAST_BUDGET_S):
-    """(kept, deferred): every `direct` file is kept; `others` are added cheapest first while the estimated wall time stays inside `budget`
-    (lower bound: total work / workers, and the largest single file). est: file -> seconds. base_s: seconds of work already planned."""
-    kept = list(direct)
-    total = base_s + sum(est(f) for f in kept)
-    longest = max([est(f) for f in kept] or [0])
-    deferred = []
-    for f in sorted(others, key=lambda f: (est(f), f)):
+    """(kept, deferred): `direct` files are tried first, then `others`, each cheapest first; a file is kept while the estimated wall time stays
+    inside `budget` (lower bound: total work / workers, and the largest single file), else it is left to CI. est: file -> seconds.
+    base_s: seconds of work already planned."""
+    kept, deferred = [], []
+    total, longest = base_s, 0
+    for f in sorted(direct, key=lambda f: (est(f), f)) + sorted(others, key=lambda f: (est(f), f)):
         e = est(f)
         if max(longest, e, (total + e) / max(1, workers)) <= budget:
             kept.append(f)
@@ -188,7 +188,7 @@ def quarantine_rows(text):
 
 
 def quarantine_problems(rows, today=None):
-    """One message per row that is not a valid, unexpired entry (owner and a real date are required; live-path ids are refused)."""
+    """One message per row that is not a valid, unexpired entry (owner and a real date are required; expiry at most QUARANTINE_MAX_DAYS ahead; live-path ids are refused)."""
     today = today or date.today()
     out = []
     for tid, owner, exp, why in rows:
@@ -201,6 +201,8 @@ def quarantine_problems(rows, today=None):
             out.append(f"{tid or '?'}: test id, owner and reason are all required")
         if d < today:
             out.append(f"{tid}: quarantine expired {exp} (owner {owner}): fix the test or renew with a reason")
+        if d > today + timedelta(days=QUARANTINE_MAX_DAYS):
+            out.append(f"{tid}: quarantine expiry {exp} is more than {QUARANTINE_MAX_DAYS} days away (owner {owner}): use a shorter expiry and renew with a reason")
         if tid.startswith(NO_QUARANTINE):
             out.append(f"{tid}: live-path tests are never quarantined")
     return out

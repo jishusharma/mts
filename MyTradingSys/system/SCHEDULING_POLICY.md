@@ -23,10 +23,35 @@ No standing Windows scheduled tasks and no Claude routines (App scheduled tasks,
 ## 4. Only allowed exception
 A one-shot task created by `scripts/dev/nuc_wake.py` to wake a headless worker for one card. It must be unregistered after it fires. Nothing else.
 
+## 4b. Second allowed exception (operator via the 2026-10-21 wt-maint-job card)
+`MTS-WorktreeMaint-<device>`: daily headless worktree/branch cleanup, `scripts/dev/wt_maint.py`, same on every device (DEVICES.md s8b). DECISION (OURS): it reverses nothing else; no revival, deploy or relay is implied. Remove with `wt_maint.py uninstall`.
+
+## 4b2. Third allowed exception: one-time App task for a successor session (chain test passed 2026-10-26)
+A one-time task (`create_scheduled_task` with `fireAt`, never `cron`) may start ONE successor session so a hand-over does not wait for an operator click. Proof: `chain_test_proof.txt` (commit ce8194ba2): task `chain-test-2` fired at 09:06:43Z, all tools and SessionStart/UserPromptSubmit hooks present, the run shipped to fast-track, and the task was deleted after its run. Rules (OURS): one `fireAt`, no repeat, the task prompt names the model (the test ran on Opus; cost rules say Sonnet), the successor never creates another task, and the creating session records the task id in its hand-over.
+
+## 4c. Logon guard (operator 2026-10-24: cleanup on every restart, no scheduler)
+A per-user Run value `MTSTempGuard` (HKCU\Software\Microsoft\Windows\CurrentVersion\Run) runs `scripts/dev/c_drive_guard.py logon` once at each logon, headless (`conhost --headless`). It prunes the %TEMP% set in STATION_CLEANUP.md section 3 and exits. It has no timer, no repeat and no admin rights, so it is not a scheduled task. Register with `c_drive_guard.py install` from the primary checkout; remove with `uninstall`. Operator yes 2026-10-24 (OURS); registered per station as each acks (STATION_CLEANUP.md section 4).
+
 ## 5. Current state (update this table whenever it changes)
+
+### CBP-only exception (operator request 2026-10-26)
+The operator explicitly requested automatic CBP inputs twice daily. `scripts/dev/cbp_schedule.py`
+owns ONE task `MTS-CBP-Ingestion`: 09:00 and 13:00 UTC (14:30 and 18:30 IST, OURS), daily including
+weekends because crypto analysts publish every day. It runs only fetch -> extract -> quote check ->
+CBP store; no session dispatcher, trading process, deploy or revival is authorized by this exception.
+Install only on the host holding the configured CBP home, from a durable non-live MTS checkout.
+It requires an existing signed-in Windows session, Claude login and yt-dlp. Failed prerequisites refuse
+installation. Retry: three times at 15-minute intervals; missed starts run when available in today's
+remaining window. The task ignores overlapping scheduled invocations. Until installation and a real
+successful run are recorded, this is prepared wiring, not an operating feed.
+2026-10-27 NUC verification: NOT INSTALLED; `F:/CryptoScrapper/cbp_v2/analysts.json` absent. Claude
+has been asked to identify the current host/path via the desk board.
 | Device | State |
 |---|---|
 | JIS-NUC | none (0 MTS scheduled tasks, verified 2026-10-17 after the operator removed `MTS-NUC-Worker` and the nine `MTS-Wake-*`). `MTS-CodexLab`, `MTS-DailyHygiene`, `MTS-DispatchGate` were unregistered earlier the same day; XML backups: `F:/MTS/backups/sched_tasks_2026-10-17_NUC` (restore with `Register-ScheduledTask -Xml`, only on operator say-so) |
-| JIS-NB | still running until card `host-legacy-tasks-unregister` is executed on that machine. Do not touch the live tree from another host |
+| JIS-NB | none (operator checked Task Scheduler himself and says every MTS task is removed, 2026-10-23, d-jisnb-no-sched-tasks). Any session that reports MTS-* tasks on JIS-NB must paste a `schtasks /query` result from this turn, never repeat an older note |
+
+| JIS-NUC (2026-10-21) | `MTS-WorktreeMaint-JIS-NUC` registered by wt-maint-job (section 4b). Any other MTS-* task still must not exist. |
 
 A Windows task registered by hand again must be reported in this table. Someone re-registered `MTS-CodexLab` on 2026-10-17 ~15:00 IST; it was unregistered again.
+

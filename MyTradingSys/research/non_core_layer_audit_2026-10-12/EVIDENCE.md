@@ -237,7 +237,7 @@ SHA-256: `8aa03d2d19fb0722bfbde9c116a84ed21d5f248fae59e2d5f103363fa524ecd2`
 162:
 163: ## 9. CryptoCred swing / MSB / retest / R-target math (`layers/cryptocred/*`)
 164:
-165: Source: `MyTradingSys/research/cross_trader_consolidated.md` cluster C08 (MSB Definition &
+165: Source: `MyTradingSys/research/_archive/loose_2026-10/cross_trader_consolidated.md` cluster C08 (MSB Definition &
 166: Significance), C07 (Retests) and C10 (Setup Types) — these are verbatim-quote-verified transcript
 167: extracts (per repo convention, higher confidence than the Malkan web research), and the module
 168: docstrings already cite the specific rule IDs (C08-Rule1, C08-E01/E03/E05, C07-E01/E04/E05, C10-E01/
@@ -430,7 +430,7 @@ SHA-256: `8aa03d2d19fb0722bfbde9c116a84ed21d5f248fae59e2d5f103363fa524ecd2`
 355:
 356: ## 14. T055 C1 - funding-extreme reversion + CVD/price divergence fade (`layers/positioning/funding_cvd_fade.py`)
 357:
-358: Sources: funding-extreme reversion T2, Memon 2026 (7y Binance) via `research/whale_positioning_evidence_2026-09-12.md`
+358: Sources: funding-extreme reversion T2, Memon 2026 (7y Binance) via `research/_archive/loose_2026-10/whale_positioning_evidence_2026-09-12.md`
 359: (the percentile threshold is NOT given there: UNDEFINED in source, so it is a grid parameter); mechanism
 360: He/Manela/Ross/von Wachter arXiv 2212.06888 (T2); CVD/price divergence = same CVD as `bt_data.cvd_delta`
 361: (section above, `delta = 2*tbv - v`, running sum). Merge decision: supervisor 2026-09-29 (T055a H2 + T055b funding-extreme).
@@ -2983,7 +2983,7 @@ SHA-256: `2ab4fc5db5370dda7ecf4754f84a6b4fc92aee23f776b6fbe8bbcbdf338a8f88`
 26: | Date | Event | Source |
 27: |---|---|---|
 28: | 2026-08-29 | "Malkans RSI 40/60 integrated" into the Tom chart layout (E4) | system/COMPILED_DECISIONS.md:40 |
-29: | 2026-09-01 | VVP-001 demotes RSI: removed from default layout, "NEVER let RSI or BB override a Tom-validated setup" | research/visual_validation_protocol_vvp001.md:116,119; BUGS.md T019 (line 105) |
+29: | 2026-09-01 | VVP-001 demotes RSI: removed from default layout, "NEVER let RSI or BB override a Tom-validated setup" | research/_archive/loose_2026-10/visual_validation_protocol_vvp001.md:116,119; BUGS.md T019 (line 105) |
 30: | 2026-09-28 | Operator directive (verbatim): Malkan 40-60 is private to its own sub-layer; RSI MA support; "slippage" tolerance around 40/60 to be measured; alerts per timeframe incl. 1,2,3,10 min and 2d,3d,5d; fine-tune later on testnet | PROJECT_VISION.md:189-203 |
 31: | 2026-09-28 | Opus design D1-D7 (timeframe layer + rsi_core / rsi_ma / rsi_events / malkan_40_60) | research/fast_track_2026-09-27/RSI_TF_LAYER_DESIGN.md |
 32: | 2026-09-28 | Web research on Malkan (secondary sources: eLearnMarkets blog, Chartink screeners, YouTube titles). 10 gaps listed | WR (400 lines) |
@@ -2992,8 +2992,8 @@ SHA-256: `2ab4fc5db5370dda7ecf4754f84a6b4fc92aee23f776b6fbe8bbcbdf338a8f88`
 35: | 2026-09-29 | Live runner: RSI-40 tol 0.5 on 1h/15m (0817968); malkan_bull / malkan_bear added (4d1bc36); failure-event side (adc75b3). 5m added 2026-09-30 (7058bc2) | NEXT_SESSION_PLAN.md:145; SUPERVISOR_LOG.md:185,221 |
 36: | 2026-09-30 | Cloud Sonnet writes `run_rsi_backtest.py` (35 tests) with families malkan_40_60, malkan_mtf, rsi_ma_events | research/fast_track_2026-09-27/DSA_BACKLOG.md:23-24 |
 37: | 2026-10-04 | Layer provenance audit: rsi = 4 SOURCED, 10 CONCEPT-ONLY, 12 NO-SOURCE | research/LAYER_PROVENANCE_AUDIT.md:46 |
-38: | 2026-10-07 | Desktop runs malkan_40_60 and rsi_ma_events; both NO-EDGE. malkan_mtf not run. Verdict table written | research/MARKET_GUIDE_RESULTS_2026-10-07.md:20-22,36 |
-39: | 2026-10-08 | Closeout: rsi:cross now side-by-level (40 down = short, 60 up = long, else no side); the trade blocklist is emptied for testnet data collection and parked | items/B128 row M29-11; research/AUDIT_CLOSEOUT_2026-10-07.md:53; execution/auto_trader_config.json:2,104-111 |
+38: | 2026-10-07 | Desktop runs malkan_40_60 and rsi_ma_events; both NO-EDGE. malkan_mtf not run. Verdict table written | research/_archive/loose_2026-10/MARKET_GUIDE_RESULTS_2026-10-07.md:20-22,36 |
+39: | 2026-10-08 | Closeout: rsi:cross now side-by-level (40 down = short, 60 up = long, else no side); the trade blocklist is emptied for testnet data collection and parked | items/B128 row M29-11; research/_archive/loose_2026-10/AUDIT_CLOSEOUT_2026-10-07.md:53; execution/auto_trader_config.json:2,104-111 |
 40: | 2026-10-09 | Volume study re-tests RSI 40/60 cross events with volume: one 4h DEV pass, failed VALIDATION (n=50, net -2 bp) | research/volume_2026-10-09/VOLUME_RESEARCH_REPORT_2026-10-09.md:96 |
 41:
 42: ## 3. What exists (built)
@@ -3072,7 +3072,7 @@ SHA-256: `2ab4fc5db5370dda7ecf4754f84a6b4fc92aee23f776b6fbe8bbcbdf338a8f88`
 115: the 1w+1M RSI gates, Malkan's stop/target/hold); T3 operator decision on audit Q2. Anything on 5m/15m stays "context, no rule".
 ```
 
-### MyTradingSys/research/MARKET_GUIDE_RESULTS_2026-10-07.md
+### MyTradingSys/research/_archive/loose_2026-10/MARKET_GUIDE_RESULTS_2026-10-07.md
 
 SHA-256: `eca6ff01506f101723ef9f20f40120236a5f493fb8963292cd3fd82a112471e9`
 
@@ -3100,7 +3100,7 @@ SHA-256: `eca6ff01506f101723ef9f20f40120236a5f493fb8963292cd3fd82a112471e9`
 21: | rsi malkan_40_60 (live malkan_*) | NO-EDGE / insufficient n | run 2026-10-07 Dumps/backtest/runs/rsi_malkan_40_60/REPORT.md: 1h OOS n 43, -0.092% net, PBO 0.760; 4h n 17, 1d n 5 |
 22: | rsi_ma_events (offline only) | NO-EDGE | run 2026-10-07 Dumps/backtest/runs/rsi_rsi_ma_events/REPORT.md (1h+4h only; 15m dropped after a 30-min timeout): 1h OOS n 357, -0.199% net, PBO 0.352; 4h n 69, -0.216%, PBO 0.455 |
 23: | fabio cvd_absorption / escalation / volume_fvg | NO-EDGE | backtest/layers/fabio/FABIO_L1_REPORT.md:33-58 |
-24: | cryptocred sr_flip / fib_pullback | NO-EDGE | research/AUDIT_CLOSEOUT_2026-10-07.md:25 |
+24: | cryptocred sr_flip / fib_pullback | NO-EDGE | research/_archive/loose_2026-10/AUDIT_CLOSEOUT_2026-10-07.md:25 |
 25: | positioning funding_cvd_fade | NO-EDGE | AUDIT_CLOSEOUT_2026-10-07.md:23 (OOS -0.0453%) |
 26: | session momentum | NO-EDGE | AUDIT_CLOSEOUT_2026-10-07.md:24 (Sharpe 0.0084) |
 27: | turn_of_candle toc_m14 | timer, excluded | no gross edge (closeout) |
@@ -4018,7 +4018,7 @@ SHA-256: `f72d3772e541fae6fcdde3dbbe95d252856e2a04e016d80623a5fa38c67b4bf7`
 
 ## E16
 
-### MyTradingSys/research/T065_LAZYBEAR_SURVEY.md
+### MyTradingSys/research/_archive/loose_2026-10/T065_LAZYBEAR_SURVEY.md
 
 SHA-256: `3d97b2addb017eeacae617a83035a18083fd032ce44dd211a7e1d0f1a8ee7ac4`
 
@@ -4103,7 +4103,7 @@ SHA-256: `dbc44eed3cb1f12dee7d4876cf5e9e38b3c8150785176f308211e685a2ce49ef`
 ```text
 1: # T065 - LazyBear indicators that complement MTS: survey + shortlist
 2:
-3: Opened 2026-10-05 by MTS-2026-10-05-1500Z-APP-ANA-operator-asks. Status OPEN. Verbatim ask: research/OPERATOR_ASKS_2026-10-05.md section 0, ask 3. Related: T061 (WaveTrend, already open).
+3: Opened 2026-10-05 by MTS-2026-10-05-1500Z-APP-ANA-operator-asks. Status OPEN. Verbatim ask: research/_archive/loose_2026-10/OPERATOR_ASKS_2026-10-05.md section 0, ask 3. Related: T061 (WaveTrend, already open).
 4: Source page: https://in.tradingview.com/u/LazyBear/
 5:
 6: ## Task (Cloud, web research, playbook Part I tiers; LazyBear = T3 practitioner)
@@ -4111,7 +4111,7 @@ SHA-256: `dbc44eed3cb1f12dee7d4876cf5e9e38b3c8150785176f308211e685a2ce49ef`
 8: 2. Map each to an MTS gap (volume/flow, absorption, squeeze/volatility, divergence, trend state) or "duplicate of X".
 9: 3. Shortlist 5 or fewer: math, parameters from the source, port cost (hours), evidence tier, ROI note.
 10: 4. Each survivor = a separate switchable layer, [SCREENER] tag, never a Tom filter.
-11: Output: research/T065_LAZYBEAR_SURVEY.md.
+11: Output: research/_archive/loose_2026-10/T065_LAZYBEAR_SURVEY.md.
 ```
 
 ## E17
@@ -4134,7 +4134,7 @@ SHA-256: `74f7c393375d98efe8bc75363e540db42a874c93aa2a3892914c4c41781d3989`
 11: "stop" (float), "targets" (list with exactly one tuple: [(target_price, 1.0)]) — plus a nested "meta" dict
 12: holding everything else ("setup", "rule_id", "msb_i", "target_r").
 13:
-14: Module source: MyTradingSys/research/cross_trader_consolidated.md, cluster C10 (Setup Types).
+14: Module source: MyTradingSys/research/_archive/loose_2026-10/cross_trader_consolidated.md, cluster C10 (Setup Types).
 15: Design constraint: [C10-E03 "cut and reverse trap"] - this module never auto-chains a setup-1/2 stop-out into a setup-3 entry;
 16: each function only looks at MSB structure independently.
 17: """
@@ -4661,7 +4661,7 @@ SHA-256: `cc25f5966c5c3236f407c52a937b35a53ad15ab1cd0aa341c3dcfc8de3d4c6cb`
 
 ## E19
 
-### MyTradingSys/research/AUDIT_CLOSEOUT_2026-10-07.md
+### MyTradingSys/research/_archive/loose_2026-10/AUDIT_CLOSEOUT_2026-10-07.md
 
 SHA-256: `b9dd755a3b5cb35e2739c8365c1df763abd5f539b37786e21d3ccdd62e6fa995`
 
@@ -4757,11 +4757,11 @@ SHA-256: `cfe66285fe425f5cd6508b4651e3f88e5b836f902d3c0b86cf4fa855c3aa9e72`
 15: | rsi (malkan) | Vishal B Malkan (MalkanView), blog/chartink text | research/malkan_rsi_2026-09-28/WEB_RESEARCH.md (WR) |
 16: | rsi (generic) | none named; params say "source": "operator" | backtest/layers/rsi/params/default.json:3 |
 17: | cryptocred | CryptoCred, videos BHwoN7VPrBE, inqHN8q57X4 | extracts/processed/cryptocred/extract_BHwoN7VPrBE.md (BH), extract_inqHN8q57X4.md (INQ) |
-18: | positioning | Memon 2026 (T2), He/Manela/Ross/von Wachter (T2); CVD leg = internal T055a H2 | research/whale_positioning_evidence_2026-09-12.md:30; backtest/layers/FORMULAS.md:356-370 |
+18: | positioning | Memon 2026 (T2), He/Manela/Ross/von Wachter (T2); CVD leg = internal T055a H2 | research/_archive/loose_2026-10/whale_positioning_evidence_2026-09-12.md:30; backtest/layers/FORMULAS.md:356-370 |
 19: | session | Shen, Urquhart, Wang 2022 (T1) | research/fast_track_2026-09-27/T055b_PROVEN_SETUPS.md:30; FORMULAS.md:372-383 |
 20: | turn_of_candle | Shanaev, Vasenin, Stepanov, Heliyon (T1) | T055b_PROVEN_SETUPS.md:38,51; FORMULAS.md:385-398 |
 21: | tick | operator spec (T040), verbatim operator text | MyTradingSys/items/T040_tick_delta_layer.md (T040) |
-22: | consensus | operator architecture doc | research/ARCHITECTURE_TWO_CORES_2026-10-01.md:29-43 |
+22: | consensus | operator architecture doc | research/_archive/loose_2026-10/ARCHITECTURE_TWO_CORES_2026-10-01.md:29-43 |
 23:
 24: Quote rule used: a SOURCED row cites a line that carries the source's own words (in quotes in that file). A summary
 25: bullet written by our researcher is not a quote; rows resting only on one are CONCEPT-ONLY.
@@ -5221,7 +5221,7 @@ SHA-256: `06f76b4c1db378662b1108ad40132126d9398f6699c598c36eea68d1e48f34af`
 ```text
 1: """
 2: candidate C1. Funding-extreme mean reversion (T2, Memon 2026, 7y Binance, via
-3: research/whale_positioning_evidence_2026-09-12.md; that source does NOT give the percentile threshold, so
+3: research/_archive/loose_2026-10/whale_positioning_evidence_2026-09-12.md; that source does NOT give the percentile threshold, so
 4: `hi`/`lo`/`lookback` are UNDEFINED in source and are grid parameters) merged with a CVD/price divergence
 5: fade (T055a H2). It is an independent layer, never a filter on the Tom core. Signals fade the crowded side:
 6: extreme high funding -> short, extreme low funding -> long. Events use the shape
@@ -5482,7 +5482,7 @@ SHA-256: `820a8d394ebae544bb27899a8a73d8fa9bd113aa1c41455d3ce5e392aee10748`
 124:
 125:
 126: # ---- Fabio v3 live emitter (staged MTS-2026-10-02-1930Z-CLI-BLD-fabio-v3-shadow) -----------------------------------
-127: # Decision per grid parameter, from research/FABIO_V3_SOURCING_2026-10-02.md: SOURCE = a Fabio quote gives the numeric
+127: # Decision per grid parameter, from research/_archive/loose_2026-10/FABIO_V3_SOURCING_2026-10-02.md: SOURCE = a Fabio quote gives the numeric
 128: # value; SHADOW = it does not (NS-grid). A cell is SOURCE only if every parameter it uses is SOURCE. A SOURCE signal is
 129: # an ordinary fabio.* alert (has "side", the auto-trader maps it). A SHADOW signal is collection-only: tagged
 130: # `collection_only`, carries `shadow_side` and NO "side" and no layer_rules entry, so the auto-trader's layer_side()
@@ -5748,7 +5748,7 @@ SHA-256: `820a8d394ebae544bb27899a8a73d8fa9bd113aa1c41455d3ce5e392aee10748`
 390:             append_alerts_jsonl(group, pathlib.Path(args.alerts_dir) / f"{tf}.jsonl")
 391:
 392:         # Consensus row (observation only: never gates a core, never raises). One row per poll in which the Fabio
-393:         # core emitted an alert or the Tom card advanced (research/ARCHITECTURE_TWO_CORES_2026-10-01.md:29-43).
+393:         # core emitted an alert or the Tom card advanced (research/_archive/loose_2026-10/ARCHITECTURE_TWO_CORES_2026-10-01.md:29-43).
 394:         # Runs after the alert files are written because the rsi block is read back from them.
 395:         try:
 396:             from MyTradingSys.backtest.layers.consensus.hook import consensus_after_poll
@@ -6597,7 +6597,7 @@ SHA-256: `0a229f696fbb23bc06a463a238dc9b98669d0c76341b4ca41e829eb78825acd1`
 ```text
 1: # consensus: one observation row per core alert
 2:
-3: Doctrine: `MyTradingSys/research/ARCHITECTURE_TWO_CORES_2026-10-01.md` :29-43 (consensus row), :76-83 (acceptance).
+3: Doctrine: `MyTradingSys/research/_archive/loose_2026-10/ARCHITECTURE_TWO_CORES_2026-10-01.md` :29-43 (consensus row), :76-83 (acceptance).
 4: Consensus is an observation. It never gates, vetoes or delays a core, and nothing in this directory edits core state.
 5: Every claim below cites file:line; "unknown" means the clone shows nothing.
 6:
@@ -6767,7 +6767,7 @@ SHA-256: `c716f4090e460ed9b17924f42c33a58fa1652942d92ff676a2e4ce2abb090ab3`
 4: READ-ONLY, NO NEW COMPUTATION: nothing here computes an RSI or an MA, fetches klines, writes a file, or imports any
 5: execution code. It tails MyTradingSys/runtime/alerts/<tf>.jsonl (written by alerts/live_runner_cli.py:263-273 via
 6: alert_emitter.append_alerts_jsonl) and copies fields that already exist in an alert record. A field or timeframe with
-7: no source stays None. Consensus is an observation (research/ARCHITECTURE_TWO_CORES_2026-10-01.md:29-43): this block
+7: no source stays None. Consensus is an observation (research/_archive/loose_2026-10/ARCHITECTURE_TWO_CORES_2026-10-01.md:29-43): this block
 8: never gates, vetoes or delays a core.
 9:
 10: WHERE THE DATA LIVES (investigated 2026-10-01):
@@ -7240,7 +7240,7 @@ SHA-256: `d930f51c05a08066a58f3b7731ca01c9cd80bd48e6d9e31feafd098794c8f634`
 72:
 73: ## 6. Fit to MTS (analysis, not a plan)
 74:
-75: - Market mismatch: Kurisko's stops are 1-2 ticks on MES during US cash hours; the repo's cost model is taker 5 bp per side. A few-bp stop on BTC 1m is under the 14 bp round-trip cost, the situation the roadmap already calls fee-dominated ("49-100 % fee-dominated (stop under round-trip fee, F-BT-22)", research/CONSOLIDATED_ROADMAP_2026-10-09.md:27-28). Expect the same problem unless the trade targets more than a few bp.
+75: - Market mismatch: Kurisko's stops are 1-2 ticks on MES during US cash hours; the repo's cost model is taker 5 bp per side. A few-bp stop on BTC 1m is under the 14 bp round-trip cost, the situation the roadmap already calls fee-dominated ("49-100 % fee-dominated (stop under round-trip fee, F-BT-22)", research/_archive/loose_2026-10/CONSOLIDATED_ROADMAP_2026-10-09.md:27-28). Expect the same problem unless the trade targets more than a few bp.
 76: - Closest sibling already tested: generic RSI/volume events NO-EDGE (RSI_HISTORY.md section 4). A stochastic quad rotation is untested in the repo (grep "stochastic" over .md/.py found only DIVERGENCE_AUDIT, VVP-001 "Stochastic: Not a Tom concept", BT_SPEC and a Krown note).
 77: - Isolation: if built, it is a new layer under `backtest/layers/` with its own params file (`source` = "Kurisko S1-S4"), no import of Tom constants, no use as a Tom filter, alert-only first.
 78: - Backtest plan: **not written** (condition "only if the spec is fully sourced" is not met). Preconditions to write one in under a page: close gaps 1-4 above, add a stochastic section to FORMULAS.md with a hand-computed example, and have the operator decide gap 5 items (stop, exit, BTC translation) as explicit operator parameters.
@@ -7550,7 +7550,7 @@ SHA-256: `21eec21783b6959aa6f0c7cda3a0b0c9ea92a6fa5c3be104a54997c6a7e01e30`
 215:
 216: ### Cores and layers
 217: Two cores since 2026-10-01: Tom and Fabio, each compiled independently with its own verdicts, plans and ledger
-218: source flag (research/ARCHITECTURE_TWO_CORES_2026-10-01.md). Every other system (RSI/Malkan, CryptoCred,
+218: source flag (research/_archive/loose_2026-10/ARCHITECTURE_TWO_CORES_2026-10-01.md). Every other system (RSI/Malkan, CryptoCred,
 219: session, positioning, probability, tick, timeframe, options, analyst/caller feeds) is a switchable layer that
 220: never gates a core. A core or layer that fails S3 on fixed data is parked (alerts kept for data), not tuned
 221: into passing. Promotion to core uses the S3 bar, never opinion.

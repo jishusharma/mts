@@ -60,6 +60,22 @@ def test_forward_index_is_fail_outside_fwd_names():
     assert hits("seg = c[i:i + 25]\n") == [(1, "fwd-index", "FAIL")]
 
 
+def test_chunk_and_text_window_slices_are_clean():
+    # chunking a list by a named size constant: idx[a:a + CH] is a batch, not a read past the decision bar
+    assert hits("part = idx[a:a + CH]\n") == []
+    assert hits("for a in range(0, n, CHUNK):\n    part = idx[a:a + CHUNK]\n") == []
+    # a text window handed to a regex is string parsing, not a price series
+    assert hits("m = re.search(pat, t[q - 400:q + 600])\n") == []
+    assert hits("rows = pat.findall(txt[q:q + 600])\n") == []
+
+
+def test_real_forward_reads_still_fail_next_to_the_exemptions():
+    assert hits("sig = c[i + 1] - c[i]\n") == [(1, "fwd-index", "FAIL")]
+    assert hits("x = c[i:i + H]\n") == [(1, "fwd-index", "FAIL")]
+    assert hits("m = f(c[i - 5:i + 600])\n") == [(1, "pivot-right-neighbour", "FAIL")]   # same window, not handed to a regex
+    assert hits("part = idx[a + 1:a + CH]\n") == [(1, "fwd-index", "FAIL")]
+
+
 def test_forward_index_allowed_in_outcome_names():
     assert hits("fwd = c[i + 1]\n") == []
     assert hits("exit_px = c[t + h]\n") == []

@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-25T20:14:36Z",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py extracts/gemini_out/fabio/HUYBdYnXUNc_note.md"
+  ],
+  "created": "2026-10-24T15:40:16Z",
+  "depends_on": [],
+  "done_when": "Per video: captions in raw_transcripts_canonical/<ID>_raw.txt and a note with live trades + 2 quotes passing verify_extract_quotes.py; or, if captions fail, a note headed UNVERIFIED (gemini-video-read) with a [mm:ss] trade summary and no quotes. Committed with a Result: line.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator 2026-10-25: YouTube work goes to Gemini (saves Claude budget). 3 Fabio videos: HUYBdYnXUNc agjftXPkLUE cLgdXZnLL_0. Quotes must come from captions on disk: Gemini watching a video invents quotes (77 bad on 2026-10-24).",
+  "id": "yt-fabio-fetch-retry",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "3 notes in extracts/gemini_out/fabio/ headed UNVERIFIED (HTTP 429), mm:ss trade summary, 0",
+      "ref": "6b9f9dbe",
+      "utc": "2026-10-25T20:14:36Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Re-routed to Gemini by Doctor 2026-10-25 after the Claude worker hit 429 on all 3 (operator: use Gemini for all YouTube work).",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-24T15:40:19Z",
+  "refs": [],
+  "result": "3 notes in extracts/gemini_out/fabio/ headed UNVERIFIED (HTTP 429), mm:ss trade summary, 0 quote marks",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "raw_transcripts_canonical",
+    "extracts/gemini_out/fabio"
+  ],
+  "scope_out": [
+    "scripts; live tree; retry loops (one fetch try per video)"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/fabio_video_search_2026-10-17/README.md"
+  ],
+  "state": "done",
+  "steps": [
+    "python scripts/dev/fetch_captions_timed.py --analyst fabio <ID> once per video; on 429 do not retry",
+    "Captions fetched: rewrite the note with live trades and 2 verbatim quotes; run verify_extract_quotes.py until exit 0",
+    "Captions failed: read https://www.youtube.com/watch?v=<ID> yourself and write the UNVERIFIED trade summary, no quotes",
+    "Commit with a Result: line"
+  ],
+  "taken": "2026-10-25T20:14:36Z",
+  "tests": "verify_extract_quotes.py exits 0 on every note that carries quotes; an UNVERIFIED note carries no quote marks. The Claude reviewer spot-checks 1 trade per video before shipping.",
+  "title": "Fabio caption retry: HUYBdYnXUNc, agjftXPkLUE, cLgdXZnLL_0 (HTTP 429 in Gemini run; feV6CATGUqo, pZai3k1e-Jg are Video unavailable)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

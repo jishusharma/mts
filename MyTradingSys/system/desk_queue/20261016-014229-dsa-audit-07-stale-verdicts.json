@@ -1,11 +1,14 @@
 {
   "card": "dsa-audit-07-stale-verdicts",
   "done_when": "T07_stale_verdicts.md shipped: provenance table with STALE-CANDIDATEs, rerun_diff.csv for ten results, determinism result, CI table, doc-drift list, lead L9 resolved, S1/S2 carded.",
+  "finished": "2026-10-23T11:55:45Z",
   "from": "JIS-NB",
+  "host": "JIS-NB",
   "id": "20261016-014229-dsa-audit-07-stale-verdicts",
   "need": "python scripts/dev/sync.py claim \"dsa-audit-07-stale-verdicts\"; python scripts/dev/tasks.py take dsa-audit-07-stale-verdicts; git log --format=\"%h %ad %s\" --date=short -- MyTradingSys/research/mal_bb_mid_engulf_2026-10-16; python -c \"import sys, numpy, pandas; print(sys.version, numpy.__version__, pandas.__version__)\"; python scripts/dev/tasks.py done dsa-audit-07-stale-verdicts --result \"<Tnn>: k findings (S1 a, S2 b, S3 c); <headline>\"; # AIRUN task=mts-ship repo=<WORKTREE> timeout=1800  (then git cherry origin/fast-track HEAD is empty) (full brief: python scripts/dev/tasks.py brief dsa-audit-07-stale-verdicts)",
   "posted": "2026-10-16T01:45:08Z",
-  "status": "pending",
+  "result": "re-routed: DSA-NB bridge not taking rows (178 h); card dsa-audit-07-stale-verdicts moved to lane SONNET (ROUTING C7, Pipeliner 2026-10-23)",
+  "status": "failed",
   "target": "DSA-NB",
   "title": "DSA audit T07: verdict-to-code provenance, rerun-and-diff of ten results, determinism, CI and doc drift"
 }

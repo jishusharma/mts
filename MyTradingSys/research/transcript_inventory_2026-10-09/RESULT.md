@@ -2,7 +2,7 @@
 
 Task: 20261009-181324-transcript-inventory-tom-v2-done-vs-tota
 Run: MTS-2026-10-10 (DSA), worktree mts-dsa
-No download. Source: MyTradingSys/research/transcript_inventory_2026-10-09.md (regenerated this run),
+No download. Source: MyTradingSys/research/_archive/loose_2026-10/transcript_inventory_2026-10-09.md (regenerated this run),
 gate scripts/dev/verify_extract_quotes.py run on every extracts/v2/tom/*_v2.md file.
 
 ## Table

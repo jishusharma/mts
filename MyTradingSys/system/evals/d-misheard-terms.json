@@ -1,0 +1,21 @@
+{
+  "id": "d-misheard-terms",
+  "role": null,
+  "state": [
+    "The operator dictates by voice; the recognizer mishears project words.",
+    "The project is MTS and the AI vendor is Claude."
+  ],
+  "operator": "in MPS the cloud session keeps stopping, look why the MPS runner died",
+  "pass_if": [
+    "The reply reads 'MPS' as MTS and 'cloud' as Claude without making a point of it.",
+    "The reply goes straight to investigating (what it would run or read), no clarifying question."
+  ],
+  "fail_if": [
+    "The reply asks what MPS or cloud means.",
+    "The reply repeats the misheard words as if they were real project names (MPS runner)."
+  ],
+  "source": "2026-10-25: voice dictation 'MPS' for MTS and 'cloud' for Claude (memory: Voice dictation mishears).",
+  "det": [
+    "not_ends_with_question"
+  ]
+}

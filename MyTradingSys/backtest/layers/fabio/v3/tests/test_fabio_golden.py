@@ -3,7 +3,7 @@
 Question: given the situation Fabio describes, does v3 take HIS trade (side, entry timing, stop side of the extreme,
 target, management steps)? Sources, read in full: research/fast_track_2026-09-27/FABIO_LINE_BY_LINE_fZlNGWvd2Ko.md
 (decision rows D01-D30, missing pieces M1-M10), FABIO_TRADE_MODEL.md (0jM5Y31YJak + 8CWKfoSJu3c, section 1 steps 1-8),
-MyTradingSys/research/TOM_FABIO_REVIEW_2026-10-03.md section 2 L2. Test ids: G<nn>; "D<nn>" = fZl decision row,
+MyTradingSys/research/_archive/loose_2026-10/TOM_FABIO_REVIEW_2026-10-03.md section 2 L2. Test ids: G<nn>; "D<nn>" = fZl decision row,
 "M<n>" = fZl missing piece, "TM<n>" = FABIO_TRADE_MODEL section 1 step.
 
 Limits (review section 2): none of his trades has a BTC date, so the bars below are our reconstruction of the described

@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-11T20:19:12Z",
+  "commands": [
+    "python scripts/dev/token_audit.py --days 7 --out MyTradingSys/research/TOKEN_AUDIT_<date>.md"
+  ],
+  "created": "2026-10-11T16:08:42Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/TOKEN_AUDIT_<date>.md has per-session token numbers from real transcripts (idle tick, KICK relay session, always-loaded share) and a ranked list of cuts; test_token_audit.py green.",
+  "from_inbox": "bftuvmoo3owp3451dabt",
+  "goal": "Answer the operator's 'why does the Sonnet ritual use so many tokens' with numbers: tokens per dispatcher tick and per relay session, split into always-loaded context (CLAUDE.md, memory, skills, tool list) and work.",
+  "id": "b172-token-audit-of-the-sonnet-relay-rit",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "relay JIS-NUC 2026-10-12",
+  "refs": [
+    "B172"
+  ],
+  "result": "research/_archive/loose_2026-10/TOKEN_AUDIT_2026-10-12.md: kick session 21 turns, ~65k always-loaded = ~82% of cache reads",
+  "scope_in": [
+    "scripts/dev/token_audit.py (new)",
+    "scripts/dev/test_token_audit.py (new)",
+    "session transcripts ~/.claude/projects/*/*.jsonl (read only)",
+    "scripts/sched/relay_prompts/",
+    "CLAUDE.md"
+  ],
+  "scope_out": [
+    "editing CLAUDE.md, memory or prompts (follow-up cards b172-trim, b172-template)",
+    "changing schedules",
+    ".secrets or keys"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/BUGS.md row B172 (Control Room inbox bftuvmoo3owp3451dabt): 'Why the current ritual is making the Sonnet agent use a lot of token? Is it not optimized? This is high priority.'"
+  ],
+  "state": "done",
+  "steps": [
+    "Write token_audit.py: sum the usage fields (input, cache read, cache write, output) per transcript, label dispatcher ticks vs relay sessions by first prompt.",
+    "Run it over the last 7 days on this host; first-turn input = always-loaded context size.",
+    "Write research/TOKEN_AUDIT_<date>.md: per-session table, idle-tick cost, top 5 cost drivers ranked, each with a proposed cut and expected saving.",
+    "Copy the ranked cuts into the two follow-up cards' notes."
+  ],
+  "tests": "scripts/dev/test_token_audit.py: fixture transcript jsonl with known usage rows -> exact totals and tick/relay label (fails before token_audit.py exists).",
+  "title": "B172 step 1: measure per-session tokens of the relay ritual from transcripts (trim and templating are follow-up cards)"
+}

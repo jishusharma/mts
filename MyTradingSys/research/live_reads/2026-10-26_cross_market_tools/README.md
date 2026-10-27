@@ -1,0 +1,2 @@
+# 2026-10-26 Eagle_Eyes scratch tools (reference for card live-cross-market-read-script)
+us_open.py: BTC daily + index daily/intraday pull. corr.py: BTC vs SPX/NDX/VIX daily r and last-week candle table. live.py: since-open table + rolling 5m r (KNOWN BUG: since-open baseline uses the 13:30 bar close = the 13:35 price; use the previous bar close). chk1m.py: spot 1m legend check (BB20,2 incl forming bar).

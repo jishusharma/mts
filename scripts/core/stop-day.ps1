@@ -1,7 +1,7 @@
 # stop_day.ps1 - request clean loop shutdown via flag; wait for lock release.
 # Stage 3b of LOOP_LIFECYCLE_DESIGN_2026-09-19.md. No kill.
 
-$R = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
+$R = (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 $LockFile = Join-Path $R "runtime_data\apparatus.lock"
 $FlagFile = Join-Path $R "runtime_data\loop_stop.flag"
 $TimeoutSec = 60

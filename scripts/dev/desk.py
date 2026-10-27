@@ -33,6 +33,9 @@ from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import hosts  # noqa: E402
+
 QUEUE = "MyTradingSys/system/desk_queue"
 TRUNK = "fast-track"
 LIVE_MARKER = ".mts_live"
@@ -80,7 +83,7 @@ def get(repo, rid):
 
 
 def run_ship(repo):
-    subprocess.run([sys.executable, str(Path(repo) / "scripts/dev/sync.py"), "ship"], cwd=repo, check=True)
+    subprocess.run([sys.executable, str(Path(repo) / "scripts/dev/sync.py"), "ship", "--no-ci-wait"], cwd=repo, check=True)
 
 
 def commit_ship(repo, req, msg, ship=True):
@@ -118,14 +121,30 @@ def post(repo, title, need, done_when, target="JIS-NB", ship=True):
            "done_when": done_when, "target": target, "from": socket.gethostname(), "posted": now(),
            "status": "pending"}
     with writable(repo, ship) as wt:
+        for old in tasks(wt):
+            if (old["status"] not in FINAL and old.get("target") == target
+                    and old["title"].strip().lower() == title.strip().lower()):
+                return old["id"]
         save(wt, req)
         commit_ship(wt, req, f"desk task: {title}\n\nResult: task {req['id']} queued for {target}\n", ship)
     return req["id"]
 
 
+def trunk_status(repo, rid, ref=f"origin/{TRUNK}"):
+    """Status of the row on `ref` (fresh fetch, best effort), None when absent: the re-read before a commit."""
+    sh(repo, "fetch", "--quiet", "origin", TRUNK, check=False)
+    blob = trunk_blobs(repo, ref, [f"{QUEUE}/{rid}.json"]).get(f"{QUEUE}/{rid}.json")
+    try:
+        return json.loads(blob)["status"] if blob else None
+    except (ValueError, KeyError):
+        return None
+
+
 def take(repo, rid, ship=True):
     with writable(repo, ship) as wt:
         req = get(wt, rid)
+        if trunk_status(wt, rid) in FINAL:
+            req["status"] = trunk_status(wt, rid)
         if req["status"] != "pending":
             raise SystemExit(f"desk: {rid} is {req['status']}, not pending")
         req.update(status="taken", taken_by=socket.gethostname(), taken=now())
@@ -137,6 +156,8 @@ def take(repo, rid, ship=True):
 def finish(repo, rid, result, failed=False, ship=True):
     with writable(repo, ship) as wt:
         req = get(wt, rid)
+        if trunk_status(wt, rid) in FINAL:
+            req["status"] = trunk_status(wt, rid)
         if req["status"] in FINAL:
             raise SystemExit(f"desk: {rid} already {req['status']}")
         req.update(status="failed" if failed else "done", result=result, host=socket.gethostname(), finished=now())
@@ -151,7 +172,9 @@ def finish(repo, rid, result, failed=False, ship=True):
 def dsa_targets(host=None):
     """Targets the DSA bridge on this host may take: its own lane (JIS-NUC -> DSA-NUC) and the shared DSA lane.
     A row addressed to the host itself (JIS-NB) is live-host work for a Claude session, never DSA's."""
-    host = (host or socket.gethostname()).upper()
+    host = str(hosts.canonical(host or socket.gethostname())).upper()
+    if host == "JIS-DESKTOP":   # the DSA-NB lane keeps its name through the rename
+        return ("DSA-NB", "DSA")
     return ("DSA-" + host.split("-", 1)[-1], "DSA")
 
 
@@ -440,6 +463,14 @@ def main(argv):
             p.add_argument("--no-ship", action="store_true")
     a = ap.parse_args(argv)
     repo = toplevel()
+    if a.cmd in ("post", "take", "done", "assign", "sweep"):
+        # TRAFFIC_CONTROLLER.md Part A: a Pipeliner (or other singleton-role) session acts only while it holds its lease
+        import lease
+        try:
+            lease.guard(repo)
+        except lease.LeaseError as e:
+            print(f"desk: LEASE {'REFUSED' if e.code == lease.REFUSED else 'UNREACHABLE'}: {e}", file=sys.stderr)
+            return e.code
     if a.cmd == "post":
         print(post(repo, a.title, a.need, a.done_when, a.target, not a.no_ship))
     elif a.cmd == "take":

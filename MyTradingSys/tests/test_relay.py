@@ -573,5 +573,17 @@ class BeginTest(unittest.TestCase):
         self.assertNotIn(stamp, real.read_text(encoding="utf-8") if real.exists() else "")
 
 
+class NucWakeTest(unittest.TestCase):
+    def test_nuc_wake_card_prelaunches_worktree_and_sets_location(self):
+        # B183 trim 1: Launch builder sessions inside their assigned worktree cwd with pre-seeded branch context
+        # instead of parent root F:/MTS
+        sys.path.insert(0, str(REPO / "scripts" / "dev"))
+        import nuc_wake
+        script = nuc_wake.build_script("claude-sonnet-5-5", "prompt text", "my-task", card="my-task")
+        self.assertIn("Set-Location F:/MTS/mts-jis-nuc-my-task", script)
+        self.assertNotIn("Set-Location F:/MTS;", script)
+
+
 if __name__ == "__main__":
     unittest.main()
+

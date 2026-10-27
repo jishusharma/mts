@@ -4,33 +4,50 @@
   "commands": [],
   "created": "2026-10-18T16:17:48Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-10-19_trend-healthy-in-balance.md is shipped with DEV counts of trend_healthy inside multi-day balance (OURS definition labelled) and forward excursion summary; unit test passes.",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
   "goal": "mts_math.py:354-355 sets trend_healthy whenever price is outside the daily VA. On DEV only, count how often trend_healthy is set while price sits inside a multi-day balance (define balance as OURS, labelled) and what price did next; file findings as cards; no live change.",
   "id": "lab-verify-trend-healthy-in-balance",
   "lane": "SONNET",
-  "layers": [],
+  "layers": [
+    "tom"
+  ],
   "live_path": false,
   "mutation_check": "",
-  "note": "From desk row 20261018-145916 (DSA) via Pipeliner 2026-10-18 (Eagle_Eyes shot 2da0ed270ed8). Part 2 (ct_long) is closed: tom-ctlong-below-zone-cvd-aligned-audit done, 7d30650a. Lab_Guy class review of the count.",
+  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:results CLASS:C1 REVIEWER:none WEIGHT:IMPORTANT. Refined by gemini-yt-pipeliner from desk row 20261018-145916; T0 mechanical checks passed, awaiting non-Gemini Lab_Guy ACCEPT stamp for C1/IMPORTANT promotion.",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "gemini-yt-pipeliner",
+  "refreshed": "2026-10-18T21:03:00Z",
   "refs": [
     "MyTradingSys/runtime/mts_math.py"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/runtime/mts_math.py",
+    "MyTradingSys/research/layer_lab/reports/"
+  ],
+  "scope_out": [
+    "live-path edits to mts_math.py",
+    "VALIDATION and HOLDOUT reads"
+  ],
+  "scope_sha": "60c1b88e5269",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/runtime/mts_math.py"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read MyTradingSys/runtime/mts_math.py:354-355 for the trend_healthy condition (price outside daily VA).",
+    "Define a causal multi-day balance indicator (labelled OURS, e.g. 5-day high-low range overlap) on DEV only (before 2025-04-01) and count bars/sessions where trend_healthy is True while inside multi-day balance.",
+    "Write MyTradingSys/research/layer_lab/reports/2026-10-19_trend-healthy-in-balance.md with the counts, forward excursion vs non-balance trend_healthy, and any follow-up card."
+  ],
+  "tests": "Synthetic 10-day fixture test verifying the multi-day balance overlap and trend_healthy flag count before running on DEV data.",
   "title": "LAB-VERIFY 10-18: how often trend_healthy is set inside a multi-day balance (DEV)",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session",
+  "class": "C1"
 }

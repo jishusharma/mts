@@ -59,4 +59,29 @@ t('a post that really failed still switches hands-free off', () => {
   assert.strictEqual(L.postLanded(sentFrom(node('a', 'msg')), nowFrom(node('a', 'msg'))), false);
 });
 
+t('postGate: idle chat + operator draft -> send_keep_draft, never stop', () => {
+  assert.strictEqual(L.postGate({ idle: true, draft: 'half typed note', waitedMs: 5, maxMs: 1000 }), 'send_keep_draft');
+});
+t('postGate: idle chat + empty draft -> send_keep_draft', () => {
+  assert.strictEqual(L.postGate({ idle: true, draft: '', waitedMs: 5, maxMs: 1000 }), 'send_keep_draft');
+});
+t('postGate: busy chat under maxMs -> wait', () => {
+  assert.strictEqual(L.postGate({ idle: false, draft: 'x', waitedMs: 999, maxMs: 1000 }), 'wait');
+});
+t('postGate: busy chat past maxMs -> stop_busy (fails closed)', () => {
+  assert.strictEqual(L.postGate({ idle: false, draft: '', waitedMs: 1001, maxMs: 1000 }), 'stop_busy');
+});
+t('postGate: undefined or non-string draft and missing input are empty-safe', () => {
+  assert.strictEqual(L.postGate({ idle: true, waitedMs: 0, maxMs: 10 }), 'send_keep_draft');
+  assert.strictEqual(L.postGate({ idle: true, draft: 42, waitedMs: 0, maxMs: 10 }), 'send_keep_draft');
+  assert.strictEqual(L.postGate({ idle: false, draft: null, waitedMs: 0, maxMs: 10 }), 'wait');
+  assert.strictEqual(L.postGate(undefined), 'stop_busy');
+});
+t('stopNotice: states why and how to re-arm', () => {
+  const m = L.stopNotice('the result was not posted');
+  assert.ok(m.indexOf('the result was not posted') >= 0);
+  assert.ok(/tick the box/i.test(m));
+  assert.ok(/OFF/.test(L.stopNotice()));
+});
+
 console.log(n + ' tests passed');

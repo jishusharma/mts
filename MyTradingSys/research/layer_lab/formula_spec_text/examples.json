@@ -1,62 +1,62 @@
 {
   "F01": {
     "bar_open_ms": [
-      1640995200000,
-      1640998800000,
-      1641002400000,
-      1641006000000,
-      1641009600000,
-      1641013200000,
-      1641016800000,
-      1641020400000,
-      1641024000000,
-      1641027600000,
-      1641031200000,
-      1641034800000,
-      1641038400000,
-      1641042000000,
-      1641045600000
+      1649793600000,
+      1649797200000,
+      1649800800000,
+      1649804400000,
+      1649808000000,
+      1649811600000,
+      1649815200000,
+      1649818800000,
+      1649822400000,
+      1649826000000,
+      1649829600000,
+      1649833200000,
+      1649836800000,
+      1649840400000,
+      1649844000000
     ],
     "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC",
-      "2022-01-01 02:00 UTC",
-      "2022-01-01 03:00 UTC",
-      "2022-01-01 04:00 UTC",
-      "2022-01-01 05:00 UTC",
-      "2022-01-01 06:00 UTC",
-      "2022-01-01 07:00 UTC",
-      "2022-01-01 08:00 UTC",
-      "2022-01-01 09:00 UTC",
-      "2022-01-01 10:00 UTC",
-      "2022-01-01 11:00 UTC",
-      "2022-01-01 12:00 UTC",
-      "2022-01-01 13:00 UTC",
-      "2022-01-01 14:00 UTC"
+      "2022-04-12 20:00 UTC",
+      "2022-04-12 21:00 UTC",
+      "2022-04-12 22:00 UTC",
+      "2022-04-12 23:00 UTC",
+      "2022-04-13 00:00 UTC",
+      "2022-04-13 01:00 UTC",
+      "2022-04-13 02:00 UTC",
+      "2022-04-13 03:00 UTC",
+      "2022-04-13 04:00 UTC",
+      "2022-04-13 05:00 UTC",
+      "2022-04-13 06:00 UTC",
+      "2022-04-13 07:00 UTC",
+      "2022-04-13 08:00 UTC",
+      "2022-04-13 09:00 UTC",
+      "2022-04-13 10:00 UTC"
     ],
     "expected": {
       "name": "Wilder RSI at index 14",
       "unit": "percent",
-      "value": 56.16276802655401
+      "value": 57.830163407447
     },
     "id": "F01",
     "inputs": {
       "closes": [
-        46650.01,
-        46766.78,
-        46796.14,
-        46789.56,
-        46690.81,
-        47184.18,
-        46972.19,
-        47186.83,
-        47117.84,
-        47137.37,
-        46864.09,
-        46755.01,
-        47062.37,
-        47005.55,
-        46909.2
+        39495.8,
+        39669.1,
+        39809.3,
+        40060.7,
+        39917.0,
+        39860.7,
+        40037.4,
+        40059.3,
+        40112.9,
+        40161.2,
+        39929.9,
+        40112.0,
+        40143.9,
+        40062.3,
+        39788.1
       ],
       "period": 14
     }
@@ -65,17 +65,19 @@
     "bar_open_ms": [
       1640995200000,
       1640998800000,
-      1641002400000
+      1641002400000,
+      1641006000000
     ],
     "bar_open_utc": [
       "2022-01-01 00:00 UTC",
       "2022-01-01 01:00 UTC",
-      "2022-01-01 02:00 UTC"
+      "2022-01-01 02:00 UTC",
+      "2022-01-01 03:00 UTC"
     ],
     "expected": {
       "name": "RMA SMA seed",
       "unit": "number",
-      "value": 46737.64333333333
+      "value": 46754.94888888889
     },
     "id": "F02",
     "inputs": {
@@ -83,7 +85,8 @@
       "values": [
         46650.01,
         46766.78,
-        46796.14
+        46796.14,
+        46789.56
       ]
     }
   },
@@ -91,17 +94,19 @@
     "bar_open_ms": [
       1640995200000,
       1640998800000,
-      1641002400000
+      1641002400000,
+      1641006000000
     ],
     "bar_open_utc": [
       "2022-01-01 00:00 UTC",
       "2022-01-01 01:00 UTC",
-      "2022-01-01 02:00 UTC"
+      "2022-01-01 02:00 UTC",
+      "2022-01-01 03:00 UTC"
     ],
     "expected": {
       "name": "SMA",
       "unit": "number",
-      "value": 46737.64333333333
+      "value": 46784.159999999996
     },
     "id": "F03",
     "inputs": {
@@ -109,7 +114,8 @@
       "values": [
         46650.01,
         46766.78,
-        46796.14
+        46796.14,
+        46789.56
       ]
     }
   },
@@ -146,17 +152,19 @@
     "bar_open_ms": [
       1640995200000,
       1640998800000,
-      1641002400000
+      1641002400000,
+      1641006000000
     ],
     "bar_open_utc": [
       "2022-01-01 00:00 UTC",
       "2022-01-01 01:00 UTC",
-      "2022-01-01 02:00 UTC"
+      "2022-01-01 02:00 UTC",
+      "2022-01-01 03:00 UTC"
     ],
     "expected": {
       "name": "WMA",
       "unit": "number",
-      "value": 46761.99833333333
+      "value": 46787.956666666665
     },
     "id": "F05",
     "inputs": {
@@ -164,18 +172,23 @@
       "values": [
         46650.01,
         46766.78,
-        46796.14
+        46796.14,
+        46789.56
       ]
     }
   },
   "F06": {
     "bar_open_ms": [
       1640995200000,
-      1640998800000
+      1640998800000,
+      1641002400000,
+      1641006000000
     ],
     "bar_open_utc": [
       "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
+      "2022-01-01 01:00 UTC",
+      "2022-01-01 02:00 UTC",
+      "2022-01-01 03:00 UTC"
     ],
     "expected": {
       "name": "tolerance band transition",
@@ -240,7 +253,7 @@
     },
     "id": "F08",
     "inputs": {
-      "bucket": "00:00-04:00 UTC",
+      "bucket": "2022-01-01 00:00-04:00 UTC",
       "source_closes": [
         46650.01,
         46766.78,
@@ -252,11 +265,15 @@
   "F09": {
     "bar_open_ms": [
       1640995200000,
-      1640998800000
+      1640998800000,
+      1641002400000,
+      1641006000000
     ],
     "bar_open_utc": [
       "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
+      "2022-01-01 01:00 UTC",
+      "2022-01-01 02:00 UTC",
+      "2022-01-01 03:00 UTC"
     ],
     "expected": {
       "name": "long R target",
@@ -273,225 +290,241 @@
   "F10": {
     "bar_open_ms": [
       1640995200000,
-      1640998800000
+      1640998800000,
+      1641002400000,
+      1641006000000
     ],
     "bar_open_utc": [
       "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
+      "2022-01-01 01:00 UTC",
+      "2022-01-01 02:00 UTC",
+      "2022-01-01 03:00 UTC"
     ],
     "expected": {
-      "name": "population Sharpe one-observation undefined",
+      "name": "population Sharpe",
       "unit": "number",
-      "value": 0.0
+      "value": 0.6340218626255404
     },
     "id": "F10",
     "inputs": {
       "returns": [
-        -0.00014060988790959568
-      ],
-      "sharpe": "undefined"
+        -0.00014060988790959568,
+        0.000627796055234091
+      ]
     }
   },
   "F11": {
     "bar_open_ms": [
       1640995200000,
-      1640998800000
+      1640998800000,
+      1641002400000,
+      1641006000000
     ],
     "bar_open_utc": [
       "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
+      "2022-01-01 01:00 UTC",
+      "2022-01-01 02:00 UTC",
+      "2022-01-01 03:00 UTC"
     ],
     "expected": {
-      "name": "execution math",
+      "name": "execution tick floor",
       "unit": "number",
-      "value": 46766.78
+      "value": 46766.5
     },
     "id": "F11",
     "inputs": {
       "price": 46766.78,
-      "size_usd": 20,
       "tick": 0.5
     }
   },
   "F11.1": {
     "bar_open_ms": [
-      1640995200000,
       1640998800000
     ],
     "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
       "2022-01-01 01:00 UTC"
     ],
     "expected": {
-      "name": "execution math",
+      "name": "tick floor",
       "unit": "number",
-      "value": 46766.78
+      "value": 62749.5
     },
+    "formula_case": "F11.1",
     "id": "F11.1",
     "inputs": {
-      "price": 46766.78,
-      "size_usd": 20,
+      "price": 62749.5,
       "tick": 0.5
     }
   },
   "F11.2": {
     "bar_open_ms": [
-      1640995200000,
       1640998800000
     ],
     "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
       "2022-01-01 01:00 UTC"
     ],
     "expected": {
-      "name": "execution math",
+      "name": "size floor",
       "unit": "number",
-      "value": 46766.78
+      "value": 20.0
     },
+    "formula_case": "F11.2",
     "id": "F11.2",
     "inputs": {
-      "price": 46766.78,
-      "size_usd": 20,
-      "tick": 0.5
+      "amount_usd": 29.9,
+      "increment_usd": 10
     }
   },
   "F11.3": {
     "bar_open_ms": [
-      1640995200000,
       1640998800000
     ],
     "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
       "2022-01-01 01:00 UTC"
     ],
     "expected": {
-      "name": "execution math",
+      "name": "ladder rung",
       "unit": "number",
-      "value": 46766.78
+      "value": 46757.45
     },
+    "formula_case": "F11.3",
     "id": "F11.3",
     "inputs": {
-      "price": 46766.78,
-      "size_usd": 20,
-      "tick": 0.5
+      "high": 46944.56,
+      "low": 46570.34,
+      "rung": 2,
+      "rungs": 3,
+      "side": "LONG"
     }
   },
   "F11.4": {
     "bar_open_ms": [
-      1640995200000,
       1640998800000
     ],
     "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
       "2022-01-01 01:00 UTC"
     ],
     "expected": {
-      "name": "execution math",
+      "name": "inverse weighted average",
       "unit": "number",
-      "value": 46766.78
+      "value": 62751.98750000001
     },
+    "formula_case": "F11.4",
     "id": "F11.4",
     "inputs": {
-      "price": 46766.78,
-      "size_usd": 20,
-      "tick": 0.5
+      "fills": [
+        [
+          62754.7,
+          1.0
+        ],
+        [
+          62749.5,
+          1.0903619038962966
+        ]
+      ]
     }
   },
   "F11.5": {
     "bar_open_ms": [
-      1640995200000,
       1640998800000
     ],
     "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
       "2022-01-01 01:00 UTC"
     ],
     "expected": {
-      "name": "execution math",
+      "name": "inverse live average fill",
       "unit": "number",
-      "value": 46766.78
+      "value": 62751.98750000001
     },
+    "formula_case": "F11.5",
     "id": "F11.5",
     "inputs": {
-      "price": 46766.78,
-      "size_usd": 20,
-      "tick": 0.5
+      "fills": [
+        [
+          62754.7,
+          1.0
+        ],
+        [
+          62749.5,
+          1.0903619038962966
+        ]
+      ]
     }
   },
   "F11.6": {
     "bar_open_ms": [
-      1640995200000,
       1640998800000
     ],
     "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
       "2022-01-01 01:00 UTC"
     ],
     "expected": {
-      "name": "execution math",
+      "name": "inverse stop loss usd",
       "unit": "number",
-      "value": 46766.78
+      "value": -0.399847
     },
+    "formula_case": "F11.6",
     "id": "F11.6",
     "inputs": {
-      "price": 46766.78,
-      "size_usd": 20,
-      "tick": 0.5
+      "entry": 62754.7,
+      "size_usd": 54.76272049519895,
+      "stop": 62296.5
     }
   },
   "F11.7": {
     "bar_open_ms": [
-      1640995200000,
       1640998800000
     ],
     "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
       "2022-01-01 01:00 UTC"
     ],
     "expected": {
-      "name": "execution math",
+      "name": "inverse target price",
       "unit": "number",
-      "value": 46766.78
+      "value": 63382.0
     },
+    "formula_case": "F11.7",
     "id": "F11.7",
     "inputs": {
-      "price": 46766.78,
-      "size_usd": 20,
-      "tick": 0.5
+      "entry": 62754.7,
+      "pct": 1.0,
+      "side": "LONG"
     }
   },
   "F11.8": {
     "bar_open_ms": [
-      1640995200000,
       1640998800000
     ],
     "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
       "2022-01-01 01:00 UTC"
     ],
     "expected": {
-      "name": "execution math",
+      "name": "USD notional",
       "unit": "number",
-      "value": 46766.78
+      "value": 20.0
     },
+    "formula_case": "F11.8",
     "id": "F11.8",
     "inputs": {
-      "price": 46766.78,
-      "size_usd": 20,
-      "tick": 0.5
+      "mark_price": null,
+      "size": 20.0
     }
   },
   "F12": {
     "bar_open_ms": [
       1640995200000,
-      1640998800000
+      1640998800000,
+      1641002400000,
+      1641006000000
     ],
     "bar_open_utc": [
       "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
+      "2022-01-01 01:00 UTC",
+      "2022-01-01 02:00 UTC",
+      "2022-01-01 03:00 UTC"
     ],
     "expected": {
-      "name": "TR",
+      "name": "true range",
       "unit": "number",
       "value": 374.22000000000116
     },
@@ -505,11 +538,15 @@
   "F13": {
     "bar_open_ms": [
       1640995200000,
-      1640998800000
+      1640998800000,
+      1641002400000,
+      1641006000000
     ],
     "bar_open_utc": [
       "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
+      "2022-01-01 01:00 UTC",
+      "2022-01-01 02:00 UTC",
+      "2022-01-01 03:00 UTC"
     ],
     "expected": {
       "name": "gross return",
@@ -528,11 +565,15 @@
   "F14": {
     "bar_open_ms": [
       1640995200000,
-      1640998800000
+      1640998800000,
+      1641002400000,
+      1641006000000
     ],
     "bar_open_utc": [
       "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
+      "2022-01-01 01:00 UTC",
+      "2022-01-01 02:00 UTC",
+      "2022-01-01 03:00 UTC"
     ],
     "expected": {
       "name": "CVD cumulative input",
@@ -554,11 +595,15 @@
   "F15": {
     "bar_open_ms": [
       1640995200000,
-      1640998800000
+      1640998800000,
+      1641002400000,
+      1641006000000
     ],
     "bar_open_utc": [
       "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
+      "2022-01-01 01:00 UTC",
+      "2022-01-01 02:00 UTC",
+      "2022-01-01 03:00 UTC"
     ],
     "expected": {
       "name": "session hourly return",
@@ -575,11 +620,15 @@
   "F16": {
     "bar_open_ms": [
       1640995200000,
-      1640998800000
+      1640998800000,
+      1641002400000,
+      1641006000000
     ],
     "bar_open_utc": [
       "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
+      "2022-01-01 01:00 UTC",
+      "2022-01-01 02:00 UTC",
+      "2022-01-01 03:00 UTC"
     ],
     "expected": {
       "name": "bar return",
@@ -590,17 +639,21 @@
     "inputs": {
       "close": 46650.01,
       "open": 46210.57,
-      "timeframe": "1h; cannot resolve 1m slot"
+      "timeframe": "1h"
     }
   },
   "F17": {
     "bar_open_ms": [
       1640995200000,
-      1640998800000
+      1640998800000,
+      1641002400000,
+      1641006000000
     ],
     "bar_open_utc": [
       "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
+      "2022-01-01 01:00 UTC",
+      "2022-01-01 02:00 UTC",
+      "2022-01-01 03:00 UTC"
     ],
     "expected": {
       "name": "net reward risk",
@@ -618,11 +671,15 @@
   "F18": {
     "bar_open_ms": [
       1640995200000,
-      1640998800000
+      1640998800000,
+      1641002400000,
+      1641006000000
     ],
     "bar_open_utc": [
       "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
+      "2022-01-01 01:00 UTC",
+      "2022-01-01 02:00 UTC",
+      "2022-01-01 03:00 UTC"
     ],
     "expected": {
       "name": "typical price bin",
@@ -634,179 +691,160 @@
       "bin_width": 10,
       "close": 46650.01,
       "high": 46729.73,
-      "low": 46210.55,
-      "typical_price": 46530.09666666667
+      "low": 46210.55
     }
   },
   "F18.1": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "typical price bin",
+      "name": "profile POC price",
       "unit": "number",
-      "value": 4653.0
+      "value": 1.5
     },
+    "formula_case": "F18.1",
     "id": "F18.1",
     "inputs": {
-      "bin_width": 10,
-      "close": 46650.01,
-      "high": 46729.73,
-      "low": 46210.55,
-      "typical_price": 46530.09666666667
-    }
+      "bars": [
+        [
+          0.0,
+          2.0,
+          6.0
+        ],
+        [
+          1.0,
+          3.0,
+          4.0
+        ],
+        [
+          1.0,
+          2.0,
+          10.0
+        ]
+      ],
+      "w": 1.0
+    },
+    "synthetic": true
   },
   "F18.2": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "typical price bin",
-      "unit": "number",
-      "value": 4653.0
+      "name": "fractal pivot high test",
+      "unit": "boolean",
+      "value": true
     },
+    "formula_case": "F18.2",
     "id": "F18.2",
     "inputs": {
-      "bin_width": 10,
-      "close": 46650.01,
-      "high": 46729.73,
-      "low": 46210.55,
-      "typical_price": 46530.09666666667
-    }
+      "highs": [
+        1.0,
+        3.0,
+        2.0,
+        5.0,
+        4.0,
+        1.0,
+        2.0
+      ],
+      "n": 1,
+      "test_index": 1
+    },
+    "synthetic": true
   },
   "F18.3": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "typical price bin",
-      "unit": "number",
-      "value": 4653.0
+      "name": "meaningful pivot size filter",
+      "unit": "boolean",
+      "value": true
     },
+    "formula_case": "F18.3",
     "id": "F18.3",
     "inputs": {
-      "bin_width": 10,
-      "close": 46650.01,
-      "high": 46729.73,
-      "low": 46210.55,
-      "typical_price": 46530.09666666667
-    }
+      "atr": 5.0,
+      "k": 1.0,
+      "price_p": 110.0,
+      "price_q": 100.0
+    },
+    "synthetic": true
   },
   "F18.4": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "typical price bin",
-      "unit": "number",
-      "value": 4653.0
+      "name": "NOT_APPLICABLE",
+      "unit": "none",
+      "value": 0.0
     },
+    "formula_case": "F18.4",
     "id": "F18.4",
-    "inputs": {
-      "bin_width": 10,
-      "close": 46650.01,
-      "high": 46729.73,
-      "low": 46210.55,
-      "typical_price": 46530.09666666667
-    }
+    "not_applicable": true,
+    "quote": "levels refreshed on a 15-minute grid... Developing; need >= 12 bars... Each profile contributes three levels: POC, VAH, VAL",
+    "reason": "Defines bar window definitions and grid intervals for profile families; contains no standalone formula or worked numerical calculation."
   },
   "F18.5": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "typical price bin",
+      "name": "touch outcome net R",
       "unit": "number",
-      "value": 4653.0
+      "value": 0.9495
     },
+    "formula_case": "F18.5",
     "id": "F18.5",
     "inputs": {
-      "bin_width": 10,
-      "close": 46650.01,
-      "high": 46729.73,
-      "low": 46210.55,
-      "typical_price": 46530.09666666667
-    }
+      "L": 100.0,
+      "R": 2.0,
+      "exit": 102.0,
+      "fee_in": 0.0005,
+      "fee_out": 0.0005,
+      "side": 1
+    },
+    "synthetic": true
   },
   "F18.6": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "typical price bin",
+      "name": "placebo level",
       "unit": "number",
-      "value": 4653.0
+      "value": 101.0
     },
+    "formula_case": "F18.6",
     "id": "F18.6",
     "inputs": {
-      "bin_width": 10,
-      "close": 46650.01,
-      "high": 46729.73,
-      "low": 46210.55,
-      "typical_price": 46530.09666666667
-    }
+      "L": 100.0,
+      "R_ref": 2.0,
+      "refresh_index": 4
+    },
+    "synthetic": true
   },
   "F18.7": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "typical price bin",
+      "name": "day-block bootstrap mean",
       "unit": "number",
-      "value": 4653.0
+      "value": 0.6666666666666666
     },
+    "formula_case": "F18.7",
     "id": "F18.7",
     "inputs": {
-      "bin_width": 10,
-      "close": 46650.01,
-      "high": 46729.73,
-      "low": 46210.55,
-      "typical_price": 46530.09666666667
-    }
+      "day_events": [
+        [
+          1.0,
+          3.0
+        ],
+        [
+          -2.0
+        ]
+      ],
+      "resample_indices": [
+        0,
+        1
+      ]
+    },
+    "synthetic": true
   },
   "F19": {
     "bar_open_ms": [
       1640995200000,
-      1640998800000
+      1640998800000,
+      1641002400000,
+      1641006000000
     ],
     "bar_open_utc": [
       "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
+      "2022-01-01 01:00 UTC",
+      "2022-01-01 02:00 UTC",
+      "2022-01-01 03:00 UTC"
     ],
     "expected": {
       "name": "linear trendline",
@@ -829,245 +867,154 @@
     }
   },
   "F19.1": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "linear trendline",
-      "unit": "number",
-      "value": 46930.12999999999
+      "name": "strict pivot low test",
+      "unit": "boolean",
+      "value": true
     },
+    "formula_case": "F19.1",
     "id": "F19.1",
     "inputs": {
-      "anchors": [
-        [
-          0,
-          46210.55
-        ],
-        [
-          1,
-          46570.34
-        ]
+      "k": 3,
+      "lows": [
+        9.0,
+        8.0,
+        7.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0
       ],
-      "query_index": 2
-    }
+      "test_index": 3
+    },
+    "synthetic": true
   },
   "F19.2": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "linear trendline",
+      "name": "trendline anchor interpolation",
       "unit": "number",
-      "value": 46930.12999999999
+      "value": 115.0
     },
+    "formula_case": "F19.2",
     "id": "F19.2",
     "inputs": {
-      "anchors": [
-        [
-          0,
-          46210.55
-        ],
-        [
-          1,
-          46570.34
-        ]
-      ],
-      "query_index": 2
-    }
+      "geometry": "linear",
+      "ia": 10,
+      "ib": 20,
+      "pa": 100.0,
+      "pb": 110.0,
+      "t": 25
+    },
+    "synthetic": true
   },
   "F19.3": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "linear trendline",
+      "name": "contract ATR",
       "unit": "number",
-      "value": 46930.12999999999
+      "value": 2.1666666666666665
     },
+    "formula_case": "F19.3",
     "id": "F19.3",
     "inputs": {
-      "anchors": [
-        [
-          0,
-          46210.55
-        ],
-        [
-          1,
-          46570.34
-        ]
-      ],
-      "query_index": 2
-    }
+      "length": 3,
+      "ranges": [
+        2.0,
+        2.5,
+        2.0
+      ]
+    },
+    "synthetic": true
   },
   "F19.4": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "linear trendline",
+      "name": "slope atr",
       "unit": "number",
-      "value": 46930.12999999999
+      "value": 0.25
     },
+    "formula_case": "F19.4",
     "id": "F19.4",
     "inputs": {
-      "anchors": [
-        [
-          0,
-          46210.55
-        ],
-        [
-          1,
-          46570.34
-        ]
-      ],
-      "query_index": 2
-    }
+      "atr": 4.0,
+      "dt": 10,
+      "pa": 100.0,
+      "pb": 110.0
+    },
+    "synthetic": true
   },
   "F19.5": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "linear trendline",
-      "unit": "number",
-      "value": 46930.12999999999
+      "name": "touch tolerance test",
+      "unit": "boolean",
+      "value": true
     },
+    "formula_case": "F19.5",
     "id": "F19.5",
     "inputs": {
-      "anchors": [
-        [
-          0,
-          46210.55
-        ],
-        [
-          1,
-          46570.34
-        ]
-      ],
-      "query_index": 2
-    }
+      "L": 115.0,
+      "atr": 4.0,
+      "low": 115.8,
+      "mult": 0.25
+    },
+    "synthetic": true
   },
   "F19.6": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "linear trendline",
-      "unit": "number",
-      "value": 46930.12999999999
+      "name": "episode reset test",
+      "unit": "boolean",
+      "value": true
     },
+    "formula_case": "F19.6",
     "id": "F19.6",
     "inputs": {
-      "anchors": [
-        [
-          0,
-          46210.55
-        ],
-        [
-          1,
-          46570.34
-        ]
-      ],
-      "query_index": 2
-    }
+      "L": 115.0,
+      "atr": 4.0,
+      "low": 120.0,
+      "mult": 1.0
+    },
+    "synthetic": true
   },
   "F19.7": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "linear trendline",
+      "name": "volume anchor test ratio",
       "unit": "number",
-      "value": 46930.12999999999
+      "value": 2.142857142857143
     },
+    "formula_case": "F19.7",
     "id": "F19.7",
     "inputs": {
-      "anchors": [
-        [
-          0,
-          46210.55
-        ],
-        [
-          1,
-          46570.34
-        ]
-      ],
-      "query_index": 2
-    }
+      "M": 140.0,
+      "V": 300.0
+    },
+    "synthetic": true
   },
   "F19.8": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "linear trendline",
-      "unit": "number",
-      "value": 46930.12999999999
+      "name": "third anchor tolerance test",
+      "unit": "boolean",
+      "value": true
     },
+    "formula_case": "F19.8",
     "id": "F19.8",
     "inputs": {
-      "anchors": [
-        [
-          0,
-          46210.55
-        ],
-        [
-          1,
-          46570.34
-        ]
-      ],
-      "query_index": 2
-    }
+      "L": 120.0,
+      "atr": 4.0,
+      "mult": 0.25,
+      "price": 119.5
+    },
+    "synthetic": true
   },
   "F20": {
     "bar_open_ms": [
       1640995200000,
-      1640998800000
+      1640998800000,
+      1641002400000,
+      1641006000000
     ],
     "bar_open_utc": [
       "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
+      "2022-01-01 01:00 UTC",
+      "2022-01-01 02:00 UTC",
+      "2022-01-01 03:00 UTC"
     ],
     "expected": {
       "name": "WaveTrend ap",
@@ -1078,111 +1025,82 @@
     "inputs": {
       "close": 46650.01,
       "high": 46729.73,
-      "low": 46210.55,
-      "output": "unavailable before warmup",
-      "warmup_bars": 200
+      "low": 46210.55
     }
   },
   "F20.1": {
     "bar_open_ms": [
-      1640995200000,
-      1640998800000
+      1640995200000
     ],
     "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
+      "2022-01-01 00:00 UTC"
     ],
     "expected": {
       "name": "WaveTrend ap",
       "unit": "number",
       "value": 46530.09666666667
     },
+    "formula_case": "F20.1",
     "id": "F20.1",
     "inputs": {
       "close": 46650.01,
       "high": 46729.73,
-      "low": 46210.55,
-      "output": "unavailable before warmup",
-      "warmup_bars": 200
+      "low": 46210.55
     }
   },
   "F20.2": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "WaveTrend ap",
-      "unit": "number",
-      "value": 46530.09666666667
+      "name": "NOT_APPLICABLE",
+      "unit": "none",
+      "value": 0.0
     },
+    "formula_case": "F20.2",
     "id": "F20.2",
-    "inputs": {
-      "close": 46650.01,
-      "high": 46729.73,
-      "low": 46210.55,
-      "output": "unavailable before warmup",
-      "warmup_bars": 200
-    }
+    "not_applicable": true,
+    "quote": "EMA seeded with the first valid source value; output used only after WARMUP=200 bars... Zones from wt1: ob2 >= 60, ob1 >= 53... available_at = bar_open + timeframe",
+    "reason": "Conventions and event definitions without an inline numerical formula."
   },
   "F20.3": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "WaveTrend ap",
+      "name": "WaveTrend hand ci",
       "unit": "number",
-      "value": 46530.09666666667
+      "value": 366.6666666666667
     },
+    "formula_case": "F20.3",
     "id": "F20.3",
     "inputs": {
-      "close": 46650.01,
-      "high": 46729.73,
-      "low": 46210.55,
-      "output": "unavailable before warmup",
-      "warmup_bars": 200
-    }
+      "ap": [
+        10.0,
+        12.0
+      ],
+      "n": 10
+    },
+    "synthetic": true
   },
   "F20.4": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "WaveTrend ap",
-      "unit": "number",
-      "value": 46530.09666666667
+      "name": "NOT_APPLICABLE",
+      "unit": "none",
+      "value": 0.0
     },
+    "formula_case": "F20.4",
     "id": "F20.4",
-    "inputs": {
-      "close": 46650.01,
-      "high": 46729.73,
-      "low": 46210.55,
-      "output": "unavailable before warmup",
-      "warmup_bars": 200
-    }
+    "not_applicable": true,
+    "quote": "wavetrend/golden_wt_btcusdt_1h_dev_2022-01.csv: 400 BTCUSDT 1h bars... Compared at 1e-9 (OURS) after bar 200",
+    "reason": "Reference golden CSV comparison specification; no inline formula computation."
   },
   "F21": {
     "bar_open_ms": [
       1640995200000,
-      1640998800000
+      1640998800000,
+      1641002400000,
+      1641006000000
     ],
     "bar_open_utc": [
       "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
+      "2022-01-01 01:00 UTC",
+      "2022-01-01 02:00 UTC",
+      "2022-01-01 03:00 UTC"
     ],
     "expected": {
       "name": "volume ratio",
@@ -1191,218 +1109,244 @@
     },
     "id": "F21",
     "inputs": {
-      "configured_prior_count": 20,
       "current_volume": 7276.249,
-      "prior_count": 1,
-      "prior_volume": 8957.464999999998
+      "prior_volumes": [
+        8957.464999999998
+      ]
     }
   },
   "F21.1": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "volume ratio",
+      "name": "wick zone high",
       "unit": "number",
-      "value": 0.812311184023605
+      "value": 104.0
     },
+    "formula_case": "F21.1",
     "id": "F21.1",
     "inputs": {
-      "configured_prior_count": 20,
-      "current_volume": 7276.249,
-      "prior_count": 1,
-      "prior_volume": 8957.464999999998
-    }
+      "close": 104.0,
+      "wick_extreme": 90.0
+    },
+    "synthetic": true
   },
   "F21.2": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "volume ratio",
+      "name": "prior-volume mean ratio",
       "unit": "number",
-      "value": 0.812311184023605
+      "value": 2.5
     },
+    "formula_case": "F21.2",
     "id": "F21.2",
     "inputs": {
-      "configured_prior_count": 20,
-      "current_volume": 7276.249,
-      "prior_count": 1,
-      "prior_volume": 8957.464999999998
-    }
+      "current_volume": 250.0,
+      "prior_mean": 100.0
+    },
+    "synthetic": true
   },
   "F21.3": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "volume ratio",
-      "unit": "number",
-      "value": 0.812311184023605
+      "name": "strict bullish engulf test",
+      "unit": "boolean",
+      "value": true
     },
+    "formula_case": "F21.3",
     "id": "F21.3",
     "inputs": {
-      "configured_prior_count": 20,
-      "current_volume": 7276.249,
-      "prior_count": 1,
-      "prior_volume": 8957.464999999998
-    }
+      "close": 106.0,
+      "low": 99.0,
+      "prior_high": 105.0,
+      "prior_low": 100.0
+    },
+    "synthetic": true
   },
   "F21.4": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "volume ratio",
+      "name": "dominant low level",
       "unit": "number",
-      "value": 0.812311184023605
+      "value": 8.0
     },
+    "formula_case": "F21.4",
     "id": "F21.4",
     "inputs": {
-      "configured_prior_count": 20,
-      "current_volume": 7276.249,
-      "prior_count": 1,
-      "prior_volume": 8957.464999999998
-    }
+      "bars": [
+        [
+          10,
+          8,
+          9
+        ],
+        [
+          12,
+          9,
+          11
+        ],
+        [
+          11,
+          7,
+          8
+        ],
+        [
+          14,
+          9,
+          13
+        ],
+        [
+          13,
+          10,
+          12
+        ],
+        [
+          12,
+          8,
+          9
+        ],
+        [
+          17,
+          11,
+          16
+        ],
+        [
+          15,
+          12,
+          13
+        ],
+        [
+          13,
+          6,
+          7.5
+        ]
+      ],
+      "k": 1,
+      "query_t": 7
+    },
+    "synthetic": true
   },
   "F21.5": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "volume ratio",
-      "unit": "number",
-      "value": 0.812311184023605
+      "name": "BBWP percentile",
+      "unit": "percent",
+      "value": 100.0
     },
+    "formula_case": "F21.5",
     "id": "F21.5",
     "inputs": {
-      "configured_prior_count": 20,
-      "current_volume": 7276.249,
-      "prior_count": 1,
-      "prior_volume": 8957.464999999998
-    }
+      "basis": 2,
+      "closes": [
+        10.0,
+        10.0,
+        12.0,
+        11.0,
+        15.0,
+        15.0,
+        14.0
+      ],
+      "lookback": 3,
+      "t": 4
+    },
+    "synthetic": true
   },
   "F21.6": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "volume ratio",
+      "name": "EMA seed step",
       "unit": "number",
-      "value": 0.812311184023605
+      "value": 4.0
     },
+    "formula_case": "F21.6",
     "id": "F21.6",
     "inputs": {
-      "configured_prior_count": 20,
-      "current_volume": 7276.249,
-      "prior_count": 1,
-      "prior_volume": 8957.464999999998
-    }
+      "closes": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0
+      ],
+      "n": 5
+    },
+    "synthetic": true
   },
   "F21.7": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "volume ratio",
-      "unit": "number",
-      "value": 0.812311184023605
+      "name": "Wilder RSI smoothed",
+      "unit": "percent",
+      "value": 83.33333333333333
     },
+    "formula_case": "F21.7",
     "id": "F21.7",
     "inputs": {
-      "configured_prior_count": 20,
-      "current_volume": 7276.249,
-      "prior_count": 1,
-      "prior_volume": 8957.464999999998
-    }
+      "closes": [
+        10.0,
+        11.0,
+        10.0,
+        12.0
+      ],
+      "period": 2
+    },
+    "synthetic": true
   },
   "F21.8": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "volume ratio",
+      "name": "range position",
       "unit": "number",
-      "value": 0.812311184023605
+      "value": 0.2
     },
+    "formula_case": "F21.8",
     "id": "F21.8",
     "inputs": {
-      "configured_prior_count": 20,
-      "current_volume": 7276.249,
-      "prior_count": 1,
-      "prior_volume": 8957.464999999998
-    }
+      "close": 9.4,
+      "highs": [
+        10.0,
+        11.0,
+        10.5,
+        11.0
+      ],
+      "lows": [
+        9.0,
+        9.5,
+        9.0,
+        9.5
+      ]
+    },
+    "synthetic": true
   },
   "F21.9": {
-    "bar_open_ms": [
-      1640995200000,
-      1640998800000
-    ],
-    "bar_open_utc": [
-      "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
-    ],
     "expected": {
-      "name": "volume ratio",
-      "unit": "number",
-      "value": 0.812311184023605
+      "name": "top signal count",
+      "unit": "count",
+      "value": 3.0
     },
+    "formula_case": "F21.9",
     "id": "F21.9",
     "inputs": {
-      "configured_prior_count": 20,
-      "current_volume": 7276.249,
-      "prior_count": 1,
-      "prior_volume": 8957.464999999998
-    }
+      "signals": {
+        "bbwp": [
+          7
+        ],
+        "candle": [
+          5
+        ],
+        "momentum": [],
+        "volume": [
+          6
+        ]
+      },
+      "t": 7,
+      "window": 3
+    },
+    "synthetic": true
   },
   "F22": {
     "bar_open_ms": [
       1640995200000,
-      1640998800000
+      1640998800000,
+      1641002400000,
+      1641006000000
     ],
     "bar_open_utc": [
       "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
+      "2022-01-01 01:00 UTC",
+      "2022-01-01 02:00 UTC",
+      "2022-01-01 03:00 UTC"
     ],
     "expected": {
       "name": "population standard deviation",
@@ -1421,23 +1365,41 @@
   "F23": {
     "bar_open_ms": [
       1640995200000,
-      1640998800000
+      1640998800000,
+      1641002400000,
+      1641006000000
     ],
     "bar_open_utc": [
       "2022-01-01 00:00 UTC",
-      "2022-01-01 01:00 UTC"
+      "2022-01-01 01:00 UTC",
+      "2022-01-01 02:00 UTC",
+      "2022-01-01 03:00 UTC"
     ],
     "expected": {
-      "name": "RSI warmup",
+      "name": "Wilder RSI at index 14",
       "unit": "number",
       "value": 56.16276802655401
     },
     "id": "F23",
     "inputs": {
-      "close_count": 15,
-      "rsi": 56.16276802655401,
-      "rsi_period": 14,
-      "stoch": "unavailable before 14 RSI values"
+      "closes": [
+        46650.01,
+        46766.78,
+        46796.14,
+        46789.56,
+        46690.81,
+        47184.18,
+        46972.19,
+        47186.83,
+        47117.84,
+        47137.37,
+        46864.09,
+        46755.01,
+        47062.37,
+        47005.55,
+        46909.2
+      ],
+      "rsi_period": 14
     }
   }
 }

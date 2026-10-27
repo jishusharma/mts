@@ -1,0 +1,10 @@
+{
+  "done_when": "per-bar table 13:00-14:30Z with the three deltas, units and alignment stated, one quoting rule written",
+  "from": "JIS-NB",
+  "id": "20261026-145734-lab-verify-10-26-footprint-delta-vs-coin",
+  "need": "card lab-verify-footprint-vs-indicator-delta (python scripts/dev/tasks.py brief lab-verify-footprint-vs-indicator-delta); shots 1f3d02f3e0aa 34bad00c5501 d31c5690e8c0 43fc5ddec27b df6257dd397a 8dc124f61332 7a8737e4c81b",
+  "posted": "2026-10-26T14:57:34Z",
+  "status": "pending",
+  "target": "DSA",
+  "title": "LAB-VERIFY 10-26: footprint delta vs CoinGlass Net Delta indicator vs spot taker delta disagree on the 13:30Z bar"
+}

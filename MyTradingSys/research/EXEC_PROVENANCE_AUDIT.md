@@ -2,7 +2,7 @@
 
 Session: MTS-2026-10-03-1444Z-CLI-BLD-tf4-execution-proven (App, Code mode, branch fast-track). Written 2026-10-03.
 Read-only: no code, config, plan, HALT file or trade was touched, and the live testnet system kept running. Every number was read from disk or run this session ([disk], [run]).
-Task rows: runtime/BUILD_PIPELINE.md:45 (row 1.6); research/TOM_FABIO_REVIEW_2026-10-03.md section 1.2 (table :43-52) and section 3 (:87).
+Task rows: runtime/BUILD_PIPELINE.md:45 (row 1.6); research/_archive/loose_2026-10/TOM_FABIO_REVIEW_2026-10-03.md section 1.2 (table :43-52) and section 3 (:87).
 Id map: audit E1-E3 = review E1-E3 (entry order type, time exit, runner at size 10). E4-E9 are further execution rows (50/50 rule, runner distance, max age, break-even, stop, target). E10 = review E5 (entry before proof). Review E4, E6, E7, E8 are not execution parameters (H6).
 Verdicts, same definitions as research/fast_track_2026-09-27/PROVENANCE_AUDIT_TOM.md:5: SOURCED = a quote supports the value. CONCEPT-ONLY = the trader names the idea, the number or trigger is ours. NO-SOURCE = no idea behind it, or a role the trader never gives it.
 Flags (last column): KEEP = stays as the testnet collection default (operator Rulings 1-2, OPERATOR_RULINGS_2026-10-02.md). CHANGE = a default change is proposed (Ruling 2: apply a default and flag it). MEASURE = the value should come from a pre-registered measurement (Ruling 3 accepted 2026-10-04, MEASURED label, testnet only). REMOVE@LIVE = must be sourced or removed before any live use.

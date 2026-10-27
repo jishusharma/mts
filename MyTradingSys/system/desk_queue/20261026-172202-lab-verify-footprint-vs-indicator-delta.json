@@ -1,0 +1,11 @@
+{
+  "card": "lab-verify-footprint-vs-indicator-delta",
+  "done_when": "per-bar table 13:00-14:30Z with indicator, footprint and spot delta, units and bar alignment stated, sign agreement counted (spot vs footprint was 3 of 6), one-line rule for which source Eagle_Eyes quotes",
+  "from": "JIS-NB",
+  "id": "20261026-172202-lab-verify-footprint-vs-indicator-delta",
+  "need": "python scripts/dev/shot.py status (full brief: python scripts/dev/tasks.py brief lab-verify-footprint-vs-indicator-delta)",
+  "posted": "2026-10-26T17:22:02Z",
+  "status": "pending",
+  "target": "DSA",
+  "title": "LAB-VERIFY: CoinGlass Net Delta indicator vs Legend footprint delta vs spot taker delta (units, bar alignment, sign agreement)"
+}

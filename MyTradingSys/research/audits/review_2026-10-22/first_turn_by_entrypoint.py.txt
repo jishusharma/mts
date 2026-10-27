@@ -1,0 +1,18 @@
+import json,datetime,collections
+from pathlib import Path
+root=Path.home()/".claude"/"projects"
+c=collections.defaultdict(list)
+for f in root.glob("*/*.jsonl"):
+    m=f.stat().st_mtime
+    if m<datetime.datetime(2026,10,12).timestamp() or "scratch-2026-10-22" in str(f): continue
+    ent=None;first=None;tools=None
+    for line in f.open(encoding="utf-8",errors="ignore"):
+        try:e=json.loads(line)
+        except:continue
+        ent=ent or e.get("entrypoint")
+        u=(e.get("message") or {}).get("usage")
+        if e.get("type")=="assistant" and u and first is None:
+            t=u.get("input_tokens",0)+u.get("cache_read_input_tokens",0)+u.get("cache_creation_input_tokens",0)
+            if t>1000: first=(e["timestamp"][:10],t); break
+    if first: c[(ent,"lean" if first[1]<45000 else "full")].append(first)
+for k,v in sorted(c.items(),key=str): print(k,len(v),"dates",min(x[0] for x in v),max(x[0] for x in v),"median",sorted(x[1] for x in v)[len(v)//2])

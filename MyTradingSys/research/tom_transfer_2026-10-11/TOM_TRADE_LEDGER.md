@@ -2,8 +2,10 @@
 Source of every repair: audit report `research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md` (FIX-FIRST). No frame was re-audited here; no value was invented. Evidence classes: frame-observed / trader-quoted (AI-translated caption) / inferred. Unresolved items are written NOT_IN_DATA in the CSV columns `date_time_status`, `evidence_unresolved`.
 
 ## Current counts (supersede the 10-trade/NOT DONE header and the "14 trade ids" totals below)
-- 37 rows preserved, all IDs and frame pointers kept. 14 headline IDs = **12 candidate trade groups** (see `TOM_LEDGER_CANONICAL_GROUPS.csv`), not 12 certified executions: no fill price, execution minute or timezone is certified for any group.
+- 39 rows preserved (37 previous + 2 losing first attempts T1-a0 and T7-a0), all IDs and frame pointers kept. 14 headline IDs = **12 candidate trade groups** (see `TOM_LEDGER_CANONICAL_GROUPS.csv`), not 12 certified executions: no fill price, execution minute or timezone is certified for any group.
 - Duplicate aliases: T9 -> T4 (UOBgXV20yCM, 23887/23857/23962), T10 -> T6 (zQTbdEweG3c, 25344), T3-s -> T3, T3b-s/T3b-r -> T3b (second video SANOimk8M9o).
+- Losing first attempts (card `tom-ledger-add-the-losing-first-attempts`, 2026-10-19): added rows `T1-a0` (S1 n7ZSkjb7JXs:31-33, pre-trade stop loss) and `T7-a0` (S6 l8RZrBfzvp4:175-177, pre-session stop, losing 1R) with `row_kind=ATTEMPT_LOST`. S2 T2 first entry was already row T2 (stopped out at T2-x). S3/T5 losing attempts have no frame fills (spec section 3).
+- Treatment in `backtest/tom_dax_recall.py`: V2 group recall targets are constructed from `ENTRY` rows only (`row_kind == "ENTRY"`), so `row_kind=ATTEMPT_LOST` does not count as a recall target; it ensures backtests count every attempt to prevent survivorship bias.
 - Do not use 14 / 12 / 7 / 4 as a recall denominator. Every inspected episode is EXPOSED for the holdout split; this repair does not touch the split manifest.
 
 ## What changed (CSV)

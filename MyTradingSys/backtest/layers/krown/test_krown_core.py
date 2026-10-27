@@ -222,6 +222,13 @@ class TestRsi(unittest.TestCase):
         self.assertAlmostEqual(r[2], 50.0)
         self.assertAlmostEqual(r[3], 100 - 100 / 6)
 
+    def test_flat_window_returns_50(self):
+        # FORMULAS.md s1 step 4 & AUDIT.md B-item: a perfectly flat window returns 50 (neutral), not 100
+        closes = [5.0] * 20
+        r = kc.rsi(closes, period=14)
+        self.assertEqual(r[14], 50.0)
+        self.assertEqual(r[19], 50.0)
+
     def test_zone(self):
         self.assertEqual([kc.rsi_zone(x) for x in (61, 60, 50, 40, 39, None)],
                          ["bull", "range", "range", "range", "bear", None])

@@ -30,7 +30,7 @@ Evidence (file:line):
 - `MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_POSITIONING.md:7-16` "Finding that frames everything: the tested layer is not a FlowHorse layer"
 - `extracts/fresh/extract_izZyd-HrTSE_the_flow_horse.txt:230` FlowHorse: not focused on funding
 - `research/fast_track_2026-09-27/CROSS_TRADER_RULEBOOK.md:121` FlowHorse built rows: 0 of 32
-- `research/whale_positioning_evidence_2026-09-12.md:19,46` "Whale signals are coincident or lagged, not leading; DO NOT add whale-tracking DSA field"
+- `research/_archive/loose_2026-10/whale_positioning_evidence_2026-09-12.md:19,46` "Whale signals are coincident or lagged, not leading; DO NOT add whale-tracking DSA field"
 - `MyTradingSys/backtest/layers/FORMULAS.md:356-370` C1 specification and formula definition
 - `MyTradingSys/research/positioning_c1_2026-10/COUNT_POWER.md:88-100` DEV horizon dynamics and Gate 0b results
 

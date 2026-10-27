@@ -1,4 +1,4 @@
-# TRENDLINE_CONTRACT.md: causal trend-line detector contract (v1, 2026-10-17)
+# TRENDLINE_CONTRACT.md: causal trend-line detector contract (v1.1, 2026-10-26; v1 2026-10-17)
 
 Card `trendline-contract-spec`. Spec only: no code, no market data read, no backtest, no VALIDATION/HOLDOUT read. Two coders reading this must write the same detector. Formulas with hand-computed numbers: `backtest/layers/FORMULAS.md` section 19.
 
@@ -44,7 +44,7 @@ Let b be the newly available pivot, a an earlier same-side available pivot, bar 
 | L3 | Minimum anchor spacing | ib - ia >= 10 bars | OURS | StockCharts: spacing matters (REPORT.md line 18); value not stated by anyone |
 | L4 | Maximum anchor spacing | ib - ia <= 200 bars | OURS | `R:KR-T01` "min_periods=200" is the history Krown wants, reused as a window cap |
 | L5 | Maximum line age | line retired when t - ib > 500 bars (t = current bar index); arm: no cap | OURS | `R:KR-T01` "ideal_periods=500" (SOURCED number reused as a cap = OURS use); `R:KR-Z06` states no expiry, so the cap is the OURS arm named there ("optional OURS arm: maximum age") and the no-cap run is mandatory as a second arm |
-| L6 | Strict (external) penetration test | tested once, at availability of b, over bars ia..ib only (later bars are governed by E5-E7 and B1, so a later break never voids a ledger row, see B8). For support: every bar j has low[j] >= L(j) - 0.10 * ATR_b and close[j] >= L(j) (mirror for resistance). A line failing the test is not eligible and is logged `reject=penetration` | OURS | "the left line slices through the candle ... it's bent to fit it has to break" (`E:126`); "slices through" needs a tolerance (`R:KR-L05` blocker). Tolerance 0.10 ATR is OURS |
+| L6 | Strict (external) penetration test | tested once, at availability of b, over bars ia..ib only (later bars are governed by E5-E7 and B1, so a later break never voids a ledger row, see B8). For support: every bar j has low[j] >= L(j) - 0.10 * ATR_b and close[j] >= L(j) (mirror for resistance). A line failing the test is not eligible and is logged `reject=penetration` | OURS | "the left line slices through the candle ... it's bent to fit it has to break" (`E:126`); "slices through" needs a tolerance (`R:KR-L05` blocker). Tolerance 0.10 ATR is OURS. v1.1: the close arm tests closes only (the wick clause applies to the wick arm), see section 11 |
 | L7 | Flat pair | if abs(pb - pa) <= 0.25 * ATR_b the pair is horizontal and goes to the horizontal-control family only | OURS | Horizontals matter more: "flat trend lines horizontal trend lines ... are actually the most important" (`E:167`); threshold OURS |
 | L8 | Transform | log price (primary); linear is a separate-id arm. L(t) formulas in F section 19.2 | OURS | REPORT.md line 67 (different geometries) |
 | L9 | No regression lines | line passes exactly through the two anchors; never refit | SOURCED | "we don't want to fit like a regression trend lines that's not gonna matter" (`E:128`) |
@@ -68,7 +68,7 @@ Krown's KR-L02 has two readings; each is its own arm and its own line family lab
 | E7 | Poke | a bar with low < L(j) - 0.10 ATR_b but close >= L(j) is a poke (stop harvest), a contact, not a break; logged `poke` | SOURCED shape | "an intrabar poke that snaps back is a stop harvest, not a break" (`R:KR-Z07`); thresholds OURS |
 | E9 | Gap bars in an episode | a bar with L+0.25 ATR_b < low <= L+1.0 ATR_b is neither a contact nor a reset: it neither starts nor ends an episode and keeps an open episode open | OURS | closes the E5/E6 gap |
 | E10 | Break before reset | a break (B1) during an open episode ends it as a failed test: arm A never becomes eligible and the line goes to `broken` without `eligible` | OURS | |
-| E11 | Pivots after a break | a pivot b' formed after a line's break may not pair with that line's anchors (a broken line is not extended); pairing with other available pivots is unchanged | OURS | |
+| E11 | Pivots after a break | v1.1: a pivot may not serve as first anchor ia of a new line when it is the second anchor ib of a line that has broken (a broken line is not re-anchored on its break pivot). The first anchor ia of a broken line stays free, so an outer line (ia, ib2) forms after the inner line (ia, ib1) breaks. v1 banned both anchors; `e11="strict"` keeps v1 for count replication | OURS | audit gap 3 |
 | P9 | Series edges | a bar with fewer than k bars on either side inside the series is never a pivot; ATR needs 14 bars of TR (first TR at bar 1), so no line before bar 15 | OURS | |
 | E8 | Minimum touches after eligibility | none; contact count is a feature (episodes counted, anchors excluded), not a gate | OURS | REPORT.md line 83: contact-count comparisons need survival treatment, not gating |
 
@@ -122,6 +122,16 @@ Fixes the gaps in CLAUDE_VERIFY.md (b): first observed was a run window, not per
 | popularity | stored with label and capture time only; never a selection variable | OURS |
 
 Rule: a record with `geometry_status != reader_agreed` and `geometry_source != author_coordinates` carries `eligible=false`, `NOT_IN_DATA`, and is not a line.
+
+## 11. Changelog v1.1 (2026-10-26, card `trendline-v11-detector-fixes`; audit `AUDIT_2026-10-18.md` gaps 1-3)
+
+Trial-ledger note: all three rows are OURS design fixes to the detector, not tuned numbers; counts from v1 are not comparable (replicate them with `e11="strict"` only for gap 3; gaps 1-2 change line sets and events).
+
+| Gap | Rows | Change (v1.1) | Tag |
+|---|---|---|---|
+| 1 | L6, P5 | close arm: the penetration test over ia..ib checks closes only (`close < L` for support); the wick clause `low < L - 0.10 ATR_b` applies to the wick arm only. v1 rejected every close-arm line whose own wicks sat below it | OURS |
+| 2 | P6, L6 | bars ib+1..ib+k (up to and including the availability bar) grant no touch, poke, reset or eligibility: the line is first advanced at the bar after availability. A close beyond L(j) on any of ib+1..ib+k rejects the line (`reject=broken_before_available`) | OURS |
+| 3 | E11 | see E11: only the second anchor of a broken line is banned as a new first anchor (`e11="narrow"` default) | OURS |
 
 ## 9. Zero-unset check
 

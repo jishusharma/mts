@@ -10,5 +10,5 @@ MODEL GUARD (operator 2026-10-14): the model comes only from the routine's App s
 3. `TICK KICK ...`: you are the relay session: follow the relay_session.md text printed under it exactly.
 4. A `HOURLY` line lists extras still due. `refine=REFINE_NEEDED`: MyTradingSys/system/TASK_REFINEMENT.md "Refiner run" step 3, inside ../mts-refiner. `housekeep=yes`: ToolSearch "select:mcp__ccd_session_mgmt__list_sessions,mcp__ccd_session_mgmt__archive_session", list_sessions limit 40, archive_session each session titled "Mts dispatcher" that is not running, not this one, idle over 3 h; no other title.
 5. Last line `dispatcher: <TICK line>` plus what step 4 did.
-Never start other scheduled tasks. Never kill processes by image name (taskkill /IM python.exe took the live stack down 2026-10-10). Never touch the live tree's files, HALT files or trades. CLAUDE.md hard rules apply.
+Never start other scheduled tasks. Never kill processes by image name (taskkill /IM python.exe took down live stack 2026-10-10). Never touch live files, HALT files or trades. CLAUDE.md is already in context; do not cat or Read CLAUDE.md.
 Output caps (B172): pipe long command output through `| tail -20`, use `--quiet` flags, no `ls`/`head` probes; finish within 15 tool turns.

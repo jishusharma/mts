@@ -26,20 +26,41 @@ PROMPT = (
 
 
 CARD_PROMPT = (
-    "You are a NUC worker for MTS. Follow CLAUDE.md in the repo. Boot: sync.py start {card}; python scripts/dev/mts_signal.py read; "
-    "python scripts/dev/tasks.py brief {card}; sync.py claim. Do exactly that one card in full. Rule 11: if the diff touches the live path, "
+    "You are a NUC worker for MTS. Follow CLAUDE.md in the repo. Boot: python scripts/dev/sync.py start {card}; python scripts/dev/mts_signal.py read; "
+    "python scripts/dev/tasks.py brief {card}; python scripts/dev/sync.py claim. Do exactly that one card in full. Rule 11: if the diff touches the live path, "
     "gates, decision numbers, run a Sonnet review Agent in the foreground (diff only, 5-line reply) before ship and fix on BLOCK once. "
-    "No VALIDATION/HOLDOUT reads. sync.py ship --release {card} with a Result: line, confirm git cherry origin/fast-track HEAD is empty, "
+    "No VALIDATION/HOLDOUT reads. python scripts/dev/sync.py ship --release {card} with a Result: line, confirm git cherry origin/fast-track HEAD is empty, "
     "send one mts_signal done line, stop. Never ask the operator; take defaults and log them."
 )
 
 
-def build_script(model: str, prompt: str = PROMPT, name: str = "default") -> str:
+def build_script(model: str, prompt: str = PROMPT, name: str = "default", card: str = None) -> str:
     # `ps` runs as the logged-in user (the SYSTEM ps-bg job has no Claude login: "Not logged in").
     # Start-Process detaches the worker so it survives the ssh disconnect.
+    # B183 trim 1: Launch builder sessions directly inside their assigned worktree cwd with pre-seeded branch context.
+    setup_lines = []
+    if card:
+        target_dir = f"F:/MTS/mts-jis-nuc-{card}"
+        branch = f"jis-nuc/{card}"
+        setup_lines.extend([
+            f'Set-Location F:/MTS',
+            f'git fetch -q origin fast-track',
+            f'if (!(Test-Path "{target_dir}")) {{',
+            f'    git worktree add -q "{target_dir}" -b "{branch}" origin/fast-track 2>$null',
+            f'    if ($LASTEXITCODE -ne 0) {{ git worktree add -q "{target_dir}" "{branch}" 2>$null }}',
+            f'}}',
+            f'if (Test-Path "{target_dir}") {{',
+            f'    git -C "{target_dir}" merge -q --ff-only origin/fast-track 2>$null',
+            f'}}',
+        ])
+        set_loc = f'Set-Location {target_dir}'
+    else:
+        set_loc = 'Set-Location F:/MTS'
+
     lines = [
         '$env:Path += ";C:/Users/E-ngineers/.local/bin"',
         f'$d = "F:/MTS/nuc_wake/{name}"; New-Item -ItemType Directory -Force $d | Out-Null',
+    ] + setup_lines + [
         "$p = @'",
         prompt,
         "'@",
@@ -47,7 +68,7 @@ def build_script(model: str, prompt: str = PROMPT, name: str = "default") -> str
         # A child of the ssh session dies when it disconnects (empty logs, no process). A one-shot interactive
         # scheduled task for the logged-on user is not tied to the ssh session and needs no password.
         '$c = (Get-Command claude.exe).Source',
-        f'$cmd = "Set-Location F:/MTS; Get-Content -Raw $d/prompt.txt | & \'$c\' -p --model {model} '
+        f'$cmd = "{set_loc}; Get-Content -Raw $d/prompt.txt | & \'$c\' -p --model {model} '
         '--permission-mode bypassPermissions > $d/out.log 2> $d/err.log"',
         '$a = New-ScheduledTaskAction -Execute "powershell.exe" -Argument ("-NoProfile -WindowStyle Hidden -Command `"" + $cmd + "`"")',
         '$pr = New-ScheduledTaskPrincipal -UserId "e-ngineers" -LogonType Interactive',
@@ -69,7 +90,7 @@ def main() -> int:
     prompt = open(a.prompt_file, encoding="utf-8").read().strip() if a.prompt_file else PROMPT
     if a.card:
         prompt = CARD_PROMPT.format(card=a.card)
-    script = build_script(a.model, prompt, a.name)
+    script = build_script(a.model, prompt, a.name, card=a.card)
     if a.dry:
         print(script)
         return 0

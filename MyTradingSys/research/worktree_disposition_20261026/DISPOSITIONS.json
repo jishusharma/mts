@@ -1,0 +1,2548 @@
+{
+  "as_of_utc": "2026-10-26T10:52:00.608699+00:00",
+  "trunk": "3bb24f9f6942270acc5e2d3f0c6bdeb629583d82",
+  "worktrees": [
+    {
+      "name": "BinanceDataFeed",
+      "branch": "fast-track",
+      "head": "bbd808f4aa26a97a4d8ed620460ccc033c0258d3",
+      "category": "PROTECTED_WORKSPACE",
+      "existing_owner_card": "",
+      "decision": "Persistent primary/lane/data home, not an unfinished job. Preserve current owner state.",
+      "files": [
+        {
+          "path": "MyTradingSys/system/NUC_SHUTDOWN_HANDOVER.md",
+          "sha256": "c45563666e1e116964dcc6265b08bcda6cbe4c1028e1c662ff5db175daa63c66",
+          "trunk_same": false,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "mts-jis-nuc-builder-b-coord-audit-2",
+      "branch": "jis-nuc/builder-b-coord-audit-2",
+      "head": "dda0c8f3d2e05ab6703783f471c549ee1065b94c",
+      "category": "COMPLETED_OR_RESIDUE",
+      "existing_owner_card": "",
+      "decision": "No unmerged committed work; save residual files/data, retire checkout. Planner card edits are snapshots, not authority to replace newer queue state.",
+      "files": []
+    },
+    {
+      "name": "mts-jis-nuc-builder-b-dispatch-crucial-2",
+      "branch": "jis-nuc/builder-b-dispatch-crucial-2",
+      "head": "faa0fe54efaf675555eee2b3545793698745e595",
+      "category": "COMPLETED_OR_RESIDUE",
+      "existing_owner_card": "",
+      "decision": "No unmerged committed work; save residual files/data, retire checkout. Planner card edits are snapshots, not authority to replace newer queue state.",
+      "files": []
+    },
+    {
+      "name": "mts-jis-nuc-builder-b-oi-pivot-2",
+      "branch": "jis-nuc/builder-b-oi-pivot-2",
+      "head": "5e14a98d6db7efdc34660438e672068f4eda48a8",
+      "category": "COMPLETED_OR_RESIDUE",
+      "existing_owner_card": "",
+      "decision": "No unmerged committed work; save residual files/data, retire checkout. Planner card edits are snapshots, not authority to replace newer queue state.",
+      "files": []
+    },
+    {
+      "name": "mts-jis-nuc-builder-b-rsi-deep-2",
+      "branch": "jis-nuc/builder-b-rsi-deep-2",
+      "head": "51b61d53bb54e3698a9487516da4e25da8d4ac15",
+      "category": "COMPLETED_OR_RESIDUE",
+      "existing_owner_card": "",
+      "decision": "No unmerged committed work; save residual files/data, retire checkout. Planner card edits are snapshots, not authority to replace newer queue state.",
+      "files": []
+    },
+    {
+      "name": "mts-jis-nuc-codex-stuck-2",
+      "branch": "jis-nuc/codex-stuck-2",
+      "head": "153e3ce24ecff1d3ea7ee1240384bb66cf6d7e5e",
+      "category": "HOST_RELIABILITY_REVIEW",
+      "existing_owner_card": "opus-station-review-act",
+      "decision": "Unique old ACL helpers and old-Git fixture changes. Recover and review in own tree; no broad ACL reset or elevation executed.",
+      "files": [
+        {
+          "path": "scripts/dev/fix_codex_sandbox_bin.ps1",
+          "sha256": "9ecbbde4e3669e48ed911c96eb08e6115dbe63da4e28f5b82e086725443eea55",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "scripts/dev/fix_locked_dir.ps1",
+          "sha256": "82dcd7fe1c8af0a044b8c690b7c424a32732796d128b256983f5aa18ca066994",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "scripts/dev/test_c_drive_guard.py",
+          "sha256": "6e4f915d2f5ae5fba6e47e7c5aa792c08d793ac6e1a170cd36e7fb05ceb93b25",
+          "trunk_same": false,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "mts-jis-nuc-planner-b-2026-10-26-2",
+      "branch": "jis-nuc/planner-b-2026-10-26-2",
+      "head": "ccaf14f6a95886f4cfd4197c93fd90170ac83be6",
+      "category": "COMPLETED_OR_RESIDUE",
+      "existing_owner_card": "",
+      "decision": "No unmerged committed work; save residual files/data, retire checkout. Planner card edits are snapshots, not authority to replace newer queue state.",
+      "files": []
+    },
+    {
+      "name": "mts-jis-nuc-runaway-process-bug",
+      "branch": "jis-nuc/runaway-process-bug",
+      "head": "3ed1c8b9a8e5093f367776ffef2b1734d8643c9f",
+      "category": "RECENT_WORKSPACE",
+      "existing_owner_card": "",
+      "decision": "Recent activity; preserve owner workspace, no claim of a running model from directory activity alone.",
+      "files": []
+    },
+    {
+      "name": "mts-jis-nuc-runaway-process-bug-2",
+      "branch": "jis-nuc/runaway-process-bug-2",
+      "head": "2a648d3991934247088b61ed0b2fb90b4706f10a",
+      "category": "HOST_RELIABILITY_REVIEW",
+      "existing_owner_card": "opus-station-review-act",
+      "decision": "Recently active local author tree has runaway design and original unshipped cards; keep owner workspace, request ship after independent review; do not duplicate its cards.",
+      "files": [
+        {
+          "path": "MyTradingSys/system/NUC_SHUTDOWN_HANDOVER.md",
+          "sha256": "c45563666e1e116964dcc6265b08bcda6cbe4c1028e1c662ff5db175daa63c66",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/RUNAWAY_GUARD.md",
+          "sha256": "bce55b9a04778e3eacc6ffea1de1c4df01d147f8de5cd0a6a9fd77f24eee356b",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/system/tasks/runaway-guard-design-review.json",
+          "sha256": "015a447f161c9c3a06c4f93e1f3e48ed5610a63a3ef1ef01bcabaa129676be84",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/system/tasks/runaway-process-leak.json",
+          "sha256": "fda8d73cc091a3806dcef5ff4c1ee056be9aea231bd60726f62a77911fe1de04",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "scripts/dev/test_c_drive_guard.py",
+          "sha256": "e77cdafab546f0f50da75a0089b511a0cd191afa3a879667ab4a06baed59e10a",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "scripts/operator/runaway_check.ps1",
+          "sha256": "9da51aa5261d4b1d89b01ac97711b69edc2e412a25c2f35593f07ac1c5dafe2d",
+          "trunk_same": false,
+          "trunk_exists": false
+        }
+      ]
+    },
+    {
+      "name": "mts-jis-nuc-station-tidy-sync-py-where-2",
+      "branch": "jis-nuc/station-tidy-sync-py-where-2",
+      "head": "7e79e4dab1f8accb60acbfca79bbf7e962014e9b",
+      "category": "COMPLETED_OR_RESIDUE",
+      "existing_owner_card": "",
+      "decision": "No unmerged committed work; save residual files/data, retire checkout. Planner card edits are snapshots, not authority to replace newer queue state.",
+      "files": []
+    },
+    {
+      "name": "gb-bt-standards",
+      "branch": "gemini-q/gb-bt-standards",
+      "head": "c3e227b96cd5ce589df9afe3399345594eb1c07b",
+      "category": "DEFER_ARCHIVE",
+      "existing_owner_card": "",
+      "decision": "Optional research/extract drafts or blocked retries. Preserve output; no active job, no new audit/fetch or new card just to spend remaining budget.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gemini_burn_2026-10-24/backtest_standards_gaps.md",
+          "sha256": "2c0a15beba5509f602de715ff935797fe7999afb1a0cbe630861574faad90393",
+          "trunk_same": false,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gb-fees-public",
+      "branch": "gemini-q/gb-fees-public",
+      "head": "5ad1ebe4141e9b4d1d2f0820ee4cbc060c15494e",
+      "category": "EXACT_DUPLICATE",
+      "existing_owner_card": "",
+      "decision": "Every committed delta file has identical bytes on current trunk; commit ancestry alone falsely suggests unfinished work.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gemini_burn_2026-10-24/fees_vs_repo.md",
+          "sha256": "ce21c387500ad229bfbcedd40a0503131c57e5a8b35bcee190076639a4b470ae",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gb-formulas-audit",
+      "branch": "gemini-q/gb-formulas-audit",
+      "head": "0a3e2d2d9c21cd022ff14dd8699648fd3f9da555",
+      "category": "EXACT_DUPLICATE",
+      "existing_owner_card": "",
+      "decision": "Every committed delta file has identical bytes on current trunk; commit ancestry alone falsely suggests unfinished work.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gemini_burn_2026-10-24/formulas_canonical_audit.md",
+          "sha256": "47c024c536b3ca8ea8e09fef09d592fa7ac30839bd5b56fcfa64fdc92b0a489e",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gb-habib-yt",
+      "branch": "gemini-q/gb-habib-yt",
+      "head": "220419b7b197483d82c529f9f692babe87f7f63d",
+      "category": "EXACT_DUPLICATE",
+      "existing_owner_card": "",
+      "decision": "Every committed delta file has identical bytes on current trunk; commit ancestry alone falsely suggests unfinished work.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gemini_burn_2026-10-24/habib_yt_rules.md",
+          "sha256": "9a346391a0ea92a2bd4c8a1b8aee6947ed38585c6f0c56a1d03c1eb2a8b66a97",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gb-krown-yt",
+      "branch": "gemini-q/gb-krown-yt",
+      "head": "45cf255048eb2b7919f8b7be003486c8b8d28622",
+      "category": "DEFER_ARCHIVE",
+      "existing_owner_card": "",
+      "decision": "Optional research/extract drafts or blocked retries. Preserve output; no active job, no new audit/fetch or new card just to spend remaining budget.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gemini_burn_2026-10-24/krown_yt_rules.md",
+          "sha256": "2703e64f4083cef1133472103bb664aee8a5920c03e2e4fc2cbaac9ef7689669",
+          "trunk_same": false,
+          "trunk_exists": false
+        }
+      ]
+    },
+    {
+      "name": "gb-rsi-div-std",
+      "branch": "gemini-q/gb-rsi-div-std",
+      "head": "c35dfcf9398b99b8e30a191bad51f13d99ee9954",
+      "category": "DEFER_ARCHIVE",
+      "existing_owner_card": "",
+      "decision": "Optional research/extract drafts or blocked retries. Preserve output; no active job, no new audit/fetch or new card just to spend remaining budget.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gemini_burn_2026-10-24/rsi_divergence_standard.md",
+          "sha256": "1ad2d037fd99e52b706b2719d956d5b3b7f89c02ec86d3dc025463aeaf6df494",
+          "trunk_same": false,
+          "trunk_exists": false
+        }
+      ]
+    },
+    {
+      "name": "gb-wavetrend-src",
+      "branch": "gemini-q/gb-wavetrend-src",
+      "head": "a5300231c6c8d1f17e785b4065c87d25c5f15b82",
+      "category": "DEFER_ARCHIVE",
+      "existing_owner_card": "",
+      "decision": "Optional research/extract drafts or blocked retries. Preserve output; no active job, no new audit/fetch or new card just to spend remaining budget.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gemini_burn_2026-10-24/wavetrend_canonical.md",
+          "sha256": "f85772711d96adf5c93a0f75d6bd20cd124b92b2e17f92652f364b4dd5c8e30a",
+          "trunk_same": false,
+          "trunk_exists": false
+        }
+      ]
+    },
+    {
+      "name": "gb2-deflated-sharpe",
+      "branch": "gemini-q/gb2-deflated-sharpe",
+      "head": "c15c25b016ca2912782b08d973580ac0f0e784da",
+      "category": "EXACT_DUPLICATE",
+      "existing_owner_card": "",
+      "decision": "Every committed delta file has identical bytes on current trunk; commit ancestry alone falsely suggests unfinished work.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gemini_burn_2026-10-25/deflated_sharpe_luck_line.md",
+          "sha256": "59932a0543d797109c518e12926114e53a1552acec7a619273c396e7b949824a",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gb2-monte-carlo-presentation",
+      "branch": "gemini-q/gb2-monte-carlo-presentation",
+      "head": "1dbf912738b1af6934c275331fee6ca4cb83be5f",
+      "category": "EXACT_DUPLICATE",
+      "existing_owner_card": "",
+      "decision": "Every committed delta file has identical bytes on current trunk; commit ancestry alone falsely suggests unfinished work.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gemini_burn_2026-10-25/monte_carlo_presentation.md",
+          "sha256": "6410670a260adaf7dba3230dc9793a3093c669644d971b199857741f6600ace7",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gb2-slippage-sources",
+      "branch": "gemini-q/gb2-slippage-sources",
+      "head": "cbed65e972d19c41b91d1c679bde963f3285dc61",
+      "category": "EXACT_DUPLICATE",
+      "existing_owner_card": "",
+      "decision": "Every committed delta file has identical bytes on current trunk; commit ancestry alone falsely suggests unfinished work.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gemini_burn_2026-10-25/slippage_sources.md",
+          "sha256": "053a3a125d3344193ec1aa07c524177d867fe32c51fae5151ac15b70e6aa448f",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gb3-sim-first-use-path",
+      "branch": "gemini-q/gb3-sim-first-use-path",
+      "head": "2ad666676e7bd07c98e50b5547ca0d3162e097cb",
+      "category": "DEFER_ARCHIVE",
+      "existing_owner_card": "",
+      "decision": "Optional research/extract drafts or blocked retries. Preserve output; no active job, no new audit/fetch or new card just to spend remaining budget.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gemini_burn_2026-10-25/sim_first_use_path.md",
+          "sha256": "cb7aa9c3fa83f197ef782552e2b9fa52bc9de867ec36fd11fcd830156feeb58b",
+          "trunk_same": false,
+          "trunk_exists": false
+        }
+      ]
+    },
+    {
+      "name": "gb3-sim-layer-adapter-patterns",
+      "branch": "gemini-q/gb3-sim-layer-adapter-patterns",
+      "head": "469e54a1923586809499c49b8080692741d9ea4a",
+      "category": "DEFER_ARCHIVE",
+      "existing_owner_card": "",
+      "decision": "Optional research/extract drafts or blocked retries. Preserve output; no active job, no new audit/fetch or new card just to spend remaining budget.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gemini_burn_2026-10-25/sim_layer_adapter_patterns.md",
+          "sha256": "4541f57aefc3c21bea7044ee3dd59f13c048de3e5aaf269f442a6e942f20524c",
+          "trunk_same": false,
+          "trunk_exists": false
+        }
+      ]
+    },
+    {
+      "name": "gb4-lenovo-start",
+      "branch": "gemini-q/gb4-lenovo-start",
+      "head": "0d63115e6a28a1eb657a035b346c0236e4f8029c",
+      "category": "COORDINATION_REFERENCE",
+      "existing_owner_card": "opus-station-review-act",
+      "decision": "Historical adapter research only; verify current product capabilities in Opus review before implementing.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/lenovo_start/gemini_answer.md",
+          "sha256": "e712f5e7799cfb9c6a51d0c49b1656337b28866adc0f712d68bb57a97930030d",
+          "trunk_same": false,
+          "trunk_exists": false
+        }
+      ]
+    },
+    {
+      "name": "gemini-ccu-dxntdn3jfTg-check",
+      "branch": "gemini-q/gemini-ccu-dxntdn3jfTg-check",
+      "head": "086eece1813bf231f93816dd50b5a7ee06bc6790",
+      "category": "EXACT_DUPLICATE",
+      "existing_owner_card": "",
+      "decision": "Every committed delta file has identical bytes on current trunk; commit ancestry alone falsely suggests unfinished work.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/cbp/ccu_DXntdN3jfTg_extract.md",
+          "sha256": "acfc3515794ee36f11094afbcff58223b1b6595661cc219c7f60b525f1f70913",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/layer_lab/reports/2026-10-25_gemini-ccu-dxntdn3jfTg-check.md",
+          "sha256": "d97f724a1840f68c353fe75de00cfe1494e9bd5bd62f61589df10df0b519b38b",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/tasks/gemini-ccu-dxntdn3jfTg-check.json",
+          "sha256": "b5cd999cca0169f22928c19e2587c57d830c0fb460bf1dbfd7d6459af06f8dcb",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gw-cryptocred",
+      "branch": "gemini-q/gw-cryptocred",
+      "head": "0f8b03e7ac405f5ea49714462749e94ffadd67b1",
+      "category": "DEFER_ARCHIVE",
+      "existing_owner_card": "",
+      "decision": "Optional research/extract drafts or blocked retries. Preserve output; no active job, no new audit/fetch or new card just to spend remaining budget.",
+      "files": [
+        {
+          "path": "extracts/gemini_out/cryptocred/27scZH3vBLk_rules.md",
+          "sha256": "e56357fc089769b9b97969d0399b98a65af4b09dc942f71fdd602f2f957b7b5c",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "extracts/gemini_out/cryptocred/7mnz-JxhHnk_rules.md",
+          "sha256": "8c81cc7c15797a410077a87c49a3e60ae73ec31bf694b444608c48b46c40845d",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "extracts/gemini_out/cryptocred/f9mkEe-Y67A_rules.md",
+          "sha256": "7ad61ead3ec025cefd30039989387d76dfa18ce489c90efd7406add9100c45b2",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "extracts/gemini_out/cryptocred/j5pBnAiQz-c_rules.md",
+          "sha256": "89f59e4bb8f23b3753fac85d6c85c34247221cc9c0c81fa6d044ebef6ae8eadc",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "extracts/gemini_out/cryptocred/jUTKg5SiSZ0_rules.md",
+          "sha256": "a11f953a1b8d394074d5d969182d80e8c3192df173a96cfe2bfc05cb1e7cf107",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "extracts/gemini_out/cryptocred/nPDk5qPbf08_rules.md",
+          "sha256": "cadeb10746e9f389e8bd6e13cd967cd10c856e4bb4c2e4b8e0d57139f93505f0",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "extracts/gemini_out/cryptocred/owF4u48hUKI_rules.md",
+          "sha256": "8ad31ec3cd77651299456b23b3304a3a96a4812717beb5234a971e1ca9112384",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "extracts/gemini_out/cryptocred/uDoi2EwJy8E_rules.md",
+          "sha256": "03ff97158e7234d7bf12d1c6449db6fcdc52be54b6cf634c1a2ec481def7804c",
+          "trunk_same": false,
+          "trunk_exists": false
+        }
+      ]
+    },
+    {
+      "name": "gw-flowhorse",
+      "branch": "gemini-q/gw-flowhorse",
+      "head": "84df69a9a66647498498af48428c365ae7fc0fc6",
+      "category": "EXACT_DUPLICATE",
+      "existing_owner_card": "",
+      "decision": "Every committed delta file has identical bytes on current trunk; commit ancestry alone falsely suggests unfinished work.",
+      "files": [
+        {
+          "path": "extracts/gemini_out/flowhorse/A3CYHzszLXA_rules.md",
+          "sha256": "b526ded943faf75b381026fea5604ac364cbb45716c92d9a269cc14c686f729d",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/flowhorse/HrpDoMEBnGk_rules.md",
+          "sha256": "047487039ee050eb9d4654415e8d175ddbdeb3ec7363dfeeb8b1d2442a32fdb1",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/flowhorse/XVOJ_r5f2P0_rules.md",
+          "sha256": "515d980490b63a3a75127aebaf7c6a0a7e3e689300dedf68796cf81209ba4db8",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/flowhorse/bJEeNTAQeNQ_rules.md",
+          "sha256": "10ea0e577aeb3bd986950b26138a2ab089775a7d10691a1ecd57525baea01c9d",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/flowhorse/cAhpDsOYjlQ_rules.md",
+          "sha256": "4fad239f531dc815b44845d9eb3cd50af857802b295104bf0f80d7a6639c47d1",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/flowhorse/luvmZwcB4PY_rules.md",
+          "sha256": "bb71372ab42055453d81e3a3f8cf6ad280266d7f6dd814a609e59f19e1d4f6db",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/flowhorse/zfI_eQ6DUXo_rules.md",
+          "sha256": "2e651209ef22deed54458d72b4b9190423df585b80ab4ea0c2df21206fb16851",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/flowhorse/zfjoNDPbdMU_rules.md",
+          "sha256": "2d5630a022fe734f49f62dbec8ea9d61515a76f11979ffb38e9ffb3101e74806",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gw-krown-ranked",
+      "branch": "gemini-q/gw-krown-ranked",
+      "head": "6c5a7dd10784206255424aa8d2e5ac48bfd6bb20",
+      "category": "EXACT_DUPLICATE",
+      "existing_owner_card": "",
+      "decision": "Every committed delta file has identical bytes on current trunk; commit ancestry alone falsely suggests unfinished work.",
+      "files": [
+        {
+          "path": "extracts/gemini_out/krown/-9rAJNUpMsk_rules.md",
+          "sha256": "803acca2156e0c781e855f7f25151f7c0a351297a17da08075e68f537dcc0228",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/krown/EQy4HouRMMk_rules.md",
+          "sha256": "8ec11f92507633f7cfd444cf2c87bba9a6d0afc71c01dcb52a47cb9d3d6f0122",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/krown/LB3DRYxnA0A_rules.md",
+          "sha256": "4d6b7cf160edfccbfbb931038c55ed0ad363b3d3b7aeb3aa6d5149bab4101f69",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/krown/SOaAP9vBgM4_rules.md",
+          "sha256": "cdd8005e820f563782c59dc50de01b8e1f4e84b46dd9f37c429e9c4067ad31ec",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/krown/UHY740h3e-Y_rules.md",
+          "sha256": "8b91bbf77066782abef437b1ca9cc216ddcee153a8e162eedba3387c14e3ba83",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/krown/_JoJbu_Ug-A_rules.md",
+          "sha256": "d2ee06bbb9b850051440ae1c68fa15ee1c07e23ffe07f68a7e512669629416ff",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/krown/fMRvOt26xcA_rules.md",
+          "sha256": "0cd1410b9f2b4f3aa96d9a670386b8cac53ea3d929d305b31e37ff2dd8601f24",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/krown/hNfjyrJEytI_rules.md",
+          "sha256": "ccee6595e37410e93c4811afe0f8827a612fa389f5e3409dbbc8cfe23082ec17",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gw-kurisko",
+      "branch": "gemini-q/gw-kurisko",
+      "head": "3d0cadcf21ee656d636f1b743f473060ccbccf15",
+      "category": "EXACT_DUPLICATE",
+      "existing_owner_card": "",
+      "decision": "Every committed delta file has identical bytes on current trunk; commit ancestry alone falsely suggests unfinished work.",
+      "files": [
+        {
+          "path": "extracts/gemini_out/kurisko/IiCC0PEHtyw_rules.md",
+          "sha256": "bc73031925df90439911eaa6bf8a59e7497881d262604d134628f5c62d0ef9a4",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/kurisko/OSka8T7z5EM_rules.md",
+          "sha256": "70ce45fad7c76630165a90a54595a7225614ab94cb715dc719679fb0d79bc526",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/kurisko/aacVKplbGWA_rules.md",
+          "sha256": "5d854e45f4d0d4c17efdaac4310879d597626a4f52c8df873de6fd4f12647e52",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/kurisko/b5Q-mFBIIWs_rules.md",
+          "sha256": "85ae227622e59bbdcd63f8ae3cd31c747dcd4fbd51c3c9308271350f955bca8a",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/kurisko/kB901og8xag_rules.md",
+          "sha256": "dd3634a392af12d12f1149669de95547224e4be87da88e9498d23660f15fa610",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/kurisko/mxvvEYCP1_c_rules.md",
+          "sha256": "9df9b8d7afa13fc57d0f30110555ed65941fc5c2248867a16b4ee943cb33417d",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/kurisko/tfG3hA0kZ4U_rules.md",
+          "sha256": "aa7b8c6a20a077d2cd244e00dc7aaf84ec59204455223b6fc9efd5c6f993d106",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/kurisko/vKN1jXIpfbI_rules.md",
+          "sha256": "8a105a2eea46f7eb22e23f2c641ffe6993c93a9b9c049f36065c1e755bf2e41d",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gw-malkan-a",
+      "branch": "gemini-q/gw-malkan-a",
+      "head": "c167859b94f7745608fb0773db93990610c14ac2",
+      "category": "DEFER_ARCHIVE",
+      "existing_owner_card": "",
+      "decision": "Optional research/extract drafts or blocked retries. Preserve output; no active job, no new audit/fetch or new card just to spend remaining budget.",
+      "files": []
+    },
+    {
+      "name": "gw-malkan-b",
+      "branch": "gemini-q/gw-malkan-b",
+      "head": "e14d2e00d79b4acd2cec778cab3ff09f1cff30fb",
+      "category": "DEFER_ARCHIVE",
+      "existing_owner_card": "",
+      "decision": "Optional research/extract drafts or blocked retries. Preserve output; no active job, no new audit/fetch or new card just to spend remaining budget.",
+      "files": [
+        {
+          "path": "extracts/gemini_out/malkan/U12jz3LQhy0_rules.md",
+          "sha256": "d5a1bbe5e764fcd92e21413beafbeb1c5c7525b112ba6acd100f1f358e684bc9",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "extracts/gemini_out/malkan/WBByyLBp8-c_rules.md",
+          "sha256": "a1185462fe788f2b8c7fa90f78ecd22446c1e9528e6ccf2f4afa1fbbcb9b53c2",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "extracts/gemini_out/malkan/kVIvcn7T44o_rules.md",
+          "sha256": "872c097cdc81fc45d1f0f88b03bb93a22b92fba22820bce73dc8db588c12563e",
+          "trunk_same": false,
+          "trunk_exists": false
+        }
+      ]
+    },
+    {
+      "name": "gw-malkan-c",
+      "branch": "gemini-q/gw-malkan-c",
+      "head": "b25689aa6c7f987d9f973130eda73dbac6b6b9a0",
+      "category": "DEFER_ARCHIVE",
+      "existing_owner_card": "",
+      "decision": "Optional research/extract drafts or blocked retries. Preserve output; no active job, no new audit/fetch or new card just to spend remaining budget.",
+      "files": [
+        {
+          "path": "extracts/gemini_out/malkan/rows_41_61_rules.md",
+          "sha256": "91994239cdde609c8155fef66ce8f912cb4e56d8627221063e122dd859063329",
+          "trunk_same": false,
+          "trunk_exists": false
+        }
+      ]
+    },
+    {
+      "name": "gw3-fabio-retry",
+      "branch": "gemini-q/gw3-fabio-retry",
+      "head": "acc3e23a7860a8fcbbee97e6642cc649ab3cd12c",
+      "category": "DEFER_ARCHIVE",
+      "existing_owner_card": "",
+      "decision": "Optional research/extract drafts or blocked retries. Preserve output; no active job, no new audit/fetch or new card just to spend remaining budget.",
+      "files": []
+    },
+    {
+      "name": "gw3-krown-more",
+      "branch": "gemini-q/gw3-krown-more",
+      "head": "acc3e23a7860a8fcbbee97e6642cc649ab3cd12c",
+      "category": "DEFER_ARCHIVE",
+      "existing_owner_card": "",
+      "decision": "Optional research/extract drafts or blocked retries. Preserve output; no active job, no new audit/fetch or new card just to spend remaining budget.",
+      "files": []
+    },
+    {
+      "name": "gw3-ofi-papers",
+      "branch": "gemini-q/gw3-ofi-papers",
+      "head": "57ae4cbb24daca822458c16603813f2c2916a7f8",
+      "category": "EXACT_DUPLICATE",
+      "existing_owner_card": "",
+      "decision": "Every committed delta file has identical bytes on current trunk; commit ancestry alone falsely suggests unfinished work.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gemini_burn_2026-10-24/orderflow_imbalance_literature.md",
+          "sha256": "855a54939362b9ee851c2b1b763d9a567e599ebb05669d9dc1214f59cf4fa262",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gx-habib-imbalance",
+      "branch": "gpt-q/gx-habib-imbalance",
+      "head": "d0676496badd70bfb39ee3c377b18e5f5e637b8d",
+      "category": "EVIDENCE_ARCHIVE",
+      "existing_owner_card": "",
+      "decision": "Most canonical reports already on trunk; preserve unique scripts/provenance. Recover only a proof demanded by an existing repair or independent discrepancy, no repeat broad audit.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx-habib-imbalance/report.md",
+          "sha256": "ae059d64de43956bd4dbc55cb5a5927341749cfbb9eb49759b8c375c1a180a88",
+          "trunk_same": false,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gx-krown-audit",
+      "branch": "gpt-q/gx-krown-audit",
+      "head": "739b6d085122a575cf2e4718219219ce0e4cfc3d",
+      "category": "EVIDENCE_ARCHIVE",
+      "existing_owner_card": "",
+      "decision": "Most canonical reports already on trunk; preserve unique scripts/provenance. Recover only a proof demanded by an existing repair or independent discrepancy, no repeat broad audit.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx-krown-audit/audit.py",
+          "sha256": "647e7564b5d0df8bb0fa47a6d58687c412e3ddc14fba39cb499e36e3b4eeded3",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx-krown-audit/report.md",
+          "sha256": "7b6587fed2744b74c71ea5547efff6cfc268e9c0867d1faad79f5f22dbc33a9f",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx-krown-audit/write_report.py",
+          "sha256": "46faa6c61630b3732b640a99d330bed669130ab173b430c11fa58aa926e02423",
+          "trunk_same": false,
+          "trunk_exists": false
+        }
+      ]
+    },
+    {
+      "name": "gx-rsi-lookahead",
+      "branch": "gpt-q/gx-rsi-lookahead",
+      "head": "3712b0529c009ce051f66d08b2843da26439d59c",
+      "category": "EXACT_DUPLICATE",
+      "existing_owner_card": "",
+      "decision": "Every committed delta file has identical bytes on current trunk; commit ancestry alone falsely suggests unfinished work.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx-rsi-lookahead/audit_truncation.py",
+          "sha256": "1f31d219ed269580f4aba1f7014adafd483f03df2e583ccbdc59b5044b7b454b",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx-rsi-lookahead/report.md",
+          "sha256": "5ff095d775ae34d1c930fbc17a86faae53551d5f553165a23a8c4fd46e2db83b",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gx-sim-desk-review",
+      "branch": "gpt-q/gx-sim-desk-review",
+      "head": "ea66d0698471344aea497c1e2d9a666b74cd6893",
+      "category": "EXACT_DUPLICATE",
+      "existing_owner_card": "",
+      "decision": "Every committed delta file has identical bytes on current trunk; commit ancestry alone falsely suggests unfinished work.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx-sim-desk-review/audit.py",
+          "sha256": "5fd72d36e9b4b8b3564fc246b1013810ebb9e115141a6028e8b8332406d4ea4a",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx-sim-desk-review/report.md",
+          "sha256": "f01ed87c040db5367ab853c1d63f9d8f999f8980904ed6e42cad102099443511",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gx-test-tautology",
+      "branch": "gpt-q/gx-test-tautology",
+      "head": "281e7093cc8f881ef586aa738fc1bbb2e158243b",
+      "category": "EXACT_DUPLICATE",
+      "existing_owner_card": "",
+      "decision": "Every committed delta file has identical bytes on current trunk; commit ancestry alone falsely suggests unfinished work.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx-test-tautology/report.md",
+          "sha256": "708856a36d1df49b9f7542eb991b406917ed7f9bb68fd0730330cec8c4a3894b",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gx-wavetrend-rederive",
+      "branch": "gpt-q/gx-wavetrend-rederive",
+      "head": "9d00a433a5370e6ef0c65251fbb7da969dadbdad",
+      "category": "EXACT_DUPLICATE",
+      "existing_owner_card": "",
+      "decision": "Every committed delta file has identical bytes on current trunk; commit ancestry alone falsely suggests unfinished work.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx-wavetrend-rederive/audit.py",
+          "sha256": "70b4cd7c3db603ddc9e453e489d16b43969fffc8d0735b1138383eb55d729015",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx-wavetrend-rederive/report.md",
+          "sha256": "dc094cae298a8765d429703c056e439e6d534dca2f80f25c9c09eb6a68002b0d",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx-wavetrend-rederive/wt.py",
+          "sha256": "630527e123e8dc597fa5501865a56c65b26e728b6596642c8dd7a20e68617bba",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gx2-allowlist-chunk-4",
+      "branch": "gpt-q/gx2-allowlist-chunk-4",
+      "head": "7af3fcd2e1d3baf6cab8b6fec1e6837065a22444",
+      "category": "EXACT_DUPLICATE",
+      "existing_owner_card": "",
+      "decision": "Every committed delta file has identical bytes on current trunk; commit ancestry alone falsely suggests unfinished work.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx2-allowlist-chunk-4/report.md",
+          "sha256": "9414e4dd14fa6c27691b45e9f6b113e0750055b7a88aef4636b9f47268933514",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gx2-check-gemini-bt-gaps",
+      "branch": "gpt-q/gx2-check-gemini-bt-gaps",
+      "head": "e182c878452c579fa79755133ff8d9eb2c9b4ca5",
+      "category": "EVIDENCE_ARCHIVE",
+      "existing_owner_card": "",
+      "decision": "Most canonical reports already on trunk; preserve unique scripts/provenance. Recover only a proof demanded by an existing repair or independent discrepancy, no repeat broad audit.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx2-check-gemini-bt-gaps/audit.py",
+          "sha256": "e40c44a0276d4b8ec3c36290b873e5e0ca26bccbc72ad64c7486774ff81645a5",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx2-check-gemini-bt-gaps/report.md",
+          "sha256": "7d9a34e6585634fef704a7b2a275a9efbf0726a47166f3178b1f6111c6a20c38",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gx2-check-gemini-formulas",
+      "branch": "gpt-q/gx2-check-gemini-formulas",
+      "head": "a347c27002b9104a757cca30f05e9b89a17b2645",
+      "category": "EVIDENCE_ARCHIVE",
+      "existing_owner_card": "",
+      "decision": "Most canonical reports already on trunk; preserve unique scripts/provenance. Recover only a proof demanded by an existing repair or independent discrepancy, no repeat broad audit.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx2-check-gemini-formulas/report.md",
+          "sha256": "f19b33ee6932e250e15f0b5ae4a9887b576bd5be7cbf99c1de27993e930a1484",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx2-check-gemini-formulas/reproduce.py",
+          "sha256": "b03fc877ef910ae4596ea2021df68343aacafc1af6455e024c468a5ca8bfa00d",
+          "trunk_same": false,
+          "trunk_exists": false
+        }
+      ]
+    },
+    {
+      "name": "gx2-confluence-s1",
+      "branch": "gpt-q/gx2-confluence-s1",
+      "head": "749d45ddb5dd2631eac6506b7a45c89384faa934",
+      "category": "EVIDENCE_ARCHIVE",
+      "existing_owner_card": "",
+      "decision": "Most canonical reports already on trunk; preserve unique scripts/provenance. Recover only a proof demanded by an existing repair or independent discrepancy, no repeat broad audit.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx2-confluence-s1/audit.py",
+          "sha256": "b83004177ddae7033369a65c6386133f6c44fc6544a0b61dec90e8b4e788e9de",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx2-confluence-s1/report.md",
+          "sha256": "7bdfa8fee5e17351d0a739ff72c528e6ee36e7f23f1abb643eef59b5638360cb",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx2-confluence-s1/write_reports.py",
+          "sha256": "2380448b79bbabae13694f6597570bfd105ba73c9f2aa9a0812adec29c6f3bcc",
+          "trunk_same": false,
+          "trunk_exists": false
+        }
+      ]
+    },
+    {
+      "name": "gx2-review-audits-fabio",
+      "branch": "gpt-q/gx2-review-audits-fabio",
+      "head": "614ba77f87f4189ca802eacccdd446367ac43132",
+      "category": "EVIDENCE_ARCHIVE",
+      "existing_owner_card": "",
+      "decision": "Most canonical reports already on trunk; preserve unique scripts/provenance. Recover only a proof demanded by an existing repair or independent discrepancy, no repeat broad audit.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx2-review-audits-fabio/report.md",
+          "sha256": "1b9d668391dc3f2877ac9025961a833028fe459edbb7a3c9680dc631fb3b262d",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx2-review-audits-fabio/review.py",
+          "sha256": "fb58352a0634df36b10b23474abb156c0cb79072d14998f69378627d96d1dccb",
+          "trunk_same": false,
+          "trunk_exists": false
+        }
+      ]
+    },
+    {
+      "name": "gx2-review-tom-extracts",
+      "branch": "gpt-q/gx2-review-tom-extracts",
+      "head": "c1a0425b38c50c61c9e32eea703daa9c0176fc91",
+      "category": "RECOVER_EXISTING",
+      "existing_owner_card": "apply-gpt-review-fix-items-to-gemini-ext",
+      "decision": "Canonical report already on trunk; preserve missing audit script and task report; use existing ready repair card.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx2-review-tom-extracts/audit.py",
+          "sha256": "e4df974f624c9a0c367eb1b78fdaa0dac53e3ede1f0911d3efcbd82dcd685d96",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx2-review-tom-extracts/report.md",
+          "sha256": "c150a756eaf5ef8651e16ad37c52b515ecb347cfdab61f36bbdb456e93a31769",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gx3-dsa-audit-04",
+      "branch": "gpt-q/gx3-dsa-audit-04",
+      "head": "bd78c797610991e3109815890f4cecf17c1895de",
+      "category": "COMPARE_CANONICAL",
+      "existing_owner_card": "dsa-audit-04-clean-room-twin",
+      "decision": "Current card done in canonical dsa_backtest_audit folder; archive twin provenance, compare discrepancies only, do not rerun entire audit.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/T04_PROGRESS.md",
+          "sha256": "61b80aba23ba9100e7926483ffbfc69c5793a09586fa90799bddc0bfdd343d34",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/T04_clean_room_twin.md",
+          "sha256": "eaf01689045b532a3dac5b6275e1615db0087fc1a1c551d2c2822e16c7146cda",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/ambiguity_log.md",
+          "sha256": "afff2b9aaefa5b043e0aed54c5860ff85919f5c92173a0c6e7d4cf7cae3afea1",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/clean_room_freeze.json",
+          "sha256": "acfa4bf191c00a8e09b3e8cebbadab774193a308a4dd1fe811c357c3eb42cddc",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/follow_up.md",
+          "sha256": "2c8eeec22fbf4c8e0443b13310c2b906f2486bbf4111eb4f30c17a0bc8171912",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/input_hashes.json",
+          "sha256": "f12dbce31280decdb17af7b6e187bdc7bd018b881c11413c6a01bb4f8686e1a7",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/preopen_freeze.json",
+          "sha256": "aa996d7ae533d60017e271ddf2f341bb31587912bd3f555483897c03f921a562",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/reconciliation_decisions.md",
+          "sha256": "042141cb0a2fa890e437351664ab376bee11bf29ae8bb53cba9997d64fd19081",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/report.md",
+          "sha256": "eaf01689045b532a3dac5b6275e1615db0087fc1a1c551d2c2822e16c7146cda",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/audit_diff.py",
+          "sha256": "1586f86c3674f226db56ea20e6c715a98f50bcbc4ae01dd13819bdace178da29",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/initial_sources/twin_common.py",
+          "sha256": "9a0f904e1f8aaa9723f80e4d14ab0d7f6072df237cb929b6cdbd0a916e398285",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/initial_sources/twin_mal_bb.py",
+          "sha256": "d694422ad8d4a238311f00c80daae949718664661a814cbc4f143d7e2b4f9545",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/initial_sources/twin_preopen.py",
+          "sha256": "b5f6465120980eaf64185d25be03ca8509f2b0399d770038e860cc997f684528",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/initial_sources/twin_weekly_low.py",
+          "sha256": "6388f8afe34495c0251945721d98f4e69378bce1f581ccc5f697abe5cdfc3f75",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/make_report.py",
+          "sha256": "2bcaf268f46e4afa9de3da77f35998eac752eabcd7b2f948a0dc63835e795443",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/audit_results.json",
+          "sha256": "d56f4d20a1c64624e2fd43d70208b4386d2e00818f01759e3d1931856b3a4eb9",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/data_manifest.json",
+          "sha256": "fe49409ad4b7bafc8f78dc2706ae0141e0d829f05bc74136f78f53d8b3db14d7",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/mal_bb_aligned.csv",
+          "sha256": "613f1c66e8b6681acf7e39b8e4baf0483fa6cfb3702e174665b88900bec6e4b2",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/mal_bb_aligned_diff.csv",
+          "sha256": "eb714439a745f2e1b73cbc067d0267457fa03c73bb383e5f4a43a420b22559de",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/mal_bb_corrected.csv",
+          "sha256": "97d98a90447b7c8bca18ed7ad1e0b7427ed32bd9192832938ded75a4067965f7",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/mal_bb_corrected_diff.csv",
+          "sha256": "3547d678763c69268bdf187eadb42ad14b739580b30a8ffe22fc6774dc53aed2",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/mal_bb_initial.csv",
+          "sha256": "b3d3bfa6a1213eaad460dfdf2e6474eba419f562ab1951ceeca1d5af184bc4f1",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/mal_bb_initial_diff.csv",
+          "sha256": "65395b82771f1e346d8d0a811c3da83015f53528d69330e1110c512cfeabea71",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/mal_bb_initial_metrics.json",
+          "sha256": "0aeeb4131efc2f373d96c64e8076c157e2a296e54477990fa593a22d52e04dae",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/mal_bb_shipped.csv",
+          "sha256": "50c4cc4e192e256992613e3e94347a9453291dad3ac00abea36df045e26e75f4",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/preopen_aligned.csv",
+          "sha256": "903bae5840d8f66cfcaa8aa45dfa65619e7964d925c9d6d6efbf90a528ddf786",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/preopen_aligned_diff.csv",
+          "sha256": "4b419ddb880a1bd3b7edc371ada2b4661e1cb1c8c7be8bca8c9e754a6fd1d70b",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/preopen_corrected.csv",
+          "sha256": "fbab49a5d4de15d763705002552bc47f93b549b0190445aafa825aaae5839302",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/preopen_corrected_diff.csv",
+          "sha256": "9afa6a611ca44c74fb10a29b22af2785ea2988e476eb77102caf06d67269389d",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/preopen_initial.csv",
+          "sha256": "feaed3bd4565488927987cd5d2e56e81db89072c3b089185c8c6c36d8df0a29b",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/preopen_initial_diff.csv",
+          "sha256": "e7b102a67185aebc33a052ba7c13e0e273a6015231886eb47b4e908b7eee12e7",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/preopen_initial_metrics.json",
+          "sha256": "83a4d1ef720c948a2405b2bb3e87fd5b20444a80a2d1ef3e4511e0154ea78ac3",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/preopen_reconciliation_log.txt",
+          "sha256": "a470528c85161e2434b1d2c44fae2d2b3777304d7d0d8eb30c6a1a0a5351ab37",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/preopen_results.json",
+          "sha256": "1966c64778ce99177ba2f847d5276efdf1becaae8f2b86a1a711767abd3b3d09",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/preopen_shipped.csv",
+          "sha256": "d9d3f13dafd8c349ab7116343f6cd0f98c01e93c29d7eb8e4d4851d63298bd73",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/reconciliation_log.txt",
+          "sha256": "159b706d879b18e4695ed76f10229758838e6afadc2af00777235467f8043481",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/weekly_low_aligned.csv",
+          "sha256": "d25cd46bf35f50aa93076f792ceb72e6d62fb9aa9d5f4d1dbcdd24fc699504a8",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/weekly_low_aligned_diff.csv",
+          "sha256": "3de27ebe0888c3d7b33090d8963ea4f564286ba2b284384c645d1063509c1514",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/weekly_low_corrected.csv",
+          "sha256": "00bc96dcd5686754967a6540e0b828d9c40ac6c8beaf9b4753c8238588ad0de8",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/weekly_low_corrected_diff.csv",
+          "sha256": "e93ab3575cfb785c9caefe5c03c1b3ae2539ffd0f6c32ee7323b83303e36011e",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/weekly_low_initial.csv",
+          "sha256": "58772d0325eabd4b99c605db5d70614156e92201a06304e0c3b4d33d13652175",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/weekly_low_initial_diff.csv",
+          "sha256": "02857bfc91d32fb7a036a7796c08f3cc6934862e91cb5469c321f5ffec4e72ae",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/weekly_low_initial_metrics.json",
+          "sha256": "812cee4debe58958dddab3c89bfb576cb76d9302ac4e998bd71b185b6b41537f",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/out/weekly_low_shipped.csv",
+          "sha256": "66bac48676a2641380ef31d8892672db054784181c4fca968d89cde8d416dabd",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/preopen_diff.py",
+          "sha256": "78623893728b8210c82d66bec94b6996f6dd7e9d03568cf6746acadf224541cc",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/test_twin_diff.py",
+          "sha256": "37b6c415c77ccda1161b5a507793d93c92b542a3a21ed3d14792c54843a59d1b",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/twin_common.py",
+          "sha256": "9f3833729dc7ffb1d6729395c51e584c9d7efce68841383e17fbfeff7ecbbea4",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/twin_mal_bb.py",
+          "sha256": "c53d30608457b6b65e6306b8f086ce9ed1eaaeb562dcdf1817fda24917b500b7",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/twin_preopen.py",
+          "sha256": "d3f79d9bff3bb71c57c267e34cbf9a16428c1efcdea7ca2912989c7ec0aeeeae",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/scripts/T04/twin_weekly_low.py",
+          "sha256": "6bd1046d89391d459585cea5b13fa7cb93b3ba832d373aa4d526f81cac54d146",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-04/validation.json",
+          "sha256": "560005de51e7bce04832d4a0aaa391bc859ca45ac4229bdadab1e647940ec426",
+          "trunk_same": false,
+          "trunk_exists": false
+        }
+      ]
+    },
+    {
+      "name": "gx3-dsa-audit-09",
+      "branch": "gpt-q/gx3-dsa-audit-09",
+      "head": "d8077878ae6085b5218b62bb12b2410b1dd64bee",
+      "category": "COMPARE_CANONICAL",
+      "existing_owner_card": "dsa-audit-09-live-parity",
+      "decision": "Current canonical audit done and follow-up repairs exist; preserve replay evidence, import only missing proofs after review.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/audit.py",
+          "sha256": "b71bdefa6374031c5572e2a492f2018518baacf075127e26da8656db414ac00c",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/blocked.json",
+          "sha256": "7b9b4ec0cc633cb15bf8455b58cd69f183d236c1c78c7de643f5612175808dec",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/data_manifest.json",
+          "sha256": "b6ae6e62630f23cb14c7437059b53f6cd473c9c2db4a964556568b2ee13d1791",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/diagnose.py",
+          "sha256": "7ec97c921c3e379892b8d0ab84fd47d76c84b138b57a755a7ea84c0d8b4e5087",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/diagnostics.json",
+          "sha256": "58d9ee340edaaa8912241357749a5f3334168ba353772d80fe7886c5ae2da080",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/extra_bb_top_reversal.json",
+          "sha256": "8f9b76f01a2904eee0747919b07ea02b4ff0898cf287fa6aacb882f16cc02e82",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/extra_candle_close.json",
+          "sha256": "09370169781b9762be807a6ae9969a116a3ecdca9e720fe282e94c25a31efd99",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/extra_fabio_v3.json",
+          "sha256": "e7710d6db4c0a47452ce507b302cd9622353576d133fbf5a4a87e45d12d7f34a",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/extra_funding.json",
+          "sha256": "75fff70e8e8e2b07ae317b5bb6cbb7897b3419524a03d4d53825e58f67a2d646",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/extra_levels.json",
+          "sha256": "4916e5fc3677b9b256976cfc3a60b1e078ba23c8fe2f3c86083e23a00165b217",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/extra_replay.py",
+          "sha256": "60fedd92ae40256cf160b1957568294c8385330f26b07ba6ca455d4362c5522c",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/extra_rsi_divergence.json",
+          "sha256": "3e8ed2e4094a1b84d1c1510917bc768a284e868f61d5434d132abb38937ab659",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/extra_session_levels.json",
+          "sha256": "d6c8c32bc2e67694ff003573b518e36d17eace5fe314ad4ee19461d24a7a5fc8",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/extra_wlow_bounce.json",
+          "sha256": "c87c3da46fb64af8252f545ea1d15ad62a9c57d878b5ce9580e7bd26cf7b2dd0",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/hypothetical_exits.json",
+          "sha256": "85b5fccf1fa0b92c6f682b90b08792af28cdd5f4c1e584ad28736367f3e6675a",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/independent_checks.json",
+          "sha256": "2b1ee33d2070421bbb0ec7ffe98aa0e145a1adfa7c6e6c3b75c27124ec60ec36",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/independent_checks.py",
+          "sha256": "09baca42432c9842e9d9ede2834fd17bf17e2c9331d9df963e089eedd4f91865",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/inventory.json",
+          "sha256": "6f569e51bcc4d62865f1bf5662a8ac14278a273f856fd2c218554720dd39ebe2",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/inventory.py",
+          "sha256": "a6b03c058a3d9b5bb3f025383315dc93624b753bebfc0bde778d81d1b8d623ab",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/metadata.json",
+          "sha256": "5a242ca98460ba8b6fa62bd76a1f63552cee4f4f7ad33686b3ccc99b3cb315d7",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/parity_diagnostics.json",
+          "sha256": "1e9fa6729bb440c835e5e5914c66816044376e62bf29b0f80fb89fd1df027425",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/parity_diagnostics.py",
+          "sha256": "f5e7dc776c497ae0ff500ef3a49897b5dc116bb5b4a781463484c4b9805779c4",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/progress_15m_main.json",
+          "sha256": "941500e7c0a6cc2e63b6d6be52c7a8d368122076e16b3636ad055b7e049f863d",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/progress_1h_main.json",
+          "sha256": "4aada4d6d7fd462e68a6c6180a8c2f42b98b1e9b205b85ade5939e84345865e3",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/progress_1m_history_candle_close.json",
+          "sha256": "a6c1559f252b30341b66880a7da96dc04d8f2571e8675dbfd53fee57340ea32b",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/progress_1m_history_session_levels.json",
+          "sha256": "099e72f537b64fdab2f631c8aa7d0166d8220d62b3c698d57bc6e627a689b00e",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/progress_1m_main.json",
+          "sha256": "1bb44d79609be8ba1edbeeda3aac68971a52b8b30a58819bb89660c635ec0ef8",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/progress_5m_main.json",
+          "sha256": "c16ec00b17f91a05a678d67425fa376b11179e2496573da8996aaabec5806f6d",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/registry.json",
+          "sha256": "4c0427d7731039e703e86902fa3fd237e0e7b8d39fb0624bae014a2af25090c2",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/replay.py",
+          "sha256": "f4b6ea64d9ebee895989ee30418d874afa750ffcb36e5eddcc77914380118eb6",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/replay_15m_main.json",
+          "sha256": "31360a84cd39e54285a793e228e2bc110a9a38f9a68cb1ee527e3b03fa482c09",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/replay_1h_main.json",
+          "sha256": "142d543ed7aacd73e494f43f4a4977809c9b27e5be3f0b617b15ef6b7709ab9f",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/replay_1m_main.json",
+          "sha256": "a89b7d7c800815d5f6856755e52be47f42bd26dffa3ee9c15fdb843d9b54f005",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/replay_5m_main.json",
+          "sha256": "b59a5da2c434196fc1353efae6c9350bc1534e53fde930bb7080e7c61c3b6131",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/replay_counts.json",
+          "sha256": "8bb333884a427bbff586b3645e21b4ea8aafd6be7e9bbfaa54addad8c1f9c3bd",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/replay_errors.json",
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/signals.json",
+          "sha256": "5732e2e9b18256e1d0bdd5ecb108ea2a988191fb7d144eee6734e0538fb5d444",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/signals_15m_main.jsonl",
+          "sha256": "3ed907981450e95fba36aa854963bd92082702ef9af511bff2f29c7623773126",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/signals_1h_main.jsonl",
+          "sha256": "74243f3f217ce954a46bc6fde5f3a051968cbd8892327dc64a1f68b9bae68246",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/signals_1m_main.jsonl",
+          "sha256": "93e4c4ec4ac548322f8848fee57d0c448eb8b2a87b86f574b1c4cfb9c51dceae",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/signals_5m_main.jsonl",
+          "sha256": "7bd888a85edaff8aedb0e5cf6f4eebcf4fce190e54557a769d21d0cc2d6f620e",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-dsa-audit-09/test_layer_signal_parity.py",
+          "sha256": "6905307862528e33de79a13a6648da3b97da39fd1bc5b5a63645669b795b74c6",
+          "trunk_same": false,
+          "trunk_exists": false
+        }
+      ]
+    },
+    {
+      "name": "gx3-gap-g7-slippage",
+      "branch": "gpt-q/gx3-gap-g7-slippage",
+      "head": "f5bb079c1da5c6b4eda845f7faaa07dc1e0253f0",
+      "category": "BLOCKED_EXISTING",
+      "existing_owner_card": "gap-g7-stop-slippage",
+      "decision": "Archive says blocked before fetch, no measured slippage; compare spec receipt on current trunk. Do not count as a completed run.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-gap-g7-slippage/SLIPPAGE.md",
+          "sha256": "4f32165e5853f7b4cbd19aa9efd9f7c3607b08d98ee2d8a6813ce41267ee43fa",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-gap-g7-slippage/TRIALS.md",
+          "sha256": "802e7e24aa8e0d735156c2b680ccc0359e50b3dfe549f1335e827a402e687af5",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-gap-g7-slippage/days.csv",
+          "sha256": "b486767241fb3155e02e278a86ac6db3be0474923b31547d841ed1b06e1c173c",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-gap-g7-slippage/eligible_days.csv",
+          "sha256": "d015b2f95735fee73e211dc80c0e29cf0cfca3495c265c15d4adaecfa1d39c28",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-gap-g7-slippage/evidence.json",
+          "sha256": "cea73d1f2040738eac0ebcebc6f395ee705d58e17fb21c2690147b6049f9fb18",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-gap-g7-slippage/prepare_days.py",
+          "sha256": "226bcf1ccf249b3bd841a3068d59a21d8aec41f2d7c9c36aa4b232ff1d365055",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-gap-g7-slippage/report.md",
+          "sha256": "16839aafd912ca267373d6caeabe5e54e393efc40d2b12d4d3f5a882d4b289ad",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-gap-g7-slippage/sha256.txt",
+          "sha256": "fd6a7ff50eed23cbcd6efc1cbb481d3cd4abd5178c87f73f369703cf16ce40a2",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-gap-g7-slippage/slippage.py",
+          "sha256": "63cd35bf7741912cd89a8cb3f79f30876eb2fc4453390d47b0a2feab7abc95da",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-gap-g7-slippage/test_slippage.py",
+          "sha256": "b6112e6ba27c8ec4a1dfc553b1d9c4d0abbf6f8445cd1717fea8aa6aec8b6454",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-gap-g7-slippage/tests_green.txt",
+          "sha256": "2e7359278a3ddbcdcac04b10012e312304df9ea151a5dd23c920b9c3e3c6fa13",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-gap-g7-slippage/tests_red.txt",
+          "sha256": "a7c5f1c95c68e862e0b420a7466c63af9808f0c2ea0b37c4b83f1b75f64b6afb",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-gap-g7-slippage/write_report.py",
+          "sha256": "4b43496983e88da4e7d0ef4ea506dfda2d2a5bad9acccd8377086b7f2a386ea3",
+          "trunk_same": false,
+          "trunk_exists": false
+        }
+      ]
+    },
+    {
+      "name": "gx3-rv05-h2",
+      "branch": "gpt-q/gx3-rv05-h2",
+      "head": "794031387a55da1cdc1543d27021000d00ab9eb4",
+      "category": "RECOVER_EXISTING",
+      "existing_owner_card": "rv05-h2-position-line-evidence",
+      "decision": "Retain blind-read evidence for existing adjudication card; no new same-model image adjudication.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-rv05-h2/RV05_H2_READS.csv",
+          "sha256": "779ee27f1a4e90923f7ae73a4276a7538299b1d0bd213c928bf2acf785a26d3d",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-rv05-h2/extract_frames.py",
+          "sha256": "46aebd2b82d6b7561c1ebb21f66915f411245607f83efaa74ffd061eb2ad95a6",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-rv05-h2/ledger_adjudication.md",
+          "sha256": "82fa3546b0d3bbf550648176d324edcfe32180e6c018203dd0e08f13e6d388f8",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-rv05-h2/report.md",
+          "sha256": "772d53436cc74358403d2fa09d3874cc721051cb11977e8d33125e32d4066c45",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gx4-statecode-races",
+      "branch": "gpt-q/gx4-statecode-races",
+      "head": "61c2fc11906259259ff773ef0f1d51bb9a3036c6",
+      "category": "SUPERSEDED",
+      "existing_owner_card": "statecode-invalid-publish-race / statecode-late-seam-tick",
+      "decision": "Both current cards done; retain old draft and test output only as history.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx4-statecode-races/StateCodeEmitter.java",
+          "sha256": "0331d8a396aee8874e85d0424ed2f08facdf11961a4956fa757e3cc1f51607ca",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx4-statecode-races/StateCodeEmitterTest.java",
+          "sha256": "556c2c2a24af2662ee1b3ab1027b10d95f26c40945c9328c3391fb455ec5fd82",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx4-statecode-races/after-test-output.txt",
+          "sha256": "49bcdf30afd636c461342cf74abc52ce43662be523fbb44a52e2bf57ff4af637",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx4-statecode-races/report.md",
+          "sha256": "33c6b06153555cf18c518123e2a407ddc079914df5f12ad29edea8dff466d445",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gx4-t05-recheck",
+      "branch": "gpt-q/gx4-t05-recheck",
+      "head": "2fb9b87ebb7ffba86be6d74918a0e71515860313",
+      "category": "RECOVER_EXISTING",
+      "existing_owner_card": "re-state-lc1-keep-list-on-the-touched-on",
+      "decision": "Use existing LC1 repair card; recover this independent DEV recheck before rerunning.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx4-t05-recheck/independent_results.csv",
+          "sha256": "7e775e2bd7389ad28f3fa293348502978d955beda17cdfebee05ef4c5ffde4fd",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx4-t05-recheck/recheck.py",
+          "sha256": "edb40b03042e0e46b210d11e3dfe5af9f7ada08e7dec14b790086cfcf8319435",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx4-t05-recheck/report.md",
+          "sha256": "305b87160597021d891b13969b4750c83b1ed315d4b45369cd3c66176ed7df93",
+          "trunk_same": false,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gx4-t09-f1-fvg-side",
+      "branch": "gpt-q/gx4-t09-f1-fvg-side",
+      "head": "1e3995cab395f0499ccfe20654054f2ccf54856d",
+      "category": "SUPERSEDED",
+      "existing_owner_card": "t09-f1-volume-fvg-side-inverted",
+      "decision": "Already repaired on trunk; archive old patch, do not reapply.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx4-t09-f1-fvg-side/fix.patch",
+          "sha256": "72f3a9d4e0bd383c938ca2a7f441ad2774b1ff9b1fcf04e05309fde7fed8b4af",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx4-t09-f1-fvg-side/report.md",
+          "sha256": "9c02080677f35637bf1f5a2a21638513aec181c58820891c9d1b43d9da78c103",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx4-t09-f1-fvg-side/test_volume_fvg_side.py",
+          "sha256": "40e8ef2fefd8f725a464b109b68de3226b9ffdef3f10549cde6c11eebabdaf6e",
+          "trunk_same": false,
+          "trunk_exists": false
+        }
+      ]
+    },
+    {
+      "name": "gx4-t09-f2-exits",
+      "branch": "gpt-q/gx4-t09-f2-exits",
+      "head": "afa838056438590bb611fb89b65d0f0e85d7e3fc",
+      "category": "SUPERSEDED",
+      "existing_owner_card": "t09-f2-live-exits-match-tested-exits",
+      "decision": "Already repaired on trunk; archive old patch, do not reapply.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx4-t09-f2-exits/patch.diff",
+          "sha256": "c47455553df092b82a9c6f2b58d3a93a0f707859793eea39d89460679678524b",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx4-t09-f2-exits/report.md",
+          "sha256": "62d48c974db764a6910bfde3989c681eb693f0a2d39fb7d1647d6a6772537369",
+          "trunk_same": false,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gx4-t09-f3-rsi-events",
+      "branch": "gpt-q/gx4-t09-f3-rsi-events",
+      "head": "a65e2cccac16bde885b73cd5cc101ab73c94267a",
+      "category": "EXACT_DUPLICATE",
+      "existing_owner_card": "",
+      "decision": "Every committed delta file has identical bytes on current trunk; commit ancestry alone falsely suggests unfinished work.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx4-t09-f3-rsi-events/patch.diff",
+          "sha256": "ef325b71051ea4e771cab8c69ef4d6a122be5c4e272fd6a09714579cd68c1e8d",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx4-t09-f3-rsi-events/report.md",
+          "sha256": "a85516bd8dc328d0ea6452cae5cbad8ca24fb034e928353fa699d7d6d54d797a",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "gx5-lenovo-start",
+      "branch": "gpt-q/gx5-lenovo-start",
+      "head": "bdfcfb36a71aac4f900639536fdb79007a4e5547",
+      "category": "COORDINATION_REFERENCE",
+      "existing_owner_card": "opus-station-review-act",
+      "decision": "Historical adapter research only; useful input to bounded rolling-session review, not a separate new project.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gpt_burn_2026-10-24/gx5-lenovo-start/report.md",
+          "sha256": "cbe609eec4d64398427e8a76e461564e32bc95f2895540b02be2763676ede75f",
+          "trunk_same": false,
+          "trunk_exists": false
+        }
+      ]
+    },
+    {
+      "name": "lf-callers-gemini-facts",
+      "branch": "gemini-q/lf-callers-gemini-facts",
+      "head": "09805c541b57a495cd35cc773f90db956cc41a41",
+      "category": "SUPERSEDED",
+      "existing_owner_card": "layer-review-after-simulator",
+      "decision": "All ten producer sheets were independently reviewed and corrected: 2026-10-26_gemini-facts-review.md. Retain current trunk; never merge pre-review sheets over it.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/callers.md",
+          "sha256": "47b875d788b2a18a10663516e4e4aad8c206ea50e5141bb52be9f3a4d31d4f94",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/LAYERS.md",
+          "sha256": "544384d924d13558d124e8fa334d1fdcd0f3be25ad4d28f3e49b3b3c545ef9a8",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/tasks/lf-callers-gemini-facts.json",
+          "sha256": "b7df82e22fc39fd7fb3a03f68f625b9ae6c34b7fa236d28b40093e8b180407cf",
+          "trunk_same": false,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "lf-cryptocred-gemini-facts",
+      "branch": "gemini-q/lf-cryptocred-gemini-facts",
+      "head": "0c749aac41937fbb180512dc130b600fb732506d",
+      "category": "SUPERSEDED",
+      "existing_owner_card": "layer-review-after-simulator",
+      "decision": "All ten producer sheets were independently reviewed and corrected: 2026-10-26_gemini-facts-review.md. Retain current trunk; never merge pre-review sheets over it.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/cryptocred.md",
+          "sha256": "005b7e89de2e0d6055233931c53b38c7d52cbd6d5830e58c4e423831a6ea0060",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/layer_lab/reports/2026-10-25_lf-cryptocred-gemini-facts.md",
+          "sha256": "f8a8b39874f8fc5c3c8ca3733fb22a3ed1717c344e9eb03329fba3bc7b5f02c3",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/LAYERS.md",
+          "sha256": "3ad55fea17a4d06eeacf166a03bbe271c5c4a89e9321b5aef33ca7079c41982c",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/tasks/lf-cryptocred-gemini-facts.json",
+          "sha256": "904c0cd4562abaa5bc6ec8eb48c2569f8dbf9433f971d8dc50591781d86e6be7",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "lf-fabio-gemini-facts",
+      "branch": "gemini-q/lf-fabio-gemini-facts",
+      "head": "ca09d867db5ec0c4f9efaade829b6bed073a95b5",
+      "category": "SUPERSEDED",
+      "existing_owner_card": "layer-review-after-simulator",
+      "decision": "All ten producer sheets were independently reviewed and corrected: 2026-10-26_gemini-facts-review.md. Retain current trunk; never merge pre-review sheets over it.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/fabio.md",
+          "sha256": "0c541bbc038bbe011f831be2cce4110712674d26c6d6216aff259157e1b60dea",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/layer_lab/reports/2026-10-25_lf-fabio-gemini-facts.md",
+          "sha256": "15600641ab687c140e397d1e453953c5106a15c760ad6d90e30fe07a454b8e9f",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/LAYERS.md",
+          "sha256": "9d24847e9b8dc235c410c3741905faa930ea194a7f2a4cbbe36d3026065739bb",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/tasks/lf-fabio-gemini-facts.json",
+          "sha256": "45a53609a3ad967093d3f9fe5f45d114a91796d1eb9056a6bbf3405ef20149d2",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "lf-guidance-gemini-facts",
+      "branch": "gemini-q/lf-guidance-gemini-facts",
+      "head": "3b3e2fa96c1d5e7d86f356cbb7ea0134fd002877",
+      "category": "SUPERSEDED",
+      "existing_owner_card": "layer-review-after-simulator",
+      "decision": "All ten producer sheets were independently reviewed and corrected: 2026-10-26_gemini-facts-review.md. Retain current trunk; never merge pre-review sheets over it.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/guidance.md",
+          "sha256": "c2a540a6bb595ab560fa3bf5ebde1d0fc1d168ce2c4d2a693ed205a96ceb3a04",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/LAYERS.md",
+          "sha256": "8e6131958a17f3f7370405517588567473f059e66627c2cf15ad5729dcb19eaa",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/tasks/lf-guidance-gemini-facts.json",
+          "sha256": "51eb4098379857383d161869801dda36418e8a38c9b1b750e08d10e25bed8f7c",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "lf-krown-gemini-facts",
+      "branch": "gemini-q/lf-krown-gemini-facts",
+      "head": "3e3b8b3bcc4c19690a2d5cc90a990afa35b8867a",
+      "category": "SUPERSEDED",
+      "existing_owner_card": "layer-review-after-simulator",
+      "decision": "All ten producer sheets were independently reviewed and corrected: 2026-10-26_gemini-facts-review.md. Retain current trunk; never merge pre-review sheets over it.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/krown.md",
+          "sha256": "74965406ad3cdfe72a95d15872405f21e6fa8d0b6ebba2055d43226352a1307f",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/layer_lab/reports/2026-10-25_lf-krown-gemini-facts.md",
+          "sha256": "1ec1641ec572503f169ed7c3cd7ac9c8eae0eeb7415118df44d120877ec3983c",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/LAYERS.md",
+          "sha256": "5ea602208539e505d91704f61961637be1b06bea5b7da19eba46c518964864b5",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/tasks/lf-krown-gemini-facts.json",
+          "sha256": "3b09fcc7de15046ccf9b4a489e9cc88f5ca2647f1910abc10701249cd672f9ee",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "lf-pitchfork-gemini-facts",
+      "branch": "gemini-q/lf-pitchfork-gemini-facts",
+      "head": "b3a78c3f81030de04b3cfb3bc63e729f3f17bfad",
+      "category": "SUPERSEDED",
+      "existing_owner_card": "layer-review-after-simulator",
+      "decision": "All ten producer sheets were independently reviewed and corrected: 2026-10-26_gemini-facts-review.md. Retain current trunk; never merge pre-review sheets over it.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/pitchfork.md",
+          "sha256": "17f24c76e74a76cd5c060fa27a6efb78ec8e73d42417dcec241d75b9f46a0483",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/LAYERS.md",
+          "sha256": "66acdd8c9f9bad647eab2fc1ae071195d0dac237e370b5a1af917abe1484e346",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/tasks/lf-pitchfork-gemini-facts.json",
+          "sha256": "edea2c8cb89e77a1a81d446c86cb076fea217e92b5510f109062113b58018304",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "lf-positioning-gemini-facts",
+      "branch": "gemini-q/lf-positioning-gemini-facts",
+      "head": "35b1b6996db3bba72e0e44a35542fb7f8483c472",
+      "category": "SUPERSEDED",
+      "existing_owner_card": "layer-review-after-simulator",
+      "decision": "All ten producer sheets were independently reviewed and corrected: 2026-10-26_gemini-facts-review.md. Retain current trunk; never merge pre-review sheets over it.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/positioning.md",
+          "sha256": "04b08b68a95bc87087f8a8d65dddb201128943e535718a0f87183ddf3b1d105b",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/LAYERS.md",
+          "sha256": "0d9d635cb42f2cb3230febf4377d5c3b6683a602b8137f32392241b320f5be6b",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/tasks/lf-positioning-gemini-facts.json",
+          "sha256": "e18143871d1173d38c65c3207fa12d7b6d6eb3263efec2acf25d3c6f67070adc",
+          "trunk_same": false,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "lf-rsi-gemini-facts",
+      "branch": "gemini-q/lf-rsi-gemini-facts",
+      "head": "f37611e89b42c43968dbcb9f9db5466cbc020ebc",
+      "category": "SUPERSEDED",
+      "existing_owner_card": "layer-review-after-simulator",
+      "decision": "All ten producer sheets were independently reviewed and corrected: 2026-10-26_gemini-facts-review.md. Retain current trunk; never merge pre-review sheets over it.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/rsi.md",
+          "sha256": "be13048702fd52c70ff45195bdb1011fed1a0bddb28142f23d44143e7d082f35",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/layer_lab/reports/2026-10-26_lf-rsi-gemini-facts.md",
+          "sha256": "e9c423627a2fbebbe08c65853ce22c2029246d8d3fdc0207609e3ea034f20747",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/LAYERS.md",
+          "sha256": "d681e90772faa596075ed1881167efddfcf42a9a76e7e8bc9dec861fc12bc063",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/tasks/lf-rsi-gemini-facts.json",
+          "sha256": "71b99a4b4f2bd67f23b6b5054d8ea41bb5e526f2b0fe63e105a337485e9313d3",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "lf-tom-gemini-facts",
+      "branch": "gemini-q/lf-tom-gemini-facts",
+      "head": "1e91a36fd7e545aae976ad1e8d1a6f2128f35022",
+      "category": "SUPERSEDED",
+      "existing_owner_card": "layer-review-after-simulator",
+      "decision": "All ten producer sheets were independently reviewed and corrected: 2026-10-26_gemini-facts-review.md. Retain current trunk; never merge pre-review sheets over it.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/tom.md",
+          "sha256": "1c0fcdb26e553f67eaf3db15723be4b1bde9faed92e01408178461805caf5133",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/research/layer_lab/reports/2026-10-25_lf-tom-gemini-facts.md",
+          "sha256": "d2f6b8a93e064a378b84c0cf4322d0f3f664c6486565e15a31adcd897e148aff",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/LAYERS.md",
+          "sha256": "35c462c108eb5b9c158354887420f76eb09d602f8cf5f73df843f78aadae9650",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/tasks/lf-tom-gemini-facts.json",
+          "sha256": "342d79c0a6b142e2c59e8ea8be7e92c6b426c90ab7fe3ee40a7dae3fd75163a6",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "lf-wavetrend-gemini-facts",
+      "branch": "gemini-q/lf-wavetrend-gemini-facts",
+      "head": "1c262cd397df66311287478627660f42322e2e16",
+      "category": "SUPERSEDED",
+      "existing_owner_card": "layer-review-after-simulator",
+      "decision": "All ten producer sheets were independently reviewed and corrected: 2026-10-26_gemini-facts-review.md. Retain current trunk; never merge pre-review sheets over it.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/wavetrend.md",
+          "sha256": "3d03177ab3c382b079c302ae178bfea4ad44fd5808c3ba3305fe5a0476484c2c",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/LAYERS.md",
+          "sha256": "cc8824b7d0a507705976aecff16dea172ea548858fd9a57ee8111a311022c90e",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/tasks/lf-wavetrend-gemini-facts.json",
+          "sha256": "7d40208a034258f47520bf716ed38110e14f3daf2de52facae0efcc9bfefa43e",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "yt-fabio-fetch-retry",
+      "branch": "gemini-q/yt-fabio-fetch-retry",
+      "head": "f41fbf55f8f131222fd0a84491935783db429a01",
+      "category": "SUPERSEDED_OR_UNVERIFIED",
+      "existing_owner_card": "apply-gpt-fix-fabio-notes-gemini / apply-gpt-fix-audits-gemini-extracts / apply-gpt-review-fix-items-to-gemini-ext",
+      "decision": "Existing extraction/audit cards already done or repairs already carded. Archive old reports and drafts; UNVERIFIED video-only notes remain unverified, not new sourced rules.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/layer_lab/reports/2026-10-24_yt-fabio-fetch-retry.md",
+          "sha256": "4c6c06883d16ee8a2b93764efec05e2e8851ce889bd52380d26fdf649eb8268a",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/tasks/yt-fabio-fetch-retry.json",
+          "sha256": "9ec3aef99f6b89c17bf831f946b98e5120c9819dcbd716c34d077745d862adf8",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/fabio/HUYBdYnXUNc_note.md",
+          "sha256": "7c97e91ee38c0b496044db2396703103bdfd5c50c45d1d39c004378afc4a5644",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/fabio/agjftXPkLUE_note.md",
+          "sha256": "0cb9b8a72361394feae5288cf6180b631a3dc274ec828818871f0dba7e36e53d",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/fabio/cLgdXZnLL_0_note.md",
+          "sha256": "3eef7f94a8a45dda7df6f6876aadbb019157cb5a96f11e493ba2ebedc6b14351",
+          "trunk_same": false,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "yt-gem-audit-a1",
+      "branch": "gemini-q/yt-gem-audit-a1",
+      "head": "3c513365cb549cc8d667373fdc9128832667f40d",
+      "category": "SUPERSEDED_OR_UNVERIFIED",
+      "existing_owner_card": "apply-gpt-fix-fabio-notes-gemini / apply-gpt-fix-audits-gemini-extracts / apply-gpt-review-fix-items-to-gemini-ext",
+      "decision": "Existing extraction/audit cards already done or repairs already carded. Archive old reports and drafts; UNVERIFIED video-only notes remain unverified, not new sourced rules.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/layer_lab/reports/2026-10-24_yt-gem-audit-a1.md",
+          "sha256": "a73c526fb70f86d409d41b68574b528dd289c2c4d24dd07a869d1d94be714e44",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/system/tasks/yt-gem-audit-a1.json",
+          "sha256": "c9c1ab8310e1ec4c977b2d223b9b67cb84c7bf721200c672d2ab6c061aafc0d9",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/-dMWA_bbm3o_audit.md",
+          "sha256": "9ac0a0b39cea64dea21ab8429064bf416b61f04d3d8a9c1f1e45a2805264c7cd",
+          "trunk_same": false,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "yt-gem-audit-a2",
+      "branch": "gemini-q/yt-gem-audit-a2",
+      "head": "ca97f0c471995378cb3d2038e84c594b073627e1",
+      "category": "SUPERSEDED_OR_UNVERIFIED",
+      "existing_owner_card": "apply-gpt-fix-fabio-notes-gemini / apply-gpt-fix-audits-gemini-extracts / apply-gpt-review-fix-items-to-gemini-ext",
+      "decision": "Existing extraction/audit cards already done or repairs already carded. Archive old reports and drafts; UNVERIFIED video-only notes remain unverified, not new sourced rules.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/layer_lab/reports/2026-10-24_yt-gem-audit-a2.md",
+          "sha256": "d19dd9bde9827ed5b4ecc8685e90ea0f26643d909a8d5ad7cefa362299d0417e",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/system/tasks/argon-blind-read-7-frames.json",
+          "sha256": "ff2bccb38adc7835cf2a610e1450db71a263020c4a4557ae56b9dcc44fa2e060",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/tasks/yt-gem-audit-a2.json",
+          "sha256": "39f543201fe1843e246e6bdfdb137c16336094c69bd96ee1c335f36b1c4c2175",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/1xBWnyr1qe4_audit.md",
+          "sha256": "ebd664f5d8a618b2e1f40c78ad698b6f14b07489c7d9a9051b23fd1e3a9b0f35",
+          "trunk_same": false,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "yt-gem-fabio-fetch-1",
+      "branch": "gemini-q/yt-gem-fabio-fetch-1",
+      "head": "de44e93c5ffd0046010d9d1eb9bcf75554aeec91",
+      "category": "SUPERSEDED_OR_UNVERIFIED",
+      "existing_owner_card": "apply-gpt-fix-fabio-notes-gemini / apply-gpt-fix-audits-gemini-extracts / apply-gpt-review-fix-items-to-gemini-ext",
+      "decision": "Existing extraction/audit cards already done or repairs already carded. Archive old reports and drafts; UNVERIFIED video-only notes remain unverified, not new sourced rules.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/layer_lab/reports/2026-10-24_yt-gem-fabio-fetch-1.md",
+          "sha256": "96a6969953e40715ad23e6a32dd4aade5922a41e2a2285f43b929f3068616fbe",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/system/tasks/yt-gem-fabio-fetch-1.json",
+          "sha256": "d7e41fc65d79265fba11661300b771ca4f604fc9f9dda2ab2f7d2ca61e3a0b20",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/fabio/HUYBdYnXUNc_note.md",
+          "sha256": "eeb7e4231b31bc8e04585726805e0c2348c2afc1fd997f4023861b1a3cc2b04b",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/fabio/agjftXPkLUE_note.md",
+          "sha256": "f76d68a0d33d43db2d20a8f80544cc31a6f8653f9b0db8c5cfefc1aff664e48c",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/fabio/cLgdXZnLL_0_note.md",
+          "sha256": "538311b5784ea29c3f8acb354b1c889ec9382861cafb1a8c0f794dcf98412a50",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/fabio/feV6CATGUqo_note.md",
+          "sha256": "f865c576623a2ca24f70b9c39b13aa301446610743d008d885ada124f909f1e1",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/fabio/pZai3k1e-Jg_note.md",
+          "sha256": "37e0847bd6b8eaf71e1762429f0774eff1bc854c201baba586feb003bef636e5",
+          "trunk_same": false,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "yt-gem-fabio-fetch-2",
+      "branch": "gemini-q/yt-gem-fabio-fetch-2",
+      "head": "1a887e3b34563025561137fa6526347fb250c6ca",
+      "category": "SUPERSEDED_OR_UNVERIFIED",
+      "existing_owner_card": "apply-gpt-fix-fabio-notes-gemini / apply-gpt-fix-audits-gemini-extracts / apply-gpt-review-fix-items-to-gemini-ext",
+      "decision": "Existing extraction/audit cards already done or repairs already carded. Archive old reports and drafts; UNVERIFIED video-only notes remain unverified, not new sourced rules.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/layer_lab/reports/2026-10-24_yt-gem-fabio-fetch-2.md",
+          "sha256": "390da10ba854f9b0f730815684394c6403ad2192a29ea19b1d21f35429db1baf",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/system/tasks/yt-gem-fabio-fetch-2.json",
+          "sha256": "90088b70380594e053626a64fcb254d9a40ba0d072840f94a973b69a16f7cb79",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/fabio/06R-ebyOhDI_note.md",
+          "sha256": "f2f10b3e165a288fd255cfaed5b9f09910c58ebc3505f120e611a2844e3f7f9a",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/fabio/DD73wDVvObI_note.md",
+          "sha256": "818afc45c3765b32cf823fce92998b705dfda0b7a7535206feca7cf18d0a7806",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/fabio/Khgj5q1-ln8_note.md",
+          "sha256": "d7e5d5f01f8a4119de960950aa77f756bcd729ee4263984276443c2f64f151d1",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/fabio/Pz8f0wWW12M_note.md",
+          "sha256": "c09f0aa7c95491b61e01b2e685cedac97547e6d261ae5c3f65fe9003dc9b358d",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/fabio/cUTsoU-15Tc_note.md",
+          "sha256": "e6cb72735dc3c7fc55aa872350eaad1369a075df506d336df104adcb939a7f75",
+          "trunk_same": false,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "yt-gem-tom-extract-1",
+      "branch": "gemini-q/yt-gem-tom-extract-1",
+      "head": "f921dc388303485334a111e9ed6b4eb69b7cb104",
+      "category": "SUPERSEDED_OR_UNVERIFIED",
+      "existing_owner_card": "apply-gpt-fix-fabio-notes-gemini / apply-gpt-fix-audits-gemini-extracts / apply-gpt-review-fix-items-to-gemini-ext",
+      "decision": "Existing extraction/audit cards already done or repairs already carded. Archive old reports and drafts; UNVERIFIED video-only notes remain unverified, not new sourced rules.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/layer_lab/reports/2026-10-24_yt-gem-tom-extract-1.md",
+          "sha256": "11c384e3171be1ffd8ee84ee858748d99f6173d9c38bbc87d6272dffe80740e8",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/system/tasks/argon-blind-read-7-frames.json",
+          "sha256": "ff2bccb38adc7835cf2a610e1450db71a263020c4a4557ae56b9dcc44fa2e060",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/tasks/yt-gem-tom-extract-1.json",
+          "sha256": "c0419b07fac9240f4593a5e1a864533d1d2f4e68ae24fd5e0fbe77289da5de0f",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/7BQPMJ39WpI_gemini.md",
+          "sha256": "2332d69bcd560747ce5916a5935ef19a3bf020f031964841c9b9a6d705889fc8",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/96iPFDpXEcU_gemini.md",
+          "sha256": "c4d6871fd2042e81ded0a07bbb7f596509acad69ac5ed3618243a8b43bdfdb15",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/WQ_OAdz-PJ8_gemini.md",
+          "sha256": "3a446af03fa22effbac789135a7d9fa927f5b9a819ea8ba7062bc93b80e1d65a",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "yt-gem-tom-extract-2",
+      "branch": "gemini-q/yt-gem-tom-extract-2",
+      "head": "e4c4c22bfbf8302b6967d653041d6332721ebf22",
+      "category": "SUPERSEDED_OR_UNVERIFIED",
+      "existing_owner_card": "apply-gpt-fix-fabio-notes-gemini / apply-gpt-fix-audits-gemini-extracts / apply-gpt-review-fix-items-to-gemini-ext",
+      "decision": "Existing extraction/audit cards already done or repairs already carded. Archive old reports and drafts; UNVERIFIED video-only notes remain unverified, not new sourced rules.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/layer_lab/reports/2026-10-24_yt-gem-tom-extract-2.md",
+          "sha256": "8d71e4c14f20fe70cf0b4e94b9ec246a4996681f86747f6d99493d5c5c325e7c",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/system/tasks/argon-blind-read-7-frames.json",
+          "sha256": "ff2bccb38adc7835cf2a610e1450db71a263020c4a4557ae56b9dcc44fa2e060",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "MyTradingSys/system/tasks/yt-gem-tom-extract-2.json",
+          "sha256": "d66b95b9770f90a3d861e5b3bb1aac24656f30faa8316f0d8f385d52b89402b3",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/HySZZSjMxF8_gemini.md",
+          "sha256": "f08d70e5cee4734be06e652d85469b22e651a81b03a88b704c121ea164a16897",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/aursfDVYzUk_gemini.md",
+          "sha256": "75a68d3a736b27aaede5a4009b1ecfcef0086c753884e3824aaf14100b377d36",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/gWjHq5UMisY_gemini.md",
+          "sha256": "54a6dc640168abbb10cbaaa394735cf78987058e81a6220fb43149320ba38643",
+          "trunk_same": false,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "yt-gem-tom-extract-3",
+      "branch": "gemini-q/yt-gem-tom-extract-3",
+      "head": "13f0477f385325ed028ca8a3e78e25939e1ff433",
+      "category": "SUPERSEDED_OR_UNVERIFIED",
+      "existing_owner_card": "apply-gpt-fix-fabio-notes-gemini / apply-gpt-fix-audits-gemini-extracts / apply-gpt-review-fix-items-to-gemini-ext",
+      "decision": "Existing extraction/audit cards already done or repairs already carded. Archive old reports and drafts; UNVERIFIED video-only notes remain unverified, not new sourced rules.",
+      "files": [
+        {
+          "path": "MyTradingSys/research/layer_lab/reports/2026-10-24_yt-gem-tom-extract-3.md",
+          "sha256": "cbab46cc5ea83bc46339a63c70e4bf1d45a54194c72ca1ac7ca7378812e55297",
+          "trunk_same": false,
+          "trunk_exists": false
+        },
+        {
+          "path": "MyTradingSys/system/tasks/yt-gem-tom-extract-3.json",
+          "sha256": "3dafebd3495d96ba55c918d5cbe1b70bb8b76ec8d6c855a88fb79f71dec6b5b5",
+          "trunk_same": false,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/hQ8sOq67x5o_gemini.md",
+          "sha256": "793de6dd9d922a39f493effa99f9d65855fe7fac80812dc50c7fa4f0cd932d29",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/pgdmKLJ0hhA_gemini.md",
+          "sha256": "c5800f52aad2595d2405cba9027c302c3a92ae77f35c29f3df7accf6ee45e5d4",
+          "trunk_same": true,
+          "trunk_exists": true
+        },
+        {
+          "path": "extracts/gemini_out/zAwEX_tRUfE_gemini.md",
+          "sha256": "dce163228145871dffe6f44b1852f39bba240bb012088d7e5e58ce715f5b1877",
+          "trunk_same": true,
+          "trunk_exists": true
+        }
+      ]
+    },
+    {
+      "name": "mts-codex",
+      "branch": "nuc/codex-holdout",
+      "head": "7cd3d68bad84d032ee13cbb0b8cec86b75f70343",
+      "category": "PROTECTED_WORKSPACE",
+      "existing_owner_card": "",
+      "decision": "Persistent primary/lane/data home, not an unfinished job. Preserve current owner state.",
+      "files": []
+    },
+    {
+      "name": "mts-codex-lab",
+      "branch": "jis-nuc/codex-lab",
+      "head": "faa0fe54efaf675555eee2b3545793698745e595",
+      "category": "PROTECTED_WORKSPACE",
+      "existing_owner_card": "",
+      "decision": "Persistent primary/lane/data home, not an unfinished job. Preserve current owner state.",
+      "files": []
+    },
+    {
+      "name": "mts-gemini",
+      "branch": "jis-nuc/gemini-start",
+      "head": "3bb24f9f6942270acc5e2d3f0c6bdeb629583d82",
+      "category": "RECENT_WORKSPACE",
+      "existing_owner_card": "",
+      "decision": "Recent activity; preserve owner workspace, no claim of a running model from directory activity alone.",
+      "files": []
+    },
+    {
+      "name": "mts-jis-nuc-cloud-ai-health",
+      "branch": "jis-nuc/codex-cloud-ai-health",
+      "head": "3ed1c8b9a8e5093f367776ffef2b1734d8643c9f",
+      "category": "COMPLETED_OR_RESIDUE",
+      "existing_owner_card": "",
+      "decision": "No unmerged committed work; save residual files/data, retire checkout. Planner card edits are snapshots, not authority to replace newer queue state.",
+      "files": []
+    },
+    {
+      "name": "mts-jis-nuc-codex-station-c-review",
+      "branch": "jis-nuc/codex-station-c-review",
+      "head": "ce8194ba2ccaa4e3e058954df95d019a5c2c8ded",
+      "category": "COMPLETED_OR_RESIDUE",
+      "existing_owner_card": "",
+      "decision": "No unmerged committed work; save residual files/data, retire checkout. Planner card edits are snapshots, not authority to replace newer queue state.",
+      "files": []
+    },
+    {
+      "name": "mts-jis-nuc-opus-review-handoff",
+      "branch": "jis-nuc/opus-review-handoff",
+      "head": "0e4b72767c395768cbed869952130abac33fd8ee",
+      "category": "COMPLETED_OR_RESIDUE",
+      "existing_owner_card": "",
+      "decision": "No unmerged committed work; save residual files/data, retire checkout. Planner card edits are snapshots, not authority to replace newer queue state.",
+      "files": []
+    },
+    {
+      "name": "mts-jis-nuc-retained-worktree-disposition",
+      "branch": "jis-nuc/retained-worktree-disposition",
+      "head": "3bb24f9f6942270acc5e2d3f0c6bdeb629583d82",
+      "category": "COMPLETED_OR_RESIDUE",
+      "existing_owner_card": "",
+      "decision": "No unmerged committed work; save residual files/data, retire checkout. Planner card edits are snapshots, not authority to replace newer queue state.",
+      "files": []
+    },
+    {
+      "name": "mts-jis-nuc-station-c-rolling-audit",
+      "branch": "jis-nuc/station-c-rolling-audit",
+      "head": "7d36743342733b0726f2a6199440995196324ba4",
+      "category": "COMPLETED_OR_RESIDUE",
+      "existing_owner_card": "",
+      "decision": "No unmerged committed work; save residual files/data, retire checkout. Planner card edits are snapshots, not authority to replace newer queue state.",
+      "files": []
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "closed": "2026-10-14T13:17:53Z",
+  "commands": [],
+  "created": "2026-10-14T12:38:00Z",
+  "depends_on": [],
+  "done_when": "The named test passes and the report lists the changed files and the red-then-green test output (the runner's ship runs the quick gate).",
+  "from_inbox": "",
+  "goal": "Corrected candle-close study: causal joint phases and matched first encounters",
+  "id": "lab-candle-close-corrected",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [
+    "volume_candles_ma"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refs": [],
+  "result": "0 candidates / 2016 registered cells; 64 informative quality cells all TRANSITION_OTHER; 13 tests without skips and independent verifier PASS; DEV only.",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/candle_close_corrected_2026-10-14"
+  ],
+  "scope_out": [
+    "the live path",
+    "holdout reads",
+    "parameters without a trader quote (NO-SOURCE)"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Write the test named in Tests first and see it fail on the current code.",
+    "Implement the goal inside scope_in only; new behaviour sits behind a flag that is off by default.",
+    "Run the test file you changed (PYTHONPATH = the work tree root) until it passes. Do not run scripts/dev/run_all_tests.py: tests that create git repositories are refused in the sandbox; the runner runs the quick gate when it ships."
+  ],
+  "taken": "2026-10-14T12:38:00Z",
+  "tests": "Fail-first fixtures for structural phases, true range boundaries, matching, inference, availability and future perturbation; real-data verifier",
+  "title": "Corrected candle-close study: causal joint phases and matched first encounters"
+}

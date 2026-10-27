@@ -1,0 +1,62 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "powershell -ExecutionPolicy Bypass -File scripts/operator/defender_exclusions.ps1 -Check",
+    "python scripts/dev/sync.py start docker-vs-windows-test-speed",
+    "git rev-parse HEAD",
+    "python -c \"import sys;print(sys.version)\"",
+    "Measure-Command { python scripts/dev/run_all_tests.py --quick }",
+    "Measure-Command { python -m pytest MyTradingSys/tests -q -p no:cacheprovider }",
+    "docker run --rm python:3.12 sh -c \"git clone --depth 1 -b fast-track https://github.com/jishusharma/mts.git /w && cd /w && pip install -q pytest numpy pandas tzdata && time python -m pytest MyTradingSys/tests -q -p no:cacheprovider\"",
+    "docker run --rm -v ${PWD}:/w -w /w python:3.12 sh -c \"pip install -q pytest numpy pandas tzdata && time python -m pytest MyTradingSys/tests -q -p no:cacheprovider\""
+  ],
+  "created": "2026-10-22T11:24:15Z",
+  "depends_on": [],
+  "done_when": "The audit file has wall-clock numbers for Windows native, Docker Linux FS and Docker bind mount on the same commit, at least 2 runs each for the first two, with test pass/fail counts per variant and a one-line recommendation backed by the ratio.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Decide with numbers whether the MTS test suite should run in Docker/WSL (Linux filesystem) instead of native Windows. Operator 2026-10-22: Windows process start-up makes scripts and tests slow; NB has Docker.",
+  "id": "docker-vs-windows-test-speed",
+  "lane": "JIS-NB",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Laptop DESKTOP-F7IU69N has no WSL/Docker (operator installs it as admin). Results decide whether gates move to WSL/Docker on every machine.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-22T11:44:23Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "JIS-NB only; Defender exclusions applied first (scripts/operator/defender_exclusions.ps1 -Check = 0 missing)",
+    "Same commit of origin/fast-track both ways",
+    "Docker: official python image matching ci.yml's Python version; repo cloned INSIDE the container/Linux FS (not a bind mount of C:), pip install pytest numpy pandas tzdata as ci.yml",
+    "Also time the bind-mount variant once (repo on C: mounted into the container) to show the cost of crossing filesystems"
+  ],
+  "scope_out": [
+    "No changes to ci.yml, run_all_tests.py or any hook",
+    "No live tree, no deploy, no processes stopped",
+    "No Maven/backtest steps"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "git -C <fresh worktree> rev-parse HEAD; record it",
+    "Windows: time `python scripts/dev/run_all_tests.py --quick` 2x and `python -m pytest MyTradingSys/tests -q -x -p no:cacheprovider` 2x; record wall seconds and pass/fail counts",
+    "Docker (Linux FS): docker run --rm python:<ver> sh -c 'git clone --depth 1 -b fast-track <repo url> /w && cd /w && pip install -q pytest numpy pandas tzdata && time python -m pytest MyTradingSys/tests -q -p no:cacheprovider'; 2x; also run_all_tests.py --quick if it runs on Linux",
+    "Docker bind mount: same pytest command with -v <worktree>:/w; 1x",
+    "Also time `python -c pass` x20 on each side (start-up floor)",
+    "Write MyTradingSys/research/audits/docker_vs_windows_2026-10-22.md: table (variant, wall s, tests passed/failed/skipped, start-up ms), commit SHA, machine load at the time, and which tests fail only on Linux"
+  ],
+  "tests": "Measurement card: no new tests. Numbers must come from the runs on NB this card made; quote the raw `time` lines.",
+  "title": "Measure MTS test suite in Docker (Linux FS) vs native Windows on JIS-NB",
+  "weight": "ROUTINE",
+  "worker": "builder"
+}

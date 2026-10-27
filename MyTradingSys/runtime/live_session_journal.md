@@ -422,7 +422,7 @@ BN1. Supervisor not running. MTS-PROC SUP COUNT=0. Launched via mode.ps1 only.
 BN2. Non-IntelliJ java query empty at 05:05Z while log advanced. Confirm spawn-per-cycle behavior next check.
 ## SESSION MTS-2026-09-18-0456Z - WRITES
 
-W1. Wrote MyTradingSys\research\session_anchor_options_note.md.
+W1. Wrote MyTradingSys\research\_archive\loose_2026-10\session_anchor_options_note.md.
     6619 bytes, no BOM, no non-ASCII. Contains options A (UTC anchor only),
     B (per-session anchors only), C (both). Evidence attached:
     snapshot 2026-09-17T20:11:15Z session block populated (anchor 13:30Z
@@ -943,8 +943,8 @@ Landed:
   tape-watch.ps1 history-on-start. Prints last 40 lines on mts-tape start. Hash CB434659 -> 61EC0CE0, 107 lines.
   apparatus_fixes.md: log tail is not a health check. Loop-state claim requires wrapper PID + lock + log mtime in the same read.
   live_session_protocol.md rule 15: no inferred levels. SCREENER levels are not signals. Prior-day POC/VAH/VAL not in conditions/ are SCREENER.
-  MyTradingSys/research/MODEL_ALIGNMENT_2026-09-21.md: five model-alignment issues + pre-committed chain. Disk verdicts cited, web claims UNVERIFIED-WEB.
-  MyTradingSys/research/PENDING_MODEL_ALIGNMENT_FYI.md: carry-forward note, resolved.
+  MyTradingSys/research/_archive/loose_2026-10/MODEL_ALIGNMENT_2026-09-21.md: five model-alignment issues + pre-committed chain. Disk verdicts cited, web claims UNVERIFIED-WEB.
+  MyTradingSys/research/_archive/loose_2026-10/PENDING_MODEL_ALIGNMENT_FYI.md: carry-forward note, resolved.
   NEXT_SESSION_HANDOFF.md item 4 added: read the PENDING FYI.
   03_FILE_INDEX.md: MODEL_ALIGNMENT row added; 16 em-dashes normalized to hyphens (pre-existing, cosmetic).
 

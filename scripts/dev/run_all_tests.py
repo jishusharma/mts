@@ -5,6 +5,8 @@ Usage:
   python scripts/dev/run_all_tests.py --quick (skip mvn and backtest)
   python scripts/dev/run_all_tests.py --quick --smoke --changed-file F   (what `sync.py ship` runs: only the steps gate_select picks
                                                                           for the paths listed in F; live-path or unknown paths = all)
+  python scripts/dev/run_all_tests.py --shard K/N   (CI: run only shard K of N; every job builds the same plan and splits it
+                                                    by estimated time, longest first, so the N jobs together run every step once)
   sync.py ship adds --precheck --fail-fast --slot --record (MyTradingSys/system/GATE_SPEED.md): cheap steps first without the gate
   slot, stop at the first failure, the slot around the main phase only, steps that passed on this exact clean tree are not rerun.
 
@@ -19,6 +21,7 @@ import contextlib
 import glob
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -43,8 +46,10 @@ PYTEST_LAYER_PATHS = [
     "scripts/dev/test_dax_engine_flag.py",
     "scripts/dev/test_check_handoff.py",
     "scripts/dev/test_live_owner.py",
+    "scripts/dev/test_hosts.py",
     "scripts/dev/test_loop_supervisor_grace.py",
     "scripts/dev/test_nowin.py",
+    "scripts/dev/test_wt_maint.py",
     "scripts/dev/test_outcome_labeler_incremental.py",
     "scripts/dev/test_wrapper_load_resilience.py",
     "scripts/dev/test_gate_priority.py",
@@ -73,17 +78,20 @@ SERIAL_STEPS = ("3ly", "3af", "3x", "3ms", "3mg", "5")
 PYTEST_SHARD_NUMS = ("4", "4b", "4c", "4g", "4h")
 TEST_FILE_DEFAULT_S = 2
 TEST_FILE_SECONDS = {
-    "test_turn_meter.py": 8,     # 150 until GATE_SPEED D7 (2026-10-18) ran its hook calls in-process: 7 s
-
-    "test_aibridge_payload.py": 95,
+    "test_aibridge_payload.py": 45,                  # 95 split 2026-10-24 (quiet: 19 s + 23 s): one selftest here,
+    "test_aibridge_selftest_concurrent.py": 50,      # the concurrent pair there, so two shards share it
     "test_b091_build_check_tiers.py": 60,
     "test_build_check_report_reasons.py": 32,
-    "test_relay_tick.py": 32,
-    "test_relay.py": 25,
+    "test_relay_tick.py": 36,
+    "test_relay.py": 60,                              # 2026-10-25 measured alone on JIS-NB (git-heavy, Windows)
+    "test_lease.py": 60,
+    "test_cicd_run.py": 27,
+    "test_gate_budget.py": 15,
     "test_tom_profile_parity.py": 12,
     "test_net_rr_floor_single_source.py": 8,
     "test_sync_where_unborn.py": 6,
     "test_dsa_direct_mode.py": 6,
+    "test_soak_six_slots.py": 150,                   # pure CPU, 135-164 s: smoke leaves it to CI (card soak-six-slots-smoke-cap)
 }
 SLOWEST_FIRST = ("4", "4b", "4c", "4g", "4h", "4e", "4f","3xt", "5b", "3k", "3ds", "3dk", "3bk", "3w")
 _LOCK = threading.Lock()
@@ -91,22 +99,26 @@ _LOCK = threading.Lock()
 # GATE_SPEED D1 (ship only, --precheck): these run first, PRECHECK_JOBS at a time and WITHOUT a gate slot; any failure stops the gate
 # before the slow steps start. OURS: the steps whose median is <= 25 s over 4106 step rows of 30 trees' gate_timing.jsonl (2026-10-18),
 # plus 3x (ALWAYS, 18 s in ship logs, 8 failures) and 3js. 2026-10-18: RELAY.md over its size cap failed step 4d (6.6 s) at +438 s.
-CHEAP_STEPS = ("1", "2", "3", "3b", "3c", "3r", "3cv", "3tm", "3s", "3f", "3td", "3hs", "3sq", "3ly", "3cy", "3tl", "3q", "3p", "3t",
+CHEAP_STEPS = ("1", "2", "3", "3b", "3c", "3r", "3cv", "3cva", "3tm", "3s", "3f", "3td", "3hs", "3sq", "3ly", "3cy", "3tl", "3q", "3p", "3t",
                "3d", "3h", "3g", "3gs", "3rc", "3e", "3sh", "3cs", "3pc", "3rb", "3af", "3vd", "3lm", "3gd", "3dl", "3x", "3mg", "3js",
                "4d", "4e", "5c")
 PRECHECK_JOBS = 2
 TARGET_STEP = "4t"   # precheck pytest of the MyTradingSys/tests files that reference the change (they also run in their shard)
 TARGET_CAP = 12      # OURS: at most this many files (sorted), so the precheck stays about a minute
+LOCAL_SKIP = ("3k", "4", "3dk", "3ad", "3bk")   # OURS: BRIEF 3.3, dropped from the local ship gate only; every CI shard still runs them. Not 5b/4f: live-path layer files (FULL_RE) need them locally
 SLOW_FILE_S = 30     # files measured at >= this many seconds stay in their shard only
-CHEAP_STEPS += ("3qn", "3gi")
+CHEAP_STEPS += ("3qn", "3gi")   # 3la (11 s) is not cheap: it runs with the main phase
 # GATE_SPEED X2 (ship only, --fast, smoke mode): the fast path. One phase, tests chosen by gate_impact, a time budget, the rest left to CI.
 FAST_STEP_TIMEOUT_S = 240     # OURS: a fast-gate step still running after this is hung (a held slot would block every later ship)
+GATE_HARD_STEP_S = 60         # OURS: step-phase deadline of every fast ship; ship overhead measured ~45-80 s on a loaded JIS-NB (2026-10-25: 171 s wall at 90), total stays under 120 s
+GATE_DEADLINE = None          # monotonic time by which a gate-file ship's steps must be done
+TIMEOUT_DEFERS = False        # gate-file ship: a step over the cap is left to CI (reported, not failed); set in main()
 FAST_BASE_S = 6              # OURS: seconds of ALWAYS-step work counted against the budget before any test is added
 UNIT_DEFAULT_S = 8            # OURS: estimated seconds of a script-style test step that is not in STEP_EST
 EXTRA_FILE_S = 4              # OURS: estimated seconds per step-3xt file (one pytest process each) and per step-5b module
 # Estimated CPU seconds of the script-style test steps a change can reach (each run alone on JIS-NB, 2026-10-18; 3k/3ds/3dk/3bk run as
 # 2-3 shards, the figure is their sum); a step above the budget is deferred to CI unless a changed file names it.
-STEP_EST = {"3k": 200, "3ds": 30, "3bk": 25, "3dk": 14, "3ad": 24, "3sig": 21, "3cx": 11, "3tk": 13, "3lh": 9, "3ms": 13, "3sg": 9,
+STEP_EST = {"3k": 200, "3ds": 30, "3bk": 25, "3dk": 14, "3ad": 24, "3sig": 150, "3cx": 11, "3tk": 13, "3lh": 9, "3ms": 13, "3sg": 9,
             "3cr": 8, "3lm": 4, "3hy": 1, "3w": 9, "3x": 3}
 RECORD_NAME = "mts_gate_record.json"   # GATE_SPEED D3: per-worktree git dir, never shared between trees or machines
 RECORD_MAX_AGE_S = 24 * 3600
@@ -177,7 +189,8 @@ def pytest_cmd(targets, root=REPO, deselect=()):
     after all tests pass: JIS-NB 2026-10-14, six ships at once), no cache dir, and transient tmp dirs ignored (transient_ignore_glob)."""
     scratch = tempfile.mkdtemp(prefix="mts_s4_")
     _SCRATCH.append(scratch)
-    return [sys.executable, "-m", "pytest", *targets, "-q", "-p", "no:cacheprovider", transient_ignore_glob(root),
+    durations = ["--durations=0", "--durations-min=0.5"] if os.environ.get("GITHUB_ACTIONS") else []   # per-file times for the notice
+    return [sys.executable, "-m", "pytest", *targets, "-q", "-p", "no:cacheprovider", *durations, transient_ignore_glob(root),
             f"--basetemp={Path(scratch) / 'bt'}", *[a for d in deselect for a in ("--deselect", d)]]
 
 
@@ -210,12 +223,17 @@ STEP_TIMEOUT_S = None   # set by the fast path (FAST_STEP_TIMEOUT_S); None = no 
 def exec_step(cmd, cwd=None):
     """Run one command to completion. Returns (ok, output): ok is True/False, or None with a reason when the executable is missing.
     A step over STEP_TIMEOUT_S (fast path only) fails: a hung step must not hold a gate slot for ever."""
+    limit = STEP_TIMEOUT_S
+    if GATE_DEADLINE is not None and limit is not None:
+        limit = max(1.0, min(limit, GATE_DEADLINE - time.monotonic()))   # a step queued behind others gets only what is left of the budget
     try:
         result = subprocess.run(cmd, cwd=cwd or str(REPO), capture_output=True, text=True, errors="replace",
-                                shell=isinstance(cmd, str), timeout=STEP_TIMEOUT_S)
+                                shell=isinstance(cmd, str), timeout=limit)
     except FileNotFoundError as e:
         return None, f"not found: {e}"
     except subprocess.TimeoutExpired:
+        if TIMEOUT_DEFERS:
+            return True, f"step over the {STEP_TIMEOUT_S} s ship budget: DEFERRED TO CI (a gate-file ship must finish in 2 minutes; CI runs the whole suite)"
         return False, f"step timed out after {STEP_TIMEOUT_S} s (fast gate limit): treated as a failure"
     return result.returncode == 0, result.stdout + result.stderr
 
@@ -232,6 +250,34 @@ def ci_annotation(num, description, output, limit=3000):
     return f"::error title=Step {num} FAIL::{description} | {body}"
 
 
+STEP_SECONDS = {}   # step -> wall seconds of this run; on CI the slowest go out as one ::notice (job logs are not readable off GitHub)
+
+
+FILE_SECONDS = {}
+
+
+def note_file_seconds(output):
+    """Per-file seconds out of a step's output: pytest --durations lines ('1.20s call  path.py::test') summed per file, and the 3xt
+    lines ('ok   path.py: 3 passed in 4.10s')."""
+    for ln in (output or "").splitlines():
+        m = re.match(r"\s*([\d.]+)s (?:call|setup|teardown)\s+([^\s:]+\.py)::", ln)
+        if m:
+            FILE_SECONDS[m.group(2)] = FILE_SECONDS.get(m.group(2), 0) + float(m.group(1))
+            continue
+        m = re.match(r"(?:ok  |FAIL) (\S+\.py): .* in ([\d.]+)s", ln)
+        if m:
+            FILE_SECONDS[m.group(1)] = float(m.group(2))
+
+
+def times_notice(n=15):
+    """'::notice title=Gate step times::4.2=19s, ...' for the n slowest steps: the check-run annotations API serves it, so shard
+    estimates can be retuned from real runner numbers (operator 2026-10-22, under 2 minutes)."""
+    top = sorted(STEP_SECONDS.items(), key=lambda kv: -kv[1])[:n]
+    files = sorted(FILE_SECONDS.items(), key=lambda kv: -kv[1])[:2 * n]
+    return ("::notice title=Gate step times::" + ", ".join(f"{k}={v:.0f}s" for k, v in top)
+            + (("\n::notice title=Gate file times::" + ", ".join(f"{k}={v:.0f}s" for k, v in files)) if files else ""))
+
+
 def format_step(num, description, cmd_text, ok, output, elapsed, progress="", tail=15):
     """The block one finished step prints. tail = how many output lines a failure shows (None = all; CI always shows all)."""
     lines = [f"\n[Step {num}] {description}", f"  Command: {cmd_text}"]
@@ -239,6 +285,8 @@ def format_step(num, description, cmd_text, ok, output, elapsed, progress="", ta
         lines.append(f"Step {num}: SKIP ({output})")
         return lines
     lines.append(f"  Elapsed: {elapsed:.1f}s" + (f" ({progress})" if progress else ""))
+    STEP_SECONDS[str(num)] = elapsed
+    note_file_seconds(output)
     lines.append(f"Step {num}: {'PASS' if ok else 'FAIL'}")
     out = output.splitlines()
     if not ok:
@@ -310,14 +358,17 @@ def exec_layer_chunks(modules, jobs):
     procs = [subprocess.Popen([sys.executable, "-m", "unittest"] + c, cwd=str(REPO), stdout=subprocess.PIPE,
                               stderr=subprocess.STDOUT, text=True, errors="replace") for c in chunks]
     outs = [p.communicate()[0] for p in procs]
-    ok = all(p.returncode == 0 for p in procs)
+    # Python 3.12+ exits 5 when a chunk holds only modules with no unittest cases ('NO TESTS RAN'): that is not a failure.
+    def passed(p, o):
+        return p.returncode == 0 or (p.returncode == 5 and "NO TESTS RAN" in o)
+    ok = all(passed(p, o) for p, o in zip(procs, outs))
     if ok:
         return True, "\n".join(outs)
-    keep = [o if os.environ.get("CI") else "\n".join(o.splitlines()[-15:]) for p, o in zip(procs, outs) if p.returncode != 0]
+    keep = [o if os.environ.get("CI") else "\n".join(o.splitlines()[-15:]) for p, o in zip(procs, outs) if not passed(p, o)]
     return False, "\n".join(keep)
 
 
-def exec_unittest_shards(script, jobs):
+def exec_unittest_shards(script, jobs, part=None):
     """Run one slow unittest script as `jobs` concurrent processes (its test ids split round-robin; union = every test, each once).
     cwd stays the repo root and scripts/dev goes on PYTHONPATH, as when the script runs directly. Returns (ok, output)."""
     import importlib
@@ -332,7 +383,10 @@ def exec_unittest_shards(script, jobs):
     def ids(t):
         return [i for x in t for i in (ids(x) if isinstance(x, unittest.TestSuite) else [x.id()])]
 
-    chunks = split_modules(ids(suite), jobs)
+    all_ids = ids(suite)
+    if part:   # (i, n): only every n-th test id from i, so n CI shards each run a slice (union = every test, each once)
+        all_ids = all_ids[part[0]::part[1]]
+    chunks = split_modules(all_ids, jobs)
     env = dict(os.environ, PYTHONPATH=os.pathsep.join([mod_dir, os.environ.get("PYTHONPATH", "")]).rstrip(os.pathsep))
     procs = [subprocess.Popen([sys.executable, "-m", "unittest"] + c, cwd=str(REPO), stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                               text=True, errors="replace", env=env) for c in chunks]
@@ -423,6 +477,7 @@ def build_plan(quick):
     add("3c", "User guide in sync with mts.ps1", [sys.executable, "scripts/dev/check_guide.py"], "Step 3c: Guide in sync")
     add("3r", "Alert rate checker tests", [sys.executable, "scripts/dev/test_alert_rate_check.py"], "Step 3r: Alert rate checker tests")
     add("3cv", "Chart verify (RSI/BB/StochRSI) tests", [sys.executable, "scripts/dev/test_chart_verify.py"], "Step 3cv: Chart verify tests")
+    add("3cva", "Indicator audit sampler/comparator tests", [sys.executable, "scripts/dev/test_indicator_audit.py"], "Step 3cva: Indicator audit tests")
     add("3tm", "One timeframe map tests", [sys.executable, "scripts/dev/test_tf_map.py"], "Step 3tm: TF map tests")
     add("3s", "Testnet status summary tests", [sys.executable, "scripts/dev/test_testnet_status.py"], "Step 3s: Testnet status tests")
     add("3f", "Funnel report tests", [sys.executable, "scripts/dev/test_funnel_report.py"], "Step 3f: Funnel report tests")
@@ -433,11 +488,12 @@ def build_plan(quick):
     add("3sq", "Spec quote checker tests", [sys.executable, "scripts/dev/test_check_spec_quotes.py"], "Step 3sq: Spec quote checker tests")   # spec quotes verbatim in the cited transcript lines
     add("3ly", "Layer index tests", [sys.executable, "scripts/dev/test_make_layers_md.py"], "Step 3ly: Layer index tests")   # LAYERS.md: no dead pointer, every layer owned
     add("3cx", "Layer lab runner tests", [sys.executable, "scripts/dev/test_codex_run.py"], "Step 3cx: Layer lab runner tests")
+    add("3nl", "NUC lab wrapper tests (tick/status/gemini over the ssh gate)", [sys.executable, "scripts/dev/test_nuc_lab.py"], "Step 3nl: NUC lab wrapper tests")
     add("3cy", "ask_model tests", [sys.executable, "scripts/dev/test_ask_model.py"], "Step 3cy: ask_model tests")
     add("3tl", "Task cards meet the Definition of Ready", [sys.executable, "scripts/dev/tasks.py", "lint"], "Step 3tl: Task card lint")   # a ready/active card that fails the Definition of Ready is an error
     add("3q", "INDEX/BUGS consistency", [sys.executable, "scripts/dev/test_registry_consistency.py"], "Step 3q: INDEX/BUGS consistency")
-    add("3p", "P4 corrected script tests", [sys.executable, "MyTradingSys/research/test_p4_corrected.py"], "Step 3p: P4 corrected script tests")
-    add("3t", "T093 turn-of-candle imbalance tests", [sys.executable, "MyTradingSys/research/test_t093_toc_imbalance_klines.py"], "Step 3t: T093 imbalance tests")
+    add("3p", "P4 corrected script tests", [sys.executable, "MyTradingSys/research/loose_code/test_p4_corrected.py"], "Step 3p: P4 corrected script tests")
+    add("3t", "T093 turn-of-candle imbalance tests", [sys.executable, "MyTradingSys/research/loose_code/test_t093_toc_imbalance_klines.py"], "Step 3t: T093 imbalance tests")
     add("3d", "Extract quote checker tests", [sys.executable, "scripts/dev/test_verify_extract_quotes.py"], "Step 3d: Quote checker tests")
     add("3h", "Launcher verb static tests (runner, orphans)", [sys.executable, "scripts/dev/test_mts_launcher.py"], "Step 3h: Launcher static tests")
     add("3g", "Gate coverage tests (Fabio v3 + live writers)", [sys.executable, "scripts/dev/test_run_all_tests.py"], "Step 3g: Gate coverage tests")
@@ -445,6 +501,7 @@ def build_plan(quick):
     add("3gs", "Gate selector tests (path -> smoke steps, fail closed)", [sys.executable, "scripts/dev/test_gate_select.py"], "Step 3gs: Gate selector tests")
     add("3rc", "Red CI task card tests (one card per red run)", [sys.executable, "scripts/dev/test_ci_red_card.py"], "Step 3rc: Red CI card tests")
     add("3sg", "Stop guard tests (a session cannot end holding unshipped work)", [sys.executable, "scripts/dev/test_stop_guard.py"], "Step 3sg: Stop guard tests")
+    add("3cxp", "Codex status parser tests", [sys.executable, "scripts/dev/test_codex_status_parse.py"], "Step 3cxp: Codex status parser tests")
     add("3sig", "Signals between logins (mts_signal.py)", [sys.executable, "scripts/dev/test_mts_signal.py"], "Step 3sig: Signals tests")
     add("3e", "DSA browser worker + queue lane tests", [sys.executable, "scripts/worker/test_dsa_worker.py"], "Step 3e: DSA worker tests")
     add("3sh", "Screenshot intake tests (save, classify, read, close gates)", [sys.executable, "scripts/dev/test_shot.py"], "Step 3sh: Screenshot intake tests")
@@ -460,6 +517,7 @@ def build_plan(quick):
     add("3lh", "GPT lane health tests (down/up rules, reroute, pause, resume, DSA prompt)", [sys.executable, "scripts/dev/test_lane_health.py"], "Step 3lh: GPT lane health tests")
     add("3rb", "Claude-GPT relay board tests (shared notes, lanes, pack)", [sys.executable, "scripts/dev/test_relay_board.py"], "Step 3rb: Relay board tests")
     add("3af", "Artifact registry tests (one url per page per account)", [sys.executable, "scripts/dev/test_artifacts.py"], "Step 3af: Artifact registry tests")
+    add("3ul", "Usage ledger tests (usage_log.py row, parser, idle, summary)", pytest_cmd(["scripts/dev/test_usage_log.py"]), "Step 3ul: Usage ledger tests")
     plan.append(Step("3bk", "Backup snapshot tests (dirty/untracked work reaches the remote)", "Step 3bk: Backup snapshot tests", run=lambda: exec_unittest_shards("scripts/dev/test_backup_snapshot.py", gate_jobs() if gate_jobs() == 1 else 2), cmd_text="python -m unittest (scripts/dev/test_backup_snapshot.py, 2 shards)", tail=None))
     add("3vd", "Verdict registry override tests (sourced hand corrections survive backfill)", [sys.executable, "scripts/dev/test_verdicts.py"], "Step 3vd: Verdict registry tests")
     add("3lm", "Live mirror tests (read-only desktop->work-tree data, fail-closed)", [sys.executable, "scripts/dev/test_live_mirror.py"], "Step 3lm: Live mirror tests")
@@ -475,6 +533,9 @@ def build_plan(quick):
     add("3gd", "Gate discovery: every tracked test file is gated (B150)", [sys.executable, "MyTradingSys/tests/test_gate_discovery_b150.py"], "Step 3gd: Gate discovery")
     # Step 3dl: CI deps lint (2026-10-16: pandas imported by research tests, missing from the ci.yml pip line; the desktop has every package, so
     # only CI saw ModuleNotFoundError at collection, three red rounds in 3 h). Always runs, ~5 s.
+    # Step 3la: look-ahead lint (2026-10-24: 62a05b2eb added a run_rsi_backtest.py hit; no smoke shard named the module, the ship passed, CI
+    # went red 17 min). ~11 s, picked by gate_select.LOOKAHEAD_RE; exit 1 on a new FAIL hit.
+    add("3la", "Look-ahead lint: no new unreviewed FAIL hit (lookahead_lint.py --new)", [sys.executable, "scripts/dev/lookahead_lint.py", "--new"], "Step 3la: Look-ahead lint")
     add("3dl", "CI deps lint: no gated test hard-imports a package the ci.yml pip line lacks", [sys.executable, "scripts/dev/ci_deps_lint.py"], "Step 3dl: CI deps lint")
 
     # Step 4: pytest (math + doc tests), sharded so the slowest step no longer sets the gate's wall time (2026-10-16: one process
@@ -543,12 +604,12 @@ def build_plan(quick):
 NOT_RUN = {}   # step num -> why it did not run (fail-fast / precheck failed); results[num] is None for these
 
 
-def run_plan(plan, jobs, out=None, fail_fast=False, precheck=False, slot=None, reused=None):
+def run_plan(plan, jobs, out=None, fail_fast=False, precheck=False, slot=None, reused=None, precheck_slot=None):
     """Run the plan and print each step's block as it finishes. Independent steps run `jobs` at a time, slowest first; SERIAL_STEPS
     follow one by one; jobs == 1 runs everything in definition order. Returns {step num: True|False|None}.
     GATE_SPEED (sync.py ship only; CI, auto_deploy and a bare run pass none of these):
-      precheck   CHEAP_STEPS and the targeted step run first, PRECHECK_JOBS at a time, outside `slot`; any failure there and the rest
-                 is NOT RUN (the whole precheck still runs, so every cheap failure shows at once)
+      precheck   CHEAP_STEPS and the targeted step run first, PRECHECK_JOBS at a time, holding precheck_slot when provided;
+                 any failure there and the rest is NOT RUN (the whole precheck still runs, so every cheap failure shows at once)
       fail_fast  in the main phase, after the first failed step the steps not yet started are NOT RUN; started ones finish
       slot       zero-argument context manager (the gate slot) held around the main phase only
       reused     {num: note} of steps the pass record shows passing on this exact tree: PASS without running"""
@@ -611,9 +672,11 @@ def run_plan(plan, jobs, out=None, fail_fast=False, precheck=False, slot=None, r
     if precheck:
         pre = [s for s in todo if s.num in CHEAP_STEPS or s.num == TARGET_STEP]
         main_steps = [s for s in todo if s not in pre]
-        print(f"Gate: {len(todo)} steps; precheck {len(pre)} cheap steps, {min(jobs, PRECHECK_JOBS)} at a time, no gate slot"
+        slot_msg = "with precheck slot" if precheck_slot else "no gate slot"
+        print(f"Gate: {len(todo)} steps; precheck {len(pre)} cheap steps, {min(jobs, PRECHECK_JOBS)} at a time, {slot_msg}"
               + (f"; {len(reused)} reused from the pass record" if reused else ""), file=out, flush=True)
-        run_steps(pre, min(jobs, PRECHECK_JOBS), False)
+        with (precheck_slot() if precheck_slot else contextlib.nullcontext()):
+            run_steps(pre, min(jobs, PRECHECK_JOBS), False)
         if failed_first:
             for s in main_steps:
                 not_run(s, f"precheck failed: step {failed_first[0]}")
@@ -627,6 +690,11 @@ def run_plan(plan, jobs, out=None, fail_fast=False, precheck=False, slot=None, r
         with (slot() if slot else contextlib.nullcontext()):
             run_steps(main_steps, jobs, fail_fast)
     return results
+
+
+def step_timeout_for(mode):
+    """gate-tiers-by-path: the per-step cap (seconds) of a smoke gate; a full gate and an unselected run keep none."""
+    return FAST_STEP_TIMEOUT_S if mode == "smoke" else None
 
 
 def changed_files(args):
@@ -714,7 +782,7 @@ def apply_fast(plan, files, nums, jobs):
     needed = set()
     for f in files:
         needed.update(gate_select._name_matches(f, steps_list))
-        if gate_impact.is_test_file(f):
+        if f.endswith(".py") or f.endswith("ci.yml") or gate_impact.is_test_file(f):
             needed.add("3dl")
     if any(gate_select._is_doc(f) for f in files):
         needed.update(gate_select.DOC_STEPS)
@@ -742,7 +810,7 @@ def apply_fast(plan, files, nums, jobs):
     extras = run_extra_tests.all_tests()
     ex = {t for t in gate_select.extra_subset(files, extras) if t in extras} | {t for t in extras if t in reach.tests}
     for t in ex:
-        unit(("ex", t), EXTRA_FILE_S, t in reach.direct)
+        unit(("ex", t), TEST_FILE_SECONDS.get(Path(t).name, EXTRA_FILE_S), t in reach.direct)
     modules = find_layer_modules()
     ly = set(gate_select.layer_subset([f for f in files if not f.endswith(gate_select.DOC_SUFFIXES)], modules)) \
         | {m for m in modules if m.replace(".", "/") + ".py" in reach.tests}
@@ -751,10 +819,11 @@ def apply_fast(plan, files, nums, jobs):
     direct = [k for k, (e, d) in units.items() if d]
     others = [k for k, (e, d) in units.items() if not d]
     workers = min(jobs, gate_impact.EFFECTIVE_WORKERS)
-    kept, deferred = gate_impact.plan_budget(direct, others, lambda k: units[k][0], workers, base_s=FAST_BASE_S, budget=gate_impact.FAST_BUDGET_S)
+    budget = gate_select.GATE_BUDGET_S if any(gate_select.is_gate_file(f) for f in files) else gate_impact.FAST_BUDGET_S   # a gate-file change gets the 2-minute ship's budget
+    kept, deferred = gate_impact.plan_budget(direct, others, lambda k: units[k][0], workers, base_s=FAST_BASE_S, budget=budget)
     kept = set(kept)
     info["deferred"] = sorted(("/".join(k[1:]) for k in deferred))
-    info["kept"], info["budget"] = len(kept), gate_impact.FAST_BUDGET_S
+    info["kept"], info["budget"], info["gate_file"] = len(kept), budget, budget == gate_select.GATE_BUDGET_S
     info["est_s"] = round((FAST_BASE_S + sum(units[k][0] for k in kept)) / max(1, workers))
     deselect = gate_impact.active_deselects(gate_impact.trunk_quarantine())
     info["quarantined"] = deselect
@@ -810,13 +879,139 @@ def apply_fast(plan, files, nums, jobs):
     return new_plan, info
 
 
+# OURS (operator 2026-10-22 "I want everything to be under 2 minutes"): wall seconds of each gate step, measured alone-in-pool on a
+# 4-core Linux container (full gate 120 s); a step not listed counts 2 s. The file-list steps are split per file below instead.
+SHARD_EST_S = {"5": 17, "6": 8, "3k": 20, "3sig": 20, "3ad": 14, "3cx": 11, "3gi": 8, "3tk": 7, "3cr": 7, "3dl": 6, "3g": 5, "3ds": 5,
+               "3dk": 5, "3ms": 5, "4d": 5, "4e": 2, "4f": 10, "1": 4, "3w": 4, "3sg": 4, "5c": 3, "3bk": 3, "3lh": 3}
+SHARD_DEFAULT_S = 2
+# OURS: the same steps on windows-latest CI runners (Gate step times notices, run 39838332881, 2026-10-22). Git-driving steps cost
+# 3-17x their Linux time there; a step not listed counts WIN_FACTOR x its Linux figure, and so do split file parts.
+SHARD_EST_WIN = {"3sig": 61, "4f": 53, "3w": 52, "3tk": 48, "3cx": 40, "3gi": 38, "3dk": 37, "5": 36, "3ad": 35, "3ds": 34, "3sg": 29,
+                 "3cr": 26, "4d": 24, "6": 22, "3g": 22, "3bk": 18, "3lm": 17, "3lh": 13, "3ms": 10, "4e": 9, "3x": 8, "3tl": 7, "1": 6,
+                 "3sh": 6, "3rb": 4, "5c": 3, "3dl": 2}
+WIN_FACTOR = 3
+# OURS: seconds per test file, each file timed alone (4 at a time) on the same container 2026-10-22; the rest count CI_FILE_DEFAULT_S.
+CI_FILE_S = {
+    "MyTradingSys/research/context_factors_2026-10-16/test_context_asof.py": 35,
+    "MyTradingSys/research/context_factors_pit_2026-10-16/test_context_asof.py": 19,
+    "MyTradingSys/research/context_null_2026-10-16/test_context_null.py": 19,
+    "scripts/dev/test_ci_deps_lint.py": 15,
+    "MyTradingSys/research/pit_levels_2026-10-16/test_pit_leakage.py": 11,
+    "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/test_filter_join.py": 6,
+    "scripts/dev/test_lab_query.py": 6,
+    "scripts/dev/test_testnet_canary.py": 5,
+    "MyTradingSys/tests/test_relay.py": 11,
+    "MyTradingSys/tests/test_lease.py": 10,
+    "MyTradingSys/tests/test_relay_tick.py": 7,
+    "MyTradingSys/tests/test_lookahead_lint.py": 6,
+    "MyTradingSys.backtest.layers.test_run_bracket_grid": 22,
+    "MyTradingSys.backtest.layers.promotion.test_promote": 17,
+    "MyTradingSys.backtest.layers.alerts.test_live_levels_confluence": 4,
+    "MyTradingSys.backtest.layers.cryptocred.test_cc_htf_count": 3,
+}
+CI_FILE_DEFAULT_S = 1.5
+CI_MODULE_DEFAULT_S = 0.3   # a layer module not in CI_FILE_S (78 modules took 61 s, two of them 38 s)
+
+
+def shard_est(num, win=None):
+    num = str(num)
+    win = (os.name == "nt") if win is None else win
+    lin = SHARD_EST_S.get(num, SHARD_DEFAULT_S)
+    return SHARD_EST_WIN.get(num, WIN_FACTOR * lin) if win else lin
+
+
+def _bins(items, n, sec):
+    """Greedy longest-first: `items` into at most n non-empty lists balanced by sec(item); their union is exactly `items`."""
+    bins = [[0.0, []] for _ in range(max(1, min(n, len(items))))]
+    for it in sorted(items, key=lambda x: (-sec(x), x)):
+        b = min(bins, key=lambda b: b[0])
+        b[0] += sec(it)
+        b[1].append(it)
+    return [(s, sorted(c)) for s, c in bins if c]
+
+
+def split_for_shards(plan, n):
+    """CI shards (operator 2026-10-22, under 2 minutes): the file-list steps (3xt extra files, 5b layer modules, the MyTradingSys/tests
+    pytest shards) become n parts each, balanced per file, so no single step holds a shard far past the others. Same split on every
+    job (sorted, deterministic). Other steps are kept as they are; est is set on every step."""
+    import run_extra_tests
+    f = WIN_FACTOR if os.name == "nt" else 1
+    sec = lambda x: f * CI_FILE_S.get(x, CI_FILE_DEFAULT_S)            # noqa: E731
+    out, py_files = [], []
+    for s in plan:
+        mine = [a for a in s.cmd_text.split() if a.startswith("MyTradingSys/tests/")]
+        if not s.skip and s.num in PYTEST_SHARD_NUMS and mine:   # a shard whose files cannot be read stays whole (fail closed)
+            py_files += mine
+            continue
+        if not s.skip and s.num == "3xt":
+            for i, (est, sub) in enumerate(_bins(run_extra_tests.all_tests(), n, sec)):
+                p = Step(f"3xt.{i + 1}", f"Extra tests part {i + 1} ({len(sub)} files)", s.label,
+                         cmd=[sys.executable, "scripts/dev/run_extra_tests.py", "--only", *sub])
+                p.est = est / max(1, min(gate_jobs(), len(sub)))
+                out.append(p)
+            continue
+        if not s.skip and s.num == "5b" and n > 1:
+            jobs = gate_jobs()
+            mods = find_layer_modules()
+            for i, (est, sub) in enumerate(_bins(mods, n, lambda m: f * CI_FILE_S.get(m, CI_MODULE_DEFAULT_S))):
+                p = Step(f"5b.{i + 1}", f"Layer tests part {i + 1} ({len(sub)} modules)", s.label, tail=None, key=",".join(sub),
+                         run=(lambda sub=sub: exec_layer_chunks(sub, jobs)), cmd_text=f"python -m unittest ({len(sub)} modules)")
+                p.est = est
+                out.append(p)
+            continue
+        if not s.skip and s.num == "3k" and n > 1:   # test_sync.py drives git: 173 s on a Windows runner as one step
+            for i in range(n):
+                p = Step(f"3k.{i + 1}", f"sync.py tests part {i + 1}/{n}", s.label, tail=None, key=f"{i + 1}/{n}", cmd_text=s.cmd_text,
+                         run=(lambda i=i: exec_unittest_shards("scripts/dev/test_sync.py", 2, part=(i, n))))
+                p.est = shard_est("3k") / n
+                out.append(p)
+            continue
+        s.est = shard_est(s.num)
+        out.append(s)
+    for i, (est, sub) in enumerate(_bins(py_files, n, sec)):
+        p = Step(f"4.{i + 1}", f"Pytest MyTradingSys/tests part {i + 1} ({len(sub)} files)", "Step 4: Pytest tests", cmd=pytest_cmd(sub))
+        p.est = est
+        out.append(p)
+    return out
+
+
+def apply_shard(plan, spec):
+    """--shard K/N (operator 2026-10-22, q-ci-speed-fixes; "everything under 2 minutes"): split_for_shards, then a greedy longest-first
+    split of the steps that would run; steps of other shards get skip='shard j/N runs it'. Same plan on every job -> each step runs
+    exactly once. Maven (step 5) always runs in shard 1, the only job that sets up Java."""
+    k, n = (int(x) for x in str(spec).split("/"))
+    if not (1 <= k <= n):
+        raise ValueError(f"bad --shard {spec}")
+    plan = split_for_shards(plan, n) if n > 1 else plan
+    est = lambda x: x.est if x.est is not None else shard_est(x.num)   # noqa: E731
+    loads, owner = [0.0] * n, {}
+    for st in sorted((x for x in plan if not x.skip), key=lambda x: (x.num != "5", -est(x), x.num)):
+        j = 0 if st.num == "5" else min(range(n), key=lambda i: (loads[i], i))
+        owner[st.num] = j
+        loads[j] += est(st)
+    for st in plan:
+        if st.num in owner and owner[st.num] != k - 1:
+            st.skip = f"shard {owner[st.num] + 1}/{n} runs it"
+    return plan
+
+
+def apply_local_skip(plan, args):
+    """A ship (--precheck, no --shard, not CI) leaves LOCAL_SKIP steps to the CI shards, which still run every step."""
+    if "--precheck" in args and "--shard" not in args and not os.environ.get("CI"):
+        for s in plan:
+            if s.num in LOCAL_SKIP and not s.skip:
+                s.skip = "ship: CI shards run it (simplify 2026-10-24)"
+    return plan
+
+
 def apply_selection(plan, args):
     """--changed-file F (one path per line, vs origin/fast-track) with --smoke: skip the steps gate_select.select does not pick.
     --smoke without --changed-file, or an unreadable file, runs everything (fail closed). Returns (plan, mode or None).
     GATE_SPEED D6: a smoke/docs 3xt runs only gate_select.extra_subset, a smoke 5b only gate_select.layer_subset.
     D1: with --precheck and a readable list, the targeted step 4t is added (every mode)."""
     files = changed_files(args)
-    if "--precheck" in args and files:
+    # gate-tiers-by-path: 4t (about 1000 s on a loaded machine) only when a test file is in the diff; the fast path / CI cover the rest
+    if "--precheck" in args and files and any(PurePosixPath(f).name.startswith("test_") and f.endswith(".py") for f in files):
         tt = targeted_tests(files)
         if tt:
             plan.append(Step(TARGET_STEP, f"Precheck pytest: {len(tt)} test file(s) that reference the change", f"Step {TARGET_STEP}: Targeted pytest",
@@ -829,8 +1024,8 @@ def apply_selection(plan, args):
     extras, modules = run_extra_tests.all_tests(), find_layer_modules()
     mode, nums, gate_reason = gate_select.explain(files, [(s.num, s.cmd_text) for s in plan], step_files={"3xt": extras, "5b": modules})
     gate_mode = mode
-    if mode == "full":
-        return plan, mode
+    if mode == "full":   # every shard runs: 4t would run its files twice, serially before the main gate (303 s, ship 2026-10-24)
+        return [s for s in plan if s.num != TARGET_STEP], mode
     global fast_applied, fast_info
     if "--fast" in args and mode == "smoke":
         try:
@@ -847,6 +1042,8 @@ def apply_selection(plan, args):
                 gate_mode = "full"
                 return plan, "full"
             fast_applied = True
+            ran_always = [s.num for s in new_plan if not s.skip and s.num in ("3w", "3x", "3tl", "3gd", "3dl")]
+            gate_reason = f"fast smoke: {len(files)} file(s); ALWAYS steps {','.join(ran_always) if ran_always else 'none'} ran"
             return new_plan, mode
     for s in plan:
         if s.num not in nums and not s.skip and s.num != TARGET_STEP:
@@ -905,7 +1102,7 @@ def load_reused(plan, root=REPO, now=None):
         return {}
 
 
-def save_record(plan, results, root=REPO, start_tree=None):
+def save_record(plan, results, root=REPO, start_tree=None, deferred=None):
     """Write the passing steps of this run (and the still-valid passes of the same tree) to the record. Skipped when the tree is dirty or
     HEAD moved while the gate ran (a session edited or committed mid-gate). Atomic (temp + os.replace, 3 tries on a Windows lock); never
     raises: a record that cannot be written only costs a rerun."""
@@ -915,6 +1112,7 @@ def save_record(plan, results, root=REPO, start_tree=None):
             return False
         path = record_path(root)
         passed = {}
+        old = {}
         try:
             old = json.loads(path.read_text(encoding="utf-8"))
             if old.get("tree") == tree and old.get("python") == sys.version:
@@ -928,6 +1126,10 @@ def save_record(plan, results, root=REPO, start_tree=None):
                 passed.pop(s.num, None)
         row = {"tree": tree, "python": sys.version, "epoch": time.time(), "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                "passed": passed}
+        if deferred is not None:
+            row["deferred"] = list(deferred)
+        elif old.get("tree") == tree and "deferred" in old:
+            row["deferred"] = old["deferred"]
         tmp = path.with_name(f"{RECORD_NAME}.{os.getpid()}.tmp")
         with open(tmp, "w", encoding="utf-8", newline="\n") as fh:
             json.dump(row, fh)
@@ -997,16 +1199,30 @@ def main(argv=None):
 
     plan = build_plan(quick)
     plan, mode = apply_selection(plan, args)
+    apply_local_skip(plan, args)
+    if "--shard" in args:
+        spec = args[args.index("--shard") + 1]
+        plan = apply_shard(plan, spec)
+        print(f"Shard {spec}: {sum(1 for x in plan if not x.skip)} steps here (est {sum(x.est if x.est is not None else shard_est(x.num) for x in plan if not x.skip):.0f} s)", flush=True)
+    if mode and mode != "full" and changed_files(args):
+        files = changed_files(args)
+        if len(chr(10).join(files)) > 30000:   # Windows caps an env var at 32767 chars (a card sweep moves hundreds of files); card json carries no doc caps
+            files = [f for f in files if not f.startswith("MyTradingSys/system/tasks/")]
+        os.environ["MTS_GATE_CHANGED_FILES"] = chr(10).join(files)   # tests/docs/test_integrity.py: caps and banners on the diff only
     if mode:
         print(f"Gate mode: {mode} ({sum(1 for s in plan if not s.skip)} steps); CI runs the full suite behind the push", flush=True)
         print(f"Gate reason: {gate_reason}", flush=True)
-    global STEP_TIMEOUT_S
+    global STEP_TIMEOUT_S, TIMEOUT_DEFERS, GATE_DEADLINE
+    STEP_TIMEOUT_S = step_timeout_for(mode)
     if fast_applied:
-        STEP_TIMEOUT_S = FAST_STEP_TIMEOUT_S
+        # Operator 2026-10-25 "every ship under 2 minutes": EVERY fast ship gets the hard cap (it was gate-file ships only, so a
+        # signals change hit the 240 s step timeout and failed); what does not finish by the deadline is deferred to CI, not failed.
+        STEP_TIMEOUT_S, TIMEOUT_DEFERS = GATE_HARD_STEP_S, True
+        GATE_DEADLINE = time.monotonic() + GATE_HARD_STEP_S   # the whole step phase, not only each step
         print(f"Fast gate (GATE_SPEED X2): {fast_info['reached']} test files reached ({fast_info['direct']} direct), {fast_info['kept']} units kept, "
               f"estimated {fast_info['est_s']} s (budget {fast_info['budget']} s) on {fast_jobs()} workers; {len(fast_info['deferred'])} deferred to CI (budget)", flush=True)
         if fast_info["deferred"]:
-            print("  DEFERRED to CI: " + ", ".join(fast_info["deferred"][:15]) + (f" (+{len(fast_info['deferred']) - 15} more)" if len(fast_info["deferred"]) > 15 else ""), flush=True)
+            print(f"  DEFERRED to CI ({len(fast_info['deferred'])}): " + ", ".join(fast_info["deferred"]), flush=True)
         if fast_info["quarantined"]:
             print("  QUARANTINED (deselected here, CI runs them): " + ", ".join(fast_info["quarantined"]), flush=True)
     # GATE_SPEED: the ship-only flags (sync.run_gate passes them; CI, auto_deploy and daily_hygiene never do)
@@ -1019,16 +1235,18 @@ def main(argv=None):
             use_record = False
         reused = load_reused(plan) if use_record else {}
     slot = None
+    precheck_slot = None
     if "--slot" in args and mode not in ("docs", "none"):
         import sync
         if fast_applied:   # own pool: a fast gate never queues behind the 9-minute full gates
             slot = lambda: sync.gate_slot(REPO, slots=FAST_SLOTS, name="gate-slots-fast")   # noqa: E731
         else:
             slot = lambda: sync.gate_slot(REPO)   # noqa: E731 - the slot is taken after the precheck, released when the main phase ends
+            precheck_slot = lambda: sync.gate_slot(REPO, slots=sync.GATE_PRECHECK_SLOTS, name="gate-slots-precheck")   # noqa: E731
     results = run_plan(plan, fast_jobs() if fast_applied else gate_jobs(), fail_fast="--fail-fast" in args,
-                       precheck="--precheck" in args and not fast_applied, slot=slot, reused=reused)
+                       precheck="--precheck" in args and not fast_applied, slot=slot, reused=reused, precheck_slot=precheck_slot)
     if use_record:
-        save_record(plan, results, start_tree=start_tree)
+        save_record(plan, results, start_tree=start_tree, deferred=fast_info.get("deferred") if fast_applied else None)
 
     # Summary
     print("\n" + "=" * 70)
@@ -1048,6 +1266,8 @@ def main(argv=None):
             print(f"{s.label}: SKIP")
 
     print("=" * 70)
+    if os.environ.get("GITHUB_ACTIONS") and STEP_SECONDS:
+        print(times_notice())
     if not failed and NOT_RUN:   # fail closed: a step that did not run never counts as a pass
         failed = [s.label for s in plan if s.num in NOT_RUN]
     if failed:

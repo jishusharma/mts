@@ -1,6 +1,6 @@
 # B139 - CBP adapter: register, run on the real queue, backtest analyst rules
 
-Status: OPEN. Severity: MED. Opened 2026-10-06.
+Status: SUPERSEDED 2026-10-27 (by D5 as built: scripts/dev/cbp_run.py + cbp.query; queue, consumer and adapter deleted in f9fcf77b4; history below kept). Severity: MED. Opened 2026-10-06.
 Session: MTS-2026-10-06-2122Z-APP-COO-registry-fix. Source: CLOUD_INBOX note 2026-10-06 14:50 UTC (CLD-BLD-cbp-trade-inputs).
 
 ## What exists

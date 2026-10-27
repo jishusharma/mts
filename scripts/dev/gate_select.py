@@ -4,7 +4,7 @@
   explain(files, steps) -> (mode, step numbers, one-line reason: the first file/rule that forced full, or the ALWAYS steps of a smoke)
     files: paths changed vs origin/fast-track; steps: [(num, cmd_text)] of the plan (run_all_tests.build_plan).
     mode  none   nothing changed: no steps
-          docs   only docs/data: the cheap doc invariants (DOC_STEPS), no gate slot needed
+          docs   only docs/data/cards/pages: no local steps at all (DOC_STEPS is empty; CI gates behind); the wiring registry still runs 3x/3w
           smoke  code outside the live path: steps whose test file matches a changed file, the pytest shards whose tests mention
                  its module name, plus ALWAYS (wiring, task-card DoR, B150 discovery, CI deps lint); CI runs everything behind the push
           full   any live-path file, or ANY path no rule knows (fail closed): every step, the old --quick gate
@@ -32,15 +32,31 @@ WIRING_REGISTRY = "MyTradingSys/system/wiring_registry.json"
 # Live path (CLAUDE.md "Gates"): always the full quick gate.
 FULL_RE = re.compile(
     r"^(MyTradingSys/execution/|MyTradingSys/runtime/|scripts/sched/|src/|pom\.xml$|\.github/|"
-    r"scripts/dev/(sync|run_all_tests|gate_select|run_extra_tests|auto_deploy|live_mirror|cloud_setup|wiring_scan|ci_watch|config_check|"
-    r"ci_deps_lint|run_staged_tests|gate_impact)\.py$|scripts/dev/gate_quarantine\.tsv$|"
+    r"scripts/dev/(auto_deploy|live_mirror|cloud_setup)\.py$|"
     r"MyTradingSys/backtest/layers/[^/]+/[^/]*(live|writer)[^/]*\.py$)")
+# DECISION (OURS, operator 2026-10-25 "every ship under 2 minutes"): the gate's own machinery is no longer a full gate. A change to one of
+# these files runs the smoke gate plus only the tests that import or name it (is_gate_file; run_all_tests gives it GATE_BUDGET_S); the full
+# suite runs in CI behind the push and a red CI is reverted within 10 min. Deploy/live-ops scripts (auto_deploy, live_mirror, cloud_setup) stay full.
+GATE_RE = re.compile(r"^scripts/dev/(sync|run_all_tests|gate_select|run_extra_tests|wiring_scan|ci_watch|config_check|"
+                     r"ci_deps_lint|run_staged_tests|gate_impact)\.py$|^scripts/dev/gate_quarantine\.tsv$")
+GATE_BUDGET_S = 40    # OURS: estimated wall-second budget for a gate-file change; real wall ran ~2-3x the estimate on JIS-NB (2026-10-25), a step cap backs it up
+
+
+def is_gate_file(f):
+    return bool(GATE_RE.match(f.replace("\\", "/")))
+
+
 # Non-live code folders: smoke with name-matched steps + the pytest shards + extras
 CODE_DIRS = ("scripts/dev/", "scripts/worker/", "MyTradingSys/tests/", "MyTradingSys/backtest/", "MyTradingSys/research/",
              "MyTradingSys/options/", "MyTradingSys/observation/")
 
-ALWAYS = ("3w", "3x", "3tl", "3gd", "3dl")   # wiring, task-card DoR, test-file discovery (B150), CI deps lint: seconds, catch the usual merge-time breaks
-DOC_STEPS = ("3tl", "3q", "3pc", "3c", "4d")   # task cards, INDEX/BUGS, prompt contract, guide sync, doc size/contract pytest
+ALWAYS = ("3w", "3x", "3gd", "3dl")   # wiring, task-card DoR, test-file discovery (B150), CI deps lint: seconds, catch the usual merge-time breaks
+DOC_STEPS = ()   # gate-tiers-by-path (operator q-v1-gate-tiers, 2026-10-20): a docs ship runs no local step; CI gates behind
+CARD_RE = re.compile(r"^MyTradingSys/system/tasks/[^/]+\.json$")   # a card in the diff brings step 3tl (task-card lint) with it
+# Look-ahead lint (62a05b2eb): any non-test .py the lint scans (MyTradingSys/, not tests/), the lint, its allowlist and its test run step 3la.
+LOOKAHEAD_STEP = "3la"
+LOOKAHEAD_RE = re.compile(r"^(MyTradingSys/(?!tests/)(?:.*/)?(?!test_)[^/]+\.py|scripts/dev/lookahead_(lint\.py|allowlist\.tsv)|"
+                          r"MyTradingSys/tests/test_lookahead_lint\.py)$")
 SHARD_PREFIX = "4"                    # every pytest shard is numbered 4, 4b, 4c ...
 
 
@@ -221,15 +237,19 @@ def explain(files, steps, mentioned=mentions, named=names_file, step_files=None)
     if not code:
         # GATE_SPEED review: the wiring registry is data under system/, but 3x/3w are its only readers (a bad entry would go red only in CI)
         reg = {"3x", "3w"} if any(f == WIRING_REGISTRY for f in files) else set()
-        nums = [n for n in all_nums if n in DOC_STEPS or n in subset_steps or n in reg]
-        return "docs", nums, f"docs: {len(files)} doc/data file(s) only; doc invariants {','.join(nums)}"
+        nums = [n for n in all_nums if n in DOC_STEPS or n in reg]
+        return "docs", nums, f"docs: {len(files)} doc/data file(s) only; no local gate" + (f" except {','.join(nums)}" if nums else "")
     picked = {n for n in ALWAYS if n in all_nums} | subset_steps
+    if "3tl" in all_nums and any(CARD_RE.match(f) for f in files):
+        picked.add("3tl")
     always = [n for n in all_nums if n in ALWAYS]
     if len(code) < len(files):                    # docs ride along: their invariants too
         picked |= {n for n in DOC_STEPS if n in all_nums}
     for f in code:
         if FULL_RE.match(f):
             return "full", list(all_nums), f"full: {f} is on the live path (FULL_RE)"
+        if LOOKAHEAD_RE.match(f) and LOOKAHEAD_STEP in all_nums:
+            picked.add(LOOKAHEAD_STEP)
         if _is_config(f):
             base = PurePosixPath(f).name
             picked.update(_name_matches(f, steps))

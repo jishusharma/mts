@@ -4,16 +4,16 @@
 
 Prints: flags, commit mix, gate-bookkeeping share, B4 adoption (release folded into ship), recent CI with the failed step and its
 first annotation, stale claims, and the latest workflow-file commits. The METRICS line is what the next run diffs against.
-Public GitHub API, unauthenticated (~60 calls/h): one list call plus, per red run (max 3), 1 jobs call and up to 1 annotations call.
+GitHub API via ci_watch.get_json (git's saved login: 5000 calls/h; none: 60/h per internet address): one list call plus, per red run (max 3), 1 jobs call and up to 1 annotations call.
 """
 import json
 import re
 import subprocess
 import sys
-import urllib.request
 from collections import Counter
 from pathlib import Path
 
+import ci_watch
 import traffic_report as TR
 
 REPO = Path(__file__).resolve().parents[2]
@@ -37,8 +37,7 @@ def git(*a, timeout=120):
 
 def fetch_json(url):
     try:
-        with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "mts-health-audit"}), timeout=20) as r:
-            return json.load(r)
+        return ci_watch.get_json(url, agent="mts-health-audit", timeout=20)
     except Exception as e:  # rate limit, offline: report it, never fail the audit
         return {"_error": str(e)[:120]}
 

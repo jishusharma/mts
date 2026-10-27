@@ -379,7 +379,7 @@
     ],
     "survey": [
      {
-      "path": "MyTradingSys/research/T065_LAZYBEAR_SURVEY.md",
+      "path": "MyTradingSys/research/_archive/loose_2026-10/T065_LAZYBEAR_SURVEY.md",
       "needle": "## 0. Evidence status",
       "line": 5,
       "sha256": "3d97b2addb017eeacae617a83035a18083fd032ce44dd211a7e1d0f1a8ee7ac4",
@@ -421,7 +421,7 @@
    "citations": {
     "survey": [
      {
-      "path": "MyTradingSys/research/T065_LAZYBEAR_SURVEY.md",
+      "path": "MyTradingSys/research/_archive/loose_2026-10/T065_LAZYBEAR_SURVEY.md",
       "needle": "Not verified: the Squeeze Momentum author's *updated* source",
       "line": 9,
       "sha256": "3d97b2addb017eeacae617a83035a18083fd032ce44dd211a7e1d0f1a8ee7ac4",

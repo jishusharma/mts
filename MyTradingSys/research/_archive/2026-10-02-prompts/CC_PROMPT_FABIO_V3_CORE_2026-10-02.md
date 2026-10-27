@@ -32,8 +32,8 @@ Line 2: usage percent, or 'unknown'.
 
 - MyTradingSys/research/fast_track_2026-09-27/FABIO_V3_SPEC.md (full; sections 3, 4, 5, 7.1, 10, 11 are load-bearing).
 - MyTradingSys/research/fast_track_2026-09-27/FABIO_TRADE_MODEL.md.
-- MyTradingSys/research/TWO_CORES_SCAFFOLD_2026-10-01.md sections 1-2.
-- MyTradingSys/research/ARCHITECTURE_TWO_CORES_2026-10-01.md.
+- MyTradingSys/research/_archive/loose_2026-10/TWO_CORES_SCAFFOLD_2026-10-01.md sections 1-2.
+- MyTradingSys/research/_archive/loose_2026-10/ARCHITECTURE_TWO_CORES_2026-10-01.md.
 - MyTradingSys/backtest/layers/fabio/v3/*.py.new (7 files, all staged).
 - MyTradingSys/backtest/layers/fabio/pending_test_fabio_v3.py.
 - MyTradingSys/backtest/layers/FORMULAS.md.

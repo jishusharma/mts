@@ -1,7 +1,7 @@
 # B123 - Zero-trade and QUIET family follow-ups from the 2026-09-30 maintainer report: Tom main and fabio jishu_3 after AUTO_PAUSE, jishu_4 QUIET
 
 Status: OPEN. Severity: MED. Opened 2026-10-04.
-Session: MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup. Group (c) from MyTradingSys/research/AUDIT_RECONCILE_2026-10-04.md.
+Session: MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup. Group (c) from MyTradingSys/research/_archive/loose_2026-10/AUDIT_RECONCILE_2026-10-04.md.
 
 ## Defect
 
@@ -29,7 +29,7 @@ Filing only. No code or doc edit was made for this item.
 
 ## Related
 
-- MyTradingSys/research/AUDIT_RECONCILE_2026-10-04.md
+- MyTradingSys/research/_archive/loose_2026-10/AUDIT_RECONCILE_2026-10-04.md
 - MyTradingSys/system/sessions/MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup.md
 
 ## Receipt

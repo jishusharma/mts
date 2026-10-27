@@ -1,0 +1,62 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-25T19:30:01Z",
+  "depends_on": [],
+  "done_when": "Results of levels, rsi, wavetrend and krown hold a string 'exit' array aligned with 'net'; breakdown(res)['exit'] counts sum to the filled n and a result without 'exit' gets no exit group; trade_list(res)['exit'] is in time order; a v3 cache is not served; the whole sim_desk suite passes with pins 255 (test_reference.py:49) and -0.119 (test_desk.py:148/197) unchanged",
+  "est_turns": 24,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Close the open Fable item 'entry/exit reason columns': _bars.collect keeps run_trade's exit reason (STOP, T1, SIGNAL, HOLD) per idea, levels keeps its last exit reason (STOP, T1, T2, TIME), a never-filled idea reads NOFILL; desk.trade_list and breakdown() gain an 'exit' group (n, mean net R, too-few flag). RESULT_VERSION goes 3 to 4 so old caches rebuild.",
+  "id": "sim-desk-exit-reasons",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim desk: breakdown table, folded charts and ledger, catalogue-safe run saving",
+      "ref": "67426492d1bd",
+      "utc": "2026-10-25T05:29:23Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer Agent a8e64e6d verified, planner DECISION OURS). Sim-v2 follow-up drafted 2026-10-26. Owns desk.py and studies/_bars.py (no other new sim card edits them). Residual of sim-desk-side-by-side card: a breakdown by family/condition with n is still open, not covered here. Needs a real review stamp (shared run schema and cache version). FIX 2026-10-26: explicit string dtype for exit in _bars.collect, levels.run and _run_month (they coerce unlisted keys to float); test_build2.py in scope_in; breakdown tolerates results without exit; whole sim_desk suite must pass. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-25T19:53:21Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/studies/_bars.py",
+    "MyTradingSys/research/sim_desk/studies/levels.py",
+    "MyTradingSys/research/sim_desk/desk.py",
+    "MyTradingSys/research/sim_desk/test_reasons.py",
+    "MyTradingSys/research/sim_desk/test_build2.py"
+  ],
+  "scope_out": [
+    "Do not touch page.html (sim-desk-declutter renders the group), conditions.py (apply keeps every array of length n), results/, studies/rsi.py, wavetrend.py, krown.py (they use _bars.collect), the live path"
+  ],
+  "scope_sha": "67426492d1bd",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/sim_desk/HANDOVER_SIMV2.md:23 (Fable cards still open)",
+    "MyTradingSys/research/sim_desk/REVIEW_FABLE_2026-10-25.md:section 3 item 4 (trade list with entry/exit reason)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read studies/_bars.py run_trade and collect, studies/levels.py run, _run_month and simulate_one exits, desk.py trade_list, breakdown and _raw, and test_build2.py:40",
+    "Write test_reasons.py first and watch it fail",
+    "_bars.collect, levels.run and levels._run_month (it merges per-month parts): give 'exit' an explicit string dtype (U8) instead of the float coercion np.array(v, dtype=float); NOFILL when not filled",
+    "desk.py: RESULT_VERSION = 4; trade_list adds exit when present; breakdown adds the exit group only when res has 'exit', so test_build2.py:40 still holds (extend that test, do not loosen it)",
+    "Run python -m pytest MyTradingSys/research/sim_desk -q (whole suite, data-free ones); confirm 255 and -0.119 did not move; sync.py ship"
+  ],
+  "tests": "test_reasons.py (new), fails now (res has no 'exit'): planted 1m bars via _bars.collect give STOP, T1, SIGNAL, HOLD as strings, not floats; conditions.apply keeps 'exit' aligned with a planted mask; exit counts sum to n; a result without 'exit' keeps three groups (test_build2.py:40); levels exits in {STOP,T1,T2,TIME,NOFILL} after the per-month merge; a v3 cache is rejected.",
+  "title": "Sim desk: every trade carries why it ended (stop, target, signal, time) and the breakdown groups by it",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

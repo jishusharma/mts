@@ -6,13 +6,15 @@
 
 | Login | GitHub identity | Machines (relay_runs.jsonl, artifacts/registry.json) | Claude GitHub App | Role |
 |---|---|---|---|---|
-| A: jishu.sharma@gmail.com | jishusharma (repo owner) | JIS-NUC (checked 2026-10-15) | installed, cloud sessions only | Control Room Inbox and decisions owner (q21); all artifacts belong here |
+| A: jishu.sharma@gmail.com | jishusharma (repo owner) | Lenovo DESKTOP-F7IU69N (roll call `mts_signal.py who`, 2026-10-25; was JIS-NUC on 2026-10-15) | installed, cloud sessions only | Control Room Inbox and decisions owner (q21); all artifacts belong here |
 | B: jishu.awgp | jishu-awgp (write collaborator, checked 2026-10-14) | JIS-NB (inferred 2026-10-15, not checked) | not installed yet | second login; its pages are read-only copies |
 | C: jishusharma1985@gmail.com (Claude Max, 2026-10-14) | jishusharma1985 (write invite sent 2026-10-14, accept pending) | JIS-NB and JIS-NUC | not installed yet | third login, same queue and ritual |
 
 Repo owned by: jishusharma/mts (GitHub user jishusharma). One repo. Never duplicate the repo. Never fork for a second login.
 All logins take the same queue (NEXT_SESSION.md); whichever has budget runs it. Claims are labelled by the machine's `MTS_ACCOUNT`
 (`sharma` or `awgp`, set once per machine), not by the login that is signed in; login C has no value of its own, so its claims carry the machine's value.
+
+Login roll call (operator 2026-10-23): a session's login letter is detected from the app account, not typed. `mts_signal.login()` reads only `oauthAccount.emailAddress` from `~/.claude.json` and matches it to the rows above (the full address, or the part before the @); env `MTS_LOGIN=A|B|C` overrides. Only the letter travels: every signal record carries `login`, `budget` and `supervisor.py plan` use the detected letter (a different `--login` prints `LOGIN MISMATCH`), SessionStart announces `login=<L>`, and `python scripts/dev/mts_signal.py who` lists who is logged in where (and flags `CONFLICT login <L>` when two machines claim one login). Never write an address into a signal, a commit or a log.
 
 ## CREDITS AND BUDGET (volatile: verify in the Claude app before relying on a number)
 
@@ -53,8 +55,8 @@ Used from JIS-NB and JIS-NUC (Claude Code Win App), same queue and ritual as A a
   3. Cloud sessions only: in the Claude app on login C, Connectors -> GitHub, install the Claude GitHub App for that user, scoped to jishusharma/mts.
 - Pages: login C has its own pins (artifacts/registry.json key `jishusharma1985`). Its Control Room copy is a read-only mirror
   (published without capabilities); the one Inbox is on jishu.sharma (q21).
-- Claude routines (scheduled tasks) are per login: A's paused routines do not show on C. To run the relay on C's budget,
-  recreate mts-dispatcher on that host from scripts/sched/relay_prompts/INSTALL.md, signed in as C.
+- Claude routines (scheduled tasks) are per login, and none may run on any login (SCHEDULING_POLICY.md). To use C's
+  budget, the coordinator starts sessions signed in as C; never recreate mts-dispatcher.
 - How a session knows it is on C: `Artifact read` of a jishu.sharma or jishu.awgp page url says "not found".
 
 ## Which login is on which machine (checked 2026-10-15, decision q21)

@@ -63,6 +63,10 @@ need the 544 s full gate; docs ships already take ~10 s.
 - X6 `ship` prints the CI state (ci_watch; a cached red is re-fetched before it counts; offline = unknown, never a block). Two finished fast-track runs
   failed = the next code ship is blocked, fix-first. A newer run in flight does not clear a red (fast-track always has one pending). `ship --fix-ci`
   is the way through for the fix itself and runs the FULL gate, so it is not a cheap bypass. Docs/data-only ships (gate_select's definition) pass.
+- X7 After the push `ship` waits (up to 10 min, polls every 20 s, `wait_own_ci`) for the CI run of the sha it just pushed and prints `CI green <sha>` or
+  `CI RED <sha>: <failed jobs> <url>` at once; red exits 3 (the push is done) so `sync.py ship && ...` stops and the author, who knows the change,
+  reverts it (CLAUDE.md boot step 2). No run (ci.yml `push: paths:` filter, or none within 90 s), still running at the cap, or GitHub unreachable
+  = a note, never a red. `--no-ci-wait` / `SYNC_NO_CI_WAIT=1` skips it; desk.py, lane_health.py and codex_run.py (unattended) pass it.
 - Review fixes (Sonnet + Haiku, one-time, read-only): CI paths now include research .py, options, observation, .gitignore, .claude/settings.json (a
   smoke ship there had no CI run); FULL_RE gained wiring_scan, ci_watch, config_check, ci_deps_lint, run_staged_tests, gate_impact and the quarantine
   file (a smoke ship could weaken its own gate); wiring_registry.json edits run 3x/3w; race_overlap also checks incoming modules that import ours;
@@ -83,4 +87,11 @@ list) took the full 65-step gate, about 9 minutes per attempt, and was repeated 
 Floor on this box: python start 0.2 s + one pytest chunk of the longest direct test + about 9 s of git/CI/page overhead; hub modules push it to the budget (30 s).
 
 ## Not done (next)
-Machine-wide process budget across concurrent gates; FIFO slot queue; Windows CI on selected steps only.
+FIFO slot queue; Windows CI on selected steps only. (Done: Machine-wide process budget across concurrent gates & prechecks counted with ship timing logged, SV7).
+
+
+## Three tiers by path (gate-tiers-by-path, operator q-v1-gate-tiers 2026-10-20)
+1. **Docs** (.md/.txt, data under research/system/items/methodology, task cards, pages): `gate_select` mode `docs` selects no steps and `sync.py ship` runs no gate (fetch, merge, push, record); CI gates behind. The wiring registry still runs 3x/3w.
+2. **Smoke** (non-live code): only the tests that import the changed module (fast path), every step capped at 240 s; 4t only when a test file is in the diff, 3tl only when a card is; doc size caps and banner checks only on diff files (`MTS_GATE_CHANGED_FILES`).
+3. **Live path / unknown path**: the full quick gate, unchanged (fail closed).
+Claims and releases live on the `claims` branch of origin (no claim/release commit on the trunk; `sync.py claims` reads it plus legacy trunk claims). A second ship from one tree within 10 min is refused: `ship --again` (or `SYNC_ALLOW_SECOND_SHIP=1`) overrides. DECISION (OURS): wall times for one docs and one code ship on JIS-NB are not measured in this card; read them in gate_timing.jsonl after the next ships.

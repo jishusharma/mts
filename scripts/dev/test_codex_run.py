@@ -536,6 +536,7 @@ class LimitFallback(unittest.TestCase):
         run("config", "user.name", "t")   # merge_trunk commits without -c: CI runners may have no global identity
         run("config", "user.email", "t@t")
         for f in {lab_file, trunk_file, R.LAB + "/INDEX.md"}:
+            (wt / f).parent.mkdir(parents=True, exist_ok=True)
             (wt / f).write_text("base\n", encoding="utf-8")
         run("add", ".")
         run("commit", "-qm", "base")
@@ -557,6 +558,40 @@ class LimitFallback(unittest.TestCase):
             self.assertEqual(R.changed_files(wt), [])
             self.assertNotEqual(run("rev-parse", "-q", "--verify", "MERGE_HEAD").returncode, 0)
             self.assertEqual(run("merge-base", "--is-ancestor", "trunk", "HEAD").returncode, 0)
+
+    def test_a_lab_run_ship_passes_the_second_ship_guard(self):
+        # 2026-10-22: lab-formula-spec-text ran 373 s and then SHIP_FAILED on "second ship from this tree 528 s after the last one"
+        self.assertIn("--again", R.SHIP_ARGS)
+        self.assertIn("*SHIP_ARGS", Path(R.__file__).read_text(encoding="utf-8"))
+
+    def test_merge_trunk_keeps_the_labs_lane_state_on_a_clash(self):
+        # JIS-NUC 2026-10-21: a Supervisor heartbeat on trunk clashed with the lab's lane_state.json; ship failed, lab idle 34 h
+        with tempfile.TemporaryDirectory() as d:
+            st = R.lane_health.STATE
+            wt, run = self._two_branches(d, st, st)
+            R.merge_trunk(wt, "trunk")
+            self.assertEqual((wt / st).read_text(encoding="utf-8"), "lab\n")
+            self.assertEqual(R.changed_files(wt), [])
+            self.assertEqual(run("merge-base", "--is-ancestor", "trunk", "HEAD").returncode, 0)
+
+    def test_refresh_survives_a_merge_left_in_progress(self):
+        # Supervisor pilot 2026-10-22: `codex_run.py tick` died with "cannot switch branch while merging" (MERGE_HEAD left behind);
+        # refresh switched branch before merge_trunk could abort it.
+        import socket
+        import subprocess
+        with tempfile.TemporaryDirectory() as d, unittest.mock.patch.dict("os.environ", {"CODEX_HOME": str(Path(d) / "home")}):
+            wt, run = self._two_branches(d, "code.py", "code.py")
+            bare = Path(d) / "origin.git"
+            subprocess.run(["git", "init", "-q", "--bare", str(bare)], check=True)
+            run("remote", "add", "origin", str(bare))
+            run("push", "-q", "origin", "trunk:" + R.sync.TRUNK)
+            run("switch", "-q", "-c", f"{socket.gethostname().lower()}/codex-lab", "lab")
+            self.assertNotEqual(run("merge", "--no-edit", "trunk").returncode, 0)   # real clash: MERGE_HEAD stays
+            self.assertEqual(run("rev-parse", "-q", "--verify", "MERGE_HEAD").returncode, 0)
+            with self.assertRaises(SystemExit) as e:
+                R.refresh(wt)   # the clash itself still needs a session, but the tick must get as far as saying so
+            self.assertIn("clashes on code.py", str(e.exception))
+            self.assertNotEqual(run("rev-parse", "-q", "--verify", "MERGE_HEAD").returncode, 0)
 
     def test_merge_trunk_aborts_a_real_clash_and_leaves_the_tree_clean(self):
         with tempfile.TemporaryDirectory() as d:

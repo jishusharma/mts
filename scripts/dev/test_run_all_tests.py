@@ -17,6 +17,24 @@ import run_all_tests as rat
 os.environ["MTS_GATE_TIMING"] = os.path.join(tempfile.mkdtemp(prefix="gate_timing_test_"), "t.jsonl")
 
 
+class LocalSkip(unittest.TestCase):
+    def _skipped(self, args, env=None):
+        with mock.patch.dict(os.environ, env or {}, clear=False):
+            os.environ.pop("CI", None) if not env else None
+            plan = rat.apply_local_skip(rat.build_plan(True), args)
+        return {s.num for s in plan if s.skip and str(s.skip).startswith("ship:")}
+
+    def test_a_ship_leaves_the_slow_coordination_steps_to_ci(self):
+        self.assertEqual(self._skipped(["--precheck"]), set(rat.LOCAL_SKIP) & {s.num for s in rat.build_plan(True)})
+        self.assertTrue({"3k", "3dk", "3ad", "3bk"} <= self._skipped(["--precheck"]))
+        self.assertFalse({"5b", "4f"} & self._skipped(["--precheck"]))      # live-path layer tests stay in the local full gate
+
+    def test_ci_shards_and_plain_runs_keep_every_step(self):
+        self.assertEqual(self._skipped(["--precheck", "--shard", "1/15"]), set())
+        self.assertEqual(self._skipped([]), set())
+        self.assertEqual(self._skipped(["--precheck"], {"CI": "1"}), set())
+
+
 class GateCoverage(unittest.TestCase):
     def test_pytest_paths_cover_v3_and_live_writers(self):
         paths = getattr(rat, "PYTEST_LAYER_PATHS", [])
@@ -68,6 +86,14 @@ class TestParallelLayerGate(unittest.TestCase):
             self.assertEqual(sorted(flat), sorted(mods), jobs)
             self.assertEqual(len(flat), len(set(flat)), jobs)
             self.assertTrue(all(chunks))
+
+    def test_chunk_with_only_testless_modules_passes(self):
+        ok, out = rat.exec_layer_chunks(["MyTradingSys.backtest.layers.alerts.test_live_toc_tfs"], 1)
+        self.assertTrue(ok, out)
+
+    def test_chunk_with_missing_module_still_fails(self):
+        ok, _ = rat.exec_layer_chunks(["MyTradingSys.backtest.layers.alerts.no_such_module_xyz"], 1)
+        self.assertFalse(ok)
 
     def test_gate_jobs_env(self):
         import os
@@ -191,9 +217,7 @@ class TestShardedPytest(unittest.TestCase):
             f.write_text("MyTradingSys/system/RELAY.md\n", encoding="utf-8")
             plan, mode = rat.apply_selection(rat.build_plan(True), ["--smoke", "--changed-file", str(f)])
             self.assertEqual(mode, "docs")
-            ran = {s.num for s in plan if not s.skip}
-            self.assertLessEqual({"3tl", "3q", "3pc", "3c", "4d"}, ran)
-            self.assertLessEqual(ran - {"3tl", "3q", "3pc", "3c", "4d"}, {"3xt"})   # GATE_SPEED D6: extra tests that name RELAY.md
+            self.assertEqual({s.num for s in plan if not s.skip}, set())   # gate-tiers-by-path: a docs ship runs no step
             f.write_text("MyTradingSys/execution/executor.py\n", encoding="utf-8")
             plan, mode = rat.apply_selection(rat.build_plan(True), ["--smoke", "--changed-file", str(f)])
             self.assertEqual(mode, "full")
@@ -362,13 +386,16 @@ class TestExtraTestsRunConcurrently(unittest.TestCase):
         import threading
         import run_extra_tests as rx
         seen, live, peak, lock = [], [0], [0], threading.Lock()
+        overlap = threading.Barrier(2, timeout=10)  # a dummy sequential runner must fail this overlap oracle
 
         def one(rel, basetemp):
             with lock:
                 live[0] += 1
                 peak[0] = max(peak[0], live[0])
                 seen.append(str(basetemp))
-            time.sleep(0.1)
+            # Require two workers to arrive; elapsed sleep did not prove overlap
+            # when a loaded CI runner scheduled the tasks more than 0.1 s apart.
+            overlap.wait()
             with lock:
                 live[0] -= 1
             return (rel not in ("b.py", "d.py")), ("missing" if rel == "d.py" else "1 passed")
@@ -445,6 +472,35 @@ class TestGateTimingLog(unittest.TestCase):
 
 
 
+class TestGateFileShipBudget(unittest.TestCase):
+    """Operator 2026-10-25: a gate-file ship finishes in under 2 minutes; a step over the cap is left to CI, not failed."""
+
+    SLOW = [sys.executable, "-c", "import time; time.sleep(30)"]
+
+    def test_a_step_over_the_cap_is_deferred_to_ci_on_a_gate_file_ship(self):
+        with mock.patch.object(rat, "STEP_TIMEOUT_S", 1), mock.patch.object(rat, "TIMEOUT_DEFERS", True):
+            ok, out = rat.exec_step(self.SLOW)
+        self.assertTrue(ok)
+        self.assertIn("DEFERRED TO CI", out)
+
+    def test_a_step_over_the_cap_still_fails_on_an_ordinary_fast_ship(self):
+        with mock.patch.object(rat, "STEP_TIMEOUT_S", 1), mock.patch.object(rat, "TIMEOUT_DEFERS", False):
+            ok, _ = rat.exec_step(self.SLOW)
+        self.assertFalse(ok)
+
+    def test_the_deadline_caps_a_step_queued_behind_others(self):
+        with mock.patch.object(rat, "STEP_TIMEOUT_S", 60), mock.patch.object(rat, "TIMEOUT_DEFERS", True),                 mock.patch.object(rat, "GATE_DEADLINE", time.monotonic() + 1):
+            t0 = time.monotonic()
+            ok, out = rat.exec_step(self.SLOW)
+        self.assertLess(time.monotonic() - t0, 10)
+        self.assertIn("DEFERRED TO CI", out)
+
+    def test_gate_file_budget_is_inside_the_two_minute_goal(self):
+        import gate_select
+        self.assertLess(rat.GATE_HARD_STEP_S + 25, 120)
+        self.assertTrue(gate_select.is_gate_file("scripts/dev/sync.py"))
+
+
 class TestGateSpeed(unittest.TestCase):
     """GATE_SPEED.md D1-D3 (2026-10-18): precheck, fail-fast, slot around the main phase only, same-tree pass record."""
 
@@ -502,24 +558,45 @@ class TestGateSpeed(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             t = Path(d) / "MyTradingSys" / "tests"
             t.mkdir(parents=True)
-            (t / "test_relay.py").write_text("RELAY = 'MyTradingSys/system/RELAY.md'\n", encoding="utf-8")
+            (t / "test_relay_doc.py").write_text("RELAY = 'MyTradingSys/system/RELAY.md'\n", encoding="utf-8")
             (t / "test_kit.py").write_text("import screen\n", encoding="utf-8")
             (t / "test_none.py").write_text("x = 1\n", encoding="utf-8")
             self.assertEqual(rat.targeted_tests(["MyTradingSys/system/RELAY.md", "MyTradingSys/research/s/screen.py"], d),
-                             ["MyTradingSys/tests/test_kit.py", "MyTradingSys/tests/test_relay.py"])
+                             ["MyTradingSys/tests/test_kit.py", "MyTradingSys/tests/test_relay_doc.py"])
 
-    def test_precheck_flag_adds_the_targeted_step_in_every_mode(self):
+    def test_targeted_step_runs_only_when_a_test_file_is_in_the_diff(self):
         with tempfile.TemporaryDirectory() as d:
             lst = Path(d) / "changed.txt"
             lst.write_text("MyTradingSys/system/RELAY.md\n", encoding="utf-8")
             plan, mode = rat.apply_selection(rat.build_plan(True), ["--smoke", "--precheck", "--changed-file", str(lst)])
             self.assertEqual(mode, "docs")
+            self.assertFalse([s for s in plan if s.num == rat.TARGET_STEP])   # gate-tiers-by-path: a doc alone never pulls 4t
+            lst.write_text("MyTradingSys/tests/test_relay_prompts.py\n", encoding="utf-8")
+            plan, mode = rat.apply_selection(rat.build_plan(True), ["--smoke", "--precheck", "--changed-file", str(lst)])
             four_t = [s for s in plan if s.num == rat.TARGET_STEP]
             self.assertEqual(len(four_t), 1)
             self.assertIsNone(four_t[0].skip)
             self.assertIn("test_relay_prompts.py", four_t[0].cmd_text)
+            lst.write_text("MyTradingSys/system/RELAY.md\n", encoding="utf-8")
             plan, _ = rat.apply_selection(rat.build_plan(True), ["--smoke", "--changed-file", str(lst)])
             self.assertFalse([s for s in plan if s.num == rat.TARGET_STEP])   # CI / auto_deploy argv: no precheck step
+
+    def test_a_full_gate_runs_the_targeted_files_once_in_their_shard_not_again_as_4t(self):
+        """Ship 2026-10-24: a full gate ran 4t (12 files, 303 s) serially before the main gate, then ran the same files in their shard."""
+        with tempfile.TemporaryDirectory() as d:
+            lst = Path(d) / "changed.txt"
+            lst.write_text("scripts/dev/auto_deploy.py\nMyTradingSys/tests/test_relay_prompts.py\n", encoding="utf-8")
+            plan, mode = rat.apply_selection(rat.build_plan(True), ["--smoke", "--precheck", "--changed-file", str(lst)])
+            self.assertEqual(mode, "full")
+            self.assertFalse([s for s in plan if s.num == rat.TARGET_STEP])
+            shards = [s for s in plan if s.num.startswith("4") and "pytest" in s.cmd_text]
+            self.assertTrue(shards)
+            self.assertFalse([s for s in shards if s.skip])   # every shard (so test_relay_prompts.py) still runs
+
+    def test_smoke_steps_are_capped_at_240_s_and_other_modes_are_not(self):
+        self.assertEqual(rat.step_timeout_for("smoke"), 240)
+        self.assertIsNone(rat.step_timeout_for("full"))
+        self.assertIsNone(rat.step_timeout_for(None))
 
     def test_config_check_is_a_cheap_gate_step(self):
         plan = {s.num: s for s in rat.build_plan(True)}

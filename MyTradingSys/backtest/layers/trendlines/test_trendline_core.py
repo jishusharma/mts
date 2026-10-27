@@ -296,6 +296,62 @@ class TestEligibilityArms(unittest.TestCase):
         self.assertIsNone(det.nearest("support", "V"))
 
 
+class TestContractV11(unittest.TestCase):
+    """Contract v1.1 (audit 2026-10-18 gaps 1-3). Each test fails on the v1 detector."""
+
+    def test_gap1_close_arm_line_survives_wick_through_it(self):
+        # close-series swing lows at 15 (close 100) and 27 (close 106); their wicks sit 5 below the closes,
+        # i.e. below the line on its own anchor bars. The close arm tests closes only.
+        bars = [{"t": i * HOUR, "o": 115.0, "h": 125.0, "l": 110.0, "c": 115.0, "v": 100.0} for i in range(40)]
+        bars[15]["c"], bars[15]["l"] = 100.0, 95.0
+        bars[27]["c"], bars[27]["l"] = 106.0, 101.0
+        det = detect(bars, price_arm="close", transform="linear")
+        self.assertIn("1h|support|close|linear|15|27", det.lines)
+        self.assertFalse([r for r in det.rejects if r["reject"] == "penetration"])
+
+    def test_gap1_close_arm_still_rejects_a_close_through_the_line(self):
+        bars = [{"t": i * HOUR, "o": 115.0, "h": 125.0, "l": 110.0, "c": 115.0, "v": 100.0} for i in range(40)]
+        bars[15]["c"], bars[15]["l"] = 100.0, 95.0
+        bars[27]["c"], bars[27]["l"] = 106.0, 101.0
+        bars[20]["c"] = 101.0   # L(20) = 100 + 6*5/12 = 102.5; close 101 is 1.5 below, beyond the 1.0 tolerance
+        det = detect(bars, price_arm="close", transform="linear")
+        self.assertNotIn("1h|support|close|linear|15|27", det.lines)
+
+    def test_gap2_touch_before_availability_grants_no_arm_a(self):
+        # bars 28 (contact) and 29 (reset) lie inside ib+1..ib+k; b is only known at 30
+        det = run(scenario(tail=[T(1), T(11), T(4), T(4), T(4)]))
+        self.assertIn(MAIN_ID, det.lines)
+        self.assertFalse([e for e in line_events(det, MAIN_ID) if e["state"] in ("touched", "eligible")])
+
+    def test_gap2_line_closed_beyond_in_availability_window_is_rejected(self):
+        # bar 28: low 106.2 (pivot at 27 stays valid), close 106.4 < L(28) = 106.5
+        det = run(scenario(tail=[T(-0.3, h=9.7, c=-0.1), T(4), T(4), T(4)]))
+        self.assertNotIn(MAIN_ID, det.lines)
+        self.assertIn({"reject": "broken_before_available", "known_at": 30, "side": "support", "ia": 15, "ib": 27},
+                      det.rejects)
+
+    def test_gap3_broken_inner_line_does_not_block_outer_line(self):
+        bars = [{"t": i * HOUR, "o": 150.0, "h": 160.0, "l": 150.0, "c": 150.0, "v": 100.0} for i in range(60)]
+        bars[15]["l"] = 100.0
+        bars[27]["l"] = 112.0
+        bars[35]["l"], bars[35]["c"] = 114.0, 115.0
+        bars[40]["l"] = 106.0
+        det = detect(bars, transform="linear")
+        self.assertEqual(det.lines["1h|support|wick|linear|15|27"]["broken_at"], 35)
+        self.assertIn("1h|support|wick|linear|15|40", det.lines)
+        strict = detect(bars, transform="linear", e11="strict")
+        self.assertNotIn("1h|support|wick|linear|15|40", strict.lines)
+
+    def test_gap3_broken_line_second_anchor_still_cannot_start_a_line(self):
+        bars = [{"t": i * HOUR, "o": 150.0, "h": 160.0, "l": 150.0, "c": 150.0, "v": 100.0} for i in range(60)]
+        bars[15]["l"] = 100.0
+        bars[27]["l"] = 112.0
+        bars[35]["l"], bars[35]["c"] = 114.0, 115.0
+        bars[40]["l"] = 125.0   # pivot after the break pairs with 27 (the broken line's second anchor)
+        det = detect(bars, transform="linear")
+        self.assertNotIn("1h|support|wick|linear|27|40", det.lines)
+
+
 class TestCausality(unittest.TestCase):
     """Lines built on data cut at t equal those built on all data and read at t (every t)."""
 

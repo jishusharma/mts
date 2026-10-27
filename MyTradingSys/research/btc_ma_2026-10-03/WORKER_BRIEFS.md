@@ -1,7 +1,7 @@
 # Worker briefs - MTS-2026-10-03-2053Z-APP-ANA-btc-moving-averages
 
 Three Sonnet web-research workers launched 2026-10-03 ~21:10Z. If an output file below is missing, re-run that brief
-(general-purpose agent, model sonnet). Method notes + tier plan: research/BTC_MA_SETUPS_RESEARCH_2026-10-03.md sections 1-2.
+(general-purpose agent, model sonnet). Method notes + tier plan: research/_archive/loose_2026-10/BTC_MA_SETUPS_RESEARCH_2026-10-03.md sections 1-2.
 
 Common rules (all three): playbook Part I governs (methodology/playbook.md). Fixed tiers T1/T2/T3/REJECT (SSRN/arXiv never
 T1). Open every cited source (ToolSearch "select:WebSearch,WebFetch"), match title/authors/venue/year, record URL/DOI +

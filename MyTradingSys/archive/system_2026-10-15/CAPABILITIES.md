@@ -12,16 +12,16 @@
 | Task arrives as... | Load | Skip | Reason |
 |--------------------|------|------|--------|
 | JSON snapshot (uploaded/pasted) | `mts/runtime/compiled_engine.md`, `Dumps/dump_runtime.md`, `Dumps/dump_data.md` | Everything else | Deterministic engine + math + schema |
-| Screenshot (chart image) | `mts/research/visual_validation_protocol_vvp002.md` | Engine files | Vision spec, no execution path |
+| Screenshot (chart image) | `mts/research/_archive/loose_2026-10/visual_validation_protocol_vvp002.md` | Engine files | Vision spec, no execution path |
 | New transcript (analyst video) | `methodology/extraction.md`, `methodology/playbook.md` Part J | Engine files | Extraction lifecycle + verbatim rules |
 | New rule proposed for engine | `system/01_AI_BEHAVIOR.md` Rules 31-41 | Everything else | Integration gate |
 | Rule validation request | `system/01_AI_BEHAVIOR.md` Rule 32 | Everything else | 3-snapshot proof |
 | Research question | `methodology/playbook.md` Part I | Extraction/engine | Meta-research + source tiers |
 | Coordinator task handoff | `DSA_SESSION_PROMPT.md`, `mts/runtime/session_log.json` | Engine files | Ledger + active state |
-| Probability layer work | `mts/research/event_probability_layer_DESIGN.md` | Engine files | Parked design (needs 500+ labels) |
+| Probability layer work | `mts/research/_archive/loose_2026-10/event_probability_layer_DESIGN.md` | Engine files | Parked design (needs 500+ labels) |
 | Engine edit proposed | `mts/runtime/compiled_engine.md`, condition file for the section | Everything else | Runtime authority + canonical doc |
 | Data schema question | `runtime_data/data_schema_v1.2.0.md` | Engine files | Field-level contract |
-| Cross-trader integration | `mts/research/cross_trader_integration_plan.md` | Everything else | 4-phase workflow |
+| Cross-trader integration | `mts/research/_archive/loose_2026-10/cross_trader_integration_plan.md` | Everything else | 4-phase workflow |
 | Session state update | `mts/runtime/session_state.json`, `mts/runtime/session_log.json` | Engine files | SSOT |
 | Task list / status review | `system/02a_CURRENT_STATUS.md`, `system/COMPILED_DECISIONS.md` | Everything else | Status + decisions reference |
 

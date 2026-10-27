@@ -7,6 +7,7 @@ status of the retired NUC worker, 10 commits, delivered lab cards) are not repea
 """
 import nowin  # B190: scheduled run (hidden console) must not flash git windows
 nowin.install()
+import csv
 import json
 import subprocess
 import os
@@ -23,6 +24,9 @@ RESEARCH_PATHS = ("MyTradingSys/research/", "MyTradingSys/methodology/", "MyTrad
 INFRA_CAP_PCT = 30
 RECENT_REPORTS = 5
 RECENT_REPORT_DAYS = 3
+PROMOTED_SETUPS = "MyTradingSys/execution/promoted_setups.json"
+VERDICTS_CSV = "MyTradingSys/research/VERDICTS.csv"
+OOS_SPLITS = ("VALIDATION", "HOLDOUT")
 
 
 def run_cmd(cmd, cwd=None):
@@ -32,6 +36,50 @@ def run_cmd(cmd, cwd=None):
         return result.stdout.strip()
     except Exception as e:
         return f"Error: {e}"
+
+
+def handoff_blocks(text):
+    """[(heading, body)] for each `## ` block of NEXT_SESSION.md."""
+    out, head, body = [], None, []
+    for line in text.splitlines():
+        if line.startswith("## "):
+            if head:
+                out.append((head, "\n".join(body)))
+            head, body = line[3:].strip(), []
+        elif head:
+            body.append(line)
+    if head:
+        out.append((head, "\n".join(body)))
+    return out
+
+
+def get_handoff_freshness(text=None, newer=None, root="."):
+    """One line per NEXT_SESSION block: FRESH or STALE (operator 2026-10-21: sessions quoted hand-overs that disk and git had already
+    overtaken). STALE = newer trunk commits touch a file the block names in backticks, since the date in its heading.
+    newer(paths, since) -> [one-line commits]; injectable for tests. A hand-over is history, never the current state."""
+    if text is None:
+        try:
+            text = Path(root, "MyTradingSys/system/NEXT_SESSION.md").read_text(encoding="utf-8")
+        except OSError:
+            return ["(NEXT_SESSION.md unreadable: check the disk, do not guess)"]
+    if newer is None:
+        def newer(paths, since):
+            r = subprocess.run(["git", "log", "--since=" + since + " 00:00", "--oneline", TRUNK, "--", *paths], capture_output=True, text=True, cwd=root)
+            return [x for x in r.stdout.splitlines() if x]
+    lines = []
+    for head, body in handoff_blocks(text):
+        m = re.search(r"20\d\d-\d\d-\d\d", head)
+        if not m:
+            continue
+        paths = sorted({t for t in re.findall(r"`([^`\s]+)`", body)
+                        if ("/" in t or t.endswith((".py", ".md", ".ps1", ".json"))) and Path(root, t.split(":")[0]).exists()})[:25]
+        commits = newer(paths, m.group(0)) if paths else []
+        if len(commits) > 1:
+            lines.append(f"STALE {m.group(0)} {head[:70]}: {len(commits)} newer commits touch files it names (newest {commits[0][:80]}). "
+                         "Verify on disk and git before quoting it.")
+        else:
+            lines.append(f"FRESH {m.group(0)} {head[:70]}")
+    return lines or ["(no dated hand-over blocks)"]
 
 
 def get_trunk_log(n=TRUNK_COMMITS, cwd=None):
@@ -212,6 +260,43 @@ def get_ci_line(cwd=None, now=None):
             f"origin/fast-track: {tag}")
 
 
+def get_go_private_line(cwd=None):
+    """GO-PRIVATE trigger (operator 2026-10-22: notify the moment a layer first clears its fee-net out-of-sample gate).
+    A = promoted_setups.json entries (already promoted live). B = VERDICTS.csv PASS rows whose split_read names
+    VALIDATION or HOLDOUT, grouped by study_dir and dated by the earliest such PASS row. A or B above zero reads
+    TRIGGER with the ids/dirs and first-seen date; a missing or unreadable file counts as zero, never an error."""
+    base = Path(cwd) if cwd else Path(".")
+    a_ids = []
+    try:
+        data = json.loads((base / PROMOTED_SETUPS).read_text(encoding="utf-8"))
+        a_ids = [str(e.get("id") or e.get("setup_id") or "?") for e in data.get("entries", [])]
+    except (OSError, ValueError):
+        pass
+    b = {}
+    try:
+        with open(base / VERDICTS_CSV, newline="", encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                if row.get("verdict") != "PASS":
+                    continue
+                split = row.get("split_read") or ""
+                if not any(s in split for s in OOS_SPLITS):
+                    continue
+                d, dt = row.get("study_dir") or "?", row.get("date") or ""
+                if d not in b or (dt and dt < b[d]):
+                    b[d] = dt
+    except (OSError, csv.Error):
+        pass
+    a, bn = len(a_ids), len(b)
+    if a == 0 and bn == 0:
+        return "GO-PRIVATE: A=0 B=0 NO TRIGGER"
+    bits = []
+    if a_ids:
+        bits.append("A:" + ",".join(a_ids))
+    if b:
+        bits.append("B:" + ",".join(f"{k} ({v})" for k, v in sorted(b.items(), key=lambda kv: kv[1])))
+    return f"GO-PRIVATE: A={a} B={bn} TRIGGER " + "; ".join(bits)
+
+
 LIVE_MARKER = ".mts_live"   # marker FILE at the root of the live tree (auto_deploy.Ops.is_live)
 
 
@@ -233,6 +318,16 @@ def get_ci_card_line(ci_line, root=".", env=None):
         return "CI card: " + "; ".join(ci_red_card.run(str(Path(root).resolve()), apply=True))
     except Exception as e:   # never block the status page
         return f"CI card: not filed ({type(e).__name__}); run scripts/dev/ci_red_card.py --apply"
+
+
+STATUS_TRACKED = "MyTradingSys/research/STATUS.md"
+STATUS_LIVE = "runtime_data/STATUS_live.md"   # git-ignored
+
+
+def get_status_path(root="."):
+    """Where main() writes the page. STATUS.md stays tracked and is generated off the live host (ship / CI); the live tree writes an
+    ignored copy instead, so a scheduled run there never dirties a tracked file and blocks a hand deploy (card move-live-host-generated-files)."""
+    return STATUS_LIVE if is_live_tree(root) else STATUS_TRACKED
 
 
 LESSONS = "MyTradingSys/system/LESSONS_LEARNED.md"
@@ -358,6 +453,7 @@ def main():
     output.append("## Git Status")
     ci_line = get_ci_line()
     output.append(ci_line)
+    output.append(get_go_private_line())
     card_line = get_ci_card_line(ci_line)
     if card_line:
         output.append(card_line)
@@ -365,6 +461,12 @@ def main():
     n_stale, stale_lines = get_stale_pages()
     output.append(f"Pages stale: {n_stale}")
     output.extend(stale_lines)
+    output.append("")
+
+    output.append("## Hand-over freshness (hand-overs are history: read disk and git, never quote them as current)")
+    output.append("```")
+    output.extend(get_handoff_freshness())
+    output.append("```")
     output.append("")
 
     # Gate board: which gate each layer is at and when its proof last moved (LAYER_REBUILD_PLAN_2026-10-15 s5; gate_board.json)
@@ -442,7 +544,8 @@ def main():
     output.append("")
 
     # Write output
-    status_path = "MyTradingSys/research/STATUS.md"
+    status_path = get_status_path()
+    Path(status_path).parent.mkdir(parents=True, exist_ok=True)
     with open(status_path, 'w', encoding='utf-8') as f:
         f.write("\n".join(output))
 

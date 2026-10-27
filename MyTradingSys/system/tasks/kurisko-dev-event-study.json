@@ -19,6 +19,9 @@
   ],
   "live_path": false,
   "mutation_check": "",
+  "not_twin_of": [
+    "krown-dev-event-study"
+  ],
   "note": "REVIEWED:2026-10-18 ACCEPT LAB:results CLASS:C2 REVIEWER:GPT high on spec+tests+diff via desk row (non-Claude) + Haiku re-derives 1-3 decision numbers (one cell's event-days, net mean and placebo mean) + Gemini Flash second look on RESULT.md; second vendor re-derives on first downstream use (the VALIDATION card) WEIGHT:IMPORTANT. Lab_Guy 2026-10-18 confirms C2: it writes registry rows (VERDICTS.csv, layer_map.json) and decides promote or close. Card fixes: cost model and funding rule are the PRE_REG's frozen ones (F:/MTS/Dumps/backtest/raw_fund does not exist, so no funding choice at run time); pass bars come only from the PRE_REG; INSUFFICIENT-N is not NO EDGE (E4/E5); the guard also checks data shas and refuses a second run (E7); loader refuses bars >= 2024-07-01 (E1); net-R fixture from FORMULAS 13. Stays refined until the fire-counts card is done. Holdout stays sealed. A result that contradicts the PRE_REG gets reported, not re-cut. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
   "prio": 2,
   "refine_tries": 0,

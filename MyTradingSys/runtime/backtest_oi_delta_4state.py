@@ -6,7 +6,7 @@ import statistics
 from pathlib import Path
 from collections import defaultdict
 
-ROOT = Path(r"C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed")
+ROOT = Path(__file__).resolve().parents[2]
 SNAPS = ROOT / "runtime_data" / "snapshots"
 LABELS = ROOT / "runtime_data" / "outcome_labels.json"
 OUT = ROOT / "MyTradingSys" / "research" / "OI_DELTA_4STATE_BACKTEST_2026-09-21.md"

@@ -13,6 +13,7 @@ The table below is the one place for machine x login x lane x model x may-touch;
 | See each layer's progress, what is stuck, the roadmap and what is missing | MTS Layers page (this page) |
 | Start work | RETIRED 2026-10-17, see SCHEDULING_POLICY.md: no dispatcher starts sessions. A super-session coordinator starts them (SUPER_SESSION.md); to start one by hand, open the Claude app and give it the block in NEXT_SESSION.md |
 | Check the live testnet system | JIS-NB: `mts status` |
+| Names | New name JIS-DESKTOP = old JIS-NB (the desktop); JIS-LAPTOP = old DESKTOP-F7IU69N (the Lenovo laptop); JIS-NUC stays (the NUC). Table and aliases: `scripts/dev/hosts.py`; rename steps: MACHINE_RENAME.md |
 
 ## Who does what (machine, login, lane, model, may touch)
 | Machine | Login / worker | Lane and what runs by itself | Model | May touch |
@@ -24,6 +25,7 @@ The table below is the one place for machine x login x lane x model x may-touch;
 | JIS-NUC | jishusharma1985 | any queue task | Sonnet; Opus only when named | work trees only |
 | JIS-NUC | Codex (GPT; no Claude login) | lane CODEX: (RETIRED 2026-10-17, see SCHEDULING_POLICY.md: MTS-CodexLab unregistered; the coordinator runs `codex_run.py tick`) plus the hand-started Codex app project (`F:\MTS\mts-codex`) | gpt-6-luna; astra only for a card flagged `crucial`, low effort (LAYER_LAB.md) | `F:\MTS\mts-codex-lab`; audit and run cards write only `research/layer_lab/` and `system/tasks/`; never the relay, live path or a holdout |
 | JIS-NUC | Gemini (Google AI Pro login, Antigravity IDE; no Claude login) | hand-started only, no scheduler: lane CODEX cards the Codex lab has not claimed (GEMINI_START.md) | Google's model, UNVERIFIED which | `F:\MTS\mts-gemini` work tree only; ask-before-write; no live path, no secrets |
+| Laptop (DESKTOP-F7IU69N) | Gemini (Google AI Pro login, standalone Antigravity app; no Claude login) | hand-started only: lane CODEX cards nobody has claimed (GEMINI_START.md, Laptop section) | Google's model, UNVERIFIED which | `C:\Users\e-ngineers\IdeaProjects\mts-gemini` work tree only; ask-before-write; no live path, no secrets |
 | JIS-NB and JIS-NUC | DSA (DeepSeek chat, no Claude login) | lanes DSA, DSA-NB, DSA-NUC: run-and-report jobs from the desk board (`desk.py`) through AIBridge | DeepSeek | work tree `mts-dsa`; no live path, no secrets; data on JIS-NB only for DSA-NB |
 | Laptop (DESKTOP-F7IU69N) | either Claude login | nothing by itself; travel, remote desktop into the other two | per login | its own clone, committed data only |
 | Cloud (claude.ai/code) | any login (which login holds the 100 USD credits, expiry 2026-11-05: UNVERIFIED) | offline research, specs and reviews; its changes arrive as pull requests into fast-track | UNVERIFIED | pushed refs only; no LAN, no gitignored files |

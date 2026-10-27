@@ -1,0 +1,10 @@
+{
+  "done_when": "F:\\AIBridge\\extension\\manifest.json shows 0.7.1, extension.pre_0.7.1 exists, and the operator was told the reload step.",
+  "from": "JIS-NUC",
+  "id": "20261019-050232-aibridge-extension-v0-7-1-install-on-jis",
+  "need": "F:/AIBridge/extension on this machine is still 0.7.0 (manifest.json line 4). Fix is on trunk (commit 3270e742, node scripts/aibridge/tests/handsfree.test.js 7/7 pass). Steps: rename F:\\AIBridge\\extension to F:\\AIBridge\\extension.pre_0.7.1 (backup, do not delete); copy scripts/aibridge/extension from origin/fast-track (work tree, not live tree) to F:\\AIBridge\\extension; check manifest.json version is 0.7.1; tell the operator to reload the AIBridge extension in chrome://extensions and press F5 on the DeepSeek chat. Same job as row 20261018-170620 for JIS-NB.",
+  "posted": "2026-10-19T05:02:32Z",
+  "status": "pending",
+  "target": "JIS-NUC",
+  "title": "AIBridge extension v0.7.1 install on JIS-NUC (hands-free uncheck fix)"
+}

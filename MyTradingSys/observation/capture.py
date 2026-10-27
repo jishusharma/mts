@@ -10,9 +10,6 @@ Storage: --dir, else env MTS_OBS_DIR, else <repo>/runtime_data/observations (git
 Rules come from methodology/live_session_protocol.md (rule 4 labels, rule 9 corrections),
 methodology/chart_read_protocol.md (six layers, "no invalidation, no read") and VVP-002 C.1 (footprint zones).
 """
-import argparse
-import csv
-import hashlib
 import json
 import os
 import sys
@@ -126,6 +123,7 @@ def validate(rec):
 
 def make_id(rec):
     body = json.dumps({k: rec.get(k) for k in ("ts_logged", "session", "kind", "ts_market", "text")}, sort_keys=True)
+    import hashlib
     return hashlib.sha1(body.encode("utf-8")).hexdigest()[:12]
 
 
@@ -186,6 +184,7 @@ def load_captures(directory=None):
 
 def build(directory=None):
     """Normalize: UTC times, superseded flag, quality flags. Writes derived/observations.jsonl and setups.csv."""
+    import csv
     recs, rejects = load_captures(directory)
     superseded = {r["supersedes"] for r in recs if r.get("supersedes")}
     for r in recs:
@@ -214,6 +213,7 @@ def build(directory=None):
 
 
 def main(argv=None):
+    import argparse
     p = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     p.add_argument("--dir", help="observation store (default env MTS_OBS_DIR or runtime_data/observations)")
     sub = p.add_subparsers(dest="cmd", required=True)

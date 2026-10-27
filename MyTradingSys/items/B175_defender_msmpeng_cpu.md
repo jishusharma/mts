@@ -13,4 +13,7 @@ Host-level, hard-to-reverse changes (kill pid 3200, WMI repository reset + reboo
 4. WMI repository reset (stale ESET entry): cosmetic for CPU, needs reboot; do last.
 5. Disable file hash computation by Group Policy: low yield, skip unless 1-3 fail.
 
+## 2026-10-21 update: Gemini / GPT lanes
+Task Manager showed MsMpEng 30 %, Intel System Usage Report 25 %, python 22 % while the Codex (GPT) and Gemini lanes ran parallel pytest/unittest gates in `F:\MTS\mts-*`. Builders are not admin, so the exclusions cannot be applied from a session. Operator runs once (UAC prompt): `powershell -File scripts\operator\defender_exclusions.ps1 -StopIntelSur`. It covers `F:\MTS`, the repo, `.gemini`, Codex runtimes and `OpenAI\Codex`, pytest temp, `.m2`, plus python/node/git/codex/java processes and the .class/.jar/.pyc extensions. `-Check` lists what is missing; `-Remove` undoes it.
+
 Done when: MsMpEng average CPU < 0.3 core over 120 s on a quiet loop, measured the same way as the report (CPU seconds delta).

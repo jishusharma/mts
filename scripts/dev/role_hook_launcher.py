@@ -23,8 +23,8 @@ from pathlib import Path
 TRUNK = "origin/fast-track"
 LOADER_REL = "scripts/dev/role_loader.py"
 MARK = "mts_role_launcher.py"
-KNOWN = ["Eagle_Eyes", "Lab_Guy", "Session_Planner", "MTS_Doctor", "Artifacts_Guy", "Network_Admin_Guy", "Q&A_Helper",
-         "Pipeliner"]
+KNOWN = ["Eagle_Eyes", "Lab_Guy", "Session_Planner", "MTS_Doctor", "1985Artifacts_Guy", "Artifacts_Guy", "Admin_Guy",
+         "Q&A_Helper", "Network_Admin_Guy", "Pipeliner", "Traffic_Controller", "Supervisor", "Builder", "Thinker", "Lead"]
 PREFIX = r"(?:you are|you're|act as|be the|be|role:|i need(?: an| a| the)?|start(?: an| a| the)?)"
 HOME = Path.home() / ".claude"
 
@@ -61,6 +61,20 @@ def names_role(prompt):
     return None
 
 
+BARE_LOGIN = re.compile(r"(?i)^\s*login\s+[abc]\s*[.!]?\s*$")
+
+
+def stale_for_bare_login(top, prompt):
+    """A bare `login A|B|C` prompt in a checkout whose own role_loader.py predates it (operator 2026-10-26: the
+    stale laptop and NUC ignored it): the project hook is silent there, so the trunk loader must run."""
+    if not BARE_LOGIN.match((prompt or "").strip().splitlines()[0] if (prompt or "").strip() else ""):
+        return False
+    try:
+        return "BARE_LOGIN" not in (top / LOADER_REL).read_text(encoding="utf-8")
+    except Exception:
+        return True
+
+
 def not_loaded(event, why):
     return json.dumps({"hookSpecificOutput": {"hookEventName": event, "additionalContext":
         f"ROLE LOADER (user-level launcher): the role loader could not run ({why}). Your FIRST reply must begin with "
@@ -73,9 +87,9 @@ def run(payload):
     top = toplevel(payload.get("cwd") or ".")
     if top is None or not (top / "MyTradingSys").is_dir():
         return ""
-    if project_has_hook(top):
-        return ""
     prompt = payload.get("prompt") if isinstance(payload.get("prompt"), str) else ""
+    if project_has_hook(top) and not (event == "UserPromptSubmit" and stale_for_bare_login(top, prompt)):
+        return ""
     role = names_role(prompt) if event == "UserPromptSubmit" else None
     try:
         rc, src = _git(top, "show", f"{TRUNK}:{LOADER_REL}")

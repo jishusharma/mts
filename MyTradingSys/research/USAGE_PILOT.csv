@@ -1,0 +1,6 @@
+ts_utc,lane,model,card,step,pct5h_before,pct5h_after,pctweek_before,pctweek_after,fable_week_before,fable_week_after,tokens_in,tokens_out,tokens_cache,minutes,source,codex_5h_pct,codex_week_pct,gemini
+2026-10-23T11:58:47Z,builder,sonnet-5.5,usage-pilot-run-confluence-s0-registry-o,0-baseline (no work; other sessions share the account),13,14,16,17,6,6,,,,5,get_usage,,,
+2026-10-23T11:59:19Z,builder,sonnet-5.5,usage-pilot-run-confluence-s0-registry-o,s1 gate_board krown G1->G2,14,15,17,17,6,6,,,,1,get_usage,,,
+2026-10-23T12:00:00Z,builder,sonnet-5.5,usage-pilot-run-confluence-s0-registry-o,s2 layer_index + make_layers_md + make_status,15,15,17,17,6,6,,,,1,get_usage,,,
+2026-10-23T12:00:32Z,builder,sonnet-5.5,usage-pilot-run-confluence-s0-registry-o,s3 STATE.md + catalogue F1/F2,15,15,17,17,6,6,,,,1,get_usage,,,
+2026-10-23T12:01:00Z,codex,codex-plus,usage-pilot-run-confluence-s0-registry-o,codex window (no run started),,,,,,,,,,,codex_status,0,0,

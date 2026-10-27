@@ -17,12 +17,20 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import hosts  # noqa: E402
+
 STALE_SEC = 180  # OURS: supervisor tick is 30 s; 6 missed ticks = dead
 ROOT = Path(__file__).resolve().parents[2]
 
 
 def host():
     return (os.environ.get("MTS_HOST") or socket.gethostname()).lower()
+
+
+def _same(a, b):
+    """JIS-NB and JIS-DESKTOP are one machine (hosts.py): an owner file written under the old name still matches."""
+    return hosts.same_host(a, b) or str(a).lower() == str(b).lower()
 
 
 def marker_path(owner_dir=None):
@@ -56,7 +64,7 @@ def check(owner_dir=None, me=None, now=None, stale_sec=STALE_SEC):
     m, err = _read(marker_path(owner_dir))
     if err:
         return False, f"REFUSE: {err} (fail closed)"
-    if m is None or m["host"] == me:
+    if m is None or _same(m["host"], me):
         return True, "ok: no other owner"
     age = ((now or _now()) - m["heartbeat"]).total_seconds()
     if age < stale_sec:
@@ -85,7 +93,7 @@ def release(owner_dir=None, me=None):
     me = (me or host()).lower()
     p = marker_path(owner_dir)
     m, err = _read(p)
-    if m is not None and m["host"] == me:
+    if m is not None and _same(m["host"], me):
         try:
             p.unlink()
         except FileNotFoundError:

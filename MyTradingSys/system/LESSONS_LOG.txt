@@ -1,0 +1,3 @@
+2026-10-26 | sync-hygiene | sync.py start now shows doctor warnings and recent lessons; log one line per task at ship
+2026-10-26 | station-watcher | a background watch loop died silently (regex IndexError on tick 2) and logged no STATE-CHANGE for 40+ min; watcher death is itself a ship-flow stall - a heartbeat per tick makes it detectable [10-26 watcher]
+2026-10-26 | codex-lab | codex_run.py tick on NUC fired astra-low-confluence-prereg-leak-hunt, INCOMPLETE in 5s, and its release failed ("no claim on origin/claims"): the lab lane idles 24-ready/0-runs on a claim/release seam fault, not on the model [10-26 watcher]

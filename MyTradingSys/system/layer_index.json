@@ -121,7 +121,7 @@
       "results": [
         "MyTradingSys/backtest/layers/fabio/FABIO_L1_REPORT.md",
         "MyTradingSys/backtest/layers/fabio/FABIO_OF_REPORT.md",
-        "MyTradingSys/research/P2_FABIO_V3_HOLDOUT_STATUS.md",
+        "MyTradingSys/research/_archive/loose_2026-10/P2_FABIO_V3_HOLDOUT_STATUS.md",
         "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-fabio-ledger-frames.md",
         "MyTradingSys/research/orderflow_views_2026-10-14"
       ],
@@ -357,7 +357,7 @@
       "tracks": "Claude",
       "status": "T055 C1 FAIL; OI/long-short unused as filters.",
       "spec": [
-        "MyTradingSys/research/whale_positioning_evidence_2026-09-12.md",
+        "MyTradingSys/research/_archive/loose_2026-10/whale_positioning_evidence_2026-09-12.md",
         "MyTradingSys/backtest/layers/FORMULAS.md"
       ],
       "code": [
@@ -365,8 +365,8 @@
       ],
       "ledger": [],
       "results": [
-        "MyTradingSys/research/OI_DIVERGENCE_V2_2026-10-10.md",
-        "MyTradingSys/research/OI_EVENT_STUDY_2026-10-10.md"
+        "MyTradingSys/research/_archive/loose_2026-10/OI_DIVERGENCE_V2_2026-10-10.md",
+        "MyTradingSys/research/_archive/loose_2026-10/OI_EVENT_STUDY_2026-10-10.md"
       ],
       "roadmap": [],
       "cards": [
@@ -418,7 +418,7 @@
       "tracks": "Claude",
       "status": "T055 C2/C3 closed; T087 failed prior-day-high fade FAIL.",
       "spec": [
-        "MyTradingSys/research/TURN_OF_CANDLE_ORIGIN_2026-10-09.md"
+        "MyTradingSys/research/_archive/loose_2026-10/TURN_OF_CANDLE_ORIGIN_2026-10-09.md"
       ],
       "code": [
         "MyTradingSys/backtest/layers/session",
@@ -562,7 +562,7 @@
       "plain": "Traders who post entries, stops and targets: score their record first, then trade their calls on a testnet account.",
       "spec": [
         "MyTradingSys/items/B162_qriptal_signal_layer.md",
-        "MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md",
+        "MyTradingSys/research/_archive/loose_2026-10/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md",
         "MyTradingSys/research/analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md"
       ],
       "code": [
@@ -632,7 +632,7 @@
       "id": "krown",
       "name": "Krown (TA 101: zones, volume, candles, averages, ranges)",
       "tracks": "Claude (extraction, ledger, spec, detectors), DSA (data runs)",
-      "status": "Spec v0.2 + 120-rule ledger from 15 of 19 reachable TA 101 videos (14 TA + 1 fees). 4 videos blocked on YouTube captions (429). One structural stop (compression breakout), no stop distance or size rule: the rest is OURS. Not built, not backtested.",
+      "status": "Spec v0.2 + 120-rule ledger from 15 of 19 reachable TA 101 videos (14 TA + 1 fees). The 4 missing transcripts are on disk since 2026-10-16 (krown_capture_2026-10-16/transcripts/ta101_missing4). Gate G2 reached: KROWN_SETUP_CATALOG.md (commit f4a5182a). One structural stop (compression breakout), no stop distance or size rule: the rest is OURS. Detectors not built, not backtested.",
       "plain": "Daily and weekly BTC swing method: trend state from dominant highs and lows, levels from wick to close, volume at 2x its average, a volatility (BBWP) regime, RSI 40/60 zones as confirmation, four candle patterns, 21/55 EMA + 200 SMA; a close, not a wick, is the verdict.",
       "spec": [
         "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md",
@@ -713,6 +713,71 @@
       }
     },
     {
+      "id": "wavetrend",
+      "name": "WaveTrend (LazyBear oscillator)",
+      "tracks": "Claude (research and layer work)",
+      "status": "Causal observation module and parity fixtures exist. BTC DEV atlas remains exploratory: W01-W03/W09 FAIL; W04-W08 INCONCLUSIVE per the MTS re-gate; W07/W08 also use an invalid C1 detector. No validated edge or live integration.",
+      "spec": [
+        "MyTradingSys/research/wavetrend_2026-10-17/PARITY_CONTRACT.md",
+        "MyTradingSys/research/wavetrend_2026-10-17/ATLAS_STUDY_SPEC.md",
+        "MyTradingSys/research/wavetrend_2026-10-17/PRE_REG.md"
+      ],
+      "code": [
+        "MyTradingSys/backtest/layers/wavetrend/wavetrend.py"
+      ],
+      "ledger": [
+        "MyTradingSys/research/gross_effect_screen_2026-10-15/EXPOSURE_LEDGER.csv"
+      ],
+      "results": [
+        "MyTradingSys/research/wavetrend_2026-10-17/RESULT.md",
+        "MyTradingSys/research/wavetrend_2026-10-17/AUDIT_2026-10-18.md",
+        "MyTradingSys/research/wavetrend_2026-10-17/DISPOSITION_2026-10-19.md",
+        "MyTradingSys/research/wavetrend_2026-10-17/STATUS_2026-10-19.md"
+      ],
+      "roadmap": [
+        "MyTradingSys/research/wavetrend_2026-10-17/STATUS_2026-10-19.md"
+      ],
+      "cards": [
+        "wavetrend-*"
+      ],
+      "layers": [],
+      "plain": "LazyBear WaveTrend as a causal BTC context layer; observable oscillator states are implemented, while event definitions, controls and fee-net strategy value remain under research.",
+      "path": {
+        "idea": {
+          "s": "done",
+          "note": "Source/parity contract and BTC context study plan"
+        },
+        "inputs": {
+          "s": "done",
+          "note": "BTCUSDT Binance USD-M DEV 2022-01-01 through 2024-06-30; exact content manifest remains open"
+        },
+        "fees": {
+          "s": "planned",
+          "note": "No fee, funding or executable strategy evaluation yet"
+        },
+        "charts": {
+          "s": "planned",
+          "note": "Visual BTC state review remains separate from the frozen gross atlas"
+        },
+        "built": {
+          "s": "done",
+          "note": "Causal observation module, fixtures and reference parity checks"
+        },
+        "dev": {
+          "s": "failed",
+          "note": "Exploratory gross atlas: 4 FAIL and 5 INCONCLUSIVE; W07/W08 also invalid under the stated C1 definition"
+        },
+        "oos": {
+          "s": "planned",
+          "note": "No VALIDATION or HOLDOUT reads; HOLDOUT remains sealed"
+        },
+        "testnet": {
+          "s": "later",
+          "note": "No strategy passed the research gates"
+        }
+      }
+    },
+    {
       "id": "pitchfork",
       "name": "Pitchfork (Andrews / Schiff / Morge median line)",
       "tracks": "Gemini (study/detector), Claude",
@@ -767,6 +832,61 @@
         },
         "testnet": {
           "s": "later"
+        }
+      }
+    },
+    {
+      "id": "pizzino",
+      "name": "Pizzino (Jason bar count + Michael nested swing states)",
+      "tracks": "Claude",
+      "status": "Indicator module built with fail-first tests from SPEC worked examples. No backtest, no live wiring (pz-4 next).",
+      "spec": [
+        "MyTradingSys/research/pizzino_layer_2026-10-27/SPEC.md",
+        "MyTradingSys/research/pizzino_layer_2026-10-27/PLAN.md"
+      ],
+      "code": [
+        "MyTradingSys/backtest/layers/pizzino/pizzino_indicators.py"
+      ],
+      "ledger": [],
+      "results": [],
+      "roadmap": [],
+      "cards": [
+        "pz-*"
+      ],
+      "layers": [
+        "pizzino_indicators"
+      ],
+      "plain": "Pivots, 50% correction line, retest, Jason 3-bar count and Michael 1/2/3-bar nested trend states as pure functions; fee-net value untested.",
+      "path": {
+        "idea": {
+          "s": "done",
+          "note": "SPEC.md pz-2 from method_extraction.md"
+        },
+        "inputs": {
+          "s": "planned",
+          "note": "BTC daily/3D/weekly klines in pz-4"
+        },
+        "fees": {
+          "s": "planned",
+          "note": "applied in pz-4 backtest"
+        },
+        "charts": {
+          "s": "planned"
+        },
+        "built": {
+          "s": "done",
+          "note": "pizzino_indicators.py + test_pizzino_indicators.py"
+        },
+        "dev": {
+          "s": "planned",
+          "note": "pz-4-backtest"
+        },
+        "oos": {
+          "s": "planned"
+        },
+        "testnet": {
+          "s": "later",
+          "note": "no strategy has passed any gate"
         }
       }
     }

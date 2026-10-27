@@ -40,8 +40,11 @@ def escalation_layer(bars):
 
 def volume_fvg_layer(bars, n_bins=20):
     """Mirrors fabio/run_backtest.py run_fvg (real lowest-volume level in the 70% value area of each swing leg;
-    first touch of that level within 200 bars of leg confirmation). Side as in the backtest: price at leg
-    confirmation above the level -> "short", else "long". n_bins=20, VA 70% = backtest values."""
+    first touch of that level within 200 bars after leg confirmation, scan from confirmed_i+1 like run_fvg).
+    Side = the backtest 'bounce' reading (run_backtest.py:199,202): close at leg confirmation above the level ->
+    "long", else "short". n_bins=20, VA 70% = backtest values. Fail closed: fewer than 2*n_bins bars -> []."""
+    if len(bars) < 2 * n_bins:
+        return []
     legs = swing_legs(bars, left=2, right=2, use_body=True)
     closes = [b["c"] for b in bars]
     out = []
@@ -56,9 +59,9 @@ def volume_fvg_layer(bars, n_bins=20):
             continue
         start = leg["confirmed_i"]
         mid = (lvl["price_lo"] + lvl["price_hi"]) / 2.0
-        for i in range(start, min(start + 200, len(bars) - 1)):
+        for i in range(start + 1, min(start + 1 + 200, len(bars) - 1)):
             if bars[i]["l"] <= mid <= bars[i]["h"]:
-                side = "short" if closes[start] > mid else "long"
+                side = "long" if closes[start] > mid else "short"
                 out.append({"t": bars[i]["t"], "side": side, "level": round(mid, 2),
                             "event": "fvg_touch_%s_%s" % (side, round(mid, 2))})
                 break
@@ -144,26 +147,14 @@ RSI_TOL = 0.5
 
 
 def rsi_level_layer(bars):
-    """1h/15m RSI(14) level events at 40 +/- 0.5 (unchanged detector: rsi_events). Side only on "failure":
-    a failure is a band run whose resolving bar closed on the OPPOSITE side of the run's entry side
-    (rsi_events.py; rsi/TEST_PLAN.md), so the entry side is the opposite of the resolving bar's side, and that side
-    is readable from the RSI value at the event bar (t = resolving bar; rsi > level+tol / < level-tol always holds
-    there). Resolved below -> the run came from above (support from above failed) -> "short"; resolved above -> came
-    from below (resistance from below failed) -> "long". support / rejection / cross keep NO side (alert-only)."""
+    """1h/15m RSI(14) level events at 40 +/- 0.5 (unchanged detector: rsi_events). NO event carries a side here
+    (T09-F3): live trades only support@40 long, mapped by auto_trader layer_rules; cross, failure and rejection are
+    alert-only because no backtest covered them as trades (T09_live_parity.md sec 5). The earlier failure side
+    (opposite of the resolving bar's side) is gone."""
     closes = [b["c"] for b in bars]
     ts = [b["t"] for b in bars]
     rsi = rsi_core(closes, period=14)
-    idx = {t: i for i, t in enumerate(ts)}
-    out = []
-    for e in rsi_events(rsi, ts, level=RSI_LEVEL, tolerance=RSI_TOL):
-        if e["event"] == "failure":
-            v = rsi[idx[e["t"]]]
-            if v is not None and v < RSI_LEVEL - RSI_TOL:
-                e = {**e, "side": "short"}
-            elif v is not None and v > RSI_LEVEL + RSI_TOL:
-                e = {**e, "side": "long"}
-        out.append(e)
-    return out
+    return list(rsi_events(rsi, ts, level=RSI_LEVEL, tolerance=RSI_TOL))
 
 
 def turn_of_candle_layer(bars):

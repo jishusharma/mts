@@ -1,6 +1,6 @@
 # MTS live: live - compact per-minute block for chat paste.
 # usage:    . .\scripts\load.ps1   then type: live
-$root = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
+$root = (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 
 function Fmt($v, $d) { if ($null -eq $v) { "n/a" } else { [math]::Round([double]$v, $d).ToString() } }
 function Dlt($a, $b, $d) {

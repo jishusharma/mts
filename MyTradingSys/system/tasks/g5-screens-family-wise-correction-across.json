@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-24T10:24:25Z",
+  "depends_on": [
+    "fix-screen-real-funding"
+  ],
+  "done_when": "A placebo test with 12 and 40 arms passes at most 5% (family-wise) with the new rule and fails on the old; a table LABEL_MOVES.md lists every past PASS_FLOW/KEEP that changes with old and new label; scripts/T10/t10_demos.py D3 rerun is attached; no ledger row or pre-registered bar is edited.",
+  "est_turns": 24,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Add family-wise correction across arms, horizons and variants to the gross screen (screen.py:220-250) and the G5 common.py:192-230 so a PASS needs the corrected bar; a placebo run of K arms must pass at most the nominal rate (T10 D3: 23.8% at 12 arms, 60.5% at 40 today). Report which past PASS or KEEP labels move.",
+  "id": "g5-screens-family-wise-correction-across",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): scoped from the audit finding; CRUCIAL: review Agent on the diff before ship (changes PASS/KEEP labels). Past labels may move to INCONCLUSIVE. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "Session_Planner",
+  "refs": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T10_missing_aspects.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py",
+    "MyTradingSys/research/chart_read_g5_2026-10-16/common.py",
+    "MyTradingSys/research/chart_read_g5_2026-10-16/test_common.py",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/t10_demos.py",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/LABEL_MOVES.md"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "restating any published verdict, ledger row or pre-registered bar",
+    "live path"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T10_missing_aspects.md (T10-F1, handover)",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/t10_demos.py"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read T10-F1 and the handover; run t10_demos.py D3 to reproduce 23.8% / 60.5%.",
+    "Write the correction rule (Holm over arms x horizons x variants; m = verdicts.py count --split DEV plus new cells, OURS) at the top of LABEL_MOVES.md before any rerun, and the placebo test.",
+    "Apply it in screen.py and common.py; keep the uncorrected label in an extra column.",
+    "Rerun the screens on DEV only, list label moves in LABEL_MOVES.md; change no label by hand."
+  ],
+  "tests": "screen test_placebo_family: K=12 and K=40 placebo arms pass the screen at no more than 5% of seeds; fails on the pre-change rule (23.8% / 60.5%).",
+  "title": "G5 screens: family-wise correction across arms/horizons/variants before a PASS (T10-F1, D3: 12 placebo arms pass the gross screen 23.8%)",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

@@ -19,4 +19,4 @@ Kept on purpose (read by code): `runtime_data/snapshots/` (replay, outcome label
 `apparatus_log.txt` (parity.py), `outcome_labels.json`, `Dumps/backtest/raw*` (research inputs, re-downloadable).
 
 Open: `Dumps/backtest/raw/bookDepth` is 700 MB; confirm which backtests use it before trimming.
-Scheduled: task `MTS-Retention` daily 09:10 local runs `retention.py --apply` via `runtime_data/launch-retention.vbs`.
+Not scheduled (SCHEDULING_POLICY.md, 2026-10-17): run `python scripts/dev/retention.py` by hand. No MTS task is registered on JIS-NB (checked 2026-10-24); the other stations are NOT CAPTURED. `%TEMP%` cleanup, per station: STATION_CLEANUP.md.

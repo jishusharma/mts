@@ -72,6 +72,23 @@ def test_missing_file_is_red(tmp_path):
     assert code == 2 and "oi_1m: no file" in line
 
 
+def test_every_generated_input_absent_is_red_never_ok(tmp_path):
+    """oi_live csv and htf_context are untracked (card move-live-host-generated-files): read from the working tree, absent = RED."""
+    for rel in ("MyTradingSys/runtime/oi_live/oi_1m.csv", "MyTradingSys/research/htf_context/2033-05-18.jsonl"):
+        root = make_root(tmp_path)
+        (root / rel).unlink()
+        code, line = check(root, procs_file(tmp_path))
+        assert code == 2 and ": no file" in line, (rel, line)
+
+
+def test_untracked_generated_inputs_in_a_git_checkout_read_fine(tmp_path):
+    root = make_root(tmp_path)
+    subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+    (root / ".gitignore").write_text((REPO / ".gitignore").read_text(encoding="utf-8"), encoding="utf-8")
+    code, line = check(root, procs_file(tmp_path))
+    assert code == 0 and line.startswith("live_health OK"), line
+
+
 def test_each_dropped_process_is_red(tmp_path):
     root = make_root(tmp_path)
     for i in range(len(CMDS)):

@@ -1,5 +1,5 @@
 import sys; sys.dont_write_bytecode = True
-"""cicd_run.py - end-to-end CI/CD runner for MTS (design: MyTradingSys/research/CICD_PIPELINE_2026-10-03.md).
+"""cicd_run.py - end-to-end CI/CD runner for MTS (design: MyTradingSys/research/_archive/loose_2026-10/CICD_PIPELINE_2026-10-03.md).
 
 One function per stage (2.1 to 2.9). No stage stops the run: every stage records PASS / WARN / FAIL / SKIP / CRASH
 and the next stage runs. The runner never halts, kills, restarts, commits, pushes, merges, deletes or touches

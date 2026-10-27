@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T12:05:15Z",
+  "commands": [],
+  "created": "2026-10-15T14:29:34Z",
+  "crucial": true,
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "effort": "low",
+  "from_inbox": "",
+  "goal": "Second model family on KROWN_SETUP_CATALOG.md (krown-g2) before G3 marks: per S1-S9 list (a) NOT STATED cells the transcripts state, (b) quotes not supporting the row, (c) BTC-visible Y/P/N calls the transcript contradicts, (d) numbers not his (OURS passed as SOURCED). Each finding: file:line + verbatim quote of 25 words or fewer. Report only; no catalogue edit.",
+  "id": "krown-catalogue-gpt-audit",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "SOUND: quotes verbatim, 0 HIGH, 2 MED 5 LOW; MyTradingSys/research/layer_lab/reports/2026-",
+      "ref": "78402f22",
+      "utc": "2026-10-17T12:05:15Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "krown-g2: KROWN_SETUP_CATALOG.md, S1-S9 rewritten into the G2 catalogue format",
+      "ref": "f4a5182a9735",
+      "utc": "2026-10-15T13:40:28Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "f4a5182a9735 krown-g2: KROWN_SETUP_CATALOG.md, S1-S9 rewritten into the G2 catalogue forma",
+      "ref": "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_SETUP_CATALOG.md",
+      "utc": "2026-10-15T13:40:28Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "model": "gpt-6-astra",
+  "note": "ready now: p3 behind 3 astra cards at 1 astra run per 5 h window; krown-g2 KROWN_SETUP_CATALOG.md (f4a5182a) is in its ship gate. If it is still absent at run time the run BLOCKs (free bail retry). coordinator 2026-10-16: operator 'we need all layers'; Krown/Malkan go to G3 first (Fable P6), so this audit runs next in the lab (p3 -> p1).",
+  "pinned": false,
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-17T07:24:56Z",
+  "refs": [],
+  "result": "SOUND: quotes verbatim, 0 HIGH, 2 MED 5 LOW; MyTradingSys/research/layer_lab/reports/2026-10-17_krown-catalogue-gpt-audit.md",
+  "scope_in": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_SETUP_CATALOG.md",
+    "MyTradingSys/research/krown_ta101_2026-10-13/transcripts/ (read only)",
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv (read only)"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "scope_sha": "f4a5182a9735",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "",
+  "title": "Krown G2 catalogue: GPT audit of NOT STATED cells, quote support and BTC-visible calls for S1-S9"
+}

@@ -10,7 +10,8 @@ Scans MyTradingSys/research/**/*.py and MyTradingSys/backtest/**/*.py (AST based
   rolling-center         FAIL  .rolling(..., center=True): every value sees half a window of the future
   shift-negative         FAIL  .shift(-k) / np.roll(x, -k) / diff(-k) / pct_change(-k), unless the statement assigns a name,
                                column or keyword like fwd / forward / outcome / ret(urn) / exit, or sits in a function so named
-  fwd-index              FAIL  x[i+k] (k > 0 or a name), x[i+1:], x[:i+k] (k > 1) under the same exemption; x[:i+1] is not a hit
+  fwd-index              FAIL  x[i+k] (k > 0 or a name), x[i+1:], x[:i+k] (k > 1) under the same exemption; x[:i+1] is not a hit;
+                               batches idx[a:a+CH] (UPPER_CASE chunk-size constant) and text windows passed to a regex are not hits
   pivot-right-neighbour  FAIL  one expression reads x[i-a] and x[i+b] of the same series: a pivot whose right neighbour can be the
                                decision bar (the setup_alpha_beta_2026-10-10 sweep study, line 177: i+1 of the last bar of the previous day)
   fullsample-quantile    WARN  quantile / percentile / qcut over a whole array or frame used for an arm or threshold. OURS-on-DEV
@@ -182,6 +183,27 @@ def _effective(kind, off):
     return off - 1 if kind == "hi" else off
 
 
+CHUNK_NAMES = {"ch", "chunk", "chunks", "batch", "block", "page", "step", "stride", "size"}
+REGEX_FUNCS = {"search", "match", "fullmatch", "finditer", "findall", "sub", "split", "find", "rfind"}
+
+
+def _benign_slice(sub, par):
+    """Slices that are not a read of future bars: (1) a batch idx[a:a + CH] (lower bound is the bare name, upper adds an
+    UPPER_CASE chunk-size constant); (2) a text window passed straight to a regex / str search, e.g. re.search(p, t[q-400:q+600])."""
+    sl = sub.slice
+    if isinstance(sl, ast.Slice) and isinstance(sl.lower, ast.Name) and isinstance(sl.upper, ast.BinOp) \
+            and isinstance(sl.upper.op, ast.Add) and isinstance(sl.upper.left, ast.Name) and sl.upper.left.id == sl.lower.id \
+            and isinstance(sl.upper.right, ast.Name) and sl.upper.right.id.isupper() \
+            and any(t in CHUNK_NAMES for t in _tokens(sl.upper.right.id)):
+        return True
+    p = par.get(sub)
+    if isinstance(sl, ast.Slice) and isinstance(p, ast.Call) and sub in p.args:
+        fn = p.func
+        name = fn.attr if isinstance(fn, ast.Attribute) else (fn.id if isinstance(fn, ast.Name) else None)
+        return name in REGEX_FUNCS
+    return False
+
+
 def _scan_tree(tree, lines, rel):
     hits = []
     par = _parents(tree)
@@ -195,7 +217,7 @@ def _scan_tree(tree, lines, rel):
     for stmt in (n for n in ast.walk(tree) if isinstance(n, ast.stmt)):
         for root in (c for c in ast.iter_child_nodes(stmt) if isinstance(c, ast.expr)):
             seen = {}
-            for sub in (n for n in ast.walk(root) if isinstance(n, ast.Subscript)):
+            for sub in (n for n in ast.walk(root) if isinstance(n, ast.Subscript) and not _benign_slice(n, par)):
                 base = ast.dump(sub.value)
                 for kind, e in _index_items(sub):
                     o = _offset(e)
@@ -238,7 +260,7 @@ def _scan_tree(tree, lines, rel):
                     add(node, "fullsample-quantile")
             if name in ("argrelextrema", "find_peaks", "find_peaks_cwt"):
                 add(node, "pivot-function")
-        elif isinstance(node, ast.Subscript) and node not in pivot_nodes:
+        elif isinstance(node, ast.Subscript) and node not in pivot_nodes and not _benign_slice(node, par):
             for kind, e in _index_items(node):
                 o = _offset(e)
                 if o is None or _effective(kind, o[1]) <= 0:

@@ -207,6 +207,45 @@ class PositioningC1PreReg(unittest.TestCase):
                     self.assertNotIn("NOT_ANSWERED", ans)
 
 
+MALKAN_GFS_BTC_PRE_REG = ROOT / "research" / "malkan_extract_2026-10-15" / "PRE_REG_MALKAN_GFS_BTC.md"
+
+
+class MalkanGfsBtcPreReg(unittest.TestCase):
+    """Card malkan-gfs-btc-htf-prereg: PRE_REG_MALKAN_GFS_BTC.md readiness check."""
+
+    def test_file_exists(self):
+        self.assertTrue(MALKAN_GFS_BTC_PRE_REG.exists(), "PRE_REG_MALKAN_GFS_BTC.md missing")
+
+    def test_items_0_to_12_present_and_answered(self):
+        self.assertTrue(MALKAN_GFS_BTC_PRE_REG.exists(), "PRE_REG_MALKAN_GFS_BTC.md missing")
+        nums = item_numbers(MALKAN_GFS_BTC_PRE_REG)
+        for i in range(0, 13):
+            self.assertIn(i, nums, f"item {i} missing from PRE_REG_MALKAN_GFS_BTC.md")
+        txt = MALKAN_GFS_BTC_PRE_REG.read_text(encoding="utf-8")
+        self.assertNotIn("Answer: TODO", txt)
+        self.assertNotIn("Evidence (file:line): TODO", txt)
+        self.assertNotIn("NOT_ANSWERED", txt)
+        parts = re.split(r"(?m)^## (?=\d+\. )", txt)[1:]
+        self.assertGreaterEqual(len(parts), 12, "fewer than 12 numbered sections")
+        item_secs = [s for s in parts if re.match(r"^([1-9]|1[0-2])\.", s)]
+        self.assertEqual(len(item_secs), 12, "must have all 12 items")
+        for sec in item_secs:
+            n = sec.split(".", 1)[0]
+            self.assertRegex(sec, r"(?m)^Answer:\s*\S", f"item {n}: no answer")
+            self.assertRegex(sec, r"(?m)^Evidence.*:\s*\S", f"item {n}: no evidence")
+
+    def test_gates_0a_to_0f_answered(self):
+        self.assertTrue(MALKAN_GFS_BTC_PRE_REG.exists(), "PRE_REG_MALKAN_GFS_BTC.md missing")
+        txt = MALKAN_GFS_BTC_PRE_REG.read_text(encoding="utf-8")
+        for g in ["0a", "0b", "0c", "0d", "0e", "0f"]:
+            match = re.search(rf"(?m)^-\s*{g}\b[^\n]*:\s*(.+)$", txt)
+            self.assertIsNotNone(match, f"gate {g} missing from PRE_REG_MALKAN_GFS_BTC.md")
+            ans = match.group(1).strip()
+            self.assertGreater(len(ans), 10, f"gate {g} answer too short")
+            self.assertNotIn("TODO", ans)
+            self.assertNotIn("NOT_ANSWERED", ans)
+
+
 if __name__ == "__main__":
     unittest.main()
 

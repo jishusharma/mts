@@ -298,5 +298,59 @@ class GateBoard(Base):
                          "commits 24h: 2 = research 50% | claim/release 0% | other 50%  OVER 30% CAP")
 
 
+class GoPrivateLine(Base):
+    """GO-PRIVATE: A = promoted_setups.json entries, B = VERDICTS.csv PASS rows read on VALIDATION/HOLDOUT, by study_dir
+    (operator quote 2026-10-22: notify the moment a layer first clears its fee-net out-of-sample gate)."""
+    def write_promoted(self, entries):
+        p = Path(self.repo) / ms.PROMOTED_SETUPS
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(json.dumps({"version": 1, "entries": entries}), encoding="utf-8", newline="\n")
+
+    def write_verdicts(self, rows):
+        p = Path(self.repo) / ms.VERDICTS_CSV
+        p.parent.mkdir(parents=True, exist_ok=True)
+        cols = ["study_dir", "family", "arm", "split_read", "n", "gross_mean_pct", "se_pct", "cost_pct", "verdict",
+                "kill_scope", "one_run", "commit", "date"]
+        lines = [",".join(cols)]
+        for r in rows:
+            lines.append(",".join(str(r.get(c, "")) for c in cols))
+        p.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
+
+    def test_no_entries_and_no_oos_pass_is_no_trigger(self):
+        self.write_promoted([])
+        self.write_verdicts([{"study_dir": "d1", "verdict": "FAIL", "split_read": "DEV", "date": "2026-10-01"}])
+        self.assertEqual(ms.get_go_private_line(cwd=self.repo), "GO-PRIVATE: A=0 B=0 NO TRIGGER")
+
+    def test_a_entry_triggers(self):
+        self.write_promoted([{"id": "carry_basis_2026-10-18"}])
+        self.write_verdicts([])
+        line = ms.get_go_private_line(cwd=self.repo)
+        self.assertTrue(line.startswith("GO-PRIVATE: A=1 B=0 TRIGGER"))
+        self.assertIn("carry_basis_2026-10-18", line)
+
+    def test_oos_pass_row_triggers_by_study_dir_first_seen_date(self):
+        self.write_promoted([])
+        self.write_verdicts([
+            {"study_dir": "d1", "verdict": "PASS", "split_read": "VALIDATION", "date": "2026-10-20"},
+            {"study_dir": "d1", "verdict": "PASS", "split_read": "HOLDOUT", "date": "2026-10-15"},   # earlier: wins
+            {"study_dir": "d1", "verdict": "FAIL", "split_read": "VALIDATION", "date": "2026-10-01"},  # FAIL: ignored
+            {"study_dir": "d2", "verdict": "PASS", "split_read": "DEV", "date": "2026-10-10"},        # not OOS: ignored
+        ])
+        line = ms.get_go_private_line(cwd=self.repo)
+        self.assertTrue(line.startswith("GO-PRIVATE: A=0 B=1 TRIGGER"))
+        self.assertIn("d1 (2026-10-15)", line)
+        self.assertNotIn("d2", line)
+
+
+class TestStatusPath(unittest.TestCase):
+    """Card move-live-host-generated-files: the live tree never rewrites the tracked STATUS.md (it blocked hand deploys)."""
+
+    def test_live_tree_writes_the_ignored_copy(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.assertEqual(ms.get_status_path(d), "MyTradingSys/research/STATUS.md")
+            Path(d, ".mts_live").write_text("x")
+            self.assertEqual(ms.get_status_path(d), "runtime_data/STATUS_live.md")
+
+
 if __name__ == "__main__":
     unittest.main()

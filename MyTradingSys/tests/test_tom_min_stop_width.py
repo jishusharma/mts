@@ -8,6 +8,8 @@ import sys
 sys.dont_write_bytecode = True
 import os
 from array import array
+from datetime import date, datetime, timezone
+import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "scripts", "dev"))
 import tom_noise_units as t
@@ -26,6 +28,42 @@ def _make_dummy_bars1m(t0, prices):
         v.append(10.0)
         tbv.append(5.0)
     return Bars1m(t0, o, h, l, c, v, tbv)
+
+
+@pytest.mark.parametrize('kind', ['dict', 'iterable', 'bars1m'])
+def test_n5_uses_only_five_minute_bars_closed_by_asof(kind):
+    # Two synthetic buckets: first H=101,L=99,C=100; second H=150,L=50,C=100.
+    # Before minute 10 only bucket 0 has closed, so no TR with a prior close.
+    # At minute 10, TR_1=max(150-50,abs(150-100),abs(50-100))/100=1.
+    t0 = 1704067200000  # 2024-01-01T00:00:00Z, DEV synthetic timestamps
+    prices = [(100., 101., 99., 100.)] * 9 + [(100., 150., 50., 100.)]
+    rows = {t0 + i*60000: p for i, p in enumerate(prices)}
+    bars = rows if kind == 'dict' else list(rows.items()) if kind == 'iterable' else _make_dummy_bars1m(t0, prices)
+    assert t.n5(bars, asof=t0 + 9*60000 + 30000) == 0.0
+    assert t.n5(bars, asof=t0 + 10*60000) == 1.0
+
+
+def test_n5_iterable_future_bars_cannot_change_past():
+    t0 = 1704067200000
+    prices = [(100., 101., 99., 100.)] * 9 + [(100., 150., 50., 100.)]
+    rows = [(t0 + i*60000, p) for i, p in enumerate(prices)]
+    future = [(t0 + i*60000, (100., 10000., 1., 100.)) for i in range(10,20)]
+    assert t.n5(rows, asof=t0+10*60000) == 1.0
+    assert t.n5(rows+future, asof=t0+10*60000) == 1.0
+
+
+def test_n5_date_means_completed_utc_day_and_requires_timestamped_asof_input():
+    t0 = 1704067200000
+    rows = {t0+i*60000: (100., 101., 99., 100.) for i in range(10)}
+    assert t.n5(rows, asof=date(2024,1,1)) == t.n5(rows, asof=datetime(2024,1,2,tzinfo=timezone.utc))
+    late = {t0+(1430+i)*60000: (100.,101.,99.,100.) for i in range(9)}
+    late[t0+1439*60000] = (100.,150.,50.,100.)
+    assert t.n5(late, asof=date(2024,1,1)) == 1.0
+    assert t.n5(late, asof=datetime(2024,1,2,tzinfo=timezone.utc)) == 1.0
+    with pytest.raises(ValueError, match='timestamp'):
+        t.n5([(101.,99.,100.)]*3, asof=t0)
+    with pytest.raises(ValueError, match='timezone'):
+        t.n5(rows, asof=datetime(2024,1,1,0,10))
 
 
 def test_worked_example():

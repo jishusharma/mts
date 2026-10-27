@@ -16,7 +16,7 @@ Microsoft-Windows-WHEA-Logger Id 1 on the desktop, 43 events 2026-07-19..2026-10
 1. Elevated SMART read (5, 197, 198, 199). 2. Swap SATA cable and port. 3. Back up D:. 4. Move JDK/Maven to the SSD (supervisor restarts the loop once).
 5. Replace the drive if pending/reallocated sectors. NUC move not required by this evidence.
 
-Report: MyTradingSys/research/WHEA_DIAGNOSIS_2026-10-07.md
+Report: MyTradingSys/research/_archive/loose_2026-10/WHEA_DIAGNOSIS_2026-10-07.md
 
 ## Update 2026-10-07 18:00Z - Step 1 SMART read (clean), cause narrowed
 Session MTS-2026-10-07-1800Z-APP-ANA-whea-step2-decide.
@@ -27,6 +27,6 @@ Session MTS-2026-10-07-1800Z-APP-ANA-whea-step2-decide.
 - Cause narrowed from "drive failing" to SATA link, controller, or driver. Ranked: H1 cable/port, H2 controller, H3 driver, H4 PSU rail.
 - Driver facts (non-elevated reads): storahci.sys 10.0.19041.3636, inbox; controller Intel 8 Series/C220 SATA AHCI (PCI DEV_8C02) on MSI H87-G43 (MS-7816), bound to "Standard SATA AHCI Controller" (mshdc.inf). No vendor (Intel RST) AHCI driver installed.
 - Short self-test could not be started from this session: smartctl needs admin and self-elevation was declined. Operator step.
-- Next: swap SATA cable + port; run short self-test; back up D:; move D:\tools to the SSD. Full order: MyTradingSys/research/WHEA_SEQUENCE_2026-10-07.md.
+- Next: swap SATA cable + port; run short self-test; back up D:; move D:\tools to the SSD. Full order: MyTradingSys/research/_archive/loose_2026-10/WHEA_SEQUENCE_2026-10-07.md.
 
-2026-10-10 triage: hardware fix is operator-side. Exact ask: (1) power off and swap the SATA data cable and port for the WDC WD1002FAEX (D:); (2) elevated shell: smartctl -t short /dev/sda and read the result after 2 minutes; (3) back up D:; (4) move D:\tools (live Java) to the SSD. Sequence: research/WHEA_SEQUENCE_2026-10-07.md. Status BLOCKED until the operator reports the swap; new WHEA events after it reopen the driver hypothesis.
+2026-10-10 triage: hardware fix is operator-side. Exact ask: (1) power off and swap the SATA data cable and port for the WDC WD1002FAEX (D:); (2) elevated shell: smartctl -t short /dev/sda and read the result after 2 minutes; (3) back up D:; (4) move D:\tools (live Java) to the SSD. Sequence: research/_archive/loose_2026-10/WHEA_SEQUENCE_2026-10-07.md. Status BLOCKED until the operator reports the swap; new WHEA events after it reopen the driver hypothesis.

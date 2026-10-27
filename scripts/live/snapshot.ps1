@@ -1,6 +1,6 @@
 # MTS live: snapshot - one snapshot, all decision fields
 # usage:    . .\scripts\load.ps1   then type: snapshot
-$root = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
+$root = (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 $snap = Get-ChildItem "$root\runtime_data\snapshots\BTCUSDT_*.json" | Sort LastWriteTime -Desc | Select -First 1
 $j = Get-Content $snap.FullName -Raw | ConvertFrom-Json
 "TIME   $($j.timestamp_utc)"

@@ -2,6 +2,15 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-25T22:16:31Z",
+    "misses": 22,
+    "reads": [
+      "MyTradingSys/research/analysts/ingest_analysts.py"
+    ],
+    "session": "agent-a3684659294ffb4fa"
+  },
   "created": "2026-10-18T16:28:30Z",
   "depends_on": [],
   "done_when": "Social call ingestion utility supports Roman Trading volume-absorption calls; real sourced setups ingested into MyTradingSys/research/analysts/roman/CALL_LEDGER.csv with verbatim source_url and published_utc; unit tests passing.",
@@ -32,7 +41,7 @@
   "refined_by": "gemini-4-argon",
   "refreshed": "2026-10-18T16:30:17Z",
   "refs": [
-    "MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md",
+    "MyTradingSys/research/_archive/loose_2026-10/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md",
     "MyTradingSys/research/analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md",
     "MyTradingSys/research/analysts/ROADMAP.md",
     "MyTradingSys/research/analysts/schema.py",
@@ -51,7 +60,7 @@
   "scope_sha": "1e405a57e967",
   "size": "M",
   "sources": [
-    "MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md:116-135"
+    "MyTradingSys/research/_archive/loose_2026-10/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md:116-135"
   ],
   "state": "ready",
   "steps": [

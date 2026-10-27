@@ -324,7 +324,7 @@ class BeginEndTest(Base):
         self.assertIn("CLAIM: refresh-section-4-tom-fabio", out)
         self.assertEqual(sh(wt, "branch", "--show-current").strip(), self.host_branch())
         self.assertEqual(sh(wt, "rev-parse", "HEAD").strip(), sh(self.origin, "rev-parse", "fast-track").strip())   # claim shipped
-        claim = sh(self.origin, "show", "fast-track:MyTradingSys/system/claims/refresh-section-4-tom-fabio.md")
+        claim = sh(self.origin, "show", "claims:MyTradingSys/system/claims/refresh-section-4-tom-fabio.md")
         self.assertIn(f"task: {self.TITLE}", claim)
         self.assertEqual(sh(self.live, "branch", "--show-current").strip(), "fast-track")    # live tree untouched
         self.assertEqual(sh(self.live, "status", "--porcelain").strip(), "")
@@ -348,7 +348,7 @@ class BeginEndTest(Base):
         self.assertIn("released: refresh-section-4-tom-fabio", out)
         self.assertFalse(wt.exists())
         r = subprocess.run(["git", "-C", str(self.origin), "cat-file", "-e",
-                            "fast-track:MyTradingSys/system/claims/refresh-section-4-tom-fabio.md"], capture_output=True)
+                            "claims:MyTradingSys/system/claims/refresh-section-4-tom-fabio.md"], capture_output=True)
         self.assertNotEqual(r.returncode, 0)                                              # claim file gone on origin
         self.assertNotIn("mts-dsa-refresh", sh(self.live, "worktree", "list"))
 

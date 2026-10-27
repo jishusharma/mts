@@ -6,6 +6,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -86,6 +87,21 @@ class DefinitionOfReadyTest(unittest.TestCase):
         c = good(steps=[f"step {i}" for i in range(40)])
         self.assertTrue(any("30 lines" in m for m in T.problems(c)))
         self.assertLessEqual(len(T.brief(good()).splitlines()), T.MAX_BRIEF)
+
+    def test_brief_prints_read_first_ruled_out_traps_and_first_commands(self):
+        c = good(context={"reads": ["scripts/dev/desk.py", "scripts/dev/lease.py"], "misses": 2}, commands=["pytest -q x"],
+                 note="HOLD two clones must close the row in one second" + NL + "tried a second lease",
+                 latest=[{"kind": "decision", "ref": "r", "utc": "2026-10-25T00:00:00Z", "line": "no second lease"}])
+        b = T.brief(c)
+        self.assertIn("Read first: scripts/dev/desk.py, scripts/dev/lease.py", b)
+        self.assertIn("Ruled out: no second lease | tried a second lease", b)
+        self.assertIn("Traps: HOLD two clones", b)
+        self.assertIn('First commands: python scripts/dev/sync.py start B900; python scripts/dev/sync.py claim "B900"; pytest -q x', b)
+        self.assertLessEqual(len(b.splitlines()), T.MAX_BRIEF)
+        self.assertNotIn("Read first:", T.brief(good()))
+        self.assertNotIn('sync.py claim "', T.brief(good(lane="CODEX", kind="build", context={"reads": ["a.py"]})))   # lab prompt: runner claims
+        self.assertEqual(T.problems(c), [])
+        self.assertTrue(any("context" in m for m in T.problems(good(context={"reads": [str(i) for i in range(9)]}))))
 
     def test_weight_field_is_validated_optional_and_shown_in_brief(self):
         self.assertTrue(any("BOGUS" in m for m in T.problems(good(weight="BOGUS"))))
@@ -217,26 +233,51 @@ class QueueTest(unittest.TestCase):
         self.assertEqual(rc, 1)
         self.assertEqual(T.get(self.repo, "B1")["state"], "refined")
 
-    def test_status_line_refine_needed_only_when_work_waits_and_buffer_low(self):
-        T.save(self.repo, good("B1", state="raw"))
+    def test_one_raw_card_two_hours_old_with_five_ready_is_refine_needed(self):
+        made = datetime(2026, 10, 23, 10, 0, tzinfo=timezone.utc)
+        T.save(self.repo, good("B1", state="raw", created="2026-10-23T10:00:00Z"))
+        for i in range(5):
+            T.save(self.repo, good(f"R{i}"))
+        cards = T.load_all(self.repo)
+        self.assertTrue(T.status_line(cards, made + timedelta(hours=2)).startswith("REFINE_NEEDED"))
+        self.assertTrue(T.status_line(cards, made + timedelta(minutes=30)).startswith("REFINE_OK"))   # too young
+
+    def test_fresh_raw_card_with_empty_builder_stock_is_refine_needed_at_once(self):
+        """The 1 h age rule alone left an empty queue idle for an hour."""
+        made = datetime(2026, 10, 23, 10, 0, tzinfo=timezone.utc)
+        T.save(self.repo, good("B1", state="raw", created="2026-10-23T10:00:00Z"))
+        cards = T.load_all(self.repo)
+        self.assertTrue(T.status_line(cards, made + timedelta(minutes=5)).startswith("REFINE_NEEDED"))
+        self.assertEqual([c["id"] for c in T.refine_due(cards, made + timedelta(minutes=5))], ["B1"])
+
+    def test_old_refined_card_with_empty_builder_stock_is_refine_needed(self):
+        """A refined card (past raw, not yet ready) still wakes the refiner when builders run dry."""
+        T.save(self.repo, good("B1", state="refined", created="2020-01-01T00:00:00Z"))
         self.assertTrue(T.status_line(T.load_all(self.repo)).startswith("REFINE_NEEDED"))
-        for i in range(3):
+
+    def test_no_raw_cards_is_refine_ok(self):
+        for i in range(5):
             T.save(self.repo, good(f"R{i}"))
         self.assertTrue(T.status_line(T.load_all(self.repo)).startswith("REFINE_OK"))
-        for i in range(3):
+        for i in range(5):
             (self.repo / T.DIR / f"R{i}.json").unlink()
-        (self.repo / T.DIR / "B1.json").unlink()
-        self.assertTrue(T.status_line(T.load_all(self.repo)).startswith("REFINE_OK"))   # nothing waiting
+        self.assertTrue(T.status_line(T.load_all(self.repo)).startswith("REFINE_OK"))   # nothing at all
+
+    def test_parked_raw_card_does_not_trigger_refine_needed(self):
+        T.save(self.repo, good("B1", state="raw", created="2020-01-01T00:00:00Z", asks="Which year?"))
+        line = T.status_line(T.load_all(self.repo))
+        self.assertTrue(line.startswith("REFINE_OK"), line)
+        self.assertIn("parked=1", line)
 
     def test_ready_run_lane_cards_do_not_fill_the_builder_buffer(self):
-        T.save(self.repo, good("B1", state="raw"))
+        T.save(self.repo, good("B1", state="raw", created="2020-01-01T00:00:00Z"))
         for i in range(3):
             T.save(self.repo, good(f"D{i}", lane="DSA-NB"))
         self.assertTrue(T.status_line(T.load_all(self.repo)).startswith("REFINE_NEEDED"))
 
     def test_parked_cards_do_not_keep_the_refiner_firing(self):
         """The brake: a card the refiner cannot finish must not start a session every dispatcher tick."""
-        T.save(self.repo, good("B1", state="raw", goal=""))
+        T.save(self.repo, good("B1", state="raw", goal="", created="2020-01-01T00:00:00Z"))
         self.assertTrue(T.status_line(T.load_all(self.repo)).startswith("REFINE_NEEDED"))
         self.run_cli("tried", "B1")
         self.assertTrue(T.status_line(T.load_all(self.repo)).startswith("REFINE_NEEDED"))     # 1 of 2 tries used
@@ -300,6 +341,19 @@ class QueueTest(unittest.TestCase):
         self.assertEqual(T.get(self.repo, "C1")["state"], "ready")        # dry run changes nothing
         self.run_cli("sweep", "--apply")
         self.assertEqual([T.get(self.repo, i)["state"] for i in ("C1", "C2", "C3")], ["done", "ready", "ready"])
+
+    def test_sweep_archive_moves_closed_cards_and_keeps_them_resolvable(self):
+        T.save(self.repo, good("C1"))
+        T.save(self.repo, good("C2"))
+        self.run_cli("apply-op", "C2", "drop")
+        self.run_cli("sweep", "--archive")
+        self.assertTrue((T.tdir(self.repo) / "C2.json").exists())          # dry run moves nothing
+        self.run_cli("sweep", "--archive", "--apply")
+        self.assertFalse((T.tdir(self.repo) / "C2.json").exists())
+        self.assertTrue((T.tdir(self.repo) / "archive" / "C2.json").exists())
+        self.assertTrue((T.tdir(self.repo) / "C1.json").exists())
+        self.assertEqual(T.get(self.repo, "C2")["state"], "dropped")
+        self.assertIn("C2", [c["id"] for c in T.load_all(self.repo)])
 
     def test_new_creates_a_raw_card_and_refuses_duplicates(self):
         rc, _ = self.run_cli("new", "Check the funding sign", "--id", "B950", "--ref", "B950", "--from-inbox", "abc")
@@ -502,6 +556,33 @@ class StateTagTest(NextSkipsClaimedTest):
         self.assertIn("LATEST decision MyTradingSys/system/CONTROL_ROOM.md", out)
         self.assertIn("LATEST ship", out)
 
+    def test_list_flags_a_ready_card_whose_scope_already_shipped_on_trunk(self):
+        """bug-ready-state-lags-shipped-card: next/take/brief already hide/refuse/STOP a ready card whose scope moved on
+        trunk, but `list` printed a bare 'ready' for the same card -- the stale copy of an already-shipped card then reads
+        as dispatchable backlog. `list` must carry the same STATE tag brief shows."""
+        self.commit("src/a.py", "x=1" + NL)
+        self.card()
+        self.run_cli("tag", "TS1", "--refresh")
+        self.commit("src/a.py", "x=2" + NL, "2026-10-02T00:00:00+00:00")   # trunk ship after the card's own refresh
+        rc, out = self.run_cli("list")
+        self.assertEqual(rc, 0)
+        line = next(ln for ln in out.splitlines() if ln.startswith("TS1"))
+        self.assertIn("ready", line)
+        self.assertIn("STALE:scope changed", line)
+
+    def test_dispatch_excludes_a_ready_card_whose_scope_already_shipped_on_trunk(self):
+        """The Lead pick path (tasks.py dispatch, session_planner.md Duty 2) must not hand out the same stale-but-ready
+        card that next/take/brief already refuse -- exclusion() read only card['state'] and missed it."""
+        self.commit("src/a.py", "x=1" + NL)
+        self.card()
+        self.run_cli("tag", "TS1", "--refresh")
+        self.commit("src/a.py", "x=2" + NL, "2026-10-02T00:00:00+00:00")
+        c = T.get(self.repo, "TS1")
+        now = datetime(2026, 10, 3, tzinfo=timezone.utc)
+        code, why = T.exclusion(c, [c], {}, [], {}, {"status": "up"}, now, None, self.repo)
+        self.assertEqual(code, "stale")
+        self.assertIn("scope changed", why)
+
 
 class RepoDataTest(unittest.TestCase):
     def test_every_committed_card_is_consistent(self):
@@ -513,6 +594,15 @@ class RepoDataTest(unittest.TestCase):
                 self.assertEqual(c["id"] + ".json", T.path_of(T.REPO, c["id"]).name)
                 if c["state"] in T.LIVE:
                     self.assertEqual(T.problems(c, cards, reg), [])
+
+    def test_sized_open_model_cards_carry_worker_fields(self):
+        """card-worker-fields: an open SONNET/HAIKU/OPUS card with a size also has worker and est_turns (WORKERS.md)."""
+        for c in T.load_all(T.REPO):
+            if c["state"] in ("done", "dropped") or c.get("lane") not in ("SONNET", "HAIKU", "OPUS") or not c.get("size"):
+                continue
+            with self.subTest(card=c["id"]):
+                self.assertTrue(c.get("worker") and c.get("est_turns"))
+
 
 
 class LabMachineChecksTest(unittest.TestCase):
@@ -554,13 +644,20 @@ class LabMachineChecksTest(unittest.TestCase):
         T.RUNS_JSONL.unlink()
         self.assertEqual(T.problems(card), [])
 
-    def test_cited_scope_automatically_marks_source_b_shared(self):
+    def test_save_of_citing_card_leaves_cited_card_bytes_untouched(self):
         source = good("BASE1")
         citing = good("USE1", scope_in=["BASE1 results.md"])
         T.save(self.repo, source)
+        before = T.path_of(self.repo, "BASE1").read_bytes()
         T.save(self.repo, citing)
+        self.assertEqual(T.path_of(self.repo, "BASE1").read_bytes(), before)
+        self.assertNotEqual(T.get(self.repo, "BASE1")["weight"], "B-SHARED")
+
+    def test_promote_shared_still_marks_when_called_explicitly(self):
+        T.save(self.repo, good("BASE1"))
+        T.save(self.repo, good("USE1", scope_in=["BASE1 results.md"]))
+        T.promote_shared(self.repo)
         self.assertEqual(T.get(self.repo, "BASE1")["weight"], "B-SHARED")
-        self.assertEqual(T.problems(T.get(self.repo, "BASE1")), [])
 
     def test_build_requires_a_dummy_or_shuffled_output_mutation_probe(self):
         card = good(lane="CODEX", kind="build", mutation_check="")
@@ -575,6 +672,60 @@ class LabMachineChecksTest(unittest.TestCase):
 
 
 class ReviewGateTest(unittest.TestCase):
+    def test_malformed_note_class_fails_closed(self):
+        for note in ('class C2', 'class=2', 'class: 2', 'class: C 2',
+                     'class:C-2', 'Class: **C2**', 'class: "C2"', 'class=Cx'):
+            with self.subTest(note=note):
+                self.assertEqual(T.card_class(good(note=note)), 'C3')
+                self.assertTrue(T.review_gate(good(note=note)))
+        for value in ([], {}, False, 0, ['class=C2']):
+            with self.subTest(value=value):
+                self.assertTrue(T.review_gate(good(note=value)))
+        for value in ('C9', 'wat', [], {}, False, 0):
+            with self.subTest(field=value):
+                self.assertEqual(T.card_class(good(**{'class': value})), 'C3')
+                self.assertTrue(T.review_gate(good(**{'class': value})))
+
+    def test_weight_and_live_path_malformed_values_fail_closed(self):
+        self.assertEqual(T.needs_review(good(weight=' IMPORTANT ')), 'soft')
+        for weight in (' CRUCIAL', 'CRUCIAL ', 'critical', ['CRUCIAL'], {}, 1, False):
+            with self.subTest(weight=weight):
+                self.assertTrue(T.review_gate(good(weight=weight), True, 'evidence'))
+        for live in ('true', 'false', 1, 0, [], {}):
+            with self.subTest(live=live):
+                self.assertTrue(T.review_gate(good(live_path=live), True, 'evidence'))
+        # Malformed data cannot be rescued by a syntactically valid stamp.
+        self.assertTrue(T.review_gate(good(weight=['CRUCIAL'], note='REVIEWED: Argon 2026-10-18')))
+        self.assertTrue(T.review_gate(good(weight='BOGUS', note='REVIEWED: Argon 2026-10-18')))
+        for key, value in (('note', []), ('class', []), ('weight', []), ('live_path', 'true')):
+            c = good(**{key: value})
+            c['review_receipt'] = T.make_review_receipt(c, 'Argon')
+            self.assertTrue(T.review_gate(c), key)
+
+    def test_each_producer_identity_independently_rejects_own_review(self):
+        for key in ('producer', 'producer_model', 'vendor', 'model', 'worker', 'refined_by', 'author'):
+            for note in ('REVIEWED: Argon 2026-10-18', 'REVIEWED:2026-10-18 ACCEPT reviewer=Argon'):
+                with self.subTest(key=key, note=note):
+                    c = good(weight='CRUCIAL', note=note, **{key: ' Argon '})
+                    self.assertEqual(T.stamp_kind(c), '')
+            c = good(weight='CRUCIAL', **{key: ' Argon '})
+            c['review_receipt'] = T.make_review_receipt(c, 'Argon')
+            self.assertEqual(T.stamp_kind(c), '', key)
+        self.assertEqual(T.stamp_kind(good(weight='CRUCIAL', note='REVIEWED: Argon 2026-10-18', producer='Other')), 'real')
+
+    def test_dates_anchors_case_and_single_line_independently(self):
+        for note in ('REVIEWED: Argon 2026-13-45', 'REVIEWED:2026-13-45 ACCEPT',
+                     'quoted REVIEWED:2026-10-18 ACCEPT',
+                     'REVIEWED:\n2026-10-18 ACCEPT', 'REVIEWED:\nArgon 2026-10-18',
+                     'REVIEWED: Argon\n2026-10-18', 'REVIEWED:2026-10-18\nACCEPT'):
+            with self.subTest(note=note):
+                self.assertEqual(T.stamp_kind(good(note=note)), '')
+        self.assertEqual(T.stamp_kind(good(note='preamble\nREVIEWED: Argon 2026-10-18')), 'real')
+        self.assertEqual(T.card_class(good(**{'class': 'c2'})), 'C2')
+        self.assertEqual(T.card_class(good(note='class=C0 class=C3')), 'C3')
+        self.assertTrue(T.review_gate(good(weight='critical')))
+        self.assertEqual(T.needs_review(good(weight='important')), 'soft')
+
     def test_forged_stamp_forms_are_rejected(self):
         forged = (
             "REVIEWED: <reviewer> 2026-10-18",
@@ -710,5 +861,302 @@ class ReviewGateTest(unittest.TestCase):
             d.cleanup()
 
 
+class ResultTrustTest(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.repo = Path(self.tmp.name)
+        (self.repo / 'base.py').write_text('v1\n', encoding='utf-8')
+        (self.repo / 'data.csv').write_text('t,x\n1,2\n', encoding='utf-8')
+        (self.repo / 'proof.md').write_text('independent check\n', encoding='utf-8')
+        self.base = good('BASE', state='done', scope_in=['base.py', 'data.csv'])
+        T.save(self.repo, self.base)
+        self.consumer = good('USE', scope_in=['card:BASE'], **{'class': 'C1'})
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def verify(self, tag='VERIFIED-C1'):
+        self.base['result_receipt'] = {'trust': T.make_result_trust(
+            self.base, tag, 'independent-model', 'medium', 'proof.md', repo=self.repo)}
+        T.save(self.repo, self.base)
+
+    def test_unchecked_refused_verified_c1_allowed(self):
+        self.assertTrue(T.result_trust_problems(self.consumer, self.repo))
+        self.verify()
+        self.assertEqual(T.result_trust_problems(self.consumer, self.repo), [])
+        self.assertTrue(T.result_trust_problems(dict(self.consumer, **{'class': 'C2'}), self.repo))
+        self.verify('VERIFIED-C2')
+        self.assertEqual(T.result_trust_problems(dict(self.consumer, **{'class': 'C2'}), self.repo), [])
+
+    def test_trust_expires_on_data_code_or_evidence_change(self):
+        for file in ('base.py', 'data.csv', 'proof.md'):
+            with self.subTest(file=file):
+                self.verify()
+                path = self.repo / file
+                original = path.read_bytes()
+                path.write_bytes(original + b'changed\n')
+                self.assertTrue(T.result_trust_problems(self.consumer, self.repo))
+                path.write_bytes(original)
+
+    def test_disputed_missing_malformed_or_weak_trust_fails_closed(self):
+        for tag in ('UNCHECKED', 'MACHINE-OK', 'DISPUTED'):
+            self.verify(tag)
+            self.assertTrue(T.result_trust_problems(self.consumer, self.repo))
+        self.verify()
+        for field in ('checker_model', 'effort', 'date', 'data_hash', 'code_revision', 'evidence'):
+            original = dict(self.base['result_receipt']['trust'])
+            self.base['result_receipt']['trust'][field] = ''
+            T.save(self.repo, self.base)
+            self.assertTrue(T.result_trust_problems(self.consumer, self.repo), field)
+            self.base['result_receipt']['trust'] = original
+        self.assertTrue(T.result_trust_problems(good(scope_in=['card:MISSING']), self.repo))
+
+    def test_citation_marks_base_shared_without_query_side_effects(self):
+        self.verify()
+        T.result_trust_problems(self.consumer, self.repo)
+        self.assertEqual(T.get(self.repo, 'BASE')['weight'], '')
+        T.mark_shared_bases(self.consumer, self.repo)
+        shared = T.get(self.repo, 'BASE')
+        self.assertEqual(shared['weight'], 'B-SHARED')
+        self.assertEqual(T.card_class(shared), 'C2')
+        self.assertEqual(shared['shared_consumers'], ['USE'])
+        self.assertEqual(T.result_trust_problems(self.consumer, self.repo), [])
+
+    def test_take_and_active_done_enforce_result_trust(self):
+        previous = T.REPO
+        T.REPO = self.repo
+        try:
+            T.save(self.repo, self.consumer)
+            rc, out = run_cli('take', 'USE')
+            self.assertNotEqual(rc, 0, out)
+            self.consumer['state'] = 'active'
+            T.save(self.repo, self.consumer)
+            rc, out = run_cli('done', 'USE', '--result', 'evidence')
+            self.assertNotEqual(rc, 0, out)
+            self.assertEqual(T.get(self.repo, 'USE')['state'], 'active')
+        finally:
+            T.REPO = previous
+
+    def test_directory_input_cannot_get_a_false_verified_pin(self):
+        (self.repo / 'data_dir').mkdir()
+        self.base['scope_in'] = ['data_dir/']
+        with self.assertRaisesRegex(ValueError, 'explicit file'):
+            self.verify()
+
+    def test_no_data_result_and_flow_data_scope_are_bound(self):
+        self.base['scope_in'] = ['base.py']
+        self.verify()
+        self.assertEqual(T.result_trust_problems(self.consumer, self.repo), [])
+        self.base['flow'] = {'data_scope': ['data.csv']}
+        self.base['flow_receipt'] = {'trust': T.make_result_trust(
+            self.base, 'VERIFIED-C1', 'independent-model', 'medium', 'proof.md', repo=self.repo)}
+        T.save(self.repo, self.base)
+        self.assertEqual(T.result_trust_problems(self.consumer, self.repo), [])
+        (self.repo / 'data.csv').write_text('changed', encoding='utf-8')
+        self.assertTrue(T.result_trust_problems(self.consumer, self.repo))
+
+    def test_flow_ready_and_active_close_require_trusted_base(self):
+        import lab_flow
+        for state in ('ready', 'active'):
+            c = dict(self.consumer, state=state, flow={'id': 'test-flow'})
+            T.save(self.repo, c)
+            with self.assertRaisesRegex(ValueError, 'UNCHECKED'):
+                lab_flow.finish(self.repo, 'USE', 'missing.md', 'PASS', 'receipt')
+            self.assertEqual(T.get(self.repo, 'USE')['state'], state)
+
+    def test_card_file_citation_and_changed_upstream_receipt_expire(self):
+        self.verify('VERIFIED-C2')
+        consumer = dict(self.consumer, scope_in=['MyTradingSys/system/tasks/BASE.json'])
+        self.assertEqual(T.result_trust_problems(consumer, self.repo), [])
+        self.base['result_receipt']['trust']['tag'] = 'DISPUTED'
+        T.save(self.repo, self.base)
+        self.assertTrue(T.result_trust_problems(consumer, self.repo))
+
+    def test_transitive_input_change_is_not_hidden_by_unchanged_card_json(self):
+        root = good('ROOT', state='done', scope_in=['base.py'])
+        root['result_receipt'] = {'trust': T.make_result_trust(
+            root, 'VERIFIED-C2', 'independent-model', 'high', 'proof.md', repo=self.repo)}
+        T.save(self.repo, root)
+        self.base['scope_in'] = ['card:ROOT']
+        self.verify()
+        self.assertEqual(T.result_trust_problems(self.consumer, self.repo), [])
+        (self.repo / 'base.py').write_text('new input code', encoding='utf-8')
+        self.assertTrue(T.result_trust_problems(self.consumer, self.repo))
+
+    def test_declared_flow_risk_class_requires_matching_result_trust(self):
+        self.verify()
+        consumer = dict(self.consumer, **{'class': 'C0'}, flow={'risk_class': 'C2'})
+        self.assertTrue(T.result_trust_problems(consumer, self.repo))
+
+    def test_flow_finish_defaults_to_unchecked_without_claiming_verification(self):
+        # The normal finish contract is tested in test_lab_flow; assert its receipt
+        # default here through the same fixture helpers, without a model call.
+        import lab_flow
+        previous = T.REPO
+        T.REPO = self.repo
+        try:
+            (self.repo / 'source.md').write_text('source', encoding='utf-8')
+            spec = {'id': 'trust-default', 'recipe': 'critical-audit', 'goal': 'check',
+                    'criteria': ['source checked'], 'scope_in': ['source.md']}
+            c = lab_flow.launch(self.repo, spec)[0]
+            proof = self.repo / T.LAB_REPORTS / 'flow.md'
+            proof.parent.mkdir(parents=True, exist_ok=True)
+            proof.write_text(c['id']+'\nC1: PASS\nsource.md:1\n', encoding='utf-8')
+            done = lab_flow.finish(self.repo, c['id'], str(proof.relative_to(self.repo)), 'PASS', 'evidence')
+            self.assertEqual(done['flow_receipt']['trust'], {'tag': 'UNCHECKED'})
+        finally:
+            T.REPO = previous
+
+
+
+class DispatchBlockerTest(unittest.TestCase):
+    def snap(self, cards):
+        orig = T.exclusion
+        T.exclusion = lambda *a, **k: None
+        try:
+            now = datetime(2026, 10, 26, tzinfo=timezone.utc)
+            return [r["id"] for r in T.dispatch(cards, {}, [], {}, {}, now)["dispatch"]]
+        finally:
+            T.exclusion = orig
+
+    def c(self, i, prio, weight="ROUTINE", dep=()):
+        return {"id": i, "title": "t", "lane": "SONNET", "state": "ready", "prio": prio, "weight": weight,
+                "depends_on": list(dep), "created": "2026-10-20"}
+
+    def test_dispatch_heavy_blocker_outranks_prio(self):
+        cards = [self.c("routine-p1", 1), self.c("blocker-p3", 3, "CRUCIAL"), self.c("waiter", 3, dep=["blocker-p3"])]
+        self.assertEqual(self.snap(cards)[0], "blocker-p3")
+
+    def test_dispatch_heavy_without_dependants_keeps_prio_order(self):
+        cards = [self.c("routine-p1", 1), self.c("crucial-p3", 3, "CRUCIAL")]
+        self.assertEqual(self.snap(cards), ["routine-p1", "crucial-p3"])
+
+    def test_dispatch_routine_blocker_keeps_prio_order(self):
+        cards = [self.c("routine-p1", 1), self.c("blocker-p3", 3), self.c("waiter", 3, dep=["blocker-p3"])]
+        self.assertEqual(self.snap(cards)[0], "routine-p1")
+
 if __name__ == "__main__":
     unittest.main()
+
+
+class NeedTest(unittest.TestCase):
+    """Operator 2026-10-22: pre-run items live in the queue (tasks.py need), not in the operator's head."""
+    def setUp(self):
+        self.d = tempfile.TemporaryDirectory()
+        self.repo = Path(self.d.name)
+        self._repo = T.REPO
+        T.REPO = self.repo
+        T.save(self.repo, good("main-card"))
+
+    def tearDown(self):
+        T.REPO = self._repo
+        self.d.cleanup()
+
+    def test_need_makes_an_owned_prereq_card_and_blocks_the_main_card(self):
+        rc, _ = run_cli("need", "main-card", "Lab_Guy review stamp", "--lane", "SONNET", "--role", "Lab_Guy")
+        self.assertEqual(rc, 0)
+        main = T.get(self.repo, "main-card")
+        nid = "main-card-need-lab-guy-review-stamp"
+        self.assertEqual(main["depends_on"], [nid])
+        pre = T.get(self.repo, nid)
+        self.assertEqual((pre["lane"], pre["role"], pre["state"]), ("SONNET", "Lab_Guy", "raw"))
+        self.assertTrue(any(p.startswith("depends_on " + nid) for p in T.problems(main, T.load_all(self.repo), {})))
+        run_cli("need", "main-card", "Lab_Guy review stamp", "--lane", "SONNET")   # idempotent
+        self.assertEqual(T.get(self.repo, "main-card")["depends_on"], [nid])
+
+    def test_need_without_lane_is_refused(self):
+        rc, out = run_cli("need", "main-card", "stamp it")
+        self.assertNotEqual(rc, 0)
+        self.assertIn("--lane", out)
+
+    def test_host_pin_excludes_other_machines_and_shows_in_brief(self):
+        run_cli("need", "main-card", "--host", "JIS-NB", "--host", "DESKTOP-F7IU69N")
+        c = T.get(self.repo, "main-card")
+        self.assertEqual(c["hosts"], ["DESKTOP-F7IU69N", "JIS-NB"])
+        self.assertIn("Host: run only on DESKTOP-F7IU69N or JIS-NB", T.brief(c))
+        lane_st = {"status": "up"}
+        from datetime import datetime, timezone
+        now = datetime(2026, 10, 22, tzinfo=timezone.utc)
+        args = ([c], {}, [], {}, lane_st, now)
+        self.assertEqual(T.exclusion(c, *args[:5], now, "JIS-NUC", self.repo)[0], "host")
+        self.assertIsNone(T.exclusion(c, *args[:5], now, "JIS-NB", self.repo))
+
+
+class TwinCardTest(unittest.TestCase):
+    """Doctor 2026-10-23: two sessions filed one job as doctor-main-checkout-behind and jis-nb-fast-forward-the-main-checkout-to."""
+    REAL_A = ("Main checkout is 102 commits behind origin/fast-track so every session runs stale settings.json/turn_meter.py; "
+              "find why it does not auto-pull and fix (coordinator pulls ff-only)")
+    REAL_B = ("JIS-NB: fast-forward the main checkout to origin/fast-track so PC hooks run the event-turn guard (f47d4cae7) "
+              "and BOOT probe")
+    OTHERS = ["Trust re-check: lab-data-pin-hash", "Trust re-check: lab-dax-net-fee-verdict", "Krown pre-registration fire counts",
+              "Wire real funding into the RSI backtest rerun", "Gemini queue reads results back after each run",
+              "CI windows leg on a dev drive", "Fabio v3 grid fixtures for the lookahead lint", "Session levels for WLOW fixtures",
+              "Refresh the stale layer map page after a ship", "Codex spend guard counts 151 of 65 points on 3 runs"]
+
+    def cards(self):
+        out = [T.blank("a", self.REAL_A), T.blank("b", self.REAL_B)]
+        out += [T.blank(f"o{i}", t) for i, t in enumerate(self.OTHERS)]
+        out[0]["created"], out[1]["created"] = "2026-10-22T22:48:51Z", "2026-10-23T03:39:15Z"   # the real pair, 5 h apart
+        for i, c in enumerate(out[2:]):
+            c["created"] = f"2026-10-{10 + i:02d}T00:00:00Z"                                    # one per day: no batches
+        return out
+
+    def test_one_sessions_batch_is_not_a_twin(self):
+        cs = self.cards() + [T.blank("c", "Codex spend guard counts 151 of 65 points on 3 runs")]
+        for gap, flagged in (("00:00:00", False), ("00:30:00", False), ("00:31:00", True)):
+            cs[-1]["created"] = f"2026-10-19T{gap}Z"                                         # o9 was created 2026-10-19T00:00Z
+            self.assertEqual(("o9", "c") in self.ids(cs, only="c"), flagged, gap)
+        cs[-1]["created"] = "?"                                                           # no usable time: no silence
+        self.assertIn(("o9", "c"), self.ids(cs, only="c"))
+        cs[0]["created"] = "2026-10-23T03:20:00Z"                                         # the real pair, if filed 19 min apart
+        self.assertNotIn(("a", "b"), self.ids(cs))
+
+    def ids(self, cards, **kw):
+        return {(x, y) for _, x, y, _ in T.twin_pairs(cards, **kw)}
+
+    def test_the_real_pair_is_a_twin_and_a_series_is_not(self):
+        got = self.ids(self.cards())
+        self.assertIn(("a", "b"), got)
+        self.assertNotIn(("o0", "o1"), got)          # "Trust re-check: X" siblings differ in X
+        self.assertEqual(got, {("a", "b")})
+
+    def test_same_title_is_a_twin(self):
+        cs = self.cards() + [T.blank("c", "Codex spend guard counts 151 of 65 points on 3 runs")]
+        self.assertEqual(self.ids(cs, only="c"), {("o9", "c")})
+
+    def test_two_shared_rare_files_make_a_twin_but_a_file_and_its_test_do_not(self):
+        cs = self.cards()
+        cs[2]["scope_in"] = ["scripts/dev/shot.py", "scripts/dev/test_shot.py"]
+        cs[3]["scope_in"] = ["scripts/dev/shot.py", "MyTradingSys/tests/test_shot.py"]
+        self.assertNotIn(("o0", "o1"), self.ids(cs))
+        cs[2]["refs"] = ["MyTradingSys/research/x/SPEC.md"]
+        cs[3]["refs"] = ["MyTradingSys/research/x/SPEC.md"]
+        self.assertIn(("o0", "o1"), self.ids(cs))
+
+    def test_a_path_many_cards_share_is_not_evidence(self):
+        cs = self.cards()
+        for c in cs[2:7]:
+            c["refs"] = ["MyTradingSys/research/x/SPEC.md", "MyTradingSys/research/x/FRAMING.md"]
+        self.assertEqual(self.ids(cs), {("a", "b")})
+
+    def test_not_twin_of_depends_on_and_final_cards_silence_a_pair(self):
+        for change in ({"not_twin_of": ["b"]}, {"depends_on": ["b"]}, {"state": "dropped"}):
+            cs = self.cards()
+            cs[0].update(change)
+            self.assertNotIn(("a", "b"), self.ids(cs), change)
+
+    def test_new_warns_on_a_likely_twin(self):
+        with tempfile.TemporaryDirectory() as d:
+            repo, old = Path(d), T.REPO
+            T.REPO = repo
+            try:
+                for c in self.cards()[1:]:
+                    T.save(repo, c)
+                rc, out = run_cli("new", self.REAL_A, "--id", "a")
+                self.assertEqual(rc, 0)
+                self.assertIn("WARN likely twin of b", out)
+                self.assertTrue(T.path_of(repo, "a").exists())        # a warning, not a refusal
+                rc, out = run_cli("twins")
+                self.assertIn("TWIN a b", out)
+            finally:
+                T.REPO = old

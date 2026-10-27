@@ -22,7 +22,9 @@ CODES = {"CAN": "8MvxK_nxO-0", "TFR": "_t_XIBrcjRk", "TRL": "14bxwxC8gBQ", "SNR"
          "GDE": "Aysdt7PBETQ", "TRD": "2-nG9bsMoPQ", "LVL": "2ei4fj-Ba24", "VJZ": "vjzy_KxJ_y8", "RSI": "INOCBmqQupc",
          "KCM": "kcMnnQr1VFg", "TOP": "7IxfsuD2wCM",
          # batch 3 (2026-10-18): Foundations ep8 (order book)
-         "OBK": "ftK2BqggabQ"}
+         "OBK": "ftK2BqggabQ",
+         # batch 4 (2026-10-19): Inside the Machine ep7 (liquidation cascades)
+         "LQC": "P3rDSh187TE", "CAS": "P3rDSh187TE", "P3rDSh187TE": "P3rDSh187TE"}
 
 FAMILIES = {
     "T": "Top-down and context (timeframes, modes)",
@@ -38,6 +40,7 @@ FAMILIES = {
     "X": "Risk and execution",
     "F": "Framing and claims (not rules)",
     "OBK": "Order book and market structure (Foundations ep8)",
+    "LQC": "Liquidation cascades and perpetual mechanics (Inside the Machine Ep 7)",
 }
 
 # id, name, side, type, rule, params, label, sources, mirror, encodability, phase3, blockers
@@ -566,6 +569,28 @@ add("KR-OBK07", "The 10-second pre-execution habit", "long", "PROCESS",
     "SOURCED", "OBK-20;OBK-19", "yes (short execution mirror implied)", "DISCRETIONARY", "READY",
     "human pre-execution checklist; testnet orders are too small for size-vs-depth slippage; cost/slippage inputs map to gap-g7 and dsa-audit-06")
 
+# ---- LQC: liquidation cascades (Inside the Machine Ep 7, P3rDSh187TE)
+add("KR-LQC01", "Anatomy of a liquidation cascade and domino effect", "none", "CONTEXT/REGIME",
+    "A sudden violent market move (e.g. 10% in minutes) is driven by forced exchange liquidations sequentially wiping out leverage bands (10x then 5x). Not panic selling but algorithmic contracts executing in order.",
+    'citing K-P3rDSh187TE-01, K-P3rDSh187TE-04: "thousands of traders got liquidated force closed effectively by the exchange no choice no mercy" (P3rDSh187TE); "each band force exits are the push that triggers the next band and that is your cascade" (P3rDSh187TE); "10% of minutes isn t a thousand people panicking it s a thousand computers executing contracts in order" (P3rDSh187TE)',
+    "SOURCED", "P3rDSh187TE-01;P3rDSh187TE-04", "yes (long and short cascades mirror)", "PARTIAL", "READY",
+    "cascade detection and leverage-band mapping; context/regime input only, no directional bias")
+add("KR-LQC02", "Liquidation weather: funding rate and open interest", "none", "INDICATOR",
+    "Check funding rate and open interest before sizing: hot positive funding shows longs paying shorts to stay leveraged; high open interest represents stacked potential energy (the loaded mountain). Together they signal high cascade vulnerability, though not the exact trigger timestamp.",
+    'citing K-P3rDSh187TE-02, K-P3rDSh187TE-03: "hot positive funding means a crowd is literally paying to stay leveraged along" (P3rDSh187TE); "thermometer for how crowded one side of the boat has become" (P3rDSh187TE); "open interest is potential energy high open interest plus hot funding doesn t tell you when the avalanche comes" (P3rDSh187TE); "it tells you the mountain is loaded with snow and that avalanche has a potential to come now" (P3rDSh187TE)',
+    "SOURCED", "P3rDSh187TE-02;P3rDSh187TE-03", "yes (negative funding mirrors for short squeeze)", "PARTIAL", "READY",
+    "quantitative thresholds for hot funding and stacked OI are discretionary/OURS (gap in extract)")
+add("KR-LQC03", "Deleveraging flush and V-shaped recovery pattern", "none", "MENTAL-MODEL",
+    "A cascade is market deleveraging taking out borrowed conviction, not organic market breakdown. Liquidation prints carry zero opinion because forced sellers decided nothing. Once borrowed positions are wiped out, lack of genuine sellers often produces sharp V-shaped recoveries.",
+    'citing K-P3rDSh187TE-05: "a cascade is not the market breaking it s the market deleveraging is what it is" (P3rDSh187TE); "a liquidation print carries no opinion the seller didn t decide anything" (P3rDSh187TE); "that s why cascades so often end up in v shaped recoveries because once the borrowed positions are gone there s nobody left who actually wanted to sell" (P3rDSh187TE)',
+    "SOURCED", "P3rDSh187TE-05", "n/a", "DISCRETIONARY", "READY",
+    "qualitative pattern / mental model; bounce speed and reclaim metrics to be quantified in pre-registration")
+add("KR-LQC04", "Liquidation risk defense and distance", "none", "RISK/SIZING",
+    "Proactive risk management defense: trade spot or low leverage to eliminate liquidation risk, keep liquidation prices far from obvious liquidity pool clusters, and never risk being liquidated ('do not multiply by zero').",
+    'citing K-P3rDSh187TE-06: "check the weather before you size funding and open interest are free" (P3rDSh187TE); "if you get liquidated you lose everything you lose everything so we don t want to multiply by zero here" (P3rDSh187TE); "liquidation price should always be far from the pools you should be actively proactively managing risk" (P3rDSh187TE)',
+    "SOURCED", "P3rDSh187TE-06", "n/a", "DISCRETIONARY", "READY",
+    "risk management rule; aligns with protective stop requirements and gap-g7")
+
 
 CONFLICTS = [
     ("C1", "KR-Z13 vs KR-L02", "More touches weaken a level, beyond three it breaks (SNR-18, SNR-19); three touches make a line a trend (TRL-08).",
@@ -673,7 +698,7 @@ def main():
                "`CODE-NN` = concept `K-<video id>-NN` (codes in MANIFEST.csv). Batch 1 (Aug-Oct 2026): CAN=ep1 candles, TFR=ep2 timeframes, TRL=ep3 trend lines, "
                "SNR=ep4 support/resistance, VOL=ep5 volume, MAV=ep6 moving averages, RNG=ep7 range, FEE=fees video. Batch 2 (Mar-Jun 2026): "
                "GDE=intro guide, TRD=trend (dominant highs and lows), LVL=levels, VJZ=moving-average setup, RSI=RSI, KCM=volatility (BBWP) and entry timing, "
-               "TOP=selling long-term holdings at tops. Batch 3 (Oct 2026): OBK=ep8 order book. Every source token was "
+               "TOP=selling long-term holdings at tops. Batch 3 (Oct 2026): OBK=ep8 order book. Batch 4 (Oct 2026): LQC/P3rDSh187TE=Inside the Machine ep7 liquidation cascades. Every source token was "
                "checked against the real concept headings: dead pointers = 0.\n")
     out.append(f"**{total} consolidated rules: {by3['READY']} READY, {by3['BLOCKED']} BLOCKED, {by3['REJECT']} REJECT** "
                f"(READY or BLOCKED rows seen in fewer than 3 videos are PROVISIONAL: {prov}). Parameter labels: SOURCED = his words carry the number, "

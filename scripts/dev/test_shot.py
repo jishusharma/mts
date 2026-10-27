@@ -29,6 +29,14 @@ def paste_rec(data, text, sid=SID, ts="2026-10-09T00:40:40.678Z"):
                 {"type": "text", "text": text}]}}
 
 
+def queued_rec(data, text, sid=SID, ts="2026-10-18T14:57:00.000Z"):
+    """Message sent while a turn was running: the app keeps it as attachment/queued_command, not as a user record."""
+    return {"type": "attachment", "sessionId": sid, "timestamp": ts,
+            "attachment": {"type": "queued_command", "commandMode": "prompt", "prompt": [
+                {"type": "image", "source": {"type": "base64", "media_type": "image/png", "data": base64.b64encode(data).decode()}},
+                {"type": "text", "text": text}]}}
+
+
 def tool_rec(data):
     return {"type": "user", "sessionId": SID, "timestamp": "2026-10-09T00:41:00.000Z",
             "message": {"role": "user", "content": [{"type": "tool_result", "tool_use_id": "t", "content": [
@@ -88,6 +96,16 @@ class ShotTest(unittest.TestCase):
         s = self.state()[new[0]["id"]]
         self.assertEqual((s["route"], s["status"], s["w"], s["h"]), ("paste", "new", 1920, 1040))
         self.assertIn("look carefully", s["operator_text"])
+        self.assertTrue((self.store / "img" / f"{s['id']}.png").read_bytes() == a)
+
+    def test_mid_turn_queued_command_image_lands(self):
+        a = png("mid")
+        self.write_transcript(queued_rec(a, "4h chart sent mid-turn"))
+        new = shot.ingest_all(self.store)
+        self.assertEqual(len(new), 1)
+        s = self.state()[new[0]["id"]]
+        self.assertEqual(s["route"], "paste")
+        self.assertIn("mid-turn", s["operator_text"])
         self.assertTrue((self.store / "img" / f"{s['id']}.png").read_bytes() == a)
 
     def test_same_bytes_via_paste_upload_and_temp_are_one_shot(self):
@@ -503,6 +521,20 @@ class MainRootOldGit(unittest.TestCase):
             return "--path-format=absolute\nC:/x/MTS/.git\n" if "--path-format=absolute" in a else ""
         with mock.patch.object(shot, "git", fake):
             self.assertEqual(shot.main_root(), Path("C:/x/MTS"))
+
+
+class HookStartupTest(unittest.TestCase):
+    def test_hook_path_does_not_import_heavy_modules(self):
+        """2026-10-22: shot.py hook cost 1.4 s per prompt; argparse/tempfile/traceback/hashlib are imported only when used."""
+        import subprocess
+        here = Path(__file__).resolve().parent
+        code = ("import sys, io; sys.path.insert(0, %r); sys.argv = ['shot.py', 'hook']; sys.stdin = io.TextIOWrapper(io.BytesIO(b'{}'));"
+                " import shot; shot.main(); heavy = [m for m in ('argparse', 'tempfile', 'traceback', 'hashlib', 'shutil') if m in sys.modules];"
+                " print(heavy)" % str(here))
+        with tempfile.TemporaryDirectory() as d:
+            env = {**os.environ, "MTS_SHOT_DIR": d, "MTS_SHOT_TEMP": d, "MTS_CLAUDE_HOME": d}
+            r = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, env=env)
+        self.assertEqual(r.stdout.strip().splitlines()[-1], "[]", r.stdout + r.stderr)
 
 
 if __name__ == "__main__":

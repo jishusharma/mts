@@ -1,0 +1,69 @@
+study,doc,number,published,n_mentions,status
+mal_bb_mid_engulf,LAYERS.md,A1 n,1179,0,STUDY_NOT_MENTIONED
+mal_bb_mid_engulf,LAYERS.md,A2 n,807,0,STUDY_NOT_MENTIONED
+mal_bb_mid_engulf,LAYERS.md,verdict,FAIL,0,STUDY_NOT_MENTIONED
+opr_weekly_low_round_sweep,LAYERS.md,RL n,685,0,STUDY_NOT_MENTIONED
+opr_weekly_low_round_sweep,LAYERS.md,AS n,525,0,STUDY_NOT_MENTIONED
+opr_weekly_low_round_sweep,LAYERS.md,verdict,FAIL,0,STUDY_NOT_MENTIONED
+opr_bb_mtf_center,LAYERS.md,AU n,194,0,STUDY_NOT_MENTIONED
+opr_bb_mtf_center,LAYERS.md,AD n,282,0,STUDY_NOT_MENTIONED
+opr_preopen_tops,LAYERS.md,H1 n,105,0,STUDY_NOT_MENTIONED
+opr_preopen_tops,LAYERS.md,H2 n,104,0,STUDY_NOT_MENTIONED
+wlow_bounce_bbrsi60,LAYERS.md,n,8,0,STUDY_NOT_MENTIONED
+gross_effect_screen,LAYERS.md,n_T,40,1,NUMBER_NOT_NEAR_MENTION
+gross_effect_screen,LAYERS.md,t,-1.51,1,NUMBER_NOT_NEAR_MENTION
+candle_close,LAYERS.md,arms,126,4,NUMBER_NOT_NEAR_MENTION
+levels_sizing,LAYERS.md,campaigns,117,1,NUMBER_NOT_NEAR_MENTION
+published_strats,LAYERS.md,variants,62,0,STUDY_NOT_MENTIONED
+tom_fabio_q33,LAYERS.md,cells,336,19,NUMBER_NOT_NEAR_MENTION
+mal_bb_mid_engulf,layer_map.json,A1 n,1179,0,STUDY_NOT_MENTIONED
+mal_bb_mid_engulf,layer_map.json,A2 n,807,0,STUDY_NOT_MENTIONED
+mal_bb_mid_engulf,layer_map.json,verdict,FAIL,0,STUDY_NOT_MENTIONED
+opr_weekly_low_round_sweep,layer_map.json,RL n,685,0,STUDY_NOT_MENTIONED
+opr_weekly_low_round_sweep,layer_map.json,AS n,525,0,STUDY_NOT_MENTIONED
+opr_weekly_low_round_sweep,layer_map.json,verdict,FAIL,0,STUDY_NOT_MENTIONED
+opr_bb_mtf_center,layer_map.json,AU n,194,0,STUDY_NOT_MENTIONED
+opr_bb_mtf_center,layer_map.json,AD n,282,0,STUDY_NOT_MENTIONED
+opr_preopen_tops,layer_map.json,H1 n,105,0,STUDY_NOT_MENTIONED
+opr_preopen_tops,layer_map.json,H2 n,104,0,STUDY_NOT_MENTIONED
+wlow_bounce_bbrsi60,layer_map.json,n,8,0,STUDY_NOT_MENTIONED
+gross_effect_screen,layer_map.json,n_T,40,0,STUDY_NOT_MENTIONED
+gross_effect_screen,layer_map.json,t,-1.51,0,STUDY_NOT_MENTIONED
+candle_close,layer_map.json,arms,126,2,PRESENT_NEAR_MENTION
+levels_sizing,layer_map.json,campaigns,117,1,PRESENT_NEAR_MENTION
+published_strats,layer_map.json,variants,62,0,STUDY_NOT_MENTIONED
+tom_fabio_q33,layer_map.json,cells,336,8,PRESENT_NEAR_MENTION
+mal_bb_mid_engulf,research_map.html,A1 n,1179,8,NUMBER_NOT_NEAR_MENTION
+mal_bb_mid_engulf,research_map.html,A2 n,807,8,PRESENT_NEAR_MENTION
+mal_bb_mid_engulf,research_map.html,verdict,FAIL,8,PRESENT_NEAR_MENTION
+opr_weekly_low_round_sweep,research_map.html,RL n,685,7,PRESENT_NEAR_MENTION
+opr_weekly_low_round_sweep,research_map.html,AS n,525,7,NUMBER_NOT_NEAR_MENTION
+opr_weekly_low_round_sweep,research_map.html,verdict,FAIL,7,PRESENT_NEAR_MENTION
+opr_bb_mtf_center,research_map.html,AU n,194,5,NUMBER_NOT_NEAR_MENTION
+opr_bb_mtf_center,research_map.html,AD n,282,5,PRESENT_NEAR_MENTION
+opr_preopen_tops,research_map.html,H1 n,105,9,PRESENT_NEAR_MENTION
+opr_preopen_tops,research_map.html,H2 n,104,9,PRESENT_NEAR_MENTION
+wlow_bounce_bbrsi60,research_map.html,n,8,9,PRESENT_NEAR_MENTION
+gross_effect_screen,research_map.html,n_T,40,7,PRESENT_NEAR_MENTION
+gross_effect_screen,research_map.html,t,-1.51,7,NUMBER_NOT_NEAR_MENTION
+candle_close,research_map.html,arms,126,11,PRESENT_NEAR_MENTION
+levels_sizing,research_map.html,campaigns,117,3,PRESENT_NEAR_MENTION
+published_strats,research_map.html,variants,62,4,PRESENT_NEAR_MENTION
+tom_fabio_q33,research_map.html,cells,336,7,PRESENT_NEAR_MENTION
+mal_bb_mid_engulf,STATUS.md,A1 n,1179,0,STUDY_NOT_MENTIONED
+mal_bb_mid_engulf,STATUS.md,A2 n,807,0,STUDY_NOT_MENTIONED
+mal_bb_mid_engulf,STATUS.md,verdict,FAIL,0,STUDY_NOT_MENTIONED
+opr_weekly_low_round_sweep,STATUS.md,RL n,685,0,STUDY_NOT_MENTIONED
+opr_weekly_low_round_sweep,STATUS.md,AS n,525,0,STUDY_NOT_MENTIONED
+opr_weekly_low_round_sweep,STATUS.md,verdict,FAIL,0,STUDY_NOT_MENTIONED
+opr_bb_mtf_center,STATUS.md,AU n,194,0,STUDY_NOT_MENTIONED
+opr_bb_mtf_center,STATUS.md,AD n,282,0,STUDY_NOT_MENTIONED
+opr_preopen_tops,STATUS.md,H1 n,105,0,STUDY_NOT_MENTIONED
+opr_preopen_tops,STATUS.md,H2 n,104,0,STUDY_NOT_MENTIONED
+wlow_bounce_bbrsi60,STATUS.md,n,8,0,STUDY_NOT_MENTIONED
+gross_effect_screen,STATUS.md,n_T,40,0,STUDY_NOT_MENTIONED
+gross_effect_screen,STATUS.md,t,-1.51,0,STUDY_NOT_MENTIONED
+candle_close,STATUS.md,arms,126,0,STUDY_NOT_MENTIONED
+levels_sizing,STATUS.md,campaigns,117,0,STUDY_NOT_MENTIONED
+published_strats,STATUS.md,variants,62,0,STUDY_NOT_MENTIONED
+tom_fabio_q33,STATUS.md,cells,336,0,STUDY_NOT_MENTIONED

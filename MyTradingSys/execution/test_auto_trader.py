@@ -267,21 +267,64 @@ class LayerSignalTest(unittest.TestCase):
         s = at.layer_signal({"layer": "rsi", "sub": "rsi_events", "event": "support", "tf": "3m", "t_close": t}, cfg(), NOW)
         self.assertIn("stale", s.get("reject", ""))
 
-    def test_rsi_cross_side_by_level(self):
-        # B128 M29-11 (operator 2026-10-08): side comes from the level crossed, not the direction alone. Source MLK-R1
-        # (malkan_40_60.py): a bull regime cannot cross 40 downward, a bear regime cannot cross 60 upward, so a cross
-        # down through 40 -> short and a cross up through 60 -> long. Every other cross (incl. unknown level) -> no side.
-        def sig(level, direction):
-            alert = {"layer": "rsi", "event": "cross", "direction": direction, "tf": "15m", "t_close": self.T15}
-            if level is not None:
-                alert["level_value"] = level
+    def test_rsi_untested_events_not_traded(self):
+        # T09-F3: rsi_events live trades only what a backtest covered: support@40 long. cross (any level/direction),
+        # failure and rejection@40 are alert-only (T09_live_parity.md sec 5), also when the alert carries a "side".
+        def sig(event, **extra):
+            alert = {"layer": "rsi", "sub": "rsi_events", "event": event, "tf": "15m", "t_close": self.T15}
+            alert.update(extra)
             return at.layer_signal(alert, cfg(), NOW)
-        self.assertEqual(sig(40.0, "down")["side"], "short")
-        self.assertEqual(sig(60.0, "up")["side"], "long")
-        for level, direction in ((40.0, "up"), (60.0, "down"), (50.0, "up"), (50.0, "down"), (None, "up"), (None, "down")):
-            s = sig(level, direction)
+        for level, direction in ((40.0, "down"), (60.0, "up"), (40.0, "up"), (60.0, "down"), (50.0, "up"), (None, "up")):
+            extra = {"direction": direction}
+            if level is not None:
+                extra["level_value"] = level
+            s = sig("cross", **extra)
             self.assertIsNone(s["side"], (level, direction))
             self.assertIn("unmapped", s["reject"], (level, direction))
+        for event in ("rejection", "failure", "cross"):
+            for side in (None, "long", "short"):
+                s = sig(event, level_value=40.0, **({"side": side} if side else {}))
+                self.assertIsNone(s["side"], (event, side))
+                self.assertIn("unmapped", s["reject"], (event, side))
+        s = sig("support", level_value=40.0)
+        self.assertEqual(s["side"], "long")
+        self.assertNotIn("reject", s)
+
+    def test_rsi_events_without_event_key_rejects(self):
+        for extra in ({}, {"event": None}, {"event": ""}, {"event": "Support"}, {"event": "support "}, {"kind": "support"}):
+            alert = {"layer": "rsi", "sub": "rsi_events", "tf": "15m", "t_close": self.T15, "side": "long"}
+            alert.update(extra)
+            s = at.layer_signal(alert, cfg(), NOW)
+            self.assertIn("unmapped", s.get("reject", ""), extra)
+
+    def test_rsi_rule_stays_closed_after_restart_and_old_config_file(self):
+        # restart / reset: a fresh process rebuilds cfg from DEFAULT_CONFIG + the config file on disk. A file written
+        # before T09-F3 still carries rsi:cross / rsi:rejection rules; the code gate must reject regardless.
+        old = {"layer_rules": {"rsi:cross": "level", "rsi:rejection": "short", "rsi:support": "long"}}
+        with tempfile.TemporaryDirectory() as d:
+            f = Path(d) / "auto_trader_config.json"
+            f.write_text(json.dumps(old), encoding="utf-8")
+            decisions = []
+            for _ in range(2):                                  # two "process starts" give the same decisions
+                c = at.load_config(f)
+                c["pre_pipeline_sources"] = {"layer:": {"reason": "fixture", "review_by": "2026-10-23"}}
+                row = []
+                for event, extra in (("cross", {"level_value": 40.0, "direction": "down"}),
+                                     ("rejection", {"level_value": 40.0}), ("failure", {"side": "short"}),
+                                     ("support", {})):
+                    s = at.layer_signal({"layer": "rsi", "sub": "rsi_events", "event": event, "tf": "15m",
+                                         "t_close": self.T15, **extra}, c, NOW)
+                    row.append((event, s["side"], "reject" in s))
+                decisions.append(row)
+            self.assertEqual(decisions[0], decisions[1])
+            self.assertEqual(decisions[0], [("cross", None, True), ("rejection", None, True),
+                                            ("failure", None, True), ("support", "long", False)])
+
+    def test_rsi_malkan_sublayers_keep_their_side_field(self):
+        # the gate is for rsi_events only: malkan bull/bear (layer "rsi", own sub) still trade on the alert's side
+        s = at.layer_signal({"layer": "rsi", "sub": "malkan_bear", "event": "malkan_resistance", "side": "short",
+                             "tf": "1h", "t_close": self.T15}, cfg(), NOW)
+        self.assertEqual(s["side"], "short")
 
     def test_side_field_wins_for_new_layers(self):
         s = at.layer_signal({"layer": "brand_new_layer", "kind": "x", "side": "short", "tf": "1h",
@@ -394,7 +437,7 @@ class CycleTest(unittest.TestCase):
         return [r for r in (json.loads(l) for l in at.LOG_PATH.read_text(encoding="utf-8").splitlines())
                 if r["event"] == event]
 
-    def test_layer_trade_log_rows_carry_bracket_source_sampling(self):
+    def test_layer_trade_log_rows_carry_bracket_source(self):
         # B118: the layer bracket (stop_pct 1.0, targets 2, size 100, ...) is NO-SOURCE; every layer row says so.
         f = at.LAYER_ALERT_DIR / "15m.jsonl"
         f.write_text("", encoding="utf-8")
@@ -405,8 +448,9 @@ class CycleTest(unittest.TestCase):
         at.cycle(st, cfg(), False, {}, NOW)
         row = self.rows_of("trade_attempt")[0]
         self.assertTrue(row["source"].startswith("layer:"))
-        self.assertEqual(row["bracket_source"], "SAMPLING")
-        self.assertEqual(cfg()["layers"]["bracket_source"], "SAMPLING")
+        # T09-F2: rsi_events 15m now trades its tested bracket and the row says which backtest line
+        self.assertEqual(row["bracket_source"], "TESTED:rsi/run_rsi_backtest.py:56-58")
+        self.assertEqual(cfg()["layers"]["bracket_source"], "SAMPLING")      # the default bracket's own label is unchanged
 
     def test_tom_trade_row_has_no_bracket_source(self):
         at.TOM_ALERT.write_text(json.dumps(tom_alert()), encoding="utf-8")
@@ -826,6 +870,128 @@ class TF5SizeAndSplitTest(unittest.TestCase):
     def test_no_zone_tf_scaling_left_in_the_tom_path(self):
         self.assertNotIn("max_hold_bars", at.DEFAULT_CONFIG["tom"])
         self.assertNotIn("zone_tf", at.parse_tom_alert(tom_alert()))
+
+
+class LayerExitTest(unittest.TestCase):
+    """T09-F2: per-layer exit table (rsi tested bracket, cc event stop), SAMPLING default, fail closed on bad entries."""
+    T15 = LayerSignalTest.T15
+    T1H = int(datetime(2026, 9, 28, 23, 0, tzinfo=timezone.utc).timestamp() * 1000)   # opens 23:00, closes 00:00 = NOW
+    RSI_SRC = "TESTED:rsi/run_rsi_backtest.py:56-58"
+    CC_SRC = "TESTED:cryptocred/run_cc_setups.py:170"
+
+    def rsi(self, c=None, tf="15m"):
+        return at.layer_signal({"layer": "rsi", "sub": "rsi_events", "event": "support", "tf": tf,
+                                "t_close": self.T15 if tf == "15m" else self.T1H}, c or cfg(), NOW)
+
+    def cc(self, side="long", entry=100.0, stop=98.5, c=None, sub="sr_flip", **extra):
+        a = {"layer": "cryptocred", "sub": sub, "event": f"{sub}_{side}", "side": side, "tf": "1h",
+             "t_close": self.T1H, "entry_price": entry, "stop": stop}
+        a.update(extra)
+        for k in [k for k, v in a.items() if v is None]:
+            del a[k]
+        return at.layer_signal(a, c or cfg(), NOW)
+
+    @staticmethod
+    def arg(s, flag):
+        return s["plan_args"][s["plan_args"].index(flag) + 1]
+
+    def test_layer_exit_per_layer(self):
+        # rsi_events 15m: the RSI backtest bracket 1% / 2% / 100 bars (run_rsi_backtest.py:56-58), 100 x 15 min
+        s = self.rsi()
+        self.assertNotIn("reject", s)
+        self.assertEqual((self.arg(s, "--stop"), self.arg(s, "--targets"), self.arg(s, "--max-hold-minutes")),
+                         ("1", "2", "1500"))
+        self.assertEqual(s["log"], {"bracket_source": self.RSI_SRC})
+        # cc: the event stop (1.5% below entry 100), tested hold 1440 min; target stays SAMPLING and says so
+        s = self.cc()
+        self.assertNotIn("reject", s)
+        self.assertEqual((self.arg(s, "--stop"), self.arg(s, "--targets"), self.arg(s, "--max-hold-minutes")),
+                         ("1.5", "2", "1440"))
+        self.assertEqual(s["log"], {"bracket_source": self.CC_SRC, "sampling_fields": ["targets"]})
+        # short: stop above entry
+        self.assertEqual(self.arg(self.cc(side="short", entry=200.0, stop=203.0), "--stop"), "1.5")
+        # an unknown layer / an rsi tf with no tested exit keeps the labelled SAMPLING bracket, 8 bars of its tf
+        t3 = int(datetime(2026, 9, 28, 23, 54, tzinfo=timezone.utc).timestamp() * 1000)
+        for s in (at.layer_signal({"layer": "brand_new_layer", "kind": "x", "side": "short", "tf": "1h",
+                                   "t_close": self.T1H}, cfg(), NOW),
+                  at.layer_signal({"layer": "rsi", "sub": "rsi_events", "event": "support", "tf": "3m",
+                                   "t_close": t3}, cfg(), NOW)):
+            self.assertNotIn("reject", s)
+            self.assertEqual(s["log"], {"bracket_source": "SAMPLING"})
+            self.assertEqual(self.arg(s, "--stop"), "1.0")
+            self.assertEqual(self.arg(s, "--targets"), "2")
+        self.assertEqual(self.arg(self.rsi(tf="1h"), "--max-hold-minutes"), "6000")
+
+    def test_event_stop_missing_zero_or_wrong_side_rejects(self):
+        for kw in ({"stop": None}, {"stop": 0}, {"stop": float("nan")}, {"stop": 100.0}, {"stop": 101.0},
+                   {"entry": None}, {"entry": 0}, {"stop": True}):
+            s = self.cc(**kw)
+            self.assertIn("bad layers.exits", s.get("reject", ""), kw)
+            self.assertNotIn("plan_args", s)
+        s = self.cc(side="short", entry=100.0, stop=99.0)            # short stop below entry
+        self.assertIn("wrong side", s["reject"])
+
+    def test_bad_exit_table_entry_rejects_and_untouched_layers_still_trade(self):
+        bad = [{"stop_pct": 1.0},                                                     # no TESTED source
+               {"stop_pct": 1.0, "source": "OURS"},
+               {"stop_pct": 0, "source": self.RSI_SRC}, {"stop_pct": 100, "source": self.RSI_SRC},
+               {"stop_pct": -1, "source": self.RSI_SRC}, {"stop_pct": "1", "source": self.RSI_SRC},
+               {"stop_pct": 1.0, "stop": "event", "source": self.RSI_SRC},            # both stops
+               {"source": self.RSI_SRC},                                              # no stop
+               {"stop_pct": 1.0, "targets": "abc", "source": self.RSI_SRC},
+               {"stop_pct": 1.0, "targets": "0", "source": self.RSI_SRC},
+               {"stop_pct": 1.0, "max_hold_bars": 0, "source": self.RSI_SRC},
+               {"stop_pct": 1.0, "max_hold_bars": 5, "max_hold_minutes": 5, "source": self.RSI_SRC},
+               {"stop_pct": 1.0, "wat": 1, "source": self.RSI_SRC}, "junk", None]
+        for entry in bad:
+            c = cfg()
+            c["layers"]["exits"] = {"layer:rsi:rsi_events:15m": entry}
+            s = self.rsi(c)
+            self.assertIn("bad layers.exits", s.get("reject", ""), entry)
+            self.assertNotIn("plan_args", s)
+            self.assertNotIn("reject", self.rsi(c, tf="1h"))                      # other prefixes unaffected
+        c = cfg()
+        c["layers"]["exits"] = ["not", "an", "object"]
+        self.assertIn("bad layers.exits", self.rsi(c)["reject"])
+
+    def test_no_exit_table_is_the_old_sampling_bracket(self):
+        c = cfg()
+        del c["layers"]["exits"]
+        s = self.rsi(c)
+        self.assertEqual((self.arg(s, "--stop"), self.arg(s, "--max-hold-minutes"), s["log"]),
+                         ("1.0", "120", {"bracket_source": "SAMPLING"}))
+
+    def test_config_reload_gives_same_plan_args(self):
+        with tempfile.TemporaryDirectory() as d:
+            f = Path(d) / "auto_trader_config.json"
+            f.write_text(json.dumps({"layers": {"size_usd": 20, "max_loss_usd": 2, "max_age_bars": 2.0}}), encoding="utf-8")
+            plans = []
+            for _ in range(2):                               # a restart = a fresh load_config + fresh signal
+                c = at.load_config(f)
+                c["pre_pipeline_sources"] = cfg()["pre_pipeline_sources"]
+                plans += [self.rsi(c)["plan_args"], self.cc(c=c)["plan_args"]]
+        self.assertEqual(plans[0], plans[2])
+        self.assertEqual(plans[1], plans[3])
+        self.assertEqual(self.arg({"plan_args": plans[0]}, "--max-hold-minutes"), "1500")   # table survived the file overlay
+
+    def test_layer_signal_keeps_no_state_and_does_not_mutate_config(self):
+        # non-trade balance moves and API errors live in the cycle/executor path; layer_signal does no I/O and holds no state
+        c = cfg()
+        before = json.dumps(c, sort_keys=True)
+        a = self.cc()
+        with mock.patch("builtins.open", side_effect=AssertionError("layer_signal must not do I/O")), \
+                mock.patch.object(at.subprocess, "run", side_effect=AssertionError("layer_signal must not call out")):
+            first = at.layer_signal(a["detail"], c, NOW)
+            second = at.layer_signal(a["detail"], c, NOW)
+        self.assertEqual(first, second)
+        self.assertEqual(json.dumps(c, sort_keys=True), before)
+
+    def test_every_layer_trade_row_carries_a_known_bracket_source(self):
+        for s in (self.rsi(), self.cc(), self.rsi(tf="1h"),
+                  at.layer_signal({"layer": "brand_new_layer", "kind": "x", "side": "long", "tf": "1h",
+                                   "t_close": self.T1H}, cfg(), NOW)):
+            src = s["log"]["bracket_source"]
+            self.assertTrue(src == "SAMPLING" or src.startswith("TESTED:") and ":" in src[len("TESTED:"):], src)
 
 
 if __name__ == "__main__":

@@ -131,6 +131,154 @@ def detect_candidates(rows, anchors=ANCHORS, prior_legs=20, va_days=1):
     return found
 
 
+def _with_indicators(rows):
+    """Add causal daily VWAP and rolling volume fields; all windows are OURS."""
+    by_day = defaultdict(list)
+    for row in rows:
+        by_day[_minute_dt(row).date()].append(row)
+    result = {}
+    for day, dayrows in by_day.items():
+        pv = volume = 0.0
+        for row in sorted(dayrows, key=lambda x: x["t"]):
+            vol = max(float(row.get("buy_vol", 0)) + float(row.get("sell_vol", 0)), 0.0)
+            typical = (row["h"] + row["l"] + row["c"]) / 3
+            pv += typical * vol
+            volume += vol
+            result[row["t"]] = dict(row, vwap=pv / volume if volume else typical, vol=vol)
+    return result
+
+
+def detect_tc(rows, anchors=ANCHORS):
+    """OURS chart candidates: pullback to VWAP in a volume-backed trend."""
+    ind = _with_indicators(rows)
+    by_day = defaultdict(list)
+    for row in ind.values():
+        by_day[_minute_dt(row).date()].append(row)
+    found = []
+    for day, dayrows in sorted(by_day.items()):
+        dayrows.sort(key=lambda x: x["t"])
+        for anchor in anchors:
+            start = int(_anchor_dt(day, anchor).timestamp() * 1000)
+            active = [x for x in dayrows if start <= x["t"] < start + 4 * 3600_000]
+            for i in range(30, len(active)):
+                cur, prior = active[i], active[i - 1]
+                base = active[i - 30]
+                direction = 1 if cur["vwap"] > base["vwap"] else -1
+                # OURS: 30m VWAP slope, 20m mean volume, 5m pullback touch/reclaim.
+                if abs(cur["vwap"] - base["vwap"]) < cur["c"] * 0.0002:
+                    continue
+                volref = active[max(0, i - 20):i]
+                meanvol = sum(x["vol"] for x in volref) / max(1, len(volref))
+                if cur["vol"] < meanvol * 1.25:
+                    continue
+                touched = min(x["l"] for x in active[i - 5:i + 1]) <= cur["vwap"] * 1.001 and max(x["h"] for x in active[i - 5:i + 1]) >= cur["vwap"] * 0.999
+                reaction = cur["c"] > prior["h"] if direction > 0 else cur["c"] < prior["l"]
+                if touched and reaction and (cur["c"] - cur["vwap"]) * direction > 0:
+                    va = _value_area(by_day.get(day - timedelta(days=1), [])) or {"vah": cur["vwap"], "val": cur["vwap"], "poc": cur["vwap"]}
+                    found.append({"setup": "tc", "day": day.isoformat(), "anchor": anchor, "anchor_t": start,
+                                  "direction": direction, "decision_t": cur["t"], "extreme_t": cur["t"], "extreme": cur["c"],
+                                  "size_ours": abs(cur["c"] - cur["vwap"]), "median20_ours": meanvol,
+                                  "vah": va["vah"], "val": va["val"], "poc": va["poc"], "vwap": cur["vwap"],
+                                  "rule_ours": "30m VWAP slope; 20m volume mean x1.25; 5m VWAP touch/reclaim"})
+                    break
+    return found
+
+
+def detect_bo(rows, anchors=ANCHORS):
+    """OURS chart candidates: balance breakout or rejected break-in with volume proof."""
+    ind = _with_indicators(rows)
+    by_day = defaultdict(list)
+    for row in ind.values():
+        by_day[_minute_dt(row).date()].append(row)
+    found = []
+    for day, dayrows in sorted(by_day.items()):
+        dayrows.sort(key=lambda x: x["t"])
+        for anchor in anchors:
+            start = int(_anchor_dt(day, anchor).timestamp() * 1000)
+            active = [x for x in dayrows if start <= x["t"] < start + 4 * 3600_000]
+            for i in range(60, len(active)):
+                cur = active[i]
+                # OURS: preceding 60m balance, 1m close outside/inside and 1.5x volume proof.
+                window = active[i - 60:i]
+                hi, lo = max(x["h"] for x in window), min(x["l"] for x in window)
+                avgvol = sum(x["vol"] for x in window[-20:]) / 20
+                if cur["vol"] < avgvol * 1.5:
+                    continue
+                prev = active[i - 1]
+                side = 1 if cur["c"] > hi and cur["c"] > prev["c"] else (-1 if cur["c"] < lo and cur["c"] < prev["c"] else 0)
+                kind = "breakout"
+                if not side and i >= 2:
+                    # A close back inside after a prior close outside is a break-in.
+                    before = active[i - 1]
+                    if before["c"] > hi and cur["c"] < hi:
+                        side, kind = -1, "break-in"
+                    elif before["c"] < lo and cur["c"] > lo:
+                        side, kind = 1, "break-in"
+                if side:
+                    va = _value_area(by_day.get(day - timedelta(days=1), [])) or {"vah": hi, "val": lo, "poc": (hi + lo) / 2}
+                    found.append({"setup": "bo", "kind": kind, "day": day.isoformat(), "anchor": anchor, "anchor_t": start,
+                                  "direction": side, "decision_t": cur["t"], "extreme_t": cur["t"], "extreme": cur["c"],
+                                  "size_ours": hi - lo, "median20_ours": avgvol, "vah": va["vah"], "val": va["val"], "poc": va["poc"],
+                                  "balance_high": hi, "balance_low": lo,
+                                  "rule_ours": "prior 60m balance; close resolution/re-entry; 20m volume mean x1.5"})
+                    break
+    return found
+
+
+def run_tc_bo(data_dir, out_dir, setup):
+    rows = load_dev(data_dir)
+    candidates = detect_tc(rows) if setup == "tc" else detect_bo(rows)
+    other = detect_bo(rows) if setup == "tc" else detect_tc(rows)
+    rng = random.Random(SEED + (1 if setup == "tc" else 2))
+    selected = sorted(candidates, key=lambda x: rng.random())[:40]
+    by_day = defaultdict(list)
+    for row in rows:
+        d = _minute_dt(row).date()
+        if DEV_START <= d <= DEV_END:
+            by_day[d].append(row)
+    randoms = []
+    for day, dayrows in sorted(by_day.items()):
+        for anchor in ANCHORS:
+            start = int(_anchor_dt(day, anchor).timestamp() * 1000)
+            eligible = [r for r in dayrows if start <= r["t"] < start + 4 * 3600_000]
+            if not eligible:
+                continue
+            r = rng.choice(eligible)
+            va = _value_area(by_day.get(day - timedelta(days=1), []))
+            if va:
+                randoms.append({"setup": setup, "kind": "random", "day": day.isoformat(), "anchor": anchor,
+                                "anchor_t": start, "decision_t": r["t"], "direction": 0, "extreme_t": r["t"],
+                                "extreme": r["c"], "size_ours": 0.0, "median20_ours": 0.0,
+                                "vah": va["vah"], "val": va["val"], "poc": va["poc"], "rule_ours": "random timestamp"})
+    randoms = rng.sample(randoms, min(10, len(randoms)))
+    out = Path(out_dir) / "charts_tc_bo"
+    out.mkdir(parents=True, exist_ok=True)
+    all_candidates = sorted(candidates + other, key=lambda x: (x["setup"], x["day"], x["anchor"], x["decision_t"]))
+    fields = sorted({k for x in all_candidates for k in x})
+    with open(out / "candidates_tc_bo.csv", "w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=fields, lineterminator="\n"); w.writeheader(); w.writerows(all_candidates)
+    items = [("candidate", x) for x in selected] + [("random", x) for x in randoms]
+    rng.shuffle(items)
+    keyrows, index = [], []
+    if (out / "_key.csv").exists():
+        with open(out / "_key.csv", newline="", encoding="utf-8") as f:
+            keyrows = [r for r in csv.DictReader(f) if not r["blind_id"].startswith(setup.upper())]
+    if (out / "index.csv").exists():
+        with open(out / "index.csv", newline="", encoding="utf-8") as f:
+            index = [r for r in csv.DictReader(f) if not r["blind_id"].startswith(setup.upper())]
+    for n, (kind, item) in enumerate(items, 1):
+        blind = f"{setup.upper()}{n:03d}"
+        chartitem = dict(item, kind=kind, setup=setup)
+        plot_chart(rows, chartitem, out / f"{blind}.png", blind)
+        keyrows.append({"blind_id": blind, "kind": kind, "day": item["day"], "anchor": item["anchor"], "decision_t": item["decision_t"]})
+        index.append({"blind_id": blind, "file": f"{blind}.png"})
+    for name, records, columns in (("_key.csv", keyrows, ["blind_id", "kind", "day", "anchor", "decision_t"]),
+                                   ("index.csv", index, ["blind_id", "file"])):
+        with open(out / name, "w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=columns, lineterminator="\n"); w.writeheader(); w.writerows(records)
+    print(f"setup={setup} candidates={len(candidates)} per_anchor={dict((a, sum(x['anchor']==a for x in candidates)) for a in ANCHORS)} candidate_charts={len(selected)} random={len(randoms)} combined_candidates={len(all_candidates)}")
+
+
 def plot_chart(rows, candidate, output_path=None, blind_id=""):
     """Draw only bars ending at decision_t; return the visible 5m bars for audit/tests."""
     decision = candidate["decision_t"]
@@ -184,6 +332,10 @@ def plot_chart(rows, candidate, output_path=None, blind_id=""):
         items = sorted(b["fp_bins"].items(), key=lambda kv: kv[1][0] + kv[1][1], reverse=True)[:5]
         s = "  ".join(f"{px:.0f}:{v[0]:.2f}/{v[1]:.2f}" for px, v in items)
         d.text((25, 715 + i * 22), f"FP {_minute_dt({'t': b['t']}).strftime('%H:%M')} buy/sell: {s}", fill="#a9c6dc", font=font)
+    if candidate.get("setup") in ("tc", "bo"):
+        d.text((25, 55), f"{candidate.get('setup')} {candidate.get('kind', '')} | OURS: {candidate.get('rule_ours', '')}", fill="#e6c76a", font=font)
+        if "vwap" in candidate:
+            yy = y(candidate["vwap"]); d.line((70, yy, 1430, yy), fill="#c08bea", width=2); d.text((8, yy - 5), "VWAP", fill="#c08bea", font=font)
     d.text((25, 890), "All thresholds and profile convention shown are OURS. Blind chart; no post-decision outcome is plotted.", fill="#e6c76a", font=font)
     if output_path:
         im.save(output_path)
@@ -255,5 +407,6 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--data", default=r"F:\MTS\data\orderflow_1m")
     ap.add_argument("--out", default=str(HERE))
+    ap.add_argument("--setup", choices=("fade", "tc", "bo"), default="fade")
     args = ap.parse_args()
-    run(args.data, args.out)
+    run(args.data, args.out) if args.setup == "fade" else run_tc_bo(args.data, args.out, args.setup)

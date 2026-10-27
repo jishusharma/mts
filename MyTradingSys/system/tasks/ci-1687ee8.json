@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-21T12:33:51Z",
+  "depends_on": [],
+  "done_when": "the newest CI run on fast-track is green and green/fast-track has advanced",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "CI on fast-track is red since commit 1687ee8 (run 39600601462); auto_deploy only takes green, so nothing deploys until it is fixed.",
+  "id": "ci-1687ee8",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "pinned": false,
+  "prio": 0,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "Superseded: the red CI was the F:-only formula_spec_text tape test (Step 3xt), fixed and skip-guarded in d4b59ba4; origin/green/fast-track advanced to d4b59ba4. DECISION (OURS): no new code, card closed.",
+  "scope_in": [
+    "the failing step of run 39600601462 (https://github.com/jishusharma/mts/actions/runs/39600601462) and the commit 1687ee8 that first broke it"
+  ],
+  "scope_out": [
+    "unrelated cleanups",
+    "live tree, processes, deploys"
+  ],
+  "size": "S",
+  "sources": [
+    "CI run 39600601462"
+  ],
+  "state": "done",
+  "steps": [
+    "git show 1687ee8: find what that commit changed; read the failing step in the run page (gh run view 39600601462 --log-failed)",
+    "write the test that fails now, fix the cause (a merge interaction counts: the local gate is a smoke gate)",
+    "python scripts/dev/run_all_tests.py --quick, then sync.py ship; confirm the next CI run is green"
+  ],
+  "tests": "the step CI reports failing: reproduce it locally first (fails before the fix, passes after)",
+  "title": "fix CI 1687ee8: fast-track is red",
+  "weight": "",
+  "worker": "agent"
+}

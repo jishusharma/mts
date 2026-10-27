@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-25T19:25:14Z",
+  "depends_on": [
+    "gemini-laptop-open-questions"
+  ],
+  "done_when": "MyTradingSys/backtest/test_no_own_costs.py and cost_allowlist.txt exist; the test passes on trunk and fails when a new file with 'FEE = 0.001' is planted; allowlist count equals the offending files in costs.csv; fees.py docstring points at the allowlist; the fee regime A-D table from the T06 note is added to fees.py.",
+  "est_turns": 18,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Keep backtest/fees.py as the one cost module and add a test that greps backtest/ and research/ for own fee or slippage constants and fails for any file not in a frozen allowlist built from scripts/T06/costs.csv (164 rows, 70 files), so no new study can define its own cost. Existing 57 offenders are listed, not edited.",
+  "id": "fix-single-cost-module",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/machine-rename",
+      "ref": "937af0c3d6fd",
+      "utc": "2026-10-25T17:17:17Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): scoped from the audit finding; DECISION (OURS): ratchet only; no study is restated (original goal wired all 57 files). Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | CLUSTER: same file set as gemini-laptop-open (one editor per file); runs after it",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:29:28Z",
+  "refs": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/fees.py",
+    "MyTradingSys/backtest/test_no_own_costs.py",
+    "MyTradingSys/backtest/cost_allowlist.txt",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/costs.csv",
+    "scripts/dev/run_all_tests.py",
+    "scripts/dev/run_extra_tests.py"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "restating any published verdict, ledger row or pre-registered bar",
+    "live path"
+  ],
+  "scope_sha": "937af0c3d6fd",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md (T06-F2)",
+    "MyTradingSys/backtest/fees.py:3"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read T06-F2 and scripts/T06/costs.csv; list the files that define their own constant (imports_fees = 0).",
+    "Write cost_allowlist.txt with those paths; write the test: scan *.py under backtest/ and research/ for fee/slippage literal assignments, fail on any file outside the allowlist.",
+    "Plant a temp file in a tmp dir variant of the scan to prove it fails; document regimes A-D in fees.py.",
+    "Register the test in run_all_tests.py / run_extra_tests.py if the discovery test requires it."
+  ],
+  "tests": "MyTradingSys/backtest/test_no_own_costs.py: planted file 'FEE_RT = 0.0012' outside the allowlist fails; the same line inside an allowlisted path passes; fails on pre-change code (file absent).",
+  "title": "Fix T06-F2: 57 of 70 cost-setting files define their own fee/slip constant; one costs.py imported by every study plus a test that greps for literals",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

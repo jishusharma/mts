@@ -56,6 +56,7 @@ top of the relevant section. Keep each entry to 3 lines.
 - Delegate broad reads to a Haiku Explore agent; the coordinator reads only what it will edit.
 
 ## D. Windows / tooling
+- 2026-10-26: the NUC station-watch monitor loop died on tick 2 (regex IndexError) and logged no STATE-CHANGE for 40+ min; nobody noticed because the watch line itself was the only liveness proof. RULE: a background watcher writes a heartbeat every tick; a missing heartbeat within 2 intervals means the watcher is dead and gets restarted (logged in LESSONS_LOG, 10-26 station-watcher). Where: MyTradingSys/research/pipeliner/station_watcher_monitor.py; digest section 6.
 - Python `open(p, 'w')` writes CRLF on Windows; always pass `newline='\n'` (a 142 KB diff was refused).
 - Multi-line patches: write the patch as a .py file and run it; heredoc quoting in Git Bash breaks.
 - unittest: never name an attribute `self.fail` (it shadows TestCase.fail).

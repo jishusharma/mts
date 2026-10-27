@@ -97,6 +97,19 @@ or the 82.8 invalidation already used as the stop of the two eligible rows).
 
 The extract's own outcome check (stop-out about 14 h after the stream) is not used here: it reads candles from the holdout window.
 
+## Discord rows (card qriptal-discord-calls-2026-10-18)
+
+Added 11 rows (`QRP-discord-01..11`, source `discord_rows.json`, built by `ledger.py` after the 70 transcript rows). Ledger now **81 candidates, 2 ELIGIBLE** (unchanged).
+Counts of the 11: kind RECAP 4, PLAN 2, VIEW 5 (10-13..18 posts: 9 rows; 2 rows are 10-19 follow-ups from `research/habib_plan_imbalance_2026-10-20/README.md`);
+reasons: retrospective 4, view only 5, no entry/no stop 1 (85.5k weekly target), NO_TIME 1 (73k short, PLAN); 3 rows have no recorded post time (NO_TIME split), 8 are HOLDOUT-window dated.
+Evidence is the B162 section (operator's transcription of three screenshots) and the habib README, not the images (not in git). Each quote is verified verbatim
+in those files and its line is the `file_line`. No Discord post gives a typed entry AND stop AND target, so none is ELIGIBLE; chart-only levels (Sunday plan chart, 10-14 support) stay blank (no reading from the image).
+Not scored: no Discord row is ELIGIBLE and none is in DEV (Oct 2026 is after the 2026-06-26 holdout start); no candles were read.
+
+DECISION (OURS): Discord times read as IST (UTC+5:30), the operator clock (the habib README converts 10-18 23:52 IST to 18:22Z). B162 itself says "UTC+?". If the clock were another zone, only `published_utc` shifts; no row changes eligibility.
+DECISION (OURS): 10-19 follow-ups kept as rows although outside 10-13..18 (the plan study needs them). Missing: the 2026-10-16 "later" posts have no time, so they are NO_TIME.
+Gap: the plan posts with typed price levels and full-res charts are not available (README section 5); the operator has to paste them.
+
 ## Transcript coverage and the daily retry
 
 22 transcripts are staged: 21 of the 40 videos in `raw/q_list.txt` plus the 2026-09-21 live stream (which is not on that list). Known videos: 41. Missing: 19.

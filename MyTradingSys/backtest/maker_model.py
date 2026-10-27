@@ -32,8 +32,8 @@ sys.path.insert(0, str(ROOT))
 from MyTradingSys.backtest.fees import DERIBIT_MAKER, DERIBIT_TAKER  # noqa: E402
 
 TICK = 0.5   # USD, Deribit BTC-PERPETUAL tick size (instrument spec; stated in the task, not in fees.py)
-# Adverse-selection cells. Source: research/P1_BREAKDOWNS_20261006.md ("mean adverse selection +0.02 bp", 6.4M signal-less fills,
-# 2024-12..2026-09, review banner: INCOMPLETE, one pooled number) and research/P1_COST_FLOOR_2026-10-06.md section 3C (4.7-day
+# Adverse-selection cells. Source: research/_archive/loose_2026-10/P1_BREAKDOWNS_20261006.md ("mean adverse selection +0.02 bp", 6.4M signal-less fills,
+# 2024-12..2026-09, review banner: INCOMPLETE, one pooled number) and research/_archive/loose_2026-10/P1_COST_FLOOR_2026-10-06.md section 3C (4.7-day
 # run, mean -0.08 .. -0.95 bp; 1.0 bp is the rounded-up worst cell). A signal-triggered adverse selection is NOT_IN_DATA.
 ADV_CELLS = {"D_0.02bp": 0.02, "D_1bp": 1.0}
 

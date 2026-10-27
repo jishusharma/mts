@@ -1,0 +1,87 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "closed": "2026-10-19T04:35:57Z",
+  "commands": [],
+  "created": "2026-10-18T16:17:45Z",
+  "depends_on": [],
+  "done_when": "A dated layer_lab/reports/<date>_context-factors-v3-crossvendor-review.md records SOUND/FIX-FIRST/BLOCKED, file:line evidence for both audit items, independently recomputed power numbers and frozen SHA256 checks; card result links the report. Executor verifies content commit SHA, empty git cherry and upstream git ls-tree report existence.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent GPT audit of Gemini-produced PRE_REG_V3.md against AUDIT_BEFORE_RUN.md sections 1-2, ending in a report verdict and file:line findings; refinement leaves the review pending.",
+  "id": "context-factors-v3-crossvendor-review",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "FIX-FIRST; report MyTradingSys/research/layer_lab/reports/2026-10-19_context-factors-v3-cr",
+      "ref": "26deeaa2",
+      "utc": "2026-10-19T04:35:57Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Review gemini-q batch 2 (1/3): context-factors PRE_REG_V3, flowhorse feasibility, carry ba",
+      "ref": "65bf6cf82e50",
+      "utc": "2026-10-18T13:05:26Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "65bf6cf82e50 Review gemini-q batch 2 (1/3): context-factors PRE_REG_V3, flowhorse feasibil",
+      "ref": "MyTradingSys/research/context_factors_pit_2026-10-16/PRE_REG_V3.md",
+      "utc": "2026-10-18T13:05:26Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-19 ACCEPT GPT Luna independent brief review; fixes applied for exact 25% boundary and missing controls/strata. class=C2; CRUCIAL. Gemini produced V3; GPT audits committed trunk only. This approves the audit brief; implementation and lab results remain UNCHECKED. From desk row 20261018-130525.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T21:23:16Z",
+  "refs": [],
+  "result": "FIX-FIRST; report MyTradingSys/research/layer_lab/reports/2026-10-19_context-factors-v3-crossvendor-review.md: 437/319-day arithmetic and both frozen hashes MATCH; missing control/stratum dispositions and proxy F3 verdict require clarification [wrong data copy]",
+  "scope_in": [
+    "MyTradingSys/research/context_factors_pit_2026-10-16/PRE_REG_V3.md",
+    "MyTradingSys/research/context_factors_pit_2026-10-16/AUDIT_BEFORE_RUN.md",
+    "MyTradingSys/research/context_factors_pit_2026-10-16/PRE_REG_V2.md",
+    "MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py"
+  ],
+  "scope_out": [
+    "All source edits; backtests, outcome reads, VALIDATION and HOLDOUT; unshipped producer branches"
+  ],
+  "scope_sha": "65bf6cf82e50",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/context_factors_pit_2026-10-16/AUDIT_BEFORE_RUN.md:18-38 (stop comparability defects and exact fixes)",
+    "MyTradingSys/research/context_factors_pit_2026-10-16/AUDIT_BEFORE_RUN.md:40-53 (Holm-z power and FAIL/INCONCLUSIVE fixes)",
+    "MyTradingSys/research/context_factors_pit_2026-10-16/AUDIT_BEFORE_RUN.md:70-75 (frozen hashes and route; one-run remains blocked)",
+    "MyTradingSys/research/context_factors_pit_2026-10-16/PRE_REG_V3.md:1-19 (scope, frozen hashes and study boundaries)",
+    "MyTradingSys/research/context_factors_pit_2026-10-16/PRE_REG_V3.md:21-56 (Holm-z formula, 437/319-day thresholds and power table)",
+    "MyTradingSys/research/context_factors_pit_2026-10-16/PRE_REG_V3.md:58-106 (stop diagnostics, verdict clauses, kill scope and inconclusive rules)",
+    "MyTradingSys/research/context_factors_pit_2026-10-16/PRE_REG_V2.md:47-59 (Holm gate, verdict rules and frozen hash reference)",
+    "MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py (frozen engine SHA reference; inspect committed bytes only)",
+    "MyTradingSys/system/LAYER_LAB.md:16-22, 47-52 (CODEX audit role and report/verdict requirements)"
+  ],
+  "state": "done",
+  "steps": [
+    "Review only the committed trunk versions of PRE_REG_V3.md and AUDIT_BEFORE_RUN.md sections 1-2; the producer was Gemini, so perform the review independently as GPT. Do not inspect Gemini's unshipped branch.",
+    "Check audit item 1: count-only diagnostics, matched-control caveat, stratified-E PASS and the exact boundary (>25% gap is INCONCLUSIVE/no-kill; <=25% remains eligible). If missing control pools or insufficient rung strata lack a defined disposition in V3, report FIX-FIRST with file:line evidence; do not invent a rule.",
+    "For audit item 2, independently recompute the stated Holm-z thresholds from cited inputs and check powered-cell classification, FAIL requiring E <= 0 and MDE <= 0.30 R, positive-but-subthreshold INCONCLUSIVE, and the unpowered-only-INCONCLUSIVE rule. Do not read outcomes or run a backtest.",
+    "Hash PRE_REG_V2.md and context_asof.py bytes without importing or executing code; compare SHA256 to V3 section 0. Record mismatches; do not modify frozen sources.",
+    "Write research/layer_lab/reports/<date>_context-factors-v3-crossvendor-review.md with MATCH/MISMATCH/NOT_IN_DATA, severity and file:line evidence for each check; conclude SOUND/FIX-FIRST/BLOCKED and link the report in card result.",
+    "After delivery, provide a separate verification receipt with the full report commit SHA, line-content check, empty git cherry origin/fast-track <sha>, and git ls-tree report existence; do not put a self-referential SHA receipt in the report.",
+    "Executor final reply verifies content commit SHA, empty git cherry origin/fast-track <sha>, and git ls-tree -r origin/fast-track --name-only report existence. Runner handles git for sandboxed audits."
+  ],
+  "taken": "2026-10-19T04:34:57Z",
+  "tests": "",
+  "title": "Cross-vendor review: context-factors PRE_REG_V3.md (Gemini-written, CRUCIAL)",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

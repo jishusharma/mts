@@ -1,0 +1,12 @@
+[
+  {
+    "day": "2024-12-01",
+    "main_phase": "VALIDATION",
+    "got": "DEV"
+  },
+  {
+    "day": "2025-08-01",
+    "main_phase": "HOLDOUT",
+    "got": "VAL"
+  }
+]

@@ -14,6 +14,7 @@ sys.path.insert(0, str(ROOT / "scripts" / "dev"))
 import run_extra_tests  # noqa: E402
 
 SKIP = {   # relative path -> reason it is deliberately not in the gate. Empty on purpose: add a reason, not a blind skip.
+    "scripts/dev/test_supervisor.py": "SV2/SV5 supervisor CLI test; run directly via pytest scripts/dev/test_supervisor.py (omitted from run_extra_tests.py to avoid FULL_RE gate on supervisor-only ship)",
 }
 COLLECTED_DIRS = ("MyTradingSys/tests/", "MyTradingSys/backtest/", "MyTradingSys/options/tests/")
 

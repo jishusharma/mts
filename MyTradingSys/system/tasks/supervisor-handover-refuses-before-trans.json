@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-22T22:44:22Z",
+  "depends_on": [
+    "supervisor-handover-fixed-form"
+  ],
+  "done_when": "test_supervisor.py: handover before TRANSIT with a ready card exits non-zero naming TRANSIT; with --early 'x' it writes and the reason is in the file; after TRANSIT or at 5h >= 80% it writes without the flag.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "supervisor.py handover refuses while ready cards exist and now is before the TRANSIT time and the 5h window is under 80% used; handover --early '<reason>' overrides and writes the reason into the file.",
+  "id": "supervisor-handover-refuses-before-trans",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): operator A of d-supervisor-stay-to-window. Same function as the fixed-form card, so it runs after it. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "Session_Planner",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/supervisor.py",
+    "scripts/dev/test_supervisor.py"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "live path, orders, deploy, restarts",
+    "new hooks, gate steps or rules beyond the card"
+  ],
+  "size": "S",
+  "sources": [
+    "scripts/dev/supervisor.py:577,717 (TRANSIT_MIN, transit)",
+    "MyTradingSys/system/roles/supervisor.md:49"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read plan_for transit calc (supervisor.py:717) and handover().",
+    "Write the 3 failing cases.",
+    "Add the refusal and --early to handover and the CLI parser."
+  ],
+  "tests": "scripts/dev/test_supervisor.py::test_handover_refuses_before_transit and ::test_handover_early_override fail first, pass after.",
+  "title": "Supervisor handover refuses before transit (TRANSIT time or 5h>=80%) while ready cards exist; --early <reason> overrides",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

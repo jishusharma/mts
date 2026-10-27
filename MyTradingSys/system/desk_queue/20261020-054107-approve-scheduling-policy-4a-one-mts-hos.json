@@ -1,0 +1,10 @@
+{
+  "done_when": "Operator answer recorded: 4a yes/no + chosen HOST_TUNING rows",
+  "from": "JIS-NB",
+  "id": "20261020-054107-approve-scheduling-policy-4a-one-mts-hos",
+  "need": "Read MyTradingSys/system/SCHEDULING_EXCEPTION_PROPOSAL.md (policy amendment + install command) and MyTradingSys/system/HOST_TUNING.md (ranked debloat table, pick rows). Operator: reply yes/no on 4a, and list HOST_TUNING row numbers to apply. Nothing is registered or changed until then.",
+  "posted": "2026-10-20T05:41:07Z",
+  "status": "pending",
+  "target": "JIS-NB",
+  "title": "Approve SCHEDULING_POLICY 4a: one MTS-HostCare maintenance task"
+}

@@ -12,7 +12,11 @@ MAX_MIN = 24 * 60
 
 
 def main():
-    text = (REPO / "MyTradingSys" / "runtime" / "BUILD_REPORT.md").read_text(encoding="utf-8", errors="replace")
+    report = REPO / "MyTradingSys" / "runtime" / "BUILD_REPORT.md"   # untracked since move-live-host-generated-files: absent on a fresh clone
+    try:
+        text = report.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return emit("new_aging", "WARN", "BUILD_REPORT.md absent: no .new aging data (run scripts/Build-Check.ps1)", ["report_absent"])
     overdue = []
     for m in re.finditer(r"^\s*-\s+(\S+\.new)\s+\(age (\d+)m\)", text, re.M):
         if int(m.group(2)) > MAX_MIN:

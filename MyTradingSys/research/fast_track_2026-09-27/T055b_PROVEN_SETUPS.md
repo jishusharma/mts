@@ -7,7 +7,7 @@ Scope: T055 part (b) - which BTC setups have verifiable evidence, by style (scal
 swing), buildable from Binance/Deribit public data. Superseded: pre-gate version (A/B/C/D/F
 grades) backed up at `T055b_PROVEN_SETUPS.md.pre_gate3`. This version applies playbook.md Part I
 v3.0 (fixed T1/T2/T3/REJECT table). Reused prior gated research:
-`research/whale_positioning_evidence_2026-09-12.md` (funding, order-flow tiers already settled).
+`research/_archive/loose_2026-10/whale_positioning_evidence_2026-09-12.md` (funding, order-flow tiers already settled).
 
 ## STEP 1 - METHOD NOTE (one, covers all styles)
 

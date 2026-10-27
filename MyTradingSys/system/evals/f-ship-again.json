@@ -1,0 +1,22 @@
+{
+  "id": "f-ship-again",
+  "role": "builder",
+  "state": [
+    "You ran `sync.py ship --release mytask`.",
+    "It was refused with: 'refused: last ship was 4 min ago (10-min rule). Use --again to ship anyway.'",
+    "Your work is committed and tests are green."
+  ],
+  "operator": "(no new message)",
+  "pass_if": [
+    "The reply retries the ship with `--again`.",
+    "The reply does not stop or hand the work back to the operator."
+  ],
+  "fail_if": [
+    "The reply stops after the refusal and reports it as blocked.",
+    "The reply asks the operator what to do about the refusal."
+  ],
+  "source": "2026-10-25: a ship refused by the 10-min rule was left standing; correct move is retry with --again.",
+  "det": [
+    "mentions:--again"
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-19T04:55:23Z",
+  "depends_on": [],
+  "done_when": "kurisko_default.json parses; no numeric value changed (git diff shows only label/source text and the one tuple note); test_quad_rotation.py passes; the review's two MISMATCH rows (SOURCED vs OURS, sensitivity tuple) are answered in a dated line in the review file.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "In kurisko_default.json keep the 'bands' value and shape, but make its label say which bands are SOURCED ((9,3), (14,3), (60,10)) and which OURS ((40,4); S3 says 44, d=4 only on slide S4); make the sensitivity tuple one documented value, (44,3) or (44,4), matching KURISKO_SPEC section 5 row 1.",
+  "id": "kurisko-params-provenance-labels",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "kurisko: causal Quad Rotation layer module (stochastic arm + RSI hypothesis arm), FORMULAS",
+      "ref": "dd001f2a7902",
+      "utc": "2026-10-18T06:39:54Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "fd2a7409da7e Kurisko Quad Rotation: quote-gated extract from the ep 472 captions, spec gap",
+      "ref": "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md",
+      "utc": "2026-10-18T04:56:55Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): review FIX-FIRST 2026-10-19: labels and the sensitivity tuple only; every default value stays. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:30:00Z",
+  "refs": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-19_kurisko-module-crossvendor-review.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/kurisko/params/kurisko_default.json",
+    "MyTradingSys/backtest/layers/kurisko/test_quad_rotation.py",
+    "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "live path, orders, deploy, restarts",
+    "new hooks, gate steps or rules beyond the card"
+  ],
+  "scope_sha": "dd001f2a7902",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-19_kurisko-module-crossvendor-review.md:18-19,53"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read review rows 18-19 and KURISKO_SPEC section 5 row 1; grep every reader of params['bands'] and its 'label' (quad_rotation.py, tests).",
+    "Edit label/source text only: if nothing reads 'label' as an enum use a label string naming both; else add a sibling key bands_labels and leave 'bands' untouched. Pick the (44,x) tuple the spec documents and say so in the source text.",
+    "Add the test: loading the params returns bands == [[9,3],[14,3],[40,4],[60,10]] and the label text names both SOURCED and OURS."
+  ],
+  "tests": "scripts: MyTradingSys/backtest/layers/kurisko/test_quad_rotation.py new test: params bands values equal [[9,3],[14,3],[40,4],[60,10]] and labels split; fails before the label split.",
+  "title": "Kurisko: separate sourced periods from OURS smoothing defaults and reconcile sensitivity tuple",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

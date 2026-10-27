@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-26T18:53:26Z",
+  "commands": [],
+  "created": "2026-10-26T22:50:00Z",
+  "crucial": "One leaked sealed bar voids every out-of-sample claim the desk will make.",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/design_cards_2026-10-26/astra_sealed_guard.md exists: list of paths tried, each REFUSED or LEAK with file:line, and a failing test sketch for every LEAK",
+  "effort": "low",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent challenge: find any path in sim_desk (desk.py, fetch_klines.py, studies, cache) by which a sealed VALIDATION or HOLDOUT bar can reach a study, incl. cache reuse, symbol box and date edges (2024-06-30 23:59, 2024-07-01). Report each path tested and result.",
+  "id": "astra-low-sealed-window-guard-challenge",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "astra_sealed_guard.md: 34 synthetic attacks, 27 REFUSED and 7 cache/payload LEAK paths plu",
+      "ref": "4cc6e618e",
+      "utc": "2026-10-26T18:53:26Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "model": "astra",
+  "mutation_check": "",
+  "note": "REVIEWED: sonnet-reviewer-a89035 2026-10-26",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "super-c-design",
+  "refreshed": "2026-10-25T22:50:19Z",
+  "refs": [],
+  "result": "astra_sealed_guard.md: 34 synthetic attacks, 27 REFUSED and 7 cache/payload LEAK paths plus 4 controls; 30 existing tests pass; no real sealed data read; fix card sim-desk-cache-date-validation",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/design_cards_2026-10-26/astra_sealed_guard.md (new file only)"
+  ],
+  "scope_out": [
+    "live tree; deploys; any verdict to keep, drop, demote or park a layer; VALIDATION and HOLDOUT data"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/sim_desk/desk.py",
+    "MyTradingSys/research/sim_desk/fetch_klines.py",
+    "MyTradingSys/research/sim_desk/DESIGN.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Read sim_desk/desk.py, fetch_klines.py, _bars.py, conditions.py guards",
+    "Write each attack as a one-line call or input; run it against a temp ledger and temp cache only",
+    "Record REFUSED or LEAK; no code change in this card",
+    "Commit with a Result: line (paths tried, LEAKs)"
+  ],
+  "taken": "2026-10-26T18:53:26Z",
+  "tests": "Each LEAK entry names a test that would fail on current code; zero LEAKs is stated with the list of paths tried",
+  "title": "Astra-low: challenge the VALIDATION and HOLDOUT lock in sim_desk (try to read a sealed bar)",
+  "weight": "CRUCIAL",
+  "worker": "agent"
+}

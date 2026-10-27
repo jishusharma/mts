@@ -1,10 +1,13 @@
 {
   "done_when": "Reviewed and acknowledged in desk board or layer specs",
+  "finished": "2026-10-18T21:06:53Z",
   "from": "JIS-NUC",
+  "host": "DESKTOP-F7IU69N",
   "id": "20261018-185429-claude-krown-liquidation-cascades-extrac",
   "need": "Review extract_P3rDSh187TE.md and integrate liquidation cascade concepts into Krown layer specs",
   "posted": "2026-10-18T18:54:29Z",
-  "status": "pending",
+  "result": "done: extract_P3rDSh187TE.md shipped in fbbb369b (18/18 quotes PASS); ledger fold -> card krown-liquidation-cascades-fold (SONNET, ready)",
+  "status": "done",
   "target": "JIS-NB",
   "title": "Claude: Krown liquidation cascades extraction (P3rDSh187TE)"
 }

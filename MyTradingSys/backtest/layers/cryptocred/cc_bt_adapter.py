@@ -14,7 +14,7 @@ setup3_failed_msb_reversal) since they all share the same signal contract.
 from MyTradingSys.backtest.bt.bt_engine import simulate_trade
 
 
-def signals_to_trades(signals: list, bars: list, mark_bars: list = None, funding: list = None, taker_fee: float = 0.0005, maker_fee: float = 0.0, max_bars: int = 1440, stop_first: bool = True, target_through: float = 0.0) -> list:
+def signals_to_trades(signals: list, bars: list, mark_bars: list = None, funding: list = (), taker_fee: float = 0.0005, maker_fee: float = 0.0, max_bars: int = 1440, stop_first: bool = True, target_through: float = 0.0) -> list:
     """
     Convert cc_setups signals into bt_engine trade simulations.
     
@@ -22,7 +22,7 @@ def signals_to_trades(signals: list, bars: list, mark_bars: list = None, funding
         signals: List of signal dicts from cc_setups (with meta)
         bars: List of bar dicts {t,o,h,l,c} for time lookup
         mark_bars: Optional list of mark bars for stop/target timing
-        funding: Optional list of funding events {t, rate}
+        funding: funding records [(t, rate)] covering the hold; () / [] = explicit no-funding model; None raises (B103)
         taker_fee: Taker fee rate
         maker_fee: Maker fee rate
         max_bars: Maximum bars to simulate

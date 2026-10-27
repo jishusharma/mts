@@ -13,9 +13,10 @@ The operator is not a developer: do these, do not ask, do not re-investigate. Ha
 ## Sessions, claims, task cards
 - Same-page check on any Claude login, and before ending a session: `python scripts/dev/sync.py where` (this tree plus trees holding unshipped work; `where --all` lists every tree); commit + ship what is yours. `sync.py health` lists collisions (PARALLEL.md).
 - Task cards (refinement stage: raw idea -> ready task, Definition of Ready, Backlog on the Control Room): `MyTradingSys/system/TASK_REFINEMENT.md`; `python scripts/dev/tasks.py next` before picking work, `tasks.py new` for follow-ups you find.
-- Writing tasks into NEXT_SESSION.md: RELAY.md "Task list standard" (curated, one session each, `DONE when:`); `relay.py handoff` refuses a list that fails `relay.py lint`.
+- Writing tasks into NEXT_SESSION.md: RELAY.md "Task list standard" (curated, one session each, `DONE when:`); check it with `python scripts/sched/relay.py lint --file MyTradingSys/system/NEXT_SESSION.md`; no dispatcher reads it, the coordinator does (SCHEDULING_POLICY.md).
 - Surface fallback (operator 2026-10-08): only if a task truly cannot run in the Claude Code Win App (e.g. needs a process this App cannot reach) file a card (lane JIS-NB) or a desk row with the exact commands, why forced and the expected result, and say so in one line. Never stay silent.
 - Archive backups/rejects with `python scripts/dev/declutter_backups.py --apply` (moves, never deletes).
+- C: low or `%TEMP%` full: nothing to do by hand. The logon run (`c_drive_guard.py install`, once per station) and the SessionStart hook prune it; what each station cleans and why: `MyTradingSys/system/STATION_CLEANUP.md`.
 - "What did study X lead to?" (its card, VERDICTS.csv row, pre-registration, follow-up cards, commits, LAYERS.md, open claim): `python scripts/dev/trace.py <study_dir | card id | layer id>`; one read-only call, report only (T043 stays WONTFIX).
 - "Is this stat already in research_kit?" (Holm, day-clustered SE): `MyTradingSys/backtest/research_kit.py` (tests: `test_research_kit.py`); `python scripts/dev/research_kit_lint.py` lists scripts that re-implement it (new ones under NEW; known ones in `research_kit_lint_allow.tsv`); report only.
 
@@ -26,7 +27,7 @@ The operator is not a developer: do these, do not ask, do not re-investigate. Ha
 ## Push, CI/CD, deploy, machines
 - Push: never from the live tree (the folder holding `.mts_live`). `sync.py ship` is the way. Cloud containers (claude.ai/code, harness branch `claude/...`): start from origin/fast-track, push the harness branch, open a PR into fast-track; CI auto-merges it when green (PARALLEL.md). `python scripts/dev/cloud_setup.py` installs the gate deps and prints the state. If sync.py itself is broken, the manual recipe is PARALLEL.md "Fallback if sync.py is broken".
 - CI/CD without the operator: `.github/workflows/ci.yml` gates every push (ubuntu AND windows) and moves `green/fast-track`;
-  `MTS-AutoDeploy` (RETIRED 2026-10-17, see SCHEDULING_POLICY.md; deploy by hand) deployed only that SHA, stops on red; `MTS-DailyHygiene` writes the report STATUS.md embeds. Details,
+  `MTS-AutoDeploy` (RETIRED 2026-10-17, see SCHEDULING_POLICY.md; deploy by hand) deployed only that SHA, stops on red; `MTS-DailyHygiene` (RETIRED 2026-10-17) wrote the report STATUS.md embeds. Details,
   restart map, registration: `MyTradingSys/system/DEPLOY_RUNBOOK.md`. STATUS.md's `CI green:` line says RED when the tip has not
   gone green for an hour: then nothing deploys, and fixing CI is the first job of any session.
 - Deploy to the live tree by hand only if that job is down: DEPLOY_RUNBOOK.md "Manual fallback" (operator pre-authorised "just do it" 2026-10-09).
@@ -45,13 +46,21 @@ The operator is not a developer: do these, do not ask, do not re-investigate. Ha
 - A hook saves every pasted image and prints `[SCREENSHOT INTAKE] ... SAVED` with ids; no notice = nothing new landed. On the notice: `python scripts/dev/shot.py classify <id> --kind ... --why "<operator's meaning>"`, read, `shot.py read`, `shot.py done`. Never leave a shot `new` at session end (`shot.py status`, also in STATUS.md).
 - Charts of one moment are one set, read together; every claim is MATCH / MISMATCH / NOT_IN_DATA against files you read; file the last two. Process and per-surface rules: `MyTradingSys/methodology/screenshot_intake.md`. Project map (which group an item belongs to): `MyTradingSys/system/PROJECT_MAP.md`.
 
-## Interview Prep notes (claude.ai project path; belongs in F:/Interview Prep/CLAUDE.md, copy it there and delete this section)
-- When a thread or project message says "Note this for InterviewPrep", append one entry to `/mnt/project-files/interview_prep/NOTES.md` with date, source link, and status "not yet exported".
-- Jis manually decides when to push entries to F:\Interview Prep project.
-- This captures lightweight insights from MTS and CBP work without automation overhead.
+## Interview Prep notes
+- "Note this for InterviewPrep" / a "teach me" answer: save it as a note in `MyTradingSys/learning/` with front matter `interview: yes` (topic, level, date); design in RUN_MODEL.md section 7.
+- `python scripts/dev/interview_feed.py list` shows which notes may leave; `export --to <dir>` (or env MTS_INTERVIEW_DIR) copies them with an INDEX.md and skips any holding paths, secrets or runtime data.
+- Jis decides when to push the exported folder to the Interview Prep project.
 
 ## Ask Gemini or GPT directly (no desk row)
 `python scripts/dev/ask_model.py gemini|gpt "<prompt>" [--model flash|argon|sonnet|opus] [--effort low|medium|high] [--file PATH ...]` sends the prompt to the model and prints the answer (read-only, runs in a scratch folder under F:/MTS/ask, never a work tree). Gemini = Antigravity `agy` on the Google Pro login; GPT = Codex CLI on the lab login. Use it for questions, second opinions, frame reads. Work that must change the repo stays on cards (`gemini_queue.py`, `codex_run.py`). Quota error (429) means wait for the reset it prints; do not fall back to a desk row for a question.
 
 ## Commands the operator must run (no copy-paste)
 Any command the operator has to run, in admin or normal PowerShell or any shell: open it with the terminal tool (`mcp__terminal__run_in_terminal`) with the command already typed, so the operator only presses Enter or UAC Yes. For admin: `Start-Process pwsh -Verb RunAs -ArgumentList '-NoExit','-Command','<cmd>'`. Never paste the command in chat as the only delivery. Standing rule, repeated by the operator.
+
+- HIGH broadcast stuck (operator 2026-10-25: b-10b3d8 sat `told` ~25 h): `told` expires after 2 h (`TOLD_TTL_H` in mts_signal.py): loud again on every prompt, Stop blocks it; a broadcast with `--cmd` takes `ack <id> told --note "<blocker>"` only. Hosts without a session (live Lenovo): `python scripts/dev/mts_signal.py pending --host <h> --json`; mts_doctor BROADCAST warns after 6 h naming host and id; run the cmd there by hand, then `ack <id> done`.
+
+## Archive, then delete
+Research or runtime data goes to F:/MTS_backup first (local backup repo only), never deleted outright; the cleanup guard (`c_drive_guard.py plan` lists what it would delete and why) touches only finished worktrees and this repo's own temp prefixes.
+
+## Never scan a whole drive
+No bare `find /`, `find C:\`, `grep -r /`, `ls -R /` or `du /` in any shell: name a folder (`git ls-files`, `find MyTradingSys -name ...`). A timed-out shell call leaves the find.exe running (JIS-NUC 2026-10-26: 9 h, 10.9M handles, 0 MB free). Check: `powershell -File scripts/operator/runaway_check.ps1`; see RUNAWAY_GUARD.md.

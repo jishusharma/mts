@@ -1,0 +1,15 @@
+{
+  "card": "cbp-quote-gate-review",
+  "done_when": "research/cbp/QUOTE_REVIEW_GPT.md lists 13 rows with PASS/FAIL and reason with file:line; the known 1 rejected row is reproduced.",
+  "finished": "2026-10-27T08:36:27Z",
+  "from": "lane_health",
+  "host": "lane_health",
+  "id": "20261026-210153-cbp-quote-gate-review",
+  "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card cbp-quote-gate-review: CBP quote gate: cross-vendor review of the 13 stored rows\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief cbp-quote-gate-review\nGoal: Check each stored CBP row's evidence quote is verbatim in its transcript and list any that verify_extract_quotes.py passes but a human would reject.\nRead: scripts/dev/verify_extract_quotes.py; MyTradingSys/research/cbp/\nStep 1: run verify_extract_quotes.py on each row, then recheck by hand against raw_transcripts_canonical, plant one altered quote and confirm it fails\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-10-26_cbp-quote-gate-review.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-10-26_cbp-quote-gate-review.md>\".",
+  "posted": "2026-10-26T21:01:53Z",
+  "rerouted_from": "CODEX",
+  "result": "cancelled: GPT lane is back, card returned to CODEX",
+  "status": "failed",
+  "target": "DSA",
+  "title": "CBP quote gate: cross-vendor review of the 13 stored rows"
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CBP store row v1 (owned by MTS; written only by scripts/dev/cbp_run.py)",
+  "type": "object",
+  "required": ["analyst", "video_id", "published", "bias", "quotes", "trades", "pointers", "symbols", "quote_verified", "expires_at"],
+  "properties": {
+    "analyst": {"type": "string"},
+    "video_id": {"type": "string", "minLength": 11, "maxLength": 11},
+    "published": {"type": "string", "description": "YYYY-MM-DD"},
+    "bias": {"enum": ["BULLISH", "BEARISH", "NEUTRAL", "NO_VIEW"]},
+    "symbols": {"type": "array", "items": {"type": "string"}},
+    "quotes": {"type": "array", "items": {"type": "string"}, "description": "verbatim from the transcript"},
+    "trades": {"type": "array", "items": {"type": "object",
+      "required": ["asset", "direction", "entry", "target", "invalidation", "quote"],
+      "properties": {"asset": {"type": "string"}, "direction": {"enum": ["LONG", "SHORT"]},
+        "entry": {"type": "string"}, "target": {"type": "string"}, "invalidation": {"type": "string"},
+        "quote": {"type": "string", "description": "verbatim from the transcript"}}}},
+    "pointers": {"type": "array", "items": {"type": "string"}},
+    "quote_verified": {"type": "boolean"},
+    "expires_at": {"type": "string", "description": "published + 5 days, UTC"}
+  }
+}

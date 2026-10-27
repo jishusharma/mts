@@ -1,0 +1,75 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-25T23:19:36Z",
+  "commands": [],
+  "created": "2026-10-19T04:32:21Z",
+  "depends_on": [],
+  "done_when": "test_study_guard.py passes: a default run config evaluates only DEV, a protected request without the env var raises, with a made-up id also raises; results_dev_rerun_2026-10-17.json is not modified; no VALIDATION or HOLDOUT bar is read in any test.",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "orderflow_views study.py defaults to DEV only (before 2024-07-01); evaluating VALIDATION or HOLDOUT needs OFV_PROTECTED_AUTH set to a holdout_reads.csv authorization id, otherwise the run refuses; a default run no longer writes results.json with protected rows.",
+  "id": "t08-orderflow-default-dev-guard",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "test_study_guard.py 5 pass; study.py DEV-only default + guard_phases",
+      "ref": "c1c3c045",
+      "utc": "2026-10-25T23:19:36Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "bigtrade: relabel fire CSV split column to repo split; DEV-only reruns of contaminated stu",
+      "ref": "26c6f3a837e8",
+      "utc": "2026-10-17T03:31:53Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): study.py:215-221 gates DEV-only behind OFV_DEV_ONLY=1; default evaluates VALIDATION and HOLDOUT. DECISION (OURS): DEV-only is the default; protected phases need OFV_PROTECTED_AUTH=<holdout_reads.csv id>. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:30:32Z",
+  "refs": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T08_split_trials.md"
+  ],
+  "result": "test_study_guard.py 5 pass; study.py DEV-only default + guard_phases",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/orderflow_views_2026-10-14/study.py",
+    "MyTradingSys/research/orderflow_views_2026-10-14/test_study_guard.py"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars before the pre-registration is frozen",
+    "live path, orders, deploy",
+    "restating published verdicts"
+  ],
+  "scope_sha": "26c6f3a837e8",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T08_split_trials.md (T08-F1)",
+    "MyTradingSys/research/orderflow_views_2026-10-14/study.py:214-221,240,252,287",
+    "MyTradingSys/research/holdout_reads.csv"
+  ],
+  "state": "done",
+  "steps": [
+    "Read study.py:214-292; extract the phase selection into guard_phases(env, reads_path) with no data load or side effect at import (study.py runs as a script).",
+    "Write the failing tests with a temp holdout_reads.csv: default gives ['DEV']; protected with no id raises; an id not in the file raises; an id in the file is accepted.",
+    "Switch the DEV_ONLY default and call the guard; do not rerun the study."
+  ],
+  "taken": "2026-10-25T23:19:36Z",
+  "tests": "MyTradingSys/research/orderflow_views_2026-10-14/test_study_guard.py: guard_phases({}) == ['DEV']; guard_phases({'OFV_PROTECTED_AUTH': ''}) raises; fails before the function exists.",
+  "title": "T08: make orderflow study DEV-only by default and guard protected phases",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

@@ -29,7 +29,8 @@
   ],
   "live_path": true,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C1 REVIEWER:GPT medium (code review at ship) WEIGHT:IMPORTANT. Live-path Java: builder never deploys; deploy by hand per DEPLOY_RUNBOOK.md. Audit lines MarketDataSnapshot.java:832-861.",
+  "note": "pilot1-cards: already fixed: MarketDataSnapshot.java:862 writes UTC day start, test liveSession_vwapAnchorIsUtcDayStartAndNeverInTheFuture exists (MarketDataSnapshotTest.java:350)",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -50,7 +51,7 @@
   "scope_sha": "d8efebc2e1ed",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "grep every consumer of vwap_anchor_utc (java, python, docs) and list them in the commit body",
     "vwap_anchor_utc = UTC day start used by dailyBars; keep the NY open under its own new key session_open_anchor_utc so IB/session high-low consumers still get it",

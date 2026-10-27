@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-22T22:48:49Z",
+  "depends_on": [],
+  "done_when": "python scripts/dev/tasks.py stale prints nothing (or only cards parked with a note); python scripts/dev/tasks.py lint passes; the Result line lists refreshed N and parked N.",
+  "est_turns": 26,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "For each card in tasks.py stale: read git log over its scope paths since the refresh stamp, decide if the card text still holds, then python scripts/dev/tasks.py tag <id> --refresh; a card whose scope really moved gets its fields fixed or is parked with tasks.py tried.",
+  "id": "doctor-refresh-stale-cards",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "fold context into card layer-review-after-simulator",
+      "ref": "494b4ad0f407",
+      "utc": "2026-10-25T21:33:00Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 T0-ONLY | DRAFT 2026-10-26 Session_Planner (OURS): absorbs the shipped t02-f3 pair (dropped). tasks.py stale lists 35 ready cards on 2026-10-26. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:17:57Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/tasks/"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "live path, orders, deploy, restarts",
+    "new hooks, gate steps or rules beyond the card"
+  ],
+  "scope_sha": "494b4ad0f407",
+  "size": "M",
+  "sources": [
+    "python scripts/dev/tasks.py stale"
+  ],
+  "state": "ready",
+  "steps": [
+    "Run tasks.py stale and group cards by the commit that moved their scope (many share one commit, e.g. a702fafd, 494b4ad0).",
+    "Per group read the commit's diff on the scope paths; if the card goal still stands run tasks.py tag <id> --refresh.",
+    "If not, edit the card (goal, steps, scope_in) and re-run tasks.py check; otherwise tasks.py tried with a note.",
+    "Run tasks.py lint; ship."
+  ],
+  "tests": "No code. Check: python scripts/dev/tasks.py stale is empty after; tasks.py lint exits 0.",
+  "title": "Refresh stale cards (tasks.py stale; 10 in MTS doctor 2026-10-22 plus bug-ask-go-for-asked-work, card-worker-fields) via tasks.py tag --refresh after checking scope",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

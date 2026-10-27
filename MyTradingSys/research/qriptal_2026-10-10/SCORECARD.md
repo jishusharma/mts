@@ -1,6 +1,6 @@
 # Qriptal scorecard (card qriptal-score-binance, B162 step 1)
 
-Result: **scored n = 0.** No call is both ELIGIBLE and inside the DEV window, so there is no win rate and no net R to put against his 67.1% / 3.99% / 0.63%. Power at n = 0 is zero. Of 70 candidate statements, 2 are ELIGIBLE and both sit in the holdout window, which the card does not allow reading.
+Result: **scored n = 0.** No call is both ELIGIBLE and inside the DEV window, so there is no win rate and no net R to put against his 67.1% / 3.99% / 0.63%. Power at n = 0 is zero. Of 81 candidate statements, 2 are ELIGIBLE and both sit in the holdout window, which the card does not allow reading.
 
 ## Count per split (the data rule)
 
@@ -9,8 +9,8 @@ Card: dev data only, scope-out holdout reads. BACKTEST_PROTOCOL section 2: DEV 2
 | Split | Ledger rows | ELIGIBLE | Scored |
 |---|---|---|---|
 | DEV | 11 | 0 | 0 |
-| HOLDOUT | 59 | 2 | 0 |
-| Total | 70 | 2 | 0 |
+| HOLDOUT | 67 | 2 | 0 |
+| Total | 81 | 2 | 0 |
 
 ELIGIBLE rows left unscored because they fall in the holdout window (not read):
 

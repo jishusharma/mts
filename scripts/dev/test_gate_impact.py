@@ -1,6 +1,7 @@
 """Tests for gate_impact.py and the fast ship gate (GATE_SPEED.md X1-X6). Runs as a script (gate step 3gi): python scripts/dev/test_gate_impact.py"""
 import contextlib
 import io
+import json
 import subprocess
 import sys
 import tempfile
@@ -94,10 +95,15 @@ class Reach(unittest.TestCase):
 class Budget(unittest.TestCase):
     EST = {"a": 5, "b": 10, "c": 40, "d": 3}.get
 
-    def test_direct_files_are_always_kept_even_over_budget(self):
+    def test_direct_files_obey_the_budget_too(self):
         kept, deferred = gi.plan_budget(["c"], ["a"], self.EST, 1, budget=30)
-        self.assertEqual(kept, ["c"])
-        self.assertEqual(deferred, ["a"])
+        self.assertEqual(kept, ["a"])
+        self.assertEqual(deferred, ["c"])
+
+    def test_direct_files_are_tried_before_others(self):
+        kept, deferred = gi.plan_budget(["b"], ["a", "d"], self.EST, 1, budget=11)
+        self.assertEqual(kept, ["b"])
+        self.assertEqual(sorted(deferred), ["a", "d"])
 
     def test_others_fill_the_budget_cheapest_first(self):
         kept, deferred = gi.plan_budget([], ["b", "a", "d", "c"], self.EST, 1, budget=20)
@@ -148,6 +154,18 @@ class Quarantine(unittest.TestCase):
 
     def test_live_path_tests_are_never_quarantined(self):
         r = self.rows("MyTradingSys/execution/test_o.py::T::t\tjis\t2026-11-01\twhy")
+        self.assertIn("never quarantined", gi.quarantine_problems(r, self.TODAY)[0])
+        self.assertEqual(gi.active_deselects(r, self.TODAY), [])
+
+    def test_expiry_more_than_14_days_ahead_is_refused_and_deselects_nothing(self):
+        r = self.rows("scripts/dev/test_x.py::T::t	jis	2026-11-02	why")   # TODAY + 15 days
+        self.assertIn("14 days", gi.quarantine_problems(r, self.TODAY)[0])
+        self.assertEqual(gi.active_deselects(r, self.TODAY), [])
+        edge = self.rows("scripts/dev/test_x.py::T::t	jis	2026-11-01	why")   # exactly TODAY + 14 days
+        self.assertEqual(gi.quarantine_problems(edge, self.TODAY), [])
+
+    def test_tests_under_mytradingsys_tests_are_never_quarantined(self):
+        r = self.rows("MyTradingSys/tests/test_o.py::T::t	jis	2026-11-01	why")
         self.assertIn("never quarantined", gi.quarantine_problems(r, self.TODAY)[0])
         self.assertEqual(gi.active_deselects(r, self.TODAY), [])
 
@@ -213,9 +231,41 @@ class FastPlan(unittest.TestCase):
         self.assertFalse(any(str(s.skip).startswith("fast:") for s in plan))
 
     def test_live_path_files_never_take_the_fast_path(self):
-        plan, mode, _ = self.select(["scripts/dev/sync.py"])
+        plan, mode, _ = self.select(["scripts/dev/auto_deploy.py"])
         self.assertEqual(mode, "full")
         self.assertFalse(rat.fast_applied)
+
+    def test_fast_gate_runs_3dl_on_any_py_or_ci_yml_change(self):
+        plan, mode, _ = self.select(["scripts/dev/nowin.py"])
+        self.assertEqual(mode, "smoke")
+        self.assertTrue(rat.fast_applied)
+        run_nums = [s.num for s in plan if not s.skip]
+        self.assertIn("3dl", run_nums)
+
+        plan_ci = rat.build_plan(True)
+        new_plan, _ = rat.apply_fast(plan_ci, [".github/workflows/ci.yml"], nums=[s.num for s in plan_ci], jobs=2)
+        ci_run_nums = [s.num for s in new_plan if not s.skip]
+        self.assertIn("3dl", ci_run_nums)
+
+    def test_save_record_stores_deferred_tests_list(self):
+        d = make_repo({"a.py": "x = 1\n"})
+        self.addCleanup(lambda: __import__("shutil").rmtree(d, ignore_errors=True))
+        git(d, "-c", "user.email=t@t", "-c", "user.name=t", "commit", "-q", "-m", "init")
+        plan = []
+        results = {}
+        deferred_tests = ["MyTradingSys/tests/test_foo.py", "scripts/dev/test_bar.py"]
+        ok = rat.save_record(plan, results, root=d, deferred=deferred_tests)
+        self.assertTrue(ok)
+        rec = json.loads(rat.record_path(d).read_text(encoding="utf-8"))
+        self.assertEqual(rec.get("deferred"), deferred_tests)
+
+    def test_fast_gate_reason_does_not_report_unreached_always_steps(self):
+        plan, mode, out = self.select(["scripts/dev/nowin.py"])
+        self.assertEqual(mode, "smoke")
+        self.assertTrue(rat.fast_applied)
+        # 3w and 3tl were not reached by nowin.py
+        self.assertNotIn("3w", rat.gate_reason)
+        self.assertNotIn("3tl", rat.gate_reason)
 
 
 def setattr_all(mod, names, values):

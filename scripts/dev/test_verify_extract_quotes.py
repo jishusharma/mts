@@ -46,6 +46,18 @@ class VerifyQuotesTest(unittest.TestCase):
         bad, out = self._check("beta gamma", "BEGIN")
         self.assertEqual(bad, 0, out)
 
+    def test_nested_metadata_header_is_not_searched(self):
+        # Outer header, '# ---', nested '# Video ID .. # Description' block, second '# ---', then the spoken body.
+        self._transcript("# Video: x\n# ---\n# Video ID: AAAAAAAAAAA\n# Description: zebra crossing quote only here\n# ---\n"
+                         "[0:00] alpha beta\n[0:02] gamma delta\n")
+        bad, out = self._check("zebra crossing quote only here", "BEGIN")
+        self.assertEqual(bad, 1, out)
+        self.assertEqual(self._check("beta gamma", "BEGIN")[0], 0)
+
+    def test_single_header_transcript_unchanged(self):
+        self._transcript("# Video: x\n# ---\n[0:00] alpha beta\n[0:02] gamma delta\n")
+        self.assertEqual(self._check("alpha beta gamma", "BEGIN")[0], 0)
+
     def test_invented_quote_still_missing(self):
         self._transcript("[0:00] alpha beta\n[0:02] gamma delta\n")
         bad, out = self._check("beta epsilon", "MIDDLE")
@@ -64,6 +76,40 @@ class VerifyQuotesTest(unittest.TestCase):
         bad, out = self._check("one two", "END")
         self.assertEqual(bad, 1)
         self.assertIn("POSITION", out)
+
+    def _cbp(self, evidence, cues=("[0:00] alpha beta gamma", "[0:02] delta epsilon zeta")):
+        (self.root / "inbox").mkdir(exist_ok=True)
+        (self.root / "inbox" / f"Jala_{VID}.txt").write_text(chr(10).join([*cues, ""]), encoding="utf-8")
+        ex = self.root / "extractions.md"
+        ex.write_text("\n".join([f"### Jala | 2026-09-27 | {VID} | Some title", "bottom_call: IN",
+                                 f'evidence: "{evidence}"', "btc_levels: support=[1]", ""]), encoding="utf-8")
+        with redirect_stdout(io.StringIO()) as out:
+            bad = v.check(ex)
+        return bad, out.getvalue()
+
+    def test_cbp_evidence_line_verified(self):
+        # CBP: one evidence line per video, id in the ### header, transcript in sibling inbox/, "..." joins fragments.
+        bad, out = self._cbp("beta gamma delta... zeta")
+        self.assertEqual(bad, 0, out)
+        self.assertIn("OK", out)  # a checker that skips the line would also report 0 problems
+
+    def test_cbp_invented_quote_fails(self):
+        bad, out = self._cbp("beta gamma invented words")
+        self.assertEqual(bad, 1)
+        self.assertIn("MISSING", out)
+
+    def test_cbp_quote_survives_caption_fillers_and_stutters(self):
+        # real CBP rows: transcript "see uh bitcoin below", "this is is really"; the clean quote omits them
+        cues = ("[0:00] i don t think that we see uh bitcoin below", "[0:03] if this is is really um a breakout")
+        bad, out = self._cbp("we see Bitcoin below... if this is really a breakout", cues)
+        self.assertEqual(bad, 0, out)
+
+    def test_cbp_spliced_quote_still_fails(self):
+        # restart in speech ("it s gonna it s going to be") is not a plain stutter: a stitched quote is not verbatim
+        cues = ("[0:00] it s gonna it s going to be going up",)
+        bad, out = self._cbp("it's gonna be going up", cues)
+        self.assertEqual(bad, 1)
+        self.assertIn("MISSING", out)
 
 
 if __name__ == "__main__":

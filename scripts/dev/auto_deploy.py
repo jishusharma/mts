@@ -505,17 +505,29 @@ def run(ops=None, check=False, state=None, save=True):
     return _finish(res, save, state)
 
 
+def _tasklist_has_pid(out, pid):
+    """True when a `tasklist /FO CSV /NH` row has exactly this PID in its PID column (a bare substring also hit memory columns like '1,234 K')."""
+    import csv
+    for row in csv.reader(out.splitlines()):
+        if len(row) > 1 and row[1].strip() == str(pid):
+            return True
+    return False
+
+
 def _pid_alive(pid):
     if pid <= 0:
         return False
     if os.name == "nt":
-        out = subprocess.run(["tasklist", "/FI", f"PID eq {pid}", "/NH"], capture_output=True, text=True).stdout
-        return str(pid) in out
+        out = subprocess.run(["tasklist", "/FI", f"PID eq {pid}", "/FO", "CSV", "/NH"], capture_output=True, text=True).stdout
+        return _tasklist_has_pid(out, pid)
     try:
         os.kill(pid, 0)
     except OSError:
         return False
-    return True
+    try:   # a zombie answers kill(0) but is dead; containers whose PID 1 is not an init never reap it (cloud gate 2026-10-22)
+        return Path(f"/proc/{pid}/stat").read_text().rsplit(")", 1)[1].split()[0] != "Z"
+    except (OSError, IndexError):
+        return True
 
 
 def acquire_lock(path=None, pid_alive=_pid_alive, now=time.time):

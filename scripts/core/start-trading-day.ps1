@@ -33,7 +33,7 @@ $StopProxPct = 0.15
 $TargetProxPct = 0.15
 
 $ErrorActionPreference = "Continue"
-$R = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
+$R = (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 
 # Ensure required system and tool paths exist regardless of parent shell.
 # pwsh 7 launched via Start-Process from an IDE terminal inherits a PATH
@@ -544,7 +544,9 @@ try {
         # Label past snapshots (idempotent, cheap)
     try {
         $olCmd = 'python "' + $R + '\MyTradingSys\runtime\outcome_labeler.py" > NUL 2>&1'
-        $null = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $olCmd) -TimeoutSec 30 -Tag "outcome_labeler" -WorkDir $R
+        $olRc = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $olCmd) -TimeoutSec 30 -Tag "outcome_labeler" -WorkDir $R
+        # exit 3 = SLOW (>20 s), -1 = killed at 30 s (also logged by Invoke-WithTimeout); output stays in NUL
+        if ($olRc -ne 0) { Log-Line ("outcome_labeler exit=" + $olRc) }
     } catch {}
 
     # Feature layer: kline archive + regime classifier (additive, non-gating)
@@ -783,7 +785,7 @@ print(json.dumps(result))
             Set-Content -LiteralPath $evtFile -Value $evt -Encoding UTF8
             $py = @"
 import sys, json
-sys.path.insert(0, r'C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\runtime')
+sys.path.insert(0, r'$($R)\MyTradingSys\runtime')
 sys.dont_write_bytecode = True
 import session_state as ss
 with open(r'$($evtFile.Replace("\", "/"))', 'r', encoding='utf-8') as f:

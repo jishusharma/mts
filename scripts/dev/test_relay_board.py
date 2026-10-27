@@ -60,6 +60,24 @@ class Notes(unittest.TestCase):
         self.assertEqual(b["lanes"]["desk"]["next"][0]["id"], "c")
         self.assertEqual(b["claims"][0]["age_h"], 2.0)
 
+    def test_claims_come_from_the_claims_branch(self):
+        import subprocess
+        def git(*a):
+            subprocess.run(["git", "-C", str(self.repo), *a], check=True, capture_output=True)
+        git("init", "-q")
+        git("config", "user.email", "t@t")
+        git("config", "user.name", "t")
+        rel = "MyTradingSys/system/claims/side.md"
+        (self.repo / "MyTradingSys/system/claims").mkdir()
+        (self.repo / rel).write_text(f"task: side\nhost: JIS-NUC\naccount: y\nepoch: {int(NOW.timestamp()) - 3600}\n", encoding="utf-8")
+        git("add", rel)
+        git("commit", "-q", "-m", "claim side")
+        git("update-ref", "refs/remotes/origin/claims", "HEAD")
+        git("rm", "-q", "--cached", rel)
+        (self.repo / rel).unlink()                       # not in the worktree: only the side branch holds it
+        got = rb.board(self.repo, [], NOW)["claims"]
+        self.assertEqual([(c["task"], c["host"], c["age_h"]) for c in got], [("side", "JIS-NUC", 1.0)])
+
     def test_board_carries_the_codex_usage_file_for_the_control_room(self):
         self.assertEqual(rb.board(self.repo, [], NOW)["gpt_usage"], {})
         d = self.repo / "MyTradingSys/system"

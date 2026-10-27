@@ -1,5 +1,5 @@
 import sys, json, os
-sys.path.insert(0, r"C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\runtime")
+sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.abspath(__file__)))
 from math_object_builder import build_math_object
 
 

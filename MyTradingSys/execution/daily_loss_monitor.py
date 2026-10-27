@@ -8,7 +8,7 @@ P&L SOURCE DECISION (read this before changing the math below):
 
   Nothing in this repo is a RECORDED REAL Deribit response for
   private/get_account_summary or private/get_position - grep of
-  research/deribit_api_research.md and execution/journal/*.jsonl turned up
+  research/_archive/loose_2026-10/deribit_api_research.md and execution/journal/*.jsonl turned up
   only (a) a static field list in the research doc (equity, balance,
   available_funds, margin_balance, initial_margin, maintenance_margin;
   current_size, average_price, unrealized_pnl) and (b) per-order fill

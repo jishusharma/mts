@@ -70,6 +70,7 @@ Hard rules and gates live only in CLAUDE.md and are not repeated here; prompt-co
 - Cloud sessions that produce analysis name a DELIVERABLE file and commit it; read-only never means no file output. [10-01 cloud $11]
 
 ## 6. Windows / tooling
+- A background watcher must heartbeat every tick (one log line); no heartbeat within 2 intervals = watcher dead, restart it - watcher death is a ship-flow stall, and it is silent otherwise. [10-26 watcher]
 - Never name a unittest attribute `self.fail`. [D]
 - YouTube: at most ~5 caption fetches per session; on a bot check STOP and ask for pasted transcripts. [D]
 - Confirm a scheduled task with Get-ScheduledTask before relying on it; long NUC jobs go through the ssh gate `ps-bg` (DEVICES.md section 7). [F]

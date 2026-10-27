@@ -38,6 +38,11 @@ other sessions' uncommitted files and unshipped commits) and a handful of hot fi
 `sync.py` refuses to run in the live tree, so a session that opens there is told to make a worktree:
 `git worktree add ../mts-<slug> -b <host>/<slug> origin/fast-track`.
 
+**Main checkout rule.** The main checkout (JIS-NB live tree, hooks run from it) is a clean copy of trunk:
+(1) never edit, stage or commit there; (2) a session that opens there runs `sync.py start` and works in the worktree;
+(3) it moves only by `git merge --ff-only origin/fast-track`, as a deploy; (4) found dirty or behind: report it, do not
+clean up foreign files. Case 2026-10-24: 109 commits behind, 82 foreign dirty files (mts_doctor REPORT_2026-10-24.md).
+
 ## A session's whole protocol
 1. `python scripts/dev/sync.py start` (from a work tree, never the live tree) - pull everyone else's work; it prints the open claims.
 2. Pick ONE task not in the claims list (`system/NEXT_SESSION.md`, or `tasks.py next`) and
@@ -59,7 +64,7 @@ other sessions' uncommitted files and unshipped commits) and a handful of hot fi
    `sync.py where` must be clean; overwrite NEXT_SESSION.md if you are the last session of the day (hand-over: RELAY.md; session length: CLAUDE.md SHORT SESSIONS).
 5. CI (`.github/workflows/ci.yml`) runs the full gate on both OSes after every push and publishes the passing SHA as `green/fast-track`;
    MTS-AutoDeploy (`scripts/dev/auto_deploy.py`, RETIRED 2026-10-17, see SCHEDULING_POLICY.md) deployed only that branch (fast-track only after 90 min without a green advance, gated by the
-   local gate). So a defect reaches testnet never; at worst fast-track is red for one CI cycle. Red CI: `make_status.py` files ONE pinned
+   local gate). So a defect reaches testnet never; at worst fast-track is red for one CI cycle. A revert of a json/md-only push has no CI run (outside the ci.yml path list): run `gh workflow run CI --ref fast-track`. Red CI: `make_status.py` files ONE pinned
    card `ci-<first failing sha7>` (`scripts/dev/ci_red_card.py`, one per failure chain), which tops `tasks.py next`; ship it with your next ship.
 6. Worktree hygiene (2026-10-12): a session that made a `../mts-<host>-<slug>` worktree and shipped everything
    ends with `sync.py where` (own tree clean); the next session of any lane runs `sync.py tidy` (dry run) then `tidy --apply`,
@@ -117,7 +122,7 @@ Which machine, login, lane and model may touch what: HOW_MTS_RUNS.md.
 Only one machine runs the live loop at a time (DEVICES section 3).
 
 ## Nothing left behind (operator 2026-10-15)
-A session ends with its tree clean and shipped: the Stop hook (`scripts/dev/stop_guard.py`) blocks one stop while it is not. `daily_hygiene.py` runs `sync.py tidy --apply` each morning (repairs case-broken HEADs, retires finished trees). Leftovers swept by hand are listed in LEFTOVERS_2026-10-15.md with the restore command.
+A session ends with its tree clean and shipped: the Stop hook (`scripts/dev/stop_guard.py`) blocks one stop while it is not. `sync.py tidy --apply` (repairs case-broken HEADs, retires finished trees) is run by hand or by the coordinator; its MTS-DailyHygiene schedule is RETIRED 2026-10-17 (SCHEDULING_POLICY.md). Leftovers swept by hand are listed in LEFTOVERS_2026-10-15.md with the restore command.
 
 ## Fallback if sync.py is broken (moved from CLAUDE.md Quick answers, 2026-10-15)
 Never from the live tree (the folder holding `.mts_live`). `git worktree add ../mts-push -b <host>/<slug> HEAD` (reuse it if present),
@@ -128,4 +133,4 @@ take origin's, regenerate), `python scripts/dev/run_all_tests.py --quick` there,
 ## Lane trees (operator q20, 2026-10-15)
 One persistent worktree per lane: JIS-NB `mts-app`, `mts-relay`, `mts-dsa`; NUC `mts-relay`. A task is a branch inside it (`sync.py start <slug>`), not a tree,
 so no stale per-session trees pile up (reason: 26 did on JIS-NB). `tidy` never removes a named lane tree, with or without `--all`. The turn cap
-for one task is 10 operator / 40 tool turns (CLAUDE.md SHORT SESSIONS, `turn_meter.py`). MTS-Backup still snapshots every tree every 15 minutes.
+for one task is 10 operator turns or the tool-turn cap (WORKERS.md rule 5, `turn_meter.py`). The MTS-Backup 15-minute snapshot is RETIRED 2026-10-17 (SCHEDULING_POLICY.md): nothing backs a tree up but `sync.py ship`.

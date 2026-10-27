@@ -8,6 +8,7 @@
   python scripts/dev/shot.py read <id>... --extract <md>       # extract exists, names the ids, has claim rows
   python scripts/dev/shot.py done <id>... --outcome finding:B156 | finding:card:<task id> | feature:FEAT-11 | noaction:"<why>" | note:"<text>"
   python scripts/dev/shot.py sets                              # chart shots grouped into multi-timeframe sets
+  python scripts/dev/shot.py bundle <set>                      # RU3: one evidence packet per multi-chart set
   python scripts/dev/shot.py engine <id> [--raw DIR] [--plan]  # B160: engine snapshot at the shot's minute (SnapAt, 1m archive)
                                                                #   -> MyTradingSys/research/screenshots/engine/<id>.json
   python scripts/dev/shot.py status [--max-age-hours 24]       # one line; exit 1 when a shot is overdue (the gate)
@@ -18,17 +19,13 @@ sha256, so saving never depends on a session remembering to do it. The store is 
 accounts); the extracts written about them are tracked. Process: MyTradingSys/methodology/screenshot_intake.md.
 Store: env MTS_SHOT_DIR, else <main checkout>/runtime_data/screenshots (one store per machine, shared by every worktree).
 """
-import argparse
-import hashlib
 import json
 import os
 import re
 import struct
 import subprocess
 import sys
-import tempfile
 import time
-import traceback
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -89,7 +86,13 @@ def claude_home():
 
 
 def temp_root():
-    return Path(os.environ.get("MTS_SHOT_TEMP") or Path(tempfile.gettempdir()) / "claude")
+    if os.environ.get("MTS_SHOT_TEMP"):
+        return Path(os.environ["MTS_SHOT_TEMP"])
+    for var in ("TMPDIR", "TEMP", "TMP"):      # the first two steps of tempfile.gettempdir(), without importing tempfile (~25 ms)
+        if os.environ.get(var) and os.path.isdir(os.environ[var]):
+            return Path(os.path.abspath(os.environ[var])) / "claude"
+    import tempfile
+    return Path(tempfile.gettempdir()) / "claude"
 
 
 def slug(path):
@@ -221,6 +224,7 @@ def land(store, data, route, session, ts_seen, src, text=""):
     kind = sniff(data)
     if kind is None:
         return None
+    import hashlib
     sha = hashlib.sha256(data).hexdigest()
     sid = sha[:12]
     if sid in fold(load_events(store)):
@@ -245,6 +249,19 @@ def user_text(rec):
     if isinstance(c, list):
         return " ".join(b.get("text", "") for b in c if isinstance(b, dict) and b.get("type") == "text")
     return ""
+
+
+def paste_blocks(rec):
+    """(content blocks, operator text) of an operator paste. Two record shapes carry one: a plain user record, and an
+    attachment/queued_command record (a message sent while a turn was running; its blocks sit in attachment.prompt)."""
+    if rec.get("type") == "user":
+        return (rec.get("message") or {}).get("content"), user_text(rec)
+    a = rec.get("attachment")
+    if rec.get("type") == "attachment" and isinstance(a, dict) and a.get("type") == "queued_command":
+        p = a.get("prompt")
+        if isinstance(p, list):
+            return p, " ".join(b.get("text", "") for b in p if isinstance(b, dict) and b.get("type") == "text")
+    return None, ""
 
 
 def ingest_transcript(store, path, cursors):
@@ -272,9 +289,7 @@ def ingest_transcript(store, path, cursors):
             rec = json.loads(raw)
         except ValueError:
             continue
-        if rec.get("type") != "user":
-            continue
-        c = (rec.get("message") or {}).get("content")
+        c, text = paste_blocks(rec)
         if not isinstance(c, list):
             continue
         for b in c:
@@ -284,7 +299,7 @@ def ingest_transcript(store, path, cursors):
                 except Exception:
                     continue
                 r = land(store, data, "paste", rec.get("sessionId") or path.stem, rec.get("timestamp"),
-                         f"transcript:{path.name}", user_text(rec))
+                         f"transcript:{path.name}", text)
                 if r:
                     new.append(r)
     cursors[key] = off + end
@@ -327,6 +342,7 @@ def ingest_dir(store, d, route, session, transcript=None):
 
 
 def sha_known(store, data):
+    import hashlib
     return hashlib.sha256(data).hexdigest()[:12] in fold(load_events(store))
 
 
@@ -609,7 +625,8 @@ def outcome_exists(token):
     if os.environ.get("MTS_SHOT_SKIP_REPO_CHECK"):
         return True
     if token.startswith("card:"):
-        return (REPO / "MyTradingSys" / "system" / "tasks" / f"{token[5:]}.json").is_file()
+        d = REPO / "MyTradingSys" / "system" / "tasks"
+        return (d / f"{token[5:]}.json").is_file() or (d / "archive" / f"{token[5:]}.json").is_file()   # swept closed cards live in archive/
     if re.fullmatch(r"[BT]\d{3}", token):
         bugs = REPO / "MyTradingSys" / "research" / "BUGS.md"
         return bugs.is_file() and re.search(rf"^\|\s*{re.escape(token)}\s*\|", bugs.read_text(encoding="utf-8"), re.M) is not None
@@ -710,6 +727,7 @@ def engine_jars():
 def run_engine(plan, runner=subprocess.run):
     """Compile src/main + SnapAt into a temp copy (never src/ or target/), run it from an empty cwd, save one record."""
     import shutil
+    import tempfile
     tmp = Path(tempfile.mkdtemp(prefix="mts_snapat_"))
     try:
         src, out, cwd = tmp / "src", tmp / "out", tmp / "cwd"
@@ -775,6 +793,202 @@ def make_sets(S, window_min=SET_WINDOW_MIN):
     return out
 
 
+def find_set(S, prefix):
+    sets = make_sets(S)
+    p = prefix.strip()
+    for s in sets:
+        if s["set"] == p or s["set"].startswith(p) or p.startswith(s["set"]):
+            return s
+        if any(i == p or i.startswith(p) for i in s["ids"]):
+            return s
+    raise ShotError(f"set '{prefix}' not found (run `shot.py sets` to list sets)")
+
+
+def find_previous_read(S, before_at=None):
+    candidates = []
+    for s in S.values():
+        if s.get("status") in ("read", "done") and s.get("extract"):
+            t = s.get("at") or s.get("ts_seen") or s.get("ts_landed") or ""
+            if before_at and t and t >= before_at:
+                continue
+            candidates.append((t, s))
+    if not candidates:
+        return None, None, []
+    candidates.sort(key=lambda x: x[0], reverse=True)
+    prev_shot = candidates[0][1]
+    ext = prev_shot.get("extract")
+    falsifiers = []
+    if ext:
+        p = Path(ext)
+        tries = [p] if p.is_absolute() else [REPO / p, Path.cwd() / p]
+        found = next((t for t in tries if t.is_file()), None)
+        if found:
+            try:
+                for line in found.read_text(encoding="utf-8").splitlines():
+                    st = line.strip().lstrip("-*> ").strip()
+                    if st.lower().startswith(("invalidation", "falsify")):
+                        falsifiers.append(st)
+            except OSError:
+                pass
+    return prev_shot, ext, falsifiers
+
+
+def find_open_mismatches(S):
+    open_mm = []
+    for s in sorted(S.values(), key=lambda x: x.get("at") or x.get("ts_seen") or ""):
+        if s.get("status") != "done":
+            claims = s.get("claims") or {}
+            if claims.get("MISMATCH", 0) > 0:
+                rows = [r for r in s.get("claim_rows", []) if r.get("class") == "MISMATCH"]
+                open_mm.append({
+                    "id": s["id"],
+                    "extract": s.get("extract"),
+                    "mismatch_count": claims["MISMATCH"],
+                    "claim_rows": rows
+                })
+    return open_mm
+
+
+def get_mirror_info():
+    try:
+        import live_mirror
+        base = Path(REPO) / live_mirror.MIRROR_DIR
+        mf = base / "manifest.json"
+        if not mf.is_file():
+            return {
+                "status": "NO_MIRROR", "tag": "none", "age_min": None, "lag_min": None, "flags": [], "stale": True,
+                "lines": ["NO MIRROR: run `python scripts/dev/live_mirror.py pull` (never read the old git snapshot as live)"]
+            }
+        m = json.loads(mf.read_text(encoding="utf-8"))
+        pub = datetime.fromisoformat(m["utc"].replace("Z", "+00:00"))
+        now = datetime.now(timezone.utc)
+        age = (now - pub).total_seconds() / 60
+        snaps = [f for f in m.get("files", []) if f.get("rel", "").startswith("runtime_data/snapshots/")]
+        lag = None
+        if snaps:
+            newest = max(datetime.fromisoformat(f["mtime"].replace("Z", "+00:00")) for f in snaps)
+            lag = (pub - newest).total_seconds() / 60
+        stale = (age > live_mirror.STALE_MIN) or (lag is not None and lag > live_mirror.STALE_MIN)
+        warn = (age > live_mirror.WARN_MIN) or (lag is not None and lag > live_mirror.WARN_MIN)
+        status = "STALE" if stale else ("WARN" if warn else "OK")
+        tag = f"mirror@{pub.strftime('%Y-%m-%d %H:%MZ')}"
+        lines = live_mirror.brief_lines(REPO, now)
+        return {
+            "status": status, "tag": tag, "age_min": age, "lag_min": lag,
+            "flags": [k for k, v in m.get("flags", {}).items() if v],
+            "stale": stale, "lines": lines
+        }
+    except Exception as e:
+        return {
+            "status": "ERROR", "tag": "none", "age_min": None, "lag_min": None, "flags": [], "stale": True,
+            "lines": [f"Mirror error: {e}"]
+        }
+
+
+def bundle(store, set_prefix):
+    S = fold(load_events(store))
+    st = find_set(S, set_prefix)
+    shots = [S[i] for i in st["ids"]]
+    edir = engine_dir()
+    engine_snaps = {}
+    for sid in st["ids"]:
+        ef = edir / f"{sid}.json"
+        if ef.is_file():
+            try:
+                engine_snaps[sid] = json.loads(ef.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                engine_snaps[sid] = None
+        else:
+            engine_snaps[sid] = None
+    prev_shot, prev_extract, prev_falsifiers = find_previous_read(S, st.get("from"))
+    open_mm = find_open_mismatches(S)
+    mirror = get_mirror_info()
+    return {
+        "set": st,
+        "shots": shots,
+        "engine_snapshots": engine_snaps,
+        "previous_read": {
+            "shot_id": prev_shot["id"] if prev_shot else None,
+            "extract": prev_extract,
+            "falsifiers": prev_falsifiers
+        },
+        "open_mismatches": open_mm,
+        "mirror": mirror,
+    }
+
+
+def format_bundle(packet):
+    st = packet["set"]
+    mirror = packet["mirror"]
+    lines = []
+    lines.append("=" * 70)
+    lines.append(f"EVIDENCE PACKET: SET {st['set']} ({st['symbol']} {','.join(st['tfs'])})")
+    lines.append("=" * 70)
+    lines.append(f"Window: {st['from']} .. {st['to']} | Status: {st['status']} | Shots: {len(st['ids'])}")
+    lines.append("")
+    lines.append("1. CLASSIFICATION & SHOTS:")
+    for s in packet["shots"]:
+        lines.append(f"  - {s['id'][:12]} [{s.get('tf', '-')}] {s.get('at', '-')} via {s.get('source', '-')} | {s.get('why', '-')}")
+    lines.append("")
+    lines.append("2. ENGINE SNAPSHOTS (SnapAt):")
+    for sid in st["ids"]:
+        snap = packet["engine_snapshots"].get(sid)
+        if snap and snap.get("snapshot"):
+            sp = snap["snapshot"]
+            lines.append(f"  Shot {sid[:12]}: as_of={snap.get('as_of')}")
+            key_items = [f"{k}={v}" for k, v in sp.items() if isinstance(v, (int, float, str, bool))][:10]
+            lines.append("    " + "; ".join(key_items))
+        else:
+            lines.append(f"  Shot {sid[:12]}: none (run `shot.py engine {sid[:8]}` to generate)")
+    lines.append("")
+    lines.append("3. PREVIOUS READ CONTEXT:")
+    pr = packet["previous_read"]
+    if pr["extract"]:
+        lines.append(f"  Prior Extract: {pr['extract']} (shot {str(pr['shot_id'])[:12]})")
+        if pr["falsifiers"]:
+            lines.append("  Carried Falsifiers to test:")
+            for f in pr["falsifiers"]:
+                lines.append(f"    - {f}")
+    else:
+        lines.append("  Prior: none")
+    lines.append("")
+    lines.append("4. OPEN MISMATCHES:")
+    if packet["open_mismatches"]:
+        for mm in packet["open_mismatches"]:
+            lines.append(f"  - Shot {mm['id'][:12]}: {mm['mismatch_count']} open MISMATCH claim(s) in {mm['extract'] or 'unlinked'}")
+            for r in mm["claim_rows"]:
+                lines.append(f"      [{r.get('id', '-')}] Claim: {r.get('claim', '-')} | Data: {r.get('evidence', '-')}")
+    else:
+        lines.append("  none")
+    lines.append("")
+    lines.append("5. LIVE MIRROR STATUS:")
+    if mirror["stale"]:
+        lines.append(f"  [FLAGGED] MIRROR IS STALE ({mirror['status']}): do NOT present these numbers as live")
+        for l in mirror["lines"]:
+            lines.append(f"    {l}")
+        lines.append("  NOTICE: Stale mirror is flagged and NOT used for live data claims.")
+    else:
+        lines.append(f"  {mirror['tag']} [{mirror['status']}]: fresh mirror available")
+        for l in mirror["lines"]:
+            lines.append(f"    {l}")
+    lines.append("")
+    lines.append("6. EXTRACT STUB:")
+    prior_val = pr["extract"] if pr["extract"] else "none"
+    mirror_val = mirror["tag"] if not mirror["stale"] else f"{mirror['tag']} (STALE - FLAGGED)"
+    lines.append("```markdown")
+    lines.append(f"# Extract: SET {st['set']} ({st['symbol']} {','.join(st['tfs'])})")
+    lines.append(f"Prior: {prior_val}")
+    lines.append(f"Mirror: {mirror_val}")
+    lines.append("")
+    lines.append("| id | class | chart claim | data check |")
+    for s in packet["shots"]:
+        lines.append(f"| {s['id']} | MATCH | <chart claim> | <data check> |")
+        lines.append(f"| {s['id']} | MISMATCH | <chart claim> | <data check> |")
+    lines.append("```")
+    return "\n".join(lines)
+
+
+
 def status_line(S, max_age_hours=24):
     c = {k: 0 for k in STATUSES}
     for s in S.values():
@@ -831,6 +1045,7 @@ def hook():
             print(text)
     except Exception:
         try:
+            import traceback    # only on failure
             store.mkdir(parents=True, exist_ok=True)
             with open(store / "hook_errors.log", "a", encoding="utf-8") as f:
                 f.write(now_iso() + "\n" + traceback.format_exc() + "\n")
@@ -849,6 +1064,9 @@ def fmt(s):
 
 
 def main(argv=None):
+    if (sys.argv[1:] if argv is None else list(argv)) == ["hook"]:
+        return hook()       # fast path: building the argparse tree costs ~0.1 s on every prompt
+    import argparse
     p = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = p.add_subparsers(dest="cmd", required=True)
     a = sub.add_parser("ingest"); a.add_argument("--inbox", help="also land images dropped in this folder (default <store>/inbox)")
@@ -862,6 +1080,7 @@ def main(argv=None):
     a.add_argument("--klines", help="klines json file to score carried falsifiers against")
     a = sub.add_parser("done"); a.add_argument("ids", nargs="+"); a.add_argument("--outcome", required=True)
     sub.add_parser("sets")
+    a = sub.add_parser("bundle"); a.add_argument("set"); a.add_argument("--json", action="store_true")
     a = sub.add_parser("engine"); a.add_argument("id"); a.add_argument("--raw", help="1m archive root (default <main>/Dumps/backtest/raw)")
     a.add_argument("--plan", action="store_true", help="print the instant and paths, do not compile or run")
     a = sub.add_parser("status"); a.add_argument("--max-age-hours", type=float, default=24)
@@ -906,6 +1125,12 @@ def main(argv=None):
             for s in make_sets(fold(load_events(store))):
                 flag = "  SINGLE-TF: cross-timeframe layers of chart_read_protocol cannot be done" if s["single_tf"] else ""
                 print(f"set {s['set']} {s['symbol']} {s['from']}..{s['to']} tfs {','.join(s['tfs'])} [{s['status']}] ids {' '.join(i[:8] for i in s['ids'])}{flag}")
+        elif args.cmd == "bundle":
+            packet = bundle(store, args.set)
+            if getattr(args, "json", False):
+                print(json.dumps(packet, indent=1, sort_keys=True))
+            else:
+                print(format_bundle(packet))
         elif args.cmd == "engine":
             plan = engine_plan(store, args.id, args.raw)
             print(f"PLAN {plan['id']} {plan['symbol']} as_of {plan['as_of']} (at {plan['at']}) raw {plan['raw']} -> {repo_rel(plan['out'])}")
