@@ -219,6 +219,17 @@ class TestComputeStoch(unittest.TestCase):
         self.assertEqual((p["level_lo"]["value"], p["level_hi"]["value"]), (20, 80))
         self.assertEqual(p["rsi_bands"]["label"], "OPERATOR-HYPOTHESIS")
 
+    def test_bands_value_unchanged_and_provenance_split(self):
+        # task kurisko-params-provenance-labels: 'bands'.label is read as an enum by
+        # test_default_params_labels above, so the SOURCED/OURS split for the four bands
+        # lives in the sibling key 'bands_labels', not in 'bands' itself (left untouched).
+        p = json.loads((HERE / "params" / "kurisko_default.json").read_text())["params"]
+        self.assertEqual(p["bands"]["value"], [[9, 3], [14, 3], [40, 4], [60, 10]])
+        labels_source = p["bands_labels"]["source"]
+        self.assertIn("SOURCED", labels_source)
+        self.assertIn("OURS", labels_source)
+        self.assertIn("(44,4)", labels_source)
+
 
 class TestComputeRsi(unittest.TestCase):
     # Closes fall 10,9,8,7,6 then 7. RSI periods (2,3,3,3). Falling closes: no gains, RSI = 0 once seeded (idx = period).
