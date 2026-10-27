@@ -914,7 +914,11 @@
     },
     "MyTradingSys/backtest/layers/rsi/div_flags_chart.py": {
       "disp": "TOOL",
-      "why": "DEV-only chart renderer: draws regular and hidden Malkan RSI divergence flags on 1d/1w charts for operator review; covered by test_div_flags_chart.py, no live imports."
+      "why": "DEV-only chart renderer: draws Malkan regular and PRD/NRD flags plus separate KROWN-CONFLUENCE hidden flags on 1d/1w charts for operator review; covered by test_div_flags_chart.py, no live imports."
+    },
+    "MyTradingSys/backtest/layers/rsi/krown_hidden_divergence.py": {
+      "disp": "TOOL",
+      "why": "KROWN-CONFLUENCE generic hidden RSI divergence (no trend condition), a separate feed any layer can consume, not part of the Malkan layer; covered by test_div_flags_chart.py, no live imports."
     }
   },
   "MyTradingSys/research/layer_lab/candle_pattern_event_table/event_table.py": {
