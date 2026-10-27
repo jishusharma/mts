@@ -102,7 +102,7 @@ def test_loader_refuses_validation():
 def run(ndays, **kw):
     A, fades, fflag = make_fixture(ndays, **kw)
     led = S.build_ledger(A, ndays)
-    cells = S.compute_cells(A, led, ndays)
+    cells = S.compute_cells(A, led, ndays, fund=[])    # no funding: pure price tests
     res = S.evaluate(cells, A, ndays)
     return A, fades, fflag, led, cells, res
 
@@ -213,6 +213,30 @@ def test_manifest_refuses_file_set_change():
         else:
             raise AssertionError("check_manifest did not raise SystemExit on missing file")
         assert man2.read_bytes() == frozen_bytes2
+
+
+def test_real_funding_sign_and_old_column():
+    ndays = 40
+    A, fades, fflag = make_fixture(ndays)
+    led = S.build_ledger(A, ndays)
+    # one +0.01 % settlement inside every encounter window (entry bar 201+d .. exit 201+d+h): day start + 4 h = bar 240
+    fund = [(S.TS0 + (k * DAY + 240) * S.MS, 0.0001) for k in range(ndays)]
+    cells = S.compute_cells(A, led, ndays, fund=fund)
+    f = cells["FUND"][(1, 60)]
+    assert np.allclose(f, led["side"] * 0.01), (f[:3], led["side"][:3])      # SHORT (-1) receives: -0.01 %, LONG pays +0.01 %
+    assert np.allclose(cells["FUND_OLD"][(1, 60)], 0.0)                      # old flat 1 bp kept beside: no 00/08/16 boundary in bars 202..262
+    short_net = cells["G"][(1, 60)] - f
+    assert np.allclose(short_net, cells["G"][(1, 60)] + 0.01)
+
+
+def test_funding_absent_fails_closed():
+    import tempfile
+    with tempfile.TemporaryDirectory() as td:
+        try:
+            S.bt_data.load_funding_strict(td)
+        except FileNotFoundError:
+            return
+        raise AssertionError("loader returned without raw_fund/raw funding folder")
 
 
 def main():
