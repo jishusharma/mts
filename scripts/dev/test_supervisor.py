@@ -462,9 +462,9 @@ def test_pick_cards_jis_nb_lane_follows_the_live_host_file(monkeypatch, tmp_path
     f = tmp_path / "live_host.txt"
     monkeypatch.setattr(S, "LIVE_HOST_FILE", f)
     ids = lambda h: [r["id"] for r in S.pick_cards(rows, h, 9)]
-    assert S.live_host() == "JIS-NB" and ids("JIS-NB") == ["n1", "s1"]
+    assert S.live_host() == S.CN("JIS-NB") and ids("JIS-NB") == ["n1", "s1"]
     f.write_text("desktop-f7iu69n", encoding="utf-8")
-    assert S.live_host() == "DESKTOP-F7IU69N"
+    assert S.live_host() == S.CN("DESKTOP-F7IU69N")
     assert ids("DESKTOP-F7IU69N") == ["n1", "s1"] and ids("JIS-NB") == ["s1"] and ids("JIS-NUC") == ["s1"]
 
 
