@@ -147,3 +147,11 @@ Status: one snapshot, no count of how often the higher ladder won. Routed to car
 - 2H highs lower each candle: 80,844 (14:00Z), 80,553, 80,422, 80,034 (spot klines). Forming 2H low 79,836 at 20:40Z, under the 16:40Z 5m low 79,923.
 - Correction: 5m closes under 79,923 already happened at 20:15Z (79,914) and 20:25Z (79,877); earlier lines saying "no 5m close under 79,923 yet" at 20:19-20:29Z were wrong. The watcher had no trigger at 79,923 (only 79,451), so it stayed silent. Next lines: 79,836 (2H forming low), 79,583 (14:00Z 2H low), 79,451.
 - Reading: gap +0.46 with ES steady and BTC down means BTC is the weak leg, not a catch-up setup; higher bias (1w..2d red, RSI 12h/8h/4h under 40) is winning, as the operator's ladder predicted.
+
+## 2026-10-27 04:30Z: event 4, BTC leads down with ES flat (watcher log)
+- Fade of 80,250 confirmed 02:30Z (call made earlier, rejection 00:45Z). 5m closes: 79,836 lost 02:55Z, 79,729 lost 03:05Z, widening trigger 03:15Z (BTC 79,693, ES +0.46%). Session low on 5m 79,648 (03:15Z).
+- Reclaim attempt: 03:30Z 5m close 79,903, 03:35Z 79,930, high 79,935. Under the 80,020 fade line and under 79,923 for the full reclaim by 4 points. Failed at 03:50Z (5m close 79,805, under 79,836): the break call returned. Lower-low sequence resumed (79,736 at 04:26Z).
+- Call scoring so far: break call 02:30Z-03:30Z held (BTC -170 from 79,923 to the 79,693 low, ES flat); cancelled by the 03:30Z close, which then turned out to be a one-candle bounce. Cancel rule was too tight for a 5m bounce into a lower high: next time wait for a close above 79,923, not 79,836.
+- Data: Yahoo ES/NQ stalled 03:53Z-04:19Z; watch.py had no ES fallback and dropped BTC polls for about 6 minutes until fixed (hold last ES/NQ, ES_STALE flag). Gap and r1h in that window are not valid.
+- Status: one event, one session, no count of misses. Nothing here is a tested rule.
+

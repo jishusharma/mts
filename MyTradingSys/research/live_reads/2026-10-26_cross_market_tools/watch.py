@@ -14,13 +14,19 @@ GAP_CLOSED, GAP_WIDE = 0.15, 0.80        # ES since-open minus BTC since-open, p
 R_UP, R_DOWN = 0.40, 0.0                 # 1h BTC-ES 5m-return correlation
 
 
+LAST, STALE = {}, {"es": False}
+
+
 def get(url):
     return json.load(urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=20))
 
 
 def yahoo(sym, itv):
     r = get(f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}?range=1d&interval={itv}&includePrePost=true")["chart"]["result"][0]
-    c = r["indicators"]["quote"][0]["close"]
+    q = r["indicators"]["quote"]
+    c = q[0].get("close") if q else None
+    if not c:  # Yahoo sends no bars when the ES/NQ feed stalls (10-27 03:53Z): empty, not an error
+        return {}
     return {t: v for t, v in zip(r["timestamp"], c) if v is not None}
 
 
@@ -36,7 +42,14 @@ def corr(x, y):
 def poll():
     btc = float(get("https://data-api.binance.vision/api/v3/ticker/price?symbol=BTCUSDT")["price"])
     es1, nq1 = yahoo("ES=F", "1m"), yahoo("NQ=F", "1m")
-    es, nq = es1[max(es1)], nq1[max(nq1)]
+    STALE["es"] = not es1 or not nq1
+    if STALE["es"]:  # keep BTC triggers alive: reuse the last ES/NQ, flagged ES_STALE
+        es, nq = LAST.get("es"), LAST.get("nq")
+        if es is None:
+            raise RuntimeError("no ES yet")
+    else:
+        es, nq = es1[max(es1)], nq1[max(nq1)]
+        LAST["es"], LAST["nq"] = es, nq
     k = get("https://data-api.binance.vision/api/v3/klines?symbol=BTCUSDT&interval=5m&limit=40")
     b5 = {x[0] // 1000: float(x[4]) for x in k}
     e5 = yahoo("ES=F", "5m")
@@ -63,12 +76,17 @@ def states(r):
         "GAP>=0.80(widening)": r["gap_es_minus_btc"] >= GAP_WIDE,
         "r1h>=0.40(re-coupled)": r["r5m_1h_es"] >= R_UP,
         "r1h<=0(decoupled)": r["r5m_1h_es"] <= R_DOWN,
+        "ES_STALE(gap/r1h not valid)": STALE["es"],
     }
 
 
 def main():
     new = not os.path.exists(CSV)
     prev, last_hb, n = None, 0, 0
+    if not new:  # seed the ES/NQ fallback from the last recorded row
+        with open(CSV, newline="") as f:
+            last = list(csv.DictReader(f))[-1]
+        LAST["es"], LAST["nq"] = float(last["es"]), float(last["nq"])
     while True:
         try:
             r = poll()
