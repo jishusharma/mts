@@ -1,0 +1,1 @@
+{"t": "20261027T183618Z", "from": "jis-nb/C", "to": "desktop-f7iu69n", "kind": "note", "text": "C holds: handover-form-2 port (supervisor.py, test_supervisor.py) - do not touch. Laptop owes: re-land run_context_read.py with its 5 costs.csv rows (reverted 03e9f6d6, red cost-inventory). Handover: ", "login": "C"}
