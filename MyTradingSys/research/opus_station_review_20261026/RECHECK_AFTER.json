@@ -1,0 +1,114 @@
+{
+  "head": "4e79a8a0cb9e21159487a4007a5f5424455ca7da",
+  "results": {
+    "fetch_does_not_refresh_dispatch": {
+      "status": "REPRODUCED",
+      "evidence": {
+        "remote_predecessor": "done",
+        "successor": {
+          "id": "successor",
+          "state": "ready",
+          "reason_code": "dependency",
+          "why": "depends_on predecessor is ready"
+        }
+      }
+    },
+    "racing_claims_both_succeed": {
+      "status": "NOT_REPRODUCED",
+      "detail": "success messages=1 err=already claimed by JIS-NUC / worker-b: same-task. Pick another task or area, or ask them (a claim over 24 h old is stale: release it)."
+    },
+    "tasks_misses_side_claim": {
+      "status": "NOT_REPRODUCED",
+      "detail": "tasks.open_claims=['same-task']"
+    },
+    "dispatch_bypasses_stop_tag": {
+      "status": "NOT_REPRODUCED",
+      "detail": "dispatch=[] excluded=[{'id': 'already-shipped', 'state': 'ready', 'reason_code': 'shipped', 'why': 'SHIPPED@deadbeef'}]"
+    },
+    "failed_ship_emits_done": {
+      "status": "REPRODUCED",
+      "evidence": {
+        "failed_exit_code": 1,
+        "signal": [
+          "ship failed-task Result: old successful result",
+          "done"
+        ]
+      }
+    },
+    "green_completion_not_watched": {
+      "status": "REPRODUCED",
+      "evidence": {
+        "before": {
+          "shas": {
+            "abc": true
+          },
+          "ci_red": false,
+          "busy_slots": 0,
+          "total_slots": 2
+        },
+        "after": {
+          "shas": {
+            "abc": true
+          },
+          "ci_red": false,
+          "busy_slots": 0,
+          "total_slots": 2
+        },
+        "return": "TIMEOUT after 3000s with no transition"
+      }
+    },
+    "uninvoked_tool_passes_wiring": {
+      "status": "REPRODUCED",
+      "evidence": {
+        "classification": {
+          "scripts/dev/uninvoked_feature.py": "DEV-TOOL"
+        },
+        "gate_errors": []
+      }
+    },
+    "gemini_full_id_release_mismatch": {
+      "status": "NOT_REPRODUCED",
+      "detail": "release(full id) err=no claim a-card-name-that-is-deliberately-longer-than-forty-characters on origin/claims gemini_queue passes full id=False"
+    },
+    "ship_wall_excludes_ci_wait": {
+      "status": "REPRODUCED",
+      "evidence": {
+        "order": [
+          "ship_wall_recorded",
+          "push_returned",
+          "ci_wait_started"
+        ],
+        "CI_wait_cap_seconds": 600
+      }
+    },
+    "fast_gate_missing_from_supervisor": {
+      "status": "REPRODUCED",
+      "evidence": {
+        "actual_fast_slots_busy": 1,
+        "supervisor_busy": 0
+      }
+    },
+    "timeout_cached_as_pass": {
+      "status": "REPRODUCED",
+      "evidence": {
+        "return_ok": true,
+        "message": "step over the 60 s ship budget: DEFERRED TO CI (a gate-file ship must finish in 2 minutes; CI runs the whole suite)",
+        "reused": {
+          "audit": "reused: passed on this tree 2026-10-27T21:08:37Z"
+        }
+      }
+    },
+    "worker_brief_drops_context_contract": {
+      "status": "REPRODUCED",
+      "evidence": {
+        "task_brief_includes_dependency_id": false,
+        "supervisor_brief_includes_context_tests_done_when": false
+      }
+    }
+  },
+  "counts": {
+    "REPRODUCED": 8,
+    "NOT_REPRODUCED": 4,
+    "ERROR": 0
+  }
+}

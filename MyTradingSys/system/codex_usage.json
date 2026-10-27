@@ -2,11 +2,11 @@
  "allowance": {
   "plan": "plus",
   "week_resets": 1793614696,
-  "week_used": 18.0,
+  "week_used": 29.0,
   "window_resets": 1793151916,
-  "window_used": 0
+  "window_used": 68.0
  },
- "at": "2026-10-27T20:45:47Z",
+ "at": "2026-10-27T21:29:47Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -18,11 +18,41 @@
  "host": "JIS-NUC",
  "lab": {
   "astra_runs": 0,
-  "week_pts": 9.5,
-  "window_pts": 0.0,
-  "window_runs": 0
+  "week_pts": 11.5,
+  "window_pts": 9.0,
+  "window_runs": 2
  },
  "runs": [
+  {
+   "at": "2026-10-27T21:29:43Z",
+   "card": "lf-volume_candles_ma-gpt-rederive",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "Codex credits ran out; the card stays ready, is not charged a try, and the GPT lane is marked down",
+   "outcome": "LIMIT",
+   "seconds": 3,
+   "tokens_out": null,
+   "tokens_total": null,
+   "tokens_uncached": null,
+   "week_pts": null,
+   "window_pts": null
+  },
+  {
+   "at": "2026-10-27T21:07:23Z",
+   "card": "gpt-argon-score-recount",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 50,
+   "tokens_out": 3583,
+   "tokens_total": 499736,
+   "tokens_uncached": 51865,
+   "week_pts": 1.0,
+   "window_pts": 3.0
+  },
   {
    "at": "2026-10-27T20:45:04Z",
    "card": "gpt-formulas-rederive-2-5",
@@ -140,36 +170,6 @@
    "tokens_out": 3622,
    "tokens_total": 459214,
    "tokens_uncached": 50984,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-27T11:27:26Z",
-   "card": "lf-session_timing-gpt-rederive",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": " | release failed: sync: no claim lf-session-timing-gpt-rederive on origin/claims",
-   "outcome": "BLOCKED",
-   "seconds": 65,
-   "tokens_out": 3761,
-   "tokens_total": 574126,
-   "tokens_uncached": 64893,
-   "week_pts": 0.0,
-   "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-27T11:04:59Z",
-   "card": "lf-positioning-gpt-rederive",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "2 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/positioning.md | release failed: sync: no claim",
-   "outcome": "OUT_OF_SCOPE",
-   "seconds": 80,
-   "tokens_out": 5216,
-   "tokens_total": 680407,
-   "tokens_uncached": 64119,
    "week_pts": 0.0,
    "window_pts": 0.0
   }

@@ -28,6 +28,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`; `MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md`
 - Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-tom-gemini-facts.md`; `MyTradingSys/research/layer_lab/reports/2026-10-22_tom-btc-other-setups.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `extracted-rules-wiring-audit-tom-fabio-habib` refined p1 SONNET: Wiring audit (Tom, Fabio, Habib): every SOURCED rule vs layer code, params and tests: wired / unwired-worth-wi
   - `tom-btc-eye-read` blocked p1 SONNET: Tom on BTC T3: eye read of the 80 lab charts by two readers (Claude + Jis), blind; agreement per Tom concept
   - `lf-tom-gpt-rederive` ready p2 CODEX: Layer re-derive: tom (independent recount of the headline numbers behind the fact sheet)
   - `live-divergence-event-log` ready p2 DSA: Live divergence event log: record each BTC vs ES/NQ divergence read with outcomes at +30/60/120 min (forward e
@@ -66,6 +67,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-fabio-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `extracted-rules-wiring-audit-tom-fabio-habib` refined p1 SONNET: Wiring audit (Tom, Fabio, Habib): every SOURCED rule vs layer code, params and tests: wired / unwired-worth-wi
   - `lf-fabio-gpt-rederive` ready p2 CODEX: Layer re-derive: fabio (independent recount of the headline numbers behind the fact sheet)
   - `t09-f4-live-window-99-bars-swing-layers` refined p2 JIS-NB: T09-F4 S2: 99-bar live window misses 68 of 96 escalation signals; fetch more bars for swing layers
   - `layer-review-fabio-session` ready p3 SONNET: Layer review sheet: Fabio and session timing (idea, source, backtests, bugs, confluence)
@@ -83,7 +85,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `MyTradingSys/research/tom_fabio_guidance_2026-10-12/GUIDANCE_AUDIT.md`; `MyTradingSys/research/tom_fabio_guidance_2026-10-12/PRE_REG_Q33.md`
 - Code: `MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py`; `MyTradingSys/backtest/layers/test_layer_boundaries.py`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `lf-guidance-gpt-rederive` ready p2 CODEX: Layer re-derive: guidance (independent recount of the headline numbers behind the fact sheet)
+  - `lf-guidance-gpt-rederive` blocked p2 CODEX: Layer re-derive: guidance (independent recount of the headline numbers behind the fact sheet)
   - `layer-review-tom-guidance` ready p3 SONNET: Layer review sheet: Tom and cross-guidance (idea, source, backtests, bugs, confluence)
 
 ## RSI / Malkan / Kurisko (`rsi`)
@@ -101,10 +103,13 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/rsi_divergence_mtf_2026-10-09`
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-26_lf-rsi-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `malkan-rsi-divergence-chart-flags-1d-1w` raw p1 SONNET: Malkan RSI regular + hidden divergence detector with chart-drawn flags on 1d and 1w (operator confirms/correct
+  - `extracted-rules-wiring-audit` refined p1 SONNET: Wiring audit (Malkan, Krown): every SOURCED rule in the setup catalogs/glossaries vs layer code, params and te
+  - `malkan-rsi-divergence-chart-flags-1d-1w` ready p1 SONNET: Malkan RSI regular + hidden divergence detector with chart-drawn flags on 1d and 1w (operator confirms/correct
+  - `sourced-rule-guard` refined p1 SONNET: Guard: no layer param or rule ships without a SOURCED quote+file:line or an OURS label (CI test)
+  - `krown-hidden-divergence-confluence-feed` ready p2 SONNET: Krown hidden divergence as a shared confluence feed any layer (RSI 40-60 included) can consume; Malkan layer s
   - `kurisko-dev-event-study` refined p2 SONNET: Kurisko Quad Rotation: DEV event study, fee-net, same-window placebo
   - `lf-rsi-gpt-rederive` ready p2 CODEX: Layer re-derive: rsi (independent recount of the headline numbers behind the fact sheet)
-  - `malkan-hindi-reread-garble-check` raw p2 CODEX: Re-read Malkan Hindi ASR transcripts against English for garbled rules (levels, bar counts, star grades, trend
+  - `malkan-hindi-reread-garble-check` refined p2 CODEX: [GEMINI] Re-read Malkan Hindi ASR transcripts against English for garbled rules (levels, bar counts, star grad
   - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
   - `rsi-cross-unmapped-and-pivot-stack` ready p3 SONNET: RSI cross events are rejected as unmapped in the auto-trader (no layer_rules entry); and no layer stacks level
   - `malkan-prereg-dwm-equities` refined p4 SONNET: Malkan: pre-registration for the D/W/M equity home test (items 6/7/8/9/11/12, gates 0a/0f)
@@ -122,7 +127,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/cryptocred_stop_2026-10-10`
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-cryptocred-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `lf-cryptocred-gpt-rederive` ready p2 CODEX: Layer re-derive: cryptocred (independent recount of the headline numbers behind the fact sheet)
+  - `cryptocred-stop-sweep-conclusion-provenance` ready p2 SONNET: Correct CryptoCred widest-stop claim and recover extended-cell provenance
+  - `lf-cryptocred-gpt-rederive` blocked p2 CODEX: Layer re-derive: cryptocred (independent recount of the headline numbers behind the fact sheet)
   - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
 
 ## Positioning (funding, OI, whale / FlowHorse) (`positioning`)
@@ -240,13 +246,15 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Codex lab reports (newest 3 of 3): `MyTradingSys/research/layer_lab/reports/2026-10-26_astra-low-levels-fee-drag-recompute.md`; `MyTradingSys/research/layer_lab/reports/2026-10-26_astra-low-confluence-prereg-leak-hunt.md`; `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-krown-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `astra-low-levels-fee-drag-recompute` blocked p1 CODEX: Astra-low: independently recompute the levels study fee drag (+0.22 R gross, -0.12 R net, 255 fills)
+  - `extracted-rules-wiring-audit` refined p1 SONNET: Wiring audit (Malkan, Krown): every SOURCED rule in the setup catalogs/glossaries vs layer code, params and te
+  - `sourced-rule-guard` refined p1 SONNET: Guard: no layer param or rule ships without a SOURCED quote+file:line or an OURS label (CI test)
   - `confluence-s4-dev-trials` refined p2 SONNET: Confluence S4: DEV and DEV_EXT trial runs (T2, sizing arm, pooled read, T4) per PRE_REG_CONFLUENCE
   - `confluence-s5-fable-verdict` refined p2 SONNET: Confluence S5: Fable verdict on DEV results, what goes to the one VALIDATION read (then ship, S6)
   - `krown-data-cme-btc-volume` refined p2 SONNET: Krown CME BTC futures daily volume (public data only) as third volume arm
   - `krown-dev-event-study` refined p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
   - `krown-dev-event-study-candles` raw p2 SONNET: Krown DEV event study 3/3: candle hypotheses H-C1, H-C2 (H-T1 not run); DONE when: DEV_RESULTS.md has N, power
   - `krown-dev-event-study-levels` raw p2 SONNET: Krown DEV event study 2/3: level and moving-average hypotheses H-M1, H-M3, H-Z1 (H-M2 not run); DONE when: DEV
-  - `krown-hidden-divergence-confluence-feed` raw p2 SONNET: Krown hidden divergence as a shared confluence feed any layer (RSI 40-60 included) can consume; Malkan layer s
+  - `krown-hidden-divergence-confluence-feed` ready p2 SONNET: Krown hidden divergence as a shared confluence feed any layer (RSI 40-60 included) can consume; Malkan layer s
   - `lf-krown-gpt-rederive` ready p2 CODEX: Layer re-derive: krown (independent recount of the headline numbers behind the fact sheet)
   - `trendline-count-only-v2` refined p2 SONNET: Trend-line count-only v2 and PRE_REG v2: first_touch vs all_touches, retest/reclaim counts, causal terciles, k
   - `krown-other-sources-event-study-videos` refined p3 CODEX: Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigg
