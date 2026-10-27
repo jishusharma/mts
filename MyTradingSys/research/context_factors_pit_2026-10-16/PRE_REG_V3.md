@@ -134,3 +134,24 @@ In accordance with repo policy (CLAUDE.md:33), every number is explicitly labele
 - Minimum matched controls $k_{\text{min}} = 10$: OURS (PRE_REG_V2.md:52).
 - Minimum stop floor $= 0.56\ \% $: OURS (PRE_REG.md:55).
 - Cross-engine kappa threshold $= 0.4$: OURS (PRE_REG_V2.md:59).
+
+## 5. Amendment (2026-10-28): Holm m = 89 recount and F3 power update (audit fix 8, card fable-run2-regate-c-ctx-v2-blocked-pit-v3-m89)
+
+Per `REGATE_AUDIT.md` fix 8, updating the Holm correction pool to current ledger count $m = 89$:
+- $m = 89$: SOURCED from current ledger recount (`REGATE_AUDIT.md` fix 8).
+- $z_{\text{holm}} = 3.449$: SOURCED, two-sided Holm critical value for $m = 89$ at $\alpha = 0.05$, $\Phi^{-1}(1 - 0.05/(2 \times 89)) \approx 3.449$.
+- $\text{sd} = 1.5\text{ R}$: DECISION (OURS), the sd in the audit's check command (`REGATE_AUDIT.md:82`).
+- $\text{cost} = 0.0\text{ R}$: filter contrast pays no extra fee.
+- $\text{effect} = 0.30\text{ R}$: plausible effect bound.
+
+Check command output (`python scripts/dev/prereg_gate.py --n 448 --sd 1.5 --cost 0 --m 89`):
+```
+n 448 sd 1.5 m 89 z_holm 3.449 MDE 0.304 R + cost 0 = 0.304 vs max plausible gross 0.3; n needed 460
+BLOCK: do not freeze (write BLOCKED.md with these numbers)
+```
+
+### Power impact under m = 89:
+- Required sample size: $n_{\text{needed}} = \left\lceil \left( \frac{(3.449 + 0.8416) \times 1.5}{0.30} \right)^2 \right\rceil = \lceil 459.79 \rceil = 460\text{ days}$.
+- F3 operator condition (`ladder_cond`) has 448 distinct long days ($448 < 460$, $460 > 448$) and 452 short days ($452 < 460$).
+- Therefore, cell F3 is unpowered (460 > 448) at the primary trunk-free gate ($\text{sd} = 1.5\text{ R}$). Only F1 (694/700 days) and F2 (654/657 days) remain powered by design ($n \ge 460\text{ days}$).
+
