@@ -6,7 +6,7 @@
   "window_resets": 1793151916,
   "window_used": 68.0
  },
- "at": "2026-10-27T21:08:22Z",
+ "at": "2026-10-27T21:29:47Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -18,11 +18,26 @@
  "host": "JIS-NUC",
  "lab": {
   "astra_runs": 0,
-  "week_pts": 10.5,
-  "window_pts": 3.0,
-  "window_runs": 1
+  "week_pts": 11.5,
+  "window_pts": 9.0,
+  "window_runs": 2
  },
  "runs": [
+  {
+   "at": "2026-10-27T21:29:43Z",
+   "card": "lf-volume_candles_ma-gpt-rederive",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "Codex credits ran out; the card stays ready, is not charged a try, and the GPT lane is marked down",
+   "outcome": "LIMIT",
+   "seconds": 3,
+   "tokens_out": null,
+   "tokens_total": null,
+   "tokens_uncached": null,
+   "week_pts": null,
+   "window_pts": null
+  },
   {
    "at": "2026-10-27T21:07:23Z",
    "card": "gpt-argon-score-recount",
@@ -157,21 +172,6 @@
    "tokens_uncached": 50984,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-27T11:27:26Z",
-   "card": "lf-session_timing-gpt-rederive",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": " | release failed: sync: no claim lf-session-timing-gpt-rederive on origin/claims",
-   "outcome": "BLOCKED",
-   "seconds": 65,
-   "tokens_out": 3761,
-   "tokens_total": 574126,
-   "tokens_uncached": 64893,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }
