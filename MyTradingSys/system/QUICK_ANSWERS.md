@@ -52,3 +52,6 @@ The operator is not a developer: do these, do not ask, do not re-investigate. Ha
 
 ## Ask Gemini or GPT directly (no desk row)
 `python scripts/dev/ask_model.py gemini|gpt "<prompt>" [--model flash|argon|sonnet|opus] [--effort low|medium|high] [--file PATH ...]` sends the prompt to the model and prints the answer (read-only, runs in a scratch folder under F:/MTS/ask, never a work tree). Gemini = Antigravity `agy` on the Google Pro login; GPT = Codex CLI on the lab login. Use it for questions, second opinions, frame reads. Work that must change the repo stays on cards (`gemini_queue.py`, `codex_run.py`). Quota error (429) means wait for the reset it prints; do not fall back to a desk row for a question.
+
+## Commands the operator must run (no copy-paste)
+Any command the operator has to run, in admin or normal PowerShell or any shell: open it with the terminal tool (`mcp__terminal__run_in_terminal`) with the command already typed, so the operator only presses Enter or UAC Yes. For admin: `Start-Process pwsh -Verb RunAs -ArgumentList '-NoExit','-Command','<cmd>'`. Never paste the command in chat as the only delivery. Standing rule, repeated by the operator.
