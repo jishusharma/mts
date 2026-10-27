@@ -155,3 +155,10 @@ Status: one snapshot, no count of how often the higher ladder won. Routed to car
 - Data: Yahoo ES/NQ stalled 03:53Z-04:19Z; watch.py had no ES fallback and dropped BTC polls for about 6 minutes until fixed (hold last ES/NQ, ES_STALE flag). Gap and r1h in that window are not valid.
 - Status: one event, one session, no count of misses. Nothing here is a tested rule.
 
+
+## 2026-10-27 06:41Z: Eagle_Eyes session closed, state for the next one
+- Watcher stopped 06:41Z (watch.py, 33 arms; restart: Monitor `python -I -u watch.py` in 2026-10-26_cross_market_tools, 30 min cap, B202).
+- Call in force: break (BTC under 79,836). Cancel only on a 5m close above 79,923 (single closes above 79,836 failed 03:30Z, 05:00Z, 06:10Z). A 5m close under 79,729 targets 79,583 then 79,451.
+- Last row 06:41Z: BTC 79,769, ES +0.36%, gap +0.59, r1h +0.60 (re-coupled). Event 4 still open in events.md.
+- Open: 16 unclosed chart shots (B201); score the 80,250 / break / cancel calls against klines; cards lab-verify-mtf-bias-ladder, lab-verify-rsi-40-60-bb-bounce-15m, timeframes-add-2d-3d-4d-5d wait for workers.
+- This session was compacted several times, against roles/eagle_eyes.md ("never compacted"); next Eagle_Eyes starts fresh from this log.
