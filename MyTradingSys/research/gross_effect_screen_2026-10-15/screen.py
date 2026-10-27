@@ -18,6 +18,8 @@ from pathlib import Path
 import numpy as np
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE.parents[2] / "MyTradingSys" / "backtest" / "bt"))
+import bt_data  # noqa: E402  (shared funding loader: raw_fund first, then raw, raises if neither exists)
 ARCH = Path("F:/MTS/data/tom_raw/klines")
 DAYMIN = 1440
 MS = 60_000
@@ -29,7 +31,16 @@ HS = (5, 15, 30, 60, 120, 240)
 PRIMARY = (1, 60)
 C_PCT = 0.14
 CM_PCT = 0.09
-FUND_PCT = 0.01
+FUND_PCT = 0.01                       # old flat 1 bp per straddling encounter; kept only as the old_flat_1bp comparison column
+FUND_BASE = Path("F:/MTS/Dumps/backtest")
+_FUNDING = {}
+
+
+def funding():
+    """Real DEV funding rates (calc_time < CUTOFF_MS, VALIDATION never read); raises if the archive is absent."""
+    if "r" not in _FUNDING:
+        _FUNDING["r"] = bt_data.load_funding_strict(FUND_BASE, CUTOFF_MS)
+    return _FUNDING["r"]
 TICK = 0.1
 N_MIN = 200
 CLIP = 1000.0
@@ -146,11 +157,12 @@ def build_ledger(A, ndays):
     return dict(t=t, side=side, D5=d5, leg=leg, F=F, day=t // DAYMIN, j=t % DAYMIN)
 
 
-def compute_cells(A, led, ndays):
+def compute_cells(A, led, ndays, fund=None):
+    fund = funding() if fund is None else fund
     O, H, L = A["O"], A["H"], A["L"]
     n = len(O)
     t, side = led["t"], led["side"]
-    G, FUND, FILL, PIN = {}, {}, {}, {}
+    G, FUND, FUND_OLD, FILL, PIN = {}, {}, {}, {}, {}
     for d in DS:
         e = t + 1 + d
         pin = np.where(e < n, O[np.minimum(e, n - 1)], np.nan)
@@ -174,9 +186,10 @@ def compute_cells(A, led, ndays):
             te = TS0 + e * MS
             tx = TS0 + x * MS
             per = 8 * 3600 * 1000
-            FUND[(d, h)] = np.where((tx // per) - (te // per) > 0, FUND_PCT, 0.0)
+            FUND_OLD[(d, h)] = np.where((tx // per) - (te // per) > 0, FUND_PCT, 0.0)       # old_flat_1bp
+            FUND[(d, h)] = bt_data.funding_cost_pct(fund, te, tx, side)
             FILL[(d, h)] = first <= h - 1                             # fill bar strictly before the exit bar
-    return dict(G=G, FUND=FUND, FILL=FILL, PIN=PIN, led=led)
+    return dict(G=G, FUND=FUND, FUND_OLD=FUND_OLD, FILL=FILL, PIN=PIN, led=led)
 
 
 # ---------------------------------------------------------------- stats
