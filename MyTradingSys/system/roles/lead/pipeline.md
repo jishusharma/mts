@@ -9,6 +9,8 @@ Single instance (trunk lease, taken at Boot step 1). Loaded by `role_loader.py m
 ## Pin
 Runs anywhere. Only one at a time: the trunk lease (`scripts/dev/lease.py`) refuses a second on any machine or login (2026-10-18: a second Pipeliner double-closed three desk rows). `desk.py post/take/done/assign/sweep` and `sync.py claim/ship/release` refuse a Pipeliner session that does not hold it. A non-Claude runner (Gemini, Codex) sets `MTS_ROLE=Pipeliner` and `MTS_LEASE_SESSION=<its run id>`.
 
+Load pipeline mode only when draining the desk. Exception (bug-lease-blocks-lead-ship-after-pipeline-mode): `sync.py ship` of a diff that is only task cards (`system/tasks/*.json`) and `.md`/`.txt` docs passes without the lease; `--release`, desk rows, claims, code or an empty diff keep the guard (fail closed).
+
 ## Boot
 1. `python scripts/dev/lease.py acquire Pipeliner`. Exit 3 = another Pipeliner holds it (the line names host and session): reply with that line and stop. Exit 4 = trunk unreachable or the lease file is ambiguous: report and stop. Never work without the lease.
 2. `python scripts/dev/sync.py start pipeliner`

@@ -2,13 +2,30 @@
   "approved_by": "",
   "asks": "",
   "commands": [
+    "python scripts/dev/verdicts.py check \"pizzino\"",
+    "python scripts/dev/prereg_gate.py --n <days> --sd <sd> --cost <cost_R> --m auto",
     "python scripts/dev/tasks.py brief pz-4-backtest"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-26T21:27:58Z",
+    "misses": 15,
+    "reads": [
+      "MyTradingSys/system/LAYERS.md",
+      "scripts/dev/cbp_run.py",
+      "scripts/dev/cbp_schedule.py",
+      "MyTradingSys/tests/test_cbp_query.py",
+      "scripts/dev/test_sync.py",
+      "scripts/dev/test_run_all_tests.py",
+      "MyTradingSys/system/SCHEDULING_POLICY.md"
+    ],
+    "session": "agent-a3373db6f65852a3d"
+  },
   "created": "2026-10-26T19:08:24Z",
   "depends_on": [
     "pz-3-indicators"
   ],
-  "done_when": "MyTradingSys/research/pizzino_layer_2026-10-27/RESULT.md lists n trades, mean R, fee-net Y/N, split, for each variant, and the ledger rows; no keep or drop verdict",
+  "done_when": "RESULT.md lists n trades, mean R, fee-net Y/N, split, per variant, with ledger rows in TRIALS.md; exports sim_desk/results/pz-4-backtest.json; independent recount of n and mean R matches; no keep or drop verdict.",
   "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
@@ -21,18 +38,20 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Held raw on purpose: set state ready (tasks.py tag --refresh) when its depends_on cards are done.",
+  "note": "Planner-B 2026-10-27: card complete; only gate is depends_on pz-3-indicators (claimed by DESKTOP-F7IU69N). Re-run check after it is done; CRUCIAL needs Lab_Guy stamp + review Agent. | HELD: set ready (tasks.py tag --refresh) when pz-3-indicators is done. DECISION (OURS): weight raised ROUTINE->CRUCIAL (decision numbers, holdout read once); review Agent before ship. Parameters SOURCED from SPEC.md or labelled OURS.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-26T19:08:44Z",
+  "refreshed": "2026-10-26T21:58:27Z",
   "refs": [
     "MyTradingSys/research/pizzino_layer_2026-10-27/PLAN.md"
   ],
   "result": "",
   "scope_in": [
     "MyTradingSys/research/pizzino_layer_2026-10-27/RESULT.md",
-    "trial ledger rows"
+    "MyTradingSys/research/pizzino_layer_2026-10-27/PRE_REG.md (new)",
+    "MyTradingSys/research/layer_lab/TRIALS.md",
+    "MyTradingSys/research/sim_desk/results/pz-4-backtest.json (new)"
   ],
   "scope_out": [
     "live tree; deciding the layer's fate"
@@ -40,16 +59,15 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "Follow LAYER_LAB.md for the harness and the trial ledger format",
-    "Run SPEC.md defaults and the listed OURS variants on DEV only",
+    "Freeze PRE_REG.md first: verdicts.py check, prereg_gate.py exit 0, SPEC.md defaults + listed OURS variants",
+    "Follow LAYER_LAB.md for the harness; run DEV only, one TRIALS.md row per run",
     "One VALIDATION run of the chosen variant; holdout read once",
-    "Write RESULT.md with the numbers and an independent recount of n and mean R",
-    "Commit with a Result: line"
+    "Write RESULT.md with an independent recount of n and mean R; export the results json; commit with a Result: line"
   ],
-  "tests": "none (run card); proof = RESULT.md recount matches",
+  "tests": "Run card; proof = recount script output equals RESULT.md n and mean R; prereg_gate.py exit 0 before any DEV run.",
   "title": "Pizzino layer: BTC backtest DEV/VALIDATION/holdout, fee-net, trial ledger",
-  "weight": "ROUTINE",
+  "weight": "CRUCIAL",
   "worker": "session"
 }

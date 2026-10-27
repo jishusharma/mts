@@ -57,3 +57,6 @@ The operator is not a developer: do these, do not ask, do not re-investigate. Ha
 
 ## Archive, then delete
 Research or runtime data goes to F:/MTS_backup first (local backup repo only), never deleted outright; the cleanup guard (`c_drive_guard.py plan` lists what it would delete and why) touches only finished worktrees and this repo's own temp prefixes.
+
+## Never scan a whole drive
+No bare `find /`, `find C:\`, `grep -r /`, `ls -R /` or `du /` in any shell: name a folder (`git ls-files`, `find MyTradingSys -name ...`). A timed-out shell call leaves the find.exe running (JIS-NUC 2026-10-26: 9 h, 10.9M handles, 0 MB free). Check: `powershell -File scripts/operator/runaway_check.ps1`; see RUNAWAY_GUARD.md.

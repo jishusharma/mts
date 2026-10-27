@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-26T20:46:43Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md"
   ],
@@ -18,7 +19,14 @@
   "id": "pz-1c-method-merge",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "method_extraction.md shipped 562db2b8d, verify_extract_quotes exit 0",
+      "ref": "318ee373a",
+      "utc": "2026-10-26T20:46:43Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -30,7 +38,12 @@
   "refs": [
     "MyTradingSys/research/pizzino_layer_2026-10-27/PLAN.md"
   ],
-  "result": "",
+  "result": "method_extraction.md shipped 562db2b8d, verify_extract_quotes exit 0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md"
   ],
@@ -40,12 +53,13 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "done",
   "steps": [
     "Read both method files",
     "Write the merged file with one section per concept and a Jason-vs-Michael differences table",
     "Run verify_extract_quotes.py until exit 0; commit with a Result: line"
   ],
+  "taken": "2026-10-26T20:46:43Z",
   "tests": "none (doc card); proof = verify_extract_quotes.py exit 0",
   "title": "Pizzino: merge Jason and Michael method files into method_extraction.md",
   "weight": "ROUTINE",

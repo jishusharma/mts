@@ -5,7 +5,7 @@ every card change). Pointers: `layer_index.json`; layer status and backtests: `l
 Rules: no fixed core; layers may combine or filter each other, results decide (CLAUDE.md, 2026-10-13). A new backtest is a row in
 `layer_map.json` (it then shows here); a new layer joins a family in `layer_index.json`; a new card names `--layer <family>`.
 
-Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow layer) | guidance = Tom/Fabio cross-guidance (BB, LVN, regime filters) | rsi = RSI / Malkan / Kurisko | cryptocred = CryptoCred setups | positioning = Positioning (funding, OI, whale / FlowHorse) | session_timing = Session / timing (session levels, turn of candle, session momentum) | volume_candles_ma = Volume, candle patterns, daily MA setups, bigtrade | live_engine = Live engine, execution and live-market reads (feeds every layer) | callers = Callers (posted trade calls: Qriptal, RLinda, Bennett, Crypto Chase, Roman) | krown = Krown (TA 101: zones, volume, candles, averages, ranges) | wavetrend = WaveTrend (LazyBear oscillator) | pitchfork = Pitchfork (Andrews / Schiff / Morge median line)
+Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow layer) | guidance = Tom/Fabio cross-guidance (BB, LVN, regime filters) | rsi = RSI / Malkan / Kurisko | cryptocred = CryptoCred setups | positioning = Positioning (funding, OI, whale / FlowHorse) | session_timing = Session / timing (session levels, turn of candle, session momentum) | volume_candles_ma = Volume, candle patterns, daily MA setups, bigtrade | live_engine = Live engine, execution and live-market reads (feeds every layer) | callers = Callers (posted trade calls: Qriptal, RLinda, Bennett, Crypto Chase, Roman) | krown = Krown (TA 101: zones, volume, candles, averages, ranges) | wavetrend = WaveTrend (LazyBear oscillator) | pitchfork = Pitchfork (Andrews / Schiff / Morge median line) | pizzino = Pizzino (Jason bar count + Michael nested swing states)
 
 ## Tom (order flow + volume profile) (`tom`)
 - Status: Tom on BTC with our own judgement (operator 2026-10-13). DAX chain held, no FDAX data bought (q11). The old BTC encoding stays stopped.
@@ -227,7 +227,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Codex lab reports (newest 3 of 3): `MyTradingSys/research/layer_lab/reports/2026-10-26_astra-low-levels-fee-drag-recompute.md`; `MyTradingSys/research/layer_lab/reports/2026-10-26_astra-low-confluence-prereg-leak-hunt.md`; `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-krown-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `astra-low-levels-fee-drag-recompute` blocked p1 CODEX: Astra-low: independently recompute the levels study fee drag (+0.22 R gross, -0.12 R net, 255 fills)
-  - `astra-low-levels-fee-drag-recompute-need-export-the-original` raw p1 SONNET: Prereq of astra-low-levels-fee-drag-recompute: Export the original 2026-10-25 levels default-run DEV trade led
   - `confluence-s4-dev-trials` refined p2 SONNET: Confluence S4: DEV and DEV_EXT trial runs (T2, sizing arm, pooled read, T4) per PRE_REG_CONFLUENCE
   - `confluence-s5-fable-verdict` refined p2 SONNET: Confluence S5: Fable verdict on DEV results, what goes to the one VALIDATION read (then ship, S6)
   - `krown-data-cme-btc-volume` refined p2 SONNET: Krown CME BTC futures daily volume (public data only) as third volume arm
@@ -259,6 +258,16 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Code: `MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `lf-pitchfork-gpt-rederive` ready p2 CODEX: Layer re-derive: pitchfork (independent recount of the headline numbers behind the fact sheet)
+
+## Pizzino (Jason bar count + Michael nested swing states) (`pizzino`)
+- Status: Indicator module built with fail-first tests from SPEC worked examples. No backtest, no live wiring (pz-4 next).
+- Tracks: Claude
+- Layer `pizzino_indicators`: Pure-function module built with tests; not backtested, not wired | module MyTradingSys/backtest/layers/pizzino/pizzino_indicators.py
+- Spec / sources: `MyTradingSys/research/pizzino_layer_2026-10-27/SPEC.md`; `MyTradingSys/research/pizzino_layer_2026-10-27/PLAN.md`
+- Code: `MyTradingSys/backtest/layers/pizzino/pizzino_indicators.py`
+- Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `pz-4-backtest` ready p1 SONNET: Pizzino layer: BTC backtest DEV/VALIDATION/holdout, fee-net, trial ledger
+  - `pz-5-confluence-and-live` raw p2 SONNET: Pizzino layer: confluence table with other layers; cbp.query bias and levels as live input
 
 ## Cross-cutting
 

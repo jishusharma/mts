@@ -12,6 +12,7 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(os.environ.get('SIM_DESK_KLINES', 'F:/MTS/data/tom_raw/klines'))
+CUT_MS = 1719792000000   # 2024-07-01 00:00 UTC: no record at or after this is ever written
 BASE = 'https://data.binance.vision/data/futures/um/monthly/klines'
 
 
@@ -39,6 +40,9 @@ def fetch(symbol, root=ROOT):
             raise RuntimeError(f'checksum mismatch {url}')
         with zipfile.ZipFile(io.BytesIO(z)) as zf:
             data = zf.read(zf.namelist()[0])
+        for ln in data.decode('utf-8').splitlines():
+            if ln[:1].isdigit() and int(ln.split(',')[0]) >= CUT_MS:
+                raise ValueError(f'{url}: record at or after the sealed cut (2024-07-01 UTC); refusing to write {out.name}')
         out.write_bytes(data)
         print('ok', out.name, flush=True)
 
