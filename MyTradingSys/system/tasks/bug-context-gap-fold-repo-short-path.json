@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-27T10:12:28Z",
+  "depends_on": [],
+  "done_when": "The 4 failing tests pass on DESKTOP-F7IU69N; sync.py ship succeeds through Step 3xt for a change touching tasks.py.",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "fold_repo (test_context_gap.py) builds its sandbox repo without .resolve(); on this host tmp_path resolves through the short alias E-NGIN~1, so git -C <path> raises CalledProcessError. 4 fold/ship-hook tests fail 100% reproducibly on a clean trunk worktree. sync.py ship's local gate reaches these tests whenever a change touches tasks.py, so such ships fail Step 3xt from this host.",
+  "id": "bug-context-gap-fold-repo-short-path",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tests: no 'git init -b' (NUC git 2.24 lacks it); symbolic-ref instead",
+      "ref": "2e42109427d6",
+      "utc": "2026-10-25T22:29:36Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "context-gap-fold-on-ship"
+  ],
+  "note": "found shipping bug-ready-state-lags-shipped-card (2026-10-27): deterministic on pristine trunk f00e9f212, unrelated to that diff. CI (windows-latest, different account) may not reproduce; local gate is where this blocks.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-27T10:13:07Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/test_context_gap.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "2e42109427d6",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "apply the same .resolve() fix to fold_repo's tmp_path/repo root that NextSkipsClaimedTest.setUp already uses (see its comment on the E-NGIN~1 short path)",
+    "confirm the 4 named tests pass here; re-run sync.py ship for an unrelated tasks.py change to confirm Step 3xt no longer fails"
+  ],
+  "tests": "scripts/dev/test_context_gap.py (fail-first: already red on current trunk, confirmed on f00e9f212)",
+  "title": "BUG: test_context_gap.py fold_repo hits Windows short-path (E-NGIN~1), blocks local ship gate",
+  "weight": "",
+  "worker": "agent"
+}
