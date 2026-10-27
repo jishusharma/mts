@@ -13,8 +13,15 @@ A and B are CONSECUTIVE swing points of the same kind (v1 limit: a divergence ag
 swing is not detected). A swing point with RSI None is skipped as if absent.
 `chain` counts how many consecutive A->B pairs ending at this B were divergences (1 = single, 2 = double...):
 Malkan's "multiple divergences".
+HIDDEN divergence (kinds "hidden_bullish" / "hidden_bearish", added 2026-10-28, OURS window, third-party definition:
+DIVERGENCE_RESEARCH_2026-10-09.md s2; Malkan names "reverse divergence" but his transcripts hold no definition):
+hidden_bullish = price close HIGHER low, RSI LOWER low; hidden_bearish = price LOWER high, RSI HIGHER high. Same swing
+points, same causal stamp, same bars window and min_rsi_diff as regular (mirror: only the two comparisons flip).
 Not here: candle confirmation, entry, stop, target (backtest step), intrabar/wick RSI (he says close to close).
 """
+
+
+KINDS = ("bullish", "bearish", "hidden_bullish", "hidden_bearish")
 
 
 def _pivots(vals, rsi, kind):
@@ -31,23 +38,29 @@ def _pivots(vals, rsi, kind):
 
 def rsi_divergence(close: list, rsi: list, ts: list, min_bars: int, max_bars: int,
                    kind: str = "bullish", min_rsi_diff: float = 0.0) -> list:
-    if kind not in ("bullish", "bearish"):
-        raise ValueError("kind must be 'bullish' or 'bearish'")
+    if kind not in KINDS:
+        raise ValueError("kind must be one of %s" % (KINDS,))
     if not (len(close) == len(rsi) == len(ts)):
         raise ValueError("close, rsi and ts must have the same length")
     if min_bars < 3 or max_bars < min_bars:
         raise ValueError("need 3 <= min_bars <= max_bars")
     if min_rsi_diff < 0:
         raise ValueError("min_rsi_diff must be >= 0")
-    sign = 1 if kind == "bullish" else -1
-    piv = _pivots(close, rsi, "low" if kind == "bullish" else "high")
+    hidden = kind.startswith("hidden_")
+    base = kind[len("hidden_"):] if hidden else kind
+    sign = 1 if base == "bullish" else -1
+    piv = _pivots(close, rsi, "low" if base == "bullish" else "high")
     events = []
     chain = 0
     for k in range(1, len(piv)):
         a, b = piv[k - 1], piv[k]
         bars = b - a + 1
-        price_ok = sign * close[b] < sign * close[a]
-        rsi_ok = sign * rsi[b] - sign * rsi[a] > min_rsi_diff
+        if hidden:   # mirror of regular: price less extreme, RSI more extreme
+            price_ok = sign * close[b] > sign * close[a]
+            rsi_ok = sign * rsi[a] - sign * rsi[b] > min_rsi_diff
+        else:
+            price_ok = sign * close[b] < sign * close[a]
+            rsi_ok = sign * rsi[b] - sign * rsi[a] > min_rsi_diff
         if price_ok and rsi_ok and min_bars <= bars <= max_bars:
             chain += 1
             events.append({
