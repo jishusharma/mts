@@ -1,11 +1,10 @@
 # Development Status
 
-Generated: 2026-10-27 23:59:36
+Generated: 2026-10-28 00:28:34
 
 ## Git Status
-CI green: 3fc30ac12 (2026-10-27 13:27:39 +0530, 10.5 h old), 56 trunk landing(s) / 95 commit(s) behind origin/fast-track: RED: oldest ungreen commit is 9.9 h old - CI is failing, auto-deploy is idle; fix CI first
+CI green: 3fc30ac12 (2026-10-27 13:27:39 +0530, 11.0 h old), 4 trunk landing(s) / 114 commit(s) behind origin/fast-track: CI running
 GO-PRIVATE: A=0 B=1 TRIGGER B:carry_basis_2026-10-18 (2026-10-18)
-CI card: GREEN; CI on fast-track is green or still running; nothing to file
 LESSONS: digest STALE (synced c5767610, now fe84b771): read the new LESSONS_LEARNED.md entries (git diff), add their rule lines to LESSONS_DIGEST.md, update the blob
 Pages stale: 6
 STALE mts_control_room https://claude.ai/artifact/MNuodXmi5RiEihX7rFpqUp
@@ -37,27 +36,31 @@ FRESH 2026-10-22 E2E run 2 (2026-10-22, Supervisor B)
 
 ## Gate Board
 ```
-tom     G2  proof changed 43h ago | next: G3 blind marks (READER_PROTOCOL.md + g3_marks_2026-10-16) | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
-fabio   G2  proof changed 43h ago | next: G1 coverage check, then G3 | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
-malkan  G2  proof changed 43h ago | next: G3 blind marks MAL-2/5, MAL-16/17 (g3_marks_2026-10-16) | proof: MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md
+tom     G2  proof changed 44h ago | next: G3 blind marks (READER_PROTOCOL.md + g3_marks_2026-10-16) | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
+fabio   G2  proof changed 44h ago | next: G1 coverage check, then G3 | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
+malkan  G2  proof changed 44h ago | next: G3 blind marks MAL-2/5, MAL-16/17 (g3_marks_2026-10-16) | proof: MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md
 krown   G2  proof not on trunk | next: G3 blind marks (not started) | proof: MyTradingSys/research/krown_ta101_2026-10-13/KROWN_SETUP_CATALOG.md (commit f4a5182a)
 NO GATE MOVED IN 24h: the next spawn targets a gate (LAYER_REBUILD_PLAN s5)
-commits 24h: 223 = research 24% | claim/release 4% | other 72%  OVER 30% CAP
+commits 24h: 217 = research 24% | claim/release 4% | other 72%  OVER 30% CAP
 ```
 
 **Last 3 commits on origin/fast-track:**
 ```
-2b11e51a7 lead: NUC - record the ordered test adapter (SellZone 120W, centre +)
-51fa3cd67 Merge remote-tracking branch 'origin/fast-track' into claude/suspicious-jones-57835d
-adefffc69 lead: card exhaust-broadcasts-skip-gateway-profile- (READY)
+5651b2d23 Merge remote-tracking branch 'origin/fast-track' into fast-track
+93eb00dad lab gpt-slippage-arith: DONE (audit)
+080dc3400 Merge remote-tracking branch 'origin/fast-track' into jis-nb/port-handover-fixed-form
 ```
 
 ## In-Flight .new Files
-- MyTradingSys/backtest/layers/fabio/htf_context_live.py.new (412.1h)
-- MyTradingSys/backtest/layers/fabio/test_htf_context_live.py.new (412.1h)
+- MyTradingSys/backtest/layers/fabio/htf_context_live.py.new (412.6h)
+- MyTradingSys/backtest/layers/fabio/test_htf_context_live.py.new (412.6h)
 
 ## Recent Reports (newest 5, last 3 days)
-(none)
+- MyTradingSys/research/mts_doctor/REPORT_2026-10-27.md (2026-10-27 18:38) # MTS doctor report 2026-10-27
+- MyTradingSys/research/mts_doctor/REPORT_2026-10-26.md (2026-10-27 01:57) # MTS doctor report 2026-10-26
+- MyTradingSys/research/mfe_exit_2026-10-13/REPORT.md (2026-10-26 23:26) # MFE exit study: can exits be reverse-engineered from the peak-profit bar? (2026-10-13, J
+- MyTradingSys/research/worktree_disposition_20261026/REPORT.md (2026-10-26 16:30) # Retained worktrees: decisions and recovery order (2026-10-26)
+- MyTradingSys/research/station_c_rolling_audit_20261026/REPORT.md (2026-10-26 15:55) # Station C watcher and continuous rolling sessions: audit and implementation plan
 
 ## Screenshots
 ```
@@ -76,15 +79,13 @@ SHOTS landed 34: new 1, classified 33, read 0, done 0 | overdue(>24h) 33 | claim
 
 ## Layer Lab (Codex)
 ```
-Layer lab (Codex) at 2026-10-27 18:29Z: on
+Layer lab (Codex) at 2026-10-27 18:58Z: on
   This machine does not run the lab (it runs on JIS-NUC): the queue below is from the repo; allowance, runs and what needs a look are only known there.
-  Queue: 48 ready
+  Queue: 46 ready
     runaway-guard-design-review [audit, gpt-6-luna / medium]
     trust-recheck-gpt-formulas-rederive [audit, gpt-6-luna / medium]
     trust-recheck-gptb-forward-excursion-hel [audit, gpt-6-luna / medium]
-    gpt-luckline-rederive [audit, gpt-6-luna / medium]
     gem-wavetrend-fixture [audit, gpt-6-luna / medium]
-    gpt-slippage-arith [audit, gpt-6-luna / medium]
     gpt-simdesk-ci-recompute [audit, gpt-6-luna / medium]
     gpt-t06-breakeven-recount [audit, gpt-6-luna / medium]
     gpt-t07-rerun-recount [audit, gpt-6-luna / medium]
