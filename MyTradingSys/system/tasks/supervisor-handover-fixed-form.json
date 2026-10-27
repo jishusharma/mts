@@ -2,6 +2,13 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-27T18:46:31Z",
+    "misses": 13,
+    "reads": [],
+    "session": "agent-aaed78713b823a912"
+  },
   "created": "2026-10-25T08:00:36Z",
   "depends_on": [],
   "done_when": "test_supervisor.py: handover writes the 7 sections from a fixture plan, refuses a 61-line file and a '## Update' file; --verify marks an unreachable sha STALE; plan prints TRANSIT at 150K/3 h; context_files/EXAMPLE_SUPERVISOR_C.md passes the shape check.",
