@@ -18,16 +18,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nb/auto-compact-at-25-for-all-se",
-      "ref": "80e8e1cef938",
-      "utc": "2026-10-25T19:30:06Z"
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nb/supervisor-C-2026-10-28",
+      "ref": "920b8848e29d",
+      "utc": "2026-10-27T21:59:58Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "80e8e1cef938 Merge remote-tracking branch 'origin/fast-track' into jis-nb/auto-compact-at-",
+      "line": "920b8848e29d Merge remote-tracking branch 'origin/fast-track' into jis-nb/supervisor-C-202",
       "ref": "MyTradingSys/system/SUPER_SESSION.md",
-      "utc": "2026-10-25T19:30:06Z"
+      "utc": "2026-10-27T21:59:58Z"
     }
   ],
   "layers": [],
@@ -37,7 +37,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-25T22:29:51Z",
+  "refreshed": "2026-10-27T22:51:34Z",
   "refs": [
     "MyTradingSys/research/mts_doctor/CONTEXT_FILES_DESIGN.md"
   ],
@@ -54,13 +54,13 @@
     "live path, orders, deploy, restarts",
     "new hooks, gate steps or rules beyond the card"
   ],
-  "scope_sha": "80e8e1cef938",
+  "scope_sha": "920b8848e29d",
   "size": "S",
   "sources": [
     "MyTradingSys/research/mts_doctor/CONTEXT_FILES_DESIGN.md:156",
     "MyTradingSys/system/roles/lab_guy.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read CONTEXT_FILES_DESIGN.md line 156 and lab_guy.md stamp duties and the review Agent brief in SUPER_SESSION rule 3 / session_planner_details.md.",
     "Write checker.md (header, ROLE LOADED banner via role_loader render); add the ROSTER.json row; run role_loader.py render and check.",

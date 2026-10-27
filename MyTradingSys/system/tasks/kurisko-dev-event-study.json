@@ -14,6 +14,15 @@
   "goal": "The one DEV run of the frozen Kurisko PRE_REG cells: fee-net forward outcome against a same-window random-clock placebo, Holm over the frozen cells. No cell added or changed after the first outcome; VALIDATION and HOLDOUT untouched.",
   "id": "kurisko-dev-event-study",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "REGATE fixes 3-7: VERDICTS BLOCKED backfill, kill scopes, drop duplicate filter rows, 62 c",
+      "ref": "07695eb16511",
+      "utc": "2026-10-27T21:28:21Z"
+    }
+  ],
   "layers": [
     "rsi"
   ],
@@ -26,6 +35,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-27T22:51:45Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -39,12 +49,13 @@
     "new cells or parameters",
     "live wiring"
   ],
+  "scope_sha": "07695eb16511",
   "size": "M",
   "sources": [
     "MyTradingSys/research/kurisko_2026-10-18/PRE_REG.md (written by the previous card)",
     "MyTradingSys/backtest/layers/FORMULAS.md section 13 (cost model and net formula, read only)"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "read PRE_REG.md; the run script refuses to start if the PRE_REG commit does not precede this run, a cell differs from the frozen list, a data file sha differs from the PRE_REG, or a run receipt (PRE_REG sha, module sha, seed) already exists: one run only.",
     "run each cell once: fee-net R with the cost model and funding rule exactly as frozen in the PRE_REG (no new choice here), MFE/MAE, 200 random-clock placebos with the PRE_REG seed, Holm over the frozen cells; DEV only (the loader refuses bars >= 2024-07-01).",
