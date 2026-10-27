@@ -16,7 +16,7 @@ import screen as S  # noqa: E402  (loader refuses any bar >= 2024-07-01)
 
 TS0, MS, DAYMIN, NDAYS_DEV = S.TS0, S.MS, S.DAYMIN, S.NDAYS_DEV
 C_PCT = S.C_PCT                 # 0.14 % round trip = 2 x (5 bp fee + 2 bp slippage); SOURCED: gross_effect_screen PRE_REG s.1
-FUND_PCT = S.FUND_PCT           # old flat 1 bp per settlement crossed, kept only as the old_flat_1bp comparison (funding_pct_flat)
+FUND_PCT = S.FUND_PCT           # 1 bp per 00/08/16 UTC settlement crossed (raw_fund archive absent); OURS, as the template
 N_MIN = S.N_MIN                 # 200 events, OURS, as the template
 PER8H = 8 * 3600 * 1000
 DELAY = 1                       # extra 1m bars between the decision-bar close and the fill (template d=1)
@@ -145,18 +145,10 @@ def trade_gross(O, t, side, h, d=DELAY):
     return np.asarray(side) * (pout / pin - 1.0) * 100.0
 
 
-def funding_pct_flat(e, x):
-    """old_flat_1bp: 1 bp per 00/08/16 UTC settlement crossed between entry bar open e and exit bar open x (1m indices)."""
+def funding_pct(e, x):
+    """Flat 1 bp per 00/08/16 UTC settlement crossed between the entry bar open e and exit bar open x (1m indices)."""
     e, x = np.asarray(e, np.int64), np.asarray(x, np.int64)
     return FUND_PCT * ((TS0 + x * MS) // PER8H - (TS0 + e * MS) // PER8H)
-
-
-def funding_pct(e, x, side, fund=None):
-    """Real funding cost % of notional: side x sum(rate of settlements in (entry, exit]); long pays +rate, short receives it.
-    e, x = 1m indices of the entry / exit bar open; fund = [(t_ms, rate)] (default: the shared DEV loader, raises if absent)."""
-    fund = S.funding() if fund is None else fund
-    e, x = np.asarray(e, np.int64), np.asarray(x, np.int64)
-    return S.bt_data.funding_cost_pct(fund, TS0 + e * MS, TS0 + x * MS, side)
 
 
 def net_cells(A, t, side, hs, d=DELAY):
@@ -164,7 +156,7 @@ def net_cells(A, t, side, hs, d=DELAY):
     t = np.asarray(t, np.int64)
     out = {}
     for h in hs:
-        out[h] = trade_gross(A["O"], t, side, h, d) - funding_pct(t + 1 + d, t + 1 + d + h, side)
+        out[h] = trade_gross(A["O"], t, side, h, d) - funding_pct(t + 1 + d, t + 1 + d + h)
     return out
 
 
@@ -174,7 +166,7 @@ def placebo_gross(A, t, side, h, lags=(-7, 7), d=DELAY):
     for lag in lags:
         tt = np.asarray(t, np.int64) + lag * DAYMIN
         ok = (tt >= 0) & (tt + 1 + d + h < len(A["O"]))
-        g = trade_gross(A["O"], tt[ok], np.asarray(side)[ok], h, d) - funding_pct(tt[ok] + 1 + d, tt[ok] + 1 + d + h, np.asarray(side)[ok])
+        g = trade_gross(A["O"], tt[ok], np.asarray(side)[ok], h, d) - funding_pct(tt[ok] + 1 + d, tt[ok] + 1 + d + h)
         gs.append(g)
         ds.append((tt[ok] + 1 + d) // DAYMIN)
         ts.append(tt[ok])

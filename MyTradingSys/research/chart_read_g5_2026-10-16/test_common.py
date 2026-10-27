@@ -87,17 +87,8 @@ class TestTrade(unittest.TestCase):
     def test_funding_crossings(self):
         ms = 60_000
         base = K.TS0                                              # 2022-01-01 00:00 UTC
-        f = K.funding_pct_flat(np.array([479, 479, 0]), np.array([481, 960, 479]))   # 07:59 -> 08:01 | 07:59 -> 16:00 | 00:00 -> 07:59
+        f = K.funding_pct(np.array([479, 479, 0]), np.array([481, 960, 479]))   # 07:59 -> 08:01 | 07:59 -> 16:00 | 00:00 -> 07:59
         self.assertEqual(list(np.round(f, 6)), [0.01, 0.02, 0.0])
-
-    def test_real_funding_signed(self):
-        # planted settlements 08:00 +0.01 %, 16:00 -0.02 %, 24:00 +0.03 % (rate fractions); (entry, exit] window
-        fund = [(K.TS0 + 480 * K.MS, 0.0001), (K.TS0 + 960 * K.MS, -0.0002), (K.TS0 + 1440 * K.MS, 0.0003)]
-        e, x = np.array([479, 479, 480]), np.array([481, 1440, 960])
-        long_ = K.funding_pct(e, x, np.array([1, 1, 1]), fund)
-        short = K.funding_pct(e, x, np.array([-1, -1, -1]), fund)
-        np.testing.assert_allclose(long_, [0.01, 0.02, -0.02], atol=1e-12)    # long pays +rate; entry==settlement excluded
-        np.testing.assert_allclose(short, -long_, atol=1e-12)
 
     def test_cooldown(self):
         t = np.array([0, 10, 61, 62, 200])

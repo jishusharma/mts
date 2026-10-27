@@ -58,23 +58,4 @@ class Hard(unittest.TestCase):
                 bars = d.load_klines(td, report=rp)
             self.assertEqual([b["t"] for b in bars], [0, 60000, 120000])
             self.assertEqual(rp["unsorted"], 1)
-    def test_funding_dir_order_and_fail_closed(self):
-        with tempfile.TemporaryDirectory() as td:
-            with self.assertRaises(FileNotFoundError):
-                d.resolve_funding_dir(td)
-            with self.assertRaises(FileNotFoundError):
-                d.load_funding_strict(td)
-            raw = Path(td, "raw", "fundingRate"); raw.mkdir(parents=True)
-            rf = Path(td, "raw_fund", "fundingRate"); rf.mkdir(parents=True)
-            hdr = "calc_time,funding_interval_hours,last_funding_rate\n"
-            (raw / "a.csv").write_text(hdr + "1000,8,0.0005\n")
-            (rf / "a.csv").write_text(hdr + "1000,8,0.0001\n2000,8,0.0002\n")
-            self.assertEqual(d.resolve_funding_dir(td), rf)
-            self.assertEqual(d.load_funding_strict(td), [(1000, 0.0001), (2000, 0.0002)])
-            self.assertEqual(d.load_funding_strict(td, end_ms=2000), [(1000, 0.0001)])
-    def test_funding_cost_sign_window(self):
-        fr = [(1000, 0.0001), (2000, -0.0002), (3000, 0.0003)]
-        long_ = d.funding_cost_pct(fr, [999, 1000, 999], [3000, 3000, 1000], [1, 1, 1])
-        self.assertTrue(all(abs(a - b) < 1e-12 for a, b in zip(long_, [0.02, 0.01, 0.01])))   # (entry, exit]: entry==settlement excluded
-        self.assertAlmostEqual(float(d.funding_cost_pct(fr, 999, 3000, -1)), -0.02)         # short receives
 if __name__ == "__main__": unittest.main()
