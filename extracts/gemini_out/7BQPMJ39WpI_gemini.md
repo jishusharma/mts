@@ -61,7 +61,7 @@ The speaker outlines a trend continuation strategy tailored specifically to the 
 ### Claim 3: First step is impulse identification
 **T4 recommendation**
 > "The first thing I always do when I look at gold is to identify impulses, and you can see that very clearly right here."
-**Source GPS: 7BQPMJ39WpI | MIDDLE**
+**Source GPS: 7BQPMJ39WpI | BEGIN**
 
 ### Claim 4: Impulse continuation pattern
 **T4 recommendation**
@@ -81,12 +81,12 @@ The speaker outlines a trend continuation strategy tailored specifically to the 
 ### Claim 7: Trend-stable candles without large spikes or wicks
 **T4 recommendation**
 > "Often we have candles when it speeds up that are very trend stable. Why are they trend stable? Because they show us that they aren't often marked by large spikes and wicks"
-**Source GPS: 7BQPMJ39WpI | END**
+**Source GPS: 7BQPMJ39WpI | MIDDLE**
 
 ### Claim 8: Avoid trading in the middle of sideways phases
 **T4 recommendation**
 > "I can select very well that it makes sense to play these trends. Provided that we are not in a sideways phase, and therefore, I simply recommend the following."
-**Source GPS: 7BQPMJ39WpI | END**
+**Source GPS: 7BQPMJ39WpI | MIDDLE**
 
 ### Claim 9: Multi-timeframe daily to M15 execution
 **T4 recommendation**

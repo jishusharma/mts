@@ -26,12 +26,12 @@
 ### Claim 2
 **T4 recommendation**
 > "the VPOC, that is the volume weighted point of control, the balance of turnover is already below this price range."
-**Source GPS: gWjHq5UMisY | MIDDLE**
+**Source GPS: gWjHq5UMisY | BEGIN**
 
 ### Claim 3
 **T4 recommendation**
 > "I've checked that off here as well and say reversal short, reversal long."
-**Source GPS: gWjHq5UMisY | MIDDLE**
+**Source GPS: gWjHq5UMisY | BEGIN**
 
 ### Claim 4
 **T5 command**
