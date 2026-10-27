@@ -3,32 +3,56 @@
   "asks": "",
   "commands": [],
   "created": "2026-10-27T20:38:49Z",
-  "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "depends_on": [
+    "extraction-ledger-all-sources"
+  ],
+  "done_when": "WIRING_MALKAN_KROWN.csv has one row per catalog rule (count in MD), each with verdict and quote+file:line or NO_QUOTE; shipped; cherry empty.",
+  "est_turns": 35,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "One table row per rule in SETUP_CATALOG.md, MALKAN_DIVERGENCE_GLOSSARY.md and KROWN_SETUP_CATALOG.md: rule id, quote, quote file:line, code file:line or none, param, test, verdict wired|unwired-worth-wiring|not-worth-wiring. Malkan: only his sourced PRD/NRD counts; hidden divergence is a Krown rule.",
   "id": "extracted-rules-wiring-audit",
   "lane": "SONNET",
-  "layers": [],
+  "layers": [
+    "rsi",
+    "krown"
+  ],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-28 ACCEPT LAB:none CLASS:C1 REVIEWER:sonnet-agent WEIGHT:IMPORTANT. Sonnet medium.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Wiring audit: every SOURCED rule in the setup catalogs/glossaries (Malkan, Krown, Tom, Fabio, Habib) vs layer code, params and tests: wired / unwired-worth-wiring / not-worth-wiring, with quote and file:line",
-  "weight": "",
-  "worker": ""
+  "scope_in": [
+    "MyTradingSys/research/wiring_audit_2026-10/WIRING_MALKAN_KROWN.csv",
+    "MyTradingSys/research/wiring_audit_2026-10/WIRING_MALKAN_KROWN.md",
+    "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md",
+    "MyTradingSys/research/setup_catalog_2026-10-15/malkan/MALKAN_DIVERGENCE_GLOSSARY.md",
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_SETUP_CATALOG.md",
+    "MyTradingSys/backtest/layers/rsi",
+    "MyTradingSys/backtest/layers/krown"
+  ],
+  "scope_out": [
+    "changing layer code or params",
+    "new backtests",
+    "Tom/Fabio/Habib (sibling card)"
+  ],
+  "size": "M",
+  "sources": [
+    "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable",
+    "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "Parse the three catalogs into rule rows (script kept in the folder for rerun).",
+    "Per rule: grep params/*.json, layer .py and test_*.py for the rule id or its number; check the quote with verify_extract_quotes.py against the ledger extract.",
+    "Write CSV + MD (counts by verdict, top 10 unwired-worth-wiring by how strongly the trader stresses it); rules with no quote go to a NO_QUOTE section."
+  ],
+  "tests": "verify_extract_quotes.py exit 0 on every quote used; MD footer row count equals CSV rows.",
+  "title": "Wiring audit (Malkan, Krown): every SOURCED rule in the setup catalogs/glossaries vs layer code, params and tests: wired / unwired-worth-wiring / not-worth-wiring, with quote and file:line",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
