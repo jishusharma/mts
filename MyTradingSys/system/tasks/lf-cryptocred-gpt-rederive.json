@@ -1,6 +1,6 @@
 {
   "approved_by": "",
-  "asks": "",
+  "asks": "Recover exact producing revision and permitted DEV-only timestamped event/trade evidence; no operator decision needed.",
   "commands": [],
   "created": "2026-10-25T20:05:38Z",
   "depends_on": [],
@@ -25,7 +25,7 @@
   "refined_by": "",
   "refreshed": "2026-10-25T20:06:41Z",
   "refs": [],
-  "result": "",
+  "result": "Partial: all 14 published cells match aggregates; widest-stop claim false for setup1 and two extra cells lack current-driver provenance. Raw trade/fee/split rederivation unavailable.",
   "scope_in": [
     "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/cryptocred.md (new file only)"
   ],
@@ -39,7 +39,7 @@
     "MyTradingSys/backtest/layers/FORMULAS.md",
     "MyTradingSys/research/cryptocred_stop_2026-10-10"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "List the result files for cryptocred in layer_index.json (results, ledger) and pick the headline numbers each states",
     "Recompute each from the ledger or raw data with an independent script (formulas from MyTradingSys/backtest/layers/FORMULAS.md, not from the code under check)",

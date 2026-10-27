@@ -118,7 +118,7 @@ def run_job(card: str, effort: str) -> None:
         f.flush()
         p = subprocess.run(cmd, cwd=wt, stdout=f, stderr=subprocess.STDOUT, text=True, env={**child_env(card, brief), **NOPROMPT})
         f.write(f'\nEXIT {p.returncode} after {int(time.time() - t0)}s\n')
-    r = sh([PY, 'scripts/dev/sync.py', 'release', card], cwd=wt)
+    r = sh([PY, 'scripts/dev/sync.py', 'release', sync.slugify(card)], cwd=wt)   # claims are filed under slugify(card) (40 chars): finding 7
     if r.returncode:
         with open(log, 'a', encoding='utf-8', newline='\n') as f:
             f.write(f'RELEASE FAILED/TIMEOUT {card}: {r.stderr}\n')

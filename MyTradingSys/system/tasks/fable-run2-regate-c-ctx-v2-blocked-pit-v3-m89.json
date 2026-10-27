@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-27T21:16:14Z",
   "commands": [
     "python scripts/dev/prereg_gate.py --n 452 --sd 1.5 --cost 0.066 --m 76",
     "python scripts/dev/prereg_gate.py --n 448 --sd 1.5 --cost 0 --m 89"
@@ -16,6 +17,12 @@
   "id": "fable-run2-regate-c-ctx-v2-blocked-pit-v3-m89",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "BLOCKED.md written (m 76, n needed 741 > 452) and PRE_REG_V3.md amended (m 89, z 3.449, n ",
+      "ref": "cbb092d36",
+      "utc": "2026-10-27T21:16:14Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -44,7 +51,12 @@
     "MyTradingSys/system/tasks/context-factors-one-run.json",
     "MyTradingSys/system/tasks/context-composite-v2-dev-read.json"
   ],
-  "result": "",
+  "result": "BLOCKED.md written (m 76, n needed 741 > 452) and PRE_REG_V3.md amended (m 89, z 3.449, n needed 460 > 448, F3 unpowered)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/context_factors_2026-10-16/BLOCKED.md",
     "MyTradingSys/research/context_factors_pit_2026-10-16/PRE_REG_V3.md"
@@ -61,13 +73,14 @@
   "sources": [
     "MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md:82 (fix 8)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run both prereg_gate.py commands from done_when and copy each output line into the docs unchanged.",
     "Write context_factors_2026-10-16/BLOCKED.md: the m 76 output, the 0.30 R gate, n needed 741 vs 452 days available; BLOCKED means the V2 run is not frozen (a power result, not a layer decision).",
     "Append an amendment block to PRE_REG_V3.md: m 89, z 3.449, sd 1.5 R (DECISION OURS, the sd in the audit's check command), F3 listed unpowered (460 > 448).",
     "Read context-factors-one-run and context-composite-v2-dev-read (stamped: read-only, never edited) and name in BLOCKED.md which of them waits on this power result, so the planner can set their state. sync.py ship."
   ],
+  "taken": "2026-10-27T21:16:14Z",
   "tests": "prereg_gate.py CLI, run 2026-10-26 on current files: both quoted commands exit 1; BLOCKED.md and PRE_REG_V3.md must contain those exact output lines (grep them). No code change.",
   "title": "Fable run 2 REGATE fix 8: context_factors V2 BLOCKED.md and pit V3 PRE_REG amendment (m 89)",
   "weight": "CRUCIAL",
