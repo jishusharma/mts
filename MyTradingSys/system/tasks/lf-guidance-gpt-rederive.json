@@ -1,6 +1,6 @@
 {
   "approved_by": "",
-  "asks": "",
+  "asks": "Recover exact producing revision and permitted DEV-only timestamped event/trade evidence; no operator decision needed.",
   "closed": "2026-10-27T21:11:14Z",
   "commands": [],
   "created": "2026-10-25T20:05:35Z",
@@ -33,7 +33,7 @@
   "refined_by": "",
   "refreshed": "2026-10-25T20:06:47Z",
   "refs": [],
-  "result": "Recount: 336 cells, 186 tested, 89 underpowered, 61 tiny; independent BH min q .62, zero primary survivors. Two narrative mismatches (horizon attribution and filter key); raw-return reconstruction NOT_IN_DATA. research/gpt_rederive_2026-10-26/layer_rederive/guidance.md",
+  "result": "Partial: aggregate recount and BH correction shipped; two narrative mismatches. Event-level raw return and placebo reconstruction unavailable.",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -52,7 +52,7 @@
     "MyTradingSys/research/tom_fabio_guidance_2026-10-12/PRE_REG_Q33.md",
     "MyTradingSys/research/tom_fabio_guidance_2026-10-12/MATRIX_REPORT.md"
   ],
-  "state": "done",
+  "state": "blocked",
   "steps": [
     "List the result files for guidance in layer_index.json (results, ledger) and pick the headline numbers each states",
     "Recompute each from the ledger or raw data with an independent script (formulas from MyTradingSys/backtest/layers/FORMULAS.md, not from the code under check)",
