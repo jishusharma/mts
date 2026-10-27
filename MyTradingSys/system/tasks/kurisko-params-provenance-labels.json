@@ -2,6 +2,13 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 15,
+    "folded": "2026-10-27T21:27:30Z",
+    "misses": 0,
+    "reads": [],
+    "session": "agent-a13f34b0fe4c70a85"
+  },
   "created": "2026-10-19T04:55:23Z",
   "depends_on": [],
   "done_when": "kurisko_default.json parses; no numeric value changed (git diff shows only label/source text and the one tuple note); test_quad_rotation.py passes; the review's two MISMATCH rows (SOURCED vs OURS, sensitivity tuple) are answered in a dated line in the review file.",
