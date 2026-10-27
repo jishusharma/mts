@@ -30,6 +30,22 @@
   "goal": "One Lead role: roles/lead.md core (<=4000 B) + roles/lead/{think,admin,pipeline,doctor}.md; roster 10->7 with every old name an alias; old four role files deleted; budgets, launcher, mts_run and eagle_eyes pointer updated in one atomic commit.",
   "id": "lead-role-core-and-modes",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "context-cost-rules: compact-before-idle, fresh-session-per-topic, thin-reads",
+      "ref": "231545be3f3c",
+      "utc": "2026-10-27T20:57:36Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "231545be3f3c context-cost-rules: compact-before-idle, fresh-session-per-topic, thin-reads",
+      "ref": "MyTradingSys/system/roles/lead.md",
+      "utc": "2026-10-27T20:57:36Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -37,6 +53,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-27T22:51:47Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -51,12 +68,13 @@
     "docs and pages (card lead-docs-and-pages)",
     "run_extra_tests.py"
   ],
+  "scope_sha": "231545be3f3c",
   "size": "M",
   "sources": [
     "research/mts_doctor/LEAD_ROLE_SOLUTION.md s2-s4 (section 4 card table)",
     "research/mts_doctor/LEAD_ROLE_IMPACT_MAP.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Write the tests first, see them fail; add lead.md core + 4 mode files (bodies moved; Pin/THINKER BLOCK/OPEN-note lines dropped; doctor rule reworded per solution s1); role_loader.py retoken lead.md; delete the 4 old files.",
     "ROSTER.json: one Lead entry (start operator, 'You are Lead.', model 'Sonnet (Opus when named)', lane SONNET, limit 'one at a time; a second reads LEAD.md'); aliases = full list in LEAD_ROLE_SOLUTION s2 (thinker ... doctor); keywords = union of the 4 old.",
