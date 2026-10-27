@@ -27,3 +27,20 @@ Start 2026-10-27T12:50Z. Worktree claude/supervisor-c-jis-nb-ce71af (HEAD = orig
 3. RAMP: +1 worker per wake up to slots (3); dispatch from Planner table, re-check STALE cards first; ship order by gate contention.
 4. Rewrite this file, `supervisor.py wait --timeout 50m --login C` background, `supervisor.py watchcheck` LAST (exit 0).
 5. No ready cards the Planner can fix, or CI red, or budget stop -> D6 stop + transit per SUPER_SESSION.md "End".
+
+## 2026-10-27 ~13:05Z escalation (cross-session)
+- Start Lead asked for `git reset --soft 4662684a3` on the main checkout to unstick the c_drive_guard logon pull. DECLINED: hard rule "never rebase/reset/force-push" + live tree + reset would re-stage the wip's ~83 files so ff-only pull still fails. Logged `tasks.py conflict` (bug-conflict-ef2e6db71a); Lead to escalate to operator. Builder worker on main-checkout-stale-hooks-2026-10-24 owns the tree meanwhile (save -> ff-only, no reset). Main checkout read-only check: HEAD 0ac18c3fb, 1188 behind / 1 ahead, 55 dirty files.
+
+## 2026-10-27 ~15:24Z resume (after 5 h quota reset; three agents died on the quota)
+- Doctor SHIPPED acb1104e2 (REPORT_2026-10-27, 40 findings - verify at next wake per rule).
+- Planner: filed p1 card ci-66990cb05-red-on-auto-deploy-tests (CI red since 66990cb05 nuc_lab step 3ad; revert card). Planner's own ship: unverified - its tree had dirty LAYERS.md + the card file.
+- Builder main-checkout-stale-hooks: DIED unshipped (no content commit; SUPERVISOR_LOG edit + scratch in agent-ac6f... tree). Re-dispatched ~15:26Z.
+- HIGH b-2a5b44 (exhaust claim) + b-4c2dfe (c_drive_guard ff-only steps): acked told 15:25Z; operator-run main-checkout steps blocked by the wip commit + 64 dirty files, being solved by the card worker; c_drive_guard re-check follows its ship (Lead asked for that verify).
+- Budget DECISION (OURS): est 5h=10% week=80% (last readings 5h 5% at 13:00Z; cannot read plan meter in-app).
+
+## 2026-10-27 ~15:30Z wake (SPEND mode, ramp new=1)
+- Re-dispatched main-checkout-stale-hooks-2026-10-24 (Builder agent ac1c2638, worktree isolation). Previous attempt (agent ac6f6b38) died on quota with zero shipped.
+- CI state: ci_watch says "CI ok" (green ref at bb9751a8f), but last fast-track run 40496958685 FAILED (66990cb05 nuc_lab step 3ad). Planner's revert card ci-66990cb05-red-on-auto-deploy-tests unshipped (planner died before ship): dispatch next wake when a slot frees. A-20261018-6 STOP note is gap-g2 only, no such card.
+- Doctor report acb1104e2 on trunk (40 findings) - spot-check at that worker's verify.
+- HIGHs b-2a5b44 (exhaust) + b-4c2dfe (c_drive_guard ff-only): both acked told ~15:25Z; b-4c2dfe's operator-run line blocked on main checkout dirty state, in flight via the re-dispatched worker.
+- NUC Codex lab: lead says GPT steady loop relaunched on NB (12/65 pts); tick next wake.
