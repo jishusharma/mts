@@ -4,57 +4,31 @@
   "commands": [],
   "created": "2026-10-27T20:38:54Z",
   "depends_on": [],
-  "done_when": "Test passes and is registered in extra_tests.tsv, run_job uses claim_with_retry, shipped with a Result line, cherry empty. NUC verification is a later run.",
-  "est_turns": 12,
+  "done_when": "",
+  "est_turns": null,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "In scripts/dev/gemini_queue.py make the claim step retry-safe: on push reject re-fetch and retry up to 6 times with jittered backoff, treat an own claim as success, and set git user.name/user.email in the throwaway worktree so jobs run under SYSTEM; a failure writes a one-line reason to the job log.",
+  "goal": "",
   "id": "gemini-queue-claim-race-fix",
   "lane": "SONNET",
-  "latest": [
-    {
-      "auto": true,
-      "kind": "ship",
-      "line": "wavetrend c1-v2: versioned C1 detector pairing confirmed price+WT pivots (count-only, DEV)",
-      "ref": "c318d9670a3b",
-      "utc": "2026-10-27T17:37:23Z"
-    }
-  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-28 ACCEPT LAB:none CLASS:C1 REVIEWER:sonnet-agent WEIGHT:IMPORTANT. Sonnet; Agent. Blocks every [GEMINI] card.",
+  "note": "",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-27T20:53:38Z",
   "refs": [],
   "result": "",
-  "scope_in": [
-    "scripts/dev/gemini_queue.py",
-    "scripts/dev/test_gemini_queue.py",
-    "scripts/dev/extra_tests.tsv"
-  ],
-  "scope_out": [
-    "sync.py claim semantics",
-    "NUC task scheduler",
-    "Gemini prompts"
-  ],
-  "scope_sha": "c318d9670a3b",
-  "size": "S",
-  "sources": [
-    "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable",
-    "MyTradingSys/system/ROUTING.md row 47"
-  ],
-  "state": "ready",
-  "steps": [
-    "Add claim_with_retry(wt, card, tries=6) around the sync.py claim call; backoff 2-10 s jittered; stop at once if another host holds it.",
-    "In run_job after worktree add: git config user.name gemini-queue and user.email gemini-queue@mts.local inside wt only; on final failure write one reason line to the job log (CLAIM FAILED: reason).",
-    "test_gemini_queue.py with a fake sh(): reject 3 times then accept returns ok; other holder returns skip; identity set."
-  ],
-  "tests": "scripts/dev/test_gemini_queue.py: fake sh rejects the push 3 times then accepts; fails on pre-change code (CLAIM FAILED after 3 tries).",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
   "title": "gemini_queue.py: claim push rejected 3 tries on busy trunk and jobs exit 3 / SYSTEM git email; make claim retry-safe and set git identity so Gemini lane runs",
-  "weight": "IMPORTANT",
-  "worker": "agent"
+  "weight": "",
+  "worker": ""
 }
