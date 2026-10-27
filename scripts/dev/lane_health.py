@@ -389,7 +389,7 @@ def commit_ship(repo, paths, msg):
 def read_claimed(repo):
     try:
         import sync
-        return {slug for slug, _ in sync.read_claims(repo, f"origin/{sync.TRUNK}")}
+        return {slug for slug, _ in sync.open_claims(repo, fetch=False)}   # side branch + legacy trunk (finding 2A)
     except Exception:   # no git remote (tests, fresh clone): treat as nothing claimed
         return set()
 

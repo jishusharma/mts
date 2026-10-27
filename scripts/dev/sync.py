@@ -1241,15 +1241,20 @@ def print_claims(repo, ref=None):
               f"[area: {kv.get('area','-')}] {age_h:.0f}h old{stale}")
 
 
-def push_claim_commit(repo, rel, text, msg, branch=CLAIMS_BRANCH):
+def push_claim_commit(repo, rel, text, msg, branch=CLAIMS_BRANCH, guard=None):
     """Traffic buster (2026-10-16): put ONE claim-file change on origin/<branch> as a commit built with plumbing on top of origin's
     tip: no merge commit, no gate, no dependence on this tree's state (dirty or ahead is fine). text=None removes the file. Default
     branch is the claims side branch (gate-tiers-by-path: no claim/release commit on the trunk; created empty on first use); branch=TRUNK
-    serves legacy claims. Returns the pushed sha. On the trunk this branch is then fast-forwarded to it when it can be (never a merge)."""
+    serves legacy claims. Returns the pushed sha. On the trunk this branch is then fast-forwarded to it when it can be (never a merge).
+    guard(parent_sha_or_None) runs on EVERY fetched parent before the commit is built and raises SyncError when the change is no
+    longer valid there (coordination audit 2026-10-26 finding 1: a rejected push was rebuilt on the new tip without a re-check, so
+    a racing claim on the same file was silently overwritten and both sessions printed "claimed")."""
     for attempt in range(1, PUSH_TRIES + 1):
         have = git(repo, "fetch", "--quiet", "origin", branch, check=False).returncode == 0 and \
             git(repo, "rev-parse", "--verify", "--quiet", f"origin/{branch}", check=False).returncode == 0
         parent = git(repo, "rev-parse", f"origin/{branch}").stdout.strip() if have else None
+        if guard is not None:
+            guard(parent)
         idx = Path(git(repo, "rev-parse", "--absolute-git-dir").stdout.strip()) / f"claim-index-{os.getpid()}"
         env = {**os.environ, "GIT_INDEX_FILE": str(idx)}
 
@@ -1330,10 +1335,9 @@ def claim(repo, task, area="-", gate=run_gate, force=False):
     slug0 = slugify(task)
     mine = claim_areas({"area": area})
     NL = chr(10)
-    for attempt in range(1, PUSH_TRIES + 1):  # re-check on every retry: a racing claim may have landed
-        git(repo, "fetch", "--quiet", "origin", TRUNK)
-        open_rows = open_claims(repo)
-        for other, kv in open_rows:
+
+    def refuse_conflicts(rows):
+        for other, kv in rows:
             # With areas on both sides a claim blocks only on overlap (operator q20); a claim without --area cannot be compared,
             # so there only the same task name blocks.
             theirs = claim_areas(kv)
@@ -1341,16 +1345,31 @@ def claim(repo, task, area="-", gate=run_gate, force=False):
             if hit or (other == slug0 and not (mine and theirs)):
                 raise SyncError(f"already claimed by {kv.get('host')} / {kv.get('account')}: {kv.get('task')}"
                                 + (f" (area {hit[0]} ~ {hit[1]})" if hit else "") + ". Pick another task or area, or ask them (a claim over 24 h old is stale: release it).")
+
+    for attempt in range(1, PUSH_TRIES + 1):  # re-check on every retry: a racing claim may have landed
+        git(repo, "fetch", "--quiet", "origin", TRUNK)
+        open_rows = open_claims(repo)
+        refuse_conflicts(open_rows)
         taken = {s for s, _ in open_rows}
         slug, n = slug0, 1
         while slug in taken:  # same task name, disjoint areas: both may work
             n += 1
             slug = f"{slug0}-{n}"
+
+        def still_free(parent, slug=slug):
+            """Push guard (finding 1): the same check against the exact side-branch tip the commit is built on, plus legacy trunk
+            claims. A racing claim on our slug or an overlapping area refuses; claim() then re-reads and reports or re-slugs."""
+            rows = read_claims(repo, parent) if parent else []
+            have = {s for s, _ in rows}
+            rows += [r for r in read_claims(repo, f"origin/{TRUNK}") if r[0] not in have]
+            refuse_conflicts(rows)
+            if slug in {s for s, _ in rows}:
+                raise SyncError(f"claim file {slug} appeared on origin/{CLAIMS_BRANCH} while claiming (racing claim); re-checking")
         body = NL.join([f"task: {task}", f"host: {socket.gethostname()}", f"account: {account(repo)}",
                         f"area: {area}", f"epoch: {int(time.time())}", ""])
         msg = NL.join([f"claim {slug}", "", f"Result: {account(repo)} on {socket.gethostname()} works on: {task}"])
         try:
-            push_claim_commit(repo, f"{CLAIMS_DIR}/{slug}.md", body, msg)
+            push_claim_commit(repo, f"{CLAIMS_DIR}/{slug}.md", body, msg, guard=still_free)
         except SyncError:
             if attempt == PUSH_TRIES:
                 raise
