@@ -1,0 +1,44 @@
+{
+ "id": "dir-binance_backtesting_2026-10-18",
+ "kind": "backtest",
+ "family": "Binance Backtesting",
+ "title": "Reliable backtesting: Binance BTC and the general research standard",
+ "provenance": "source-extracted",
+ "date": "2026-10-18",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Evidence must distinguish selection bias, information leakage and execution error from genuine loss of economic predictability. Assess methods using known-truth simulations and empirical studies with stated instruments,…",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2019-09-08 to 2021-12-31 (as written in the source)",
+ "verdict": {
+  "label": ".py Computes snapshot setup status/proof/net-RR, not a statistical strategy-promotion verdict. Its filename must not be treated as evidence that holdout/PBO/power checks are enforced.",
+  "tone": "info"
+ },
+ "why": [
+  "Backtesting is a conditional experiment: what a precisely specified strategy would have done on specified historical information under specified execution assumptions. A profitable chart is insufficient evidence. MTS should require reproducible data, causal s…",
+  "The most directly relevant empirical warning is Hudson and Urquhart: their broad technical-rule study finds positive results within its historical sample but no Bitcoin predictability in its out-of-sample period [S6]. This does not prove all BTC strategies fa…",
+  "Morris, White and Crowther recommend ADEMP: aims, data-generating mechanisms, estimands, methods and performance measures, with simulation uncertainty [S1]. Adaptation here: define the question and target outcome first; distinguish actual market replay from s…",
+  "This is a targeted critical review, not an exhaustive systematic review or meta-analysis. Searches covered backtest overfitting/PBO, deflated Sharpe, data snooping, serial dependence, technical trading OOS in crypto, market fragmentation, wash trading, perpet…"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)"
+ },
+ "source_files": [
+  "MyTradingSys/research/binance_backtesting_2026-10-18/REPORT.md"
+ ],
+ "commit": "553b7d319"
+}

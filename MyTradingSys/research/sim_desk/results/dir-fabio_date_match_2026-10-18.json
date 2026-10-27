@@ -1,0 +1,37 @@
+{
+ "id": "dir-fabio_date_match_2026-10-18",
+ "kind": "thought_experiment",
+ "family": "Fabio Date Match",
+ "title": "Fabio NQ-202512 session (DyS79Eb92Ug / Jpd96fLqr5M): date by price-path match",
+ "provenance": "source-extracted",
+ "date": "2026-10-18",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2025-09-15 to 2025-12-19 (as written in the source)",
+ "verdict": {
+  "label": "AMBIGUOUS. Report only; the ledger is untouched.",
+  "tone": "info"
+ },
+ "why": [
+  "Data: Dukascopy USATECHIDXUSD BID 1m, 70 weekdays 2025-09-15..2025-12-19 (69 + 1 retried, 70 with bars, 0 empty, 0 fetch fail in the final run), entry minutes scanned 13:00-15:15 UTC. Offsets only, so the CFD-vs-Dec-futures basis cancels (here CFD about 24752…",
+  "The price pattern alone does not single out a day: +87 pt then +160..190 pt in two hours is common on NQ. The spoken day 2025-10-15 does match and was checked first; its entry minute 13:47 UTC = 15:47 CEST (DST ran to 2025-10-26), consistent with the chart's…"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/fabio_date_match_2026-10-18/DATE_MATCH.md"
+ ],
+ "commit": "24ce6c938"
+}

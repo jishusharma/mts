@@ -1,0 +1,56 @@
+{
+ "id": "dir-fable_audit_2026-10-16",
+ "kind": "audit",
+ "family": "Fable Audit",
+ "title": "CATALOGUE + REBUILD AUDIT (Fable 5.1, 2026-10-16, FABLE_PROMPT_PACK.md section A3 run early)",
+ "provenance": "source-extracted",
+ "date": "2026-10-16",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Read in full: 3 of the 26 \"never extracted\" Tom videos that the catalogue's pass reports as \"no setup, no quote used\" (the most likely place for a miss), 3 V1-only Tom videos the catalogue names as uncatalogued candidat…",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "1. Verdict",
+  "tone": "info"
+ },
+ "why": [
+  "No backtest, no fee number, no VALIDATION or HOLDOUT bar, no code, no live tree. WEEK_BRIEF.md does not exist (B runs 10-20); nothing stood in for it.",
+  "Counts: wrong rows 3 (TOM-3, FAB-4, FAB-5), overstated rows 3 (TOM-1 trade count, TOM-4 stale stop field, the \"Fabio 0 of 8 stops\" summary line), missing setups 2 (plus 6 missing rules, section 3).",
+  "The gross-effect screen (INCONCLUSIVE, n_T = 40, MDE 0.365 %; control arm n = 1,439 at -0.008 % gross, t_cost -6.0) is the first G5 number the plan has and it is about an OURS location",
+  "Fidelity summary: 31 of 31 quotes verbatim and in context. Nothing OURS is presented as his. Rows wrong on a field: TOM-3, FAB-4, FAB-5 (3). Rows overstated: TOM-1 (count), TOM-4 (stale field), summary line C:60-61 (Fabio 0 of 8 stops). The GPT audit's two HI…"
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "1439"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 1439,
+   "quote": "The gross-effect screen (INCONCLUSIVE, n_T = 40, MDE 0.365 %; control arm n = 1,439 at -0.008 % gross, t_cost -6.0) is the first G5 number the plan has and it is about an OURS location"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "n_trades": "not a trade test (audit)"
+ },
+ "source_files": [
+  "MyTradingSys/research/fable_audit_2026-10-16/CATALOGUE_AUDIT.md"
+ ],
+ "commit": "1946d455e"
+}

@@ -1,0 +1,38 @@
+{
+ "id": "lm-q33",
+ "kind": "backtest",
+ "family": "Bb Lvn Triggers",
+ "title": "Tom/Fabio guidance matrix: fee-net trigger x context event study",
+ "provenance": "source-extracted",
+ "date": "2026-10-12",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-01-01 to 2026-10-11 (as written in the source)",
+ "verdict": {
+  "label": "no cell survives (smallest q 0.62); do not wire cross-guidance",
+  "tone": "good"
+ },
+ "why": [
+  "1 % loss after fees. 0 of 186 cells have a positive net mean at 60 min; 3 are positive at 240 min (best +0.039 %,",
+  "Price outside the Bollinger band, entering an LVN, or testing a gap does not move fast enough, in either direction and",
+  "This confirms the earlier single-indicator failures. It is not a verdict on Tom's or Fabio's own trades: their edge is"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/tom_fabio_guidance_2026-10-12/MATRIX_REPORT.md"
+ ],
+ "commit": "72c2090ef"
+}

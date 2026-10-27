@@ -1,0 +1,79 @@
+{
+ "id": "dir-krown_ta101_2026-10-13",
+ "kind": "backtest",
+ "family": "Krown Ta101",
+ "title": "KROWN SETUP CATALOG: every setup Krown's 15 extracts teach, in plain chart terms (2026-10-15)",
+ "provenance": "source-extracted",
+ "date": "2026-10-13",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Status: gate G2 of research/layer_rebuild_2026-10-15/LAYER_REBUILD_PLAN_2026-10-15.md (section 3 Krown, work order item 4). Rewrite of",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "the nine setups S1-S9 of KROWN_LAYER_SPEC.md:57-65 into the catalogue format of research/setup_catalog_2026-10-15/SETUP_CATALOG.md",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "(that file and the Malkan SETUP_SUMMARY.md are not edited), plus seven setups the extracts teach that S1-S9 miss (KR-S10 to KR-S16).",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "No code, no detector, no backtest, no fees, no stop-size math, no VALIDATION/HOLDOUT read. Nothing here is an MTS rule. Corpus: 14 TA",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "videos + 1 fees video (KROWN_RULES.csv, 120 rules); the 4 videos still blocked by HTTP 429 (MANIFEST.csv) and the 18 hidden playlist",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "entries are NOT read. Fable 5.1 audits this file against the raw transcripts on 2026-10-20.",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "(section 4).",
+  "tone": "info"
+ },
+ "why": [
+  "faked (his words follow) and should be read on major venues (VOL-04, paraphrase), which our feed does not meet (rule KR-V11 BLOCKED, conflict C6). PARTIAL =",
+  "> \"it must be at the low the exact low of that move meaning that price does not go lower on the left or right-hand side especially on the left-hand side\"",
+  "Inside an unbroken resistance zone he also scalps short or simply does not buy:"
+ ],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "0"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 0,
+   "quote": "6. Evidence. 0 trades in a ledger. Chart examples in the extracts (T3); one winner is shown without an entry price: \"price goes from 84 to 126\" (extracts/extract_2ei4fj-Ba24.md:317 (LVL-26)), instrum…"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window"
+ },
+ "source_files": [
+  "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_SETUP_CATALOG.md"
+ ],
+ "commit": "5025e79ba"
+}

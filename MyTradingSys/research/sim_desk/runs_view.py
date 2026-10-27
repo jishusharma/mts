@@ -61,3 +61,30 @@ def get_run(results_dir, rid):
     except (OSError, ValueError):
         return None
     return doc if isinstance(doc, dict) and _in_dev(doc) else None
+
+
+TEST_ID_RE = re.compile(r'^[a-z0-9][a-z0-9_.-]{0,120}$')
+
+
+def list_tests(results_dir):
+    """Every catalogued test (all kinds), newest first; read-only view of results/_catalogue.json."""
+    try:
+        doc = json.loads((Path(results_dir) / '_catalogue.json').read_text(encoding='utf-8'))
+    except (OSError, ValueError):
+        return []
+    rows = [r for r in doc.get('rows', []) if isinstance(r, dict) and r.get('id')]
+    rows.sort(key=lambda r: (str(r.get('date') or ''), str(r.get('title') or '')), reverse=True)
+    return rows
+
+
+def get_test(results_dir, tid):
+    """One result card for a catalogued test id (backfilled, exported or desk run); None when unknown or unreadable."""
+    if not TEST_ID_RE.fullmatch(str(tid or '')):
+        return None
+    if tid not in {r['id'] for r in list_tests(results_dir)} and not ID_RE.fullmatch(tid):
+        return None
+    try:
+        doc = json.loads((Path(results_dir) / f'{tid}.json').read_text(encoding='utf-8'))
+    except (OSError, ValueError):
+        return None
+    return doc if isinstance(doc, dict) else None

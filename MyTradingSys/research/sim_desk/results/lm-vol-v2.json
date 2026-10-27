@@ -1,0 +1,51 @@
+{
+ "id": "lm-vol-v2",
+ "kind": "backtest",
+ "family": "Volume",
+ "title": "Volume STATE family on daily bars (V2)",
+ "provenance": "source-extracted",
+ "date": "2026-10-09",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "None. No state x horizon x orientation passes the registered triage on DEV.",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "BTCUSDT perp daily DEV (as written in layer_map)",
+ "verdict": {
+  "label": "0 pass triage",
+  "tone": "good"
+ },
+ "why": [
+  "Registered in PRE_REG_ADDENDUM_A_2026-10-09.md (commit 6e6227b) before any V2 outcome. 1272 bars in range (first valid state bar index 350), 96 trials (84 live, 12 INSUFFICIENT-N), 0 pass triage."
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "400"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 400,
+   "quote": "sd of h-day fwd return: h=5 748 bp, h=10 1085 bp, h=20 1552 bp. Naive MDE at n=400: h=5 93 bp, h=10 135 bp, h=20 193 bp"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)"
+ },
+ "source_files": [
+  "MyTradingSys/research/volume_2026-10-09/V2_DEV_RESULTS.md"
+ ],
+ "commit": "e0e3a2e0a"
+}

@@ -1,0 +1,43 @@
+{
+ "id": "dir-gemini_burn_2026-10-24",
+ "kind": "backtest",
+ "family": "Gemini Burn",
+ "title": "Industry Standards Audit & Gap Analysis: MTS Backtesting Architecture",
+ "provenance": "source-extracted",
+ "date": "2026-10-24",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Every parameter, threshold, and formula across the literature and the repo is explicitly cataloged below and labeled SOURCED (with verbatim quote and URL) or OURS (repo internal convention or operator ruling).",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2026-09-13 to 2026-09-21 (as written in the source)",
+ "verdict": {
+  "label": "relies entirely on a naive bootstrap CI of mean net R; DSR and PBO implemented in bt_stats.py are completely bypassed during interactive tuning; Trial Ledger cannot compute PBO.",
+  "tone": "info"
+ },
+ "why": [
+  "Source: López de Prado, Marcos (2018), Advances in Financial Machine Learning, John Wiley & Sons, Chapter 7; and \"The 10 Reasons Most Machine Learning Funds Fail\", Journal of Portfolio Management, Vol. 44, No. 6, pp. 120–133.",
+  "> \"Failing to account for overlapping outcomes leads to cross-validation leakage... when labels span multiple periods, standard cross-validation methods allow information from the testing set to leak into the training set.\"",
+  "Limitation: The ledger records only categorical metadata, parameter descriptions, and run statuses. It does not store per-bar or per-trade aligned return vectors across variants, precluding concurrent matrix operations like CSCV PBO."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)"
+ },
+ "source_files": [
+  "MyTradingSys/research/gemini_burn_2026-10-24/backtest_standards_gaps.md"
+ ],
+ "commit": "f8d0799de"
+}

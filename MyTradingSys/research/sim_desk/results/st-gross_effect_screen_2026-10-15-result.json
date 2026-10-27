@@ -1,0 +1,39 @@
+{
+ "id": "st-gross_effect_screen_2026-10-15-result",
+ "kind": "backtest",
+ "family": "Gross Effect Screen",
+ "title": "RESULT: gross-effect screen on DEV (primary cell d=1, h=60, C=0.14 %). Verdict above is per PRE_REG.md section 4, one r…",
+ "provenance": "source-extracted",
+ "date": "2026-10-15",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "above is per PRE_REG.md section 4, one run.",
+  "tone": "info"
+ },
+ "why": [
+  "DECISION (OURS): INCONCLUSIVE tested after PASS_FLOW and PASS_CONTROL on n_T; maker readout counts a fill when a bar after the entry bar trades through p_in by 0.1 USDT before the exit bar; arm MDD is the sum-of-nets drawdown in % of one clip vs BH in % of pr…",
+  "Files: 30 (SHA256 in DATA_MANIFEST.csv). Bars present 1313280 of 1313280; missing 0.",
+  "FAIL/INCONCLUSIVE: stop; no detector, chart, layer or management work follows on this family."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/gross_effect_screen_2026-10-15/RESULT.md"
+ ],
+ "commit": "b42cef1b8"
+}

@@ -1,0 +1,70 @@
+{
+ "id": "dir-malkan_ledger_2026-10",
+ "kind": "audit",
+ "family": "Malkan Ledger",
+ "title": "Malkan: Dated-Call Ledger Feasibility and RSI Parity Points (Gate 0c)",
+ "provenance": "source-extracted",
+ "date": "2026-10-18",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Speaker: Vishal Malkan.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "Candidate mentions: Tata Motors and Reliance Infrastructure mentioned on screen as stocks meeting the weekly RSI < 40 condition.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "Quote: > \"here the weekly chart is below 40 right and if you go to daily... Tata Motors is on the list\" (SOURCED: extracts/extract_2HcJ3NeZmEQ.md:61).",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "Assessment: 0 dated trades. Malkan explicitly states that data for the last 2-3 days was missing and specifies no trade or entry level (SOURCED: extracts/extract_2HcJ3NeZmEQ.md:240). No calendar dates or timestamps.",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "0. Summary and Gate 0c Verdict",
+  "tone": "info"
+ },
+ "why": [
+  "Speaker: Learn2Earn presenter recapping Malkan's strategy; Malkan does not speak (SOURCED: extracts/extract_-CBvFi40sIQ.md:339).",
+  "Assessment: 0 dated trades. These are historical dates displayed on a third-party screener web page presented as illustrative examples. The host does not state outcomes, entry levels, stops, or execution details (SOURCED: extracts/extract_-CBvFi40sIQ.md:235,3…",
+  "Assessment: 0 dated trades. Teaches reverse divergence concepts (positive and negative reverse divergence). No dates, timestamps, or trade calls (SOURCED: SETUP_SUMMARY.md:260,285,313,587)."
+ ],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "0"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 0,
+   "quote": "Every setup row in SETUP_SUMMARY.md records: \"0 trades in a ledger (lecture video; on-screen examples are not counted)\" (SOURCED: SETUP_SUMMARY.md:78,114,142,174,203,232,260,285,313,343,365,390,411,4…"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "n_trades": "not a trade test (audit)"
+ },
+ "source_files": [
+  "MyTradingSys/research/malkan_ledger_2026-10/LEDGER_PARITY.md"
+ ],
+ "commit": "966d2607d"
+}

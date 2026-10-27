@@ -1,0 +1,78 @@
+{
+ "id": "dir-btc_ma_2026-10-03",
+ "kind": "backtest",
+ "family": "Btc Ma",
+ "title": "Q_ALL: BTC moving-average evidence, consolidated pass (2026-10-07)",
+ "provenance": "source-extracted",
+ "date": "2026-10-03",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "F1. Wei, Kyriakou, Sermpinis, Stasinakis (2024), \"Cryptocurrencies and Lucky Factors: The value of technical and fundamental",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "analysis\", Int. J. Finance & Economics 29(4):4073-4104. DOI 10.1002/ijfe.2863. Full text read; verified 2026-10-07.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "URL: https://eprints.gla.ac.uk/302711/1/302711.pdf",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "Tier T1 Method quality: high (7,851 technical rules incl. MA rules, 59 fundamental factors, 12 coins; Lucky Factors + Hansen SPA",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "snooping control; trading performance computed with average Binance transaction costs; three IS/OOS splits 50/25/10 percent OOS;",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "BTC from Bitstamp, in-sample start Aug 2015, OOS ends 5 Mar 2022) Confidence M (sample ends Mar 2022; no post-ETF data).",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2024-01-10 to 2024-12-31 (as written in the source)",
+ "verdict": {
+  "label": "Worker: Sonnet research pass covering briefs sonnet-01 (Q1), sonnet-02 (Q2 definitions + cycle MAs), sonnet-03 (Q3/Q4, partial).",
+  "tone": "good"
+ },
+ "why": [
+  "there is no predictability for Bitcoin in the out-of-sample period (other coins keep it). This is a direct negative OOS result",
+  "Statement that MA rules work when trending and fail when ranging is folklore at our bar.",
+  "T2. close vs SMA(n), n in {20, 50, 100, 200} (Grobys grid), same evaluator; 100/200 fail the event gate (24/18 OOS events), so"
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "20"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 20,
+   "quote": "- Finding: BTC single-coin payoffs positive for all n, strongest for n=20 and fading as n grows; jointly the (1,20), (1,50), (1,100)"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)"
+ },
+ "source_files": [
+  "MyTradingSys/research/btc_ma_2026-10-03/Q_ALL_ma_findings.md"
+ ],
+ "commit": "f8e201dbc"
+}

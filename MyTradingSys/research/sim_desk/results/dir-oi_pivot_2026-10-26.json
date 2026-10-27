@@ -1,0 +1,38 @@
+{
+ "id": "dir-oi_pivot_2026-10-26",
+ "kind": "backtest",
+ "family": "Oi Pivot",
+ "title": "PRE_REG: causal pivot candidates, P(reversal) by TF (card oi-pivot-reversal-probability-by-tf)",
+ "provenance": "source-extracted",
+ "date": "2026-10-26",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2024-06-01 to 2024-06-30 (as written in the source)",
+ "verdict": {
+  "label": "s.py check 'oi pivot reversal': check 'oi pivot reversal': no prior row matches (need 2 of ['pivot', 'rever']). Safe to pre-register; append your row after RESULT.",
+  "tone": "info"
+ },
+ "why": [
+  "Frozen 2026-10-26 BEFORE any outcome was computed. Status: DESCRIPTIVE pilot, no edge claim, no trading rule (see Gate).",
+  "D3 Long OI path for 1h/4h: the 5m metrics archive covers 2021-12..today, so 1h/4h reads aggregate it (OI at the TF close). Not run here; follow-up card filed (tasks.py new) with the 1h/4h grid. The 1h divergence event study showed no edge (_archive/loose_2026…",
+  "DECISION (OURS): the BLOCK is for an R-edge claim. This pilot makes none: it is frozen as DESCRIPTIVE / INCONCLUSIVE in advance, produces no trade rule and no Holm verdict, and a 30-day DEV slice cannot support one (30 clusters, 89-cell family). Any edge clai…"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/oi_pivot_2026-10-26/PRE_REG.md"
+ ],
+ "commit": "58251261a"
+}

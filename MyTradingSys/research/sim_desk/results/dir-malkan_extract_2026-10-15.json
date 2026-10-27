@@ -1,0 +1,76 @@
+{
+ "id": "dir-malkan_extract_2026-10-15",
+ "kind": "backtest",
+ "family": "Malkan Extract",
+ "title": "SETUP SUMMARY: every Malkan setup the 6 extracted videos teach (2026-10-15)",
+ "provenance": "source-extracted",
+ "date": "2026-10-15",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Field format follows setup_catalog_2026-10-15/SETUP_CATALOG.md (that file is not edited here). Every field text below is copied from the",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "Setups sections of extracts/extract_<id>.md by script (no retyping); quotes are checked by verify_extract_quotes.py.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "Protocol: Krown PROTOCOL.md + EXTRACT_TEMPLATE.md concept format (see malkan_extract_2026-10-15/EXTRACT_TEMPLATE.md); V2 trade-recap format not used because Malkan",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "teaches concepts (resolves the conflict with LAYER_REBUILD_PLAN_2026-10-15.md). Tier T3: a quote shows what he teaches, not an edge.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "Hindi videos (W1HrDl70Lhk, A-CQiV_UFB4): English quote = YouTube machine translation, MACHINE-MADE; the Hindi original is quoted beside it.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "Where the machine translation is garbled the stop/target text is quoted as is and marked GARBLED; it is not repaired.",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Field format follows setup_catalog_2026-10-15/SETUP_CATALOG.md (that file is not edited here). Every field text below is copied from the",
+  "tone": "info"
+ },
+ "why": [],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "0"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 0,
+   "quote": "6. Evidence. 0 trades in a ledger (lecture video; on-screen examples are not counted)."
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "why": "no sentence in the source states why it passed or failed"
+ },
+ "source_files": [
+  "MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md"
+ ],
+ "commit": "dd5aa09fb"
+}
