@@ -37,6 +37,11 @@ COLS = ["video_id", "channel", "language", "method", "transcript_file", "extract
 SKIP_DIRS = {".git", "node_modules", "__pycache__", "_archive"}
 
 
+def following(lines, i):
+    """The two text lines after quote line i (a source tag, not a price series)."""
+    return lines[slice(i + 1, i + 3)]
+
+
 def norm_ws(s):
     return " ".join(re.sub(r"\[[^\]]*\]", " ", s).split())
 
@@ -141,7 +146,7 @@ def check_extract(root, tdir, trans, text):
         m = QUOTE.match(s)
         if not m or hindi:
             continue
-        gps = next((GPS.search(l) for l in lines[i + 1:i + 3] if GPS.search(l)), None)
+        gps = next((GPS.search(l) for l in following(lines, i) if GPS.search(l)), None)
         if not gps:
             rec("", 1)
             continue
