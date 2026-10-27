@@ -94,11 +94,63 @@ def read_shas(repo: Path, shas: list[str]) -> dict:
     return out
 
 
+def _load_cards_fetched(repo: Path) -> list[dict]:
+    """Load task cards from origin/fast-track when present, overlaid on working tree cards so fetch refreshes dispatch."""
+    import tasks
+    local_cards = {c["id"]: c for c in tasks.load_all(repo) if isinstance(c, dict) and "id" in c}
+    try:
+        ls = subprocess.run(
+            ["git", "-C", str(repo), "ls-tree", f"{TRUNK_REF}:MyTradingSys/system/tasks"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+            check=False,
+        )
+        if ls.returncode != 0 or not ls.stdout.strip():
+            return sorted(local_cards.values(), key=lambda c: c["id"])
+        blobs: list[str] = []
+        for ln in ls.stdout.splitlines():
+            parts = ln.split()
+            if len(parts) >= 4 and parts[3].endswith(".json") and not parts[3].startswith("_"):
+                blobs.append(parts[2])
+        if not blobs:
+            return sorted(local_cards.values(), key=lambda c: c["id"])
+        cat = subprocess.run(
+            ["git", "-C", str(repo), "cat-file", "--batch"],
+            input=("\n".join(blobs) + "\n").encode("utf-8"),
+            capture_output=True,
+            timeout=10,
+            check=False,
+        )
+        if cat.returncode == 0 and cat.stdout:
+            buf = cat.stdout
+            pos = 0
+            while pos < len(buf):
+                nl = buf.find(b"\n", pos)
+                if nl < 0:
+                    break
+                hdr = buf[pos:nl].decode("utf-8", "replace").split()
+                pos = nl + 1
+                if len(hdr) >= 3 and hdr[1] == "blob":
+                    sz = int(hdr[2])
+                    raw = buf[pos : pos + sz].decode("utf-8", "replace")
+                    pos += sz + 1
+                    try:
+                        c = json.loads(raw)
+                        if isinstance(c, dict) and "id" in c:
+                            local_cards[c["id"]] = c
+                    except ValueError:
+                        pass
+    except (OSError, subprocess.SubprocessError, ValueError):
+        pass
+    return sorted(local_cards.values(), key=lambda c: c["id"])
+
+
 def _dispatch_raw(repo: Path, as_of: datetime, host: str | None = None, login: str | None = None,
                   logins: list | None = None) -> dict:
     import tasks
     import lane_health
-    cards = tasks.load_all(repo)
+    cards = _load_cards_fetched(repo)
     reg = tasks.registry(repo)
     holds = tasks.active_holds(repo)
     claims = tasks.open_claims(repo)
@@ -198,20 +250,25 @@ def _gate_slots_raw(repo: Path = REPO) -> dict:
     total = sync.GATE_SLOTS
     busy = 0
     pids = []
-    for i in range(total):
-        p = d / f"slot-{i}"
-        if not p.exists():
-            continue
-        try:
-            raw = p.read_text(encoding="utf-8").strip()
-            owner = int(raw) if raw else (0 if time.time() - p.stat().st_mtime > 10 else None)
-        except (OSError, ValueError):
-            owner = None
-        if owner is None:
-            busy += 1
-        elif owner > 0 and pid_alive(owner):
-            busy += 1
-            pids.append(owner)
+    dirs = [d]
+    fast_d = d.parent / "gate-slots-fast"
+    if fast_d != d and fast_d.is_dir():
+        dirs.append(fast_d)
+    for cur_d in dirs:
+        for i in range(max(total, getattr(sync, "FAST_GATE_SLOTS", 1))):
+            p = cur_d / f"slot-{i}"
+            if not p.exists():
+                continue
+            try:
+                raw = p.read_text(encoding="utf-8").strip()
+                owner = int(raw) if raw else (0 if time.time() - p.stat().st_mtime > 10 else None)
+            except (OSError, ValueError):
+                owner = None
+            if owner is None:
+                busy += 1
+            elif owner > 0 and pid_alive(owner):
+                busy += 1
+                pids.append(owner)
     return {"busy": busy, "total": total, "free": max(0, total - busy), "pids": pids}
 
 
@@ -386,12 +443,13 @@ def parse_duration(val: str | int | float) -> int:
 def _probe_wait_state(repo: Path, shas: list[str]) -> dict:
     shas_map = read_shas(repo, shas)
     sha_on_trunk = {s: bool(info.get("on_trunk")) if isinstance(info, dict) and "error" not in info else False for s, info in shas_map.items()}
+    sha_on_green = {s: bool(info.get("on_green")) if isinstance(info, dict) and "error" not in info else False for s, info in shas_map.items()}
     ci_info = read_ci(use_cache=False)
     ci_red = bool(ci_info["red"]) if isinstance(ci_info, dict) and "red" in ci_info else None
     gs_info = read_gate_slots(repo)
     busy_slots = int(gs_info["busy"]) if isinstance(gs_info, dict) and "busy" in gs_info else None
     total_slots = int(gs_info["total"]) if isinstance(gs_info, dict) and "total" in gs_info else None
-    return {"shas": sha_on_trunk, "ci_red": ci_red, "busy_slots": busy_slots, "total_slots": total_slots}
+    return {"shas": sha_on_trunk, "shas_green": sha_on_green, "ci_red": ci_red, "busy_slots": busy_slots, "total_slots": total_slots}
 
 
 STUCK_MAX = 2   # plans in a row with a free worker slot and no new worker: stop the actionable wake (no 5 min wake loop; OURS)
@@ -455,6 +513,13 @@ def _detect_transition(baseline: dict, current: dict) -> str | None:
         was_on = bool(base_shas.get(sha, False))
         if not was_on and now_on:
             return f"TRANSITION sha {sha} landed on {TRUNK_REF}"
+
+    base_green = baseline.get("shas_green", {})
+    cur_green = current.get("shas_green", {})
+    for sha, now_green in cur_green.items():
+        was_green = bool(base_green.get(sha, False))
+        if not was_green and now_green:
+            return f"TRANSITION sha {sha} landed on {GREEN_REF}"
 
     base_ci = baseline.get("ci_red")
     cur_ci = current.get("ci_red")
@@ -618,6 +683,25 @@ def brief(card_id: str, role: str | None = None, repo: Path = REPO, card: dict |
         clean_scope = [s for s in scope_in if not any(x in s for x in (".secrets", ".env", "keys"))]
         if clean_scope:
             lines.append(f"Scope in: {'; '.join(clean_scope)}")
+
+    deps = card.get("depends_on") or []
+    if deps:
+        lines.append(f"Depends on: {', '.join(str(d) for d in deps)}")
+
+    ctx = card.get("context") or {}
+    reads = ctx.get("reads") if isinstance(ctx, dict) else None
+    if reads:
+        clean_reads = [str(r) for r in reads if not any(x in str(r) for x in (".secrets", ".env", "keys"))]
+        if clean_reads:
+            lines.append(f"Read first: {'; '.join(clean_reads)}")
+
+    tests_spec = card.get("tests") or ""
+    if tests_spec:
+        lines.append(f"Tests: {tests_spec}")
+
+    done_when = card.get("done_when") or ""
+    if done_when:
+        lines.append(f"Done when: {done_when}")
 
     # Defaults for open questions
     lines.append("Defaults for open questions: on any ambiguity take the most conservative default, never ask the operator.")

@@ -47,7 +47,7 @@ def f_fetch_does_not_refresh_dispatch(root):
     snap = S._dispatch_raw(a, datetime.now(timezone.utc), host='JIS-NUC')
     excluded = {r['id']: r for r in snap['excluded']}
     assert remote_state == 'done' and tasks.get(a, 'predecessor')['state'] == 'ready'
-    assert excluded['successor']['reason_code'] == 'dependency'
+    assert excluded.get('successor', {}).get('reason_code') == 'dependency', f"successor not excluded by dependency; dispatch={[r['id'] for r in snap.get('dispatch', [])]}"
     return {'remote_predecessor': remote_state, 'successor': excluded['successor']}
 
 

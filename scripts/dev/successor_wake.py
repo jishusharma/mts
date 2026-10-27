@@ -55,7 +55,8 @@ def iso(d: datetime) -> str:
 
 def plan_fire_at(plan: dict | None, now: datetime) -> tuple[datetime, str]:
     """Pure: budget-aware fireAt from the pacer's last plan (supervisor.pace_plan). Returns (when, why).
-    slots >= 1 or any non-STOP mode -> now. STOP -> the weekly reset when the week is at cap, else the next 5 h reset (+GRACE).
+    slots >= 1 or any non-STOP mode -> now (incl. T-48h weekly drain window when 5h slots are open).
+    STOP -> the weekly reset when the week is at cap, else the next 5 h reset (+GRACE).
     No plan / unreadable -> now (OURS: a missing reading must not stall the chain)."""
     if not plan:
         return now, "no pacer reading: now"
@@ -64,6 +65,18 @@ def plan_fire_at(plan: dict | None, now: datetime) -> tuple[datetime, str]:
     except (TypeError, ValueError):
         slots = 1
     if slots >= 1 or plan.get("mode") != "STOP":
+        wk_raw = plan.get("week_reset")
+        wk_dt = _parse(wk_raw)
+        if wk_dt is not None:
+            while wk_dt <= now:
+                wk_dt += timedelta(days=7)
+            if 0 < (wk_dt - now).total_seconds() / 3600.0 <= 48.0:
+                try:
+                    wk_used = float(plan.get("week", plan.get("week_pct", 0)) or 0)
+                except (TypeError, ValueError):
+                    wk_used = 0.0
+                if 100.0 - wk_used > 5.0:
+                    return now, f"T-48h weekly drain ({100.0 - wk_used:.0f}% left) slots {slots}: now"
         return now, f"pacer {plan.get('mode', '?')} slots {slots}: now"
     try:
         week_cap = float(plan.get("week", 0)) >= float(plan.get("cap", 101))

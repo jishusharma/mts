@@ -950,7 +950,7 @@ def _timing_path(repo):
     return Path(os.environ.get("MTS_GATE_TIMING") or (Path(repo) / "runtime_data" / "gate_timing.jsonl"))
 
 
-def record_ship_wall(repo, wall_s, offset=0, path=None):
+def record_ship_wall(repo, wall_s, offset=0, path=None, ok=True):
     """Append one `ship_wall` row (the whole ship, start to end) to gate_timing.jsonl; over SHIP_SLOW_S print one
     `SHIP SLOW <n>s: top 3 steps <name secs>` line from the step rows this ship wrote after byte `offset`. Never raises."""
     try:
@@ -967,7 +967,7 @@ def record_ship_wall(repo, wall_s, offset=0, path=None):
                     except (ValueError, KeyError, TypeError):
                         continue
         r = git(repo, "rev-parse", "--short=8", "HEAD", check=False)
-        row = {"step": "ship_wall", "name": "sync.ship_wall", "secs": round(float(wall_s), 2), "ok": True,
+        row = {"step": "ship_wall", "name": "sync.ship_wall", "secs": round(float(wall_s), 2), "ok": bool(ok),
                "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "sha": r.stdout.strip() if r.returncode == 0 else ""}
         with open(p, "a", encoding="utf-8", newline="\n") as fh:
             fh.write(json.dumps(row) + "\n")
@@ -1065,7 +1065,7 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
     finally:
         if files:
             record_ship_timing(repo, wait_s=wait_s, run_s=run_s, retry_s=retry_s, ok=ok)
-            record_ship_wall(repo, time.monotonic() - t_ship_0, offset=log_off)
+            record_ship_wall(repo, time.monotonic() - t_ship_0, offset=log_off, ok=ok)
 
 
 def news(repo, hours=24):
