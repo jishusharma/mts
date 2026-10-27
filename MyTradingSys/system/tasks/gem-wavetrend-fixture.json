@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-25T19:23:45Z",
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Compute WT1/WT2 on the 400 fixture rows from FORMULAS.md:513-523 (HLC3, EMA10, EMA21, 0.015, SMA4, first-valid seed); compare the golden csv. GPT: 399 wt1 pairs, 396 wt2, max abs diff 1.07e-11, 0 event diffs. Producer: GPT gpt-6-luna. Do NOT read: wt.py, audit.py, wavetrend.py. Report: MyTradingSys/research/layer_lab/reports/2026-10-26_gem-wavetrend-fixture.md",
+  "id": "gem-wavetrend-fixture",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "yt-burn batch 2: Gemini audit 1xBWnyr1qe4 (verified), 4 GPT audit reports gx-* (file:line ",
+      "ref": "45ca080fa98e",
+      "utc": "2026-10-24T15:12:43Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "45ca080fa98e yt-burn batch 2: Gemini audit 1xBWnyr1qe4 (verified), 4 GPT audit reports gx-",
+      "ref": "MyTradingSys/research/gpt_burn_2026-10-24/gx-wavetrend-rederive/report.md",
+      "utc": "2026-10-24T15:12:43Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 T0-ONLY (planner, machine checks only). Producer vendor: GPT gpt-6-luna. Reviewer vendor: Gemini Flash (agy via gemini_queue.py); producer != reviewer. Reviewer must NOT read: GPT wt.py, audit.py and wavetrend.py. Read-only audit: no product code, no live path, DEV data only (bars before 2024-07-01), no VALIDATION or HOLDOUT. DECISION (OURS) 2026-10-26: weight ROUTINE so the card is READY now; the planner may raise it (formula or verdict checks = CRUCIAL, needs a review stamp). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-25T19:27:17Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/wavetrend/fixture_btcusdt_1h_dev_2022-01.csv",
+    "MyTradingSys/backtest/layers/wavetrend/golden_wt_btcusdt_1h_dev_2022-01.csv",
+    "MyTradingSys/backtest/layers/FORMULAS.md",
+    "MyTradingSys/research/gpt_burn_2026-10-24/gx-wavetrend-rederive/report.md"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "scope_sha": "45ca080fa98e",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "",
+  "title": "[GEMINI] Re-derive WaveTrend WT1/WT2 on the 400-bar fixture, check GPT max diff 1.07e-11",
+  "weight": "ROUTINE",
+  "worker": ""
+}

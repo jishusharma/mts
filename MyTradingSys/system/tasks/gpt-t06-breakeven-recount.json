@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-25T19:24:58Z",
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Recount the csvs: best gross +3.59 bp (AD) yet H2 shows +3.80 bp (T06 lines 113-115); 57 of 70 files define their own cost (13 import fees.py); 164 binding rows. Say which 'best' is right. Producer: DSA lane (DeepSeek). Do NOT read: T06 section 1, findings table. Report: MyTradingSys/research/layer_lab/reports/2026-10-26_gpt-t06-breakeven-recount.md",
+  "id": "gpt-t06-breakeven-recount",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim-v2: re-land slippage box (0.02 %, ours) with its 3 costs.csv rows",
+      "ref": "11b8f95c4125",
+      "utc": "2026-10-24T21:06:43Z"
+    },
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "0d738711fd58 T06 backtest audit: costs, fills, real funding",
+      "ref": "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md",
+      "utc": "2026-10-24T19:03:33Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 T0-ONLY (planner, machine checks only). Producer vendor: DSA lane (DeepSeek). Reviewer vendor: GPT gpt-6-luna (codex_run.py); producer != reviewer. Reviewer must NOT read: T06 section 1 and the findings table before counting. Read-only audit: no product code, no live path, DEV data only (bars before 2024-07-01), no VALIDATION or HOLDOUT. DECISION (OURS) 2026-10-26: weight ROUTINE so the card is READY now; the planner may raise it (formula or verdict checks = CRUCIAL, needs a review stamp). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-25T19:26:13Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/breakeven.csv",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/costs.csv"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "scope_sha": "11b8f95c4125",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "",
+  "title": "GPT recounts the T06 cost audit: best gross edge, break-even rows, files with own cost constant",
+  "weight": "ROUTINE",
+  "worker": ""
+}

@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-25T19:25:03Z",
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "FORMULAS.md 59-120: hand-compute RMA, SMA, EMA (seeded), WMA on one 12-value series; compare with rsi_ma.py, max abs diff per type (expect <=1e-9). Producer: Claude (FORMULAS.md, rsi_ma.py). Do NOT read: rsi_ma.py, test_rsi_ma*.py until done. Report: MyTradingSys/research/layer_lab/reports/2026-10-26_gpt-formulas-rederive-2-5.md",
+  "id": "gpt-formulas-rederive-2-5",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "kurisko: causal Quad Rotation layer module (stochastic arm + RSI hypothesis arm), FORMULAS",
+      "ref": "dd001f2a7902",
+      "utc": "2026-10-18T06:39:54Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "dd001f2a7902 kurisko: causal Quad Rotation layer module (stochastic arm + RSI hypothesis a",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-10-18T06:39:54Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 T0-ONLY (planner, machine checks only). Producer vendor: Claude (FORMULAS.md, rsi_ma.py). Reviewer vendor: GPT gpt-6-luna (codex_run.py); producer != reviewer. Reviewer must NOT read: rsi_ma.py and test_rsi_ma*.py before your numbers are written. Read-only audit: no product code, no live path, DEV data only (bars before 2024-07-01), no VALIDATION or HOLDOUT. DECISION (OURS) 2026-10-26: weight ROUTINE so the card is READY now; the planner may raise it (formula or verdict checks = CRUCIAL, needs a review stamp). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-25T19:26:34Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/FORMULAS.md",
+    "MyTradingSys/backtest/layers/rsi/rsi_ma.py"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "scope_sha": "dd001f2a7902",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "",
+  "title": "GPT re-derives FORMULAS.md sections 2-5 (RMA, SMA, EMA seeding, WMA) by hand",
+  "weight": "ROUTINE",
+  "worker": ""
+}

@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-25T19:30:03Z",
+  "depends_on": [],
+  "done_when": "On JIS-NB, python MyTradingSys/research/sim_desk/fee_sweep.py prints one row per study (levels, rsi, wavetrend, krown) with columns n filled, mean gross R, fee R, net R at fee x0/x0.5/x1/x2 and break-even multiple, all four rows numeric (NOT_IN_DATA only on another machine); test_fee_sweep.py passes with hand-computed numbers; TRIALS.md and results/ unchanged",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Turn 'fees are the whole result' (REVIEW_FABLE_2026-10-25 One screen) into a number for every study: fee_sweep.py reads each study's cached default run, filled trades only, and prints mean gross R, fee R, net R at fee x0, x0.5, x1, x2 and the break-even fee multiple (gross / fee), one plain sentence per study. Read-only: no ledger row, no result file.",
+  "hosts": [
+    "JIS-NB"
+  ],
+  "id": "sim-desk-fee-sweep",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "sim-desk-wire-krown-detectors-as-a-plug-"
+  ],
+  "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer Agent a8e64e6d verified, planner DECISION OURS). Sim-v2 follow-up drafted 2026-10-26. Only new files, so it is disjoint from every other sim card. Saved results/*.json carry no gross/fee fields, which is why it reads the cached run arrays. Weight IMPORTANT: prints a verdict-like sentence per study. FIX 2026-10-26: columns named in done_when; host pinned to JIS-NB (klines live there) so a NOT_IN_DATA run cannot pass. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-25T19:53:23Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/fee_sweep.py",
+    "MyTradingSys/research/sim_desk/test_fee_sweep.py"
+  ],
+  "scope_out": [
+    "Do not touch desk.py, page.html, studies/, results/ or TRIALS.md; call desk._raw (cache only), never run_setting, so no ledger row is written; fees include the 0.02 % slippage (OURS) and the output says so"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/sim_desk/REVIEW_FABLE_2026-10-25.md:One screen paragraph 2 (fees are the whole result)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read desk.py numbers(), _raw(), STUDIES and test_reference.py to see how a default run and its cache are read",
+    "Write test_fee_sweep.py first and watch it fail",
+    "fee_sweep.py: sweep(gross, fees, filled) returns the dict; main() loops the studies at DEFAULT settings through desk._raw and prints the table; a missing klines folder prints NOT_IN_DATA for that study",
+    "Add the sentence per row: before fees +X R, fees -Y R, after fees Z R; fees would have to fall to W of today's level to break even",
+    "Run the test and the script once; put the table in the commit body Result line; sync.py ship"
+  ],
+  "tests": "test_fee_sweep.py (new), fails before fee_sweep.py exists: planted gross [1, -1, 0.6], fee 0.2 each give mean gross 0.2, net x0 0.2, x0.5 0.1, x1 0.0, x2 -0.2, break-even 1.0; gross <= 0 gives break-even 0; zero fees give None; never-filled ideas are excluded.",
+  "title": "Sim desk: fee sweep (net R at 0x, 0.5x, 1x, 2x fees and the break-even fee for each study)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}
