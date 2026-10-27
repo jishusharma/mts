@@ -22,3 +22,6 @@ No stop-floor, horizon or parameter search may rescue the gate (card scope_out).
 - DECISION (OURS, conservative default): BLOCKED, no outcome run, no VALIDATION/HOLDOUT read.
 - DECISION (OURS): larger m' = 62 reported beside 42, as V2 item 4 requires; verdict identical.
 - DECISION (OURS): no RESULT.md written (nothing to report); VERDICTS.csv row comes from `verdicts.py backfill` as it parses the folder.
+
+## Kill scope (REGATE_AUDIT.md fix 4; OURS wording from the audit Q5 text)
+FAIL/INCONCLUSIVE: stop; this BLOCK (count-only, no outcome read) covers only the failed-auction-at-prior-day-value-area-edge detector on BTCUSDT 5m with the probe-extreme stop and the opposite-edge target at 14 bp cost (FAB-4 / TOM-12 family as encoded here); prior-day value-area levels as a context factor (context_factors_pit F1), other stops, other timeframes and other instruments are not killed.

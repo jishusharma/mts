@@ -18,16 +18,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "GEMINI_START: laptop agy CLI installed, gemini_queue F: gap, account naming, approval re-c",
-      "ref": "c5639ca90c70",
-      "utc": "2026-10-25T20:50:19Z"
+      "line": "docs: dedupe shared lines between CODEX_START.md and GEMINI_START.md",
+      "ref": "181971f18821",
+      "utc": "2026-10-27T22:09:16Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "c5639ca90c70 GEMINI_START: laptop agy CLI installed, gemini_queue F: gap, account naming, ",
+      "line": "181971f18821 docs: dedupe shared lines between CODEX_START.md and GEMINI_START.md",
       "ref": "MyTradingSys/system/GEMINI_START.md",
-      "utc": "2026-10-25T20:50:19Z"
+      "utc": "2026-10-27T22:09:16Z"
     }
   ],
   "layers": [],
@@ -37,7 +37,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-25T22:18:11Z",
+  "refreshed": "2026-10-27T22:51:51Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -50,12 +50,12 @@
     "live path, orders, deploy, restarts",
     "new hooks, gate steps or rules beyond the card"
   ],
-  "scope_sha": "c5639ca90c70",
+  "scope_sha": "181971f18821",
   "size": "S",
   "sources": [
     "MyTradingSys/system/SUPER_SESSION.md D3"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Check each file for an existing revert rule (grep -n revert).",
     "Add the line where Hard rules / gates are listed; do not copy the whole D3 text.",

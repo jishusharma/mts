@@ -1176,3 +1176,28 @@ class TwinCardTest(unittest.TestCase):
                 self.assertIn("TWIN a b", out)
             finally:
                 T.REPO = old
+
+
+class LikelyDoneAndDependsBriefTest(unittest.TestCase):
+    def test_brief_shows_depends_on_for_non_flow_card(self):
+        c = good("DEP1", depends_on=["B050", "B051"])
+        b = T.brief(c)
+        self.assertIn("Depends on: B050, B051", b)
+
+    def test_check_warns_when_card_target_symbol_already_in_tree(self):
+        with tempfile.TemporaryDirectory() as d:
+            repo, old = Path(d), T.REPO
+            T.REPO = repo
+            try:
+                mod = repo / "src" / "mod.py"
+                mod.parent.mkdir(parents=True, exist_ok=True)
+                mod.write_text("def test_already_shipped_probe():\n    return True\n", encoding="utf-8")
+                c = good("SHIP1", state="refined", scope_in=["src/mod.py"],
+                         tests="pytest -k test_already_shipped_probe")
+                T.save(repo, c)
+                self.assertIn("test_already_shipped_probe", T.likely_done_reason(c, repo))
+                rc, out = run_cli("check", "SHIP1")
+                self.assertEqual(rc, 0)
+                self.assertIn("WARN likely already in tree", out)
+            finally:
+                T.REPO = old

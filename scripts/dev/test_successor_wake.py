@@ -1,157 +1,168 @@
-"""successor_wake.py (4b2 one-time successor task): golden --dry PowerShell, past --at refused, register
-idempotent, the supervisor handover chain wiring (default registers, --no-wake registers nothing, one
-Successor line, idempotent), and the budget-aware fireAt from the pacer's last plan (d-47).
-
-Fails on the pre-change code: `import successor_wake` is a ModuleNotFoundError (the file did not exist)
-and `supervisor.handover` had no `wake`/`dry` parameters.
-"""
+"""Tests for successor_wake.py and the supervisor.py handover wiring (SCHEDULING_POLICY 4b2).
+--dry / stub runner only: no real scheduled task is ever registered, HALT is never touched, nothing reads secrets.
+Run: python scripts/dev/test_successor_wake.py"""
 import json
+import re
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import successor_wake as W
 import supervisor as S
 
-T0 = datetime(2026, 10, 19, 12, 0, tzinfo=timezone.utc)
+NOW = datetime(2026, 10, 27, 12, 0, tzinfo=timezone.utc)
+HERE_REPO = Path(__file__).resolve().parents[2]
 
 
-def _plan(slots=4, mode="NORMAL", five=10, week=20, five_reset="2026-10-19T14:00Z", week_reset="2026-10-25T09:00Z",
-          cap=95):
-    return {"plan": {"mode": mode, "slots": slots, "five": five, "week": week, "cap": cap,
-                     "five_reset": five_reset, "week_reset": week_reset}}
+def _repo(tmp_path):
+    (tmp_path / "MyTradingSys" / "system" / "handover").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "scripts" / "dev").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "scripts" / "dev" / "sync.py").write_text("", encoding="utf-8")
+    return tmp_path
 
 
-# ---------- the one-time task itself ----------
-def test_dry_golden_one_once_trigger_no_repeat_self_unregister():
-    ps = W.build_ps(W.task_name("C"), "C", "2026-10-19T14:00:00Z", "claude-sonnet-5-5",
-                    "You are Supervisor. Login C. Continue", "F:/MTS/mts-jis-nuc")
-    assert ps.count("-Once -At") == 1 and ps.count("$fireAt = [DateTime]::Parse") == 1
-    # one fireAt, no repeat trigger, no cron (SCHEDULING_POLICY 4: a one-time task, unregistered after it fires)
-    for bad in ("RepetitionInterval", "-Weekly", "-Daily", "-AtLogOn", "cron"):
-        assert bad not in ps, bad
-    assert "claude-sonnet-5-5" in ps              # the task prompt names the model (4b2 rule)
-    assert "Unregister-ScheduledTask" in ps        # self-unregister IS the "gone after it fires" rule
-    assert "Register-ScheduledTask" in ps and "-Force" in ps
-    assert "powershell.exe -NoProfile -ExecutionPolicy Bypass -File" in ps   # no nested -Command quoting
+def _dry(tmp_path, **kw):
+    return W.register("C", cwd=_repo(tmp_path), dry=True, now=NOW, plan={"mode": "NORMAL", "slots": 2}, **kw)
 
 
-def test_task_name_and_fireat_format():
-    assert W.task_name("b") == "MTS-SuccWake-B"
-    assert W.iso_utc(T0) == "2026-10-19T12:00:00Z"
-    assert W.parse_utc("2026-10-19T14:00Z") == datetime(2026, 10, 19, 14, 0, tzinfo=timezone.utc)
+def test_dry_golden_one_fireat_no_repeat_selfunregister(tmp_path):
+    r = _dry(tmp_path, at="2026-10-27T20:05Z")
+    s = r["script"]
+    assert s.count("$FireAt =") == 1 and "-Once -At $FireAt" in s
+    for bad in ("RepetitionInterval", "-Daily", "-Weekly", "-AtLogOn", "cron", "-Repetition"):
+        assert bad not in s
+    assert "claude-sonnet-5-5" in s and "Unregister-ScheduledTask -TaskName 'MTS-SuccWake-C'" in s
+    assert "-LogonType Interactive" in s and "conhost.exe" in s and "--headless" in s and s.count("Register-ScheduledTask") == 1
+    assert "You are Supervisor. Login C." in s and "SUPERVISOR_C.md" in s
+    assert r["line"] == "Successor task: MTS-SuccWake-C fireAt 2026-10-27T20:05Z (4b2)"
 
 
-def test_past_at_refused_even_when_dry():
-    assert W.main(["--login", "C", "--at", "2020-01-01T00:00Z", "--dry"]) == 2
-    # a future --at still runs: the golden PowerShell prints, nothing registers
-    assert W.main(["--login", "C", "--at", "2027-01-01T00:00:00Z", "--dry"]) == 0
+def test_fire_now_has_no_trigger_and_starts_task(tmp_path):
+    r = _dry(tmp_path)
+    assert "FireAt" not in r["script"] and "-Trigger" not in r["script"] and "Start-ScheduledTask" in r["script"]
+    assert r["fire_at"] == "2026-10-27T12:00Z"
 
 
-def test_register_idempotent_reregister_is_force():
-    a = W.build_ps(W.task_name("A"), "A", "2026-10-19T14:00:00Z", "m", "p", "F:/x")
-    b = W.build_ps(W.task_name("A"), "A", "2026-10-19T15:00:00Z", "m", "p", "F:/x")   # a second run
-    assert a.count("$task = 'MTS-SuccWake-A'") == 1 and b.count("$task = 'MTS-SuccWake-A'") == 1
-    assert "-Force" in a and "-Force" in b        # re-registering the existing task overwrites, never duplicates
+def test_past_at_refused(tmp_path):
+    with pytest.raises(W.WakeError, match="past"):
+        W.register("C", cwd=_repo(tmp_path), at="2026-10-27T11:00Z", dry=True, now=NOW)
+    with pytest.raises(W.WakeError):
+        W.register("C", cwd=_repo(tmp_path), at="not-a-time", dry=True, now=NOW)
 
 
-def test_upsert_line_idempotent_one_successor_line():
-    f = Path("x.md")
-    f.write_text("body line\n")
-    W.upsert_line(f, W.handover_line("MTS-SuccWake-C", "2026-10-19T14:00:00Z"))
-    W.upsert_line(f, W.handover_line("MTS-SuccWake-C", "2026-10-19T15:00:00Z"))
-    t = f.read_text()
-    assert t.count("Successor task:") == 1 and "15:00:00" in t and "14:00:00" not in t
-    f.unlink()
+def test_non_mts_checkout_and_bad_login_refused(tmp_path):
+    with pytest.raises(W.WakeError, match="not an MTS checkout"):
+        W.register("C", cwd=tmp_path, dry=True, now=NOW)
+    with pytest.raises(W.WakeError, match="login"):
+        W.register("Z", cwd=_repo(tmp_path), dry=True, now=NOW)
 
 
-# ---------- the budget-aware fireAt (d-47) ----------
-def test_fireat_slots_at_least_one_is_now():
-    fa, why = S.successor_fireat(_plan(slots=4), T0)
-    assert fa == W.iso_utc(T0) and "slots 4" in why
+def test_model_and_prompt_file_override(tmp_path):
+    pf = tmp_path / "p.txt"
+    pf.write_text("custom boot prompt", encoding="utf-8")
+    r = _dry(tmp_path, model="claude-haiku-4-5", prompt_file=str(pf))
+    assert "--model claude-haiku-4-5" in r["script"] and "custom boot prompt" in r["script"]
 
 
-def test_fireat_stop_five_block_waits_for_the_5h_reset():
-    fa, why = S.successor_fireat(_plan(slots=0, mode="STOP", five=90), T0)
-    assert fa == "2026-10-19T14:00:00Z" and "5h" in why
+def test_budget_aware_fire_at(tmp_path):
+    now = NOW
+    ok = {"mode": "NORMAL", "slots": 2, "five": 10, "week": 20, "cap": 85}
+    assert W.plan_fire_at(ok, now)[0] == now
+    stop5 = {"mode": "STOP", "slots": 0, "five": 85, "week": 40, "cap": 85, "five_reset": "2026-10-27T15:00Z", "week_reset": "2026-11-01T00:00Z"}
+    assert W.plan_fire_at(stop5, now)[0] == datetime(2026, 10, 27, 15, 2, tzinfo=timezone.utc)
+    stopw = {**stop5, "week": 86}
+    assert W.plan_fire_at(stopw, now)[0] == datetime(2026, 11, 1, 0, 2, tzinfo=timezone.utc)
+    assert W.plan_fire_at(None, now)[0] == now
+    assert W.plan_fire_at({**stop5, "five_reset": "2026-10-27T11:00Z"}, now)[0] == now      # reset already past
+    # end to end: a STOP plan registers a trigger at the reset, not "now"
+    s = W.register("C", cwd=_repo(tmp_path / "stop"), dry=True, now=NOW, plan=stop5)
+    assert "-Once -At $FireAt" in s["script"] and s["fire_at"] == "2026-10-27T15:02Z"
 
 
-def test_fireat_stop_weekly_at_cap_waits_for_the_weekly_reset():
-    fa, why = S.successor_fireat(_plan(slots=0, mode="STOP", five=5, week=99), T0)
-    assert fa == "2026-10-25T09:00:00Z" and "weekly" in why
+def test_real_path_records_one_line_and_second_run_updates(tmp_path):
+    repo = _repo(tmp_path)
+    ho = repo / W.HANDOVER_REL.format("C")
+    ho.write_text("# Supervisor C handover | x\n\n## Goal\ng\n", encoding="utf-8")
+    ran = []
+    for at in ("2026-10-27T20:05Z", "2026-10-27T21:05Z"):
+        W.register("C", cwd=repo, at=at, now=NOW, runner=ran.append)
+    t = ho.read_text(encoding="utf-8")
+    assert len(ran) == 2 and ran[0].count("Register-ScheduledTask") == 1      # idempotent: -Force, same task name
+    assert "-Force" in ran[0]
+    assert t.count("Successor task:") == 1 and "21:05Z" in t and "20:05Z" not in t
+    assert t.splitlines()[0].startswith("# Supervisor C") and t.splitlines()[1].startswith("Successor task:")
 
 
-def test_fireat_no_last_plan_defaults_to_now():
-    fa, why = S.successor_fireat({}, T0)
-    assert fa == W.iso_utc(T0)
+def test_registered_handover_still_valid_form(tmp_path, monkeypatch):
+    import sync
+    monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
+    repo = _repo(tmp_path)
+    home = tmp_path / "home"
+    home.mkdir()
+    p = S.handover(repo, "c", host="JIS-NB", home=home, now=NOW)
+    W.record_handover(repo, "C", "Successor task: MTS-SuccWake-C fireAt 2026-10-27T20:05Z (4b2)")
+    assert S.validate_form(p.read_text(encoding="utf-8")) == []
 
 
-# ---------- the handover chain wiring (the ENDED path: handover send=True) ----------
-@pytest.fixture
-def _no_real_register(monkeypatch):
-    """The ENDED handover's default wake must never hit the real Task Scheduler (nor the real signal clone)."""
+# ---- supervisor.py handover wiring ----
+def _cli(monkeypatch, tmp_path, extra):
+    import sync
+    import mts_signal
+    monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
+    monkeypatch.setattr(mts_signal, "resolve_login", lambda x: ("C", ""))
     calls = []
-    monkeypatch.setattr(W, "register", lambda *a, **k: calls.append((a, k)) or 0)
-    import sys as _sys, types as _types
-    monkeypatch.setitem(_sys.modules, "mts_signal", _types.SimpleNamespace(send=lambda *a, **k: True))
-    return calls
+
+    def fake(login, **kw):
+        calls.append((login, kw))
+        return {"line": "Successor task: MTS-SuccWake-C fireAt X (4b2)", "why": "stub"}
+    monkeypatch.setattr(W, "register", fake)
+    monkeypatch.chdir(_repo(tmp_path))
+    rc = S.main(["handover", "--login", "C", "--no-send"] + extra)
+    return rc, calls
 
 
-def test_handover_registers_by_default_and_writes_one_successor_line(tmp_path, monkeypatch, _no_real_register):
+def test_handover_default_registers_successor(tmp_path, monkeypatch):
+    rc, calls = _cli(monkeypatch, tmp_path, [])
+    assert rc == 0 and len(calls) == 1 and calls[0][0] == "C"
+
+
+def test_handover_no_wake_registers_nothing(tmp_path, monkeypatch):
+    rc, calls = _cli(monkeypatch, tmp_path, ["--no-wake"])
+    assert rc == 0 and calls == []
+
+
+def test_handover_lead_never_wakes(tmp_path, monkeypatch):
+    rc, calls = _cli(monkeypatch, tmp_path, ["--role", "lead"])
+    assert calls == []
+
+
+def test_handover_register_failure_does_not_break_handover(tmp_path, monkeypatch, capsys):
+    import sync
+    import mts_signal
+    monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
+    monkeypatch.setattr(mts_signal, "resolve_login", lambda x: ("C", ""))
+
+    def boom(*a, **k):
+        raise W.WakeError("no cli")
+    monkeypatch.setattr(W, "register", boom)
+    monkeypatch.chdir(_repo(tmp_path))
+    assert S.main(["handover", "--login", "C", "--no-send"]) == 0
+    assert "NOT registered" in capsys.readouterr().out
+    assert (tmp_path / W.HANDOVER_REL.format("C")).is_file()
+
+
+def test_library_handover_default_does_not_wake(tmp_path, monkeypatch):
+    """S.handover() called as a library (every other test) must never register a task; only the CLI default does."""
     import sync
     monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
-    home = tmp_path / "home"
+    monkeypatch.setattr(W, "register", lambda *a, **k: pytest.fail("registered from library call"))
+    home = tmp_path / "h"
     home.mkdir()
-    (home / "A-last-plan.json").write_text(json.dumps(_plan(slots=4)), encoding="utf-8")
-    p = S.handover(tmp_path, "a", note="n", host="JIS-NUC", home=home, now=T0, send=True)
-    assert len(_no_real_register) == 1 and _no_real_register[0][0][0] == "A"
-    t = p.read_text(encoding="utf-8")
-    assert t.count("Successor task:") == 1 and "MTS-SuccWake-A" in t
-    assert W.iso_utc(T0) in t                              # slots >= 1 -> fireAt = now
+    S.handover(_repo(tmp_path), "c", host="JIS-NB", home=home, now=NOW)
 
 
-def test_handover_no_wake_registers_nothing_and_writes_no_line(tmp_path, monkeypatch, _no_real_register):
-    import sync
-    monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
-    home = tmp_path / "home"
-    home.mkdir()
-    p = S.handover(tmp_path, "a", note="n", host="JIS-NUC", home=home, now=T0, send=True, wake=False)
-    assert _no_real_register == []
-    assert "Successor task:" not in p.read_text(encoding="utf-8")
-
-
-def test_handover_reregister_updates_the_line_never_duplicates(tmp_path, monkeypatch, _no_real_register):
-    import sync
-    monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
-    home = tmp_path / "home"
-    home.mkdir()
-    S.handover(tmp_path, "a", note="n", host="JIS-NUC", home=home, now=T0, send=True)
-    p2 = S.handover(tmp_path, "a", note="n", host="JIS-NUC", home=home, now=T0 + timedelta(minutes=5), send=True)
-    t = p2.read_text(encoding="utf-8")
-    assert t.count("Successor task:") == 1 and W.iso_utc(T0 + timedelta(minutes=5)) in t
-
-
-def test_handover_non_ended_writes_no_successor(tmp_path, monkeypatch, _no_real_register):
-    """A handover without the ENDED heartbeat (send=False) records no successor: the chain advances only on ENDED."""
-    import sync
-    monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
-    home = tmp_path / "home"
-    home.mkdir()
-    p = S.handover(tmp_path, "a", note="n", host="JIS-NUC", home=home, now=T0)
-    assert _no_real_register == []
-    assert "Successor task:" not in p.read_text(encoding="utf-8")
-
-
-def test_handover_dry_registers_nothing_but_reports_fireat(tmp_path, monkeypatch, _no_real_register, capsys):
-    import sync
-    monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
-    home = tmp_path / "home"
-    home.mkdir()
-    (home / "A-last-plan.json").write_text(json.dumps(_plan(slots=4)), encoding="utf-8")
-    p = S.handover(tmp_path, "a", note="n", host="JIS-NUC", home=home, now=T0, send=True, dry=True)
-    assert _no_real_register == []
-    out = capsys.readouterr().out
-    assert "DRY MTS-SuccWake-A would register fireAt" in out and "nothing registered" in out
-    assert "Successor task:" in p.read_text(encoding="utf-8")
+if __name__ == "__main__":
+    sys.exit(pytest.main([__file__, "-q"]))

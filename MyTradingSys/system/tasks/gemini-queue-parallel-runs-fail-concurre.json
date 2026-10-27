@@ -16,6 +16,15 @@
   "goal": "Parallel `gemini_queue.py run` processes must not fail on concurrent `git worktree add` (.git/config lock): serialise the git setup with a file lock and retry on a lock error.",
   "id": "gemini-queue-parallel-runs-fail-concurre",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge origin/fast-track for 5-day wiring audit & fixes",
+      "ref": "a37caf64ec00",
+      "utc": "2026-10-27T22:22:56Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,6 +32,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-27T22:51:43Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -34,12 +44,13 @@
     "gemini-queue-claim-release-push-hangs-fo (separate card, same file: take after it)",
     "any process start or restart on the NUC"
   ],
+  "scope_sha": "a37caf64ec00",
   "size": "S",
   "sources": [
     "scripts/dev/gemini_queue.py:55-82",
     "card title: 2 of 7 parallel jobs failed 2026-10-24 on .git/config lock"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read run_job() (gemini_queue.py:55-82) and MyTradingSys/tests/test_gemini_claim_skip.py for how git() is faked.",
     "Write the fail-first test: fake git() returns 'could not lock config file' rc 255 on the first two worktree-add calls, then rc 0; two threads call the setup helper; assert both end with a worktree and the log has no 'worktree failed'. Fails on current code (no retry).",

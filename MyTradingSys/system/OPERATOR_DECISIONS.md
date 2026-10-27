@@ -1303,8 +1303,9 @@ Applied: 2026-10-22: scripts/dev/offer_guard.py (Stop hook, .claude/settings.jso
 ## d-weekly-reset-radar | decided 2026-10-28 | Lead (thinker, login C)
 ```json
 {"question":"A weekly quota reset passed unnoticed and ~20% was lost. What should MTS do?","decision":"Track every login's reset, flag it 48 h ahead (T-48/T-24/T-2), and keep the successor chain running to exhaust the week before reset. Card weekly-reset-radar-48h-exhaust. DECISION (OURS): flag stages 48/24/2 h; roll a stale reset forward by 7 days; extends EXHAUST_PHASE.md (2 h window) and the successor-wake design.","date":"2026-10-28","status":"DECIDED","operator_quote":"We just lost around 20 % weekly max plan data - it just resetted without we noticing - it is a miss - mts must track and flat 48 hours in advance and exhaust weekly.","id":"d-weekly-reset-radar"}
-```n
+```
+
 ## d-live-validation | decided 2026-10-28 | Lead (thinker, login C), relayed from the Malkan RSI session
 ```json
 {"status":"DECIDED","operator_quote":"Relayed 2026-10-28 by the Malkan RSI session; verbatim operator words not in the relay (NOT_IN_DATA).","decision":"Live validation: a live signal is sent with a chart of drawn flags; operator confirms or corrects once per unique category; look-alikes inherit (matches validated case #n); differing or corrected goes to a DOUBTS list, never an auto-verdict. Seed categories from history (OURS). Card live-validation-store-signal-chart-hook.","question":"How are layers validated now that G3 blind marking is dropped?","id":"d-live-validation","date":"2026-10-28"}
-```n
+```

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-27T22:52:07Z",
   "commands": [
     "python -m pytest MyTradingSys/research/layer_lab/forward_excursion/test_event_table.py -q"
   ],
@@ -16,6 +17,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "VERIFIED-C2; report 2026-10-23_trust-recheck-gptb-forward-excursion-hel.md written",
+      "ref": "afe15027f",
+      "utc": "2026-10-27T22:52:07Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -43,7 +50,12 @@
     "MyTradingSys/system/tasks/archive/gptb-forward-excursion-helper.json",
     "MyTradingSys/research/layer_lab/reports/2026-10-19_lab-trust-tag.md"
   ],
-  "result": "",
+  "result": "VERIFIED-C2; report 2026-10-23_trust-recheck-gptb-forward-excursion-hel.md written",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/forward_excursion/event_table.py",
     "MyTradingSys/research/layer_lab/forward_excursion/test_event_table.py",
@@ -63,13 +75,14 @@
     "MyTradingSys/research/layer_lab/forward_excursion/REPORT.md (spec: a bar touching both counts stop first, OURS)",
     "MyTradingSys/research/layer_lab/forward_excursion/event_table.py:42-44 (label names stop_1R/target_1R only; semantics come from the card goal)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read REPORT.md and the card goal, not the code: forward_excursion(bars, i_entry, side, r_price, horizon) -> mfe_r, mae_r, first_hit. Labels: stop_1R = stop level touched first, target_1R = +1R touched first (names as emitted at event_table.py:42-44).",
     "Re-derive by hand and with your own short script 3 cases: a long hitting +1R first (first_hit target_1R), a short hitting its stop first, and one bar touching both (first_hit stop_1R); compare with the function output; a difference is a MISMATCH with file:line, settled by calculation.",
     "Read test_event_table.py: would it fail on a broken implementation? Mutate one line (the both-touch rule) in a scratch copy, run, record; leave the real file unchanged.",
     "Write the report MyTradingSys/research/layer_lab/reports/2026-10-23_trust-recheck-gptb-forward-excursion-hel.md: reviewer vendor and model, the numbers, MATCH or MISMATCH per number, mutation result, tag proposal VERIFIED-C2 or DISPUTED."
   ],
+  "taken": "2026-10-27T22:52:07Z",
   "tests": "Audit card: its fail-first is the one-line mutation in a scratch copy, which must turn a test red; recorded in the report.",
   "title": "Trust re-check: gptb-forward-excursion-helper",
   "weight": "CRUCIAL",

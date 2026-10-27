@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-27T21:57:09Z",
   "commands": [],
   "created": "2026-10-27T20:51:39Z",
   "depends_on": [],
@@ -12,29 +13,52 @@
   "goal": "3 READY cards this session (mfe-exit-dev-only-rerun-not-reproducible, fix-raw-1d-vs-1m-resample-mismatch-905-o, habib-holdout-prereg-draft) were already shipped days earlier (ad4e461d6, 74727bd432, e65a368db); tasks.py check/dispatch/stale did not catch it. Find and close that gap; see note for how each was found.",
   "id": "dispatch-ranking-shows-already-shipped-c",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "tasks.py likely_done_reason + cmd_check warning + test_tasks.py::LikelyDoneAndDependsBrief",
+      "ref": "09e917af2",
+      "utc": "2026-10-27T21:57:09Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "opus-station-review: review disposition and claim ownership repairs (findings 1, 2A, 7)",
+      "ref": "8fce9ee1fe14",
+      "utc": "2026-10-27T21:12:25Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Found by login A rolling-chain dispatch 2026-10-27/28 while avoiding duplicate work per operator instruction. The 3 cards are already closed (see their result fields).",
+  "note": "Found by login A rolling-chain dispatch 2026-10-27/28 while avoiding duplicate work per operator instruction. The 3 cards are already closed (see their result fields).\nREVIEWED:2026-10-28 ACCEPT reviewer=Opus",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-27T21:57:05Z",
   "refs": [],
-  "result": "",
+  "result": "tasks.py likely_done_reason + cmd_check warning + test_tasks.py::LikelyDoneAndDependsBriefTest",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/tasks.py, scripts/dev/test_tasks.py (or wherever its tests live)"
   ],
   "scope_out": [
     "do not touch task JSON files of other cards; no change to stale --refresh's own scope-pointer logic unless that is the actual fix"
   ],
+  "scope_sha": "8fce9ee1fe14",
   "size": "S",
   "sources": [],
-  "state": "raw",
+  "state": "done",
   "steps": [
     "Reproduce: run tasks.py check on the 3 (now-closed) card ids' pre-close json (git show HEAD~N) against current tree; confirm check says ready/passes despite done_when already true.",
     "Add or extend a check/stale heuristic: grep each card's done_when/tests text for file:line or literal strings that should exist only after the fix, and warn (not auto-close) when they already match current tree.",
     "Write the test fixture (one real closed card, one genuinely-open card) and wire the new check into tasks.py check or stale."
   ],
+  "taken": "2026-10-27T21:57:09Z",
   "tests": "New test on the detector: feed it one of the 3 real closed cards' json (or a synthetic fixture) plus the tree state showing the fix present, assert it flags/warns; feed a genuinely-open card, assert it does not false-positive.",
   "title": "dispatch ranking shows already-shipped cards as READY (3 caught this session: mfe-exit, fix-raw-1d, habib-holdout)",
   "weight": "IMPORTANT",

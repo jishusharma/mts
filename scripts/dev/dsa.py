@@ -32,6 +32,7 @@ from pathlib import Path
 TRUNK = "fast-track"
 LIVE_MARKER = ".mts_live"
 MIRROR_PREFIX = "runtime_data/_mirror/"
+GATEWAY_MARKER = ".gateway_owner"   # written by sync.py start on the gateway profile; gitignored in the repo, tool-owned, never work
 CLAIMS_DIR = "MyTradingSys/system/claims"
 NEXT_SESSION = "MyTradingSys/system/NEXT_SESSION.md"
 STATUS_MD = "MyTradingSys/research/STATUS.md"
@@ -572,6 +573,8 @@ def porcelain(root):
         xy, path = e[:2], e[3:]
         if xy[0] in "RC":
             i += 1                       # the old name follows as its own field
+        if path == GATEWAY_MARKER:
+            continue                     # tool-owned marker, not unshipped work (fixture repos have no .gitignore)
         rows.append((xy, path))
     return rows
 

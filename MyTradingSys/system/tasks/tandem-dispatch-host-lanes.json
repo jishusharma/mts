@@ -18,9 +18,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Machine rename: repo works under old and new host names (hosts.py)",
-      "ref": "fc950331b605",
-      "utc": "2026-10-25T15:36:18Z"
+      "line": "Result: 5-day wiring audit & fixes (4b2 successor_wake, 48h exhaust radar, 6 coordination ",
+      "ref": "eb305a9f043c",
+      "utc": "2026-10-27T22:21:22Z"
     }
   ],
   "layers": [],
@@ -30,7 +30,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-25T22:18:26Z",
+  "refreshed": "2026-10-27T22:51:57Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -42,10 +42,10 @@
     "live path, orders, deploy, restarts",
     "new hooks, gate steps or rules beyond the card"
   ],
-  "scope_sha": "fc950331b605",
+  "scope_sha": "eb305a9f043c",
   "size": "S",
   "sources": [],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read exclusion() (tasks.py:1384-1416) and supervisor.pick_cards.",
     "Write the failing tests for hosts JIS-NB, DESKTOP-F7IU69N and JIS-NUC.",
