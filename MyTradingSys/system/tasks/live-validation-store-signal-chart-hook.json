@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-27T20:25:29Z",
+  "depends_on": [],
+  "done_when": "validation store (category -> verdict, case #, chart path) and doubts list exist as files; match(signal) returns 'matches validated case #n' or DOUBT; seeded from MyTradingSys/research/malkan_div_flags_2026-10-28/ with one example per type (regular/hidden x bull/bear x 1d/1w); a hook turns a live Malkan signal into a chart message; tests pass and fail on pre-change code",
+  "est_turns": 35,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Replace G3 blind marking with live validation: when a layer fires a live signal, MTS sends it with a chart of the drawn flags; the operator confirms or corrects once per unique signal category; look-alikes inherit the verdict; anything different or corrected goes to a DOUBTS list, never an auto-verdict.",
+  "id": "live-validation-store-signal-chart-hook",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "OPERATOR DECISION 2026-10-28 (relayed by Malkan RSI session): replaces G3 blind marking with LIVE VALIDATION; one validation per unique signal category, later look-alikes inherit 'matches validated case #n', differing or corrected goes to DOUBTS. Seed categories from history (OURS default).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-27T20:25:30Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "validation store + doubts list; seed from history flags; signal-to-chart hook as a separate module called by the signal path; first layer Malkan RSI divergence BTC 1d/1w"
+  ],
+  "scope_out": [
+    "changing live trading logic or order paths; any mainnet; auto-verdicts; deploy (live tree changes only by manual deploy)"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Define category key (type regular|hidden, side bull|bear, timeframe 1d|1w, symbol) and store schema with provenance (operator verdict verbatim, date, chart path)",
+    "Seed one example per type from malkan_div_flags_2026-10-28 (wait for the Builder re-land; if the folder is missing, block and say so)",
+    "match(): same category and same flag geometry rule -> inherits; otherwise DOUBT appended, no verdict",
+    "Hook: live signal -> chart with drawn flags -> operator message; correction writes the verdict and moves the doubt",
+    "Tests for restart/reset state, non-trade balance moves, send/API errors, fail closed (CLAUDE.md live-path rule)"
+  ],
+  "tests": "MyTradingSys/tests/validation/test_live_validation_store.py: look-alike inherits case #n; differing or corrected signal goes to doubts and gets no verdict; restart/reset keeps store; API/send error leaves the signal pending, fails closed",
+  "title": "Live validation: per-category verdict store, doubts list, live signal-to-chart hook (first layer: Malkan RSI divergence BTC 1d/1w)",
+  "weight": "",
+  "worker": "session"
+}
