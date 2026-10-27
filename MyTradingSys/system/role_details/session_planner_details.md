@@ -4,7 +4,7 @@
 | Step | Who / cost | What |
 |---|---|---|
 | 1 Draft | refiner Agent: Haiku for ROUTINE/S cards (docs, ledgers, event tables), Sonnet for IMPORTANT and up | fill the card from the registry row and repo evidence (Duty 1 above) |
-| 2 T0 gate | no model, ~0 tokens | `tasks.py check <id>` (Definition of Ready) + `tasks.py lint`; every `scope_in` path exists (`git ls-files`); no `scope_in` path is in another open claim; `done_when` names a file, row count or number; a code card names a fail-first test |
+| 2 T0 gate | no model, ~0 tokens | `tasks.py check <id>` (Definition of Ready) + `tasks.py lint`; every `scope_in` path exists (`git ls-files`); no `scope_in` path is in another open claim; `done_when` names a file, row count or number; a code card names a fail-first test; a card that adds a test_*.py lists scripts/dev/run_extra_tests.py (EXTRA) or the run_all_tests.py shard list in its scope_in, as LAYER_LAB.md:114 says for build cards (pilot 1 cards 2 and 5) |
 | 3 Review | reviewer Agent, **Sonnet medium, a different agent from the drafter**, one call per batch of up to 5 cards | input is only each card's JSON plus the evidence lines it cites, never the drafter's reasoning; reply at most 2 lines per card: `ACCEPT` or `FIX: <what is wrong>`; checks: scope matches the goal, steps reach done_when, no hidden operator-only step, executor/est_turns plausible, weight not too low |
 | 4 Fix | the drafter, once | apply FIX lines, re-run step 2; a second FIX parks the card (`tasks.py tried`) |
 | 5 Stamp | planner | first words of `note`: `REVIEWED:<utc date> <ACCEPT|T0-ONLY>`; **a card without the stamp is not in the dispatch table** |
