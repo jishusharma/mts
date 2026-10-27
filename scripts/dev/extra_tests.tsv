@@ -123,4 +123,5 @@ scripts/dev/test_runaway_check.py
 scripts/dev/test_tasks_conflict.py
 scripts/dev/test_live_cross_read.py
 scripts/dev/test_operator_material_index.py
+scripts/dev/test_gemini_queue.py
 MyTradingSys/research/extraction_ledger_2026-10/test_build_ledger.py

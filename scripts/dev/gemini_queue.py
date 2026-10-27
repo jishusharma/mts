@@ -9,7 +9,7 @@ never stamps REVIEWED, never touches the live tree. A Claude session reviews the
 Flash models only (operator 2026-10-18).
 """
 from __future__ import annotations
-import os, subprocess, sys, time
+import os, random, re, socket, subprocess, sys, time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -64,6 +64,26 @@ def claim_holder(card: str, claims) -> str:
     return ''
 
 
+def claim_with_retry(wt, card: str, tries: int = 6, sleep=time.sleep):
+    """Claim `card` from worktree `wt`; returns (status, reason), status in ok|skip|fail.
+    A busy trunk rejects the claim push: re-run (sync.py re-fetches) up to `tries` times with 2-10 s jittered backoff (OURS).
+    Our own host already holding it = ok; another holder = skip at once; a timeout (rc 124) fails at once, never 6 hangs."""
+    reason = ''
+    for n in range(1, tries + 1):
+        c = sh([PY, 'scripts/dev/sync.py', 'claim', card], cwd=wt)
+        if c.returncode == 0:
+            return 'ok', ''
+        reason = ((c.stderr or '') + (c.stdout or '')).strip().replace('\n', ' | ')[:300]
+        m = re.search(r'already claimed by (\S+)', reason)
+        if m:
+            return ('ok', '') if m.group(1).lower() == socket.gethostname().lower() else ('skip', reason)
+        if c.returncode == 124:
+            return 'fail', f'timeout: {reason}'
+        if n < tries:
+            sleep(random.uniform(2, 10))
+    return 'fail', f'after {tries} tries: {reason}'
+
+
 def run_job(card: str, effort: str) -> None:
     wt = ROOT / card
     log = ROOT / f'{card}.log'
@@ -79,9 +99,14 @@ def run_job(card: str, effort: str) -> None:
         if r.returncode:
             log.write_text('worktree failed: ' + r.stderr, encoding='utf-8', newline='\n')
             return
-    c = sh([PY, 'scripts/dev/sync.py', 'claim', card], cwd=wt)
-    if c.returncode:
-        log.write_text(f'CLAIM FAILED/TIMEOUT {card}: {c.stderr}\n', encoding='utf-8', newline='\n')
+    for k, v in (('user.name', 'gemini-queue'), ('user.email', 'gemini-queue@mts.local')):  # SYSTEM has no git identity
+        git('config', k, v, cwd=wt, timeout=30)
+    status, why = claim_with_retry(wt, card)
+    if status == 'skip':
+        log.write_text(f'SKIP {card}: {why}\n', encoding='utf-8', newline='\n')
+        return
+    if status == 'fail':
+        log.write_text(f'CLAIM FAILED: {card}: {why}\n', encoding='utf-8', newline='\n')
         return
     brief = sh([PY, 'scripts/dev/tasks.py', 'brief', card], cwd=wt).stdout
     model = f'gemini-3.8-flash-{effort}'
