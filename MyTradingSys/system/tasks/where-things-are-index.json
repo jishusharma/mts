@@ -14,7 +14,7 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "scripts/dev/where_is.py <topic> prints files, machine, channel and ledger row for a topic (trader, video id, layer, rule id, screenshot topic) from generated MyTradingSys/system/WHERE_IS.md; sync.py start prints one pointer line; the rule goes in QUICK_ANSWERS.md and role files, NOT CLAUDE.md (7127/7168 B).",
+  "goal": "scripts/dev/where_is.py <topic> prints files, machine, channel and ledger row for a topic (trader, video id, layer, rule id, screenshot topic) from generated MyTradingSys/system/WHERE_IS.md; sync.py start prints one pointer line; the rule goes in QUICK_ANSWERS.md and role files, NOT CLAUDE.md (no size headroom).",
   "id": "where-things-are-index",
   "lane": "SONNET",
   "layers": [],
