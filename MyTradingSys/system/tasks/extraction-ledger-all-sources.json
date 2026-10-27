@@ -3,9 +3,9 @@
   "asks": "",
   "commands": [],
   "context": {
-    "calls_to_edit": 9,
-    "folded": "2026-10-27T21:02:00Z",
-    "misses": 4,
+    "calls_to_edit": null,
+    "folded": "2026-10-27T21:00:00Z",
+    "misses": 58,
     "reads": [
       "MyTradingSys/research/malkan_extract_2026-10-15/tools/check_hindi.py",
       "scripts/dev/verify_extract_quotes.py",
