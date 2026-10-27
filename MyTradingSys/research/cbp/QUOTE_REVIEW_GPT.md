@@ -5,7 +5,7 @@ The production store and matching transcripts are not available in this checkout
 
 ## Reproducible local evidence
 
-Run `python MyTradingSys/research/cbp/quote_review_repro.py`. It uses a temporary synthetic transcript and the actual `check()` entry point. The original verifier is unchanged. All seven current-behavior assertions passed; these are reproductions of gaps, not assertions that acceptance is correct.
+Run `python MyTradingSys/research/cbp/quote_review_repro.py.txt`. It uses a temporary synthetic transcript and the actual `check()` entry point. The original verifier is unchanged. All seven current-behavior assertions passed; these are reproductions of gaps, not assertions that acceptance is correct.
 
 | Probe | Machine result | Human disposition |
 |---|---|---|
