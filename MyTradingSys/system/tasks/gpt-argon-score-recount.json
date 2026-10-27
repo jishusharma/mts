@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-10-27T20:55:32Z",
+  "closed": "2026-10-27T21:08:11Z",
   "commands": [],
   "created": "2026-10-25T19:25:09Z",
   "depends_on": [],
@@ -17,9 +17,9 @@
   "latest": [
     {
       "kind": "ship",
-      "line": "SOUND: MATCH 16, MISMATCH 1, CORRECT_NULL 5, missed 0, INVENTED 4, UNVERIFIED 2 (28 fields",
-      "ref": "d2632c605",
-      "utc": "2026-10-27T20:55:32Z"
+      "line": "16/1/5/0/4/2 (28 core fields); MyTradingSys/research/layer_lab/reports/2026-10-27_gpt-argo",
+      "ref": "dc1ef0a61",
+      "utc": "2026-10-27T21:08:11Z"
     },
     {
       "auto": true,
@@ -45,7 +45,7 @@
   "refined_by": "codex_run.py ask",
   "refreshed": "2026-10-25T19:26:58Z",
   "refs": [],
-  "result": "SOUND: MATCH 16, MISMATCH 1, CORRECT_NULL 5, missed 0, INVENTED 4, UNVERIFIED 2 (28 fields; local excluded); MyTradingSys/research/layer_lab/reports/2026-10-26_gpt-argon-score-recount.md",
+  "result": "16/1/5/0/4/2 (28 core fields); MyTradingSys/research/layer_lab/reports/2026-10-27_gpt-argon-score-recount.md",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -70,7 +70,7 @@
     "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
     "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
   ],
-  "taken": "2026-10-27T20:55:32Z",
+  "taken": "2026-10-27T21:08:11Z",
   "tests": "",
   "title": "GPT recounts the Argon-vs-Flash scoring table of the blind read of 7 frames",
   "weight": "ROUTINE",
