@@ -7,6 +7,7 @@ status of the retired NUC worker, 10 commits, delivered lab cards) are not repea
 """
 import nowin  # B190: scheduled run (hidden console) must not flash git windows
 nowin.install()
+import csv
 import json
 import subprocess
 import os
@@ -23,6 +24,9 @@ RESEARCH_PATHS = ("MyTradingSys/research/", "MyTradingSys/methodology/", "MyTrad
 INFRA_CAP_PCT = 30
 RECENT_REPORTS = 5
 RECENT_REPORT_DAYS = 3
+PROMOTED_SETUPS = "MyTradingSys/execution/promoted_setups.json"
+VERDICTS_CSV = "MyTradingSys/research/VERDICTS.csv"
+OOS_SPLITS = ("VALIDATION", "HOLDOUT")
 
 
 def run_cmd(cmd, cwd=None):
@@ -256,6 +260,43 @@ def get_ci_line(cwd=None, now=None):
             f"origin/fast-track: {tag}")
 
 
+def get_go_private_line(cwd=None):
+    """GO-PRIVATE trigger (operator 2026-10-22: notify the moment a layer first clears its fee-net out-of-sample gate).
+    A = promoted_setups.json entries (already promoted live). B = VERDICTS.csv PASS rows whose split_read names
+    VALIDATION or HOLDOUT, grouped by study_dir and dated by the earliest such PASS row. A or B above zero reads
+    TRIGGER with the ids/dirs and first-seen date; a missing or unreadable file counts as zero, never an error."""
+    base = Path(cwd) if cwd else Path(".")
+    a_ids = []
+    try:
+        data = json.loads((base / PROMOTED_SETUPS).read_text(encoding="utf-8"))
+        a_ids = [str(e.get("id") or e.get("setup_id") or "?") for e in data.get("entries", [])]
+    except (OSError, ValueError):
+        pass
+    b = {}
+    try:
+        with open(base / VERDICTS_CSV, newline="", encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                if row.get("verdict") != "PASS":
+                    continue
+                split = row.get("split_read") or ""
+                if not any(s in split for s in OOS_SPLITS):
+                    continue
+                d, dt = row.get("study_dir") or "?", row.get("date") or ""
+                if d not in b or (dt and dt < b[d]):
+                    b[d] = dt
+    except (OSError, csv.Error):
+        pass
+    a, bn = len(a_ids), len(b)
+    if a == 0 and bn == 0:
+        return "GO-PRIVATE: A=0 B=0 NO TRIGGER"
+    bits = []
+    if a_ids:
+        bits.append("A:" + ",".join(a_ids))
+    if b:
+        bits.append("B:" + ",".join(f"{k} ({v})" for k, v in sorted(b.items(), key=lambda kv: kv[1])))
+    return f"GO-PRIVATE: A={a} B={bn} TRIGGER " + "; ".join(bits)
+
+
 LIVE_MARKER = ".mts_live"   # marker FILE at the root of the live tree (auto_deploy.Ops.is_live)
 
 
@@ -412,6 +453,7 @@ def main():
     output.append("## Git Status")
     ci_line = get_ci_line()
     output.append(ci_line)
+    output.append(get_go_private_line())
     card_line = get_ci_card_line(ci_line)
     if card_line:
         output.append(card_line)
