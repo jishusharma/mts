@@ -18,6 +18,7 @@ Entry format: `### A-<yyyymmdd>-<n> <kind> <title>` with kind one of INFO, DO-NO
 - Until: the operator posts the end of it.
 - What: read `GATEWAY_NUC.md` (routing, rules, switch on/off). Fable-lane and heavy card work with no private data goes to JIS-NUC (card or `desk.py post ... --target JIS-NUC`); NUC sessions take the next card when one ships. Gateway sessions touch public tracked files only, run in a worktree, never read `.secrets`, `.env`, runtime or the live tree.
 - Why: the gateway has no weekly cap, login B is not available on the NUC while it runs, and the other logins are capped.
+- Not a scheduling exception: "unrestricted" (GATEWAY_NUC.md:26-31) lifts only the usage/weekly-cap gate and the 2-worker pacing, not the "no scheduled tasks anywhere" hard rule (GATEWAY_NUC.md:31 keeps it in force on the gateway too); the one standing exception is `MTS-CBP-Ingestion` (SCHEDULING_POLICY.md "CBP-only exception"), unrelated to this gateway profile.
 
 ### A-20261024-1 DO-NOW Every station: restart cleanup and a cleanup roll call (operator yes 2026-10-24)
 - Applies to: every station (device + login, STATION_CLEANUP.md section 1). The first session on each device to read this does it once for that device.

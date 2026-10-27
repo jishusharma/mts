@@ -1214,17 +1214,51 @@ def slugify(text):
     return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")[:40] or "task"
 
 
+_CLAIMS_MEMO = {}   # (repo, resolved sha) -> rows; a sha names immutable content, so a hit is exact (plan-hang-claims 2026-10-28)
+
+
+def _cat_batch(repo, shas):
+    """{sha: text} for blob shas with ONE `git cat-file --batch` process (was one `git show` per claim file)."""
+    if not shas:
+        return {}
+    NL = chr(10)
+    r = subprocess.run(["git", "-C", str(repo), "cat-file", "--batch"], input=(NL.join(shas) + NL).encode(), capture_output=True)
+    if r.returncode != 0:
+        raise SyncError("git cat-file --batch failed:" + NL + r.stderr.decode(errors="replace").rstrip())
+    out, buf, i = {}, r.stdout, 0
+    for _ in shas:
+        j = buf.index(b"\n", i)
+        head = buf[i:j].split()
+        if len(head) < 3:
+            raise SyncError(f"git cat-file --batch: no object {head[0].decode() if head else '?'}")
+        n = int(head[2])
+        out[head[0].decode()] = buf[j + 1:j + 1 + n].decode("utf-8", errors="replace")
+        i = j + 1 + n + 1
+    return out
+
+
 def read_claims(repo, ref):
-    """[(slug, {key: value})] of claim files on `ref`."""
-    names = git(repo, "ls-tree", "--name-only", ref, f"{CLAIMS_DIR}/", check=False).stdout.split()
+    """[(slug, {key: value})] of claim files on `ref`. Memoised per (repo, resolved sha of ref): a plan/dispatch run asks per card."""
+    sha = git(repo, "rev-parse", "--verify", "--quiet", ref, check=False).stdout.strip()
+    if not sha:
+        return []   # ref absent: the old ls-tree (check=False) printed nothing too
+    key = (str(repo), sha)
+    if key in _CLAIMS_MEMO:
+        return [(s, dict(kv)) for s, kv in _CLAIMS_MEMO[key]]
+    tree = git(repo, "ls-tree", ref, f"{CLAIMS_DIR}/", check=False).stdout.splitlines()
+    ents = []   # (path, blob sha)
+    for line in tree:
+        meta, _, path = line.partition("\t")
+        parts = meta.split()
+        if path.endswith(".md") and len(parts) == 3 and parts[1] == "blob":
+            ents.append((path, parts[2]))
+    texts = _cat_batch(repo, sorted({b for _, b in ents}))
     rows = []
-    for n in names:
-        if not n.endswith(".md"):
-            continue
-        body = git(repo, "show", f"{ref}:{n}").stdout
-        kv = dict(l.split(": ", 1) for l in body.splitlines() if ": " in l)
-        rows.append((Path(n).stem, kv))
-    return rows
+    for path, blob in ents:
+        kv = dict(l.split(": ", 1) for l in texts[blob].splitlines() if ": " in l)
+        rows.append((Path(path).stem, kv))
+    _CLAIMS_MEMO[key] = rows
+    return [(s, dict(kv)) for s, kv in rows]
 
 
 def open_claims(repo, fetch=True):

@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/mts_doctor.py"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-27T23:26:52Z",
+    "misses": 0,
+    "reads": [],
+    "session": "agent-a9caa09de4b247139"
+  },
+  "created": "2026-10-27T23:26:20Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/health_checks_run_2026-10-28/REPORT.md exists with one table (check, command, result PASS/FAIL/ERROR, time taken, what it guards), flags for stale/never-run/hanging/duplicate checks, and a proposed schedule-free one-command runner.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Run every health/check script in scripts/dev read-only; one triage table in REPORT.md (see done_when); report only, no fixes.",
+  "id": "all-health-checks-run-and-triage",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Output file: MyTradingSys/research/health_checks_run_2026-10-28/REPORT.md. Gemini effort low. Scripts named: aibridge_health, health_audit, host_health, lane_health, mts_doctor, config_check, alert_rate_check, perm_audit, token_audit, ci_watch, check_handoff, runaway_check, plus others found. Flag stale, never-run, hanging, duplicate checks.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-27T23:26:49Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/health_checks_run_2026-10-28/REPORT.md"
+  ],
+  "scope_out": [
+    "scripts/dev (no fixes, no edits)",
+    "live tree and runtime data"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "scripts/dev"
+  ],
+  "state": "ready",
+  "steps": [
+    "List health/check scripts in scripts/dev (aibridge_health, health_audit, host_health, lane_health, mts_doctor, config_check, alert_rate_check, perm_audit, token_audit, ci_watch, check_handoff, runaway_check, check_*.py, others)",
+    "Run each read-only with 120 s timeout; record result and time",
+    "Write REPORT.md table plus flags and the one-command proposal"
+  ],
+  "tests": "none (report only); each command run with a 120 s timeout, hangs recorded as ERROR",
+  "title": "Run every health/check script read-only and triage results (report only)",
+  "weight": "",
+  "worker": "session"
+}
