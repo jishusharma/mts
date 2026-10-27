@@ -75,3 +75,13 @@ Start 2026-10-27T12:50Z. Worktree claude/supervisor-c-jis-nb-ce71af (HEAD = orig
 - CI green on trunk tip (ci_watch "CI ok" 16:18Z). Budget C: 5h=12% week=81% (cap 85%, reset 20:00Z), SPEND.
 - RAMP +1 dispatched: docker-vs-windows-test-speed (JIS-NB S builder 25t, agent ae0740e4). a1902bee still running (wrapping up; content already on trunk).
 - Stop conditions unchanged: 5h>=80% / week>=85% / 24h.
+
+## 2026-10-27 ~16:32Z divert directive (from Start Lead local_f41228dd)
+- Operator directive: divert card work OFF login C. C holds new card-builder slots; CODEX-lane cards -> GPT loop btdbn802l (codex_run.py, own 65-pt meter) churns the queue; Claude-lane card work -> login A (jishusharma, fresh pool, JIS-NUC).
+- Stopped ae0740e4 (docker-vs-windows-test-speed) pre-claim: board still STATE READY, so A gets it clean, no release needed.
+- Stopped HAIKU re-run a1902bee finished earlier: content 88769b8f4 already on trunk + card done.
+- KEPT: verifying every GPT ship (sha + Result: + green 60 min + one other-model spot-check) stays here on C.
+- main-checkout-stale-hooks-2026-10-24 stays PARKED (waits operator's wip 0ac18c3fb call); C does not move the live tree.
+- Posted divert signals per Lead: host-legacy-tasks-unregister, docker-vs-windows-test-speed, main-checkout-stale-hooks (parked).
+- Eagle stays on live-market thread (now Sonnet/medium, cheap) - not C-budget churn.
+- Net: C stops spending on card churn; GPT + A carry it. Watcher still armed; D6 stop conditions unchanged.
