@@ -65,7 +65,7 @@ def _git(root, *a):
 
 
 def fold_repo(tmp_path):
-    root = tmp_path / "repo"
+    root = (tmp_path / "repo").resolve()  # git calls an 8.3 short TEMP path (E-NGIN~1) "outside repository"
     (root / "MyTradingSys/system/tasks").mkdir(parents=True)
     (root / "scripts/dev").mkdir(parents=True)
     (root / "MyTradingSys/system/tasks/card-a.json").write_text(json.dumps({"id": "card-a", "state": "ready"}) + chr(10), encoding="utf-8")
@@ -73,8 +73,10 @@ def fold_repo(tmp_path):
         (root / f).write_text("x=1" + chr(10), encoding="utf-8")
     _git(root, "init", "-q")
     _git(root, "symbolic-ref", "HEAD", "refs/heads/work")
-    _git(root, "-c", "user.name=t", "-c", "user.email=t@t", "add", "-A")
-    _git(root, "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", "base")
+    _git(root, "config", "user.name", "t")   # local identity: context_gap.fold()'s own commit call carries no -c flags and a
+    _git(root, "config", "user.email", "t@t")  # host with no global git identity (common on a fresh box) fails it otherwise
+    _git(root, "add", "-A")
+    _git(root, "commit", "-q", "-m", "base")
     _git(root, "update-ref", "refs/remotes/origin/fast-track", "HEAD")
     return root
 
