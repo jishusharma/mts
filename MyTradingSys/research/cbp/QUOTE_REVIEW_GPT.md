@@ -21,9 +21,9 @@ Run `python MyTradingSys/research/cbp/quote_review_repro.py`. It uses a temporar
 
 | Severity | Evidence | Finding and proposed action |
 |---|---|---|
-| HIGH | scripts/dev/verify_extract_quotes.py:80-91 (`first_missing`) | Empty normalized fragments are skipped and no nonempty fragment is required. Reject evidence with no meaningful fragment. Follow-up: `cbp-quote-empty-fragment-word-boundary`. |
+| HIGH | scripts/dev/verify_extract_quotes.py:66-78 (`first_missing`) | Empty normalized fragments are skipped and no nonempty fragment is required. Reject evidence with no meaningful fragment. Follow-up: `cbp-quote-empty-fragment-word-boundary`. |
 | MED | scripts/dev/verify_extract_quotes.py:87 (`body_norm.find`) | Substring matching accepts `long` inside `belong`. Require word boundaries for every fragment. Same follow-up. |
-| HIGH | scripts/dev/verify_extract_quotes.py:80-91 | Ordered ellipsis fragments can remove negation. Lexical presence is insufficient for semantic quote approval; retain an independent contextual check. No automated semantic remedy claimed. |
+| HIGH | scripts/dev/verify_extract_quotes.py:66-78 | Ordered ellipsis fragments can remove negation. Lexical presence is insufficient for semantic quote approval; retain an independent contextual check. No automated semantic remedy claimed. |
 | MED | scripts/dev/verify_extract_quotes.py:178-184 (`main`) | Zero checked quotes yields PASS. Callers must distinguish zero checked from successfully verified evidence. This is a certification limitation, not proof of a production ingestion bypass. |
 | BLOCKER | GPT_CBP_GUIDE.md:5,19-21; desk request above | Actual store rows, rejection reason and corresponding transcript bodies are absent. Obtain a host-local review or an authorized noncommitted pack before assigning row-level PASS/FAIL. Do not fabricate 13 table entries. |
 
