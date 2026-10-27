@@ -209,6 +209,21 @@ class SignalTest(unittest.TestCase):
         (h / "20200101T000000Z-x-0000.json").write_text("{}", newline="\n")
         self.assertEqual(S.prune(h), 1)
 
+    def test_ensure_recovers_from_zeroed_hub_head(self):
+        """bug-nuc-signal-hub-not-a-git-repo: a power loss on JIS-NUC left the hub clone's .git/HEAD all NUL bytes. ensure()
+        saw the .git dir, skipped re-init, and every later git call (send()'s `git add -A`) crashed with RuntimeError
+        'not a git repository' instead of self-healing."""
+        self.machine("jis-nuc", "sharma")
+        S.ensure()
+        h = S.home()
+        (h / ".git" / "HEAD").write_bytes(b"\x00" * 41)
+        h2 = S.ensure()
+        self.assertEqual(h2, h)
+        self.assertTrue(S.send("after corruption", kind="note"))
+        self.machine("jis-nb", "pro")
+        rows = S.load(S.ensure())
+        self.assertIn("after corruption", [r["text"] for r in rows])
+
     def test_no_origin_is_silent(self):
         os.environ["MTS_SIGNALS_ORIGIN"] = ""
         os.environ["MTS_SIGNALS_HOME"] = str(self.tmp / "none")
