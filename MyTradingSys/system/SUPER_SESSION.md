@@ -105,3 +105,4 @@ You are Supervisor. Run the super session per MyTradingSys/system/SUPER_SESSION.
 ```
 The role_loader hook injects `roles/supervisor.md` (banner `ROLE LOADED: Supervisor ...`); the login letter comes from the session's email
 (CLOUD_ACCOUNTS.md), else env `MTS_LOGIN`. First turn: `get_usage`, ANNOUNCEMENTS ACTIVE entries, STATUS.md, NEXT_SESSION.md, Session_Planner, Doctor, then workers.
+- 2026-10-27 login C Supervisor TRANSIT at 5h 23%: handover written; timed successor wake MTS-SuccWake-C 22:12Z (first real 4b2 run)
