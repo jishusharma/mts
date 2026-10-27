@@ -6,15 +6,20 @@
     "python scripts/dev/successor_wake.py --dry --login C"
   ],
   "context": {
-    "calls_to_edit": 10,
-    "folded": "2026-10-27T21:52:09Z",
-    "misses": 4,
+    "calls_to_edit": 60,
+    "folded": "2026-10-27T23:09:27Z",
+    "misses": 12,
     "reads": [
+      "scripts/dev/traffic.py",
+      "scripts/dev/run_all_tests.py",
       "scripts/dev/test_supervisor.py",
-      "scripts/dev/test_nuc_lab.py",
-      "scripts/dev/run_all_tests.py"
+      "scripts/dev/run_extra_tests.py",
+      "MyTradingSys/system/SCHEDULING_POLICY.md",
+      "chain_test_proof.txt",
+      "scripts/dev/c_drive_guard.py",
+      "scripts/sched/register_aibridge.ps1"
     ],
-    "session": "agent-a8e3464a20907353d"
+    "session": "c4f2d08d-7677-405a-aa0d-b17986302515"
   },
   "created": "2026-10-27T20:00:06Z",
   "depends_on": [],
