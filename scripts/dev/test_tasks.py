@@ -556,6 +556,33 @@ class StateTagTest(NextSkipsClaimedTest):
         self.assertIn("LATEST decision MyTradingSys/system/CONTROL_ROOM.md", out)
         self.assertIn("LATEST ship", out)
 
+    def test_list_flags_a_ready_card_whose_scope_already_shipped_on_trunk(self):
+        """bug-ready-state-lags-shipped-card: next/take/brief already hide/refuse/STOP a ready card whose scope moved on
+        trunk, but `list` printed a bare 'ready' for the same card -- the stale copy of an already-shipped card then reads
+        as dispatchable backlog. `list` must carry the same STATE tag brief shows."""
+        self.commit("src/a.py", "x=1" + NL)
+        self.card()
+        self.run_cli("tag", "TS1", "--refresh")
+        self.commit("src/a.py", "x=2" + NL, "2026-10-02T00:00:00+00:00")   # trunk ship after the card's own refresh
+        rc, out = self.run_cli("list")
+        self.assertEqual(rc, 0)
+        line = next(ln for ln in out.splitlines() if ln.startswith("TS1"))
+        self.assertIn("ready", line)
+        self.assertIn("STALE:scope changed", line)
+
+    def test_dispatch_excludes_a_ready_card_whose_scope_already_shipped_on_trunk(self):
+        """The Lead pick path (tasks.py dispatch, session_planner.md Duty 2) must not hand out the same stale-but-ready
+        card that next/take/brief already refuse -- exclusion() read only card['state'] and missed it."""
+        self.commit("src/a.py", "x=1" + NL)
+        self.card()
+        self.run_cli("tag", "TS1", "--refresh")
+        self.commit("src/a.py", "x=2" + NL, "2026-10-02T00:00:00+00:00")
+        c = T.get(self.repo, "TS1")
+        now = datetime(2026, 10, 3, tzinfo=timezone.utc)
+        code, why = T.exclusion(c, [c], {}, [], {}, {"status": "up"}, now, None, self.repo)
+        self.assertEqual(code, "stale")
+        self.assertIn("scope changed", why)
+
 
 class RepoDataTest(unittest.TestCase):
     def test_every_committed_card_is_consistent(self):

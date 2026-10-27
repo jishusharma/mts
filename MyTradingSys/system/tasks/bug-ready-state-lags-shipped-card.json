@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "agent",
+  "closed": "2026-10-27T09:55:12Z",
   "commands": [],
   "created": "2026-10-26T19:38:31Z",
   "depends_on": [],
@@ -14,11 +16,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "list and dispatch now carry the SHIPPED/STALE trunk-ship tag next/take/brief already had; ",
+      "ref": "d3a58ac5b",
+      "utc": "2026-10-27T09:55:12Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "tasks dispatch: CRITICAL/CRUCIAL blocker of an open card outranks prio",
-      "ref": "3734b980938b",
-      "utc": "2026-10-26T01:26:44Z"
+      "line": "fix conflict-card review findings: Hard rules outrank operator order, CLAUDE.md headroom, ",
+      "ref": "f142d7049af3",
+      "utc": "2026-10-26T23:54:21Z"
     }
   ],
   "layers": [],
@@ -28,24 +36,30 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-26T19:38:31Z",
+  "refreshed": "2026-10-27T09:20:26Z",
   "refs": [],
-  "result": "",
+  "result": "list and dispatch now carry the SHIPPED/STALE trunk-ship tag next/take/brief already had; 2 fail-first tests added; sweep found 34/77 ready cards already STALE in the live backlog",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/tasks.py; scripts/dev/test_tasks.py"
   ],
   "scope_out": [
     "live tree; card content of other cards"
   ],
-  "scope_sha": "3734b980938b",
+  "scope_sha": "f142d7049af3",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "reproduce: tasks.py brief dsa-audit-05-placebo-nulls prints no STATE SHIPPED line (the card with SHIPPED@ state is what brief already shows for mts-cbp-integration)",
     "find why list/next read the card state only and not the tag; add a shipped check to list, next and the Lead pick path",
     "write fail-first test with a fixture card plus a trunk commit; sweep: auto-mark or flag every ready card with a trunk ship"
   ],
+  "taken": "2026-10-27T09:20:33Z",
   "tests": "scripts/dev/test_tasks.py::test_ready_card_with_trunk_ship_is_flagged (fail-first)",
   "title": "BUG: tasks.py list shows a card ready after its work shipped; a worker started on it finds nothing to build",
   "weight": "",

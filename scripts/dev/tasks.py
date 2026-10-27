@@ -759,7 +759,11 @@ def cmd_lint(a):
 def cmd_list(a):
     for c in load_all(REPO):
         if (not a.state or c["state"] == a.state) and (not a.lane or c["lane"] == a.lane):
-            print(f"{c['id']:<24} {c['state']:<8} p{c.get('prio', 3)} {c.get('lane', '-'):<8} {c.get('size') or '-':<2} {c['title'][:70]}")
+            # C3: a ready/active card whose work already hit trunk (SHIPPED) or whose scope moved on (STALE) is flagged here
+            # too, not only in next/take/brief -- a stale *copy* of an archived card must not read as plain "ready" in the backlog.
+            tag = stop_tag(c) if c["state"] in ("ready", "active") else ""
+            flag = f" [{tag}]" if tag else ""
+            print(f"{c['id']:<24} {c['state']:<8} p{c.get('prio', 3)} {c.get('lane', '-'):<8} {c.get('size') or '-':<2} {c['title'][:70]}{flag}")
 
 
 def cmd_status(a):
@@ -1423,6 +1427,9 @@ def exclusion(card, cards, reg, holds, claims, lane_st, as_of, host=None, repo=R
     import lane_health
     if card["state"] != "ready":
         return ("state", f"not ready: state is {card['state']}")
+    tag = stop_tag(card, repo)   # C3: the Lead pick path never dispatches a card whose work is already on trunk or scope is stale
+    if tag:
+        return ("shipped" if tag.startswith("SHIPPED") else "stale", tag)
     held = hold_problems(card, holds)
     if held:
         return ("hold", held[0].split(":")[0])
