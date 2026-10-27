@@ -1,0 +1,1 @@
+{"t": "20261027T185418Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship Result: 8 new/changed tests in test_supervisor.py pass (10 fail on pre-change supervisor.py); 69/70 pass, the 1 failure (pick_cards live-host) pre-exists on trunk.", "login": "B", "sid": "af64a85c32"}
