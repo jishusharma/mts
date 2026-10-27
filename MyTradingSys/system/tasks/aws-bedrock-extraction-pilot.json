@@ -14,7 +14,22 @@
   "goal": "Operator pastes the AWS_BEDROCK_PILOT.md prompts into Bedrock Playground (credits expire 2026-10-25); a Claude session verifies the saved outputs and records the verbatim-quote rate.",
   "id": "aws-bedrock-extraction-pilot",
   "lane": "HAIKU",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "WORKERS rule 9: Blocked - solve it, then report AND continue",
+      "ref": "59424d8d7d29",
+      "utc": "2026-10-26T15:39:21Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "59424d8d7d29 WORKERS rule 9: Blocked - solve it, then report AND continue",
+      "ref": "MyTradingSys/system/AWS_BEDROCK_PILOT.md",
+      "utc": "2026-10-26T15:39:21Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -22,7 +37,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-19T09:21:36Z",
+  "refreshed": "2026-10-27T19:29:45Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -33,7 +48,7 @@
     "scripts",
     "extracts/fresh"
   ],
-  "scope_sha": "",
+  "scope_sha": "59424d8d7d29",
   "size": "S",
   "sources": [
     "MyTradingSys/system/AWS_BEDROCK_PILOT.md"

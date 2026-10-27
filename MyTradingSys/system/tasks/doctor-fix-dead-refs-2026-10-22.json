@@ -16,16 +16,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "handoff: update NEXT_SESSION.md with Gemini exhaust deliverables",
-      "ref": "c6263d7e8d34",
-      "utc": "2026-10-23T20:16:33Z"
+      "line": "Hand-over: rolling super-session chain progress (links 2-5), window-exhaustion stop",
+      "ref": "97227df5df57",
+      "utc": "2026-10-27T11:38:22Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "c6263d7e8d34 handoff: update NEXT_SESSION.md with Gemini exhaust deliverables",
+      "line": "97227df5df57 Hand-over: rolling super-session chain progress (links 2-5), window-exhaustio",
       "ref": "MyTradingSys/system/NEXT_SESSION.md",
-      "utc": "2026-10-23T20:16:33Z"
+      "utc": "2026-10-27T11:38:22Z"
     }
   ],
   "layers": [],
@@ -35,7 +35,7 @@
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-25T22:17:52Z",
+  "refreshed": "2026-10-27T19:29:49Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -49,7 +49,7 @@
     "live path, orders, deploy, restarts",
     "new hooks, gate steps or rules beyond the card"
   ],
-  "scope_sha": "c6263d7e8d34",
+  "scope_sha": "97227df5df57",
   "size": "S",
   "sources": [
     "scripts/dev/mts_doctor.py DEAD-REF check"

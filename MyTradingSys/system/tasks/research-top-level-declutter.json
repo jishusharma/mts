@@ -18,9 +18,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/wavetrend-eom",
-      "ref": "0be944155673",
-      "utc": "2026-10-18T21:36:38Z"
+      "line": "lab gpt-simdesk-ci-recompute: DONE (audit)",
+      "ref": "0ee4ba36b951",
+      "utc": "2026-10-27T19:15:40Z"
     }
   ],
   "layers": [],
@@ -30,7 +30,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "MTS_Doctor arch-cleanup 2026-10-19",
-  "refreshed": "2026-10-18T21:57:34Z",
+  "refreshed": "2026-10-27T19:30:17Z",
   "refs": [
     "MyTradingSys/system/ARCHITECTURE.md"
   ],
@@ -42,7 +42,7 @@
     "file content",
     "runtime_data"
   ],
-  "scope_sha": "0be944155673",
+  "scope_sha": "0ee4ba36b951",
   "size": "M",
   "sources": [],
   "state": "ready",

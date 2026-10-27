@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "sim desk: breakdown table, folded charts and ledger, catalogue-safe run saving",
-      "ref": "67426492d1bd",
-      "utc": "2026-10-25T05:29:23Z"
+      "line": "sim desk: refuse bar/result/fetch timestamps at or after the sealed cut (L1-L7)",
+      "ref": "11ddfd25a70a",
+      "utc": "2026-10-26T21:25:38Z"
     },
     {
       "auto": true,
@@ -36,7 +36,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
-  "refreshed": "2026-10-25T19:28:39Z",
+  "refreshed": "2026-10-27T19:29:55Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -49,7 +49,7 @@
     "holdout reads",
     "BTC runs of the current encoding (ROADMAP section 2)"
   ],
-  "scope_sha": "67426492d1bd",
+  "scope_sha": "11ddfd25a70a",
   "size": "S",
   "sources": [],
   "state": "ready",

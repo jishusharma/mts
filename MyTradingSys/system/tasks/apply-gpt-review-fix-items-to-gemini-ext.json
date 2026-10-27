@@ -18,16 +18,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "yt-burn: Gemini Tom extracts (9), audit -dMWA_bbm3o, Fabio notes (9) - quote-verified, 5 c",
-      "ref": "152df77163d3",
-      "utc": "2026-10-24T15:07:14Z"
+      "line": "gemini_out: apply GPT review fixes F1-F5 to Tom extracts; F6 deferred",
+      "ref": "38dfe0116d23",
+      "utc": "2026-10-25T05:52:43Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "152df77163d3 yt-burn: Gemini Tom extracts (9), audit -dMWA_bbm3o, Fabio notes (9) - quote-",
-      "ref": "extracts/gemini_out/7BQPMJ39WpI_gemini.md",
-      "utc": "2026-10-24T15:07:14Z"
+      "line": "38dfe0116d23 gemini_out: apply GPT review fixes F1-F5 to Tom extracts; F6 deferred",
+      "ref": "extracts/gemini_out/96iPFDpXEcU_gemini.md",
+      "utc": "2026-10-25T05:52:43Z"
     }
   ],
   "layers": [],
@@ -37,7 +37,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-24T22:51:22Z",
+  "refreshed": "2026-10-27T19:29:44Z",
   "refs": [
     "MyTradingSys/research/worktree_disposition_20261026/REPORT.md"
   ],
@@ -58,7 +58,7 @@
     "verify_extract_quotes.py (separate card)",
     "any new claim not in the transcript"
   ],
-  "scope_sha": "152df77163d3",
+  "scope_sha": "38dfe0116d23",
   "size": "M",
   "sources": [
     "MyTradingSys/research/gpt_burn_2026-10-24/gx2-review-tom-extracts/report.md:21-118"

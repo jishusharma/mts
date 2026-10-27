@@ -54,7 +54,7 @@
   "scope_sha": "98b94b97f340",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "refined",
   "steps": [
     "Read card_specs/state-code-accumulator-backfill.md first (design, seam, fail-closed meaning, test list), then the audit and StateCodeEmitter.java regions it names.",
     "Write tests a-f first against an injectable klines seam; run on old code and see them fail.",

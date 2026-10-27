@@ -16,16 +16,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "T01 backtest audit: data forensics on DEV 1m bars, loader torture matrix, 1m-vs-1d resampl",
-      "ref": "3a9b389a8104",
-      "utc": "2026-10-19T07:21:57Z"
+      "line": "raw_1d vs 1m resample: label 9 loaders T01-F2 (EOF, no line shift), DATA_NOTES entry, labe",
+      "ref": "74727bd432bd",
+      "utc": "2026-10-26T18:07:18Z"
     },
     {
       "auto": true,
       "kind": "audit",
-      "line": "3a9b389a8104 T01 backtest audit: data forensics on DEV 1m bars, loader torture matrix, 1m-",
+      "line": "f8d0799de2bc research/ top level: 189 -> 14 files; 176 dated loose files into _archive/loo",
       "ref": "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md",
-      "utc": "2026-10-19T07:21:57Z"
+      "utc": "2026-10-25T23:02:12Z"
     }
   ],
   "layers": [],
@@ -35,7 +35,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-25T22:07:53Z",
+  "refreshed": "2026-10-27T19:29:51Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md"
   ],
@@ -53,7 +53,7 @@
     "restating any published verdict, ledger row or pre-registered bar",
     "live path"
   ],
-  "scope_sha": "3a9b389a8104",
+  "scope_sha": "74727bd432bd",
   "size": "S",
   "sources": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md (T01-F2)",

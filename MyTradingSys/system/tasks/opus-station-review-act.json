@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "rsi-deep-prob-tables fix: report non-survival share first, relabel window-selection allowl",
-      "ref": "9d61cb293ff1",
-      "utc": "2026-10-26T02:14:15Z"
+      "line": "supervisor: fixed-form coordinator handover (port of JIS-NB/handover-form-2 onto current t",
+      "ref": "94d3fe8836c4",
+      "utc": "2026-10-27T18:46:33Z"
     }
   ],
   "layers": [],
@@ -30,7 +30,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-26T10:37:44Z",
+  "refreshed": "2026-10-27T19:30:16Z",
   "refs": [
     "MyTradingSys/research/worktree_disposition_20261026/REPORT.md"
   ],
@@ -43,7 +43,7 @@
   "scope_out": [
     "Live trading processes, HALT, orders, secrets, deployments; unattended fleet scheduler installation"
   ],
-  "scope_sha": "9d61cb293ff1",
+  "scope_sha": "94d3fe8836c4",
   "size": "M",
   "sources": [
     "MyTradingSys/research/coordination_audit_20261026/REPORT.md",

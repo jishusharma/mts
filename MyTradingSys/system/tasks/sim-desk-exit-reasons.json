@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "sim desk: breakdown table, folded charts and ledger, catalogue-safe run saving",
-      "ref": "67426492d1bd",
-      "utc": "2026-10-25T05:29:23Z"
+      "line": "sim desk: refuse bar/result/fetch timestamps at or after the sealed cut (L1-L7)",
+      "ref": "11ddfd25a70a",
+      "utc": "2026-10-26T21:25:38Z"
     }
   ],
   "layers": [],
@@ -28,7 +28,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-25T19:53:21Z",
+  "refreshed": "2026-10-27T19:30:18Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -41,7 +41,7 @@
   "scope_out": [
     "Do not touch page.html (sim-desk-declutter renders the group), conditions.py (apply keeps every array of length n), results/, studies/rsi.py, wavetrend.py, krown.py (they use _bars.collect), the live path"
   ],
-  "scope_sha": "67426492d1bd",
+  "scope_sha": "11ddfd25a70a",
   "size": "M",
   "sources": [
     "MyTradingSys/research/sim_desk/HANDOVER_SIMV2.md:23 (Fable cards still open)",

@@ -4,9 +4,9 @@
   "week_resets": 1793614696,
   "week_used": 18.0,
   "window_resets": 1793133535,
-  "window_used": 1.0
+  "window_used": 2.0
  },
- "at": "2026-10-27T18:53:04Z",
+ "at": "2026-10-27T19:38:33Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -19,10 +19,40 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 9.5,
-  "window_pts": 1.0,
-  "window_runs": 2
+  "window_pts": 2.0,
+  "window_runs": 4
  },
  "runs": [
+  {
+   "at": "2026-10-27T19:37:26Z",
+   "card": "gpt-t06-breakeven-recount",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 59,
+   "tokens_out": 4875,
+   "tokens_total": 545021,
+   "tokens_uncached": 44274,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
+  {
+   "at": "2026-10-27T19:14:41Z",
+   "card": "gpt-simdesk-ci-recompute",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 50,
+   "tokens_out": 4059,
+   "tokens_total": 510640,
+   "tokens_uncached": 50517,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-27T18:52:19Z",
    "card": "gpt-slippage-arith",
@@ -140,36 +170,6 @@
    "tokens_out": 5106,
    "tokens_total": 439532,
    "tokens_uncached": 58490,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-27T09:33:51Z",
-   "card": "lf-rsi-gpt-rederive",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "2 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/rsi.md | release failed: sync: no claim lf-rsi-",
-   "outcome": "OUT_OF_SCOPE",
-   "seconds": 81,
-   "tokens_out": 5829,
-   "tokens_total": 545626,
-   "tokens_uncached": 55701,
-   "week_pts": 0.0,
-   "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-27T09:11:03Z",
-   "card": "runaway-guard-design-review",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "2 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/system/RUNAWAY_GUARD_REVIEW.md",
-   "outcome": "OUT_OF_SCOPE",
-   "seconds": 87,
-   "tokens_out": 5635,
-   "tokens_total": 303550,
-   "tokens_uncached": 39355,
    "week_pts": 0.0,
    "window_pts": 0.0
   }

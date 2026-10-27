@@ -18,16 +18,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "malkan: deliver GFS BTC HTF pre-reg, update test_pre_reg_template, close malkan-universe-d",
-      "ref": "b0e31e9eb31e",
-      "utc": "2026-10-19T23:04:02Z"
+      "line": "research/ top level: 189 -> 14 files; 176 dated loose files into _archive/loose_2026-10 an",
+      "ref": "f8d0799de2bc",
+      "utc": "2026-10-25T23:02:12Z"
     },
     {
       "auto": true,
-      "kind": "report",
-      "line": "17158023682d review: positioning C1 prereg marked DRAFT (trials 222); Malkan universe powe",
-      "ref": "MyTradingSys/research/positioning_c1_2026-10/PRE_REG_POSITIONING_C1.md",
-      "utc": "2026-10-18T18:41:42Z"
+      "kind": "audit",
+      "line": "f8d0799de2bc research/ top level: 189 -> 14 files; 176 dated loose files into _archive/loo",
+      "ref": "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_POSITIONING.md",
+      "utc": "2026-10-25T23:02:12Z"
     }
   ],
   "layers": [
@@ -39,7 +39,7 @@
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-25T22:30:19Z",
+  "refreshed": "2026-10-27T19:30:16Z",
   "refs": [
     "positioning-home-fit-audit"
   ],
@@ -57,7 +57,7 @@
     "edits to live-path code",
     "edits to run_t055.py or funding_cvd_fade.py"
   ],
-  "scope_sha": "b0e31e9eb31e",
+  "scope_sha": "f8d0799de2bc",
   "size": "S",
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_POSITIONING.md"

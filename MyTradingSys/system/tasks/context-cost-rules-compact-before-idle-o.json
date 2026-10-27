@@ -16,16 +16,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nb/auto-compact-at-25-for-all-se",
-      "ref": "80e8e1cef938",
-      "utc": "2026-10-25T19:30:06Z"
+      "line": "SUPER_SESSION: coordinator pacing checklist + no start_session retry rule",
+      "ref": "821236f97756",
+      "utc": "2026-10-27T19:16:39Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "80e8e1cef938 Merge remote-tracking branch 'origin/fast-track' into jis-nb/auto-compact-at-",
+      "line": "821236f97756 SUPER_SESSION: coordinator pacing checklist + no start_session retry rule",
       "ref": "MyTradingSys/system/SUPER_SESSION.md",
-      "utc": "2026-10-25T19:30:06Z"
+      "utc": "2026-10-27T19:16:39Z"
     }
   ],
   "layers": [],
@@ -35,7 +35,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-25T22:17:37Z",
+  "refreshed": "2026-10-27T19:29:47Z",
   "refs": [
     "MyTradingSys/research/mts_doctor/context_cost_2026-10-24.md"
   ],
@@ -50,7 +50,7 @@
     "live path, orders, deploy, restarts",
     "new hooks, gate steps or rules beyond the card"
   ],
-  "scope_sha": "80e8e1cef938",
+  "scope_sha": "821236f97756",
   "size": "S",
   "sources": [
     "MyTradingSys/research/mts_doctor/context_cost_2026-10-24.md"

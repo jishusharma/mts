@@ -16,16 +16,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "bigtrade: relabel fire CSV split column to repo split; DEV-only reruns of contaminated stu",
-      "ref": "26c6f3a837e8",
-      "utc": "2026-10-17T03:31:53Z"
+      "line": "mfe_exit: DEV pass filters fires by t_fire_ms < 2024-07-01, not the stale split label",
+      "ref": "ad4e461d6685",
+      "utc": "2026-10-26T17:56:44Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "26c6f3a837e8 bigtrade: relabel fire CSV split column to repo split; DEV-only reruns of con",
+      "line": "ad4e461d6685 mfe_exit: DEV pass filters fires by t_fire_ms < 2024-07-01, not the stale spl",
       "ref": "MyTradingSys/research/mfe_exit_2026-10-13/REPORT.md",
-      "utc": "2026-10-17T03:31:53Z"
+      "utc": "2026-10-26T17:56:44Z"
     }
   ],
   "layers": [],
@@ -35,7 +35,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-25T22:29:41Z",
+  "refreshed": "2026-10-27T19:30:15Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T07_stale_verdicts.md"
   ],
@@ -50,7 +50,7 @@
     "restating any published verdict, ledger row or pre-registered bar",
     "live path"
   ],
-  "scope_sha": "26c6f3a837e8",
+  "scope_sha": "ad4e461d6685",
   "size": "S",
   "sources": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T07_stale_verdicts.md (T07-F1)",

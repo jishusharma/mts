@@ -45,7 +45,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "refined",
   "steps": [
     "Read MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md sections 1-7, then section 8 'T06' (full method).",
     "Cost inventory (lead L3): every fee/slippage/spread/funding constant under backtest/ and research/ with file:line, unit, side, fees.py import; costs.csv.",

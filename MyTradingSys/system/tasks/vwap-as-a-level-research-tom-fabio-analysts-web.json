@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "layer review: 13 layer sheets (idea, source, params, backtests, errors, combines-with)",
-      "ref": "cb903f9dc550",
-      "utc": "2026-10-25T21:33:00Z"
+      "line": "lab gpt-simdesk-ci-recompute: DONE (audit)",
+      "ref": "0ee4ba36b951",
+      "utc": "2026-10-27T19:15:40Z"
     }
   ],
   "layers": [],
@@ -28,7 +28,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-25T22:30:35Z",
+  "refreshed": "2026-10-27T19:30:21Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -41,7 +41,7 @@
     "live path, orders, deploy",
     "restating published verdicts"
   ],
-  "scope_sha": "cb903f9dc550",
+  "scope_sha": "0ee4ba36b951",
   "size": "M",
   "sources": [
     "card title (shots 2026-10-19 14:16, price 135 under VWAP 82,402)",

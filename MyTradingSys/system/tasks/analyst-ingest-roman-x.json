@@ -25,9 +25,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "review-imbalance-analysts-report-and-imp: evaluation, ingestion pipeline and scorecard eng",
-      "ref": "1e405a57e967",
-      "utc": "2026-10-18T13:52:59Z"
+      "line": "analysts: Roman Trading volume-absorption call ingestion adapter",
+      "ref": "fd31f8f6b491",
+      "utc": "2026-10-25T22:16:32Z"
     }
   ],
   "layers": [
@@ -39,7 +39,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "gemini-4-argon",
-  "refreshed": "2026-10-18T16:30:17Z",
+  "refreshed": "2026-10-27T19:29:43Z",
   "refs": [
     "MyTradingSys/research/_archive/loose_2026-10/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md",
     "MyTradingSys/research/analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md",
@@ -57,7 +57,7 @@
     "paid Twitter API credentials",
     "fabricated or unverified sample calls"
   ],
-  "scope_sha": "1e405a57e967",
+  "scope_sha": "fd31f8f6b491",
   "size": "M",
   "sources": [
     "MyTradingSys/research/_archive/loose_2026-10/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md:116-135"

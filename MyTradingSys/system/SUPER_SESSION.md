@@ -30,6 +30,28 @@ SUPERVISOR.md and SUPER_LOOP.md are pointers to this file (merged 2026-10-26); `
 6. **Stuck worker**: no note, commit or gate slot for 45 min -> one SendMessage; still nothing next wake -> `stop_session`, check trunk for a late ship, `tasks.py tried <id>`.
 7. **Stuck on a fact**: never ask the operator; `mts_signal.py who`, else a HIGH broadcast, continue on the default.
 8. **Learning loop**: before it ends, it corrects Boot facts (under ~25 lines) and adds one Session log line (last 5 kept).
+9. **No `start_session` retry after click-friction feedback** (card `coordinator-retried-start-session-after-`, 2026-10-27).
+   Once a session has been told directly by the operator, or by a hook, that `start_session` cost an unwanted click, it does
+   not call `start_session` again for the rest of its life -- straight to the Agent tool, no retry with a different
+   `initiation` value. `start_session` stays right for a genuine, operator-present, persistent hand-off; this only bars
+   retrying it blindly after already being told not to.
+
+## Pacing checklist (every wake) - card `coordinator-self-pacing-rolling-super-se`, 2026-10-27
+A rolling chain self-paces to exhaust its usage window without a coordinator dying early or overrunning. No new script, no
+scheduler (SCHEDULING_POLICY.md retired every scheduler 2026-10-17): reuses Rule 5's existing remaining-minutes/40 heuristic
+and D5/D6's existing rotation and stop-and-hand-over mechanics; nothing here invents a new formula.
+1. `get_usage` every wake (Every wake step 1) -- read the 5 h window and this coordinator's own context size.
+2. Close to a limit means hand off LIVE to a fresh coordinator now, instead of idling on the old one or grinding turns with no
+   ready work: the 5 h window near D6's 80% stop, OR this coordinator's own context near the ~200K D5 rotation point
+   (Mechanics "Turn caps": an unattended coordinator runs on that context-size cap, not the 40-tool/10-operator one). The same
+   remaining-minutes/40 arithmetic Rule 5 uses to size the next worker wave doubles as the hand-off trigger: once it rounds to
+   0, there is no budget left for new work either by a worker or by this coordinator -- hand off.
+3. Hand off while the window is still open enough to write a clean note: D5 rotation when a successor is already running,
+   else a full D6 drain + `supervisor.py handover` per "End" below -- never after the budget has already run out.
+4. Worked example (the motivating case): the 2026-10-27 DESKTOP-F7IU69N chain (local_37a9ec3e) wound down deliberately at 94%
+   of its 5 h window with ~1h6m left (weekly 40%, context only ~12% -- context was never the constraint, the 5 h plan window
+   was); it stopped dispatching new links and finalized hand-over rather than risk a 6th link landing half-shipped right at
+   reset (`NEXT_SESSION.md`, "Rolling super-session chain hand-over 2026-10-27").
 
 ## Mechanics (merged 2026-10-26 from SUPERVISOR.md and SUPER_LOOP.md; their full old text: `handoff_history/SUPERVISOR_full_2026-10-26.md`, `handoff_history/SUPER_LOOP_full_2026-10-26.md`)
 Supervisor and super session are ONE role. Code: `scripts/dev/supervisor.py plan|tick|wait|watchcheck|handover`; role file `roles/supervisor.md`.
