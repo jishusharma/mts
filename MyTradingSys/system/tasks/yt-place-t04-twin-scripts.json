@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/lookahead_lint.py --new"
+  ],
+  "created": "2026-10-24T16:05:47Z",
+  "depends_on": [],
+  "done_when": "scripts/T04 twins plus test_twin_diff.py are on fast-track, lookahead_lint --new shows no new FAIL, test_twin_diff.py passes",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Move the T04 clean-room twin scripts and tests from NUC branch gpt-q/gx3-dsa-audit-04 into scripts/T04 so they pass lookahead_lint --new and the T04 tests.",
+  "id": "yt-place-t04-twin-scripts",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys\\research\\dsa_backtest_audit_2026-10-16\\scripts\\T04; branch gpt-q\\gx3-dsa-audit-04 on JIS-NUC (F;C:\\Users\\E-ngineers\\Git\\MTS\\mts-codex-lab)"
+  ],
+  "scope_out": [
+    "live tree; existing verdict files"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T04_clean_room_twin.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "git archive the scripts/T04 files from gpt-q/gx3-dsa-audit-04 on the NUC and copy them in",
+    "Fix lookahead_lint FAIL hits (or allowlist row after review); run the T04 tests; ship with Result line"
+  ],
+  "tests": "python -m pytest MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T04/test_twin_diff.py -q passes (files absent before this card)",
+  "title": "Place T04 twin scripts from gpt-q/gx3-dsa-audit-04 (lint-clean)",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

@@ -1,0 +1,1 @@
+<!-- Placed by Session_Planner 2026-10-24. Twin scripts, tests and data stay on NUC branch gpt-q/gx3-dsa-audit-04 (not shipped; placement card yt-place-t04-twin-scripts). Result: A1+RL FAIL, H2 INCONCLUSIVE, 7 LOW. -->
