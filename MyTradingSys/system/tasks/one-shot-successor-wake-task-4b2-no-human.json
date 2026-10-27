@@ -7,7 +7,7 @@
   ],
   "context": {
     "calls_to_edit": 10,
-    "folded": "2026-10-27T21:49:47Z",
+    "folded": "2026-10-27T21:52:04Z",
     "misses": 4,
     "reads": [
       "scripts/dev/test_supervisor.py",
