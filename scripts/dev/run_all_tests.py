@@ -420,6 +420,7 @@ class Step:
 
     def __init__(self, num, desc, label, cmd=None, run=None, cmd_text=None, skip=None, tail=15, key=None):
         self.num, self.desc, self.label, self.skip, self.tail = str(num), desc, label, skip, tail
+        self.cmd = cmd
         self.cmd_text = cmd_text or (" ".join(cmd) if isinstance(cmd, list) else str(cmd))
         self.run = run or (lambda: exec_step(cmd))
         self.lane = "seq" if self.num in SERIAL_STEPS else "par"
