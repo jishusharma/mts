@@ -408,6 +408,11 @@ def auto_send_text(payload):
     if ev == "SessionStart" and payload.get("source") in (None, "startup"):
         return "session started in %s%s" % (Path(cwd).name or "?", " login=" + login() if login() else ""), "note"
     if ev == "PostToolUse" and payload.get("tool_name") == "Bash":
+        resp = payload.get("tool_response")
+        if isinstance(resp, dict):
+            rc = resp.get("exit_code") if "exit_code" in resp else resp.get("returncode")
+            if (rc is not None and rc != 0) or resp.get("is_error") is True:
+                return None
         cmd = str((payload.get("tool_input") or {}).get("command") or "")
         m = CMD.search(cmd)
         if m:
@@ -656,6 +661,13 @@ def _handle_rows(payload, sid, ev, auto):
         out.append(action_block(rows, ev))
     if ev == "SessionStart":
         out.append("\n".join(roll_lines(rows)[:4]))
+        try:
+            import exhaust
+            rb = exhaust.radar_banner(rows, now=now(), state_dir=sd / "radar")
+            if rb:
+                out.append(rb)
+        except Exception:
+            pass
     if ev == "UserPromptSubmit":
         out.append(sender_status(rows))
     if ev != "SessionStart":

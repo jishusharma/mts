@@ -283,9 +283,13 @@ def trunk_rows(repo, ref):
 
 
 def trunk_claims(repo, ref):
-    names = sh(repo, "ls-tree", "--name-only", ref, f"{CLAIMS_DIR}/", check=False).stdout.split()
-    blobs = trunk_blobs(repo, ref, [n for n in names if n.endswith(".md")])
-    return [(Path(rel).stem, dict(l.split(": ", 1) for l in body.splitlines() if ": " in l)) for rel, body in sorted(blobs.items())]
+    seen = {}
+    for cur_ref in (ref, "origin/claims"):
+        names = sh(repo, "ls-tree", "--name-only", cur_ref, f"{CLAIMS_DIR}/", check=False).stdout.split()
+        blobs = trunk_blobs(repo, cur_ref, [n for n in names if n.endswith(".md")])
+        for rel, body in sorted(blobs.items()):
+            seen[Path(rel).stem] = dict(l.split(": ", 1) for l in body.splitlines() if ": " in l)
+    return sorted(seen.items())
 
 
 def trunk_commits(repo, ref, since, until):

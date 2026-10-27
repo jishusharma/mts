@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 REPO = Path(__file__).resolve().parents[2]
 AGY = Path.home() / '.gemini' / 'bin' / 'agy.exe'
-ROOT = Path('F:/MTS/gq')
+ROOT = Path(os.environ.get('MTS_GQ_ROOT') or ('F:/MTS/gq' if Path('F:/').exists() else Path.home() / '.gemini' / 'mts-gq'))
 PY = sys.executable
 
 RULES = """You are a Gemini Flash worker in the MTS repo. Work ONLY in this directory (a throwaway git worktree).

@@ -218,6 +218,7 @@ def unbuffer(stream=None):
 
 
 STEP_TIMEOUT_S = None   # set by the fast path (FAST_STEP_TIMEOUT_S); None = no limit, as before
+_TIMED_OUT_DEFERRED_CMDS: set[str] = set()
 
 
 def exec_step(cmd, cwd=None):
@@ -233,8 +234,10 @@ def exec_step(cmd, cwd=None):
         return None, f"not found: {e}"
     except subprocess.TimeoutExpired:
         if TIMEOUT_DEFERS:
+            _TIMED_OUT_DEFERRED_CMDS.add(repr(cmd))
             return True, f"step over the {STEP_TIMEOUT_S} s ship budget: DEFERRED TO CI (a gate-file ship must finish in 2 minutes; CI runs the whole suite)"
         return False, f"step timed out after {STEP_TIMEOUT_S} s (fast gate limit): treated as a failure"
+    _TIMED_OUT_DEFERRED_CMDS.discard(repr(cmd))
     return result.returncode == 0, result.stdout + result.stderr
 
 
@@ -1119,8 +1122,11 @@ def save_record(plan, results, root=REPO, start_tree=None, deferred=None):
                 passed = dict(old.get("passed", {}))
         except Exception:
             pass
+        deferred_set = set(deferred or ())
         for s in plan:
-            if results.get(s.num) is True:
+            if s.num in deferred_set or repr(s.cmd) in _TIMED_OUT_DEFERRED_CMDS:
+                passed.pop(s.num, None)
+            elif results.get(s.num) is True:
                 passed[s.num] = s.sig()
             elif results.get(s.num) is False:
                 passed.pop(s.num, None)
