@@ -27,7 +27,18 @@ What `successor_wake.py` does (all local, no network, no new deps; pattern = `nu
 Flags: `--at` (future only, fail closed on past), `--model` (default sonnet — cost rule), `--prompt-file`, `--cwd` (default: the checkout it runs from; fail closed if not an MTS checkout), `--dry` (print the PowerShell, run nothing).
 
 ## Auto wiring (the rolling guarantee)
-`supervisor.py handover` (`supervisor.py:1518`, ENDED heartbeat at `:1547`): after writing the handover and sending `mode=ENDED`, unless `--no-wake` is passed, call `successor_wake.py` register for the same login, `--at now`. ENDED then always self-boots the next link: task → successor supervisor → its ENDED → next task. Human input only on exceptions (no CLI login on that machine, checkout missing — both visible in `who`'s missing heartbeat and the out.log).
+`supervisor.py handover` (`supervisor.py:1518`, ENDED heartbeat at `:1547`): after writing the handover and sending `mode=ENDED`, call `successor_wake.py` register for the same login. `--no-wake` stays as the manual opt-out. ENDED then always self-boots the next link: task → successor supervisor → its ENDED → next task. Human input only on exceptions (no CLI login on that machine, checkout missing — both visible in `who`'s missing heartbeat and the out.log).
+
+## Budget-aware fireAt (operator d-47, 2026-10-27: "depending of the session usage limits runs has to continue. keep distributing load.")
+- At handover, read the pacer (`supervisor.py` slot bands): slots ≥ 1 → fireAt = now; STOP (5h ≥ 80 / weekly at cap) → fireAt = next 5-hour or weekly reset (the `reset=` value already on the BUDGET heartbeat lines).
+- The successor boots inside a window where the pacer has room, so ready cards drain as each reset opens; per-station pacing (the existing pacer) keeps load distributed across A/B/C — the chain adds no re-balancer, it just keeps each station's loop alive across limits.
+
+## "Something exists but is not wired" — what we reuse (operator 2026-10-27)
+All three pieces exist; only the connector is missing:
+1. **The chain mechanism**: 4b2 one-time task proven end-to-end on 2026-10-26 (`chain_test_proof.txt`, commit `ce8194ba2`: task fired, session shipped, task deleted).
+2. **The registration pattern**: `nuc_wake.py` (Interactive-principal one-shot task, self-unregister, `conhost --headless`, `--dry` golden output).
+3. **The hook point**: `supervisor.py handover` / ENDED heartbeat (`supervisor.py:1518` / `:1547`) where the successor registration goes.
+Missing: `successor_wake.py` + that one wiring hunk. Nothing new is invented.
 
 ## 4b2 rule "the successor never creates another task" — interpretation (OURS, pinned here)
 The *task's action* registers nothing: one prompt, one session, one self-unregister. The supervisor session it boots **may** register the next link at its own ENDED — that is exactly what the 2026-10-26 chain test proved (`chain_test_proof.txt`, commit `ce8194ba2`: task `chain-test-2` fired, the run shipped, the task was deleted after). If the operator reads the rule as "no chain, ever", the auto-wiring above is off by default (`--no-wake` default) and the manual one-liner stays the tool.
@@ -49,4 +60,5 @@ The *task's action* registers nothing: one prompt, one session, one self-unregis
 ~150–250 lines incl. tests: one new file (`successor_wake.py`), one test file, one wiring hunk in `supervisor.py` + its flag. No live path, no deploy gate: `sync.py ship` smoke gate only.
 
 ## Open question for the operator
-Chain-vs-one-shot (the "4b2 rule" bullet above): default auto-wake every ENDED, or manual one-liner only? Everything else is settled; answer with "chain" or "manual" and the card's `--done-when` adjusts.
+Resolved 2026-10-27 (d-47, VERBATIM below): runs must be chained, nothing manual by default; manual intervention stays possible/compatible (`--no-wake`, `Unregister-ScheduledTask MTS-SuccWake-<login>`); fireAt is budget-aware per the pacer.
+> "runs must be chained - nothing manual but manual interventions possible/compatible -> makes sense? So depending of the session usage limits runs has to continue. keep distributing load. Something exists on this but perhaps is not woired and connetted." (operator, 2026-10-27)
