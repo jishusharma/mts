@@ -1,55 +1,35 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [
-    "python scripts/dev/gemini_queue.py run malkan-hindi-reread-garble-check:medium"
-  ],
+  "commands": [],
   "created": "2026-10-27T20:38:53Z",
-  "depends_on": [
-    "gemini-queue-claim-race-fix"
-  ],
-  "done_when": "HINDI_REREAD_GEMINI.md shipped with a status for every MAL row and a verdict for each of the 12 UNVERIFIED rows; disagreements with the GPT read listed first; cherry empty.",
-  "est_turns": 14,
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Independent Gemini read of W1HrDl70Lhk and A-CQiV_UFB4 Hindi files against the English extracts: per rule field (levels, bar counts, star grade, trend condition) mark MATCH / GARBLED / NOT STATED, and decide each of the 12 UNVERIFIED rows of MALKAN_DIVERGENCE_GLOSSARY.md. Cross-vendor to the earlier GPT read.",
+  "goal": "",
   "id": "malkan-hindi-reread-garble-check",
   "kind": "audit",
   "lane": "CODEX",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-28 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Gemini Flash via queue; a Claude session reviews the branch.",
+  "note": "",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [
-    "MyTradingSys/research/malkan_extract_2026-10-15/HINDI_REREAD_GEMINI.md",
-    "raw_transcripts_canonical/W1HrDl70Lhk_hi_raw.txt",
-    "raw_transcripts_canonical/A-CQiV_UFB4_hi_raw.txt",
-    "MyTradingSys/research/setup_catalog_2026-10-15/malkan/MALKAN_DIVERGENCE_GLOSSARY.md"
-  ],
-  "scope_out": [
-    "editing extracts or glossary (report only)",
-    "code",
-    "new downloads"
-  ],
-  "size": "S",
-  "sources": [
-    "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable",
-    "MyTradingSys/research/layer_lab/reports/2026-10-17_malkan-hindi-rows-gpt-read.md"
-  ],
-  "state": "refined",
-  "steps": [
-    "Form your own read from the raw files first; only then open MyTradingSys/research/layer_lab/reports/2026-10-17_malkan-hindi-rows-gpt-read.md.",
-    "Write HINDI_REREAD_GEMINI.md: per row Hindi line number, your English, status, agreement with the GPT read; disagreements first.",
-    "Give each of the 12 UNVERIFIED glossary rows a verdict (confirm, correct, keep unverified); run check_hindi.py on any quote you cite."
-  ],
-  "tests": "python -I MyTradingSys/research/malkan_extract_2026-10-15/tools/check_hindi.py on any extract quoted; report row count equals the GPT read rows plus 12 glossary rows.",
-  "title": "[GEMINI] Re-read Malkan Hindi ASR transcripts against English for garbled rules (levels, bar counts, star grades, trend condition); cross-vendor check of glossary UNVERIFIED rows",
-  "weight": "ROUTINE",
-  "worker": "agent"
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Re-read Malkan Hindi ASR transcripts against English for garbled rules (levels, bar counts, star grades, trend condition); cross-vendor check of glossary UNVERIFIED rows",
+  "weight": "",
+  "worker": ""
 }
