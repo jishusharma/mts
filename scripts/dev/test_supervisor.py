@@ -375,6 +375,25 @@ def test_pace_burn_projection_shrinks_workers():
     assert p["burn"] == 30 and p["projected"] == 100 and p["slots"] == 2 and p["new"] == 0
 
 
+def test_pace_burn_over_target_never_shrinks_below_floor_one_with_room_left():
+    """bug-burn-cap-stops-all-work (operator 2026-10-27): login B's supervisor held 0 spawns for hours at 5h=18%, week=21%,
+    burn projecting 44% against a 33% target, with ready cards waiting. On the pre-fix code the shrink branch computed
+    max(0, running - 1), which is 0 whenever running is 0 or 1 -- so an idle (or single-worker) supervisor that is simply
+    over its burn target got clamped to 0 forever, even with budget headroom (room 15 pts, mode NORMAL, nowhere near the
+    80%/weekly STOP). The fix floors the shrink at 1 so an over-burn supervisor throttles instead of fully stopping."""
+    week_reset = (T0 + timedelta(hours=202)).strftime("%Y-%m-%dT%H:%MZ")
+    first = _rd(5, 21, week_reset=week_reset, at="2026-10-19T11:00:00Z")
+    p0 = S.pace_plan(T0, _rd(18, 21, week_reset=week_reset), 95, hist=[first], running=0)
+    assert p0["burn"] == 13 and p0["projected"] == 44 and p0["target"] == 33 and p0["mode"] == "NORMAL"
+    assert p0["slots"] >= 1          # was 0 on the pre-fix code: this is the line that must fail on the old clamp
+    p1 = S.pace_plan(T0, _rd(18, 21, week_reset=week_reset), 95, hist=[first], running=1)
+    assert p1["slots"] >= 1          # running - 1 == 0 hit the same max(0, ...) bug
+    # the absolute stops this card must not touch stay intact: STOP (room < 2 / five >= 80) and SUPERVISOR-ONLY (five >= 70)
+    # still zero out slots even with an over-target burn and running workers.
+    assert S.pace_plan(T0, _rd(7, 88, week_reset="2026-10-20T20:00Z"), 75, running=2)["slots"] == 0
+    assert S.pace_plan(T0, _rd(72, 10), 95, running=2)["slots"] == 0
+
+
 def test_pace_window_bands_and_reset_window():
     assert S.pace_plan(T0, _rd(65, 10), 95)["mode"] == "CRUCIAL-ONLY"
     assert S.pace_plan(T0, _rd(72, 10), 95)["slots"] == 0
