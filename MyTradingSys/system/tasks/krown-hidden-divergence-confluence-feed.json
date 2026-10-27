@@ -4,31 +4,73 @@
   "commands": [],
   "created": "2026-10-27T20:38:55Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Feed module and both tests pass under run_extra_tests, the Malkan hidden-free test is in place, design doc updated, shipped, cherry empty.",
+  "est_turns": 24,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Hidden divergence (OURS window, third-party definition, DIVERGENCE_RESEARCH s2; Malkan has no definition) becomes a Krown-owned confluence feed any layer (RSI 40-60 included) can read; Malkan paths are pinned to regular PRD/NRD only, so he is never credited with a rule he did not say (operator 2026-10-28).",
   "id": "krown-hidden-divergence-confluence-feed",
   "lane": "SONNET",
-  "layers": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Reapply \"malkan RSI divergence: hidden kinds + chart flags for 1d/1w\"",
+      "ref": "441faf0090d2",
+      "utc": "2026-10-27T20:23:03Z"
+    },
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "460c15e0bdff confluence design v2 after Opus review; Fable card for role-based layer confl",
+      "ref": "MyTradingSys/research/krown_audit_2026-10-22/LAYER_CONFLUENCE_DESIGN.md",
+      "utc": "2026-10-22T11:07:38Z"
+    }
+  ],
+  "layers": [
+    "krown",
+    "rsi"
+  ],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-28 ACCEPT LAB:none CLASS:C1 REVIEWER:sonnet-agent WEIGHT:IMPORTANT. Not live_path: alert wiring untouched, the pin is a test. Sonnet medium. May run before the audits.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-27T20:53:39Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/krown/krown_hidden_div_feed.py",
+    "MyTradingSys/backtest/layers/krown/test_krown_hidden_div_feed.py",
+    "MyTradingSys/backtest/layers/rsi/rsi_divergence.py",
+    "MyTradingSys/backtest/layers/rsi/test_rsi_divergence.py",
+    "MyTradingSys/research/krown_audit_2026-10-22/LAYER_CONFLUENCE_DESIGN.md",
+    "scripts/dev/extra_tests.tsv",
+    "MyTradingSys/backtest/layers/rsi/run_divergence_mtf.py",
+    "MyTradingSys/backtest/layers/rsi/test_run_divergence_mtf.py"
+  ],
+  "scope_out": [
+    "live runner, live_rsi_divergence.py and alert wiring",
+    "thresholds tuned on VALIDATION/HOLDOUT",
+    "Malkan params"
+  ],
+  "scope_sha": "441faf0090d2",
+  "size": "M",
+  "sources": [
+    "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable",
+    "MyTradingSys/research/krown_audit_2026-10-22/LAYER_CONFLUENCE_DESIGN.md:112-115",
+    "MyTradingSys/backtest/layers/rsi/rsi_divergence.py:16-24"
+  ],
+  "state": "ready",
+  "steps": [
+    "Add krown_hidden_div_feed.py: thin causal wrapper over rsi_divergence with hidden kinds, returns events {ts, side, bars, chain}, label OURS, source Krown hNfjyrJEytI 00:16:57-00:17:20 (design T5).",
+    "Pin Malkan: its real caller run_divergence_mtf.py (line ~195) passes an explicit regular-only kinds tuple; add a test asserting this and that no hidden_* event appears in its output; live_rsi_divergence is read only (assert in the test, no edit).",
+    "Document the feed in LAYER_CONFLUENCE_DESIGN.md T5 (consumers: any layer, RSI 40-60 gate as optional input, default off)."
+  ],
+  "tests": "test_krown_hidden_div_feed.py fails until the feed module exists; test_run_divergence_mtf.py asserts explicit regular-only kinds and no hidden_* in output, failing on the pre-change code where kinds are implicit.",
   "title": "Krown hidden divergence as a shared confluence feed any layer (RSI 40-60 included) can consume; Malkan layer stays PRD/NRD only",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

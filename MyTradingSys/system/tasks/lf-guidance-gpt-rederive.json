@@ -1,6 +1,7 @@
 {
   "approved_by": "",
-  "asks": "",
+  "asks": "Recover exact producing revision and permitted DEV-only timestamped event/trade evidence; no operator decision needed.",
+  "closed": "2026-10-27T21:11:14Z",
   "commands": [],
   "created": "2026-10-25T20:05:35Z",
   "depends_on": [],
@@ -13,7 +14,14 @@
   "id": "lf-guidance-gpt-rederive",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Recount: 336 cells, 186 tested, 89 underpowered, 61 tiny; independent BH min q .62, zero p",
+      "ref": "53ee928da",
+      "utc": "2026-10-27T21:11:14Z"
+    }
+  ],
   "layers": [
     "guidance"
   ],
@@ -25,7 +33,12 @@
   "refined_by": "",
   "refreshed": "2026-10-25T20:06:47Z",
   "refs": [],
-  "result": "",
+  "result": "Partial: aggregate recount and BH correction shipped; two narrative mismatches. Event-level raw return and placebo reconstruction unavailable.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/guidance.md (new file only)"
   ],
@@ -39,13 +52,14 @@
     "MyTradingSys/research/tom_fabio_guidance_2026-10-12/PRE_REG_Q33.md",
     "MyTradingSys/research/tom_fabio_guidance_2026-10-12/MATRIX_REPORT.md"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "List the result files for guidance in layer_index.json (results, ledger) and pick the headline numbers each states",
     "Recompute each from the ledger or raw data with an independent script (formulas from MyTradingSys/backtest/layers/FORMULAS.md, not from the code under check)",
     "Write MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/guidance.md: quoted number, recomputed number, MATCH/MISMATCH, file:line, script path",
     "Commit with a Result: line (n checked, n mismatches)"
   ],
+  "taken": "2026-10-27T21:11:14Z",
   "tests": "none (audit card); proof = the recompute script runs and the table is filled",
   "title": "Layer re-derive: guidance (independent recount of the headline numbers behind the fact sheet)",
   "weight": "ROUTINE",

@@ -226,6 +226,48 @@ class SyncTest(unittest.TestCase):
         sh(self.a, "fetch", "-q", "origin")
         self.assertEqual(sync.open_claims(self.a), [])
 
+    def race_claim(self, task_b, area_a="-", area_b="-"):
+        """coordination audit 2026-10-26 finding 1: clone b's claim lands between a's open-claims check and a's push. Returns
+        (a's SyncError text or None, number of 'claimed' lines printed, final open claims {slug: account})."""
+        real = sync.git
+        fired = []
+
+        def racing(repo, *args, **kw):
+            if Path(repo) == self.a and args[:1] == ("push",) and args[-1].endswith(":refs/heads/claims") and not fired:
+                fired.append(1)
+                with mock.patch.dict(os.environ, {"MTS_ACCOUNT": "worker-b"}):
+                    sync.claim(self.b, task_b, area=area_b, gate=self.gate, force=True)
+            return real(repo, *args, **kw)
+        out, err = io.StringIO(), None
+        with contextlib.redirect_stdout(out), mock.patch.object(sync, "git", racing), \
+                mock.patch.dict(os.environ, {"MTS_ACCOUNT": "worker-a"}):
+            try:
+                sync.claim(self.a, "Same task", area=area_a, gate=self.gate, force=True)
+            except sync.SyncError as e:
+                err = str(e)
+        self.assertEqual(fired, [1])
+        rows = {s: kv.get("account") for s, kv in sync.open_claims(self.a)}
+        return err, out.getvalue().count("claimed "), rows
+
+    def test_racing_claim_on_the_same_task_does_not_overwrite_the_winner(self):
+        err, claimed, rows = self.race_claim("Same task")
+        self.assertIsNotNone(err, "the loser must be refused, not told 'claimed'")
+        self.assertIn("already claimed", err)
+        self.assertEqual(claimed, 1)                       # only b's success line
+        self.assertEqual(rows, {"same-task": "worker-b"})  # b keeps the lock it was told it holds
+
+    def test_racing_claim_with_an_overlapping_area_is_refused(self):
+        err, claimed, rows = self.race_claim("Other task", area_a="scripts/dev/x.py", area_b="scripts/dev")
+        self.assertIsNotNone(err)
+        self.assertIn("already claimed", err)
+        self.assertEqual(rows, {"other-task": "worker-b"})
+
+    def test_racing_claim_with_disjoint_areas_both_land(self):
+        err, claimed, rows = self.race_claim("Same task", area_a="docs/a.md", area_b="scripts/dev")
+        self.assertIsNone(err)
+        self.assertEqual(claimed, 2)
+        self.assertEqual(sorted(rows.values()), ["worker-a", "worker-b"])   # same name, disjoint areas: suffixed slug, no overwrite
+
     def claim_files_on(self, ref):
         sh(self.a, "fetch", "-q", "origin")
         return [s for s, _ in sync.read_claims(self.a, ref)]
