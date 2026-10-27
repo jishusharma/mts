@@ -30,11 +30,11 @@ def lease_minutes_left():
     out = run("python", "scripts/dev/traffic.py", "status", "--json")
     d = json.loads(out)
     text = (d.get("leases") or {}).get("Pipeliner", {}).get("text", "")
-    # "+43 min" or "(-n min)" markers in the text
+    # "(+43 min)" / "(-2 min)" marker; number is group(1)
     import re
 
-    m = re.search(r"\(([-+])\d+ min\)", text)
-    return int(m.group(2)) if m else None
+    m = re.search(r"\(([-+]?\d+) min\)", text)
+    return int(m.group(1)) if m else None
 
 
 prev = None
