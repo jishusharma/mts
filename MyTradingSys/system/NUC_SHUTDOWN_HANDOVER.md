@@ -112,3 +112,7 @@ User stories that actually fixed a NUC10-class box ("What users did" section + I
 - After the runaway find.exe was stopped (10-26 15:55) nuc_health.ps1 shows 3 more event-142 resets: 10-26 17:34:45, 23:27:49, 10-27 00:49:39. Last 2 days: 5 resets, 5 unclean boots. runaway_check.ps1 now reads OK (19.9 GB free, paged pool 1.8 GB).
 - Verdict: the 48 h clean test FAILED. The runaway find did not cause the resets; hardware path (adapter swap, BIOS, RAM test) stays open. DECISION (OURS): count the clean window from the last reset, 10-27 00:49.
 
+
+## Update 2026-10-27 - adapter ordered (operator, Amazon.in)
+- SellZone 120 W, 19 V 6.32 A, 5.5 x 2.5 mm, centre + ("with Centre Pin", listing "for Toshiiba L500D"), sold by Online SBS, Amazon delivered, expected 04 Nov. All four NUC10-spec items confirmed on the listing page (operator pasted it 2026-10-27). The NUC10 power-sensing circuit caps the CPU at 120 W - a 120 W rail is the design value, no under-power.
+- Keep the old adapter for the swap-back. Verdict 48 h after plugging in: nuc_health.ps1 -Days 2, 0 event-142 resets = fixed; resets continue = escalate to the UPS + BIOS 0067 + CR2032 window (d-nuc-hw-verdict step 3).
