@@ -44,3 +44,16 @@ Start 2026-10-27T12:50Z. Worktree claude/supervisor-c-jis-nb-ce71af (HEAD = orig
 - Doctor report acb1104e2 on trunk (40 findings) - spot-check at that worker's verify.
 - HIGHs b-2a5b44 (exhaust) + b-4c2dfe (c_drive_guard ff-only): both acked told ~15:25Z; b-4c2dfe's operator-run line blocked on main checkout dirty state, in flight via the re-dispatched worker.
 - NUC Codex lab: lead says GPT steady loop relaunched on NB (12/65 pts); tick next wake.
+
+## 2026-10-27 ~16:10Z Builder card main-checkout-stale-hooks-2026-10-24 (2nd attempt, agent ac1c2638): backup DONE, ff-only BLOCKED on the wip commit
+- Main checkout state re-measured after fetch: HEAD = refs/heads/fast-track at 0ac18c3fb, 1 ahead / 1197 behind origin/fast-track (was 1188 behind at 15:24Z, origin moved to f012928d0). Dirty: 54 untracked + 4 deleted orderflow CSVs (porcelain).
+- Backup COMPLETE at F:/MTS_backup/main_checkout_2026-10-25/ (45 MB total):
+  - wip_commit.patch (11,298 lines = diff 4662684a3..0ac18c3fb, 83 files) - NEW this attempt
+  - worktree_vs_HEAD.patch / worktree_vs_ORIGIN.patch / index_vs_ORIGIN.patch - from prior attempt
+  - main_status_porcelain_v1.txt + main_untracked_list.txt + untracked_files.txt (lists)
+  - 54 untracked files copied to F: (verified 0 missing); 4 deleted orderflow CSVs recoverable from git objects in BOTH 4662684a3 and 0ac18c3fb
+  - before_numbers.txt (prior attempt numbers)
+- DECISION (OURS): ff-only pull `git -C <main> pull --ff-only origin fast-track` is BLOCKED by the wip commit 0ac18c3fb (1 ahead, merge-base = 4662684a3, not ancestor of origin). Card hard rule "no reset/rebase/force-push" + live tree = operator action required to move the wip commit (drop or reset). Backup is complete and verified, so the safe default is: report backup state + ask operator.
+- Operator ask: move the wip commit 0ac18c3fb on the live tree (git -C <main> reset --hard 4662684a3 or git -C <main> branch backup-wip-2026-10-27 0ac18c3fb && git -C <main> reset --hard 4662684a3), then run `git -C <main> pull --ff-only origin fast-track`. Once clean: `python scripts/dev/c_drive_guard.py status` should say "for this checkout".
+- c_drive_guard status re-check: deferred to after the operator's reset (needs clean main tree).
+- Result: tasks.py tried (asks filed); card NOT done (still 1197 behind).
