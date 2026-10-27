@@ -1,0 +1,1 @@
+{"t": "20261027T204830Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "done", "text": "ship tasks-stale-sweep Result: [cut] closed as duplicate of shipped 74727bd432 (all 5 loaders already T01-F2 labeled, test present); tasks.py stale --refresh updated pointers on 10 ready cards whose s", "login": "A", "sid": "cf7a390ce3"}
