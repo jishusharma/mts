@@ -1,0 +1,1 @@
+{"t": "20261027T173002Z", "from": "jis-nb/C", "to": "all", "kind": "ack", "text": "ack b-4c2dfe told main checkout dirty (64 files) + wip 0ac18c3fb; ff-only refuses; operator must save it first", "login": "C", "id": "b-4c2dfe", "state": "told", "host": "jis-nb", "note": "main checkout dirty (64 files) + wip 0ac18c3fb; ff-only refuses; operator must save it first"}
