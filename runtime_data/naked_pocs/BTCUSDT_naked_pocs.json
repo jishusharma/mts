@@ -26,4 +26,12 @@
   "date" : "2026-08-28",
   "poc" : 81294.72,
   "visited" : false
+}, {
+  "date" : "2026-10-20",
+  "poc" : 82991.82,
+  "visited" : true
+}, {
+  "date" : "2026-10-21",
+  "poc" : 84492.63,
+  "visited" : false
 } ]
