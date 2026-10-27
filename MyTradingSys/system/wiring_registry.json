@@ -911,6 +911,10 @@
     "MyTradingSys/research/pitchfork_2026-10-19/run_pitchfork_event_study.py": {
       "disp": "REPRO",
       "why": "Executes multi-year Bitcoin (2020-2026) event study of pitchfork models, validating Andrews 80% rule, Schiff slope normalization, and Hagopian failures; writes PHASE1_EVENT_STUDY.md and TRIALS_PITCHFORK.csv; run manually."
+    },
+    "MyTradingSys/backtest/layers/rsi/div_flags_chart.py": {
+      "disp": "TOOL",
+      "why": "DEV-only chart renderer: draws regular and hidden Malkan RSI divergence flags on 1d/1w charts for operator review; covered by test_div_flags_chart.py, no live imports."
     }
   },
   "MyTradingSys/research/layer_lab/candle_pattern_event_table/event_table.py": {

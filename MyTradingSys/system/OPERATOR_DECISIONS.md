@@ -9,7 +9,15 @@ word for word (CONTROL_ROOM.md step 4). Seed a wiped or second db from the JSON 
 {"id": "d-restart-c-a-supervisors", "order": 46, "date": "2026-10-27", "status": "DECIDED",
  "question": "Both supervisor loops are mode=ENDED (C on JIS-NB, A on the laptop), 117 ready cards queued, C's 5h/weekly reset at 2026-10-27T20:00Z and A's at 22:30Z. Restart the loops to drain the ready cards into the reset windows?",
  "answer": "OPERATOR VERBATIM: 'Start a fresh Supervisor on JIS-NB (login C) and DESKTOP-F7IU69N (login A) so the ENDED loops resume and ready cards drain into the 19:59Z reset window.' (2026-10-27, JIS-NUC, login B seat)",
- "done": "pending: card one-shot-successor-wake-task-4b2-no-human - successor_wake.py (4b2 one-time task, zero-operator-click restart). Design + open question (chain vs manual default) at research/lead/2026-10-27_successor-wake-design.md. Interim: a live session on A (desktop-f7iu69n) can take a restart signal; C (JIS-NB) has no live session - parked until the card ships, or the operator starts the successor line by hand once."}
+ "done": "pending: card one-shot-successor-wake-task-4b2-no-human - successor_wake.py (4b2 one-time task, zero-operator-click restart). Design at research/lead/2026-10-27_successor-wake-design.md; chain-vs-manual open question resolved by d-47-successor-wake-chained (chained default, budget-aware fireAt). Interim: a live session on A (desktop-f7iu69n) can take a restart signal; C (JIS-NB) has no live session - parked until the card ships, or the operator starts the successor line by hand once."}
+```
+
+## d-47-successor-wake-chained | decided 2026-10-27 | Lead (admin, JIS-NUC login B)
+```json
+{"id": "d-47-successor-wake-chained", "order": 47, "date": "2026-10-27", "status": "DECIDED",
+ "question": "The successor-wake design (research/lead/2026-10-27_successor-wake-design.md) leaves one open call: default every ENDED supervisor to auto-register its successor task (chain), or keep the one-liner manual?",
+ "answer": "OPERATOR VERBATIM: 'runs must be chained - nothing manual but manual interventions possible/compatible -> makes sense? So depending of the session usage limits runs has to continue. keep distributing load. Something exists on this but perhaps is not woired and connetted.' (2026-10-27, JIS-NUC, login B seat)",
+ "done": "design doc updated (chained default + budget-aware fireAt + the 3 existing-but-unwired pieces); card one-shot-successor-wake-task-4b2-no-human READY with the chained done-when; not yet dispatched."}
 ```
 
 ## q1-one-control-room | asked 2026-10-13 | Process
@@ -1291,3 +1299,12 @@ Applied: 2026-10-22: scripts/dev/offer_guard.py (Stop hook, .claude/settings.jso
 ```json
 {"id": "d-nuc-hw-verdict", "order": 45, "date": "2026-10-27", "status": "DECIDED", "question": "JIS-NUC (Intel NUC10 i7FNH) watchdog-resets ~2x/day (14 in 4 days, worsening; idle AND load, cool, clean logs 14 min before). Nothing software-side worked. What is wrong, should the operator sell it, and is it safe to route heavy multi-thread work to it?", "options": {"A": "order the 19V 120W 5.5x2.5 adapter now as the single-variable test; 48 h verdict, escalate to BIOS 0067 + CR2032 + BIOS settings in one attended window, then SSD firmware; sell only if board DC-DC/VRM is confirmed dead. Pause heavy routing to the NUC until the adapter test passes.", "B": "sell the NUC now as a broken 24/7 box (defective => low price), replace with a fresh box.", "C": "keep running heavy threads and hope the socket fix holds (it did not: rate 4/43h -> 3/28h, then 3 more in the 48h test)."}, "recommended": "A", "answer": "OPERATOR: 'what is wrong with this device... do I just sell it, or if defective I won't get a good price, I'm stuck' (2026-10-27) - so default A with the sell-floor as the fallback if the hardware tests fail. DECISION (OURS) safe default, operator overrides.", "done": "handover NUC_SHUTDOWN_HANDOVER.md update 2026-10-27 18:20; coordination signal to the desktop chain (login A/C) to pause heavy NUC routing until the adapter verdict; logger restarted 18:22. A-20261026-1 heavy-load-to-NUC is overridden-by-fact while resets continue."}
 ```
+
+## d-weekly-reset-radar | decided 2026-10-28 | Lead (thinker, login C)
+```json
+{"question":"A weekly quota reset passed unnoticed and ~20% was lost. What should MTS do?","decision":"Track every login's reset, flag it 48 h ahead (T-48/T-24/T-2), and keep the successor chain running to exhaust the week before reset. Card weekly-reset-radar-48h-exhaust. DECISION (OURS): flag stages 48/24/2 h; roll a stale reset forward by 7 days; extends EXHAUST_PHASE.md (2 h window) and the successor-wake design.","date":"2026-10-28","status":"DECIDED","operator_quote":"We just lost around 20 % weekly max plan data - it just resetted without we noticing - it is a miss - mts must track and flat 48 hours in advance and exhaust weekly.","id":"d-weekly-reset-radar"}
+```n
+## d-live-validation | decided 2026-10-28 | Lead (thinker, login C), relayed from the Malkan RSI session
+```json
+{"status":"DECIDED","operator_quote":"Relayed 2026-10-28 by the Malkan RSI session; verbatim operator words not in the relay (NOT_IN_DATA).","decision":"Live validation: a live signal is sent with a chart of drawn flags; operator confirms or corrects once per unique category; look-alikes inherit (matches validated case #n); differing or corrected goes to a DOUBTS list, never an auto-verdict. Seed categories from history (OURS). Card live-validation-store-signal-chart-hook.","question":"How are layers validated now that G3 blind marking is dropped?","id":"d-live-validation","date":"2026-10-28"}
+```n

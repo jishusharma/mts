@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-27T20:03:48Z",
   "commands": [],
   "created": "2026-10-25T19:30:03Z",
   "depends_on": [],
@@ -15,7 +16,14 @@
   ],
   "id": "sim-desk-fee-sweep",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "NOT_IN_DATA on this host (DESKTOP-F7IU69N lacks klines; expected, real on JIS-NB). Table/s",
+      "ref": "1315a8c46",
+      "utc": "2026-10-27T20:03:48Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -28,7 +36,12 @@
   "refined_by": "",
   "refreshed": "2026-10-25T19:53:23Z",
   "refs": [],
-  "result": "",
+  "result": "NOT_IN_DATA on this host (DESKTOP-F7IU69N lacks klines; expected, real on JIS-NB). Table/sentence output: krown NOT_IN_DATA; levels NOT_IN_DATA; rsi NOT_IN_DATA; wavetrend NOT_IN_DATA. test_fee_sweep.py: 4 passed (planted gross [1,-1,0.6] fee 0.2 -> mean gross 0.2, net x0 0.2/x0.5 0.1/x1 0.0/x2 -0.2, break-even 1.0; gross<=0 -> break-even 0; zero fees -> None; never-filled excluded).",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/sim_desk/fee_sweep.py",
     "MyTradingSys/research/sim_desk/test_fee_sweep.py"
@@ -41,7 +54,7 @@
   "sources": [
     "MyTradingSys/research/sim_desk/REVIEW_FABLE_2026-10-25.md:One screen paragraph 2 (fees are the whole result)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read desk.py numbers(), _raw(), STUDIES and test_reference.py to see how a default run and its cache are read",
     "Write test_fee_sweep.py first and watch it fail",
@@ -49,6 +62,7 @@
     "Add the sentence per row: before fees +X R, fees -Y R, after fees Z R; fees would have to fall to W of today's level to break even",
     "Run the test and the script once; put the table in the commit body Result line; sync.py ship"
   ],
+  "taken": "2026-10-27T20:03:48Z",
   "tests": "test_fee_sweep.py (new), fails before fee_sweep.py exists: planted gross [1, -1, 0.6], fee 0.2 each give mean gross 0.2, net x0 0.2, x0.5 0.1, x1 0.0, x2 -0.2, break-even 1.0; gross <= 0 gives break-even 0; zero fees give None; never-filled ideas are excluded.",
   "title": "Sim desk: fee sweep (net R at 0x, 0.5x, 1x, 2x fees and the break-even fee for each study)",
   "weight": "IMPORTANT",
