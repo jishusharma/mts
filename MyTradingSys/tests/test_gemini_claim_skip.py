@@ -53,7 +53,7 @@ class NoHangTest(unittest.TestCase):
                 raise subprocess.TimeoutExpired(cmd, kw["timeout"])
             return subprocess.CompletedProcess(cmd, 0, "", "")
         run, log = self._run(fake)
-        self.assertIn("CLAIM FAILED/TIMEOUT c1", log)
+        self.assertIn("CLAIM FAILED: c1", log)
         self.assertFalse([c for c in run.call_args_list if c.args[0][0] == str(gq.AGY)])
 
 
