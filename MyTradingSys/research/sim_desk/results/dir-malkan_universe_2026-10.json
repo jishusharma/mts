@@ -5,38 +5,7 @@
  "title": "Malkan: Indian-Equity D/W/M Data Sources, Universe Size, and Statistical Power",
  "provenance": "source-extracted",
  "date": "2026-10-19",
- "what": [
-  {
-   "name": "Rule or setup, line 1 from the source",
-   "value_plain": "All numbers computed via MyTradingSys/research/malkan_universe_2026-10/universe_power.py and verified by test_malkan_universe_power.py.",
-   "label": "OURS"
-  },
-  {
-   "name": "Rule or setup, line 2 from the source",
-   "value_plain": "Setup TF Pre-Filter Description (OURS Stand-in) BTC DEV Bars BTC DEV $n$ Median Stop Cost in R BTC MDE (Net R) Events for +0.10 R Net ($N_{80}$) Annual Rate ($\\lambda_{\\text{cal}}$) Asset-Years Needed (Calendar) Asset-Y…",
-   "label": "OURS"
-  },
-  {
-   "name": "Rule or setup, line 3 from the source",
-   "value_plain": "KR-S1 (anchor) 1d Zone twice-turned (pivot $k=3$) + proof candle 2,510 278 4.1% 0.024 0.24 R 1,655 40.45 / yr 41 60",
-   "label": "OURS"
-  },
-  {
-   "name": "Rule or setup, line 4 from the source",
-   "value_plain": "MAL-2 1d Weekly+Monthly RSI $>60$ gate, Daily RSI support at 60 (tol 2) 2,510 7 4.5% 0.022 1.51 R 1,654 1.02 / yr 1,624 2,372",
-   "label": "OURS"
-  },
-  {
-   "name": "Rule or setup, line 5 from the source",
-   "value_plain": "MAL-5 1d Weekly+Monthly RSI $>60$ gate, Daily RSI in 58..62, order over high, stop under 3-bar low 2,510 25 6.3% 0.016 0.80 R 1,650 3.64 / yr 454 663",
-   "label": "OURS"
-  },
-  {
-   "name": "Rule or setup, line 6 from the source",
-   "value_plain": "MAL-10 1d Weekly+Monthly RSI $>60$ gate, Daily RSI support at 40 (tol 2) [host 5-star variant] 2,510 6 5.2% 0.019 1.63 R 1,652 0.87 / yr 1,892 2,764",
-   "label": "OURS"
-  }
- ],
+ "what": [],
  "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
  "window": "2000-01-01 to 2021-04-30 (as written in the source)",
  "verdict": {
@@ -69,7 +38,8 @@
   }
  ],
  "missing": {
-  "n_trades": "the source does not state a trade count"
+  "n_trades": "the source does not state a trade count",
+  "parameters": "no rule or parameter section found in the source"
  },
  "source_files": [
   "MyTradingSys/research/malkan_universe_2026-10/UNIVERSE_POWER.md"

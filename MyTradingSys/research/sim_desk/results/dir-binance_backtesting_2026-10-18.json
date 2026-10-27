@@ -5,13 +5,7 @@
  "title": "Reliable backtesting: Binance BTC and the general research standard",
  "provenance": "source-extracted",
  "date": "2026-10-18",
- "what": [
-  {
-   "name": "Rule or setup, line 1 from the source",
-   "value_plain": "Evidence must distinguish selection bias, information leakage and execution error from genuine loss of economic predictability. Assess methods using known-truth simulations and empirical studies with stated instruments,…",
-   "label": "OURS"
-  }
- ],
+ "what": [],
  "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
  "window": "2019-09-08 to 2021-12-31 (as written in the source)",
  "verdict": {
@@ -35,7 +29,8 @@
  "evidence": [],
  "missing": {
   "n_trades": "the source does not state a trade count",
-  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)"
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "parameters": "no rule or parameter section found in the source"
  },
  "source_files": [
   "MyTradingSys/research/binance_backtesting_2026-10-18/REPORT.md"

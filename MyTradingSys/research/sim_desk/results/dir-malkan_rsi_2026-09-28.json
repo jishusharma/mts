@@ -5,33 +5,7 @@
  "title": "Vishal B Malkan RSI Trading System - Web Research",
  "provenance": "source-extracted",
  "date": "2026-09-28",
- "what": [
-  {
-   "name": "Rule or setup, line 1 from the source",
-   "value_plain": "Instead of traditional overbought (70) / oversold (30) levels, Malkan uses:",
-   "label": "OURS"
-  },
-  {
-   "name": "Rule or setup, line 2 from the source",
-   "value_plain": "Primary Range: 40-60 zone represents consolidation/sideways movement",
-   "label": "OURS"
-  },
-  {
-   "name": "Rule or setup, line 3 from the source",
-   "value_plain": "Key Inflection Points: 40 (support in bullish), 60 (resistance in bearish)",
-   "label": "OURS"
-  },
-  {
-   "name": "Rule or setup, line 4 from the source",
-   "value_plain": "Source: \"When the market is bearish, it won't be able to cross 60, and whenever in a bullish trend, it won't be able to cross 40.\"",
-   "label": "OURS"
-  },
-  {
-   "name": "Rule or setup, line 5 from the source",
-   "value_plain": "URL: https://blog.elearnmarkets.com/a-5-star-rsi-strategy/",
-   "label": "OURS"
-  }
- ],
+ "what": [],
  "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
  "window": null,
  "verdict": {
@@ -56,7 +30,8 @@
  "missing": {
   "n_trades": "the source does not state a trade count",
   "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
-  "window": "the source states no test window"
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
  },
  "source_files": [
   "MyTradingSys/research/malkan_rsi_2026-09-28/WEB_RESEARCH.md"

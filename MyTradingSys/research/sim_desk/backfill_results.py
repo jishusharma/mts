@@ -49,21 +49,21 @@ def first_match(text, pats):
 
 
 def params_of(text):
-    lines = text.splitlines()
-    for i, ln in enumerate(lines):
-        if RE_PARAM_HEAD.match(ln):
-            out = []
-            for l in lines[i + 1: i + 40]:
-                if l.startswith("#"):
-                    break
-                t = bc.clean(re.sub(r"^\s*(?:[-*]|\d+\.)\s*", "", l), 220)
-                if len(t) > 12 and not l.strip().startswith("|---"):
-                    out.append(t)
-                if len(out) == 6:
-                    break
-            if out:
-                return out
-    return []
+    """Up to 6 lines under the first heading that names a rule/setup section (document lines, not a time series)."""
+    out, inside, seen = [], False, 0
+    for ln in text.splitlines():
+        if inside:
+            if ln.startswith("#"):
+                break
+            seen += 1
+            t = bc.clean(re.sub(r"^\s*(?:[-*]|\d+\.)\s*", "", ln), 220)
+            if len(t) > 12 and not ln.strip().startswith("|---"):
+                out.append(t)
+            if len(out) == 6 or seen >= 40:
+                break
+        elif RE_PARAM_HEAD.match(ln):
+            inside = True
+    return out
 
 
 def tone_of(row):

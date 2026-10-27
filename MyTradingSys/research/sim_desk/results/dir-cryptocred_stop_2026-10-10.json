@@ -5,33 +5,7 @@
  "title": "CryptoCred stop placement - source hunt (D20/B143)",
  "provenance": "source-extracted",
  "date": "2026-10-10",
- "what": [
-  {
-   "name": "Rule or setup, line 1 from the source",
-   "value_plain": "The stop is the trade invalidation point, not a fixed percent. For these setups",
-   "label": "OURS"
-  },
-  {
-   "name": "Rule or setup, line 2 from the source",
-   "value_plain": "the invalidation is the structural level being traded (broken SR level, fib zone edge,",
-   "label": "OURS"
-  },
-  {
-   "name": "Rule or setup, line 3 from the source",
-   "value_plain": "broken MSB level), so a stop just beyond that level is the source-consistent rule.",
-   "label": "OURS"
-  },
-  {
-   "name": "Rule or setup, line 4 from the source",
-   "value_plain": "Precision scales with move size: a 1h structural setup wants a wider stop than a scalp.",
-   "label": "OURS"
-  },
-  {
-   "name": "Rule or setup, line 5 from the source",
-   "value_plain": "No quote gives a numeric percent. 0.1% / 0.25% / 0.5% are OUR numbers, marked NO-SOURCE.",
-   "label": "OURS"
-  }
- ],
+ "what": [],
  "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
  "window": null,
  "verdict": {
@@ -54,7 +28,8 @@
  "missing": {
   "n_trades": "the source does not state a trade count",
   "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
-  "window": "the source states no test window"
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
  },
  "source_files": [
   "MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md"
