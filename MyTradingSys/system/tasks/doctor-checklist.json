@@ -4,15 +4,19 @@
   "closed": "2026-10-26T21:20:23Z",
   "commands": [],
   "context": {
-    "calls_to_edit": 12,
-    "folded": "2026-10-26T20:58:19Z",
+    "calls_to_edit": null,
+    "folded": "2026-10-27T00:27:11Z",
     "misses": 13,
     "reads": [
-      "scripts/dev/wt_maint.py",
-      "scripts/dev/c_drive_guard.py",
-      "scripts/dev/dsa.py"
+      "scripts/dev/health_audit.py",
+      "scripts/dev/supervisor.py",
+      "scripts/dev/usage_reminder.py",
+      "CLAUDE.md",
+      "MyTradingSys/research/design_cards_2026-10-26/levels_raw_ledger/ledger.csv",
+      ".claude/settings.json",
+      "MyTradingSys/tests/test_boot_budget_line.py"
     ],
-    "session": "4259065d-612b-4736-8283-146da85367aa"
+    "session": "33371177-8f67-466e-bcbc-3fe990c39490"
   },
   "created": "2026-10-25T11:14:07Z",
   "depends_on": [],

@@ -712,6 +712,59 @@
      "src": "code"
     }
    ]
+  },
+  {
+   "id": "pizzino_indicators",
+   "family": "pizzino",
+   "name": "Pizzino indicators (pivots, nested swing states, 3-bar count, 50% line, retest)",
+   "module": "MyTradingSys/backtest/layers/pizzino/pizzino_indicators.py",
+   "status": "Pure-function module built with tests; not backtested, not wired",
+   "params": [
+    {
+     "k": "swing_degrees",
+     "label": "fractal n per nested degree",
+     "kind": "choice",
+     "values": [
+      "1,2,3",
+      "2,5,13",
+      "3,8,21"
+     ],
+     "src": "code"
+    },
+    {
+     "k": "significance_window",
+     "label": "significance window W (bars)",
+     "kind": "choice",
+     "values": [
+      "50",
+      "20",
+      "100"
+     ],
+     "src": "code"
+    },
+    {
+     "k": "break_closes",
+     "label": "closes to confirm a break N",
+     "kind": "choice",
+     "values": [
+      "2",
+      "1",
+      "3"
+     ],
+     "src": "code"
+    },
+    {
+     "k": "retest_tol",
+     "label": "retest tolerance",
+     "kind": "choice",
+     "values": [
+      "0.5%",
+      "0.25%",
+      "1.0%"
+     ],
+     "src": "code"
+    }
+   ]
   }
  ],
  "backtests": [

@@ -1,9 +1,9 @@
-# Supervisor hand-over, login B (JIS-NUC, 2026-10-26T02:36Z)
+# Supervisor hand-over, login B (JIS-NUC, 2026-10-27T00:27Z)
 
-- Next: Shipped this run: argon close, malkan dd5aa09fb, fabio 68d57dcc4, klines 8f8a52814, oi-pivot 58251261a, coord-audit c074aca4d, dispatch 3734b9809, rsi 28565f801+9d61cb293, intrabar 7e72e3432, stability e77be3a0d. Open: 36 stale claims unreleased; context-composite-v2-dev-read review stamp voided; pytest needs --basetemp on NUC; test_pick_cards_jis_nb_lane fails on git 2.24; DSA-NUC DeepSeek chat unarmed; claim exhaust-B near 2026-11-01T15Z, ack b-2a5b44 then. Next: tasks.py next --lane SONNET, one Sonnet bg agent per card.
-- Budget at hand-over: 5h 57.0% (reset 2026-10-26T02:59Z), week 12.0% of cap 95 (reset 2026-11-01T16:59Z), mode NORMAL, k 0.177
+- Next: Shipped this run: astra fee-drag ledger 451af24c3, sim-desk sealed-cut 11ddfd25a, runaway guard 7cc1f1532+a1926ccc9, station loop e4acda18a, conflict cards 523f59baa, cbp read path 81b3c256c, conflict-card fixes redo 80779003; trunk red twice from my own commits (abcf80590 card quoting the cap number, f142d7049), both reverted. Next: runaway NUC 48h clean window counts from 10-27 00:49; pz-3 held on DESKTOP claim so pz-4/pz-5 wait; cbp-ingestion and ci-fixture await Lab_Guy stamp; DeepSeek DSA-NUC row 87h untaken (operator); never ship with --no-ci-wait.
+- Budget at hand-over: 5h 47.0% (reset 2026-10-27T01:00Z), week 26.0% of cap 95 (reset 2026-11-01T17:00Z), mode NORMAL, k 0.174
 - Peers live at hand-over: none
-- Last picks: doctor-checklist
+- Last picks: bug-youtube-gemini-only-rule-is-a-preference
 - Open claims from JIS-NUC: funding-carry-with-real-spot-basis-margi (finish, hand over in the card, or release by the claim rules)
 
 Successor: `You are Supervisor. Login B. Continue from MyTradingSys/system/handover/SUPERVISOR_B.md`

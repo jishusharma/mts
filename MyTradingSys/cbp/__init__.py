@@ -22,6 +22,7 @@ ROW_FIELDS = ("analyst", "video_id", "published", "bias", "quotes", "trades", "p
               "symbols", "quote_verified", "expires_at")
 BIASES = ("BULLISH", "BEARISH", "NEUTRAL", "NO_VIEW")
 TRADE_FIELDS = ("asset", "direction", "entry", "target", "invalidation", "quote")
+DIRECTIONS = ("LONG", "SHORT")
 
 
 def store_path(path=None):
@@ -59,7 +60,21 @@ def validate_row(r):
     for t in r.get("trades") or []:
         if not isinstance(t, dict) or any(k not in t for k in TRADE_FIELDS):
             errs.append("trade needs %s" % (TRADE_FIELDS,))
+        elif t["direction"] not in DIRECTIONS:
+            errs.append("trade direction must be one of %s" % (DIRECTIONS,))
+    if "expires_at" in r and parse_expiry(r["expires_at"]) is None:
+        errs.append("expires_at must be UTC YYYY-MM-DDTHH:MM:SSZ")
     return errs
+
+
+def parse_expiry(v):
+    """UTC datetime of an expires_at string (YYYY-MM-DDTHH:MM:SSZ), None if malformed."""
+    if not isinstance(v, str):
+        return None
+    try:
+        return datetime.strptime(v, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+    except ValueError:
+        return None
 
 
 def is_tradable(r):
@@ -75,6 +90,10 @@ def query(analyst=None, symbol=None, since_days=WINDOW_DAYS, now=None, store=Non
     sym = symbol.upper() if symbol else None
     out = []
     for r in load(store)["rows"]:
+        if validate_row(r):
+            continue  # fail closed: a malformed stored row is never returned
+        if parse_expiry(r["expires_at"]) <= now.astimezone(timezone.utc):
+            continue  # expired (boundary: expires_at == now is expired)
         if (r.get("published") or "") < cutoff:
             continue
         if analyst and r.get("analyst", "").lower() != analyst.lower():
