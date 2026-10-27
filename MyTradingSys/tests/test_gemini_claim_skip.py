@@ -57,5 +57,24 @@ class NoHangTest(unittest.TestCase):
         self.assertFalse([c for c in run.call_args_list if c.args[0][0] == str(gq.AGY)])
 
 
+class ReleaseSlugTest(unittest.TestCase):
+    """coordination audit 2026-10-26 finding 7: run_job released the full card id, but `sync.py claim <id>` files the claim under
+    slugify(id) (40 chars), so a long card id's release failed ('no claim ...') and the claim stayed open."""
+
+    def test_run_job_releases_the_slug_the_claim_was_filed_under(self):
+        import subprocess
+        import sync
+        cid = "a-card-name-that-is-deliberately-longer-than-forty-characters"
+        with tempfile.TemporaryDirectory() as t:
+            (Path(t) / cid).mkdir()
+            with mock.patch.object(gq, "ROOT", Path(t)), mock.patch("sync.open_claims", return_value=[]), \
+                    mock.patch.object(gq, "child_env", return_value={}), \
+                    mock.patch.object(gq.subprocess, "run", side_effect=lambda cmd, **kw: subprocess.CompletedProcess(cmd, 0, "", "")) as run:
+                gq.run_job(cid, "low")
+        releases = [c.args[0] for c in run.call_args_list if "release" in c.args[0]]
+        self.assertEqual(len(releases), 1, run.call_args_list)
+        self.assertEqual(releases[0][-1], sync.slugify(cid))
+
+
 if __name__ == "__main__":
     unittest.main()
