@@ -13,6 +13,8 @@ SCRIPT = Path(__file__).with_name("usage_reminder.py")
 def env(tmp_path):
     e = dict(os.environ)
     e["MTS_USAGE_STATE"] = str(tmp_path / "state.json")
+    e.pop("MTS_GATEWAY", None)
+    e["MTS_GATEWAY_FLAG"] = str(tmp_path / "no_gateway_flag")
     return e
 
 
