@@ -44,3 +44,10 @@ Start 2026-10-27T12:50Z. Worktree claude/supervisor-c-jis-nb-ce71af (HEAD = orig
 - Doctor report acb1104e2 on trunk (40 findings) - spot-check at that worker's verify.
 - HIGHs b-2a5b44 (exhaust) + b-4c2dfe (c_drive_guard ff-only): both acked told ~15:25Z; b-4c2dfe's operator-run line blocked on main checkout dirty state, in flight via the re-dispatched worker.
 - NUC Codex lab: lead says GPT steady loop relaunched on NB (12/65 pts); tick next wake.
+
+## 2026-10-27 ~15:45Z wake (NORMAL, RAMP new=1)
+- Running: ac1c2638 (Builder main-checkout-stale-hooks, re-dispatch ~15:30), ab4705a8 (HAIKU card-file-lists-miss-test-registration-w, ROUTINE docs line).
+- CI CONFIRMED GREEN on trunk tip fde1d108d: ci_watch "CI ok", run 40531995203 in progress passing; 66990cb05 red was flaky (subsequent runs passed). Planner's p1 card ci-66990cb05-red-on-auto-deploy-tests is STALE/resolved; its card file was orphaned in the dead planner worktree - no dispatch needed. Note for Planner runs: re-check CI before dispatching red-trunk cards.
+- Doctor acb1104e2 (40 findings) on trunk, verified.
+- NUC Codex tick: IDLE lock-held (steady loop pacing), not stuck.
+- My notes d082db411 landed on trunk via a worker merge.
