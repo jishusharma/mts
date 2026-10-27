@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-27T20:51:37Z",
   "commands": [],
   "created": "2026-10-24T14:29:47Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "habib-holdout-prereg-draft",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Already shipped e65a368db143 (2026-10-24): PRE_REG_HABIB_PLANS.md has DRAFT banner, placeb",
+      "ref": "7f4427641",
+      "utc": "2026-10-27T20:51:37Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -37,7 +44,12 @@
   "refined_by": "",
   "refreshed": "2026-10-27T19:30:01Z",
   "refs": [],
-  "result": "",
+  "result": "Already shipped e65a368db143 (2026-10-24): PRE_REG_HABIB_PLANS.md has DRAFT banner, placebo definition (s3-s5), variant count line ('Imbalance variants run: 0'). Closing stale card, no duplicate work done.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/habib_plan_imbalance_2026-10-20/PRE_REG_HABIB_PLANS.md"
   ],
@@ -47,11 +59,12 @@
   "scope_sha": "e65a368db143",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read README.md, plan_score.py, PLAN_LEDGER.csv",
     "Write DRAFT pre-reg; label params SOURCED/OURS"
   ],
+  "taken": "2026-10-27T20:51:37Z",
   "tests": "doc only: grep for DRAFT banner and variant count",
   "title": "Habib plan-imbalance hold-out pre-registration (DRAFT, operator approves later)",
   "weight": "",
