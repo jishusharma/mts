@@ -127,16 +127,20 @@ def trade_list(res):
     filled = filled[np.argsort(np.asarray(res['touch_t'])[filled], kind='stable')]
     net = np.asarray(res['net'], float)[filled]
     side = np.asarray(res['side'])[filled] if 'side' in res else np.zeros(len(filled), int)
-    return {'i': filled.tolist(), 't': [int(x) for x in np.asarray(res['touch_t'])[filled]], 'side': [int(x) for x in side],
-            'r': [round(float(x), 3) for x in net], 'cum': [round(float(x), 3) for x in np.cumsum(net)]}
+    out = {'i': filled.tolist(), 't': [int(x) for x in np.asarray(res['touch_t'])[filled]], 'side': [int(x) for x in side],
+           'r': [round(float(x), 3) for x in net], 'cum': [round(float(x), 3) for x in np.cumsum(net)]}
+    if 'exit' in res:
+        out['exit'] = [str(x) for x in np.asarray(res['exit'])[filled]]
+    return out
 
 
 MIN_BUCKET = 30   # a row under this many filled trades is marked 'too few trades'
 
 
 def breakdown(res):
-    """Filled trades split by year, side and UTC hour bucket: {group: [{'k', 'n', 'mean', 'few'}]}. Reads the run's own arrays only.
-    The trade rows carry no exit or no-fill reason, so there are no reason columns."""
+    """Filled trades split by year, side, UTC hour bucket and (when the run carries it) exit reason:
+    {group: [{'k', 'n', 'mean', 'few'}]}. Reads the run's own arrays only. A result with no 'exit' key (an
+    older cache, or a study that predates the reason columns) gets no exit group."""
     L = trade_list(res)
     t = np.asarray(L['t'], dtype='int64')
     r = np.asarray(L['r'], float)
@@ -154,9 +158,13 @@ def breakdown(res):
                 out.append({'k': name, 'n': n, 'mean': round(float(r[m].mean()), 3), 'few': n < MIN_BUCKET})
         return out
     ys = sorted(set(year.tolist()))
-    return {'year': rows(year, [(y, str(y)) for y in ys]),
-            'side': rows(np.sign(sd), [(1, 'long'), (-1, 'short'), (0, 'unknown')]),
-            'hour': rows(hour // 4, [(b, f'{b * 4:02d}-{b * 4 + 4:02d} UTC') for b in range(6)])}
+    out = {'year': rows(year, [(y, str(y)) for y in ys]),
+           'side': rows(np.sign(sd), [(1, 'long'), (-1, 'short'), (0, 'unknown')]),
+           'hour': rows(hour // 4, [(b, f'{b * 4:02d}-{b * 4 + 4:02d} UTC') for b in range(6)])}
+    if 'exit' in L:
+        ex = np.asarray(L['exit'])
+        out['exit'] = rows(ex, [(c, c) for c in sorted(set(ex.tolist()))])
+    return out
 
 
 def trade_chart(study, p, cond, i, cache_dir=CACHE, progress=print):
@@ -219,7 +227,7 @@ def count_tries(trials_path, study):
     return len(_rows(trials_path, f'| sim-desk {study.ID} '))
 
 
-RESULT_VERSION = 3   # 3: results carry the per-idea side (conditions need it)
+RESULT_VERSION = 4   # 4: results carry a per-idea exit reason (STOP, T1, T2, TIME, SIGNAL, HOLD, NOFILL); 3 and older rebuild
 
 
 def _key(study, q):
