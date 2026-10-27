@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-27T21:04:03Z",
   "commands": [],
   "created": "2026-10-26T19:13:34Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "bug-nuc-signal-hub-not-a-git-repo",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Already shipped 3c3785563539 (2026-10-27): ensure() self-heals via corrupt- rename at mts_",
+      "ref": "ef8d78d2b",
+      "utc": "2026-10-27T21:04:03Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,7 +37,12 @@
   "refined_by": "",
   "refreshed": "2026-10-27T19:29:46Z",
   "refs": [],
-  "result": "",
+  "result": "Already shipped 3c3785563539 (2026-10-27): ensure() self-heals via corrupt- rename at mts_signal.py:201, test_ensure_recovers_from_zeroed_hub_head present. Closing stale card, no duplicate work done.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/mts_signal.py; scripts/dev/test_mts_signal.py"
   ],
@@ -40,11 +52,12 @@
   "scope_sha": "3c3785563539",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write fail-first test with NUL HEAD",
     "in ensure(): if .git exists but 'git rev-parse HEAD' fails, rename hub to mts-signals.corrupt-<date> and re-create"
   ],
+  "taken": "2026-10-27T21:04:03Z",
   "tests": "scripts/dev/test_mts_signal.py::test_ensure_recovers_from_zeroed_hub_head (fail-first)",
   "title": "BUG: mts_signal.py ack fails on JIS-NUC: hub dir is not a git repo (git add -A)",
   "weight": "",
