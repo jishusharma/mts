@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-27T09:02:21Z",
   "commands": [
     "C:/Users/E-ngineers/.gemini/bin/agy.exe --print \"Follow the steps of card argon-med-param-label-sweep (python scripts/dev/tasks.py brief argon-med-param-label-sweep). Write only MyTradingSys/research/design_cards_2026-10-26/argon_param_labels.md. Facts with file:line or NOT_IN_DATA; no verdicts.\" --model gemini-4-argon-medium"
   ],
@@ -16,7 +17,14 @@
   "id": "argon-med-param-label-sweep",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/design_cards_2026-10-26/argon_param_labels.md (115 parameter default",
+      "ref": "6fc6fa4d9",
+      "utc": "2026-10-27T09:02:21Z"
+    }
+  ],
   "layers": [
     "krown",
     "wavetrend",
@@ -31,7 +39,12 @@
   "refined_by": "super-c-design",
   "refreshed": "2026-10-25T22:50:15Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/design_cards_2026-10-26/argon_param_labels.md (115 parameter default rows: 52 SOURCED, 59 OURS, 4 OPERATOR-HYPOTHESIS, 0 UNLABELED)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/design_cards_2026-10-26/argon_param_labels.md (new file only)"
   ],
@@ -44,12 +57,13 @@
     "MyTradingSys/system/layer_index.json",
     "MyTradingSys/research/sim_desk/studies/"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/sim_desk/studies/krown.py, wavetrend.py, rsi.py and the specs named in layer_index.json for these families",
     "One row per numeric default; SOURCED only with a quote and path, else OURS or UNLABELED",
     "Commit with a Result: line (parameters, UNLABELED count)"
   ],
+  "taken": "2026-10-27T09:02:21Z",
   "tests": "none (run card); proof = every SOURCED row carries a quote and a path",
   "title": "[GEMINI] Argon-medium: list layer parameters with no SOURCED/OURS label (file:line)",
   "weight": "IMPORTANT",
