@@ -6,7 +6,7 @@
   "window_resets": 1793107804,
   "window_used": 5.0
  },
- "at": "2026-10-27T11:28:32Z",
+ "at": "2026-10-27T11:51:14Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,16 +20,31 @@
   "astra_runs": 0,
   "week_pts": 8.5,
   "window_pts": 5.0,
-  "window_runs": 8
+  "window_runs": 9
  },
  "runs": [
+  {
+   "at": "2026-10-27T11:50:08Z",
+   "card": "lf-session_timing-gpt-rederive",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 65,
+   "tokens_out": 3622,
+   "tokens_total": 459214,
+   "tokens_uncached": 50984,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-27T11:27:26Z",
    "card": "lf-session_timing-gpt-rederive",
    "effort": "medium",
    "kind": "audit",
    "model": "gpt-6-luna",
-   "note": "",
+   "note": " | release failed: sync: no claim lf-session-timing-gpt-rederive on origin/claims",
    "outcome": "BLOCKED",
    "seconds": 65,
    "tokens_out": 3761,
@@ -152,21 +167,6 @@
    "note": " | release failed: sync: no claim astra-low-confluence-prereg-leak-hunt on origin/claims",
    "outcome": "INCOMPLETE",
    "seconds": 5,
-   "tokens_out": null,
-   "tokens_total": null,
-   "tokens_uncached": null,
-   "week_pts": null,
-   "window_pts": null
-  },
-  {
-   "at": "2026-10-25T23:20:58Z",
-   "card": "lf-rsi-gpt-rederive",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "Codex credits ran out; the card stays ready, is not charged a try, and the GPT lane is marked down | release failed: sync: no claim lf-rsi-gpt-rederive on origi",
-   "outcome": "LIMIT",
-   "seconds": 2,
    "tokens_out": null,
    "tokens_total": null,
    "tokens_uncached": null,
