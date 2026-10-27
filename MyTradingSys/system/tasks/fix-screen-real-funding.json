@@ -20,9 +20,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "T06 backtest audit: costs, fills, real funding",
-      "ref": "0d738711fd58",
-      "utc": "2026-10-24T19:03:33Z"
+      "line": "bt_data.load_klines: convert microsecond stamps, raise on conflicting duplicates, report d",
+      "ref": "8f8a52814868",
+      "utc": "2026-10-26T00:53:00Z"
     }
   ],
   "layers": [],
@@ -32,7 +32,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-25T22:29:24Z",
+  "refreshed": "2026-10-27T19:29:51Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md"
   ],
@@ -52,7 +52,7 @@
     "restating any published verdict, ledger row or pre-registered bar",
     "live path"
   ],
-  "scope_sha": "0d738711fd58",
+  "scope_sha": "8f8a52814868",
   "size": "M",
   "sources": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md (T06-F1)",

@@ -17,16 +17,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "yt-burn batch 6: GPT wave-3 reports for gap-g7-stop-slippage and rv05-h2 (both BLOCKED; ca",
-      "ref": "5623ccdfec54",
-      "utc": "2026-10-24T15:53:58Z"
+      "line": "RV05 H2: adjudicate Fabio ledger entry/stop against full-res position lines",
+      "ref": "a15b35fedb56",
+      "utc": "2026-10-26T15:33:52Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "5623ccdfec54 yt-burn batch 6: GPT wave-3 reports for gap-g7-stop-slippage and rv05-h2 (bot",
-      "ref": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-rv05-h2/ledger_adjudication.md",
-      "utc": "2026-10-24T15:53:58Z"
+      "line": "a15b35fedb56 RV05 H2: adjudicate Fabio ledger entry/stop against full-res position lines",
+      "ref": "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
+      "utc": "2026-10-26T15:33:52Z"
     }
   ],
   "layers": [],
@@ -36,7 +36,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
-  "refreshed": "2026-10-25T19:28:45Z",
+  "refreshed": "2026-10-27T19:29:54Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -49,7 +49,7 @@
     "holdout reads",
     "BTC runs of the current encoding (ROADMAP section 2)"
   ],
-  "scope_sha": "5623ccdfec54",
+  "scope_sha": "a15b35fedb56",
   "size": "S",
   "sources": [],
   "state": "ready",

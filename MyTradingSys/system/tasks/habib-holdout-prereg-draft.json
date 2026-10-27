@@ -12,7 +12,22 @@
   "goal": "DRAFT pre-registration for Habib plan-imbalance hold-out: placebo definition and variant count. Reads no holdout data. Operator approves later.",
   "id": "habib-holdout-prereg-draft",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "habib: DRAFT pre-registration for plan hit-rate vs placebo (holdout release awaits operato",
+      "ref": "e65a368db143",
+      "utc": "2026-10-24T14:51:09Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "e65a368db143 habib: DRAFT pre-registration for plan hit-rate vs placebo (holdout release a",
+      "ref": "MyTradingSys/research/habib_plan_imbalance_2026-10-20/PRE_REG_HABIB_PLANS.md",
+      "utc": "2026-10-24T14:51:09Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -20,7 +35,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-24T14:30:00Z",
+  "refreshed": "2026-10-27T19:30:01Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -29,7 +44,7 @@
   "scope_out": [
     "No holdout data; do not edit plan_score.py or PLAN_LEDGER.csv"
   ],
-  "scope_sha": "",
+  "scope_sha": "e65a368db143",
   "size": "S",
   "sources": [],
   "state": "ready",

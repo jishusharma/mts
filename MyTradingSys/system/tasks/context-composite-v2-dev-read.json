@@ -55,7 +55,7 @@
   "scope_sha": "a440450b50a9",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "refined",
   "steps": [
     "Read PRE_REG_V2.md in full; check git log shows it committed before any outcome file; record the sha of context_asof.py (must be efa3513f...) and of PRE_REG_V2.md.",
     "Run counts_v2.py (counts only): C 554/254 long, 456/202 short, matched with the s.1 pool 546/254 long, 428/198 short, pooled 974/452; any mismatch = BLOCKED.md. Commit this before any outcome code.",

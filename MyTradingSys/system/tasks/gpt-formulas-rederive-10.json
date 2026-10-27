@@ -17,16 +17,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "kurisko: causal Quad Rotation layer module (stochastic arm + RSI hypothesis arm), FORMULAS",
-      "ref": "dd001f2a7902",
-      "utc": "2026-10-18T06:39:54Z"
+      "line": "research/ top level: 189 -> 14 files; 176 dated loose files into _archive/loose_2026-10 an",
+      "ref": "f8d0799de2bc",
+      "utc": "2026-10-25T23:02:12Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "dd001f2a7902 kurisko: causal Quad Rotation layer module (stochastic arm + RSI hypothesis a",
+      "line": "f8d0799de2bc research/ top level: 189 -> 14 files; 176 dated loose files into _archive/loo",
       "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
-      "utc": "2026-10-18T06:39:54Z"
+      "utc": "2026-10-25T23:02:12Z"
     }
   ],
   "layers": [],
@@ -36,7 +36,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
-  "refreshed": "2026-10-25T19:26:40Z",
+  "refreshed": "2026-10-27T19:29:58Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -49,7 +49,7 @@
     "holdout reads",
     "BTC runs of the current encoding (ROADMAP section 2)"
   ],
-  "scope_sha": "dd001f2a7902",
+  "scope_sha": "f8d0799de2bc",
   "size": "S",
   "sources": [],
   "state": "ready",

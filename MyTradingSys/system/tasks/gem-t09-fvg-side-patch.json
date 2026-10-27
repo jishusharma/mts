@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into claude/gallant-mayer-ea7007",
-      "ref": "e26b1871268d",
-      "utc": "2026-10-24T23:50:07Z"
+      "line": "T09-F3: live RSI trades only support@40 long; cross, failure, rejection are alert-only",
+      "ref": "f04a3cbad6ee",
+      "utc": "2026-10-26T20:59:34Z"
     }
   ],
   "layers": [],
@@ -29,7 +29,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
-  "refreshed": "2026-10-25T19:28:20Z",
+  "refreshed": "2026-10-27T19:29:55Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -43,7 +43,7 @@
     "holdout reads",
     "BTC runs of the current encoding (ROADMAP section 2)"
   ],
-  "scope_sha": "e26b1871268d",
+  "scope_sha": "f04a3cbad6ee",
   "size": "S",
   "sources": [],
   "state": "ready",

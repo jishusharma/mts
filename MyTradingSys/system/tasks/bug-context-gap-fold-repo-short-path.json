@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "tests: no 'git init -b' (NUC git 2.24 lacks it); symbolic-ref instead",
-      "ref": "2e42109427d6",
-      "utc": "2026-10-25T22:29:36Z"
+      "line": "fix bug-context-gap-fold-repo-short-path: fold_repo gives its sandbox repo a local git ide",
+      "ref": "f6186e4658f1",
+      "utc": "2026-10-27T10:27:11Z"
     }
   ],
   "layers": [],
@@ -31,14 +31,14 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-27T10:13:07Z",
+  "refreshed": "2026-10-27T19:29:45Z",
   "refs": [],
   "result": "",
   "scope_in": [
     "scripts/dev/test_context_gap.py"
   ],
   "scope_out": [],
-  "scope_sha": "2e42109427d6",
+  "scope_sha": "f6186e4658f1",
   "size": "S",
   "sources": [],
   "state": "ready",

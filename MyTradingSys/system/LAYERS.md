@@ -206,7 +206,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `lf-live_engine-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: live_engine (file:line facts only, no verdict)
   - `lf-live_engine-gpt-rederive` ready p2 CODEX: Layer re-derive: live_engine (independent recount of the headline numbers behind the fact sheet)
-  - `state-code-accumulator-backfill` ready p2 JIS-NB: StateCodeEmitter: backfill session CVD/cum_pv/cum_vol after restart and WS reconnect, fail closed on backfill 
+  - `state-code-accumulator-backfill` refined p2 JIS-NB: StateCodeEmitter: backfill session CVD/cum_pv/cum_vol after restart and WS reconnect, fail closed on backfill 
   - `statecode-backfill-race-coverage` refined p2 JIS-NB: StateCodeEmitter: cover in-flight rollover reconnect and retry scheduling
   - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
   - `live-loop-timeouts-b191` refined p3 SONNET: Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)
@@ -279,7 +279,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `MyTradingSys/research/pizzino_layer_2026-10-27/SPEC.md`; `MyTradingSys/research/pizzino_layer_2026-10-27/PLAN.md`
 - Code: `MyTradingSys/backtest/layers/pizzino/pizzino_indicators.py`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `pz-4-backtest` ready p1 SONNET: Pizzino layer: BTC backtest DEV/VALIDATION/holdout, fee-net, trial ledger
+  - `pz-4-backtest` refined p1 SONNET: Pizzino layer: BTC backtest DEV/VALIDATION/holdout, fee-net, trial ledger
   - `pz-5-confluence-and-live` raw p2 SONNET: Pizzino layer: confluence table with other layers; cbp.query bias and levels as live input
 
 ## Cross-cutting

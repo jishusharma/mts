@@ -15,17 +15,17 @@
   "latest": [
     {
       "auto": true,
+      "kind": "ship",
+      "line": "bt_data.load_klines: convert microsecond stamps, raise on conflicting duplicates, report d",
+      "ref": "8f8a52814868",
+      "utc": "2026-10-26T00:53:00Z"
+    },
+    {
+      "auto": true,
       "kind": "report",
       "line": "dfb243d4cc83 labguy-pass-b: Lab_Guy ACCEPT stamps for 5 cards (b187 done, audit/rv05-h2/h3",
       "ref": "MyTradingSys/research/lab_guy/specs/gap-g7-stop-slippage.md",
       "utc": "2026-10-18T04:13:20Z"
-    },
-    {
-      "auto": true,
-      "kind": "ship",
-      "line": "lab gap-g4-through-ticks-flag: DONE (build)",
-      "ref": "52530e64c23f",
-      "utc": "2026-10-15T14:32:14Z"
     }
   ],
   "layers": [],
@@ -34,7 +34,7 @@
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-18T05:12:41Z",
+  "refreshed": "2026-10-27T19:29:52Z",
   "refs": [
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md",
     "MyTradingSys/research/lab_guy/specs/gap-g7-stop-slippage.md",
@@ -53,7 +53,7 @@
     "any day on or after 2024-07-01 (VALIDATION/HOLDOUT)",
     "live tree"
   ],
-  "scope_sha": "52530e64c23f",
+  "scope_sha": "8f8a52814868",
   "size": "M",
   "sources": [
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md section 5 G7 (tom_bt.py:176 slip=0.0; maker_model.py:19 not modelled)",
@@ -70,7 +70,7 @@
   ],
   "tests": "test_slippage.py (new, in the output folder) fails before slippage.py exists, passes after: python -m pytest MyTradingSys/research/gap_g7_stop_slippage_2026-10-18/test_slippage.py -q; includes the synthetic 5 USD gap case at delta 0 and a hand value at delta 250 ms, and a check that a day on or after 2024-07-01 is refused",
   "title": "G7 measure BTC stop slippage from aggTrades by volatility bucket",
+  "updated": "2026-10-18T10:00:00Z",
   "weight": "IMPORTANT",
-  "worker": "session",
-  "updated": "2026-10-18T10:00:00Z"
+  "worker": "session"
 }

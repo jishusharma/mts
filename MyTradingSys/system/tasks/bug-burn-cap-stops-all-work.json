@@ -18,9 +18,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "supervisor: login C weekly cap 85 on JIS-NB (operator 2026-10-26)",
-      "ref": "3c3c8fe5c29a",
-      "utc": "2026-10-26T15:22:47Z"
+      "line": "supervisor: fixed-form coordinator handover (port of JIS-NB/handover-form-2 onto current t",
+      "ref": "94d3fe8836c4",
+      "utc": "2026-10-27T18:46:33Z"
     }
   ],
   "layers": [],
@@ -30,7 +30,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-27T02:33:12Z",
+  "refreshed": "2026-10-27T19:29:45Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -39,7 +39,7 @@
   "scope_out": [
     "STOP at 5h>=80, weekly cap, live-path, D3 gate limits"
   ],
-  "scope_sha": "3c3c8fe5c29a",
+  "scope_sha": "94d3fe8836c4",
   "size": "M",
   "sources": [
     "scripts/dev/supervisor.py:763"

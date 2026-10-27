@@ -16,16 +16,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "kurisko: causal Quad Rotation layer module (stochastic arm + RSI hypothesis arm), FORMULAS",
-      "ref": "dd001f2a7902",
-      "utc": "2026-10-18T06:39:54Z"
+      "line": "research/ top level: 189 -> 14 files; 176 dated loose files into _archive/loose_2026-10 an",
+      "ref": "f8d0799de2bc",
+      "utc": "2026-10-25T23:02:12Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "fd2a7409da7e Kurisko Quad Rotation: quote-gated extract from the ep 472 captions, spec gap",
+      "line": "f8d0799de2bc research/ top level: 189 -> 14 files; 176 dated loose files into _archive/loo",
       "ref": "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md",
-      "utc": "2026-10-18T04:56:55Z"
+      "utc": "2026-10-25T23:02:12Z"
     }
   ],
   "layers": [],
@@ -35,7 +35,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-25T22:30:00Z",
+  "refreshed": "2026-10-27T19:30:02Z",
   "refs": [
     "MyTradingSys/research/layer_lab/reports/2026-10-19_kurisko-module-crossvendor-review.md"
   ],
@@ -50,7 +50,7 @@
     "live path, orders, deploy, restarts",
     "new hooks, gate steps or rules beyond the card"
   ],
-  "scope_sha": "dd001f2a7902",
+  "scope_sha": "f8d0799de2bc",
   "size": "S",
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-19_kurisko-module-crossvendor-review.md:18-19,53"

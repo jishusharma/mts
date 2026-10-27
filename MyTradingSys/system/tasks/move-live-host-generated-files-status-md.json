@@ -65,7 +65,7 @@
   "scope_sha": "52263d413d62",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "refined",
   "steps": [
     "Read card_specs/move-live-host-generated-files-status-md.md first (hazard, order, reader list).",
     "Readers first: every reader works from the working tree/mirror and gives SKIP/stale when the file is absent (never PASS); tests with the file untracked and absent.",
