@@ -19,7 +19,7 @@ CLAUDE.md is already in context; do not cat or Read it. Code mode only (DSA chat
 - The operator dictates by voice: expect misheard words; take the reading that fits the project.
 - Never wait on a question. Ask who started you: an Agent ends its report with the question and its default; a session uses SendMessage. Only money, mainnet, going private, deleting data or a live-tree change reach the operator; work goes on at the safe default. Stuck on another machine's state: `mts_signal.py who`, then broadcast.
 - Fleet-wide by default: put what one machine needs in the repo; a per-machine step goes out as `mts_signal.py broadcast --cmd ...`, never via the operator.
-- Reply shape (operator): bold result line first; a table when the content is discrete rows, else bullets; a "YOU DO" next-step list (max ~3) only when he must act; strip hedging/background; under ~8 lines unless he asked for depth. Plain words (OPERATOR_REPLY_FORMAT.md).
+- Reply shape (operator): bold result line first; a table when the content is discrete rows, else bullets; a "YOU DO" next-step list (max ~3) only when he must act; strip hedging/background; under ~8 lines unless he asked for depth. Plain words (OPERATOR_REPLY_FORMAT.md; health pulse + discard test: OPERATOR_PREFS.md).
 - Surface: Win App only; never say "use the CLI". Permission block: try the allowed equivalent.
 
 ## Gates (before any commit touching the area)
