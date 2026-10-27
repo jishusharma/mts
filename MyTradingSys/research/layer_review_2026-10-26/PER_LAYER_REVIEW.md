@@ -1,4 +1,4 @@
-# Per-layer review: 13 families (Fable, 2026-10-26)
+# Per-layer review: 13 families (Fable, 2026-10-26; corrected 2026-10-27)
 
 Task: for each of the 13 layer families, fill the a-h fields using `LAYER_SHEETS.md`
 (commit cb903f9d, 2026-10-26) as the starting point and `FABLE_LAYER_REVIEW_RUBRIC.md`
@@ -29,17 +29,19 @@ fills on 1m even when the signal is a higher TF; ETH/SOL 1m not yet on disk).
 ## 1. tom (Order flow + volume profile)
 - (a) Order flow + volume profile; Tom v2 being redefined.
 - (b) Source: `TOM_LAYER_V2_SPEC.md`, `SOURCED_RULES.md`, `TOM_VERBATIM_INDEX.md`. Provenance
-  (`fast_track_2026-09-27/PROVENANCE_AUDIT_TOM.md`, 2026-10-26): 2 TOM-SOURCED / 34
-  TOM-CONCEPT-ONLY / 35 NO-SOURCE / 3 plumbing, 74 rows. Only the 70% value area is TOM-SOURCED;
-  stop floor, fallback stop, target window, net R:R gate, proof bands, book veto, distance caps,
-  below-VAL rule are NO-SOURCE. book_imbalance never counts in historical snapshots; P06 volume
-  spike NO-SOURCE. Counts NOT_IN_DATA.
-- (c) `TOM-CORE-0929` (report commit 2026-10-26): net -0.30 R [95% -0.34..-0.25], holdout
-  -0.32 R [-0.46..-0.18] n=254, gross -0.07 R; window 4.7y BTCUSDT 1m, fee-net (Deribit-style
-  fees; tight stops make fees ~0.23 R/trade). `TOM-CORE-1007` (report commit 36a114939, 2026-10-07):
-  net -2.91 R [-4.35..-1.89], holdout -2.80 R [-4.77..-0.75] n=181, gross -0.15 R; mechanical
-  -2.9 R is from PR #12 removing the 0.1% stop floor (B116) so R is tiny and fees cost ~2.76 R/trade.
-  VP anchors: 46/48 real-minus-placebo CIs straddle 0 (L19).
+  (`fast_track_2026-09-27/PROVENANCE_AUDIT_TOM.md`, authored 5f816ae12 2026-09-30, counts
+  updated through aaf007a5b 2026-10-08): 2 TOM-SOURCED / 34 TOM-CONCEPT-ONLY / 35 NO-SOURCE /
+  3 plumbing, 74 rows (table PROVENANCE_AUDIT_TOM.md:11-15). Only the 70% value area is
+  TOM-SOURCED; stop floor, fallback stop, target window, net R:R gate, proof bands, book veto,
+  distance caps, below-VAL rule are NO-SOURCE. book_imbalance never counts in historical
+  snapshots; P06 volume spike NO-SOURCE. Counts NOT_IN_DATA.
+- (c) `TOM-CORE-0929` (created 5831eadd7 2026-09-30; relocated to _archive by f8d0799de
+  2026-10-26): net -0.30 R [95% -0.34..-0.25], holdout -0.32 R [-0.46..-0.18] n=254, gross
+  -0.07 R; window 4.7y BTCUSDT 1m, fee-net (Deribit-style fees; tight stops make fees ~0.23 R/
+  trade). `TOM-CORE-1007` (report commit 36a114939, 2026-10-07): net -2.91 R [-4.35..-1.89],
+  holdout -2.80 R [-4.77..-0.75] n=181, gross -0.15 R; mechanical -2.9 R is from PR #12
+  removing the 0.1% stop floor (B116) so R is tiny and fees cost ~2.76 R/trade. VP anchors:
+  46/48 real-minus-placebo CIs straddle 0 (L19).
 - (d) B146, B147, B131, B085, B084 (BACKTEST_ERRORS part 1, commit a50ff56bd, 2026-10-26): B146 no
   minimum stop width (median stop 0.082%, planned gross R:R 79, fees dominate); B147 live-rule
   evidence unreliable (0 signals vs 19 earlier; holdout read twice; Oct-7 run not on HEAD); B131/B085
@@ -99,19 +101,22 @@ fills on 1m even when the signal is a higher TF; ETH/SOL 1m not yet on disk).
 ## 4. rsi (RSI 40/60 / Malkan / Kurisko)
 - (a) RSI 40/60 levels (Malkan), RSI divergence, Kurisko quad rotation.
 - (b) Source: `KURISKO_SPEC.md`, `FORMULAS.md`, Malkan blog/Chartink text (WR). Provenance
-  (`LAYER_PROVENANCE_AUDIT.md`, commit f8d0799de 2026-10-26) rsi row: 4 SOURCED / 10 CONCEPT-ONLY /
+  (`research/LAYER_PROVENANCE_AUDIT.md`, authored 9b76e716f 2026-10-04; touched by f8d0799de
+  2026-10-26) rsi row (LAYER_PROVENANCE_AUDIT.md:46): 4 SOURCED / 10 CONCEPT-ONLY /
   12 NO-SOURCE, 26 rows. SOURCED = levels 40/60 (WR:45) and green/red entry candle (WR:77,144). No
   sourced exit (stop 1%, target 2%, 100-bar time exit are NO-SOURCE, R21-R23). Kurisko stop is the
   pattern-low minus 1 tick (SOURCED) but "skip if stop distance < 14 bp round trip" is OURS; exact
   stochastic smoothing and numeric turn-up are OPEN/OURS.
 - (c) L1-D3 (`BACKTEST_L1_REPORT.md`): only 1h / level-40 support, tol 0.5, clears the PBO bar,
   PBO 0.030 (IS n 193, OOS n 89 h5 mean +0.043% / hit 56.2%); every other cell PBO 0.39-0.91.
-  RSI-DIV-MTF (`RESULT.md`, commit 0aa8f5644 2026-10-09): 31 of 32 net negative after a 0.10%
-  taker round trip; 32 cells >= 300 events (1m-1h except 1h operator bullish at 277, plus 2h Malkan
-  bearish 301); 6h/2d leads have n 6-54. Sim-desk trial `TRIALS.md:274` (commit 28565f801
-  2026-10-26): rsi 1d BREAK RSI 60/40 band 2 trend 20, fee-net, n 2 filled (3 never filled), mean
-  net R -1.036 [-1.042,-1.030]. `TRIALS.md:282` rsi-deep-prob-tables: the only rsi trial that read
-  VALIDATION (2024-07..2025-06 read once; HOLDOUT refused by the loader).
+  RSI-DIV-MTF (`research/rsi_divergence_mtf_2026-10-09/RESULT.md`, created 1157dbe6c 2026-10-09,
+  amended 0aa8f5644 2026-10-09): 31 of 32 net negative after a 0.10% taker round trip; 32 cells
+  >= 300 events (1m-1h except 1h operator bullish at 277, plus 2h Malkan bearish 301); 6h/2d
+  leads have n 6-54. Sim-desk trial `TRIALS.md:274` (row dated 2026-10-21, added by 2b80ef52b
+  2026-10-21): rsi 1d BREAK RSI 60/40 band 2 trend 20, fee-net, n 2 filled (3 never filled), mean
+  net R -1.036 [-1.042,-1.030]. `TRIALS.md:282` rsi-deep-prob-tables (added by 28565f801
+  2026-10-26): the only rsi trial that read VALIDATION (2024-07..2025-06 read once; HOLDOUT
+  refused by the loader).
 - (d) T09 F3 (live event set differs - live trades 384 of 461 events on 5m, not covered by the
   tested set, `LAYER_REALITY:10`); provenance exit NO-SOURCE; Kurisko stop too narrow for the 14 bp
   round trip (fee 2.1-2.3 R on 1m, 0.60-0.79 R on 5m, `LAYER_REALITY:12`).
@@ -130,11 +135,11 @@ fills on 1m even when the signal is a higher TF; ETH/SOL 1m not yet on disk).
 ## 5. cryptocred (S/R flip, fib pullback, failed MSB)
 - (a) CryptoCred price-structure setups: S/R flip, fib pullback, failed market-structure break.
 - (b) Source: CryptoCred videos BHwoN7VPrBE / inqHN8q57X4 (`extract_BHwoN7VPrBE.md`,
-  `extract_inqHN8q57X4.md`). Provenance cryptocred row: 6 SOURCED / 11 CONCEPT-ONLY / 8 NO-SOURCE,
-  25 rows. SOURCED = bodies-not-wicks, close-through break, prior-sequence requirement, entry at the
-  broken level, fib 0.618/0.786. NO-SOURCE = 0.1% stop buffer (C14/C23), 200-bar retest expiry,
-  20-bar failure window. The 1.5:1 and 2:1 are the trader's MINIMUM R:R filters (BH:82) used as
-  fixed take-profit targets - a role swap, NO-SOURCE.
+  `extract_inqHN8q57X4.md`). Provenance cryptocred row (LAYER_PROVENANCE_AUDIT.md:82): 6 SOURCED /
+  11 CONCEPT-ONLY / 8 NO-SOURCE, 25 rows. SOURCED = bodies-not-wicks, close-through break,
+  prior-sequence requirement, entry at the broken level, fib 0.618/0.786. NO-SOURCE = 0.1% stop
+  buffer (C14/C23), 200-bar retest expiry, 20-bar failure window. The 1.5:1 and 2:1 are the
+  trader's MINIMUM R:R filters (BH:82) used as fixed take-profit targets - a role swap, NO-SOURCE.
 - (c) FAIL after trade-through rerun (`LAYER_REALITY:9`, sheet Backtests L107): 15m brackets FAIL;
   daily/4h untested. BIGTRADE-EXIT first row negative both splits (`EXIT_POLICIES_REPORT.md`,
   commit 26c6f3a83 2026-10-17); full table not read. L1-D3 mixed (shared row, PBO 0.030 at 1h
@@ -160,9 +165,10 @@ fills on 1m even when the signal is a higher TF; ETH/SOL 1m not yet on disk).
   citation is REJECT (repo holds only a tier label, no title/URL/quote, `LAYER_PROVENANCE_AUDIT`
   REJECT list item 2). Funding-extreme reversion direction has no source sentence in repo (CONCEPT-ONLY).
 - (c) T055-C1 funding_cvd_fade rerun (`T055_BT_RERUN_FULLFUNDING_2026-10-07.md`, commit 36a114939
-  2026-10-07): OOS FAIL, n 76, OOS net -0.0453%, OOS net Sharpe -0.0346, fee-net (fee 10 bps RT +
-  slip 2 bps RT + funding, full funding from 2020-01); single-year OOS, "provisional". OI-DELTA:
-  descriptive only, no verdict line (`OI_DELTA_4STATE_BACKTEST_2026-09-21.md`).
+  2026-10-07, candidate table row 14): OOS FAIL, n 76, OOS net -0.0453%, OOS net Sharpe -0.0346,
+  fee-net (fee 10 bps RT + slip 2 bps RT + funding, full funding from 2020-01); single-year OOS
+  (2026: n=76), "provisional". OI-DELTA: descriptive only, no verdict line
+  (`OI_DELTA_4STATE_BACKTEST_2026-09-21.md`).
 - (d) funding tf mismatch: live 1h vs 15m tested, 0 of 34 coincide (`LAYER_REALITY:17`); B103
   (backtest funding cost silently 0 outside the loaded funding range, CLOSED); B075 (historical
   mode zeroed funding/OI and pulled live into a past snapshot - look-ahead, CLOSED).
@@ -188,10 +194,12 @@ fills on 1m even when the signal is a higher TF; ETH/SOL 1m not yet on disk).
   2022-01-01..2026-10-07, no edge: asia_target|touch_all|both n 911, net -0.036%, t -1.72, win 31%
   (gross, no fee claim); EU-touch cells insufficient n (asia_target|touch_eu|low n 144, net
   -0.101%, t -1.95). T055-C2 session_momentum rerun (`T055_BT_RERUN_FULLFUNDING_2026-10-07.md`,
-  commit 36a114939 2026-10-07): OOS FAIL, n 299, OOS net +0.0177%, Sharpe 0.0084, 1 of 2 OOS years
-  positive (fee-net, fee 10 bps + slip 2 bps + funding). T055-C3: NO EDGE, gross OOS ~0 at every
-  horizon. EUR-low sweeps BLOCKED by power gate (`RESULT.md` commit ecefc522c 2026-10-18);
-  LC-SIZING-QUICK exploratory negative.
+  commit 36a114939 2026-10-07, candidate table row 15): OOS FAIL, n 299, OOS net +0.0177%,
+  Sharpe 0.0084, 1 of 2 OOS years positive (2025 +0.0636% / 2026 -0.0332%; fee 10 bps + slip
+  2 bps + funding). T055-C3 (turn_of_candle + quarter-hour opening order imbalance, original
+  `T055_BT_c3.md`): no gross edge at 4h/8h/12h on the BTC proxy (T055_BT_c3.md:31); not re-run in
+  the 10-07 full-funding rerun (C1/C2 only). EUR-low sweeps BLOCKED by power gate (`RESULT.md`
+  commit ecefc522c 2026-10-18); LC-SIZING-QUICK exploratory negative.
 - (d) B102 (offline session models anchor NY/London at fixed UTC minutes, no DST, wrong ~40% of
   days, CLOSED), B187 (price-level study blocked by a power gate it cannot pass on current data,
   OPEN). turn_of_candle is 71% of live alerts (`LAYER_REALITY:20`) but exits differ.
@@ -210,7 +218,8 @@ fills on 1m even when the signal is a higher TF; ETH/SOL 1m not yet on disk).
   L164); ALPHA labelled NO-SOURCE. volume, candle_patterns, ma_daily, bigtrade_fires have no
   trader source.
 - (c) VOLUME (`VOLUME_RESEARCH_REPORT_2026-10-09.md`, commit 3cb5b521c 2026-10-09): no validated
-  directional edge, "volume gives intensity, not direction"; 1 marginal DEV pass failed VALIDATION;
+  directional edge, "volume gives intensity, not direction" (report :9-10: 553 pre-registered
+  trials -> 1 marginal DEV pass that failed VALIDATION, net -2 bp on 50 events vs +70 bp on DEV);
   volume HOLDOUT sealed. ALPHA (`ALPHA_RESULTS.md`, commit 457d13043 2026-10-12): NO-SOURCE, A CAGR
   20.5% / maxDD 49% vs buy-and-hold 43.8% / 76.7% - "not a result". CANDLE-P1 1d engulfing rows all
   FAIL; CANDLE-CLOSE-DEV exploratory negative. BIGTRADE-EXIT first row negative both splits. Gross
@@ -236,7 +245,7 @@ fills on 1m even when the signal is a higher TF; ETH/SOL 1m not yet on disk).
   1.25, and min stop floors are NO-SOURCE (BUGS.md B117 :228, B153 :264, B116 :227). No trading
   parameter is trader-sourced: this is an infra layer.
 - (c) No backtest row - live_engine has no strategy P&L number. Testnet HALT since 2026-10-12
-  09:46Z (executor fail_closed; supervisor clears it).
+  09:46Z (executor fail_closed; supervisor clears it; `system/layer_index.json:532`).
 - (d) B075, B081 (four different fee sets for the same Deribit BTC perp), B116-B118, B136, T085
   (97% of testnet trades end on the time exit; the 1%/2%/8-bar bracket on every layer was never
   backtested, T09:3-5/86). B042 day_type, B054 cvd_aligned proof direction-blind (WONTFIX).
@@ -259,9 +268,11 @@ fills on 1m even when the signal is a higher TF; ETH/SOL 1m not yet on disk).
 - (c) No backtest result yet. The kline scorecard (multi-provider parser + ingestion, built
   2026-10-18) scores the record before anything is traded; the 67.1% / 3.99% / 0.63% are the
   analysts' own claims, unverified. Triage floor: n=30 resolved trades gives 60.5% power vs a
-  50% coin-flip null at the claimed 67.1% win rate (`analysts/ROADMAP.md`).
+  50% coin-flip null at the claimed 67.1% win rate (`analysts/ROADMAP.md` :68).
 - (d) B139 (analyst-rules adapter has no tracked item; candidates file never produced; analyst
-  rules unbacktested, OPEN). Ingestion is unfinished (4 ingestion cards ready, `analyst-ingest-roman-x`).
+  rules unbacktested, OPEN). Ingestion is unfinished: 4 ingestion cards ready
+  (analyst-ingest-rlinda-tv / -bennett-dpa / -cryptochase-x / -roman-x,
+  `analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md` :103-106 + ROADMAP.md:15).
 - (e) Scored on the same BTC klines every backtest uses; sealed splits; no walk-forward; fee-net
   sum R < 0 at n=30 drops the analyst.
 - (f) JUDGE role - scores calls on the same klines; no strategy-family confluence, it judges.
@@ -280,10 +291,11 @@ fills on 1m even when the signal is a higher TF; ETH/SOL 1m not yet on disk).
   distance and size are OURS (sheet L222); the rest is OURS. `krown_params.json` carries 47 entries
   (ma_fast 21, ma_slow 55, ma_long 200, bbwp 7/100/2.0/30/50, range_n 20, etc.).
 - (c) No DEV event study yet (sheet L222, `LAYER_REALITY:13`). Sim-desk trial `TRIALS.md:280`
-  (commit 28565f801 2026-10-26): krown S5 4h target 2R, fees 0.02/0.05% slip 0.02%, DEV
-  2022-04-01..2024-06-30, fee-net: filled n 35 (0 never filled), mean net R +0.278
-  [-0.161, +0.750], worst losing streak 4 - NOT ENOUGH DATA. Confluence-s1 D3/D2 band grids
-  (`TRIALS.md:275-277`) are counts only, no outcome column read (DEV decision times only).
+  (row dated 2026-10-25, added by 60f53e24c 2026-10-25 "sim desk: Krown study"): krown S5 4h
+  target 2R, fees 0.02/0.05% slip 0.02%, DEV 2022-04-01..2024-06-30, fee-net: filled n 35 (0 never
+  filled), mean net R +0.278 [-0.161, +0.750], worst losing streak 4 - NOT ENOUGH DATA. Confluence-
+  s1 D3/D2 band grids (`TRIALS.md:275-277`, rows dated 2026-10-23) are counts only, no outcome
+  column read (DEV decision times only).
 - (d) B141 (Krown/levels `htf_context_live` bal_4h/bal_1d null on every row: the balance rule holds
   in 0.4% (4H) and 0% (1D) of windows, so failed_breakout is null, OPEN); detector recall check
   3 of 12 (`RECALL.md`/`KROWN_GAP_AUDIT_2026-10-18.md` commit 8e5c3647 2026-10-18) - RECALL FAIL
@@ -305,12 +317,12 @@ fills on 1m even when the signal is a higher TF; ETH/SOL 1m not yet on disk).
 - (b) Source: `PARITY_CONTRACT.md`, `ATLAS_STUDY_SPEC.md`. Parameters NOT_IN_DATA in the sheet;
   the oscillator constants (N1=10, N2=21, SMA_N=4, K=0.015, OB1=60, OB2=53, WARMUP=200) are in
   `backtest/layers/wavetrend/wavetrend.py:16-19` - OURS (LazyBear formula, no trader source in repo).
-- (c) `RESULT.md` (commit 249f01fd0 2026-10-17): W01-03/W09 FAIL; W04-08 INCONCLUSIVE per the MTS
-  re-gate; W07/W08 also use an invalid C1 detector; 0 of 9 frozen cells pass the gross DEV screen
-  (gross, no fees, DEV 2022-01-01..2024-06-30). Sim-desk trial `TRIALS.md:273` (commit 28565f801
-  2026-10-26): wavetrend 1h band 53 BOTH target 1.5R, fees 0.02/0.05%, DEV 2022-04-01..2024-06-30,
-  fee-net: filled n 369 (0 never filled), mean net R -0.158 [-0.288, -0.023], worst losing streak 8
-  - FAILED.
+- (c) `research/wavetrend_2026-10-17/RESULT.md` (commit 249f01fd0 2026-10-17): W01-03/W09 FAIL;
+  W04-08 INCONCLUSIVE per the MTS re-gate; W07/W08 also use an invalid C1 detector; 0 of 9 frozen
+  cells pass the gross DEV screen (gross, no fees, DEV 2022-01-01..2024-06-30, RESULT.md:3,5).
+  Sim-desk trial `TRIALS.md:273` (row dated 2026-10-21, added by 2b80ef52b 2026-10-21):
+  wavetrend 1h band 53 BOTH target 1.5R, fees 0.02/0.05%, DEV 2022-04-01..2024-06-30, fee-net:
+  filled n 369 (0 never filled), mean net R -0.158 [-0.288, -0.023], worst losing streak 8 - FAILED.
 - (d) Invalid C1 detector (L244): W07/W08 used a wrong divergence detector; card `wavetrend-c1-v2`
   (p1, refined) is the correction.
 - (e) BTCUSDT USD-M DEV bars 2022-01-01..2024-06-30; sealed splits; no walk-forward; desk fills on
@@ -327,10 +339,13 @@ fills on 1m even when the signal is a higher TF; ETH/SOL 1m not yet on disk).
 - (b) Source: papers 01-03 (`papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md` etc.). Parameters
   NOT_IN_DATA in the sheet (no per-parameter provenance row).
 - (c) None recorded with a verdict. The YouTube BTC evaluation benchmark: Daily 1D event study
-  (2,461 bars, 2020-2026) confirmed Andrews' 80% rule on Bitcoin (86.15%-90.03% reach on Modified
-  Schiff, `PHASE1_EVENT_STUDY.md`); a 4H study ran on 14,766 klines / 1,273 confirmed swing setups.
-  These span 2020-2026, not DEV-only - the 80% reach is a descriptive benchmark, not a DEV fee-net
-  edge. Detector built with unit tests (100% pass).
+  (2,461 bars, 2020-01-01..2026-09-26, 361 setups, `PHASE1_EVENT_STUDY.md`) confirms Andrews' 80%
+  rule on Bitcoin, per-model ML reach: Standard Andrews 55.96%, Schiff 86.15%, Modified Schiff
+  89.2%, Log-Modified Schiff 90.03%. The P&L column is fee-net (0.10% RT taker + 0.02% slip): mean
+  returns Schiff -1.12%, Modified -1.12%, Log-Modified -0.95%. A 4H study (PHASE2) ran on 14,766
+  klines / 1,273 confirmed swing setups. These span 2020-2026, not DEV-only - the reach rates are
+  a descriptive benchmark, and the fee-net P&L is negative; no DEV fee-net edge. Detector built with
+  unit tests (100% pass).
 - (d) Studies span 2020-2026, not DEV-only (`LAYER_REALITY:18`); no VERDICTS row.
 - (e) 4H/1D klines on BTC; sealed splits; no walk-forward; the DEV-only rerun is an open card.
 - (f) levels (structure zones; subject overlaps krown/cryptocred only - the map marks the confluence
@@ -344,17 +359,63 @@ fills on 1m even when the signal is a higher TF; ETH/SOL 1m not yet on disk).
 ## Cross-family reading (OURS, no verdict)
 - Simulator coverage: 3 dedicated studies covered (rsi, krown, wavetrend via `studies/{rsi,krown,
   wavetrend}.py`); 2 partial via `studies/levels.py` level-family inputs (tom, fabio tagged 6 of 8
-  KEEP families); 8 NOT_IN_DATA (guidance, cryptocred, positioning, session_timing,
-  volume_candles_ma, live_engine, callers, pitchfork). The two common gates: (1) order-flow bars
-  before 2024-12 and ETH/SOL 1m (takes tom/fabio there), and (2) a small study/adapter file per
-  family (takes the other 6 there); live_engine is out of scope by design (execution, not a
-  backtest).
+  KEEP level families, `argon_sim_layer_coverage.md` :12); 8 NOT_IN_DATA (guidance, cryptocred,
+  positioning, session_timing, volume_candles_ma, live_engine, callers, pitchfork). The two common
+  gates: (1) order-flow bars before 2024-12 and ETH/SOL 1m (takes tom/fabio there), and (2) a small
+  study/adapter file per family (takes the other 6 there); live_engine is out of scope by design
+  (execution, not a backtest).
 - Rubric verdict tally: proven 0, promising 0, FAILED 7 (tom, fabio, guidance, cryptocred,
   positioning, session_timing, wavetrend), NOT ENOUGH DATA 6 (rsi, volume_candles_ma, live_engine,
   callers, krown, pitchfork). No family is dropped: the standing rule keeps every family until it
   has been seen in the simulator, and the 8 NOT_IN_DATA families name the gate above.
-- Fee stop rule (`FABLE_FEE_STOP_RULE.md`, 91170f43c): a stop must be at least 4x the round-trip
-  fee before gross edge can survive (0.40% taker / 0.20% maker floors, SOURCED from
+- Fee stop rule (`FABLE_FEE_STOP_RULE.md`, 91170f43c 2026-10-26): a stop must be at least 4x the
+  round-trip fee before gross edge can survive (0.40% taker / 0.20% maker floors, SOURCED from
   `PRE_REG_CRYPTOCRED_HTF.md` gate 0a). This is why tom (B146 median stop 0.082%), kurisko (14 bp
   round trip) and the tight K5 stop all lose to fees - the single largest recurring fee-net
   failure across the FAILED families.
+
+## Corrections vs the wrong-model draft (shipped 983f96a33)
+
+Verified line by line against disk + git on 2026-10-27; the headline numbers, bug ids,
+provenance totals, confluence/coverage routing and 20 cited commit hashes all held. What the
+draft got wrong or thin:
+
+1. `TRIALS.md` row attributions (draft §4/§11/§12): the draft cited commit 28565f801
+   (2026-10-26) for rows :273 (wavetrend), :274 (rsi) and :280 (krown). 28565f801 added only
+   :282 (rsi-deep-prob-tables). Row :273 and :274 are dated 2026-10-21 and came with 2b80ef52b
+   ("sim-desk: RSI 40/60 (Malkan) and WaveTrend (LazyBear) studies on the desk"); row :280 is
+   dated 2026-10-25 and came with 60f53e24c ("sim desk: Krown study (S5/S8/S4), exploratory,
+   DEV only"). Fixed per row.
+2. TOM-CORE-0929 (draft §1c): "report commit 2026-10-26" was a relocation, not an authorship.
+   The report was created in 5831eadd7 (2026-09-30, WIP commit carrying `TOM_CORE_BT.md`);
+   f8d0799de (2026-10-26) only moved research/ files into `_archive/`. Fixed.
+3. RSI-DIV-MTF (draft §4c): the draft cited 0aa8f5644 as the RESULT.md commit. Created by
+   1157dbe6c ("T089+T091: RSI divergence on every timeframe", 2026-10-09); 0aa8f5644 ("T088")
+   amended it minutes later. Fixed.
+4. `PROVENANCE_AUDIT_TOM.md` (draft §1b): the draft dated it 2026-10-26. Authored 5f816ae12
+   (2026-09-30, "36 NO-SOURCE, 33 concept-only, 2 sourced"); counts updated through aaf007a5b
+   (2026-10-08, "A11 reclassified, B127 closed, B145 filed") to the current 2/34/35/74. Fixed.
+5. `LAYER_PROVENANCE_AUDIT.md` (draft §4b): the draft cited f8d0799de 2026-10-26. Authored
+   9b76e716f (2026-10-04, "81 non-core params, 17 SOURCED / 34 CONCEPT-ONLY / 30 NO-SOURCE");
+   f8d0799de only touched 4 lines. Fixed.
+6. Pitchfork (draft §13c): "86.15%-90.03% reach on Modified Schiff" conflated the four ML
+   models: 86.15% is Schiff, 89.2% Modified Schiff, 90.03% Log-Modified Schiff (Standard Andrews
+   is 55.96%). Also the P&L column of PHASE1 is fee-net (0.10% RT taker + 0.02% slip), not
+   gross: mean returns Schiff -1.12% / Modified -1.12% / Log-Modified -0.95% on 2020-2026. Fixed.
+7. T055-C3 (draft §7c): "NO EDGE gross OOS ~0 at every horizon" is supported but the source is
+   the original `T055_BT_c3.md` (:31 "no gross edge at 4/8/12h on BTC proxy"), NOT the 10-07
+   full-funding rerun - that rerun carries C1/C2 only. Re-sourced.
+
+Also refined (wording, not error): §6c now points at the candidate-table rows (report :14/:15),
+§8c cites the volume report's "1 marginal pass failed VALIDATION" line (:9-10), §9c adds
+`system/layer_index.json:532` for the HALT, §10d names the 4 ingestion cards with sources
+(`REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md` :103-106 + ROADMAP.md:15), §12c cites
+RESULT.md:3,5 for the 0-of-9 gross screen.
+
+Cross-check: sibling FABLE_FULL_AUDIT (`FABLE_FULL_AUDIT.md`, commit ccc3d661e 2026-10-26,
+sibling session fable-audit) found no numeric conflicts against this review's sim-desk
+numbers; its open card `krown-review-feenet-prose` (fee-net prose in `krown_study_review.md` +
+`test_krown.py:67`, off ~100x on the fee figure - the test assertion itself is correct) is
+outside this file's scope and noted here so the fix gets attributed to the right card. The
+audit's "Krown S4 = OURS" note reads the params-json label; TRIALS.md:280's trial is the S5
+trial as cited here.
