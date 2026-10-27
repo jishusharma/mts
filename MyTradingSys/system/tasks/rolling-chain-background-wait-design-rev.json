@@ -1,0 +1,42 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-27T20:33:04Z",
+  "depends_on": [],
+  "done_when": "A design note under MyTradingSys/research/lead/ lists the candidate levers (smaller S-size cards instead of M; raise MAX_RUNNING in usage_reminder.py past 2 with evidence it is safe; --quick gate where paths allow instead of --full; batch several small cards into one dispatch to amortize the gate run once) with the cost/risk of each, and picks a default. No code changes in this card.",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator asked why rolling-chain background agents (Agent-tool dispatches) sit 15-25 min each and wants that consolidated into one design before any fix is coded. Each link currently: reads full card brief, edits files, runs the smoke/full gate (run_all_tests.py), re-verifies pinned regression numbers, commits, sync.py ship (CI gate). That cycle is the real cost, not idle wait.",
+  "id": "rolling-chain-background-wait-design-rev",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Operator rule for this whole line of work: consolidate idea -> refine this task -> design review passes (with tests where applicable) -> only then implement -> implementation tested with proof attached. Do not skip straight to a code change.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/lead/*.md (new design note only)"
+  ],
+  "scope_out": [
+    "scripts/dev/usage_reminder.py, scripts/dev/sync.py, scripts/dev/tasks.py, any sim_desk code — no implementation in this card"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "Pull timing evidence: grep recent sync.py ship / gate run durations from the last 6 rolling-chain links for a real baseline, not a guess.",
+    "List levers with tradeoffs (card size, MAX_RUNNING, gate scope, batching) and pick one default; write the note.",
+    "Open ONE follow-up implementation card (tasks.py new) that points at this note; that follow-up card is only markable done once it ships with passing tests and the test output attached as proof in its result field."
+  ],
+  "tests": "Design-only: no tests to run yet. The note itself must show, per lever, what existing test or CI evidence it leans on (e.g. gate timing from recent sync.py ship logs).",
+  "title": "rolling-chain background wait: design review before fix",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

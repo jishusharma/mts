@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-27T20:51:50Z",
+  "depends_on": [
+    "extraction-ledger-all-sources"
+  ],
+  "done_when": "CROSS_METHOD_QA.md has a trust row for every (type, method) pair with 3+ sampled videos, planted-error test passes 5/5, test registered in extra_tests.tsv, shipped, cherry empty.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Measure which extraction method to trust per video type: for 3 videos per type present under 2+ methods, compare rule-bearing sentences (levels, bar counts, grades, conditions); plant 5 known errors in a copy to prove the checker catches them; write the per-type trust table.",
+  "id": "extraction-cross-method-qa",
+  "kind": "audit",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-28 ACCEPT LAB:none CLASS:C1 REVIEWER:sonnet-agent WEIGHT:IMPORTANT. GPT luna medium (ROUTING.md row 46). Needs REVIEWED stamp.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/extraction_ledger_2026-10/CROSS_METHOD_QA.md",
+    "MyTradingSys/research/extraction_ledger_2026-10/cross_method_qa.py",
+    "MyTradingSys/research/extraction_ledger_2026-10/test_cross_method_qa.py",
+    "scripts/dev/extra_tests.tsv"
+  ],
+  "scope_out": [
+    "layer code",
+    "editing any extract",
+    "new transcripts"
+  ],
+  "size": "M",
+  "sources": [
+    "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable",
+    "MyTradingSys/research/layer_lab/reports/2026-10-17_malkan-hindi-rows-gpt-read.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "From EXTRACTION_LEDGER.csv pick videos present under 2+ methods (e.g. W1HrDl70Lhk captions, hi, asr).",
+    "cross_method_qa.py: normalise numbers and rule keywords from each transcript; report agree/disagree/missing per rule sentence.",
+    "Plant 5 numeric edits in a temp copy; the script must flag all 5 (test). Write CROSS_METHOD_QA.md: per type and method, agreement %, advice (trust / re-extract / ASR-only)."
+  ],
+  "tests": "test_cross_method_qa.py: planted-error fixture, 5 of 5 flagged; fails before the script exists.",
+  "title": "Cross-method extraction QA: same videos read by English captions vs Hindi ASR vs Whisper vs Gemini, agreement per video type, planted-error trial",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

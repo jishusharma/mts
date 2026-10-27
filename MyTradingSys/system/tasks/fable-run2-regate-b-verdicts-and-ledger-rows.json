@@ -6,6 +6,18 @@
     "python scripts/dev/verdicts.py count --split DEV",
     "python scripts/dev/verdicts.py count --split DEV --ledger"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-27T21:28:20Z",
+    "misses": 45,
+    "reads": [
+      "scripts/dev/test_verdicts.py",
+      "scripts/dev/verdicts.py",
+      "MyTradingSys/research/VERDICTS.csv",
+      "MyTradingSys/research/TRIAL_LEDGER.csv"
+    ],
+    "session": "agent-abe7ae4d6c9b3da3f"
+  },
   "created": "2026-10-25T19:40:20Z",
   "depends_on": [],
   "done_when": "Live-file numbers after the edits: verdicts.py count --split DEV prints 56 (57 today: -2 duplicate filter rows, +1 kurisko split DEV; simulated on a copy); 'session-extreme fade' matches 2 VERDICTS rows (4 today); rows :25 and :50 read BLOCKED; TRIAL_LEDGER.csv gains 62 rows (step 6); test_verdicts.py new case passes.",
