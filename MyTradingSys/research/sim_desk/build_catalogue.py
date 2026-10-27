@@ -30,6 +30,22 @@ EXPORTED_BY_SOURCE = {
 }
 
 
+DATE_IN_PATH = re.compile(r"(20\d\d-\d\d-\d\d)")
+
+
+def date_of(source):
+    """Date a test was run: a date in the path, else the last commit date of the source file, else None."""
+    m = DATE_IN_PATH.search(source)
+    if m:
+        return m.group(1)
+    try:
+        out = subprocess.run(["git", "-C", ROOT, "log", "-1", "--format=%cs", "--", source.split("#")[0]],
+                             capture_output=True, text=True, timeout=30).stdout.strip()
+        return out or None
+    except Exception:
+        return None
+
+
 def tracked():
     out = subprocess.run(["git", "-C", ROOT, "ls-files", "MyTradingSys"], capture_output=True, text=True, check=True).stdout
     return [p for p in out.splitlines() if p]
@@ -44,6 +60,7 @@ def read(p):
 
 
 def clean(s, n=240):
+    s = re.sub(r"(?<![\d.])\d{5,}\.\d+", "[price omitted]", s)   # public repo: no raw prices in any catalogue or result text
     s = re.sub(r"[*`#|]+", "", s).strip()
     s = re.sub(r"\s+", " ", s)
     return s if len(s) <= n else s[: n - 1].rstrip() + "…"
@@ -84,6 +101,8 @@ def tag(row):
     row["tag"] = (row["verdict"] + " " + row["title"]).lower()
     fl = "failed" if re.search(r"\bfail|no edge|negative|does not pay|inconclusive|nothing survives|no anchor|closed", row["tag"]) else "other"
     row["status"] = "FAILED" if fl == "failed" else "SEE_VERDICT"
+    row["verdict_class"] = ("failed" if fl == "failed" else "unclear" if re.search(r"inconclusive|insufficient|unvalidated|not enough", row["tag"])
+                            else "passed" if re.search(r"\bpass|survives|adopt|confirmed", row["tag"]) and not re.search(r"not pass|nothing survives|\bfail", row["tag"]) else "other")
     del row["tag"]
     return row
 
@@ -105,10 +124,14 @@ def main(argv=None):
             return
         seen.add(source)
         exp = EXPORTED_BY_SOURCE.get(source)
+        if not (exp and exp in have) and id_ in have:   # a backfilled result file is named after its catalogue id
+            exp = id_
         r = {"id": id_, "family": family, "title": title, "kind": kind, "kind_source": kind_source, "verdict": verdict,
              "source": source, "exported": bool(exp and exp in have), "result_id": exp if exp and exp in have else None}
         if extra:
             r.update(extra)
+        if not r.get("date"):
+            r["date"] = date_of(source)
         rows.append(tag(r))
 
     # 1. exported first: make sure their source is claimed
@@ -167,6 +190,7 @@ def main(argv=None):
         add(rid, d.get("family", "Desk runs"), d.get("title", rid), d.get("kind", "backtest"), "result file", d["verdict"]["label"],
             "MyTradingSys/research/sim_desk/results/" + rid + ".json", {"exported": True, "result_id": rid})
     rows.sort(key=lambda r: (not r["exported"], r["family"].lower(), r["title"].lower()))
+    # NOTE (gap closed by backfill): every row with a result file counts as exported
     doc = {"_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
            "count": len(rows), "exported": sum(1 for r in rows if r["exported"]), "rows": rows}
     with open(a.out, "w", encoding="utf-8", newline="\n") as f:

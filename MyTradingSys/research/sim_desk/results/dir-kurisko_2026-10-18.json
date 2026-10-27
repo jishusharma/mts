@@ -1,0 +1,60 @@
+{
+ "id": "dir-kurisko_2026-10-18",
+ "kind": "backtest",
+ "family": "Kurisko",
+ "title": "PRE-REGISTRATION: Kurisko Quad Rotation, count-only, BTCUSDT perp DEV 1m/5m (2026-10-18)",
+ "provenance": "source-extracted",
+ "date": "2026-10-18",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Data: Binance USDT-M BTCUSDT 1m klines F:/MTS/data/tom_raw/klines/BTCUSDT-1m-2022-01.csv .. -2024-06.csv (30 files, DEV, 1,313,280 1m bars). count_events.py checks each file sha256 against gross_effect_screen_2026-10-15…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "Events: kurisko module quad_rotation.lines + detect, module commit dd001f2a7902f2de5c1b3821db7ea35bcb613624 (FORMULAS 24.4 rule), default bands (9,3),(14,3),(40,4),(60,10); the (44,x) variant was NOT run. RSI arm = same…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "Computed: events, distinct UTC event-days (of the event bar close), side split, pattern stop width in bp. NOT computed anywhere: any return, MFE/MAE, hit rate, fee in P&L, or any bar after an event. No outcome column ex…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "Reproduce: python count_events.py --out counts; tests python -m pytest test_count_events.py (7 pass; hand-derived from FORMULAS 24.5; they failed before the script existed).",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "check (step 1)",
+  "tone": "info"
+ },
+ "why": [
+  "Card kurisko-prereg-fire-counts. Status: COUNT-ONLY. Frozen cells: 0 of 8 candidates. Of the eight counted cells (1m and 5m only), every TF x arm x side is fee-dominated or underpowered by prereg_gate.py (BLOCK), so nothing is frozen and no outcome study may…",
+  "Reproduce: python count_events.py --out counts; tests python -m pytest test_count_events.py (7 pass; hand-derived from FORMULAS 24.5; they failed before the script existed).",
+  "Round trip 14 bp = 2 x 5 bp taker (SOURCED backtest/fees.py BINANCE_TAKER 0.0005, both legs) + 4 bp slippage (OURS). FORMULAS 13 carries 12 bp; I did not re-derive that figure, 14 bp follows the card and is the stricter number. Funding rule (OURS, for any lat…",
+  "Kill scope (GATE_AUDIT Q4, gate-fix-4): FAIL/INCONCLUSIVE: stop; this BLOCK (count-only, no outcome read) covers only Quad Rotation on BTCUSDT 1m and 5m with bands (9,3),(14,3),(40,4),(60,10) D-line, the pattern-low stop and a 14 bp taker round trip; 15m and…"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window"
+ },
+ "source_files": [
+  "MyTradingSys/research/kurisko_2026-10-18/PRE_REG.md"
+ ],
+ "commit": "86288e039"
+}

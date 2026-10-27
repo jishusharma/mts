@@ -1,0 +1,70 @@
+{
+ "id": "dir-gemini_burn_2026-10-25",
+ "kind": "backtest",
+ "family": "Gemini Burn",
+ "title": "Monte Carlo Backtesting & Robustness Presentation: Industry Benchmark & Single-Screen Beginner Design",
+ "provenance": "source-extracted",
+ "date": "2026-10-25",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Deliverable ID: gemini_burn_2026-10-25/monte_carlo_presentation.md",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "Author: Gemini Flash Research Worker (Antigravity / MTS)",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "Date: 2026-10-25",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "Topic: Survey of Professional Backtesting Tools (AmiBroker, StrategyQuant X, Build Alpha, TradingView, QuantConnect, MultiCharts) on Monte Carlo Trade Reshuffling, Robustness Testing, Risk of Ruin, and Drawdown Distribu…",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Sentence [OURS]: A single generated sentence that translates the mathematics into immediate operational guidance.",
+  "tone": "info"
+ },
+ "why": [
+  "Randomly Skip Trades: Randomly drops a specified percentage of trades (e.g., 5% to 10% omission probability) to model real-world missed fills, connection failures, or slippage execution skips.",
+  "MACHR (Market Condition Historical Randomization): Shuffles multi-month market regime blocks (bull, bear, consolidation) to verify the strategy does not rely on a fixed historical macro sequence.",
+  "Native Monte Carlo Support: NOT FOUND. TradingView does not have a native, built-in Monte Carlo simulation tab or sequence-reshuffling tool in its standard Strategy Tester.",
+  "Native GUI Backtest Report Status: NOT FOUND in standard Backtest Summary GUI. When a backtest finishes in QuantConnect Cloud or Local LEAN, the primary results overview renders the Runtime Statistics Banner (Equity, Fees, Holdings, Net Profit), Performance C…"
+ ],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "500"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 500,
+   "quote": "2. Forward Variance Simulator [SOURCED]: Rather than merely permuting historical trades, the Forward Simulator samples from the statistical distribution of the backtest (win rate, mean winner, mean l…"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window"
+ },
+ "source_files": [
+  "MyTradingSys/research/gemini_burn_2026-10-25/monte_carlo_presentation.md"
+ ],
+ "commit": "8e56554c1"
+}

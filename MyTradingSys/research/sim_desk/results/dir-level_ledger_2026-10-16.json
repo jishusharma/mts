@@ -1,0 +1,37 @@
+{
+ "id": "dir-level_ledger_2026-10-16",
+ "kind": "thought_experiment",
+ "family": "Level Ledger",
+ "title": "Level ledger and Java zone check (2026-10-16, session ctx-audit-ledger)",
+ "provenance": "source-extracted",
+ "date": "2026-10-16",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Source of the two items: pit_levels_2026-10-16/REPORT.md D2 (build the level ledger of PIT_CONTRACT section 1) and D3 (verify the Java zones).",
+  "tone": "info"
+ },
+ "why": [
+  "Tests: test_level_ledger.py (registered in run_extra_tests.py, B150). The module is new, so on the parent commit the test file cannot import (git show <sha>^ has no level_ledger.py): fail-first by absence;"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/level_ledger_2026-10-16/README.md"
+ ],
+ "commit": "59b85fd25"
+}

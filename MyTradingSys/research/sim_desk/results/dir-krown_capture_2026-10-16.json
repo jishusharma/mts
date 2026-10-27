@@ -1,0 +1,70 @@
+{
+ "id": "dir-krown_capture_2026-10-16",
+ "kind": "thought_experiment",
+ "family": "Krown Capture",
+ "title": "Krown RULES_DRAFT (pilot, 2026-10-16) - his own words, tagged",
+ "provenance": "source-extracted",
+ "date": "2026-10-16",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Scope: pilot of 6 transcripts that are NOT in the TA 101 corpus (that corpus is already ledgered: ../krown_ta101_2026-10-13/KROWN_RULES.csv, 120 rules).",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "This file adds the daily-video method: event-study \"setups\", targets as median-return arithmetic, probability statements, invalidation levels.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "Videos: V0gjxlaW2Qk (2026-10-06), wvu0onib6WU (2026-10-13), BvxLX8FL3bg (2026-10-14), SOaAP9vBgM4 and 7CFrrRm5hLw (shorts, 2026-10-07), dzH7m9cQeZA (2026-09-27).",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "Not mined for rules: qwjU2jI2D-0 (accumulation theory, execution/slippage education, no numbers), 0F-WBBd5M3s (2024 Meta Signals NFT interview/promo).",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "Every quote is machine-checked by scripts/dev/verify_extract_quotes.py (replaced the deleted check_quotes.py) against the transcripts (auto-captions; case and punctuation normalised, timestamps are the caption line wher…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "Tags: SOURCED = his words, OURS = our reading. Nothing here is an MTS rule; no edge is claimed. Captions carry stutter (\"the the\"), so quotes are cut at clean spans.",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Scope: pilot of 6 transcripts that are NOT in the TA 101 corpus (that corpus is already ledgered: ../krown_ta101_2026-10-13/KROWN_RULES.csv, 120 rules).",
+  "tone": "info"
+ },
+ "why": [
+  "Tags: SOURCED = his words, OURS = our reading. Nothing here is an MTS rule; no edge is claimed. Captions carry stutter (\"the the\"), so quotes are cut at clean spans.",
+  "A2. He reports two medians, all history and since 2018. SOURCED. He concedes the pre-2018 returns can be called unrealistic, yet says he would \"prefer the previous ones\": he reports both and flags the gap; he does not drop the old sample.",
+  "> \"if something has a 70% probability to work out, there's still a 30% probability that it does not\"",
+  "> \"I would argue at negative 25 pessimism, you have no edge\""
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window"
+ },
+ "source_files": [
+  "MyTradingSys/research/krown_capture_2026-10-16/RULES_DRAFT.md"
+ ],
+ "commit": "1b3f14a1f"
+}

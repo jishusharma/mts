@@ -1,0 +1,74 @@
+{
+ "id": "st-imbalance_qriptal_2026-10-16-filter-result",
+ "kind": "backtest",
+ "family": "Imbalance Qriptal",
+ "title": "RESULT: Qriptal volume-anomaly candle as a filter and a veto on the lc-levels-hold level layer, BTCUSDT 1m, DEV only (g…",
+ "provenance": "source-extracted",
+ "date": "2026-10-16",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "arm n mean G % (gross, of notional) SE G % (day-cl.) net R t_net Delta R vs rest t_Delta Holm p MDE R (2.8 SE) verdict",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "H1 filter: SMALL imbalance at the level (k2, rr1) 3271 -0.0067 0.0090 -0.3665 -16.37 +0.1005 +3.27 0.0174 0.086 FAIL",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "H2 veto: LARGE imbalance at the level (k2, rr1) 2702 -0.0229 0.0103 -0.4070 -15.88 +0.0090 +0.27 1.0000 0.092 FAIL",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "Decision inputs (H1): n_imb=3271, n_noimb=2705, days_imb=708, mean_imb=-0.3665, t_imb=-16.37, delta=0.1005, p_holm=0.01744, delta_h1=0.0922, delta_h2=0.1099, mean_ctrl=-0.454, mde=0.08615.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "Decision inputs (H2): n_large=2702, delta=0.009015, p_holm=1, delta_h1=0.004305, delta_h2=0.0136, mde=0.0918.",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-04-01 to 2024-06-30 (as written in the source)",
+ "verdict": {
+  "label": "arms (primary cells; mean G % = gross R x width %, SE day-clustered; verdict rule in PRE_REG.md section 4)",
+  "tone": "info"
+ },
+ "why": [
+  "H1 filter: FAIL (filter lifts). H2 veto: FAIL (no veto effect). Study word = FAIL (PASS if either primary passes; FAIL only if both fail; otherwise INCONCLUSIVE). DEV only (bars before 2024-07-01, decisions 2022-04-01..2024-06-30); VALIDATION and HOLDOUT were…",
+  "Only two of the eight families have a positive gross (prior_day_poc +0.072, naked_poc +0.101); every family is negative net (best naked_poc -0.249 R, n 149).",
+  "The veto does not work on this layer. Trades with a high-volume large-body candle at the level net -0.407 R against -0.416 R for the rest (+0.009 R, t +0.27, Holm p 1.0; k = 3: +0.006 R; rr 2: +0.024 R).",
+  "Power is not the issue. The day-clustered MDE of Delta1 is 0.086 R and of Delta2 0.092 R, both under the 0.15 R bar, so both FAILs stand (they are not downgraded to INCONCLUSIVE)."
+ ],
+ "kpis": [
+  {
+   "label": "net R after fees (first value in the source)",
+   "value": "0.14"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "net_r",
+   "value": 0.14,
+   "quote": "Answer in numbers (fee-net R per trade, taker both legs 0.14 % round trip, 1R:1R bracket)"
+  }
+ ],
+ "missing": {
+  "n_trades": "the source does not state a trade count"
+ },
+ "source_files": [
+  "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/RESULT.md"
+ ],
+ "commit": "b4d4e287c"
+}

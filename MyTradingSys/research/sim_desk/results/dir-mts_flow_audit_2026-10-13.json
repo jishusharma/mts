@@ -1,0 +1,60 @@
+{
+ "id": "dir-mts_flow_audit_2026-10-13",
+ "kind": "audit",
+ "family": "Mts Flow Audit",
+ "title": "MTS end to end: the mistake at each step, and whether to buy FDAX data (2026-10-13, cloud, read-only)",
+ "provenance": "source-extracted",
+ "date": "2026-10-13",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "_2026-10-13/REPORT.md, tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md (C1-C8), and",
+  "tone": "info"
+ },
+ "why": [
+  "Builds on, does not repeat: tom_dax_what_is_proven_2026-10-13/REPORT.md, backtest_gap_review_2026-10-13/REPORT.md (G1-G8),",
+  "has an edge (7 trades he chose to publish), and it does not produce a BTC strategy.",
+  "with no opening auction for the spike he fades. It is a new strategy that needs its own BTC test, and that test does not",
+  "have stopped a build came after the build, one at a time, each found by a failure:"
+ ],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "7"
+  },
+  {
+   "label": "net R after fees (first value in the source)",
+   "value": "-1.27",
+   "tone": "bad"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 7,
+   "quote": "has an edge (7 trades he chose to publish), and it does not produce a BTC strategy."
+  },
+  {
+   "field": "net_r",
+   "value": -1.27,
+   "quote": "0a The instrument (BTC) and the sources (Tom, Fabio) were fixed separately. Nobody checked first that the sources' methods can work on BTC. Goal: BTC (VISION:211). Tom is core (VISION:16). Tom's stop…"
+  }
+ ],
+ "missing": {
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source",
+  "n_trades": "not a trade test (audit)"
+ },
+ "source_files": [
+  "MyTradingSys/research/mts_flow_audit_2026-10-13/REPORT.md"
+ ],
+ "commit": "f8d0799de"
+}

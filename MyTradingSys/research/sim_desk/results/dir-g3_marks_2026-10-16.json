@@ -1,0 +1,35 @@
+{
+ "id": "dir-g3_marks_2026-10-16",
+ "kind": "thought_experiment",
+ "family": "G3 Marks",
+ "title": "G3 marking pack, first batch (built 2026-10-16)",
+ "provenance": "source-extracted",
+ "date": "2026-10-16",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2024-12-02 to 2025-03-31 (as written in the source)",
+ "verdict": {
+  "label": "Status: READY TO MARK (blindness fixes audited, 213 charts rebuilt 2026-10-17 from the fixed g3_pack.py). 213 blind windows over 11 mark units (13 catalogue rows). Definitions: ../layer_rebuild_2026-10-15/READER_PROTOCOL.md (read it first)…",
+  "tone": "info"
+ },
+ "why": [],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "parameters": "no rule or parameter section found in the source",
+  "why": "no sentence in the source states why it passed or failed"
+ },
+ "source_files": [
+  "MyTradingSys/research/g3_marks_2026-10-16/README.md"
+ ],
+ "commit": "bbe64cea6"
+}

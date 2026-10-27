@@ -1,0 +1,79 @@
+{
+ "id": "lm-l1-fabio",
+ "kind": "backtest",
+ "family": "Fabio Cvd Absorption",
+ "title": "Fabio L1: CVD absorption, escalation, volume FVG",
+ "provenance": "source-extracted",
+ "date": "2026-09-27",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Rule TF Chosen params IS n / h5 mean OOS n / h1 OOS h5 (gross / net) OOS h20 (gross / net) OOS hit h5 PBO Verdict",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "cvd_absorption 5m w5, tol 0.1% 3373 / +0.005% 1639 / +0.001% +0.000% / -0.100% +0.001% / -0.099% 48.2% 0.683 no edge",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "cvd_absorption 15m w3, tol 0.2% 2146 / -0.002% 982 / +0.003% +0.001% / -0.099% -0.009% / -0.109% 48.2% 0.330 no edge",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "cvd_absorption 1h w5, tol 0.05% 228 / +0.067% 109 / +0.023% -0.042% / -0.142% +0.001% / -0.099% 45.9% 0.333 no edge",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "escalation 5m lt 0.2%, k 3, lb 50 16999 / +0.016% 7908 / -0.007% -0.004% / -0.104% +0.029% / -0.071% 46.1% 0.657 no edge",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "escalation 15m lt 0.1%, k 1.5, lb 50 2526 / +0.039% 1095 / -0.024% -0.069% / -0.169% -0.139% / -0.239% 42.6% 0.174 no edge",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-01-01 to 2026-09-26 (as written in the source)",
+ "verdict": {
+  "label": "no edge / insufficient n (rule: OOS n>=30, net>0, PBO<0.5)",
+  "tone": "bad"
+ },
+ "why": [
+  "Verdict rule: \"edge\" needs OOS n >= 30, OOS net mean > 0 at h=5 and PBO < 0.5; \"insufficient n\" if OOS n < 30;",
+  "otherwise \"no edge\". Baseline (buy every bar, OOS) mean return is ~0.000% at every horizon and tf.",
+  "It is not called an edge because PBO = 0.756 (in 75.6% of CSCV splits the IS-best variant ranks at or below the median OOS), h20 falls to zero, and it does not repeat at 5m/15m (where the same rule is negative OOS).",
+  "76 and n=182 it does not qualify, and it is negative at 5m/15m. Caveat: these are the mechanical readings of"
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "182"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 182,
+   "quote": "Only cell with positive OOS net at h5: escalation 1h (+0.113% net, n=182, hit rate 48.4%, so a few large winners)."
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)"
+ },
+ "source_files": [
+  "MyTradingSys/backtest/layers/fabio/FABIO_L1_REPORT.md"
+ ],
+ "commit": "efa186306"
+}

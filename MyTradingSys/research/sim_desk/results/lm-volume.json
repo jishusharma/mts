@@ -1,0 +1,79 @@
+{
+ "id": "lm-volume",
+ "kind": "backtest",
+ "family": "Volume",
+ "title": "BTC volume research V0-V4 (553 pre-registered trials)",
+ "provenance": "source-extracted",
+ "date": "2026-10-09",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Data: BTCUSDT USD-M perpetual, Binance archive. DEV 2020-01-01..2024-06-30; VALIDATION 2024-07-01..2025-06-30 (touched only by 4 frozen tests); HOLDOUT 2025-07-01..2026-09-30 sealed by a code guard (the loader refuses i…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "Costs: 14 bp round trip plus realised funding. Entry next bar open. Timeframes: 1d and 4h (weekly bars: about 230 in DEV, no power, not tested).",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "family content trials",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "V1 events 36 events x 3 horizons x 2 orientations x 2 timeframes. Volume spike (2x/3x), buying/selling climax and breakaway, absorption (high volume, small range), no-demand/no-supply (new high on low volume), taker-del…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "V1 contrasts does volume confirmation add anything (6 pairs), plain vs time-adjusted volume, weekend vs weekday, session A/B/C 18",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "V2 states 20-day taker-delta share, volume trend, momentum (control), US-hours and Asia-hours delta, each x top/bottom third of its own trailing-year rank, plus RSI 40/60 regime x delta 96 + 3 contrasts",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2020-01-01 to 2024-06-30 (as written in the source)",
+ "verdict": {
+  "label": "no validated directional edge; volume gives intensity, not direction; 1 marginal DEV pass failed VALIDATION",
+  "tone": "bad"
+ },
+ "why": [
+  "and 0 usable survivors: that one failed VALIDATION (net -2 bp on 50 events vs +70 bp on DEV). Two further DEV-supported ideas (a time-of-day contrast and a pooled \"volume confirms breakouts\" premium, which looked very strong on DEV, p = 0.008)",
+  "both failed VALIDATION. HOLDOUT (2025-07 .. 2026-09) was never opened and is still sealed.",
+  "\"No edge found\" has limits (section 6): with 50-300 events, only effects larger than roughly 60-170 bp (4h, n about 200, 1 to 7 day holds) or 100-550 bp (daily, n 50-200) are detectable. Small effects are not excluded; they are also too small to trade after 1…",
+  "Verdict legend: NO-EDGE = tested with enough events and failed; INSUFFICIENT = too few events for the registered test, descriptive numbers only; NOT SUPPORTED = failed VALIDATION."
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "50"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 50,
+   "quote": "RSI 40/60 + volume RSI(14) crosses 60 up / 40 down, confirmed or not, 40-reclaim, 60-rejection one 4h trial passed DEV (RSI crosses below 40 on UNconfirmed volume, buy for 1 day, +70 bp net [+24, +12…"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)"
+ },
+ "source_files": [
+  "MyTradingSys/research/volume_2026-10-09/VOLUME_RESEARCH_REPORT_2026-10-09.md"
+ ],
+ "commit": "3cb5b521c"
+}

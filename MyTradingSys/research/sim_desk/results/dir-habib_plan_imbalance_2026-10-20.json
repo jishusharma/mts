@@ -1,0 +1,54 @@
+{
+ "id": "dir-habib_plan_imbalance_2026-10-20",
+ "kind": "backtest",
+ "family": "Habib Plan Imbalance",
+ "title": "Habib (Qriptal) plan-and-imbalance method: intake note (2026-10-20)",
+ "provenance": "source-extracted",
+ "date": "2026-10-20",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Status: INTAKE. No edge claimed. Testnet research only, no trade advice. Builds on research/imbalance_qriptal_2026-10-16/ (construct F, fee-net test of his candle: NO EDGE) and research/qriptal_2026-10-10/. Those tested…",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "for this one plan: the sweep-then-higher part is a clean MATCH; the box/bull-trap/drop part cannot be scored yet. One plan proves nothing about hit rate (n = 1).",
+  "tone": "info"
+ },
+ "why": [
+  "Status: INTAKE. No edge claimed. Testnet research only, no trade advice. Builds on research/imbalance_qriptal_2026-10-16/ (construct F, fee-net test of his candle: NO EDGE) and research/qriptal_2026-10-10/. Those tested his fade candle; this note is about his…",
+  "wOpen: weekly open (Mon 00:00Z) as bias level: price above = long bias. Hypothesis: \"wOpen\" is the UTC Monday open; his \"(before wOpen though)\" fits Sunday evening UTC. Confirm he does not mean the Sunday 17:00 NY forex-style week open.",
+  "plan_score.py: pure scorer, execution excluded. Definitions OURS and fixed before any scoring: fill window 24 h, open window 7 d (same as qriptal RULES.md), full = entry then first target touched, partial = entry touched and at least 50% of the distance to ta…"
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "1"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 1,
+   "quote": "Verdict for this one plan: the sweep-then-higher part is a clean MATCH; the box/bull-trap/drop part cannot be scored yet. One plan proves nothing about hit rate (n = 1)."
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window"
+ },
+ "source_files": [
+  "MyTradingSys/research/habib_plan_imbalance_2026-10-20/README.md"
+ ],
+ "commit": "95fcdb20f"
+}

@@ -81,7 +81,7 @@ Supervisor and super session are ONE role. Code: `scripts/dev/supervisor.py plan
 
 ## End (any D6 stop)
 Stop spawning; every worker shipped (`git cherry` empty) or its partial work written into NEXT_SESSION.md; workers archived; `get_usage` in the
-hand-over; refresh the Research Map; `supervisor.py handover --login <L> --note "<next step>"`; one Session log line here; one docs-only `sync.py ship --release`. Pages follow builds: `python scripts/dev/artifacts.py build`, then `artifacts.py stale`, then republish each STALE page over its url from the owning login (C = jishusharma1985 for its pages); a stale page is a warning at ship, never a gate.
+hand-over; refresh the Research Map; `supervisor.py handover --login <L> --note "<next step>"` (registers the one-time successor-wake task `MTS-SuccWake-<L>` by default, SCHEDULING_POLICY 4b2; opt out with `--no-wake`; the idempotent `Successor task:` line lands in the hand-over file, source `scripts/dev/successor_wake.py`); one Session log line here; one docs-only `sync.py ship --release`. Pages follow builds: `python scripts/dev/artifacts.py build`, then `artifacts.py stale`, then republish each STALE page over its url from the owning login (C = jishusharma1985 for its pages); a stale page is a warning at ship, never a gate.
 
 ## Pacing (when no super session runs) - state from the weekly meter
 `f` = fraction of the week elapsed since the last weekly reset, `U` = Weekly all-models % used. `traffic.py budget` prints it per login

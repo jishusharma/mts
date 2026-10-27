@@ -1,0 +1,88 @@
+{
+ "id": "dir-pitchfork_2026-10-19",
+ "kind": "backtest",
+ "family": "Pitchfork",
+ "title": "EMPIRICAL RESEARCH REPORT: PITCHFORK & VOLUME PROFILE 4H STUDY (2020-2026)",
+ "provenance": "source-extracted",
+ "date": "2026-10-19",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "To implement this layer in src/main/java/datafeed/SetupCandidatesBuilder.java and MTS live orderflow:",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "Geometry Engine:",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "Detect ZigZag extrema on 4H klines (lookback = 4, min_change = 0.03).",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "Construct ModifiedSchiffPitchfork using price-shifted origin $P_0' = (t_0, \\frac{p_0 + p_1}{2})$.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "Volume Profile Anchoring:",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "Calculate uniform-spread volume profile (FORMULAS 18.1) over bars $t_0 \\dots t_2$.",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Study Window: 2020-01-01 00:00:00 to 2026-09-26 20:00:00 (14,766 4-Hour Bars)",
+  "tone": "info"
+ },
+ "why": [
+  "In the Phase 1 Daily (1D) event study, classical pitchfork geometry exhibited high Median Line reach (86.15% to 90.03%), but naive market entries suffered small negative fee drag (-0.95% to -1.12% per trade).",
+  "This severely shrinks the remaining reward while leaving the full stop-loss distance intact, producing negative returns (-0.16% to -1.31%) across every test condition.",
+  "Placing resting limit orders at the active tine ($LML$ for longs, $UML$ for shorts) completely eliminates negative fee drag.",
+  "In naive confirmation entries, the average winning trade captured only +1.58% to +2.11% because price had already completed 40%-60% of the journey toward the Median Line before the entry bar closed. Meanwhile, the stop loss remained fixed at -2.0% or below $P…"
+ ],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "279"
+  },
+  {
+   "label": "net R after fees (first value in the source)",
+   "value": "+0.05"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 279,
+   "quote": "- Modified Schiff: Mean Net PnL +0.61%, Profit Factor 1.63, 279 filled trades."
+  },
+  {
+   "field": "net_r",
+   "value": 0.05,
+   "quote": "- Across all four geometric models, every single unfiltered tine limit test turned net returns POSITIVE (+0.05% to +0.39%) with Profit Factors $> 1.0$."
+  }
+ ],
+ "missing": {
+  "window": "the source states no test window"
+ },
+ "source_files": [
+  "MyTradingSys/research/pitchfork_2026-10-19/PHASE2_4H_POC_STUDY.md"
+ ],
+ "commit": "119d763d2"
+}

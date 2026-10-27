@@ -1,0 +1,40 @@
+{
+ "id": "dir-station_c_rolling_audit_20261026",
+ "kind": "audit",
+ "family": "Station C Rolling Audit 20261026",
+ "title": "Station C watcher and continuous rolling sessions: audit and implementation plan",
+ "provenance": "source-extracted",
+ "date": "2026-10-26",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "26 October 2026. Audited tree: ce8194ba2ccaa4e3e058954df95d019a5c2c8ded. Scope: repository code, committed pilot receipts and policies. No timers installed, live processes changed, remote login probed, other chats messaged, private session…",
+  "tone": "info"
+ },
+ "why": [
+  "Decision: repair ownership, current-state dispatch and truthful completion before increasing the wake rate. Then test a bounded rolling chain using the existing scheduled-session capability, with durable state and exclusive ownership. A successful scheduled s…",
+  "Supervisor and role-loader tests: 113 passed, 1 failed in 12.70 s using a fresh pytest temporary directory. The failure is the previously reported test_pick_cards_jis_nb_lane_follows_the_live_host_file: expected old JIS-NB name, received canonical JIS-DESKTOP…",
+  "Latest scheduled-start receipt: chain_test_proof.txt, commit ce8194ba2, Claude Opus coauthor. It records scheduled chain-test-2 startup at 09:07:23Z, hooks, Bash/PowerShell/Agent tools and deferred scheduled-task tools available. It explicitly says it did not…",
+  "This receipt proves one scheduled invocation reportedly reached a usable Code session. It does not contain task registration/run IDs, full predecessor-to-successor lineage, a third hop, exclusive-owner proof, restart recovery, quota-reset handling or cancella…"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/station_c_rolling_audit_20261026/REPORT.md"
+ ],
+ "commit": "05b22b756"
+}

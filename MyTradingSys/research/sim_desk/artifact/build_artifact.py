@@ -129,6 +129,7 @@ nav h2:first-child{margin-top:0}
 nav button{display:block;width:100%;text-align:left;margin:2px 0;padding:6px 8px;border:1px solid transparent;border-radius:6px;background:none;color:var(--ink);cursor:pointer;font:inherit}
 nav button[aria-current=true]{border-color:var(--acc);background:var(--bg)}
 nav input[type=search]{width:100%;padding:6px;margin-bottom:6px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit}
+nav select{width:100%;padding:5px;margin-bottom:6px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit}
 nav button small{display:block;color:var(--mute)}
 h2.s{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--mute);margin:18px 0 6px}
 h3{font-size:14px;margin:14px 0 4px}
@@ -164,14 +165,21 @@ const tone=t=>t==="bad"||t==="good"||t==="warn"?t:"";
 const COL={bad:"var(--bad)",good:"var(--good)",mute:"var(--line)",warn:"var(--warn)"};
 let tm=null;
 const KIND={backtest:"backtest",audit:"audit",thought_experiment:"thought experiment"};
-function buildNav(){const q=($("q")?$("q").value:"").toLowerCase(),only=$("onlyx")&&$("onlyx").checked,fam={};
-CAT.filter(r=>(!only||r.exported)&&(!q||(r.title+" "+r.family+" "+r.verdict+" "+r.kind).toLowerCase().includes(q))).forEach(r=>(fam[r.family]=fam[r.family]||[]).push(r));
-const fl=Object.keys(fam).sort((a,b)=>(fam[b].some(r=>r.exported)-fam[a].some(r=>r.exported))||a.localeCompare(b));
-const list=fl.map(f=>"<h2>"+esc(f)+"</h2>"+fam[f].sort((a,b)=>(b.status==="FAILED")-(a.status==="FAILED")||b.exported-a.exported).map(r=>'<button data-id="'+esc(r.exported?r.result_id:r.id)+'">'+(r.status==="FAILED"?'<span class="bad">&#9679;</span> ':"")+esc(r.title)+"<small>"+esc(KIND[r.kind]||r.kind)+(r.exported?"":" · charts not exported yet")+"</small></button>").join("")).join("");
-$("nav").innerHTML='<input id="q" type="search" placeholder="Search '+CAT.length+' tests" aria-label="Search tests" value="'+esc(q)+'"><label class="note"><input id="onlyx" type="checkbox"'+(only?" checked":"")+'> with charts only ('+CAT.filter(r=>r.exported).length+")</label><div id=\"lst\">"+list+"</div>";
-$("q").oninput=refilter;$("onlyx").onchange=refilter;
+const VC={failed:"failed",unclear:"unclear",passed:"passed",other:"other"};
+function opts(v,all,cur){return '<option value="">'+all+"</option>"+v.map(x=>'<option value="'+esc(x[0])+'"'+(x[0]===cur?" selected":"")+">"+esc(x[1])+"</option>").join("");}
+function buildNav(){const g=id=>$(id)?$(id).value:"",q=g("q").toLowerCase(),kf=g("kf"),ff=g("ff"),vf=g("vf"),only=$("onlyx")&&$("onlyx").checked;
+const rows=CAT.filter(r=>(!only||r.exported)&&(!kf||r.kind===kf)&&(!ff||r.family===ff)&&(!vf||(r.verdict_class||"other")===vf)&&(!q||(r.title+" "+r.family+" "+r.verdict+" "+r.kind).toLowerCase().includes(q)))
+.sort((a,b)=>String(b.date||"").localeCompare(String(a.date||""))||a.title.localeCompare(b.title));
+const fams=[...new Set(CAT.map(r=>r.family))].sort((a,b)=>a.localeCompare(b));
+const list=rows.map(r=>'<button data-id="'+esc(r.exported?r.result_id:r.id)+'">'+(r.status==="FAILED"?'<span class="bad">&#9679;</span> ':"")+esc(r.title)+"<small>"+esc(r.date||"no date")+" · "+esc(KIND[r.kind]||r.kind)+" · "+esc(r.family)+(r.exported?"":" · no result card")+"</small></button>").join("");
+$("nav").innerHTML='<input id="q" type="search" placeholder="Search '+CAT.length+' tests" aria-label="Search tests" value="'+esc(q)+'">'+
+'<select id="kf" aria-label="Kind">'+opts([["backtest","Backtests"],["audit","Audits"],["thought_experiment","Thought experiments"]],"All kinds",kf)+"</select>"+
+'<select id="vf" aria-label="Verdict">'+opts([["failed","Failed"],["unclear","Unclear / not enough data"],["passed","Passed"],["other","Other"]],"Any verdict",vf)+"</select>"+
+'<select id="ff" aria-label="Family">'+opts(fams.map(f=>[f,f]),"All families",ff)+"</select>"+
+'<label class="note"><input id="onlyx" type="checkbox"'+(only?" checked":"")+'> hand-made charts only ('+CAT.filter(r=>r.exported&&r.provenance!=="source-extracted").length+')</label><div class="note">'+rows.length+' of '+CAT.length+' shown, newest first</div><div id="lst">'+list+"</div>";
+["q","kf","vf","ff"].forEach(i=>$(i).oninput=refilter);$("onlyx").onchange=refilter;
 $("nav").onclick=e=>{const b=e.target.closest("button");if(b){location.hash=b.dataset.id}};}
-function refilter(){const q=$("q").value,o=$("onlyx").checked;buildNav();$("q").value=q;$("onlyx").checked=o;$("q").focus();}
+function refilter(){const id=document.activeElement&&document.activeElement.id;buildNav();if(id&&$(id))$(id).focus();}
 function stub(r){return '<h1 style="font-size:20px;margin:0 0 6px">'+esc(r.title)+'</h1><span class="pill '+(r.status==="FAILED"?"bad":"")+'">'+esc(KIND[r.kind]||r.kind)+"</span> <span class=\"pill\">charts not exported yet</span>"+
 '<h2 class="s">Verdict as written</h2><p>'+esc(r.verdict)+'</p><h2 class="s">Where it lives</h2><p class="src">'+esc(r.source)+'</p><p class="note">Family: '+esc(r.family)+". The kind ("+esc(r.kind_source||"")+") and the verdict line were read from the file automatically, so check them against the source. No numbers or examples are shown until this test is exported to sim_desk/results/.</p>";}
 function table(x){return '<div class="tw"><table><tr>'+x.cols.map(c=>"<th>"+esc(c)+"</th>").join("")+"</tr>"+x.rows.map(r=>"<tr>"+r.map(c=>"<td>"+esc(c)+"</td>").join("")+"</tr>").join("")+"</table></div>";}
@@ -221,10 +229,13 @@ document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-current"
 let h='<h1 style="font-size:20px;margin:0 0 6px">'+esc(t.title)+'</h1><span class="pill '+tone(t.verdict.tone)+'">'+esc(t.verdict.label)+"</span>";
 h+='<div class="kpis">'+t.kpis.map(k=>'<div class="kpi"><b class="'+tone(k.tone)+'">'+esc(k.value)+"</b><span>"+esc(k.label)+"</span></div>").join("")+"</div>";
 h+='<h2 class="s">What was tested</h2><dl>'+t.what.map(w=>"<dt>"+esc(w.name)+' <span class="tag '+esc(w.label)+'">'+esc(w.label)+"</span></dt><dd>"+esc(w.value_plain)+"</dd>").join("")+"</dl>";
-h+='<p class="note"><b>Window:</b> '+esc(t.window)+"</p><p class=\"note\">SOURCED = taken from a named source (the trader's words or a fee table). OURS = our own judgement or tuned on DEV data.</p>";
+h+='<p class="note"><b>Window:</b> '+esc(t.window||"not stated in the source")+"</p><p class=\"note\">SOURCED = taken from a named source (the trader's words or a fee table). OURS = our own judgement or tuned on DEV data.</p>";
 h+='<h2 class="s">How</h2><p>'+esc(t.how)+"</p>";
 const inits=[];h+='<h2 class="s">Examples</h2>';t.examples.forEach(x=>{const e=example(x);h+=e.html;inits.push(...e.inits)});
-h+='<h2 class="s">Verdict and why</h2><span class="pill '+tone(t.verdict.tone)+'">'+esc(t.verdict.label)+"</span><ul>"+t.why.map(w=>"<li>"+esc(w)+"</li>").join("")+"</ul>";
+h+='<h2 class="s">Verdict and why</h2><span class="pill '+tone(t.verdict.tone)+'">'+esc(t.verdict.label)+"</span><ul>"+(t.why.length?t.why.map(w=>"<li>"+esc(w)+"</li>").join(""):"<li>The source does not say why.</li>")+"</ul>";
+if(t.provenance==="source-extracted"){const ms=Object.entries(t.missing||{});h+='<h2 class="s">Source-extracted</h2><p class="note">Copied from the written note, not re-run. Check each line against the source.</p>'+
+(t.evidence&&t.evidence.length?"<ul>"+t.evidence.map(e=>"<li>"+esc(e.field)+": "+esc(e.value)+' <span class="src">from: '+esc(e.quote)+"</span></li>").join("")+"</ul>":"")+
+(ms.length?'<p class="note">Not in the source (shown as empty, not guessed): '+ms.map(m=>esc(m[0]+" ("+m[1]+")")).join("; ")+"</p>":"");}
 h+='<h2 class="s">Where the numbers come from</h2><p class="src">'+t.source_files.map(esc).join("<br>")+"<br>commit "+esc(t.commit)+"</p>";
 $("view").innerHTML=h;inits.forEach(f=>f());}
 buildNav();window.onhashchange=()=>render(location.hash.slice(1));render(location.hash.slice(1));
@@ -245,6 +256,9 @@ def render(tests, catalogue=None):
         return json.dumps(o, separators=(",", ":"), ensure_ascii=False).replace("</", "<" + chr(92) + "/")
     cat = (catalogue or {}).get("rows", [])
     ids = {r.get("result_id") for r in cat}
+    prov = {t["id"]: t.get("provenance") for t in tests}
+    for r in cat:
+        r["provenance"] = prov.get(r.get("result_id"))
     for t in tests:  # an exported result missing from the catalogue still gets a row
         if t["id"] not in ids:
             cat.append({"id": t["id"], "family": t["family"], "title": t["title"], "kind": t.get("kind", "backtest"),

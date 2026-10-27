@@ -1,0 +1,35 @@
+{
+ "id": "dir-screenshots",
+ "kind": "backtest",
+ "family": "Screenshots",
+ "title": "2026-10-07 BTCUSDT screenshots, set 29ff2b488f13 (7 shots, one moment 21:14-21:18Z)",
+ "provenance": "source-extracted",
+ "date": "2026-10-07",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2026-09-19 to 2026-10-09 (as written in the source)",
+ "verdict": {
+  "label": "Shots: 29ff2b488f13, be1fd3316ddc, deb4ad19b10f, d65a9de33995, 4d3ce438bf5d, e18cdb7e2c57, fa30957f9921",
+  "tone": "info"
+ },
+ "why": [],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "parameters": "no rule or parameter section found in the source",
+  "why": "no sentence in the source states why it passed or failed"
+ },
+ "source_files": [
+  "MyTradingSys/research/screenshots/2026-10-07_BTCUSDT_29ff2b488f13.md"
+ ],
+ "commit": "866b48587"
+}
