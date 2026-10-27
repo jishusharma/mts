@@ -2,6 +2,22 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 54,
+    "folded": "2026-10-27T15:31:54Z",
+    "misses": 16,
+    "reads": [
+      "scripts/dev/role_loader.py",
+      "MyTradingSys/tests/docs/test_integrity.py",
+      "MyTradingSys/tests/test_role_budget.py",
+      "scripts/dev/gate_select.py",
+      "MyTradingSys/system/roles/builder.md",
+      "MyTradingSys/system/evals/h-reply-shape.json",
+      "scripts/dev/run_all_tests.py",
+      "MyTradingSys/tests/test_gate_discovery_b150.py"
+    ],
+    "session": "agent-aa73da0f4f4526278"
+  },
   "created": "2026-10-24T14:56:51Z",
   "depends_on": [],
   "done_when": "",
