@@ -80,3 +80,15 @@ def test_third_agent_refused_until_one_finishes(env):
 def test_corrupt_state_fails_closed(env):
     Path(env["MTS_USAGE_STATE"]).write_text("{not json")
     assert run(env, "pre").returncode == 2
+
+
+def test_gateway_machine_never_refuses_and_registers_nothing(env, tmp_path):
+    flag = tmp_path / "flag"
+    flag.write_text("on", encoding="utf-8")
+    env["MTS_GATEWAY_FLAG"] = str(flag)
+    for _ in range(5):
+        p = run(env, "pre", "Agent")
+        assert p.returncode == 0 and p.stdout == ""
+    assert not (tmp_path / "state.json").exists()
+    env["MTS_GATEWAY_FLAG"] = str(tmp_path / "absent")
+    assert run(env, "pre", "Agent").returncode == 2

@@ -7,6 +7,8 @@ record --five P --elapsed E   stores a get_usage reading (P = 5 h use %, E = % o
 
 A hook cannot call MCP, so the agent records the reading after calling get_usage. State file: $MTS_USAGE_STATE or
 ~/.claude/mts_usage_gate.json (outside the repo). Thresholds are OURS (hygiene card 1, PLAN_5H_2026-10-26b).
+Gateway machine (env MTS_GATEWAY=1 or the flag file ~/.claude/mts_gateway_on, env MTS_GATEWAY_FLAG overrides the path):
+no meter exists, so pre never refuses and registers nothing (GATEWAY_NUC.md "Unrestricted mode").
 Bad stdin or other tools: silent exit 0. Missing/corrupt state counts as stale (fail closed).
 Usage: usage_reminder.py pre|post|record  (hook JSON on stdin for pre/post)
 """
@@ -20,6 +22,12 @@ STALE_S = 600       # OURS: reading older than 10 min is stale
 MAX_RUNNING = 2     # OURS: a spawn is refused when 2 already run (a 3rd would be "more than 2")
 MARGIN = 10.0       # OURS: 5 h use may exceed elapsed% by at most 10 points
 RUN_TTL_S = 3600    # OURS: a registered spawn that never reported post expires after 1 h
+
+
+def gateway_on():
+    if os.environ.get("MTS_GATEWAY") == "1":
+        return True
+    return os.path.exists(os.environ.get("MTS_GATEWAY_FLAG") or os.path.join(os.path.expanduser("~"), ".claude", "mts_gateway_on"))
 
 
 def state_path():
@@ -75,7 +83,7 @@ def main(argv, now=None):
             print("usage reading recorded")
             return 0
         data = json.loads(sys.stdin.read() or "{}")
-        if data.get("tool_name") not in TOOLS:
+        if data.get("tool_name") not in TOOLS or gateway_on():
             return 0
         d = load()
         if mode == "post":

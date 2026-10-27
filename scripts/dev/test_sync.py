@@ -588,8 +588,14 @@ class SyncTest(unittest.TestCase):
             self.assertTrue(sync.mark_gateway(self.a))
         self.assertTrue((self.a / sync.GATEWAY_MARKER).exists())
         (self.a / sync.GATEWAY_MARKER).unlink()
-        with mock.patch.dict(os.environ, {"MTS_GATEWAY": "0"}):
+        no_flag = str(self.a / "no_such_flag")
+        with mock.patch.dict(os.environ, {"MTS_GATEWAY": "0", "MTS_GATEWAY_FLAG": no_flag}):
             self.assertFalse(sync.mark_gateway(self.a))
+        flag = self.a / "flag_file"
+        flag.write_text("on", encoding="utf-8")
+        with mock.patch.dict(os.environ, {"MTS_GATEWAY": "0", "MTS_GATEWAY_FLAG": str(flag)}):
+            self.assertTrue(sync.mark_gateway(self.a))
+        (self.a / sync.GATEWAY_MARKER).unlink()
 
     def test_station_runs_where_all_then_tidy(self):
         with contextlib.redirect_stdout(io.StringIO()):

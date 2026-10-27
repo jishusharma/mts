@@ -23,6 +23,14 @@ Public repo: no key, no URL with credentials, no account data in this file or an
 
 7. **Its worktree is its own (operator 2026-10-26).** A gateway session's worktree and branch belong to that session alone. No other session, login, station, Lead, tidy or cleanup script removes, resets, merges into or edits it; a cleanup touches only worktrees its own session made. Marker: `sync.py start` writes the gitignored file `.gateway_owner` into the tree when the session runs with env `MTS_GATEWAY=1` (or write the file by hand); `sync.py tidy`, `wt_maint.py`/`c_drive_guard.py` and tree reuse skip any tree holding it. Every login on a station that may run on the gateway reads this at boot.
 
+## Unrestricted mode on a gateway machine (operator 2026-10-27, JIS-DESKTOP)
+Operator: no restrictions on how much runs; Super sessions loop continuously, spawn sessions and background Agents freely (Max 20x key), he checks the roles and compacts when he wants. The one aim: nothing stops or stalls, no pop-up waits for a decision.
+- Machine flag: the file `~/.claude/mts_gateway_on` (or env `MTS_GATEWAY=1`) marks the machine as gateway. Create it when the registry file is merged, delete it when the removal file is merged. While it exists `usage_reminder.py pre` never refuses and registers nothing (no meter, no 2-agent cap, no stale reading) and `sync.py start` marks every tree.
+- Supervisors on the gateway: skip `get_usage`, `usage_reminder.py record`, `supervisor.py plan` pacing and the BUDGET signal; D3 "default 2 workers" does not apply; spawn as many as the cards on free files allow. Smoke-gate slots (GATE_SLOTS = 2 per machine) stay: they protect the 240 s test cap, not the quota.
+- No pop-ups: set each new worktree folder to Bypass in the mode selector once, or use the PermissionRequest hook (UNATTENDED_PERMISSIONS.md). Briefs never use AskUserQuestion.
+- Still in force (hard rules outrank an order): public tracked files only, no `.secrets`/`.env`/runtime/live tree, testnet only, ship through `sync.py ship`, no standing scheduled tasks (SCHEDULING_POLICY.md); continuous work is a running Super session, not a scheduler.
+- Real stall risk: one shared key across NUC and desktop. A rate-limit error is a wait, not a stop: retry with backoff, do not hand over.
+
 ## Switching a station on or off (operator only)
 - On: merge the exported registry file on that machine, fully quit and reopen the app.
 - Off: merge the matching removal file, reopen the app. Both files stay outside the repo in the operator's Documents folder.

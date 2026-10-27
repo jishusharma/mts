@@ -445,8 +445,9 @@ def doctor_top_warnings(repo, n=3, checklist=None):
 
 
 def mark_gateway(repo):
-    """On the gateway profile (env MTS_GATEWAY=1) write GATEWAY_MARKER into the tree so no cleanup removes it. Returns True if marked."""
-    if os.environ.get("MTS_GATEWAY") != "1":
+    """On the gateway profile (env MTS_GATEWAY=1 or the machine flag ~/.claude/mts_gateway_on) write GATEWAY_MARKER into the tree so no cleanup removes it. Returns True if marked."""
+    flag = os.environ.get("MTS_GATEWAY_FLAG") or os.path.join(os.path.expanduser("~"), ".claude", "mts_gateway_on")
+    if os.environ.get("MTS_GATEWAY") != "1" and not os.path.exists(flag):
         return False
     (Path(repo) / GATEWAY_MARKER).write_text("gateway session tree: never remove (GATEWAY_NUC.md rule 7)\n", encoding="utf-8", newline="\n")
     return True
