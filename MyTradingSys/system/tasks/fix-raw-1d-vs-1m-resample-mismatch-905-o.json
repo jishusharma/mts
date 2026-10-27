@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-27T20:46:45Z",
   "commands": [],
   "created": "2026-10-19T07:20:42Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "fix-raw-1d-vs-1m-resample-mismatch-905-o",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Already shipped in 74727bd432bd (2026-10-26): all 5 scope-in loaders carry T01-F2 label, t",
+      "ref": "521b5dc10",
+      "utc": "2026-10-27T20:46:45Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,12 @@
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md"
   ],
-  "result": "",
+  "result": "Already shipped in 74727bd432bd (2026-10-26): all 5 scope-in loaders carry T01-F2 label, test_raw_1d_label.py exists. Closing stale card, no duplicate work done.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md",
     "MyTradingSys/research/candle_patterns_2026-10-04/pilot/cdata.py",
@@ -59,12 +71,13 @@
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md (T01-F2)",
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T01/out/resample_summary.txt"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Open T01-F2 and take the 8 loader paths; verify each still reads raw_1d with grep.",
     "Add one comment line per loader: raw_1d differs from the 1m resample (905 open / 847 volume days of 912), derive daily bars from 1m for new work (T01-F2).",
     "Add the data note entry and a small test that greps the 8 files for the label."
   ],
+  "taken": "2026-10-27T20:46:45Z",
   "tests": "MyTradingSys/tests/test_raw_1d_label.py: every loader file that mentions raw_1d also contains 'T01-F2'; fails now (label absent).",
   "title": "Fix raw_1d vs 1m resample mismatch: 905 open and 847 volume days disagree, max volume rel-diff 12%",
   "weight": "ROUTINE",
