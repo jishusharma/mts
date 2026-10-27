@@ -31,6 +31,22 @@ class ConflictCardTest(unittest.TestCase):
         c = json.loads(self.cards()[0].read_text(encoding="utf-8"))
         self.assertEqual((c["id"], c["seen"], c["prio"], c["lane"], c["last_session"]), (cid, 2, 1, "SONNET", "s2"))
 
+    def test_done_closes_raw_conflict_card(self):
+        cid, _ = T.log_conflict(self.repo, "Hand off", "Keep working", "s")
+        old, T.REPO = T.REPO, self.repo
+        try:
+            T.cmd_done(type("A", (), {"id": cid, "result": "operator chose: keep working"}))
+        finally:
+            T.REPO = old
+        c = json.loads((self.repo / T.DIR / f"{cid}.json").read_text(encoding="utf-8"))
+        self.assertEqual(c["state"], "done")
+
+    def test_conflict_card_not_refinable(self):
+        cid, _ = T.log_conflict(self.repo, "Hand off", "Keep working", "s")
+        c = json.loads((self.repo / T.DIR / f"{cid}.json").read_text(encoding="utf-8"))
+        self.assertTrue(c["asks"].startswith("Which holds:") and len(c["asks"]) <= 300)
+        self.assertFalse(T.refinable(c))
+
     def test_different_pair_makes_second_card(self):
         T.log_conflict(self.repo, "A", "B")
         T.log_conflict(self.repo, "A", "C")
@@ -62,7 +78,21 @@ class DoctorAndHintTest(unittest.TestCase):
         self.assertIn("CONFLICT-OPEN", D.CHECK_NAMES)
 
     def test_role_loader_text_carries_conflict_hint(self):
-        self.assertIn("tasks.py conflict", RL.CONFLICT_HINT)
+        old = RL._build_text
+        RL._build_text = lambda *x, **k: "FIXTURE ROLE BODY\n"
+        try:
+            out = RL.build_text("Fixture", Path("."), True)
+        finally:
+            RL._build_text = old
+        self.assertIn("FIXTURE ROLE BODY", out)
+        self.assertIn("tasks.py conflict", out)
+
+    def test_claude_md_precedence_puts_hard_rules_first(self):
+        t = (Path(__file__).resolve().parents[2] / "CLAUDE.md").read_text(encoding="utf-8")
+        line = next(l for l in t.splitlines() if l.startswith("- Precedence:"))
+        self.assertLess(line.index("Hard rules"), line.index("operator order"))
+        self.assertIn("outrank", line)
+        self.assertIn("TRAFFIC_BUSTERS B20", line)
 
 
 if __name__ == "__main__":

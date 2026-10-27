@@ -40,3 +40,6 @@ Trade, deploy, restart, touch HALT files, read `.secrets/`, add a scheduler (SCH
 - two logins: one actor each, no cross-login claim.
 - model order: most headroom first; a model at 100% skipped.
 - delivery: `acks <id>` shows hosts `none` before and `done` after an ack (temp clone, `MTS_SIGNALS_SYNC=1`).
+
+## Commands (moved from CLAUDE.md step 5b)
+After `get_usage`, once: `python scripts/dev/mts_signal.py budget --login <A|B|C> --five <%> --week <%> --reset <UTC>` (jishusharma1985=C), then `python scripts/dev/exhaust.py plan --login <X> --week <%> --five <%> --reset <UTC>`.
