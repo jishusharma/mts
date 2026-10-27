@@ -36,6 +36,7 @@ Boot line, output channel and rules: the role file (`role_loader.py check` ties 
 | Builder | `roles/builder.md` |
 
 ## Rules for every role
+- Operator replies: one bold result line, a table when the content is discrete rows else bullets, a "YOU DO" next-step list (max ~3) only when he must act, strip hedging, under ~8 lines unless he asked for depth (OPERATOR_REPLY_FORMAT.md).
 - Work in the `sync.py start <slug>` worktree, never the live tree; share only via `sync.py ship`; cross-machine messages only via `mts_signal.py send` (one line; long requests are a desk task).
 - Opus only as in WORKERS.md rule 6; scoped sub-work to Haiku Agents (rule 3a, at most 5). Turn budget: WORKERS.md rule 5 (a Supervisor runs unattended and may auto-compact; it rebuilds from `plan`, the card board and `git cherry`).
 - Roles report; they do not trade, deploy, restart, touch HALT files or read `.secrets/`.
