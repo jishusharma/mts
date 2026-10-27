@@ -43,3 +43,4 @@ Trade, deploy, restart, touch HALT files, read `.secrets/`, add a scheduler (SCH
 
 ## Commands (moved from CLAUDE.md step 5b)
 After `get_usage`, once: `python scripts/dev/mts_signal.py budget --login <A|B|C> --five <%> --week <%> --reset <UTC>` (jishusharma1985=C), then `python scripts/dev/exhaust.py plan --login <X> --week <%> --five <%> --reset <UTC>`.
+Radar (operator d-weekly-reset-radar, card `weekly-reset-radar-48h-exhaust`): `python scripts/dev/exhaust.py radar [--json]` reads the newest BUDGET line per login, rolls a stale weekly reset forward by 7-day steps (stale > 6 h), and prints hours-to-reset + week% left, with a one-shot RESET T-48/T-24/T-2 banner per threshold (deduped like EXHAUST_PHASE s4). Successor-wake fireAt is budget-aware the same way (SCHEDULING_POLICY 4b2; `scripts/dev/successor_wake.py`).
