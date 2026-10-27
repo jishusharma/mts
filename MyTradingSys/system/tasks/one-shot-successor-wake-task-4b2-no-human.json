@@ -1,53 +1,53 @@
 {
-  "approved_by": "",
-  "asks": "",
-  "commands": [
-    "python scripts/dev/successor_wake.py --dry --login C"
-  ],
-  "created": "2026-10-27T20:00:06Z",
-  "depends_on": [],
-  "done_when": "successor_wake.py registers a one-time self-unregistering task (fireAt, no cron) with the successor prompt; supervisor.py handover calls it (default on, --no-wake off); test_successor_wake.py green incl. dry-run golden + handover line + past-fireAt refusal; new test failed on pre-change code",
-  "est_turns": 30,
-  "formula_id": "",
-  "formula_ids": [],
-  "from_inbox": "",
-  "goal": "successor_wake.py: one-time (4b2) scheduled task that boots the next Supervisor when the current one ENDEDs; auto-wired into supervisor.py handover; design + open questions in MyTradingSys/research/lead/2026-10-27_successor-wake-design.md",
-  "id": "one-shot-successor-wake-task-4b2-no-human",
-  "lane": "SONNET",
-  "latest": [],
-  "layers": [],
-  "live_path": false,
-  "mutation_check": "",
-  "note": "",
-  "prio": 3,
-  "refine_tries": 0,
-  "refined_by": "",
-  "refreshed": "2026-10-27T20:00:21Z",
-  "refs": [
-    "MyTradingSys/research/lead/2026-10-27_successor-wake-design.md",
-    "MyTradingSys/system/SCHEDULING_POLICY.md",
-    "scripts/dev/nuc_wake.py"
-  ],
-  "result": "",
-  "scope_in": [
-    "scripts/dev/successor_wake.py; scripts/dev/test_successor_wake.py; supervisor.py handover wiring + flag"
-  ],
-  "scope_out": [
-    "revival of hung/finished app sessions; mts_signal changes; cross-host registration; budget pacer; SCHEDULING_POLICY rule 4b2 wording"
-  ],
-  "scope_sha": "",
-  "size": "M",
-  "sources": [],
-  "state": "ready",
-  "steps": [
-    "read design doc + nuc_wake.py + supervisor.py handover/ENDED (1518/1547)",
-    "write successor_wake.py: prompt + one-time self-unregistering task + handover line + --dry/--at/--model/--prompt-file/--cwd",
-    "wire supervisor.py handover: auto-register, --no-wake flag",
-    "write test_successor_wake.py, confirm it fails pre-change, then green; tasks.py check",
-    "sync.py ship (doc+code gate) + mts_signal done line"
-  ],
-  "tests": "python scripts/dev/test_successor_wake.py",
-  "title": "One-shot successor wake task (4b2): ENDED supervisors self-boot the next link, no operator click",
-  "weight": "",
-  "worker": "session"
+ "approved_by": "",
+ "asks": "",
+ "commands": [
+  "python scripts/dev/successor_wake.py --dry --login C"
+ ],
+ "created": "2026-10-27T20:00:06Z",
+ "depends_on": [],
+ "done_when": "successor_wake.py registers a one-time self-unregistering task (fireAt, no cron); fireAt BUDGET-AWARE per the pacer; supervisor.py handover auto-registers by default (CHAIN, d-47), --no-wake opt-out; test_successor_wake.py green (full spec: research/lead/2026-10-27_successor-wake-design.md); new test failed on pre-change code",
+ "est_turns": 30,
+ "formula_id": "",
+ "formula_ids": [],
+ "from_inbox": "",
+ "goal": "successor_wake.py: one-time (4b2) scheduled task that boots the next Supervisor when the current one ENDEDs; auto-wired into supervisor.py handover; design + open questions in MyTradingSys/research/lead/2026-10-27_successor-wake-design.md",
+ "id": "one-shot-successor-wake-task-4b2-no-human",
+ "lane": "SONNET",
+ "latest": [],
+ "layers": [],
+ "live_path": false,
+ "mutation_check": "",
+ "note": "",
+ "prio": 3,
+ "refine_tries": 0,
+ "refined_by": "",
+ "refreshed": "2026-10-27T20:00:21Z",
+ "refs": [
+  "MyTradingSys/research/lead/2026-10-27_successor-wake-design.md",
+  "MyTradingSys/system/SCHEDULING_POLICY.md",
+  "scripts/dev/nuc_wake.py"
+ ],
+ "result": "",
+ "scope_in": [
+  "scripts/dev/successor_wake.py; scripts/dev/test_successor_wake.py; supervisor.py handover wiring + flag"
+ ],
+ "scope_out": [
+  "revival of hung/finished app sessions; mts_signal changes; cross-host registration; budget pacer; SCHEDULING_POLICY rule 4b2 wording"
+ ],
+ "scope_sha": "",
+ "size": "M",
+ "sources": [],
+ "state": "ready",
+ "steps": [
+  "read design doc + nuc_wake.py + supervisor.py handover/ENDED (1518/1547)",
+  "write successor_wake.py: prompt + one-time self-unregistering task + handover line + --dry/--at/--model/--prompt-file/--cwd",
+  "wire supervisor.py handover: auto-register, --no-wake flag",
+  "write test_successor_wake.py, confirm it fails pre-change, then green; tasks.py check",
+  "sync.py ship (doc+code gate) + mts_signal done line"
+ ],
+ "tests": "python scripts/dev/test_successor_wake.py",
+ "title": "One-shot successor wake task (4b2): ENDED supervisors self-boot the next link, no operator click",
+ "weight": "",
+ "worker": "session"
 }

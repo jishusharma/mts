@@ -9,7 +9,15 @@ word for word (CONTROL_ROOM.md step 4). Seed a wiped or second db from the JSON 
 {"id": "d-restart-c-a-supervisors", "order": 46, "date": "2026-10-27", "status": "DECIDED",
  "question": "Both supervisor loops are mode=ENDED (C on JIS-NB, A on the laptop), 117 ready cards queued, C's 5h/weekly reset at 2026-10-27T20:00Z and A's at 22:30Z. Restart the loops to drain the ready cards into the reset windows?",
  "answer": "OPERATOR VERBATIM: 'Start a fresh Supervisor on JIS-NB (login C) and DESKTOP-F7IU69N (login A) so the ENDED loops resume and ready cards drain into the 19:59Z reset window.' (2026-10-27, JIS-NUC, login B seat)",
- "done": "pending: card one-shot-successor-wake-task-4b2-no-human - successor_wake.py (4b2 one-time task, zero-operator-click restart). Design + open question (chain vs manual default) at research/lead/2026-10-27_successor-wake-design.md. Interim: a live session on A (desktop-f7iu69n) can take a restart signal; C (JIS-NB) has no live session - parked until the card ships, or the operator starts the successor line by hand once."}
+ "done": "pending: card one-shot-successor-wake-task-4b2-no-human - successor_wake.py (4b2 one-time task, zero-operator-click restart). Design at research/lead/2026-10-27_successor-wake-design.md; chain-vs-manual open question resolved by d-47-successor-wake-chained (chained default, budget-aware fireAt). Interim: a live session on A (desktop-f7iu69n) can take a restart signal; C (JIS-NB) has no live session - parked until the card ships, or the operator starts the successor line by hand once."}
+```
+
+## d-47-successor-wake-chained | decided 2026-10-27 | Lead (admin, JIS-NUC login B)
+```json
+{"id": "d-47-successor-wake-chained", "order": 47, "date": "2026-10-27", "status": "DECIDED",
+ "question": "The successor-wake design (research/lead/2026-10-27_successor-wake-design.md) leaves one open call: default every ENDED supervisor to auto-register its successor task (chain), or keep the one-liner manual?",
+ "answer": "OPERATOR VERBATIM: 'runs must be chained - nothing manual but manual interventions possible/compatible -> makes sense? So depending of the session usage limits runs has to continue. keep distributing load. Something exists on this but perhaps is not woired and connetted.' (2026-10-27, JIS-NUC, login B seat)",
+ "done": "design doc updated (chained default + budget-aware fireAt + the 3 existing-but-unwired pieces); card one-shot-successor-wake-task-4b2-no-human READY with the chained done-when; not yet dispatched."}
 ```
 
 ## q1-one-control-room | asked 2026-10-13 | Process
