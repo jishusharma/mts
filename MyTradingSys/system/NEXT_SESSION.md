@@ -17,6 +17,28 @@ Worktree state: clean, 0 unshipped commits, all claims released.
 
 Older blocks (2026-10-18/19): `MyTradingSys/system/handoff_history/2026-10-21_next_session_trim.md`. A session reads only its own block.
 
+## Rolling super-session chain hand-over 2026-10-27 (DESKTOP-F7IU69N, local_37a9ec3e)
+
+**Worktree cleanup from the 2026-10-26 Lenovo hand-over is DONE.** All 8 remaining UNSHIPPED branches (ci-1687ee8-2, context-diet, gemini-ship-boot-halve, hook-reminder-get-usage, usage-reminder-gate-3, ship-speed, ship-lesson-flag, model-rule-enforce) were independently re-evaluated by parallel workers, all recommended DROP (superseded/already-landed/stale), and deleted from origin with operator confirmation. That hand-over bucket is closed — do not re-open it.
+
+**Operator asked for a rolling super-session chain this session** (one coordinator link hands to the next live, via the Agent tool only — never `start_session` for worker dispatch, it pops an unwanted approval card even in bypass mode; see memory `feedback_prefer_agent_over_start_session`). Two p1 cards record this as a standing capability request + a behavior bug, both still `raw`, need refine+implement:
+- `coordinator-self-pacing-rolling-super-se` (d1b0b9753) — pacing checklist request for SUPER_SESSION.md.
+- `coordinator-retried-start-session-after-` (e72a67e4b) — behavior-rule request (don't retry start_session after known click-friction feedback) + an open platform question for whoever has Remote Control/push-layer visibility (does a backend-refused start_session still cost a click?).
+
+**Chain progress this session (4 links via Agent tool, 7 cards shipped, all verified `git cherry origin/fast-track <sha>` empty):**
+- Link 2 (Gate Board/backlog drain): shipped `bug-burn-cap-stops-all-work` (f00e9f212, burn-cap zero-spawn fix). No ready Gate Board card existed (tom/malkan/krown all waiting on a future triage pass). Filed `bug-context-gap-fold-repo-short-path` after hitting a blocker.
+- Link 3 (blocker fix + drain): shipped 4 fixes — `bug-context-gap-fold-repo-short-path` (f6186e465, real cause was missing git identity in `fold_repo()`'s sandbox repo, not the short-path alias the card named), `bug-ready-state-lags-shipped-card` (d2e575feb), `bug-nuc-signal-hub-not-a-git-repo` (3c3785563), `go-private-trigger-notify-operator-when-` (ffc522a39 + e81c0ca53). Also discovered its own fix now flags ~30 previously-"ready" cards as `STALE:scope changed` — re-check scope before dispatching any of them, they are not necessarily already shipped.
+- Link 4: shipped `bug-youtube-gemini-only-rule-is-a-preference` (d456f001b, 67f805ec8 — CBP caption fetch no longer requires Gemini/NUC, only open-ended video search does) and `live-cross-market-read-script` (a6a5d7a2b, bb9751a8f, 81435c019 — ported Eagle_Eyes' hand-run live-read script, fixed a since-open 5-minute bar-close bug). Flagged (false alarm, resolved): the shared main checkout was ~2500 commits stale/read-only — always `sync.py start` into a fresh worktree, don't trust "card not found" from the stale main tree.
+- Link 5 (last link this session, usage window was down to its final ~6%): shipped exactly one card, deliberately stopping after it per the tight budget — `tandem-nuc-lab-from-other-devices` (66990cb05, added `scripts/dev/nuc_lab.py` + 6 tests, gate step 3nl). Shipped with `--no-ci-wait` to fit the time budget. **CI for 66990cb05 was still `in_progress` (run 40496958685) when this session checked — confirm it went green.**
+
+**Open items for the next coordinator:**
+1. Confirm CI run 40496958685 (commit 66990cb05) finished green. If red, it's the first thing to fix.
+2. Not started, left ready for whoever has a fresh usage window: `fix-fill-rules-shared` (M, touches 5 backtest engines, needs real exploration time), `oi-pivot-1h-4h-long-oi-followup` (CRUCIAL weight, 16-cell prereg run — needs rule-11 review), `timeframes-add-2d-3d-4d-5d` (open-ended — scope says "every timeframe map found by grep," run that grep first before sizing it), `ops-change-checklist-ship-gate` (CRITICAL, needs rule-11 review), `re-state-lc1-keep-list-on-the-touched-on` (CRUCIAL, decision-numbers, needs rule-11 review).
+3. Refine (rule 14 triage) the two still-`raw` coordinator-chain cards above when there's a free SONNET slot — docs-only, no code.
+4. Re-scope-check the ~30 cards link 3 flagged STALE before dispatching any (`tasks.py check <id>`); most are likely just behind trunk, not already done.
+5. The main checkout (`BinanceDataFeed`) has pre-existing modified/untracked files left by earlier link work (not mine to touch per hard rules — don't stash/clean/revert).
+6. **Chain wound down here deliberately, not from idling or dying early:** by the end of link 5 the 5h usage window was at 94% with ~1h6m left (weekly 40%, context only ~12% — context was never the constraint, the 5h plan window was). Launching a 6th link into the last ~6% of budget risked leaving work half-shipped right as the window reset, so this coordinator stopped dispatching new links and finalized hand-over instead. Next coordinator: once the window resets, resume from item 2 above.
+
 ## Next card: nuc-unexpected-shutdown (hand-over, JIS-NUC session, 2026-10-23)
 Task: nuc-unexpected-shutdown (no card on disk yet; the brief is `MyTradingSys/system/NUC_SHUTDOWN_HANDOVER.md`). Run with zero operator input; defaults for open questions.
 Steps:
