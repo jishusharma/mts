@@ -92,3 +92,10 @@ Start 2026-10-27T12:50Z. Worktree claude/supervisor-c-jis-nb-ce71af (HEAD = orig
 - Directive 4 carve-out: docker-vs-windows-test-speed was in-flight on C -> completed by a8d067c84 (Haiku, minimal cost), ship it, then hold.
 - Verified GPT-ship lane stays on C: sha + Result: + green 60 min + one other-model spot-check.
 - main-checkout-stale-hooks still parked on operator's wip 0ac18c3fb call.
+
+## Hand-over 2026-10-27 ~20:00Z (desktop session, login C)
+- Port supervisor-handover-fixed-form onto fresh trunk (old branch JIS-NB/handover-form-2 conflicts in supervisor.py).
+- Drop planner branch claude/laughing-nobel-14e441 (worktree gallant-mayer-ea7007) if the operator agrees; vigilant-chatelet-c1366c has an open merge (operator: git merge --abort there), change already on trunk.
+- b-4c2dfe blocked: main checkout has 64 dirty files + local wip 0ac18c3fb; operator saves it first.
+- Shipped today: wavetrend c1-v2 (c318d9670, a178697eb), CI green. Gateway uses ~50x fresh tokens/day vs Max (usage-compare session): ask vendor about cache_control pass-through.
+
