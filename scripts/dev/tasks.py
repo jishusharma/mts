@@ -813,10 +813,10 @@ def cmd_status(a):
     print(status_line(cards))
 
 
-def stop_tag(c, repo=None):
+def stop_tag(c, repo=None, claims=None):
     """The STATE tag when the card's work is already on trunk (SHIPPED) or its scope moved on (STALE), else ''."""
     repo = repo or REPO
-    tag = TS.state_tag(c, repo, claim_of(c, open_claims(repo)), registry(repo))
+    tag = TS.state_tag(c, repo, claim_of(c, open_claims(repo) if claims is None else claims), registry(repo))
     # DECISION (OURS): "latest never refreshed" is a fresh card without pointers, not stale work: it stays dispatchable
     return tag if tag.startswith(("SHIPPED", "STALE")) and "never refreshed" not in tag else ""
 
@@ -1467,7 +1467,7 @@ def exclusion(card, cards, reg, holds, claims, lane_st, as_of, host=None, repo=R
     import lane_health
     if card["state"] != "ready":
         return ("state", f"not ready: state is {card['state']}")
-    tag = stop_tag(card, repo)   # C3: the Lead pick path never dispatches a card whose work is already on trunk or scope is stale
+    tag = stop_tag(card, repo, claims)   # C3: the Lead pick path never dispatches a card whose work is already on trunk or scope is stale
     if tag:
         return ("shipped" if tag.startswith("SHIPPED") else "stale", tag)
     held = hold_problems(card, holds)

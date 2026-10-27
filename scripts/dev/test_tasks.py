@@ -6,6 +6,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -412,6 +413,26 @@ class NextSkipsClaimedTest(unittest.TestCase):
             except SystemExit as e:
                 rc = e.code if isinstance(e.code, int) else 1
         return rc, out.getvalue()
+
+    def test_open_claims_reads_git_once_for_many_cards(self):
+        """plan-hang-claims: stop_tag called open_claims per card, each re-reading every claim file (cards x ~5 s). N lookups, one read."""
+        import sync
+        for i in range(5):
+            self.claim(f"c{i}")
+        getattr(sync, "_CLAIMS_MEMO", {}).clear()
+        calls = []
+        real = subprocess.run
+
+        def spy(cmd, *a, **k):
+            calls.append(list(cmd))
+            return real(cmd, *a, **k)
+        with mock.patch.object(sync.subprocess, "run", spy):
+            for _ in range(20):
+                got = T.open_claims(self.repo)
+        self.assertEqual(sorted(got), [f"c{i}" for i in range(5)])
+        reads = [c for c in calls if "ls-tree" in c]
+        self.assertLessEqual(len(reads), 2, reads)   # origin/claims + trunk, once each, not 20x
+        self.assertEqual(len([c for c in calls if "show" in c]), 0)   # no per-file subprocess
 
     def test_next_skips_a_card_with_an_open_claim(self):
         T.save(self.repo, good("B1", prio=1))   # claim files are lower-case slugs of the id (sync.slugify)
