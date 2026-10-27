@@ -15,6 +15,8 @@ import run_extra_tests  # noqa: E402
 
 SKIP = {   # relative path -> reason it is deliberately not in the gate. Empty on purpose: add a reason, not a blind skip.
     "scripts/dev/test_supervisor.py": "SV2/SV5 supervisor CLI test; run directly via pytest scripts/dev/test_supervisor.py (omitted from run_extra_tests.py to avoid FULL_RE gate on supervisor-only ship)",
+    "scratch_r3/test_kill_switch_real_client_r3.py": "fable R3 scratch: pass-audit that kill_switch works against the REAL deribit_orders.get_open_orders signature (passes on current code; finding F-KILL-1 refuted, kept as the audit trail)",
+    "scratch_r3/test_stop_gap_r3.py": "fable R3 scratch: FAILING F-GAP-1 repro (restart with filled entry but no journaled stop leaves the position naked); card fable-r3-stop-gap-early-return moves it into MyTradingSys/execution/ and fixes the code",
 }
 COLLECTED_DIRS = ("MyTradingSys/tests/", "MyTradingSys/backtest/", "MyTradingSys/options/tests/")
 
