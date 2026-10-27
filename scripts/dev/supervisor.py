@@ -1516,7 +1516,7 @@ def _old_missed(p: Path) -> list | None:
 
 
 def handover(repo: Path, login: str, note: str = "", host: str | None = None, home=None, now: datetime | None = None,
-             send: bool = False, role: str = "supervisor", text: str | None = None) -> Path:
+             send: bool = False, role: str = "supervisor", text: str | None = None, wake: bool = False) -> Path:
     """Write the fixed-form hand-over (7 sections, or the Lead's 8) and return its path. `text` = a file the agent wrote; without it the
     form is rendered from the last plan. A form that breaks the caps or carries `## Update` raises ValueError and writes nothing."""
     import sync
@@ -1547,6 +1547,13 @@ def handover(repo: Path, login: str, note: str = "", host: str | None = None, ho
                 mts_signal.send(heartbeat_text(login, host, {**lp["plan"], "running": 0}, free=0, mode="ENDED"), to="all", kind="note")
         except Exception:
             pass   # the 75 min heartbeat age still removes this supervisor
+    if wake and role != "lead":
+        try:
+            import successor_wake
+            r = successor_wake.register(login, cwd=repo, home=home)
+            print(f"{r['line']} [{r['why']}]")
+        except Exception as e:   # fail closed = no task, never a broken hand-over; the line tells the operator the manual command
+            print(f"successor wake NOT registered ({e}); manual: python scripts/dev/successor_wake.py --login {login}")
     return p
 
 
@@ -1591,6 +1598,7 @@ def main(argv: list[str] | None = None) -> int:
     p_ho.add_argument("--login", default=None, help="optional: detected from the app account")
     p_ho.add_argument("--note", default="", help="one line: what the successor does first")
     p_ho.add_argument("--no-send", action="store_true", help="do not send the ENDED heartbeat")
+    p_ho.add_argument("--no-wake", action="store_true", help="do not register the one-time successor task (SCHEDULING_POLICY 4b2; default: register)")
     p_ho.add_argument("--role", "--kind", dest="role", choices=("supervisor", "lead"), default="supervisor",
                       help="lead: the Lead's 8-section resume file handover/LEAD_RESUME_<date>.md")
     p_ho.add_argument("--from", dest="src", default=None, help="a form file you wrote: validated (caps, no '## Update'), then written to the target")
@@ -1661,7 +1669,8 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"cannot read {args.src}: {e}")
                 return 2
         try:
-            p = handover(repo, args.login or "", note=args.note, send=not args.no_send, role=args.role, text=text)
+            p = handover(repo, args.login or "", note=args.note, send=not args.no_send, role=args.role, text=text,
+                         wake=not args.no_wake)
         except ValueError as e:
             print(f"REFUSED, nothing written: {e}")
             return 2

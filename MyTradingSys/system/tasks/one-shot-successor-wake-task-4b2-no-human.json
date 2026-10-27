@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-27T21:49:50Z",
   "commands": [
     "python scripts/dev/successor_wake.py --dry --login C"
   ],
@@ -25,7 +26,14 @@
   "goal": "successor_wake.py: one-time (4b2) scheduled task that boots the next Supervisor when the current one ENDEDs; auto-wired into supervisor.py handover; design + open questions in MyTradingSys/research/lead/2026-10-27_successor-wake-design.md",
   "id": "one-shot-successor-wake-task-4b2-no-human",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/successor_wake.py + test_successor_wake.py (13 pass); supervisor handover auto",
+      "ref": "890bf1566",
+      "utc": "2026-10-27T21:49:50Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -39,7 +47,12 @@
     "MyTradingSys/system/SCHEDULING_POLICY.md",
     "scripts/dev/nuc_wake.py"
   ],
-  "result": "",
+  "result": "scripts/dev/successor_wake.py + test_successor_wake.py (13 pass); supervisor handover auto-wake, --no-wake",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/successor_wake.py; scripts/dev/test_successor_wake.py; supervisor.py handover wiring + flag"
   ],
@@ -49,7 +62,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read design doc + nuc_wake.py + supervisor.py handover/ENDED (1518/1547)",
     "write successor_wake.py: prompt + one-time self-unregistering task + handover line + --dry/--at/--model/--prompt-file/--cwd",
@@ -57,6 +70,7 @@
     "write test_successor_wake.py, confirm it fails pre-change, then green; tasks.py check",
     "sync.py ship (doc+code gate) + mts_signal done line"
   ],
+  "taken": "2026-10-27T21:49:50Z",
   "tests": "python scripts/dev/test_successor_wake.py",
   "title": "One-shot successor wake task (4b2): ENDED supervisors self-boot the next link, no operator click",
   "weight": "",
