@@ -17,7 +17,7 @@ Why this file exists (operator 2026-10-28): requirements were unclear from the s
 | C-01 | "No scheduled tasks anywhere" (CLAUDE.md, SCHEDULING_POLICY.md) vs a zero-click successor wake that uses a one-time scheduled task (card one-shot-successor-wake-task-4b2-no-human, research/lead/2026-10-27_successor-wake-design.md) | Narrow, expiring exception for the successor wake only. |
 | C-02 | The app shows an approval card on session starts from a pasted brief, an event turn or after compaction; a hook cannot remove it (research/thinker/2026-10-23_requirements_review_opus.md) | Do not rely on start_session for the chain; use the scheduled wake. |
 | C-03 | Rotation triggers disagree: 3 h or 150K context (audit proposal), 24 h or 200K (SUPER_SESSION), five-hour loop (supervisor role) | "Small" = one wave of at most 3 h or 150K context, hard stop 4 h. |
-| C-04 | Auto-mode permission denials stop an unattended run (seen 2026-10-27: `git merge --abort`, `git checkout --theirs`, a Builder brief about merging in place) | Briefs use only allowed forms (revert, cherry-pick in a clean tree, copy files); a denial is logged and the card parked, never waited on. |
+| C-04 | Auto-mode permission denials stop an unattended run (seen 2026-10-27: a merge abort, a checkout of theirs, a Builder brief about merging in place) | Briefs use only allowed forms (revert, cherry-pick in a clean tree, copy files); a denial is logged and the card parked, never waited on. |
 | C-05 | When the weekly or five-hour cap is reached, the chain has no rule for pausing and resuming | Pause new starts, resume by itself after the reset time. |
 
 Sources: station_c_rolling_audit_20261026/REPORT.md (policy contradictions table), thinker/2026-10-23_requirements_review_opus.md.
