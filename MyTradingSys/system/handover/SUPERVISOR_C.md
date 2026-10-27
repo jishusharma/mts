@@ -27,3 +27,6 @@ Start 2026-10-27T12:50Z. Worktree claude/supervisor-c-jis-nb-ce71af (HEAD = orig
 3. RAMP: +1 worker per wake up to slots (3); dispatch from Planner table, re-check STALE cards first; ship order by gate contention.
 4. Rewrite this file, `supervisor.py wait --timeout 50m --login C` background, `supervisor.py watchcheck` LAST (exit 0).
 5. No ready cards the Planner can fix, or CI red, or budget stop -> D6 stop + transit per SUPER_SESSION.md "End".
+
+## 2026-10-27 ~13:05Z escalation (cross-session)
+- Start Lead asked for `git reset --soft 4662684a3` on the main checkout to unstick the c_drive_guard logon pull. DECLINED: hard rule "never rebase/reset/force-push" + live tree + reset would re-stage the wip's ~83 files so ff-only pull still fails. Logged `tasks.py conflict` (bug-conflict-ef2e6db71a); Lead to escalate to operator. Builder worker on main-checkout-stale-hooks-2026-10-24 owns the tree meanwhile (save -> ff-only, no reset). Main checkout read-only check: HEAD 0ac18c3fb, 1188 behind / 1 ahead, 55 dirty files.
