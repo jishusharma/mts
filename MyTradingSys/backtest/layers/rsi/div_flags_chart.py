@@ -12,6 +12,8 @@ rsi_divergence.py); RSI period 14 = SOURCED default of the layer (run_divergence
 and 1w built from complete Mon-Sun UTC daily bars = OURS (display choices).
 Causal: the event is stamped one bar after swing B (t_event); the label is drawn at B. The RSI is Wilder RSI from the
 whole history, so truncating future bars never changes an earlier flag (test_div_flags_chart.py).
+T01-F2: the raw_1d daily klines are a different feed from live (mismatch measured by the T01 audit); the flags
+are for visual review only, never a trading input.
 Data: local Binance daily klines (free public data) via bt_data.load_klines; 1w is aggregated from them.
 Usage: python -m MyTradingSys.backtest.layers.rsi.div_flags_chart --symbol BTCUSDT --tfs 1d,1w --bars 250
 """
