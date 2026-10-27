@@ -2,6 +2,22 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 43,
+    "folded": "2026-10-27T23:57:00Z",
+    "misses": 32,
+    "reads": [
+      "scripts/dev/test_sync.py",
+      "scripts/dev/nuc_lab.py",
+      "scripts/dev/gemini_queue.py",
+      "scripts/dev/successor_wake.py",
+      "scripts/dev/test_gemini_queue.py",
+      "MyTradingSys/system/roles/builder.md",
+      "scripts/dev/nuc_wake.py",
+      "scripts/dev/test_nuc_lab.py"
+    ],
+    "session": "agent-ac11f7eb0a30ecbd7"
+  },
   "created": "2026-10-27T23:49:16Z",
   "depends_on": [],
   "done_when": "AUDIT.md in MyTradingSys/research/bg_process_audit_2026-10-28/ lists every background task over 30 min (7 days) with outcome; python -m pytest scripts/dev/test_bg_watch.py scripts/dev/test_nuc_lab.py scripts/dev/test_gemini_queue.py -q passes and test_sync.py -k 'auth_failure or lost_race_message or GitNetTimeout' passes",
