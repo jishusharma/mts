@@ -67,3 +67,28 @@ Start 2026-10-27T12:50Z. Worktree claude/supervisor-c-jis-nb-ce71af (HEAD = orig
 - Operator ask: move the wip commit 0ac18c3fb on the live tree (git -C <main> reset --hard 4662684a3 or git -C <main> branch backup-wip-2026-10-27 0ac18c3fb && git -C <main> reset --hard 4662684a3), then run `git -C <main> pull --ff-only origin fast-track`. Once clean: `python scripts/dev/c_drive_guard.py status` should say "for this checkout".
 - c_drive_guard status re-check: deferred to after the operator's reset (needs clean main tree).
 - Result: tasks.py tried (asks filed); card NOT done (still 1197 behind).
+
+## 2026-10-27 ~16:20Z wake (SPEND, slots=2, RAMP new=1 -> +1)
+- HAIKU re-run (a1902bee) VERIFIED DONE: doc line genuinely on trunk now - `git grep run_extra_tests origin/fast-track` returns session_planner_details.md:7 with the full clause; content commit 88769b8f4 (non-merge, Result: present, ancestor of trunk, cherry empty). Previous done (42c3c195) was a FALSE claim (merge-only, doc never edited); card re-opened by hand then completed properly.
+- main-checkout builder (ac1c2638) VERIFIED: backup complete at F:/MTS_backup/main_checkout_2026-10-25/ (wip_commit.patch 83 files, 54 untracked copied, 4 deleted CSVs recoverable); ff-only BLOCKED by wip 0ac18c3fb (1 ahead / 1197 behind); operator ask filed via `tasks.py tried` (try 1/2, default: leave HEAD untouched, card parked). Card state=ready, NOT done.
+- Lead's requested c_drive_guard status: "logon run: installed; main checkout 1209 behind; not pulled: main tree has uncommitted files" - corroborates builder; re-check after operator's reset.
+- CI green on trunk tip (ci_watch "CI ok" 16:18Z). Budget C: 5h=12% week=81% (cap 85%, reset 20:00Z), SPEND.
+- RAMP +1 dispatched: docker-vs-windows-test-speed (JIS-NB S builder 25t, agent ae0740e4). a1902bee still running (wrapping up; content already on trunk).
+- Stop conditions unchanged: 5h>=80% / week>=85% / 24h.
+
+## 2026-10-27 ~16:32Z divert directive (from Start Lead local_f41228dd)
+- Operator directive: divert card work OFF login C. C holds new card-builder slots; CODEX-lane cards -> GPT loop btdbn802l (codex_run.py, own 65-pt meter) churns the queue; Claude-lane card work -> login A (jishusharma, fresh pool, JIS-NUC).
+- Stopped ae0740e4 (docker-vs-windows-test-speed) pre-claim: board still STATE READY, so A gets it clean, no release needed.
+- Stopped HAIKU re-run a1902bee finished earlier: content 88769b8f4 already on trunk + card done.
+- KEPT: verifying every GPT ship (sha + Result: + green 60 min + one other-model spot-check) stays here on C.
+- main-checkout-stale-hooks-2026-10-24 stays PARKED (waits operator's wip 0ac18c3fb call); C does not move the live tree.
+- Posted divert signals per Lead: host-legacy-tasks-unregister, docker-vs-windows-test-speed, main-checkout-stale-hooks (parked).
+- Eagle stays on live-market thread (now Sonnet/medium, cheap) - not C-budget churn.
+- Net: C stops spending on card churn; GPT + A carry it. Watcher still armed; D6 stop conditions unchanged.
+
+## 2026-10-27 ~16:40Z divert CONFIRMED (2nd directive from Start Lead; fleet broadcast)
+- Login C at 79% week / 39% of 5h window -> C BUDGET-HOLD: no new C-budget card-builder spawns from the next wake; watcher goes quiet instead of dispatching.
+- CODEX-lane cards -> GPT only (codex_run.py btdbn802l, own meter). Claude-lane cards (live-host move, desk R2 ETH, live-path, RU* items) -> left on shared board for login A; C does not claim them.
+- Directive 4 carve-out: docker-vs-windows-test-speed was in-flight on C -> completed by a8d067c84 (Haiku, minimal cost), ship it, then hold.
+- Verified GPT-ship lane stays on C: sha + Result: + green 60 min + one other-model spot-check.
+- main-checkout-stale-hooks still parked on operator's wip 0ac18c3fb call.
