@@ -51,3 +51,6 @@ Start 2026-10-27T12:50Z. Worktree claude/supervisor-c-jis-nb-ce71af (HEAD = orig
 - Doctor acb1104e2 (40 findings) on trunk, verified.
 - NUC Codex tick: IDLE lock-held (steady loop pacing), not stuck.
 - My notes d082db411 landed on trunk via a worker merge.
+
+## 2026-10-27 ~15:41Z status note (builder ac1c2638)
+- main-checkout-stale-hooks: SAVE step done+verified (F:/MTS_backup/main_checkout_2026-10-25/: local.patch, wip_commit.patch, dirty list, stash ref). FF-ONLY step STALLED: wip commit 0ac18c3fb (1 ahead) blocks `pull --ff-only` on the live tree. Builder filed `tasks.py tried ... --asks "operator to reset/drop the wip commit on the live tree"` (the only permitted primitive is ff-only; moving HEAD otherwise is an operator/live-tree action). Per Lead routing: this single question reaches the operator; loop continues meanwhile. Ship of builder's note pending its gate slot.
