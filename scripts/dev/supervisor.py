@@ -638,6 +638,7 @@ TRANSIT_MIN = 20                # write the hand-over this many minutes before t
 DSA_DOWN_H = 24                 # a DSA target whose oldest pending row is older than this has no working bridge (OURS)
 CLAUDE_LANES = ("SONNET", "HAIKU")
 import hosts  # noqa: E402  (canonical machine names: JIS-NB is JIS-DESKTOP since the rename)
+import successor_wake  # noqa: E402  (the 4b2 one-time successor task, wired into `handover`)
 
 
 def CN(h):
@@ -1515,10 +1516,42 @@ def _old_missed(p: Path) -> list | None:
     return None
 
 
+def successor_fireat(last: dict, now: datetime) -> tuple[str, str]:
+    """Pure (d-47, successor-wake design): the successor task's fireAt from the pacer's last plan. slots >= 1 -> now,
+    so the chain keeps draining the pacer's room; STOP (5h >= 80 or weekly at cap) -> the next reset that reopens
+    the binding constraint (5h block -> five_reset, weekly at cap -> week_reset). No last plan (a fresh ENDED without
+    a recorded plan) defaults to now. Returns (fireAt iso-utc, why)."""
+    plan = (last or {}).get("plan", {}) or {}
+    mode = str(plan.get("mode", "NORMAL"))
+    slots = int(plan.get("slots") or 0)
+    if slots >= 1:
+        return successor_wake.iso_utc(now), f"slots {slots} >= 1: the pacer has room, chain now"
+
+    def parse_key(key: str, default: datetime) -> datetime:
+        v = str(plan.get(key) or "").strip()
+        try:
+            return successor_wake.parse_utc(v) if v else default
+        except ValueError:
+            return default
+
+    fr, wr = parse_key("five_reset", now + timedelta(hours=5)), parse_key("week_reset", now + timedelta(days=7))
+    if mode == "STOP":
+        if float(plan.get("five") or 0) >= SPAWN_CEIL:
+            return successor_wake.iso_utc(fr), "STOP, 5h >= 80: chain at the 5h reset"
+        return successor_wake.iso_utc(wr), "STOP, weekly at cap: chain at the weekly reset"
+    return successor_wake.iso_utc(now), f"mode {mode}: default chain now"
+
+
 def handover(repo: Path, login: str, note: str = "", host: str | None = None, home=None, now: datetime | None = None,
-             send: bool = False, role: str = "supervisor", text: str | None = None) -> Path:
+             send: bool = False, role: str = "supervisor", text: str | None = None, wake: bool = True,
+             dry: bool = False) -> Path:
     """Write the fixed-form hand-over (7 sections, or the Lead's 8) and return its path. `text` = a file the agent wrote; without it the
-    form is rendered from the last plan. A form that breaks the caps or carries `## Update` raises ValueError and writes nothing."""
+    form is rendered from the last plan. A form that breaks the caps or carries `## Update` raises ValueError and writes nothing.
+    On the ENDED handover (`send=True`) the wake chain (d-47: chained default) fires: it computes the pacer fireAt
+    (slots >= 1 -> now, STOP -> the next reset that reopens the binding constraint), records the one `Successor task:`
+    line, and registers the 4b2 one-time task; `dry` previews the fireAt and PowerShell but registers nothing and skips
+    the ENDED heartbeat; `wake=False` (--no-wake) is the manual opt-out: no task, no line. A non-ENDED handover
+    (`send=False`) records no successor: the chain advances only when a supervisor ENDEDs."""
     import sync
     now = now or _now_utc()
     host = CN(host or socket.gethostname())
@@ -1538,8 +1571,31 @@ def handover(repo: Path, login: str, note: str = "", host: str | None = None, ho
     if probs:
         raise ValueError("; ".join(probs))
     p.parent.mkdir(parents=True, exist_ok=True)
+    if send and wake and role != "lead":
+        try:
+            last = json.loads((loop_home(home) / f"{login}-last-plan.json").read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            last = {}
+        fire_at, why = successor_fireat(last, now)
+        # DECISION (OURS): a stale last plan can name a reset in the past; the one-time task would then fire immediately.
+        # Keep the rolling chain alive: clamp a past fireAt to now rather than refusing the link.
+        try:
+            if successor_wake.parse_utc(fire_at) <= now:
+                fire_at, why = successor_wake.iso_utc(now), why + "; (clamped to now: the recorded reset was past)"
+        except ValueError:
+            pass
+        text = upsert_successor_line(text, successor_wake.handover_line(task_name(login), fire_at))
+        if dry:
+            print(f"DRY {task_name(login)} would register fireAt {fire_at} ({why}); nothing registered")
+        else:
+            rc = successor_wake.register(login, fire_at, cwd=str(repo))
+            if rc == 0:
+                print(f"registered {task_name(login)} fireAt {fire_at} ({why})")
+            else:
+                print(f"NOTICE {task_name(login)} NOT registered (exit {rc}); manual fallback: "
+                      f"python scripts/dev/successor_wake.py --login {login} --at {fire_at}", file=sys.stderr)
     p.write_text(text if text.endswith("\n") else text + "\n", encoding="utf-8", newline="\n")
-    if send and role != "lead":
+    if send and not dry and role != "lead":
         try:
             lp = json.loads((loop_home(home) / f"{login}-last-plan.json").read_text(encoding="utf-8"))
             if lp.get("plan"):
@@ -1548,6 +1604,17 @@ def handover(repo: Path, login: str, note: str = "", host: str | None = None, ho
         except Exception:
             pass   # the 75 min heartbeat age still removes this supervisor
     return p
+
+
+def task_name(login: str) -> str:
+    """The 4b2 one-time successor task id for a login (the name recorded in the hand-over)."""
+    return f"MTS-SuccWake-{(login or '').strip().upper()[:1]}"
+
+
+def upsert_successor_line(text: str, line: str) -> str:
+    """Idempotent: replace any existing `Successor task:` line with `line`, else append it (a second run updates, never duplicates)."""
+    kept = [x for x in text.splitlines() if "Successor task:" not in x]
+    return "\n".join(kept + [line]) + "\n"
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -1591,6 +1658,8 @@ def main(argv: list[str] | None = None) -> int:
     p_ho.add_argument("--login", default=None, help="optional: detected from the app account")
     p_ho.add_argument("--note", default="", help="one line: what the successor does first")
     p_ho.add_argument("--no-send", action="store_true", help="do not send the ENDED heartbeat")
+    p_ho.add_argument("--dry", action="store_true",
+                      help="preview the successor task's PowerShell and fireAt, but register nothing and skip the ENDED heartbeat")
     p_ho.add_argument("--role", "--kind", dest="role", choices=("supervisor", "lead"), default="supervisor",
                       help="lead: the Lead's 8-section resume file handover/LEAD_RESUME_<date>.md")
     p_ho.add_argument("--from", dest="src", default=None, help="a form file you wrote: validated (caps, no '## Update'), then written to the target")
@@ -1599,6 +1668,8 @@ def main(argv: list[str] | None = None) -> int:
     p_ho.add_argument("--no-write", action="store_true", help="with --verify: report only, leave the file as it is")
     p_ho.add_argument("--fold-target", action="store_true", help="print the file the ship-time fold writes (the card, else the hand-over)")
     p_ho.add_argument("--card", default=None, help="with --fold-target: the claimed card id")
+    p_ho.add_argument("--no-wake", action="store_true",
+                      help="manual opt-out (d-47): do NOT register the 4b2 successor task, add no Successor line; chain nothing")
 
     args = ap.parse_args(argv)
     if args.cmd in ("plan", "handover", "wait", "tick", "watchcheck"):
@@ -1661,7 +1732,8 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"cannot read {args.src}: {e}")
                 return 2
         try:
-            p = handover(repo, args.login or "", note=args.note, send=not args.no_send, role=args.role, text=text)
+            p = handover(repo, args.login or "", note=args.note, send=not args.no_send, role=args.role, text=text,
+                         wake=not args.no_wake, dry=args.dry)
         except ValueError as e:
             print(f"REFUSED, nothing written: {e}")
             return 2
