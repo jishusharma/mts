@@ -17,8 +17,8 @@
       "auto": true,
       "kind": "ship",
       "line": "Merge remote-tracking branch 'origin/fast-track' into fast-track",
-      "ref": "bfd2b903b8e6",
-      "utc": "2026-10-27T19:18:22Z"
+      "ref": "521b5dc10db8",
+      "utc": "2026-10-27T20:44:29Z"
     }
   ],
   "layers": [],
@@ -28,7 +28,7 @@
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-27T19:29:50Z",
+  "refreshed": "2026-10-27T20:47:02Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -39,7 +39,7 @@
     "live path, orders, deploy, restarts",
     "new hooks, gate steps or rules beyond the card"
   ],
-  "scope_sha": "bfd2b903b8e6",
+  "scope_sha": "521b5dc10db8",
   "size": "M",
   "sources": [
     "python scripts/dev/tasks.py stale"

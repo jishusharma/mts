@@ -800,7 +800,7 @@ def cmd_next(a):
         print("HOLD " + held)
         return 1
     cards, _ = tasks.ready_cards(REPO, "CODEX")
-    claimed = {slug for slug, _ in sync.read_claims(REPO, f"origin/{sync.TRUNK}")}
+    claimed = set(tasks.open_claims(REPO))   # side branch + legacy trunk (finding 2A); was origin/fast-track only
     lane = lane_health.load(REPO)
     gate = "go" if a.dry else lane_health.allow(lane, utc())
     if not gate:

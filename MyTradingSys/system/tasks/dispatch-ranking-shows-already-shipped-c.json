@@ -1,0 +1,42 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-27T20:51:39Z",
+  "depends_on": [],
+  "done_when": "tasks.py check (or stale) flags a READY/raw card as likely-done when grepping its own done_when/tests text against current tree state finds the condition already true, OR documents why that check is out of scope with a cheaper manual habit instead. Fix is a detector/warning, not a guess-based auto-close.",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "3 READY cards this session (mfe-exit-dev-only-rerun-not-reproducible, fix-raw-1d-vs-1m-resample-mismatch-905-o, habib-holdout-prereg-draft) were already shipped days earlier (ad4e461d6, 74727bd432, e65a368db); tasks.py check/dispatch/stale did not catch it. Find and close that gap; see note for how each was found.",
+  "id": "dispatch-ranking-shows-already-shipped-c",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Found by login A rolling-chain dispatch 2026-10-27/28 while avoiding duplicate work per operator instruction. The 3 cards are already closed (see their result fields).",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/tasks.py, scripts/dev/test_tasks.py (or wherever its tests live)"
+  ],
+  "scope_out": [
+    "do not touch task JSON files of other cards; no change to stale --refresh's own scope-pointer logic unless that is the actual fix"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "Reproduce: run tasks.py check on the 3 (now-closed) card ids' pre-close json (git show HEAD~N) against current tree; confirm check says ready/passes despite done_when already true.",
+    "Add or extend a check/stale heuristic: grep each card's done_when/tests text for file:line or literal strings that should exist only after the fix, and warn (not auto-close) when they already match current tree.",
+    "Write the test fixture (one real closed card, one genuinely-open card) and wire the new check into tasks.py check or stale."
+  ],
+  "tests": "New test on the detector: feed it one of the 3 real closed cards' json (or a synthetic fixture) plus the tree state showing the fix present, assert it flags/warns; feed a genuinely-open card, assert it does not false-positive.",
+  "title": "dispatch ranking shows already-shipped cards as READY (3 caught this session: mfe-exit, fix-raw-1d, habib-holdout)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

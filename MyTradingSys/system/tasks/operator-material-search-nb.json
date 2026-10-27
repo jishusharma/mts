@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/operator_material_index.py --host JIS-NB --roots \"%USERPROFILE%/Desktop\" \"%USERPROFILE%/Documents\" \"%USERPROFILE%/Pictures\" \"%USERPROFILE%/Downloads\" \"%USERPROFILE%/OneDrive\" D:/ --out F:/MTS/data/operator_material_index"
+  ],
+  "created": "2026-10-27T20:38:51Z",
+  "depends_on": [
+    "operator-material-indexer-build"
+  ],
+  "done_when": "MyTradingSys/research/operator_material_2026-10/NB_COUNTS.md shipped with counts by topic; local jsonl exists on JIS-NB; cherry empty.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Run the indexer on JIS-NB over Desktop, Documents, Pictures, Downloads, OneDrive and D:/ and report counts by topic; the index file stays on the machine. Say which items are RSI reverse/hidden divergence material.",
+  "id": "operator-material-search-nb",
+  "lane": "JIS-NB",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-28 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Lane JIS-NB (reads the desktop disk). Sibling desk rows cover JIS-NUC and JIS-LAPTOP.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/operator_material_2026-10/NB_COUNTS.md"
+  ],
+  "scope_out": [
+    "committing file names or contents",
+    "copying files",
+    "live tree"
+  ],
+  "size": "S",
+  "sources": [
+    "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable"
+  ],
+  "state": "refined",
+  "steps": [
+    "Run the command below.",
+    "Write NB_COUNTS.md: counts by topic and root, newest mtime, local index path; no file names.",
+    "sync.py ship."
+  ],
+  "tests": "python scripts/dev/tasks.py check operator-material-search-nb; grep of NB_COUNTS.md finds no file name with an extension (printed in the report).",
+  "title": "Search this desktop (JIS-NB) for the operator screenshots and notes on RSI reverse divergence and other trader videos; local index, counts only in repo",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

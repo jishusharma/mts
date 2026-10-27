@@ -438,6 +438,22 @@ class NextSkipsClaimedTest(unittest.TestCase):
         self.assertEqual(lines[0], "B1 [SONNET, S, p1] Run the 28 cells (claimed by JIS-NUC/sharma)")
         self.assertEqual(lines[1], "B2 [SONNET, S, p2] Run the 28 cells")
 
+    def test_next_skips_a_card_claimed_on_the_claims_side_branch(self):
+        """coordination audit 2026-10-26 finding 2A: claims live on origin/claims since gate-tiers-by-path, but tasks.open_claims
+        read only origin/fast-track, so next/dispatch/brief offered a card another session held (54 open claims vs 3 seen)."""
+        T.save(self.repo, good("B1", prio=1))
+        T.save(self.repo, good("B2", prio=2))
+        p = self.repo / "MyTradingSys" / "system" / "claims" / "b1.md"
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(chr(10).join(["task: B1", "host: JIS-NB", "account: other", "area: -", "epoch: 1", ""]), encoding="utf-8", newline=chr(10))
+        self.git("add", str(p))
+        self.git("commit", "-q", "-m", "claim b1")
+        self.git("update-ref", "refs/remotes/origin/claims", "HEAD")   # side branch only; no origin/fast-track claim
+        self.assertIn("b1", T.open_claims(self.repo))
+        rc, out = self.run_cli("next")
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(out.splitlines(), ["B2 [SONNET, S, p2] Run the 28 cells"])
+
     def test_next_with_every_ready_card_claimed_says_so(self):
         T.save(self.repo, good("B1"))
         self.claim("b1")

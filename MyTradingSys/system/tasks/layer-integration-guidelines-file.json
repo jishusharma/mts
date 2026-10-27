@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-27T21:15:34Z",
   "commands": [],
   "created": "2026-10-25T08:00:38Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "layer-integration-guidelines-file",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "LAYER_INTEGRATION.md created: 12 steps, each with file:line pointer; QUICK_ANSWERS.md poin",
+      "ref": "5a700d9f5",
+      "utc": "2026-10-27T21:15:34Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,12 @@
   "refs": [
     "MyTradingSys/research/mts_doctor/LAYER_REALITY_2026-10-25.md"
   ],
-  "result": "",
+  "result": "LAYER_INTEGRATION.md created: 12 steps, each with file:line pointer; QUICK_ANSWERS.md pointer added",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/LAYER_INTEGRATION.md",
     "MyTradingSys/system/QUICK_ANSWERS.md",
@@ -57,12 +69,13 @@
     "MyTradingSys/system/PROMOTION_PIPELINE.md",
     "MyTradingSys/system/LAYER_LAB.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read LAYER_REALITY lines 31-37 and each cited source; verify every cited file exists.",
     "Write the 12 lines with file:line pointers; no rule text copied.",
     "Add the pointer in QUICK_ANSWERS.md; run mts_doctor DEAD-REF check."
   ],
+  "taken": "2026-10-27T21:15:34Z",
   "tests": "python scripts/dev/mts_doctor.py --no-process finds no DEAD-REF/DUPLICATE for LAYER_INTEGRATION.md; python -m pytest MyTradingSys/tests/docs -q passes.",
   "title": "LAYER_INTEGRATION.md: one guidelines file for putting a layer live",
   "weight": "IMPORTANT",

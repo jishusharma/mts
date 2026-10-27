@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-27T21:10:07Z",
   "commands": [],
   "created": "2026-10-25T19:25:13Z",
   "depends_on": [],
@@ -14,6 +16,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "SOUND: verified GPT finding F1 (1 signal vs 0 with available-only states); report MyTradin",
+      "ref": "a177bb682",
+      "utc": "2026-10-27T21:10:07Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +46,12 @@
   "refined_by": "codex_run.py ask",
   "refreshed": "2026-10-25T19:27:32Z",
   "refs": [],
-  "result": "",
+  "result": "SOUND: verified GPT finding F1 (1 signal vs 0 with available-only states); report MyTradingSys/research/layer_lab/reports/2026-10-26_gem-malkan-mtf-lookahead.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/rsi/malkan_mtf.py",
     "MyTradingSys/backtest/layers/rsi/test_malkan_mtf.py",
@@ -52,7 +65,7 @@
   "scope_sha": "45ca080fa98e",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
     "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
@@ -60,6 +73,7 @@
     "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
     "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
   ],
+  "taken": "2026-10-27T21:09:43Z",
   "tests": "",
   "title": "[GEMINI] Verify GPT's malkan_mtf open-time look-ahead finding with a fixture",
   "weight": "ROUTINE",

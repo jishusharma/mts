@@ -520,11 +520,13 @@ def ready_cards(repo=REPO, lane=None):
 
 
 def open_claims(repo):
-    """{claim slug: claim fields} of the claim files on origin/fast-track, read with sync.py's own reader (as of the last fetch).
+    """{claim slug: claim fields} of the open claims, read with sync.open_claims (origin/claims side branch plus legacy trunk
+    files, as of the last fetch). Coordination audit 2026-10-26 finding 2A: this read only origin/fast-track after claims moved
+    to the side branch, so next/dispatch/brief offered cards other sessions held.
     {} when git or the ref is unavailable (a test repo, a fresh clone): the claim itself stays the lock, `sync.py claim` refuses."""
     import sync   # scripts/dev is on sys.path wherever tasks.py runs or is imported by name
     try:
-        return dict(sync.read_claims(repo, f"origin/{sync.TRUNK}"))
+        return dict(sync.open_claims(repo, fetch=False))
     except (OSError, sync.SyncError):
         return {}
 
