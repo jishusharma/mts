@@ -67,3 +67,11 @@ Start 2026-10-27T12:50Z. Worktree claude/supervisor-c-jis-nb-ce71af (HEAD = orig
 - Operator ask: move the wip commit 0ac18c3fb on the live tree (git -C <main> reset --hard 4662684a3 or git -C <main> branch backup-wip-2026-10-27 0ac18c3fb && git -C <main> reset --hard 4662684a3), then run `git -C <main> pull --ff-only origin fast-track`. Once clean: `python scripts/dev/c_drive_guard.py status` should say "for this checkout".
 - c_drive_guard status re-check: deferred to after the operator's reset (needs clean main tree).
 - Result: tasks.py tried (asks filed); card NOT done (still 1197 behind).
+
+## 2026-10-27 ~16:20Z wake (SPEND, slots=2, RAMP new=1 -> +1)
+- HAIKU re-run (a1902bee) VERIFIED DONE: doc line genuinely on trunk now - `git grep run_extra_tests origin/fast-track` returns session_planner_details.md:7 with the full clause; content commit 88769b8f4 (non-merge, Result: present, ancestor of trunk, cherry empty). Previous done (42c3c195) was a FALSE claim (merge-only, doc never edited); card re-opened by hand then completed properly.
+- main-checkout builder (ac1c2638) VERIFIED: backup complete at F:/MTS_backup/main_checkout_2026-10-25/ (wip_commit.patch 83 files, 54 untracked copied, 4 deleted CSVs recoverable); ff-only BLOCKED by wip 0ac18c3fb (1 ahead / 1197 behind); operator ask filed via `tasks.py tried` (try 1/2, default: leave HEAD untouched, card parked). Card state=ready, NOT done.
+- Lead's requested c_drive_guard status: "logon run: installed; main checkout 1209 behind; not pulled: main tree has uncommitted files" - corroborates builder; re-check after operator's reset.
+- CI green on trunk tip (ci_watch "CI ok" 16:18Z). Budget C: 5h=12% week=81% (cap 85%, reset 20:00Z), SPEND.
+- RAMP +1 dispatched: docker-vs-windows-test-speed (JIS-NB S builder 25t, agent ae0740e4). a1902bee still running (wrapping up; content already on trunk).
+- Stop conditions unchanged: 5h>=80% / week>=85% / 24h.
