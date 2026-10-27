@@ -194,11 +194,27 @@ def _day_num(s):
     return int(dt.datetime.strptime(s, '%Y-%m-%d').replace(tzinfo=dt.timezone.utc).timestamp() * 1000) // DAY
 
 
+# simulate()'s own exit legs, collapsed to the desk's canonical codes (STOP, T1, T2, TIME); NOFILL is added
+# separately for an idea that never filled. X0 is simulate()'s plain single-target code (arms other than X1/X2);
+# STOP_LATE is a stop hit after the ladder started; BAND/CVD_AGAINST are the ladder's order-flow bail-out (X2
+# scale only), closer to a defensive stop than a time exit; CVD_FLAT never ends up last (ladder() always appends
+# one more leg, down to TIME, after it).
+_EXIT_MAP = {'TIME': 'TIME', 'STOP': 'STOP', 'STOP_LATE': 'STOP', 'T1': 'T1', 'X0': 'T1', 'T2': 'T2',
+             'BAND': 'STOP', 'CVD_AGAINST': 'STOP', 'CVD_FLAT': 'TIME'}
+
+
+def _exit_reason(r):
+    """Canonical exit code for one simulate() result: the last leg of r['exits'], or NOFILL when nothing filled."""
+    if not r['exits']:
+        return 'NOFILL'
+    return _EXIT_MAP.get(r['exits'][-1][2], 'TIME')
+
+
 def _run_month(args):
     m_start, q = args
     blob = _load_month(m_start)
     d0, d1 = _day_num(q['start']), _day_num(q['end'])
-    out = {'day': [], 'touch_t': [], 'side': [], 'net': [], 'gross': [], 'fees': [], 'filled': [], 'refs': [], 'all_days': set()}
+    out = {'day': [], 'touch_t': [], 'side': [], 'net': [], 'gross': [], 'fees': [], 'filled': [], 'refs': [], 'all_days': set(), 'exit': []}
     ctxs = {}
     for k, idea in enumerate(blob['ideas']):
         d = idea['day']
@@ -218,6 +234,7 @@ def _run_month(args):
         out['day'].append(d); out['touch_t'].append(idea['touch_t']); out['side'].append(int(idea['side']))
         out['net'].append(r['net_r']); out['gross'].append(r['gross_r']); out['fees'].append(r['fees_r'])
         out['filled'].append(r['filled_qty'] > 0)
+        out['exit'].append(_exit_reason(r))
         out['refs'].append([m_start, k])
     return out
 
@@ -230,13 +247,14 @@ def run(q, progress=print):
     todo = [(a, q) for a, b in _months() if a // DAY <= d1 and (b - 1) // DAY >= d0]
     with ProcessPoolExecutor(max_workers=max(1, min(len(todo), (os.cpu_count() or 2) - 1))) as ex:
         parts = list(ex.map(_run_month, todo))
-    res = {k: [] for k in ('day', 'touch_t', 'side', 'net', 'gross', 'fees', 'filled', 'refs')}
+    res = {k: [] for k in ('day', 'touch_t', 'side', 'net', 'gross', 'fees', 'filled', 'refs', 'exit')}
     days = set()
     for p in parts:
         for k in res:
             res[k] += p[k]
         days |= p['all_days']
-    out = {k: np.array(v, dtype=np.int64 if k in ('day', 'touch_t', 'side') else bool if k == 'filled' else float)
+    out = {k: np.array(v, dtype=np.int64 if k in ('day', 'touch_t', 'side') else bool if k == 'filled'
+                        else 'U8' if k == 'exit' else float)
            for k, v in res.items() if k != 'refs'}
     out['refs'] = res['refs']
     out['all_days'] = np.array(sorted(days), dtype=np.int64)

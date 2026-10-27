@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-27T20:33:17Z",
   "commands": [],
   "created": "2026-10-25T19:30:01Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "sim-desk-exit-reasons",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "pins unchanged (255 filled test_reference.py:49; -0.119 test_desk.py:148/197); added _bars",
+      "ref": "cafdf458d",
+      "utc": "2026-10-27T20:33:17Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,7 +37,12 @@
   "refined_by": "",
   "refreshed": "2026-10-27T19:30:18Z",
   "refs": [],
-  "result": "",
+  "result": "pins unchanged (255 filled test_reference.py:49; -0.119 test_desk.py:148/197); added _bars.collect/levels.run+_run_month 'exit' U8 string reason (STOP/T1/T2/TIME/SIGNAL/HOLD/NOFILL), desk.RESULT_VERSION 3->4, desk.trade_list/breakdown exit group when present, test_reasons.py (new, 9 tests), test_build2.py extended",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/sim_desk/studies/_bars.py",
     "MyTradingSys/research/sim_desk/studies/levels.py",
@@ -47,7 +59,7 @@
     "MyTradingSys/research/sim_desk/HANDOVER_SIMV2.md:23 (Fable cards still open)",
     "MyTradingSys/research/sim_desk/REVIEW_FABLE_2026-10-25.md:section 3 item 4 (trade list with entry/exit reason)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read studies/_bars.py run_trade and collect, studies/levels.py run, _run_month and simulate_one exits, desk.py trade_list, breakdown and _raw, and test_build2.py:40",
     "Write test_reasons.py first and watch it fail",
@@ -55,6 +67,7 @@
     "desk.py: RESULT_VERSION = 4; trade_list adds exit when present; breakdown adds the exit group only when res has 'exit', so test_build2.py:40 still holds (extend that test, do not loosen it)",
     "Run python -m pytest MyTradingSys/research/sim_desk -q (whole suite, data-free ones); confirm 255 and -0.119 did not move; sync.py ship"
   ],
+  "taken": "2026-10-27T20:33:17Z",
   "tests": "test_reasons.py (new), fails now (res has no 'exit'): planted 1m bars via _bars.collect give STOP, T1, SIGNAL, HOLD as strings, not floats; conditions.apply keeps 'exit' aligned with a planted mask; exit counts sum to n; a result without 'exit' keeps three groups (test_build2.py:40); levels exits in {STOP,T1,T2,TIME,NOFILL} after the per-month merge; a v3 cache is rejected.",
   "title": "Sim desk: every trade carries why it ended (stop, target, signal, time) and the breakdown groups by it",
   "weight": "IMPORTANT",
