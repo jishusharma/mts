@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-27T20:59:30Z",
   "commands": [],
   "created": "2026-10-25T19:23:45Z",
   "depends_on": [],
@@ -14,6 +16,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "SOUND: wt1 max diff 1.0664e-11, wt2 max diff 1.0503e-11, 0 event diffs; report MyTradingSy",
+      "ref": "4e79a8a0c",
+      "utc": "2026-10-27T20:59:30Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +46,12 @@
   "refined_by": "codex_run.py ask",
   "refreshed": "2026-10-27T19:29:57Z",
   "refs": [],
-  "result": "",
+  "result": "SOUND: wt1 max diff 1.0664e-11, wt2 max diff 1.0503e-11, 0 event diffs; report MyTradingSys/research/layer_lab/reports/2026-10-26_gem-wavetrend-fixture.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/wavetrend/fixture_btcusdt_1h_dev_2022-01.csv",
     "MyTradingSys/backtest/layers/wavetrend/golden_wt_btcusdt_1h_dev_2022-01.csv",
@@ -53,7 +66,7 @@
   "scope_sha": "f8d0799de2bc",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
     "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
@@ -61,6 +74,7 @@
     "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
     "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
   ],
+  "taken": "2026-10-27T20:58:48Z",
   "tests": "",
   "title": "[GEMINI] Re-derive WaveTrend WT1/WT2 on the 400-bar fixture, check GPT max diff 1.07e-11",
   "weight": "ROUTINE",
