@@ -6,7 +6,7 @@
   "window_resets": 1793133535,
   "window_used": 1.0
  },
- "at": "2026-10-27T18:53:04Z",
+ "at": "2026-10-27T19:15:40Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,9 +20,24 @@
   "astra_runs": 0,
   "week_pts": 9.5,
   "window_pts": 1.0,
-  "window_runs": 2
+  "window_runs": 3
  },
  "runs": [
+  {
+   "at": "2026-10-27T19:14:41Z",
+   "card": "gpt-simdesk-ci-recompute",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 50,
+   "tokens_out": 4059,
+   "tokens_total": 510640,
+   "tokens_uncached": 50517,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-27T18:52:19Z",
    "card": "gpt-slippage-arith",
@@ -157,21 +172,6 @@
    "tokens_uncached": 55701,
    "week_pts": 0.0,
    "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-27T09:11:03Z",
-   "card": "runaway-guard-design-review",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "2 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/system/RUNAWAY_GUARD_REVIEW.md",
-   "outcome": "OUT_OF_SCOPE",
-   "seconds": 87,
-   "tokens_out": 5635,
-   "tokens_total": 303550,
-   "tokens_uncached": 39355,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }
