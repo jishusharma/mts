@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-27T21:08:11Z",
   "commands": [],
   "created": "2026-10-25T19:25:09Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "16/1/5/0/4/2 (28 core fields); MyTradingSys/research/layer_lab/reports/2026-10-27_gpt-argo",
+      "ref": "dc1ef0a61",
+      "utc": "2026-10-27T21:08:11Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +45,12 @@
   "refined_by": "codex_run.py ask",
   "refreshed": "2026-10-25T19:26:58Z",
   "refs": [],
-  "result": "",
+  "result": "16/1/5/0/4/2 (28 core fields); MyTradingSys/research/layer_lab/reports/2026-10-27_gpt-argon-score-recount.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/2026-10-22_argon-blind-read-7-frames.md"
   ],
@@ -50,7 +62,7 @@
   "scope_sha": "ad987950b13f",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
     "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
@@ -58,6 +70,7 @@
     "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
     "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
   ],
+  "taken": "2026-10-27T21:08:11Z",
   "tests": "",
   "title": "GPT recounts the Argon-vs-Flash scoring table of the blind read of 7 frames",
   "weight": "ROUTINE",
