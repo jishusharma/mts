@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "sim desk: refuse bar/result/fetch timestamps at or after the sealed cut (L1-L7)",
-      "ref": "11ddfd25a70a",
-      "utc": "2026-10-26T21:25:38Z"
+      "line": "sim desk: exit reasons (STOP/T1/T2/TIME/SIGNAL/HOLD/NOFILL) + breakdown group",
+      "ref": "c054737d37c5",
+      "utc": "2026-10-27T20:34:56Z"
     },
     {
       "auto": true,
@@ -36,7 +36,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
-  "refreshed": "2026-10-27T19:29:55Z",
+  "refreshed": "2026-10-27T20:47:08Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -49,7 +49,7 @@
     "holdout reads",
     "BTC runs of the current encoding (ROADMAP section 2)"
   ],
-  "scope_sha": "11ddfd25a70a",
+  "scope_sha": "c054737d37c5",
   "size": "S",
   "sources": [],
   "state": "ready",
