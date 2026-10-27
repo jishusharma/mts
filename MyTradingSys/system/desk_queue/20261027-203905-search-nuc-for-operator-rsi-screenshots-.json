@@ -1,0 +1,10 @@
+{
+  "done_when": "A list of every hit (path, size, date, one-line what it is) is shipped under MyTradingSys/research/operator_material_nuc_2026-10-28/INDEX.md, or the file says none found and which folders were searched",
+  "from": "JIS-NB",
+  "id": "20261027-203905-search-nuc-for-operator-rsi-screenshots-",
+  "need": "On JIS-NUC search all drives (F:, C:\\Users\\*\\Desktop/Documents/Pictures/Downloads, OneDrive) for the operator's own screenshots and Word/text notes about RSI reverse positive/negative divergence (Malkan) and other trader videos: names matching rsi|diverg|reverse|malkan|krown, .docx text containing those words, screenshots in Pictures/Screenshots. List path, size, date; copy nothing outside the machine.",
+  "posted": "2026-10-27T20:39:05Z",
+  "status": "pending",
+  "target": "JIS-NUC",
+  "title": "Search NUC for operator RSI screenshots and notes"
+}
