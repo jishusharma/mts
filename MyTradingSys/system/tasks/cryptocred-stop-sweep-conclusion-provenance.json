@@ -4,14 +4,30 @@
   "commands": [],
   "created": "2026-10-27T21:12:47Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "STOP_SOURCES.md accurately says atr_1.5 is least negative for setup1 while atr_2.0 is least negative for setups2/3; extended-cell producing revision is cited or explicitly NOT_IN_DATA; raw audit remains blocked.",
+  "est_turns": 6,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Correct the false universal widest-ATR sentence and document missing historical provenance for the two extended stop-sweep cells without selecting a stop or rerunning data.",
   "id": "cryptocred-stop-sweep-conclusion-provenance",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "D20/B143: CryptoCred stop sweep - all stop rules net-negative",
+      "ref": "f29af65d8723",
+      "utc": "2026-10-11T11:53:59Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "f29af65d8723 D20/B143: CryptoCred stop sweep - all stop rules net-negative",
+      "ref": "MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md",
+      "utc": "2026-10-11T11:53:59Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,18 +35,29 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-27T21:13:35Z",
   "refs": [
     "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/cryptocred.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md"
+  ],
+  "scope_out": [
+    "Trading code; stored sweep JSON; new parameter searches; raw bars; VALIDATION/HOLDOUT; live tree; promotion decisions"
+  ],
+  "scope_sha": "f29af65d8723",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/cryptocred.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Confirm aggregate best-rule comparisons in cryptocred.md; distinguish recorded minimum from recommended stop.",
+    "Correct the universal statement and record that current resumable driver cannot freshly generate atr_1.5; preserve missing provenance as unknown."
+  ],
+  "tests": "Run embedded aggregate recount script from cryptocred.md and standard documentation gate; no new test needed for prose correction.",
   "title": "Correct CryptoCred widest-stop claim and recover extended-cell provenance",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }
