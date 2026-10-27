@@ -5,18 +5,14 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-27T00:27:11Z",
-    "misses": 13,
+    "folded": "2026-10-27T17:29:57Z",
+    "misses": 17,
     "reads": [
-      "scripts/dev/health_audit.py",
-      "scripts/dev/supervisor.py",
-      "scripts/dev/usage_reminder.py",
-      "CLAUDE.md",
-      "MyTradingSys/research/design_cards_2026-10-26/levels_raw_ledger/ledger.csv",
-      ".claude/settings.json",
-      "MyTradingSys/tests/test_boot_budget_line.py"
+      "scripts/dev/tasks.py",
+      "MyTradingSys/system/NEXT_SESSION.md",
+      "MyTradingSys/system/CLOUD_ACCOUNTS.md"
     ],
-    "session": "33371177-8f67-466e-bcbc-3fe990c39490"
+    "session": "7c7e3003-0fc7-496b-85d7-8cc69beafdb4"
   },
   "created": "2026-10-25T11:14:07Z",
   "depends_on": [],
