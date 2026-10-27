@@ -4,7 +4,7 @@
   "commands": [],
   "context": {
     "calls_to_edit": 9,
-    "folded": "2026-10-27T21:09:04Z",
+    "folded": "2026-10-27T21:32:30Z",
     "misses": 4,
     "reads": [
       "MyTradingSys/research/malkan_extract_2026-10-15/tools/check_hindi.py",
