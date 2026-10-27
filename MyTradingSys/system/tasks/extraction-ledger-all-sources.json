@@ -2,6 +2,16 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-27T20:50:44Z",
+    "misses": 42,
+    "reads": [
+      "scripts/dev/tasks.py",
+      "MyTradingSys/system/layer_index.json"
+    ],
+    "session": "agent-ad3574ded48c73a04"
+  },
   "created": "2026-10-27T20:38:47Z",
   "depends_on": [],
   "done_when": "",
