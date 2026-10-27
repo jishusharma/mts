@@ -1,10 +1,11 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-27T21:28:26Z",
   "commands": [],
   "context": {
     "calls_to_edit": 15,
-    "folded": "2026-10-27T21:27:30Z",
+    "folded": "2026-10-27T21:28:31Z",
     "misses": 0,
     "reads": [],
     "session": "agent-a13f34b0fe4c70a85"
@@ -20,6 +21,12 @@
   "id": "kurisko-params-provenance-labels",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "bands_labels sibling key added (SOURCED: (9,3),(14,3),(60,10); OURS: (40,4)); sensitivity ",
+      "ref": "923719398",
+      "utc": "2026-10-27T21:28:26Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -46,7 +53,12 @@
   "refs": [
     "MyTradingSys/research/layer_lab/reports/2026-10-19_kurisko-module-crossvendor-review.md"
   ],
-  "result": "",
+  "result": "bands_labels sibling key added (SOURCED: (9,3),(14,3),(60,10); OURS: (40,4)); sensitivity tuple (44,4) picked per KURISKO_SPEC s5 row1; new test test_bands_value_unchanged_and_provenance_split added (failed pre-change w/ KeyError, passes now); gate --quick ALL TESTS PASSED",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/kurisko/params/kurisko_default.json",
     "MyTradingSys/backtest/layers/kurisko/test_quad_rotation.py",
@@ -62,12 +74,13 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-19_kurisko-module-crossvendor-review.md:18-19,53"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read review rows 18-19 and KURISKO_SPEC section 5 row 1; grep every reader of params['bands'] and its 'label' (quad_rotation.py, tests).",
     "Edit label/source text only: if nothing reads 'label' as an enum use a label string naming both; else add a sibling key bands_labels and leave 'bands' untouched. Pick the (44,x) tuple the spec documents and say so in the source text.",
     "Add the test: loading the params returns bands == [[9,3],[14,3],[40,4],[60,10]] and the label text names both SOURCED and OURS."
   ],
+  "taken": "2026-10-27T21:28:26Z",
   "tests": "scripts: MyTradingSys/backtest/layers/kurisko/test_quad_rotation.py new test: params bands values equal [[9,3],[14,3],[40,4],[60,10]] and labels split; fails before the label split.",
   "title": "Kurisko: separate sourced periods from OURS smoothing defaults and reconcile sensitivity tuple",
   "weight": "IMPORTANT",
