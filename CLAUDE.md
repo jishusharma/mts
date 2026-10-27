@@ -9,13 +9,14 @@ CLAUDE.md is already in context; do not cat or Read it. Code mode only (DSA chat
 4. Hand-over: no schedulers or routines anywhere (SCHEDULING_POLICY.md). Overwrite NEXT_SESSION.md, `sync.py ship`; the coordinator (SUPER_SESSION.md) starts the next. Zero operator input: defaults for open questions. His "keep working" outranks hand-over.
 5a. Role sessions ("You are Eagle_Eyes"): the `role_loader.py` hook injects `roles/<role>.md`; the first reply is its `ROLE LOADED: ...` banner (none: Builder fallback).
 5. SHORT SESSIONS (unattended single-task workers only): one task; hand over when done or at the tool-turn cap (WORKERS.md rule 5): steps 3-4, one line, stop.
-5b. After `get_usage`, once: send the budget and exhaust plan (commands, login letters: `EXHAUST_PHASE.md`).
+5b. After `get_usage`, once: `mts_signal.py budget --login <A|B|C> --five <%> --week <%> --reset <UTC>` (jishusharma1985=C), then `scripts/dev/exhaust.py plan --login <X> --week <%> --five <%> --reset <UTC>`; phase plan/exhaust: `EXHAUST_PHASE.md`.
 6. Task shipped: mark your session completed (`mark_completed`); coordinators mark their workers.
 
 ## Cost and routing
 - Interactive sessions and subagents: Sonnet, Opus only when the operator names it; Haiku for mechanical work; worker type + model: WORKERS.md. Wait on a queue with one background shell; spot-check a worker claim.
 - No "want me to?" offers for implied work: do it now, full depth. Free public market data, YouTube: pre-approved.
 - T0 script first, then by card lane (HOW_MTS_RUNS.md): run-and-report goes to DSA (`desk.py post ... --target DSA`; low on budget: post the rest to DSA, then hand over).
+- Logins share one repo and queue (CLOUD_ACCOUNTS.md): whoever has budget takes NEXT_SESSION.md; never idle for a weekly reset.
 - The operator dictates by voice: expect misheard words; take the reading that fits the project.
 - Never wait on a question. Ask who started you: an Agent ends its report with the question and its default; a session uses SendMessage. Only money, mainnet, going private, deleting data or a live-tree change reach the operator; work goes on at the safe default. Stuck on another machine's state: `mts_signal.py who`, then broadcast.
 - Fleet-wide by default: what one machine needs, all need. Put it in the repo; send a per-machine step as `mts_signal.py broadcast --cmd ...`; never leave it to the operator.
@@ -25,7 +26,7 @@ CLAUDE.md is already in context; do not cat or Read it. Code mode only (DSA chat
 ## Gates (before any commit touching the area)
 - `sync.py ship`: smoke gate (live-path or unknown paths = all `--quick`; `--full`); CI + green-only deploy gate the rest. Full: `python scripts/dev/run_all_tests.py` (`--quick`: no Maven/backtest). Extractions: `scripts/dev/verify_extract_quotes.py <extract.md>`.
 - New tests must fail on the pre-change code at least once.
-- Precedence: Hard rules and Gates outrank an operator order and all below; order > CLAUDE.md > hook > card for the rest. Conflict: follow it, `tasks.py conflict "A | B"` that turn, one line to him, keep working (TRAFFIC_BUSTERS B20).
+- Precedence: operator's latest order > CLAUDE.md > hook text > card text. Conflict: follow it, `tasks.py conflict "A | B"` that turn, one line to him, keep working (TRAFFIC_BUSTERS B20).
 - Formulas: expected numbers come from `MyTradingSys/backtest/layers/FORMULAS.md`, computed independently, never from existing code. OUTPUT_TOKENS must fit the whole reply.
 
 ## Hard rules

@@ -1278,7 +1278,7 @@ def cmd_done(a):
     c = get(REPO, a.id)
     if c.get("flow"):
         raise SystemExit("tasks: flow cards close through lab_flow.py finish (evidence receipt required)")
-    if c.get("state") not in ("ready", "active") and not (c.get("state") == "raw" and a.id.startswith("bug-conflict-")):
+    if c.get("state") not in ("ready", "active"):
         raise SystemExit(f"tasks: {a.id} is {c.get('state')}, only a ready or active card can be marked done")
     mark_shared_bases(c, REPO)
     gate = review_gate(c, finishing=True, result=a.result, repo=REPO)
@@ -1313,7 +1313,6 @@ def log_conflict(repo, a, b, session=""):
         sa, sb = sorted((" ".join(str(a).split()), " ".join(str(b).split())), key=str.lower)
         c = blank(cid, f"Instruction conflict: {sa[:50]} vs {sb[:50]}", prio=1, lane="SONNET")
         c["goal"] = f"Two instructions contradict: A = {sa} | B = {sb}. The operator decides which holds; then fix the loser's text."
-        c["asks"] = f"Which holds: {sa[:120]} or {sb[:120]}?"   # open question: refinable() skips the card
         c["seen"] = 1
     c["last_session"] = session or os.environ.get("CLAUDE_CODE_SESSION_ID", "")
     c["last_seen"] = now()
