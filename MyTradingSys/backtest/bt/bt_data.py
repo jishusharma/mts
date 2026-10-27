@@ -111,6 +111,38 @@ def load_metrics(root, start_ms=None, end_ms=None):
     return bars
 
 
+FUNDING_SUBDIRS = ("raw_fund/fundingRate", "raw/fundingRate")   # tried in this order under a Dumps/backtest base
+
+
+def resolve_funding_dir(base):
+    """First existing funding folder under base (raw_fund first, then raw); raises if neither exists (fail closed)."""
+    for sub in FUNDING_SUBDIRS:
+        d = Path(base) / sub
+        if d.is_dir():
+            return d
+    raise FileNotFoundError(f"no funding folder under {base}: tried {', '.join(FUNDING_SUBDIRS)}")
+
+
+def load_funding_strict(base, end_ms=None):
+    """Shared screen loader: resolve the folder (raises when absent), return sorted (calc_time_ms, rate) with calc_time < end_ms."""
+    d = resolve_funding_dir(base)
+    rates = [r for r in load_funding(d.parent) if end_ms is None or r[0] < end_ms]
+    if not rates:
+        raise ValueError(f"funding folder {d} holds no rates before {end_ms}")
+    return rates
+
+
+def funding_cost_pct(funding, entry_ms, exit_ms, side):
+    """Funding cost in % of notional: side x sum(rate of settlements s, entry < s <= exit). side +1 long pays a positive rate,
+    side -1 short receives it. entry_ms / exit_ms / side broadcast as numpy arrays; funding = [(t_ms, rate)] sorted."""
+    import numpy as np
+    ts = np.array([x[0] for x in funding], np.int64)
+    cum = np.concatenate(([0.0], np.cumsum([x[1] for x in funding])))
+    a = np.searchsorted(ts, np.asarray(entry_ms, np.int64), side="right")
+    b = np.searchsorted(ts, np.asarray(exit_ms, np.int64), side="right")
+    return np.asarray(side) * (cum[b] - cum[a]) * 100.0
+
+
 def load_funding(root):
     """Load funding rate data from CSV files."""
     root = Path(root)

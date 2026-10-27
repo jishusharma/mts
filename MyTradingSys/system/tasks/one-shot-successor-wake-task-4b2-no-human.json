@@ -1,10 +1,21 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-10-27T21:56:42Z",
+  "closed": "2026-10-27T21:49:50Z",
   "commands": [
     "python scripts/dev/successor_wake.py --dry --login C"
   ],
+  "context": {
+    "calls_to_edit": 10,
+    "folded": "2026-10-27T21:52:09Z",
+    "misses": 4,
+    "reads": [
+      "scripts/dev/test_supervisor.py",
+      "scripts/dev/test_nuc_lab.py",
+      "scripts/dev/run_all_tests.py"
+    ],
+    "session": "agent-a8e3464a20907353d"
+  },
   "created": "2026-10-27T20:00:06Z",
   "depends_on": [],
   "done_when": "successor_wake.py registers a one-time self-unregistering task (fireAt, no cron); fireAt BUDGET-AWARE per the pacer; supervisor.py handover auto-registers by default (CHAIN, d-47), --no-wake opt-out; test_successor_wake.py green (full spec: research/lead/2026-10-27_successor-wake-design.md); new test failed on pre-change code",
@@ -18,9 +29,9 @@
   "latest": [
     {
       "kind": "ship",
-      "line": "scripts/dev/successor_wake.py + supervisor.py handover wiring + scripts/dev/test_successor",
-      "ref": "09e917af2",
-      "utc": "2026-10-27T21:56:42Z"
+      "line": "scripts/dev/successor_wake.py + test_successor_wake.py (13 pass); supervisor handover auto",
+      "ref": "890bf1566",
+      "utc": "2026-10-27T21:49:50Z"
     }
   ],
   "layers": [],
@@ -36,7 +47,7 @@
     "MyTradingSys/system/SCHEDULING_POLICY.md",
     "scripts/dev/nuc_wake.py"
   ],
-  "result": "scripts/dev/successor_wake.py + supervisor.py handover wiring + scripts/dev/test_successor_wake.py (5/5 pass, failed pre-change)",
+  "result": "scripts/dev/successor_wake.py + test_successor_wake.py (13 pass); supervisor handover auto-wake, --no-wake",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -59,7 +70,7 @@
     "write test_successor_wake.py, confirm it fails pre-change, then green; tasks.py check",
     "sync.py ship (doc+code gate) + mts_signal done line"
   ],
-  "taken": "2026-10-27T21:56:42Z",
+  "taken": "2026-10-27T21:49:50Z",
   "tests": "python scripts/dev/test_successor_wake.py",
   "title": "One-shot successor wake task (4b2): ENDED supervisors self-boot the next link, no operator click",
   "weight": "",

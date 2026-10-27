@@ -1,273 +1,238 @@
-#!/usr/bin/env python3
-"""One-shot Windows Scheduled Task successor wake (4b2) — no human in the loop.
+"""successor_wake.py - register ONE one-time, self-unregistering task that boots the next Supervisor (SCHEDULING_POLICY.md 4b2).
 
-Implements MyTradingSys/research/lead/2026-10-27_successor-wake-design.md:
-  - Registers a single-fire task `MTS-SuccWake-<login>` with one `FireAt` trigger.
-  - No repetition / cron flags (`-Once`, self-unregisters after invocation).
-  - Refuses past `--at` timestamps (fail closed, exit 2).
-  - Computes budget-aware `fireAt` from `<loop_home>/<login>-last-plan.json` when `--at` is omitted:
-      * If within 48h of weekly reset and >5% weekly pool remains -> `now + 1m` when 5h slots are available (`slots >= 1` and `mode != "STOP"`), or `five_reset` (or `now + 15m` fallback) when 5h budget is exhausted.
-      * Else if `slots >= 1` and `mode != "STOP"` -> `now + 1m`.
-      * Else -> `five_reset` (or `week_reset` if weekly pool exhausted, else `now + 15m`).
-  - Records `- Successor task: MTS-SuccWake-<login> fireAt <iso> (4b2)` inside `## Open`
-    of `MyTradingSys/system/handover/SUPERVISOR_<login>.md` idempotently.
+Why: an ENDED supervisor has no live turn left; a signal reaches nothing. The only allowed boot is one fireAt task, and the
+creating session must record its id in the hand-over. Design: MyTradingSys/research/lead/2026-10-27_successor-wake-design.md.
+What: task MTS-SuccWake-<login> (Interactive principal, current user, no password), one trigger (-Once) or none (fire now),
+action = conhost --headless -> run.ps1 -> `claude -p --model <m>` in the MTS checkout, then Unregister-ScheduledTask itself.
+No cron, no repeat. Log: F:/MTS/succ_wake/<login>/out.log (override: env MTS_SUCC_WAKE_DIR).
+fireAt is budget-aware (operator d-47): pacer slots >= 1 -> now; STOP band -> the next 5 h (or weekly, if the week is at cap) reset.
+Usage: python scripts/dev/successor_wake.py --login C [--at 2026-10-27T20:05Z] [--model M] [--prompt-file F] [--cwd DIR] [--dry]
+Tests use --dry / build_script only; nothing here touches HALT, secrets or orders.
 """
 from __future__ import annotations
 
 import argparse
-import datetime as dt
-import json
 import os
 import subprocess
 import sys
 import tempfile
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Any
 
-REPO = Path(__file__).resolve().parents[2]
-LOOP_HOME = Path(os.environ.get("MTS_LOOP_HOME") or (Path.home() / ".claude" / "mts-loop"))
-DEFAULT_MODEL = "claude-sonnet-5-5"
+HERE = Path(__file__).resolve().parent
+REPO = HERE.parents[1]
+sys.path.insert(0, str(HERE))
 
+DEFAULT_MODEL = "claude-sonnet-5-5"     # cost rule: Sonnet
+GRACE_MIN = 2                           # fire this long after a reset so the new window is open (OURS)
+HANDOVER_REL = "MyTradingSys/system/handover/SUPERVISOR_{}.md"
+MARK = "Successor task:"
+BASE_DIR = "F:/MTS/succ_wake"
 
-def _utc_now() -> dt.datetime:
-    return dt.datetime.now(dt.timezone.utc)
-
-
-def _parse_iso(ts: str) -> dt.datetime:
-    d = dt.datetime.fromisoformat(ts.strip().replace("Z", "+00:00"))
-    return d if d.tzinfo else d.replace(tzinfo=dt.timezone.utc)
-
-
-def _iso_z(d: dt.datetime) -> str:
-    return d.astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+PROMPT = ("You are Supervisor. Login {login}. Continue from MyTradingSys/system/handover/SUPERVISOR_{login}.md. "
+          "Never ask the operator; take the defaults and log them.")
 
 
-def _prompt_stage_dir(login: str) -> Path:
-    base = Path("F:/MTS/succ_wake") if Path("F:/").exists() else (Path(tempfile.gettempdir()) / "mts_succ_wake")
-    return base / login.upper()
+class WakeError(Exception):
+    pass
 
 
-def default_prompt(login: str) -> str:
-    L = login.upper()
-    return (
-        f"You are Supervisor {L}. Read MyTradingSys/system/handover/SUPERVISOR_{L}.md, "
-        f"run `python scripts/dev/supervisor.py wake --lane {L.lower()}`, and continue the loop."
-    )
+def task_name(login: str) -> str:
+    return f"MTS-SuccWake-{login}"
 
 
-def budget_fire_at(loop_home: Path | None, login: str, now: dt.datetime | None = None) -> dt.datetime:
-    now = now or _utc_now()
-    home = loop_home or LOOP_HOME
-    plan_file = Path(home) / f"{login.upper()}-last-plan.json"
-    immediate = now + dt.timedelta(minutes=1)
-    if not plan_file.is_file():
-        return immediate
+def _parse(s) -> datetime | None:
     try:
-        plan: dict[str, Any] = json.loads(plan_file.read_text(encoding="utf-8"))
-    except (OSError, ValueError):
-        return immediate
+        d = datetime.fromisoformat(str(s).strip().replace("Z", "+00:00"))
+    except (TypeError, ValueError):
+        return None
+    return d if d.tzinfo else d.replace(tzinfo=timezone.utc)
 
-    slots = int(plan.get("slots", 1) or 0)
-    mode = str(plan.get("mode") or "NORMAL").upper()
-    five_raw = plan.get("five_reset")
-    five_dt: dt.datetime | None = None
-    if five_raw:
-        try:
-            cand_five = _parse_iso(str(five_raw))
-            if cand_five > now:
-                five_dt = cand_five
-        except ValueError:
-            pass
 
-    # Check T-48h weekly reset window with >5% weekly left:
-    # if 5h budget is exhausted (slots == 0 or mode == "STOP"), wait until five_reset if present so we don't wake into a 5h block;
-    # otherwise wake immediately (now + 1m) to drain the weekly pool.
-    wk_reset_raw = plan.get("week_reset")
-    wk_pct = float(plan.get("week_pct", 0) or 0)
-    wk_left = max(0.0, 100.0 - wk_pct)
-    if wk_reset_raw:
-        try:
-            wk_dt = _parse_iso(str(wk_reset_raw))
+def iso(d: datetime) -> str:
+    return d.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%MZ")
+
+
+def plan_fire_at(plan: dict | None, now: datetime) -> tuple[datetime, str]:
+    """Pure: budget-aware fireAt from the pacer's last plan (supervisor.pace_plan). Returns (when, why).
+    slots >= 1 or any non-STOP mode -> now (incl. T-48h weekly drain window when 5h slots are open).
+    STOP -> the weekly reset when the week is at cap, else the next 5 h reset (+GRACE).
+    No plan / unreadable -> now (OURS: a missing reading must not stall the chain)."""
+    if not plan:
+        return now, "no pacer reading: now"
+    try:
+        slots = int(plan.get("slots", 1))
+    except (TypeError, ValueError):
+        slots = 1
+    if slots >= 1 or plan.get("mode") != "STOP":
+        wk_raw = plan.get("week_reset")
+        wk_dt = _parse(wk_raw)
+        if wk_dt is not None:
             while wk_dt <= now:
-                wk_dt += dt.timedelta(days=7)
-            hours_to_wk = (wk_dt - now).total_seconds() / 3600.0
-            if 0 < hours_to_wk <= 48.0 and wk_left > 5.0:
-                if slots == 0 or mode == "STOP":
-                    if five_dt is not None and five_dt < wk_dt:
-                        return five_dt
-                    return now + dt.timedelta(minutes=15)
-                return immediate
-        except ValueError:
-            pass
+                wk_dt += timedelta(days=7)
+            if 0 < (wk_dt - now).total_seconds() / 3600.0 <= 48.0:
+                try:
+                    wk_used = float(plan.get("week", plan.get("week_pct", 0)) or 0)
+                except (TypeError, ValueError):
+                    wk_used = 0.0
+                if 100.0 - wk_used > 5.0:
+                    return now, f"T-48h weekly drain ({100.0 - wk_used:.0f}% left) slots {slots}: now"
+        return now, f"pacer {plan.get('mode', '?')} slots {slots}: now"
+    try:
+        week_cap = float(plan.get("week", 0)) >= float(plan.get("cap", 101))
+    except (TypeError, ValueError):
+        week_cap = False
+    key = "week_reset" if week_cap else "five_reset"
+    r = _parse(plan.get(key))
+    if r is None or r + timedelta(minutes=GRACE_MIN) <= now:
+        return now, f"pacer STOP but {key} unreadable/past: now"
+    return r + timedelta(minutes=GRACE_MIN), f"pacer STOP: next {key} {iso(r)}"
 
-    if slots >= 1 and mode != "STOP":
-        return immediate
 
-    if five_dt is not None:
-        return five_dt
-    if wk_reset_raw:
+def check_checkout(cwd: Path) -> None:
+    if not ((cwd / "MyTradingSys").is_dir() and (cwd / "scripts" / "dev" / "sync.py").is_file()):
+        raise WakeError(f"{cwd} is not an MTS checkout (MyTradingSys/ or scripts/dev/sync.py missing)")
+
+
+def build_script(login: str, model: str, prompt: str, cwd: Path, fire_at: datetime | None, base: str | None = None) -> str:
+    """The PowerShell that writes prompt.txt + run.ps1 and registers the one-time task. fire_at None = start it now (no trigger).
+    A future fire_at = one -Once trigger, never a repeat. The run script unregisters the task in a `finally`."""
+    for v in (login, model, str(cwd)):
+        if "'" in v or "\n" in v:
+            raise WakeError("quote or newline in login/model/cwd")
+    name = task_name(login)
+    d = f"{base or os.environ.get('MTS_SUCC_WAKE_DIR') or BASE_DIR}/{login}"
+    cwd_s = str(cwd).replace("\\", "/")
+    run = "\n".join([
+        '$env:Path += ";C:/Users/E-ngineers/.local/bin"',
+        f"Set-Location '{cwd_s}'",
+        "$c = (Get-Command claude.exe).Source",
+        "try {",
+        f"  Get-Content -Raw '{d}/prompt.txt' | & $c -p --model {model} --permission-mode bypassPermissions > '{d}/out.log' 2> '{d}/err.log'",
+        "} finally {",
+        f"  Unregister-ScheduledTask -TaskName '{name}' -Confirm:$false -ErrorAction SilentlyContinue",
+        "}",
+    ])
+    L = [
+        f"$d = '{d}'; New-Item -ItemType Directory -Force $d | Out-Null",
+        "$p = @'", prompt, "'@",
+        '[IO.File]::WriteAllText("$d/prompt.txt", $p)',
+        "$r = @'", run, "'@",
+        '[IO.File]::WriteAllText("$d/run.ps1", $r)',
+        '$a = New-ScheduledTaskAction -Execute "conhost.exe" -Argument "--headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File $d/run.ps1"',
+        '$pr = New-ScheduledTaskPrincipal -UserId ([Security.Principal.WindowsIdentity]::GetCurrent().Name) -LogonType Interactive',
+    ]
+    if fire_at is None:
+        L.append(f'Register-ScheduledTask -TaskName "{name}" -Action $a -Principal $pr -Force | Out-Null')
+        L.append(f'Start-ScheduledTask -TaskName "{name}"')
+    else:
+        L.append(f"$FireAt = [DateTimeOffset]::Parse('{iso(fire_at)}').LocalDateTime")
+        L.append("$t = New-ScheduledTaskTrigger -Once -At $FireAt")
+        L.append(f'Register-ScheduledTask -TaskName "{name}" -Action $a -Trigger $t -Principal $pr -Force | Out-Null')
+    L.append('"registered"')
+    return "\n".join(L) + "\n"
+
+
+def record_handover(repo: Path, login: str, line: str) -> Path | None:
+    """Put exactly one `Successor task:` line in the hand-over preamble (under the title; the form allows 2 lines there).
+    A second call replaces it. Returns the path, or None when there is no hand-over file."""
+    p = Path(repo) / HANDOVER_REL.format(login)
+    try:
+        lines = p.read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return None
+    lines = [x for x in lines if not x.startswith(MARK)]
+    lines.insert(1, line)
+    p.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
+    return p
+
+
+def load_plan(login: str, home=None) -> dict | None:
+    try:
+        import json
+        import supervisor
+        return json.loads((supervisor.loop_home(home) / f"{login}-last-plan.json").read_text(encoding="utf-8")).get("plan")
+    except Exception:
+        return None
+
+
+def register(login: str, *, at: str | None = None, model: str = DEFAULT_MODEL, prompt_file: str | None = None,
+             cwd: str | Path | None = None, dry: bool = False, now: datetime | None = None, plan: dict | None = None,
+             home=None, base: str | None = None, runner=None) -> dict:
+    """Validate, choose fireAt, build the script, run it (unless dry), record the id line. Raises WakeError (fail closed)."""
+    now = now or datetime.now(timezone.utc)
+    login = (login or "").strip().upper()[:1]
+    if login not in ("A", "B", "C"):
+        raise WakeError("login must be A, B or C")
+    cwd = Path(cwd or REPO).resolve()
+    check_checkout(cwd)
+    if at:
+        when = _parse(at)
+        if when is None:
+            raise WakeError(f"cannot read --at {at!r}")
+        if when <= now:
+            raise WakeError(f"--at {at} is in the past (now {iso(now)}): refused")
+        why = "--at given"
+    else:
+        when, why = plan_fire_at(plan if plan is not None else load_plan(login, home), now)
+    prompt = PROMPT.format(login=login)
+    if prompt_file:
         try:
-            cand = _parse_iso(str(wk_reset_raw))
-            if cand > now:
-                return cand
-        except ValueError:
-            pass
-    return now + dt.timedelta(minutes=15)
-
-
-def build_ps_script(
-    *,
-    login: str,
-    fire_at: dt.datetime,
-    cwd: Path,
-    model: str = DEFAULT_MODEL,
-    prompt_text: str | None = None,
-    now: dt.datetime | None = None,
-) -> str:
-    now = now or _utc_now()
-    if fire_at <= now:
-        raise ValueError(f"--at timestamp {_iso_z(fire_at)} is in the past (now={_iso_z(now)})")
-    L = login.upper()
-    if L not in {"A", "B", "C"}:
-        raise ValueError(f"--login must be A, B, or C (got {login!r})")
-    import re
-    if not re.fullmatch(r"[A-Za-z0-9._-]+", model):
-        raise ValueError(f"--model contains invalid characters: {model!r}")
-
-    task_name = f"MTS-SuccWake-{L}"
-    stage_dir = _prompt_stage_dir(L)
-    prompt_path = stage_dir / "prompt.txt"
-    runner_path = stage_dir / "run_once.ps1"
-    body = (prompt_text or default_prompt(L)).strip()
-    fire_iso = _iso_z(fire_at)
-    cwd_str = str(Path(cwd).resolve()).replace("'", "''")
-    stage_str = str(stage_dir).replace("'", "''")
-    prompt_str = str(prompt_path).replace("'", "''")
-    runner_str = str(runner_path).replace("'", "''")
-    escaped_body = body.replace("'", "''")
-
-    return "\n".join(
-        [
-            "$ErrorActionPreference = 'Stop'",
-            f"$stageDir = '{stage_str}'",
-            "New-Item -ItemType Directory -Force -Path $stageDir | Out-Null",
-            f"Set-Content -LiteralPath '{prompt_str}' -Value '{escaped_body}' -Encoding UTF8",
-            "$runnerLines = @(",
-            f"  'Set-Location -LiteralPath ''{cwd_str}'''",
-            f"  'Unregister-ScheduledTask -TaskName \"{task_name}\" -Confirm:$false -ErrorAction SilentlyContinue'",
-            f"  '$p = Get-Content -LiteralPath ''{prompt_str}'' -Raw -Encoding UTF8'",
-            f"  'claude -p --model {model} $p'",
-            ")",
-            f"Set-Content -LiteralPath '{runner_str}' -Value ($runnerLines -join \"`r`n\") -Encoding UTF8",
-            f"$action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File \"{runner_str}\"' -WorkingDirectory '{cwd_str}'",
-            f"$trigger = New-ScheduledTaskTrigger -Once -At ([datetime]::Parse('{fire_iso}').ToLocalTime())",
-            "$principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interactive -RunLevel Limited",
-            "$settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries",
-            f"Register-ScheduledTask -TaskName '{task_name}' -Action $action -Trigger $trigger -Principal $principal -Settings $settings -Force | Out-Null",
-        ]
-    )
-
-
-def record_handover_line(handover_path: Path, login: str, fire_at: dt.datetime) -> None:
-    if not handover_path.is_file():
-        return
-    L = login.upper()
-    prefix = f"- Successor task: MTS-SuccWake-{L}"
-    entry = f"{prefix} fireAt {_iso_z(fire_at)} (4b2)"
-    lines = handover_path.read_text(encoding="utf-8").splitlines()
-    filtered = [ln for ln in lines if not ln.strip().startswith(prefix)]
-    out: list[str] = []
-    inserted = False
-    for idx, ln in enumerate(filtered):
-        out.append(ln)
-        if ln.strip() == "## Open" and not inserted:
-            out.append(entry)
-            inserted = True
-    if not inserted:
-        out.append(entry)
-    with handover_path.open("w", encoding="utf-8", newline="\n") as f:
-        f.write("\n".join(out).rstrip() + "\n")
-
-
-def _run_ps(script: str) -> tuple[int, str]:
-    if os.environ.get("MTS_NO_SCHTASKS") == "1" or sys.platform != "win32":
-        return 1, "skipped"
-    try:
-        r = subprocess.run(
-            ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", script],
-            capture_output=True,
-            text=True,
-            timeout=20,
-            check=False,
-        )
-        return r.returncode, (r.stdout or "") + (r.stderr or "")
-    except OSError as exc:
-        return 1, str(exc)
-
-
-def register_for_handover(
-    repo: Path,
-    login: str,
-    handover_path: Path,
-    *,
-    home: Path | None = None,
-    now: dt.datetime | None = None,
-    fire_at: dt.datetime | None = None,
-    model: str = DEFAULT_MODEL,
-    dry: bool = False,
-) -> dict[str, Any]:
-    now = now or _utc_now()
-    L = login.upper()
-    if L not in {"A", "B", "C"}:
-        return {"ok": False, "reason": f"unsupported login {login!r}"}
-    target_at = fire_at or budget_fire_at(home, L, now=now)
-    script = build_ps_script(login=L, fire_at=target_at, cwd=repo, model=model, now=now)
+            prompt = Path(prompt_file).read_text(encoding="utf-8").strip()
+        except OSError as e:
+            raise WakeError(f"cannot read --prompt-file: {e}")
+        if not prompt or "'@" in prompt:
+            raise WakeError("prompt file empty or contains a here-string terminator")
+    immediate = when <= now + timedelta(minutes=1)
+    script = build_script(login, model, prompt, cwd, None if immediate else when, base)
+    fire = iso(now) if immediate else iso(when)
+    line = f"{MARK} {task_name(login)} fireAt {fire} (4b2)"
+    res = {"script": script, "line": line, "fire_at": fire, "why": why, "task": task_name(login), "ran": False, "handover": None}
     if dry:
-        return {"ok": True, "dry": True, "fire_at": _iso_z(target_at), "script": script}
-    rc, out = _run_ps(script)
-    if rc == 0:
-        record_handover_line(handover_path, L, target_at)
-    return {"ok": rc == 0, "rc": rc, "fire_at": _iso_z(target_at), "output": out.strip()}
+        return res
+    if runner is None:
+        runner = _run_ps
+    runner(script)
+    res["ran"] = True
+    res["handover"] = record_handover(cwd, login, line)
+    return res
 
 
-def main(argv: list[str] | None = None, *, now: dt.datetime | None = None) -> int:
-    ap = argparse.ArgumentParser(description="Register one-shot Windows Scheduled Task successor wake (4b2).")
-    ap.add_argument("--login", required=True, help="Supervisor login lane (A, B, or C)")
-    ap.add_argument("--at", default="", help="ISO UTC fire timestamp (must be in the future)")
-    ap.add_argument("--model", default=DEFAULT_MODEL, help="Claude model id for successor wake")
-    ap.add_argument("--prompt-file", default="", help="Optional path to prompt file")
-    ap.add_argument("--cwd", default=str(REPO), help="Working directory for the successor task")
-    ap.add_argument("--dry", action="store_true", help="Print PowerShell registration script and exit without running")
-    args = ap.parse_args(argv)
-
-    now = now or _utc_now()
-    L = args.login.strip().upper()
-    cwd = Path(args.cwd).resolve()
-    if not args.dry and not (cwd / "MyTradingSys").is_dir():
-        print(f"ERROR: --cwd {cwd} is not an MTS checkout (missing MyTradingSys/)", file=sys.stderr)
-        return 2
-
+def _run_ps(script: str) -> None:
+    with tempfile.NamedTemporaryFile("w", suffix=".ps1", delete=False, encoding="utf-8-sig", newline="\n") as f:
+        f.write(script)
+        path = f.name
     try:
-        fire_at = _parse_iso(args.at) if args.at else budget_fire_at(LOOP_HOME, L, now=now)
-        prompt_text = Path(args.prompt_file).read_text(encoding="utf-8") if args.prompt_file else default_prompt(L)
-        script = build_ps_script(login=L, fire_at=fire_at, cwd=cwd, model=args.model, prompt_text=prompt_text, now=now)
-    except (OSError, ValueError) as exc:
-        print(f"ERROR: {exc}", file=sys.stderr)
+        r = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-File", path],
+                           capture_output=True, text=True)
+    finally:
+        try:
+            os.unlink(path)
+        except OSError:
+            pass
+    if r.returncode != 0:
+        raise WakeError(f"registration failed (exit {r.returncode}): {(r.stdout + r.stderr).strip()[:300]}")
+
+
+def main(argv=None) -> int:
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--login", required=True, help="A|B|C: the supervisor login to wake")
+    ap.add_argument("--at", help="UTC fireAt, e.g. 2026-10-27T20:05Z (future only); default: budget-aware from the pacer")
+    ap.add_argument("--model", default=DEFAULT_MODEL)
+    ap.add_argument("--prompt-file", help="override the successor prompt")
+    ap.add_argument("--cwd", help="MTS checkout to run in (default: the checkout this script is in)")
+    ap.add_argument("--dry", action="store_true", help="print the PowerShell, register nothing")
+    a = ap.parse_args(argv)
+    try:
+        r = register(a.login, at=a.at, model=a.model, prompt_file=a.prompt_file, cwd=a.cwd, dry=a.dry)
+    except WakeError as e:
+        print(f"REFUSED: {e}")
         return 2
-
-    if args.dry:
-        print(script)
-        return 0
-
-    rc, out = _run_ps(script)
-    if rc != 0:
-        print(f"ERROR: Register-ScheduledTask failed (rc={rc}): {out}", file=sys.stderr)
-        return 1
-    ho = cwd / "MyTradingSys" / "system" / "handover" / f"SUPERVISOR_{L}.md"
-    record_handover_line(ho, L, fire_at)
-    print(f"registered MTS-SuccWake-{L} fireAt {_iso_z(fire_at)}")
+    if a.dry:
+        print(r["script"])
+    print(f"{r['line']} [{r['why']}]" + (" (dry: nothing registered)" if a.dry else ""))
     return 0
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    sys.exit(main())

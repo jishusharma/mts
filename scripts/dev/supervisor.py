@@ -1623,12 +1623,6 @@ def handover(repo: Path, login: str, note: str = "", host: str | None = None, ho
         raise ValueError("; ".join(probs))
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(text if text.endswith("\n") else text + "\n", encoding="utf-8", newline="\n")
-    if wake and role == "supervisor" and login in ("A", "B", "C"):
-        try:
-            import successor_wake
-            successor_wake.register_for_handover(repo, login, p, home=loop_home(home), now=now)
-        except Exception:
-            pass
     if send and role != "lead":
         try:
             lp = json.loads((loop_home(home) / f"{login}-last-plan.json").read_text(encoding="utf-8"))
@@ -1637,6 +1631,13 @@ def handover(repo: Path, login: str, note: str = "", host: str | None = None, ho
                 mts_signal.send(heartbeat_text(login, host, {**lp["plan"], "running": 0}, free=0, mode="ENDED"), to="all", kind="note")
         except Exception:
             pass   # the 75 min heartbeat age still removes this supervisor
+    if wake and role != "lead":
+        try:
+            import successor_wake
+            r = successor_wake.register(login, cwd=repo, home=home)
+            print(f"{r['line']} [{r['why']}]")
+        except Exception as e:   # fail closed = no task, never a broken hand-over; the line tells the operator the manual command
+            print(f"successor wake NOT registered ({e}); manual: python scripts/dev/successor_wake.py --login {login}")
     return p
 
 
@@ -1681,7 +1682,7 @@ def main(argv: list[str] | None = None) -> int:
     p_ho.add_argument("--login", default=None, help="optional: detected from the app account")
     p_ho.add_argument("--note", default="", help="one line: what the successor does first")
     p_ho.add_argument("--no-send", action="store_true", help="do not send the ENDED heartbeat")
-    p_ho.add_argument("--no-wake", action="store_true", help="do not register the one-shot 4b2 successor wake task")
+    p_ho.add_argument("--no-wake", action="store_true", help="do not register the one-time successor task (SCHEDULING_POLICY 4b2; default: register)")
     p_ho.add_argument("--role", "--kind", dest="role", choices=("supervisor", "lead"), default="supervisor",
                       help="lead: the Lead's 8-section resume file handover/LEAD_RESUME_<date>.md")
     p_ho.add_argument("--from", dest="src", default=None, help="a form file you wrote: validated (caps, no '## Update'), then written to the target")
@@ -1752,7 +1753,8 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"cannot read {args.src}: {e}")
                 return 2
         try:
-            p = handover(repo, args.login or "", note=args.note, send=not args.no_send, role=args.role, text=text, wake=not args.no_wake)
+            p = handover(repo, args.login or "", note=args.note, send=not args.no_send, role=args.role, text=text,
+                         wake=not args.no_wake)
         except ValueError as e:
             print(f"REFUSED, nothing written: {e}")
             return 2
