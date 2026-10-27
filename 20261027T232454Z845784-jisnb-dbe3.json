@@ -1,0 +1,1 @@
+{"t": "20261027T232454Z", "from": "jis-nb/C", "to": "A", "kind": "broadcast", "text": "Login A reset 2026-10-28: run Supervisor A loop for 4 h (get_usage, supervisor.py plan, spawn Builders, wait). Do not pause; re-arm wait after every wake. Read handover/SUPERVISOR_A.md.", "login": "C"}
