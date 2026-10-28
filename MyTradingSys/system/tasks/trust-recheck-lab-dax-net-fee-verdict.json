@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T04:32:04Z",
   "commands": [
     "python -m pytest MyTradingSys/backtest/test_tom_dax_bt.py -q"
   ],
@@ -15,18 +16,46 @@
   "id": "trust-recheck-lab-dax-net-fee-verdict",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "cost=0.001, net RR=1.247752 < 1.25, WAIT_RR re-derived MATCH; 90 tests pass; mutation red;",
+      "ref": "d3fabf4a6",
+      "utc": "2026-10-28T04:32:04Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "CI fixes: c_drive_guard stays silent without C: (Linux); DAX missing-download test no long",
+      "ref": "0b02f7aab4cd",
+      "utc": "2026-10-18T15:21:38Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "4503f2cb014b lab lab-dax-net-fee-verdict: DONE (build)",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-net-fee-verdict.md",
+      "utc": "2026-10-12T07:05:27Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS) 2026-10-23: drafted and T0-checked; reviewer Agent blocked by spawn cap (8/h), so no ACCEPT stamp: needs ONE batched Sonnet reviewer pass (or Lab_Guy for CODEX), then stamp REVIEWED:<date> ACCEPT and tasks.py check. LAB:results CLASS:C2 WEIGHT:CRUCIAL. Raw follow-up from 2026-10-19_lab-trust-tag.md. Audit target, not a trusted premise. No outcome or holdout rerun; no data fetch. Different reviewer vendor than the producer (CODEX/GPT produced it, so Gemini or Claude re-derives). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the report.",
+  "note": "REVIEWED: gemini-2.5-pro 2026-10-28 scope=89a8233a5cc4 card=d666bc56b57c",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
+  "refreshed": "2026-10-28T04:31:56Z",
   "refs": [
     "MyTradingSys/system/tasks/archive/lab-dax-net-fee-verdict.json",
     "MyTradingSys/research/layer_lab/reports/2026-10-19_lab-trust-tag.md"
   ],
-  "result": "",
+  "result": "cost=0.001, net RR=1.247752 < 1.25, WAIT_RR re-derived MATCH; 90 tests pass; mutation red; VERIFIED-C2",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/tom_dax_bt.py",
     "MyTradingSys/backtest/test_tom_dax_bt.py",
@@ -39,17 +68,19 @@
     "live path",
     "data fetch"
   ],
+  "scope_sha": "0b02f7aab4cd",
   "size": "S",
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-net-fee-verdict.md:20 (independent formula)"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "Read the spec/report line by line, not the code: report line 20 (H5 net RR for GER40).",
     "Re-derive GER40 net RR: cost = 2 * 0.000005 * 100 = 0.001; net = (1.25-0.001)/(1+0.001) = 1.247752 < 1.25 and the WAIT_RR outcome with your own short script from the written definition and compare; a difference is a MISMATCH finding with file:line, settled by calculation not vote.",
     "Read MyTradingSys/backtest/test_tom_dax_bt.py: would it fail on a broken implementation? Mutate one line in a scratch copy, run, record; leave the real file unchanged.",
     "Write the report: reviewer vendor and model, the numbers, MATCH or MISMATCH per number, tag proposal VERIFIED-C2 or DISPUTED."
   ],
+  "taken": "2026-10-28T04:32:04Z",
   "tests": "Audit card: its fail-first is the one-line mutation in a scratch copy, which must turn a test red; recorded in the report.",
   "title": "Trust re-check: lab-dax-net-fee-verdict",
   "weight": "CRUCIAL",
