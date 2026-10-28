@@ -24,6 +24,7 @@ scripts/dev/test_trace.py
 scripts/dev/test_lab_query.py
 scripts/dev/test_health_audit.py
 scripts/dev/test_mts_doctor.py
+scripts/dev/test_mts_doctor_heal.py
 scripts/dev/test_prereg_gate.py
 scripts/dev/test_eagle_gaps.py
 scripts/dev/test_research_kit_lint.py
@@ -93,6 +94,7 @@ MyTradingSys/research/volume_2026-10-09/test_volume.py
 MyTradingSys/research/tom_btc_2026-10-13/test_chart_lab.py
 MyTradingSys/research/levels_confluence_2026-10-14/test_levels.py
 MyTradingSys/research/levels_confluence_2026-10-14/test_event_table.py
+MyTradingSys/research/levels_confluence_2026-10-14/test_levels_hold_fair.py
 MyTradingSys/research/sim_desk/artifact/test_artifact.py
 MyTradingSys/runtime/test_update_market_state.py
 scripts/dev/test_testnet_canary.py
@@ -139,3 +141,4 @@ scripts/dev/test_logon_wake.py
 scripts/dev/test_refresh_main_checkout.py
 MyTradingSys/tools/live_aid/test_live_aid.py
 scripts/dev/test_sync_push_race.py
+scripts/dev/test_announcements_ids.py

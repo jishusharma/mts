@@ -1,15 +1,17 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T16:18:24Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-28T13:12:47Z",
-    "misses": 1,
+    "folded": "2026-10-28T16:18:30Z",
+    "misses": 33,
     "reads": [
-      "scripts/dev/tasks.py"
+      "scripts/dev/test_gemini_queue.py",
+      "scripts/dev/gemini_queue.py"
     ],
-    "session": "agent-af74f5876c0454f4b"
+    "session": "agent-a81a3b7c8ab0ac30b"
   },
   "created": "2026-10-28T06:27:20Z",
   "depends_on": [
@@ -24,6 +26,12 @@
   "id": "gemini-queue-two-process-race-test",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/test_gemini_queue.py TwoProcessClaimRaceTest (Windows pass)",
+      "ref": "2ca9094b9",
+      "utc": "2026-10-28T16:18:24Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -43,7 +51,12 @@
   "refs": [
     "MyTradingSys/research/fix_verification_2026-10-28/REPORT.md"
   ],
-  "result": "",
+  "result": "scripts/dev/test_gemini_queue.py TwoProcessClaimRaceTest (Windows pass)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/gemini_queue.py",
     "scripts/dev/test_gemini_queue.py"
@@ -52,13 +65,14 @@
   "scope_sha": "003f55d1c0a9",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Fixture: bare temp repo, claims branch pre-created OR absent (run both); two real subprocess claimers, no mocked push; start them with a barrier so order is not fixed.",
     "Assert order-independently: len(winners)==1, loser rc/reason is the lost-race path (not an error), final origin/claims content names one holder; never assert claimer A or B won.",
     "Linux run before ship: push the branch and read the ubuntu-latest job (gh run view), or run in WSL/docker if present; if both claims succeed on Linux, the cause is the first-creation path (PUSH_RACE_RE), fixed by the dependency card, not by weakening the assert.",
     "Verify: content sha, git cherry origin/fast-track <sha> empty, ls-tree lists both files; Linux run id in the commit body."
   ],
+  "taken": "2026-10-28T16:18:24Z",
   "tests": "scripts/dev/test_gemini_queue.py::test_two_process_claim_race_against_bare_repo (new, exercises the path CT-2 found untested)",
   "title": "gemini_queue: two-process claim race test against a bare temp repo, no mocked push (commit 2e5ada03f; fix report CT-2)",
   "weight": "ROUTINE",

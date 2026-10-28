@@ -11,6 +11,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import trunk_lag as T
 
+# Under a full gate run (4 pytest processes, one git-heavy test taking 306 s) a single git call here can pass the hook's 8 s limit.
+os.environ.setdefault("MTS_TRUNK_LAG_GIT_TIMEOUT", "120")
+
 
 def sh(cwd, *args, env=None):
     subprocess.run(["git", "-C", str(cwd), *args], check=True, capture_output=True, env=env)
@@ -36,6 +39,16 @@ class TrunkLagTest(unittest.TestCase):
 
     def tearDown(self):
         self.d.cleanup()
+
+    def test_git_timeout_is_overridable_and_defaults_to_the_hook_limit(self):
+        with unittest.mock.patch.dict(os.environ, {"MTS_TRUNK_LAG_GIT_TIMEOUT": "0.000001"}):
+            with self.assertRaises(subprocess.TimeoutExpired):
+                T.git(self.tree, "status")
+        with unittest.mock.patch.dict(os.environ, {"MTS_TRUNK_LAG_GIT_TIMEOUT": "junk"}):
+            self.assertEqual(T.git_timeout(), 8)
+        env = {k: v for k, v in os.environ.items() if k != "MTS_TRUNK_LAG_GIT_TIMEOUT"}
+        with unittest.mock.patch.dict(os.environ, env, clear=True):
+            self.assertEqual(T.git_timeout(), 8)
 
     def test_message_thresholds(self):
         self.assertEqual(T.message(0, 0), "")

@@ -31,3 +31,15 @@ Threshold for 80% statistical power: **56 scored calls** (SOURCED: `MyTradingSys
 - Limit orders not reached within 24 hours are marked `NOT_FILLED` and discarded from win rate calculation.
 - Positions still open after 7 days are closed at market.
 - Taker fee of 0.05% applied to both entry and exit (total 0.10% round trip).
+
+
+## 5. CBP Store Recount (rows, not scored calls)
+
+| Analyst | Rows | Trades | Rows with tradable call |
+|---|---|---|---|
+| Jason | 1 | 0 | 0 |
+| Krown | 3 | 0 | 0 |
+| Michaal | 1 | 0 | 0 |
+| Michael | 2 | 0 | 0 |
+
+Scored calls stay 0 until outcomes exist; Michael (@MichaelPizzino) and Michaal (@michaelvdpoppe) are two different analysts, never merged (OURS).

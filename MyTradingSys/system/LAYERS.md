@@ -32,7 +32,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `live-divergence-event-log` ready p2 DSA: Live divergence event log: record each BTC vs ES/NQ divergence read with outcomes at +30/60/120 min (forward e
   - `tom-btc-dev-backtest` blocked p2 CODEX: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
   - `tom-btc-encode` blocked p2 CODEX: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
-  - `tom-btc-eye-read-claude-marks` ready p2 SONNET: Tom-on-BTC T3 reader 1: Claude blind marks of all 80 lab charts (marks_claude.csv)
   - `tom-btc-validation` blocked p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
   - `tom-corr-divergence-backtest` ready p2 DSA: Pre-registered backtest of Tom correlation-divergence filter (H1 DAX vs ES/Nikkei/BTC, H2 BTC vs ES/NQ/DXY), s
   - `tom-probe-prereg` blocked p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
@@ -66,7 +65,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `t09-f4-live-window-99-bars-swing-layers` ready p2 JIS-NB: T09-F4 S2: 99-bar live window misses 68 of 96 escalation signals; fetch more bars for swing layers
   - `layer-review-fabio-session` ready p3 SONNET: Layer review sheet: Fabio and session timing (idea, source, backtests, bugs, confluence)
   - `oi-pivot-1h-4h-long-oi-followup` ready p3 SONNET: OI pivot candidates at 1h/4h: aggregate the 5m metrics archive 2022-01..2024-06 (DEV), same candidates/outcome
-  - `rv05-h3-outcome-evidence` ready p3 SONNET: RV05 H3: incorporate partial stop coverage evidence into existing F13 outcome repair
   - `fabio-layer-v2-markets` blocked p5 OPUS: Fabio layer v2 spec, part B: data plan per market, cost, stop width, build + recall cards (Opus research)
   - `fabio-layer-v2-spec` blocked p5 OPUS: Fabio layer v2 spec, part A: setup families + sourced rules from his ledger (Opus research)
 
@@ -272,7 +270,9 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-pitchfork-gpt-rederive.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `pitchfork-engine-implement-hagopian-fail` refined p2 OPUS: Pitchfork engine: implement Hagopian failure breakout candidates (PF-HAG-L / PF-HAG-S) in Java
-  - `pitchfork-review-fixes-2026-10-28` raw p2 SONNET: Pitchfork review fixes: Hagopian target W=|UML-ML| (F1), live PF-REV stale-bounce gate parity (F3), desk/live 
+  - `pitchfork-fixes-desk-python` raw p2 SONNET: Pitchfork desk/Python review fixes: F1 target reading, F4 profile parity, F5 lookahead + VA leak test, F6 pyth
+  - `pitchfork-fixes-live-java` raw p2 SONNET: Pitchfork live Java review fixes: F3 stale-bounce gate parity, F6 inverted-fork tine, F7/F9 labels
+  - `pitchfork-pf-can-arm-order-check` raw p2 SONNET: Pitchfork step 0: can a PF-* candidate arm an order in the live state machine? (read-only code trace, no edit)
   - `sim-desk-plug-in-pitchfork-4h-tine-bounc` refined p2 OPUS: Sim desk: plug in Pitchfork 4H tine-bounce study adapter (Modified Schiff + Volume Profile)
   - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
 

@@ -5,6 +5,22 @@
   "commands": [
     "python MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T05/t05_lc1.py"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T15:53:04Z",
+    "misses": 17,
+    "reads": [
+      "scripts/dev/tasks.py",
+      "MyTradingSys/system/wiring_registry.json",
+      "MyTradingSys/system/roles/session_planner.md",
+      "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.md",
+      "MyTradingSys/backtest/layers/alerts/live_levels_confluence.py",
+      "MyTradingSys/research/STATUS.md",
+      "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/stability.py",
+      "MyTradingSys/backtest/layers/alerts/live_runner_cli.py"
+    ],
+    "session": "agent-a60616ddb0b0e424e"
+  },
   "created": "2026-10-25T19:12:02Z",
   "depends_on": [],
   "done_when": "New test red on the old control, green on the fair one (draws never equal the real level; untouched lines leave the denominator); levels_hold.md states the new KEEP list on DEV 2022-04-01..2024-06-30; numbers match scripts/T05/out/lc1_fair.csv of the T05 audit.",

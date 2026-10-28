@@ -1,7 +1,24 @@
 {
   "approved_by": "operator 2026-10-28 (asked this session directly: design the next Opus runs / the next Fable run); the operator starting the run by hand is the approval",
   "asks": "",
+  "closed": "2026-10-28T15:41:14Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": 57,
+    "folded": "2026-10-28T15:41:38Z",
+    "misses": 31,
+    "reads": [
+      "scripts/dev/mts_signal.py",
+      "scripts/dev/run_all_tests.py",
+      "MyTradingSys/system/wiring_registry.json",
+      "scripts/dev/tasks.py",
+      "scripts/dev/ci_watch.py",
+      "scripts/dev/extra_tests.tsv",
+      "scripts/dev/mts_doctor.py",
+      ".claude/settings.json"
+    ],
+    "session": "4b846272-b5c2-40e8-a265-e5d5f62d3657"
+  },
   "created": "2026-10-28T09:31:53Z",
   "crucial": "hook and doctor code runs in every session; a misfiring heal blocks the fleet",
   "depends_on": [],
@@ -14,6 +31,12 @@
   "id": "opus-o1-self-heal-loop",
   "lane": "OPUS",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "mts_doctor.py --heal on trunk (3 heals, 15 fail-first tests, B150 registered); STALE-CLAIM",
+      "ref": "6e568ee10",
+      "utc": "2026-10-28T15:41:14Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,7 +56,12 @@
   "refs": [
     "MyTradingSys/system/handover/OPUS_RUNS.md"
   ],
-  "result": "",
+  "result": "mts_doctor.py --heal on trunk (3 heals, 15 fail-first tests, B150 registered); STALE-CLAIMS 58->27, BROADCAST 8->4 vs 10-27 baseline; overall WARN 6->7 (churn only); ci-auto-revert-red-trunk SONNET card filed; CI red at ship is jishusharma's krown-S8 3la churn, not O1",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/self_heal_2026-10-28/",
     "scripts/dev/mts_doctor.py",
@@ -48,13 +76,14 @@
   "sources": [
     "MyTradingSys/research/opus_run_design_2026-10-28/DESIGN.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "HEAL_MAP.md: one row per doctor check and hook, class HEAL/CARD/OPERATOR",
     "mts_doctor.py --heal running HEAL rows only",
     "Build 3 heals: shipped stale claims, unackable broadcasts, diverged main checkout",
     "Sonnet cards for bigger fixes; ship"
   ],
+  "taken": "2026-10-28T15:41:14Z",
   "tests": "scripts/dev/test_mts_doctor_heal.py: each heal test fails on the pre-change mts_doctor.py",
   "title": "Opus O1: self-healing loop for AI health and hooks (HEAL_MAP + mts_doctor --heal, top 3 heals built)",
   "weight": "IMPORTANT",

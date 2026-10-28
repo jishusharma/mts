@@ -3,15 +3,17 @@
   "asks": "",
   "commands": [],
   "context": {
-    "calls_to_edit": 25,
-    "folded": "2026-10-28T14:08:44Z",
-    "misses": 16,
+    "calls_to_edit": null,
+    "folded": "2026-10-28T15:52:30Z",
+    "misses": 10,
     "reads": [
-      "scripts/dev/logon_wake.py",
-      "scripts/dev/test_successor_wake.py",
-      "scripts/dev/test_stop_guard.py"
+      "MyTradingSys/research/STATUS.md",
+      "MyTradingSys/system/WORKERS.md",
+      "scripts/dev/extra_tests.tsv",
+      "scripts/dev/c_drive_guard.py",
+      "scripts/dev/health_audit.py"
     ],
-    "session": "agent-a80fc0d7c23feab9c"
+    "session": "23fb6610-7d18-469d-ac43-277390348817"
   },
   "created": "2026-10-28T13:40:18Z",
   "crucial": "One design call with no undo: who may write the hand-over and start a successor, so two Supervisors never run one login (a wrong rule double-spends budget or leaves a login unattended).",
@@ -27,7 +29,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS) Session_Planner 2026-10-28: content is complete (goal/scope/steps/tests/done_when); the only promotion gap is the review stamp. Weight IMPORTANT (lane OPUS, operator-named) needs a real stamp (Lab_Guy pass) to reach ready; the planner does not self-stamp IMPORTANT+ cards. Awaiting Lab_Guy REVIEWED stamp.",
+  "note": "DECISION (OURS) Session_Planner 2026-10-28: content is complete (goal/scope/steps/tests/done_when); the only promotion gap is the review stamp. Weight IMPORTANT (lane OPUS, operator-named) needs a real stamp (Lab_Guy pass) to reach ready; the planner does not self-stamp IMPORTANT+ cards. Awaiting Lab_Guy REVIEWED stamp. | PLANNER 2026-10-28 c3: ISSUES_REGISTER.md:66 says B1,B2,B3,B5,B6,B10 fixed in 637422a47, af2d5b82b, 2c5731b8a, fc12c222f (all on origin/fast-track; handover-guard, one-transit-rule and start-worker tests exist). Coordinator: verify B5/B6 tests, then tasks.py done with --result; no rebuild. | T0 2026-10-28 planner-refine-A: scope_in paths all tracked, no open claim on them, content complete; only gap = Lab_Guy REVIEWED stamp (IMPORTANT+).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",

@@ -35,7 +35,7 @@ LAST_DAY = (DEV_END_MS - 1) // DAY                                # 2024-06-30
 H2_START_DAY = pd.Timestamp("2023-04-01").value // 10**6 // DAY   # stability halves: H1 < this <= H2
 
 KEEP = ("prior_day_high", "prior_day_low", "prior_day_poc", "naked_poc", "4h_fractal_low", "4h_fractal_high",
-        "round_1000", "prior_week_high")                          # LC1 KEEP families (levels_hold.md)
+        "round_1000", "prior_week_high")                          # LEGACY 8 families (LC1 KEEP void since T05-F5; kept so the frozen run reproduces)
 TFS = ("1h", "4h", "12h", "1d")
 K_PRIMARY, K_SENS = 2.0, 3.0
 SMALL_BODY, LARGE_BODY, NORMAL_VOL = imb.SMALL_BODY, imb.LARGE_BODY, imb.NORMAL_VOL

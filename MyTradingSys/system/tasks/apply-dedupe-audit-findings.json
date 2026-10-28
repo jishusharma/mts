@@ -6,19 +6,13 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-28T12:38:46Z",
-    "misses": 49,
+    "folded": "2026-10-28T15:35:38Z",
+    "misses": 23,
     "reads": [
-      "scripts/dev/live_mirror.py",
-      "MyTradingSys/tests/docs/test_integrity.py",
-      "MyTradingSys/cbp/__init__.py",
-      "scripts/dev/prereg_gate.py",
-      "scripts/dev/verdicts.py",
-      "MyTradingSys/system/GATEWAY_NUC.md",
-      "MyTradingSys/tests/test_cbp_query.py",
-      "scripts/dev/cbp_run.py"
+      "MyTradingSys/system/HOST_WORKTREES_2026-10-21.md",
+      "scripts/dev/indicator_audit_compare.py"
     ],
-    "session": "agent-aedb53e46b554e0d5"
+    "session": "agent-a5df9ce40352c5bd7"
   },
   "created": "2026-10-28T08:18:16Z",
   "depends_on": [
