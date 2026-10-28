@@ -1,10 +1,13 @@
 {
   "done_when": "operator ran the stop command or allow-listed the pattern in MyTradingSys/system/STRAY_REAP_POLICY.md",
+  "finished": "2026-10-28T00:04:55Z",
   "from": "DESKTOP-F7IU69N",
+  "host": "DESKTOP-F7IU69N",
   "id": "20261025-231517-stray-cpu-hog-on-desktop-f7iu69n",
   "need": "STRAY PID 7148 Antigravity.exe cpu=3619s age=14.7h chain: Antigravity.exe[8588] <- explorer.exe[10892] <- (parent gone)\n    cmd: \"C:\\Users\\e-ngineers\\AppData\\Local\\Programs\\antigravity\\Antigravity.exe\" --type=renderer --user-data-dir=\"C:\\Users\\e-ngineers\\AppData\\Roaming\\Antigravity\" --sta\n    stop: taskkill /PID 7148 /T /F",
   "posted": "2026-10-25T23:15:17Z",
-  "status": "pending",
+  "result": "moot: one-time PID snapshot, 3 days old, process certainly gone by now; no further action",
+  "status": "failed",
   "target": "JIS-NB",
   "title": "Stray CPU hog on DESKTOP-F7IU69N"
 }
