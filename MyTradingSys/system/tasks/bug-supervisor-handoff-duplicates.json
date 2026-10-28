@@ -4,14 +4,16 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-28T15:52:30Z",
-    "misses": 10,
+    "folded": "2026-10-28T18:44:42Z",
+    "misses": 15,
     "reads": [
+      "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/test_cost_inventory.py",
       "MyTradingSys/research/STATUS.md",
       "MyTradingSys/system/WORKERS.md",
       "scripts/dev/extra_tests.tsv",
       "scripts/dev/c_drive_guard.py",
-      "scripts/dev/health_audit.py"
+      "scripts/dev/health_audit.py",
+      "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/costs.csv"
     ],
     "session": "23fb6610-7d18-469d-ac43-277390348817"
   },

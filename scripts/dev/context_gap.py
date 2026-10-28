@@ -32,6 +32,7 @@ SKIP_PATH = ("scratchpad", "tool-results", ".claude/projects", "handover/")
 READ_CMD = re.compile(r"\b(cat|head|sed -n|type|git show)\b")
 STATE_RE = re.compile(r"STATE (?:SHIPPED|STALE)")
 MIN_TURNS = 5
+FINAL_STATES = ("done", "dropped")   # card states that are closed: their context is a record, never read first again (O3 CUT2)
 
 
 def _text(c):
@@ -290,8 +291,20 @@ def fold(transcript, tree, now=None, commit=True):
         rel = f"{TASKS_REL}/{cid}.json"
         path = os.path.join(tree, *rel.split("/"))
         card = json.load(open(path, encoding="utf-8"))
-        card["context"] = {"reads": f["reads"], "misses": f["misses"], "calls_to_edit": f["calls_to_edit"], "session": f["session"],
-                           "folded": (now or datetime.now(timezone.utc)).strftime("%Y-%m-%dT%H:%M:%SZ")}
+        new_ctx = {"reads": f["reads"], "misses": f["misses"], "calls_to_edit": f["calls_to_edit"], "session": f["session"],
+                   "folded": (now or datetime.now(timezone.utc)).strftime("%Y-%m-%dT%H:%M:%SZ")}
+        # O3 overhead cut (overhead_cut_2026-10-28/CUTS.md): a re-fold that writes nothing new is churn, skip it.
+        # CUT1: the card already carries exactly this context (only the `folded` timestamp would differ).
+        same = {k: v for k, v in new_ctx.items() if k != "folded"} == \
+               {k: v for k, v in (card.get("context") or {}).items() if k != "folded"}
+        # CUT2: a terminal card (done/dropped) is never read first again; its context is a closed record.
+        terminal = card.get("state") in FINAL_STATES
+        # CUT3: zero read-first paths carry no handover value; the read list is the fold's whole point.
+        no_reads = not f["reads"]
+        if same or terminal or no_reads:
+            why = " ".join(w for w, on in (("no change", same), ("card terminal " + str(card.get("state")), terminal), ("0 reads", no_reads)) if on)
+            return "skipped", f"{cid}: {why}"
+        card["context"] = new_ctx
         with open(path, "w", encoding="utf-8", newline=NL) as fh:
             fh.write(json.dumps(card, indent=2, sort_keys=True, ensure_ascii=False) + NL)
         if commit and subprocess.run(["git", "-C", tree, "status", "--porcelain", "--", rel], capture_output=True, text=True, timeout=20).stdout.strip():
@@ -322,7 +335,7 @@ def main(argv=None):
     if a.cmd == "fold":
         status, what = fold(a.transcript, a.tree, commit=not a.no_commit)
         print(f"{status}: {what}")
-        return 0 if status == "folded" else 1
+        return 0 if status in ("folded", "skipped") else 1   # skipped (O3 CUT1-3) is a success: nothing needed a commit
     since = datetime.fromisoformat(a.since.replace("Z", "+00:00")) if a.since else datetime.now(timezone.utc) - timedelta(hours=a.hours)
     if since.tzinfo is None:
         since = since.replace(tzinfo=timezone.utc)

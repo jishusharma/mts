@@ -2,6 +2,18 @@
   "approved_by": "operator 2026-10-28 (asked this session directly: design the next Opus runs / the next Fable run); the operator starting the run by hand is the approval",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 15,
+    "folded": "2026-10-28T18:58:35Z",
+    "misses": 4,
+    "reads": [
+      "MyTradingSys/research/opus_run_design_2026-10-28/DESIGN.md",
+      "MyTradingSys/research/STATUS.md",
+      "MyTradingSys/system/ANNOUNCEMENTS.md",
+      "scripts/dev/make_status.py"
+    ],
+    "session": "427d4273-1113-45e8-9617-8e01c44cc5e2"
+  },
   "created": "2026-10-28T09:31:55Z",
   "crucial": "changes how every session commits; a wrong cut can drop a safety gate",
   "depends_on": [
