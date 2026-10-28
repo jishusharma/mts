@@ -28,7 +28,8 @@ class T(unittest.TestCase):
         self.td = tempfile.TemporaryDirectory()
         base = Path(self.td.name)
         self.origin, self.clone, self.up = base / "origin.git", base / "clone", base / "up"
-        g(base, "init", "-q", "--bare", "-b", "fast-track", str(self.origin))
+        g(base, "init", "-q", "--bare", str(self.origin))
+        g(self.origin, "symbolic-ref", "HEAD", "refs/heads/fast-track")  # git < 2.28 has no init -b
         g(base, "clone", "-q", str(self.origin), str(self.clone))
         g(self.clone, "checkout", "-q", "-B", "fast-track")
         commit(self.clone, "a.txt")
