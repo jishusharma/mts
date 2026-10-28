@@ -1,6 +1,6 @@
 {
   "approved_by": "",
-  "asks": "Lab_Guy/reviewer Agent: stamp REVIEWED for stats-cscv-degenerate-input-contract, weight CRUCIAL (planner cannot stamp)",
+  "asks": "",
   "commands": [],
   "created": "2026-10-27T20:55:54Z",
   "depends_on": [],
@@ -12,13 +12,30 @@
   "goal": "Resolve the independently reproduced section 10 boundary findings: reference CSCV computes PBO=1 from zero retained rows when T<S, and constant/singleton returns produce undocumented finite PSR/DSR values.",
   "id": "stats-cscv-degenerate-input-contract",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research/ top level: 189 -> 14 files; 176 dated loose files into _archive/loose_2026-10 an",
+      "ref": "f8d0799de2bc",
+      "utc": "2026-10-25T23:02:12Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "f8d0799de2bc research/ top level: 189 -> 14 files; 176 dated loose files into _archive/loo",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-10-25T23:02:12Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "mutation_check": "",
-  "note": "Audit follow-up only; RAW for refinement. MED findings, no live-path change. Producer of boundary evidence: GPT. No implementation changes made by audit. PLANNER 2026-10-28: fields filled; weight CRUCIAL (formula/stat semantics, a verdict-input contract); DECISION (OURS) default policy: T<S, S odd/<2, matrix not rectangular, empty or singleton raise ValueError; zero-variance returns give NaN Sharpe and PSR/DSR NaN, never a finite number. Needs review Agent stamp (CRUCIAL) before dispatch.",
+  "mutation_check": "MyTradingSys/backtest/bt/test_ref_pbo.py::test_ref_pbo_rejects_T_less_than_S (new): revert the T<S raise in ref_pbo.py in a scratch copy and the test must go red",
+  "note": "REVIEWED:2026-10-28 ACCEPT (Sonnet reviewer Agent a7d41f37, after 1 FIX applied once, not re-read, planner DECISION OURS). Audit follow-up only; RAW for refinement. MED findings, no live-path change. Producer of boundary evidence: GPT. No implementation changes made by audit. PLANNER 2026-10-28: fields filled; weight CRUCIAL (formula/stat semantics, a verdict-input contract); DECISION (OURS) default policy: T<S, S odd/<2, matrix not rectangular, empty or singleton raise ValueError; zero-variance returns give NaN Sharpe and PSR/DSR NaN, never a finite number. Needs review Agent stamp (CRUCIAL) before dispatch.",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
+  "refreshed": "2026-10-28T09:54:54Z",
   "refs": [
     "MyTradingSys/research/layer_lab/reports/2026-10-26_gpt-formulas-rederive-10.md"
   ],
@@ -35,19 +52,20 @@
     "strategy runs",
     "holdout reads"
   ],
+  "scope_sha": "f8d0799de2bc",
   "size": "S",
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-26_gpt-formulas-rederive-10.md",
     "MyTradingSys/research/layer_lab/gpt_formulas_rederive_10_comparison.json"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "Decide and document invalid/degenerate return and CSCV input semantics against the audit evidence.",
-    "Add independent regression tests that fail before changing product code.",
-    "Reject invalid partitions before computing probabilities; keep valid-input arithmetic unchanged.",
-    "Verify tests and report the decided constant-return and truncation policy."
+    "Use the policy in note (DECISION OURS): T<S, S odd or <2, ragged matrix, empty or singleton raise ValueError; zero-variance returns give NaN Sharpe, PSR, DSR.",
+    "Write the boundary tests first in test_ref_pbo.py and test_bt_stats.py; see them fail on current code.",
+    "Reject invalid partitions in ref_pbo.py/bt_stats.py before computing probabilities; valid-input arithmetic unchanged.",
+    "Add the degenerate policy paragraph to FORMULAS.md section 10 (line 179); run both suites."
   ],
-  "tests": "Existing bt_stats/ref_pbo suites plus independent audit frozen oracle and boundary regressions; new tests must fail on pre-change code.",
+  "tests": "New fail-first tests: test_ref_pbo.py::test_ref_pbo_rejects_T_less_than_S (T<S raises ValueError, today PBO=1.0), plus S odd/<2, ragged matrix, empty and singleton raise; test_bt_stats.py zero-variance gives NaN Sharpe/PSR/DSR. Existing suites and the section 10 oracle (1e-12) stay green.",
   "title": "Stats audit: validate CSCV partitions and define degenerate Sharpe semantics",
   "weight": "CRUCIAL",
   "worker": "session"

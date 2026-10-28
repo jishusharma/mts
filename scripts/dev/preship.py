@@ -10,7 +10,10 @@ Every rule runs the gate's OWN check (never a copy), so it cannot drift from the
                denies the commit with the fix. The same failure set is denied once per session, then allowed (a trunk that is
                already red must not trap a session; the ship gate still stops it). A doc size cap is denied every time: only
                this commit's own file can break it, and `sync.py ship` checks it again on a docs-only ship (docs_ship_failures).
-  check [files...]   run the rules by hand (default: files changed against origin/fast-track plus the working tree); exit 1 on failure.
+               A commit reaching a start/hook/role mechanism (REACH_PATHS) must carry `Reach: Q1-Q8 ...` (OPS_CHANGE_CHECK.md): denied every
+               time, fails closed on any error; `MTS_PRESHIP=off` bypasses.
+  check [files...]   run the rules by hand (default: files changed against origin/fast-track plus the working tree); exit 1 on failure;
+               with no files it also flags unpushed commits that touch REACH_PATHS without the Reach line.
 Env: MTS_PRESHIP=off disables both hooks. Never raises in hook mode.
 """
 import hashlib
@@ -32,6 +35,25 @@ PY = sys.executable
 COLLECTED = ("MyTradingSys/tests/", "MyTradingSys/backtest/", "MyTradingSys/options/tests/")   # test_gate_discovery_b150.py
 SHIP = re.compile(r"(?<![\w.-])sync\.py\s+ship(?![-\w])")
 COMMIT = re.compile(r"(^|[;&|(]\s*|\s)git(\s+-C\s+(\"[^\"]+\"|'[^']+'|\S+))?\s+commit(?![-\w])")
+
+
+REACH = re.compile(r"Reach:\s*Q1-Q8\b")
+REACH_LINE = "Reach: Q1-Q8 ok"
+
+
+def _reach_path(p):
+    """Paths whose change must pass the 8-question reach test (MyTradingSys/system/OPS_CHANGE_CHECK.md)."""
+    name = Path(p).name
+    return (p.startswith("scripts/dev/") and name.startswith("role_")) or name in ("mts_signal.py", "sync.py") \
+        or p == ".claude/settings.json" or (p.startswith("MyTradingSys/system/roles/") and p.endswith(".md"))
+
+
+def reach_text_ok(text):
+    return REACH.search(text) is not None
+
+
+REACH_FIX = ("add a body line `" + REACH_LINE + "` (or `Reach: Q1-Q8 ok, Q2 n/a <why>`) after answering the 8 questions in "
+             "MyTradingSys/system/OPS_CHANGE_CHECK.md")
 
 
 def _docs(p):
@@ -260,6 +282,17 @@ def hook_commit(data):
     if re.search(r"(\s-[a-zA-Z]*a[a-zA-Z]*\b|\s--all\b)", tail):
         paths += git_lines(root, "diff", "--name-only", "--diff-filter=ACMR")
     paths = sorted(set(paths))
+    reach = ""
+    if any(_reach_path(p) for p in paths):
+        try:
+            if not reach_text_ok(cmd):
+                reach = "no Reach line in the commit text"
+        except Exception as e:   # fail closed: a reach path is staged and the check could not run
+            reach = f"reach check failed ({type(e).__name__})"
+    if reach:
+        return json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
+                                                  "permissionDecisionReason": f"PRESHIP [reach line]: {reach}; this commit touches a "
+                                                  f"start/hook/role path. FIX: {REACH_FIX}."}})
     results = [(rule, f) for rule, ps in rules_for(paths) for f in [run_rule(rule, ps, root)] if f]
     if not results:
         return ""
@@ -270,6 +303,19 @@ def hook_commit(data):
     return json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
                                               "permissionDecisionReason": "PRESHIP: this commit would fail the ship gate. " + text
                                               + " (Fix and commit again; the same failure is not blocked twice, except a doc size cap.)"}})
+
+
+def reach_commit_failures(root):
+    """-> one line per unpushed non-merge commit that touches REACH_PATHS without the Reach line (check mode)."""
+    bad = []
+    for sha in git_lines(root, "log", "origin/fast-track..HEAD", "--no-merges", "--format=%H"):
+        files = git_lines(root, "diff-tree", "--no-commit-id", "--name-only", "-r", sha)
+        if any(_reach_path(f) for f in files):
+            body = subprocess.run(["git", "show", "-s", "--format=%B", sha], cwd=root, capture_output=True, text=True,
+                                  encoding="utf-8", errors="replace").stdout
+            if not reach_text_ok(body):
+                bad.append(f"{sha[:9]} {body.strip().splitlines()[0][:70] if body.strip() else ''}")
+    return bad
 
 
 def hook(mode, stdin_text):
@@ -296,6 +342,13 @@ def main(argv):
             fails = run_rule(rule, ps, root)
             print(("FAIL " if fails else "ok   ") + rule[0] + (f": {' / '.join(fails)} -> FIX: {rule[4]}" if fails else ""))
             bad += bool(fails)
+        if not argv[1:]:
+            try:
+                miss = reach_commit_failures(root)
+            except Exception as e:
+                miss = [f"reach check failed ({type(e).__name__})"]
+            print(("FAIL " if miss else "ok   ") + "reach line" + (f": {' / '.join(miss)} -> FIX: {REACH_FIX}" if miss else ""))
+            bad += bool(miss)
         if not paths:
             print("no changed files")
         return 1 if bad else 0
