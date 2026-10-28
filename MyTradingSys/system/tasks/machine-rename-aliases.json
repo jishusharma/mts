@@ -1,24 +1,18 @@
 {
   "approved_by": "operator 2026-10-25 via MTS_Doctor",
   "asks": "",
+  "closed": "2026-10-28T14:42:25Z",
   "commands": [
     "python scripts/dev/test_hosts.py"
   ],
   "context": {
-    "calls_to_edit": 15,
-    "folded": "2026-10-25T17:16:27Z",
-    "misses": 26,
+    "calls_to_edit": null,
+    "folded": "2026-10-28T14:42:29Z",
+    "misses": 2,
     "reads": [
-      "scripts/dev/live_mirror.py",
-      "scripts/dev/supervisor.py",
-      "scripts/dev/test_live_owner.py",
-      "scripts/dev/test_mts_signal.py",
-      "scripts/dev/lease.py",
-      "scripts/dev/wt_maint.py",
-      "scripts/sched/relay.py",
-      "scripts/sched/handoff_lint.py"
+      "scripts/dev/test_hosts.py"
     ],
-    "session": "agent-a1c47a4e61ac5d765"
+    "session": "agent-a9b42dac23991de17"
   },
   "created": "2026-10-25T15:10:08Z",
   "depends_on": [],
@@ -31,6 +25,12 @@
   "id": "machine-rename-aliases",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "already on trunk fc950331b; scripts/dev/test_hosts.py 7 tests OK",
+      "ref": "82bf14fc4",
+      "utc": "2026-10-28T14:42:25Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -48,7 +48,12 @@
   "refined_by": "",
   "refreshed": "2026-10-27T19:30:14Z",
   "refs": [],
-  "result": "",
+  "result": "already on trunk fc950331b; scripts/dev/test_hosts.py 7 tests OK",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/hosts.py, host compares in mts_signal live_owner live_mirror supervisor tasks desk lease wt_maint relay handoff_lint, MACHINE_RENAME.md, Names rows"
   ],
@@ -60,12 +65,13 @@
   "sources": [
     "operator 2026-10-25 via MTS_Doctor"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "add hosts.py",
     "route host compares through it",
     "tests and docs"
   ],
+  "taken": "2026-10-28T14:42:25Z",
   "tests": "scripts/dev/test_hosts.py",
   "title": "Machine rename aliases: repo works under old and new host names",
   "weight": "ROUTINE",
