@@ -1,16 +1,18 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T10:32:31Z",
   "commands": [
     "python -m pytest scripts/dev/test_sync.py scripts/dev/test_run_all_tests.py -q"
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-28T10:32:29Z",
-    "misses": 8,
+    "folded": "2026-10-28T10:33:03Z",
+    "misses": 9,
     "reads": [
       "scripts/dev/test_sync.py",
-      "scripts/dev/test_run_all_tests.py"
+      "scripts/dev/test_run_all_tests.py",
+      "MyTradingSys/system/LAYERS.md"
     ],
     "session": "agent-ac50890a34f037a62"
   },
@@ -26,6 +28,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Fixes 8da805e73/ab1cd588e on origin/fast-track and origin/green/fast-track (green-only bra",
+      "ref": "9d9b43231",
+      "utc": "2026-10-28T10:32:31Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -56,7 +64,12 @@
     "to": "SONNET",
     "why": "credits"
   },
-  "result": "Fixture repair shipped; local affected suites and smoke gate pass. Keep card raw until required review stamp and CI confirmation are recorded.",
+  "result": "Fixes 8da805e73/ab1cd588e on origin/fast-track and origin/green/fast-track (green-only branch); pytest test_sync+test_run_all_tests 194 passed; maintenance regression test red (3 subtests fail) on pre-fix fixture",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/test_sync.py",
     "scripts/dev/test_run_all_tests.py"
@@ -70,12 +83,13 @@
     "https://github.com/jishusharma/mts/actions/runs/40382326578",
     "commits 8da805e73, ab1cd588e (origin/fast-track, verified 2026-10-27 by Planner)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Confirm the fixes 8da805e73 and ab1cd588e are on origin/fast-track (git branch -r --contains).",
     "Re-run both test modules; re-check the maintenance regression is red on the pre-fix fixture (copy of the file at <sha>^ in scratch).",
     "Write the evidence (CI run status of the fix commits, pre-fix red result) into the card result via tasks.py done --result; test_cbp_query.py fixture errors are out of scope (card cbp-ingestion)."
   ],
+  "taken": "2026-10-28T10:32:31Z",
   "tests": "Run both affected test modules; fixture regression red before change; original CI annotations identify both races.",
   "title": "CI: remove timing and Git maintenance races in test fixtures",
   "weight": "IMPORTANT",
