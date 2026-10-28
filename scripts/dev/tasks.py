@@ -1527,6 +1527,34 @@ def shard_of(card_id, logins):
     return ls[zlib.crc32(card_id.encode("utf-8")) % len(ls)] if ls else ""
 
 
+BATCH_MAX = 3   # OURS: judgement, not tuned (rolling-chain-link-latency-levers.md Default); re-check once 30 batched links exist
+
+
+def _scope_overlap(xs, ys):
+    xs, ys = [x.rstrip("/") for x in xs], [y.rstrip("/") for y in ys]
+    return any(x == y or x.startswith(y + "/") or y.startswith(x + "/") for x in xs for y in ys)
+
+
+def batch_cards(rows, max_n=BATCH_MAX):
+    """Pure. Greedy first-fit in rank order: batches of 2..max_n card ids with pairwise-disjoint scope_in, to share one gate and
+    one ship. Never batched: live_path cards, cards with no scope_in (unknown), any path on the live path (gate_select.FULL_RE)
+    or the gate's own machinery; those ship alone and appear in no batch. A lone safe card is not a batch."""
+    import gate_select
+    groups = []
+    for r in rows:
+        scope = [x.replace("\\", "/") for x in r.get("scope_in") or []]
+        if r.get("live_path") or not scope or any(gate_select.FULL_RE.match(x) or gate_select.is_gate_file(x) for x in scope):
+            continue
+        for g in groups:
+            if len(g[0]) < max_n and not any(_scope_overlap(scope, s) for s in g[1]):
+                g[0].append(r["id"])
+                g[1].append(scope)
+                break
+        else:
+            groups.append(([r["id"]], [scope]))
+    return [g[0] for g in groups if len(g[0]) >= 2]
+
+
 def dispatch(cards, reg, holds, claims, lane_st, as_of, host=None, repo=REPO, login=None, logins=None):
     """Pure ranked snapshot: {as_of, host, dispatch: [...], excluded: [...]}. Same inputs -> same dict (as_of is an input).
     With `login` and at least two `logins` (the supervisors alive), each row gets `shard` and `own`; after pinned (CI) cards the
@@ -1547,7 +1575,7 @@ def dispatch(cards, reg, holds, claims, lane_st, as_of, host=None, repo=REPO, lo
         inc.append({"id": c["id"], "title": c["title"], "lane": c["lane"], "role": role, "weight": w, "prio": c.get("prio", 3),
                     "pinned": bool(c.get("pinned")), "est_turns": c.get("est_turns"), "worker": c.get("worker") or "",
                     "reviewer": REVIEWER_SLOT[w], "scope_in": list(c.get("scope_in", [])), "depends_on": list(c.get("depends_on", [])),
-                    "created": c.get("created", "")})
+                    "live_path": bool(c.get("live_path")), "created": c.get("created", "")})
         if sharded:
             inc[-1]["shard"] = shard_of(c["id"], logins)
             inc[-1]["own"] = inc[-1]["shard"] == login
@@ -1560,18 +1588,22 @@ def dispatch(cards, reg, holds, claims, lane_st, as_of, host=None, repo=REPO, lo
         r["rank"] = n
         del r["created"], r["blocker"]
     exc.sort(key=lambda r: (r["reason_code"], r["id"]))
-    return {"as_of": as_of.strftime("%Y-%m-%dT%H:%M:%SZ"), "host": host or "", "dispatch": inc, "excluded": exc}
+    return {"as_of": as_of.strftime("%Y-%m-%dT%H:%M:%SZ"), "host": host or "", "dispatch": inc, "excluded": exc,
+            "batches": batch_cards(inc)}
 
 
 def dispatch_table(snap):
     """The <=15-line table session_planner.md Duty 2 asks for, plus one summary line of exclusions."""
     lines = [f"DISPATCH as_of {snap['as_of']}: {len(snap['dispatch'])} card(s), {len(snap['excluded'])} excluded"]
-    for r in snap["dispatch"][:DISPATCH_TABLE_MAX - 3]:
+    batches = snap.get("batches") or []
+    room = DISPATCH_TABLE_MAX - 3 - len(batches)
+    for r in snap["dispatch"][:max(room, 0)]:
         est = f"{r['est_turns']}t" if r["est_turns"] else "-"
         lines.append(f"{r['rank']}. {r['id']} [{r['lane']}] {r['weight']} p{r['prio']} {r['worker'] or '-'} {est} review={r['reviewer']}")
-    left = len(snap["dispatch"]) - (DISPATCH_TABLE_MAX - 3)
+    left = len(snap["dispatch"]) - max(room, 0)
     if left > 0:
         lines.append(f"... +{left} more (--json)")
+    lines += [f"BATCH {n}: {' + '.join(b)} (one gate, one ship)" for n, b in enumerate(batches, 1)]
     by = {}
     for e in snap["excluded"]:
         by[e["reason_code"]] = by.get(e["reason_code"], 0) + 1

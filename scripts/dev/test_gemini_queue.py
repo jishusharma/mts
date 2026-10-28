@@ -88,5 +88,72 @@ class RunJobTest(unittest.TestCase):
         run.assert_not_called()
 
 
+class TwoProcessClaimRaceTest(unittest.TestCase):
+    """CT-2: two real `sync.py claim` processes against a bare temp remote; no mocked push or git."""
+
+    def _git(self, cwd, *a):
+        return subprocess.run(["git", "-C", str(cwd), *a], capture_output=True, text=True, check=True)
+
+    def _fixture(self, tmp):
+        import shutil
+        tmp = Path(tmp)
+        bare = tmp / "origin.git"
+        subprocess.run(["git", "init", "-q", "--bare", "-b", "fast-track", str(bare)], check=True)
+        seed = tmp / "seed"
+        seed.mkdir()
+        shutil.copytree(Path(__file__).resolve().parent, seed / "scripts" / "dev", ignore=shutil.ignore_patterns("__pycache__"))
+        (seed / "MyTradingSys" / "system").mkdir(parents=True)
+        (seed / "MyTradingSys" / "system" / "README.txt").write_text("x" + chr(10), encoding="utf-8")
+        self._git(seed, "init", "-q", "-b", "fast-track")
+        for k, v in (("user.name", "t"), ("user.email", "t@t")):
+            self._git(seed, "config", k, v)
+        self._git(seed, "add", "-A")
+        self._git(seed, "commit", "-q", "-m", "seed")
+        self._git(seed, "remote", "add", "origin", str(bare))
+        self._git(seed, "push", "-q", "origin", "fast-track")
+        clones = []
+        for n in ("a", "b"):
+            c = tmp / n
+            subprocess.run(["git", "clone", "-q", "-b", "fast-track", str(bare), str(c)], check=True)
+            for k, v in (("user.name", "t"), ("user.email", "t@t")):
+                self._git(c, "config", k, v)
+            clones.append(c)
+        return bare, clones
+
+    def _race(self, warm):
+        import threading
+        with tempfile.TemporaryDirectory() as td:
+            bare, (a, b) = self._fixture(td)
+            base = ["MyTradingSys/system/claims/warm-card.md"] if warm else []
+            if warm:   # the claims side branch already exists: the loser meets an ordinary non-fast-forward rejection
+                self.assertEqual(gq.sh([sys.executable, "scripts/dev/sync.py", "claim", "warm-card", "--force"], cwd=a).returncode, 0)
+            barrier = threading.Barrier(2)
+            res = {}
+
+            def go(name, wt):
+                barrier.wait()
+                res[name] = gq.sh([sys.executable, "scripts/dev/sync.py", "claim", "race-card", "--force"], cwd=wt, timeout=120)
+
+            ts = [threading.Thread(target=go, args=(n, w)) for n, w in (("a", a), ("b", b))]
+            [t.start() for t in ts]
+            [t.join() for t in ts]
+            msgs = {n: (r.stdout + r.stderr) for n, r in res.items()}
+            self.assertEqual(sorted(r.returncode == 0 for r in res.values()), [False, True], msgs)   # exactly one winner
+            loser = next(m for n, m in msgs.items() if res[n].returncode != 0)
+            files = self._git(bare, "ls-tree", "-r", "--name-only", "claims").stdout.split()
+            self.assertEqual(sorted(files), sorted(base + ["MyTradingSys/system/claims/race-card.md"]))   # never race-card-2
+            return loser, bare, (a, b), files
+
+    def test_two_process_claim_race_against_bare_repo(self):
+        loser, bare, _, _ = self._race(warm=True)
+        self.assertIn("already claimed by", loser)               # the loser saw the conflict, no silent double claim
+
+    def test_two_process_first_claim_race_creating_claims_branch(self):
+        # Real finding (CT-2): both claimers create origin/claims at once; the loser gets "reference already exists", which
+        # sync.PUSH_RACE_RE does not match, so it is reported as a non-race failure. It still fails cleanly: one claim file.
+        loser, _, _, _ = self._race(warm=False)
+        self.assertTrue("already claimed by" in loser or "FAILED" in loser, loser)
+
+
 if __name__ == "__main__":
     unittest.main()

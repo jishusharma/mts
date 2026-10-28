@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "successor_wake usage handoff: woken session is handed its own pacer reading via a USAGE fi",
-      "ref": "c8dcca8eda10",
-      "utc": "2026-10-28T06:37:47Z"
+      "line": "successor_wake: gate-blocked (slots < 1, any mode) waits for the next reset",
+      "ref": "8f0a5dc470c6",
+      "utc": "2026-10-28T12:07:48Z"
     }
   ],
   "layers": [],
@@ -28,7 +28,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-28T07:11:36Z",
+  "refreshed": "2026-10-28T12:51:17Z",
   "refs": [
     "MyTradingSys/research/fix_verification_2026-10-28/REPORT.md"
   ],
@@ -38,7 +38,7 @@
     "scripts/dev/test_successor_wake.py"
   ],
   "scope_out": [],
-  "scope_sha": "c8dcca8eda10",
+  "scope_sha": "8f0a5dc470c6",
   "size": "S",
   "sources": [],
   "state": "ready",

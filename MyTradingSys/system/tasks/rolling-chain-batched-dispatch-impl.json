@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T12:51:19Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -30,6 +31,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "test_tasks_dispatch.py 12 passed (6 new batch tests failed on old tasks.py); tasks tests 1",
+      "ref": "438d58a76",
+      "utc": "2026-10-28T12:51:19Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "plan hang: read claims once per run, not per card",
@@ -49,7 +56,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T12:34:39Z",
   "refs": [],
-  "result": "",
+  "result": "test_tasks_dispatch.py 12 passed (6 new batch tests failed on old tasks.py); tasks tests 135 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/tasks.py",
     "MyTradingSys/tests/test_tasks_dispatch.py"
@@ -62,13 +74,14 @@
   "sources": [
     "MyTradingSys/research/lead/2026-10-28_rolling-chain-link-latency-levers.md (Default OURS: batch size 3, MAX_RUNNING 2)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read research/lead/2026-10-28_rolling-chain-link-latency-levers.md Default (OURS) section and tasks.py dispatch() + dispatch_table().",
     "Add pure batch_cards(rows, max_n=3): greedy in rank order, skip live_path and cards whose scope_in matches gate_select.FULL_RE or is unknown; overlap = same path or one a prefix of the other.",
     "Wire into dispatch() as snap['batches'] and print BATCH lines in dispatch_table; keep the 15-line cap.",
     "Tests first: overlap, 3-cap, live_path excluded, FULL_RE path alone, deterministic order; confirm they fail on the old tasks.py. Run run_all_tests.py --quick."
   ],
+  "taken": "2026-10-28T12:51:19Z",
   "tests": "MyTradingSys/tests/test_tasks_dispatch.py: new batch tests fail on current tasks.py (no 'batches' key), pass after.",
   "title": "Implement batched dispatch of non-overlapping small cards (design: research/lead/2026-10-28_rolling-chain-link-latency-levers.md)",
   "weight": "ROUTINE",

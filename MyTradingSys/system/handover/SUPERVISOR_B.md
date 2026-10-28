@@ -11,6 +11,7 @@ Stop at 5 h >= 80%, week >= cap, CI red, no ready cards, or a 3 h wave.
 - Open claims from JIS-NUC: funding-carry-with-real-spot-basis-margi | `python scripts/dev/sync.py where --all` | read at 2026-10-28T13:04Z
 
 ## Ruled out
+- DUPLICATE: the headless Supervisor B (MTS-SuccWake-B, hand-over ac1ec897a at 12:51Z) also had a Builder (a34675) on cbp-query-symbol-btcusdt-returns-zero; a second Builder (a884fb9bdeae1fd41) started 13:00Z from the App session. Whichever claims second must stop; check git log for the card before spawning anything on it.
 - none recorded by the tool; add what was tried and closed (`handover --from <file>`).
 
 ## Next 3 steps

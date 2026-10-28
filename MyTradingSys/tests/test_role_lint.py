@@ -113,6 +113,14 @@ class TestRoleLint(unittest.TestCase):
         self.assertIn("CI red and owner: RED", line)
         self.assertIn("deadbeef", line)
 
+    def test_eagle_eyes_names_live_owner_not_nb(self):
+        txt = (REPO / "MyTradingSys/system/roles/eagle_eyes.md").read_text(encoding="utf-8")
+        self.assertIn("live_owner.py", txt)
+        self.assertIn("Bitstamp", txt)
+        self.assertNotIn("On JIS-NB the live files", txt)
+        self.assertNotIn("(JIS-NB only", txt)
+        self.assertNotIn("ask for a JIS-NB read", txt)
+
     def test_repo_clean_roles_exit_0_via_cli(self):
         r = subprocess.run([sys.executable, str(SCRIPT), "lint"], capture_output=True, text=True, cwd=REPO)
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
