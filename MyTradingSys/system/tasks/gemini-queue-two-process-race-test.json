@@ -27,9 +27,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "bg-process-audit: deadlines on NUC/git network calls, no retry on non-race push, STALLED-B",
-      "ref": "e1ac77891613",
-      "utc": "2026-10-27T23:56:54Z"
+      "line": "fix: gemini lane — claim-push jitter, Argon model option, 7-card verdicts",
+      "ref": "003f55d1c0a9",
+      "utc": "2026-10-28T08:34:07Z"
     }
   ],
   "layers": [],
@@ -39,7 +39,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-28T07:11:32Z",
+  "refreshed": "2026-10-28T15:06:45Z",
   "refs": [
     "MyTradingSys/research/fix_verification_2026-10-28/REPORT.md"
   ],
@@ -49,10 +49,10 @@
     "scripts/dev/test_gemini_queue.py"
   ],
   "scope_out": [],
-  "scope_sha": "e1ac77891613",
+  "scope_sha": "003f55d1c0a9",
   "size": "S",
   "sources": [],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Fixture: bare temp repo, claims branch pre-created OR absent (run both); two real subprocess claimers, no mocked push; start them with a barrier so order is not fixed.",
     "Assert order-independently: len(winners)==1, loser rc/reason is the lost-race path (not an error), final origin/claims content names one holder; never assert claimer A or B won.",

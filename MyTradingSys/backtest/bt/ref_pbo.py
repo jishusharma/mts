@@ -22,11 +22,17 @@ def ref_pbo_cscv(M: List[List[float]], S: int = 16) -> Tuple[float, List[float],
     Returns:
         Tuple of (pbo, log_odds_list, w_list)
     """
-    if S % 2 != 0:
-        raise ValueError("S must be even")
+    if S < 2 or S % 2 != 0:
+        raise ValueError("S must be even and >= 2")
     
     T = len(M)
     N = len(M[0]) if T > 0 else 0
+    if T < 2 or N < 1:
+        raise ValueError("matrix must have >= 2 rows and >= 1 column")
+    if any(len(r) != N for r in M):
+        raise ValueError("ragged matrix")
+    if T < S:
+        raise ValueError("T must be >= S")
     
     # Keep only the first (T//S)*S rows
     keep_rows = (T // S) * S

@@ -3,10 +3,10 @@
   python scripts/dev/sync.py start [slug] [--quiet]  # up to date with origin/fast-track; in a shared/dirty tree makes your own worktree;
                                            # in a lane tree (mts-app, mts-relay, mts-dsa) `start <slug>` switches to branch <host>/<slug>
   python scripts/dev/sync.py health  # stale/overlapping claims, shared or orphan worktrees, branches never shipped
-  python scripts/dev/sync.py ship [--full] [--fix-ci] [--again] [--no-ci-wait] [--release <slug>] [--after <slug>]  # a second ship within 10 min only prints a note (--again still accepted); docs-only ships run no gate; merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
+  python scripts/dev/sync.py ship [--full] [--fix-ci] [--again] [--wait-ci] [--release <slug>] [--after <slug>]  # a second ship within 10 min only prints a note (--again still accepted); docs-only ships run no gate; merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
                                            # ordinary code ships run the FAST gate (GATE_SPEED.md: ~60 s, tests chosen by import graph); a red CI blocks code ships until
                                            # fixed: --fix-ci ships the fix through it with the full gate; --after waits for predecessor order ticket
-                                           # after the push it waits (up to 10 min) for the CI run of its own sha and prints CI RED at once (exit 3); --no-ci-wait / SYNC_NO_CI_WAIT=1 skips (unattended callers)
+                                           # after the push it returns at once; `sync.py ci [sha]` (or `ship --wait-ci` / SYNC_WAIT_CI=1) waits up to 10 min for the CI run of the sha and prints CI RED at once (exit 3)
   python scripts/dev/sync.py news [hours=24]  # what shipped: feature + Result line per commit, no code
   python scripts/dev/sync.py claim "<task>" [--area <paths>]  # tell parallel sessions what you work on (shipped at once); refused only when --area overlaps an open claim
   python scripts/dev/sync.py claims  # open claims on origin/fast-track (host, account, task, age); release: `release <slug>`
@@ -693,6 +693,36 @@ def write_ship_stamp(repo):
         ship_stamp(repo).write_text(str(time.time()), encoding="utf-8")
     except (OSError, SyncError):
         pass
+
+
+LAST_PUSHED = "mts_last_pushed.json"   # in the git dir: the sha (and files) of this tree's last push, for `sync.py ci`
+
+
+def write_last_pushed(repo, pushed):
+    try:
+        p = Path(git(repo, "rev-parse", "--absolute-git-dir").stdout.strip()) / LAST_PUSHED
+        p.write_text(json.dumps({"sha": pushed.sha, "files": list(pushed.files)}), encoding="utf-8", newline=chr(10))
+    except (OSError, SyncError):
+        pass
+
+
+def read_last_pushed(repo):
+    """Pushed(sha, files) of this tree's last ship, or None."""
+    try:
+        d = json.loads((Path(git(repo, "rev-parse", "--absolute-git-dir").stdout.strip()) / LAST_PUSHED).read_text(encoding="utf-8"))
+        return Pushed(d["sha"], list(d.get("files", [])))
+    except (OSError, ValueError, KeyError, SyncError):
+        return None
+
+
+def ci_verb(repo, argv):
+    """`sync.py ci [sha]`: the CI wait that `ship` no longer does by default (B8: a ship returned only after up to 10 min of polling).
+    No sha = the last sha this tree pushed. Prints the verdict line; red exits CI_RED_EXIT. Never changes anything."""
+    pushed = Pushed(argv[0], []) if argv else read_last_pushed(repo)
+    if pushed is None:
+        print("sync: ci: no sha given and this tree has not pushed one (sync.py ci <sha>)", file=sys.stderr)
+        return 1
+    return CI_RED_EXIT if wait_own_ci(pushed, globs=ci_path_filter(repo)) == "red" else 0
 
 
 def ci_state(fetch=None):
@@ -1875,6 +1905,12 @@ def main(argv):
             print(f"sync: {e}", file=sys.stderr)
             return 1
         return 0
+    if argv and argv[0] == "ci" and len(argv) <= 2:
+        try:
+            return ci_verb(toplevel(Path.cwd()), argv[1:])
+        except SyncError as e:
+            print(f"sync: {e}", file=sys.stderr)
+            return 1
     if argv and argv[0] == "ship":
         run_host_health(toplevel_or_none())
         try:
@@ -1889,8 +1925,9 @@ def main(argv):
             if "--full" in argv:
                 os.environ["SYNC_FULL_GATE"] = "1"
                 argv = [a for a in argv if a != "--full"]
-            no_ci_wait = bool(os.environ.get("SYNC_NO_CI_WAIT")) or "--no-ci-wait" in argv
-            argv = [a for a in argv if a != "--no-ci-wait"]
+            # B8 (2026-10-28): ship returns as soon as origin has the commit; the CI wait is `sync.py ci` or opt-in `--wait-ci` / SYNC_WAIT_CI=1
+            wait_ci = ("--wait-ci" in argv or bool(os.environ.get("SYNC_WAIT_CI"))) and "--no-ci-wait" not in argv and not os.environ.get("SYNC_NO_CI_WAIT")
+            argv = [a for a in argv if a not in ("--no-ci-wait", "--wait-ci")]
             release_slug = None
             if "--release" in argv:
                 i = argv.index("--release")
@@ -1909,7 +1946,11 @@ def main(argv):
                 raise SyncError(f"unknown arguments to ship: {' '.join(argv[1:])}")
             repo = toplevel(Path.cwd())
             pushed = ship(repo, release_slug=release_slug, after_slug=after_slug)
-            if isinstance(pushed, Pushed) and not no_ci_wait:
+            if isinstance(pushed, Pushed):
+                write_last_pushed(repo, pushed)
+            if isinstance(pushed, Pushed) and not wait_ci:
+                print(f"shipped {pushed.sha[:8]}; CI not awaited: `python scripts/dev/sync.py ci` waits for its verdict (red exits {CI_RED_EXIT}); `ship --wait-ci` waits here")
+            if isinstance(pushed, Pushed) and wait_ci:
                 try:
                     return CI_RED_EXIT if wait_own_ci(pushed, globs=ci_path_filter(repo)) == "red" else 0
                 except KeyboardInterrupt:

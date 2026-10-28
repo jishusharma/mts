@@ -7,8 +7,8 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-28T14:45:15Z",
-    "misses": 0,
+    "folded": "2026-10-28T14:54:41Z",
+    "misses": 5,
     "reads": [],
     "session": "agent-af0ccc58c9972b532"
   },
