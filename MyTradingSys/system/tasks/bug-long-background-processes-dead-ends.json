@@ -31,7 +31,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Built and shipped by the audit owner in one pass (operator HIGH priority, zero-input). DECISION (OURS): state left raw for a reviewer stamp (tasks.py done refuses an unreviewed card); a reviewer checks the diff and marks it done.",
+  "note": "Built and shipped by the audit owner in one pass (operator HIGH priority, zero-input). DECISION (OURS): state left raw for a reviewer stamp (tasks.py done refuses an unreviewed card); a reviewer checks the diff and marks it done.\nWAITING 2026-10-28 (planner-raw-refine): work already shipped (result filled); only a Lab_Guy REVIEWED stamp is missing before tasks.py done.",
   "prio": 1,
   "refine_tries": 1,
   "refined_by": "",
@@ -56,7 +56,7 @@
   "sources": [
     "operator 2026-10-28: background processes run 1h39m+ and most are dead ends"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Mine transcripts for background tasks over 30 min; classify outcome",
     "Cite gaps file:line",

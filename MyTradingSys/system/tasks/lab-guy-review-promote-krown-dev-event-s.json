@@ -20,7 +20,7 @@
     "krown-dev-event-study-levels",
     "krown-dev-event-study"
   ],
-  "note": "",
+  "note": "WAITING 2026-10-28 (planner-raw-refine): fields complete; needs a real Lab_Guy stamp (planner cannot stamp). Batch into the next Lab_Guy pass.",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
@@ -34,7 +34,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Lab_Guy reads krown-dev-event-study-candles and -levels output (DEV_RESULTS.md, TRIAL_LEDGER.csv rows) against roles/lab_guy.md class criteria",
     "Write a real REVIEWED:<date> ACCEPT (or T0-ONLY/reject with reason) stamp into each card's note, non-Gemini, independent of the Sonnet reviewer already noted on -candles",

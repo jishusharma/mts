@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS): scoped as a design note first, per the operator's standing rule for this line of work (see rolling-chain-background-wait-design-rev, coordinator-sits-idle-during-long-backgr): consolidate idea -> refine -> design review -> implement. No evidence file found beyond this card's own title (operator idea 2026-10-26, no transcript on disk). Needs an IMPORTANT review stamp before promotion; this pinned Session_Planner cannot spawn a reviewer Agent (role: spawns nothing) -- recommend the coordinator run a batched Sonnet reviewer Agent on next wake. No stamp fabricated.",
+  "note": "DECISION (OURS): scoped as a design note first, per the operator's standing rule for this line of work (see rolling-chain-background-wait-design-rev, coordinator-sits-idle-during-long-backgr): consolidate idea -> refine -> design review -> implement. No evidence file found beyond this card's own title (operator idea 2026-10-26, no transcript on disk). Needs an IMPORTANT review stamp before promotion; this pinned Session_Planner cannot spawn a reviewer Agent (role: spawns nothing) -- recommend the coordinator run a batched Sonnet reviewer Agent on next wake. No stamp fabricated.\nWAITING 2026-10-28 (planner-raw-refine): fields complete; needs a real Lab_Guy stamp (planner cannot stamp).",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
@@ -32,7 +32,7 @@
     "MyTradingSys/system/SUPER_SESSION.md:14 (D5 rotation rule)",
     "MyTradingSys/research/pipeliner/station_watcher_monitor.py (current STATE-CHANGE triggers)"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Read SUPER_SESSION.md D5 (context rotation), station_watcher_monitor.py's current STATE-CHANGE triggers (liveness flip, lane stall, lease expiry, desk-pending move) and traffic.py's render_status PROPOSED block.",
     "List options for the idle+ready-cards trigger (poll interval, ACTIVE/idle definition, one-per-login enforcement) with cost/risk, pick one default.",

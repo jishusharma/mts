@@ -18,7 +18,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator-run only; no session may start or message it.\nREVIEWED: Lab_Guy 2026-10-28 ACCEPT (independent Sonnet reviewer, first pass)",
+  "note": "Operator-run only; no session may start or message it.\nREVIEWED: Lab_Guy 2026-10-28 ACCEPT (independent Sonnet reviewer, first pass)\nWAITING 2026-10-28 (planner-raw-refine): fields and REVIEWED stamp complete; gate miss is depends_on opus-o1-self-heal-loop (ready, not done). Operator-run only.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -38,7 +38,7 @@
   "sources": [
     "MyTradingSys/research/opus_run_design_2026-10-28/DESIGN.md"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Script counts 7 days of trunk commits by kind",
     "CUTS.md ranked by commits/day saved",
