@@ -92,3 +92,5 @@ Batch 1 applied (dedupe-apply-1): row 1 (supervisor.py strings use HEARTBEAT_MIN
 Batch 2 applied (dedupe-apply-2): row 25 (wt_maint imports cicd_run.SUPERVISOR_LOG_REL; test added), row 26 partly (mts_doctor uses sync.STALE_HOURS, test added; desk.py STALE_CLAIM_H left: desk has no sync import). Remaining: 2-24 (except 25), 26 desk part, 27-33.
 
 Batch 3 applied (dedupe-apply-3): rows 6, 7, 8, 10 (dead defs removed; test_dedupe_dead_code added). Remaining: 2-5, 9, 11-24, 26 desk part, 27-33.
+
+Batch 4 applied (dedupe-apply-4): rows 3, 4, 5, 9 (dead defs removed; test_dedupe_dead_code extended). Remaining: 2, 11-24, 26 desk part, 27-33.

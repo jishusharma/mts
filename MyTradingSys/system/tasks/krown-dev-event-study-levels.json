@@ -20,7 +20,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer Agent reviewers, after 2nd FIX applied once, not re-read, planner DECISION OURS). Split from krown-dev-event-study 2026-10-26 (drafter E). DECISION (OURS 2026-10-26): recall waiver is the safe default - DEV only, every result NO-RECALL-CLEARANCE, nothing promoted. Needs a real review stamp (CRUCIAL). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer Agent reviewers, after 2nd FIX applied once, not re-read, planner DECISION OURS). Split from krown-dev-event-study 2026-10-26 (drafter E). DECISION (OURS 2026-10-26): recall waiver is the safe default - DEV only, every result NO-RECALL-CLEARANCE, nothing promoted. Needs a real review stamp (CRUCIAL). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.\nWAITING 2026-10-28 (planner-raw-refine): fields complete; only gate miss is depends_on krown-dev-event-study (refined). Promote when it is ready.\nLAB_GUY 2026-10-28 NOT STAMPED (see lab-guy-review-promote-krown-dev-event-s): depends on unshipped krown-dev-event-study (no addendum with frozen M1/M3/Z1 grids, no loader, no test_dev_study.py on trunk); tests check table presence only (E4); prior ACCEPT applied a 2nd FIX without re-read. Stays refined.",
   "prio": 2,
   "refine_tries": 1,
   "refined_by": "",
@@ -43,7 +43,7 @@
     "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_CONSOLIDATED.md:239-249",
     "MyTradingSys/research/krown_ta101_2026-10-13/RECALL.md (Result: RECALL FAIL)"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Read the addendum in PRE_REG_KROWN.md (grids for M1, M3, Z1 are frozen there; M1's N is OURS) and the loader from card 1; freeze nothing new.",
     "Add the three failing tests first and run them: they fail.",

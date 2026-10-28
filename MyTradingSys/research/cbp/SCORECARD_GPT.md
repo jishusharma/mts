@@ -20,16 +20,18 @@
 
 | Analyst | Actionable Profile | Total Ingested | Scored Calls | Hits (Net of Fee) | Hit Rate | Status |
 |---|---|---|---|---|---|---|
-| **Krown** | Actionable-6 (`CBP_STATUS_2026-10-27.md:7`) | 0 (local) / $\le$ 13 (prod) | 0 | 0 | N/A | **NOT ENOUGH CALLS** (< 56) |
-| **Rekt Capital** | Actionable-6 (`CBP_STATUS_2026-10-27.md:7`) | 0 (local) / $\le$ 13 (prod) | 0 | 0 | N/A | **NOT ENOUGH CALLS** (< 56) |
-| **Jason Pizzino** | Actionable-6 (`CBP_STATUS_2026-10-27.md:7`) | 0 (local) / $\le$ 13 (prod) | 0 | 0 | N/A | **NOT ENOUGH CALLS** (< 56) |
-| **Michael van de Poppe** | Actionable-6 (`CBP_STATUS_2026-10-27.md:7`) | 0 (local) / $\le$ 13 (prod) | 0 | 0 | N/A | **NOT ENOUGH CALLS** (< 56) |
-| **Michaal van de Poppe** | Actionable-6 (`CBP_STATUS_2026-10-27.md:7`) | 0 (local) / $\le$ 13 (prod) | 0 | 0 | N/A | **NOT ENOUGH CALLS** (< 56) |
-| **Qriptal** | Actionable-6 (`CBP_STATUS_2026-10-27.md:7`) | 0 (local) / $\le$ 13 (prod) | 0 | 0 | N/A | **NOT ENOUGH CALLS** (< 56) |
+| **Krown** | Actionable-6 (`CBP_STATUS_2026-10-27.md:7`) | 4 / 3 rows (snapshot / now) | 0 | 0 | N/A | **NOT ENOUGH CALLS** (< 56) |
+| **Rekt Capital** | Actionable-6 (`CBP_STATUS_2026-10-27.md:7`) | 0 / 0 rows (snapshot / now) | 0 | 0 | N/A | **NOT ENOUGH CALLS** (< 56) |
+| **Jason (Pizzino)** | Actionable-6 (`CBP_STATUS_2026-10-27.md:7`) | 2 / 1 rows (snapshot / now) | 0 | 0 | N/A | **NOT ENOUGH CALLS** (< 56) |
+| **Michael (Pizzino, @MichaelPizzino)** | Actionable-6 (`CBP_STATUS_2026-10-27.md:7`) | 5 / 2 rows (snapshot / now) | 0 | 0 | N/A | **NOT ENOUGH CALLS** (< 56) |
+| **Michaal (van de Poppe, @michaelvdpoppe)** | Actionable-6 (`CBP_STATUS_2026-10-27.md:7`) | 1 / 1 rows (snapshot / now) | 0 | 0 | N/A | **NOT ENOUGH CALLS** (< 56) |
+| **Qriptal** | Actionable-6 (`CBP_STATUS_2026-10-27.md:7`) | 1 / 0 rows (snapshot / now) | 0 | 0 | N/A | **NOT ENOUGH CALLS** (< 56) |
 | **Benjamin Cowen** | Thesis-only (`CBP_STATUS_2026-10-27.md:7`) | 0 (disabled) | 0 | 0 | N/A | **NOT ENOUGH CALLS** (< 56) |
 | **Bob Loukas** | Thesis-only (`CBP_STATUS_2026-10-27.md:7`) | 0 (disabled) | 0 | 0 | N/A | **NOT ENOUGH CALLS** (< 56) |
 | **Jala** | Thesis-only (`CBP_STATUS_2026-10-27.md:7`) | 0 (disabled) | 0 | 0 | N/A | **NOT ENOUGH CALLS** (< 56) |
 | **Crypto Crew University (CCU)** | Thesis-only (`CBP_STATUS_2026-10-27.md:7`) | 0 (disabled / 429) | 0 | 0 | N/A | **NOT ENOUGH CALLS** (< 56) |
+
+*Recount note (2026-10-28, host JIS-NB, `scripts/dev/cbp_scorecard.py`)*: "snapshot" = the 13-row store committed in the CBP repo at `d184752` (run of 2026-10-24); "now" = the 7-row working store (5-day window, rewritten 2026-10-28). Snapshot: Michael 5, Krown 4, Jason 2, Qriptal 1, Michaal 1 (13 rows, 1 rejected); tradable calls (direction, entry, target, invalidation all stated): 1 row, Qriptal, 2 trades. Now: Krown 3, Michael 2, Jason 1, Michaal 1, 0 tradable. The first version of this table said 0 because it was run on host DESKTOP-F7IU69N, which has no store. Michael and Michaal are two different analysts (`F:/CryptoScrapper/cbp_v2/analysts.json`: Michael = `@MichaelPizzino`, Michaal = `@michaelvdpoppe`); the earlier table mislabelled Michael as van de Poppe. DECISION (OURS): keep the store's own short names, never merge them. Scored calls stay 0: no call has an outcome yet.
 
 *Summary*: Every evaluated analyst is marked **NOT ENOUGH CALLS**. Zero analysts qualify for weight assignment or promotion consideration.
 

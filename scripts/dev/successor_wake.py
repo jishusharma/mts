@@ -118,8 +118,9 @@ def iso(d: datetime) -> str:
 
 def plan_fire_at(plan: dict | None, now: datetime) -> tuple[datetime, str]:
     """Pure: budget-aware fireAt from the pacer's last plan (supervisor.pace_plan). Returns (when, why).
-    slots >= 1 or any non-STOP mode -> now (incl. T-48h weekly drain window when 5h slots are open).
-    STOP -> the weekly reset when the week is at cap, else the next 5 h reset (+GRACE).
+    slots >= 1 -> now (incl. T-48h weekly drain window when 5h slots are open).
+    slots < 1 (gate-blocked, ANY mode: STOP, SUPERVISOR-ONLY, CRUCIAL-ONLY) -> the weekly reset when the week is at cap,
+    else the next 5 h reset (+GRACE). Waking now would hit the same gate and end with nothing re-registered.
     No plan / unreadable -> now (OURS: a missing reading must not stall the chain)."""
     if not plan:
         return now, "no pacer reading: now"
@@ -127,7 +128,7 @@ def plan_fire_at(plan: dict | None, now: datetime) -> tuple[datetime, str]:
         slots = int(plan.get("slots", 1))
     except (TypeError, ValueError):
         slots = 1
-    if slots >= 1 or plan.get("mode") != "STOP":
+    if slots >= 1:
         wk_raw = plan.get("week_reset")
         wk_dt = _parse(wk_raw)
         if wk_dt is not None:
@@ -148,8 +149,8 @@ def plan_fire_at(plan: dict | None, now: datetime) -> tuple[datetime, str]:
     key = "week_reset" if week_cap else "five_reset"
     r = _parse(plan.get(key))
     if r is None or r + timedelta(minutes=GRACE_MIN) <= now:
-        return now, f"pacer STOP but {key} unreadable/past: now"
-    return r + timedelta(minutes=GRACE_MIN), f"pacer STOP: next {key} {iso(r)}"
+        return now, f"pacer {plan.get('mode', '?')} slots {slots} but {key} unreadable/past: now"
+    return r + timedelta(minutes=GRACE_MIN), f"pacer {plan.get('mode', '?')} slots {slots}: next {key} {iso(r)}"
 
 
 def check_checkout(cwd: Path) -> None:
