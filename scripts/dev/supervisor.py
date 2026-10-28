@@ -879,7 +879,7 @@ def pace_plan(now: datetime, rd: dict, cap: float, hist=(), running: int = 0) ->
             "cap": cap, "k": k, "k_measured": bool(k_meas), "room": round(room, 1), "target": round(target), "h_left": round(h_left, 2),
             "burn": None if burn is None else round(burn, 2), "projected": None if projected is None else round(projected),
             "five_reset": r5.strftime("%Y-%m-%dT%H:%MZ"), "week_reset": (rw or now + timedelta(days=7)).strftime("%Y-%m-%dT%H:%MZ"),
-            "transit": (r5 - timedelta(minutes=TRANSIT_MIN)).strftime("%Y-%m-%dT%H:%MZ"), "why": "; ".join(why)}
+            "transit": (r5 - timedelta(minutes=TRANSIT_MIN)).strftime("%Y-%m-%dT%H:%MZ"), "ceil": ceil, "why": "; ".join(why)}
 
 
 def heartbeat_text(login: str, host: str, plan: dict, dsa: str | None = None, free: int | None = None, mode: str | None = None,
@@ -1190,14 +1190,14 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
     now = now or _now_utc()
     host = CN(host or socket.gethostname())
     login = login.strip().upper()[:1]
-    rd = {**rd, "at": now.strftime("%Y-%m-%dT%H:%M:%SZ")}
+    rd = {**rd, "at": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "sid": session_ident(), "tree": str(Path(repo).resolve()), "host": host}
     hist = record_reading(login, rd, home)
     rw = _utc(rd.get("week_reset"))
     gs = read_gate_slots(repo)
     pl = pace_plan(now, rd, weekly_cap(login, host, (rw - now).total_seconds() / 3600 if rw else None), hist[:-1], running)
     prev = _last_plan(login, home)
     notes, ctx = [], {}
-    ctx["transit_now"] = transit_reason(context_tokens, wave_start or wave_start_from(hist, now), now)
+    ctx["transit_now"] = transit_reason(pl, now, context_tokens, wave_start or wave_start_from(hist, now, rd["sid"]))
     if not no_fetch:
         try:
             fetch_origin(repo)
@@ -1349,9 +1349,23 @@ _CHECK_OK = re.compile(r"^(git|python scripts/dev/)\S*")
 _CHECK_BAD = re.compile(r"[;`$<>]|&&|\|\|")
 
 
-def transit_reason(context_tokens: int | None, wave_start: datetime | None, now: datetime) -> str:
-    """Pure: '' while the wave may go on, else why the coordinator writes its hand-over now (150K context or 3 h, whichever first)."""
+# B2 (2026-10-28): the one transit rule. roles/supervisor.md and SUPER_SESSION.md quote it verbatim (test_one_transit_rule_code_and_docs_agree).
+TRANSIT_RULE = ("TRANSIT = the first of: 5 h at the stop (80%, 95% in the last 2 h before the weekly reset), the `TRANSIT at` time "
+                "(20 min before the 5 h reset), this session's own wave >= 3 h, or --context-tokens >= 150000")
+
+
+def transit_reason(pl: dict, now: datetime, context_tokens: int | None = None, wave_start: datetime | None = None) -> str:
+    """Pure: '' while the wave may go on, else why the coordinator writes its hand-over now (TRANSIT_RULE, whichever first).
+    `pl` = pace_plan's dict (five, ceil, transit); wave_start = this session's first reading (wave_start_from with its sid)."""
     why = []
+    try:
+        if float(pl.get("five", 0)) >= float(pl.get("ceil") or SPAWN_CEIL):
+            why.append(f"5 h {float(pl['five']):g}% >= stop {float(pl.get('ceil') or SPAWN_CEIL):g}%")
+    except (TypeError, ValueError):
+        pass
+    t = _utc(pl.get("transit"))
+    if t is not None and now >= t:
+        why.append(f"TRANSIT at {pl['transit']} passed")
     if context_tokens is not None and context_tokens >= TRANSIT_CONTEXT:
         why.append(f"context {context_tokens / 1000:.0f}K >= {TRANSIT_CONTEXT // 1000}K")
     if wave_start is not None and (now - wave_start).total_seconds() >= TRANSIT_HOURS * 3600:
@@ -1359,9 +1373,10 @@ def transit_reason(context_tokens: int | None, wave_start: datetime | None, now:
     return "; ".join(why)
 
 
-def wave_start_from(hist, now: datetime) -> datetime | None:
-    """Pure: start of the contiguous run of readings (gap <= WAVE_GAP_MIN) that ends at the newest one; None without timestamps."""
-    ts = sorted(t for t in (_utc(r.get("at")) for r in hist if isinstance(r, dict)) if t)
+def wave_start_from(hist, now: datetime, sid: str | None = None) -> datetime | None:
+    """Pure: start of the contiguous run of readings (gap <= WAVE_GAP_MIN) that ends at the newest one; None without timestamps.
+    sid: only that session's readings (B2: the per-login file is shared, a successor must not inherit its predecessor's wave)."""
+    ts = sorted(t for t in (_utc(r.get("at")) for r in hist if isinstance(r, dict) and (sid is None or r.get("sid") == sid)) if t)
     if not ts:
         return None
     start = ts[-1]
@@ -1653,7 +1668,7 @@ def render_handover(login: str, host: str, now: datetime, last: dict, claims: li
     L = [f"# Supervisor {login} handover | written {u} by {host} | verify: python scripts/dev/supervisor.py handover --verify   (STALE 0 at last boot)", "",
          "## Goal",
          f"Login {login} on {host}: mode {pl.get('mode', '?')}, 5 h {pl.get('five', '?')}% (reset {pl.get('five_reset', '?')}), week {pl.get('week', '?')}% of cap {pl.get('cap', '?')}.",
-         f"Stop at 5 h >= {SPAWN_CEIL}%, week >= cap, CI red, no ready cards, or a {TRANSIT_HOURS:g} h wave.", "",
+         f"Stop at 5 h >= {SPAWN_CEIL}%, week >= cap, CI red, no ready cards, the TRANSIT at time, or a {TRANSIT_HOURS:g} h wave.", "",
          "## Truth",
          f"- Peers live at write: {peers or 'none'} | `python scripts/dev/sync.py where --all` | read at {u}",
          f"- Last picks: {picks} | `python scripts/dev/tasks.py dispatch` | read at {u}",
@@ -1669,6 +1684,28 @@ def render_handover(login: str, host: str, now: datetime, last: dict, claims: li
     return "\n".join(L)
 
 
+HANDOVER_GUARD_MIN = 10        # another planner of the login this recent = it is alive: no second hand-over writer (B1, OURS)
+
+
+def session_ident() -> str:
+    """Who is planning: the Claude Code session id, else the Claude pid, else this process's folder (OURS)."""
+    return os.environ.get("CLAUDE_CODE_SESSION_ID") or os.environ.get("CLAUDE_PID") or str(Path.cwd().resolve())
+
+
+def other_planner(login: str, now: datetime, sid: str, home=None, minutes: int = HANDOVER_GUARD_MIN) -> dict | None:
+    """The newest reading of `login` from another session within `minutes`, else None. Readings without a sid (written before
+    2026-10-28) never block: their origin is unknown (OURS)."""
+    try:
+        rows = [json.loads(x) for x in (loop_home(home) / f"{login}.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+    except (OSError, ValueError):
+        return None
+    for r in reversed(rows):
+        t = _utc(r.get("at")) if isinstance(r, dict) else None
+        if t and r.get("sid") and r["sid"] != sid and -60 <= (now - t).total_seconds() <= minutes * 60:
+            return r
+    return None
+
+
 def _old_missed(p: Path) -> list | None:
     try:
         for h, body in split_sections(p.read_text(encoding="utf-8"))[1]:
@@ -1680,14 +1717,24 @@ def _old_missed(p: Path) -> list | None:
 
 
 def handover(repo: Path, login: str, note: str = "", host: str | None = None, home=None, now: datetime | None = None,
-             send: bool = False, role: str = "supervisor", text: str | None = None, wake: bool = False) -> Path:
+             send: bool = False, role: str = "supervisor", text: str | None = None, wake: bool = False, force: bool = False,
+             sid: str | None = None) -> Path:
     """Write the fixed-form hand-over (7 sections, or the Lead's 8) and return its path. `text` = a file the agent wrote; without it the
-    form is rendered from the last plan. A form that breaks the caps or carries `## Update` raises ValueError and writes nothing."""
+    form is rendered from the last plan. A form that breaks the caps or carries `## Update` raises ValueError and writes nothing.
+    B1: one hand-over writer per login: another Supervisor of the login that planned in the last HANDOVER_GUARD_MIN minutes
+    raises ValueError naming it (it is alive and owns the login), unless force."""
     import sync
     now = now or _now_utc()
     host = CN(host or socket.gethostname())
     login = (login or "").strip().upper()[:1]
     p = handover_path(repo, login, role, now)
+    if role != "lead" and not force:
+        o = other_planner(login, now, sid or session_ident(), home)
+        if o:
+            age = (now - _utc(o["at"])).total_seconds() / 60
+            raise ValueError(f"another Supervisor {login} is live: session {str(o['sid'])[:8]} in {o.get('tree', '?')} on "
+                             f"{o.get('host', '?')} planned {age:.0f} min ago (< {HANDOVER_GUARD_MIN}). One hand-over writer per login: "
+                             f"leave it to that session and end without a hand-over, or rerun with --force if it is gone")
     if text is None:
         try:
             last = json.loads((loop_home(home) / f"{login}-last-plan.json").read_text(encoding="utf-8"))
@@ -1762,6 +1809,7 @@ def main(argv: list[str] | None = None) -> int:
     p_ho.add_argument("--login", default=None, help="optional: detected from the app account")
     p_ho.add_argument("--note", default="", help="one line: what the successor does first")
     p_ho.add_argument("--no-send", action="store_true", help="do not send the ENDED heartbeat")
+    p_ho.add_argument("--force", action="store_true", help="write although another Supervisor of the login planned < 10 min ago (B1)")
     p_ho.add_argument("--no-wake", action="store_true", help="do not register the one-time successor task (SCHEDULING_POLICY 4b2; default: register)")
     p_ho.add_argument("--role", "--kind", dest="role", choices=("supervisor", "lead"), default="supervisor",
                       help="lead: the Lead's 8-section resume file handover/LEAD_RESUME_<date>.md")
@@ -1846,7 +1894,7 @@ def main(argv: list[str] | None = None) -> int:
                 return 2
         try:
             p = handover(repo, args.login or "", note=args.note, send=not args.no_send, role=args.role, text=text,
-                         wake=not args.no_wake)
+                         wake=not args.no_wake, force=args.force)
         except ValueError as e:
             print(f"REFUSED, nothing written: {e}")
             return 2
