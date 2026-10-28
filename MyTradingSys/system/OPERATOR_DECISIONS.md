@@ -1357,3 +1357,8 @@ REMOVED 2026-10-24 (43d3bfc8f): offer_guard.py is gone; the rule now lives in CL
 ```json
 {"id": "d-live-trading-dashboard-built-live", "order": 55, "date": "2026-10-28", "status": "DECIDED", "question": "What dashboard does the operator want while trading?", "answer": "OPERATOR (voice, 2026-10-28): 'i need trading dashboard - a cool one! highly performance oriented - and it will be build live with my reqs and current live usage'; earlier: 'use opus - strict narrow dashboard that suits my style - we will add functions step by step'; and 'we can also see its diff timeframes to compare what played out at lower time frames since last weeks' (heatmap across timeframes). DECISION (OURS): Opus Builder builds a narrow v1 (price+clock, manual position and ladder, 1m/5m/15m RSI-BB-ATR strip, levels), every later requirement becomes a step in MyTradingSys/tools/live_aid/STEPS.md with his words verbatim. Observation only, no signals.", "done": "Opus Builder running; liquidation trust ledger in research/liquidation_layer_2026-10-28/"}
 ```
+
+## d-krown-s8-e2-desk-crosscheck-go | decided 2026-10-28 | Fable R6 (fable-run6-powered-prereg)
+```json
+{"id": "d-krown-s8-e2-desk-crosscheck-go", "order": 56, "date": "2026-10-28", "status": "DECIDED", "question": "Run a simulator-desk cross-check of the E2 Krown S8 4h trade list (BTCUSDT 2022-04-01..2024-06-30) to prove the trade mechanics agree between e2_run.py and the desk Krown study?", "answer": "OPERATOR (chat 2026-10-28, after asking whether the simulator can prove what E2 tested): 'Yes, run it'. Sonnet card krown-s8-e2-desk-crosscheck, session started the same turn. Mechanics proof only; the E2 verdict (INCONCLUSIVE) is untouched.", "done": "card krown-s8-e2-desk-crosscheck filed and started."}
+```
