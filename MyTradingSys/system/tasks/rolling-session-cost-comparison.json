@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T15:13:23Z",
   "commands": [],
   "created": "2026-10-28T08:13:44Z",
   "depends_on": [],
@@ -12,7 +13,14 @@
   "goal": "Measure how long rolling Supervisor sessions run before data consumption becomes a problem, and what past issues looked like, from existing logs, heartbeats and turn_meter data only.",
   "id": "rolling-session-cost-comparison",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "research/rolling_session_cost_2026-10/REPORT.md: 7 sessions, 13 issues, file:line sources",
+      "ref": "b9d955903",
+      "utc": "2026-10-28T15:13:23Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -22,7 +30,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T08:13:58Z",
   "refs": [],
-  "result": "",
+  "result": "research/rolling_session_cost_2026-10/REPORT.md: 7 sessions, 13 issues, file:line sources",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/rolling_session_cost_2026-10/REPORT.md"
   ],
@@ -34,12 +47,13 @@
   "sources": [
     "MyTradingSys/system/OPERATOR_DECISIONS.md d-measure-rolling-cost"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Find the data: turn_meter output, supervisor heartbeats, SUPERVISOR_LOG, runtime logs (grep, no guessing)",
     "Build the per-session table with a script; mark missing cells NOT_IN_DATA",
     "List past issues (budget burn, context bloat, early ends) with file:line sources; write REPORT.md"
   ],
+  "taken": "2026-10-28T15:13:23Z",
   "tests": "none: research report; script output pasted in REPORT.md",
   "title": "Rolling sessions: measured cost comparison (how long they run before data use hurts, past issues)",
   "weight": "ROUTINE",
