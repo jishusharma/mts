@@ -6,6 +6,21 @@
     "python MyTradingSys/research/fable_run6_powered_prereg/e2_run.py",
     "python scripts/dev/verdicts.py backfill"
   ],
+  "context": {
+    "calls_to_edit": 16,
+    "folded": "2026-10-28T10:20:24Z",
+    "misses": 57,
+    "reads": [
+      "scripts/dev/verdicts.py",
+      "MyTradingSys/research/layer_lab/TRIALS.md",
+      "scripts/dev/extra_tests.tsv",
+      "MyTradingSys/backtest/layers/FORMULAS.md",
+      "MyTradingSys/backtest/fees.py",
+      "MyTradingSys/research/carry_basis_2026-10-18/RESULT.md",
+      "MyTradingSys/research/VERDICTS.csv"
+    ],
+    "session": "agent-a4b08af1aaa540e8e"
+  },
   "created": "2026-10-28T09:26:34Z",
   "depends_on": [],
   "done_when": "research/fable_run6_powered_prereg/RESULT.md with a `Verdict arms` table (C0 + 8 strata), the kill sentence and freeze bar from PRE_REG.md; e2_run.py + test_e2_run.py on trunk; 9 rows in layer_lab/TRIALS.md and TRIAL_LEDGER.csv; verdicts.py backfill parses C0; test proves no bar >= 2024-07-01 is loaded.",

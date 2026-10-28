@@ -276,8 +276,7 @@ def main(argv=None):
                                  cost_r=f'{cr:.4f}', data_from='', months_missing='', note=f'm={m} z_holm={z_holm(m):.3f} n_needed={need:.0f} '
                                  f'{"POWERED" if ss and len(days) >= need else "NOT POWERED"}'))
     with open(a.out, 'w', newline='\n', encoding='utf-8') as fh:
-        w = csv.DictWriter(fh, fieldnames=list(rows_out[0].keys()), lineterminator='
-')
+        w = csv.DictWriter(fh, fieldnames=list(rows_out[0].keys()), lineterminator=chr(10))
         w.writeheader()
         w.writerows(rows_out)
     for r in rows_out:
