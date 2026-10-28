@@ -1,11 +1,17 @@
-"""Live levels-confluence layer (wave W2a): first touch of the 8 KEEP level families, 1m bars, alert-only.
+"""Live levels-confluence layer (wave W2a): first touch of 8 level families, 1m bars, alert-only.
+
+STATUS (KEEP_STATUS = COLLECTION_ONLY_LC1_FAIR_KEEP_EMPTY): the 8 families below are the W3 testnet DATA-COLLECTION
+universe (operator 2026-10-16), NOT an edge claim. The old LC1 "KEEP" prior was scored against a void control; on the
+fair control (levels_hold.md fair-control section, DEV 2022-04-01..2024-06-30) the LC1 KEEP list is EMPTY (0 of 12).
+The name KEEP is kept for the tuple only. DECISION (OURS): tuple and emitted events unchanged, silencing a data
+source is the operator's call.
 
 Reference: research/levels_confluence_2026-10-14/levels.py (builder) and event_table.py (first-touch rows); the Q79 rule
 (commit e6a3b0be) fixes the side: taken from the PREVIOUS bar's close vs the level, never from the touch bar.
 The research files are NOT imported (live code must not depend on research dirs); the logic is restated here.
 
 Point in time: the levels of UTC day d are built only from bars with t < d*DAY_MS (a prior-day level does not exist
-before the 00:00 UTC close of its source day). Families (LC1 levels_hold.md KEEP): prior_day_high, prior_day_low,
+before the 00:00 UTC close of its source day). Families (legacy LC1 KEEP set, collection universe only): prior_day_high, prior_day_low,
 prior_day_poc, naked_poc, 4h_fractal_high, 4h_fractal_low, round_1000, prior_week_high.
 
 Known caveat: the Java level builder matches these Python zones only 54.9% (level ledger, commit 59b85fd2); this module
@@ -18,6 +24,7 @@ from collections import defaultdict
 DAY_MS = 86_400_000
 MIN_MS = 60_000
 BIN_USD = 10.0
+KEEP_STATUS = "COLLECTION_ONLY_LC1_FAIR_KEEP_EMPTY"
 KEEP = ("prior_day_high", "prior_day_low", "prior_day_poc", "naked_poc",
         "4h_fractal_high", "4h_fractal_low", "round_1000", "prior_week_high")
 ADAPTER_DAYS = 2   # adapter reports the last N UTC days present (alert_emitter dedups on (t, event))
