@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest scripts/dev/test_verify_extract_quotes.py -q",
+    "python -m pytest MyTradingSys/tests -k quote -q --basetemp F:/MTS/scratch/codex-cbp-empty-evidence-pytest"
+  ],
+  "created": "2026-10-28T13:46:42Z",
+  "depends_on": [],
+  "done_when": "A temporary CBP extract with a valid header and evidence: \"\" produces exactly one checker problem; valid quoted evidence still verifies; existing no-evidence no-caption behavior is unchanged. The new regression fails before the parser fix and passes after.",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "An explicitly empty quoted CBP evidence value (evidence: \"\") is currently ignored because CBP_EVIDENCE requires at least one character. Make this malformed quote fail closed, without changing behavior for records with no evidence line (e.g. no-captions outcomes).",
+  "id": "cbp-empty-quoted-evidence",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "scripts/dev/test_verify_extract_quotes.py::test_cbp_empty_quoted_evidence_fails",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/verify_extract_quotes.py",
+    "scripts/dev/test_verify_extract_quotes.py"
+  ],
+  "scope_out": [
+    "CBP store/repo; real rows/transcripts; policy for files with no evidence line; unrelated GPS ambiguity"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/cbp/QUOTE_REVIEW_GPT.md",
+    "MyTradingSys/research/cbp/GPT_CBP_GUIDE.md",
+    "MyTradingSys/system/tasks/cbp-quote-empty-fragment-word-boundary.json"
+  ],
+  "state": "raw",
+  "steps": [
+    "Add an isolated regression with a CBP header and explicit evidence: \"\"; confirm failure on current code.",
+    "Adjust only the CBP evidence parser so an empty quoted value reaches the existing fail-closed empty-normalization check.",
+    "Run focused verifier tests and quote-specific integration tests, then ship through sync.py."
+  ],
+  "tests": "scripts/dev/test_verify_extract_quotes.py::test_cbp_empty_quoted_evidence_fails; python -m pytest scripts/dev/test_verify_extract_quotes.py -q",
+  "title": "verify_extract_quotes ignores explicitly empty CBP evidence",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
