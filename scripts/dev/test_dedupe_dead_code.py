@@ -15,6 +15,8 @@ DEAD = {
     "role_loader.py": "explicit_role",
     "role_loader.py#2": "clean_prompt",
     "c_drive_guard.py": "sync_script",
+    # batch 5 (fresh single-occurrence scan)
+    "indicator_audit_compare.py#2": "engine_bb_live",
 }
 
 
@@ -35,6 +37,11 @@ class DeadCode(unittest.TestCase):
         for name in ("PILOT3_HAIKU.md", "PILOT3_RESULTS.md", "SUPER_RUN_2H.md"):
             self.assertFalse((REPO / "MyTradingSys/system/handover" / name).exists(), name)
             self.assertTrue((REPO / "MyTradingSys/system/handoff_history" / name).exists(), name)
+
+    def test_batch5_unreferenced_dated_doc_in_history(self):
+        # INFRA.md row 18: HOST_WORKTREES_2026-10-21 had zero readers (git grep -F), so it is history
+        self.assertFalse((REPO / "MyTradingSys/system/HOST_WORKTREES_2026-10-21.md").exists())
+        self.assertTrue((REPO / "MyTradingSys/system/handoff_history/HOST_WORKTREES_2026-10-21.md").exists())
 
 
 if __name__ == "__main__":
