@@ -2,33 +2,72 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T14:36:29Z",
+    "misses": 13,
+    "reads": [
+      "MyTradingSys/system/ANNOUNCEMENTS.md",
+      "MyTradingSys/system/TASK_REFINEMENT.md",
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/gemini_queue.py",
+      "scripts/dev/test_gemini_queue.py",
+      "scripts/dev/run_extra_tests.py",
+      "scripts/dev/trunk_lag.py",
+      "MyTradingSys/research/fix_verification_2026-10-28/REPORT.md"
+    ],
+    "session": "agent-afd6f11015841b051"
+  },
   "created": "2026-10-28T13:08:14Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "sync.py PUSH_RACE_RE matches 'reference already exists' and push_race_lost() is True for that stderr; new test in scripts/dev/test_sync_push_race.py passes, fails on the old regex.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Race loser on first creation of origin/claims is retried: PUSH_RACE_RE also matches git's 'reference already exists'.",
   "id": "sync-py-push-race-re-misses-reference-al",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "B3: workers get their own WORKTREE; a nested worktree's files never block the parent",
+      "ref": "af2d5b82bdea",
+      "utc": "2026-10-28T14:04:42Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "scripts/dev/sync.py:1299 PUSH_RACE_RE lacks 'reference already exists' (git stderr when two creators race to create origin/claims first time), so the race loser is not retried. Found by gemini-queue-two-process-race-test (shipped 4be68ddc). Fix: add the phrase; test with fake stderr, fail-first.",
+  "note": "REVIEWED:2026-10-28 ACCEPT | DRAFT 2026-10-28 Session_Planner (OURS). Tooling freeze A-20261024-2 ENDED 2026-10-24; one-line fix allowed. Unblocks gemini-queue-two-process-race-test (depends_on). Original: sync.py:1299 PUSH_RACE_RE lacks 'reference already exists' (git stderr when two creators race to create origin/claims first time).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-28T14:34:43Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "scripts/dev/sync.py",
+    "scripts/dev/test_sync_push_race.py"
+  ],
+  "scope_out": [
+    "any other sync.py logic, gate, claim format"
+  ],
+  "scope_sha": "af2d5b82bdea",
+  "size": "S",
+  "sources": [
+    "scripts/dev/sync.py:1366 PUSH_RACE_RE",
+    "gemini-queue-two-process-race-test (found it, 4be68ddc)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Fail-first: write test calling sync.push_race_lost(CompletedProcess(1,'','! [remote rejected] claims (reference already exists)')) and the plain-auth-failure negative; run it, see it fail.",
+    "One-line fix at scripts/dev/sync.py:1366: add |reference already exists to PUSH_RACE_RE; rerun test; if the file is not in extra_tests.tsv add a row.",
+    "Verify: content sha, git cherry origin/fast-track <sha> empty, ls-tree lists both files."
+  ],
+  "tests": "scripts/dev/test_sync_push_race.py::test_reference_already_exists_is_a_lost_race (fake stderr via subprocess.CompletedProcess; run on pre-change sync.py first: must fail)",
   "title": "sync.py PUSH_RACE_RE misses 'reference already exists' on first creation of origin/claims",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }
