@@ -3,6 +3,7 @@
   "entries": {
     "MyTradingSys/backtest/layers/alerts/live_validation.py": {
       "disp": "PARKED",
+      "ref": "live-validation-store-signal-chart-hook",
       "why": "Live-validation store, doubts list and signal-to-chart hook (task live-validation-store-signal-chart-hook); the hook is a separate module the Malkan signal path calls with injected render_chart/send. Wiring into the live signal path is a later live-tree change (coordinator deploy), not done here."
     },
     "scripts/ops/nuc_create_mts_shares.ps1": {
