@@ -1,10 +1,13 @@
 {
   "done_when": "A single value (or NULL) with the frame time, recorded against row F12-m2 field stop in MyTradingSys/research/fabio_transfer/RV05_H2_READS.csv follow-up",
+  "finished": "2026-10-28T00:03:50Z",
   "from": "JIS-NB",
+  "host": "DESKTOP-F7IU69N",
   "id": "20261026-153028-blind-read-f12-m2-stop-price-tag-at-t-31",
   "need": "Non-Claude blind read of the red STP order price tag (right edge) in DyS79Eb92Ug.f398.mp4 at t=3150 s (full-res 1280x720, frame ~y=475, x 950-995; also the -10 STP dollar label). Candidates differ by one tick pair: 25098.75 vs 25098.25. Return the number or NULL; do not infer from the dollar label.",
   "posted": "2026-10-26T15:30:28Z",
-  "status": "pending",
+  "result": "DONE RV05_H2_READS.csv row F12-m2,stop,3150,25098.25 filled (resolved to the lower candidate tick)",
+  "status": "done",
   "target": "DSA-NUC",
   "title": "Blind read: F12-m2 stop price tag at t=3150"
 }
