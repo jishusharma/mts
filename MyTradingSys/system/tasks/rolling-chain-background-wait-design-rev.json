@@ -1,7 +1,17 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T12:14:58Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": 14,
+    "folded": "2026-10-28T12:15:06Z",
+    "misses": 21,
+    "reads": [
+      "scripts/dev/traffic.py"
+    ],
+    "session": "agent-a685964261d727f96"
+  },
   "created": "2026-10-27T20:33:04Z",
   "depends_on": [],
   "done_when": "A design note under MyTradingSys/research/lead/ lists the candidate levers (smaller S-size cards instead of M; raise MAX_RUNNING in usage_reminder.py past 2 with evidence it is safe; --quick gate where paths allow instead of --full; batch several small cards into one dispatch to amortize the gate run once) with the cost/risk of each, and picks a default. No code changes in this card.",
@@ -12,7 +22,14 @@
   "goal": "Operator asked why rolling-chain background agents (Agent-tool dispatches) sit 15-25 min each and wants that consolidated into one design before any fix is coded. Each link currently: reads full card brief, edits files, runs the smoke/full gate (run_all_tests.py), re-verifies pinned regression numbers, commits, sync.py ship (CI gate). That cycle is the real cost, not idle wait.",
   "id": "rolling-chain-background-wait-design-rev",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "design note MyTradingSys/research/lead/2026-10-28_rolling-chain-link-latency-levers.md: 4 ",
+      "ref": "f07e16ee2",
+      "utc": "2026-10-28T12:14:58Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -22,7 +39,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T12:01:22Z",
   "refs": [],
-  "result": "",
+  "result": "design note MyTradingSys/research/lead/2026-10-28_rolling-chain-link-latency-levers.md: 4 levers with cost/risk and AUDIT/gate_timing evidence; default (OURS) batch up to 3 non-overlapping non-live-path cards per gate+ship, MAX_RUNNING stays 2; follow-up rolling-chain-batched-dispatch-impl",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/lead/*.md (new design note only)"
   ],
@@ -32,12 +54,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Pull timing evidence: grep recent sync.py ship / gate run durations from the last 6 rolling-chain links for a real baseline, not a guess.",
     "List levers with tradeoffs (card size, MAX_RUNNING, gate scope, batching) and pick one default; write the note.",
     "Open ONE follow-up implementation card (tasks.py new) that points at this note; that follow-up card is only markable done once it ships with passing tests and the test output attached as proof in its result field."
   ],
+  "taken": "2026-10-28T12:14:58Z",
   "tests": "Design-only: no tests to run yet. The note itself must show, per lever, what existing test or CI evidence it leans on (e.g. gate timing from recent sync.py ship logs).",
   "title": "rolling-chain background wait: design review before fix",
   "weight": "IMPORTANT",

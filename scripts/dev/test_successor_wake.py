@@ -124,6 +124,24 @@ def test_budget_aware_fire_at(tmp_path):
     assert "-Once -At $FireAt" in s["script"] and s["fire_at"] == "2026-10-27T15:02Z"
 
 
+def test_gate_blocked_slots0_waits_for_reset_any_mode(tmp_path):
+    base = {"slots": 0, "five": 63, "week": 40, "cap": 85, "five_reset": "2026-10-27T15:00Z", "week_reset": "2026-11-01T00:00Z"}
+    for mode in ("CRUCIAL-ONLY", "SUPERVISOR-ONLY", "NORMAL"):
+        assert W.plan_fire_at({**base, "mode": mode}, NOW)[0] == datetime(2026, 10, 27, 15, 2, tzinfo=timezone.utc), mode
+    # week at cap -> weekly reset
+    assert W.plan_fire_at({**base, "mode": "CRUCIAL-ONLY", "week": 86}, NOW)[0] == datetime(2026, 11, 1, 0, 2, tzinfo=timezone.utc)
+    # unreadable / past reset keeps the now fallback
+    assert W.plan_fire_at({**base, "mode": "CRUCIAL-ONLY", "five_reset": "junk"}, NOW)[0] == NOW
+    assert W.plan_fire_at({**base, "mode": "CRUCIAL-ONLY", "five_reset": "2026-10-27T11:00Z"}, NOW)[0] == NOW
+    s = W.register("A", cwd=_repo(tmp_path), dry=True, now=NOW, plan={**base, "mode": "CRUCIAL-ONLY"})
+    assert "-Once -At $FireAt" in s["script"] and s["fire_at"] == "2026-10-27T15:02Z"
+
+
+def test_slots1_fires_now_even_in_crucial_only():
+    plan = {"mode": "CRUCIAL-ONLY", "slots": 1, "five": 50, "week": 40, "cap": 85, "five_reset": "2026-10-27T15:00Z"}
+    assert W.plan_fire_at(plan, NOW)[0] == NOW
+
+
 def test_real_path_records_one_line_and_second_run_updates(tmp_path):
     repo = _repo(tmp_path)
     ho = repo / W.HANDOVER_REL.format("C")

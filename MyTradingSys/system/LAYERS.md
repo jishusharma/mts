@@ -204,6 +204,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/system/NEXT_SESSION.md`
 - Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-live_engine-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-live_engine-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `live-mirror-follow-live-host-move` raw p1 SONNET: live_mirror.py hard-codes JIS-NB (LIVE_HOST, share \JIS-NB\MTS-Mirror); live loop is on desktop-f7iu69n (Lenov
   - `live-validation-store-signal-chart-hook` ready p2 SONNET: Live validation: per-category verdict store, doubts list, live signal-to-chart hook (first layer: Malkan RSI d
   - `state-code-accumulator-backfill` refined p2 JIS-NB: StateCodeEmitter: backfill session CVD/cum_pv/cum_vol after restart and WS reconnect, fail closed on backfill 
   - `statecode-backfill-race-coverage` ready p2 JIS-NB: StateCodeEmitter: cover in-flight rollover reconnect and retry scheduling
@@ -242,11 +243,10 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `confluence-s5-fable-verdict` refined p2 SONNET: Confluence S5: Fable verdict on DEV results, what goes to the one VALIDATION read (then ship, S6)
   - `krown-data-cme-btc-volume` refined p2 SONNET: Krown CME BTC futures daily volume (public data only) as third volume arm
   - `krown-dev-event-study` refined p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
-  - `krown-dev-event-study-candles` raw p2 SONNET: Krown DEV event study 3/3: candle hypotheses H-C1, H-C2 (H-T1 not run); DONE when: DEV_RESULTS.md has N, power
-  - `krown-dev-event-study-levels` raw p2 SONNET: Krown DEV event study 2/3: level and moving-average hypotheses H-M1, H-M3, H-Z1 (H-M2 not run); DONE when: DEV
+  - `krown-dev-event-study-candles` refined p2 SONNET: Krown DEV event study 3/3: candle hypotheses H-C1, H-C2 (H-T1 not run); DONE when: DEV_RESULTS.md has N, power
+  - `krown-dev-event-study-levels` refined p2 SONNET: Krown DEV event study 2/3: level and moving-average hypotheses H-M1, H-M3, H-Z1 (H-M2 not run); DONE when: DEV
   - `krown-hidden-divergence-confluence-feed` ready p2 SONNET: Krown hidden divergence as a shared confluence feed any layer (RSI 40-60 included) can consume; Malkan layer s
-  - `krown-s8-4h-validation-read` raw p2 SONNET: Krown S8 4h: the ONE VALIDATION read (2024-07-01..2025-06-30) after a DEV PASS; BLOCKED until the operator say
-  - `trendline-count-only-v2` ready p2 SONNET: Trend-line count-only v2 and PRE_REG v2: first_touch vs all_touches, retest/reclaim counts, causal terciles, k
+  - `krown-s8-4h-validation-read` refined p2 SONNET: Krown S8 4h: the ONE VALIDATION read (2024-07-01..2025-06-30) after a DEV PASS; BLOCKED until the operator say
   - `krown-other-sources-event-study-videos` ready p3 SONNET: Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigg
   - `layer-review-krown-wavetrend` ready p3 SONNET: Layer review sheet: Krown and WaveTrend (idea, source, backtests, bugs, confluence)
   - `trendline-ledger-registry-hygiene` ready p3 SONNET: Trend-line daily ledger schema v2 enforcement + register the module in layer_index and wiring_registry (audit 
@@ -289,7 +289,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Code: `MyTradingSys/backtest/layers/pizzino/pizzino_indicators.py`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `pz-4-backtest` refined p1 SONNET: Pizzino layer: BTC backtest DEV/VALIDATION/holdout, fee-net, trial ledger
-  - `pz-5-confluence-and-live` raw p2 SONNET: Pizzino layer: confluence table with other layers; cbp.query bias and levels as live input
+  - `pz-5-confluence-and-live` refined p2 SONNET: Pizzino layer: confluence table with other layers; cbp.query bias and levels as live input
 
 ## Cross-cutting
 
