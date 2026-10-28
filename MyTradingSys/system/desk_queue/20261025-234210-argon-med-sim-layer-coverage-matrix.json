@@ -1,12 +1,15 @@
 {
   "card": "argon-med-sim-layer-coverage-matrix",
   "done_when": "MyTradingSys/research/design_cards_2026-10-26/argon_sim_layer_coverage.md has 13 rows (one per family), each cell with file:line or NOT_IN_DATA, no verdict column",
+  "finished": "2026-10-28T00:04:13Z",
   "from": "lane_health",
+  "host": "DESKTOP-F7IU69N",
   "id": "20261025-234210-argon-med-sim-layer-coverage-matrix",
   "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card argon-med-sim-layer-coverage-matrix: [GEMINI] Argon-medium: which sim-desk study covers which layer family (file:line matrix)\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief argon-med-sim-layer-coverage-matrix\nGoal: One matrix: for each of the 13 layer families in layer_index.json, which sim_desk study/plugin runs it, which parameters it exposes, and which are not reachable from the desk. Facts only, so the\nRead: MyTradingSys/research/design_cards_2026-10-26/argon_sim_layer_coverage.md (new file only)\nStep 1: Read MyTradingSys/system/layer_index.json families and MyTradingSys/research/sim_desk/PLUGIN.md, studies/*.py\nStep 2: For each family grep the study modules for its detectors and parameters; record file:line\nStep 3: Write the table; NOT_IN_DATA where the desk has no path; no keep/drop wording\nStep 4: Commit with a Result: line (families covered, families with no desk path)\nRun exactly:\n  C:/Users/E-ngineers/.gemini/bin/agy.exe --print \"Follow the steps of card argon-med-sim-layer-coverage-matrix (python scripts/dev/tasks.py brief argon-med-sim-layer-coverage-matrix). Write only MyTr\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-10-25_argon-med-sim-layer-coverage-matrix.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-10-25_argon-med-sim-layer-coverage-matrix.md>\".",
   "posted": "2026-10-25T23:42:10Z",
   "rerouted_from": "CODEX",
-  "status": "pending",
+  "result": "DONE card done, lane CODEX, REVIEWED:sonnet-reviewer-a89035 2026-10-26",
+  "status": "done",
   "target": "DSA",
   "title": "[GEMINI] Argon-medium: which sim-desk study covers which layer family (file:line matrix)"
 }
