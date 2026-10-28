@@ -192,8 +192,14 @@ class RealRegistry(unittest.TestCase):
 
     def test_regate_fixes_3_to_7_live_files(self):
         # REGATE_AUDIT.md fix items 3-7: DEV count 57 -> 56, no phantom 'filter' study, BLOCKED backfill, kill scopes, ledger rows
+        # Count-agnostic: the invariant is the regate floor (56 DEV variants), not an exact total that every new DEV study moves.
+        # The count must also equal an independent csv read of VERDICTS.csv, so a silent drop in the helper is caught.
         seen, _ = V.count_variants(V.CSV_PATH, "DEV")
-        self.assertEqual(len(seen), 65)  # 56 + 9 Krown S8 4h E2 arms (a849d000, 2026-10-28)
+        self.assertGreaterEqual(len(seen), 56, "regate fix 3: DEV variants fell below the 56 floor")
+        with open(V.CSV_PATH, newline="", encoding="utf-8") as f:
+            raw = {(r["study_dir"], r["arm"]) for r in csv.DictReader(f)
+                   if r["split_read"] != V.UNP and "DEV" in r["split_read"].upper().split("+")}
+        self.assertEqual(seen, raw)
         self.assertFalse(self.row("filter"))
         k = self.row("kurisko_2026-10-18")
         self.assertTrue(k and all(r["split_read"] == "DEV" for r in k))

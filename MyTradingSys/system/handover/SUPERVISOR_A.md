@@ -1,19 +1,28 @@
-# Supervisor hand-over, login A (written by Supervisor C, 2026-10-28)
+# Supervisor A handover | written 2026-10-28T10:59Z by JIS-LAPTOP | verify: python scripts/dev/supervisor.py handover --verify   (STALE 0 at last boot)
+Successor task: MTS-SuccWake-A fireAt 2026-10-28T10:59Z (4b2)
 
-Read as history. Current state comes from git and disk this turn. The operator pastes only the one-line start (operator 2026-10-28: long prompts cannot be pasted on the laptop).
+## Goal
+Login A on JIS-LAPTOP: mode CRUCIAL-ONLY, 5 h 63.0% (reset 2026-10-28T11:19Z), week 64.0% of cap 95.
+Stop at 5 h >= 80%, week >= cap, CI red, no ready cards, or a 3 h wave.
 
-## Goals, in order
-1. Read `MyTradingSys/research/fix_verification_2026-10-28/REPORT.md` (a Haiku checker writes it). File a card for every FAIL and CANNOT TEST in it; dispatch the top ones.
-2. Verify the three gateway Builder ships landed on `origin/fast-track` and `origin/green/fast-track` and meet their done-when: `wake-sleeping-sessions` (needs a recorded real run, else not done), `handover-log-cap`, `gemini-lane-fix`.
-3. Keep CI green: revert a breaking commit, never fix forward.
-4. Refine or drop the 8 RAW-AGED cards; run Session_Planner on the 11 raw cards.
-5. Keep the Gemini lane fed, always `<card>:low`.
+## Truth
+- Peers live at write: B@JIS-NUC, C@JIS-DESKTOP | `python scripts/dev/sync.py where --all` | read at 2026-10-28T10:59Z
+- Last picks: trendline-count-only-v2 | `python scripts/dev/tasks.py dispatch` | read at 2026-10-28T10:59Z
+- Open claims from JIS-LAPTOP: none | `python scripts/dev/sync.py where --all` | read at 2026-10-28T10:59Z
 
-## Rules the operator set (do not ask him again)
-- Malkan RSI divergence flags are confirmed only in the simulator, never on screenshots.
-- Never hand him a long prompt to paste. Save it in a file on trunk and give a one-line start that points at it.
-- A feature counts as done only when a real end-to-end run is recorded.
-- Gateway sessions: public tracked files only (GATEWAY_NUC.md).
-- SUPER_SESSION.md Session log keeps the last 5 lines: drop the oldest before adding one.
+## Ruled out
+- none recorded by the tool; add what was tried and closed (`handover --from <file>`).
 
-Successor: `You are Supervisor. Login A. Continue from MyTradingSys/system/handover/SUPERVISOR_A.md`
+## Next 3 steps
+1. `python scripts/dev/sync.py start supervisor-A-<utc date>`; `get_usage`; `python scripts/dev/supervisor.py plan --login A --five <%> --five-reset <utc> --week <%> --week-reset <utc> --running 0`.
+2. Usage gate blocked all spawns this wake (5h 63% > elapsed 11%+10); trendline-count-only-v2 (CRUCIAL, host DESKTOP-F7IU69N/JIS-NB) broadcast to C (b-9ba2b0); Session_Planner refine-9-raw and desk.py assign still pending once gate clears; DSA/DSA-NB/DSA-NUC still held.
+3. `python scripts/dev/tasks.py dispatch`; start the next picks.
+
+## Traps
+- One ship at a time; EXTRA registration forces the ~20 min gate.
+
+## Open
+- Claims above: finish, hand over in the card, or release.
+
+## Missed last time
+(machine-written by `context_gap.py fold` at the next ship)

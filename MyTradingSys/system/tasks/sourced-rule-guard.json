@@ -2,6 +2,13 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T10:45:57Z",
+    "misses": 45,
+    "reads": [],
+    "session": "agent-a14be74b477edd2cf"
+  },
   "created": "2026-10-27T20:51:51Z",
   "depends_on": [
     "extraction-ledger-all-sources"

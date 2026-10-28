@@ -5,12 +5,12 @@
   "created": "2026-10-28T09:31:51Z",
   "crucial": "decides whether the one clean VALIDATION read of the BTC edge program is spent on R6 as frozen",
   "depends_on": [],
-  "done_when": "research/fable_run6_powered_prereg/REVIEW_O2.md on trunk with ACCEPT/REJECT, m used and source, n available vs needed; E2 card stamped REVIEWED or set back to refined; Result: verdict; sync.py where clean",
+  "done_when": "research/fable_run6_powered_prereg/REVIEW_O2.md on trunk with reproduced C0 (or mismatches named), E2-AS-FROZEN yes/no, verdict a/b/c with sources, R7 months; REVIEWED line in krown-s8-4h-validation-read and fable-run7-forward-test notes; Result: verdict; sync.py where clean",
   "est_turns": 35,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Operator runs Opus on system/handover/OPUS_RUNS.md O2 once R6 is on trunk: own recount of R6 events/days (no outcome, no bar >= 2024-07-01), settle m (42 vs 65 vs 281 vs 3,018) and an outcome-free entry-day bound after the busy rule, then ACCEPT or REJECT R6 PRE_REG.md.",
+  "goal": "E2 ran once: INCONCLUSIVE, 332 entry days of 439, t 1.73. Operator runs Opus on system/handover/OPUS_RUNS.md O2: own reproduction of C0 from public klines (no bar >= 2024-07-01), check E2 against PRE_REG section 2, decide STOP (R1 s5) vs one new test powered on entry days vs VALIDATION, and R7 run/hold/drop.",
   "id": "opus-o2-r6-review",
   "lane": "OPUS",
   "latest": [
@@ -25,7 +25,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator-run only; no session may start or message it.\nStamp on the E2 card: 'REVIEWED: Opus_O2 <YYYY-MM-DD> ACCEPT' on its own line.\nREVIEWED: Lab_Guy 2026-10-28 ACCEPT (independent Sonnet reviewer; second pass after must-fixes)",
+  "note": "Operator-run only; no session may start or message it.\nRewritten 2026-10-28 after E2 shipped INCONCLUSIVE (2b80d7ecf): the pre-E2 review is moot. Stamp on krown-s8-4h-validation-read and fable-run7-forward-test: 'REVIEWED: Opus_O2 <YYYY-MM-DD> <a|b|c>' on its own line.\nREVIEWED: Lab_Guy 2026-10-28 ACCEPT (independent Sonnet reviewer; second pass after must-fixes)",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -54,14 +54,14 @@
   ],
   "state": "ready",
   "steps": [
-    "Guard: PRE_REG.md and COUNTS.csv on origin/fast-track, else reply \"R6 not shipped\" and stop; data = F:/MTS/data/fable_run6_klines/ on JIS-NB, bars >= 2024-07-01 dropped at load",
-    "Own recount script of R6 events/UTC days from the cached klines (sealed-cut and no-outcome asserts)",
-    "Settle m with sources; re-run prereg_gate.py with it",
-    "Outcome-free entry-day bound after busy rule + 100-bar time stop",
-    "Write REVIEW_O2.md ACCEPT/REJECT; stamp or refine the E2 card; ship"
+    "Own reproduction of C0 from public 4h klines into a gitignored cache, bars >= 2024-07-01 dropped at load",
+    "Check E2 against PRE_REG section 2 item by item",
+    "Decide a STOP / b new entry-day-powered pre-reg / c VALIDATION, with sources; VALIDATION counts only",
+    "R7 run/hold/drop with entry-day months",
+    "Write REVIEW_O2.md, stamp the two cards, raw card for (b), ship"
   ],
-  "tests": "MyTradingSys/research/fable_run6_powered_prereg/test_recount_o2.py: sealed-cut and no-outcome asserts fail on a planted 2024-07-01 bar / outcome column",
-  "title": "Opus O2: independent review of the R6 Krown S8 4h pre-reg (m choice, entry-day power) before any E2 run",
+  "tests": "MyTradingSys/research/fable_run6_powered_prereg/test_recount_o2.py: sealed-cut assert fails on a planted 2024-07-01 bar",
+  "title": "Opus O2: E2 post-mortem of Krown S8 4h (INCONCLUSIVE) and the edge program next step",
   "weight": "IMPORTANT",
   "worker": "session"
 }
