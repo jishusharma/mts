@@ -69,14 +69,13 @@ the CBP sha).
 S4 in D7. Entry: contract v1 promoted to the one Signal schema, scheduled task decided. Exit: one real analyst row flows
 producer -> queue -> consumer -> CANDIDATE_UNTESTED with an ack, and the golden-set harness is green on CI.
 
-## Status table (amended 2026-10-23; CBP sha 152726bec1208c27115a4042d52d6c741699ff2a)
-Placeholders: agent V (independent verify) fills MET / PARTIAL / NOT MET with pasted command output. Until then PENDING.
+## Status table (amended 2026-10-28; CBP sha d184752 on origin/cloud/work; MTS CBP module audit)
 | Item | Status | Evidence |
 |---|---|---|
-| Gate 1 Schema (producer side) | PENDING | |
-| Gate 2 Quote (single checker in MTS) | PENDING | |
-| Gate 3 Freshness (consumer) | PENDING | |
-| Gate 4 Scorecard (56 scored calls) | PENDING | |
-| Gate 5 Promotion (CANDIDATE_UNTESTED) | PENDING | |
-| Golden-set harness green on CI | PENDING | |
-| S4 exit: one real row producer -> queue -> consumer -> ack | PENDING | |
+| Gate 1 Schema (producer & consumer) | MET | `cbp.validate_row(r)` + `test_cbp_query.py` (`test_planted_wrong_direction_is_rejected`, `test_planted_missing_expiry_is_not_returned`; abcf80590, 6cdb5d72d) |
+| Gate 2 Quote (single checker in MTS) | MET | `scripts/dev/verify_extract_quotes.py` (`test_fabricated_quote_rejected`, `test_planted_trade_without_quote_is_rejected`, word-boundary & non-empty fragment fix 560a44358) |
+| Gate 3 Freshness (consumer) | MET | `cbp.query` enforces `expires_at` UTC boundary + `since_days` cutoff (`test_expiry_boundary_is_expired`, `test_malformed_expiry_is_not_returned`) |
+| Gate 4 Scorecard (56 scored calls) | NOT MET | `SCORECARD_GPT.md` (6cdb5d72d): 13 stored rows across 6 actionable analysts; all analysts < 56 calls (`NOT ENOUGH CALLS`), 0 weights assigned |
+| Gate 5 Promotion (CANDIDATE_UNTESTED) | MET | 0 production layers call `cbp.query()` yet; `cbp.is_tradable(r)` is field-completeness only, not order permission; nothing trades without B139/Gate 5 promotion |
+| Twice-daily ingestion (`cbp_schedule.py`) | PARTIAL | `scripts/dev/cbp_schedule.py` + `cbp_run.py --due` (09:00 & 13:00 UTC) wired & tested (`1b23396e9`); Windows task `MTS-CBP-Ingestion` NOT INSTALLED on JIS-NUC (preflight fails closed until active CBP data host is populated) |
+| Golden-set harness green on CI | PARTIAL | 26 CBP tests + 29 MTS CBP/schedule tests pass locally; GitHub Actions on `jishusharma/CryptoScrapper` blocked by account billing |
