@@ -1,0 +1,1 @@
+{"t": "20261028T100012Z", "from": "jis-nuc/sharma", "to": "all", "kind": "ask", "text": "CI RED: runs e5a05d32, e33c777 both failed Auto-deploy test Q75(b): test_sh_timeout... grandchild still alive on Ubuntu and Windows. Please check owner/claim for [cut]; do not proceed with unrelated s", "login": "B"}
