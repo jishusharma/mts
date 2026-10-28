@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-28T17:55:26Z",
+  "depends_on": [],
+  "done_when": "Report MyTradingSys/research/layer_lab/reports/2026-10-28_gem-supervisor-wait-watcher-review.md has the behavior-to-test table (count of rows and of NO TEST rows stated), the three watchcheck exit codes and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "In supervisor.py (lines 443-600: _probe_wait_state, PLAN_MAX_MIN, one actionable wake per plan, watchcheck) list every behavior stated in comments or docstrings and map each to a test in test_supervisor.py. Behaviors with no test are findings; confirm watchcheck exits 4 with no marker, an expired marker or a dead pid. Producer: Claude.",
+  "id": "gemini-supervisor-wait-watcher-review",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "supervisor plan: SPAWN line names Builder workers as agents, not sessions",
+      "ref": "b7d9f3e09aa7",
+      "utc": "2026-10-28T16:37:41Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Producer vendor: Claude. Reviewer vendor: Gemini Flash (agy via gemini_queue.py, GEMINI_START.md rule 7); producer != reviewer. Reviewer must NOT read: test_supervisor.py before the behavior list is written. Read-only audit: no product code, no live path, no data that lives only on JIS-NB, no VALIDATION or HOLDOUT. No ACCEPT stamp is set by the card author: the reviewer's own report is the stamp. DECISION (OURS) 2026-10-28: weight ROUTINE. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T17:55:27Z",
+  "refs": [],
+  "reroute": {
+    "at": "2026-10-28T18:14:50Z",
+    "desk": "20261028-181450-gemini-supervisor-wait-watcher-review",
+    "to": "DSA",
+    "why": "credits"
+  },
+  "result": "",
+  "scope_in": [
+    "scripts/dev/supervisor.py",
+    "scripts/dev/test_supervisor.py",
+    "MyTradingSys/research/layer_lab/reports/2026-10-28_gem-supervisor-wait-watcher-review.md"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "any live process, HALT file or deployment",
+    ".secrets and keys"
+  ],
+  "scope_sha": "b7d9f3e09aa7",
+  "size": "M",
+  "sources": [
+    "scripts/dev/supervisor.py:443-600 (wait watcher; docstrings are the spec)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read supervisor.py lines 443-600 and extract each stated behavior as one row: behavior | file:line.",
+    "For each row grep test_supervisor.py for a test that would fail if the behavior broke; write test name:line or NO TEST.",
+    "Run watchcheck from a scratch HOME with no marker, an expired marker and a dead pid marker; record the three exit codes (expect 4 each).",
+    "Report: gap table (NO TEST rows with severity), the three exit codes, one verdict line. Change no code. For each HIGH gap capture: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "",
+  "title": "[GEMINI] Cross-review the supervisor.py wait watcher: fail-closed wake source and test gaps",
+  "weight": "ROUTINE",
+  "worker": ""
+}

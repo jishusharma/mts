@@ -1,22 +1,21 @@
-# Supervisor B handover | written 2026-10-28T13:04Z by JIS-NUC | verify: python scripts/dev/supervisor.py handover --verify   (STALE 0 at last boot)
-Successor task: MTS-SuccWake-B fireAt 2026-10-28T13:04Z (4b2)
+# Supervisor B handover | written 2026-10-28T18:14Z by JIS-NUC | verify: python scripts/dev/supervisor.py handover --verify   (STALE 0 at last boot)
+Successor task: MTS-SuccWake-B fireAt 2026-10-28T18:14Z (4b2)
 
 ## Goal
-Login B on JIS-NUC: mode NORMAL, 5 h 48.0% (reset 2026-10-28T14:40Z), week 35.0% of cap 95.
-Stop at 5 h >= 80%, week >= cap, CI red, no ready cards, or a 3 h wave.
+Login B on JIS-NUC: mode NORMAL, 5 h 56.0% (reset 2026-10-28T19:40Z), week 48.0% of cap 95.
+Stop at 5 h >= 80%, week >= cap, CI red, no ready cards, the TRANSIT at time, or a 3 h wave.
 
 ## Truth
-- Peers live at write: C@JIS-DESKTOP | `python scripts/dev/sync.py where --all` | read at 2026-10-28T13:04Z
-- Last picks: none | `python scripts/dev/tasks.py dispatch` | read at 2026-10-28T13:04Z
-- Open claims from JIS-NUC: funding-carry-with-real-spot-basis-margi | `python scripts/dev/sync.py where --all` | read at 2026-10-28T13:04Z
+- Peers live at write: A@JIS-LAPTOP | `python scripts/dev/sync.py where --all` | read at 2026-10-28T18:14Z
+- Last picks: layer-relations-concepts-us-open | `python scripts/dev/tasks.py dispatch` | read at 2026-10-28T18:14Z
+- Open claims from JIS-NUC: funding-carry-with-real-spot-basis-margi | `python scripts/dev/sync.py where --all` | read at 2026-10-28T18:14Z
 
 ## Ruled out
-- DUPLICATE: the headless Supervisor B (MTS-SuccWake-B, hand-over ac1ec897a at 12:51Z) also had a Builder (a34675) on cbp-query-symbol-btcusdt-returns-zero; a second Builder (a884fb9bdeae1fd41) started 13:00Z from the App session. Whichever claims second must stop; check the card's commit history before spawning anything on it.
 - none recorded by the tool; add what was tried and closed (`handover --from <file>`).
 
 ## Next 3 steps
 1. `python scripts/dev/sync.py start supervisor-B-<utc date>`; `get_usage`; `python scripts/dev/supervisor.py plan --login B --five <%> --five-reset <utc> --week <%> --week-reset <utc> --running 0`.
-2. Restart wake MTSLogonWake live (launch_app proven only at next cold boot; check F:/MTS/succ_wake/logon_wake.log); logins A and C need 'logon_wake.py install --login X' from their own primary clone; Builder agent on cbp-query-symbol-btcusdt-returns-zero in flight (verify note, is-ancestor, green); wiring audit bcfd46cfc verified, Haiku recheck + diff review still owed; Session_Planner 0b57bdf20 has no Result line; apply-dedupe-audit-findings still raw; stalled bg tasks a7d41f374b06f4e89 b1lx1m5ta b5hx9ksb7 belong to other sessions; headless Supervisor B (MTS-SuccWake-B) may still run, the successor should check and not duplicate; 5h burn 14/h so spawn one worker per wake
+2. Restart wake MTSLogonWake live; cold launch_app and the B14 successor chain fix (12d90245b) still unproven until the next real reboot, check F:/MTS/succ_wake/logon_wake.log; logins A and C need logon_wake.py install. Shipped+verified today: logon wake 4d, wiring audit bcfd46cfc, Opus fixes B1/B2/B3/B5/B6/B10, ship returns at push (f6c7c446b), ship --result + bg_watch until (223bb7c01), gate reuse (26fe674ec), stop-guard merge-base (d5946cee2), LC1 fair-control 0/12 KEEP (10dca8a07), live-layer relabel + T10 12 rows (eac7837a0), pre-US PRE_REG (04112bfe2), liquidation event log (a0704527f, needs MANUAL DEPLOY to record data). Open: bug-supervisor-handoff-duplicates card still raw (needs review stamp then done); cards layer-relations-concepts-us-open duplicated by login C flow_layers_concepts (skip); T0 tests in test_gemini_queue ok on NUC git 2.24 after fix; re-land multi_tf_bias study needs a costs.csv inventory row (author C); gap_frequency needs lookahead allowlist rows. ISSUES_REGISTER.md lists B1-B21 and I1-I9. Stalled bg tasks of other sessions: a8d649e9ded724c8c a4b4f1f06774c79f1 a09497793807739fc bhung0001. 5h burn about 19 pts/h, spawn one worker per wake.
 3. `python scripts/dev/tasks.py dispatch`; start the next picks.
 
 ## Traps

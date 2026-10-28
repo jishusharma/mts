@@ -19,6 +19,16 @@ from pathlib import Path
 
 ACK_LINE = "python scripts/dev/mts_signal.py ack b-4c2dfe done"
 
+# Live-safety state: never stashed (a stashed HALT flag = live runner sees no halt). Prefix match on repo-relative paths.
+PROTECTED_PREFIXES = ("MyTradingSys/execution/HALT", "MyTradingSys/execution/AUTO_PAUSE", "MyTradingSys/runtime",
+                      ".mts_live")
+STASH_EXCLUDES = [f":(exclude){p}" for p in PROTECTED_PREFIXES]
+
+
+def is_protected(path):
+    p = path.strip('"').replace("\\", "/")
+    return any(p == q or p.startswith(q) for q in PROTECTED_PREFIXES)
+
 
 def git(repo, *args):
     return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True,
@@ -73,7 +83,9 @@ def refresh(repo, branch="fast-track", wip_branch=None, apply=False, merge_if_di
     ahead = git(repo, "rev-list", "--count", f"{remote}..HEAD").stdout.strip()
     say(f"HEAD {head[:9]}: {behind} behind, {ahead} ahead of {remote}")
 
-    staged, unstaged, untracked = classify(git(repo, "status", "--porcelain").stdout)
+    staged, unstaged, untracked = classify(git(repo, "status", "--porcelain", "-uall").stdout)
+    protected = sorted({p for p in staged + unstaged + untracked if is_protected(p)})
+    staged, unstaged, untracked = ([p for p in lst if not is_protected(p)] for lst in (staged, unstaged, untracked))
     for label, items in (("staged", staged), ("unstaged", unstaged), ("untracked", untracked)):
         say(f"{label}: {len(items)}")
         for p in items[:15]:
@@ -81,6 +93,7 @@ def refresh(repo, branch="fast-track", wip_branch=None, apply=False, merge_if_di
         if len(items) > 15:
             say(f"   ... +{len(items) - 15} more")
 
+    say(f"PROTECTED (left in place): {', '.join(protected) if protected else '(none)'}")
     diverged = ahead != "0"
     if diverged:
         if not wip_branch:
@@ -102,7 +115,7 @@ def refresh(repo, branch="fast-track", wip_branch=None, apply=False, merge_if_di
     stash = ("refresh-main-" + time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())) if dirty else None
     if not apply:
         if stash:
-            say(f"WOULD: git stash push -u -m {stash}")
+            say(f"WOULD: git stash push -u -m {stash} -- . <exclude protected>")
         say(f"WOULD: git merge --ff-only {remote}" + (f" (else git merge {remote})" if merge_if_diverged else ""))
         if stash:
             say("WOULD: git stash pop --index (conflicts: stash kept, reported)")
@@ -112,7 +125,7 @@ def refresh(repo, branch="fast-track", wip_branch=None, apply=False, merge_if_di
         return True, stash
 
     if dirty:
-        s = git(repo, "stash", "push", "-u", "-m", stash)
+        s = git(repo, "stash", "push", "-u", "-m", stash, "--", ".", *STASH_EXCLUDES)
         if s.returncode or "No local changes" in s.stdout:
             say(f"STOP: stash failed: {(s.stderr or s.stdout).strip()}")
             return False, None

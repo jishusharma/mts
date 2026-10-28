@@ -1,0 +1,75 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-28T18:07:26Z",
+  "commands": [],
+  "created": "2026-10-28T17:55:16Z",
+  "depends_on": [],
+  "done_when": "Report MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-refresh-main-checkout-review.md has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Confirm refresh_main_checkout.py never rebases, resets, force-pushes or drops a stash, never stashes PROTECTED_PREFIXES (HALT, AUTO_PAUSE, runtime, .mts_live), and keeps an unpoppable stash listed. Producer: Claude. Check every claim in its docstring against git calls; expect 0 mismatches.",
+  "id": "gpt-refresh-main-checkout-review",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Audit report delivered: FIX-FIRST; post-step failure is swallowed; scratch suite 12 passed",
+      "ref": "0174b852d",
+      "utc": "2026-10-28T18:07:26Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "refresh_main_checkout: never stash protected live-state paths (HALT*, AUTO_PAUSE*, runtime",
+      "ref": "134fc32e61a5",
+      "utc": "2026-10-28T17:31:31Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Producer vendor: Claude. Reviewer vendor: GPT (codex_run.py); producer != reviewer. Reviewer must NOT read: the test file before listing every git subcommand the script can run. Read-only audit: no product code, no live path, no data that lives only on JIS-NB, no VALIDATION or HOLDOUT. No ACCEPT stamp is set by the card author: the reviewer's own report is the stamp. DECISION (OURS) 2026-10-28: weight ROUTINE. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T17:55:17Z",
+  "refs": [],
+  "result": "Audit report delivered: FIX-FIRST; post-step failure is swallowed; scratch suite 12 passed, 1 existing Git-option compatibility failure.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/refresh_main_checkout.py",
+    "scripts/dev/test_refresh_main_checkout.py",
+    "MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-refresh-main-checkout-review.md"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "any live process, HALT file or deployment",
+    ".secrets and keys"
+  ],
+  "scope_sha": "134fc32e61a5",
+  "size": "S",
+  "sources": [
+    "CLAUDE.md Hard rules (never rebase/reset/force-push; live tree changes only by deploy) - scripts/dev/refresh_main_checkout.py docstring lines 1-14"
+  ],
+  "state": "done",
+  "steps": [
+    "Read every scope_in file and each source it cites; run no live process and write nothing outside the report.",
+    "Check each claim in the goal against the code (file:line), and run the existing test file once from a scratch copy only.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (data on another machine) is a NOT_IN_DATA finding, not BLOCKED: finish the audit.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "taken": "2026-10-28T18:07:26Z",
+  "tests": "",
+  "title": "GPT cross-vendor review of refresh_main_checkout.py: can it lose work, touch live state or reset?",
+  "weight": "ROUTINE",
+  "worker": ""
+}

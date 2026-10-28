@@ -105,7 +105,8 @@ class TwoProcessClaimRaceTest(unittest.TestCase):
         import shutil
         tmp = Path(tmp)
         bare = tmp / "origin.git"
-        subprocess.run(["git", "init", "--bare", "-q", "-b", "fast-track", str(bare)], check=True)
+        subprocess.run(["git", "init", "--bare", "-q", str(bare)], check=True)   # git 2.24 has no init -b
+        subprocess.run(["git", "-C", str(bare), "symbolic-ref", "HEAD", "refs/heads/fast-track"], check=True)
         seed = tmp / "seed"
         subprocess.run(["git", "clone", "-q", str(bare), str(seed)], check=True, capture_output=True)
         shutil.copytree(Path(__file__).resolve().parent, seed / "scripts" / "dev",

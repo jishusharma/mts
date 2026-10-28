@@ -44,7 +44,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "OPERATOR GO RECORDED 2026-10-28 (\"Yes, go\", OPERATOR_DECISIONS.md d-krown-s8-validation-read-go). Remaining precondition: krown-s8-4h-e2-dev-run must have shipped PASS_DEV. Filed by Fable run R6 2026-10-28. The ask to the operator, one line: \"The Krown S8 4h test is powered; after its DEV run passes, may the one VALIDATION read (2024-07..2025-06) be spent on it?\"\nREVIEWED: Lab_Guy 2026-10-28 ACCEPT (independent Sonnet reviewer Agent; depends_on E2 plus operator-go precondition, VALIDATION-only scope, HOLDOUT sealed, rule matches PRE_REG section 2)\nWAITING 2026-10-28 (planner-raw-refine): fields complete; blocked on dep krown-s8-4h-e2-dev-run shipping PASS_DEV (operator go recorded). Not for dispatch.",
+  "note": "OPERATOR GO RECORDED 2026-10-28 (\"Yes, go\", OPERATOR_DECISIONS.md d-krown-s8-validation-read-go). Remaining precondition: krown-s8-4h-e2-dev-run must have shipped PASS_DEV. Filed by Fable run R6 2026-10-28. The ask to the operator, one line: \"The Krown S8 4h test is powered; after its DEV run passes, may the one VALIDATION read (2024-07..2025-06) be spent on it?\"\nREVIEWED: Lab_Guy 2026-10-28 ACCEPT (independent Sonnet reviewer Agent; depends_on E2 plus operator-go precondition, VALIDATION-only scope, HOLDOUT sealed, rule matches PRE_REG section 2)\nWAITING 2026-10-28 (planner-raw-refine): fields complete; blocked on dep krown-s8-4h-e2-dev-run shipping PASS_DEV (operator go recorded). Not for dispatch.\nREVIEWED: Opus_O2 2026-10-28 a",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

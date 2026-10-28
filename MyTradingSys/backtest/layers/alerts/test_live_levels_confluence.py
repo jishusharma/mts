@@ -113,6 +113,19 @@ class TestNoLookAhead(unittest.TestCase):
         self.assertEqual(base, [r for r in m.detect_events(mutated) if r["t"] < t_cut])
 
 
+class TestKeepLabel(unittest.TestCase):
+    def test_keep_status_label_and_events_unchanged(self):
+        import hashlib
+        import json
+        self.assertEqual(m.KEEP_STATUS, "COLLECTION_ONLY_LC1_FAIR_KEEP_EMPTY")
+        self.assertEqual(m.KEEP, ("prior_day_high", "prior_day_low", "prior_day_poc", "naked_poc",
+                                  "4h_fractal_high", "4h_fractal_low", "round_1000", "prior_week_high"))
+        bars = walk(18)
+        blob = json.dumps([m.detect_events(bars), m.levels_confluence_layer(bars)], sort_keys=True, default=str)
+        self.assertEqual(hashlib.sha256(blob.encode()).hexdigest(),
+                         "10e5a4ddbc1545548853a28b3bb418bb19770d1eb4cf0417d01d3bb24f5c7014")
+
+
 class TestRestartAndInput(unittest.TestCase):
     def test_restart_determinism_and_window(self):
         bars = walk(18)

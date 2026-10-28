@@ -1,0 +1,12 @@
+{
+  "card": "gpt-status-board-number-recount",
+  "done_when": "Report MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-status-board-number-recount.md has one row per printed number (script value vs independent value, mismatch count stated) and a verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "from": "lane_health",
+  "id": "20261028-181450-gpt-status-board-number-recount",
+  "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card gpt-status-board-number-recount: GPT recounts every number status_board.py prints from git and task cards (never invent numbers)\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief gpt-status-board-number-recount\nGoal: status_board.py claims every number comes from a command run now. Recompute each printed count (cards per state and lane, commits in window, disk free, signal lines) independently with git, task\nRead: scripts/dev/status_board.py; scripts/dev/test_status_board.py; MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-status-board-number-recount.md\nStep 1: Run python scripts/dev/status_board.py once from a scratch worktree and save the output in the report.\nStep 2: For each number in the output write the independent command you used and the value it gave; flag any mismatch beyond the rounding the script states.\nStep 3: List every section and say whether a failure prints NOT_IN_DATA (read the try/except blocks, file:line), then report findings as a table: severity, file:line, evidence, proposed fix. Change no\nStep 4: For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET.\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-status-board-number-recount.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-status-board-number-recount.md>\".",
+  "posted": "2026-10-28T18:14:50Z",
+  "rerouted_from": "CODEX",
+  "status": "pending",
+  "target": "DSA",
+  "title": "GPT recounts every number status_board.py prints from git and task cards (never invent numbers)"
+}

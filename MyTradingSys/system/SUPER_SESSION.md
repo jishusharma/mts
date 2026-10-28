@@ -102,11 +102,11 @@ from the newest `BUDGET` signal line (older than 6 h counts NORMAL). The meter i
 | THROTTLE | U > 100 f + 5 (not in the last 24 h), U >= 99, or the 5-hour window above its stop (80 %, 95 % in the last 2 h) | only model-free work: Codex lab, DSA desk, CI |
 
 ## Session log (newest first; one line each, last 5)
+- B 2026-10-28 13:00-18:15Z: restart chain proven once (logon wake), 6 Opus fixes verified, ship wait removed, 3 CI REDs reverted, 11 cards shipped; successor registered fire-now
 - B 2026-10-28 12:00-13:05Z: logon_wake 4d (MTSLogonWake + launch_app) shipped; wiring audit Tom/Fabio/Habib bcfd46cfc 446 rows verified; planner refined 5 cards; CI red 4d cleared; builder cbp-query-symbol in flight at transit
 - 2026-10-28 Builder (bg-process-audit, Opus agent): 142 background tasks over 30 min in 7 days (173 h), 43 dead ends/hung/idle (72 h); fixes: git network deadline + no-retry on non-race push (sync.py), NUC verb deadlines, `bg_watch.py` STALLED-BG/RAW-AGED lines in `plan`; AUDIT: research/bg_process_audit_2026-10-28/AUDIT.md.
 - 2026-10-27 Supervisor C (desktop, Sonnet): T09-F3 live RSI support-long-only shipped (f04a3cbad) after a diff-only review Agent; planner refined 13 cards; cbp-ingestion parked (unverified operator request for the CBP scheduled task); handed over with one 4b2 successor task. Lesson: Agents started without isolation worktree share this tree and dirty it for the stop guard.
 - 2026-10-26 Supervisor B (NUC, Sonnet): 10 cards shipped via 8 Sonnet bg agents (klines, oi-pivot, rsi, intrabar, stability, dispatch, coord-audit, malkan); a diff-only review Agent per CRUCIAL card caught 2 defects. Lesson: builders report merge shas, verify the own commit with show --stat.
-- 2026-10-26 Supervisor C (desktop): watched A/B stations 10 h; reverted ca310cbe1 (sync ship --lesson, 21ea5324d); trunk green f02dc2fa; handed over (handover/SUPERVISOR_C.md).
 
 ## Prompt: start a super session (new session, model Sonnet, permission mode bypass or auto; zero operator input)
 ```

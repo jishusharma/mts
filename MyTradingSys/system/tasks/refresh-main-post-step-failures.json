@@ -1,0 +1,60 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-28T18:09:05Z",
+  "depends_on": [],
+  "done_when": "A failing post step produces a nonzero CLI result and no completion acknowledgment; successful post steps retain existing behavior. Add a focused regression and pass relevant tests.",
+  "est_turns": 1,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fix the MED audit finding: refresh_main_checkout.py ignores the false result from post_steps(), prints ACK_LINE and returns success when c_drive_guard or wt_maint fails. Keep the refresh safety behavior unchanged.",
+  "id": "refresh-main-post-step-failures",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "refresh_main_checkout: never stash protected live-state paths (HALT*, AUTO_PAUSE*, runtime",
+      "ref": "134fc32e61a5",
+      "utc": "2026-10-28T17:31:31Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Follow-up to FIX-FIRST independent audit; implementation owner lane SONNET/Claude. No live process or deployment.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T18:09:08Z",
+  "refs": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-refresh-main-checkout-review.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/refresh_main_checkout.py",
+    "scripts/dev/test_refresh_main_checkout.py"
+  ],
+  "scope_out": [
+    ".mts_live",
+    "MyTradingSys/execution/HALT",
+    "deployments"
+  ],
+  "scope_sha": "134fc32e61a5",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-refresh-main-checkout-review.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Add a focused test proving a failed post step does not emit ACK_LINE and returns nonzero.",
+    "Implement failure propagation without changing stash/merge policy.",
+    "Run focused tests and ship through sync.py."
+  ],
+  "tests": "scripts/dev/test_refresh_main_checkout.py::test_failed_post_steps_fail_cli",
+  "title": "Propagate refresh_main_checkout post-step failures",
+  "weight": "",
+  "worker": "session"
+}
