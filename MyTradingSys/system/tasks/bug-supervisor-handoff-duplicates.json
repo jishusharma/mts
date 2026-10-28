@@ -27,7 +27,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "DECISION (OURS) Session_Planner 2026-10-28: content is complete (goal/scope/steps/tests/done_when); the only promotion gap is the review stamp. Weight IMPORTANT (lane OPUS, operator-named) needs a real stamp (Lab_Guy pass) to reach ready; the planner does not self-stamp IMPORTANT+ cards. Awaiting Lab_Guy REVIEWED stamp.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",

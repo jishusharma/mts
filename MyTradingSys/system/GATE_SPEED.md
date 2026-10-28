@@ -63,10 +63,10 @@ need the 544 s full gate; docs ships already take ~10 s.
 - X6 `ship` prints the CI state (ci_watch; a cached red is re-fetched before it counts; offline = unknown, never a block). Two finished fast-track runs
   failed = the next code ship is blocked, fix-first. A newer run in flight does not clear a red (fast-track always has one pending). `ship --fix-ci`
   is the way through for the fix itself and runs the FULL gate, so it is not a cheap bypass. Docs/data-only ships (gate_select's definition) pass.
-- X7 After the push `ship` waits (up to 10 min, polls every 20 s, `wait_own_ci`) for the CI run of the sha it just pushed and prints `CI green <sha>` or
+- X7 (B8, 2026-10-28: `ship` returns once origin has the commit; the wait is `python scripts/dev/sync.py ci [sha]`, or `ship --wait-ci` / `SYNC_WAIT_CI=1`) The CI wait (up to 10 min, polls every 20 s, `wait_own_ci`) for the CI run of the sha it just pushed and prints `CI green <sha>` or
   `CI RED <sha>: <failed jobs> <url>` at once; red exits 3 (the push is done) so `sync.py ship && ...` stops and the author, who knows the change,
   reverts it (CLAUDE.md boot step 2). No run (ci.yml `push: paths:` filter, or none within 90 s), still running at the cap, or GitHub unreachable
-  = a note, never a red. `--no-ci-wait` / `SYNC_NO_CI_WAIT=1` skips it; desk.py, lane_health.py and codex_run.py (unattended) pass it.
+  = a note, never a red. `--no-ci-wait` / `SYNC_NO_CI_WAIT=1` still cancel a `--wait-ci`; desk.py, lane_health.py and codex_run.py (unattended) pass it.
 - Review fixes (Sonnet + Haiku, one-time, read-only): CI paths now include research .py, options, observation, .gitignore, .claude/settings.json (a
   smoke ship there had no CI run); FULL_RE gained wiring_scan, ci_watch, config_check, ci_deps_lint, run_staged_tests, gate_impact and the quarantine
   file (a smoke ship could weaken its own gate); wiring_registry.json edits run 3x/3w; race_overlap also checks incoming modules that import ours;

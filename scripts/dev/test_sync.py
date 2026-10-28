@@ -1743,11 +1743,35 @@ class OwnCiWaitTest(unittest.TestCase):
                     mock.patch.object(sync, "ship", return_value=self.pushed) as mock_ship, \
                     mock.patch.object(sync, "ci_path_filter", return_value=["scripts/**"]), \
                     mock.patch.object(sync, "wait_own_ci", return_value=state) as mock_wait:
-                self.assertEqual(sync.main(["ship", "--release", "my-slug"]), rc, state)
+                self.assertEqual(sync.main(["ship", "--wait-ci", "--release", "my-slug"]), rc, state)
                 mock_ship.assert_called_once_with(Path("."), release_slug="my-slug", after_slug=None)
                 self.assertEqual(mock_wait.call_args[0][0], self.pushed)
                 self.assertEqual(mock_wait.call_args[1]["globs"], ["scripts/**"])
         self.assertEqual(sync.CI_RED_EXIT, 3)
+
+    def test_ship_returns_without_the_ci_wait_by_default_and_ci_verb_waits_later(self):
+        """B8 (2026-10-28): the 10-minute CI poll is opt-in on ship; `sync.py ci` does it for the last pushed sha."""
+        with tempfile.TemporaryDirectory() as td, mock.patch.object(sync, "toplevel", return_value=Path(td)),                 mock.patch.object(sync, "run_host_health"), mock.patch.object(sync, "ship", return_value=self.pushed),                 mock.patch.object(sync, "write_last_pushed") as mock_save,                 mock.patch.object(sync, "ci_path_filter", return_value=None),                 mock.patch.object(sync, "wait_own_ci", return_value="red") as mock_wait:
+            self.assertEqual(sync.main(["ship"]), 0)
+            mock_wait.assert_not_called()
+            mock_save.assert_called_once()
+            with mock.patch.dict(os.environ, {"SYNC_WAIT_CI": "1"}):
+                self.assertEqual(sync.main(["ship"]), sync.CI_RED_EXIT)
+            self.assertEqual(mock_wait.call_count, 1)
+            with mock.patch.object(sync, "read_last_pushed", return_value=self.pushed):
+                self.assertEqual(sync.main(["ci"]), sync.CI_RED_EXIT)
+            self.assertEqual(mock_wait.call_args[0][0], self.pushed)
+            self.assertEqual(sync.main(["ci", "abcdef12"]), sync.CI_RED_EXIT)
+            self.assertEqual(mock_wait.call_args[0][0].sha, "abcdef12")
+            with mock.patch.object(sync, "read_last_pushed", return_value=None):
+                self.assertEqual(sync.main(["ci"]), 1)    # nothing pushed from this tree and no sha given
+
+    def test_last_pushed_sha_round_trips_through_the_git_dir(self):
+        with tempfile.TemporaryDirectory() as td:
+            subprocess.run(["git", "init", "-q", td], check=True)
+            self.assertIsNone(sync.read_last_pushed(td))
+            sync.write_last_pushed(td, self.pushed)
+            self.assertEqual(sync.read_last_pushed(td), self.pushed)
 
     def test_no_ci_wait_flag_env_and_a_ship_that_pushed_nothing_skip_the_wait(self):
         with mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "run_host_health"), \
@@ -1770,6 +1794,43 @@ class OwnCiWaitTest(unittest.TestCase):
             self.assertIn('"ship", "--no-ci-wait"', (root / name).read_text(encoding="utf-8"), name)
         import codex_run
         self.assertIn("--no-ci-wait", codex_run.SHIP_ARGS)
+
+
+class ShipResultFlagTest(unittest.TestCase):
+    """`ship --result` commits the tree's uncommitted files with a Result: body line (planner finding, 2026-10-28)."""
+
+    def make_repo(self, td):
+        g = lambda *a: subprocess.run(["git", "-C", td, *a], check=True, capture_output=True, text=True).stdout
+        g("init", "-q")
+        g("config", "user.email", "t@t")
+        g("config", "user.name", "t")
+        (Path(td) / "a.txt").write_text("one", encoding="utf-8")
+        g("add", "-A")
+        g("commit", "-q", "-m", "base")
+        g("update-ref", f"refs/remotes/origin/{sync.TRUNK}", "HEAD")
+        return g
+
+    def test_commit_pending_writes_the_result_line_and_takes_new_and_changed_files(self):
+        with tempfile.TemporaryDirectory() as td:
+            g = self.make_repo(td)
+            (Path(td) / "a.txt").write_text("two", encoding="utf-8")
+            (Path(td) / "b.txt").write_text("new", encoding="utf-8")
+            self.assertEqual(sync.commit_pending(td, "ships in 40 s", "planner: card edits"), 2)
+            msg = g("log", "-1", "--format=%B")
+            self.assertTrue(msg.startswith("planner: card edits"))
+            self.assertIn("Result: ships in 40 s", msg)
+            self.assertEqual(g("status", "--short").strip(), "")
+            self.assertEqual(sync.commit_pending(td, "x"), 0)       # clean tree: nothing to commit
+            with self.assertRaises(sync.SyncError):
+                sync.commit_pending(td, "  ")
+
+    def test_cli_result_commits_before_ship_and_m_without_result_is_refused(self):
+        with mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "run_host_health"),                 mock.patch.object(sync, "ship", return_value=None) as mock_ship,                 mock.patch.object(sync, "commit_pending", return_value=1) as mock_commit:
+            self.assertEqual(sync.main(["ship", "--result", "it works", "-m", "subj"]), 0)
+            mock_commit.assert_called_once_with(Path("."), "it works", "subj")
+            mock_ship.assert_called_once_with(Path("."), release_slug=None, after_slug=None)
+            with contextlib.redirect_stderr(io.StringIO()):
+                self.assertEqual(sync.main(["ship", "-m", "subj"]), 1)
 
 
 class PARALLEL_MainCheckoutRuleTest(unittest.TestCase):
