@@ -143,7 +143,13 @@ class T(unittest.TestCase):
         ok, stash = self.run_r(apply=True)
         self.assertFalse(ok)
         self.assertEqual((ex / "HALT").read_text(), "halt-me")
-        self.assertNotIn("HALT", g(self.clone, "stash", "show", "--include-untracked", "--name-only", "stash@{0}"))
+        # portable to git 2.24 (stash show --include-untracked needs 2.32): tracked files, then the untracked parent
+        names = g(self.clone, "show", "--name-only", "--format=", "stash@{0}")
+        try:
+            names += g(self.clone, "ls-tree", "-r", "--name-only", "stash@{0}^3")
+        except Exception:
+            pass
+        self.assertNotIn("HALT", names)
 
     def test_only_protected_dirty_means_no_stash(self):
         ex = self._protected_files()
