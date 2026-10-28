@@ -80,6 +80,3 @@ def role_line(text, known=None, events=False, strict=False):
             break
     return None
 
-
-def is_role(text, role, strict=True):
-    return bool(role_line(text, [role], strict=strict))

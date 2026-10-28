@@ -43,10 +43,6 @@ def load(repo=REPO):
     return idx, lmap, cards, reports
 
 
-def family_ids(repo=REPO):
-    return [f["id"] for f in json.loads((Path(repo) / SYS / "layer_index.json").read_text(encoding="utf-8"))["families"]]
-
-
 def problems(idx, lmap, repo=REPO):
     """Dead pointers and layer ownership errors; [] when the index is sound."""
     repo = Path(repo)

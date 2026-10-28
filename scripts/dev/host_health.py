@@ -500,13 +500,6 @@ def run_safe(repo, **kw):
     return lines
 
 
-def ensure_policy(repo):
-    p = Path(repo) / POLICY_REL
-    if not p.exists():
-        p.parent.mkdir(parents=True, exist_ok=True)
-        p.write_text(POLICY_TEXT, encoding="utf-8", newline="\n")
-
-
 def main(argv):
     repo = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True).stdout.strip() or "."
     run_safe(repo, reap="--no-reap" not in argv, post="--no-post" not in argv)
