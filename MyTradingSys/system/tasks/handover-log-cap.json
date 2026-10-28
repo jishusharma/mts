@@ -4,6 +4,16 @@
   "commands": [
     "python scripts/dev/run_all_tests.py --quick"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T08:15:15Z",
+    "misses": 11,
+    "reads": [
+      "scripts/dev/test_codex_run.py",
+      "CLAUDE.md"
+    ],
+    "session": "agent-ad0697e212f209557"
+  },
   "created": "2026-10-28T06:49:37Z",
   "depends_on": [],
   "done_when": "NOT_IN_DATA: scope and done-when were in the NUC prompt only; read the prompt or the ship commit message (verify via card handover-log-cap-and-gemini-lane-verify) and rewrite this card; minimum: log growth is capped and a test fails on old code",
