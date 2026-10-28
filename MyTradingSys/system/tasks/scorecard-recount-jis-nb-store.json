@@ -2,6 +2,22 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T15:20:46Z",
+    "misses": 29,
+    "reads": [
+      "MyTradingSys/research/analysts/run_scorecard.py",
+      "MyTradingSys/research/analysts/test_analysts_ingestion_and_scorecard.py",
+      "MyTradingSys/research/analysts/SCORECARD.md",
+      "scripts/dev/cbp_scorecard.py",
+      "MyTradingSys/research/analysts/SAMPLE_CALL_LEDGER.csv",
+      "MyTradingSys/research/fix_verification_2026-10-28/REPORT.md",
+      "MyTradingSys/research/layer_lab/reports/2026-10-28_cbp-scorecard-recount.md",
+      "MyTradingSys/research/cbp/SCORECARD_GPT.md"
+    ],
+    "session": "agent-a197c33f86b800fb4"
+  },
   "created": "2026-10-28T06:27:19Z",
   "depends_on": [],
   "done_when": "An independent recount script's counts are recorded in this card's result and compared against the JIS-NB store; Michael vs Michaal is resolved as one analyst (typo) or two; SCORECARD.md is regenerated with non-zero rows or the blocker is documented.",
