@@ -1,0 +1,87 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-28T14:48:07Z",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T15:33:25Z",
+    "misses": 10,
+    "reads": [
+      "MyTradingSys/research/sim_desk/export_results.py",
+      "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T09_live_parity.md",
+      "MyTradingSys/research/sim_desk/results/t09_live_parity.json"
+    ],
+    "session": "agent-a371b947962b9a4fe"
+  },
+  "created": "2026-10-27T21:12:47Z",
+  "depends_on": [],
+  "done_when": "STOP_SOURCES.md accurately says atr_1.5 is least negative for setup1 while atr_2.0 is least negative for setups2/3; extended-cell producing revision is cited or explicitly NOT_IN_DATA; raw audit remains blocked.",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Correct the false universal widest-ATR sentence and document missing historical provenance for the two extended stop-sweep cells without selecting a stop or rerunning data.",
+  "id": "cryptocred-stop-sweep-conclusion-provenance",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "STOP_SOURCES.md sha256 5ea236602ccf4e76623432d4616373d6fee495d0d412b6692e03418faedacec0",
+      "ref": "2add4f3cd",
+      "utc": "2026-10-28T14:48:07Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "D20/B143: CryptoCred stop sweep - all stop rules net-negative",
+      "ref": "f29af65d8723",
+      "utc": "2026-10-11T11:53:59Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "f29af65d8723 D20/B143: CryptoCred stop sweep - all stop rules net-negative",
+      "ref": "MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md",
+      "utc": "2026-10-11T11:53:59Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-27T21:13:35Z",
+  "refs": [
+    "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/cryptocred.md"
+  ],
+  "result": "STOP_SOURCES.md sha256 5ea236602ccf4e76623432d4616373d6fee495d0d412b6692e03418faedacec0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md"
+  ],
+  "scope_out": [
+    "Trading code; stored sweep JSON; new parameter searches; raw bars; VALIDATION/HOLDOUT; live tree; promotion decisions"
+  ],
+  "scope_sha": "f29af65d8723",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/cryptocred.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Confirm aggregate best-rule comparisons in cryptocred.md; distinguish recorded minimum from recommended stop.",
+    "Correct the universal statement and record that current resumable driver cannot freshly generate atr_1.5; preserve missing provenance as unknown."
+  ],
+  "taken": "2026-10-28T14:48:07Z",
+  "tests": "Run embedded aggregate recount script from cryptocred.md and standard documentation gate; no new test needed for prose correction.",
+  "title": "Correct CryptoCred widest-stop claim and recover extended-cell provenance",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

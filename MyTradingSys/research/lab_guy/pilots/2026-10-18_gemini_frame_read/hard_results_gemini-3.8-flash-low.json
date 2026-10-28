@@ -1,0 +1,129 @@
+[
+ {
+  "frame": "T6hDJcHrVBM_0520.jpg",
+  "truth": {
+   "pos": -3,
+   "entry": 24690,
+   "sl": null,
+   "tp": 24184
+  },
+  "blind": "```json\n{\"position\": -3, \"entry\": 24690, \"stop\": null, \"target\": 24184}\n```",
+  "claim": {
+   "pos": -3,
+   "entry": 24690,
+   "tp": 24184,
+   "sl": 24690
+  },
+  "claim_true": false,
+  "planted": "sl",
+  "verify": "```json\n{\"verdict\":\"REFUTED\",\"wrong_fields\":[\"entry\",\"sl\"],\"unreadable_fields\":[]}\n```"
+ },
+ {
+  "frame": "T6hDJcHrVBM_0550.jpg",
+  "truth": {
+   "pos": -2,
+   "entry": null,
+   "sl": null,
+   "tp": 24184
+  },
+  "blind": "```json\n{\"position\":-2,\"entry\":null,\"stop\":24690,\"target\":24184}\n```",
+  "claim": {
+   "pos": -2,
+   "tp": 24184,
+   "sl": 24690
+  },
+  "claim_true": false,
+  "planted": "sl",
+  "verify": "{\"verdict\":\"PARTLY\",\"wrong_fields\":[\"sl\"],\"unreadable_fields\":[]}"
+ },
+ {
+  "frame": "zQTbdEweG3c_0370.jpg",
+  "truth": {
+   "pos": -1,
+   "entry": 25344,
+   "sl": null,
+   "tp": null
+  },
+  "blind": "```json\n{\"position\": -1, \"entry\": 25344, \"stop\": null, \"target\": null}\n```",
+  "claim": {
+   "pos": -1,
+   "entry": 25344,
+   "sl": 25400
+  },
+  "claim_true": false,
+  "planted": "sl",
+  "verify": "{\"verdict\":\"CONFIRMED\",\"wrong_fields\":[],\"unreadable_fields\":[]}"
+ },
+ {
+  "frame": "l8RZrBfzvp4_0190.jpg",
+  "truth": {
+   "pos": -1,
+   "entry": 6806.25,
+   "sl": "?",
+   "tp": 6767.25
+  },
+  "blind": "```json\n{\"position\": -1, \"entry\": 6806.25, \"stop\": 6812.25, \"target\": 6767.25}\n```",
+  "claim": {
+   "pos": -1,
+   "entry": 6806.25,
+   "tp": 6767.25,
+   "sl": 6812.25
+  },
+  "claim_true": false,
+  "planted": "sl",
+  "verify": "{\"verdict\":\"CONFIRMED\",\"wrong_fields\":[],\"unreadable_fields\":[]}"
+ },
+ {
+  "frame": "SANOimk8M9o_0270.jpg",
+  "truth": {
+   "pos": null,
+   "entry": null,
+   "sl": null,
+   "tp": null
+  },
+  "blind": "```json\n{\"position\": -1, \"entry\": 24229, \"stop\": null, \"target\": 24111}\n```",
+  "claim": {
+   "sl": 24220
+  },
+  "claim_true": false,
+  "planted": "sl",
+  "verify": "```json\n{\"verdict\":\"REFUTED\",\"wrong_fields\":[\"sl\"],\"unreadable_fields\":[]}\n```"
+ },
+ {
+  "frame": "UOBgXV20yCM_0250.png",
+  "truth": {
+   "pos": "?",
+   "entry": 23887,
+   "sl": 23857,
+   "tp": 23962
+  },
+  "blind": "{\"position\": 1, \"entry\": 23887, \"stop\": 23857, \"target\": 23962}",
+  "claim": {
+   "entry": 23887,
+   "sl": 23857,
+   "tp": 23962
+  },
+  "claim_true": false,
+  "planted": "sl",
+  "verify": "```json\n{\"verdict\":\"CONFIRMED\",\"wrong_fields\":[],\"unreadable_fields\":[]}\n```"
+ },
+ {
+  "frame": "k0zm_1510_1720.png",
+  "truth": {
+   "pos": -1,
+   "entry": 25324,
+   "sl": 25310,
+   "tp": 25200
+  },
+  "blind": "```json\n{\"position\": -1, \"entry\": 25324.0, \"stop\": 25349.0, \"target\": 25200.0}\n```",
+  "claim": {
+   "pos": -1,
+   "entry": 25324,
+   "sl": 25310,
+   "tp": 25206
+  },
+  "claim_true": false,
+  "planted": "tp",
+  "verify": "```json\n{\"verdict\":\"CONFIRMED\",\"wrong_fields\":[],\"unreadable_fields\":[]}\n```"
+ }
+]

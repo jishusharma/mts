@@ -1,0 +1,2 @@
+seed 20261016 root C:\Users\e-ngineers\IdeaProjects\mts-desktop-f7iu69n-dsa02-lenovo-2
+fabio|v3_grid|1m                             n=700 cuts=10 events=0 late=0 repaint=0 nan_diff=0 x10_diff=0 lag=0/0 err(tr/nan/x10)=0/0/0 VACUOUS (0 events on synthetic bars)  528.4s

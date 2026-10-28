@@ -1,0 +1,15 @@
+{
+  "card": "rv02-dax-harness-fixes",
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "finished": "2026-10-12T19:27:54Z",
+  "from": "lane_health",
+  "host": "lane_health",
+  "id": "20261012-180706-rv02-dax-harness-fixes",
+  "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card rv02-dax-harness-fixes: RV02 revalidate DAX harness fixes H1-H8 and holdout isolation (host=JIS-NUC)\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief rv02-dax-harness-fixes\nGoal: Follow MyTradingSys/system/revalidation/RV02_dax_harness_fixes.md exactly; report per MyTradingSys/system/revalidation/_COMMON.md. host=JIS-NUC.\nRead: MyTradingSys/system/revalidation/RV02_dax_harness_fixes.md; MyTradingSys/system/revalidation/_COMMON.md; MyTradingSys/backtest/tom_dax_bt.py; MyTradingSys/backtest/dax_engine.py; MyTradingSys/ba\nStep 1: Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).\nStep 2: Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.\nStep 3: Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.\nStep 4: A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.\nStep 5: For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET.\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-10-12_rv02-dax-harness-fixes.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-10-12_rv02-dax-harness-fixes.md>\".",
+  "posted": "2026-10-12T18:07:06Z",
+  "rerouted_from": "CODEX",
+  "result": "cancelled: GPT lane is back, card returned to CODEX",
+  "status": "failed",
+  "target": "DSA",
+  "title": "RV02 revalidate DAX harness fixes H1-H8 and holdout isolation (host=JIS-NUC)"
+}

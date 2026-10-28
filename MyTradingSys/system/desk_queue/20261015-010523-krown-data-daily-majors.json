@@ -1,0 +1,14 @@
+{
+  "card": "krown-data-daily-majors",
+  "done_when": "files under Dumps/backtest/raw/ (gitignored) and a committed coverage table research/krown_ta101_2026-10-13/DATA_COVERAGE.md: per series first and last bar, bar count, gaps, SHA256 results; weekly bars built by tf_resample.py with Monday 00:00 UTC start",
+  "finished": "2026-10-18T16:17:18Z",
+  "from": "JIS-NB",
+  "host": "JIS-NUC",
+  "id": "20261015-010523-krown-data-daily-majors",
+  "need": "python MyTradingSys/backtest/test_fetch_binance_archive.py   (new: the default futures URL is unchanged after adding --market and --symbol); python MyTradingSys/backtest/fetch_binance_archive.py --market spot --symbol BTCUSDT --datasets klines --interval 1d --start 2017-08-17 --end 2026-09-30; python MyTradingSys/backtest/fetch_binance_archive.py --market spot --symbol ETHUSDT --datasets klines --interval 1d --start 2017-08-17 --end 2026-09-30; python MyTradingSys/backtest/layers/timeframe/tf_resample.py   (weekly bars, Monday 00:00 UTC; see test_tf_resample.py for the call form) (full brief: python scripts/dev/tasks.py brief krown-data-daily-majors)",
+  "posted": "2026-10-15T01:05:23Z",
+  "result": "Pipeliner drain 2026-10-18: done: d8a77746 research/krown_ta101_2026-10-13/DATA_COVERAGE.md + DATA_MANIFEST.csv; card krown-data-daily-majors done",
+  "status": "done",
+  "target": "DSA",
+  "title": "Krown data: BTCUSDT spot 1d/1w from 2017-08 plus ETH/BNB/SOL majors and Coinbase BTC-USD daily volume, checksummed; DONE when: files + a coverage table (first/last bar, gaps) are committed under research"
+}

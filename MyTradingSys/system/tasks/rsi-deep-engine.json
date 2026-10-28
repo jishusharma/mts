@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-19T14:45:04Z",
+  "depends_on": [
+    "rsi-deep-prereg",
+    "rsi-deep-divergence-context"
+  ],
+  "done_when": "research/rsi_deep_buy_2026-10-19/episode_sim.py and test_episode_sim.py exist and pass; the divergence stamp is never earlier than the confirming bar; the K1-K10 detector fixture passes; ruin test output is written before returns; one top-cell number re-derived by hand in the Result line.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Build episode_sim.py per SPEC s3-s4 and OPUS_FRAMING s2.4/s5: entry arms, exits X1-X6, ladders S0-S3, no stop, account metrics, bankroll cap arm (B=20u) and ruin test reported first; replay on ETH, SOL and non-survivors (LUNA 2022-05, FTT 2022-11 if archives exist, else NOT_IN_DATA).",
+  "id": "rsi-deep-engine",
+  "kind": "build",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): scoped from SPEC/OPUS_FRAMING/SHOT_REVIEW; needs the batched review stamp, then tasks.py check. Lane CODEX stalled (ROUTING C2): re-laned to SONNET build, Gemini/GPT re-derive the top cell later. Waits on rsi-deep-prereg. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "Session_Planner",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/episode_sim.py",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/test_episode_sim.py",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/PRE_REG.md",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/divergence_context.py (read only: import the detector)"
+  ],
+  "scope_out": [
+    "VALIDATION read more than once",
+    "any HOLDOUT bar (2025-07 onward)",
+    "live path, orders, VALIDATION-tuned parameters"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/APPLIED.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read SPEC s3-s4, OPUS_FRAMING s2.4, PRE_REG.md (card rsi-deep-prereg); import the divergence detector from the divergence-context card, do not copy it.",
+    "Implement entry arms, exit arms X1-X6, ladders S0-S3 with average-cost stacks, fees on every fill, open episodes marked at last price.",
+    "Add account metrics and the ruin test (bankroll cap arm first); add the planted tests listed under tests.",
+    "Run python scripts/dev/lookahead_lint.py on the new file; ship with the Verify line."
+  ],
+  "tests": "test_episode_sim.py fail-first: a falling series that never recovers shows open-episode loss not a win; ladder average-cost arithmetic equals a hand example; no look-ahead (lookahead_lint.py clean); divergence stamp not before the confirming bar; K1-K10 detector fixture.",
+  "title": "RSI deep-buy: episode simulator (entry arms, RSI/divergence exits, scale-in ladders, no stop, ruin test)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

@@ -1,0 +1,119 @@
+"""Stdlib poison probe for G3: compare each edge result/chart with later rows poisoned.
+
+Run from the repo root with:
+    python -c "exec(open('MyTradingSys/research/layer_lab/gpt-g3-pack-audit/probe.py.txt').read())"
+Only synthetic data is used; no pack files are written or opened.
+"""
+import json
+import math
+import random
+import sys
+import csv
+import gzip
+import tempfile
+from datetime import date, timedelta
+from datetime import datetime, timezone
+from pathlib import Path
+
+sys.path.insert(0, str(Path("MyTradingSys/research/g3_marks_2026-10-16").resolve()))
+import g3_pack as g
+
+
+def fake_rows(days=8, seed=7):
+    rng, rows, px, cvd = random.Random(seed), [], 100_000.0, 0.0
+    t0 = int(datetime(2025, 1, 1, tzinfo=timezone.utc).timestamp() * 1000)
+    for k in range(days * 1440):
+        t = t0 + k * g.MIN
+        if t % g.DAY == 0:
+            cvd = 0.0
+        o = px
+        px += rng.gauss(0, 18) + (6 if (k // 600) % 2 else -6)
+        c, buy, sell = px, rng.uniform(0.5, 6), rng.uniform(0.5, 6)
+        cvd += buy - sell
+        b = int(o // 10 * 10)
+        rows.append(dict(t=t, o=o, h=max(o, c) + 5, l=min(o, c) - 5, c=c,
+                         buy=buy, sell=sell, delta=buy-sell, cvd=cvd,
+                         bbn=int(rng.random() < .02), bsn=int(rng.random() < .02),
+                         fp=f"{b}:{buy/2:.3f}:{sell/2:.3f}|{b+10}:{buy/2:.3f}:{sell/2:.3f}"))
+    return rows
+
+
+def fake_daily(n=700, seed=3):
+    rng, out, px = random.Random(seed), [], 20_000.0
+    t0 = int(datetime(2020, 1, 1, tzinfo=timezone.utc).timestamp() * 1000)
+    for k in range(n):
+        o = px
+        px *= 1 + rng.gauss(.001, .03) + (.05 if k % 90 == 0 else 0)
+        out.append(dict(t=t0+k*g.DAY, o=o, h=max(o, px)*1.01, l=min(o, px)*.99,
+                        c=px, vol=1000*rng.uniform(.5, 2.5)))
+    return out
+
+
+def check_intraday():
+    rows, checks = fake_rows(), []
+    for code, u in g.UNITS.items():
+        if u["fam"] != "intra":
+            continue
+        full = g.Intra(rows, u["tf"])
+        i = len(full.bars) - 20
+        edge = full.bars[i]["t"] + full.tf_ms
+        cut_rows = [r for r in rows if r["t"] < edge]
+        poison = [dict(r, h=r["h"]*3, l=r["l"]/3, c=r["c"]*2, o=r["o"]*2,
+                       buy=r["buy"]*50, sell=r["sell"]*50, delta=r["delta"]*50,
+                       fp="1:9999:9999", bbn=5, bsn=5) if r["t"] >= edge else r for r in rows]
+        cut, bad = g.Intra(cut_rows, u["tf"]), g.Intra(poison, u["tf"])
+        pf = g.INTRA_PF[code](full.bars, i, full)
+        pf_ok = pf == g.INTRA_PF[code](cut.bars, i, cut) == g.INTRA_PF[code](bad.bars, i, bad)
+        chart = lambda cx: json.dumps(g.intra_chart(code, cx, i, "SYN-1").p, sort_keys=True)
+        chart_ok = chart(cut) == chart(bad)
+        checks.append((code, pf_ok, chart_ok))
+    return checks
+
+
+def check_daily():
+    bars, checks = fake_daily(), []
+    full = g.Daily(bars)
+    for code in ("KRS1", "KRS8", "MAL1617"):
+        i = 500
+        cut = g.Daily(bars[:i+1])
+        fn = {"KRS1": g.pf_krs1, "KRS8": g.pf_krs8, "MAL1617": g.pf_mal1617}[code]
+        pf_ok = fn(full, i) == fn(cut, i)
+        ch = lambda d: json.dumps(g.daily_chart(code, d, i, "SYN-1").p, sort_keys=True)
+        checks.append((code, pf_ok, ch(full) == ch(cut)))
+    code, i = "MAL25", 80
+    cut = g.Daily([x for x in bars if x["t"] < full.w[i]["end"]])
+    pf_ok = g.pf_mal25(full, i) == g.pf_mal25(cut, i)
+    ch = lambda d: json.dumps(g.daily_chart(code, d, i, "SYN-1").p, sort_keys=True)
+    checks.append((code, pf_ok, ch(full) == ch(cut)))
+    return checks
+
+
+def check_loader_fences():
+    """Synthetic boundary test: timestamp poisoning inside the final allowed file."""
+    stamp = lambda d: int(datetime(d.year, d.month, d.day, tzinfo=timezone.utc).timestamp() * 1000)
+    with tempfile.TemporaryDirectory() as td:
+        next_day = g.INTRA_LAST + timedelta(days=1)
+        p = Path(td) / f"{g.INTRA_LAST.isoformat()}.csv.gz"
+        with gzip.open(p, "wt", encoding="utf-8", newline="") as f:
+            f.write("t,o,h,l,c,buy_vol,sell_vol,delta,cvd_day,b999_buy_n,b999_sell_n,fp\n")
+            f.write(f"{stamp(next_day)},1,2,0.5,1.5,1,1,0,0,0,0,10:1:1\n")
+        intra = g.load_intraday(td)
+        intra_ok = not any(r["t"] >= stamp(next_day) for r in intra)
+        d = g.DAILY_LAST + timedelta(days=1)
+        q = Path(td) / f"BTCUSDT-1d-{g.DAILY_LAST:%Y-%m}.csv"
+        with q.open("w", encoding="utf-8", newline="") as f:
+            f.write("open_time,open,high,low,close,volume\n")
+            f.write(f"{stamp(d)},1,2,0.5,1.5,10\n")
+        daily = g.load_daily(td)
+        daily_ok = not any(r["t"] >= stamp(d) for r in daily)
+    return intra_ok, daily_ok
+
+
+all_checks = check_intraday() + check_daily()
+for code, pf_ok, chart_ok in all_checks:
+    print(f"{code}: prefilter={'MATCH' if pf_ok else 'MISMATCH'} chart={'MATCH' if chart_ok else 'MISMATCH'}")
+print(f"totals: {len(all_checks)} units; prefilters {sum(x[1] for x in all_checks)}/{len(all_checks)} match; charts {sum(x[2] for x in all_checks)}/{len(all_checks)} match")
+intra_fence, daily_fence = check_loader_fences()
+print(f"loader fences: intraday={'MATCH' if intra_fence else 'MISMATCH'} daily={'MATCH' if daily_fence else 'MISMATCH'}")
+assert all(pf and chart for _, pf, chart in all_checks)
+assert daily_fence

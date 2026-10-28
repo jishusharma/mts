@@ -1,0 +1,17 @@
+{
+  "params_id": "malkan_40_60_default_2026-09-28",
+  "source": "MalkanView",
+  "date": "2026-09-28",
+  "note": "MalkanView 40/60 regime + setup levels. Sourced from MyTradingSys/research/malkan_rsi_2026-09-28/WEB_RESEARCH.md (no publisher rule-id table exists there; local ids MLK-R1/MLK-S1/MLK-S2 assigned in layers/rsi/TEST_PLAN.md cite the exact lines). These 40/60 numbers must never be imported by rsi_core or rsi_ma defaults (D2 isolation rule).",
+  "rsi_core": {
+    "period": 14
+  },
+  "malkan_40_60": {
+    "lo": 40,
+    "hi": 60,
+    "regime_lookback": 20,
+    "event_tolerance": 2,
+    "require_bullish_candle_for_bull_setup": true,
+    "require_bearish_candle_for_bear_setup": true
+  }
+}

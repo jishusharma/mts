@@ -1,0 +1,36 @@
+{
+ "id": "st-b154_stratified_2026-10-09-result",
+ "kind": "backtest",
+ "family": "B154 Stratified",
+ "title": "B154 STRATIFIED VERDICTS - by UTC session and by regime",
+ "provenance": "source-extracted",
+ "date": "2026-10-09",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "S - by UTC session and by regime",
+  "tone": "info"
+ },
+ "why": [],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source",
+  "why": "no sentence in the source states why it passed or failed"
+ },
+ "source_files": [
+  "MyTradingSys/research/b154_stratified_2026-10-09/RESULT.md"
+ ],
+ "commit": "7252ef979"
+}

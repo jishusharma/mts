@@ -1,0 +1,61 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/shot.py status"
+  ],
+  "context": {
+    "calls_to_edit": 8,
+    "folded": "2026-10-28T08:36:30Z",
+    "misses": 1,
+    "reads": [
+      "MyTradingSys/research/live_reads/2026-10-26_cross_market_tools/mtf_bias.py"
+    ],
+    "session": "agent-a30c58e3e785d0c20"
+  },
+  "created": "2026-10-26T20:05:00Z",
+  "depends_on": [],
+  "done_when": "table: for each ladder state (count of higher timeframes red/green, RSI 40-60 zone per timeframe) the BTCUSDT forward 4/8/16-bar return on 1h and 15m, gross and after 0.2% round-trip fee, against the unconditional baseline with t-stat; DEV/VALIDATION split stated; trial count logged; verdict worth-a-layer or not",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Test the operator's grandfather-father-son bias idea: when the higher timeframes (weekly, 5d, 3d, 2d, 1d, 12h) are mostly one colour and the lower timeframes turn the other way, does the higher bias win after the lower move fades; and does it add to the Malkan 40-60 RSI zone state. Observation only: does the ladder beat the unconditional forward return after fees.",
+  "id": "lab-verify-mtf-bias-ladder",
+  "lane": "DSA-NUC",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "SOURCED (operator, live chat 2026-10-26 ~20:00Z, shot 13c9d9d2cd6e): \"once a weekly is negative, and 5 days negative, and 3 days negative, 2 days negative, and 1 day is negative, so it is more like negative. So bias is negative in higher time frames. So chances are that when smaller time frames are turning positive, after some point they will trip, and the higher bias will continue.\" and \"when I say RSI, it is only Malkan, which is 40-60\". OURS (judgement, tuned on DEV only): colour of a timeframe = last closed candle close vs open; ladder score = signed count over the higher set; 'lower turning' = forming candle on 1h/30m/15m opposite to the higher majority; RSI 14 Wilder zones under 40 / 40-60 / over 60 as the Malkan state; 2d/4d/5d built from 1d (the lab builds them itself and states the anchor; it does not wait for timeframes-add-2d-3d-4d-5d). Other analysts' RSI 80/20 is not used here; their confidence is marked separately. Prototype for the live table: MyTradingSys/research/live_reads/2026-10-26_cross_market_tools/mtf_bias.py. Warning from the ledger: RSI-DIV-MTF (2026-10-09) found no edge on timeframes with 300 events and 2d leads had n 6 to 54; report event counts before any claim.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-26T20:05:00Z",
+  "refs": [
+    "MyTradingSys/research/live_reads/2026-10-26_cross_market_tools/mtf_bias.py",
+    "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/READ.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "read-only: Binance spot BTCUSDT klines 15m, 1h, 12h, 1d, 3d, 1w from data-api.binance.vision"
+  ],
+  "scope_out": [
+    "any code change outside the new research folder",
+    "live path"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "pull the klines for as many years as the API gives; build 2d/4d/5d from 1d",
+    "compute the ladder state and the Malkan RSI zone per bar with no look-ahead (closed candles only)",
+    "event counts first, then forward returns 4/8/16 bars, baseline, fee-net, t-stat; DEV then VALIDATION once, variants in the trial ledger",
+    "write REPORT.md in a new research folder; verdict worth a layer card or closed"
+  ],
+  "tests": "",
+  "title": "LAB-VERIFY: multi-timeframe bias ladder (grandfather/father/son) plus Malkan RSI 40-60 state on BTC, fee-net",
+  "weight": "",
+  "worker": "agent"
+}

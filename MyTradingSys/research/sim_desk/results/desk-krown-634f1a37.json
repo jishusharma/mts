@@ -1,0 +1,145 @@
+{
+ "id": "desk-krown-634f1a37",
+ "kind": "backtest",
+ "parity": null,
+ "family": "Desk runs",
+ "title": "Krown (exploratory desk try, not the pre-registered study): S5 MA cross, S8 squeeze break, S4 coil break, BTCUSDT or ETHUSDT: S5 4h target 2R fees 0.02/0.05% slip 0.02% 2022-04-01..2024-06-30",
+ "what": [
+  {
+   "name": "Study",
+   "value_plain": "Krown (exploratory desk try, not the pre-registered study): S5 MA cross, S8 squeeze break, S4 coil break, BTCUSDT or ETHUSDT: EXPLORATORY desk try, not the pre-registered study krown-dev-event-study, NO-RECALL-CLEARANCE. BTC / USDT, 4 hours Krown S5: 21/55 EMA cross on the 200 side: market entry at the next bar's open, stop past the last 10 bars, a target at 2 x risk, closed after 100 bars; fees 0.02 % limit / 0.05 % market, plus 0.02 % slippage on market and stop fills; 2022-04-01 to 2024-06-30 (development window only). Skipped detectors: S1 zone test, S2 zone break and S7 capitulation need volume (the desk bars have none; the trader quotes CME volume); S9 tops need volume; S3 range edge needs candle-pattern wicks (all OURS); S6 leash fires at the reconnect bar, after the move, and names no entry direction (provisional, one video).",
+   "label": "OURS"
+  },
+  {
+   "name": "Settings",
+   "value_plain": "S5 4h target 2R fees 0.02/0.05% slip 0.02% 2022-04-01..2024-06-30",
+   "label": "OURS"
+  },
+  {
+   "name": "Condition",
+   "value_plain": "none",
+   "label": "OURS"
+  }
+ ],
+ "how": "Run on the local simulator desk: the study re-simulates every idea on development data; the optional condition then keeps only matching trades (post-filter on the cached run). Fees are included; a never-filled idea is not a trade.",
+ "window": "DEV only, 2022-04-01 to 2024-06-30 (VALIDATION and HOLDOUT never offered)",
+ "verdict": {
+  "label": "NOT ENOUGH DATA",
+  "tone": "warn"
+ },
+ "why": [
+  "95 % range of the average -0.161 to +0.750 R: too wide to call either way; 35 trades can only rule out edges above about +0.64 R"
+ ],
+ "kpis": [
+  {
+   "label": "filled trades",
+   "value": "35"
+  },
+  {
+   "label": "ideas never filled",
+   "value": "0"
+  },
+  {
+   "label": "average per trade, after fees",
+   "value": "+0.278 R"
+  },
+  {
+   "label": "95 % range",
+   "value": "-0.161 to +0.750 R"
+  },
+  {
+   "label": "if you put in $1,000",
+   "value": "$1097"
+  },
+  {
+   "label": "try number",
+   "value": "1"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "curve",
+   "title": "Running total of net R, filled trades in time order",
+   "r": [
+    1.9854,
+    0.9454,
+    -0.0788,
+    1.8818,
+    0.8614,
+    2.8488,
+    3.5255,
+    5.4792,
+    4.458,
+    6.3861,
+    5.3258,
+    4.2727,
+    6.2618,
+    6.3232,
+    5.6001,
+    6.6721,
+    8.625,
+    7.6089,
+    6.504,
+    8.4652,
+    10.4051,
+    9.3704,
+    8.8692,
+    7.7962,
+    7.5209,
+    9.5003,
+    8.4751,
+    7.4512,
+    7.2367,
+    7.0874,
+    9.0719,
+    11.0547,
+    10.0217,
+    10.798,
+    9.7458
+   ],
+   "usd": [
+    1019.85,
+    1009.45,
+    999.21,
+    1018.82,
+    1008.61,
+    1028.49,
+    1035.26,
+    1054.79,
+    1044.58,
+    1063.86,
+    1053.26,
+    1042.73,
+    1062.62,
+    1063.23,
+    1056.0,
+    1066.72,
+    1086.25,
+    1076.09,
+    1065.04,
+    1084.65,
+    1104.05,
+    1093.7,
+    1088.69,
+    1077.96,
+    1075.21,
+    1095.0,
+    1084.75,
+    1074.51,
+    1072.37,
+    1070.87,
+    1090.72,
+    1110.55,
+    1100.22,
+    1107.98,
+    1097.46
+   ],
+   "start_usd": 1000.0,
+   "risk_pct": 1.0
+  }
+ ],
+ "source_files": [
+  "MyTradingSys/research/sim_desk/desk.py"
+ ],
+ "commit": "local desk run"
+}

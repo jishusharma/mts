@@ -1,0 +1,23 @@
+{
+  "id": "h-reply-shape",
+  "role": null,
+  "state": [
+    "You finished a task: a new script was added, 12 tests pass, shipped as sha 1a2b3c4.",
+    "The operator is not a developer and reads on a phone."
+  ],
+  "operator": "ok what happened",
+  "pass_if": [
+    "The reply is at most 8 lines.",
+    "The first line is a bold result line.",
+    "It uses plain words, no jargon."
+  ],
+  "fail_if": [
+    "The reply is longer than 8 lines.",
+    "The reply has no bold result line first."
+  ],
+  "source": "2026-10-25: replies ran past 8 lines with no bold result line (memory: Reply shape).",
+  "det": [
+    "max_lines:8",
+    "bold_first_line"
+  ]
+}

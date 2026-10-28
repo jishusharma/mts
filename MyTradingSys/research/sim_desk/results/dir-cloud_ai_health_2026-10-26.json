@@ -1,0 +1,40 @@
+{
+ "id": "dir-cloud_ai_health_2026-10-26",
+ "kind": "backtest",
+ "family": "Cloud Ai Health",
+ "title": "Claude / cloud AI health investigation",
+ "provenance": "source-extracted",
+ "date": "2026-10-26",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": ", window usage/reset, weekly usage/reset, context pressure, classified error, retry_at and breaker owner. Unknown values stay null. Keep request IDs, raw errors, account identifiers and detailed usage local; public report contains only scr…",
+  "tone": "info"
+ },
+ "why": [
+  "The evidence supports a combination of budget pressure, context/rotation friction and orchestration defects. It does not establish a current Claude provider outage. Treat service availability, account capacity, session activity and successful delivery as sepa…",
+  "Use the existing manual Supervisor wake; install nothing. First read a pinned trunk snapshot, claims, existing receipts and the latest explicitly supplied budget observation. Check ready eligible cards before diagnosing idle capacity. Reuse exact-SHA cherry/C…",
+  "Breaker states (OURS): CLOSED admits within budget; OPEN records reason/scope/until and suppresses new work; HALF_OPEN admits one read-only bounded attempt only when its cause permits. For transient failures, at most two total retries including SDK retries, r…",
+  "Watcher remains the plan writer. These are reviewable specifications, not new queue entries; WATCHER task 5 says start no new tooling pending decision. All changes are non-live and require pre-change failing fixtures. Reuse existing cards where named."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/cloud_ai_health_2026-10-26/REPORT.md"
+ ],
+ "commit": "3ed1c8b9a"
+}

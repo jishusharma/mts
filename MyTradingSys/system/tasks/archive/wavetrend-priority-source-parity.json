@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T06:33:46Z",
+  "commands": [],
+  "created": "2026-10-16T21:18:44Z",
+  "depends_on": [],
+  "done_when": "Saved source or precise access blocker, updated ER-07 parity checklist, and a bounded BTC behavior-atlas/confluence study card with causal event/outcome definitions exist.",
+  "est_turns": 30,
+  "from_inbox": "",
+  "goal": "Deliver pinned WaveTrend source/parity contract and BTC behavior-atlas study plan: bands, center, structures, divergence and confluence by timeframe/regime.",
+  "id": "wavetrend-priority-source-parity",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "Operator 2026-10-17 explicitly requests Claude delivery and priority progress. Follow-up: edge discovery belongs to BTC context/confluence, not generic indicator tests; discover ranges on DEV, freeze before validation.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "T061"
+  ],
+  "result": "PARITY_CONTRACT.md + ATLAS_STUDY_SPEC.md; source saved; seed diff <1e-3 after bar 144",
+  "scope_in": [
+    "T061 and ER-07 source/version/attribution reconciliation",
+    "BTC conditional behavior atlas: excursions, reversals, centerline, divergence, structure and confluence"
+  ],
+  "scope_out": [
+    "Live execution, Tom/Fabio gates, parameter optimization or profitability claims"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/wavetrend_2026-10-17/CLAUDE_HANDOFF.md",
+    "MyTradingSys/items/T061_wavetrend_lazybear.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Read research/wavetrend_2026-10-17/CLAUDE_HANDOFF.md and both blind external reports.",
+    "Reconcile the operator priority request with parked policy; pin exact source and source terms.",
+    "Resolve initialization, d=0, equality and warm-up against fixtures; select one module path.",
+    "Specify BTC behavior atlas and matched confluence controls before strategy selection; issue bounded observation/study implementation card."
+  ],
+  "tests": "Document/source review: every numeric rule is SOURCED with location or OURS; fixtures have explicit availability times.",
+  "title": "Priority WaveTrend source parity and BTC context study",
+  "worker": "session"
+}

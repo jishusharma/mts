@@ -1,0 +1,36 @@
+{
+ "id": "audit-t02_f1_unsafe",
+ "kind": "audit",
+ "family": "Audit: DSA backtest audit",
+ "title": "T02_F1_unsafe",
+ "provenance": "source-extracted",
+ "date": "2026-10-16",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "study: opr_weekly_low_round_sweep_2026-10-16; line 180, CVD flip split, descriptive only)",
+  "tone": "info"
+ },
+ "why": [],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source",
+  "why": "no sentence in the source states why it passed or failed"
+ },
+ "source_files": [
+  "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T02_F1_unsafe.md"
+ ],
+ "commit": "c68e93ced"
+}

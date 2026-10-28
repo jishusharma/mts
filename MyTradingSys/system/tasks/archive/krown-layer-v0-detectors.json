@@ -1,0 +1,77 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T11:19:08Z",
+  "commands": [],
+  "created": "2026-10-14T15:56:54Z",
+  "depends_on": [],
+  "done_when": "python scripts/dev/run_all_tests.py --quick green; each new test shown failing against an empty module first; a printed table of fire counts per detector on BTCUSDT 1d from the data card; test_layer_boundaries.py passes",
+  "est_turns": 30,
+  "from_inbox": "",
+  "goal": "Implement the Krown detectors of KROWN_LAYER_SPEC s2 (tf, swings and dominant highs/lows, zones, volume, vol_regime (BBWP), candles, mas, rsi, range, topdown, tops, events) as pure functions of closed bars under MyTradingSys/backtest/layers/krown/, with params/krown_params.json carrying a source per number (SOURCED + ledger id, or OURS). Flag-gated, default off, alert-only, no live wiring, no P&L.",
+  "id": "krown-layer-v0-detectors",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "krown/ krown_core.py+krown_events.py+params, 43 tests (fail-first 42/43 vs empty module), ",
+      "ref": "cd68159f",
+      "utc": "2026-10-17T11:19:08Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "trendline-contract-spec: apply review fixes (L6 scope, E9-E11 gaps, tie example)",
+      "ref": "c768076dcafe",
+      "utc": "2026-10-17T04:42:49Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "c768076dcafe trendline-contract-spec: apply review fixes (L6 scope, E9-E11 gaps, tie examp",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-10-17T04:42:49Z"
+    }
+  ],
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "note": "UNPARKED 2026-10-17 by operator decisions q-krown-saturation (waiver: descriptive detectors, recall and DEV event study only, no engine setup file) and q-krown-stop (testnet may run without a resting stop; close-based exit is a testnet arm) and q-krown-volume-venue (Binance, Coinbase, CME). Refiner re-scopes it.",
+  "pinned": false,
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T07:24:57Z",
+  "refs": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md",
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv",
+    "MyTradingSys/research/krown_ta101_2026-10-13/PRE_REG_KROWN.md"
+  ],
+  "result": "krown/ krown_core.py+krown_events.py+params, 43 tests (fail-first 42/43 vs empty module), FIRE_COUNTS_BTC_DEV.md, no setup over 1.0/10 bars ceiling; FORMULAS s21",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/krown/",
+    "MyTradingSys/backtest/layers/FORMULAS.md (new Krown section with a hand-computed example per detector)"
+  ],
+  "scope_out": [
+    "execution/",
+    "any file a running process imports",
+    "Tom and Fabio constants",
+    "any backtest P&L",
+    "live wiring"
+  ],
+  "scope_sha": "c768076dcafe",
+  "size": "M",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "add a Krown section to FORMULAS.md: zone = [close, wick extreme] (KR-Z01), volume ratio (KR-V01/V02), strict engulfing (KR-C06), dominant low / dominant lower high (KR-L10), BBWP (KR-Q01: basis 7, lookback 100; multiplier 2 and the percentile formula are OURS, say so), leash (KR-M06), each with a hand-computed example",
+    "write tests first from those examples (expected numbers independent of the code), run them against an empty module: all fail",
+    "implement krown_core.py (swings, zones, volume, vol_regime, candles, mas, rsi, range, tops) and krown_events.py (events {i, side, setup, tags}); params file with source per number; same-slot volume baseline as a second arm",
+    "print fire counts per detector and per setup S1-S9 on BTC 1d/1w; check the fire-rate ceiling of PRE_REG_KROWN item 3"
+  ],
+  "tests": "test_krown_*.py with expected values hand-derived from the ledger definitions; fail-first against an empty module (git show of the old file or a scratch copy, never stash); a causality test (a zone is never used before its confirming close); test_layer_boundaries.py",
+  "title": "Krown layer v0 detectors: swings, zones, volume, candles, averages, range/coil as pure functions + params file with a source per number + tests; DONE when: tests pass, fail-before proven, fire counts printed on BTC 1d",
+  "worker": "session"
+}

@@ -1,0 +1,80 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-28T15:33:29Z",
+  "commands": [],
+  "created": "2026-10-27T20:23:24Z",
+  "depends_on": [],
+  "done_when": "T09_live_parity.md:72 and export_results.py:169 both read '0 differences in 3,156 signals' (not 3,200+); new test_t09_export_counts.py passes; no other wording changed.",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "GPT audit MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-t09-table-recount.md (HIGH) found T09_live_parity.md:72 and export_results.py:169 overstate the exact-match count as '3,200+'; the five named families sum to 3,156 (2,880+30+99+130+17). Replace '3,200+' with '3,156' in both places; no other text change.",
+  "id": "correct-t09-exact-match-count-and-3-200-",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "3,200+ -> 3,156 in T09_live_parity.md, export_results.py, t09_live_parity.json",
+      "ref": "4c31beaab",
+      "utc": "2026-10-28T15:33:29Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim-v2: catalogue of every known test, WaveTrend export, kind/parity/ROI fields",
+      "ref": "bd11ebf782e0",
+      "utc": "2026-10-24T19:39:33Z"
+    },
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "446f6c5030a8 T09 backtest audit: live parity (volume_fvg side mirrored, RSI untested event",
+      "ref": "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T09_live_parity.md",
+      "utc": "2026-10-24T19:18:19Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DECISION (OURS): weight ROUTINE (sourced text/number correction, no trading-decision parameter) -> T0-ONLY, no reviewer stamp needed. Follow-up filed by gpt-t09-table-recount's HIGH finding. MED finding (export RSI 1h Live undercount, lines 123-124) filed separately as export-rsi-1h-live-count-undercounts-by-.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T00:03:48Z",
+  "refs": [],
+  "result": "3,200+ -> 3,156 in T09_live_parity.md, export_results.py, t09_live_parity.json",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T09_live_parity.md",
+    "MyTradingSys/research/sim_desk/export_results.py",
+    "MyTradingSys/research/sim_desk/test_t09_export_counts.py (new)"
+  ],
+  "scope_out": [
+    "T09_live_parity.md section 5 findings table",
+    "export_results.py:123-124 RSI 1h Live undercount (separate MED finding, card export-rsi-1h-live-count-undercounts-by-)",
+    "any backtest re-run"
+  ],
+  "scope_sha": "bd11ebf782e0",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-t09-table-recount.md (HIGH finding, recount 2,880+30+99+130+17=3,156)"
+  ],
+  "state": "done",
+  "steps": [
+    "Add test_t09_export_counts.py asserting T09_live_parity.md has no '3,200+' substring and does contain '3,156'; see it fail.",
+    "Edit T09_live_parity.md:72 and export_results.py:169: replace '3,200+' with '3,156'.",
+    "Re-run export_results.py's t09_live_parity() export and confirm regenerated results/t09_live_parity.json 'why' text also reads 3,156.",
+    "Run the new test; commit with a Result: line citing the audit report sha."
+  ],
+  "taken": "2026-10-28T15:33:29Z",
+  "tests": "New fail-first MyTradingSys/research/sim_desk/test_t09_export_counts.py: red on pre-change text (contains '3,200+'); green once both files say '3,156'.",
+  "title": "Correct T09 exact-match count and 3,200+ claim",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

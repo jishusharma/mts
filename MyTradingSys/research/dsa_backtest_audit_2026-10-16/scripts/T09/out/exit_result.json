@@ -1,0 +1,97 @@
+{
+ "live_rule": {
+  "1m": {
+   "hold_minutes": 8,
+   "long": {
+    "n": 262655,
+    "stop": 0.0072,
+    "target": 0.0009,
+    "time": 0.9919
+   },
+   "short": {
+    "n": 262655,
+    "stop": 0.0068,
+    "target": 0.0009,
+    "time": 0.9923
+   }
+  },
+  "5m": {
+   "hold_minutes": 40,
+   "long": {
+    "n": 262648,
+    "stop": 0.0535,
+    "target": 0.0092,
+    "time": 0.9373
+   },
+   "short": {
+    "n": 262648,
+    "stop": 0.0504,
+    "target": 0.0095,
+    "time": 0.9401
+   }
+  },
+  "15m": {
+   "hold_minutes": 120,
+   "long": {
+    "n": 87544,
+    "stop": 0.1518,
+    "target": 0.0364,
+    "time": 0.8118
+   },
+   "short": {
+    "n": 87544,
+    "stop": 0.1455,
+    "target": 0.0386,
+    "time": 0.8158
+   }
+  },
+  "1h": {
+   "hold_minutes": 480,
+   "long": {
+    "n": 21880,
+    "stop": 0.3817,
+    "target": 0.1379,
+    "time": 0.4804
+   },
+   "short": {
+    "n": 21880,
+    "stop": 0.3742,
+    "target": 0.1374,
+    "time": 0.4884
+   }
+  }
+ },
+ "backtest_rsi_rule": {
+  "15m": {
+   "hold_minutes": 1500,
+   "long": {
+    "n": 7288,
+    "stop": 0.5693,
+    "target": 0.2634,
+    "time": 0.1673
+   },
+   "short": {
+    "n": 7288,
+    "stop": 0.5668,
+    "target": 0.2602,
+    "time": 0.173
+   }
+  },
+  "1h": {
+   "hold_minutes": 6000,
+   "long": {
+    "n": 7263,
+    "stop": 0.6616,
+    "target": 0.3317,
+    "time": 0.0067
+   },
+   "short": {
+    "n": 7263,
+    "stop": 0.6576,
+    "target": 0.3324,
+    "time": 0.0101
+   }
+  }
+ },
+ "rule": "stop 1%, target 2%, stop-first inside a 1m bar"
+}

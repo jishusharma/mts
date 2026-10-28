@@ -1,0 +1,13 @@
+{
+  "done_when": "selftest prints '36 passed, 0 failed'; GET http://127.0.0.1:7181/ping shows agent 0.7.0 and host JIS-NUC; result lists the real java/mvn paths",
+  "finished": "2026-10-14T17:21:33Z",
+  "from": "JIS-NB",
+  "host": "JIS-NB",
+  "id": "20261014-153129-install-aibridge-v0-7-0-on-jis-nuc",
+  "need": "On JIS-NUC: python scripts/dev/sync.py start; then python scripts/dev/aibridge_install.py <AIBridge root on this host, F:/AIBridge unless different> --restart-agent (token-free: keeps the host's own TOKEN, AGENT_CWD, config.json; merges policy.json; backs up *.pre_v07). Then run python <root>/tests/agent_live_selftest.py (expect 36 passed, 0 failed) and node <root>/tests/loop.test.js. Verify Java: the DSA note says JDK 17 at C:\\Users\\E-ngineers\\Java\\jdk-17.0.20.1+1 and Maven at C:\\Users\\E-ngineers\\Maven\\apache-maven-3.6.3 on the NUC (NB has D:\\tools instead): run '# AIRUN task=inline' style check or java -version / mvn -v and report the real paths. Tell the operator to reload the AIBridge extension in each Chrome profile on the NUC (chrome://extensions) and F5 the DSA chat tabs. Do not touch HALT files or MTS live processes; only the AIBridge agent on port 7181 restarts.",
+  "posted": "2026-10-14T15:31:29Z",
+  "result": "Installed over SSH gate from JIS-NB 2026-10-14 17:19Z: manifest 0.7.0, 8 .pre_v07 backups, TOKEN kept, roots IdeaProjects/Temp/F:\\AIBridge/F:\\MTS; AIBridge-Agent task restarted, /ping agent 0.7.0 host JIS-NUC auto_mode fluent; agent_live_selftest 35 passed 1 failed (optional shell=pwsh: Access is denied starting pwsh); loop.test.js 9 passed. Java: JAVA_HOME=C:\\Users\\E-ngineers\\Java\\jdk-17.0.20.1+1 (java not on PATH), mvn C:\\Users\\E-ngineers\\Maven\\apache-maven-3.6.3 (Maven 3.6.3, Java 17.0.20.1). Operator: reload the extension in each NUC Chrome profile and F5 the DSA tabs.",
+  "status": "done",
+  "target": "JIS-NUC",
+  "title": "Install AIBridge v0.7.0 on JIS-NUC"
+}

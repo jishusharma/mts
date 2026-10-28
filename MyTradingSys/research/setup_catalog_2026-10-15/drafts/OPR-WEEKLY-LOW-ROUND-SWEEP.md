@@ -1,0 +1,50 @@
+# DRAFT catalogue row OPR-WEEKLY-LOW-ROUND-SWEEP: weekly low + round number break, reclaim or acceptance (2026-10-15)
+
+Status: DRAFT in its own file; `SETUP_CATALOG.md` is NOT edited. Not a Tom/Fabio/Malkan setup: an operator question about probabilities. Every parameter is OPERATOR (his words) or OURS (G5 variant, decided on DEV, never called his). No trader quote is used. Operator text: `../sources/OPERATOR_2026-10-15_weekly_low_round_sweep.md` (relayed paraphrase). Data checks: `../evidence/weekly_low_sweep_checks.py` + `_output.txt` (our Binance 1m klines, 1w/1d klines, 1m OI recorder, fapi 5m OI history). Linked row: `OPR-PREOPEN-TOPS.md` (see item 2, last bullet).
+
+### OPR-WEEKLY-LOW-ROUND-SWEEP Weekly low and round number taken together: reclaim, acceptance or range
+1. **Name / trader.** Operator reading (OPERATOR). Neighbours in the catalogue, for the flow layer only: FAB-3 (failed auction of one side, then aggression of the other at the level), FAB-1 (CVD pressure then break); neither says "round number" or "weekly low", so no quote is borrowed.
+2. **What you see.**
+   - Levels (OPERATOR, shot 4e8ef8d3f2e5 marks): white lines at 81146.6 (the 12:25Z pre-open top), 80743.5 (the 13:45 bounce high), 80027.0 (the 13:31 low) and 79732.3 (the sweep low). Our data: 80027.0 = 1m low 13:31, 79732.3 = 1m low 13:55 (the day, week and 1d-candle low), 80743.5 = 13:45 1m high, 81146.6 = 12:25 1m high.
+   - NOT reproduced (relay numbers): the "prior-week low 80,393" is not a prior-week low in our data: the Binance 1w candle of 10-05..10-11 has low 80344.8 (1m 10-08 17:26; the 1d lows that week: 82706.2, 80344.8, 81571.5, 82500.0, 82751.1); 80,393 is only where price first closed below it on the 1m at 13:11 (80380.1 after 80393). The "today's low 80,091" equals the 1m low at 13:36 (80091.2), which sits ABOVE the 13:31 low 80027.0 that was already taken. So the "weekly low + today's low + round number" are three levels inside a 0.5 % band (80027.0 to 80393), and they were not broken at one instant (next bullet).
+   - Timeline (our 1m, UTC): weekly low 80344.8 first wicked 13:22 (low 80333.0), first 1m close below it 13:26 (80300.4); the 4h 00:00 low 80188.0 broke 13:28; wave 1 low 80027.0 at 13:31; bounce to 80743.5 by 13:45 (OPR-PREOPEN-TOPS); wave 2 broke 80027.0 and 80000 at 13:53 (first low 79831.4, first close below 80000 at 13:53, 79916.0), lowest 79732.3 at 13:55 (267.7 pts = 0.335 % under 80K; 1m bar closed 80144.6). So the weekly-low break (13:22-13:26) came 27-31 minutes BEFORE the round-number break (13:53), and the 13:30Z US open fell between them; the low came 25 minutes after the open (relay: "about 13:53, 20 minutes"). The stacked cluster at the sweep is 80027.0 (swing low) / 80000 (round) / 80091 (13:36 low): within 0.1 %.
+   - Reclaim: first 1m close back above 80000 at 13:56 (80229.9): one minute after the lowest bar, three minutes after the first break (relay said about 10). It then held: no 1m close below 80000 again (lowest later 1m low 80038.2 at 13:56, 80066.2 at 14:00). A retest of 80100-80200 lasted until 14:00; the run began at 14:01.
+   - Acceleration: RSI14 (1m, Wilder) 28.9 at 13:54 -> 43.8 at 13:55 -> 76.8 at 14:10 / 76.9 at 14:11 (relay "77" holds). Pre-open top 81146.6 first exceeded at 14:10 (high 81390.5, close 81242.6), not 14:11; the 14:11 bar high is 81293.8 (the relay's 81,293). Day high so far 81390.5.
+   - Flow (OURS reading; OI is in no Tom/Fabio row): our taker delta, CVD since 13:50: -1321 at 13:54, -1412 at 13:55, then turned up from 13:56; 14:10 delta +1026 (the squeeze bar); 14:11 delta -51. The relay's "net delta +488 at 14:11" is not reproduced (the chart's Net Delta panel is a different quantity from taker delta, see `MAL-BB-RSI-4060.md` section 1). OI: recorder (sparse) 93106 at 13:35, 94010 at 13:55 (+904 BTC in 20 min, so "rose into the break" holds; chart 94.14K / 94.177K at 13:52-13:54), then 93877-93999 over 14:00-14:07 (-70 to -130 from the peak, about -0.1 %), chart 94.077K at 14:08. The relay's "OI fell to 93.28K at 14:11" cannot be checked: no recorder row after 14:07 and the fapi 5m history stops at 13:40. So "shorts covering" is NOT shown by our data before 14:08; OI was roughly flat during the reclaim. CoinGlass levels are about 140-160 above the recorder's.
+   - Link to OPR-PREOPEN-TOPS (OPERATOR via the relay): this is the operator's squeeze case. The top 81146.6 (12:25) was broken at 14:10 after a slow build from the 13:55 sweep (about 15 minutes, RSI 44 -> 77), the opposite of "broken quickly pre-open then sold". In that row's terms S1 = 40 minutes after the 13:30 open, S3 (dwell) not measured; the flow covariates there (OI change, CVD slope, net delta sign at the break) are the same ones used here. One instance, after the fact.
+3. **Entry, stop, target, management.** NOT STATED. The operator asks for probabilities and patterns, not a trade. Nothing filled in.
+4. **Context.** US session: sweep and reclaim happened 13:53-14:10Z, inside the first hour after the 13:30Z cash open (EDT until 2026-11-01). HTF stretch: before the low, 1h/4h RSI were below 35 / near 31 (see `bb_mid_engulf_checks_output.txt`, 13:54: 1h RSI 29.8, 4h 31.2). Not a hard rule.
+5. **BTC visibility: YES.** Levels (1m, 1w/1d klines), reclaim and acceptance (1m closes), RSI, taker delta, CVD: from klines; OI: 1m recorder from 2026-10-05, fapi 5m history only for the latest ~30 days, archive `metrics` 5m (on this machine it ends 2026-09-26).
+6. **Evidence.** 1 instance (2026-10-15 13:53-14:10), same day and downtrend as the BB/RSI rows (not independent of them). Prior evidence to cite, a different question: `levels_confluence_2026-10-14/levels_hold.md:5, 29, 31`: round_1000 KEEP (n = 322, hold 56.5 % vs random 44.6 %, +11.9 pp, CI [7.7, 15.9]); prior_week_low DROP (n = 20, 50.0 % vs 34.0 %, +16.0 pp, CI [-1.0, 34.0], so dropped only because the CI touches zero at small n). That study measured HOLD; this one measures sweep-and-reclaim vs acceptance, so it does not contradict it.
+7. **Gaps.** "Break": a wick, a close, how far: NOT STATED (here 0.335 % under 80K by wick). "Reclaimed": window NOT STATED (relay says about 10 minutes, our first close back is 1 minute). "Weekly low": which weekly (UTC Monday vs the operator's chart) NOT STATED; our 1w candle low is 80344.8, the relay says 80,393. Whether "together" means within one bar, one hour or one level cluster: NOT STATED (here 31 minutes apart). Who is trapped: not visible in our data (no liquidation history); OI is the only proxy. What the study should compare (patterns) is the operator's open question.
+
+## Parameter table (every parameter labelled)
+
+| parameter | value or definition | label |
+|---|---|---|
+| events are worth studying | breaks of the prior-week low and/or a round-1000 level | OPERATOR |
+| prior-week low | low of the previous Monday-Sunday UTC week from 1m or 1w klines (variant: rolling 7 days; variant: the operator's chart value if recorded) | OURS |
+| round level | multiples of 1000 (variants: 500, 1000; the operator says "80,000") | OURS (round-1000 is the lc-levels-hold family) |
+| break | 1m low below the level by at least p % (grid 0, 0.1, 0.2, 0.3 %); variant: 1m close below | OURS |
+| penetration depth | max(level - low) / level within the event window; this case 0.335 % under 80K | OURS |
+| event window | from the first break to 60 minutes later (grid 30, 60, 120) | OURS |
+| outcome A, reclaim (failed breakdown) | first 1m close back above the level within k minutes of the first break (grid k = 3, 5, 10, 15) and no 1m close below it again for 15 minutes | OURS |
+| outcome B, acceptance below | m consecutive closes below the level on 1m (m = 3, 5) or on 5m (m = 2, 3) | OURS |
+| outcome C, range | neither A nor B inside the window; price stays within 0.3 x ATR(14, 1h) of the level | OURS |
+| after a reclaim | MFE and MAE in ATR(14, 1h) units to +30, +60, +120 minutes; whether the prior swing high (12 h) or an unbroken pre-open top is exceeded (this case: 81146.6 at 14:10) | OURS |
+| OI during the break | OI change from 15 minutes before the first break to the lowest bar (up / flat / down; tercile cuts on DEV); rising = shorts adding (OURS reading) | OURS |
+| CVD / net-delta flip | sign of the CVD slope over 5 minutes before vs after the lowest bar; sign of taker delta in the reclaim bar | OURS |
+| session | event inside 0-60 minutes after the 13:30/14:30Z US open (by calendar) vs elsewhere; control: a fixed 13:30Z | OURS |
+| HTF stretch | 1h and 4h RSI14 < 35 and price below the 4h/1d lower BB(20,2) at the first break | OURS |
+| level stacking | weekly low and a round-1000 level within X % of each other (grid 0.1, 0.25, 0.5 %), or a swing low / weekly low / round number cluster, vs a single level | OURS |
+
+## Outcomes to measure (also on the G5 card)
+
+1. P(A), P(B), P(C) with n and Wilson 95 % CI, unconditional and per condition above (2 x 2 splits only, cells with n < 10 are not read).
+2. After A: MFE/MAE to +30/+60/+120 min, hit of the prior swing high and of unbroken pre-open tops; after B: continuation to the next level, MAE.
+3. Fee-net R (METHOD.md fees: taker 5 bp + 1 bp slippage per fill) for two plain rules only after the frequencies say there is something to cost: long at the reclaim close, short at acceptance (stops OURS).
+4. Controls: same-level touches without a break (pure touch), random-time same-day placebo, round level alone vs weekly low alone vs stacked.
+
+## G5 study sketch (DEV only, fee-net, NOT run)
+
+DEV days only (LAYERS.md:35 window); holdout sealed; one look at VALIDATION per frozen variant; every (level family, p, k, m, window, stacking) combination is a ledger row. Expected n: weekly lows are rare (about 1 per week, `levels_hold.md` had n = 20 touches of the prior-week low), round-1000 breaks are common (n = 322 touches in that study), so the stacked cell will be tens at best: report it, do not tune on it. The card is `MyTradingSys/system/tasks/opr-weekly-low-round-sweep-g5.json` (GPT/NUC candidate: a heavy 1m event study).

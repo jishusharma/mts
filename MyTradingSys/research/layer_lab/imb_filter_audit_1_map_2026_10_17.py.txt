@@ -1,0 +1,94 @@
+"""Table-only recount; deliberately opens exactly the six card-scoped sources."""
+from collections import Counter
+import csv
+from datetime import datetime, timezone
+from decimal import Decimal
+import hashlib
+import io
+import json
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[3]
+BASE = ROOT / 'MyTradingSys/research/imbalance_qriptal_2026-10-16/filter'
+# Read original evidence before the result narrative. No loaders or market files.
+NAMES = ['PRE_REG.md', 'COUNTS.md', 'events_dev.csv', 'trades_dev.csv',
+         'trials.csv', 'RESULT.md']
+raw = {name: (BASE / name).read_bytes() for name in NAMES}
+texts = {name: data.decode('utf-8') for name, data in raw.items()}
+tables = {name: list(csv.DictReader(io.StringIO(texts[name])))
+          for name in NAMES if name.endswith('.csv')}
+events = tables['events_dev.csv']
+trades = tables['trades_dev.csv']
+trials = tables['trials.csv']
+
+def flag(row, name):
+    assert row[name] in ('True', 'False')
+    return row[name] == 'True'
+
+def mean(rows, col):
+    return sum((Decimal(row[col]) for row in rows), Decimal(0)) / len(rows)
+
+def utc(ms):
+    return datetime.fromtimestamp(ms / 1000, timezone.utc).isoformat()
+
+groups = {
+    'ALL': trades,
+    'IMB': [r for r in trades if flag(r, 'small')],
+    'NOIMB': [r for r in trades if not flag(r, 'small')],
+    'LARGE': [r for r in trades if flag(r, 'large')],
+    'NOLARGE': [r for r in trades if not flag(r, 'large')],
+    'CTRLONLY': [r for r in trades if flag(r, 'ctrl') and not flag(r, 'small')],
+}
+out = {
+    'inputs': [{'path': (BASE / name).relative_to(ROOT).as_posix(),
+                'sha256': hashlib.sha256(raw[name]).hexdigest(),
+                'lines': len(texts[name].splitlines())} for name in NAMES],
+    'schemas': {name: list(rows[0]) for name, rows in tables.items()},
+    'rows': {name: len(rows) for name, rows in tables.items()},
+    'groups': {},
+}
+assert len(events) == len(trades) == 5976
+assert all(all(e[k] == r[k] for k in e) for e, r in zip(events, trades))
+assert len({(r['day'], r['level']) for r in events}) == len(events)
+out['shared_event_trade_fields_equal'] = True
+out['duplicate_day_level_keys'] = 0
+cutoff = 1719792000000  # 2024-07-01T00:00:00+00:00, fixed card boundary
+for name in ['events_dev.csv', 'trades_dev.csv']:
+    rows = tables[name]
+    times = [int(r['t']) for r in rows]
+    bad = sum(t >= cutoff for t in times)
+    mismatches = sum(int(r['day']) != int(r['t']) // 86400000 for r in rows)
+    assert bad == mismatches == 0
+    out[name + '_time_check'] = {
+        'min_ms': min(times), 'max_ms': max(times),
+        'min_utc': utc(min(times)), 'max_utc': utc(max(times)),
+        'at_or_after_cutoff': bad, 'day_mismatches': mismatches,
+    }
+for name, rows in groups.items():
+    out['groups'][name] = {
+        'n': len(rows), 'days': len({r['day'] for r in rows}),
+        'sum_net_1': str(sum((Decimal(r['net_1']) for r in rows), Decimal(0))),
+        'mean_net_1': str(mean(rows, 'net_1')),
+        'mean_gross_1': str(mean(rows, 'gross_1')),
+        'mean_cost_1': str(mean(rows, 'cost_1')),
+        'H1_n': sum(int(r['t']) < 1680307200000 for r in rows),
+        'H2_n': sum(int(r['t']) >= 1680307200000 for r in rows),
+        'outcomes': {},
+    }
+    for rr in (1, 2):
+        counts = Counter(r[f'kind_{rr}'] for r in rows)
+        assert set(counts) <= {'target', 'stop', 'time'}
+        out['groups'][name]['outcomes'][str(rr)] = {
+            kind: {'n': counts[kind], 'percent': 100 * counts[kind] / len(rows)}
+            for kind in ['target', 'stop', 'time']
+        }
+out['delta1'] = str(mean(groups['IMB'], 'net_1') - mean(groups['NOIMB'], 'net_1'))
+out['headline_rounded'] = [format(mean(groups['IMB'], 'net_1'), '.3f'),
+                           format(mean(groups['NOIMB'], 'net_1'), '.3f'),
+                           format(Decimal(out['delta1']), '+.3f')]
+assert out['headline_rounded'] == ['-0.366', '-0.467', '+0.101']
+for i, group in enumerate(['IMB', 'NOIMB', 'LARGE', 'NOLARGE']):
+    assert int(trials[i]['n']) == len(groups[group])
+    assert abs(Decimal(trials[i]['net_R']) - mean(groups[group], 'net_1')) < Decimal('0.0000005')
+out['primary_trial_count_mean_checks'] = 'PASS (CSV rounding tolerance 5e-7 R)'
+print(json.dumps(out, indent=2))

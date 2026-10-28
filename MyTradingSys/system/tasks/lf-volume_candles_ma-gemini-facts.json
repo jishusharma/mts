@@ -1,0 +1,73 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-28T03:15:51Z",
+  "commands": [
+    "python scripts/dev/lab_query.py layers",
+    "python scripts/dev/lab_query.py rulings volume_candles_ma"
+  ],
+  "created": "2026-10-25T20:05:41Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/volume_candles_ma.md exists with the five sections, every fact has file:line or NOT_IN_DATA",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "One fact sheet for layer family volume_candles_ma, from repo files only, each fact with file:line, for the layer review (card layer-review-after-simulator). No verdict on keeping or dropping a layer.",
+  "id": "lf-volume_candles_ma-gemini-facts",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "4 layers covered; 110 facts cited with file:line; volume_candles_ma.md written",
+      "ref": "d72c1e78d",
+      "utc": "2026-10-28T03:15:51Z"
+    }
+  ],
+  "layers": [
+    "volume_candles_ma"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-25T20:07:12Z",
+  "refs": [
+    "MyTradingSys/system/ANTIGRAVITY_LAPTOP.md item C"
+  ],
+  "result": "4 layers covered; 110 facts cited with file:line; volume_candles_ma.md written",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/volume_candles_ma.md (new file only)"
+  ],
+  "scope_out": [
+    "scripts; live tree; LAYERS.md; any verdict to keep, drop, demote or park a layer"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/LAYERS.md",
+    "MyTradingSys/system/layer_index.json",
+    "MyTradingSys/backtest/layers/FORMULAS.md"
+  ],
+  "state": "done",
+  "steps": [
+    "python scripts/dev/lab_query.py layers (rows with family volume_candles_ma); read the volume_candles_ma section of MyTradingSys/system/LAYERS.md and its spec/results files in layer_index.json",
+    "python scripts/dev/lab_query.py rulings volume_candles_ma",
+    "Write MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/volume_candles_ma.md per ANTIGRAVITY_LAPTOP.md item C: per layer ORIGIN (quoted source), PARAMETERS (SOURCED or OURS), BACKTESTS (path, fee-net, IS/OOS, n), KNOWN BUGS (rulings), CONFLUENCE",
+    "Write NOT_IN_DATA where the repo has no answer; never fill from memory; give no verdict",
+    "Commit with a Result: line (layers covered, facts counted)"
+  ],
+  "taken": "2026-10-28T03:15:51Z",
+  "tests": "none (run card); proof = file exists and every fact line carries file:line or NOT_IN_DATA",
+  "title": "[GEMINI] Layer fact sheet: volume_candles_ma (file:line facts only, no verdict)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

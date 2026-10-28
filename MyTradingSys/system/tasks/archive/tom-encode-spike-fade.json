@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-13T07:23:49Z",
+  "commands": [],
+  "created": "2026-10-10T20:38:11Z",
+  "depends_on": [
+    "tom-verdict-fee-per-market",
+    "tom-layer-v2-cost",
+    "tom-holdout-clean-split"
+  ],
+  "done_when": "fade_short emitted on the synthetic series with the hand numbers above, none on the flat series, flag-off snapshot JSON bit-identical on BTC and GER40 fixtures, quick gate green.",
+  "from_inbox": "",
+  "goal": "Add candidate type fade_short behind -Dmts.spikeFade (default off): short at the session extreme of an opening/pre-market impulse, PRICE arm only (spec sections 12, 13, 15), with stop A-S1/A-S2, target A-T1 and the section 14 snapshot fields.",
+  "id": "tom-encode-spike-fade",
+  "lane": "SONNET",
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "Part B 2026-10-13: recall moved to card tom-v2-recall-fire-rate; PRICE arm only. No threshold beyond the spec's RANK-DEFAULT values; anything else unsourced is NO-SOURCE: flag, do not add.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "opus-2026-10-13 (TOM_LAYER_V2_SPEC part B)",
+  "refs": [],
+  "result": "fade_short built behind -Dmts.spikeFade: hand numbers 24110/24130/24010 RR 5.0 net 4.9285 pass; flag-off golden identical BTC+GER40; quick gate green",
+  "scope_in": [
+    "src/main/java/datafeed/SetupCandidatesBuilder.java",
+    "src/test/java/datafeed/",
+    "MyTradingSys/backtest/dax_engine.py",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2, 11-15"
+  ],
+  "scope_out": [
+    "live tree / restarts",
+    "tuning on outcomes",
+    "reading any DAX holdout day (2026-04-11 on)",
+    "BTC runs",
+    "profile proofs (card tom-encode-fade-profile-proofs)",
+    "paths A2/A3",
+    "recall runs"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2.1-2.5, 12, 13, 15",
+    "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md section 3"
+  ],
+  "state": "done",
+  "steps": [
+    "Read spec sections 2, 12, 13, 15. Every condition keeps its spec id (A-C1, A-P4 ...) in the code comment and the proof JSON.",
+    "Zone = session extreme of the impulse leg; A-C1 via impulse_rank above the median of the prior 20 sessions; A-C2 = price above the prior day's range.",
+    "Proofs P2, P4 (5-minute inside bar), P5, P7 from OHLC; emit the list, count nothing else. Stop: A-S1 level if one exists above, else A-S2 20 DAX points. Target A-T1 start of the impulse.",
+    "Write market_state, day_type, htf_bias, impulse_rank, stop_n5 on each candidate. dax_engine.py passes the flag through.",
+    "Flag off: full snapshot JSON identical on a BTC and a GER40 fixture (test)."
+  ],
+  "tests": "Java: 1m series with prior-day high 24000, open 24010, impulse to 24110 above the prior 20 legs' median, old high 24080 taken, 5m inside bar at the top -> one fade_short at 24110, stop 24130, target 24010, gross RR 5.0, GER40 net RR 99.7589/20.2411 = 4.9285, proofs P4+P5; flat series -> none; flag off -> output identical. Fails before the type exists.",
+  "title": "Tom v2: encode the fade PRICE arm (session-extreme zone, A-C1/A-C2, proofs P2 P4 P5 P7, path A1)"
+}

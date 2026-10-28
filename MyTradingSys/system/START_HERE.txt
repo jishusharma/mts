@@ -1,0 +1,52 @@
+==============================================================
+ MTS CHEAT SHEET   (2026-10-25)   one main session, you only talk
+==============================================================
+
+YOUR HABIT (the only flow)
+  1. Open ONE main session (Sonnet). Paste:
+       You are Lead. Read MyTradingSys/system/handover/LEAD_RESUME_<newest>.md
+  2. Talk to it in plain words. It starts every other session for you
+     (workers, Thinker, Eagle_Eyes) and archives them when done.
+  3. When it says "I am long, open a new main session", paste the
+     line it gives you into a NEW session. Nothing else to learn.
+  You never run commands. If one is truly needed (Lenovo, admin),
+  the session gives you one line that starts with cd.
+
+ASK THE MAIN SESSION, IN YOUR WORDS
+  "Run the ready cards"        -> it starts 2 workers at a time
+  "Think about <question>"     -> it starts a Thinker (say Opus if wanted)
+  "Read this chart"            -> it starts Eagle_Eyes
+  "Status?"                    -> one line + what waits for you
+
+REPLIES YOU GET (every session)
+  One bold line: the result.  Then ONLY "YOU DO" rows, if any.
+  No answer from you = the safe default it names.
+
+LIMITS IT KEEPS FOR YOU
+  5-hour window: stops new work at 80%.  Weekly: stops at about 70%.
+  CI red: it reverts first, then tells you.
+  No super session needed: sessions can start workers only on
+  YOUR message, so the main session is the supervisor.
+
+GOLDEN RULES
+  Testnet only. Repo is public: no account or order data.
+  Live tree changes only by a deploy. No schedulers anywhere.
+  Fee-net out-of-sample results decide what trades.
+
+  Logins:  A = jishu.sharma   B = jishu.awgp   C = jishusharma1985
+
+--------------------------------------------------------------
+ THE ROLES   (the main session picks these; you rarely paste them)
+--------------------------------------------------------------
+  -- roster:begin (generated from roles/ROSTER.json by role_loader.py render; do not edit) --
+  You are Lead.               Sonnet (Opus when named)      the one session the operator talks to: design, answers, routing, health; loads one mode at a time
+  You are Eagle_Eyes.         Sonnet                        chart screenshots read against live files, logged
+  You are Supervisor.         Sonnet (Opus only when named) super session: dispatches role workers, verifies their banners
+                                paste: Supervisor A (or supervisor login a, or login a): one phrase, loads the Supervisor and its hand-over goals; or You are Supervisor. Login <A|B|C>. <your tasks>
+  You are Lab_Guy.            Sonnet                        quality owner of the Claude-to-lab flow (GPT/Codex, Gemini)
+  You are 1985Artifacts_Guy.  Sonnet                        owns every published page and its links; republishes
+  Inside the Supervisor (never by hand, never picked by fallback): Session_Planner, Builder.
+  Old names still work: thinker, thinker_guy, thinker guy, think_guy, think guy, admin_guy, admin guy, q&a_helper, q&a helper, qa helper, q and a helper, network_admin_guy, network admin guy, pipeliner, traffic_controller, traffic controller, traffic cop, mts_doctor, mts doctor, doctor -> Lead; artifacts_guy, artifacts guy -> 1985Artifacts_Guy.
+  No role line? The first prompt loads the best fit:  ROLE LOADED: <Name> (fallback: <why>) ...
+  -- roster:end --
+==============================================================

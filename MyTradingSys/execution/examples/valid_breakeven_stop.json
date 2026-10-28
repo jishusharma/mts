@@ -1,0 +1,16 @@
+{
+  "plan_id": "valid_breakeven_stop",
+  "account": "subaccount_1",
+  "instrument": "BTC-PERPETUAL",
+  "side": "LONG",
+  "validity": {"start": "2026-09-27T09:00:00Z", "end": "2026-09-27T13:00:00Z"},
+  "entry": {
+    "type": "ladder",
+    "range": {"low": 49500, "high": 50000},
+    "rungs": 3,
+    "size_multipliers": [1, 1, 1]
+  },
+  "base_unit": 20,
+  "stop": {"type": "breakeven_after_fills", "min_fills_for_breakeven": 2},
+  "caps": {"max_notional_usd": 100, "max_loss_usd": -50, "max_concurrent_orders": 4}
+}

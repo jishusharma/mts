@@ -1,0 +1,757 @@
+--- deribit_orders.py	2026-09-28 00:47:33.538901000 +0530
++++ deribit_orders.py.new	2026-09-28 03:33:41.055732500 +0530
+@@ -35,6 +35,10 @@
+ fill-driven logic (satellites, T048).
+ 
+ Never prints the secret or the access token.
++
++v4 (FIX3, 2026-09-28): transport errors (timeout, reset, URLError, non-JSON
++  body) never escape _call raw. Order-creating calls raise OrderStateUnknown
++  (no retry); reads/cancels retry MAX_RETRIES then raise DeribitError.
+ """
+ import sys
+ sys.dont_write_bytecode = True
+@@ -66,6 +70,10 @@
+ # Non-order calls (reads, cancel, edit) keep retrying on both sets - unchanged
+ # from v2 behaviour.
+ RETRYABLE_ERROR_CODES = CONFIRMED_PRE_PROCESSING_REJECT_CODES | AMBIGUOUS_OUTCOME_CODES
++# FIX3 C1: timeouts/resets/URL errors (OSError), non-JSON bodies (ValueError)
++# and non-JSON HTTP errors (RuntimeError from _post). Never escape _call raw:
++# order-creating calls -> OrderStateUnknown, everything else -> DeribitError.
++TRANSPORT_ERRORS = (OSError, urllib.error.URLError, ValueError, RuntimeError)
+ AUTH_ERROR_CODES = {13009, 13010, 13011}        # token expired / invalid
+ MAX_RETRIES = 3
+ INITIAL_BACKOFF_SECONDS = 1
+@@ -139,12 +147,29 @@
+     processing."""
+     attempt, backoff, reauthed = 0, INITIAL_BACKOFF_SECONDS, False
+     while True:
+-        body = _post(method, params, token)
++        try:
++            body = _post(method, params, token)
++        except TRANSPORT_ERRORS as ex:
++            # FIX3 C1: a lost response on an order-creating call is the
++            # classic ambiguous outcome - never retry, caller must reconcile.
++            if creates_order:
++                raise OrderStateUnknown(method, params_label, f"transport:{ex!r}")
++            if retry and attempt < MAX_RETRIES:
++                attempt += 1
++                time.sleep(backoff)
++                backoff *= 2
++                continue
++            raise DeribitError(method, {"code": None, "message": f"transport error: {ex!r}"})
+         if "error" not in body:
+             return body["result"]
+         code = body["error"].get("code")
+         if token and code in AUTH_ERROR_CODES and not reauthed:
+-            token = authenticate()
++            try:
++                token = authenticate()
++            except DeribitError:
++                raise
++            except Exception as ex:  # FIX3 C1: never escape raw
++                raise DeribitError(method, {"code": code, "message": f"re-auth failed: {ex!r}"})
+             reauthed = True
+             continue
+         if creates_order and code in AMBIGUOUS_OUTCOME_CODES:
+--- executor.py.new.pre_fix3	2026-09-28 03:30:09.981027900 +0530
++++ executor.py.new	2026-09-28 03:33:41.109931300 +0530
+@@ -84,6 +84,7 @@
+ import sys
+ sys.dont_write_bytecode = True
+ 
++import re
+ import time
+ import json
+ import argparse
+@@ -102,6 +103,8 @@
+                      "breakeven_after_fills")
+ HALT_PATH = Path(__file__).resolve().parent / "HALT"
+ HALT_DAILY_LOSS_PATH = Path(__file__).resolve().parent / "HALT_DAILY_LOSS"
++PLAN_ID_RE = re.compile(r"^[A-Za-z0-9_-]{1,24}$")  # FIX3 M6: labels never truncate/collide
++_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+ 
+ 
+ class ExecutionHalted(Exception):
+@@ -109,7 +112,37 @@
+ 
+ 
+ def _xlabel(plan_id, label):
+-    return f"{plan_id}:{label}"[:64]
++    x = f"{plan_id}:{label}"
++    if len(x) > 64:  # FIX3 M6: never slice - a truncated label can collide
++        raise ExecutionHalted(f"label {x!r} exceeds 64 chars")
++    return x
++
++
++def write_manual_halt(reason: str, halt_path: Path = None) -> None:
++    """FIX3 M5: flatten+halt must survive the process - write execution/HALT
++    (the operator-only brake preflight refuses on). Never raises."""
++    try:
++        (halt_path or HALT_PATH).write_text(
++            f"{datetime.now(timezone.utc).isoformat()} executor fail_closed: {reason}\n", encoding="utf-8")
++    except Exception as e:  # noqa: BLE001
++        print(f"WARNING: could not write HALT ({e!r}) - reason was: {reason}")
++
++
++def _read_halt_json(path: Path) -> dict:
++    """FIX3 M3: PowerShell writes UTF-8-BOM or UTF-16. Raises ValueError/OSError
++    on anything that is not a JSON object."""
++    raw = path.read_bytes()
++    for enc in ("utf-8-sig", "utf-16"):
++        try:
++            data = json.loads(raw.decode(enc))
++            break
++        except ValueError:
++            continue
++    else:
++        raise ValueError("not utf-8/utf-16 JSON")
++    if not isinstance(data, dict):
++        raise ValueError("not a JSON object")
++    return data
+ 
+ 
+ def _place(token, instrument, side, amount, order_type, price=None, label=None, reduce_only=False, **kw):
+@@ -128,19 +161,22 @@
+                        "remove HALT after operator review to resume")
+     if halt_daily_loss_path.exists():
+         try:
+-            halt_data = json.loads(halt_daily_loss_path.read_text(encoding="utf-8"))
++            halt_data = _read_halt_json(halt_daily_loss_path)
+             halt_date = halt_data.get("date")
+             halt_reason = halt_data.get("reason")
+-        except (json.JSONDecodeError, OSError, AttributeError):
++        except (ValueError, OSError):
+             halt_date, halt_reason = None, None
+         today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
++        # FIX3 M1: only a well-formed date strictly before today is non-blocking;
++        # today, future, garbage, non-string or missing -> refuse (fail closed).
++        valid_past = isinstance(halt_date, str) and bool(_DATE_RE.match(halt_date)) and halt_date < today
+         if halt_date == today:
+             reasons.append(f"HALT_DAILY_LOSS: daily loss halt active ({halt_reason}) - remove "
+                            "HALT_DAILY_LOSS after operator review to resume")
+-        elif halt_date is None:
+-            # unparseable contents: fail closed rather than silently ignore
+-            reasons.append("HALT_DAILY_LOSS: file present but unreadable/malformed - refused "
+-                           "(fail closed) - remove HALT_DAILY_LOSS after operator review to resume")
++        elif not valid_past:
++            # unparseable contents / bad date: fail closed rather than silently ignore
++            reasons.append(f"HALT_DAILY_LOSS: file present but unreadable/malformed (date={halt_date!r}) - "
++                           "refused (fail closed) - remove HALT_DAILY_LOSS after operator review to resume")
+         else:
+             print(f"WARNING: stale HALT_DAILY_LOSS from {halt_date} (today is {today}) - not "
+                  "blocking, but it was never cleared by an operator - review before proceeding")
+@@ -148,11 +184,15 @@
+ 
+ 
+ def preflight(compiled: dict, plan: dict = None, mark: float = None,
+-             halt_path: Path = HALT_PATH, halt_daily_loss_path: Path = HALT_DAILY_LOSS_PATH) -> list:
++             halt_path: Path = None, halt_daily_loss_path: Path = None) -> list:
+     """Returns list of refusal reasons (empty = OK). Pure except for mark and
+     the two HALT-file reads (see _check_halt_files / this module's HALT
+-    files docstring note)."""
+-    reasons = _check_halt_files(halt_path, halt_daily_loss_path)
++    files docstring note). Paths default to the module globals, read at call
++    time (FIX3 H6: a suite can redirect HALT_PATH/HALT_DAILY_LOSS_PATH)."""
++    reasons = _check_halt_files(halt_path or HALT_PATH, halt_daily_loss_path or HALT_DAILY_LOSS_PATH)
++    pid = compiled.get("plan_id")
++    if not (isinstance(pid, str) and PLAN_ID_RE.match(pid)):
++        reasons.append(f"M6: plan_id {pid!r} must match [A-Za-z0-9_-]{{1,24}}")
+     stop = compiled.get("stop_order") or {}
+     st = stop.get("order_type")
+     if st in UNSUPPORTED_STOPS or (plan and plan["stop"]["type"] != "fixed_percent"):
+@@ -237,146 +277,155 @@
+ 
+     def fail_closed(reason):
+         journal.append_event(plan_id, "mismatch_halt", {"reason": reason})
++        write_manual_halt(f"{plan_id}: {reason}")  # FIX3 M5: first, so it survives anything below
++
++        def _quiet(fn, *a):
++            # FIX3 H1: any exception in one cancel must never skip the flatten
++            try:
++                fn(*a)
++            except Exception as ce:  # noqa: BLE001
++                journal.append_event(plan_id, "error", {"context": f"fail_closed:{fn.__name__}",
++                                                        "error": repr(ce)})
++
++        # FIX3 C3 order: cancel entries/targets -> close position -> verify
++        # flat -> cancel the stop LAST. If the close fails the stop stays.
++        for e in entries:
++            _quiet(do.cancel, token, e["order_id"])
++        # G-h: an entry whose create call returned an ambiguous code has no
++        # order_id in `entries` but may be resting on the book - sweep every
++        # entry label server-side so it cannot fill after we flatten.
++        for spec in compiled["entry_orders"]:
++            _quiet(do.cancel_by_label, token, _xlabel(plan_id, spec["label"]))
++        # S6: a target create call can raise OrderStateUnknown having already
++        # rested the order - sweep every target label (N from the raw plan,
++        # else compiled["target_orders"]).
++        n_targets = (len(plan["targets"]) if plan and plan.get("targets")
++                    else len(compiled.get("target_orders") or []))
++        for i in range(1, n_targets + 1):
++            _quiet(do.cancel_by_label, token, _xlabel(plan_id, f"target_{i}"))
+         try:
+-            for e in entries:
+-                try:
+-                    do.cancel(token, e["order_id"])
+-                except do.DeribitError:
+-                    pass
+-            # G-h: an entry whose create call returned an ambiguous code has no
+-            # order_id in `entries` but may be resting on the book - sweep every
+-            # entry label server-side so it cannot fill after we flatten.
+-            for spec in compiled["entry_orders"]:
+-                try:
+-                    do.cancel_by_label(token, _xlabel(plan_id, spec["label"]))
+-                except do.DeribitError:
+-                    pass
+-            # S6: the same ambiguous-outcome risk applies to the stop and to
+-            # every target - a stop_market/limit create call can raise
+-            # OrderStateUnknown having already rested the order server-side,
+-            # with no order_id ever recorded here (stop["order_id"] stays
+-            # None/stale; targets are only placed after this point, so
+-            # `entries`-style id tracking can't help for them either). Sweep
+-            # the stop's compiled label plus every target label the targets
+-            # section below would use (f"target_{i}", i=1..N). N comes from
+-            # the raw plan when available (that's what actually drives the
+-            # targets loop below); falls back to compiled["target_orders"]
+-            # when there is no raw plan (e.g. an offline test that calls
+-            # execute_plan(compiled) directly) since plan_compiler only
+-            # populates compiled["target_orders"] for non-market entries.
+-            stop_label = (compiled.get("stop_order") or {}).get("label")
+-            if stop_label:
+-                try:
+-                    do.cancel_by_label(token, _xlabel(plan_id, stop_label))
+-                except do.DeribitError:
+-                    pass
+-            n_targets = (len(plan["targets"]) if plan and plan.get("targets")
+-                        else len(compiled.get("target_orders") or []))
+-            for i in range(1, n_targets + 1):
+-                try:
+-                    do.cancel_by_label(token, _xlabel(plan_id, f"target_{i}"))
+-                except do.DeribitError:
+-                    pass
+-            if do.get_position(token, instrument).get("size", 0) != 0:
+-                c = do.close_position(token, instrument)
+-                journal.append_event(plan_id, "order_placed", {"order_id": c["order"]["order_id"], "label": "emergency_close",
+-                                                               "side": "SELL" if is_long else "BUY",
+-                                                               "amount": c["order"]["filled_amount"]})
+-            if stop["order_id"]:
++            try:
++                size = do.get_position(token, instrument).get("size", 0)
++            except Exception as pe:  # noqa: BLE001 - position unknown: attempt the close anyway
++                journal.append_event(plan_id, "error", {"context": "fail_closed:get_position", "error": repr(pe)})
++                size = None
++            if size != 0:
+                 try:
+-                    do.cancel(token, stop["order_id"])
+-                except do.DeribitError:
+-                    pass
++                    c = do.close_position(token, instrument)
++                    journal.append_event(plan_id, "order_placed", {"order_id": c["order"]["order_id"],
++                                                                   "label": "emergency_close",
++                                                                   "side": "SELL" if is_long else "BUY",
++                                                                   "amount": c["order"]["filled_amount"]})
++                except Exception as xe:  # noqa: BLE001 - e.g. OrderStateUnknown: the re-read decides
++                    journal.append_event(plan_id, "error", {"context": "fail_closed:close_position",
++                                                            "error": repr(xe)})
++                size = do.get_position(token, instrument).get("size", 0)
++            if size != 0:
++                raise ExecutionHalted(f"position still {size} after close_position - stop left in place")
+         except Exception as e:  # noqa: BLE001
+             journal.append_event(plan_id, "error", {"context": "fail_closed", "error": repr(e)})
+             raise ExecutionHalted(f"FAIL-CLOSED ITSELF FAILED ({e}) after: {reason} - CHECK TESTNET UI NOW")
++        # flat confirmed: now (and only now) remove the protective stop
++        if stop["order_id"]:
++            _quiet(do.cancel, token, stop["order_id"])
++        stop_label = (compiled.get("stop_order") or {}).get("label")
++        if stop_label:
++            _quiet(do.cancel_by_label, token, _xlabel(plan_id, stop_label))
+         raise ExecutionHalted(f"flattened + halted: {reason}")
+ 
+-    # --- entries ---
+-    for spec in compiled["entry_orders"]:
+-        try:
+-            o = _place(token, instrument, spec["side"], spec["amount"], spec["order_type"],
+-                       price=spec.get("price"), label=_xlabel(plan_id, spec["label"]))
+-        except do.DeribitError as e:
+-            journal.append_event(plan_id, "order_rejected", {"label": spec["label"], "error": str(e.error)})
+-            fail_closed(f"entry {spec['label']} rejected: {e.error}")
+-        entries.append({"order_id": o["order_id"], "label": spec["label"], "filled": 0})
+-        journal.append_event(plan_id, "order_placed", {"order_id": o["order_id"], "label": spec["label"],
+-                                                       "side": spec["side"], "amount": spec["amount"]})
+-
+-    # --- poll: protect every fill immediately ---
+-    deadline = time.time() + max_entry_seconds
+-    if plan and "validity" in plan:
+-        end = datetime.fromisoformat(plan["validity"]["end"].replace("Z", "+00:00")).timestamp()
+-        deadline = min(deadline, end)
+-    avg_fill = None
+-    while True:
+-        any_open, notional, filled_total = False, 0.0, 0
+-        for e in entries:
+-            st = do.get_order_state(token, e["order_id"])
+-            fa = int(st.get("filled_amount") or 0)
+-            if fa != e["filled"]:
+-                e["filled"] = fa
+-                journal.append_event(plan_id, "order_filled", {"order_id": e["order_id"], "filled_amount": fa,
+-                                                               "order_state": st.get("order_state"),
+-                                                               "average_price": st.get("average_price")})
+-            if st.get("order_state") == "open":
+-                any_open = True
+-            if fa:
+-                notional += fa / float(st["average_price"])  # inverse: contracts / price = BTC
+-                filled_total += fa
+-        if filled_total:
+-            avg_fill = filled_total / notional
+-        if filled_total > stop["amount"]:
++    # FIX3 C2: any unexpected exception after the intent (a poll read that
++    # still fails after retries, a KeyError on a malformed reply, ...) must
++    # flatten and halt - never escape with a filled, unprotected position.
++    try:
++        # --- entries ---
++        for spec in compiled["entry_orders"]:
+             try:
+-                ensure_stop(filled_total, avg_fill)
+-            except (do.DeribitError, ExecutionHalted) as ex:
+-                fail_closed(f"R7 stop could not be placed/resized: {ex}")
+-        if not any_open:
+-            break
+-        if time.time() >= deadline:
++                o = _place(token, instrument, spec["side"], spec["amount"], spec["order_type"],
++                           price=spec.get("price"), label=_xlabel(plan_id, spec["label"]))
++            except do.DeribitError as e:
++                journal.append_event(plan_id, "order_rejected", {"label": spec["label"], "error": str(e.error)})
++                fail_closed(f"entry {spec['label']} rejected: {e.error}")
++            entries.append({"order_id": o["order_id"], "label": spec["label"], "filled": 0})
++            journal.append_event(plan_id, "order_placed", {"order_id": o["order_id"], "label": spec["label"],
++                                                           "side": spec["side"], "amount": spec["amount"]})
++
++        # --- poll: protect every fill immediately ---
++        deadline = time.time() + max_entry_seconds
++        if plan and "validity" in plan:
++            end = datetime.fromisoformat(plan["validity"]["end"].replace("Z", "+00:00")).timestamp()
++            deadline = min(deadline, end)
++        avg_fill = None
++        while True:
++            any_open, notional, filled_total = False, 0.0, 0
+             for e in entries:
++                st = do.get_order_state(token, e["order_id"])
++                fa = int(st.get("filled_amount") or 0)
++                if fa != e["filled"]:
++                    e["filled"] = fa
++                    journal.append_event(plan_id, "order_filled", {"order_id": e["order_id"], "filled_amount": fa,
++                                                                   "order_state": st.get("order_state"),
++                                                                   "average_price": st.get("average_price")})
++                if st.get("order_state") == "open":
++                    any_open = True
++                if fa:
++                    notional += fa / float(st["average_price"])  # inverse: contracts / price = BTC
++                    filled_total += fa
++            if filled_total:
++                avg_fill = filled_total / notional
++            if filled_total > stop["amount"]:
+                 try:
+-                    do.cancel(token, e["order_id"])
+-                    journal.append_event(plan_id, "order_cancelled", {"order_id": e["order_id"], "reason": "entry_deadline"})
+-                except do.DeribitError:
+-                    pass  # already filled/cancelled
+-            continue  # one more pass to capture fills that raced the cancel
+-        time.sleep(POLL_INTERVAL_SECONDS)
+-
+-    if filled_total == 0:
+-        journal.append_event(plan_id, "reconciliation", {"result": "no_fill_clean_exit"})
+-        return {"plan_id": plan_id, "filled_total": 0, "status": "no_fill"}
+-
+-    # --- verify exchange agrees before targets ---
+-    pos = do.get_position(token, instrument)
+-    if abs(pos.get("size", 0)) != filled_total:
+-        fail_closed(f"position size {pos.get('size')} != believed fills {filled_total}")
+-
+-    # --- targets, proportional to actual fill ---
+-    target_ids = []
+-    remaining = filled_total
+-    tgts = plan.get("targets", []) if plan else []
+-    for i, t in enumerate(tgts, start=1):
+-        amt = remaining if i == len(tgts) else min(remaining, round_size(filled_total * t["amount_percent"] / 100.0))
+-        if amt < 10:
+-            continue
+-        px = snap_price(avg_fill * (1 + t["pnl_target_percent"] / 100) if is_long
+-                        else avg_fill * (1 - t["pnl_target_percent"] / 100))
+-        try:
+-            o = _place(token, instrument, stop_side, amt, "limit", price=px,
+-                       label=_xlabel(plan_id, f"target_{i}"), reduce_only=True)
+-        except do.DeribitError as e:
+-            journal.append_event(plan_id, "order_rejected", {"label": f"target_{i}", "error": str(e.error)})
+-            continue  # position is still protected by the stop; a missing target is not a safety issue
+-        target_ids.append(o["order_id"])
+-        journal.append_event(plan_id, "order_placed", {"order_id": o["order_id"], "label": f"target_{i}",
+-                                                       "side": stop_side, "amount": amt, "price": px})
+-        remaining -= amt
+-
+-    return {"plan_id": plan_id, "filled_total": filled_total, "avg_fill": round(avg_fill, 2),
+-            "stop_order_id": stop["order_id"], "stop_trigger": stop["trigger"],
+-            "target_order_ids": target_ids, "status": "entry_filled_stop_placed"}
++                    ensure_stop(filled_total, avg_fill)
++                except (do.DeribitError, ExecutionHalted) as ex:
++                    fail_closed(f"R7 stop could not be placed/resized: {ex}")
++            if not any_open:
++                break
++            if time.time() >= deadline:
++                for e in entries:
++                    try:
++                        do.cancel(token, e["order_id"])
++                        journal.append_event(plan_id, "order_cancelled", {"order_id": e["order_id"], "reason": "entry_deadline"})
++                    except do.DeribitError:
++                        pass  # already filled/cancelled
++                continue  # one more pass to capture fills that raced the cancel
++            time.sleep(POLL_INTERVAL_SECONDS)
++
++        if filled_total == 0:
++            journal.append_event(plan_id, "reconciliation", {"result": "no_fill_clean_exit"})
++            return {"plan_id": plan_id, "filled_total": 0, "status": "no_fill"}
++
++        # --- verify exchange agrees before targets ---
++        pos = do.get_position(token, instrument)
++        if abs(pos.get("size", 0)) != filled_total:
++            fail_closed(f"position size {pos.get('size')} != believed fills {filled_total}")
++
++        # --- targets, proportional to actual fill ---
++        target_ids = []
++        remaining = filled_total
++        tgts = plan.get("targets", []) if plan else []
++        for i, t in enumerate(tgts, start=1):
++            amt = remaining if i == len(tgts) else min(remaining, round_size(filled_total * t["amount_percent"] / 100.0))
++            if amt < 10:
++                continue
++            px = snap_price(avg_fill * (1 + t["pnl_target_percent"] / 100) if is_long
++                            else avg_fill * (1 - t["pnl_target_percent"] / 100))
++            try:
++                o = _place(token, instrument, stop_side, amt, "limit", price=px,
++                           label=_xlabel(plan_id, f"target_{i}"), reduce_only=True)
++            except do.DeribitError as e:
++                journal.append_event(plan_id, "order_rejected", {"label": f"target_{i}", "error": str(e.error)})
++                continue  # position is still protected by the stop; a missing target is not a safety issue
++            target_ids.append(o["order_id"])
++            journal.append_event(plan_id, "order_placed", {"order_id": o["order_id"], "label": f"target_{i}",
++                                                           "side": stop_side, "amount": amt, "price": px})
++            remaining -= amt
++
++        return {"plan_id": plan_id, "filled_total": filled_total, "avg_fill": round(avg_fill, 2),
++                "stop_order_id": stop["order_id"], "stop_trigger": stop["trigger"],
++                "target_order_ids": target_ids, "status": "entry_filled_stop_placed"}
++    except ExecutionHalted:
++        raise
++    except Exception as ex:  # noqa: BLE001
++        fail_closed(f"R7 unexpected: {ex!r}")
+ 
+ 
+ def load(path: Path):
+--- position_manager.py.new.pre_fix3	2026-09-28 03:30:10.034359600 +0530
++++ position_manager.py.new	2026-09-28 03:33:41.161781700 +0530
+@@ -62,6 +62,7 @@
+ 
+ import time
+ import argparse
++from datetime import datetime, timezone
+ from pathlib import Path
+ 
+ sys.path.insert(0, str(Path(__file__).resolve().parent))
+@@ -78,6 +79,7 @@
+ # Documented here as a named constant instead of left implicit in a retry
+ # counter.
+ MAX_UNPROTECTED_SECONDS = 2 * POLL_INTERVAL_SECONDS  # 4s
++HALT_PATH = Path(__file__).resolve().parent / "HALT"  # FIX3 M5: same file executor preflight refuses on
+ 
+ 
+ class ManagerHalted(Exception):
+@@ -129,33 +131,54 @@
+ 
+     def flatten_halt(reason):
+         journal.append_event(plan_id, "mismatch_halt", {"reason": reason, "by": "position_manager"})
++        try:  # FIX3 M5: write the manual HALT first so the halt survives this process
++            HALT_PATH.write_text(f"{datetime.now(timezone.utc).isoformat()} position_manager {plan_id}: "
++                                 f"{reason}\n", encoding="utf-8")
++        except Exception as he:  # noqa: BLE001
++            print(f"WARNING: could not write HALT ({he!r})")
++
++        def _quiet(fn, *a):
++            # FIX3 H1: one failing cancel must never skip the flatten
++            try:
++                fn(*a)
++            except Exception as ce:  # noqa: BLE001
++                journal.append_event(plan_id, "error", {"context": f"manager_flatten:{fn.__name__}",
++                                                        "error": repr(ce)})
++
++        # FIX3 C3 order: targets -> close position -> verify flat -> stop LAST.
++        # S6: sweep by the plan-scoped label as well as by id - a re-place can
++        # rest an order whose id was never recorded.
++        for oid in list(targets):
++            _quiet(do.cancel, token, oid)
++        for tg in targets.values():
++            _quiet(do.cancel_by_label, token, f"{plan_id}:{tg['label']}"[:64])
+         try:
+-            for oid in list(targets) + [stop["order_id"]]:
+-                try:
+-                    do.cancel(token, oid)
+-                except do.DeribitError:
+-                    pass
+-            # S6: a stop re-place (below) can raise an OrderStateUnknown-style
+-            # DeribitError after already resting the new order server-side -
+-            # stop["order_id"] is then None/stale and the id-based cancel
+-            # above can't reach it. Sweep by the plan-scoped label this module
+-            # and executor.py both build the same way (f"{plan_id}:{label}"),
+-            # for the stop and every known target - harmless (a no-op) if
+-            # nothing is resting under that label.
+-            for label in [stop["label"]] + [tg["label"] for tg in targets.values()]:
++            try:
++                size = _signed(do.get_position(token, instrument).get("size"))
++            except Exception as pe:  # noqa: BLE001 - position unknown: attempt the close anyway
++                journal.append_event(plan_id, "error", {"context": "manager_flatten:get_position",
++                                                        "error": repr(pe)})
++                size = None
++            if size != 0:
+                 try:
+-                    do.cancel_by_label(token, f"{plan_id}:{label}"[:64])
+-                except do.DeribitError:
+-                    pass
+-            if _signed(do.get_position(token, instrument).get("size")) != 0:
+-                c = do.close_position(token, instrument)
+-                journal.append_event(plan_id, "order_placed", {"order_id": c["order"]["order_id"],
+-                                                               "label": "emergency_close",
+-                                                               "side": "SELL" if is_long else "BUY",
+-                                                               "amount": c["order"]["filled_amount"]})
++                    c = do.close_position(token, instrument)
++                    journal.append_event(plan_id, "order_placed", {"order_id": c["order"]["order_id"],
++                                                                   "label": "emergency_close",
++                                                                   "side": "SELL" if is_long else "BUY",
++                                                                   "amount": c["order"]["filled_amount"]})
++                except Exception as xe:  # noqa: BLE001 - e.g. OrderStateUnknown: the re-read decides
++                    journal.append_event(plan_id, "error", {"context": "manager_flatten:close_position",
++                                                            "error": repr(xe)})
++                size = _signed(do.get_position(token, instrument).get("size"))
++            if size != 0:
++                raise ManagerHalted(f"position still {size} after close_position - stop left in place")
+         except Exception as e:  # noqa: BLE001
+             journal.append_event(plan_id, "error", {"context": "manager_flatten", "error": repr(e)})
+             raise ManagerHalted(f"FLATTEN ITSELF FAILED ({e}) after: {reason} - CHECK EXCHANGE UI NOW")
++        # flat confirmed: now (and only now) remove the protective stop
++        if stop["order_id"]:
++            _quiet(do.cancel, token, stop["order_id"])
++        _quiet(do.cancel_by_label, token, f"{plan_id}:{stop['label']}"[:64])
+         raise ManagerHalted(f"flattened + halted: {reason}")
+ 
+     while True:
+@@ -210,7 +233,20 @@
+             flatten_halt(f"position sign flipped: size {pos} on a {'long' if is_long else 'short'} plan")
+ 
+         size = abs(pos)
+-        if stop_state not in LIVE_STOP_STATES:
++        if str(stop_state).startswith("query_failed"):
++            # FIX3 H5: we could not READ the stop - it may well still be live.
++            # Never re-place (that stacks duplicate stops and loses the old
++            # id). Count it as unprotected time; flatten only once
++            # MAX_UNPROTECTED_SECONDS of consecutive failures have passed
++            # (flatten_halt keeps the stop until the close is confirmed).
++            now = time.time()
++            if unprotected_since is None:
++                unprotected_since = now
++            elapsed = now - unprotected_since
++            if elapsed > MAX_UNPROTECTED_SECONDS:
++                flatten_halt(f"stop state unreadable ({stop_state}) for {elapsed:.1f}s > "
++                             f"MAX_UNPROTECTED_SECONDS={MAX_UNPROTECTED_SECONDS}s, |pos|={size}")
++        elif stop_state not in LIVE_STOP_STATES:
+             # S3: explicit, named bound on how long |position| may go
+             # unprotected, replacing the old implicit "one re-place attempt"
+             # counter. unprotected_since is only cleared once a poll actually
+--- kill_switch.py.new.pre_fix3	2026-09-28 03:30:10.083255400 +0530
++++ kill_switch.py.new	2026-09-28 03:33:41.218767200 +0530
+@@ -60,8 +60,14 @@
+     
+     # Phase 1: Discover instruments to process
+     if instruments is None:
+-        positions = client.get_positions(token, currency=currency, kind="future")
+-        instruments = list(set(pos["instrument_name"] for pos in positions if abs(pos.get("size", 0)) > 0))
++        # FIX3 H2: a failed discovery read must not abort the kill - fall back
++        # to BTC-PERPETUAL (added below) and record the error.
++        try:
++            positions = client.get_positions(token, currency=currency, kind="future")
++            instruments = list(set(pos["instrument_name"] for pos in positions if abs(pos.get("size", 0)) > 0))
++        except Exception as e:
++            errors.append({"operation": "get_positions(discover)", "error": repr(e)})
++            instruments = []
+         
+         # If no positions found, fall back to default instrument
+         if not instruments:
+@@ -146,17 +152,22 @@
+         print("REFUSED: --confirm KILL required (exact match, case-sensitive) - nothing was done")
+         return 1
+ 
+-    sys.path.insert(0, str(Path(__file__).resolve().parent))
+-    import deribit_orders  # noqa: E402 (deferred: real exchange import only at runtime, not at test-collection time)
+-    token = deribit_orders.authenticate()
+-
+-    result = kill_all(deribit_orders, token, currency=args.currency)
+-    print(format_kill_report(result))
+-
++    # FIX3 H2: HALT FIRST - the kill switch is used exactly when the exchange
++    # or network misbehaves, so nothing below may prevent the halt.
+     halt_path.write_text("kill switch invoked from CLI - operator review required before resuming\n",
+                          encoding="utf-8")
+     print(f"HALT file written: {halt_path} - delete it once you have reviewed the account before resuming trading")
+ 
++    try:
++        sys.path.insert(0, str(Path(__file__).resolve().parent))
++        import deribit_orders  # noqa: E402 (deferred: real exchange import only at runtime, not at test-collection time)
++        token = deribit_orders.authenticate()
++        result = kill_all(deribit_orders, token, currency=args.currency)
++    except Exception as e:
++        print(f"KILL SWITCH FAILED ({e!r}) - HALT is in place - CHECK THE EXCHANGE UI NOW")
++        return 1
++    print(format_kill_report(result))
++
+     return 0 if result["ok"] else 1
+ 
+ 
+--- daily_loss_monitor.py.new.pre_fix3	2026-09-28 03:30:10.132379600 +0530
++++ daily_loss_monitor.py.new	2026-09-28 03:33:41.274531300 +0530
+@@ -71,6 +71,7 @@
+ 
+ import argparse
+ import json
++import os
+ import time
+ from datetime import datetime, timezone
+ from pathlib import Path
+@@ -84,6 +85,11 @@
+ STATE_PATH = Path(__file__).resolve().parent / "daily_loss_monitor_state.json"
+ HALT_PATH = Path(__file__).resolve().parent / "HALT_DAILY_LOSS"
+ JOURNAL_PLAN_ID = "ACCOUNT_DAILY_LOSS"
++MAX_CONSECUTIVE_FAILURES = 3  # FIX3 H3: then fail closed (write HALT_DAILY_LOSS) instead of dying
++
++
++class StateUnreadable(Exception):
++    """FIX3 H4: the state file exists but cannot be trusted - never re-baseline."""
+ 
+ 
+ def _utc_now():
+@@ -95,16 +101,33 @@
+ 
+ 
+ def load_state(state_path: Path = STATE_PATH) -> dict:
++    """Missing file -> {} (first run). Present but unreadable/torn/non-dict ->
++    StateUnreadable (FIX3 H4): re-snapshotting the baseline from current
++    equity would silently erase the day's loss."""
+     if not state_path.exists():
+         return {}
+     try:
+-        return json.loads(state_path.read_text(encoding="utf-8"))
+-    except (json.JSONDecodeError, OSError):
+-        return {}
++        state = json.loads(state_path.read_text(encoding="utf-8"))
++    except (ValueError, OSError) as e:  # ValueError covers JSON and Unicode decode errors
++        raise StateUnreadable(f"{state_path.name}: {e!r}")
++    if not isinstance(state, dict):
++        raise StateUnreadable(f"{state_path.name}: not a JSON object")
++    return state
+ 
+ 
+ def save_state(state: dict, state_path: Path = STATE_PATH):
+-    state_path.write_text(json.dumps(state), encoding="utf-8")
++    # FIX3 H4: atomic - a crash mid-write can never leave a torn state file
++    tmp = state_path.with_name(state_path.name + ".tmp")
++    tmp.write_text(json.dumps(state), encoding="utf-8")
++    os.replace(tmp, state_path)
++
++
++def write_halt(halt_path: Path, date: str, reason: str, now) -> None:
++    halt_path.write_text(json.dumps({
++        "date": date,
++        "reason": reason,
++        "ts_iso": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
++    }), encoding="utf-8")
+ 
+ 
+ def ensure_day_state(client, token, now, currency: str = "BTC", state_path: Path = STATE_PATH) -> dict:
+@@ -138,7 +161,13 @@
+     dict (plus 'state' for tests). Idempotent: a breach only triggers
+     kill_all/HALT-file/journal once per UTC day (state['breached_today'])."""
+     now = clock()
+-    state = ensure_day_state(client, token, now, currency=currency, state_path=state_path)
++    try:
++        state = ensure_day_state(client, token, now, currency=currency, state_path=state_path)
++    except StateUnreadable as e:
++        # FIX3 H4: fail closed - halt, do not re-baseline, leave the file for the operator
++        write_halt(halt_path, _today_str(now), f"daily_loss_monitor state unreadable: {e}", now)
++        return {"ok": False, "reason": f"state unreadable - HALT_DAILY_LOSS written: {e}",
++                "total_pnl_usd": None, "state": None}
+ 
+     total_pnl_usd = compute_total_pnl_usd(client, token, state, currency=currency, instrument=instrument)
+     result = check_daily_loss_cap([{"pnl_usd": total_pnl_usd}], 0.0, cap_usd=cap_usd)
+@@ -151,18 +180,21 @@
+             "cap_usd": cap_usd,
+             "reason": reason,
+         })
+-        kill_result = kill_switch.kill_all(client, token, currency=currency)
+-        journal.append_event(JOURNAL_PLAN_ID, "error", {
+-            "source": "daily_loss_monitor",
+-            "kill_switch_report": kill_switch.format_kill_report(kill_result),
+-            "kill_switch_ok": kill_result["ok"],
+-        })
+-        halt_path.write_text(json.dumps({
+-            "date": state["date"],
+-            "reason": reason,
+-            "ts_iso": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+-        }), encoding="utf-8")
++        # FIX3 H3: HALT first, and regardless of whether kill_all works
++        write_halt(halt_path, state["date"], reason, now)
+         state["breached_today"] = True
++        save_state(state, state_path)
++        try:
++            kill_result = kill_switch.kill_all(client, token, currency=currency)
++            journal.append_event(JOURNAL_PLAN_ID, "error", {
++                "source": "daily_loss_monitor",
++                "kill_switch_report": kill_switch.format_kill_report(kill_result),
++                "kill_switch_ok": kill_result["ok"],
++            })
++        except Exception as e:  # noqa: BLE001
++            journal.append_event(JOURNAL_PLAN_ID, "error", {
++                "source": "daily_loss_monitor", "kill_switch_ok": False,
++                "kill_switch_error": repr(e)})
+ 
+     save_state(state, state_path)
+     result["state"] = state
+@@ -181,11 +213,30 @@
+     import deribit_orders as do  # noqa: E402 (deferred: real exchange import only at runtime, not at test-collection time)
+     token = do.authenticate()
+ 
++    failures = 0
+     while True:
+-        result = run_once(do, token, currency=args.currency, instrument=args.instrument, cap_usd=args.cap_usd)
+-        print(format_breach_report(result))
+-        if args.once:
+-            return 0 if result["ok"] else 1
++        # FIX3 H3: a transient error (ticker 10028, summary timeout, re-auth)
++        # must not kill the monitor; N consecutive failures -> fail closed.
++        try:
++            result = run_once(do, token, currency=args.currency, instrument=args.instrument,
++                              cap_usd=args.cap_usd)
++            failures = 0
++            print(format_breach_report(result))
++            if args.once:
++                return 0 if result["ok"] else 1
++        except Exception as e:  # noqa: BLE001
++            failures += 1
++            print(f"daily_loss_monitor iteration failed ({failures}/{MAX_CONSECUTIVE_FAILURES}): {e!r}")
++            if failures >= MAX_CONSECUTIVE_FAILURES or args.once:
++                now = _utc_now()
++                write_halt(HALT_PATH, _today_str(now),
++                           f"daily_loss_monitor blind: {failures} consecutive failures, last {e!r}", now)
++                print(f"HALT_DAILY_LOSS written: {HALT_PATH} - monitor cannot see the account")
++                return 1
++            try:
++                token = do.authenticate()
++            except Exception as ae:  # noqa: BLE001
++                print(f"re-auth failed: {ae!r}")
+         time.sleep(args.interval)
+ 
+ 

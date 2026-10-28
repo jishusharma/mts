@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-28T17:44:03Z",
+  "depends_on": [],
+  "done_when": "auto_trader_config.json has no review_by earlier than today for any pre_pipeline_sources entry, a test fails when one lapses, and OPERATOR_DECISIONS.md has a DECISION (OURS) line; shipped, cherry empty",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Record the decision on the 27 grandfathered pre_pipeline_sources whose review_by 2026-10-23 expired; default (OURS, conservative): keep them testnet-only, re-set review_by to 2026-11-25 with an explicit reason, and make expiry visible.",
+  "id": "pre-pipeline-sources-review-by-2026-10-2",
+  "kind": "audit",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DRAFT 2026-10-28 Session_Planner (OURS): enforcement stays a test, not runtime rejection (rejecting would stop testnet trades; operator decides that). | REVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified 27 entries, all review_by 2026-10-23, only format-validated (registry.py:59-76), never enforced at runtime, so re-dating changes no trading behaviour. Test file path to be chosen under MyTradingSys/execution/ (added to scope_in as test_pre_pipeline_review_by.py).",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/execution/auto_trader_config.json"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/execution/auto_trader_config.json",
+    "MyTradingSys/system/OPERATOR_DECISIONS.md",
+    "MyTradingSys/execution/test_pre_pipeline_review_by.py"
+  ],
+  "scope_out": [
+    "auto_trader.py logic; promoted_setups.json; live tree deploy; mainnet"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "Write the failing test reading the config",
+    "Set review_by to 2026-11-25 on all entries, reason text names the default and this card",
+    "Append DECISION (OURS) line to OPERATOR_DECISIONS.md"
+  ],
+  "tests": "New test in MyTradingSys/execution asserts every pre_pipeline_sources review_by >= today; fails on current file (all 2026-10-23)",
+  "title": "pre_pipeline_sources review_by 2026-10-23 expired for all 27 sources, unenforced; done when operator decision recorded or dates re-set with reason",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

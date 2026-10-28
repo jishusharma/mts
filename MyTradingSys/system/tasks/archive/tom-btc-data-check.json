@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-15T15:33:08Z",
+  "commands": [
+    "python -c \"from pathlib import Path; import datetime as d; p=Path(r'F:\\MTS\\data\\orderflow_1m'); s=d.date(2024,12,1); n=(d.date(2025,6,30)-s).days+1; days=[s+d.timedelta(i) for i in range(n)]; miss=[str(x) for x in days if not list(p.glob(str(x)+'*'))]; print(n-len(miss),'of',n,'days present; missing',len(miss),miss[:40])\""
+  ],
+  "created": "2026-10-13T17:31:44Z",
+  "depends_on": [],
+  "done_when": "Card result has 'X of 212 days present; missing N [...]'.",
+  "from_inbox": "",
+  "goal": "Confirm F:\\MTS\\data\\orderflow_1m holds one file per day for 2024-12-01..2025-06-30 (DEV + VALIDATION of the Tom-on-BTC plan) and report missing days. No data is built or changed.",
+  "id": "tom-btc-data-check",
+  "lane": "DSA-NUC",
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
+  "refs": [],
+  "result": "211 of 212 days present; missing 1 ['2024-12-01'] (F:\\MTS\\data\\orderflow_1m, JIS-NUC, read only)",
+  "scope_in": [
+    "F:\\MTS\\data\\orderflow_1m (read only)",
+    "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4 (windows)"
+  ],
+  "scope_out": [
+    "building or deleting data",
+    "reading outcomes",
+    "the sealed HOLDOUT 2025-07-01.."
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2, 11"
+  ],
+  "state": "done",
+  "steps": [
+    "Run the command on JIS-NUC.",
+    "Paste the printed line into the card result with tasks.py done."
+  ],
+  "tests": "run lane: the printed line is the result",
+  "title": "Tom on BTC T1: check the footprint bars on JIS-NUC cover DEV + VALIDATION (2024-12..2025-06), list gaps"
+}

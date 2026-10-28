@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-25T19:44:21Z",
+  "depends_on": [
+    "krown-dev-event-study"
+  ],
+  "done_when": "DEV_RESULTS.md has a section per H-id (M1, M3, Z1) with N, power or MDE, effect with CI, placebo, strata, 'underpowered' where N < 100; H-M2 listed NOT RUN with its reason; new variants in research/TRIAL_LEDGER.csv; no VALIDATION or HOLDOUT bar opened.",
+  "est_turns": 18,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Run the DEV event studies H-M1 (first 200 SMA touch after N days away), H-M3 (5 EMA leash: his counts and 82 % reconnect recomputed) and H-Z1 (bounce size per touch index) from KROWN_CONSOLIDATED.md:239-249, using the addendum, loader and test of card krown-dev-event-study. BTC DEV 2017-08..2024-06 only, fee-net, same-window placebo, power first.",
+  "id": "krown-dev-event-study-levels",
+  "kind": "build",
+  "lane": "SONNET",
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer Agent reviewers, after 2nd FIX applied once, not re-read, planner DECISION OURS). Split from krown-dev-event-study 2026-10-26 (drafter E). DECISION (OURS 2026-10-26): recall waiver is the safe default - DEV only, every result NO-RECALL-CLEARANCE, nothing promoted. Needs a real review stamp (CRUCIAL). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.\nWAITING 2026-10-28 (planner-raw-refine): fields complete; only gate miss is depends_on krown-dev-event-study (refined). Promote when it is ready.\nLAB_GUY 2026-10-28 NOT STAMPED (see lab-guy-review-promote-krown-dev-event-s): depends on unshipped krown-dev-event-study (no addendum with frozen M1/M3/Z1 grids, no loader, no test_dev_study.py on trunk); tests check table presence only (E4); prior ACCEPT applied a 2nd FIX without re-read. Stays refined.",
+  "prio": 2,
+  "refine_tries": 1,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/",
+    "MyTradingSys/backtest/layers/krown/",
+    "MyTradingSys/backtest/power_mde.py",
+    "MyTradingSys/research/TRIAL_LEDGER.csv"
+  ],
+  "scope_out": [
+    "VALIDATION 2024-07..2025-06",
+    "HOLDOUT 2025-07..2026-09",
+    "live path",
+    "freezing new grids (card 1 did)"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_CONSOLIDATED.md:239-249",
+    "MyTradingSys/research/krown_ta101_2026-10-13/RECALL.md (Result: RECALL FAIL)"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read the addendum in PRE_REG_KROWN.md (grids for M1, M3, Z1 are frozen there; M1's N is OURS) and the loader from card 1; freeze nothing new.",
+    "Add the three failing tests first and run them: they fail.",
+    "Per H-id compute expected N and MDE (power_mde.py). H-M3 reports counts of candles, disconnects, median, share reconnecting within 2, maximum. H-Z1 reports bounce size and break rate per touch index, levels from KR-Z01/Z02 (KROWN_CONSOLIDATED.md:244); no retest arms, because Z10 vs Z11 is the H-V2 and C2 contrast. Fee-net, same-window placebo without replacement, strata.",
+    "Append the three sections to DEV_RESULTS.md (NO-RECALL-CLEARANCE label), list H-M2 as NOT RUN (R06a-d NOT_IN_DATA or not verified), add variants to TRIAL_LEDGER.csv; tests pass."
+  ],
+  "tests": "Fail-first: test_dev_study.py gains one test per H-id (M1, M3, Z1) that DEV_RESULTS.md holds its table with N, MDE, CI and the NO-RECALL-CLEARANCE label; the tests fail before this card runs (no such tables).",
+  "title": "Krown DEV event study 2/3: level and moving-average hypotheses H-M1, H-M3, H-Z1 (H-M2 not run); DONE when: DEV_RESULTS.md has N, power, CI per H-id",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

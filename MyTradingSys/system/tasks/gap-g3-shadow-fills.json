@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "class": "C2",
+  "commands": [],
+  "created": "2026-10-14T11:26:01Z",
+  "depends_on": [],
+  "done_when": "shadow_fills.py, test_shadow_fills.py (in EXTRA) and SHADOW_FILLS.md are committed and pass run_all_tests.py --quick; GO_LIVE_BAR.md is untouched.",
+  "est_turns": 15,
+  "from_inbox": "",
+  "goal": "Build a read-only comparison utility and report comparing testnet fills against shadow fills (first trade at or through the order price on the public Binance/Deribit tape) side by side, without changing GO_LIVE_BAR.md (operator decision q-gap-b 2026-10-15).",
+  "id": "gap-g3-shadow-fills",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab lab-formula-spec-text: BLOCKED (build)",
+      "ref": "3c4addfa2e35",
+      "utc": "2026-10-17T21:58:07Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "5a839bfb4430 gap review follow-up: sources checked, G2 spread measured, cards G1-G8 filed",
+      "ref": "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md",
+      "utc": "2026-10-14T11:26:35Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] 2026-10-15 q-gap-b answered: no change to GO_LIVE_BAR; report shadow-fill and testnet numbers side by side.\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C2 weight=CRUCIAL); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "gemini-nuc",
+  "refreshed": "2026-10-18T05:13:32Z",
+  "refs": [
+    "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md",
+    "MyTradingSys/backtest/maker_model.py",
+    "scripts/dev/run_extra_tests.py"
+  ],
+  "scope_out": [
+    "GO_LIVE_BAR.md edits (q-gap-b: no change to GO_LIVE_BAR)",
+    "live tree or execution/ order paths",
+    "HOLDOUT >= 2024-07-01"
+  ],
+  "scope_sha": "3c4addfa2e35",
+  "size": "S",
+  "sources": [],
+  "state": "refined",
+  "steps": [
+    "Write fail-first test MyTradingSys/research/gap_g3_shadow_fills_2026-10-18/test_shadow_fills.py: given synthetic order records and a 1m/trade tape, compute touch fill vs trade-through shadow fill rate and slip_bp; register in scripts/dev/run_extra_tests.py EXTRA.",
+    "Implement shadow_fills.py in MyTradingSys/research/gap_g3_shadow_fills_2026-10-18/ to score recorded paper/testnet orders against public tape bars (touch vs trade-through) and output side-by-side metrics.",
+    "Write MyTradingSys/research/gap_g3_shadow_fills_2026-10-18/SHADOW_FILLS.md with the side-by-side schema and DEV fixture verification; run_all_tests.py --quick."
+  ],
+  "tests": "python -m pytest MyTradingSys/research/gap_g3_shadow_fills_2026-10-18/test_shadow_fills.py -q (fails before shadow_fills.py exists; registered in run_extra_tests.py EXTRA)",
+  "title": "G3 GO_LIVE_BAR on shadow fills from the real tape (operator D-b)",
+  "weight": "CRUCIAL",
+  "worker": "agent",
+  "updated": "2026-10-18T10:00:00Z"
+}

@@ -1,0 +1,79 @@
+{
+ "updated_utc": "2026-10-03T05:40:31Z",
+ "source": "DSA_SESSION_PROMPT.md section 6 'Critical files:'; blob = git hash-object -- <path>; values OBSERVED until the operator approves",
+ "observed_by": "MTS-2026-10-03-0600Z-CL-BLD-registry-and-cicd",
+ "files": [
+  {
+   "path": "MyTradingSys/runtime/compiled_engine.md",
+   "blob": "dda0d7b89c01d321cf97880b69a1c2d5961dfb4f",
+   "sha256_8": "1d52f2e4",
+   "eol": "CRLF",
+   "approved_by": "pending",
+   "approved_commit": "pending"
+  },
+  {
+   "path": "DSA_SESSION_PROMPT.md",
+   "blob": "3ada1c22f336d0d6ad0ca2734ce073ce5ffc8082",
+   "sha256_8": "bda1c03a",
+   "eol": "LF",
+   "approved_by": "operator chat 2026-10-15 (JIS-NB): stale pointers after token-opt (MTS-AutoDeploy, STATUS.md/LESSONS_DIGEST.md)",
+   "approved_commit": "pending"
+  },
+  {
+   "path": "MyTradingSys/system/01_AI_BEHAVIOR.md",
+   "blob": "030aa9954f886190bbacdf3dcd6b8fb8bd57b65d",
+   "sha256_8": "7a37085c",
+   "eol": "LF",
+   "approved_by": "operator chat 2026-10-15 (JIS-NB): stale pointers after token-opt (MTS-AutoDeploy, STATUS.md/LESSONS_DIGEST.md)",
+   "approved_commit": "pending"
+  },
+  {
+   "path": "MyTradingSys/runtime/mts_math.py",
+   "blob": "0b0bb42fc367345a2e34f5d00e971387f8e4280e",
+   "sha256_8": "d45e51d0",
+   "eol": "CRLF",
+   "approved_by": "pending",
+   "approved_commit": "pending"
+  },
+  {
+   "path": "MyTradingSys/runtime/math_object_builder.py",
+   "blob": "6f880c366bc9ca8d1387332c35096976951daaef",
+   "sha256_8": "d1876da6",
+   "eol": "LF",
+   "approved_by": "pending",
+   "approved_commit": "pending"
+  },
+  {
+   "path": "scripts/core/start-trading-day.ps1",
+   "blob": "742247da1d7dd4008ff113828680292380d31428",
+   "sha256_8": "1679e96e",
+   "eol": "LF",
+   "approved_by": "pending",
+   "approved_commit": "pending"
+  },
+  {
+   "path": "scripts/core/mode.ps1",
+   "blob": "570edff90b1da6e78424b78a83660e84f79b1218",
+   "sha256_8": "05dbfa1a",
+   "eol": "LF",
+   "approved_by": "pending",
+   "approved_commit": "pending"
+  },
+  {
+   "path": "scripts/core/stop-day.ps1",
+   "blob": "4ebabbb0bc08ee4f4957a18a993ff48adc49f036",
+   "sha256_8": "15486b3e",
+   "eol": "LF",
+   "approved_by": "pending",
+   "approved_commit": "pending"
+  },
+  {
+   "path": "MyTradingSys/PROJECT_VISION.md",
+   "blob": "d478e6122aa5666c3371745d7ce39faccd08fe1b",
+   "sha256_8": "41e44e49",
+   "eol": "LF",
+   "approved_by": "pending",
+   "approved_commit": "pending"
+  }
+ ]
+}

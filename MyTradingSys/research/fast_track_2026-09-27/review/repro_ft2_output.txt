@@ -1,0 +1,43 @@
+[CONFIRMED] R1 executor: socket.timeout on entry create -> escapes fail_closed, naked position :: escaped TimeoutError; close_position called=False; pos=100; live stops=0
+[CONFIRMED] R2 executor fail_closed: stop cancelled (S6 sweep) before flatten; close fails -> naked :: call order=['cancel_by_label', 'cancel_by_label', 'close_position']; pos=100; live stops=0; halt='FAIL-CLOSED ITSELF FAILED (private/close_position: {'code': 10050}) af'
+[CONFIRMED] R3 executor: get_order_state error in poll loop escapes, filled position has no stop :: escaped DeribitError; pos=100; live stops=0; close called=False
+[CONFIRMED] R4 executor fail_closed: ConnectionResetError in label sweep skips flatten :: close_position called=False; pos=100; halt='FAIL-CLOSED ITSELF FAILED (reset) after: position size 999 !'
+[CONFIRMED] R5 position_manager flatten_halt: stop cancelled first, close fails -> naked :: pos=300; live stops=0; halt='FLATTEN ITSELF FAILED (timed out) after: stop resize 100->300 failed: {'code': 1'
+[CONFIRMED] R6 position_manager: get_order_state failure treated as 'stop not live' -> duplicate stops :: live stops after read failures=7 (sum amount=700, pos=100); result={'plan_id': 'r6', 'status': 'managing', 'position': 100, 'stop_amount': 100, 'st
+[CONFIRMED] R7 kill_switch: get_positions failure -> exception, no cancels, no HALT :: escaped TimeoutError; HALT written=False; open orders left=1
+[CONFIRMED] R8 kill_switch CLI: authenticate() failure -> HALT never written :: escaped RuntimeError; HALT written=False
+[CONFIRMED] R9 daily_loss_monitor: kill_all failure on breach -> no HALT_DAILY_LOSS, monitor loop dies :: run_once raised TimeoutError; HALT_DAILY_LOSS written=False
+[CONFIRMED] R10 daily_loss_monitor: torn state file -> baseline reset, -800 USD day not detected :: ok=True total_pnl=0.0 new baseline=0.99
+[CONFIRMED] R11 executor: UTF-16 HALT_DAILY_LOSS -> UnicodeDecodeError escapes :: UnicodeDecodeError escapes _check_halt_files (not in except tuple); execute_plan crashes before orders (fail-stop, not a clean refusal)
+[CONFIRMED] R11b executor: UTF-8-BOM HALT_DAILY_LOSS -> blocks as malformed (fail-closed, but mislabels a valid halt) :: reasons=['HALT_DAILY_LOSS: file present but unreadable/malformed - refused (fail closed) - remove HALT_DAILY_LOSS after operator review to resume']
+WARNING: stale HALT_DAILY_LOSS from 20260928 (today is 2026-09-27) - not blocking, but it was never cleared by an operator - review before proceeding
+WARNING: stale HALT_DAILY_LOSS from 2026/09/27 (today is 2026-09-27) - not blocking, but it was never cleared by an operator - review before proceeding
+WARNING: stale HALT_DAILY_LOSS from  (today is 2026-09-27) - not blocking, but it was never cleared by an operator - review before proceeding
+WARNING: stale HALT_DAILY_LOSS from 2026-09-27  (today is 2026-09-27) - not blocking, but it was never cleared by an operator - review before proceeding
+[CONFIRMED] R12 executor: HALT_DAILY_LOSS with non-matching/garbage date -> NOT blocking :: (body, n_refusals)=[({'date': 20260928}, 0), ({'date': '2026/09/27'}, 0), ({'date': ''}, 0), ({'date': '2026-09-27 '}, 0)]
+[CONFIRMED] R13 _xlabel truncation collisions (within plan and across plans) :: len51 rung1==rung10:True; len63 stop==entry==target:True; two 71-char plan_ids share stop label:True
+[CONFIRMED] R14 executor: HALT written mid-run does not stop remaining entry placement :: entry orders placed after HALT appeared mid-run: 2
+[CONFIRMED] R15 position_manager: manual close after partial target fill passes G2 'explained' check :: result={'plan_id': 'r15', 'status': 'closed', 'stop_state': 'untriggered', 'target_filled': 60} (manual close of 40 accepted as explained because target_filled 60 >= stop amount 40)
+[CONFIRMED] R16 soak_report: orphan/unresolved orders never make the soak NOT CLEAN :: verdict clean=True while unresolved=['O1']
+[CONFIRMED] R-DO deribit_orders: socket timeout on private/buy is not OrderStateUnknown :: private/buy timeout raises TimeoutError (not DeribitError/OrderStateUnknown) - bypasses every `except do.DeribitError`
+
+SUMMARY
+  CONFIRMED       R1 executor: socket.timeout on entry create -> escapes fail_closed, naked position
+  CONFIRMED       R2 executor fail_closed: stop cancelled (S6 sweep) before flatten; close fails -> naked
+  CONFIRMED       R3 executor: get_order_state error in poll loop escapes, filled position has no stop
+  CONFIRMED       R4 executor fail_closed: ConnectionResetError in label sweep skips flatten
+  CONFIRMED       R5 position_manager flatten_halt: stop cancelled first, close fails -> naked
+  CONFIRMED       R6 position_manager: get_order_state failure treated as 'stop not live' -> duplicate stops
+  CONFIRMED       R7 kill_switch: get_positions failure -> exception, no cancels, no HALT
+  CONFIRMED       R8 kill_switch CLI: authenticate() failure -> HALT never written
+  CONFIRMED       R9 daily_loss_monitor: kill_all failure on breach -> no HALT_DAILY_LOSS, monitor loop dies
+  CONFIRMED       R10 daily_loss_monitor: torn state file -> baseline reset, -800 USD day not detected
+  CONFIRMED       R11 executor: UTF-16 HALT_DAILY_LOSS -> UnicodeDecodeError escapes
+  CONFIRMED       R11b executor: UTF-8-BOM HALT_DAILY_LOSS -> blocks as malformed (fail-closed, but mislabels a valid halt)
+  CONFIRMED       R12 executor: HALT_DAILY_LOSS with non-matching/garbage date -> NOT blocking
+  CONFIRMED       R13 _xlabel truncation collisions (within plan and across plans)
+  CONFIRMED       R14 executor: HALT written mid-run does not stop remaining entry placement
+  CONFIRMED       R15 position_manager: manual close after partial target fill passes G2 'explained' check
+  CONFIRMED       R16 soak_report: orphan/unresolved orders never make the soak NOT CLEAN
+  CONFIRMED       R-DO deribit_orders: socket timeout on private/buy is not OrderStateUnknown
+tempdir: /sessions/rcw-01rw4ryhkfjynp625ecutsd3/tmp/ft2rev_edfwikqx

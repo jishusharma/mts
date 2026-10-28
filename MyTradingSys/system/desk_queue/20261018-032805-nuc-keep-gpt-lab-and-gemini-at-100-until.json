@@ -1,0 +1,13 @@
+{
+  "done_when": "GPT used its window runs (codex_run.py status shows runs spent) and Gemini Flash passes are shipped, each with git cherry origin/fast-track HEAD empty",
+  "finished": "2026-10-18T16:17:36Z",
+  "from": "JIS-NB",
+  "host": "JIS-NUC",
+  "id": "20261018-032805-nuc-keep-gpt-lab-and-gemini-at-100-until",
+  "need": "On JIS-NUC: (1) GPT: run 'python scripts/dev/codex_run.py status' then 'codex_run.py next' repeatedly (one card at a time, lab.lock) through the 11+ ready CODEX cards (gap-g1-prereg-power, dsa-audit-08-split-trials, gap-g6-trial-ledger, lc-ladder-dev, lab-trust-tag, simulator-validation-planted-edge, gross-screen-refuse-a-changed-data-manif, one-timeframe-map-for-the-whole-toolchai, ...) and the cards refine workers ready later; use the full 10 runs of the window, astra only on crucial cards, luna otherwise; after each run a Haiku Agent re-derives one number, then ship. (2) Gemini (Antigravity, F:/MTS/mts-gemini or agy.exe --print): Flash passes on C0/C1 CODEX-lane cards not claimed by the lab (claim first), first-pass review of the GPT deliveries, and a draft refinement of any raw card for the Claude refiner; Argon only for C2/C3; read View Usage before each heavy card, do not start under 30% of the 5h pool. (3) Post a SYNC line with quota left every ~90 min; when a quota resets, restart the loop. Ready queue below 4: post to the Session_Planner for more.",
+  "posted": "2026-10-18T03:28:05Z",
+  "result": "Pipeliner drain 2026-10-18: obsolete: its 5h window ended; superseded by A-20261018-3 (GPT queue order) and the coordinator wake rule",
+  "status": "failed",
+  "target": "DSA-NUC",
+  "title": "NUC: keep GPT lab and Gemini at 100% until their 5h reset"
+}

@@ -1,0 +1,84 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T11:43:43Z",
+  "commands": [],
+  "created": "2026-10-17T03:40:00Z",
+  "depends_on": [],
+  "done_when": "Named tests green (red first), REPORT.md written with row/OK/NOT_IN_DATA counts from the real DEV run, DEV row in TRIALS.md, nothing read on/after 2024-07-01, result line set.",
+  "effort": "medium",
+  "from_inbox": "",
+  "goal": "Build event_table.py: on 1h DEV bars compute RSI14 with MyTradingSys/backtest/layers/rsi/rsi_core.py (rsi_core) and the regime with malkan_regime, then one row per event of malkan_setup_bull (level 40, long) and malkan_setup_bear (level 60 ... (rest: BRIEF.md). Input F:/MTS/data/bigtrade/cache/perp/klines_1h.npz, DEV open < 2024-07-01. Spec: brief in scope_in.",
+  "id": "gptb-malkan-rsi-event-table",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "132 DEV events (59 long/73 short), 132 OK, 0 NOT_IN_DATA, mean MFE 3.18R MAE 3.06R: malkan",
+      "ref": "6542c843",
+      "utc": "2026-10-17T11:43:43Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "wavetrend-priority-source-parity: register parity ref + test in wiring and extra gate",
+      "ref": "515d07a91407",
+      "utc": "2026-10-17T06:23:06Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "c768076dcafe trendline-contract-spec: apply review fixes (L6 scope, E9-E11 gaps, tie examp",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-10-17T04:42:49Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "model": "gpt-6-luna",
+  "note": "lab-cards-1017 (NUC session). Research only, flag off. Detector exists, no event table yet (LAYERS.md rsi family). Params are OURS unless a source is named; horizon is OURS.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "lab-cards-1017",
+  "refreshed": "2026-10-17T07:24:51Z",
+  "refs": [],
+  "result": "132 DEV events (59 long/73 short), 132 OK, 0 NOT_IN_DATA, mean MFE 3.18R MAE 3.06R: malkan_rsi_event_table/REPORT.md",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/malkan_rsi_event_table/event_table.py",
+    "MyTradingSys/research/layer_lab/malkan_rsi_event_table/test_event_table.py",
+    "MyTradingSys/research/layer_lab/malkan_rsi_event_table/REPORT.md",
+    "MyTradingSys/research/layer_lab/TRIALS.md",
+    "MyTradingSys/system/wiring_registry.json",
+    "scripts/dev/run_extra_tests.py",
+    "MyTradingSys/research/layer_lab/dev_split_guard/event_table.py (read only)",
+    "MyTradingSys/research/layer_lab/forward_excursion/event_table.py (read only)",
+    "MyTradingSys/research/layer_lab/bb_top_reversal_event_table/event_table.py (template, read only)",
+    "MyTradingSys/backtest/layers/rsi/malkan_40_60.py (read only)",
+    "MyTradingSys/backtest/layers/rsi/rsi_core.py (read only)",
+    "MyTradingSys/backtest/layers/rsi/rsi_events.py (read only)",
+    "MyTradingSys/backtest/layers/FORMULAS.md (sections 1, 6, 12; read only)",
+    "MyTradingSys/research/layer_lab/briefs/gptb-malkan-rsi-event-table.md"
+  ],
+  "scope_out": [
+    "live path (alerts/live_*, execution/)",
+    "shared engine files",
+    "VALIDATION and HOLDOUT bars (open on/after 2024-07-01)",
+    "Tom/Fabio layer code (read only)",
+    "trading rules, tuning or net-of-cost claims",
+    "editing dev_split_guard or forward_excursion (import read only)"
+  ],
+  "scope_sha": "515d07a91407",
+  "size": "M",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read the BRIEF.md named in scope_in, then write the test file first; run it and confirm it fails (red).",
+    "Implement event_table.py in MyTradingSys/research/layer_lab/malkan_rsi_event_table/ only: DEV data only, gap or missing input = NOT_IN_DATA (never 0); use the two helpers named in the brief (read only).",
+    "Run `python scripts/dev/lookahead_lint.py --new`, fix FAIL hits (forward bars as zip(times, times[1:])); run the test file until green; register it in scripts/dev/run_extra_tests.py EXTRA and event_table.py in MyTradingSys/system/wiring_registry.json.",
+    "Run the CLI once on the real DEV npz; put row/OK/NOT_IN_DATA counts and mean MFE/MAE in REPORT.md and one DEV row in TRIALS.md; delete any CSV you wrote; set the result line."
+  ],
+  "tests": "synthetic 1h bars with a hand-built RSI path: one bull bounce at 40 gives one long row, a bear reject at 60 one short row, a near-miss (RSI stops 3 points above the tolerance band) gives none; entry is the next bar open and no bar after the horizon is read; fewer than 15 prior bars or a gap inside the forward window = NOT_IN_DATA; MFE/MAE equal hand values.",
+  "title": "Malkan 40/60 RSI bounce: research-side event table with forward MFE/MAE in R on 1h DEV",
+  "weight": "B-SHARED"
+}

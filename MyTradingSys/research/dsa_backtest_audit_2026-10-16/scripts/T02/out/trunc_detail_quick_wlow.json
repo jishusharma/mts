@@ -1,0 +1,24 @@
+{
+ "seed": 20261016,
+ "rows": [
+  {
+   "key": "wlow_bounce|bbrsi60|1h",
+   "n_bars": 1600,
+   "cuts": 50,
+   "late": 0,
+   "repaint": 0,
+   "nan_diff": 0,
+   "x10_diff": 0,
+   "nan_err": 0,
+   "x10_err": 0,
+   "trunc_err": 0,
+   "max_lag": 0,
+   "n_events_full": 0,
+   "notes": "",
+   "declared_lag": 0,
+   "secs": 51.4,
+   "verdict": "VACUOUS (0 events on synthetic bars)"
+  }
+ ],
+ "detail": {}
+}

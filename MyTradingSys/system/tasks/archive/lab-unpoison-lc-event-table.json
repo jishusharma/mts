@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-16T01:04:54Z",
+  "commands": [],
+  "created": "2026-10-16T00:50:38Z",
+  "depends_on": [],
+  "done_when": "event_table.py, test_event_table.py, event_table.csv, separation.md and the two gate entries are on origin/fast-track (git cherry empty), the lc-event-table claim is released, and the lab status shows no unshipped commits.",
+  "from_inbox": "",
+  "goal": "Since 2026-10-15 19:41Z every lab ship fails (00:35Z sweep: nothing pushed): lab-branch commit 6a2b227a (lc-event-table, DONE, 1,278 first touches) adds event_table.py and test_event_table.py that no gate step lists (steps 3w, 3x, 3gd red). Land it on trunk with the two entries; the lab branch then passes and ships its backlog.",
+  "id": "lab-unpoison-lc-event-table",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "only a JIS-NUC session can run this: commit 6a2b227a exists only in the NUC lab repo. Other hosts skip it. Found by codex-feed 2026-10-16 (runs.jsonl 19:30Z SHIP_FAILED, ship.txt steps 3w 3x 4b).",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "codex-feed 2026-10-16 (sonnet worker)",
+  "refs": [],
+  "result": "1,278 first touches (event_table.csv) landed on trunk with gate entries (EXTRA + wiring_registry REPRO); wiring gate and test_gate_discovery_b150 pass",
+  "scope_in": [
+    "MyTradingSys/research/levels_confluence_2026-10-14/ (event_table.py, test_event_table.py, event_table.csv, separation.md) and layer_lab/reports/2026-10-15_lc-event-table.md, all from commit 6a2b227a",
+    "scripts/dev/run_extra_tests.py (EXTRA)",
+    "MyTradingSys/system/wiring_registry.json",
+    "MyTradingSys/research/layer_lab/TRIALS.md (one lab row from the same commit)"
+  ],
+  "scope_out": [
+    "F:/MTS/mts-codex-lab: the unattended lab tree; a dirty tree is salvaged by the next tick, so work in your own work tree",
+    "changing event_table.py logic or its numbers",
+    "VALIDATION and HOLDOUT reads"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/system/LAYER_LAB.md (Guards: gate registration)",
+    "MyTradingSys/research/layer_lab/INDEX.md"
+  ],
+  "state": "done",
+  "steps": [
+    "On JIS-NUC: sync.py start lc-event-table-land (own work tree). Then git -C <tree> fetch F:/MTS/mts-codex-lab jis-nuc/codex-lab and git -C <tree> cherry-pick 6a2b227a (10 files). A clash in layer_lab/INDEX.md, system/codex_usage.json or system/lane_state.json: take trunk's copy (the lab regenerates them); in layer_lab/TRIALS.md: keep both rows.",
+    "Add MyTradingSys/research/levels_confluence_2026-10-14/test_event_table.py to run_extra_tests.EXTRA (next to test_levels.py) and event_table.py to wiring_registry.json (disp REPRO, why: reproduces event_table.csv cited in layer_lab/reports/2026-10-15_lc-event-table.md, run by hand).",
+    "Run the three red gate steps and the card's own test: python scripts/dev/test_wiring_scan.py; python scripts/dev/wiring_scan.py --check; python -m pytest MyTradingSys/tests/test_gate_discovery_b150.py MyTradingSys/research/levels_confluence_2026-10-14/test_event_table.py -q.",
+    "sync.py release lc-event-table (stale lab claim, JIS-NUC/sharma), sync.py ship. Report it shipped only with an empty git cherry origin/fast-track <sha>.",
+    "Check the lab: on JIS-NUC python scripts/dev/codex_run.py status shows no 'unshipped' line after the next two ticks (the lab branch merges trunk and its sweep ship passes)."
+  ],
+  "tests": "scripts/dev/test_wiring_scan.py::test_real_repo_passes and MyTradingSys/tests/test_gate_discovery_b150.py fail on the lab branch today (steps 3w, 3x, 3gd) and pass once the two entries are in.",
+  "title": "host=JIS-NUC: land lc-event-table's finished lab commit with its gate entries so the lab branch ships again"
+}

@@ -1,0 +1,33 @@
+{
+  "approved_by": "",
+  "closed": "2026-10-10T17:19:40Z",
+  "commands": [],
+  "created": "2026-10-10T16:31:57Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "",
+  "goal": "Write the runner for the 28 pre-registered cells and run it on F:/MTS/data, holdout once.",
+  "id": "B141",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "NUC session holds an open claim on B141: check `sync.py start` before touching. Refiner owes: file list, steps, fail-first test, done_when (rows/columns of the result).",
+  "prio": 2,
+  "refined_by": "",
+  "refs": [
+    "B141"
+  ],
+  "result": "Already executed 2026-10-10: Stage 1+2 scripts research/loose_code/b141_htf_stage1.py, b141_htf_stage2.py (results in PRE_REG section 9); no candidate; writer .new staged (788b186), awaits supervisor promote. Card was stale.",
+  "scope_in": [
+    "MyTradingSys/research/_archive/loose_2026-10/PRE_REG_HTF_REPLACE_2026-10-07.md"
+  ],
+  "scope_out": [],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/system/NEXT_SESSION.md task 3a (2026-10-10)"
+  ],
+  "state": "done",
+  "steps": [],
+  "tests": "",
+  "title": "28-cell runner for the pre-registered HTF replace test",
+  "weight": "B-SHARED"
+}

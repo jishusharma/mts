@@ -1,0 +1,57 @@
+MyTradingSys/backtest/layers/alerts/live_session_levels.py:5:NO-SOURCE per that module (Asia 00-08 UTC, US open 14:00, fail window 60 min); not tuned here.
+MyTradingSys/backtest/layers/alerts/test_live_session_levels.py:2:construction (level = previous UTC day extreme, fail = first close back inside within 60 min, before 14:00)."""
+MyTradingSys/backtest/layers/fabio/fabio_of_model.py:8:State   : session (UTC) Asia 00:00-08:00, London 08:00-13:30, NY 13:30-21:00. Prior session = the previous session in
+MyTradingSys/backtest/layers/fabio/fabio_of_model.py:120:    08:00, ny 13:30 in US DST else 14:30 (day_gates rules); the fixed-UTC widths 330/450 min and contiguity are kept,
+MyTradingSys/backtest/layers/fabio/orderflow_live.py:330:    ap.add_argument("--since", help="ISO UTC start for a first run / backfill, e.g. 2026-10-03T13:30:00")
+MyTradingSys/backtest/layers/fabio/pending_test_fabio_v3.py:595:        # spec :326-327 (:32-36) second Sunday March <= D < first Sunday November -> 13:30 UTC else 14:30
+MyTradingSys/backtest/layers/fabio/pending_test_fabio_v3.py:674:        d = dt.date(2025, 3, 10)                              # Monday, DST: open 13:30 UTC
+MyTradingSys/backtest/layers/fabio/test_fabio_of_model.py:61:        # 2026-07-15: US DST + UK BST -> london 07:00, ny 13:30 UTC; fixed-UTC model gave 08:00
+MyTradingSys/backtest/layers/fabio/test_fabio_of_model.py:66:        # 2026-03-20: US DST started (Mar 8), UK not yet (Mar 29) -> london 08:00, ny 13:30
+MyTradingSys/backtest/layers/fabio/v3/day_gates.py:61:    """NY cash open for a UTC date: 13:30 UTC in US DST else 14:30; None on Sat/Sun and on US_CLOSED (spec section 2)."""
+MyTradingSys/backtest/layers/session/test_session_momentum.py:47:        # B102: fixed 810 (13:30 UTC) is wrong in US standard time; "ny" = day_gates.ny_open_utc
+MyTradingSys/backtest/layers/session_levels/run_session_levels.py:69:         "Event: first touch of the previous UTC day high (side high) / low (side low) before 14:00 UTC, close back "
+MyTradingSys/backtest/layers/session_levels/run_session_levels.py:71:         "extreme on the other side, time exit 14:00 UTC (US-open placeholder). Net = minus 2 x taker 0.05%%. "
+MyTradingSys/backtest/layers/session_levels/session_levels.py:23:EU 08:00-14:00), US open 14:00 UTC, FAIL_WINDOW_MIN = 60, a touch is any tick above the level. Tom's only
+MyTradingSys/backtest/layers/session_levels/test_session_levels.py:72:        # last bar before 14:00 is minute 839, close 99.0
+MyTradingSys/backtest/test_tom_probe_diag.py:122:        # 14:00Z in January: DAX/London 08:00Z +6h (outside), US open 14:30Z not yet -> in no 0-4h window
+MyTradingSys/backtest/tom_dax_bt.py:42:from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
+MyTradingSys/backtest/tom_dax_bt.py:350:        tz = ZoneInfo(session["timezone"])
+MyTradingSys/backtest/tom_dax_bt.py:356:    except (KeyError, TypeError, ValueError, ZoneInfoNotFoundError) as exc:
+MyTradingSys/backtest/tom_dax_recall.py:51:from zoneinfo import ZoneInfo
+MyTradingSys/backtest/tom_dax_recall.py:58:BER = ZoneInfo("Europe/Berlin")
+MyTradingSys/backtest/tom_probe_diag.py:20:  London 08:00 Europe/London, US_open 09:30 America/New_York, US_close 16:00 America/New_York. Opens are generated
+MyTradingSys/backtest/tom_probe_diag.py:40:from zoneinfo import ZoneInfo
+MyTradingSys/backtest/tom_probe_diag.py:57:SESSIONS = [("Asia", "Asia/Tokyo", 9, 0), ("DAX", "Europe/Berlin", 9, 0), ("London", "Europe/London", 8, 0),
+MyTradingSys/backtest/tom_probe_diag.py:58:            ("US_open", "America/New_York", 9, 30), ("US_close", "America/New_York", 16, 0)]
+MyTradingSys/backtest/tom_probe_diag.py:59:_TZ = {name: ZoneInfo(tz) for name, tz, _, _ in SESSIONS}
+MyTradingSys/execution/test_plan_compiler.py:98:        "validity": {"start": "2026-09-27T10:00:00Z", "end": "2026-09-27T14:00:00Z"},
+MyTradingSys/execution/test_plan_compiler.py:144:            "validity": {"start": "2026-09-27T10:00:00Z", "end": "2026-09-27T14:00:00Z"},
+MyTradingSys/execution/test_plan_compiler.py:161:            "validity": {"start": "2026-09-27T10:00:00Z", "end": "2026-09-27T14:00:00Z"},
+MyTradingSys/execution/test_plan_compiler.py:185:            "validity": {"start": "2026-09-27T10:00:00Z", "end": "2026-09-27T14:00:00Z"},
+MyTradingSys/execution/test_plan_compiler.py:204:            "validity": {"start": "2026-09-27T10:00:00Z", "end": "2026-09-27T14:00:00Z"},
+MyTradingSys/execution/test_r2_runner_exit.py:273:            "validity": {"start": "2026-09-27T10:00:00Z", "end": "2026-09-27T14:00:00Z"},
+MyTradingSys/research/eur_low_us_sweep_2026-10-14/study.py:6:Anchor (per weekday D): A = US cash open, 13:30Z under US DST, 14:30Z otherwise. T0 = A - 90 min (decision time,
+MyTradingSys/research/krown_ta101_2026-10-13/tools/build_ledger.py:82:    "'agree' is not defined (TFR gap t=00:14:00): OURS arm = trend state from side of 200 SMA and order of 21/55 EMA")
+MyTradingSys/research/opr_bb_mtf_center_2026-10-16/study.py:12:from zoneinfo import ZoneInfo
+MyTradingSys/research/opr_bb_mtf_center_2026-10-16/study.py:20:NY = ZoneInfo("America/New_York")
+MyTradingSys/research/opr_preopen_tops_2026-10-16/study.py:12:from zoneinfo import ZoneInfo
+MyTradingSys/research/opr_preopen_tops_2026-10-16/study.py:20:NY = ZoneInfo("America/New_York")
+MyTradingSys/research/opr_preopen_tops_2026-10-16/study.py:29:    """1m tape index of the 09:30 New York open of date d (13:30Z in EDT, 14:30Z in EST)."""
+MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/study.py:12:from zoneinfo import ZoneInfo
+MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/study.py:21:NY = ZoneInfo("America/New_York")
+MyTradingSys/research/orderflow_views_2026-10-14/study.py:340:                 ("10:00", "12:15", "12:30", "13:30", "14:00", "14:55", "15:00", "15:10", "15:15", "15:20")}
+MyTradingSys/research/session_sweeps/session_open_study.py:7:Days : UTC date D with fabio v3 day_gates.ny_open_utc(D) not None (Mon-Fri, DST-aware 13:30/14:30 UTC, US_CLOSED)
+MyTradingSys/research/session_sweeps/session_open_study.py:13:    13:30 -> 14:30 with DST, the US cash open (not a UTC clock time) drives it.            [operator: US open special]
+MyTradingSys/research/setup_catalog_2026-10-15/evidence/bb_mid_engulf_checks.py:60:print("\n== swept low: 5m 13:30 bar low and 1m lows 13:25-13:40")
+MyTradingSys/research/setup_catalog_2026-10-15/evidence/bb_mid_engulf_checks.py:61:print("5m 13:30 low", b[tsms("13:30")][2], "; 1m lows:", [(hm(t), l) for t, o, h, l, c, v, tb in m1 if "13:25" <= hm(t) <= "13:40" and l < 80100])
+MyTradingSys/research/setup_catalog_2026-10-15/evidence/rsi_divergence_mtf_checks.py:92:print("\n== D. after the sweep: first close above RSI 40 and RSI 60, first close above the marked lines (from 13:30Z)")
+MyTradingSys/research/setup_catalog_2026-10-15/evidence/rsi_divergence_mtf_checks.py:96:        if e[0] < ms("13:30") or rsi[i] is None: continue
+MyTradingSys/research/setup_catalog_2026-10-15/evidence/rsi_divergence_mtf_checks.py:121:print("\n== F. the same two points on every timeframe: the bar that closes at 13:30Z against the lowest-close bar closing 13:45..13:56Z (RSI on that timeframe)")
+MyTradingSys/research/setup_catalog_2026-10-15/evidence/rsi_divergence_mtf_checks.py:124:    ia = [i for i, e in enumerate(bars) if e[0] + step * 60000 == ms("13:30")][0]
+MyTradingSys/research/setup_catalog_2026-10-15/evidence/weekly_low_sweep_checks.py:19:print("this week Mon 10-12 00:00 .. 13:30 low:", low("2026-10-12T00:00", "2026-10-15T13:30"))
+MyTradingSys/research/setup_catalog_2026-10-15/evidence/weekly_low_sweep_checks.py:20:print("today 00:00 .. 13:30 low:", low("2026-10-15T00:00", "2026-10-15T13:30"), " | today low up to 13:36:", low("2026-10-15T00:00", "2026-10-15T13:36"))
+MyTradingSys/research/setup_catalog_2026-10-15/evidence/weekly_low_sweep_checks.py:22:print("sweep low 13:30-14:14:", low("2026-10-15T13:30", "2026-10-15T14:15"))
+MyTradingSys/research/setup_catalog_2026-10-15/evidence/weekly_low_sweep_checks.py:28:low_bar = min(rng("2026-10-15T13:30", "2026-10-15T14:15"), key=lambda k: k[3])
+MyTradingSys/research/tom_btc_2026-10-13/chart_lab.py:12:from zoneinfo import ZoneInfo
+MyTradingSys/research/tom_btc_2026-10-13/chart_lab.py:52:        local = datetime.combine(day, time(9, 30), ZoneInfo("America/New_York"))
+MyTradingSys/tests/test_b156_thesis_line_age.py:37:        st = dict(STATE, updated_utc="2026-10-09T14:00:00Z")

@@ -1,0 +1,1204 @@
+[0:00] If there is one thing you need to know
+[0:02] as a trader, is liquidity. I scalp and
+[0:05] day traded the NASDAQ over the last
+[0:07] years. I've participated in the CME
+[0:10] Group Equity Cup and in the World
+[0:13] Trading Cup, ranking in the top podium
+[0:16] every single time. And what you will
+[0:17] learn here in this video is the
+[0:20] foundation of my trading. Financial
+[0:23] markets, stock, crypto, everything,
+[0:26] every financial asset class that comes
+[0:29] to your mind, it's moved by a flow of
+[0:32] orders matching liquidity. So, it's
+[0:35] crucial that you understand how these
+[0:38] forces are related to understand why and
+[0:41] how the market moves. And this video
+[0:44] will most likely be the last one you
+[0:46] will ever need about liquidity heat map.
+[0:50] Before you ask, no, it's not going to be
+[0:52] a video where I explain you how to draw
+[0:55] lines above the top, below the bottom,
+[0:58] trend lines, too. Search for liquidity
+[1:01] that market makers will come to hunt
+[1:04] your stop loss. I will show you the real
+[1:06] deal. I will show you how professionals
+[1:09] watch the heat map and understand where
+[1:12] the path of least resistance is. Even if
+[1:15] the sellers will try to push it through,
+[1:17] the fact that there is passive liquidity
+[1:19] here is the break and protect. So,
+[1:22] trying to get and as you can see, this
+[1:24] is an example live of how the reload
+[1:26] unfold, okay? Look at this beauty. And
+[1:28] how they should position themselves. I
+[1:30] will show you how the plumbing of the
+[1:33] market works and why with this kind of
+[1:36] information you're accessing [music]
+[1:37] somewhere that 95% of retail traders
+[1:41] completely ignore. And by the way, on
+[1:44] the 8th of May, we are going to host
+[1:47] webinar [music] where we talk about the
+[1:49] liquidity heat map and we are going to
+[1:51] go over the best [music] and the
+[1:53] cleanest heat map setup. You don't want
+[1:55] to miss it. Let's start with the concept
+[1:58] of retail liquidity from a beginner
+[2:02] point of view. So, retail is usually
+[2:05] seen as resting above the high and below
+[2:09] the low in a compression phase or above
+[2:13] the top swing and below the top swing in
+[2:17] a directional market phase. This is not
+[2:19] wrong, but it's only accurate 60 to 70%
+[2:23] of the time because you need to guess
+[2:25] where liquidity is. You don't know where
+[2:27] liquidity is. Maybe in this case where
+[2:30] you would expect that liquidity is here,
+[2:33] when you are going up there is a big
+[2:35] liquidity level here that you are
+[2:37] ignoring because you are trying to
+[2:39] assume and predict where the liquidity
+[2:42] will be because you miss the software
+[2:44] and the technology to understand the
+[2:46] actual liquidity. The actual liquidity
+[2:48] heat map it's a technology step from the
+[2:52] usual order book because it shows you
+[2:55] also the historical movement of the
+[2:57] liquidity and it's really visually
+[3:00] appealing and easy to understand because
+[3:03] you have the darker level or the level
+[3:06] it's more powerful from a visual
+[3:08] perspective and it's more lighting if
+[3:11] the level it's important. So, for
+[3:13] example, here let's say that you have
+[3:14] 100 contracts, this level will be
+[3:17] visually stronger than all the other
+[3:20] level where the liquidity it's really
+[3:22] low. So, from a scalper point of view,
+[3:25] this kind of visualization of the orders
+[3:28] is really convenient and you have always
+[3:30] an interaction of two forces. You have
+[3:33] the aggressive market orders, bubbles,
+[3:35] and the passive liquidity. These two
+[3:37] match together. So, the aggressive
+[3:39] liquidity is matched with the passive
+[3:41] liquidity and this is how the market
+[3:43] moves and the exchange happen. Let's go
+[3:46] on the market micromechanics. Market
+[3:48] takers, they eat. These are the bubbles
+[3:50] that eat liquidity level. Market makers,
+[3:53] they offer. So, you have the best bid,
+[3:56] best ask. You have the level in the
+[3:59] middle, the 100, and you have 33
+[4:01] contracts resting passive liquidity on
+[4:04] the 101, and 48 contracts passive
+[4:07] liquidity resting on the 99. The
+[4:10] difference between these two is called
+[4:12] the spread. Now, let's go on. If you are
+[4:14] in this case, 25 aggressive market order
+[4:18] arrive to meet the passive liquidity
+[4:22] order at 101. So, 25 aggressive order
+[4:26] match with 33 passive orders on the
+[4:29] single level, 101. Now, my question for
+[4:32] you is, are these 33 enough to meet the
+[4:35] demand of the 25? Yes, they are. In this
+[4:38] case, on the 101, you have enough supply
+[4:42] to meet the aggressive market forces of
+[4:45] the buyers. Perfect. What you have here?
+[4:48] You have eight contract remaining on the
+[4:50] 101, and the filling completely on this
+[4:53] level of the aggressive market
+[4:55] participants. Now, let's say that you
+[4:57] have 25 aggressive sellers. They meet
+[5:00] the offer at the 40 at the 99 level. 41
+[5:05] passive orders, it's enough to fulfill
+[5:08] the demand? Yes. So, you have eight
+[5:10] contract passive liquidity remaining on
+[5:12] 101, and 16 contract remaining on the 99
+[5:16] level. Now, let's say that the market
+[5:19] participants gets more interest in
+[5:22] getting into position, and you get 75
+[5:25] contracts. They need to meet the 101
+[5:28] level. How much offer there is on this
+[5:30] level from the passive liquidity side?
+[5:32] Eight. On the level above, 42. Is this
+[5:35] enough? No. They need to go even higher
+[5:37] to the 103 level. So, what happens? They
+[5:40] eat the first level. You have still 67
+[5:43] contract missing. Then, what you have?
+[5:45] You step up to 102. Is this enough? No,
+[5:48] not yet enough. You still need to go to
+[5:50] the next level to meet the full demand.
+[5:54] So, you have now 31 contracts remaining
+[5:57] from a passive liquidity perspective on
+[6:00] the 103, and you met the complete
+[6:03] necessity from aggressive market orders
+[6:06] to be filled, and you did this movement.
+[6:08] This is how the market really moves. So,
+[6:10] the main takeaways you can get from here
+[6:13] is that you buy and sell at the price
+[6:16] you want, but you don't have a guarantee
+[6:19] that you'll get filled. This is the
+[6:20] perspective of the passive order. So,
+[6:22] you have price certainty, but not time
+[6:25] certainty and not execution certainty.
+[6:28] You don't know if they will fill you at
+[6:30] the level that you want. The aggressive
+[6:31] market participants are the one that
+[6:33] say, "Fill me now. I want to be filled
+[6:36] now." So, you buy and sell when you
+[6:38] want. You'll pay a worse price. You pay
+[6:41] for the spread because you have the
+[6:43] necessity to be filled in your order
+[6:46] now. Let's go now to the books low, the
+[6:48] path of least resistance. So, let's say
+[6:50] that we fix the effort, and we say that
+[6:53] the effort is 50. So, you have 50
+[6:56] contracts here. It doesn't matter if
+[6:58] it's aggressive on the top going by or
+[7:00] aggressive on the bottom side. What I
+[7:02] want to explain you here is the passive
+[7:05] forces. In this case, the path of least
+[7:07] resistance is down. Why the path of
+[7:10] least resistance in down? Because to go
+[7:12] above, you need to fulfill 273
+[7:16] passive orders. The total limit above
+[7:19] the price is 273.
+[7:21] Below the price is 122.
+[7:24] So, you have a five price level. The
+[7:26] total of this price level above is 273.
+[7:29] The total of the five price level below
+[7:31] is 122. So, fixing the effort, it's
+[7:35] easier to move price down in this
+[7:37] particular behavior. And this is why you
+[7:39] have this slope like this because the
+[7:41] path of least resistance is on the
+[7:43] downside and this is really important to
+[7:45] understand when you need for example to
+[7:47] take a trading decision on the short
+[7:49] term. Now, the liquidity heat map, how
+[7:51] is it structured? How is it based? As I
+[7:54] was explaining to you, you have the
+[7:56] brightest color on the darkest color
+[7:59] when the level is important. You can set
+[8:01] it for for this case here we have the 78
+[8:04] that is a super important passive
+[8:06] liquidity level where the price could
+[8:08] bounce if it reach have a really bright
+[8:11] color and then you have this 33 and 40
+[8:14] level that stand out of the other ones
+[8:16] because they are more important. They
+[8:18] are more loaded with contract and the
+[8:21] power of the liquidity heat map is that
+[8:23] you have an historical DOM. So you can
+[8:25] see how the liquidity move. You can see
+[8:27] here that the liquidity raised and
+[8:29] raised again going on. So it means that
+[8:31] they are lifting, okay, the path of
+[8:34] least resistance. And in this case you
+[8:36] see that the price is bouncing between
+[8:38] this level of the heat map, the 101 and
+[8:41] the 98 doing this work here and you have
+[8:45] a strong limit above that could stop the
+[8:48] advance of price going on. And now I
+[8:50] want to continue with the common book
+[8:53] pattern. Let's go over multiple book
+[8:55] pattern. We have the bid reload. So when
+[8:58] you are in a consolidation phase,
+[8:59] compression phase and you see in this
+[9:01] point in time appearing 110 contract
+[9:04] supporting your movement and your idea.
+[9:07] This one is a bid reload and this one is
+[9:09] giving information that there is someone
+[9:11] really big that want to be filled on the
+[9:13] long. And what is the immediate reaction
+[9:15] of the algorithm of the market? They
+[9:17] will try to front run it. So there is a
+[9:19] big probability that you will go
+[9:21] directly to this level. Be careful also
+[9:23] because this pattern here it's used a
+[9:25] lot by the spoofing, okay, there is a
+[9:28] market manipulation technique where they
+[9:30] put this order here but they don't
+[9:32] really intend to be filled to manipulate
+[9:35] the movement of the market above to
+[9:37] short from a better level, okay? Now,
+[9:39] spoofing is an illegal trading
+[9:41] technique, but still nowadays you can
+[9:43] see them in the market that is still
+[9:45] used every day, okay? And the bid reload
+[9:48] here is an information, for example,
+[9:50] let's say that you have a bias long and
+[9:52] you want to go long till this level.
+[9:54] Seeing this kind of information is an
+[9:56] amazing information to validate your
+[9:58] idea. The iceberg it's can be called
+[10:00] invisible liquidity. Why invisible
+[10:03] liquidity? Because you cannot see heat
+[10:05] from the heat map because it's a reload.
+[10:06] There are only eight contract here, but
+[10:08] every time sellers step in and consume
+[10:10] it, they get reloaded. Reloaded for
+[10:12] hundreds of time. So, even if you see
+[10:15] eight here, maybe it can be 500
+[10:17] contracts, 400. You need specific
+[10:19] indicator for it, an iceberg indicator
+[10:21] that show you when there is a
+[10:23] algorithmic activity of reloading a
+[10:25] price level. Then here you have one of
+[10:27] my favorite one, the book sweeping is
+[10:29] the
+[10:30] that you have seen probably in hundreds
+[10:32] of interview and live trading for that
+[10:35] I've made is when you have a book
+[10:37] sweeping, a fast movement. Specifically,
+[10:39] this one you can find really close to
+[10:41] all-time high, all-time low of the
+[10:44] range. Or if you are really close to the
+[10:47] high of the New York session or on the
+[10:49] session, the market approach this level
+[10:51] and you have a book sweeping usually in
+[10:53] this kind of level. So, if you are
+[10:55] positioned, you can take an asymmetrical
+[10:57] risk to reward. You can risk few ticks
+[10:59] to get a really good risk to reward
+[11:00] multiplier. And the last one is the book
+[11:03] flip. This is really convenient also for
+[11:05] scalpers because let's say that here you
+[11:07] are on the short side, you took a short.
+[11:08] You see the break through of this level
+[11:10] of liquidity, so you have a continuation
+[11:12] at least till here. And you see also
+[11:14] that they reload the level of liquidity.
+[11:15] So, they are like going down, closing
+[11:17] the door to go above and going down.
+[11:19] This is important because if you are
+[11:21] covered here, you can trail your stop
+[11:23] loss here or you can also add other
+[11:25] contract because they are confirming you
+[11:27] that they want to go down. Okay, let's
+[11:30] go now to the heat map liquidity pattern
+[11:34] and let's start with the one that we saw
+[11:36] before, the buyers reload. This is a
+[11:38] situation where you may be have a long
+[11:40] bias for your asset, you have a setup
+[11:43] and you want to get a better feeling,
+[11:46] you wants to get a probability area of a
+[11:49] potential reversal play like you can see
+[11:53] here on the bottom and of a reload. So
+[11:56] you have both the setups where you can
+[11:58] go mean reverting in direction of of the
+[12:01] main trend and when you can reload. In
+[12:03] this one, this is amazing because you
+[12:05] have a protection wall that is there.
+[12:07] This is a resting liquidity, is not
+[12:09] fresh liquidity and as you can see the
+[12:11] market approach here and get absorbed
+[12:14] the first time, strike again this area,
+[12:16] absorb the second time, strike this
+[12:19] area, absorb the third time and then you
+[12:21] have already potential liquidity levels
+[12:25] to reach from the price. The price
+[12:27] extend here. This is the mean reverting
+[12:30] on the protection wall of the buyers in
+[12:33] line with the main direction. So you
+[12:34] need to start with an idea. But for
+[12:37] scalpers, where you want before to see
+[12:40] the market getting aggressive on your
+[12:43] direction. So you want to see maybe big
+[12:45] trades confirming that there is an
+[12:47] aggression there and that there is
+[12:48] intention to go higher, then in this
+[12:51] case you can use this one. This one is
+[12:53] called the reload and is where you are
+[12:55] really close to a resting liquidity
+[12:57] level and you see the buyers reloading
+[13:00] passive liquidity and getting
+[13:02] aggressive. This is a really high
+[13:03] probability break break and retest play,
+[13:07] okay? This one it's really easy to trade
+[13:10] because if you have a directional bias,
+[13:12] a probability directional bias, you can
+[13:14] enter at the breakout protected below
+[13:16] the reload level and you can run the
+[13:19] setups with the first take profit on the
+[13:21] major liquidity areas and the second and
+[13:24] third take profit on other resting
+[13:26] liquidity area. Remember that to take
+[13:29] this kind of setup, you need to start
+[13:31] with a directional bias and a
+[13:33] probability framework that comes from
+[13:35] the order flow. Now, let's go on the
+[13:37] second example. This one is the seller's
+[13:39] reload. Truly easy to identify. We have
+[13:41] a market that is closed inside a resting
+[13:45] liquidity fresh area of the buyers and
+[13:47] is protected on the aggression from the
+[13:49] seller. So, who is pushing the market?
+[13:51] The sellers are getting aggressive here.
+[13:53] They are trying to break through this
+[13:55] level and this is the ultimate
+[13:56] confirmation you need because you can
+[13:58] see that they get aggressive and at the
+[14:00] same time they reload fresh liquidity.
+[14:04] This is an information that they want to
+[14:06] fuel the movement to the next liquidity
+[14:08] levels. This is exactly where the price
+[14:10] reached. Then they come back to the
+[14:12] level, they reload again as you can see
+[14:15] and they get aggressive again protected
+[14:18] with aggressive orders back to the
+[14:20] liquidity level. And you can see that
+[14:21] they both put aggression and resting
+[14:24] liquidity protection area. This is a
+[14:27] good confirmation. Then, in this kind of
+[14:29] setup, you always needs to be careful
+[14:31] because the price usually goes to the
+[14:32] next liquidity cluster. And the next
+[14:35] liquidity cluster in this case was
+[14:36] really close, okay? So, the risk to
+[14:38] reward is not the best, but the
+[14:40] confirmation that you get here gets
+[14:42] respected for four additional times.
+[14:45] One, two, three and the fourth time here
+[14:47] when the price explodes short. Now,
+[14:49] let's see other setup and let's go on
+[14:52] other example here on the heat map. This
+[14:54] one here, it's an amazing example of the
+[14:57] framing of the liquidity area. So, let's
+[14:59] say that you are in a directional bias
+[15:01] long for the day. Maybe you have an IVB,
+[15:04] maybe you have statistical projection of
+[15:05] the the pivot for the reversal or maybe
+[15:08] you use the volume profile or the view
+[15:10] up and you are below the extension. You
+[15:12] have anything that gives you the
+[15:13] probability that from this area you are
+[15:15] going to rebound. Now, if you don't have
+[15:17] the heat map, you could be a little bit
+[15:19] confused on where to cover yourself. So,
+[15:21] you can say, "Look, I enter here and I
+[15:23] cover below the low." But, here you can
+[15:24] see that there was a main resting
+[15:26] liquidity level, and there is also an
+[15:28] additional liquidity wall here. So, the
+[15:30] best play from a probability side here
+[15:34] is to see the reload that they put
+[15:36] reload plus absorption. It's an amazing
+[15:39] pattern to join with an amazing feeling
+[15:41] here. But, to be careful, also, you
+[15:43] could decide to enter here, yes, but to
+[15:45] put your stop loss below the next
+[15:47] liquidity area. So, you have still an
+[15:49] amazing risk to reward to the next
+[15:51] liquidity area, but you are being
+[15:52] careful of the market not taking you out
+[15:55] during an accumulation phase, because it
+[15:57] could make, for example, here another
+[15:58] spike, then bouncing back, and then
+[16:00] going to the next liquidity area. This
+[16:02] is also a pattern that I need to give
+[16:04] credit to Eric Stokke, because this is
+[16:06] the grill, the barbecue, when you have
+[16:08] multiple liquidity area, and the price
+[16:10] gets aggressive here to eat all these
+[16:12] level of liquidity. And you can see here
+[16:14] from the aggressive market order that is
+[16:16] pushing really hard to slice through
+[16:18] them, because this is I mean a perfect
+[16:20] example of a sustained move, where you
+[16:22] have aggression, aggression, aggression,
+[16:24] and the price is eating all the passive
+[16:26] liquidity level really aggressively. And
+[16:28] these are all partial profit that you
+[16:30] can take, because the market usually
+[16:32] reach a point of exhaustion here when
+[16:34] there are there is a cluster of
+[16:35] liquidity level, and then reverts. Let's
+[16:37] go on the next one. And this one is an
+[16:39] example of an aggressive breakout on a
+[16:42] resting liquidity level protected by the
+[16:45] reload. This is important, because when
+[16:47] you see here the bubble, you could think
+[16:50] about a potential absorption. But, when
+[16:52] you have a clue and you see that at the
+[16:54] same time, okay, they load resting
+[16:57] liquidity fresh, and they get aggressive
+[16:59] on the level, is because they want to do
+[17:00] a sustained move. So, this one is an
+[17:02] additional probability booster for a
+[17:04] break and retest pattern to go above.
+[17:07] And this one is one of my favorite
+[17:09] pattern of the book, because when you
+[17:10] see something like this, and you have
+[17:12] maybe, I don't know, a footprint
+[17:14] aggression, a big trade from the
+[17:16] execution of order, you cannot see if
+[17:18] this liquidity is sustained in the book.
+[17:21] But with this pattern, you can decide to
+[17:23] take the trades that have the highest
+[17:25] probability of following up on the
+[17:27] trend, and you can also decide, let me
+[17:29] see if the result of the price is
+[17:31] positive, I can enter on the test,
+[17:33] protect myself below the wall reload,
+[17:35] and go to the next liquidity level,
+[17:37] maybe for a 1:2 1:3 risk to reward.
+[17:40] Let's go on the next one, and this is a
+[17:42] textbook example of a liquidity cluster
+[17:45] wall. You have a resting liquidity here
+[17:47] on the 27,625
+[17:49] and on the 27,630,
+[17:52] and you can see here that the price
+[17:53] tried to break through, but you see the
+[17:55] first line absorption, and the second
+[17:58] time they tried to come again here, they
+[18:00] cannot surpass the first aggression.
+[18:02] This is a strong confirmation that this
+[18:04] is a filled auction, and the price will
+[18:06] reverse for the path of least
+[18:07] resistance. Where is the path of least
+[18:09] resistance? You can see a liquidity wall
+[18:11] here. This could be the next level where
+[18:13] they go to reload to finally take the
+[18:15] strength they need to reach the second
+[18:17] liquidity level. And also you can see
+[18:18] that when they break out this, they fuel
+[18:21] the movement with aggressive order, and
+[18:23] this is your confirmation that we are
+[18:24] going to flip the auction on the short
+[18:27] term. Remember that this is market micro
+[18:29] mechanics, so you always need a
+[18:31] confirmation from the higher time frame
+[18:34] on what's happening here. Let's go on
+[18:36] the next one. This one is the Stucky
+[18:38] Grill, and this is when you have the
+[18:40] book that have multiple levels of
+[18:42] liquidity above, and you can see that
+[18:43] the market is usually during the
+[18:45] opening, start to get a really
+[18:47] aggressive during the opening, okay? And
+[18:49] you can see that they protect their
+[18:51] movement, so they do the first push, put
+[18:53] fresh liquidity to protect and fuel the
+[18:56] movement. Here, they do the second push,
+[18:58] and they put fresh liquidity to fuel.
+[19:00] This means they wants to go up, they
+[19:03] want to capitalize up. As you can see,
+[19:04] they are not putting liquidity, this is
+[19:06] empty. They are not putting protective
+[19:08] liquidity to protect this level, but
+[19:10] they are going to put protective fresh
+[19:13] liquidity to fuel the aggression on the
+[19:15] way up. And this is all example of
+[19:17] reload of fresh liquidity till they
+[19:19] reach the final take profit in this
+[19:21] area. This is another amazing pattern
+[19:23] that you can use to boost your
+[19:24] probability. Then we go here and we can
+[19:26] see an example of a cluster of liquidity
+[19:29] wall. And this is important because this
+[19:31] can be the most tricky one because you
+[19:33] have an absorption on the top, you have
+[19:34] a liquidity wall on the top and you will
+[19:36] think to go short here. But when you see
+[19:38] that there is a strong cluster of four
+[19:41] levels stacked on each other way higher
+[19:44] than this aggressive liquidity of the
+[19:45] sellers, all these levels here on the
+[19:47] Nasdaq, you can understand that the
+[19:49] highest probability here is that they
+[19:51] will get a full fill, okay? You can see
+[19:54] the absorption on this level to go to
+[19:55] the next liquidity level on the way up.
+[19:58] Remember the market is a path of least
+[20:00] resistance, okay? And all the players,
+[20:02] specifically institutional player, use
+[20:04] execution alpha mechanism. And that's
+[20:07] the reason it's really important if you
+[20:09] want to improve also a little bit your
+[20:11] risk to reward or your risk management
+[20:13] or use the micro mechanics to get a
+[20:16] higher probability of getting your
+[20:18] trade, this is the best way to do it and
+[20:21] to improve the feeling of your order.
+[20:23] Now, let's go to the flip of the
+[20:24] auction. The flip of the auction it's an
+[20:26] amazing example of the battle. As you
+[20:29] can see, buyers getting aggressive,
+[20:30] buyers getting aggressive, sellers
+[20:32] getting aggressive here, but they are
+[20:34] protected by this liquidity wall that
+[20:36] you can see here, okay? When the sellers
+[20:38] take the final decision to breach
+[20:41] through, this is important because at
+[20:43] the same time you see the protection of
+[20:46] the aggressive market orders sustained
+[20:48] by the liquidity wall. So, what does it
+[20:50] mean? That if the price try to go back
+[20:53] here, it will find the resistance on the
+[20:56] liquidity level. Sometimes it can spike
+[20:58] up, fill all and collapse. And this is a
+[21:00] break and protect pattern. When you have
+[21:02] a breakout sustained breakout, it's
+[21:04] sustained by a fresh liquidity and this
+[21:06] is a really high probability of going to
+[21:09] the next liquidity. Maybe this is a
+[21:10] small movement for you, but it's enough
+[21:12] to put your position to break even. Why?
+[21:14] Because if they start accumulating here
+[21:16] and they come back, there is a high
+[21:17] probability that they will reverse the
+[21:19] market. Now, let's go on the iceberg.
+[21:23] What is the iceberg? We like to call the
+[21:25] iceberg the hidden liquidity because
+[21:27] it's a reload on levels that are
+[21:30] invisible, that you cannot see because
+[21:32] they don't put the amount in the order
+[21:35] book, but they reload the level with
+[21:38] algorithm. So, you can see that they did
+[21:40] a reload here, and uh you had this arrow
+[21:44] here that is showing you where the
+[21:46] sellers found a wall, a wall from the
+[21:49] iceberg, and even if the liquidity, the
+[21:52] resting liquidity was not so high, this
+[21:55] one was a super important level. And you
+[21:57] can see this with specific algorithm.
+[22:00] For example, this one is detecting the
+[22:02] iceberg orders, the liquidity that you
+[22:05] cannot see. Let's go on, and let's see
+[22:08] the example that they used to
+[22:09] distribute, and this is an example that
+[22:11] I always like to make to explain the
+[22:13] activity of the institutional player.
+[22:16] They have necessity to fill large amount
+[22:18] of orders. So, as you can see, they put
+[22:21] multiple iceberg orders on the way up.
+[22:23] So, they put the first one here, as you
+[22:25] can see, the second one here, and the
+[22:27] third one is the one that really stopped
+[22:29] the market and got filled completely,
+[22:32] and the market start to collapse, and
+[22:33] they reloaded, okay? Even before the
+[22:36] liquidity. So, everyone that is scalping
+[22:38] here will think, "Okay, I will enter if
+[22:40] I see an absorption here." But the
+[22:42] market never reached this level, and you
+[22:44] can stay there waiting that the market
+[22:46] goes there. But the real reason is
+[22:48] because the iceberg got filled
+[22:51] completely on this level, on the 27,875,
+[22:56] around this level, okay? So, it never
+[22:57] managed to reach liquidity. And also
+[23:00] here, as you can see on the bottom,
+[23:02] there was a major liquidity level here
+[23:05] that a lot of players could wait for the
+[23:08] market to reach that never got reached
+[23:10] because the price wanted to go long and
+[23:12] got filled the orders even before. How
+[23:14] they can do this? Using algorithm that
+[23:18] fill order fractionalized, okay? In a
+[23:20] fractionalized way. So, instead of
+[23:22] putting the full order, okay, on the
+[23:24] limit that you will see like this, they
+[23:27] just reload the level, okay? So, you
+[23:28] fill the reload, they fill the reload.
+[23:30] You fill the reload and there is a way
+[23:31] to spot it using specific iceberg
+[23:34] detection method. Hope you enjoyed it.
+[23:37] Leave a like and a comment if you like
+[23:39] this kind of content. So, we are now in
+[23:41] live market environment on the 4th of
+[23:44] May, 2026 and I would like to show you
+[23:47] how much this can get useful when you
+[23:49] need to get a feeling level. As you can
+[23:51] see, here they fill multiple levels, one
+[23:54] here, one here, one here. All these
+[23:56] resting liquidity, but the only level
+[23:58] that managed to have a push up and to
+[24:00] create a real movement is the one that
+[24:03] got supported, as you can see in this
+[24:05] area, by the reload level, okay? This is
+[24:08] really important. Here you can see a
+[24:09] clear absorption on this resting
+[24:11] liquidity and this can be a level that
+[24:14] still they struggle to break and that if
+[24:16] they manage to take control could give
+[24:19] to the price a squeeze on the way up
+[24:21] where you see a lot of aggressive orders
+[24:24] eating the book because you have a major
+[24:26] filling level on the 27,900
+[24:30] and 40, 939, 940, okay? So, this one
+[24:33] seems to me as an accumulation phase.
+[24:35] Let's see how this one behave, but as
+[24:38] you can see here you have multiple
+[24:39] levels really low and then you have a
+[24:41] thick level of resting liquidity here
+[24:44] that could be revisit and you have here
+[24:46] exactly the pattern of reload. So, when
+[24:48] you have an absorption of the sellers
+[24:50] and aggression of the buyers and they
+[24:52] put a resting liquidity, but in this
+[24:54] case fresh to protect and fuel the
+[24:57] movement up. As you can see here, they
+[24:59] are trying to protect the horizontal
+[25:01] level getting filled more sell order,
+[25:03] but as you can see from here the buyers
+[25:05] are trying to get aggressively and
+[25:07] squeeze. Let me go deeper so you can see
+[25:09] the interaction in real time and this
+[25:11] one is live market guys and you can see
+[25:13] that these buyers got absorbed exactly
+[25:16] at this horizontal liquidity level and
+[25:18] the next level that they are going to
+[25:19] target is this intermediate level that
+[25:22] got created now on the 27,890.
+[25:25] You can see that the aggressive sell
+[25:26] orders are taking control and this
+[25:28] 27,875.
+[25:31] These are the two main level that we
+[25:33] could reach. And as you can see here the
+[25:34] sellers got really aggressive on the way
+[25:37] down. They absorb the buyers, they put
+[25:39] their load here and now the battle it's
+[25:41] it's getting more hard and the
+[25:42] volatility it's also going higher
+[25:44] because this market it's analyzing the
+[25:46] regime of volatility and it's giving you
+[25:49] the probability of getting in any
+[25:51] direction. As you can see here, they are
+[25:54] battling on this horizontal level on the
+[25:56] 27,890
+[25:58] and it seems from how the orders are
+[26:00] unfolding that the sellers are losing
+[26:03] the control of the situation and buyers
+[26:05] want to really to push to get aggressive
+[26:07] and to finally break this level to go on
+[26:10] the main level of liquidity that is the
+[26:12] 27,940.
+[26:14] Look how much liquidity there is here.
+[26:16] This will make the grill, the pattern of
+[26:18] Enrico Stucky. In the meantime, while I
+[26:20] comment the session, I will show you the
+[26:23] settings and a small tutorial of the
+[26:25] Deep Tone platform. We can see that here
+[26:27] we have all the drawing tools. If you
+[26:29] are a price action trader, you need to
+[26:32] mark the most important level of the
+[26:33] battle. So you need to mark where the
+[26:35] sellers took control and when the last
+[26:37] time the buyers took control and the
+[26:39] intermediate level of liquidity. And
+[26:41] also let me explain something here. I've
+[26:44] been a price action trader for years and
+[26:46] I was always assuming liquidity.
+[26:49] Watching liquidity in real time how it
+[26:51] interact with orders. The real liquidity
+[26:53] is letting you really understand how the
+[26:55] auction move. And this is important
+[26:57] because as a price action trader you can
+[26:59] be extremely profitable using pattern,
+[27:02] but you are always in the in this kind
+[27:04] of mindset where you need to draw
+[27:06] important levels of liquidity and assume
+[27:09] where it can be. But in this case we saw
+[27:11] this one in real time. We understood the
+[27:13] auction in real time. And we are
+[27:15] understanding also this one how they
+[27:17] reloaded the level and where they are
+[27:19] going next here on the 27,875
+[27:23] and why they are going there. Then other
+[27:25] than this we can customize everything.
+[27:27] We can customize the contrast. So if you
+[27:29] want to have more visible level, I
+[27:31] prefer them to be darker, okay? Because
+[27:34] so so I can see only the most important
+[27:36] level here and the other one fade also
+[27:39] the market maker activity is less
+[27:41] visible on the chart. You can manage to
+[27:44] select the bubble grouping as you
+[27:46] prefer. For example, if you want to
+[27:47] trade absorption and reversal, you can
+[27:49] put this in the 70 to 75% to spot in a
+[27:53] really simple way where buyers or seller
+[27:55] get absorbed. Look at this huge
+[27:57] horizontal absorption that you have here
+[27:59] and aggression of the buyers. And you
+[28:01] can also select here the size of the
+[28:04] bubbles. So you can decide if you want
+[28:06] to have more or if you want to have
+[28:08] intermediate. That is I think it's more
+[28:10] pleasant for the eye, specifically if
+[28:12] you scalp for multiple hours per day.
+[28:14] And then the contrast of liquidity. So
+[28:16] if you don't want bright color, you can
+[28:18] go in the 80% and only see really the
+[28:22] most important level. And as you see
+[28:24] here, they are trying to squeeze this
+[28:25] top and complete the grill pattern. So
+[28:27] filling all this liquidity horizontal
+[28:30] level and squeezing the top,
+[28:31] accelerating with this big bubble, doing
+[28:34] what I call the squeeze. So eating all
+[28:36] these level horizontal level of
+[28:37] liquidity, filling all these level on
+[28:39] the 27,912
+[28:41] and doing a big aggressive move to go to
+[28:44] the next station. This is what I call
+[28:46] the next station, okay? This is the
+[28:47] other horizontal level of liquidity. And
+[28:49] as you can see, on this case, we can see
+[28:51] the interaction of the players. The
+[28:53] buyers try to push, the sellers
+[28:55] protected, but the buyers reloaded,
+[28:57] reloaded the fresh liquidity. And this
+[28:59] is the first information that you can
+[29:01] get that there is interest in
+[29:03] continuation. Even if the sellers will
+[29:05] try to push it through, the fact that
+[29:07] there is passive liquidity here is the
+[29:09] break and protect. So, trying to get And
+[29:12] as you can see, this is an example live
+[29:14] of how the reload unfold, okay? Look at
+[29:16] this beauty. So, they managed to break
+[29:18] this horizontal level, the sellers
+[29:19] reloaded, but also the buyers reload.
+[29:21] And here you can see the sellers
+[29:23] encountering a wall of liquidity on the
+[29:26] reload side. And now, you can see the
+[29:28] buyers eating all the level of
+[29:29] liquidity. If they squeeze this one on
+[29:31] the top and they reach this one,
+[29:33] probably, with high probability, they
+[29:35] will go for a fast move all the way up
+[29:38] because, as you can see, this level is
+[29:40] pretty empty, okay? Yes, you have
+[29:42] something on the 27,000
+[29:45] and 125, but mainly here, who is
+[29:47] controlling the auction is buyers. And
+[29:49] you can see from this aggression, no?
+[29:51] Look at this aggression. This is another
+[29:52] example of one side taking control,
+[29:55] catalyzing one movement, and the sellers
+[29:57] trying to recover the movement on the
+[29:59] way down, getting aggressive, as you can
+[30:01] see. They are trying to push the market
+[30:03] back to the fair value. Which one is the
+[30:06] fair value of all this range? The fair
+[30:08] value of all this range, you can see
+[30:09] here, is the origin of the move. So, it
+[30:12] sold this aggression, and the buyers put
+[30:14] what? Uh, fresh liquidity. This is a
+[30:16] reload. I don't know if this will get
+[30:18] filled. You don't have a guarantee that
+[30:19] the fresh liquidity gets filled, but
+[30:21] this is an information. They break, and
+[30:23] immediately after they break, they
+[30:24] reload liquidity. So, they want to get
+[30:26] more contracts filled to go long. This
+[30:28] is important because this one here it's
+[30:30] protecting the intention to go higher.
+[30:32] And in this case, if you see this one
+[30:35] doesn't always happen, but if you see
+[30:36] this one raising, perfect. If you see
+[30:39] this one raising, means that they are
+[30:40] willing to get filled at higher level to
+[30:43] be in the movement. And this is an
+[30:45] amazing confirmation of the buyers
+[30:47] wanting to continue the auction up and
+[30:50] having a breakout movement. And in this
+[30:52] case, we can clearly lead the path of
+[30:53] least resistance on the buy side. So, we
+[30:55] can see that the highest probability is
+[30:57] that we squeeze this high, we go on the
+[30:59] top on the 27,915,
+[31:02] and we fill this level of liquidity. And
+[31:04] here we see the interaction, and you can
+[31:06] do this every single time. Now, when
+[31:08] they break this level, if they break
+[31:09] this level, you see And if you see other
+[31:13] fresh liquidity getting added here, it
+[31:15] means that they want to fuel the
+[31:17] movement up. As of now, the fresh
+[31:19] liquidity is still here, okay? As you
+[31:20] can see, they are adding short, but look
+[31:22] at this movement how much is getting
+[31:24] aggressive. Look how much is fueled by
+[31:26] orders. This is the real auction market
+[31:28] theory. This is the market mechanics at
+[31:30] its finest, okay? They strike one of the
+[31:32] most important liquidity level, and as
+[31:34] you can see, the buyers give back the
+[31:36] rain. So, they get They got really
+[31:38] aggressive here, but they found a
+[31:39] ceiling. And this is important for take
+[31:41] profit, for partial, can give you a lot
+[31:44] of information of where you can take a
+[31:46] decision of unloading a position. This
+[31:49] is a good piece of information for
+[31:51] scalpers, for example. As you can see,
+[31:53] the buyers are not willing to get filled
+[31:55] at higher levels, and this is an
+[31:56] information because the sellers could
+[31:58] try here to reload on the way down and
+[32:01] get back to fair value and balance. Why?
+[32:04] Because [snorts] the resting liquidity
+[32:05] and the fresh liquidity is not
+[32:07] protecting the move up, so there is not
+[32:08] a lot of interest. So, the it's solely
+[32:10] in the hands of the aggressive market
+[32:12] participants, the buyers, okay? So, from
+[32:14] the heat map, we can see that one of the
+[32:16] most important level is the 27,925,
+[32:20] this horizontal level. If this one gets
+[32:22] broken, I would like to see exactly the
+[32:24] same that we saw here, breaking and
+[32:26] loading liquidity. This means that is a
+[32:28] sustained move. Look at this aggression,
+[32:29] okay? Let's see if now they add
+[32:31] something on the liquidity side. They
+[32:33] are breaking. They are not having an
+[32:34] easy time break this level, but they are
+[32:36] trying their best to break. See how this
+[32:38] goes. So, the buyers are taking control
+[32:40] and are absorbing sellers on the way
+[32:42] down. So, they are definitely breaking
+[32:44] here, but I don't see resting liquidity
+[32:46] getting hot on the on this level. So, it
+[32:49] means that they are not willing to get
+[32:50] filled here, but they still have this
+[32:53] massive liquidity level on the 27,895.
+[32:57] So, there is a probability that we will
+[32:58] see a retracement of the market. Okay,
+[33:00] if they don't put anything anything
+[33:02] else. We are really close to the final
+[33:03] target level. Let's see how this one
+[33:05] goes. They are rebalancing. They are
+[33:07] rebalancing here. Let me make more
+[33:09] precise the level. This is the level.
+[33:11] One, two. Remember, it's not a level.
+[33:13] It's always an area. It's important to
+[33:15] understand this. When you approach this,
+[33:18] okay, you can see a reversal something
+[33:20] below, okay, because it's not a single
+[33:22] level. You cannot put only in the 72.
+[33:24] You can you needs to understand that
+[33:26] there are orders around it, okay? It's
+[33:29] always an area. Buyers still in control.
+[33:31] Look how much they are getting
+[33:32] aggressive. As you can see, we can
+[33:34] cancel everything here to make the heat
+[33:36] map as clean as possible. Look at this
+[33:39] beauty. We can see how the CVD it's
+[33:41] behaving here. Let me activate on the
+[33:44] bottom of the chart. So, the buyers are
+[33:45] in complete control. You can see here.
+[33:47] Buyers are dominating this auction from
+[33:49] the beginning of the session. We can go
+[33:51] on the view up that is giving you also
+[33:53] the standard deviation of where we are.
+[33:56] And if we zoom out, we can see that we
+[33:58] are above the first standard deviation
+[34:01] of the view up. So, buyers are
+[34:02] definitely in control. This is the fair
+[34:04] value of the day, and this is a level
+[34:06] that we could see filled once they reach
+[34:08] the main heat map level on the 27,940.
+[34:13] Let me also put for you the horizontal
+[34:15] volume, and this one can be really
+[34:17] useful if you want to do some volume
+[34:19] spread analysis, for example, watching
+[34:21] the vertical levels and the absorption
+[34:23] on the vertical levels because this mark
+[34:25] really important levels here, okay? For
+[34:27] example, this aggression here that got
+[34:29] completely stopped is relevant. And also
+[34:31] what you are seeing at the moment, so a
+[34:33] lot of seller aggression is trying to
+[34:35] flip the auction. As you can see, they
+[34:37] put, while I was talking, other fresh
+[34:39] liquidity to fuel the movement. I don't
+[34:41] know if you can see. This is the new
+[34:43] fresh liquidity that they add to fuel
+[34:44] the move- the movement, and the seller
+[34:46] stuck here, as you can see, and they are
+[34:49] flushing all the orders, okay? This one
+[34:52] it's live. It's on
+[34:55] Monday. We just received a missile alert
+[34:58] in the United Arab Emirates, and this is
+[35:00] how the New York session is unfoldings
+[35:03] in terms of orders on the heat map. I
+[35:05] hope you enjoy this kind of content.
+[35:07] This is more technicals. The heat map
+[35:09] it's a little bit more technical and
+[35:11] complicated that what we are usually
+[35:13] watching here, but I think this kind of
+[35:15] master class can give a lot of value to
+[35:18] scalpers that want to improve their
+[35:20] precision. Look at the sellers trying to
+[35:21] take control here. And here they find a
+[35:24] wall. You see the first reaction they
+[35:25] see on the wall is this one, absorption.
+[35:27] And now you can see the second time they
+[35:29] touch. So, when the buyers get filled
+[35:31] here, you can see all these orders,
+[35:34] okay, on the bubbles, and you can see,
+[35:36] look at this beauty, how the market have
+[35:38] an immediate reaction when they reach.
+[35:40] Then they could try to reload, because
+[35:42] here we have a level, but it's important
+[35:44] to understand how much of a strong
+[35:46] reaction we can see at these horizontal
+[35:48] level that are levels that mark the most
+[35:51] important crossing point and check point
+[35:53] of the market participants of the day.
+[35:55] Look at this beauty. Look at this
+[35:56] beauty. This was the most important
+[35:58] level that we had from the beginning of
+[35:59] the session. I hope you enjoy content.
+[36:02] Let me know if you like the breakdown
+[36:04] live of how you can use them the heat
+[36:07] map, and how you can build a the
+[36:09] liquidity heat map confluence on the
+[36:12] order flow analysis. Of course, today
+[36:14] the bias was was on the long side, and
+[36:16] how you can get also a better feeling
+[36:18] level using nothing else that market
+[36:21] microstructure. This is not science of
+[36:24] orders, okay? Some conspiracy theory.
+[36:26] This is how the market moves. These data
+[36:29] are provided directly from the exchange,
+[36:31] so you have one certainty. You know for
+[36:33] a fact that these data are real and
+[36:35] these data are actual levels waiting to
+[36:38] get filled paired with actual execution
+[36:40] on the bubble. I hope you enjoy this
+[36:42] kind of content. Let me know in the
+[36:44] comment section and leave a like if you
+[36:46] enjoy this kind of breakdown of the
+[36:48] session. Okay, this is the original
+[36:50] level that we were watching before, the
+[36:52] one that we mark after the opening of
+[36:54] the session. And as you can see, this is
+[36:56] what I want you to watch in the heat map
+[36:58] because it's a really objective piece of
+[36:59] information. They had an absorption of
+[37:02] the buyers here. We had the buyers
+[37:04] getting really aggressive on the top
+[37:05] getting absorbed and this is a perfect
+[37:07] example of a reload. So the sellers say,
+[37:09] "Look, you don't go anywhere." And from
+[37:11] here they took control and the the
+[37:13] sellers are getting aggressive, okay?
+[37:15] And they eat this original level of
+[37:17] liquidity here, as you can see. And the
+[37:19] second level of liquidity that you have
+[37:21] is this one, this 27,915.
+[37:25] So you can see that they didn't remove
+[37:27] this liquidity, so they still have a
+[37:28] bias on the long side, but now they are
+[37:31] having a really difficult time breaching
+[37:33] through this level. Now they are
+[37:34] approaching again, let's see how they
+[37:36] behave and they are raising this
+[37:37] liquidity, you see? Before was here,
+[37:39] then it was here, then it it's here. So
+[37:41] if they manage to break, this one is the
+[37:43] next sensitive level with a high
+[37:45] probability of getting filled, okay? And
+[37:47] here we can see also how the sellers are
+[37:50] behaving. The sellers, when the buyers
+[37:52] started retracing and started to get
+[37:53] aggressive, the sellers place another
+[37:55] level of passive liquidity. So they want
+[37:58] more order to get filled. Now let's see
+[38:00] if a big absorption buy is placed here.
+[38:03] Here you can see, but this one could be
+[38:05] a level that bring the sellers in a
+[38:07] potential retracement phase, okay? So
+[38:09] from here we could expect that the
+[38:11] buyers get a really convinced of
+[38:13] breaking through, so we need to see a
+[38:15] lot of buyers aggression bubble. But in
+[38:17] this case, what we can see with the
+[38:19] highest probability is that the sellers
+[38:21] wants to get more order filled, wants to
+[38:23] complete the distribution to go back to
+[38:26] the main level, so the 27,915.
+[38:29] This is the reading and market reading
+[38:30] that I would make considering that I
+[38:32] have a long bias for the day. You always
+[38:35] needs to consider that even if your bias
+[38:37] it's on the long side, you still have
+[38:39] retracement on the main direction of the
+[38:41] day, okay? And this one and this one on
+[38:43] the top specifically could be levels
+[38:45] that bring
+[38:45] >> [laughter]
+[38:47] >> that bring an amazing retracement for
+[38:49] the day. This is a incredible aggression
+[38:51] that we have. They are filling all the
+[38:53] levels. They filled the first, they
+[38:54] filled the second. They missed only this
+[38:56] one and then if they break this one,
+[38:57] they have one really low on the 27,850,
+[39:00] but I think this is enough to start on
+[39:02] the way back and you can see here that
+[39:04] they are getting aggressive. Now, let's
+[39:06] see what the CVD is telling us and the
+[39:08] CVD as you can see is flipping lower.
+[39:10] So, even if the main direction of the
+[39:12] day is higher, they are getting
+[39:13] aggressive on the downside. What does it
+[39:15] mean? That I will not try reversal play.
+[39:17] I will not try to get long while the
+[39:19] sellers are dominating the auction
+[39:21] because it's a suicide, okay? I will
+[39:23] wait for the buyers to show me some kind
+[39:25] of protection. They filled all the
+[39:27] levels, you see? These were levels that
+[39:28] we had from before and when they accept
+[39:31] above this level, look at this
+[39:32] liquidity. This is fresh liquidity,
+[39:34] okay? This is a potential reload. So,
+[39:36] this liquidity level here is telling us,
+[39:38] "Look that from this level there is a
+[39:40] high probability that you have a
+[39:41] rebound, okay?" So, you have an
+[39:43] absorption of the sellers here and you
+[39:45] go back to the main liquidity area of
+[39:47] the sellers. And then we see from here
+[39:49] if the aggressive buyers have the power
+[39:51] and the strength to go higher. Look how
+[39:53] much they are aggressive the sellers
+[39:54] here, still going aggressively down and
+[39:57] if they manage to break this horizontal
+[39:59] level that still is getting protected in
+[40:01] the blue area, you have a flip of the
+[40:03] auction and you flip the bias of the
+[40:05] day. So, it means that your next target
+[40:07] is the 27,870
+[40:10] or the 27,850.
+[40:12] As of now, buyers are still protecting
+[40:14] and the real battle is here on the
+[40:16] 27,910.
+[40:18] This is where you can see if the buyers
+[40:21] is are having enough strength to get
+[40:23] aggressive on the level. See what they
+[40:25] do. Let's see also the CBD. CBD is
+[40:27] stable, so there is no aggression of the
+[40:29] buyers, but the market is going up. So
+[40:30] this means that if we have a flip here
+[40:32] and we see a buy aggression of the
+[40:34] buyers, we could make a lot of points on
+[40:36] the up. Compressed, compressed, no
+[40:38] aggression of the buyers, no aggression
+[40:40] of the buyers. They are starting to have
+[40:41] a little bit of movement here. Look at
+[40:43] the sellers always protecting on this
+[40:45] horizontal level. Once they reach the
+[40:46] 27,900, the sellers show their hand
+[40:50] really aggressively. This one seems to
+[40:52] me like an accumulation area and the
+[40:54] reason is this horizontal level it's
+[40:56] showing a lot of absorption here. They
+[40:58] filled completely the 27,900
+[41:01] and they are going back as you can see
+[41:02] to this passive liquidity level. Look at
+[41:05] Look at the order that got aggressive on
+[41:07] this level and they broke the level. So
+[41:09] they flipped the auction reload of the
+[41:11] sellers. Look at this reload. Reload of
+[41:12] the sellers number one, reload of the
+[41:14] sellers number two. What does it mean?
+[41:16] That they wants to get more order filled
+[41:19] and this could be for the reason that
+[41:21] they wants to get this horizontal level
+[41:23] filled. So they could Now they got
+[41:25] filled completely. This one could be an
+[41:28] information that we have that the
+[41:29] auction Look at this amazing reaction
+[41:31] here. The auction would go to the
+[41:33] 27,870.
+[41:34] So if I took a short from here, I would
+[41:37] consider bringing my full take profit
+[41:40] way lower than the low. So for example
+[41:42] here, filled now, okay? Okay, now let's
+[41:45] go on why this kind of information are
+[41:48] important. So first of all, with the
+[41:50] liquid heat map, you can predict with a
+[41:52] high degree of accuracy which kind of
+[41:54] volatility you could expect and today
+[41:56] was telling us that we were high
+[41:57] volatility. But more than this, on all
+[41:59] the breakdown in the live session that I
+[42:01] gave you before, in the end, the level
+[42:03] that I marked for you, the most
+[42:04] important liquidity level was the top.
+[42:06] And this kind of information you cannot
+[42:09] see only with execute order because you
+[42:11] don't know where there is the massive
+[42:14] liquidity wall of the passive orders.
+[42:16] Second of all, with my confirmation I
+[42:18] would have taken the first trade here,
+[42:21] okay? This timing difference can be a
+[42:23] lot of filling execution divergence,
+[42:27] okay? So, you you can be filled way
+[42:29] lower if you don't know when to search
+[42:32] for setups. And also, when you have the
+[42:34] confirmation, for example, on the Nasdaq
+[42:36] effort, watching what happened from the
+[42:38] liquidity heat map, exactly the level
+[42:41] that they rejected here, seeing
+[42:44] horizontally the 27,910
+[42:46] and 912, and knowing that this pattern
+[42:49] here on this absorption of the buyers
+[42:51] and this reload here, it's exactly where
+[42:54] the Nasdaq effort printed, is giving me
+[42:56] the confidence to go to the next level
+[42:58] of liquidity. Where is the most
+[43:00] important next level of liquidity after
+[43:02] the touch? This one got consumed, this
+[43:04] one got consumed, which level do we have
+[43:06] here below? We have here below this
+[43:08] level of liquidity. Okay, we have the
+[43:10] 27,790 that is super far, and we have
+[43:13] this cluster. So, we have TP1 and TP2
+[43:16] here, okay? And today, the Nasdaq
+[43:19] unfolded collapsing like this. Now, this
+[43:21] was
+[43:24] also a news about Iran, and here in UAE,
+[43:27] the attacks are getting back, but the
+[43:29] situation that we can see here, also
+[43:31] this is the second Nasdaq effort area.
+[43:33] What can you notice? You can notice that
+[43:35] you have liquidity heat map level here,
+[43:37] okay? Removed. Putting lowered. What
+[43:39] does it mean that they want to get
+[43:41] filled and they are willing to get
+[43:42] filled at lower levels? You see this
+[43:44] amazing absorption, on top of this you
+[43:46] see reload, reload, reload, reload. This
+[43:48] is all fresh liquidity fueling the
+[43:50] movement down, and you can see that here
+[43:52] you have Nasdaq effort and Nasdaq effort
+[43:54] area. So, this is another example of how
+[43:56] you can pair all this information that
+[43:59] you have from the heat map. Look how
+[44:00] much the price is rejecting this level
+[44:02] here from an aggressive from aggressive
+[44:04] participants. Pairing this information,
+[44:06] for example, the bounce that we had when
+[44:08] we reached the maximum point of
+[44:11] liquidity resting here, and these are
+[44:13] levels that they put after, so this is
+[44:15] fresh liquidity and this is fresh
+[44:16] liquidity, and this is fresh liquidity,
+[44:18] okay? So, this is another example of
+[44:20] reload. Look at this. This is an
+[44:21] absorption and reload here. It's giving
+[44:23] you a lot of confidence about when to
+[44:26] engage in setups, okay? And it's giving
+[44:28] you a better timing advantage over other
+[44:30] players here. I hope you enjoy this kind
+[44:33] of video and see you in the next one.

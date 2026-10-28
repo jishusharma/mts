@@ -1,0 +1,15 @@
+{
+  "card": "runaway-guard-design-review",
+  "done_when": "A review file MyTradingSys/system/RUNAWAY_GUARD_REVIEW.md exists with verdict and numbered findings; each of the 7 questions answered with a command output or a quoted line; policy fit stated.",
+  "finished": "2026-10-27T08:36:27Z",
+  "from": "lane_health",
+  "host": "lane_health",
+  "id": "20261026-210153-runaway-guard-design-review",
+  "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card runaway-guard-design-review: Independent review of RUNAWAY_GUARD.md: root cause (find / orphaned by a timed-out agent shell call), guard \nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief runaway-guard-design-review\nGoal: Review MyTradingSys/system/RUNAWAY_GUARD.md as an independent checker (another model than the author). Answer the 7 questions in its section 5 with evidence, and return ACCEPT or CHANGES with a \nRead: MyTradingSys/system/RUNAWAY_GUARD_REVIEW.md\nStep 1: Read RUNAWAY_GUARD.md s1-5 and NUC_SHUTDOWN_HANDOVER.md update of 2026-10-26 16:00\nStep 2: Root-cause test, bounded: run find on a small scratch dir in an agent shell call with a hard 60 s kill and 5-minute handle/CPU watch; NEVER run find / and never leave it running\nStep 3: Answer questions 1-7 of section 5, each with pasted command output or a quoted line; Q4 peaks: JIS-NUC plus any host that answers a broadcast within 24 h, else mark the second host NOT_IN_DATA\nStep 4: Write RUNAWAY_GUARD_REVIEW.md: ACCEPT or CHANGES with a numbered list; commit with a Result: line\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-10-26_runaway-guard-design-review.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-10-26_runaway-guard-design-review.md>\".",
+  "posted": "2026-10-26T21:01:53Z",
+  "rerouted_from": "CODEX",
+  "result": "cancelled: GPT lane is back, card returned to CODEX",
+  "status": "failed",
+  "target": "DSA",
+  "title": "Independent review of RUNAWAY_GUARD.md: root cause (find / orphaned by a timed-out agent shell call), guard layers, thresholds, policy fit"
+}

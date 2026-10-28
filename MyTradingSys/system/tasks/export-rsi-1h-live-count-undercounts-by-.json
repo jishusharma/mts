@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-28T00:03:59Z",
+  "depends_on": [],
+  "done_when": "export_results.py's RSI 1h row (results/t09_live_parity.json examples[0].rows) reports Live=28, matching parity_result.json live_tradable_side; other RSI rows (5m, 15m) and category totals (same/side_diff/off_by_one/live_only) unchanged; new test passes.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "GPT audit MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-t09-table-recount.md (MED) found export_results.py:123-124 computes RSI 1h Live as same+live_only=3+24=27, but the source parity_result.json has live_tradable_side=28 for that key; the export undercounts Live by 1 versus the source table's 28.",
+  "id": "export-rsi-1h-live-count-undercounts-by-",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim-v2: catalogue of every known test, WaveTrend export, kind/parity/ROI fields",
+      "ref": "bd11ebf782e0",
+      "utc": "2026-10-24T19:39:33Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DECISION (OURS): weight ROUTINE (export-arithmetic fix against a sourced audit recount, no trading-decision parameter) -> T0-ONLY, no reviewer stamp needed. Captured from gpt-t09-table-recount's MED finding, which had no follow-up card yet.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T00:04:16Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/export_results.py",
+    "MyTradingSys/research/sim_desk/results/t09_live_parity.json",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T09/out/parity_result.json"
+  ],
+  "scope_out": [
+    "the HIGH 3,200+/3,156 fix (separate card correct-t09-exact-match-count-and-3-200-)",
+    "any backtest re-run; T09_live_parity.md prose"
+  ],
+  "scope_sha": "bd11ebf782e0",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-t09-table-recount.md (MED finding)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Add a fail-first test asserting the exported RSI 1h row's Live value equals parity_result.json's live_tradable_side (28), not same+live_only (27); see it fail.",
+    "Fix export_results.py:123-124 to use the source's tradable/accepted count for Live while keeping the category totals (same/side_diff/off_by_one/live_only) separate.",
+    "Re-run the export and confirm results/t09_live_parity.json updates; run the new test; commit with a Result: line citing the audit report sha."
+  ],
+  "tests": "New fail-first MyTradingSys/research/sim_desk/test_t09_export_counts.py::test_rsi_1h_live_matches_source (or a new test_t09_export_rsi.py): red while Live computes 27, green once it reports the source's live_tradable_side=28.",
+  "title": "Export RSI 1h Live count undercounts by 1 (export_results.py:123-124)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

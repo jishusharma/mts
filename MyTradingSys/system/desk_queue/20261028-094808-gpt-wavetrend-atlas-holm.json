@@ -1,0 +1,12 @@
+{
+  "card": "gpt-wavetrend-atlas-holm",
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "from": "lane_health",
+  "id": "20261028-094808-gpt-wavetrend-atlas-holm",
+  "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card gpt-wavetrend-atlas-holm: GPT recomputes the WaveTrend atlas z-scores and Holm over 9 cells\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief gpt-wavetrend-atlas-holm\nGoal: For the 9 primary arms (W01 -0.0143/0.0108 ... W09 0.0241/0.0418) get z, one-sided p, Holm over 9 (ATLAS_STUDY_SPEC.md); confirm 0 of 9 pass; W05 -0.0578 and W06 are wrong-direction. Producer: C\nRead: MyTradingSys/research/sim_desk/results/wavetrend_atlas.json; MyTradingSys/research/wavetrend_2026-10-17/ATLAS_STUDY_SPEC.md; MyTradingSys/research/wavetrend_2026-10-17/RESULT.md\nStep 1: Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).\nStep 2: Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.\nStep 3: Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.\nStep 4: A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.\nStep 5: For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET.\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-wavetrend-atlas-holm.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-wavetrend-atlas-holm.md>\".",
+  "posted": "2026-10-28T09:48:08Z",
+  "rerouted_from": "CODEX",
+  "status": "pending",
+  "target": "DSA",
+  "title": "GPT recomputes the WaveTrend atlas z-scores and Holm over 9 cells"
+}

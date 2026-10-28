@@ -1,0 +1,83 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "closed": "2026-10-18T13:05:14Z",
+  "commands": [],
+  "created": "2026-10-18T04:10:14Z",
+  "depends_on": [],
+  "done_when": "LEDGER_FEASIBILITY.md with the event count and a SCORABLE/HYPOTHESIS verdict, every event quoted with file:line.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gate 0c and 0d for the FlowHorse positioning content (liquidation cascade, OI pickup, news-event second move; CROSS_TRADER_RULEBOOK.md FHR-19 to FHR-26): find whether any dated FlowHorse trade or call exists that can be scored on BTC data, and whether BTC history holds the inputs he reads. Listing and counting only; no P&L. If none, FlowHorse positioning stays a hypothesis.",
+  "id": "positioning-flowhorse-ledger-feasibility",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "LEDGER_FEASIBILITY.md: 0 scoreable BTC events, HYPOTHESIS",
+      "ref": "e5067cb8",
+      "utc": "2026-10-18T13:05:14Z"
+    },
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "8faa3c298787 claim positioning-home-fit-audit",
+      "ref": "MyTradingSys/system/claims/positioning-home-fit-audit.md",
+      "utc": "2026-10-18T04:02:50Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Control Room pickup 2026-10-15: copy and apply 9 operator decisions (q-gap-a/b/c, q-pub-tr",
+      "ref": "d7749d092236",
+      "utc": "2026-10-15T09:54:44Z"
+    }
+  ],
+  "layers": [
+    "positioning"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DRAFT by positioning-home-fit-audit 2026-10-18; not yet REVIEWED. Independent of positioning-c1-longwindow-count-power (can run in parallel). WEIGHT:ROUTINE.",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "positioning-home-fit-audit 2026-10-18",
+  "refreshed": "2026-10-18T04:12:39Z",
+  "refs": [
+    "positioning-home-fit-audit"
+  ],
+  "result": "LEDGER_FEASIBILITY.md: 0 scoreable BTC events, HYPOTHESIS",
+  "scope_in": [
+    "extracts/processed/flowhorse/",
+    "extracts/fresh/extract_UrnES-HzQ6w_the_flow_horse.txt",
+    "extracts/fresh/extract_izZyd-HrTSE_the_flow_horse.txt",
+    "MyTradingSys/research/fast_track_2026-09-27/CROSS_TRADER_RULEBOOK.md",
+    "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
+    "MyTradingSys/research/positioning_flowhorse_2026-10/ (new)"
+  ],
+  "scope_out": [
+    "any P&L backtest run",
+    "tuning",
+    "edits to live-path code",
+    "edits to run_t055.py or funding_cvd_fade.py"
+  ],
+  "scope_sha": "d7749d092236",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_POSITIONING.md"
+  ],
+  "state": "done",
+  "steps": [
+    "List every dated trade or call in the 5 FlowHorse sources (3 extracts in extracts/processed/flowhorse/, raw transcripts extracts/fresh/extract_UrnES-HzQ6w and extract_izZyd-HrTSE): video date, event timestamp if stated, side, quote + file:line; mark each SCOREABLE or NOT_SCOREABLE.",
+    "For each SCOREABLE event check the date against BTC 1m klines (2022-01..2026-09) and OI 5m (2025-09..2026-09); liquidation history, tick and L2 are NOT_IN_DATA (the repo has only a live forceOrder socket).",
+    "Write MyTradingSys/research/positioning_flowhorse_2026-10/LEDGER_FEASIBILITY.md: N found, minute timestamps possible or not, design/check split possible or not, verdict SCORABLE or HYPOTHESIS. If SCORABLE write the ledger csv; no backtest."
+  ],
+  "taken": "2026-10-18T13:05:11Z",
+  "tests": "A new test (MyTradingSys/research/positioning_flowhorse_2026-10/test_ledger_feasibility.py) asserts LEDGER_FEASIBILITY.md exists, has a line 'Verdict: SCORABLE' or 'Verdict: HYPOTHESIS', and that every listed event row carries a file:line; fails before the file exists. test_pre_reg_template.py stays green.",
+  "title": "FlowHorse positioning: is there any dated trade or call to score (items 1/2/3/5, gates 0c/0d)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

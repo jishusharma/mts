@@ -1,0 +1,70 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-28T05:23:56Z",
+  "commands": [
+    "python scripts/dev/gemini_queue.py run extraction-method-coverage-audit:medium"
+  ],
+  "created": "2026-10-27T20:38:48Z",
+  "depends_on": [
+    "extraction-ledger-all-sources",
+    "gemini-queue-claim-race-fix"
+  ],
+  "done_when": "COVERAGE_AUDIT.md and REEXTRACT_LIST.csv shipped; every ledger row is classified; samples carry file:line; git cherry origin/fast-track empty.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "From the ledger, group videos by type (English talk, Hinglish/Hindi, chart-walk, live stream) and by method; per group count thin, garbled and never-read videos and write the re-extraction list with the cheapest method per video.",
+  "id": "extraction-method-coverage-audit",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "303 rows classified, COVERAGE_AUDIT.md + REEXTRACT_LIST.csv (183 rows), 100% in ledger",
+      "ref": "a544be7e4",
+      "utc": "2026-10-28T05:23:56Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-28 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Gemini Flash in the queue; a Claude session reviews the branch (ROUTING.md row 47).",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T05:18:14Z",
+  "refs": [],
+  "result": "303 rows classified, COVERAGE_AUDIT.md + REEXTRACT_LIST.csv (183 rows), 100% in ledger",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/extraction_ledger_2026-10/COVERAGE_AUDIT.md",
+    "MyTradingSys/research/extraction_ledger_2026-10/REEXTRACT_LIST.csv"
+  ],
+  "scope_out": [
+    "re-running any extraction",
+    "layer code",
+    "edits to the ledger"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable"
+  ],
+  "state": "done",
+  "steps": [
+    "Read EXTRACTION_LEDGER.csv and GAPS.md; classify each video by language and type from its extract header and the channel list.",
+    "Spot-read 5 transcripts per method per type (sample ids in the report) to label thin or garbled with file:line evidence.",
+    "Write COVERAGE_AUDIT.md (table type x method x counts) and REEXTRACT_LIST.csv (video_id, why, method, est cost); nothing is extracted here."
+  ],
+  "taken": "2026-10-28T05:23:56Z",
+  "tests": "Every REEXTRACT_LIST video_id exists in EXTRACTION_LEDGER.csv (one-line check printed in the report); python scripts/dev/tasks.py check extraction-method-coverage-audit.",
+  "title": "[GEMINI] Audit each extraction method (English captions, Hindi ASR, Whisper, Gemini) per video type: which videos were thin, garbled or never read; list re-extraction needs",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

@@ -1,0 +1,13 @@
+{
+  "done_when": "auto_deploy.log shows DEPLOYED (not STOP_DIRTY) and launch-backup.vbs in the live tree contains '--remote backup'",
+  "finished": "2026-10-11T14:51:12Z",
+  "from": "JIS-NB",
+  "host": "JIS-NB",
+  "id": "20261011-125816-unblock-autodeploy-commit-ship-the-6-unc",
+  "need": "In the live tree 03_FILE_INDEX.md has 7 uncommitted added lines (OI divergence docs, B171 rows, session 1608Z-DSA-COO). They make every AutoDeploy run STOP_DIRTY since 12:45Z, so nothing deploys (incl. the auto_deploy run-lock and the backup relaunch). Commit those rows from a worktree (with the files they index) and sync.py ship, then git checkout the file in the live tree only if identical to origin. Do NOT revert them.",
+  "posted": "2026-10-11T12:58:16Z",
+  "result": "AutoDeploy is already unblocked. Log shows DEPLOYED 14:30:00Z 337b681 -> 126d7c1, gate ALL TESTS PASSED. 03_FILE_INDEX.md is clean (git status --short: no entry). STOP_DIRTY/STOP_NOT_FF were 12:45-14:15Z and cleared on their own.",
+  "status": "done",
+  "target": "DSA",
+  "title": "Unblock AutoDeploy: commit+ship the 6 uncommitted rows you added to MyTradingSys/system/03_FILE_INDEX.md in the live tree"
+}

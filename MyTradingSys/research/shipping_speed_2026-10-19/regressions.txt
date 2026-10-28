@@ -1,0 +1,58 @@
+...........................................................................................................................................................................................
+----------------------------------------------------------------------
+Ran 187 tests in 142.008s
+
+OK
+shipped 1 file(s) to origin/fast-track
+claimed task-x; release with: sync.py release task-x
+hint (B4): this tree has 1 unshipped commit(s); `sync.py ship --release task-x` closes the claim in the same push and saves a commit
+released task-x
+claimed task-one; release with: sync.py release task-one
+claimed task-two; release with: sync.py release task-two
+claimed no-area-given; release with: sync.py release no-area-given
+claimed task-one-2; release with: sync.py release task-one-2
+no claim needed (B2): --area writes only new files under dated folders (MyTradingSys/research/x_2026-10-17/). Nothing to release: finish with sync.py ship. Claim anyway: sync.py claim "<task>" --force
+claimed dated-and-code; release with: sync.py release dated-and-code
+claimed forced; release with: sync.py release forced
+shipped 7 file(s) to origin/fast-track
+claimed code-task; release with: sync.py release code-task
+claimed mixed; release with: sync.py release mixed
+claimed live; release with: sync.py release live
+claimed edits-existing; release with: sync.py release edits-existing
+claimed no-such-card; release with: sync.py release no-such-card
+claimed build-thing-one; release with: sync.py release build-thing-one
+released build-thing-one
+shipped 1 file(s) to origin/fast-track
+shipped 1 file(s) to origin/fast-track
+shipped 1 file(s) to origin/fast-track
+shipped 1 file(s) to origin/fast-track
+shipped 1 file(s) to origin/fast-track
+shipped 1 file(s) to origin/fast-track
+claimed task-one; release with: sync.py release task-one
+shipped 1 file(s) to origin/fast-track
+shipped 1 file(s) to origin/fast-track
+shipped 1 file(s) to origin/fast-track
+shipped 1 file(s) to origin/fast-track
+shipped 1 file(s) to origin/fast-track
+shipped 2 file(s) to origin/fast-track
+shipped 1 file(s) to origin/fast-track
+shipped 1 file(s) to origin/fast-track
+shipped 1 file(s) to origin/fast-track
+shipped 1 file(s) to origin/fast-track
+shipped 1 file(s) to origin/fast-track
+claimed task-h; release with: sync.py release task-h
+claimed task-i; release with: sync.py release task-i
+claimed task-y; release with: sync.py release task-y
+shipped 1 file(s) to origin/fast-track; released task-y
+claimed task-z; release with: sync.py release task-z
+released task-z
+shipped 1 file(s) to origin/fast-track
+shipped 1 file(s) to origin/fast-track
+shipped 1 file(s) to origin/fast-track
+host=JIS-NUC branch=master pulled=1 head=e70ffc5
+claims: none open
+shipped 1 file(s) to origin/fast-track
+shipped 1 file(s) to origin/fast-track
+shipped 1 file(s) to origin/fast-track
+shipped 1 file(s) to origin/fast-track
+shipped 1 file(s) to origin/fast-track

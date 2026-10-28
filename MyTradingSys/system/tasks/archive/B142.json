@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-10T21:04:05Z",
+  "commands": [
+    "PATH=C:/tools/jdk-17.0.18/bin:$PATH mvn -q test -Dtest='ExtraSetupBuilder*Test,MarketDataSnapshotTest'"
+  ],
+  "created": "2026-10-10T18:29:04Z",
+  "depends_on": [],
+  "done_when": "mvn test green; ExtraSetupBuilder.build returns 0 candidates on the old momentum fixture; module_candidates key still in the snapshot; commit shipped (live only after the Java window).",
+  "from_inbox": "",
+  "goal": "Stop ExtraSetupBuilder emitting momentum candidates: its stop is the previous 1m bar high/low with no trader source. Operator D15 (2026-10-10): disable until a sourced stop exists.",
+  "id": "B142",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "Same Java window as B144. Row stays OPEN until the restart confirms; then CLOSED with this commit as Receipt.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "refiner 2026-10-10",
+  "refs": [
+    "B142"
+  ],
+  "result": "ExtraSetupBuilder.build returns 0 candidates (ExtraSetupBuilderDisabledTest red->green), full mvn test green, commit e262656; live after desk 20261010-205418 Java window",
+  "scope_in": [
+    "src/main/java/datafeed/ExtraSetupBuilder.java",
+    "src/test/java/datafeed/ExtraSetupBuilderMomentumTest.java",
+    "src/test/java/datafeed/ExtraSetupBuilderDisabledTest.java (new)"
+  ],
+  "scope_out": [
+    "MarketDataSnapshot.java call sites L458 and L1300 and the module_candidates key (MarketDataSnapshotTest.java:181 pins the key: it stays, as an empty array)",
+    "any replacement stop (never invent one)",
+    "restart or deploy of the Java feed"
+  ],
+  "size": "S",
+  "sources": [
+    "BUGS.md:253 row B142 (D15 2026-10-10 'Disable until a sourced stop exists')",
+    "MyTradingSys/items/B142_extrasetupbuilder_1m_stop_unsourced.md",
+    "MyTradingSys/research/no_source_sweep_2026-10-09/RESULT.md (B142: NOT FOUND in 154 files)",
+    "src/main/java/datafeed/ExtraSetupBuilder.java:39 (stop = previousHigh/previousLow)"
+  ],
+  "state": "done",
+  "steps": [
+    "Write ExtraSetupBuilderDisabledTest with the fixture of ExtraSetupBuilderMomentumTest (20 klines, last 3 range 10, speed_picking_up true, daily_vp val 80 vah 120): assert build() returns size 0 at price 99 and at price 101. Run it: red on old code (1 candidate).",
+    "ExtraSetupBuilder.build: return the empty ArrayNode at the top with a comment citing B142 and D15; delete the now-unreachable momentum block and the private helpers only it used (javac rejects unreachable code).",
+    "Delete the two emission tests in ExtraSetupBuilderMomentumTest (shortMomentum..., longMomentum...); the other five assert 0 and stay.",
+    "Run the mvn command below; FvgTest and MarketDataSnapshotTest must stay green.",
+    "Java reaches the feed only at a restart: run `python scripts/dev/desk.py list`; if no open JIS-NB task for a Java window, post one (mvn compile in the live tree, kill the statemachine JVM, loop-supervisor relaunches; recipe java-feed-restart-recipe)."
+  ],
+  "tests": "ExtraSetupBuilderDisabledTest (new): red on old code (returns 1 momentum candidate), green after.",
+  "title": "Disable ExtraSetupBuilder momentum candidates (unsourced stop)"
+}

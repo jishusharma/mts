@@ -1,0 +1,291 @@
+Gate mode: smoke (6 steps); CI runs the full suite behind the push
+Gate reason: smoke: 1 code file(s) outside the live path; ALWAYS steps 3tl,3w,3x,3gd,3dl ran; plus 4f (name/test/shard match)
+
+[Step 1] Execution module tests
+Step 1: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 2] G1G2 offline script test
+Step 2: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3] Static test suite
+Step 3: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3b] User guide checker tests
+Step 3b: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3c] User guide in sync with mts.ps1
+Step 3c: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3r] Alert rate checker tests
+Step 3r: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3cv] Chart verify (RSI/BB/StochRSI) tests
+Step 3cv: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3tm] One timeframe map tests
+Step 3tm: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3s] Testnet status summary tests
+Step 3s: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3f] Funnel report tests
+Step 3f: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3dk] Desk board tests
+Step 3dk: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3tk] Task card tests
+Step 3tk: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3td] Tom ledger date tests
+Step 3td: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3hs] Tom holdout split tests
+Step 3hs: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3sq] Spec quote checker tests
+Step 3sq: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3ly] Layer index tests
+Step 3ly: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3cx] Layer lab runner tests
+Step 3cx: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3cy] ask_model tests
+Step 3cy: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3q] INDEX/BUGS consistency
+Step 3q: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3p] P4 corrected script tests
+Step 3p: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3t] T093 turn-of-candle imbalance tests
+Step 3t: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3d] Extract quote checker tests
+Step 3d: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3h] Launcher verb static tests (runner, orphans)
+Step 3h: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3g] Gate coverage tests (Fabio v3 + live writers)
+Step 3g: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3k] sync.py parallel ship tests
+Step 3k: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3gs] Gate selector tests (path -> smoke steps, fail closed)
+Step 3gs: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3rc] Red CI task card tests (one card per red run)
+Step 3rc: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3sg] Stop guard tests (a session cannot end holding unshipped work)
+Step 3sg: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3sig] Signals between logins (mts_signal.py)
+Step 3sig: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3e] DSA browser worker + queue lane tests
+Step 3e: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3sh] Screenshot intake tests (save, classify, read, close gates)
+Step 3sh: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3mg] Project group map tests (every row and file has one group)
+Step 3mg: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3xt] Extra tests outside the collected dirs (B150 discovery)
+Step 3xt: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3ad] Scheduled auto-deploy tests (stops on red gate)
+Step 3ad: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3hy] Daily hygiene job tests
+Step 3hy: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3ms] STATUS.md generator tests (commit-dated reports, CI green line)
+Step 3ms: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3cs] Cloud SessionStart hook tests (no-op off cloud)
+Step 3cs: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3pc] Prompt contract tests (DSA_SESSION_PROMPT 5d, B155)
+Step 3pc: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3ds] DSA helper CLI tests (dsa.py)
+Step 3ds: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3cr] Control Room page generator tests
+Step 3cr: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3lh] GPT lane health tests (down/up rules, reroute, pause, resume, DSA prompt)
+Step 3lh: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3rb] Claude-GPT relay board tests (shared notes, lanes, pack)
+Step 3rb: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3af] Artifact registry tests (one url per page per account)
+Step 3af: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3bk] Backup snapshot tests (dirty/untracked work reaches the remote)
+Step 3bk: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3vd] Verdict registry override tests (sourced hand corrections survive backfill)
+Step 3vd: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3lm] Live mirror tests (read-only desktop->work-tree data, fail-closed)
+Step 3lm: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3js] Config check (settings.json parses, hook scripts exist, secrets stay ignored)
+Step 3js: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3gi] Gate impact tests (import-graph test selection, budget, quarantine)
+Step 3gi: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 3qn] Gate quarantine list valid (owner, reason, not expired)
+Step 3qn: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 4] Pytest shard 1/5 (MyTradingSys/tests, 1 files)
+Step 4: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 4b] Pytest shard 2/5 (MyTradingSys/tests, 9 files)
+Step 4b: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 4c] Pytest shard 3/5 (MyTradingSys/tests, 18 files)
+Step 4c: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 4g] Pytest shard 4/5 (MyTradingSys/tests, 19 files)
+Step 4g: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 4h] Pytest shard 5/5 (MyTradingSys/tests, 19 files)
+Step 4h: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 4d] Pytest doc size/contract tests
+Step 4d: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 4e] Pytest backtest function-style tests
+Step 4e: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 5] Maven Java tests
+Step 5: SKIP (skipped with --quick)
+
+[Step 5b] Layer tests (77 modules, 4 parallel processes)
+Step 5b: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 5c] Options module tests
+Step 5c: SKIP (not selected by the smoke gate (CI runs it))
+
+[Step 6] Backtest tests
+Step 6: SKIP (skipped with --quick)
+Gate: 6 steps; precheck 4 cheap steps, 2 at a time, no gate slot
+
+[Step 3gd] Gate discovery: every tracked test file is gated (B150)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe MyTradingSys/tests/test_gate_discovery_b150.py
+  Elapsed: 0.2s (1/6 done, +0s)
+Step 3gd: PASS
+
+[Step 3dl] CI deps lint: no gated test hard-imports a package the ci.yml pip line lacks
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/ci_deps_lint.py
+  Elapsed: 3.0s (2/6 done, +3s)
+Step 3dl: PASS
+
+[Step 3tl] Task cards meet the Definition of Ready
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/tasks.py lint
+  Elapsed: 10.0s (3/6 done, +10s)
+Step 3tl: PASS
+  WARN argon-blind-read-7-frames (ready): STALE scope changed 74772a994d9e 2026-10-17T20:39:55Z after refresh 2026-10-17T20:39:52Z; run `tasks.py tag argon-blind-read-7-frames --refresh` after re-reading the card
+  WARN ci-919cc0f (ready): STALE latest never refreshed (tasks.py tag <id> --refresh); run `tasks.py tag ci-919cc0f --refresh` after re-reading the card
+  WARN lab-review-gate-harden2 (ready): STALE latest never refreshed (tasks.py tag <id> --refresh); run `tasks.py tag lab-review-gate-harden2 --refresh` after re-reading the card
+  WARN lab-vendor-gate-harden2 (ready): STALE latest never refreshed (tasks.py tag <id> --refresh); run `tasks.py tag lab-vendor-gate-harden2 --refresh` after re-reading the card
+
+[Step 3x] Wiring check: no undeclared unwired code (wiring_scan.py --check)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/wiring_scan.py --check
+  Elapsed: 1.8s (4/6 done, +12s)
+Step 3x: PASS
+  WARN NO-READER (12 scripts/dev files nobody reads; archive or document the reader): aibridge_install.py, asr_to_canonical.py, chart_verify.py, check_spec_quotes.py, dsa_eval.py, eagle_gaps.py, fabio_prescreen.py, prompt_contract.py, role_hook_launcher.py, tom_holdout_split.py, tom_ledger_dates.py, trial_ledger.py
+Precheck passed in 12s; main 2 steps, 4 at a time
+
+[Step 3w] Wiring gate tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_wiring_scan.py
+  Elapsed: 4.4s (5/6 done, +16s)
+Step 3w: PASS
+
+[Step 4f] Pytest layer + live-writer tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe -m pytest MyTradingSys/backtest/layers/fabio/v3/tests MyTradingSys/backtest/layers/fabio/test_orderflow_live.py MyTradingSys/backtest/layers/fabio/test_of_backfill.py MyTradingSys/backtest/layers/fabio/test_htf_context_live.py MyTradingSys/execution/tests scripts/dev/test_market_guide.py scripts/dev/test_dax_engine_flag.py scripts/dev/test_check_handoff.py scripts/dev/test_live_owner.py scripts/dev/test_loop_supervisor_grace.py scripts/dev/test_nowin.py scripts/dev/test_outcome_labeler_incremental.py scripts/dev/test_wrapper_load_resilience.py scripts/dev/test_gate_priority.py scripts/dev/test_gate_scratch.py scripts/dev/test_feed_watchdog_script.py MyTradingSys/observation/tests -q -p no:cacheprovider --ignore-glob=F:\MTS\mts-jis-nuc-shipping-proof*[/\]tmp[a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_] --basetemp=C:\Users\E-NGIN~1\AppData\Local\Temp\mts_s4_cux7oz50\bt
+  Elapsed: 10.5s (6/6 done, +22s)
+Step 4f: PASS
+
+======================================================================
+SUMMARY
+======================================================================
+Step 1: Execution tests: SKIP
+Step 2: G1G2 offline test: SKIP
+Step 3: Static test suite: SKIP
+Step 3b: Guide checker tests: SKIP
+Step 3c: Guide in sync: SKIP
+Step 3r: Alert rate checker tests: SKIP
+Step 3cv: Chart verify tests: SKIP
+Step 3tm: TF map tests: SKIP
+Step 3s: Testnet status tests: SKIP
+Step 3f: Funnel report tests: SKIP
+Step 3dk: Desk board tests: SKIP
+Step 3tk: Task card tests: SKIP
+Step 3td: Tom ledger date tests: SKIP
+Step 3hs: Tom holdout split tests: SKIP
+Step 3sq: Spec quote checker tests: SKIP
+Step 3ly: Layer index tests: SKIP
+Step 3cx: Layer lab runner tests: SKIP
+Step 3cy: ask_model tests: SKIP
+Step 3tl: Task card lint: PASS
+Step 3q: INDEX/BUGS consistency: SKIP
+Step 3p: P4 corrected script tests: SKIP
+Step 3t: T093 imbalance tests: SKIP
+Step 3d: Quote checker tests: SKIP
+Step 3h: Launcher static tests: SKIP
+Step 3g: Gate coverage tests: SKIP
+Step 3k: sync.py tests: SKIP
+Step 3gs: Gate selector tests: SKIP
+Step 3rc: Red CI card tests: SKIP
+Step 3sg: Stop guard tests: SKIP
+Step 3sig: Signals tests: SKIP
+Step 3e: DSA worker tests: SKIP
+Step 3sh: Screenshot intake tests: SKIP
+Step 3mg: Project group map tests: SKIP
+Step 3xt: Extra tests: SKIP
+Step 3ad: Auto-deploy tests: SKIP
+Step 3hy: Daily hygiene tests: SKIP
+Step 3ms: make_status tests: SKIP
+Step 3cs: Cloud setup hook tests: SKIP
+Step 3pc: Prompt contract tests: SKIP
+Step 3ds: DSA helper CLI tests: SKIP
+Step 3cr: Control Room tests: SKIP
+Step 3lh: GPT lane health tests: SKIP
+Step 3rb: Relay board tests: SKIP
+Step 3af: Artifact registry tests: SKIP
+Step 3bk: Backup snapshot tests: SKIP
+Step 3vd: Verdict registry tests: SKIP
+Step 3lm: Live mirror tests: SKIP
+Step 3js: Config check: SKIP
+Step 3gi: Gate impact tests: SKIP
+Step 3qn: Quarantine check: SKIP
+Step 3w: Wiring gate tests: PASS
+Step 3x: Wiring check: PASS
+Step 3gd: Gate discovery: PASS
+Step 3dl: CI deps lint: PASS
+Step 4: Pytest tests: SKIP
+Step 4b: Pytest tests: SKIP
+Step 4c: Pytest tests: SKIP
+Step 4g: Pytest tests: SKIP
+Step 4h: Pytest tests: SKIP
+Step 4d: Pytest doc tests: SKIP
+Step 4e: Pytest backtest tests: SKIP
+Step 4f: Pytest layer tests: PASS
+Step 5: Maven tests: SKIP
+Step 5b: Layer tests: SKIP
+Step 5c: Options tests: SKIP
+Step 6: Backtest tests: SKIP
+======================================================================
+ALL TESTS PASSED

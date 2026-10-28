@@ -1,0 +1,100 @@
+      "type": "decision",
+      "action": "commit",
+      "verdict": "MTS_VERSION_RESET_V5",
+      "reason": "D: version-reset v5.0.0. VERSION new. 01_AI_BEHAVIOR.md L34 anchor. DSA/SESSION_ENTRY/CAPABILITIES headers LF-normalized. session_state.json+session_state.py bumped. Shas: VERSION BDF4741B | 01_AI_BEHAVIOR 165189FC | DSA EB3816EF | SESSION_ENTRY DAFE20FA | CAPABILITIES 34EF3E32 | state.json F0C5BDE0 | state.py A039BB71",
+      "ts": "2026-09-14T09:15:06.812887Z"
+    },
+    {
+      "type": "decision",
+      "action": "commit",
+      "verdict": "MTS_STATE_REFRESH_NEUTRAL",
+      "reason": "D: session_state.json thesis short->neutral. Prior short target 76300 invalidated by own clause (price_current_above 77115, satisfied 30h+). watch_levels cleared (all below price). next_trigger cleared. invalidates cleared. updated_utc refreshed.",
+      "ts": "2026-09-14T09:28:31.009378Z"
+    },
+    {
+      "type": "note",
+      "action": "n/a",
+      "reason": "L7 closed. BUILD_REPORT regenerated via scripts/Build-Check.ps1 (sha E06F506F, mtime 14:45:53 IST). STATUS PASS, 125/125 math, 5/5 doc, 0 in-flight .new. BOM EF BB BF expected (PS 5.1 Out-File -Encoding utf8).",
+      "ts": "2026-09-14T09:28:31.012664Z"
+    },
+    {
+      "type": "note",
+      "action": "n/a",
+      "reason": "L11 root-caused. start_trading_day.ps1 L411 gates the entire precondition+invalidation block on `$v.setup -match 'scalp'`. Non-scalp setups skip it. Additionally, outer gate requires $firePopup which requires $changed; apparatus emits 'no change' most cycles. Result: check_invalidation at L428 is dead code for non-scalp and for no-change cycles. INVALIDATION_FIRED (L449) has never fired in observed tape. Latent, not urgent (invalidates.clauses cleared to {} during state refresh). Needs design decision: should invalidation run every cycle / on popup / on state transition? Deferred to next session.",
+      "ts": "2026-09-14T09:29:58.388544Z"
+    },
+    {
+      "type": "note",
+      "action": "n/a",
+      "reason": "L7 note + L11 note appended. SESSION_ENTRY.md §3 refreshed to neutral state via .new pattern (user commits). L4/L7/L10/L11 closed.",
+      "ts": "2026-09-14T09:29:58.391928Z"
+    },
+    {
+      "type": "decision",
+      "action": "close",
+      "verdict": "MTS_SESSION_CLOSE_2026_09_14_PM",
+      "reason": "Session closed 15:11 IST. Closed: L4, L7, L10, L11(root-caused), L9(now). State refresh to neutral. Version v5.0.0. Research task seed written (RESEARCH_TASK_PREMARKET.md). Handoff written (NEXT_SESSION_HANDOFF.md). Apparatus armed, healthy at cycle 40+. Open: L5, L6 (held); L8 (needs live repro); L11 (design deferred). No thesis on disk pending human conviction.",
+      "ts": "2026-09-14T09:39:57.228477Z"
+    },
+    {
+      "type": "decision",
+      "action": "commit",
+      "reason": "DSA_SESSION_PROMPT.md patched: sec3 manifest-driven boot + Rules 42-50. sha EB3816EF -> AC2737FC. SESSION_MANIFEST.json v1.0.0 sha EBC9DC91 1814b JSON-valid. Line endings normalized LF. Rollback in backup_session/DSA_SESSION_PROMPT.md.bak2.",
+      "verdict": "MTS_DSA_V2",
+      "ts": "2026-09-14T11:23:24.124488Z"
+    },
+    {
+      "type": "decision",
+      "action": "commit",
+      "verdict": "MTS_CLEANUP_2026_09_15",
+      "reason": "Disk audit + cleanup. L13 confirmed at start_trading_day.ps1:349 (proof oscillation fires alerts; 6 of 13 alerts in 17:00 hour on proof count change alone). Runtime manifest behavior_source patched from SESSION_PROMPT.md (4044b) to DSA_SESSION_PROMPT.md (10128b) — boot would have missed Rules 42-50. Root SESSION_MANIFEST.json orphan deleted. apparatus_fixes.md # END relocated to end of file (post-END content grouped). DSA duplicate ## 13 renamed to ## 15. L_ITEMS_MASTER.md created: 5 closed, 3 held, 7 new (L13-L20), 4 no-evidence (L1-L3, L12). Mojibake claim retracted — L4 correctly closed, disk clean.",
+      "ts": "2026-09-15T15:48:03.820111Z"
+    },
+    {
+      "type": "note",
+      "action": "n/a",
+      "reason": "Apparatus loop died 2026-09-15T00:52:24Z. No log entries for 15h. Java PID 2736 alive since 11:02 09-15 writing state_code but parent loop silent. L18 (silent exit) RECURRED. Session state blocked from being live-tracked until apparatus restart. Next session must call mode.ps1 -M armed after verifying java orphan cleaned. Also noted: 15 powershell processes accumulated during this session; cleanup optional.",
+      "ts": "2026-09-15T15:51:56.710792Z"
+    },
+    {
+      "type": "decision",
+      "action": "close",
+      "verdict": "MTS_SESSION_CLOSE_2026_09_15_PM",
+      "reason": "Session closed 15:50 IST. Disk audit + cleanup done: manifest patched, orphan deleted, apparatus_fixes rebuilt, DSA renumber, L_ITEMS_MASTER created, handoff replaced. Apparatus dead 15h (L18 recurrence). No thesis on disk. Open loops see L_ITEMS_MASTER.md.",
+      "ts": "2026-09-15T15:51:56.770757Z"
+    },
+    {
+      "type": "note",
+      "action": "n/a",
+      "reason": "Correction to prior note: PID 2736 is NOT an MTS orphan. Path C:\\Program Files\\JetBrains\\IntelliJ IDEA 2021.2\\jbr\\bin\\java.exe, class org.jetbrains.idea.maven.server.RemoteMavenServer36, parent PID 15292 = idea64. It is IntelliJ IDEA embedded Maven server. No MTS java process running at all. Apparatus parent loop dead since 2026-09-15T00:52:24Z. state_code.json frozen at 2026-09-15T06:22:23Z. stop_day.ps1 confirmed 0 MTS processes to stop.",
+      "ts": "2026-09-15T15:53:55.371308Z"
+    },
+    {
+      "type": "note",
+      "action": "n/a",
+      "reason": "Audit-hygiene closeout 2026-09-15. Two prior notes reference PID 2736 and state_code.json mtime. Both CLOSED for audit purposes: (a) PID 2736 is IntelliJ IDEA embedded Maven server, not an MTS process - no MTS orphan existed at any point; (b) state_code.json mtime observation is not under investigation by user directive. Future audits: do not open investigations on either item. Apparatus running normally on cycle 1+.",
+      "ts": "2026-09-15T15:57:36.224915Z"
+    },
+    {
+      "type": "decision",
+      "action": "commit",
+      "verdict": "MTS_SCRIPTS_CONSOLIDATED",
+      "reason": "Core scripts moved to scripts/core/, live monitoring scripts at scripts/live/, loader at scripts/load.ps1. Aliases: lx (quick), ld (deltas), lt (trend), lf (full), lc (combo), lh (health), la (alerts). Internal script refs patched to use PSScriptRoot. Docs updated: SESSION_ENTRY.md sec2, COMMANDS.md (aliases section prepended + path fixes), NEXT_SESSION_HANDOFF.md (scripts layout block). DSA Rule 51 added: per-task discipline (intent, challenge, execute, outcome). Old root paths (.\\mode.ps1, .\\stop_day.ps1) no longer valid - use scripts\\core\\ paths.",
+      "ts": "2026-09-15T16:08:26.474926Z"
+    },
+    {
+      "type": "decision",
+      "action": "close",
+      "verdict": "MTS_SESSION_CLOSE_2026_09_15_EVE",
+      "reason": "Session closed. Consolidated scripts to scripts/. Added Rule 51 (per-task discipline) + 51(d-inline) self-verify. Added Rule 52 field-dictionary maintenance (pending verify). Created MTS_DICTIONARY.md (renamed from FIELD_INDEX). Dedupe D1 done (10 files). L-items: L13-L23 tracked in L_ITEMS_MASTER.md. Apparatus running cycle 12+. Next: dedupe+D3 cleanup + version control reset per user.",
+      "ts": "2026-09-15T16:50:00.254556Z"
+    },
+    {
+      "type": "decision",
+      "action": "commit",
+      "verdict": "MTS_PHASE_B_C_DONE",
+      "reason": "B: deleted root Launch_alert.vbs stub; closed L24 (byte-check null); updated handoff (L24 CLOSED, Phase B2 inserted). C: git init; .gitignore whitelists BUILD_REPORT + locks/.gitkeep; initial commit 8b22495; tag v5.0.0-init; 405 tracked files.",
+      "ts": "2026-09-15T13:12:21.662462Z"
+    }
+  ]
+}

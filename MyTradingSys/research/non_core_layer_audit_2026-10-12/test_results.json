@@ -1,0 +1,130 @@
+{
+  "rsi": {
+    "modules": [
+      "MyTradingSys.backtest.layers.rsi.test_malkan_40_60",
+      "MyTradingSys.backtest.layers.rsi.test_malkan_mtf",
+      "MyTradingSys.backtest.layers.rsi.test_observation",
+      "MyTradingSys.backtest.layers.rsi.test_rsi_core_ma",
+      "MyTradingSys.backtest.layers.rsi.test_rsi_divergence",
+      "MyTradingSys.backtest.layers.rsi.test_rsi_events",
+      "MyTradingSys.backtest.layers.rsi.test_rsi_ma_events",
+      "MyTradingSys.backtest.layers.rsi.test_rsi_reclaim",
+      "MyTradingSys.backtest.layers.rsi.test_run_divergence_mtf",
+      "MyTradingSys.backtest.layers.rsi.test_run_rsi_backtest"
+    ],
+    "run": 134,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": true
+  },
+  "timeframe": {
+    "modules": [
+      "MyTradingSys.backtest.layers.timeframe.test_tf_resample"
+    ],
+    "run": 18,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": true
+  },
+  "cryptocred": {
+    "modules": [
+      "MyTradingSys.backtest.layers.cryptocred.test_cc_bt_adapter",
+      "MyTradingSys.backtest.layers.cryptocred.test_cc_range_noise_live_neutrality",
+      "MyTradingSys.backtest.layers.cryptocred.test_cc_retest",
+      "MyTradingSys.backtest.layers.cryptocred.test_cc_setups",
+      "MyTradingSys.backtest.layers.cryptocred.test_cc_structure",
+      "MyTradingSys.backtest.layers.cryptocred.test_run_cc_setups"
+    ],
+    "run": 69,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1,
+    "passed": true
+  },
+  "positioning": {
+    "modules": [
+      "MyTradingSys.backtest.layers.positioning.test_funding_cvd_fade",
+      "MyTradingSys.backtest.layers.positioning.test_trade_costs"
+    ],
+    "run": 21,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": true
+  },
+  "session": {
+    "modules": [
+      "MyTradingSys.backtest.layers.session.test_session_momentum"
+    ],
+    "run": 9,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": true
+  },
+  "turn_of_candle": {
+    "modules": [
+      "MyTradingSys.backtest.layers.turn_of_candle.test_turn_of_candle",
+      "MyTradingSys.backtest.layers.turn_of_candle.test_turn_of_candle_edge"
+    ],
+    "run": 36,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": true
+  },
+  "session_levels": {
+    "modules": [
+      "MyTradingSys.backtest.layers.session_levels.test_session_levels"
+    ],
+    "run": 13,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": true
+  },
+  "tick": {
+    "modules": [
+      "MyTradingSys.backtest.layers.tick.test_tick_extremes",
+      "MyTradingSys.backtest.layers.tick.test_tick_flagger",
+      "MyTradingSys.backtest.layers.tick.test_tick_oi_extremes"
+    ],
+    "run": 49,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": true
+  },
+  "consensus": {
+    "modules": [
+      "MyTradingSys.backtest.layers.consensus.test_hook",
+      "MyTradingSys.backtest.layers.consensus.test_writer"
+    ],
+    "run": 52,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": true
+  },
+  "alerts": {
+    "modules": [
+      "MyTradingSys.backtest.layers.alerts.test_alert_emitter",
+      "MyTradingSys.backtest.layers.alerts.test_live_runner_cli",
+      "MyTradingSys.backtest.layers.alerts.test_live_runner_core",
+      "MyTradingSys.backtest.layers.alerts.test_live_runner_fresh",
+      "MyTradingSys.backtest.layers.alerts.test_live_runner_lag",
+      "MyTradingSys.backtest.layers.alerts.test_live_runner_layers",
+      "MyTradingSys.backtest.layers.alerts.test_live_runner_of_feed",
+      "MyTradingSys.backtest.layers.alerts.test_live_runner_v3_shadow",
+      "MyTradingSys.backtest.layers.alerts.test_live_runner_wiring",
+      "MyTradingSys.backtest.layers.alerts.test_live_toc_tfs"
+    ],
+    "run": 104,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": true
+  }
+}

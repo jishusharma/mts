@@ -1,0 +1,48 @@
+{
+  "approved_by": "operator 2026-10-15",
+  "asks": "",
+  "closed": "2026-10-15T21:19:32Z",
+  "commands": [],
+  "created": "2026-10-15T09:05:39Z",
+  "depends_on": [],
+  "done_when": "2 extracts in MyTradingSys/research/malkan_extract_2026-10-15/ pass verify_extract_quotes.py; COMPARE.md lists each 5-star/7-star rule with quote + source line and whether the code matches; on origin/fast-track",
+  "from_inbox": "",
+  "goal": "Extract Malkan's own words on the 5-star and 7-star setups from two transcripts on disk, never extracted: A-CQiV_UFB4 (7-star, raw line 292-294) and W1HrDl70Lhk (5-star, Hindi + English MT). Today 7-star comes only from a web page (WEB_RESEARCH.md:171-172).",
+  "id": "malkan-extract-5star-7star",
+  "lane": "SONNET",
+  "layers": [
+    "rsi"
+  ],
+  "live_path": false,
+  "note": "operator 2026-10-15: \"Queue the Krown/Malkan caption fetch and the Malkan extraction of the two on-disk transcripts.\" Part of LAYER_REBUILD_PLAN_2026-10-15 gate G1 (this is the Malkan extraction that was lost midway). No code changes, no backtests.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "raw_transcripts_canonical/A-CQiV_UFB4_raw.txt",
+    "raw_transcripts_canonical/W1HrDl70Lhk_hi_raw.txt",
+    "MyTradingSys/research/malkan_rsi_2026-09-28/WEB_RESEARCH.md",
+    "MyTradingSys/research/rsi_2a_2026-10-09/RSI_2A_SPEC.md",
+    "MyTradingSys/research/krown_ta101_2026-10-13/PROTOCOL.md"
+  ],
+  "result": "Result: extracts for A-CQiV_UFB4 and W1HrDl70Lhk already on disk and pass verify_extract_quotes (0 problems). New COMPARE.md quotes each 5-star/7-star rule with extract line, vs WEB_RESEARCH, RSI_2A_SPEC and code (malkan_mtf.py). SETUP_SUMMARY.md: Source lines item on all rows plus MAL-20 (star grade, conditions withheld). Finding: his 7-star (Wvq1) = monthly>60 + daily<40 + divergence; the web 7-star (all three >60) is a screener's, not his.",
+  "scope_in": [
+    "MyTradingSys/research/malkan_extract_2026-10-15/"
+  ],
+  "scope_out": [
+    "engine and layer code",
+    "any backtest",
+    "VALIDATION/HOLDOUT data"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "one fresh Sonnet worker per video, clean slate, using the Krown method: MyTradingSys/research/krown_ta101_2026-10-13/PROTOCOL.md s3 and EXTRACT_TEMPLATE.md (do not read other Malkan extracts or the web research first)",
+    "for each setup he names: what you SEE on the chart (timeframes, RSI levels, price action), entry, stop, target and management in his words, NOT STATED where silent; Hindi quotes kept in the original with the English line beside it",
+    "python scripts/dev/verify_extract_quotes.py on both extracts (0 problems)",
+    "write MyTradingSys/research/malkan_extract_2026-10-15/COMPARE.md: his 5-star and 7-star rules versus WEB_RESEARCH.md:171-172 and RSI_2A_SPEC.md:20-33, and versus what backtest/layers/rsi/malkan_40_60.py encodes (single timeframe, no 5-star gate: malkan_40_60.py:14-17)"
+  ],
+  "tests": "docs lane, no code: verify_extract_quotes.py is the gate",
+  "title": "Malkan: extract the 7-star (A-CQiV_UFB4) and 5-star (W1HrDl70Lhk) transcripts already on disk; DONE when both extracts pass verify_extract_quotes.py and the 5-star/7-star rules are quoted in his words"
+}

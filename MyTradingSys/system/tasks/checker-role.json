@@ -1,0 +1,73 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-25T08:00:38Z",
+  "depends_on": [
+    "context-cost-rules-compact-before-idle-o"
+  ],
+  "done_when": "roles/checker.md exists with a valid header; ROSTER.json lists Checker (start: embedded); python scripts/dev/role_loader.py check and lint exit 0; test_role_roster.py passes; SUPER_SESSION.md rule 3 names roles/checker.md; lab_guy.md keeps its own duties and links it.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Add roles/checker.md = Lab_Guy stamp duties plus the diff-only review Agent brief, as an embedded role in ROSTER.json, so the review Agent and the Lab_Guy pass both start 'You are Checker.'; SUPER_SESSION rule 3 points at it.",
+  "id": "checker-role",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nb/supervisor-C-2026-10-28",
+      "ref": "920b8848e29d",
+      "utc": "2026-10-27T21:59:58Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "920b8848e29d Merge remote-tracking branch 'origin/fast-track' into jis-nb/supervisor-C-202",
+      "ref": "MyTradingSys/system/SUPER_SESSION.md",
+      "utc": "2026-10-27T21:59:58Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): C7 of CONTEXT_FILES_DESIGN (operator-approved 2026-10-25). Roster has 7 roles after the Lead merge; Checker is embedded (never picked by the fallback). Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | CLUSTER: same file set as context-cost-rules (one e",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-27T22:51:34Z",
+  "refs": [
+    "MyTradingSys/research/mts_doctor/CONTEXT_FILES_DESIGN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/roles/checker.md",
+    "MyTradingSys/system/roles/ROSTER.json",
+    "MyTradingSys/system/roles/lab_guy.md",
+    "MyTradingSys/system/SUPER_SESSION.md",
+    "MyTradingSys/tests/test_role_roster.py"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "live path, orders, deploy, restarts",
+    "new hooks, gate steps or rules beyond the card"
+  ],
+  "scope_sha": "920b8848e29d",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/mts_doctor/CONTEXT_FILES_DESIGN.md:156",
+    "MyTradingSys/system/roles/lab_guy.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read CONTEXT_FILES_DESIGN.md line 156 and lab_guy.md stamp duties and the review Agent brief in SUPER_SESSION rule 3 / session_planner_details.md.",
+    "Write checker.md (header, ROLE LOADED banner via role_loader render); add the ROSTER.json row; run role_loader.py render and check.",
+    "Point SUPER_SESSION rule 3 at checker.md with a one-line edit; keep every file under its SIZE_CAPS."
+  ],
+  "tests": "MyTradingSys/tests/test_role_roster.py: the roster lists Checker as embedded and its file exists; the fallback pick for a review sentence never returns Checker; fails before the file exists.",
+  "title": "checker-role (C7): roles/checker.md = Lab_Guy stamps + review Agent brief",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

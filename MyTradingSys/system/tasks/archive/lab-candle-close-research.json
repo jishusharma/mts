@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "closed": "2026-10-14T06:39:59Z",
+  "commands": [],
+  "created": "2026-10-14T06:20:06Z",
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "from_inbox": "",
+  "goal": "Audit BTC candle-close conditional evidence and preregister LAB study",
+  "id": "lab-candle-close-research",
+  "kind": "audit",
+  "lane": "CODEX",
+  "layers": [
+    "volume_candles_ma"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refs": [],
+  "result": "FIX-FIRST for edge claims: verified sources, causal study design, split audit and two follow-up cards; full research report saved.",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/candle_close_2026-10-14"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "taken": "2026-10-14T06:21:18Z",
+  "tests": "",
+  "title": "Audit BTC candle-close conditional evidence and preregister LAB study"
+}

@@ -1,0 +1,13 @@
+num,study,later_sha,date,subject,file,changed_lines
+1,gross_effect_screen,d55a90858,2026-10-18,"gate speed: screen ledger 91 s -> 1 s, pit f4 126 s -> 9 s; SUPER_SESSION.md 22.1 -> 19.0 ",MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py,23
+1,gross_effect_screen,f068fd95f,2026-10-18,gross-screen-refuse-a-changed-data-manif: refuse changed data manifest,MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py,42
+2,opr_preopen_tops,d55a90858,2026-10-18,"gate speed: screen ledger 91 s -> 1 s, pit f4 126 s -> 9 s; SUPER_SESSION.md 22.1 -> 19.0 ",MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py,23
+2,opr_preopen_tops,f068fd95f,2026-10-18,gross-screen-refuse-a-changed-data-manif: refuse changed data manifest,MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py,42
+3,mal_bb_mid_engulf,d55a90858,2026-10-18,"gate speed: screen ledger 91 s -> 1 s, pit f4 126 s -> 9 s; SUPER_SESSION.md 22.1 -> 19.0 ",MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py,23
+3,mal_bb_mid_engulf,f068fd95f,2026-10-18,gross-screen-refuse-a-changed-data-manif: refuse changed data manifest,MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py,42
+4,opr_bb_mtf_center,d55a90858,2026-10-18,"gate speed: screen ledger 91 s -> 1 s, pit f4 126 s -> 9 s; SUPER_SESSION.md 22.1 -> 19.0 ",MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py,23
+4,opr_bb_mtf_center,f068fd95f,2026-10-18,gross-screen-refuse-a-changed-data-manif: refuse changed data manifest,MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py,42
+5,opr_weekly_low_round_sweep,d55a90858,2026-10-18,"gate speed: screen ledger 91 s -> 1 s, pit f4 126 s -> 9 s; SUPER_SESSION.md 22.1 -> 19.0 ",MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py,23
+5,opr_weekly_low_round_sweep,f068fd95f,2026-10-18,gross-screen-refuse-a-changed-data-manif: refuse changed data manifest,MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py,42
+6,wlow_bounce_bbrsi60,150840644,2026-10-21,b-item-krown-core-rsi-returns-100-on-a-f: fix flat window RSI 100 to 50 and update docstri,MyTradingSys/backtest/layers/rsi/rsi_core.py,2
+7,krown_malkan_g3,150840644,2026-10-21,b-item-krown-core-rsi-returns-100-on-a-f: fix flat window RSI 100 to 50 and update docstri,MyTradingSys/backtest/layers/rsi/rsi_core.py,2

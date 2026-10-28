@@ -1,0 +1,20 @@
+{
+  "plan_id": "valid_ladder_four_rung",
+  "account": "subaccount_1",
+  "instrument": "BTC-PERPETUAL",
+  "side": "LONG",
+  "validity": {"start": "2026-09-27T10:00:00Z", "end": "2026-09-27T14:00:00Z"},
+  "entry": {
+    "type": "ladder",
+    "range": {"low": 49750, "high": 50200},
+    "rungs": 4,
+    "size_multipliers": [1, 1, 2, 3]
+  },
+  "base_unit": 10,
+  "stop": {"type": "fixed_percent", "percent_below_entry": 2.0},
+  "targets": [
+    {"amount_percent": 50, "pnl_target_percent": 2.0},
+    {"amount_percent": 50, "pnl_target_percent": 5.0}
+  ],
+  "caps": {"max_notional_usd": 1000, "max_loss_usd": -50, "max_concurrent_orders": 7}
+}

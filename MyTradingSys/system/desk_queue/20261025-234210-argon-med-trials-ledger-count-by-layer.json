@@ -1,0 +1,15 @@
+{
+  "card": "argon-med-trials-ledger-count-by-layer",
+  "done_when": "MyTradingSys/research/design_cards_2026-10-26/argon_trials_by_layer.md exists: table family x (rows, DEV, VALIDATION, HOLDOUT, UNKNOWN) with the TRIALS.md line range for each count and a total that equals the file row count",
+  "finished": "2026-10-28T00:04:16Z",
+  "from": "lane_health",
+  "host": "DESKTOP-F7IU69N",
+  "id": "20261025-234210-argon-med-trials-ledger-count-by-layer",
+  "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card argon-med-trials-ledger-count-by-layer: [GEMINI] Argon-medium: count tries per layer family in TRIALS.md and the sealed-window reads (fil\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief argon-med-trials-ledger-count-by-layer\nGoal: Count how many trial rows (a row = a line starting \"| 20\"; header and blanks excluded) each layer family has in research/layer_lab/TRIALS.md and which touched DEV, VALIDATION or HOLDOUT, so a la\nRead: MyTradingSys/research/design_cards_2026-10-26/argon_trials_by_layer.md (new file only)\nStep 1: Read MyTradingSys/research/layer_lab/TRIALS.md and layer_index.json\nStep 2: A row is a line starting \"| 20\"; header and blank lines are not rows. TRIALS.md has no window columns: derive DEV/VALIDATION/HOLDOUT from the row text, UNKNOWN where silent\nStep 3: Parse then count (never from truncated output); map each row to a family or UNMAPPED\nStep 4: Check the table total equals the file row count, then commit with a Result: line\nRun exactly:\n  C:/Users/E-ngineers/.gemini/bin/agy.exe --print \"Follow the steps of card argon-med-trials-ledger-count-by-layer (python scripts/dev/tasks.py brief argon-med-trials-ledger-count-by-layer). Write onl\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-10-25_argon-med-trials-ledger-count-by-layer.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-10-25_argon-med-trials-ledger-count-by-layer.md>\".",
+  "posted": "2026-10-25T23:42:10Z",
+  "rerouted_from": "CODEX",
+  "result": "DONE card done, lane CODEX, REVIEWED:sonnet-reviewer-a89035 2026-10-26",
+  "status": "done",
+  "target": "DSA",
+  "title": "[GEMINI] Argon-medium: count tries per layer family in TRIALS.md and the sealed-window reads (file:line)"
+}

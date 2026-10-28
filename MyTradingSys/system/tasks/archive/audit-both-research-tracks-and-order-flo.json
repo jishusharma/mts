@@ -1,0 +1,42 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-14T19:55:56Z",
+  "commands": [],
+  "created": "2026-10-14T19:52:02Z",
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "from_inbox": "",
+  "goal": "Audit both research tracks and order-flow edge discovery gaps",
+  "id": "audit-both-research-tracks-and-order-flo",
+  "kind": "audit",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refs": [],
+  "result": "FIX-FIRST: cross-track audit, stale lab prerequisites, overlapping research splits, flow-data limits and five-step roadmap; report 2026-10-15_strategy-direction-audit.md; Cloud notified",
+  "scope_in": [
+    "MyTradingSys/research"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "",
+  "title": "Audit both research tracks and order-flow edge discovery gaps"
+}

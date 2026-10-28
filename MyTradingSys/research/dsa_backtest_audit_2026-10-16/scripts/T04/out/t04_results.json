@@ -1,0 +1,286 @@
+{
+ "mal_ledger_rows": 1179,
+ "mal_shipped": {
+  "n": 1179.0,
+  "n_ctrl": 2486.0,
+  "mean": 0.012401120426429785,
+  "se": 0.02118297125774142,
+  "net": -0.12759887957357022,
+  "t_net": -6.023653529102466,
+  "mean_ctrl": 0.001307464892501536,
+  "diff": 0.011093655533928218,
+  "se_diff": 0.018195955976421395,
+  "t_diff": 0.6096769825286207,
+  "mdd": 151.98307040659827,
+  "mdd_bh": 67.8000955486779,
+  "mde": 0.059312319521675975,
+  "verdict": "FAIL"
+ },
+ "mal": {
+  "v0": {
+   "counts": {
+    "matched": 1173,
+    "return_differs": 0,
+    "twin_only": 16,
+    "shipped_only": 6
+   },
+   "pre_counts": {
+    "falling": 69176,
+    "falling_touch": 26361,
+    "falling_touch_htf": 10671,
+    "a1": 1189,
+    "ctrl": 2583,
+    "a2": 814
+   },
+   "line": {
+    "n": 1189.0,
+    "mean_G": 0.010534519308920517,
+    "se": 0.021005588517496083,
+    "t_cost": -6.1633826913844585,
+    "mde": 0.05881564784898903,
+    "n_ctrl": 2583.0,
+    "mean_ctrl": 0.0018833276664608732,
+    "diff": 0.008651191642459644,
+    "t_diff": 0.35093150104542364,
+    "mdd_arm": 155.47844793105253,
+    "mdd_bh": 67.8000955486779,
+    "verdict": "FAIL"
+   }
+  },
+  "v1": {
+   "counts": {
+    "matched": 1174,
+    "return_differs": 0,
+    "twin_only": 16,
+    "shipped_only": 5
+   },
+   "pre_counts": {
+    "falling": 69176,
+    "falling_touch": 26367,
+    "falling_touch_htf": 10673,
+    "a1": 1190,
+    "ctrl": 2584,
+    "a2": 814
+   },
+   "line": {
+    "n": 1190.0,
+    "mean_G": 0.01052123620476186,
+    "se": 0.020988092150999543,
+    "t_cost": -6.169153578309967,
+    "mde": 0.058766658022798714,
+    "n_ctrl": 2584.0,
+    "mean_ctrl": 0.0018364222392122228,
+    "diff": 0.008684813965549636,
+    "t_diff": 0.3525435728166944,
+    "mdd_arm": 155.62372030569242,
+    "mdd_bh": 67.8000955486779,
+    "verdict": "FAIL"
+   }
+  },
+  "v2": {
+   "counts": {
+    "matched": 1179,
+    "return_differs": 0,
+    "twin_only": 0,
+    "shipped_only": 0
+   },
+   "pre_counts": {
+    "falling": 69176,
+    "falling_touch": 26367,
+    "falling_touch_htf": 10673,
+    "a1": 1179,
+    "ctrl": 2486,
+    "a2": 807
+   },
+   "line": {
+    "n": 1179.0,
+    "mean_G": 0.012401120426429697,
+    "se": 0.02118297125774142,
+    "t_cost": -6.0236535291024715,
+    "mde": 0.059312319521675975,
+    "n_ctrl": 2486.0,
+    "mean_ctrl": 0.0013074648925015977,
+    "diff": 0.011093655533928099,
+    "t_diff": 0.4428387334854178,
+    "mdd_arm": 151.98307040659842,
+    "mdd_bh": 67.8000955486779,
+    "verdict": "FAIL"
+   }
+  },
+  "v3": {
+   "counts": {
+    "matched": 1179,
+    "return_differs": 0,
+    "twin_only": 0,
+    "shipped_only": 0
+   },
+   "pre_counts": {
+    "falling": 69173,
+    "falling_touch": 26366,
+    "falling_touch_htf": 10672,
+    "a1": 1179,
+    "ctrl": 2485,
+    "a2": 807
+   },
+   "line": {
+    "n": 1179.0,
+    "mean_G": 0.012401120426429697,
+    "se": 0.02118297125774142,
+    "t_cost": -6.0236535291024715,
+    "mde": 0.059312319521675975,
+    "n_ctrl": 2485.0,
+    "mean_ctrl": 0.0013560072511480975,
+    "diff": 0.011045113175281599,
+    "t_diff": 0.44085335111829155,
+    "mdd_arm": 151.98307040659842,
+    "mdd_bh": 67.8000955486779,
+    "verdict": "FAIL"
+   }
+  },
+  "classes": {
+   "twin_bug": 1,
+   "spec_ambiguity": 21,
+   "shipped_bug": 0,
+   "residual": 0
+  }
+ },
+ "mal_state": {
+  "falling": {
+   "twin": 69173,
+   "shipped": 69174,
+   "disagree_after_warmup": 1,
+   "bars": [
+    173060
+   ]
+  },
+  "touch": {
+   "twin": 191777,
+   "shipped": 191788,
+   "disagree_after_warmup": 0,
+   "bars": []
+  },
+  "htf": {
+   "twin": 82647,
+   "shipped": 82647,
+   "disagree_after_warmup": 0,
+   "bars": []
+  },
+  "engulf_a": {
+   "twin": 33150,
+   "shipped": 33152,
+   "disagree_after_warmup": 0,
+   "bars": []
+  }
+ },
+ "wl_shipped": {
+  "n": 685.0,
+  "n_ctrl": 375.0,
+  "mean": 0.03169352581810581,
+  "se": 0.03352690451111102,
+  "net": -0.10830647418189421,
+  "t_net": -3.2304346542342075,
+  "mean_ctrl": -0.0003616188766584353,
+  "diff": 0.03205514469476427,
+  "se_diff": 0.06688357096802856,
+  "t_diff": 0.47926784157632896,
+  "mdd": 75.61582216329502,
+  "mdd_bh": 67.8000955486779,
+  "mde": 0.09387533263111085,
+  "verdict": "FAIL"
+ },
+ "wl_shipped_arm_n": {
+  "rl": 685,
+  "ctrl": 375,
+  "dropped_nan_window": 0
+ },
+ "wl_ledger_rows": 1060,
+ "wl_level_mismatch": [],
+ "wl": {
+  "v0": {
+   "counts": {
+    "matched": 684,
+    "return_differs": 0,
+    "twin_only": 1,
+    "shipped_only": 1
+   },
+   "pre_counts": {
+    "pooled": 1061,
+    "round_only": 1007,
+    "weekly_only": 103
+   },
+   "line": {
+    "n": 685.0,
+    "mean_G": 0.027391434364761276,
+    "se": 0.03329494989676029,
+    "t_cost": -3.3821515270156914,
+    "mde": 0.0932258597109288,
+    "n_ctrl": 376.0,
+    "mean_ctrl": 0.0034278219940272916,
+    "diff": 0.023963612370733984,
+    "t_diff": 0.3915276182350391,
+    "mdd_arm": 78.56275480883596,
+    "mdd_bh": 67.8000955486779,
+    "verdict": "FAIL"
+   },
+   "classes": {
+    "twin_bug": 0,
+    "spec_ambiguity": 2,
+    "shipped_bug": 0,
+    "residual": 0
+   },
+   "ctrl_n": 376
+  },
+  "v2": {
+   "counts": {
+    "matched": 685,
+    "return_differs": 0,
+    "twin_only": 0,
+    "shipped_only": 0
+   },
+   "pre_counts": {
+    "pooled": 1060,
+    "round_only": 1006,
+    "weekly_only": 103
+   },
+   "line": {
+    "n": 685.0,
+    "mean_G": 0.03169352581810603,
+    "se": 0.033526904511111046,
+    "t_cost": -3.230434654234198,
+    "mde": 0.09387533263111092,
+    "n_ctrl": 375.0,
+    "mean_ctrl": -0.00036161887665871005,
+    "diff": 0.03205514469476474,
+    "t_diff": 0.5141109663533714,
+    "mdd_arm": 75.61582216329481,
+    "mdd_bh": 67.8000955486779,
+    "verdict": "FAIL"
+   },
+   "classes": {
+    "twin_bug": 0,
+    "spec_ambiguity": 0,
+    "shipped_bug": 0,
+    "residual": 0
+   },
+   "ctrl_n": 375
+  },
+  "pooled_counts_v0": {
+   "matched": 1059,
+   "return_differs": 0,
+   "twin_only": 2,
+   "shipped_only": 1
+  },
+  "pooled_counts_v2": {
+   "matched": 1060,
+   "return_differs": 0,
+   "twin_only": 0,
+   "shipped_only": 0
+  },
+  "pooled_classes": {
+   "twin_bug": 0,
+   "spec_ambiguity": 3,
+   "shipped_bug": 0,
+   "residual": 0
+  }
+ }
+}

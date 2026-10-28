@@ -1,0 +1,51 @@
+{
+ "id": "dir-bb_top_reversal_2026-10-18",
+ "kind": "backtest",
+ "family": "Bb Top Reversal",
+ "title": "PRE_REG: 15m BB top-reversal short, DEV only (2026-10-18, card bb-top-reversal-candle-backtest)",
+ "provenance": "source-extracted",
+ "date": "2026-10-18",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "E1 sell-stop at green open / E2 red close below green open, fill next open / E3 red close below green low, fill next open (all OURS) x S1 max(green, red high)+2 ticks / S2 red open+2 ticks (OURS) x exit 2R / middle band…",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-01-01 to 2024-06-30 (as written in the source)",
+ "verdict": {
+  "label": "s.py check \"bollinger top reversal\"",
+  "tone": "info"
+ },
+ "why": [
+  "Status: NOT FROZEN. Power gate failed (see BLOCKED.md). No outcome (PnL, MFE, MAE) was read; DEV only (2022-01-01..2024-06-30); VALIDATION/HOLDOUT not read."
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "759"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 759,
+   "quote": "- n = 759 distinct UTC days holding >=1 event (1,577 events, count_gate.py)."
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)"
+ },
+ "source_files": [
+  "MyTradingSys/research/bb_top_reversal_2026-10-18/PRE_REG.md"
+ ],
+ "commit": "3f78a5d27"
+}

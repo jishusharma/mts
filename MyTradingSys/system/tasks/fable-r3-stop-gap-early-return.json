@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-27T22:05:56Z",
+  "depends_on": [],
+  "done_when": "Repo test fails on pre-fix code and passes post-fix; offline suite green; commit body Result: restart with filled entry and no journaled stop now re-places the protective stop instead of leaving the position naked.",
+  "est_turns": 18,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "position_manager._manage_impl must not leave an open position naked when the journal has a filled entry but no journaled stop (executor crash window, executor.py:461 vs :338). Fix F-GAP-1 in research/fable_runs_2026-10-28/R3_LIVE_REDTEAM.md. Failing test already written: scratch_r3/test_stop_gap_r3.py (FAILED on current code: manager halts 'journal has no entry/stop' with |pos|=100, no flatten).",
+  "id": "fable-r3-stop-gap-early-return",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "B148 part 5 (D10: 10 min heartbeat age) and B146 gate on at 0.3 (D09); Inbox items recorde",
+      "ref": "5c5678d4caa8",
+      "utc": "2026-10-09T08:25:56Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-27T22:06:20Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/execution/position_manager.py; MyTradingSys/execution/test_stop_gap_offline.py; MyTradingSys/system/tasks/fable-r3-stop-gap-early-return.json"
+  ],
+  "scope_out": [
+    "live tree; auto_trader respawn loop; executor; other offline tests"
+  ],
+  "scope_sha": "5c5678d4caa8",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/fable_runs_2026-10-28/R3_LIVE_REDTEAM.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Move scratch_r3/test_stop_gap_r3.py into MyTradingSys/execution/ as a repo test; run it and confirm it FAILS on current code with the F-GAP-1 assertion.",
+    "Fix position_manager.py:340-342: when stop is None and entry_filled_total > 0, fail closed - re-place the protective stop from the journal (trigger from intent/plan, amount=entry_filled_total) or flatten + write HALT, then return/halt.",
+    "Re-run the new test (must pass) and MyTradingSys/execution/testnet/offline/* (must stay green)."
+  ],
+  "tests": "MyTradingSys/execution/test_stop_gap_offline.py (moved from scratch): fails on pre-fix code, passes post-fix; offline suite test_s3_unprotected_offline + others stay green.",
+  "title": "fable R3: position_manager early return leaves open position naked when journal has entry but no stop (F-GAP-1, BLOCKS-LIVE)",
+  "weight": "",
+  "worker": "session"
+}

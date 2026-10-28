@@ -1,0 +1,24 @@
+{
+  "id": "imb-filter-audit",
+  "recipe": "critical-audit",
+  "goal": "Audit research/imbalance_qriptal_2026-10-16/filter/RESULT.md from committed tables only: recompute the headline cells, confirm DEV-only inputs, reproduce the touch-bar look-ahead defect. No market rerun, no VALIDATION or HOLDOUT read.",
+  "criteria": [
+    "The headline cells -0.366 R / -0.467 R / +0.101 R reproduce from the committed counts and tables (file:line and recompute command shown).",
+    "The DEV-only statement is checked as far as the six scoped files allow: no VALIDATION or HOLDOUT file is among the inputs (file list and SHA256 shown); original-loader isolation is marked NOT_IN_DATA if the files cannot show it, and that gap alone does not fail this criterion.",
+    "The touch-bar look-ahead defect is documented from the six scoped files only: list the columns present, state which of previous close, touch OHLC and exit time are absent, give the outcome-rate counts the files do support, and name the exact fixture fields a later Claude-side card needs. If the files cannot reproduce the defect, mark the effect on the HOLD rates NOT_IN_DATA; PASS this criterion when that gap is stated with evidence. No bars are invented and no market data is read."
+  ],
+  "scope_in": [
+    "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/RESULT.md",
+    "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/PRE_REG.md",
+    "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/COUNTS.md",
+    "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/trades_dev.csv",
+    "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/events_dev.csv",
+    "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/trials.csv"
+  ],
+  "prio": 3,
+  "contract": "211fb335f3d467b2caa8f5c8109d20fff796a1a03ec669d449bed8a19ecec1d8",
+  "cards": [
+    "imb-filter-audit-1-map",
+    "imb-filter-audit-2-challenge"
+  ]
+}

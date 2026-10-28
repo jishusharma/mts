@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-12T08:11:49Z",
+  "commands": [],
+  "created": "2026-10-11T20:16:28Z",
+  "depends_on": [],
+  "done_when": "The new test fails before and passes after, and the report lists the changed files with the red-then-green output for H3.",
+  "from_inbox": "",
+  "goal": "The random-entry null draws inside a frozen session window and reuses the strategy's passive entry offset, side, geometry, order lifetime, fill model and one-at-a-time scheduling, reporting opportunity and fill counts with a fixed seed.",
+  "id": "lab-dax-session-null",
+  "kind": "build",
+  "lane": "CODEX",
+  "live_path": false,
+  "note": "Captured by lab-audit-tom-dax-bt. Coordinate with tom-layer-v2-cost for sourced session windows; no invented tuning. No holdout reads or BTC runs during the fix. Session window and timezone are an input parameter read from the pre-registration addendum; the function refuses to run without it (no invented window).",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "JIS-NUC session 2026-10-12 (task refinement from the Codex status reply)",
+  "refs": [],
+  "result": "H3 fixed; red then green; 53 harness tests pass; MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-session-null.md",
+  "scope_in": [
+    "MyTradingSys/backtest/tom_dax_bt.py",
+    "MyTradingSys/backtest/test_tom_dax_bt.py",
+    "MyTradingSys/research/layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md"
+  ],
+  "scope_out": [
+    "holdout reads",
+    "any backtest or recall run on real data (synthetic fixtures only)",
+    "BTC runs of the current encoding (ROADMAP section 2)",
+    "the live path and shared engine files (Java, runtime/)",
+    "parameters without a trader quote (NO-SOURCE)",
+    "the original text of PRE_REG_DAX.md"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md finding H3"
+  ],
+  "state": "done",
+  "steps": [
+    "Read finding H3 in MyTradingSys/research/layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md (file legend, evidence, proposed fix) and the lines it cites.",
+    "Write the test named in Tests in MyTradingSys/backtest/test_tom_dax_bt.py and see it fail on the current code.",
+    "Fix it as the finding proposes, inside scope_in only. If it cannot be fixed without a file outside scope_in, stop: report BLOCKED with the reason.",
+    "Run MyTradingSys/backtest/test_tom_dax_bt.py (PYTHONPATH = the work tree root) until it passes. Do not run scripts/dev/run_all_tests.py: it cannot pass inside the sandbox; the runner runs the quick gate when it ships."
+  ],
+  "tests": "A synthetic day: null entries only inside the supplied session window, the null order can expire unfilled like a strategy order, and a null trade is not opened while another is live; on the current code the null enters at next-bar open across the UTC day.",
+  "title": "DAX audit H3: match null session, limit fills and opportunity selection"
+}

@@ -1,0 +1,35 @@
+{
+ "id": "lm-fabio-v3",
+ "kind": "thought_experiment",
+ "family": "Fabio V3",
+ "title": "Fabio v3 layer-3 variants A-D",
+ "provenance": "source-extracted",
+ "date": "2026-10-04",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "not recorded here (as written in layer_map)",
+ "verdict": {
+  "label": "not recorded in map",
+  "tone": "info"
+ },
+ "why": [],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "parameters": "no rule or parameter section found in the source",
+  "why": "no sentence in the source states why it passed or failed"
+ },
+ "source_files": [
+  "MyTradingSys/research/fast_track_2026-09-27/bt_runs/TRIAL_REGISTRY.csv"
+ ],
+ "commit": "9226c5fa4"
+}

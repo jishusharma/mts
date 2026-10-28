@@ -1,0 +1,15 @@
+{
+  "done_when": "last timestamp per file is yesterday UTC",
+  "finished": "2026-10-09T19:08:28Z",
+  "from": "JIS-NUC",
+  "host": "JIS-NB",
+  "id": "20261009-181324-refresh-klines-and-funding-to-yesterday",
+  "need": "Run scripts/dev/refresh_klines.py and the funding fetch in MyTradingSys/backtest/fetch_bars.py for the symbols in the registry; no mainnet keys (public endpoints only). Print row counts and last timestamp per file.",
+  "posted": "2026-10-09T18:13:24Z",
+  "result": "klines 10-08 ok (last 2026-10-08T23:59Z); 10-09 archive 404 (Binance lag); funding 2026-09 ok (through Sep 30); 2026-10 not published. Cache lives in BinanceDataFeed\\Dumps\\backtest\\raw\\, not mts-dsa.",
+  "status": "done",
+  "taken": "2026-10-09T18:48:43Z",
+  "taken_by": "JIS-NB",
+  "target": "DSA",
+  "title": "Refresh klines and funding to yesterday"
+}

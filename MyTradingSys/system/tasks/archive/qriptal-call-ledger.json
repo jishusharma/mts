@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-15T21:31:48Z",
+  "commands": [],
+  "created": "2026-10-14T05:28:38Z",
+  "depends_on": [],
+  "done_when": "CALL_LEDGER.csv + LEDGER_NOTES.md; every row carries file:line and a verbatim quote; tests green; card result = \"<n> candidates, <k> ELIGIBLE\".",
+  "from_inbox": "",
+  "goal": "One reviewed row per Qriptal statement that could be a call, from the 22 raw transcripts, so the scorer has a source of truth. Lab run 2026-10-14 (layer_lab/reports/2026-10-14_qriptal-score-binance.md) BLOCKED the scorer for lack of this ledger. Rules: research/qriptal_2026-10-10/RULES.md.",
+  "id": "qriptal-call-ledger",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [
+    "callers"
+  ],
+  "live_path": false,
+  "note": "PARKED 2026-10-15 (lab-unstall, TRACK_RECORD.md item 1-2): input data/ledger is not on JIS-NUC; the 2026-10-13 qriptal-score-binance runs ended BLOCKED at 320-474k tokens for zero output. Release (apply-op release) only after the Qriptal ledger is copied to F:/MTS/data and a pre-flight script confir",
+  "pinned": false,
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "opus-2026-10-14 (split after lab BLOCKED twice)",
+  "refs": [],
+  "result": "70 candidates, 2 ELIGIBLE (both ZPFK3ZsLwoo weekly-plan variants, HOLDOUT window; 0 in DEV). CALL_LEDGER.csv + LEDGER_NOTES.md + ledger.py + 18 tests; call times from YouTube metadata.",
+  "scope_in": [
+    "MyTradingSys/research/qriptal_2026-10-10/ledger.py",
+    "MyTradingSys/research/qriptal_2026-10-10/test_ledger.py",
+    "MyTradingSys/research/qriptal_2026-10-10/CALL_LEDGER.csv",
+    "MyTradingSys/research/qriptal_2026-10-10/LEDGER_NOTES.md",
+    "extracts/_staged_2026-09-27 (read only; repo root, NOT under MyTradingSys)",
+    "MyTradingSys/research/qriptal_2026-10-10/RULES.md (read only)"
+  ],
+  "scope_out": [
+    "scoring on candles (card qriptal-score-binance)",
+    "the live path",
+    "YouTube fetch"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-14_qriptal-score-binance.md",
+    "MyTradingSys/items/B162_qriptal_signal_layer.md"
+  ],
+  "state": "done",
+  "steps": [
+    "ledger.py: read extracts/_staged_2026-09-27/raw/qriptal_*_raw.txt; for each candidate statement write a row: file, line, verbatim quote (<= 40 words), asset, side, entry, stop, targets, call time and its source, ELIGIBLE / NOT_ELIGIBLE with the rule that decided it.",
+    "Cross-check the one structured extraction (extracts/_staged_2026-09-27/extracts/qriptal/trade_log/2026-09-20_ZPFK3ZsLwoo.md): every row there maps to a ledger row or a stated reason.",
+    "Write research/qriptal_2026-10-10/CALL_LEDGER.csv and LEDGER_NOTES.md (counts by verdict and by rule)."
+  ],
+  "tests": "test_ledger.py on 3 hand-written transcript snippets: full call -> ELIGIBLE with all fields; call without stop -> NOT_ELIGIBLE \"no stop\"; past-trade recap -> NOT_ELIGIBLE \"retrospective\". Red before ledger.py exists.",
+  "title": "Qriptal: build the call ledger from the 22 staged transcripts (B162 step 1)"
+}

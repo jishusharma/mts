@@ -1,0 +1,74 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-26T16:02:04Z",
+  "commands": [
+    "C:/Users/E-ngineers/.gemini/bin/agy.exe --print \"Follow the steps of card argon-med-trials-ledger-count-by-layer (python scripts/dev/tasks.py brief argon-med-trials-ledger-count-by-layer). Write only MyTradingSys/research/design_cards_2026-10-26/argon_trials_by_layer.md. Facts with file:line or NOT_IN_DATA; no verdicts.\" --model gemini-4-argon-medium"
+  ],
+  "created": "2026-10-26T22:50:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/design_cards_2026-10-26/argon_trials_by_layer.md exists: table family x (rows, DEV, VALIDATION, HOLDOUT, UNKNOWN) with the TRIALS.md line range for each count and a total that equals the file row count",
+  "effort": "medium",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Count how many trial rows (a row = a line starting \"| 20\"; header and blanks excluded) each layer family has in research/layer_lab/TRIALS.md and which touched DEV, VALIDATION or HOLDOUT, so a later multiple-testing correction starts from a counted number. Counts only.",
+  "id": "argon-med-trials-ledger-count-by-layer",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/design_cards_2026-10-26/argon_trials_by_layer.md: 281 rows (280 DEV ",
+      "ref": "de4e0a2ca",
+      "utc": "2026-10-26T16:02:04Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "model": "gemini-4-argon-medium",
+  "mutation_check": "",
+  "note": "REVIEWED: sonnet-reviewer-a89035 2026-10-26",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "super-c-design",
+  "refreshed": "2026-10-25T22:50:17Z",
+  "refs": [],
+  "reroute": {
+    "at": "2026-10-25T23:42:10Z",
+    "desk": "20261025-234210-argon-med-trials-ledger-count-by-layer",
+    "to": "DSA",
+    "why": "credits"
+  },
+  "result": "MyTradingSys/research/design_cards_2026-10-26/argon_trials_by_layer.md: 281 rows (280 DEV incl. 1 DEV+VALIDATION, 1 VALIDATION, 0 HOLDOUT, 1 UNKNOWN; 28 mapped across 8 families, 253 UNMAPPED)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/design_cards_2026-10-26/argon_trials_by_layer.md (new file only)"
+  ],
+  "scope_out": [
+    "live tree; deploys; any verdict to keep, drop, demote or park a layer; VALIDATION and HOLDOUT data"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/TRIALS.md",
+    "MyTradingSys/system/layer_index.json"
+  ],
+  "state": "done",
+  "steps": [
+    "Read MyTradingSys/research/layer_lab/TRIALS.md and layer_index.json",
+    "A row is a line starting \"| 20\"; header and blank lines are not rows. TRIALS.md has no window columns: derive DEV/VALIDATION/HOLDOUT from the row text, UNKNOWN where silent",
+    "Parse then count (never from truncated output); map each row to a family or UNMAPPED",
+    "Check the table total equals the file row count, then commit with a Result: line"
+  ],
+  "taken": "2026-10-26T16:02:04Z",
+  "tests": "none (run card); proof = table total equals the TRIALS.md row count",
+  "title": "[GEMINI] Argon-medium: count tries per layer family in TRIALS.md and the sealed-window reads (file:line)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

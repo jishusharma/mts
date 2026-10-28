@@ -1,0 +1,70 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-23T05:56:25Z",
+  "commands": [
+    "python -m pytest -q MyTradingSys/tests/docs"
+  ],
+  "created": "2026-10-18T21:57:07Z",
+  "depends_on": [],
+  "done_when": "tasks.py lint OK and 0 open model-lane cards without worker/est_turns.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Every open SONNET/HAIKU/OPUS card carries worker and est_turns (WORKERS.md), so dispatch can size it.",
+  "id": "card-worker-fields",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "8 sized open model cards filled (12, agent); 46 raw unsized cards left to the refiner; tes",
+      "ref": "4bc100e2",
+      "utc": "2026-10-23T05:56:25Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/s1018-204500",
+      "ref": "c4e53d0c51a0",
+      "utc": "2026-10-18T21:37:57Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "MTS_Doctor arch-cleanup 2026-10-19",
+  "refreshed": "2026-10-18T21:57:45Z",
+  "refs": [
+    "MyTradingSys/system/ARCHITECTURE.md"
+  ],
+  "result": "8 sized open model cards filled (12, agent); 46 raw unsized cards left to the refiner; test_tasks 90 OK",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/system/tasks/"
+  ],
+  "scope_out": [
+    "card goals or scope"
+  ],
+  "scope_sha": "c4e53d0c51a0",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "List open cards missing the fields.",
+    "Set them from size (S <= 15 agent, else session).",
+    "tasks.py lint; ship."
+  ],
+  "taken": "2026-10-23T05:56:25Z",
+  "tests": "scripts/dev/test_tasks.py",
+  "title": "Add worker and est_turns to the 181 open cards that lack them",
+  "weight": "",
+  "worker": "agent"
+}

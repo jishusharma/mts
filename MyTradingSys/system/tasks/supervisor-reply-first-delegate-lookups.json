@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-10-28T06:49:11Z",
+  "depends_on": [],
+  "done_when": "roles/supervisor.md carries the short rule and stays under its byte budget; role lint passes; the lint or a test fails on the old file",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gap: Supervisor did lookups inline and replied late.",
+  "id": "supervisor-reply-first-delegate-lookups",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "One coordinator doc: SUPERVISOR.md and SUPER_LOOP.md become pointers to SUPER_SESSION.md",
+      "ref": "b5aac2bf879f",
+      "utc": "2026-10-25T22:45:55Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "b5aac2bf879f One coordinator doc: SUPERVISOR.md and SUPER_LOOP.md become pointers to SUPER",
+      "ref": "MyTradingSys/system/roles/supervisor.md",
+      "utc": "2026-10-25T22:45:55Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T06:49:11Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/roles/supervisor.md"
+  ],
+  "scope_out": [
+    "unrelated files; live tree; other cards"
+  ],
+  "scope_sha": "b5aac2bf879f",
+  "size": "S",
+  "sources": [
+    "operator ask 2026-10-28 gap 17"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read the gap text and linked files",
+    "Implement the smallest change",
+    "Run the test on old and new code; record output"
+  ],
+  "tests": "role lint test fails on old supervisor.md",
+  "title": "roles/supervisor.md rule: delegate lookups to background agents, reply first with what is known",
+  "weight": "",
+  "worker": "agent"
+}

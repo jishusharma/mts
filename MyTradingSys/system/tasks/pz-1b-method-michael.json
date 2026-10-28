@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-26T20:46:42Z",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst Michael --channel @MichaelPizzino --latest 30",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/pizzino_layer_2026-10-27/method_michael.md"
+  ],
+  "created": "2026-10-26T19:08:23Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/pizzino_layer_2026-10-27/method_michael.md exists; each definition has video id, timestamp and verbatim quote, or NOT_IN_DATA; verify_extract_quotes.py exits 0",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "From the latest 30 videos of @MichaelPizzino (plus any already-stored Michael transcripts), extract how they define the 1-bar, 2-bar and 3-bar indicator, 50% correction, pivot points and retests, with timed verbatim quotes. No verdict, no invention.",
+  "id": "pz-1b-method-michael",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "method_michael.md shipped 563889ca3",
+      "ref": "318ee373a",
+      "utc": "2026-10-26T20:46:42Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-26T19:08:38Z",
+  "refs": [
+    "MyTradingSys/research/pizzino_layer_2026-10-27/PLAN.md"
+  ],
+  "result": "method_michael.md shipped 563889ca3",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/pizzino_layer_2026-10-27/method_michael.md (new file)"
+  ],
+  "scope_out": [
+    "scripts; live tree; any trading verdict"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "First list stored Michael transcripts (CBP store F:/CryptoScrapper raw_transcripts_canonical, research/*/transcripts) and reuse them; fetch only missing videos",
+    "Fetch missing captions of the latest 30 videos (on HTTP 429 record blocked_429 and stop, no retry loop)",
+    "Per video note which of 1-bar, 2-bar, 3-bar, 50% correction, pivot, retest, invalidation, timeframe, symbol appear",
+    "Write method_michael.md: per concept the definition in their words (timed verbatim quote), entry, stop, target, timeframe rules if stated, with video id; a table of dated pivot/retest calls with prices",
+    "Run verify_extract_quotes.py until exit 0; commit with a Result: line (videos read, concepts defined, NOT_IN_DATA count)"
+  ],
+  "taken": "2026-10-26T20:46:42Z",
+  "tests": "none (run card); proof = verify_extract_quotes.py exit 0",
+  "title": "[GEMINI] Pizzino Michael: extract the 1-2-3 bar method, 50% corrections, pivots, retests",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

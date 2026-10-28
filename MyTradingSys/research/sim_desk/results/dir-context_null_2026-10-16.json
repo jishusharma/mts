@@ -1,0 +1,47 @@
+{
+ "id": "dir-context_null_2026-10-16",
+ "kind": "backtest",
+ "family": "Context Null",
+ "title": "Context-null harness (2026-10-16)",
+ "provenance": "source-extracted",
+ "date": "2026-10-16",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Why: the Fable gross-effect screen's location-only control arm FAILED hard (n=1,439, mean -0.008 %, t_cost -6.0,",
+  "tone": "bad"
+ },
+ "why": [
+  "Why: the Fable gross-effect screen's location-only control arm FAILED hard (n=1,439, mean -0.008 %, t_cost -6.0,"
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "1439"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 1439,
+   "quote": "Why: the Fable gross-effect screen's location-only control arm FAILED hard (n=1,439, mean -0.008 %, t_cost -6.0,"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/context_null_2026-10-16/README.md"
+ ],
+ "commit": "ca6a9c69c"
+}

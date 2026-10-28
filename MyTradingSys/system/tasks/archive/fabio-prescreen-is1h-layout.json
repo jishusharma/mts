@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-16T05:14:26Z",
+  "commands": [],
+  "created": "2026-10-13T06:40:58Z",
+  "depends_on": [],
+  "done_when": "PRESCREEN_Is1HvdfQm5c.csv covers t=0-8881 with trade/no-trade flags and the number of windows a model must still read is stated.",
+  "from_inbox": "",
+  "goal": "scripts/dev/fabio_prescreen.py is calibrated on the DyS79Eb92Ug layout only (recall 8/8 sheets, 1/19 empty windows falsely flagged). Is1HvdfQm5c is an order-flow screen with green/red zone boxes and no order ticket in the frames checked (t=3250, 3545), so the line-to-axis cue lights 13/20 windows as 'candidate'. Find what a trade looks like in that layout and add a cue.",
+  "id": "fabio-prescreen-is1h-layout",
+  "lane": "SONNET",
+  "layers": [
+    "fabio"
+  ],
+  "live_path": false,
+  "note": "Relay queue = LAYER_REBUILD_PLAN s6 (coordinator 2026-10-15, observer). Release: tasks.py apply-op <id> release, then tasks.py check <id>",
+  "pinned": false,
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "fabio-video-prescreen"
+  ],
+  "result": "Superseded 2026-10-16: Is1HvdfQm5c was read from a local ASR transcript (D2 flipped to YES) and fully extracted (extracts/v2/fabio/Is1HvdfQm5c_v2.md). The session has no confirmed live fill with stated entry and stop (ledger +0 rows), so a frame-layout cue for its zone-box screen is not needed; fabio_prescreen.py stays calibrated on DyS79Eb92Ug only.",
+  "scope_in": [
+    "scripts/dev/fabio_prescreen.py",
+    "scripts/dev/test_fabio_prescreen.py",
+    "MyTradingSys/research/fabio_transfer/PRESCREEN_Is1HvdfQm5c.csv",
+    "F:/MTS/data/fabio_videos/prescreen_cache/Is1HvdfQm5c (cache covers t=0-5250; extract again for 5250-8881, ~100 min decode, AV1 cannot be seeked in OpenCV 5)"
+  ],
+  "scope_out": [
+    "engine code",
+    "backtests",
+    "new downloads"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read 3 flagged 'candidate' windows (first_hit_frame column) from PRESCREEN_Is1HvdfQm5c.csv and 1 'no-hit' window; write down what an open position or order looks like in this layout (or that no trade is ever drawn).",
+    "Add the cue as a per-video profile in fabio_prescreen.py; test: a synthetic zone-box frame is NOT flagged, a synthetic frame with the cue IS (fails first).",
+    "Re-screen windows 0-5250, state how many are flagged; extract the rest (0.5 of the video) in the background, then screen it.",
+    "Add Is1HvdfQm5c to VALIDATED only if the cue was confirmed on at least one read trade."
+  ],
+  "tests": "scripts/dev/test_fabio_prescreen.py: zone-box frame not flagged, cue frame flagged (fail on the current script).",
+  "title": "Fabio pre-screen: add an Is1HvdfQm5c layout cue (it draws zone boxes, no order ticket) so its windows can be flagged"
+}

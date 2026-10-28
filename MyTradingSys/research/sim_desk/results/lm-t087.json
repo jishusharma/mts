@@ -1,0 +1,50 @@
+{
+ "id": "lm-t087",
+ "kind": "thought_experiment",
+ "family": "Session Levels",
+ "title": "Failed first break of prior-day high/low, session targets",
+ "provenance": "source-extracted",
+ "date": "2026-10-09",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-01-01 to 2026-10-07 (as written in the source)",
+ "verdict": {
+  "label": "no edge (net -0.036%, t -1.72); EU-touch cells insufficient n",
+  "tone": "bad"
+ },
+ "why": [
+  "Events found: high side 466, low side 447 (days with a failed first break).",
+  "asia_targettouch_asiahigh: n=345 target 27% / stop 67% / neither 6%, net -0.044% t -1.36 win 30% -> no edge",
+  "asia_targettouch_asialow: n=301 target 34% / stop 60% / neither 6%, net -0.025% t -0.66 win 36% -> no edge",
+  "asia_targettouch_asiaboth: n=646 target 30% / stop 64% / neither 6%, net -0.035% t -1.43 win 33% -> no edge"
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "345"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 345,
+   "quote": "- asia_targettouch_asiahigh: n=345 target 27% / stop 67% / neither 6%, net -0.044% t -1.36 win 30% -> no edge"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "parameters": "no rule or parameter section found in the source",
+  "n_trades": "not a trade test (thought experiment)"
+ },
+ "source_files": [
+  "MyTradingSys/research/t087_session_levels_2026-10-09/RESULT.md"
+ ],
+ "commit": "71df3aad8"
+}

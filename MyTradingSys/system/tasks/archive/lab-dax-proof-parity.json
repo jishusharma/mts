@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-12T06:08:40Z",
+  "commands": [],
+  "created": "2026-10-11T20:16:25Z",
+  "depends_on": [],
+  "done_when": "The new test fails before and passes after, the quick gate passes, and the report lists the changed files with the red-then-green output for H1.",
+  "from_inbox": "",
+  "goal": "The Python proof count matches the current Java counter (volume_spike excluded, B144), the printed proof ceiling is right, and rows or snapshots made under the old count are rejected.",
+  "id": "lab-dax-proof-parity",
+  "kind": "build",
+  "lane": "CODEX",
+  "live_path": false,
+  "note": "Captured by lab-audit-tom-dax-bt. Current Java excludes volume_spike; add a Java-derived parity fixture. No holdout reads or BTC runs during the fix.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "JIS-NUC session 2026-10-12 from the lab audit report (operator: feed scoped tasks to Codex)",
+  "refs": [],
+  "result": "H1 fixed: volume_spike no longer counted (Java B144), stale rows and snapshots refused, proof ceiling printed as 1; 33 harness tests pass, quick gate green outside the sandbox. reports/2026-10-12_lab-dax-proof-parity.md",
+  "scope_in": [
+    "MyTradingSys/backtest/tom_dax_bt.py",
+    "MyTradingSys/backtest/test_tom_dax_bt.py",
+    "MyTradingSys/research/layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md"
+  ],
+  "scope_out": [
+    "holdout reads",
+    "any backtest or recall run on real data (synthetic fixtures only)",
+    "BTC runs of the current encoding (ROADMAP section 2)",
+    "the live path and shared engine files (Java, runtime/)",
+    "parameters without a trader quote (NO-SOURCE)",
+    "the original text of PRE_REG_DAX.md"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md finding H1"
+  ],
+  "state": "done",
+  "steps": [
+    "Read finding H1 in MyTradingSys/research/layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md (file legend, evidence, proposed fix) and the lines it cites.",
+    "Write the test named in Tests in MyTradingSys/backtest/test_tom_dax_bt.py and see it fail on the current code.",
+    "Fix it as the finding proposes, inside scope_in only. If it cannot be fixed without a file outside scope_in, stop: report BLOCKED with the reason.",
+    "python MyTradingSys/backtest/test_tom_dax_bt.py and python scripts/dev/run_all_tests.py --quick pass."
+  ],
+  "tests": "A candidate whose only detected proof is volume_spike counts 0 (expected value read from the Java counter the finding cites) and rescore accepts it; on the current code the count is 1 and rescore raises.",
+  "title": "DAX audit H1: align proof counting with current Java and reject stale snapshots"
+}

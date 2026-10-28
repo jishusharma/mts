@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-15T21:26:10Z",
+  "commands": [],
+  "created": "2026-10-15T13:53:02Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/opr_preopen_tops_<date>/REPORT.md with n, outcome frequencies + Wilson CIs per speed tertile and flow bin, S1-S3 in the trial ledger.",
+  "from_inbox": "",
+  "goal": "Build and run the G5 DEV event study in drafts/OPR-PREOPEN-TOPS.md: for each pre-open top break on DEV days, outcome frequencies by break speed (S1-S3), with OI/CVD/net-delta covariates. Holdout sealed.",
+  "id": "opr-preopen-tops-g5-dev-event-study-brea",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "bb-rsi-40-60 setup draft session 2026-10-15",
+  "refs": [],
+  "result": "INCONCLUSIVE (screen, ran before G3 marks by operator decision 2026-10-16): n=308 DEV events, H1 quick-short n=105 mean G -0.011%, H2 slow-long n=104 mean +0.037%, both below the 200 bar; MyTradingSys/research/opr_preopen_tops_2026-10-16/RESULT.md",
+  "scope_in": [
+    "MyTradingSys/research/setup_catalog_2026-10-15/drafts/OPR-PREOPEN-TOPS.md",
+    "MyTradingSys/research/setup_catalog_2026-10-15/sources/OPERATOR_2026-10-15_preopen_tops_break_speed.md",
+    "MyTradingSys/backtest/layers/FORMULAS.md",
+    "MyTradingSys/research/levels_sizing_2026-10-14/METHOD.md"
+  ],
+  "scope_out": [
+    "HOLDOUT or VALIDATION reads",
+    "live tree",
+    "any trade call or live rule",
+    "editing SETUP_CATALOG.md"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/setup_catalog_2026-10-15/drafts/OPR-PREOPEN-TOPS.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Check DEV 1m klines and OI metrics coverage in LAYERS.md:35 window; list gaps.",
+    "Write the top finder, break detector and speed S1-S3 with a test on synthetic bars (fail-first).",
+    "Run DEV only; fill the outcome tables with n and Wilson 95 % CI; cells with n<10 are not read.",
+    "Pick one speed definition on DEV, append S1-S3 to the trial ledger, write REPORT.md."
+  ],
+  "tests": "Fail-first test on synthetic 3m bars: a quick and a slow approach to a top give S1, S2, S3 as hand-computed from FORMULAS.md.",
+  "title": "OPR-PREOPEN-TOPS G5 DEV event study: break speed vs session outcome"
+}

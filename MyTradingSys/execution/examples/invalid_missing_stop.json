@@ -1,0 +1,10 @@
+{
+  "plan_id": "invalid_missing_stop",
+  "account": "subaccount_1",
+  "instrument": "BTC-PERPETUAL",
+  "side": "LONG",
+  "validity": {"start": "2026-09-27T10:00:00Z", "end": "2026-09-27T11:00:00Z"},
+  "entry": {"type": "market"},
+  "base_unit": 100,
+  "caps": {"max_notional_usd": 5000, "max_loss_usd": -200, "max_concurrent_orders": 5}
+}

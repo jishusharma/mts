@@ -1,0 +1,102 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest scripts/dev/test_verdicts.py -q",
+    "python scripts/dev/verdicts.py count --split DEV",
+    "python scripts/dev/verdicts.py count --split DEV --ledger"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-27T21:28:20Z",
+    "misses": 45,
+    "reads": [
+      "scripts/dev/test_verdicts.py",
+      "scripts/dev/verdicts.py",
+      "MyTradingSys/research/VERDICTS.csv",
+      "MyTradingSys/research/TRIAL_LEDGER.csv"
+    ],
+    "session": "agent-abe7ae4d6c9b3da3f"
+  },
+  "created": "2026-10-25T19:40:20Z",
+  "depends_on": [],
+  "done_when": "Live-file numbers after the edits: verdicts.py count --split DEV prints 56 (57 today: -2 duplicate filter rows, +1 kurisko split DEV; simulated on a copy); 'session-extreme fade' matches 2 VERDICTS rows (4 today); rows :25 and :50 read BLOCKED; TRIAL_LEDGER.csv gains 62 rows (step 6); test_verdicts.py new case passes.",
+  "est_turns": 28,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Apply REGATE_AUDIT.md fix items 3-7 to the registries: VERDICTS.csv BLOCKED backfill (bb_top :25, pit_levels :50, kurisko split DEV), kill scopes (pit_levels, bb_top BLOCKED.md, eur_low override), ctx rows :29-30, drop duplicate filter rows :37-38, count-only TRIAL_LEDGER.csv rows. Item 2 is already done.",
+  "id": "fable-run2-regate-b-verdicts-and-ledger-rows",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Session flow states x context: PRE_REG, 604 DEV rows, event table, verdict INCONCLUSIVE",
+      "ref": "80c9df1a7056",
+      "utc": "2026-10-23T12:18:19Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "65bf6cf82e50 Review gemini-q batch 2 (1/3): context-factors PRE_REG_V3, flowhorse feasibil",
+      "ref": "MyTradingSys/research/context_factors_pit_2026-10-16/PRE_REG_V3.md",
+      "utc": "2026-10-18T13:05:26Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer Agent a894c6f7 verified, planner DECISION OURS). OWNER (OURS) 2026-10-26: ledger rows ctx 16, pit 8, eur_low 3 are written here, not by t08-ledger-lowercase-trial-coverage (BUILT.csv only). Split from fable-run2-regate-fixes-1to8. Card c also edits PRE_REG_V3.md: run one after the other. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-25T21:15:41Z",
+  "refs": [
+    "MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/VERDICTS.csv",
+    "MyTradingSys/research/VERDICTS_OVERRIDES.csv",
+    "MyTradingSys/research/TRIAL_LEDGER.csv",
+    "scripts/dev/test_verdicts.py",
+    "MyTradingSys/research/bb_top_reversal_2026-10-18/BLOCKED.md",
+    "MyTradingSys/research/bb_top_reversal_2026-10-18/PRE_REG.md",
+    "MyTradingSys/research/pit_levels_2026-10-16/BLOCKED.md",
+    "MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/PRE_REG.md",
+    "MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/trials.csv",
+    "MyTradingSys/research/context_factors_2026-10-16/PRE_REG.md",
+    "MyTradingSys/research/context_factors_2026-10-16/trials.csv",
+    "MyTradingSys/research/context_factors_pit_2026-10-16/PRE_REG_V2.md",
+    "MyTradingSys/research/context_factors_pit_2026-10-16/PRE_REG_V3.md",
+    "MyTradingSys/research/context_factors_pit_2026-10-16/trials.csv",
+    "MyTradingSys/research/cryptocred_htf_2026-10/count_power.json"
+  ],
+  "scope_out": [
+    "scripts/dev/prereg_gate.py (card a)",
+    "context_factors V2 BLOCKED.md and pit PRE_REG_V3.md (card c)",
+    "WT-T01..T04 and trendlines ledger rows (counts not in the audit)",
+    "VALIDATION and HOLDOUT reads",
+    "TRIAL_LEDGER_BUILT.csv (t08-ledger-lowercase-trial-coverage)"
+  ],
+  "scope_sha": "80c9df1a7056",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md:60-84 (Q6 table and fix list)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read REGATE_AUDIT.md fix items 3-7 and the Q6 table (lines 60-84); run verdicts.py count --split DEV (57) and --ledger (76) for the start numbers.",
+    "Write the live-file case in test_verdicts.py; run it and see it fail.",
+    "VERDICTS.csv: rows :25 bb_top and :50 pit_levels to BLOCKED (verdicts.parse_study dry run); kurisko split DEV; delete the duplicate 'filter' rows :37-38; row :29 (context_factors) kill_scope quoted from context_factors_2026-10-16/PRE_REG.md:98-100.",
+    "Row :30 (context_factors_pit) kill_scope quoted from context_factors_pit_2026-10-16/PRE_REG_V2.md:56-57 (OURS: the latest scope sentence; V3 only adds unpowered-cell rules). Not the ctx PRE_REG.md:98-100 text, which defines the composite only.",
+    "Kill-scope sentences quoted from each own PRE_REG into bb_top and pit_levels BLOCKED.md; for eur_low one VERDICTS_OVERRIDES.csv row (with source) quoting followups PRE_REG.md:34.",
+    "Append 62 count-only rows to TRIAL_LEDGER.csv (existing columns): bb_top 12 (bb_top PRE_REG.md:9), eur_low 3 (followups trials.csv), context_factors 16 distinct (factor, side) of its trials.csv, pit trials.csv 8, pit V3 14 (PRE_REG_V3.md:16 and :52-55), cryptocred 9 (count_power.json rows). Recount each; record any difference in the commit.",
+    "pytest test_verdicts.py; run count --split DEV and --ledger; sync.py ship."
+  ],
+  "tests": "scripts/dev/test_verdicts.py new live-file case: count_variants(DEV) == 56; no study_dir 'filter'; kurisko split DEV; bb_top and pit_levels rows BLOCKED; no context_factors row kill_scope has 'session-extreme fade'. Fails now (57, UNPARSED, present).",
+  "title": "Fable run 2 REGATE fixes 3-7: VERDICTS BLOCKED backfill, kill scopes, duplicate rows, count-only TRIAL_LEDGER rows",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

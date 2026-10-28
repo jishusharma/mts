@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-10-28T08:18:15Z",
+  "depends_on": [],
+  "done_when": "research/dedupe_audit_2026-10/INFRA.md exists: ranked table of overlaps with evidence, winner by the default rule, proposed edit.",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Find overlapping hooks, scheduled/startup mechanisms, stale device-task lists and duplicate published artifact pages. Winner by the default rule in OPERATOR_DECISIONS.md d-dedupe-lean-no-contradiction; never ask the operator.",
+  "id": "infra-architecture-duplication-audit",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "dispatch-check-vs-decisions",
+    "planner-conflicting-cards-vs-decisions"
+  ],
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T08:18:35Z",
+  "refs": [
+    "MyTradingSys/system/OPERATOR_DECISIONS.md"
+  ],
+  "result": "",
+  "scope_in": [
+    ".claude/settings*.json hooks",
+    "SCHEDULING_POLICY.md and startup mechanisms",
+    "device-task registry vs older lists (DEVICES.md etc.)",
+    "published artifact pages (artifact list)",
+    "research/dedupe_audit_2026-10/INFRA.md"
+  ],
+  "scope_out": [
+    "Audit only: no process stopped, no task or page changed or deleted"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Inventory hooks, startup/scheduled mechanisms, the device-task registry and older lists, published pages",
+    "Mark overlaps and contradictions with evidence, winner by the default rule",
+    "Write INFRA.md ranked"
+  ],
+  "tests": "Check: each row cites a path or command output reproducible on trunk.",
+  "title": "Infra and architecture duplication audit: hooks, startup mechanisms, device-task registry, pages",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

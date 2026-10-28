@@ -1,0 +1,52 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-19T23:01:39Z",
+  "depends_on": [],
+  "done_when": "FORMULAS.md has sections 25 and 26 with definition, source file:line and a 4-bar worked example computed by hand (not by running code); formula ids s25 and s26 resolve in tasks.py check; test_formulas_snapshot.py recomputes the examples from the written definition and passes.",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Add FORMULAS.md sections 25 (snapshot VWAP and +-1s/+-2s bands) and 26 (session CVD) from MarketDataSnapshot.java buildVwap (688-726) and buildCvd (733-743): typical price (h+l+c)/3, cumulative PV/V over bars since 00:00 UTC (fallback last 200 1m bars when none), volume-weighted sigma, band rounding 2 dp; CVD = sum(2*taker_buy - vol), with a hand-computed worked example each.",
+  "id": "formulas-md-definitions-for-snapshot-vwa",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DRAFT 2026-10-26 Session_Planner (OURS): C2 class: formulas feed every layer; non-Claude spec review by Lab_Guy before ready (promotion gate). Java is read, not edited. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "Session_Planner",
+  "refs": [
+    "MyTradingSys/research/indicator_audit_2026-10-14/AUDIT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/FORMULAS.md",
+    "MyTradingSys/tests/test_formulas_snapshot.py",
+    "src/main/java/datafeed/MarketDataSnapshot.java (read only)"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "live path, orders, deploy, restarts",
+    "new hooks, gate steps or rules beyond the card"
+  ],
+  "size": "S",
+  "sources": [
+    "src/main/java/datafeed/MarketDataSnapshot.java:688-743",
+    "MyTradingSys/research/indicator_audit_2026-10-14/AUDIT.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read buildVwap/buildCvd and the dailyBars rule (lines 91-100); write each definition in words and symbols.",
+    "Compute a 4-bar example by hand (bars with h,l,c,vol,taker_buy listed); write the numbers.",
+    "Add the two sections after section 24; write the python test that implements the written definition and asserts the hand numbers.",
+    "Do not touch the Java; list differences found as findings."
+  ],
+  "tests": "MyTradingSys/tests/test_formulas_snapshot.py: VWAP, sigma, +-1s, +-2s and CVD of the 4-bar example equal the FORMULAS.md hand numbers; fails before the sections exist.",
+  "title": "FORMULAS.md definitions for snapshot VWAP (+-1s/2s bands) and session CVD so the indicator audit can sample them",
+  "weight": "CRUCIAL",
+  "worker": "agent"
+}

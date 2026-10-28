@@ -1,0 +1,13 @@
+{
+  "done_when": "the capture json is on origin/fast-track and the settlement entries show whether trade cashflow and settlement session_profit_loss carry the same amount (double count question in items/B149)",
+  "finished": "2026-10-10T12:21:59Z",
+  "from": "JIS-NUC",
+  "host": "JIS-NB",
+  "id": "20261009-205713-b149-capture-the-transaction-log-across-",
+  "need": "On a day a position stayed open across 08:00 UTC (daily_loss_monitor log shows it): cd to the live repo root ; python MyTradingSys/execution/capture_txlog_settlement.py --hours 36 --out MyTradingSys/research/txlog_capture_<date>.json ; then python -c \"import json;d=json.load(open('MyTradingSys/research/txlog_capture_<date>.json'));print(d['summary']['by_type']);print(d['summary']['settlements'][:3])\". Testnet only, read-only, writes only --out. Commit the json with sync.py ship.",
+  "posted": "2026-10-09T20:57:13Z",
+  "result": "2026-10-10 12:20Z relay B: research/loose_code/txlog_capture_2026-10-10_jishu_11.json + _jishu_13.json. Settlement -1.59e-06 + close -4e-08 = whole PnL -1.636e-06 BTC: no double count; mainnet_pnl.py must include type settlement (B149 item).",
+  "status": "done",
+  "target": "JIS-NB",
+  "title": "B149: capture the transaction log across an 08:00 UTC settlement"
+}

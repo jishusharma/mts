@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-15T22:02:52Z",
+  "commands": [],
+  "created": "2026-10-13T17:10:37Z",
+  "depends_on": [
+    "qriptal-call-ledger"
+  ],
+  "done_when": "The named test passes and the report lists the changed files and the red-then-green test output (the runner's ship runs the quick gate).",
+  "from_inbox": "",
+  "goal": "Score every Qriptal call from the 22 staged transcripts on Binance BTCUSDT 1m klines (0.05%/side fees, as posted); write research/qriptal_2026-10-10/SCORECARD.md: n, win rate, net R vs his claim 67.1%/3.99%/0.63%. Dev data only; no YouTube fetch. Brief: items/B162_qriptal_signal_layer.md, flow audit step 1. Input = CALL_LEDGER.csv ELIGIBLE rows only. Rules: research/qriptal_2026-10-10/RULES.md.",
+  "id": "qriptal-score-binance",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [
+    "callers"
+  ],
+  "live_path": false,
+  "note": "2026-10-14 scope fixed: transcripts are at repo-root extracts/_staged_2026-09-27; first run BLOCKED on the wrong MyTradingSys/ prefix. 2026-10-14: BLOCKED twice for lack of a call ledger; back to raw, waits on qriptal-call-ledger. 2026-10-15 q12: stays p1 (operator answer).",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refs": [],
+  "result": "Scored n = 0: 0 ELIGIBLE rows in DEV, 2 in HOLDOUT (one weekly plan, not read per card scope-out); no win rate or net R vs 67.1% / 3.99% / 0.63%; power 0 at n = 0, 56 scored calls give 80% power. score_calls.py + 26 tests (red first), SCORECARD.md generated.",
+  "scope_in": [
+    "MyTradingSys/research/qriptal_2026-10-10",
+    "extracts/_staged_2026-09-27 (read only; repo root, NOT under MyTradingSys)",
+    "F:\\MTS\\data\tom_raw\\klines (BTCUSDT 1m, JIS-NUC, read only)",
+    "MyTradingSys/research/qriptal_2026-10-10/RULES.md (read only)"
+  ],
+  "scope_out": [
+    "the live path",
+    "holdout reads",
+    "parameters without a trader quote (NO-SOURCE)"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Write the test named in Tests first and see it fail on the current code.",
+    "Implement the goal inside scope_in only; new behaviour sits behind a flag that is off by default.",
+    "Run the test file you changed (PYTHONPATH = the work tree root) until it passes. Do not run scripts/dev/run_all_tests.py: tests that create git repositories are refused in the sandbox; the runner runs the quick gate when it ships."
+  ],
+  "tests": "scorer unit test on 3 hand-built calls (win, stop, never-filled), red first",
+  "title": "Qriptal: score his posted calls on Binance candles (B162)"
+}

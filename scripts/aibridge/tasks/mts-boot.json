@@ -1,0 +1,13 @@
+{
+  "name": "mts-boot",
+  "description": "DSA boot in one call: host, work-tree state, sync start, status, news, unshipped work",
+  "params": { "repo": "C:\\Users\\E-ngineers\\IdeaProjects\\mts-dsa", "hours": "24" },
+  "steps": [
+    { "name": "host", "cmd": "hostname", "cwd": "{repo}", "show": 1 },
+    { "name": "branch", "cmd": "git status -sb", "cwd": "{repo}", "show": 3 },
+    { "name": "sync-start", "cmd": "python scripts/dev/sync.py start", "cwd": "{repo}", "timeout_s": 120, "show": 6 },
+    { "name": "status", "cmd": "python scripts/dev/make_status.py", "cwd": "{repo}", "timeout_s": 120, "show": 2 },
+    { "name": "news", "cmd": "python scripts/dev/sync.py news {hours}", "cwd": "{repo}", "timeout_s": 120, "show": 15 },
+    { "name": "where", "cmd": "python scripts/dev/sync.py where", "cwd": "{repo}", "timeout_s": 120, "show": 8 }
+  ]
+}

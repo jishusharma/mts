@@ -1,0 +1,23 @@
+== B187 evidence: PRE_REG_V2 item-2 power gate ==
+source COUNT.txt: DEV days=912, feasible T days=662, feasible n_T=1835
+inputs: sd=1.46 R, cost=0.179 R, plausible gross effect=0.3 R (OURS)
+m=42: z_holm=3.241 MDE=0.232 R MDE+cost=0.411 R days needed=2,427 vs available 662 -> BLOCK
+m=62: z_holm=3.351 MDE=0.238 R MDE+cost=0.417 R days needed=2,559 vs available 662 -> BLOCK
+
+== calendar ceilings (pre-2024-07-01 history, this study's sealed cut) ==
+DEV window 2022-01-01..2024-06-30: 912 days (file says so)
+calendar 2020-01-01..2024-06-30: 1643 days; est feasible at DEV ratio 0.726: 1,193
+calendar 2017-08-17..2024-06-30: 2510 days; est feasible: 1,822
+needed (m=42, plausible 0.30 R): 2,427 -> from 2020 no pre-2024 history reaches it even at 100 % feasible (1643 < 2,427)
+from 2017 (Binance spot era, assumed start) it needs 96.7% of calendar days feasible; the DEV ratio gives 1,822
+DEV_EXT 2020-2021 decision days in context study: 641 (COUNTS_DEV_EXT.md)
+pit study with DEV_EXT added (estimate): 662 + 465 = 1,127 days, still < 2,427
+
+== where the data is on this machine ==
+F:/MTS/data/dev_ext_2019_2021 exists: False  (dev_ext.py EXT_DIR points here)
+F:/MTS/data/binance_raw contents: ['aggTrades']
+F:/MTS/data/tom_raw/klines files: 89
+
+== ERRATUM 2026-10-18 (text only; the numbers above are unchanged) ==
+PRE_REG_V2.md said "even at zero cost n_needed is about 1,000 days"; hand value (4.083*1.46/0.30)^2 = 394.8 = about 395 days. The 2,427 line (cost 0.179 R) and 662 days stand.
+Q76 direct count (layer_lab/reports/2026-10-18_q76-dev-ext-power-check.md): 662 baseline + 545 DEV_EXT days = 1,207 of 2,427 (Haiku blind about 1,215), supersedes the +465 estimate above.

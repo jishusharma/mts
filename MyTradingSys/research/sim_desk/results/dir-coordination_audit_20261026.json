@@ -1,0 +1,40 @@
+{
+ "id": "dir-coordination_audit_20261026",
+ "kind": "audit",
+ "family": "Coordination Audit 20261026",
+ "title": "MTS task-flow audit — 26 October 2026",
+ "provenance": "source-extracted",
+ "date": "2026-10-26",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "repair the existing pipeline before adding messaging infrastructure. The earlier recommendation to improve the watcher alone was incomplete. Dispatch reads stale state, misses most claims, and the claim writer can grant the same task twice…",
+  "tone": "info"
+ },
+ "why": [
+  "54 open claims, of which 36 were over 24 hours old. The task selector sees only 3 legacy claims. Age does not authorize deleting a claim.",
+  "NUC dispatch returned 88 cards. Eight would be excluded when given the complete claim set; 21 carry STALE tags that tasks.py next filters but dispatch does not. These groups overlap; do not add them.",
+  "Existing tests: 73 passed, one failed across Supervisor/context/ship-time tests; a further 268 passed with 868 subtests across tasks/signals/Codex/role-loader/discovery tests.",
+  "Public GitHub API: latest 30 completed CI runs, 27 success / 3 failure; creation-to-update median 171 s, p90 191 s, max 265 s. Workflow start delay was zero; individual job queue time is not inferred from that."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/coordination_audit_20261026/REPORT.md"
+ ],
+ "commit": "3dc47d91d"
+}

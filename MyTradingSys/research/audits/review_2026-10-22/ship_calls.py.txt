@@ -1,0 +1,29 @@
+import json,datetime,collections
+from pathlib import Path
+root=Path.home()/".claude"/"projects"
+since=datetime.datetime(2026,10,19).timestamp()
+ts=lambda s: datetime.datetime.fromisoformat(s.replace("Z","+00:00")).timestamp()
+ships=[]
+for f in root.glob("*/*.jsonl"):
+    if f.stat().st_mtime<since or "scratch-2026-10-22" in str(f): continue
+    uses={}
+    for line in f.open(encoding="utf-8",errors="ignore"):
+        try:e=json.loads(line)
+        except:continue
+        t=e.get("timestamp"); tt=ts(t) if t else None
+        c=(e.get("message") or {}).get("content")
+        if e.get("type")=="assistant" and isinstance(c,list):
+            for b in c:
+                if b.get("type")=="tool_use" and b["name"]=="Bash":
+                    cmd=(b.get("input") or {}).get("command","")
+                    if "sync.py ship" in cmd and "nohup" not in cmd and "--release" in cmd or "sync.py ship" in cmd: uses[b["id"]]=(tt,cmd)
+        elif e.get("type")=="user" and isinstance(c,list):
+            for b in c:
+                if b.get("type")=="tool_result" and b.get("tool_use_id") in uses:
+                    t0,cmd=uses.pop(b["tool_use_id"])
+                    ships.append((datetime.datetime.fromtimestamp(t0).strftime("%m-%d"),round((tt-t0)),("detached" if "nohup" in cmd or "&" in cmd[-40:] else "fg")))
+by=collections.defaultdict(list)
+for d,s,k in ships:
+    if k=="fg": by[d].append(s)
+for d in sorted(by):
+    v=sorted(by[d]); print(d,"foreground ship calls",len(v),"median s",v[len(v)//2],"p90",v[int(len(v)*.9)-1 if len(v)>1 else 0],"max",v[-1],">=300s:",sum(1 for x in v if x>=300))

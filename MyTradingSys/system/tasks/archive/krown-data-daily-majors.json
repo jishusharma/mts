@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-15T21:31:17Z",
+  "commands": [
+    "python MyTradingSys/backtest/test_fetch_binance_archive.py   (new: the default futures URL is unchanged after adding --market and --symbol)",
+    "python MyTradingSys/backtest/fetch_binance_archive.py --market spot --symbol BTCUSDT --datasets klines --interval 1d --start 2017-08-17 --end 2026-09-30",
+    "python MyTradingSys/backtest/fetch_binance_archive.py --market spot --symbol ETHUSDT --datasets klines --interval 1d --start 2017-08-17 --end 2026-09-30",
+    "python MyTradingSys/backtest/layers/timeframe/tf_resample.py   (weekly bars, Monday 00:00 UTC; see test_tf_resample.py for the call form)"
+  ],
+  "created": "2026-10-14T15:57:18Z",
+  "depends_on": [],
+  "done_when": "files under Dumps/backtest/raw/ (gitignored) and a committed coverage table research/krown_ta101_2026-10-13/DATA_COVERAGE.md: per series first and last bar, bar count, gaps, SHA256 results; weekly bars built by tf_resample.py with Monday 00:00 UTC start",
+  "from_inbox": "",
+  "goal": "Fetch checksummed daily history for the Krown studies: BTCUSDT spot 1d and 1w from 2017-08, ETHUSDT, BNBUSDT, SOLUSDT (Binance spot, from data.binance.vision), and Coinbase BTC-USD daily candles (public exchange API, no auth) for the volume-venue question (conflict C6).",
+  "id": "krown-data-daily-majors",
+  "lane": "DSA",
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "note": "PARKED until Krown G2+G3 (LAYER_REBUILD_PLAN s3; coordinator 2026-10-15, OPERATOR_DECISIONS q-pause-krown-detectors)",
+  "pinned": false,
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md",
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv",
+    "MyTradingSys/research/krown_ta101_2026-10-13/PRE_REG_KROWN.md"
+  ],
+  "result": "Result: BTCUSDT spot 1d (3332 bars 2017-08-17..2026-09-30, 0 gaps) and 1w (456 published, 8 gap weeks in Binance's own file; 475 weeks built from daily, 352/352 DEV weeks identical to published), ETH/BNB/SOL 1d, Coinbase BTC-USD 1d (4106 bars 2015-07-20..2026-10-15) fetched to F:/MTS/data/krown_daily; 508 monthly zips matched their published SHA256; DATA_MANIFEST.csv + DATA_COVERAGE.md committed, data not in git. Dedicated fetch script instead of editing fetch_binance_archive.py (OURS).",
+  "scope_in": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/",
+    "MyTradingSys/backtest/fetch_binance_archive.py (add --market spot, default futures, default output unchanged)"
+  ],
+  "scope_out": [
+    "live path",
+    "any backtest"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "add --market spot and --symbol to fetch_binance_archive.py (defaults unchanged: futures, BTCUSDT) with a test that the default URL is byte-identical",
+    "run the commands for BTC, ETH, BNB, SOL (spot 1d from the listing date); build weekly bars; fetch Coinbase BTC-USD daily candles in pages",
+    "write DATA_COVERAGE.md (first and last bar, count, gaps, SHA256); never open bars dated 2025-07-01 or later for a study"
+  ],
+  "tests": "docs/run lane: the unchanged-default test for fetch_binance_archive.py plus SHA256 verification output",
+  "title": "Krown data: BTCUSDT spot 1d/1w from 2017-08 plus ETH/BNB/SOL majors and Coinbase BTC-USD daily volume, checksummed; DONE when: files + a coverage table (first/last bar, gaps) are committed under research"
+}

@@ -1,0 +1,143 @@
+{
+ "id": "wavetrend_atlas",
+ "kind": "backtest",
+ "parity": null,
+ "family": "WaveTrend",
+ "title": "WaveTrend behaviour atlas (9 frozen cells)",
+ "what": [
+  {
+   "name": "Idea",
+   "value_plain": "WaveTrend (LazyBear) oscillator events on BTCUSDT: touches of the +/-53 band, crosses and pivots, each in a context of trend, higher-timeframe zone, volatility or time of day.",
+   "label": "OURS"
+  },
+  {
+   "name": "Oscillator settings",
+   "value_plain": "hlc3, EMA 10, EMA 21, SMA 4, 0.015, bands +/-53 and +/-60",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Outcome",
+   "value_plain": "Signed return from the open after the event to the close 12 bars later, in the direction the event implies, before fees and funding.",
+   "label": "OURS"
+  },
+  {
+   "name": "Cells and tests",
+   "value_plain": "9 cells frozen before the run, Holm correction over 9 (no tuning after the result).",
+   "label": "OURS"
+  },
+  {
+   "name": "Costs",
+   "value_plain": "None: this is a gross behaviour table, not a strategy test.",
+   "label": "OURS"
+  }
+ ],
+ "how": "Count events, then measure the gross 12-bar outcome for each frozen cell and compare with the same events without the context, the indicator alone and a random clock. Nothing is adopted from it.",
+ "window": "DEV only, 2022-04-01 to 2024-06-30 (sealed VALIDATION and HOLDOUT windows were not read)",
+ "verdict": {
+  "label": "INCONCLUSIVE: 0 of 9 cells pass the gross screen",
+  "tone": "warn"
+ },
+ "why": [
+  "9 of 9 primary arms are marked FAIL; the other cells carry no tuned rule.",
+  "Every mean is within a few hundredths of a percent and mostly inside its standard error, so there is no sign of an edge even before fees.",
+  "Verdict as written: INCONCLUSIVE - 0 of 9 frozen cells pass the gross DEV screen. FAIL/INCONCLUSIVE: stop; this atlas adopts no rule and the cells are not tuned or re-cut; any strategy needs its own PRE_REG with Binance-venue costs, VALIDATION once, HOLDOUT sealed."
+ ],
+ "kpis": [
+  {
+   "label": "primary arms",
+   "value": "9"
+  },
+  {
+   "label": "arms failing",
+   "value": "9",
+   "tone": "bad"
+  },
+  {
+   "label": "arms passing",
+   "value": "0"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "table",
+   "title": "Primary arms (gross, % per event)",
+   "cols": [
+    "Arm",
+    "Events",
+    "Mean %",
+    "Std error %",
+    "Verdict"
+   ],
+   "rows": [
+    [
+     "W01 5m A1_L53 trend:trend_with",
+     "3893",
+     "-0.0143",
+     "0.0108",
+     "FAIL"
+    ],
+    [
+     "W02 5m A1_L53 htf:htf_mid",
+     "4196",
+     "-0.0078",
+     "0.0096",
+     "FAIL"
+    ],
+    [
+     "W03 5m A2_L53 trend:trend_with",
+     "3509",
+     "-0.0043",
+     "0.0110",
+     "FAIL"
+    ],
+    [
+     "W04 15m A2_L53 trend:trend_with",
+     "1154",
+     "-0.0209",
+     "0.0325",
+     "FAIL"
+    ],
+    [
+     "W05 15m B2 htf:htf_mid",
+     "788",
+     "-0.0578",
+     "0.0329",
+     "FAIL"
+    ],
+    [
+     "W06 15m B2 trend:trend_with",
+     "538",
+     "-0.0422",
+     "0.0402",
+     "FAIL"
+    ],
+    [
+     "W07 1h C1 trend:trend_with",
+     "298",
+     "-0.0295",
+     "0.1457",
+     "FAIL"
+    ],
+    [
+     "W08 1h C1 htf:htf_mid",
+     "271",
+     "0.0897",
+     "0.1228",
+     "FAIL"
+    ],
+    [
+     "W09 1h B1 htf:htf_mid",
+     "947",
+     "0.0241",
+     "0.0418",
+     "FAIL"
+    ]
+   ],
+   "caption": "Gross mean of the 12-bar signed return. No example trades exported: this study counts events, it has no trade list."
+  }
+ ],
+ "source_files": [
+  "MyTradingSys/research/wavetrend_2026-10-17/RESULT.md"
+ ],
+ "commit": "249f01fd0"
+}

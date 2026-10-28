@@ -1,0 +1,31 @@
+{
+  "registry_id": "tf_registry_default_2026-09-28",
+  "source": "operator",
+  "date": "2026-09-28",
+  "note": "D1 timeframe registry: minute/hour frames align to Unix epoch; 2d/3d/5d use epoch-day index mod N from anchor_date; 1w opens Monday 00:00 UTC (epoch_day % 7 == 4); 1M is calendar month in UTC. day_reset_seconds frames restart at 00:00 UTC and end the day with a short bar. All times UTC. Adding a timeframe is a one-line addition below.",
+  "timeframes": {
+    "1m":  {"unit": "seconds", "seconds": 60},
+    "2m":  {"unit": "seconds", "seconds": 120},
+    "3m":  {"unit": "seconds", "seconds": 180},
+    "4m":  {"unit": "seconds", "seconds": 240},
+    "5m":  {"unit": "seconds", "seconds": 300},
+    "10m": {"unit": "seconds", "seconds": 600},
+    "15m": {"unit": "seconds", "seconds": 900},
+    "30m": {"unit": "seconds", "seconds": 1800},
+    "1h":  {"unit": "seconds", "seconds": 3600},
+    "2h":  {"unit": "seconds", "seconds": 7200},
+    "3h":  {"unit": "seconds", "seconds": 10800},
+    "4h":  {"unit": "seconds", "seconds": 14400},
+    "6h":  {"unit": "seconds", "seconds": 21600},
+    "7h":  {"unit": "day_reset_seconds", "seconds": 25200, "flag": "NO-SOURCE anchor (T090 2026-10-09: no source for 00:00 UTC on crypto; the only sourced 7h anchor is 18:00 New York = 22:00/23:00 UTC, TradingView script 7Hour_Levels, a tool description not a test; use offsets in run_t090_anchor_probe.py): restarts at 00:00 UTC each day like TradingView intraday bars; 00/07/14/21 then a 3h stub"},
+    "7h_epoch": {"unit": "seconds", "seconds": 25200, "flag": "NO-SOURCE anchor (T090: nobody cites epoch alignment for 7h): epoch-aligned, drifts 3h against the UTC day each day"},
+    "8h":  {"unit": "seconds", "seconds": 28800},
+    "12h": {"unit": "seconds", "seconds": 43200},
+    "1d":  {"unit": "days", "days": 1, "anchor_date": "1970-01-01"},
+    "2d":  {"unit": "days", "days": 2, "anchor_date": "1970-01-01"},
+    "3d":  {"unit": "days", "days": 3, "anchor_date": "1970-01-01"},
+    "5d":  {"unit": "days", "days": 5, "anchor_date": "1970-01-01"},
+    "1w":  {"unit": "week"},
+    "1M":  {"unit": "month"}
+  }
+}

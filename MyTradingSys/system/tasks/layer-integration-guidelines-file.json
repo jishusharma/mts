@@ -1,0 +1,83 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-27T21:15:34Z",
+  "commands": [],
+  "created": "2026-10-25T08:00:38Z",
+  "depends_on": [],
+  "done_when": "LAYER_INTEGRATION.md exists, at most 40 lines, each step has a tracked path that exists (git ls-files); QUICK_ANSWERS.md Layers bullet links it; mts_doctor DEAD-REF and DUPLICATE stay 0 for it; test_integrity passes.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Write MyTradingSys/system/LAYER_INTEGRATION.md: the 12 integration steps a layer passes (G0-G5, labels, pre-reg, record, validation, live parity, promotion, confluence) each as one line with the file:line of the rule, and point QUICK_ANSWERS.md Layers at it.",
+  "id": "layer-integration-guidelines-file",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "LAYER_INTEGRATION.md created: 12 steps, each with file:line pointer; QUICK_ANSWERS.md poin",
+      "ref": "5a700d9f5",
+      "utc": "2026-10-27T21:15:34Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into fast-track",
+      "ref": "6cb4e0a8670a",
+      "utc": "2026-10-27T18:33:05Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "6cb4e0a8670a Merge remote-tracking branch 'origin/fast-track' into fast-track",
+      "ref": "MyTradingSys/system/QUICK_ANSWERS.md",
+      "utc": "2026-10-27T18:33:05Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): LAYER_REALITY_2026-10-25.md lines 31-37 stitched the 12 steps; no single file existed. Pointers only, no copied rules. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-27T19:30:03Z",
+  "refs": [
+    "MyTradingSys/research/mts_doctor/LAYER_REALITY_2026-10-25.md"
+  ],
+  "result": "LAYER_INTEGRATION.md created: 12 steps, each with file:line pointer; QUICK_ANSWERS.md pointer added",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/system/LAYER_INTEGRATION.md",
+    "MyTradingSys/system/QUICK_ANSWERS.md",
+    "MyTradingSys/research/mts_doctor/LAYER_REALITY_2026-10-25.md"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "live path, orders, deploy, restarts",
+    "new hooks, gate steps or rules beyond the card"
+  ],
+  "scope_sha": "6cb4e0a8670a",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/mts_doctor/LAYER_REALITY_2026-10-25.md:31-37",
+    "MyTradingSys/system/PROMOTION_PIPELINE.md",
+    "MyTradingSys/system/LAYER_LAB.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Read LAYER_REALITY lines 31-37 and each cited source; verify every cited file exists.",
+    "Write the 12 lines with file:line pointers; no rule text copied.",
+    "Add the pointer in QUICK_ANSWERS.md; run mts_doctor DEAD-REF check."
+  ],
+  "taken": "2026-10-27T21:15:34Z",
+  "tests": "python scripts/dev/mts_doctor.py --no-process finds no DEAD-REF/DUPLICATE for LAYER_INTEGRATION.md; python -m pytest MyTradingSys/tests/docs -q passes.",
+  "title": "LAYER_INTEGRATION.md: one guidelines file for putting a layer live",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

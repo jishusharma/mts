@@ -1,0 +1,49 @@
+"""Timestamp-only L2 reproduction. No indicators, signals, prices or returns."""
+import ast
+import csv
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+ROOT = Path.cwd()
+data = Path('F:/MTS/data/tom_raw/klines')
+stamps = set()
+rows = 0
+for p in sorted(data.glob('*.csv')):
+    with p.open(encoding='utf-8-sig', newline='') as f:
+        for row in csv.reader(f):
+            if row and row[0].isdigit():
+                stamps.add(int(row[0]))
+                rows += 1
+stamps = sorted(stamps)
+def utc(t):
+    return datetime.fromtimestamp(t/1000, timezone.utc).isoformat()
+paths = {
+    't055': ('MyTradingSys/backtest/layers/run_t055.py', [1,5,15]),
+    'rsi': ('MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py', [15,60,240,1440]),
+    'fabio': ('MyTradingSys/backtest/layers/fabio/run_backtest.py', [5,15,60]),
+    'cryptocred': ('MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py', [15,60,240]),
+}
+out = []
+for runner, (path, minutes) in paths.items():
+    tree = ast.parse((ROOT/path).read_text(encoding='utf-8'))
+    fn = next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name=='chronological_split')
+    ns = {}
+    exec(compile(ast.Module(body=[fn], type_ignores=[]), path, 'exec'), ns)
+    # Validate extracted split against hand-counted 10-element case.
+    a,b,n = ns['chronological_split'](list(range(10)))
+    assert a==list(range(7)) and b==[7,8,9] and n==7
+    for m in minutes:
+        buckets = sorted({t//(m*60000)*(m*60000) for t in stamps})
+        a,b,n = ns['chronological_split'](buckets)
+        out.append(dict(runner=runner, file=path, line=fn.lineno, timeframe_minutes=m,
+                        n=len(buckets), start=utc(buckets[0]), end=utc(buckets[-1]),
+                        oos_start=utc(b[0]), in_main_holdout=b[0]>=1751328000000,
+                        status='COUNTERFACTUAL copied timestamp set, not default loader or historical reconstruction'))
+result = dict(raw_rows=rows, unique_timestamps=len(stamps), copied_start=utc(stamps[0]), copied_end=utc(stamps[-1]),
+              default_paths={str(p):p.exists() for p in [ROOT/'Dumps/backtest/raw_1m_2022/klines',ROOT/'Dumps/backtest/raw/klines']},
+              results=out, historical='BLOCKED: no dated original runtime input snapshot or immutable manifest; git excludes raw inputs')
+(HERE/'out/split_probe.json').write_text(json.dumps(result, indent=2)+'\n',encoding='utf-8',newline='\n')
+print(json.dumps({k:v for k,v in result.items() if k!='results'}))
+print('oos_start_span', min(r['oos_start'] for r in out), max(r['oos_start'] for r in out))

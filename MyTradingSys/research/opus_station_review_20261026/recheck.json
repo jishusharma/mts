@@ -1,0 +1,70 @@
+{
+  "head": "09e917af22fd16c613ae44c266539eae14702f5e",
+  "results": {
+    "fetch_does_not_refresh_dispatch": {
+      "status": "NOT_REPRODUCED",
+      "detail": "successor not excluded by dependency; dispatch=['successor']"
+    },
+    "racing_claims_both_succeed": {
+      "status": "NOT_REPRODUCED",
+      "detail": "success messages=1 err=already claimed by DESKTOP-F7IU69N / worker-b: same-task. Pick another task or area, or ask them (a claim over 24 h old is stale: release it)."
+    },
+    "tasks_misses_side_claim": {
+      "status": "NOT_REPRODUCED",
+      "detail": "tasks.open_claims=['same-task']"
+    },
+    "dispatch_bypasses_stop_tag": {
+      "status": "NOT_REPRODUCED",
+      "detail": "dispatch=[] excluded=[{'id': 'already-shipped', 'state': 'ready', 'reason_code': 'shipped', 'why': 'SHIPPED@deadbeef'}]"
+    },
+    "failed_ship_emits_done": {
+      "status": "NOT_REPRODUCED",
+      "detail": "signal=None"
+    },
+    "green_completion_not_watched": {
+      "status": "NOT_REPRODUCED",
+      "detail": ""
+    },
+    "uninvoked_tool_passes_wiring": {
+      "status": "REPRODUCED",
+      "evidence": {
+        "classification": {
+          "scripts/dev/uninvoked_feature.py": "DEV-TOOL"
+        },
+        "gate_errors": []
+      }
+    },
+    "gemini_full_id_release_mismatch": {
+      "status": "NOT_REPRODUCED",
+      "detail": "release(full id) err=no claim a-card-name-that-is-deliberately-longer-than-forty-characters on origin/claims gemini_queue passes full id=False"
+    },
+    "ship_wall_excludes_ci_wait": {
+      "status": "REPRODUCED",
+      "evidence": {
+        "order": [
+          "ship_wall_recorded",
+          "push_returned",
+          "ci_wait_started"
+        ],
+        "CI_wait_cap_seconds": 600
+      }
+    },
+    "fast_gate_missing_from_supervisor": {
+      "status": "NOT_REPRODUCED",
+      "detail": "fast=1 busy={'busy': 1, 'total': 2, 'free': 1, 'pids': [4248]}"
+    },
+    "timeout_cached_as_pass": {
+      "status": "NOT_REPRODUCED",
+      "detail": ""
+    },
+    "worker_brief_drops_context_contract": {
+      "status": "NOT_REPRODUCED",
+      "detail": ""
+    }
+  },
+  "counts": {
+    "REPRODUCED": 2,
+    "NOT_REPRODUCED": 10,
+    "ERROR": 0
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-15T19:55:27Z",
+  "commands": [
+    "git cat-file -e origin/fast-track:scripts/sched/register_live_mirror.ps1  (non-zero exit = not shipped yet: stop, see step 1)",
+    "powershell -File scripts\\sched\\register_live_mirror.ps1 -Repo C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed",
+    "powershell -File scripts\\sched\\register_live_mirror.ps1 -Repo C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed -Apply",
+    "Get-ScheduledTask -TaskName MTS-LiveMirror | Get-ScheduledTaskInfo",
+    "Get-Content F:/MTS/Mirror/CURRENT",
+    "python scripts/dev/live_mirror.py brief"
+  ],
+  "created": "2026-10-12T15:34:42Z",
+  "depends_on": [],
+  "done_when": "MTS-LiveMirror task registered from scripts/sched/register_live_mirror.ps1 (Get-ScheduledTask shows it); CURRENT under F:\\MTS\\Mirror advances at least twice unattended; live_mirror.py brief prints status OK from a JIS-NB worktree.",
+  "from_inbox": "",
+  "goal": "A scheduled publisher keeps F:\\MTS\\Mirror fresh (CURRENT younger than 10 min) with no manual run, and JIS-NB worktrees read it locally (pull --root F:\\MTS\\Mirror).",
+  "id": "live-mirror-stale-published-2026-10-11-2",
+  "lane": "JIS-NB",
+  "layers": [
+    "live_engine"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "claude JIS-NB 2026-10-14 (docs+cards pass)",
+  "refs": [],
+  "result": "MTS-LiveMirror registered (Ready, 5-min repeat); CURRENT advanced unattended v191344Z,v191634Z,v192245Z; brief OK 11 min; added PUBLISH_FAIL.json + brief PUBLISHER FAILING line (irregular cadence/exit 267014 now visible)",
+  "scope_in": [
+    "scripts/sched/register_live_mirror.ps1 (written on parallel branch jis-nb/fix-sched-catchup: merge it, do not rewrite it)",
+    "scripts/dev/live_mirror.py (publish, pull, brief) and MyTradingSys/system/LIVE_MIRROR.md",
+    "F:\\MTS\\Mirror (CURRENT pointer and the v<utc> version folders)"
+  ],
+  "scope_out": [
+    "any trading, gating or pause code reading the mirror: it is data, never authority (LIVE_MIRROR.md)",
+    "stopping or restarting trading processes, HALT or AUTO_PAUSE files",
+    "STATUS.md publish heartbeat line (last clause of the title): follow-up card once the task runs"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/LIVE_MIRROR.md Changes 1, 2, 8: separate share root F:\\MTS\\Mirror, CURRENT pointer moves last, publish is its own process installed by a desk task",
+    "Read 2026-10-14 12:16Z: F:/MTS/Mirror/CURRENT = v20261011T200930Z (manual publish, ~3 days old); SMB share MTS-Mirror exists; no MTS-LiveMirror scheduled task; same install as desk row 20261011-201038-install-live-mirror-on-jis-nb"
+  ],
+  "state": "done",
+  "steps": [
+    "If scripts/sched/register_live_mirror.ps1 is not on origin/fast-track (branch jis-nb/fix-sched-catchup not shipped yet), stop: write the blocker in note and leave the card. Else read it: MTS-LiveMirror, 5-minute repeat, publish runs in the live tree (-Repo must hold .mts_live).",
+    "On JIS-NB run the dry run, read it, then the same line with -Apply. Get-ScheduledTask MTS-LiveMirror must show Ready and, after 5 min, a LastRunTime.",
+    "Read F:/MTS/Mirror/CURRENT, wait 6 minutes, read it again: it must differ with no manual publish. Repeat once.",
+    "From a JIS-NB worktree: live_mirror.py brief (it reads F:\\MTS\\Mirror on JIS-NB by default once jis-nb/fix-mirror-root is on origin): status OK, published under 10 min ago."
+  ],
+  "tests": "",
+  "title": "Live mirror stale: published 2026-10-11 20:09Z, 19 h old at 15:25Z 10-12; NUC reads cannot check HALT, layer fires, setup_candidates; add publish heartbeat to STATUS.md"
+}

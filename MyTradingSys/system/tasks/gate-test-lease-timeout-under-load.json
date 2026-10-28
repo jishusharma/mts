@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-25T22:02:10Z",
+  "commands": [],
+  "created": "2026-10-24T19:50:00Z",
+  "depends_on": [],
+  "done_when": "test_lease.py runs under 30 s alone with the same 24 behaviours checked; no ship fails on it under parallel load; shipped with git cherry empty.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "MyTradingSys/tests/test_lease.py passes alone (24 tests, 108 s) but times out at the 240 s ship-gate limit when several ships run at once; sim-v2 lost 2 ship attempts to it on 2026-10-25. Make it fast or load-robust (cut real sleeps, fake the clock) without weakening what it checks.",
+  "id": "gate-test-lease-timeout-under-load",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "test_lease.py: ~60 fewer git spawns (330->270), held-lease template, 1-round push-error te",
+      "ref": "a1c750df",
+      "utc": "2026-10-25T22:02:10Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "test_lease: build repos once per run, trim 4-round push-error test (no sleeps), skip globa",
+      "ref": "11850c8c776e",
+      "utc": "2026-10-24T20:05:41Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-25T21:45:58Z",
+  "refs": [],
+  "result": "test_lease.py: ~60 fewer git spawns (330->270), held-lease template, 1-round push-error test; still spawn-bound, not <30 s under 98% CPU",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/tests/test_lease.py",
+    "the lease module it tests (read only unless a clock hook is needed)"
+  ],
+  "scope_out": [
+    "Live tree, HALT, deploys, mainnet, account data, .secrets; gate timeout value"
+  ],
+  "scope_sha": "11850c8c776e",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Profile where the 108 s goes",
+    "Replace real waits with a fake clock",
+    "Ship"
+  ],
+  "taken": "2026-10-25T22:02:10Z",
+  "tests": "Every existing assertion kept; a timing check that the file runs under 30 s; any new test fails on the pre-change code.",
+  "title": "test_lease.py exceeds the 240 s gate limit at 100% CPU (sim-v2 lost 2 ships)",
+  "weight": "",
+  "worker": "agent"
+}

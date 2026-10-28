@@ -1,0 +1,55 @@
+{
+ "id": "dir-bollinger_2026-10-14",
+ "kind": "backtest",
+ "family": "Bollinger",
+ "title": "Bollinger Bands: band walk (\"dance\"), setups and BTC settings (sources, 2026-10-14)",
+ "provenance": "source-extracted",
+ "date": "2026-10-14",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Tiers: T1 = peer-reviewed or primary author; T2 = practitioner with reproducible backtest (data, period, fees stated); T3 = blog/opinion/no data; REJECT = unverifiable, blocked with no readable abstract, or marketing. N…",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Tiers: T1 = peer-reviewed or primary author; T2 = practitioner with reproducible backtest (data, period, fees stated); T3 = blog/opinion/no data; REJECT = unverifiable, blocked with no readable abstract, or marketing. Numbers carry their s…",
+  "tone": "info"
+ },
+ "why": [
+  "No source gives a numeric \"close enough to the band\" rule. The only tolerance language is %b (0 = lower band, 1 = upper band, 0.5 = middle). LuxAlgo says readings pinned near 1 quantify a walk but does not say what counts as pinned; \"3 or more closes within a…",
+  "Evidence on profit is thin and regime-dependent. Index tests net of costs show no edge over buy-and-hold [4]; the famous stock edge faded after the rule became popular [5]; crypto grids show big gains in bull windows and losses in bear windows [8]; a Bollinge…",
+  "Tolerance for \"close to the band\" (what exists and what does not)",
+  "Nothing we fetched backtests this scaling. The only source for the idea on Bollinger Bands is [10] (opinion). Bollinger rule 21 says bands work on any bar interval as long as bars contain enough activity [1]; he does not say to scale by hours."
+ ],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "58"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 58,
+   "quote": "Band-walk continuation / breakout Buy a close above the upper band, exit below the lower band (S&P 500, 1960 to Apr 2026) CAGR 5.7% ex dividends, 58 trades, invested about 64% of time, max drawdown 3…"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window"
+ },
+ "source_files": [
+  "MyTradingSys/research/bollinger_2026-10-14/SOURCES.md"
+ ],
+ "commit": "c1af99fe2"
+}

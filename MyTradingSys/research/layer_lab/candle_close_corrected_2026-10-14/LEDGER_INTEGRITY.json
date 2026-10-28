@@ -1,0 +1,5 @@
+{
+  "status": "PASS",
+  "canonical_ledger_sha256": "76df3c2f8e5b0d350fbae45cf98e07a35b56fc19ba8fc62916b19c788d33fa22",
+  "reason": "CSV re-encoding altered byte representation; rebuilt identical cached ledger from unchanged DEV inputs/functions; no statistical analysis rerun"
+}

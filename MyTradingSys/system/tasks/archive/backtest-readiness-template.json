@@ -1,0 +1,41 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-11T18:48:54Z",
+  "commands": [],
+  "created": "2026-10-11T18:00:25Z",
+  "depends_on": [],
+  "done_when": "PRE_REG_TEMPLATE.md + test green + LESSONS_LEARNED entry + VISION link in the commit.",
+  "from_inbox": "",
+  "goal": "Every layer backtest answers the same 12 questions before it runs; the checklist would have stopped most wasted runs (classes C1, C2, C8).",
+  "id": "backtest-readiness-template",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "cloud-research 2026-10-11 (C-Cloud BACKTEST_FAILURES_RESEARCH.md; operator: 'get this into action')",
+  "refs": [],
+  "result": "MyTradingSys/backtest/PRE_REG_TEMPLATE.md + test_pre_reg_template.py green",
+  "scope_in": [
+    "MyTradingSys/backtest/",
+    "MyTradingSys/system/LESSONS_LEARNED.md",
+    "MyTradingSys/PROJECT_VISION.md"
+  ],
+  "scope_out": [
+    "any backtest run",
+    "changing PRE_REG_DAX.md"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md section 6"
+  ],
+  "state": "done",
+  "steps": [
+    "Copy section 6 of BACKTEST_FAILURES_RESEARCH.md into MyTradingSys/backtest/PRE_REG_TEMPLATE.md as 12 numbered items with a 'answer + evidence file:line' slot each.",
+    "Add one LESSONS_LEARNED entry (encoding fidelity, extraction from frames, market/timeframe transfer) and link the template from PROJECT_VISION DIRECTION UPDATE.",
+    "Add test_pre_reg_template.py: the template has 12 numbered items, and any HOME_FIT_AUDIT_*.md present has all 12 answered."
+  ],
+  "tests": "test_pre_reg_template.py: the 12-item check passes on the new template and fails with the file absent.",
+  "title": "Adopt the 12-point backtest readiness checklist as the pre-registration template"
+}

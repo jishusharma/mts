@@ -1,0 +1,30 @@
+layer,size_usd,max_loss_usd,stop_pct,stop_usd,fee_rt_usd,fee_to_stop_taker,fee_to_stop_with_slip,fee_to_maxloss,cap_pct_of_size,note
+layers (default),20,2,1.0,0.2,0.02,0.1,0.14,0.01,10.0,fixed bracket stop_pct 1.0 (auto_trader.py:72)
+layer:turn_of_candle:,20,2,1.0,0.2,0.02,0.1,0.14,0.01,10.0,fixed bracket stop_pct 1.0
+layer:rsi:rsi_events:5m,50,2,1.0,0.5,0.05,0.1,0.14,0.025,4.0,fixed bracket stop_pct 1.0
+layer:rsi:rsi_events:15m,100,3,1.0,1.0,0.1,0.1,0.14,0.0333,3.0,fixed bracket stop_pct 1.0
+layer:rsi:rsi_events:1h,250,5,1.0,2.5,0.25,0.1,0.14,0.05,2.0,fixed bracket stop_pct 1.0
+layer:rsi:malkan_,500,10,1.0,5.0,0.5,0.1,0.14,0.05,2.0,fixed bracket stop_pct 1.0
+layer:session:,150,3,1.0,1.5,0.15,0.1,0.14,0.05,2.0,fixed bracket stop_pct 1.0
+layer:positioning:,750,15,1.0,7.5,0.75,0.1,0.14,0.05,2.0,fixed bracket stop_pct 1.0
+layer:fabio:cvd_absorption:15m,100,3,1.0,1.0,0.1,0.1,0.14,0.0333,3.0,fixed bracket stop_pct 1.0
+layer:fabio:cvd_absorption:1h,300,6,1.0,3.0,0.3,0.1,0.14,0.05,2.0,fixed bracket stop_pct 1.0
+layer:fabio:escalation:,400,8,1.0,4.0,0.4,0.1,0.14,0.05,2.0,fixed bracket stop_pct 1.0
+layer:fabio:volume_fvg:,1000,20,1.0,10.0,1.0,0.1,0.14,0.05,2.0,fixed bracket stop_pct 1.0
+layer:cryptocred:sr_flip:15m,200,4,1.0,2.0,0.2,0.1,0.14,0.05,2.0,fixed bracket stop_pct 1.0
+layer:cryptocred:sr_flip:1h,600,12,1.0,6.0,0.6,0.1,0.14,0.05,2.0,fixed bracket stop_pct 1.0
+layer:cryptocred:fib_pullback:15m,350,7,1.0,3.5,0.35,0.1,0.14,0.05,2.0,fixed bracket stop_pct 1.0
+layer:cryptocred:fib_pullback:1h,800,16,1.0,8.0,0.8,0.1,0.14,0.05,2.0,fixed bracket stop_pct 1.0
+layer:rsi_divergence:,20,2,1.0,0.2,0.02,0.1,0.14,0.01,10.0,fixed bracket stop_pct 1.0
+layer:session_levels:,20,2,1.0,0.2,0.02,0.1,0.14,0.01,10.0,fixed bracket stop_pct 1.0
+layer:bb_top_reversal:,20,2,1.0,0.2,0.02,0.1,0.14,0.01,10.0,fixed bracket stop_pct 1.0
+layer:candle_close:,20,2,1.0,0.2,0.02,0.1,0.14,0.01,10.0,fixed bracket stop_pct 1.0
+layer:levels:,20,2,1.0,0.2,0.02,0.1,0.14,0.01,10.0,fixed bracket stop_pct 1.0
+layer:wlow_bounce:,20,2,1.0,0.2,0.02,0.1,0.14,0.01,10.0,fixed bracket stop_pct 1.0
+layer:cryptocred:failed_msb:,200,4,1.0,2.0,0.2,0.1,0.14,0.05,2.0,fixed bracket stop_pct 1.0
+tom (stop 0.044% of price),20,5,0.044,0.0088,0.02,2.2727,3.1818,0.004,25.0,stop comes from the alert; max_fee_to_stop 0.3 rejects fee/stop > cut (needs stop >= 0.333 %)
+tom (stop 0.07% of price),20,5,0.07,0.014,0.02,1.4286,2.0,0.004,25.0,stop comes from the alert; max_fee_to_stop 0.3 rejects fee/stop > cut (needs stop >= 0.333 %)
+tom (stop 0.13% of price),20,5,0.13,0.026,0.02,0.7692,1.0769,0.004,25.0,stop comes from the alert; max_fee_to_stop 0.3 rejects fee/stop > cut (needs stop >= 0.333 %)
+tom (stop 0.333% of price),20,5,0.333,0.0666,0.02,0.3003,0.4204,0.004,25.0,stop comes from the alert; max_fee_to_stop 0.3 rejects fee/stop > cut (needs stop >= 0.333 %)
+tom (stop 0.5% of price),20,5,0.5,0.1,0.02,0.2,0.28,0.004,25.0,stop comes from the alert; max_fee_to_stop 0.3 rejects fee/stop > cut (needs stop >= 0.333 %)
+tom (stop 1.0% of price),20,5,1.0,0.2,0.02,0.1,0.14,0.004,25.0,stop comes from the alert; max_fee_to_stop 0.3 rejects fee/stop > cut (needs stop >= 0.333 %)

@@ -1,0 +1,14 @@
+{
+  "plan_id": "valid_limit_short",
+  "account": "subaccount_1",
+  "instrument": "BTC-PERPETUAL",
+  "side": "SHORT",
+  "validity": {"start": "2026-09-27T12:00:00Z", "end": "2026-09-27T16:00:00Z"},
+  "entry": {"type": "limit", "price": 51500},
+  "base_unit": 50,
+  "stop": {"type": "trailing_percent", "percent_below_entry": 1.5},
+  "targets": [
+    {"amount_percent": 100, "pnl_target_percent": 3.0}
+  ],
+  "caps": {"max_notional_usd": 3000, "max_loss_usd": -150, "max_concurrent_orders": 3}
+}

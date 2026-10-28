@@ -1,0 +1,43 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-15T21:13:59Z",
+  "commands": [],
+  "created": "2026-10-15T19:40:00Z",
+  "depends_on": [],
+  "done_when": "No demote path leaves a sized, rule-mapped setup tradable; run_all_tests --quick green.",
+  "from_inbox": "",
+  "goal": "Finding H2 (MyTradingSys/research/fable_audit_2026-10-16/PROMOTION_REVIEW.md): demote --to off removes the registry entry and the layer returns to trading (layer_rules + size_overrides still match). Make off at least as restrictive as shadow and let verify() catch sized prefixes with no registry entry.",
+  "id": "fable-h2-demote-off-blocklist",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "pinned": true,
+  "prio": 0,
+  "refine_tries": 0,
+  "refined_by": "fable-testnet-adversarial-review",
+  "refs": [],
+  "result": "H2 already on origin/fast-track in 644ca8b6 (demote off -> trade_blocklist + reason; verify flags sized prefixes); test_promote 45 OK",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/promotion/promote.py (demote, verify)",
+    "MyTradingSys/backtest/layers/promotion/test_promote.py",
+    "MyTradingSys/system/PROMOTION_PIPELINE.md (Demote section)"
+  ],
+  "scope_out": [
+    "auto_trader.py (card fable-h1-promotion-default-deny owns the consumer side)",
+    "live tree, processes, deploys"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/fable_audit_2026-10-16/PROMOTION_REVIEW.md"
+  ],
+  "state": "done",
+  "steps": [
+    "demote --to off: also write setup_id into auto_trader_config.json trade_blocklist_parked with reason 'demoted off <utc>' (or refuse when the config is unreadable).",
+    "verify(): add a problem for every size_overrides prefix (longer than 'layer:') that has neither a registry entry nor a trade_blocklist/parked entry.",
+    "Doc: 'off' = blocked, never 'today's behaviour'."
+  ],
+  "tests": "test_promote: demote --to off on a testnet entry leaves the prefix in trade_blocklist_parked (fails today); verify() flags a sized prefix without registry or blocklist (fails today).",
+  "title": "promote.py demote --to off must not re-enable trading"
+}

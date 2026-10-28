@@ -1,0 +1,61 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/test_prereg_gate.py",
+    "python scripts/dev/verdicts.py check"
+  ],
+  "created": "2026-10-18T21:05:00Z",
+  "depends_on": [],
+  "done_when": "prereg_gate.py --m auto uses count_with_ledger (75 + new cells); VERDICTS.csv and BLOCKED.md fixes (items 2-6 of REGATE_AUDIT.md) and TRIAL_LEDGER.csv count-only rows (item 7) and context_factors V2 BLOCKED.md / pit V3 amendment (item 8) are shipped; test_prereg_gate.py and verdicts.py check pass.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Execute the 8-item fix list from Fable run 2 (MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md:73-83): (1) prereg_gate.py --m auto uses count_with_ledger; (2) VERDICTS.csv wavetrend W04-W08 -> INCONCLUSIVE, cost 0.14, one_run yes; (3) re-backfill BLOCKED rows bb_top :25, pit_levels :50, kurisko split DEV; (4) kill-scope sentences for pit_levels, bb_top, eur_low; (5) context_factors rows :29-30 kill_scope from PRE_REG.md:98-100; (6) drop duplicate filter rows :37-38; (7) append missing count-only rows to TRIAL_LEDGER.csv; (8) write context_factors V2 BLOCKED.md (demote context-composite-v2-dev-read) and amend pit V3 PRE_REG_V3.md with m=89.",
+  "id": "fable-run2-regate-fixes-1to8",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:results CLASS:C2 REVIEWER:none WEIGHT:CRUCIAL. Created by Pipeliner from wrong-channel desk row 20261018-194127 (Fable run 2 done: REGATE_AUDIT.md). T0 mechanical checks passed, awaiting non-Gemini Lab_Guy ACCEPT stamp for C2/CRUCIAL promotion.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "gemini-yt-pipeliner",
+  "refreshed": "2026-10-18T21:05:00Z",
+  "refs": [
+    "MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md",
+    "scripts/dev/prereg_gate.py",
+    "scripts/dev/verdicts.py",
+    "MyTradingSys/research/VERDICTS.csv",
+    "MyTradingSys/research/TRIAL_LEDGER.csv"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md",
+    "scripts/dev/prereg_gate.py",
+    "scripts/dev/test_prereg_gate.py",
+    "MyTradingSys/research/VERDICTS.csv",
+    "MyTradingSys/research/TRIAL_LEDGER.csv"
+  ],
+  "scope_out": [
+    "live tree",
+    "VALIDATION and HOLDOUT reads"
+  ],
+  "scope_sha": "60c1b88e5269",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "Write a fail-first test in scripts/dev/test_prereg_gate.py asserting --m auto uses verdicts.count_with_ledger (fails today: 57 vs 75), then fix scripts/dev/prereg_gate.py:44-46.",
+    "Apply REGATE_AUDIT.md fix items 2-6 to VERDICTS.csv and the study BLOCKED.md / PRE_REG.md files, and item 7 to TRIAL_LEDGER.csv.",
+    "Write context_factors_2026-10-16/BLOCKED.md (m=76, 0.30 R gate) and amend context_factors_pit_2026-10-16/PRE_REG_V3.md with m=89 / z=3.449 (item 8); run test_prereg_gate.py and verdicts.py check."
+  ],
+  "tests": "scripts/dev/test_prereg_gate.py fixture with TRIAL_LEDGER > VERDICTS fails before the fix and passes after; verdicts.py check passes.",
+  "title": "Fable run 2 REGATE_AUDIT fixes 1-8: prereg_gate --m auto uses ledger, VERDICTS/BLOCKED/TRIAL_LEDGER repairs, ctx V2 BLOCKED",
+  "weight": "CRUCIAL",
+  "worker": "session",
+  "class": "C2"
+}

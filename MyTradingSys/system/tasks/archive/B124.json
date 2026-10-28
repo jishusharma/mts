@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-11T05:27:38Z",
+  "commands": [
+    "python -m pytest scripts/dev/test_testnet_canary.py -q"
+  ],
+  "created": "2026-10-10T18:29:05Z",
+  "depends_on": [],
+  "done_when": "pytest green with the 6 new tests; canary output shows a journal row (OK or RED) and no plan id; commit shipped; row B124 CLOSED.",
+  "from_inbox": "",
+  "goal": "testnet_canary goes RED when an open plan (auto_trades.jsonl trade_attempt outcome entered, no later trade_closed) has no execution/journal/<plan_id>.jsonl file.",
+  "id": "B124",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "Canary runs on the live host and reaches it by auto_deploy (scripts/dev is not a restarted process).",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "refiner 2026-10-10",
+  "refs": [
+    "B124"
+  ],
+  "result": "6 new tests red-before/green, 31 pass in test_testnet_canary.py",
+  "scope_in": [
+    "scripts/dev/testnet_canary.py (new check_journal, called in main after check_brakes; update the module docstring list)",
+    "scripts/dev/test_testnet_canary.py"
+  ],
+  "scope_out": [
+    "auto_trader.py, position_manager.py, journal.py (live code, untouched)",
+    "importing anything from MyTradingSys/execution (canary is stdlib-only, read-only)",
+    "printing plan ids (test_no_ids_or_secrets_in_output)"
+  ],
+  "size": "M",
+  "sources": [
+    "BUGS.md:235 row B124",
+    "MyTradingSys/items/B124_journal_dir_open_plan_check.md",
+    "MyTradingSys/system/LESSONS_LEARNED.md:130-131 (journal dir vanished; wakes check it holds the open plans' files)",
+    "MyTradingSys/execution/auto_trader.py:661 (open_plans_from_log)"
+  ],
+  "state": "done",
+  "steps": [
+    "Read auto_trader.open_plans_from_log (auto_trader.py:661) and mirror its rule in the canary with stdlib json; log path MyTradingSys/execution/auto_trades.jsonl; journal path MyTradingSys/execution/journal/<plan_id>.jsonl (journal.py _journal_path).",
+    "Write the new tests first (red: no journal check exists): open plan without a journal file = RED; with file = OK; closed plan without file = OK; no open plans = OK; auto_trades.jsonl missing = WARN; output carries counts only, no plan id.",
+    "Implement check_journal: OK 'N open, all journaled'; RED 'M of N open plans have no journal file'; missing log = WARN. Call it from main.",
+    "Run the command below; the 25 existing tests stay green (make_repo's log row has no trade_attempt, so no open plans).",
+    "Close row B124 with the test names and commit as Receipt."
+  ],
+  "tests": "test_testnet_canary.py: journal_missing_for_open_plan_is_red, journal_present_is_ok, closed_plan_without_journal_is_ok, no_open_plans_ok, trades_log_missing_is_warn, journal_output_has_no_plan_id (all new, red before).",
+  "title": "testnet_canary journal check for each open plan"
+}

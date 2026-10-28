@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-14",
+  "pre_reg_commit": "97f2c42",
+  "research_gate": "12 tests executed, no skips; PASS",
+  "files": {
+    "PRE_REG.md": "10fa96f36cc96b6ce75f91abb4393f9f245a0f06cbcfdbdd8ddaa063aa9b8d11",
+    "PRE_OUTCOME_FIXES.md": "fd1e14ea81ae997a48f3468aa275b0cb3b489434b30b9165350170ee6eefc2e8",
+    "engine.py": "eb287333867adf9e854be685a83230c6e5d490d0e063b51edce46b55b9333e6e",
+    "rules.py": "0c4e36768ee0e78c9fa39a7a5da95b6543d7f6d63dea47594dafd482a87abab5",
+    "test_rules.py": "23bfda0ee82a4d488b60d4e91e8e08ddaf1b584d219241194ba6299db3924c73",
+    "test_engine.py": "9c750104dd230ab444f8d244cbc982b25ace519f9134f9ae1380152010b98091",
+    "test_import_guard.py": "3c7f6da71a650f79b3ffb4fc01e74787f1cc0befe34f980188a2bb3a4a2ccc8a",
+    "research_gate.py": "84800d7a3163983c213d1fe9d0a50f6fe53a90ef3a98a8443d7229a24786e03e"
+  },
+  "status": "refrozen before corrected outcomes after timestamp metadata validation fix"
+}

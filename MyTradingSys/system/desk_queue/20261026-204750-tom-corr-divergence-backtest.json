@@ -1,0 +1,14 @@
+{
+  "card": "tom-corr-divergence-backtest",
+  "done_when": "RESULT.md states fee-net DEV, VALIDATION and holdout (or 'holdout not read') expectancy with bootstrap lower bound, the control (a) and placebo numbers, and the verdict add or not-add TOM-CTX-DIV; all variants in TRIALS.md; exports sim_desk/results/tom-corr-divergence-backtest.json",
+  "finished": "2026-10-28T00:05:04Z",
+  "from": "JIS-NB",
+  "host": "DESKTOP-F7IU69N",
+  "id": "20261026-204750-tom-corr-divergence-backtest",
+  "need": "python scripts/dev/verdicts.py check 'tom correlation divergence'; python -m pytest -q MyTradingSys/research/tom_correlation_trick_2026-10-26/test_run_div.py; python MyTradingSys/research/tom_correlation_trick_2026-10-26/run_div.py --split DEV (full brief: python scripts/dev/tasks.py brief tom-corr-divergence-backtest)",
+  "posted": "2026-10-26T20:47:50Z",
+  "result": "declined as posted: run_div.py/test_run_div.py (card done-when) do not exist yet in research/tom_correlation_trick_2026-10-26/ (only EXTRACT.md present); card tom-corr-divergence-backtest needs a SONNET build pass for the harness before any DSA run-and-report. DECISION (OURS): re-post to DSA once the harness ships",
+  "status": "failed",
+  "target": "DSA",
+  "title": "Pre-registered backtest of Tom correlation-divergence filter (H1 DAX vs ES/Nikkei/BTC, H2 BTC vs ES/NQ/DXY), spec in MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md s4. DONE when: fee-net DEV, VALIDATION once, holdout once, filter vs no-filter control, all variants in the trial ledger, verdict add/not-add TOM-CTX-DIV"
+}

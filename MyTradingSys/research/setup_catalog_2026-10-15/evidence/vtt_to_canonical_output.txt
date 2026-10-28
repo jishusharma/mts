@@ -1,0 +1,12 @@
+wrote 9IliXww64uM_raw.txt: 2738 words, 386 cues
+wrote DyS79Eb92Ug_raw.txt: 24641 words, 3665 cues
+DyS79Eb92Ug .txt vs .en.vtt: txt 24662 words, vtt 24926 words, common 24660 (98.93 % of the longer)
+   132 spans only in the vtt (266 words, back-channel fillers 'mhm'/'yeah' and a few short clauses), 2 stray tokens only in the .txt
+0jM5Y31YJak: canonical 1426 words, vtt 1426 words, common 1426 (100.00 % of the longer)
+   0 differing spans
+8CWKfoSJu3c: canonical 1647 words, vtt 1647 words, common 1647 (100.00 % of the longer)
+   0 differing spans
+fZlNGWvd2Ko: canonical 1260 words, vtt 1260 words, common 1260 (100.00 % of the longer)
+   0 differing spans
+jasv3L-d8ZE: canonical 1987 words, vtt 1987 words, common 1987 (100.00 % of the longer)
+   0 differing spans

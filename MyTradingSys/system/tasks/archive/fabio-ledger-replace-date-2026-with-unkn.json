@@ -1,0 +1,39 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T18:13:29Z",
+  "commands": [],
+  "created": "2026-10-12T12:41:23Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "",
+  "goal": "",
+  "id": "fabio-ledger-replace-date-2026-with-unkn",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "No edit needed: all 72 date fields already start UNKNOWN; verified in f1a15ead0 (date card",
+      "ref": "4ab57337",
+      "utc": "2026-10-17T18:13:29Z"
+    }
+  ],
+  "layers": [
+    "fabio"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "No edit needed: all 72 date fields already start UNKNOWN; verified in f1a15ead0 (date card verified)",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "done",
+  "steps": [],
+  "tests": "",
+  "title": "fabio-ledger: replace date 2026 with UNKNOWN for Jpd96/DyS79 session (contract NQ-202512)"
+}

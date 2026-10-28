@@ -1,0 +1,1225 @@
+# Video ID: -NXzJs5JRks
+# Title: The 3 Moving Averages I Used as a Market Maker (And the One Everyone Gets Wrong)
+# Published: 2026-10-03
+# Source: yt_dlp captions (manual); uploader: Krown
+# Analyst: Krown
+# Duration_s: 2169
+# Word count: 7113
+# ---
+[00:00:00] Bitcoin's entire history against it
+[00:00:01] it called the 2015 bear market low
+[00:00:04] the 2018 market low
+[00:00:06] the 2020 crash - the Rona dump
+[00:00:10] plus the 2022 low
+[00:00:13] If you're finding this video, or perhaps
+[00:00:13] since this video is found to you,
+[00:00:16] it is highly likely that you are learning
+[00:00:16] technical analysis for the purpose of
+[00:00:16] generating
+[00:00:19] that cash, that bread, as we like to say.
+[00:00:19] And in this video, we're going to be going
+[00:00:19] over perhaps
+[00:00:24] one of my most favorite concepts, which is
+[00:00:24] moving averages. Now, moving averages are
+[00:00:24] incredibly
+[00:00:29] misunderstood. Whenever I watch content on
+[00:00:29] YouTube about moving averages, I cry,
+[00:00:33] because moving averages are on one hand,
+[00:00:33] not as good as the strongest proponents of
+[00:00:33] them
+[00:00:38] would have you believe. And they are
+[00:00:38] absolutely not as useless as the
+[00:00:38] detractors would have you
+[00:00:43] believe. They are somewhere in the middle
+[00:00:43] and in the right context, they are
+[00:00:43] incredibly powerful.
+[00:00:47] But if you use them wrong, you will be,
+[00:00:47] you will generally be just wrong. And if
+[00:00:47] you use them
+[00:00:54] properly in the right context, well, you
+[00:00:54] can actually have a lot of unique
+[00:00:54] information gathered
+[00:01:00] from those moving averages for the purpose
+[00:01:00] of analysis or trading. Anyways, let's get
+[00:01:00] into
+[00:01:05] a nice little slideshow right here. And it
+[00:01:05] is simply the market's memory drawn as a
+[00:01:05] line.
+[00:01:10] That's really all that it is. And this is,
+[00:01:10] by the way, a part of a 10 part series
+[00:01:10] called
+[00:01:14] TA Foundations. This is episode number
+[00:01:14] six. We've already gone through
+[00:01:14] candlesticks,
+[00:01:18] timeframes, trend lines, volume, and
+[00:01:18] levels thus far. So if you're not fully,
+[00:01:18] fully competent in
+[00:01:24] those areas, definitely pause this videos,
+[00:01:24] check those previous ones out, and I'll be
+[00:01:24] waiting for
+[00:01:28] you right here whenever you're ready to
+[00:01:28] start with moving averages. But all these
+[00:01:28] videos build
+[00:01:32] upon each other. So it is kind of
+[00:01:32] important that you've seen the previous
+[00:01:32] ones, or at least
+[00:01:36] you are solid on those concepts to begin
+[00:01:36] with. Anyways, as I look at my screen over
+[00:01:36] here,
+[00:01:41] I should probably also let you know who I
+[00:01:41] am and where I come from, because you
+[00:01:41] might not
+[00:01:45] be familiar with me. My name is Eric
+[00:01:45] Krown. I used to be a market maker
+[00:01:45] authorized trader
+[00:01:48] on the floor of the New York Stock
+[00:01:48] Exchange, ARCA. And I was one of those
+[00:01:48] evil market makers.
+[00:01:52] And that's given me a unique view on how
+[00:01:52] to look at and incorporate technical
+[00:01:52] analysis of
+[00:01:57] which moving averages are, in fact, one of
+[00:01:57] the more interesting tools that I kind of
+[00:01:57] use
+[00:02:02] in that era of mine, which I really do
+[00:02:02] think provide a lot of values with
+[00:02:02] especially just
+[00:02:08] ignoring when to be taking trades. I mean,
+[00:02:08] it's incredibly, incredibly valuable in
+[00:02:08] that regard.
+[00:02:13] Anyways, let's move into the next slide
+[00:02:13] right here. And let's go over the
+[00:02:13] mechanism. So
+[00:02:18] what is an actual moving average? It's
+[00:02:18] just the average of the past prices. So
+[00:02:24] when you have a moving average, you have
+[00:02:24] what's called a period, which is
+[00:02:24] effectively
+[00:02:28] the previous closures, the previous
+[00:02:28] periods that you are measuring. So if you
+[00:02:28] have a 20 period
+[00:02:35] moving average, for example, you're just
+[00:02:35] looking at the past 20 closes and
+[00:02:35] averaging them out.
+[00:02:39] That's it. That's all that it is. When you
+[00:02:39] get the next period opening up, well,
+[00:02:42] you would drop the last of those 20 closes
+[00:02:42] and you'd incorporate the most recent one.
+[00:02:47] You'd continue to do only 20, but it just
+[00:02:47] gets rid of the oldest one, basically. And
+[00:02:47] then so on
+[00:02:53] and so forth as time goes on. And by the
+[00:02:53] way, you've already used one of these in
+[00:02:53] the past
+[00:02:56] videos on the volume video. We went over,
+[00:02:56] of course, the volume moving average.
+[00:03:00] That was a 20 period moving average on
+[00:03:00] volume, which we saw, I believe,
+[00:03:04] is it on this slide right here? Yes. Our
+[00:03:04] size right here, that purple line on the
+[00:03:04] volume bars,
+[00:03:10] that was an average. That's all it is.
+[00:03:10] There are multiple different types of
+[00:03:10] averages as well.
+[00:03:13] We can go through some of the nuances of
+[00:03:13] them a little bit later, but for the most
+[00:03:13] part,
+[00:03:16] we're going to be focusing on simple
+[00:03:16] averages here, which is again, just a
+[00:03:16] simple average
+[00:03:21] calculation, you know, an average
+[00:03:21] mathematical calculation. So, you know, if
+[00:03:21] you have like
+[00:03:25] three periods and you're using and you're
+[00:03:25] averaging them out and one of the values
+[00:03:25] is,
+[00:03:28] you know, one, the other value is three,
+[00:03:28] the other value is five. Well, you do one
+[00:03:28] plus
+[00:03:31] three plus five, which is nine. And then
+[00:03:31] you divide that by three, which is three.
+[00:03:36] That would be your average. All right,
+[00:03:36] cool. Let's move into our next one right
+[00:03:36] here. Okay.
+[00:03:42] Very, very nice. All right. So the lag
+[00:03:42] law, and this is where,
+[00:03:46] God, man, I see so many people get this
+[00:03:46] wrong. People will.
+[00:03:49] correctly say moving averages are lagging
+[00:03:49] indicators.
+[00:03:54] That is the correct statement.
+[00:03:55] Then they will go on to say,
+[00:03:57] or they imply that that has no value.
+[00:03:59] That is, just makes my brain bleed.
+[00:04:04] First off, as a lagging indicator,
+[00:04:07] most indicators are lagging, by the way,
+[00:04:09] but indicators help confirm
+[00:04:11] certain things with price action.
+[00:04:13] They do not tell you in advance, more or
+[00:04:13] less.
+[00:04:16] And there's a lot of value in that, by the
+[00:04:16] way.
+[00:04:18] Anyways, the single most important
+[00:04:18] sentence in this episode
+[00:04:20] is a moving average follows price.
+[00:04:22] It does not lead it.
+[00:04:26] It's built entirely out of the past.
+[00:04:27] It cannot predict anything.
+[00:04:29] And anyone telling you the line
+[00:04:31] knows the future is selling you something,
+[00:04:33] or they are just like redacted themselves.
+[00:04:36] So why use a following, you know, a
+[00:04:36] lagging indicator?
+[00:04:39] Well, because lagging is the point.
+[00:04:42] Episode two taught you markets are mostly
+[00:04:42] noise.
+[00:04:45] The average is a noise filter.
+[00:04:48] That's the whole fucking purpose of it.
+[00:04:50] It answers one question with total
+[00:04:50] honesty.
+[00:04:53] What has price actually been doing?
+[00:04:56] That answer is worth more than most
+[00:04:56] predictions
+[00:04:58] and certainly most more.
+[00:05:00] And certainly many people have missed that
+[00:05:00] in the past
+[00:05:04] or just haven't thought this through.
+[00:05:05] But anyways, built from the past,
+[00:05:06] lag is the feature, honest, not psychic.
+[00:05:09] Again, when we're using indicators
+[00:05:11] in the context of technical analysis,
+[00:05:13] nothing is perfect.
+[00:05:14] Nothing is perfect.
+[00:05:16] We will never have certainties
+[00:05:17] when it comes to analyzing price action,
+[00:05:18] but we can have probabilities.
+[00:05:20] And in that instance, moving averages,
+[00:05:22] as well as other indicators within a
+[00:05:22] system
+[00:05:24] can be a massive, massive net benefit.
+[00:05:27] Anyways, let's get into the nuances
+[00:05:29] of a couple of my favorite moving
+[00:05:29] averages.
+[00:05:32] That would be SMA versus EMA.
+[00:05:34] So these are two different flavors of
+[00:05:34] moving averages.
+[00:05:37] One difference, however,
+[00:05:38] is just effectively how they are weighting
+[00:05:40] the previous price action.
+[00:05:42] So a simple moving average
+[00:05:44] is just your stock standard average
+[00:05:44] function,
+[00:05:47] which is, like I said earlier,
+[00:05:50] you add up all of the data,
+[00:05:52] then you divide it by the amount of data
+[00:05:52] pieces
+[00:05:57] that you have.
+[00:05:57] So again, if you have like three different
+[00:05:57] numbers,
+[00:06:00] three, one, three, and five,
+[00:06:02] that adds up to nine.
+[00:06:04] You have three entries.
+[00:06:05] So nine divided by three equals three
+[00:06:08] would be your average.
+[00:06:09] Now that, I think almost everyone
+[00:06:09] understands
+[00:06:12] pretty much at first glance.
+[00:06:13] The next one, and honestly, probably my
+[00:06:13] most favorites,
+[00:06:16] moving average is an exponential moving
+[00:06:16] average, an EMA.
+[00:06:20] And what that one does is it puts more
+[00:06:20] weight
+[00:06:23] on the average towards the more recent
+[00:06:23] price action,
+[00:06:27] the most recent closures.
+[00:06:29] So it's gonna weight that with a greater
+[00:06:29] degree
+[00:06:31] than the previous one.
+[00:06:33] So in other words, it's more responsive.
+[00:06:36] It'll turn faster when price turns.
+[00:06:38] And faster isn't necessarily better, but
+[00:06:38] it is faster,
+[00:06:41] which can tell you about things in
+[00:06:41] advance.
+[00:06:43] So it's quicker to catch a real turn,
+[00:06:46] but it's also quicker to get faked out by
+[00:06:46] a fake one.
+[00:06:48] So there are ways around this, obviously.
+[00:06:51] Both have their place, however.
+[00:06:53] The real rule, pick your lines and keep
+[00:06:53] them.
+[00:06:56] Consistency beats optimization in this
+[00:06:56] game.
+[00:06:59] And I can tell you this,
+[00:07:00] after doing this for so fucking long,
+[00:07:02] you can get really in the weeds
+[00:07:04] with trying to make everything perfect.
+[00:07:05] At the end of the day, if you're
+[00:07:05] consistent,
+[00:07:07] you'll really start to notice a lot of the
+[00:07:07] nuances
+[00:07:10] with whatever tools that you're using,
+[00:07:12] and you'll be able to build upon that
+[00:07:13] in a way that most people just never even
+[00:07:13] fucking notice.
+[00:07:17] Anyways, period equals memory length.
+[00:07:20] So the period is the memory length.
+[00:07:22] On the daily, a 21 moving average,
+[00:07:22] remember.
+[00:07:25] about a month of trading. A 55 remembers a
+[00:07:25] quarter. And again, why is a 21
+[00:07:25] represented
+[00:07:32] about a month? Well, because if you add up
+[00:07:32] the real trading days in a month, which is
+[00:07:36] effectively the weekdays, you get about 21
+[00:07:36] to 22 days per month of real trading. And
+[00:07:36] yes,
+[00:07:43] Bitcoin does trade over the weekends, as
+[00:07:43] do a lot of things nowadays. But what
+[00:07:43] happens
+[00:07:49] over the weekend? Not all that much
+[00:07:49] realistically. Anyways, a 55 period
+[00:07:49] remembers about a quarter,
+[00:07:55] same idea right there. And a 200 period
+[00:07:55] moving average remembers most of the year.
+[00:07:55] In fact,
+[00:08:01] it'd probably be better if it was like
+[00:08:01] closer to 256, I think is the number of
+[00:08:01] real trading
+[00:08:05] days per year. But 200 period moving
+[00:08:05] average, honestly, as far as simple
+[00:08:05] averages go, that is
+[00:08:10] the biggest, most important moving average
+[00:08:10] to just have on your chart at any moment
+[00:08:10] in time.
+[00:08:15] Because whatever apps you're looking at
+[00:08:15] almost always will have a reaction any
+[00:08:15] time it comes
+[00:08:20] into contact with the 200 simple moving
+[00:08:20] average on almost any time frame for the
+[00:08:20] first time in a
+[00:08:25] long time. It's a long way of saying if it
+[00:08:25] hasn't been there for a long time, it's
+[00:08:25] almost
+[00:08:29] maybe react on the next test. That is the
+[00:08:29] point. Anyways, the higher the period, the
+[00:08:29] deeper the
+[00:08:34] memory of it. And the more it takes to
+[00:08:34] bend that line to change it effectively.
+[00:08:34] And from episode
+[00:08:39] two, every time frame computes its own, of
+[00:08:39] course, as you already know, the 21 on the
+[00:08:45] hourly and the 21 on the weekly are
+[00:08:45] different lines telling different stories.
+[00:08:45] And again,
+[00:08:49] the 21 on the daily obviously has given
+[00:08:49] you kind of like the average of the past
+[00:08:49] month,
+[00:08:52] the 21 on the, you know, on the on the
+[00:08:52] weekly, that's going to be a much greater
+[00:08:52] period of
+[00:08:57] time, obviously. So yes, it is timeframe
+[00:08:57] dependent. And as always, higher
+[00:08:57] timeframes
+[00:09:04] effectively mean a more powerful line.
+[00:09:04] That's all that it comes down to, you
+[00:09:04] know, higher
+[00:09:09] timeframes, more precedence, basically.
+[00:09:09] Anyways, move on from there. Okay, okay,
+[00:09:14] so let's go over what we what we can refer
+[00:09:14] to as a starter set. These are moving
+[00:09:14] averages
+[00:09:20] that I think are just generally valuable
+[00:09:20] for almost any any person for any purpose.
+[00:09:20] They
+[00:09:28] are not fully optimized for any one
+[00:09:28] particular purpose. But if you don't know
+[00:09:28] what the fuck
+[00:09:31] you're doing, and you're just trying to
+[00:09:31] get a quick read on a chart, having these
+[00:09:31] three
+[00:09:35] moving averages is a damn good way to get
+[00:09:35] started. We're going to be using a 21 and
+[00:09:40] a 55 EMA. And then we're going to use a
+[00:09:40] 200 simple moving average again, apply to
+[00:09:40] any
+[00:09:45] timeframe. So exponentials on the short on
+[00:09:45] the shorter periods here, those are
+[00:09:45] obviously
+[00:09:52] going to turn with the market a little bit
+[00:09:52] more those tell you about the current
+[00:09:52] short
+[00:09:56] term and medium term trend, for example,
+[00:09:56] the 200 simple moving average, however, is
+[00:10:01] a lot more stubborn. So full, full, full
+[00:10:01] transparency here, my complete stack, the
+[00:10:07] one on every live stream is the ribbon
+[00:10:07] with a five a 21 and a 55 and a three
+[00:10:07] seven
+[00:10:11] seven EMA plus a 200 simple. But I'm just
+[00:10:11] kind of making a little more simple here
+[00:10:15] because you don't need all that to get
+[00:10:15] started with this shit. And you might not
+[00:10:15] even
+[00:10:18] find value in those other ones too. But
+[00:10:18] but anyways, you'll meet all of these
+[00:10:22] properly in the TA 101 series, which
+[00:10:22] again, is freely available. There's a link
+[00:10:27] to in the description below as well. That
+[00:10:27] goes a little more into detail, not just
+[00:10:31] with technical analysis and training, but
+[00:10:31] also like setting up strategies, giving
+[00:10:33] you cookie cutter strategies and showing
+[00:10:33] you how to, you know, do all this sort
+[00:10:36] of things, but slightly more advanced than
+[00:10:36] this, you know, TA Foundations
+[00:10:41] program right here. Again, fully free as
+[00:10:41] well. Anyways, you don't need five lines
+[00:10:46] to start. Three is fine shit. Even, you
+[00:10:46] know, even two of them would have been
+[00:10:49] fine as well. If we went just with the 21
+[00:10:49] and the 55 EMA, simplicity is
+[00:10:54] generally best to start off with. And the
+[00:10:54] ribbons one glance read, it just
+[00:10:59] basically tells you about the trend.
+[00:11:01] and where major pivots potentially are as
+[00:11:01] well.
+[00:11:05] That one glance is really the major value
+[00:11:07] in using these tools.
+[00:11:09] It doesn't necessarily tell you exactly
+[00:11:09] what to do
+[00:11:10] in the context of a trade.
+[00:11:11] You need a lot more than that,
+[00:11:13] but we're working our way there for sure.
+[00:11:15] But of course, we gotta get a quick read
+[00:11:15] as well.
+[00:11:19] Anyways, let's now go into a nice little
+[00:11:19] example here,
+[00:11:23] actually.
+[00:11:24] So let me first show you on Trading View
+[00:11:26] where you can find moving averages.
+[00:11:28] And I just realized that you can't see
+[00:11:29] the bottom of this.
+[00:11:31] There we go.
+[00:11:32] Let me adjust that.
+[00:11:32] Beautiful.
+[00:11:33] Okay, so first things first.
+[00:11:36] On Trading View, I'm on a daily time frame
+[00:11:36] right now.
+[00:11:39] Go to the top and go to the Indicators,
+[00:11:41] Metrics and Strategies tab.
+[00:11:42] Click that and type in C-T-M-A-C.
+[00:11:46] That will bring up this moving average
+[00:11:46] right here
+[00:11:48] from the Caretaker.
+[00:11:49] There's about 1.4 thousand likes on it
+[00:11:49] right now.
+[00:11:52] And Caretaker, obviously a major portion
+[00:11:52] of this community.
+[00:11:56] One of our most bestest,
+[00:11:59] one of the best things to come out of this
+[00:11:59] damn community.
+[00:12:02] And this is the CT Moving Average
+[00:12:02] Crossover Indicator.
+[00:12:05] Click that, it'll bring up this indicator
+[00:12:05] right here.
+[00:12:07] I'm gonna format it with you right now
+[00:12:09] and we'll go through it together
+[00:12:10] and then you can set it up yourself.
+[00:12:12] So hit the Settings icon right here
+[00:12:15] that'll bring up this page right here.
+[00:12:18] We are going to only use three different
+[00:12:18] moving averages
+[00:12:22] and it might actually even come default
+[00:12:22] like this.
+[00:12:26] But I have the 21 EMA right here,
+[00:12:29] the 55 EMA right here.
+[00:12:31] So the yellow is a 21.
+[00:12:32] Let me just make it like super yellow
+[00:12:34] so that we can see very easily.
+[00:12:35] And then the green is the 55, same thing
+[00:12:35] right there.
+[00:12:39] And then the 200,
+[00:12:41] actually let's do a 200 simple right here.
+[00:12:44] I already have it on the board, very nice.
+[00:12:46] 200 simple moving average right here
+[00:12:48] is gonna be the white.
+[00:12:49] Okay, great.
+[00:12:50] That's our daily time frame.
+[00:12:52] All right, nice.
+[00:12:53] Let's look at price action within the
+[00:12:53] context
+[00:12:57] of these moving averages for the past
+[00:12:57] year.
+[00:12:59] We can see once the 21 EMA
+[00:13:02] crossed the downside of the green 55 EMA,
+[00:13:06] that represents again your shorter
+[00:13:07] and medium term trends there.
+[00:13:09] That set in Bitcoin's major massive
+[00:13:09] downside move here.
+[00:13:12] That effectively got price action down
+[00:13:12] from what?
+[00:13:14] From about a buck 14 all the way to,
+[00:13:17] I mean, inevitably it came down
+[00:13:18] a little bit below 60,000 bucks.
+[00:13:20] We can see that there was one crossover
+[00:13:20] here
+[00:13:23] in which the 21 traded above the green 55
+[00:13:23] EMA.
+[00:13:26] So you got a short-term flip, nice.
+[00:13:29] Price action rallied all the way up to the
+[00:13:29] 200 simple,
+[00:13:31] rejected, came back down,
+[00:13:32] and you got the flip again, basically.
+[00:13:34] So yes, they tell you about trend.
+[00:13:36] It's just like a very quick and easy
+[00:13:36] snapshot
+[00:13:39] as to what the trend is doing for that
+[00:13:39] time frame.
+[00:13:41] And then I look at the white 200 simple
+[00:13:41] moving average
+[00:13:44] to tell me where some major particular
+[00:13:44] pivots are.
+[00:13:47] You can see on the way down over here,
+[00:13:49] it used, or price action used
+[00:13:52] that white 200 simple moving average to
+[00:13:52] bounce off of.
+[00:13:54] Once it lost it officially with that 21
+[00:13:54] versus 55 EMA
+[00:13:58] crossed the downside here,
+[00:13:59] that is when price action really followed
+[00:13:59] through
+[00:14:01] to the downside.
+[00:14:02] Previously, we saw a couple of crosses
+[00:14:04] between the yellow 21 and the green 55 EMA
+[00:14:04] here and here,
+[00:14:07] but there was no like major massive
+[00:14:07] downside.
+[00:14:09] It wasn't until Bitcoin was trading below
+[00:14:09] the 200 simple
+[00:14:13] with those two major moving averages
+[00:14:14] crossed in the downside fashion
+[00:14:15] where you really got the floor letting
+[00:14:15] loose.
+[00:14:19] Then again, the 200 simple rears its head
+[00:14:19] again over here
+[00:14:23] and Bitcoin uses it as a selling off point
+[00:14:23] for that,
+[00:14:26] what was effectively a bear market rally.
+[00:14:28] On the other hand over here,
+[00:14:30] we might have the beginning
+[00:14:31] of something completely new going on.
+[00:14:32] We have the 21 versus 55 EMA crossing
+[00:14:32] right here
+[00:14:35] and prices above.
+[00:14:37] that white 200 simple moving average. Now,
+[00:14:37] that's just one cycle. Let's go back to a
+[00:14:37] previous one.
+[00:14:42] Another downside was where this is easiest
+[00:14:42] to see. But over here from 2022, top
+[00:14:42] left-hand side,
+[00:14:49] again, we get that cross between the
+[00:14:49] yellow and the green, yellow representing
+[00:14:49] 21 EMA,
+[00:14:53] green representing 55 EMA, lower period
+[00:14:53] versus higher period. So they cross the
+[00:14:53] downside,
+[00:14:58] telling you that the short and medium-term
+[00:14:58] trends are switching to the downside. Then
+[00:14:58] Bitcoin
+[00:15:03] loses that white 200 simple moving average
+[00:15:03] right here. And that's when, again, all
+[00:15:03] hell breaks loose.
+[00:15:08] We see these things lead price action all
+[00:15:08] the way down here until you get to your
+[00:15:08] low of November of
+[00:15:14] 2022. Then similar instance over here. We
+[00:15:14] saw on the bull trap, the yellow and the
+[00:15:14] green cross,
+[00:15:20] but rejected on the 200 simple. Okay. We
+[00:15:20] also saw on the actual reversal over here,
+[00:15:26] when we got these crossing plus Bitcoin
+[00:15:26] reclaiming the 200 simple, well, that was
+[00:15:26] your reversal.
+[00:15:32] Not bad. And yes, you cannot fake us with
+[00:15:32] this. It's not going to be perfect. You
+[00:15:32] see one right
+[00:15:36] here. You see another one right here, and
+[00:15:36] you can match that up with trend and also
+[00:15:36] structure,
+[00:15:41] which we've gone over in previous videos,
+[00:15:41] that would also help with ignoring what
+[00:15:41] can be not
+[00:15:47] necessarily the greatest signal. So to be
+[00:15:47] fair, I mean, to give these one their due
+[00:15:47] diligence,
+[00:15:50] yes, there was downside price action here.
+[00:15:50] That was absolutely tradable, but they
+[00:15:50] weren't long
+[00:15:55] running trends, obviously. Anyways, let's
+[00:15:55] find one to the upside as well, or another
+[00:15:55] one to
+[00:16:00] the upside. Again, you get your 21 versus
+[00:16:00] 55 EMA cross right here. You reclaim the
+[00:16:00] 200 simple
+[00:16:04] right there. Boom, big move up. Then
+[00:16:04] similar thing over here after the Rona
+[00:16:04] dump, bit of a black
+[00:16:10] swan. So not always the best one to be
+[00:16:10] testing, but again, crosses here, Bitcoin
+[00:16:10] back above the
+[00:16:16] 200 simple right here. And what do you
+[00:16:16] know? The next year and a half are just
+[00:16:16] straight up
+[00:16:19] and to the right. Not bad. Not perfect,
+[00:16:19] but not bad. And certainly helps a lot
+[00:16:19] more than what I
+[00:16:25] think a lot of people do, which is just go
+[00:16:25] off of vibes basically. So anyways,
+[00:16:31] the moving averages also act as dynamic
+[00:16:31] areas of interest. So if you are a
+[00:16:31] scalper, you can look
+[00:16:38] at almost always the 200 simple as be
+[00:16:38] getting a contra move on your first test
+[00:16:38] of it after being
+[00:16:44] away from it for a long time. Like you see
+[00:16:44] right here, testing into it, boom reject,
+[00:16:44] but also the
+[00:16:48] 21 EMA and the green 55 EMA act in a
+[00:16:48] similar fashion as well. You can see a lot
+[00:16:48] of the time
+[00:16:55] highs and lows are putting around these
+[00:16:55] major, uh, major moving averages. I'm just
+[00:16:55] not always perfectly,
+[00:16:59] but around them again, we are not trying
+[00:16:59] to be perfect here. There's no way to be
+[00:16:59] perfect in
+[00:17:03] this game, but there is a damn good way to
+[00:17:03] have, uh, you know, to increase your
+[00:17:03] probabilistic
+[00:17:08] outcome. That would be it again, 200
+[00:17:08] simple putting in the low right there. You
+[00:17:08] can see price,
+[00:17:14] you know, trying for lows on the yellow 21
+[00:17:14] EMA or the green 55 EMA many a time
+[00:17:14] throughout the
+[00:17:18] these whole trends too. So these can be
+[00:17:18] used in many different ways. Um, but
+[00:17:18] moving on from there,
+[00:17:25] let's say also that, oh yes, I shall say
+[00:17:25] if these three lines just made your chart
+[00:17:25] make
+[00:17:30] a little bit more sense, I don't know the
+[00:17:30] best way, the best way to get more
+[00:17:30] information like
+[00:17:34] this, hit that like button and also the
+[00:17:34] subscribe button as well. It's a cringy
+[00:17:34] part of the video.
+[00:17:38] I apologize about it, but it needs to be
+[00:17:38] done. And ultimately, uh, that will
+[00:17:38] benefit you because
+[00:17:42] it brings the next video in the series
+[00:17:42] right to your inbox when it is most
+[00:17:42] relevant in terms
+[00:17:47] of time, when it actually releases.
+[00:17:47] Anyways, move on from there. Let's go to
+[00:17:47] the memory that
+[00:17:51] travels. So episode four gave you the
+[00:17:51] market memory, the market's memories as
+[00:17:51] zones, horizontal
+[00:17:58] pin to a price, but a moving average is
+[00:17:58] the same memory with one upgrade. It
+[00:17:58] travels. So a rising
+[00:18:04] 55 EMA is a support zone walking uphill
+[00:18:04] with the trend. And we saw that many times
+[00:18:04] over here,
+[00:18:10] you know, price would like to play off of
+[00:18:12] around that green 55 EMA,
+[00:18:14] putting in the lows many times along the
+[00:18:14] way.
+[00:18:17] It works, by the way, even better
+[00:18:19] on a weekly timeframe right here.
+[00:18:20] You can see Bitcoin loves to play off that
+[00:18:20] green 55 EMA
+[00:18:23] and the yellow 21 EMA as well, for that
+[00:18:23] matter.
+[00:18:26] Anyways, yes, so it's dynamic.
+[00:18:31] It's moving with price action.
+[00:18:32] Anyways, dynamic areas of interest
+[00:18:35] are basically the same words that are used
+[00:18:35] for zones
+[00:18:37] because they do similar jobs in a lot of
+[00:18:37] cases.
+[00:18:41] I would even say the distance between the
+[00:18:43] and the green 55 EMA, that is a zone.
+[00:18:46] That is a zone of interest.
+[00:18:49] Anyways, when a static zone and a rising
+[00:18:49] average
+[00:18:53] arrive at the same place at the same time,
+[00:18:55] that is what's known as confluence.
+[00:18:57] Two independent reasons or two independent
+[00:18:57] indicators
+[00:19:00] pointing at one area of price.
+[00:19:03] Those are typically stronger areas
+[00:19:06] you'll really wanna pay attention to them.
+[00:19:09] So for example, let me see.
+[00:19:13] Do we have a good example right here?
+[00:19:15] Do we have a good example?
+[00:19:18] Okay, so let's go off of,
+[00:19:22] do we have a good example here is a real
+[00:19:22] question.
+[00:19:26] We wanna see basically horizontal support
+[00:19:26] and resistance
+[00:19:28] matching up with, of course, a major
+[00:19:28] moving average.
+[00:19:33] And in this case, we could actually come
+[00:19:33] up
+[00:19:35] with a couple here, but let's go off of,
+[00:19:37] let's make a support one for this move
+[00:19:37] that we saw.
+[00:19:42] Should we do that one or should we do that
+[00:19:42] one?
+[00:19:45] We could do this one right here.
+[00:19:46] Actually, this one makes a lot of sense.
+[00:19:48] So we saw this, and this is one of the
+[00:19:48] exact areas
+[00:19:51] that we marked off for the range video
+[00:19:55] or the area of interest, the zone area of
+[00:19:55] interest video.
+[00:19:59] We marked off at this low over here.
+[00:20:01] Again, the low of the reversal candle
+[00:20:02] plus the closing price of it.
+[00:20:05] And then we just fast forwarded it over
+[00:20:05] here.
+[00:20:08] When price action came back down to the
+[00:20:08] zone,
+[00:20:10] it also hit that green 55 EMA along the
+[00:20:10] way.
+[00:20:12] And what do you know, that was a major low
+[00:20:12] right there.
+[00:20:14] Many people during this time,
+[00:20:15] if you were around during 2021,
+[00:20:17] thought that price was gonna go
+[00:20:18] and crash to 20,000 bucks from there.
+[00:20:20] Eventually it did, but that was about a
+[00:20:20] year,
+[00:20:23] a year or two early.
+[00:20:24] And more importantly,
+[00:20:25] price actually made a new all-time high
+[00:20:25] from this zone.
+[00:20:28] It went up 2X from that area.
+[00:20:30] So kind of a big deal,
+[00:20:33] kind of a big deal to be aware of right
+[00:20:33] there.
+[00:20:35] Anyways, do we have another example right
+[00:20:35] here?
+[00:20:37] Yes, we do have another example right
+[00:20:37] here.
+[00:20:38] Another example from the previous video.
+[00:20:41] Again, we marked off this reversal
+[00:20:41] candlestick right here,
+[00:20:44] wick low to the closure.
+[00:20:46] And we extend that all the way to the
+[00:20:46] right.
+[00:20:48] And what do you know?
+[00:20:49] This area was effectively basing off of
+[00:20:49] the green 55 EMA
+[00:20:52] and also this zone at the same time.
+[00:20:54] Thus, these were good accumulation areas.
+[00:20:56] And what do you know?
+[00:20:57] Price action boosted up from there.
+[00:20:59] Nice, not bad.
+[00:21:01] Other than that,
+[00:21:03] we even have an example of a flip right
+[00:21:03] here too.
+[00:21:05] Remember this high,
+[00:21:07] well, let me actually do it properly,
+[00:21:09] but this high right here was a rejection
+[00:21:11] and we can measure that out.
+[00:21:12] And if we extend that over,
+[00:21:13] again, we get this as a support zone
+[00:21:16] from that previous high.
+[00:21:17] And you're also testing that green 55 EMA
+[00:21:20] on that same candle.
+[00:21:21] You're probably seeing it by now.
+[00:21:23] Anyways, I'll go back to our presentation
+[00:21:23] right here.
+[00:21:26] And let's go over the 200 week line.
+[00:21:30] Oh, whoops, I didn't go through any of
+[00:21:30] these.
+[00:21:31] Sorry, yes.
+[00:21:34] Memory that travels, averages, memory that
+[00:21:34] move,
+[00:21:37] confluence, zone plus average, same place.
+[00:21:39] Yes, that's what we just looked at.
+[00:21:40] Okay, cool.
+[00:21:41] The money moment, so the 200 week line,
+[00:21:43] the 200 simple moving average
+[00:21:44] on the weekly timeframe effectively.
+[00:21:46] So let me show you one of these lines.
+[00:21:48] with 12 plus years of memory. This 200
+[00:21:48] simple on the weekly, which is basically
+[00:21:48] four years of price
+[00:21:55] in one line, that's Bitcoin's one of its
+[00:21:55] most favorite indicators, in fact, or one
+[00:21:55] of its most
+[00:22:01] favorite moving averages, historically
+[00:22:01] speaking. Bitcoin's entire history against
+[00:22:01] it, that
+[00:22:06] effectively called the 2015 bear market
+[00:22:06] low, that also called the 2018 market low,
+[00:22:06] and it also
+[00:22:11] called the 2020 crash for the Rona dump,
+[00:22:11] plus the 2022 low. Yes, it did trade lower
+[00:22:11] than that,
+[00:22:17] but again, long-term, those were
+[00:22:17] phenomenally valuable buys anywhere at or
+[00:22:17] lower than that.
+[00:22:23] It was kind of like short lived that it
+[00:22:23] even was under it to begin with.
+[00:22:26] And then even in this year of 2026, so
+[00:22:26] far, that's about where Bitcoin put in its
+[00:22:26] lows. Again,
+[00:22:33] not perfect, but anywhere around there, in
+[00:22:33] hindsight, pretty fucking good, I would
+[00:22:33] say.
+[00:22:37] Anyways, okay, yes, 2022 was an exception.
+[00:22:37] Like I said, Bitcoin did live below it for
+[00:22:37] some time,
+[00:22:44] but I would argue, look, any buy below
+[00:22:44] 2020, sorry, any buy in 2022 below 22,000
+[00:22:44] bucks,
+[00:22:52] which is where that 200 simple was on the
+[00:22:52] weekly timeframe. I mean, fast forward a
+[00:22:52] few years,
+[00:22:58] looks pretty good to me. Anyways, I back
+[00:22:58] tested 26 years of this exact line across
+[00:22:58] six assets and
+[00:23:04] 80 touches, and that full study is already
+[00:23:04] on this channel, by the way, as well. If
+[00:23:04] you want
+[00:23:08] to check it out, it's a DCA video. The 200
+[00:23:08] simple average is, as always, a very
+[00:23:08] important
+[00:23:13] component of that. Strong recommend
+[00:23:13] checking that out. It's a little more
+[00:23:13] advanced than what we're
+[00:23:17] going over right here, but if you're more
+[00:23:17] of a long-term investor, it's certainly
+[00:23:17] just paying
+[00:23:22] attention to that video. Anyways, let's
+[00:23:22] move on to our next slide right here.
+[00:23:27] Oops, all right, there we go. Okay. The
+[00:23:27] leash, the daily tip. Here's one rule I
+[00:23:27] very rarely see
+[00:23:34] show up in videos like this, and it is
+[00:23:34] short moving averages act like a leash.
+[00:23:34] When price
+[00:23:39] sprints so hard that the entire candles
+[00:23:39] will float above a very low period moving
+[00:23:39] average,
+[00:23:45] like a five EMA, for example, the low of
+[00:23:45] the candle not reconnecting with the line
+[00:23:50] is what we call a disconnect. The dog is
+[00:23:50] effectively at the end of the leash. The
+[00:23:50] dog is priced,
+[00:23:57] the leash is the moving average. On the
+[00:23:57] Bitcoin daily, I've measured this 14 plus
+[00:23:57] years, by the
+[00:24:03] way, 5,284 candles, 476 disconnects.
+[00:24:03] That's all. The median lasted one close,
+[00:24:03] by the way, too.
+[00:24:14] So what am I trying to say? Just a quick
+[00:24:14] little nuance right here. I don't see
+[00:24:14] anyone else really
+[00:24:18] talking about this. Bitcoin, for whatever
+[00:24:18] reason, as well as many different markets
+[00:24:18] I've noticed,
+[00:24:24] too, if you put on a five simple moving
+[00:24:24] average or sorry, a five EMA here, you
+[00:24:24] will notice
+[00:24:29] almost on each and every closure, Bitcoin,
+[00:24:29] like I said, reconnects with it,
+[00:24:33] meaning that the low of the candle or some
+[00:24:33] portion of the candle is touching that red
+[00:24:33] five EMA.
+[00:24:39] As you can see here, we've seen actually
+[00:24:39] two closures where it is not.
+[00:24:43] Thus, we could probably expect Bitcoin to
+[00:24:43] go sideways until it does, because
+[00:24:43] ultimately,
+[00:24:47] the stats are significantly in favor of
+[00:24:47] Bitcoin reconnect with that five EMA on
+[00:24:47] any given candle
+[00:24:53] and consecutive closures away from it is
+[00:24:53] very rare. Again, I'll show you these
+[00:24:53] examples over
+[00:24:59] here. Bitcoin loves to play off it. Even
+[00:24:59] when it disconnects, it goes sideways
+[00:24:59] until it reconnects.
+[00:25:03] So we saw it right here. We see it again
+[00:25:03] right here. You know, disconnects for one
+[00:25:03] closure,
+[00:25:07] then reconnects right here. Up, up, up,
+[00:25:07] disconnects, reconnects, boom, boom, boom,
+[00:25:07] boom, boom,
+[00:25:11] disconnects, reconnects, boom, boom, boom,
+[00:25:11] boom, boom, connecting on all of these,
+[00:25:15] except for this one right here,
+[00:25:15] disconnects, reconnects on the next one.
+[00:25:18] That's what I'm talking about. So you can
+[00:25:18] get an idea of, you know,
+[00:25:20] kind of where to expect pullbacks in very
+[00:25:20] volatile moves or
+[00:25:24] just areas of interest for any given
+[00:25:24] candle to put in a higher low at the very
+[00:25:24] minimum.
+[00:25:31] Median lasted one candle, 82% reconnect
+[00:25:31] within two candles.
+[00:25:35] And the strongest disconnect in Bitcoin's
+[00:25:35] entire history was seven closes. And that
+[00:25:35] was a long
+[00:25:39] time ago as well. So not one lasted longer
+[00:25:39] than that, by the way, too. So when price
+[00:25:39] is
+[00:25:44] floating above the five EMA with three
+[00:25:44] foreclosures that it hasn't connected
+[00:25:44] with,
+[00:25:49] you're not really early. You're kind of
+[00:25:49] late. It doesn't say the trend is over. It
+[00:25:49] says that
+[00:25:53] things are sprinting right now. And your
+[00:25:53] five EMA is probably where you should be
+[00:25:53] expecting
+[00:25:58] some basis to come in around on short-term
+[00:25:58] pullbacks. Again, a little bit more of an
+[00:26:01] advanced tip right there, but I find that
+[00:26:01] that is incredibly useful.
+[00:26:06] Now let's go over perhaps one of the most
+[00:26:06] well-known moving average crosses,
+[00:26:09] which is the golden and death cross. So
+[00:26:09] here's the part probably everyone watching
+[00:26:09] this video
+[00:26:16] has either heard about or will hear about
+[00:26:16] in the not so distant future, because this
+[00:26:16] is
+[00:26:21] what most people look at moving averages
+[00:26:21] for. And I think it's okay, but it's not
+[00:26:21] great.
+[00:26:25] Anyways, a fast, a fast average cross and
+[00:26:25] a slow one. The famous pair is the 50
+[00:26:25] versus
+[00:26:31] 200. Typically simple moving averages is
+[00:26:31] what's known as a golden or death cross.
+[00:26:36] If you're getting the 50 period, the lower
+[00:26:36] period trading above the 200, the higher
+[00:26:36] period,
+[00:26:42] it is what's known as a golden cross. And
+[00:26:42] vice versa, if the 50 crosses below the
+[00:26:42] 200,
+[00:26:47] that is your death cross. A golden cross,
+[00:26:47] as the name would imply,
+[00:26:50] typically begets a lot more long-term
+[00:26:50] upside, not short-term upside. It's not
+[00:26:50] talking about
+[00:26:55] short-term, it's talking about long-term.
+[00:26:55] So let's put it on the board right here.
+[00:26:58] We're going to look at the blue as the 50
+[00:26:58] simple. We're going to look at the white
+[00:26:58] as a 200 simple,
+[00:27:03] and I'll show it to you on the daily
+[00:27:03] timeframe. And you can see generally
+[00:27:03] speaking, it ain't bad.
+[00:27:09] When it crosses the upside, more upside
+[00:27:09] typically happens. When it crosses the
+[00:27:13] downside, long-term downside typically
+[00:27:13] happens. Are there instances where you can
+[00:27:13] find that this
+[00:27:17] did not work out very well? Absolutely.
+[00:27:17] Right here in 2025, April, I should say.
+[00:27:22] Now there is a nuance to this. The slope
+[00:27:22] of the 200 simple was still up, so not
+[00:27:22] really
+[00:27:27] a great death cross in that case. Over
+[00:27:27] here, same thing, 200 simple slope was
+[00:27:27] still up.
+[00:27:32] So I would say ignore. But when the 200
+[00:27:32] simple slope is down and you get those
+[00:27:32] crossing over
+[00:27:37] here like this in January of 2022, well,
+[00:27:37] that was the beginning of your long-term
+[00:27:37] downtrend.
+[00:27:43] But remember, this is a long-term move. So
+[00:27:43] it doesn't mean that things are going to
+[00:27:43] immediately
+[00:27:47] crash to Hades. It just means that you're
+[00:27:47] probably looking to sell any rally towards
+[00:27:52] that 200 simple realistically. By the way,
+[00:27:52] this also works on any timeframe,
+[00:27:56] but of course, higher timeframe is going
+[00:27:56] to matter more than lower timeframes.
+[00:28:00] You can see a lot more floaty and flighty
+[00:28:00] behavior on a four-hour timeframe, for
+[00:28:00] example,
+[00:28:05] down to daily or especially like a weekly.
+[00:28:05] But yes, in fact, a weekly almost never
+[00:28:05] crosses
+[00:28:10] to be there. But daily, you will typically
+[00:28:10] see these play out to a decent degree.
+[00:28:15] Anyways, so yes, the honest read, by the
+[00:28:15] time the 200 period line bends,
+[00:28:20] the move is well underway. So that is the
+[00:28:20] lag law right there, and the crosses will
+[00:28:24] then confirm the trend. So they don't call
+[00:28:24] tops or bottoms. And in chop,
+[00:28:28] they will whipsaw around mercilessly if
+[00:28:28] you're treating them as like they cannot
+[00:28:28] fail.
+[00:28:38] That will happen. Like I said, they do not
+[00:28:38] call tops or bottoms. But anyways,
+[00:28:43] the cross I actually watch, which is what
+[00:28:43] you see on my shows pretty much every day,
+[00:28:48] is the 21 versus the 55 EMA, which is
+[00:28:48] known as the Silver Cross. I've also
+[00:28:48] called it the
+[00:28:52] Krown Cross in the past as well, but I
+[00:28:52] think it actually does have a technical
+[00:28:52] name as the
+[00:28:56] Silver Cross. Anyways, it's a major focus
+[00:28:56] in TA 101, and because both lines are
+[00:28:56] quicker,
+[00:29:02] it reads the recent trend, the shorter
+[00:29:02] term and the medium term trend,
+[00:29:06] and it catches a season changing, but not
+[00:29:06] necessarily the era. That's more so for
+[00:29:10] those higher periods. One more from my own
+[00:29:10] playbook as well, on the three-week time
+[00:29:10] frame,
+[00:29:15] that slow cross has historically only
+[00:29:15] fired after major macro lows anyways.
+[00:29:20] It can be a confirmation tool in that
+[00:29:20] regard. Again, confirmation as a lagging
+[00:29:20] tool,
+[00:29:25] confirming the reversal of a trend, but
+[00:29:25] that is again covered in daily analysis
+[00:29:25] and also
+[00:29:29] TA 101. The pattern across all of them
+[00:29:29] effectively is still the same. The bigger
+[00:29:29] the time frame,
+[00:29:34] the more the cross means you do get to a
+[00:29:34] point where you just don't have enough
+[00:29:34] history to
+[00:29:38] really populate very high term time frames
+[00:29:38] like a monthly or quarterly, for example,
+[00:29:43] but at some point, given enough history,
+[00:29:43] we will have that. Anyways, moving from
+[00:29:43] there,
+[00:29:47] when the averages lie. Here's a trap that
+[00:29:47] hopefully a lot of people are aware of,
+[00:29:52] but everything I've shown you assumes one
+[00:29:52] thing, a trend exists.
+[00:29:57] If things are not trending, which is
+[00:29:57] actually quite often basically a sideways
+[00:29:57] market,
+[00:30:02] there's no trend to average. The lines
+[00:30:02] more or less go flat and they braid around
+[00:30:02] each other
+[00:30:08] like headphone wires and that's just
+[00:30:08] fucking confusing and price will slice
+[00:30:08] through all of them,
+[00:30:13] both directions over and over. Every cross
+[00:30:13] fires and every cross fails. Now I would
+[00:30:13] say,
+[00:30:18] and I kind of alluded to the antidote or
+[00:30:18] at least a helping feature of this
+[00:30:18] earlier,
+[00:30:22] the higher period moving average, the
+[00:30:22] slope of that should help distinguish
+[00:30:22] between what's good
+[00:30:29] and what's bad. Also just using the 200
+[00:30:29] period as like a filter can be quite
+[00:30:29] useful as well,
+[00:30:33] but again, more advanced concepts for a
+[00:30:33] different video. Like I said, when you get
+[00:30:33] into chop,
+[00:30:39] most crosses will fire and fail. If you
+[00:30:39] look at them at face value, they will not
+[00:30:39] be good.
+[00:30:43] That is not what they're for. They are not
+[00:30:43] going to be the proper tool for that.
+[00:30:49] If you take, if you take average signals
+[00:30:49] inside chop and the tool, you know,
+[00:30:52] you're basically using a tool that
+[00:30:52] smoothing price action, your chart will
+[00:30:52] bleed you dry,
+[00:30:56] you know, one figure at a time. Again, if
+[00:30:56] you're using it in this very rudimentary
+[00:30:59] and suboptimal way, the tell, however, is
+[00:30:59] episode fives, flat tangled averages,
+[00:31:05] plus shrinking volume. That is a coil. The
+[00:31:05] market is effectively loading and that is
+[00:31:05] more or less
+[00:31:11] a skill of recognizing a range emerging.
+[00:31:11] And in these ranges, you do not want to be
+[00:31:15] trading a trend style. Of course, um,
+[00:31:15] you're just going to get chopped, but
+[00:31:15] we'll go over
+[00:31:20] a little more on that in episode seven,
+[00:31:20] big one there, but until then let's go
+[00:31:20] over
+[00:31:25] the full read. So we're going to, we're
+[00:31:25] going to have, um, a 21 and a 55 EMA and
+[00:31:25] then 200
+[00:31:31] simple moving average, um, which we've
+[00:31:31] kind of already done actually, but we can
+[00:31:31] go through
+[00:31:34] a few more examples. Let's do that right
+[00:31:34] here. These are, like I said, uh, my
+[00:31:34] preferred in
+[00:31:39] favor ones. It does not say there's other
+[00:31:39] ones that are useful. It's just, you know,
+[00:31:43] this is what I've been using for a long
+[00:31:43] time. So I'm very, very comfortable with
+[00:31:43] it.
+[00:31:46] Anyways, go for some more examples. Uh,
+[00:31:46] over here, um, we get the silver cross to
+[00:31:46] the
+[00:31:50] downside price section does depreciate
+[00:31:50] significantly, but you're still above that
+[00:31:50] 200 simple.
+[00:31:55] You know, Bitcoin has some pretty big
+[00:31:55] bounces in there. It's until Bitcoin is
+[00:31:55] below the 200
+[00:31:59] simple with that cross the downside right
+[00:31:59] here, where you really get that nasty
+[00:31:59] wrangling effect
+[00:32:04] of the market coming down. And you can see
+[00:32:04] all rallies up to the 200 simple after
+[00:32:04] that were
+[00:32:08] cells or even anything around it. Um, of
+[00:32:08] course, to the upside, we see a great
+[00:32:08] example over here
+[00:32:13] where Bitcoin reclaims the 200 simple. You
+[00:32:13] get the, the yellow, uh, above the green
+[00:32:17] and Bitcoin sets in a very long-term
+[00:32:17] trend. And when you do get the opposite
+[00:32:17] cross right here,
+[00:32:22] like the 21 versus the 55 to the down
+[00:32:24] But you're still above the 200 simple
+[00:32:24] where do your corrections come in around
+[00:32:24] the 200 simple any any sort of movement
+[00:32:24] down around there?
+[00:32:28] It's gonna be probably at least a good
+[00:32:28] bounce bounce or a good bounce area for a
+[00:32:28] good
+[00:32:33] You know scalp trade and in this instance,
+[00:32:33] you can see pricing just went up to the
+[00:32:33] right from there
+[00:32:38] So again, these are not perfect tools.
+[00:32:38] They are not fucking perfect tools, but
+[00:32:38] they are incredibly useful
+[00:32:45] If you treat them like perfect tools, you
+[00:32:45] will get wrecked if you don't if you don't
+[00:32:45] use them at all
+[00:32:48] Well, you probably survive but I think
+[00:32:48] that they do add a lot of value personally
+[00:32:53] Same thing over here to the upside again
+[00:32:53] reclaims the 200 simple
+[00:32:56] You got both you moving average to the
+[00:32:56] upside big move over here to the downside
+[00:32:56] once you go below the 200 simple
+[00:33:01] Well, eventually your Rona dump happened
+[00:33:01] to be fair, you know a couple of fake outs
+[00:33:01] within there
+[00:33:06] But again, this was you know, you could
+[00:33:06] call that a black swan
+[00:33:10] Other than that, you know
+[00:33:11] Even just looking at the green 55 EMA as
+[00:33:11] dynamic support and and also the yellow 21
+[00:33:11] EMA as dynamic support for the shorter
+[00:33:11] term
+[00:33:18] Moves also very much relevant here
+[00:33:20] You know, it's these were not bad buys
+[00:33:20] during the uptrend to be buying between
+[00:33:20] these two major movement averages
+[00:33:28] That lasted for you know year and a half
+[00:33:28] same thing over here, too
+[00:33:32] You know these go on for typically a long
+[00:33:32] time. They don't go on for forever
+[00:33:36] So you do need to be able to flip when it
+[00:33:36] tells you to flip but hey
+[00:33:39] When the go-ins good and when the getting
+[00:33:39] is good you should get or I don't know
+[00:33:39] anyways, you know what I'm trying to say
+[00:33:45] Anyways, yes for more episodes by the way
+[00:33:45] in this TA Foundation's playlist. The next
+[00:33:45] one is ranges
+[00:33:53] Again sideways markets can and do happen
+[00:33:53] and that's where you get chopped using
+[00:33:53] shit like this
+[00:33:58] Where big moves are effectively are born
+[00:33:58] from as well though
+[00:34:01] So it is very important to understand them
+[00:34:01] and beginners get chopped to death in
+[00:34:01] these ranges as well
+[00:34:06] We're gonna go over that in the next video
+[00:34:08] So if you do subscribe then episode 7 will
+[00:34:08] find you by by the magic of the YouTube
+[00:34:08] algorithm
+[00:34:14] But anyways, let's let's let's lock it in
+[00:34:14] and I'm gonna give you some homework here
+[00:34:19] Okay, so a moving average is the market's
+[00:34:19] memory drawn as a line
+[00:34:21] It follows price never leads it and the
+[00:34:21] lag is the feature
+[00:34:25] Your starter set are gonna be the 21 the
+[00:34:25] 55 and the 200 simple again if you want to
+[00:34:25] use different ones
+[00:34:30] That's fine. But I find that these are
+[00:34:30] just general purpose
+[00:34:33] For general purpose pretty damn good
+[00:34:36] You can set them once and keep them
+[00:34:37] I basically have been using this
+[00:34:37] throughout my whole career as well as a
+[00:34:37] few other ones too
+[00:34:41] But yeah, I find that they provide a lot
+[00:34:41] of value just at face value
+[00:34:43] You know a quick glance to figure out what
+[00:34:43] the hell is going on
+[00:34:46] They're dynamic again moving averages are
+[00:34:46] dynamic
+[00:34:49] They are memory that travels and where
+[00:34:49] they meet a zone from episode four again
+[00:34:49] or horizontal
+[00:34:55] supporting resistance zones that is
+[00:34:57] Confluence when we see those two things
+[00:34:57] align price action into those areas is
+[00:34:57] very very likely to respond
+[00:35:03] Crosses confirm
+[00:35:05] but they don't predict in advance what the
+[00:35:05] next trend is going to be and the silver
+[00:35:05] cross the 21 over the 55 reads the
+[00:35:12] More recent and I would say medium term
+[00:35:12] trend
+[00:35:14] The higher term time from trend is going
+[00:35:14] to be represented better by the 50 and the
+[00:35:14] 200 simple moving average or you can use
+[00:35:20] Exponential's there as well if you truly
+[00:35:20] desire it's gonna be very very similar.
+[00:35:20] Anyways, anyways, here's your homework
+[00:35:24] So put the three starter lines on any
+[00:35:24] chart. We showed you how to do that
+[00:35:24] earlier
+[00:35:28] Find one clean respect of any line and one
+[00:35:28] slice through
+[00:35:33] Proof it works and also proof. It's not
+[00:35:33] magic
+[00:35:36] Then you can drop the ticker and the
+[00:35:36] timeframe in the comments and we can grade
+[00:35:36] or I'll have Claude really grade
+[00:35:41] The first 50. The next episode: ranges
+[00:35:41] sideways markets where the big moves are
+[00:35:41] born
+[00:35:48] And that is where we're going to next as
+[00:35:48] always take care and much love

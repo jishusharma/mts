@@ -1,0 +1,44 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-14T06:42:52Z",
+  "commands": [],
+  "created": "2026-10-14T06:36:14Z",
+  "depends_on": [],
+  "done_when": "CYCLE_DESIGN.md contains a complete 12-slot readiness assessment, power limitations and executable next build card if feasible.",
+  "from_inbox": "",
+  "goal": "Design causal multi-horizon bottom/top event labels and assess independent-cycle power; no performance run.",
+  "id": "candle-close-cycle-labels",
+  "lane": "SONNET",
+  "layers": [
+    "volume_candles_ma"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "CYCLE_DESIGN.md completes causal labels and 12-slot readiness; at most five disjoint 180-day DEV blocks, macro odds underpowered; no outcome run.",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/candle_close_2026-10-14/RESEARCH.md",
+    "MyTradingSys/research/layer_lab/candle_close_2026-10-14/CYCLE_DESIGN.md"
+  ],
+  "scope_out": [
+    "reading any holdout",
+    "strategy tuning or deployment",
+    "inventing the anonymous YouTube source"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/layer_lab/candle_close_2026-10-14/RESEARCH.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Write separate local, swing and cycle outcome definitions with horizon, barriers, timeout and confirmation delay; mark all numbers OURS.",
+    "Specify causal pivot availability, all-alert ledger, failed alerts, competing upside/downside outcomes, episode grouping and design/check separation.",
+    "Audit available development date metadata and study lineage; compute precision targets from independent episode counts, not bars; freeze data plan before any run."
+  ],
+  "tests": "Document audit: every outcome has causal inputs, availability timestamp, censoring rule, episode unit and split; no unspecified numerical thresholds.",
+  "title": "Candle closes: design causal swing and cycle reversal labels with power audit"
+}

@@ -1,0 +1,82 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-27T20:43:57Z",
+  "commands": [],
+  "created": "2026-10-24T19:01:42Z",
+  "depends_on": [],
+  "done_when": "mfe_exit_study.py rejects any fire at or after 2024-07-01 in the DEV pass; test_mfe_exit_study.py has a test that plants a 2024-08 fire and asserts it is excluded; a DEV rerun reproduces or explains the 29,178 turn_of_candle_1m fires; REPORT.md gets a dated rerun note.",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Filter mfe_exit_study.py:186 fires on t_fire_ms < 2024-07-01 (DEV) instead of the file's split label, so a rerun reads no VALIDATION fire, then rerun DEV only and compare with the published rerun_dev_2026-10-17 numbers.",
+  "id": "mfe-exit-dev-only-rerun-not-reproducible",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Already shipped in ad4e461d6 (2026-10-26): DEV_END_MS=1719792000000 time-cut filter at mfe",
+      "ref": "c054737d3",
+      "utc": "2026-10-27T20:43:57Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "mfe_exit: DEV pass filters fires by t_fire_ms < 2024-07-01, not the stale split label",
+      "ref": "ad4e461d6685",
+      "utc": "2026-10-26T17:56:44Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "ad4e461d6685 mfe_exit: DEV pass filters fires by t_fire_ms < 2024-07-01, not the stale spl",
+      "ref": "MyTradingSys/research/mfe_exit_2026-10-13/REPORT.md",
+      "utc": "2026-10-26T17:56:44Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): scoped from the audit finding; T07-F2 breach was by the audit; the study fix is the filter. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-27T19:30:15Z",
+  "refs": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T07_stale_verdicts.md"
+  ],
+  "result": "Already shipped in ad4e461d6 (2026-10-26): DEV_END_MS=1719792000000 time-cut filter at mfe_exit_study.py:28, test_dev_pass_excludes_fire_after_2024_07_01_whatever_its_label present. Closing stale card, no duplicate work done.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py",
+    "MyTradingSys/research/mfe_exit_2026-10-13/test_mfe_exit_study.py",
+    "MyTradingSys/research/mfe_exit_2026-10-13/REPORT.md"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "restating any published verdict, ledger row or pre-registered bar",
+    "live path"
+  ],
+  "scope_sha": "ad4e461d6685",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T07_stale_verdicts.md (T07-F1)",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T07/out/rerun_diff.csv"
+  ],
+  "state": "done",
+  "steps": [
+    "Read mfe_exit_study.py:186 and T07-F1; write the planted-fire test first.",
+    "Replace the label filter by t_fire_ms < 1719792000000 (2024-07-01 UTC) in the DEV path.",
+    "Rerun DEV only; compare the fire count with 29,178 and the numbers with rerun_dev_2026-10-17; write the result into REPORT.md."
+  ],
+  "taken": "2026-10-27T20:43:57Z",
+  "tests": "test_mfe_exit_study.py new test: a fire stamped 2024-08-01 is excluded from the DEV pass; fails on the label-based filter.",
+  "title": "mfe_exit DEV-only rerun not reproducible: current fire files label TRAIN to 2025-01-01 (filter by t_fire_ms < 2024-07-01)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

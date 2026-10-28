@@ -1,0 +1,8 @@
+T05 run study=wlow SEED=20261016 sets=1000 boot=2000
+0 RL h=30 685 mean=0.0326 p=0.017 sdr=0.61
+1 RL h=60 685 mean=0.0317 p=0.063 sdr=0.69
+2 RL h=120 685 mean=0.0942 p=0.005 sdr=0.70
+3 AS h=30 525 mean=-0.0606 p=1.000 sdr=0.57
+4 AS h=60 525 mean=-0.0389 p=0.933 sdr=0.60
+5 AS h=120 525 mean=-0.1415 p=1.000 sdr=0.68
+wrote C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\.claude\worktrees\agent-aeff7478879c89c20\MyTradingSys\research\dsa_backtest_audit_2026-10-16\scripts\T05\out\placebo_wlow.csv

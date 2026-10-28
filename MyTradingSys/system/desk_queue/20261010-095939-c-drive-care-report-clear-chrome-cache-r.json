@@ -1,0 +1,14 @@
+{
+  "done_when": "c_drive_latest.md shows C: free before and after, task MTS-CDriveCare exists with LastTaskResult 0, outputs pasted in the done result",
+  "finished": "2026-10-12T09:51:15Z",
+  "from": "JIS-NB",
+  "host": "JIS-NUC",
+  "id": "20261010-095939-c-drive-care-report-clear-chrome-cache-r",
+  "need": "Work in mts-dsa after sync.py start. Step 1: powershell -NoProfile -File scripts\\dev\\c_drive_care.ps1 and paste the output. Step 2: ask the operator to close every Chrome window, then run powershell -NoProfile -File scripts\\dev\\c_drive_care.ps1 -Apply and paste the output (Chrome cache only; it skips if Chrome is open, say so). Step 3: powershell -NoProfile -File scripts\\sched\\register_c_drive_care.ps1 -Trigger and paste output. Step 4: Get-ScheduledTask MTS-CDriveCare | Get-ScheduledTaskInfo. Do NOT touch vm_bundles, Chrome Cookies/Login Data, D:, F:. Read MyTradingSys/system/DISK_CARE.md first. If a command fails twice close the task --failed with the error text.",
+  "posted": "2026-10-10T09:59:39Z",
+  "reopened": "2026-10-11 unstick session: taken 2026-10-10T11:56:47Z by JIS-NB, no result in >24h",
+  "result": "Blocked at session close: row is from JIS-NB and operates on the local host's C: drive (clears Chrome cache, registers scheduled task MTS-CDriveCare on that host). This DSA chat's AIBridge runs on JIS-NUC. Running here would touch JIS-NUC's C: drive and register the task on JIS-NUC, not JIS-NB. Wrong machine, stopped before any write. Step 2 also needs the operator to close every Chrome window on the target host by hand. Needs a JIS-NB bridge session or a manual run on JIS-NB. Row was stale-taken by JIS-NB since 2026-10-10T11:56:47Z.",
+  "status": "failed",
+  "target": "DSA",
+  "title": "C: drive care: report, clear Chrome cache, register weekly task"
+}

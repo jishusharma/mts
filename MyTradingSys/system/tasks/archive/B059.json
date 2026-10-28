@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-11T04:51:24Z",
+  "commands": [
+    "PATH=C:/tools/jdk-17.0.18/bin:$PATH mvn -q test -Dtest=BuildVpFixedGridTest,BuildVpWeightTest"
+  ],
+  "created": "2026-10-10T18:29:06Z",
+  "depends_on": [],
+  "done_when": "Test green on HEAD and red under the mutation (both outputs in the result); MarketDataSnapshot.java unchanged in the commit; row B059 CLOSED.",
+  "from_inbox": "",
+  "goal": "Pin the B059 fix: with fixedBinSize 10 the volume profile snaps bin edges to a 10-point grid, so POC/VAH/VAL do not move when the window extends downward.",
+  "id": "B059",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "Hand numbers 80370.0 derived from the buildVp code read 2026-10-10; if the run disagrees, re-derive from the code, do not edit the expectation to match.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "refiner 2026-10-10",
+  "refs": [
+    "B059"
+  ],
+  "result": "BuildVpFixedGridTest green on HEAD; red under L566 mutation (expected 80370.0 but was 80371.0); BUGS B059 CLOSED",
+  "scope_in": [
+    "src/test/java/datafeed/BuildVpFixedGridTest.java (new)",
+    "src/main/java/datafeed/MarketDataSnapshot.java:538-570 (read; one temporary mutation, reverted)",
+    "MyTradingSys/research/BUGS.md (row B059 status and receipt cells only)"
+  ],
+  "scope_out": [
+    "any production change",
+    "the 10.0 bin value (MarketDataSnapshot.java:183 is [SCREENER], untagged: not tuned here)",
+    "B066 (separate defect)"
+  ],
+  "size": "S",
+  "sources": [
+    "BUGS.md:127 row B059 (CORRECTED 2026-09-24: bin-edge drift in buildVp; fix landed)",
+    "MyTradingSys/items/B059_rank1_zone_drift.md",
+    "src/main/java/datafeed/MarketDataSnapshot.java:183 (call, bin 10.0) and :566 (binOrigin)"
+  ],
+  "state": "done",
+  "steps": [
+    "Copy the bar() and reflection helpers of BuildVpWeightTest.java; call buildVp(List, boolean, double) via getDeclaredMethod with double.class.",
+    "Window A: 20 bars high 80378 low 80371 close 80374 volume 10. Hand maths: each bar is one bin (n = max(1,(7)/10) = 1) at low 80371; origin = floor(80371/10)*10 = 80370, so poc = vah = val = 80370.0. Window B = A plus one bar high 80360 low 80352 volume 1 (origin moves to 80350): still 80370.0 for all three.",
+    "Run: green. Mutation: change L566 to `binOrigin = minP;`, rerun, confirm red (poc 80371.0), then `git checkout -- src/main/java/datafeed/MarketDataSnapshot.java`. Paste both outputs in --result.",
+    "BUGS.md row B059: Status CLOSED, Receipt = BuildVpFixedGridTest + commit (fix landed 2026-09-24, sha256 74B14A74 -> 52FF88CF)."
+  ],
+  "tests": "BuildVpFixedGridTest (new): green now; red under the L566 mutation (binOrigin = minP).",
+  "title": "Pin the fixed-grid volume profile (B059 fix) with a test",
+  "weight": "B-SHARED"
+}

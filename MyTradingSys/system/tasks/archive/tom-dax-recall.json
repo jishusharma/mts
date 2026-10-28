@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-10T20:38:22Z",
+  "commands": [],
+  "created": "2026-10-10T18:55:33Z",
+  "depends_on": [
+    "tom-dax-data"
+  ],
+  "done_when": "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md lists all 8 rows with HIT/MISS-RULE/MISS-DATA/NOT_IN_DATA and one recall number; if recall < 3 of 8 on MISS-RULE the file says STOP BACKTESTS.",
+  "from_inbox": "",
+  "goal": "For Tom's 8 DAX trade rows in the trade catalog, date each trade, run the engine at that instant on DAX data and report fire / no-fire / why. This tests H1 (encoding) before any backtest.",
+  "id": "tom-dax-recall",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "opus-2026-10-11 (operator chat)",
+  "refs": [],
+  "result": "RECALL_DAX.md: 0/7 signals on Tom's chart-verified DAX entries; 4 near-zone candidates with proof<=2 (WAIT_RR as coded, WAIT_PROOF DAX-fee), 3 spike-top shorts with no candidate. Stop rule: encoding first (tom-encode-spike-fade, tom-verdict-fee-per-market).",
+  "scope_in": [
+    "MyTradingSys/research/fast_track_2026-09-27/ANGLE_TRADE_CATALOG.md rows 8-19",
+    "MyTradingSys/research/tom_transfer_2026-10-11/PROBE_PLAN.md sections 2 and 4",
+    "F:/MTS/data/dax_archive/"
+  ],
+  "scope_out": [
+    "BTC",
+    "tuning any rule",
+    "Nasdaq/AVIS/crude rows"
+  ],
+  "size": "M",
+  "sources": [
+    "operator chat 2026-10-11: queue DAX recall, gap rules, DAX backtest in that order; probe selection/management/session with options flagged up front",
+    "MyTradingSys/research/fast_track_2026-09-27/ANGLE_TRADE_CATALOG.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Date each DAX row: chart x-axis in the video frame at the quoted position (approved download), else publish date + 'yesterday/Monday' in the quote; undatable = NOT_IN_DATA.",
+    "Engine snapshot at entry -30..+30 min, 1-min steps: zone, side, proof count, verdict.",
+    "Classify each row HIT (same side, zone within the stated stop), MISS-RULE, MISS-DATA (needs order flow / volume we lack).",
+    "Write MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md: table, recall = HIT/(HIT+MISS-RULE), branch per PROBE_PLAN section 4."
+  ],
+  "tests": "test_trade_dating.py: publish date 2026-02-04 + 'yesterday' -> 2026-02-03; 'a Monday' picks the Monday before publish (fails before the dater exists).",
+  "title": "Recall: does coded Tom fire where Tom traded his own DAX trades?"
+}

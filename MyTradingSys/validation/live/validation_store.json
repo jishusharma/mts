@@ -1,0 +1,220 @@
+{
+ "cases": [
+  {
+   "case": 1,
+   "category": "BTCUSDT|1d|hidden|bear",
+   "chart_path": "MyTradingSys/research/malkan_div_flags_2026-10-28/charts/BTCUSDT_1d.png",
+   "date": "2026-10-28",
+   "geometry": {
+    "in_window": true,
+    "price_dir": -1,
+    "rsi_dir": 1,
+    "rsi_zone": "mid"
+   },
+   "operator_verbatim": null,
+   "signal": {
+    "bars_A_to_B": 6.0,
+    "code": "K-HBEAR",
+    "date_A": "2026-01-23",
+    "date_B": "2026-01-28",
+    "price_A": 89558.7,
+    "price_B": 89261.7,
+    "rsi_A": 43.65,
+    "rsi_B": 45.65,
+    "symbol": "BTCUSDT",
+    "tf": "1d"
+   },
+   "source": "history_flags n=1",
+   "verdict": null
+  },
+  {
+   "case": 2,
+   "category": "BTCUSDT|1d|regular|bull",
+   "chart_path": "MyTradingSys/research/malkan_div_flags_2026-10-28/charts/BTCUSDT_1d.png",
+   "date": "2026-10-28",
+   "geometry": {
+    "in_window": true,
+    "price_dir": -1,
+    "rsi_dir": 1,
+    "rsi_zone": "lo"
+   },
+   "operator_verbatim": null,
+   "signal": {
+    "bars_A_to_B": 3.0,
+    "code": "R-BULL",
+    "date_A": "2026-02-27",
+    "date_B": "2026-03-01",
+    "price_A": 65836.0,
+    "price_B": 65750.0,
+    "rsi_A": 38.41,
+    "rsi_B": 39.23,
+    "symbol": "BTCUSDT",
+    "tf": "1d"
+   },
+   "source": "history_flags n=10",
+   "verdict": null
+  },
+  {
+   "case": 3,
+   "category": "BTCUSDT|1d|regular|bear",
+   "chart_path": "MyTradingSys/research/malkan_div_flags_2026-10-28/charts/BTCUSDT_1d.png",
+   "date": "2026-10-28",
+   "geometry": {
+    "in_window": true,
+    "price_dir": 1,
+    "rsi_dir": -1,
+    "rsi_zone": "hi"
+   },
+   "operator_verbatim": null,
+   "signal": {
+    "bars_A_to_B": 7.0,
+    "code": "R-BEAR",
+    "date_A": "2026-04-17",
+    "date_B": "2026-04-23",
+    "price_A": 77030.6,
+    "price_B": 78216.8,
+    "rsi_A": 67.42,
+    "rsi_B": 65.46,
+    "symbol": "BTCUSDT",
+    "tf": "1d"
+   },
+   "source": "history_flags n=11",
+   "verdict": null
+  },
+  {
+   "case": 4,
+   "category": "BTCUSDT|1d|hidden|bull",
+   "chart_path": "MyTradingSys/research/malkan_div_flags_2026-10-28/charts/BTCUSDT_1d.png",
+   "date": "2026-10-28",
+   "geometry": {
+    "in_window": true,
+    "price_dir": 1,
+    "rsi_dir": -1,
+    "rsi_zone": "mid"
+   },
+   "operator_verbatim": null,
+   "signal": {
+    "bars_A_to_B": 6.0,
+    "code": "K-HBULL",
+    "date_A": "2026-07-08",
+    "date_B": "2026-07-13",
+    "price_A": 62255.3,
+    "price_B": 62307.0,
+    "rsi_A": 46.13,
+    "rsi_B": 45.82,
+    "symbol": "BTCUSDT",
+    "tf": "1d"
+   },
+   "source": "history_flags n=19",
+   "verdict": null
+  },
+  {
+   "case": 5,
+   "category": "BTCUSDT|1w|hidden|bear",
+   "chart_path": "MyTradingSys/research/malkan_div_flags_2026-10-28/charts/BTCUSDT_1w.png",
+   "date": "2026-10-28",
+   "geometry": {
+    "in_window": true,
+    "price_dir": -1,
+    "rsi_dir": 1,
+    "rsi_zone": "mid"
+   },
+   "operator_verbatim": null,
+   "signal": {
+    "bars_A_to_B": 4.0,
+    "code": "K-HBEAR",
+    "date_A": "2022-01-10",
+    "date_B": "2022-01-31",
+    "price_A": 43060.66,
+    "price_B": 42361.35,
+    "rsi_A": 43.31,
+    "rsi_B": 45.0,
+    "symbol": "BTCUSDT",
+    "tf": "1w"
+   },
+   "source": "history_flags n=1",
+   "verdict": null
+  },
+  {
+   "case": 6,
+   "category": "BTCUSDT|1w|regular|bull",
+   "chart_path": "MyTradingSys/research/malkan_div_flags_2026-10-28/charts/BTCUSDT_1w.png",
+   "date": "2026-10-28",
+   "geometry": {
+    "in_window": true,
+    "price_dir": -1,
+    "rsi_dir": 1,
+    "rsi_zone": "lo"
+   },
+   "operator_verbatim": null,
+   "signal": {
+    "bars_A_to_B": 5.0,
+    "code": "R-BULL",
+    "date_A": "2022-08-22",
+    "date_B": "2022-09-19",
+    "price_A": 19547.5,
+    "price_B": 18799.7,
+    "rsi_A": 31.23,
+    "rsi_B": 32.98,
+    "symbol": "BTCUSDT",
+    "tf": "1w"
+   },
+   "source": "history_flags n=3",
+   "verdict": null
+  },
+  {
+   "case": 7,
+   "category": "BTCUSDT|1w|regular|bear",
+   "chart_path": "MyTradingSys/research/malkan_div_flags_2026-10-28/charts/BTCUSDT_1w.png",
+   "date": "2026-10-28",
+   "geometry": {
+    "in_window": true,
+    "price_dir": 1,
+    "rsi_dir": -1,
+    "rsi_zone": "mid"
+   },
+   "operator_verbatim": null,
+   "signal": {
+    "bars_A_to_B": 4.0,
+    "code": "R-BEAR",
+    "date_A": "2023-01-23",
+    "date_B": "2023-02-13",
+    "price_A": 23740.3,
+    "price_B": 24265.9,
+    "rsi_A": 58.73,
+    "rsi_B": 58.66,
+    "symbol": "BTCUSDT",
+    "tf": "1w"
+   },
+   "source": "history_flags n=4",
+   "verdict": null
+  },
+  {
+   "case": 8,
+   "category": "BTCUSDT|1w|hidden|bull",
+   "chart_path": "MyTradingSys/research/malkan_div_flags_2026-10-28/charts/BTCUSDT_1w.png",
+   "date": "2026-10-28",
+   "geometry": {
+    "in_window": true,
+    "price_dir": 1,
+    "rsi_dir": -1,
+    "rsi_zone": "mid"
+   },
+   "operator_verbatim": null,
+   "signal": {
+    "bars_A_to_B": 5.0,
+    "code": "K-HBULL",
+    "date_A": "2023-02-06",
+    "date_B": "2023-03-06",
+    "price_A": 21771.1,
+    "price_B": 21986.2,
+    "rsi_A": 51.91,
+    "rsi_B": 51.12,
+    "symbol": "BTCUSDT",
+    "tf": "1w"
+   },
+   "source": "history_flags n=5",
+   "verdict": null
+  }
+ ]
+}

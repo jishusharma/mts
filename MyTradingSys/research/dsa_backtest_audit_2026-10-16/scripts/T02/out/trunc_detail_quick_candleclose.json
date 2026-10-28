@@ -1,0 +1,24 @@
+{
+ "seed": 20261016,
+ "rows": [
+  {
+   "key": "candle_close|candle_close|1m",
+   "n_bars": 10650,
+   "cuts": 10,
+   "late": 0,
+   "repaint": 0,
+   "nan_diff": 0,
+   "x10_diff": 0,
+   "nan_err": 0,
+   "x10_err": 0,
+   "trunc_err": 0,
+   "max_lag": 0,
+   "n_events_full": 1,
+   "notes": "",
+   "declared_lag": 0,
+   "secs": 14.2,
+   "verdict": "PASS"
+  }
+ ],
+ "detail": {}
+}

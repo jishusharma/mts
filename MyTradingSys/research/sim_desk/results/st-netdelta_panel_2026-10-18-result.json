@@ -1,0 +1,51 @@
+{
+ "id": "st-netdelta_panel_2026-10-18-result",
+ "kind": "thought_experiment",
+ "family": "Netdelta Panel",
+ "title": "CoinGlass Net Delta Panel Unit and Scope Identification",
+ "provenance": "source-extracted",
+ "date": "2026-10-18",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "1. Executive Summary and Verdict",
+  "tone": "info"
+ },
+ "why": [
+  "Candidate B (Binance perp taker delta): Fails ratio spread completely (spread 0.064x to 1.594x, median 0.483x, sign agreement 85.7% with C04-09 exhibiting opposite sign) [OURS]. CoinGlass Net Delta is emphatically not order-flow taker delta.",
+  "Candidate C (Binance spot taker delta): Fails ratio spread completely (spread 0.338x to 13.791x, median 1.425x, sign agreement 85.7% with C07-08 exhibiting opposite sign) [OURS].",
+  "Candidate D (A + B family): Fails ratio spread (spread 0.059x to 1.505x, median 0.369x) [OURS].",
+  "Candidate A is NOT established. It matches 5m / 8h / 12h rows (ratios 0.90 to 1.03, plus 1.45 on C07-08), but all 10 rows with a bar time and a step must count, including the three \"additional\" rows: 30m rows give ratios 18.4 and 48.9, and the sub-5m rows giv…"
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "7"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 7,
+   "quote": "Verdict: UNIDENTIFIED (n = 7) [OURS: evaluation rule per card specification]"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source",
+  "n_trades": "not a trade test (thought experiment)"
+ },
+ "source_files": [
+  "MyTradingSys/research/netdelta_panel_2026-10-18/RESULT.md"
+ ],
+ "commit": "966d2607d"
+}

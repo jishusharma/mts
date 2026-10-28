@@ -1,0 +1,78 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-27T21:08:11Z",
+  "commands": [],
+  "created": "2026-10-25T19:25:09Z",
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Count section 3 rows by score: MATCH 16, mismatch 1, CORRECT_NULL 5, missed 0, INVENTED 4, UNVERIFIED 2 = 28 core fields (UNVERIFIED_LOCAL excluded). Text only. Producer: Gemini 4 Argon low. Do NOT read: section 1 counts. Report: MyTradingSys/research/layer_lab/reports/2026-10-26_gpt-argon-score-recount.md",
+  "id": "gpt-argon-score-recount",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "16/1/5/0/4/2 (28 core fields); MyTradingSys/research/layer_lab/reports/2026-10-27_gpt-argo",
+      "ref": "dc1ef0a61",
+      "utc": "2026-10-27T21:08:11Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Argon blind-read re-land: fix 4 hold defects (overstated k0zm resolution, wrong 'down from",
+      "ref": "ad987950b13f",
+      "utc": "2026-10-24T19:23:41Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "ad987950b13f Argon blind-read re-land: fix 4 hold defects (overstated k0zm resolution, wro",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-22_argon-blind-read-7-frames.md",
+      "utc": "2026-10-24T19:23:41Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 T0-ONLY (planner, machine checks only). Producer vendor: Gemini 4 Argon low. Reviewer vendor: GPT gpt-6-luna (codex_run.py); producer != reviewer. Reviewer must NOT read: section 1 headline counts before counting. Read-only audit: no product code, no live path, DEV data only (bars before 2024-07-01), no VALIDATION or HOLDOUT. DECISION (OURS) 2026-10-26: weight ROUTINE so the card is READY now; the planner may raise it (formula or verdict checks = CRUCIAL, needs a review stamp). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-25T19:26:58Z",
+  "refs": [],
+  "result": "16/1/5/0/4/2 (28 core fields); MyTradingSys/research/layer_lab/reports/2026-10-27_gpt-argon-score-recount.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-22_argon-blind-read-7-frames.md"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "scope_sha": "ad987950b13f",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "taken": "2026-10-27T21:08:11Z",
+  "tests": "",
+  "title": "GPT recounts the Argon-vs-Flash scoring table of the blind read of 7 frames",
+  "weight": "ROUTINE",
+  "worker": ""
+}

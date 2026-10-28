@@ -1,0 +1,8 @@
+{
+ "bands": {
+  "near_atr": 0.25,
+  "edge": 0.1,
+  "bbwp_high": 85
+ },
+ "label": "OURS, frozen from COUNTS.md counts only"
+}

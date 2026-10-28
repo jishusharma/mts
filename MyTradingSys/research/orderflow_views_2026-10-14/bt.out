@@ -1,0 +1,61 @@
+S1 long DIV DEV 3048 r60 -0.105 -8.5 trade -0.1115 -24.32
+S1 long DIV VAL 1030 r60 -0.0692 -4.33 trade -0.0997 -14.76
+S1 long DIV HOLDOUT 855 r60 -0.1042 -5.89 trade -0.117 -16.69
+S1 long DIV ALL 4933 r60 -0.0974 -10.97 trade -0.11 -32.44
+S1 long CONTROL DEV 6939 r60 -0.0824 -10.73 trade -0.1008 -33.21
+S1 long CONTROL VAL 2236 r60 -0.095 -8.21 trade -0.0961 -21.78
+S1 long CONTROL HOLDOUT 1746 r60 -0.0965 -7.9 trade -0.1041 -21.1
+S1 long CONTROL ALL 10921 r60 -0.0872 -15.13 trade -0.1004 -44.19
+S1 long CONFIRM DEV 6660 r60 -0.0846 -10.9 trade -0.1015 -33.19
+S1 long CONFIRM VAL 2110 r60 -0.0974 -8.15 trade -0.0998 -21.69
+S1 long CONFIRM HOLDOUT 1652 r60 -0.0862 -6.56 trade -0.0962 -17.91
+S1 long CONFIRM ALL 10422 r60 -0.0874 -14.82 trade -0.1003 -43.12
+S1 short DIV DEV 3397 r60 -0.0861 -7.92 trade -0.0976 -24.38
+S1 short DIV VAL 1219 r60 -0.0909 -5.79 trade -0.0981 -16.94
+S1 short DIV HOLDOUT 818 r60 -0.136 -7.23 trade -0.1049 -14.21
+S1 short DIV ALL 5434 r60 -0.0947 -11.59 trade -0.0988 -32.6
+S1 short CONTROL DEV 7101 r60 -0.0992 -13.38 trade -0.1008 -35.75
+S1 short CONTROL VAL 2301 r60 -0.0797 -7.27 trade -0.098 -23.67
+S1 short CONTROL HOLDOUT 1741 r60 -0.1031 -8.4 trade -0.0984 -19.58
+S1 short CONTROL ALL 11143 r60 -0.0958 -17.17 trade -0.0998 -46.68
+S1 short CONFIRM DEV 6756 r60 -0.1024 -13.58 trade -0.1042 -36.09
+S1 short CONFIRM VAL 2166 r60 -0.068 -5.89 trade -0.0946 -21.51
+S1 short CONFIRM HOLDOUT 1637 r60 -0.1027 -8.18 trade -0.1049 -20.54
+S1 short CONFIRM ALL 10559 r60 -0.0954 -16.68 trade -0.1023 -46.45
+S5 long DIV DEV 773 r60 -0.0525 -2.03 trade -0.1211 -7.87
+S5 long DIV VAL 357 r60 -0.1311 -4.91 trade -0.1132 -6.15
+S5 long DIV HOLDOUT 281 r60 -0.0943 -2.74 trade -0.0929 -4.18
+S5 long DIV ALL 1411 r60 -0.0807 -4.71 trade -0.1135 -10.71
+S5 long CONTROL DEV 3213 r60 -0.0933 -6.84 trade -0.1021 -13.28
+S5 long CONTROL VAL 1084 r60 -0.0941 -5.28 trade -0.1152 -10.85
+S5 long CONTROL HOLDOUT 850 r60 -0.095 -4.61 trade -0.1088 -9.91
+S5 long CONTROL ALL 5147 r60 -0.0937 -9.47 trade -0.106 -18.94
+S5 long CONFIRM DEV 2961 r60 -0.1024 -7.24 trade -0.1036 -13.11
+S5 long CONFIRM VAL 963 r60 -0.0939 -4.85 trade -0.1232 -11.13
+S5 long CONFIRM HOLDOUT 747 r60 -0.0806 -3.62 trade -0.0978 -8.51
+S5 long CONFIRM ALL 4671 r60 -0.0972 -9.31 trade -0.1067 -18.38
+S5 short DIV DEV 1076 r60 -0.104 -5.74 trade -0.1017 -9.36
+S5 short DIV VAL 512 r60 -0.0852 -3.84 trade -0.1123 -8.92
+S5 short DIV HOLDOUT 270 r60 -0.0985 -3.33 trade -0.1055 -5.53
+S5 short DIV ALL 1858 r60 -0.098 -7.61 trade -0.1052 -13.67
+S5 short CONTROL DEV 3452 r60 -0.0953 -8.11 trade -0.098 -13.92
+S5 short CONTROL VAL 1148 r60 -0.0843 -5.09 trade -0.0888 -9.68
+S5 short CONTROL HOLDOUT 847 r60 -0.0793 -4.05 trade -0.0806 -6.68
+S5 short CONTROL ALL 5447 r60 -0.0905 -10.32 trade -0.0934 -17.92
+S5 short CONFIRM DEV 3077 r60 -0.0996 -7.8 trade -0.1065 -14.33
+S5 short CONFIRM VAL 960 r60 -0.0996 -5.38 trade -0.0857 -8.31
+S5 short CONFIRM HOLDOUT 747 r60 -0.0774 -3.6 trade -0.0732 -5.55
+S5 short CONFIRM ALL 4784 r60 -0.0961 -10.0 trade -0.0971 -17.34
+EDGE {'scale': 'S1', 'side': 'long', 'oi': 'any', 'DEV': {'diff': -0.0226, 't': -1.56, 'n_div': 3048, 'n_ctl': 6939}, 'VAL': {'diff': 0.0257, 't': 1.31, 'n_div': 1030, 'n_ctl': 2236}, 'HOLDOUT': {'diff': -0.0077, 't': -0.36, 'n_div': 855, 'n_ctl': 1746}, 'edge': False}
+EDGE {'scale': 'S1', 'side': 'long', 'oi': 'UP', 'DEV': None, 'VAL': {'diff': 0.0329, 't': 0.6, 'n_div': 154, 'n_ctl': 342}, 'HOLDOUT': {'diff': -0.0183, 't': -0.58, 'n_div': 399, 'n_ctl': 828}, 'edge': False}
+EDGE {'scale': 'S1', 'side': 'long', 'oi': 'DOWN', 'DEV': None, 'VAL': {'diff': 0.0056, 't': 0.12, 'n_div': 149, 'n_ctl': 392}, 'HOLDOUT': {'diff': 0.002, 't': 0.07, 'n_div': 456, 'n_ctl': 918}, 'edge': False}
+EDGE {'scale': 'S1', 'side': 'short', 'oi': 'any', 'DEV': {'diff': 0.0131, 't': 1.0, 'n_div': 3397, 'n_ctl': 7101}, 'VAL': {'diff': -0.0112, 't': -0.59, 'n_div': 1219, 'n_ctl': 2301}, 'HOLDOUT': {'diff': -0.033, 't': -1.47, 'n_div': 818, 'n_ctl': 1741}, 'edge': False}
+EDGE {'scale': 'S1', 'side': 'short', 'oi': 'UP', 'DEV': None, 'VAL': {'diff': -0.0242, 't': -0.52, 'n_div': 198, 'n_ctl': 368}, 'HOLDOUT': {'diff': -0.0531, 't': -1.55, 'n_div': 423, 'n_ctl': 852}, 'edge': False}
+EDGE {'scale': 'S1', 'side': 'short', 'oi': 'DOWN', 'DEV': None, 'VAL': {'diff': -0.0535, 't': -1.06, 'n_div': 177, 'n_ctl': 368}, 'HOLDOUT': {'diff': -0.0123, 't': -0.43, 'n_div': 395, 'n_ctl': 889}, 'edge': False}
+EDGE {'scale': 'S5', 'side': 'long', 'oi': 'any', 'DEV': {'diff': 0.0407, 't': 1.39, 'n_div': 773, 'n_ctl': 3213}, 'VAL': {'diff': -0.037, 't': -1.15, 'n_div': 357, 'n_ctl': 1084}, 'HOLDOUT': {'diff': 0.0006, 't': 0.02, 'n_div': 281, 'n_ctl': 850}, 'edge': False}
+EDGE {'scale': 'S5', 'side': 'long', 'oi': 'UP', 'DEV': None, 'VAL': {'diff': -0.1285, 't': -1.03, 'n_div': 38, 'n_ctl': 161}, 'HOLDOUT': {'diff': 0.0012, 't': 0.02, 'n_div': 136, 'n_ctl': 407}, 'edge': False}
+EDGE {'scale': 'S5', 'side': 'long', 'oi': 'DOWN', 'DEV': None, 'VAL': {'diff': -0.0663, 't': -0.92, 'n_div': 65, 'n_ctl': 199}, 'HOLDOUT': {'diff': -0.0, 't': -0.0, 'n_div': 145, 'n_ctl': 443}, 'edge': False}
+EDGE {'scale': 'S5', 'side': 'short', 'oi': 'any', 'DEV': {'diff': -0.0086, 't': -0.4, 'n_div': 1076, 'n_ctl': 3452}, 'VAL': {'diff': -0.0009, 't': -0.03, 'n_div': 512, 'n_ctl': 1148}, 'HOLDOUT': {'diff': -0.0191, 't': -0.54, 'n_div': 270, 'n_ctl': 847}, 'edge': False}
+EDGE {'scale': 'S5', 'side': 'short', 'oi': 'UP', 'DEV': None, 'VAL': {'diff': 0.049, 't': 0.65, 'n_div': 85, 'n_ctl': 189}, 'HOLDOUT': {'diff': -0.0047, 't': -0.09, 'n_div': 126, 'n_ctl': 437}, 'edge': False}
+EDGE {'scale': 'S5', 'side': 'short', 'oi': 'DOWN', 'DEV': None, 'VAL': {'diff': -0.0224, 't': -0.29, 'n_div': 61, 'n_ctl': 172}, 'HOLDOUT': {'diff': -0.0328, 't': -0.69, 'n_div': 144, 'n_ctl': 410}, 'edge': False}
+TODAY [{'scale': 'S1', 'side': 'long', 'bar_close': '2026-10-13 23:55', 'oi': 'DOWN', 'r30': np.float64(0.242), 'r60': np.float64(0.323), 'trade': np.float64(0.143)}, {'scale': 'S1', 'side': 'long', 'bar_close': '2026-10-14 05:51', 'oi': 'DOWN', 'r30': np.float64(-0.039), 'r60': np.float64(-0.149), 'trade': np.float64(-0.2)}, {'scale': 'S1', 'side': 'long', 'bar_close': '2026-10-14 10:02', 'oi': 'DOWN', 'r30': np.float64(0.113), 'r60': np.float64(0.085), 'trade': np.float64(-0.262)}, {'scale': 'S1', 'side': 'long', 'bar_close': '2026-10-14 13:13', 'oi': 'UP', 'r30': np.float64(0.261), 'r60': np.float64(-0.727), 'trade': np.float64(-0.227)}, {'scale': 'S1', 'side': 'short', 'bar_close': '2026-10-14 00:31', 'oi': 'DOWN', 'r30': np.float64(0.025), 'r60': np.float64(0.151), 'trade': np.float64(-0.245)}, {'scale': 'S1', 'side': 'short', 'bar_close': '2026-10-14 08:01', 'oi': 'DOWN', 'r30': np.float64(-0.317), 'r60': np.float64(0.124), 'trade': np.float64(-0.2)}, {'scale': 'S1', 'side': 'short', 'bar_close': '2026-10-14 12:30', 'oi': 'UP', 'r30': np.float64(1.257), 'r60': np.float64(1.359), 'trade': np.float64(0.195)}]

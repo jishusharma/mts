@@ -1,0 +1,19 @@
+{
+  "id": "recipe-pilot",
+  "recipe": "critical-audit",
+  "goal": "Verify that an ordered independent review catches a seeded numerical error and handles missing fees without inventing data.",
+  "criteria": [
+    "Independently compute sum 30 and mean 10 from the source observations and identify the sum claim as MISMATCH.",
+    "Label the unsupported net-after-fees claim NOT_IN_DATA; make no trading inference."
+  ],
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/examples/pilot-facts.md",
+    "MyTradingSys/research/layer_lab/examples/pilot-claims.md"
+  ],
+  "prio": 2,
+  "contract": "0eba7f538144824cdf140093366c25ce45fa32b1d87008a4d81882ac98345d51",
+  "cards": [
+    "recipe-pilot-1-map",
+    "recipe-pilot-2-challenge"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "done_when": "Get-ScheduledTask shows MTS-AutoDeploy and MTS-DailyHygiene; auto_deploy_last.json action is UP_TO_DATE or DEPLOYED (not NOT_LIVE); hygiene_latest.md says STATUS",
+  "finished": "2026-10-09T23:07:02Z",
+  "from": "JIS-NUC",
+  "host": "JIS-NB",
+  "id": "20261009-205713-register-ci-cd-scheduled-jobs-on-the-liv",
+  "need": "powershell -NoProfile -File scripts\\sched\\register_cicd_tasks.ps1 -Trigger ; then: type MyTradingSys\\runtime\\sched\\auto_deploy_last.json ; type MyTradingSys\\runtime\\sched\\hygiene_latest.md. Recipe: MyTradingSys/system/DEPLOY_RUNBOOK.md. Run in a normal user shell (not the live tree session's build shell).",
+  "posted": "2026-10-09T20:57:13Z",
+  "result": "Live tree ff to b4c1644 (via fast-track fallback); MTS-DailyHygiene (GREEN, gate PASS 499 s) and MTS-AutoDeploy (every 15 min, UP_TO_DATE) registered and triggered once on JIS-NB; live_runner_cli/auto_trader/daily_loss_monitor restarted 04:21 local on new code, position_manager untouched; runner 6 families 14 setups errors=0. Java (pom.xml, MarketDataSnapshot, NakedPocTracker) still needs mvn + JVM window.",
+  "status": "done",
+  "taken": "2026-10-09T23:01:06Z",
+  "taken_by": "JIS-NB",
+  "target": "JIS-NB",
+  "title": "Register CI/CD scheduled jobs on the live host"
+}

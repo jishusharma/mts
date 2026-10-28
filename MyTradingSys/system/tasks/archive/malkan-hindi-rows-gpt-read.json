@@ -1,0 +1,73 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T12:06:25Z",
+  "commands": [],
+  "created": "2026-10-15T14:29:33Z",
+  "crucial": true,
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "effort": "low",
+  "from_inbox": "",
+  "goal": "Rows MAL-1,3,4,6,7,8,9 of SETUP_SUMMARY.md quote the 2 Hindi videos only via YouTube machine translation (GARBLED / NOT STATED). From *_hi_raw.txt give per row: Hindi line(s) verbatim + file:line, your English rendering, per field STATED / NOT STATED / UNREADABLE; and whether the 5-star / 7-star rule is stated in his words. Report only; no extract edits.",
+  "id": "malkan-hindi-rows-gpt-read",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "report MyTradingSys/research/layer_lab/reports/2026-10-17_malkan-hindi-rows-gpt-read.md: v",
+      "ref": "55696cf3",
+      "utc": "2026-10-17T12:06:25Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Malkan 5-star/7-star: COMPARE.md with extract lines vs web/spec/code, Source lines on SETU",
+      "ref": "ecc5bebc038b",
+      "utc": "2026-10-15T21:19:33Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "ecc5bebc038b Malkan 5-star/7-star: COMPARE.md with extract lines vs web/spec/code, Source ",
+      "ref": "MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md",
+      "utc": "2026-10-15T21:19:33Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "model": "gpt-6-astra",
+  "note": " coordinator 2026-10-16: same; Malkan rows feed the G3 marking pack (p2 -> p1).",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-17T07:24:59Z",
+  "refs": [],
+  "result": "report MyTradingSys/research/layer_lab/reports/2026-10-17_malkan-hindi-rows-gpt-read.md: verdict SOUND, 0 HIGH, 3 MED (stop recoverable below candle low, '100' is 60, 2068 unresolved); 5/7-star not in W, grades-only in A",
+  "scope_in": [
+    "MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md",
+    "MyTradingSys/research/malkan_extract_2026-10-15/extracts/extract_W1HrDl70Lhk.md",
+    "MyTradingSys/research/malkan_extract_2026-10-15/extracts/extract_A-CQiV_UFB4.md",
+    "raw_transcripts_canonical/W1HrDl70Lhk_hi_raw.txt (read only)",
+    "raw_transcripts_canonical/A-CQiV_UFB4_hi_raw.txt (read only)"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "scope_sha": "ecc5bebc038b",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "",
+  "title": "Malkan Hindi rows: independent GPT reading of the GARBLED / NOT STATED entry, stop, target and the 5-star / 7-star rule"
+}

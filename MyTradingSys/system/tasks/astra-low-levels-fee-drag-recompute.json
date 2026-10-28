@@ -1,0 +1,85 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "astra-low-levels-fee-drag-recompute",
+  "closed": "2026-10-28T09:57:02Z",
+  "created": "2026-10-26T22:50:00Z",
+  "crucial": "The fee-versus-stop finding drives every later stop-width decision; a wrong number here misleads all layers.",
+  "depends_on": [
+    "astra-low-levels-fee-drag-recompute-need-export-the-original"
+  ],
+  "done_when": "MyTradingSys/research/design_cards_2026-10-26/astra_levels_recompute.md exists: five recomputed numbers with the formula line used, MATCH or gap per number, method written before the comparison",
+  "effort": "low",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Recompute from raw ledger rows and FORMULAS.md, without running the study code, the levels study headline: filled count, gross R, fee R per trade, net R, win rate. Compare with the Fable review numbers and say MATCH or the exact gap.",
+  "id": "astra-low-levels-fee-drag-recompute",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MATCH: raw ledger 255 fills; mean gross +0.2174473R, fee +0.3368860R, net -0.1194387R, 104",
+      "ref": "0b53d1a2f",
+      "utc": "2026-10-28T09:57:02Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Audit levels net returns and expose missing raw fee provenance",
+      "ref": "3737ab2a4a8d",
+      "utc": "2026-10-26T18:37:32Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "3737ab2a4a8d Audit levels net returns and expose missing raw fee provenance",
+      "ref": "MyTradingSys/research/design_cards_2026-10-26/astra_levels_recompute.md",
+      "utc": "2026-10-26T18:37:32Z"
+    }
+  ],
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "model": "astra",
+  "mutation_check": "",
+  "note": "REVIEWED: sonnet-reviewer-a89035 2026-10-26\nReopened after the raw-ledger export dependency shipped (acd3b4fc); independent recomputation underway.",
+  "prio": 1,
+  "refine_tries": 1,
+  "refined_by": "super-c-design",
+  "refreshed": "2026-10-28T09:55:48Z",
+  "refs": [],
+  "result": "MATCH: raw ledger 255 fills; mean gross +0.2174473R, fee +0.3368860R, net -0.1194387R, 104/255=40.7843% wins; all five match Fable display. See astra_levels_recompute.md and 2026-10-28 report.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/design_cards_2026-10-26/astra_levels_recompute.md (new file only)"
+  ],
+  "scope_out": [
+    "live tree; deploys; any verdict to keep, drop, demote or park a layer; VALIDATION and HOLDOUT data"
+  ],
+  "scope_sha": "3737ab2a4a8d",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/sim_desk/REVIEW_FABLE_2026-10-25.md",
+    "MyTradingSys/backtest/layers/FORMULAS.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Read FORMULAS.md for R, fee and filled-only rules; write the method down first",
+    "Load the levels run trades from sim_desk/results (or the runs ledger) with a short throwaway script kept out of the repo",
+    "Compute the five numbers, then compare with REVIEW_FABLE_2026-10-25.md section 1",
+    "Commit the report with a Result: line (MATCH or gaps)"
+  ],
+  "taken": "2026-10-28T09:56:07Z",
+  "tests": "Throwaway script checked once on a hand-made 3-trade sample with known answers before the real data",
+  "title": "Astra-low: independently recompute the levels study fee drag (+0.22 R gross, -0.12 R net, 255 fills)",
+  "weight": "CRUCIAL",
+  "worker": "agent"
+}

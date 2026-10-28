@@ -1,0 +1,6 @@
+--- a/MyTradingSys/backtest/layers/alerts/live_layers.py
++++ b/MyTradingSys/backtest/layers/alerts/live_layers.py
+@@
+-                side = "short" if closes[start] > mid else "long"
++                side = "long" if closes[start] > mid else "short"
+*** End Patch

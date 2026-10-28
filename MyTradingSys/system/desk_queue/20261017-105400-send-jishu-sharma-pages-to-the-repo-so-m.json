@@ -1,0 +1,10 @@
+{
+  "done_when": "git cherry clean; tom_fabio_deck.html on fast-track; desk row done with commit sha",
+  "from": "JIS-NB",
+  "id": "20261017-105400-send-jishu-sharma-pages-to-the-repo-so-m",
+  "need": "Run on JIS-NUC in a Claude session signed in to the login that owns Control Room EoHi2q (artifacts/registry.json). 1) Artifact read 2DXWotLraL8te3xNqo4hWV (Tom and Fabio deck); save its slides as MyTradingSys/system/artifacts/tom_fabio_deck.html; set registry html for tom_fabio_deck. 2) Artifact read EoHi2q, QwsvsN, 7V5bKe, 4JZxNE. Where a page is newer than its repo html (registry html field), write the newer html over the repo copy. 3) Copy any Inbox (feedback) or decisions rows from the EoHi2q db that are not yet in OPERATOR_DECISIONS.md into it (no account or order data: public repo). 4) Make the CBP routine commit its desk html to the repo after each run. 5) Ship via sync.py ship, then run desk.py done with the commit. Never publish a new copy on that login: the home login republishes from the repo.",
+  "posted": "2026-10-17T10:54:00Z",
+  "status": "pending",
+  "target": "JIS-NUC",
+  "title": "Send jishu.sharma pages to the repo so MTS Home on the home login has the latest"
+}

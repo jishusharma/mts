@@ -1,0 +1,128 @@
+"""Run with python <this file>. Metadata only: never emit outcome values.
+
+CSV records are projected to timestamp/phase/variant identity fields immediately.
+This is an audit inventory, not a parser for arbitrary JSON or binary artifacts.
+"""
+import csv
+import io
+import json
+import math
+import re
+import subprocess
+from collections import Counter, defaultdict
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path.cwd()
+HERE = Path(__file__).resolve().parent
+OUT = HERE / 'out'
+OUT.mkdir(exist_ok=True)
+def git(*args):
+    return subprocess.check_output(['git', *args], text=True, encoding='utf-8', errors='replace')
+def write(name, rows, fields):
+    with (OUT / name).open('w', encoding='utf-8', newline='') as f:
+        w = csv.DictWriter(f, fieldnames=fields, lineterminator='\n')
+        w.writeheader()
+        w.writerows(rows)
+def date(value):
+    s = str(value).strip()
+    if re.match(r'^20\d\d-\d\d-\d\d', s):
+        return s[:10]
+    try:
+        n = float(s)
+        if n > 1e14:
+            n /= 1e6
+        elif n > 1e11:
+            n /= 1e3
+        if 946684800 <= n <= 1893456000:
+            return datetime.fromtimestamp(n, timezone.utc).strftime('%Y-%m-%d')
+    except (ValueError, OverflowError, OSError):
+        pass
+    return None
+TIME = re.compile(r'^(date|datetime|timestamp|time|t|ts|open_time|close_time|entry_time|exit_time|entry_ts|exit_ts|entry_t|exit_t|signal_t|signal_time|day|day_utc|utc|first|last|month|.*_utc(?:_ms)?|.*_open|t_open_time|t_fire_ms|break_close_utc_ms|C_T|ctrl_T)$', re.I)
+RET = re.compile(r'(^|_)(ret|return|returns|pnl|profit|gross|net|mfe|mae|r60|net_r|gross_r|G)(_|$)', re.I)
+IDENT = {'study', 'variant', 'arm', 'horizon', 'hold', 'hold_bars', 'k', 'side', 'tf', 'setup', 'name', 'mode', 'family', 'signal', 'params', 'hypothesis', 'trial_id', 'trial', 'strategy', 'stop', 'target', 'scale', 'oi', 'cell', 'h', 'd', 'block', 'rr', 'signature', 'factor', 'trigger', 'filt', 'definition', 'count_of'}
+IDENT.update({'event', 'sign'})
+files = git('ls-files', 'MyTradingSys/backtest', 'MyTradingSys/research').splitlines()
+static = []
+pattern = re.compile(r'2024-07-01|2025-07-01|2026-06-26|is_frac|\bHOLDOUT\b|\bVALIDATION\b|\bDEV_END\w*\b|\bDEV_START\w*\b|datetime\(202|Timestamp\([\x22\x27]20|\bsplit_of\b|\bchronological_split\b')
+for name in files:
+    if name.endswith('.py'):
+        for i, line in enumerate((ROOT/name).read_text(encoding='utf-8', errors='replace').splitlines(), 1):
+            if pattern.search(line):
+                static.append(dict(file=name, line=i, code=line.strip()))
+write('split_map.csv', static, ['file', 'line', 'code'])
+windows, seal, skipped, trials = [], [], [], []
+for name in files:
+    if not name.startswith('MyTradingSys/research/') or not name.endswith('.csv'):
+        continue
+    try:
+        with (ROOT/name).open(encoding='utf-8-sig', newline='') as f:
+            reader = csv.DictReader(f)
+            fields = reader.fieldnames or []
+            times = [k for k in fields if k and TIME.match(k)]
+            outcomes = [k for k in fields if k and RET.search(k)]
+            bounds = defaultdict(list)
+            identities = set()
+            count = 0
+            identity_fields = [k for k in fields if k and k.lower() in IDENT]
+            for row in reader:
+                count += 1
+                # Never inspect return/outcome cells.
+                phase = row.get('split', row.get('phase', 'UNSPECIFIED'))
+                for k in times:
+                    d = date(row.get(k, ''))
+                    if d:
+                        bounds[(phase, k)].append(d)
+                if 'trial' in Path(name).name.lower():
+                    identities.add(tuple((k, row.get(k, '')) for k in identity_fields))
+            for (phase, key), dates in bounds.items():
+                rec = dict(file=name, phase=phase, column=key, n=len(dates), minimum=min(dates), maximum=max(dates), outcome_columns=';'.join(outcomes))
+                windows.append(rec)
+                if outcomes and max(dates) >= '2025-07-01':
+                    seal.append(dict(rec))
+            if 'trial' in Path(name).name.lower():
+                trials.append(dict(file=name, rows=count, identity_fields=';'.join(identity_fields), distinct_identities=len(identities) if identity_fields else '', haircut=round(math.sqrt(2*math.log(len(identities))), 6) if len(identities)>1 else 0))
+            if not times:
+                skipped.append(dict(file=name, reason='no recognized timestamp column; schema only', columns=';'.join(str(x) for x in fields)))
+    except (OSError, csv.Error, UnicodeError) as e:
+        skipped.append(dict(file=name, reason=type(e).__name__, columns=''))
+for rec in seal:
+    rec['commit'] = git('log', '-1', '--format=%h %aI %an', '--', rec['file']).strip()
+wf = ['file', 'phase', 'column', 'n', 'minimum', 'maximum', 'outcome_columns']
+write('artifact_windows.csv', windows, wf)
+write('seal_candidates.csv', seal, wf+['commit'])
+write('schema_gaps.csv', skipped, ['file', 'reason', 'columns'])
+write('trial_inventory.csv', trials, ['file', 'rows', 'identity_fields', 'distinct_identities', 'haircut'])
+# All historical trial identities, not their scores. Union is only a LOWER BOUND:
+# repeated parameter values, deleted runs and untracked trials are unidentifiable.
+history = []
+for tr in trials:
+    name = tr['file']
+    if '/dsa_backtest_audit_' in name or '/monitor_' in name:
+        continue
+    revisions = git('log', '--format=%H', '--', name).splitlines()
+    seen = set()
+    for rev in revisions:
+        reader = csv.DictReader(io.StringIO(git('show', f'{rev}:{name}')))
+        keys = [k for k in reader.fieldnames or [] if k and k.lower() in IDENT]
+        for row in reader:
+            if keys:
+                seen.add(tuple((k, row.get(k, '')) for k in keys))
+    history.append(dict(file=name, revisions=len(revisions), historical_identity_lower_bound=len(seen), current_identities=tr['distinct_identities'], haircut_lower_bound=round(math.sqrt(2*math.log(len(seen))),6) if len(seen)>1 else 0))
+write('trial_history.csv', history, ['file','revisions','historical_identity_lower_bound','current_identities','haircut_lower_bound'])
+calendar = []
+for w in windows:
+    if not w['outcome_columns'] or w['column'] in ('date', 'run_utc'):
+        continue
+    y, m = map(int, w['minimum'][:7].split('-'))
+    while f'{y:04}-{m:02}' <= w['maximum'][:7]:
+        month = f'{y:04}-{m:02}'
+        calendar.append(dict(file=w['file'], phase=w['phase'], month=month, main_phase='DEV' if month<'2024-07' else 'VALIDATION' if month<'2025-07' else 'HOLDOUT', evidence='BOUNDS ONLY: month may contain no rows'))
+        m += 1
+        if m == 13:
+            y, m = y+1, 1
+write('contamination_calendar.csv', calendar, ['file','phase','month','main_phase','evidence'])
+summary = dict(sha=git('rev-parse','HEAD').strip(), tracked_files=len(files), split_lines=len(static), csv_window_groups=len(windows), seal_candidate_groups=len(seal), seal_candidate_files=len({w['file'] for w in seal}), trial_files=len(trials), schema_gaps=len(skipped), historical_trial_files=len(history))
+(OUT/'summary.json').write_text(json.dumps(summary, indent=2)+'\n', encoding='utf-8', newline='\n')
+print(json.dumps(summary))

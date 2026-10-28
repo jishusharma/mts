@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-15T22:16:01Z",
+  "commands": [],
+  "created": "2026-10-15T14:19:36Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/opr_weekly_low_round_sweep_<date>/REPORT.md with n, P(A/B/C) and Wilson CIs overall and per condition, after-reclaim MFE/MAE, trial-ledger rows.",
+  "from_inbox": "",
+  "goal": "Build and run the G5 DEV event study in drafts/OPR-WEEKLY-LOW-ROUND-SWEEP.md: P(reclaim / acceptance / range) after a break of the prior-week low or a round-1000 level, by OI change, CVD flip, US-open window, HTF stretch and stacking. Holdout sealed.",
+  "id": "opr-weekly-low-round-sweep-g5",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "Heavy 1m event study: coordinator asks the observer (local_9e6b2df7) to queue it as GPT/NUC astra/low; lane SONNET here only because a DSA/CODEX run card needs copy-ready commands, which do not exist until the finder is written.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "bb-rsi-40-60 setup draft session 2026-10-15",
+  "refs": [],
+  "result": "FAIL (screen, ran before G3 marks by operator decision 2026-10-16): pooled first-break ledger n=1060 (round 1006, weekly 103); RL reclaim-long n=685 mean G +0.032% (net -0.108%); AS acceptance-short n=525 mean G -0.039%; ran on this machine (vectorised, ~1 min), no NUC card needed; MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/RESULT.md",
+  "scope_in": [
+    "MyTradingSys/research/setup_catalog_2026-10-15/drafts/OPR-WEEKLY-LOW-ROUND-SWEEP.md",
+    "MyTradingSys/research/setup_catalog_2026-10-15/sources/OPERATOR_2026-10-15_weekly_low_round_sweep.md",
+    "MyTradingSys/research/setup_catalog_2026-10-15/evidence/weekly_low_sweep_checks.py",
+    "MyTradingSys/research/levels_confluence_2026-10-14/levels.py",
+    "MyTradingSys/backtest/layers/FORMULAS.md",
+    "MyTradingSys/research/levels_sizing_2026-10-14/METHOD.md"
+  ],
+  "scope_out": [
+    "HOLDOUT or VALIDATION reads",
+    "live tree",
+    "any trade call or live rule",
+    "editing SETUP_CATALOG.md"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/setup_catalog_2026-10-15/drafts/OPR-WEEKLY-LOW-ROUND-SWEEP.md",
+    "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Check DEV 1m klines, taker volume and OI coverage in the LAYERS.md:35 window (recorder 1m only since 2026-10-05; archive metrics 5m): list gaps.",
+    "Write the event finder (prior-week low from Monday-Sunday UTC, round-1000 levels, break rule with penetration grid) and the outcome classifier A/B/C with a fail-first test on synthetic 1m bars.",
+    "Run DEV only. Tables: P(A), P(B), P(C) with n and Wilson 95% CI, unconditional and by OI change, CVD flip, US-open window, HTF stretch (1h/4h RSI<35, price below 4h/1d lower BB) and stacking (weekly low + round within X%); after A: MFE/MAE to +30/+60/+120 min and swing-high / pre-open-top hits. Cells with n<10 are not read.",
+    "Only if a conditional frequency beats the unconditional one: cost long-at-reclaim and short-at-acceptance with METHOD.md fees; every (level, p, k, m, window, stacking) combination goes into the trial ledger; one look at VALIDATION; write REPORT.md. Cite levels_hold.md (round_1000 KEEP, prior_week_low DROP at n=20): that study measured hold, this one sweep-and-reclaim."
+  ],
+  "tests": "Fail-first test on synthetic 1m bars: a wick below the level followed by a close back above within k minutes is outcome A, m consecutive closes below is outcome B, neither is C; counts hand-computed from the definitions in the draft.",
+  "title": "OPR-WEEKLY-LOW-ROUND-SWEEP G5 DEV event study: weekly low + round number break, reclaim vs acceptance"
+}

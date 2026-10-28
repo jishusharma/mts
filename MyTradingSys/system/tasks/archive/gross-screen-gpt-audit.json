@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-15T20:08:39Z",
+  "commands": [],
+  "created": "2026-10-15T19:38:36Z",
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "from_inbox": "",
+  "goal": "RESULT.md says INCONCLUSIVE (flow arm T n=40 < 200 at a new session extreme) and stops this family. A second model checks that verdict from PRE_REG.md before we rely on it: counts, code vs pre-registration, the T primary-cell numbers, and why n_T is so small. Report only; no new variant, no re-run of other cells.",
+  "id": "gross-screen-gpt-audit",
+  "kind": "audit",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refs": [],
+  "result": "FIX-FIRST; independent DEV recount matches counts (40/1400/1440) and T primary n=40, mean_G=-0.055276%, t_cost=-1.509456; MED frozen-manifest guard finding in report",
+  "scope_in": [
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/PRE_REG.md",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/RESULT.md",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/ledger.csv",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/DATA_MANIFEST.csv",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read PRE_REG.md sections 2, 4, 5, 7 first; RESULT.md after. screen.py only in step 3, so your recount does not copy it.",
+    "Recount n_T, n_notF, n_C with your own script under MyTradingSys/research/layer_lab/, from PRE_REG sections 2 and 5 only, on F:/MTS/data/tom_raw/klines BTCUSDT-1m-2022-01..2024-06 (SHA256 must match DATA_MANIFEST.csv). Never read a bar >= 2024-07-01.",
+    "Check screen.py line by line against PRE_REG sections 2-5 and 7: L1-L4, the D5 window and F sign per side, cooldown before or after F as section 5 says, cost C 0.14, t_cost, DIFF, MDD.",
+    "Recompute arm T only at the primary cell d=1 h=60 (n, mean G, t_cost) and compare with RESULT.md. No other cell, no new variant, no change to any PRE_REG number.",
+    "For each of the 3 DECISION (OURS) lines in RESULT.md say whether it can change the verdict. Explain n_T=40: share of eligible encounters whose D5 points with the move, and whether the shared cooldown keeps the first bar of each new-extreme cluster. A design finding, never a re-run.",
+    "Report: table screen vs GPT for every count and the T primary-cell numbers, findings table (HIGH/MED/LOW, file:line, evidence, proposed fix), verdict line SOUND / FIX-FIRST / BLOCKED. A HIGH finding gets a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "",
+  "title": "Gross-effect screen: independent GPT check of the INCONCLUSIVE verdict (n_T=40) before the family stays stopped"
+}

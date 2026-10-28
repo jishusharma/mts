@@ -1,0 +1,13 @@
+{
+  "done_when": "Get-ScheduledTask output printed showing MTS-DailyHygiene Ready on JIS-NUC and no MTS-AutoDeploy",
+  "finished": "2026-10-11T15:30:23Z",
+  "from": "JIS-NB",
+  "host": "JIS-NUC",
+  "id": "20261011-140307-nuc-register-ci-cd-scheduled-tasks-no-de",
+  "need": "On JIS-NUC in repo F:\\MTS\\repo worktree mts-dsa: git fetch origin; git merge --ff-only origin/fast-track; then powershell -File scripts/sched/register_cicd_tasks.ps1 -Trigger -SkipDeploy ; then Get-ScheduledTask -TaskName MTS-* and print the list. Do NOT register MTS-AutoDeploy (live tree is JIS-NB only). If a command fails twice close --failed with the error text.",
+  "posted": "2026-10-11T14:03:07Z",
+  "result": "Ran scripts\\sched\\register_cicd_tasks.ps1 -Trigger -SkipDeploy on JIS-NUC (repo C:\\Users\\E-ngineers\\IdeaProjects\\mts-dsa; F:\\MTS\\repo is not a git repo on this machine). MTS-DailyHygiene registered, State Ready, last result 0 (ok). MTS-AutoDeploy was already registered here from an earlier run and is not wanted on the NUC, so it was unregistered; Get-ScheduledTask MTS-* now shows MTS-DailyHygiene Ready and MTS-NUC-Worker Disabled, no MTS-AutoDeploy. Note: F:\\MTS\\repo named in the task is not a git repository; the working NUC tree is mts-dsa.",
+  "status": "done",
+  "target": "DSA-NUC",
+  "title": "NUC: register CI/CD scheduled tasks (no deploy) on JIS-NUC"
+}

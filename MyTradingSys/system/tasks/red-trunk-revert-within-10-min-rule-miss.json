@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-24T15:09:37Z",
+  "depends_on": [
+    "doctor-dedupe-codex-gemini-start"
+  ],
+  "done_when": "grep 'revert' finds the line in all three files; the files stay under SIZE_CAPS; no duplicate of an existing line (mts_doctor DUPLICATE stays 0 for them).",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Add one line to AGENTS.md, CODEX_START.md and GEMINI_START.md: red trunk: the author reverts the breaking commit within 10 minutes, anyone else after that (git revert; the failing file at its last-green bytes is a revert, a new line is a forward-fix); see SUPER_SESSION.md D3.",
+  "id": "red-trunk-revert-within-10-min-rule-miss",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "docs: dedupe shared lines between CODEX_START.md and GEMINI_START.md",
+      "ref": "181971f18821",
+      "utc": "2026-10-27T22:09:16Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "181971f18821 docs: dedupe shared lines between CODEX_START.md and GEMINI_START.md",
+      "ref": "MyTradingSys/system/GEMINI_START.md",
+      "utc": "2026-10-27T22:09:16Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 T0-ONLY | DRAFT 2026-10-26 Session_Planner (OURS): SUPER_SESSION D3 holds the rule; the three start files should carry one line. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | CLUSTER: same file set as doctor-dedupe-codex-gemini-start (one editor per file); runs after it",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-27T22:51:51Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "AGENTS.md",
+    "MyTradingSys/system/CODEX_START.md",
+    "MyTradingSys/system/GEMINI_START.md"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "live path, orders, deploy, restarts",
+    "new hooks, gate steps or rules beyond the card"
+  ],
+  "scope_sha": "181971f18821",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/SUPER_SESSION.md D3"
+  ],
+  "state": "ready",
+  "steps": [
+    "Check each file for an existing revert rule (grep -n revert).",
+    "Add the line where Hard rules / gates are listed; do not copy the whole D3 text.",
+    "Run test_integrity."
+  ],
+  "tests": "python -m pytest MyTradingSys/tests/docs/test_integrity.py -q passes; grep -c 'SUPER_SESSION.md D3' on the three files is 1 each.",
+  "title": "red-trunk revert-within-10-min rule missing from AGENTS.md, CODEX_START.md and GEMINI_START.md",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -1,0 +1,13 @@
+{
+  "done_when": "worktree F:\\MTS\\mts-codex exists on branch nuc/codex-first and CODEX_HOME prints F:\\codex_home",
+  "finished": "2026-10-11T15:26:27Z",
+  "from": "JIS-NB",
+  "host": "JIS-NUC",
+  "id": "20261011-140621-nuc-set-up-codex-work-tree-and-codex-hom",
+  "need": "On JIS-NUC: git -C F:\\MTS\\repo fetch origin claude/sharp-allen-k7m4ap ; git -C F:\\MTS\\repo worktree add F:\\MTS\\mts-codex -b nuc/codex-first origin/claude/sharp-allen-k7m4ap ; setx CODEX_HOME F:\\codex_home ; mkdir F:\\codex_home if missing ; print git -C F:\\MTS\\mts-codex log --oneline -1 and the CODEX_HOME value. Operator then does Add project + Ask for approval in the Codex app. Failure twice: close --failed with error.",
+  "posted": "2026-10-11T14:06:21Z",
+  "result": "Satisfied. F:\\MTS\\mts-codex exists on branch nuc/codex-first at 9e6a885 (worktree of C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed, not F:\\MTS\\repo - F:\\MTS\\repo is not a git repository on this machine). CODEX_HOME prints F:\\codex_home; F:\\codex_home exists. Remaining operator step: Add project + Ask for approval in the Codex app.",
+  "status": "done",
+  "target": "DSA-NUC",
+  "title": "NUC: set up Codex work tree and CODEX_HOME (CODEX_START step 1-2)"
+}

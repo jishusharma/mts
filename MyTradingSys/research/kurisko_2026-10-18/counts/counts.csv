@@ -1,0 +1,9 @@
+tf,arm,side,bars,events,event_days,median_stop_bp,share_stop_ge_fee
+1m,stoch,long,1313280,14317,912,6.6711,0.2206
+1m,stoch,short,1313280,15706,912,5.9694,0.1732
+1m,rsi,long,1313280,19,18,114.2767,0.8947
+1m,rsi,short,1313280,15,14,66.9729,1.0000
+5m,stoch,long,262656,1646,678,23.4344,0.6883
+5m,stoch,short,262656,2030,742,17.7677,0.6172
+5m,rsi,long,262656,3,3,452.1993,1.0000
+5m,rsi,short,262656,4,4,169.3218,1.0000

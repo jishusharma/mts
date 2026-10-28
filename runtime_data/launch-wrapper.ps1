@@ -1,0 +1,1 @@
+& "C:\Users\E-ngineers\AppData\Local\Microsoft\WindowsApps\pwsh.exe" -NoProfile -ExecutionPolicy Bypass -File "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\scripts\core\start-trading-day.ps1 -Mode 'armed' -Popups 'on'

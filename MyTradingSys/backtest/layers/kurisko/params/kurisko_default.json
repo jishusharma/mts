@@ -1,0 +1,13 @@
+{
+  "_doc": "Kurisko Quad Rotation v0 parameters (krown format). label SOURCED = his words, quote + char offset in extracts/processed/kurisko/QUAD_ROTATION.md (S8) or KURISKO_SPEC s3 row; OURS = judgement, variants count in the trial ledger; OPERATOR-HYPOTHESIS = not Kurisko. enabled stays false: alert-only, no live wiring.",
+  "params": {
+    "enabled": {"value": false, "label": "OURS", "source": "flag-gated default OFF (alert-only layer)"},
+    "bands": {"value": [[9, 3], [14, 3], [40, 4], [60, 10]], "label": "SOURCED", "source": "(k, d) fast first. (9,3), (14,3) SOURCED KURISKO_SPEC s3 rows Stochastic 1-2 (S4); 60 SOURCED R1 ('These are 40 candles and these are 60 candles', char 21291) with d=10 (S4 (60,10,10)). Third band (40,4) SOURCED but contested: S3 says 44; the smoothing d=4 is on slide S4 only, not in his spoken words. (44,3) only as a switch; any DEV count with it is a ledger trial."},
+    "line": {"value": "D", "label": "SOURCED", "source": "R8 'here I'm using the D line. And the D line is the signal line'; D = SMA_d(raw %K) per spec_review_kurisko_2026-10-18.md FIX (FORMULAS s24). Slowing variant (60,10,10) = slow 10 + d 10 is a ledger trial."},
+    "level_lo": {"value": 20, "label": "SOURCED", "source": "R2 'all of these bands get oversold below 20' (char 20846); KURISKO_SPEC s3 Levels (S4, S2)"},
+    "level_hi": {"value": 80, "label": "SOURCED", "source": "KURISKO_SPEC s3 Levels 20/80 (S4, S2); used only by the short mirror here"},
+    "turn_rule": {"value": "fast[t] > fast[t-1], all four < level_lo on s..t-1, one event per episode", "label": "OURS", "source": "no source defines the number for 'turn back up' (R3 'visual confirmation', KURISKO_SPEC s5 gap 3); other turn rules (D9 crosses up through 20) are ledger trials, not built"},
+    "short_side": {"value": "all four > level_hi and fast falls", "label": "OURS", "source": "NO-SOURCE: he never states 'all four above 80' (KURISKO_SPEC s5 gap 6, R10 only says the same goes for the downside); reported apart from the long arm"},
+    "rsi_bands": {"value": [[9, 0], [14, 0], [40, 0], [60, 0]], "label": "OPERATOR-HYPOTHESIS", "source": "operator memory '4 RSI with params'; 'RSI' occurs 0 times in S8 (KURISKO_SPEC s4); Wilder RSI via rsi_core on the same four lookbacks, levels 20/80 reused, NOT Kurisko"}
+  }
+}

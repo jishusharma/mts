@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-16T17:18:14Z",
+  "commands": [],
+  "created": "2026-10-16T00:44:21Z",
+  "depends_on": [],
+  "done_when": "Report with one table per check (a), (b), (c) and fences plus one verdict line (SOUND / FIX-FIRST / BLOCKED); probe.py.txt saved beside it; no window id appears next to its half or tag.",
+  "from_inbox": "",
+  "goal": "Second model family on the G3 marking pack (213 blind windows) before the operator spends about 45 min marking it. Find (a) any pre-filter, aggregate or chart that uses a bar after the window's right edge, (b) anything a reader sees that reveals the random/enriched half or the pre-filter tag, (c) any READER_PROTOCOL.md definition the code does not implement as written.",
+  "id": "gpt-g3-pack-audit",
+  "kind": "audit",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "note": "codex-feed 2026-10-16: luna/medium on purpose (about 1 window point), so it runs before the operator marks. Scripts are saved as .py.txt, never .py: a new .py or test file fails the runner's ship gate (3w, 3x, 4b), see LAYER_LAB.md Guards.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "codex-feed 2026-10-16 (sonnet worker)",
+  "refs": [],
+  "result": "FIX-FIRST 2026-10-16_gpt-g3-pack-audit.md",
+  "scope_in": [
+    "MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py",
+    "MyTradingSys/research/g3_marks_2026-10-16/test_g3_pack.py",
+    "MyTradingSys/research/g3_marks_2026-10-16/README.md",
+    "MyTradingSys/research/g3_marks_2026-10-16/WINDOWS.csv",
+    "MyTradingSys/research/g3_marks_2026-10-16/render_png.ps1",
+    "MyTradingSys/research/layer_rebuild_2026-10-15/READER_PROTOCOL.md",
+    "MyTradingSys/research/tom_btc_2026-10-13/chart_lab.py (value-area reference, read only)"
+  ],
+  "scope_out": [
+    "ANSWER_KEY_CLOSED/ in the pack folder: never open KEY.csv (closed until both reader sheets are committed)",
+    "editing or rebuilding the pack: no g3_pack.py build or draw, no change to WINDOWS.csv or the marking sheets",
+    "any report line that names a window id together with its half or tag",
+    "VALIDATION and HOLDOUT reads beyond the pack's own fences; BTC runs of any encoding"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/observer_2026-10-15/OBSERVER_REPORT.md (G3 brief, revised 2026-10-16)",
+    "MyTradingSys/research/fable_audit_2026-10-16/CATALOGUE_AUDIT.md (P3, P4)"
+  ],
+  "state": "done",
+  "steps": [
+    "Read READER_PROTOCOL.md sections 1-3, then g3_pack.py in full. Run python -m pytest MyTradingSys/research/g3_marks_2026-10-16/test_g3_pack.py -q (synthetic data, writes nothing into the pack folder); report passed/failed/skipped.",
+    "Causality (a): for each pf_* pre-filter, chart builder and aggregate (weekly, monthly, 4h blocks, session VWAP and profile, rolling percentiles, RSI, BBWP) list the bars read relative to the edge index i. MATCH = only bars closed at the edge, else MISMATCH with file:line. Probe by poisoning later bars in a stdlib script saved as MyTradingSys/research/layer_lab/gpt-g3-pack-audit/probe.py.txt.",
+    "Definitions (c): for each protocol term the pack implements (balance, value area, P/b/D, thin top, big trade, healthy trend, VWAP pullback, outside P and break-in, BBWP, RSI, divergence, weekly and monthly RSI) put the protocol wording beside the code (file:line each): MATCH or MISMATCH.",
+    "Blindness (b): from code, WINDOWS.csv, README.md and the chart builders only: can a reader tell the half or tag from a window id, file name, chart title or axis text, bar count, spacing, right-edge time of day or the last bar? Give aggregate evidence only (counts, test names).",
+    "DEV fences: confirm no loader can return a bar after INTRA_LAST or DAILY_LAST and that the README Data rule matches the constants. Data absent on this machine (F:/MTS/data/orderflow_1m, Dumps/backtest/raw_1d) is NOT_IN_DATA: use synthetic bars and finish the audit.",
+    "Report: one table per check (a), (b), (c) and fences; HIGH = a leak or mismatch that would invalidate marks. For each HIGH capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "",
+  "title": "G3 pack: GPT audit of look-ahead, blindness and protocol match before the 213 operator marks"
+}

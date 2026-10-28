@@ -1,0 +1,81 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-21T01:06:52Z",
+  "commands": [
+    "git -C C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed log --oneline origin/fast-track..HEAD",
+    "python scripts/dev/sync.py ship"
+  ],
+  "created": "2026-10-21T00:29:59Z",
+  "depends_on": [],
+  "done_when": "git ls-tree origin/fast-track lists scripts/operator/defender_exclusions.ps1, cpu_cleanup.ps1 and cpu_stress.py; sync.py ship exit 0.",
+  "est_turns": 10,
+  "from_inbox": "",
+  "goal": "Get the four local JIS-NUC commits (defender_exclusions.ps1, cpu_stress.py, cpu_cleanup.ps1, B175 note) onto fast-track so NB and the laptop can pull them.",
+  "id": "ship-cpu-cleanup-scripts",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Shipped to origin/fast-track 2026-10-21: defender_exclusions.ps1, cpu_cleanup.ps1, cpu_str",
+      "ref": "3554ca7a",
+      "utc": "2026-10-21T01:06:52Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "B175: task cards for NB, laptop and shipping; cpu_cleanup -Audit needs no elevation",
+      "ref": "7257400c85f5",
+      "utc": "2026-10-21T01:00:55Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "9e15918e2a43 B175: operator script for Defender exclusions (Gemini/GPT lanes), PcaSvc and ",
+      "ref": "MyTradingSys/items/B175_defender_msmpeng_cpu.md",
+      "utc": "2026-10-21T01:00:54Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "sync.py ship failed on the shared JIS-NUC tree because six other sessions' files were uncommitted; the commits exist only there.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-21T01:02:01Z",
+  "refs": [],
+  "result": "Shipped to origin/fast-track 2026-10-21: defender_exclusions.ps1, cpu_cleanup.ps1, cpu_stress.py, B175 note, 3 cards",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/operator/defender_exclusions.ps1",
+    "scripts/operator/cpu_cleanup.ps1",
+    "scripts/operator/cpu_stress.py",
+    "MyTradingSys/items/B175_defender_msmpeng_cpu.md"
+  ],
+  "scope_out": [
+    "other sessions' uncommitted files (do not stash, clean or revert them)",
+    "any live-path file"
+  ],
+  "scope_sha": "7257400c85f5",
+  "size": "S",
+  "sources": [
+    "B175 note 2026-10-21",
+    "commits 2ddb1aac and 3eb14968 plus the later -Audit/-Lenovo commit on JIS-NUC"
+  ],
+  "state": "done",
+  "steps": [
+    "On JIS-NUC (E-ngineers clone) git log --oneline origin/fast-track..HEAD should show the four B175 commits",
+    "Ship from a clean tree or lane worktree: sync.py start ship-cpu-cleanup-scripts; cherry-pick those commits if the tree is dirty",
+    "sync.py ship; confirm the three files exist on origin/fast-track"
+  ],
+  "taken": "2026-10-21T01:06:52Z",
+  "tests": [
+    "Fail-first: powershell parse check of both .ps1 files under Windows PowerShell 5.1 and pwsh 7 (0 errors); python -m py_compile scripts/operator/cpu_stress.py"
+  ],
+  "title": "Ship the Defender and CPU cleanup scripts (B175) to fast-track",
+  "worker": "session"
+}

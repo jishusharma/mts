@@ -1,0 +1,13 @@
+{
+  "done_when": "review note posted, REVIEWED stamp or defect list",
+  "finished": "2026-10-18T16:17:48Z",
+  "from": "JIS-NUC",
+  "host": "JIS-NUC",
+  "id": "20261018-130525-cross-vendor-review-context-factors-pre-",
+  "need": "Independent (non-Claude-Gemini-same-vendor) review of MyTradingSys/research/context_factors_pit_2026-10-16/PRE_REG_V3.md vs AUDIT_BEFORE_RUN.md sections 1-2: check Holm-z n=437/319, FAIL/INCONCLUSIVE clauses, stop-gap rule, frozen sha256. Claude spot-check found it faithful, hashes match; not stamped REVIEWED.",
+  "posted": "2026-10-18T13:05:25Z",
+  "result": "Pipeliner drain 2026-10-18: wrong channel: card context-factors-v3-crossvendor-review (CODEX audit for GPT, raw)",
+  "status": "failed",
+  "target": "DSA",
+  "title": "Cross-vendor review: context-factors PRE_REG_V3.md (CRUCIAL, Gemini-written)"
+}

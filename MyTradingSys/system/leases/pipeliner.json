@@ -1,0 +1,17 @@
+{
+ "acquired": 1793202937,
+ "expires": 1793203150,
+ "holder": {
+  "account": "?",
+  "host": "DESKTOP-F7IU69N",
+  "key": "DESKTOP-F7IU69N/d706ba2280d0",
+  "session": "d706ba2280d0"
+ },
+ "nonce": "419036d14dd954c8",
+ "renewed": 1793203150,
+ "role": "Pipeliner",
+ "state": "released",
+ "took_over_from": null,
+ "ttl": 2700,
+ "write_id": "14a669f0ab14"
+}

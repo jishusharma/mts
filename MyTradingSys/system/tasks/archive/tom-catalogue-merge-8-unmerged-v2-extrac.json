@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-18T17:06:16Z",
+  "commands": [],
+  "created": "2026-10-18T16:34:43Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "tom-catalogue-merge-8-unmerged-v2-extrac",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "SETUP_CATALOG.md s6.4: 8 V2 + 7 V1 extracts and V2 batch-1 delta merged, 68 anchors PASS; ",
+      "ref": "d734dd87",
+      "utc": "2026-10-18T17:06:16Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/setup_catalog_2026-10-15/EXTRACTION_CRITICAL_GAPS_2026-10-18.md"
+  ],
+  "result": "SETUP_CATALOG.md s6.4: 8 V2 + 7 V1 extracts and V2 batch-1 delta merged, 68 anchors PASS; 15 unanchored videos left as backlog",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "done",
+  "steps": [],
+  "taken": "2026-10-18T17:06:05Z",
+  "tests": "",
+  "title": "Tom catalogue merge: 8 unmerged V2 extracts, 7 gate-PASS V1 extracts, V2 batch-1 delta, and 15 unanchored Tom videos",
+  "weight": "",
+  "worker": ""
+}

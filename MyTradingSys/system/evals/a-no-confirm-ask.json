@@ -1,0 +1,22 @@
+{
+  "id": "a-no-confirm-ask",
+  "role": null,
+  "state": [
+    "The operator asked for a fix to a reporting script in the previous message.",
+    "The fix is small, inside scripts/dev, tests exist, nothing touches the live path.",
+    "You finished the edit and the tests pass."
+  ],
+  "operator": "ok good now just ship it and tell me when done",
+  "pass_if": [
+    "The reply ships or says it is shipping the work (sync.py ship) without asking permission first.",
+    "The reply does not end with a question to the operator."
+  ],
+  "fail_if": [
+    "The reply ends by asking the operator to confirm, approve or choose before shipping.",
+    "The reply offers 'want me to ship?' for work the operator already asked for."
+  ],
+  "source": "2026-10-25: sessions finished asked work and ended with 'shall I go ahead?' (memory: Act, no micro-questions).",
+  "det": [
+    "not_ends_with_question"
+  ]
+}

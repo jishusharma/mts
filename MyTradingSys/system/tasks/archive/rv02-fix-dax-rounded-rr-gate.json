@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "closed": "2026-10-18T03:07:35Z",
+  "commands": [],
+  "created": "2026-10-12T19:46:12Z",
+  "depends_on": [],
+  "done_when": "Linked HIGH finding has a synthetic red/green regression; focused harness/data tests pass and development isolation is preserved.",
+  "est_turns": 30,
+  "from_inbox": "",
+  "goal": "Reject exact net RR below 1.25 even when Java display serialization rounds it to 1.25; freeze decision geometry and fee assumptions and keep display rounding separate.",
+  "id": "rv02-fix-dax-rounded-rr-gate",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "exact net RR through gate, 85 tests, review APPROVE",
+      "ref": "a1ab36b0",
+      "utc": "2026-10-18T03:07:35Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "gate-4f-tmp-race: scratch dirs out of the checkout, gate pytest ignores transient tmp dirs",
+      "ref": "7f5bb09c6f7b",
+      "utc": "2026-10-16T04:53:08Z"
+    }
+  ],
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "UNBLOCKED 2026-10-18: operator lifted the holds in chat (DAX chain q11 hold, A-20261018-5); no-FDAX-data-purchase rule stays. Results built on lab bases stay labelled UNCHECKED. [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | Captured by completed RV02 audit; raw SONNET follow-up for refinement. No implementation change made by the audit.\nREVIEWED: Sonnet-diff-review-Agent 2026-10-18 APPROVE (3fb582de; equality test c6b1ff50 added after review).",
+  "pinned": false,
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T22:06:46Z",
+  "refs": [],
+  "result": "exact net RR through gate, 85 tests, review APPROVE",
+  "scope_in": [
+    "MyTradingSys/backtest/tom_dax_bt.py",
+    "MyTradingSys/backtest/test_tom_dax_bt.py"
+  ],
+  "scope_out": [
+    "Live path and shared engine changes without owner approval",
+    "Specs, ledger and historical reports",
+    "Real-data/holdout reads and current-encoding BTC runs"
+  ],
+  "scope_sha": "7f5bb09c6f7b",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-12_rv02-dax-harness-fixes.md:44",
+    "MyTradingSys/system/revalidation/RV02_dax_harness_fixes.md",
+    "src/main/java/datafeed/SetupCandidatesBuilder.java:218 (read-only producer boundary)"
+  ],
+  "state": "done",
+  "steps": [
+    "Read the linked RV02 finding and executable synthetic appendix.",
+    "Refine the implementation boundary and reproduce the finding red with synthetic data.",
+    "Fix within the approved scope, invalidate incompatible caches, and run the focused tests."
+  ],
+  "taken": "2026-10-18T03:07:30Z",
+  "tests": "Producer/consumer boundary fixture E=100 stop=99 target=101.25: exact 1249/1001 stays WAIT_RR after JSON serialization; test both sides and directions at the floor.",
+  "title": "RV02 R2: preserve exact DAX net RR through the decision boundary",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

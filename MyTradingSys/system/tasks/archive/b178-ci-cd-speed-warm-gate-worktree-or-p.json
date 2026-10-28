@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-11T20:55:31Z",
+  "commands": [
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-10-11T16:08:42Z",
+  "depends_on": [],
+  "done_when": "DEPLOY_RUNBOOK.md has quick-gate wall time before/after on the same SHA, the step and module lists are identical before/after, backup_snapshot trigger is staggered off the deploy slot, gate green.",
+  "from_inbox": "unmrdo3l1z9i5jmzqw85",
+  "goal": "Cut the quick-gate wall time (baseline about 15 min for the layer suite as one cold call) without dropping any test, and move backup_snapshot off the deploy slot so they do not compete for disk.",
+  "id": "b178-ci-cd-speed-warm-gate-worktree-or-p",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "relay JIS-NUC 2026-10-12",
+  "refs": [
+    "B178"
+  ],
+  "result": "5b 29.8s->25.0s, total 172.6->169.4s on NUC; backup staggered to :07 offset",
+  "scope_in": [
+    "scripts/dev/run_all_tests.py",
+    "scripts/dev/test_run_all_tests.py",
+    "scripts/dev/auto_deploy.py",
+    "scripts/dev/backup_snapshot.py",
+    "scripts/sched/register_cicd_tasks.ps1",
+    "MyTradingSys/system/DEPLOY_RUNBOOK.md"
+  ],
+  "scope_out": [
+    "removing or skipping any gate step",
+    "auto_deploy run-lock (already shipped: acquire_lock)",
+    "restarting live-path processes",
+    "the live tree"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/BUGS.md row B178 (Control Room inbox 3nk95q0pnm8hwyf26yvm + unmrdo3l1z9i5jmzqw85, verbatim in OPERATOR_INBOX.md or archive/operator_inbox/)"
+  ],
+  "state": "done",
+  "steps": [
+    "Time `run_all_tests.py --quick` per step on one SHA (baseline); record the step list.",
+    "Speed up step 5b/pytest layer run (per-module or parallel processes, or a warm persistent gate worktree); every module still runs.",
+    "Re-time on the same SHA; write before/after per step in DEPLOY_RUNBOOK.md.",
+    "Stagger the backup_snapshot schedule off the 15-min deploy slot in register_cicd_tasks.ps1; do not re-register live jobs yourself: list the command in the result."
+  ],
+  "tests": "scripts/dev/test_run_all_tests.py: new test_quick_gate_runs_every_layer_module (the set of modules run equals find_layer_modules(); fails if a module is dropped) plus a test that the backup trigger minute differs from the deploy slot.",
+  "title": "B178 CI/CD speed: warm gate worktree or per-module layer tests, stagger backup_snapshot (run-lock already shipped)"
+}

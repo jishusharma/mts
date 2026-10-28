@@ -1,0 +1,2 @@
+study,run_utc,data_source,window_read,split,rule_sha256,verdict,decision_informed
+mal_bb_mid_engulf_2026-10-16,2026-10-15T21:58Z,F:/MTS/data/tom_raw/klines 1m,2022-01-01..2024-06-30,DEV,e3160024c2891d1ee7726036f162125567cd6aa342b37a884d883de8f5a1e107,FAIL,whether a bearish engulf at the 5m BB mid in a falling market has a gross effect above 0.14 % (screen before G3 marks)

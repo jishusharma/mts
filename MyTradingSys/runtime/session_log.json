@@ -1,0 +1,2109 @@
+{
+    "version":  "5.0.0",
+    "events":  [
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "session close: MTS-2026-09-17-1624Z. mts-watch v1.1.0 compiled blocks, MTS- naming scheme, load aliases, prompt 9+11, BUGS B044 B045, WRAP matcher fix.",
+                       "ts":  "2026-09-17T17:53:00.2618588Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "alert_id":  14,
+                       "verdict":  "WATCH",
+                       "setup":  "ct_short @ daily_vah",
+                       "reason":  "Proof 4, pd=contradiction (last_3_delta positive vs SHORT). Not actionable.",
+                       "ts":  "2026-09-12T19:39:54.777135Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "alert_id":  15,
+                       "verdict":  "SETUP_FORMING",
+                       "setup":  "ct_long @ 4h_val",
+                       "reason":  "Aligned long forming. Thesis is short. Conflict - did not enter.",
+                       "ts":  "2026-09-12T19:39:54.780603Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "alert_id":  18,
+                       "verdict":  "SETUP_FORMING",
+                       "setup":  "scalp_short @ vwap",
+                       "reason":  "Chop. Same zone as #15, opposite direction, 6 min later.",
+                       "ts":  "2026-09-12T19:39:54.793481Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "alert_id":  19,
+                       "verdict":  "WATCH",
+                       "setup":  "scalp_short @ vwap",
+                       "reason":  "Proof decayed 5-\u003e4. Chop continuation.",
+                       "ts":  "2026-09-12T19:39:54.802528Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "alert_id":  20,
+                       "verdict":  "WATCH",
+                       "setup":  "scalp_short @ vwap",
+                       "reason":  "Proof decayed 4-\u003e3. Chop.",
+                       "ts":  "2026-09-12T19:39:54.810403Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "alert_id":  32,
+                       "verdict":  "WATCH",
+                       "setup":  "scalp_short @ vwap",
+                       "reason":  "State flipped B-\u003eP. Setup stale by 73 pts. DSA picked nearest zone, not relevant.",
+                       "ts":  "2026-09-12T19:39:54.818759Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "alert_id":  217,
+                       "verdict":  "WATCH",
+                       "setup":  "ct_long @ 4h_val",
+                       "reason":  "Proof 7 but contradicted (finished_auction=SELL vs LONG). Downgrade correct.",
+                       "ts":  "2026-09-12T19:39:54.827127Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "alert_id":  219,
+                       "verdict":  "SETUP_FORMING",
+                       "setup":  "scalp_long @ vwap-2s",
+                       "reason":  "Aligned long. Thesis is short. Volume spike 8.85 but stop 28pts too tight for noise.",
+                       "ts":  "2026-09-12T19:39:54.834758Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "alert_id":  220,
+                       "verdict":  "WATCH",
+                       "setup":  "scalp_long @ vwap-2s",
+                       "reason":  "Proof 5 contradicted (finished_auction=SELL, last_3_delta neg,neg,neg).",
+                       "ts":  "2026-09-12T19:39:54.843743Z"
+                   },
+                   {
+                       "type":  "note",
+                       "action":  "n/a",
+                       "reason":  "Root cause identified: state classifier frozen at B while trend continues. IBC-008 built to suppress CT against broken-value flow.",
+                       "ts":  "2026-09-12T19:39:54.851612Z"
+                   },
+                   {
+                       "type":  "note",
+                       "action":  "n/a",
+                       "reason":  "IBC-008 landed. Apparatus restarted. Rule 32 evidence: 2/3 snapshots collected (#217, #219).",
+                       "ts":  "2026-09-12T19:39:54.860542Z"
+                   },
+                   {
+                       "type":  "note",
+                       "action":  "n/a",
+                       "reason":  "4-AI research consensus: conditional event catalog is real improvement, but named events (bull trap, absorption) are unground-truthable from snapshot. Redefine catalog as observable forward kline outcomes. Data prerequisite: 5-10k labeled events needed. Currently 0.",
+                       "ts":  "2026-09-12T19:39:54.868630Z"
+                   },
+                   {
+                       "type":  "worker_task",
+                       "worker":  "session_A_market_context",
+                       "task":  "Market context briefing - verify prepended BTC claims, run meta-research on liquidation heatmap methodology, establish research gate",
+                       "status":  "reported",
+                       "result":  "PARTIAL. Core price/liquidation/macro verified. 2 [SINGLE-SOURCE] flags: LTH 539K, OME $8.94B. Awaiting heatmap_field_map citation check.",
+                       "ts":  "2026-09-13T18:57:43.007323Z"
+                   },
+                   {
+                       "type":  "worker_task",
+                       "worker":  "session_B_probability",
+                       "task":  "Probability layer design continuation - label count, feature_vector placement, MVP scope under Rule 32",
+                       "status":  "assigned",
+                       "result":  "",
+                       "ts":  "2026-09-13T18:57:43.007323Z"
+                   },
+                   {
+                       "type":  "worker_task",
+                       "worker":  "session_A_market_context",
+                       "task":  "heatmap_field_map citation + gap check",
+                       "status":  "accepted",
+                       "result":  "Cited -1 + -4. Gap confirmed in -1. One-line methodology note added and committed. Briefing stands. [SINGLE-SOURCE] flags remain for LTH 539K and OME $8.94B.",
+                       "ts":  "2026-09-13T19:01:23.194294Z"
+                   },
+                   {
+                       "type":  "worker_task",
+                       "worker":  "session_B_probability",
+                       "task":  "Probability layer design continuation",
+                       "status":  "accepted",
+                       "result":  "DONE. 500-gate met (759). 5,000-gate closed. feature_vector=Python. MVP=catalog-only, Rule 32 vacuous. Doc stale on 3 figures.",
+                       "ts":  "2026-09-13T19:02:15.690823Z"
+                   },
+                   {
+                       "type":  "worker_task",
+                       "worker":  "session_A_market_context",
+                       "task":  "Coordinator caveat - liquidation numbers scope",
+                       "status":  "note",
+                       "result":  "Liquidation cluster levels in Session A briefing are external CoinGlass visual reads, NOT DSA pipeline output. DSA liquidation_clusters.* is DEPRECATED (0.0/false). Do not promote heatmap levels to session_state.json as target/invalidation. Context role only.",
+                       "ts":  "2026-09-13T19:04:33.411706Z"
+                   },
+                   {
+                       "type":  "worker_task",
+                       "worker":  "session_C_market_data",
+                       "task":  "Market data + context briefing (BTCUSDT)",
+                       "status":  "reported",
+                       "result":  "PARTIAL. 4a-4e extracted from 5.5h-old snapshot. 4f/4g BLOCKED (no web). Verdict withheld - compiled_engine.md not pasted. Flagged session_state.json as stale + price-violated.",
+                       "ts":  "2026-09-13T19:21:24.081944Z"
+                   },
+                   {
+                       "type":  "note",
+                       "action":  "n/a",
+                       "reason":  "session_state.json (09-13 08:53Z) thesis short-\u003e76300. Price now 77285.9, never printed 76300. Invalidation clause \u00275m close \u003e 77115\u0027 appears price-satisfied. Awaiting fresh snapshot before any state update.",
+                       "ts":  "2026-09-13T19:21:24.081944Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "Alert 261 SETUP_FORMING (3 min after #260 WATCH) - proof_dir flipped contradiction-\u003ealigned, finished_auction BUY-\u003eSELL, book_imbalance 1.86-\u003e1.22. Same zone, same R:R. Churn signature. VWAP slope=falling still blocks scalp. FOMC 36h. No action.",
+                       "alert_id":  261,
+                       "verdict":  "SETUP_FORMING",
+                       "setup":  "scalp_short @ vwap_band_+1",
+                       "ts":  "2026-09-13T19:31:56.476826Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "commit",
+                       "reason":  "D: mts_math.py +check_scalp_preconditions +check_invalidation (130 tests green)",
+                       "verdict":  "MTS_MATH_CHECKERS",
+                       "ts":  "2026-09-14T08:43:50.557239Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "commit",
+                       "reason":  "D: test_mts_math.py +15 cases (64-\u003e79), 130/130 suite",
+                       "ts":  "2026-09-14T08:43:50.826058Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "commit",
+                       "reason":  "D: session_state.json v1.0.0-\u003ev1.1.0 clauses+prose_hint",
+                       "ts":  "2026-09-14T08:43:51.138427Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "commit",
+                       "reason":  "D: start_trading_day.ps1 line 411 wire checkers after firePopup, PSParser PASS",
+                       "ts":  "2026-09-14T08:43:52.598643Z"
+                   },
+                   {
+                       "type":  "note",
+                       "action":  "n/a",
+                       "reason":  "L4 closed. Non-ASCII census of session_log.json: U+00A7 x3 (section marker), U+2014 x5 (em-dash). Both legitimate content. Prior session mojibake display was viewer artifact, not disk.",
+                       "ts":  "2026-09-14T09:15:06.800059Z"
+                   },
+                   {
+                       "type":  "note",
+                       "action":  "n/a",
+                       "reason":  "L10 root-caused+closed. session_state.json.new (mtime 2026-09-14T08:45Z, v1.1.0, hand-typed updated_utc ...T08:45:00.000000Z) was a manual edit never committed. Committed file updated_utc stayed at 2026-09-13T08:53:02Z one day stale. Two manual writes bypassed session_state.write_state. .new deleted. STALE THESIS text preserved for next state refresh.",
+                       "ts":  "2026-09-14T09:15:06.802875Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "commit",
+                       "verdict":  "MTS_VERSION_RESET_V5",
+                       "reason":  "D: version-reset v5.0.0. VERSION new. 01_AI_BEHAVIOR.md L34 anchor. DSA/SESSION_ENTRY/CAPABILITIES headers LF-normalized. session_state.json+session_state.py bumped. Shas: VERSION BDF4741B | 01_AI_BEHAVIOR 165189FC | DSA EB3816EF | SESSION_ENTRY DAFE20FA | CAPABILITIES 34EF3E32 | state.json F0C5BDE0 | state.py A039BB71",
+                       "ts":  "2026-09-14T09:15:06.812887Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "commit",
+                       "verdict":  "MTS_STATE_REFRESH_NEUTRAL",
+                       "reason":  "D: session_state.json thesis short-\u003eneutral. Prior short target 76300 invalidated by own clause (price_current_above 77115, satisfied 30h+). watch_levels cleared (all below price). next_trigger cleared. invalidates cleared. updated_utc refreshed.",
+                       "ts":  "2026-09-14T09:28:31.009378Z"
+                   },
+                   {
+                       "type":  "note",
+                       "action":  "n/a",
+                       "reason":  "L7 closed. BUILD_REPORT regenerated via scripts/Build-Check.ps1 (sha E06F506F, mtime 14:45:53 IST). STATUS PASS, 125/125 math, 5/5 doc, 0 in-flight .new. BOM EF BB BF expected (PS 5.1 Out-File -Encoding utf8).",
+                       "ts":  "2026-09-14T09:28:31.012664Z"
+                   },
+                   {
+                       "type":  "note",
+                       "action":  "n/a",
+                       "reason":  "L11 root-caused. start_trading_day.ps1 L411 gates the entire precondition+invalidation block on `$v.setup -match \u0027scalp\u0027`. Non-scalp setups skip it. Additionally, outer gate requires $firePopup which requires $changed; apparatus emits \u0027no change\u0027 most cycles. Result: check_invalidation at L428 is dead code for non-scalp and for no-change cycles. INVALIDATION_FIRED (L449) has never fired in observed tape. Latent, not urgent (invalidates.clauses cleared to {} during state refresh). Needs design decision: should invalidation run every cycle / on popup / on state transition? Deferred to next session.",
+                       "ts":  "2026-09-14T09:29:58.388544Z"
+                   },
+                   {
+                       "type":  "note",
+                       "action":  "n/a",
+                       "reason":  "L7 note + L11 note appended. SESSION_ENTRY.md -3 refreshed to neutral state via .new pattern (user commits). L4/L7/L10/L11 closed.",
+                       "ts":  "2026-09-14T09:29:58.391928Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "close",
+                       "verdict":  "MTS_SESSION_CLOSE_2026_09_14_PM",
+                       "reason":  "Session closed 15:11 IST. Closed: L4, L7, L10, L11(root-caused), L9(now). State refresh to neutral. Version v5.0.0. Research task seed written (RESEARCH_TASK_PREMARKET.md). Handoff written (NEXT_SESSION_HANDOFF.md). Apparatus armed, healthy at cycle 40+. Open: L5, L6 (held); L8 (needs live repro); L11 (design deferred). No thesis on disk pending human conviction.",
+                       "ts":  "2026-09-14T09:39:57.228477Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "commit",
+                       "reason":  "DSA_SESSION_PROMPT.md patched: sec3 manifest-driven boot + Rules 42-50. sha EB3816EF -\u003e AC2737FC. SESSION_MANIFEST.json v1.0.0 sha EBC9DC91 1814b JSON-valid. Line endings normalized LF. Rollback in backup_session/DSA_SESSION_PROMPT.md.bak2.",
+                       "verdict":  "MTS_DSA_V2",
+                       "ts":  "2026-09-14T11:23:24.124488Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "commit",
+                       "verdict":  "MTS_CLEANUP_2026_09_15",
+                       "reason":  "Disk audit + cleanup. L13 confirmed at start_trading_day.ps1:349 (proof oscillation fires alerts; 6 of 13 alerts in 17:00 hour on proof count change alone). Runtime manifest behavior_source patched from SESSION_PROMPT.md (4044b) to DSA_SESSION_PROMPT.md (10128b) - boot would have missed Rules 42-50. Root SESSION_MANIFEST.json orphan deleted. apparatus_fixes.md # END relocated to end of file (post-END content grouped). DSA duplicate ## 13 renamed to ## 15. L_ITEMS_MASTER.md created: 5 closed, 3 held, 7 new (L13-L20), 4 no-evidence (L1-L3, L12). Mojibake claim retracted - L4 correctly closed, disk clean.",
+                       "ts":  "2026-09-15T15:48:03.820111Z"
+                   },
+                   {
+                       "type":  "note",
+                       "action":  "n/a",
+                       "reason":  "Apparatus loop died 2026-09-15T00:52:24Z. No log entries for 15h. Java PID 2736 alive since 11:02 09-15 writing state_code but parent loop silent. L18 (silent exit) RECURRED. Session state blocked from being live-tracked until apparatus restart. Next session must call mode.ps1 -M armed after verifying java orphan cleaned. Also noted: 15 powershell processes accumulated during this session; cleanup optional.",
+                       "ts":  "2026-09-15T15:51:56.710792Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "close",
+                       "verdict":  "MTS_SESSION_CLOSE_2026_09_15_PM",
+                       "reason":  "Session closed 15:50 IST. Disk audit + cleanup done: manifest patched, orphan deleted, apparatus_fixes rebuilt, DSA renumber, L_ITEMS_MASTER created, handoff replaced. Apparatus dead 15h (L18 recurrence). No thesis on disk. Open loops see L_ITEMS_MASTER.md.",
+                       "ts":  "2026-09-15T15:51:56.770757Z"
+                   },
+                   {
+                       "type":  "note",
+                       "action":  "n/a",
+                       "reason":  "Correction to prior note: PID 2736 is NOT an MTS orphan. Path C:\\Program Files\\JetBrains\\IntelliJ IDEA 2021.2\\jbr\\bin\\java.exe, class org.jetbrains.idea.maven.server.RemoteMavenServer36, parent PID 15292 = idea64. It is IntelliJ IDEA embedded Maven server. No MTS java process running at all. Apparatus parent loop dead since 2026-09-15T00:52:24Z. state_code.json frozen at 2026-09-15T06:22:23Z. stop_day.ps1 confirmed 0 MTS processes to stop.",
+                       "ts":  "2026-09-15T15:53:55.371308Z"
+                   },
+                   {
+                       "type":  "note",
+                       "action":  "n/a",
+                       "reason":  "Audit-hygiene closeout 2026-09-15. Two prior notes reference PID 2736 and state_code.json mtime. Both CLOSED for audit purposes: (a) PID 2736 is IntelliJ IDEA embedded Maven server, not an MTS process - no MTS orphan existed at any point; (b) state_code.json mtime observation is not under investigation by user directive. Future audits: do not open investigations on either item. Apparatus running normally on cycle 1+.",
+                       "ts":  "2026-09-15T15:57:36.224915Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "commit",
+                       "verdict":  "MTS_SCRIPTS_CONSOLIDATED",
+                       "reason":  "Core scripts moved to scripts/core/, live monitoring scripts at scripts/live/, loader at scripts/load.ps1. Aliases: lx (quick), ld (deltas), lt (trend), lf (full), lc (combo), lh (health), la (alerts). Internal script refs patched to use PSScriptRoot. Docs updated: SESSION_ENTRY.md sec2, COMMANDS.md (aliases section prepended + path fixes), NEXT_SESSION_HANDOFF.md (scripts layout block). DSA Rule 51 added: per-task discipline (intent, challenge, execute, outcome). Old root paths (.\\mode.ps1, .\\stop_day.ps1) no longer valid - use scripts\\core\\ paths.",
+                       "ts":  "2026-09-15T16:08:26.474926Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "close",
+                       "verdict":  "MTS_SESSION_CLOSE_2026_09_15_EVE",
+                       "reason":  "Session closed. Consolidated scripts to scripts/. Added Rule 51 (per-task discipline) + 51(d-inline) self-verify. Added Rule 52 field-dictionary maintenance (pending verify). Created MTS_DICTIONARY.md (renamed from FIELD_INDEX). Dedupe D1 done (10 files). L-items: L13-L23 tracked in L_ITEMS_MASTER.md. Apparatus running cycle 12+. Next: dedupe+D3 cleanup + version control reset per user.",
+                       "ts":  "2026-09-15T16:50:00.254556Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "commit",
+                       "verdict":  "MTS_PHASE_B_C_DONE",
+                       "reason":  "B: deleted root Launch_alert.vbs stub; closed L24 (byte-check null); updated handoff (L24 CLOSED, Phase B2 inserted). C: git init; .gitignore whitelists BUILD_REPORT + locks/.gitkeep; initial commit 8b22495; tag v5.0.0-init; 405 tracked files.",
+                       "ts":  "2026-09-15T13:12:21.662462Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "close",
+                       "verdict":  "MTS_SESSION_CLOSE_2026_09_16_PM",
+                       "reason":  "Cleanup + fix session. kimi naming removed, dumps renamed, backup purged. StateCodeEmitter cvd_slope warmup fixed. Live/story aliases added. Boot paste extended with git/loop/scripts/commands/dictionary. L23, L26, L27, O1 closed. Commits 3e7e704, 44afc61, 856e062. L18 (silent exit) recurred 11:41:02 today and is Task 1 next session. Two more tasks queued: context.ps1 (24h per-TF), verify_data.ps1.",
+                       "ts":  "2026-09-16T11:43:16.922861Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "session close: L18 fixed (silent exit instrumented), verify_data.ps1 built, L28 opened (orphan java on exit), anchor resolved (UTC for data, US cash open for session frame)",
+                       "ts":  "2026-09-16T12:09:25.763884Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "Task 1 done: session block in MarketDataSnapshot.buildSession. Fifteen of sixteen fields live. day_type UNKNOWN per L29. session_bias deferred to runtime echo. L25 folded: session labels DST-aware. Compile exit 0, live snapshot verified.",
+                       "ts":  "2026-09-16T12:27:06.693985Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "Feature layer wired: context.ps1, regime_classifier.py, kline_archiver.py. BOM fix permanent. Session close.",
+                       "ts":  "2026-09-16T13:00:19.488456Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "DSA_SESSION_PROMPT section 3: added boot rules 5 (no fabricated values) and 6 (no invented aliases). Cause: boot reply invented fields and aliases.",
+                       "ts":  "2026-09-16T13:24:44.167023Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "session close: prompt section 11 refreshed; handoff rewritten to reflect parallel-session work (context.ps1, regime_classifier.py, kline_archiver.py already live)",
+                       "ts":  "2026-09-16T13:26:11.589706Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "close 2026-09-16: loop hung 3x, L29 blocked by I26, zone map + I21-I26 logged, 5 alerts all WAIT_RR",
+                       "ts":  "2026-09-16T14:40:22.373459Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "close 2026-09-16: loop hung 3x, L29 blocked by I26, zone map + I21-I26 logged, 5 alerts all WAIT_RR",
+                       "ts":  "2026-09-16T14:49:28.377015Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "I26 CLOSED. Ruling: B profile = weakness at the extreme (not balance). Five Tom transcripts agree (BVpYGKz9PBU, rFPCtOcfUMI, vk0mkNPuhDc, OUM9LYwL8eA, tS6ZEiHj8gQ). market_state_rules.md L50 was unsourced and contradicted its own cited line at L53. Patched: B=balance line replaced with B=weakness; added citation rFPCtOcfUMI. Hash D965EC32 -\u003e FA70DA88. 332 lines, 57 non-ASCII (unchanged vs backup), BOM false.",
+                       "ts":  "2026-09-16T20:43:56.679408Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "L29 CLOSED. buildVp \u0027B\u0027 renamed to \u0027TWOPEAK\u0027 (bell heuristic; collided with Tom\u0027s B). classifyState rewritten on vwap_slope+cvd_slope+price_vs_va. Rule 32 test 3/3 outside-VA snapshots changed to trend_healthy. mts_math STATE.classification aligned to Java. Docs updated: compiled_engine L30/L322, data_schema L78/L90, trading_card_generator L378. Java BUILD SUCCESS.",
+                       "ts":  "2026-09-16T20:57:13.857476Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "Session 2026-09-16 evening: I36, I26, L29 closed. DSA_SESSION_PROMPT section 11 updated. NEXT_SESSION_HANDOFF rewritten. SESSION_LEARNINGS appended. Loop running on new jar. Wrapper 5308, state machine 18060, supervisor ON.",
+                       "ts":  "2026-09-16T21:00:44.140640Z"
+                   },
+                   {
+                       "ts":  "2026-09-17T10:20:03.938728Z",
+                       "verdict":  "session close",
+                       "reason":  "Audit step 1 complete. 11 files inventoried, ~100 findings, 6 material defects. TOM_VERBATIM_INDEX.md and verify_rule_citations.ps1 built. Claims 2 and 4 resolved, 1 and 5 supported, 3 asserted.",
+                       "session":  "MTS-2026-09-17-0553Z"
+                   },
+                   {
+                       "ts":  "2026-09-17T11:41:12.733729Z",
+                       "verdict":  "session close",
+                       "reason":  "Bug tracking system live: BUGS.md SSOT, validator in Build-Check, wired to manifest and file index. L_ITEMS_MASTER and apparatus_fixes frozen. Mojibake cleared across 8 files. Stale test fixed. Build-Check PASS.",
+                       "session":  "MTS-2026-09-17-1037Z"
+                   },
+                   {
+                       "ts_utc":  "2026-09-17T12:41:21.3560852Z",
+                       "summary":  "B035 CLOSED, B020 CLOSED, Defect 1 fix landed. Loop running single chain for live mode. Anchor 13:30 UTC.",
+                       "session":  "MTS-2026-09-17-1142Z",
+                       "action":  "session close"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "live_session_log.md created. Append-only analytical live-market log. One entry per cycle, live mode only. Two seed entries 12:41Z and 12:52Z. Index row added. Not yet auto-written by start-trading-day.ps1 - pending separate task with four-step proof.",
+                       "ts":  "2026-09-17T13:07:26.054178Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "tape-watch.ps1 sidecar live. Divergence classifier every 30s to runtime_data/live_tape.md. Read-only on loop.",
+                       "ts":  "2026-09-17T13:19:57.185779Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "mts-watch.ps1 sidecar live. Read-only console feed. One block per 30s. Process chain + snapshot + session + conditions + top 3 setups + state_code + flow + recent cycles + tape + slow state.",
+                       "ts":  "2026-09-17T13:36:06.640395Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "live_session_protocol.md created. 10 operational checks + mistake ledger for 2026-09-17. Read at boot.",
+                       "ts":  "2026-09-17T13:48:56.494157Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "TASK OPEN: attempt-number context at a zone. MTS re-evaluates every cycle, does not track first vs second vs third retest, no fuel decay or escalation factor. Today live: 76120-76174 tested three times, each with different flow, engine blind to the difference. Proof cases: 13:45 nrr 1.89 p5, 13:47 nrr 1.97 p4 pd=aligned, 13:48 price left zone. Near-miss misses inside rounding. Action: search Tom corpus for retest/first-test/absorption-count language. If specific, becomes condition-file rule. If vague, note in audit. Related: B017, B025. Do not implement without three-snapshot proof.",
+                       "ts":  "2026-09-17T13:52:43.777220Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "Manifest mistake fixed via text splice. Two new entries: SESSION_RESUME.md, live_session_protocol.md. live_session_log.md tail entry now has lines:60. start-session.ps1 graceful-handling defect noted in apparatus_fixes. Paste regenerated 13:57:39.",
+                       "ts":  "2026-09-17T13:57:59.895119Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "live_session_journal.md created (115 lines, SHA 4BDB59E2). Retrofit 2026-09-17 session: 17 quotes, 10 requirements, 12 observations, 5 decisions, 9 landed items, 4 market reads copied from retired log. live_session_log.md retired, backup in backup_session/. Manifest swapped to journal read tail 150. Index updated.",
+                       "ts":  "2026-09-17T14:26:32.302740Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "SESSION_PASTE.txt trim: 116KB to 71KB. New read modes head_to_end and audit-summary slice in start-session.ps1. Five cuts landed. Build PASS.",
+                       "ts":  "2026-09-17T15:10:17.126915Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "Build-Check Active sessions section is dead code: no writer to runtime\\locks, only Build-Check.ps1 reads it. Real lock at runtime_data\\apparatus.lock. Dormant UTC parse bug at Build-Check.ps1:89 noted, not fixed. Leave section for now.",
+                       "ts":  "2026-09-17T15:13:11.172801Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "session close: MTS-2026-09-18-0456Z. Loop restarted after overnight shutdown. Anchor options note written. Rule 11 added to live_session_protocol.md. Journal appends. Nine uncommitted files cleared by 0848Z.",
+                       "ts":  "2026-09-18T10:16:12.458622Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "session close: MTS-2026-09-18-0848Z. B043 CLOSED. mts-watch v1.1.1 synced four files (changelog, 03_FILE_INDEX, NEXT_SESSION_HANDOFF, DSA_SESSION_PROMPT). chart_read_protocol.md new. Anchor decision Option C (both layers). Three FYI docs archived word-for-word. Two commits: 9f05f16, 97b8fc6.",
+                       "ts":  "2026-09-18T10:16:12.799596Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "note",
+                       "reason":  "B046: earlier two \u0027session close\u0027 entries claimed DSA_SESSION_PROMPT.md section 11 and NEXT_SESSION_HANDOFF.md were rewritten. They were not. Both are now rewritten. BUGS.md extended to BUGS AND TASKS. T001-T019 filed. Correction ledger entry for MTS-2026-09-18-0848Z.",
+                       "ts":  "2026-09-18T11:22:12.304004Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "session close: MTS-2026-09-18-0848Z. BUGS.md extended to BUGS AND TASKS. B046 B047 filed. T001-T022 filed. T004-T013 T020-T022 landed. DSP section 11 and handoff rewritten. Nine commits: 97b8fc6 675f68a 2eed7b5 f9bf889 186f483 7ccd0e1 323d082 14cfd60 3dadb7b. B047 engine fix BLOCKED pending three-snapshot proof.",
+                       "ts":  "2026-09-18T15:55:05.482295Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "session close: MTS-2026-09-18-1600Z. B049 T023 T024 CLOSED (state gate + tc_long, VerifyScbEdits.java 12/12 PASS). B048 T018 T025 and 11 stale rows CLOSED. T026 T027 filed. 04_final_report saved and indexed. 7 commits: 134c086 4d401cf 18458e0 6816cc0 e100c52 87cc085 a1d8b25. Next: B047 finished_auction sign, Tom source read.",
+                       "ts":  "2026-09-18T17:09:01.076607Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "Session MTS-2026-09-19-0823Z close: T032/B044 WONTFIX, T036 CLOSED, B050/B051 filed, protocol fixes, loop lifecycle plan",
+                       "ts":  "2026-09-19T10:39:55.757761Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "Session MTS-2026-09-19-1120Z close: paste trim 99-\u003e78.7KB, read modes, DSA close gate",
+                       "ts":  "2026-09-19T11:41:00.383742Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "Session MTS-2026-09-19-1141Z close: paste fence wrapping for one-click copy; 17 blocks",
+                       "ts":  "2026-09-19T12:36:39.030003Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "Session MTS-2026-09-19-1237Z close: T037 coverage gap filed; Build-Check bug count is B-row only",
+                       "ts":  "2026-09-19T12:41:16.152895Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "Session MTS-2026-09-19-1243Z close: loop lifecycle stage 1 done (supervisor reader-only)",
+                       "ts":  "2026-09-19T12:47:49.761136Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "Session MTS-2026-09-19-1247Z close: B052 CLOSED (gitsnap false-success guard)",
+                       "ts":  "2026-09-19T12:50:25.026442Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "Session MTS-2026-09-19-1305Z close: B052 receipt rewritten, doc test 2 green",
+                       "ts":  "2026-09-19T12:53:58.400964Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "Session MTS-2026-09-19-1310Z close: loop lifecycle stage 2 done (atomic lock create)",
+                       "ts":  "2026-09-19T13:16:26.182806Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "note",
+                       "reason":  "session close MTS-2026-09-19-1405Z: stage 3a landed (loop reads loop_stop.flag, removes in finally). Test PASS.",
+                       "ts":  "2026-09-19T14:33:46.865180Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "note",
+                       "reason":  "session close MTS-2026-09-19-1405Z stage 3b: stop-day flag write no kill; loop finally taskkill /F /T. B003 B014 CLOSED. Test PASS.",
+                       "ts":  "2026-09-19T14:43:15.128689Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "note",
+                       "reason":  "session close MTS-2026-09-19-1405Z stage 3b: stop-day flag write no kill; loop finally taskkill /F /T. B003 B014 CLOSED. Test PASS.",
+                       "ts":  "2026-09-19T14:45:24.689531Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "note",
+                       "reason":  "session close MTS-2026-09-19-1405Z stage 3b: stop-day flag write no kill; loop finally taskkill /F /T. B003 B014 CLOSED. Test PASS.",
+                       "ts":  "2026-09-19T14:46:26.587138Z"
+                   },
+                   {
+                       "ts":  "2026-09-19T18:05:20.279823Z",
+                       "event":  "session close MTS-2026-09-19-1716Z: disk-validated Claude synthesis review; B051 handoff corrected; B056 fix written (IN-FIX, undeployed); Rule 15 added to live_session_protocol.md; vp_shape taxonomy dissolved (pre-2026-09-16T20:54Z labels are a constant, not a shape). Build PASS 18:04Z."
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "session MTS-2026-09-21-0729Z close: B058 C+D, B062, EXIT_HINT, stop/target wiring, tape history, MODEL_ALIGNMENT docs, rule 15. Build PASS 12:23Z. Rule 32 observations carried.",
+                       "ts":  "2026-09-21T12:31:37.460019Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "boot FAIL session_log.json non-ASCII (mojibake em-dash). Cleaned to ASCII, backup at backup_session\\session_log.before_ascii_clean.json. Build PASS 13:23Z.",
+                       "ts":  "2026-09-21T13:23:56.406038Z"
+                   },
+                   {
+                       "ts":  "2026-09-21T18:24:25.202320Z",
+                       "event":  "session MTS-2026-09-21-1328Z close: BACKTEST_METHOD, DIVERGENCE_AUDIT_AND_RESEARCH, GOLAS_CD_WEB landed. 3 index rows added. Rule 32 not engaged (research only)."
+                   },
+                   {
+                       "ts":  "2026-09-21T18:32:37.813664Z",
+                       "event":  "MTS-2026-09-21-1328Z close: mts-paste delivered, BACKTEST_METHOD + DIVERGENCE_AUDIT + GOLAS_CD_WEB indexed. Loop stopped 18:32Z. B056 recurred at 18:29:53Z (supervisor restarted wrapper after stop). Carried to queue."
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "T033 closed: delta_state + delta_state_price. Backtest 6362 rows, no state survives day-clustered SE. Session close.",
+                       "ts":  "2026-09-21T21:21:55.874201Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "T033 closed: delta_state + delta_state_price. Backtest 6362 rows, no state survives day-clustered SE. Session close.",
+                       "ts":  "2026-09-21T21:22:41.074122Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "T033 closed: delta_state + delta_state_price. Backtest 6362 rows, no state survives day-clustered SE. Session close.",
+                       "ts":  "2026-09-21T21:24:11.287029Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "T033 closed: delta_state + delta_state_price. Backtest 6362 rows, no state survives day-clustered SE. Loop left running at close.",
+                       "ts":  "2026-09-21T21:26:45.094201Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "MTS-2026-09-22-1215Z close: mts-watch v1.1.3 landed. MTS-OID block surfaces open_interest delta schools. B063 opened. T039 and T040 registered. items/ convention established.",
+                       "ts":  "2026-09-22T17:30:00Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "MTS-2026-09-22-1737Z boot: manifest confirmed, build PASS, both OI-delta fields verified live (schools disagree). Rebuilt NEXT_SESSION_HANDOFF.md. Added operator_reminders.md to SESSION_MANIFEST boot_supplemental. Sidecar found stopped.",
+                       "ts":  "2026-09-22T17:50:00Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "MTS-2026-09-22-1737Z close: T039 sweep (8 item docs), Build-Check enforcement live (OPEN needs items/), regex B-or-T, 63-\u003e103 rows. PS7 7.6.6 side-by-side, five spawn sites migrated to pwsh. Journal correction: five unrecorded 1215Z commits logged.",
+                       "ts":  "2026-09-22T18:45:00Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "MTS-2026-09-22-1737Z final close: R1-R5 relabel, 6 worker dispatches ready, T041 registered (verdict timeframe gap + stale 1h). Journal mojibake fixed. Build-Check 104 rows.",
+                       "ts":  "2026-09-22T19:00:00Z"
+                   },
+                   {
+                       "verdict":  "WAIT_PROOF",
+                       "action":  "monitored",
+                       "ts":  "2026-09-23T04:36:23.779Z",
+                       "alert_id":  807,
+                       "setup":  "ct_short",
+                       "reason":  null,
+                       "type":  "alert"
+                   },
+                   {
+                       "ts":  "2026-09-23T05:51:25.207Z",
+                       "action":  "monitored",
+                       "setup":  "ct_long",
+                       "alert_id":  808,
+                       "type":  "alert",
+                       "verdict":  "WAIT_TRIGGER",
+                       "reason":  null
+                   },
+                   {
+                       "verdict":  "WATCH",
+                       "setup":  "ct_long",
+                       "alert_id":  809,
+                       "action":  "monitored",
+                       "type":  "alert",
+                       "ts":  "2026-09-23T08:35:25.700Z",
+                       "reason":  null
+                   },
+                   {
+                       "verdict":  "WATCH",
+                       "setup":  "ct_long",
+                       "alert_id":  810,
+                       "action":  "monitored",
+                       "type":  "alert",
+                       "ts":  "2026-09-23T08:38:27.328Z",
+                       "reason":  "proof 4 -\u003e 5 | STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val"
+                   },
+                   {
+                       "verdict":  "WATCH",
+                       "setup":  "ct_long",
+                       "alert_id":  811,
+                       "action":  "monitored",
+                       "type":  "alert",
+                       "ts":  "2026-09-23T08:44:25.475Z",
+                       "reason":  "zone 5m_swing_low -\u003e prior_day_close | STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va"
+                   },
+                   {
+                       "verdict":  "WAIT_PROOF",
+                       "setup":  "ct_long",
+                       "alert_id":  812,
+                       "action":  "monitored",
+                       "type":  "alert",
+                       "ts":  "2026-09-23T09:04:24.588Z",
+                       "reason":  "zone daily_val -\u003e 5m_swing_low | proof 5 -\u003e 4 | STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val"
+                   },
+                   {
+                       "verdict":  "WAIT_PROOF",
+                       "setup":  "ct_long",
+                       "alert_id":  813,
+                       "action":  "monitored",
+                       "type":  "alert",
+                       "ts":  "2026-09-23T09:19:24.322Z",
+                       "reason":  "verdict WAIT_RR -\u003e WAIT_PROOF | STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va"
+                   },
+                   {
+                       "verdict":  "SETUP_FORMING",
+                       "setup":  "ct_long",
+                       "alert_id":  814,
+                       "action":  "monitored",
+                       "type":  "alert",
+                       "ts":  "2026-09-23T10:07:25.629Z",
+                       "reason":  "proof 5 -\u003e 4 | STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val"
+                   },
+                   {
+                       "verdict":  "SETUP_FORMING",
+                       "setup":  "ct_long",
+                       "alert_id":  815,
+                       "action":  "monitored",
+                       "type":  "alert",
+                       "ts":  "2026-09-23T10:28:23.779Z",
+                       "reason":  "proof 4 -\u003e 5"
+                   },
+                   {
+                       "verdict":  "WAIT_TRIGGER",
+                       "setup":  "ct_long",
+                       "alert_id":  816,
+                       "action":  "monitored",
+                       "type":  "alert",
+                       "ts":  "2026-09-23T10:32:24.585Z",
+                       "reason":  "zone 15m_swing_low -\u003e pf_val"
+                   },
+                   {
+                       "verdict":  "WAIT_TRIGGER",
+                       "setup":  "ct_long",
+                       "alert_id":  817,
+                       "action":  "monitored",
+                       "type":  "alert",
+                       "ts":  "2026-09-23T11:22:24.813Z",
+                       "reason":  "verdict WATCH -\u003e WAIT_TRIGGER | STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va"
+                   },
+                   {
+                       "verdict":  "",
+                       "setup":  "",
+                       "alert_id":  0,
+                       "action":  "closed",
+                       "type":  "session",
+                       "ts":  "2026-09-23T11:40:00.000Z",
+                       "reason":  "MTS-2026-09-23-0831Z close: B064 CLOSED, T041 CLOSED, B065 filed, T042 filed, T043 filed. 4 worker dispatches replied. T043 Phase 1+2 done."
+                   },
+                   {
+                       "verdict":  "WAIT_TRIGGER",
+                       "setup":  "ct_long",
+                       "alert_id":  818,
+                       "action":  "monitored",
+                       "type":  "alert",
+                       "ts":  "2026-09-23T11:52:24.527Z",
+                       "reason":  "verdict WATCH -\u003e WAIT_TRIGGER | zone prior_day_val -\u003e pf_val | STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val"
+                   },
+                   {
+                       "verdict":  "SETUP_FORMING",
+                       "setup":  "ct_long",
+                       "alert_id":  819,
+                       "action":  "monitored",
+                       "type":  "alert",
+                       "ts":  "2026-09-23T12:12:24.512Z",
+                       "reason":  "STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va"
+                   },
+                   {
+                       "verdict":  "SETUP_FORMING",
+                       "setup":  "ct_long",
+                       "alert_id":  820,
+                       "action":  "monitored",
+                       "type":  "alert",
+                       "ts":  "2026-09-23T12:59:25.312Z",
+                       "reason":  "zone daily_val -\u003e 4h_val | proof 4 -\u003e 5"
+                   },
+                   {
+                       "verdict":  "SETUP_FORMING",
+                       "setup":  "ct_long",
+                       "alert_id":  821,
+                       "action":  "monitored",
+                       "type":  "alert",
+                       "ts":  "2026-09-23T13:04:25.185Z",
+                       "reason":  "zone 15m_swing_low -\u003e pf_val | proof 4 -\u003e 5"
+                   },
+                   {
+                       "verdict":  "WAIT_PROOF",
+                       "setup":  "ct_short",
+                       "alert_id":  822,
+                       "action":  "monitored",
+                       "type":  "alert",
+                       "ts":  "2026-09-23T13:26:26.492Z",
+                       "reason":  "proof 4 -\u003e 5"
+                   },
+                   {
+                       "verdict":  "WAIT_RR",
+                       "setup":  "ct_long",
+                       "alert_id":  823,
+                       "action":  "monitored",
+                       "type":  "alert",
+                       "ts":  "2026-09-23T14:15:25.335Z",
+                       "reason":  "zone 4h_val -\u003e 15m_swing_high | STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va"
+                   },
+                   {
+                       "verdict":  "WAIT_TRIGGER",
+                       "setup":  "ct_long",
+                       "alert_id":  824,
+                       "action":  "monitored",
+                       "type":  "alert",
+                       "ts":  "2026-09-23T14:22:25.311Z",
+                       "reason":  "verdict WAIT_PROOF -\u003e WAIT_RR | price delta 0.18% | STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va"
+                   },
+                   {
+                       "verdict":  "NO_TRADE",
+                       "setup":  "-",
+                       "alert_id":  825,
+                       "action":  "monitored",
+                       "type":  "alert",
+                       "ts":  "2026-09-23T14:26:25.621Z",
+                       "reason":  "verdict NO_TRADE -\u003e WAIT_TRIGGER | STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va"
+                   },
+                   {
+                       "ts_utc":  "2026-09-23T15:08:40.5538991Z",
+                       "session":  "MTS-2026-09-23-1445Z",
+                       "actor":  "COORDINATOR",
+                       "kind":  "RESTRUCTURE",
+                       "subject":  "Dumps/workers/",
+                       "change":  "Adopted one-folder-per-session model. This session moved to Dumps/workers/MTS-2026-09-23-1445Z/. 13 workers renumbered 01-13 (01 main T043-W1). Old worker folders left in place. README.md written as model doc.",
+                       "files_new":  [
+                                         "Dumps/workers/README.md",
+                                         "Dumps/workers/MTS-2026-09-23-1445Z/01-T043-W1/DISPATCH.md",
+                                         "Dumps/workers/MTS-2026-09-23-1445Z/02-B058-W1/DISPATCH.md",
+                                         "Dumps/workers/MTS-2026-09-23-1445Z/03-B059-W1/DISPATCH.md",
+                                         "Dumps/workers/MTS-2026-09-23-1445Z/04-B062-W1/DISPATCH.md",
+                                         "Dumps/workers/MTS-2026-09-23-1445Z/05-B063-W1/DISPATCH.md",
+                                         "Dumps/workers/MTS-2026-09-23-1445Z/06-B065-W1/DISPATCH.md",
+                                         "Dumps/workers/MTS-2026-09-23-1445Z/07-T034-W1/DISPATCH.md",
+                                         "Dumps/workers/MTS-2026-09-23-1445Z/08-T035-W1/DISPATCH.md",
+                                         "Dumps/workers/MTS-2026-09-23-1445Z/09-T037-W1/DISPATCH.md",
+                                         "Dumps/workers/MTS-2026-09-23-1445Z/10-T038-W1/DISPATCH.md",
+                                         "Dumps/workers/MTS-2026-09-23-1445Z/11-T039-W1/DISPATCH.md",
+                                         "Dumps/workers/MTS-2026-09-23-1445Z/12-T040-W1/DISPATCH.md",
+                                         "Dumps/workers/MTS-2026-09-23-1445Z/13-T042-W1/DISPATCH.md"
+                                     ],
+                       "verified":  "bytes 857-2061, BOM False x13, non-ASCII 0, reply paths rewritten, old folders intact"
+                   },
+                   {
+                       "ts_utc":  "2026-09-23T15:14:31.1499837Z",
+                       "session":  "MTS-2026-09-23-1445Z",
+                       "actor":  "COORDINATOR",
+                       "kind":  "DELETE",
+                       "subject":  "Dumps/LIVE_PASTE.txt",
+                       "change":  "Operator confirmed never used. Deleted. Backup at backup_session/MTS-2026-09-23-1445Z/LIVE_PASTE.txt (13087 bytes). No stop flag, no tmp left. mts-paste.ps1 and load.ps1 aliases mts-paste/mts-paste-now/mts-paste-stop left in place; deferred removal to a future session (4-file change: load.ps1, mts-paste.ps1, COMMANDS.md, MTS_DICTIONARY.md).",
+                       "verified":  "exists after delete: False"
+                   },
+                   {
+                       "ts_utc":  "2026-09-23T15:18:47.6630304Z",
+                       "session":  "MTS-2026-09-23-1445Z",
+                       "actor":  "COORDINATOR",
+                       "kind":  "MOVE",
+                       "subject":  "BUILD_REPORT.md",
+                       "change":  "Moved Dumps/BUILD_REPORT.md -\u003e MyTradingSys/runtime/BUILD_REPORT.md. Live refs updated: Build-Check.ps1 (3 anchors: header, Always line, outDir), SESSION_MANIFEST.json (boot_files path). Historical refs in archive/, fyi_archive/, L_ITEMS_MASTER, session_log, 02a, 02b left as records. Dumps now holds request-on-demand only.",
+                       "hashes":  "Build-Check.ps1 6237C0CE -\u003e 417F4308; SESSION_MANIFEST.json 2BB4F780 -\u003e 1C6FC39B",
+                       "verified":  "Build-Check STATUS PASS, dispatch count 26, BOM False on 3 touched files"
+                   },
+                   {
+                       "verdict":  "WAIT_RR",
+                       "setup":  "ct_long",
+                       "alert_id":  826,
+                       "action":  "monitored",
+                       "type":  "alert",
+                       "ts":  "2026-09-23T16:03:26.422Z",
+                       "reason":  "zone vwap_band_-2 -\u003e - | proof 6 -\u003e 0 | STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va"
+                   },
+                   {
+                       "verdict":  "WAIT_RR",
+                       "setup":  "ct_long",
+                       "alert_id":  827,
+                       "action":  "monitored",
+                       "type":  "alert",
+                       "ts":  "2026-09-23T16:07:24.455Z",
+                       "reason":  "verdict WAIT_PROOF -\u003e WAIT_RR | STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val"
+                   },
+                   {
+                       "verdict":  "WAIT_PROOF",
+                       "setup":  "ct_long",
+                       "alert_id":  828,
+                       "action":  "monitored",
+                       "type":  "alert",
+                       "ts":  "2026-09-23T16:51:25.664Z",
+                       "reason":  "zone weekly_val -\u003e 15m_swing_low | price delta 0.16% | proof 5 -\u003e 4 | STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va"
+                   },
+                   {
+                       "ts_utc":  "2026-09-23T17:23:08.0056794Z",
+                       "session":  "MTS-2026-09-23-1445Z",
+                       "actor":  "COORDINATOR",
+                       "kind":  "WORKERS",
+                       "subject":  "Dumps/workers/MTS-2026-09-23-1445Z/",
+                       "change":  "13 worker dispatches issued. Outcomes: 02-10,12,13 DONE. 01 FAIL (design-only, reverted). 11 FAIL (fabricated verbatim sources). 13 round 1 FAIL (fabricated buildStructure body), round 2 DONE after real body pasted. Coordinator did T039 source-folds directly after 11 FAIL (3 new items T044/T045/T046, 3 fold appends, 3 BUGS rows).",
+                       "verified":  "Build-Check PASS at 17:16Z. Bugs 108 -\u003e 111 rows. 13 worker folders 01-13 with DISPATCH.md + REPLY.md each."
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "Handoff MTS-2026-09-23-1445Z steps 1-4 complete. Loop healthy. Independent worker type removed from DSA_SESSION_PROMPT.md section 1 and live_session_protocol.md WORKER TYPES. Build-Check.ps1 L131 label corrected to Cyrillic codepoints (0x0400-0x04FF). DSA section 11 regenerated. Mojibake report in handoff 1445Z was wrong; on-disk bytes E2 80 94 clean UTF-8 em dash.",
+                       "ts":  "2026-09-23T19:01:03.898274Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "MTS-2026-09-23-1730Z continuation. Landed: protocol cleanup (stray # END, dup rule 15 -\u003e rule 16); B058 C+D confirmed on disk and CLOSED; B062 WATCH suppress + opposing SETUP_FORMING elevation; B065 stale checks wired in extractZones and stop selection; T042 buildStructure emits 1w/1d/4h; B059 attempted then reverted (fix belongs producer-side); T043 WONTFIX; timestamp format fix at start-trading-day.ps1 L130 (was culture-dependent, now ISO). Loop restarted twice: 4356/2428/16160 then 9260/4336/13032.",
+                       "ts":  "2026-09-23T19:26:16.610477Z"
+                   },
+                   {
+                       "verdict":  "WAIT_PROOF",
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "alert_id":  829,
+                       "reason":  null,
+                       "ts":  "2026-09-24T05:49:19.240Z",
+                       "type":  "alert"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "MTS-2026-09-23-1730Z addendum 2. Loop hardening: PATH prepend (system32+Maven), absolute cmd.exe/taskkill.exe, +5s warmup/cycle, mojibake fix (14-\u003e0 non-ASCII), mts-up lock poll, mode.ps1 Gap 6 lock validation + 7b orphan sweep extension, start-session.ps1 supervisor heartbeat age. Claude-reviewed architecture: kill-only on stale. Deferred: single stop flag, stale detection, loop_state.json, mts-loop CLI.",
+                       "ts":  "2026-09-24T06:35:24.095880Z"
+                   },
+                   {
+                       "verdict":  "WAIT_TRIGGER",
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "alert_id":  830,
+                       "reason":  "STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va",
+                       "ts":  "2026-09-24T07:27:19.829Z",
+                       "type":  "alert"
+                   },
+                   {
+                       "verdict":  "WAIT_TRIGGER",
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "alert_id":  831,
+                       "reason":  "verdict WATCH -\u003e WAIT_TRIGGER | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "ts":  "2026-09-24T08:32:20.794Z",
+                       "type":  "alert"
+                   },
+                   {
+                       "verdict":  "NO_TRADE",
+                       "setup":  "-",
+                       "action":  "monitored",
+                       "alert_id":  832,
+                       "reason":  "zone pf_vah -\u003e daily_vah | STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va",
+                       "ts":  "2026-09-24T08:46:19.555Z",
+                       "type":  "alert"
+                   },
+                   {
+                       "verdict":  "NO_TRADE",
+                       "setup":  "-",
+                       "action":  "monitored",
+                       "alert_id":  833,
+                       "reason":  "verdict WAIT_PROOF -\u003e NO_TRADE | STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val",
+                       "ts":  "2026-09-24T09:16:20.226Z",
+                       "type":  "alert"
+                   },
+                   {
+                       "verdict":  "WAIT_PROOF",
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "alert_id":  834,
+                       "reason":  "STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val",
+                       "ts":  "2026-09-24T09:21:20.906Z",
+                       "type":  "alert"
+                   },
+                   {
+                       "verdict":  "WAIT_TRIGGER",
+                       "setup":  "fvg_short",
+                       "action":  "monitored",
+                       "alert_id":  835,
+                       "reason":  "verdict NO_TRADE -\u003e WAIT_PROOF | STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va",
+                       "ts":  "2026-09-24T09:30:19.748Z",
+                       "type":  "alert"
+                   },
+                   {
+                       "verdict":  "SETUP_FORMING",
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "alert_id":  836,
+                       "reason":  "verdict WAIT_PROOF -\u003e WAIT_TRIGGER | STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va",
+                       "ts":  "2026-09-24T10:23:20.369Z",
+                       "type":  "alert"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "session 1100Z close: folder flatten, PROJECT_VISION boot, post_funding demoted, DSA five-edit audit, T045 closed",
+                       "ts":  "2026-09-24T13:50:26.395188Z"
+                   },
+                   {
+                       "alert_id":  5,
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_TRIGGER",
+                       "reason":  null,
+                       "type":  "alert",
+                       "ts":  "2026-09-25T09:03:19.885Z"
+                   },
+                   {
+                       "alert_id":  6,
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "verdict":  "SETUP_FORMING",
+                       "reason":  "STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "type":  "alert",
+                       "ts":  "2026-09-25T10:36:19.916Z"
+                   },
+                   {
+                       "alert_id":  7,
+                       "setup":  "fvg_long",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_TRIGGER",
+                       "reason":  "zone vwap_band_+1 -\u003e 5m_swing_high",
+                       "type":  "alert",
+                       "ts":  "2026-09-25T11:08:19.396Z"
+                   },
+                   {
+                       "alert_id":  8,
+                       "setup":  "tc_long",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_RR",
+                       "reason":  "zone - -\u003e fvg_bottom | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "type":  "alert",
+                       "ts":  "2026-09-25T11:28:20.299Z"
+                   },
+                   {
+                       "alert_id":  9,
+                       "setup":  "-",
+                       "action":  "monitored",
+                       "verdict":  "NO_TRADE",
+                       "reason":  "verdict WAIT_PROOF -\u003e WAIT_RR | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "type":  "alert",
+                       "ts":  "2026-09-25T12:20:20.834Z"
+                   },
+                   {
+                       "alert_id":  10,
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "verdict":  "SETUP_FORMING",
+                       "reason":  "STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va",
+                       "type":  "alert",
+                       "ts":  "2026-09-25T12:49:21.183Z"
+                   },
+                   {
+                       "alert_id":  11,
+                       "setup":  "-",
+                       "action":  "monitored",
+                       "verdict":  "NO_TRADE",
+                       "reason":  "price delta 0.16% | proof 3 -\u003e 5",
+                       "type":  "alert",
+                       "ts":  "2026-09-25T13:32:20.575Z"
+                   },
+                   {
+                       "alert_id":  12,
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_TRIGGER",
+                       "reason":  "verdict WAIT_TRIGGER -\u003e NO_TRADE | STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val",
+                       "type":  "alert",
+                       "ts":  "2026-09-25T13:36:20.576Z"
+                   },
+                   {
+                       "alert_id":  13,
+                       "setup":  "fvg_short",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_TRIGGER",
+                       "reason":  "price delta 0.28% | STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va",
+                       "type":  "alert",
+                       "ts":  "2026-09-25T13:48:19.920Z"
+                   },
+                   {
+                       "alert_id":  14,
+                       "setup":  "-",
+                       "action":  "monitored",
+                       "verdict":  "NO_TRADE",
+                       "reason":  "zone - -\u003e fvg_top | STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val",
+                       "type":  "alert",
+                       "ts":  "2026-09-25T14:05:20.206Z"
+                   },
+                   {
+                       "alert_id":  15,
+                       "setup":  "fvg_long",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "price delta 0.33% | STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val",
+                       "type":  "alert",
+                       "ts":  "2026-09-25T14:13:21.223Z"
+                   },
+                   {
+                       "type":  "alert",
+                       "alert_id":  16,
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  null,
+                       "ts":  "2026-09-26T17:55:31.553Z",
+                       "action":  "monitored",
+                       "setup":  "ct_long"
+                   },
+                   {
+                       "type":  "alert",
+                       "alert_id":  17,
+                       "verdict":  "SETUP_FORMING",
+                       "reason":  "STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "ts":  "2026-09-26T18:09:21.721Z",
+                       "action":  "monitored",
+                       "setup":  "ct_long"
+                   },
+                   {
+                       "type":  "alert",
+                       "alert_id":  18,
+                       "verdict":  "WAIT_TRIGGER",
+                       "reason":  "proof 4 -\u003e 5",
+                       "ts":  "2026-09-26T20:52:25.382Z",
+                       "action":  "monitored",
+                       "setup":  "ct_short"
+                   },
+                   {
+                       "type":  "alert",
+                       "alert_id":  19,
+                       "verdict":  "WATCH",
+                       "reason":  "verdict NO_TRADE -\u003e WAIT_TRIGGER | zone fvg_top -\u003e daily_vah | STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va",
+                       "ts":  "2026-09-26T21:06:22.087Z",
+                       "action":  "monitored",
+                       "setup":  "ct_short"
+                   },
+                   {
+                       "type":  "alert",
+                       "alert_id":  20,
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "ts":  "2026-09-26T21:12:23.909Z",
+                       "action":  "monitored",
+                       "setup":  "ct_short"
+                   },
+                   {
+                       "type":  "alert",
+                       "alert_id":  21,
+                       "verdict":  "SETUP_FORMING",
+                       "reason":  "verdict WATCH -\u003e WAIT_PROOF | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va",
+                       "ts":  "2026-09-27T00:01:21.466Z",
+                       "action":  "monitored",
+                       "setup":  "ct_short"
+                   },
+                   {
+                       "type":  "alert",
+                       "alert_id":  22,
+                       "verdict":  "WATCH",
+                       "reason":  "zone vwap_band_+1 -\u003e prior_day_close | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va",
+                       "ts":  "2026-09-27T00:05:21.537Z",
+                       "action":  "monitored",
+                       "setup":  "ct_short"
+                   },
+                   {
+                       "type":  "alert",
+                       "alert_id":  23,
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "verdict WAIT_PROOF -\u003e WATCH | STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va",
+                       "ts":  "2026-09-27T00:21:21.261Z",
+                       "action":  "monitored",
+                       "setup":  "fvg_short"
+                   },
+                   {
+                       "type":  "alert",
+                       "alert_id":  24,
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "zone - -\u003e fvg_top | STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val",
+                       "ts":  "2026-09-27T00:33:21.682Z",
+                       "action":  "monitored",
+                       "setup":  "fvg_long"
+                   },
+                   {
+                       "type":  "alert",
+                       "alert_id":  25,
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "zone - -\u003e fvg_bottom | STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va",
+                       "ts":  "2026-09-27T00:54:21.283Z",
+                       "action":  "monitored",
+                       "setup":  "fvg_short"
+                   },
+                   {
+                       "type":  "alert",
+                       "alert_id":  26,
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "zone - -\u003e fvg_top | STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val",
+                       "ts":  "2026-09-27T01:11:21.524Z",
+                       "action":  "monitored",
+                       "setup":  "scalp_short"
+                   },
+                   {
+                       "type":  "alert",
+                       "alert_id":  27,
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "zone 1h_swing_low -\u003e vwap | proof 3 -\u003e 5 | STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va",
+                       "ts":  "2026-09-27T01:18:21.251Z",
+                       "action":  "monitored",
+                       "setup":  "ct_short"
+                   },
+                   {
+                       "type":  "alert",
+                       "alert_id":  28,
+                       "verdict":  "WAIT_TRIGGER",
+                       "reason":  "proof 3 -\u003e 5 | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va",
+                       "ts":  "2026-09-27T01:35:21.806Z",
+                       "action":  "monitored",
+                       "setup":  "ct_long"
+                   },
+                   {
+                       "type":  "alert",
+                       "alert_id":  29,
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val",
+                       "ts":  "2026-09-27T01:44:21.419Z",
+                       "action":  "monitored",
+                       "setup":  "ct_short"
+                   },
+                   {
+                       "type":  "alert",
+                       "alert_id":  30,
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "ts":  "2026-09-27T01:54:21.823Z",
+                       "action":  "monitored",
+                       "setup":  "ct_short"
+                   },
+                   {
+                       "type":  "alert",
+                       "alert_id":  31,
+                       "verdict":  "NO_TRADE",
+                       "reason":  "verdict WAIT_TRIGGER -\u003e WAIT_PROOF | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va",
+                       "ts":  "2026-09-27T03:27:21.403Z",
+                       "action":  "monitored",
+                       "setup":  "-"
+                   },
+                   {
+                       "type":  "alert",
+                       "alert_id":  32,
+                       "verdict":  "NO_TRADE",
+                       "reason":  "STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val",
+                       "ts":  "2026-09-27T03:49:21.863Z",
+                       "action":  "monitored",
+                       "setup":  "-"
+                   },
+                   {
+                       "type":  "alert",
+                       "alert_id":  33,
+                       "verdict":  "NO_TRADE",
+                       "reason":  "STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va",
+                       "ts":  "2026-09-27T04:33:21.585Z",
+                       "action":  "monitored",
+                       "setup":  "-"
+                   },
+                   {
+                       "type":  "alert",
+                       "alert_id":  34,
+                       "verdict":  "NO_TRADE",
+                       "reason":  "STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val",
+                       "ts":  "2026-09-27T05:05:21.571Z",
+                       "action":  "monitored",
+                       "setup":  "-"
+                   },
+                   {
+                       "type":  "alert",
+                       "alert_id":  35,
+                       "verdict":  "WAIT_TRIGGER",
+                       "reason":  "STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val",
+                       "ts":  "2026-09-27T07:51:20.825Z",
+                       "action":  "monitored",
+                       "setup":  "ct_short"
+                   },
+                   {
+                       "type":  "alert",
+                       "alert_id":  36,
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "verdict WAIT_PROOF -\u003e WAIT_TRIGGER | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "ts":  "2026-09-27T07:55:20.797Z",
+                       "action":  "monitored",
+                       "setup":  "ct_short"
+                   },
+                   {
+                       "alert_id":  37,
+                       "type":  "alert",
+                       "ts":  "2026-09-28T16:19:22.045Z",
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "reason":  null,
+                       "verdict":  "SETUP_FORMING"
+                   },
+                   {
+                       "alert_id":  38,
+                       "type":  "alert",
+                       "ts":  "2026-09-28T16:49:22.429Z",
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "reason":  "zone - -\u003e daily_vah | price delta 0.17% | proof 0 -\u003e 5",
+                       "verdict":  "WAIT_RR"
+                   },
+                   {
+                       "alert_id":  39,
+                       "type":  "alert",
+                       "ts":  "2026-09-28T16:56:21.888Z",
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "reason":  "verdict NO_TRADE -\u003e WAIT_RR | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va",
+                       "verdict":  "WAIT_TRIGGER"
+                   },
+                   {
+                       "alert_id":  40,
+                       "type":  "alert",
+                       "ts":  "2026-09-28T17:02:22.384Z",
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "reason":  "verdict WAIT_RR -\u003e WAIT_TRIGGER | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "verdict":  "WAIT_RR"
+                   },
+                   {
+                       "alert_id":  41,
+                       "type":  "alert",
+                       "ts":  "2026-09-28T17:13:22.087Z",
+                       "setup":  "-",
+                       "action":  "monitored",
+                       "reason":  "verdict WAIT_TRIGGER -\u003e WAIT_RR | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va",
+                       "verdict":  "NO_TRADE"
+                   },
+                   {
+                       "alert_id":  42,
+                       "type":  "alert",
+                       "ts":  "2026-09-28T19:10:21.042Z",
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "reason":  "verdict WAIT_RR -\u003e NO_TRADE | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "verdict":  "WAIT_RR"
+                   },
+                   {
+                       "alert_id":  43,
+                       "type":  "alert",
+                       "ts":  "2026-09-28T21:17:21.464Z",
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "reason":  "STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va",
+                       "verdict":  "SETUP_FORMING"
+                   },
+                   {
+                       "alert_id":  44,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T00:03:20.675Z",
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "reason":  "proof 4 -\u003e 5",
+                       "verdict":  "WAIT_RR"
+                   },
+                   {
+                       "alert_id":  45,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T00:08:21.287Z",
+                       "setup":  "tc_long",
+                       "action":  "monitored",
+                       "reason":  "STATE TWOPEAK/below_val -\u003e TWOPEAK/above_vah",
+                       "verdict":  "WAIT_RR"
+                   },
+                   {
+                       "alert_id":  46,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T00:13:22.382Z",
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "reason":  "STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "verdict":  "WATCH"
+                   },
+                   {
+                       "alert_id":  47,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T00:18:21.608Z",
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "reason":  "verdict WAIT_TRIGGER -\u003e WATCH | STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va",
+                       "verdict":  "WAIT_TRIGGER"
+                   },
+                   {
+                       "alert_id":  48,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T00:30:21.733Z",
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "reason":  "STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val",
+                       "verdict":  "WAIT_RR"
+                   },
+                   {
+                       "alert_id":  49,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T00:37:21.342Z",
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "reason":  "STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "verdict":  "WAIT_TRIGGER"
+                   },
+                   {
+                       "alert_id":  50,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T00:47:21.593Z",
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "reason":  "verdict WATCH -\u003e WAIT_TRIGGER | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "verdict":  "WAIT_RR"
+                   },
+                   {
+                       "alert_id":  51,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T01:05:20.858Z",
+                       "setup":  "-",
+                       "action":  "monitored",
+                       "reason":  "verdict WAIT_PROOF -\u003e WAIT_RR | STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val",
+                       "verdict":  "NO_TRADE"
+                   },
+                   {
+                       "alert_id":  52,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T01:32:21.695Z",
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "reason":  "verdict WAIT_RR -\u003e NO_TRADE | STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val",
+                       "verdict":  "WAIT_RR"
+                   },
+                   {
+                       "alert_id":  53,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T02:21:21.891Z",
+                       "setup":  "-",
+                       "action":  "monitored",
+                       "reason":  "verdict NO_TRADE -\u003e WAIT_RR | zone vwap_band_-1 -\u003e 5m_swing_low | proof 4 -\u003e 5 | STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va",
+                       "verdict":  "NO_TRADE"
+                   },
+                   {
+                       "alert_id":  54,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T02:49:21.338Z",
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "reason":  "verdict WAIT_RR -\u003e NO_TRADE | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "verdict":  "WAIT_RR"
+                   },
+                   {
+                       "alert_id":  55,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T03:22:21.911Z",
+                       "setup":  "-",
+                       "action":  "monitored",
+                       "reason":  "zone vwap -\u003e daily_vah | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va",
+                       "verdict":  "NO_TRADE"
+                   },
+                   {
+                       "alert_id":  56,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T03:56:21.801Z",
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "reason":  "verdict WAIT_RR -\u003e NO_TRADE | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "verdict":  "WATCH"
+                   },
+                   {
+                       "alert_id":  57,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T04:13:22.163Z",
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "reason":  "verdict WAIT_TRIGGER -\u003e WATCH | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va",
+                       "verdict":  "WAIT_TRIGGER"
+                   },
+                   {
+                       "alert_id":  58,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T04:37:20.907Z",
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "reason":  "verdict WAIT_RR -\u003e WAIT_TRIGGER | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "verdict":  "WAIT_RR"
+                   },
+                   {
+                       "alert_id":  59,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T04:49:21.158Z",
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "reason":  "STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va",
+                       "verdict":  "WAIT_RR"
+                   },
+                   {
+                       "alert_id":  60,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T04:53:20.797Z",
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "reason":  "zone 15m_swing_high -\u003e daily_vah | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va",
+                       "verdict":  "WAIT_RR"
+                   },
+                   {
+                       "alert_id":  61,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T05:35:21.512Z",
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "reason":  "STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "verdict":  "WAIT_RR"
+                   },
+                   {
+                       "alert_id":  62,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T05:43:23.554Z",
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "reason":  "zone 4h_vah -\u003e 1h_swing_low | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va",
+                       "verdict":  "WAIT_RR"
+                   },
+                   {
+                       "alert_id":  63,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T08:43:21.047Z",
+                       "setup":  "-",
+                       "action":  "monitored",
+                       "reason":  "STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "verdict":  "NO_TRADE"
+                   },
+                   {
+                       "alert_id":  64,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T09:30:21.277Z",
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "reason":  "verdict WAIT_TRIGGER -\u003e NO_TRADE | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "verdict":  "WAIT_RR"
+                   },
+                   {
+                       "alert_id":  65,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T09:33:22.654Z",
+                       "setup":  "-",
+                       "action":  "monitored",
+                       "reason":  "verdict NO_TRADE -\u003e WAIT_RR | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va",
+                       "verdict":  "NO_TRADE"
+                   },
+                   {
+                       "alert_id":  66,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T10:49:21.390Z",
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "reason":  "verdict WAIT_RR -\u003e NO_TRADE | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "verdict":  "WAIT_RR"
+                   },
+                   {
+                       "alert_id":  67,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T14:53:21.993Z",
+                       "setup":  "-",
+                       "action":  "monitored",
+                       "reason":  "verdict WAIT_TRIGGER -\u003e WAIT_RR | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va",
+                       "verdict":  "NO_TRADE"
+                   },
+                   {
+                       "alert_id":  68,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T15:12:22.811Z",
+                       "setup":  "-",
+                       "action":  "monitored",
+                       "reason":  "STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va",
+                       "verdict":  "NO_TRADE"
+                   },
+                   {
+                       "alert_id":  69,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T15:31:21.511Z",
+                       "setup":  "-",
+                       "action":  "monitored",
+                       "reason":  "zone 5m_swing_low -\u003e - | STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val",
+                       "verdict":  "NO_TRADE"
+                   },
+                   {
+                       "alert_id":  70,
+                       "type":  "alert",
+                       "ts":  "2026-09-29T20:10:22.998Z",
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "reason":  "STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va",
+                       "verdict":  "SETUP_FORMING"
+                   },
+                   {
+                       "ts":  "2026-09-30T19:20:23.068Z",
+                       "reason":  null,
+                       "verdict":  "WAIT_RR",
+                       "alert_id":  71,
+                       "action":  "monitored",
+                       "setup":  "ct_long",
+                       "type":  "alert"
+                   },
+                   {
+                       "action":  "monitored",
+                       "reason":  null,
+                       "type":  "alert",
+                       "alert_id":  72,
+                       "setup":  "ct_long",
+                       "verdict":  "WAIT_RR",
+                       "ts":  "2026-10-01T14:48:21.475Z"
+                   },
+                   {
+                       "action":  "monitored",
+                       "reason":  "verdict NO_TRADE -\u003e WAIT_RR | zone 4h_vah -\u003e 4h_val | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va",
+                       "type":  "alert",
+                       "alert_id":  73,
+                       "setup":  "-",
+                       "verdict":  "NO_TRADE",
+                       "ts":  "2026-10-01T15:21:22.625Z"
+                   },
+                   {
+                       "action":  "monitored",
+                       "reason":  "verdict WAIT_RR -\u003e NO_TRADE | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "type":  "alert",
+                       "alert_id":  74,
+                       "setup":  "ct_short",
+                       "verdict":  "WAIT_RR",
+                       "ts":  "2026-10-01T15:24:23.093Z"
+                   },
+                   {
+                       "action":  "monitored",
+                       "reason":  "verdict NO_TRADE -\u003e WAIT_RR | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va",
+                       "type":  "alert",
+                       "alert_id":  75,
+                       "setup":  "ct_short",
+                       "verdict":  "WAIT_RR",
+                       "ts":  "2026-10-01T15:51:22.445Z"
+                   },
+                   {
+                       "action":  "monitored",
+                       "reason":  "verdict NO_TRADE -\u003e WAIT_RR | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va",
+                       "type":  "alert",
+                       "alert_id":  76,
+                       "setup":  "ct_short",
+                       "verdict":  "WAIT_RR",
+                       "ts":  "2026-10-01T16:09:22.547Z"
+                   },
+                   {
+                       "action":  "monitored",
+                       "reason":  "verdict NO_TRADE -\u003e WAIT_RR | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va",
+                       "type":  "alert",
+                       "alert_id":  77,
+                       "setup":  "-",
+                       "verdict":  "NO_TRADE",
+                       "ts":  "2026-10-01T16:16:22.381Z"
+                   },
+                   {
+                       "action":  "monitored",
+                       "reason":  "verdict WAIT_RR -\u003e NO_TRADE | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "type":  "alert",
+                       "alert_id":  78,
+                       "setup":  "tc_long",
+                       "verdict":  "WAIT_PROOF",
+                       "ts":  "2026-10-01T16:31:22.507Z"
+                   },
+                   {
+                       "action":  "monitored",
+                       "reason":  "zone 4h_val -\u003e vwap_band_+2 | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "type":  "alert",
+                       "alert_id":  79,
+                       "setup":  "ct_short",
+                       "verdict":  "WAIT_TRIGGER",
+                       "ts":  "2026-10-01T16:40:21.464Z"
+                   },
+                   {
+                       "action":  "monitored",
+                       "reason":  "zone 15m_swing_high -\u003e 4h_vah | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va",
+                       "type":  "alert",
+                       "alert_id":  80,
+                       "setup":  "ct_long",
+                       "verdict":  "WAIT_RR",
+                       "ts":  "2026-10-01T16:45:21.418Z"
+                   },
+                   {
+                       "action":  "monitored",
+                       "reason":  "zone - -\u003e 5m_swing_low | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah",
+                       "type":  "alert",
+                       "alert_id":  81,
+                       "setup":  "ct_short",
+                       "verdict":  "WAIT_RR",
+                       "ts":  "2026-10-01T16:50:22.417Z"
+                   },
+                   {
+                       "action":  "monitored",
+                       "reason":  "STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va",
+                       "type":  "alert",
+                       "alert_id":  82,
+                       "setup":  "-",
+                       "verdict":  "NO_TRADE",
+                       "ts":  "2026-10-01T17:04:22.009Z"
+                   },
+                   {
+                       "action":  "monitored",
+                       "setup":  "-",
+                       "verdict":  "NO_TRADE",
+                       "reason":  null,
+                       "type":  "alert",
+                       "ts":  "2026-10-02T14:31:25.103Z",
+                       "alert_id":  83
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "note",
+                       "reason":  "P2 CL close: Tom all-shorts root cause = math_object_builder.py book_imbalance 0.0 treated as ask-heavy for longs (archive placeholder). Fix in 13295c8, WIP/unverified, touched a critical file without four-step proof. Cache stale (2026-09-30). Section 11 refresh committed 78d8c3a. Next: regenerate row cache, re-run Tom report, gate 13295c8 fail-first.",
+                       "ts":  "2026-10-02T14:38:14.787054Z"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "note",
+                       "reason":  "DSA session MTS-2026-10-02-1423Z-CLI-... close: P2 done, T050 phase 3 PASS, B077/B078/B079 CLOSED, prompt rules tightened (8b57131, 9df02c6, b8eb479). Three parallel CL sessions A/B/C mid-work at close. Section 11 update deferred (A owns DSA_SESSION_PROMPT.md). Next DSA session applies handoff part 5.",
+                       "ts":  "2026-10-02T16:46:21.371999Z"
+                   },
+                   {
+                       "type":  "alert",
+                       "action":  "monitored",
+                       "verdict":  "SETUP_FORMING",
+                       "reason":  null,
+                       "setup":  "ct_long",
+                       "alert_id":  84,
+                       "ts":  "2026-10-02T19:54:23.205Z"
+                   },
+                   {
+                       "ts":  "2026-10-02T22:14:23.071Z",
+                       "type":  "alert",
+                       "alert_id":  85,
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "verdict":  "SETUP_FORMING",
+                       "reason":  null
+                   },
+                   {
+                       "ts":  "2026-10-02T22:35:23.038Z",
+                       "type":  "alert",
+                       "alert_id":  86,
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "verdict":  "SETUP_FORMING",
+                       "reason":  "zone 4h_val -\u003e 5m_swing_low | proof 1 -\u003e 5"
+                   },
+                   {
+                       "ts":  "2026-10-02T23:53:23.233Z",
+                       "type":  "alert",
+                       "alert_id":  87,
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "verdict":  "SETUP_FORMING",
+                       "reason":  "zone 4h_val -\u003e 5m_swing_low | proof 2 -\u003e 5"
+                   },
+                   {
+                       "ts":  "2026-10-03T00:03:23.323Z",
+                       "type":  "alert",
+                       "alert_id":  88,
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "proof 4 -\u003e 5"
+                   },
+                   {
+                       "ts":  "2026-10-03T00:10:23.736Z",
+                       "type":  "alert",
+                       "alert_id":  89,
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_TRIGGER",
+                       "reason":  "STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va"
+                   },
+                   {
+                       "ts":  "2026-10-03T00:14:24.341Z",
+                       "type":  "alert",
+                       "alert_id":  90,
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "verdict":  "WATCH",
+                       "reason":  "STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val"
+                   },
+                   {
+                       "ts":  "2026-10-03T00:36:22.904Z",
+                       "type":  "alert",
+                       "alert_id":  91,
+                       "setup":  "-",
+                       "action":  "monitored",
+                       "verdict":  "NO_TRADE",
+                       "reason":  "verdict WAIT_TRIGGER -\u003e WATCH | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah"
+                   },
+                   {
+                       "ts":  "2026-10-03T00:46:23.263Z",
+                       "type":  "alert",
+                       "alert_id":  92,
+                       "setup":  "scalp_long",
+                       "action":  "monitored",
+                       "verdict":  "SETUP_FORMING",
+                       "reason":  "verdict WAIT_TRIGGER -\u003e NO_TRADE | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va"
+                   },
+                   {
+                       "ts":  "2026-10-03T00:51:23.527Z",
+                       "type":  "alert",
+                       "alert_id":  93,
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_TRIGGER",
+                       "reason":  "proof 3 -\u003e 5"
+                   },
+                   {
+                       "ts":  "2026-10-03T01:10:23.954Z",
+                       "type":  "alert",
+                       "alert_id":  94,
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_TRIGGER",
+                       "reason":  "verdict WAIT_PROOF -\u003e WAIT_TRIGGER | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah"
+                   },
+                   {
+                       "ts":  "2026-10-03T01:13:23.359Z",
+                       "type":  "alert",
+                       "alert_id":  95,
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "verdict WAIT_PROOF -\u003e WAIT_TRIGGER | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah"
+                   },
+                   {
+                       "ts":  "2026-10-03T02:58:24.050Z",
+                       "type":  "alert",
+                       "alert_id":  96,
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "verdict WAIT_TRIGGER -\u003e WAIT_PROOF | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va"
+                   },
+                   {
+                       "ts":  "2026-10-03T03:18:24.752Z",
+                       "type":  "alert",
+                       "alert_id":  97,
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_TRIGGER",
+                       "reason":  "STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val"
+                   },
+                   {
+                       "ts":  "2026-10-03T04:05:25.196Z",
+                       "type":  "alert",
+                       "alert_id":  98,
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_TRIGGER",
+                       "reason":  "proof 5 -\u003e 4 | STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va"
+                   },
+                   {
+                       "ts":  "2026-10-03T04:21:26.202Z",
+                       "type":  "alert",
+                       "alert_id":  99,
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "verdict WAIT_PROOF -\u003e WAIT_TRIGGER | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah"
+                   },
+                   {
+                       "ts":  "2026-10-03T04:48:23.530Z",
+                       "type":  "alert",
+                       "alert_id":  100,
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val"
+                   },
+                   {
+                       "ts":  "2026-10-03T04:54:23.764Z",
+                       "type":  "alert",
+                       "alert_id":  101,
+                       "setup":  "scalp_long",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "zone vwap_band_-1 -\u003e daily_val | STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va"
+                   },
+                   {
+                       "ts":  "2026-10-03T05:02:24.241Z",
+                       "type":  "alert",
+                       "alert_id":  102,
+                       "setup":  "tc_long",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "verdict WAIT_RR -\u003e WAIT_PROOF | zone daily_val -\u003e vwap_band_-1 | STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va"
+                   },
+                   {
+                       "ts":  "2026-10-03T05:08:24.983Z",
+                       "type":  "alert",
+                       "alert_id":  103,
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "zone daily_val -\u003e vwap_band_-1 | STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val"
+                   },
+                   {
+                       "ts":  "2026-10-03T05:19:23.632Z",
+                       "type":  "alert",
+                       "alert_id":  104,
+                       "setup":  "-",
+                       "action":  "monitored",
+                       "verdict":  "NO_TRADE",
+                       "reason":  "STATE TWOPEAK/in_va -\u003e TWOPEAK/below_val"
+                   },
+                   {
+                       "ts":  "2026-10-03T06:35:22.864Z",
+                       "type":  "alert",
+                       "alert_id":  105,
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "verdict":  "SETUP_FORMING",
+                       "reason":  "verdict WAIT_PROOF -\u003e NO_TRADE | STATE TWOPEAK/below_val -\u003e TWOPEAK/in_va"
+                   },
+                   {
+                       "ts":  "2026-10-03T06:43:22.898Z",
+                       "type":  "alert",
+                       "alert_id":  106,
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "verdict":  "SETUP_FORMING",
+                       "reason":  "zone vwap_band_+1 -\u003e 5m_swing_high | proof 3 -\u003e 5"
+                   },
+                   {
+                       "ts":  "2026-10-03T09:11:24.192Z",
+                       "type":  "alert",
+                       "alert_id":  107,
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_TRIGGER",
+                       "reason":  "zone vwap_band_+1 -\u003e 15m_swing_high | proof 3 -\u003e 5"
+                   },
+                   {
+                       "ts":  "2026-10-03T09:15:23.847Z",
+                       "type":  "alert",
+                       "alert_id":  108,
+                       "setup":  "scalp_long",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "verdict WAIT_PROOF -\u003e WAIT_TRIGGER | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah"
+                   },
+                   {
+                       "ts":  "2026-10-03T11:12:24.839Z",
+                       "type":  "alert",
+                       "alert_id":  109,
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "verdict WAIT_TRIGGER -\u003e WAIT_PROOF | zone daily_vah -\u003e vwap_band_+1 | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va"
+                   },
+                   {
+                       "ts":  "2026-10-03T11:15:24.630Z",
+                       "type":  "alert",
+                       "alert_id":  110,
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "verdict WAIT_TRIGGER -\u003e WAIT_PROOF | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va"
+                   },
+                   {
+                       "ts":  "2026-10-03T11:20:26.256Z",
+                       "type":  "alert",
+                       "alert_id":  111,
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "verdict":  "WATCH",
+                       "reason":  "verdict WAIT_TRIGGER -\u003e WAIT_PROOF | zone 5m_swing_low -\u003e 4h_vah | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va"
+                   },
+                   {
+                       "ts":  "2026-10-03T11:36:24.907Z",
+                       "type":  "alert",
+                       "alert_id":  112,
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_TRIGGER",
+                       "reason":  "verdict WAIT_PROOF -\u003e WATCH | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah"
+                   },
+                   {
+                       "ts":  "2026-10-03T12:00:24.279Z",
+                       "type":  "alert",
+                       "alert_id":  113,
+                       "setup":  "tc_long",
+                       "action":  "monitored",
+                       "verdict":  "SETUP_FORMING",
+                       "reason":  "verdict WAIT_PROOF -\u003e WAIT_TRIGGER | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah"
+                   },
+                   {
+                       "ts":  "2026-10-03T12:11:23.709Z",
+                       "type":  "alert",
+                       "alert_id":  114,
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "verdict":  "SETUP_FORMING",
+                       "reason":  "zone prior_day_close -\u003e vwap_band_+1 | proof 0 -\u003e 5"
+                   },
+                   {
+                       "ts":  "2026-10-03T13:57:28.610Z",
+                       "type":  "alert",
+                       "alert_id":  115,
+                       "setup":  "tc_long",
+                       "action":  "monitored",
+                       "verdict":  "SETUP_FORMING",
+                       "reason":  "proof 4 -\u003e 5"
+                   },
+                   {
+                       "ts":  "2026-10-03T14:05:24.664Z",
+                       "type":  "alert",
+                       "alert_id":  116,
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "proof 3 -\u003e 5"
+                   },
+                   {
+                       "ts":  "2026-10-03T14:09:24.907Z",
+                       "type":  "alert",
+                       "alert_id":  117,
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_TRIGGER",
+                       "reason":  "verdict WAIT_RR -\u003e WAIT_PROOF | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va"
+                   },
+                   {
+                       "ts":  "2026-10-03T14:20:25.077Z",
+                       "type":  "alert",
+                       "alert_id":  118,
+                       "setup":  "tc_long",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "verdict WAIT_PROOF -\u003e WAIT_TRIGGER | zone prior_day_close -\u003e 1h_swing_low | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah"
+                   },
+                   {
+                       "ts":  "2026-10-03T14:34:25.452Z",
+                       "type":  "alert",
+                       "alert_id":  119,
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "verdict WATCH -\u003e WAIT_PROOF | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah"
+                   },
+                   {
+                       "ts":  "2026-10-03T14:50:29.787Z",
+                       "type":  "alert",
+                       "alert_id":  120,
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_TRIGGER",
+                       "reason":  "verdict WATCH -\u003e WAIT_PROOF | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va"
+                   },
+                   {
+                       "ts":  "2026-10-03T15:10:26.034Z",
+                       "type":  "alert",
+                       "alert_id":  121,
+                       "setup":  "tc_long",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "verdict WAIT_PROOF -\u003e WAIT_TRIGGER | zone prior_day_close -\u003e 1h_swing_low | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah"
+                   },
+                   {
+                       "ts":  "2026-10-03T15:33:25.574Z",
+                       "type":  "alert",
+                       "alert_id":  122,
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "verdict":  "WATCH",
+                       "reason":  "verdict WATCH -\u003e WAIT_PROOF | zone 4h_val -\u003e vwap_band_+1 | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "B088 CLOSED, B089 CLOSED: one CLI session-id builder, cooldown sourced, picker sweeps BUGS-only OPEN ids. Commit 9b4a844. Session MTS-2026-10-03-1230Z-CLI-BLD-fix-b088-b089",
+                       "ts":  "2026-10-03T15:41:27.575297Z"
+                   },
+                   {
+                       "ts":  "2026-10-03T15:46:27.176Z",
+                       "type":  "alert",
+                       "alert_id":  123,
+                       "setup":  "tc_long",
+                       "action":  "monitored",
+                       "verdict":  "SETUP_FORMING",
+                       "reason":  "verdict WAIT_TRIGGER -\u003e WATCH | zone daily_vah -\u003e 15m_swing_high | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va"
+                   },
+                   {
+                       "ts":  "2026-10-03T16:04:25.300Z",
+                       "type":  "alert",
+                       "alert_id":  124,
+                       "setup":  "ct_long",
+                       "action":  "monitored",
+                       "verdict":  "SETUP_FORMING",
+                       "reason":  "proof 4 -\u003e 5"
+                   },
+                   {
+                       "ts":  "2026-10-03T16:22:24.392Z",
+                       "type":  "alert",
+                       "alert_id":  125,
+                       "setup":  "ct_short",
+                       "action":  "monitored",
+                       "verdict":  "WATCH",
+                       "reason":  "proof 3 -\u003e 5"
+                   },
+                   {
+                       "ts":  "2026-10-03T16:31:25.978Z",
+                       "type":  "alert",
+                       "alert_id":  126,
+                       "setup":  "tc_long",
+                       "action":  "monitored",
+                       "verdict":  "WAIT_PROOF",
+                       "reason":  "verdict WAIT_TRIGGER -\u003e WATCH | STATE TWOPEAK/above_vah -\u003e TWOPEAK/in_va"
+                   },
+                   {
+                       "ts":  "2026-10-03T16:47:25.632Z",
+                       "type":  "alert",
+                       "alert_id":  127,
+                       "setup":  "tc_long",
+                       "action":  "monitored",
+                       "verdict":  "SETUP_FORMING",
+                       "reason":  "verdict WATCH -\u003e WAIT_PROOF | STATE TWOPEAK/in_va -\u003e TWOPEAK/above_vah"
+                   },
+                   {
+                       "type":  "decision",
+                       "action":  "passed",
+                       "reason":  "Session close MTS-2026-10-12-DSA-COO-2 (parallel, NUC bridge): four DSA-lane desk rows closed. D11b Malkan FAILED (yt-dlp 2026.08.19 installed, still HTTP 429 on all 5 IDs; follow-up CLAUDE row 20261012-085022 filed and shipped). B162 qriptal FAILED (backtest row, BUILD_REPORT FAIL). c-drive-care FAILED (row from JIS-NB, this bridge on JIS-NUC). B171 TFI FAILED (backtest row, BUILD_REPORT FAIL). Commits: b64e247 dedupe of double-posted CLAUDE row, 488ceb9 CLAUDE follow-up, plus desk closes.",
+                       "ts":  "2026-10-12T09:40:00Z"
+                   }
+               ]
+}

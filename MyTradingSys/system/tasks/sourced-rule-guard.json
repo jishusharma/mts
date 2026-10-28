@@ -1,0 +1,75 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T10:45:57Z",
+    "misses": 45,
+    "reads": [],
+    "session": "agent-a14be74b477edd2cf"
+  },
+  "created": "2026-10-27T20:51:51Z",
+  "depends_on": [
+    "extraction-ledger-all-sources"
+  ],
+  "done_when": "check_sourced_params.py exits 0 on trunk over rsi, krown and kurisko params with an allowlist whose size is in the commit; each bad fixture fails; gate runs it in --quick; shipped; cherry empty.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "A test over backtest/layers/{rsi,krown,kurisko}/params/*.json that fails when a param lacks label SOURCED|OURS, when SOURCED has no quote or a source absent from the ledger, so a layer cannot silently ship a rule the trader never said. Today known gaps go to an ALLOWLIST with owner and expiry.",
+  "id": "sourced-rule-guard",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge origin/fast-track (wiring_registry: keep trunk, reapply div_flags_chart why)",
+      "ref": "4b9ed0dbd18c",
+      "utc": "2026-10-27T22:45:07Z"
+    }
+  ],
+  "layers": [
+    "rsi",
+    "krown"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-28 ACCEPT LAB:none CLASS:C1 REVIEWER:sonnet-agent WEIGHT:IMPORTANT. Sonnet medium.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T08:23:51Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tests/test_sourced_rule_guard.py",
+    "scripts/dev/check_sourced_params.py",
+    "scripts/dev/run_all_tests.py",
+    "MyTradingSys/backtest/layers/rsi/params",
+    "MyTradingSys/backtest/layers/krown/params",
+    "MyTradingSys/backtest/layers/kurisko/params"
+  ],
+  "scope_out": [
+    "changing param values",
+    "layer logic",
+    "silently fixing unlabelled params (they go to the allowlist)"
+  ],
+  "scope_sha": "4b9ed0dbd18c",
+  "size": "M",
+  "sources": [
+    "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable",
+    "CLAUDE.md Numbers rule 2026-10-13"
+  ],
+  "state": "ready",
+  "steps": [
+    "Write check_sourced_params.py: load every params JSON (shapes seen: krown {value,label,source}; rsi flat with *_quote keys); report missing label, SOURCED without quote, source not in EXTRACTION_LEDGER.csv.",
+    "Test fixtures: good, no label, SOURCED without quote, unknown source; plus a real-tree run against the allowlist of known gaps (count asserted).",
+    "Wire into the --quick gate list in run_all_tests.py; commit with Result: <N params checked, M allowlisted>."
+  ],
+  "tests": "MyTradingSys/tests/test_sourced_rule_guard.py: fails on the pre-change tree (script missing) and on the SOURCED-without-quote fixture.",
+  "title": "Guard: no layer param or rule ships without a SOURCED quote+file:line or an OURS label (CI test)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

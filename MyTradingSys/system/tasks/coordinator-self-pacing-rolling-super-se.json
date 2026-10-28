@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-27T19:11:25Z",
+  "commands": [],
+  "created": "2026-10-27T08:42:40Z",
+  "depends_on": [],
+  "done_when": "SUPER_SESSION.md gets a short 'Pacing checklist' section (reusing Rule 5's remaining-minutes/40 heuristic, no new script, no scheduler) that a coordinator runs on every wake: get_usage, and when the 5h window or its own turn/context budget is close to its limit, hand off live to a fresh coordinator (D5/D6) instead of idling or stopping. One worked example (2026-10-27 chain, NEXT_SESSION.md numbers) cited. turn_meter.py coordinator-distinction question resolved (the hook no longer exists) and noted in the result, not fixed in code.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator priority-1 request (2026-10-27, this session): coordinators should 'keep rolling' -- pace real dispatched work so a super-session chain uses up its usage window without a coordinator dying early (handing off while there is still budget and ready backlog) or overrunning (grinding turns with no real task once budget/backlog is spent). Keep it simple: no new scheduler, no new service -- extend the existing rule 12 heuristic and rule 5 hand-off into one explicit checklist in SUPER_SESSION.md.",
+  "id": "coordinator-self-pacing-rolling-super-se",
+  "kind": "build",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Context: operator asked this session (local_37a9ec3e) to 'exhaust the session' as a pacing test, then clarified the real ask is a standing MTS capability -- a rolling coordinator chain that self-paces to the usage window, simply. This session observed a real mismatch worth fixing as part of this card: turn_meter.py's generic single-task cap (CLAUDE.md step 5, ~10 operator/40 tool turns) fires on coordinator sessions too, even though SUPER_SESSION.md rule 9 says Sonnet/Haiku coordinators get a much larger context-based cap (4M/context tokens) and are meant to run for hours. Whoever refines this card should check whether turn_meter.py already distinguishes coordinator sessions, and if not, whether that belongs in this card or a separate one.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/system/SUPER_SESSION.md",
+    "MyTradingSys/system/SCHEDULING_POLICY.md",
+    "MyTradingSys/system/WORKERS.md"
+  ],
+  "result": "Added '## Pacing checklist (every wake)' to SUPER_SESSION.md (after Rules, before Mechanics): get_usage every wake; hand off LIVE to a fresh coordinator when the 5h window nears D6's 80% stop or context nears the ~200K D5 rotation point, reusing Rule 5's remaining-minutes/40 arithmetic as the hand-off trigger (no new formula, no scheduler). Cited worked example: 2026-10-27 DESKTOP-F7IU69N chain wound down at 94% of its 5h window (~1h6m left, weekly 40%, context ~12%), per NEXT_SESSION.md. Rule number note: the card's 'rule 9'/'rule 12'/'rule 5' citations are pre-2026-10-24-redesign numbers (file went 137->73 lines that day); mapped here to current Rule 5 (Spend the window), D5 (rotation) and D6 (stop conditions), and the Mechanics 'Turn caps' bullet. turn_meter.py check: it does NOT distinguish coordinator sessions because it (and model_guard.py) were removed from trunk entirely on 2026-10-24 (43d3bfc8f) and are absent from .claude/settings.json -- no hook enforces any turn/tool cap on any session today, so the mismatch the card worried about no longer exists as stated. Not fixed in code (out of scope, and nothing to fix: the file is gone). Doc tests pass: test_integrity.py (15), test_super_session_doc.py (7).",
+  "scope_in": [
+    "SUPER_SESSION.md checklist addition (pacing + hand-off decision on every wake)",
+    "clarify how rule 12's remaining-minutes/40 heuristic and rule 5's hand-off threshold compose into one decision"
+  ],
+  "scope_out": [
+    "any Windows scheduled task, cron trigger, ScheduleWakeup/CronCreate-based auto-chaining -- explicitly retired by SCHEDULING_POLICY.md 2026-10-17 and reaffirmed by the operator this session (chose 'manual chain' over 'real scheduler' when asked directly)",
+    "changing turn_meter.py's cap formula itself (note it, don't silently change a shared gate as a side effect of a docs card)"
+  ],
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "taken": "2026-10-27T19:11:25Z",
+  "steps": [
+    "Read NEXT_SESSION.md 'Rolling super-session chain hand-over 2026-10-27' section for the worked-example numbers (94% of 5h window, ~1h6m left, weekly 40%, context ~12%).",
+    "Map the card's stale pre-2026-10-24-redesign rule numbers (old rule 12 = remaining-minutes/40, old rule 5 = hand off to a fresh coordinator, old rule 9 = turn/context budget) onto the current SUPER_SESSION.md structure: Rule 5 'Spend the window', D5 rotation / D6 stop-and-hand-over, and the Mechanics 'Turn caps' bullet.",
+    "Add a new '## Pacing checklist (every wake)' section to SUPER_SESSION.md: get_usage every wake, hand off live to a fresh coordinator (D5/D6) when the 5h window nears D6's 80% stop or context nears the ~200K D5 rotation point, reusing Rule 5's remaining-minutes/40 arithmetic as the hand-off trigger (no new formula), citing the 2026-10-27 chain as the worked example.",
+    "Check whether turn_meter.py distinguishes coordinator sessions: it does not, because turn_meter.py (and model_guard.py) were removed from trunk entirely on 2026-10-24 (43d3bfc8f) and are absent from .claude/settings.json; no hook enforces any turn/tool cap on any session today, so the card's worried-about mismatch no longer applies as stated. Noted in commit body and card result; turn_meter.py's cap formula is not touched (does not exist to touch)."
+  ],
+  "tests": "",
+  "title": "Coordinator self-pacing: rolling super-session chain exhausts the usage window without dying early or overrunning",
+  "weight": "",
+  "worker": "agent"
+}

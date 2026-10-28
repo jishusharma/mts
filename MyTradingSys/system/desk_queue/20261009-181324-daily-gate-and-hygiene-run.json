@@ -1,0 +1,15 @@
+{
+  "done_when": "Report lists pass/fail per gate step verbatim, STATUS regenerated, unshipped-worktree list, declutter dry-run counts",
+  "finished": "2026-10-10T11:13:24Z",
+  "from": "JIS-NUC",
+  "host": "JIS-NUC",
+  "id": "20261009-181324-daily-gate-and-hygiene-run",
+  "need": "In mts-dsa: python scripts/dev/sync.py start; python scripts/dev/run_all_tests.py --quick (split by step if a call nears 300 s, write output to scratch file and read tail ranges); python scripts/dev/make_status.py; python scripts/dev/sync.py where; python scripts/dev/declutter_backups.py (dry run only, report counts).",
+  "posted": "2026-10-09T18:13:24Z",
+  "result": "Gate --quick ALL TESTS PASSED (Steps 1,2,3,3b-3xt,3ad,3hy,3pc,3cr,3bk,3lm,3w,3x,4,5b,5c PASS; 5 Maven, 6 Backtest SKIP). STATUS.md regenerated 2026-10-10 16:25:59 (branch jisnb/dsa, head ce6e2bc). sync.py where: 2 unshipped worktrees - BinanceDataFeed [fast-track] commits=1 modified=1 untracked=3; mts-dsa [jisnb/dsa] commits=0 modified=1 untracked=1. declutter_backups dry run: superseded=1 staged=0 unknown=0 pycache=24. Fast-forwarded mts-dsa 64a8093->ce6e2bc (50 files) before gate.",
+  "status": "done",
+  "taken": "2026-10-09T21:37:24Z",
+  "taken_by": "JIS-NUC",
+  "target": "DSA",
+  "title": "Daily gate and hygiene run"
+}

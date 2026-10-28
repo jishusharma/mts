@@ -1,0 +1,15 @@
+{
+  "done_when": "State, last run time and the registering script/doc line printed and in the desk result",
+  "finished": "2026-10-11T15:59:01Z",
+  "from": "JIS-NB",
+  "host": "JIS-NUC",
+  "id": "20261011-154817-nuc-is-mts-nuc-worker-disabled-on-purpos",
+  "need": "On JIS-NUC: Get-ScheduledTask MTS-NUC-Worker | fl TaskName,State ; Get-ScheduledTaskInfo MTS-NUC-Worker ; grep the repo for MTS-NUC-Worker (scripts, MyTradingSys/system docs) and quote what registered it and why. Do NOT enable it. Close with the three outputs.",
+  "posted": "2026-10-11T15:48:17Z",
+  "result": "State Disabled. TaskInfo: LastRunTime 2026-10-06 10:25:55, LastTaskResult 4294967295 (never completed), NextRunTime none. Registered by scripts\\worker\\setup-nuc.ps1 step 5 (Register-ScheduledTask -Force then Start-ScheduledTask; script sets Enabled by default, so Disabled was a later manual/session action, not the script). Doc: DEVICES.md 182-184 lists MTS-NUC-Worker under 'Old Qwen worker files'; T049_nuc_worker_v2.md is the design; DEVICES.md 34 'Qwen lane ended 2026-10-01' and models deleted 2026-10-06 (ollama list empty). Disabled date (10-06) matches the model-deletion day. Intended, left disabled.",
+  "status": "done",
+  "taken": "2026-10-11T15:57:34Z",
+  "taken_by": "JIS-NUC",
+  "target": "DSA-NUC",
+  "title": "NUC: is MTS-NUC-Worker Disabled on purpose? report"
+}

@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T09:04:14Z",
+  "commands": [],
+  "created": "2026-10-17T03:54:24Z",
+  "depends_on": [
+    "wavetrend-prereg-counts",
+    "wavetrend-observation-module"
+  ],
+  "done_when": "RESULT.md with all frozen cells, controls and MDE; verdicts row appended; VALIDATION/HOLDOUT read count still zero.",
+  "est_turns": 30,
+  "from_inbox": "",
+  "goal": "Run the single pre-registered DEV atlas: gross conditional outcomes per frozen cell with random-clock and context-only control arms.",
+  "id": "wavetrend-dev-atlas",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "RESULT.md: 9 frozen cells, 0 pass gross DEV (Holm m=9 all adj p=1.0, best W08 +10.3bps z=0",
+      "ref": "b1e2fb0a",
+      "utc": "2026-10-17T09:04:14Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "Outcome definitions and arms: ATLAS_STUDY_SPEC.md s4-5. backlog-refine-1017: added est_turns/worker (card failed the Ready gate on those fields only).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T08:58:04Z",
+  "refs": [],
+  "result": "RESULT.md: 9 frozen cells, 0 pass gross DEV (Holm m=9 all adj p=1.0, best W08 +10.3bps z=0.61); VALIDATION/HOLDOUT reads 0",
+  "scope_in": [
+    "Cells, outcomes, controls and Holm exactly as in PRE_REG.md",
+    "Report N, episodes, rate with CI, MFE/MAE, response time, gross only; trial ledger rows"
+  ],
+  "scope_out": [
+    "VALIDATION and HOLDOUT; fees and strategies (later gate); changing cells after seeing results"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/wavetrend_2026-10-17/ATLAS_STUDY_SPEC.md",
+    "MyTradingSys/research/wavetrend_2026-10-17/CLAUDE_VERIFY.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Read PRE_REG.md; confirm it was committed before this run.",
+    "Run the study once on DEV with the observation module; log DEV exposure.",
+    "Write RESULT.md with every cell incl. empty/underpowered; verdicts.py row and TRIALS entries.",
+    "State per cell: passes gross DEV or not, MDE honest."
+  ],
+  "tests": "Study script test: a cell not in PRE_REG raises; control arm present; fails on pre-change code (script absent).",
+  "title": "WaveTrend DEV atlas run per PRE_REG",
+  "worker": "session"
+}

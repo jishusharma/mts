@@ -1,0 +1,13 @@
+{
+  "done_when": "Claude pickup is recorded and the drawing contract task has delivered bounded detector/observation/study cards or a precise owned dependency.",
+  "finished": "2026-10-18T16:17:21Z",
+  "from": "JIS-NUC",
+  "host": "JIS-NUC",
+  "id": "20261016-214517-operator-priority-claude-trend-line-draw",
+  "need": "Operator explicitly requests priority work and Claude delivery. Read MyTradingSys/research/trendlines_2026-10-17/CLAUDE_HANDOFF.md and REPORT.md. Take ready priority-1 SONNET card trendline-priority-drawing-contract. Start with reproducible drawing/causal anchors, reuse Krown KR-S10/S11, specify BTC touch/break/retest context studies and daily prospective chart observation. Daily source channel starts with Krown and accessible original TradingView BTC posts, pending operator additions. Record access gaps; no visual-angle, viral-chart or profitability assumptions. Reconcile existing Krown tasks before duplicate builds. Republish the Control Room with this work when picked up.",
+  "posted": "2026-10-16T21:45:17Z",
+  "result": "Pipeliner drain 2026-10-18: done: 43e8adaa TRENDLINE_CONTRACT.md (card trendline-contract-spec done); 2164b622 replaced trendline-priority-drawing-contract with trendline-causal-module, -count-only, -g3-marks-pack (all done)",
+  "status": "done",
+  "target": "JIS-NB",
+  "title": "Operator priority: Claude trend-line drawing and BTC context study"
+}

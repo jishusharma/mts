@@ -1,0 +1,44 @@
+import json, collections, datetime, re
+from pathlib import Path
+root=Path.home()/".claude"/"projects"
+since=datetime.datetime(2026,10,19).timestamp()
+files=[f for f in root.glob("*/*.jsonl") if f.stat().st_mtime>=since and "scratch-2026-10-22" not in str(f)]
+ts=lambda s: datetime.datetime.fromisoformat(s.replace("Z","+00:00")).timestamp()
+cat=collections.defaultdict(lambda:[0,0.0])
+init=[]
+ss_long=[]
+for f in files:
+    uses={}
+    for line in f.open(encoding="utf-8",errors="ignore"):
+        try:e=json.loads(line)
+        except:continue
+        t=e.get("timestamp"); tt=ts(t) if t else None
+        c=(e.get("message") or {}).get("content")
+        if e.get("type")=="assistant" and isinstance(c,list):
+            for b in c:
+                if b.get("type")=="tool_use":
+                    uses[b["id"]]=(b["name"],tt,b.get("input") or {})
+                    if b["name"].endswith("start_session"):
+                        init.append((t[:16],(b.get("input") or {}).get("initiation"),f.name[:8]))
+        elif e.get("type")=="user" and isinstance(c,list):
+            for b in c:
+                if b.get("type")=="tool_result" and b.get("tool_use_id") in uses:
+                    nm,t0,inp=uses.pop(b["tool_use_id"]); d=(tt-t0) if tt and t0 else 0
+                    if nm=="Bash":
+                        cmd=inp.get("command","")
+                        if "sync.py ship" in cmd or "sync.py\" ship" in cmd: k="ship"
+                        elif "run_all_tests" in cmd or "pytest" in cmd: k="tests"
+                        elif re.search(r"\b(sleep|until|wait|tail -f|Monitor)\b",cmd): k="sleep/wait"
+                        elif "git " in cmd: k="git"
+                        else: k="other bash"
+                        cat[k][0]+=1; cat[k][1]+=d
+                    if nm.endswith("start_session") and d>120:
+                        txt=json.dumps(b.get("content"))[:200]
+                        ss_long.append((round(d/60,1),inp.get("initiation"),t0 and datetime.datetime.fromtimestamp(t0).strftime("%m-%d %H:%M"),txt))
+print("Bash by kind: count, total min"); 
+for k,(n,s) in sorted(cat.items(),key=lambda x:-x[1][1]): print(f"  {k:12} {n:5} {s/60:8.1f}")
+print("\nstart_session by date/initiation:")
+c=collections.Counter((d[0][:10],d[1]) for d in init)
+for k in sorted(c,key=lambda x:(x[0],str(x[1]))): print(" ",k,c[k])
+print("\nstart_session calls that blocked >2min:")
+for x in ss_long: print(" ",x)

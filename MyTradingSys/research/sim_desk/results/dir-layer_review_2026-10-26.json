@@ -1,0 +1,59 @@
+{
+ "id": "dir-layer_review_2026-10-26",
+ "kind": "audit",
+ "family": "Layer Review",
+ "title": "Per-layer review: 13 families (Fable, 2026-10-26; corrected 2026-10-27)",
+ "provenance": "source-extracted",
+ "date": "2026-10-26",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-04-01 to 2024-06-30 (as written in the source)",
+ "verdict": {
+  "label": "against the rubric: proven / promising / NOT ENOUGH DATA, with the",
+  "tone": "warn"
+ },
+ "why": [
+  "95% range where the desk computed one. Rubric verdict words are PASSED/FAILED/NOT ENOUGH DATA;",
+  "\"FAILED\" below is the h-field shorthand for a rubric FAILED.",
+  "(PLUGIN.md \"Tom DAX: Does not fit\"). Only 4 TOM-sourced daily level families are routed via",
+  "(h) FAILED - net -0.30 R, holdout -0.32 R n=254, both fee-net, at-or-below-zero gross; the"
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "254"
+  },
+  {
+   "label": "net R after fees (first value in the source)",
+   "value": "-0.1038",
+   "tone": "bad"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 254,
+   "quote": "2026-10-26): net -0.30 R [95% -0.34..-0.25], holdout -0.32 R [-0.46..-0.18] n=254, gross"
+  },
+  {
+   "field": "net_r",
+   "value": -0.1038,
+   "quote": "- (c) FABIO-V3 OOS FAIL: 79 trades, mean -0.1038 R, only model C evaluable (fee-net, OOS);"
+  }
+ ],
+ "missing": {
+  "parameters": "no rule or parameter section found in the source",
+  "n_trades": "not a trade test (audit)"
+ },
+ "source_files": [
+  "MyTradingSys/research/layer_review_2026-10-26/PER_LAYER_REVIEW.md"
+ ],
+ "commit": "0d001e179"
+}

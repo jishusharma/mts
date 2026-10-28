@@ -1,0 +1,277 @@
+{
+  "$schema": "local",
+  "version": "1.0.0",
+  "purpose": "Screenshot extraction output. Worker writes one file per image. Main session reads and reconciles against DSA snapshot. Field names follow VVP-002 sections; no invented field names.",
+  "canonical_by": "MyTradingSys/research/_archive/loose_2026-10/visual_validation_protocol_vvp002.md",
+  "file_naming": "runtime_data/screenshot_extracts/{SYMBOL}_{TF}_{YYYYMMDDTHHMMSSZ}.json",
+  "required": [
+    "version",
+    "source_image",
+    "captured_utc",
+    "symbol",
+    "timeframe",
+    "extractor",
+    "chart_values",
+    "flags"
+  ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "source_image": {
+      "type": "string",
+      "desc": "original filename or pasted blob name"
+    },
+    "captured_utc": {
+      "type": "string",
+      "desc": "ISO8601 UTC; when the screenshot was taken"
+    },
+    "symbol": {
+      "type": "string",
+      "example": "BTCUSDT"
+    },
+    "timeframe": {
+      "type": "string",
+      "desc": "VVP-001 3.2; label as shown on chart, not inferred",
+      "example": "1m"
+    },
+    "extractor": {
+      "type": "string",
+      "desc": "worker id / model tag"
+    },
+    "vvp002_sections_used": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "desc": "e.g. F.1,F.2,F.3,F.4",
+      "source": "VVP-002 6"
+    },
+    "chart_values": {
+      "type": "object",
+      "desc": "Values directly observable. Null if panel absent. Never infer.",
+      "properties": {
+        "price": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "vwap_price": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "source": "VVP-001 4 Tier 1"
+        },
+        "vwap_slope": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "rising",
+            "falling",
+            "flat",
+            null
+          ]
+        },
+        "cvd_value": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "source": "VVP-001 4 Tier 1"
+        },
+        "cvd_slope": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "rising",
+            "falling",
+            "flat",
+            null
+          ]
+        },
+        "net_delta": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "source": "VVP-001 4 Tier 1"
+        },
+        "open_interest": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "source": "VVP-001 4 Tier 2"
+        },
+        "oi_direction": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "rising",
+            "falling",
+            "flat",
+            null
+          ]
+        }
+      }
+    },
+    "profile": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "desc": "VVP-001 4 Tier 1. Null if VP Fixed Range panel not present.",
+      "properties": {
+        "poc": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "vah": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "val": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "shape": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "B",
+            "P",
+            "D",
+            "thin",
+            null
+          ]
+        }
+      }
+    },
+    "footprint": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "desc": "VVP-002 Section C. Null if footprint panel absent.",
+      "properties": {
+        "absorption_detected": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "exhaustion_detected": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "heatmap": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "desc": "VVP-002 Section B. Context only, never a trigger.",
+      "properties": {
+        "cluster_nearest_above": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "cluster_nearest_below": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "density": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "thick",
+            "medium",
+            "thin",
+            null
+          ]
+        },
+        "thin_zones": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "flags": {
+      "type": "object",
+      "desc": "VVP-002 Section G. Exact tag names.",
+      "properties": {
+        "missing_tier1": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "desc": "VVP-001 7 gate failures"
+        },
+        "visual_cannot_confirm": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "desc": "field paths; tag VISUAL-CANNOT-CONFIRM"
+        },
+        "visual_contradicts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "desc": "field paths; tag VISUAL-CONTRADICTS"
+        },
+        "scope_mismatch": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "desc": "field paths; tag SCOPE-MISMATCH"
+        }
+      }
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T16:37:08Z",
+    "misses": 18,
+    "reads": [
+      "scripts/dev/wt_maint.py",
+      "scripts/dev/test_wt_maint.py",
+      "scripts/dev/test_supervisor.py",
+      "scripts/dev/c_drive_guard.py"
+    ],
+    "session": "agent-a5ac4e56b594eadf4"
+  },
+  "created": "2026-10-28T13:18:58Z",
+  "depends_on": [],
+  "done_when": "A new test in scripts/dev/test_c_drive_guard.py fails on current code and passes after the fix; a real c_drive_guard.py --apply run afterward frees materially more than 0.66 GB (the worktree GB named in the layout note); shipped; cherry empty.",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fix c_drive_guard.py so a guard run frees the GB already identified as safe (stale worktrees ~4 GB via wt_maint.py tidy), not just 0.66 GB. Chrome cache/profile (5 GB) and the C+F partition merge past the Recovery partition stay out of scope: different owners (DISK_CARE.md; manual Disk Management).",
+  "id": "c-drive-guard-frees-only-0-66-gb-c-stays",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "dedupe batch 4: remove dead run_step, explicit_role, clean_prompt, sync_script; pilot-3 no",
+      "ref": "e62bb1eb632c",
+      "utc": "2026-10-28T11:44:41Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "ab3aac3251d3 disk care: C: drive report/safe-clean script, weekly task, DISK_CARE.md",
+      "ref": "MyTradingSys/system/DISK_CARE.md",
+      "utc": "2026-10-10T09:59:38Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "LAYOUT (SOURCED Get-Partition 2026-10-28): Disk1 Kingston SSD 224 GB = C 121.3 GB, then a 0.6 GB Recovery partition at 122.0, then F 101 GB; D is a separate 932 GB HDD (WHEA errors per DISK_CARE.md). Merge C+F = copy F off (about 54 GB used), delete F and the Recovery partition, extend C; Disk Management cannot do it past the Recovery partition. Existing plan on trunk: DISK_CARE.md (vm_bundles junction to F, weekly MTS-CDriveCare). Quick wins: pagefile 9 GB to F, Chrome cache, IdeaProjects/.claude junction to F with all sessions closed.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T15:00:15Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/c_drive_guard.py",
+    "scripts/dev/wt_maint.py",
+    "scripts/dev/test_c_drive_guard.py",
+    "MyTradingSys/system/DISK_CARE.md"
+  ],
+  "scope_out": [
+    "Chrome cache/profile cleanup (DISK_CARE.md c_drive_care.ps1 owns it)",
+    "C: Recovery-partition merge with F: (manual Disk Management, operator-only, destructive)",
+    "pagefile relocation; vm_bundles move; any new scheduled task"
+  ],
+  "scope_sha": "e62bb1eb632c",
+  "size": "M",
+  "sources": [
+    "card note (SOURCED Get-Partition 2026-10-28 layout)",
+    "MyTradingSys/system/DISK_CARE.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Reproduce: run python scripts/dev/c_drive_guard.py plan and python scripts/dev/wt_maint.py (dry run) from the current main checkout; compare what each lists as prunable against the 2026-10-28 layout note (worktrees about 4 GB) and the guard's actual --apply result (0.66 GB freed).",
+    "Leading hypothesis to check first: c_drive_guard's logon-installed run (install()/logon_command()/main_checkout_note()) may point at a stale primary checkout left by a host move (host-move-mirror/ps1/super cards, STALE 166h), so its wt_maint.py call runs against the wrong tree; confirm with python scripts/dev/c_drive_guard.py status --check.",
+    "Write a failing test in test_c_drive_guard.py that reproduces whatever gap step 1-2 finds (stale-checkout install, or a candidates()/plan() miss), then fix it.",
+    "Ship with sync.py ship --release; Result: line with GB before/after a real --apply run."
+  ],
+  "tests": "new test in scripts/dev/test_c_drive_guard.py for the gap found in steps 1-2 (e.g. logon run resolving a stale vs current checkout); fails on current code first",
+  "title": "c_drive_guard frees only 0.66 GB: C: stays at 10 GB (worktrees 4 GB, Chrome profile 5 GB, logon task runs the stale main checkout)",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

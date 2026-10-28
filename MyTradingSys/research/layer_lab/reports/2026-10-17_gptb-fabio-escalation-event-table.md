@@ -1,0 +1,12 @@
+# Fabio escalation/absorption 1h event table
+
+**Result:** DEV 1h 652 escalation events (FAB-003 breakouts after a FAB-002 absorption); 649 OK, 3 NOT_IN_DATA; mean gross MFE 4.6065R / MAE 3.9069R over 24 bars (long n=333: 5.3973R / 4.0273R; short n=316: 3.7731R / 3.7800R). Descriptive gross excursion data, not an edge claim.
+
+## Built
+
+- `event_table.py` calls the read-only `escalation_events` (`MyTradingSys/backtest/layers/fabio/fabio_escalation.py`) at module defaults (left 2, right 2, use_body True, level_tolerance 0.001, aggression_k 2.0, record_lookback 20; all OURS) on DEV 1h bars with delta = 2*tbv - v. One row per event; side = the event's breakout direction; entry = open of the bar after the event bar; R = ATR14 (plain SMA of true range) of bars closed at that open; forward MFE/MAE over 24 bars (OURS) starting with the entry bar through `forward_excursion` (read only). ATR window, entry link or forward window with a gap or fewer than 24 bars = `NOT_IN_DATA`.
+- The NPZ reader slices `[2022-01-01, 2024-07-01)` before building bars; no later bars were read. Source: `F:/MTS/data/bigtrade/cache/perp/klines_1h.npz`. `assert_dev` runs on the output rows.
+- `test_event_table.py` (hand-computed ATR/MFE/MAE): long and mirrored short row, delta under k*average gives none, absorption before `confirmed_i` unused, later bars do not change the event, entry is next bar open, gap / short forward window = NOT_IN_DATA, pre-DEV bars dropped. Written first: failed at collection (`event_table.py` missing); after implementation `python -m pytest MyTradingSys/research/layer_lab/fabio_escalation_event_table/test_event_table.py -q -p no:cacheprovider` -> **8 passed**.
+- DEV run: `python MyTradingSys/research/layer_lab/fabio_escalation_event_table/event_table.py` -> `bars=21888 rows=652 OK=649 NOT_IN_DATA=3` (no CSV written). `python scripts/dev/lookahead_lint.py --new`: no hits in the new files.
+- Registered in `scripts/dev/run_extra_tests.py` and `MyTradingSys/system/wiring_registry.json`; trial row in `MyTradingSys/research/layer_lab/TRIALS.md`. No live path or rule changed. VALIDATION and HOLDOUT were not read.
+- Defaults logged: the module scans the whole DEV list, so swings/delta averages span any data gap (only the ATR and forward windows are gap-checked); the event dict has no tie to the entry price, so the next bar's open is used even when the event bar closes far from it.

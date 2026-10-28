@@ -1,0 +1,892 @@
+[
+ {
+  "harness": "bt_engine.simulate_trade",
+  "canary": "a_zero_drift",
+  "n": 83,
+  "expected": -0.018655228332512153,
+  "got": -0.018655228332512933,
+  "max_abs_diff": 1.099120794378905e-14,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "tom_bt.sim_limit_trade",
+  "canary": "a_zero_drift",
+  "n": 83,
+  "expected": -0.018655228332512153,
+  "got": -0.018655228332512933,
+  "max_abs_diff": 1.099120794378905e-14,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "run_t055.score_trades",
+  "canary": "a_zero_drift",
+  "n": 83,
+  "expected": -0.018655228332512153,
+  "got": -0.01865522833251293,
+  "max_abs_diff": 1.099120794378905e-14,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "screen.compute_cells",
+  "canary": "a_zero_drift",
+  "n": 83,
+  "expected": -0.018655228332512153,
+  "got": -0.018655228332512153,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "chart_read_g5.trade_gross",
+  "canary": "a_zero_drift",
+  "n": 83,
+  "expected": -0.018655228332512153,
+  "got": -0.018655228332512153,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "orderflow_views.trade (fw60)",
+  "canary": "a_zero_drift",
+  "n": 83,
+  "expected": -0.018655228332512153,
+  "got": -0.018655228332512153,
+  "max_abs_diff": 2.7755575615628914e-17,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "levels_sizing.run (day_end)",
+  "canary": "a_zero_drift",
+  "n": 83,
+  "expected": -0.018655228332512153,
+  "got": -0.018655228332512153,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "zero-edge sanity",
+  "canary": "a_zero_drift",
+  "n": 1,
+  "expected": 0.0,
+  "got": -0.018655228332512153,
+  "max_abs_diff": 0.018655228332512153,
+  "status": "PASS",
+  "note": "seed 20261018; planted market has mean(exp)=0 within 3 SE of the walk"
+ },
+ {
+  "harness": "bt_engine.simulate_trade",
+  "canary": "b_planted_0.30",
+  "n": 83,
+  "expected": 0.29999999999999466,
+  "got": 0.29999999999998994,
+  "max_abs_diff": 6.217248937900877e-15,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "tom_bt.sim_limit_trade",
+  "canary": "b_planted_0.30",
+  "n": 83,
+  "expected": 0.29999999999999466,
+  "got": 0.29999999999998994,
+  "max_abs_diff": 6.217248937900877e-15,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "run_t055.score_trades",
+  "canary": "b_planted_0.30",
+  "n": 83,
+  "expected": 0.29999999999999466,
+  "got": 0.29999999999998994,
+  "max_abs_diff": 6.217248937900877e-15,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "screen.compute_cells",
+  "canary": "b_planted_0.30",
+  "n": 83,
+  "expected": 0.29999999999999466,
+  "got": 0.29999999999999466,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "chart_read_g5.trade_gross",
+  "canary": "b_planted_0.30",
+  "n": 83,
+  "expected": 0.29999999999999466,
+  "got": 0.29999999999999466,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "orderflow_views.trade (fw60)",
+  "canary": "b_planted_0.30",
+  "n": 83,
+  "expected": 0.29999999999999466,
+  "got": 0.29999999999999466,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "levels_sizing.run (day_end)",
+  "canary": "b_planted_0.30",
+  "n": 83,
+  "expected": 0.29999999999999466,
+  "got": 0.29999999999999466,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "bt_engine.simulate_trade",
+  "canary": "c_move_inside_signal_bar",
+  "n": 83,
+  "expected": 0.0,
+  "got": 0.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "tom_bt.sim_limit_trade",
+  "canary": "c_move_inside_signal_bar",
+  "n": 83,
+  "expected": 0.0,
+  "got": 0.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "run_t055.score_trades",
+  "canary": "c_move_inside_signal_bar",
+  "n": 83,
+  "expected": 0.0,
+  "got": 0.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "screen.compute_cells",
+  "canary": "c_move_inside_signal_bar",
+  "n": 83,
+  "expected": 0.0,
+  "got": 0.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "chart_read_g5.trade_gross",
+  "canary": "c_move_inside_signal_bar",
+  "n": 83,
+  "expected": 0.0,
+  "got": 0.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "orderflow_views.trade (fw60)",
+  "canary": "c_move_inside_signal_bar",
+  "n": 83,
+  "expected": 0.0,
+  "got": 0.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "levels_sizing.run (day_end)",
+  "canary": "c_move_inside_signal_bar",
+  "n": 83,
+  "expected": 0.0,
+  "got": 0.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "bt_engine.simulate_trade",
+  "canary": "d_move_after_exit",
+  "n": 83,
+  "expected": 0.0,
+  "got": 0.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "tom_bt.sim_limit_trade",
+  "canary": "d_move_after_exit",
+  "n": 83,
+  "expected": 0.0,
+  "got": 0.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "run_t055.score_trades",
+  "canary": "d_move_after_exit",
+  "n": 83,
+  "expected": 0.0,
+  "got": 0.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "screen.compute_cells",
+  "canary": "d_move_after_exit",
+  "n": 83,
+  "expected": 0.0,
+  "got": 0.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "chart_read_g5.trade_gross",
+  "canary": "d_move_after_exit",
+  "n": 83,
+  "expected": 0.0,
+  "got": 0.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "orderflow_views.trade (fw60)",
+  "canary": "d_move_after_exit",
+  "n": 83,
+  "expected": 0.0,
+  "got": 0.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "levels_sizing.run (day_end)",
+  "canary": "d_move_after_exit",
+  "n": 83,
+  "expected": 0.0,
+  "got": 0.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "bt_engine.simulate_trade",
+  "canary": "b_net_fees_taker_both_legs",
+  "n": 83,
+  "expected": 0.19999819277108438,
+  "got": 0.19999819277107433,
+  "max_abs_diff": 1.7069679003611782e-14,
+  "status": "PASS",
+  "note": "expected = 0.30 - 0.05 - 0.05*pout/pin (pct)"
+ },
+ {
+  "harness": "tom_bt.sim_limit_trade",
+  "canary": "b_net_fees_maker_in_taker_out",
+  "n": 83,
+  "expected": 0.24999819277108432,
+  "got": 0.24999819277107435,
+  "max_abs_diff": 1.7014167852380524e-14,
+  "status": "PASS",
+  "note": "Deribit maker 0 / taker 0.05"
+ },
+ {
+  "harness": "run_t055.score_trades",
+  "canary": "b_net_cost_model",
+  "n": 83,
+  "expected": 0.0017999999999999997,
+  "got": 0.0017999999999998993,
+  "max_abs_diff": 1.706534219492184e-16,
+  "status": "PASS",
+  "note": "net = gross - 0.0010 - 0.0002 (FORMULAS 13); fraction"
+ },
+ {
+  "harness": "bt_engine.simulate_trade",
+  "canary": "e_funding_interior_rate+0.0001",
+  "n": 83,
+  "expected": 0.00012048192771084338,
+  "got": 0.00012048192771084338,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "bt_engine.simulate_trade (funding=None)",
+  "canary": "e_funding_interior_rate+0.0001",
+  "n": 83,
+  "expected": 0.00012048192771084338,
+  "got": 0.0,
+  "max_abs_diff": 0.01,
+  "status": "FAIL",
+  "note": "L5: None means 0 with no error"
+ },
+ {
+  "harness": "trade_costs.funding_paid",
+  "canary": "e_funding_interior_rate+0.0001",
+  "n": 83,
+  "expected": 0.00012048192771084338,
+  "got": 0.00012048192771084338,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "run_t055.score_trades",
+  "canary": "e_funding_interior_rate+0.0001",
+  "n": 83,
+  "expected": 0.00012048192771084338,
+  "got": 0.00012048192771084344,
+  "max_abs_diff": 5.204170427930421e-18,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "screen.compute_cells FUND",
+  "canary": "e_funding_interior_rate+0.0001",
+  "n": 83,
+  "expected": 0.00012048192771084338,
+  "got": 0.01,
+  "max_abs_diff": 0.02,
+  "status": "FAIL",
+  "note": "flat 1 bp per crossing, blind to side and rate (L1)"
+ },
+ {
+  "harness": "chart_read_g5.funding_pct",
+  "canary": "e_funding_interior_rate+0.0001",
+  "n": 83,
+  "expected": 0.00012048192771084338,
+  "got": 0.01,
+  "max_abs_diff": 0.02,
+  "status": "FAIL",
+  "note": "flat 1 bp per crossing, blind to side and rate (L1)"
+ },
+ {
+  "harness": "bt_engine.simulate_trade",
+  "canary": "e_funding_interior_rate-0.0001",
+  "n": 83,
+  "expected": -0.00012048192771084338,
+  "got": -0.00012048192771084338,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "bt_engine.simulate_trade (funding=None)",
+  "canary": "e_funding_interior_rate-0.0001",
+  "n": 83,
+  "expected": -0.00012048192771084338,
+  "got": 0.0,
+  "max_abs_diff": 0.01,
+  "status": "FAIL",
+  "note": "L5: None means 0 with no error"
+ },
+ {
+  "harness": "trade_costs.funding_paid",
+  "canary": "e_funding_interior_rate-0.0001",
+  "n": 83,
+  "expected": -0.00012048192771084338,
+  "got": -0.00012048192771084338,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "run_t055.score_trades",
+  "canary": "e_funding_interior_rate-0.0001",
+  "n": 83,
+  "expected": -0.00012048192771084338,
+  "got": -0.00012048192771084344,
+  "max_abs_diff": 5.204170427930421e-18,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "screen.compute_cells FUND",
+  "canary": "e_funding_interior_rate-0.0001",
+  "n": 83,
+  "expected": -0.00012048192771084338,
+  "got": 0.01,
+  "max_abs_diff": 0.02,
+  "status": "FAIL",
+  "note": "flat 1 bp per crossing, blind to side and rate (L1)"
+ },
+ {
+  "harness": "chart_read_g5.funding_pct",
+  "canary": "e_funding_interior_rate-0.0001",
+  "n": 83,
+  "expected": -0.00012048192771084338,
+  "got": 0.01,
+  "max_abs_diff": 0.02,
+  "status": "FAIL",
+  "note": "flat 1 bp per crossing, blind to side and rate (L1)"
+ },
+ {
+  "harness": "bt_engine.simulate_trade",
+  "canary": "e_funding_entry_on_rate+0.0001",
+  "n": 83,
+  "expected": 0.0,
+  "got": 0.00012048192771084338,
+  "max_abs_diff": 0.01,
+  "status": "FAIL",
+  "note": ""
+ },
+ {
+  "harness": "trade_costs.funding_paid",
+  "canary": "e_funding_entry_on_rate+0.0001",
+  "n": 83,
+  "expected": 0.0,
+  "got": 0.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "run_t055.score_trades",
+  "canary": "e_funding_entry_on_rate+0.0001",
+  "n": 83,
+  "expected": 0.0,
+  "got": 0.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "screen.compute_cells FUND",
+  "canary": "e_funding_entry_on_rate+0.0001",
+  "n": 83,
+  "expected": 0.0,
+  "got": 0.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": "flat 1 bp per crossing, blind to side and rate (L1)"
+ },
+ {
+  "harness": "chart_read_g5.funding_pct",
+  "canary": "e_funding_entry_on_rate+0.0001",
+  "n": 83,
+  "expected": 0.0,
+  "got": 0.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": "flat 1 bp per crossing, blind to side and rate (L1)"
+ },
+ {
+  "harness": "bt_engine.simulate_trade",
+  "canary": "e_funding_entry_on_rate-0.0001",
+  "n": 83,
+  "expected": 0.0,
+  "got": -0.00012048192771084338,
+  "max_abs_diff": 0.01,
+  "status": "FAIL",
+  "note": ""
+ },
+ {
+  "harness": "trade_costs.funding_paid",
+  "canary": "e_funding_entry_on_rate-0.0001",
+  "n": 83,
+  "expected": 0.0,
+  "got": 0.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "run_t055.score_trades",
+  "canary": "e_funding_entry_on_rate-0.0001",
+  "n": 83,
+  "expected": 0.0,
+  "got": 0.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "screen.compute_cells FUND",
+  "canary": "e_funding_entry_on_rate-0.0001",
+  "n": 83,
+  "expected": 0.0,
+  "got": 0.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": "flat 1 bp per crossing, blind to side and rate (L1)"
+ },
+ {
+  "harness": "chart_read_g5.funding_pct",
+  "canary": "e_funding_entry_on_rate-0.0001",
+  "n": 83,
+  "expected": 0.0,
+  "got": 0.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": "flat 1 bp per crossing, blind to side and rate (L1)"
+ },
+ {
+  "harness": "bt_engine.simulate_trade",
+  "canary": "e_funding_exit_on_rate+0.0001",
+  "n": 83,
+  "expected": 0.00012048192771084338,
+  "got": 0.0,
+  "max_abs_diff": 0.01,
+  "status": "FAIL",
+  "note": ""
+ },
+ {
+  "harness": "trade_costs.funding_paid",
+  "canary": "e_funding_exit_on_rate+0.0001",
+  "n": 83,
+  "expected": 0.00012048192771084338,
+  "got": 0.00012048192771084338,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "run_t055.score_trades",
+  "canary": "e_funding_exit_on_rate+0.0001",
+  "n": 83,
+  "expected": 0.00012048192771084338,
+  "got": 0.00012048192771084344,
+  "max_abs_diff": 5.204170427930421e-18,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "screen.compute_cells FUND",
+  "canary": "e_funding_exit_on_rate+0.0001",
+  "n": 83,
+  "expected": 0.00012048192771084338,
+  "got": 0.01,
+  "max_abs_diff": 0.02,
+  "status": "FAIL",
+  "note": "flat 1 bp per crossing, blind to side and rate (L1)"
+ },
+ {
+  "harness": "chart_read_g5.funding_pct",
+  "canary": "e_funding_exit_on_rate+0.0001",
+  "n": 83,
+  "expected": 0.00012048192771084338,
+  "got": 0.01,
+  "max_abs_diff": 0.02,
+  "status": "FAIL",
+  "note": "flat 1 bp per crossing, blind to side and rate (L1)"
+ },
+ {
+  "harness": "bt_engine.simulate_trade",
+  "canary": "e_funding_exit_on_rate-0.0001",
+  "n": 83,
+  "expected": -0.00012048192771084338,
+  "got": 0.0,
+  "max_abs_diff": 0.01,
+  "status": "FAIL",
+  "note": ""
+ },
+ {
+  "harness": "trade_costs.funding_paid",
+  "canary": "e_funding_exit_on_rate-0.0001",
+  "n": 83,
+  "expected": -0.00012048192771084338,
+  "got": -0.00012048192771084338,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "run_t055.score_trades",
+  "canary": "e_funding_exit_on_rate-0.0001",
+  "n": 83,
+  "expected": -0.00012048192771084338,
+  "got": -0.00012048192771084344,
+  "max_abs_diff": 5.204170427930421e-18,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "screen.compute_cells FUND",
+  "canary": "e_funding_exit_on_rate-0.0001",
+  "n": 83,
+  "expected": -0.00012048192771084338,
+  "got": 0.01,
+  "max_abs_diff": 0.02,
+  "status": "FAIL",
+  "note": "flat 1 bp per crossing, blind to side and rate (L1)"
+ },
+ {
+  "harness": "chart_read_g5.funding_pct",
+  "canary": "e_funding_exit_on_rate-0.0001",
+  "n": 83,
+  "expected": -0.00012048192771084338,
+  "got": 0.01,
+  "max_abs_diff": 0.02,
+  "status": "FAIL",
+  "note": "flat 1 bp per crossing, blind to side and rate (L1)"
+ },
+ {
+  "harness": "tom_bt.sim_limit_trade",
+  "canary": "e_funding",
+  "n": 0,
+  "expected": null,
+  "got": null,
+  "max_abs_diff": null,
+  "status": "BLOCKED",
+  "note": "no funding term in sim_limit_trade (fees only)"
+ },
+ {
+  "harness": "orderflow_views.trade",
+  "canary": "e_funding",
+  "n": 0,
+  "expected": null,
+  "got": null,
+  "max_abs_diff": null,
+  "status": "BLOCKED",
+  "note": "no funding term (FEE_RT only)"
+ },
+ {
+  "harness": "levels_sizing.run",
+  "canary": "e_funding",
+  "n": 0,
+  "expected": null,
+  "got": null,
+  "max_abs_diff": null,
+  "status": "BLOCKED",
+  "note": "no rate input; flat stress qty*op*1e-4/480 per bar, side-blind (cannot take a rate)"
+ },
+ {
+  "harness": "bt_engine.simulate_trade",
+  "canary": "e_funding_records_missing_for_hold",
+  "n": 1,
+  "expected": 76.0,
+  "got": 0.0,
+  "max_abs_diff": 76.0,
+  "status": "FAIL",
+  "note": "expected fail-closed (B103 behaviour of trade_costs) on every event whose exit is past the last funding record; got = events that raised"
+ },
+ {
+  "harness": "run_t055.score_trades",
+  "canary": "e_funding_records_missing_for_hold",
+  "n": 1,
+  "expected": 76.0,
+  "got": 76.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": "expected fail-closed on every event whose exit is past the last funding record"
+ },
+ {
+  "harness": "bt_engine.simulate_trade",
+  "canary": "f_gap_through_stop",
+  "n": 83,
+  "expected": -2.0000000000000013,
+  "got": -2.0,
+  "max_abs_diff": 1.7763568394002505e-15,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "tom_bt.sim_limit_trade",
+  "canary": "f_gap_through_stop",
+  "n": 83,
+  "expected": -2.0000000000000013,
+  "got": -2.000000000000028,
+  "max_abs_diff": 5.5067062021407764e-14,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "orderflow_views.trade (stop/2R leg)",
+  "canary": "f_gap_through_stop",
+  "n": 83,
+  "expected": -2.0000000000000013,
+  "got": -0.499999999999993,
+  "max_abs_diff": 1.500000000000016,
+  "status": "FAIL",
+  "note": "N2 of 2026-10-15 audit: books the stop price, not the gap open"
+ },
+ {
+  "harness": "levels_sizing.run",
+  "canary": "f_gap_through_stop",
+  "n": 83,
+  "expected": -2.0000000000000013,
+  "got": -2.0000000000000013,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "run_t055.score_trades",
+  "canary": "f_gap_through_stop",
+  "n": 0,
+  "expected": null,
+  "got": null,
+  "max_abs_diff": null,
+  "status": "BLOCKED",
+  "note": "fixed-hold harness: no stop concept"
+ },
+ {
+  "harness": "screen.compute_cells",
+  "canary": "f_gap_through_stop",
+  "n": 0,
+  "expected": null,
+  "got": null,
+  "max_abs_diff": null,
+  "status": "BLOCKED",
+  "note": "fixed-hold harness: no stop concept"
+ },
+ {
+  "harness": "chart_read_g5.trade_gross",
+  "canary": "f_gap_through_stop",
+  "n": 0,
+  "expected": null,
+  "got": null,
+  "max_abs_diff": null,
+  "status": "BLOCKED",
+  "note": "fixed-hold harness: no stop concept"
+ },
+ {
+  "harness": "bt_engine.simulate_trade",
+  "canary": "f2_trade_gaps_but_mark_does_not",
+  "n": 1,
+  "expected": 0.0,
+  "got": 0.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": "exchange stops trigger on MARK: no stop expected while mark stays above; got = share of events stopped (0 = consistent)"
+ },
+ {
+  "harness": "bt_engine.simulate_trade",
+  "canary": "g_same_bar_stop_and_target",
+  "n": 83,
+  "expected": -0.49999999999999484,
+  "got": -0.499999999999993,
+  "max_abs_diff": 3.552713678800501e-15,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "bt_engine.simulate_trade",
+  "canary": "g_ambiguous_counter",
+  "n": 1,
+  "expected": 83.0,
+  "got": 83.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "tom_bt.sim_limit_trade",
+  "canary": "g_same_bar_stop_and_target",
+  "n": 83,
+  "expected": -0.49999999999999484,
+  "got": -0.5,
+  "max_abs_diff": 1.0658141036401503e-14,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "orderflow_views.trade (stop/2R leg)",
+  "canary": "g_same_bar_stop_and_target",
+  "n": 83,
+  "expected": -0.49999999999999484,
+  "got": -0.499999999999993,
+  "max_abs_diff": 3.552713678800501e-15,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "levels_sizing.run",
+  "canary": "g_same_bar_stop_and_target",
+  "n": 83,
+  "expected": -0.49999999999999484,
+  "got": -0.49999999999999484,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "run_t055.score_trades",
+  "canary": "g_same_bar_stop_and_target",
+  "n": 0,
+  "expected": null,
+  "got": null,
+  "max_abs_diff": null,
+  "status": "BLOCKED",
+  "note": "fixed-hold harness: no stop or target"
+ },
+ {
+  "harness": "screen.compute_cells",
+  "canary": "g_same_bar_stop_and_target",
+  "n": 0,
+  "expected": null,
+  "got": null,
+  "max_abs_diff": null,
+  "status": "BLOCKED",
+  "note": "fixed-hold harness: no stop or target"
+ },
+ {
+  "harness": "chart_read_g5.trade_gross",
+  "canary": "g_same_bar_stop_and_target",
+  "n": 0,
+  "expected": null,
+  "got": null,
+  "max_abs_diff": null,
+  "status": "BLOCKED",
+  "note": "fixed-hold harness: no stop or target"
+ },
+ {
+  "harness": "bt_engine.simulate_trade",
+  "canary": "h_timeout_reason_bars_exit_bar",
+  "n": 1,
+  "expected": 3.0,
+  "got": 3.0,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": ""
+ },
+ {
+  "harness": "bt_engine.simulate_trade",
+  "canary": "h2_timeout_vs_next_open_gap",
+  "n": 83,
+  "expected": -1.0000000000000007,
+  "got": 0.0,
+  "max_abs_diff": 1.0000000000000009,
+  "status": "FAIL",
+  "note": "L5: timeout fills at the last bar's close; a market exit sent at that close fills at the next open. got=close fill, exp=next-open fill (-1.00 pct apart)"
+ },
+ {
+  "harness": "screen.compute_cells",
+  "canary": "h2_timeout_vs_next_open_gap",
+  "n": 83,
+  "expected": -1.0000000000000007,
+  "got": -1.0000000000000007,
+  "max_abs_diff": 0.0,
+  "status": "PASS",
+  "note": "screen exits at the next open: consistent with the next-open reading"
+ },
+ {
+  "harness": "tom_bt.sim_limit_trade",
+  "canary": "h2_timeout_vs_next_open_gap",
+  "n": 83,
+  "expected": -1.0000000000000007,
+  "got": 0.0,
+  "max_abs_diff": 1.0000000000000009,
+  "status": "FAIL",
+  "note": "same close-fill convention as bt_engine"
+ }
+]

@@ -1,0 +1,54 @@
+{
+  "approved_by": "",
+  "asks": "Owner/data prerequisite: authoritative accepted and rejected CBP rows plus matching transcripts; existing desk request 20261026-183052-claude-locate-current-cbp-repo-and-store remains pending. No operator decision required.",
+  "commands": [],
+  "created": "2026-10-26T18:35:30Z",
+  "depends_on": [],
+  "done_when": "research/cbp/QUOTE_REVIEW_GPT.md lists 13 rows with PASS/FAIL and reason with file:line; the known 1 rejected row is reproduced.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Check each stored CBP row's evidence quote is verbatim in its transcript and list any that verify_extract_quotes.py passes but a human would reject.",
+  "id": "cbp-quote-gate-review",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "verify_extract_quotes: skip nested metadata header so description-only quotes fail",
+      "ref": "b4eced018d26",
+      "utc": "2026-10-25T15:41:36Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "OPERATOR QUOTE: guide GPT for CBP related work",
+  "prio": 3,
+  "refine_tries": 1,
+  "refined_by": "",
+  "refreshed": "2026-10-26T18:35:30Z",
+  "refs": [
+    "MyTradingSys/research/cbp/GPT_CBP_GUIDE.md"
+  ],
+  "result": "Partial audit: seven synthetic probes; empty/punctuation evidence, partial-word and negation-ellipsis gaps reproduced. Production row review blocked on unavailable CBP data. See research/cbp/QUOTE_REVIEW_GPT.md.",
+  "scope_in": [
+    "scripts/dev/verify_extract_quotes.py; MyTradingSys/research/cbp/"
+  ],
+  "scope_out": [
+    "any edit to the verifier, the CBP repo, YouTube fetches"
+  ],
+  "scope_sha": "b4eced018d26",
+  "size": "S",
+  "sources": [],
+  "state": "blocked",
+  "steps": [
+    "run verify_extract_quotes.py on each row, then recheck by hand against raw_transcripts_canonical, plant one altered quote and confirm it fails"
+  ],
+  "tests": "python -m pytest MyTradingSys/tests -k quote (fail-first)",
+  "title": "CBP quote gate: cross-vendor review of the 13 stored rows",
+  "weight": "",
+  "worker": "session"
+}

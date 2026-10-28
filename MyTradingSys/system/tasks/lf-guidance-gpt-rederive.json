@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "Recover exact producing revision and permitted DEV-only timestamped event/trade evidence; no operator decision needed.",
+  "closed": "2026-10-27T21:11:14Z",
+  "commands": [],
+  "created": "2026-10-25T20:05:35Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/guidance.md lists each quoted number, the recomputed number, and MATCH or MISMATCH with file:line",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independently re-derive the headline backtest numbers (n trades, mean R, fee-net or not, split used) quoted for layer family guidance in its result reports, from the raw ledger/data, and list every mismatch. No verdict on keeping or dropping a layer.",
+  "id": "lf-guidance-gpt-rederive",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Recount: 336 cells, 186 tested, 89 underpowered, 61 tiny; independent BH min q .62, zero p",
+      "ref": "53ee928da",
+      "utc": "2026-10-27T21:11:14Z"
+    }
+  ],
+  "layers": [
+    "guidance"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-25T20:06:47Z",
+  "refs": [],
+  "result": "Partial: aggregate recount and BH correction shipped; two narrative mismatches. Event-level raw return and placebo reconstruction unavailable.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/guidance.md (new file only)"
+  ],
+  "scope_out": [
+    "editing the reports or code being checked; live tree; any verdict to keep, drop, demote or park a layer"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/tom_fabio_guidance_2026-10-12/GUIDANCE_AUDIT.md",
+    "MyTradingSys/research/tom_fabio_guidance_2026-10-12/PRE_REG_Q33.md",
+    "MyTradingSys/research/tom_fabio_guidance_2026-10-12/MATRIX_REPORT.md"
+  ],
+  "state": "blocked",
+  "steps": [
+    "List the result files for guidance in layer_index.json (results, ledger) and pick the headline numbers each states",
+    "Recompute each from the ledger or raw data with an independent script (formulas from MyTradingSys/backtest/layers/FORMULAS.md, not from the code under check)",
+    "Write MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/guidance.md: quoted number, recomputed number, MATCH/MISMATCH, file:line, script path",
+    "Commit with a Result: line (n checked, n mismatches)"
+  ],
+  "taken": "2026-10-27T21:11:14Z",
+  "tests": "none (audit card); proof = the recompute script runs and the table is filled",
+  "title": "Layer re-derive: guidance (independent recount of the headline numbers behind the fact sheet)",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

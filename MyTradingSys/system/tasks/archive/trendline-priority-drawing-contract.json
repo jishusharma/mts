@@ -1,0 +1,45 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-17T00:00:00+05:30",
+  "depends_on": [],
+  "done_when": "A source/OURS drawing contract, causal replay fixture plan, daily public-chart ledger schema and bounded detector/event-study follow-up cards are saved and reviewed against Krown KR-S10/S11.",
+  "est_turns": 30,
+  "from_inbox": "",
+  "goal": "Specify reproducible BTC trend lines and prospective daily chart observation before testing conditional breaks, bounces and confluence.",
+  "id": "trendline-priority-drawing-contract",
+  "lane": "SONNET",
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "note": "Operator 2026-10-17 requests priority Claude work. Drawing lines is first: known anchors, touch episodes, slopes, channels, phase/context and daily source checks. No visual-angle or viral-chart efficacy assumptions. DROPPED 2026-10-17 by trendlines-verify: superseded by trendline-contract-spec, -causal-module, -count-only, -g3-marks-pack (see CLAUDE_VERIFY.md).",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "Line lifecycle, causal anchor/touch timing, slope and timeframe contract",
+    "Krown reuse, BTC context controls and timestamped daily public-chart observations"
+  ],
+  "scope_out": [
+    "Live wiring, economic adoption, fresh validation exposure or automated trades"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/trendlines_2026-10-17/CLAUDE_HANDOFF.md",
+    "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_14bxwxC8gBQ.md"
+  ],
+  "state": "dropped",
+  "steps": [
+    "Read the trend-line report and Krown KR-S10/S11; reconcile existing cards and claims.",
+    "Specify immutable wick/close and log/linear line families, causal lifecycle and deterministic selection.",
+    "Define drawing agreement, replay fixtures and daily source/observation schema with edits and selection bias recorded.",
+    "Issue bounded descriptive detector and BTC context study cards; identify dataset/exposure dependencies before preregistration."
+  ],
+  "tests": "Spec review: each rule SOURCED with locator or OURS; fixtures cover delayed pivots, clustered touches, stale HTF, future retests and edited public charts.",
+  "title": "Priority trend-line drawing contract and BTC observation plan",
+  "worker": "session"
+}

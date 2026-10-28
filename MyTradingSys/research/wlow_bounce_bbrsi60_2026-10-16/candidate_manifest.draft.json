@@ -1,0 +1,12 @@
+{
+  "setup_id": "layer:wlow_bounce:bbrsi60:1h",
+  "layer": "wlow_bounce",
+  "pre_reg": {"path": "MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/PRE_REG.md", "git_sha": "f22feae768cc095b815362321a9576fc182a2ffd"},
+  "screen_verdict": {"path": "MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/RESULT.md"},
+  "backtest": {"report_path": "MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/RESULT.md", "label": "BT-TUNED"},
+  "oos": {"fee_net": true, "net_r": 0.0, "ci_low": 0.0, "ci_high": 0.0, "n_trades": 0},
+  "trial_ledger": {"path": "MyTradingSys/research/TRIAL_LEDGER.csv", "entry_id": "wlow_bounce_bbrsi60_2026-10-16", "variants": 8},
+  "validation_reads": [],
+  "holdout_reads": [],
+  "requested_mode": "shadow"
+}

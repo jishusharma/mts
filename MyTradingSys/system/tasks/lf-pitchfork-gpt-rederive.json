@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-28T02:47:49Z",
+  "commands": [],
+  "created": "2026-10-25T20:05:50Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/pitchfork.md lists each quoted number, the recomputed number, and MATCH or MISMATCH with file:line",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independently re-derive the headline backtest numbers (n trades, mean R, fee-net or not, split used) quoted for layer family pitchfork in its result reports, from the raw ledger/data, and list every mismatch. No verdict on keeping or dropping a layer.",
+  "id": "lf-pitchfork-gpt-rederive",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "SOUND; 20 claims checked, 0 mismatches; pitchfork.md written",
+      "ref": "fb8e26bd2",
+      "utc": "2026-10-28T02:47:49Z"
+    }
+  ],
+  "layers": [
+    "pitchfork"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-25T20:06:58Z",
+  "refs": [],
+  "result": "SOUND; 20 claims checked, 0 mismatches; pitchfork.md written",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/pitchfork.md (new file only)"
+  ],
+  "scope_out": [
+    "editing the reports or code being checked; live tree; any verdict to keep, drop, demote or park a layer"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md",
+    "papers/02_PITCHFORK_APPLICATION_ON_BTC.md",
+    "MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md",
+    "papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md"
+  ],
+  "state": "done",
+  "steps": [
+    "List the result files for pitchfork in layer_index.json (results, ledger) and pick the headline numbers each states",
+    "Recompute each from the ledger or raw data with an independent script (formulas from MyTradingSys/backtest/layers/FORMULAS.md, not from the code under check)",
+    "Write MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/pitchfork.md: quoted number, recomputed number, MATCH/MISMATCH, file:line, script path",
+    "Commit with a Result: line (n checked, n mismatches)"
+  ],
+  "taken": "2026-10-28T02:47:49Z",
+  "tests": "none (audit card); proof = the recompute script runs and the table is filled",
+  "title": "Layer re-derive: pitchfork (independent recount of the headline numbers behind the fact sheet)",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

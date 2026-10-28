@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T07:29:29Z",
+  "commands": [],
+  "created": "2026-10-16T16:47:31Z",
+  "depends_on": [],
+  "done_when": "AUDIT_BEFORE_RUN.md committed in the folder with OK or FIX-FIRST per item and the exact fix for each FIX-FIRST; shipped.",
+  "est_turns": 12,
+  "from_inbox": "",
+  "goal": "Independent audit of research/context_factors_pit_2026-10-16/PRE_REG_V2.md with the 6 items of research/pit_levels_2026-10-16/AUDIT_BEFORE_RUN.md (location-only control, MDE under day clustering, Holm k, leakage, VERDICTS row, frozen trigger), counts only, no outcome read, no VALIDATION/HOLDOUT bar. Writes AUDIT_BEFORE_RUN.md with the verdict word OK or FIX-FIRST (per item, with the exact fix).",
+  "id": "context-factors-pit-audit",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "note": "Same pattern as the Opus and pit_levels audits. Zero operator input. If FIX-FIRST, the one-run card stays blocked until a PRE_REG_V3.md carries the fix.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T07:16:27Z",
+  "refs": [
+    "research/context_factors_pit_2026-10-16/PRE_REG_V2.md",
+    "research/context_factors_pit_2026-10-16/COMPARISON.md",
+    "research/context_factors_2026-10-16/AUDIT_BEFORE_RUN.md",
+    "research/pit_levels_2026-10-16/AUDIT_BEFORE_RUN.md"
+  ],
+  "result": "FIX-FIRST on items 1 (stop gap F3 +43/45%, F5 +44/130%) and 2 (n_needed uses z 2.8 vs PASS z 3.337; Holm-z n 1274/983/2775 > 700 days); items 3-6 OK; m=59",
+  "scope_in": [
+    "MyTradingSys/research/context_factors_pit_2026-10-16/AUDIT_BEFORE_RUN.md"
+  ],
+  "scope_out": [
+    "every other file of the folder (PRE_REG.md, PRE_REG_V2.md, context_asof.py are frozen)",
+    "MyTradingSys/research/context_factors_2026-10-16/ (read-only)",
+    "any VALIDATION or HOLDOUT bar",
+    "any outcome computation"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read PRE_REG_V2.md, COMPARISON.md s.3-4, EPISODE_COUNTS.md and the two prior audits named in refs.",
+    "Item 1: is the context_null match key (hour, vol, trend) enough for a filter contrast whose arms share the ladder stop? Recompute the stop_pct medians per arm from grid_context.csv (python run_compare.py, count-only) for the four design-powered cells; flag > 25 % relative gaps.",
+    "Item 2: redo the three n_needed figures of PRE_REG_V2 s.2 by hand (own 572, trunk-free 441, trunk-net 1246) and the day counts of the four powered cells; confirm the realised-MDE rule text matches layer_lab/context_fix2_mde_rule.",
+    "Item 3: recount Holm m with verdicts.py count --split DEV today; m must be >= 59.",
+    "Item 4: python scripts/dev/lookahead_lint.py on the folder; confirm the 7 planted leaks are still caught (python -m pytest test_context_asof.py -q).",
+    "Item 5: no VERDICTS.csv row exists yet for this folder (correct before a read).",
+    "Item 6: sha256 of context_asof.py and PRE_REG_V2.md recorded; equal to the committed ones.",
+    "Write AUDIT_BEFORE_RUN.md (verdict first line), commit with a Result: line, ship. Do not run the one-run card."
+  ],
+  "tests": "none (docs only; the lint and the existing test file are run, not changed)",
+  "title": "Context factors (Fable engine): 6-item AUDIT_BEFORE_RUN of PRE_REG_V2.md before the one-run card",
+  "worker": "agent"
+}

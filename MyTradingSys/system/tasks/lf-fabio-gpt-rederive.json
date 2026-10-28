@@ -1,0 +1,70 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-28T01:31:44Z",
+  "commands": [],
+  "created": "2026-10-25T20:05:33Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/fabio.md lists each quoted number, the recomputed number, and MATCH or MISMATCH with file:line",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independently re-derive the headline backtest numbers (n trades, mean R, fee-net or not, split used) quoted for layer family fabio in its result reports, from the raw ledger/data, and list every mismatch. No verdict on keeping or dropping a layer.",
+  "id": "lf-fabio-gpt-rederive",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "SOUND; 20 claims checked, 0 mismatches; fabio.md written",
+      "ref": "848810b7a",
+      "utc": "2026-10-28T01:31:44Z"
+    }
+  ],
+  "layers": [
+    "fabio"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-25T20:06:44Z",
+  "refs": [],
+  "result": "SOUND; 20 claims checked, 0 mismatches; fabio.md written",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/fabio.md (new file only)"
+  ],
+  "scope_out": [
+    "editing the reports or code being checked; live tree; any verdict to keep, drop, demote or park a layer"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/fast_track_2026-09-27/FABIO_V3_SPEC.md",
+    "MyTradingSys/research/fast_track_2026-09-27/FABIO_RULEBOOK.md",
+    "MyTradingSys/research/fast_track_2026-09-27/FABIO_TRADE_MODEL.md",
+    "MyTradingSys/research/tom_fabio_guidance_2026-10-12/SOURCED_RULES.md",
+    "MyTradingSys/backtest/layers/fabio/FABIO_L1_REPORT.md",
+    "MyTradingSys/backtest/layers/fabio/FABIO_OF_REPORT.md"
+  ],
+  "state": "done",
+  "steps": [
+    "List the result files for fabio in layer_index.json (results, ledger) and pick the headline numbers each states",
+    "Recompute each from the ledger or raw data with an independent script (formulas from MyTradingSys/backtest/layers/FORMULAS.md, not from the code under check)",
+    "Write MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/fabio.md: quoted number, recomputed number, MATCH/MISMATCH, file:line, script path",
+    "Commit with a Result: line (n checked, n mismatches)"
+  ],
+  "taken": "2026-10-28T01:31:44Z",
+  "tests": "none (audit card); proof = the recompute script runs and the table is filled",
+  "title": "Layer re-derive: fabio (independent recount of the headline numbers behind the fact sheet)",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

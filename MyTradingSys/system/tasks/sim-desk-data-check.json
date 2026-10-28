@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-27T19:53:57Z",
+  "commands": [],
+  "created": "2026-10-25T19:30:05Z",
+  "depends_on": [],
+  "done_when": "python MyTradingSys/research/sim_desk/data_check.py prints one row per symbol (expected, present, missing minutes, longest gap in minutes, duplicates) or NOT_IN_DATA when the klines folder is absent; it refuses to read a bar at or after 2024-07-01; test_data_check.py passes; no data file is committed",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Silent holes in the 1m klines would mis-fill stops and targets in every study (_bars.resample leaves missing minutes absent). data_check.py counts expected, present and missing minutes, duplicates, out-of-order rows and the longest gap inside the DEV window 2022-04-01..2024-06-30 for BTCUSDT and ETHUSDT, read-only, counts only (no prices).",
+  "id": "sim-desk-data-check",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "BTCUSDT NOT_IN_DATA, ETHUSDT NOT_IN_DATA (klines folder F:/MTS/data/tom_raw/klines absent ",
+      "ref": "2f7831570",
+      "utc": "2026-10-27T19:53:57Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 T0-ONLY (planner, machine checks only). Sim-v2 follow-up drafted 2026-10-26. New files only. Evidence: studies/_bars.py:80 (sorted, no duplicates) and :97 (missing minutes are simply absent). If the run shows holes, the next card decides whether studies must skip those minutes. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-25T19:30:06Z",
+  "refs": [],
+  "result": "BTCUSDT NOT_IN_DATA, ETHUSDT NOT_IN_DATA (klines folder F:/MTS/data/tom_raw/klines absent on this machine, DESKTOP-F7IU69N; not JIS-NB which holds the raw klines). check() hand-counted tests pass: hole+dup (missing=3, longest_gap=3, duplicates=1), sealed-cut guard raises, out-of-order row counted.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/data_check.py",
+    "MyTradingSys/research/sim_desk/test_data_check.py"
+  ],
+  "scope_out": [
+    "Import from studies/_bars.py read-only (sim-desk-exit-reasons owns it); do not touch desk.py, page.html, results/; no price data committed (public repo)"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/sim_desk/studies/_bars.py:97 (missing minutes are simply absent)"
+  ],
+  "state": "done",
+  "steps": [
+    "Read studies/_bars.py load_1m (it sorts and de-duplicates, so read the raw files for duplicates) and fetch_klines.py for the file layout",
+    "Write test_data_check.py first and watch it fail",
+    "data_check.check(rows, start_ms, end_ms) returns the counts dict (pure function); main() reads each symbol raw klines for the DEV window and prints counts only",
+    "Run on the machine that holds F:/MTS/data/tom_raw/klines (JIS-NB); put the two rows in the commit body Result line",
+    "Run python -m pytest MyTradingSys/research/sim_desk/test_data_check.py -q; sync.py ship"
+  ],
+  "taken": "2026-10-27T19:53:57Z",
+  "tests": "test_data_check.py (new), fails before data_check.py exists: planted minute rows with one 3-minute hole and one duplicate report missing 3, longest gap 3, duplicates 1 (hand-counted); a row at 2024-07-01 00:00 UTC raises; an out-of-order row is counted.",
+  "title": "Sim desk: 1m data check (missing minutes, duplicates, longest gap) over the DEV window per symbol",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

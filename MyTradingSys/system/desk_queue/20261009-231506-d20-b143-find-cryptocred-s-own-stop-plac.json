@@ -1,0 +1,15 @@
+{
+  "done_when": "STOP_SOURCES.md lists quoted stop rules with file:line (or says none found) plus the per-stop net R table",
+  "finished": "2026-10-11T11:55:22Z",
+  "from": "JIS-NB",
+  "host": "JIS-NB",
+  "id": "20261009-231506-d20-b143-find-cryptocred-s-own-stop-plac",
+  "need": "Operator note on D20: the 0.1% stop makes no sense, find the stop that does. Provenance rule forbids tuning an unsourced number, so first hunt his words: grep extracts/processed/cryptocred/*.md and the raw CryptoCred transcripts for stop / invalidation / below the low / wick / swing. List every quote with file:line. Then, as a separate labelled research table only, backtest the three CC setups with each quoted stop rule (and, marked NO-SOURCE, 0.1% / 0.25% / 0.5% / beyond-swing-low variants) on 2022-2026 with fees. Write MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md.",
+  "posted": "2026-10-09T23:15:06Z",
+  "result": "Source hunt: no numeric percent in CC words; structural invalidation is the source-consistent rule. Net R sweep 14 rows, 3 setups x 7 stop rules, every rule net-negative. Widest ATR least bad; NO-SOURCE 0.1pct worst. Table in MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md. Commit f29af65.",
+  "status": "done",
+  "taken": "2026-10-10T15:37:02Z",
+  "taken_by": "JIS-NB",
+  "target": "DSA",
+  "title": "D20/B143: find CryptoCred's own stop placement in his transcripts (source hunt)"
+}

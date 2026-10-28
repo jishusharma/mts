@@ -1,0 +1,73 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-25T21:20:22Z",
+  "depends_on": [
+    "gemini-laptop-open-questions"
+  ],
+  "done_when": "MyTradingSys/research/mts_doctor/HANDOFF_AUDIT_2026-10-26.md has one row per point: verdict KEEP/DROP, evidence (command and result), action or card id; the 3 UNVERIFIED questions are answered (loader reads NEXT_SESSION.md for non-Claude sessions? ship wall = CI queue or run time?); doc fixes shipped.",
+  "est_turns": 24,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Review the Gemini-laptop audit of 2026-10-26 point by point (SPEED, CONTEXT LOAD, BOOT DOC, PLATFORM, RECOVERY, IDENTITY): verify each with a command, drop what has no value, ship the cheap fixes, answer the UNVERIFIED items with evidence, file one card per fix that is bigger than a doc edit.",
+  "id": "bug-session-handoff-ship-speed-audit",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "GEMINI_START: laptop agy CLI installed, gemini_queue F: gap, account naming, approval re-c",
+      "ref": "c5639ca90c70",
+      "utc": "2026-10-25T20:50:19Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "c5639ca90c70 GEMINI_START: laptop agy CLI installed, gemini_queue F: gap, account naming, ",
+      "ref": "MyTradingSys/system/GEMINI_START.md",
+      "utc": "2026-10-25T20:50:19Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): audit-and-answer; each of the 6 points is kept or dropped with evidence. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | CLUSTER: same file set as gemini-laptop-open (one editor per file); runs after it | MERGED 2026-10-28 from sync-py-ship-is-slow-timed-run-in-card-n: SPEED point must use this measurement: sync.py ship of a docs/tasks-only commit took 263 s wall on jis-nb (ship2, includes CI wait up to 10 min); a first ship without a claim aborted after 58 s because the host-health scan runs before the claim check (order fix = candidate card if confirmed). | WAITING on gemini-laptop-open-questions (depends_on, same file set).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:29:48Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/mts_doctor/HANDOFF_AUDIT_2026-10-26.md",
+    "MyTradingSys/system/GEMINI_START.md",
+    "MyTradingSys/system/NEXT_SESSION.md",
+    ".github/workflows/ci.yml"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "live path, orders, deploy, restarts",
+    "new hooks, gate steps or rules beyond the card"
+  ],
+  "scope_sha": "c5639ca90c70",
+  "size": "M",
+  "sources": [
+    "this card's steps list the six audit points (SPEED, CONTEXT LOAD, BOOT DOC, PLATFORM, RECOVERY, IDENTITY)",
+    ".github/workflows/ci.yml:19",
+    "scripts/dev/role_loader.py",
+    "AGENTS.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "SPEED: read ci.yml:19 (tasks/** runs CI on purpose, CI review 2026-10-25) and gh run list timings for 5a65fb31, d794c33c; state whether 3m20s was queue or run time.",
+    "CONTEXT LOAD: check NEXT_SESSION.md date and owner header; grep role_loader.py and AGENTS.md for who reads it; propose owner+date header only if a loader reads it.",
+    "BOOT DOC: verify by repo evidence; fix stale lines in GEMINI_START.md; facts only the laptop can show (F: paths, installed tools) become a card for gemini-laptop. PLATFORM: add PowerShell-safe examples where a doc has a bash heredoc.",
+    "RECOVERY and IDENTITY: check the signal naming (gemini-nuc, gemini-laptop) in mts_signal; file cards for anything above a doc edit; write the audit file."
+  ],
+  "tests": "No code unless a fix needs it. Check: python scripts/dev/tasks.py lint passes; every UNVERIFIED line in the audit file ends with a command and its output.",
+  "title": "BUG: session/handoff pipeline misses the 2-min ship goal and loads stale context (Gemini laptop audit 2026-10-26)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

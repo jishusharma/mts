@@ -1,0 +1,194 @@
+{
+ "seed": 20261020,
+ "packets": [
+  {
+   "id": "rsi-01-ethusdt-15m",
+   "indicator": "RSI",
+   "symbol": "ETHUSDT",
+   "tf": "15m",
+   "last_close_open_time_ms": 1792150200000,
+   "n_closes": 500,
+   "sha256": "3fbb3d5bbcc09f2d32619cda394991aa027eb7ec586a0ce172cd43cd3d722741"
+  },
+  {
+   "id": "rsi-02-btcusdt-5m",
+   "indicator": "RSI",
+   "symbol": "BTCUSDT",
+   "tf": "5m",
+   "last_close_open_time_ms": 1792414500000,
+   "n_closes": 500,
+   "sha256": "1c096302d8a8f67a657cad05b4d2fe361a1c723fd529473b94312aa95257e08b"
+  },
+  {
+   "id": "rsi-03-ethusdt-1h",
+   "indicator": "RSI",
+   "symbol": "ETHUSDT",
+   "tf": "1h",
+   "last_close_open_time_ms": 1791781200000,
+   "n_closes": 500,
+   "sha256": "6307ce92110bbfe2072cd3e72ee4a0970e4001e3bf8cc9809e01abc7091c5e1d"
+  },
+  {
+   "id": "rsi-04-btcusdt-15m",
+   "indicator": "RSI",
+   "symbol": "BTCUSDT",
+   "tf": "15m",
+   "last_close_open_time_ms": 1792007100000,
+   "n_closes": 500,
+   "sha256": "4db5ef245b7a835981d84aecd8c6b24117a5ac2908de90da0ad930782573ce44"
+  },
+  {
+   "id": "rsi-05-btcusdt-1h",
+   "indicator": "RSI",
+   "symbol": "BTCUSDT",
+   "tf": "1h",
+   "last_close_open_time_ms": 1789149600000,
+   "n_closes": 500,
+   "sha256": "29e625c79d9ef056d98840345ff755cce44e7995b3b21db1e6e9bfa4fad87e80"
+  },
+  {
+   "id": "rsi-06-ethusdt-5m",
+   "indicator": "RSI",
+   "symbol": "ETHUSDT",
+   "tf": "5m",
+   "last_close_open_time_ms": 1792196100000,
+   "n_closes": 500,
+   "sha256": "b94a8f04b68b7cbdb8a0d8e5be83b3dbc64b5ba1e573a66d632551fc33d8e3c9"
+  },
+  {
+   "id": "rsi-07-ethusdt-15m",
+   "indicator": "RSI",
+   "symbol": "ETHUSDT",
+   "tf": "15m",
+   "last_close_open_time_ms": 1791579600000,
+   "n_closes": 500,
+   "sha256": "80bec57fdc78f12a106badc2d1210dbf4f34520817ead6e2a2a01d3ef4e85bf7"
+  },
+  {
+   "id": "bb-01-ethusdt-5m",
+   "indicator": "BB",
+   "symbol": "ETHUSDT",
+   "tf": "5m",
+   "last_close_open_time_ms": 1792281900000,
+   "n_closes": 500,
+   "sha256": "65bec05a343fdee39423a2f3f1b1b12f1e6084efddb6ba24aa97a8bfec1b9ff4"
+  },
+  {
+   "id": "bb-02-ethusdt-1h",
+   "indicator": "BB",
+   "symbol": "ETHUSDT",
+   "tf": "1h",
+   "last_close_open_time_ms": 1789182000000,
+   "n_closes": 500,
+   "sha256": "ad2c2beb24e194faf775dcf933936b2ae06505fc574ed2a8c3998975d79723c7"
+  },
+  {
+   "id": "bb-03-btcusdt-5m",
+   "indicator": "BB",
+   "symbol": "BTCUSDT",
+   "tf": "5m",
+   "last_close_open_time_ms": 1792321500000,
+   "n_closes": 500,
+   "sha256": "d632ffaefb38006da176cddc839ecdbac436bc7949e1d82d80c432300a43b937"
+  },
+  {
+   "id": "bb-04-btcusdt-15m",
+   "indicator": "BB",
+   "symbol": "BTCUSDT",
+   "tf": "15m",
+   "last_close_open_time_ms": 1791755100000,
+   "n_closes": 500,
+   "sha256": "41e5a82de7c4a7da9f5e8199ab90b4a7cb6c793520926104800f3196f340d545"
+  },
+  {
+   "id": "bb-05-ethusdt-15m",
+   "indicator": "BB",
+   "symbol": "ETHUSDT",
+   "tf": "15m",
+   "last_close_open_time_ms": 1792130400000,
+   "n_closes": 500,
+   "sha256": "126b21be91a607ceeb30273a919206c0fb552bbac203b1e8026fe1522ab83ca8"
+  },
+  {
+   "id": "bb-06-btcusdt-1h",
+   "indicator": "BB",
+   "symbol": "BTCUSDT",
+   "tf": "1h",
+   "last_close_open_time_ms": 1791320400000,
+   "n_closes": 500,
+   "sha256": "732e2657856e8d97ffec24c18eb5dd9810585b9c99e9a0da7169d18a9ad8b1e3"
+  },
+  {
+   "id": "bb-07-ethusdt-5m",
+   "indicator": "BB",
+   "symbol": "ETHUSDT",
+   "tf": "5m",
+   "last_close_open_time_ms": 1792312800000,
+   "n_closes": 500,
+   "sha256": "8e0c15897dcc7a892352fa565d262cba256ec8185e5e82cce238cfc9fe8c1866"
+  },
+  {
+   "id": "stochrsi-01-ethusdt-15m",
+   "indicator": "STOCHRSI",
+   "symbol": "ETHUSDT",
+   "tf": "15m",
+   "last_close_open_time_ms": 1792440000000,
+   "n_closes": 500,
+   "sha256": "1b991768b21b4a7c99b8387889b010a3250ebefc5e741c26abea6264e2d1669b"
+  },
+  {
+   "id": "stochrsi-02-btcusdt-1h",
+   "indicator": "STOCHRSI",
+   "symbol": "BTCUSDT",
+   "tf": "1h",
+   "last_close_open_time_ms": 1792414800000,
+   "n_closes": 500,
+   "sha256": "a3d56f63de42b80c51bf35a46926dd076ebc0a7f6b44fc840843a44ea08bb51e"
+  },
+  {
+   "id": "stochrsi-03-ethusdt-5m",
+   "indicator": "STOCHRSI",
+   "symbol": "ETHUSDT",
+   "tf": "5m",
+   "last_close_open_time_ms": 1792185600000,
+   "n_closes": 500,
+   "sha256": "8db69b7c0f174ad4f852a3cef8a9259a448a973df99e294db5c8358a3e67bcaa"
+  },
+  {
+   "id": "stochrsi-04-btcusdt-5m",
+   "indicator": "STOCHRSI",
+   "symbol": "BTCUSDT",
+   "tf": "5m",
+   "last_close_open_time_ms": 1792378800000,
+   "n_closes": 500,
+   "sha256": "a4f965a32536d278863ee8a368257e9f6effca8ee2972777372f4ffe211fd4ba"
+  },
+  {
+   "id": "stochrsi-05-ethusdt-1h",
+   "indicator": "STOCHRSI",
+   "symbol": "ETHUSDT",
+   "tf": "1h",
+   "last_close_open_time_ms": 1791612000000,
+   "n_closes": 500,
+   "sha256": "203104e2444f66e38121f5c85cf20206acda7c3f5782a2f24313cf0770cd621f"
+  },
+  {
+   "id": "stochrsi-06-btcusdt-15m",
+   "indicator": "STOCHRSI",
+   "symbol": "BTCUSDT",
+   "tf": "15m",
+   "last_close_open_time_ms": 1791798300000,
+   "n_closes": 500,
+   "sha256": "01a15a15065d27317d8da34cea7c03ccc121e2ed9758cc5af679537727320794"
+  },
+  {
+   "id": "stochrsi-07-ethusdt-15m",
+   "indicator": "STOCHRSI",
+   "symbol": "ETHUSDT",
+   "tf": "15m",
+   "last_close_open_time_ms": 1791979200000,
+   "n_closes": 500,
+   "sha256": "7e1813aca7339cfd5ad25fd61d377af9469e892f7cbabd5693e47191c7d09de2"
+  }
+ ]
+}

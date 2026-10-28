@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-28T16:07:45Z",
+  "depends_on": [],
+  "done_when": "each of F1,F4,F5,F6,F9,F10 has a test or label diff; fail-first tests fail on old code and pass; python scripts/dev/run_all_tests.py --quick green; shipped, cherry empty",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fix the desk-side Pitchfork findings of the Opus E2E review: F1 target distance, F4 TPO/bin parity, F5 bin-width lookahead plus VA/POC causality test, F6 inverted-fork tine, F9 OURS labels, F10 one ZigZag function.",
+  "id": "pitchfork-fixes-desk-python",
+  "lane": "SONNET",
+  "layers": [
+    "pitchfork"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "pitchfork-review-fixes-2026-10-28"
+  ],
+  "note": "DRAFT 2026-10-28 Session_Planner (OURS): split of pitchfork-review-fixes-2026-10-28 (size L, mixed desk/live). CRUCIAL (target formula, decision numbers): review Agent + REVIEWED stamp before dispatch; formula expected value computed independently from RESEARCH_PITCHFORK_LAYER.md:42, not from code. depends on nothing. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | T0 2026-10-28 planner-refine-A: scope_in paths all tracked, no open claim on them, content complete; only gap = Lab_Guy REVIEWED stamp (IMPORTANT+). | REVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified detector:528 (hag_target uses channel_width), RESEARCH:42 vs :54-55, review F1/F4/F5/F6/F9/F10 refs. CRUCIAL: F1 reading is a OURS decision; Java keeps 2x until card pitchfork-fixes-live-java lands, so desk/live differ meanwhile - state that in the label.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/pitchfork_2026-10-19/OPUS_E2E_REVIEW_2026-10-28.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py",
+    "MyTradingSys/research/sim_desk/studies/pitchfork.py",
+    "MyTradingSys/tests"
+  ],
+  "scope_out": [
+    "Java live code (card pitchfork-fixes-live-java); source documents; VALIDATION/HOLDOUT reads; re-running studies"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/pitchfork_2026-10-19/OPUS_E2E_REVIEW_2026-10-28.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "F1: DECISION (OURS) take RESEARCH_PITCHFORK_LAYER.md:42 as written, target = entry +/- |UML-ML|; label 'OURS reading' and note the :54-55 alternative; fix detector :528 and the desk EXIT['ML'] label",
+    "F5: bin width from data up to bar i only, add a planted-leak test with vp_filter set to VA and POC; F6: pick the tine from p2_is_lower; F10: one zigzag function, detector :334-383 and :412-447 call it",
+    "F4: make the desk profile match the live choice or document the gap in MyTradingSys/research/sim_desk/studies/pitchfork.py; F9: add OURS labels to the listed constants"
+  ],
+  "tests": "F1 target test, F5 VA/POC leak test, F6 inverted-fork test, F10 pivot-equality test; each fails on the pre-change code",
+  "title": "Pitchfork desk/Python review fixes: F1 target reading, F4 profile parity, F5 lookahead + VA leak test, F6 python inverted fork, F9 OURS labels, F10 ZigZag dedup",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

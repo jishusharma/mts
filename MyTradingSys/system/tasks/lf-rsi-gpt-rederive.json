@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-28T01:40:19Z",
+  "commands": [],
+  "created": "2026-10-25T20:05:36Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/rsi.md lists each quoted number, the recomputed number, and MATCH or MISMATCH with file:line",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independently re-derive the headline backtest numbers (n trades, mean R, fee-net or not, split used) quoted for layer family rsi in its result reports, from the raw ledger/data, and list every mismatch. No verdict on keeping or dropping a layer.",
+  "id": "lf-rsi-gpt-rederive",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "SOUND; 19 matches, 1 minor rounding discrepancy noted; rsi.md written",
+      "ref": "03bfb07c7",
+      "utc": "2026-10-28T01:40:19Z"
+    }
+  ],
+  "layers": [
+    "rsi"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-25T20:07:04Z",
+  "refs": [],
+  "result": "SOUND; 19 matches, 1 minor rounding discrepancy noted; rsi.md written",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/rsi.md (new file only)"
+  ],
+  "scope_out": [
+    "editing the reports or code being checked; live tree; any verdict to keep, drop, demote or park a layer"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md",
+    "MyTradingSys/backtest/layers/FORMULAS.md",
+    "MyTradingSys/research/rsi_divergence_mtf_2026-10-09"
+  ],
+  "state": "done",
+  "steps": [
+    "List the result files for rsi in layer_index.json (results, ledger) and pick the headline numbers each states",
+    "Recompute each from the ledger or raw data with an independent script (formulas from MyTradingSys/backtest/layers/FORMULAS.md, not from the code under check)",
+    "Write MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/rsi.md: quoted number, recomputed number, MATCH/MISMATCH, file:line, script path",
+    "Commit with a Result: line (n checked, n mismatches)"
+  ],
+  "taken": "2026-10-28T01:40:19Z",
+  "tests": "none (audit card); proof = the recompute script runs and the table is filled",
+  "title": "Layer re-derive: rsi (independent recount of the headline numbers behind the fact sheet)",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

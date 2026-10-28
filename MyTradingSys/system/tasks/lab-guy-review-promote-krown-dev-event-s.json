@@ -1,0 +1,78 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-28T12:01:28Z",
+  "commands": [],
+  "created": "2026-10-28T00:05:11Z",
+  "depends_on": [],
+  "done_when": "krown-dev-event-study-candles and krown-dev-event-study-levels carry a real Lab_Guy review stamp (non-Gemini) and move state raw -> ready, or a logged reason they cannot yet.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Remaining half of desk row 20261021-041000: the krown_core flat-window RSI fix (150840644) is already reviewed; the Lab_Guy independent review that promotes krown-dev-event-study-candles/-levels from raw to ready is not done (both still raw; -candles carries a Sonnet-reviewer ACCEPT note but also 'needs a real review stamp (CRUCIAL)').",
+  "id": "lab-guy-review-promote-krown-dev-event-s",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Dispatch done 2026-10-28: both krown cards refused (depend on unshipped krown-dev-event-st",
+      "ref": "43bb698df",
+      "utc": "2026-10-28T12:01:28Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "roles: read-first rule for rule, role, super-session and budget answers",
+      "ref": "2998b4ac4c09",
+      "utc": "2026-10-21T02:05:56Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "2998b4ac4c09 roles: read-first rule for rule, role, super-session and budget answers",
+      "ref": "MyTradingSys/system/roles/lab_guy.md",
+      "utc": "2026-10-21T02:05:56Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "krown-dev-event-study-candles",
+    "krown-dev-event-study-levels",
+    "krown-dev-event-study"
+  ],
+  "note": "WAITING 2026-10-28 (planner-raw-refine): fields complete; needs a real Lab_Guy stamp (planner cannot stamp). Batch into the next Lab_Guy pass.\nREVIEWED:2026-10-28 ACCEPT Lab_Guy for this dispatch card (Sonnet). Outcome of the dispatch: krown-dev-event-study-candles and -levels NOT stamped, state stays refined. Specific misses: (1) both depend on krown-dev-event-study, which has not shipped: no addendum in PRE_REG_KROWN.md (grep addendum = none), no DEV_RESULTS.md, no test_dev_study.py anywhere on trunk, so the frozen grids (M1 N is OURS) the steps say to read do not exist and cannot be reviewed; (2) the card brief says review DEV_RESULTS/TRIAL_LEDGER rows, but no such results exist yet; (3) E4: tests only assert each H-id table is present with N/MDE/CI/label text, which cannot fail on a wrong number: add a fail-first check that one decision number per H-id (e.g. N and MDE from power_mde.py) is re-derived independently by a Haiku Agent from the pinned data (C1 rule); (4) the -levels prior ACCEPT says a 2nd FIX was applied and not re-read. Re-submit after krown-dev-event-study ships with its addendum and loader and the (3) check is in tests. RECALL FAIL (3 of 12 verified) confirmed in RECALL.md, so NO-RECALL-CLEARANCE waiver stays.",
+  "prio": 3,
+  "refine_tries": 1,
+  "refined_by": "",
+  "refreshed": "2026-10-28T12:01:18Z",
+  "refs": [],
+  "result": "Dispatch done 2026-10-28: both krown cards refused (depend on unshipped krown-dev-event-study; E4 test gap); reasons in the card notes",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/system/roles/lab_guy.md"
+  ],
+  "scope_out": [
+    ""
+  ],
+  "scope_sha": "2998b4ac4c09",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Lab_Guy reads krown-dev-event-study-candles and -levels output (DEV_RESULTS.md, TRIAL_LEDGER.csv rows) against roles/lab_guy.md class criteria",
+    "Write a real REVIEWED:<date> ACCEPT (or T0-ONLY/reject with reason) stamp into each card's note, non-Gemini, independent of the Sonnet reviewer already noted on -candles",
+    "Run tasks.py check on both cards; state moves raw -> ready on an ACCEPT stamp, or stays raw/refined with the logged reason"
+  ],
+  "taken": "2026-10-28T12:01:28Z",
+  "tests": "no code change; the stamp grammar itself is enforced by scripts/dev/test_tasks.py's existing promotion-gate tests",
+  "title": "Lab_Guy review: promote krown-dev-event-study-candles and -levels to ready",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

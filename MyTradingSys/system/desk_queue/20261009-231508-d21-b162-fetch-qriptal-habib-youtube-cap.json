@@ -1,0 +1,14 @@
+{
+  "done_when": "SCORECARD.md exists with per-call rows and a total vs the self-reported 67.1% win rate",
+  "finished": "2026-10-12T09:43:32Z",
+  "from": "JIS-NB",
+  "host": "JIS-NUC",
+  "id": "20261009-231508-d21-b162-fetch-qriptal-habib-youtube-cap",
+  "need": "Operator note on D21: also read YouTube transcripts. 22 raw transcripts already staged under extracts/_staged_2026-09-27/raw/qriptal_*_raw.txt; fetch captions (yt-dlp --skip-download --write-auto-subs, no video) for the rest of youtube.com/@qriptal into the same place. Extract every call with date, side, entry, stop, targets in his words (file:line), merge with the qriptal.com 86-setup list where readable, then score each against Binance BTCUSDT klines with 0.05%/side fees exactly as posted. Write MyTradingSys/research/qriptal_2026-10-10/SCORECARD.md (n, win rate, avg R, vs his claimed 67.1%).",
+  "posted": "2026-10-09T23:15:08Z",
+  "reopened": "2026-10-11 unstick session: taken 2026-10-10T15:37:02Z by JIS-NB, no result in >24h",
+  "result": "Blocked at session close: the done_when is a scored backtest (every Qriptal call priced against Binance BTCUSDT klines, 0.05%/side fees, vs claimed 67.1% win rate). Boot BUILD_REPORT status FAIL (Java and math tests skipped in quick tier), so stopped before any backtest per operator rule. Row was already claimed by JIS-NB since 2026-10-10T15:37:02Z and never closed; reclaiming DSA lane here. The 22 staged transcripts under extracts/_staged_2026-09-27/raw/qriptal_*_raw.txt are untouched. Unstarted, not task-failed; a session with a PASS build picks this up unchanged.",
+  "status": "failed",
+  "target": "DSA",
+  "title": "D21/B162: fetch Qriptal (Habib) YouTube captions and score his posted calls"
+}

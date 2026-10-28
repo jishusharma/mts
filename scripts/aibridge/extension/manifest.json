@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "AIBridge",
+  "version": "0.7.1",
+  "description": "Local command execution for AI chat replies.",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:7181/*",
+    "http://127.0.0.1:7182/*",
+    "http://127.0.0.1:7183/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "exclude_matches": [
+        "http://127.0.0.1:7181/*"
+      ],
+      "js": [
+        "loop.js",
+        "content.js"
+      ],
+      "css": [
+        "panel.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "AIBridge"
+  }
+}

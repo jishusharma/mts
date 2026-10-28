@@ -1,0 +1,53 @@
+study,factor,definition,side,count_of,n,split,outcome_read
+context_factors_2026-10-16,F1 role flip,1h close through the level (CHOSEN),long,mean same-side levels per hour,11.035,DEV,no
+context_factors_2026-10-16,F1 role flip,1h and last 4h close both through (contested excluded),long,mean same-side levels per hour,10.602,DEV,no
+context_factors_2026-10-16,F2 confluence,distinct layers (objects) in zone (CHOSEN),long,events with >= 2,2264.0,DEV,no
+context_factors_2026-10-16,F2 confluence,distinct trader/source names in zone,long,events with >= 2,2727.0,DEV,no
+context_factors_2026-10-16,F3 armed,close past the prior D open (CHOSEN),long,events armed,1879.0,DEV,no
+context_factors_2026-10-16,F3 armed,partial-day extreme past the prior D open,long,events armed,2607.0,DEV,no
+context_factors_2026-10-16,F3 W_max,1.0 x ATR14(D) (CHOSEN),long,events with a stop,2817.0,DEV,no
+context_factors_2026-10-16,F3 W_max,fixed 3.0 %,long,events with a stop,2908.0,DEV,no
+context_factors_2026-10-16,F4 engulf (D),operator: colour flip + close past previous open (CHOSEN),long,events with D engulf on the trade side,522.0,DEV,no
+context_factors_2026-10-16,F4 engulf (D),classic body engulf incl. open <= previous close,long,events with D engulf on the trade side,364.0,DEV,no
+context_factors_2026-10-16,F5 at the band,close at/beyond the band (CHOSEN),long,events in a 1h walk (either band),124.0,DEV,no
+context_factors_2026-10-16,F5 at the band,%b cushion 0.05,long,events in a 1h walk (either band),222.0,DEV,no
+context_factors_2026-10-16,F5 veto,prompt: walk on the band against the trade (CHOSEN),long,events vetoed,63.0,DEV,no
+context_factors_2026-10-16,F5 veto,"operator 'dance' reading: any close at/below the lower band (short) / upper (long), last 2 bars",long,events vetoed,348.0,DEV,no
+context_factors_2026-10-16,F6 phase,weekly close vs SMA10(W) + slope (CHOSEN),long,events markup,1738.0,DEV,no
+context_factors_2026-10-16,F6 phase,weekly close vs SMA10(W) + slope (CHOSEN),long,events distribution,426.0,DEV,no
+context_factors_2026-10-16,F6 phase,weekly close vs SMA10(W) + slope (CHOSEN),long,events markdown,1298.0,DEV,no
+context_factors_2026-10-16,F6 phase,weekly close vs SMA10(W) + slope (CHOSEN),long,events accumulation,352.0,DEV,no
+context_factors_2026-10-16,F6 phase,weekly close vs SMA10(W) + slope (CHOSEN),long,events balance,0.0,DEV,no
+context_factors_2026-10-16,F6 phase,weekly close vs SMA10(W) + slope (CHOSEN),long,events na,0.0,DEV,no
+context_factors_2026-10-16,F6 phase,30 d trend tag + 90 d range position,long,events markup,1354.0,DEV,no
+context_factors_2026-10-16,F6 phase,30 d trend tag + 90 d range position,long,events distribution,454.0,DEV,no
+context_factors_2026-10-16,F6 phase,30 d trend tag + 90 d range position,long,events markdown,984.0,DEV,no
+context_factors_2026-10-16,F6 phase,30 d trend tag + 90 d range position,long,events accumulation,474.0,DEV,no
+context_factors_2026-10-16,F6 phase,30 d trend tag + 90 d range position,long,events balance,548.0,DEV,no
+context_factors_2026-10-16,F6 phase,30 d trend tag + 90 d range position,long,events na,0.0,DEV,no
+context_factors_2026-10-16,F1 role flip,1h close through the level (CHOSEN),short,mean same-side levels per hour,10.195,DEV,no
+context_factors_2026-10-16,F1 role flip,1h and last 4h close both through (contested excluded),short,mean same-side levels per hour,9.769,DEV,no
+context_factors_2026-10-16,F2 confluence,distinct layers (objects) in zone (CHOSEN),short,events with >= 2,2268.0,DEV,no
+context_factors_2026-10-16,F2 confluence,distinct trader/source names in zone,short,events with >= 2,2730.0,DEV,no
+context_factors_2026-10-16,F3 armed,close past the prior D open (CHOSEN),short,events armed,1916.0,DEV,no
+context_factors_2026-10-16,F3 armed,partial-day extreme past the prior D open,short,events armed,2589.0,DEV,no
+context_factors_2026-10-16,F3 W_max,1.0 x ATR14(D) (CHOSEN),short,events with a stop,2781.0,DEV,no
+context_factors_2026-10-16,F3 W_max,fixed 3.0 %,short,events with a stop,2835.0,DEV,no
+context_factors_2026-10-16,F4 engulf (D),operator: colour flip + close past previous open (CHOSEN),short,events with D engulf on the trade side,455.0,DEV,no
+context_factors_2026-10-16,F4 engulf (D),classic body engulf incl. open <= previous close,short,events with D engulf on the trade side,352.0,DEV,no
+context_factors_2026-10-16,F5 at the band,close at/beyond the band (CHOSEN),short,events in a 1h walk (either band),139.0,DEV,no
+context_factors_2026-10-16,F5 at the band,%b cushion 0.05,short,events in a 1h walk (either band),240.0,DEV,no
+context_factors_2026-10-16,F5 veto,prompt: walk on the band against the trade (CHOSEN),short,events vetoed,63.0,DEV,no
+context_factors_2026-10-16,F5 veto,"operator 'dance' reading: any close at/below the lower band (short) / upper (long), last 2 bars",short,events vetoed,353.0,DEV,no
+context_factors_2026-10-16,F6 phase,weekly close vs SMA10(W) + slope (CHOSEN),short,events markup,1741.0,DEV,no
+context_factors_2026-10-16,F6 phase,weekly close vs SMA10(W) + slope (CHOSEN),short,events distribution,423.0,DEV,no
+context_factors_2026-10-16,F6 phase,weekly close vs SMA10(W) + slope (CHOSEN),short,events markdown,1298.0,DEV,no
+context_factors_2026-10-16,F6 phase,weekly close vs SMA10(W) + slope (CHOSEN),short,events accumulation,355.0,DEV,no
+context_factors_2026-10-16,F6 phase,weekly close vs SMA10(W) + slope (CHOSEN),short,events balance,0.0,DEV,no
+context_factors_2026-10-16,F6 phase,weekly close vs SMA10(W) + slope (CHOSEN),short,events na,0.0,DEV,no
+context_factors_2026-10-16,F6 phase,30 d trend tag + 90 d range position,short,events markup,1360.0,DEV,no
+context_factors_2026-10-16,F6 phase,30 d trend tag + 90 d range position,short,events distribution,453.0,DEV,no
+context_factors_2026-10-16,F6 phase,30 d trend tag + 90 d range position,short,events markdown,992.0,DEV,no
+context_factors_2026-10-16,F6 phase,30 d trend tag + 90 d range position,short,events accumulation,470.0,DEV,no
+context_factors_2026-10-16,F6 phase,30 d trend tag + 90 d range position,short,events balance,542.0,DEV,no
+context_factors_2026-10-16,F6 phase,30 d trend tag + 90 d range position,short,events na,0.0,DEV,no

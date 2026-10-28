@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-11T18:43:39Z",
+  "commands": [],
+  "created": "2026-10-11T18:08:10Z",
+  "depends_on": [],
+  "done_when": "relay_prompts/ in git and byte-equal to JIS-NB's live SKILL.md files (superseded 2026-10-15 by relay.py tick drift=SKILL); test_relay.py covers --standby-hours (fails on old code); NEXT_SESSION.md under 8 KB; relay_runs.jsonl gains a line from one real relay run; JIS-NUC list_scheduled_tasks shows mts-dispatcher-standby and a dry kick prints IDLE while JIS-NB is active.",
+  "from_inbox": "",
+  "goal": "Relay survives one account/host being out: prompts live in git, JIS-NUC runs a standby dispatcher that fires only when JIS-NB is silent, the handoff file stays under 8 KB, and every launched session is listed in git. Findings in note.",
+  "id": "relay-two-host-standby",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "Found 2026-10-11 on JIS-NUC (account jishu.awgp, Pro plan): the App there has zero scheduled tasks and no ~/.claude/mts-relay-* state, so the relay runs on JIS-NB only and stops when that account's budget or machine is out. The relay/dispatcher prompts are host-local (~/.claude/scheduled-tasks/*/SKILL.md on JIS-NB), not in git, so no other host can rebuild them. relay.py kick state is per host, so a second dispatcher would double-launch the same handoff id. NEXT_SESSION.md is 34.7 KB (about 9k tokens) because sessions append updates instead of overwriting. Session chats exist only in the App of the host+account that ran them; nothing in git lists them.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "relay.py: runs list + kick --peer-quiet-min + handoff trim (24 tests, 7 new fail on old code); NEXT_SESSION.md 34.7 KB -> 6.9 KB; prompts in scripts/sched/relay_prompts/; NUC tasks created; NB half is Q31",
+  "scope_in": [
+    "scripts/sched/relay.py",
+    "scripts/sched/relay_prompts/",
+    "MyTradingSys/tests/test_relay.py",
+    "MyTradingSys/system/RELAY.md",
+    "MyTradingSys/system/NEXT_SESSION.md",
+    "MyTradingSys/system/relay_runs.jsonl"
+  ],
+  "scope_out": [
+    "live-path processes",
+    "MTS-AutoDeploy",
+    "Control Room sharing between accounts (operator action)"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/system/RELAY.md",
+    "scripts/sched/relay.py",
+    "operator chat 2026-10-11 (JIS-NUC session)"
+  ],
+  "state": "done",
+  "steps": [
+    "Copy the SKILL.md of mts-relay-a, mts-relay-b (archived 2026-10-15: MyTradingSys/archive/relay_2026-10-15/), mts-dispatcher, mts-control-room from JIS-NB into scripts/sched/relay_prompts/ (git), plus install_relay_tasks.md saying how a host recreates them with create_scheduled_task. Must run on JIS-NB (source files are there).",
+    "relay.py kick --standby-hours N: IDLE unless origin/fast-track's NEXT_SESSION.md commit is older than N hours (primary host silent) and the header says go; tests for fresh/old/stop/no-header.",
+    "relay.py handoff: refuse (or lint RED) a NEXT_SESSION.md over 8 KB; move the update history into system/handoff_history/<date>.md once.",
+    "relay.py gate/kick append one line per launch to system/relay_runs.jsonl in git: utc, host, account label, task, handoff id, App session title. That is the cross-device list of session chats.",
+    "On JIS-NUC create mts-dispatcher-standby (every 2 h, Sonnet or Haiku) from the git prompts with --standby-hours 3. Pro plan there: one relay session per kick, never the 30 min cadence."
+  ],
+  "tests": "MyTradingSys/tests/test_relay.py",
+  "title": "Relay across two hosts and accounts: prompts in git, standby dispatcher on JIS-NUC, handoff trim, run index"
+}

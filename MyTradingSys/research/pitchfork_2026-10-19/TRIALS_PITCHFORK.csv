@@ -1,0 +1,5 @@
+study,variant,run_utc,split,data_source,description,status
+pitchfork_swing_2026-10-19,Standard_Andrews,2026-10-20,DEV,F:/MTS/data/tom_raw + dev_ext (BTCUSDT 1d 2020-2026),Standard_Andrews swing evaluation across 361 confirmed forks,"PASS (ML Reach: 55.96%, WinRate: 36.84%, MeanRet: +0.86%)"
+pitchfork_swing_2026-10-19,Schiff,2026-10-20,DEV,F:/MTS/data/tom_raw + dev_ext (BTCUSDT 1d 2020-2026),Schiff swing evaluation across 361 confirmed forks,"PASS (ML Reach: 86.15%, WinRate: 34.9%, MeanRet: -1.12%)"
+pitchfork_swing_2026-10-19,Modified_Schiff,2026-10-20,DEV,F:/MTS/data/tom_raw + dev_ext (BTCUSDT 1d 2020-2026),Modified_Schiff swing evaluation across 361 confirmed forks,"PASS (ML Reach: 89.2%, WinRate: 36.84%, MeanRet: -1.12%)"
+pitchfork_swing_2026-10-19,Log_Modified_Schiff,2026-10-20,DEV,F:/MTS/data/tom_raw + dev_ext (BTCUSDT 1d 2020-2026),Log_Modified_Schiff swing evaluation across 361 confirmed forks,"PASS (ML Reach: 90.03%, WinRate: 37.12%, MeanRet: -0.95%)"

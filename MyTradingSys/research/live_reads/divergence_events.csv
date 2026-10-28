@@ -1,0 +1,45 @@
+# divergence_events.csv — DESCRIPTIVE ONLY. Forward evidence log for card tom-corr-divergence-backtest
+# (MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md). Never used to select, tune or
+# pre-register TOM-DIV parameters; never a gate. Each row is one BTC-vs-ES/NQ divergence read plus its
+# +30/60/120 min forward outcome, filled only after that much time has actually passed.
+#
+# Schema: utc,btc_since_open,es_since_open,nq_since_open,vix,r5m_1h_es,r5m_1h_nq,footprint_delta_note,out_30m,out_60m,out_120m
+#   utc              - event timestamp (convergence-start read), ISO Z
+#   btc/es/nq_since_open - % change since the 13:30Z 2026-10-26 US-cash-open baseline (BTC 79952.00 spot,
+#                      ES 7683.50, NQ 29230.50 — OURS baseline, 13:25 5m-bar close for ES/NQ, 13:30 1m
+#                      open for BTC; same convention as live_cross_read.py since_open() and
+#                      research/live_reads/2026-10-26_cross_market_tools/watch.py OPEN{})
+#   vix              - ^VIX level nearest the timestamp (Yahoo chart API 5m bars)
+#   r5m_1h_es/nq      - rolling 1h, 5m-return correlation of BTC vs ES / BTC vs NQ at/near the timestamp
+#   footprint_delta_note - OURS descriptive note: Binance BTCUSDT taker-buy-ratio for the 5m bar ending
+#                      at the timestamp (tbv/vol; 0.5 = balanced), as a free proxy for order-flow delta
+#   out_30m/60m/120m  - outcome string "BTC{pct} ES{pct} NQ{pct} VIX={v} gap(ES-BTC)={g}pp [r1h_es={r}]"
+#                      at utc+30/60/120 min, from the SAME public sources (public data only: Binance
+#                      data-api.binance.vision + Yahoo chart API; no paid/restricted feed, no account
+#                      data). r1h_es (1h 5m-return correlation) is appended by hand when read alongside
+#                      the pull (append_divergence_event.py's automated `fill` leaves it out — a
+#                      correlation needs a 1h window of paired bars, not a single price pull).
+#
+# Event 1 (2026-10-26, US cash open window). btc/es/nq_since_open for the event row are the numbers
+# already registered for this event (MyTradingSys/system/tasks/live-divergence-event-log.json done_when;
+# research/live_reads/2026-10-17_live_market_1017/READ.md "10-26 13:16-14:36Z US open" section, read at
+# the time from 1m bars/spot, baseline = 13:25 bar close). Convergence-start window flagged there: 14:33-
+# 14:36Z (gap ES-BTC ~0.6 -> ~0.4 pts), first visible trigger for the pre-registered TOM-DIV
+# convergence-start rule (EXTRACT.md Section 4) — observation only, TOM-DIV untested, layer G2.
+# Cross-check: a fresh public 5m-bar pull for the same instant (this task, 2026-10-28, Binance+Yahoo,
+# since_open() convention) gives BTC -0.24% / ES +0.29% / NQ +0.30% — same sign and order of magnitude;
+# the small gap vs the registered numbers is bar-granularity (5m vs the original 1m/spot read), not a
+# data conflict. r5m_1h_es/nq at the event: nearest logged 1h-window read is 14:31Z (READ.md), not an
+# exact-14:36 figure (none was logged at the time); used here as the closest available reading.
+# +30/60/120 outcomes: pulled fresh now (2026-10-28) from Binance data-api.binance.vision (BTC 5m klines,
+# startTime/endTime) and Yahoo chart API (ES=F/NQ=F/^VIX 5m, period1/period2) for 15:06Z/15:36Z/16:36Z,
+# price_at(t) = close of the public 5m bar covering [t-5m, t) (since_open() convention, live_cross_read.py
+# docstring). Cross-checked against the live poll already on disk at
+# research/live_reads/2026-10-26_cross_market_tools/watch_rows.csv (same OPEN baseline, 60s Binance+Yahoo
+# polls at the time): rows nearest the marks are 15:06:05Z (BTC+0.685/ES+0.615/NQ+0.951), 15:36:40Z
+# (BTC+1.03/ES+0.647/NQ+1.114), 16:36:59Z (BTC-0.189/ES+0.446/NQ+0.832) — same direction and magnitude as
+# the fresh 5m-bar pull below; differences are 1m-poll-vs-5m-bar granularity, not a data conflict.
+# DECISION (OURS): log the fresh 5m-bar pull (reproducible, documented above) as the recorded outcome
+# values, not the 1m poll, so every outcome column in this file uses one consistent, re-runnable method.
+utc,btc_since_open,es_since_open,nq_since_open,vix,r5m_1h_es,r5m_1h_nq,footprint_delta_note,out_30m,out_60m,out_120m
+2026-10-26T14:36:00Z,-0.10,+0.32,+0.36,18.33,0.19,0.27,"BTC taker-buy-ratio 0.56 (buy-leaning) for the 5m bar ending 14:36Z despite the -0.10% since-open read; descriptive only, no causal claim",BTC+0.66% ES+0.68% NQ+1.06% VIX=17.88 gap(ES-BTC)=+0.02pp,BTC+0.90% ES+0.60% NQ+1.05% VIX=17.85 gap(ES-BTC)=-0.30pp r1h_es=0.77,BTC-0.06% ES+0.42% NQ+0.84% VIX=18.38 gap(ES-BTC)=+0.48pp r1h_es=0.28

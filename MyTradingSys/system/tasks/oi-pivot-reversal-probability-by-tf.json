@@ -1,0 +1,99 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-26T01:18:17Z",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-26T01:18:21Z",
+    "misses": 91,
+    "reads": [],
+    "session": "agent-af27dbcb366bdce5d"
+  },
+  "created": "2026-10-18T17:26:34Z",
+  "depends_on": [
+    "context-conditioned-session-flow-states"
+  ],
+  "done_when": "research/oi_pivot_2026-10-26/PRE_REG.md frozen before any outcome (N/k/H labelled OURS, verdicts.py check and prereg_gate.py lines pasted); candidates.py with test_candidates.py (look-ahead fixtures) passes; pilot_table.csv has day-clustered SE per candidate x location x context; trial ledger rows exist; follow-up card for 1h/4h filed.",
+  "est_turns": 28,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Pre-register and test the causal pivot candidates (OI slope flip, price-vs-OI divergence state, taker-delta sign, volume spike, location vs levels known at the time) on BTC 5m/15m for the 30 days of OI that exist, with reversal-before-continuation outcomes and day-clustered SE; state the long-OI path for 1h/4h.",
+  "id": "oi-pivot-reversal-probability-by-tf",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "58251261a: PRE_REG + candidates.py (7 look-ahead tests) + 32-cell DEV pilot, 7328 rows, be",
+      "ref": "7207b2d25",
+      "utc": "2026-10-26T01:18:17Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim desk: Krown study (S5/S8/S4), exploratory, DEV only",
+      "ref": "60f53e24c9d6",
+      "utc": "2026-10-25T05:51:40Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "60f53e24c9d6 sim desk: Krown study (S5/S8/S4), exploratory, DEV only",
+      "ref": "MyTradingSys/research/layer_lab/TRIALS.md",
+      "utc": "2026-10-25T05:51:40Z"
+    }
+  ],
+  "layers": [
+    "fabio"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): DECISION (OURS): this card = PRE_REG + causal candidate detector with look-ahead fixtures + 30-day 5m/15m pilot table; 1h/4h need the OI archive (desk fetch 20261013-143640-gap-g5) and are a follow-up card filed at the end (tasks.py new). Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-25T22:30:14Z",
+  "refs": [
+    "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/SHOT_163af24365f3.md",
+    "MyTradingSys/research/layer_lab/candle_close_2026-10-14/CYCLE_DESIGN.md",
+    "MyTradingSys/research/_archive/loose_2026-10/OI_EVENT_STUDY_2026-10-10.md"
+  ],
+  "result": "58251261a: PRE_REG + candidates.py (7 look-ahead tests) + 32-cell DEV pilot, 7328 rows, best cell +0.059 z3.35 NOT proven; 1h/4h follow-up card filed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/oi_pivot_2026-10-26/PRE_REG.md",
+    "MyTradingSys/research/oi_pivot_2026-10-26/candidates.py",
+    "MyTradingSys/research/oi_pivot_2026-10-26/test_candidates.py",
+    "MyTradingSys/research/oi_pivot_2026-10-26/pilot_table.csv",
+    "MyTradingSys/research/layer_lab/TRIALS.md"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars before the pre-registration is frozen",
+    "live path, orders, deploy",
+    "restating published verdicts"
+  ],
+  "scope_sha": "60f53e24c9d6",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/layer_lab/candle_close_2026-10-14/CYCLE_DESIGN.md",
+    "MyTradingSys/research/_archive/loose_2026-10/OI_EVENT_STUDY_2026-10-10.md",
+    "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/SHOT_163af24365f3.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Read the card goal, CYCLE_DESIGN.md five-bar rule and OI_EVENT_STUDY_2026-10-10.md (1h divergence: no edge); run verdicts.py check 'oi pivot reversal' and paste it.",
+    "Write PRE_REG.md: candidate definitions, location set, outcome (k x ATR reversal before continuation within H bars; hits, misses, timeouts, censored separate), trial list; run prereg_gate.py with the 30-day n and freeze before any outcome file.",
+    "Implement candidates.py on bars known at the close (swing label is outcome only); write look-ahead fixtures that change a future bar and require unchanged candidates.",
+    "Run the DEV pilot on 5m/15m, write pilot_table.csv; file the 1h/4h follow-up card with tasks.py new."
+  ],
+  "taken": "2026-10-26T01:18:17Z",
+  "tests": "research/oi_pivot_2026-10-26/test_candidates.py: changing any bar after the candidate bar leaves the candidate unchanged; the swing label is computed only from bars through j+2; an OI slope flip fixture fires once; fails before candidates.py exists.",
+  "title": "Causal pivot-candidate study: P(reversal) per TF from OI slope flip + price/OI divergence + delta + location, conditioned on context",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

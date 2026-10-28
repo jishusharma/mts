@@ -1,0 +1,74 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-25T19:25:12Z",
+  "depends_on": [],
+  "done_when": "A funding_rerun table (old flat-1bp vs real) is written next to the screens; test_screen.py and chart_read_g5 test_common.py pass; no published verdict, ledger row or pre-registered bar is edited; the loader raises when both folders are missing; numbers match scripts/T06/out/funding_rerun.json.",
+  "est_turns": 24,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "One shared funding loader (bt_data.load_funding + funding_rate_at) that tries Dumps/backtest/raw_fund/fundingRate then raw/fundingRate and fails closed if neither exists; gross_effect_screen screen.py:32,:177,:349,:451 and chart_read_g5 common.py:18-19,:148-151 charge side x sum(rate of settlements in (entry, exit]) instead of the flat 1 bp. Old number kept beside the new one.",
+  "hosts": [
+    "JIS-NB",
+    "JIS-NUC"
+  ],
+  "id": "fix-screen-real-funding",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "bt_data.load_klines: convert microsecond stamps, raise on conflicting duplicates, report d",
+      "ref": "8f8a52814868",
+      "utc": "2026-10-26T00:53:00Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): scoped from the audit finding; absorbs fix-dumps-backtest-raw-fundingrate-path (host path drift raw vs raw_fund). Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-10-27T19:29:51Z",
+  "refs": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/bt/bt_data.py",
+    "MyTradingSys/backtest/bt/test_bt_data.py",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py",
+    "MyTradingSys/research/chart_read_g5_2026-10-16/common.py",
+    "MyTradingSys/research/chart_read_g5_2026-10-16/test_common.py",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/FUNDING_RERUN.md",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/t06_funding.py"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "restating any published verdict, ledger row or pre-registered bar",
+    "live path"
+  ],
+  "scope_sha": "8f8a52814868",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md (T06-F1)",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md (T01-F3)",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/t06_funding.py",
+    "Dumps/backtest/raw_fund and raw/fundingRate are untracked: run on JIS-NB or JIS-NUC; the loader fails closed elsewhere"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read T06-F1 and T01-F3; reuse bt_data.load_funding and funding_rate_at; add a path resolver (raw_fund first) that raises if no folder exists.",
+    "Replace FUND_PCT in screen.py and common.py with side x sum(rate) over settlements in (entry, exit]; keep the flat 1 bp as a column named old_flat_1bp.",
+    "Rerun the screen on DEV with scripts/T06/t06_funding.py (about 5 min) and write the old-vs-new table; expect no verdict flip and largest move +0.0181 pp.",
+    "Add a fail-first test that a short pays +rate and a long pays -rate on a planted 3-settlement window."
+  ],
+  "tests": "MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py new test: a planted long across one +0.01% settlement nets -0.01%, a short +0.01%; fails on the flat-1bp code. bt_data test: both folders missing raises.",
+  "title": "Fix T06-F1: screens charge a flat 1 bp funding to both sides; load Dumps/backtest/raw/fundingRate in one shared loader and charge side x sum(rate) (largest published move +0.018 pp, no verdict flips)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

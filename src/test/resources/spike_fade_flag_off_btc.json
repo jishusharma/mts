@@ -1,0 +1,72 @@
+[ {
+  "rank" : 1,
+  "setup_type" : "ct_short",
+  "direction" : "short",
+  "zone" : {
+    "name" : "daily_vah",
+    "price" : 100.0,
+    "type" : "daily_vah"
+  },
+  "math" : {
+    "distance_pct" : 0.05,
+    "distance_cap" : 0.4,
+    "tier" : "trigger_ready",
+    "substate" : "at_zone",
+    "stop" : 100.05,
+    "target" : 99.5,
+    "runner_target" : 0.0,
+    "gross_rr" : 10.0,
+    "net_rr" : 2.67,
+    "rr_sanity" : true,
+    "net_rr_sanity" : true
+  },
+  "proof" : {
+    "rejection_wick" : "MODERATE",
+    "rejection_wick_proximity_pct" : 0.0,
+    "rejection_wick_actual_level" : 100.0,
+    "absorption" : {
+      "detected" : false,
+      "strength" : "none",
+      "candle_count" : 0,
+      "vol_ratio" : 0.0
+    },
+    "finished_auction" : {
+      "detected" : false,
+      "direction" : "",
+      "extreme_delta" : 0.0,
+      "reversal_delta" : 0.0,
+      "follow_through" : false
+    },
+    "delta_flip" : {
+      "detected" : false,
+      "from_negative" : false,
+      "at_zone" : false,
+      "zone_level" : 0.0,
+      "candles_since" : 0
+    },
+    "volume_spike" : {
+      "detected" : false,
+      "magnitude" : 1.0,
+      "at_level" : true,
+      "level" : 100.0
+    },
+    "speed" : {
+      "picking_up" : true,
+      "regime" : "active",
+      "score" : 10.0,
+      "direction" : "flat",
+      "atr_ratio" : 9.223372036854776E16,
+      "consecutive_large" : 0,
+      "actual_level" : 0.0,
+      "proximity_pct" : 0.0
+    },
+    "cvd_aligned" : false,
+    "book_imbalance" : 1.0
+  },
+  "score" : {
+    "raw" : 57,
+    "confidence" : "C+",
+    "proof_count" : 1,
+    "confluence_bonus" : 0
+  }
+} ]

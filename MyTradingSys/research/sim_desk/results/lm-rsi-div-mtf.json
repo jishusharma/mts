@@ -1,0 +1,39 @@
+{
+ "id": "lm-rsi-div-mtf",
+ "kind": "backtest",
+ "family": "Rsi Divergence",
+ "title": "RSI divergence on every timeframe (T089 + T091)",
+ "provenance": "source-extracted",
+ "date": "2026-10-09",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-01-01 to 2026-10-07 (as written in the source)",
+ "verdict": {
+  "label": "no edge on any timeframe that reached 300 events; 31 of 32 net negative; 6h and 2d leads have n 6-54",
+  "tone": "bad"
+ },
+ "why": [
+  "Verdict: no edge on any timeframe that reached 300 events, for either Malkan's sourced 3-10 bar rule or the",
+  "symbol in 4.75 years; the rest stay \"insufficient n\" (not \"edge\", not \"no edge\").",
+  "hundredths of a percent of plain drift; after one taker round trip (0.10%) 31 of 32 are net negative (t -0.4 to",
+  "73). On 1m-30m net is negative in every year 2022-2026 except three 2024 operator cells (15m/30m, +0.001% to"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/rsi_divergence_mtf_2026-10-09/RESULT.md"
+ ],
+ "commit": "0aa8f5644"
+}

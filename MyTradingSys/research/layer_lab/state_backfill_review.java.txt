@@ -1,0 +1,59 @@
+package datafeed;
+
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.node.*;
+import java.nio.file.*;
+import java.time.Instant;
+import java.io.PrintStream;
+
+// Standalone synthetic review probe; copy to StateBackfillReview.java in a temporary directory.
+public class StateBackfillReview {
+    static final ObjectMapper mapper = new ObjectMapper();
+    static final long DAY = Instant.parse("2026-10-20T00:00:00Z").toEpochMilli();
+    static final long M = DAY + 330 * 60000L;
+    static StateCodeEmitter fresh(Path file) throws Exception {
+        StateCodeEmitter e = new StateCodeEmitter("BTCUSDT", file, (sym, start, end) -> {
+            ArrayNode bars = mapper.createArrayNode();
+            for (long t = start; t <= end; t += 60000L) {
+                ArrayNode row = bars.addArray();
+                row.add(t).add("100").add("101").add("99").add("100")
+                   .add("10").add(t + 59999).add("1000").add(10).add("7");
+            }
+            return bars;
+        });
+        e.nowMsOverride = M + 20000;
+        e.onStreamOpen(M - 110000);
+        if (!e.backfillNow()) throw new AssertionError("fixture backfill failed");
+        return e;
+    }
+    public static void main(String[] args) throws Exception {
+        Path dir = Files.createTempDirectory("state-backfill-review-");
+        StateCodeEmitter seam = fresh(dir.resolve("seam.json"));
+        seam.onMessage("{\"e\":\"aggTrade\",\"T\":" + (M-1) + ",\"p\":\"100\",\"q\":\"2\",\"m\":false}");
+        seam.evaluateAndEmit();
+        JsonNode j = mapper.readTree(seam.stateFile.toFile());
+        System.out.println("LATE_PRE_M: expectedCvd=1320 actual=" + j.get("session_cvd")
+            + " expectedVolume=3300 actual=" + j.get("session_cum_vol") + " valid=" + j.get("session_accumulators_valid"));
+        if (j.get("session_cvd").asDouble() != 1322) throw new AssertionError("unexpected seam result");
+        StateCodeEmitter race = fresh(dir.resolve("race.json"));
+        PrintStream original = System.out;
+        // Schedule the socket-close callback at the existing emit logging boundary, after snapshot and before publish.
+        System.setOut(new PrintStream(original) {
+            boolean closed;
+            @Override public void println(String line) {
+                if (!closed && line.startsWith("[StateCode] emit")) {
+                    closed = true;
+                    race.onStreamClosed("review_close_before_publish");
+                }
+                super.println(line);
+            }
+        });
+        try { race.evaluateAndEmit(); } finally { System.setOut(original); }
+        j = mapper.readTree(race.stateFile.toFile());
+        System.out.println("CLOSE_BEFORE_PUBLISH: expectedValid=false actual=" + j.get("session_accumulators_valid")
+            + " state=" + j.get("state"));
+        if (!j.get("session_accumulators_valid").asBoolean()) throw new AssertionError("unexpected race result");
+        seam.shutdown();
+        race.shutdown();
+    }
+}

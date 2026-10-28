@@ -1,0 +1,41 @@
+{
+  "inspected": 82,
+  "registered_checkouts_remaining": 7,
+  "registered_checkouts_retired": 75,
+  "fully_removed": 73,
+  "residual_directories_archived": 2,
+  "verified_saved_files": 554,
+  "verified_saved_bytes": 215984234,
+  "all_reviewed_commits_readable": true,
+  "bundle_verified": true,
+  "remaining": [
+    {
+      "name": "BinanceDataFeed",
+      "reason": "protected primary, current or persistent lane"
+    },
+    {
+      "name": "mts-jis-nuc-runaway-process-bug",
+      "reason": "recent activity; preserve owner workspace"
+    },
+    {
+      "name": "mts-jis-nuc-runaway-process-bug-2",
+      "reason": "recent activity; preserve owner workspace"
+    },
+    {
+      "name": "mts-codex",
+      "reason": "protected primary, current or persistent lane"
+    },
+    {
+      "name": "mts-codex-lab",
+      "reason": "protected primary, current or persistent lane"
+    },
+    {
+      "name": "mts-gemini",
+      "reason": "recent activity; preserve owner workspace"
+    },
+    {
+      "name": "mts-jis-nuc-retained-worktree-disposition",
+      "reason": "protected primary, current or persistent lane"
+    }
+  ]
+}

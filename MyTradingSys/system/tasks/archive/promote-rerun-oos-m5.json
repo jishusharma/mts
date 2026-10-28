@@ -1,0 +1,42 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-16T20:51:51Z",
+  "commands": [],
+  "created": "2026-10-16T16:01:27Z",
+  "depends_on": [],
+  "done_when": "3 new tests fail before and pass after; promote.py verify exits 0 on the current registry; Result names the tolerance",
+  "from_inbox": "",
+  "goal": "promote.check trusts oos.net_r, ci_low, ci_high and n_trades typed into the manifest. Add an optional oos.trades_csv (repo-relative, column net_r per trade) and recompute n, mean and a bootstrap CI (seed 20261016, 2000 draws); REJECT if the manifest differs from the recompute by more than 0.01 R or 5% of n, and REJECT when trades_csv is absent (default: required).",
+  "id": "promote-rerun-oos-m5",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "Same files as fable-audit-e4-promotion-variants: take it after that card ships (queue order).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "promote.check recomputes OOS n, mean and seeded bootstrap CI (20261016, 2000 draws) from oos.trades_csv; REJECT beyond 0.01 R / 5% n or when the csv is absent; verify() grandfathers registered entries without a csv (legacy flag); 70 promotion tests pass, 6 new fail on old code. Not run: no new backtest, no VALIDATION/HOLDOUT read; the code only reads a trades csv named by the manifest",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/promotion/promote.py",
+    "MyTradingSys/backtest/layers/promotion/test_promote.py"
+  ],
+  "scope_out": [
+    "MyTradingSys/execution/",
+    "any existing registry entry (verify must not break registered setups: grandfather entries without trades_csv through a legacy flag)"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/NEXT_SESSION.md 2026-10-16 'Fable M5'; OURS: tolerance 0.01 R / 5%, seed 20261016"
+  ],
+  "state": "done",
+  "steps": [
+    "write the tests first (fail on current code)",
+    "implement recompute in check(); register stays gated by check",
+    "add the legacy flag: entries already in the registry are verified without trades_csv",
+    "run_all_tests --quick, ship"
+  ],
+  "tests": "test_promote.py: manifest net_r 0.5 with a trades_csv whose mean is 0.1 REJECTs; a missing trades_csv REJECTs; matching csv PASSes; verify() still passes on the current registry",
+  "title": "promote.py re-runs the OOS number itself instead of trusting the manifest (Fable M5)"
+}

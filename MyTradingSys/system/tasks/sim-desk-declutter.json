@@ -1,0 +1,81 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-27T19:42:41Z",
+  "commands": [],
+  "created": "2026-10-25T19:29:58Z",
+  "depends_on": [],
+  "done_when": "page.html has no id=\"qs\" section and no loadQuestions call; breakdown() loops over the groups of the run, not a fixed year/side/hour list; mockup/ has no tracked file; SIM_DESIGN_RESEARCH.md keeps the OPERATOR OVERRIDE block and sections 1, 6, 7 with 2-5 replaced by one pointer line; test_declutter.py, test_plugin.py, test_desk.py pass",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Declutter the desk page (REVIEW_FABLE_2026-10-25 section 3 item 10, HANDOVER_SIMV2 Next 2): remove the Questions panel from page.html (questions.json, /api/questions and answers stay), make breakdown() draw every group the run returns, delete mockup/, and cut SIM_DESIGN_RESEARCH.md sections 2-5 to one pointer line.",
+  "id": "sim-desk-declutter",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "page.html: dropped qs panel + loadQuestions (q&a endpoints untouched); breakdown() now loo",
+      "ref": "6c967d47f",
+      "utc": "2026-10-27T19:42:41Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim desk: breakdown table, folded charts and ledger, catalogue-safe run saving",
+      "ref": "67426492d1bd",
+      "utc": "2026-10-25T05:29:23Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "9cb0ae157cd4 sim-desk: operator override, local desk is the product; accuracy, conditions ",
+      "ref": "MyTradingSys/research/sim_desk/SIM_DESIGN_RESEARCH.md",
+      "utc": "2026-10-24T19:55:12Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 T0-ONLY (planner, machine checks only). Sim-v2 follow-up drafted 2026-10-26. Owns page.html (no other new sim card edits it). The generic breakdown renderer lets sim-desk-exit-reasons show its new exit group with no page edit. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-25T19:29:59Z",
+  "refs": [],
+  "result": "page.html: dropped qs panel + loadQuestions (q&a endpoints untouched); breakdown() now loops Object.keys(B) with a title map + name fallback; mockup/ git rm'd; SIM_DESIGN_RESEARCH.md sections 2-5 collapsed to one pointer line",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/page.html",
+    "MyTradingSys/research/sim_desk/mockup/",
+    "MyTradingSys/research/sim_desk/SIM_DESIGN_RESEARCH.md",
+    "MyTradingSys/research/sim_desk/test_declutter.py"
+  ],
+  "scope_out": [
+    "Do not touch desk.py, conditions.py, studies/, questions.json or results/; do not publish the page; no quiz, badges or new panels"
+  ],
+  "scope_sha": "67426492d1bd",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/sim_desk/HANDOVER_SIMV2.md:23 (Fable cards still open)",
+    "MyTradingSys/research/sim_desk/REVIEW_FABLE_2026-10-25.md:section 3 item 10 (declutter)"
+  ],
+  "state": "done",
+  "steps": [
+    "Read HANDOVER_SIMV2.md Next 2, REVIEW_FABLE_2026-10-25.md section 3 item 10, and page.html (section qs, loadQuestions, breakdown())",
+    "Write test_declutter.py first and watch it fail on the current tree",
+    "page.html: drop the qs section and the loadQuestions call; breakdown(B) loops over Object.keys(B) with a title map (year, side, hour, exit) and shows an unknown key by its name",
+    "git rm the mockup/ files; replace SIM_DESIGN_RESEARCH.md sections 2-5 with one line pointing at the OPERATOR OVERRIDE block",
+    "Run python -m pytest MyTradingSys/research/sim_desk -q (data-free tests), then sync.py ship"
+  ],
+  "taken": "2026-10-27T19:42:41Z",
+  "tests": "test_declutter.py (new), fails on the current tree: page.html still has id=\"qs\" and the fixed [year, side, hour] list; mockup/index.html is tracked; the design doc still has headings 2-5. Passing guard: desk.load_questions() still returns the seeded questions (endpoint kept).",
+  "title": "Sim desk: declutter the page (Questions panel off, breakdown draws every group, mockup deleted, design doc cut)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

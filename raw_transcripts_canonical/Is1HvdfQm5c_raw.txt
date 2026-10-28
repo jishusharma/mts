@@ -1,0 +1,932 @@
+# Video ID: Is1HvdfQm5c
+# Title: World Cup Trader Reveals His Order Flow LIVE | Fabio Valentini Full Uncut Session
+# Published: 2026-09-28
+# Source: MACHINE TRANSCRIPTION (ASR), NOT CAPTIONS; audio = YouTube format 251; uploader: HijoTrades
+# Method: ASR faster-whisper small.en, local, 2026-10-16
+# Quote rule: anything quoted from this file is an ASR quote and must be labelled ASR; misheard words and numbers are possible, check against the frames
+# Analyst: Fabio Valentini (live session answering chat; ASR has no speaker labels)
+# Word count: 17227
+# ASR QA: 3 low-confidence segment(s) (compression_ratio > 2.4 or avg_logprob < -1.0), 0 looped or hallucinated-credit line(s) dropped
+# Note: viewer chat names and questions are spoken in the same audio as Fabio's answers; speaker UNKNOWN unless the words settle it
+# ---
+[0:03] hello everyone and welcome in chat how is it going warriors one in chat can you look
+[0:16] how many people we good we good two
+[0:25] loss one win today says Andrea we try to recover try
+[0:31] to recover there is also Luca now guys I'm I'm creating the Avengers team okay all the best traders I
+[0:41] know will be inside here one of those is Luca up and they will participate in the battlefield chat.
+[0:53] So the lives are cheaper week but you have the possibility to talk with other members and all the traders that are profitable
+[1:03] consistently profitable will be part of the group. The group will be open tomorrow and it will be you will see in the dashboard for everyone it will call battlefield right
+[1:13] now you have only battleground preparation during the weekend i was thinking it could be nice let me share screen it could be nice to invite a nutritionist because some of you
+[1:23] told me that you want to know also the supplements how to reduce the stress and how to deal with it because i i cannot
+[1:34] stress enough how much it's stressful this profession
+[1:42] you took the shot from the top right on us i was driving i couldn't take it i was driving back from the podcast business base was overcrowded couldn't
+[1:52] get the short but it was an amazing setup session we saw a garbage market
+[2:03] consolidation not moving and stuff anyway majority of you made money anyone that made money in the last session text one in chat even with
+[2:13] this garbage condition now look at this the previous session without order flow if I only guess based on price action I will
+[2:23] not be able to survive okay because I will be not fast enough to put my stop-loss to breakeven and we took multiple breakeven
+[2:32] made the most in my life trading in the last session nice Zansalan nice amazing amazing
+[2:43] guys now can you see the screen can you see it properly
+[2:50] okay okay now what we're going to do today we are going to cover the mental models that
+[3:01] you need to use we are going to do live charting
+[3:06] and we are going to the execution method trick let me see the chart yesterday two micro from pop yesterday oh nice one
+[3:17] perfect rejection at the POC from 16 but I was delayed because of the profile amazing amazing trade amazing trade someone
+[3:27] other took the short you to floor in you took the same short that I was taking before unfortunately I was not with my setup so I couldn't manage because I
+[3:37] had the live and it's not easy to trade and at the same time explain but amazing setup amazing setup now I want
+[3:48] to start with this it will cover not much not much time and we will treat this while we do live charting I want to ask you something guys how
+[3:58] many of you lost money not because of the model but for inefficient
+[4:06] mental resilience when you go in drawdown because I want to tell you my story now you see the now you see world champion foreign world cap 2000 execution
+[4:17] 500% amazing you see me like trading and doing 10 20 30 40 50 000 per day but before before it
+[4:27] was not like this it was really different than this and trading can get to your mind can get to your brain and when
+[4:37] you manage personal capital that goes above a threshold that it's a lot for you.
+[4:44] So for example, it could be for you guys $100,000 for me, it's millions.
+[4:50] And when you go into down and you break the profit streak. So for example, let's say that today we close a bad day, okay, we close three stop loss, okay, four stop
+[5:00] loss, it can happen, it will happen like okay when you have something like this the only thing that can save you from doing damage it's your mental model it's
+[5:11] nice that you share our cheaper well no sugar coating or i don't care about sugar coating the peel to make you think that it's easy no i promise you
+[5:21] that i will be 100% transparent and i will be completely honest with you and i get upside and then i get downside during my career okay it's
+[5:33] part of the game and the moments that you need the mental model usually is the moment where if you don't edit already set up with rules you will fuck
+[5:43] up your whole account okay how many of you did big drawdown and damage not because of the strategy type one in chat but because of the mental models going in three stop loss
+[5:53] look at the chat look at the chat okay what what I'm telling you is human nature here there is no shame no one needs to be covered behind the camera we are all the same and
+[6:03] we do this for a living okay we trade now if you never did this congratulations you are in the top 1% that are able to keep their mind under control when
+[6:13] they are floating numbers I was not like this I had to become like this okay so what What I want to share with you today to start is the first
+[6:23] mental model that is process oriented. So I want you to try to shift your satisfaction from
+[6:37] end of day result to end of day process.
+[6:44] What does it mean? I have a model. Okay, the model is saying that I only enter in profile framing In in trend condition and I execute
+[6:54] with big trades perfect as soon as My process it's on point.
+[7:00] I'm not over trading. I'm not doing stupid stuff I'm not risking triple the amount I should if I close the day with negative X
+[7:11] % is still okay. Is it clear?
+[7:15] you see how much we are fast after three minutes was available the recording the last session you have always there okay this part here it's counterintuitive because
+[7:26] we as humans sit and they know that you all at these moments okay try to try to think about this the
+[7:36] session is going good I tell you one session that I had one month and half ago that was at the same time funny and depressing So it was
+[7:46] a long super long bullish day on November and I started to load my position Okay, I started to load my position and they took amazing 1
+[7:56] 2 3 1 2 4 1 2 5 with multiple trades So I built the profit for the day till 41 42 thousand dollars.
+[8:04] Okay that for a single day, even if you are wealthy, it's it's a large sum of money it's a personal account it's not proper so the moment you withdraw it's in your bank account and you
+[8:14] can spend it okay so it's a lot of money what i did at what i'm not shy to tell you is the following i built for the
+[8:25] session here and the session exploded okay you know what your brain is telling you you have 40 000 of profit here you respected the process and
+[8:35] now you have an amazing that's an interesting result. So what I did in this case is assuming in my mind that considering that was a bullish session we will derive here we will continue.
+[8:45] So I start to mark on the charts level that are higher. Why? Because I put in my mind the target of closing six figures in one day 100,000 dollar.
+[8:54] okay you know what happened that i loaded again position here okay risking part of the profit of this one the market did like
+[9:04] this i added and this snapback taking me in a streak of four stop loss before going here and out of the 41 000
+[9:14] in profit i only lost 15 000 in profit but if i was
+[9:42] the 350 people only two people in the chat told me the last time Fabio I think you need to get exactly the level where
+[9:53] you enter the target and the stop loss so they took this as a signal service these people are not interested in learning they want to make quick money following
+[10:03] your process and they don't have the mindset to stay in this book okay they don't have the mindset because if you are here only not to learn and not to be
+[10:13] independent but you are here to take some signals here and there yes you will pay out for the money that you you pay for the service but you will not go anywhere the moment I
+[10:24] start to I decide to stop the session you don't make money anymore because you didn't understand the process okay so everyone needs to agree that we are here because
+[10:34] I want to make you profitable on your own not with me always close to you enter here close here enter close year break even okay
+[10:44] look at ORA yesterday i was up then lost everything because i was impatient only to see the market move exactly the right way once the you see yesterday unfortunately we
+[10:55] didn't head alive because if we head alive and we see that the market is not performing we stop
+[11:03] okay you remember in the live session that we did with word of wisdom no we took a crazy sniper 25 000 okay
+[11:13] then the market goes choppy same stuff okay these are condition that I don't trade usually but we are with the rates we want to take and explain I will try even
+[11:23] if I will stop for the day back to 15,000 Fabio but it's still an amazing day still probably of course is still profitable because we have an edge but we gave back 10,000
+[11:33] to the market it's not smart
+[11:37] okay not
+[11:42] smart at all I cannot see your image now out of these you need only three rules please follow these three rules and I promise
+[11:52] you at least you will survive if you are dumb you don't know how to analyze you don't know how to take what I teach and bring this into an edge at least you will
+[12:02] not make damage to your account okay so first point not end of end-of-day result end-of-day process second
+[12:12] point you
+[12:15] pay emotional three girls in dollars without discount okay the
+[12:26] moment you are not suitable to go in market you had an argument with your family you had an argument with your girlfriend you had an argument with your father you stay out of the market there
+[12:36] is no way around it okay the only time I lost more money than expected in my life is the moment I had someone in my family that was not with us
+[12:46] anymore okay I traded I was angry I didn't care about what I was doing I lost triple the amount that is the maximum drawdown not for the day but for
+[12:56] the week why your mindset is the reason you click buttons the moment you start
+[13:06] clicking buttons for your mind because you have an emotional trigger you have no separation line with Between a gambler you are at the casino.
+[13:15] Okay, you are at Las Vegas trying to trade This is what you are doing look in the chat table one account for these arguing with me.
+[13:22] Okay, perfect second point third point
+[13:30] Your personal account is your bullet and you have one Okay, you have one Remember
+[13:41] this the damage that you make to your personal accounts the unsustainable damage that you make cannot be recovered by just
+[13:51] depositing back in the broker because you just admitted failure to burn an account you need to be inconsistent in mental discipline
+[14:01] mindset model and control of yourself you are inefficient you are not made for this profession if you cannot control yourself it's better that you stay out
+[14:12] okay and i promise you i will not sugarcoat you will burn money if you are not capable of doing this now you have one bullet
+[14:22] shoot it in a way where you don't have the pressure to empty immediately your
+[14:33] gun you have time the market is open every day if we include crypto every day of the week why
+[14:43] are you running why are you trying to take five seven ten twenty five trades per day you will not get rich today you will only make damage okay
+[14:55] so i want you to go in this session with these three rules in mind then we are all human we all make errors but please i'm responsible in
+[15:05] this program i'm not only a teacher i'm someone that is responsible to install in your brain a program that
+[15:15] can save you from yourself this is the difference between a teacher that sells you a course and a teacher that care that you can survive
+[15:25] in these markets because this is a battleground okay and the broker will not help you the market maker don't care about you you you can go
+[15:36] to die in some forest will
+[15:41] be interesting issue Yes, but Bitcoin guys, I don't use order from Bitcoin.
+[15:47] I use on-chain analysis Let's go
+[15:52] Let's go to the platform.
+[15:56] I Want to ask you something? In the previous year, I made amazing results also Using the volume spread analysis
+[16:06] that uses thick volume There is any one of you that is interested in my volume spread analysis model for
+[16:17] trading view because if yes okay I can create a template for trading you where you add volume spread analysis that is not the same as
+[16:27] order flow it's another different type of analysis but we can explain okay okay I need to upload because it's a private code I need to upload upload
+[16:37] on trading you and next week you have it yeah it's good also for stock it's good also for stock let's go so we start with
+[16:47] our amazing template here and profile framing now going through profile framing let me remove one second the TPO
+[16:59] how is the session of today guys how
+[17:04] is the session of today previous value
+[17:12] previous value ah something there is someone that remember the level that i told you the 25,000 1x1 that's the bottom level before accumulation
+[17:22] this one was the pivot now they are building up we saw the last time I don't know how many of you if everyone is present they closed the session
+[17:32] of yesterday bullish I took some long yesterday okay the closed bullish the cash session is bullish now they tapped into the high and they rejected so
+[17:43] the cash session open with a strong long aggression to the upside as you can see here and now is rejecting how many of
+[17:53] you loaded short guys text you in chat if you took a shot from here based on the failed auction look at you look how many people
+[18:03] you are still running short yes or no
+[18:10] okay what
+[18:15] we can see here so this is the this
+[18:21] is the template that we use for triggers and we can see that there is a crazy absorption at this horizontal level there is a crazy
+[18:31] absorption at this horizontal level and when we go to the reason why
+[18:41] we go to the reason of
+[18:45] why the market didn't continue higher I gave you the tool to understand it can you see it no one in chat my
+[18:55] my type of analysis is not subjective what i do can be done from any one of you okay because it's visible it's visible this aggression of the buyers fading
+[19:06] the top failing the breakout at the top something that we can see okay and we can also see the lock-in from the sellers
+[19:16] where is the looking from the sellers here now this is one pattern that i also want to cover for today and I want to take one minute to explain to you because
+[19:26] it's one pattern that's made me a huge amount of money during the last year and is this one
+[19:34] let's say that you have an absorption here okay so you have a lot of aggressive buyers pushing failing to break out the top okay so
+[19:44] this one becomes a failed auction okay
+[19:50] perfect then when you have the first lock that this absorption is successful when you have an aggression with aggressive sellers
+[20:00] do you agree with me you have an aggression aggressive sellers lock in the movement okay so we have absorbed buyers aggressive
+[20:10] sellers with result we can take one short the trade that in 2025 gave me the most amount of money is the test of this level with
+[20:22] the confirmation of absorbed buyers so try try to reason with me you have an absorption at the top okay you
+[20:32] have an aggression that is rewarded so these buyers no follow through the aggression rewarded
+[20:43] and the buyers again absorbed you have three order flow information going in the same direction this is what i wanted to show you okay guys
+[20:53] don't be afraid to ask it if it's not clear say it okay absorption at the top aggressive sellers 165 contract really strong
+[21:04] the market tried to break this level for i think 2000 contract total 1400 contract total fail always this is your opportunity
+[21:14] to jump in with a super small stop loss okay you can cover yourself above the area and shoot for a 1 to 4.5
+[21:24] guys there is someone type 3 in chat that notice that this is exactly the same model that I used to take the trade of the session of $50,000 on YouTube absorption
+[21:36] at the top aggression entering when there is aggression collapse okay this is today this is
+[21:47] I took on YouTube was the second of December oh look at this can you help me guys to read this so we do some
+[21:57] live reading what
+[22:01] is here and you see look at the chart when I was explaining there is one guy that saw exactly what I mean John Pransch you
+[22:11] executed exactly the trade that I was explaining you executed exactly look at this absorption at the top again okay then
+[22:24] you add all this effort candle is rewarded so a huge cluster of aggression and absorption at
+[22:34] the top amazing I entered the short also amazing setup you see that is it's a method it's a method probably they
+[22:44] squeeze the lot this law probably they squeeze this low let me see if there is also momentum setup let me go here this is pretty empty it's
+[22:54] not so much volume because it's the london session probably they squeeze the low 25 500 let
+[23:05] me see how is that the rejection now you remember that in my live session uh what i was doing the one of the days on YouTube, I explained that when you have
+[23:15] an absorption and a strong move down, the aggression of the last sellers is your first point of interest.
+[23:25] So where they can go to try to reload and then you need to see the battle here if they manage to break or not.
+[23:31] And the second one is the first aggression point, which one is the first aggression point?
+[23:36] It's this one. Okay. It's all this area because it's from here that the sellers got absorbed Sorry, the buyers got absorbed completely and the sellers
+[23:46] to control so they broke this level now Where are we going? We are going to the origin of the movement from where they from where they rejected guys
+[23:58] You remember this level? Why would you be able to?
+[24:02] Mark this level by yourself when you are alone when I'm not there will you be able to mark this level why try to explain to me why in the
+[24:12] chat there
+[24:16] is damage that took long because this one is the most important absorption level of
+[24:24] the chart this is the most important one guys okay and the most important absorption level of the buyer so where the buyers got destroyed on the
+[24:34] way up is this one
+[24:39] now they are playing here now I'm really curious to see what they do here what they do here this is important it
+[24:50] is better to take the trade immediately from the absorption or from the aggression so here if you have a level where to cover yourself that is this one you
+[25:00] can already when you see rejection you can execute but let's take this for example okay is this an absorption or the buyers are still in control what
+[25:12] is this at the moment till they break from the downside buyers are still in control so probably they want to reach this level again you
+[25:22] see that they are using this as a stair aggression sellers rejected tapped into again and now you see what's happening they
+[25:33] go here okay they go back here here we can see if there is an opportunity of course we can see the volume bar
+[25:43] i put immediately want a single bar the delta bar look how much effort look how much effort they put okay
+[25:53] look how much effort they put here and now you can see what a dry in volume now you can see a dry in volume now tell me guys is
+[26:04] this precise or no look at the first rejection because the first rejection is telling you if you mark level correctly it's the the capacity to
+[26:15] identify resting orders. Then you can see a lot of stuff.
+[26:19] You can see the inability of the buyers to break out for multiple times.
+[26:24] We only had one test. OK. You can see if they lock in the movement. So the aggression of the sellers control like you need to have something like this.
+[26:33] You can use a lot of stuff. But the ability to mark the level it's based on the the the the first time that the market reached it was the rejection okay
+[26:43] this one was the first level of the day that we marked we'll make it blue but it's count unfortunately it's counter trend this one is
+[26:53] counter trend this one is
+[27:01] trend following
+[27:05] mama mia i
+[27:11] cannot even watch the chart that immediately will it be a squeeze if you break the green box guys from how how the price it's unfolding I will
+[27:21] not say that it's so smart to take a long yeah we can see we can see the downside pressure now you can understand that even
+[27:31] this small movement okay even this aggression of the sellers that you had here if you think about entering at the level a closing above it's a huge risk reward what is
+[27:41] this information what happened Kendall is closing like this what what does it mean
+[27:50] all these sellers got absorbed all of them
+[27:57] all these sellers got absorbed now what they try to do they try to reload here they try to reload on the same level okay you know when you will have
+[28:07] a good movement a good movement you will have if we manage to break this law
+[28:17] if we manage to break this law we have a good new movement as
+[28:26] always guys it's for educational purpose it's not financial
+[28:33] okay don't risk your money use it to study look again is is this precision something that
+[28:43] will make you satisfied of your level of knowledge position on the down level position on the top level see how we reject okay now
+[28:54] if these sellers push against this wall you have a movement that is interesting okay because all these aggressive
+[29:05] sellers gets a confirmation of the direction of their their positioning okay so they can load back again and you can see a candle that gets populated by aggression
+[29:15] aggression aggression aggression aggression okay but you need to push the downside now they are fighting if the market bias today is long we
+[29:25] don't need to go higher from the value area law of yesterday this is only one model this is the profile framing on the long term yes you can go long let's
+[29:35] go on the profile framing and comment this together okay what happens what happens here where is the value area low of the previous session it's here okay
+[29:46] they try to tap the top they got rejected tom do you agree with me that this rejection is not a good sign and that the value area low it's really far and they
+[29:56] didn't even reached the POC we have a little bit of space to retrace yes or no Tom
+[30:04] that's the point but your analysis is correct like the value of the session is telling us that we go high okay the
+[30:14] value of the session is telling us that we go high
+[30:24] back on this level look again the third time no one two three four fourth time okay remember that every time that you
+[30:34] attack the level the level gets weaker because other orders gets filled
+[30:42] nice level with the naked POC yes Amano
+[30:49] what is your smartest way to add position as entry point changes and you mind up taking a BA a BA is not a problem honest a BA is not a problem you see what they
+[30:59] told you every time if you see that your level is not holding and the sellers got absorbed like here for example this information what is telling you guys
+[31:09] this block here what is telling you going up or no squeeze up or no
+[31:30] these buyers got the reward that the candle close long we managed to break this level and we have a huge cluster between here and also the downside area okay
+[31:41] they are squeezing the top
+[31:45] okay now these sellers absorbed or no you see this is the pattern that I take the squeeze is this sellers absorbed or no
+[31:55] absorbed you see you see how the market behave the sellers is absorbed the buyers got confirmed even
+[32:05] if you enter here not here still an amazing run up you don't need to make one to three one to four always let's see also the next level how it
+[32:16] behave now they are testing here
+[32:19] now they are testing what
+[32:28] happened on the testing level there was a 97 sellers absorbed they put another 75 contract here is it rewarded or no
+[32:41] no okay then when you make this framing of the area okay remember that also the small position
+[32:52] okay this one is a 123.9 if you go back to the top now we just tested again for the third time it's a 125 okay
+[33:03] covering yourself below the area this is the squeeze setup you see how the market continuously tap into this
+[33:14] cluster you see how we tap into a reload all this cluster it's
+[33:21] where the market took a decision okay and the decision that the market took is it long or is it short this one it's target 1
+[33:32] to 5 1 to 4.9 at the third touch
+[33:39] okay the problem you know where is the problem when you try to make the super sniper 1 to 10 now this one is still
+[33:49] not super long but remember that the more you are greedy with your target the less the probability that it get reached is look
+[33:59] at this amazing lesson the
+[34:03] market show us live
+[34:07] mind blow clear guys look
+[34:13] here now what
+[34:19] happens here also let's see if there is another setup
+[34:28] not so choppy it's moving it's moving they tap into these 255 contracts they tap
+[34:38] into this but this one this one here it's a trade that it's a little bit difficult to take
+[34:48] because you have always also these inefficiency okay now if you frame here 139 255 73
+[34:59] 65 62 do you agree that if we if we need to make an analysis only based on numbers the most important aggression
+[35:09] of all this chart area is this 255
+[35:16] is this okay for everyone guys number if we need to see everyone the same stuff
+[35:26] I'm not thinking oh this level broke this one so I make a consideration if I want to make it stupid simple and I want to take only the horizontal level
+[35:36] not about of absorption that we talked before that anyway anyway sustain the price anyway sustain the price and
+[35:46] I want to see in this aggression which level is the most strong and is this one okay and is this one and here
+[35:57] you understand also the flexibility that you need to have because we were short here the first time it took an amazing explosion down then it came
+[36:07] back three times but when the market tell you something like this and you continue to short it's your responsibility because it's you that you don't care about making money
+[36:17] you only want to be right do you agree with me
+[36:27] okay now also for this setup you can decide to execute with a stop loss before the area with the target here or you can go for the home run okay you
+[36:37] can go for the long setup with a huge risk reward but this one have a lower strike rate you will have around 30 to 35 percent win rate so
+[36:48] you will see more red
+[36:53] 640 we consider a stop area 640 640 if i need to go long term
+[37:04] okay so you had two choice either you enter here and you take a target above the eye or either you try to shoot it to
+[37:14] the next level and the next level that i can see is the 25 646.39 okay now what happened here they did a failed auction
+[37:24] or they did a breakout is this a confirmation of selling pressure or buy pressure
+[37:33] unfortunately failed auction and after the failed auction where they came back they came back to the same level that so the sellers absorbed
+[37:43] before let's do this together okay let's do this together we take this we print it here okay and let's say
+[37:53] that we don't have the big trades we only you have the fixed profile you see that order flow is democratic we see the same information all over
+[38:03] together look at this delta delta where the market rejected first time here first time here it's not magic it's orders there
+[38:16] is no skill in what I'm doing there is only reading
+[38:24] 10,000 accounts I don't think I would also be able to open the mini no I'm pretty sure so the only opportunity
+[38:34] you have is micro a la if with a 10,000 accounts but maybe it's smarter if you have a small account a prop firm only
+[38:45] micro yeah but still guys when you are in the learning process okay it's okay what's the problem if you are learning you don't need to see the number you need to see
+[39:11] the you need to learn the skill you don't need to raise capital by yourself what an amazing auction guys what an amazing auction today what an
+[39:21] amazing auction is respecting the level like crazy like crazy
+[39:33] that's what I'm doing starting with 10 000 market to get consistency and confidence then going to put a couple hundred in once I'm profitable yeah
+[39:44] I think it's a smart choice keep I
+[39:51] think it's a smart choice keep
+[39:57] no guys I think the first reaction we will see at this level twenty five thousand six hundred and forty six look at this gap look at this small gap can
+[40:07] you see it there is a small gap between these two candle if the candle close green is shoot thus and goes to the next
+[40:17] level you see how would they reload on the gap this is inefficient volume because it created a micro gap
+[40:29] and when they go back here the market reload
+[40:34] nice one really
+[40:40] nice you see the first rejection when you get close to the level one okay how many of you took this sniper guys and not only one one two
+[40:50] three third test how many of you uh hacks didn't two kids amazing oh
+[41:00] you're still in Roy going really high Damian is $10,000 in profit personal or prop account $400 for rig I took
+[41:11] three of them nice entry FTMO okay still money
+[41:18] tick by tick you have date on dip charts relax I made $400 today personal nice Arman
+[41:29] I've been with you since the bootcamp I never thought I'd be this precise amazing another guy with another sniper top
+[41:40] step today was behind bipchars i was farming you are printing money amazing so good now guys remove the
+[41:51] long okay let's not consider the long i always think about the first touch okay you see the first time they reach you see it's clearly visible the absorption it's visible
+[42:01] that on this level there are resting orders okay there are interesting orders on this level now what happened that's usually you do reload on one
+[42:11] level if you want to break so I would like to say some aggressive sellers that get absorbed or seeing the price going back to this balance level
+[42:22] price going back to this balance level but these are counter trend trade and I don't like to take them I don't like to take them
+[42:38] they are really trying aggressively to break remember that this level is sustained by 39 250 89 around around
+[42:48] 25 million of notional value okay and if this gets broken we shoot strong we shoot strong up you have
+[42:58] a squeeze okay you have a squeeze
+[43:03] look how much is beautiful a
+[43:08] squeeze guys is when you see a sudden acceleration so from here it jumped directly maybe here with one single candle because there are a lot of closing of cell
+[43:21] unfortunately there is not a big participation from the aggressive buyers so big orders in this movement the last loading they did it's here this is the last loading they
+[43:31] did one two three four then they stopped now
+[43:36] now i don't see anything that we can execute buyers are scared now no it's not that they are scary just that they are high in the curve you
+[43:47] see here a lot of participation here a lot of participation now there is a dry up in volume it's a little bit dry the movement but still when
+[43:57] they go back to this level I can see the buyers reloading you see they try to break three four five times and they always hold this level that
+[44:07] they broke it means that their intent is go higher okay their intent is to go higher i usually don't
+[44:18] like to take trades when there is no support from the aggressive order market participants but if you have other confirmation that you like to use maybe the delta
+[44:28] profile footprint you can do it
+[44:39] as speed of tape is dry but i think it will get soon soon
+[44:47] interesting because
+[44:54] now you see oh you remember the last last live that I showed you look at the coherence you see that this vertical candle it's
+[45:05] the one populated by this aggression of sellers it's
+[45:10] the same candle and it's the candle that initiated all this movement this is what I was trying to explain the last live that I gave you the model with deep trades
+[45:20] plus the aggression candle of the speed of tape this mean that is interesting is 681 a good TP where
+[45:30] is 681 681 yes
+[45:37] it's a smart TP but I don't understand why you are trying long in the no-man land see that there is nothing here okay the last opportunity that I see long
+[45:47] is one and two that is the true that I told you anyway now it will be so entering at this cluster one
+[45:59] two six entering with really high stop loss so one to two point five still paying out I
+[46:21] took two now securing one hour I took two one-to-one risk to reward it's it's still good yeah I know that it's burning Arsalan we
+[46:31] will cover it don't worry I want to do some charting because today he already gave us multiple opportunities that are amazing see
+[46:48] how they it's shy the speed of tape speed of tape is shy aggressive aggressive sellers remember this level that I told you are the one that they will visit you
+[46:59] see so now the speed of tape is loading now the speed of tape is loading and the speed of tape look look look look look at
+[47:09] the aggression on the downside of the speed of tape
+[47:13] populated by
+[47:18] aggressive sellers and which is the level that stopped at least for the first time all this collapse does it make
+[47:28] sense to you that it stopped here with the weak yes or no it's not subjective it's
+[47:40] not subjective and
+[47:45] look how much the market it's amazing now the speed of tape of the buyers it's super aggressive they are reloading to protect this level so they
+[47:55] are fighting they are fighting in this area
+[48:00] against sellers trying to recover the aggressive pressure that they put before.
+[48:09] Can you still consider to take different type of trades like momentum breakout when you are in a whole balance space?
+[48:15] You can take yes, but you need to be not exactly at one level value area value area low because it's the probability that you
+[48:25] will get into consolidation because the aggressive orders it's the limit price wall on the top or on the bottom it's giving keeping you in consolidation
+[48:36] this is the worst case that you can have for a momentum trade will
+[48:44] you consider a cell continuation i will consider a cell continuation if we break out this level yes if we break out this level yes but
+[48:54] this one for me this aggression that got absorbed here and this reclaim of the level that got reconfirmed here it's a really good sign for
+[49:04] the long it's a really good sign and it's possible that if we manage to recover this huge candle okay
+[49:14] and we see i don't ask a lot but a little bit of participation of the buyer some big trades then we go to the target that the other guy say that is this one so
+[49:25] let me clean everything and only mark the sensitive areas that i'm watching sensitive area one sensitive area two
+[49:35] this is the absorption this is the intermediate area that we don't need this goes broken so we don't need this is the playground this is the playground
+[49:49] Fabio will you consider shifting your view of course of course i will consider shifting my view when the market tells me so if the market
+[49:59] gives me an aggression on the downside that breaks this this area breaks this area break this one i will say probably we now are ready
+[50:09] to attack the law and for attacking the law i mean attacking the 25,545 but
+[50:21] as of now for example guys this one okay this pattern on the most important area that we saw gives you the vibe of
+[50:31] a rejection or a continuation short like will you short now?
+[50:38] Yes or no.
+[50:40] You can short now. Okay. If the market gives you the breakout.
+[50:45] So if this candle boom aggressive. Here you can take a short on the momentum phase.
+[50:52] But still the buyers are so aggressive here. I think we tested four times and each time they rejected.
+[50:59] We don't have the clue that the aggressive sellers are strong enough.
+[51:03] enough to break okay
+[51:07] we have the clue that buyers are protecting the level and they are doing this amazingly because also the last test that they did here the sellers
+[51:17] got completely absorbed
+[51:23] this is the intermediate wall that the sellers are putting if this one gets broken expect volatility twenty five thousand six hundred and
+[51:33] thirty two if this one gets broken from the buyers expect volatility and if you are waiting for a confirmation to get short wait for this level to collapse
+[51:44] wait for it to stop printing this week and to have a clean break
+[51:53] let's see how they behave
+[52:01] i cannot look at the picture and because i'm watching chart now another time they filled into the inefficiency see also of the 139
+[52:11] executed contract and now i start to see popping the speed of tape long can you see guys i don't know if it's big enough otherwise i can amplify but you see that it's green this
+[52:22] candle and this candle is telling you that the speed of tape of the aggressive market order on the buy side it's interesting and it's always on the same
+[52:32] level it's always on this horizontal level now they are fighting this is an important decision level you don't load your picture and I only see
+[52:42] a blank image there
+[52:46] is nothing
+[52:49] yeah they are defending buyers are defending let's see where we are in location we
+[53:00] are a little bit below the value area I a little bit below we are almost at the POC they
+[53:15] are really trying their best they are really trying their best to break it and now the speed of tape you see is growing from the sell side one and
+[53:25] two this speed of tape is really high from the sell side i will be surprised if they don't break it now because it means that there is a huge absorption wall
+[53:35] from the buyers if they don't break with this speed of tape and with this pressure we reject look
+[53:44] how much look how much this one considering all the aggression is matched only by this yes
+[54:01] of course we can go through it peter of course we can go through the deep effort now i want to watch this interaction then then we go through the deep effort
+[54:14] really curious to see can you understand guy which level of a fight they are putting in here which level of a fight on
+[54:24] this critique there is between buyers and sellers
+[54:32] this is the moment where you risk sleepage this is the moment where you risk sleepage because maybe you try to put your order here with a stop loss slightly below
+[54:43] the level gets broken and the candle squeeze really strong because this is a decision level this
+[54:53] is a really important decision level
+[54:59] they close like this with the speed of tape so
+[55:07] the sellers are in control but
+[55:13] if they break the level will become a self-protection level exactly Jason you got the point if they break it this level will be used to
+[55:23] reload on the cell side
+[55:27] but if they break this level guys you will not see a small movement if they break this level it's explosion because all these buyers needs
+[55:37] to close you see look at here it broke it failed every time they try to break buyers absorb
+[55:46] look at this bit of tape and look how much they are absorbing is
+[55:57] it clear for you guys how much it's important the relationship between volume and price if you see a lot of volume here but the the level don't break but they just print a week it
+[56:08] means that they put a lot of volume but they failed okay
+[56:14] look at how how much they are fighting
+[56:19] cell control level by control level.
+[56:27] This is the final word. And they are they are putting billions here.
+[56:33] They are loading billions.
+[56:36] And yes, if this one breaks, it's an amazing opportunity to go on the downside to the level that we saw before the sensitive level that we saw before.
+[56:56] They are trying their best guys.
+[57:00] I understand the bottle but is this Viva Viva
+[57:09] can you do can you ask the question again because I lost it and when I click it I can do like this no I understand
+[57:20] the bottle look at the buyers look at the buyers look at the buyers stand up a star the Italian means they are fighting to hell
+[57:30] here I understand the bottle but I want to understand how they are want to understand how they are defending or for protecting an area if the position were already over.
+[57:39] Does that mean they are reloading orders? Of course, when they go here, OK, and you see that the market goes here and then reject again.
+[57:48] It means that the passive orders are stacking liquid here.
+[57:52] So they are absorbing all this cell aggression. So the market is not having the cap stopping here.
+[57:58] And they are also loading long, as you can see here.
+[58:02] Beautiful, beautiful,
+[58:06] beautiful. is
+[58:12] it clear be back
+[58:14] those affect the defending zone when London is closing position what do you mean I didn't understand put your name not user
+[58:25] 0 1 5 put your name
+[58:32] and they didn't manage to break we still have only two important level we still have only two important level the aggression of the buyers and
+[58:43] the protection level of the buyers here they put a flag and the level of the sellers we have these two then if you break this you
+[58:55] have this level that it's really interesting nothing else it's not necessary to mark intermediate level that are useless for us
+[59:20] no I don't think it's it's lagging I see that the connection is going right and you don't have even delay in the life can you hear me properly can you
+[59:30] see my chart here look at this aggression of the sellers can you hear me properly I
+[59:39] see the chat not
+[59:42] going so I think it's my problem now chat in Pausa Casa de los Colimiento ah no yes okay chat
+[59:52] was post now guys chat what is this it's giving you an additional information or no
+[1:00:01] oh and these buyers at the top so the candle close green with sellers absorbed at the bottom and
+[1:00:11] buyers at the top what is telling us is telling us that the buyers look here again someone is willing to buy
+[1:00:21] at the top and
+[1:00:25] the result of the buyers how is the result of the buyers at zero
+[1:00:35] and the result of the sellers zero we are stuck we are inside this range we can make the range even more precise but it doesn't change anything this is the range
+[1:00:48] usually what I like to do in this situation is stacking it's waiting and and stacking one order that
+[1:01:01] is capitalizing on the explosion of the range okay so when you have a clean control point
+[1:01:11] stacking an order okay and for control points I mean you need that to have an acceptance of this okay so some big trades here at the top
+[1:01:21] or clean breakout and test and we are stacking our third position for the day okay i
+[1:01:31] got this one running with small risk from the fair value gap protected by 400 buyers nice one hey it's the one that we saw before we
+[1:01:44] will watch fundamentals later if you want if we want we will watch if
+[1:01:51] we want we will watch fundamentals later
+[1:02:02] it's not necessary now the deep effort because we are watching the interaction from the big orders
+[1:02:12] CBT is telling you buyers more aggressive let's see you see that in this case they created a breakout of the movements they try to test the level and
+[1:02:22] when they try to test the level they are still stuck here okay so you don't see other participation from the big trades this is an important information
+[1:02:33] okay is telling you that yes the buyers are interested but there is not follow through on the reduction.
+[1:02:40] So the direction is still not decided. OK. Because if the direction was decided you will see aggression aggression aggression like here.
+[1:02:49] BAM BAM BAM BAM BAM BAM OK. It's clear the direction for me because the structure is unfolding on the upside.
+[1:02:57] And we have this absorption. So it's clear to me that we are going long. But we don't see participation of the big.
+[1:03:02] So maybe this target is too long. It's too on the upside.
+[1:03:06] That's the reason it makes sense to put the risk to zero on the upside to risk zero so we are not
+[1:03:17] even using the profit of the previous one and then considering to run through the final target there is a bigger movement and
+[1:03:30] how you scaling when you are right I explained this multiple times but if you want to met when this now I want to see the how with the price action unfold and the volume
+[1:03:41] unfold when we finish showing this one remember that we need to see position management true we need to see the third model for we need to see three
+[1:03:51] sorry we need to see the deep effort remember for me
+[1:03:55] guys what I told you when you exit from a compression phase you have momentum okay look at the single candle look
+[1:04:05] at this single candle how much it's aggressive how much it's aggressively single candle so
+[1:04:15] what they told you buyers stock at the top sellers stuck at the bottom result of the buyers confirmed and now the
+[1:04:25] markets is coming to test okay it's closing an inefficiency touch the level and close the level with this absorption
+[1:04:36] so this one here would have been your feeling point this
+[1:04:44] one would have been your feeling point look at
+[1:04:50] The sellers are loading new position even if the buyers are protecting now sellers are stronger So what does make sense on
+[1:05:01] this position to consider covering? Okay covering your risk when you go out of the level.
+[1:05:09] So Considering that the sellers are being absorbed and the buyers are being follow-up.
+[1:05:15] You can also Go risk-free if you enter precisely really fast Okay, so considering that when you clean this level
+[1:05:25] and to clean this level I mean breaking this top for example You can go risk-free because if it breaks on the downside even now if it break this level the analysis
+[1:05:36] invalidator So you go to stop loss? Let's see how it goes Now they are engaging again Sellers and I want to ask you something guys.
+[1:05:45] How is this interaction of buyers and sellers? He one minute risk-free Is it amazing the trade management or no now ignore it goes to profit
+[1:05:55] it goes to stop loss, but how much is precise?
+[1:06:00] We mark the level from before we know exactly where there is the high probability of rejecting and we have time To go stop losing at zero so fast
+[1:06:11] not even one candle it's better to take three brekivan for brekivan that losing money
+[1:06:20] hey you see here when to enter you see this absorption in one candle you have two following absorption then you have an aggression
+[1:06:30] here
+[1:06:35] they teach the opposite everybody else Nick and this is the reason people lose money
+[1:06:42] let's make a survey please be honest be honest okay don't be afraid to tell no it's garbage what you teach okay how many of you were losing before or struggling and
+[1:06:52] are seeing consistent result as the first time one in chat okay
+[1:06:59] i cannot fake the opinion of people i cannot fake the opinion of people there are hundreds of people in the chat
+[1:07:11] what a sniper guys this one what a sniper what an amazing sniper ah look how
+[1:07:21] they they they enter someone is making one to four oh
+[1:07:28] the Presection it's a little bit choppy. You can also decide we took two one two three.
+[1:07:34] Okay, you can also decide look You know what? I take another one to one point five here I close like the other session no two
+[1:07:44] one two three six are plus one point five you close seven point five and you are done But the confidence of going to break even when the market tell you that you can
+[1:07:54] go because anyway if it breaks this level we go down something that is keeping you it's keeping you safe and
+[1:08:06] but you are not risk-free Mario you are still with position in the market be careful oh now let's go here what the market is telling us
+[1:08:17] what the market is telling us the aggressive sellers are slicing through the aggressive buyers okay where
+[1:08:27] is the first level where they find difficulty in going down the one that we marked
+[1:08:36] when you start to see this in 3,000 setup like I did on the World Cup 2300 you start to understand that there is a big difference between
+[1:08:47] skills and probabilities okay
+[1:08:54] this information here you can say you know what oh I take also a little bit of money out of the market maybe it's not much it's $200 but better
+[1:09:04] in our pocket than in the pocket of the market makers
+[1:09:10] better like this
+[1:09:23] no no no it's not delayed guys I don't do delayed life it will be easy to pretend the time presides with delayed life it's
+[1:09:33] for fake gurus this is real time and you can check with your chart
+[1:09:48] Important level. Yes here. You will take out your take profit your partial your first take profit.
+[1:09:53] Look at the rejection and the precision on the level
+[1:09:58] Look at the precision of the level.
+[1:10:05] Look at this
+[1:10:08] Just fast five evaluation account. Bravo Fabio. No Bravo to you Bravo to you Just giving you my view
+[1:10:22] Later, we go to the cot Florian for now.
+[1:10:26] The profile is long
+[1:10:36] How do you manage your day fee started with a loss? if I start with a loss I continue till 3 if I reach a maximum of 3 stop loss either
+[1:10:46] I lower the exposure but usually a stop for the day but guys it's really difficult for me to take 3 stop loss in a row it's really difficult it happens
+[1:10:56] two or three times per month but it's not common and not because I'm precise but because my position management it's fast
+[1:11:07] so if I take a is not a stop loss the market only takes the commission out of me okay
+[1:11:18] so it's it's not a problem it's not a problem at all
+[1:11:25] no I'm expecting a final target here
+[1:11:30] expecting a final target here
+[1:11:35] one day it will be nice to see how you actually execute and manage your trade I add a huge amount of content maybe in the next
+[1:12:16] let people understand let people understand it's not easy nice trade oh you trade on interactive brokers also okay then I can recognize yeah
+[1:12:32] you only make money if you only execute how
+[1:12:39] did I mark this level based on this
+[1:12:44] you see how
+[1:12:49] many in the chat can understand why this level it's important for me
+[1:12:58] why this level it's important this
+[1:13:09] level is the starting of the sell move participated by the aggressive sellers but it's the huge absorption look here this cluster it's
+[1:13:19] incredible this is the initiation of the move no
+[1:13:41] I don't I don't notice the shape of the candle like the pattern guys you know I have a theory I can share with
+[1:13:51] you okay the theory my theory is the following that
+[1:13:59] the trading industry is controlled by multiple educators okay
+[1:14:09] that pretend to be to write books about useless stuff like technical figures penment cup
+[1:14:19] and dandel and stuff that doesn't work and it's like a self-fulfilling prophecy no because the beginners advise this book to
+[1:14:29] other beginners and everyone study the same bullshit but when you do this from a quantitative perspective you understand that 95%
+[1:14:40] of the stuff that they teach you don't work okay and it's not fabulous saying it like if you try to
+[1:14:50] make money and I should risk two thousand three thousand dollar five thousand dollars per position based on one shape okay of I don't know
+[1:15:00] cup and dandel I will be scared as fuck I
+[1:15:08] will be scared as fuck guys
+[1:15:18] so Jay I have some students that scalp gold also that trade gold also and they have amazing result with my momentum model
+[1:15:28] and my models that they use on Nasdaq I don't know if there is Luca in shot Luca are you in shot one in shot franchise get this one in chat if he's
+[1:15:38] here he told me that the model works amazingly also in in gold no
+[1:16:00] I do usually the minute or the range the range when the market is choppy look at this when the market is getting in
+[1:16:10] a choppy mood you can use the 40 range is still the same visualization but you see how it's it's less crowded
+[1:16:21] so you don't have candle on top of candle on top of candle is more and specifically the speed of tape it's more relaxed more clean on
+[1:16:32] the range but the analysis is the same you see sellers absorbed by the bottom sellers absorbed at the bottom sellers absorbed we are recovering
+[1:16:42] okay guys if you decided to not take take profit here and tool till here you can also manage you manage like I do the position you
+[1:16:52] manage the position with a stop loss in profit here okay so you are already taking out a one-to-one you have additional R and remember
+[1:17:02] that the market is here for you so if you get taken out it goes back to this level you see another you can take another trade look it's here how does it work the model for gold
+[1:17:12] Luka okay
+[1:17:17] so you trade I know why Luka is not playing it look how much money are you making scalping the loan send send your chat distracted
+[1:17:28] this guy yeah
+[1:17:30] beautiful nice
+[1:17:42] making money money there
+[1:17:50] buyers at the top everyone in profit everyone in profit
+[1:18:01] in the game
+[1:18:09] six hundred dollar Rick took six
+[1:18:16] hundred dollars trade on five account look look at these guys look look at the soldiers i
+[1:18:23] heard that people participate in training tournament increase the risk per trade but how you do do you keep your 0.25 so you know what i do i stack profit for the day using
+[1:18:34] it to risk another trade let's say for example i take three take profits after i take three take profits at the next trade it's
+[1:18:44] part of the profit i made
+[1:18:52] you go heavy yeah you trade almost as many contracts as me
+[1:19:00] Nasdaq for start it's okay guys you need to learn the process you need to learn how to cover yourself and the process you
+[1:19:20] want me dark to after we finish to see this trade to give a breakdown of the reason why I explained this long history
+[1:19:30] long that we saw why why they take profit you want me make a summary for everyone from the profile framing to the session we can do it just wait one second because
+[1:19:41] i want to see if it fill this level and reject take
+[1:19:49] one glass of water guys
+[1:20:22] amazing you're doing really well
+[1:20:33] doing really well now you see how i also trade my position when i'm really close to target is trailing on the big trade so
+[1:20:44] let's say that i have a stop in profit i put below the big trade on this downside because i'm happy with a one to three instead
+[1:20:54] of a one to three point six okay but i'm not happy if the market touch this level from here and collapse down and sometimes when you are really good
+[1:21:04] at framing the areas it happens so now the price completely is At least sustained by his demand created by the 65 contract
+[1:21:15] Let's see how it goes
+[1:21:20] You saw me in the live like trailing Here then you have an aggression trailing here.
+[1:21:27] Then you have another aggression the 50,000 session. I did exactly like this I
+[1:21:34] don't use the a bitraker Liar so I cannot help
+[1:22:07] you see how we starting to reject the top
+[1:22:11] here you are out you are out with your one to two point seven one two two point six if you stay in the long term you see
+[1:22:21] the market went down absorbed and probably you go to the full target one
+[1:22:28] two three how many of you took the full target guys look at the rejection speed of date they are trying to break it one in shot
+[1:22:38] fabulous trade you know what is fabulous but we are not inside from here here we are inside from the beginning of the move with
+[1:22:49] this precision
+[1:22:52] amazing today three targets
+[1:22:58] and look at this way wait it's not finished look at this
+[1:23:04] because knowing where it's better to remove your position is part of the game knowing which level can create you problem
+[1:23:15] it's okay jason it's okay learning is more valuable than making more money but i want to know if it's clear if you understood everything that we did what
+[1:23:34] information is giving you the market here buyers at the top on the level that we saw with an absorption speed
+[1:23:48] of tape long so they will try to reload that they will try to break this level okay now
+[1:23:58] let's go on the profile framing first of all the value that we are building so
+[1:24:08] this is session one this
+[1:24:15] is the session of yesterday and
+[1:24:20] this is the session of today
+[1:24:25] the profile framing is long or short
+[1:24:31] it's long okay perfect we started with the rejection of this so it means that they tap
+[1:24:41] into the high of the previous session they rejected and we were here what I was trying to take and
+[1:24:51] to capitalize is the virgin POC test okay so I was trying to take this to do
+[1:25:02] this in line okay this one the market did a retracement and
+[1:25:13] then decided not to go to the bottom as a matter of fact the first level that we marked for the day you
+[1:25:23] remember this one is the bottom of the day when we start the life please watch it I mark this level explaining why it's really important but
+[1:25:35] this buy was counter thrown because at this moment sellers were still in control okay here and here but after this breakout look
+[1:25:46] at this aggression there is no doubt from here take together the stream formation shut the behavior of the
+[1:25:56] sellers here okay that we so live and they let you participate in what they were doing the behavior of the buy here what
+[1:26:06] they are telling you is the following that's the mobile of this okay and let's do like this so the
+[1:26:17] profile framing is long we
+[1:26:22] are here and we expect a long okay the sellers are in control they find a level award seller city load and they expect they
+[1:26:32] to try to break this and they tried two times but then unfortunately they broke how they broke with sellers absorbed and
+[1:26:43] buyers rewarded you understand that now the more probable scenario is this and I didn't created this
+[1:26:53] based only on profile framing but I watched the live interaction between buyers and sellers if here let's
+[1:27:05] make an example here if here we had this absorption okay of the buyers and then we have aggressive sellers aggressive sellers aggressive
+[1:27:15] sellers okay and we break these movements okay well there be in a continuation because the sellers had enough strength to break but considering that
+[1:27:25] they tried they failed they retraced they tried again you can see their attempt here they tried guys they tried their best
+[1:27:35] they failed and they was watching here maybe they try again no broken from here there is no short opportunity that makes sense from this
+[1:27:45] moment i only told you also when it was unfolding and printing momentum trade and it would have been an amazing risk to reward also after the test then
+[1:27:55] we took the reload zero down and shoot up and where is rejecting now at the final target
+[1:28:06] amazing satisfied with the souls that you bring home today we go to the third model this
+[1:28:20] is the final target not of the day is the final target for the position okay because this this is the most sensitive level but there is no reason why
+[1:28:30] they will not break this level if your approach is not to be based on one level to the other one two three one two four one two five and i'm out but your approach is
+[1:28:40] i want to take the full movement of the session then your target will be this huge absorption at the top this
+[1:28:50] will be your target okay you know why i don't trade like like this because it's really frustrating for me when you are floating 10, 20,
+[1:29:00] 30,000. And then you want to shoot for more and it comes back.
+[1:29:05] It's really frustrating for the way I approach the market to see all this profit back to the markets.
+[1:29:11] I prefer to make three, four, $10,000 of trade, making a total of 40,000 that's making one big shot of 40
+[1:29:22] ,000 that after three hours I mean reverse and they see from 40 to 0 this one drive me crazy I cannot accept it is it's bad for my
+[1:29:32] mental health and it's not scalable I think I don't like it
+[1:29:41] yeah but this is personal opinion this is personal opinion so the big trades guys are 60
+[1:29:51] the filter it's on 60 and you know what one time frame that I'm loving recently that is based on the range is the 80 range it's
+[1:30:04] really clean look how much it's clean absorption at the bottom now you know what is beautiful about volume every single time frame is confirming all the
+[1:30:14] setup that we took from point of view of volume absorption at the bottom buyers aggressive at the this was our trade they came back to test huge absorption at the bottom
+[1:30:24] buyers in the body another explosion absorption at the bottom buyers another explosion okay this one was absorption at the top sellers
+[1:30:35] and we could expect that from here we will go down that's the reason we take partial and then the buyers absorb sellers aggressive buyers here when we have the first
+[1:30:45] sign of weakness yes you see it it's visible i can go on 80 range i can go on 40 range i can go on one minute is it visible yes
+[1:30:55] does this mean that we are going short for all the session no but this mean that i found a wall here there is a wall and this wall got identified to us
+[1:31:05] before do not risk that the market there can do this and reject okay
+[1:31:13] if this wall gets broken where can we go we have already the level ready okay is this one this is the level okay so now what the market
+[1:31:24] is doing if you want if you are not happy with the trade that we took and you want to do another trade okay what can you see
+[1:31:34] aggression and absorption of the sellers no this means that if this level gets broken this one you
+[1:31:47] can have something like this
+[1:31:51] test I
+[1:31:58] marked this one to on the right wait a second so breakout test probably on the absorbed sellers like
+[1:32:08] these and then you can consider a follow-up but you need to have this breakout because otherwise this one it's a standpoint of control of
+[1:32:18] the sellers and and we marked okay
+[1:32:27] of
+[1:32:31] course I can repeat let me go to the so the three main catalyst that they watch are the following first I need an area
+[1:32:42] that
+[1:32:45] they can qualify from
+[1:32:50] one profile framing so it can be the value area I the value area low or the POC okay so it can be a sensitive area
+[1:33:01] from the profile framing perspective the second reason I can do this is based on the observation
+[1:33:11] of order interaction using the trades okay so
+[1:33:22] let's make an example I have here an absorption that is so strong of the sellers for two times trade okay this
+[1:33:32] is a strong buy area for okay this is a strong buy area this horizontal area even if I'm closed inside this range this one
+[1:33:42] for me is a strong buy area if I am here and I see the result with this aggression this is a strong buy area for me if I'm here and they see the absorption
+[1:33:52] this is a strong buy area for me okay so
+[1:34:03] I
+[1:34:06] can use this to to qualify my area and I will make you some example if here I have a consistent
+[1:34:16] absorption
+[1:34:18] of aggressive buy orders on
+[1:34:27] the top okay I have either the fading reversal so you
+[1:34:38] want to be a sniper and you want a system that is sustainable to be a sniper even if your win rate will be lower you trade the fade with a stop loss above
+[1:34:48] and you try to take the beginning of the move for a huge risk to reward okay you want to be someone with high win rate like today then
+[1:34:59] you can trade the confirmed fade setup and what is the confirmed fade setup is that you wait for
+[1:35:10] the aggressive sellers to take control of the movement that you qualified so you had a distribution okay you had control of the sellers you mark
+[1:35:20] this area and then you engage okay and then you engage and the third one
+[1:35:32] way to qualify area is using the delta profile from fixed
+[1:35:43] range what
+[1:35:47] you're explaining it's a it's happening right now from our area this
+[1:35:55] is a reload like I told you this is a reload to go by this one it's one here it's a reload this between these area you have this absorption
+[1:36:05] okay and you have this absorption of the buyer so what can happen is the same as before i will mark for you i will not take other trades okay
+[1:36:15] because we already took amazing setup for today but let's say that you want to trade because you want to trade okay it's the same setup as this one you see sellers
+[1:36:26] at the bottom absorbed sellers at the bottom absorbed buyers at the top absorbed buyers at the top absorbed
+[1:36:36] perfect breakout of compression reaction phase test with aggressive sellers skyrocket to the moon
+[1:36:47] can you see it can you see it the coherence between these two setups what's the only problem of this setup
+[1:36:57] that you are really close to the wall it's not a smart setup that's the reason i will not consider it you are so close to the wall and some of you will
+[1:37:08] say yeah you are close to the wall but if you break this wall you have the momentum and I cannot say no it's right if you manage it's
+[1:37:18] lower probability but if you manage to push this level you have an aggression that is interesting okay you have an aggression that is interesting now
+[1:37:28] going back to what I was explaining this one is the safe setup the confirm fate setup okay the fate setup it's
+[1:37:39] having as I told you 35 to 40% but with a lot of risk reward okay and there is also a fourth way to qualify the
+[1:37:49] area where you can execute from that
+[1:37:55] is the origin of the move using price this one I keeping my heart from my price action era
+[1:38:05] and is still working in an amazing way okay why because let's say that you want to use you come from
+[1:38:15] price action and you love price action so you get good at trading price action so you say Fabio I want my price action model but I want to execute this in a precise way what can I do you
+[1:38:25] can reason in the control area what do I mean control area I will give you an explanation.
+[1:38:40] Let me draw here and they will explain to you. Okay.
+[1:38:47] Okay. Now,
+[1:38:51] what does it mean control area is the study of the area that is controlling price.
+[1:38:57] Now, let's make an example. This supply is
+[1:39:09] controlling the price. Okay. till we don't break it this demand is controlling the
+[1:39:20] area till we don't break it when can I say that this demand it's more
+[1:39:30] important than the supply when this level gets broken when
+[1:39:41] this level gets broken the supply it's meaningless so I have only this demanding control these areas usually
+[1:39:52] give you amazing setup when you pair with order flow maybe it's an absorption maybe it's an exhaustion
+[1:40:02] okay let's make another example
+[1:40:07] this supply area it's interesting till the moment I don't break it When I break it my demand
+[1:40:17] takes control, okay? here
+[1:40:23] When I break this consolidation phase My demand gets control So everything that happened here in control from the
+[1:40:33] buyers momentum setup. I can bring up When is that I have a flip when I have a supply here?
+[1:40:41] I have a demand here and this demand gets broken so you have control of the supply and they will continue to have control of the supply
+[1:40:51] as much as the structure is telling me that the sellers are in control okay with
+[1:41:02] a personal
+[1:41:05] care to take out part of my profit on this area because I can't reverse okay but with a confirmation that the sellers are in control
+[1:41:15] till I don't break them and when I break them when this demand creates
+[1:41:22] this breakout and now I'm controlled from the bias and when I break this becomes the demand so I can continue to search long
+[1:41:33] okay is it clear guys one in chat when you have these you can say I continue to take short in this in this behavior I continue to
+[1:41:43] take long in this behavior I continue to take long in this behavior as always you will have some stop loss but they are part of the game what happened here
+[1:41:55] what happened here guys
+[1:42:08] demanding control still a garbage area because they are closed inside this range okay but look at this the
+[1:42:19] area that I marked for you again for the fourth time today rejected amazingly buyers I explained to you what when we break this we test they tested yes
+[1:42:29] zero draw look at these guys come on
+[1:42:34] look at the control point they take when you have this pattern I
+[1:42:42] repeat for you you are long of bias okay start to notice absorbed sellers buyers at the top break out and testing with
+[1:42:52] absorption on the bottom
+[1:43:00] okay now can you understand why we are having some resistance here yes or no remove everything watch only
+[1:43:10] here I gave you the tools to understand this by yourself okay
+[1:43:19] here
+[1:43:24] it's not interesting for me all this area is not interesting but here we have a lot of absorbed buyers this means that this level for sellers is interesting
+[1:43:35] and guess what will happen if the buyers take control also over this level
+[1:43:45] that we skyrocket here
+[1:43:49] no way around it we squeeze it
+[1:44:08] the what do you mean reconformation on close the level that they closed above was this one like the setup
+[1:44:18] that we saw before this one okay absorption at the bottom buyers at the top you break and you test zero draw down okay
+[1:44:29] this one is the same what you add you add absorption at the bottom buyers at the top test what we miss we miss the aggressive sellers they didn't do and
+[1:44:39] I think they can come back I think they can come back print aggressive sellers and then go up let's see
+[1:44:54] it will explode up it will explode if they break this they need to break this if they break the top for example when you want to understand how
+[1:45:04] much pressure there is you can also see the cumulative volume Delta the
+[1:45:11] Delta candlestick what is this it's telling you they are still loading they are continuing to load they are already
+[1:45:21] above the top
+[1:45:24] with the cvd they are already above the top it means that they are continuing to load you see they broke from the cvd point of view
+[1:45:35] you see here okay and what is incredible it's incredible that now they have a cvd cell candle but the candle is printing green so they are absorbing with
+[1:45:46] passive liquidity all this attempt to go short and this is interesting because it means that even if they are at the top of the
+[1:45:56] range still there are buyers absorbing absorbing absorbing seems like an accumulation you see how they start they restart from here
+[1:46:06] and this is not common why it's not common because we are in a wall so i would expect sellers to take control okay i will not expect that
+[1:46:16] that's candles that have all this delta close long if this happen it means that the buyers are putting back again passive order wall and they are pushing the
+[1:46:26] auction down okay
+[1:46:30] they are pushing the auction down they are absorbing look at this horizontal level that we saw before it
+[1:46:53] is a big gamma level where we are and the one right above and this is the reason they don't manage to break it yet okay they are not having an easy time breaking
+[1:47:04] it and for the fourth time they got rejected on the level
+[1:47:12] look at this delta look at this delta look at this delta look at this delta
+[1:47:30] i'm not watching gamma la if just i am is i am the guy that is texting me every day is
+[1:47:42] it you i am i don't remember all the all the name guys sorry
+[1:47:49] by yourself sleeping guys but you cannot expect always action you need to build some patience it's normal that you have some consolidation to give the market
+[1:48:00] the possibility to have trend you need to wait for consolidation just
+[1:48:29] one second guys that fab
+[1:48:58] you're loading no no i'm not loading guys i'm solving cash sheet i was trying to hide that i was loading but it's visible now
+[1:49:12] i'm playing I'm playing
+[1:49:15] look at this absorption look at this absorption
+[1:49:28] Rick I feel that my trading is getting consistent I just want to say big thanks I will get to the buy and make off yes let's go good Italian
+[1:49:38] dinner guys should we do a meet-up in Dubai at the end of the year should we do a meet-up in Dubai
+[1:49:52] nice let's consider it at the end of the last quarter to buy look
+[1:50:03] here what you notice what you notice what you notice watch fast fast fast fast what you notice between these two candles inside the area there was so
+[1:50:13] much bullish pressure that they got and
+[1:50:19] what I always tell you about the gap that is really important the candle next because if the candle next rebalance the gap now they rebalance and close green okay
+[1:50:29] so they rebalance and reject and you have a good movement you have a good movement up violent one if the candle eat the gap on the downside so
+[1:50:39] it eat the gaps till the beginning of the move then it got completely absorbed all with Nasdaq cap okay how
+[1:50:52] the candle is closing guys the
+[1:50:59] candle close purple and what happened market push down look at the delta bomb now all this aggressive sell
+[1:51:09] all this pressure got confirmed or absorbed I know that it's fast at this time but you need to notice what happens all this Delta
+[1:51:19] absorption or long absorbed I think we continue long guys I think we continue long I
+[1:51:32] marked this level I'm really curious to see
+[1:51:39] they didn't yet rebalance the beginning of the level that is this 1 we don't have much level that are interesting for us so we have
+[1:51:52] this as a decision level from the downside and this level for a potential up squeeze we have
+[1:52:03] one here and
+[1:52:07] we have all this area here now if we want to mark using the profile we
+[1:52:18] can do like this oh
+[1:52:23] it went back to the level wait wait it's too fast at all it went back to the level this is the level that we marked imagine guys imagine now he
+[1:52:34] print this aggressive absorption and it goes long like he did here exactly like he did here just for the sake of making
+[1:52:44] sure that the setup is complete because he missed the aggressive order we have news in five minutes let's see
+[1:52:56] with 30 you have more possibility with 60 you have less possibility it
+[1:53:12] felt this level in a crazy way in a crazy way now I'm really curious do
+[1:53:26] you consider to lower the value of BT no there is volume yet still 77 here speed of tape was so big I
+[1:53:36] can see from the CVD I can imagine I can imagine look at this movement but you why they are preparing guys because there is volatility in four minutes what
+[1:53:47] news there is can you check for me which news there is uh in few minutes
+[1:54:00] then here tip auction okay really
+[1:54:11] curious to see what they do they tap into the buy area that we saw and now what you notice when we are getting close to a news you you notice how many
+[1:54:21] big trades you see
+[1:54:25] like we we had 30 minutes without participation and now we have three big trades in two candles it means that they are fighting here
+[1:54:36] means that they are fighting like crazy and
+[1:54:57] when there is a news guys it gets it gets heated up the situation let's try to read this mass of big order so the
+[1:55:07] sellers I remove these otherwise we cannot understand okay the aggressive sellers control the situation from this big order here the big order got broken
+[1:55:18] or is still valid this aggressive seller here broken or still valid is still in control still valid okay
+[1:55:28] this seller is
+[1:55:34] absorbed okay and we are coming from a multiple hundreds of absorption here
+[1:55:44] what does it mean that the battle to decide is in these two areas okay the extreme
+[1:55:54] and the news is giving the burst of volatility to let you understand what they want to do
+[1:56:24] I'm on be a short you took the shot from here this is was the only short area that we saw but you know what Leonardo I
+[1:56:34] will I'm really happy if you go short okay if it goes short so you make money but I will not consider a short here for only one reason the
+[1:56:44] auction the auction is still on okay i prefer not to go opposite to the direction of the bias
+[1:56:54] of course if we break this level i change my mind but i want to see the market before breaking okay
+[1:57:07] it's coming the volatility burst huh
+[1:57:13] look how much is moving fast we need speed of tape they are trying the hell to break this level speed of
+[1:57:25] tape
+[1:57:27] let's check with these guys how is it going so the speed of tape is crazy in this movement and is building up on this way and you have absorption
+[1:57:38] on the buy side and confirmation on the downside now we see how this candle close okay if this candle gets
+[1:57:48] completely rejected then in this case we can have a move up but this candle needs to be completely rejected and if
+[1:57:58] get accepted is a squeeze on the downside
+[1:58:03] this is the cluster this
+[1:58:11] bit of tape it's interesting this bit of tape here it's interesting and you want to see how the candle close you just want to see how the candle close you don't want to execute you
+[1:58:22] want to understand when you have a moment where the dominance is completed so you have a clean part that is dominating the auction when this candle it's
+[1:58:32] almost closing if it goes with the speed of tape eating up these and these what do you see long or short
+[1:58:43] you see long
+[1:58:48] let's see if it close and
+[1:58:53] you have here we go here we go you have the last trade of the day let's see if it test let's see if it test i will
+[1:59:04] go for the last one another one two three the last one two three
+[1:59:11] and we closed like how many are we did today we did uh three trades one was i don't remember guys how many are we made
+[1:59:21] on average hey
+[1:59:26] it broke but was a fakeout it didn't it didn't complete the breakout that's the reason i always tell you wait for the close because it heated with
+[1:59:36] speed of tape and aggressive six are amazing let's see if it test i
+[1:59:47] also want to show you the deep effort
+[1:59:53] now i will show you let's see if we get filled
+[2:00:04] yeah of course it's possible tall this
+[2:00:15] was the line point of the last point of aggression of the sellers i'm really curious to see if they hold the the ground or not
+[2:00:33] in the meantime that it unfolds look here look at the speed of tape but look at this rejection decision level
+[2:00:44] oh
+[2:01:15] they they are they are fighting like hell on this horizontal level the speed of tape it's it's incredible if
+[2:01:28] they break this level guys is probably that they will never test here we didn't got filled for like one tick they
+[2:01:39] are breaking it's not valid anymore I try to make another last sniper, but we didn't got field.
+[2:01:47] Okay. I can go now on there Want
+[2:01:53] to show you the deep effort to
+[2:02:05] go on the 40 range
+[2:02:13] Hey, if I didn't get field, yes, because if it comes back it break me So it's not so interesting.
+[2:02:20] So if I don't get field I remove the order
+[2:02:24] So let's go on the deep effort
+[2:02:50] to feel just to make sure that the community gets inside we removed anything anyway but it's good that we remove because you see that this
+[2:03:01] one do you like it or not
+[2:03:04] this one
+[2:03:08] not so beautiful but anyway let's go here because this one it's
+[2:03:19] showing you this this is deep effort is showing you who is in control you see they show you it's controlled the auction buyers control of the option buyers who is controlling the auction now
+[2:03:32] yeah it's like a wall it's like a wall it's like telling you that the buyers are in control of this movement so the probability instead of breaking this
+[2:03:42] level is that we tap into top okay so that's we have an extension here an
+[2:03:52] expansion sorry breaking this level and potentially reaching also the final target where was the I want to see the most important
+[2:04:02] cell level you see this one is not so strong didn't even got marked this absorption guys
+[2:04:14] i just noticed that i'm live from two hours and 10 are you sure that you are not getting bored seems
+[2:04:24] like 15 minutes to me
+[2:04:32] let's go let's go
+[2:04:48] you can also pay them so now that you know that this level is controlled by buyers and you have a control of the buyers you can put this one and see okay
+[2:04:59] now i expect a surge of the bow today it's uh with the remote control the market i say he do i was saying you need to wait for a surge to the next
+[2:05:09] level beautiful now
+[2:05:21] we touch the top range and
+[2:05:25] it seems really aggressive to break it guys if this will that field does on the downtick it will already be one to one point five look
+[2:05:35] at this look at the speed of tape
+[2:05:41] okay calm because there is a huge volatility now calm 319 absorbed orders and one 104 on the bottom
+[2:05:51] they
+[2:05:54] skyrocket mark
+[2:05:58] this level here they want to mark this horizontal level what a beautiful session today guys all the
+[2:06:08] speed of tape down and everything got absorbed now they are coming to rebalance on the three three 1.9 of course I removed but if you
+[2:06:18] got filled here go risk-free yeah go risk-free don't give back not even ten dollars to the market you did a crazy sniper don't don't let this
+[2:06:28] volatility take you out with a spike if it goes it goes this
+[2:06:37] is not the delta it's the speed of tape
+[2:06:48] martin he's loading and then posting news
+[2:07:00] Leonardo I really will like that you go to profit on the short side but but this it's really risky because this absorption of the sellers
+[2:07:10] means that there is a liquidity wall here and if this high gets broken we really skyrocket if we break this down
+[2:07:20] on the other side we go down heavy so if you are still short anyway you could go risk free because you have
+[2:07:31] you are short from here zero down so either you are short either you are long it's it's good to take position to
+[2:07:41] take risk out of the market when the situation is so heated because you can get a sleep edge
+[2:07:50] now guys i want to show you something i remove this one second and i show you only the balls the one on the chart
+[2:08:00] don't dream
+[2:08:03] this okay now let's go here
+[2:08:15] this aggression 319 this aggression 104 and this breakout of the level what makes you think of it i say and the start i didn't
+[2:08:25] have the time to say makes you think long makes you think an aggression okay now if they manage to break this no if
+[2:08:36] they manage to break this you agree with me that all the sellers that are stacked and all these absorbed buyers needs to be released and these if all this huge
+[2:08:46] amount of buyers needs to be released and this movement is fast
+[2:08:52] okay this movement is fast let's see how they
+[2:09:04] time to break again
+[2:09:11] let's extend the area
+[2:09:17] you see how many times they try to load and break these two clusters of two purple
+[2:09:28] cluster the 104 and the 300 that are standing still really
+[2:09:39] curious to see really
+[2:09:46] curious to see if they managed to break or if they continue to do this dance of of initiative auction and absorption Leonardo you are making profit on this short still
+[2:10:00] inside
+[2:10:05] see either they reject on the 319 or the one on four and they always dance here
+[2:10:13] the buyers on the other side stop participating 10 minutes ago in the in the play I
+[2:10:26] can imagine Leonardo's emotion
+[2:10:30] yeah but the delta is not the all-important stuff jersey you need to pay delta with the result because delta is the input but then you need to see what the candle does
+[2:11:09] Leonardo say Fabio let it go today it's all break even but because you try to short the up move yeah
+[2:11:20] you are good Tom you
+[2:11:27] are good you are good
+[2:11:29] on the range chart is show but I really let's watch it you're right you see
+[2:11:40] now the the Nasdaq effort is telling you look you have the regression up the area on the upside but there is a wall here so there is an obstacle
+[2:11:50] to go up and this is the best behavior before a squeeze this is the best behavior before shooting up
+[2:12:00] the moon I like this
+[2:12:11] buyers are trying to load heavy
+[2:12:20] now we are on the top of the range the deep effort it's a proprietary study and it's based on the thickness of the book so
+[2:12:30] is watching the number of effort that is necessary to move the price and when it's really easy for one side to move the price we print the area so smart guys so
+[2:12:42] smart this is like the concept of fluid dynamics, okay, the more is difficult to move something
+[2:12:52] the more strength you need Okay, and In this case we can apply this to price to market Because if
+[2:13:02] for volume the path of risk resistance on the on the upside like we had here You see what they did it printed this candle and it never came back now
+[2:13:13] on the other side this red area that I marked for you is where the part of risk resistance is on the downside so from this area the sellers are in
+[2:13:23] control now if you want to have a no-brainer ping-pong between these two areas pay you a lot of money pay
+[2:13:33] you a lot of money
+[2:13:45] yeah I think depending completely on one indicator it's not what you want to do because
+[2:13:56] guys we are here to get freedom we are here to get possibility to be independent and but I don't talk only about
+[2:14:06] something from me I talk about everything if you need something to be profitable I don't want to say that you are labeled the
+[2:14:17] tools but almost okay that's the reason I want you to understand volume 360 every tool okay
+[2:14:27] also the VSA to be able to read it with anything in front of you we are going back to the to
+[2:14:38] the area we are going back to the bi-control area just touched just touched let's see what they do now that we are
+[2:14:48] inside the area I want to see but you see guys how much these are precise anyway this printed we have a bottom this printed and from here they did the high oh
+[2:14:59] let's go here
+[2:15:04] ah this one i didn't saw why you didn't send me guys look at this amazing absorption at the top this is the first time buyers participated
+[2:15:14] and got completely absorbed this is a strong wall this is a really a strong wall robin said uh you see
+[2:15:25] thank you Robin so it was my fault
+[2:15:30] was the replying and I even saw
+[2:15:38] Michael is saying I always get stopped out I don't know this just so rough for me I never catch a move Michael which kind of trades for example today you
+[2:15:48] took you took this one you
+[2:15:54] took this one or this test to the 255 if yes yeah good Jason thank you for stay in here if yes here for example
+[2:16:04] or here or on this test where did you got stopped out you trail your stop I want to help you
+[2:16:25] I took the short on open and made a lot but all the trading after the law I didn't trade well why Michael what
+[2:16:36] have you done so you took an amazing show on top of the amazing trade we took you to call so this short during the open how is it possible that that you gave back this money
+[2:16:46] to the market you took this short if i understood right this one this incredible short stay with me one second michael you took this short right where did you close this
+[2:16:57] short
+[2:17:07] it varies from trade to trader each other
+[2:17:12] good question i show you immediately let's say that you are here okay and you want to risk the same amount always on the
+[2:17:22] single trade okay you open this you go on settings you go on stop and you put
+[2:17:32] 2500 okay you
+[2:17:38] like this
+[2:17:43] okay and it doesn't matter where you put you see that it's always 2500 2499 is just changing
+[2:17:53] the contract I have to put seven mini contract here if I I want to do this I have to put 15 if I want to risk 2500 if
+[2:18:04] I want to enter here to take this I on this and having a stop here I can risk six contracts six point five contracts
+[2:18:22] okay
+[2:18:25] amazing Michael today the market only went up and we managed to take all the long on the way up how
+[2:18:35] did you got taken out of this long you try to short here because the only explanation that I can have that you lost money is that you try to short to fade this movement to go
+[2:18:46] back down yes sellers are in control now we are still inside the area but sellers are controlling you see from here let me clean this you
+[2:18:57] can see from here that sellers are in controlling control of the the AI standing their ground reclaim of this okay
+[2:19:08] so sellers are in control what
+[2:19:18] is the best exercise to really understand pressure management when controlling a longer short position sometimes they struggle with it it's just exercise Mario there
+[2:19:30] is there is no shortcut cut on this
+[2:19:40] look look here
+[2:19:46] 250 108 and huge speed of tape but candle red candle purple you
+[2:19:56] know that if it close like this and it close like this it's it's a problem for the buyers they got completely absorbed
+[2:20:07] they
+[2:20:13] got completely absorbed in this area crazy now they are trying to recover I want to see if they can manage to close above because if I'm not wrong we are still in the
+[2:20:24] buy area of the Nasdaq efforts
+[2:20:38] yeah they are recovering buyers to control back
+[2:20:43] buyers to control back
+[2:20:52] no and no the effort is invalidated when you break it
+[2:20:58] it's uh you see the market tap into this area this is the area I think it's visible in colors but this is the area it gets invalidated if it breaks
+[2:21:09] also this one no you have here the mark test and reject this one you print here the mark test don't break only
+[2:21:19] weak and reject so now why should be invalid I was thinking that the next candle here would be a
+[2:21:30] breakout so they test and they collapse but no they absorbed completely so still the area is valid and buyers are still strong still we can
+[2:21:40] go to the final target up.
+[2:21:52] We saw multiple entry technique so for example let's see the trade off before okay you have absorption here
+[2:22:02] and you have buyers at the top you have this breakout you can put a limit order this level with
+[2:22:11] a stop loss between this aggression and when you have another confirmation from the buyers you can put your stop loss to zero like we did before now for the trades that we saw before
+[2:22:22] was this one okay you can enter with the stop loss below the area and put your stop loss at zero when you see this and let's
+[2:22:32] make another example let's say that you want to consider this trade okay you get buyers that are controlling the auction okay and you can have for
+[2:22:42] example speed of tape here you can add your stop loss below the aggression of the buyers below the area for a risk to reward cannot surprise
+[2:22:53] but if we zoom in and we see here yeah it's correct this one should
+[2:23:03] be
+[2:23:07] the area where you have the best entry so if we want to be precise now I don't know if we will get filled but if we want to be really precise this one
+[2:23:18] is should be the area and the stop loss should be below here okay and you can say but it's only one to one no it's way more because we can go to this target that
+[2:23:28] it's a 1 2 3.5 it's an amazing trade okay it's limited so if you get field it's good which
+[2:23:38] other execution method you can have let's say for example that now we break this okay and we break this with a buy candle strong
+[2:23:49] and we see the market coming back printing a candle like this Here you can have another execution or the
+[2:23:59] first execution with a stop loss below the aggression of the sellers and The target of both is it clear guys, but I don't advise you do this trade there.
+[2:24:09] I don't like it at all. It's Be set up see set up this one was triple-a.
+[2:24:17] I was really amazing
+[2:24:24] Okay,
+[2:24:27] it feels
+[2:24:30] Feel the area. This is the area that is interesting because
+[2:24:36] it's the beginning of the candle with the complete control of the buyers
+[2:24:44] buy some oil thank you for your time
+[2:24:49] yeah this point the session is done the major volatility of the day we had okay we had amazing risk to reward anything you take from now it's to study
+[2:24:59] it's not because this is a good setup this is an average setup guys okay thank
+[2:25:09] you for the fantastic session thank you guys so i had some people already leaving the feedback we went on for two hours
+[2:25:19] and half i hope it's not too much i hope you can be able to enjoy the session even if they are super long we had everything we
+[2:25:29] had setups we had best models to execute risk management now a lot of stuff is Arriving for the next week and also the weekend
+[2:25:39] new section new participation to the group rules About advice.
+[2:25:46] Sorry about supplements. I take files research paper to study and So on guys if you did a small profit, I'm happy for you, but the
+[2:25:56] setups it just
+[2:26:00] Choppy now, okay Think we can still go up a little bit.
+[2:26:04] But anyway, look at the area look at the precision of the area gap yeah yeah the gap this one is the reloading gap when they are
+[2:26:14] really aggressive thank
+[2:26:20] you guys thank you for everything have an amazing day I hope you are enjoying this service someone have payout
+[2:26:30] certificate 6000 Peter amazing have a good day guys
+[2:26:40] it's playing yeah I want to leave you but it's coming back volatility from a 1 to 10 how much score you give
+[2:26:50] to this even with low volatility it's a 1 to 3 from here to here another gap look now now
+[2:27:00] you don't you don't want to let us close you don't want to let us close another gap here is true another gap they are building the pressure guys
+[2:27:11] what the fuck they are doing
+[2:27:18] what an amazing session
+[2:27:22] no guys look at the comment of ud2 market needs to stop i want to take a shit guys
+[2:27:33] i think this is the best good weekend to you all that i can give you low volatility environment another one to 100 i don't know how much is it i
+[2:27:44] think probably can go also here amazing
+[2:27:49] nice guys bye now bye for real

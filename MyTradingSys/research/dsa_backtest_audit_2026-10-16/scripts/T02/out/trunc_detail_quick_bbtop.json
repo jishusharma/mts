@@ -1,0 +1,27 @@
+{
+ "seed": 20261016,
+ "rows": [
+  {
+   "key": "bb_top_reversal|bb_top_reversal|15m",
+   "n_bars": 1500,
+   "cuts": 50,
+   "late": 0,
+   "repaint": 0,
+   "nan_diff": 0,
+   "x10_diff": 0,
+   "nan_err": 0,
+   "x10_err": 0,
+   "trunc_err": 0,
+   "max_lag": 0,
+   "n_events_full": 31,
+   "notes": "",
+   "lag_hist": {
+    "0": 2
+   },
+   "declared_lag": 0,
+   "secs": 14.6,
+   "verdict": "PASS"
+  }
+ ],
+ "detail": {}
+}

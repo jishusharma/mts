@@ -1,0 +1,76 @@
+{
+ "id": "dir-gpt_burn_2026-10-24",
+ "kind": "audit",
+ "family": "Gpt Burn",
+ "title": "GPT cross-vendor review: Gemini Tom extracts J1-J9",
+ "provenance": "source-extracted",
+ "date": "2026-10-24",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Reviewed every extracts/gemini_out/_gemini.md and all nine corresponding files in extracts/pending_raw/tom/new_selected_10. The two _audit.md files in gemini_out are outside the card's explicit producer-output glob. Rea…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "Reproduce all machine checks and regenerate these reports from the repo root:",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "python -X utf8 MyTradingSys/research/gpt_burn_2026-10-24/gx2-review-tom-extracts/audit.py",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "The script invokes python scripts/dev/verify_extract_quotes.py <file> separately for each extract, captures complete stdout/stderr, and counts parsed statuses before reporting totals. The verifier uses raw_transcripts_c…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "Sampling is OURS: sort files by Python path order, then take five without replacement from the detailed-claims section using random.Random(\"20261024:\" + video_id).sample(claims, 5) and display by source line. Negative r…",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "2 APPROVE, 7 FIX. All nine verifier runs pass: 107/107 quote blocks OK, zero reported problems. 45/45 randomly sampled detailed claims match the supplied transcript wording and immediate context. The independent caption-body check finds 10…",
+  "tone": "good"
+ },
+ "why": [
+  "Verdict: 2 APPROVE, 7 FIX. All nine verifier runs pass: 107/107 quote blocks OK, zero reported problems. 45/45 randomly sampled detailed claims match the supplied transcript wording and immediate context. The independent caption-body check finds 105/107 match…",
+  "The script invokes python scripts/dev/verify_extract_quotes.py <file> separately for each extract, captures complete stdout/stderr, and counts parsed statuses before reporting totals. The verifier uses raw_transcripts_canonical/<id>_raw.txt; the separate loca…",
+  "Sampling is OURS: sort files by Python path order, then take five without replacement from the detailed-claims section using random.Random(\"20261024:\" + video_id).sample(claims, 5) and display by source line. Negative rules receive the exhaustive quote check…",
+  "The key finding says that if price fails to trade back through elevated volume, \"the trade setup must be abandoned.\""
+ ],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "100"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 100,
+   "quote": "32 wins at +11/5 R and 68 losses at -1 R per 100 trades give (3211/5-68)/100 = 0.024R."
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "n_trades": "not a trade test (audit)"
+ },
+ "source_files": [
+  "MyTradingSys/research/gpt_burn_2026-10-24/gx2-review-tom-extracts/report.md"
+ ],
+ "commit": "01ace2d25"
+}

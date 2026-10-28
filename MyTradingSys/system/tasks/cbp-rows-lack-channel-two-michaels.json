@@ -1,0 +1,60 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-28T11:19:08Z",
+  "depends_on": [],
+  "done_when": "new test: two rows with analyst 'Michael' and channels @MichaelPizzino / @michaelvdpoppe both stored and query(channel='@michaelvdpoppe') returns only one; old rows without channel still load; schema.json lists channel; test_cbp_query.py passes",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Every new CBP row carries channel (the @handle from the analyst config) so same-named analysts are told apart; query(channel=) filters on it",
+  "id": "cbp-rows-lack-channel-two-michaels",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "cbp: audit integration, align default store_path fallback, mark cbp-ingestion for Cloud re",
+      "ref": "fcd3c0449a71",
+      "utc": "2026-10-28T08:45:07Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-28 ACCEPT (FIX applied once) DECISION (OURS): channel optional so the 6 stored rows stay valid. Ends: content sha; git cherry origin/fast-track <sha> empty AND git ls-tree -r origin/fast-track --name-only lists the 4 files",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T12:29:49Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/cbp/__init__.py",
+    "MyTradingSys/cbp/schema.json",
+    "scripts/dev/cbp_run.py",
+    "MyTradingSys/tests/test_cbp_query.py"
+  ],
+  "scope_out": [
+    "no backfill of existing rows; no scorecard change; no change to the analyst list"
+  ],
+  "scope_sha": "fcd3c0449a71",
+  "size": "M",
+  "sources": [
+    "scripts/dev/cbp_run.py:105,167 (channel known at fetch, dropped in row)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read cbp_run.py: build_row (about line 154) gets only (vid, analyst, published, title, path); carry channel via local_videos / fetch_new tuple (an['channel'], line 105), never a lookup by short name (ambiguous for two Michaels)",
+    "Add channel to the row dict (about line 167); update callers and tests of the changed signature",
+    "schema.json: optional string channel (not in required); cbp.query channel= filter, case-insensitive",
+    "Add the test; run test_cbp_query.py and test_cbp_scorecard.py"
+  ],
+  "tests": "MyTradingSys/tests/test_cbp_query.py::test_same_name_analysts_split_by_channel (fails before: row has no channel key)",
+  "title": "CBP rows carry no channel/handle: two analysts both labelled Michael (@MichaelPizzino, @michaelvdpoppe) and Michaal/Qriptal(Habib) cannot be told apart; add channel to row + schema",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

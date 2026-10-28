@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": 67,
+    "folded": "2026-10-25T21:32:59Z",
+    "misses": 39,
+    "reads": [
+      "MyTradingSys/research/mts_doctor/MAINNET_PATH_2026-10-25.md",
+      "MyTradingSys/system/ANNOUNCEMENTS.md",
+      "MyTradingSys/system/LAYERS.md",
+      "MyTradingSys/research/LAYER_PROVENANCE_AUDIT.md",
+      "MyTradingSys/research/VERDICTS.csv",
+      "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T09_live_parity.md",
+      "MyTradingSys/research/STATUS.md",
+      "MyTradingSys/research/krown_audit_2026-10-22/LAYER_CONFLUENCE_DESIGN.md"
+    ],
+    "session": "eacbf3f7-94d0-4613-ac2e-cca2526c683a"
+  },
+  "created": "2026-10-25T14:48:25Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "layer-review-after-simulator",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "BLOCKED 2026-10-28 Session_Planner(c-1028): waits on the 13 lf-*-gemini-facts and 13 lf-*-gpt-rederive fact sheets; operator 2026-10-25: no layer dropped before the simulator review | PARKED 2026-10-26 Session_Planner: sheets exist (research/layer_review_2026-10-26/LAYER_SHEETS.md, cb903f9d); the integration map and confluence rule wait for the 13 lf-*-gemini-facts and 13 lf-*-gpt-rederive fact sheets (LAYER_SHEETS.md line 3). Operator 2026-10-25: no layer dropped before he sees it in the simulator. | ",
+  "pinned": false,
+  "prio": 3,
+  "refine_tries": 1,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/mts_doctor/MAINNET_PATH_2026-10-25.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "blocked",
+  "steps": [],
+  "tests": "",
+  "title": "layer-review-after-simulator: per layer idea, source, backtest, bugs and assumptions found, confluence map",
+  "weight": "",
+  "worker": ""
+}

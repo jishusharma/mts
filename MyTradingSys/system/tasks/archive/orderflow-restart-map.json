@@ -1,0 +1,39 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-15T19:17:26Z",
+  "commands": [],
+  "created": "2026-10-15T18:22:10Z",
+  "depends_on": [],
+  "done_when": "decide() on a changed orderflow_live.py returns restarts containing orderflow_live.py; the restart relaunches it (loop-supervisor / launch-orderflow-live.vbs); run_all_tests green.",
+  "from_inbox": "",
+  "goal": "A deploy that changes orderflow_live.py restarts the recorder; today fabio/ maps only to live_runner_cli.py so the recorder keeps running old code.",
+  "id": "orderflow-restart-map",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "W8 orderflow-stall",
+  "refs": [],
+  "result": "RESTART_MAP: fabio/orderflow_live.py + orderflow_bars.py -> restart 'orderflow_live'; 47 test_auto_deploy tests pass, new one fails on old map",
+  "scope_in": [
+    "scripts/dev/auto_deploy.py",
+    "scripts/dev/test_auto_deploy.py"
+  ],
+  "scope_out": [
+    "execution/",
+    "live_runner_cli.py"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Wait until the live-reliability worker has shipped (it owns auto_deploy.py).",
+    "Add (re.compile(r'^MyTradingSys/backtest/layers/fabio/orderflow_live\\.py'), 'orderflow_live.py') to RESTART_MAP, before the generic fabio rule.",
+    "Check kill_process matches the recorder command line (module name orderflow_live) and loop-supervisor relaunches it."
+  ],
+  "tests": "test in test_auto_deploy: decide(changed=[orderflow_live.py]) includes orderflow_live.py in restarts; fails on the current map.",
+  "title": "Add orderflow_live recorder to auto_deploy RESTART_MAP"
+}

@@ -1,0 +1,2 @@
+study,run_utc,data_source,window_read,split,rule_sha256,verdict,decision_informed
+trendlines_2026-10-17/g3_pack/g3_pack.py,2026-10-18,"F:/MTS/data/tom_raw/klines BTCUSDT 1m (aggregated to closed 4h) + daily klines BTCUSDT","4h 2022-01-01..2024-06-30; 1d 2020-01-01..2024-06-30",DEV,66dce289da99098b60e30b6638d0c522e39e2513e9b98ce718dffd15b3fa2c38,"n/a (window selection and blind charts only; no return, MFE/MAE or outcome computed)","which 40 BTC windows two readers mark for an obvious legitimate trend line; no rule adopted; VALIDATION/HOLDOUT unread"

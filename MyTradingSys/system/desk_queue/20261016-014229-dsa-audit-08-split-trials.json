@@ -1,0 +1,14 @@
+{
+  "card": "dsa-audit-08-split-trials",
+  "done_when": "T08_split_trials.md shipped: split map, dynamic window table, contamination calendar, seal-breach candidates, true-N table with haircut bars, lead L2 resolved, S1/S2 carded.",
+  "finished": "2026-10-18T16:17:37Z",
+  "from": "JIS-NB",
+  "host": "JIS-NUC",
+  "id": "20261016-014229-dsa-audit-08-split-trials",
+  "need": "python scripts/dev/sync.py claim \"dsa-audit-08-split-trials\"; python scripts/dev/tasks.py take dsa-audit-08-split-trials; git grep -n -E \"2024-07-01|2025-07-01|2026-06-26|is_frac|HOLDOUT|VALIDATION\" -- MyTradingSys/backtest MyTradingSys/research; Get-Content MyTradingSys/research/TRIAL_LEDGER.csv; python scripts/dev/tasks.py done dsa-audit-08-split-trials --result \"<Tnn>: k findings (S1 a, S2 b, S3 c); <headline>\"; # AIRUN task=mts-ship repo=<WORKTREE> timeout=1800  (then git cherry origin/fast-track HEAD is empty) (full brief: python scripts/dev/tasks.py brief dsa-audit-08-split-trials)",
+  "posted": "2026-10-16T01:45:20Z",
+  "result": "Pipeliner drain 2026-10-18: moved: card dsa-audit-08-split-trials is lane CODEX since 82403872 (GPT lab runs it, codex_run.py)",
+  "status": "failed",
+  "target": "DSA-NB",
+  "title": "DSA audit T08: split map, contamination calendar, HOLDOUT seal check and the true trial count"
+}

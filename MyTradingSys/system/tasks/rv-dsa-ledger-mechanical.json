@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/make_layers_md.py --help",
+    "# AIRUN task=rv-dsa-ledger-mechanical repo=C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed\\.claude\\worktrees\\mts-jis-nb-planner-runlanes-1018 timeout=900"
+  ],
+  "created": "2026-10-12T17:50:00Z",
+  "depends_on": [],
+  "done_when": "RV_DSA_ledger_mechanical.md lists violations per check with row ids and counts, or 0.",
+  "est_turns": 8,
+  "from_inbox": "",
+  "goal": "Prompt MyTradingSys/system/revalidation/RV01_tom_ledger_repairs.md check 1 only (script it: ISO date vs trade_date_status, one date per canonical group, geometry, frame pointers exist) plus: every path in MyTradingSys/system/layer_index.json and layer_map.json exists. Print counts.",
+  "id": "rv-dsa-ledger-mechanical",
+  "lane": "DSA-NUC",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Tom ledger: date column observed-or-empty, one inferred date per group (RV01 D4)",
+      "ref": "927515b62091",
+      "utc": "2026-10-12T19:59:39Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d0148cc63bc7 revalidation: 8 second-eyes prompts, 9 cards, 8 defects found (tidy deletes l",
+      "ref": "MyTradingSys/system/revalidation/RV01_tom_ledger_repairs.md",
+      "utc": "2026-10-12T17:20:07Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none (coordinator spot-check) DECISION (OURS): writes counts only, no code or ledger edits. host=JIS-NUC\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C1 weight=IMPORTANT); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "gemini-nuc",
+  "refreshed": "2026-10-18T10:00:54Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/revalidation/RV01_tom_ledger_repairs.md",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv"
+  ],
+  "scope_out": [
+    "editing code or ledgers",
+    "holdout reads",
+    "tidy --apply"
+  ],
+  "scope_sha": "927515b62091",
+  "size": "S",
+  "sources": [],
+  "state": "refined",
+  "steps": [
+    "Run the commands in order, each inside the 300 s bridge cap.",
+    "Paste the output tail into the chat; if a command fails twice close the task --failed with the error text.",
+    "Write the numbers to the named file; change no code."
+  ],
+  "tests": "",
+  "title": "RV-DSA Tom ledger mechanical check and path audit of the layer index (host=JIS-NUC)",
+  "updated": "2026-10-18T10:00:00Z",
+  "weight": "IMPORTANT",
+  "worker": "agent",
+  "class": "C1"
+}

@@ -1,0 +1,17 @@
+num,study,result_file,pub_sha,pub_date,n_inputs,n_later_commits,changed_lines,first_pub_sha,n_commits_since_first,lines_since_first,status,latest_later_commit
+1,gross_effect_screen,MyTradingSys/research/gross_effect_screen_2026-10-15/RESULT.md,b42cef1b8,2026-10-16,1,2,65,6cfe048a4,2,65,STALE-CANDIDATE,d55a90858
+2,opr_preopen_tops,MyTradingSys/research/opr_preopen_tops_2026-10-16/RESULT.md,ce92961d9,2026-10-16,3,2,65,ce92961d9,2,65,STALE-CANDIDATE,d55a90858
+3,mal_bb_mid_engulf,MyTradingSys/research/mal_bb_mid_engulf_2026-10-16/RESULT.md,3c097b2ba,2026-10-16,3,2,65,3c097b2ba,2,65,STALE-CANDIDATE,d55a90858
+4,opr_bb_mtf_center,MyTradingSys/research/opr_bb_mtf_center_2026-10-16/RESULT.md,1318ef9e2,2026-10-16,3,2,65,1318ef9e2,2,65,STALE-CANDIDATE,d55a90858
+5,opr_weekly_low_round_sweep,MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/RESULT.md,0584b0353,2026-10-16,3,2,65,0584b0353,2,65,STALE-CANDIDATE,d55a90858
+6,wlow_bounce_bbrsi60,MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/RESULT.md,8bc4b9fae,2026-10-16,3,1,2,f06058878,1,2,STALE-CANDIDATE,150840644
+7,krown_malkan_g3,MyTradingSys/research/krown_malkan_g3_2026-10-16/EVENT_COUNTS.md,c98a9925c,2026-10-16,5,1,2,9913e31a0,2,22,STALE-CANDIDATE,150840644
+8,qriptal_scorecard,MyTradingSys/research/qriptal_2026-10-10/SCORECARD.md,95fcdb20f,2026-10-23,1,0,0,81994f659,1,9,CURRENT,
+9,candle_close,MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md,f12f53ab5,2026-10-14,1,0,0,6f904aa65,0,0,CURRENT,
+10,levels_sizing,MyTradingSys/research/levels_sizing_2026-10-14/REPORT.md,73b1273f2,2026-10-14,1,0,0,73b1273f2,0,0,CURRENT,
+11,levels_hold_lc1,MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.md,3b3ea9df4,2026-10-16,2,0,0,ecc193d02,1,36,CURRENT,
+12,orderflow_views,MyTradingSys/research/orderflow_views_2026-10-14/RESULT.md,26c6f3a83,2026-10-17,1,0,0,c87ab2468,1,16,CURRENT,
+13,eur_low_us_sweep,MyTradingSys/research/eur_low_us_sweep_2026-10-14/RESULT.md,045bb84b5,2026-10-14,1,0,0,045bb84b5,0,0,CURRENT,
+14,mfe_exit,MyTradingSys/research/mfe_exit_2026-10-13/REPORT.md,26c6f3a83,2026-10-17,1,0,0,fdfe36ea4,1,8,CURRENT,
+15,published_strats,MyTradingSys/research/published_strats_2026-10-13/RESULTS.md,6ca61b5ec,2026-10-13,1,0,0,cc99b1f09,1,10,CURRENT,
+16,tom_fabio_guidance_q33,MyTradingSys/research/tom_fabio_guidance_2026-10-12/MATRIX_REPORT.md,72c2090ef,2026-10-12,2,0,0,72c2090ef,0,0,CURRENT,

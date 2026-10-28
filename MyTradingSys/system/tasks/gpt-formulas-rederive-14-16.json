@@ -1,0 +1,81 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-27T20:56:23Z",
+  "commands": [],
+  "created": "2026-10-25T19:25:07Z",
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "FORMULAS.md 356-399: on a hand-built 3-day minute series derive fire bars of funding fade, session momentum, turn-of-candle; compare the 3 modules (count, bar index). Producer: Claude (FORMULAS.md, three modules). Do NOT read: layer tests, event_table REPORTs. Report: MyTradingSys/research/layer_lab/reports/2026-10-26_gpt-formulas-rederive-14-16.md",
+  "id": "gpt-formulas-rederive-14-16",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "7/3/288 events match exact indices; report MyTradingSys/research/layer_lab/reports/2026-10",
+      "ref": "d2632c605",
+      "utc": "2026-10-27T20:56:23Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research/ top level: 189 -> 14 files; 176 dated loose files into _archive/loose_2026-10 an",
+      "ref": "f8d0799de2bc",
+      "utc": "2026-10-25T23:02:12Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "f8d0799de2bc research/ top level: 189 -> 14 files; 176 dated loose files into _archive/loo",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-10-25T23:02:12Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 T0-ONLY (planner, machine checks only). Producer vendor: Claude (FORMULAS.md, three modules). Reviewer vendor: GPT gpt-6-luna (codex_run.py); producer != reviewer. Reviewer must NOT read: each layer's tests and event_table REPORT.md before deriving. Read-only audit: no product code, no live path, DEV data only (bars before 2024-07-01), no VALIDATION or HOLDOUT. DECISION (OURS) 2026-10-26: weight ROUTINE so the card is READY now; the planner may raise it (formula or verdict checks = CRUCIAL, needs a review stamp). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-27T19:29:59Z",
+  "refs": [],
+  "result": "7/3/288 events match exact indices; report MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-formulas-rederive-14-16.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/backtest/layers/FORMULAS.md",
+    "MyTradingSys/backtest/layers/positioning/funding_cvd_fade.py",
+    "MyTradingSys/backtest/layers/session/session_momentum.py",
+    "MyTradingSys/backtest/layers/turn_of_candle/turn_of_candle.py"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "scope_sha": "f8d0799de2bc",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "taken": "2026-10-27T20:56:23Z",
+  "tests": "",
+  "title": "GPT re-derives FORMULAS.md 14-16 (funding fade, session momentum, turn-of-candle) rules",
+  "weight": "ROUTINE",
+  "worker": ""
+}

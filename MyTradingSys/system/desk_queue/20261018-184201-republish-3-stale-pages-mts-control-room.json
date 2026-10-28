@@ -1,0 +1,13 @@
+{
+  "done_when": "sync.py ship prints no stale-page warning for those 3 pages",
+  "finished": "2026-10-28T06:48:27Z",
+  "from": "DESKTOP-F7IU69N",
+  "host": "DESKTOP-F7IU69N",
+  "id": "20261018-184201-republish-3-stale-pages-mts-control-room",
+  "need": "Artifacts_Guy (home login on NB): sync.py ship warns these 3 published pages are older than their sources. Regenerate each from its source file in the repo and republish to its existing url, then open each link.",
+  "posted": "2026-10-18T18:42:01Z",
+  "result": "Verified done: commit 30f1f7fc4 (Pages 2026-10-25: rebuild/republish MTS Home, Control Room, Layers) resolved this; current sync.py ship/doctor shows no stale-page warning for these 3 pages. Pipeliner drain 2026-10-28.",
+  "status": "done",
+  "target": "JIS-NB",
+  "title": "Republish 3 stale pages: mts_control_room, mts_layer_map, mts_home"
+}

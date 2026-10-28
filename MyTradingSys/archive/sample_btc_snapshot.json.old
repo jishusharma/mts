@@ -1,0 +1,168 @@
+
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Try the new cross-platform PowerShell https://aka.ms/pscore6
+
+PS C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed> mvn compile exec:java "-Dexec.mainClass=datafeed.Main" "-Dexec.args=snapshot BTCUSDT"
+[INFO] Scanning for projects...
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/org/codehaus/mojo/maven-metadata.xml
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-metadata.xml (14 kB at 30 kB/s)
+Downloaded from central: https://repo.maven.apache.org/maven2/org/codehaus/mojo/maven-metadata.xml (20 kB at 42 kB/s)
+[INFO]
+[INFO] --------------------< io.healgrid:BinanceDataFeed >---------------------
+[INFO] Building BinanceDataFeed 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.4.0:resources (default-resources) @ BinanceDataFeed ---
+[INFO] skip non existing resourceDirectory C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\src\main\resources
+[INFO]
+[INFO] --- compiler:3.15.0:compile (default-compile) @ BinanceDataFeed ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --- exec:3.1.0:java (default-cli) @ BinanceDataFeed ---
+[Main] Mode: snapshot | Symbols: [BTCUSDT]
+[Main] Fetching snapshot for BTCUSDT...
+Snapshot saved to C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\data\snapshots\BTCUSDT_2026-09-02_1788345170923.json
+{
+  "timestamp_utc" : "2026-09-02T10:32:50.923669100Z",
+  "asset" : "BTCUSDT",
+  "current_price" : 76474.0,
+  "alignment_pass" : true,
+  "weekly_vp" : {
+    "poc" : 77913.27,
+    "vah" : 78698.41,
+    "val" : 77203.15,
+    "shape" : "B",
+    "confidence" : "MEDIUM",
+    "prior_week_poc" : 79284.54,
+    "two_week_ago_poc" : 77250.28
+  },
+  "daily_vp" : {
+    "poc" : 77597.51,
+    "vah" : 77742.76,
+    "val" : 76801.13,
+    "shape" : "B",
+    "confidence" : "MEDIUM",
+    "hvns" : [ 77602.51, 77442.24, 77357.09 ],
+    "lvns" : [ 76630.84, 76670.91, 76781.1 ]
+  },
+  "post_funding_vp" : {
+    "poc" : 76666.08,
+    "vah" : 76876.6,
+    "val" : 76490.64,
+    "shape" : "B",
+    "confidence" : "MEDIUM"
+  },
+  "intraday_4h_vp" : {
+    "poc" : 76666.08,
+    "vah" : 76876.6,
+    "val" : 76490.64,
+    "shape" : "B",
+    "confidence" : "MEDIUM"
+  },
+  "vwap" : {
+    "price" : 77147.71,
+    "slope" : "rising",
+    "slope_pct" : 0.001,
+    "bands" : {
+      "+1s" : 77515.83,
+      "+2s" : 77883.95,
+      "-1s" : 76779.6,
+      "-2s" : 76411.48
+    },
+    "confidence" : "MEDIUM"
+  },
+  "cvd" : {
+    "value" : -7996.761,
+    "slope" : "falling",
+    "divergence" : false,
+    "last_3_delta" : [ "negative", "negative", "negative" ],
+    "cvd_recent" : {
+      "slope_1h" : "falling",
+      "slope_4h" : "falling",
+      "delta_1h" : -1136.768,
+      "delta_4h" : -2572.931
+    },
+    "confidence" : "MEDIUM"
+  },
+  "trade_flow" : {
+    "net_delta" : -9.82,
+    "confidence" : "HIGH"
+  },
+  "structure" : {
+    "1h" : {
+      "swing_high" : 78396.9,
+      "swing_low" : 76368.0,
+      "stale" : false
+    },
+    "15m" : {
+      "swing_high" : 77731.7,
+      "swing_low" : 76435.5,
+      "stale" : false
+    },
+    "5m" : {
+      "swing_high" : 76725.0,
+      "swing_low" : 76435.5,
+      "stale" : false
+    }
+  },
+  "order_book_depth" : {
+    "bid_ask_ratio" : 1.44,
+    "confidence" : "HIGH"
+  },
+  "conditions" : {
+    "price_vs_poc" : "below",
+    "price_vs_va" : "below_val",
+    "vp_shape" : "B",
+    "vwap_slope" : "rising",
+    "cvd_slope" : "falling",
+    "cvd_divergence" : false,
+    "cvd_trade_flow_aligned" : true,
+    "fvg_unfilled_count" : 1,
+    "fvg_nearest_unfilled" : {
+      "type" : "bearish",
+      "top" : 76533.1,
+      "bottom" : 76498.8
+    },
+    "book_imbalance" : 1.44,
+    "funding_extreme" : false,
+    "oi_trend" : "rising",
+    "speed_picking_up" : false,
+    "volume_spike_at_level" : false,
+    "rejection_wick_at_zone" : true
+  },
+  "prior_day" : {
+    "poc" : 77804.52,
+    "vah" : 78415.17,
+    "val" : 77008.68,
+    "shape" : "B",
+    "confidence" : "MEDIUM",
+    "close" : 77400.1,
+    "high" : 79196.0,
+    "low" : 76368.0
+  },
+  "funding" : {
+    "current_rate" : 6.399E-5,
+    "extreme" : false,
+    "confidence" : "HIGH"
+  },
+  "open_interest" : {
+    "direction" : "rising",
+    "change_1h_pct" : 0.47,
+    "confidence" : "HIGH"
+  },
+  "session_timing" : {
+    "current_session" : "european",
+    "funding_reset_window" : false,
+    "us_equity_open_window" : false,
+    "us_equity_open_in_minutes" : 177
+  },
+  "liquidation_warning" : {
+    "status" : "none",
+    "nearest_cluster_distance_pct" : null,
+    "note" : "Liquidation data requires API key. When available, emit warning only if cluster within 0.5% of proposed stop."
+  }
+}
+PS C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed>

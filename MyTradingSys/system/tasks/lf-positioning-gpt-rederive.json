@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-28T01:49:24Z",
+  "commands": [],
+  "created": "2026-10-25T20:05:39Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/positioning.md lists each quoted number, the recomputed number, and MATCH or MISMATCH with file:line",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independently re-derive the headline backtest numbers (n trades, mean R, fee-net or not, split used) quoted for layer family positioning in its result reports, from the raw ledger/data, and list every mismatch. No verdict on keeping or dropping a layer.",
+  "id": "lf-positioning-gpt-rederive",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "SOUND; 20 claims checked, 0 mismatches; positioning.md written",
+      "ref": "fa95f8386",
+      "utc": "2026-10-28T01:49:24Z"
+    }
+  ],
+  "layers": [
+    "positioning"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-25T20:07:01Z",
+  "refs": [],
+  "result": "SOUND; 20 claims checked, 0 mismatches; positioning.md written",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/positioning.md (new file only)"
+  ],
+  "scope_out": [
+    "editing the reports or code being checked; live tree; any verdict to keep, drop, demote or park a layer"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/_archive/loose_2026-10/whale_positioning_evidence_2026-09-12.md",
+    "MyTradingSys/backtest/layers/FORMULAS.md",
+    "MyTradingSys/research/_archive/loose_2026-10/OI_DIVERGENCE_V2_2026-10-10.md",
+    "MyTradingSys/research/_archive/loose_2026-10/OI_EVENT_STUDY_2026-10-10.md"
+  ],
+  "state": "done",
+  "steps": [
+    "List the result files for positioning in layer_index.json (results, ledger) and pick the headline numbers each states",
+    "Recompute each from the ledger or raw data with an independent script (formulas from MyTradingSys/backtest/layers/FORMULAS.md, not from the code under check)",
+    "Write MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/positioning.md: quoted number, recomputed number, MATCH/MISMATCH, file:line, script path",
+    "Commit with a Result: line (n checked, n mismatches)"
+  ],
+  "taken": "2026-10-28T01:49:24Z",
+  "tests": "none (audit card); proof = the recompute script runs and the table is filled",
+  "title": "Layer re-derive: positioning (independent recount of the headline numbers behind the fact sheet)",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

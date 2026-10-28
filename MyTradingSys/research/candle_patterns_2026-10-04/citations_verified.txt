@@ -1,0 +1,41 @@
+citation check run 2026-10-04 (Crossref registry)
+MYR2006: MATCH | Candlestick technical trading strategies: Can they create value for investors? | Marshall, Young, Rose | Journal of Banking &amp; Finance | 2006 | doi:10.1016/j.jbankfin.2005.08.001 | abstract:no
+MYC2008: MATCH | Are candlestick technical trading strategies profitable in the Japanese equity market? | Marshall, Young, Cahan | Review of Quantitative Finance and Accounting | 2007 | doi:10.1007/s11156-007-0068-1 | abstract:no
+Cohen2021: MATCH | Optimizing candlesticks patterns for Bitcoin's trading systems | Cohen | Review of Quantitative Finance and Accounting | 2021 | doi:10.1007/s11156-021-00973-6 | abstract:no
+MoserBrauneis2026: MATCH | Intraday price forecasts using candlestick patterns in cryptocurrency markets | Moser, Brauneis | International Review of Economics &amp; Finance | 2026 | doi:10.1016/j.iref.2026.105158 | abstract:no
+Lu2012: MATCH | Profitable candlestick trading strategies—The evidence from a new perspective | Lu, Shiu, Liu | Review of Financial Economics | 2012 | doi:10.1016/j.rfe.2012.02.001 | abstract:yes
+Tharavanij2017: MATCH | Profitability of Candlestick Charting Patterns in the Stock Exchange of Thailand | Tharavanij, Siraprapasiri, Rajchamaha | Sage Open | 2017 | doi:10.1177/2158244017736799 | abstract:yes
+CaginalpLaurent1998: MATCH | The predictive power of price patterns | Caginalp, Laurent | Applied Mathematical Finance | 1998 | doi:10.1080/135048698334637 | abstract:no
+FockKleinZwergel2005: MATCH | Performance of Candlestick Analysis on Intraday Futures Data | Fock, Klein, Zwergel | The Journal of Derivatives | 2005 | doi:10.3905/jod.2005.580514 | abstract:no
+LoMamayskyWang2000: MATCH | Foundations of Technical Analysis: Computational Algorithms, Statistical Inference, and Empirical Implementation | Lo, Mamaysky, Wang | ? | 2000 | doi:10.3386/w7613 | abstract:no
+BrockLakLeBaron1992: MATCH | Simple Technical Trading Rules and the Stochastic Properties of Stock Returns | BROCK, LAKONISHOK, LeBARON | The Journal of Finance | 1992 | doi:10.1111/j.1540-6261.1992.tb04681.x | abstract:yes
+SullivanTW1999: MATCH | Data‐Snooping, Technical Trading Rule Performance, and the Bootstrap | Sullivan, Timmermann, White | The Journal of Finance | 1999 | doi:10.1111/0022-1082.00163 | abstract:yes
+White2000: MATCH | A Reality Check for Data Snooping | White | Econometrica | 2000 | doi:10.1111/1468-0262.00152 | abstract:no
+Hansen2005: MATCH | A Test for Superior Predictive Ability | Hansen | ? | 2004 | doi:10.2139/ssrn.264569 | abstract:yes
+HsuHsuKuan2010: MATCH | Testing the Predictive Ability of Technical Analysis Using a New Stepwise Test Without Data Snooping Bias | Hsu, Hsu, Kuan | ? | 2008 | doi:10.2139/ssrn.1087044 | abstract:yes
+BaileyLdP2014DSR: MATCH | Practical Applications of The Deflated Sharpe Ratio: <i>Correcting for Selection Bias, Backtest Overfitting, and Non-Normality</i> | Bailey, López de Prado | Practical Applications | 2015 | doi:10.3905/pa.2015.2.3.089 | abstract:no
+BaileyPBO2017: MATCH | The probability of backtest overfitting | Bailey, Borwein, López de Prado, Zhu | The Journal of Computational Finance | 2016 | doi:10.21314/jcf.2016.322 | abstract:no
+HarveyLiuZhu2016: MATCH | … and the Cross-Section of Expected Returns | Harvey, Liu, Zhu | Review of Financial Studies | 2015 | doi:10.1093/rfs/hhv059 | abstract:no
+ParkIrwin2007: MATCH | WHAT DO WE KNOW ABOUT THE PROFITABILITY OF TECHNICAL ANALYSIS? | Park, Irwin | Journal of Economic Surveys | 2007 | doi:10.1111/j.1467-6419.2007.00519.x | abstract:yes
+Gerritsen2020: MATCH | The profitability of technical trading rules in the Bitcoin market | Gerritsen, Bouri, Ramezanifar, Roubaud | Finance Research Letters | 2020 | doi:10.1016/j.frl.2019.08.011 | abstract:no
+Corbet2019: MATCH | The Effectiveness of Technical Trading Rules in Cryptocurrency Markets | Corbet, Eraslan, Lucey, Sensoy | SSRN Electronic Journal | 2019 | doi:10.2139/ssrn.3454216 | abstract:no
+HudsonUrquhart2021: MATCH | Technical trading and cryptocurrencies | Hudson, Urquhart | Annals of Operations Research | 2019 | doi:10.1007/s10479-019-03357-1 | abstract:yes
+LiuTsyvinski2021: MATCH | Risks and Returns of Cryptocurrency | Liu, Tsyvinski | The Review of Financial Studies | 2020 | doi:10.1093/rfs/hhaa113 | abstract:yes
+GaoHanLiZhou2018: MATCH | Market intraday momentum | Gao, Han, Zhengzi Li, Zhou | Journal of Financial Economics | 2018 | doi:10.1016/j.jfineco.2018.05.009 | abstract:no
+WenBouri2022: MATCH | Intraday Return Predictability in the Cryptocurrency Markets: Momentum, Reversal, or Both | Wen, Bouri, Xu, Zhao | ? | 2022 | doi:10.2139/ssrn.4080253 | abstract:yes
+Detzel2021: MATCH | Learning and predictability via technical analysis: Evidence from bitcoin and stocks with hard‐to‐value fundamentals | Detzel, Liu, Strauss, Zhou, Zhu | Financial Management | 2020 | doi:10.1111/fima.12310 | abstract:yes
+Plastun2019: MATCH | Price Overreactions in the Cryptocurrency Market | Caporale, Plastun | ? | 2018 | doi:10.2139/ssrn.3143399 | abstract:yes
+CaporalePlastun2019: MATCH | The day of the week effect in the cryptocurrency market | Caporale, Plastun | Finance Research Letters | 2019 | doi:10.1016/j.frl.2018.11.012 | abstract:no
+Romano2005: MATCH | Stepwise Multiple Testing as Formalized Data Snooping | Wolf, Romano | ? | 2004 | doi:10.2139/ssrn.563209 | abstract:yes
+BenjaminiHochberg1995: MATCH | Controlling the False Discovery Rate: A Practical and Powerful Approach to Multiple Testing | Benjamini, Hochberg | Journal of the Royal Statistical Society Series B: Statistical Methodology | 1995 | doi:10.1111/j.2517-6161.1995.tb02031.x | abstract:yes
+Ho2021: MATCH | Do Candlestick Patterns Work in Cryptocurrency Trading? | Ho, Chan, Pan, Li | 2021 IEEE International Conference on Big Data (Big Data) | 2021 | doi:10.1109/bigdata52589.2021.9671826 | abstract:no
+Cohen2023: MATCH | Intraday algorithmic trading strategies for cryptocurrencies | Cohen | Review of Quantitative Finance and Accounting | 2023 | doi:10.1007/s11156-023-01139-2 | abstract:no
+Urquhart2016: MATCH | The Inefficiency of Bitcoin | Urquhart | SSRN Electronic Journal | 2016 | doi:10.2139/ssrn.2828745 | abstract:no
+Tzouvanas2020: MATCH | Momentum trading in cryptocurrencies: Short-term returns and diversification benefits | Tzouvanas, Kizys, Tsend-Ayush | Economics Letters | 2020 | doi:10.1016/j.econlet.2019.108728 | abstract:no
+Osler2003: MATCH | Currency Orders and Exchange Rate Dynamics: An Explanation for the Predictive Success of Technical Analysis | Osler | The Journal of Finance | 2003 | doi:10.1111/1540-6261.00588 | abstract:yes
+ZarattiniORB2024: MATCH | A Profitable Day Trading Strategy For The U.S. Equity Market | Zarattini, Barbon, Aziz | ? | 2024 | doi:10.2139/ssrn.4729284 | abstract:yes
+ZarattiniVWAP2023: MATCH | Volume Weighted Average Price (VWAP) The Holy Grail for Day Trading Systems | Zarattini, Aziz | ? | 2023 | doi:10.2139/ssrn.4631351 | abstract:yes
+Parkinson1980: MATCH | The Extreme Value Method for Estimating the Variance of the Rate of Return | Parkinson | The Journal of Business | 1980 | doi:10.1086/296071 | abstract:no
+GarmanKlass1980: MATCH | On the Estimation of Security Price Volatilities from Historical Data | Garman, Klass | The Journal of Business | 1980 | doi:10.1086/296072 | abstract:no
+Efron1979: MATCH | Bootstrap Methods: Another Look at the Jackknife | Efron | The Annals of Statistics | 1979 | doi:10.1214/aos/1176344552 | abstract:no
+PolitisRomano1994: MATCH | The Stationary Bootstrap | Politis, Romano | Journal of the American Statistical Association | 1994 | doi:10.1080/01621459.1994.10476870 | abstract:no

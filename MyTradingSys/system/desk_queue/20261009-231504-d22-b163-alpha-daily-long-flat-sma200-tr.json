@@ -1,0 +1,15 @@
+{
+  "done_when": "ALPHA_RESULTS.md has the metrics table for all variants and buy-and-hold, labelled NO-SOURCE",
+  "finished": "2026-10-12T08:10:57Z",
+  "from": "JIS-NB",
+  "host": "JIS-NUC",
+  "id": "20261009-231504-d22-b163-alpha-daily-long-flat-sma200-tr",
+  "need": "Spec: MyTradingSys/items/B163_setup_alpha_beta_handoff.md + operator pastes in OPERATOR_INBOX.md (ids 711u1pgwu643b1yvewz9, yj7c1p8t23rcl9ic0z6o, mk5rh9m8ic48g1glmgk0). Position-series backtest on Binance BTCUSDT daily, long-flat, the 3 variants exactly as written: (a) Close>SMA200 & Close>EMA7 & RSI(2)>ADX(2), stop entry-2xATR14, trail 2xATR after +1ATR; (b) Close>SMA200 & Close>EMA20 & ADX14>20; (c) Donchian 20/10 and Supertrend(10,3). Fees 0.05% per side + funding from fapi history. Report CAGR, max DD, PF, win rate, time in market, per regime (2018, 2020-21, 2022, 2024-25, 2026) vs buy-and-hold. Write MyTradingSys/research/bigtrade_2026-10-09/../setup_alpha_beta_2026-10-10/ALPHA_RESULTS.md (create dir MyTradingSys/research/setup_alpha_beta_2026-10-10).",
+  "posted": "2026-10-09T23:15:04Z",
+  "result": "ALPHA_RESULTS.md written. 2020-2026 (spec said 2018, data starts 2020). A: CAGR 20.5% maxDD 49.4% PF 2.55 n=42. B: 8.7%/55.2%/1.99 n=44. C: 2.0%/41.6%/1.42 n=29. Buy-and-hold: 43.8%/76.7%. All variants cut drawdown, none beat hold. NO-SOURCE. File: MyTradingSys/research/setup_alpha_beta_2026-10-10/ALPHA_RESULTS.md",
+  "status": "done",
+  "taken": "2026-10-12T06:30:04Z",
+  "taken_by": "JIS-NUC",
+  "target": "DSA",
+  "title": "D22/B163 Alpha: daily long-flat SMA200 trend backtest 2018-2026, NO-SOURCE research"
+}

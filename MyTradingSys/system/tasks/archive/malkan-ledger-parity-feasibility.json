@@ -1,0 +1,78 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "closed": "2026-10-18T12:28:47Z",
+  "commands": [],
+  "created": "2026-10-18T04:08:51Z",
+  "depends_on": [],
+  "done_when": "LEDGER_PARITY.md with N dated calls, N parity points, a SCORABLE/HYPOTHESIS verdict, each quoted with file:line.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gate 0c for Malkan: count dated Malkan calls or trades in the 6 extracts and any saved captions, and list every RSI value he quotes on a chart as a parity point. Verdict SCORABLE or HYPOTHESIS. No backtest.",
+  "id": "malkan-ledger-parity-feasibility",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "LEDGER_PARITY.md: 0 dated calls, 6 RSI parity points, HYPOTHESIS",
+      "ref": "2ffc6de7",
+      "utc": "2026-10-18T12:28:47Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Malkan 5-star/7-star: COMPARE.md with extract lines vs web/spec/code, Source lines on SETU",
+      "ref": "ecc5bebc038b",
+      "utc": "2026-10-15T21:19:33Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d7749d092236 Control Room pickup 2026-10-15: copy and apply 9 operator decisions (q-gap-a/",
+      "ref": "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
+      "utc": "2026-10-15T09:54:44Z"
+    }
+  ],
+  "layers": [
+    "rsi"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T04:11:18Z",
+  "refs": [],
+  "result": "LEDGER_PARITY.md: 0 dated calls, 6 RSI parity points, HYPOTHESIS",
+  "scope_in": [
+    "MyTradingSys/research/malkan_extract_2026-10-15/",
+    "MyTradingSys/research/video_priority_2026-10-15/",
+    "MyTradingSys/research/malkan_ledger_2026-10/ (new: LEDGER_PARITY.md)",
+    "MyTradingSys/backtest/PRE_REG_TEMPLATE.md"
+  ],
+  "scope_out": [
+    "any P&L backtest run",
+    "tuning",
+    "edits to live-path code"
+  ],
+  "scope_sha": "ecc5bebc038b",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_MALKAN.md"
+  ],
+  "state": "done",
+  "steps": [
+    "List every dated Malkan trade or call in the 6 extracts and saved captions (quote + file:line); count them.",
+    "List every chart RSI value he quotes (for example Nifty weekly 74.29 and 71) with video, line and the stated tolerance.",
+    "Write MyTradingSys/research/malkan_ledger_2026-10/LEDGER_PARITY.md: N calls, minute timestamps possible or not, design/check split possible or not, verdict."
+  ],
+  "taken": "2026-10-18T12:28:43Z",
+  "tests": "test_pre_reg_template.py stays green; the new doc has the counts and a verdict line (fails before the file exists).",
+  "title": "Malkan: dated-call ledger feasibility and RSI parity points (items 2/3/5, gate 0c)",
+  "weight": "",
+  "worker": "agent"
+}

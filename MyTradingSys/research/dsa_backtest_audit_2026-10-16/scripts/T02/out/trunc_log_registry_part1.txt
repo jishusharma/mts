@@ -1,0 +1,21 @@
+seed 20261016 root C:\Users\e-ngineers\IdeaProjects\mts-desktop-f7iu69n-dsa02-lenovo-2
+rsi|rsi_events|1h                            n=1600 cuts=50 events=74 late=0 repaint=0 nan_diff=0 x10_diff=0 lag=0/0 err(tr/nan/x10)=0/0/0 PASS  1.8s
+rsi|rsi_events|15m                           n=1500 cuts=50 events=83 late=0 repaint=0 nan_diff=0 x10_diff=0 lag=0/0 err(tr/nan/x10)=0/0/0 PASS  2.1s
+rsi|rsi_events|5m                            n=1500 cuts=50 events=57 late=0 repaint=0 nan_diff=0 x10_diff=0 lag=0/0 err(tr/nan/x10)=0/0/0 PASS  1.3s
+fabio|cvd_absorption|1h                      n=1600 cuts=50 events=56 late=0 repaint=0 nan_diff=0 x10_diff=0 lag=0/0 err(tr/nan/x10)=0/0/0 PASS  4.2s
+fabio|cvd_absorption|15m                     n=1500 cuts=51 events=57 late=0 repaint=0 nan_diff=0 x10_diff=0 lag=0/0 err(tr/nan/x10)=0/0/0 PASS  2.5s
+fabio|escalation|1h                          n=1600 cuts=51 events=47 late=0 repaint=0 nan_diff=0 x10_diff=0 lag=0/0 err(tr/nan/x10)=0/0/0 PASS  62.7s
+fabio|volume_fvg|1h                          n=1600 cuts=51 events=2 late=0 repaint=0 nan_diff=0 x10_diff=0 lag=0/1 err(tr/nan/x10)=0/0/0 PASS  4.0s
+session|session_momentum|15m                 n=1500 cuts=51 events=16 late=0 repaint=0 nan_diff=0 x10_diff=0 lag=0/0 err(tr/nan/x10)=0/0/0 PASS  0.9s
+positioning|funding_cvd_fade|1h              n=1600 cuts=51 events=0 late=0 repaint=0 nan_diff=0 x10_diff=0 lag=0/0 err(tr/nan/x10)=0/0/0 VACUOUS (0 events on synthetic bars)  5.3s
+rsi|malkan_bull|1h                           n=1600 cuts=51 events=0 late=0 repaint=0 nan_diff=0 x10_diff=0 lag=0/0 err(tr/nan/x10)=0/0/0 VACUOUS (0 events on synthetic bars)  5.3s
+rsi|malkan_bear|1h                           n=1600 cuts=51 events=3 late=0 repaint=0 nan_diff=0 x10_diff=0 lag=0/0 err(tr/nan/x10)=0/0/0 PASS  4.3s
+cryptocred|sr_flip|1h                        n=1600 cuts=51 events=65 late=0 repaint=0 nan_diff=0 x10_diff=0 lag=0/0 err(tr/nan/x10)=0/0/0 PASS  22.6s
+cryptocred|fib_pullback|1h                   n=1600 cuts=51 events=57 late=0 repaint=0 nan_diff=0 x10_diff=0 lag=0/0 err(tr/nan/x10)=0/0/0 PASS  18.1s
+cryptocred|failed_msb|1h                     n=1600 cuts=49 events=3 late=0 repaint=0 nan_diff=0 x10_diff=0 lag=0/0 err(tr/nan/x10)=0/0/0 PASS  18.5s
+turn_of_candle|turn_of_candle|1m             n=1500 cuts=51 events=100 late=0 repaint=0 nan_diff=0 x10_diff=0 lag=0/0 err(tr/nan/x10)=0/0/0 PASS  0.6s
+fabio|escalation|15m                         n=1500 cuts=48 events=41 late=0 repaint=0 nan_diff=0 x10_diff=0 lag=0/0 err(tr/nan/x10)=0/0/0 PASS  39.2s
+fabio|volume_fvg|15m                         n=1500 cuts=51 events=3 late=0 repaint=0 nan_diff=0 x10_diff=0 lag=0/1 err(tr/nan/x10)=0/0/0 PASS  2.7s
+cryptocred|sr_flip|15m                       n=1500 cuts=51 events=60 late=0 repaint=0 nan_diff=0 x10_diff=0 lag=0/0 err(tr/nan/x10)=0/0/0 PASS  21.9s
+cryptocred|fib_pullback|15m                  n=1500 cuts=51 events=53 late=0 repaint=0 nan_diff=0 x10_diff=0 lag=0/0 err(tr/nan/x10)=0/0/0 PASS  14.0s
+cryptocred|failed_msb|15m                    n=1500 cuts=51 events=7 late=0 repaint=0 nan_diff=0 x10_diff=0 lag=0/0 err(tr/nan/x10)=0/0/0 PASS  13.3s

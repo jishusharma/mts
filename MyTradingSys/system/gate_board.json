@@ -1,0 +1,37 @@
+{
+ "_doc": "Layer x gate board (LAYER_REBUILD_PLAN_2026-10-15 s2, s5). The commit that moves a gate edits 'gate' and 'proof' here; make_status.py prints it into STATUS.md with the hours since each proof last changed on the trunk.",
+ "layers": [
+  {
+   "layer": "tom",
+   "gate": "G2",
+   "proof": [
+    "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md"
+   ],
+   "next": "Live validation with drawn chart flags (d-live-validation; G3 blind marks dropped)"
+  },
+  {
+   "layer": "fabio",
+   "gate": "G2",
+   "proof": [
+    "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md"
+   ],
+   "next": "G1 coverage check, then live validation (d-live-validation)"
+  },
+  {
+   "layer": "malkan",
+   "gate": "G2",
+   "proof": [
+    "MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md"
+   ],
+   "next": "Live validation + 1d/1w RSI divergence flags (d-live-validation; G3 blind marks dropped)"
+  },
+  {
+   "layer": "krown",
+   "gate": "G2",
+   "proof": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_SETUP_CATALOG.md (commit f4a5182a)"
+   ],
+   "next": "Live validation with drawn chart flags (d-live-validation; G3 blind marks dropped)"
+  }
+ ]
+}

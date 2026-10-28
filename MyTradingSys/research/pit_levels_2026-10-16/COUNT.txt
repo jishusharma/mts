@@ -1,0 +1,28 @@
+loader: DEV 912 days, missing files none; bars present 1313280 of 1313280
+profile builder: repo vp_pivot_probe.build_profile (FORMULAS 18.1)
+prior-day profiles built: 912 days
+
+T (failed auction at prior-day VA edge, 5m closes): n = 4905 over 752 days
+  side SHORT@VAH  n = 2392
+  side LONG@VAL   n = 2513
+  year 2022: n = 1895
+  year 2023: n = 2019
+  year 2024: n = 991
+  open inside prior VA: n = 2987; open outside: n = 1918
+  first event per day and side: n = 1008
+  stop % of price: p10 0.074 p25 0.139 median 0.278 p75 0.598 p90 1.225
+  stop >= 0.4 %: n = 1835 (37.4 %); cost in R at the median stop: taker 0.50 R, maker-in 0.32 R
+  geometric R:R to the other VA edge: p25 2.16 median 4.59 p75 8.93
+  FEASIBLE subset (stop >= 0.40 %): n = 1835, days 662, stop median 0.781 % (p25 0.534, p75 1.289), R:R median 1.94 (p25 1.00, p75 3.46), open-inside n = 1017
+    year 2022: n = 901
+    year 2023: n = 572
+    year 2024: n = 362
+  count-only power (power_mde.py, two-point payoff p=0.596, rr=1.94, cost_R=0.179, n=1835): {'mean_net_r': np.float64(0.5708258168877376), 'power': 1.0, 'mde_net_r': 0.09427196028556854, 'trades_for_80_power': np.float64(50.048830149297295)}
+  MDE (80 % power, 2.8 x sd/sqrt n, sd = 1.44 R): 0.094 R; cost 0.179 R; MDE + cost = 0.273 R vs plausible gross +0.75 R -> FREEZE OK
+
+C (first touch of the prior-day VA edge per side and day, location only): n = 1254 over 886 days; open-inside n = 743
+  year 2022: n = 505
+  year 2023: n = 491
+  year 2024: n = 258
+
+No outcome column was computed; nothing after the entry bar was read.

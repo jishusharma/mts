@@ -1,0 +1,32 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-15T09:54:27Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "",
+  "goal": "",
+  "id": "q17-p1-p2-machine-roles",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "DROPPED 2026-10-26 Session_Planner: decided: HOW_MTS_RUNS.md:47-52 adopts P1/P2 as defaults, not locks, with any account on any machine possible (operator q17 2026-10-14) | PARKED 2026-10-18: acts = coordinator decision on the machine-role default (P2 retired by SCHEDULING_POLICY.md); logged DECISION OURS, then cards. PARKED 2026-10-18 (not stamped): operator design decision (machine roles); coord",
+  "pinned": false,
+  "prio": 3,
+  "refine_tries": 1,
+  "refined_by": "",
+  "refs": [
+    "q17"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "dropped",
+  "steps": [],
+  "tests": "",
+  "title": "P1/P2 one machine per job as default with any account on any machine kept possible (q17 note)",
+  "weight": "ROUTINE"
+}

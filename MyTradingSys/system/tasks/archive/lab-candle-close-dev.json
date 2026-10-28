@@ -1,0 +1,44 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "closed": "2026-10-14T06:40:00Z",
+  "commands": [],
+  "created": "2026-10-14T06:26:34Z",
+  "depends_on": [],
+  "done_when": "The named test passes and the report lists the changed files and the red-then-green test output (the runner's ship runs the quick gate).",
+  "from_inbox": "",
+  "goal": "Build and run frozen BTC candle-close DEV event study",
+  "id": "lab-candle-close-dev",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [
+    "volume_candles_ma"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refs": [],
+  "result": "126 DEV arms, 105541 correlated events, 0 pass; eight tests and independent 126-event reconstruction pass; validation unread. Claude spot-check: MATCH gross -0.0166378 (2023-03-30 03:00Z 1h week-high break long; raw Binance 1m open 28952.1->28470.4, level 28881.0 = Mon-week high).",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/candle_close_2026-10-14"
+  ],
+  "scope_out": [
+    "the live path",
+    "holdout reads",
+    "parameters without a trader quote (NO-SOURCE)"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Write the test named in Tests first and see it fail on the current code.",
+    "Implement the goal inside scope_in only; new behaviour sits behind a flag that is off by default.",
+    "Run the test file you changed (PYTHONPATH = the work tree root) until it passes. Do not run scripts/dev/run_all_tests.py: tests that create git repositories are refused in the sandbox; the runner runs the quick gate when it ships."
+  ],
+  "taken": "2026-10-14T06:26:34Z",
+  "tests": "test_study.py: fail before study.py exists; synthetic mirror, wick vs close, complete buckets, causal levels, next-open returns and DEV guard",
+  "title": "Build and run frozen BTC candle-close DEV event study"
+}

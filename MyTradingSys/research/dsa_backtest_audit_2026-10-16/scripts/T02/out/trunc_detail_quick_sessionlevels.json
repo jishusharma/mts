@@ -1,0 +1,24 @@
+{
+ "seed": 20261016,
+ "rows": [
+  {
+   "key": "session_levels|session_levels|1m",
+   "n_bars": 3350,
+   "cuts": 10,
+   "late": 0,
+   "repaint": 0,
+   "nan_diff": 0,
+   "x10_diff": 0,
+   "nan_err": 0,
+   "x10_err": 0,
+   "trunc_err": 0,
+   "max_lag": 0,
+   "n_events_full": 0,
+   "notes": "",
+   "declared_lag": 0,
+   "secs": 3.1,
+   "verdict": "VACUOUS (0 events on synthetic bars)"
+  }
+ ],
+ "detail": {}
+}

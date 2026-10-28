@@ -1,0 +1,5 @@
+seed 20261016
+causal               late=0 repaint=0 poison_diff=0 -> PASS
+planted_next_close   late=11 repaint=0 poison_diff=15 -> FAIL(look-ahead)
+planted_centered     late=12 repaint=0 poison_diff=34 -> FAIL(look-ahead)
+HARNESS SELF-TEST OK

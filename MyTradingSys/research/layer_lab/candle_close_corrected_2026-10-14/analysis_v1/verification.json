@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "price_hashes": 30,
+  "funding_hashes": 30,
+  "raw_phase_level_context_return_funding_checks": 126,
+  "independent_control_selection_checks": 126,
+  "registered_count_and_mean_checks": 1764,
+  "independently_rebuilt_real_cell_intervals": 10,
+  "bootstrap_arithmetic": "five highest-count cells, two metrics each; plus independent known fixture; not every interval replicated"
+}

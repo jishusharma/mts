@@ -1,0 +1,31 @@
+cell,block,rr,n,net_R,se
+IMB: SMALL k2,primary H1,1,3271,-0.36648,0.0223874
+NOIMB: no SMALL k2,primary H1,1,2705,-0.466981,0.0236589
+LARGE k2,primary H2,1,2702,-0.407032,0.0256329
+NOLARGE: no LARGE k2,primary H2,1,3274,-0.416047,0.0219647
+SMALL k2 rr2,sensitivity,2,3271,-0.392745,0.0297671
+SMALL k3 rr1,sensitivity,1,1968,-0.321089,0.0284556
+SMALL k3 rr2,sensitivity,2,1968,-0.350304,0.0388611
+LARGE k2 rr2,sensitivity,2,2702,-0.413749,0.0332732
+LARGE k3 rr1,sensitivity,1,1664,-0.40777,0.0312373
+LARGE k3 rr2,sensitivity,2,1664,-0.439726,0.04347
+"CTRL only (shape, no volume)",control,1,1771,-0.453971,0.0295174
+ALL layer trades,base,1,5976,-0.411971,0.0171836
+"CTRL only (shape, no volume)",control,2,1771,-0.446195,0.0387129
+ALL layer trades,base,2,5976,-0.426745,0.0220923
+SMALL k2 on 1h only,per-TF,1,2712,-0.358886,0.0247794
+SMALL k2 on 4h only,per-TF,1,1246,-0.363153,0.0354537
+SMALL k2 on 12h only,per-TF,1,386,-0.411423,0.0611073
+SMALL k2 on 1d only,per-TF,1,125,-0.324419,0.110726
+family 4h_fractal_high,family,1,1725,-0.386803,0.0290997
+family 4h_fractal_low,family,1,1846,-0.423133,0.0272079
+family naked_poc,family,1,149,-0.249485,0.0830082
+family prior_day_high,family,1,380,-0.599281,0.049701
+family prior_day_low,family,1,345,-0.510979,0.052748
+family prior_day_poc,family,1,583,-0.277542,0.0409779
+family prior_week_high,family,1,139,-0.422136,0.0844434
+family round_1000,family,1,809,-0.435019,0.0356934
+Delta1 in H1,halves,1,1201,0.0921973,0.0483672
+Delta2 in H1,halves,1,978,0.00430472,0.0483564
+Delta1 in H2,halves,1,2070,0.109924,0.0403579
+Delta2 in H2,halves,1,1724,0.0136001,0.0440629

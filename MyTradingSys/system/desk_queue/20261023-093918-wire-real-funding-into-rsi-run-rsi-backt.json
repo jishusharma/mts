@@ -1,0 +1,13 @@
+{
+  "done_when": "RSI rerun uses real funding; RERUN_FUNDING.md shipped; tests green",
+  "finished": "2026-10-28T00:03:43Z",
+  "from": "DESKTOP-F7IU69N",
+  "host": "DESKTOP-F7IU69N",
+  "id": "20261023-093918-wire-real-funding-into-rsi-run-rsi-backt",
+  "need": "Card bt-engine-wire-real-funding-rsi-cc-rerun. rsi/run_rsi_backtest.py:110 hardwires funding=[]; cryptocred/run_cc_setups.py already loads real funding via load_data/load_funding. Needs F:/MTS/data klines + fundingRate (absent on DESKTOP-F7IU69N). Wire load_funding, add a test failing on old code, rerun DEV, write RERUN_FUNDING.md.",
+  "posted": "2026-10-23T09:39:18Z",
+  "result": "DONE 9be3f415e RERUN_FUNDING.md committed, tests green, lookahead-lint clean",
+  "status": "done",
+  "target": "JIS-NB",
+  "title": "Wire real funding into rsi/run_rsi_backtest.py and rerun RSI+CC DEV"
+}

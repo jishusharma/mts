@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-26T20:58:04Z",
+  "commands": [],
+  "created": "2026-10-26T20:01:19Z",
+  "depends_on": [],
+  "done_when": "A gateway-marked worktree survives tidy and cleanup in a fail-first test; an unmarked shipped tree is still removed; GATEWAY_NUC.md says how a gateway session marks its tree.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator 2026-10-26: a gateway session's worktree is its own. sync.py start tidy (removes shipped clean trees after 1 h), c_drive_guard and clean_up_worktrees must skip a tree marked as gateway-owned. Rule: GATEWAY_NUC.md rule 7.",
+  "id": "tidy-must-skip-gateway-worktrees",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/sync.py GATEWAY_MARKER .gateway_owner skipped by tidy, reuse, wt_maint; 2 test",
+      "ref": "ba81c4cb2",
+      "utc": "2026-10-26T20:58:04Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert \"sync ship --lesson logs a one-line lesson; start prints the last 5\"",
+      "ref": "21ea5324d5b4",
+      "utc": "2026-10-26T00:38:48Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "OPERATOR QUOTE: do not touch the work tree of the gateway account. So it has its own work tree.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-26T20:01:19Z",
+  "refs": [],
+  "result": "scripts/dev/sync.py GATEWAY_MARKER .gateway_owner skipped by tidy, reuse, wt_maint; 2 tests in test_sync.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/sync.py; scripts/dev/c_drive_guard.py; scripts/dev/test_sync.py; MyTradingSys/system/GATEWAY_NUC.md"
+  ],
+  "scope_out": [
+    "live tree; app settings"
+  ],
+  "scope_sha": "21ea5324d5b4",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "find every script that removes worktrees (git grep 'worktree remove')",
+    "define a marker file in the tree (.gateway_owner) written at session start on the gateway profile; each remover skips marked trees",
+    "fail-first test, then document the marker in GATEWAY_NUC.md"
+  ],
+  "taken": "2026-10-26T20:58:04Z",
+  "tests": "scripts/dev/test_sync.py::test_tidy_skips_gateway_marked_worktree (fail-first)",
+  "title": "Tidy and cleanup scripts must never remove or touch a gateway session's worktree",
+  "weight": "",
+  "worker": "agent"
+}

@@ -1,0 +1,69 @@
+{
+ "id": "st-carry_basis_2026-10-18-result",
+ "kind": "backtest",
+ "family": "Carry Basis",
+ "title": "RESULT: funding carry basis (BTCUSDT, DEV+VALIDATION+HOLDOUT)",
+ "provenance": "source-extracted",
+ "date": "2026-10-18",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "DEV window: 2021-01-01 to 2023-07-01 (run_pub.py:24).",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "VAL window: 2023-07-01 to 2024-07-01 (run_pub.py:24).",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "HOLD window: 2024-07-01 to 2025-07-01 (run_pub.py:24).",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "Sealed holdout boundary: >= 2025-07-01 strictly unread (run_pub.py:17,438).",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "Funding-alone carry baseline: DEV 15.4%, VAL 12.1%, HOLD 6.2% (supp_carry.txt:1-3).",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "Execution fee rate: 0.10% per side per leg (run_pub.py:15).",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "(reviewer-corrected): PASS for unlevered always-on carry (net ann 15.35 / 12.06 / 6.26 % after basis and fees); switched carry PASS on the pre-registered gate but strictly worse than always-on; 3x margin carry FAIL (liquidated 2021-05-19).",
+  "tone": "bad"
+ },
+ "why": [
+  "Verdict (reviewer-corrected): PASS for unlevered always-on carry (net ann 15.35 / 12.06 / 6.26 % after basis and fees); switched carry PASS on the pre-registered gate but strictly worse than always-on; 3x margin carry FAIL (liquidated 2021-05-19).",
+  "Reviewer correction 2026-10-18: the worker's worst_30d was mean daily return x 365 (an annualized rate), not the 30-day cumulative return PRE_REG s.3 specifies; it printed -15.02 / -19.11 / -8.41 for the switch arm next to a max drawdown of only -2.87 %, whic…",
+  "FAIL means stop: the 3x margin always-on arm only (liquidated 2021-05-19); unlevered carry is not killed (its pre-registered gate: DEV net annual <= 0 % or worst 30-day drawdown > 15 %, not met)."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window"
+ },
+ "source_files": [
+  "MyTradingSys/research/carry_basis_2026-10-18/RESULT.md"
+ ],
+ "commit": "65bf6cf82"
+}
