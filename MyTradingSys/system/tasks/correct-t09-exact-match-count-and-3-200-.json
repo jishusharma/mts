@@ -1,34 +1,48 @@
 {
   "approved_by": "",
-  "asks": "",
+  "asks": "Lab_Guy: stamp REVIEWED for correct-t09-exact-match-count-and-3-200- (planner cannot stamp IMPORTANT)",
   "commands": [],
   "created": "2026-10-27T20:23:24Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "grep of T09_live_parity.md and export_results.py finds no \"3,200+\" and shows 3,156; regenerated results/t09_live_parity.json has RSI 1h live = 28; test passes.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Replace the unsupported \"0 differences in 3,200+ signals\" with the recounted 3,156 exact matches, and fix the RSI 1h live count (27 -> 28) in the sim_desk export.",
   "id": "correct-t09-exact-match-count-and-3-200-",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Planner 2026-10-28: evidence = GPT recount 3,156 (2880+30+99+130+17), commit-dated 10-28; card retained, not a twin of done gpt-t09-table-recount (that was the audit). | DECISION (OURS) 2026-10-28: audited 15 raw cards vs OPERATOR_DECISIONS.md (grep rsi|vwap|krown|pizzino|cscv|rolling|watcher|T09): none contradicts; Krown pause q-pause-krown-detectors (10-15) superseded by q-krown-saturation waiver 10-17. 8 drafted cards stay raw only on unmet depends_on / pending Lab_Guy stamp.",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner 2026-10-28",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T09_live_parity.md",
+    "MyTradingSys/research/sim_desk/export_results.py",
+    "MyTradingSys/research/sim_desk/results/t09_live_parity.json",
+    "MyTradingSys/research/sim_desk/test_reference.py"
+  ],
+  "scope_out": [
+    "no new backtest run",
+    "no bar reads"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-t09-table-recount.md:3"
+  ],
+  "state": "refined",
+  "steps": [
+    "Add a failing test: exported text holds 3,156 and RSI 1h live = 28 (red on current export).",
+    "Edit line 72 of T09_live_parity.md and line 169 of export_results.py to 3,156; fix the RSI 1h live count at lines 123-124.",
+    "Re-run the exporter and the test."
+  ],
+  "tests": "New test in sim_desk/test_reference.py fails on the pre-change export (text has 3,200+, RSI 1h live 27) and passes after.",
   "title": "Correct T09 exact-match count and 3,200+ claim",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }

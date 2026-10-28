@@ -3,32 +3,43 @@
   "asks": "",
   "commands": [],
   "created": "2026-10-26T17:11:01Z",
-  "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "depends_on": [
+    "watcher-ship-flow-guard"
+  ],
+  "done_when": "MyTradingSys/research/lead/rolling_supersessions_design.md exists with one default per open point, cites SUPER_SESSION.md lines and station_c_rolling_audit evidence, and names the implementation cards.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Design note: rolling super sessions on each ACTIVE station (one per login, D5 rotation by clear plus rebuild message instead of restart; watcher re-broadcasts a PROPOSED start line when a station idles with ready cards).",
   "id": "rolling-supersessions-per-station",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Planner 2026-10-28: design before code per operator 10-27 rule; idle re-broadcast part shares work with watcher-ship-flow-guard. DECISION (OURS): depends on it. | DECISION (OURS) 2026-10-28: audited 15 raw cards vs OPERATOR_DECISIONS.md (grep rsi|vwap|krown|pizzino|cscv|rolling|watcher|T09): none contradicts; Krown pause q-pause-krown-detectors (10-15) superseded by q-krown-saturation waiver 10-17. 8 drafted cards stay raw only on unmet depends_on / pending Lab_Guy stamp.",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner 2026-10-28",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/lead/rolling_supersessions_design.md (new)",
+    "MyTradingSys/system/SUPER_SESSION.md"
+  ],
+  "scope_out": [
+    "no code",
+    "no scheduler"
+  ],
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "refined",
+  "steps": [
+    "Read SUPER_SESSION.md and research/station_c_rolling_audit_20261026/REPORT.md.",
+    "Write the design with a default per open point (OURS)."
+  ],
+  "tests": "Design-only: no tests; each claim in the note cites file:line.",
   "title": "Design: rolling super sessions (SUPER_SESSION.md, up to 24h) on every ACTIVE station: one per login per SUPER_SESSION rules, D5 rotation (clear + rebuild message) instead of restart, station watcher re-broadcasts a PROPOSED start line when a station goes idle with ready cards; operator idea 2026-10-26 'launching rolling super sessions on each station'",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
