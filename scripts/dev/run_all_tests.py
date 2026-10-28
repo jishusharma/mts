@@ -528,6 +528,7 @@ def build_plan(quick):
     add("3js", "Config check (settings.json parses, hook scripts exist, secrets stay ignored)", [sys.executable, "scripts/dev/test_config_check.py"], "Step 3js: Config check")   # GATE_SPEED D5
     add("3gi", "Gate impact tests (import-graph test selection, budget, quarantine)", [sys.executable, "scripts/dev/test_gate_impact.py"], "Step 3gi: Gate impact tests")   # GATE_SPEED X1
     add("3qn", "Gate quarantine list valid (owner, reason, not expired)", [sys.executable, "scripts/dev/gate_impact.py", "--check-quarantine"], "Step 3qn: Quarantine check")   # GATE_SPEED X5
+    add("3sg", "Sourced-rule guard: every layer param has SOURCED quote/locator or OURS label", [sys.executable, "scripts/dev/check_sourced_params.py"], "Step 3sg: Sourced-rule guard")
 
     # Step 3w: wiring gate - every unrun code file is declared in wiring_registry.json or archived (fast, in --quick too)
     add("3w", "Wiring gate tests", [sys.executable, "scripts/dev/test_wiring_scan.py"], "Step 3w: Wiring gate tests")
