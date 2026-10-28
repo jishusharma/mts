@@ -4,33 +4,57 @@
   "commands": [],
   "created": "2026-10-28T14:46:52Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "KEEP_STATUS exists, docstring states the fair-control result, test_live_levels_confluence.py and test_w3_wiring.py green, diff touches only the two scope_in files, KEEP tuple and event output unchanged.",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "live_levels_confluence.py KEEP (8 families) cites a void LC1 prior. Keep it as the W3 testnet collection universe (operator 2026-10-16, not an edge claim), relabel it, change no emitted event.",
   "id": "re-point-live-levels-confluence-py-keep-",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "W2a: live levels-confluence detector (8 KEEP families, Q79 side) + tests + handoff",
+      "ref": "7fd4462cbd93",
+      "utc": "2026-10-16T10:23:14Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-28 ACCEPT | Live-path file: review SESSION mid and pre-ship (CRITICAL). Builder never deploys. DECISION (OURS): live_path stays false (true forces lane JIS-NB; the edit is a label in the worktree); reviewer FIX to set it true rejected for that reason. Parent: re-state-lc1-keep-list-on-the-touched-on.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-28T15:52:46Z",
   "refs": [
     "re-state-lc1-keep-list-on-the-touched-on"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/alerts/live_levels_confluence.py",
+    "MyTradingSys/backtest/layers/alerts/test_live_levels_confluence.py"
+  ],
+  "scope_out": [
+    "KEEP tuple contents; event fields; live_runner_cli.py; the live tree; deploy or restart; levels_hold.py"
+  ],
+  "scope_sha": "7fd4462cbd93",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.md (fair-control section: KEEP list none, 0 of 12, DEV 2022-04-01..2024-06-30)",
+    "MyTradingSys/backtest/layers/alerts/live_runner_cli.py:507-523 (W3: calibration/data source, NOT an edge claim)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read live_levels_confluence.py lines 1-30 and the live_runner_cli.py:512-523 registration; DECISION (OURS): tuple stays (silencing a data source is the operator's call), only the label changes.",
+    "Write the test first: KEEP_STATUS == 'COLLECTION_ONLY_LC1_FAIR_KEEP_EMPTY' (red: attribute absent), KEEP tuple equals the 8 names, events on the existing fixture byte-identical.",
+    "Add the KEEP_STATUS constant and rewrite the module docstring: 8 families = collection universe, LC1 fair control KEEP none, not an edge claim.",
+    "Run test_live_levels_confluence.py and test_w3_wiring.py; ship; do NOT deploy (DEPLOY_RUNBOOK.md, coordinator)."
+  ],
+  "tests": "MyTradingSys/backtest/layers/alerts/test_live_levels_confluence.py::test_keep_status_label_and_events_unchanged: red before (no KEEP_STATUS), green after; existing restart-determinism and first-touch tests stay green.",
   "title": "Re-point live_levels_confluence.py KEEP tuple to the fair-control LC1 list (layer consumer)",
-  "weight": "",
-  "worker": ""
+  "weight": "CRITICAL",
+  "worker": "session"
 }
