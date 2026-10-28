@@ -6,13 +6,19 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-28T09:34:18Z",
-    "misses": 26,
+    "folded": "2026-10-28T12:38:46Z",
+    "misses": 49,
     "reads": [
-      "scripts/dev/test_device_tasks.py",
-      "scripts/dev/test_supervisor.py"
+      "scripts/dev/live_mirror.py",
+      "MyTradingSys/tests/docs/test_integrity.py",
+      "MyTradingSys/cbp/__init__.py",
+      "scripts/dev/prereg_gate.py",
+      "scripts/dev/verdicts.py",
+      "MyTradingSys/system/GATEWAY_NUC.md",
+      "MyTradingSys/tests/test_cbp_query.py",
+      "scripts/dev/cbp_run.py"
     ],
-    "session": "agent-a7ffd59b066976566"
+    "session": "agent-aedb53e46b554e0d5"
   },
   "created": "2026-10-28T08:18:16Z",
   "depends_on": [
@@ -35,7 +41,7 @@
     "dispatch-check-vs-decisions",
     "planner-conflicting-cards-vs-decisions"
   ],
-  "note": "",
+  "note": "WAITING 2026-10-28 (planner-2026-10-28-c2): waits on depends_on cards contradiction-audit-docs-prompts-roles, duplicate-code-and-tests-audit, infra-architecture-duplication-audit (all still ready, not done). Scope after they ship: batches of 10 per d-dedupe-lean-no-contradiction; no operator question.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -53,7 +59,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Take the top rows in batches of at most 10",
     "Apply per the default rule; run python scripts/dev/run_all_tests.py --quick green",

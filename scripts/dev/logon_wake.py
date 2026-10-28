@@ -114,13 +114,34 @@ def recovery_prompt(login: str, boot: float, home=None, base=None) -> str:
     return head + " " + RECOVERY.format(boot=b, login=login, plan_path=plan_file(login, home))
 
 
-def logon(login: str, dry: bool = False, grace: float = GRACE_S, home=None, boot: float | None = None, register=None, sleep=time.sleep, refresh=None) -> int:
+APP_AUMID = "Claude_pzs8sxrjxfjjc!Claude"   # Get-StartApps; the packaged App's own start entry (OURS: its Run/StartupTask toggle reverts after a power loss)
+
+
+def launch_app(running=None, start=None) -> str:
+    """Start the Claude App when it is not running. The App's own 'Run on startup' is a Windows StartupTask whose
+    registry state is lost on a power cut (Event 41), so logon does not rely on it. Never raises."""
+    import subprocess
+    try:
+        if running is None:
+            out = subprocess.run(["tasklist", "/FI", "IMAGENAME eq Claude.exe", "/NH"], capture_output=True, text=True, timeout=30).stdout
+            running = "Claude.exe" in out
+        if running:
+            return "already running"
+        (start or (lambda: subprocess.Popen(["explorer.exe", "shell:AppsFolder\\" + APP_AUMID])))()
+        return "started"
+    except Exception as e:
+        return "launch failed: %r" % (e,)
+
+
+def logon(login: str, dry: bool = False, grace: float = GRACE_S, home=None, boot: float | None = None, register=None, sleep=time.sleep, refresh=None, launch=None) -> int:
     login = (login or "").strip().upper()[:1]
     if login not in ("A", "B", "C"):
         log("logon: login must be A, B or C")
         return 0
     try:
         sleep(0 if dry else grace)
+        if not dry:
+            log("logon %s: app %s" % (login, (launch or launch_app)()))
         b = boot_epoch() if boot is None else boot
         why = already_up(login, b, home)
         if why:

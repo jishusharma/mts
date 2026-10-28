@@ -45,6 +45,17 @@ def test_query_five_day_filter_and_filters(tmp_path):
     assert len(cbp.query(since_days=2, store=st, now=NOW)) == 2
 
 
+def test_query_symbol_aliases(tmp_path):
+    st = tmp_path / "s.json"
+    cbp.save({"rows": [row("a" * 11, "2026-10-23"), row("d" * 11, "2026-10-22", analyst="Rekt", sym="ETH")]}, st)
+    base = [r["video_id"] for r in cbp.query(symbol="BTC", store=st, now=NOW)]
+    assert len(base) == 1
+    for alias in ("BTCUSDT", "btc", "btc-perpetual", "BTC_USD", "BTCPERP"):
+        assert [r["video_id"] for r in cbp.query(symbol=alias, store=st, now=NOW)] == base, alias
+    assert [r["video_id"][0] for r in cbp.query(symbol="ETHUSDT", store=st, now=NOW)] == ["d"]
+    assert cbp.query(symbol="SOLUSDT", store=st, now=NOW) == []
+
+
 def test_window_logic_injected_clock():
     assert cbp_run.open_window(at(9)) == "EU" and cbp_run.open_window(at(10, 59)) == "EU"
     assert cbp_run.open_window(at(11)) == "EU" and cbp_run.open_window(at(8, 59)) is None

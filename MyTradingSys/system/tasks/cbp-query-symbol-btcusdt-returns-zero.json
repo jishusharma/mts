@@ -2,34 +2,63 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 5,
+    "folded": "2026-10-28T13:19:05Z",
+    "misses": 0,
+    "reads": [],
+    "session": "agent-ada4c6327a8691fc5"
+  },
   "created": "2026-10-28T11:19:07Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "new test: query(symbol='BTCUSDT') returns the same 6-style row set as symbol='BTC' on a fixture store (0 rows before the change); test_cbp_query.py all pass",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "cbp.query(symbol=...) matches BTCUSDT, BTC-PERPETUAL and btc to the stored 'BTC' (fold case, strip USDT/USD/PERP/PERPETUAL suffix on both sides)",
   "id": "cbp-query-symbol-btcusdt-returns-zero",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "cbp: audit integration, align default store_path fallback, mark cbp-ingestion for Cloud re",
+      "ref": "fcd3c0449a71",
+      "utc": "2026-10-28T08:45:07Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-28 ACCEPT (FIX applied once) DECISION (OURS): suffix-strip only, no alias table; ETHBTC-style pairs are out of scope. Ends: report content sha; git cherry origin/fast-track <sha> empty AND git ls-tree -r origin/fast-track --name-only shows the 2 files",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-28T12:29:48Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/cbp/__init__.py",
+    "MyTradingSys/tests/test_cbp_query.py"
+  ],
+  "scope_out": [
+    "store rows stay as written; no change to cbp_run.py extraction"
+  ],
+  "scope_sha": "fcd3c0449a71",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/cbp/__init__.py:106-124 (exact-match filter)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Add _norm_symbol(s): upper, drop -/_/space, strip trailing PERPETUAL|PERP|USDT|USDC|USD",
+    "Use it on both sides of the symbol filter in query()",
+    "Add test_query_symbol_aliases with BTC, BTCUSDT, btc-perpetual, ETH negative"
+  ],
+  "tests": "MyTradingSys/tests/test_cbp_query.py::test_query_symbol_aliases (fails on pre-change code: 0 rows for BTCUSDT)",
   "title": "cbp.query(symbol='BTCUSDT') returns 0 rows; store uses 'BTC' (6 rows). Normalise symbols in query + test",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }

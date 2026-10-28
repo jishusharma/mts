@@ -1,0 +1,92 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-28T14:56:20Z",
+  "commands": [],
+  "context": {
+    "calls_to_edit": 13,
+    "folded": "2026-10-28T14:56:18Z",
+    "misses": 16,
+    "reads": [
+      "scripts/dev/test_successor_wake.py",
+      "MyTradingSys/system/SCHEDULING_POLICY.md",
+      "MyTradingSys/tests/docs/test_integrity.py"
+    ],
+    "session": "agent-a72da70545fbd5114"
+  },
+  "created": "2026-10-28T14:13:49Z",
+  "depends_on": [],
+  "done_when": "test_successor_wake.py has test_chain_second_registration_survives_first_run_finally, failing on 2add4f3cd and passing after: with MTS_SUCC_WAKE_TASK set, the next-link script does not Start the running name, fires after the first run exits, and the first finally unregisters only its own generation; 4b3 rules hold. Shipped; git cherry origin/fast-track <sha> empty; ls-tree shows both files.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Make a Supervisor started by MTS-SuccWake-<L> able to register the next wake so the chain survives link 1. Cause (register B14): same task name, Start on a Running task is ignored, and the old run's finally unregisters the new task.",
+  "id": "bug-successor-wake-chain-stops-after-one-link",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/successor_wake.py: own-run successor = -Once +1min trigger, Parallel, token-gu",
+      "ref": "cb60d4131",
+      "utc": "2026-10-28T14:56:20Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "B1+B10+B2: one hand-over writer per login, no second live successor, one TRANSIT rule",
+      "ref": "637422a471e4",
+      "utc": "2026-10-28T13:55:31Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "74eab8109c27 Wake the Supervisor once at each logon so a NUC restart resumes work",
+      "ref": "MyTradingSys/system/SCHEDULING_POLICY.md",
+      "utc": "2026-10-28T11:11:58Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-28 ACCEPT (independent Sonnet reviewer Agent ae91e024) | DRAFT 2026-10-28 Session_Planner (planner-refine-2, OURS): fix design is a default, the worker may take the fallback if Parallel instances fail. Gate: not live path; no real task registered in tests; fail-first quote required. SCHEDULING_POLICY.md edit counts against its SIZE_CAP.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T14:49:13Z",
+  "refs": [
+    "MyTradingSys/research/nuc_restart_2026-10-28/ISSUES_REGISTER.md"
+  ],
+  "result": "scripts/dev/successor_wake.py: own-run successor = -Once +1min trigger, Parallel, token-guarded finally; test_chain_second_registration_survives_first_run_finally (failed on old Start line, 21 pass)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/successor_wake.py",
+    "scripts/dev/test_successor_wake.py",
+    "MyTradingSys/system/SCHEDULING_POLICY.md (4b3 paragraph, one sentence on the generation rule)"
+  ],
+  "scope_out": [
+    "live tree; deploy; other scheduled tasks; supervisor.py and logon_wake.py behaviour (they call register unchanged); anything beyond the allowed 4b/4b2/4b3 one-shot; no new standing task"
+  ],
+  "scope_sha": "637422a471e4",
+  "size": "M",
+  "sources": [
+    "operator 2026-10-28 restarts must resume unattended"
+  ],
+  "state": "done",
+  "steps": [
+    "Read successor_wake.py build_script (run.ps1 finally, Start branch), register (SELF_ENV bypass) and the B10 tests in test_successor_wake.py",
+    "Write the failing chain test first; quote its failure",
+    "Fix (OURS default): token in task Description, MultipleInstances Parallel, -Once trigger now+1min when SELF_ENV set, finally unregisters only if Description still equals its token. Fallback: unique name MTS-SuccWake-<L>-<utc>",
+    "One sentence in SCHEDULING_POLICY.md 4b3; check its SIZE_CAPS headroom in MyTradingSys/tests/docs/test_integrity.py first",
+    "sync.py ship --release <slug>; body ends Result:; verify sha, git cherry empty, ls-tree lists both files"
+  ],
+  "taken": "2026-10-28T14:56:20Z",
+  "tests": "scripts/dev/test_successor_wake.py (python -m pytest scripts/dev/test_successor_wake.py --basetemp <own temp dir>): new chain test fails first on old code (run it before the fix and quote the failing line), plus the existing B10 refusal test still passes. Pure script-text and stub-runner tests only; never register a real task from a test.",
+  "title": "HIGH BUG: a Supervisor started by MTS-SuccWake cannot register its own successor: Windows ignores starting a task that is already running and the run's finally unregisters the new task, so the restart chain stops after one link (register B14)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

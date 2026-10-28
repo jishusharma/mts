@@ -1,0 +1,58 @@
+{
+  "approved_by": "operator 2026-10-28: 'File a high priority bug and assign it to Opus to fix it'",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": 25,
+    "folded": "2026-10-28T14:08:44Z",
+    "misses": 16,
+    "reads": [
+      "scripts/dev/logon_wake.py",
+      "scripts/dev/test_successor_wake.py",
+      "scripts/dev/test_stop_guard.py"
+    ],
+    "session": "agent-a80fc0d7c23feab9c"
+  },
+  "created": "2026-10-28T13:40:18Z",
+  "crucial": "One design call with no undo: who may write the hand-over and start a successor, so two Supervisors never run one login (a wrong rule double-spends budget or leaves a login unattended).",
+  "depends_on": [],
+  "done_when": "Each register item B1,B2,B3,B5,B6,B10 has a test that fails on the old code and passes now (handover refuses a second live Supervisor; one TRANSIT rule; agents get a WORKTREE; no real log writes from tests; no CRLF-only changes); shipped; cherry empty.",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fix the Supervisor transit and restart chain: one login never runs two Supervisors or two workers on one card, and workers never commit in the Supervisor's worktree. Detail and evidence: ISSUES_REGISTER.md B1,B2,B3,B5,B6,B10. Operator 2026-10-28 named Opus.",
+  "id": "bug-supervisor-handoff-duplicates",
+  "lane": "OPUS",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DECISION (OURS) Session_Planner 2026-10-28: content is complete (goal/scope/steps/tests/done_when); the only promotion gap is the review stamp. Weight IMPORTANT (lane OPUS, operator-named) needs a real stamp (Lab_Guy pass) to reach ready; the planner does not self-stamp IMPORTANT+ cards. Awaiting Lab_Guy REVIEWED stamp.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/nuc_restart_2026-10-28/ISSUES_REGISTER.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/supervisor.py; scripts/dev/successor_wake.py; scripts/dev/sync.py; scripts/dev/stop_guard.py; scripts/dev/logon_wake.py; scripts/dev/test_logon_wake.py; scripts/dev/test_supervisor.py; .gitattributes; MyTradingSys/system/roles/supervisor.md; MyTradingSys/system/SUPER_SESSION.md"
+  ],
+  "scope_out": [
+    "live tree; deploy; changing worker roles; the CI workflow; any live-path code"
+  ],
+  "size": "M",
+  "sources": [
+    "operator 2026-10-28"
+  ],
+  "state": "raw",
+  "steps": [
+    "Read ISSUES_REGISTER.md B1-B3, B5, B6, B10; reproduce each from the cited output",
+    "Write failing tests first, then fix B5 (smallest), B6, B1, B2, B3 in that order",
+    "Ship once per fix group with sync.py ship --release; Result: line in each body"
+  ],
+  "tests": "test_supervisor_handover_guard, test_plan_transit_rule, test_sync_start_worker_worktree, test_logon_wake no real log write, test_eol_noise; each fails on old code",
+  "title": "HIGH BUG: Supervisor hand-over and restart chain starts duplicate Supervisors/Builders and workers share the Supervisor's worktree (register B1-B3, B5, B6, B10)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

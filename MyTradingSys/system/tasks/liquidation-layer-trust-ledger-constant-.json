@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-28T13:30:15Z",
+  "depends_on": [],
+  "done_when": "A new JUnit test feeds a synthetic forceOrder message and shows one JSONL line appended with price/qty/side/event time; fails on current code first; a short live run then appends at least one real line; shipped; cherry empty.",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The pre-reg test (README.md) needs H3 scored from the forceOrder stream, which has no REST backfill: unrecorded data is lost. H1/H2 need only klines, fetchable later via BinanceClient.klinesRange. The accumulator already runs continuously (Scheduler.java) but keeps only an in-memory daily snapshot, too coarse for hour-scale touches. Add a continuous append-only log of forceOrder events.",
+  "id": "liquidation-layer-trust-ledger-constant-",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "liquidation layer: trust ledger, pre-registered test, card",
+      "ref": "8804c7ff6ab3",
+      "utc": "2026-10-28T13:30:25Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8804c7ff6ab3 liquidation layer: trust ledger, pre-registered test, card",
+      "ref": "MyTradingSys/research/liquidation_layer_2026-10-28/README.md",
+      "utc": "2026-10-28T13:30:25Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "OPERATOR QUOTE 2026-10-28 (voice): \"now we have to find out how much of this is actually useful - worth trusting - so we need a constant context building for this liquidation layer\". Design and first rows: MyTradingSys/research/liquidation_layer_2026-10-28/ (README.md pre-registered test, BANDS_LEDGER.csv). Needs a forceOrder + 1m kline recorder (owner decision: long-running process, not a scheduled task) and the operator pasting heatmap sets or a CoinGlass API key (money, operator only). Related: Builder dashboard step liquidation tape (STEPS.md).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T15:03:14Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "src/main/java/datafeed/BinanceLiquidationAccumulator.java",
+    "src/main/java/datafeed/Scheduler.java",
+    "MyTradingSys/research/liquidation_layer_2026-10-28/README.md"
+  ],
+  "scope_out": [
+    "CoinGlass API key or operator-pasted heatmap sets (money, operator-only decision per README.md)",
+    "the H1/H2/H3 scorer itself and BANDS_LEDGER.csv scoring (follow-up card once events are recorded)",
+    "the daily snapshot cadence/format in Scheduler.java (00:05 UTC); any new scheduled task; live tree"
+  ],
+  "scope_sha": "8804c7ff6ab3",
+  "size": "M",
+  "sources": [
+    "src/main/java/datafeed/BinanceLiquidationAccumulator.java:47-69 (forceOrder parse, in-memory only, no disk write)",
+    "MyTradingSys/research/liquidation_layer_2026-10-28/README.md:6,9 (H3 needs a recorded forceOrder stream; recorder = long-running process, owner decision)",
+    "src/main/java/datafeed/Scheduler.java:32-33,61-69 (already connects liqBtc/liqEth continuously; daily snapshot only)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read BinanceLiquidationAccumulator.onMessage() (forceOrder parse, ~line 47) and its Bucket aggregation (~line 130); confirm Scheduler.java already connect()s it continuously for BTCUSDT/ETHUSDT (it does: a long-running process already, not new).",
+    "Write a failing JUnit test first: feed a synthetic forceOrder JSON message to the accumulator and assert one line is appended to a durable log (e.g. runtime_data/liq_events/<symbol>.jsonl) with price, qty, side, event time; fails on current code (no persistence exists).",
+    "Add the append-only writer in onMessage() (flush each write; never block the WebSocket thread on slow disk I/O; create the directory if missing).",
+    "Ship with sync.py ship --release; Result: line naming the log path and confirming a short real run appended at least one line."
+  ],
+  "tests": "new JUnit test for BinanceLiquidationAccumulator: a synthetic forceOrder message produces one appended JSONL line; fails on current code (no persistence)",
+  "title": "Liquidation layer trust ledger: constant context, pre-registered touch and reversal test",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

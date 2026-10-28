@@ -123,6 +123,30 @@ class StopGuardTest(unittest.TestCase):
         sub.mkdir(parents=True)
         self.assertEqual(stop_guard.reason(sub), stop_guard._slow_reason(sub))
 
+    def test_eol_only_rewrite_is_not_work(self):
+        """B6: a gate rewrites a file with LF under core.autocrlf=true; status says ` M`, git diff sees no change."""
+        sh(self.a, "config", "core.autocrlf", "true")
+        (self.a / "README.md").unlink()
+        sh(self.a, "checkout", "--", "README.md")              # worktree now CRLF, as on every Windows host
+        (self.a / "README.md").write_bytes(b"x\n")              # the gate writes LF
+        st = subprocess.run(["git", "-C", str(self.a), "status", "--short"], capture_output=True, text=True).stdout
+        self.assertIn("README.md", st)                          # git itself reports it modified
+        self.assertIsNone(stop_guard.reason(self.a))
+        self.assertIsNone(stop_guard._slow_reason(self.a))
+        (self.a / "README.md").write_bytes(b"y\n")              # a real change still blocks
+        self.assertIn("uncommitted", stop_guard.reason(self.a))
+
+    def test_files_of_a_nested_worktree_are_not_this_trees_work(self):
+        """B3: an Agent's isolation worktree lives inside the parent tree (.claude/worktrees/agent-x); its files are not the
+        parent's work and must not block the parent's stop. A real untracked file next to it still blocks."""
+        nested = self.a / ".claude" / "worktrees" / "agent-x"
+        sh(self.a, "worktree", "add", "-q", "-b", "agent-x", str(nested), "HEAD")
+        (nested / "worker_wip.py").write_text("w\n", newline="\n")
+        self.assertIsNone(stop_guard.reason(self.a))
+        self.assertIsNone(stop_guard._slow_reason(self.a))
+        (self.a / ".claude" / "notes.txt").write_text("mine\n", newline="\n")
+        self.assertIn("uncommitted", stop_guard.reason(self.a))
+
     def test_clean_tree_does_not_import_sync(self):
         code = ("import sys, json; sys.path.insert(0, %r); import stop_guard; r = stop_guard.reason(%r); "
                 "print(json.dumps([r, 'sync' in sys.modules]))" % (str(Path(__file__).resolve().parent), str(self.a)))

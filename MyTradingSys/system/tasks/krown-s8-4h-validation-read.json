@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T12:34:26Z",
   "commands": [
     "python MyTradingSys/research/fable_run6_powered_prereg/e2_run.py --validation"
   ],
@@ -16,19 +17,47 @@
   "goal": "Read VALIDATION once for the frozen Krown S8 4h pre-reg: same e2_run.py, same three symbols, 2024-07-01..2025-06-30; PASS iff mean net R > 0 and t >= 2.0 with the DEV sign (PRE_REG.md section 2). Runs only after krown-s8-4h-e2-dev-run reports PASS_DEV AND the operator said go in one line: this is the one clean VALIDATION read of the BTC edge program and cannot be repeated.",
   "id": "krown-s8-4h-validation-read",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "NOT RUN: krown-s8-4h-e2-dev-run shipped INCONCLUSIVE (2b80d7ecf: 332 entry days < 439 by t",
+      "ref": "e18395b03",
+      "utc": "2026-10-28T12:34:26Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "trendline-count-only-v2: first_touch/all_touches, retest/reclaim, causal terciles, kline d",
+      "ref": "569e31dd6604",
+      "utc": "2026-10-28T12:14:49Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "2b80d7ecfcbc E2: Krown S8 4h frozen pre-reg run once on DEV 2020-01..2024-06: INCONCLUSIVE",
+      "ref": "MyTradingSys/research/layer_lab/TRIALS.md",
+      "utc": "2026-10-28T10:00:54Z"
+    }
+  ],
   "layers": [
     "krown"
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "BLOCKED: operator go needed (one line in OPERATOR_DECISIONS.md: \"VALIDATION read of Krown S8 4h: go\"), and krown-s8-4h-e2-dev-run must have shipped PASS_DEV. Filed by Fable run R6 2026-10-28. The ask to the operator, one line: \"The Krown S8 4h test is powered; after its DEV run passes, may the one VALIDATION read (2024-07..2025-06) be spent on it?\"\nREVIEWED: Lab_Guy 2026-10-28 ACCEPT (independent Sonnet reviewer Agent; depends_on E2 plus operator-go precondition, VALIDATION-only scope, HOLDOUT sealed, rule matches PRE_REG section 2)\nWAITING 2026-10-28 (planner-raw-refine): fields complete; blocked on dep krown-s8-4h-e2-dev-run shipping PASS_DEV and the operator go line. Not for dispatch.",
+  "note": "OPERATOR GO RECORDED 2026-10-28 (\"Yes, go\", OPERATOR_DECISIONS.md d-krown-s8-validation-read-go). Remaining precondition: krown-s8-4h-e2-dev-run must have shipped PASS_DEV. Filed by Fable run R6 2026-10-28. The ask to the operator, one line: \"The Krown S8 4h test is powered; after its DEV run passes, may the one VALIDATION read (2024-07..2025-06) be spent on it?\"\nREVIEWED: Lab_Guy 2026-10-28 ACCEPT (independent Sonnet reviewer Agent; depends_on E2 plus operator-go precondition, VALIDATION-only scope, HOLDOUT sealed, rule matches PRE_REG section 2)\nWAITING 2026-10-28 (planner-raw-refine): fields complete; blocked on dep krown-s8-4h-e2-dev-run shipping PASS_DEV (operator go recorded). Not for dispatch.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-28T12:34:18Z",
   "refs": [
     "MyTradingSys/research/fable_run6_powered_prereg/PRE_REG.md"
   ],
-  "result": "",
+  "result": "NOT RUN: krown-s8-4h-e2-dev-run shipped INCONCLUSIVE (2b80d7ecf: 332 entry days < 439 by the busy rule, t 1.73), not PASS_DEV; the VALIDATION read stays unspent and HOLDOUT sealed. Operator go d-krown-s8-validation-read-go stays on record for a future pre-reg that passes DEV (new card then).",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/TRIAL_LEDGER.csv",
     "MyTradingSys/research/VERDICTS.csv",
@@ -40,17 +69,19 @@
     "any change to PRE_REG.md or the DEV result",
     "a second VALIDATION read of any cell"
   ],
+  "scope_sha": "569e31dd6604",
   "size": "S",
   "sources": [
     "MyTradingSys/research/fable_run6_powered_prereg/PRE_REG.md",
     "MyTradingSys/research/fable_runs_2026-10-28/R1_EDGE_OR_STOP.md"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "Pre-condition check: RESULT.md shows PASS_DEV for C0 and the operator go line exists in system/OPERATOR_DECISIONS.md (if either is missing: stop, write nothing, report in one line).",
     "Write the failing test, confirm it fails; add the VALIDATION mode to e2_run.py (window and cut only; no other change).",
     "Run once; append the VALIDATION section to RESULT.md; add the one ledger row; verdicts.py backfill; ship with sync.py ship --release krown-s8-4h-validation-read; commit body Result: <VALIDATION n, mean net R, t, PASS|FAIL>."
   ],
+  "taken": "2026-10-28T12:34:26Z",
   "tests": "Fail-first: test_e2_run.py gains a test that the VALIDATION loader refuses any bar >= 2025-07-01 and that the DEV run cannot be re-executed by this card (the DEV RESULT.md section is unchanged, byte-compared); fails before the VALIDATION mode exists.",
   "title": "Krown S8 4h: the ONE VALIDATION read (2024-07-01..2025-06-30) after a DEV PASS; BLOCKED until the operator says go; DONE when: RESULT.md VALIDATION section with t and the same-sign rule",
   "weight": "CRUCIAL",

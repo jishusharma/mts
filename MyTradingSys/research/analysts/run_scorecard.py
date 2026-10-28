@@ -58,7 +58,34 @@ def load_calls_from_csv(csv_path: Path):
     return signals
 
 
-def generate_scorecard_markdown(analyst_results: dict) -> str:
+def recount_cbp_store(data: dict) -> dict:
+    """Independent per-analyst recount of the CBP store (names kept as stored: Michael and Michaal are two analysts)."""
+    out = {}
+    for r in data.get("rows", []):
+        c = out.setdefault(r.get("analyst", "UNKNOWN"), {"rows": 0, "trades": 0, "tradable_rows": 0})
+        c["rows"] += 1
+        trades = r.get("trades") or []
+        c["trades"] += len(trades)
+        if trades and all(
+            t.get("direction") in ("LONG", "SHORT") and t.get("entry") and t.get("target") and t.get("invalidation")
+            for t in trades
+        ):
+            c["tradable_rows"] += 1
+    return out
+
+
+def cbp_section_lines(cbp_counts) -> list:
+    lines = ["", "## 5. CBP Store Recount (rows, not scored calls)", ""]
+    if not cbp_counts:
+        return lines + ["CBP store not readable on this host (NOT_IN_DATA); run on the host that owns `cbp_store/rows.json`.", ""]
+    lines += ["| Analyst | Rows | Trades | Rows with tradable call |", "|---|---|---|---|"]
+    for name, c in sorted(cbp_counts.items()):
+        lines.append(f"| {name} | {c['rows']} | {c['trades']} | {c['tradable_rows']} |")
+    lines += ["", "Scored calls stay 0 until outcomes exist; Michael (@MichaelPizzino) and Michaal (@michaelvdpoppe) are two different analysts, never merged (OURS).", ""]
+    return lines
+
+
+def generate_scorecard_markdown(analyst_results: dict, cbp_counts=None) -> str:
     lines = [
         "# Imbalance & Price Action Analysts Multi-Provider Scorecard",
         "**Date**: 2026-10-18  ",
@@ -125,6 +152,7 @@ def generate_scorecard_markdown(analyst_results: dict) -> str:
         "- Taker fee of 0.05% applied to both entry and exit (total 0.10% round trip).",
         "",
     ])
+    lines.extend(cbp_section_lines(cbp_counts))
 
     return "\n".join(lines)
 
@@ -146,7 +174,15 @@ def main():
     for analyst, data in analyst_results.items():
         data["metrics"] = compute_scorecard_metrics(data["scored"])
 
-    content = generate_scorecard_markdown(analyst_results)
+    cbp_counts = None
+    try:
+        import json
+        sys.path.insert(0, str(HERE.parents[2] / "MyTradingSys"))
+        import cbp
+        cbp_counts = recount_cbp_store(json.loads(Path(cbp.store_path()).read_text(encoding="utf-8")))
+    except Exception:
+        cbp_counts = None
+    content = generate_scorecard_markdown(analyst_results, cbp_counts)
     with open(SCORECARD_MD, "w", encoding="utf-8") as f:
         f.write(content)
     print(f"Generated scorecard markdown at {SCORECARD_MD}")

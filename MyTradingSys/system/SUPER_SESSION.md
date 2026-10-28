@@ -23,7 +23,7 @@ SUPERVISOR.md and SUPER_LOOP.md are pointers to this file (merged 2026-10-26); `
 
 ## Rules
 1. **Thin coordinator.** It reads results, decides, spot-checks one claim per worker, archives; batches tool calls in one message. Wide or broad reading (card sweeps, log scans) goes to a subagent that returns only a summary or count, never raw output (CLAUDE.md: never conclude from truncated output; parse, then count).
-2. **Worker brief**: line 1 `You are <Role>.` (Builder for build cards), the card id, `Boot: python scripts/dev/sync.py start <slug>; work only in the printed WORKTREE`, files, DONE-when, defaults for every open question, ship order (`after <earlier shipper>`), "Run with zero operator input: never ask; take the conservative default, log DECISION (OURS), continue", "stop at 40 turns and report" (size S: 20), final reply max 6 lines starting with the ROLE LOADED banner, then `Result:` and the sha. Every call passes `model`.
+2. **Worker brief**: line 1 `You are <Role>.` (Builder for build cards), the card id, `Boot: python scripts/dev/sync.py start <slug> --worker; work only in the printed WORKTREE` (`--worker`: always its own tree, B3), files, DONE-when, defaults for every open question, ship order (`after <earlier shipper>`), "Run with zero operator input: never ask; take the conservative default, log DECISION (OURS), continue", "stop at 40 turns and report" (size S: 20), final reply max 6 lines starting with the ROLE LOADED banner, then `Result:` and the sha. Every call passes `model`.
 3. **Review Agent**: a diff touching the live path, gates (`run_all_tests.py`, `sync.py` gate), `promote.py`, `prereg_gate.py` or decision numbers gets a second Sonnet Agent that sees only the diff against origin/fast-track. Reply max 5 lines, APPROVE or BLOCK. One re-submit; a second BLOCK goes to the coordinator, logged.
 4. **Blockers go bottom-up**: a defect blocks only cards that read its output; release holds that name no defect.
 5. **Spend the window**: launch what `supervisor.py plan` says (Budget policy below; the old remaining-minutes/40 count is retired); quote quota only from a `get_usage` made this turn.
@@ -46,6 +46,8 @@ and D5/D6's existing rotation and stop-and-hand-over mechanics; nothing here inv
    (Mechanics "Turn caps": an unattended coordinator runs on that context-size cap, not the 40-tool/10-operator one). The same
    remaining-minutes/40 arithmetic Rule 5 uses to size the next worker wave doubles as the hand-off trigger: once it rounds to
    0, there is no budget left for new work either by a worker or by this coordinator -- hand off.
+   The code rule `plan` prints as `TRANSIT NOW` (B2, 2026-10-28; same text in roles/supervisor.md): TRANSIT = the first of: 5 h at the stop (80%, 95% in the last 2 h before the weekly reset), the `TRANSIT at` time (20 min before the 5 h reset), this session's own wave >= 3 h, or --context-tokens >= 150000.
+   One hand-over writer per login (B1): `handover` refuses while another Supervisor of the login planned < 10 min ago (`--force` when it is gone), and a successor task that is still Running is never registered twice.
 3. Hand off while the window is still open enough to write a clean note: D5 rotation when a successor is already running,
    else a full D6 drain + `supervisor.py handover` per "End" below -- never after the budget has already run out.
 4. Worked example (the motivating case): the 2026-10-27 DESKTOP-F7IU69N chain (local_37a9ec3e) wound down deliberately at 94%
@@ -100,6 +102,7 @@ from the newest `BUDGET` signal line (older than 6 h counts NORMAL). The meter i
 | THROTTLE | U > 100 f + 5 (not in the last 24 h), U >= 99, or the 5-hour window above its stop (80 %, 95 % in the last 2 h) | only model-free work: Codex lab, DSA desk, CI |
 
 ## Session log (newest first; one line each, last 5)
+- B 2026-10-28 12:00-13:05Z: logon_wake 4d (MTSLogonWake + launch_app) shipped; wiring audit Tom/Fabio/Habib bcfd46cfc 446 rows verified; planner refined 5 cards; CI red 4d cleared; builder cbp-query-symbol in flight at transit
 - 2026-10-28 Builder (bg-process-audit, Opus agent): 142 background tasks over 30 min in 7 days (173 h), 43 dead ends/hung/idle (72 h); fixes: git network deadline + no-retry on non-race push (sync.py), NUC verb deadlines, `bg_watch.py` STALLED-BG/RAW-AGED lines in `plan`; AUDIT: research/bg_process_audit_2026-10-28/AUDIT.md.
 - 2026-10-27 Supervisor C (desktop, Sonnet): T09-F3 live RSI support-long-only shipped (f04a3cbad) after a diff-only review Agent; planner refined 13 cards; cbp-ingestion parked (unverified operator request for the CBP scheduled task); handed over with one 4b2 successor task. Lesson: Agents started without isolation worktree share this tree and dirty it for the stop guard.
 - 2026-10-26 Supervisor B (NUC, Sonnet): 10 cards shipped via 8 Sonnet bg agents (klines, oi-pivot, rsi, intrabar, stability, dispatch, coord-audit, malkan); a diff-only review Agent per CRUCIAL card caught 2 defects. Lesson: builders report merge shas, verify the own commit with show --stat.

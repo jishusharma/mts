@@ -14,31 +14,44 @@
   "goal": "Fix the review BLOCK of 2026-10-19 on the vendor-gate tests in test_lab_flow.py: make the tamper test fail on the old gate, make the V5 mutant tests exercise launch/gate not unchanged helpers, add the stage-3 same-vendor-as-producer case and an empty-vendor receipt test.",
   "id": "lab-flow-vendor-gate-tests-tamper-test-p",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab flow: strengthen vendor gate mutation tests",
+      "ref": "ac21243ad6f6",
+      "utc": "2026-10-28T09:49:29Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "ac21243ad6f6 lab flow: strengthen vendor gate mutation tests",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-28_lab-flow-vendor-gate-tests-tamper-test-p.md",
+      "utc": "2026-10-28T09:49:29Z"
+    },
     {
       "kind": "report",
       "line": "52 tests pass; 7 mutants killed; review stamp pending",
       "ref": "MyTradingSys/research/layer_lab/reports/2026-10-28_lab-flow-vendor-gate-tests-tamper-test-p.md",
       "utc": "2026-10-28T09:49:10Z"
-    },
-    {
-      "auto": true,
-      "kind": "ship",
-      "line": "codex_run: raise lab caps (window 65, week 90, 14 runs)",
-      "ref": "8bc0ade5a86b",
-      "utc": "2026-10-21T04:49:34Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "scripts/dev/test_lab_flow.py::test_v5_mutant_gate_normalized_allowlist_card_vendor_check",
-  "note": "DECISION (OURS) 2026-10-28: tests/report complete (52 pass, 7/7 mutants killed). JIS-NB Sonnet review requested; not stamped. Lab_Guy owns stamp. After ACCEPT: tasks.py check then done.",
+  "note": "REVIEWED:2026-10-28 ACCEPT (Lab_Guy, Sonnet). 7/7 mutants re-run by me in scratch copy, each killed by exactly its named test; 52 pass on trunk.\nDECISION (OURS) 2026-10-28: tests/report complete (52 pass, 7/7 mutants killed). JIS-NB Sonnet review requested; not stamped. Lab_Guy owns stamp. After ACCEPT: tasks.py check then done.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-28T09:49:10Z",
+  "refreshed": "2026-10-28T14:03:56Z",
   "refs": [],
+  "reroute": {
+    "at": "2026-10-28T14:43:36Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "credits"
+  },
   "result": "",
   "scope_in": [
     "scripts/dev/test_lab_flow.py",
@@ -50,13 +63,13 @@
     "tasks.py gate logic",
     "recipes in RECIPES"
   ],
-  "scope_sha": "8bc0ade5a86b",
+  "scope_sha": "ac21243ad6f6",
   "size": "M",
   "sources": [
     "scripts/dev/lab_flow.py:158,211-217",
     "commit ea73852f4 (card filed from review BLOCK)"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Tamper test (test_lab_flow.py:198): revert the vendor check in scratch copy of lab_flow.py:211-212 and show the test turns red; today it also accepts the 'drifted' message so it passes on old code: assert the exact vendor-normalized message only.",
     "V5 mutant tests (:171-196) call normalize_vendor/validate_hardened_recipe directly: rewrite each to go through F.launch or F.gate so a weakened gate (not just a helper) is caught; record which mutant each test kills.",

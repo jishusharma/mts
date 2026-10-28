@@ -16,6 +16,8 @@ import os
 import subprocess
 import sys
 import tempfile
+import hashlib
+import uuid
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -118,8 +120,9 @@ def iso(d: datetime) -> str:
 
 def plan_fire_at(plan: dict | None, now: datetime) -> tuple[datetime, str]:
     """Pure: budget-aware fireAt from the pacer's last plan (supervisor.pace_plan). Returns (when, why).
-    slots >= 1 or any non-STOP mode -> now (incl. T-48h weekly drain window when 5h slots are open).
-    STOP -> the weekly reset when the week is at cap, else the next 5 h reset (+GRACE).
+    slots >= 1 -> now (incl. T-48h weekly drain window when 5h slots are open).
+    slots < 1 (gate-blocked, ANY mode: STOP, SUPERVISOR-ONLY, CRUCIAL-ONLY) -> the weekly reset when the week is at cap,
+    else the next 5 h reset (+GRACE). Waking now would hit the same gate and end with nothing re-registered.
     No plan / unreadable -> now (OURS: a missing reading must not stall the chain)."""
     if not plan:
         return now, "no pacer reading: now"
@@ -127,7 +130,7 @@ def plan_fire_at(plan: dict | None, now: datetime) -> tuple[datetime, str]:
         slots = int(plan.get("slots", 1))
     except (TypeError, ValueError):
         slots = 1
-    if slots >= 1 or plan.get("mode") != "STOP":
+    if slots >= 1:
         wk_raw = plan.get("week_reset")
         wk_dt = _parse(wk_raw)
         if wk_dt is not None:
@@ -148,8 +151,8 @@ def plan_fire_at(plan: dict | None, now: datetime) -> tuple[datetime, str]:
     key = "week_reset" if week_cap else "five_reset"
     r = _parse(plan.get(key))
     if r is None or r + timedelta(minutes=GRACE_MIN) <= now:
-        return now, f"pacer STOP but {key} unreadable/past: now"
-    return r + timedelta(minutes=GRACE_MIN), f"pacer STOP: next {key} {iso(r)}"
+        return now, f"pacer {plan.get('mode', '?')} slots {slots} but {key} unreadable/past: now"
+    return r + timedelta(minutes=GRACE_MIN), f"pacer {plan.get('mode', '?')} slots {slots}: next {key} {iso(r)}"
 
 
 def check_checkout(cwd: Path) -> None:
@@ -158,25 +161,30 @@ def check_checkout(cwd: Path) -> None:
 
 
 def build_script(login: str, model: str, prompt: str, cwd: Path, fire_at: datetime | None, base: str | None = None,
-                 usage: dict | None = None) -> str:
+                 usage: dict | None = None, token: str | None = None) -> str:
     """The PowerShell that writes prompt.txt + USAGE + run.ps1 and registers the one-time task. fire_at None = start it now (no trigger).
-    A future fire_at = one -Once trigger, never a repeat. The run script unregisters the task in a `finally`."""
+    A future fire_at = one -Once trigger, never a repeat. The run script unregisters the task in a `finally`, but only while the
+    task's Description still equals this registration's generation token (B14: a later link re-registers the same name, and the
+    earlier run's finally must not remove it). Instances are Parallel so the later link can start while the earlier run winds down."""
     import json
     for v in (login, model, str(cwd)):
         if "'" in v or "\n" in v:
             raise WakeError("quote or newline in login/model/cwd")
     name = task_name(login)
+    token = token or f"gen-{uuid.uuid4().hex[:12]}"
     d = f"{base or os.environ.get('MTS_SUCC_WAKE_DIR') or BASE_DIR}/{login}"
     cwd_s = str(cwd).replace("\\", "/")
     usage_json = json.dumps(usage or {}, ensure_ascii=True, sort_keys=True, separators=(",", ":"))
     run = "\n".join([
         '$env:Path += ";C:/Users/E-ngineers/.local/bin"',
         f"Set-Location '{cwd_s}'",
+        f"$env:MTS_SUCC_WAKE_TASK = '{name}'",
         "$c = (Get-Command claude.exe).Source",
         "try {",
         f"  Get-Content -Raw '{d}/prompt.txt' | & $c -p --model {model} --permission-mode bypassPermissions > '{d}/out.log' 2> '{d}/err.log'",
         "} finally {",
-        f"  Unregister-ScheduledTask -TaskName '{name}' -Confirm:$false -ErrorAction SilentlyContinue",
+        f"  $t = Get-ScheduledTask -TaskName '{name}' -ErrorAction SilentlyContinue",
+        f"  if ($t -and $t.Description -eq '{token}') {{ Unregister-ScheduledTask -TaskName '{name}' -Confirm:$false -ErrorAction SilentlyContinue }}",
         "}",
     ])
     L = [
@@ -189,14 +197,15 @@ def build_script(login: str, model: str, prompt: str, cwd: Path, fire_at: dateti
         '[IO.File]::WriteAllText("$d/run.ps1", $r)',
         '$a = New-ScheduledTaskAction -Execute "conhost.exe" -Argument "--headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File $d/run.ps1"',
         '$pr = New-ScheduledTaskPrincipal -UserId ([Security.Principal.WindowsIdentity]::GetCurrent().Name) -LogonType Interactive',
+        "$s = New-ScheduledTaskSettingsSet -MultipleInstances Parallel",
     ]
     if fire_at is None:
-        L.append(f'Register-ScheduledTask -TaskName "{name}" -Action $a -Principal $pr -Force | Out-Null')
+        L.append(f'Register-ScheduledTask -TaskName "{name}" -Action $a -Principal $pr -Settings $s -Description ' + "'" + token + "'" + ' -Force | Out-Null')
         L.append(f'Start-ScheduledTask -TaskName "{name}"')
     else:
         L.append(f"$FireAt = [DateTimeOffset]::Parse('{iso(fire_at)}').LocalDateTime")
         L.append("$t = New-ScheduledTaskTrigger -Once -At $FireAt")
-        L.append(f'Register-ScheduledTask -TaskName "{name}" -Action $a -Trigger $t -Principal $pr -Force | Out-Null')
+        L.append(f'Register-ScheduledTask -TaskName "{name}" -Action $a -Trigger $t -Principal $pr -Settings $s -Description ' + "'" + token + "'" + ' -Force | Out-Null')
     L.append('"registered"')
     return "\n".join(L) + "\n"
 
@@ -224,10 +233,29 @@ def load_plan(login: str, home=None) -> dict | None:
         return None
 
 
+LIVE_STATES = ("Running", "Queued")     # a successor of this task is up or about to start (B10)
+SELF_DELAY_MIN = 1                      # own-run successor fires this long after registering (OURS, B14)
+SELF_ENV = "MTS_SUCC_WAKE_TASK"         # run.ps1 sets it: the woken session is that task's own run
+
+
+def task_state(name: str) -> str:
+    """The scheduled task's State ('Running', 'Ready', 'Queued', ...), '' when it does not exist or cannot be read (OURS: the
+    registration itself then fails or succeeds on its own; an unreadable state never blocks the chain)."""
+    try:
+        r = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-Command",
+                            f"(Get-ScheduledTask -TaskName '{name}' -ErrorAction SilentlyContinue).State"],
+                           capture_output=True, text=True, timeout=60)
+        return r.stdout.strip()
+    except Exception:
+        return ""
+
+
 def register(login: str, *, at: str | None = None, model: str = DEFAULT_MODEL, prompt_file: str | None = None,
              cwd: str | Path | None = None, dry: bool = False, now: datetime | None = None, plan: dict | None = None,
-             home=None, base: str | None = None, runner=None) -> dict:
-    """Validate, choose fireAt, build the script, run it (unless dry), record the id line. Raises WakeError (fail closed)."""
+             home=None, base: str | None = None, runner=None, probe=None) -> dict:
+    """Validate, choose fireAt, build the script, run it (unless dry), record the id line. Raises WakeError (fail closed).
+    B10: refuses while MTS-SuccWake-<login> is Running or Queued (its successor is already up); -Force + Start would boot a second.
+    `probe(name) -> state`; default: the real task state, or none when a stub runner is given (tests)."""
     now = now or datetime.now(timezone.utc)
     login = (login or "").strip().upper()[:1]
     if login not in ("A", "B", "C"):
@@ -253,12 +281,23 @@ def register(login: str, *, at: str | None = None, model: str = DEFAULT_MODEL, p
             raise WakeError(f"cannot read --prompt-file: {e}")
         if not prompt or "'@" in prompt:
             raise WakeError("prompt file empty or contains a here-string terminator")
-    immediate = when <= now + timedelta(minutes=1)
-    script = build_script(login, model, prompt, cwd, None if immediate else when, base, usage=usage)
+    own_run = os.environ.get(SELF_ENV) == task_name(login)
+    if own_run and when <= now + timedelta(minutes=1):
+        when = now + timedelta(minutes=SELF_DELAY_MIN)      # B14: never Start the running name; a -Once trigger fires the next link
+        fire, why = iso(when), why + f"; own run: +{SELF_DELAY_MIN} min trigger"
+    immediate = when <= now + timedelta(minutes=1) and not own_run
+    token = "gen-" + hashlib.sha1(f"{login}|{fire}|{now.isoformat()}".encode()).hexdigest()[:12]     # one per registration; dry == real
+    script = build_script(login, model, prompt, cwd, None if immediate else when, base, usage=usage, token=token)
     line = f"{MARK} {task_name(login)} fireAt {fire} (4b2)"
     res = {"script": script, "line": line, "fire_at": fire, "why": why, "task": task_name(login), "ran": False, "handover": None, "usage": usage}
     if dry:
         return res
+    if probe is None:
+        probe = task_state if runner is None else (lambda name: "")
+    state = probe(task_name(login))
+    if state in LIVE_STATES and os.environ.get(SELF_ENV) != task_name(login):    # the task's own run may hand over
+        raise WakeError(f"{task_name(login)} is already live ({state}): its successor is up; a second registration would start "
+                        f"another Supervisor {login}. Refused")
     if runner is None:
         runner = _run_ps
     runner(script)

@@ -124,6 +124,24 @@ def test_budget_aware_fire_at(tmp_path):
     assert "-Once -At $FireAt" in s["script"] and s["fire_at"] == "2026-10-27T15:02Z"
 
 
+def test_gate_blocked_slots0_waits_for_reset_any_mode(tmp_path):
+    base = {"slots": 0, "five": 63, "week": 40, "cap": 85, "five_reset": "2026-10-27T15:00Z", "week_reset": "2026-11-01T00:00Z"}
+    for mode in ("CRUCIAL-ONLY", "SUPERVISOR-ONLY", "NORMAL"):
+        assert W.plan_fire_at({**base, "mode": mode}, NOW)[0] == datetime(2026, 10, 27, 15, 2, tzinfo=timezone.utc), mode
+    # week at cap -> weekly reset
+    assert W.plan_fire_at({**base, "mode": "CRUCIAL-ONLY", "week": 86}, NOW)[0] == datetime(2026, 11, 1, 0, 2, tzinfo=timezone.utc)
+    # unreadable / past reset keeps the now fallback
+    assert W.plan_fire_at({**base, "mode": "CRUCIAL-ONLY", "five_reset": "junk"}, NOW)[0] == NOW
+    assert W.plan_fire_at({**base, "mode": "CRUCIAL-ONLY", "five_reset": "2026-10-27T11:00Z"}, NOW)[0] == NOW
+    s = W.register("A", cwd=_repo(tmp_path), dry=True, now=NOW, plan={**base, "mode": "CRUCIAL-ONLY"})
+    assert "-Once -At $FireAt" in s["script"] and s["fire_at"] == "2026-10-27T15:02Z"
+
+
+def test_slots1_fires_now_even_in_crucial_only():
+    plan = {"mode": "CRUCIAL-ONLY", "slots": 1, "five": 50, "week": 40, "cap": 85, "five_reset": "2026-10-27T15:00Z"}
+    assert W.plan_fire_at(plan, NOW)[0] == NOW
+
+
 def test_real_path_records_one_line_and_second_run_updates(tmp_path):
     repo = _repo(tmp_path)
     ho = repo / W.HANDOVER_REL.format("C")
@@ -147,6 +165,54 @@ def test_registered_handover_still_valid_form(tmp_path, monkeypatch):
     p = S.handover(repo, "c", host="JIS-NB", home=home, now=NOW)
     W.record_handover(repo, "C", "Successor task: MTS-SuccWake-C fireAt 2026-10-27T20:05Z (4b2)")
     assert S.validate_form(p.read_text(encoding="utf-8")) == []
+
+
+def test_no_second_task_while_one_is_live(tmp_path):
+    """B10/B1: a logon-wake successor was Running when the transit hand-over registered MTS-SuccWake-B fireAt now again
+    (-Force + Start-ScheduledTask): two Supervisor B sessions. A Running/Queued task refuses; Ready (future trigger) or none goes on."""
+    repo = _repo(tmp_path)
+    ran = []
+    for state in ("Running", "Queued"):
+        with pytest.raises(W.WakeError, match="already live"):
+            W.register("B", cwd=repo, now=NOW, plan={"mode": "NORMAL", "slots": 2}, runner=ran.append, probe=lambda name, s=state: s)
+    assert ran == []
+    import os
+    os.environ[W.SELF_ENV] = "MTS-SuccWake-B"          # the task's own run (run.ps1 sets it) may still hand over
+    try:
+        W.register("B", cwd=repo, now=NOW, plan={"mode": "NORMAL", "slots": 2}, runner=ran.append, probe=lambda name: "Running")
+    finally:
+        os.environ.pop(W.SELF_ENV, None)
+    assert len(ran) == 1 and "$env:MTS_SUCC_WAKE_TASK = 'MTS-SuccWake-B'" in ran[0]
+    ran.clear()
+    for state in ("", "Ready"):
+        W.register("B", cwd=repo, now=NOW, plan={"mode": "NORMAL", "slots": 2}, runner=ran.append, probe=lambda name, s=state: s)
+    assert len(ran) == 2
+
+
+def test_chain_second_registration_survives_first_run_finally(tmp_path, monkeypatch):
+    """B14: a Supervisor started by MTS-SuccWake-<L> (SELF_ENV set) registers the next link. Old code: -Force + Start-ScheduledTask
+    on the RUNNING task name (Windows ignores it) and the first run's finally unregistered the new task: the chain stopped.
+    Now: no Start of the running name, a -Once trigger after now, Parallel instances, a generation token in the Description,
+    and the finally unregisters only when the Description still equals ITS token."""
+    repo = _repo(tmp_path)
+    plan = {"mode": "NORMAL", "slots": 2}
+    monkeypatch.delenv(W.SELF_ENV, raising=False)
+    first = W.register("B", cwd=repo, now=NOW, plan=plan, runner=lambda s: None)["script"]
+    monkeypatch.setenv(W.SELF_ENV, "MTS-SuccWake-B")
+    ran = []
+    r = W.register("B", cwd=repo, now=NOW, plan=plan, runner=ran.append, probe=lambda name: "Running")
+    second = ran[0]
+    assert "Start-ScheduledTask" not in second, "must not Start the task name that is already Running"
+    assert "-Once -At $FireAt" in second and r["fire_at"] == "2026-10-27T12:01Z"      # after the first run, not now
+    assert "-MultipleInstances Parallel" in second and "-Description" in second
+    tok = lambda s: re.search(r"-Description '([^']+)'", s).group(1)
+    runps = lambda s: re.search(r"\$r = @'\n(.*?)\n'@", s, re.S).group(1)
+    assert tok(first) != tok(second), "each registration is its own generation"
+    # the first run's finally (token of generation 1) must not unregister generation 2
+    f1 = runps(first)
+    assert "Unregister-ScheduledTask" in f1 and tok(first) in f1 and tok(second) not in f1
+    assert "Description" in f1 and f1.index("Description") < f1.index("Unregister-ScheduledTask")
+    assert second.count("Register-ScheduledTask") == 1 and "RepetitionInterval" not in second
 
 
 # ---- supervisor.py handover wiring ----
@@ -208,3 +274,44 @@ def test_library_handover_default_does_not_wake(tmp_path, monkeypatch):
 
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-q"]))
+
+
+_PS_STUBS = r"""
+function New-ScheduledTaskAction { param($Execute, $Argument) @{ Execute = $Execute; Argument = $Argument } }
+function New-ScheduledTaskPrincipal { param($UserId, $LogonType) @{ LogonType = "$LogonType" } }
+function New-ScheduledTaskTrigger { param([switch]$Once, [datetime]$At) @{ At = $At.ToUniversalTime().ToString('yyyy-MM-ddTHH:mm') } }
+function New-ScheduledTaskSettingsSet { param($MultipleInstances) @{ MI = "$MultipleInstances" } }
+function Register-ScheduledTask { param($TaskName, $Action, $Trigger, $Principal, $Settings, $Description, [switch]$Force)
+  $o = @{ TaskName = $TaskName; Execute = $Action.Execute; Argument = $Action.Argument; At = $(if ($Trigger) { $Trigger.At } else { $null }); Force = [bool]$Force }
+  [IO.File]::WriteAllText($env:MTS_FAKE_REG_OUT, ($o | ConvertTo-Json -Compress)) }
+function Start-ScheduledTask { param($TaskName) [IO.File]::WriteAllText($env:MTS_FAKE_REG_OUT + '.started', $TaskName) }
+"""
+
+
+@pytest.mark.skipif(sys.platform != "win32", reason="real path shells out to powershell.exe")
+def test_real_schtasks_path_registers_expected_task_via_fake(tmp_path, monkeypatch):
+    """CT-1: run the REAL _run_ps (powershell.exe) with Register-ScheduledTask replaced by a recording fake."""
+    import json
+    out = tmp_path / "reg.json"
+    monkeypatch.setenv("MTS_FAKE_REG_OUT", str(out))
+    repo = _repo(tmp_path / "repo")
+    base = (tmp_path / "wake").as_posix()
+    seen = []
+
+    def runner(script):
+        seen.append(script)
+        W._run_ps(_PS_STUBS + script)
+
+    dry = W.register("C", cwd=repo, at="2026-10-27T20:05Z", dry=True, now=NOW, plan={"mode": "NORMAL", "slots": 2}, base=base)
+    r = W.register("C", cwd=repo, at="2026-10-27T20:05Z", now=NOW, plan={"mode": "NORMAL", "slots": 2}, base=base, runner=runner)
+    got = json.loads(out.read_text(encoding="utf-8"))
+    assert r["ran"] and got["TaskName"] == "MTS-SuccWake-C" and got["Force"] is True
+    assert got["At"] == "2026-10-27T20:05"                                   # fireAt reached the scheduler call, UTC-exact
+    assert dry["fire_at"] == "2026-10-27T20:05Z" and seen[0] == dry["script"]  # real path ran the same script the dry run reports
+    assert got["Execute"] == "conhost.exe"
+    assert got["Argument"] == f"--headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File {base}/C/run.ps1"
+    run_ps = (tmp_path / "wake" / "C" / "run.ps1").read_text(encoding="utf-8")
+    assert f"Set-Location '{repo.resolve().as_posix()}'" in run_ps           # cwd
+    assert "--model claude-sonnet-5-5" in run_ps and "Unregister-ScheduledTask -TaskName 'MTS-SuccWake-C'" in run_ps
+    assert "You are Supervisor. Login C." in (tmp_path / "wake" / "C" / "prompt.txt").read_text(encoding="utf-8")
+    assert not Path(str(out) + ".started").exists()                           # future fireAt: no immediate start

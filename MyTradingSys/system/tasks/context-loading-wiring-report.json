@@ -1,7 +1,24 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T15:10:25Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T15:12:38Z",
+    "misses": 53,
+    "reads": [
+      "scripts/dev/role_loader.py",
+      "MyTradingSys/system/roles/supervisor.md",
+      ".claude/settings.json",
+      "MyTradingSys/research/STATUS.md",
+      "MyTradingSys/system/ANNOUNCEMENTS.md",
+      "MyTradingSys/system/SUPER_SESSION.md",
+      "MyTradingSys/research/context_load/REPORT.md",
+      "scripts/dev/supervisor.py"
+    ],
+    "session": "agent-a180dd8a226c456ca"
+  },
   "created": "2026-10-28T08:13:45Z",
   "depends_on": [],
   "done_when": "REPORT table of every source loaded at Supervisor session start with bytes measured by script, hooks listed with file:line, compaction behaviour cited with file:line.",
@@ -12,7 +29,14 @@
   "goal": "Explain in plain words how context is loaded for a Supervisor session today: boot files, hooks, role files, memory, compaction.",
   "id": "context-loading-wiring-report",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/context_loading_wiring_2026-10/REPORT.md",
+      "ref": "26dabee88",
+      "utc": "2026-10-28T15:10:25Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -22,7 +46,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T08:13:58Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/context_loading_wiring_2026-10/REPORT.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/context_loading_wiring_2026-10/REPORT.md"
   ],
@@ -34,12 +63,13 @@
   "sources": [
     "CLAUDE.md; scripts/dev/role_loader.py; MyTradingSys/system/roles/supervisor.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Script: measure bytes of CLAUDE.md, MEMORY.md, role file, handover, STATUS.md, announcements and every hook-injected text",
     "List hooks from .claude/settings.json and scripts/dev/role_loader.py with file:line",
     "Cite compaction behaviour from repo docs/code; write the plain explanation on top"
   ],
+  "taken": "2026-10-28T15:10:25Z",
   "tests": "none: research report; script output pasted in REPORT.md",
   "title": "Plain report: how context is loaded into a Supervisor session today (boot, hooks, roles, memory, compaction)",
   "weight": "ROUTINE",

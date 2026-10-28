@@ -2,10 +2,21 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T13:12:47Z",
+    "misses": 1,
+    "reads": [
+      "scripts/dev/tasks.py"
+    ],
+    "session": "agent-af74f5876c0454f4b"
+  },
   "created": "2026-10-28T06:27:20Z",
-  "depends_on": [],
-  "done_when": "A new test spawns two real claimers against a bare temp git repo with no mocked push; exactly one wins the claim and the loser retries/fails cleanly per gemini_queue.py's real logic; existing unit tests still pass.",
-  "est_turns": 12,
+  "depends_on": [
+    "sync-py-push-race-re-misses-reference-al"
+  ],
+  "done_when": "test_two_process_claim_race_against_bare_repo passes locally (Windows) AND on ubuntu-latest CI (green run id in the commit body); asserts the OUTCOME SET, not which claimer wins: winners == 1, loser reported lost/skipped, claims ref holds exactly one holder, identical under either start order.",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
@@ -16,19 +27,19 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "bg-process-audit: deadlines on NUC/git network calls, no retry on non-race push, STALLED-B",
-      "ref": "e1ac77891613",
-      "utc": "2026-10-27T23:56:54Z"
+      "line": "fix: gemini lane — claim-push jitter, Argon model option, 7-card verdicts",
+      "ref": "003f55d1c0a9",
+      "utc": "2026-10-28T08:34:07Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "WAITING on sync-py-push-race-re-misses-reference-al (depends_on): its PUSH_RACE_RE fix makes the first-creation race loser retry; without it the Linux 'both claims succeed' result is expected. Reopened 2026-10-28: commit 040a1aa89 reverted (CI RED, passes on Windows, both claims succeed on ubuntu-latest). REVIEWED:2026-10-28 ACCEPT | DRAFT 2026-10-28 Session_Planner (OURS). Promote to ready once the dependency is done.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-28T07:11:32Z",
+  "refreshed": "2026-10-28T15:06:45Z",
   "refs": [
     "MyTradingSys/research/fix_verification_2026-10-28/REPORT.md"
   ],
@@ -38,14 +49,15 @@
     "scripts/dev/test_gemini_queue.py"
   ],
   "scope_out": [],
-  "scope_sha": "e1ac77891613",
+  "scope_sha": "003f55d1c0a9",
   "size": "S",
   "sources": [],
   "state": "ready",
   "steps": [
-    "Set up a bare temp repo fixture (tempfile.TemporaryDirectory + git init --bare) as the shared remote",
-    "Launch two real claimers (subprocesses or threads doing real git subprocess calls) against the same queue item concurrently, no mocking",
-    "Assert exactly one claim succeeds and the other observes the conflict and retries or backs off per gemini_queue.py's real logic"
+    "Fixture: bare temp repo, claims branch pre-created OR absent (run both); two real subprocess claimers, no mocked push; start them with a barrier so order is not fixed.",
+    "Assert order-independently: len(winners)==1, loser rc/reason is the lost-race path (not an error), final origin/claims content names one holder; never assert claimer A or B won.",
+    "Linux run before ship: push the branch and read the ubuntu-latest job (gh run view), or run in WSL/docker if present; if both claims succeed on Linux, the cause is the first-creation path (PUSH_RACE_RE), fixed by the dependency card, not by weakening the assert.",
+    "Verify: content sha, git cherry origin/fast-track <sha> empty, ls-tree lists both files; Linux run id in the commit body."
   ],
   "tests": "scripts/dev/test_gemini_queue.py::test_two_process_claim_race_against_bare_repo (new, exercises the path CT-2 found untested)",
   "title": "gemini_queue: two-process claim race test against a bare temp repo, no mocked push (commit 2e5ada03f; fix report CT-2)",
