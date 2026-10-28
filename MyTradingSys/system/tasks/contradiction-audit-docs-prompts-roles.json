@@ -4,6 +4,19 @@
   "commands": [
     "python scripts/dev/run_all_tests.py --quick"
   ],
+  "context": {
+    "calls_to_edit": 25,
+    "folded": "2026-10-28T08:33:31Z",
+    "misses": 56,
+    "reads": [
+      "scripts/dev/role_loader.py",
+      "MyTradingSys/system/WORKERS.md",
+      "MyTradingSys/system/roles/session_planner.md",
+      "MyTradingSys/system/RUN_MODEL.md",
+      "scripts/dev/mts_signal.py"
+    ],
+    "session": "agent-a76c950a3c0a8773a"
+  },
   "created": "2026-10-28T08:18:14Z",
   "depends_on": [],
   "done_when": "research/dedupe_audit_2026-10/DOCS.md exists: table of at most 40 ranked conflicting or duplicated statements with file:line on both sides, winner by the default rule, proposed edit.",
