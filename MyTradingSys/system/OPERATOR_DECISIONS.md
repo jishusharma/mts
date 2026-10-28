@@ -1362,3 +1362,8 @@ REMOVED 2026-10-24 (43d3bfc8f): offer_guard.py is gone; the rule now lives in CL
 ```json
 {"id": "d-krown-s8-e2-desk-crosscheck-go", "order": 56, "date": "2026-10-28", "status": "DECIDED", "question": "Run a simulator-desk cross-check of the E2 Krown S8 4h trade list (BTCUSDT 2022-04-01..2024-06-30) to prove the trade mechanics agree between e2_run.py and the desk Krown study?", "answer": "OPERATOR (chat 2026-10-28, after asking whether the simulator can prove what E2 tested): 'Yes, run it'. Sonnet card krown-s8-e2-desk-crosscheck, session started the same turn. Mechanics proof only; the E2 verdict (INCONCLUSIVE) is untouched.", "done": "card krown-s8-e2-desk-crosscheck filed and started."}
 ```
+
+## d-dsa-bridge-version-bump-always | decided 2026-10-28 | Builder (dsa-bridge-version-miss)
+```json
+{"id": "d-dsa-bridge-version-bump-always", "order": 57, "date": "2026-10-28", "status": "DECIDED", "question": "Why do DSA bridge fixes not reach the desktop, and how is the bridge version miss stopped?", "answer": "OPERATOR (2026-10-28): 'Find why the DSA bridge fixes are not working on the desktop. The DSA bridge version has not changed, so every time there is a fix the version is not updated. This is not the first time. Fix this miss ALWAYS. Make sure all DSA fixes are tested and ready on the desktop. Running DSA on the NUC is pointless because it restarts on the Lenovo; think about it later.' DECISION: every DSA bridge fix bumps the bridge version (guard: scripts/dev/aibridge_version.py + MyTradingSys/tests/test_aibridge_version_bump.py); DSA is not run on the NUC (revisit later).", "done": "bridge 0.7.2 with the version guard; card aibridge-072-desktop-install for the desktop install and Chrome reload."}
+```

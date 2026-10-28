@@ -31,8 +31,8 @@ BS = chr(92)
 FIXES = [
     ('v0.7.0 fluent auto-run, task mode, parallel chats', 'af9f3446a', 'src/concurrency.ps1', 'function Test-ConnectionSlot'),
     ('keep-alive: tab not discarded, worker heartbeat', '2c73ba9fe', 'extension/background.js', 'automatic discarding'),
-    ('v0.7.1 hands-free stays armed after a post', '3270e7423', 'extension/loop.js', "L.VERSION = '0.7.1'"),
-    ('agent 0.7.1 version matches extension', '3ba37319b', 'src/agent.ps1', "$AgentVersion = '0.7.1'"),
+    ('v0.7.1 hands-free stays armed after a post', '3270e7423', 'extension/loop.js', 'L.postLanded = function (before, now)'),
+    ('agent version constant (matches extension)', '3ba37319b', 'src/agent.ps1', "$AgentVersion = '"),
     ('B196 post gate keeps operator draft, auto-off banner', '8fb185ac0', 'extension/loop.js', 'L.postGate = function'),
     ('B196 stop notice banner', '8fb185ac0', 'extension/loop.js', 'L.stopNotice = function'),
     ('policy: fluent auto_mode', 'af9f3446a', 'src/policy.json', '"auto_mode": "fluent"'),
