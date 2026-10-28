@@ -2,6 +2,17 @@
   "approved_by": "operator 2026-10-28: 'File a high priority bug and assign it to Opus to fix it'",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 25,
+    "folded": "2026-10-28T13:55:35Z",
+    "misses": 16,
+    "reads": [
+      "scripts/dev/logon_wake.py",
+      "scripts/dev/test_successor_wake.py",
+      "scripts/dev/test_stop_guard.py"
+    ],
+    "session": "agent-a80fc0d7c23feab9c"
+  },
   "created": "2026-10-28T13:40:18Z",
   "crucial": "One design call with no undo: who may write the hand-over and start a successor, so two Supervisors never run one login (a wrong rule double-spends budget or leaves a login unattended).",
   "depends_on": [],
