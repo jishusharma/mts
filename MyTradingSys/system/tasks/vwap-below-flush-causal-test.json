@@ -4,7 +4,7 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-28T09:39:02Z",
+    "folded": "2026-10-28T09:49:13Z",
     "misses": 26,
     "reads": [
       "scripts/dev/tasks.py",
