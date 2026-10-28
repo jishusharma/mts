@@ -4,6 +4,20 @@
   "commands": [
     "python scripts/dev/run_all_tests.py --quick"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T06:53:52Z",
+    "misses": 17,
+    "reads": [
+      "MyTradingSys/system/roles/builder.md",
+      "MyTradingSys/system/SCHEDULING_POLICY.md",
+      "scripts/dev/c_drive_guard.py",
+      "scripts/dev/role_loader.py",
+      "MyTradingSys/system/WORKERS.md",
+      "scripts/dev/make_status.py"
+    ],
+    "session": "agent-a1140f67885d18f7a"
+  },
   "created": "2026-10-28T06:23:18Z",
   "depends_on": [],
   "done_when": "tasks.py dispatch and the planner exclude any open card whose title or scope matches a decision marked as a no-go in OPERATOR_DECISIONS.md, showing why-excluded; a one-step verb drops a card by decision id; tests fail on the pre-change code.",
