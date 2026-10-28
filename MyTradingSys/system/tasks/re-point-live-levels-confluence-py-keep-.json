@@ -2,6 +2,19 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 7,
+    "folded": "2026-10-28T16:43:55Z",
+    "misses": 8,
+    "reads": [
+      "MyTradingSys/research/malkan_div_flags_2026-10-28/BTCUSDT_divergences.csv",
+      "scripts/dev/run_all_tests.py",
+      "MyTradingSys/backtest/layers/alerts/live_levels_confluence.py",
+      "MyTradingSys/backtest/layers/alerts/test_live_levels_confluence.py",
+      "MyTradingSys/tests/test_budget.py"
+    ],
+    "session": "agent-ac9af566a17314957"
+  },
   "created": "2026-10-28T14:46:52Z",
   "depends_on": [],
   "done_when": "KEEP_STATUS exists, docstring states the fair-control result, test_live_levels_confluence.py and test_w3_wiring.py green, diff touches only the two scope_in files, KEEP tuple and event output unchanged.",
