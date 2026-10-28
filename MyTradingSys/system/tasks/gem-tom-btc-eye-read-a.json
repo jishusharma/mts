@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T01:00:25Z",
   "commands": [
     "python -c \"import csv;r=list(csv.DictReader(open('MyTradingSys/research/tom_btc_2026-10-13/marks_gemini_a.csv')));assert len(r)==40 and r[0]['chart']=='C001' and r[-1]['chart']=='C040';print(len(r))\""
   ],
@@ -16,6 +17,12 @@
   "kind": "run",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "SOUND; 40 rows in marks_gemini_a.csv; report written",
+      "ref": "4a6864ec2",
+      "utc": "2026-10-28T01:00:25Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +47,12 @@
   "refined_by": "",
   "refreshed": "2026-10-25T19:41:35Z",
   "refs": [],
-  "result": "",
+  "result": "SOUND; 40 rows in marks_gemini_a.csv; report written",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/tom_btc_2026-10-13/charts (PNG files C001..C040 only)",
     "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md",
@@ -57,12 +69,13 @@
   "sources": [
     "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4 and table 2 (concept ids A-C3, A-P1..A-P8)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read TOM_ON_BTC.md section 4 and table 2 for the concept ids; do not open charts/index.csv or charts/_key.csv.",
     "For each PNG C001..C040 write one CSV row: chart,take,concepts,stop,target (unreadable allowed in every field).",
     "Write MyTradingSys/research/tom_btc_2026-10-13/marks_gemini_a.csv with a header and 40 rows; python -c check that the row count and the chart ids match the files."
   ],
+  "taken": "2026-10-28T01:00:25Z",
   "tests": "Read task: its check is the python -c row count and id match, which fails before the file exists.",
   "title": "[GEMINI] Tom-on-BTC blind eye read, reader 2, charts C001-C040: marks_gemini_a.csv",
   "weight": "ROUTINE",

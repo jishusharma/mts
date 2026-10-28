@@ -1,0 +1,41 @@
+chart,take,concepts,stop,target
+C001,take,A-C3 A-P2 A-P6,unreadable,93300.0
+C002,skip,A-P2,unreadable,unreadable
+C003,skip,none,unreadable,unreadable
+C004,skip,none,unreadable,unreadable
+C005,take,A-C3 A-P2 A-P6,unreadable,unreadable
+C006,take,A-C3 A-P2,unreadable,unreadable
+C007,skip,none,unreadable,unreadable
+C008,skip,none,unreadable,unreadable
+C009,skip,none,unreadable,unreadable
+C010,skip,none,unreadable,unreadable
+C011,take,A-C3 A-P2 A-P6,unreadable,unreadable
+C012,skip,none,unreadable,unreadable
+C013,skip,none,unreadable,unreadable
+C014,skip,none,unreadable,unreadable
+C015,take,A-C3 A-P2,unreadable,unreadable
+C016,skip,none,unreadable,unreadable
+C017,skip,none,unreadable,unreadable
+C018,take,A-C3 A-P2 A-P6,unreadable,unreadable
+C019,take,A-C3 A-P2 A-P6,unreadable,unreadable
+C020,take,A-C3 A-P2,unreadable,unreadable
+C021,skip,none,unreadable,unreadable
+C022,skip,none,unreadable,unreadable
+C023,take,A-C3 A-P2 A-P6,unreadable,unreadable
+C024,take,A-C3 A-P2 A-P6,unreadable,unreadable
+C025,take,A-C3 A-P2 A-P6,unreadable,unreadable
+C026,skip,none,unreadable,unreadable
+C027,take,A-C3 A-P2 A-P6,unreadable,unreadable
+C028,take,A-C3 A-P2,unreadable,unreadable
+C029,skip,none,unreadable,unreadable
+C030,take,A-C3 A-P2 A-P6,unreadable,unreadable
+C031,take,A-C3 A-P2 A-P6,unreadable,unreadable
+C032,take,A-C3 A-P2,unreadable,unreadable
+C033,take,A-C3 A-P2 A-P6,unreadable,unreadable
+C034,take,A-C3 A-P2,unreadable,unreadable
+C035,skip,none,unreadable,unreadable
+C036,skip,none,unreadable,unreadable
+C037,skip,none,unreadable,unreadable
+C038,skip,none,unreadable,unreadable
+C039,skip,unreadable,unreadable,unreadable
+C040,take,A-C3 A-P2 A-P6,unreadable,unreadable
