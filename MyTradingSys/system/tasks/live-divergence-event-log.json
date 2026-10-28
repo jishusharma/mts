@@ -4,6 +4,20 @@
   "commands": [
     "python scripts/dev/live_cross_read.py --help"
   ],
+  "context": {
+    "calls_to_edit": 21,
+    "folded": "2026-10-28T06:55:19Z",
+    "misses": 6,
+    "reads": [
+      "MyTradingSys/research/live_reads/2026-10-26_cross_market_tools/watch_rows.csv",
+      "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/READ.md",
+      "MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md",
+      "MyTradingSys/research/live_reads/2026-10-26_cross_market_tools/events.md",
+      "MyTradingSys/research/live_reads/2026-10-26_cross_market_tools/us_open.py",
+      "MyTradingSys/research/live_reads/2026-10-26_cross_market_tools/watch.py"
+    ],
+    "session": "agent-a86467f3cb181ce6c"
+  },
   "created": "2026-10-26T14:56:56Z",
   "depends_on": [],
   "done_when": "CSV with the 2026-10-26 event (BTC -0.10% vs ES +0.32% NQ +0.36% at 14:36Z, convergence start 14:33-14:36) and its +30/60/120 outcomes from public data; schema documented; labelled descriptive, never used to select parameters",

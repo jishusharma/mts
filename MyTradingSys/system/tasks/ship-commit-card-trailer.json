@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-10-28T06:48:54Z",
+  "depends_on": [],
+  "done_when": "git log --grep 'Card: <id>' finds each new ship; a test fails on old sync.py (ship message without trailer) and passes after; make_status / verify lookups use the trailer",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gap: wake-sleeping-sessions ship c8dcca8ed (author gemini-queue) carried no card id, so a search by card id found nothing. Require a 'Card: <id>' trailer from the claimed card in every ship commit; make_status / verify lookups find ships by it.",
+  "id": "ship-commit-card-trailer",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nb/bg-process-audit",
+      "ref": "e5bbcb6faab9",
+      "utc": "2026-10-27T23:57:20Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T06:48:55Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/sync.py",
+    "scripts/dev/make_status.py"
+  ],
+  "scope_out": [
+    "unrelated files; live tree; other cards"
+  ],
+  "scope_sha": "e5bbcb6faab9",
+  "size": "S",
+  "sources": [
+    "operator ask 2026-10-28 gap 1"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read the gap text and linked files",
+    "Implement the smallest change",
+    "Run the test on old and new code; record output"
+  ],
+  "tests": "scripts/dev/test_sync.py::test_ship_message_has_card_trailer (new, fails on old code)",
+  "title": "Ship commits carry a Card: <id> trailer (sync.py ship); status/verify find ships by it",
+  "weight": "",
+  "worker": "agent"
+}
