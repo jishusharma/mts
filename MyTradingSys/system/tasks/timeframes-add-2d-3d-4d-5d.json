@@ -7,7 +7,7 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-28T16:20:20Z",
+    "folded": "2026-10-28T16:59:35Z",
     "misses": 7,
     "reads": [
       "MyTradingSys/backtest/layers/timeframe/test_tf_resample.py",
