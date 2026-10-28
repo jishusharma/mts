@@ -2,6 +2,22 @@
   "approved_by": "operator 2026-10-28 (asked this session directly: design the next Opus runs / the next Fable run); the operator starting the run by hand is the approval",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 57,
+    "folded": "2026-10-28T15:29:30Z",
+    "misses": 31,
+    "reads": [
+      "scripts/dev/mts_signal.py",
+      "scripts/dev/run_all_tests.py",
+      "MyTradingSys/system/wiring_registry.json",
+      "scripts/dev/tasks.py",
+      "scripts/dev/ci_watch.py",
+      "scripts/dev/extra_tests.tsv",
+      "scripts/dev/mts_doctor.py",
+      ".claude/settings.json"
+    ],
+    "session": "4b846272-b5c2-40e8-a265-e5d5f62d3657"
+  },
   "created": "2026-10-28T09:31:53Z",
   "crucial": "hook and doctor code runs in every session; a misfiring heal blocks the fleet",
   "depends_on": [],
