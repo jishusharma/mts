@@ -2,6 +2,19 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 11,
+    "folded": "2026-10-28T15:26:38Z",
+    "misses": 24,
+    "reads": [
+      "MyTradingSys/backtest/layers/fabio/v3/manage.py",
+      "MyTradingSys/backtest/sim.py",
+      "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/fill_canary.py",
+      "MyTradingSys/research/netdelta_panel_2026-10-18/data/binance_perp_klines.json.gz",
+      "scripts/dev/extra_tests.tsv"
+    ],
+    "session": "agent-a75895c8185b0f0c9"
+  },
   "created": "2026-10-28T15:12:22Z",
   "depends_on": [],
   "done_when": "",
