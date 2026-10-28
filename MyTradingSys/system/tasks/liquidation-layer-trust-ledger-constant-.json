@@ -1,7 +1,20 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T17:23:53Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": 7,
+    "folded": "2026-10-28T17:23:56Z",
+    "misses": 30,
+    "reads": [
+      "src/main/java/datafeed/BinanceLiquidationAccumulator.java",
+      "src/test/java/datafeed/NakedPocWriterTest.java",
+      "pom.xml",
+      "src/main/java/datafeed/Scheduler.java"
+    ],
+    "session": "agent-af7c4297ecac1ad93"
+  },
   "created": "2026-10-28T13:30:15Z",
   "depends_on": [],
   "done_when": "A new JUnit test feeds a synthetic forceOrder message and shows one JSONL line appended with price/qty/side/event time; fails on current code first; a short live run then appends at least one real line; shipped; cherry empty.",
@@ -13,6 +26,12 @@
   "id": "liquidation-layer-trust-ledger-constant-",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "runtime_data/liq_events/SYMBOL.jsonl; LiquidationEventLogTest 5 tests green, each forceOrd",
+      "ref": "2aa547d9b",
+      "utc": "2026-10-28T17:23:53Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -37,7 +56,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T15:03:14Z",
   "refs": [],
-  "result": "",
+  "result": "runtime_data/liq_events/SYMBOL.jsonl; LiquidationEventLogTest 5 tests green, each forceOrder appends one JSONL line",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "src/main/java/datafeed/BinanceLiquidationAccumulator.java",
     "src/main/java/datafeed/Scheduler.java",
@@ -55,13 +79,14 @@
     "MyTradingSys/research/liquidation_layer_2026-10-28/README.md:6,9 (H3 needs a recorded forceOrder stream; recorder = long-running process, owner decision)",
     "src/main/java/datafeed/Scheduler.java:32-33,61-69 (already connects liqBtc/liqEth continuously; daily snapshot only)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read BinanceLiquidationAccumulator.onMessage() (forceOrder parse, ~line 47) and its Bucket aggregation (~line 130); confirm Scheduler.java already connect()s it continuously for BTCUSDT/ETHUSDT (it does: a long-running process already, not new).",
     "Write a failing JUnit test first: feed a synthetic forceOrder JSON message to the accumulator and assert one line is appended to a durable log (e.g. runtime_data/liq_events/<symbol>.jsonl) with price, qty, side, event time; fails on current code (no persistence exists).",
     "Add the append-only writer in onMessage() (flush each write; never block the WebSocket thread on slow disk I/O; create the directory if missing).",
     "Ship with sync.py ship --release; Result: line naming the log path and confirming a short real run appended at least one line."
   ],
+  "taken": "2026-10-28T17:23:53Z",
   "tests": "new JUnit test for BinanceLiquidationAccumulator: a synthetic forceOrder message produces one appended JSONL line; fails on current code (no persistence)",
   "title": "Liquidation layer trust ledger: constant context, pre-registered touch and reversal test",
   "weight": "ROUTINE",

@@ -1375,3 +1375,13 @@ REMOVED 2026-10-24 (43d3bfc8f): offer_guard.py is gone; the rule now lives in CL
 ```json
 {"id": "d-all-stations-roll-exhaust-a", "order": 58, "date": "2026-10-28", "status": "DECIDED", "question": "How hard do the three stations run now?", "answer": "OPERATOR (voice, 2026-10-28): 'Login is now active. On the Lenovo laptop, I need it to be engaged. Let it exhaust all the session limit that remains ... and then it will continue normally in the next session. So I need work to be rolling everywhere ... continue in parallel from 3 machines must happen right now.' DECISION (OURS): login A (laptop) runs Supervisor A in exhaust mode for the current 5 h window (EXHAUST_PHASE.md five_stop 95), weekly cap still applies; B (NUC) and C (desktop) keep NORMAL supervisors dispatching; gateway runs O1-O3 continue.", "done": "HIGH broadcast to jis-laptop; NORMAL broadcast to all supervisors."}
 ```
+
+## d-eagle-eyes-bible-alerts-mainnet | decided 2026-10-28 | Eagle_Eyes
+```json
+{"id": "d-eagle-eyes-bible-alerts-mainnet", "order": 60, "date": "2026-10-28", "status": "DECIDED", "question": "What does the operator want from Eagle_Eyes beyond live reads?", "answer": "OPERATOR (voice, 2026-10-28): a compact report of the whole MTS picture; to SEE alerts firing and the testnet trades fired; a redesigned, elegant alert UI with no drag/close problems and no windows piling up (study how modern alerts are designed); Eagle_Eyes to find what MTS lacks to reach completion, an edge and a first mainnet trade (the goal, even on the simplest edge). Verbatim brief saved as MyTradingSys/system/EAGLE_EYES_BIBLE.md, read at every Eagle_Eyes load. Then: spawn an Opus session to review the report and plan, apply the corrections, and give the operator a prompt for a stable-model run. DECISION (OURS): report and plan in research/eagle_eyes_picture_2026-10-28, Opus review session, stable-run prompt as a saved file with a one-line start.", "done": "bible, picture and plan shipped; Opus reviewer started the same turn."}
+```
+
+## d-status-is-inline-dashboard | decided 2026-10-28 | Builder (status-board-c)
+```json
+{"id": "d-status-is-inline-dashboard", "order": 59, "date": "2026-10-28", "status": "DECIDED", "question": "What does 'status' mean?", "answer": "OPERATOR (2026-10-28): \"whenever I say status, I should be presented a dashboard right at my chat screen... readable, actionable ... it must change with context, whatever I'm asking. So every output has to be in that format\" DECISION (OURS): 'status' runs scripts/dev/status_board.py and pastes the tables inline, no links.", "done": "scripts/dev/status_board.py + test_status_board.py shipped; QUICK_ANSWERS.md line added."}
+```

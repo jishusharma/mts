@@ -38,7 +38,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `tom-probe-runner` blocked p2 SONNET: Run pre-registered Tom management arms on DAX and BTC
   - `lab-verify-trend-healthy-in-balance` refined p3 SONNET: LAB-VERIFY 10-18: how often trend_healthy is set inside a multi-day balance (DEV)
   - `layer-review-tom-guidance` ready p3 SONNET: Layer review sheet: Tom and cross-guidance (idea, source, backtests, bugs, confluence)
-  - `multi-tf-bias-stack-one-written-rule-tha` ready p3 SONNET: Multi-TF bias stack: one written rule that forms bias from HTF location + LTF flow, tested on DEV (operator 10
   - `tom-btc-other-setups` blocked p3 CODEX: Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, b
 
 ## Fabio (order-flow layer) (`fabio`)
@@ -270,7 +269,9 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-pitchfork-gpt-rederive.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `pitchfork-engine-implement-hagopian-fail` refined p2 OPUS: Pitchfork engine: implement Hagopian failure breakout candidates (PF-HAG-L / PF-HAG-S) in Java
-  - `pitchfork-review-fixes-2026-10-28` raw p2 SONNET: Pitchfork review fixes: Hagopian target W=|UML-ML| (F1), live PF-REV stale-bounce gate parity (F3), desk/live 
+  - `pitchfork-fixes-desk-python` raw p2 SONNET: Pitchfork desk/Python review fixes: F1 target reading, F4 profile parity, F5 lookahead + VA leak test, F6 pyth
+  - `pitchfork-fixes-live-java` raw p2 SONNET: Pitchfork live Java review fixes: F3 stale-bounce gate parity, F6 inverted-fork tine, F7/F9 labels
+  - `pitchfork-pf-can-arm-order-check` raw p2 SONNET: Pitchfork step 0: can a PF-* candidate arm an order in the live state machine? (read-only code trace, no edit)
   - `sim-desk-plug-in-pitchfork-4h-tine-bounc` refined p2 OPUS: Sim desk: plug in Pitchfork 4H tine-bounce study adapter (Modified Schiff + Volume Profile)
   - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
 
