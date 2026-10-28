@@ -35,6 +35,8 @@ MODEL = "claude-opus-5-5"
 DROP = re.compile(r"^(ANTHROPIC_|CLAUDE_CODE_OAUTH|CLAUDE_CODE_USE_)")
 HANG_MIN = 45     # OURS: no stream event for 45 min = hung (long backtests print tool events, not silence)
 MAX_RESUMES = 2   # OURS
+MAX_QUOTA_WAITS = 6  # OURS: the gateway has its own 5-hour quota (10-28: O1+O2 in parallel spent it in ~1 h)
+LIMIT_RE = re.compile(r"reached 100% of your|usage limit|quota|rate.?limit|429|try again later", re.I)
 RESUME_PROMPT = (
     "You were interrupted (station restart or hang) and your context was compacted. Same rules as before. "
     "Check git status, the files you changed and git cherry, then finish OPUS_RUNS.md {run} from where you stopped; "
@@ -104,8 +106,11 @@ def summary(stdout: str, key: str) -> dict:
         return {"is_error": True, "result": redact(stdout[-400:], key)}
     res = str(d.get("result", ""))
     # the CLI reports is_error false on an auth failure; the text is the only signal
-    bad = bool(d.get("is_error")) or bool(re.search(r"Invalid API key|API Error|authentication_error|401|403", res))
-    return {"is_error": bad, "num_turns": d.get("num_turns"),
+    limit = bool(LIMIT_RE.search(res))
+    bad = bool(d.get("is_error")) or limit or bool(re.search(r"Invalid API key|API Error|authentication_error|401|403", res))
+    m = re.search(r"reset in (\d+) (minute|hour)", res)
+    wait = (int(m.group(1)) * (60 if m.group(2) == "hour" else 1)) if m else (60 if limit else 0)
+    return {"is_error": bad, "limit_wait_min": wait if limit else None, "num_turns": d.get("num_turns"),
             "models": sorted((d.get("modelUsage") or {}).keys()), "result": redact(str(d.get("result", ""))[-400:], key)}
 
 
@@ -236,10 +241,40 @@ def verdict(has_done: bool, started: bool, running: bool, idle_min: float, strea
     return "resume" if not running else "kill-resume"
 
 
+def quota_pass(now: float) -> set:
+    """Runs that ended on the gateway quota: clear their done marker once the reset time is past and no other run
+    is going (one run at a time after a quota hit, DECISION OURS), so the normal resume below relaunches them.
+    Returns the cards still waiting."""
+    dirs = sorted(RUNS.glob("*")) if RUNS.exists() else []
+    waiting, busy = set(), any((d / "started").exists() and not (d / "done").exists() for d in dirs)
+    for d in dirs:
+        if not ((d / "done").exists() and (d / "summary.json").exists()):
+            continue
+        s = json.loads((d / "summary.json").read_text())
+        if s.get("limit_wait_min") is None:
+            continue
+        waits = int((d / "quota_waits").read_text()) if (d / "quota_waits").exists() else 0
+        if waits >= MAX_QUOTA_WAITS:
+            continue
+        due = (d / "done").stat().st_mtime + (s["limit_wait_min"] + 5) * 60
+        if now < due or busy:
+            waiting.add(d.name)
+            continue
+        (d / "quota_waits").write_text(str(waits + 1), encoding="utf-8", newline=chr(10))
+        (d / "done").unlink()
+        (d / "summary.json").unlink()
+        busy = True
+    return waiting
+
+
 def tick() -> int:
     """One pass: report every run, relaunch dead or hung ones (compact, then resume). Prints one line per run."""
+    waiting = quota_pass(time.time())
     for d in sorted(RUNS.glob("*")) if RUNS.exists() else []:
         card = d.name
+        if card in waiting:
+            print(f"{card}: quota-wait (gateway 5-hour quota; resumes after reset, one run at a time)")
+            continue
         resumes = int((d / "resumes").read_text()) if (d / "resumes").exists() else 0
         idle = (time.time() - last_activity(d)) / 60
         v = verdict((d / "done").exists(), (d / "started").exists(), task_running(card), idle,
@@ -264,7 +299,8 @@ def tick() -> int:
             (d / "done").write_text("exit=gave-up\n", encoding="utf-8", newline="\n")
         s = (d / "summary.json").read_text()[:300] if (d / "summary.json").exists() else ""
         if v in ("done", "gave-up"):
-            v = "done " + (d / "done").read_text().strip()
+            bad = json.loads(s).get("is_error", True) if s.startswith("{") else True
+            v = "done " + (d / "done").read_text().strip() + (" FAIL" if bad else " OK")
         print(f"{card}: {v} idle={idle:.0f}m resumes={resumes} {s}")
     return 0
 

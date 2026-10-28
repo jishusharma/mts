@@ -1,0 +1,11 @@
+{
+  "card": "live-mirror-follow-live-host-move",
+  "done_when": "on the Lenovo 'live_mirror.py publish' exits 0 with MTS_LIVE_OWNER_DIR set; from the NUC 'live_mirror.py brief' first line is 'LIVE OWNER: DESKTOP-F7IU69N (heartbeat Ns ago)' with live numbers; both outputs quoted in the desk reply; a manual publish is the only copy until the supervisor deploy (LIVE_MIRROR.md:69-74), say so in the reply",
+  "from": "JIS-NUC",
+  "id": "20261028-124022-live-mirror-follow-live-host-move",
+  "need": "python scripts/dev/live_owner.py check; python scripts/dev/live_mirror.py publish; python scripts/dev/live_mirror.py brief (full brief: python scripts/dev/tasks.py brief live-mirror-follow-live-host-move)",
+  "posted": "2026-10-28T12:40:22Z",
+  "status": "pending",
+  "target": "DSA",
+  "title": "live_mirror.py hard-codes JIS-NB (LIVE_HOST, share \\JIS-NB\\MTS-Mirror); live loop is on desktop-f7iu69n (Lenovo, heartbeat live), so no session off the Lenovo can read live state. Make mirror root/owner follow the live-owner heartbeat; publish from Lenovo; test"
+}

@@ -226,3 +226,43 @@ def test_library_handover_default_does_not_wake(tmp_path, monkeypatch):
 
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-q"]))
+
+
+_PS_STUBS = r"""
+function New-ScheduledTaskAction { param($Execute, $Argument) @{ Execute = $Execute; Argument = $Argument } }
+function New-ScheduledTaskPrincipal { param($UserId, $LogonType) @{ LogonType = "$LogonType" } }
+function New-ScheduledTaskTrigger { param([switch]$Once, [datetime]$At) @{ At = $At.ToUniversalTime().ToString('yyyy-MM-ddTHH:mm') } }
+function Register-ScheduledTask { param($TaskName, $Action, $Trigger, $Principal, [switch]$Force)
+  $o = @{ TaskName = $TaskName; Execute = $Action.Execute; Argument = $Action.Argument; At = $(if ($Trigger) { $Trigger.At } else { $null }); Force = [bool]$Force }
+  [IO.File]::WriteAllText($env:MTS_FAKE_REG_OUT, ($o | ConvertTo-Json -Compress)) }
+function Start-ScheduledTask { param($TaskName) [IO.File]::WriteAllText($env:MTS_FAKE_REG_OUT + '.started', $TaskName) }
+"""
+
+
+@pytest.mark.skipif(sys.platform != "win32", reason="real path shells out to powershell.exe")
+def test_real_schtasks_path_registers_expected_task_via_fake(tmp_path, monkeypatch):
+    """CT-1: run the REAL _run_ps (powershell.exe) with Register-ScheduledTask replaced by a recording fake."""
+    import json
+    out = tmp_path / "reg.json"
+    monkeypatch.setenv("MTS_FAKE_REG_OUT", str(out))
+    repo = _repo(tmp_path / "repo")
+    base = (tmp_path / "wake").as_posix()
+    seen = []
+
+    def runner(script):
+        seen.append(script)
+        W._run_ps(_PS_STUBS + script)
+
+    dry = W.register("C", cwd=repo, at="2026-10-27T20:05Z", dry=True, now=NOW, plan={"mode": "NORMAL", "slots": 2}, base=base)
+    r = W.register("C", cwd=repo, at="2026-10-27T20:05Z", now=NOW, plan={"mode": "NORMAL", "slots": 2}, base=base, runner=runner)
+    got = json.loads(out.read_text(encoding="utf-8"))
+    assert r["ran"] and got["TaskName"] == "MTS-SuccWake-C" and got["Force"] is True
+    assert got["At"] == "2026-10-27T20:05"                                   # fireAt reached the scheduler call, UTC-exact
+    assert dry["fire_at"] == "2026-10-27T20:05Z" and seen[0] == dry["script"]  # real path ran the same script the dry run reports
+    assert got["Execute"] == "conhost.exe"
+    assert got["Argument"] == f"--headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File {base}/C/run.ps1"
+    run_ps = (tmp_path / "wake" / "C" / "run.ps1").read_text(encoding="utf-8")
+    assert f"Set-Location '{repo.resolve().as_posix()}'" in run_ps           # cwd
+    assert "--model claude-sonnet-5-5" in run_ps and "Unregister-ScheduledTask -TaskName 'MTS-SuccWake-C'" in run_ps
+    assert "You are Supervisor. Login C." in (tmp_path / "wake" / "C" / "prompt.txt").read_text(encoding="utf-8")
+    assert not Path(str(out) + ".started").exists()                           # future fireAt: no immediate start

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T12:36:17Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -24,7 +25,14 @@
   "goal": "station_watcher_monitor.py (research/pipeliner, the watcher session's own 5-min loop, no scheduler) flags only liveness flips, lane stalls, lease expiry and desk-pending moves today. Operator goal: also catch a stuck ship - CI red on the last ship, a gate slot held long, a STALE claim, or a ready-card lane sitting idle - and re-propose routing centrally.",
   "id": "watcher-ship-flow-guard",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Design note shipped 0c8d0db02 (research/lead/2026-10-28_watcher-ship-flow-guard-design.md)",
+      "ref": "c596cbd0b",
+      "utc": "2026-10-28T12:36:17Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -34,7 +42,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T12:01:27Z",
   "refs": [],
-  "result": "",
+  "result": "Design note shipped 0c8d0db02 (research/lead/2026-10-28_watcher-ship-flow-guard-design.md); implementation card implement-watcher-ship-flow-guard-check- opened",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/lead/*.md (new design note only)"
   ],
@@ -47,12 +60,13 @@
     "MyTradingSys/research/pipeliner/station_watcher_monitor.py (current checks: liveness, lane stall, lease, desk pending)",
     "scripts/dev/traffic.py:702 (PROPOSED line format)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read station_watcher_monitor.py (bare while-loop, no functions, no tests today), traffic.py's render_status PROPOSED block, and sync.py's claims STALE logic and gate/CI status output.",
     "List detection options per signal (poll source, threshold, false-positive risk) with cost/risk, pick one default per signal; decide whether the loop needs a pure check_once(state)->reasons refactor to be testable.",
     "Open ONE follow-up implementation card (tasks.py new) pointing at this note; markable done only once it ships with passing tests and the test output attached as proof in its result field."
   ],
+  "taken": "2026-10-28T12:36:17Z",
   "tests": "Design-only: no tests to run yet. The note must show, per signal, what existing command or log already carries that data (sync.py claims, CI, gate timing), not a new data source invented here.",
   "title": "Station watcher flow guard: extend station_watcher_monitor.py beyond liveness - detect a stuck ship (CI red on the last ship, gate slot held > 20 min, STALE claim > 24 h, lane idle with ready cards) and emit a STATE-CHANGE line plus one PIPE signal re-proposing the routing; goal: ships always in optimal flow, governed centrally by the one watcher",
   "weight": "IMPORTANT",

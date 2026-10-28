@@ -2,6 +2,15 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T13:12:47Z",
+    "misses": 1,
+    "reads": [
+      "scripts/dev/tasks.py"
+    ],
+    "session": "agent-af74f5876c0454f4b"
+  },
   "created": "2026-10-28T06:27:20Z",
   "depends_on": [],
   "done_when": "A new test spawns two real claimers against a bare temp git repo with no mocked push; exactly one wins the claim and the loser retries/fails cleanly per gemini_queue.py's real logic; existing unit tests still pass.",
@@ -24,7 +33,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Reopened 2026-10-28: commit 040a1aa89 reverted (CI RED, passes on Windows but both claims succeed on ubuntu-latest). Needs an order-independent assertion and a Linux run before shipping; do not rebuild yet.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

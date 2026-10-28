@@ -1,37 +1,89 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T12:51:19Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T12:36:33Z",
+    "misses": 25,
+    "reads": [
+      "MyTradingSys/system/TASK_REFINEMENT.md",
+      "MyTradingSys/system/roles/eagle_eyes.md",
+      "MyTradingSys/system/LIVE_MIRROR.md",
+      "scripts/dev/live_owner.py",
+      "MyTradingSys/research/pipeliner/station_watcher_monitor.py",
+      "scripts/dev/traffic.py",
+      "scripts/dev/gate_select.py",
+      "scripts/dev/live_mirror.py"
+    ],
+    "session": "agent-abc18a1b6ef909513"
+  },
   "created": "2026-10-28T12:14:41Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "tasks.py dispatch --json has a 'batches' list (each batch <=3 card ids, disjoint scope_in, no live_path, no FULL_RE path); dispatch_table prints one BATCH line per batch; new tests pass; test output pasted in the card result.",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "tasks.py dispatch also returns batches: up to 3 ready non-live-path cards with pairwise-disjoint scope_in, none touching a gate/FULL_RE path, so one worker runs one gate and one sync.py ship for the batch (design default L4, OURS).",
   "id": "rolling-chain-batched-dispatch-impl",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "test_tasks_dispatch.py 12 passed (6 new batch tests failed on old tasks.py); tasks tests 1",
+      "ref": "438d58a76",
+      "utc": "2026-10-28T12:51:19Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "plan hang: read claims once per run, not per card",
+      "ref": "33ddfe6bb991",
+      "utc": "2026-10-27T23:53:54Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "not_twin_of": [
+    "rolling-chain-background-wait-design-rev"
+  ],
+  "note": "Params OURS: batch size 3 (re-check after 30 batched links), no MAX_RUNNING change. Checked vs OPERATOR_DECISIONS d-rolling-sessions / d-dedupe-lean: no conflict. Verify line: content sha, git cherry origin/fast-track <sha> empty, git ls-tree shows both files.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-28T12:34:39Z",
   "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "result": "test_tasks_dispatch.py 12 passed (6 new batch tests failed on old tasks.py); tasks tests 135 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "MyTradingSys/tests/test_tasks_dispatch.py"
+  ],
+  "scope_out": [
+    "usage_reminder.py MAX_RUNNING (stays 2), sync.py, gate_select.py, worker spawning"
+  ],
+  "scope_sha": "33ddfe6bb991",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/lead/2026-10-28_rolling-chain-link-latency-levers.md (Default OURS: batch size 3, MAX_RUNNING 2)"
+  ],
+  "state": "done",
+  "steps": [
+    "Read research/lead/2026-10-28_rolling-chain-link-latency-levers.md Default (OURS) section and tasks.py dispatch() + dispatch_table().",
+    "Add pure batch_cards(rows, max_n=3): greedy in rank order, skip live_path and cards whose scope_in matches gate_select.FULL_RE or is unknown; overlap = same path or one a prefix of the other.",
+    "Wire into dispatch() as snap['batches'] and print BATCH lines in dispatch_table; keep the 15-line cap.",
+    "Tests first: overlap, 3-cap, live_path excluded, FULL_RE path alone, deterministic order; confirm they fail on the old tasks.py. Run run_all_tests.py --quick."
+  ],
+  "taken": "2026-10-28T12:51:19Z",
+  "tests": "MyTradingSys/tests/test_tasks_dispatch.py: new batch tests fail on current tasks.py (no 'batches' key), pass after.",
   "title": "Implement batched dispatch of non-overlapping small cards (design: research/lead/2026-10-28_rolling-chain-link-latency-levers.md)",
-  "weight": "",
-  "worker": "",
-  "not_twin_of": [
-    "rolling-chain-background-wait-design-rev"
-  ]
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
