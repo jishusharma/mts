@@ -221,5 +221,6 @@ scratch_*.py
 scratch_*.ps1
 MyTradingSys/research/pipeliner/STATION_WATCH_*.log
 
+MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/.gapfreq_cache/
 # live validation store and operator messages (runtime, operator verdicts; repo is public)
 MyTradingSys/runtime/live_validation/

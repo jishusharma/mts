@@ -1234,9 +1234,13 @@ def worktrees(repo):
 
 
 def ahead_commits(path, n):
-    """`n` commits ahead of origin/fast-track, or 0 when HEAD's tree equals the trunk's (B17: merge commits plus a revert that trunk
-    already holds are 'nothing to ship' to `ship`, so they are not unshipped work either)."""
-    if n and git(path, "diff", "--quiet", f"origin/{TRUNK}", "HEAD", check=False).returncode == 0:
+    """`n` commits ahead of origin/fast-track, or 0 when HEAD adds no content of its own: its tree equals the merge-base with the trunk
+    (B17: merge commits plus a revert that trunk already holds are 'nothing to ship' to `ship`; comparing with the trunk TIP fails the
+    minute the trunk moves on, the merge-base does not)."""
+    if not n:
+        return n
+    base = git(path, "merge-base", f"origin/{TRUNK}", "HEAD", check=False)
+    if base.returncode == 0 and base.stdout.strip() and git(path, "diff", "--quiet", base.stdout.strip(), "HEAD", check=False).returncode == 0:
         return 0
     return n
 
