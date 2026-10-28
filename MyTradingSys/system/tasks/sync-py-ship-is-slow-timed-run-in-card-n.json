@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Measured 2026-10-28 on jis-nb: sync.py ship of a docs/tasks-only commit took 263 s wall (ship2, includes CI wait up to 10 min); the first ship attempt without a claim aborted after 58 s (host-health scan before the claim check). Target is the 2-min ship goal (see bug-session-handoff-ship-speed-audit; check overlap before refining).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",

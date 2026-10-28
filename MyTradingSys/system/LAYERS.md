@@ -243,6 +243,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `krown-dev-event-study-candles` refined p2 SONNET: Krown DEV event study 3/3: candle hypotheses H-C1, H-C2 (H-T1 not run); DONE when: DEV_RESULTS.md has N, power
   - `krown-dev-event-study-levels` refined p2 SONNET: Krown DEV event study 2/3: level and moving-average hypotheses H-M1, H-M3, H-Z1 (H-M2 not run); DONE when: DEV
   - `krown-hidden-divergence-confluence-feed` ready p2 SONNET: Krown hidden divergence as a shared confluence feed any layer (RSI 40-60 included) can consume; Malkan layer s
+  - `krown-s8-e2-desk-crosscheck` ready p2 SONNET: Cross-check E2 (Krown S8 4h) trade mechanics against the simulator desk on BTCUSDT 2022-04-01..2024-06-30; DON
   - `krown-other-sources-event-study-videos` ready p3 SONNET: Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigg
   - `layer-review-krown-wavetrend` ready p3 SONNET: Layer review sheet: Krown and WaveTrend (idea, source, backtests, bugs, confluence)
   - `trendline-ledger-registry-hygiene` ready p3 SONNET: Trend-line daily ledger schema v2 enforcement + register the module in layer_index and wiring_registry (audit 
