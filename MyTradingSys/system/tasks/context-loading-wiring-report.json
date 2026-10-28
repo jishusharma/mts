@@ -5,7 +5,7 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-28T15:10:33Z",
+    "folded": "2026-10-28T15:12:38Z",
     "misses": 53,
     "reads": [
       "scripts/dev/role_loader.py",
