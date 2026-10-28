@@ -145,6 +145,102 @@ class PreshipTest(unittest.TestCase):
         self.assertEqual(P.hook("hook-edit", json.dumps({"tool_input": {"file_path": "/no/such/dir/f.md"}})), "")
 
 
+class ReachLineTest(unittest.TestCase):
+    """OPS_CHANGE_CHECK.md: a commit touching role_*, mts_signal.py, sync.py, hooks or roles/*.md carries `Reach: Q1-Q8 ...`."""
+    def setUp(self):
+        self.d = tempfile.TemporaryDirectory()
+        self.root = Path(self.d.name) / "repo"
+        self.root.mkdir()
+        os.environ["MTS_STOP_GUARD_HOME"] = str(Path(self.d.name) / "state")
+        git(self.root, "init", "-q")
+        git(self.root, "config", "user.email", "t@t")
+        git(self.root, "config", "user.name", "t")
+        self._rules = P.RULES
+        P.RULES = []
+
+    def tearDown(self):
+        P.RULES = self._rules
+        os.environ.pop("MTS_STOP_GUARD_HOME", None)
+        self.d.cleanup()
+
+    def stage(self, name):
+        (self.root / name).parent.mkdir(parents=True, exist_ok=True)
+        (self.root / name).write_text("x", encoding="utf-8")
+        git(self.root, "add", name)
+
+    def hook(self, command, sid="s1"):
+        return P.hook("hook-commit", json.dumps({"session_id": sid, "cwd": str(self.root), "tool_input": {"command": command}}))
+
+    def denied(self, command):
+        out = self.hook(command)
+        return json.loads(out)["hookSpecificOutput"]["permissionDecisionReason"] if out else ""
+
+    def test_role_loader_commit_without_reach_is_denied_every_time_naming_the_doc_and_line(self):
+        self.stage("scripts/dev/role_loader.py")
+        for _ in range(3):
+            why = self.denied('git commit -m "fix loader"')
+            self.assertIn("OPS_CHANGE_CHECK.md", why)
+            self.assertIn("Reach: Q1-Q8 ok", why)
+
+    def test_reach_line_in_m_and_heredoc_forms_is_allowed(self):
+        self.stage("scripts/dev/role_loader.py")
+        self.assertEqual(self.hook('git commit -m "fix" -m "Reach: Q1-Q8 ok"'), "")
+        nl = chr(10)
+        doc = "git commit -F - <<'EOF'" + nl + "fix" + nl + nl + "%s" + nl + "EOF"
+        self.assertEqual(self.hook(doc % "Reach: Q1-Q8 ok, Q2 n/a none"), "")
+        self.assertNotEqual(self.hook(doc % "Reach: see above"), "")
+
+    def test_every_reach_path_is_covered_and_unrelated_paths_are_not(self):
+        for name in ("scripts/dev/role_loader.py", "scripts/dev/mts_signal.py", "scripts/dev/sync.py", ".claude/settings.json",
+                     "MyTradingSys/system/roles/builder.md"):
+            git(self.root, "reset", "-q")
+            self.stage(name)
+            self.assertIn("Reach", self.denied("git commit -m x"), name)
+        for name in ("scripts/dev/test_role_loader.py", "scripts/dev/other.py", "MyTradingSys/system/ROLES.md", "a.py"):
+            git(self.root, "reset", "-q")
+            self.stage(name)
+            self.assertEqual(self.hook("git commit -m x"), "", name)
+
+    def test_garbage_command_denies_only_when_a_reach_path_is_staged(self):
+        garbage = "git commit " + chr(0) + chr(0xfffd) + " -m 'unterminated"
+        self.stage("a.py")
+        self.assertEqual(self.hook(garbage), "")
+        git(self.root, "reset", "-q")
+        self.stage("scripts/dev/sync.py")
+        self.assertIn("Reach", self.denied(garbage))
+
+    def test_a_crash_in_the_check_fails_closed_for_a_reach_path(self):
+        self.stage("scripts/dev/sync.py")
+        real = P.reach_text_ok
+        P.reach_text_ok = lambda *a, **k: 1 / 0
+        try:
+            self.assertIn("Reach", self.denied('git commit -m "Reach: Q1-Q8 ok"'))
+        finally:
+            P.reach_text_ok = real
+
+    def test_off_switch_bypasses_the_reach_check(self):
+        self.stage("scripts/dev/role_loader.py")
+        os.environ["MTS_PRESHIP"] = "off"
+        try:
+            self.assertEqual(self.hook("git commit -m x"), "")
+        finally:
+            os.environ.pop("MTS_PRESHIP")
+
+    def test_check_mode_flags_unpushed_commits_missing_the_line(self):
+        git(self.root, "commit", "-q", "--allow-empty", "-m", "base")
+        git(self.root, "branch", "-M", "fast-track")
+        git(self.root, "update-ref", "refs/remotes/origin/fast-track", "HEAD")
+        self.stage("scripts/dev/role_loader.py")
+        git(self.root, "commit", "-qm", "loader without line")
+        self.stage("scripts/dev/sync.py")
+        git(self.root, "commit", "-qm", "sync with line", "-m", "Reach: Q1-Q8 ok")
+        self.stage("a.py")
+        git(self.root, "commit", "-qm", "unrelated")
+        bad = P.reach_commit_failures(str(self.root))
+        self.assertEqual(len(bad), 1)
+        self.assertIn("loader without line", bad[0])
+
+
 class RealRulesTest(unittest.TestCase):
     """The real table routes the paths that went red in 2026-10-19..22 to a rule."""
     def names(self, path):
