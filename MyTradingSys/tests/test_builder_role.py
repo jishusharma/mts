@@ -36,7 +36,7 @@ def test_supervisor_brief_format_and_security(tmp_path):
     assert lines[0] == "You are Builder."
     # Line 2: Card: <card_id>[, <chained_ids>...]. Boot: python <main_checkout>/scripts/dev/sync.py start <slug>; work only in the printed WORKTREE.
     assert lines[1].startswith("Card: fixture-card-1. Boot: python ")
-    assert "scripts/dev/sync.py start fixture-card-1; work only in the printed WORKTREE." in lines[1]
+    assert "scripts/dev/sync.py start fixture-card-1 --worker; work only in the printed WORKTREE." in lines[1]   # B3: own tree
     
     # Must contain card id
     assert "fixture-card-1" in out
