@@ -41,12 +41,15 @@ class GuardTest(unittest.TestCase):
         g.LOCK = Path(self.logdir.name) / "c_drive_guard.lock"
         g.STAMP.write_text("x", encoding="utf-8")      # daily run not due unless a test ages this
         self.real_tidy = g.run_tidy
+        self.real_check = g.start_check_detached
+        g.start_check_detached = lambda: None          # never post a real device-tasks report from a test
         g.run_tidy = lambda apply: []                  # never run the real worktree job against this checkout from a test
 
     def tearDown(self):
         g.TEMP, g.LOG, g.STAMP = self.old_temp, self.old_log, self.old_stamp
         g.LOCK = self.old_lock
         g.run_tidy = self.real_tidy
+        g.start_check_detached = self.real_check
         self.d.cleanup()
         self.logdir.cleanup()
 

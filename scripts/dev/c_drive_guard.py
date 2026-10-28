@@ -10,7 +10,8 @@ Usage:
   python scripts/dev/c_drive_guard.py logon      logon run: prunes at every logon, whatever the free space; one line to the log
   python scripts/dev/c_drive_guard.py install [--repo PATH ...]   register `logon` under HKCU Run (no admin, no scheduled task); run from the
                                                  primary checkout; --repo: also retire the worktrees of that other clone (JIS-NB: IdeaProjects)
-  python scripts/dev/c_drive_guard.py status     registered or not, for which checkout, last logon line
+  python scripts/dev/c_drive_guard.py status [--check]   registered or not, for which checkout, last logon line; --check: exit 1 if not registered
+  (the daily hook also runs `device_tasks.py check --send`, report-only: DEVICE_TASKS.md)
   python scripts/dev/c_drive_guard.py uninstall  remove the logon run
 
 What it prunes (only entries whose newest file is older than the age limit; locked entries are skipped):
@@ -392,6 +393,20 @@ def start_apply_detached():
         pass
 
 
+def start_check_detached():
+    """Report-only `device_tasks.py check --send` (DEVICE_TASKS.md): this host's result goes out as one mts_signal line. Never raises."""
+    script = Path(__file__).resolve().parent / "device_tasks.py"
+    if os.environ.get("MTS_NO_DEVICE_TASKS") or not script.is_file():
+        return
+    try:
+        LOG.parent.mkdir(parents=True, exist_ok=True)
+        with open(LOG.parent / "c_drive_guard.out", "ab") as out:
+            subprocess.Popen([sys.executable, str(script), "check", "--send"], creationflags=NO_WINDOW,
+                             stdin=subprocess.DEVNULL, stdout=out, stderr=out, close_fds=True)
+    except OSError:
+        pass
+
+
 def logon(repos=()):
     """Logon run: prune now whatever the free space and log one line. A failure is logged, and the run still returns 0."""
     try:
@@ -457,7 +472,8 @@ def uninstall(key=RUN_KEY, name=RUN_NAME):
     return 0
 
 
-def status(key=RUN_KEY, name=RUN_NAME):
+def status(key=RUN_KEY, name=RUN_NAME, check=False):
+    """check=True (device_tasks.py verify): exit 1 when the logon run is not registered at all."""
     cur = installed_command(key, name)
     if cur is None:
         print("logon run: not installed (python scripts/dev/c_drive_guard.py install, from the primary checkout)")
@@ -469,7 +485,7 @@ def status(key=RUN_KEY, name=RUN_NAME):
     except (OSError, IndexError):
         last = "none yet (log %s)" % LOG
     print("last logon line: " + last)
-    return 0
+    return 1 if check and cur is None else 0
 
 
 def main(argv):
@@ -481,6 +497,7 @@ def main(argv):
             if daily_due():
                 touch_stamp()
                 start_apply_detached()
+                start_check_detached()
             return 0
         touch_stamp()
         msg = "LOW: " + ", ".join(f"{d} {g:.1f} GB free" for d, g in low) + f" (< {limit:g}); c_drive_guard --apply started in the background."
@@ -502,7 +519,7 @@ def main(argv):
     if argv[:1] == ["uninstall"]:
         return uninstall()
     if argv[:1] == ["status"]:
-        return status()
+        return status(check="--check" in argv)
     apply = "--apply" in argv
     before = free_gb()
     print(f"C: free {before:.2f} GB")
