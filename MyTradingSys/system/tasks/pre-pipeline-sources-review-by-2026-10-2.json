@@ -16,7 +16,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DRAFT 2026-10-28 Session_Planner (OURS): enforcement stays a test, not runtime rejection (rejecting would stop testnet trades; operator decides that).",
+  "note": "DRAFT 2026-10-28 Session_Planner (OURS): enforcement stays a test, not runtime rejection (rejecting would stop testnet trades; operator decides that). | REVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified 27 entries, all review_by 2026-10-23, only format-validated (registry.py:59-76), never enforced at runtime, so re-dating changes no trading behaviour. Test file path to be chosen under MyTradingSys/execution/ (added to scope_in as test_pre_pipeline_review_by.py).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -26,7 +26,8 @@
   "result": "",
   "scope_in": [
     "MyTradingSys/execution/auto_trader_config.json",
-    "MyTradingSys/system/OPERATOR_DECISIONS.md"
+    "MyTradingSys/system/OPERATOR_DECISIONS.md",
+    "MyTradingSys/execution/test_pre_pipeline_review_by.py"
   ],
   "scope_out": [
     "auto_trader.py logic; promoted_setups.json; live tree deploy; mainnet"

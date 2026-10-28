@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DRAFT 2026-10-28 Session_Planner (OURS): lease.py guards ship, so weight IMPORTANT: needs a real REVIEWED stamp (Lab_Guy) before ready; fails closed must stay. Twin check: bug-lease-blocks-lead-ship-after-pipeline-mode is DONE and covers pipeline-mode ships, not history resolution. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | T0 2026-10-28 planner-refine-A: scope_in paths all tracked, no open claim on them, content complete; only gap = Lab_Guy REVIEWED stamp (IMPORTANT+).",
+  "note": "DRAFT 2026-10-28 Session_Planner (OURS): lease.py guards ship, so weight IMPORTANT: needs a real REVIEWED stamp (Lab_Guy) before ready; fails closed must stay. Twin check: bug-lease-blocks-lead-ship-after-pipeline-mode is DONE and covers pipeline-mode ships, not history resolution. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | T0 2026-10-28 planner-refine-A: scope_in paths all tracked, no open claim on them, content complete; only gap = Lab_Guy REVIEWED stamp (IMPORTANT+). | REVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified lease.current_role uses role_loader.injected (all roles) and explicit_injected exists; fix target confirmed. Keep fallback to injected() when explicit list empty.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
