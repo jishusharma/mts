@@ -4,6 +4,8 @@ Run 2026-10-20 20:35Z on JIS-NB, `python MyTradingSys/research/levels_confluence
 
 ## Verdict
 
+SUPERSEDED-PREMISE: the 8 KEEP families this ladder trades are void on the fair control (levels_hold.md: KEEP list none, 0 of 12, DEV 2022-04-01..2024-06-30). Verdict unchanged, no rerun (DECISION OURS: the ladder needs KEEP levels; none exist).
+
 **INCONCLUSIVE by the card rule (power_mde.py power 31% < 50 %); FAIL by the sample-sd rule (+0.10 R excluded, power 87%).** Frozen rule (max mean net R among the 240 variants with n >= 200; selection = one trial, the VALIDATION read is the answer): `E1 S2 K5 X0_2R`: n 772, mean net R -0.039 [-0.123, +0.048], max drawdown 40.3 R, win rate 13.5%, mean fee 0.111 R, MDE (sample sd) 0.091 R, power for +0.10 R 87%; power_mde.py (two-point payoff model, rr 8.8): power 31%, MDE 0.337 R.
 Robustness: the variant with the highest lower CI is `E0 S2 K5 X0_1R`: n 5775, -0.090 [-0.110, -0.069].
 

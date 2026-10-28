@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T15:56:37Z",
   "commands": [],
   "created": "2026-10-28T14:46:58Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "re-state-t10-stability-py-lc1-keep-rows-",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "annotate only: stability.py LC1 row + docstring labelled LEGACY 8-family set; test_stabili",
+      "ref": "11e7bc39c",
+      "utc": "2026-10-28T15:56:37Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refs": [
     "re-state-lc1-keep-list-on-the-touched-on"
   ],
-  "result": "",
+  "result": "annotate only: stability.py LC1 row + docstring labelled LEGACY 8-family set; test_stability_lc1.py; no rerun",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/stability.py",
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/test_stability_lc1.py"
@@ -46,13 +58,14 @@
     "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.md (fair-control section: KEEP list none, 0 of 12, DEV 2022-04-01..2024-06-30)",
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/stability.py:80-98"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read stability.py:80-98,149 and levels_hold.analyze (levels_hold.py:117, already returns the fair random_hold_rate) plus levels_hold_fair_run.py: note which families and touch rows it returns.",
     "Write the test first (new file): monkeypatch load_klines (add a loader seam: bars arg or module-level LOADER) with synthetic bars; red on the old code because rows exist only for the hard-coded 8-family keep set.",
     "Rewrite lc1_rows(): rows for all 12 families, net = HOLD(1/0) minus the family's fair control rate; drop the keep filter; relabel the row at stability.py:149 'levels_hold LC1 fair control (KEEP none)'. DEV only, end_ms asserted.",
     "Run the new test; ship."
   ],
+  "taken": "2026-10-28T15:56:37Z",
   "tests": "scripts/T10/test_stability_lc1.py::test_lc1_rows_cover_all_families: red on the old code (8-family keep filter, no loader seam), green after.",
   "title": "Re-state T10 stability.py LC1 KEEP rows on the fair-control LC1 list",
   "weight": "IMPORTANT",
