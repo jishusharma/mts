@@ -4,11 +4,12 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-28T16:29:16Z",
-    "misses": 16,
+    "folded": "2026-10-28T16:37:08Z",
+    "misses": 18,
     "reads": [
       "scripts/dev/wt_maint.py",
       "scripts/dev/test_wt_maint.py",
+      "scripts/dev/test_supervisor.py",
       "scripts/dev/c_drive_guard.py"
     ],
     "session": "agent-a5ac4e56b594eadf4"
