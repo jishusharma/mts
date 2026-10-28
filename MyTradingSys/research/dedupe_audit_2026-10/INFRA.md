@@ -46,3 +46,7 @@ Card `infra-architecture-duplication-audit`, decision `d-dedupe-lean-no-contradi
 3. Row 6: host_health is the one kill policy; the PowerShell watchdog stays for the dead-Python case.
 4. Rows 14-18, 21: history moves, not deletes (`handoff_history/`); content is never lost.
 5. Rows 19-22: only the operator can delete or unpin a claude.ai page; the fix for those is registry text plus one republish.
+
+
+## Batch 2 (not applied yet)
+Batch 1 applied (dedupe-apply-1): rows 2, 3, 11, 19. Rows 1, 4-10, 12-18, 20-24: batch 2.

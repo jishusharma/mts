@@ -351,7 +351,7 @@ def read_budget(as_of: datetime | None = None, home: Path | None = None) -> dict
 
 def read_peers(login: str | None, as_of: datetime, do_fetch: bool = True) -> dict:
     """The other logins' supervisors, seen only through their BUDGET signal lines (the app cannot message across logins).
-    `active` = logins whose supervisor heartbeat (BUDGET line with sup=, < 75 min) has free slots, plus this one: the list dispatch shards over.
+    `active` = logins whose supervisor heartbeat (BUDGET line with sup=, newer than HEARTBEAT_MIN) has free slots, plus this one: the list dispatch shards over.
     Fails soft: {"error": ...} and dispatch then runs unsharded."""
     try:
         import traffic
@@ -1001,7 +1001,7 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
     if unknown:
         L.append("PEERS UNKNOWN (signals not read): shared-lane actions below are NOTE only this wake; do not touch NEXT_SESSION.md")
     elif len(live) <= 1:
-        L.append("PEER none live (no heartbeat < 75 min): you are alone; NEXT_SESSION.md is yours to update at transit")
+        L.append(f"PEER none live (no heartbeat < {HEARTBEAT_MIN} min): you are alone; NEXT_SESSION.md is yours to update at transit")
     for hid, kind, title in ctx.get("holds", []):
         L.append(f"BOARD {kind} {hid}: {title} (no card of that kind)")
     if ctx.get("handover"):
@@ -1710,7 +1710,7 @@ def handover(repo: Path, login: str, note: str = "", host: str | None = None, ho
                 import mts_signal
                 mts_signal.send(heartbeat_text(login, host, {**lp["plan"], "running": 0}, free=0, mode="ENDED"), to="all", kind="note")
         except Exception:
-            pass   # the 75 min heartbeat age still removes this supervisor
+            pass   # the HEARTBEAT_MIN heartbeat age still removes this supervisor
     if wake and role != "lead":
         try:
             import successor_wake

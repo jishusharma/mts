@@ -4,10 +4,10 @@ Operator, OPERATOR_DECISIONS.md `q-host-sched-tasks` / `q-sched-scope`: "no more
 Any doc that still describes a dispatcher, relay tick, AutoDeploy, Supervisor, MTS-CodexLab or MTS-DispatchGate as running is the old design (marked `RETIRED 2026-10-17`); this file wins.
 
 ## 1. Rule
-No standing Windows scheduled tasks and no Claude routines (App scheduled tasks, cron triggers, `mts-dispatcher`, `mts-lane-watch`) on any device. Two devices, same or different logins, work from one repo and one queue.
+No standing Windows scheduled tasks and no Claude routines (App scheduled tasks, cron triggers, `mts-dispatcher`, `mts-lane-watch`) on any device, except the exceptions listed in sections 4, 4b, 4b2, 4b3, 4c and the CBP block under 5 (name, trigger and removal in each). Two devices, same or different logins, work from one repo and one queue.
 
 ## 2. Who does what instead
-- A super-session coordinator (SUPER_SESSION.md) is the dispatcher. On every wake it keeps the Codex lab busy (`python scripts/dev/codex_run.py status`, then `python scripts/dev/tasks.py next`), checks CI, and starts workers with `start_session`.
+- A super-session coordinator (SUPER_SESSION.md) is the dispatcher. On every wake it keeps the Codex lab busy (`python scripts/dev/codex_run.py status`, then `python scripts/dev/tasks.py next`), checks CI, and starts workers as background Agents (roles/supervisor.md:35).
 - "Schedule this for the next 5h / 10h" is planned by a session on demand: the coordinator writes the card order up front in a plan file (like `PLAN_2026-10-17_NEXT_5H.md`) and works it for that window. When the window ends, nothing keeps running.
 - No coordinator running = nothing moves on its own. That is accepted.
 
@@ -20,8 +20,8 @@ No standing Windows scheduled tasks and no Claude routines (App scheduled tasks,
 | MTS-CodexLab (`codex_run.py tick` every 30 min) | coordinator runs `codex_run.py tick` / `status` on wake (LAYER_LAB.md) |
 | MTS-DailyHygiene, MTS-Backup, MTS-LiveMirror and the other MTS-* checks | run the script by hand when needed (`daily_hygiene.py`, `live_mirror.py`) |
 
-## 4. Only allowed exception
-A one-shot task created by `scripts/dev/nuc_wake.py` to wake a headless worker for one card. It must be unregistered after it fires. Nothing else.
+## 4. First allowed exception (the full list is the section 1 sentence; each later exception has its own section)
+A one-shot task created by `scripts/dev/nuc_wake.py` to wake a headless worker for one card. It must be unregistered after it fires. Anything not in sections 4-4c or the CBP block is forbidden.
 
 ## 4b. Second allowed exception (operator via the 2026-10-21 wt-maint-job card)
 `MTS-WorktreeMaint-<device>`: daily headless worktree/branch cleanup, `scripts/dev/wt_maint.py`, same on every device (DEVICES.md s8b). DECISION (OURS): it reverses nothing else; no revival, deploy or relay is implied. Remove with `wt_maint.py uninstall`.
