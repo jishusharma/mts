@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T00:18:08Z",
   "commands": [],
   "created": "2026-10-25T19:25:27Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "SOUND; report 2026-10-26_gem-simdesk-review-recount.md written",
+      "ref": "1d725a7cc",
+      "utc": "2026-10-28T00:18:08Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +45,12 @@
   "refined_by": "codex_run.py ask",
   "refreshed": "2026-10-27T20:47:08Z",
   "refs": [],
-  "result": "",
+  "result": "SOUND; report 2026-10-26_gem-simdesk-review-recount.md written",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gpt_burn_2026-10-24/gx-sim-desk-review/report.md",
     "MyTradingSys/research/gpt_burn_2026-10-24/gx-sim-desk-review/audit.py",
@@ -52,7 +64,7 @@
   "scope_sha": "c054737d37c5",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
     "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
@@ -60,6 +72,7 @@
     "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
     "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
   ],
+  "taken": "2026-10-28T00:18:08Z",
   "tests": "",
   "title": "[GEMINI] Recount GPT's sim-desk audit: 10 findings (7 HIGH, 3 LOW), 25 comparisons",
   "weight": "ROUTINE",
