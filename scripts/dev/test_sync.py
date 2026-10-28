@@ -1743,11 +1743,35 @@ class OwnCiWaitTest(unittest.TestCase):
                     mock.patch.object(sync, "ship", return_value=self.pushed) as mock_ship, \
                     mock.patch.object(sync, "ci_path_filter", return_value=["scripts/**"]), \
                     mock.patch.object(sync, "wait_own_ci", return_value=state) as mock_wait:
-                self.assertEqual(sync.main(["ship", "--release", "my-slug"]), rc, state)
+                self.assertEqual(sync.main(["ship", "--wait-ci", "--release", "my-slug"]), rc, state)
                 mock_ship.assert_called_once_with(Path("."), release_slug="my-slug", after_slug=None)
                 self.assertEqual(mock_wait.call_args[0][0], self.pushed)
                 self.assertEqual(mock_wait.call_args[1]["globs"], ["scripts/**"])
         self.assertEqual(sync.CI_RED_EXIT, 3)
+
+    def test_ship_returns_without_the_ci_wait_by_default_and_ci_verb_waits_later(self):
+        """B8 (2026-10-28): the 10-minute CI poll is opt-in on ship; `sync.py ci` does it for the last pushed sha."""
+        with tempfile.TemporaryDirectory() as td, mock.patch.object(sync, "toplevel", return_value=Path(td)),                 mock.patch.object(sync, "run_host_health"), mock.patch.object(sync, "ship", return_value=self.pushed),                 mock.patch.object(sync, "write_last_pushed") as mock_save,                 mock.patch.object(sync, "ci_path_filter", return_value=None),                 mock.patch.object(sync, "wait_own_ci", return_value="red") as mock_wait:
+            self.assertEqual(sync.main(["ship"]), 0)
+            mock_wait.assert_not_called()
+            mock_save.assert_called_once()
+            with mock.patch.dict(os.environ, {"SYNC_WAIT_CI": "1"}):
+                self.assertEqual(sync.main(["ship"]), sync.CI_RED_EXIT)
+            self.assertEqual(mock_wait.call_count, 1)
+            with mock.patch.object(sync, "read_last_pushed", return_value=self.pushed):
+                self.assertEqual(sync.main(["ci"]), sync.CI_RED_EXIT)
+            self.assertEqual(mock_wait.call_args[0][0], self.pushed)
+            self.assertEqual(sync.main(["ci", "abcdef12"]), sync.CI_RED_EXIT)
+            self.assertEqual(mock_wait.call_args[0][0].sha, "abcdef12")
+            with mock.patch.object(sync, "read_last_pushed", return_value=None):
+                self.assertEqual(sync.main(["ci"]), 1)    # nothing pushed from this tree and no sha given
+
+    def test_last_pushed_sha_round_trips_through_the_git_dir(self):
+        with tempfile.TemporaryDirectory() as td:
+            subprocess.run(["git", "init", "-q", td], check=True)
+            self.assertIsNone(sync.read_last_pushed(td))
+            sync.write_last_pushed(td, self.pushed)
+            self.assertEqual(sync.read_last_pushed(td), self.pushed)
 
     def test_no_ci_wait_flag_env_and_a_ship_that_pushed_nothing_skip_the_wait(self):
         with mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "run_host_health"), \
