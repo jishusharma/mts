@@ -2,6 +2,18 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T15:57:15Z",
+    "misses": 16,
+    "reads": [
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/RESULT.md",
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/PRE_REG.md",
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/filter_join.py",
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/test_filter_join.py"
+    ],
+    "session": "agent-a68c198da1c0a589c"
+  },
   "created": "2026-10-28T15:26:42Z",
   "depends_on": [],
   "done_when": "RESULT.md and PRE_REG.md each carry the SUPERSEDED-PREMISE header, filter_join.py line 38 comment relabelled, test_filter_join.py green, the diff shows no number or CSV changed.",
