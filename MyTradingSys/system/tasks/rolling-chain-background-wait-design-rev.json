@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator rule for this whole line of work: consolidate idea -> refine this task -> design review passes (with tests where applicable) -> only then implement -> implementation tested with proof attached. Do not skip straight to a code change. Session_Planner 2026-10-28: content complete, passes the T0 gate; needs an IMPORTANT review stamp before promotion, which this pinned session cannot spawn (role: spawns nothing) -- recommend coordinator-run batched Sonnet reviewer Agent. No stamp fabricated.",
+  "note": "Operator rule for this whole line of work: consolidate idea -> refine this task -> design review passes (with tests where applicable) -> only then implement -> implementation tested with proof attached. Do not skip straight to a code change. Session_Planner 2026-10-28: content complete, passes the T0 gate; needs an IMPORTANT review stamp before promotion, which this pinned session cannot spawn (role: spawns nothing) -- recommend coordinator-run batched Sonnet reviewer Agent. No stamp fabricated.\nWAITING 2026-10-28 (planner-raw-refine): fields complete; needs a real Lab_Guy stamp (planner cannot stamp).",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
@@ -29,7 +29,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Pull timing evidence: grep recent sync.py ship / gate run durations from the last 6 rolling-chain links for a real baseline, not a guess.",
     "List levers with tradeoffs (card size, MAX_RUNNING, gate scope, batching) and pick one default; write the note.",

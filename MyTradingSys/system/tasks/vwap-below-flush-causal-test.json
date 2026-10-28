@@ -34,7 +34,7 @@
   "not_twin_of": [
     "vwap-as-a-level-research-tom-fabio-analysts-web"
   ],
-  "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer Agent reviewers, after 2nd FIX applied once, not re-read, planner DECISION OURS). DECISION (OURS 2026-10-26) defaults: D = 100 pts and 0.12 % of price; flush = a bar in the last 30 with range >= 3x the median range of the prior 60 bars and a close below the close 30 bars earlier; H = 60 bars on 1m, 24 on 5m; touch = high >= VWAP; rejection = touch then a close back below VWAP within 3 bars. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files. PLANNER 2026-10-28: duplicate steps 5-6 removed; stays raw: depends_on vwap-as-a-level-research (ready, scope STALE) and formulas-md-definitions (refined) are not done and VWAP_LEVEL_SOURCES.md is not on trunk (step 1 gate would stop the worker). Dispatch after both are done; then tasks.py check.",
+  "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer Agent reviewers, after 2nd FIX applied once, not re-read, planner DECISION OURS). DECISION (OURS 2026-10-26) defaults: D = 100 pts and 0.12 % of price; flush = a bar in the last 30 with range >= 3x the median range of the prior 60 bars and a close below the close 30 bars earlier; H = 60 bars on 1m, 24 on 5m; touch = high >= VWAP; rejection = touch then a close back below VWAP within 3 bars. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files. PLANNER 2026-10-28: duplicate steps 5-6 removed; stays raw: depends_on vwap-as-a-level-research (ready, scope STALE) and formulas-md-definitions (refined) are not done and VWAP_LEVEL_SOURCES.md is not on trunk (step 1 gate would stop the worker). Dispatch after both are done; then tasks.py check.\nWAITING 2026-10-28 (planner-raw-refine): fields and REVIEWED stamp complete; gate miss is depends_on formulas-md-definitions-for-snapshot-vwa (refined) and vwap-as-a-level-research-tom-fabio-analysts-web (ready).",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
@@ -64,7 +64,7 @@
     "MyTradingSys/system/fable_run_4_brief.md:20 (14 bp cost)",
     "MyTradingSys/research/mts_doctor/LAYER_REALITY_2026-10-25.md:2 (DEV = 2022..2024-06)"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Gate: VWAP_LEVEL_SOURCES.md and FORMULAS.md section 25 are on fast-track; if not, stop and hand back.",
     "Write test_vwap_flush_study.py first (hand numbers: VWAP, distance flag, flush flag, count totals; planted future read raises; a bar >= 2024-07-01 raises), then ONLY the count-only detector count_events() in vwap_flush_study.py: flags from bars up to t, no forward bar. Session VWAP anchored 00:00 UTC per FORMULAS s25; DEV 2022-01-01..2024-06-30; bt/bt_data.py load_klines 1m, 5m resampled.",

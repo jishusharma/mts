@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS): scoped as a design note first, per the operator's standing rule for this line of work (see rolling-chain-background-wait-design-rev, coordinator-sits-idle-during-long-backgr): consolidate idea -> refine -> design review -> implement. Detection sources (CI status, gate-slot duration) are not yet wired into traffic.py's status, so the note must pick them, not assume them. Needs an IMPORTANT review stamp before promotion; this pinned Session_Planner cannot spawn a reviewer Agent (role: spawns nothing) -- recommend the coordinator run a batched Sonnet reviewer Agent on next wake. No stamp fabricated.",
+  "note": "DECISION (OURS): scoped as a design note first, per the operator's standing rule for this line of work (see rolling-chain-background-wait-design-rev, coordinator-sits-idle-during-long-backgr): consolidate idea -> refine -> design review -> implement. Detection sources (CI status, gate-slot duration) are not yet wired into traffic.py's status, so the note must pick them, not assume them. Needs an IMPORTANT review stamp before promotion; this pinned Session_Planner cannot spawn a reviewer Agent (role: spawns nothing) -- recommend the coordinator run a batched Sonnet reviewer Agent on next wake. No stamp fabricated.\nWAITING 2026-10-28 (planner-raw-refine): fields complete; needs a real Lab_Guy stamp (planner cannot stamp).",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
@@ -32,7 +32,7 @@
     "MyTradingSys/research/pipeliner/station_watcher_monitor.py (current checks: liveness, lane stall, lease, desk pending)",
     "scripts/dev/traffic.py:702 (PROPOSED line format)"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Read station_watcher_monitor.py (bare while-loop, no functions, no tests today), traffic.py's render_status PROPOSED block, and sync.py's claims STALE logic and gate/CI status output.",
     "List detection options per signal (poll source, threshold, false-positive risk) with cost/risk, pick one default per signal; decide whether the loop needs a pure check_once(state)->reasons refactor to be testable.",
