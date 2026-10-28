@@ -36,6 +36,9 @@ DROP = re.compile(r"^(ANTHROPIC_|CLAUDE_CODE_OAUTH|CLAUDE_CODE_USE_)")
 HANG_MIN = 45     # OURS: no stream event for 45 min = hung (long backtests print tool events, not silence)
 MAX_RESUMES = 2   # OURS
 MAX_QUOTA_WAITS = 6  # OURS: the gateway has its own 5-hour quota (10-28: O1+O2 in parallel spent it in ~1 h)
+STATUS_URL = "https://api.opusmax.pro/api/key-status?key="  # SOURCED: the provider's own key-status page calls it
+START_MAX_PCT = 70   # OURS: no new start or resume once the 5-hour window is this full
+STATUS_FIELDS = ("usagePercent", "windowResetAt", "isOverLimit", "isActive", "isExpired", "expiresAt", "rateLimit")
 LIMIT_RE = re.compile(r"reached 100% of your|usage limit|quota|rate.?limit|429|try again later", re.I)
 RESUME_PROMPT = (
     "You were interrupted (station restart or hang) and your context was compacted. Same rules as before. "
@@ -241,7 +244,25 @@ def verdict(has_done: bool, started: bool, running: bool, idle_min: float, strea
     return "resume" if not running else "kill-resume"
 
 
-def quota_pass(now: float) -> set:
+def key_status() -> dict:
+    """The gateway's own quota read for our key: only the STATUS_FIELDS (no name, prefix or logs). {} when it fails."""
+    import urllib.parse
+    import urllib.request
+    try:
+        _, key = load_secret()
+        req = urllib.request.Request(STATUS_URL + urllib.parse.quote(key), headers={"User-Agent": "mts-gateway"})
+        d = json.load(urllib.request.urlopen(req, timeout=20))
+    except Exception:
+        return {}
+    return {k: d.get(k) for k in STATUS_FIELDS} if d.get("status") == "found" else {}
+
+
+def iso_ts(text: str) -> float:
+    from datetime import datetime
+    return datetime.fromisoformat(text.replace("Z", "+00:00")).timestamp()
+
+
+def quota_pass(now: float, ks: dict = None) -> set:
     """Runs that ended on the gateway quota: clear their done marker once the reset time is past and no other run
     is going (one run at a time after a quota hit, DECISION OURS), so the normal resume below relaunches them.
     Returns the cards still waiting."""
@@ -257,7 +278,11 @@ def quota_pass(now: float) -> set:
         if waits >= MAX_QUOTA_WAITS:
             continue
         due = (d / "done").stat().st_mtime + (s["limit_wait_min"] + 5) * 60
-        if now < due or busy:
+        full = False
+        if ks and ks.get("windowResetAt"):  # the provider's own numbers beat the text guess
+            due = iso_ts(ks["windowResetAt"]) + 120 if ks.get("isOverLimit") or ks.get("usagePercent", 0) >= 100 else 0
+            full = (ks.get("usagePercent") or 0) >= START_MAX_PCT
+        if now < due or busy or full:
             waiting.add(d.name)
             continue
         (d / "quota_waits").write_text(str(waits + 1), encoding="utf-8", newline=chr(10))
@@ -269,7 +294,11 @@ def quota_pass(now: float) -> set:
 
 def tick() -> int:
     """One pass: report every run, relaunch dead or hung ones (compact, then resume). Prints one line per run."""
-    waiting = quota_pass(time.time())
+    ks = key_status()
+    if ks:
+        print(f"gateway: {ks.get('usagePercent')}% of 5h window used, resets {ks.get('windowResetAt')}, "
+              f"key expires {ks.get('expiresAt')}{' EXPIRED' if ks.get('isExpired') else ''}")
+    waiting = quota_pass(time.time(), ks)
     for d in sorted(RUNS.glob("*")) if RUNS.exists() else []:
         card = d.name
         if card in waiting:
