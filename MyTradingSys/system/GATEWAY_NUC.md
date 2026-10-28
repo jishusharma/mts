@@ -38,3 +38,4 @@ Operator: no restrictions on how much runs; Super sessions loop continuously, sp
 ## Open points
 - Key: the first key gave "Invalid API key" on every generation (the model-list call answers 200 even for a made-up key, so "Test connection" proves nothing). A replacement key was entered on the NUC on 2026-10-26 and the session answered; re-verify before sending a big queue. 2026-10-28: the .reg key is invalid again; the operator's new key lives in `~/.mts_gateway/key` on JIS-NUC (user-only) and `gateway_run.py probe` answered OK from claude-opus-5-5. Background runs: `scripts/dev/gateway_run.py` (OPUS_RUNS.md section Gateway).
 - Speed is not measured yet (card of the same name).
+- Key carve-out (d-gateway-background-opus): only `gateway_run.py` opens `~/.mts_gateway/key` and passes it to the child env; sessions and Agents still never read, print or commit it (CLAUDE.md "never read keys" stands).

@@ -1,0 +1,462 @@
+Gate: 72 steps, 4 at a time
+
+[Step 4g] Pytest shard 4/5 (MyTradingSys/tests, 20 files)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe -m pytest MyTradingSys/tests/test_aibridge_selftest_concurrent.py MyTradingSys/tests/test_autogo.py MyTradingSys/tests/test_b075_book_none_short.py MyTradingSys/tests/test_b127_fabio_v3_isolation.py MyTradingSys/tests/test_boot_budget_line.py MyTradingSys/tests/test_build_check_report_reasons.py MyTradingSys/tests/test_cbp_query.py MyTradingSys/tests/test_desk_done_once.py MyTradingSys/tests/test_gate_discovery_b150.py MyTradingSys/tests/test_handoff_freshness.py MyTradingSys/tests/test_mfe_exit_study.py MyTradingSys/tests/test_operator_questions_pending.py MyTradingSys/tests/test_raw_1d_label.py MyTradingSys/tests/test_review_receipts.py MyTradingSys/tests/test_role_roster.py MyTradingSys/tests/test_ship_fast_path.py MyTradingSys/tests/test_super_watchdog.py MyTradingSys/tests/test_target_nearest_node.py MyTradingSys/tests/test_tom_golden.py MyTradingSys/tests/test_traffic.py -q -p no:cacheprovider --ignore-glob=C:\Users\E-ngineers\IdeaProjects\mts-fixver-final-c3*[/\]tmp[a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_] --basetemp=C:\Users\E-NGIN~1\AppData\Local\Temp\mts_s4_4ok48t37\bt
+  Elapsed: 211.8s (1/72 done, +212s)
+Step 4g: PASS
+
+[Step 4] Pytest shard 1/5 (MyTradingSys/tests, 18 files)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe -m pytest MyTradingSys/tests/test_b091_build_check_tiers.py MyTradingSys/tests/test_b127_fetch_archive_funding.py MyTradingSys/tests/test_boot_exhaust_line.py MyTradingSys/tests/test_cbp_scorecard.py MyTradingSys/tests/test_cicd_run.py MyTradingSys/tests/test_desk_post_once.py MyTradingSys/tests/test_gate_scratch_outside_checkout.py MyTradingSys/tests/test_hook_settings.py MyTradingSys/tests/test_mts_math.py MyTradingSys/tests/test_pick_task.py MyTradingSys/tests/test_regime_classifier.py MyTradingSys/tests/test_role_budget.py MyTradingSys/tests/test_routing_gemini_tag.py MyTradingSys/tests/test_shot_bundle.py MyTradingSys/tests/test_t037_quad_classify.py MyTradingSys/tests/test_tasks_dispatch.py MyTradingSys/tests/test_tom_min_stop_width.py MyTradingSys/tests/test_verdicts.py -q -p no:cacheprovider --ignore-glob=C:\Users\E-ngineers\IdeaProjects\mts-fixver-final-c3*[/\]tmp[a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_] --basetemp=C:\Users\E-NGIN~1\AppData\Local\Temp\mts_s4_vidnnfel\bt
+  Elapsed: 234.9s (2/72 done, +235s)
+Step 4: PASS
+
+[Step 4e] Pytest backtest function-style tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe -m pytest MyTradingSys/backtest/test_prob_table.py MyTradingSys/backtest/test_prob_table_edge.py MyTradingSys/backtest/test_tom_bt.py MyTradingSys/backtest/test_tom_probe_diag.py MyTradingSys/backtest/test_dax_data.py MyTradingSys/backtest/test_tom_dax_recall.py MyTradingSys/backtest/test_tom_v2_recall.py MyTradingSys/backtest/test_tom_dax_bt.py -q -p no:cacheprovider --ignore-glob=C:\Users\E-ngineers\IdeaProjects\mts-fixver-final-c3*[/\]tmp[a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_] --basetemp=C:\Users\E-NGIN~1\AppData\Local\Temp\mts_s4_3y27ch95\bt
+  Elapsed: 20.5s (3/72 done, +255s)
+Step 4e: PASS
+
+[Step 4c] Pytest shard 3/5 (MyTradingSys/tests, 20 files)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe -m pytest MyTradingSys/tests/test_b127_declutter_backups.py MyTradingSys/tests/test_book_imbalance_nodata.py MyTradingSys/tests/test_carry_basis.py MyTradingSys/tests/test_cpu_cleanup_script.py MyTradingSys/tests/test_exhaust_phase.py MyTradingSys/tests/test_go.py MyTradingSys/tests/test_math_object_builder.py MyTradingSys/tests/test_net_rr_floor_single_source.py MyTradingSys/tests/test_nowin_audit.py MyTradingSys/tests/test_quad_classify.py MyTradingSys/tests/test_relay.py MyTradingSys/tests/test_retention_b152.py MyTradingSys/tests/test_role_loader.py MyTradingSys/tests/test_session_state.py MyTradingSys/tests/test_station_watcher_monitor.py MyTradingSys/tests/test_sync_where_unborn.py MyTradingSys/tests/test_target_hvn.py MyTradingSys/tests/test_tasks_stop.py MyTradingSys/tests/test_tom_profile_parity.py MyTradingSys/tests/test_tom_through_ticks.py -q -p no:cacheprovider --ignore-glob=C:\Users\E-ngineers\IdeaProjects\mts-fixver-final-c3*[/\]tmp[a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_] --basetemp=C:\Users\E-NGIN~1\AppData\Local\Temp\mts_s4_a_c68sai\bt
+  Elapsed: 264.0s (4/72 done, +264s)
+Step 4c: PASS
+
+[Step 4b] Pytest shard 2/5 (MyTradingSys/tests, 22 files)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe -m pytest MyTradingSys/tests/dev MyTradingSys/tests/test_aibridge_install_fresh.py MyTradingSys/tests/test_b070_fee_parity.py MyTradingSys/tests/test_b075_bt_book_null_unavailable.py MyTradingSys/tests/test_b128_cc_range_noise_filter.py MyTradingSys/tests/test_budget.py MyTradingSys/tests/test_check_live_health.py MyTradingSys/tests/test_desk_sweep.py MyTradingSys/tests/test_dsa_direct_mode.py MyTradingSys/tests/test_gate_budget.py MyTradingSys/tests/test_gemini_claim_skip.py MyTradingSys/tests/test_lease.py MyTradingSys/tests/test_lookahead_lint.py MyTradingSys/tests/test_mts_run.py MyTradingSys/tests/test_power_mde.py MyTradingSys/tests/test_relay_queue.py MyTradingSys/tests/test_role_hook_launcher.py MyTradingSys/tests/test_run_all_tests_paths.py MyTradingSys/tests/test_signal_audience.py MyTradingSys/tests/test_t037_regime_classifier.py MyTradingSys/tests/test_tasks_fill.py MyTradingSys/tests/test_tom_noise_units.py -q -p no:cacheprovider --ignore-glob=C:\Users\E-ngineers\IdeaProjects\mts-fixver-final-c3*[/\]tmp[a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_] --basetemp=C:\Users\E-NGIN~1\AppData\Local\Temp\mts_s4_lncfefdn\bt
+  Elapsed: 403.3s (5/72 done, +403s)
+Step 4b: PASS
+
+[Step 4h] Pytest shard 5/5 (MyTradingSys/tests, 20 files)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe -m pytest MyTradingSys/tests/test_aibridge_payload.py MyTradingSys/tests/test_artifacts_audit_links.py MyTradingSys/tests/test_b074_rule_order.py MyTradingSys/tests/test_b076_setup_confirmed_unreachable.py MyTradingSys/tests/test_b156_thesis_line_age.py MyTradingSys/tests/test_builder_role.py MyTradingSys/tests/test_coord_overhead.py MyTradingSys/tests/test_dispatch_gate.py MyTradingSys/tests/test_generated_files_untracked.py MyTradingSys/tests/test_malkan_universe_power.py MyTradingSys/tests/test_net_rr_parity_b153.py MyTradingSys/tests/test_proof_direction.py MyTradingSys/tests/test_relay_tick.py MyTradingSys/tests/test_research_kit.py MyTradingSys/tests/test_role_lint.py MyTradingSys/tests/test_runner_lease_env.py MyTradingSys/tests/test_sourced_rule_guard.py MyTradingSys/tests/test_t037_update_market_state.py MyTradingSys/tests/test_tasks_lab_precheck.py MyTradingSys/tests/test_tom_probe_prereg.py -q -p no:cacheprovider --ignore-glob=C:\Users\E-ngineers\IdeaProjects\mts-fixver-final-c3*[/\]tmp[a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_] --basetemp=C:\Users\E-NGIN~1\AppData\Local\Temp\mts_s4_4w9xn59b\bt
+  Elapsed: 409.6s (6/72 done, +622s)
+Step 4h: PASS
+
+[Step 4f] Pytest layer + live-writer tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe -m pytest MyTradingSys/backtest/layers/fabio/v3/tests MyTradingSys/backtest/layers/fabio/test_orderflow_live.py MyTradingSys/backtest/layers/fabio/test_of_backfill.py MyTradingSys/backtest/layers/fabio/test_htf_context_live.py MyTradingSys/execution/tests scripts/dev/test_market_guide.py scripts/dev/test_dax_engine_flag.py scripts/dev/test_check_handoff.py scripts/dev/test_live_owner.py scripts/dev/test_hosts.py scripts/dev/test_loop_supervisor_grace.py scripts/dev/test_nowin.py scripts/dev/test_wt_maint.py scripts/dev/test_outcome_labeler_incremental.py scripts/dev/test_wrapper_load_resilience.py scripts/dev/test_gate_priority.py scripts/dev/test_gate_scratch.py scripts/dev/test_feed_watchdog_script.py MyTradingSys/observation/tests -q -p no:cacheprovider --ignore-glob=C:\Users\E-ngineers\IdeaProjects\mts-fixver-final-c3*[/\]tmp[a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_] --basetemp=C:\Users\E-NGIN~1\AppData\Local\Temp\mts_s4_bl13yge7\bt
+  Elapsed: 560.0s (7/72 done, +815s)
+Step 4f: PASS
+
+[Step 5b] Layer tests (84 modules, 4 parallel processes)
+  Command: python -m unittest (84 modules)
+  Elapsed: 597.8s (8/72 done, +1001s)
+Step 5b: PASS
+
+[Step 3ds] DSA helper CLI tests (dsa.py)
+  Command: python -m unittest (scripts/dev/test_dsa.py, 2 shards)
+  Elapsed: 411.2s (9/72 done, +1227s)
+Step 3ds: PASS
+
+[Step 3dk] Desk board tests
+  Command: python -m unittest (scripts/dev/test_desk.py, 2 shards)
+  Elapsed: 276.6s (10/72 done, +1278s)
+Step 3dk: PASS
+
+[Step 3w] Wiring gate tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_wiring_scan.py
+  Elapsed: 114.8s (11/72 done, +1393s)
+Step 3w: PASS
+
+[Step 1] Execution module tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/run_staged_tests.py MyTradingSys/execution MyTradingSys/execution/testnet/offline -- test_daily_loss_guard test_daily_loss_monitor test_mainnet_flag_offline test_gh_executor_offline test_settlement_skip_offline test_gh_retry_offline test_halt_preflight_offline test_kill_switch test_kill_switch_account test_premainnet1_offline test_risk_guard test_s1_cap_offline test_s3_unprotected_offline test_s6_orphan_offline test_triggered_stop_offline test_soak_report test_fix3_offline test_fix4_offline test_plan_compiler test_executor_math test_auto_trader test_dlm_aggregate test_b148_reauth_account test_b146_fee_to_stop test_dlm_failure_cap test_dlm_blind_recovery test_auto_trader_blocklist test_auto_trader_sizes test_auto_trader_confirm test_auto_trader_promotion test_orphan_sweep_loop test_fabio_slot test_fix3_mutants_offline test_capture_txlog_settlement test_mts_kill_mainnet test_pm_heartbeat test_pm_heartbeat_wiring test_journal_env test_mainnet_plan_check test_env_wiring test_reconciler_env test_deribit_read_account test_orphan_watchdog test_orphan_watchdog_cli test_mainnet_pnl test_daily_pnl_wiring test_xferfix test_time_exit_offline test_trade_ledger test_netretry test_r2_runner_exit test_r2_breakeven_move
+  Elapsed: 57.9s (12/72 done, +1450s)
+Step 1: PASS
+  WARNING: could not write heartbeat (OSError('disk'))
+  WARNING: could not refresh heartbeat (OSError('disk'))
+  WARNING: transient error (DeribitError('public/auth: {\'code\': None, \'message\': "transport error: URLError(\'connection reset\')"}')); retry 1/5 in 2s
+  WARNING: transient error (DeribitError('public/auth: {\'code\': None, \'message\': "transport error: URLError(\'connection reset\')"}')); retry 2/5 in 4s
+  WARNING: transient error (DeribitError('public/auth: {\'code\': None, \'message\': "transport error: URLError(\'connection reset\')"}')); retry 3/5 in 8s
+
+[Step 2] G1G2 offline script test
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/run_staged_tests.py MyTradingSys/execution MyTradingSys/execution/testnet/offline --script test_g1g2_offline.py --fake fake_deribit_orders.py=deribit_orders.py
+  Elapsed: 6.2s (13/72 done, +1457s)
+Step 2: PASS
+
+[Step 3] Static test suite
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe MyTradingSys/execution/testnet/test_suite_static.py
+  Elapsed: 2.5s (14/72 done, +1459s)
+Step 3: PASS
+
+[Step 3b] User guide checker tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_check_guide.py
+  Elapsed: 1.2s (15/72 done, +1461s)
+Step 3b: PASS
+
+[Step 3c] User guide in sync with mts.ps1
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/check_guide.py
+  Elapsed: 0.7s (16/72 done, +1461s)
+Step 3c: PASS
+
+[Step 3r] Alert rate checker tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_alert_rate_check.py
+  Elapsed: 1.2s (17/72 done, +1462s)
+Step 3r: PASS
+
+[Step 3cv] Chart verify (RSI/BB/StochRSI) tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_chart_verify.py
+  Elapsed: 1.7s (18/72 done, +1464s)
+Step 3cv: PASS
+
+[Step 3cva] Indicator audit sampler/comparator tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_indicator_audit.py
+  Elapsed: 2.7s (19/72 done, +1467s)
+Step 3cva: PASS
+
+[Step 3tm] One timeframe map tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_tf_map.py
+  Elapsed: 1.1s (20/72 done, +1468s)
+Step 3tm: PASS
+
+[Step 3s] Testnet status summary tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_testnet_status.py
+  Elapsed: 1.6s (21/72 done, +1469s)
+Step 3s: PASS
+
+[Step 3f] Funnel report tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_funnel_report.py
+  Elapsed: 1.6s (22/72 done, +1471s)
+Step 3f: PASS
+
+[Step 3bk] Backup snapshot tests (dirty/untracked work reaches the remote)
+  Command: python -m unittest (scripts/dev/test_backup_snapshot.py, 2 shards)
+  Elapsed: 330.0s (23/72 done, +1557s)
+Step 3bk: PASS
+
+[Step 3td] Tom ledger date tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_tom_ledger_dates.py
+  Elapsed: 3.0s (24/72 done, +1560s)
+Step 3td: PASS
+
+[Step 3hs] Tom holdout split tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_tom_holdout_split.py
+  Elapsed: 1.1s (25/72 done, +1561s)
+Step 3hs: PASS
+
+[Step 3sq] Spec quote checker tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_check_spec_quotes.py
+  Elapsed: 1.5s (26/72 done, +1562s)
+Step 3sq: PASS
+
+[Step 3xt] Extra tests outside the collected dirs (B150 discovery)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/run_extra_tests.py
+  Elapsed: 1405.4s (27/72 done, +1669s)
+Step 3xt: FAIL
+  Last output:
+    ok   MyTradingSys/research/sim_desk/test_conditions.py: 23 passed in 34.31s
+    ok   MyTradingSys/research/sim_desk/test_launcher.py: 8 passed in 2.94s
+    ok   MyTradingSys/research/sim_desk/test_plugin.py: 6 passed in 1.83s
+    ok   MyTradingSys/research/sim_desk/test_krown.py: 8 passed in 15.30s
+    ok   MyTradingSys/research/sim_desk/test_pitchfork.py: 13 passed in 14.28s
+    ok   MyTradingSys/research/sim_desk/test_reasons.py: 8 passed in 11.14s
+    ok   MyTradingSys/research/sim_desk/test_sealed_cache.py: 8 passed in 3.95s
+    ok   MyTradingSys/research/sim_desk/test_reference.py: 5 passed, 2 skipped in 18.70s
+    ok   MyTradingSys/research/trendlines_2026-10-17/g3_pack/test_g3_pack.py: 9 passed in 1.41s
+    ok   MyTradingSys/research/trendlines_2026-10-17/test_count_only.py: 15 passed in 0.99s
+    ok   MyTradingSys/research/sim_desk/test_studies.py: 15 passed in 43.12s
+    ok   MyTradingSys/research/wavetrend_2026-10-17/test_atlas.py: 7 passed in 5.34s
+    ok   MyTradingSys/research/wiring_audit_2026-10/test_wiring_tom_fabio_habib.py: 5 passed in 2.67s
+    ok   scripts/dev/test_refresh_main_checkout.py: 7 passed in 306.64s (0:05:06)
+    extra tests (187 files): FAIL scripts/dev/test_trunk_lag.py
+
+[Step 3nl] NUC lab wrapper tests (tick/status/gemini over the ssh gate)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_nuc_lab.py
+  Elapsed: 4.3s (28/72 done, +1674s)
+Step 3nl: PASS
+
+[Step 3cy] ask_model tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_ask_model.py
+  Elapsed: 0.5s (29/72 done, +1674s)
+Step 3cy: PASS
+
+[Step 3cx] Layer lab runner tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_codex_run.py
+  Elapsed: 179.6s (30/72 done, +1742s)
+Step 3cx: PASS
+
+[Step 3q] INDEX/BUGS consistency
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_registry_consistency.py
+  Elapsed: 1.3s (31/72 done, +1743s)
+Step 3q: PASS
+
+[Step 3p] P4 corrected script tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe MyTradingSys/research/loose_code/test_p4_corrected.py
+  Elapsed: 2.6s (32/72 done, +1746s)
+Step 3p: PASS
+
+[Step 3t] T093 turn-of-candle imbalance tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe MyTradingSys/research/loose_code/test_t093_toc_imbalance_klines.py
+  Elapsed: 1.5s (33/72 done, +1747s)
+Step 3t: PASS
+
+[Step 3d] Extract quote checker tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_verify_extract_quotes.py
+  Elapsed: 1.1s (34/72 done, +1748s)
+Step 3d: PASS
+
+[Step 3h] Launcher verb static tests (runner, orphans)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_mts_launcher.py
+  Elapsed: 0.7s (35/72 done, +1749s)
+Step 3h: PASS
+
+[Step 3tk] Task card tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_tasks.py
+  Elapsed: 291.4s (36/72 done, +1762s)
+Step 3tk: PASS
+
+[Step 3gs] Gate selector tests (path -> smoke steps, fail closed)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_gate_select.py
+  Elapsed: 1.2s (37/72 done, +1764s)
+Step 3gs: PASS
+
+[Step 3rc] Red CI task card tests (one card per red run)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_ci_red_card.py
+  Elapsed: 5.1s (38/72 done, +1769s)
+Step 3rc: PASS
+
+[Step 3tl] Task cards meet the Definition of Ready
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/tasks.py lint
+  Elapsed: 108.2s (39/72 done, +1782s)
+Step 3tl: PASS
+
+[Step 3cxp] Codex status parser tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_codex_status_parse.py
+  Elapsed: 1.0s (40/72 done, +1783s)
+Step 3cxp: PASS
+
+[Step 3g] Gate coverage tests (Fabio v3 + live writers)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_run_all_tests.py
+  Elapsed: 46.2s (41/72 done, +1795s)
+Step 3g: PASS
+
+[Step 3e] DSA browser worker + queue lane tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/worker/test_dsa_worker.py
+  Elapsed: 3.7s (42/72 done, +1799s)
+Step 3e: PASS
+
+[Step 3sh] Screenshot intake tests (save, classify, read, close gates)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_shot.py
+  Elapsed: 16.2s (43/72 done, +1815s)
+Step 3sh: PASS
+
+[Step 3sg] Stop guard tests (a session cannot end holding unshipped work)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_stop_guard.py
+  Elapsed: 71.6s (44/72 done, +1840s)
+Step 3sg: PASS
+
+[Step 3hy] Daily hygiene job tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_daily_hygiene.py
+  Elapsed: 2.1s (45/72 done, +1842s)
+Step 3hy: PASS
+
+[Step 3cs] Cloud SessionStart hook tests (no-op off cloud)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_cloud_setup.py
+  Elapsed: 0.9s (46/72 done, +1843s)
+Step 3cs: PASS
+
+[Step 3pc] Prompt contract tests (DSA_SESSION_PROMPT 5d, B155)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_prompt_contract.py
+  Elapsed: 0.6s (47/72 done, +1844s)
+Step 3pc: PASS
+
+[Step 3ad] Scheduled auto-deploy tests (stops on red gate)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_auto_deploy.py
+  Elapsed: 133.6s (48/72 done, +1949s)
+Step 3ad: PASS
+
+[Step 3k] sync.py parallel ship tests
+  Command: python -m unittest (scripts/dev/test_sync.py, 3 shards)
+  Elapsed: 1358.9s (49/72 done, +1980s)
+Step 3k: PASS
+
+[Step 3rb] Claude-GPT relay board tests (shared notes, lanes, pack)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_relay_board.py
+  Elapsed: 2.8s (50/72 done, +1983s)
+Step 3rb: PASS
+
+[Step 3ul] Usage ledger tests (usage_log.py row, parser, idle, summary)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe -m pytest scripts/dev/test_usage_log.py -q -p no:cacheprovider --ignore-glob=C:\Users\E-ngineers\IdeaProjects\mts-fixver-final-c3*[/\]tmp[a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_] --basetemp=C:\Users\E-NGIN~1\AppData\Local\Temp\mts_s4_ikl1sfuz\bt
+  Elapsed: 6.1s (51/72 done, +1989s)
+Step 3ul: PASS
+
+[Step 3vd] Verdict registry override tests (sourced hand corrections survive backfill)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_verdicts.py
+  Elapsed: 3.5s (52/72 done, +1993s)
+Step 3vd: PASS
+
+[Step 3lm] Live mirror tests (read-only desktop->work-tree data, fail-closed)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_live_mirror.py
+  Elapsed: 28.6s (53/72 done, +2021s)
+Step 3lm: PASS
+
+[Step 3js] Config check (settings.json parses, hook scripts exist, secrets stay ignored)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_config_check.py
+  Elapsed: 2.1s (54/72 done, +2024s)
+Step 3js: PASS
+
+[Step 3lh] GPT lane health tests (down/up rules, reroute, pause, resume, DSA prompt)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_lane_health.py
+  Elapsed: 87.0s (55/72 done, +2036s)
+Step 3lh: PASS
+
+[Step 3qn] Gate quarantine list valid (owner, reason, not expired)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/gate_impact.py --check-quarantine
+  Elapsed: 0.3s (56/72 done, +2036s)
+Step 3qn: PASS
+
+[Step 3sg] Sourced-rule guard: every layer param has SOURCED quote/locator or OURS label
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/check_sourced_params.py
+  Elapsed: 0.3s (57/72 done, +2036s)
+Step 3sg: PASS
+
+[Step 3gd] Gate discovery: every tracked test file is gated (B150)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe MyTradingSys/tests/test_gate_discovery_b150.py
+  Elapsed: 1.5s (58/72 done, +2038s)
+Step 3gd: PASS
+
+[Step 3cr] Control Room page generator tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_make_control_room.py
+  Elapsed: 207.1s (59/72 done, +2051s)
+Step 3cr: PASS
+
+[Step 3dl] CI deps lint: no gated test hard-imports a package the ci.yml pip line lacks
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/ci_deps_lint.py
+  Elapsed: 18.6s (60/72 done, +2070s)
+Step 3dl: PASS
+
+[Step 3la] Look-ahead lint: no new unreviewed FAIL hit (lookahead_lint.py --new)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/lookahead_lint.py --new
+  Elapsed: 32.3s (61/72 done, +2070s)
+Step 3la: PASS
+
+[Step 3gi] Gate impact tests (import-graph test selection, budget, quarantine)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_gate_impact.py
+  Elapsed: 52.1s (62/72 done, +2076s)
+Step 3gi: PASS
+
+[Step 5c] Options module tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe -m pytest MyTradingSys/options/tests -q -p no:cacheprovider --ignore-glob=C:\Users\E-ngineers\IdeaProjects\mts-fixver-final-c3*[/\]tmp[a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_] --basetemp=C:\Users\E-NGIN~1\AppData\Local\Temp\mts_s5c_zxmnplxe\bt
+  Elapsed: 14.7s (63/72 done, +2085s)
+Step 5c: PASS
+
+[Step 4d] Pytest doc size/contract tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe -m pytest MyTradingSys/tests/docs MyTradingSys/tests/test_relay_prompts.py -q -p no:cacheprovider --ignore-glob=C:\Users\E-ngineers\IdeaProjects\mts-fixver-final-c3*[/\]tmp[a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_] --basetemp=C:\Users\E-NGIN~1\AppData\Local\Temp\mts_s4_4oowp831\bt
+  Elapsed: 24.9s (64/72 done, +2095s)
+Step 4d: PASS
+
+[Step 6] Backtest tests (5 modules)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/run_staged_tests.py MyTradingSys/backtest/bt -- test_bt_data test_bt_engine test_bt_ladder test_bt_stats test_ref_pbo
+  Elapsed: 41.3s (65/72 done, +2117s)
+Step 6: PASS
+
+[Step 3sig] Signals between logins (mts_signal.py)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_mts_signal.py
+  Elapsed: 518.8s (66/72 done, +2302s)
+Step 3sig: PASS
+
+[Step 3ly] Layer index tests
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_make_layers_md.py
+  Elapsed: 1.1s (67/72 done, +2303s)
+Step 3ly: PASS
+
+[Step 3mg] Project group map tests (every row and file has one group)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_make_groups.py
+  Elapsed: 1.5s (68/72 done, +2305s)
+Step 3mg: PASS
+
+[Step 3ms] STATUS.md generator tests (commit-dated reports, CI green line)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_make_status.py
+  Elapsed: 150.7s (69/72 done, +2456s)
+Step 3ms: PASS
+
+[Step 3af] Artifact registry tests (one url per page per account)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/test_artifacts.py
+  Elapsed: 12.3s (70/72 done, +2468s)
+Step 3af: PASS
+
+[Step 3x] Wiring check: no undeclared unwired code (wiring_scan.py --check)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe scripts/dev/wiring_scan.py --check
+  Elapsed: 9.0s (71/72 done, +2477s)
+Step 3x: PASS
+
+[Step 5] Maven Java tests
+  Command: mvn -q test
+  Elapsed: 156.5s (72/72 done, +2633s)
+Step 5: PASS
+
+======================================================================
+SUMMARY
+======================================================================
+Step 1: Execution tests: PASS
+Step 2: G1G2 offline test: PASS
+Step 3: Static test suite: PASS
+Step 3b: Guide checker tests: PASS
+Step 3c: Guide in sync: PASS
+Step 3r: Alert rate checker tests: PASS
+Step 3cv: Chart verify tests: PASS
+Step 3cva: Indicator audit tests: PASS
+Step 3tm: TF map tests: PASS
+Step 3s: Testnet status tests: PASS
+Step 3f: Funnel report tests: PASS
+Step 3dk: Desk board tests: PASS
+Step 3tk: Task card tests: PASS
+Step 3td: Tom ledger date tests: PASS
+Step 3hs: Tom holdout split tests: PASS
+Step 3sq: Spec quote checker tests: PASS
+Step 3ly: Layer index tests: PASS
+Step 3cx: Layer lab runner tests: PASS
+Step 3nl: NUC lab wrapper tests: PASS
+Step 3cy: ask_model tests: PASS
+Step 3tl: Task card lint: PASS
+Step 3q: INDEX/BUGS consistency: PASS
+Step 3p: P4 corrected script tests: PASS
+Step 3t: T093 imbalance tests: PASS
+Step 3d: Quote checker tests: PASS
+Step 3h: Launcher static tests: PASS
+Step 3g: Gate coverage tests: PASS
+Step 3k: sync.py tests: PASS
+Step 3gs: Gate selector tests: PASS
+Step 3rc: Red CI card tests: PASS
+Step 3sg: Stop guard tests: PASS
+Step 3cxp: Codex status parser tests: PASS
+Step 3sig: Signals tests: PASS
+Step 3e: DSA worker tests: PASS
+Step 3sh: Screenshot intake tests: PASS
+Step 3mg: Project group map tests: PASS
+Step 3xt: Extra tests: FAIL
+Step 3ad: Auto-deploy tests: PASS
+Step 3hy: Daily hygiene tests: PASS
+Step 3ms: make_status tests: PASS
+Step 3cs: Cloud setup hook tests: PASS
+Step 3pc: Prompt contract tests: PASS
+Step 3ds: DSA helper CLI tests: PASS
+Step 3cr: Control Room tests: PASS
+Step 3lh: GPT lane health tests: PASS
+Step 3rb: Relay board tests: PASS
+Step 3af: Artifact registry tests: PASS
+Step 3ul: Usage ledger tests: PASS
+Step 3bk: Backup snapshot tests: PASS
+Step 3vd: Verdict registry tests: PASS
+Step 3lm: Live mirror tests: PASS
+Step 3js: Config check: PASS
+Step 3gi: Gate impact tests: PASS
+Step 3qn: Quarantine check: PASS
+Step 3sg: Sourced-rule guard: PASS
+Step 3w: Wiring gate tests: PASS
+Step 3x: Wiring check: PASS
+Step 3gd: Gate discovery: PASS
+Step 3la: Look-ahead lint: PASS
+Step 3dl: CI deps lint: PASS
+Step 4: Pytest tests: PASS
+Step 4b: Pytest tests: PASS
+Step 4c: Pytest tests: PASS
+Step 4g: Pytest tests: PASS
+Step 4h: Pytest tests: PASS
+Step 4d: Pytest doc tests: PASS
+Step 4e: Pytest backtest tests: PASS
+Step 4f: Pytest layer tests: PASS
+Step 5: Maven tests: PASS
+Step 5b: Layer tests: PASS
+Step 5c: Options tests: PASS
+Step 6: Backtest tests: PASS
+======================================================================
+FAILED: 1 step(s)
+  - Step 3xt: Extra tests
+EXIT_CODE=1
