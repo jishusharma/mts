@@ -40,3 +40,8 @@ def test_summary_and_prompt_never_hold_key():
     assert FAKE not in str(s) and s["models"] == ["claude-opus-5-5"]
     assert FAKE not in g.summary("boom " + FAKE, FAKE)["result"]
     assert "{" not in g.CHILD_PROMPT.format(run="O1", model=g.MODEL)
+
+
+def test_invalid_key_text_is_an_error():
+    s = g.summary('{"is_error": false, "num_turns": 1, "modelUsage": {}, "result": "Invalid API key. Please check"}', FAKE)
+    assert s["is_error"] is True

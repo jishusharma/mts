@@ -73,7 +73,10 @@ def summary(stdout: str, key: str) -> dict:
         d = json.loads(stdout)
     except ValueError:
         return {"is_error": True, "result": redact(stdout[-400:], key)}
-    return {"is_error": d.get("is_error"), "num_turns": d.get("num_turns"),
+    res = str(d.get("result", ""))
+    # the CLI reports is_error false on an auth failure; the text is the only signal
+    bad = bool(d.get("is_error")) or bool(re.search(r"Invalid API key|API Error|authentication_error|401|403", res))
+    return {"is_error": bad, "num_turns": d.get("num_turns"),
             "models": sorted((d.get("modelUsage") or {}).keys()), "result": redact(str(d.get("result", ""))[-400:], key)}
 
 
