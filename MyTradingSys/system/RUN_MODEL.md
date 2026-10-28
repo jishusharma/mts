@@ -22,7 +22,7 @@ optimally using all our data plans ... reduce [script time] by half." Status: DE
 claude -p "<card brief>" --model <haiku|sonnet|opus> --permission-mode auto --permission-prompts none
        --tools Bash,Read,Edit,Write,Grep,Glob --strict-mcp-config --max-turns <est_turns x 1.5> --output-format json
 ```
-- Runs in its own worktree (`sync.py start`), with the project hooks (safety_guard, model_guard, turn_meter). Never `--bare` (it skips hooks).
+- Runs in its own worktree (`sync.py start`), with the project hooks (safety_guard). Never `--bare` (it skips hooks).
 - `--tools` and `--strict-mcp-config` drop the app's connector and browser tools: the fixed cost per step falls from about 75k tokens to the
   core tools only (to be measured in phase 1).
 - No compaction for workers: a card is sized to fit (est_turns); a run that hits `--max-turns` writes its hand-over to the card and is requeued

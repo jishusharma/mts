@@ -10,39 +10,57 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Operator runs Opus on system/handover/OPUS_RUNS.md O2 once R6 is on trunk: own recount of R6 events/days (no outcome, no bar >= 2024-07-01), settle m (65 vs 281 vs 3,018) and an outcome-free entry-day bound after the busy rule, then ACCEPT or REJECT R6 PRE_REG.md.",
+  "goal": "Operator runs Opus on system/handover/OPUS_RUNS.md O2 once R6 is on trunk: own recount of R6 events/days (no outcome, no bar >= 2024-07-01), settle m (42 vs 65 vs 281 vs 3,018) and an outcome-free entry-day bound after the busy rule, then ACCEPT or REJECT R6 PRE_REG.md.",
   "id": "opus-o2-r6-review",
   "lane": "OPUS",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lead: apply Lab_Guy must-fixes to O2/R7, O1 READY, O3 after O1",
+      "ref": "989d2f03ce62",
+      "utc": "2026-10-28T09:37:54Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator-run only; no session may start or message it.",
+  "note": "Operator-run only; no session may start or message it.\nStamp on the E2 card: 'REVIEWED: Opus_O2 <YYYY-MM-DD> ACCEPT' on its own line.\nREVIEWED: Lab_Guy 2026-10-28 ACCEPT (independent Sonnet reviewer; second pass after must-fixes)",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-28T09:38:13Z",
   "refs": [
     "MyTradingSys/system/handover/OPUS_RUNS.md"
   ],
   "result": "",
   "scope_in": [
     "MyTradingSys/research/fable_run6_powered_prereg/REVIEW_O2.md",
-    "MyTradingSys/system/tasks/"
+    "MyTradingSys/system/tasks/",
+    "MyTradingSys/research/fable_run6_powered_prereg/recount_o2.py",
+    "MyTradingSys/research/fable_run6_powered_prereg/test_recount_o2.py"
   ],
   "scope_out": [
     "live tree, deploy, mainnet, .secrets, .env, outcome columns and bars >= 2024-07-01"
   ],
+  "scope_sha": "989d2f03ce62",
   "size": "M",
   "sources": [
-    "MyTradingSys/research/opus_run_design_2026-10-28/DESIGN.md"
+    "MyTradingSys/research/opus_run_design_2026-10-28/DESIGN.md",
+    "MyTradingSys/research/fable_run6_powered_prereg/PRE_REG.md",
+    "MyTradingSys/research/fable_run6_powered_prereg/COUNTS.csv",
+    "MyTradingSys/research/opus_run_design_2026-10-28/R6_LIVE_READ.md",
+    "MyTradingSys/research/fable_runs_2026-10-28/R1_EDGE_OR_STOP.md"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
+    "Guard: PRE_REG.md and COUNTS.csv on origin/fast-track, else reply \"R6 not shipped\" and stop; data = F:/MTS/data/fable_run6_klines/ on JIS-NB, bars >= 2024-07-01 dropped at load",
     "Own recount script of R6 events/UTC days from the cached klines (sealed-cut and no-outcome asserts)",
     "Settle m with sources; re-run prereg_gate.py with it",
     "Outcome-free entry-day bound after busy rule + 100-bar time stop",
     "Write REVIEW_O2.md ACCEPT/REJECT; stamp or refine the E2 card; ship"
   ],
-  "tests": "recount script asserts no bar >= 2024-07-01 and no outcome column (assert fails on a planted sealed bar)",
+  "tests": "MyTradingSys/research/fable_run6_powered_prereg/test_recount_o2.py: sealed-cut and no-outcome asserts fail on a planted 2024-07-01 bar / outcome column",
   "title": "Opus O2: independent review of the R6 Krown S8 4h pre-reg (m choice, entry-day power) before any E2 run",
   "weight": "IMPORTANT",
   "worker": "session"

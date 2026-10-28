@@ -13,13 +13,30 @@
   "goal": "Operator runs one Fable 5.1 session on system/handover/FABLE_RUN_R7.md after R6 ships: parity spec + replay test, forward sample rule with months to power, pass/fail fixed now, isolation from other testnet sources, build/parity/readout cards. No outcome read.",
   "id": "fable-run7-forward-test",
   "lane": "OPUS",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lead: apply Lab_Guy must-fixes to O2/R7, O1 READY, O3 after O1",
+      "ref": "989d2f03ce62",
+      "utc": "2026-10-28T09:37:54Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "b7783268fee8 fable R3: usage guard log entry (context 20pct end, no stop trigger; T06 gate",
+      "ref": "MyTradingSys/research/fable_runs_2026-10-28/USAGE.md",
+      "utc": "2026-10-27T22:24:03Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator-run only; no session may start or message it.",
+  "note": "Operator-run only; no session may start or message it.\nLane OPUS as for fable-run6-powered-prereg (operator-run Fable 5.1 cards use lane OPUS; no FABLE lane exists in tasks.py).\nREVIEWED: Lab_Guy 2026-10-28 ACCEPT (independent Sonnet reviewer; second pass after must-fixes)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-28T09:38:16Z",
   "refs": [
     "MyTradingSys/system/handover/FABLE_RUN_R7.md"
   ],
@@ -32,11 +49,12 @@
   "scope_out": [
     "live tree, deploy, mainnet, .secrets, .env, outcome columns and bars >= 2024-07-01"
   ],
+  "scope_sha": "989d2f03ce62",
   "size": "M",
   "sources": [
     "MyTradingSys/research/fable_run_design_2026-10-28/DESIGN_R7.md"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Parity spec + replay test spec reproducing R6 event list",
     "Forward sample rule and months to power from COUNTS.csv",

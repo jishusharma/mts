@@ -35,3 +35,7 @@ Rule used (d-dedupe-lean-no-contradiction, OPERATOR_DECISIONS.md:1335): newer op
 - Rows 1, 2, 3 touch the most readers: apply first. Rows 3 and 9 also touch `scripts/dev/supervisor.py` (live-path-adjacent coordinator code, not trading); both need a test that fails on the old string.
 - DECISION (OURS): row 10 and row 21 are the cheapest (pointer edits); do them last.
 - Not found, so not in the table: an explicit "Supervisor must never be started" sentence (row 8 explains the nearest text); MEMORY.md contradictions against trunk (none).
+
+
+## Batch 2 (not applied yet)
+Batch 1 applied (dedupe-apply-1): rows 1, 2, 9 (row 9: SUPER_SESSION.md already said 100 min after the budget-rules fix; added the notes-file heartbeat remark). Row 3 is already fixed on trunk (supervisor.py has no Pipeliner spawn line). Rows 4-8 and 10-24: batch 2.

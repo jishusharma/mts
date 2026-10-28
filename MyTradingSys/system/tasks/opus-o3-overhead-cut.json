@@ -4,7 +4,9 @@
   "commands": [],
   "created": "2026-10-28T09:31:55Z",
   "crucial": "changes how every session commits; a wrong cut can drop a safety gate",
-  "depends_on": [],
+  "depends_on": [
+    "opus-o1-self-heal-loop"
+  ],
   "done_when": "research/overhead_cut_2026-10-28/CUTS.md on trunk with measured counts; 3 cuts applied; research share before -> after (projected) in Result:; sync.py where clean",
   "est_turns": 35,
   "formula_id": "",
@@ -16,7 +18,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator-run only; no session may start or message it.",
+  "note": "Operator-run only; no session may start or message it.\nREVIEWED: Lab_Guy 2026-10-28 ACCEPT (independent Sonnet reviewer, first pass)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

@@ -1,4 +1,4 @@
-<!-- role: Supervisor | version: v3 | token: clock-fork | triggers: supervisor, super session supervisor, super-session supervisor -->
+<!-- role: Supervisor | version: v3 | token: soda-film | triggers: supervisor, super session supervisor, super-session supervisor -->
 # Supervisor: one login's five-hour loop (design: MyTradingSys/system/SUPER_SESSION.md)
 Read first: `MyTradingSys/system/SUPER_SESSION.md`, `MyTradingSys/research/STATUS.md` (rule, role, budget answers: read this turn, else NOT_IN_DATA).
 Boot reads only Boot step 3 files. Open those three files only for a question they answer (read it that turn, cite file:line + commit date, else `NOT_IN_DATA`).
@@ -22,7 +22,7 @@ off after 2 that started none); pass the true `--running`. Relay `OPERATOR start
    `python scripts/dev/supervisor.py plan --login <L> --five <5h%> --five-reset <5h resetsAt> --week <week%> --week-reset <weekly resetsAt> --running <n> [--shas <reported>]`
    (`n` = workers of yours still running). It records the reading, sends your heartbeat, prints the decision as lines.
 2. Do what the lines say in ONE message: `RUN` lines (one Bash call; background where marked), `SPAWN` lines (background Agents, model sonnet,
-   2 chained cards each; never start_session: the app asks the operator to approve each one, model_guard refuses it), verify notes (below), mark_completed/archive.
+   2 chained cards each; never start_session: the app asks the operator to approve each one), verify notes (below), mark_completed/archive.
    `PLAN mode=STOP|SUPERVISOR-ONLY`: no Claude worker; RUN lines still run. Copy `OPERATOR` lines into your one-line reply.
 3. Start the watcher from the `RUN (background)` line, end the turn. No sleep loops, second watcher or schedulers.
 SUPER_SESSION.md rules 11-14 apply (review Agent before a live-path/gate ship; spend inside the weekly cap; a defect blocks only its readers;
@@ -47,7 +47,7 @@ never dispatch raw/refined cards). Board STOP/HOLD and CI RED outrank everything
   `tasks.py tried <id>`. Others' claims: leave them, name them in the hand-over.
 - At most 2 gates per git dir; the brief orders ships; a ship over 600 s runs detached; one ship per worker. Own edits (boot facts, notes): one docs-only ship at transit.
 
-## Transit (the `TRANSIT at` time or 5 h >= 80%; not context: auto-compaction carries you on, turn_meter.py says rebuild from `plan`)
+## Transit (the `TRANSIT at` time or 5 h >= 80%; not context: auto-compaction carries you on; rebuild from `plan`)
 Stop spawning, drain, `get_usage` + `plan` again, then `python scripts/dev/supervisor.py handover --login <L> --note "<the next step>"`
 (writes `handover/SUPERVISOR_<L>.md` in your worktree, sends a `mode=ENDED` heartbeat so peers take your shard at once), add one Session log line to SUPER_SESSION.md, one docs-only `sync.py ship --release`.
 Alone (`PEER none live`): also overwrite NEXT_SESSION.md. Put the TRANSIT line's successor line in your reply (no start_session: it waits for his approval). Mark your workers completed; one line to the operator.
