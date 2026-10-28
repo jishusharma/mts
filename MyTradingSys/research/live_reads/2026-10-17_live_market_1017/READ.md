@@ -169,3 +169,9 @@ Status: one snapshot, no count of how often the higher ladder won. Routed to car
 - Chart: price above BB mid 79,935 and day VWAP 79,967 (hlc3 from 00:00Z), RSI 58 (SMA 58.8, under the 60 line), Stoch RSI 54.7/69.4 turning down, OI flat 98.0K, CVD -1.04K flat, bar net delta -524. Higher low 79,506 vs the 06:41Z low 79,649; highs capped at 80,250-80,497.
 - Bias: 15m neutral to mildly up while above 79,967; flips to down on a 5m close under 79,948 then 79,729. Higher timeframe ladder (10-26 20:00Z: 1w..1d red, 12h/8h/4h RSI under 40) not re-read today: NOT_IN_DATA. Observation only, nothing here is a tested rule.
 - Status: shot 7332e351db75 classified chart.
+
+## 2026-10-28 13:26Z read (Eagle_Eyes, mirror NOT_IN_DATA: live owner desktop-f7iu69n unreachable from this host)
+Shots (NOTE, not LAB-VERIFY): bf4be625432d, 3ca8df9aca33 (Deribit 1m, short 8,280 avg 81,414.42 closed 12:03-12:14Z, net +0.00041079 BTC from the Deribit tx log, equity +0.00041081), 44f3baea8a55 / d53ffeabb69b (CoinGlass 5m/1m flow), 6d1c2292c2df..9989fbd0eacb (CoinGlass Legend 1H-1D liquidation heatmap, 13:25-13:27Z), 15m heatmap shot not yet id'd.
+Day high 81,800.0 (Binance, 8H/1D legend) vs Deribit 81,750; price 80,613-80,639 at 13:26-13:28Z, day low 80,577.0.
+Heatmap reading (palette cream = densest, OURS reading, band prices from the axis +-100): the 81,300-81,400 cluster built since 10-24 was swept by the 08:30Z spike to 81,800; standing clusters at the right edge: ~80,000-80,050, ~79,200-79,400 (below), ~81,950-82,000 (above). Heatmap is a modelled estimate, not executed liquidations.
+Open: VWAP 81,105.2 (5m shot) vs 81,261.5 (1m shot) unexplained (Binance fapi timed out); engine/HALT/Tom NOT_IN_DATA; card live-mirror-follow-live-host-move.
