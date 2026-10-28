@@ -1,6 +1,7 @@
 {
   "approved_by": "operator 2026-10-28 (asked this session directly: design the next Opus runs / the next Fable run); the operator starting the run by hand is the approval",
   "asks": "",
+  "closed": "2026-10-28T18:32:14Z",
   "commands": [],
   "context": {
     "calls_to_edit": 36,
@@ -31,6 +32,12 @@
   "lane": "OPUS",
   "latest": [
     {
+      "kind": "ship",
+      "line": "E2 C0 reproduced independently (recount_o2.py) within 1% - E2 AS-FROZEN: yes; verdict (a):",
+      "ref": "47f0c986b",
+      "utc": "2026-10-28T18:32:14Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "lead: apply Lab_Guy must-fixes to O2/R7, O1 READY, O3 after O1",
@@ -49,7 +56,12 @@
   "refs": [
     "MyTradingSys/system/handover/OPUS_RUNS.md"
   ],
-  "result": "",
+  "result": "E2 C0 reproduced independently (recount_o2.py) within 1% - E2 AS-FROZEN: yes; verdict (a): park on R1 s5 STOP list; reject (b) fresh pre-reg and (c) VALIDATION spend now; R7 = hold ~72 months. REVIEW_O2.md shipped; both cards stamped REVIEWED: Opus_O2 2026-10-28 a.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/fable_run6_powered_prereg/REVIEW_O2.md",
     "MyTradingSys/system/tasks/",
@@ -68,7 +80,7 @@
     "MyTradingSys/research/opus_run_design_2026-10-28/R6_LIVE_READ.md",
     "MyTradingSys/research/fable_runs_2026-10-28/R1_EDGE_OR_STOP.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Own reproduction of C0 from public 4h klines into a gitignored cache, bars >= 2024-07-01 dropped at load",
     "Check E2 against PRE_REG section 2 item by item",
@@ -76,6 +88,7 @@
     "R7 run/hold/drop with entry-day months",
     "Write REVIEW_O2.md, stamp the two cards, raw card for (b), ship"
   ],
+  "taken": "2026-10-28T18:32:14Z",
   "tests": "MyTradingSys/research/fable_run6_powered_prereg/test_recount_o2.py: sealed-cut assert fails on a planted 2024-07-01 bar",
   "title": "Opus O2: E2 post-mortem of Krown S8 4h (INCONCLUSIVE) and the edge program next step",
   "weight": "IMPORTANT",
