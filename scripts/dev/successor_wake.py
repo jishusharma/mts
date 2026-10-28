@@ -173,6 +173,7 @@ def build_script(login: str, model: str, prompt: str, cwd: Path, fire_at: dateti
     run = "\n".join([
         '$env:Path += ";C:/Users/E-ngineers/.local/bin"',
         f"Set-Location '{cwd_s}'",
+        f"$env:MTS_SUCC_WAKE_TASK = '{name}'",
         "$c = (Get-Command claude.exe).Source",
         "try {",
         f"  Get-Content -Raw '{d}/prompt.txt' | & $c -p --model {model} --permission-mode bypassPermissions > '{d}/out.log' 2> '{d}/err.log'",
@@ -225,10 +226,28 @@ def load_plan(login: str, home=None) -> dict | None:
         return None
 
 
+LIVE_STATES = ("Running", "Queued")     # a successor of this task is up or about to start (B10)
+SELF_ENV = "MTS_SUCC_WAKE_TASK"         # run.ps1 sets it: the woken session is that task's own run
+
+
+def task_state(name: str) -> str:
+    """The scheduled task's State ('Running', 'Ready', 'Queued', ...), '' when it does not exist or cannot be read (OURS: the
+    registration itself then fails or succeeds on its own; an unreadable state never blocks the chain)."""
+    try:
+        r = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-Command",
+                            f"(Get-ScheduledTask -TaskName '{name}' -ErrorAction SilentlyContinue).State"],
+                           capture_output=True, text=True, timeout=60)
+        return r.stdout.strip()
+    except Exception:
+        return ""
+
+
 def register(login: str, *, at: str | None = None, model: str = DEFAULT_MODEL, prompt_file: str | None = None,
              cwd: str | Path | None = None, dry: bool = False, now: datetime | None = None, plan: dict | None = None,
-             home=None, base: str | None = None, runner=None) -> dict:
-    """Validate, choose fireAt, build the script, run it (unless dry), record the id line. Raises WakeError (fail closed)."""
+             home=None, base: str | None = None, runner=None, probe=None) -> dict:
+    """Validate, choose fireAt, build the script, run it (unless dry), record the id line. Raises WakeError (fail closed).
+    B10: refuses while MTS-SuccWake-<login> is Running or Queued (its successor is already up); -Force + Start would boot a second.
+    `probe(name) -> state`; default: the real task state, or none when a stub runner is given (tests)."""
     now = now or datetime.now(timezone.utc)
     login = (login or "").strip().upper()[:1]
     if login not in ("A", "B", "C"):
@@ -260,6 +279,12 @@ def register(login: str, *, at: str | None = None, model: str = DEFAULT_MODEL, p
     res = {"script": script, "line": line, "fire_at": fire, "why": why, "task": task_name(login), "ran": False, "handover": None, "usage": usage}
     if dry:
         return res
+    if probe is None:
+        probe = task_state if runner is None else (lambda name: "")
+    state = probe(task_name(login))
+    if state in LIVE_STATES and os.environ.get(SELF_ENV) != task_name(login):    # the task's own run may hand over
+        raise WakeError(f"{task_name(login)} is already live ({state}): its successor is up; a second registration would start "
+                        f"another Supervisor {login}. Refused")
     if runner is None:
         runner = _run_ps
     runner(script)

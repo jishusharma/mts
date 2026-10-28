@@ -92,3 +92,17 @@ def test_quota_pass_waits_then_frees_one_run(tmp_path, monkeypatch):
     assert g.quota_pass(t0 + 60) == {"a", "b"}            # before the reset: both wait
     assert g.quota_pass(t0 + 21 * 60) == {"b"}            # after: one run freed, the other waits its turn
     assert not (tmp_path / "a" / "done").exists() and (tmp_path / "b" / "done").exists()
+
+
+def test_quota_pass_uses_provider_reset_and_fill(tmp_path, monkeypatch):
+    monkeypatch.setattr(g, "RUNS", tmp_path)
+    d = tmp_path / "a"
+    d.mkdir()
+    (d / "started").write_text("t")
+    (d / "done").write_text("exit=0")
+    (d / "summary.json").write_text('{"is_error": true, "limit_wait_min": 15}')
+    t0 = (d / "done").stat().st_mtime
+    reset = "2030-01-01T00:00:00Z"
+    assert g.quota_pass(t0 + 3600, {"usagePercent": 100, "isOverLimit": True, "windowResetAt": reset}) == {"a"}
+    assert g.quota_pass(t0 + 3600, {"usagePercent": 80, "isOverLimit": False, "windowResetAt": reset}) == {"a"}
+    assert g.quota_pass(t0 + 60, {"usagePercent": 10, "isOverLimit": False, "windowResetAt": reset}) == set()
