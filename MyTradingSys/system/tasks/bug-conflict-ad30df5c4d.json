@@ -5,8 +5,8 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-28T14:42:04Z",
-    "misses": 1,
+    "folded": "2026-10-28T14:46:50Z",
+    "misses": 2,
     "reads": [
       "MyTradingSys/system/GATEWAY_NUC.md"
     ],
