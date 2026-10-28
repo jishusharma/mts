@@ -80,7 +80,7 @@ GIT_NOPROMPT = {"GCM_INTERACTIVE": "never", "GIT_TERMINAL_PROMPT": "0"}
 def git(repo, *args, check=True):
     # `status` refreshes and rewrites the index under index.lock; where/health/tidy run it in other sessions' trees,
     # where that can break their `git add` and reset the idle clock tidy reads, so status never takes optional locks.
-    opts = ["--no-optional-locks"] if args and args[0] == "status" else []
+    opts = ["--no-optional-locks"] if args and args[0] in ("status", "diff") else []
     cmd = ["git", "-C", str(repo), *opts, *args]
     if args and args[0] in GIT_NET_VERBS:
         try:
@@ -99,6 +99,19 @@ def is_noise(row, strays=True):
     """True for a `status --short` row that is not anyone's work (see MIRROR_PREFIXES, STRAY_UNTRACKED)."""
     path = row[3:].strip('"')
     return path.startswith(MIRROR_PREFIXES) or (strays and row.startswith("??") and path in STRAY_UNTRACKED)
+
+
+def eol_only(path, rows):
+    """B6: the `status --short` rows marked modified only in the worktree (` M`) whose content `git diff` sees as unchanged:
+    a gate rewrote the file with other line ends under core.autocrlf (git 2.24 still lists it). Not work, so noise."""
+    cand = [l for l in rows if l.startswith(" M ")]
+    if not cand:
+        return set()
+    r = git(path, "diff", "--name-only", check=False)
+    if r.returncode != 0:
+        return set()
+    real = {l.strip('"') for l in r.stdout.splitlines() if l}
+    return {l for l in cand if l[3:].strip('"') not in real}
 
 
 def toplevel(path):
@@ -1129,7 +1142,9 @@ def tree_state(path):
     if r.returncode != 0:
         return None, [], []
     rows = [l for l in git(path, "status", "--short", check=False).stdout.splitlines() if l]
-    return int(r.stdout.strip() or 0), [l for l in rows if not is_noise(l)], [l for l in rows if is_noise(l)]
+    eol = eol_only(path, rows)
+    return (int(r.stdout.strip() or 0), [l for l in rows if not is_noise(l) and l not in eol],
+            [l for l in rows if is_noise(l) or l in eol])
 
 
 def survey(repo):
