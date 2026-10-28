@@ -5,6 +5,13 @@
   "commands": [
     "python MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T05/t05_lc1.py"
   ],
+  "context": {
+    "calls_to_edit": 9,
+    "folded": "2026-10-28T15:28:34Z",
+    "misses": 24,
+    "reads": [],
+    "session": "agent-a627dae2a8f09e6fa"
+  },
   "created": "2026-10-25T19:12:02Z",
   "depends_on": [],
   "done_when": "New test red on the old control, green on the fair one (draws never equal the real level; untouched lines leave the denominator); levels_hold.md states the new KEEP list on DEV 2022-04-01..2024-06-30; numbers match scripts/T05/out/lc1_fair.csv of the T05 audit.",

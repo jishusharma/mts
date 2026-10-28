@@ -21,7 +21,9 @@ net mean > 0, same sign in both halves): **0**. The smallest q is 0.62.
 
 Median gross edge across the 186 tested cells at 60 min: +0.0003 %. Every trigger is a coin flip before fees and a
 0.1 % loss after fees. 0 of 186 cells have a positive net mean at 60 min; 3 are positive at 240 min (best +0.039 %,
-`T3b_through short F1=UP`, p 0.038, q 0.62, first half -0.034 %, second half -0.071 %, so not stable).
+`T3b_through short`, cell key `F1=1&F3=0` (F1 up and F3 neutral), CSV row 275). The p 0.038, q 0.62 and half-sample
+means (-0.034 % / -0.071 %) listed for that cell are the PRIMARY 60-minute statistics (H4), not 240-minute ones. Whether the
+240-minute result is significant or stable is NOT_IN_DATA (unverified; not recomputed).
 
 ## What this says about the idea
 - Price outside the Bollinger band, entering an LVN, or testing a gap does not move fast enough, in either direction and
