@@ -1,5 +1,5 @@
 {
-  "approved_by": "",
+  "approved_by": "operator 2026-10-28 (ask for Opus review)",
   "asks": "",
   "commands": [
     "mvn test -Dtest=PitchforkSignalLayerTest"
@@ -13,13 +13,13 @@
   "from_inbox": "",
   "goal": "Implement Hagopian failure breakout candidates (PF-HAG-L / PF-HAG-S) in PitchforkSignalLayer.java per Rule P-04 in RESEARCH_PITCHFORK_LAYER.md: when price stalls before ML, reverses, and closes beyond the opposing tine, emit momentum breakout order with target equal to channel width.",
   "id": "pitchfork-engine-implement-hagopian-fail",
-  "lane": "SONNET",
+  "lane": "OPUS",
   "layers": [
     "pitchfork"
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "Documented in papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md:97 and RESEARCH_PITCHFORK_LAYER.md:39. Supported in pitchfork_detector.py:190-210, but not yet implemented in PitchforkSignalLayer.java.\nREVIEWED: 2026-10-28 T0-ONLY",
+  "note": "Implemented in PitchforkSignalLayer.java + PitchforkSignalLayerTest.java (17/17 unit tests passing, 53/53 total with SetupCandidatesBuilder).\nREVIEWED: 2026-10-28 T0-ONLY",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "gemini-3.8-flash 2026-10-28 T0-ONLY",
@@ -29,7 +29,7 @@
     "MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py",
     "src/main/java/datafeed/PitchforkSignalLayer.java"
   ],
-  "result": "",
+  "result": "Implemented PF-HAG-L / PF-HAG-S Hagopian failure breakouts, B070 ExecutionMathConstants.netRR parity, and 1m microstructural wick rejection proof in PitchforkSignalLayer.java; verified 53/53 Maven tests passing in PitchforkSignalLayerTest + SetupCandidatesBuilder*Test. Ready for Opus cross-vendor review.",
   "scope_in": [
     "src/main/java/datafeed/PitchforkSignalLayer.java",
     "src/test/java/datafeed/PitchforkSignalLayerTest.java"
@@ -54,5 +54,6 @@
   "tests": "mvn test -Dtest=PitchforkSignalLayerTest",
   "title": "Pitchfork engine: implement Hagopian failure breakout candidates (PF-HAG-L / PF-HAG-S) in Java",
   "weight": "IMPORTANT",
-  "worker": "session"
+  "worker": "session",
+  "crucial": "Operator explicitly requested Opus review of the Pitchfork simulator desk plugin and live Java engine integration."
 }

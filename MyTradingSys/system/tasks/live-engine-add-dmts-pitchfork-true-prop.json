@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T10:08:17Z",
   "commands": [
     "python -c \"content=open('scripts/core/start-trading-day.ps1').read(); assert '-Dmts.pitchfork=true' in content, 'Missing flag'\""
   ],
@@ -15,6 +16,12 @@
   "id": "live-engine-add-dmts-pitchfork-true-prop",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Added -Dmts.pitchfork=true JVM property to start-trading-day.ps1 direct java snapshot comm",
+      "ref": "7439493b4",
+      "utc": "2026-10-28T10:08:17Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,12 @@
     "src/main/java/datafeed/PitchforkSignalLayer.java",
     "src/main/java/datafeed/SetupCandidatesBuilder.java"
   ],
-  "result": "",
+  "result": "Added -Dmts.pitchfork=true JVM property to start-trading-day.ps1 direct java snapshot command (line 113), state machine runner (line 445), and mvn snapshot fallback (line 475); verified flag assertion passes.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/core/start-trading-day.ps1"
   ],
@@ -52,12 +64,13 @@
   "sources": [
     "src/main/java/datafeed/PitchforkSignalLayer.java:26-30"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "In scripts/core/start-trading-day.ps1, locate direct java snapshot command builder around line 113.",
     "Add -Dmts.pitchfork=true to the JVM arguments of the snapshot command and the state machine runner around line 445.",
     "Verify syntax and run python scripts/dev/tasks.py check live-engine-add-dmts-pitchfork-true-prop."
   ],
+  "taken": "2026-10-28T10:08:17Z",
   "tests": "python -c \"content=open('scripts/core/start-trading-day.ps1').read(); assert '-Dmts.pitchfork=true' in content, 'Missing flag'\"",
   "title": "Live engine: add -Dmts.pitchfork=true property to start-trading-day.ps1 snapshot runner",
   "weight": "ROUTINE",

@@ -24,6 +24,7 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from MyTradingSys.backtest.fees import BINANCE_TAKER
 from MyTradingSys.backtest.layers.pitchfork.pitchfork_detector import (
     PitchforkVariant,
     PitchforkPivot,
@@ -196,7 +197,7 @@ def run_pitchfork_study():
                     exit_price = res.ml_value
                     raw_ret = (exit_price - entry_price) / entry_price if is_long else (entry_price - exit_price) / entry_price
                     # Deduct 0.10% round-trip fee
-                    bounce_pnl_pct = raw_ret - 0.0010
+                    bounce_pnl_pct = raw_ret - 2.0 * BINANCE_TAKER
 
                 if not reached_ml and not hagopian_triggered:
                     # Premature breach before reaching ML
@@ -218,17 +219,17 @@ def run_pitchfork_study():
                     for rem_bar in eval_window[sub_idx + 1 :]:
                         if pf.is_ascending() and rem_bar["low"] <= hagopian_target:
                             hagopian_hit_target = True
-                            hagopian_pnl_pct = (hagopian_entry - hagopian_target) / hagopian_entry - 0.0010
+                            hagopian_pnl_pct = (hagopian_entry - hagopian_target) / hagopian_entry - 2.0 * BINANCE_TAKER
                             break
                         elif not pf.is_ascending() and rem_bar["high"] >= hagopian_target:
                             hagopian_hit_target = True
-                            hagopian_pnl_pct = (hagopian_target - hagopian_entry) / hagopian_entry - 0.0010
+                            hagopian_pnl_pct = (hagopian_target - hagopian_entry) / hagopian_entry - 2.0 * BINANCE_TAKER
                             break
                     if not hagopian_hit_target and len(eval_window) > sub_idx + 1:
                         # Exit at end of window
                         last_c = eval_window[-1]["close"]
                         raw_h = (hagopian_entry - last_c) / hagopian_entry if pf.is_ascending() else (last_c - hagopian_entry) / hagopian_entry
-                        hagopian_pnl_pct = raw_h - 0.0010
+                        hagopian_pnl_pct = raw_h - 2.0 * BINANCE_TAKER
 
             results_by_variant[var_name].append({
                 "p0_date": bars[p0.index]["date"],
@@ -239,7 +240,7 @@ def run_pitchfork_study():
                 "premature_breach": premature_tine_breach,
                 "hagopian_triggered": hagopian_triggered,
                 "hagopian_hit_target": hagopian_hit_target,
-                "bounce_pnl_pct": bounce_pnl_pct if reached_ml else -0.015 - 0.0010,  # 1.5% stop out
+                "bounce_pnl_pct": bounce_pnl_pct if reached_ml else -0.015 - 2.0 * BINANCE_TAKER,  # 1.5% stop out
                 "hagopian_pnl_pct": hagopian_pnl_pct,
             })
 
