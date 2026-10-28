@@ -1,0 +1,8 @@
+obs_utc,price_at_obs,band_lo,band_hi,density,side,status,source_shot,note
+2026-10-28T13:26Z,80613,81950,82050,cream,above,standing,15m heatmap shot (new, not yet id'd),read off axis +-100 (OURS)
+2026-10-28T13:26Z,80613,79950,80050,pink,below,standing,5m heatmap e5ede7c82a58 and 15m shot,read off axis +-100 (OURS)
+2026-10-28T13:26Z,80613,79200,79400,pink-red,below,standing,5m e5ede7c82a58 / 4H 47e1938ebe74,read off axis +-100 (OURS)
+2026-10-28T13:26Z,80613,79000,79300,cream,below,standing,4H 47e1938ebe74 / 1D 9989fbd0eacb,densest low cluster in the 4H-1D views (OURS)
+2026-10-27T21:30Z,NA,81150,81250,cream,above,consumed (price wick high about 81260),5m e5ede7c82a58,outcome after touch NOT_MEASURED (needs Binance 1m klines)
+2026-10-28T08:30Z,NA,81300,81800,cream+pink,above,consumed (day high 81800.0),15m shot / 8H 141978a1a838,outcome: price 80613 about 5h later = -1187 from the high (SOURCED 8H/1D legend + shots); no placebo comparison
+2026-10-27T15:00Z,NA,79500,79600,cream,below,consumed (low wick about 79450),5m e5ede7c82a58,outcome after touch NOT_MEASURED
