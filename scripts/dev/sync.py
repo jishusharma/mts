@@ -1233,6 +1233,18 @@ def worktrees(repo):
     return rows
 
 
+def ahead_commits(path, n):
+    """`n` commits ahead of origin/fast-track, or 0 when HEAD adds no content of its own: its tree equals the merge-base with the trunk
+    (B17: merge commits plus a revert that trunk already holds are 'nothing to ship' to `ship`; comparing with the trunk TIP fails the
+    minute the trunk moves on, the merge-base does not)."""
+    if not n:
+        return n
+    base = git(path, "merge-base", f"origin/{TRUNK}", "HEAD", check=False)
+    if base.returncode == 0 and base.stdout.strip() and git(path, "diff", "--quiet", base.stdout.strip(), "HEAD", check=False).returncode == 0:
+        return 0
+    return n
+
+
 def tree_state(path):
     """(ahead, work, noise) of the worktree at `path`: commits not on origin/fast-track, the uncommitted
     `status --short` rows that are real work, and the rows that are not (is_noise). ahead is None when HEAD does not
@@ -1242,7 +1254,7 @@ def tree_state(path):
         return None, [], []
     rows = [l for l in git(path, "status", "--short", check=False).stdout.splitlines() if l]
     skip = not_work(path, rows)
-    return (int(r.stdout.strip() or 0), [l for l in rows if not is_noise(l) and l not in skip],
+    return (ahead_commits(path, int(r.stdout.strip() or 0)), [l for l in rows if not is_noise(l) and l not in skip],
             [l for l in rows if is_noise(l) or l in skip])
 
 

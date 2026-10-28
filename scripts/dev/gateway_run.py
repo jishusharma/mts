@@ -326,12 +326,19 @@ def tick() -> int:
                 launch(card, run, meta.get("auth", "api-key"), wt, resume=True)
         if v == "gave-up" and not (d / "done").exists():
             (d / "done").write_text("exit=gave-up\n", encoding="utf-8", newline="\n")
-        s = (d / "summary.json").read_text()[:300] if (d / "summary.json").exists() else ""
+        full = (d / "summary.json").read_text() if (d / "summary.json").exists() else ""
         if v in ("done", "gave-up"):
-            bad = json.loads(s).get("is_error", True) if s.startswith("{") else True
-            v = "done " + (d / "done").read_text().strip() + (" FAIL" if bad else " OK")
-        print(f"{card}: {v} idle={idle:.0f}m resumes={resumes} {s}")
+            v = "done " + (d / "done").read_text().strip() + (" FAIL" if summary_bad(full) else " OK")
+        print(f"{card}: {v} idle={idle:.0f}m resumes={resumes} {full[:300]}")
     return 0
+
+
+def summary_bad(text: str) -> bool:
+    # parse the whole file: a cut or broken summary counts as an error instead of crashing tick
+    try:
+        return bool(json.loads(text).get("is_error", True))
+    except (ValueError, AttributeError):
+        return True
 
 
 def status() -> int:

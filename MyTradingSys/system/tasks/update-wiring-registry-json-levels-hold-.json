@@ -4,33 +4,55 @@
   "commands": [],
   "created": "2026-10-28T14:46:59Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "wiring_registry.json is valid JSON with the corrected levels_hold.py why and a REPRO entry for levels_hold_fair_run.py; wiring_scan.py reports no new unregistered file.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "wiring_registry.json still describes levels_hold.py as the 2024-12..2025-03 run and omits levels_hold_fair_run.py. Fix the entry and register the fair run so the wiring scan stays green.",
   "id": "update-wiring-registry-json-levels-hold-",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge origin/fast-track (wiring_registry: keep trunk, reapply div_flags_chart why)",
+      "ref": "4b9ed0dbd18c",
+      "utc": "2026-10-27T22:45:07Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-28 ACCEPT | DECISION (OURS): disp REPRO for both (no live import).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-28T15:52:47Z",
   "refs": [
     "re-state-lc1-keep-list-on-the-touched-on"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/system/wiring_registry.json"
+  ],
+  "scope_out": [
+    "every other registry row; levels_hold.py; levels_hold_fair_run.py; disp values of other files"
+  ],
+  "scope_sha": "4b9ed0dbd18c",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.md (fair-control section: KEEP list none, 0 of 12, DEV 2022-04-01..2024-06-30)",
+    "MyTradingSys/system/wiring_registry.json:391-395"
+  ],
+  "state": "ready",
+  "steps": [
+    "Edit the levels_hold.py entry (line 391): why = standard DEV 2022-04-01..2024-06-30, fair touched-only control, KEEP none, legacy control kept as a column; tested by test_levels.py and test_levels_hold_fair.py.",
+    "Add a sibling REPRO entry for levels_confluence_2026-10-14/levels_hold_fair_run.py (ref lc-levels-hold, run by hand, writes lc1_fair_dev.csv, no live import).",
+    "Run python scripts/dev/wiring_scan.py and scripts/dev/test_gate_select.py; ship."
+  ],
+  "tests": "wiring_scan.py: levels_hold_fair_run.py is reported unregistered before the edit and registered after; test_gate_select.py green.",
   "title": "Update wiring_registry.json levels_hold.py entry for the fair control (and register levels_hold_fair_run.py)",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }
