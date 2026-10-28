@@ -4,8 +4,8 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-28T14:48:46Z",
-    "misses": 32,
+    "folded": "2026-10-28T14:49:20Z",
+    "misses": 40,
     "reads": [
       "scripts/dev/tasks.py",
       "scripts/dev/run_extra_tests.py",
@@ -28,13 +28,30 @@
   "goal": "Make a Supervisor started by MTS-SuccWake-<L> able to register the next wake so the chain survives link 1. Cause (register B14): same task name, Start on a Running task is ignored, and the old run's finally unregisters the new task.",
   "id": "bug-successor-wake-chain-stops-after-one-link",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "B1+B10+B2: one hand-over writer per login, no second live successor, one TRANSIT rule",
+      "ref": "637422a471e4",
+      "utc": "2026-10-28T13:55:31Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "74eab8109c27 Wake the Supervisor once at each logon so a NUC restart resumes work",
+      "ref": "MyTradingSys/system/SCHEDULING_POLICY.md",
+      "utc": "2026-10-28T11:11:58Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DRAFT 2026-10-28 Session_Planner (planner-refine-2, OURS): fix design is a default, the worker may take the fallback if Parallel instances fail. Gate: not live path; no real task registered in tests; fail-first quote required. SCHEDULING_POLICY.md edit counts against its SIZE_CAP.",
+  "note": "REVIEWED:2026-10-28 ACCEPT (independent Sonnet reviewer Agent ae91e024) | DRAFT 2026-10-28 Session_Planner (planner-refine-2, OURS): fix design is a default, the worker may take the fallback if Parallel instances fail. Gate: not live path; no real task registered in tests; fail-first quote required. SCHEDULING_POLICY.md edit counts against its SIZE_CAP.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-28T14:49:13Z",
   "refs": [
     "MyTradingSys/research/nuc_restart_2026-10-28/ISSUES_REGISTER.md"
   ],
@@ -47,11 +64,12 @@
   "scope_out": [
     "live tree; deploy; other scheduled tasks; supervisor.py and logon_wake.py behaviour (they call register unchanged); anything beyond the allowed 4b/4b2/4b3 one-shot; no new standing task"
   ],
+  "scope_sha": "637422a471e4",
   "size": "M",
   "sources": [
     "operator 2026-10-28 restarts must resume unattended"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read successor_wake.py build_script (run.ps1 finally, Start branch), register (SELF_ENV bypass) and the B10 tests in test_successor_wake.py",
     "Write the failing chain test first; quote its failure",
