@@ -1,12 +1,13 @@
-"""Queue task cards onto Gemini Flash through the Antigravity CLI (`agy`), one throwaway worktree per card.
+"""Queue task cards onto Gemini through the Antigravity CLI (`agy`), one throwaway worktree per card.
 
-  python scripts/dev/gemini_queue.py run <card-id>:<low|medium|high> ...   run the jobs one after another
+  python scripts/dev/gemini_queue.py run <card-id>[:<effort>][:<model>] ...  run the jobs one after another
+    effort in low|medium|high (default low); model in flash|argon (default flash); tokens may appear in either order
   python scripts/dev/gemini_queue.py status                                last log line per job
 
 Each job: worktree F:/MTS/gq/<id> on branch gemini-q/<id> cut from origin/fast-track, `agy --print` with a
 Flash model, prompt = the card brief plus the lane rules. Gemini commits on its branch only: it never ships,
 never stamps REVIEWED, never touches the live tree. A Claude session reviews the branch and ships it.
-Flash models only (operator 2026-10-18).
+Flash models only (operator 2026-10-18); the argon option was added by the operator via the gemini-lane-fix task.
 """
 from __future__ import annotations
 import os, random, re, socket, subprocess, sys, time
@@ -87,7 +88,7 @@ def claim_with_retry(wt, card: str, tries: int = 6, sleep=time.sleep):
     return 'fail', f'after {tries} tries: {reason}'
 
 
-def run_job(card: str, effort: str) -> None:
+def run_job(card: str, effort: str, model: str = 'flash') -> None:
     wt = ROOT / card
     log = ROOT / f'{card}.log'
     ROOT.mkdir(parents=True, exist_ok=True)
@@ -112,7 +113,8 @@ def run_job(card: str, effort: str) -> None:
         log.write_text(f'CLAIM FAILED: {card}: {why}\n', encoding='utf-8', newline='\n')
         return
     brief = sh([PY, 'scripts/dev/tasks.py', 'brief', card], cwd=wt).stdout
-    model = f'gemini-3.8-flash-{effort}'
+    # NUC 2026-10-28 (gemini-lane-fix): argon ids from `agy models` on this NUC; flash stays 3.8
+    model = f'{"gemini-4-argon" if model == "argon" else "gemini-3.8-flash"}-{effort}'
     cmd = [str(AGY), '--print', RULES + brief, '--model', model, '--effort', effort,
            '--mode', 'accept-edits', '--dangerously-skip-permissions', '--print-timeout', '2400s']
     t0 = time.time()
@@ -137,12 +139,21 @@ def main(argv: list[str]) -> int:
             print(lg.stem, '|', lines[-1][:120] if lines else '')
         return 0
     for spec in argv[1:]:
-        card, _, eff = spec.partition(':')
-        eff = eff or 'medium'
-        if eff not in ('low', 'medium', 'high'):
-            print('bad effort', spec)
+        parts = spec.split(':')
+        if len(parts) > 3:
+            print('bad spec', spec)
             return 2
-        run_job(card, eff)
+        card = parts[0]
+        effort, model = 'low', 'flash'
+        for t in parts[1:]:
+            if t in ('low', 'medium', 'high'):
+                effort = t
+            elif t in ('flash', 'argon'):
+                model = t
+            else:
+                print('bad token', spec, t)
+                return 2
+        run_job(card, effort, model)
     return 0
 
 
