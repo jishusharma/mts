@@ -17,6 +17,7 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
+  "id": "aibridge-072-desktop-install",
   "goal": "Put bridge 0.7.2 (B196 post-gate draft keep, hands-free fix, version guard) on the desktop F:/AIBridge and into the running Chrome extension. The desktop copy is still 0.7.1 and Chrome still runs the pre-B196 extension until the reload.",
   "kind": "run",
   "lane": "JIS-NB",
