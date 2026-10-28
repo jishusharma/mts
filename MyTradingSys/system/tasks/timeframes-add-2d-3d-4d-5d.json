@@ -4,6 +4,21 @@
   "commands": [
     "python scripts/dev/test_tf_map.py"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T16:20:20Z",
+    "misses": 7,
+    "reads": [
+      "MyTradingSys/backtest/layers/timeframe/test_tf_resample.py",
+      "scripts/dev/test_tf_map.py",
+      "MyTradingSys/research/live_reads/2026-10-26_cross_market_tools/mtf_bias.py",
+      "MyTradingSys/backtest/layers/timeframe/tf_resample.py",
+      "MyTradingSys/backtest/layers/timeframe/registry.json",
+      "MyTradingSys/observation/capture.py",
+      "scripts/dev/chart_verify.py"
+    ],
+    "session": "agent-af51b03f3b2115a8d"
+  },
   "created": "2026-10-26T20:05:00Z",
   "depends_on": [],
   "done_when": "2d, 3d, 4d and 5d exist as timeframes next to 1d and 1w in every TF map, with a test per map; 3d is the exchange candle, 2d/4d/5d are built from 1d with a stated anchor; monthly stays out for now",
