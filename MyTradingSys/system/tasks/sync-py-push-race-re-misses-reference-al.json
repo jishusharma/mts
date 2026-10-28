@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T14:42:36Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -24,6 +25,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "scripts/dev/sync.py:1366 regex + scripts/dev/test_sync_push_race.py",
+      "ref": "1818f13cc",
+      "utc": "2026-10-28T14:42:36Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "B3: workers get their own WORKTREE; a nested worktree's files never block the parent",
@@ -40,7 +47,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T14:34:43Z",
   "refs": [],
-  "result": "",
+  "result": "scripts/dev/sync.py:1366 regex + scripts/dev/test_sync_push_race.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/sync.py",
     "scripts/dev/test_sync_push_race.py"
@@ -54,12 +66,13 @@
     "scripts/dev/sync.py:1366 PUSH_RACE_RE",
     "gemini-queue-two-process-race-test (found it, 4be68ddc)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Fail-first: write test calling sync.push_race_lost(CompletedProcess(1,'','! [remote rejected] claims (reference already exists)')) and the plain-auth-failure negative; run it, see it fail.",
     "One-line fix at scripts/dev/sync.py:1366: add |reference already exists to PUSH_RACE_RE; rerun test; if the file is not in extra_tests.tsv add a row.",
     "Verify: content sha, git cherry origin/fast-track <sha> empty, ls-tree lists both files."
   ],
+  "taken": "2026-10-28T14:42:36Z",
   "tests": "scripts/dev/test_sync_push_race.py::test_reference_already_exists_is_a_lost_race (fake stderr via subprocess.CompletedProcess; run on pre-change sync.py first: must fail)",
   "title": "sync.py PUSH_RACE_RE misses 'reference already exists' on first creation of origin/claims",
   "weight": "IMPORTANT",
