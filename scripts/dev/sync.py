@@ -1311,7 +1311,7 @@ def push_reason(r):
     return (t or f"git push exit {r.returncode}, no output")[:300]
 
 
-def push_claim_commit(repo, rel, text, msg, branch=CLAIMS_BRANCH, guard=None):
+def push_claim_commit(repo, rel, text, msg, branch=CLAIMS_BRANCH, guard=None, sleep=time.sleep):
     """Traffic buster (2026-10-16): put ONE claim-file change on origin/<branch> as a commit built with plumbing on top of origin's
     tip: no merge commit, no gate, no dependence on this tree's state (dirty or ahead is fine). text=None removes the file. Default
     branch is the claims side branch (gate-tiers-by-path: no claim/release commit on the trunk; created empty on first use); branch=TRUNK
@@ -1351,6 +1351,9 @@ def push_claim_commit(repo, rel, text, msg, branch=CLAIMS_BRANCH, guard=None):
         if not push_race_lost(r):
             raise PushFailed(f"claim push FAILED (not a race, no retry): {push_reason(r)}")
         print(f"push rejected (someone shipped first), retry {attempt}/{PUSH_TRIES}")
+        if attempt < PUSH_TRIES:
+            sleep(0.5 + 3.5 * random.random())   # NUC 2026-10-28 (gemini-lane-fix): the loop retried with ~0 s between attempts, so two
+            # contending claimers re-fetched in lockstep and lost every attempt; the ship loop jitters the same way (GATE_SPEED D4)
     raise SyncError(f"claim push still rejected after {PUSH_TRIES} tries")
 
 
@@ -1395,7 +1398,7 @@ def new_files_only_reason(repo, task, area="-"):
     return f"{where} writes only new files under dated folders ({', '.join(sorted(set(paths))[:3])})"
 
 
-def claim(repo, task, area="-", gate=run_gate, force=False):
+def claim(repo, task, area="-", gate=run_gate, force=False, sleep=time.sleep):
     if str(task).startswith("--"):
         raise SyncError(f"claim name {task!r} looks like a flag, not a task name; usage: sync.py claim \"<task>\" [--area <paths>]")
     refuse_live(repo)
@@ -1442,7 +1445,7 @@ def claim(repo, task, area="-", gate=run_gate, force=False):
                         f"area: {area}", f"epoch: {int(time.time())}", ""])
         msg = NL.join([f"claim {slug}", "", f"Result: {account(repo)} on {socket.gethostname()} works on: {task}"])
         try:
-            push_claim_commit(repo, f"{CLAIMS_DIR}/{slug}.md", body, msg, guard=still_free)
+            push_claim_commit(repo, f"{CLAIMS_DIR}/{slug}.md", body, msg, guard=still_free, sleep=sleep)
         except PushFailed:
             raise
         except SyncError:
@@ -1453,7 +1456,7 @@ def claim(repo, task, area="-", gate=run_gate, force=False):
         return
 
 
-def release(repo, slug, gate=run_gate):
+def release(repo, slug, gate=run_gate, sleep=time.sleep):
     refuse_live(repo)
     git(repo, "fetch", "--quiet", "origin", TRUNK)
     git(repo, "fetch", "--quiet", "origin", CLAIMS_BRANCH, check=False)
@@ -1464,7 +1467,7 @@ def release(repo, slug, gate=run_gate):
     ahead = git(repo, "rev-list", "--count", f"origin/{TRUNK}..HEAD", check=False).stdout.strip()
     if ahead.isdigit() and int(ahead) > 0:
         print(f"hint (B4): this tree has {ahead} unshipped commit(s); `sync.py ship --release {slug}` closes the claim in the same push and saves a commit")
-    push_claim_commit(repo, rel, None, f"release {slug}" + chr(10) * 2 + f"Result: claim {slug} closed", branch=CLAIMS_BRANCH if side else TRUNK)
+    push_claim_commit(repo, rel, None, f"release {slug}" + chr(10) * 2 + f"Result: claim {slug} closed", branch=CLAIMS_BRANCH if side else TRUNK, sleep=sleep)
     print(f"released {slug}")
 
 
