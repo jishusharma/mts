@@ -24,6 +24,7 @@
     "1d":  {"unit": "days", "days": 1, "anchor_date": "1970-01-01"},
     "2d":  {"unit": "days", "days": 2, "anchor_date": "1970-01-01"},
     "3d":  {"unit": "days", "days": 3, "anchor_date": "1970-01-01"},
+    "4d":  {"unit": "days", "days": 4, "anchor_date": "1970-01-01", "flag": "OURS: not an exchange candle, built from 1d; bucket = epoch-day index mod 4 from 1970-01-01"},
     "5d":  {"unit": "days", "days": 5, "anchor_date": "1970-01-01"},
     "1w":  {"unit": "week"},
     "1M":  {"unit": "month"}

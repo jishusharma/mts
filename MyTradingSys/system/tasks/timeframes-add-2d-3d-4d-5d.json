@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T16:20:24Z",
   "commands": [
     "python scripts/dev/test_tf_map.py"
   ],
@@ -29,7 +30,14 @@
   "goal": "Add the multi-day timeframes the operator named (5 day, 3 day, 2 day, 'maybe 4 day as a dark horse'; weekly already covered, monthly later) to the shared timeframe unit that every layer uses.",
   "id": "timeframes-add-2d-3d-4d-5d",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "2d/3d/4d/5d added to capture.TF_MINUTES (shared), chart_verify (3d fapi, 2d/4d/5d built), ",
+      "ref": "899c9454b",
+      "utc": "2026-10-28T16:20:24Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -41,7 +49,12 @@
   "refs": [
     "MyTradingSys/research/live_reads/2026-10-26_cross_market_tools/mtf_bias.py"
   ],
-  "result": "",
+  "result": "2d/3d/4d/5d added to capture.TF_MINUTES (shared), chart_verify (3d fapi, 2d/4d/5d built), timeframe registry.json (4d added); 3 new tests fail on old code. Anchor: epoch-day mod N from 1970-01-01 (OURS for 2d/4d/5d). Java maps (MarketDataSnapshot/ArchiveHistoricalSource) live-path, left out",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "every timeframe map found by grep, plus one test per map"
   ],
@@ -53,13 +66,14 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "grep every TF/family map and list them in the card result",
     "add 2d, 3d, 4d, 5d with the stated anchor rule; 3d is the exchange candle",
     "extend scripts/dev/test_tf_map.py so each map is checked; the new test must fail on the old code",
     "ship via sync.py ship"
   ],
+  "taken": "2026-10-28T16:20:24Z",
   "tests": "python scripts/dev/test_tf_map.py",
   "title": "Timeframes: add 2d, 3d, 4d, 5d to the shared timeframe unit (operator ask)",
   "weight": "",

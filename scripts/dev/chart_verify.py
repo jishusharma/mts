@@ -17,7 +17,7 @@ import capture  # noqa: E402
 
 FAPI = "https://fapi.binance.com/fapi/v1/klines"
 # capture.TF_MINUTES is the one map; these capture-only intervals are not served by fapi klines
-FAPI_UNSUPPORTED = {"4m", "3h", "7h"}
+FAPI_UNSUPPORTED = {"4m", "3h", "7h", "2d", "4d", "5d"}  # 3d is an exchange candle; 2d/4d/5d are built from 1d
 TFS = set(capture.TF_MINUTES) - FAPI_UNSUPPORTED
 
 
