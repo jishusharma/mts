@@ -982,6 +982,81 @@ def test_lead_role_same_form_other_file(tmp_path):
     assert S.verify_text(t, tmp_path, "lead")[1]["problems"] == []
 
 
+# ---------- SUPER_SESSION.md Session log cap (handover log overflow broke test_session_log_keeps_last_five 2026-10-28) ----------
+def _session_doc(entries):
+    body = "\n".join(f"- {i}" for i in entries)
+    return f"# Super session\n\n## Pacing\nstate row\n\n## Session log (newest first; one line each, last 5)\n{body}\n\n## Prompt: start a super session\n```\nYou are Supervisor.\n```\n"
+
+
+def test_append_session_line_prepends_newest_first_and_keeps_cap():
+    """5 entries already: the new line goes to the top and the oldest (last) entry is dropped, so the section still holds 5."""
+    doc = _session_doc(["1", "2", "3", "4", "5"])
+    out = S.append_session_line(doc, "- NEW")
+    log = [l for l in out.splitlines() if l.startswith("- ")]
+    assert log == ["- NEW", "- 1", "- 2", "- 3", "- 4"]
+    assert "- 5" not in out                      # oldest dropped
+
+
+def test_append_session_line_under_cap_does_not_drop():
+    """Fewer than 5 entries: the new line is prepended, nothing dropped, total grows by one."""
+    out = S.append_session_line(_session_doc(["1", "2"]), "- NEW")
+    log = [l for l in out.splitlines() if l.startswith("- ")]
+    assert log == ["- NEW", "- 1", "- 2"]
+
+
+def test_append_session_line_leaves_other_sections_untouched():
+    """Only the entry block under '## Session log' changes; the Pacing/Prompt sections and their '- ' lines elsewhere are intact."""
+    doc = _session_doc(["1", "2", "3", "4", "5"])
+    out = S.append_session_line(doc, "- NEW")
+    assert "## Pacing" in out and "state row" in out and "You are Supervisor." in out
+    assert "## Prompt: start a super session" in out
+
+
+def test_append_session_line_missing_section_is_noop():
+    """A file without the Session log section is returned unchanged (fail closed: no new section invented)."""
+    doc = "# Super session\n\n## Pacing\nstate row\n"
+    assert S.append_session_line(doc, "- NEW") == doc
+
+
+def test_append_session_line_blank_input_is_noop():
+    assert S.append_session_line(_session_doc(["1"]), "") == _session_doc(["1"])
+    assert S.append_session_line(_session_doc(["1"]), "   ") == _session_doc(["1"])
+
+
+def test_append_session_line_respects_custom_keep():
+    out = S.append_session_line(_session_doc(["1", "2", "3"]), "- NEW", keep=2)
+    assert [l for l in out.splitlines() if l.startswith("- ")] == ["- NEW", "- 1"]
+
+
+def test_record_session_line_writes_capped_file(tmp_path, monkeypatch):
+    """End-to-end: 5 entries on disk + a new line -> 5 kept, oldest gone; returns the new count."""
+    import sync
+    monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
+    p = tmp_path / "MyTradingSys" / "system"
+    p.mkdir(parents=True)
+    doc_path = p / "SUPER_SESSION.md"
+    doc_path.write_text(_session_doc(["1", "2", "3", "4", "5"]), encoding="utf-8")
+    assert S.record_session_line(tmp_path, "- NEW") == 5
+    on_disk = [l for l in doc_path.read_text(encoding="utf-8").splitlines() if l.startswith("- ")]
+    assert on_disk == ["- NEW", "- 1", "- 2", "- 3", "- 4"]
+
+
+def test_record_session_line_autobulleted_text_stays_well_formed(tmp_path):
+    """A raw line without '- ' gets one prepended; the next capped call still slices the block correctly (no stray entry)."""
+    p = tmp_path / "MyTradingSys" / "system"
+    p.mkdir(parents=True)
+    doc_path = p / "SUPER_SESSION.md"
+    doc_path.write_text(_session_doc(["1", "2", "3", "4", "5"]), encoding="utf-8")
+    assert S.record_session_line(tmp_path, "NEW") == 5            # raw text, no bullet
+    assert S.record_session_line(tmp_path, "SECOND") == 5          # still 5: block re-sliced, oldest dropped again
+    on_disk = [l for l in doc_path.read_text(encoding="utf-8").splitlines() if l.startswith("- ")]
+    assert on_disk == ["- SECOND", "- NEW", "- 1", "- 2", "- 3"]
+
+
+def test_record_session_line_missing_file_is_noop(tmp_path):
+    assert S.record_session_line(tmp_path, "- NEW") == -1      # SUPER_SESSION.md absent: nothing written
+
+
 def test_fold_target_card_else_handover(tmp_path):
     cards = tmp_path / "MyTradingSys" / "system" / "tasks"
     cards.mkdir(parents=True)
