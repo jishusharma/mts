@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-10-28T06:49:10Z",
+  "depends_on": [],
+  "done_when": "Station A's scheduled tasks are listed against policy via the device-task-registry check (recorded output); IC1 recorded as allowed, renamed or removed with the decision id (d-47, SCHEDULING_POLICY 4b2); registry row in DEVICE_TASKS.json",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gap: IC1 (self-chaining 10-hour work tick) on Login A has an unknown exact name and policy status. Do not rebuild device-task-registry (being built); use it once shipped. Conservative default (OURS): an unlisted task is not allowed. Removal of a live scheduler needs the operator's yes.",
+  "id": "ic1-scheduled-task-policy-status",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nb/device-task-registry",
+      "ref": "fda63df21aa0",
+      "utc": "2026-10-28T06:40:45Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "9b5aaa747479 device-task-registry: one DEVICE_TASKS.json, device_tasks.py check/matrix/add",
+      "ref": "MyTradingSys/system/DEVICE_TASKS.md",
+      "utc": "2026-10-28T06:40:27Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T06:49:10Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/DEVICE_TASKS.md",
+    "MyTradingSys/system/SCHEDULING_POLICY.md",
+    "scripts/dev/device_tasks.py"
+  ],
+  "scope_out": [
+    "unrelated files; live tree; other cards"
+  ],
+  "scope_sha": "fda63df21aa0",
+  "size": "S",
+  "sources": [
+    "operator ask 2026-10-28 gap 16"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read the gap text and linked files",
+    "Implement the smallest change",
+    "Run the test on old and new code; record output"
+  ],
+  "tests": "device_tasks check output recorded; test_device_tasks covers the IC1 row",
+  "title": "Scheduled task IC1 on Login A: exact name and policy status; allow, rename or remove",
+  "weight": "",
+  "worker": "agent"
+}

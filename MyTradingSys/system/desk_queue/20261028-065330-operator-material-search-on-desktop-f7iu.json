@@ -1,0 +1,10 @@
+{
+  "done_when": "JIS-LAPTOP.jsonl exists locally outside the repo; stdout counts reported in the desk row reply; LAPTOP_COUNTS.md committed only if the operator confirms it is still wanted",
+  "from": "DESKTOP-F7IU69N",
+  "id": "20261028-065330-operator-material-search-on-desktop-f7iu",
+  "need": "scripts\\dev\\operator_material_index.py is on origin\\fast-track. Run it on the Lenovo laptop DESKTOP-F7IU69N over Desktop, Documents, Pictures, Downloads, OneDrive, --host JIS-LAPTOP --out a local data folder outside the repo (default F;\\MTS\\data\\operator_material_index\\<host>.jsonl). Index stays local; the script commits no counts file by its own logged decision (OCR not done, no counts file in scope_in) -- confirm with the operator whether a committed LAPTOP_COUNTS.md is still wanted before adding that step. Copy nothing private; must run on DESKTOP-F7IU69N itself (not a remote host).",
+  "posted": "2026-10-28T06:53:30Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "Operator material search on DESKTOP-F7IU69N (laptop host, retarget from JIS-LAPTOP): screenshots and notes on RSI reverse divergence and trader videos"
+}
