@@ -155,6 +155,16 @@ class DevToolNoReader(unittest.TestCase):
             self.assertEqual(ws.dev_no_reader(tmp, built[0], built[1]), ['scripts/dev/dead_tool.py'])
 
 
+class RealRepoReaders(unittest.TestCase):
+    """fix-wiring-no-reader-api-batch-omi: these two tools must have a named reader in an entry doc."""
+
+    def test_api_batch_and_operator_material_index_have_a_reader(self):
+        built = ws.build(ws.ROOT)
+        unread = [os.path.basename(p) for p in ws.dev_no_reader(ws.ROOT, built[0], built[1])]
+        self.assertNotIn('api_batch.py', unread)
+        self.assertNotIn('operator_material_index.py', unread)
+
+
 class ScanSpeed(unittest.TestCase):
     """GATE_SPEED.md X4: the content-hash facts cache must never change what the scan finds."""
 

@@ -133,4 +133,6 @@ scripts/dev/test_device_tasks.py
 scripts/dev/test_budget_policy.py
 MyTradingSys/research/fable_run6_powered_prereg/test_e2_run.py
 scripts/dev/test_dedupe_dead_code.py
+scripts/dev/test_gateway_run.py
 scripts/dev/test_logon_wake.py
+scripts/dev/test_refresh_main_checkout.py

@@ -65,3 +65,8 @@ Research or runtime data goes to F:/MTS_backup first (local backup repo only), n
 
 ## Never scan a whole drive
 No bare `find /`, `find C:\`, `grep -r /`, `ls -R /` or `du /` in any shell: name a folder (`git ls-files`, `find MyTradingSys -name ...`). A timed-out shell call leaves the find.exe running (JIS-NUC 2026-10-26: 9 h, 10.9M handles, 0 MB free). Check: `powershell -File scripts/operator/runaway_check.ps1`; see RUNAWAY_GUARD.md.
+
+## Hand-run dev tools (named readers, so the wiring scan's NO-READER warning stays quiet)
+- `scripts/dev/api_batch.py`: bulk non-urgent LLM jobs (extractions, quote checks, classification) on the Claude API credit at the half-price Batches rate. Run by hand: `submit jobs.jsonl --max-usd 2`, `status <id>`, `fetch <id>`. Key from env `ANTHROPIC_API_KEY` only. Reader: an operator or Builder session that has a batch of >20 non-urgent prompts.
+- `scripts/dev/operator_material_index.py`: local-only index of operator screenshots and notes on one machine (JSONL outside the repo, counts only on stdout). Run by hand per machine: `python scripts/dev/operator_material_index.py --roots <dir>`. Reader: the Eagle_Eyes screenshot intake.
+- `scripts/dev/cbp_scorecard.py`: per-analyst row/trade/tradable recount of the CBP store (read-only, counts only). Run by hand on the host that holds the store (JIS-NB): `python scripts/dev/cbp_scorecard.py [--store snap.json]`. Michael (@MichaelPizzino) and Michaal (@michaelvdpoppe) are different analysts. Reader: the CBP scorecard (research/cbp/SCORECARD_GPT.md).
