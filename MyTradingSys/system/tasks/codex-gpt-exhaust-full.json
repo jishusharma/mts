@@ -35,7 +35,8 @@
   "not_twin_of": [
     "codex-spend-guard-151-vs-65"
   ],
-  "note": "Role Builder. Operator D3 2026-10-28 (d-gpt-exhaust-full).",
+  "note": "BLOCKED: requires a top-level Codex CLI exhaustion run with an actual usage reading; this Luna child will not initiate GPT quota use. Resume when that run is authorized and recorded.",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -56,7 +57,7 @@
   "sources": [
     "MyTradingSys/system/EXHAUST_PHASE.md"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Read EXHAUST_PHASE.md, exhaust.py, codex_run.py, CODEX_START.md",
     "Find why the lane stops short of the limit; fix with a test that fails on old code",
