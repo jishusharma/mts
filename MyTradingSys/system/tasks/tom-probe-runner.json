@@ -22,7 +22,8 @@
   "not_twin_of": [
     "tom-btc-dev-backtest"
   ],
-  "note": "Pre-registered in PRE_REG_ARMS.md. Evaluates M arms on dev sets under stop-width floor W_min.",
+  "note": "BLOCKED 2026-10-28 Session_Planner(c-1028): waits on tom-probe-prereg (blocked) | Pre-registered in PRE_REG_ARMS.md. Evaluates M arms on dev sets under stop-width floor W_min.",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "gemini-flash",
@@ -44,7 +45,7 @@
     "MyTradingSys/research/tom_transfer_2026-10-11/PROBE_PLAN.md section 3",
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md section 11"
   ],
-  "state": "refined",
+  "state": "blocked",
   "steps": [
     "1. Implement simulators for M1 (trailing stop), M2 (partial at 1R), M3 (re-entry), and M4 (no timeout) in backtest pipeline.",
     "2. Enforce stop-width floor W_min on BTC (>=0.40% all-taker, >=0.20% Deribit; DAX reported) per TOM_LAYER_V2_SPEC section 11.",

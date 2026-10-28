@@ -1,0 +1,63 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-10-28T08:18:15Z",
+  "depends_on": [],
+  "done_when": "research/dedupe_audit_2026-10/CODE.md exists: ranked table, each row with the grep command and its result as evidence; nothing deleted.",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "List duplicated helpers, dead scripts and overlapping tests so the lean rule can be applied safely. Winner by the default rule in OPERATOR_DECISIONS.md d-dedupe-lean-no-contradiction; never ask the operator.",
+  "id": "duplicate-code-and-tests-audit",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nb/two-cards-voice-procs",
+      "ref": "1536591a46bb",
+      "utc": "2026-10-28T06:43:07Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "dispatch-check-vs-decisions",
+    "planner-conflicting-cards-vs-decisions"
+  ],
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T08:18:34Z",
+  "refs": [
+    "MyTradingSys/system/OPERATOR_DECISIONS.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev",
+    "MyTradingSys/tests",
+    "research/dedupe_audit_2026-10/CODE.md"
+  ],
+  "scope_out": [
+    "Audit never deletes or edits code"
+  ],
+  "scope_sha": "1536591a46bb",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Find duplicated helper functions and near-identical scripts",
+    "Find scripts nothing imports, calls or greps (dead), and tests that assert the same thing",
+    "Write CODE.md with grep evidence per row, ranked"
+  ],
+  "tests": "Check: re-run three random rows' grep commands and get the same result.",
+  "title": "Duplicate code and tests audit: scripts/dev and tests",
+  "weight": "ROUTINE",
+  "worker": "session"
+}
