@@ -214,10 +214,6 @@ def drop_lock():
         pass
 
 
-def sync_script():
-    return Path(__file__).resolve().parent / "sync.py"
-
-
 def maint_script():
     return Path(__file__).resolve().parent / "wt_maint.py"
 

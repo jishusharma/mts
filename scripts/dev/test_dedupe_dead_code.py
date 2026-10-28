@@ -1,4 +1,4 @@
-"""dedupe audit batch 3: dead helpers stay removed and the root handover/ folder stays gone."""
+"""dedupe audit batches 3-4: dead helpers stay removed and the root handover/ folder stays gone."""
 import ast
 import unittest
 from pathlib import Path
@@ -10,13 +10,18 @@ DEAD = {
     "indicator_audit_compare.py": "live_route_check",
     "role_line.py": "is_role",
     "make_layers_md.py": "family_ids",
+    # batch 4 (CODE.md rows 3, 4, 5, 9)
+    "run_all_tests.py": "run_step",
+    "role_loader.py": "explicit_role",
+    "role_loader.py#2": "clean_prompt",
+    "c_drive_guard.py": "sync_script",
 }
 
 
 class DeadCode(unittest.TestCase):
     def test_dead_defs_removed(self):
         for fn, name in DEAD.items():
-            tree = ast.parse((DEV / fn).read_text(encoding="utf-8"))
+            tree = ast.parse((DEV / fn.split("#")[0]).read_text(encoding="utf-8"))
             defs = [n.name for n in ast.walk(tree) if isinstance(n, ast.FunctionDef)]
             self.assertNotIn(name, defs, f"{fn}:{name} is dead code (CODE.md rows 6-8,10)")
 
@@ -24,6 +29,12 @@ class DeadCode(unittest.TestCase):
         # INFRA.md row 14: role_loader reads MyTradingSys/system/handover only
         self.assertFalse((REPO / "handover" / "LEAD.md").exists())
         self.assertFalse((REPO / "handover" / "SUPERVISOR_C.md").exists())
+
+    def test_batch4_one_shot_handover_files_in_history(self):
+        # INFRA.md row 17: finished pilot notes are history, not per-login hand-over files
+        for name in ("PILOT3_HAIKU.md", "PILOT3_RESULTS.md", "SUPER_RUN_2H.md"):
+            self.assertFalse((REPO / "MyTradingSys/system/handover" / name).exists(), name)
+            self.assertTrue((REPO / "MyTradingSys/system/handoff_history" / name).exists(), name)
 
 
 if __name__ == "__main__":
