@@ -1,7 +1,20 @@
 {
   "approved_by": "",
-  "asks": "Lab_Guy: stamp REVIEWED for watcher-ship-flow-guard (planner cannot stamp)",
+  "asks": "",
+  "closed": "2026-10-28T12:36:17Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T12:07:59Z",
+    "misses": 6,
+    "reads": [
+      "MyTradingSys/research/pipeliner/station_watcher_monitor.py",
+      "scripts/dev/mts_signal.py",
+      "scripts/dev/make_status.py",
+      "MyTradingSys/research/lead/2026-10-28_coordinator-idle-during-background-wait.md"
+    ],
+    "session": "agent-a17b0c953e545771a"
+  },
   "created": "2026-10-26T17:08:50Z",
   "depends_on": [],
   "done_when": "A design note under MyTradingSys/research/lead/ picks, per stuck-ship signal: (1) its data source and threshold; (2) the output format (STATE-CHANGE line plus one mts_signal.py PIPE note, reusing traffic.py's PROPOSED text); (3) whether the bare while-loop (no functions, no tests today) needs a pure check_once() refactor to be testable. One default per point. No code changes in this card.",
@@ -12,32 +25,48 @@
   "goal": "station_watcher_monitor.py (research/pipeliner, the watcher session's own 5-min loop, no scheduler) flags only liveness flips, lane stalls, lease expiry and desk-pending moves today. Operator goal: also catch a stuck ship - CI red on the last ship, a gate slot held long, a STALE claim, or a ready-card lane sitting idle - and re-propose routing centrally.",
   "id": "watcher-ship-flow-guard",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Design note shipped 0c8d0db02 (research/lead/2026-10-28_watcher-ship-flow-guard-design.md)",
+      "ref": "c596cbd0b",
+      "utc": "2026-10-28T12:36:17Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS): scoped as a design note first, per the operator's standing rule for this line of work (see rolling-chain-background-wait-design-rev, coordinator-sits-idle-during-long-backgr): consolidate idea -> refine -> design review -> implement. Detection sources (CI status, gate-slot duration) are not yet wired into traffic.py's status, so the note must pick them, not assume them. Needs an IMPORTANT review stamp before promotion; this pinned Session_Planner cannot spawn a reviewer Agent (role: spawns nothing) -- recommend the coordinator run a batched Sonnet reviewer Agent on next wake. No stamp fabricated.\nWAITING 2026-10-28 (planner-raw-refine): fields complete; needs a real Lab_Guy stamp (planner cannot stamp).",
+  "note": "DECISION (OURS): scoped as a design note first, per the operator's standing rule for this line of work (see rolling-chain-background-wait-design-rev, coordinator-sits-idle-during-long-backgr): consolidate idea -> refine -> design review -> implement. Detection sources (CI status, gate-slot duration) are not yet wired into traffic.py's status, so the note must pick them, not assume them. Needs an IMPORTANT review stamp before promotion; this pinned Session_Planner cannot spawn a reviewer Agent (role: spawns nothing) -- recommend the coordinator run a batched Sonnet reviewer Agent on next wake. No stamp fabricated.\nWAITING 2026-10-28 (planner-raw-refine): fields complete; needs a real Lab_Guy stamp (planner cannot stamp).\nREVIEWED:2026-10-28 ACCEPT Lab_Guy (Sonnet, C0 design-only). Checked: station_watcher_monitor.py is a bare while True loop with no functions (line 41), checks liveness/CODEX-STALLED/lease/desk pending as the card says; sync.py STALE_HOURS=24 matches the 24 h STALE signal; gate slots GATE_SLOTS=2 exist. Source miss to fix in the note: the PROPOSED format is at traffic.py:720, not :702. Gate-slot-held and CI-red data sources must be picked in the note (card says so); label the 20 min threshold OURS.",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
+  "refreshed": "2026-10-28T12:01:27Z",
   "refs": [],
-  "result": "",
+  "result": "Design note shipped 0c8d0db02 (research/lead/2026-10-28_watcher-ship-flow-guard-design.md); implementation card implement-watcher-ship-flow-guard-check- opened",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/lead/*.md (new design note only)"
   ],
   "scope_out": [
     "MyTradingSys/research/pipeliner/station_watcher_monitor.py, scripts/dev/traffic.py, scripts/dev/sync.py -- no implementation in this card"
   ],
+  "scope_sha": "",
   "size": "S",
   "sources": [
     "MyTradingSys/research/pipeliner/station_watcher_monitor.py (current checks: liveness, lane stall, lease, desk pending)",
     "scripts/dev/traffic.py:702 (PROPOSED line format)"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "Read station_watcher_monitor.py (bare while-loop, no functions, no tests today), traffic.py's render_status PROPOSED block, and sync.py's claims STALE logic and gate/CI status output.",
     "List detection options per signal (poll source, threshold, false-positive risk) with cost/risk, pick one default per signal; decide whether the loop needs a pure check_once(state)->reasons refactor to be testable.",
     "Open ONE follow-up implementation card (tasks.py new) pointing at this note; markable done only once it ships with passing tests and the test output attached as proof in its result field."
   ],
+  "taken": "2026-10-28T12:36:17Z",
   "tests": "Design-only: no tests to run yet. The note must show, per signal, what existing command or log already carries that data (sync.py claims, CI, gate timing), not a new data source invented here.",
   "title": "Station watcher flow guard: extend station_watcher_monitor.py beyond liveness - detect a stuck ship (CI red on the last ship, gate slot held > 20 min, STALE claim > 24 h, lane idle with ready cards) and emit a STATE-CHANGE line plus one PIPE signal re-proposing the routing; goal: ships always in optimal flow, governed centrally by the one watcher",
   "weight": "IMPORTANT",

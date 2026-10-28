@@ -50,3 +50,26 @@ def test_invalid_key_text_is_an_error():
 def test_repo_root_is_the_main_checkout():
     root = g.repo_root(Path(__file__).parent)
     assert (root / ".git").is_dir() and (root / "scripts" / "dev").is_dir()
+
+
+def test_stream_json_summary_reads_last_result_line():
+    stream = '{"type": "system", "session_id": "s"}\n{"type": "result", "is_error": false, "num_turns": 7, "modelUsage": {"claude-opus-5-5": {}}, "result": "done"}\n'
+    s = g.summary(stream, FAKE)
+    assert s["is_error"] is False and s["num_turns"] == 7
+
+
+def test_resume_args_compact_on_same_session():
+    a = g.claude_args("/compact", "sid-1", True)
+    assert a[2] == "/compact" and a[-2:] == ["--resume", "sid-1"] and "stream-json" in a
+    assert g.claude_args("x", "", True)[-1] == "--continue"
+    assert g.claude_args("x", "sid-1", False)[-2:] == ["--session-id", "sid-1"]
+
+
+def test_verdict_restart_hang_and_cap():
+    assert g.verdict(True, True, False, 0, True, 0) == "done"
+    assert g.verdict(False, True, False, 1, False, 0) == "resume"            # station restarted: task not Running
+    assert g.verdict(False, True, True, g.HANG_MIN, True, 0) == "kill-resume"
+    assert g.verdict(False, True, True, g.HANG_MIN, False, 0) == "running"   # old json run: silence is normal
+    assert g.verdict(False, True, True, 5, True, 0) == "running"
+    assert g.verdict(False, True, False, 1, True, g.MAX_RESUMES) == "gave-up"
+    assert g.verdict(False, False, False, 0, False, 0) == "idle"

@@ -1,0 +1,87 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-28T12:44:30Z",
+  "commands": [],
+  "context": {
+    "calls_to_edit": 8,
+    "folded": "2026-10-28T12:45:08Z",
+    "misses": 22,
+    "reads": [
+      "MyTradingSys/research/pipeliner/station_watcher_monitor.py",
+      "scripts/dev/traffic.py",
+      "scripts/dev/make_status.py",
+      "scripts/dev/mts_signal.py",
+      "scripts/dev/run_all_tests.py",
+      "MyTradingSys/tests/test_lease.py",
+      "MyTradingSys/tests/test_gate_discovery_b150.py"
+    ],
+    "session": "agent-a4914340ac27b1ae1"
+  },
+  "created": "2026-10-28T12:34:59Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/tests/test_station_watcher_monitor.py passes (CI lag 19/21 min, gate 19/21 min and dead PID ignored, claim 23/25 h, lane idle 1 vs 2 polls, signal once per appearance, bad extras gives MONITOR ERROR); test output pasted in the card result.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "station_watcher_monitor.py gets a pure check_flags(status, extras, prev_flags) and main() guarded by __main__, flagging CI-RED-20m, GATE-HELD-<slot>-<min>m, STALE-CLAIM-<slug>, LANE-IDLE-<lane> and sending one PIPE signal per flag appearance.",
+  "id": "implement-watcher-ship-flow-guard-check-",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/tests/test_station_watcher_monitor.py: 7 tests OK (hung on old module, no che",
+      "ref": "d2b8cf7a1",
+      "utc": "2026-10-28T12:44:30Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "pipeliner: station watch 10-26 - monitor fix + 2 mechanism cards + lesson seed",
+      "ref": "92233077cfcf",
+      "utc": "2026-10-26T20:35:52Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "watcher-ship-flow-guard"
+  ],
+  "note": "Opened by planner 2026-10-28 from the design card (Lab_Guy ACCEPT 356e109a8, C0). Fix the design note's traffic.py:702 cite to :720 if touched. Verify line: sha, git cherry empty, ls-tree shows both files.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T12:35:26Z",
+  "refs": [],
+  "result": "MyTradingSys/tests/test_station_watcher_monitor.py: 7 tests OK (hung on old module, no check_flags)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/pipeliner/station_watcher_monitor.py",
+    "MyTradingSys/tests/test_station_watcher_monitor.py"
+  ],
+  "scope_out": [
+    "traffic.py, sync.py, any revert/release/kill action (watcher proposes only), station-idle trigger (card rolling-station-idle-broadcast-impl)"
+  ],
+  "scope_sha": "92233077cfcf",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/lead/2026-10-28_watcher-ship-flow-guard-design.md (thresholds OURS; STALE_HOURS SOURCED sync.py:52)"
+  ],
+  "state": "done",
+  "steps": [
+    "Read research/lead/2026-10-28_watcher-ship-flow-guard-design.md in full (sections 1-3 are the spec) and the bare while-loop in station_watcher_monitor.py.",
+    "Tests first (new file; confirm they fail on the old module: no check_flags). Thresholds OURS 20 min / 2 polls; STALE uses sync.STALE_HOURS (24).",
+    "Extract check_flags plus thin read_green_lag/read_gate_slots/read_stale_claims; PIPE text as [who] action (why) per design section 2; run run_all_tests.py --quick."
+  ],
+  "taken": "2026-10-28T12:44:30Z",
+  "tests": "MyTradingSys/tests/test_station_watcher_monitor.py fails on the current module (no check_flags), passes after.",
+  "title": "Implement watcher ship-flow guard: check_flags() refactor of station_watcher_monitor.py (design: research/lead/2026-10-28_watcher-ship-flow-guard-design.md)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

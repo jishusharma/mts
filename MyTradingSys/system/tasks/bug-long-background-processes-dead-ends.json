@@ -1,6 +1,7 @@
 {
   "approved_by": "",
-  "asks": "Lab_Guy: stamp REVIEWED for bug-long-background-processes-dead-ends (built+shipped by audit owner; planner cannot stamp)",
+  "asks": "",
+  "closed": "2026-10-28T12:01:27Z",
   "commands": [],
   "context": {
     "calls_to_edit": 43,
@@ -28,18 +29,39 @@
   "goal": "No background task in an MTS session runs silently past its cap: NUC verbs and network git have deadlines, a non-race push fails once with its reason, and plan/wait report any task past its cap (STALLED-BG) and aged raw IMPORTANT cards (RAW-AGED)",
   "id": "bug-long-background-processes-dead-ends",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Reviewed 2026-10-28 by Lab_Guy: e1ac77891 on origin/fast-track; 23+4 tests pass on trunk, ",
+      "ref": "43bb698df",
+      "utc": "2026-10-28T12:01:27Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Reapply \"dedupe batch 1: workers=Agents, model_guard refs, heartbeat, sched exceptions, Su",
+      "ref": "022aae9066b9",
+      "utc": "2026-10-28T09:34:11Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Built and shipped by the audit owner in one pass (operator HIGH priority, zero-input). DECISION (OURS): state left raw for a reviewer stamp (tasks.py done refuses an unreviewed card); a reviewer checks the diff and marks it done.\nWAITING 2026-10-28 (planner-raw-refine): work already shipped (result filled); only a Lab_Guy REVIEWED stamp is missing before tasks.py done.",
+  "note": "Built and shipped by the audit owner in one pass (operator HIGH priority, zero-input). DECISION (OURS): state left raw for a reviewer stamp (tasks.py done refuses an unreviewed card); a reviewer checks the diff and marks it done.\nWAITING 2026-10-28 (planner-raw-refine): work already shipped (result filled); only a Lab_Guy REVIEWED stamp is missing before tasks.py done.\nREVIEWED:2026-10-28 ACCEPT Lab_Guy (Sonnet, C1 shared tooling, not live path). Verified: ship commit e1ac77891 is in origin/fast-track (git branch -r --contains; cherry empty); test_bg_watch+test_nuc_lab+test_gemini_queue 23 passed and test_sync -k auth_failure/lost_race_message/GitNetTimeout 4 passed on trunk; the same tests run against the pre-change scripts (e1ac77891^) fail: 3 of 3 nuc_lab/gemini_queue non-race tests and 4 of 4 sync tests (bg_watch.py did not exist, 7 tests fail by import); AUDIT.md result line matches the card result (142 over 30 min, 43 dead ends).",
   "prio": 1,
   "refine_tries": 1,
   "refined_by": "",
+  "refreshed": "2026-10-28T12:01:12Z",
   "refs": [
     "MyTradingSys/research/bg_process_audit_2026-10-28/AUDIT.md",
     "MyTradingSys/research/lead/2026-10-28_coordinator-idle-during-background-wait.md"
   ],
-  "result": "AUDIT.md: 142 background tasks over 30 min in 7 days (173 h), 43 dead/hung/idle (72 h); shipped: git net deadline 180 s, non-race push fails once with reason, NUC verb deadlines, bg_watch STALLED-BG/RAW-AGED in plan + watcher wake; 14 new tests fail on old code",
+  "result": "Reviewed 2026-10-28 by Lab_Guy: e1ac77891 on origin/fast-track; 23+4 tests pass on trunk, 14 fail on pre-change scripts; AUDIT.md matches",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/bg_watch.py",
     "scripts/dev/sync.py",
@@ -52,16 +74,18 @@
   "scope_out": [
     "sim_desk, divergence PRD/NRD, live tree, ship re-gate design"
   ],
+  "scope_sha": "022aae9066b9",
   "size": "M",
   "sources": [
     "operator 2026-10-28: background processes run 1h39m+ and most are dead ends"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "Mine transcripts for background tasks over 30 min; classify outcome",
     "Cite gaps file:line",
     "Add deadlines, fail-fast push, bg_watch report and watcher wake; tests fail first"
   ],
+  "taken": "2026-10-28T12:01:27Z",
   "tests": "test_bg_watch.py (7), test_nuc_lab.py NucLabTimeoutTest (2), test_gemini_queue.py non-race (1), test_sync.py auth/race/timeout (4); all fail on the pre-change code",
   "title": "Background processes run 1h39m+ as dead ends (ssh probes, claim retries, ship waits, watchers, Agents): audit and close",
   "weight": "IMPORTANT",
