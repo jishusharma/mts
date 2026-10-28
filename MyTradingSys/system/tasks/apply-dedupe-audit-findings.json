@@ -4,6 +4,16 @@
   "commands": [
     "python scripts/dev/run_all_tests.py --quick"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T09:28:59Z",
+    "misses": 26,
+    "reads": [
+      "scripts/dev/test_device_tasks.py",
+      "scripts/dev/test_supervisor.py"
+    ],
+    "session": "agent-a7ffd59b066976566"
+  },
   "created": "2026-10-28T08:18:16Z",
   "depends_on": [
     "contradiction-audit-docs-prompts-roles",
