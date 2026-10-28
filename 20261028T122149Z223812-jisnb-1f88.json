@@ -1,0 +1,1 @@
+{"t": "20261028T122149Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship Result: logon_wake starts Claude via its Start-menu entry when it is not running; 15 tests pass; the App's StartupTask state read 0 (disabled) after Event 41 power losses.", "login": "C", "sid": "bbb3948d57"}
