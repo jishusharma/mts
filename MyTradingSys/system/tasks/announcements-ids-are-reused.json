@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T15:32:48Z",
   "commands": [],
   "created": "2026-10-28T13:08:18Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "announcements-ids-are-reused",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "0 duplicate ids of 12; scripts/dev/test_announcements_ids.py",
+      "ref": "95f14c0ab",
+      "utc": "2026-10-28T15:32:48Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -37,7 +44,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T14:34:25Z",
   "refs": [],
-  "result": "",
+  "result": "0 duplicate ids of 12; scripts/dev/test_announcements_ids.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/ANNOUNCEMENTS.md",
     "scripts/dev/test_announcements_ids.py"
@@ -50,12 +62,13 @@
   "sources": [
     "MyTradingSys/system/ANNOUNCEMENTS.md entry format line 13"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Count: grep '^### A-' ANNOUNCEMENTS.md, report duplicate ids (note: A-20261018-5 sits after -8, -1 reused across dates is fine only if full id differs).",
     "Write the test with a next_id(text, yyyymmdd) helper inside the test module (no new tool); fix real duplicates by renumbering the later entry and its signal references (grep the old id).",
     "Add the test to extra_tests.tsv; verify: sha, git cherry empty, ls-tree."
   ],
+  "taken": "2026-10-28T15:32:48Z",
   "tests": "scripts/dev/test_announcements_ids.py::test_ids_unique and ::test_next_id_is_max_plus_one (fail first: no helper, or duplicate fixture)",
   "title": "ANNOUNCEMENTS ids are reused",
   "weight": "ROUTINE",

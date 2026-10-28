@@ -69,7 +69,7 @@ Backtest-only RSI = rejection@60 (live never watches level 60) plus, on 15m, sup
 | T09-F6 | S3 | CONFIRMED | live_layers.py:133 events carry entry_price/stop | cc live ignores the setup stop and entry (market, 1%) | use the event stop | with F2 |
 | T09-F7 | S3 | CONFIRMED | live_layers.py:59 `range(start, ...)` vs run_fvg `range(start+1, ...)` | 2 of 24 fvg signals one bar earlier live | align | with F1 |
 
-Positive: turn_of_candle, session_momentum, cvd_absorption, sr_flip, failed_msb signals are bit-for-bit the same bars and sides live and in the backtest (0 differences in 3,200+ signals).
+Positive: turn_of_candle, session_momentum, cvd_absorption, sr_flip, failed_msb signals are bit-for-bit the same bars and sides live and in the backtest (0 differences in 3,156 signals).
 
 ## 6. Exits and the 97% time exits
 Live rule (position_manager.py:560 time exit after `max_hold_s`; auto_trader.py:443 `max_hold_minutes = 8 * tf minutes`; plan validity `hours` only gates entry, executor.py:280): stop 1%, target 2%, close at market after 8 bars of the signal tf.

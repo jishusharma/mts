@@ -5,10 +5,11 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-28T15:32:42Z",
+    "folded": "2026-10-28T15:35:05Z",
     "misses": 16,
     "reads": [
       "scripts/dev/extra_tests.tsv",
+      "scripts/dev/test_announcements_ids.py",
       "MyTradingSys/system/ANNOUNCEMENTS.md",
       "scripts/dev/test_ci_split.py"
     ],
