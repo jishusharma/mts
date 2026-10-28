@@ -107,6 +107,69 @@ class T(unittest.TestCase):
         s, u, t = R.classify("A  x\n M y\nMM z\n?? n\n D w\n")
         self.assertEqual((s, u, t), (["x", "z"], ["y", "z", "w"], ["n"]))
 
+    def _protected_files(self):
+        ex = self.clone / "MyTradingSys" / "execution"
+        ex.mkdir(parents=True)
+        (ex / "HALT").write_text("halt-me")
+        (ex / "AUTO_PAUSE_x").write_text("pause")
+        rt = self.clone / "MyTradingSys" / "runtime"
+        rt.mkdir()
+        (rt / "state.csv").write_text("s")
+        return ex
+
+    def test_dry_run_lists_protected(self):
+        self._protected_files()
+        (self.clone / "dirty.txt").write_text("x")
+        ok, _ = self.run_r()
+        self.assertTrue(ok)
+        self.assertIn("PROTECTED (left in place): MyTradingSys/execution/AUTO_PAUSE_x, "
+                      "MyTradingSys/execution/HALT, MyTradingSys/runtime/state.csv", self.text())
+        self.assertIn("untracked: 1", self.text())
+
+    def test_apply_never_stashes_protected_untracked(self):
+        ex = self._protected_files()
+        (self.clone / "dirty.txt").write_text("x")
+        ok, _ = self.run_r(apply=True)
+        self.assertTrue(ok, self.text())
+        self.assertEqual((ex / "HALT").read_text(), "halt-me")
+        self.assertEqual((ex / "AUTO_PAUSE_x").read_text(), "pause")
+        self.assertEqual(g(self.clone, "stash", "list"), "")
+        self.assertEqual((self.clone / "dirty.txt").read_text(), "x")
+
+    def test_protected_present_while_stash_kept_after_conflict(self):
+        ex = self._protected_files()
+        (self.clone / "b.txt").write_text("mine")
+        g(self.clone, "add", "b.txt")
+        ok, stash = self.run_r(apply=True)
+        self.assertFalse(ok)
+        self.assertEqual((ex / "HALT").read_text(), "halt-me")
+        self.assertNotIn("HALT", g(self.clone, "stash", "show", "--include-untracked", "--name-only", "stash@{0}"))
+
+    def test_only_protected_dirty_means_no_stash(self):
+        ex = self._protected_files()
+        ok, stash = self.run_r(apply=True)
+        self.assertTrue(ok, self.text())
+        self.assertIsNone(stash)
+        self.assertEqual((ex / "HALT").read_text(), "halt-me")
+
+    def test_upstream_adding_same_protected_path_aborts_merge(self):
+        (self.up / "MyTradingSys" / "execution").mkdir(parents=True)
+        commit(self.up, "MyTradingSys/execution/HALT", "upstream")
+        g(self.up, "push", "-q", "origin", "fast-track")
+        ex = self.clone / "MyTradingSys" / "execution"
+        ex.mkdir(parents=True)
+        (ex / "HALT").write_text("local-halt")
+        ok, _ = self.run_r(apply=True)
+        self.assertFalse(ok)
+        self.assertEqual((ex / "HALT").read_text(), "local-halt")
+
+    def test_is_protected(self):
+        for p in ("MyTradingSys/execution/HALT", "MyTradingSys/execution/HALT_DAILY_LOSS",
+                  "MyTradingSys/execution/AUTO_PAUSE", "MyTradingSys/runtime/a/b.csv", ".mts_live/x"):
+            self.assertTrue(R.is_protected(p), p)
+        for p in ("scripts/dev/x.py", "MyTradingSys/execution/live_runner.py"):
+            self.assertFalse(R.is_protected(p), p)
+
     def test_cli_default_is_dry(self):
         self.assertEqual(R.main(["--repo", str(self.clone)]), 0)
         self.assertNotEqual(g(self.clone, "rev-parse", "HEAD"), g(self.up, "rev-parse", "HEAD"))
