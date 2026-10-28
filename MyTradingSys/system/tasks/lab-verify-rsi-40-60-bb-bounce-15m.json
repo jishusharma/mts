@@ -1,12 +1,13 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T07:16:52Z",
   "commands": [
     "python scripts/dev/shot.py status"
   ],
   "context": {
     "calls_to_edit": 18,
-    "folded": "2026-10-28T07:11:19Z",
+    "folded": "2026-10-28T07:17:20Z",
     "misses": 5,
     "reads": [
       "MyTradingSys/system/desk_queue/20261026-204750-lab-verify-rsi-40-60-bb-bounce-15m.json",
@@ -25,7 +26,14 @@
   "goal": "Test the operator's 2026-10-26 live teaching: in an uptrend RSI(14) holds 40 on pullbacks, breaks under 40 for 2-3 candles then returns and takes support on 40 while price tags the lower Bollinger band, and the mirror at RSI 60 and the upper band; also RSI higher low against price wick lows (divergence). Does it beat the unconditional forward return after fees?",
   "id": "lab-verify-rsi-40-60-bb-bounce-15m",
   "lane": "DSA",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "NOT WORTH A LAYER; MyTradingSys/research/lab_verify_rsi4060_bb_15m_2026-10-28/REPORT.md",
+      "ref": "76ea28a07",
+      "utc": "2026-10-28T07:16:52Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -37,7 +45,12 @@
   "refs": [
     "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/READ.md"
   ],
-  "result": "",
+  "result": "NOT WORTH A LAYER; MyTradingSys/research/lab_verify_rsi4060_bb_15m_2026-10-28/REPORT.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "read-only: Binance spot BTCUSDT 15m and 5m klines from data-api.binance.vision, shot a3330d10c427"
   ],
@@ -48,7 +61,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Pull 15m (and 5m) klines for as many days as the API gives, compute RSI14 Wilder and BB20/2 independently",
     "Mark the three examples from the shot first; confirm the rule fires on 04:00, 07:30 and 14:15Z before anything else",
@@ -56,6 +69,7 @@
     "Divergence arm: RSI higher low vs price lower low across two swing lows, same table",
     "Write REPORT.md in a new research folder, verdict: worth a layer card or closed"
   ],
+  "taken": "2026-10-28T07:16:52Z",
   "tests": "",
   "title": "LAB-VERIFY: RSI 40-60 range plus Bollinger-band bounce rule (operator live teaching) on BTC 15m, fee-net",
   "weight": "",
