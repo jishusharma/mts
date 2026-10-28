@@ -6,9 +6,10 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-28T16:06:48Z",
-    "misses": 21,
+    "folded": "2026-10-28T16:09:45Z",
+    "misses": 31,
     "reads": [
+      "MyTradingSys/research/pitchfork_2026-10-19/OPUS_E2E_REVIEW_2026-10-28.md",
       "scripts/dev/mts_doctor.py",
       "scripts/dev/lease.py",
       "scripts/dev/test_supervisor.py"
