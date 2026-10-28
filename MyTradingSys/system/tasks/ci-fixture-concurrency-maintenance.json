@@ -14,7 +14,7 @@
   "goal": "Make the two failing CI fixture checks deterministic: worker overlap must use synchronization and Git template snapshots must not race background maintenance.",
   "id": "ci-fixture-concurrency-maintenance",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -40,6 +40,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T09:54:51Z",
   "refs": [],
+  "reroute": {
+    "at": "2026-10-28T09:59:29Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "credits"
+  },
   "result": "Fixture repair shipped; local affected suites and smoke gate pass. Keep card raw until required review stamp and CI confirmation are recorded.",
   "scope_in": [
     "scripts/dev/test_sync.py",
