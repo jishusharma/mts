@@ -4,6 +4,16 @@
   "commands": [
     "python scripts/dev/run_all_tests.py --quick"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T15:37:24Z",
+    "misses": 2,
+    "reads": [
+      "scripts/dev/mts_signal.py",
+      "scripts/dev/test_mts_signal.py"
+    ],
+    "session": "agent-a9768e9a0f26c2341"
+  },
   "created": "2026-10-28T06:49:09Z",
   "depends_on": [],
   "done_when": "The 8 broadcasts with vm=none/told forever are closed or expired (listing before/after recorded); broadcast expiry has a test that fails on old code; b-4c2dfe blocker (wip commit 0ac18c3fb on jis-desktop) has a named owner in SUPERVISOR_LOG or the broadcast",
