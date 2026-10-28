@@ -2,6 +2,16 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T16:14:28Z",
+    "misses": 14,
+    "reads": [
+      "MyTradingSys/system/wiring_registry.json",
+      "scripts/dev/wiring_scan.py"
+    ],
+    "session": "agent-a105a94c1fc34614f"
+  },
   "created": "2026-10-28T14:46:59Z",
   "depends_on": [],
   "done_when": "wiring_registry.json is valid JSON with the corrected levels_hold.py why and a REPRO entry for levels_hold_fair_run.py; wiring_scan.py reports no new unregistered file.",
