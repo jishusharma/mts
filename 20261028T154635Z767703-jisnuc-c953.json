@@ -1,0 +1,1 @@
+{"t": "20261028T154635Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship [cut] Result: stop guard and sync where count 0 ahead when HEAD tree equals origin/fast-track (B17); 5 identical-tree commits blocked a stop before, 0 now; new test fails on old code", "login": "B", "sid": "4311cb183a"}
