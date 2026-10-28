@@ -44,7 +44,7 @@
     "MyTradingSys/system/GATEWAY_NUC.md"
   ],
   "scope_out": [
-    "CLAUDE.md is at its size cap: do not edit it; no change to gateway_run.py"
+    "CLAUDE.md is at its size cap (see SIZE_CAPS): do not edit it; no change to gateway_run.py"
   ],
   "scope_sha": "0b0843612f33",
   "seen": 1,
