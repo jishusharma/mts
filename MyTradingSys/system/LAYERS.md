@@ -162,9 +162,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `MyTradingSys/research/_archive/loose_2026-10/TURN_OF_CANDLE_ORIGIN_2026-10-09.md`
 - Code: `MyTradingSys/backtest/layers/session`; `MyTradingSys/backtest/layers/session_levels`; `MyTradingSys/backtest/layers/turn_of_candle`
 - Other results: `MyTradingSys/research/t087_session_levels_2026-10-09`; `MyTradingSys/research/eur_low_us_sweep_2026-10-14`
-- Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-session_timing-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-27_lf-session_timing-gpt-rederive.md`
+- Codex lab reports (newest 3 of 3): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-session_timing-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-session_timing-gemini-facts.md`; `MyTradingSys/research/layer_lab/reports/2026-10-27_lf-session_timing-gpt-rederive.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `lf-session_timing-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: session_timing (file:line facts only, no verdict)
   - `layer-review-fabio-session` ready p3 SONNET: Layer review sheet: Fabio and session timing (idea, source, backtests, bugs, confluence)
 
 ## Volume, candle patterns, daily MA setups, bigtrade (`volume_candles_ma`)

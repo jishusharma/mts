@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T03:06:03Z",
   "commands": [
     "python scripts/dev/lab_query.py layers",
     "python scripts/dev/lab_query.py rulings session_timing"
@@ -16,7 +17,14 @@
   "id": "lf-session_timing-gemini-facts",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "3 layers covered; 111 facts cited with file:line; session_timing.md written",
+      "ref": "2e6cf3c50",
+      "utc": "2026-10-28T03:06:03Z"
+    }
+  ],
   "layers": [
     "session_timing"
   ],
@@ -30,7 +38,12 @@
   "refs": [
     "MyTradingSys/system/ANTIGRAVITY_LAPTOP.md item C"
   ],
-  "result": "",
+  "result": "3 layers covered; 111 facts cited with file:line; session_timing.md written",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/session_timing.md (new file only)"
   ],
@@ -44,7 +57,7 @@
     "MyTradingSys/system/layer_index.json",
     "MyTradingSys/research/_archive/loose_2026-10/TURN_OF_CANDLE_ORIGIN_2026-10-09.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "python scripts/dev/lab_query.py layers (rows with family session_timing); read the session_timing section of MyTradingSys/system/LAYERS.md and its spec/results files in layer_index.json",
     "python scripts/dev/lab_query.py rulings session_timing",
@@ -52,6 +65,7 @@
     "Write NOT_IN_DATA where the repo has no answer; never fill from memory; give no verdict",
     "Commit with a Result: line (layers covered, facts counted)"
   ],
+  "taken": "2026-10-28T03:06:03Z",
   "tests": "none (run card); proof = file exists and every fact line carries file:line or NOT_IN_DATA",
   "title": "[GEMINI] Layer fact sheet: session_timing (file:line facts only, no verdict)",
   "weight": "ROUTINE",
