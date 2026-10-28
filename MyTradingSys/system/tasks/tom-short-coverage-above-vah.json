@@ -1,7 +1,18 @@
 {
   "approved_by": "",
-  "asks": "Overrule the sd (use 1.0R) or supply more pre-2022 days for the Tom ct_short VAH test? Default: neither; the card stays parked.",
+  "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T08:24:02Z",
+    "misses": 22,
+    "reads": [
+      "scripts/dev/tasks.py",
+      "MyTradingSys/system/ANNOUNCEMENTS.md",
+      "MyTradingSys/backtest/layers/promotion/promote.py"
+    ],
+    "session": "agent-a5d87f3ca36418c44"
+  },
   "created": "2026-10-14T14:37:40Z",
   "depends_on": [],
   "done_when": "RESULT.md with both variants fee-net on DEV/VAL/HOLDOUT vs current Tom; a layer_map.json row; a flag-gated change proposed only if VAL and HOLDOUT agree.",
@@ -13,7 +24,8 @@
     "tom"
   ],
   "live_path": false,
-  "note": "PARKED 2026-10-26 Session_Planner: prereg_gate fails with the measured sd 2.6R (n needed 2427 vs 662 DEV days); HOLD A-20261018-5 (no new consumers of unchecked lab bases); a builder may only measure the sd of ct_short R on DEV until the operator rules | PARKED 2026-10-18 (re-checked, hold lifted): prereg_gate with sd=1.0R passes (MDE 0.12+0.14 cost, n=662), but BLOCKED.md used the measured sd (~2",
+  "note": "DROPPED 2026-10-28 Session_Planner(c-1028): measured sd 2.6R needs n=2427 vs 662 DEV days: the test cannot be powered, and hold A-20261018-5 is lifted so nothing else blocks it. DECISION (OURS): drop; reopen only if pre-2022 BTC days exist. Tom layer stays in the layer review. | PARKED 2026-10-26 Session_Planner: prereg_gate fails with the measured sd 2.6R (n needed 2427 vs 662 DEV days); HOLD A-20261018-5 (no new consumers of unchecked lab bases); a builder may only measure the sd of ct_short R on DEV until the operator rules | PARKED 2026-10-18 (re-checked, hold lifted): prereg_gate with sd=1.0R passes (MDE 0.12+0.14 cost, n=662), but BLOCKED.md used the measured sd (~2",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 2,
   "refined_by": "",
@@ -25,7 +37,7 @@
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "refined",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "Tom short coverage on trend-down days: no candidate above VAH, ct_short at VAH killed by POC-only target (2026-10-14)",
