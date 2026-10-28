@@ -5,6 +5,22 @@
     "python -m pytest scripts/dev/test_verify_extract_quotes.py -q",
     "python -m pytest MyTradingSys/tests -k quote -q --basetemp F:/MTS/scratch/codex-cbp-empty-evidence-pytest"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T14:04:37Z",
+    "misses": 35,
+    "reads": [
+      "scripts/dev/tasks.py",
+      "scripts/dev/test_lab_flow.py",
+      "scripts/dev/lab_flow.py",
+      "scripts/dev/verify_extract_quotes.py",
+      "scripts/dev/test_verify_extract_quotes.py",
+      "MyTradingSys/system/TASK_REFINEMENT.md",
+      "MyTradingSys/research/layer_lab/reports/2026-10-28_cbp-empty-quoted-evidence.md",
+      "MyTradingSys/research/layer_lab/reports/2026-10-28_lab-flow-vendor-gate-tests-tamper-test-p.md"
+    ],
+    "session": "agent-a3c129da629f090ed"
+  },
   "created": "2026-10-28T13:46:42Z",
   "depends_on": [],
   "done_when": "CBP evidence: \"\" and > \"\" with valid Source GPS each produce exactly one checker problem; valid quoted evidence still verifies; existing no-evidence no-caption behavior is unchanged. Both new regressions fail before the parser fix and pass after.",
@@ -19,7 +35,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "scripts/dev/test_verify_extract_quotes.py::test_cbp_empty_quoted_evidence_fails",
-  "note": "",
+  "note": "REVIEWED:2026-10-28 ACCEPT (Lab_Guy, Sonnet). Spec/fix only: repro and 2-regex fix re-run independently; NO fix or tests exist on trunk or lab tree yet, so builder must deliver both named tests and show them red on current code. Claim hold stays until they ship.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
