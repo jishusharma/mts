@@ -461,6 +461,38 @@ class SyncTest(unittest.TestCase):
             sync.start(lane, slug="next")
         self.assertEqual(self.branch_of(lane), f"{sync.socket.gethostname()}/old-task")
 
+    def test_start_worker_in_a_lane_tree_makes_a_worktree_and_leaves_the_lane(self):
+        """B3: a worker Agent booted in the Supervisor's lane tree switched it and committed there. --worker always gets its own tree."""
+        lane = self.make_lane()
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            path = sync.start(lane, slug="cbp-query", worker=True)
+        self.assertNotEqual(Path(path).resolve(), lane.resolve())
+        self.assertIn("WORKTREE:", buf.getvalue())
+        self.assertEqual(self.branch_of(lane), f"{sync.socket.gethostname()}/old-task")
+        self.assertTrue(self.branch_of(Path(path)).endswith("/cbp-query"))
+
+    def test_start_other_slug_in_another_sessions_tree_makes_a_worktree(self):
+        """B3: `start <slug>` from a session tree made for another slug (the Supervisor's) never works in that tree."""
+        host = sync.socket.gethostname()
+        sup = self.make_tree(self.tmp.resolve() / f"mts-{host.lower()}-supervisor-b", f"{host}/supervisor-b")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            path = sync.start(sup, slug="cbp-query")
+        self.assertNotEqual(Path(path).resolve(), sup.resolve())
+        self.assertIn("WORKTREE:", buf.getvalue())
+        self.assertEqual(self.branch_of(sup), f"{host}/supervisor-b")
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(Path(sync.start(sup, slug="supervisor-b")).resolve(), sup.resolve())   # its own slug: stays
+
+    def test_start_worker_flag_on_the_cli(self):
+        lane = self.make_lane()
+        buf = io.StringIO()
+        with mock.patch.object(sync, "toplevel", lambda p: lane), contextlib.redirect_stdout(buf):
+            self.assertEqual(sync.main(["start", "w2", "--worker", "-q"]), 0)
+        self.assertIn("WORKTREE:", buf.getvalue())
+        self.assertEqual(self.branch_of(lane), f"{sync.socket.gethostname()}/old-task")
+
     def test_start_slug_in_a_non_lane_clean_tree_still_stays_put(self):
         with contextlib.redirect_stdout(io.StringIO()):
             path = sync.start(self.a, slug="anything")
