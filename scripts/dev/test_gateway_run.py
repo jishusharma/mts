@@ -73,3 +73,22 @@ def test_verdict_restart_hang_and_cap():
     assert g.verdict(False, True, True, 5, True, 0) == "running"
     assert g.verdict(False, True, False, 1, True, g.MAX_RESUMES) == "gave-up"
     assert g.verdict(False, False, False, 0, False, 0) == "idle"
+
+
+def test_quota_text_is_an_error_with_wait():
+    s = g.summary('{"is_error": false, "num_turns": 9, "result": "You have reached 100% of your 5-hour quota. Your usage will reset in 15 minutes."}', FAKE)
+    assert s["is_error"] is True and s["limit_wait_min"] == 15
+
+
+def test_quota_pass_waits_then_frees_one_run(tmp_path, monkeypatch):
+    monkeypatch.setattr(g, "RUNS", tmp_path)
+    for c in ("a", "b"):
+        d = tmp_path / c
+        d.mkdir()
+        (d / "started").write_text("t")
+        (d / "done").write_text("exit=0")
+        (d / "summary.json").write_text('{"is_error": true, "limit_wait_min": 15}')
+    t0 = (tmp_path / "a" / "done").stat().st_mtime
+    assert g.quota_pass(t0 + 60) == {"a", "b"}            # before the reset: both wait
+    assert g.quota_pass(t0 + 21 * 60) == {"b"}            # after: one run freed, the other waits its turn
+    assert not (tmp_path / "a" / "done").exists() and (tmp_path / "b" / "done").exists()
