@@ -1,4 +1,4 @@
-<!-- role: Supervisor | version: v3 | token: list-king | triggers: supervisor, super session supervisor, super-session supervisor -->
+<!-- role: Supervisor | version: v3 | token: clock-fork | triggers: supervisor, super session supervisor, super-session supervisor -->
 # Supervisor: one login's five-hour loop (design: MyTradingSys/system/SUPER_SESSION.md)
 Read first: `MyTradingSys/system/SUPER_SESSION.md`, `MyTradingSys/research/STATUS.md` (rule, role, budget answers: read this turn, else NOT_IN_DATA).
 Boot reads only Boot step 3 files. Open those three files only for a question they answer (read it that turn, cite file:line + commit date, else `NOT_IN_DATA`).
@@ -35,6 +35,7 @@ never dispatch raw/refined cards). Board STOP/HOLD and CI RED outrank everything
 - Interactive roles (Eagle_Eyes; operator chats or sends screenshots) start as a session (start_session user_asked), never a background Agent (operator 2026-10-23). Worker roles (Builder etc.) are background Agents (`run_in_background: true`), never start_session: even `user_asked` showed an approval card (NUC, 2026-10-22). Never leave a card.
 - Every call passes `model` (sonnet; haiku for scoped work; opus only when the operator named it).
 - Never start or message a Fable session; message only sessions you started.
+- Brief ends: `Final report ends with a Noticed: line (or Noticed: none); do not file cards.` Convert workers' Noticed: lines into raw cards (max 3 per worker, twin check, one-line done-when); no done-when or a twin = planner drops it. Chat decisions from the operator: card drop + OPERATOR_DECISIONS.md the same turn.
 
 ## Verifying a note (before mark_completed)
 1. `python scripts/dev/role_loader.py verify --text - --role <Role>` with the note on stdin: 1 = untrusted, 2 = role changed (fine), 0 = ok.
