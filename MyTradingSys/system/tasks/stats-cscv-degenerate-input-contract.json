@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T14:54:34Z",
   "commands": [],
   "created": "2026-10-27T20:55:54Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "stats-cscv-degenerate-input-contract",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "T<S/odd S/ragged/empty/singleton raise ValueError; zero-variance Sharpe/PSR/DSR NaN; 21 te",
+      "ref": "430695089",
+      "utc": "2026-10-28T14:54:34Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,12 @@
   "refs": [
     "MyTradingSys/research/layer_lab/reports/2026-10-26_gpt-formulas-rederive-10.md"
   ],
-  "result": "",
+  "result": "T<S/odd S/ragged/empty/singleton raise ValueError; zero-variance Sharpe/PSR/DSR NaN; 21 tests OK; FORMULAS.md s10 policy",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/bt/bt_stats.py",
     "MyTradingSys/backtest/bt/ref_pbo.py",
@@ -58,13 +70,14 @@
     "MyTradingSys/research/layer_lab/reports/2026-10-26_gpt-formulas-rederive-10.md",
     "MyTradingSys/research/layer_lab/gpt_formulas_rederive_10_comparison.json"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Use the policy in note (DECISION OURS): T<S, S odd or <2, ragged matrix, empty or singleton raise ValueError; zero-variance returns give NaN Sharpe, PSR, DSR.",
     "Write the boundary tests first in test_ref_pbo.py and test_bt_stats.py; see them fail on current code.",
     "Reject invalid partitions in ref_pbo.py/bt_stats.py before computing probabilities; valid-input arithmetic unchanged.",
     "Add the degenerate policy paragraph to FORMULAS.md section 10 (line 179); run both suites."
   ],
+  "taken": "2026-10-28T14:54:34Z",
   "tests": "New fail-first tests: test_ref_pbo.py::test_ref_pbo_rejects_T_less_than_S (T<S raises ValueError, today PBO=1.0), plus S odd/<2, ragged matrix, empty and singleton raise; test_bt_stats.py zero-variance gives NaN Sharpe/PSR/DSR. Existing suites and the section 10 oracle (1e-12) stay green.",
   "title": "Stats audit: validate CSCV partitions and define degenerate Sharpe semantics",
   "weight": "CRUCIAL",

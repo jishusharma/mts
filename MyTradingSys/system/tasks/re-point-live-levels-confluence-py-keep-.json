@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
-  "created": "2026-10-28T15:26:38Z",
+  "created": "2026-10-28T14:46:52Z",
   "depends_on": [],
   "done_when": "",
   "est_turns": null,
@@ -10,7 +10,7 @@
   "formula_ids": [],
   "from_inbox": "",
   "goal": "",
-  "id": "lc1-empty-keep-live-levels-confluence-layer",
+  "id": "re-point-live-levels-confluence-py-keep-",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
@@ -19,7 +19,9 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": [],
+  "refs": [
+    "re-state-lc1-keep-list-on-the-touched-on"
+  ],
   "result": "",
   "scope_in": [],
   "scope_out": [],
@@ -28,7 +30,7 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "LC1 KEEP list is now empty (T05-F5): review live_levels_confluence.py (backtest/layers/alerts), which fires on the 8 old KEEP families; see levels_confluence_2026-10-14/levels_hold.md RESTATED section",
+  "title": "Re-point live_levels_confluence.py KEEP tuple to the fair-control LC1 list (layer consumer)",
   "weight": "",
   "worker": ""
 }

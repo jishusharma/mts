@@ -19,7 +19,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "Implemented in studies/pitchfork.py + test_pitchfork.py; verified 43/43 pytest (test_pitchfork, test_integration_http, test_cost_inventory, test_lookahead_lint).\nREVIEWED: 2026-10-28 T0-ONLY",
+  "note": "Implemented in studies/pitchfork.py + test_pitchfork.py; verified 43/43 pytest (test_pitchfork, test_integration_http, test_cost_inventory, test_lookahead_lint).\nREVIEWED: 2026-10-28 T0-ONLY\nREVIEWED: claude-opus-5-5 2026-10-28 CHANGES-REQUESTED (OPUS_E2E_REVIEW_2026-10-28.md; fixes in pitchfork-review-fixes-2026-10-28)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "gemini-3.8-flash 2026-10-28 T0-ONLY",

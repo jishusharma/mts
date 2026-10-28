@@ -1,58 +1,47 @@
-"""T05-F5: the LC1 control must be touched-only and distance-matched without ever being the real level.
-Red on the old control (analyze_fair does not exist there; the legacy figure below is the defect), green on the fair one."""
+"""LC1 fair control (T05-F5): touched-only, distance-matched. Expected numbers are worked by hand in the comments."""
 import random
-import sys
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-import levels_hold as LH  # noqa: E402
-from levels_hold import DAY_MS  # noqa: E402
+from levels_hold import DAY_MS, analyze, fair_control_prices, legacy_control_prices
 
 
-def _bar(t, o, h, l, c):
-    return {'t': t, 'o': o, 'h': h, 'l': l, 'c': c, 'v': 1}
+def _bar(t, o, h, lo, c):
+    return {'t': t, 'o': o, 'h': h, 'l': lo, 'c': c, 'v': 1.0}
 
 
-def _day(day, mid=100.0):
-    # 30 one-minute bars inside [98, 102]; nothing beyond is ever touched.
-    return [_bar(day * DAY_MS + i * 60_000, mid, mid + 2, mid - 2, mid) for i in range(30)]
+def _hold_day(day):
+    """Midnight open 100, stop width max(.004*100, .001*101)=0.4.
+    b1 touches 101 from below (prev close 100 < 101 => side -1, resistance); b2 trades down to 100.5 <= 101-0.4 => HOLD.
+    The range 99.9..101.2 never reaches 99, so a control line at 99 is never touched."""
+    t0 = day * DAY_MS
+    return [_bar(t0, 100, 100.2, 99.9, 100), _bar(t0 + 60000, 100.5, 101.2, 100.4, 101),
+            _bar(t0 + 120000, 101, 101.1, 100.5, 100.6)]
 
 
 def test_fair_control_excludes_real_level():
-    mid = 100.0
-    pool = [0.5, 1.0, 1.5, 40.0]
-    rng = random.Random(1)
-    for _ in range(200):
-        lines = LH.fair_control_prices(rng, pool, mid, real_price=mid + 1.0, k=20, skip_real=True)
-        assert all(abs(p - (mid + 1.0)) > 1e-9 for p in lines)
-    # Same rng stream with or without the skip: only collided draws differ.
-    a = LH.fair_control_prices(random.Random(7), pool, mid, mid + 1.0, 50, False)
-    b = LH.fair_control_prices(random.Random(7), pool, mid, mid + 1.0, 50, True)
-    assert [p for p in a if abs(p - (mid + 1.0)) > 1e-9] == b
-    assert len(a) == 50
+    # Pool of 200 distinct distances; real distance 37.  Legacy draws are mid +/- the real distance, so half of them ARE the
+    # real level (expected share 1/2).  Fair draws pick one of 200 distances and a sign, so the share is 1/(2*200) = 0.0025.
+    mid, real_dist, n = 100.0, 37.0, 20000
+    pool = [float(i) for i in range(1, 201)]
+    legacy = legacy_control_prices(mid, real_dist, n, random.Random(1))
+    fair = fair_control_prices(pool, mid, n, random.Random(1))
+    assert len(legacy) == len(fair) == n
+    eq = lambda xs: sum(abs(p - (mid + real_dist)) < 1e-9 for p in xs) / n
+    assert eq(legacy) > .45
+    assert eq(fair) < .01
 
 
 def test_untouched_control_lines_leave_the_denominator():
-    # 3 days, 1 level each at +-1 from open; the pool also holds a 40 USD distance whose lines are never touched.
-    bars, levels = [], {}
-    for day, off in ((1, 1.0), (2, -1.0), (3, 1.0)):
-        bars += _day(day)
-        levels[day] = [{'family': 'f', 'price': 100.0 + off}]
-    bars += _day(4)
-    levels[4] = [{'family': 'f', 'price': 140.0}]
-    res = LH.analyze_fair(bars, levels, k=20, skip_real=True)['f']
-    total_draws = 20 * 4
-    assert res['n_touch'] == 3                          # the 140 level is untouched: absent, not a non-hold
-    assert 0 < res['fair_ctl_touches'] < total_draws    # the 40 USD lines left the denominator
-    assert res['fair_ctl_touches'] <= total_draws * 3 / 4 + 20   # independent bound: only 1 of 4 pool distances is far
-
-
-def test_legacy_control_is_defective():
-    # Documents the defect the fair control removes: in the legacy control about half the five lines ARE the real level.
-    bars, levels = [], {}
-    for day in range(1, 41):
-        bars += _day(day)
-        levels[day] = [{'family': 'f', 'price': 101.0}, {'family': 'f', 'price': 140.0}]
-    res = LH.analyze_fair(bars, levels, k=20, skip_real=False)['f']
-    assert 0.4 < res['orig_ctl_equal_real_share'] < 0.6
-    assert res['orig_ctl_untouched_share'] > 0.3     # the 140 level's lines are all untouched => counted as non-holds
+    # 30 January days, each with one level at 101 (distance 1) that touches and HOLDs: real hold rate 30/30 = 1.
+    # Every pool distance is 1, so a control line sits at 101 (touched, HOLD) or at 99 (never touched).
+    days = list(range(19723, 19753))
+    bars = [b for d in days for b in _hold_day(d)]
+    levels = {d: [{'family': 'f', 'price': 101.0}] for d in days}
+    row = analyze(bars, levels)['families']['f']
+    assert row['n'] == 30 and row['hold_rate'] == 1.0
+    # fair: only the ~half of 600 lines at 101 are touched, all HOLD => rate exactly 1.0, difference exactly 0 => DROP.
+    assert 0 < row['fair_control_touches'] < 600
+    assert row['random_hold_rate'] == 1.0
+    assert row['difference'] == 0.0 and row['verdict'] == 'DROP'
+    # legacy: lines at 99 count as non-holds in the denominator => random rate near 0.5, a spurious positive gap, KEEP.
+    assert 0.3 < row['legacy_random_hold_rate'] < 0.7
+    assert row['legacy_ci95'][0] > 0 and row['legacy_verdict'] == 'KEEP'

@@ -38,13 +38,21 @@ def moments(x):
     return (m, sd, skew, kurt)
 
 def sharpe(x):
+    """mean/pstdev; NaN for zero variance or a single observation (section 10 policy)."""
     mean, sd, _, _ = moments(x)
-    if sd == 0:
-        return 0.0
+    if sd == 0 or len(x) < 2:
+        return float('nan')
     return mean / sd
+
+def _sharpe_or_zero(x):
+    """Internal to pbo_cscv: a constant variant ranks as Sharpe 0 (unchanged arithmetic)."""
+    s = sharpe(x)
+    return 0.0 if s != s else s
 
 def psr(x, sr_star=0.0):
     sr = sharpe(x)
+    if sr != sr:
+        return float('nan')
     T = len(x)
     _, _, g3, g4 = moments(x)
     numerator = (sr - sr_star) * math.sqrt(T - 1)
@@ -69,8 +77,10 @@ def dsr(x, n_trials, var_sr):
 def pbo_cscv(M, S=16):
     T = len(M)
     N = len(M[0]) if M else 0
-    if T < S or S < 2 or S % 2 != 0:
+    if T < 2 or N < 1 or S < 2 or S % 2 != 0 or T < S:
         raise ValueError("Invalid input")
+    if any(len(r) != N for r in M):
+        raise ValueError("Ragged matrix")
     block_size = T // S
     if block_size == 0:
         raise ValueError("Not enough data for specified S")
@@ -86,8 +96,8 @@ def pbo_cscv(M, S=16):
         oos_data = [blocks[i] for i in oos_indices]
         is_returns = [[row[i] for row in sum(is_data, [])] for i in range(N)]
         oos_returns = [[row[i] for row in sum(oos_data, [])] for i in range(N)]
-        is_sharpes = [sharpe(returns) for returns in is_returns]
-        oos_sharpes = [sharpe(returns) for returns in oos_returns]
+        is_sharpes = [_sharpe_or_zero(returns) for returns in is_returns]
+        oos_sharpes = [_sharpe_or_zero(returns) for returns in oos_returns]
         n_star = is_sharpes.index(max(is_sharpes))
         w = (sum(1 for s in oos_sharpes if s < oos_sharpes[n_star]) + 1) / (N + 1)
         log_odds = math.log(w / (1 - w)) if w > 0 and w < 1 else float('-inf') if w == 0 else float('inf')

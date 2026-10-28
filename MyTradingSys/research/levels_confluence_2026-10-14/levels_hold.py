@@ -1,11 +1,17 @@
 """First-touch level reactions and distance-matched seeded random-line controls."""
 from collections import defaultdict
+import datetime as dt
 import math
 import random
 
+import numpy as np
+
 DAY_MS = 86_400_000
-SEED = 20261014
-BOOTSTRAPS = 2000
+SEED = 20261014          # OURS: legacy control + legacy bootstrap (published study)
+FAIR_SEED = 20261016     # OURS: fair control draws + fair bootstrap (T05 audit seed; reproduces out/lc1_fair.csv)
+BOOTSTRAPS = 2000        # OURS
+FAIR_LINES = 20          # OURS: random lines per candidate level in the fair control (T05-F5)
+LEGACY_LINES = 5         # OURS: published control lines per level
 
 
 def stop_width(price, level):
@@ -50,6 +56,45 @@ def outcome(bars, level, width, prev_close=None):
     return 'NEITHER'
 
 
+def month_of(day):
+    d = dt.date(1970, 1, 1) + dt.timedelta(days=int(day))
+    return d.year * 12 + d.month
+
+
+def legacy_control_prices(mid, dist, k, rng):
+    """PUBLISHED control (legacy column): mid +/- the real level's own distance, random sign.
+    Half of these lines ARE the real level (T05-F5)."""
+    out = []
+    for _ in range(k):
+        sign = -1 if rng.random() < .5 else 1
+        out.append(mid + sign * dist)
+    return out
+
+
+def fair_control_prices(pool, mid, k, rng):
+    """FAIR control: k lines whose distance from the midnight open is drawn from `pool` (distances of the same family's
+    candidate levels in the same calendar month, touched or not), random sign. The real level is hit only with
+    probability 1/(2*len(pool)), not 1/2."""
+    out = []
+    for _ in range(k):
+        dist = pool[rng.randrange(len(pool))]
+        out.append(mid + (-1 if rng.random() < .5 else 1) * dist)
+    return out
+
+
+def _fair_boot_ci(days, seed=FAIR_SEED, iterations=BOOTSTRAPS):
+    """days: day -> [real_hold, real_n, ctl_hold, ctl_n]. Ratio-of-sums day bootstrap of real rate minus control rate."""
+    keys = sorted(days)
+    arr = np.array([days[k] for k in keys], float)
+    rng = np.random.default_rng(seed)
+    pick = rng.integers(0, len(keys), (iterations, len(keys)))
+    sums = arr[pick].sum(1)
+    with np.errstate(invalid='ignore', divide='ignore'):
+        diff = sums[:, 0] / sums[:, 1] - sums[:, 2] / sums[:, 3]
+    diff = diff[~np.isnan(diff)]
+    return float(np.quantile(diff, .025)), float(np.quantile(diff, .975))
+
+
 def _prev_close(rows, i):
     return float(rows[i - 1]['c']) if i > 0 else None
 
@@ -77,6 +122,15 @@ def analyze(bars, levels, seed=SEED):
     for rows in by_day.values():
         rows.sort(key=lambda b: b['t'])
     rng = random.Random(seed)
+    # fair control distance pools: family x calendar month, ALL candidate levels (touched or not)
+    pool = defaultdict(list)
+    for day, rows in by_day.items():
+        mid0 = float(rows[0]['o'])
+        for lev in levels.get(day, []):
+            pool[(lev['family'], month_of(day))].append(abs(float(lev['price']) - mid0))
+    frng = random.Random(FAIR_SEED)
+    fair = defaultdict(lambda: defaultdict(lambda: [0, 0, 0, 0]))   # family -> day -> real_h, real_n, ctl_h, ctl_n
+    diag = defaultdict(lambda: [0, 0, 0, 0, 0])   # family -> legacy lines drawn, untouched, equal to real, fair lines equal to real, fair lines drawn
     family = defaultdict(lambda: {'n': 0, 'hold': 0, 'random_hold': 0, 'days': defaultdict(lambda: [0, 0])})
     touches, pairs = [], []
     for day in sorted(by_day):
@@ -84,6 +138,32 @@ def analyze(bars, levels, seed=SEED):
         if not rows:
             continue
         midnight = float(rows[0]['o'])
+        for lev in levels.get(day, []):
+            fam, price = lev['family'], float(lev['price'])
+            ps = pool[(fam, month_of(day))]
+
+            def one(p):
+                i = next((j for j, b in enumerate(rows) if float(b['l']) <= p <= float(b['h'])), None)
+                if i is None:
+                    return None
+                return outcome(rows[i:], p, stop_width(midnight, p), _prev_close(rows, i))
+
+            diag[fam][4] += FAIR_LINES
+            for p in fair_control_prices(ps, midnight, FAIR_LINES, frng):
+                diag[fam][3] += int(abs(p - price) < 1e-9)
+                r = one(p)
+                if r is not None:
+                    fair[fam][day][2] += int(r == 'HOLD')
+                    fair[fam][day][3] += 1
+            real = one(price)
+            if real is not None:
+                fair[fam][day][0] += int(real == 'HOLD')
+                fair[fam][day][1] += 1
+            # diagnostics on the published control (also keeps the draw stream identical to the T05 audit run)
+            for p in legacy_control_prices(midnight, abs(price - midnight), LEGACY_LINES, frng):
+                diag[fam][0] += 1
+                diag[fam][1] += int(one(p) is None)
+                diag[fam][2] += int(abs(p - price) < 1e-9)
         events = []
         for lev in levels.get(day, []):
             price = float(lev['price'])
@@ -94,9 +174,7 @@ def analyze(bars, levels, seed=SEED):
             res = outcome(rows[first:], price, width, _prev_close(rows, first))
             dist = abs(price - midnight)
             controls = []
-            for _ in range(5):
-                sign = -1 if rng.random() < .5 else 1
-                random_price = midnight + sign * dist
+            for random_price in legacy_control_prices(midnight, dist, LEGACY_LINES, rng):
                 rand_first = next((i for i, b in enumerate(rows)
                                    if float(b['l']) <= random_price <= float(b['h'])), None)
                 controls.append(outcome(rows[rand_first:], random_price, stop_width(midnight, random_price),
@@ -136,126 +214,21 @@ def analyze(bars, levels, seed=SEED):
     for name, s in family.items():
         diff_by_day = s['days']
         ci = _bootstrap_ci(diff_by_day)
+        legacy_diff = (s['hold'] - s['random_hold']) / s['n']
+        f = fair[name]
+        rh = sum(v[0] for v in f.values()); rn = sum(v[1] for v in f.values())
+        ch = sum(v[2] for v in f.values()); cn = sum(v[3] for v in f.values())
+        fci = _fair_boot_ci(f)
+        d = diag[name]
         summary[name] = {'n': s['n'], 'hold_rate': s['hold'] / s['n'],
-                         'random_hold_rate': s['random_hold'] / s['n'],
-                         'difference': (s['hold'] - s['random_hold']) / s['n'], 'ci95': ci,
-                         'verdict': 'KEEP' if ci and ci[0] > 0 else 'DROP'}
+                         # DECISION columns: touched-only distance-matched control
+                         'random_hold_rate': ch / cn, 'fair_control_touches': cn, 'difference': rh / rn - ch / cn,
+                         'ci95': fci, 'verdict': 'KEEP' if fci[0] > 0 else 'DROP',
+                         # LEGACY columns: published control (half the lines are the real level, untouched = non-hold)
+                         'legacy_random_hold_rate': s['random_hold'] / s['n'], 'legacy_difference': legacy_diff,
+                         'legacy_ci95': ci, 'legacy_verdict': 'KEEP' if ci and ci[0] > 0 else 'DROP',
+                         'legacy_equal_real_share': d[2] / d[0], 'legacy_untouched_share': d[1] / d[0],
+                         'fair_equal_real_share': d[3] / d[4]}
     kept = {name for name, row in summary.items() if row['verdict'] == 'KEEP'}
     pairs = [row for row in pairs if row['l2_family'] in kept]
     return {'families': summary, 'touches': touches, 'pairs': pairs}
-
-
-# ---------------------------------------------------------------------------------------------------------------------
-# T05-F5 fair control (2026-10-28).  The control in analyze() above is UNFAIR: midnight +/- the real distance with a random
-# sign makes half the five "random" lines the real level itself, and a control line never touched counts as a non-hold.
-# analyze_fair() is the touched-only, distance-matched control ported from
-# dsa_backtest_audit_2026-10-16/scripts/T05/t05_lc1.py (reference implementation; numbers must equal out/lc1_fair.csv).
-# analyze() stays as the LEGACY control (published figures, shown as pub_* columns).
-# Parameters (all OURS, no SOURCED ones): FAIR_SEED 20261016, K_LINES 20 per level, 2,000 day-bootstrap, KEEP = lower CI > 0.
-# ---------------------------------------------------------------------------------------------------------------------
-FAIR_SEED = 20261016
-K_LINES = 20
-
-
-def _month_of(day):
-    import datetime as dt
-    d = dt.date(1970, 1, 1) + dt.timedelta(days=int(day))
-    return d.year * 12 + d.month
-
-
-def fair_control_prices(rng, pool, mid, real_price, k=K_LINES, skip_real=False):
-    """k random lines: distance drawn from `pool` (same family, same calendar month), random sign.
-
-    Always consumes 2 rng values per draw (stream is identical for either skip_real). With skip_real a draw that lands
-    on the real level is dropped (not redrawn), so a fair control line is never the real level.
-    """
-    out = []
-    for _ in range(k):
-        dist = pool[rng.randrange(len(pool))]
-        p = mid + (-1 if rng.random() < .5 else 1) * dist
-        if skip_real and abs(p - real_price) < 1e-9:
-            continue
-        out.append(p)
-    return out
-
-
-def _fair_boot_ci(days, seed, n_boot=BOOTSTRAPS):
-    import numpy as np
-    keys = sorted(days)
-    arr = np.array([days[k] for k in keys], float)
-    rng = np.random.default_rng(seed)
-    pick = rng.integers(0, len(keys), (n_boot, len(keys)))
-    s = arr[pick].sum(1)
-    with np.errstate(invalid='ignore', divide='ignore'):
-        diff = s[:, 0] / s[:, 1] - s[:, 2] / s[:, 3]
-    diff = diff[~np.isnan(diff)]
-    return float(np.quantile(diff, .025)), float(np.quantile(diff, .975))
-
-
-def analyze_fair(bars, levels, seed=FAIR_SEED, k=K_LINES, skip_real=False):
-    """Per-family hold rate vs the touched-only distance-matched control. `bars` = DEV only.
-
-    hold = holds / touches for real levels AND control lines (an untouched line leaves the denominator).
-    Also returns the legacy-control shares (orig_ctl_equal_real_share, orig_ctl_untouched_share) drawn from the same rng
-    stream so the figures equal the T05 audit file.
-    """
-    by_day = defaultdict(list)
-    for b in bars:
-        by_day[int(b['t']) // DAY_MS].append(b)
-    for rows in by_day.values():
-        rows.sort(key=lambda b: b['t'])
-    pool = defaultdict(list)
-    for day, rows in by_day.items():
-        mid = float(rows[0]['o'])
-        for lv in levels.get(day, []):
-            pool[(lv['family'], _month_of(day))].append(abs(float(lv['price']) - mid))
-    rng = random.Random(seed)
-    acc = defaultdict(lambda: defaultdict(lambda: [0, 0, 0, 0]))   # family -> day -> real_h, real_n, ctl_h, ctl_n
-    legacy = defaultdict(lambda: [0, 0, 0])                         # family -> levels, untouched draws, draws == real
-    for day in sorted(by_day):
-        rows = by_day[day]
-        mid = float(rows[0]['o'])
-        for lv in levels.get(day, []):
-            fam = lv['family']
-            price = float(lv['price'])
-
-            def one(p):
-                i = next((j for j, b in enumerate(rows) if float(b['l']) <= p <= float(b['h'])), None)
-                if i is None:
-                    return None
-                return outcome(rows[i:], p, stop_width(mid, p), _prev_close(rows, i))
-
-            real = one(price)
-            for p in fair_control_prices(rng, pool[(fam, _month_of(day))], mid, price, k, skip_real):
-                r = one(p)
-                if r is not None:
-                    acc[fam][day][2] += int(r == 'HOLD')
-                    acc[fam][day][3] += 1
-            if real is not None:
-                acc[fam][day][0] += int(real == 'HOLD')
-                acc[fam][day][1] += 1
-            o = legacy[fam]
-            o[0] += 1
-            dist = abs(price - mid)
-            for _ in range(5):
-                sign = -1 if rng.random() < .5 else 1
-                pp = mid + sign * dist
-                o[2] += int(abs(pp - price) < 1e-9)
-                o[1] += int(one(pp) is None)
-    pub = analyze(bars, levels)['families']
-    out = {}
-    for fam in sorted(acc):
-        d = acc[fam]
-        rh = sum(v[0] for v in d.values()); rn = sum(v[1] for v in d.values())
-        ch = sum(v[2] for v in d.values()); cn = sum(v[3] for v in d.values())
-        lo, hi = _fair_boot_ci(d, seed)
-        o = legacy[fam]
-        p = pub.get(fam)
-        out[fam] = {'n_touch': rn, 'hold': rh / rn, 'fair_ctl_touches': cn, 'fair_ctl_hold': ch / cn,
-                    'diff': rh / rn - ch / cn, 'ci_lo': lo, 'ci_hi': hi, 'verdict': 'KEEP' if lo > 0 else 'DROP',
-                    'pub_hold': p['hold_rate'] if p else float('nan'),
-                    'pub_random': p['random_hold_rate'] if p else float('nan'),
-                    'pub_diff': p['difference'] if p else float('nan'),
-                    'pub_verdict': p['verdict'] if p else '',
-                    'orig_ctl_equal_real_share': o[2] / (5 * o[0]), 'orig_ctl_untouched_share': o[1] / (5 * o[0])}
-    return out
