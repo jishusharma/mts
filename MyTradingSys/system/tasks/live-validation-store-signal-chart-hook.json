@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T15:49:24Z",
   "commands": [],
   "created": "2026-10-27T20:25:29Z",
   "depends_on": [],
@@ -13,7 +14,14 @@
   "id": "live-validation-store-signal-chart-hook",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "rsi/live_validation.py: store (category->verdict, case #, chart) + doubts + outbox; match(",
+      "ref": "b32132a2f",
+      "utc": "2026-10-28T15:49:24Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,7 +31,12 @@
   "refined_by": "",
   "refreshed": "2026-10-27T20:25:30Z",
   "refs": [],
-  "result": "",
+  "result": "rsi/live_validation.py: store (category->verdict, case #, chart) + doubts + outbox; match() -> matches validated case #n / PENDING case #n / DOUBT; seeded 6 of 8 categories from malkan_div_flags_2026-10-28 (PRD 1d, NRD 1w: no history example); on_signal hook chart+message fails closed; 10 tests red->green; not wired into live runner (deploy)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "validation store + doubts list; seed from history flags; signal-to-chart hook as a separate module called by the signal path; first layer Malkan RSI divergence BTC 1d/1w"
   ],
@@ -33,7 +46,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Define category key (type regular|hidden, side bull|bear, timeframe 1d|1w, symbol) and store schema with provenance (operator verdict verbatim, date, chart path)",
     "Seed one example per type from malkan_div_flags_2026-10-28 (wait for the Builder re-land; if the folder is missing, block and say so)",
@@ -41,6 +54,7 @@
     "Hook: live signal -> chart with drawn flags -> operator message; correction writes the verdict and moves the doubt",
     "Tests for restart/reset state, non-trade balance moves, send/API errors, fail closed (CLAUDE.md live-path rule)"
   ],
+  "taken": "2026-10-28T15:49:24Z",
   "tests": "MyTradingSys/tests/validation/test_live_validation_store.py: look-alike inherits case #n; differing or corrected signal goes to doubts and gets no verdict; restart/reset keeps store; API/send error leaves the signal pending, fails closed",
   "title": "Live validation: per-category verdict store, doubts list, live signal-to-chart hook (first layer: Malkan RSI divergence BTC 1d/1w)",
   "weight": "",
