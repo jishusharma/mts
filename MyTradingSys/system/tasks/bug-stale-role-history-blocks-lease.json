@@ -4,31 +4,44 @@
   "commands": [],
   "created": "2026-10-28T15:11:02Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Session with history [Pipeliner, Session_Planner] resolves to Session_Planner and sync.py claim/ship need no Pipeliner lease; fail-first test; test_lease.py green; shipped, cherry empty",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "lease.current_role returns the last Pipeliner (singleton) ever injected in the session history, so a session that now plays another role is blocked at claim/ship until MTS_ROLE is set; the role it was most recently given must win.",
   "id": "bug-stale-role-history-blocks-lease",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "DRAFT 2026-10-28 Session_Planner (OURS): lease.py guards ship, so weight IMPORTANT: needs a real REVIEWED stamp (Lab_Guy) before ready; fails closed must stay. Twin check: bug-lease-blocks-lead-ship-after-pipeline-mode is DONE and covers pipeline-mode ships, not history resolution. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
+  "scope_in": [
+    "scripts/dev/lease.py",
+    "MyTradingSys/tests/test_lease.py",
+    "scripts/dev/role_loader.py"
+  ],
+  "scope_out": [
+    "lease timeout and mutex logic; desk.py; live tree"
+  ],
+  "size": "S",
+  "sources": [
+    "scripts/dev/lease.py:157-175",
+    "scripts/dev/role_loader.py:332-337"
+  ],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Reproduce in test_lease.py: role_loader state roles=[Pipeliner, Session_Planner] (Session_Planner latest) -> current_role() today returns Pipeliner",
+    "In lease.current_role use the most recent EXPLICIT role line (role_loader.explicit_injected(sid)[-1]) instead of any singleton in history; MTS_ROLE env still wins; fail closed (None) on read error as today",
+    "Keep the case: Pipeliner loaded then a mere mention of another role stays Pipeliner (existing test)"
+  ],
+  "tests": "MyTradingSys/tests/test_lease.py::test_latest_explicit_role_beats_older_singleton fails on old code; the existing later-mention-never-hides-a-singleton test stays green",
   "title": "BUG: session with a prior role in history gets mis-resolved as that old role by lease.py/role_loader, blocking claim/ship for the new role until MTS_ROLE is set explicitly",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }
