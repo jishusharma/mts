@@ -4,7 +4,7 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-28T18:44:16Z",
+    "folded": "2026-10-28T18:44:42Z",
     "misses": 15,
     "reads": [
       "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/test_cost_inventory.py",
