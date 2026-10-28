@@ -23,7 +23,7 @@
   ],
   "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer Agent reviewers, after 2nd FIX applied once, not re-read, planner DECISION OURS). DECISION (OURS 2026-10-26) defaults: D = 100 pts and 0.12 % of price; flush = a bar in the last 30 with range >= 3x the median range of the prior 60 bars and a close below the close 30 bars earlier; H = 60 bars on 1m, 24 on 5m; touch = high >= VWAP; rejection = touch then a close back below VWAP within 3 bars. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files. PLANNER 2026-10-28: duplicate steps 5-6 removed; stays raw: depends_on vwap-as-a-level-research (ready, scope STALE) and formulas-md-definitions (refined) are not done and VWAP_LEVEL_SOURCES.md is not on trunk (step 1 gate would stop the worker). Dispatch after both are done; then tasks.py check.",
   "prio": 3,
-  "refine_tries": 0,
+  "refine_tries": 1,
   "refined_by": "",
   "refs": [],
   "result": "",

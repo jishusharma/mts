@@ -1,10 +1,13 @@
 {
   "done_when": "LAPTOP_COUNTS.md shipped on origin/fast-track and a local JIS-LAPTOP.jsonl exists",
+  "finished": "2026-10-28T06:52:58Z",
   "from": "JIS-NB",
+  "host": "DESKTOP-F7IU69N",
   "id": "20261027-205357-operator-material-search-on-jis-laptop-d",
   "need": "After scripts/dev/operator_material_index.py is on origin/fast-track (card operator-material-indexer-build): run it on the Lenovo laptop DESKTOP-F7IU69N over Desktop, Documents, Pictures, Downloads, OneDrive, --host JIS-LAPTOP --out a local data folder outside the repo. Index stays local; commit only MyTradingSys/research/operator_material_2026-10/LAPTOP_COUNTS.md (counts by topic and root, no file names). Copy nothing private.",
   "posted": "2026-10-27T20:53:57Z",
-  "status": "pending",
+  "result": "Wrong target: JIS-LAPTOP is not in desk.py's target enum (CLAUDE/DSA/DSA-NB/DSA-NUC/JIS-NB/JIS-NUC); no lane models this host distinctly. Reposted under --target CLAUDE (any Claude session on DESKTOP-F7IU69N) as 20261028-pipeliner follow-up. Also flagging: operator_material_index.py (now on trunk) logs its own DECISION (OURS) that it writes no committed counts file, so this row's done_when ('LAPTOP_COUNTS.md shipped') needs the operator or the next session to confirm the counts-file scope before closing. Pipeliner drain 2026-10-28.",
+  "status": "done",
   "target": "JIS-LAPTOP",
   "title": "Operator material search on JIS-LAPTOP (DESKTOP-F7IU69N): screenshots and notes on RSI reverse divergence and trader videos"
 }
