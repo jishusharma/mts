@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T11:08:33Z",
   "commands": [
     "python MyTradingSys/research/pit_levels_2026-10-16/count_prior_va.py"
   ],
@@ -17,6 +18,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Independent count 545 days/1,742 events matches; report documents GPT same-vendor limitati",
+      "ref": "61f59be48",
+      "utc": "2026-10-28T11:08:33Z"
+    },
     {
       "auto": true,
       "kind": "report",
@@ -43,7 +50,12 @@
     "to": "DSA",
     "why": "credits"
   },
-  "result": "",
+  "result": "Independent count 545 days/1,742 events matches; report documents GPT same-vendor limitation",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/pit_levels_2026-10-16/bug_b187_evidence.txt",
     "MyTradingSys/research/pit_levels_2026-10-16/PRE_REG_V2.md",
@@ -64,13 +76,14 @@
     "MyTradingSys/research/pit_levels_2026-10-16/bug_b187_evidence.txt:1-6 (662 baseline, 2,427 needed)",
     "MyTradingSys/research/pit_levels_2026-10-16/PRE_REG_V2.md:17-31 (item 2 power gate), :44 (stop >=0.40% filter), :33-36 (m=42)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run on JIS-NUC (--host JIS-NUC; F:/MTS/data is not on the Desktop). Read the written feasibility rule (PRE_REG_V2.md:17-31 and :44, stop >=0.40%) and the report's numbers (662 + 545 = 1,207 vs 2,427), not its code.",
     "Re-derive the 545 DEV_EXT feasible days with your own independent script from the 1m CSVs and the written rule; compare 545 and 1,207; a difference is a MISMATCH with file:line (the lab Haiku blind pass got 549, 0.7 percent apart, so state the tolerance used).",
     "Confirm no outcome column or bar at or after 2022-01-01 was read, then mutate one line of the day-count in a scratch copy and record the changed number; leave the real files unchanged.",
     "Write the report MyTradingSys/research/layer_lab/reports/2026-10-23_trust-recheck-q76-dev-ext-power-check.md: reviewer vendor and model, the numbers, MATCH or MISMATCH per number, mutation result, tag proposal VERIFIED-C2 or DISPUTED."
   ],
+  "taken": "2026-10-28T11:08:33Z",
   "tests": "Audit card: its fail-first is the one-line mutation in a scratch copy, which must turn a test red; recorded in the report.",
   "title": "Trust re-check: q76-dev-ext-power-check",
   "weight": "CRUCIAL",
