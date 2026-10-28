@@ -95,9 +95,12 @@ def probe(auth: str) -> int:
     return 0 if r.returncode == 0 and not s["is_error"] else 1
 
 
-def repo_root() -> Path:
-    return Path(subprocess.run(["git", "rev-parse", "--path-format=absolute", "--git-common-dir"],
-                               capture_output=True, text=True, check=True).stdout.strip()).parent
+def repo_root(cwd: Path = None) -> Path:
+    # old git (the NUC) has no --path-format; --git-common-dir may be relative to cwd
+    cwd = Path(cwd or Path.cwd())
+    out = subprocess.run(["git", "rev-parse", "--git-common-dir"], cwd=cwd,
+                         capture_output=True, text=True, check=True).stdout.strip()
+    return (cwd / out).resolve().parent
 
 
 def task_name(card: str) -> str:

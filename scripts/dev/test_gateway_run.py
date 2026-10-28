@@ -45,3 +45,8 @@ def test_summary_and_prompt_never_hold_key():
 def test_invalid_key_text_is_an_error():
     s = g.summary('{"is_error": false, "num_turns": 1, "modelUsage": {}, "result": "Invalid API key. Please check"}', FAKE)
     assert s["is_error"] is True
+
+
+def test_repo_root_is_the_main_checkout():
+    root = g.repo_root(Path(__file__).parent)
+    assert (root / ".git").is_dir() and (root / "scripts" / "dev").is_dir()
