@@ -9,7 +9,8 @@ REPO = Path(__file__).resolve().parents[3]
 SYSTEM = REPO / "MyTradingSys" / "system"
 DOC = SYSTEM / "DEBUGGING.md"
 # Gitignored runtime state: named so a reader knows where to look, absent from a clean checkout by design.
-RUNTIME_STATE = ("runtime_data/", "MyTradingSys/runtime/sched/", "MyTradingSys/execution/HALT")
+RUNTIME_STATE = ("runtime_data/", "MyTradingSys/runtime/sched/", "MyTradingSys/execution/HALT",
+                 "MyTradingSys/system/claims/")  # claim files are created by sync.py claim; a fresh worktree has none
 
 
 def _text():
