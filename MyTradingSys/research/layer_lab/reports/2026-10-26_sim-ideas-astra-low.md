@@ -1,3 +1,0 @@
-# Simulator ideas
-
-RESULT: three ranked proposals, each with OURS S/M cost and canonical layer ids, delivered in `MyTradingSys/research/sim_ideas_raw/astra.md` (five lines; card maximum twelve). Sources: sim_desk/DESIGN.md, PLUGIN.md, HANDOVER_SIMV2.md and the synthetic cache audit astra_sealed_guard.md. Proposals: run provenance drawer, separate commission/slippage/exit evidence, explicit subset-versus-replay meaning for conditions. No code, market-data reads or layer verdict changes. Content checked against the existing desk features; these extend those features rather than proposing an already-built curve or comparison view.

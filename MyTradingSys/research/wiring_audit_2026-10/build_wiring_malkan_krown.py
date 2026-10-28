@@ -206,6 +206,23 @@ def manifest():
     return m
 
 
+GPS = re.compile(r"Source GPS:\s*([A-Za-z0-9_-]{11})\s*\|\s*(BEGIN|MIDDLE|END)")
+QRE = re.compile(r'^>\s*"(.*)"\s*$')
+
+
+def quote_blocks(ls, start, stop):
+    """Quote blocks (quote line, GPS line, next line) of an already-written text file between 1-based lines start..stop.
+    Pure text parsing of a finished document, no market data."""
+    trio = list(zip(ls, ls[1:], ls[2:] + [""]))
+    for n in range(start - 1, min(stop, len(trio))):
+        q, g, nxt = trio[n]
+        if q.startswith("### ") and n >= start:
+            return
+        mq, mg = QRE.match(q), GPS.search(g)
+        if mq and mg:
+            yield n + 1, mq.group(1), mg.group(1), mg.group(2), nxt
+
+
 def krown_quote(sources, codes):
     """First resolvable concept id in `sources` -> (quote, vid, pos, 'file:line', concept). Else None."""
     for tok in sources.split(";"):
@@ -218,15 +235,10 @@ def krown_quote(sources, codes):
             continue
         ls = lines_of(f)
         head = "### K-%s-%02d " % (vid, n)
-        for i, ln in enumerate(ls):
+        for i, ln in enumerate(ls, 1):
             if ln.startswith(head):
-                for j in range(i + 1, min(i + 40, len(ls) - 1)):
-                    if ls[j].startswith("### "):
-                        break
-                    q = re.match(r'^>\s*"(.*)"\s*$', ls[j])
-                    g = re.search(r"Source GPS:\s*([A-Za-z0-9_-]{11})\s*\|\s*(BEGIN|MIDDLE|END)", ls[j + 1])
-                    if q and g:
-                        return q.group(1), g.group(1), g.group(2), "%s:%d" % (rel(f), j + 1), tok.strip()
+                for lineno, q, v, pos, _ in quote_blocks(ls, i + 1, i + 40):
+                    return q, v, pos, "%s:%d" % (rel(f), lineno), tok.strip()
     return None
 
 
@@ -274,15 +286,9 @@ MV = [
 
 def glossary_quote(anchor):
     ls = lines_of(GLOS)
-    for j in range(anchor - 1, min(anchor + 25, len(ls) - 1)):
-        q = re.match(r'^>\s*"(.*)"\s*$', ls[j])
-        if q:
-            g = re.search(r"Source GPS:\s*([A-Za-z0-9_-]{11})\s*\|\s*(BEGIN|MIDDLE|END)", ls[j + 1])
-            cite = ""
-            if j + 2 < len(ls) and ls[j + 2].startswith("- cite:"):
-                cite = ls[j + 2][len("- cite:"):].strip()
-            if g:
-                return q.group(1), g.group(1), g.group(2), "%s:%d" % (rel(GLOS), j + 1), cite
+    for lineno, q, v, pos, nxt in quote_blocks(ls, anchor, anchor + 25):
+        cite = nxt[len("- cite:"):].strip() if nxt.startswith("- cite:") else ""
+        return q, v, pos, "%s:%d" % (rel(GLOS), lineno), cite
     return None
 
 

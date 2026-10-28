@@ -1,4 +1,0 @@
-klines               {'skip': 38}
-metrics              {'skip': 287, 'ok': 104}
-fundingRate          {'skip': 1, 'ok': 11, '404': 1}
-markPriceKlines      {'ok': 38}

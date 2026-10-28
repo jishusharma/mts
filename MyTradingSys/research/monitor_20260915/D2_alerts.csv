@@ -1,4 +1,0 @@
-"ts","alert_num","trigger_type","prev_state","new_state","price_at_fire","direction","body"
-"2026-09-15 15:52:18","357","verdict","WAIT_RR","WATCH","","","verdict WAIT_RR -> WATCH | zone pf_vah -> 5m_swing_high"
-"2026-09-15 15:56:18","358","verdict|proof","WAIT_TRIGGER","WATCH","0.20%","","verdict WAIT_TRIGGER -> WATCH | price delta 0.20% | proof 3 -> 6"
-"2026-09-15 16:02:20","359","verdict|proof","WAIT_TRIGGER","WATCH","","","verdict WAIT_TRIGGER -> WATCH | proof 4 -> 5"

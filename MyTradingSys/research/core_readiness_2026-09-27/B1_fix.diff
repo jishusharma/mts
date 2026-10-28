@@ -1,2 +1,0 @@
-465a466
->                 elseif (-not $status -and -not $snap.setup_candidates) { $pd = "aligned" }
