@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T02:11:15Z",
   "commands": [],
   "created": "2026-10-25T20:05:42Z",
   "depends_on": [],
@@ -13,7 +14,14 @@
   "id": "lf-volume_candles_ma-gpt-rederive",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "SOUND; 20 claims checked, 0 mismatches; volume_candles_ma.md written",
+      "ref": "778696c16",
+      "utc": "2026-10-28T02:11:15Z"
+    }
+  ],
   "layers": [
     "volume_candles_ma"
   ],
@@ -25,7 +33,12 @@
   "refined_by": "",
   "refreshed": "2026-10-25T20:07:16Z",
   "refs": [],
-  "result": "",
+  "result": "SOUND; 20 claims checked, 0 mismatches; volume_candles_ma.md written",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/volume_candles_ma.md (new file only)"
   ],
@@ -42,13 +55,14 @@
     "MyTradingSys/research/bigtrade_2026-10-09",
     "MyTradingSys/research/layer_lab/candle_close_2026-10-14"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "List the result files for volume_candles_ma in layer_index.json (results, ledger) and pick the headline numbers each states",
     "Recompute each from the ledger or raw data with an independent script (formulas from MyTradingSys/backtest/layers/FORMULAS.md, not from the code under check)",
     "Write MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/volume_candles_ma.md: quoted number, recomputed number, MATCH/MISMATCH, file:line, script path",
     "Commit with a Result: line (n checked, n mismatches)"
   ],
+  "taken": "2026-10-28T02:11:15Z",
   "tests": "none (audit card); proof = the recompute script runs and the table is filled",
   "title": "Layer re-derive: volume_candles_ma (independent recount of the headline numbers behind the fact sheet)",
   "weight": "ROUTINE",
