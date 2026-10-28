@@ -252,13 +252,16 @@ def prune(h):
 REPEAT_SEC = 300   # OURS: an identical note from the same sender inside 5 minutes adds nothing (traffic.py: 87 repeated lines in 72 h)
 
 
+REPEAT_KINDS = ("note", "done")     # a ship signal re-fired with the same Result (3 times after a fast-track merge, 2026-10-28) adds nothing either
+
+
 def is_repeat(rows, rec):
     """True when `rec` is a note that a row from the same sender already says, within REPEAT_SEC. Broadcasts and acks never repeat-drop."""
-    if rec.get("kind") != "note":
+    if rec.get("kind") not in REPEAT_KINDS:
         return False
     t = datetime.strptime(rec["t"], "%Y%m%dT%H%M%SZ")
     for r in rows:
-        if r.get("kind") == "note" and r.get("from") == rec.get("from") and r.get("text") == rec.get("text"):
+        if r.get("kind") == rec.get("kind") and r.get("from") == rec.get("from") and r.get("text") == rec.get("text"):
             try:
                 if 0 <= (t - datetime.strptime(r["t"], "%Y%m%dT%H%M%SZ")).total_seconds() <= REPEAT_SEC:
                     return True
@@ -376,9 +379,10 @@ def ship_dir(cmd, cwd):
 def last_result(cwd):
     """The `Result:` line of the newest work commit in cwd (what a ship delivered), else ''. Claim, release and merge commits
     are skipped: a ship that ends on its claim commit sent the claim's "works on: <old task>" text as its Result (2026-10-23,
-    DESKTOP-F7IU69N, 9 ships in a row)."""
+    DESKTOP-F7IU69N, 9 ships in a row). First-parent only: the commits this branch made and shipped, not the trunk commits a
+    merged-in fast-track brings (a context-fold commit from trunk's Result was signalled as the ship's, 3 times, 2026-10-28)."""
     try:
-        r = git(cwd, "log", "-10", "--format=%x1e%B", check=False, timeout=5)
+        r = git(cwd, "log", "--first-parent", "-10", "--format=%x1e%B", check=False, timeout=5)
     except (OSError, subprocess.SubprocessError, RuntimeError):
         return ""
     for body in r.stdout.split(chr(0x1e))[1:]:

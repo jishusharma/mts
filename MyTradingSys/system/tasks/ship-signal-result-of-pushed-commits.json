@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T15:37:40Z",
   "commands": [
     "python scripts/dev/run_all_tests.py --quick"
   ],
@@ -18,6 +19,12 @@
   "id": "ship-signal-result-of-pushed-commits",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "last_result first-parent only; done signals dedupe 5 min; test fails old, 46 pass",
+      "ref": "6cf7dc67d",
+      "utc": "2026-10-28T15:37:40Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +45,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T06:49:34Z",
   "refs": [],
-  "result": "",
+  "result": "last_result first-parent only; done signals dedupe 5 min; test fails old, 46 pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/mts_signal.py"
   ],
@@ -50,12 +62,13 @@
   "sources": [
     "operator ask 2026-10-28 gap 2"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the gap text and linked files",
     "Implement the smallest change",
     "Run the test on old and new code; record output"
   ],
+  "taken": "2026-10-28T15:37:40Z",
   "tests": "scripts/dev/test_mts_signal.py::test_ship_signal_uses_pushed_commit_result (new, fails on old code)",
   "title": "mts_signal ship signal takes the Result of the commits the ship pushed, not the newest non-merge commit",
   "weight": "",

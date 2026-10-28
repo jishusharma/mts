@@ -290,6 +290,26 @@ class SignalTest(unittest.TestCase):
         sh(repo, "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "--allow-empty", "-m", "docs only")
         self.assertEqual(S.last_result(str(repo)), "")      # the newest work commit states no Result: say nothing, not an old one
 
+    def test_ship_signal_uses_pushed_commit_result(self):
+        # 2026-10-28: after a fast-track merge the newest non-merge commit was a trunk context-fold commit; its Result was signalled
+        nl2 = chr(10) * 2
+        c = ("-c", "user.name=t", "-c", "user.email=t@t")
+        sh(self.tmp, "init", "-q", "repo")
+        repo = self.tmp / "repo"
+        sh(repo, *c, "commit", "-q", "--allow-empty", "-m", "base")
+        sh(repo, "branch", "-M", "main")
+        sh(repo, "checkout", "-q", "-b", "trunk")
+        sh(repo, *c, "commit", "-q", "--allow-empty", "-m", "fold context into card x" + nl2 + "Result: fold noise")
+        sh(repo, "checkout", "-q", "main")
+        sh(repo, *c, "commit", "-q", "--allow-empty", "-m", "feat" + nl2 + "Result: 7 gaps closed")
+        sh(repo, *c, "merge", "-q", "--no-ff", "-m", "Merge origin/fast-track", "trunk")
+        self.assertEqual(S.last_result(str(repo)), "Result: 7 gaps closed")
+        # the identical ship signal is sent once
+        a = {"t": "20261028T100000Z", "from": "h", "kind": "done", "text": "ship x Result: 7 gaps closed"}
+        self.assertTrue(S.is_repeat([a], dict(a, t="20261028T100100Z")))
+        self.assertFalse(S.is_repeat([a], dict(a, t="20261028T100100Z", text="ship y Result: other")))
+        self.assertFalse(S.is_repeat([dict(a, kind="broadcast")], dict(a, t="20261028T100100Z", kind="broadcast")))
+
     def test_budget_command_sends_line_traffic_parses_and_writes_file(self):
         self.machine("nb", "sharma")
         os.environ["MTS_RELAY_HOME"] = str(self.tmp / "claudehome")

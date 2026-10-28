@@ -80,6 +80,13 @@ def test_quota_text_is_an_error_with_wait():
     assert s["is_error"] is True and s["limit_wait_min"] == 15
 
 
+def test_summary_bad_reads_long_and_broken_summaries():
+    long_ok = '{"is_error": false, "num_turns": 40, "result": "' + "x" * 500 + '"}'
+    assert g.summary_bad(long_ok) is False                 # tick cut this at 300 chars and crashed
+    assert g.summary_bad(long_ok[:300]) is True
+    assert g.summary_bad("") is True and g.summary_bad("[1]") is True
+
+
 def test_quota_pass_waits_then_frees_one_run(tmp_path, monkeypatch):
     monkeypatch.setattr(g, "RUNS", tmp_path)
     for c in ("a", "b"):
