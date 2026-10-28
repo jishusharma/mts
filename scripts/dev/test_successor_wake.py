@@ -189,6 +189,32 @@ def test_no_second_task_while_one_is_live(tmp_path):
     assert len(ran) == 2
 
 
+def test_chain_second_registration_survives_first_run_finally(tmp_path, monkeypatch):
+    """B14: a Supervisor started by MTS-SuccWake-<L> (SELF_ENV set) registers the next link. Old code: -Force + Start-ScheduledTask
+    on the RUNNING task name (Windows ignores it) and the first run's finally unregistered the new task: the chain stopped.
+    Now: no Start of the running name, a -Once trigger after now, Parallel instances, a generation token in the Description,
+    and the finally unregisters only when the Description still equals ITS token."""
+    repo = _repo(tmp_path)
+    plan = {"mode": "NORMAL", "slots": 2}
+    monkeypatch.delenv(W.SELF_ENV, raising=False)
+    first = W.register("B", cwd=repo, now=NOW, plan=plan, runner=lambda s: None)["script"]
+    monkeypatch.setenv(W.SELF_ENV, "MTS-SuccWake-B")
+    ran = []
+    r = W.register("B", cwd=repo, now=NOW, plan=plan, runner=ran.append, probe=lambda name: "Running")
+    second = ran[0]
+    assert "Start-ScheduledTask" not in second, "must not Start the task name that is already Running"
+    assert "-Once -At $FireAt" in second and r["fire_at"] == "2026-10-27T12:01Z"      # after the first run, not now
+    assert "-MultipleInstances Parallel" in second and "-Description" in second
+    tok = lambda s: re.search(r"-Description '([^']+)'", s).group(1)
+    runps = lambda s: re.search(r"\$r = @'\n(.*?)\n'@", s, re.S).group(1)
+    assert tok(first) != tok(second), "each registration is its own generation"
+    # the first run's finally (token of generation 1) must not unregister generation 2
+    f1 = runps(first)
+    assert "Unregister-ScheduledTask" in f1 and tok(first) in f1 and tok(second) not in f1
+    assert "Description" in f1 and f1.index("Description") < f1.index("Unregister-ScheduledTask")
+    assert second.count("Register-ScheduledTask") == 1 and "RepetitionInterval" not in second
+
+
 # ---- supervisor.py handover wiring ----
 def _cli(monkeypatch, tmp_path, extra):
     import sync
@@ -254,7 +280,8 @@ _PS_STUBS = r"""
 function New-ScheduledTaskAction { param($Execute, $Argument) @{ Execute = $Execute; Argument = $Argument } }
 function New-ScheduledTaskPrincipal { param($UserId, $LogonType) @{ LogonType = "$LogonType" } }
 function New-ScheduledTaskTrigger { param([switch]$Once, [datetime]$At) @{ At = $At.ToUniversalTime().ToString('yyyy-MM-ddTHH:mm') } }
-function Register-ScheduledTask { param($TaskName, $Action, $Trigger, $Principal, [switch]$Force)
+function New-ScheduledTaskSettingsSet { param($MultipleInstances) @{ MI = "$MultipleInstances" } }
+function Register-ScheduledTask { param($TaskName, $Action, $Trigger, $Principal, $Settings, $Description, [switch]$Force)
   $o = @{ TaskName = $TaskName; Execute = $Action.Execute; Argument = $Action.Argument; At = $(if ($Trigger) { $Trigger.At } else { $null }); Force = [bool]$Force }
   [IO.File]::WriteAllText($env:MTS_FAKE_REG_OUT, ($o | ConvertTo-Json -Compress)) }
 function Start-ScheduledTask { param($TaskName) [IO.File]::WriteAllText($env:MTS_FAKE_REG_OUT + '.started', $TaskName) }

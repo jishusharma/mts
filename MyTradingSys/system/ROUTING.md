@@ -5,6 +5,15 @@ procedures (how to post a desk row, how the lab runs a card). Changes come from 
 (ROLES.md row Pipeliner); a change that alters how sessions behave also gets an ANNOUNCEMENTS.md entry and one signal line.
 
 ## Changes (newest first)
+- 2026-10-28 Pipeliner re-sweep (lead-pipeline-2026-10-28, third opening today): 15 -> 15 pending, no closes. Standing operator
+  hold confirmed in force: the DeepSeek bridges (DSA/DSA-NB/DSA-NUC) stay closed, so all 5 DSA-target rows (gemini-krown-
+  rules-extracts-quote-audit, gpt-wavetrend-atlas-holm, trust-recheck-q76-dev-ext-power-check, run-all-tests-full-worker-
+  run, live-mirror-follow-live-host-move) were skipped entirely this pass, left queued, not routed or touched, matching
+  the existing "do not post new rows there" line above. The other 10 pending rows (JIS-NB 2, JIS-NUC 5, CLAUDE 1, OPERATOR
+  2) were re-checked against trunk and against this morning's two earlier drains and found unchanged: every decision in
+  `research/pipeliner/DRAIN_2026-10-28.md` still holds. One sweep false positive re-verified and rejected: LIKELY DONE flag
+  on `20261023-062833-apply-laptop-cpu-cleanup-on-desktop-f7iu` cites commit e8271b763, which is the LOGIN-naming change in
+  `mts_signal.py`, unrelated to the CPU-cleanup row; left pending (OPERATOR, audit-only report exists, apply step not run).
 - 2026-10-28 Pipeliner drain (pipeliner-2026-10-28): 20 -> 15 pending. Closed done: republish-3-stale-pages (evidence: commit
   30f1f7fc4, current ship shows no stale-page warning), aibridge-v0.7.1-install-on-JIS-NUC (evidence: aibridge_verify PASS
   28/28 JIS-NUC, commit 4271cb142 brought NB/NUC to B196). DECISION (OURS): declined approve-scheduling-policy-4a at the

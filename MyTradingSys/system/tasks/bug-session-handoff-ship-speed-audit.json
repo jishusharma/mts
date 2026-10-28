@@ -33,7 +33,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): audit-and-answer; each of the 6 points is kept or dropped with evidence. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | CLUSTER: same file set as gemini-laptop-open (one editor per file); runs after it",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): audit-and-answer; each of the 6 points is kept or dropped with evidence. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | CLUSTER: same file set as gemini-laptop-open (one editor per file); runs after it | MERGED 2026-10-28 from sync-py-ship-is-slow-timed-run-in-card-n: SPEED point must use this measurement: sync.py ship of a docs/tasks-only commit took 263 s wall on jis-nb (ship2, includes CI wait up to 10 min); a first ship without a claim aborted after 58 s because the host-health scan runs before the claim check (order fix = candidate card if confirmed). | WAITING on gemini-laptop-open-questions (depends_on, same file set).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",

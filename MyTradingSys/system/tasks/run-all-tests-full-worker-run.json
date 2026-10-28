@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T14:23:45Z",
   "commands": [
     "python scripts/dev/run_all_tests.py > run_all_tests_full_2026-10-28.txt 2>&1; echo EXIT_CODE=$?"
   ],
@@ -16,11 +17,17 @@
   "lane": "DSA",
   "latest": [
     {
+      "kind": "ship",
+      "line": "full run_all_tests.py EXIT_CODE=1, 71/72 steps PASS (2633s); only FAIL Step 3xt (scripts/d",
+      "ref": "4be68ddca",
+      "utc": "2026-10-28T14:23:45Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "Result: fix Step.cmd attribute in run_all_tests.py for Step 3g TestPassRecord (6/6 pass)",
-      "ref": "02b9db8db82d",
-      "utc": "2026-10-27T22:32:23Z"
+      "line": "dedupe batch 4: remove dead run_step, explicit_role, clean_prompt, sync_script; pilot-3 no",
+      "ref": "e62bb1eb632c",
+      "utc": "2026-10-28T11:44:41Z"
     }
   ],
   "layers": [],
@@ -30,24 +37,30 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-28T07:11:55Z",
+  "refreshed": "2026-10-28T13:06:09Z",
   "refs": [
     "MyTradingSys/research/fix_verification_2026-10-28/REPORT.md"
   ],
-  "result": "",
+  "result": "full run_all_tests.py EXIT_CODE=1, 71/72 steps PASS (2633s); only FAIL Step 3xt (scripts/dev/test_trunk_lag.py, passes standalone 9/9 in 37s, so load/timing flake); output MyTradingSys/research/fix_verification_2026-10-28/run_all_tests_full_2026-10-28.txt",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/run_all_tests.py"
   ],
   "scope_out": [],
-  "scope_sha": "02b9db8db82d",
+  "scope_sha": "e62bb1eb632c",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run python scripts/dev/run_all_tests.py (no --quick) to completion on a fresh trunk checkout",
     "Save the full output and record the exit code",
     "List the name of every failing/erroring step in the card result"
   ],
+  "taken": "2026-10-28T14:23:45Z",
   "tests": "",
   "title": "Full run_all_tests.py worker run on trunk, record the exit code and failures (fix report CT-3)",
   "weight": "ROUTINE",
