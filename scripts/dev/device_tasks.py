@@ -27,7 +27,7 @@ ROOT = HERE.parents[1]
 REG = Path(os.environ.get("MTS_DEVICE_TASKS") or ROOT / "MyTradingSys" / "system" / "DEVICE_TASKS.json")
 REPORT_ID = "device-tasks"
 VERIFY_TIMEOUT = 90
-ALLOWED_TASKS = ("MTS-WorktreeMaint-", "MTS-CBP-Ingestion")
+ALLOWED_TASKS = ("MTS-WorktreeMaint-", "MTS-CBP-Ingestion", "MTS-SuccWake-")
 
 
 def load_reg(path=None):
