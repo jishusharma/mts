@@ -33,7 +33,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Reopened 2026-10-28: commit 040a1aa89 reverted (CI RED, passes on Windows but both claims succeed on ubuntu-latest). Needs an order-independent assertion and a Linux run before shipping; do not rebuild yet.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
