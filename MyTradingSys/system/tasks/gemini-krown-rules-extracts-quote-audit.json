@@ -41,6 +41,12 @@
   "refined_by": "codex_run.py ask",
   "refreshed": "2026-10-25T19:30:00Z",
   "refs": [],
+  "reroute": {
+    "at": "2026-10-28T09:48:08Z",
+    "desk": "20261028-094808-gemini-krown-rules-extracts-quote-audit",
+    "to": "DSA",
+    "why": "credits"
+  },
   "result": "",
   "scope_in": [
     "extracts/gemini_out/krown/UHY740h3e-Y_rules.md",
