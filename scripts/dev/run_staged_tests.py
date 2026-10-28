@@ -32,7 +32,10 @@ def main(argv):
     cmd = [sys.executable, script] if script else [sys.executable, "-m", "unittest", "-v", *tests]
     print(f"[run_staged_tests] {tmp}: {' '.join(cmd[1:])}")
     import os
-    return subprocess.call(cmd, cwd=tmp, env={**os.environ, "MTS_REPO_ROOT": str(Path.cwd())})
+    try:
+        return subprocess.call(cmd, cwd=tmp, env={**os.environ, "MTS_REPO_ROOT": str(Path.cwd())})
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv[1:]))

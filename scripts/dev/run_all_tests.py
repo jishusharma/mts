@@ -394,6 +394,22 @@ def exec_unittest_shards(script, jobs, part=None):
     return ok, "\n".join(keep)
 
 
+def run_temp_root():
+    """One run-scoped temp root for everything this gate starts. 2026-10-28: %TEMP% held 1.1M items on JIS-NB, ~190 new top-level
+    tmpXXXXXXXX dirs per 10 minutes, because test files call tempfile.mkdtemp / TemporaryDirectory(delete=False) and never remove the
+    result. Children inherit TEMP/TMP/TMPDIR, so their scratch lands under mts_run_<pid>_* and the whole tree goes at exit. This process
+    keeps the real temp dir (tempfile.tempdir is pinned first) so cross-process state (gate slots) stays shared. A nested gate reuses the
+    parent's root. MTS_NO_RUN_TEMP=1 turns it off. Returns the root, or None."""
+    if os.environ.get("MTS_NO_RUN_TEMP") or os.environ.get("MTS_RUN_TEMP"):
+        return os.environ.get("MTS_RUN_TEMP")
+    tempfile.tempdir = tempfile.gettempdir()
+    root = gate_tmp(f"mts_run_{os.getpid()}_")
+    for k in ("TEMP", "TMP", "TMPDIR"):
+        os.environ[k] = str(root)
+    os.environ["MTS_RUN_TEMP"] = str(root)
+    return str(root)
+
+
 def isolate_pytest_tmp():
     """Give every pytest child of this gate its own fresh temp root (inherited via env). A stale pytest-of-<user>/pytest-current link in
     %TEMP% that cannot be unlinked (WinError 5, seen 2026-10-11 after the ESET removal reboot) makes pytest exit 1 even when every test passes,
@@ -1192,6 +1208,7 @@ def main(argv=None):
     args = sys.argv[1:] if argv is None else argv
     unbuffer()
     lower_priority()
+    run_temp_root()
     isolate_pytest_tmp()
     quick = "--quick" in args
 
@@ -1281,4 +1298,8 @@ def main(argv=None):
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    finally:
+        _remove_gate_tmp()
+        _drop_scratch()
