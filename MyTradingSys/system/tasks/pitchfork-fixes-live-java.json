@@ -1,0 +1,51 @@
+{
+ "approved_by": "",
+ "asks": "",
+ "commands": [],
+ "created": "2026-10-28T16:07:50Z",
+ "depends_on": [],
+ "done_when": "PF-REV emits no bounce when ML was reached after P2 or the triplet is older than 60 bars; mvn test green; CRITICAL review session approves plan and diff; shipped, cherry empty",
+ "est_turns": 30,
+ "formula_id": "",
+ "formula_ids": [],
+ "from_inbox": "",
+ "goal": "Port Python parity into PitchforkSignalLayer.java: F3 PF-REV bounce needs not hasReachedMl and triplet age <= 60 bars, F6 tine by p2_is_lower, F7/F9 OURS labels. Built in a worktree; never deployed by the builder.",
+ "id": "pitchfork-fixes-live-java",
+ "lane": "SONNET",
+ "layers": [
+  "pitchfork"
+ ],
+ "live_path": false,
+ "mutation_check": "",
+ "not_twin_of": [
+  "pitchfork-review-fixes-2026-10-28"
+ ],
+ "note": "DRAFT 2026-10-28 Session_Planner (OURS): live_path card split from pitchfork-review-fixes-2026-10-28. HOLD for dispatch: CRITICAL protocol (review SESSION mid and pre-ship), and DoR 4 wants live_path cards in lane JIS-NB: coordinator decides lane before dispatch. Runs after pitchfork-pf-can-arm-order-check tells urgency. Not dispatchable until REVIEWED stamp. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+ "prio": 2,
+ "refine_tries": 0,
+ "refined_by": "",
+ "refs": [
+  "MyTradingSys/research/pitchfork_2026-10-19/OPUS_E2E_REVIEW_2026-10-28.md"
+ ],
+ "result": "",
+ "scope_in": [
+  "src/main/java/datafeed/PitchforkSignalLayer.java",
+  "src/test/java"
+ ],
+ "scope_out": [
+  "deploy; restart; the live tree; HALT files; changing the -Dmts.pitchfork flag"
+ ],
+ "size": "M",
+ "sources": [
+  "MyTradingSys/research/pitchfork_2026-10-19/OPUS_E2E_REVIEW_2026-10-28.md"
+ ],
+ "state": "raw",
+ "steps": [
+  "Locate PitchforkSignalLayer.java:495-515 and add the hasReachedMl and 60-bar age gates as in the Python scanner :497",
+  "Add tests for restart/reset state, non-trade balance moves and API errors per CLAUDE.md live-path rules; safety checks fail closed"
+ ],
+ "tests": "Java test: stale triplet and reached-ML bounce emit no candidate (fails on old code); inverted-fork tine test; restart/API-error tests",
+ "title": "Pitchfork live Java review fixes: F3 stale-bounce gate parity, F6 inverted-fork tine, F7/F9 labels",
+ "weight": "CRITICAL",
+ "worker": "session"
+}

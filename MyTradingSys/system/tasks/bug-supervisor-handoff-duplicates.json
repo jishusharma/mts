@@ -29,7 +29,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS) Session_Planner 2026-10-28: content is complete (goal/scope/steps/tests/done_when); the only promotion gap is the review stamp. Weight IMPORTANT (lane OPUS, operator-named) needs a real stamp (Lab_Guy pass) to reach ready; the planner does not self-stamp IMPORTANT+ cards. Awaiting Lab_Guy REVIEWED stamp.",
+  "note": "DECISION (OURS) Session_Planner 2026-10-28: content is complete (goal/scope/steps/tests/done_when); the only promotion gap is the review stamp. Weight IMPORTANT (lane OPUS, operator-named) needs a real stamp (Lab_Guy pass) to reach ready; the planner does not self-stamp IMPORTANT+ cards. Awaiting Lab_Guy REVIEWED stamp. | PLANNER 2026-10-28 c3: ISSUES_REGISTER.md:66 says B1,B2,B3,B5,B6,B10 fixed in 637422a47, af2d5b82b, 2c5731b8a, fc12c222f (all on origin/fast-track; handover-guard, one-transit-rule and start-worker tests exist). Coordinator: verify B5/B6 tests, then tasks.py done with --result; no rebuild.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
