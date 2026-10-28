@@ -1,0 +1,1 @@
+{"t": "20261028T125956Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship Result: 11 gateway_run tests pass (2 new fail on the old code); O1/O2 resume after the reset instead of being lost.", "login": "C", "sid": "bbb3948d57"}
