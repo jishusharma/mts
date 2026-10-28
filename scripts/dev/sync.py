@@ -1363,7 +1363,7 @@ def print_claims(repo, ref=None):
               f"[area: {kv.get('area','-')}] {age_h:.0f}h old{stale}")
 
 
-PUSH_RACE_RE = re.compile(r"\[rejected\]|fetch first|non-fast-forward|stale info|cannot lock ref|incorrect old value")
+PUSH_RACE_RE = re.compile(r"\[rejected\]|fetch first|non-fast-forward|stale info|cannot lock ref|incorrect old value|reference already exists")
 
 
 def push_race_lost(r):
