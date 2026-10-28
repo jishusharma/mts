@@ -88,5 +88,87 @@ class RunJobTest(unittest.TestCase):
         run.assert_not_called()
 
 
+NL = chr(10)
+
+
+class TwoProcessClaimRaceTest(unittest.TestCase):
+    """CT-2 (fix_verification_2026-10-28): two REAL sync.py claim processes against a bare temp origin, no mocked push.
+    Asserts the outcome set, never which claimer wins."""
+    CARD = "race-card"
+
+    def _git(self, cwd, *a):
+        r = subprocess.run(["git", "-C", str(cwd), *a], capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        return r.stdout
+
+    def _fixture(self, tmp, precreate_claims):
+        import shutil
+        tmp = Path(tmp)
+        bare = tmp / "origin.git"
+        subprocess.run(["git", "init", "--bare", "-q", "-b", "fast-track", str(bare)], check=True)
+        seed = tmp / "seed"
+        subprocess.run(["git", "clone", "-q", str(bare), str(seed)], check=True, capture_output=True)
+        shutil.copytree(Path(__file__).resolve().parent, seed / "scripts" / "dev",
+                        ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+        (seed / "README").write_text("x")
+        for k, v in (("user.name", "seed"), ("user.email", "s@x"), ("commit.gpgsign", "false")):
+            self._git(seed, "config", k, v)
+        self._git(seed, "checkout", "-q", "-B", "fast-track")
+        self._git(seed, "add", "-A")
+        self._git(seed, "commit", "-q", "-m", "seed")
+        self._git(seed, "push", "-q", "origin", "fast-track")
+        if precreate_claims:
+            self._git(seed, "checkout", "-q", "--orphan", "claims")
+            self._git(seed, "rm", "-rq", "--cached", ".")
+            d = seed / "MyTradingSys" / "system" / "claims"
+            d.mkdir(parents=True)
+            (d / "other.md").write_text(NL.join(["task: other", "host: h", "account: a", "area: -", "epoch: 1", ""]))
+            self._git(seed, "add", "MyTradingSys/system/claims/other.md")
+            self._git(seed, "commit", "-q", "-m", "claims init")
+            self._git(seed, "push", "-q", "origin", "claims")
+        clones = []
+        for n in ("A", "B"):
+            c = tmp / n
+            subprocess.run(["git", "clone", "-q", "-b", "fast-track", str(bare), str(c)], check=True, capture_output=True)
+            for k, v in (("user.name", "claimer" + n), ("user.email", n + "@x"), ("commit.gpgsign", "false")):
+                self._git(c, "config", k, v)
+            clones.append(c)
+        return bare, clones
+
+    def _race(self, precreate_claims):
+        with tempfile.TemporaryDirectory() as tmp:
+            bare, clones = self._fixture(tmp, precreate_claims)
+            go = Path(tmp) / "go"
+            runner = NL.join(["import sys,time,subprocess,pathlib", "g=pathlib.Path(sys.argv[1])", "while not g.exists(): time.sleep(0.005)",
+                         "sys.exit(subprocess.run([sys.executable,'scripts/dev/sync.py','claim',sys.argv[2]]).returncode)", ""])
+            procs = [subprocess.Popen([sys.executable, "-c", runner, str(go), self.CARD], cwd=str(c),
+                                      stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
+                                      env={**__import__("os").environ, "GIT_TERMINAL_PROMPT": "0", "MTS_ACCOUNT": "acct"})
+                     for c in clones]
+            go.write_text("go")
+            outs = [p.communicate(timeout=180)[0] for p in procs]
+            rcs = [p.returncode for p in procs]
+            winners = [i for i, rc in enumerate(rcs) if rc == 0]
+            losers = [i for i, rc in enumerate(rcs) if rc != 0]
+            self.assertEqual(len(winners), 1, (rcs, outs))
+            self.assertEqual(len(losers), 1, (rcs, outs))
+            lo = outs[losers[0]]
+            self.assertIn("already claimed by", lo)          # the lost-race path ...
+            self.assertNotIn("not a race", lo)                # ... not a push error
+            self.assertNotIn("still rejected", lo)
+            subprocess.run(["git", "-C", str(bare), "rev-parse", "--verify", "claims"], check=True, capture_output=True)
+            files = self._git(bare, "ls-tree", "-r", "--name-only", "claims").split()
+            mine = [f for f in files if f.endswith(f"{self.CARD}.md")]
+            self.assertEqual(mine, [f"MyTradingSys/system/claims/{self.CARD}.md"], files)
+            body = self._git(bare, "show", f"claims:{mine[0]}")
+            self.assertEqual(body.count("host:"), 1, body)
+
+    def test_two_process_claim_race_against_bare_repo(self):
+        self._race(precreate_claims=True)
+
+    def test_two_process_claim_race_claims_branch_absent(self):
+        self._race(precreate_claims=False)
+
+
 if __name__ == "__main__":
     unittest.main()
