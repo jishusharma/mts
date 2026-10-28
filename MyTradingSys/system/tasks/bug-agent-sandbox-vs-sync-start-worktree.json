@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DRAFT 2026-10-28 Session_Planner (OURS): follow-up to B3 (shipped 2c5731b8a), different case: the Agent tool made the tree. sync.py is a ship-path file so weight IMPORTANT: needs a real REVIEWED stamp (Lab_Guy) before ready. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "note": "DRAFT 2026-10-28 Session_Planner (OURS): follow-up to B3 (shipped 2c5731b8a), different case: the Agent tool made the tree. sync.py is a ship-path file so weight IMPORTANT: needs a real REVIEWED stamp (Lab_Guy) before ready. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | REVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified sync.start --worker forces new_worktree (B3) and the named existing test exists.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",

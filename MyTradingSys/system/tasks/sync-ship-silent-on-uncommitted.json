@@ -16,7 +16,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DRAFT 2026-10-29 Session_Planner (OURS): sync.py is the ship path so IMPORTANT: needs a real REVIEWED stamp before ready. No twin: B6 only filters CRLF noise, ship --result commits files on request.",
+  "note": "DRAFT 2026-10-29 Session_Planner (OURS): sync.py is the ship path so IMPORTANT: needs a real REVIEWED stamp before ready. No twin: B6 only filters CRLF noise, ship --result commits files on request. | REVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified sync.py ship() not-files branch and tree_state exist as cited; no twin.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
