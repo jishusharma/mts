@@ -411,6 +411,17 @@ def liveness(last, now, inv):
 BUDGET_RE = re.compile(r"BUDGET login=([ABC]) 5h=(\d+)% week=(\d+)%(?: reset=(\d{4}-\d\d-\d\dT\d\d:\d\dZ?))?")
 BUDGET_FRESH_H = 6        # a reading older than this counts as NORMAL / unknown (SUPER_SESSION.md Pacing)
 WEEK_H = 168
+# One budget policy (SUPER_SESSION.md "Budget policy"); supervisor.py and exhaust.py read these, never their own copies.
+SPAWN_CEIL = 80     # 5 h % at which no Claude worker starts (goal 2: never run the window to 100 every time)
+EXHAUST_CEIL = 95   # same stop inside the exhaust window (goal 1: unused weekly quota is lost; EXHAUST_PHASE.md)
+EXHAUST_H = 2       # = exhaust.PLAN_MIN / 60: hours before the weekly reset when the exhaust window opens
+LAST_DAY_H = 24     # weekly room left this close to the reset is lost if unused
+LAST_DAY_CAP = 99   # every login's weekly cap in the last LAST_DAY_H (operator 2026-10-22, 2026-10-28)
+
+
+def five_ceiling(h_to_reset=None):
+    """5 h % at which Claude workers stop: SPAWN_CEIL, EXHAUST_CEIL in the last EXHAUST_H before the weekly reset."""
+    return EXHAUST_CEIL if h_to_reset is not None and 0 < h_to_reset <= EXHAUST_H else SPAWN_CEIL
 
 
 def budgets_from_signals(sigs):
@@ -434,18 +445,25 @@ def pacing_state(b, now):
         return "NORMAL", f"reading older than {BUDGET_FRESH_H} h or undated: counted NORMAL"
     u, h5 = b.get("week"), b.get("five_h")
     reset = utc(b.get("reset"))
-    if h5 is not None and h5 > 80:
-        return "THROTTLE", f"5 h window {h5}% > 80"
+    left_h = (reset - now).total_seconds() / 3600 if reset else None
+    ceil = five_ceiling(left_h)
+    if h5 is not None and h5 > ceil:
+        return "THROTTLE", f"5 h window {h5}% > {ceil}"
     if u is None or reset is None:
         return "NORMAL", "no weekly % or reset time in the line: only the 5 h rule applies"
-    left_h = (reset - now).total_seconds() / 3600
     if left_h <= 0 or left_h > WEEK_H:
         return "NORMAL", f"reset time {b.get('reset')} is past or more than a week away: reading unusable for pace"
+    if left_h <= LAST_DAY_H:     # the pace line no longer binds: what is left under the cap is lost at the reset
+        if u >= LAST_DAY_CAP:
+            return "THROTTLE", f"week {u}% at the last-day cap {LAST_DAY_CAP}"
+        if u < LAST_DAY_CAP - 4:
+            return "SPEND", f"reset in {max(0, round(left_h))} h with week {u}% under {LAST_DAY_CAP - 4}: spend it"
+        return "NORMAL", f"reset in {max(0, round(left_h))} h, week {u}% near the cap {LAST_DAY_CAP}"
     f = 1 - left_h / WEEK_H
     if u > 100 * f + 5:
         return "THROTTLE", f"week {u}% > pace {round(100 * f + 5)}% ({round(f * 100)}% of the week gone)"
-    if u < 100 * f - 10 or (0 <= left_h < 24 and u < 85):
-        return "SPEND", f"week {u}% under pace {round(100 * f - 10)}% or reset in {max(0, round(left_h))} h with room"
+    if u < 100 * f - 10:
+        return "SPEND", f"week {u}% under pace {round(100 * f - 10)}% ({round(f * 100)}% of the week gone)"
     return "NORMAL", f"week {u}% on pace ({round(f * 100)}% of the week gone)"
 
 
