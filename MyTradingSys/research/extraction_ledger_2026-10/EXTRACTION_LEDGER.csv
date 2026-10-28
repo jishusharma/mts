@@ -57,7 +57,7 @@ video_id,channel,language,method,transcript_file,extract_file,extract_source,quo
 6aA-P4Gvhrc,Krown,en,captions,6aA-P4Gvhrc_raw.txt,MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_6aA-P4Gvhrc.md,claude_or_manual,66,FAIL,none
 6rHybt-DfQ0,Kurisko,en,captions,6rHybt-DfQ0_raw.txt,,,,,none
 7BQPMJ39WpI,Tom,en,captions,7BQPMJ39WpI_raw.txt,MyTradingSys/research/setup_catalog_2026-10-15/EXTRACTION_CRITICAL_GAPS_2026-10-18.md,claude_or_manual,1,PASS,none
-7BQPMJ39WpI,,en,captions,7BQPMJ39WpI_raw.txt,extracts/gemini_out/7BQPMJ39WpI_gemini.md,gemini,11,PASS,none
+7BQPMJ39WpI,,en,captions,7BQPMJ39WpI_raw.txt,extracts/gemini_out/7BQPMJ39WpI_gemini.md,gemini,11,FAIL,none
 7BQPMJ39WpI,Tom,en,captions,7BQPMJ39WpI_raw.txt,extracts/processed/tom/new_selected_10/extract_7BQPMJ39WpI.md,claude_or_manual,5,PASS,none
 7IxfsuD2wCM,Krown,en,captions,7IxfsuD2wCM_raw.txt,MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_7IxfsuD2wCM.md,claude_or_manual,100,PASS,none
 7wl0C1lVfRE,,,,,MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md,claude_or_manual,2,FAIL,none
@@ -73,9 +73,9 @@ video_id,channel,language,method,transcript_file,extract_file,extract_source,quo
 9VN9y2DVtGQ,,en,captions,9VN9y2DVtGQ_raw.txt,,,,,none
 9eHZMVXilgc,,en,captions,9eHZMVXilgc_raw.txt,,,,,none
 <id>,Malkan,,,,MyTradingSys/research/malkan_extract_2026-10-15/EXTRACT_TEMPLATE.md,claude_or_manual,1,FAIL,none
-A-CQiV_UFB4,Malkan,en,captions,A-CQiV_UFB4_raw.txt,MyTradingSys/research/malkan_extract_2026-10-15/COMPARE.md,claude_or_manual,2,PASS,none
-A-CQiV_UFB4,Malkan,en,captions,A-CQiV_UFB4_raw.txt,MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md,claude_or_manual,10,PASS,none
-A-CQiV_UFB4,Malkan,en,captions,A-CQiV_UFB4_raw.txt,MyTradingSys/research/malkan_extract_2026-10-15/extracts/extract_A-CQiV_UFB4.md,claude_or_manual,63,PASS,none
+A-CQiV_UFB4,Malkan,en,captions,A-CQiV_UFB4_raw.txt,MyTradingSys/research/malkan_extract_2026-10-15/COMPARE.md,claude_or_manual,2,PASS,rsi:malkan_divergence_default.json
+A-CQiV_UFB4,Malkan,en,captions,A-CQiV_UFB4_raw.txt,MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md,claude_or_manual,10,PASS,rsi:malkan_divergence_default.json
+A-CQiV_UFB4,Malkan,en,captions,A-CQiV_UFB4_raw.txt,MyTradingSys/research/malkan_extract_2026-10-15/extracts/extract_A-CQiV_UFB4.md,claude_or_manual,63,PASS,rsi:malkan_divergence_default.json
 ACb0Qtt3DSQ,,en,captions,ACb0Qtt3DSQ_raw.txt,,,,,none
 AQR6zIgCx7I,,en,captions,AQR6zIgCx7I_raw.txt,,,,,none
 AtR_c-B0jw8,,en,captions,AtR_c-B0jw8_raw.txt,,,,,none
@@ -101,12 +101,12 @@ FawPrRUGNpk,Fabio,en,captions,FawPrRUGNpk_raw.txt,extracts/v2/fabio/FawPrRUGNpk_
 Fj4FDZQxw0I,,en,captions,Fj4FDZQxw0I_raw.txt,,,,,none
 G0CiJcuXCRs,Tom,en,captions,G0CiJcuXCRs_raw.txt,extracts/v2/tom/G0CiJcuXCRs_v2.md,claude_or_manual,19,PASS,none
 GaHjNt91mPU,,,,,MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md,claude_or_manual,1,FAIL,none
-GbXnw_tNMtw,Malkan,en,captions,GbXnw_tNMtw_raw.txt,,,,,none
+GbXnw_tNMtw,Malkan,en,captions,GbXnw_tNMtw_raw.txt,,,,,rsi:malkan_divergence_default.json
 H1Mi5BFGqbQ,,,,,,,,,none
 HhV4HI9p5Uw,Krown,en,captions,HhV4HI9p5Uw_raw.txt,MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_HhV4HI9p5Uw.md,claude_or_manual,24,PASS,none
 Hlot1KhrlMs,,,,,MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md,claude_or_manual,1,FAIL,none
 HySZZSjMxF8,Tom,en,captions,HySZZSjMxF8_raw.txt,MyTradingSys/research/setup_catalog_2026-10-15/EXTRACTION_CRITICAL_GAPS_2026-10-18.md,claude_or_manual,1,PASS,none
-HySZZSjMxF8,,en,captions,HySZZSjMxF8_raw.txt,extracts/gemini_out/HySZZSjMxF8_gemini.md,gemini,12,PASS,none
+HySZZSjMxF8,,en,captions,HySZZSjMxF8_raw.txt,extracts/gemini_out/HySZZSjMxF8_gemini.md,gemini,12,FAIL,none
 HySZZSjMxF8,Tom,en,captions,HySZZSjMxF8_raw.txt,extracts/processed/tom/new_selected_10/extract_HySZZSjMxF8.md,claude_or_manual,8,PASS,none
 I0rxiH1jZwc,Kurisko,en,captions,I0rxiH1jZwc_raw.txt,,,,,none
 INOCBmqQupc,Krown,en,captions,INOCBmqQupc_raw.txt,MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_INOCBmqQupc.md,claude_or_manual,68,PASS,none
@@ -177,7 +177,7 @@ W1HrDl70Lhk,Malkan,en,captions,W1HrDl70Lhk_raw.txt,MyTradingSys/research/malkan_
 W1HrDl70Lhk,Malkan,en,captions,W1HrDl70Lhk_raw.txt,MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md,claude_or_manual,23,PASS,none
 W1HrDl70Lhk,Malkan,en,captions,W1HrDl70Lhk_raw.txt,MyTradingSys/research/malkan_extract_2026-10-15/extracts/extract_W1HrDl70Lhk.md,claude_or_manual,96,PASS,none
 WBByyLBp8-c,,,,,,,,,none
-WQ_OAdz-PJ8,,en,captions,WQ_OAdz-PJ8_raw.txt,extracts/gemini_out/WQ_OAdz-PJ8_gemini.md,gemini,12,PASS,none
+WQ_OAdz-PJ8,,en,captions,WQ_OAdz-PJ8_raw.txt,extracts/gemini_out/WQ_OAdz-PJ8_gemini.md,gemini,12,FAIL,none
 WQ_OAdz-PJ8,Tom,en,captions,WQ_OAdz-PJ8_raw.txt,extracts/processed/tom/new_selected_10/extract_WQ_OAdz-PJ8.md,claude_or_manual,7,PASS,none
 WSCIURybK3U,Tom,en,captions,WSCIURybK3U_raw.txt,extracts/v2/tom/WSCIURybK3U_v2.md,claude_or_manual,7,PASS,none
 Wvq1TZh8aF0,Malkan,en,captions,Wvq1TZh8aF0_raw.txt,MyTradingSys/research/malkan_extract_2026-10-15/COMPARE.md,claude_or_manual,3,PASS,rsi:malkan_divergence_default.json
@@ -217,6 +217,7 @@ ctBtClaBdk0,,,,,,,,,none
 cw8LWQmec1E,,en,captions,cw8LWQmec1E_raw.txt,,,,,none
 dh-ysRR8f-M,,en,captions,dh-ysRR8f-M_raw.txt,,,,,none
 e6Gm1n2h05M,,en,captions,e6Gm1n2h05M_raw.txt,,,,,none
+e83njGZFrPw,Tom,,,,MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md,claude_or_manual,6,FAIL,none
 etg6j0JybfE,Tom,en,captions,etg6j0JybfE_raw.txt,MyTradingSys/research/setup_catalog_2026-10-15/EXTRACTION_CRITICAL_GAPS_2026-10-18.md,claude_or_manual,2,PASS,none
 etg6j0JybfE,Tom,en,captions,etg6j0JybfE_raw.txt,extracts/v2/tom/etg6j0JybfE_v2.md,claude_or_manual,18,PASS,none
 f225iVdsrfg,,en,captions,f225iVdsrfg_raw.txt,,,,,none
@@ -231,7 +232,7 @@ fgN6QBFY3Ss,,,,,,,,,none
 ftK2BqggabQ,Krown,en,captions,ftK2BqggabQ_raw.txt,MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_ftK2BqggabQ.md,claude_or_manual,63,FAIL,none
 gFJBg8Bsw68,,en,captions,gFJBg8Bsw68_raw.txt,,,,,none
 gV4CeXkLrOA,,,,,,,,,none
-gWjHq5UMisY,,en,captions,gWjHq5UMisY_raw.txt,extracts/gemini_out/gWjHq5UMisY_gemini.md,gemini,12,PASS,none
+gWjHq5UMisY,,en,captions,gWjHq5UMisY_raw.txt,extracts/gemini_out/gWjHq5UMisY_gemini.md,gemini,12,FAIL,none
 gWjHq5UMisY,Tom,en,captions,gWjHq5UMisY_raw.txt,extracts/processed/tom/new_selected_10/extract_gWjHq5UMisY.md,claude_or_manual,7,PASS,none
 gfr5n6B5QJk,,,,,,,,,none
 gqPfaTB0vwU,,,,,,,,,none
@@ -298,6 +299,6 @@ yRvMW6lgN1o,,en,captions,yRvMW6lgN1o_raw.txt,,,,,none
 yp8rHZw8Ro0,,,,,,,,,none
 z5l35nvsepA,,,,,,,,,none
 zAwEX_tRUfE,Tom,en,captions,zAwEX_tRUfE_raw.txt,MyTradingSys/research/setup_catalog_2026-10-15/EXTRACTION_CRITICAL_GAPS_2026-10-18.md,claude_or_manual,2,PASS,none
-zAwEX_tRUfE,,en,captions,zAwEX_tRUfE_raw.txt,extracts/gemini_out/zAwEX_tRUfE_gemini.md,gemini,12,PASS,none
+zAwEX_tRUfE,,en,captions,zAwEX_tRUfE_raw.txt,extracts/gemini_out/zAwEX_tRUfE_gemini.md,gemini,12,FAIL,none
 zAwEX_tRUfE,Tom,en,captions,zAwEX_tRUfE_raw.txt,extracts/processed/tom/new_selected_10/extract_zAwEX_tRUfE.md,claude_or_manual,9,PASS,none
 zQTbdEweG3c,Tom,en,captions,zQTbdEweG3c_raw.txt,MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md,claude_or_manual,3,PASS,none
