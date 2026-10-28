@@ -5,6 +5,11 @@
       "disp": "TOOL",
       "why": "Builds the one-file claude.ai Artifact preview of live_aid.html (indicators inlined); run by hand when the live aid page changes, named in tools/live_aid/STEPS.md."
     },
+    "MyTradingSys/backtest/layers/alerts/live_validation.py": {
+      "disp": "PARKED",
+      "ref": "live-validation-store-signal-chart-hook",
+      "why": "Live-validation store, doubts list and signal-to-chart hook (task live-validation-store-signal-chart-hook); the hook is a separate module the Malkan signal path calls with injected render_chart/send. Wiring into the live signal path is a later live-tree change (coordinator deploy), not done here."
+    },
     "scripts/ops/nuc_create_mts_shares.ps1": {
       "disp": "TOOL",
       "why": "Operator runs it once, elevated, on JIS-NUC to create the four LIVE_HOST_MOVE s5 shares (MTS-Data, MTS-Live, MTS-Mirror, MTS-Backup); named in LIVE_HOST_MOVE.md."
