@@ -1,0 +1,54 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-28T06:27:20Z",
+  "depends_on": [],
+  "done_when": "A new test replaces Register-ScheduledTask with an echo/fake executable, runs the real (non-dry) successor_wake code path, and asserts the computed fireAt, cwd and command line are correct; existing dry-run tests still pass.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "fix_verification_2026-10-28 CT-1: successor_wake tests (commits 0e07b7418, 3a1c8003b, fa094a92b) are dry/stub only; the real path that calls Register-ScheduledTask is never exercised.",
+  "id": "successor-wake-real-path-test",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "successor_wake usage handoff: woken session is handed its own pacer reading via a USAGE fi",
+      "ref": "c8dcca8eda10",
+      "utc": "2026-10-28T06:37:47Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T07:11:36Z",
+  "refs": [
+    "MyTradingSys/research/fix_verification_2026-10-28/REPORT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/successor_wake.py",
+    "scripts/dev/test_successor_wake.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "c8dcca8eda10",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Add a seam/fake for Register-ScheduledTask (monkeypatch the PowerShell/subprocess call to write its args to a file instead of registering a real task)",
+    "Run the real (non-dry) code path through that seam",
+    "Assert the captured fireAt, cwd and command line match what the dry-run reports"
+  ],
+  "tests": "scripts/dev/test_successor_wake.py::test_real_schtasks_path_registers_expected_task_via_fake (new, exercises the path CT-1 found untested)",
+  "title": "Real successor wake test: replace Register-ScheduledTask with an echo, assert fireAt, cwd and command (commits 0e07b7418, 3a1c8003b, fa094a92b; fix report CT-1)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-10-28T06:49:07Z",
+  "depends_on": [],
+  "done_when": "roles/supervisor.md and roles/lead.md each carry the short rule; a role lint or test fails on the old files; one worked example row in OPERATOR_DECISIONS.md",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gap: operator chat decisions are lost unless recorded. A memory note exists; make it a repo rule. Keep supervisor.md under its byte budget (see supervisor-role-trim).",
+  "id": "record-operator-no-decisions-rule",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "docs: drop docker card, record no-Docker decision, file dispatch-check card",
+      "ref": "007c433cdef1",
+      "utc": "2026-10-28T06:37:36Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "007c433cdef1 docs: drop docker card, record no-Docker decision, file dispatch-check card",
+      "ref": "MyTradingSys/system/OPERATOR_DECISIONS.md",
+      "utc": "2026-10-28T06:37:36Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T06:49:07Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/roles/supervisor.md",
+    "MyTradingSys/system/roles/lead.md",
+    "MyTradingSys/system/OPERATOR_DECISIONS.md"
+  ],
+  "scope_out": [
+    "unrelated files; live tree; other cards"
+  ],
+  "scope_sha": "007c433cdef1",
+  "size": "S",
+  "sources": [
+    "operator ask 2026-10-28 gap 13"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read the gap text and linked files",
+    "Implement the smallest change",
+    "Run the test on old and new code; record output"
+  ],
+  "tests": "role lint test fails on old role files",
+  "title": "Supervisor/Lead rule: record 'we will not do X' as a card drop plus an OPERATOR_DECISIONS.md entry the same turn",
+  "weight": "",
+  "worker": "agent"
+}

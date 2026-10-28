@@ -14,6 +14,22 @@
   "goal": "One table row per rule in SETUP_CATALOG.md, MALKAN_DIVERGENCE_GLOSSARY.md and KROWN_SETUP_CATALOG.md: rule id, quote, quote file:line, code file:line or none, param, test, verdict wired|unwired-worth-wiring|not-worth-wiring. Malkan: only his sourced PRD/NRD counts; hidden divergence is a Krown rule.",
   "id": "extracted-rules-wiring-audit",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "malkan RSI: PRD/NRD as Malkan defines them; generic hidden moved to KROWN-CONFLUENCE",
+      "ref": "51b4b9a6fbf1",
+      "utc": "2026-10-27T20:37:06Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "f8d0799de2bc research/ top level: 189 -> 14 files; 176 dated loose files into _archive/loo",
+      "ref": "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md",
+      "utc": "2026-10-25T23:02:12Z"
+    }
+  ],
   "layers": [
     "rsi",
     "krown"
@@ -24,6 +40,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-28T08:23:49Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -40,12 +57,13 @@
     "new backtests",
     "Tom/Fabio/Habib (sibling card)"
   ],
+  "scope_sha": "51b4b9a6fbf1",
   "size": "M",
   "sources": [
     "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable",
     "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Parse the three catalogs into rule rows (script kept in the folder for rerun).",
     "Per rule: grep params/*.json, layer .py and test_*.py for the rule id or its number; check the quote with verify_extract_quotes.py against the ledger extract.",

@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-10-28T06:49:36Z",
+  "depends_on": [],
+  "done_when": "A sleeping (idle) Claude session is woken by one one-shot scheduled task, reads its own usage (USAGE file), does its work, and the task self-unregisters; proven on the NUC in MyTradingSys/research/lead/wake_proof_2026-10-28T06-25Z.md (ship c8dcca8ed); independent re-run is card wake-sleeping-sessions-independent-rerun",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Card file recreated by gap-cards-2026-10-28 (gap 7): the NUC prompt named it but no tasks/<id>.json existed.",
+  "id": "wake-sleeping-sessions",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "successor_wake usage handoff: woken session is handed its own pacer reading via a USAGE fi",
+      "ref": "c8dcca8eda10",
+      "utc": "2026-10-28T06:37:47Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T06:49:36Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/successor_wake.py"
+  ],
+  "scope_out": [
+    "unrelated files; live tree"
+  ],
+  "scope_sha": "c8dcca8eda10",
+  "size": "S",
+  "sources": [
+    "operator ask 2026-10-28 gap 7"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read the done-when and linked files",
+    "Verify or complete; record run"
+  ],
+  "tests": "see done-when; test fails on old code",
+  "title": "Wake sleeping sessions with zero operator step via a one-shot scheduled task",
+  "weight": "",
+  "worker": "agent"
+}

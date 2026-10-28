@@ -1541,6 +1541,65 @@ def set_missed(text: str, lines: list) -> str:
     return "\n".join(out) + "\n"
 
 
+SUPER_SESSION_REL = "MyTradingSys/system/SUPER_SESSION.md"
+SESSION_LOG_SECTION = "Session log"
+SESSION_LOG_MAX = 5
+
+
+def append_session_line(text: str, line: str, keep: int = SESSION_LOG_MAX) -> str:
+    """Pure: add one line to SUPER_SESSION.md's `## Session log` section (newest first), dropping the oldest entry so the section
+    never holds more than `keep` (the doc test test_session_log_keeps_last_five caps it at 5). The handover's one-line-per-run
+    update used to be typed by hand and has overflowed that cap twice (2026-10-25, 2026-10-28); this is the capped writer. Only
+    the contiguous `- ` entry block at the top of the section is replaced; every other line and section is untouched. An empty
+    line or a file without the section is returned as-is (fail closed: no new section, no empty entry)."""
+    if not line.strip() or not text.strip():
+        return text
+    lines = text.splitlines()
+    start = None
+    for i, ln in enumerate(lines):
+        m = _HEAD_RE.match(ln)
+        if m and m.group(1) == SESSION_LOG_SECTION:
+            start = i
+            break
+    if start is None:
+        return text
+    i = start + 1
+    while i < len(lines) and not lines[i].strip():
+        i += 1                                   # past any blank lines under the heading
+    block_start = i
+    while i < len(lines) and lines[i].lstrip().startswith("- "):
+        i += 1                                   # the contiguous entry block, newest first
+    out = lines[:start + 1] + [line] + lines[block_start:i][:(keep - 1)] + lines[i:]
+    body = "\n".join(out)
+    return body if body.endswith("\n") else body + "\n"
+
+
+def record_session_line(repo: Path, line: str) -> int:
+    """Add one Session log line to SUPER_SESSION.md on trunk, dropping the oldest entry to keep the last 5. Returns the new entry
+    count. A missing file or section is a no-op returning -1 (fail closed: nothing written, nothing invented). A line missing its
+    leading '- ' is given one, so a raw-text call still yields a well-formed entry the next call can re-slice."""
+    p = Path(repo) / SUPER_SESSION_REL
+    try:
+        text = p.read_text(encoding="utf-8")
+    except OSError:
+        return -1
+    line = line.strip()
+    if not line.startswith("- "):
+        line = "- " + line
+    new = append_session_line(text, line)
+    if new == text:
+        return -1
+    p.write_text(new, encoding="utf-8", newline="\n")
+    log, counting = [], False
+    for ln in new.splitlines():
+        m = _HEAD_RE.match(ln)
+        if m:
+            counting = m.group(1) == SESSION_LOG_SECTION
+        elif counting and ln.lstrip().startswith("- "):
+            log.append(ln)
+    return len(log)
+
+
 def handover_path(repo: Path, login: str | None = None, role: str = "supervisor", now: datetime | None = None) -> Path:
     if role == "lead":
         return Path(repo) / LEAD_HANDOVER_REL.format((now or _now_utc()).strftime("%Y-%m-%d"))
@@ -1708,6 +1767,10 @@ def main(argv: list[str] | None = None) -> int:
     p_ho.add_argument("--fold-target", action="store_true", help="print the file the ship-time fold writes (the card, else the hand-over)")
     p_ho.add_argument("--card", default=None, help="with --fold-target: the claimed card id")
 
+    p_sl = sub.add_parser("session-log", help="add one line to SUPER_SESSION.md's Session log (last 5 kept), dropping the oldest entry")
+    p_sl.add_argument("line", help="the one-line session record")
+    p_sl.add_argument("--repo", default=None, help="repo root (default: the checkout this script is in)")
+
     args = ap.parse_args(argv)
     if args.cmd in ("plan", "handover", "wait", "tick", "watchcheck"):
         try:
@@ -1738,6 +1801,14 @@ def main(argv: list[str] | None = None) -> int:
         lines, data = plan(REPO, args.login, rd, running=args.running, send=not args.no_send, no_fetch=args.no_fetch,
                            shas=parse_shas_arg(args.shas), context_tokens=args.context_tokens, wave_start=ws)
         print(json.dumps(data, indent=1, sort_keys=True, default=str) if args.json else chr(10).join(lines))
+        return 0
+    if args.cmd == "session-log":
+        repo = Path(args.repo) if args.repo else (Path.cwd() if (Path.cwd() / "MyTradingSys").is_dir() else REPO)
+        n = record_session_line(repo, args.line)
+        if n < 0:
+            print("no-op: no '## Session log' section (or file missing) in SUPER_SESSION.md; nothing written")
+            return 2
+        print(f"wrote {SUPER_SESSION_REL}: {n} Session log entr{'y' if n == 1 else 'ies'} (last {SESSION_LOG_MAX} kept); ship it once")
         return 0
     if args.cmd == "handover":
         repo = Path.cwd() if (Path.cwd() / "MyTradingSys").is_dir() else REPO

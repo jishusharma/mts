@@ -1,11 +1,14 @@
 {
   "card": "lab-verify-rsi-40-60-bb-bounce-15m",
   "done_when": "event table for the RSI 40-60 + lower-Bollinger bounce rule on BTCUSDT 15m (events, 4/8/16-bar forward return gross and after 0.2% round-trip fee, unconditional baseline, t-stat), DEV/VALIDATION split stated, trial count logged, verdict worth-a-layer or not",
+  "finished": "2026-10-28T07:16:13Z",
   "from": "JIS-NB",
+  "host": "DESKTOP-F7IU69N",
   "id": "20261026-204750-lab-verify-rsi-40-60-bb-bounce-15m",
   "need": "python scripts/dev/shot.py status (full brief: python scripts/dev/tasks.py brief lab-verify-rsi-40-60-bb-bounce-15m)",
   "posted": "2026-10-26T20:47:50Z",
-  "status": "pending",
+  "result": "MyTradingSys/research/lab_verify_rsi4060_bb_15m_2026-10-28/REPORT.md -- NOT WORTH A LAYER (fee-net negative at every horizon/side, no edge over baseline on DEV+VALIDATION); full task done from zero, prior duplicate row delivered no numbers to gap-fill",
+  "status": "done",
   "target": "DSA",
   "title": "LAB-VERIFY: RSI 40-60 range plus Bollinger-band bounce rule (operator live teaching) on BTC 15m, fee-net"
 }

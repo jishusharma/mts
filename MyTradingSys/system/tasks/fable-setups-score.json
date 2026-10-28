@@ -15,7 +15,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PARKED 2026-10-26 Session_Planner: waits on fable-run4-setup-angles (angle 6 shortlist); cannot be scoped before the shortlist exists | Waits on fable-run4-setup-angles.",
+  "note": "BLOCKED 2026-10-28 Session_Planner(c-1028): waits on fable-run4-setup-angles (angle 6 shortlist) | PARKED 2026-10-26 Session_Planner: waits on fable-run4-setup-angles (angle 6 shortlist); cannot be scoped before the shortlist exists | Waits on fable-run4-setup-angles.",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
@@ -35,7 +36,7 @@
   "sources": [
     "MyTradingSys/system/fable_run_4_brief.md"
   ],
-  "state": "refined",
+  "state": "blocked",
   "steps": [],
   "tests": "Each setup function on a 3-bar fixture gives the hand-computed trigger; ledger rows exist before any score file.",
   "title": "Score the Fable run 4 shortlist on BLIND DEV (2023-07..2024-06) against predefined bands",

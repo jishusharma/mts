@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/run_all_tests.py > run_all_tests_full_2026-10-28.txt 2>&1; echo EXIT_CODE=$?"
+  ],
+  "created": "2026-10-28T06:27:21Z",
+  "depends_on": [],
+  "done_when": "A report file has the complete step-by-step run_all_tests.py output; this card's result names the exit code and every FAILED/ERROR step (or 'all passed').",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "fix_verification_2026-10-28 CT-3: a full (non --quick) run_all_tests.py pass on trunk is still owed; the verifier's run went over its 5-minute budget.",
+  "id": "run-all-tests-full-worker-run",
+  "lane": "DSA",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: fix Step.cmd attribute in run_all_tests.py for Step 3g TestPassRecord (6/6 pass)",
+      "ref": "02b9db8db82d",
+      "utc": "2026-10-27T22:32:23Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T07:11:55Z",
+  "refs": [
+    "MyTradingSys/research/fix_verification_2026-10-28/REPORT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/run_all_tests.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "02b9db8db82d",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Run python scripts/dev/run_all_tests.py (no --quick) to completion on a fresh trunk checkout",
+    "Save the full output and record the exit code",
+    "List the name of every failing/erroring step in the card result"
+  ],
+  "tests": "",
+  "title": "Full run_all_tests.py worker run on trunk, record the exit code and failures (fix report CT-3)",
+  "weight": "ROUTINE",
+  "worker": ""
+}

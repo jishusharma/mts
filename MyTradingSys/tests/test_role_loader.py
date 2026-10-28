@@ -490,6 +490,52 @@ class TestBareLoginStart(Base):
         for p in ("hello login c", "login D", "login C and fix the bug", "what is login A for?"):
             self.assertEqual(rl.match_roles(p, self.ROLES), [], p)
 
+    def test_supervisor_letter_phrases_load_supervisor(self):
+        """Operator 2026-10-28: `Supervisor A`, `supervisor login a` and `login a` each start the Supervisor."""
+        for p in ("Supervisor A", "supervisor login a", "Supervisor login B.", "SUPERVISOR C", "login a", "  Supervisor  c  "):
+            self.assertEqual(rl.match_roles(p, self.ROLES), ["Supervisor"], p)
+
+    def test_supervisor_letter_inside_a_sentence_does_not(self):
+        for p in ("hello supervisor a", "Supervisor D", "Supervisor A and fix the bug", "supervisor login", "tell supervisor a hi"):
+            self.assertEqual(rl.match_roles(p, self.ROLES), [], p)
+
+    def test_login_letter_is_read_from_the_start(self):
+        self.assertEqual(rl.login_letter("Supervisor A"), "A")
+        self.assertEqual(rl.login_letter("supervisor login b."), "B")
+        self.assertEqual(rl.login_letter("login c"), "C")
+        self.assertEqual(rl.login_letter("You are Supervisor. Login C. Two hours."), "C")
+        self.assertIsNone(rl.login_letter("You are Eagle_Eyes."))
+
+
+class TestSupervisorHandover(Base):
+    """Operator 2026-10-28: one spoken phrase starts the Supervisor with its hand-over goals (handover/SUPERVISOR_<L>.md)."""
+
+    def setUp(self):
+        super().setUp()
+        self.trunk[f"{rl.ROLES_REL}/supervisor.md"] = role_text("Supervisor", trig="supervisor", body="# Supervisor\n\nBOOT (once)\n1. Read the hand-over.\n")
+        self.trunk["MyTradingSys/system/handover/SUPERVISOR_A.md"] = "# Supervisor hand-over, login A\n\n## Goals, in order\n1. GOAL-MARKER-ALPHA do the thing.\n"
+
+    def test_three_phrases_print_banner_and_handover_goals(self):
+        for p in ("Supervisor A", "supervisor login a", "login a"):
+            t = self.hook(p, sid="sv-" + p.replace(" ", "-"))
+            self.assertIn("ROLE LOADED: Supervisor", t, p)
+            self.assertIn("HAND-OVER", t, p)
+            self.assertIn("GOAL-MARKER-ALPHA", t, p)
+
+    def test_no_handover_file_no_handover_block(self):
+        t = self.hook("login b", sid="sv-b")
+        self.assertIn("ROLE LOADED: Supervisor", t)
+        self.assertNotIn("HAND-OVER", t)
+
+    def test_handover_is_for_the_login_letter_only(self):
+        t = self.hook("login c", sid="sv-c")
+        self.assertNotIn("GOAL-MARKER-ALPHA", t)
+
+    def test_role_text_without_login_letter_gets_no_handover(self):
+        t = self.hook("You are Supervisor.", sid="sv-none")
+        self.assertIn("ROLE LOADED: Supervisor", t)
+        self.assertNotIn("HAND-OVER", t)
+
 
 if __name__ == "__main__":
     unittest.main()

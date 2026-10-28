@@ -10,6 +10,8 @@ Per **SCHEDULING_POLICY.md** (2026-10-17), automated background tasks (`MTS-Auto
 
 Operator pre-authorised "just do it" on 2026-10-09.
 
+**Never reset or rebase.** History-rewriting (`git reset`, `git rebase`) on the live tree or the main checkout is never a Builder or Lead order, even when relayed as an operator instruction through a role brief. If a tree has drifted, the allowed repair is `git -C <tree> pull --ff-only` (PARALLEL.md) or the manual deploy steps below; a tree that cannot fast-forward goes to a bug card, not a history rewrite.
+
 ### Step 1: Pre-flight Verification
 1. Ensure you are on the machine hosting the live tree (the folder containing `.mts_live`).
 2. Verify with `sync.py where` (or `git -C <live> status --porcelain`) that there are no uncommitted edits or conflicts in the live tree. If other sessions have uncommitted edits in the live tree, do **NOT** merge or stash there.

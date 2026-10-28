@@ -22,7 +22,7 @@
   "mutation_check": "",
   "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer Agent a894c6f7 verified, planner DECISION OURS). Split from krown-dev-event-study 2026-10-26 (drafter E). DECISION (OURS 2026-10-26): recall waiver is the safe default - DEV only, every result NO-RECALL-CLEARANCE, nothing promoted. Needs a real review stamp (CRUCIAL). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
   "prio": 2,
-  "refine_tries": 0,
+  "refine_tries": 1,
   "refined_by": "",
   "refs": [],
   "result": "",

@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-28T06:27:18Z",
+  "depends_on": [],
+  "done_when": "python scripts/dev/wiring_scan.py --check prints no WARN NO-READER line naming api_batch.py or operator_material_index.py; new test fails on pre-change code.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "scripts/dev/wiring_scan.py --check prints WARN NO-READER for scripts/dev/api_batch.py and scripts/dev/operator_material_index.py (both added after eb305a9f0; fix_verification_2026-10-28 FAIL a). No allowlist mechanism exists in wiring_scan.py yet.",
+  "id": "fix-wiring-no-reader-api-batch-omi",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "api_batch.py: Message Batches runner for bulk Haiku jobs on the API credit (spend cap, fai",
+      "ref": "64b0df558d83",
+      "utc": "2026-10-27T23:12:48Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T07:10:49Z",
+  "refs": [
+    "MyTradingSys/research/fix_verification_2026-10-28/REPORT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/wiring_scan.py",
+    "scripts/dev/api_batch.py",
+    "scripts/dev/operator_material_index.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "64b0df558d83",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Confirm whether api_batch.py and operator_material_index.py are genuinely reader-less CLI entry points or are missing a real caller",
+    "Add a reader (import/call) where one is missing, else add a small documented allowlist in wiring_scan.py for CLI entry points and list these two",
+    "Re-run wiring_scan.py --check and confirm both WARN lines are gone"
+  ],
+  "tests": "scripts/dev/test_wiring_scan.py::test_cli_entrypoint_allowlist_suppresses_no_reader (new, must fail on pre-change code)",
+  "title": "wiring_scan.py --check WARN NO-READER for api_batch.py and operator_material_index.py: add the reader or allowlist (fix report FAIL a)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

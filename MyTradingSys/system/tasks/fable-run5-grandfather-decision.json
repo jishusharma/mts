@@ -15,7 +15,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator-run Fable only; no session may start or message it. Cap 3 weekly points. IMPORTANT: coordinator reads Result line and file list. Planner 2026-10-20. Parked refined: lane OPUS needs operator approved_by; the operator running Fable by hand is the approval. Not dispatchable.",
+  "note": "BLOCKED 2026-10-28 Session_Planner(c-1028): operator-run Fable only, OPUS lane has no approved_by | Operator-run Fable only; no session may start or message it. Cap 3 weekly points. IMPORTANT: coordinator reads Result line and file list. Planner 2026-10-20. Parked refined: lane OPUS needs operator approved_by; the operator running Fable by hand is the approval. Not dispatchable.",
+  "pinned": false,
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -35,7 +36,7 @@
   "sources": [
     "MyTradingSys/research/gap_audit_2026-10-19/REPORT.md"
   ],
-  "state": "refined",
+  "state": "blocked",
   "steps": [
     "Operator opens a new Code session on Fable 5.1 in a worktree of latest fast-track and sends the one-line prompt at the top of fable_run_5_brief.md",
     "Fable reads the 8 listed inputs, answers Q1-6, writes GRANDFATHER_DECISION.md",

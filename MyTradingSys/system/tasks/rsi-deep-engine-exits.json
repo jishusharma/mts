@@ -25,7 +25,7 @@
   ],
   "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer Agent reviewers, after 2nd FIX applied once, not re-read, planner DECISION OURS). Drafted 2026-10-26 (split of the old engine M card). DECISION (OURS) 2026-10-26 (FIX): K1/K2/K4/K8 windows are 2026-10-07..19 = HOLDOUT and the local klines end 2026-09-26, so tests use planted pivot/RSI pairs built from the SHOT_REVIEW (d) numbers. The same planted pairs appear in rsi-deep-divergence-context (no shared helper, file sets stay disjoint). est_turns 14. Chain wired 2026-10-26: prereg -> engine -> ladders -> exits -> run-dev; prereg -> prob-tables -> context/confirmations/confluence/divergence. Tables read no grid output, so they wait on prereg, not on run-dev. OPUS_FRAMING.md wins over SPEC.md. FIX r2 2026-10-26: K4 firing #1 and K8 firing #5 planted (earlier K8 firing prices and RSI are planted values, only the count is asserted); X4 path and break bar given so the cross-vendor card can re-derive them. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files. PLANNER 2026-10-28 DECISION (OURS): lane CODEX -> SONNET, worker session: the parent rsi-deep-engine was re-laned to SONNET (CODEX lab STALLED, ROUTING C2) and all three cards edit the same episode_sim.py as one chain, so one writer lane avoids a cross-lane merge. Stays raw until rsi-deep-engine is done (chain engine -> ladders -> exits).",
   "prio": 2,
-  "refine_tries": 0,
+  "refine_tries": 1,
   "refined_by": "",
   "refs": [],
   "result": "",

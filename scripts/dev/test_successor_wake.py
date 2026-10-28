@@ -67,6 +67,48 @@ def test_model_and_prompt_file_override(tmp_path):
     assert "--model claude-haiku-4-5" in r["script"] and "custom boot prompt" in r["script"]
 
 
+def test_usage_handoff_written_next_to_prompt(tmp_path):
+    """The woken session must be handed its own usage: a USAGE file beside the task's prompt (old code wrote none)."""
+    plan = {"mode": "NORMAL", "slots": 2, "five": 40.0, "week": 20.0, "five_reset": "2026-10-27T15:00Z", "week_reset": "2026-11-01T00:00Z"}
+    r = W.register("C", cwd=_repo(tmp_path), at="2026-10-27T20:05Z", dry=True, now=NOW, plan=plan)
+    s = r["script"]
+    assert 'Budget handoff:' in s, "prompt must hand the usage line to the woken session"
+    assert '[IO.File]::WriteAllText("$d/USAGE", $u)' in s, "the usage JSON must be written next to prompt.txt"
+    import json
+    m = re.search(r"\$u = @'\n(.*?)\n'@", s, re.S)
+    assert m, "no USAGE here-string in the script"
+    u = json.loads(m.group(1))
+    assert u["login"] == "C" and u["pacer_mode"] == "NORMAL" and u["slots"] == 2
+    assert u["five_pct"] == 40.0 and u["week_pct"] == 20.0 and u["plan"]["five_reset"] == "2026-10-27T15:00Z"
+    assert u["file"].endswith("/USAGE")
+    # the prompt names the file the woken session reads
+    assert u["file"] in s and "Budget handoff:" in s
+    # a present plan carries no missing-note
+    assert not u["note"].startswith("pacer plan missing")
+
+
+def test_usage_missing_plan_is_noted(tmp_path):
+    """A missing / unreadable pacer plan is a note, not an error: the woken session re-reads from get_usage.
+    `home` points at an empty dir so load_plan() never reads a real pacer file."""
+    r = W.register("A", cwd=_repo(tmp_path), at="2026-10-27T20:05Z", dry=True, now=NOW, plan=None, home=tmp_path / "no-plan")
+    s = r["script"]
+    m = re.search(r"\$u = @'\n(.*?)\n'@", s, re.S)
+    import json
+    u = json.loads(m.group(1))
+    assert u["pacer_mode"] == "unknown" and u["plan"] is None and u["five_pct"] is None
+    assert "re-read from get_usage" in u["note"]
+    assert "re-read from get_usage" in s, "the prompt line must tell the woken session to re-read usage"
+
+
+def test_wake_usage_pure_shape():
+    now = NOW
+    assert W.wake_usage("C", None, now)["pacer_mode"] == "unknown"
+    p = {"mode": "STOP", "slots": 0, "five": 80.0, "week": 70.0, "five_reset": "2026-10-27T15:00Z", "week_reset": "2026-11-01T00:00Z"}
+    u = W.wake_usage("B", p, now)
+    assert u["pacer_mode"] == "STOP" and u["slots"] == 0 and u["five_pct"] == 80.0 and u["week_pct"] == 70.0
+    assert W.usage_rel("B") == f"{W.BASE_DIR}/B/{W.USAGE_REL}"
+
+
 def test_budget_aware_fire_at(tmp_path):
     now = NOW
     ok = {"mode": "NORMAL", "slots": 2, "five": 10, "week": 20, "cap": 85}
