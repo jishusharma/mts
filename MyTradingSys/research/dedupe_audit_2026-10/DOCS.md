@@ -41,3 +41,5 @@ Rule used (d-dedupe-lean-no-contradiction, OPERATOR_DECISIONS.md:1335): newer op
 Batch 1 applied (dedupe-apply-1): rows 1, 2, 9 (row 9: SUPER_SESSION.md already said 100 min after the budget-rules fix; added the notes-file heartbeat remark). Row 3 is already fixed on trunk (supervisor.py has no Pipeliner spawn line). Rows 4-8 and 10-24: batch 2.
 
 Batch 2 applied (dedupe-apply-2): rows 5 (builder.md start line; ROSTER.json/ROLES.md left, role_loader check owns them), 12, 24. Remaining: 4, 6-8, 10, 11, 13-23.
+
+Batch 3 applied (dedupe-apply-3): rows 13 (RUN_MODEL.md superseded header, count dropped), 14 (ARCHITECTURE.md Pipeliner note). Remaining: 4, 6-8, 10, 11, 15-23.

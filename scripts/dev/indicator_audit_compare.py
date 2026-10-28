@@ -81,19 +81,6 @@ def run(packets, replies):
     return {"n_values": len(rows), "n_mismatch": len(bad), "rows": rows, "mismatches": bad}
 
 
-def live_route_check(packets):
-    """Engine self-consistency: the live alert layer's Bollinger must equal chart_verify's. -> list of disagreements."""
-    out = []
-    for p in packets:
-        if p["indicator"] != "BB":
-            continue
-        a, b = engine_values("BB", p["closes"]), engine_bb_live(p["closes"])
-        for key in ("BB_up", "BB_low"):
-            if abs(a[key] - b[key]) > 1e-9 * abs(a[key]):
-                out.append({"packet": p["id"], "key": key, "chart_verify": a[key], "live_bb": b[key]})
-    return out
-
-
 def other_routes(packets):
     """Other copies of the same maths that layers read: krown_core.rsi and wlow_bounce.detector.bollinger_upper.
     -> list of disagreements with the main engine route (RSI abs 0.01, BB relative 1e-6, same tolerance as the audit)."""
