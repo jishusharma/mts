@@ -46,11 +46,17 @@ BUDGET_RE = re.compile(r"^(\d{4})Z\s+\S+\s+\[note\]\s+BUDGET login=(\w+) 5h=(\d+
 
 
 def parse_budget(text):
-    """Newest BUDGET line per login from `mts_signal.py read` text (oldest first). {login: (hhmm, five, week, reset)}."""
-    out = {}
+    """Newest BUDGET line per login (by HHMM time, ties: later line) from `mts_signal.py read` text. {login: (hhmm, five, week, reset)}."""
+    out, key, day, prev = {}, {}, 0, None
     for ln in text.splitlines():
+        t = re.match(r"(\d{4})Z", ln.strip())
+        if t:   # lines carry HHMM only: a drop of over 12 h means the file crossed midnight
+            mins = int(t.group(1)[:2]) * 60 + int(t.group(1)[2:])
+            day += 1 if prev is not None and mins < prev - 720 else 0
+            prev = mins
         m = BUDGET_RE.match(ln.strip())
-        if m:
+        if m and t and (m.group(2) not in key or (day, mins) >= key[m.group(2)]):   # newest by time, not file order
+            key[m.group(2)] = (day, mins)
             out[m.group(2)] = (m.group(1), int(m.group(3)), int(m.group(4)), m.group(5) or "?")
     return out
 
@@ -62,8 +68,7 @@ def fmt_budget(budget, closed_today, closed_yday, commits_today, commits_yday):
                        [[k, f"{v[1]}%", f"{v[2]}%", v[0][:2] + ":" + v[0][2:], v[3]] for k, v in sorted(budget.items())])
     else:
         lines.append(nd("no BUDGET lines in the signal read"))
-    lines += [""] + table(["What it bought", "Today", "Yesterday"],
-                          [["Cards closed", closed_today, closed_yday], ["Commits on trunk", commits_today, commits_yday]])
+    lines += table(["What it bought", "Today", "Yesterday"], [["Cards closed", closed_today, closed_yday], ["Commits on trunk", commits_today, commits_yday]])
     lines.append("Spend vs output per login: NOT_IN_DATA (cards carry no login; a `closed_by_login` field would measure it).")
     return lines
 
@@ -105,11 +110,10 @@ def red_minutes(runs, now=None):
 
 
 def fmt_speed(commit_days, ci_runs, red_min, gate, ships):
-    lines = table(["Trunk day (UTC)", "Commits"], commit_days) + [""]
+    lines = ["Trunk commits per UTC day: " + ", ".join(f"{d[5:]} {n}" for d, n in commit_days)]
     if ci_runs:
-        lines += table(["CI last 6 (UTC)", "Result", "Commit"],
-                       [[r.get("created_at", "?")[5:16].replace("T", " "), r.get("conclusion") or "running", r.get("head_sha", "")[:8]] for r in ci_runs[:6]])
-        lines.append(f"Red now: {red_min} min" if red_min else "Red now: 0 min (green)")
+        lines.append("CI last 6 (newest first): " + ", ".join(f"{r.get('head_sha', '')[:7]} {r.get('conclusion') or 'running'}" for r in ci_runs[:6])
+                     + (f"; red now {red_min} min" if red_min else "; red now 0 min (green)"))
     else:
         lines.append(nd("CI runs unavailable (offline or rate limited)"))
     lines.append(f"Gate wall time, median of last {len(gate[1])} ships: {gate[0]:.0f} s {gate[1]}" if gate else "Gate wall time: " + nd("no gate_timing.jsonl rows"))
@@ -125,11 +129,64 @@ def old_hours(utc, now):
 
 
 def fmt_value(done_titles, cleanup, stuck, stale_claims):
-    lines = table(["Solved today (top 5)"], [[t[:90]] for t in done_titles[:5]]) if done_titles else ["Solved today: none yet"]
-    lines += ["", f"Dedupe/cleanup commits today: {len(cleanup)}" + ("  e.g. " + "; ".join(c[:60] for c in cleanup[:2]) if cleanup else ""),
+    lines = table(["Solved today (top 3)"], [[t[:90]] for t in done_titles[:3]]) if done_titles else ["Solved today: none yet"]
+    lines += [f"Dedupe/cleanup commits today: {len(cleanup)}" + ("  top 3: " + "; ".join(c[:50] for c in cleanup[:3]) if cleanup else ""),
               f"Stuck: {len(stuck)} active card(s) older than {STUCK_H} h" + ("  " + ", ".join(stuck[:3]) if stuck else ""),
               f"Stale claims (over {STUCK_H} h): {len(stale_claims)}" + ("  " + "; ".join(s[:70] for s in stale_claims[:3]) if stale_claims else "")]
     return lines
+
+
+CLEAN_RE = re.compile(r"dedupe|dedup|clean-?up|declutter|retire|prune|temp leak", re.I)
+
+
+def cleanup_commits(subjects):
+    return [s for s in subjects if CLEAN_RE.search(s)]
+
+
+GPT_JSON = "MyTradingSys/system/codex_usage.json"
+STALE_H = 6
+GEM_FACTS = ("Gemini facts on trunk: plan Google AI Pro (MyTradingSys/system/GEMINI_START.md:1); lane CODEX cards only (GEMINI_START.md:5); "
+             "Flash models via agy queue (scripts/dev/gemini_queue.py:10); queue logs F:/MTS/gq/*.log live on the NUC, not on trunk (gemini_queue.py:20).")
+
+
+def _pct(v):
+    return f"{v:g}%" if isinstance(v, (int, float)) else ND
+
+
+def gpt_row(d, now, src):
+    """Table row for the GPT/Codex account from codex_usage.json content."""
+    al = d.get("allowance") or {}
+    at = d.get("at", "")
+    age = old_hours(at, now) if at else None
+    when = f"{at[:16]}Z, {age:.1f} h old" + (" STALE" if age > STALE_H else "") if at else ND
+    return ["GPT (Codex)", al.get("plan") or ND, _pct(al.get("window_used")), _pct(al.get("week_used")), when, src]
+
+
+def fmt_gpt_gemini(gpt):
+    gem = ["Gemini (Antigravity)", "Google AI Pro", ND, ND, ND, "GEMINI_START.md:1"]
+    return table(["Provider", "Account/plan", "5h used", "Week used", "Reading (UTC), age", "Source"], [gpt, gem]) + [
+        "Gemini usage: NOT_IN_DATA (no Gemini usage file; would measure: gemini_queue run counts per day from its done log)", GEM_FACTS]
+
+
+def newest_gpt(now):
+    """codex_usage.json from the tree or origin/fast-track, whichever has the newer `at`."""
+    cands = []
+    try:
+        cands.append((json.loads((REPO / GPT_JSON).read_text(encoding="utf-8")), GPT_JSON + " (tree)"))
+    except (OSError, ValueError):
+        pass
+    try:
+        cands.append((json.loads(run(["git", "show", "origin/fast-track:" + GPT_JSON])), GPT_JSON + " (origin/fast-track)"))
+    except ValueError:
+        pass
+    if not cands:
+        raise FileNotFoundError(GPT_JSON)
+    d, src = max(cands, key=lambda c: c[0].get("at", ""))
+    return gpt_row(d, now, src)
+
+
+def sec_gpt_gemini():
+    return fmt_gpt_gemini(newest_gpt(datetime.now(timezone.utc)))
 
 
 def stale_claims(text):
@@ -148,15 +205,13 @@ def count_open(cards, weights=("CRITICAL", "CRUCIAL")):
 
 
 def fmt_missing(open_w, parked, raw, blocked):
-    return table(["Still missing", "Count"], [["Open CRITICAL cards", open_w.get("CRITICAL", 0)], ["Open CRUCIAL cards", open_w.get("CRUCIAL", 0)],
-                                              ["Parked (need review or no tries left)", parked], ["Raw cards", raw], ["Blocked cards", blocked]])
+    return [f"Open CRITICAL {open_w.get('CRITICAL', 0)}, open CRUCIAL {open_w.get('CRUCIAL', 0)}, parked (need review / no tries left) {parked}, raw {raw}, blocked {blocked}"]
 
 
 def fmt_hygiene(disks, temp_n, mts_run, bundle, trees, strays):
-    rows = [[d, f"{g:.1f} GB" if g is not None else ND] for d, g in disks]
-    rows += [["Temp top-level entries", temp_n], ["mts_run_* leftovers", mts_run], ["Worktrees (holding unshipped work)", trees],
-             ["Old stray processes", strays], ["VM bundle folder", bundle]]
-    return table(["Hygiene", "Value"], rows)
+    free = ", ".join(f"{d} {g:.1f} GB" if g is not None else f"{d} {ND}" for d, g in disks)
+    return [f"{free}; Temp entries {temp_n}; mts_run_* leftovers {mts_run}; stray processes {strays}",
+            f"Worktrees: {trees}", f"VM bundle: {bundle}"]
 
 
 def fmt_sessions():
@@ -246,7 +301,7 @@ def sec_value():
     now = datetime.now(timezone.utc)
     done = sorted((c for c in cards() if c.get("state") == "done" and str(c.get("closed", ""))[:10] == utc_day()), key=lambda c: c.get("closed", ""), reverse=True)
     subj = run(["git", "log", "origin/fast-track", "--no-merges", "--since=midnight", "--format=%s"], 20).splitlines()
-    clean = [s for s in subj if re.search(r"(dedupe|clean-?up|declutter|retire[sd]?|prune[sd]?)", s, re.I)]
+    clean = cleanup_commits(subj)
     stuck = [c["id"] for c in cards() if c.get("state") == "active" and old_hours(c.get("taken", ""), now) > STUCK_H]
     stale = stale_claims(run([sys.executable, str(HERE / "sync.py"), "claims"], 30))
     return fmt_value([c.get("title", c["id"]) for c in done], clean, stuck, stale)
@@ -291,7 +346,7 @@ def sec_hygiene():
 
 
 SECTIONS = [("Resources: budget and what it bought", sec_budget), ("Speed and health", sec_speed), ("Value added", sec_value),
-            ("Still missing", sec_missing), ("Hygiene", sec_hygiene)]
+            ("GPT and Gemini", sec_gpt_gemini), ("Still missing", sec_missing), ("Hygiene", sec_hygiene)]
 
 
 def build(sections=None):
@@ -303,7 +358,7 @@ def build(sections=None):
         except Exception as e:
             fails += 1
             lines = [nd(f"{type(e).__name__}: {str(e)[:100]}")]
-        body += [f"**{title}**"] + lines + [""]
+        body += [f"**{title}**"] + lines
     return fails, body + ["**Sessions and measurement**"] + fmt_sessions()
 
 
