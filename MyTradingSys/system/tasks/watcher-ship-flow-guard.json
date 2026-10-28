@@ -2,6 +2,18 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T12:07:59Z",
+    "misses": 6,
+    "reads": [
+      "MyTradingSys/research/pipeliner/station_watcher_monitor.py",
+      "scripts/dev/mts_signal.py",
+      "scripts/dev/make_status.py",
+      "MyTradingSys/research/lead/2026-10-28_coordinator-idle-during-background-wait.md"
+    ],
+    "session": "agent-a17b0c953e545771a"
+  },
   "created": "2026-10-26T17:08:50Z",
   "depends_on": [],
   "done_when": "A design note under MyTradingSys/research/lead/ picks, per stuck-ship signal: (1) its data source and threshold; (2) the output format (STATE-CHANGE line plus one mts_signal.py PIPE note, reusing traffic.py's PROPOSED text); (3) whether the bare while-loop (no functions, no tests today) needs a pure check_once() refactor to be testable. One default per point. No code changes in this card.",
