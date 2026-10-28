@@ -1796,6 +1796,43 @@ class OwnCiWaitTest(unittest.TestCase):
         self.assertIn("--no-ci-wait", codex_run.SHIP_ARGS)
 
 
+class ShipResultFlagTest(unittest.TestCase):
+    """`ship --result` commits the tree's uncommitted files with a Result: body line (planner finding, 2026-10-28)."""
+
+    def make_repo(self, td):
+        g = lambda *a: subprocess.run(["git", "-C", td, *a], check=True, capture_output=True, text=True).stdout
+        g("init", "-q")
+        g("config", "user.email", "t@t")
+        g("config", "user.name", "t")
+        (Path(td) / "a.txt").write_text("one", encoding="utf-8")
+        g("add", "-A")
+        g("commit", "-q", "-m", "base")
+        g("update-ref", f"refs/remotes/origin/{sync.TRUNK}", "HEAD")
+        return g
+
+    def test_commit_pending_writes_the_result_line_and_takes_new_and_changed_files(self):
+        with tempfile.TemporaryDirectory() as td:
+            g = self.make_repo(td)
+            (Path(td) / "a.txt").write_text("two", encoding="utf-8")
+            (Path(td) / "b.txt").write_text("new", encoding="utf-8")
+            self.assertEqual(sync.commit_pending(td, "ships in 40 s", "planner: card edits"), 2)
+            msg = g("log", "-1", "--format=%B")
+            self.assertTrue(msg.startswith("planner: card edits"))
+            self.assertIn("Result: ships in 40 s", msg)
+            self.assertEqual(g("status", "--short").strip(), "")
+            self.assertEqual(sync.commit_pending(td, "x"), 0)       # clean tree: nothing to commit
+            with self.assertRaises(sync.SyncError):
+                sync.commit_pending(td, "  ")
+
+    def test_cli_result_commits_before_ship_and_m_without_result_is_refused(self):
+        with mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "run_host_health"),                 mock.patch.object(sync, "ship", return_value=None) as mock_ship,                 mock.patch.object(sync, "commit_pending", return_value=1) as mock_commit:
+            self.assertEqual(sync.main(["ship", "--result", "it works", "-m", "subj"]), 0)
+            mock_commit.assert_called_once_with(Path("."), "it works", "subj")
+            mock_ship.assert_called_once_with(Path("."), release_slug=None, after_slug=None)
+            with contextlib.redirect_stderr(io.StringIO()):
+                self.assertEqual(sync.main(["ship", "-m", "subj"]), 1)
+
+
 class PARALLEL_MainCheckoutRuleTest(unittest.TestCase):
     def test_rule_present(self):
         doc = Path(__file__).resolve().parents[2] / "MyTradingSys" / "system" / "PARALLEL.md"

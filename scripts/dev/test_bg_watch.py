@@ -82,13 +82,31 @@ class BgWatchTest(unittest.TestCase):
         self.write(rows)
         out = [l for l in self.lines() if l.startswith("STALLED-BG")]
         self.assertEqual(len(out), 1, out)
-        self.assertIn("poll-loop bpoll0006 40m > cap 15m", out[0])
+        self.assertIn("poll-loop bpoll0006 40m > cap 10m", out[0])
+        self.assertIn("bg_watch.py until", out[0])           # the loop had no deadline: the line names the bounded replacement
 
     def test_dead_session_is_not_scanned(self):
         p = self.write(start("t1", "Bash", {"command": SSH}, "Command running in background with ID: bold00001.", 600))
         old = NOW.timestamp() - 5 * 3600
         os.utime(p, (old, old))
         self.assertEqual(self.lines(), [])
+
+    def test_until_verb_matches_times_out_and_unbounded_loops_are_told_apart(self):
+        f = Path(self.tmp.name) / "x.out" if hasattr(self, "tmp") else None
+        with tempfile.TemporaryDirectory() as td:
+            f = Path(td) / "x.out"
+            clock = [0.0]
+            ticks = lambda s: clock.__setitem__(0, clock[0] + s)
+            self.assertEqual(bg_watch.wait_until(f, "DONE", 30, 5, sleep=ticks, now_fn=lambda: clock[0]), 124)   # missing file, then deadline
+            self.assertEqual(clock[0], 30)
+            f.write_text("run" + chr(10) + "DONE" + chr(10), encoding="utf-8")
+            self.assertEqual(bg_watch.wait_until(f, "DONE", 30, 5, sleep=ticks, now_fn=lambda: clock[0]), 0)
+            self.assertEqual(bg_watch.main(["until", "--file", str(f), "--pattern", "NOPE", "--timeout", "0", "--interval", "1"]), 124)
+        self.assertEqual(bg_watch.main(["until", "--file", "f"]), 2)
+        self.assertTrue(bg_watch.unbounded_loop("until grep -q y f; do sleep 5; done"))
+        self.assertFalse(bg_watch.unbounded_loop("timeout 600 bash -c 'until grep -q y f; do sleep 5; done'"))
+        self.assertFalse(bg_watch.unbounded_loop("python scripts/dev/bg_watch.py until --file f --pattern y"))
+        self.assertEqual(bg_watch.CAPS["poll-loop"], 10)
 
     def test_kind_caps(self):
         k = bg_watch.kind_of
