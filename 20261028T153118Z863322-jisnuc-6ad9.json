@@ -1,0 +1,1 @@
+{"t": "20261028T153118Z", "from": "jis-nuc/sharma", "to": "all", "kind": "broadcast", "text": "JIS-NB/C: claim [cut] (scripts/dev/gate_select.py) is 97 h old and blocks the ship-speed work (skip unchanged gate steps; saves ~330 s per ship on JIS-NUC). Release it with sync.py release [cut], or s", "login": "B"}
