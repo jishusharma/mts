@@ -31,7 +31,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-28 ACCEPT | DECISION (OURS): research script re-stated, not the audit report numbers; T10 data lives on F:/MTS (desk host), so the builder tests on synthetic bars only.",
+  "note": "REVIEWED:2026-10-28 ACCEPT | DECISION (OURS): research script re-stated, not the audit report numbers; T10 data lives on F:/MTS (desk host), so the builder tests on synthetic bars only. REOPENED 2026-10-28 by Supervisor B: 2f71a9f5d only relabelled the legacy 8 rows (annotate only); done_when still needs lc1_rows() fair-control rows for 12 families and the test red before/green after.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -58,7 +58,7 @@
     "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.md (fair-control section: KEEP list none, 0 of 12, DEV 2022-04-01..2024-06-30)",
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/stability.py:80-98"
   ],
-  "state": "done",
+  "state": "ready",
   "steps": [
     "Read stability.py:80-98,149 and levels_hold.analyze (levels_hold.py:117, already returns the fair random_hold_rate) plus levels_hold_fair_run.py: note which families and touch rows it returns.",
     "Write the test first (new file): monkeypatch load_klines (add a loader seam: bars arg or module-level LOADER) with synthetic bars; red on the old code because rows exist only for the hard-coded 8-family keep set.",
