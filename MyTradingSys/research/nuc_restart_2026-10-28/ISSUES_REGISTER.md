@@ -64,3 +64,15 @@ Severity: H = stops unattended work or duplicates it; M = wastes turns or hides 
 - B15 (M, VERIFIED): pytest's default temp folder is access-denied in the agent sandbox, so preship "own unit tests" fails there while the tests pass with `--basetemp`. Fix: preship passes a basetemp under the repo scratch or the temp dir that is writable.
 - B16 (L, VERIFIED): `tasks.py done` is refused for a card still `raw`, so a bug card filed by the operator's word cannot be closed by its fixer. Fix: allow `done` on a raw card whose `approved_by` is set.
 - Fixed and shipped by Opus: B1, B2, B3, B5, B6, B10 (`637422a47`, `af2d5b82b`, `2c5731b8a`, `fc12c222f`); B4 `6507d8c1e`; B11 upstream.
+
+## Added by Supervisor B, later in the same window
+
+- B17 (M, FIXED `5451ebbbc`, `d5946cee2`): the stop guard counted commits not reachable from origin even when the tree equalled trunk (merge commits, a duplicate revert). Now compares against the merge-base.
+- B14 FIXED `12d90245b` (successor chain survives link 1; first real handover after a reboot is the proof).
+- B18 (M, VERIFIED): parallel workers quote each other's shas in their final reports (LC1 and chain-bug Builders swapped; the ship-speed session quoted a merge commit). Supervisor verifies by file (`git log -- <file>`). Workers are now told to quote from `git log -1 -- <file>`.
+- B19 (M, VERIFIED): two CI REDs at Step 3la (krown `crosscheck_desk.py`, T06 `gap_frequency.py`): research scripts with forward-index hits shipped without allowlist rows. Both reverted. Fix: builder briefs now say to add rows in the same commit; consider running `lookahead_lint.py --new` in preship for any new research script.
+- B20 (L, VERIFIED): `mts_signal.py broadcast` prints 'cut to 200 characters' but delivers; my one ask went out three times.
+- B21 (M, VERIFIED): Builder marked `re-state-t10-stability-py-lc1-keep-rows-` done while its done_when (fair-control rows for 12 families) was not met; the Planner's 'annotate only' decision for LC3 and the imbalance filter had been applied to T10, whose card said otherwise. Card reopened. Fix: Builder must compare its diff to done_when before `tasks.py done`.
+- Shipped by the ship-speed session: `f6c7c446b` (ship returns when origin has the commit, B8), `223bb7c01` (`ship --result`, `bg_watch.py until`, poll cap 600 s). Open: skip unchanged gate steps (`gate_select.py`, blocked by JIS-NB's stale claim `ship-gate-let-a-new-look-ahead-fail-reac`, 97 h).
+- LC1 re-state `10dca8a07`: 0 of 12 families KEEP on the fair control (published 8).
+- Wiring audit `bcfd46cfc`: 446 rows. PRE_REG `04112bfe2`: pre-US failed-break freeze (gate inputs n=300, sd=60 bps are estimates).
