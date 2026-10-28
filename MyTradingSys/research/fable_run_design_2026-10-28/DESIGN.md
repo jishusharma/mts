@@ -26,12 +26,13 @@ Carry executability memo (R1 E3) is a 5-turn Sonnet job, not a Fable run; R6 fil
 6. `research/context_factors_2026-10-16/COUNTS_DEV_EXT.md`; OPERATOR_DECISIONS `D3-dev-ext`.
 7. Event definitions: `research/sim_desk/studies/krown.py`, `rsi.py`, `_bars.py`; `research/malkan_extract_2026-10-15/PRE_REG_MALKAN_GFS_BTC.md`; `research/pitchfork_2026-10-19/PHASE1_EVENT_STUDY.md`; card `krown-dev-event-study`.
 8. `research/design_cards_2026-10-26/FABLE_FEE_STOP_RULE.md` (stop >= 4x round-trip fee).
-Data: klines only (timestamps + OHLCV). BTC/ETH/SOL 4h and 1d public Binance klines may be fetched (pre-approved public data; tiny files). Every bar at or after 2024-07-01 00:00Z is refused (VALIDATION/HOLDOUT sealed).
+Data: klines only (timestamps + OHLCV). BTC/ETH/SOL 4h and 1d public Binance klines may be fetched (pre-approved public data; tiny files); 1w is resampled from 1d. Windows: DEV 2022-01-01..2024-06-30 (D3; `pit_levels_2026-10-16/bug_b187_evidence.py:48`), DEV_EXT 2020-01..2021-12. Every bar at or after 2024-07-01 00:00Z is dropped at load and asserted absent (VALIDATION/HOLDOUT sealed).
+9. Gates (TASK_REFINEMENT.md:87): `scripts/dev/verdicts.py check` and `count --split DEV` (one m = DEV variants + new cells), `scripts/dev/prereg_gate.py` (exit 1 = not powered, never freeze).
 
 ## Output it must write
 `research/fable_run6_powered_prereg/PRE_REG.md` (max 3 pages) + `counts_only.py` + `COUNTS.csv`:
-1. Counts table per family x timeframe x symbol (BTC DEV, DEV_EXT if on disk else NOT_IN_DATA, ETH, SOL): events, n_needed (sd 1.37 R, cost_R = 0.14 % / median stop %, plausible 0.30 R, Holm m = family cells; all OURS except formulas SOURCED), POWERED yes/no.
-2. If one family is POWERED: the frozen pre-reg (all 12 template items; universe, event rule, cooldown, entry delay, stop >= 4x fee, exit, <= 9 cells, Holm, per-UTC-day cluster correction across symbols, DEV pass t >= 3.24, VALIDATION pass t >= 2.0 same sign). If none: a STOP verdict for the BTC trading-edge program with the R1 STOP list as cards.
+1. Counts table per family x timeframe x symbol (BTC DEV, DEV_EXT if on disk else NOT_IN_DATA, ETH, SOL): events, n_needed (sd 1.37 R, cost = mean(14/stop_i) in R, plausible 0.30 R, one Holm m per family from `verdicts.py count --split DEV` + new cells; numbers OURS, formulas SOURCED), `prereg_gate.py` exit code, POWERED yes/no.
+2. If one family is POWERED: the frozen pre-reg (all 12 template items; universe, event rule, cooldown, entry delay, stop >= 4x fee, exit, <= 9 cells, Holm, per-UTC-day cluster correction across symbols, DEV pass t >= Holm z for the same m used in n_needed, VALIDATION pass t >= 2.0 same sign). If none: a STOP verdict for the BTC trading-edge program with the R1 STOP list as cards.
 3. Cards via `tasks.py new` + `fill` (twins first): E2 DEV run (SONNET), the one VALIDATION read (blocked until operator told, one-line ask), carry memo E3 (SONNET). `tasks.py check`; revert any other card it rewrites.
 4. `research/fable_runs_2026-10-28/USAGE.md` R6 rows (get_usage start/end).
 
