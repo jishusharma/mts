@@ -29,8 +29,71 @@ HANDOVER_REL = "MyTradingSys/system/handover/SUPERVISOR_{}.md"
 MARK = "Successor task:"
 BASE_DIR = "F:/MTS/succ_wake"
 
+USAGE_REL = "USAGE"
+
 PROMPT = ("You are Supervisor. Login {login}. Continue from MyTradingSys/system/handover/SUPERVISOR_{login}.md. "
-          "Never ask the operator; take the defaults and log them.")
+          "Budget handoff: {usage_line} Never ask the operator; take the defaults and log them.")
+
+
+def usage_dir(login: str, base: str | None = None) -> str:
+    """The directory the usage file lives in: the task's prompt dir (base or MTS_SUCC_WAKE_DIR), so it sits next to out.log."""
+    return f"{base or os.environ.get('MTS_SUCC_WAKE_DIR') or BASE_DIR}/{login}"
+
+
+def usage_rel(login: str, base: str | None = None) -> str:
+    """The usage file a register() writes: the pacer's last reading (five/week %, resets, mode, slots) plus the task it lives in,
+    so a woken session on any Windows account can read its own budget without MCP get_usage (the gateway profile has none)."""
+    return f"{usage_dir(login, base)}/{USAGE_REL}"
+
+
+def wake_usage(login: str, plan: dict | None, fire_at: datetime, base: str | None = None) -> dict:
+    """Pure: the usage-JSON written next to the task's prompt. Reads the pacer's last plan; a missing / unreadable plan is
+    not an error, it is a note the woken session must re-read from get_usage. Returns the dict the JSON holds; the key
+    `file` is the path a woken session reads it from (the task dir), so the prompt can name it without re-deriving base."""
+    five = week = None
+    five_reset = week_reset = None
+    mode = "unknown"
+    slots = 0
+    if plan:
+        try:
+            five = float(plan.get("five"))
+        except (TypeError, ValueError):
+            five = None
+        try:
+            week = float(plan.get("week"))
+        except (TypeError, ValueError):
+            week = None
+        five_reset = plan.get("five_reset")
+        week_reset = plan.get("week_reset")
+        mode = str(plan.get("mode"))
+        try:
+            slots = int(plan.get("slots"))
+        except (TypeError, ValueError):
+            slots = 0
+    have_plan = bool(plan) and mode != "unknown"
+    return {
+        "file": usage_rel(login, base),
+        "login": login,
+        "at_fire": fire_at.isoformat(),
+        "five_pct": five,
+        "week_pct": week,
+        "five_reset_utc": five_reset,
+        "week_reset_utc": week_reset,
+        "pacer_mode": mode,
+        "slots": slots,
+        "plan": plan or None,
+        "note": "" if have_plan else "pacer plan missing or unreadable: re-read from get_usage before making budget decisions.",
+    }
+
+
+def usage_line(usage: dict) -> str:
+    """The short handoff sentence PROMPT appends. A named file plus the one-line task that consumes the reading."""
+    p = usage.get("file") or usage_rel(usage["login"])
+    if usage.get("five_pct") is None or usage.get("pacer_mode") == "unknown":
+        return f"usage file {p} (task MTS-SuccWake-{usage['login']}); pacer plan missing: re-read from get_usage before acting."
+    return (f"usage file {p} (task MTS-SuccWake-{usage['login']}, pacer {usage['pacer_mode']} {usage['slots']} slot(s), "
+            f"5h {usage['five_pct']}% week {usage['week_pct']}%): adopt it, then run `python scripts/dev/supervisor.py plan` "
+            "with a fresh get_usage reading (on a gateway profile that has no get_usage, record by hand and say so).")
 
 
 class WakeError(Exception):
@@ -94,15 +157,18 @@ def check_checkout(cwd: Path) -> None:
         raise WakeError(f"{cwd} is not an MTS checkout (MyTradingSys/ or scripts/dev/sync.py missing)")
 
 
-def build_script(login: str, model: str, prompt: str, cwd: Path, fire_at: datetime | None, base: str | None = None) -> str:
-    """The PowerShell that writes prompt.txt + run.ps1 and registers the one-time task. fire_at None = start it now (no trigger).
+def build_script(login: str, model: str, prompt: str, cwd: Path, fire_at: datetime | None, base: str | None = None,
+                 usage: dict | None = None) -> str:
+    """The PowerShell that writes prompt.txt + USAGE + run.ps1 and registers the one-time task. fire_at None = start it now (no trigger).
     A future fire_at = one -Once trigger, never a repeat. The run script unregisters the task in a `finally`."""
+    import json
     for v in (login, model, str(cwd)):
         if "'" in v or "\n" in v:
             raise WakeError("quote or newline in login/model/cwd")
     name = task_name(login)
     d = f"{base or os.environ.get('MTS_SUCC_WAKE_DIR') or BASE_DIR}/{login}"
     cwd_s = str(cwd).replace("\\", "/")
+    usage_json = json.dumps(usage or {}, ensure_ascii=True, sort_keys=True, separators=(",", ":"))
     run = "\n".join([
         '$env:Path += ";C:/Users/E-ngineers/.local/bin"',
         f"Set-Location '{cwd_s}'",
@@ -117,6 +183,8 @@ def build_script(login: str, model: str, prompt: str, cwd: Path, fire_at: dateti
         f"$d = '{d}'; New-Item -ItemType Directory -Force $d | Out-Null",
         "$p = @'", prompt, "'@",
         '[IO.File]::WriteAllText("$d/prompt.txt", $p)',
+        "$u = @'", usage_json, "'@",
+        f'[IO.File]::WriteAllText("$d/{USAGE_REL}", $u)',
         "$r = @'", run, "'@",
         '[IO.File]::WriteAllText("$d/run.ps1", $r)',
         '$a = New-ScheduledTaskAction -Execute "conhost.exe" -Argument "--headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File $d/run.ps1"',
@@ -175,7 +243,9 @@ def register(login: str, *, at: str | None = None, model: str = DEFAULT_MODEL, p
         why = "--at given"
     else:
         when, why = plan_fire_at(plan if plan is not None else load_plan(login, home), now)
-    prompt = PROMPT.format(login=login)
+    fire = iso(now) if when <= now + timedelta(minutes=1) else iso(when)
+    usage = wake_usage(login, plan if plan is not None else load_plan(login, home), _parse(fire) or now, base)
+    prompt = PROMPT.format(login=login, usage_line=usage_line(usage))
     if prompt_file:
         try:
             prompt = Path(prompt_file).read_text(encoding="utf-8").strip()
@@ -184,10 +254,9 @@ def register(login: str, *, at: str | None = None, model: str = DEFAULT_MODEL, p
         if not prompt or "'@" in prompt:
             raise WakeError("prompt file empty or contains a here-string terminator")
     immediate = when <= now + timedelta(minutes=1)
-    script = build_script(login, model, prompt, cwd, None if immediate else when, base)
-    fire = iso(now) if immediate else iso(when)
+    script = build_script(login, model, prompt, cwd, None if immediate else when, base, usage=usage)
     line = f"{MARK} {task_name(login)} fireAt {fire} (4b2)"
-    res = {"script": script, "line": line, "fire_at": fire, "why": why, "task": task_name(login), "ran": False, "handover": None}
+    res = {"script": script, "line": line, "fire_at": fire, "why": why, "task": task_name(login), "ran": False, "handover": None, "usage": usage}
     if dry:
         return res
     if runner is None:

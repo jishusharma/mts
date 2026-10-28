@@ -1309,3 +1309,8 @@ Applied: 2026-10-22: scripts/dev/offer_guard.py (Stop hook, .claude/settings.jso
 ```json
 {"status":"DECIDED","operator_quote":"Relayed 2026-10-28 by the Malkan RSI session; verbatim operator words not in the relay (NOT_IN_DATA).","decision":"Live validation: a live signal is sent with a chart of drawn flags; operator confirms or corrects once per unique category; look-alikes inherit (matches validated case #n); differing or corrected goes to a DOUBTS list, never an auto-verdict. Seed categories from history (OURS). Card live-validation-store-signal-chart-hook.","question":"How are layers validated now that G3 blind marking is dropped?","id":"d-live-validation","date":"2026-10-28"}
 ```
+
+## d-no-docker-wsl-for-mts | decided 2026-10-28 | Builder (docker-card-drop)
+```json
+{"id": "d-no-docker-wsl-for-mts", "order": 48, "date": "2026-10-28", "status": "DECIDED", "question": "Use Docker or WSL for MTS gates or test speed-ups?", "answer": "No. Operator decided in chat (never recorded) not to use Docker/WSL for MTS and uninstalled it from the Lenovo. Verbatim words not in the record (NOT_IN_DATA). DEVICES.md:83 (Docker Desktop and WSL kept) stays about the operator's own projects only, not MTS.", "done": "card docker-vs-windows-test-speed dropped (it had been dispatched 2026-10-27 and started Docker Desktop on JIS-NB; operator stopped it 2026-10-28; result file never written). Follow-up card dispatch-check-vs-decisions."}
+```
