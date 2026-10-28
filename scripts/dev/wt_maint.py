@@ -32,7 +32,7 @@ import sync  # noqa: E402
 import hosts  # noqa: E402
 
 REPO = Path(__file__).resolve().parents[2]
-SUPERVISOR_LOG_REL = "MyTradingSys/research/fast_track_2026-09-27/SUPERVISOR_LOG.md"
+from cicd_run import SUPERVISOR_LOG_REL  # noqa: E402  (one owner of the path)
 RECENT_MIN = 30
 IDLE_HOURS = sync.TIDY_IDLE_HOURS
 DIRTY_IDLE_HOURS = 24      # DECISION (OURS, operator 2026-10-26 "same mechanism on all devices, periodically"): a tree whose branch is fully on trunk

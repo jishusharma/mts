@@ -204,3 +204,10 @@ def test_sync_skips_host_health_in_throwaway_repo(monkeypatch, tmp_path):
     import sync
     monkeypatch.setattr(h, "run_safe", lambda repo: (_ for _ in ()).throw(AssertionError("scanned the host from a scratch repo")))
     assert sync.run_host_health(str(tmp_path)) == []
+
+
+def test_own_temp_prefixes_match_c_drive_guard():
+    """dedupe INFRA 7: one list of this repo's own gate basetemps; host_health used to miss mts_s5c_."""
+    import c_drive_guard
+    assert "mts_s5c_" in h.OWN_TEMP_PREFIXES
+    assert c_drive_guard.OWN_PREFIXES is h.OWN_TEMP_PREFIXES

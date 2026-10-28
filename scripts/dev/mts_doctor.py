@@ -416,21 +416,20 @@ def broadcast_check(repo, rows=None, now=None):
         return "OK", f"no HIGH broadcast waits over {BROADCAST_WARN_H} h on a host seen in the last {BROADCAST_SEEN_H} h"
     return "WARN", "; ".join(stale[:8]) + " | fix: python scripts/dev/mts_signal.py pending --host <host>; run the cmd there, then ack <id> done (no session on that host: run it by hand)"
 
-STALE_CLAIM_H = 24       # same as sync.py STALE_HOURS
 STALE_CLAIM_MAX = 5      # OURS: reports 10-23..10-25 counted 18, 18 and 22 stale claims; each one blocks its task for every login
 SCRATCH_RE = re.compile(r"(^|/)_scratch[^/]*$|(^runtime_data|^MyTradingSys/research)/.*ship[^/]*\.log$|(^|/)[^/]*_ship\.log$")
 
 
 def stale_claims(repo, claims=None, now=None):
     """WARN when more than 5 open claims are over 24 h old. claims = [(slug, {epoch, host, account})] (default: sync.open_claims)."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import sync as Y
     if claims is None:
-        sys.path.insert(0, str(Path(__file__).resolve().parent))
-        import sync as Y
         claims = Y.open_claims(Path(repo))
     t = (now or datetime.now(timezone.utc)).timestamp()
-    old = sorted((slug for slug, kv in claims if kv.get("epoch") and (t - int(kv["epoch"])) / 3600 > STALE_CLAIM_H))
+    old = sorted((slug for slug, kv in claims if kv.get("epoch") and (t - int(kv["epoch"])) / 3600 > Y.STALE_HOURS))
     if len(old) > STALE_CLAIM_MAX:
-        return "WARN", f"{len(old)} claims over {STALE_CLAIM_H} h old (limit {STALE_CLAIM_MAX}): {', '.join(old[:6])} | fix: python scripts/dev/sync.py release <slug> from the owner host, or ask the owner"
+        return "WARN", f"{len(old)} claims over {Y.STALE_HOURS} h old (limit {STALE_CLAIM_MAX}): {', '.join(old[:6])} | fix: python scripts/dev/sync.py release <slug> from the owner host, or ask the owner"
     return "OK", f"{len(old)} stale claim(s) of {len(claims)} open"
 
 

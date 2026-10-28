@@ -239,5 +239,13 @@ class Device(unittest.TestCase):
         self.assertNotIn("E-ngineers", src)
 
 
+
+class SharedConstants(unittest.TestCase):
+    def test_supervisor_log_rel_is_cicd_runs(self):
+        """dedupe CODE 25: one SUPERVISOR_LOG_REL (cicd_run owns it); wt_maint imports it."""
+        import cicd_run
+        self.assertIs(wt_maint.SUPERVISOR_LOG_REL, cicd_run.SUPERVISOR_LOG_REL)
+
+
 if __name__ == "__main__":
     unittest.main()
