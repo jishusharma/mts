@@ -4,6 +4,21 @@
   "commands": [
     "python scripts/dev/shot.py status"
   ],
+  "context": {
+    "calls_to_edit": 26,
+    "folded": "2026-10-28T06:57:26Z",
+    "misses": 8,
+    "reads": [
+      "scripts/dev/mts_signal.py",
+      "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/READ.md",
+      "MyTradingSys/system/desk_queue/20261026-145734-lab-verify-10-26-footprint-delta-vs-coin.json",
+      "MyTradingSys/system/desk_queue/20261026-172202-lab-verify-footprint-vs-indicator-delta.json",
+      "MyTradingSys/research/add_bugs_eagle_eyes_1026.py",
+      "MyTradingSys/methodology/screenshot_intake.md",
+      "MyTradingSys/research/layer_lab/reports/2026-10-28_trust-recheck-lab-machine-checks-extra.md"
+    ],
+    "session": "agent-ae86ceb045ca1dad3"
+  },
   "created": "2026-10-26T14:56:57Z",
   "depends_on": [],
   "done_when": "per-bar table 13:00-14:30Z with indicator, footprint and spot delta, units and bar alignment stated, sign agreement counted (spot vs footprint was 3 of 6), one-line rule for which source Eagle_Eyes quotes",
