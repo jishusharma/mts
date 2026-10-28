@@ -1,6 +1,6 @@
 {
   "approved_by": "",
-  "asks": "Approve Fable 5.1 run 4 (six angles, cap 12 weekly points) after fable-setups-pack-prep ships? Default: not yet.",
+  "asks": "",
   "commands": [],
   "created": "2026-10-18T19:46:46Z",
   "depends_on": [],
@@ -15,7 +15,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PARKED 2026-10-26 Session_Planner: operator-run Fable only (no session may start it); OPUS lane needs approved_by and a crucial line; waits on fable-setups-pack-prep and fable-run5-grandfather-decision | Operator-run Fable only; no session may start or message it. Waits on fable-setups-pack-prep (refined, review in progress 2026-10-20). Runs after fable-run5-grandfather-decision. Cap 12 weekly poi",
+  "note": "BLOCKED 2026-10-28 Session_Planner(c-1028): operator-run Fable only, OPUS lane has no approved_by | PARKED 2026-10-26 Session_Planner: operator-run Fable only (no session may start it); OPUS lane needs approved_by and a crucial line; waits on fable-setups-pack-prep and fable-run5-grandfather-decision | Operator-run Fable only; no session may start or message it. Waits on fable-setups-pack-prep (refined, review in progress 2026-10-20). Runs after fable-run5-grandfather-decision. Cap 12 weekly poi",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
@@ -35,7 +36,7 @@
   "sources": [
     "MyTradingSys/system/fable_run_4_brief.md"
   ],
-  "state": "refined",
+  "state": "blocked",
   "steps": [
     "Wait for fable-setups-pack-prep done (pack on fast-track, leak check green)",
     "Operator starts one Fable 5.1 session per angle 1..6 in order with the first message in fable_run_4_brief.md; each ships ANGLE_<n>.md",

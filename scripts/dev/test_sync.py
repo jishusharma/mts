@@ -1267,6 +1267,42 @@ class SyncTest(unittest.TestCase):
         self.assertFalse(sync.push_race_lost(subprocess.CompletedProcess([], 128, "", self.AUDIT_AUTH)))
         self.assertFalse(sync.push_race_lost(subprocess.CompletedProcess([], 124, "", "TIMEOUT git push after 180s")))
 
+    def test_lost_claim_race_retries_after_a_jitter_not_in_lockstep(self):
+        # 2026-10-28 NUC (gemini-lane-fix): two gemini claimers each lost 3 claim pushes back to back with ~0 s
+        # between attempts (no backoff in the claims loop), so the second claimer re-fetched exactly when the
+        # other's push landed: 6 'push rejected' lines, both claims 'still rejected after 3 tries'. The ship loop
+        # already jitters 1-5 s between lost-race retries (GATE_SPEED D4); the claims loop now jitters 0.5-4 s too.
+        rel = "MyTradingSys/system/claims/jitter.md"
+        sync.push_claim_commit(self.a, rel, "host: a\n", "claim jitter")   # create origin/claims
+        real = sync.git
+        fired = []
+
+        def spy(repo, *args, **kw):
+            r = real(repo, *args, **kw)
+            if r.returncode == 0 and args[:1] == ("push",) and args[-1].endswith(":refs/heads/claims") and not fired:
+                fired.append(1)
+                r.returncode, r.stderr = 1, " ! [rejected]  " + rel + " -> claims (fetch first)" + chr(10) + "error: failed to push some refs"
+            return r
+        sleeps = []
+        with mock.patch.object(sync, "git", spy), contextlib.redirect_stdout(io.StringIO()):
+            sync.push_claim_commit(self.a, rel, "host: a\n", "claim jitter", sleep=sleeps.append)
+        self.assertEqual(fired, [1])        # first push lost the race; the jittered retry landed
+        self.assertEqual(len(sleeps), 1)
+        self.assertTrue(0.5 <= sleeps[0] <= 4.0, sleeps)
+
+    def test_claim_and_release_take_a_sleep_arg(self):
+        # the CLI claim/release paths thread the sleeper through, so a lost race there is jittered too
+        sleeps = []
+        spy = mock.Mock(wraps=sync.push_claim_commit)
+        with mock.patch.object(sync, "push_claim_commit", spy):
+            sync.claim(self.a, "Jitter claim", gate=self.gate, force=True, sleep=sleeps.append)
+        self.assertTrue(any("sleep" in c.kwargs for c in spy.call_args_list), spy.call_args_list)
+        spy.reset_mock()
+        rel_slug = "jitter-claim"
+        with mock.patch.object(sync, "push_claim_commit", spy):
+            sync.release(self.a, rel_slug, sleep=sleeps.append)
+        self.assertTrue(any("sleep" in c.kwargs for c in spy.call_args_list), spy.call_args_list)
+
 
 class GateSlotTest(unittest.TestCase):
     def setUp(self):

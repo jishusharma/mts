@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-28T08:13:45Z",
+  "depends_on": [],
+  "done_when": "REPORT table of every source loaded at Supervisor session start with bytes measured by script, hooks listed with file:line, compaction behaviour cited with file:line.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Explain in plain words how context is loaded for a Supervisor session today: boot files, hooks, role files, memory, compaction.",
+  "id": "context-loading-wiring-report",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Role Researcher. Operator D5 2026-10-28; first discussion of the next Supervisor session.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T08:13:58Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/context_loading_wiring_2026-10/REPORT.md"
+  ],
+  "scope_out": [
+    "changing any hook or loader"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "CLAUDE.md; scripts/dev/role_loader.py; MyTradingSys/system/roles/supervisor.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Script: measure bytes of CLAUDE.md, MEMORY.md, role file, handover, STATUS.md, announcements and every hook-injected text",
+    "List hooks from .claude/settings.json and scripts/dev/role_loader.py with file:line",
+    "Cite compaction behaviour from repo docs/code; write the plain explanation on top"
+  ],
+  "tests": "none: research report; script output pasted in REPORT.md",
+  "title": "Plain report: how context is loaded into a Supervisor session today (boot, hooks, roles, memory, compaction)",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

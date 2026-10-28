@@ -4,6 +4,16 @@
   "commands": [
     "python scripts/dev/run_all_tests.py --quick"
   ],
+  "context": {
+    "calls_to_edit": 11,
+    "folded": "2026-10-28T08:08:22Z",
+    "misses": 2,
+    "reads": [
+      "scripts/dev/c_drive_guard.py",
+      "scripts/dev/test_c_drive_guard.py"
+    ],
+    "session": "agent-af92c2e5ae88cbf02"
+  },
   "created": "2026-10-28T06:49:12Z",
   "depends_on": [],
   "done_when": "Operator answer recorded (yes/no) in OPERATOR_DECISIONS.md; on yes, Docker Desktop is uninstalled and C: free space before/after recorded; c_drive_guard alert threshold test: free space below threshold raises an alert (test fails on old code if no alert path). Related: c-drive-cleanup-holds",
@@ -33,7 +43,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "operator 2026-10-28: keep Docker Desktop on desktop, no uninstall",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -52,7 +62,7 @@
   "sources": [
     "operator ask 2026-10-28 gap 18"
   ],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Read the gap text and linked files",
     "Implement the smallest change",
