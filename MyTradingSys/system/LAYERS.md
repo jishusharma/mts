@@ -208,7 +208,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `state-code-accumulator-backfill` refined p2 JIS-NB: StateCodeEmitter: backfill session CVD/cum_pv/cum_vol after restart and WS reconnect, fail closed on backfill 
   - `statecode-backfill-race-coverage` ready p2 JIS-NB: StateCodeEmitter: cover in-flight rollover reconnect and retry scheduling
   - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
-  - `live-engine-add-dmts-pitchfork-true-prop` ready p3 SONNET: Live engine: add -Dmts.pitchfork=true property to start-trading-day.ps1 snapshot runner
   - `live-loop-timeouts-b191` refined p3 SONNET: Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)
   - `live-orderflow-state-line-1m-5m-15m-pric` refined p3 SONNET: Live read: one order-flow state line per TF (1m/5m/15m price swing vs Binance CVD swing vs OI change), descrip
   - `score-context-reads-automatically-carrie` refined p3 SONNET: Score context reads automatically: carried falsifier lines (HELD/BROKEN/UNTESTED) computed from klines at the 
@@ -266,17 +265,21 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `layer-review-krown-wavetrend` ready p3 SONNET: Layer review sheet: Krown and WaveTrend (idea, source, backtests, bugs, confluence)
 
 ## Pitchfork (Andrews / Schiff / Morge median line) (`pitchfork`)
-- Status: Foundational study papers delivered (papers/01, 02, 03); detector, tests, and YouTube BTC evaluation benchmark built.
+- Status: Detector, simulator desk plugin (studies/pitchfork.py), and live Java engine (PitchforkSignalLayer.java with Tine Bounce + Hagopian Failure + Volume Profile confluence) built, wired, and verified on DEV.
 - Tracks: Gemini (study/detector), Claude
-- Layer `pitchfork_swing`: Foundational papers delivered; detector built with unit tests (100% pass) | module MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py
+- Layer `pitchfork_swing`: Detector, sim_desk plugin (studies/pitchfork.py), and live Java engine (PitchforkSignalLayer.java) built and verified (100% pass) | module MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py
+- Backtests (layer_map.json, newest first):
+  - 2026-10-28 `PITCHFORK-4H-VP-20261028`: PASS (VA confluence PF 1.63, +0.61% net/trade; sim_desk plugin verified) | `MyTradingSys/research/pitchfork_2026-10-19/PHASE2_4H_POC_STUDY.md`
+  - 2026-10-19 `PITCHFORK-1D-20261019`: PASS (Modified Schiff +1.50% mean net/trade, 72.12% ML reach) | `MyTradingSys/research/pitchfork_2026-10-19/PHASE1_EVENT_STUDY.md`
 - Spec / sources: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md`; `papers/02_PITCHFORK_APPLICATION_ON_BTC.md`; `MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md`; `papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md`
-- Code: `MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py`
+- Code: `MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py`; `MyTradingSys/research/sim_desk/studies/pitchfork.py`; `src/main/java/datafeed/PitchforkSignalLayer.java`
+- Ledger: `MyTradingSys/research/pitchfork_2026-10-19/TRIALS_PITCHFORK.csv`; `MyTradingSys/research/pitchfork_2026-10-19/TRIALS_PITCHFORK_4H.csv`
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-pitchfork-gpt-rederive.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `pitchfork-engine-implement-hagopian-fail` refined p2 SONNET: Pitchfork engine: implement Hagopian failure breakout candidates (PF-HAG-L / PF-HAG-S) in Java
-  - `sim-desk-plug-in-pitchfork-4h-tine-bounc` refined p2 SONNET: Sim desk: plug in Pitchfork 4H tine-bounce study adapter (Modified Schiff + Volume Profile)
+  - `pitchfork-opus-e2e-audit-2026-10-28` refined p1 OPUS: Opus E2E Review: Pitchfork Layer (Sim Desk Plugin, Java Hagopian + B070 NetRR + 1m Proofs, Live Wiring)
+  - `pitchfork-engine-implement-hagopian-fail` refined p2 OPUS: Pitchfork engine: implement Hagopian failure breakout candidates (PF-HAG-L / PF-HAG-S) in Java
+  - `sim-desk-plug-in-pitchfork-4h-tine-bounc` refined p2 OPUS: Sim desk: plug in Pitchfork 4H tine-bounce study adapter (Modified Schiff + Volume Profile)
   - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
-  - `live-engine-add-dmts-pitchfork-true-prop` ready p3 SONNET: Live engine: add -Dmts.pitchfork=true property to start-trading-day.ps1 snapshot runner
 
 ## Pizzino (Jason bar count + Michael nested swing states) (`pizzino`)
 - Status: Indicator module built with fail-first tests from SPEC worked examples. No backtest, no live wiring (pz-4 next).
