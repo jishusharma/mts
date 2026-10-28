@@ -1,6 +1,6 @@
 {
  "acquired": 1793200282,
- "expires": 1793202982,
+ "expires": 1793200327,
  "holder": {
   "account": "?",
   "host": "DESKTOP-F7IU69N",
@@ -8,10 +8,10 @@
   "session": "d706ba2280d0"
  },
  "nonce": "fee6bc584fb78204",
- "renewed": 1793200282,
+ "renewed": 1793200327,
  "role": "Pipeliner",
- "state": "held",
+ "state": "released",
  "took_over_from": null,
  "ttl": 2700,
- "write_id": "432333a08f9d"
+ "write_id": "ce846f652e9a"
 }
