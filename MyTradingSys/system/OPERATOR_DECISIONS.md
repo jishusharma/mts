@@ -1203,6 +1203,7 @@ Recommended: A Stop hook blocks replies that end by asking the operator's leave 
 Answer: A Stop hook blocks replies that end by asking the operator's leave for work; sessions do the work, the operator stops them if wrong
 Operator note (verbatim): "There must be a hook which says that never ask such a question as if you say go and you know, you should just go and do it and if I see that you are doing something which you should not, then I will stop you. At least the work will not be lost."
 Applied: 2026-10-22: scripts/dev/offer_guard.py (Stop hook, .claude/settings.json) with scripts/dev/test_offer_guard.py; OPERATOR-ONLY: lines stay allowed for real operator decisions.
+REMOVED 2026-10-24 (43d3bfc8f): offer_guard.py is gone; the rule now lives in CLAUDE.md and memory only, no hook enforces it (dedupe INFRA 9, DECISION OURS, 2026-10-28).
 
 ```json
 {

@@ -143,7 +143,7 @@ Backtest data (F:\MTS\data on the NUC) is not in git; it is copied after new rec
 
 One script, identical on JIS-NB, JIS-NUC and the Lenovo laptop (DESKTOP-F7IU69N): `scripts/dev/wt_maint.py`. Daily 07:15 local, headless (`conhost --headless`), task `MTS-WorktreeMaint-<device>`, device read from the hostname, paths from the checkout.
 Each run: fetch; retire finished worktrees (sync.py tidy's rules incl. hand-named trees; ignored data first moved to the primary tree's `Dumps/wt_rescue/`); `git worktree prune`; delete local branches fully merged into origin/fast-track; write trees holding unshipped/uncommitted work to `Dumps/worktree_report.txt` (gitignored) and one line to the SUPERVISOR_LOG.
-Never touched: primary, live tree (`.mts_live`), lane trees, Codex trees, any tree changed in the last 30 min or idle under 24 h, any tree with uncommitted files or commits not on origin/fast-track. No stash/reset/force-push; a second run changes nothing.
+Never touched: primary, live tree (`.mts_live`), lane trees, Codex trees, any tree changed in the last 30 min, any tree with commits not on origin/fast-track; uncommitted files only when the branch is on trunk and the tree is idle (patch saved first), never when recent, conflicted or too big to save (the wt_maint.py docstring is the rule). No stash/reset/force-push; a second run changes nothing.
 
 Install, status and uninstall: `python scripts/dev/wt_maint.py install|status|uninstall` (dry run by default; `--apply` does it by hand). Which devices must have it, and whether each does: DEVICE_TASKS.md (task `wt-maint`), not a list here.
 
