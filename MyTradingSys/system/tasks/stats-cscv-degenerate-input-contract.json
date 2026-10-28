@@ -5,7 +5,7 @@
   "created": "2026-10-27T20:55:54Z",
   "depends_on": [],
   "done_when": "T<S cannot produce a numeric PBO; invalid matrix/S, zero variance, empty/singleton inputs and nondivisible T have explicit consistent contracts and regression coverage; valid section 10 oracle still matches within 1e-12.",
-  "est_turns": null,
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Audit follow-up only; RAW for refinement. MED findings, no live-path change. Producer of boundary evidence: GPT. No implementation changes made by audit.",
+  "note": "Audit follow-up only; RAW for refinement. MED findings, no live-path change. Producer of boundary evidence: GPT. No implementation changes made by audit. Session_Planner 2026-10-28: normalized weight casing (important->IMPORTANT), set size S, est_turns 12, worker session (decides degenerate-input semantics + edits FORMULAS.md, needs judgement). Passes T0 gate; needs an IMPORTANT review stamp before promotion, which this pinned session cannot spawn (role: spawns nothing) -- recommend coordinator-run batched Sonnet reviewer Agent. No stamp fabricated.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -35,7 +35,7 @@
     "strategy runs",
     "holdout reads"
   ],
-  "size": "",
+  "size": "S",
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-26_gpt-formulas-rederive-10.md",
     "MyTradingSys/research/layer_lab/gpt_formulas_rederive_10_comparison.json"
@@ -49,6 +49,6 @@
   ],
   "tests": "Existing bt_stats/ref_pbo suites plus independent audit frozen oracle and boundary regressions; new tests must fail on pre-change code.",
   "title": "Stats audit: validate CSCV partitions and define degenerate Sharpe semantics",
-  "weight": "important",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
