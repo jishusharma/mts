@@ -27,7 +27,6 @@ EXPORTED_BY_SOURCE = {
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md": "t06_cost_fill",
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T07_stale_verdicts.md": "t07_stale_verdicts",
     "MyTradingSys/research/wavetrend_2026-10-17/RESULT.md": "wavetrend_atlas",
-    "MyTradingSys/research/fable_run6_powered_prereg/CROSSCHECK.md": "krown-s8-e2-desk-crosscheck",
 }
 
 
