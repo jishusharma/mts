@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T14:56:20Z",
   "commands": [],
   "context": {
     "calls_to_edit": 13,
@@ -24,6 +25,12 @@
   "id": "bug-successor-wake-chain-stops-after-one-link",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/successor_wake.py: own-run successor = -Once +1min trigger, Parallel, token-gu",
+      "ref": "cb60d4131",
+      "utc": "2026-10-28T14:56:20Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -50,7 +57,12 @@
   "refs": [
     "MyTradingSys/research/nuc_restart_2026-10-28/ISSUES_REGISTER.md"
   ],
-  "result": "",
+  "result": "scripts/dev/successor_wake.py: own-run successor = -Once +1min trigger, Parallel, token-guarded finally; test_chain_second_registration_survives_first_run_finally (failed on old Start line, 21 pass)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/successor_wake.py",
     "scripts/dev/test_successor_wake.py",
@@ -64,7 +76,7 @@
   "sources": [
     "operator 2026-10-28 restarts must resume unattended"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read successor_wake.py build_script (run.ps1 finally, Start branch), register (SELF_ENV bypass) and the B10 tests in test_successor_wake.py",
     "Write the failing chain test first; quote its failure",
@@ -72,6 +84,7 @@
     "One sentence in SCHEDULING_POLICY.md 4b3; check its SIZE_CAPS headroom in MyTradingSys/tests/docs/test_integrity.py first",
     "sync.py ship --release <slug>; body ends Result:; verify sha, git cherry empty, ls-tree lists both files"
   ],
+  "taken": "2026-10-28T14:56:20Z",
   "tests": "scripts/dev/test_successor_wake.py (python -m pytest scripts/dev/test_successor_wake.py --basetemp <own temp dir>): new chain test fails first on old code (run it before the fix and quote the failing line), plus the existing B10 refusal test still passes. Pure script-text and stub-runner tests only; never register a real task from a test.",
   "title": "HIGH BUG: a Supervisor started by MTS-SuccWake cannot register its own successor: Windows ignores starting a task that is already running and the run's finally unregisters the new task, so the restart chain stops after one link (register B14)",
   "weight": "IMPORTANT",
