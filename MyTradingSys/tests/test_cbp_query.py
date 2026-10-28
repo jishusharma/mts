@@ -152,13 +152,17 @@ def test_cbp_run_works_without_fixed_machine_paths(tmp_path, monkeypatch):
     """bug-youtube-gemini-only-rule-is-a-preference: CBP must not assume one machine. With CBP_HOME unset
     and no legacy F:/CryptoScrapper, the default falls back under this checkout, never a dead drive path."""
     monkeypatch.delenv("CBP_HOME", raising=False)
+    monkeypatch.delenv("CBP_STORE", raising=False)
     home = cbp_run.default_cbp_home(exists=lambda p: False)
     assert home == cbp_run.ROOT / "runtime_data" / "cbp"
-    assert not str(home).startswith("F:")
+    assert home != Path("F:/CryptoScrapper")
+    assert cbp.store_path(exists=lambda p: False) == home / "cbp_store" / "rows.json"
     legacy_present = cbp_run.default_cbp_home(exists=lambda p: True)
     assert legacy_present == Path("F:/CryptoScrapper")  # still honored when actually present
+    assert cbp.store_path(exists=lambda p: True) == Path("F:/CryptoScrapper/cbp_store/rows.json")
     monkeypatch.setenv("CBP_HOME", str(tmp_path / "other_machine_home"))
     assert cbp_run.default_cbp_home() == tmp_path / "other_machine_home"  # explicit override always wins
+    assert cbp.store_path() == tmp_path / "other_machine_home" / "cbp_store" / "rows.json"
 
     # End-to-end on a per-machine CBP_HOME (no F:/CryptoScrapper read anywhere): fetch, extract, store.
     home2 = tmp_path / "cbp_home"

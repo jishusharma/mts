@@ -33,17 +33,7 @@ import cbp  # noqa: E402
 import verify_extract_quotes as vq  # noqa: E402
 
 
-def default_cbp_home(exists=None):
-    """CBP_HOME env var if set; else legacy F:/CryptoScrapper if it exists on this machine; else a folder
-    under this checkout. Keeps cbp_run runnable on a device that never had F:/CryptoScrapper (card
-    bug-youtube-gemini-only-rule-is-a-preference): no step here is tied to one machine or to Gemini.
-    `exists` is injectable for tests; defaults to a real directory check."""
-    exists = exists or (lambda p: p.is_dir())
-    env = os.environ.get("CBP_HOME")
-    if env:
-        return Path(env)
-    legacy = Path("F:/CryptoScrapper")
-    return legacy if exists(legacy) else ROOT / "runtime_data" / "cbp"
+default_cbp_home = cbp.default_cbp_home
 
 
 CBP_HOME = default_cbp_home()

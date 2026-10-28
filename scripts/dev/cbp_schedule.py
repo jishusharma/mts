@@ -15,7 +15,10 @@ import sys
 from xml.sax.saxutils import escape
 
 TASK = "MTS-CBP-Ingestion"
-ROOT = Path(__file__).resolve().parents[2]
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parents[1]
+sys.path.insert(0, str(ROOT / "MyTradingSys"))
+import cbp  # noqa: E402
 
 
 def task_xml(python, script, home):
@@ -56,9 +59,9 @@ def preflight(home):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("command", choices=("install", "run", "status", "remove", "check"))
-    ap.add_argument("--home", type=Path, default=Path(os.environ.get("CBP_HOME", "F:/CryptoScrapper")))
+    ap.add_argument("--home", type=Path, default=None)
     a = ap.parse_args(argv)
-    home = a.home.resolve()
+    home = (a.home or cbp.default_cbp_home()).resolve()
     if a.command in ("status", "remove"):
         cmd = ["schtasks", "/Query", "/TN", TASK, "/V", "/FO", "LIST"] if a.command == "status" else [
             "schtasks", "/Delete", "/TN", TASK, "/F"]
