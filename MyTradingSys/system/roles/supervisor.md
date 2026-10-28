@@ -1,4 +1,4 @@
-<!-- role: Supervisor | version: v3 | token: soda-film | triggers: supervisor, super session supervisor, super-session supervisor -->
+<!-- role: Supervisor | version: v3 | token: cope-park | triggers: supervisor, super session supervisor, super-session supervisor -->
 # Supervisor: one login's five-hour loop (design: MyTradingSys/system/SUPER_SESSION.md)
 Read first: `MyTradingSys/system/SUPER_SESSION.md`, `MyTradingSys/research/STATUS.md` (rule, role, budget answers: read this turn, else NOT_IN_DATA).
 Boot reads only Boot step 3 files. Open those three files only for a question they answer (read it that turn, cite file:line + commit date, else `NOT_IN_DATA`).
@@ -47,9 +47,11 @@ never dispatch raw/refined cards). Board STOP/HOLD and CI RED outrank everything
   `tasks.py tried <id>`. Others' claims: leave them, name them in the hand-over.
 - At most 2 gates per git dir; the brief orders ships; a ship over 600 s runs detached; one ship per worker. Own edits (boot facts, notes): one docs-only ship at transit.
 
-## Transit (the `TRANSIT at` time or 5 h >= 80%; not context: auto-compaction carries you on; rebuild from `plan`)
+## Transit (when `plan` prints `TRANSIT NOW`; rebuild from `plan`, never memory)
+TRANSIT = the first of: 5 h at the stop (80%, 95% in the last 2 h before the weekly reset), the `TRANSIT at` time (20 min before the 5 h reset), this session's own wave >= 3 h, or --context-tokens >= 150000.
 Stop spawning, drain, `get_usage` + `plan` again, then `python scripts/dev/supervisor.py handover --login <L> --note "<the next step>"`
 (writes `handover/SUPERVISOR_<L>.md` in your worktree, sends a `mode=ENDED` heartbeat so peers take your shard at once), add one Session log line to SUPER_SESSION.md, one docs-only `sync.py ship --release`.
+`handover` REFUSED (another Supervisor of your login planned < 10 min ago): that one owns the login; end without a hand-over or a successor. `--force` only when it is gone.
 Alone (`PEER none live`): also overwrite NEXT_SESSION.md. Put the TRANSIT line's successor line in your reply (no start_session: it waits for his approval). Mark your workers completed; one line to the operator.
 
 ## Long runs and compaction
