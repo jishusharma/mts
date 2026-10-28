@@ -47,6 +47,8 @@ The notice quotes the operator's words sent with the image. Those words are the 
 | noise | no meaning for the project | none | closes immediately, reason kept |
 `--at` is the market time on the chart's right edge. Chart clocks differ: TradingView pages via CoinGlass are UTC; CoinGlass footprint pages (legend.coinglass.com) are IST (UTC+5:30). A naive time without `--tz` is refused.
 
+**CoinGlass quoting rule** (provisional, OURS; `lab-verify-footprint-vs-indicator-delta`, 2026-10-28, Sonnet-derived, not a DeepSeek cross-vendor check): until the CoinGlass Net Delta indicator and the Legend footprint delta are verified against each other, quote spot taker delta (`2*taker_buy_base_volume - volume`, `data-api.binance.vision` klines, UTC bar-open label) as the source of record over either CoinGlass panel — it is the one leg any host can re-derive mechanically without a screenshot. Full detail / open follow-up: `MyTradingSys/research/layer_lab/reports/2026-10-28_lab-verify-footprint-vs-indicator-delta.md`.
+
 ## 3 SET - charts studied together
 The operator's TradingView charts are one question seen at several timeframes. `shot.py sets` groups them. A set read must say which timeframes are present and which are missing
 (chart_read_protocol layers 3-4: the same level on another panel, and on a higher timeframe). One timeframe only = the read is context, not a read.
