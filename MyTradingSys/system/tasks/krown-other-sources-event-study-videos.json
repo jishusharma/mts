@@ -13,7 +13,7 @@
   "goal": "Read Krown's other free content that states entries and targets: his daily BTC event-study videos (options/research/KROWN_FREE_VS_PAID.md s1b lists ids and dates) and the rejected CBP queue item krown_2026-09-25_OggsnATGbOg; extract with the V2 method (decision rows, trade blocks) and build a timestamped call ledger for PRE_REG_KROWN item 2.",
   "id": "krown-other-sources-event-study-videos",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -39,6 +39,12 @@
     "MyTradingSys/research/krown_ta101_2026-10-13/PRE_REG_KROWN.md",
     "MyTradingSys/options/research/KROWN_FREE_VS_PAID.md"
   ],
+  "reroute": {
+    "at": "2026-10-28T09:59:29Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "credits"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/krown_ta101_2026-10-13/",

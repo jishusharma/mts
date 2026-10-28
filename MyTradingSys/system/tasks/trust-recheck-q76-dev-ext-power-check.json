@@ -37,6 +37,12 @@
     "MyTradingSys/system/tasks/archive/q76-dev-ext-power-check.json",
     "MyTradingSys/research/layer_lab/reports/2026-10-19_lab-trust-tag.md"
   ],
+  "reroute": {
+    "at": "2026-10-28T09:59:29Z",
+    "desk": "20261028-095929-trust-recheck-q76-dev-ext-power-check",
+    "to": "DSA",
+    "why": "credits"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/pit_levels_2026-10-16/bug_b187_evidence.txt",
