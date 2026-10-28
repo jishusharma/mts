@@ -16,7 +16,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DRAFT 2026-10-28 Session_Planner (OURS): edits are in repo only, deploy by coordinator (DEPLOY_RUNBOOK). Needs REVIEWED stamp (IMPORTANT).",
+  "note": "DRAFT 2026-10-28 Session_Planner (OURS): edits are in repo only, deploy by coordinator (DEPLOY_RUNBOOK). Needs REVIEWED stamp (IMPORTANT). | REVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified start-trading-day.ps1:837 matches only \"MTS #\"; producers TAPE # (tape-watch.ps1:87) and \"MTS live health RED\" (check_live_health.py:100) confirmed. Source: start-trading-day.ps1:835-840.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -34,7 +34,11 @@
     "deploy, restart, live tree; alert verdict logic; TopMost/taskbar change (separate card)"
   ],
   "size": "S",
-  "sources": [],
+  "sources": [
+    "scripts/core/start-trading-day.ps1:835-840",
+    "scripts/live/tape-watch.ps1:87",
+    "scripts/sched/check_live_health.py:100"
+  ],
   "state": "raw",
   "steps": [
     "Read PICTURE_AND_PLAN.md s3.2 and the kill step before Start-Process wscript.exe in start-trading-day.ps1",

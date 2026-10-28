@@ -4,32 +4,41 @@
   "commands": [],
   "created": "2026-10-28T18:17:43Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "New test in scripts/dev/test_sync.py fails on the old code (ship returns silently / prints only 'nothing to ship') and passes now; the clean-tree case still prints 'nothing to ship' and exits 0; shipped, git cherry origin/fast-track <sha> empty",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "sync.py ship with no commit to push but real uncommitted files (tree_state work, not CRLF noise) prints 'NOT SHIPPED: N uncommitted file(s); commit them or use --result' and exits nonzero, so a dirty tree is never mistaken for a clean ship (also with --release).",
   "id": "sync-ship-silent-on-uncommitted",
   "kind": "build",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "DRAFT 2026-10-29 Session_Planner (OURS): sync.py is the ship path so IMPORTANT: needs a real REVIEWED stamp before ready. No twin: B6 only filters CRLF noise, ship --result commits files on request. | REVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified sync.py ship() not-files branch and tree_state exist as cited; no twin.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/sync.py; scripts/dev/test_sync.py"
+  ],
+  "scope_out": [
+    "gate logic; live tree; ship --result commit path; push-race code"
+  ],
+  "size": "S",
   "sources": [],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Read sync.py ship() lines 1139-1149 (the 'not files' branch) and tree_state/work at 1249-1290 (B6: CRLF-only is noise)",
+    "Write the failing test in test_sync.py: throwaway repo, one untracked real file, no commit -> ship must return/exit with NOT SHIPPED and nonzero",
+    "In the 'not files' branch, if tree_state(repo) has real work files print the NOT SHIPPED line and raise SystemExit(1) (release_slug case too: do not release the claim); fail closed if the state read errors",
+    "Run python -m unittest scripts/dev/test_sync.py; sync.py ship --release <slug> with Result: line. Verify: content sha, git cherry origin/fast-track <sha> empty AND git ls-tree -r origin/fast-track --name-only lists both files"
+  ],
+  "tests": "scripts/dev/test_sync.py::test_ship_with_uncommitted_files_and_no_commit_is_not_shipped (fail-first); existing test_sync.py ship tests stay green; clean tree and CRLF-only noise still exit 0",
   "title": "sync.py ship prints nothing when tree is dirty with no commit; done-when: it prints NOT SHIPPED: uncommitted changes and exits nonzero (fail-first test)",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }
