@@ -6,15 +6,13 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-28T11:14:37Z",
-    "misses": 4,
+    "folded": "2026-10-28T11:53:05Z",
+    "misses": 14,
     "reads": [
-      "scripts/dev/cbp_schedule.py",
-      "scripts/dev/cbp_run.py",
-      "MyTradingSys/cbp/__init__.py",
-      "MyTradingSys/tests/test_cbp_query.py"
+      "scripts/dev/tasks.py",
+      "scripts/dev/bg_watch.py"
     ],
-    "session": "agent-a2407d4fabb93c70b"
+    "session": "agent-a347c975da2df3454"
   },
   "created": "2026-10-26T18:29:41Z",
   "depends_on": [],
