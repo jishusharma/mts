@@ -98,7 +98,6 @@ from the newest `BUDGET` signal line (older than 6 h counts NORMAL). The meter i
 - 2026-10-27 Supervisor C (desktop, Sonnet): T09-F3 live RSI support-long-only shipped (f04a3cbad) after a diff-only review Agent; planner refined 13 cards; cbp-ingestion parked (unverified operator request for the CBP scheduled task); handed over with one 4b2 successor task. Lesson: Agents started without isolation worktree share this tree and dirty it for the stop guard.
 - 2026-10-26 Supervisor B (NUC, Sonnet): 10 cards shipped via 8 Sonnet bg agents (klines, oi-pivot, rsi, intrabar, stability, dispatch, coord-audit, malkan); a diff-only review Agent per CRUCIAL card caught 2 defects. Lesson: builders report merge shas, verify the own commit with show --stat.
 - 2026-10-26 Supervisor C (desktop): watched A/B stations 10 h; reverted ca310cbe1 (sync ship --lesson, 21ea5324d); trunk green f02dc2fa; handed over (handover/SUPERVISOR_C.md).
-- 2026-10-24 design session (Opus): this file rewritten from 137 lines; D1-D6 above.
 
 ## Prompt: start a super session (new session, model Sonnet, permission mode bypass or auto; zero operator input)
 ```
@@ -106,4 +105,3 @@ You are Supervisor. Run the super session per MyTradingSys/system/SUPER_SESSION.
 ```
 The role_loader hook injects `roles/supervisor.md` (banner `ROLE LOADED: Supervisor ...`); the login letter comes from the session's email
 (CLOUD_ACCOUNTS.md), else env `MTS_LOGIN`. First turn: `get_usage`, ANNOUNCEMENTS ACTIVE entries, STATUS.md, NEXT_SESSION.md, Session_Planner, Doctor, then workers.
-- 2026-10-27 login C Supervisor TRANSIT at 5h 23%: handover written; timed successor wake MTS-SuccWake-C 22:12Z (first real 4b2 run)
