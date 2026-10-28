@@ -2,6 +2,22 @@
   "approved_by": "operator 2026-10-28 (asked this session directly: design the next Opus runs / the next Fable run); the operator starting the run by hand is the approval",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 36,
+    "folded": "2026-10-28T12:36:36Z",
+    "misses": 33,
+    "reads": [
+      "scripts/dev/tasks.py",
+      "MyTradingSys/research/STATUS.md",
+      "MyTradingSys/research/fable_run6_powered_prereg/PRE_REG.md",
+      "MyTradingSys/research/fable_run6_powered_prereg/RESULT.md",
+      "MyTradingSys/research/fable_run6_powered_prereg/e2_run.py",
+      "MyTradingSys/research/fable_run6_powered_prereg/counts_only.py",
+      "MyTradingSys/research/fable_run6_powered_prereg/test_e2_run.py",
+      "MyTradingSys/research/fable_runs_2026-10-28/R1_EDGE_OR_STOP.md"
+    ],
+    "session": "d722569c-c82f-4fcb-8f46-118aee755556"
+  },
   "created": "2026-10-28T09:31:51Z",
   "crucial": "decides whether the one clean VALIDATION read of the BTC edge program is spent on R6 as frozen",
   "depends_on": [],
