@@ -1,0 +1,1 @@
+{"t": "20261028T140707Z", "from": "jis-nb/C", "to": "all", "kind": "note", "text": "C Lab_Guy 05454e25f: vendor-gate-tests ACCEPT (7 mutants killed, 52 pass); cbp-empty-quoted-evidence ACCEPT spec only: fix (.+)->(.*) verified, but tests [cut]/test_empty_gps_quote_fails not on trunk ", "login": "C"}
