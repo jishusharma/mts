@@ -193,7 +193,7 @@ class RealRegistry(unittest.TestCase):
     def test_regate_fixes_3_to_7_live_files(self):
         # REGATE_AUDIT.md fix items 3-7: DEV count 57 -> 56, no phantom 'filter' study, BLOCKED backfill, kill scopes, ledger rows
         seen, _ = V.count_variants(V.CSV_PATH, "DEV")
-        self.assertEqual(len(seen), 56)
+        self.assertEqual(len(seen), 65)  # 56 + 9 Krown S8 4h E2 arms (a849d000, 2026-10-28)
         self.assertFalse(self.row("filter"))
         k = self.row("kurisko_2026-10-18")
         self.assertTrue(k and all(r["split_read"] == "DEV" for r in k))
