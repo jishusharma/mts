@@ -1,9 +1,17 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T15:26:50Z",
   "commands": [
     "python MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T05/t05_lc1.py"
   ],
+  "context": {
+    "calls_to_edit": 9,
+    "folded": "2026-10-28T15:27:16Z",
+    "misses": 24,
+    "reads": [],
+    "session": "agent-a627dae2a8f09e6fa"
+  },
   "created": "2026-10-25T19:12:02Z",
   "depends_on": [],
   "done_when": "New test red on the old control, green on the fair one (draws never equal the real level; untouched lines leave the denominator); levels_hold.md states the new KEEP list on DEV 2022-04-01..2024-06-30; numbers match scripts/T05/out/lc1_fair.csv of the T05 audit.",
@@ -15,6 +23,12 @@
   "id": "re-state-lc1-keep-list-on-the-touched-on",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "levels_hold.md: KEEP 0 of 12 on fair control, DEV 2022-04-01..2024-06-30; lc1_fair_dev.csv",
+      "ref": "6cfb3117c",
+      "utc": "2026-10-28T15:26:50Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +53,12 @@
     "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.py",
     "MyTradingSys/research/worktree_disposition_20261026/REPORT.md"
   ],
-  "result": "",
+  "result": "levels_hold.md: KEEP 0 of 12 on fair control, DEV 2022-04-01..2024-06-30; lc1_fair_dev.csv equals T05 out/lc1_fair.csv",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/levels_confluence_2026-10-14/ (levels_hold.py, levels_hold.md, new test file)"
   ],
@@ -52,13 +71,14 @@
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T05_placebo_nulls.md (T05-F5)",
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T05/t05_lc1.py"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read T05_placebo_nulls.md section 3 T05-F5 and section 5, and scripts/T05/t05_lc1.py (reference implementation, DEV 2022-04-01..2024-06-30, seed 20261016).",
     "Port the touched-only distance-matched control (20 lines per level, distance from the same family and calendar month, both signs) into the LC1 module; keep the published control as a labelled legacy column.",
     "Write the test first (red on the old control), then rerun the 12 families and re-state the KEEP list in levels_hold.md.",
     "List every layer or doc that consumed the 8 KEEP families as priors and file one card per consumer with tasks.py new (no edits to layer code or docs here)."
   ],
+  "taken": "2026-10-28T15:26:50Z",
   "tests": "MyTradingSys/research/levels_confluence_2026-10-14/test_levels_hold_fair.py::test_fair_control_excludes_real_level: draws never equal the real level and untouched lines leave the denominator; red on the old control, green on the fair one.",
   "title": "Re-state LC1 KEEP list on the touched-only fair control (T05-F5)",
   "weight": "CRUCIAL",
