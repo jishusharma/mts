@@ -1,0 +1,1 @@
+{"t": "20261028T214726Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship supervisor-b-restart-2 Result: design note picks source + threshold per signal (CI lag 20 min OURS, gate slot 20 min OURS, STALE 24 h SOURCED, lane idle 2 polls OURS), format reuses traffic.py:72", "login": "B", "sid": "23f57cb376"}
