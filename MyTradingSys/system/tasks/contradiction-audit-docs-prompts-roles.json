@@ -1,0 +1,74 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-10-28T08:18:14Z",
+  "depends_on": [],
+  "done_when": "research/dedupe_audit_2026-10/DOCS.md exists: table of at most 40 ranked conflicting or duplicated statements with file:line on both sides, winner by the default rule, proposed edit.",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Find statements that conflict or duplicate each other across the instruction set, so one winner stays (operator 2026-10-28 d-dedupe-lean-no-contradiction). Winner by the default rule in OPERATOR_DECISIONS.md d-dedupe-lean-no-contradiction; never ask the operator.",
+  "id": "contradiction-audit-docs-prompts-roles",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "docs: noticed-gap rule (file raw card same turn; Agents end with Noticed:)",
+      "ref": "977abf90588a",
+      "utc": "2026-10-28T06:48:18Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "977abf90588a docs: noticed-gap rule (file raw card same turn; Agents end with Noticed:)",
+      "ref": "CLAUDE.md",
+      "utc": "2026-10-28T06:48:18Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "dispatch-check-vs-decisions",
+    "planner-conflicting-cards-vs-decisions"
+  ],
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T08:18:33Z",
+  "refs": [
+    "MyTradingSys/system/OPERATOR_DECISIONS.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "CLAUDE.md",
+    "MyTradingSys/system/*.md",
+    "MyTradingSys/system/roles/*.md",
+    "MyTradingSys/system/ROSTER.json",
+    "memory index (MEMORY.md) independent read only",
+    "research/dedupe_audit_2026-10/DOCS.md"
+  ],
+  "scope_out": [
+    "No edits to audited files; no deletions",
+    "Do not edit CLAUDE.md (byte cap)"
+  ],
+  "scope_sha": "977abf90588a",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read the scope files; grep for repeated rules and opposite instructions",
+    "Per row record file:line both sides, the winner by the default rule, and a proposed edit",
+    "Rank by harm (conflict before duplicate), cap 40 rows, write DOCS.md"
+  ],
+  "tests": "Check: every row has two file:line refs that exist on trunk; row count <= 40.",
+  "title": "Contradiction audit: CLAUDE.md, system docs, roles, ROSTER.json, memory index",
+  "weight": "ROUTINE",
+  "worker": "session"
+}
