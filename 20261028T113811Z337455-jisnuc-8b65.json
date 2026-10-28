@@ -1,0 +1,1 @@
+{"t": "20261028T113811Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship [cut] Result: logon_wake.py (HKCU Run MTSLogonWake) calls successor_wake.register once per boot; 6 tests pass; policy 4d added.", "login": "B", "sid": "cfba8f0d34"}
