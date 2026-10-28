@@ -1,25 +1,18 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T12:27:50Z",
   "commands": [
     "python MyTradingSys/research/fable_run6_powered_prereg/counts_only.py --m-base 56",
     "python MyTradingSys/research/fable_run6_powered_prereg/e2_run.py",
     "python scripts/dev/verdicts.py backfill"
   ],
   "context": {
-    "calls_to_edit": 16,
-    "folded": "2026-10-28T10:20:24Z",
-    "misses": 57,
-    "reads": [
-      "scripts/dev/verdicts.py",
-      "MyTradingSys/research/layer_lab/TRIALS.md",
-      "scripts/dev/extra_tests.tsv",
-      "MyTradingSys/backtest/layers/FORMULAS.md",
-      "MyTradingSys/backtest/fees.py",
-      "MyTradingSys/research/carry_basis_2026-10-18/RESULT.md",
-      "MyTradingSys/research/VERDICTS.csv"
-    ],
-    "session": "agent-a4b08af1aaa540e8e"
+    "calls_to_edit": null,
+    "folded": "2026-10-28T12:27:54Z",
+    "misses": 1,
+    "reads": [],
+    "session": "2a4706e9-5883-4264-a51c-dadbf099bbf6"
   },
   "created": "2026-10-28T09:26:34Z",
   "depends_on": [],
@@ -32,6 +25,12 @@
   "id": "krown-s8-4h-e2-dev-run",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "E2 already shipped 2b80d7ecf: C0 n 420 trades/332 entry days (<439), mean net R +0.131, t ",
+      "ref": "33eb8b2ad",
+      "utc": "2026-10-28T12:27:50Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -62,7 +61,12 @@
     "MyTradingSys/research/sim_desk/studies/_bars.py",
     "MyTradingSys/research/pit_levels_2026-10-16/PRE_REG_V2.md"
   ],
-  "result": "",
+  "result": "E2 already shipped 2b80d7ecf: C0 n 420 trades/332 entry days (<439), mean net R +0.131, t 1.73: INCONCLUSIVE; RESULT.md in fable_run6_powered_prereg",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/TRIAL_LEDGER.csv",
     "MyTradingSys/research/VERDICTS.csv",
@@ -82,7 +86,7 @@
     "MyTradingSys/research/fable_run6_powered_prereg/counts_only.py",
     "MyTradingSys/research/fable_runs_2026-10-28/R1_EDGE_OR_STOP.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read PRE_REG.md sections 2-3 and counts_only.py; reuse its loader and krown_events (import, do not copy) so the event set is identical.",
     "Write the three failing tests, run them, confirm they fail.",
@@ -90,6 +94,7 @@
     "Run once. Write RESULT.md: Verdict arms table (C0 + strata, strata without verdict word), year table (n, mean only), descriptive non-signal comparator, the kill sentence verbatim, NO-RECALL-CLEARANCE label. Append the 9 rows to TRIALS.md and TRIAL_LEDGER.csv. Run verdicts.py backfill and fix wording until C0 parses.",
     "Ship with sync.py ship --release krown-s8-4h-e2-dev-run; commit body Result: <C0 n, mean net R, t, verdict>. On PASS_DEV: tell the coordinator in one line that krown-s8-4h-validation-read waits for the operator."
   ],
+  "taken": "2026-10-28T12:27:50Z",
   "tests": "Fail-first test_e2_run.py: (1) loader refuses bars >= 2024-07-01 and reads only open_time/OHLC; (2) hand-made 4h series reproduces net_R by hand for one long and one short (stop wins on the same bar; taker 0.05 %+0.02 % slip, maker 0.02 % on target; FORMULAS 18.5); (3) event count equals counts_only.py within 1 %. All fail before e2_run.py exists.",
   "title": "E2: run the frozen Krown S8 4h pre-reg (BTC+ETH+SOL pooled, 2020-01..2024-06) once; DONE when: RESULT.md with the Verdict arms table and PASS_DEV / INCONCLUSIVE / FAIL",
   "weight": "CRUCIAL",
