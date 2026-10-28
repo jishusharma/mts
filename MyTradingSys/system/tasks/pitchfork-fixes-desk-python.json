@@ -20,7 +20,7 @@
  "not_twin_of": [
   "pitchfork-review-fixes-2026-10-28"
  ],
- "note": "DRAFT 2026-10-28 Session_Planner (OURS): split of pitchfork-review-fixes-2026-10-28 (size L, mixed desk/live). CRUCIAL (target formula, decision numbers): review Agent + REVIEWED stamp before dispatch; formula expected value computed independently from RESEARCH_PITCHFORK_LAYER.md:42, not from code. depends on nothing. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+ "note": "DRAFT 2026-10-28 Session_Planner (OURS): split of pitchfork-review-fixes-2026-10-28 (size L, mixed desk/live). CRUCIAL (target formula, decision numbers): review Agent + REVIEWED stamp before dispatch; formula expected value computed independently from RESEARCH_PITCHFORK_LAYER.md:42, not from code. depends on nothing. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | T0 2026-10-28 planner-refine-A: scope_in paths all tracked, no open claim on them, content complete; only gap = Lab_Guy REVIEWED stamp (IMPORTANT+).",
  "prio": 2,
  "refine_tries": 0,
  "refined_by": "",

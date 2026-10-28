@@ -38,7 +38,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `tom-probe-runner` blocked p2 SONNET: Run pre-registered Tom management arms on DAX and BTC
   - `lab-verify-trend-healthy-in-balance` refined p3 SONNET: LAB-VERIFY 10-18: how often trend_healthy is set inside a multi-day balance (DEV)
   - `layer-review-tom-guidance` ready p3 SONNET: Layer review sheet: Tom and cross-guidance (idea, source, backtests, bugs, confluence)
-  - `multi-tf-bias-stack-one-written-rule-tha` ready p3 SONNET: Multi-TF bias stack: one written rule that forms bias from HTF location + LTF flow, tested on DEV (operator 10
   - `tom-btc-other-setups` blocked p3 CODEX: Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, b
 
 ## Fabio (order-flow layer) (`fabio`)
