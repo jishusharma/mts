@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T12:58:05Z",
   "commands": [],
   "created": "2026-10-28T06:27:20Z",
   "depends_on": [],
@@ -14,11 +15,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "scripts/dev/test_gemini_queue.py two-process claim race tests",
+      "ref": "3759e927b",
+      "utc": "2026-10-28T12:58:05Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "bg-process-audit: deadlines on NUC/git network calls, no retry on non-race push, STALLED-B",
-      "ref": "e1ac77891613",
-      "utc": "2026-10-27T23:56:54Z"
+      "line": "fix: gemini lane — claim-push jitter, Argon model option, 7-card verdicts",
+      "ref": "003f55d1c0a9",
+      "utc": "2026-10-28T08:34:07Z"
     }
   ],
   "layers": [],
@@ -28,25 +35,31 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-28T07:11:32Z",
+  "refreshed": "2026-10-28T12:51:19Z",
   "refs": [
     "MyTradingSys/research/fix_verification_2026-10-28/REPORT.md"
   ],
-  "result": "",
+  "result": "scripts/dev/test_gemini_queue.py two-process claim race tests",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/gemini_queue.py",
     "scripts/dev/test_gemini_queue.py"
   ],
   "scope_out": [],
-  "scope_sha": "e1ac77891613",
+  "scope_sha": "003f55d1c0a9",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Set up a bare temp repo fixture (tempfile.TemporaryDirectory + git init --bare) as the shared remote",
     "Launch two real claimers (subprocesses or threads doing real git subprocess calls) against the same queue item concurrently, no mocking",
     "Assert exactly one claim succeeds and the other observes the conflict and retries or backs off per gemini_queue.py's real logic"
   ],
+  "taken": "2026-10-28T12:58:05Z",
   "tests": "scripts/dev/test_gemini_queue.py::test_two_process_claim_race_against_bare_repo (new, exercises the path CT-2 found untested)",
   "title": "gemini_queue: two-process claim race test against a bare temp repo, no mocked push (commit 2e5ada03f; fix report CT-2)",
   "weight": "ROUTINE",
