@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "LAYOUT (SOURCED Get-Partition 2026-10-28): Disk1 Kingston SSD 224 GB = C 121.3 GB, then a 0.6 GB Recovery partition at 122.0, then F 101 GB; D is a separate 932 GB HDD (WHEA errors per DISK_CARE.md). Merge C+F = copy F off (about 54 GB used), delete F and the Recovery partition, extend C; Disk Management cannot do it past the Recovery partition. Existing plan on trunk: DISK_CARE.md (vm_bundles junction to F, weekly MTS-CDriveCare). Quick wins: pagefile 9 GB to F, Chrome cache, IdeaProjects/.claude junction to F with all sessions closed.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
