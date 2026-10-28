@@ -60,6 +60,37 @@ class T(unittest.TestCase):
         r = sb.result_line({"C": ("1", 1, 81, "r")}, 0, {"CRITICAL": 2, "CRUCIAL": 3}, 0)
         self.assertTrue(r.startswith("**Status:") and "81%" in r and "5 CRITICAL/CRUCIAL" in r)
 
+    def test_budget_newest_by_time_not_file_order(self):
+        nl = chr(10)
+        txt = ("1600Z h/C [note] BUDGET login=C 5h=5% week=16% reset=2026-11-03T20:00Z" + nl
+               + "1100Z h/C [note] BUDGET login=C 5h=90% week=95% reset=2026-10-27T20:00Z" + nl)
+        self.assertEqual(sb.parse_budget(txt)["C"][2], 16)
+
+    def test_budget_midnight_wrap(self):
+        nl = chr(10)
+        txt = ("2359Z h/C [note] BUDGET login=C 5h=8% week=4% reset=R" + nl
+               + "0820Z h/C [note] BUDGET login=C 5h=7% week=5% reset=R" + nl
+               + "0700Z h/C [note] BUDGET login=C 5h=1% week=3% reset=R" + nl)
+        self.assertEqual(sb.parse_budget(txt)["C"][2], 5)
+
+    def test_cleanup_widened(self):
+        subj = ["dedup helpers", "Cleanup temp", "temp leak fix", "feat: x", "Declutter", "prune old", "retire card"]
+        c = sb.cleanup_commits(subj)
+        self.assertEqual(len(c), 6)
+        self.assertIn("commits today: 6", chr(10).join(sb.fmt_value([], c, [], [])))
+
+    def test_gpt_row_stale_and_fresh(self):
+        d = {"allowance": {"plan": "plus", "window_used": 68.0, "week_used": 29.0}, "at": "2026-10-27T21:29:47Z"}
+        r = sb.gpt_row(d, datetime(2026, 10, 28, 12, 0, tzinfo=timezone.utc), "src")
+        self.assertEqual(r[:4], ["GPT (Codex)", "plus", "68%", "29%"])
+        self.assertIn("STALE", r[4])
+        self.assertNotIn("STALE", sb.gpt_row(d, datetime(2026, 10, 28, 0, 0, tzinfo=timezone.utc), "src")[4])
+
+    def test_gemini_not_in_data_and_no_email(self):
+        txt = chr(10).join(sb.fmt_gpt_gemini(sb.gpt_row({}, datetime.now(timezone.utc), "s")))
+        self.assertIn("NOT_IN_DATA (no Gemini usage file", txt)
+        self.assertNotIn("@", txt)
+
 
 if __name__ == "__main__":
     unittest.main()
