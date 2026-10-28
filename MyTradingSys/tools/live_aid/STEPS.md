@@ -25,7 +25,7 @@ Deribit 1D candles open at 08:00Z, so prev-day high/low and weekly open come fro
 | v1 | 4 blocks: price+clock, position (inverse P&L, ATR15 multiples, rung ladder, uncovered size), 1m/5m/15m strip, levels (VWAP, day H/L with time, prev day H/L, weekly open, typed levels). Stale badge amber past 15 s; failed feed = NOT_IN_DATA + error | BUILT 2026-10-28 |
 | R10 | WaveTrend table under the strip: wt1, wt2 (colour = wt1 above/below wt2), zone vs the 53/60 lines, last wt1/wt2 cross with bars ago and level, on 1m/5m/15m. Same maths as `backtest/layers/wavetrend/wavetrend.py` (test compares them) | BUILT 2026-10-28 |
 
-Parameters: RSI14 Wilder, SMA14 of RSI, BB(20,2) population, ATR14 Wilder, day VWAP hlc3 from 00:00Z = SOURCED (his chart setup). RSI 30/70 flag lines, session names = OURS.
+WaveTrend 10/21/4, 0.015, lines 53/60 = OURS (LazyBear defaults; his chart settings unknown). Parameters: RSI14 Wilder, SMA14 of RSI, BB(20,2) population, ATR14 Wilder, day VWAP hlc3 from 00:00Z = SOURCED (his chart setup). RSI 30/70 flag lines, session names = OURS.
 
 ## Backlog (his words first)
 
