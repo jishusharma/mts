@@ -3,6 +3,19 @@
   "asks": "",
   "closed": "2026-10-28T16:09:46Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T16:10:20Z",
+    "misses": 11,
+    "reads": [
+      "MyTradingSys/research/layer_lab/INDEX.md",
+      "MyTradingSys/research/layer_lab/reports/2026-10-19_lc-ladder-dev.md",
+      "MyTradingSys/research/layer_lab/reports/2026-10-14_lc-levels-hold.md",
+      "MyTradingSys/research/layer_lab/reports/2026-10-15_lc-event-table.md",
+      "MyTradingSys/research/layer_readiness_2026-10-16/LAYER_READINESS.md"
+    ],
+    "session": "agent-a2976daa187907d79"
+  },
   "created": "2026-10-28T15:26:45Z",
   "depends_on": [],
   "done_when": "All five files carry the SUPERSEDED 2026-10-28 note next to the 8-family mention; diff is additions only; tasks.py lint green.",
