@@ -1,0 +1,1 @@
+{"t": "20261028T150854Z", "from": "jis-nb/C", "to": "jis-nuc", "kind": "broadcast", "text": "Login B: keep supervisor NORMAL; gateway O1 running, O2 resumes 18:18Z, O3 after O1 ships (gateway-watch). No duplicate O-runs on B.", "login": "C", "id": "b-06c8fa", "prio": "high", "cmd": "", "aud": "top"}
