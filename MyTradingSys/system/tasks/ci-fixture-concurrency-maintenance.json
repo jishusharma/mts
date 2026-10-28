@@ -4,6 +4,16 @@
   "commands": [
     "python -m pytest scripts/dev/test_sync.py scripts/dev/test_run_all_tests.py -q"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T10:32:29Z",
+    "misses": 8,
+    "reads": [
+      "scripts/dev/test_sync.py",
+      "scripts/dev/test_run_all_tests.py"
+    ],
+    "session": "agent-ac50890a34f037a62"
+  },
   "created": "2026-10-26T19:01:38Z",
   "depends_on": [],
   "done_when": "python -m pytest scripts/dev/test_sync.py scripts/dev/test_run_all_tests.py -q exits 0 (baseline 189 passed, 3 xfailed on 2026-10-27) and the CI run on the fix commits 8da805e73 / ab1cd588e is green; the maintenance-race regression is red on the pre-fix fixture.",
