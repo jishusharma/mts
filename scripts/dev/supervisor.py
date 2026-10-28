@@ -1014,9 +1014,10 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
         L.append(f"SPAWN CI RED: one worker on the pinned ci-* card only; nothing else ships ({ci.get('message', '')[:80]})")
     picks = ctx.get("picks", [])
     if plan["new"] and picks and not ci.get("red"):
-        L.append(f"SPAWN {len(picks)}: " + ", ".join(f"{p['id']} ({p.get('role') or 'Builder'}, {p.get('worker') or '?'}, "
-                                                  f"{'own' if p.get('own', True) else 'peer'})" for p in picks)
-                 + "  [operator turn: sessions, 2 chained cards each; event turn: size-S Agents only]")
+        # WORKERS.md rule 2 / roles/supervisor.md:35: Claude Builder cards run as background Agents; only interactive roles are sessions
+        kind = lambda p: "agent" if (p.get("role") or "Builder") == "Builder" else (p.get("worker") or "?")
+        L.append(f"SPAWN {len(picks)}: " + ", ".join(f"{p['id']} ({p.get('role') or 'Builder'}, {kind(p)}, "
+                                                  f"{'own' if p.get('own', True) else 'peer'})" for p in picks))
     elif plan["new"] and not picks:
         L.append("NOTE no Claude card fits this host: Session_Planner (foreground Agent) refines raw cards, or idle")
     # shared lanes: exactly one live supervisor (lane_owner) acts on each
