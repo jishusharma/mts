@@ -10,6 +10,17 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import logon_wake as L
 
 
+@pytest.fixture(autouse=True)
+def _no_real_log(tmp_path, monkeypatch):
+    """B5: no test may append to the real F:/MTS/succ_wake/logon_wake.log; every test gets a temp wake dir."""
+    monkeypatch.setenv("MTS_SUCC_WAKE_DIR", str(tmp_path / "wake"))
+
+
+def test_no_test_can_reach_the_real_log():
+    real = Path("F:/MTS/succ_wake").resolve()
+    assert L.base_dir().resolve() != real
+
+
 def _env(tmp_path, monkeypatch):
     monkeypatch.setenv("MTS_SUCC_WAKE_DIR", str(tmp_path / "wake"))
     return tmp_path / "home"
@@ -65,7 +76,8 @@ def test_error_is_logged_not_raised(tmp_path, monkeypatch):
     assert "error" in (tmp_path / "wake" / "logon_wake.log").read_text(encoding="utf-8")
 
 
-def test_bad_login_refused_and_command_shape():
+def test_bad_login_refused_and_command_shape(tmp_path, monkeypatch):
+    _env(tmp_path, monkeypatch)
     assert L.logon("Z", register=_reg([]), sleep=lambda s: None, refresh=lambda r: 'stub', launch=lambda: 'stub') == 0
     cmd = L.logon_command("B", python="py.exe", script="x.py")
     assert "--headless" in cmd and cmd.endswith("logon --login B")
