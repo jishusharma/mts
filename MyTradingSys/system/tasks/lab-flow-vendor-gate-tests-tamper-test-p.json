@@ -4,6 +4,16 @@
   "commands": [
     "python -m pytest scripts/dev/test_lab_flow.py -q"
   ],
+  "context": {
+    "calls_to_edit": 10,
+    "folded": "2026-10-28T16:48:35Z",
+    "misses": 12,
+    "reads": [
+      "MyTradingSys/research/layer_lab/TRIALS.md",
+      "MyTradingSys/research/layer_lab/reports/2026-10-28_lab-flow-vendor-gate-tests-tamper-test-p.md"
+    ],
+    "session": "agent-a6f5e1392d205f023"
+  },
   "created": "2026-10-18T22:25:03Z",
   "depends_on": [],
   "done_when": "test_lab_flow.py passes; report lists each mutant of lab_flow.py:158,211,215 and the test that kills it; tamper test and empty-receipt test fail on the mutated gate.",
