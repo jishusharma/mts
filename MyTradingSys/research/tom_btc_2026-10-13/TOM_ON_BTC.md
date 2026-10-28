@@ -151,3 +151,16 @@ The DAX spec (TOM_LAYER_V2_SPEC) stays the source for Tom's words; its section 1
   (+0.13 R median) and negative after them (FABIO_OF_REPORT.md:127-128). T4 tells us early, before any build.
 - **A BTC "open" may not carry the liquidity effect Tom relies on.** T4 compares the session starts against each other and
   against no anchor at all.
+
+## 6. T3 reader 1 (Claude, blind): marks_claude.csv (2026-10-28)
+- File: `marks_claude.csv`, 80 rows C001..C080, columns chart,take,concepts,stop,target. Read from the PNGs alone; `charts/_key.csv`,
+  `charts/index.csv`, the Gemini mark files and every outcome file were not opened. Result: 13 take, 67 skip, 0 unreadable.
+- Concepts: ids from section 2 seen on the chart, joined with `|`, `none` if no id applies. Side is implied by the chart (a fade:
+  short after an up leg, long after a down leg).
+- Rules used (OURS, this reader): A-C1 = the header ratio leg/median >= 1.3; A-C2 = price beyond the drawn prior VAH/VAL (the
+  mirror for longs); A-P2 = a long rejection wick at the extreme; A-P4 = an inside bar at the extreme; A-P6 = the printed footprint
+  rows at the extreme show the fading side's surplus. take = A-C1 and A-C2 and at least one proof, and the printed footprint at
+  the extreme does not show the opposite side dominating.
+- stop: `unreadable` on every take (the charts have no price axis; the extreme's price is not printed, so the level beyond it
+  cannot be read). target: the printed VAH/VAL line that lies inside the leg (first node back toward the impulse start), else
+  `unreadable`. `na` = skip row.

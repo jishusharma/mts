@@ -32,7 +32,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `live-divergence-event-log` ready p2 DSA: Live divergence event log: record each BTC vs ES/NQ divergence read with outcomes at +30/60/120 min (forward e
   - `tom-btc-dev-backtest` blocked p2 CODEX: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
   - `tom-btc-encode` blocked p2 CODEX: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
-  - `tom-btc-eye-read-claude-marks` ready p2 SONNET: Tom-on-BTC T3 reader 1: Claude blind marks of all 80 lab charts (marks_claude.csv)
   - `tom-btc-validation` blocked p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
   - `tom-corr-divergence-backtest` ready p2 DSA: Pre-registered backtest of Tom correlation-divergence filter (H1 DAX vs ES/Nikkei/BTC, H2 BTC vs ES/NQ/DXY), s
   - `tom-probe-prereg` blocked p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
@@ -271,8 +270,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Ledger: `MyTradingSys/research/pitchfork_2026-10-19/TRIALS_PITCHFORK.csv`; `MyTradingSys/research/pitchfork_2026-10-19/TRIALS_PITCHFORK_4H.csv`
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-pitchfork-gpt-rederive.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `pitchfork-opus-e2e-audit-2026-10-28` refined p1 OPUS: Opus E2E Review: Pitchfork Layer (Sim Desk Plugin, Java Hagopian + B070 NetRR + 1m Proofs, Live Wiring)
   - `pitchfork-engine-implement-hagopian-fail` refined p2 OPUS: Pitchfork engine: implement Hagopian failure breakout candidates (PF-HAG-L / PF-HAG-S) in Java
+  - `pitchfork-review-fixes-2026-10-28` raw p2 SONNET: Pitchfork review fixes: Hagopian target W=|UML-ML| (F1), live PF-REV stale-bounce gate parity (F3), desk/live 
   - `sim-desk-plug-in-pitchfork-4h-tine-bounc` refined p2 OPUS: Sim desk: plug in Pitchfork 4H tine-bounce study adapter (Modified Schiff + Volume Profile)
   - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
 
