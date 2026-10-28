@@ -72,3 +72,23 @@ Created prerequisite `astra-low-levels-fee-drag-recompute-need-export-the-origin
 Once those rows are committed, the same three-trade-tested equations can independently calculate all five quantities and resolve the two unverified comparisons and the fill sentinel ambiguity. The current card is deliberately not marked done. No trading/layer disposition or production change is made by this audit.
 
 Reproduction used the throwaway file `F:/MTS/astra_levels_recompute_audit.py` outside the repository; it is not a shipped dependency. Equivalent ledger calculation: parse L as Decimal, select finite E1 rows, exclude exact-zero sentinel, count rows and positive values, and divide sum(S2_K5_X0_2R) by that count. The fixture, selection rule, input hash and exact totals above are sufficient to reproduce the verified arithmetic without that local file.
+
+## Raw-ledger recheck (2026-10-28 UTC)
+
+The prerequisite `astra-low-levels-fee-drag-recompute-need-export-the-original` shipped the frozen DEV fill ledger. This addendum supersedes the preceding partial-verification conclusion for gross R, fee R, and explicit fill state; the earlier analysis is retained as history. I read the frozen formula and ledger schema, wrote and ran a separate Decimal calculator outside the repository, checked it against three handwritten trades, then calculated the raw-row aggregates. The earlier Fable review had already been read during the first audit, so this is an independent arithmetic recomputation, not a blind review.
+
+For each `filled=Y` row, `gross_R = side * (exit - entry) / R_dist`. Since `qty=1` and the ledger stores the realized USD fee legs `fee_in` and `fee_out`, `fee_R = (fee_in + fee_out) / R_dist`; `net_R = gross_R - fee_R`. These are FORMULAS.md:468-470's price-based equations expressed using the ledger's already price-weighted fee legs. The aggregate is the arithmetic mean across filled rows (FORMULAS.md:479-483); win rate is the share whose recomputed net R is strictly positive. Unfilled rows are explicitly `filled=N`, `exit_reason=NO_FILL` and are excluded, never assigned a return. The frozen contract is DEV only, 2022-04-01 through (exclusive) 2024-07-01, zero slippage, E1/S2/K5/X0_2R; its source revision is `da096725e880974683bdd6cca6b086d64c61e7fd` (levels_raw_ledger/provenance.md:3-8).
+
+The three hand-oracle rows passed exact Decimal assertions (long win, short loss, long timeout). The independent pass read the tracked raw ledger directly, not `reconcile.py`, study code, or exporter code. It checked 772 total rows, 255 explicit fills, 517 explicit no-fills, valid sides and positive risk, unit quantity, source revision, and agreement of each calculated gross/fee/net field with its ledger field to <1.21e-13 R (float serialization tolerance). Input Git blob SHA-256: `2f72374b31b7f78bb6a31f96fa8fa0e30643a4e0d147fa32f34a38a3e6503915`.
+
+| Quantity | Recomputed from raw filled rows | Fable review (REVIEW_FABLE_2026-10-25.md) | Result |
+|---|---:|---:|---|
+| Filled count | 255 (517 explicitly unfilled) | 255 filled / 517 unfilled (section 1, line 19) | MATCH, exact count |
+| Mean gross R | +0.2174473159477666988727880221 | +0.22 R (lines 9, 19) | MATCH at 2 decimals; raw minus displayed = -0.0025526840522333011272 R |
+| Mean fee R per trade | +0.3368860406537607551948768035 | +0.337 R (line 21) | MATCH at 3 decimals; raw minus displayed = -0.0001139593462392448051 R |
+| Mean net R | -0.1194387247059940563220887814 | -0.1194 R (line 19) | MATCH at 4 decimals; raw minus displayed = -0.0000387247059940563221 R |
+| Net-positive win rate | 104 / 255 = 40.78431372549019607843137255% | 40.8% (line 19) | MATCH at 1 decimal; raw minus displayed = -0.0156862745098039215686 percentage points |
+
+Mean gross minus mean fee equals mean net algebraically; the independently accumulated Decimal totals differ only by finite-precision division in the final decimal places. Exit reasons were 102 X0, 150 STOP, and 3 TIME. No target-hit rate was inferred. All five review headlines match at their stated precision. The caveat is upstream provenance: the committed ledger exporter replays frozen idea geometry against the historical one-minute klines; this audit independently calculates from the exported per-trade rows but does not independently regenerate those fills from raw candles. No VALIDATION/HOLDOUT data, live path, or layer disposition was used or changed.
+
+Reproduction: `python F:/MTS/astra_levels_recompute_independent.py` (throwaway calculator outside the repository; three exact hand checks before ledger loading). Detailed evidence and commands: `MyTradingSys/research/layer_lab/reports/2026-10-28_astra-low-levels-fee-drag-recompute.md`.

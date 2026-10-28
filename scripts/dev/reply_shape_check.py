@@ -1,11 +1,12 @@
 """Det-only reply-shape guardrail: run the operator reply-shape checks WITHOUT a model.
 
-  python scripts/dev/reply_shape_check.py [REPLY_FILE] [--scenario h-reply-shape]
+  python scripts/dev/reply_shape_check.py [REPLY_FILE | -] [--scenario h-reply-shape]
 
 Applies the `det` checks of an eval scenario (default h-reply-shape: max_lines:8 +
 bold_first_line) to one operator-facing reply and exits 1 when any check fails. No model
 call, so it is cheap and safe to wire into the ship gate. The reply is read from REPLY_FILE,
-or stdin when no file is given. `check()` is the importable core (the test drives it directly).
+or from stdin when `-` is supplied. An omitted input source is an argparse error, so a bare
+invocation cannot wait indefinitely on stdin. `check()` is the importable core (the test drives it directly).
 
 DECISION (OURS): a separate det-only check + registered test instead of a CI/ship-gate step:
 the least invasive running guardrail. behavior_eval.py's model runs are NOT part of the gate
@@ -40,10 +41,12 @@ def check(reply, checks=None):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("reply_file", nargs="?", help="file with the reply to check (default: stdin)")
+    ap.add_argument("reply_file", nargs="?", help="file with the reply to check, or '-' to read stdin")
     ap.add_argument("--scenario", default=DEFAULT_SCENARIO, help=f"eval scenario whose det checks to run (default {DEFAULT_SCENARIO})")
     a = ap.parse_args(argv)
-    reply = Path(a.reply_file).read_text(encoding="utf-8") if a.reply_file else sys.stdin.read()
+    if a.reply_file is None:
+        ap.error("REPLY_FILE or - is required")
+    reply = sys.stdin.read() if a.reply_file == "-" else Path(a.reply_file).read_text(encoding="utf-8")
     checks = det_checks(a.scenario)
     failed = check(reply, checks)
     for c in failed:

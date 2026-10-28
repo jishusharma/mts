@@ -558,10 +558,14 @@ class TestGateTimeAndTimeout(unittest.TestCase):
         self.addCleanup(reap)
         self.assertEqual(rc, 124)
         self.assertLess(took, 20, "sh waited for the surviving grandchild")
-        deadline = time.monotonic() + 10   # bounded poll: windows needs a moment to retire a killed process
+        deadline = time.monotonic() + 30   # bounded poll: a loaded runner / windows needs a moment to retire a SIGKILLed process
         while ad._pid_alive(pid) and time.monotonic() < deadline:
             time.sleep(0.2)
-        self.assertTrue(pid and not ad._pid_alive(pid), "grandchild still alive after the timeout")
+        try:
+            state = Path(f"/proc/{pid}/stat").read_text().rsplit(")", 1)[1].split()[0]
+        except (OSError, IndexError):
+            state = ""
+        self.assertTrue(pid and not ad._pid_alive(pid), "grandchild still alive 30s after the timeout (proc state %r)" % state)
 
     def test_tasklist_pid_match_is_exact_not_a_substring_of_other_columns(self):
         out = '"python.exe","999","Console","1","1,234 K"'

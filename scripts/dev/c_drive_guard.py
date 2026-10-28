@@ -45,7 +45,7 @@ PREFIXES = ("tmp", "mts_", "r2_", "rmd_", "kill_switch_cli_", "staged_tests_", "
             "pytest-of-", "gate_budget_test_", "dsa_tpl_", "e2e_a2_", "dsa-boot-", "cicd_ps_", "lab_query_", "soak6_")
 KEEP_NAMES = ("mts_roles", "mts_host_health", "mts_gate_slots", "mts_relay")
 TEMP_AGE_H = 24
-OWN_PREFIXES = ("mts_s4_", "mts_s5c_", "mts_changed_")   # this repo's gate/test basetemps: nobody else writes these names
+OWN_PREFIXES = hh.OWN_TEMP_PREFIXES   # this repo's gate/test basetemps: nobody else writes these names
 OWN_AGE_H = 6                                            # DECISION (OURS): 6 h as the card said; a gate run lasts minutes
 DAILY_H = 20                                             # DECISION (OURS): "once per day" = at most one run per 20 h
 STAMP = Path(os.environ.get("MTS_GUARD_STAMP") or os.path.expandvars(r"%LOCALAPPDATA%\MTS\logs\c_drive_guard.stamp"))

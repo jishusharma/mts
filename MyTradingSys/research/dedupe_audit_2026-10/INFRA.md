@@ -50,3 +50,5 @@ Card `infra-architecture-duplication-audit`, decision `d-dedupe-lean-no-contradi
 
 ## Batch 2 (not applied yet)
 Batch 1 applied (dedupe-apply-1): rows 2, 3, 11. Row 19 tried and reverted: test_artifact_fixes pins the cbp_desk registry row (CI red 583fafb9); batch 2 must change that test with the row. Rows 1, 4-10, 12-24: batch 2.
+
+Batch 2 applied (dedupe-apply-2): rows 7 (host_health.OWN_TEMP_PREFIXES gets mts_s5c_, c_drive_guard imports it; test added), 9 (REMOVED line appended to q-no-permission-endings), 24 (DEVICES.md pointer to wt_maint docstring). Row 12 SKIPPED, unsafe: mts_signal.py:340 spawn_send runs `send --kind broadcast` for every auto-broadcast, so removing the choice breaks the UserPromptSubmit broadcast; fix needs spawn_send moved to the broadcast subcommand first. Remaining: 1, 4-6, 8, 10, 12-18, 20-23.

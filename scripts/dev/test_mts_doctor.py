@@ -275,3 +275,13 @@ def test_scratch_tracked_warns_on_scratch_and_ship_logs():
     st, detail = D.scratch_tracked(".", ["runtime_data/_scratch_x.txt", "MyTradingSys/research/PILOT3_ship.log", "scripts/dev/ok.py"])
     assert st == "WARN" and "2 tracked" in detail and "ok.py" not in detail
     assert D.scratch_tracked(".", ["scripts/dev/ok.py", "runtime_data/label_count.json"])[0] == "OK"
+
+
+def test_stale_claims_limit_is_sync_stale_hours(monkeypatch):
+    """dedupe CODE 26: the 24 h claim limit is sync.STALE_HOURS, not a second copy in mts_doctor."""
+    import sync
+    monkeypatch.setattr(sync, "STALE_HOURS", 48)
+    now = datetime(2026, 10, 26, 12, 0, tzinfo=timezone.utc)
+    ep = lambda h: str(int(now.timestamp() - h * 3600))
+    claims = [(f"c{i}", {"epoch": ep(30)}) for i in range(6)]    # 30 h old: stale at 24 h, fresh at 48 h
+    assert D.stale_claims(".", claims, now)[0] == "OK"
