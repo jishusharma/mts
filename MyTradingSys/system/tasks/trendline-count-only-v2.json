@@ -1,10 +1,24 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T12:14:41Z",
   "commands": [
     "python -m pytest MyTradingSys/research/trendlines_2026-10-17/test_count_only.py -q",
     "python MyTradingSys/research/trendlines_2026-10-17/count_only.py"
   ],
+  "context": {
+    "calls_to_edit": 20,
+    "folded": "2026-10-28T12:14:47Z",
+    "misses": 56,
+    "reads": [
+      "MyTradingSys/research/TRIAL_LEDGER.csv",
+      "scripts/dev/verdicts.py",
+      "scripts/dev/prereg_gate.py",
+      "MyTradingSys/backtest/layers/trendlines/trendline_core.py",
+      "MyTradingSys/research/trendlines_2026-10-17/test_count_only.py"
+    ],
+    "session": "agent-a78780d1547b6a8e0"
+  },
   "created": "2026-10-24T23:00:49Z",
   "depends_on": [
     "trendline-v11-detector-fixes"
@@ -22,6 +36,12 @@
   "id": "trendline-count-only-v2",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "CELLS.csv v2: Holm m 77, 12 of 36 cells carried (all 1h), 1h B break carried 413 d; KLINE_",
+      "ref": "9311d8b2f",
+      "utc": "2026-10-28T12:14:41Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -48,7 +68,12 @@
   "refined_by": "",
   "refreshed": "2026-10-27T22:51:58Z",
   "refs": [],
-  "result": "",
+  "result": "CELLS.csv v2: Holm m 77, 12 of 36 cells carried (all 1h), 1h B break carried 413 d; KLINE_DIGESTS 30 files",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/trendlines_2026-10-17/count_only.py",
     "MyTradingSys/research/trendlines_2026-10-17/test_count_only.py",
@@ -67,12 +92,13 @@
     "MyTradingSys/research/trendlines_2026-10-17/AUDIT_2026-10-18.md gap 4",
     "MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md:41"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Confirm trendline-v11-detector-fixes is done; read AUDIT gap 4, REGATE_AUDIT.md line 41 and count_only.py:115-132.",
     "Fail-first tests: first_touch counted once per eligible line (not every touch), retested/reclaimed cells exist, slope tercile of a line uses only lines known before it (expanding). Then edit count_only.py; write counts/KLINE_DIGESTS.csv (sha256 of every kline file read).",
     "Run DEV only, regenerate CELLS.csv; run prereg_gate.py with m from verdicts.py count; rewrite PRE_REG_TRENDLINES.md as v2: carried cells at the new m (the B-break cell drops at m=78), underpowered list, v1 kept as history."
   ],
+  "taken": "2026-10-28T12:14:41Z",
   "tests": "test_count_only.py: first_touch vs all_touches, retest/reclaim cells present, expanding-tercile no-lookahead; fails on pre-change code.",
   "title": "Trend-line count-only v2 and PRE_REG v2: first_touch vs all_touches, retest/reclaim counts, causal terciles, kline digests, 1h B-break flip",
   "weight": "CRUCIAL",
