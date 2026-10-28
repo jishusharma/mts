@@ -1,0 +1,12 @@
+{
+  "card": "gemini-api-batch-crossreview",
+  "done_when": "Report MyTradingSys/research/layer_lab/reports/2026-10-28_gem-api-batch-crossreview.md has the 3-file cost table (hand vs script), the cap-boundary result, the key and network grep result and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "from": "lane_health",
+  "id": "20261028-181450-gemini-api-batch-crossreview",
+  "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card gemini-api-batch-crossreview: [GEMINI] Cross-review api_batch.py: spend cap arithmetic, key never printed, dry-run makes no call\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief gemini-api-batch-crossreview\nGoal: Check api_batch.py (Claude-built) against its docstring: submit refuses when worst-case cost exceeds --max-usd, ANTHROPIC_API_KEY is never printed or written, --dry-run makes no network call, re\nRead: scripts/dev/api_batch.py; scripts/dev/test_api_batch.py; MyTradingSys/research/layer_lab/reports/2026-10-28_gem-api-batch-crossreview.md\nStep 1: Read api_batch.py and list the price constants and the estimate formula (file:line); do not read the real environment key.\nStep 2: Write 3 jobs.jsonl files in a scratch dir (1 job, 100 jobs, one with a long prompt) and compute the worst-case USD by hand; run `submit --dry-run --max-usd` for each and compare; record the re\nStep 3: Grep every print, log and file write for the key variable and every urlopen/request call to prove none runs under --dry-run; cite file:line.\nStep 4: Report findings as a table: severity, file:line, evidence, proposed fix. Price constants vs the console are NOT_IN_DATA. Change no code.\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-10-28_gemini-api-batch-crossreview.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-10-28_gemini-api-batch-crossreview.md>\".",
+  "posted": "2026-10-28T18:14:50Z",
+  "rerouted_from": "CODEX",
+  "status": "pending",
+  "target": "DSA",
+  "title": "[GEMINI] Cross-review api_batch.py: spend cap arithmetic, key never printed, dry-run makes no call"
+}
