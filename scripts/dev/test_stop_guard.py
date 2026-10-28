@@ -57,6 +57,19 @@ class StopGuardTest(unittest.TestCase):
         sh(self.a, "fetch", "-q", "origin")
         self.assertEqual(self.run_hook(), "")
 
+    def test_commits_with_a_tree_identical_to_origin_do_not_block_but_a_differing_file_does(self):
+        """B17: a commit plus its revert (or merge commits trunk already holds) leave HEAD's tree equal to origin's: nothing to ship."""
+        (self.a / "w.py").write_text("w\n", newline="\n")
+        sh(self.a, "add", "w.py")
+        sh(self.a, "commit", "-q", "-m", "w")
+        sh(self.a, "revert", "--no-edit", "HEAD")
+        sh(self.a, "commit", "-q", "--allow-empty", "-m", "dup")
+        self.assertEqual(self.run_hook(), "")
+        (self.a / "w.py").write_text("real\n", newline="\n")
+        sh(self.a, "add", "w.py")
+        sh(self.a, "commit", "-q", "-m", "real")
+        self.assertIn("not shipped", self.run_hook())
+
     def test_same_state_blocks_a_session_only_once(self):
         os.environ["MTS_STOP_GUARD_HOME"] = str(self.tmp)
         self.addCleanup(os.environ.pop, "MTS_STOP_GUARD_HOME", None)
