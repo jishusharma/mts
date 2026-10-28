@@ -5,6 +5,21 @@ procedures (how to post a desk row, how the lab runs a card). Changes come from 
 (ROLES.md row Pipeliner); a change that alters how sessions behave also gets an ANNOUNCEMENTS.md entry and one signal line.
 
 ## Changes (newest first)
+- 2026-10-28 Pipeliner drain (pipeliner-2026-10-28): 20 -> 15 pending. Closed done: republish-3-stale-pages (evidence: commit
+  30f1f7fc4, current ship shows no stale-page warning), aibridge-v0.7.1-install-on-JIS-NUC (evidence: aibridge_verify PASS
+  28/28 JIS-NUC, commit 4271cb142 brought NB/NUC to B196). DECISION (OURS): declined approve-scheduling-policy-4a at the
+  conservative default (CLAUDE.md hard rule "no scheduled tasks anywhere" outranks it; SCHEDULING_POLICY.md never adopted
+  4a). Converted dsa-session-prompt-four-bridge-rules desk row to card `dsa-session-prompt-four-bridge-rules-cri` (lane
+  SONNET): DSA_SESSION_PROMPT.md is a critical file needing operator sign-off, not a desk run-and-report row. Fixed one
+  true wrong target (JIS-LAPTOP is not in desk.py's target enum; reposted as 20261028-065330-operator-material-search-on-
+  desktop-f7iu --target CLAUDE). Left the OPERATOR-targeted "chrome-load-reload-the-aibridge-extensio" row as-is: it is
+  correctly targeted per the 2026-10-23 entry below (desk.py's sweep validator list is stale, not the row); evidence shows
+  NB/NUC extensions load clean but the laptop's does not yet, so the row still has real work. DSA / DSA-NUC rows (4 LAB-
+  VERIFY/probe/ideas rows, ~34-56 h) left untouched per the super-session coordinator: both bridges are backed up unopened,
+  operator said hold, do not post new rows there. 2 BLOCKED-DATA rows (T02/T03, JIS-NB) and the already-correctly-routed
+  context-composite-v2-dev-read (JIS-NUC) left pending: blocked on data/machine, not abandoned. 3 older STALE rows (send-
+  jishu-sharma-pages, stop-the-nuc-inbox-poller, apply-laptop-cpu-cleanup) checked against trunk/claude.ai evidence and
+  found still genuinely open (partial progress only); left pending, no fabricated closes.
 - 2026-10-27 bug-youtube-gemini-only-rule-is-a-preference: split the YouTube row. "Gemini on the NUC" was written
   as the only path for CBP's analyst caption fetch; it was a preference (CBP used yt-dlp directly before Gemini
   existed). CBP's own fetch (`cbp_run.py`, known channels) now runs on any Claude machine; Gemini/`gemini_queue.py`

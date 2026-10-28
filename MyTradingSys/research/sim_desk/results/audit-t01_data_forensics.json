@@ -1,0 +1,39 @@
+{
+ "id": "audit-t01_data_forensics",
+ "kind": "audit",
+ "family": "Audit: DSA backtest audit",
+ "title": "T01 Data forensics: are the bars the studies read the bars that happened?",
+ "provenance": "source-extracted",
+ "date": "2026-10-16",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-01-01 to 2026-09-26 (as written in the source)",
+ "verdict": {
+  "label": "Card: dsa-audit-01-data-forensics. Host: JIS-NUC (bridge host; brief assumed JIS-NB). Worktree: mts-dsa-jis-nuc-1019-0713. Start sha: 755ce518. Ran: 2026-10-19 07:16..07:20Z.",
+  "tone": "info"
+ },
+ "why": [
+  "What was wrong: (a) 905 open and 847 volume day-level mismatches between the 1m resample and the shipped raw_1d file (max volume rel-diff 12%); (b) five studies point at Dumps/backtest/raw/fundingRate, which does not exist on this host; the archive is in Dump…",
+  "Krown daily (L10): BLOCKED, F:/MTS/data/krown_daily does not exist on this host (result 44). The brief's claim (spot not perp, microsecond stamps, 8 gap weeks in 1w) cannot be confirmed or cleared here.",
+  "Footprint per-minute volume vs kline volume: NOT COMPLETED. Header read (46) shows column order t,o,h,l,c,buy_vol,sell_vol,delta,cvd_day,...; the join would need a column-map decision that the brief does not pin, and the volume field (buy_vol+sell_vol vs cvd_…",
+  "0.5% jump distribution, worst-20 timestamps: NOT COMPUTED. Frozen-bar check found 0 frozen DEV bars (result 37, \"max run: 99\" is the internal streak counter, not a frozen-bar count; correct reading is frozen_bar_count=0, because the checker only incremented w…"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md"
+ ],
+ "commit": "f8d0799de"
+}

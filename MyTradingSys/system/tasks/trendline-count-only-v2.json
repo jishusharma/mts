@@ -21,6 +21,22 @@
   ],
   "id": "trendline-count-only-v2",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "trendline-count-only: DEV counts per TF/arm/tercile + PRE_REG_TRENDLINES (3 of 18 cells ca",
+      "ref": "8a787c00d097",
+      "utc": "2026-10-17T09:10:47Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8a787c00d097 trendline-count-only: DEV counts per TF/arm/tercile + PRE_REG_TRENDLINES (3 o",
+      "ref": "MyTradingSys/research/trendlines_2026-10-17/PRE_REG_TRENDLINES.md",
+      "utc": "2026-10-17T09:10:47Z"
+    }
+  ],
   "layers": [
     "krown"
   ],
@@ -30,6 +46,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-27T22:51:58Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -44,12 +61,13 @@
     "VALIDATION/HOLDOUT bars",
     "detector changes (card trendline-v11-detector-fixes)"
   ],
+  "scope_sha": "8a787c00d097",
   "size": "M",
   "sources": [
     "MyTradingSys/research/trendlines_2026-10-17/AUDIT_2026-10-18.md gap 4",
     "MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md:41"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Confirm trendline-v11-detector-fixes is done; read AUDIT gap 4, REGATE_AUDIT.md line 41 and count_only.py:115-132.",
     "Fail-first tests: first_touch counted once per eligible line (not every touch), retested/reclaimed cells exist, slope tercile of a line uses only lines known before it (expanding). Then edit count_only.py; write counts/KLINE_DIGESTS.csv (sha256 of every kline file read).",

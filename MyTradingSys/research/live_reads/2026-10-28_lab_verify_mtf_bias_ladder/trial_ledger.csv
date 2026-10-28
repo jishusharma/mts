@@ -1,0 +1,2 @@
+trial,design,pre_specified,note
+1,"ladder_bucket(green<=2 mostly-RED / 3-3 mixed / >=4 mostly-GREEN) x (zone<=3 few / >3 many), horizons 4/8/16 bars, lower_tf in {1h,15m}, fee 0.2% round trip",True,"single design, computed on DEV then VALIDATION once; no search over alternative bucket edges or horizons"

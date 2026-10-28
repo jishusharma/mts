@@ -11,6 +11,13 @@
     "docker run --rm python:3.12 sh -c \"git clone --depth 1 -b fast-track https://github.com/jishusharma/mts.git /w && cd /w && pip install -q pytest numpy pandas tzdata && time python -m pytest MyTradingSys/tests -q -p no:cacheprovider\"",
     "docker run --rm -v ${PWD}:/w -w /w python:3.12 sh -c \"pip install -q pytest numpy pandas tzdata && time python -m pytest MyTradingSys/tests -q -p no:cacheprovider\""
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T06:37:35Z",
+    "misses": 11,
+    "reads": [],
+    "session": "agent-a27632250dab2e860"
+  },
   "created": "2026-10-22T11:24:15Z",
   "depends_on": [],
   "done_when": "The audit file has wall-clock numbers for Windows native, Docker Linux FS and Docker bind mount on the same commit, at least 2 runs each for the first two, with test pass/fail counts per variant and a one-line recommendation backed by the ratio.",
@@ -25,7 +32,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Laptop DESKTOP-F7IU69N has no WSL/Docker (operator installs it as admin). Results decide whether gates move to WSL/Docker on every machine.",
+  "note": "operator decided not to use Docker, 2026-10-28; result file never written",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -46,7 +54,7 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "git -C <fresh worktree> rev-parse HEAD; record it",
     "Windows: time `python scripts/dev/run_all_tests.py --quick` 2x and `python -m pytest MyTradingSys/tests -q -x -p no:cacheprovider` 2x; record wall seconds and pass/fail counts",

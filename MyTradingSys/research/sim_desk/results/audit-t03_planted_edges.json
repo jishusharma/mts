@@ -1,0 +1,51 @@
+{
+ "id": "audit-t03_planted_edges",
+ "kind": "audit",
+ "family": "Audit: DSA backtest audit",
+ "title": "T03 Planted edges: do the simulators return answers we know?",
+ "provenance": "source-extracted",
+ "date": "2026-10-16",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "functions were fed markets with known answers (no edge, a planted +0.30%, a move inside the signal bar, a move after the exit, funding, a gap through the stop, a same-bar stop and target, a timeout). The price accounting is right everywher…",
+  "tone": "bad"
+ },
+ "why": [
+  "Seven simulators and the two verdict functions were fed markets with known answers (no edge, a planted +0.30%, a move inside the signal bar, a move after the exit, funding, a gap through the stop, a same-bar stop and target, a timeout). The price accounting i…",
+  "The published numbers survive. The gross screen T arm and mal_bb A1 statistics rebuild from the ledgers to rounding, and every pass-bar threshold sits exactly where the PRE_REG says. No verdict changes. Result: 0 S1, 1 S2, 3 S3 findings (89 harness x canary c…",
+  "No VALIDATION or HOLDOUT value was read; no footprint window was read (no EXPOSURE_LEDGER row needed). Mutation self-test: t03_canaries.py --mutations re-runs the table against five deliberately broken copies and shows the canaries go from PASS to FAIL (secti…",
+  "Notes on reading it: e1/e3 on the screens FAIL only for the wrong-sign half of the events (a short with positive funding receives, a long with negative funding receives), the table checks every event. h2 is a convention difference, not an arithmetic error (fi…"
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "200"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 200,
+   "quote": "n = 200 / n = 199 (everything else clear) PASS / INCONCLUSIVE PASS / INCONCLUSIVE"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source",
+  "n_trades": "not a trade test (audit)"
+ },
+ "source_files": [
+  "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T03_planted_edges.md"
+ ],
+ "commit": "3ddd0b0ff"
+}

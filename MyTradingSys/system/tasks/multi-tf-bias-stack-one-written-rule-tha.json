@@ -23,7 +23,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-18T15:46:53Z",
+  "refreshed": "2026-10-27T22:51:49Z",
   "refs": [
     "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/SHOT_2da0ed270ed8.md"
   ],
@@ -47,7 +47,7 @@
     "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md:46 (TOM-2 SOURCED), :50 (TOM-7 SOURCED)",
     "MyTradingSys/runtime/mts_math.py:354 (engine labels trend_healthy whenever price is outside the daily VA; OURS rule)"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Write RULE.md table: inputs per TF (state, range location, flow sign), output bias plus a 'no bias' case; HTF sets location, LTF sets timing; TOM-2/TOM-7 wording only from SETUP_CATALOG rows.",
     "Build all TF VWAPs from 1m bars; check the 10-18 14:56Z table is reproduced (spread across TFs near zero).",

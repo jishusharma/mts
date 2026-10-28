@@ -1,7 +1,19 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T05:13:00Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": 11,
+    "folded": "2026-10-27T21:34:38Z",
+    "misses": 19,
+    "reads": [
+      "scripts/dev/gemini_queue.py",
+      "scripts/dev/extra_tests.tsv",
+      "MyTradingSys/tests/test_gemini_claim_skip.py"
+    ],
+    "session": "agent-a99c29c09d4c2784f"
+  },
   "created": "2026-10-27T20:38:54Z",
   "depends_on": [],
   "done_when": "Test passes and is registered in extra_tests.tsv, run_job uses claim_with_retry, shipped with a Result line, cherry empty. NUC verification is a later run.",
@@ -13,6 +25,12 @@
   "id": "gemini-queue-claim-race-fix",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "claim_with_retry 6 tries + jittered backoff, git identity set, 8 tests pass, extra_tests.t",
+      "ref": "4688042d4",
+      "utc": "2026-10-28T05:13:00Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,7 +48,12 @@
   "refined_by": "",
   "refreshed": "2026-10-27T20:53:38Z",
   "refs": [],
-  "result": "",
+  "result": "claim_with_retry 6 tries + jittered backoff, git identity set, 8 tests pass, extra_tests.tsv:126",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/gemini_queue.py",
     "scripts/dev/test_gemini_queue.py",
@@ -47,12 +70,13 @@
     "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable",
     "MyTradingSys/system/ROUTING.md row 47"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add claim_with_retry(wt, card, tries=6) around the sync.py claim call; backoff 2-10 s jittered; stop at once if another host holds it.",
     "In run_job after worktree add: git config user.name gemini-queue and user.email gemini-queue@mts.local inside wt only; on final failure write one reason line to the job log (CLAIM FAILED: reason).",
     "test_gemini_queue.py with a fake sh(): reject 3 times then accept returns ok; other holder returns skip; identity set."
   ],
+  "taken": "2026-10-28T05:13:00Z",
   "tests": "scripts/dev/test_gemini_queue.py: fake sh rejects the push 3 times then accepts; fails on pre-change code (CLAIM FAILED after 3 tries).",
   "title": "gemini_queue.py: claim push rejected 3 tries on busy trunk and jobs exit 3 / SYSTEM git email; make claim retry-safe and set git identity so Gemini lane runs",
   "weight": "IMPORTANT",

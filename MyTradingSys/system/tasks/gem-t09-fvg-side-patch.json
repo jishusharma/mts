@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T00:27:14Z",
   "commands": [],
   "created": "2026-10-25T19:25:24Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "SOUND; report 2026-10-26_gem-t09-fvg-side-patch.md written",
+      "ref": "dfbbae941",
+      "utc": "2026-10-28T00:27:14Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -31,7 +38,12 @@
   "refined_by": "codex_run.py ask",
   "refreshed": "2026-10-27T19:29:55Z",
   "refs": [],
-  "result": "",
+  "result": "SOUND; report 2026-10-26_gem-t09-fvg-side-patch.md written",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gpt_burn_2026-10-24/gx4-t09-f1-fvg-side/fix.patch",
     "MyTradingSys/research/gpt_burn_2026-10-24/gx4-t09-f1-fvg-side/proposed_test_volume_fvg_side.py",
@@ -46,7 +58,7 @@
   "scope_sha": "f04a3cbad6ee",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
     "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
@@ -54,6 +66,7 @@
     "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
     "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
   ],
+  "taken": "2026-10-28T00:27:14Z",
   "tests": "",
   "title": "[GEMINI] Review GPT's volume_fvg side fix: patch, red-green fixture, trunk status",
   "weight": "ROUTINE",

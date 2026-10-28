@@ -31,7 +31,7 @@
 ### Claim 3
 **T5 command**
 > "Because, and this is very, very important, always keep an eye on the closing prices."
-**Source GPS: HySZZSjMxF8 | MIDDLE**
+**Source GPS: HySZZSjMxF8 | BEGIN**
 
 ### Claim 4
 **T4 recommendation**

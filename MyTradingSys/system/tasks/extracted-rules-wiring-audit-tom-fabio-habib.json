@@ -14,6 +14,22 @@
   "goal": "Same table as extracted-rules-wiring-audit for Tom (TOM_VERBATIM_INDEX.md), Fabio (fabio_* folders, backtest/layers/fabio) and Habib (habib_plan_imbalance_2026-10-20): rule, quote, quote file:line, code file:line or none, param, test, verdict.",
   "id": "extracted-rules-wiring-audit-tom-fabio-habib",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab: reader 2 blind eye read on Tom BTC charts C041-C080 SOUND (Gemini audit)",
+      "ref": "6c1160b5ecdc",
+      "utc": "2026-10-28T01:09:10Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d398a8546281 conditions: Tom gap rules (DAX-only price-gap layer spec) + 56 verbatim index",
+      "ref": "MyTradingSys/research/TOM_VERBATIM_INDEX.md",
+      "utc": "2026-10-10T19:31:25Z"
+    }
+  ],
   "layers": [
     "tom",
     "fabio"
@@ -24,6 +40,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-28T08:23:50Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -46,11 +63,12 @@
     "new backtests",
     "Malkan/Krown (sibling card)"
   ],
+  "scope_sha": "6c1160b5ecdc",
   "size": "M",
   "sources": [
     "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "List the sourced rules per trader from the verbatim index, fabio extracts and the Habib folder.",
     "Per rule: find code (Tom has no layer folder: read backtest/dax_engine.py, backtest/bt and the tom_* research scripts, read-only), params, tests; check the quote with verify_extract_quotes.py.",

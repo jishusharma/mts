@@ -21,7 +21,7 @@
 ### Mandatory Context Requirement
 **T5 command**
 > "And that's why you must, even if you trade on the 1-minute chart, always understand the context."
-**Source GPS: zAwEX_tRUfE | MIDDLE**
+**Source GPS: zAwEX_tRUfE | BEGIN**
 
 ### Market Profile Context Foundation
 **T4 recommendation**

@@ -1,0 +1,40 @@
+{
+ "id": "dir-gap_audit_2026-10-19",
+ "kind": "audit",
+ "family": "Gap Audit",
+ "title": "MTS Critical-Gap Audit, Revalidation & End-to-End Roadmap (2026-10-19)",
+ "provenance": "source-extracted",
+ "date": "2026-10-19",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "- Producer: Antigravity Builder Session (surface=GEM, host=JIS-NUC), branch jis-nuc/gemini-mts-gap-audit",
+  "tone": "info"
+ },
+ "why": [
+  "fabio_cvd_absorption / fabio_escalation / fabio_volume_fvg: \"L1 no edge / insufficient n\"",
+  "funding_cvd_fade, session_momentum, turn_of_candle, rsi_divergence, session_levels, bb_lvn_triggers: \"FAIL, closed\" or \"no edge\"",
+  "Category: Live-Path Defect Removal / Fail-Closed Safety",
+  "Why It Matters: StateCodeEmitter fails OPEN on tick gaps: after a JVM restart or WebSocket reconnect (scheduleReconnect, line 160), it resumes summing ticks on top of stale disk state without backfilling the missing window, and emits a valid-looking state_cod…"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/gap_audit_2026-10-19/REPORT.md"
+ ],
+ "commit": "78e427781"
+}

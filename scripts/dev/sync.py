@@ -66,11 +66,30 @@ class SyncError(Exception):
     pass
 
 
+class PushFailed(SyncError):
+    """A push that failed for a reason other than a lost race (auth, network, timeout, hook): never retried."""
+
+
+# bg-process-audit 2026-10-28: a network git call with no deadline hung sessions for hours (credential prompt, dead link).
+# Network verbs get a deadline and never prompt; a timeout comes back as rc 124 with a TIMEOUT line in stderr.
+GIT_NET_VERBS = ("fetch", "push", "pull", "ls-remote", "clone")
+GIT_NET_TIMEOUT_S = int(os.environ.get("MTS_GIT_NET_TIMEOUT_S") or 180)   # OURS: a fetch/push here takes 1-20 s; 180 s = dead
+GIT_NOPROMPT = {"GCM_INTERACTIVE": "never", "GIT_TERMINAL_PROMPT": "0"}
+
+
 def git(repo, *args, check=True):
     # `status` refreshes and rewrites the index under index.lock; where/health/tidy run it in other sessions' trees,
     # where that can break their `git add` and reset the idle clock tidy reads, so status never takes optional locks.
     opts = ["--no-optional-locks"] if args and args[0] == "status" else []
-    r = subprocess.run(["git", "-C", str(repo), *opts, *args], capture_output=True, text=True)
+    cmd = ["git", "-C", str(repo), *opts, *args]
+    if args and args[0] in GIT_NET_VERBS:
+        try:
+            r = subprocess.run(cmd, capture_output=True, text=True, timeout=GIT_NET_TIMEOUT_S, env={**os.environ, **GIT_NOPROMPT})
+        except subprocess.TimeoutExpired:
+            r = subprocess.CompletedProcess(cmd, 124, "", f"TIMEOUT git {args[0]} after {GIT_NET_TIMEOUT_S}s (network down or a credential prompt)")
+            print(r.stderr, file=sys.stderr)
+    else:
+        r = subprocess.run(cmd, capture_output=True, text=True)
     if check and r.returncode != 0:
         raise SyncError(f"git {' '.join(args)} failed:\n{r.stdout}{r.stderr}".rstrip())
     return r
@@ -950,7 +969,7 @@ def _timing_path(repo):
     return Path(os.environ.get("MTS_GATE_TIMING") or (Path(repo) / "runtime_data" / "gate_timing.jsonl"))
 
 
-def record_ship_wall(repo, wall_s, offset=0, path=None):
+def record_ship_wall(repo, wall_s, offset=0, path=None, ok=True):
     """Append one `ship_wall` row (the whole ship, start to end) to gate_timing.jsonl; over SHIP_SLOW_S print one
     `SHIP SLOW <n>s: top 3 steps <name secs>` line from the step rows this ship wrote after byte `offset`. Never raises."""
     try:
@@ -967,7 +986,7 @@ def record_ship_wall(repo, wall_s, offset=0, path=None):
                     except (ValueError, KeyError, TypeError):
                         continue
         r = git(repo, "rev-parse", "--short=8", "HEAD", check=False)
-        row = {"step": "ship_wall", "name": "sync.ship_wall", "secs": round(float(wall_s), 2), "ok": True,
+        row = {"step": "ship_wall", "name": "sync.ship_wall", "secs": round(float(wall_s), 2), "ok": bool(ok),
                "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "sha": r.stdout.strip() if r.returncode == 0 else ""}
         with open(p, "a", encoding="utf-8", newline="\n") as fh:
             fh.write(json.dumps(row) + "\n")
@@ -1056,6 +1075,8 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
                 print(f"shipped {len(files)} file(s) to origin/{TRUNK}" + (f"; released {release_slug}" if released else ""))
                 pages.report()
                 return Pushed(git(repo, "rev-parse", "HEAD").stdout.strip(), list(files))   # main() waits for this sha's CI after the timing rows are written
+            if not push_race_lost(r):     # auth/network/timeout: another merge + gate would fail the same way
+                raise PushFailed(f"push FAILED (not a race, no retry): {push_reason(r)}")
             print(f"push rejected (someone shipped first), retry {attempt}/{SHIP_PUSH_TRIES}")
             if attempt < SHIP_PUSH_TRIES:
                 t_retry_0 = time.monotonic()
@@ -1065,7 +1086,7 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
     finally:
         if files:
             record_ship_timing(repo, wait_s=wait_s, run_s=run_s, retry_s=retry_s, ok=ok)
-            record_ship_wall(repo, time.monotonic() - t_ship_0, offset=log_off)
+            record_ship_wall(repo, time.monotonic() - t_ship_0, offset=log_off, ok=ok)
 
 
 def news(repo, hours=24):
@@ -1193,17 +1214,51 @@ def slugify(text):
     return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")[:40] or "task"
 
 
+_CLAIMS_MEMO = {}   # (repo, resolved sha) -> rows; a sha names immutable content, so a hit is exact (plan-hang-claims 2026-10-28)
+
+
+def _cat_batch(repo, shas):
+    """{sha: text} for blob shas with ONE `git cat-file --batch` process (was one `git show` per claim file)."""
+    if not shas:
+        return {}
+    NL = chr(10)
+    r = subprocess.run(["git", "-C", str(repo), "cat-file", "--batch"], input=(NL.join(shas) + NL).encode(), capture_output=True)
+    if r.returncode != 0:
+        raise SyncError("git cat-file --batch failed:" + NL + r.stderr.decode(errors="replace").rstrip())
+    out, buf, i = {}, r.stdout, 0
+    for _ in shas:
+        j = buf.index(b"\n", i)
+        head = buf[i:j].split()
+        if len(head) < 3:
+            raise SyncError(f"git cat-file --batch: no object {head[0].decode() if head else '?'}")
+        n = int(head[2])
+        out[head[0].decode()] = buf[j + 1:j + 1 + n].decode("utf-8", errors="replace")
+        i = j + 1 + n + 1
+    return out
+
+
 def read_claims(repo, ref):
-    """[(slug, {key: value})] of claim files on `ref`."""
-    names = git(repo, "ls-tree", "--name-only", ref, f"{CLAIMS_DIR}/", check=False).stdout.split()
+    """[(slug, {key: value})] of claim files on `ref`. Memoised per (repo, resolved sha of ref): a plan/dispatch run asks per card."""
+    sha = git(repo, "rev-parse", "--verify", "--quiet", ref, check=False).stdout.strip()
+    if not sha:
+        return []   # ref absent: the old ls-tree (check=False) printed nothing too
+    key = (str(repo), sha)
+    if key in _CLAIMS_MEMO:
+        return [(s, dict(kv)) for s, kv in _CLAIMS_MEMO[key]]
+    tree = git(repo, "ls-tree", ref, f"{CLAIMS_DIR}/", check=False).stdout.splitlines()
+    ents = []   # (path, blob sha)
+    for line in tree:
+        meta, _, path = line.partition("\t")
+        parts = meta.split()
+        if path.endswith(".md") and len(parts) == 3 and parts[1] == "blob":
+            ents.append((path, parts[2]))
+    texts = _cat_batch(repo, sorted({b for _, b in ents}))
     rows = []
-    for n in names:
-        if not n.endswith(".md"):
-            continue
-        body = git(repo, "show", f"{ref}:{n}").stdout
-        kv = dict(l.split(": ", 1) for l in body.splitlines() if ": " in l)
-        rows.append((Path(n).stem, kv))
-    return rows
+    for path, blob in ents:
+        kv = dict(l.split(": ", 1) for l in texts[blob].splitlines() if ": " in l)
+        rows.append((Path(path).stem, kv))
+    _CLAIMS_MEMO[key] = rows
+    return [(s, dict(kv)) for s, kv in rows]
 
 
 def open_claims(repo, fetch=True):
@@ -1241,7 +1296,22 @@ def print_claims(repo, ref=None):
               f"[area: {kv.get('area','-')}] {age_h:.0f}h old{stale}")
 
 
-def push_claim_commit(repo, rel, text, msg, branch=CLAIMS_BRANCH, guard=None):
+PUSH_RACE_RE = re.compile(r"\[rejected\]|fetch first|non-fast-forward|stale info|cannot lock ref|incorrect old value")
+
+
+def push_race_lost(r):
+    """True only when a failed push lost a race (the remote moved): worth a re-fetch and retry. Auth, network, hook or
+    timeout failures are not: bg-process-audit 2026-10-28 found 5 Gemini claims that retried 18 pushes each on a
+    non-race failure printed as 'someone shipped first'."""
+    return bool(PUSH_RACE_RE.search((r.stderr or "") + (r.stdout or "")))
+
+
+def push_reason(r):
+    t = " | ".join(l.strip() for l in ((r.stderr or "") + (r.stdout or "")).splitlines() if l.strip())
+    return (t or f"git push exit {r.returncode}, no output")[:300]
+
+
+def push_claim_commit(repo, rel, text, msg, branch=CLAIMS_BRANCH, guard=None, sleep=time.sleep):
     """Traffic buster (2026-10-16): put ONE claim-file change on origin/<branch> as a commit built with plumbing on top of origin's
     tip: no merge commit, no gate, no dependence on this tree's state (dirty or ahead is fine). text=None removes the file. Default
     branch is the claims side branch (gate-tiers-by-path: no claim/release commit on the trunk; created empty on first use); branch=TRUNK
@@ -1273,11 +1343,17 @@ def push_claim_commit(repo, rel, text, msg, branch=CLAIMS_BRANCH, guard=None):
             commit = plumb("commit-tree", plumb("write-tree"), *(["-p", parent] if parent else []), "-m", msg)
         finally:
             idx.unlink(missing_ok=True)
-        if git(repo, "push", "--quiet", "origin", f"{commit}:refs/heads/{branch}", check=False).returncode == 0:
+        r = git(repo, "push", "--quiet", "origin", f"{commit}:refs/heads/{branch}", check=False)
+        if r.returncode == 0:
             if branch == TRUNK:
                 git(repo, "merge", "--ff-only", "--quiet", commit, check=False)  # only when this branch has nothing unshipped
             return commit
+        if not push_race_lost(r):
+            raise PushFailed(f"claim push FAILED (not a race, no retry): {push_reason(r)}")
         print(f"push rejected (someone shipped first), retry {attempt}/{PUSH_TRIES}")
+        if attempt < PUSH_TRIES:
+            sleep(0.5 + 3.5 * random.random())   # NUC 2026-10-28 (gemini-lane-fix): the loop retried with ~0 s between attempts, so two
+            # contending claimers re-fetched in lockstep and lost every attempt; the ship loop jitters the same way (GATE_SPEED D4)
     raise SyncError(f"claim push still rejected after {PUSH_TRIES} tries")
 
 
@@ -1322,7 +1398,7 @@ def new_files_only_reason(repo, task, area="-"):
     return f"{where} writes only new files under dated folders ({', '.join(sorted(set(paths))[:3])})"
 
 
-def claim(repo, task, area="-", gate=run_gate, force=False):
+def claim(repo, task, area="-", gate=run_gate, force=False, sleep=time.sleep):
     if str(task).startswith("--"):
         raise SyncError(f"claim name {task!r} looks like a flag, not a task name; usage: sync.py claim \"<task>\" [--area <paths>]")
     refuse_live(repo)
@@ -1369,7 +1445,9 @@ def claim(repo, task, area="-", gate=run_gate, force=False):
                         f"area: {area}", f"epoch: {int(time.time())}", ""])
         msg = NL.join([f"claim {slug}", "", f"Result: {account(repo)} on {socket.gethostname()} works on: {task}"])
         try:
-            push_claim_commit(repo, f"{CLAIMS_DIR}/{slug}.md", body, msg, guard=still_free)
+            push_claim_commit(repo, f"{CLAIMS_DIR}/{slug}.md", body, msg, guard=still_free, sleep=sleep)
+        except PushFailed:
+            raise
         except SyncError:
             if attempt == PUSH_TRIES:
                 raise
@@ -1378,7 +1456,7 @@ def claim(repo, task, area="-", gate=run_gate, force=False):
         return
 
 
-def release(repo, slug, gate=run_gate):
+def release(repo, slug, gate=run_gate, sleep=time.sleep):
     refuse_live(repo)
     git(repo, "fetch", "--quiet", "origin", TRUNK)
     git(repo, "fetch", "--quiet", "origin", CLAIMS_BRANCH, check=False)
@@ -1389,7 +1467,7 @@ def release(repo, slug, gate=run_gate):
     ahead = git(repo, "rev-list", "--count", f"origin/{TRUNK}..HEAD", check=False).stdout.strip()
     if ahead.isdigit() and int(ahead) > 0:
         print(f"hint (B4): this tree has {ahead} unshipped commit(s); `sync.py ship --release {slug}` closes the claim in the same push and saves a commit")
-    push_claim_commit(repo, rel, None, f"release {slug}" + chr(10) * 2 + f"Result: claim {slug} closed", branch=CLAIMS_BRANCH if side else TRUNK)
+    push_claim_commit(repo, rel, None, f"release {slug}" + chr(10) * 2 + f"Result: claim {slug} closed", branch=CLAIMS_BRANCH if side else TRUNK, sleep=sleep)
     print(f"released {slug}")
 
 

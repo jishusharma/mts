@@ -1,0 +1,69 @@
+{
+ "id": "dir-layer_rebuild_2026-10-15",
+ "kind": "backtest",
+ "family": "Layer Rebuild",
+ "title": "Fable 5.1 prompt pack (run window: evening of Tue 2026-10-20 IST, before the 01:30 IST Wed reset)",
+ "provenance": "source-extracted",
+ "date": "2026-10-15",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "MTS Fable session. Boot per CLAUDE.md steps 1-2 only. OPERATOR OVERRIDE for this session only: the 15-tool-turn cap is lifted to 40. Write the findings file section by section as you go.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "Usage guard. get_usage first and last into PILOT_USAGE.md (all meters, UTC). Stop, write up and ship if all-models weekly rises 6 points or reaches 95%.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "Read first: MyTradingSys/research/layer_rebuild_2026-10-15/LAYER_REBUILD_PLAN_2026-10-15.md (gate order G0-G6, per-layer state), MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md (Tom + Fabio setups), WEEK…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "The question. Is the setup catalogue a faithful and complete record of what the traders actually do, and is the rebuild plan the right order? No backtests, no fees, no VALIDATION or HOLDOUT reads.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "Fidelity: sample at least 8 catalogue rows (Tom and Fabio, include family A and one Fabio row). Open the raw transcript at the cited line: does the quote say what the row claims? Is anything in the row OURS presented as…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "Completeness: read at least 3 Tom transcripts listed as never extracted and 2 Fabio sources listed as unread. Name every setup or rule there that the catalogue lacks.",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "paragraph and the weakest rung.",
+  "tone": "info"
+ },
+ "why": [
+  "R4 Statistics (paper check): split discipline, trial ledger completeness, holdout exposure, power. Could the \"none survive\" results (62 strategies, MFE exits, ETH 0 of 9) have detected a real edge of plausible size? Do a rough power calculation from the numbe…",
+  "R6 Execution/live: testnet vs real venue liquidity, PnL accounting (L6/B149), fail-closed checks. Short: is it premature to polish this before R0-R5 pass?",
+  "Scope: L6/B149 PnL source (settlement and funding excluded, session UPL reset 08:00 UTC), restart/reset state, non-trade balance moves, API errors, fail-closed checks, per CLAUDE.md live-path rules. Do not run before a candidate edge exists: polishing executi…"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window"
+ },
+ "source_files": [
+  "MyTradingSys/research/layer_rebuild_2026-10-15/FABLE_PROMPT_PACK.md"
+ ],
+ "commit": "8f5b3f1ed"
+}

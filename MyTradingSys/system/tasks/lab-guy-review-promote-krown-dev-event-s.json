@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "Lab_Guy: this card IS the review dispatch for krown-dev-event-study-candles/-levels; weight IMPORTANT needs its own stamp too (planner cannot stamp)",
+  "commands": [],
+  "created": "2026-10-28T00:05:11Z",
+  "depends_on": [],
+  "done_when": "krown-dev-event-study-candles and krown-dev-event-study-levels carry a real Lab_Guy review stamp (non-Gemini) and move state raw -> ready, or a logged reason they cannot yet.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Remaining half of desk row 20261021-041000: the krown_core flat-window RSI fix (150840644) is already reviewed; the Lab_Guy independent review that promotes krown-dev-event-study-candles/-levels from raw to ready is not done (both still raw; -candles carries a Sonnet-reviewer ACCEPT note but also 'needs a real review stamp (CRUCIAL)').",
+  "id": "lab-guy-review-promote-krown-dev-event-s",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "krown-dev-event-study-candles",
+    "krown-dev-event-study-levels",
+    "krown-dev-event-study"
+  ],
+  "note": "",
+  "prio": 3,
+  "refine_tries": 1,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/roles/lab_guy.md"
+  ],
+  "scope_out": [
+    ""
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "Lab_Guy reads krown-dev-event-study-candles and -levels output (DEV_RESULTS.md, TRIAL_LEDGER.csv rows) against roles/lab_guy.md class criteria",
+    "Write a real REVIEWED:<date> ACCEPT (or T0-ONLY/reject with reason) stamp into each card's note, non-Gemini, independent of the Sonnet reviewer already noted on -candles",
+    "Run tasks.py check on both cards; state moves raw -> ready on an ACCEPT stamp, or stays raw/refined with the logged reason"
+  ],
+  "tests": "no code change; the stamp grammar itself is enforced by scripts/dev/test_tasks.py's existing promotion-gate tests",
+  "title": "Lab_Guy review: promote krown-dev-event-study-candles and -levels to ready",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

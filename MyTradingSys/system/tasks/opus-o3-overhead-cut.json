@@ -1,0 +1,52 @@
+{
+  "approved_by": "operator 2026-10-28 (asked this session directly: design the next Opus runs / the next Fable run); the operator starting the run by hand is the approval",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-28T09:31:55Z",
+  "crucial": "changes how every session commits; a wrong cut can drop a safety gate",
+  "depends_on": [
+    "opus-o1-self-heal-loop"
+  ],
+  "done_when": "research/overhead_cut_2026-10-28/CUTS.md on trunk with measured counts; 3 cuts applied; research share before -> after (projected) in Result:; sync.py where clean",
+  "est_turns": 35,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator runs Opus on system/handover/OPUS_RUNS.md O3 after O1 ships: count 7 days of trunk commits by kind with a script, rank stop-doing cuts by commits/day saved, apply the 3 cheapest; no safety gate or live-path check removed.",
+  "id": "opus-o3-overhead-cut",
+  "lane": "OPUS",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Operator-run only; no session may start or message it.\nREVIEWED: Lab_Guy 2026-10-28 ACCEPT (independent Sonnet reviewer, first pass)",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/system/handover/OPUS_RUNS.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/overhead_cut_2026-10-28/",
+    "scripts/dev/",
+    "MyTradingSys/system/"
+  ],
+  "scope_out": [
+    "live tree, deploy, mainnet, .secrets, .env, outcome columns and bars >= 2024-07-01"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/opus_run_design_2026-10-28/DESIGN.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "Script counts 7 days of trunk commits by kind",
+    "CUTS.md ranked by commits/day saved",
+    "Apply 3 cheapest cuts, none removing a safety gate",
+    "Recompute research share; ship"
+  ],
+  "tests": "commit-kind counter has a fixture test with known counts that fails before the script exists",
+  "title": "Opus O3: overhead cut, non-research commits 72 % -> under the 30 % cap (measured list, 3 cuts applied)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

@@ -1,7 +1,7 @@
 # GEMINI START - first-message prompt for a Google (Antigravity) builder session (Google AI Pro, JIS-NUC)
 
 Rules are not copied here: `GEMINI.md` -> `AGENTS.md` -> `CLAUDE.md` is the single source (Claude-only parts do not apply: screenshots, Control Room pages, DSA posting, relay hand-over); protocol is PARALLEL.md.
-Gemini is one more work-tree session, modelled on Codex (CODEX_START.md). It meets Claude only through `origin/fast-track` (commits, claims, task cards, desk board).
+Gemini is one more work-tree session, modelled on Codex. It meets Claude only through `origin/fast-track` (commits, claims, task cards, desk board).
 **Gemini takes lane `CODEX` cards only** (audits, backtest runs, doc work, spec-derived tests), and only cards the Codex lab has not claimed: the claim is the lock. Machines and logins: `HOW_MTS_RUNS.md`.
 The tool actually installed on the NUC (2026-10-17) is the **Google Antigravity extension 1.8.0 inside VS Code** (its backend `agy` v1.4.0 lives in `C:\Users\E-ngineers\.gemini\bin`); a standalone Antigravity IDE and a terminal `agy` also exist but are not needed. Since 2026-06-18 Google no longer serves the old Gemini Code Assist extension or Gemini CLI to AI Pro logins (error: 'This client is no longer supported ... migrate to the Antigravity suite'); `google.geminicodeassist` in VS Code is dead, ignore its crash log. Sign in through the Antigravity icon in the Activity Bar (Continue with Google). Open the folder with File > Open Folder; the path must be `F:\MTS\mts-gemini`, NOT the empty stray `F:\mts-gemini`.
 
@@ -26,14 +26,13 @@ The tool actually installed on the NUC (2026-10-17) is the **Google Antigravity 
 ## Zero-conflict rules (all already in PARALLEL.md; Gemini adds none)
 1. Own checkout: the work tree `F:\MTS\mts-gemini`, never the live tree (`BinanceDataFeed` on JIS-NB, marked `.mts_live`) and never another session's tree (`mts-codex`, `mts-codex-lab`, `mts-dsa`, `mts-jis-nuc-*`). the IDE opens only `F:\MTS\mts-gemini`.
 2. Own branch prefix `<host>/gemini-<slug>`; shares work only by `sync.py ship` (merge, never rebase, reset, stash or force-push; never commit to master).
-3. The claim is the lock: `sync.py claim "<task>"` before work, `sync.py ship --release <slug>` after. Take no card another session holds.
-4. Gemini does not touch `NEXT_SESSION.md`, the relay scripts or SCHEDULING_POLICY.md. It works cards one at a time.
-5. Gemini never restarts processes, touches HALT files, opens trades, or reads `.secrets/` / `.env` / keys. Testnet only. The repo is PUBLIC: never commit runtime, order or account data.
-6. Cards that need `OPUS` stay with Claude. CI gates Gemini code exactly like Claude code; Claude spot-checks one claim per Gemini report.
-7. Data-bound cards (1m klines, DAX archive, videos live on JIS-NB disks): post a desk task (`desk.py post ... --target JIS-NB`) instead of guessing.
-8. **NO ASSUMPTIONS, NO FABRICATIONS (strict `Producer != Reviewer`)**: Never self-stamp `ACCEPT` on a `C1+` / `IMPORTANT+` card that Gemini refined or built (`refined_by: gemini-*` gets `REVIEWED:<YYYY-MM-DD> T0-ONLY` only, leaving `C1+`/`IMPORTANT+` cards in `refined` for a non-Gemini reviewer). Never bulk-replace `T0-ONLY` with `ACCEPT` or bulk-append `HOLD-CLEARED` via script. Only stamp `REVIEWED: <gemini-model-id> <YYYY-MM-DD>` (`ACCEPT`/`FIX`/`REWORK`) when acting as an independent cross-vendor reviewer on a Claude/Codex card after verifying every `file:line` and `E1`–`E7` check one card at a time.
-9. **ALWAYS COMMIT AND SHIP FINAL DELIVERY (Stop Guard enforced)**: Every Gemini session must write deliverables early, commit incrementally (`Result: ...` + `MTS-Session:` trailer), and run `python scripts/dev/sync.py ship --release <slug>` + verify `sync.py where` is clean before stopping. `.agents/hooks.json` wires `scripts/dev/stop_guard.py` into the Antigravity `Stop` lifecycle hook so a session cannot end with uncommitted or unshipped work in its worktree.
-10. **Singleton role (Pipeliner)**: a role run starts with `python scripts/dev/lease.py acquire Pipeliner` and stops on non-zero (exit 3 = another Pipeliner holds the lease). `gemini_queue.py` and `codex_run.py` already export `MTS_ROLE` and `MTS_LEASE_SESSION` for a card that names the role ("You are the Pipeliner"), so desk.py/sync.py writes are guarded.
+3. Gemini does not touch `NEXT_SESSION.md`, the relay scripts or SCHEDULING_POLICY.md. It works cards one at a time.
+4. Gemini never restarts processes, touches HALT files, opens trades, or reads `.secrets/` / `.env` / keys. Testnet only. The repo is PUBLIC: never commit runtime, order or account data.
+5. Cards that need `OPUS` stay with Claude. CI gates Gemini code exactly like Claude code; Claude spot-checks one claim per Gemini report.
+6. Data-bound cards (1m klines, DAX archive, videos live on JIS-NB disks): post a desk task (`desk.py post ... --target JIS-NB`) instead of guessing.
+7. **NO ASSUMPTIONS, NO FABRICATIONS (strict `Producer != Reviewer`)**: Never self-stamp `ACCEPT` on a `C1+` / `IMPORTANT+` card that Gemini refined or built (`refined_by: gemini-*` gets `REVIEWED:<YYYY-MM-DD> T0-ONLY` only, leaving `C1+`/`IMPORTANT+` cards in `refined` for a non-Gemini reviewer). Never bulk-replace `T0-ONLY` with `ACCEPT` or bulk-append `HOLD-CLEARED` via script. Only stamp `REVIEWED: <gemini-model-id> <YYYY-MM-DD>` (`ACCEPT`/`FIX`/`REWORK`) when acting as an independent cross-vendor reviewer on a Claude/Codex card after verifying every `file:line` and `E1`–`E7` check one card at a time.
+8. **ALWAYS COMMIT AND SHIP FINAL DELIVERY (Stop Guard enforced)**: Every Gemini session must write deliverables early, commit incrementally (`Result: ...` + `MTS-Session:` trailer), and run `python scripts/dev/sync.py ship --release <slug>` + verify `sync.py where` is clean before stopping. `.agents/hooks.json` wires `scripts/dev/stop_guard.py` into the Antigravity `Stop` lifecycle hook so a session cannot end with uncommitted or unshipped work in its worktree.
+9. **Singleton role (Pipeliner)**: a role run starts with `python scripts/dev/lease.py acquire Pipeliner` and stops on non-zero (exit 3 = another Pipeliner holds the lease). `gemini_queue.py` and `codex_run.py` already export `MTS_ROLE` and `MTS_LEASE_SESSION` for a card that names the role ("You are the Pipeliner"), so desk.py/sync.py writes are guarded.
 
 ## How Google AI Pro works (checked 2026-10-17; there is no "project" object, unlike the Codex app)
 - It is an IDE (Antigravity) plus a terminal tool (Antigravity CLI), not a project-based app like Codex. Old route (Code Assist extension in VS Code, Gemini CLI login) is dead for AI Pro. Quota for the AI Pro login: see Google's Antigravity pricing page (UNVERIFIED here).
@@ -62,12 +61,9 @@ The tool actually installed on the NUC (2026-10-17) is the **Google Antigravity 
 You are an MTS builder session (surface GEM, Gemini). Work only in this folder. Never read .secrets/, .env or keys; never run or stop live processes.
 0. FIRST, before reading any file: `python scripts/dev/sync.py start gemini-<slug>`, `sync.py where` (the tree is often behind origin; files below may not exist until this runs). Push fails: say so in one line, stop.
    Then read GEMINI.md (-> AGENTS.md -> CLAUDE.md), MyTradingSys/research/STATUS.md, MyTradingSys/system/PARALLEL.md, MyTradingSys/system/GEMINI_START.md.
-1. `python scripts/dev/tasks.py next --lane CODEX`: take the first ready card nobody has claimed.
-   `tasks.py brief <card>` is the whole task. `sync.py claim "<card>"`, work, tests (new test red before the fix), `tasks.py done <card> --result "<number/file>"`.
+1. Task pickup and execution: follow CODEX_START.md ("Paste into Codex" steps 1-2, provenance, skip OPUS).
 2. ALWAYS COMMIT AND SHIP BEFORE STOPPING: write and commit deliverables early (`Result: ...` + `MTS-Session: MTS-<UTC date>-<HHMMZ>-GEM-BLD-<slug>`), run `python scripts/dev/sync.py ship --release <slug>`, and verify `sync.py where` shows `unshipped-commits=0 modified=0 untracked=0` before ending your turn.
-Provenance rule applies: label every parameter SOURCED (trader's quote + file:line) or OURS (CLAUDE.md Hard rules).
 NO ASSUMPTIONS, NO FABRICATIONS: never self-stamp ACCEPT on cards Gemini refined/built (use T0-ONLY); never bulk-stamp ACCEPT or HOLD-CLEARED.
-Skip OPUS cards; do not touch NEXT_SESSION.md or the relay. One card per session, then stop with a one-line summary.
 ```
 
 ## Lab queries (on demand; read-only, `scripts/dev/lab_query.py`)

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-27T21:56:44Z",
   "commands": [],
   "created": "2026-10-27T20:21:14Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/exhaust.py radar/roll_weekly_reset/radar_banner + mts_signal.py SessionStart +",
+      "ref": "09e917af2",
+      "utc": "2026-10-27T21:56:44Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -31,7 +38,12 @@
   "refined_by": "",
   "refreshed": "2026-10-27T20:21:40Z",
   "refs": [],
-  "result": "",
+  "result": "scripts/dev/exhaust.py radar/roll_weekly_reset/radar_banner + mts_signal.py SessionStart + MyTradingSys/tests/dev/test_exhaust_radar.py (3/3 pass, failed pre-change)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/exhaust.py radar; mts_signal.py banner; roll-forward of stale reset; hook into successor_wake fireAt (design 2026-10-27_successor-wake-design.md)"
   ],
@@ -41,7 +53,7 @@
   "scope_sha": "8020042ba48c",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add exhaust.py radar: read latest BUDGET line per login, roll reset forward by 7d steps until in the future, print hours-to-reset + week% left",
     "Banner: RESET T-48 / T-24 / T-2 with week% left, once per login per threshold (ack dedupe as in EXHAUST_PHASE s4)",
@@ -49,6 +61,7 @@
     "successor_wake: when weekly left > 5% and now is inside T-48..reset, fireAt = now (no waiting for the 5h reset) so the chain keeps draining",
     "Test: reset passed 3 days ago rolls forward; thresholds fire once; stale reading flagged not trusted"
   ],
+  "taken": "2026-10-27T21:56:44Z",
   "tests": "MyTradingSys/tests/dev/test_exhaust_radar.py: stale reset rolls forward 7d; T-48/24/2 fire once; fails on pre-change exhaust.py",
   "title": "Weekly-reset radar: flag every login's reset 48 h ahead, fire the exhaust chain, never lose a week",
   "weight": "",

@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T09:34:18Z",
+    "misses": 26,
+    "reads": [
+      "scripts/dev/test_device_tasks.py",
+      "scripts/dev/test_supervisor.py"
+    ],
+    "session": "agent-a7ffd59b066976566"
+  },
+  "created": "2026-10-28T08:18:16Z",
+  "depends_on": [
+    "contradiction-audit-docs-prompts-roles",
+    "duplicate-code-and-tests-audit",
+    "infra-architecture-duplication-audit"
+  ],
+  "done_when": "Top rows applied in batches of at most 10, tests green after each, one ship per batch, audit tables marked applied.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Apply the top rows of DOCS.md, CODE.md and INFRA.md so one winner remains for each conflict or duplicate. Winner by the default rule in OPERATOR_DECISIONS.md d-dedupe-lean-no-contradiction; never ask the operator.",
+  "id": "apply-dedupe-audit-findings",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "dispatch-check-vs-decisions",
+    "planner-conflicting-cards-vs-decisions"
+  ],
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/system/OPERATOR_DECISIONS.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "rows named in research/dedupe_audit_2026-10/DOCS.md, CODE.md, INFRA.md"
+  ],
+  "scope_out": [
+    "CLAUDE.md (byte cap)",
+    "No live tree, deploy or process stop",
+    "Delete only after grep shows nothing references the name"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "Take the top rows in batches of at most 10",
+    "Apply per the default rule; run python scripts/dev/run_all_tests.py --quick green",
+    "One sync.py ship per batch; DECISION (OURS) in the commit body"
+  ],
+  "tests": "run_all_tests.py --quick green after each batch; a deleted name has no remaining grep hit.",
+  "title": "Apply the dedupe audit findings in batches of 10",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

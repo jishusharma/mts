@@ -16,6 +16,15 @@
   "goal": "Give the live escalation and fib_pullback layers (15m, 1h) the longer bar history the backtest used, via the existing HistoryStore, so the 47 history-limited escalation 15m backtest signals (of 68 backtest-only; 21 more are visible but not emitted, out of scope) can fire live; fail closed on any history error.",
   "id": "t09-f4-live-window-99-bars-swing-layers",
   "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research/ top level: 189 -> 14 files; 176 dated loose files into _archive/loose_2026-10 an",
+      "ref": "f8d0799de2bc",
+      "utc": "2026-10-25T23:02:12Z"
+    }
+  ],
   "layers": [
     "fabio"
   ],
@@ -25,6 +34,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-27T22:51:56Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -36,12 +46,13 @@
     "live_layers.py signal logic and auto_trader.py (t09-f2)",
     "the 21 escalation signals visible in 99 bars but not emitted (cause not traced; file a card with the replay result)"
   ],
+  "scope_sha": "f8d0799de2bc",
   "size": "M",
   "sources": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T09_live_parity.md:29,59,67",
     "MyTradingSys/backtest/layers/alerts/live_runner_cli.py:344-353"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read T09_live_parity.md rows T09-F4 (line 67) and 29, live_runner_cli.py:344-430 (HistoryStore, make_history_layer) and 480-525 (registry tuples, the 'need' column).",
     "Write the fail-first test: fake history_fetch with 1,500 15m bars containing one escalation break older than 99 bars; build_default_registry; assert the escalation 15m entry sees it with the new 'need', and sees nothing (stderr line, no event) when the history fetch raises or leaves a gap. Fails today.",

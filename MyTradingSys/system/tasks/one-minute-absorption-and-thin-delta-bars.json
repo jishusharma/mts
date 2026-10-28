@@ -14,7 +14,22 @@
   "goal": "Pre-register and test two 1m bar-close candidates: (a) max-volume bar with strong negative taker delta but a small price move (absorption), (b) large delta on lower volume that reverses next bar (thin push); forward 5 and 15 bar returns vs the same-hour base rate, with the OI-pivot context columns.",
   "id": "one-minute-absorption-and-thin-delta-bars",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "RSI deep-buy Phase 1D-E: depth/bounce probability tables, DEV then VALIDATION",
+      "ref": "28565f801b92",
+      "utc": "2026-10-26T01:31:25Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "28565f801b92 RSI deep-buy Phase 1D-E: depth/bounce probability tables, DEV then VALIDATION",
+      "ref": "MyTradingSys/research/layer_lab/TRIALS.md",
+      "utc": "2026-10-26T01:31:25Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -22,7 +37,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-19T13:44:02Z",
+  "refreshed": "2026-10-27T22:51:49Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -38,13 +53,13 @@
     "live path, orders, deploy",
     "restating published verdicts"
   ],
-  "scope_sha": "",
+  "scope_sha": "28565f801b92",
   "size": "M",
   "sources": [
     "card title (shots 10-19 13:34 and 13:37)",
     "MyTradingSys/research/oi_pivot_2026-10-26/candidates.py (card oi-pivot)"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Run verdicts.py check 'absorption thin delta 1m' and paste it; define (a) and (b) with numeric thresholds labelled OURS from DEV percentiles (decile of volume, delta/volume ratio, range/ATR).",
     "Run python scripts/dev/prereg_gate.py with n, sd (sd-source cited) and cost; paste the line; exit 1 means do not freeze. Write PRE_REG.md and freeze it, then bars.py with look-ahead tests.",

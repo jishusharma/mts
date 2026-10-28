@@ -479,6 +479,11 @@ class Handler(BaseHTTPRequestHandler):
         if self.path.startswith('/api/runs/'):
             doc = runs_view.get_run(RESULTS, self.path[len('/api/runs/'):])
             return self._send(200 if doc else 404, doc or {'error': 'no such run'})
+        if self.path == '/api/tests':
+            return self._send(200, runs_view.list_tests(RESULTS))
+        if self.path.startswith('/api/tests/'):
+            doc = runs_view.get_test(RESULTS, self.path[len('/api/tests/'):])
+            return self._send(200 if doc else 404, doc or {'error': 'no such test'})
         if self.path == '/api/studies':
             return self._send(200, [{'id': s.ID, 'title': s.TITLE, 'params': s.params(), 'defaults': s.normalize({}),
                                      'tries': count_tries(TRIALS, s)} for s in STUDIES.values()])

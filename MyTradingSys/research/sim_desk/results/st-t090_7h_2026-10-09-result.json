@@ -1,0 +1,37 @@
+{
+ "id": "st-t090_7h_2026-10-09-result",
+ "kind": "backtest",
+ "family": "T090 7H",
+ "title": "T090 7h research + T088 lead robustness (2026-10-09)",
+ "provenance": "source-extracted",
+ "date": "2026-10-09",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "NOT robust. Of 18 anchor cells, 3 reach t>2 (7h@03 t3.45, 6h@00 t2.99, 7h@00 t2.11); 17 of 18 are positive (mean ~+0.7%), so the bullish operator signal on 6-8h carries a common positive drift, and the \"best\" cell moves with the anchor. Pi…",
+  "tone": "info"
+ },
+ "why": [
+  "Verdict: NOT robust. Of 18 anchor cells, 3 reach t>2 (7h@03 t3.45, 6h@00 t2.99, 7h@00 t2.11); 17 of 18 are positive (mean ~+0.7%), so the bullish operator signal on 6-8h carries a common positive drift, and the \"best\" cell moves with the anchor. Picking the b…"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/t090_7h_2026-10-09/RESULT.md"
+ ],
+ "commit": "84fc808a6"
+}

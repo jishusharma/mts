@@ -1,0 +1,40 @@
+{
+ "id": "dir-malkan_rsi_2026-09-28",
+ "kind": "backtest",
+ "family": "Malkan Rsi",
+ "title": "Vishal B Malkan RSI Trading System - Web Research",
+ "provenance": "source-extracted",
+ "date": "2026-09-28",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Date: 2026-09-28",
+  "tone": "info"
+ },
+ "why": [
+  "Negative Divergence: Price makes higher high while RSI makes lower low (bearish reversal signal)",
+  "If Daily RSI closes and sustains below 40 without reversal = signal failure",
+  "If Daily RSI closes and sustains above 60 without reversal = signal failure",
+  "Why: Closes gap on positive/negative divergence entry rules"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/malkan_rsi_2026-09-28/WEB_RESEARCH.md"
+ ],
+ "commit": "5c4b4ba54"
+}

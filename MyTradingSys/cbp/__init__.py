@@ -16,7 +16,9 @@ from pathlib import Path
 
 sys.dont_write_bytecode = True
 
-DEFAULT_STORE = Path("F:/CryptoScrapper/cbp_store/rows.json")
+ROOT = Path(__file__).resolve().parents[2]
+LEGACY_HOME = Path("F:/CryptoScrapper")
+DEFAULT_STORE = LEGACY_HOME / "cbp_store" / "rows.json"
 WINDOW_DAYS = 5
 ROW_FIELDS = ("analyst", "video_id", "published", "bias", "quotes", "trades", "pointers",
               "symbols", "quote_verified", "expires_at")
@@ -25,8 +27,23 @@ TRADE_FIELDS = ("asset", "direction", "entry", "target", "invalidation", "quote"
 DIRECTIONS = ("LONG", "SHORT")
 
 
-def store_path(path=None):
-    return Path(path or os.environ.get("CBP_STORE") or DEFAULT_STORE)
+def default_cbp_home(exists=None):
+    """CBP_HOME env var if set; else legacy F:/CryptoScrapper if it exists on this machine; else a folder
+    under this checkout (runtime_data/cbp). Keeps CBP runnable on a device without F:/CryptoScrapper."""
+    exists = exists or (lambda p: p.is_dir())
+    env = os.environ.get("CBP_HOME")
+    if env:
+        return Path(env)
+    return LEGACY_HOME if exists(LEGACY_HOME) else ROOT / "runtime_data" / "cbp"
+
+
+def store_path(path=None, exists=None):
+    if path:
+        return Path(path)
+    env = os.environ.get("CBP_STORE")
+    if env:
+        return Path(env)
+    return default_cbp_home(exists=exists) / "cbp_store" / "rows.json"
 
 
 def load(path=None):
@@ -78,9 +95,12 @@ def parse_expiry(v):
 
 
 def is_tradable(r):
-    """A trade with entry, target and invalidation all stated (the analyst's words, nothing filled in)."""
-    return any(all(str(t.get(k) or "").strip() not in ("", "—") for k in ("entry", "target", "invalidation"))
-               for t in r.get("trades") or [])
+    """A trade with entry, target, invalidation and valid direction all stated (the analyst's words, nothing filled in)."""
+    return any(
+        t.get("direction") in DIRECTIONS and
+        all(str(t.get(k) or "").strip() not in ("", "—") for k in ("entry", "target", "invalidation"))
+        for t in r.get("trades") or []
+    )
 
 
 def query(analyst=None, symbol=None, since_days=WINDOW_DAYS, now=None, store=None):

@@ -1,8 +1,8 @@
 # DEVICES
 
-**Station** = one device with one login (e.g. JIS-NUC/A); operator 2026-10-23, d-station-term. Per-device chores (worktrees) are done once per device. Every station's cleanups (what deletes what, restart cleanup, roll-call answers): STATION_CLEANUP.md.
+**Station** = one device with one login (e.g. JIS-NUC/A); operator 2026-10-23, d-station-term. Per-device chores are defined once in DEVICE_TASKS.md (registry DEVICE_TASKS.json, which devices, who has done it); do not keep a per-device to-do list in this file. Every station's cleanups (what deletes what, restart cleanup, roll-call answers): STATION_CLEANUP.md.
 
-> Scheduled tasks: none are allowed on any device (RETIRED 2026-10-17, see SCHEDULING_POLICY.md); mentions below of MTS-* tasks, dispatcher, AutoDeploy, Supervisor are the old design.
+> Scheduled tasks: only the listed exceptions are allowed (RETIRED 2026-10-17; the list is SCHEDULING_POLICY.md section 1); mentions below of MTS-* tasks, dispatcher, AutoDeploy, Supervisor are the old design.
 
 Reference for every machine this project runs on: hostnames, addresses, disks, shares, and the rules that touch them. Read it before touching network
 paths, shares, scheduled tasks or the live loop. What each machine and login does, and what it may touch: HOW_MTS_RUNS.md (the one table).
@@ -145,15 +145,7 @@ One script, identical on JIS-NB, JIS-NUC and the Lenovo laptop (DESKTOP-F7IU69N)
 Each run: fetch; retire finished worktrees (sync.py tidy's rules incl. hand-named trees; ignored data first moved to the primary tree's `Dumps/wt_rescue/`); `git worktree prune`; delete local branches fully merged into origin/fast-track; write trees holding unshipped/uncommitted work to `Dumps/worktree_report.txt` (gitignored) and one line to the SUPERVISOR_LOG.
 Never touched: primary, live tree (`.mts_live`), lane trees, Codex trees, any tree changed in the last 30 min or idle under 24 h, any tree with uncommitted files or commits not on origin/fast-track. No stash/reset/force-push; a second run changes nothing.
 
-```
-python scripts/dev/wt_maint.py install      # once per device, from the primary checkout (after pulling origin/fast-track)
-python scripts/dev/wt_maint.py status       # device, task state, last run, last report
-python scripts/dev/wt_maint.py              # dry run (default); --apply does it by hand
-python scripts/dev/wt_maint.py uninstall
-```
-
-Operator line for the Lenovo session: `You are Builder. Install the worktree maintenance job on this device: pull origin/fast-track, run python scripts/dev/wt_maint.py install, run python scripts/dev/wt_maint.py status, ship.`
-Status 2026-10-24: JIS-NB NOT INSTALLED (`wt_maint.py status`, 2026-10-24; this section said installed before that check). JIS-NUC and DESKTOP-F7IU69N: NOT CAPTURED (roll call, STATION_CLEANUP.md section 1).
+Install, status and uninstall: `python scripts/dev/wt_maint.py install|status|uninstall` (dry run by default; `--apply` does it by hand). Which devices must have it, and whether each does: DEVICE_TASKS.md (task `wt-maint`), not a list here.
 
 ## 9. Router and home network
 

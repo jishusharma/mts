@@ -1,0 +1,37 @@
+{
+ "id": "dir-worktree_triage_2026-10-20",
+ "kind": "thought_experiment",
+ "family": "Worktree Triage",
+ "title": "JIS-NB worktree triage, 2026-10-20 (desk row 20261018-161738)",
+ "provenance": "source-extracted",
+ "date": "2026-10-20",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "action",
+  "tone": "info"
+ },
+ "why": [
+  "18 of 20 clean trees were retired (2 remove-failed, locked by a process; retry later) with sync.py tidy --apply: agent-a8eee4b2, aa5ed417, ac8b43fc, ae3ed4ae, afb69d20, fabio-transcribe-c09d2b, friendly-tereshkova-a255c3, relaxed-hawking-e5fb45, mts-jis-nb-{c…"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/worktree_triage_2026-10-20/TRIAGE.md"
+ ],
+ "commit": "122e62073"
+}

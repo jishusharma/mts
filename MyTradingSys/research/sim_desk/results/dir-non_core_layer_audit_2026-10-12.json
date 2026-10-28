@@ -1,0 +1,81 @@
+{
+ "id": "dir-non_core_layer_audit_2026-10-12",
+ "kind": "audit",
+ "family": "Non Core Layer Audit",
+ "title": "Independent layer audit: RSI, WaveTrend and the other non-core layers",
+ "provenance": "source-extracted",
+ "date": "2026-10-12",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Evidence classes used throughout:",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "REPRODUCED: a local check executed in this session. The script, outputs and logs are attached.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "CODE: inspected implementation; proves behavior or wiring in this checkout, not deployment on the live machine.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "RECORDED: a committed historical report was read; its underlying full market-data run was not repeated here.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "UNKNOWN: the evidence needed to decide is unavailable or incomplete.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "The evidence files include source excerpts with line numbers and SHA-256 hashes. Use those hashes when comparing with later parallel changes. The checkout advanced during the session; the reproducibility receipt records…",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": ", not a claim that every possible version of these systems cannot work.",
+  "tone": "info"
+ },
+ "why": [
+  "Keep the working calculation and observation infrastructure. Do not interpret it as a proven trading system. The immediate priorities are to define exactly which RSI system is being evaluated, reconcile source rules with code and execution, and preserve event…",
+  "The strongest positive finding is engineering progress: 505 existing tests passed in this audit, four Malkan extract files passed their quote checks, and both saved RSI divergence tables were reproduced exactly from their committed JSON summaries. The stronge…",
+  "Several earlier conclusions were too broad. Negative generic-bracket RSI tests do not reject Malkan's complete strategy. A small positive live sample does not establish edge. A low probability-of-backtest-overfitting score does not establish profitability. A…",
+  "Local default 1m input roots Dumps/backtest/raw_1m_2022 and Dumps/backtest/raw, and the local Dumps/backtest/runs folder, were absent. F:/MTS/data exists, but equivalent full 1m coverage was not established. Therefore this audit did not rerun years of market…"
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "89"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 89,
+   "quote": "D3 1h, 40-support, tolerance 0.5, five-bar return OOS n=89; gross +0.043%, PBO 0.030 4.3 bp gross is below even the study family's 10 bp taker round trip. Low PBO does not make it profitable. Raw eve…"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "n_trades": "not a trade test (audit)"
+ },
+ "source_files": [
+  "MyTradingSys/research/non_core_layer_audit_2026-10-12/REPORT.md"
+ ],
+ "commit": "0f0b1cc78"
+}

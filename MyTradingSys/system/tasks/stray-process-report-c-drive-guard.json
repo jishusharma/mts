@@ -1,0 +1,62 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-28T06:36:44Z",
+  "depends_on": [],
+  "done_when": "The report lists the JIS-NB leftovers (pythonw x2 146h, desk.py --port 8790 x2, cmd); tests fail on old code and cover every never-kill rule; no new scheduled task (SCHEDULING_POLICY.md).",
+  "est_turns": 16,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Add a daily report-only 'procs' step to c_drive_guard.py: list stray python/node/pwsh/cmd/conhost processes over 24h matching a safe pattern (desk.py, sim_desk, repo scripts, STRAY_REAP_POLICY.md allow list). 'procs --apply' kills only by PID, never claude.exe-ancestored or touching the live tree.",
+  "id": "stray-process-report-c-drive-guard",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nb/two-cards-voice-procs",
+      "ref": "1536591a46bb",
+      "utc": "2026-10-28T06:43:07Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "4545f7733b55 Stray process report in c_drive_guard; Supervisor voice start loads its hand-",
+      "ref": "MyTradingSys/system/STRAY_REAP_POLICY.md",
+      "utc": "2026-10-28T06:42:49Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "c-drive-cleanup-holds"
+  ],
+  "note": "Related, not a twin: c-drive-cleanup-holds (worktrees and temp). Goal/fields moved out of note into proper card fields by Session_Planner 2026-10-28; original note text preserved in history.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T07:14:45Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/c_drive_guard.py",
+    "MyTradingSys/system/STRAY_REAP_POLICY.md"
+  ],
+  "scope_out": [],
+  "scope_sha": "1536591a46bb",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Add safe-pattern entries to the allow list in STRAY_REAP_POLICY.md (operator-edit file; propose the entries, do not assume operator sign-off)",
+    "Implement 'procs' (report-only) and 'procs --apply' (kill by PID only) in c_drive_guard.py with the never-kill rules",
+    "Write tests covering each never-kill rule and the 24h/safe-pattern match, failing on current code first"
+  ],
+  "tests": "scripts/dev/test_c_drive_guard.py::test_procs_never_kills_claude_or_live_tree_processes (new, must fail on pre-change code)",
+  "title": "Stray process report in c_drive_guard",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

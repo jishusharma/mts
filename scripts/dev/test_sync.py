@@ -1228,6 +1228,82 @@ class SyncTest(unittest.TestCase):
 
 
 
+    # bg-process-audit 2026-10-28: network git calls have a deadline, and a push that failed for a non-race reason is not
+    # retried (5 Gemini claims on 2026-10-28 retried 18 pushes each, all printed as 'someone shipped first').
+    AUDIT_AUTH = "remote: Invalid username or token." + chr(10) + "fatal: Authentication failed for 'https://github.com/x/y.git/'"
+
+    def failing_push(self, target):
+        real = sync.git
+        pushes = []
+
+        def spy(repo, *args, **kw):
+            if args[:1] == ("push",) and args[-1].endswith(target):
+                pushes.append(args)
+                return subprocess.CompletedProcess(args, 128, "", self.AUDIT_AUTH)
+            return real(repo, *args, **kw)
+        return spy, pushes
+
+    def test_claim_push_auth_failure_fails_once_with_the_reason(self):
+        spy, pushes = self.failing_push(":refs/heads/claims")
+        with mock.patch.object(sync, "git", spy), contextlib.redirect_stdout(io.StringIO()):
+            with self.assertRaises(sync.PushFailed) as e:
+                sync.claim(self.a, "Task auth", gate=self.gate, force=True)
+        self.assertEqual(len(pushes), 1)
+        self.assertIn("Authentication failed", str(e.exception))
+        self.assertIn("not a race", str(e.exception))
+
+    def test_ship_push_auth_failure_is_not_regated(self):
+        commit(self.a, "auth.py", "x" + chr(10))
+        spy, pushes = self.failing_push("HEAD:refs/heads/fast-track")
+        with mock.patch.object(sync, "git", spy), contextlib.redirect_stdout(io.StringIO()):
+            with self.assertRaises(sync.PushFailed):
+                sync.ship(self.a, gate=self.gate, sleep=lambda s: None)
+        self.assertEqual(len(pushes), 1)
+        self.assertEqual(len(self.gated), 1)
+
+    def test_lost_race_message_still_retries(self):
+        r = subprocess.CompletedProcess([], 1, "", " ! [rejected]        HEAD -> fast-track (fetch first)" + chr(10) + "error: failed to push some refs")
+        self.assertTrue(sync.push_race_lost(r))
+        self.assertFalse(sync.push_race_lost(subprocess.CompletedProcess([], 128, "", self.AUDIT_AUTH)))
+        self.assertFalse(sync.push_race_lost(subprocess.CompletedProcess([], 124, "", "TIMEOUT git push after 180s")))
+
+    def test_lost_claim_race_retries_after_a_jitter_not_in_lockstep(self):
+        # 2026-10-28 NUC (gemini-lane-fix): two gemini claimers each lost 3 claim pushes back to back with ~0 s
+        # between attempts (no backoff in the claims loop), so the second claimer re-fetched exactly when the
+        # other's push landed: 6 'push rejected' lines, both claims 'still rejected after 3 tries'. The ship loop
+        # already jitters 1-5 s between lost-race retries (GATE_SPEED D4); the claims loop now jitters 0.5-4 s too.
+        rel = "MyTradingSys/system/claims/jitter.md"
+        sync.push_claim_commit(self.a, rel, "host: a\n", "claim jitter")   # create origin/claims
+        real = sync.git
+        fired = []
+
+        def spy(repo, *args, **kw):
+            r = real(repo, *args, **kw)
+            if r.returncode == 0 and args[:1] == ("push",) and args[-1].endswith(":refs/heads/claims") and not fired:
+                fired.append(1)
+                r.returncode, r.stderr = 1, " ! [rejected]  " + rel + " -> claims (fetch first)" + chr(10) + "error: failed to push some refs"
+            return r
+        sleeps = []
+        with mock.patch.object(sync, "git", spy), contextlib.redirect_stdout(io.StringIO()):
+            sync.push_claim_commit(self.a, rel, "host: a\n", "claim jitter", sleep=sleeps.append)
+        self.assertEqual(fired, [1])        # first push lost the race; the jittered retry landed
+        self.assertEqual(len(sleeps), 1)
+        self.assertTrue(0.5 <= sleeps[0] <= 4.0, sleeps)
+
+    def test_claim_and_release_take_a_sleep_arg(self):
+        # the CLI claim/release paths thread the sleeper through, so a lost race there is jittered too
+        sleeps = []
+        spy = mock.Mock(wraps=sync.push_claim_commit)
+        with mock.patch.object(sync, "push_claim_commit", spy):
+            sync.claim(self.a, "Jitter claim", gate=self.gate, force=True, sleep=sleeps.append)
+        self.assertTrue(any("sleep" in c.kwargs for c in spy.call_args_list), spy.call_args_list)
+        spy.reset_mock()
+        rel_slug = "jitter-claim"
+        with mock.patch.object(sync, "push_claim_commit", spy):
+            sync.release(self.a, rel_slug, sleep=sleeps.append)
+        self.assertTrue(any("sleep" in c.kwargs for c in spy.call_args_list), spy.call_args_list)
+
+
 class GateSlotTest(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp())
@@ -1670,6 +1746,25 @@ class PARALLEL_MainCheckoutRuleTest(unittest.TestCase):
         text = doc.read_text(encoding="utf-8")
         for needle in ("Main checkout rule", "never edit", "merge --ff-only origin/fast-track"):
             self.assertIn(needle, text)
+
+
+class GitNetTimeoutTest(unittest.TestCase):
+    def test_network_verb_gets_a_deadline_and_a_timeout_line(self):
+        seen = {}
+
+        def hang(cmd, **kw):
+            seen.update(kw)
+            raise subprocess.TimeoutExpired(cmd, kw.get("timeout"))
+        with mock.patch.object(sync.subprocess, "run", hang), contextlib.redirect_stderr(io.StringIO()) as err:
+            r = sync.git(".", "fetch", "--quiet", "origin", "fast-track", check=False)
+        self.assertEqual(r.returncode, 124)
+        self.assertEqual(seen.get("timeout"), sync.GIT_NET_TIMEOUT_S)
+        self.assertEqual(seen["env"].get("GIT_TERMINAL_PROMPT"), "0")
+        self.assertIn("TIMEOUT git fetch", err.getvalue())
+        with mock.patch.object(sync.subprocess, "run", hang), contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(sync.SyncError) as e:
+                sync.git(".", "push", "origin", "x")
+        self.assertIn("TIMEOUT git push", str(e.exception))
 
 
 if __name__ == "__main__":

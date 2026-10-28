@@ -1,0 +1,38 @@
+{
+ "id": "audit-t05_placebo_nulls",
+ "kind": "audit",
+ "family": "Audit: DSA backtest audit",
+ "title": "T05 Placebo nulls: what does chance alone produce here? (card dsa-audit-05-placebo-nulls)",
+ "provenance": "source-extracted",
+ "date": "2026-10-16",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-04-01 to 2024-06-30 (as written in the source)",
+ "verdict": {
+  "label": "s stand; the LC1 KEEP list must be re-stated on the fair control before any layer uses it.",
+  "tone": "info"
+ },
+ "why": [
+  "Found: no tested arm's gross mean beats chance once the number of arms tried is counted (arms above their study's best-of-N bar: {'screen': 0, 'mal_bb': 0, 'opr_bb': 0, 'wlow': 0, 'preopen': 0, 'candle': 0}); the published day-clustered SE is conservative for…",
+  "Changes: the FAIL / INCONCLUSIVE screen verdicts stand; the LC1 KEEP list must be re-stated on the fair control before any layer uses it.",
+  "Reproduction check: every real arm mean, n and SE equals the published trials.csv / ledger value (columns mean G vs pub mean); the gross-screen control mean -0.0081 and n 1439 match RESULT.md. Placebo test: t05_core.py draws 1,000 sets per arm; test_placebo_n…"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T05_placebo_nulls.md"
+ ],
+ "commit": "4f32dd966"
+}

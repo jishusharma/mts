@@ -1,0 +1,75 @@
+{
+ "id": "dir-backtest_gap_review_2026-10-13",
+ "kind": "audit",
+ "family": "Backtest Gap Review",
+ "title": "Backtest and extraction gap review: are we backtesting correctly? (2026-10-13, cloud session)",
+ "provenance": "source-extracted",
+ "date": "2026-10-13",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "What would settle \"are we backtesting correctly\": for each verdict, (a) the test could have detected an edge of the size the",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "source claims (power at the stated effect, out-of-sample, after fees + funding + spread + slippage), (b) fills and costs match",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "the venue that will execute, (c) the number of looks at data across the project is counted. Accepted methods exist for all three",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "(power / minimum track record length, fill-model sensitivity, deflated Sharpe / PBO / Reality Check / SPA), so this is not an",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "unvalidated domain. External items below only rank what to check first; our own backtest decides (playbook Part I 3e).",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2024-11-04 to 2026-04-10 (as written in the source)",
+ "verdict": {
+  "label": "wrong, and four of them sit in front of the next big run (the Tom v2 DAX dev run):",
+  "tone": "info"
+ },
+ "why": [
+  "the frozen DAX bar has 7-35 % power at 100-150 trades, and \"FAIL on dev = stop\" makes that miss final. [checked]",
+  "synthetic and does not mirror live liquidity. [checked repo; search for the Deribit statement]",
+  "(needs passive execution). Tom and Fabio on BTC at their native stop sizes cannot pass by arithmetic (TOM_LAYER_V2_SPEC s1);",
+  "Evidence: TOM_LAYER_V2_SPEC.md:43 PASS = >= 100 fills AND 95 % CI lower bound of net R > 0; :49 \"FAIL on DAX dev = stop\"."
+ ],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "150"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 150,
+   "quote": "the frozen DAX bar has 7-35 % power at 100-150 trades, and \"FAIL on dev = stop\" makes that miss final. [checked]"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "n_trades": "not a trade test (audit)"
+ },
+ "source_files": [
+  "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
+ ],
+ "commit": "5a839bfb4"
+}

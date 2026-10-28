@@ -15,12 +15,15 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator standing rule for this whole line of work (2026-10-27): consolidate idea -> refine this task -> design review passes (with tests where applicable) -> only then implement -> implementation tested with proof attached. Do not skip straight to a code change. See rolling-chain-background-wait-design-rev for the sibling card on per-link latency; this card is coordinator idle-time/escalation only. Concrete evidence this session: Link (kurisko-params-provenance-labels, agentId a13f34b0fe4c70a85) ran 1h15m+ with 37 tool_uses, its own notifications saying 'I'll stop issuing placeholder calls now and simply wait for the monitor's notification' -- i.e. it was polling itself, not doing useful work, and the coordinator had no visibility into that or any fallback besides waiting.",
+  "note": "Operator standing rule for this whole line of work (2026-10-27): consolidate idea -> refine this task -> design review passes (with tests where applicable) -> only then implement -> implementation tested with proof attached. Do not skip straight to a code change. See rolling-chain-background-wait-design-rev for the sibling card on per-link latency; this card is coordinator idle-time/escalation only. Concrete evidence this session: Link (kurisko-params-provenance-labels, agentId a13f34b0fe4c70a85) ran 1h15m+ with 37 tool_uses, its own notifications saying 'I'll stop issuing placeholder calls now and simply wait for the monitor's notification' -- i.e. it was polling itself, not doing useful work, and the coordinator had no visibility into that or any fallback besides waiting. | 2026-10-28: folded into bug-long-background-processes-dead-ends (operator scope add); its evidence and the default implementation ship there.",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
-  "refs": [],
-  "result": "",
+  "refined_by": "Builder (bg-process-audit, 2026-10-28)",
+  "refs": [
+    "MyTradingSys/research/lead/2026-10-28_coordinator-idle-during-background-wait.md",
+    "MyTradingSys/research/bg_process_audit_2026-10-28/AUDIT.md"
+  ],
+  "result": "design note MyTradingSys/research/lead/2026-10-28_coordinator-idle-during-background-wait.md: link cap 45 min (p93 of 255 Agents); while waiting fill free slots, else refine one RAW-AGED card (never a 5-min poll); stuck link -> STALLED-BG from bg_watch.py, watcher wakes on it, TaskStop + re-dispatch. Default built in the bug-long-background-processes-dead-ends ship (bg_watch.py, supervisor.py plan/wait, test_bg_watch.py)",
   "scope_in": [
     "MyTradingSys/research/lead/*.md (new design note only)"
   ],
@@ -29,7 +32,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Pull evidence: grep this session's actual link durations/tool_use counts (SUPER_SESSION chain notes, NEXT_SESSION.md hand-overs) for a real distribution of link wait times, and note the kurisko link's stuck-polling pattern as a concrete failure example.",
     "List options for coordinator behavior during a wait (dispatch second card now vs. wait for a slot; a stuck-agent timeout/ping; a cheaper poll) with cost/risk of each, pick one default.",

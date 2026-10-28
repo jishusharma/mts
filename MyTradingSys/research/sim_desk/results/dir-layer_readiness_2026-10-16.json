@@ -1,0 +1,50 @@
+{
+ "id": "dir-layer_readiness_2026-10-16",
+ "kind": "backtest",
+ "family": "Layer Readiness",
+ "title": "Layer readiness for testnet trading - census 2026-10-16",
+ "provenance": "source-extracted",
+ "date": "2026-10-16",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "is FAIL, NO EDGE, INCONCLUSIVE or unrun - see column \"Best verdict\").",
+  "tone": "bad"
+ },
+ "why": [
+  "(every in-scope backtest verdict is FAIL, NO EDGE, INCONCLUSIVE or unrun - see column \"Best verdict\").",
+  "Not in that tail (rare events; config says they may trade): malkan_bull/bear, failed_msb, sr_flip/fib 1h. Many skipped_halt rows",
+  "(every entry review_by 2026-10-23, not enforced, expiry does not halt trading). DECISION (OURS): leave all entries as they are; pruning is the operator's.",
+  "Rows 1-9 (TRADES): no steps. Optional hygiene, no operator decision: add a size_overrides entry for layer:cryptocred:failed_msb:"
+ ],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "9"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 9,
+   "quote": "Promotion gate default-deny 8254ece6 (+ 644ca8b6 demote/verify) every layer signal via auto_trader.promotion_reject; all 9 TRADES layers pass only through pre_pipeline_sources"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/layer_readiness_2026-10-16/LAYER_READINESS.md"
+ ],
+ "commit": "0a19455b0"
+}

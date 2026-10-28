@@ -25,3 +25,17 @@ Guard rule: stop and ship if weekly all-models rises 4 pts across this session.
 - Context self: 122,741 / 1,000,000 (12 %; below the 95 % stop line, auto-compacts at 97 %).
 - Guard outcome: no stop trigger (4-pt weekly rise unreadable, context well under 95 %) -> ship at the stop trigger per the fallback rule.
 - Session 2026-10-28 worktree `claude/gross-effect-power-prereg-d8e2cd` shipped clean.
+
+## R3 (guard log)
+
+Guard rule (same as R2): stop and ship if weekly all-models rises 4 pts; context self under 95 %.
+
+### START (post-compact resume)
+- `get_usage`: plan status `not_applicable` (org provider, no plan-limit pacing) - weekly 4-pt delta N/A.
+- Context self ~20 % / 1,000,000 (post-compact; auto-compacts at 97 %).
+
+### END
+- `get_usage`: plan still `not_applicable`; weekly delta N/A.
+- Context self: 198,004 / 1,000,000 (20 %; well under the 95 % stop line).
+- Guard outcome: no stop trigger -> ship at the stop trigger per the fallback rule.
+- Lane: `claude/live-redteam-r3-b8705e`; R3 gate shipped with trunk's T06 costs.csv fix (fff75b648) cherry-picked to unblock step 3xt.

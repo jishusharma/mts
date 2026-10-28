@@ -1,22 +1,23 @@
-"""Queue task cards onto Gemini Flash through the Antigravity CLI (`agy`), one throwaway worktree per card.
+"""Queue task cards onto Gemini through the Antigravity CLI (`agy`), one throwaway worktree per card.
 
-  python scripts/dev/gemini_queue.py run <card-id>:<low|medium|high> ...   run the jobs one after another
+  python scripts/dev/gemini_queue.py run <card-id>[:<effort>][:<model>] ...  run the jobs one after another
+    effort in low|medium|high (default low); model in flash|argon (default flash); tokens may appear in either order
   python scripts/dev/gemini_queue.py status                                last log line per job
 
 Each job: worktree F:/MTS/gq/<id> on branch gemini-q/<id> cut from origin/fast-track, `agy --print` with a
 Flash model, prompt = the card brief plus the lane rules. Gemini commits on its branch only: it never ships,
 never stamps REVIEWED, never touches the live tree. A Claude session reviews the branch and ships it.
-Flash models only (operator 2026-10-18).
+Flash models only (operator 2026-10-18); the argon option was added by the operator via the gemini-lane-fix task.
 """
 from __future__ import annotations
-import os, subprocess, sys, time
+import os, random, re, socket, subprocess, sys, time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 REPO = Path(__file__).resolve().parents[2]
 AGY = Path.home() / '.gemini' / 'bin' / 'agy.exe'
-ROOT = Path('F:/MTS/gq')
+ROOT = Path(os.environ.get('MTS_GQ_ROOT') or ('F:/MTS/gq' if Path('F:/').exists() else Path.home() / '.gemini' / 'mts-gq'))
 PY = sys.executable
 
 RULES = """You are a Gemini Flash worker in the MTS repo. Work ONLY in this directory (a throwaway git worktree).
@@ -64,7 +65,30 @@ def claim_holder(card: str, claims) -> str:
     return ''
 
 
-def run_job(card: str, effort: str) -> None:
+def claim_with_retry(wt, card: str, tries: int = 6, sleep=time.sleep):
+    """Claim `card` from worktree `wt`; returns (status, reason), status in ok|skip|fail.
+    A busy trunk rejects the claim push: re-run (sync.py re-fetches) up to `tries` times with 2-10 s jittered backoff (OURS).
+    Our own host already holding it = ok; another holder = skip at once; a timeout (rc 124) or a push that failed for a
+    non-race reason (sync.py PushFailed) fails at once, never 6 hangs."""
+    reason = ''
+    for n in range(1, tries + 1):
+        c = sh([PY, 'scripts/dev/sync.py', 'claim', card], cwd=wt)
+        if c.returncode == 0:
+            return 'ok', ''
+        reason = ((c.stderr or '') + (c.stdout or '')).strip().replace('\n', ' | ')[:300]
+        m = re.search(r'already claimed by (\S+)', reason)
+        if m:
+            return ('ok', '') if m.group(1).lower() == socket.gethostname().lower() else ('skip', reason)
+        if c.returncode == 124 or 'TIMEOUT' in reason:
+            return 'fail', f'timeout: {reason}'
+        if 'not a race' in reason:      # sync.py PushFailed: auth/network/hook; a retry fails the same way (bg-process-audit)
+            return 'fail', f'push failed, not a race: {reason}'
+        if n < tries:
+            sleep(random.uniform(2, 10))
+    return 'fail', f'after {tries} tries: {reason}'
+
+
+def run_job(card: str, effort: str, model: str = 'flash') -> None:
     wt = ROOT / card
     log = ROOT / f'{card}.log'
     ROOT.mkdir(parents=True, exist_ok=True)
@@ -79,12 +103,18 @@ def run_job(card: str, effort: str) -> None:
         if r.returncode:
             log.write_text('worktree failed: ' + r.stderr, encoding='utf-8', newline='\n')
             return
-    c = sh([PY, 'scripts/dev/sync.py', 'claim', card], cwd=wt)
-    if c.returncode:
-        log.write_text(f'CLAIM FAILED/TIMEOUT {card}: {c.stderr}\n', encoding='utf-8', newline='\n')
+    for k, v in (('user.name', 'gemini-queue'), ('user.email', 'gemini-queue@mts.local')):  # SYSTEM has no git identity
+        git('config', k, v, cwd=wt, timeout=30)
+    status, why = claim_with_retry(wt, card)
+    if status == 'skip':
+        log.write_text(f'SKIP {card}: {why}\n', encoding='utf-8', newline='\n')
+        return
+    if status == 'fail':
+        log.write_text(f'CLAIM FAILED: {card}: {why}\n', encoding='utf-8', newline='\n')
         return
     brief = sh([PY, 'scripts/dev/tasks.py', 'brief', card], cwd=wt).stdout
-    model = f'gemini-3.8-flash-{effort}'
+    # NUC 2026-10-28 (gemini-lane-fix): argon ids from `agy models` on this NUC; flash stays 3.8
+    model = f'{"gemini-4-argon" if model == "argon" else "gemini-3.8-flash"}-{effort}'
     cmd = [str(AGY), '--print', RULES + brief, '--model', model, '--effort', effort,
            '--mode', 'accept-edits', '--dangerously-skip-permissions', '--print-timeout', '2400s']
     t0 = time.time()
@@ -109,12 +139,21 @@ def main(argv: list[str]) -> int:
             print(lg.stem, '|', lines[-1][:120] if lines else '')
         return 0
     for spec in argv[1:]:
-        card, _, eff = spec.partition(':')
-        eff = eff or 'medium'
-        if eff not in ('low', 'medium', 'high'):
-            print('bad effort', spec)
+        parts = spec.split(':')
+        if len(parts) > 3:
+            print('bad spec', spec)
             return 2
-        run_job(card, eff)
+        card = parts[0]
+        effort, model = 'low', 'flash'
+        for t in parts[1:]:
+            if t in ('low', 'medium', 'high'):
+                effort = t
+            elif t in ('flash', 'argon'):
+                model = t
+            else:
+                print('bad token', spec, t)
+                return 2
+        run_job(card, effort, model)
     return 0
 
 

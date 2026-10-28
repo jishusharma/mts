@@ -341,9 +341,9 @@ def test_pace_over_weekly_cap_is_stop():
 
 def test_last_day_before_the_weekly_reset_spends_the_last_points_slowly():
     """Operator 2026-10-22: A at 97% with 15 h to its reset. Cap 95 -> STOP (points lost); last-day cap 99 over 3 windows ->
-    2/3 wk pt here / 0.12 = 5.6 pts of 5 h -> 1 Claude worker, NORMAL. NB B/C keep their 75."""
+    2/3 wk pt here / 0.12 = 5.6 pts of 5 h -> 1 Claude worker, NORMAL. NB B/C lift to 99 too (2026-10-28)."""
     assert S.weekly_cap("A", "DESKTOP-F7IU69N", 15) == 99 and S.weekly_cap("A", "DESKTOP-F7IU69N", 30) == 95
-    assert S.weekly_cap("A", "DESKTOP-F7IU69N") == 95 and S.weekly_cap("C", "JIS-NB", 15) == 85
+    assert S.weekly_cap("A", "DESKTOP-F7IU69N") == 95 and S.weekly_cap("C", "JIS-NB", 15) == 99   # 10-28: desktop caps lift in the last day too
     assert S.pace_plan(T0, _rd(2, 97, week_reset="2026-10-20T03:00Z"), 95)["mode"] == "STOP"
     p = S.pace_plan(T0, _rd(2, 97, week_reset="2026-10-20T03:00Z"), S.weekly_cap("A", "DESKTOP-F7IU69N", 15))
     assert p["room"] == 5.6 and p["slots"] == 1 and p["mode"] == "NORMAL"
@@ -462,9 +462,9 @@ def test_pick_cards_jis_nb_lane_follows_the_live_host_file(monkeypatch, tmp_path
     f = tmp_path / "live_host.txt"
     monkeypatch.setattr(S, "LIVE_HOST_FILE", f)
     ids = lambda h: [r["id"] for r in S.pick_cards(rows, h, 9)]
-    assert S.live_host() == "JIS-NB" and ids("JIS-NB") == ["n1", "s1"]
+    assert S.live_host() == S.CN("JIS-NB") and ids("JIS-NB") == ["n1", "s1"]
     f.write_text("desktop-f7iu69n", encoding="utf-8")
-    assert S.live_host() == "DESKTOP-F7IU69N"
+    assert S.live_host() == S.CN("DESKTOP-F7IU69N")
     assert ids("DESKTOP-F7IU69N") == ["n1", "s1"] and ids("JIS-NB") == ["s1"] and ids("JIS-NUC") == ["s1"]
 
 
@@ -982,6 +982,81 @@ def test_lead_role_same_form_other_file(tmp_path):
     assert S.verify_text(t, tmp_path, "lead")[1]["problems"] == []
 
 
+# ---------- SUPER_SESSION.md Session log cap (handover log overflow broke test_session_log_keeps_last_five 2026-10-28) ----------
+def _session_doc(entries):
+    body = "\n".join(f"- {i}" for i in entries)
+    return f"# Super session\n\n## Pacing\nstate row\n\n## Session log (newest first; one line each, last 5)\n{body}\n\n## Prompt: start a super session\n```\nYou are Supervisor.\n```\n"
+
+
+def test_append_session_line_prepends_newest_first_and_keeps_cap():
+    """5 entries already: the new line goes to the top and the oldest (last) entry is dropped, so the section still holds 5."""
+    doc = _session_doc(["1", "2", "3", "4", "5"])
+    out = S.append_session_line(doc, "- NEW")
+    log = [l for l in out.splitlines() if l.startswith("- ")]
+    assert log == ["- NEW", "- 1", "- 2", "- 3", "- 4"]
+    assert "- 5" not in out                      # oldest dropped
+
+
+def test_append_session_line_under_cap_does_not_drop():
+    """Fewer than 5 entries: the new line is prepended, nothing dropped, total grows by one."""
+    out = S.append_session_line(_session_doc(["1", "2"]), "- NEW")
+    log = [l for l in out.splitlines() if l.startswith("- ")]
+    assert log == ["- NEW", "- 1", "- 2"]
+
+
+def test_append_session_line_leaves_other_sections_untouched():
+    """Only the entry block under '## Session log' changes; the Pacing/Prompt sections and their '- ' lines elsewhere are intact."""
+    doc = _session_doc(["1", "2", "3", "4", "5"])
+    out = S.append_session_line(doc, "- NEW")
+    assert "## Pacing" in out and "state row" in out and "You are Supervisor." in out
+    assert "## Prompt: start a super session" in out
+
+
+def test_append_session_line_missing_section_is_noop():
+    """A file without the Session log section is returned unchanged (fail closed: no new section invented)."""
+    doc = "# Super session\n\n## Pacing\nstate row\n"
+    assert S.append_session_line(doc, "- NEW") == doc
+
+
+def test_append_session_line_blank_input_is_noop():
+    assert S.append_session_line(_session_doc(["1"]), "") == _session_doc(["1"])
+    assert S.append_session_line(_session_doc(["1"]), "   ") == _session_doc(["1"])
+
+
+def test_append_session_line_respects_custom_keep():
+    out = S.append_session_line(_session_doc(["1", "2", "3"]), "- NEW", keep=2)
+    assert [l for l in out.splitlines() if l.startswith("- ")] == ["- NEW", "- 1"]
+
+
+def test_record_session_line_writes_capped_file(tmp_path, monkeypatch):
+    """End-to-end: 5 entries on disk + a new line -> 5 kept, oldest gone; returns the new count."""
+    import sync
+    monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
+    p = tmp_path / "MyTradingSys" / "system"
+    p.mkdir(parents=True)
+    doc_path = p / "SUPER_SESSION.md"
+    doc_path.write_text(_session_doc(["1", "2", "3", "4", "5"]), encoding="utf-8")
+    assert S.record_session_line(tmp_path, "- NEW") == 5
+    on_disk = [l for l in doc_path.read_text(encoding="utf-8").splitlines() if l.startswith("- ")]
+    assert on_disk == ["- NEW", "- 1", "- 2", "- 3", "- 4"]
+
+
+def test_record_session_line_autobulleted_text_stays_well_formed(tmp_path):
+    """A raw line without '- ' gets one prepended; the next capped call still slices the block correctly (no stray entry)."""
+    p = tmp_path / "MyTradingSys" / "system"
+    p.mkdir(parents=True)
+    doc_path = p / "SUPER_SESSION.md"
+    doc_path.write_text(_session_doc(["1", "2", "3", "4", "5"]), encoding="utf-8")
+    assert S.record_session_line(tmp_path, "NEW") == 5            # raw text, no bullet
+    assert S.record_session_line(tmp_path, "SECOND") == 5          # still 5: block re-sliced, oldest dropped again
+    on_disk = [l for l in doc_path.read_text(encoding="utf-8").splitlines() if l.startswith("- ")]
+    assert on_disk == ["- SECOND", "- NEW", "- 1", "- 2", "- 3"]
+
+
+def test_record_session_line_missing_file_is_noop(tmp_path):
+    assert S.record_session_line(tmp_path, "- NEW") == -1      # SUPER_SESSION.md absent: nothing written
+
+
 def test_fold_target_card_else_handover(tmp_path):
     cards = tmp_path / "MyTradingSys" / "system" / "tasks"
     cards.mkdir(parents=True)
@@ -991,3 +1066,11 @@ def test_fold_target_card_else_handover(tmp_path):
     assert S.fold_target(tmp_path, None, None, "lead", T0).name == "LEAD_RESUME_2026-10-19.md"
     t = S.set_missed(_form(), ["a.md", "b.md"])
     assert "a.md" in t and "(none)" not in t and S.validate_form(t) == []
+
+
+def test_peer_none_live_line_names_the_heartbeat_constant():
+    p = S.pace_plan(T0, _rd(10, 20), 95)
+    live = {"B": {"host": "JIS-NB", "mode": "NORMAL", "run": 0, "free": 3, "at": "x", "dsa": None}}
+    ctx = {"codex_ready": 3, "spare": "card-x", "ci": {}, "picks": []}
+    out = chr(10).join(S.plan_lines("B", "JIS-NB", p, live, dict(ctx, nuc_ok=False), gate_key=False))
+    assert f"no heartbeat < {S.HEARTBEAT_MIN} min" in out

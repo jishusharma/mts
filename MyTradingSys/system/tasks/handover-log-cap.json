@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T08:15:15Z",
+    "misses": 11,
+    "reads": [
+      "scripts/dev/test_codex_run.py",
+      "CLAUDE.md"
+    ],
+    "session": "agent-ad0697e212f209557"
+  },
+  "created": "2026-10-28T06:49:37Z",
+  "depends_on": [],
+  "done_when": "NOT_IN_DATA: scope and done-when were in the NUC prompt only; read the prompt or the ship commit message (verify via card handover-log-cap-and-gemini-lane-verify) and rewrite this card; minimum: log growth is capped and a test fails on old code",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Card file recreated by gap-cards-2026-10-28 (gap 7): the NUC prompt named it but no tasks/<id>.json existed.",
+  "id": "handover-log-cap",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "supervisor: cap SUPER_SESSION.md Session log at the last 5 on append",
+      "ref": "8fac64479e91",
+      "utc": "2026-10-28T06:39:15Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T06:49:37Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/supervisor.py"
+  ],
+  "scope_out": [
+    "unrelated files; live tree"
+  ],
+  "scope_sha": "8fac64479e91",
+  "size": "S",
+  "sources": [
+    "operator ask 2026-10-28 gap 7"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read the done-when and linked files",
+    "Verify or complete; record run"
+  ],
+  "tests": "see done-when; test fails on old code",
+  "title": "handover-log-cap (gateway Builder ship, NUC signal 06:39Z)",
+  "weight": "",
+  "worker": "agent"
+}

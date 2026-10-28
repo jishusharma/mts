@@ -1,0 +1,59 @@
+{
+ "id": "dir-tom_dax_what_is_proven_2026-10-13",
+ "kind": "backtest",
+ "family": "Tom Dax What Is Proven",
+ "title": "What the DAX tests prove about Tom, and what is missing (2026-10-13, cloud, read-only)",
+ "provenance": "source-extracted",
+ "date": "2026-10-13",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": ". Power here means the chance of detecting an edge that is really there. The frozen pass bar has 7-35% across most of his range, and a FAIL is final (REPORT.md:92-99; spec :49).",
+  "tone": "bad"
+ },
+ "why": [
+  "No. The DAX work does not show that Tom is wrong, and it does not show that he is right either. The only DAX profit table is a one-month pipeline test labelled \"NOT a result\" (DAX_BT_REPORT.md:1). The newer chain stopped at a matching check before any P&L was…",
+  "Proven: our encoding has no edge on BTC. Over 4,417 trades it made gross -0.07R, with a 95% range of -0.11 to -0.03 (TOM_CORE_BT.md:337). The test was big enough to detect an edge of about 0.06R. Stops the size of Tom's also lose to BTC fees by arithmetic: co…",
+  "Not proven: Tom has no edge. No P&L test of anything that fires where he fires has run on his home market (tasks/tom-v2-dax-dev-backtest.json:23, result empty).",
+  "A verified Tom edge. All we have is a marketing bio (ANGLE_TRADER_SOURCES.md:26-27), and a perfect copy of a method with no edge earns nothing."
+ ],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "0"
+  },
+  {
+   "label": "net R after fees (first value in the source)",
+   "value": "-1.27",
+   "tone": "bad"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 0,
+   "quote": "Smoke backtest (DAX_BT_REPORT.md:1, :32, :78) P&L of the old engine, January 2026 only Pre-registered rule: 0 trades. Relaxed arms: 4% wins, net -0.53R That the pipeline runs Tom's P&L. Its stops wer…"
+  },
+  {
+   "field": "net_r",
+   "value": -1.27,
+   "quote": "Proven: our encoding has no edge on BTC. Over 4,417 trades it made gross -0.07R, with a 95% range of -0.11 to -0.03 (TOM_CORE_BT.md:337). The test was big enough to detect an edge of about 0.06R. Sto…"
+  }
+ ],
+ "missing": {
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/tom_dax_what_is_proven_2026-10-13/REPORT.md"
+ ],
+ "commit": "03c9811cd"
+}

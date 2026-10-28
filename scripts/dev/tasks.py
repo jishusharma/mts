@@ -482,6 +482,8 @@ def brief(card):
         L.append(f"Flow {f['id']} stage {f['stage']} ({f['recipe']}): {f['lens']}")
         L += [f"C{i + 1}: {criterion}" for i, criterion in enumerate(f["criteria"])]
         L.append("Predecessor receipt/report: " + ", ".join(card.get("depends_on", [])) + "; read its card JSON for the report path.")
+    elif card.get("depends_on"):
+        L.append("Depends on: " + ", ".join(card["depends_on"]))
     if card.get("lane") == "CODEX":
         L.append(f"Report: {LAB_REPORTS}/<UTC date>_{card['id']}.md (findings or numbers, each with file:line or command)")
     if card.get("flow"):
@@ -702,6 +704,41 @@ def cmd_fill(a):
     return cmd_check(argparse.Namespace(id=c["id"], demote=False))
 
 
+_LIKELY_FN_RE = re.compile(r"\b(test_[A-Za-z0-9_]+|cmd_[A-Za-z0-9_]+)\b")
+
+
+def likely_done_reason(card: dict, repo: Path = REPO) -> str:
+    """Detector (dispatch-ranking-shows-already-shipped-c): returns a warning reason when a ready/raw card's own
+    tests/done_when symbols are already present inside its scope_in files on disk, else ''."""
+    if card.get("state") not in ("raw", "refined", "ready", "active"):
+        return ""
+    blob = f"{card.get('tests', '')}\n{card.get('done_when', '')}"
+    symbols = sorted(set(_LIKELY_FN_RE.findall(blob)))
+    if not symbols:
+        return ""
+    scope_files: list[Path] = []
+    for s in card.get("scope_in", []):
+        tok = str(s).split()[0].rstrip(",;") if str(s).strip() else ""
+        tok = re.sub(r":\d[\d,\-]*$", "", tok).rstrip("/")
+        if not tok:
+            continue
+        p = (Path(repo) / tok) if not Path(tok).is_absolute() else Path(tok)
+        if p.is_file() and p.suffix == ".py":
+            scope_files.append(p)
+    if not scope_files:
+        return ""
+    texts = {}
+    for p in scope_files:
+        try:
+            texts[p] = p.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            pass
+    matched = [sym for sym in symbols if any(f"def {sym}" in txt for txt in texts.values())]
+    if matched and len(matched) == len(symbols):
+        return f"likely already in tree ({', '.join(matched)} defined in scope_in)"
+    return ""
+
+
 def cmd_check(a):
     cards = load_all(REPO)
     reg = registry(REPO)
@@ -714,18 +751,19 @@ def cmd_check(a):
             miss = promotion_problems(c, repo=REPO)
         elif not miss and c["state"] in LIVE and needs_review(c) and stamp_kind(c, repo=REPO) != "real":
             miss = ["review stamp voided or missing: scope or card changed after review"]
+        likely = likely_done_reason(c, REPO)
         if not miss:
             if c["state"] in ("raw", "refined"):
                 c.update(state="ready", asks="")
                 TS.refresh(c, REPO, now())
                 save(REPO, c)
-                print(f"{c['id']}: READY (promoted)")
+                print(f"{c['id']}: READY (promoted)" + (f" [WARN {likely}]" if likely else ""))
             else:
                 late = TS.overdue(c, REPO)
                 if late and not a.id:
                     bad += 1
-                if late or a.id:
-                    print(f"{c['id']}: {c['state']} and passes" + (f" but STALE: {late}" if late else ""))
+                if late or a.id or likely:
+                    print(f"{c['id']}: {c['state']} and passes" + (f" but STALE: {late}" if late else "") + (f" [WARN {likely}]" if likely else ""))
         elif a.id or c["state"] in LIVE:
             bad += 1 if a.id else (c["state"] in LIVE)
             if c["state"] in LIVE and a.demote:
@@ -775,10 +813,10 @@ def cmd_status(a):
     print(status_line(cards))
 
 
-def stop_tag(c, repo=None):
+def stop_tag(c, repo=None, claims=None):
     """The STATE tag when the card's work is already on trunk (SHIPPED) or its scope moved on (STALE), else ''."""
     repo = repo or REPO
-    tag = TS.state_tag(c, repo, claim_of(c, open_claims(repo)), registry(repo))
+    tag = TS.state_tag(c, repo, claim_of(c, open_claims(repo) if claims is None else claims), registry(repo))
     # DECISION (OURS): "latest never refreshed" is a fresh card without pointers, not stale work: it stays dispatchable
     return tag if tag.startswith(("SHIPPED", "STALE")) and "never refreshed" not in tag else ""
 
@@ -1429,7 +1467,7 @@ def exclusion(card, cards, reg, holds, claims, lane_st, as_of, host=None, repo=R
     import lane_health
     if card["state"] != "ready":
         return ("state", f"not ready: state is {card['state']}")
-    tag = stop_tag(card, repo)   # C3: the Lead pick path never dispatches a card whose work is already on trunk or scope is stale
+    tag = stop_tag(card, repo, claims)   # C3: the Lead pick path never dispatches a card whose work is already on trunk or scope is stale
     if tag:
         return ("shipped" if tag.startswith("SHIPPED") else "stale", tag)
     held = hold_problems(card, holds)

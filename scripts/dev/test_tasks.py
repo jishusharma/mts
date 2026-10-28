@@ -6,6 +6,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -412,6 +413,26 @@ class NextSkipsClaimedTest(unittest.TestCase):
             except SystemExit as e:
                 rc = e.code if isinstance(e.code, int) else 1
         return rc, out.getvalue()
+
+    def test_open_claims_reads_git_once_for_many_cards(self):
+        """plan-hang-claims: stop_tag called open_claims per card, each re-reading every claim file (cards x ~5 s). N lookups, one read."""
+        import sync
+        for i in range(5):
+            self.claim(f"c{i}")
+        getattr(sync, "_CLAIMS_MEMO", {}).clear()
+        calls = []
+        real = subprocess.run
+
+        def spy(cmd, *a, **k):
+            calls.append(list(cmd))
+            return real(cmd, *a, **k)
+        with mock.patch.object(sync.subprocess, "run", spy):
+            for _ in range(20):
+                got = T.open_claims(self.repo)
+        self.assertEqual(sorted(got), [f"c{i}" for i in range(5)])
+        reads = [c for c in calls if "ls-tree" in c]
+        self.assertLessEqual(len(reads), 2, reads)   # origin/claims + trunk, once each, not 20x
+        self.assertEqual(len([c for c in calls if "show" in c]), 0)   # no per-file subprocess
 
     def test_next_skips_a_card_with_an_open_claim(self):
         T.save(self.repo, good("B1", prio=1))   # claim files are lower-case slugs of the id (sync.slugify)
@@ -1174,5 +1195,30 @@ class TwinCardTest(unittest.TestCase):
                 self.assertTrue(T.path_of(repo, "a").exists())        # a warning, not a refusal
                 rc, out = run_cli("twins")
                 self.assertIn("TWIN a b", out)
+            finally:
+                T.REPO = old
+
+
+class LikelyDoneAndDependsBriefTest(unittest.TestCase):
+    def test_brief_shows_depends_on_for_non_flow_card(self):
+        c = good("DEP1", depends_on=["B050", "B051"])
+        b = T.brief(c)
+        self.assertIn("Depends on: B050, B051", b)
+
+    def test_check_warns_when_card_target_symbol_already_in_tree(self):
+        with tempfile.TemporaryDirectory() as d:
+            repo, old = Path(d), T.REPO
+            T.REPO = repo
+            try:
+                mod = repo / "src" / "mod.py"
+                mod.parent.mkdir(parents=True, exist_ok=True)
+                mod.write_text("def test_already_shipped_probe():\n    return True\n", encoding="utf-8")
+                c = good("SHIP1", state="refined", scope_in=["src/mod.py"],
+                         tests="pytest -k test_already_shipped_probe")
+                T.save(repo, c)
+                self.assertIn("test_already_shipped_probe", T.likely_done_reason(c, repo))
+                rc, out = run_cli("check", "SHIP1")
+                self.assertEqual(rc, 0)
+                self.assertIn("WARN likely already in tree", out)
             finally:
                 T.REPO = old

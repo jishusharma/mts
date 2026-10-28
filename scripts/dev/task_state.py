@@ -112,9 +112,15 @@ def add_entry(card, kind, ref, utc, line):
     return card
 
 
+_SHALLOW = {}   # repo -> bool: a clone does not change depth inside one process (plan-hang-claims: one git call per card)
+
+
 def is_shallow(repo):
     """A depth-limited clone (CI checkout) cannot say when a path last changed: git log then reports HEAD for every path."""
-    return git(repo, "rev-parse", "--is-shallow-repository") == "true"
+    k = str(repo)
+    if k not in _SHALLOW:
+        _SHALLOW[k] = git(repo, "rev-parse", "--is-shallow-repository") == "true"
+    return _SHALLOW[k]
 
 
 def stale_reason(card, repo):

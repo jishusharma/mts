@@ -1,10 +1,13 @@
 {
   "done_when": "REPORT.md with event table, fee-net returns, baseline, t-stat, verdict",
+  "finished": "2026-10-28T00:04:38Z",
   "from": "JIS-NB",
+  "host": "DESKTOP-F7IU69N",
   "id": "20261026-181737-lab-verify-rsi-40-60-plus-bollinger-boun",
   "need": "Test card lab-verify-rsi-40-60-bb-bounce-15m: does the RSI 40 support after a brief break + lower-band tag rule beat unconditional forward returns fee-net on BTCUSDT 15m, DEV then VALIDATION once",
   "posted": "2026-10-26T18:17:37Z",
-  "status": "pending",
+  "result": "duplicate of 20261026-204750-lab-verify-rsi-40-60-bb-bounce-15m (same card, state ready, lane DSA); closing the earlier copy",
+  "status": "done",
   "target": "DSA",
   "title": "LAB-VERIFY: RSI 40-60 plus Bollinger bounce rule on BTC 15m (operator live teaching 2026-10-26)"
 }

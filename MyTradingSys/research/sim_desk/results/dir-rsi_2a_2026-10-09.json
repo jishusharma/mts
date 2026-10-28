@@ -1,0 +1,38 @@
+{
+ "id": "dir-rsi_2a_2026-10-09",
+ "kind": "thought_experiment",
+ "family": "Rsi 2A",
+ "title": "RSI 2a / 2a' - operator ideas vs Malkan sources (2026-10-09)",
+ "provenance": "source-extracted",
+ "date": "2026-10-09",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "does not test Malkan's own exit.",
+  "tone": "info"
+ },
+ "why": [
+  "Malkan exits at target C with a candle-based stop. The earlier RSI backtests used a generic 1%/2% bracket (RSI_HISTORY.md in the mts-rsi worktree), so their \"no edge\" verdict does not test Malkan's own exit.",
+  "rsi_reclaim.py: rsi_reclaim_events (dwell_below, band_bars, depth, direct; up for the 40 side, down for the 60 side) and rsi_retest (Case C: support / fail / none within N bars). Clearance and window are arguments with no default."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/rsi_2a_2026-10-09/RSI_2A_SPEC.md"
+ ],
+ "commit": "bd545451c"
+}

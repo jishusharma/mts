@@ -37,9 +37,9 @@
   "not_twin_of": [
     "vwap-as-a-level-research-tom-fabio-analysts-web"
   ],
-  "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer Agent reviewers, after 2nd FIX applied once, not re-read, planner DECISION OURS). DECISION (OURS 2026-10-26) defaults: D = 100 pts and 0.12 % of price; flush = a bar in the last 30 with range >= 3x the median range of the prior 60 bars and a close below the close 30 bars earlier; H = 60 bars on 1m, 24 on 5m; touch = high >= VWAP; rejection = touch then a close back below VWAP within 3 bars. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer Agent reviewers, after 2nd FIX applied once, not re-read, planner DECISION OURS). DECISION (OURS 2026-10-26) defaults: D = 100 pts and 0.12 % of price; flush = a bar in the last 30 with range >= 3x the median range of the prior 60 bars and a close below the close 30 bars earlier; H = 60 bars on 1m, 24 on 5m; touch = high >= VWAP; rejection = touch then a close back below VWAP within 3 bars. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files. PLANNER 2026-10-28: duplicate steps 5-6 removed; stays raw: depends_on vwap-as-a-level-research (ready, scope STALE) and formulas-md-definitions (refined) are not done and VWAP_LEVEL_SOURCES.md is not on trunk (step 1 gate would stop the worker). Dispatch after both are done; then tasks.py check.",
   "prio": 3,
-  "refine_tries": 0,
+  "refine_tries": 1,
   "refined_by": "",
   "refs": [],
   "result": "",
@@ -72,8 +72,6 @@
     "Gate: VWAP_LEVEL_SOURCES.md and FORMULAS.md section 25 are on fast-track; if not, stop and hand back.",
     "Write test_vwap_flush_study.py first (hand numbers: VWAP, distance flag, flush flag, count totals; planted future read raises; a bar >= 2024-07-01 raises), then ONLY the count-only detector count_events() in vwap_flush_study.py: flags from bars up to t, no forward bar. Session VWAP anchored 00:00 UTC per FORMULAS s25; DEV 2022-01-01..2024-06-30; bt/bt_data.py load_klines 1m, 5m resampled.",
     "Write vwap_flush_PRE_REG.md before any outcome, using the defaults in this card's note (OURS unless the sources card gives a SOURCED value). It prints per variant the event count n and the number of event-days from count_events(). Commit it.",
-    "Same PRE_REG, formulas named: MDE = (z_holm + 0.84) * sd / sqrt(n_days) and n for 80 % power = ((z_holm + 0.84) * sd / MDE_target)^2, z_holm = Phi^-1(1 - 0.05/(2m)). Holm m = 20 (4 variants x 5 endpoints: touch, rejection, 5/15/60-bar returns; OURS), or the larger verdicts.py count --split DEV recount.",
-    "Units: return endpoints use sd in bp from the unconditioned DEV forward-return series (never event outcomes) and MDE in bp; touch and rejection rates use sd = 0.5 (worst case p0 = 0.5), MDE in percentage points. Do not use prereg_gate.py: it takes sd of per-event R, and a % return has no R.",
     "Same PRE_REG, formulas named: MDE = (z_holm + 0.84) * sd / sqrt(n_days) and n for 80 % power = ((z_holm + 0.84) * sd / MDE_target)^2, z_holm = Phi^-1(1 - 0.05/(2m)). Holm m = 20 (4 variants x 5 endpoints: touch, rejection, 5/15/60-bar returns; OURS), or the larger verdicts.py count --split DEV recount.",
     "Units: return endpoints use sd in bp from the unconditioned DEV forward-return series (never event outcomes) and MDE in bp; touch and rejection rates use sd = 0.5 (worst case p0 = 0.5), MDE in percentage points. Do not use prereg_gate.py: it takes sd of per-event R, and a % return has no R."
   ],

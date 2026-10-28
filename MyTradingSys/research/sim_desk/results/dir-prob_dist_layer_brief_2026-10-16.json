@@ -1,0 +1,50 @@
+{
+ "id": "dir-prob_dist_layer_brief_2026-10-16",
+ "kind": "backtest",
+ "family": "Prob Dist Layer Brief",
+ "title": "Probability-distribution layer: design brief for the operator talk",
+ "provenance": "source-extracted",
+ "date": "2026-10-16",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Date 2026-10-17 card prob-dist-layer-design-brief build nothing, no VALIDATION/HOLDOUT read, no new gate numbers.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "Every prior claim below cites file:line. \"Unverified\" means I could not reproduce it from files in this checkout.",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "S.csv has no prob_table row (grep for \"prob_table\"/\"probab\" returns nothing). Passing unit tests (GATE_REPORT_2026-09-29.md:19) is not an evidence run.",
+  "tone": "good"
+ },
+ "why": [
+  "Sibling probability work found nothing pooled. Candle-close study: 126 conditional arms on 1.31M BTC minutes, zero pooled candidates (commit 6f904aa6 message); every pooled arm negative after the 14bp cost screen (research/layer_lab/candle_close_2026-10-14/RE…",
+  "\"Ladder selling\" has no OI/CVD definition in either extract set (research/_archive/loose_2026-10/T064_TF_CONFIRMATION_EXTRACT.md:226). Tom's discriminator is behaviour after the poke: acceptance beyond the level = continuation; absorption and quick return = f…",
+  "Data: snapshot labels (exist, location unverified). Cells: 3 features x 3-5 bins = 27-125 cells; at 100 per cell that is 2.7k-12.5k independent observations (DESIGN :33-36). Independent observations are about days, so this fails on today's weeks of snapshots.",
+  "Event = detectable observable (sweep of a marked level, volume spike, CVD step, OI drop, ladder channel after). Outcome = forward kline path: break-and-hold, break-and-fail, continuation, reversal within N bars, plus MFE/MAE (DESIGN :18-24)."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window"
+ },
+ "source_files": [
+  "MyTradingSys/research/prob_dist_layer_brief_2026-10-16/BRIEF.md"
+ ],
+ "commit": "f8d0799de"
+}

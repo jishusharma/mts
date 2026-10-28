@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-28T08:13:44Z",
+  "depends_on": [],
+  "done_when": "research/rolling_session_cost_2026-10/REPORT.md has a table of >=5 past sessions (start/end context %, token or budget % spent, compaction count, run length) with a source per row, or NOT_IN_DATA per column; plus a list of past issues with sources.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Measure how long rolling Supervisor sessions run before data consumption becomes a problem, and what past issues looked like, from existing logs, heartbeats and turn_meter data only.",
+  "id": "rolling-session-cost-comparison",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Role Researcher. Operator D4 2026-10-28 (d-measure-rolling-cost).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T08:13:58Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/rolling_session_cost_2026-10/REPORT.md"
+  ],
+  "scope_out": [
+    "live tree, scripts that change behaviour"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/system/OPERATOR_DECISIONS.md d-measure-rolling-cost"
+  ],
+  "state": "ready",
+  "steps": [
+    "Find the data: turn_meter output, supervisor heartbeats, SUPERVISOR_LOG, runtime logs (grep, no guessing)",
+    "Build the per-session table with a script; mark missing cells NOT_IN_DATA",
+    "List past issues (budget burn, context bloat, early ends) with file:line sources; write REPORT.md"
+  ],
+  "tests": "none: research report; script output pasted in REPORT.md",
+  "title": "Rolling sessions: measured cost comparison (how long they run before data use hurts, past issues)",
+  "weight": "ROUTINE",
+  "worker": "session"
+}
