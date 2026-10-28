@@ -4,32 +4,59 @@
   "commands": [],
   "created": "2026-10-28T17:37:26Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "page.html shows the verdict and 3 numbers above the fold, Advanced toggle collapsed by default, chip row does not reflow on click; screenshot saved; test passes; shipped, cherry empty",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Simulator Desk top of page readable: one fixed row of layer chips, no repeated title, one-line DEV banner, verdict plus 3 key numbers first, fee/slippage/conditions behind an Advanced toggle, plain-word labels.",
   "id": "simdesk-declutter-top",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim desk: backfill 164 result cards from committed notes, list all 170 catalogued tests wi",
+      "ref": "73ff49f7a1c5",
+      "utc": "2026-10-27T23:07:23Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "3ecd38c214ff sim-v2 (e): every desk Run writes results/desk-<study>-<hash>.json in the sta",
+      "ref": "MyTradingSys/research/sim_desk/DESIGN.md",
+      "utc": "2026-10-24T20:39:01Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "DRAFT 2026-10-28 Session_Planner (OURS): basis NN/g progressive disclosure, Hick's law; operator 10-28 'not readable'. Basis (full ask): one fixed row of layer chips (no reflow on click), drop repeated title, DEV banner to one line, fee/slippage/conditions behind Advanced, R = 'profit per unit risked'.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-28T18:16:26Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/page.html",
+    "MyTradingSys/research/sim_desk/DESIGN.md"
+  ],
+  "scope_out": [
+    "engine, results schema, desk.py, sealed data windows"
+  ],
+  "scope_sha": "73ff49f7a1c5",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Simulator Desk: declutter the top. One fixed row of layer chips (no reflow on click), drop the repeated title, collapse the DEV banner to one line, show the verdict + 3 key numbers first, put fee/slippage/conditions behind an Advanced toggle; plain-word labels (R = 'profit per unit risked'). Basis: NN/g progressive disclosure, visual hierarchy, predictable placement; Hick's law. Operator 10-28: 'not readable, not user-friendly'",
-  "weight": "",
-  "worker": ""
+  "state": "ready",
+  "steps": [
+    "Read page.html header, banner (line 71) and control layout",
+    "Write failing page test, then restructure: chips fixed row, banner one line, verdict+3 numbers first",
+    "Move fee/slippage/conditions into a collapsed Advanced section; rename R label; screenshot"
+  ],
+  "tests": "New test in MyTradingSys/tests parses page.html: Advanced container exists and is collapsed, banner is one line, 'profit per unit risked' label present; fails on current page",
+  "title": "Simulator Desk: declutter the top (fixed chip row, verdict + 3 numbers first, Advanced toggle, plain labels)",
+  "weight": "ROUTINE",
+  "worker": "session"
 }

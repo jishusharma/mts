@@ -5,14 +5,14 @@
   "created": "2026-10-28T17:57:00Z",
   "depends_on": [],
   "done_when": "test_prereg_gate.py has at least 13 passing tests (5 old + 8 new), the report shows 3 of 3 flipped-script runs failing, and prereg_gate.py is unchanged.",
-  "est_turns": null,
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
   "goal": "prereg_gate.py decides whether a PRE_REG may freeze, yet test_prereg_gate.py has 5 tests. Add boundary tests from the docstring formulas, expected numbers computed independently (not by calling prereg_gate.mde): z_holm for m=1,5,9, MDE at 3 (n,sd,m) points, PASS exactly at limit, BLOCK just above, sd=1 refused without --sd-source, sd=1.0001 accepted, cost>=max-gross prints n needed inf.",
   "id": "gpt-prereg-gate-boundary-tests",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -30,6 +30,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T17:57:42Z",
   "refs": [],
+  "reroute": {
+    "at": "2026-10-28T18:14:50Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "credits"
+  },
   "result": "",
   "scope_in": [
     "scripts/dev/test_prereg_gate.py",
@@ -55,5 +61,5 @@
   "tests": "scripts/dev/test_prereg_gate.py: 8 new boundary methods with independently computed expectations; each of the 3 flips (POWER_Z, <= vs <, sd <= 1) must fail one of them in a scratch copy.",
   "title": "GPT adds spec-derived boundary tests to test_prereg_gate.py (MDE formula, 0.30 R limit, sd<=1 rule)",
   "weight": "ROUTINE",
-  "worker": ""
+  "worker": "agent"
 }
