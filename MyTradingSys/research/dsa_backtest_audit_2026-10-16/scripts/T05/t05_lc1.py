@@ -84,8 +84,8 @@ def main():
         w.writerow(["family", "n", "hold", "random_hold", "diff", "ci_lo", "ci_hi", "verdict"])
         for f, r in sorted(fams.items()):
             w.writerow([f, r["n"], f"{r['hold_rate']:.4f}", f"{r['random_hold_rate']:.4f}", f"{r['difference']:.4f}",
-                        f"{r['ci95'][0]:.4f}", f"{r['ci95'][1]:.4f}", r["verdict"]])
-    print("published run reproduced:", {f: (r["n"], round(r["hold_rate"], 3), round(r["random_hold_rate"], 3), r["verdict"])
+                        f"{r['ci95'][0]:.4f}", f"{r['ci95'][1]:.4f}", r.get("legacy_verdict", r["verdict"])])
+    print("published run reproduced:", {f: (r["n"], round(r["hold_rate"], 3), round(r["random_hold_rate"], 3), r.get("legacy_verdict", r["verdict"]))
                                          for f, r in fams.items()}, flush=True)
 
     # ---- fair null
@@ -151,7 +151,7 @@ def main():
         out.append(dict(family=fam, n_touch=rn, hold=rh / rn, fair_ctl_touches=cn, fair_ctl_hold=ch / cn, diff=rh / rn - ch / cn,
                         ci_lo=lo_, ci_hi=hi_, verdict="KEEP" if lo_ > 0 else "DROP",
                         pub_hold=pub["hold_rate"] if pub else float("nan"), pub_random=pub["random_hold_rate"] if pub else float("nan"),
-                        pub_diff=pub["difference"] if pub else float("nan"), pub_verdict=pub["verdict"] if pub else "",
+                        pub_diff=pub["difference"] if pub else float("nan"), pub_verdict=pub.get("legacy_verdict", pub["verdict"]) if pub else "",
                         orig_ctl_equal_real_share=o[2] / (5 * o[0]), orig_ctl_untouched_share=o[1] / (5 * o[0])))
     with open(HERE / "out" / "lc1_fair.csv", "w", newline="\n", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=list(out[0]))
