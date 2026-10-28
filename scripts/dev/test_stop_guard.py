@@ -136,6 +136,17 @@ class StopGuardTest(unittest.TestCase):
         (self.a / "README.md").write_bytes(b"y\n")              # a real change still blocks
         self.assertIn("uncommitted", stop_guard.reason(self.a))
 
+    def test_files_of_a_nested_worktree_are_not_this_trees_work(self):
+        """B3: an Agent's isolation worktree lives inside the parent tree (.claude/worktrees/agent-x); its files are not the
+        parent's work and must not block the parent's stop. A real untracked file next to it still blocks."""
+        nested = self.a / ".claude" / "worktrees" / "agent-x"
+        sh(self.a, "worktree", "add", "-q", "-b", "agent-x", str(nested), "HEAD")
+        (nested / "worker_wip.py").write_text("w\n", newline="\n")
+        self.assertIsNone(stop_guard.reason(self.a))
+        self.assertIsNone(stop_guard._slow_reason(self.a))
+        (self.a / ".claude" / "notes.txt").write_text("mine\n", newline="\n")
+        self.assertIn("uncommitted", stop_guard.reason(self.a))
+
     def test_clean_tree_does_not_import_sync(self):
         code = ("import sys, json; sys.path.insert(0, %r); import stop_guard; r = stop_guard.reason(%r); "
                 "print(json.dumps([r, 'sync' in sys.modules]))" % (str(Path(__file__).resolve().parent), str(self.a)))

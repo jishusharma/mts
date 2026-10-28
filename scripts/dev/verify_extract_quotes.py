@@ -16,9 +16,9 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-QUOTE = re.compile(r'^>\s*"(.+)"\s*$')
+QUOTE = re.compile(r'^>\s*"(.*)"\s*$')
 TIMESTAMP = re.compile(r"\[\d+:\d{2}(?::\d{2})?\]")
-CBP_EVIDENCE = re.compile(r'^(?:-\s*)?evidence:\s*"(.+)"\s*$')
+CBP_EVIDENCE = re.compile(r'^(?:-\s*)?evidence:\s*"(.*)"\s*$')
 CBP_HEAD = re.compile(r"^###\s*[^|]*\|[^|]*\|\s*([A-Za-z0-9_-]{11})\s*\|")
 GPS = re.compile(r"Source GPS:\s*([A-Za-z0-9_-]{11})\s*\|\s*(BEGIN|MIDDLE|END)")
 

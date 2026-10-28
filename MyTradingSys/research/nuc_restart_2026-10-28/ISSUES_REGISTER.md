@@ -57,3 +57,10 @@ Severity: H = stops unattended work or duplicates it; M = wastes turns or hides 
 - I7: Install `logon_wake` on A and C via one broadcast `--cmd` line (CLAUDE.md fleet-wide rule).
 - I8: Upgrade git on the NUC (2.24 is from 2019; many scripts assume newer flags).
 - I9: Add a UPS or move the NUC to another socket; Kernel-Power 41 four times in 18 h is the root cause of the lost toggles.
+
+## Added after the Opus fix (bug-supervisor-handoff-duplicates)
+
+- B14 (H, VERIFIED by Opus note, not fixed): a Supervisor started by `MTS-SuccWake-<L>` that registers the next wake fire-now gets dropped, because Windows ignores starting a task that is already running and that run's `finally` unregisters the new task. The chain stops after one link. Card: `bug-successor-wake-chain-stops-after-one-link`.
+- B15 (M, VERIFIED): pytest's default temp folder is access-denied in the agent sandbox, so preship "own unit tests" fails there while the tests pass with `--basetemp`. Fix: preship passes a basetemp under the repo scratch or the temp dir that is writable.
+- B16 (L, VERIFIED): `tasks.py done` is refused for a card still `raw`, so a bug card filed by the operator's word cannot be closed by its fixer. Fix: allow `done` on a raw card whose `approved_by` is set.
+- Fixed and shipped by Opus: B1, B2, B3, B5, B6, B10 (`637422a47`, `af2d5b82b`, `2c5731b8a`, `fc12c222f`); B4 `6507d8c1e`; B11 upstream.

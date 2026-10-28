@@ -676,10 +676,11 @@ def brief(card_id: str, role: str | None = None, repo: Path = REPO, card: dict |
     # Line 1: You are <Role>.
     line1 = f"You are {worker_role}."
 
-    # Line 2: Card: <card_id>[, <chained_ids>...]. Boot: python <main_checkout>/scripts/dev/sync.py start <slug>; work only in the printed WORKTREE.
+    # Line 2: Card: <card_id>[, <chained_ids>...]. Boot: python <main_checkout>/scripts/dev/sync.py start <slug> --worker; work only in the
+    # printed WORKTREE. --worker (B3): a worker Agent always gets its own tree, never the Supervisor's tree or lane.
     # Note: <main_checkout> is the path to repo
     slug = card_id.lower()
-    line2 = f"Card: {card_id}. Boot: python {repo}/scripts/dev/sync.py start {slug}; work only in the printed WORKTREE."
+    line2 = f"Card: {card_id}. Boot: python {repo}/scripts/dev/sync.py start {slug} --worker; work only in the printed WORKTREE."
 
     lines = [line1, line2]
 

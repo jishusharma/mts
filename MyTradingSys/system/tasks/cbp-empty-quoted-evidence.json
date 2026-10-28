@@ -1,10 +1,27 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T14:35:14Z",
   "commands": [
     "python -m pytest scripts/dev/test_verify_extract_quotes.py -q",
     "python -m pytest MyTradingSys/tests -k quote -q --basetemp F:/MTS/scratch/codex-cbp-empty-evidence-pytest"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T14:04:37Z",
+    "misses": 35,
+    "reads": [
+      "scripts/dev/tasks.py",
+      "scripts/dev/test_lab_flow.py",
+      "scripts/dev/lab_flow.py",
+      "scripts/dev/verify_extract_quotes.py",
+      "scripts/dev/test_verify_extract_quotes.py",
+      "MyTradingSys/system/TASK_REFINEMENT.md",
+      "MyTradingSys/research/layer_lab/reports/2026-10-28_cbp-empty-quoted-evidence.md",
+      "MyTradingSys/research/layer_lab/reports/2026-10-28_lab-flow-vendor-gate-tests-tamper-test-p.md"
+    ],
+    "session": "agent-a3c129da629f090ed"
+  },
   "created": "2026-10-28T13:46:42Z",
   "depends_on": [],
   "done_when": "CBP evidence: \"\" and > \"\" with valid Source GPS each produce exactly one checker problem; valid quoted evidence still verifies; existing no-evidence no-caption behavior is unchanged. Both new regressions fail before the parser fix and pass after.",
@@ -16,15 +33,43 @@
   "id": "cbp-empty-quoted-evidence",
   "kind": "build",
   "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Both empty quote formats fail closed; 16 verifier tests and 4 quote integration tests pass",
+      "ref": "fc35e49b0",
+      "utc": "2026-10-28T14:35:14Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "e5025161c172 CBP: record empty quote parser gaps",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-28_cbp-empty-quoted-evidence.md",
+      "utc": "2026-10-28T13:52:21Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "verify_extract_quotes: reject empty fragments and require word boundary matching",
+      "ref": "cc3147641617",
+      "utc": "2026-10-27T21:47:15Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "scripts/dev/test_verify_extract_quotes.py::test_cbp_empty_quoted_evidence_fails",
-  "note": "",
+  "note": "REVIEWED:2026-10-28 ACCEPT (Lab_Guy, Sonnet). Spec/fix only: repro and 2-regex fix re-run independently; NO fix or tests exist on trunk or lab tree yet, so builder must deliver both named tests and show them red on current code. Claim hold stays until they ship.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-28T14:34:22Z",
   "refs": [],
-  "result": "",
+  "result": "Both empty quote formats fail closed; 16 verifier tests and 4 quote integration tests pass; report MyTradingSys/research/layer_lab/reports/2026-10-28_cbp-empty-quoted-evidence.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/verify_extract_quotes.py",
     "scripts/dev/test_verify_extract_quotes.py"
@@ -32,18 +77,20 @@
   "scope_out": [
     "CBP store/repo; real rows/transcripts; policy for files with no evidence line; unrelated GPS ambiguity"
   ],
+  "scope_sha": "cc3147641617",
   "size": "S",
   "sources": [
     "MyTradingSys/research/cbp/QUOTE_REVIEW_GPT.md",
     "MyTradingSys/research/cbp/GPT_CBP_GUIDE.md",
     "MyTradingSys/system/tasks/cbp-quote-empty-fragment-word-boundary.json"
   ],
-  "state": "raw",
+  "state": "done",
   "steps": [
     "Add isolated regressions for empty CBP evidence and empty GPS quote values; confirm both fail on current code.",
     "Adjust only the quote-line parsers so empty quoted values reach the existing fail-closed empty-normalization checks.",
     "Run focused verifier tests and quote-specific integration tests, then ship through sync.py."
   ],
+  "taken": "2026-10-28T14:35:14Z",
   "tests": "scripts/dev/test_verify_extract_quotes.py::test_cbp_empty_quoted_evidence_fails and ::test_empty_gps_quote_fails fail before and pass after; python -m pytest scripts/dev/test_verify_extract_quotes.py -q",
   "title": "verify_extract_quotes ignores explicitly empty CBP evidence",
   "weight": "IMPORTANT",
