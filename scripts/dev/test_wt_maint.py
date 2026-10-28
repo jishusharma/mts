@@ -240,6 +240,29 @@ class Device(unittest.TestCase):
 
 
 
+class GatewayMarker(Env):
+    """C: guard freed 0.66 GB because the machine flag put .gateway_owner in all 66 trees: a stale marker must not pin a finished tree."""
+    def test_idle_gateway_tree_that_is_finished_is_removed(self):
+        p = self.tree("mts-gw-done")
+        (p / sync.GATEWAY_MARKER).write_text("x")
+        s, _ = self.run_maint()
+        self.assertEqual(s["removed"], ["mts-gw-done"])
+
+    def test_gateway_tree_in_use_is_kept(self):
+        p = self.tree("mts-gw-live")
+        (p / sync.GATEWAY_MARKER).write_text("x")
+        s, _ = self.run_maint(now=time.time())
+        self.assertEqual(s["removed"], [])
+        self.assertTrue(p.exists())
+
+    def test_idle_gateway_tree_with_unshipped_commit_is_kept(self):
+        p = self.tree("mts-gw-work", commit=True)
+        (p / sync.GATEWAY_MARKER).write_text("x")
+        s, _ = self.run_maint()
+        self.assertEqual(s["removed"], [])
+        self.assertTrue(p.exists())
+
+
 class SharedConstants(unittest.TestCase):
     def test_supervisor_log_rel_is_cicd_runs(self):
         """dedupe CODE 25: one SUPERVISOR_LOG_REL (cicd_run owns it); wt_maint imports it."""

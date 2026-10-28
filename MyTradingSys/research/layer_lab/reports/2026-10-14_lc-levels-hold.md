@@ -1,6 +1,6 @@
 # LC1 levels hold — DEV result
 
-**KEEP: prior_day_high, prior_day_low, prior_day_poc, naked_poc, 4h_fractal_low, 4h_fractal_high, round_1000, prior_week_high. DROP: prior_day_vah, prior_day_val, daily_open, prior_week_low. L2 reached: 83.8%.** Each KEEP family has a positive lower 95% day-bootstrap CI bound. L2 candidates are restricted to KEEP families.
+**KEEP: prior_day_high, prior_day_low, prior_day_poc, naked_poc, 4h_fractal_low, 4h_fractal_high, round_1000, prior_week_high. DROP: prior_day_vah, prior_day_val, daily_open, prior_week_low. L2 reached: 83.8%.** Each KEEP family has a positive lower 95% day-bootstrap CI bound. L2 candidates are restricted to KEEP families. [SUPERSEDED 2026-10-28: fair control gives KEEP none, levels_hold.md]
 
 Implemented the causal level set and touch/random-line/pair measurement in `MyTradingSys/research/levels_confluence_2026-10-14/levels.py` and `levels_hold.py`; added synthetic coverage in `test_levels.py`. The full family table, pair count, and reproduction command are in [levels_hold.md](../../levels_confluence_2026-10-14/levels_hold.md).
 

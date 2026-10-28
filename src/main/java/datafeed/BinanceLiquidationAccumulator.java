@@ -6,8 +6,14 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 /**
@@ -27,7 +33,28 @@ public class BinanceLiquidationAccumulator extends WebSocketClient {
     private volatile boolean shuttingDown = false;
     private volatile long lastEventTime = 0;
 
+    // --- append-only event log (H3 has no REST backfill; unrecorded data is lost) ---
+    static final Path DEFAULT_LOG_DIR = Paths.get("runtime_data", "liq_events");
+    private static final int LOG_QUEUE_CAP = 10_000;
+    private static final long LOG_ERR_INTERVAL_MS = 60_000;
+    private final Path logDir;
+    private final BlockingQueue<String> logQueue;
+    private final AtomicLong logEnqueued = new AtomicLong();
+    private final AtomicLong logDone = new AtomicLong();
+    private final AtomicLong logDropped = new AtomicLong();
+    private final AtomicLong logErrors = new AtomicLong();
+    private volatile long lastLogErrPrint = 0;
+    private Thread logWriter;
+
     public BinanceLiquidationAccumulator(String symbol) throws Exception {
+        this(symbol, DEFAULT_LOG_DIR);
+    }
+
+    public BinanceLiquidationAccumulator(String symbol, Path logDir) throws Exception {
+        this(symbol, logDir, LOG_QUEUE_CAP, true);
+    }
+
+    BinanceLiquidationAccumulator(String symbol, Path logDir, int queueCap, boolean startWriter) throws Exception {
         super(new URI("wss://fstream.binance.com/market/ws/" + symbol.toLowerCase() + "@forceOrder"));
         this.symbol = symbol;
         this.reconnectExecutor = Executors.newSingleThreadScheduledExecutor(r -> {
@@ -36,7 +63,65 @@ public class BinanceLiquidationAccumulator extends WebSocketClient {
             return t;
         });
         setConnectionLostTimeout(30);
+        this.logDir = logDir;
+        this.logQueue = new ArrayBlockingQueue<>(queueCap);
+        if (startWriter) {
+            logWriter = new Thread(this::logLoop, "liq-log-" + symbol);
+            logWriter.setDaemon(true);
+            logWriter.start();
+        }
     }
+
+    /** Never blocks and never throws: a full queue drops the line and counts it (fail open for the feed). */
+    private void enqueueLog(String line) {
+        if (logQueue.offer(line)) logEnqueued.incrementAndGet();
+        else {
+            logDropped.incrementAndGet();
+            logErr("log queue full, event dropped");
+        }
+    }
+
+    private void logLoop() {
+        while (!Thread.currentThread().isInterrupted()) {
+            String line;
+            try {
+                line = logQueue.take();
+            } catch (InterruptedException ie) {
+                return;
+            }
+            try {
+                Files.createDirectories(logDir);
+                Files.write(logDir.resolve(symbol + ".jsonl"), (line + '\n').getBytes(StandardCharsets.UTF_8),
+                        StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+            } catch (Throwable t) {
+                logErrors.incrementAndGet();
+                logErr("write failed: " + t);
+            } finally {
+                logDone.incrementAndGet();
+            }
+        }
+    }
+
+    private void logErr(String msg) {
+        long now = System.currentTimeMillis();
+        if (now - lastLogErrPrint >= LOG_ERR_INTERVAL_MS) {
+            lastLogErrPrint = now;
+            System.err.println("[Liquidation WS] event log (" + symbol + "): " + msg);
+        }
+    }
+
+    /** True once every queued line has been written (or failed); for tests and clean shutdown. */
+    public boolean awaitLogIdle(long timeoutMs) throws InterruptedException {
+        long end = System.currentTimeMillis() + timeoutMs;
+        while (logDone.get() < logEnqueued.get()) {
+            if (System.currentTimeMillis() > end) return false;
+            Thread.sleep(5);
+        }
+        return true;
+    }
+
+    public long getLogErrorCount() { return logErrors.get(); }
+    public long getLogDroppedCount() { return logDropped.get(); }
 
     @Override
     public void onOpen(ServerHandshake handshake) {
@@ -59,6 +144,22 @@ public class BinanceLiquidationAccumulator extends WebSocketClient {
             double price = o.get("ap").asDouble();
             double qty = o.get("z").asDouble();
             String side = o.get("S").asText(); // "BUY" = short liquidation, "SELL" = long liquidation
+
+            try {
+                com.fasterxml.jackson.databind.node.ObjectNode ev = mapper.createObjectNode();
+                ev.put("symbol", symbol);
+                ev.put("eventTime", root.path("E").asLong());
+                ev.put("tradeTime", o.path("T").asLong());
+                ev.put("side", side);
+                ev.put("price", price);
+                ev.put("qty", qty);
+                ev.put("origPrice", o.path("p").asDouble());
+                ev.put("origQty", o.path("q").asDouble());
+                enqueueLog(mapper.writeValueAsString(ev));
+            } catch (Throwable t) {
+                logErrors.incrementAndGet();
+                logErr("serialize failed: " + t);
+            }
 
             int bucketPrice = (int) (Math.floor(price / BUCKET_SIZE) * BUCKET_SIZE);
 
@@ -118,6 +219,7 @@ public class BinanceLiquidationAccumulator extends WebSocketClient {
     public void shutdown() {
         shuttingDown = true;
         reconnectExecutor.shutdownNow();
+        if (logWriter != null) logWriter.interrupt();
         close();
     }
 

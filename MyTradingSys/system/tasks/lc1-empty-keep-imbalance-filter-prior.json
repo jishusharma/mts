@@ -1,7 +1,20 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T15:57:22Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T15:57:15Z",
+    "misses": 16,
+    "reads": [
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/RESULT.md",
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/PRE_REG.md",
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/filter_join.py",
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/test_filter_join.py"
+    ],
+    "session": "agent-a68c198da1c0a589c"
+  },
   "created": "2026-10-28T15:26:42Z",
   "depends_on": [],
   "done_when": "RESULT.md and PRE_REG.md each carry the SUPERSEDED-PREMISE header, filter_join.py line 38 comment relabelled, test_filter_join.py green, the diff shows no number or CSV changed.",
@@ -13,6 +26,12 @@
   "id": "lc1-empty-keep-imbalance-filter-prior",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "SUPERSEDED-PREMISE header on filter RESULT.md/PRE_REG.md; filter_join.py comment relabelle",
+      "ref": "8d0af1afa",
+      "utc": "2026-10-28T15:57:22Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -37,7 +56,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T15:52:46Z",
   "refs": [],
-  "result": "",
+  "result": "SUPERSEDED-PREMISE header on filter RESULT.md/PRE_REG.md; filter_join.py comment relabelled; 31 tests green",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/RESULT.md",
     "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/PRE_REG.md",
@@ -52,12 +76,13 @@
     "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.md (fair-control section: KEEP list none, 0 of 12, DEV 2022-04-01..2024-06-30)",
     "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/RESULT.md:1-9 (FAIL, 5976 first-touch fades, net -0.412 R)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add a 3-line SUPERSEDED-PREMISE header under the title of RESULT.md and PRE_REG.md: base = 8 families whose LC1 KEEP is void (levels_hold.md fair section, 0 of 12); the -0.412 R layer-alone base is a legacy figure; FAIL verdict unchanged.",
     "In filter_join.py change only the comment on line 38 to 'LEGACY 8 families (LC1 KEEP void since T05-F5; kept so the frozen run reproduces)'.",
     "Run test_filter_join.py (must stay green) and the grep check below; ship."
   ],
+  "taken": "2026-10-28T15:57:22Z",
   "tests": "pytest MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/test_filter_join.py stays green (comment-only code change); grep -c SUPERSEDED on RESULT.md and PRE_REG.md: 0 before, >= 1 each after.",
   "title": "LC1 KEEP list is now empty (T05-F5): imbalance_qriptal_2026-10-16/filter (filter_join.py KEEP, PRE_REG, RESULT) uses the 8 old KEEP families as its layer-alone base; re-state its premise",
   "weight": "IMPORTANT",
