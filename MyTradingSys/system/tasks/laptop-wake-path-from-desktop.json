@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-10-28T06:49:04Z",
+  "depends_on": [],
+  "done_when": "A recorded real wake of a sleeping laptop session from the desktop works (gate like the NUC SSH gate, or the documented supported alternative with a run); linked to wake-sleeping-sessions",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gap: tools reach only the local app; no wake path to a sleeping session on the Lenovo. Design and build a gate like the NUC SSH gate or document the supported alternative. host=desktop-f7iu69n for the real wake. Scheduling policy: one-shot tasks only (SCHEDULING_POLICY 4b3).",
+  "id": "laptop-wake-path-from-desktop",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "successor_wake usage handoff: woken session is handed its own pacer reading via a USAGE fi",
+      "ref": "c8dcca8eda10",
+      "utc": "2026-10-28T06:37:47Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "b2ddbc7d9f0e docs: Lenovo is login A (2026-10-25 roll call); add the operator start lines",
+      "ref": "MyTradingSys/system/LENOVO_SETUP.md",
+      "utc": "2026-10-25T06:51:22Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T06:49:05Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/LENOVO_SETUP.md",
+    "scripts/dev/nuc_wake.py",
+    "scripts/dev/successor_wake.py"
+  ],
+  "scope_out": [
+    "unrelated files; live tree; other cards"
+  ],
+  "scope_sha": "c8dcca8eda10",
+  "size": "S",
+  "sources": [
+    "operator ask 2026-10-28 gap 11"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read the gap text and linked files",
+    "Implement the smallest change",
+    "Run the test on old and new code; record output"
+  ],
+  "tests": "recorded real wake; unit test for the gate verb allow-list fails on old code",
+  "title": "Wake path from the desktop to a sleeping Login A session on the Lenovo (desktop-f7iu69n)",
+  "weight": "",
+  "worker": "agent"
+}

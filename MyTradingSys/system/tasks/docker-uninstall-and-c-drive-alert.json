@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-10-28T06:49:12Z",
+  "depends_on": [],
+  "done_when": "Operator answer recorded (yes/no) in OPERATOR_DECISIONS.md; on yes, Docker Desktop is uninstalled and C: free space before/after recorded; c_drive_guard alert threshold test: free space below threshold raises an alert (test fails on old code if no alert path). Related: c-drive-cleanup-holds",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gap: C: free space is 12 GB (Docker program files 4 GB, docker already stopped, decision recorded). Uninstall only after the operator says yes; default (OURS) = no uninstall, alert check only.",
+  "id": "docker-uninstall-and-c-drive-alert",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nb/two-cards-voice-procs",
+      "ref": "1536591a46bb",
+      "utc": "2026-10-28T06:43:07Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "007c433cdef1 docs: drop docker card, record no-Docker decision, file dispatch-check card",
+      "ref": "MyTradingSys/system/OPERATOR_DECISIONS.md",
+      "utc": "2026-10-28T06:37:36Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T06:49:12Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/c_drive_guard.py",
+    "MyTradingSys/system/OPERATOR_DECISIONS.md"
+  ],
+  "scope_out": [
+    "unrelated files; live tree; other cards"
+  ],
+  "scope_sha": "1536591a46bb",
+  "size": "S",
+  "sources": [
+    "operator ask 2026-10-28 gap 18"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read the gap text and linked files",
+    "Implement the smallest change",
+    "Run the test on old and new code; record output"
+  ],
+  "tests": "scripts/dev/test_c_drive_guard.py::test_alert_below_threshold (new if missing, fails on old code)",
+  "title": "Uninstall Docker Desktop on JIS-NB if the operator says yes (operator list); check c_drive_guard threshold alerting",
+  "weight": "",
+  "worker": "agent"
+}
