@@ -727,7 +727,7 @@ def brief(card_id: str, role: str | None = None, repo: Path = REPO, card: dict |
 # ---------- the five-hour loop (MyTradingSys/system/SUPER_LOOP.md): one `plan` call per wake, heartbeat, lanes, hand-over ----------
 import traffic  # noqa: E402  (the one budget-policy constants: SPAWN_CEIL, LAST_DAY_*, five_ceiling)
 LOOP_DIR = "mts-superloop"      # under ~/.claude: this login's get_usage readings (local, never in git)
-HEARTBEAT_MIN = 75              # a supervisor's heartbeat older than this = it is gone (watcher <= 50 min + slack; OURS)
+HEARTBEAT_MIN = 100             # a supervisor's heartbeat older than this = it is gone (watcher <= 50 min + a long turn; login A beats every 60-90 min, 75 asked for a second Supervisor; OURS 2026-10-28)
 SPAWN_CEIL = traffic.SPAWN_CEIL   # 5 h % at which no Claude worker starts; five_ceiling() lifts it to 95 in the exhaust window
 K_DEFAULT = 0.12                # weekly points per 5 h point until two readings in one window measure it (GUESS)
 TRANSIT_MIN = 20                # write the hand-over this many minutes before the 5 h window resets (OURS)
@@ -1050,7 +1050,7 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
         if s.get("dsa") == "down":
             L.append(f"OPERATOR AIBridge agent down on {s['host']} (heartbeat of {lg}): run scripts/dev/aibridge_health.py there")
     if me_any and claude_ok and ctx.get("pipeliner_free") and ctx.get("desk_pending"):
-        L.append(f"SPAWN Pipeliner on the next operator turn (`You are Pipeliner.`, lease free, {ctx['desk_pending']} desk rows pending)")
+        L.append(f"SPAWN Lead in pipeline mode on the next operator turn (`You are Lead.`, then `role_loader.py mode pipeline`, lease free, {ctx['desk_pending']} desk rows pending)")
     if me_any and gate_key and ctx.get("nuc_ok") and not any(s["host"] == NUC for s in live.values()) and ctx.get("spare"):
         L.append(f"RUN python scripts/dev/nuc_wake.py --card {ctx['spare']} --name {ctx['spare'][:20]}   (NUC has no supervisor: one headless "
                  f"worker there, the NUC login's budget)")

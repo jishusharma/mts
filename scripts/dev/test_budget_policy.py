@@ -94,3 +94,12 @@ def test_grid_the_three_views_never_contradict():
                     # exhaust window with room: the supervisor may not idle on the 5 h stop below 95
                     if ph in ("plan", "exhaust") and week < 98 and five < 85:
                         assert pl["mode"] != "STOP", where
+
+
+def test_heartbeat_window_covers_a_supervisors_real_cadence():   # A heartbeats every 60-90 min; 75 asked the operator for a second one
+    assert S.HEARTBEAT_MIN >= 100 and S.live_supervisors.__defaults__[0] == S.HEARTBEAT_MIN
+
+
+def test_plan_never_names_the_merged_pipeliner_role():       # merged into Lead 2026-10-25 (2c9bbaf9c)
+    src = Path(S.__file__).read_text(encoding="utf-8")
+    assert "SPAWN Pipeliner" not in src and "You are Pipeliner" not in src
