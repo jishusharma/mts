@@ -401,7 +401,7 @@ class TestQueueTool(unittest.TestCase):
         self.old_queue = queue_tool.QUEUE
         queue_tool.QUEUE = self.tmp
         # spec must live inside the repo (rel_of); scope is a small real file
-        self.specdir = Path(tempfile.mkdtemp(dir=REPO, prefix=".tmp_dsa_test_"))
+        self.specdir = Path(tempfile.mkdtemp(dir=REPO, prefix="tmp"))   # "tmp"+8 chars: matches run_all_tests.transient_ignore_glob, so a parallel pytest step never lstat()s it mid-removal (CI 40667391914)
         self.spec = self.specdir / "900-dsa-hello.md"
         self.spec.write_text("TASK: say hello\nSCOPE: scripts/worker/dsa_selectors.json\n"
                              "OUTPUT: one line\nEXPECT: hello\n\nReply with the word hello.\n", encoding="utf-8")
