@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T14:42:09Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -25,6 +26,12 @@
   "last_session": "fe6401c5-3891-4fd5-a99c-7573fae3a3ff",
   "latest": [
     {
+      "kind": "ship",
+      "line": "GATEWAY_NUC.md key carve-out line",
+      "ref": "82bf14fc4",
+      "utc": "2026-10-28T14:42:09Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "operator decision d-gateway-background-opus; GATEWAY_NUC key note; conflict card",
@@ -48,7 +55,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T12:28:33Z",
   "refs": [],
-  "result": "",
+  "result": "GATEWAY_NUC.md key carve-out line",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/GATEWAY_NUC.md"
   ],
@@ -61,11 +73,12 @@
   "sources": [
     "MyTradingSys/system/OPERATOR_DECISIONS.md:1348 (d-gateway-background-opus: key saved user-only, passed to child env by gateway_run.py, never printed or committed)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Append the carve-out line under GATEWAY_NUC.md Open points, citing d-gateway-background-opus",
     "Run test_integrity.py"
   ],
+  "taken": "2026-10-28T14:42:09Z",
   "tests": "docs-only: MyTradingSys/tests/docs/test_integrity.py passes (no new test needed)",
   "title": "Instruction conflict: never read keys vs operator 10-28 gave the gateway key in chat and sa",
   "weight": "ROUTINE",
