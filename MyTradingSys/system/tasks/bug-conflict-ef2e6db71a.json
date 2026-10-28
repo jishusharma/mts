@@ -2,6 +2,17 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 12,
+    "folded": "2026-10-28T06:44:02Z",
+    "misses": 3,
+    "reads": [
+      "MyTradingSys/tests/docs/test_integrity.py",
+      "MyTradingSys/system/roles/lead.md",
+      "MyTradingSys/system/DEPLOY_RUNBOOK.md"
+    ],
+    "session": "agent-adbf98e1f102b5def"
+  },
   "created": "2026-10-27T13:19:11Z",
   "depends_on": [],
   "done_when": "No system doc instructs a reset/rebase on the live or main checkout; test_integrity passes. Verify: content commit sha, git cherry origin/fast-track <sha> empty AND git ls-tree -r origin/fast-track --name-only shows the files.",
