@@ -4,7 +4,7 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-28T14:46:47Z",
+    "folded": "2026-10-28T14:46:55Z",
     "misses": 18,
     "reads": [
       "scripts/dev/tasks.py",
@@ -20,18 +20,18 @@
   },
   "created": "2026-10-28T14:13:49Z",
   "depends_on": [],
-  "done_when": "A test simulates a run of MTS-SuccWake-B registering the next wake and shows the new task still exists and fires after the old run ends (new name per generation, or deferred unregister); fails on old code; shipped; cherry empty.",
+  "done_when": "scripts/dev/test_successor_wake.py has a chain test (test_chain_second_registration_survives_first_run_finally) that fails on commit 2add4f3cd and passes after the fix: with MTS_SUCC_WAKE_TASK=MTS-SuccWake-B set, the generated script for the next link (a) does not call Start-ScheduledTask on the running name, (b) uses a trigger or a distinct generation so it fires after the first run exits, and (c) the first run.ps1 finally unregisters only its own generation (a token check), never the new one; the existing 4b3 rules still hold (one one-shot, no repeat, self-unregistering). git cherry origin/fast-track <content sha> empty and git ls-tree -r origin/fast-track --name-only shows scripts/dev/successor_wake.py and scripts/dev/test_successor_wake.py.",
   "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Make the successor chain survive: a Supervisor started by the one-shot MTS-SuccWake-<L> task must be able to register the next wake for the next window, so Supervisors keep handing over unattended. Evidence: Opus note of bug-supervisor-handoff-duplicates (2026-10-28), register B14.",
+  "goal": "Make the MTS-SuccWake chain survive its first link: when a Supervisor started by task MTS-SuccWake-<L> calls successor_wake.register for the next wake (env MTS_SUCC_WAKE_TASK set), the new task must still exist and must fire after the old run ends. Cause (register B14, Opus note of 2026-10-28): the new registration reuses the same task name, Start-ScheduledTask on a Running task is ignored by Windows, and the old run.ps1 finally unregisters the name, deleting the new task.",
   "id": "bug-successor-wake-chain-stops-after-one-link",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "DRAFT 2026-10-28 Session_Planner (planner-refine-2, OURS): fix design is a default, the worker may take the fallback if Parallel instances fail. Gate: not live path; no real task registered in tests; fail-first quote required. SCHEDULING_POLICY.md edit counts against its SIZE_CAP.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -40,10 +40,12 @@
   ],
   "result": "",
   "scope_in": [
-    "scripts/dev/successor_wake.py; scripts/dev/test_successor_wake.py; scripts/dev/supervisor.py; MyTradingSys/system/SCHEDULING_POLICY.md"
+    "scripts/dev/successor_wake.py",
+    "scripts/dev/test_successor_wake.py",
+    "MyTradingSys/system/SCHEDULING_POLICY.md (4b3 paragraph, one sentence on the generation rule)"
   ],
   "scope_out": [
-    "live tree; deploy; other scheduled tasks; anything beyond the allowed 4b/4b2/4b3 one-shot"
+    "live tree; deploy; other scheduled tasks; supervisor.py and logon_wake.py behaviour (they call register unchanged); anything beyond the allowed 4b/4b2/4b3 one-shot; no new standing task"
   ],
   "size": "M",
   "sources": [
@@ -51,11 +53,13 @@
   ],
   "state": "raw",
   "steps": [
-    "Read successor_wake.py register/finally path and the Opus guard (637422a47)",
-    "Write the failing chain test, then fix; keep one-shot and self-unregistering (SCHEDULING_POLICY 4b3)",
-    "Ship with sync.py ship --release; Result: line"
+    "Read successor_wake.py build_script (run.ps1 try/finally, Start-ScheduledTask branch), register (SELF_ENV bypass of the B10 guard, lines near LIVE_STATES) and test_successor_wake.py B10 tests",
+    "Write the failing chain test first and quote its failure",
+    "Fix (OURS default): register with a per-generation token in the task Description and a settings object MultipleInstances Parallel; when SELF_ENV is set use a -Once trigger at now+1 minute instead of Start-ScheduledTask; run.ps1 finally unregisters only when the task Description still equals its own token. Fallback if Parallel does not work on this Windows build: unique name MTS-SuccWake-<L>-<utc stamp> (then widen the B10 live-state probe and device_tasks ALLOWED_TASKS prefix check, which already allows the MTS-SuccWake- prefix)",
+    "Add one sentence to SCHEDULING_POLICY.md 4b3; keep the size cap in MyTradingSys/tests/docs/test_integrity.py SIZE_CAPS (SURFACE_POLICY.md is near cap, SCHEDULING_POLICY.md: check headroom first)",
+    "python scripts/dev/sync.py ship --release <slug>; commit body ends Result:; verify: content commit sha, git cherry origin/fast-track <sha> empty AND git ls-tree -r origin/fast-track --name-only shows both files"
   ],
-  "tests": "test_successor_wake chain: second registration from inside the running task survives the first run's finally; fails on old code",
+  "tests": "scripts/dev/test_successor_wake.py (python -m pytest scripts/dev/test_successor_wake.py --basetemp <own temp dir>): new chain test fails first on old code (run it before the fix and quote the failing line), plus the existing B10 refusal test still passes. Pure script-text and stub-runner tests only; never register a real task from a test.",
   "title": "HIGH BUG: a Supervisor started by MTS-SuccWake cannot register its own successor: Windows ignores starting a task that is already running and the run's finally unregisters the new task, so the restart chain stops after one link (register B14)",
   "weight": "IMPORTANT",
   "worker": "session"
