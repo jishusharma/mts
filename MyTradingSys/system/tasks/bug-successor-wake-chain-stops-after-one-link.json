@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-28T14:13:49Z",
+  "depends_on": [],
+  "done_when": "A test simulates a run of MTS-SuccWake-B registering the next wake and shows the new task still exists and fires after the old run ends (new name per generation, or deferred unregister); fails on old code; shipped; cherry empty.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Make the successor chain survive: a Supervisor started by the one-shot MTS-SuccWake-<L> task must be able to register the next wake for the next window, so Supervisors keep handing over unattended. Evidence: Opus note of bug-supervisor-handoff-duplicates (2026-10-28), register B14.",
+  "id": "bug-successor-wake-chain-stops-after-one-link",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/nuc_restart_2026-10-28/ISSUES_REGISTER.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/successor_wake.py; scripts/dev/test_successor_wake.py; scripts/dev/supervisor.py; MyTradingSys/system/SCHEDULING_POLICY.md"
+  ],
+  "scope_out": [
+    "live tree; deploy; other scheduled tasks; anything beyond the allowed 4b/4b2/4b3 one-shot"
+  ],
+  "size": "M",
+  "sources": [
+    "operator 2026-10-28 restarts must resume unattended"
+  ],
+  "state": "raw",
+  "steps": [
+    "Read successor_wake.py register/finally path and the Opus guard (637422a47)",
+    "Write the failing chain test, then fix; keep one-shot and self-unregistering (SCHEDULING_POLICY 4b3)",
+    "Ship with sync.py ship --release; Result: line"
+  ],
+  "tests": "test_successor_wake chain: second registration from inside the running task survives the first run's finally; fails on old code",
+  "title": "HIGH BUG: a Supervisor started by MTS-SuccWake cannot register its own successor: Windows ignores starting a task that is already running and the run's finally unregisters the new task, so the restart chain stops after one link (register B14)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
