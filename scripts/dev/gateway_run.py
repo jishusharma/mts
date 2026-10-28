@@ -117,14 +117,17 @@ def start(card: str, run: str, auth: str) -> int:
     (wt / ".gateway_owner").write_text(f"gateway_run {card}\n", encoding="utf-8", newline="\n")
     d = RUNS / card
     d.mkdir(parents=True, exist_ok=True)
-    for f in ("done", "out.json", "err.log", "summary.json"):
+    for f in ("done", "started", "out.json", "err.log", "summary.json"):
         (d / f).unlink(missing_ok=True)
     me = wt / "scripts" / "dev" / "gateway_run.py"
-    tr = f'"{sys.executable}" "{me}" child --card {card} --run {run} --auth {auth} --cwd "{wt}"'
+    # schtasks /TR caps at 261 chars: the task runs a short run.cmd holding the long line
+    cmd = d / "run.cmd"
+    cmd.write_text(f'@"{sys.executable}" "{me}" child --card {card} --run {run} --auth {auth} --cwd "{wt}"' + chr(13) + chr(10), encoding="utf-8", newline="")
     tn = task_name(card)
-    subprocess.run(["schtasks", "/Create", "/TN", tn, "/SC", "ONCE", "/ST", "00:00", "/TR", tr, "/IT", "/F"],
+    subprocess.run(["schtasks", "/Create", "/TN", tn, "/SC", "ONCE", "/ST", "00:00", "/TR", f'"{cmd}"', "/IT", "/F"],
                    check=True, capture_output=True)
     subprocess.run(["schtasks", "/Run", "/TN", tn], check=True, capture_output=True)
+    (d / "started").write_text(tn + chr(10), encoding="utf-8", newline=chr(10))
     print(f"started {card} ({run}) task={tn} tree={wt} logs={d}")
     return 0
 
@@ -151,7 +154,7 @@ def child(card: str, run: str, auth: str, cwd: str) -> int:
 
 def status() -> int:
     for d in sorted(RUNS.glob("*")) if RUNS.exists() else []:
-        done = (d / "done").read_text().strip() if (d / "done").exists() else "running"
+        done = (d / "done").read_text().strip() if (d / "done").exists() else ("running" if (d / "started").exists() else "not started")
         s = (d / "summary.json").read_text() if (d / "summary.json").exists() else ""
         print(f"{d.name}: {done} {s[:600]}")
     return 0
