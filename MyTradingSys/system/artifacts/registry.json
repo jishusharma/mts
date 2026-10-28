@@ -119,7 +119,7 @@
     },
     {
       "slug": "cbp_consensus_desk",
-      "title": "CBP Desk",
+      "title": "CBP Consensus Desk",
       "status": "canonical",
       "pinned": true,
       "generator": "CBP daily workflow routine (CryptoScrapper tree, not in this repo)",
@@ -143,6 +143,30 @@
       "purpose": "Daily CBP consensus desk.",
       "notes_go_to": "Read only.",
       "published_sha": "56e06bbfc2d7b5168d4017a66f3f4278074f13bcca2676ef0fb532c422b3fd7a"
+    },
+    {
+      "slug": "cbp_desk",
+      "title": "CBP Desk",
+      "status": "needs-url",
+      "pinned": true,
+      "generator": "CBP daily workflow routine (CryptoScrapper tree, not in this repo)",
+      "html": null,
+      "owner_app": "CBP",
+      "refresh": "twice daily (CBP daily workflow)",
+      "db": [],
+      "urls": {
+        "jishu.sharma": "",
+        "jishu.awgp": "",
+        "jishusharma1985": ""
+      },
+      "last_published": {
+        "jishu.awgp": "2026-10-12 (viewed 2 h ago in the app)",
+        "jishusharma1985": "never"
+      },
+      "note": "Pinned only on the JIS-NB app (key jishu.awgp since the 2026-10-15 relabel); its URL is in no repo file. 2026-10-14: on that login the page titled \"CBP Desk\" IS cbp_consensus_desk (same url V1d9xSL9...); no separate page.",
+      "purpose": "Same page as the CBP Consensus Desk on the JIS-NB login.",
+      "notes_go_to": "Read only.",
+      "published_sha": null
     },
     {
       "slug": "sim_desk",

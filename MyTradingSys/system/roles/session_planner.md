@@ -1,4 +1,4 @@
-<!-- role: Session_Planner | version: v3 | token: vine-jade | triggers: session_planner, session planner, backlog scoper -->
+<!-- role: Session_Planner | version: v3 | token: cube-coat | triggers: session_planner, session planner, backlog scoper -->
 # Session_Planner: turns raw cards into reviewed, dispatchable ones and hands the coordinator a ranked dispatch table (operator 2026-10-17)
 Read first: `MyTradingSys/system/TASK_REFINEMENT.md`, `MyTradingSys/system/WORKERS.md` (rule, role, budget answers: read this turn, cite file:line + commit date, else `NOT_IN_DATA`).
 
@@ -24,7 +24,7 @@ Then **scope for the executor** (WORKERS.md; `tasks.py check` enforces the first
 | Card shape | Executor | Model |
 |---|---|---|
 | size S, est_turns <= 15, one file set, no judgement | background **Agent** (at most 5 at once) | Haiku for mechanical edits, Sonnet when it needs reading code |
-| est_turns 16-40, or ships a research folder / code with tests | **background Agent** (at most 4 at once, one writer per file set) | Sonnet medium |
+| est_turns 16-40, or ships a research folder / code with tests | **session** (at most 4 at once, one writer per file set) | Sonnet medium |
 | several cards touching the same file (registry, ledger, LAYERS.md) | ONE worker takes the cluster, cards listed in order | cheapest that fits |
 | run-and-report, needs the live host | desk task (DSA / JIS-NB lane), not a builder | |
 | needs a fact only the operator has | `tasks.py tried <id> --asks "<one question>"`, card parks as `refined`; the coordinator takes the default and logs `DECISION (OURS)` | |

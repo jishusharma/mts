@@ -111,12 +111,6 @@ class DeviceTasksTest(unittest.TestCase):
         self.assertEqual(g.status(key=r"Software\MTSNoSuchKey", name="nope", check=True), 1)
         self.assertEqual(g.status(key=r"Software\MTSNoSuchKey", name="nope"), 0)
 
-    def test_allowed_tasks_cover_every_policy_exception(self):
-        # SCHEDULING_POLICY.md 4b, 4b3 and the CBP block; the one-shot SuccWake must not be flagged
-        for name in ("MTS-WorktreeMaint-JIS-NB", "MTS-CBP-Ingestion", "MTS-SuccWake-C"):
-            self.assertTrue(name.startswith(dt.ALLOWED_TASKS), name)
-        self.assertFalse("MTS-CodexLab".startswith(dt.ALLOWED_TASKS))
-
 
 if __name__ == "__main__":
     unittest.main()

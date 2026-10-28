@@ -20,6 +20,18 @@ Entry format: `### A-<yyyymmdd>-<n> <kind> <title>` with kind one of INFO, DO-NO
 - Why: the gateway has no weekly cap, login B is not available on the NUC while it runs, and the other logins are capped.
 - Not a scheduling exception: "unrestricted" (GATEWAY_NUC.md:26-31) lifts only the usage/weekly-cap gate and the 2-worker pacing, not the "no scheduled tasks anywhere" hard rule (GATEWAY_NUC.md:31 keeps it in force on the gateway too); the one standing exception is `MTS-CBP-Ingestion` (SCHEDULING_POLICY.md "CBP-only exception"), unrelated to this gateway profile.
 
+### A-20261024-1 DO-NOW Every station: restart cleanup and a cleanup roll call (operator yes 2026-10-24)
+- Applies to: every station (device + login, STATION_CLEANUP.md section 1). The first session on each device to read this does it once for that device.
+- Until: the station has sent `STATION <device>/<login> cleanup: ...` (mts_signal send) and `python scripts/dev/c_drive_guard.py status` shows "for this checkout".
+- What: roll call first (STATION_CLEANUP.md section 5). Install only after the operator's yes. From the primary checkout (never a worktree): fast-forward it to origin/fast-track if it has no local edits (if it has, leave them and say so). Then `python scripts/dev/c_drive_guard.py install` and `status`. `status` must say "for this checkout"; an older primary has no `install` mode and would print a dry run instead, so if `status` does not say so, the install did nothing: say so.
+- Why: JIS-NB fell to 12.8 GB free on 2026-10-24; tests stalled on low C: (jis-nb, 16:03Z, test_run_removes_dead_ticket >300 s). The guard's old prefix list missed the test dirs filling %TEMP%.
+
+### A-20261023-1 DO-NOW Every station: save unshipped worktree work, then tidy (operator 2026-10-23)
+- Applies to: every station (station = one device with one login, operator 2026-10-23). The first session on each device to read this does it once for that device.
+- Until: each device (JIS-NB, JIS-NUC, DESKTOP-F7IU69N) has sent `STATION <device>/<login> worktrees: ...` done.
+- What: card `every-station-save-unshipped-worktree-wo`: `sync.py where --all`; ship real work from its own tree; never commit runtime data; `python scripts/dev/sync.py tidy --apply`.
+- Why: JIS-NUC holds 8 commits on no origin branch (nuc-shares-script 4, argon-blind-read-7-frames 2, lab-formula-spec-recount 2); a lost disk loses them.
+
 ### A-20261018-1 INFO Lab_Guy workflow v3.1 is in force (design), enforcement is being built
 - Applies to: every session that creates or refines a card, or reads a lab result.
 - Until: replaced by the machine gate (card `lab-trust-tag`).
@@ -48,27 +60,13 @@ Entry format: `### A-<yyyymmdd>-<n> <kind> <title>` with kind one of INFO, DO-NO
 - What: (1) blind reader only, never show the model our claim and ask if it is right (it agreed with the claim given, 'unreadable' used 0 times in 7 calls); (2) every schema has a required null/'unreadable' option, a number for a hidden field is an invented value; (3) crop two-panel images into panels first; (4) compare model output to our records in code; (5) contested values (25200 vs 25206) get a larger crop and a human/Argon read.
 - Detail: `MyTradingSys/system/roles/lab_guy.md` ("Using Gemini ... to read images"); pilot data `research/lab_guy/pilots/2026-10-18_gemini_frame_read/`. One pilot, not a catch rate.
 
-### A-20261018-8 INFO One routing table: ROUTING.md; Lead (pipeline mode) owns it
+### A-20261018-8 INFO One routing table: ROUTING.md; Pipeliner owns it
 - Applies to: every session that posts a desk row, creates a card or picks a lane.
 - What: `MyTradingSys/system/ROUTING.md` is the one table kind of work -> machine -> channel -> model -> checker. Build/code/review work is a card, never a desk row; DeepSeek rows go by where the data lives (DSA-NB / DSA-NUC); cross-vendor reviews are CODEX cards (GPT or `gemini_queue.py`); LAB-VERIFY items become lab cards. Pipeliner (pinned on JIS-NUC, ROLES.md) drains the desk queue: 2026-10-18 drain took 45 open rows to 14 (`research/pipeliner/DRAIN_2026-10-18.md`).
 - Operator answers wanted: ROUTING.md conflicts C1-C7 (bottom of that file).
 
 ## EXPIRED
-### A-20261024-1 DO-NOW Every station: restart cleanup and a cleanup roll call (operator yes 2026-10-24)
-- Applies to: every station (device + login, STATION_CLEANUP.md section 1). The first session on each device to read this does it once for that device.
-- Until: the station has sent `STATION <device>/<login> cleanup: ...` (mts_signal send) and `python scripts/dev/c_drive_guard.py status` shows "for this checkout".
-- What: roll call first (STATION_CLEANUP.md section 5). Install only after the operator's yes. From the primary checkout (never a worktree): fast-forward it to origin/fast-track if it has no local edits (if it has, leave them and say so). Then `python scripts/dev/c_drive_guard.py install` and `status`. `status` must say "for this checkout"; an older primary has no `install` mode and would print a dry run instead, so if `status` does not say so, the install did nothing: say so.
-- Why: JIS-NB fell to 12.8 GB free on 2026-10-24; tests stalled on low C: (jis-nb, 16:03Z, test_run_removes_dead_ticket >300 s). The guard's old prefix list missed the test dirs filling %TEMP%.
-- Superseded: the chore is now `DEVICE_TASKS.json` task `c-guard-logon` (dedupe audit INFRA row 11).
-
-### A-20261023-1 DO-NOW Every station: save unshipped worktree work, then tidy (operator 2026-10-23)
-- Applies to: every station (station = one device with one login, operator 2026-10-23). The first session on each device to read this does it once for that device.
-- Until: each device (JIS-NB, JIS-NUC, DESKTOP-F7IU69N) has sent `STATION <device>/<login> worktrees: ...` done.
-- What: card `every-station-save-unshipped-worktree-wo`: `sync.py where --all`; ship real work from its own tree; never commit runtime data; `python scripts/dev/sync.py tidy --apply`.
-- Why: JIS-NUC holds 8 commits on no origin branch (nuc-shares-script 4, argon-blind-read-7-frames 2, lab-formula-spec-recount 2); a lost disk loses them.
-- Superseded: see `DEVICE_TASKS.json` `c-guard-logon` (dedupe audit INFRA row 11).
-
-### A-20261024-2 HOLD Tooling freeze (operator 2026-10-24)
+### A-20261024-1 HOLD Tooling freeze (operator 2026-10-24)
 - Applies to: every session that would add to scripts/dev, .claude hooks or MyTradingSys/system.
 - Until: the simplification session in `research/mts_doctor/simplify_2026-10-24/BRIEF.md` reports done.
 - What: no new hooks, gate steps, roles, check scripts or rules. Allowed: deletions, one-line fixes, reverting a red trunk.

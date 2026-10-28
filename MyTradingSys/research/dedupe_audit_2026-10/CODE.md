@@ -84,7 +84,3 @@ Row count: 33 rows (32 in the main table, 1 in the uncalled-scripts table).
 3. Batch C (constants, rows 1, 18-28): row 1 first (a user-visible string).
 4. Batch D (rows 2, 29, 31, 32): needs a new module or file moves; row 2 touches redaction code, so keep a test that feeds a fake `api_key=...` through both scripts' `scrub` and asserts `[redacted]`.
 5. Rows 19, 30 and 33 are record-only or deferred.
-
-
-## Batch 2 (not applied yet)
-Batch 1 applied (dedupe-apply-1): row 1 (supervisor.py strings use HEARTBEAT_MIN; test added). Rows 2-33: batch 2.

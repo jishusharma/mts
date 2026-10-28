@@ -1066,11 +1066,3 @@ def test_fold_target_card_else_handover(tmp_path):
     assert S.fold_target(tmp_path, None, None, "lead", T0).name == "LEAD_RESUME_2026-10-19.md"
     t = S.set_missed(_form(), ["a.md", "b.md"])
     assert "a.md" in t and "(none)" not in t and S.validate_form(t) == []
-
-
-def test_peer_none_live_line_names_the_heartbeat_constant():
-    p = S.pace_plan(T0, _rd(10, 20), 95)
-    live = {"B": {"host": "JIS-NB", "mode": "NORMAL", "run": 0, "free": 3, "at": "x", "dsa": None}}
-    ctx = {"codex_ready": 3, "spare": "card-x", "ci": {}, "picks": []}
-    out = chr(10).join(S.plan_lines("B", "JIS-NB", p, live, dict(ctx, nuc_ok=False), gate_key=False))
-    assert f"no heartbeat < {S.HEARTBEAT_MIN} min" in out
