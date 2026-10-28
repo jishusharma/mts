@@ -11,7 +11,7 @@ Single source: `roles/ROSTER.json`. `role_loader.py list` prints it; the table i
 |---|---|---|---|---|---|
 | `Lead` | `You are Lead.` | any device, any login | one at a time; a second reads LEAD.md | Sonnet (Opus when named) | the one session the operator talks to: design, answers, routing, health; loads one mode at a time |
 | `Eagle_Eyes` | `You are Eagle_Eyes.` | any device (full detail on JIS-NB) | no limit | Sonnet | chart screenshots read against live files, logged |
-| `Supervisor` | `login A|B|C (one word; or You are Supervisor. Login <A|B|C>. <your tasks>)` | any device, any login | one per login | Sonnet (Opus only when named) | super session: dispatches role workers, verifies their banners |
+| `Supervisor` | `Supervisor A (or supervisor login a, or login a): one phrase, loads the Supervisor and its hand-over goals; or You are Supervisor. Login <A|B|C>. <your tasks>` | any device, any login | one per login | Sonnet (Opus only when named) | super session: dispatches role workers, verifies their banners |
 | `Lab_Guy` | `You are Lab_Guy.` | any device (needs the NUC lab) | no limit | Sonnet | quality owner of the Claude-to-lab flow (GPT/Codex, Gemini) |
 | `1985Artifacts_Guy` | `You are 1985Artifacts_Guy.` | any device on the jishusharma1985 login | no limit | Sonnet | owns every published page and its links; republishes |
 | `Session_Planner` | embedded: run by the Supervisor as an Agent; never by hand | inside a super session | no limit | Sonnet medium | refines raw cards, ranks the dispatch table |

@@ -8,9 +8,13 @@ Usage:
                                                  or one warning line when low
   python scripts/dev/c_drive_guard.py plan       dry run: every item it would delete, one line each with the reason
   python scripts/dev/c_drive_guard.py logon      logon run: prunes at every logon, whatever the free space; one line to the log
+  python scripts/dev/c_drive_guard.py procs      stray shells/runtimes (python, pythonw, node, pwsh, powershell, cmd, bash, conhost) older
+                                                 than 24 h: report only (the daily run logs the counts too)
+  python scripts/dev/c_drive_guard.py procs --apply   kill the KILL rows by PID, re-checked in a fresh snapshot (never by image name)
   python scripts/dev/c_drive_guard.py install [--repo PATH ...]   register `logon` under HKCU Run (no admin, no scheduled task); run from the
                                                  primary checkout; --repo: also retire the worktrees of that other clone (JIS-NB: IdeaProjects)
-  python scripts/dev/c_drive_guard.py status     registered or not, for which checkout, last logon line
+  python scripts/dev/c_drive_guard.py status [--check]   registered or not, for which checkout, last logon line; --check: exit 1 if not registered
+  (the daily hook also runs `device_tasks.py check --send`, report-only: DEVICE_TASKS.md)
   python scripts/dev/c_drive_guard.py uninstall  remove the logon run
 
 What it prunes (only entries whose newest file is older than the age limit; locked entries are skipped):
@@ -33,7 +37,9 @@ import sys
 import time
 from pathlib import Path
 
-TEMP = Path(os.environ.get("MTS_GUARD_TEMP") or os.path.expandvars(r"%LOCALAPPDATA%\Temp"))
+import host_health as hh     # process snapshot, ancestor chain, own pids (stdlib only; scripts/dev sits on sys.path)
+
+TEMP =Path(os.environ.get("MTS_GUARD_TEMP") or os.path.expandvars(r"%LOCALAPPDATA%\Temp"))
 LOG = Path(os.environ.get("MTS_GUARD_LOG") or os.path.expandvars(r"%LOCALAPPDATA%\MTS\logs\c_drive_guard.log"))
 PREFIXES = ("tmp", "mts_", "r2_", "rmd_", "kill_switch_cli_", "staged_tests_", "gate_timing_test_", "aibridge_selftest_",
             "pytest-of-", "gate_budget_test_", "dsa_tpl_", "e2e_a2_", "dsa-boot-", "cicd_ps_", "lab_query_", "soak6_")
@@ -351,15 +357,105 @@ def main_checkout_note(pull=True):
         return "main checkout check failed (%s)" % type(e).__name__
 
 
+# ---- stray shells and runtimes (procs): reported by the daily run, killed only by `procs --apply`, only by PID ----
+PROC_NAMES = ("python.exe", "pythonw.exe", "node.exe", "pwsh.exe", "powershell.exe", "cmd.exe", "bash.exe", "conhost.exe")
+PROC_AGE_H = 24
+PROC_SAFE = ("desk.py", "sim_desk", "layers.fabio", "scripts/dev/", "mytradingsys/")   # the allow list (STRAY_REAP_POLICY.md)
+PROC_NEVER = (".mts_live", "live_runner", "loop-supervisor", "start-trading-day", "oi_recorder", "orderflow_live",
+              "htf_context_live", "deploy", "auto_deploy", "wait_then_ship", "cicd_run")
+
+
+def proc_verdict(p, by, now):
+    """(verdict, reason) for one process, or None when it is no candidate (not a shell or runtime name, unknown or under
+    PROC_AGE_H old). KILL: old, a safe pattern, no never-kill text in it or its ancestors, no claude.exe ancestor.
+    PROTECTED: a never-kill rule hit. UNMATCHED: old, but no safe pattern: reported, never killed. Fails closed."""
+    name = p["name"].lower()
+    if "java" in name:
+        return ("PROTECTED", "java: never")
+    if name not in PROC_NAMES or not p["created"] or now - p["created"] < PROC_AGE_H * 3600:
+        return None
+    up = hh.chain(by, p["pid"])
+    cmd = p["cmd"].lower()
+    text = " ".join([cmd] + [a["cmd"].lower() for a in up])
+    if any(m in text for m in PROC_NEVER) or ("sync.py" in text and "ship" in text):
+        return ("PROTECTED", "never-kill text in its command line or an ancestor's")
+    if any(a["name"].lower() == "claude.exe" for a in up):
+        return ("PROTECTED", "claude.exe ancestor")
+    if not any(m in cmd for m in PROC_SAFE):
+        return ("UNMATCHED", "no safe pattern: reported, not killed")
+    return ("KILL", "safe pattern, old, no protected rule")
+
+
+def proc_rows(procs, now=None):
+    """One dict per candidate in a snapshot (never this process or its ancestors), KILL rows first."""
+    now = now or time.time()
+    by = hh.index(procs)
+    keep = hh.own_pids(by)
+    out = []
+    for p in procs:
+        v = None if p["pid"] in keep else proc_verdict(p, by, now)
+        if v:
+            out.append({"pid": p["pid"], "name": p["name"], "created": p["created"], "cmd": p["cmd"],
+                        "age_h": (now - p["created"]) / 3600, "verdict": v[0], "reason": v[1]})
+    return sorted(out, key=lambda r: (r["verdict"] != "KILL", -r["age_h"]))
+
+
+def proc_line(r):
+    return "%-9s PID %-6d %-14s %6.0f h  %s  | %s" % (r["verdict"], r["pid"], r["name"], r["age_h"], r["reason"], r["cmd"][:110])
+
+
+def procs_summary(procs=None, now=None):
+    """One log phrase for the daily run: counts and PIDs only, never kills. Never raises."""
+    try:
+        rows = proc_rows(hh.snapshot() if procs is None else procs, now)
+        kills = [r["pid"] for r in rows if r["verdict"] == "KILL"]
+        return "%d KILL candidate(s) %s (report only; `c_drive_guard.py procs --apply` kills by PID), %d PROTECTED, %d UNMATCHED old" % (
+            len(kills), kills, sum(r["verdict"] == "PROTECTED" for r in rows), sum(r["verdict"] == "UNMATCHED" for r in rows))
+    except Exception as e:      # the log says why; the daily run must still finish
+        return "unavailable (%s)" % type(e).__name__
+
+
+def kill_pid(pid):
+    """Stop one process by PID (taskkill /PID, no tree, no image name). True when taskkill reports success."""
+    try:
+        r = subprocess.run(["taskkill", "/PID", str(pid), "/F"], capture_output=True, text=True, timeout=30, creationflags=NO_WINDOW)
+        return r.returncode == 0
+    except (OSError, subprocess.SubprocessError):
+        return False
+
+
+def procs_apply(snapshot=hh.snapshot, now=None, kill=kill_pid):
+    """Kill every KILL row by PID. Each one is re-checked in a fresh snapshot: same PID, same start time, still KILL. Returns (killed, skipped)
+    as lists of PIDs and text lines."""
+    cands = [r for r in proc_rows(snapshot(), now) if r["verdict"] == "KILL"]
+    fresh_all = snapshot()
+    by = hh.index(fresh_all)
+    killed, skipped = [], []
+    for r in cands:
+        cur = by.get(r["pid"])
+        if cur is None or cur["created"] != r["created"]:
+            skipped.append("PID %d: gone or reused since the report, not killed" % r["pid"])
+            continue
+        again = proc_verdict(cur, by, now or time.time())
+        if not again or again[0] != "KILL":
+            skipped.append("PID %d: no longer a KILL candidate, not killed" % r["pid"])
+            continue
+        if kill(r["pid"]):
+            killed.append(r["pid"])
+        else:
+            skipped.append("PID %d: taskkill failed" % r["pid"])
+    return killed, skipped
+
+
 def apply_all(tag):
     """Prune temp, retire finished worktrees, log ONE line with the GB freed. Never raises."""
     before = free_gb()
     n, freed = prune(apply=True)
     gone = [l for l in run_tidy(True) if l.startswith("removed  ")]
     after = free_gb()
-    log("%s: C free %.1f GB -> %.1f GB (freed %.2f GB); %d temp entries (%.2f GB); %d worktrees retired; %s"
+    log("%s: C free %.1f GB -> %.1f GB (freed %.2f GB); %d temp entries (%.2f GB); %d worktrees retired; %s; procs (report only): %s"
         % (tag, before, after, max(after - before, 0) if after != float("inf") else 0, n, freed / 1e9, len(gone),
-           main_checkout_note()))
+           main_checkout_note(), procs_summary()))
     return n, freed, len(gone)
 
 
@@ -387,6 +483,20 @@ def start_apply_detached():
         LOG.parent.mkdir(parents=True, exist_ok=True)
         with open(LOG.parent / "c_drive_guard.out", "ab") as out:
             subprocess.Popen([sys.executable, str(Path(__file__).resolve()), "--apply"], creationflags=flags,
+                             stdin=subprocess.DEVNULL, stdout=out, stderr=out, close_fds=True)
+    except OSError:
+        pass
+
+
+def start_check_detached():
+    """Report-only `device_tasks.py check --send` (DEVICE_TASKS.md): this host's result goes out as one mts_signal line. Never raises."""
+    script = Path(__file__).resolve().parent / "device_tasks.py"
+    if os.environ.get("MTS_NO_DEVICE_TASKS") or not script.is_file():
+        return
+    try:
+        LOG.parent.mkdir(parents=True, exist_ok=True)
+        with open(LOG.parent / "c_drive_guard.out", "ab") as out:
+            subprocess.Popen([sys.executable, str(script), "check", "--send"], creationflags=NO_WINDOW,
                              stdin=subprocess.DEVNULL, stdout=out, stderr=out, close_fds=True)
     except OSError:
         pass
@@ -457,7 +567,8 @@ def uninstall(key=RUN_KEY, name=RUN_NAME):
     return 0
 
 
-def status(key=RUN_KEY, name=RUN_NAME):
+def status(key=RUN_KEY, name=RUN_NAME, check=False):
+    """check=True (device_tasks.py verify): exit 1 when the logon run is not registered at all."""
     cur = installed_command(key, name)
     if cur is None:
         print("logon run: not installed (python scripts/dev/c_drive_guard.py install, from the primary checkout)")
@@ -469,7 +580,7 @@ def status(key=RUN_KEY, name=RUN_NAME):
     except (OSError, IndexError):
         last = "none yet (log %s)" % LOG
     print("last logon line: " + last)
-    return 0
+    return 1 if check and cur is None else 0
 
 
 def main(argv):
@@ -481,6 +592,7 @@ def main(argv):
             if daily_due():
                 touch_stamp()
                 start_apply_detached()
+                start_check_detached()
             return 0
         touch_stamp()
         msg = "LOW: " + ", ".join(f"{d} {g:.1f} GB free" for d, g in low) + f" (< {limit:g}); c_drive_guard --apply started in the background."
@@ -495,6 +607,21 @@ def main(argv):
             print("would delete  %-8s %s (%.2f GB): %s" % (kind, name, size / 1e9, why))
         print("would delete %d item(s); nothing deleted (--apply deletes)" % len(rows))
         return 0
+    if argv[:1] == ["procs"]:
+        if "--apply" in argv:
+            killed, skipped = procs_apply()
+            for line in skipped:
+                print(line)
+            print("killed %d by PID: %s" % (len(killed), killed))
+            log("procs --apply: killed %s; skipped %d" % (killed, len(skipped)))
+            return 0
+        rows = proc_rows(hh.snapshot())
+        for r in rows:
+            print(proc_line(r))
+        print("%d candidate(s): %d KILL, %d PROTECTED, %d UNMATCHED; nothing killed (`procs --apply` kills the KILL rows)"
+              % (len(rows), sum(r["verdict"] == "KILL" for r in rows), sum(r["verdict"] == "PROTECTED" for r in rows),
+                 sum(r["verdict"] == "UNMATCHED" for r in rows)))
+        return 0
     if argv[:1] == ["logon"]:
         return logon(repo_args(argv))
     if argv[:1] == ["install"]:
@@ -502,7 +629,7 @@ def main(argv):
     if argv[:1] == ["uninstall"]:
         return uninstall()
     if argv[:1] == ["status"]:
-        return status()
+        return status(check="--check" in argv)
     apply = "--apply" in argv
     before = free_gb()
     print(f"C: free {before:.2f} GB")
