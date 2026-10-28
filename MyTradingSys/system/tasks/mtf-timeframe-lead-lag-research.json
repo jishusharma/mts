@@ -16,7 +16,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "OPERATOR QUOTE 2026-10-28: \"our goal is to identify the slip as early as possible and anticipate the slip. So first is we identify the slips and then we anticipate the slips. And then we get into the trade with this anticipation and build on that anticipation and confirm to it. Keeping in mind the fluctuations and the volatility ATR stuff on mind... We require something that is a robust idea. We just don\\x27t want to keep adding on to failures. So how to separate these?\"",
+  "note": "VOICE FIX (operator 2026-10-28): \"slip\" means \"flip\": identify the timeframe flip early, then anticipate it.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
