@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T15:27:04Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -24,6 +25,12 @@
   "id": "q33-report-horizon-and-filter-label",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MATRIX_REPORT.md: full key F1=1&F3=0, p/q/half labelled primary 60-min, 240-min NOT_IN_DAT",
+      "ref": "c9a76a3ea",
+      "utc": "2026-10-28T15:27:04Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -50,7 +57,12 @@
   "refs": [
     "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/guidance.md"
   ],
-  "result": "",
+  "result": "MATRIX_REPORT.md: full key F1=1&F3=0, p/q/half labelled primary 60-min, 240-min NOT_IN_DATA",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/tom_fabio_guidance_2026-10-12/MATRIX_REPORT.md"
   ],
@@ -62,11 +74,12 @@
   "sources": [
     "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/guidance.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Verify CSV row 275 and runner primary-horizon assignments cited in guidance.md.",
     "Correct only the horizon attribution and complete filter key, retaining the independently matched numbers."
   ],
+  "taken": "2026-10-28T15:27:04Z",
   "tests": "Read corrected prose against CSV cell key and matrix_q33.py primary-horizon assignments; standard documentation gate.",
   "title": "Q33 report mixes primary-horizon statistics into 240-minute result",
   "weight": "ROUTINE",

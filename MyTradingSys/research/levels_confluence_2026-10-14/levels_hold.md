@@ -1,5 +1,34 @@
 # LC1 levels hold — DEV result (2026-10-15)
 
+## RESTATED 2026-10-28 (T05-F5): fair control, KEEP list is EMPTY
+
+**Current verdict, standard DEV decisions 2022-04-01..2024-06-30: KEEP = none (0 of 12). DROP: all 12. The 8-family KEEP list above and in the Q79 addendum is superseded; the Q79 table stays as the legacy-control record.**
+
+**Why.** The legacy control (`analyze`) drew midnight +/- the real distance with a random sign: about half of the five "random" lines were the real level itself (measured share 0.49-0.77), and a control line that was never touched counted as a non-hold (untouched share 0.00-0.85). That inflates the gap whenever a real level is touched more than a random line. The fair control (`analyze_fair`) draws 20 lines per level with the distance taken from that family's own candidate levels in the same calendar month, random sign, and counts a line only if touched (hold rate = holds / touches, same as a real level).
+
+**Parameters (all OURS, none SOURCED).** seed 20261016, 20 lines per level, 2,000 day-bootstrap, KEEP = lower CI > 0, stop width unchanged (`max(0.40% of 00:00 price, 0.10% of level)`), side from previous close (Q79). The legacy column is kept unchanged (`pub_*` in the csv).
+
+| Family | Touches | Hold | Fair-control hold (touched lines) | Difference | 95% CI | Fair verdict | Legacy control hold | Legacy diff | Legacy verdict |
+|---|---:|---:|---:|---:|---:|---|---:|---:|---|
+| 4h_fractal_high | 1,984 | 46.3% | 49.8% | -3.5 pp | [-5.9, -1.0] pp | DROP | 36.4% | +9.9 pp | KEEP |
+| 4h_fractal_low | 1,963 | 44.9% | 50.0% | -5.1 pp | [-7.3, -2.6] pp | DROP | 34.9% | +10.0 pp | KEEP |
+| daily_open | 822 | 49.3% | 49.4% | -0.1 pp | [-3.1, +2.8] pp | DROP | 48.0% | +1.3 pp | DROP |
+| naked_poc | 732 | 53.1% | 50.6% | +2.6 pp | [-0.8, +6.1] pp | DROP | 41.4% | +11.7 pp | KEEP |
+| prior_day_high | 380 | 37.6% | 49.5% | -11.9 pp | [-16.5, -7.1] pp | DROP | 30.9% | +6.7 pp | KEEP |
+| prior_day_low | 345 | 40.9% | 49.7% | -8.8 pp | [-14.1, -3.7] pp | DROP | 33.3% | +7.6 pp | KEEP |
+| prior_day_poc | 583 | 52.7% | 51.1% | +1.6 pp | [-2.3, +5.5] pp | DROP | 43.9% | +8.7 pp | KEEP |
+| prior_day_vah | 537 | 48.2% | 50.7% | -2.4 pp | [-6.6, +1.8] pp | DROP | 42.5% | +5.8 pp | KEEP |
+| prior_day_val | 539 | 52.3% | 50.9% | +1.4 pp | [-2.8, +5.4] pp | DROP | 43.5% | +8.8 pp | KEEP |
+| prior_week_high | 150 | 44.7% | 50.1% | -5.4 pp | [-13.5, +2.6] pp | DROP | 34.1% | +10.5 pp | KEEP |
+| prior_week_low | 124 | 43.5% | 48.2% | -4.6 pp | [-13.1, +3.7] pp | DROP | 34.2% | +9.4 pp | KEEP |
+| round_1000 | 831 | 45.0% | 50.3% | -5.3 pp | [-8.3, -1.8] pp | DROP | 35.9% | +9.1 pp | KEEP |
+
+**Reading.** Five families (4h_fractal_high, 4h_fractal_low, prior_day_high, prior_day_low, round_1000) hold significantly LESS than a random touched line (CI entirely below zero); the other seven (daily_open, naked_poc, prior_day_poc/vah/val, prior_week_high/low) straddle zero. No family clears the rule. Gained vs legacy: none. Lost: 4h_fractal_high, 4h_fractal_low, naked_poc, prior_day_high, prior_day_low, prior_day_poc, prior_week_high, round_1000.
+
+**Reproduction.** `python MyTradingSys/research/levels_confluence_2026-10-14/lc1_fair_run.py` (about 40 min; stages BTCUSDT files only because `F:/MTS/data/tom_raw/klines` now also holds ETHUSDT files and `load_klines` globs every csv). Writes `lc1_fair_dev.csv`; all 12 rows equal `dsa_backtest_audit_2026-10-16/scripts/T05/out/lc1_fair.csv` to 1e-9 (every column, checked). Test: `test_levels_hold_fair.py` (3 tests, red on the old module because `analyze_fair`/`fair_control_prices` do not exist, green now).
+
+**Not done / caveats.** The `skip_real=True` variant (drops the rare fair draw that lands on the real level; the draws came from the family's own distances so about 1/(2 x month pool size) of draws can coincide) is implemented and unit-tested but its full-data run was not repeated (40 min); the audit figures use `skip_real=False`. Consumers of the old 8-family list (layer code, LC2/LC3 studies, imbalance filter) are NOT edited here: one card each was filed.
+
 ## Verdict
 
 **KEEP: prior_day_high, prior_day_low, prior_day_poc, naked_poc, 4h_fractal_low, 4h_fractal_high, round_1000, prior_week_high. DROP: prior_day_vah, prior_day_val, daily_open, prior_week_low. L2 reached: 83.8%.** Each KEEP family has a positive 95% day-bootstrap CI lower bound. L2 candidates are restricted to KEEP families.
