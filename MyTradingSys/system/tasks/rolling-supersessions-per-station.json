@@ -1,6 +1,6 @@
 {
   "approved_by": "",
-  "asks": "Lab_Guy: stamp REVIEWED for rolling-supersessions-per-station (planner cannot stamp)",
+  "asks": "",
   "commands": [],
   "created": "2026-10-26T17:11:01Z",
   "depends_on": [],
@@ -12,13 +12,15 @@
   "goal": "Operator idea 2026-10-26: run a rolling (up to 24h) super session on every ACTIVE station, one per login, using SUPER_SESSION.md D5 context rotation (clear_session + rebuild from notes file) instead of restarting; station_watcher_monitor.py re-broadcasts a PROPOSED start line when a station goes idle with ready cards.",
   "id": "rolling-supersessions-per-station",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS): scoped as a design note first, per the operator's standing rule for this line of work (see rolling-chain-background-wait-design-rev, coordinator-sits-idle-during-long-backgr): consolidate idea -> refine -> design review -> implement. No evidence file found beyond this card's own title (operator idea 2026-10-26, no transcript on disk). Needs an IMPORTANT review stamp before promotion; this pinned Session_Planner cannot spawn a reviewer Agent (role: spawns nothing) -- recommend the coordinator run a batched Sonnet reviewer Agent on next wake. No stamp fabricated.\nWAITING 2026-10-28 (planner-raw-refine): fields complete; needs a real Lab_Guy stamp (planner cannot stamp).",
+  "note": "DECISION (OURS): scoped as a design note first, per the operator's standing rule for this line of work (see rolling-chain-background-wait-design-rev, coordinator-sits-idle-during-long-backgr): consolidate idea -> refine -> design review -> implement. No evidence file found beyond this card's own title (operator idea 2026-10-26, no transcript on disk). Needs an IMPORTANT review stamp before promotion; this pinned Session_Planner cannot spawn a reviewer Agent (role: spawns nothing) -- recommend the coordinator run a batched Sonnet reviewer Agent on next wake. No stamp fabricated.\nWAITING 2026-10-28 (planner-raw-refine): fields complete; needs a real Lab_Guy stamp (planner cannot stamp).\nREVIEWED:2026-10-28 ACCEPT Lab_Guy (Sonnet, C0 design-only). Checked: SUPER_SESSION.md:14 is D5 (context rotation); station_watcher_monitor.py exists with the STATE-CHANGE triggers named; traffic.py has the PROPOSED block (render_status, PROPOSED at traffic.py:720); scope_out bars implementation. Label the idle threshold and ACTIVE definition OURS in the note.",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
+  "refreshed": "2026-10-28T12:01:22Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -27,12 +29,13 @@
   "scope_out": [
     "MyTradingSys/research/pipeliner/station_watcher_monitor.py, scripts/dev/traffic.py, MyTradingSys/system/SUPER_SESSION.md -- no implementation in this card"
   ],
+  "scope_sha": "",
   "size": "S",
   "sources": [
     "MyTradingSys/system/SUPER_SESSION.md:14 (D5 rotation rule)",
     "MyTradingSys/research/pipeliner/station_watcher_monitor.py (current STATE-CHANGE triggers)"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read SUPER_SESSION.md D5 (context rotation), station_watcher_monitor.py's current STATE-CHANGE triggers (liveness flip, lane stall, lease expiry, desk-pending move) and traffic.py's render_status PROPOSED block.",
     "List options for the idle+ready-cards trigger (poll interval, ACTIVE/idle definition, one-per-login enforcement) with cost/risk, pick one default.",
