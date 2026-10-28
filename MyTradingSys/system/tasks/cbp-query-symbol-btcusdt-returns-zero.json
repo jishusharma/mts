@@ -2,6 +2,13 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 5,
+    "folded": "2026-10-28T13:19:05Z",
+    "misses": 0,
+    "reads": [],
+    "session": "agent-ada4c6327a8691fc5"
+  },
   "created": "2026-10-28T11:19:07Z",
   "depends_on": [],
   "done_when": "new test: query(symbol='BTCUSDT') returns the same 6-style row set as symbol='BTC' on a fixture store (0 rows before the change); test_cbp_query.py all pass",
