@@ -13,6 +13,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from MyTradingSys.backtest.layers.rsi.rsi_core import rsi_core
 from levels import levels_by_day, _profile
 
+# LEGACY 8-family set, void since T05-F5
 KEEP = {'prior_day_high', 'prior_day_low', 'prior_day_poc', 'naked_poc',
         '4h_fractal_low', '4h_fractal_high', 'round_1000', 'prior_week_high'}
 TF = {'1h': 60, '4h': 240, '6h': 360, '12h': 720, '1d': 1440}

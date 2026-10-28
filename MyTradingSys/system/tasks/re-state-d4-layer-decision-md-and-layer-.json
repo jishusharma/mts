@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T16:06:12Z",
   "commands": [],
   "created": "2026-10-28T14:46:59Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "re-state-d4-layer-decision-md-and-layer-",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "D4 row 10 + DECISION line added; grep FAIR CONTROL 0->1",
+      "ref": "07efcfab1",
+      "utc": "2026-10-28T16:06:12Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,12 @@
   "refs": [
     "re-state-lc1-keep-list-on-the-touched-on"
   ],
-  "result": "",
+  "result": "D4 row 10 + DECISION line added; grep FAIR CONTROL 0->1",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/v1_plan_2026-10-20/D4_LAYER_DECISION.md"
   ],
@@ -52,12 +64,13 @@
     "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.md (fair-control section: KEEP list none, 0 of 12, DEV 2022-04-01..2024-06-30)",
     "MyTradingSys/research/v1_plan_2026-10-20/D4_LAYER_DECISION.md:10"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Edit row at line 10: append 'FAIR CONTROL 2026-10-28: KEEP list none (0 of 12), slot rests on the pre-registered funnel only, not on a KEEP rule'.",
     "Add one line under the table: DECISION (OURS) slot unchanged until the operator reviews; flagged for that review.",
     "Run tasks.py lint; ship."
   ],
+  "taken": "2026-10-28T16:06:12Z",
   "tests": "grep -c 'FAIR CONTROL 2026-10-28' D4_LAYER_DECISION.md is 0 before, 1 after; the diff shows additions on line 10 plus one line.",
   "title": "Re-state D4_LAYER_DECISION.md and LAYER_READINESS.md levels-confluence KEEP rows on the fair-control LC1 list",
   "weight": "ROUTINE",
