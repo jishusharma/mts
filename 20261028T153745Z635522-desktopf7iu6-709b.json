@@ -1,0 +1,1 @@
+{"t": "20261028T153745Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "CI RED f032c694: reverted b7e6509be (T06 gap_frequency.py:53,58 o[i+1] look-ahead lint). Re-land with lookahead_allowlist.tsv rows. Revert ship b32132a2.", "login": "A"}
