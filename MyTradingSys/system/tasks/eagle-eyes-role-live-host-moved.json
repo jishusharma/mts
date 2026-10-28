@@ -5,14 +5,16 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-28T12:49:13Z",
-    "misses": 11,
+    "folded": "2026-10-28T12:55:34Z",
+    "misses": 30,
     "reads": [
+      "scripts/dev/test_successor_wake.py",
       "MyTradingSys/system/roles/eagle_eyes.md",
       "MyTradingSys/tests/test_role_lint.py",
       "scripts/dev/role_loader.py",
       "scripts/dev/live_owner.py",
-      "MyTradingSys/tests/test_role_budget.py"
+      "MyTradingSys/tests/test_role_budget.py",
+      "MyTradingSys/system/OPS_CHANGE_CHECK.md"
     ],
     "session": "agent-ad4e06cd5bc5ced8d"
   },
