@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T05:04:08Z",
   "commands": [],
   "created": "2026-10-27T20:51:50Z",
   "depends_on": [
@@ -15,6 +16,21 @@
   "id": "extraction-cross-method-qa",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "trust table for 6 (type, method) pairs, 5/5 planted errors flagged, extra_tests.tsv:131, r",
+      "ref": "0430c00ac",
+      "utc": "2026-10-28T05:04:08Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "bg-process-audit: deadlines on NUC/git network calls, no retry on non-race push, STALLED-B",
+      "ref": "e1ac77891613",
+      "utc": "2026-10-27T23:56:54Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -22,8 +38,14 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-28T04:56:47Z",
   "refs": [],
-  "result": "",
+  "result": "trust table for 6 (type, method) pairs, 5/5 planted errors flagged, extra_tests.tsv:131, report delivered",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/extraction_ledger_2026-10/CROSS_METHOD_QA.md",
     "MyTradingSys/research/extraction_ledger_2026-10/cross_method_qa.py",
@@ -35,17 +57,19 @@
     "editing any extract",
     "new transcripts"
   ],
+  "scope_sha": "e1ac77891613",
   "size": "M",
   "sources": [
     "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable",
     "MyTradingSys/research/layer_lab/reports/2026-10-17_malkan-hindi-rows-gpt-read.md"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "From EXTRACTION_LEDGER.csv pick videos present under 2+ methods (e.g. W1HrDl70Lhk captions, hi, asr).",
     "cross_method_qa.py: normalise numbers and rule keywords from each transcript; report agree/disagree/missing per rule sentence.",
     "Plant 5 numeric edits in a temp copy; the script must flag all 5 (test). Write CROSS_METHOD_QA.md: per type and method, agreement %, advice (trust / re-extract / ASR-only)."
   ],
+  "taken": "2026-10-28T05:04:08Z",
   "tests": "test_cross_method_qa.py: planted-error fixture, 5 of 5 flagged; fails before the script exists.",
   "title": "Cross-method extraction QA: same videos read by English captions vs Hindi ASR vs Whisper vs Gemini, agreement per video type, planted-error trial",
   "weight": "IMPORTANT",
