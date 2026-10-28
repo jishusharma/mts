@@ -6,7 +6,7 @@
   ],
   "context": {
     "calls_to_edit": 8,
-    "folded": "2026-10-28T06:59:10Z",
+    "folded": "2026-10-28T08:07:08Z",
     "misses": 1,
     "reads": [
       "MyTradingSys/research/live_reads/2026-10-26_cross_market_tools/mtf_bias.py"
