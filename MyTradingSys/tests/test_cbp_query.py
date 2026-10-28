@@ -248,3 +248,13 @@ def test_expiry_boundary_is_expired(tmp_path):
 @pytest.mark.parametrize("bad", ["tomorrow", "", None, 5, "2026-10-28", "2026-10-28T00:00:00+00:00"])
 def test_malformed_expiry_is_not_returned(tmp_path, bad):
     assert cbp.query(store=_stored(tmp_path, bad), now=NOW) == []
+
+
+def test_trade_missing_direction_is_not_tradable():
+    trade = {"asset": "BTC", "entry": "80K", "target": "87K", "invalidation": "79K", "quote": "q"}
+    assert not cbp.is_tradable({"trades": [trade]})
+    assert not cbp.is_tradable({"trades": [dict(trade, direction="")]})
+    assert not cbp.is_tradable({"trades": [dict(trade, direction="SIDEWAYS")]})
+    assert cbp.is_tradable({"trades": [dict(trade, direction="LONG")]})
+    assert cbp.is_tradable({"trades": [dict(trade, direction="SHORT")]})
+

@@ -78,9 +78,12 @@ def parse_expiry(v):
 
 
 def is_tradable(r):
-    """A trade with entry, target and invalidation all stated (the analyst's words, nothing filled in)."""
-    return any(all(str(t.get(k) or "").strip() not in ("", "—") for k in ("entry", "target", "invalidation"))
-               for t in r.get("trades") or [])
+    """A trade with entry, target, invalidation and valid direction all stated (the analyst's words, nothing filled in)."""
+    return any(
+        t.get("direction") in DIRECTIONS and
+        all(str(t.get(k) or "").strip() not in ("", "—") for k in ("entry", "target", "invalidation"))
+        for t in r.get("trades") or []
+    )
 
 
 def query(analyst=None, symbol=None, since_days=WINDOW_DAYS, now=None, store=None):
