@@ -1352,3 +1352,8 @@ REMOVED 2026-10-24 (43d3bfc8f): offer_guard.py is gone; the rule now lives in CL
 ```json
 {"id": "d-krown-s8-validation-read-go", "order": 54, "date": "2026-10-28", "status": "DECIDED", "question": "Krown S8 4h (the only powered family, R6 counts: 539 UTC days vs 439 needed) may spend the one VALIDATION read (2024-07-01..2025-06-30) after its DEV run passes?", "answer": "OPERATOR (chat 2026-10-28, reply to the R6 wrap-up ask): 'Yes, go'. VALIDATION read of Krown S8 4h: go. Conditions unchanged: only after krown-s8-4h-e2-dev-run ships PASS_DEV on the frozen PRE_REG.md (research/fable_run6_powered_prereg); one read, cells frozen, HOLDOUT stays sealed.", "done": "card krown-s8-4h-validation-read: operator-go precondition met (note updated); still waits on dep krown-s8-4h-e2-dev-run."}
 ```
+
+## d-krown-s8-e2-desk-crosscheck-go | decided 2026-10-28 | Fable R6 (fable-run6-powered-prereg)
+```json
+{"id": "d-krown-s8-e2-desk-crosscheck-go", "order": 55, "date": "2026-10-28", "status": "DECIDED", "question": "Run a simulator-desk cross-check of the E2 Krown S8 4h trade list (BTCUSDT 2022-04-01..2024-06-30) to prove the trade mechanics agree between e2_run.py and the desk Krown study?", "answer": "OPERATOR (chat 2026-10-28, after asking whether the simulator can prove what E2 tested): 'Yes, run it'. Sonnet card krown-s8-e2-desk-crosscheck, session started the same turn. Mechanics proof only; the E2 verdict (INCONCLUSIVE) is untouched.", "done": "card krown-s8-e2-desk-crosscheck filed and started."}
+```
