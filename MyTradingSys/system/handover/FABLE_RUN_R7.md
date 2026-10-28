@@ -10,7 +10,7 @@ Design and reasons: `MyTradingSys/research/fable_run_design_2026-10-28/DESIGN_R7
 
 You are the MTS Fable session R7. Boot per CLAUDE.md steps 1-2 (`python scripts/dev/sync.py start fable-run7-forward-test`, STATUS.md). If `research/fable_run6_powered_prereg/PRE_REG.md` is not on origin/fast-track, stop and reply "R6 not shipped". Usage guard: `get_usage` first and last into `research/fable_runs_2026-10-28/USAGE.md` (`## R7`, UTC, all meters). Stop and ship at weekly Fable +4 pts, 5 h window 85 %, 45 tool turns, or context 60 %.
 
-Hard limits: R6's rule is frozen (never change it); no outcome column (E2, VALIDATION, forward fills) and no bar >= 2024-07-01 is read; read the live-path code only, no live-tree edit, no deploy, no process or HALT file touch; testnet only, no mainnet; never read `.secrets/` or `.env`. No questions to the operator: conservative default, log `DECISION (OURS)`.
+Hard limits: R6's rule is frozen (never change it; pin the PRE_REG.md commit you read in FORWARD_PREREG.md; an O2 rule change means R7 is re-run); months to power use the signal-day rate 0.33/day, not the 0.49 event rate; no outcome column (E2, VALIDATION, forward fills) and no bar >= 2024-07-01 is read; read the live-path code only, no live-tree edit, no deploy, no process or HALT file touch; testnet only, no mainnet; never read `.secrets/` or `.env`. No questions to the operator: conservative default, log `DECISION (OURS)`.
 
 QUESTION: how does testnet trade the R6 Krown S8 4h rule exactly as frozen, so every day from the first deploy is fresh out-of-sample data, and what forward rule decides it?
 

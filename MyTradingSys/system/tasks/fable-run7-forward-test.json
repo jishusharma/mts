@@ -16,7 +16,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator-run only; no session may start or message it.",
+  "note": "Operator-run only; no session may start or message it.\nLane OPUS as for fable-run6-powered-prereg (operator-run Fable 5.1 cards use lane OPUS; no FABLE lane exists in tasks.py).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

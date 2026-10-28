@@ -12,7 +12,7 @@ Read from its tree `C:/Users/E-ngineers/IdeaProjects/mts-fable-run6-powered-prer
 
 | # | Point | Numbers (recomputed here, same formula as `prereg_gate.py`) | Why it matters |
 |---|---|---|---|
-| 1 | m choice decides the verdict | m 65: z 3.364, n 439 (R6). m 281 (R1 bill, `R1_EDGE_OR_STOP.md:29`): z 3.748, n **523** of 539 = 3 % margin. m 3,018 (R1 cell count): n about 660 > 539 = **not powered** | `prereg_gate.py --m auto` ledger fix is still open (`fable-run2-regate-fixes-1to8`, fix 1); a Krown S5 desk row already read outcomes on DEV, so S8 is a sibling, not a clean new family |
+| 1 | m choice decides the verdict | m 65: z 3.364, n 439 (R6). m 281 (R1 bill, `research/fable_runs_2026-10-28/R1_EDGE_OR_STOP.md:29`): z 3.748, n **523** of 539 = 3 % margin. m 3,018 (R1 cell count): n about 660 > 539 = **not powered** | `prereg_gate.py --m auto` ledger fix is still open (`fable-run2-regate-fixes-1to8`, fix 1); a Krown S5 desk row already read outcomes on DEV, so S8 is a sibling, not a clean new family |
 | 2 | Power counted on signals, pass counted on entries | 539 signal days; pass needs entry days >= 439 after the one-position-per-symbol busy rule with a 100-bar (about 17 day) time stop | the busy rule drops signals; worst case cuts days well below 439, so a gate PASS may end INCONCLUSIVE after spending the run |
 
 Smaller: sd 1.37 R is OURS from a Krown S5 CI (R1), not from S8; 4h-bar fills (stated as a lower bound); the same correlated BTC/ETH/SOL move on adjacent days is not one cluster (day-block bootstrap block length not stated).

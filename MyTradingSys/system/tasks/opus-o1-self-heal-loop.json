@@ -13,13 +13,23 @@
   "goal": "Operator runs Opus on system/handover/OPUS_RUNS.md O1: classify every doctor check and hook finding HEAL/CARD/OPERATOR, add mts_doctor.py --heal for safe rows, build 3 heals (stale shipped claims, unackable broadcasts, diverged main checkout) with tests that fail on old code.",
   "id": "opus-o1-self-heal-loop",
   "lane": "OPUS",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into claude/eager-hertz-18fa0f",
+      "ref": "51950d1a5a09",
+      "utc": "2026-10-28T09:33:30Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator-run only; no session may start or message it.",
+  "note": "Operator-run only; no session may start or message it.\nREVIEWED: Lab_Guy 2026-10-28 ACCEPT (independent Sonnet reviewer, first pass)",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-28T09:37:29Z",
   "refs": [
     "MyTradingSys/system/handover/OPUS_RUNS.md"
   ],
@@ -33,11 +43,12 @@
   "scope_out": [
     "live tree, deploy, mainnet, .secrets, .env, outcome columns and bars >= 2024-07-01"
   ],
+  "scope_sha": "51950d1a5a09",
   "size": "M",
   "sources": [
     "MyTradingSys/research/opus_run_design_2026-10-28/DESIGN.md"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "HEAL_MAP.md: one row per doctor check and hook, class HEAL/CARD/OPERATOR",
     "mts_doctor.py --heal running HEAL rows only",
