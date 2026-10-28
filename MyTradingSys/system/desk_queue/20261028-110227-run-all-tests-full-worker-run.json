@@ -1,0 +1,11 @@
+{
+  "card": "run-all-tests-full-worker-run",
+  "done_when": "A report file has the complete step-by-step run_all_tests.py output; this card's result names the exit code and every FAILED/ERROR step (or 'all passed').",
+  "from": "DESKTOP-F7IU69N",
+  "id": "20261028-110227-run-all-tests-full-worker-run",
+  "need": "python scripts/dev/run_all_tests.py > run_all_tests_full_2026-10-28.txt 2>&1; echo EXIT_CODE=$? (full brief: python scripts/dev/tasks.py brief run-all-tests-full-worker-run)",
+  "posted": "2026-10-28T11:02:27Z",
+  "status": "pending",
+  "target": "DSA",
+  "title": "Full run_all_tests.py worker run on trunk, record the exit code and failures (fix report CT-3)"
+}
