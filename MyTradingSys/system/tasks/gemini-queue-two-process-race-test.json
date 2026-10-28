@@ -4,16 +4,13 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-28T16:09:06Z",
-    "misses": 20,
+    "folded": "2026-10-28T16:18:05Z",
+    "misses": 33,
     "reads": [
-      "scripts/dev/test_trunk_lag.py",
-      "scripts/dev/run_extra_tests.py",
-      "scripts/dev/trunk_lag.py",
-      "MyTradingSys/research/fix_verification_2026-10-28/run_all_tests_full_2026-10-28.txt",
-      "scripts/dev/run_all_tests.py"
+      "scripts/dev/test_gemini_queue.py",
+      "scripts/dev/gemini_queue.py"
     ],
-    "session": "agent-a74924c5275c8b9e0"
+    "session": "agent-a81a3b7c8ab0ac30b"
   },
   "created": "2026-10-28T06:27:20Z",
   "depends_on": [
