@@ -4,7 +4,7 @@
   "commands": [],
   "context": {
     "calls_to_edit": 7,
-    "folded": "2026-10-28T16:43:55Z",
+    "folded": "2026-10-28T16:53:59Z",
     "misses": 8,
     "reads": [
       "MyTradingSys/research/malkan_div_flags_2026-10-28/BTCUSDT_divergences.csv",
