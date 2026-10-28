@@ -207,6 +207,11 @@ MyTradingSys/research/imbalance_qriptal_2026-10-16/events_*.csv
 # CBP/MTS shared transcript store: public repo, never commit new transcripts (147 older ones are already tracked)
 raw_transcripts_canonical/
 
+# O2 recount klines cache (public Binance USD-M 4h klines for recount_o2.py). The default cache lives
+# outside the repo at F:/MTS/data/fable_run6_klines_o2 (so it is never committed); if O2_KLINE_CACHE is
+# pointed at a repo-local dir, ignore it there.
+MyTradingSys/research/fable_run6_powered_prereg/klines_o2/
+
 # Krown confluence S1: regenerated outcome-bearing event tables (never committed)
 MyTradingSys/research/krown_audit_2026-10-22/run/sealed/
 
