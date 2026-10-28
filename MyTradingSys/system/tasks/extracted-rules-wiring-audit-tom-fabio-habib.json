@@ -1,7 +1,24 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T12:42:04Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": 50,
+    "folded": "2026-10-28T12:42:08Z",
+    "misses": 75,
+    "reads": [
+      "src/main/java/datafeed/SetupCandidatesBuilder.java",
+      "MyTradingSys/research/TOM_VERBATIM_INDEX.md",
+      "MyTradingSys/conditions/gap_rules.md",
+      "extracts/processed/tom/CONSOLIDATED_RULES.md",
+      "extracts/processed/fabio_valentini/0jM5Y31YJak/extract_0jM5Y31YJak.md",
+      "MyTradingSys/conditions/risk_protocol.md",
+      "MyTradingSys/research/tom_fabio_guidance_2026-10-12/SOURCED_RULES.md",
+      "MyTradingSys/tests/test_target_hvn.py"
+    ],
+    "session": "agent-af2fe53f32c92839a"
+  },
   "created": "2026-10-27T20:51:50Z",
   "depends_on": [
     "extraction-ledger-all-sources"
@@ -15,6 +32,12 @@
   "id": "extracted-rules-wiring-audit-tom-fabio-habib",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/wiring_audit_2026-10/WIRING_TOM_FABIO_HABIB.csv: 446 rows (Tom 270, ",
+      "ref": "d2b8cf7a1",
+      "utc": "2026-10-28T12:42:04Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -42,7 +65,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T08:23:50Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/wiring_audit_2026-10/WIRING_TOM_FABIO_HABIB.csv: 446 rows (Tom 270, Fabio 164, Habib 12): wired 203 (94 full), unwired-worth-wiring 76, not-worth-wiring 167; 17 NO_QUOTE; verify_extract_quotes exit 0 on 442 fragments",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/wiring_audit_2026-10/WIRING_TOM_FABIO_HABIB.csv",
     "MyTradingSys/research/wiring_audit_2026-10/WIRING_TOM_FABIO_HABIB.md",
@@ -68,12 +96,13 @@
   "sources": [
     "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "List the sourced rules per trader from the verbatim index, fabio extracts and the Habib folder.",
     "Per rule: find code (Tom has no layer folder: read backtest/dax_engine.py, backtest/bt and the tom_* research scripts, read-only), params, tests; check the quote with verify_extract_quotes.py.",
     "Write CSV + MD (counts by verdict, unwired-worth-wiring ranked); rules with no quote go to NO_QUOTE."
   ],
+  "taken": "2026-10-28T12:42:04Z",
   "tests": "verify_extract_quotes.py exit 0 on every quote used; MD footer row count equals CSV rows.",
   "title": "Wiring audit (Tom, Fabio, Habib): every SOURCED rule vs layer code, params and tests: wired / unwired-worth-wiring / not-worth-wiring, with quote and file:line",
   "weight": "IMPORTANT",
