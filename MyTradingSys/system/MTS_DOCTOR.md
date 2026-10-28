@@ -41,7 +41,7 @@ DUPLICATE and MEMORY text itself; every other finding is a card for its owner (R
 
 ## Verify every change with another model
 After a change from the table, give a second worker on a different model (Haiku, plus Sonnet with a fresh context; Opus only if the
-operator names it, `model_guard` refuses it otherwise) a self-contained brief: the report text, the diff, three numbers to recompute
+operator names it) a self-contained brief: the report text, the diff, three numbers to recompute
 from raw commit history or the GitHub API, and "list errors in the reasoning and what the change breaks". The operator's wording
 2026-10-17: agents, not sessions, for these narrow checks. Apply confirmed findings; say in the commit which were rejected and why.
 

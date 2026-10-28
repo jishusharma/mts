@@ -15,10 +15,10 @@ Every other file points here. Numbers come from a 5-day transcript count (`worke
 ## The rule
 1. **Worker type is set before the work starts**, on the task card: `est_turns` (whole number) and `worker` (`agent` | `session`);
    `tasks.py check` enforces it for SONNET/HAIKU/OPUS-lane cards (TASK_REFINEMENT.md). Run lanes (DSA, JIS-NB) are not Claude-worker cards.
-2. **Session** (`start_session`, visible in the sidebar) is the default: anything over 30 expected turns, anything the
+2. **Long worker** (a background Agent, one writer per file set; `start_session` only for interactive roles such as Eagle_Eyes, roles/supervisor.md:35): anything over 30 expected turns, anything the
    operator may want to open or steer, any build wave or watch.
 3. **One-use Agent** (background, Sonnet, used once, never SendMessage'd) for size S or M with `est_turns` <= 30 (same cost per ship as a session; overrun p90 55, so
-   the brief says "stop at 40 turns and report", size S 20): a read, a fix, a card. On event turns where `start_session` is refused EVERY card runs as an Agent (chained cards allowed).
+   the brief says "stop at 40 turns and report", size S 20): a read, a fix, a card. Every worker card runs as an Agent (chained cards allowed).
    Name every Agent in one line to the operator (invisible in the sidebar).
 3a. **Haiku for scoped work (operator 2026-10-17: Haiku is underused).** A task is *scoped* when the brief can name the files, the
    exact change or command, and a check that says done (a test, a count, a diff to compare): mechanical edits, lookups, recomputing
@@ -35,7 +35,7 @@ Every other file points here. Numbers come from a 5-day transcript count (`worke
    Opus can lose data on a bug or misreading, so only critical work): (a) the operator names it in their latest message, it is done;
    (b) a session starts it only for a task card in lane OPUS with `approved_by` and `crucial` (one line: live money, irreversible data,
    or a no-undo design call), cited by id in the brief. Nothing else, not "recommended" and not "better quality". A cheap model first: Opus is for what Sonnet already got wrong or cannot undo.
-7. **No clicks.** `start_session` with `initiation: "user_asked"` on operator turns (max 4 workers at once); on event turns (a message or event started the turn) the app shows an Allow card, so `model_guard.py` denies it (2026-10-23):
+7. **No clicks.** Workers are background Agents (max 4 at once); `start_session` only for interactive roles and a genuine operator-present hand-off, because the app shows an Allow card (roles/supervisor.md:35, 2026-10-23):
    use rule 3's Agent. Never an `offer` / `own_initiative` card, for any model: nobody is at the screen to click (operator 2026-10-18).
 8. **Cleanup.** A finished session marks itself completed; the coordinator marks each worker once its ship is verified.
 9. **Blocked: solve it, then report.** A git or permission refusal is a task, not an ending. (1) List 2-3 non-destructive fixes. (2) Try the safest. (3) Verify the repo state (branch, clean tree, both histories present). (4) Report. "Report and stop" means report AND continue unless the order says HALT; never end a turn on a question or "complain then idle" (CLAUDE.md: never wait on a question).
