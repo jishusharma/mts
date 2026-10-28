@@ -2,6 +2,22 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T14:46:47Z",
+    "misses": 18,
+    "reads": [
+      "scripts/dev/tasks.py",
+      "scripts/dev/run_extra_tests.py",
+      "scripts/dev/successor_wake.py",
+      "scripts/dev/run_all_tests.py",
+      "MyTradingSys/system/roles/session_planner.md",
+      "MyTradingSys/system/role_details/session_planner_details.md",
+      "MyTradingSys/system/ANNOUNCEMENTS.md",
+      "scripts/dev/test_successor_wake.py"
+    ],
+    "session": "agent-a842643dca576ebcb"
+  },
   "created": "2026-10-28T14:13:49Z",
   "depends_on": [],
   "done_when": "A test simulates a run of MTS-SuccWake-B registering the next wake and shows the new task still exists and fires after the old run ends (new name per generation, or deferred unregister); fails on old code; shipped; cherry empty.",
