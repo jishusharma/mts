@@ -14,6 +14,15 @@
   "goal": "A test over backtest/layers/{rsi,krown,kurisko}/params/*.json that fails when a param lacks label SOURCED|OURS, when SOURCED has no quote or a source absent from the ledger, so a layer cannot silently ship a rule the trader never said. Today known gaps go to an ALLOWLIST with owner and expiry.",
   "id": "sourced-rule-guard",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge origin/fast-track (wiring_registry: keep trunk, reapply div_flags_chart why)",
+      "ref": "4b9ed0dbd18c",
+      "utc": "2026-10-27T22:45:07Z"
+    }
+  ],
   "layers": [
     "rsi",
     "krown"
@@ -24,6 +33,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-28T08:23:51Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -39,12 +49,13 @@
     "layer logic",
     "silently fixing unlabelled params (they go to the allowlist)"
   ],
+  "scope_sha": "4b9ed0dbd18c",
   "size": "M",
   "sources": [
     "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable",
     "CLAUDE.md Numbers rule 2026-10-13"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Write check_sourced_params.py: load every params JSON (shapes seen: krown {value,label,source}; rsi flat with *_quote keys); report missing label, SOURCED without quote, source not in EXTRACTION_LEDGER.csv.",
     "Test fixtures: good, no label, SOURCED without quote, unknown source; plus a real-tree run against the allowlist of known gaps (count asserted).",
