@@ -391,7 +391,12 @@
     "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.py": {
       "disp": "REPRO",
       "ref": "lc-levels-hold",
-      "why": "Reproduces research/levels_confluence_2026-10-14/levels_hold.md (12 level families vs distance-matched random lines, DEV 2024-12..2025-03, seed 20261014); run by hand with the command in that file, no live import. Tested by test_levels.py."
+      "why": "Reproduces research/levels_confluence_2026-10-14/levels_hold.md (12 level families vs distance-matched random lines, standard DEV 2022-04-01..2024-06-30, fair touched-only control, KEEP list none: 0 of 12; legacy control kept as a column); run by hand with the command in that file, no live import. Tested by test_levels.py and test_levels_hold_fair.py."
+    },
+    "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold_fair_run.py": {
+      "disp": "REPRO",
+      "ref": "lc-levels-hold",
+      "why": "Fair touched-only control run for levels_hold.md; run by hand, writes lc1_fair_dev.csv, no live import. Tested by test_levels_hold_fair.py."
     },
     "MyTradingSys/research/levels_sizing_2026-10-14/probe.py": {
       "disp": "REPRO",

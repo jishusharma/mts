@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T15:43:28Z",
+    "misses": 4,
+    "reads": [
+      "scripts/dev/lookahead_lint.py"
+    ],
+    "session": "agent-a2ac4be900156f528"
+  },
+  "created": "2026-10-28T15:12:22Z",
+  "depends_on": [],
+  "done_when": "FILL_GAP_FREQUENCY.md states n stop exits, n gap-through, share, mean and p95 R understatement with file:line of each engine fill rule, DEV only; test passes; shipped, cherry empty",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Size how often a stop exit meets a gap-through bar (bar open beyond the stop) on real DEV bars, and the R understatement where sim.py --stops ideal and fabio v3 fill-bar fill at the stop price; measurement only, no engine edit (FILL_CANARY verdict: 2 engines optimistic).",
+  "id": "fill-rule-gap-frequency",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DRAFT 2026-10-28 Session_Planner (OURS): follow-up the FILL_CANARY card (fix-fill-rules-shared, done) asked for; no operator decision conflicts (q-gap-* are unrelated). IMPORTANT (research with a verdict): needs a real REVIEWED stamp before ready. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/FILL_CANARY.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/fill_gap_frequency.py",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/FILL_GAP_FREQUENCY.md",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/test_fill_gap_frequency.py"
+  ],
+  "scope_out": [
+    "any engine edit; shared fill module (follow-up only if the number matters); VALIDATION and HOLDOUT bars (DEV 2022-01-01..2024-06-30 only)"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/FILL_CANARY.md",
+    "MyTradingSys/backtest/layers/fabio/v3/manage.py:141-143"
+  ],
+  "state": "raw",
+  "steps": [
+    "Load DEV BTCUSDT 1m bars with the loader the fabio v3 golden test uses (tests/test_fabio_golden.py); run the v3 engine on DEV to get stop exits",
+    "For each stop exit: flag gap-through (open beyond stop on a bar after the fill bar, or on the fill bar for the F scenario); report count, share of stop exits, mean and p95 R understatement",
+    "Same count for sim.py ideal on its snapshot paths if DEV snapshots exist, else say NOT_IN_DATA"
+  ],
+  "tests": "test_fill_gap_frequency.py: planted 3-bar series with one gap-through stop gives share 1/1 and understatement 0.99 R (FILL_CANARY plant); fails with the module absent",
+  "title": "Size how often a stop is gapped on real bars where sim.py ideal mode and fabio v3 fill-bar stop fill at the stop price (FILL_CANARY: 2 engines optimistic); no engine edit",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

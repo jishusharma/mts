@@ -1,0 +1,39 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-28T15:14:53Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "pitchfork-review-fixes-2026-10-28",
+  "lane": "SONNET",
+  "layers": [
+    "pitchfork"
+  ],
+  "live_path": true,
+  "mutation_check": "",
+  "note": "Split (size L, mixed desk/live): pitchfork-pf-can-arm-order-check, pitchfork-fixes-desk-python, pitchfork-fixes-live-java. Session_Planner 2026-10-28",
+  "pinned": false,
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/pitchfork_2026-10-19/OPUS_E2E_REVIEW_2026-10-28.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "dropped",
+  "steps": [],
+  "tests": "",
+  "title": "Pitchfork review fixes: Hagopian target W=|UML-ML| (F1), live PF-REV stale-bounce gate parity (F3), desk/live profile parity (F4), bin-width lookahead + VA leak test (F5), inverted-fork tine (F6), OURS labels (F9), ZigZag dedup (F10); first check whether PF-* candidates can arm orders",
+  "weight": "",
+  "worker": ""
+}

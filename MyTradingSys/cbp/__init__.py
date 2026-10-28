@@ -103,11 +103,28 @@ def is_tradable(r):
     )
 
 
+_SYM_SUFFIXES = ("PERPETUAL", "PERP", "USDT", "USDC", "USD")
+
+
+def _norm_symbol(s):
+    """Fold case, drop - _ space, strip trailing PERPETUAL|PERP|USDT|USDC|USD (never to empty): BTCUSDT, btc-perpetual -> BTC."""
+    s = "".join(c for c in str(s or "").upper() if c not in "-_ ")
+    done = False
+    while not done:
+        done = True
+        for suf in _SYM_SUFFIXES:
+            if s.endswith(suf) and len(s) > len(suf):
+                s = s[:-len(suf)]
+                done = False
+                break
+    return s
+
+
 def query(analyst=None, symbol=None, since_days=WINDOW_DAYS, now=None, store=None):
     """Rows published within the last since_days, newest first; optional analyst / symbol filter."""
     now = now or datetime.now(timezone.utc)
     cutoff = (now - timedelta(days=since_days)).date().isoformat()
-    sym = symbol.upper() if symbol else None
+    sym = _norm_symbol(symbol) if symbol else None
     out = []
     for r in load(store)["rows"]:
         if validate_row(r):
@@ -118,7 +135,7 @@ def query(analyst=None, symbol=None, since_days=WINDOW_DAYS, now=None, store=Non
             continue
         if analyst and r.get("analyst", "").lower() != analyst.lower():
             continue
-        if sym and sym not in [s.upper() for s in r.get("symbols") or []]:
+        if sym and sym not in [_norm_symbol(s) for s in r.get("symbols") or []]:
             continue
         out.append(r)
     return sorted(out, key=lambda r: r["published"], reverse=True)

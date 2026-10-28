@@ -103,6 +103,8 @@ MyTradingSys/runtime/live_alert_state.json
 runtime_data/ums.log
 MyTradingSys/runtime/*.lock
 .claude/settings.local.json
+# Agent isolation worktrees nest inside the parent's tree: their files are that tree's, never the parent's work (B3)
+.claude/worktrees/
 # --- Runtime state: never committed ---
 MyTradingSys/execution/halt_history/*
 !MyTradingSys/execution/halt_history/.gitkeep
@@ -223,3 +225,8 @@ runtime_data/_scratch_*
 scratch_*.py
 scratch_*.ps1
 MyTradingSys/research/pipeliner/STATION_WATCH_*.log
+
+MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/.gapfreq_cache/
+
+# liquidation forceOrder event ledger (runtime data, repo is public)
+runtime_data/liq_events/

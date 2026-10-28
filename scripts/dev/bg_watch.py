@@ -1,6 +1,9 @@
 """bg_watch.py - background tasks that run past their wall-time cap, and aged raw cards (bg-process-audit 2026-10-28).
 
   python scripts/dev/bg_watch.py report        STALLED-BG / RAW-AGED lines (nothing printed = nothing over its cap)
+  python scripts/dev/bg_watch.py until --file F --pattern RE [--timeout S] [--interval S]
+                                               a poll loop WITH a deadline: exit 0 when RE appears in F, 124 on timeout
+                                               (use it instead of `until grep ...; do sleep 5; done`, which has none)
 
 Why: in 7 days 105 background tasks ran over 30 min (142 h); the worst were poll loops with no deadline (`until grep ...;
 do sleep 5; done`: 18 h, 6.6 h, 20 h) and NUC ssh probes with no output (2 h). No session saw them: a background task's
@@ -23,7 +26,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-CAPS = {"probe": 2, "nuc": 5, "poll-loop": 15, "tests": 20, "ship": 20, "gemini": 45, "worker": 45, "command": 10}
+CAPS = {"probe": 2, "nuc": 5, "poll-loop": 10, "tests": 20, "ship": 20, "gemini": 45, "worker": 45, "command": 10}
 ID_RES = (re.compile(r"background with ID: ([a-z0-9]+)"), re.compile(r"moved to the background \(ID: ([a-z0-9]+)\)"),
           re.compile(r"agentId: ([a-z0-9]+)"))
 OUT_RE = re.compile(r"Output is being written to: (\S+?\.output)")
@@ -184,12 +187,36 @@ def raw_aged(repo: Path, now: float | None = None, hours: int = 12) -> list[tupl
     return sorted(out, key=lambda x: -x[1])
 
 
+DEADLINE_RE = re.compile(r"bg_watch\.py until|\btimeout\b|\$SECONDS|\bdate \+%s|\bfor\s+\w+\s+in\b|\bseq\b|-lt\b|-ge\b")
+
+
+def unbounded_loop(what: str) -> bool:
+    """True for an until/while-sleep loop with no deadline of its own: it ends only when its condition comes true."""
+    return bool(re.search(r"\b(until|while)\b.*\bsleep\b", what or "")) and not DEADLINE_RE.search(what or "")
+
+
+def wait_until(path, pattern, timeout_s=600.0, interval_s=5.0, sleep=time.sleep, now_fn=time.monotonic) -> int:
+    """Poll `path` for a regex line match: 0 on match, 124 (like timeout(1)) once timeout_s has passed. A missing file is not a match."""
+    rx = re.compile(pattern)
+    t0 = now_fn()
+    while True:
+        try:
+            if rx.search(Path(path).read_text(encoding="utf-8", errors="replace")):
+                return 0
+        except OSError:
+            pass
+        if now_fn() - t0 >= timeout_s:
+            return 124
+        sleep(interval_s)
+
+
 def report_lines(repo: Path, root: Path | None = None, now: float | None = None) -> list[str]:
     lines = []
     for r in stalled(root, now):
         quiet = f", no output {r['silent']:.0f}m" if r["silent"] is not None and r["silent"] >= 5 else ""
         lines.append(f"STALLED-BG {r['kind']} {r['id']} {r['age']:.0f}m > cap {r['cap']}m{quiet} (session {r['session']}): "
-                     f"{r['what'][:70]} -> owner: TaskStop {r['id']}, say why in one line")
+                     f"{r['what'][:70]} -> owner: TaskStop {r['id']}, say why in one line"
+                     + (" (no deadline in the loop: next time `bg_watch.py until --file F --pattern RE --timeout S`)" if r["kind"] == "poll-loop" and unbounded_loop(r["what"]) else ""))
     raw = raw_aged(repo, now)
     if raw:
         top = ", ".join(f"{i} {h:.0f}h" for i, h in raw[:3])
@@ -199,6 +226,15 @@ def report_lines(repo: Path, root: Path | None = None, now: float | None = None)
 
 def main(argv=None) -> int:
     argv = sys.argv[1:] if argv is None else argv
+    if argv[:1] == ["until"]:
+        opts = {k: v for k, v in zip(argv[1::2], argv[2::2])}
+        if not {"--file", "--pattern"} <= set(opts) or set(opts) - {"--file", "--pattern", "--timeout", "--interval"}:
+            print(__doc__)
+            return 2
+        rc = wait_until(opts["--file"], opts["--pattern"], float(opts.get("--timeout", 600)), float(opts.get("--interval", 5)))
+        if rc:
+            print(f"bg_watch until: TIMEOUT after {opts.get('--timeout', 600)} s, no match for {opts['--pattern']!r} in {opts['--file']}")
+        return rc
     if argv[:1] != ["report"]:
         print(__doc__)
         return 2

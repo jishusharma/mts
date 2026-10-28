@@ -5,7 +5,7 @@
   "commands": [],
   "context": {
     "calls_to_edit": 50,
-    "folded": "2026-10-28T12:42:08Z",
+    "folded": "2026-10-28T12:47:15Z",
     "misses": 75,
     "reads": [
       "src/main/java/datafeed/SetupCandidatesBuilder.java",

@@ -1,7 +1,19 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T14:48:07Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T15:33:25Z",
+    "misses": 10,
+    "reads": [
+      "MyTradingSys/research/sim_desk/export_results.py",
+      "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T09_live_parity.md",
+      "MyTradingSys/research/sim_desk/results/t09_live_parity.json"
+    ],
+    "session": "agent-a371b947962b9a4fe"
+  },
   "created": "2026-10-27T21:12:47Z",
   "depends_on": [],
   "done_when": "STOP_SOURCES.md accurately says atr_1.5 is least negative for setup1 while atr_2.0 is least negative for setups2/3; extended-cell producing revision is cited or explicitly NOT_IN_DATA; raw audit remains blocked.",
@@ -13,6 +25,12 @@
   "id": "cryptocred-stop-sweep-conclusion-provenance",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "STOP_SOURCES.md sha256 5ea236602ccf4e76623432d4616373d6fee495d0d412b6692e03418faedacec0",
+      "ref": "2add4f3cd",
+      "utc": "2026-10-28T14:48:07Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +57,12 @@
   "refs": [
     "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/cryptocred.md"
   ],
-  "result": "",
+  "result": "STOP_SOURCES.md sha256 5ea236602ccf4e76623432d4616373d6fee495d0d412b6692e03418faedacec0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md"
   ],
@@ -51,11 +74,12 @@
   "sources": [
     "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/cryptocred.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Confirm aggregate best-rule comparisons in cryptocred.md; distinguish recorded minimum from recommended stop.",
     "Correct the universal statement and record that current resumable driver cannot freshly generate atr_1.5; preserve missing provenance as unknown."
   ],
+  "taken": "2026-10-28T14:48:07Z",
   "tests": "Run embedded aggregate recount script from cryptocred.md and standard documentation gate; no new test needed for prose correction.",
   "title": "Correct CryptoCred widest-stop claim and recover extended-cell provenance",
   "weight": "ROUTINE",

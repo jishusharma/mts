@@ -492,6 +492,14 @@ def test_plan_lines_only_the_owner_runs_shared_lanes():
     assert "SPAWN 1: s1" not in red and "CI RED" in red
 
 
+def test_plan_spawn_line_names_agents_not_sessions():
+    p = S.pace_plan(T0, _rd(10, 20), 95)
+    live = {"A": {"host": "JIS-NUC", "mode": "NORMAL", "run": 0, "free": 2, "at": "x", "dsa": "up"}}
+    ctx = {"picks": [{"id": "s1", "role": "Builder", "worker": "session"}], "ci": {"red": False}}
+    spawn = [l for l in S.plan_lines("A", "JIS-NUC", p, live, ctx, gate_key=False) if l.startswith("SPAWN")][0]
+    assert "agent" in spawn and "session" not in spawn and "sessions, 2 chained" not in spawn
+
+
 def test_plan_lines_run_session_planner_when_raw_cards_are_old():
     p = S.pace_plan(T0, _rd(10, 20), 95)
     live = {"A": {"host": "JIS-NUC", "mode": "NORMAL", "run": 0, "free": 3, "at": "x", "dsa": "up"}}
@@ -962,9 +970,9 @@ def test_verify_cli_writes_stale(tmp_path, capsys, monkeypatch):
 
 def test_transit_at_150k_context_or_3h():
     start = T0 - timedelta(hours=3, minutes=1)
-    assert S.transit_reason(150_000, None, T0).startswith("context 150K") and S.transit_reason(149_999, None, T0) == ""
-    assert "3.0 h" in S.transit_reason(None, start, T0) and S.transit_reason(10, T0 - timedelta(hours=2), T0) == ""
     pl = S.pace_plan(T0, _rd(10, 20), 95)
+    assert S.transit_reason(pl, T0, 150_000).startswith("context 150K") and S.transit_reason(pl, T0, 149_999) == ""
+    assert "3.0 h" in S.transit_reason(pl, T0, None, start) and S.transit_reason(pl, T0, 10, T0 - timedelta(hours=2)) == ""
     hot = "\n".join(S.plan_lines("C", "JIS-NB", pl, {}, {"ci": {}, "picks": [], "transit_now": "context 160K >= 150K"}, False))
     cold = "\n".join(S.plan_lines("C", "JIS-NB", pl, {}, {"ci": {}, "picks": []}, False))
     assert "TRANSIT NOW (context 160K" in hot and "TRANSIT NOW" not in cold
@@ -1074,3 +1082,73 @@ def test_peer_none_live_line_names_the_heartbeat_constant():
     ctx = {"codex_ready": 3, "spare": "card-x", "ci": {}, "picks": []}
     out = chr(10).join(S.plan_lines("B", "JIS-NB", p, live, dict(ctx, nuc_ok=False), gate_key=False))
     assert f"no heartbeat < {S.HEARTBEAT_MIN} min" in out
+
+
+# ---------- bug-supervisor-handoff-duplicates (ISSUES_REGISTER 2026-10-28 B1, B2) ----------
+def _readings(home, login, rows):
+    home.mkdir(parents=True, exist_ok=True)
+    (home / f"{login}.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
+
+
+def test_handover_guard_refuses_while_another_supervisor_of_the_login_planned(tmp_path, monkeypatch):
+    """B1: two Supervisor B sessions each wrote the hand-over and woke a successor. A second live planner of the same login
+    within HANDOVER_GUARD_MIN refuses the hand-over and names it; --force (force=True) overrides; own or old readings do not block."""
+    import sync
+    monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
+    home = tmp_path / "home"
+    other = dict(_rd(40, 20, at="2026-10-19T11:55:00Z"), sid="sess-other-1234", tree="C:/x/mts-supervisor-b", host="JIS-NUC")
+    _readings(home, "B", [other])
+    with pytest.raises(ValueError) as e:
+        S.handover(tmp_path, "b", host="JIS-NUC", home=home, now=T0, sid="sess-me")
+    assert "sess-oth" in str(e.value) and "mts-supervisor-b" in str(e.value) and "--force" in str(e.value)
+    assert not S.handover_path(tmp_path, "B").exists()                                     # nothing written
+    assert S.handover(tmp_path, "b", host="JIS-NUC", home=home, now=T0, sid="sess-me", force=True).is_file()
+    _readings(home, "B", [dict(other, sid="sess-me")])                                    # my own reading
+    assert S.handover(tmp_path, "b", host="JIS-NUC", home=home, now=T0, sid="sess-me").is_file()
+    _readings(home, "B", [dict(other, at="2026-10-19T11:45:00Z")])                        # 15 min ago: gone
+    assert S.handover(tmp_path, "b", host="JIS-NUC", home=home, now=T0, sid="sess-me").is_file()
+
+
+def test_handover_cli_refuses_and_force_overrides(tmp_path, monkeypatch, capsys):
+    import sync
+    import mts_signal
+    monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
+    monkeypatch.setattr(mts_signal, "resolve_login", lambda x: ("B", ""))
+    monkeypatch.setenv("MTS_RELAY_HOME", str(tmp_path / "relay"))
+    monkeypatch.setenv("CLAUDE_CODE_SESSION_ID", "sess-me")
+    now = S._now_utc() - timedelta(minutes=2)
+    _readings(S.loop_home(), "B", [{"at": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "sid": "sess-other", "tree": "t2"}])
+    (tmp_path / "MyTradingSys").mkdir()
+    monkeypatch.chdir(tmp_path)
+    assert S.main(["handover", "--login", "B", "--no-send", "--no-wake"]) == 2
+    assert "REFUSED" in capsys.readouterr().out
+    assert S.main(["handover", "--login", "B", "--no-send", "--no-wake", "--force"]) == 0
+
+
+def test_plan_records_its_session_in_the_reading(tmp_path, monkeypatch):
+    monkeypatch.setenv("CLAUDE_CODE_SESSION_ID", "sess-plan-42")
+    _plan_run(tmp_path, 0, 0, send=False)
+    rows = [json.loads(x) for x in (tmp_path / "C.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+    assert rows[-1]["sid"] == "sess-plan-42"
+
+
+def test_one_transit_rule_code_and_docs_agree():
+    """B2: plan printed TRANSIT NOW on a 3 h wave while the role file said `TRANSIT at` or 5 h >= 80%. One rule: TRANSIT_RULE,
+    quoted verbatim in roles/supervisor.md and SUPER_SESSION.md, and transit_reason fires on each of its triggers."""
+    repo = Path(__file__).resolve().parents[2]
+    for rel in ("MyTradingSys/system/roles/supervisor.md", "MyTradingSys/system/SUPER_SESSION.md"):
+        assert S.TRANSIT_RULE in (repo / rel).read_text(encoding="utf-8"), rel
+    pl = S.pace_plan(T0, _rd(10, 20), 95)                                                  # reset 14:00Z -> TRANSIT at 13:40Z
+    assert S.transit_reason(pl, T0) == ""
+    assert "TRANSIT at" in S.transit_reason(pl, datetime(2026, 10, 19, 13, 41, tzinfo=timezone.utc))
+    assert "5 h 80%" in S.transit_reason(S.pace_plan(T0, _rd(80, 20), 95), T0)
+    assert "wave 3.0 h" in S.transit_reason(pl, T0, wave_start=T0 - timedelta(hours=3, minutes=1))
+    assert S.transit_reason(pl, T0, context_tokens=150_000).startswith("context 150K")
+
+
+def test_successor_wave_starts_at_its_own_first_reading():
+    """B2: readings are shared per login; the successor's wave must not inherit its predecessor's start (instant TRANSIT NOW)."""
+    hist = [{"at": "2026-10-19T08:30:00Z", "sid": "old"}, {"at": "2026-10-19T10:00:00Z", "sid": "old"},
+            {"at": "2026-10-19T11:30:00Z", "sid": "new"}, {"at": "2026-10-19T12:00:00Z", "sid": "new"}]
+    assert S.wave_start_from(hist, T0) == datetime(2026, 10, 19, 8, 30, tzinfo=timezone.utc)
+    assert S.wave_start_from(hist, T0, sid="new") == datetime(2026, 10, 19, 11, 30, tzinfo=timezone.utc)

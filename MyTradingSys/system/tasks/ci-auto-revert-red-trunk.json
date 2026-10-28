@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-28T14:44:57Z",
+  "depends_on": [],
+  "done_when": "python scripts/dev/ci_revert.py prints the revert plan for a red fixture and refuses a merge commit; --apply creates one revert commit and no force; tests fail first and pass; CI-REVERT doctor line points at the tool; shipped, cherry empty",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "New scripts/dev/ci_revert.py: when the CI-REVERT check shows fast-track red, find the first red run's commit, and (with --apply) make a git revert of it in the caller's own worktree and ship it via sync.py ship; dry run by default. Never force, rebase or reset.",
+  "id": "ci-auto-revert-red-trunk",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "red-trunk-revert-within-10-min-rule-miss"
+  ],
+  "note": "DRAFT 2026-10-28 Session_Planner (OURS): CRITICAL (writes trunk history, ship path): needs plan review + CRITICAL protocol + REVIEWED stamp before dispatch; not dispatchable now. Consistent with the recorded rule revert-first (red-trunk-revert-10-min, done) and CLAUDE.md hard rules (no rebase/reset/force-push; revert allowed). Twin check: red-trunk-revert-within-10-min-rule-miss is doc wording only. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/ci_revert.py",
+    "scripts/dev/test_ci_revert.py",
+    "scripts/dev/mts_doctor.py",
+    "MyTradingSys/system/MTS_DOCTOR.md"
+  ],
+  "scope_out": [
+    "scheduling or hooks that run it unattended (SCHEDULING_POLICY.md); the doc-wording card red-trunk-revert-within-10-min-rule-miss; CI workflow; live tree"
+  ],
+  "size": "M",
+  "sources": [
+    "scripts/dev/mts_doctor.py:409-434",
+    "CLAUDE.md Boot 2 (revert within 10 min)"
+  ],
+  "state": "raw",
+  "steps": [
+    "Reuse mts_doctor.ci_fetch/ci_revert to name the first red head_sha with no green after it",
+    "Refuse (print manual git revert steps) when the breaking commit is a merge, is not on origin/fast-track, or later commits touch the same files",
+    "--apply: git revert --no-edit in own worktree, Result: line in the body, sync.py ship; doctor CI-REVERT detail names the command to run"
+  ],
+  "tests": "test_ci_revert.py: fake runs [green,red@A,red@B] -> plan names A; merge commit refused; dry run makes no commit; each fails on the pre-change code (module absent)",
+  "title": "CI auto-revert: when CI-REVERT warns (red fast-track), a session or hook reverts the breaking commit within the 10-min window instead of the WARN recurring; touches git history so it is a card, not a heal (HEAL_MAP.md CI-REVERT row)",
+  "weight": "CRITICAL",
+  "worker": "session"
+}

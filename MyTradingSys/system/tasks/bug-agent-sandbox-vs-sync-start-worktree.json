@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-28T15:11:04Z",
+  "depends_on": [],
+  "done_when": "start --worker inside an agent-* isolation worktree prints no new WORKTREE and git worktree list gains 0 entries; B3 lane-tree test still passes; fail-first test; shipped, cherry empty",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "A worker Agent started with isolation:worktree already sits in <repo>/.claude/worktrees/agent-*; sync.py start --worker must work there, not add a second worktree that the worker must discard (B3 fix 2c5731b8a forces a fresh tree for --worker even then).",
+  "id": "bug-agent-sandbox-vs-sync-start-worktree",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DRAFT 2026-10-28 Session_Planner (OURS): follow-up to B3 (shipped 2c5731b8a), different case: the Agent tool made the tree. sync.py is a ship-path file so weight IMPORTANT: needs a real REVIEWED stamp (Lab_Guy) before ready. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/sync.py",
+    "scripts/dev/test_sync.py"
+  ],
+  "scope_out": [
+    "lane-tree switching; claim/ship gate; live tree; supervisor.py"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/nuc_restart_2026-10-28/ISSUES_REGISTER.md:12",
+    "scripts/dev/sync.py:529-548"
+  ],
+  "state": "raw",
+  "steps": [
+    "Reproduce: in a tmp repo, run start <slug> --worker with cwd = <repo>/.claude/worktrees/agent-x; confirm a second WORKTREE: line is made",
+    "In start(): when --worker and the tree is a clean .claude/worktrees/agent-* checkout (own branch, not the Supervisor tree), skip new_worktree and work there",
+    "Keep B3: a worker in a lane tree or the Supervisor tree still gets a fresh worktree"
+  ],
+  "tests": "test_sync.py::test_start_worker_inside_agent_isolation_worktree_makes_no_second_tree fails on old code; existing test_start_worker_in_a_lane_tree_makes_a_worktree_and_leaves_the_lane stays green",
+  "title": "BUG: Agent-tool's own git worktree sandbox conflicts with sync.py start --worker's worktree creation, leaving stray worktrees a worker must discard",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

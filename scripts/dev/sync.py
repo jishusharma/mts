@@ -3,10 +3,10 @@
   python scripts/dev/sync.py start [slug] [--quiet]  # up to date with origin/fast-track; in a shared/dirty tree makes your own worktree;
                                            # in a lane tree (mts-app, mts-relay, mts-dsa) `start <slug>` switches to branch <host>/<slug>
   python scripts/dev/sync.py health  # stale/overlapping claims, shared or orphan worktrees, branches never shipped
-  python scripts/dev/sync.py ship [--full] [--fix-ci] [--again] [--no-ci-wait] [--release <slug>] [--after <slug>]  # a second ship within 10 min only prints a note (--again still accepted); docs-only ships run no gate; merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
+  python scripts/dev/sync.py ship [--full] [--fix-ci] [--again] [--wait-ci] [--result <text> [-m <subject>]] [--release <slug>] [--after <slug>]  # a second ship within 10 min only prints a note (--again still accepted); docs-only ships run no gate; merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
                                            # ordinary code ships run the FAST gate (GATE_SPEED.md: ~60 s, tests chosen by import graph); a red CI blocks code ships until
                                            # fixed: --fix-ci ships the fix through it with the full gate; --after waits for predecessor order ticket
-                                           # after the push it waits (up to 10 min) for the CI run of its own sha and prints CI RED at once (exit 3); --no-ci-wait / SYNC_NO_CI_WAIT=1 skips (unattended callers)
+                                           # after the push it returns at once; `sync.py ci [sha]` (or `ship --wait-ci` / SYNC_WAIT_CI=1) waits up to 10 min for the CI run of the sha and prints CI RED at once (exit 3)
   python scripts/dev/sync.py news [hours=24]  # what shipped: feature + Result line per commit, no code
   python scripts/dev/sync.py claim "<task>" [--area <paths>]  # tell parallel sessions what you work on (shipped at once); refused only when --area overlaps an open claim
   python scripts/dev/sync.py claims  # open claims on origin/fast-track (host, account, task, age); release: `release <slug>`
@@ -80,7 +80,7 @@ GIT_NOPROMPT = {"GCM_INTERACTIVE": "never", "GIT_TERMINAL_PROMPT": "0"}
 def git(repo, *args, check=True):
     # `status` refreshes and rewrites the index under index.lock; where/health/tidy run it in other sessions' trees,
     # where that can break their `git add` and reset the idle clock tidy reads, so status never takes optional locks.
-    opts = ["--no-optional-locks"] if args and args[0] == "status" else []
+    opts = ["--no-optional-locks"] if args and args[0] in ("status", "diff") else []
     cmd = ["git", "-C", str(repo), *opts, *args]
     if args and args[0] in GIT_NET_VERBS:
         try:
@@ -99,6 +99,46 @@ def is_noise(row, strays=True):
     """True for a `status --short` row that is not anyone's work (see MIRROR_PREFIXES, STRAY_UNTRACKED)."""
     path = row[3:].strip('"')
     return path.startswith(MIRROR_PREFIXES) or (strays and row.startswith("??") and path in STRAY_UNTRACKED)
+
+
+def eol_only(path, rows):
+    """B6: the `status --short` rows marked modified only in the worktree (` M`) whose content `git diff` sees as unchanged:
+    a gate rewrote the file with other line ends under core.autocrlf (git 2.24 still lists it). Not work, so noise."""
+    cand = [l for l in rows if l.startswith(" M ")]
+    if not cand:
+        return set()
+    r = git(path, "diff", "--name-only", check=False)
+    if r.returncode != 0:
+        return set()
+    real = {l.strip('"') for l in r.stdout.splitlines() if l}
+    return {l for l in cand if l[3:].strip('"') not in real}
+
+
+def nested_trees(path, rows):
+    """B3: the untracked `?? dir/` rows that hold nothing but other worktrees (an Agent's .claude/worktrees/agent-x inside its
+    parent's tree): their files belong to that tree, not to this one. A real file beside them keeps the row as work."""
+    out = set()
+    for l in rows:
+        if not (l.startswith("?? ") and l.rstrip('"').endswith("/")):
+            continue
+        root = Path(path) / l[3:].strip('"')
+        if (root / ".git").exists():
+            out.add(l)
+            continue
+        own = False
+        for d, dirs, files in os.walk(root):
+            if files:
+                own = True
+                break
+            dirs[:] = [x for x in dirs if not (Path(d) / x / ".git").exists()]
+        if not own:
+            out.add(l)
+    return out
+
+
+def not_work(path, rows):
+    """Rows of `status --short` that are no one's work in this tree: EOL-only rewrites (B6) and nested worktrees (B3)."""
+    return eol_only(path, rows) | nested_trees(path, rows)
 
 
 def toplevel(path):
@@ -472,11 +512,36 @@ def mark_gateway(repo):
     return True
 
 
-def start(repo, slug=None, here=False, quiet=False):
+def other_session_tree(repo, slug):
+    """B3: the branch of the session this tree was made for, when that is another slug than `slug` (a worker Agent booting in
+    its Supervisor's tree), else None. Only `<this host>/<slug>[-n]` branches count: never the primary checkout, trunk or a lane tree."""
+    if Path(repo).resolve().name in SWITCH_LANES:
+        return None
+    branch = git(repo, "branch", "--show-current", check=False).stdout.strip()
+    head, sep, own = branch.partition("/")
+    if not sep or head.lower() != socket.gethostname().lower():
+        return None
+    want = slugify(slug)
+    if own.lower() == want or re.sub(r"-\d+$", "", own.lower()) == want:
+        return None
+    return branch
+
+
+def start(repo, slug=None, here=False, quiet=False, worker=False):
     """Bring a tree up to date. Returns the tree the session must work in: `repo` when it is clean, else a
-    fresh worktree off origin/fast-track (printed as `WORKTREE: <path>`); never touches the other files."""
+    fresh worktree off origin/fast-track (printed as `WORKTREE: <path>`); never touches the other files.
+    B3: `worker` (a worker Agent, `--worker`) or a tree made for another session's slug always gets a fresh worktree:
+    workers never switch a lane tree or commit in their Supervisor's tree."""
     refuse_live(repo)
-    if slug and not here and Path(repo).resolve().name in SWITCH_LANES:
+    other = None if (here or not slug) else ("--worker" if worker else other_session_tree(repo, slug))
+    if other:
+        path = new_worktree(repo, slug)
+        print(f"this tree is not yours ({'worker start' if worker else 'made for ' + other}); not working here.")
+        print(f"WORKTREE: {path}")
+        print(f"work ONLY there: cd {path}")
+        repo = path
+        reason = None
+    elif slug and not here and Path(repo).resolve().name in SWITCH_LANES:
         print(f"lane tree {Path(repo).name}: switched to {switch_lane_branch(repo, slug)} off origin/{TRUNK}; work here")
         reason = None
     else:
@@ -628,6 +693,53 @@ def write_ship_stamp(repo):
         ship_stamp(repo).write_text(str(time.time()), encoding="utf-8")
     except (OSError, SyncError):
         pass
+
+
+LAST_PUSHED = "mts_last_pushed.json"   # in the git dir: the sha (and files) of this tree's last push, for `sync.py ci`
+
+
+def write_last_pushed(repo, pushed):
+    try:
+        p = Path(git(repo, "rev-parse", "--absolute-git-dir").stdout.strip()) / LAST_PUSHED
+        p.write_text(json.dumps({"sha": pushed.sha, "files": list(pushed.files)}), encoding="utf-8", newline=chr(10))
+    except (OSError, SyncError):
+        pass
+
+
+def read_last_pushed(repo):
+    """Pushed(sha, files) of this tree's last ship, or None."""
+    try:
+        d = json.loads((Path(git(repo, "rev-parse", "--absolute-git-dir").stdout.strip()) / LAST_PUSHED).read_text(encoding="utf-8"))
+        return Pushed(d["sha"], list(d.get("files", [])))
+    except (OSError, ValueError, KeyError, SyncError):
+        return None
+
+
+def commit_pending(repo, result, subject=None):
+    """`ship --result "<what works now>" [-m "<subject>"]` (planner finding: a ship of uncommitted card/doc edits had no way to carry the
+    `Result:` line CLAUDE.md requires). Commits this tree's real uncommitted files (tree_state's `work`, not mirror noise) as one commit whose
+    body ends `Result: <text>`. Clean tree: nothing to commit (commits already made keep their own messages). Returns the file count."""
+    if not result.strip():
+        raise SyncError("ship --result needs the text of the Result line")
+    _, work, _ = tree_state(repo)
+    paths = [r[3:].split(" -> ")[-1].strip().strip(chr(34)) for r in work]
+    if not paths:
+        print("--result: no uncommitted files; existing commits keep their own messages")
+        return 0
+    git(repo, "add", "-A", "--", *paths)
+    subj = (subject or f"ship: {len(paths)} file(s)").strip()
+    git(repo, "commit", "--quiet", "-m", subj + chr(10) * 2 + "Result: " + result.strip().removeprefix("Result:").strip())
+    return len(paths)
+
+
+def ci_verb(repo, argv):
+    """`sync.py ci [sha]`: the CI wait that `ship` no longer does by default (B8: a ship returned only after up to 10 min of polling).
+    No sha = the last sha this tree pushed. Prints the verdict line; red exits CI_RED_EXIT. Never changes anything."""
+    pushed = Pushed(argv[0], []) if argv else read_last_pushed(repo)
+    if pushed is None:
+        print("sync: ci: no sha given and this tree has not pushed one (sync.py ci <sha>)", file=sys.stderr)
+        return 1
+    return CI_RED_EXIT if wait_own_ci(pushed, globs=ci_path_filter(repo)) == "red" else 0
 
 
 def ci_state(fetch=None):
@@ -1121,6 +1233,18 @@ def worktrees(repo):
     return rows
 
 
+def ahead_commits(path, n):
+    """`n` commits ahead of origin/fast-track, or 0 when HEAD adds no content of its own: its tree equals the merge-base with the trunk
+    (B17: merge commits plus a revert that trunk already holds are 'nothing to ship' to `ship`; comparing with the trunk TIP fails the
+    minute the trunk moves on, the merge-base does not)."""
+    if not n:
+        return n
+    base = git(path, "merge-base", f"origin/{TRUNK}", "HEAD", check=False)
+    if base.returncode == 0 and base.stdout.strip() and git(path, "diff", "--quiet", base.stdout.strip(), "HEAD", check=False).returncode == 0:
+        return 0
+    return n
+
+
 def tree_state(path):
     """(ahead, work, noise) of the worktree at `path`: commits not on origin/fast-track, the uncommitted
     `status --short` rows that are real work, and the rows that are not (is_noise). ahead is None when HEAD does not
@@ -1129,7 +1253,9 @@ def tree_state(path):
     if r.returncode != 0:
         return None, [], []
     rows = [l for l in git(path, "status", "--short", check=False).stdout.splitlines() if l]
-    return int(r.stdout.strip() or 0), [l for l in rows if not is_noise(l)], [l for l in rows if is_noise(l)]
+    skip = not_work(path, rows)
+    return (ahead_commits(path, int(r.stdout.strip() or 0)), [l for l in rows if not is_noise(l) and l not in skip],
+            [l for l in rows if is_noise(l) or l in skip])
 
 
 def survey(repo):
@@ -1296,7 +1422,7 @@ def print_claims(repo, ref=None):
               f"[area: {kv.get('area','-')}] {age_h:.0f}h old{stale}")
 
 
-PUSH_RACE_RE = re.compile(r"\[rejected\]|fetch first|non-fast-forward|stale info|cannot lock ref|incorrect old value")
+PUSH_RACE_RE = re.compile(r"\[rejected\]|fetch first|non-fast-forward|stale info|cannot lock ref|incorrect old value|reference already exists")
 
 
 def push_race_lost(r):
@@ -1802,12 +1928,18 @@ def main(argv):
         try:
             here = "--here" in argv
             quiet = "--quiet" in argv or "-q" in argv
-            rest = [a for a in argv[1:] if a not in ("--here", "--quiet", "-q")]
-            start(toplevel(Path.cwd()), rest[0] if rest else None, here, quiet=quiet)
+            rest = [a for a in argv[1:] if a not in ("--here", "--quiet", "-q", "--worker")]
+            start(toplevel(Path.cwd()), rest[0] if rest else None, here, quiet=quiet, worker="--worker" in argv)
         except SyncError as e:
             print(f"sync: {e}", file=sys.stderr)
             return 1
         return 0
+    if argv and argv[0] == "ci" and len(argv) <= 2:
+        try:
+            return ci_verb(toplevel(Path.cwd()), argv[1:])
+        except SyncError as e:
+            print(f"sync: {e}", file=sys.stderr)
+            return 1
     if argv and argv[0] == "ship":
         run_host_health(toplevel_or_none())
         try:
@@ -1822,8 +1954,9 @@ def main(argv):
             if "--full" in argv:
                 os.environ["SYNC_FULL_GATE"] = "1"
                 argv = [a for a in argv if a != "--full"]
-            no_ci_wait = bool(os.environ.get("SYNC_NO_CI_WAIT")) or "--no-ci-wait" in argv
-            argv = [a for a in argv if a != "--no-ci-wait"]
+            # B8 (2026-10-28): ship returns as soon as origin has the commit; the CI wait is `sync.py ci` or opt-in `--wait-ci` / SYNC_WAIT_CI=1
+            wait_ci = ("--wait-ci" in argv or bool(os.environ.get("SYNC_WAIT_CI"))) and "--no-ci-wait" not in argv and not os.environ.get("SYNC_NO_CI_WAIT")
+            argv = [a for a in argv if a not in ("--no-ci-wait", "--wait-ci")]
             release_slug = None
             if "--release" in argv:
                 i = argv.index("--release")
@@ -1838,11 +1971,30 @@ def main(argv):
                     raise SyncError("usage: sync.py ship [--full] [--fix-ci] [--no-ci-wait] [--release <slug>] [--after <slug>]")
                 after_slug = argv[i + 1]
                 argv = argv[:i] + argv[i + 2:]
+            result_text = commit_subject = None
+            for flag in ("--result", "-m"):
+                if flag in argv:
+                    i = argv.index(flag)
+                    if i + 1 >= len(argv) or argv[i + 1].startswith("--"):
+                        raise SyncError(f"usage: sync.py ship [--result <text>] [-m <subject>] ...: {flag} needs a value")
+                    if flag == "--result":
+                        result_text = argv[i + 1]
+                    else:
+                        commit_subject = argv[i + 1]
+                    argv = argv[:i] + argv[i + 2:]
+            if commit_subject and result_text is None:
+                raise SyncError("ship -m needs --result \"<what works now>\" (every commit body carries a Result: line)")
             if len(argv) != 1:
                 raise SyncError(f"unknown arguments to ship: {' '.join(argv[1:])}")
             repo = toplevel(Path.cwd())
+            if result_text is not None:
+                commit_pending(repo, result_text, commit_subject)
             pushed = ship(repo, release_slug=release_slug, after_slug=after_slug)
-            if isinstance(pushed, Pushed) and not no_ci_wait:
+            if isinstance(pushed, Pushed):
+                write_last_pushed(repo, pushed)
+            if isinstance(pushed, Pushed) and not wait_ci:
+                print(f"shipped {pushed.sha[:8]}; CI not awaited: `python scripts/dev/sync.py ci` waits for its verdict (red exits {CI_RED_EXIT}); `ship --wait-ci` waits here")
+            if isinstance(pushed, Pushed) and wait_ci:
                 try:
                     return CI_RED_EXIT if wait_own_ci(pushed, globs=ci_path_filter(repo)) == "red" else 0
                 except KeyboardInterrupt:

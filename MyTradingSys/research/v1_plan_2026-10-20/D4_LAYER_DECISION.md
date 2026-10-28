@@ -7,7 +7,7 @@ flow at the 2026-10-23 review. Everything else is PARKED with its files intact.
 ## 1. The evidence table (RESULT, LAYERS.md and research folders, read 2026-10-20)
 | Family | Best number on disk | Verdict on disk | Slot |
 |---|---|---|---|
-| Levels Confluence (session levels, VAH/VAL/POC/VWAP holds) | KEEP rule written: a level is kept when the lower CI of hold rate > 0 (levels_hold.md); LC1 and LC2 done, LC3 `lc-ladder-dev` ready, LC4 `lc-validation` refined | no verdict yet; funnel built | SLOT 1 |
+| Levels Confluence (session levels, VAH/VAL/POC/VWAP holds) | KEEP rule written: a level is kept when the lower CI of hold rate > 0 (levels_hold.md); LC1 and LC2 done, LC3 `lc-ladder-dev` ready, LC4 `lc-validation` refined | no verdict yet; funnel built; FAIR CONTROL 2026-10-28: KEEP list none (0 of 12), slot rests on the pre-registered funnel only, not on a KEEP rule | SLOT 1 |
 | CryptoCred HTF (4h/1d) | pre-reg filed and counted (`cryptocred_htf_2026-10/PRE_REG_CRYPTOCRED_HTF.md`, COUNT_POWER.md); card done dc745272; numbers OURS-UNREPRODUCED | 15m and 1h FAIL earlier; 4h/1d untested | SLOT 2 |
 | Tom (Fade, Trend-Healthy, Balance) | 7 backtest rows, all negative net of fees; TOM-CORE-1007 net -2.91 R; holdout -2.80 R | negative; v2 chain blocked on operator eye-read | THIRD IN LINE (park) |
 | RSI deep-buy (operator study 2026-10-19) | spec only, 8 raw cards | none | park; operator may swap for slot 2 |
@@ -23,6 +23,8 @@ flow at the 2026-10-23 review. Everything else is PARKED with its files intact.
 | Pitchfork | detector only | none | park |
 | Callers scorecard | needs 56 scored calls for 80 % power (analysts/SCORECARD.md) | none | CBP module (D5) |
 | Gross-effect screen 2026-10-15 | INCONCLUSIVE | none | closed |
+
+DECISION (OURS): slot unchanged until the operator reviews; flagged for that review.
 
 ## 2. Why these two
 - Both are higher-timeframe (4h/1d), so fees (< 0.25 R per PROJECT_VISION economics) are a smaller share of each trade.

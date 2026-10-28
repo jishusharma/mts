@@ -1,4 +1,5 @@
-"""LC3 DEV run (standard DEV 2022-04-01..2024-06-30, Q79 ruling): first touches of KEEP levels, every pre-registered
+"""LEGACY 8-family set, void since T05-F5.
+LC3 DEV run (standard DEV 2022-04-01..2024-06-30, Q79 ruling): first touches of KEEP levels, every pre-registered
 arm (E0/E1/E4 x S0-S3 x K1-K5 x X0_1R/X0_2R/X1/X2 = 240 variants) plus arm P and the K0 measurement.
 Writes ladder_dev.md, frozen_rule.json, ladder_ideas_dev.csv and one row per variant in layer_lab/TRIALS.md
 (earlier lc-ladder-dev rows are replaced, so a rerun does not duplicate them).

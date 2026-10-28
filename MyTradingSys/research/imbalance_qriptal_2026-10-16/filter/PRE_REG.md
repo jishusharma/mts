@@ -1,5 +1,9 @@
 # PRE-REGISTRATION: Qriptal volume-anomaly candle as a filter and a veto on the lc-levels-hold level layer, BTCUSDT 1m, DEV (frozen 2026-10-16)
 
+> SUPERSEDED-PREMISE (2026-10-28): the layer-alone base is the 8 families whose LC1 KEEP is void
+> (levels_hold.md fair-control section: KEEP none, 0 of 12). The -0.412 R layer-alone base is a legacy figure.
+> FAIL verdict unchanged; no rerun (empty KEEP = no base).
+
 Session: card `imb-filter-on-levels` (lane SONNET, task Q74, B171 follow-up), worktree JIS-NB, base origin/fast-track 02a46e28.
 Question source: `imbalance_qriptal_2026-10-16/README.md` section 5 ("level + imbalance + reaction"; the imbalance fade alone has no edge).
 The commit that adds this file precedes every commit that adds an outcome; `git log` is the proof (convention of

@@ -80,3 +80,41 @@ def test_deterministic_output_and_table_limit():
     b = json.dumps(snap(list(reversed(cards))), sort_keys=True)
     assert a == b
     assert len(tasks.dispatch_table(snap(cards))) <= tasks.DISPATCH_TABLE_MAX
+
+
+# ---- batched dispatch (card rolling-chain-batched-dispatch-impl; batch size 3 is OURS) ----
+def row(cid, scope, live=False):
+    return {"id": cid, "scope_in": scope, "live_path": live}
+
+
+def test_batches_key_present_and_disjoint_cards_batch_together():
+    s = snap([card("a"), card("b"), card("c")])
+    assert s["batches"] == [["a", "b", "c"]]
+
+
+def test_batch_overlap_same_path_and_prefix_split():
+    rows = [row("a", ["x/dir"]), row("b", ["x/dir/f.py"]), row("c", ["x/dir/"]), row("d", ["y/f.py"]), row("e", ["x/dirt.py"])]
+    assert tasks.batch_cards(rows) == [["a", "d", "e"]]
+
+
+def test_batch_cap_is_three():
+    rows = [row(c, [f"x/{c}.py"]) for c in "abcdefg"]
+    assert tasks.batch_cards(rows) == [["a", "b", "c"], ["d", "e", "f"]]
+
+
+def test_live_path_full_re_gate_and_unknown_scope_ship_alone():
+    rows = [row("a", ["x/a.py"]), row("l", ["x/l.py"], live=True), row("f", ["MyTradingSys/execution/o.py"]),
+            row("g", ["scripts/dev/sync.py"]), row("u", []), row("b", ["x/b.py"])]
+    assert tasks.batch_cards(rows) == [["a", "b"]]
+
+
+def test_single_safe_card_is_not_a_batch():
+    assert tasks.batch_cards([row("a", ["x/a.py"]), row("l", ["x/l.py"], live=True)]) == []
+
+
+def test_batches_deterministic_in_rank_order_and_table_has_batch_lines():
+    cards = [card("c", prio=2), card("b"), card("a")]
+    s1, s2 = snap(cards), snap(list(reversed(cards)))
+    assert s1["batches"] == s2["batches"] == [["c", "a", "b"]]
+    lines = tasks.dispatch_table(s1)
+    assert sum(l.startswith("BATCH") for l in lines) == 1 and len(lines) <= tasks.DISPATCH_TABLE_MAX

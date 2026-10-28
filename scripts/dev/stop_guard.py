@@ -62,8 +62,13 @@ def reason(path):
     if not rows and int(ahead.strip() or 0) == 0:
         return None
     import sync
+    ahead = str(sync.ahead_commits(top, int(ahead.strip() or 0)))    # B17: identical tree = nothing ahead
+    if not rows and ahead == "0":
+        return None
+    skip = sync.not_work(top, rows)     # B6 CRLF/LF-only rewrites, B3 files of a nested (another session's) worktree
     t = dict(path=str(top), name=top.name, branch=branch, ahead=int(ahead.strip() or 0),
-             work=[l for l in rows if not sync.is_noise(l)], noise=[l for l in rows if sync.is_noise(l)], fix="")
+             work=[l for l in rows if not sync.is_noise(l) and l not in skip],
+             noise=[l for l in rows if sync.is_noise(l) or l in skip], fix="")
     return sync.unshipped_reason(t)
 
 

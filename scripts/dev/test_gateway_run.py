@@ -73,3 +73,43 @@ def test_verdict_restart_hang_and_cap():
     assert g.verdict(False, True, True, 5, True, 0) == "running"
     assert g.verdict(False, True, False, 1, True, g.MAX_RESUMES) == "gave-up"
     assert g.verdict(False, False, False, 0, False, 0) == "idle"
+
+
+def test_quota_text_is_an_error_with_wait():
+    s = g.summary('{"is_error": false, "num_turns": 9, "result": "You have reached 100% of your 5-hour quota. Your usage will reset in 15 minutes."}', FAKE)
+    assert s["is_error"] is True and s["limit_wait_min"] == 15
+
+
+def test_summary_bad_reads_long_and_broken_summaries():
+    long_ok = '{"is_error": false, "num_turns": 40, "result": "' + "x" * 500 + '"}'
+    assert g.summary_bad(long_ok) is False                 # tick cut this at 300 chars and crashed
+    assert g.summary_bad(long_ok[:300]) is True
+    assert g.summary_bad("") is True and g.summary_bad("[1]") is True
+
+
+def test_quota_pass_waits_then_frees_one_run(tmp_path, monkeypatch):
+    monkeypatch.setattr(g, "RUNS", tmp_path)
+    for c in ("a", "b"):
+        d = tmp_path / c
+        d.mkdir()
+        (d / "started").write_text("t")
+        (d / "done").write_text("exit=0")
+        (d / "summary.json").write_text('{"is_error": true, "limit_wait_min": 15}')
+    t0 = (tmp_path / "a" / "done").stat().st_mtime
+    assert g.quota_pass(t0 + 60) == {"a", "b"}            # before the reset: both wait
+    assert g.quota_pass(t0 + 21 * 60) == {"b"}            # after: one run freed, the other waits its turn
+    assert not (tmp_path / "a" / "done").exists() and (tmp_path / "b" / "done").exists()
+
+
+def test_quota_pass_uses_provider_reset_and_fill(tmp_path, monkeypatch):
+    monkeypatch.setattr(g, "RUNS", tmp_path)
+    d = tmp_path / "a"
+    d.mkdir()
+    (d / "started").write_text("t")
+    (d / "done").write_text("exit=0")
+    (d / "summary.json").write_text('{"is_error": true, "limit_wait_min": 15}')
+    t0 = (d / "done").stat().st_mtime
+    reset = "2030-01-01T00:00:00Z"
+    assert g.quota_pass(t0 + 3600, {"usagePercent": 100, "isOverLimit": True, "windowResetAt": reset}) == {"a"}
+    assert g.quota_pass(t0 + 3600, {"usagePercent": 80, "isOverLimit": False, "windowResetAt": reset}) == {"a"}
+    assert g.quota_pass(t0 + 60, {"usagePercent": 10, "isOverLimit": False, "windowResetAt": reset}) == set()
