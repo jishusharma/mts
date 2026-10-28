@@ -32,7 +32,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator-run only; no session may start or message it.\nHOLD 2026-10-28: E2 was INCONCLUSIVE (332 entry days); at 0.20 entry days/day a forward read needs about 72 months. Run only if REVIEW_O2.md says R7 = run.\nLane OPUS as for fable-run6-powered-prereg (operator-run Fable 5.1 cards use lane OPUS; no FABLE lane exists in tasks.py).\nREVIEWED: Lab_Guy 2026-10-28 ACCEPT (independent Sonnet reviewer; second pass after must-fixes)\nREVIEWED: Opus_O2 2026-10-28 a",
+  "note": "Operator-run only; no session may start or message it.\nHOLD 2026-10-28: E2 was INCONCLUSIVE (332 entry days); at 0.20 entry days/day a forward read needs about 72 months. Run only if REVIEW_O2.md says R7 = run.\nLane OPUS as for fable-run6-powered-prereg (operator-run Fable 5.1 cards use lane OPUS; no FABLE lane exists in tasks.py).\nREVIEWED: Lab_Guy 2026-10-28 ACCEPT (independent Sonnet reviewer; second pass after must-fixes)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
