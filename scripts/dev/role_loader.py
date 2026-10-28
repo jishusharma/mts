@@ -201,12 +201,6 @@ def _role_line():
     return role_line
 
 
-def clean_prompt(prompt):
-    """The prompt without the app's wrappers (reminder blocks, paste tags, start_session "Background ... Task:"): role_line.py."""
-    rl = _role_line()
-    return rl.clean(prompt) if rl else str(prompt or "")
-
-
 BARE_LOGIN = re.compile(r"(?i)^\s*(?:supervisor\s*(?:login\s*)?|login\s+)([abc])\s*[.!]?\s*$")  # Supervisor A | supervisor login a | login a
 LOGIN_IN_TEXT = re.compile(r"(?i)\blogin\s+([abc])\b")
 HANDOVER_REL = "MyTradingSys/system/handover/SUPERVISOR_{}.md"
@@ -308,24 +302,6 @@ def pick_role(text, repo=REPO):
 
 
 ROLE_LINE = re.compile(r"(?im)^\s*You are ([\w&]+)")
-
-
-def explicit_role(prompt, roles=None):
-    """THE definition of a role session (role_loader and model_guard.role_session both call this): the first prompt names the
-    role on its own line (`You are X.` in the first 3000 chars, or a trigger phrase such as `I need a pipeliner` starting a line
-    in the first 300). A role the fallback picks from task words is only a soft hint and is not a role session."""
-    prompt = prompt or ""
-    names = {n.lower(): n for n in KNOWN_ROLES}
-    names.update({a: n for n, al in ALIASES.items() for a in al})
-    for m in ROLE_LINE.finditer(prompt[:3000]):
-        if m.group(1).lower() in names:
-            return names[m.group(1).lower()]
-    head = prompt[:300].lower()
-    for name, trigs in (roles if roles is not None else local_roles()).items():
-        for t in trigs:
-            if re.search(r"^[ \t]*" + PREFIX + r"\s+" + _phrase(t) + r"(?![a-z0-9_])", head, re.M):
-                return name
-    return None
 
 
 def from_session(prompt):

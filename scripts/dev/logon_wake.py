@@ -76,7 +76,45 @@ def already_up(login: str, boot: float, home=None) -> str | None:
     return None
 
 
-def logon(login: str, dry: bool = False, grace: float = GRACE_S, home=None, boot: float | None = None, register=None, sleep=time.sleep) -> int:
+RECOVERY = (
+    "UNPLANNED RESTART RECOVERY (this machine rebooted at {boot}; every worker Agent, background task and gate died; "
+    "nothing in memory survived, so rebuild from disk and git, never from memory). Do this BEFORE the normal loop: "
+    "1. python scripts/dev/sync.py start supervisor-{login}-restart; work only in the printed WORKTREE. "
+    "The hand-over (handover/SUPERVISOR_{login}.md on origin/fast-track) is history and may be hours old; the pacer's last "
+    "reading is {plan_path}. "
+    "2. python scripts/dev/sync.py station --apply   (trees holding unshipped work, then retire finished worktrees). "
+    "A dead worker's tree with commits not on origin/fast-track and a green test run: ship it with sync.py ship --release. "
+    "No such commits: sync.py release its slug. "
+    "3. python scripts/dev/sync.py claims   every JIS-NUC claim older than the boot belongs to a dead worker: release it "
+    "(sync.py release <slug>), so its card is not stuck STALE for days. Leave claims of other hosts. "
+    "4. If CI is RED, the red-trunk rule in CLAUDE.md applies first. "
+    "5. Then the normal loop: get_usage if you have it, else the USAGE file; supervisor.py plan; spawn per its lines. "
+    "A worker that was running before the restart is gone: its card re-enters the plan. Never ask the operator."
+)
+
+
+def refresh_clone(repo: Path, run=None) -> str:
+    """Fast-forward the dedicated clone to origin/fast-track so the woken session boots from current scripts. Never raises."""
+    import subprocess
+    run = run or (lambda *a: subprocess.run(["git", "-C", str(repo), *a], capture_output=True, text=True, timeout=120))
+    try:
+        run("fetch", "-q", "origin", "fast-track")
+        r = run("merge", "-q", "--ff-only", "origin/fast-track")
+        return "clone ff ok" if r.returncode == 0 else "clone not fast-forwarded (kept as is)"
+    except Exception as e:
+        return "clone refresh failed: %r" % (e,)
+
+
+def recovery_prompt(login: str, boot: float, home=None, base=None) -> str:
+    import successor_wake as W
+    plan = W.load_plan(login, home)
+    usage = W.wake_usage(login, plan, datetime.now(timezone.utc), base)
+    head = W.PROMPT.format(login=login, usage_line=W.usage_line(usage))
+    b = datetime.fromtimestamp(boot, timezone.utc).strftime("%Y-%m-%dT%H:%MZ") if boot else "an unknown time"
+    return head + " " + RECOVERY.format(boot=b, login=login, plan_path=plan_file(login, home))
+
+
+def logon(login: str, dry: bool = False, grace: float = GRACE_S, home=None, boot: float | None = None, register=None, sleep=time.sleep, refresh=None) -> int:
     login = (login or "").strip().upper()[:1]
     if login not in ("A", "B", "C"):
         log("logon: login must be A, B or C")
@@ -91,7 +129,12 @@ def logon(login: str, dry: bool = False, grace: float = GRACE_S, home=None, boot
         if register is None:
             import successor_wake
             register = successor_wake.register
-        r = register(login, dry=dry, home=home)
+        note = (refresh or refresh_clone)(HERE.parents[1]) if not dry else "dry"
+        pf = base_dir() / ("restart_prompt_%s.txt" % login)
+        pf.parent.mkdir(parents=True, exist_ok=True)
+        pf.write_text(recovery_prompt(login, b, home, str(base_dir())), encoding="utf-8", newline=chr(10))
+        log("logon %s: %s" % (login, note))
+        r = register(login, dry=dry, home=home, prompt_file=str(pf))
         if not dry:
             p = stamp_file(login, home)
             p.parent.mkdir(parents=True, exist_ok=True)
