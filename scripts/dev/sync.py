@@ -114,6 +114,33 @@ def eol_only(path, rows):
     return {l for l in cand if l[3:].strip('"') not in real}
 
 
+def nested_trees(path, rows):
+    """B3: the untracked `?? dir/` rows that hold nothing but other worktrees (an Agent's .claude/worktrees/agent-x inside its
+    parent's tree): their files belong to that tree, not to this one. A real file beside them keeps the row as work."""
+    out = set()
+    for l in rows:
+        if not (l.startswith("?? ") and l.rstrip('"').endswith("/")):
+            continue
+        root = Path(path) / l[3:].strip('"')
+        if (root / ".git").exists():
+            out.add(l)
+            continue
+        own = False
+        for d, dirs, files in os.walk(root):
+            if files:
+                own = True
+                break
+            dirs[:] = [x for x in dirs if not (Path(d) / x / ".git").exists()]
+        if not own:
+            out.add(l)
+    return out
+
+
+def not_work(path, rows):
+    """Rows of `status --short` that are no one's work in this tree: EOL-only rewrites (B6) and nested worktrees (B3)."""
+    return eol_only(path, rows) | nested_trees(path, rows)
+
+
 def toplevel(path):
     return Path(git(path, "rev-parse", "--show-toplevel").stdout.strip())
 
@@ -485,11 +512,36 @@ def mark_gateway(repo):
     return True
 
 
-def start(repo, slug=None, here=False, quiet=False):
+def other_session_tree(repo, slug):
+    """B3: the branch of the session this tree was made for, when that is another slug than `slug` (a worker Agent booting in
+    its Supervisor's tree), else None. Only `<this host>/<slug>[-n]` branches count: never the primary checkout, trunk or a lane tree."""
+    if Path(repo).resolve().name in SWITCH_LANES:
+        return None
+    branch = git(repo, "branch", "--show-current", check=False).stdout.strip()
+    head, sep, own = branch.partition("/")
+    if not sep or head.lower() != socket.gethostname().lower():
+        return None
+    want = slugify(slug)
+    if own.lower() == want or re.sub(r"-\d+$", "", own.lower()) == want:
+        return None
+    return branch
+
+
+def start(repo, slug=None, here=False, quiet=False, worker=False):
     """Bring a tree up to date. Returns the tree the session must work in: `repo` when it is clean, else a
-    fresh worktree off origin/fast-track (printed as `WORKTREE: <path>`); never touches the other files."""
+    fresh worktree off origin/fast-track (printed as `WORKTREE: <path>`); never touches the other files.
+    B3: `worker` (a worker Agent, `--worker`) or a tree made for another session's slug always gets a fresh worktree:
+    workers never switch a lane tree or commit in their Supervisor's tree."""
     refuse_live(repo)
-    if slug and not here and Path(repo).resolve().name in SWITCH_LANES:
+    other = None if (here or not slug) else ("--worker" if worker else other_session_tree(repo, slug))
+    if other:
+        path = new_worktree(repo, slug)
+        print(f"this tree is not yours ({'worker start' if worker else 'made for ' + other}); not working here.")
+        print(f"WORKTREE: {path}")
+        print(f"work ONLY there: cd {path}")
+        repo = path
+        reason = None
+    elif slug and not here and Path(repo).resolve().name in SWITCH_LANES:
         print(f"lane tree {Path(repo).name}: switched to {switch_lane_branch(repo, slug)} off origin/{TRUNK}; work here")
         reason = None
     else:
@@ -1142,9 +1194,9 @@ def tree_state(path):
     if r.returncode != 0:
         return None, [], []
     rows = [l for l in git(path, "status", "--short", check=False).stdout.splitlines() if l]
-    eol = eol_only(path, rows)
-    return (int(r.stdout.strip() or 0), [l for l in rows if not is_noise(l) and l not in eol],
-            [l for l in rows if is_noise(l) or l in eol])
+    skip = not_work(path, rows)
+    return (int(r.stdout.strip() or 0), [l for l in rows if not is_noise(l) and l not in skip],
+            [l for l in rows if is_noise(l) or l in skip])
 
 
 def survey(repo):
@@ -1817,8 +1869,8 @@ def main(argv):
         try:
             here = "--here" in argv
             quiet = "--quiet" in argv or "-q" in argv
-            rest = [a for a in argv[1:] if a not in ("--here", "--quiet", "-q")]
-            start(toplevel(Path.cwd()), rest[0] if rest else None, here, quiet=quiet)
+            rest = [a for a in argv[1:] if a not in ("--here", "--quiet", "-q", "--worker")]
+            start(toplevel(Path.cwd()), rest[0] if rest else None, here, quiet=quiet, worker="--worker" in argv)
         except SyncError as e:
             print(f"sync: {e}", file=sys.stderr)
             return 1

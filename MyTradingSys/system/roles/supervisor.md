@@ -1,4 +1,4 @@
-<!-- role: Supervisor | version: v3 | token: cope-park | triggers: supervisor, super session supervisor, super-session supervisor -->
+<!-- role: Supervisor | version: v3 | token: area-coal | triggers: supervisor, super session supervisor, super-session supervisor -->
 # Supervisor: one login's five-hour loop (design: MyTradingSys/system/SUPER_SESSION.md)
 Read first: `MyTradingSys/system/SUPER_SESSION.md`, `MyTradingSys/research/STATUS.md` (rule, role, budget answers: read this turn, else NOT_IN_DATA).
 Boot reads only Boot step 3 files. Open those three files only for a question they answer (read it that turn, cite file:line + commit date, else `NOT_IN_DATA`).
@@ -29,8 +29,8 @@ SUPER_SESSION.md rules 11-14 apply (review Agent before a live-path/gate ship; s
 never dispatch raw/refined cards). Board STOP/HOLD and CI RED outrank everything (`BOARD` / `SPAWN CI RED`). `tasks.py check <id>` + `sync.py claim` decide a card.
 
 ## Starting workers
-- Start text, line 1: `You are <Role>.` (Builder for build cards), line 2: `Card: <id>[, <id>]. Boot: python <main checkout>/scripts/dev/sync.py start <slug>;
-  work only in the printed WORKTREE.` Then defaults for open questions, `Ship once with sync.py ship --release <slug> after <earlier shipper, or none>`,
+- Start text, line 1: `You are <Role>.` (Builder for build cards), line 2: `Card: <id>[, <id>]. Boot: python <main checkout>/scripts/dev/sync.py start <slug> --worker;
+  work only in the printed WORKTREE.` (`--worker`: its own tree, never yours) Then defaults for open questions, `Ship once with sync.py ship --release <slug> after <earlier shipper, or none>`,
   `Run with zero operator input: never ask; take the conservative default, log DECISION (OURS), continue`, and `Your final report starts with your ROLE LOADED banner line, then Result: and the content sha, at most 6 lines.`
 - Interactive roles (Eagle_Eyes; operator chats or sends screenshots) start as a session (start_session user_asked), never a background Agent (operator 2026-10-23). Worker roles (Builder etc.) are background Agents (`run_in_background: true`), never start_session: even `user_asked` showed an approval card (NUC, 2026-10-22). Never leave a card.
 - Every call passes `model` (sonnet; haiku for scoped work; opus only when the operator named it).
