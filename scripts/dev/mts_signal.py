@@ -74,7 +74,8 @@ CMD_MAX = 300           # the operator command of a HIGH broadcast
 FUTURE_MIN = 10        # a record stamped later than now + this is a wrong clock: ignored
 DOT = chr(183)
 TOLD_TTL_H = 2          # OURS: a HIGH broadcast acked `told` goes loud again after this many hours (operator 2026-10-25: b-10b3d8 sat `told` ~25 h)
-RANK = {"none": 0, "told": 1, "done": 2}
+RANK = {"none": 0, "told": 1, "expired": 2, "done": 3}
+TERMINAL = ("done", "expired")   # a host that closed a broadcast this way owes no further action; a later real `done` still outranks `expired`
 
 
 def home():
@@ -476,7 +477,7 @@ def high_open(rows):
 
 
 def ack_state(rows, bid, hostname):
-    """Best state this host reached for broadcast bid: none < told < done."""
+    """Best state this host reached for broadcast bid: none < told < expired (a by-hand/done-after-close still wins: done > expired)."""
     best = "none"
     for r in rows:
         if r.get("kind") == "ack" and r.get("id") == bid and hosts.same_host(r.get("host", ""), hostname) \
@@ -593,7 +594,7 @@ def action_block(rows, ev):
             continue
         st = own_state(rows, b)
         old = told_expired(rows, b) if st == "told" else None
-        if st == "done" or (st == "told" and ev != "SessionStart" and not old):
+        if st in TERMINAL or (st == "told" and ev != "SessionStart" and not old):
             continue
         if st == "told" and not old:
             out.append("[MTS reminder %s HIGH %s] this machine was told, not yet confirmed done: %s (when it ran: python scripts/dev/mts_signal.py ack %s done)"
@@ -619,7 +620,7 @@ def sender_status(rows):
         if not hosts.same_host(str(b.get("from", "")).split("/")[0], host()):
             continue
         hs = sorted(targets(rows, b))
-        open_ = ["%s=%s" % (h, ack_state(rows, b["id"], h)) for h in hs if ack_state(rows, b["id"], h) != "done"]
+        open_ = ["%s=%s" % (h, ack_state(rows, b["id"], h)) for h in hs if ack_state(rows, b["id"], h) not in TERMINAL]
         if open_:
             out.append("[MTS BROADCAST %s status] %d/%d hosts done; open: %s (python scripts/dev/mts_signal.py acks %s)"
                        % (b["id"], len(hs) - len(open_), len(hs), ", ".join(open_), b["id"]))
@@ -1029,7 +1030,7 @@ def main(argv):
         rows = load(h)
         want = argv[1] if len(argv) > 1 else ""
         bs = [b for b in high_open(rows) if b["id"] == want] if want else \
-            [b for b in high_open(rows) if any(ack_state(rows, b["id"], t) != "done" for t in targets(rows, b))]
+            [b for b in high_open(rows) if any(ack_state(rows, b["id"], t) not in TERMINAL for t in targets(rows, b))]
         for b in bs:
             print("%s HIGH from %s at %s: %s" % (b["id"], b.get("from", "?"), b["t"], b.get("text", "")))
             for t in sorted(targets(rows, b)):
