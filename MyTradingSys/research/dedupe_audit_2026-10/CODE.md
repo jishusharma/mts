@@ -88,3 +88,5 @@ Row count: 33 rows (32 in the main table, 1 in the uncalled-scripts table).
 
 ## Batch 2 (not applied yet)
 Batch 1 applied (dedupe-apply-1): row 1 (supervisor.py strings use HEARTBEAT_MIN; test added). Rows 2-33: batch 2.
+
+Batch 2 applied (dedupe-apply-2): row 25 (wt_maint imports cicd_run.SUPERVISOR_LOG_REL; test added), row 26 partly (mts_doctor uses sync.STALE_HOURS, test added; desk.py STALE_CLAIM_H left: desk has no sync import). Remaining: 2-24 (except 25), 26 desk part, 27-33.

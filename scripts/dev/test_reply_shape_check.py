@@ -2,6 +2,7 @@
 
 No model call. Fails on pre-change code because scripts/dev/reply_shape_check.py does not exist there yet.
 """
+import subprocess
 import sys
 import unittest
 from pathlib import Path
@@ -68,6 +69,56 @@ class ReplyShape(unittest.TestCase):
             self.assertEqual(rsc.main([name]), 0, "a shaped reply must exit zero")
         finally:
             Path(name).unlink(missing_ok=True)
+
+    def test_no_args_with_open_stdin_exits_promptly(self):
+        script = Path(rsc.__file__).resolve()
+        proc = subprocess.Popen(
+            [sys.executable, str(script)],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        try:
+            try:
+                rc = proc.wait(timeout=2)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                proc.communicate()
+                self.fail("CLI waited for EOF on stdin when no input source was named")
+            _stdout, stderr = proc.communicate(timeout=1)
+            self.assertEqual(rc, 2, stderr)
+            self.assertIn("REPLY_FILE or - is required", stderr)
+        finally:
+            if proc.poll() is None:
+                proc.kill()
+                proc.communicate()
+
+    def test_explicit_dash_reads_piped_input(self):
+        script = Path(rsc.__file__).resolve()
+        proc = subprocess.run(
+            [sys.executable, str(script), "-"],
+            input=GOOD_REPLY,
+            text=True,
+            capture_output=True,
+            timeout=2,
+            check=False,
+        )
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertIn("reply-shape: ok", proc.stdout)
+
+    def test_explicit_dash_rejects_dummy_reply(self):
+        script = Path(rsc.__file__).resolve()
+        proc = subprocess.run(
+            [sys.executable, str(script), "-"],
+            input="dummy reply",
+            text=True,
+            capture_output=True,
+            timeout=2,
+            check=False,
+        )
+        self.assertNotEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("VIOLATION bold_first_line", proc.stdout)
 
 
 if __name__ == "__main__":

@@ -36,7 +36,7 @@ QUEUE_FACTOR = 4             # OURS (spec): queue above 4 x CPUs = overloaded (h
 SAMPLE_S = 10
 MIN_FREE_GB = float(os.environ.get("MTS_C_MIN_FREE_GB", "15"))   # same threshold as c_drive_guard.py
 FALL_GB_PER_H = 2.0          # OURS: C: losing more than this per hour is warned about even above the threshold
-OWN_TEMP_PREFIXES = ("mts_s4_", "mts_changed_")   # the only temp dirs this module deletes (this repo created them)
+OWN_TEMP_PREFIXES = ("mts_s4_", "mts_s5c_", "mts_changed_")   # the only temp dirs this module deletes (this repo created them)
 OWN_TEMP_AGE_H = 24
 ORPHAN_MIN_AGE_S = 120       # a gate younger than this may still be attaching to its parent
 PROTECTED = (".mts_live", "live_runner_cli", "loop-supervisor", "start-trading-day")

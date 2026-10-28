@@ -400,14 +400,26 @@ class TestQueueTool(unittest.TestCase):
         self.tmp = Path(tempfile.mkdtemp())
         self.old_queue = queue_tool.QUEUE
         queue_tool.QUEUE = self.tmp
-        # spec must live inside the repo (rel_of); scope is a small real file
-        self.specdir = Path(tempfile.mkdtemp(dir=REPO, prefix="tmp"))   # "tmp"+8 chars: matches run_all_tests.transient_ignore_glob, so a parallel pytest step never lstat()s it mid-removal (CI 40667391914)
+        # scratch lives OUTSIDE the checkout (system temp): no parallel-pytest collection race,
+        # and test_gate_scratch_outside_checkout stays green. rel_of() needs a path inside REPO,
+        # so it is wrapped to fall back to the absolute posix path for the scratch spec only.
+        self.specdir = Path(tempfile.mkdtemp())
+        self.old_rel_of = queue_tool.rel_of
+        orig = self.old_rel_of
+
+        def rel_of(path, _orig=orig):
+            try:
+                return _orig(path)
+            except ValueError:
+                return Path(path).resolve().as_posix()
+        queue_tool.rel_of = rel_of
         self.spec = self.specdir / "900-dsa-hello.md"
         self.spec.write_text("TASK: say hello\nSCOPE: scripts/worker/dsa_selectors.json\n"
                              "OUTPUT: one line\nEXPECT: hello\n\nReply with the word hello.\n", encoding="utf-8")
 
     def tearDown(self):
         queue_tool.QUEUE = self.old_queue
+        queue_tool.rel_of = self.old_rel_of
         shutil.rmtree(self.tmp, ignore_errors=True)
         shutil.rmtree(self.specdir, ignore_errors=True)
 

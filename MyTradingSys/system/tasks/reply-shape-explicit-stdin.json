@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-28T10:03:30Z",
+  "commands": [],
+  "created": "2026-10-28T10:00:36Z",
+  "depends_on": [],
+  "done_when": "No-argument invocation exits 2 within 2 seconds while stdin PIPE remains open; explicit - validates piped good/bad replies; file behavior stays unchanged; report and tests are committed.",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Make the reply-shape CLI fail promptly when no input source is named while preserving file input and explicit stdin input.",
+  "id": "reply-shape-explicit-stdin",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "No-argument stdin pipe exits 2; explicit - works; 8/8 tests pass; report 2026-10-28_reply-",
+      "ref": "b8561ab80",
+      "utc": "2026-10-28T10:03:30Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Builder: fold the operator reply-shape rule into shared guidance + det-only guardrail",
+      "ref": "e4e998f18c03",
+      "utc": "2026-10-27T15:31:51Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "scripts/dev/test_reply_shape_check.py::test_explicit_dash_rejects_dummy_reply",
+  "note": "Routine code fix. Existing repository scan found no invocation depending on implicit no-argument stdin; only tests pass a filename. Existing registration in scripts/dev/extra_tests.tsv remains unchanged.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T10:01:57Z",
+  "refs": [],
+  "result": "No-argument stdin pipe exits 2; explicit - works; 8/8 tests pass; report 2026-10-28_reply-shape-explicit-stdin.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/reply_shape_check.py",
+    "scripts/dev/test_reply_shape_check.py",
+    "MyTradingSys/research/layer_lab/reports/2026-10-28_reply-shape-explicit-stdin.md"
+  ],
+  "scope_out": [
+    "No change to behavior_eval det checks, test gate registration, other CLIs, hooks, or live/runtime paths."
+  ],
+  "scope_sha": "e4e998f18c03",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/health_checks_run_2026-10-28/REPORT.md:56-58 (bare invocation timed out after 120s; existing recommendation to make stdin explicit)."
+  ],
+  "state": "done",
+  "steps": [
+    "Add subprocess tests first: no arguments with open stdin=PIPE exits 2 under 2 seconds, and explicit - accepts piped shaped and violating replies; run them against old code and record failures.",
+    "Update CLI usage/docstring to REPLY_FILE or -; when omitted, call argparse error before reading stdin; only literal - reads stdin.",
+    "Run scripts/dev/test_reply_shape_check.py and record results and caller search in the report.",
+    "Write report with root cause, interface contract, changed files, fail-first proof, and exact test command/output."
+  ],
+  "taken": "2026-10-28T10:03:30Z",
+  "tests": "scripts/dev/test_reply_shape_check.py: subprocess regression for no args with stdin PIPE left open must fail on old code; explicit - piped input tests must fail on old code and pass after fix.",
+  "title": "Reply-shape CLI: require a file or explicit - for stdin to prevent no-argument hangs",
+  "weight": "ROUTINE",
+  "worker": "session"
+}
