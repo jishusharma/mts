@@ -1,0 +1,1 @@
+{"t": "20261028T083603Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship budget-rules-tester Result: new scripts/dev/test_budget_policy.py (9 tests; 5 fail on old code, all pass now) plus test_supervisor/test_hosts green. DECISION (OURS): last 24 h before a weekly res", "login": "C", "sid": "cf8013601c"}
