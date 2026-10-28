@@ -1,0 +1,1 @@
+{"t": "20261028T100219Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "CI RED owner: Supervisor C Builder on test_sh_timeout flake (Q75b) + test_usage_log Windows. Ships with --fix-ci; others do not touch those tests.", "login": "C"}
