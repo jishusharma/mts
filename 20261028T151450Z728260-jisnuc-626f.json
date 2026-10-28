@@ -1,0 +1,1 @@
+{"t": "20261028T151450Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship Result: poll loops can no longer run 68-131 min unseen when the bounded verb is used (cap 600 s default, was none); planner ship carries Result: in 1 call (was a manual commit + ship); 4 new test", "login": "B", "sid": "4311cb183a"}
