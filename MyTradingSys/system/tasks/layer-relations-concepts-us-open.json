@@ -4,10 +4,12 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-28T14:01:53Z",
-    "misses": 0,
-    "reads": [],
-    "session": "agent-a8bf4ef76c6bad7b2"
+    "folded": "2026-10-28T18:16:16Z",
+    "misses": 27,
+    "reads": [
+      "MyTradingSys/system/OPERATOR_DECISIONS.md"
+    ],
+    "session": "agent-a0561bf0bddad55e9"
   },
   "created": "2026-10-28T13:55:37Z",
   "depends_on": [],

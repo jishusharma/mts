@@ -104,7 +104,10 @@ def test_fold_writes_trunk_reads_only_into_the_card_and_commits_it(tmp_path):
     assert card["context"]["calls_to_edit"] == 6 and card["context"]["folded"] == "2026-10-25T00:00:00Z"
     assert _git(root, "status", "--short").strip() == "" and "fold context into card card-a" in _git(root, "log", "-1", "--format=%B")
     assert "Builder" not in json.dumps(card)   # paths only, never transcript text
-    assert G.fold(tp, str(root), now=SINCE)[0] == "folded" and len(json.load(open(root / "MyTradingSys/system/tasks/card-a.json"))["context"]["reads"]) == 2   # replace, never append
+    # O3 CUT1: a second fold of the identical transcript writes nothing new -> skipped, no new commit
+    assert G.fold(tp, str(root), now=SINCE)[0] == "skipped"
+    assert len(json.load(open(root / "MyTradingSys/system/tasks/card-a.json"))["context"]["reads"]) == 2
+    assert _git(root, "log", "--oneline").count("fold context") == 1   # only the first fold committed
 
 
 def test_fold_without_card_or_transcript_is_unfolded_not_an_error(tmp_path):
@@ -146,3 +149,67 @@ def test_ship_hook_follows_a_leading_cd(tmp_path):
     tp = fold_transcript(tmp_path / "s.jsonl", root)
     out = json.loads(preship.hook_commit({"cwd": str(tmp_path), "transcript_path": tp, "tool_input": {"command": f"cd {root} && python scripts/dev/sync.py ship"}}))
     assert "folded: card-a" in out["hookSpecificOutput"]["additionalContext"]
+
+
+# ---- O3 overhead cut: three skip rules that stop the fold from writing a commit that carries nothing ----
+
+
+def test_fold_skips_a_card_that_already_carries_the_same_context(tmp_path):
+    """CUT1: re-folding the same session writes only a new `folded` timestamp -> no commit, no card churn."""
+    root = fold_repo(tmp_path)
+    tp = fold_transcript(tmp_path / "s.jsonl", root)
+    assert G.fold(tp, str(root), now=SINCE) == ("folded", "card-a")
+    before = _git(root, "rev-parse", "HEAD")
+    st, what = G.fold(tp, str(root), now=datetime(2026, 10, 26, tzinfo=timezone.utc))
+    assert st == "skipped" and "no change" in what
+    assert _git(root, "rev-parse", "HEAD") == before   # no new commit
+    assert json.load(open(root / "MyTradingSys/system/tasks/card-a.json"))["context"]["folded"] == "2026-10-25T00:00:00Z"   # the card was not touched
+
+
+def test_fold_skips_a_terminal_card(tmp_path):
+    """CUT2: a done/dropped card is closed; its read list is a record, never a handover."""
+    root = fold_repo(tmp_path)
+    p = root / "MyTradingSys/system/tasks/card-a.json"
+    card = json.load(open(p))
+    card["state"] = "done"
+    p.write_text(json.dumps(card) + chr(10), encoding="utf-8")
+    tp = fold_transcript(tmp_path / "s.jsonl", root)
+    before = _git(root, "rev-parse", "HEAD")
+    st, what = G.fold(tp, str(root), now=SINCE)
+    assert st == "skipped" and "terminal done" in what
+    assert _git(root, "rev-parse", "HEAD") == before
+    assert "context" not in json.load(open(p))   # the closed card was not given a context
+
+
+def test_fold_skips_a_session_that_read_nothing_first(tmp_path):
+    """CUT3: zero read-first paths -> the fold carries no handover value; write nothing."""
+    root = fold_repo(tmp_path)
+    tp = tmp_path / "s.jsonl"
+    ev = [{"type": "user", "timestamp": "2026-10-25T10:00:00Z", "message": {"content": "Card: card-a. Edit scripts/dev/named.py"}}]
+    ev.append(asst("2026-10-25T10:00:00Z", 90000, tool=("Edit", {"file_path": str(root / "scripts/dev/named.py")})))
+    ev += [asst("2026-10-25T10:00:00Z", 90000 + i) for i in range(3)]
+    tp.write_text(chr(10).join(json.dumps(e) for e in ev) + chr(10), encoding="utf-8")
+    before = _git(root, "rev-parse", "HEAD")
+    st, what = G.fold(str(tp), str(root), now=SINCE)
+    assert st == "skipped" and "0 reads" in what
+    assert _git(root, "rev-parse", "HEAD") == before
+    assert "context" not in json.load(open(root / "MyTradingSys/system/tasks/card-a.json"))
+
+
+def test_fold_still_writes_when_the_context_is_new(tmp_path):
+    """The skip rules never swallow a real fold: a new read list is still written and committed."""
+    root = fold_repo(tmp_path)
+    tp = fold_transcript(tmp_path / "s.jsonl", root)
+    assert G.fold(tp, str(root), now=SINCE) == ("folded", "card-a")
+    tp2 = tmp_path / "s2.jsonl"
+    ab = lambda r: str(root / r)
+    ts = "2026-10-25T11:00:00Z"
+    ev = [{"type": "user", "timestamp": ts, "message": {"content": "You are Builder. Card: card-a. Edit scripts/dev/named.py"}}]
+    for r in (ab("scripts/dev/lease.py"), ab("scripts/dev/named.py")):
+        ev.append(asst(ts, 70000, tool=("Read", {"file_path": r})))
+    ev.append(asst(ts, 80000, tool=("Edit", {"file_path": ab("scripts/dev/named.py")})))
+    ev += [asst(ts, 80000 + i) for i in range(3)]
+    tp2.write_text(chr(10).join(json.dumps(e) for e in ev) + chr(10), encoding="utf-8")
+    st, what = G.fold(str(tp2), str(root), now=SINCE)
+    assert st == "folded"
+    assert json.load(open(root / "MyTradingSys/system/tasks/card-a.json"))["context"]["reads"] == ["scripts/dev/lease.py"]

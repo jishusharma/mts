@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-10-28T15:56:37Z",
+  "closed": "2026-10-28T16:44:40Z",
   "commands": [],
   "created": "2026-10-28T14:46:58Z",
   "depends_on": [],
@@ -14,6 +14,12 @@
   "id": "re-state-t10-stability-py-lc1-keep-rows-",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "lc1_rows() fair-control rows for 12 families, loader seam, 18 T10 tests green",
+      "ref": "53395ad48",
+      "utc": "2026-10-28T16:44:40Z"
+    },
     {
       "kind": "ship",
       "line": "annotate only: stability.py LC1 row + docstring labelled LEGACY 8-family set; test_stabili",
@@ -39,7 +45,7 @@
   "refs": [
     "re-state-lc1-keep-list-on-the-touched-on"
   ],
-  "result": "annotate only: stability.py LC1 row + docstring labelled LEGACY 8-family set; test_stability_lc1.py; no rerun",
+  "result": "lc1_rows() fair-control rows for 12 families, loader seam, 18 T10 tests green",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -58,7 +64,7 @@
     "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.md (fair-control section: KEEP list none, 0 of 12, DEV 2022-04-01..2024-06-30)",
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/stability.py:80-98"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read stability.py:80-98,149 and levels_hold.analyze (levels_hold.py:117, already returns the fair random_hold_rate) plus levels_hold_fair_run.py: note which families and touch rows it returns.",
     "Write the test first (new file): monkeypatch load_klines (add a loader seam: bars arg or module-level LOADER) with synthetic bars; red on the old code because rows exist only for the hard-coded 8-family keep set.",
