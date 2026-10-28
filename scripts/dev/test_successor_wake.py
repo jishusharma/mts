@@ -167,6 +167,28 @@ def test_registered_handover_still_valid_form(tmp_path, monkeypatch):
     assert S.validate_form(p.read_text(encoding="utf-8")) == []
 
 
+def test_no_second_task_while_one_is_live(tmp_path):
+    """B10/B1: a logon-wake successor was Running when the transit hand-over registered MTS-SuccWake-B fireAt now again
+    (-Force + Start-ScheduledTask): two Supervisor B sessions. A Running/Queued task refuses; Ready (future trigger) or none goes on."""
+    repo = _repo(tmp_path)
+    ran = []
+    for state in ("Running", "Queued"):
+        with pytest.raises(W.WakeError, match="already live"):
+            W.register("B", cwd=repo, now=NOW, plan={"mode": "NORMAL", "slots": 2}, runner=ran.append, probe=lambda name, s=state: s)
+    assert ran == []
+    import os
+    os.environ[W.SELF_ENV] = "MTS-SuccWake-B"          # the task's own run (run.ps1 sets it) may still hand over
+    try:
+        W.register("B", cwd=repo, now=NOW, plan={"mode": "NORMAL", "slots": 2}, runner=ran.append, probe=lambda name: "Running")
+    finally:
+        os.environ.pop(W.SELF_ENV, None)
+    assert len(ran) == 1 and "$env:MTS_SUCC_WAKE_TASK = 'MTS-SuccWake-B'" in ran[0]
+    ran.clear()
+    for state in ("", "Ready"):
+        W.register("B", cwd=repo, now=NOW, plan={"mode": "NORMAL", "slots": 2}, runner=ran.append, probe=lambda name, s=state: s)
+    assert len(ran) == 2
+
+
 # ---- supervisor.py handover wiring ----
 def _cli(monkeypatch, tmp_path, extra):
     import sync

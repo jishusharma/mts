@@ -46,6 +46,8 @@ and D5/D6's existing rotation and stop-and-hand-over mechanics; nothing here inv
    (Mechanics "Turn caps": an unattended coordinator runs on that context-size cap, not the 40-tool/10-operator one). The same
    remaining-minutes/40 arithmetic Rule 5 uses to size the next worker wave doubles as the hand-off trigger: once it rounds to
    0, there is no budget left for new work either by a worker or by this coordinator -- hand off.
+   The code rule `plan` prints as `TRANSIT NOW` (B2, 2026-10-28; same text in roles/supervisor.md): TRANSIT = the first of: 5 h at the stop (80%, 95% in the last 2 h before the weekly reset), the `TRANSIT at` time (20 min before the 5 h reset), this session's own wave >= 3 h, or --context-tokens >= 150000.
+   One hand-over writer per login (B1): `handover` refuses while another Supervisor of the login planned < 10 min ago (`--force` when it is gone), and a successor task that is still Running is never registered twice.
 3. Hand off while the window is still open enough to write a clean note: D5 rotation when a successor is already running,
    else a full D6 drain + `supervisor.py handover` per "End" below -- never after the budget has already run out.
 4. Worked example (the motivating case): the 2026-10-27 DESKTOP-F7IU69N chain (local_37a9ec3e) wound down deliberately at 94%

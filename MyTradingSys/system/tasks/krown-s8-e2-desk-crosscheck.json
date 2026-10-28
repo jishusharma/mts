@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-28T13:50:18Z",
   "commands": [
     "python MyTradingSys/research/fable_run6_powered_prereg/crosscheck_desk.py",
     "python -m pytest MyTradingSys/research/fable_run6_powered_prereg/test_crosscheck_desk.py -q"
@@ -17,11 +19,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "signals 122/122 common, trades matched 70/71 (E2 71, desk 71; unmatched pair = one cascade",
+      "ref": "50b994e79",
+      "utc": "2026-10-28T13:50:18Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "E2: Krown S8 4h frozen pre-reg run once on DEV 2020-01..2024-06: INCONCLUSIVE",
-      "ref": "2b80d7ecfcbc",
-      "utc": "2026-10-28T10:00:54Z"
+      "line": "cards: krown-s8-e2-desk-crosscheck (E2 vs simulator desk mechanics proof) + operator go d-",
+      "ref": "5bdd0f4ce814",
+      "utc": "2026-10-28T13:34:05Z"
     }
   ],
   "layers": [
@@ -33,12 +41,17 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-28T13:33:25Z",
+  "refreshed": "2026-10-28T13:38:42Z",
   "refs": [
     "MyTradingSys/research/fable_run6_powered_prereg/PRE_REG.md",
     "MyTradingSys/research/layer_lab/reports/2026-10-20_simulator-validation-planted-edge.md"
   ],
-  "result": "",
+  "result": "signals 122/122 common, trades matched 70/71 (E2 71, desk 71; unmatched pair = one cascade), mean |diff| 0.0062 R (max 0.0198), exit kinds 70/70, MECHANICS AGREE",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/fable_run6_powered_prereg/",
     "MyTradingSys/research/sim_desk/results/"
@@ -48,18 +61,19 @@
     "ETH, SOL, any bar >= 2024-07-01, VALIDATION, HOLDOUT",
     "the desk UI (desk.py, page.html); import the study module only"
   ],
-  "scope_sha": "2b80d7ecfcbc",
+  "scope_sha": "5bdd0f4ce814",
   "size": "S",
   "sources": [
     "MyTradingSys/research/fable_run6_powered_prereg/CROSSCHECK_BRIEF.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the brief MyTradingSys/research/fable_run6_powered_prereg/CROSSCHECK_BRIEF.md, e2_run.py (signals, simulate_symbol, run_trade, FLOOR) and sim_desk/studies/krown.py run() + _bars.collect/run_trade; note the fee and slip handling of each.",
     "Write the three failing tests from the brief; run; confirm they fail.",
     "Write crosscheck_desk.py: E2 path on the BTCUSDT klines cache restricted to the slice; desk path via krown.run() with the brief settings (desk 1m cache missing: BLOCKED.md with the months, stop). Join, diff, write CROSSCHECK.md and the results JSON.",
     "Ship: sync.py ship --release krown-s8-e2-desk-crosscheck; commit body Result: <signals common/total, trades matched, mean |diff| R, AGREE|DISAGREE>."
   ],
+  "taken": "2026-10-28T13:38:45Z",
   "tests": "Fail-first test_crosscheck_desk.py: (1) the diff function flags a planted trade whose net R differs by 0.2 R and whose exit kind differs, and passes an identical list; (2) the signal-set comparison on two hand-made bar series (one with an extra signal) reports the extra bar; (3) both loaders refuse bars >= 2024-07-01. All fail before crosscheck_desk.py exists.",
   "title": "Cross-check E2 (Krown S8 4h) trade mechanics against the simulator desk on BTCUSDT 2022-04-01..2024-06-30; DONE when: CROSSCHECK.md says MECHANICS AGREE or DISAGREE with every mismatch explained",
   "weight": "IMPORTANT",
