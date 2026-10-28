@@ -4,33 +4,57 @@
   "commands": [],
   "created": "2026-10-28T14:46:58Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "lc1_rows() returns fair-control rows for 12 families, the legacy 8 are labelled, the new test is green (red before), no VALIDATION or HOLDOUT bar is read (assert end_ms).",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "T10 stability.py lc1_rows() scores the 8 old KEEP families against random_hold_rate; on the fair control they are DROP. Re-state the LC1 rows as the fair-control hold-minus-control per touch (all 12 families) and label the old rows legacy.",
   "id": "re-state-t10-stability-py-lc1-keep-rows-",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "T10-F4: DEV stability table per study (per year, long/short, top-5 days removed)",
+      "ref": "e77be3a0df53",
+      "utc": "2026-10-26T02:10:25Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-28 ACCEPT | DECISION (OURS): research script re-stated, not the audit report numbers; T10 data lives on F:/MTS (desk host), so the builder tests on synthetic bars only.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-28T15:52:45Z",
   "refs": [
     "re-state-lc1-keep-list-on-the-touched-on"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/stability.py",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/test_stability_lc1.py"
+  ],
+  "scope_out": [
+    "the other T10 rows; VALIDATION or HOLDOUT; levels_hold.py; T10 report text numbers other than the LC1 row"
+  ],
+  "scope_sha": "e77be3a0df53",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.md (fair-control section: KEEP list none, 0 of 12, DEV 2022-04-01..2024-06-30)",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/stability.py:80-98"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read stability.py:80-98,149 and levels_hold.analyze (levels_hold.py:117, already returns the fair random_hold_rate) plus levels_hold_fair_run.py: note which families and touch rows it returns.",
+    "Write the test first (new file): monkeypatch load_klines (add a loader seam: bars arg or module-level LOADER) with synthetic bars; red on the old code because rows exist only for the hard-coded 8-family keep set.",
+    "Rewrite lc1_rows(): rows for all 12 families, net = HOLD(1/0) minus the family's fair control rate; drop the keep filter; relabel the row at stability.py:149 'levels_hold LC1 fair control (KEEP none)'. DEV only, end_ms asserted.",
+    "Run the new test; ship."
+  ],
+  "tests": "scripts/T10/test_stability_lc1.py::test_lc1_rows_cover_all_families: red on the old code (8-family keep filter, no loader seam), green after.",
   "title": "Re-state T10 stability.py LC1 KEEP rows on the fair-control LC1 list",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
