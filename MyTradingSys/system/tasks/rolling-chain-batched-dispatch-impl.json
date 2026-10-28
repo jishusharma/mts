@@ -2,6 +2,20 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T12:34:38Z",
+    "misses": 14,
+    "reads": [
+      "MyTradingSys/system/TASK_REFINEMENT.md",
+      "MyTradingSys/research/pipeliner/station_watcher_monitor.py",
+      "scripts/dev/traffic.py",
+      "scripts/dev/gate_select.py",
+      "MyTradingSys/system/roles/eagle_eyes.md",
+      "scripts/dev/live_mirror.py"
+    ],
+    "session": "agent-abc18a1b6ef909513"
+  },
   "created": "2026-10-28T12:14:41Z",
   "depends_on": [],
   "done_when": "",
@@ -15,6 +29,9 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "not_twin_of": [
+    "rolling-chain-background-wait-design-rev"
+  ],
   "note": "",
   "prio": 3,
   "refine_tries": 0,
@@ -30,8 +47,5 @@
   "tests": "",
   "title": "Implement batched dispatch of non-overlapping small cards (design: research/lead/2026-10-28_rolling-chain-link-latency-levers.md)",
   "weight": "",
-  "worker": "",
-  "not_twin_of": [
-    "rolling-chain-background-wait-design-rev"
-  ]
+  "worker": ""
 }
