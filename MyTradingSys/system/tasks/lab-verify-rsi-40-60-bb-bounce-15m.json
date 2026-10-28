@@ -6,7 +6,7 @@
   ],
   "context": {
     "calls_to_edit": 18,
-    "folded": "2026-10-28T07:00:01Z",
+    "folded": "2026-10-28T07:11:19Z",
     "misses": 5,
     "reads": [
       "MyTradingSys/system/desk_queue/20261026-204750-lab-verify-rsi-40-60-bb-bounce-15m.json",
