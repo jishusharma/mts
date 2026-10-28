@@ -5,6 +5,22 @@
     "python -m pytest -q scripts/dev/test_preship.py",
     "python scripts/dev/preship.py check"
   ],
+  "context": {
+    "calls_to_edit": 15,
+    "folded": "2026-10-28T09:53:38Z",
+    "misses": 47,
+    "reads": [
+      "scripts/dev/test_preship.py",
+      "scripts/dev/preship.py",
+      "scripts/dev/role_loader.py",
+      "MyTradingSys/system/OPS_CHANGE_CHECK.md",
+      ".claude/settings.json",
+      "scripts/dev/mts_signal.py",
+      "MyTradingSys/system/roles/builder.md",
+      "MyTradingSys/system/ROLES.md"
+    ],
+    "session": "agent-a5d49f53750abe17a"
+  },
   "created": "2026-10-26T15:32:15Z",
   "depends_on": [],
   "done_when": "test_preship.py passes with the new reach tests (each fails on the pre-change preship.py); a staged scripts/dev/role_loader.py commit without a Reach line is denied and with it allowed; preship.py check exits 0 on trunk; REVIEW DIFF APPROVE logged in the card note",
