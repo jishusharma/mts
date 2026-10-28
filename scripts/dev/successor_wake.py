@@ -16,6 +16,8 @@ import os
 import subprocess
 import sys
 import tempfile
+import hashlib
+import uuid
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -159,14 +161,17 @@ def check_checkout(cwd: Path) -> None:
 
 
 def build_script(login: str, model: str, prompt: str, cwd: Path, fire_at: datetime | None, base: str | None = None,
-                 usage: dict | None = None) -> str:
+                 usage: dict | None = None, token: str | None = None) -> str:
     """The PowerShell that writes prompt.txt + USAGE + run.ps1 and registers the one-time task. fire_at None = start it now (no trigger).
-    A future fire_at = one -Once trigger, never a repeat. The run script unregisters the task in a `finally`."""
+    A future fire_at = one -Once trigger, never a repeat. The run script unregisters the task in a `finally`, but only while the
+    task's Description still equals this registration's generation token (B14: a later link re-registers the same name, and the
+    earlier run's finally must not remove it). Instances are Parallel so the later link can start while the earlier run winds down."""
     import json
     for v in (login, model, str(cwd)):
         if "'" in v or "\n" in v:
             raise WakeError("quote or newline in login/model/cwd")
     name = task_name(login)
+    token = token or f"gen-{uuid.uuid4().hex[:12]}"
     d = f"{base or os.environ.get('MTS_SUCC_WAKE_DIR') or BASE_DIR}/{login}"
     cwd_s = str(cwd).replace("\\", "/")
     usage_json = json.dumps(usage or {}, ensure_ascii=True, sort_keys=True, separators=(",", ":"))
@@ -178,7 +183,8 @@ def build_script(login: str, model: str, prompt: str, cwd: Path, fire_at: dateti
         "try {",
         f"  Get-Content -Raw '{d}/prompt.txt' | & $c -p --model {model} --permission-mode bypassPermissions > '{d}/out.log' 2> '{d}/err.log'",
         "} finally {",
-        f"  Unregister-ScheduledTask -TaskName '{name}' -Confirm:$false -ErrorAction SilentlyContinue",
+        f"  $t = Get-ScheduledTask -TaskName '{name}' -ErrorAction SilentlyContinue",
+        f"  if ($t -and $t.Description -eq '{token}') {{ Unregister-ScheduledTask -TaskName '{name}' -Confirm:$false -ErrorAction SilentlyContinue }}",
         "}",
     ])
     L = [
@@ -191,14 +197,15 @@ def build_script(login: str, model: str, prompt: str, cwd: Path, fire_at: dateti
         '[IO.File]::WriteAllText("$d/run.ps1", $r)',
         '$a = New-ScheduledTaskAction -Execute "conhost.exe" -Argument "--headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File $d/run.ps1"',
         '$pr = New-ScheduledTaskPrincipal -UserId ([Security.Principal.WindowsIdentity]::GetCurrent().Name) -LogonType Interactive',
+        "$s = New-ScheduledTaskSettingsSet -MultipleInstances Parallel",
     ]
     if fire_at is None:
-        L.append(f'Register-ScheduledTask -TaskName "{name}" -Action $a -Principal $pr -Force | Out-Null')
+        L.append(f'Register-ScheduledTask -TaskName "{name}" -Action $a -Principal $pr -Settings $s -Description ' + "'" + token + "'" + ' -Force | Out-Null')
         L.append(f'Start-ScheduledTask -TaskName "{name}"')
     else:
         L.append(f"$FireAt = [DateTimeOffset]::Parse('{iso(fire_at)}').LocalDateTime")
         L.append("$t = New-ScheduledTaskTrigger -Once -At $FireAt")
-        L.append(f'Register-ScheduledTask -TaskName "{name}" -Action $a -Trigger $t -Principal $pr -Force | Out-Null')
+        L.append(f'Register-ScheduledTask -TaskName "{name}" -Action $a -Trigger $t -Principal $pr -Settings $s -Description ' + "'" + token + "'" + ' -Force | Out-Null')
     L.append('"registered"')
     return "\n".join(L) + "\n"
 
@@ -227,6 +234,7 @@ def load_plan(login: str, home=None) -> dict | None:
 
 
 LIVE_STATES = ("Running", "Queued")     # a successor of this task is up or about to start (B10)
+SELF_DELAY_MIN = 1                      # own-run successor fires this long after registering (OURS, B14)
 SELF_ENV = "MTS_SUCC_WAKE_TASK"         # run.ps1 sets it: the woken session is that task's own run
 
 
@@ -273,8 +281,13 @@ def register(login: str, *, at: str | None = None, model: str = DEFAULT_MODEL, p
             raise WakeError(f"cannot read --prompt-file: {e}")
         if not prompt or "'@" in prompt:
             raise WakeError("prompt file empty or contains a here-string terminator")
-    immediate = when <= now + timedelta(minutes=1)
-    script = build_script(login, model, prompt, cwd, None if immediate else when, base, usage=usage)
+    own_run = os.environ.get(SELF_ENV) == task_name(login)
+    if own_run and when <= now + timedelta(minutes=1):
+        when = now + timedelta(minutes=SELF_DELAY_MIN)      # B14: never Start the running name; a -Once trigger fires the next link
+        fire, why = iso(when), why + f"; own run: +{SELF_DELAY_MIN} min trigger"
+    immediate = when <= now + timedelta(minutes=1) and not own_run
+    token = "gen-" + hashlib.sha1(f"{login}|{fire}|{now.isoformat()}".encode()).hexdigest()[:12]     # one per registration; dry == real
+    script = build_script(login, model, prompt, cwd, None if immediate else when, base, usage=usage, token=token)
     line = f"{MARK} {task_name(login)} fireAt {fire} (4b2)"
     res = {"script": script, "line": line, "fire_at": fire, "why": why, "task": task_name(login), "ran": False, "handover": None, "usage": usage}
     if dry:
