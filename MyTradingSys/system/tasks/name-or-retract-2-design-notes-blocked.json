@@ -4,14 +4,23 @@
   "commands": [],
   "created": "2026-10-28T06:27:19Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Either the 2 named cards carry state blocked with a logged reason, or this card's result records that the claim could not be matched to any card and why -- never a silent drop.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Commit aae5cdc90's message claims '2 design notes blocked' but no card in that diff moved to state blocked (fix_verification_2026-10-28 FAIL c). Name the 2 cards the commit meant and block them with a reason, or retract the claim.",
   "id": "name-or-retract-2-design-notes-blocked",
   "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into DESKTOP-F7IU69N/lab-verify-footprint",
+      "ref": "65820a9b6fa7",
+      "utc": "2026-10-28T06:58:09Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,18 +28,27 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-28T07:11:09Z",
   "refs": [
     "MyTradingSys/research/fix_verification_2026-10-28/REPORT.md"
   ],
   "result": "",
-  "scope_in": [],
+  "scope_in": [
+    "commit aae5cdc90",
+    "MyTradingSys/system/tasks/"
+  ],
   "scope_out": [],
-  "size": "",
+  "scope_sha": "65820a9b6fa7",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "git show aae5cdc90 --stat and read the full commit message for the 2 design notes it names or implies",
+    "Match each to a card id under MyTradingSys/system/tasks/; do not guess without the commit text",
+    "If genuinely blocked: tasks.py apply-op <id> hold --note '<reason>'; else record in this card's result why the claim does not hold"
+  ],
+  "tests": "scripts/dev/test_tasks.py::test_apply_op_hold_sets_blocked_state (new, must fail on pre-change code if apply-op hold is not yet exercised by a test)",
   "title": "aae5cdc90 claims 2 design notes blocked but no card moves to blocked: name the 2 cards and block them, or retract the claim (fix report FAIL c)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
