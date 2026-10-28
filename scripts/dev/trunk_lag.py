@@ -31,7 +31,18 @@ MAX_BEHIND = 30
 STAMP = "mts_trunk_fetch"
 
 
-def git(repo, *args, timeout=8):
+GIT_TIMEOUT_S = 8   # OURS: the hook runs at every prompt, so it must not hang; tests under load raise it via MTS_TRUNK_LAG_GIT_TIMEOUT
+
+
+def git_timeout():
+    try:
+        return float(os.environ.get("MTS_TRUNK_LAG_GIT_TIMEOUT", "")) or GIT_TIMEOUT_S
+    except ValueError:
+        return GIT_TIMEOUT_S
+
+
+def git(repo, *args, timeout=None):
+    timeout = git_timeout() if timeout is None else timeout
     return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, timeout=timeout)
 
 

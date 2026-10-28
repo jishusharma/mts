@@ -1,34 +1,92 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T16:09:46Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T16:10:20Z",
+    "misses": 11,
+    "reads": [
+      "MyTradingSys/research/layer_lab/INDEX.md",
+      "MyTradingSys/research/layer_lab/reports/2026-10-19_lc-ladder-dev.md",
+      "MyTradingSys/research/layer_lab/reports/2026-10-14_lc-levels-hold.md",
+      "MyTradingSys/research/layer_lab/reports/2026-10-15_lc-event-table.md",
+      "MyTradingSys/research/layer_readiness_2026-10-16/LAYER_READINESS.md"
+    ],
+    "session": "agent-a2976daa187907d79"
+  },
   "created": "2026-10-28T15:26:45Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "All five files carry the SUPERSEDED 2026-10-28 note next to the 8-family mention; diff is additions only; tasks.py lint green.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Layer-lab index, three LC reports and the layer-readiness doc quote the 8 KEEP families as current. Add a one-line SUPERSEDED note to each so no reader or builder takes them as a prior.",
   "id": "lc1-empty-keep-layer-lab-index-reports",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "SUPERSEDED 2026-10-28 note on 5 files (INDEX.md:164, 3 LC reports, LAYER_READINESS.md:57)",
+      "ref": "1293d5b21",
+      "utc": "2026-10-28T16:09:46Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "CBP: reject empty quoted evidence",
+      "ref": "0c1ea48f1d99",
+      "utc": "2026-10-28T14:35:43Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "0c1ea48f1d99 CBP: reject empty quoted evidence",
+      "ref": "MyTradingSys/research/layer_lab/INDEX.md",
+      "utc": "2026-10-28T14:35:43Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-28 T0-ONLY | DECISION (OURS): the fast_track_2026-09-27 LAYER_READINESS.md has no KEEP mention, so it is out.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-28T15:51:44Z",
   "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "result": "SUPERSEDED 2026-10-28 note on 5 files (INDEX.md:164, 3 LC reports, LAYER_READINESS.md:57)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/INDEX.md",
+    "MyTradingSys/research/layer_lab/reports/2026-10-14_lc-levels-hold.md",
+    "MyTradingSys/research/layer_lab/reports/2026-10-15_lc-event-table.md",
+    "MyTradingSys/research/layer_lab/reports/2026-10-19_lc-ladder-dev.md",
+    "MyTradingSys/research/layer_readiness_2026-10-16/LAYER_READINESS.md"
+  ],
+  "scope_out": [
+    "any number, verdict or table row; levels_confluence_2026-10-14 folder; v1_plan D4 doc (own card)"
+  ],
+  "scope_sha": "0c1ea48f1d99",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.md (fair-control section: KEEP list none, 0 of 12, DEV 2022-04-01..2024-06-30)"
+  ],
+  "state": "done",
+  "steps": [
+    "Open each file, find the 8-family KEEP mention (INDEX.md line 164, LAYER_READINESS.md line 57, the three reports).",
+    "Append after each mention: ' [SUPERSEDED 2026-10-28: fair control gives KEEP none, levels_hold.md]'. Change nothing else.",
+    "Run python scripts/dev/tasks.py lint and the grep below; ship."
+  ],
+  "taken": "2026-10-28T16:09:46Z",
+  "tests": "grep -c 'SUPERSEDED 2026-10-28' on the five files: 0 before, >= 1 each after; the diff shows only added text.",
   "title": "LC1 KEEP list is now empty (T05-F5): annotate layer_lab INDEX.md and reports 2026-10-14_lc-levels-hold / 2026-10-15_lc-event-table / 2026-10-19_lc-ladder-dev, plus layer_readiness and layer_review docs that cite the 8 KEEP families",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

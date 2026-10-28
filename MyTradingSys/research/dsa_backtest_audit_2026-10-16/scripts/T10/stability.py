@@ -78,7 +78,8 @@ def gross_rows(arm="T", path=None):
 
 
 def lc1_rows():
-    """levels_hold on standard DEV: per touch of a KEEP family, net = HOLD(1/0) minus the family's pooled
+    """LEGACY 8-family set, void since T05-F5: the fair control (levels_hold.md) has KEEP none, 0 of 12. Kept as published.
+    levels_hold on standard DEV: per touch of a KEEP family, net = HOLD(1/0) minus the family's pooled
     random-line hold rate, in pp, so the mean equals the study 'difference'. Side = level above/below midnight."""
     sys.path.insert(0, str(REPO))
     sys.path.insert(0, str(REPO / "MyTradingSys/research/levels_confluence_2026-10-14"))
@@ -146,7 +147,7 @@ def table(name, unit, rows):
 def main():
     studies = [("gross_effect_screen arm T", "% net of 0.14 cost+funding", gross_rows("T")),
                ("gross_effect_screen arm C", "% net of 0.14 cost+funding", gross_rows("C")),
-               ("levels_hold LC1 KEEP", "pp hold minus random", lc1_rows())]
+               ("levels_hold LC1 KEEP (LEGACY 8-family set, void since T05-F5; fair control KEEP none)", "pp hold minus random", lc1_rows())]
     studies += [("rsi " + k, "% net (fees)", v) for k, v in rsi_rows().items()]
     lines = ["| study | year | cut | n | mean |", "|---|---|---|---|---|"]
     flips = []

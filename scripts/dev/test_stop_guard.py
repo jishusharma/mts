@@ -57,6 +57,40 @@ class StopGuardTest(unittest.TestCase):
         sh(self.a, "fetch", "-q", "origin")
         self.assertEqual(self.run_hook(), "")
 
+    def test_commits_with_a_tree_identical_to_origin_do_not_block_but_a_differing_file_does(self):
+        """B17: a commit plus its revert (or merge commits trunk already holds) leave HEAD's tree equal to origin's: nothing to ship."""
+        (self.a / "w.py").write_text("w\n", newline="\n")
+        sh(self.a, "add", "w.py")
+        sh(self.a, "commit", "-q", "-m", "w")
+        sh(self.a, "revert", "--no-edit", "HEAD")
+        sh(self.a, "commit", "-q", "--allow-empty", "-m", "dup")
+        self.assertEqual(self.run_hook(), "")
+        (self.a / "w.py").write_text("real\n", newline="\n")
+        sh(self.a, "add", "w.py")
+        sh(self.a, "commit", "-q", "-m", "real")
+        self.assertIn("not shipped", self.run_hook())
+
+    def test_identical_content_still_does_not_block_after_the_trunk_moves_on(self):
+        """B17 follow-up: HEAD equals an OLD trunk commit while origin/fast-track has moved past it; compare with the merge-base, not the tip."""
+        (self.a / "w.py").write_text("w\n", newline="\n")
+        sh(self.a, "add", "w.py")
+        sh(self.a, "commit", "-q", "-m", "w")
+        sh(self.a, "revert", "--no-edit", "HEAD")
+        other = self.tmp / "b"
+        sh(self.tmp, "clone", "-q", str(self.tmp / "origin.git"), str(other))
+        sh(other, "config", "user.email", "t@t")
+        sh(other, "config", "user.name", "t")
+        (other / "new.py").write_text("n\n", newline="\n")
+        sh(other, "add", "new.py")
+        sh(other, "commit", "-q", "-m", "trunk moved")
+        sh(other, "push", "-q", "origin", "HEAD:fast-track")
+        sh(self.a, "fetch", "-q", "origin")
+        self.assertEqual(self.run_hook(), "")
+        (self.a / "w.py").write_text("real\n", newline="\n")
+        sh(self.a, "add", "w.py")
+        sh(self.a, "commit", "-q", "-m", "real")
+        self.assertIn("not shipped", self.run_hook())
+
     def test_same_state_blocks_a_session_only_once(self):
         os.environ["MTS_STOP_GUARD_HOME"] = str(self.tmp)
         self.addCleanup(os.environ.pop, "MTS_STOP_GUARD_HOME", None)
