@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T09:53:39Z",
   "commands": [
     "python -m pytest -q scripts/dev/test_preship.py",
     "python scripts/dev/preship.py check"
@@ -33,6 +34,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "scripts/dev/preship.py reach-line gate, 21 tests pass",
+      "ref": "e284427e0",
+      "utc": "2026-10-28T09:53:39Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "OPS_CHANGE_CHECK.md: 8-question reach test, cited by Lead and DEBUGGING",
@@ -56,7 +63,12 @@
   "refined_by": "",
   "refreshed": "2026-10-26T17:26:22Z",
   "refs": [],
-  "result": "",
+  "result": "scripts/dev/preship.py reach-line gate, 21 tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/preship.py",
     "scripts/dev/test_preship.py",
@@ -73,13 +85,14 @@
     "MyTradingSys/system/OPS_CHANGE_CHECK.md (Reach line format, 8 questions)",
     "scripts/dev/preship.py:34 COMMIT regex, :241 hook_commit"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Post 'REVIEW ops-change-checklist-ship-gate PLAN <branch>' via mts_signal.py send --kind ask once plan and test list exist; wait for APPROVE",
     "Write failing tests in test_preship.py: commit text touching role_loader.py without Reach is denied; with 'Reach: Q1-Q8 ok' allowed; unrelated paths allowed; heredoc and -m forms both parsed; garbage input denies (fail closed) only when a reach path is staged; MTS_PRESHIP=off still bypasses",
     "Implement REACH_PATHS and a reach check in hook_commit and in check mode (git log origin/fast-track..HEAD --format=%B for commits touching those paths); deny text names OPS_CHANGE_CHECK.md and the exact line to add",
     "Run python -m pytest -q scripts/dev/test_preship.py and python scripts/dev/preship.py check; post 'REVIEW ops-change-checklist-ship-gate DIFF <sha>' and wait for APPROVE before sync.py ship"
   ],
+  "taken": "2026-10-28T09:53:39Z",
   "tests": "scripts/dev/test_preship.py: reach tests written first, fail on current preship.py (role_loader.py commit without Reach is allowed today); cover restart-free state, API-free paths, parse error fails closed",
   "title": "Ship gate: preship rule that fails a commit touching role_*, mts_signal.py or hooks without a Reach line",
   "weight": "CRITICAL",
