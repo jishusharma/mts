@@ -168,31 +168,47 @@ def test_three_stage_recipe_stage3_matching_stage2_accepted(repo, monkeypatch):
     assert not any("reviewer vendor must differ" in e for e in F.gate(cards[2], cards, repo))
 
 
-def test_v5_mutant_non_string_vendor_rejected():
-    with pytest.raises(ValueError, match="nonempty string"):
-        F.normalize_vendor(123)
-    with pytest.raises(ValueError, match="nonempty string"):
-        F.normalize_vendor(None)
-    with pytest.raises(ValueError, match="nonempty string"):
-        F.normalize_vendor(["codex"])
+def test_three_stage_recipe_stage3_matching_stage1_producer_is_refused(repo, monkeypatch):
+    recipe = [
+        ("producer", "codex", "audit", "gpt-6.1-sol", "medium", "Stage 1."),
+        ("reviewer", "gemini", "audit", "gemini-2.5-pro", "low", "Stage 2."),
+        ("verifier", "codex", "audit", "gpt-6.1-sol", "medium", "Stage 3."),
+    ]
+    monkeypatch.setitem(F.RECIPES, "three-stage-same-producer-fixture", recipe)
+    with pytest.raises(ValueError, match="reviewer vendor must differ from producer vendor"):
+        F.launch(repo, spec() | {"id": "stage3-same-producer", "recipe": "three-stage-same-producer-fixture"})
 
 
-def test_v5_mutant_empty_model_rejected():
-    stage = [("stage1", "codex", "audit", "", "low", "Lens")]
+@pytest.mark.parametrize("bad_vendor", [123, None, ["codex"]])
+def test_v5_mutant_non_string_vendor_rejected_through_launch(repo, monkeypatch, bad_vendor):
+    recipe = [
+        ("producer", bad_vendor, "audit", "gpt-6.1-sol", "medium", "Producer."),
+        ("challenge", "gemini", "audit", "gemini-2.5-pro", "low", "Reviewer."),
+    ]
+    monkeypatch.setitem(F.RECIPES, "non-string-vendor-fixture", recipe)
     with pytest.raises(ValueError, match="nonempty string"):
-        F.validate_hardened_recipe(stage)
-    stage_whitespace = [("stage1", "codex", "audit", "   ", "low", "Lens")]
-    with pytest.raises(ValueError, match="nonempty string"):
-        F.validate_hardened_recipe(stage_whitespace)
-    stage_nonstring = [("stage1", "codex", "audit", 123, "low", "Lens")]
-    with pytest.raises(ValueError, match="nonempty string"):
-        F.validate_hardened_recipe(stage_nonstring)
+        F.launch(repo, spec() | {"id": "non-string-vendor", "recipe": "non-string-vendor-fixture"})
 
 
-def test_v5_mutant_model_lowercase_required():
-    stage = [("stage1", "codex", "audit", "GPT-6.1-SOL", "low", "Lens")]
-    validated = F.validate_hardened_recipe(stage)
-    assert validated[0][3] == "gpt-6.1-sol"
+@pytest.mark.parametrize("bad_model", ["", "   ", 123])
+def test_v5_mutant_empty_model_rejected_through_launch(repo, monkeypatch, bad_model):
+    recipe = [
+        ("producer", "codex", "audit", bad_model, "medium", "Producer."),
+        ("challenge", "gemini", "audit", "gemini-2.5-pro", "low", "Reviewer."),
+    ]
+    monkeypatch.setitem(F.RECIPES, "empty-model-fixture", recipe)
+    with pytest.raises(ValueError, match="vendor model must be a nonempty string"):
+        F.launch(repo, spec() | {"id": "empty-model", "recipe": "empty-model-fixture"})
+
+
+def test_v5_mutant_model_lowercase_required_through_launch(repo, monkeypatch):
+    recipe = [
+        ("producer", "codex", "audit", " GPT-6.1-SOL ", "medium", "Producer."),
+        ("challenge", "gemini", "audit", " GEMINI-2.5-PRO ", "low", "Reviewer."),
+    ]
+    monkeypatch.setitem(F.RECIPES, "lowercase-model-fixture", recipe)
+    cards = F.launch(repo, spec() | {"id": "lowercase-model", "recipe": "lowercase-model-fixture"})
+    assert [card["model"] for card in cards] == ["gpt-6.1-sol", "gemini-2.5-pro"]
 
 
 def test_v5_mutant_gate_normalized_allowlist_card_vendor_check(repo, monkeypatch):
@@ -205,10 +221,30 @@ def test_v5_mutant_gate_normalized_allowlist_card_vendor_check(repo, monkeypatch
     # Tamper card's vendor to non-normalized value
     cards[0]["vendor"] = " CODEX "
     errs = F.gate(cards[0], cards, repo)
-    assert any("flow vendor must use its normalized allowlisted value" in e or "drifted" in e for e in errs)
+    assert "flow vendor must use its normalized allowlisted value" in errs
     cards[0]["vendor"] = "unknownvendor"
     errs = F.gate(cards[0], cards, repo)
-    assert any("flow vendor must use its normalized allowlisted value" in e or "recipe/stage is invalid" in e or "drifted" in e for e in errs)
+    assert "flow vendor must use its normalized allowlisted value" in errs
+
+
+def test_gate_rejects_non_boolean_vendor_hardening_flag(repo):
+    cards = F.launch(repo, spec() | {"id": "bad-hardening-flag", "vendor_gate_hardened": True})
+    card = cards[0]
+    card["flow"]["vendor_gate_hardened"] = "yes"
+    card["flow"]["contract"] = F.contract(card["flow"])
+    assert "vendor_gate_hardened must be a boolean" in F.gate(card, cards, repo)
+
+
+def test_accepted_rejects_empty_receipt_vendor(repo, monkeypatch):
+    recipe = [
+        ("producer", "codex", "audit", "gpt-6.1-sol", "medium", "Producer."),
+        ("challenge", "gemini", "audit", "gemini-2.5-pro", "low", "Reviewer."),
+    ]
+    monkeypatch.setitem(F.RECIPES, "empty-receipt-vendor-fixture", recipe)
+    cards = F.launch(repo, spec() | {"id": "empty-receipt-vendor", "recipe": "empty-receipt-vendor-fixture"})
+    done = complete(repo, cards[0])
+    done["flow_receipt"]["vendor"] = ""
+    assert F.accepted(done, repo) is False
 
 
 def test_same_vendor_override_is_c0_only_and_boolean(repo, monkeypatch):

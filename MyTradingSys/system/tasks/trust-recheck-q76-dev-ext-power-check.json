@@ -16,17 +16,33 @@
   "id": "trust-recheck-q76-dev-ext-power-check",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "af2612508b3b Lab_Guy(GEM-NUC): end-to-end backlog refinement, non-Claude C2 spec reviews, ",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-18_q76-dev-ext-power-check.md",
+      "utc": "2026-10-18T05:18:55Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS) 2026-10-23: refined by Session_Planner worker (R1 size S est_turns 12, R2 scope, R3 path/host); no ACCEPT stamp, needs ONE batched Sonnet reviewer pass (or Lab_Guy for CODEX), then stamp REVIEWED:<date> ACCEPT and tasks.py check. LAB:results CLASS:C2 WEIGHT:CRUCIAL. Producer was CODEX/GPT; re-derives from local DEV market data (bars open before 2022-01-01 only here). DATA PATH: F:/MTS/data/dev_ext_2019_2021/klines/BTCUSDT-1m-2020-01.csv .. 2021-12.csv (read-only; absent on the Desktop host); run with --host JIS-NUC. Audit target, not a trusted premise. No outcome or holdout rerun. Different reviewer vendor than the producer (CODEX/GPT produced it, so Gemini or Claude re-derives). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the report.",
+  "note": "REVIEWED:2026-10-28 ACCEPT (Sonnet reviewer Agent a7d41f37, after 1 FIX applied once, not re-read, planner DECISION OURS). DECISION (OURS) 2026-10-23: refined by Session_Planner worker (R1 size S est_turns 12, R2 scope, R3 path/host); no ACCEPT stamp, needs ONE batched Sonnet reviewer pass (or Lab_Guy for CODEX), then stamp REVIEWED:<date> ACCEPT and tasks.py check. LAB:results CLASS:C2 WEIGHT:CRUCIAL. Producer was CODEX/GPT; re-derives from local DEV market data (bars open before 2022-01-01 only here). DATA PATH: F:/MTS/data/dev_ext_2019_2021/klines/BTCUSDT-1m-2020-01.csv .. 2021-12.csv (read-only; absent on the Desktop host); run with --host JIS-NUC. Audit target, not a trusted premise. No outcome or holdout rerun. Different reviewer vendor than the producer (CODEX/GPT produced it, so Gemini or Claude re-derives). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the report.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
+  "refreshed": "2026-10-28T09:54:50Z",
   "refs": [
     "MyTradingSys/system/tasks/archive/q76-dev-ext-power-check.json",
     "MyTradingSys/research/layer_lab/reports/2026-10-19_lab-trust-tag.md"
   ],
+  "reroute": {
+    "at": "2026-10-28T09:59:29Z",
+    "desk": "20261028-095929-trust-recheck-q76-dev-ext-power-check",
+    "to": "DSA",
+    "why": "credits"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/pit_levels_2026-10-16/bug_b187_evidence.txt",
@@ -42,14 +58,15 @@
     "live path",
     "data fetch beyond the read-only local DEV files named in scope_in"
   ],
+  "scope_sha": "",
   "size": "S",
   "sources": [
     "MyTradingSys/research/pit_levels_2026-10-16/bug_b187_evidence.txt:1-6 (662 baseline, 2,427 needed)",
-    "MyTradingSys/research/pit_levels_2026-10-16/PRE_REG_V2.md:31-45 (power gate, m=42)"
+    "MyTradingSys/research/pit_levels_2026-10-16/PRE_REG_V2.md:17-31 (item 2 power gate), :44 (stop >=0.40% filter), :33-36 (m=42)"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
-    "Run on JIS-NUC (--host JIS-NUC; F:/MTS/data is not on the Desktop). Read the written feasibility rule (PRE_REG_V2.md:31-45, stop >=0.40%) and the report's numbers (662 + 545 = 1,207 vs 2,427), not its code.",
+    "Run on JIS-NUC (--host JIS-NUC; F:/MTS/data is not on the Desktop). Read the written feasibility rule (PRE_REG_V2.md:17-31 and :44, stop >=0.40%) and the report's numbers (662 + 545 = 1,207 vs 2,427), not its code.",
     "Re-derive the 545 DEV_EXT feasible days with your own independent script from the 1m CSVs and the written rule; compare 545 and 1,207; a difference is a MISMATCH with file:line (the lab Haiku blind pass got 549, 0.7 percent apart, so state the tolerance used).",
     "Confirm no outcome column or bar at or after 2022-01-01 was read, then mutate one line of the day-count in a scratch copy and record the changed number; leave the real files unchanged.",
     "Write the report MyTradingSys/research/layer_lab/reports/2026-10-23_trust-recheck-q76-dev-ext-power-check.md: reviewer vendor and model, the numbers, MATCH or MISMATCH per number, mutation result, tag proposal VERIFIED-C2 or DISPUTED."

@@ -13,4 +13,4 @@ Applies to: scripts/dev/role_*, mts_signal.py, sync.py, hooks, roles/*.md. Answe
 
 Commit body line (one per commit touching those paths): `Reach: Q1-Q8 ok|n/a <why>`
 Example: `Reach: Q1-Q8 ok` or `Reach: Q1-Q8 ok, Q2 n/a no session needed`.
-Gate enforcement at ship: card ops-change-checklist-ship-gate.
+Enforced: preship.py hook-commit denies a commit touching those paths without the line (every time; fails closed); `preship.py check` flags unpushed ones; MTS_PRESHIP=off bypasses.
