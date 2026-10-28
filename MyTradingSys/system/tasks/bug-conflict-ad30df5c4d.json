@@ -2,6 +2,15 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T14:42:04Z",
+    "misses": 1,
+    "reads": [
+      "MyTradingSys/system/GATEWAY_NUC.md"
+    ],
+    "session": "agent-aa5191fb63b8e54de"
+  },
   "created": "2026-10-28T12:01:33Z",
   "depends_on": [],
   "done_when": "GATEWAY_NUC.md gains one line naming the carve-out (only gateway_run.py opens ~/.mts_gateway/key; sessions and Agents still never read, print or commit it) and test_integrity.py passes; file stays under its size cap",
