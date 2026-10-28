@@ -1,12 +1,15 @@
 {
   "card": "argon-med-formulas-vs-bars-drift",
   "done_when": "MyTradingSys/research/design_cards_2026-10-26/argon_formulas_vs_bars.md exists: one row per formula, FORMULAS.md quote with line, code quote with file:line, SAME, DIFFERENT or NOT_IN_DATA",
+  "finished": "2026-10-28T00:04:09Z",
   "from": "lane_health",
+  "host": "DESKTOP-F7IU69N",
   "id": "20261025-234210-argon-med-formulas-vs-bars-drift",
   "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card argon-med-formulas-vs-bars-drift: [GEMINI] Argon-medium: FORMULAS.md definitions vs sim_desk stats and fill code (differences, file:line)\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief argon-med-formulas-vs-bars-drift\nGoal: List every place where the sim desk stats or fill rules (_bars.py, desk.py stats) differ from the definition in FORMULAS.md (R, fee, filled-only counting, drawdown, win rate). Quote both sides; \nRead: MyTradingSys/research/design_cards_2026-10-26/argon_formulas_vs_bars.md (new file only)\nStep 1: Read MyTradingSys/backtest/layers/FORMULAS.md fully\nStep 2: Read MyTradingSys/research/sim_desk/studies/_bars.py and the stats function in MyTradingSys/research/sim_desk/desk.py\nStep 3: No FORMULAS.md definition for a quantity means NOT_IN_DATA, never a guess\nStep 4: One row per formula; mark SAME, DIFFERENT or NOT_IN_DATA; copy numbers, never recompute\nStep 5: Commit with a Result: line (rows, DIFFERENT count)\nRun exactly:\n  C:/Users/E-ngineers/.gemini/bin/agy.exe --print \"Follow the steps of card argon-med-formulas-vs-bars-drift (python scripts/dev/tasks.py brief argon-med-formulas-vs-bars-drift). Write only MyTradingS\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-10-25_argon-med-formulas-vs-bars-drift.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-10-25_argon-med-formulas-vs-bars-drift.md>\".",
   "posted": "2026-10-25T23:42:10Z",
   "rerouted_from": "CODEX",
-  "status": "pending",
+  "result": "DONE card done, lane CODEX, REVIEWED:sonnet-reviewer-a89035 2026-10-26; argon_formulas_vs_bars.md delivered",
+  "status": "done",
   "target": "DSA",
   "title": "[GEMINI] Argon-medium: FORMULAS.md definitions vs sim_desk stats and fill code (differences, file:line)"
 }
