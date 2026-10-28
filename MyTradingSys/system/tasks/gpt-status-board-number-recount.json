@@ -1,0 +1,61 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-28T17:55:18Z",
+  "depends_on": [],
+  "done_when": "Report MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-status-board-number-recount.md has one row per printed number (script value vs independent value, mismatch count stated) and a verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "status_board.py claims every number comes from a command run now. Recompute each printed count (cards per state and lane, commits in window, disk free, signal lines) independently with git, tasks.py list and os.disk_usage and diff against its output; each unmeasurable item must print NOT_IN_DATA. Producer: Claude.",
+  "id": "gpt-status-board-number-recount",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "status board: GPT and Gemini section, newest-by-time BUDGET, widened cleanup grep, 45 line",
+      "ref": "344f483c4fbe",
+      "utc": "2026-10-28T17:32:53Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Producer vendor: Claude. Reviewer vendor: GPT (codex_run.py); producer != reviewer. Reviewer must NOT read: test_status_board.py expected values before recomputing. Read-only audit: no product code, no live path, no data that lives only on JIS-NB, no VALIDATION or HOLDOUT. No ACCEPT stamp is set by the card author: the reviewer's own report is the stamp. DECISION (OURS) 2026-10-28: weight ROUTINE. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T17:55:20Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/status_board.py",
+    "scripts/dev/test_status_board.py",
+    "MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-status-board-number-recount.md"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "any live process, HALT file or deployment",
+    ".secrets and keys"
+  ],
+  "scope_sha": "344f483c4fbe",
+  "size": "S",
+  "sources": [
+    "scripts/dev/status_board.py docstring lines 1-5 (operator 2026-10-28 d-status-is-inline-dashboard: numbers come from commands run now)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Run python scripts/dev/status_board.py once from a scratch worktree and save the output in the report.",
+    "For each number in the output write the independent command you used and the value it gave; flag any mismatch beyond the rounding the script states.",
+    "List every section and say whether a failure prints NOT_IN_DATA (read the try/except blocks, file:line), then report findings as a table: severity, file:line, evidence, proposed fix. Change no code.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "",
+  "title": "GPT recounts every number status_board.py prints from git and task cards (never invent numbers)",
+  "weight": "ROUTINE",
+  "worker": ""
+}
