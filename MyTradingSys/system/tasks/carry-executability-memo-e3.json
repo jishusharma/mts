@@ -2,6 +2,16 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T15:57:12Z",
+    "misses": 18,
+    "reads": [
+      "MyTradingSys/research/carry_basis_2026-10-18/RESULT.md",
+      "MyTradingSys/research/fable_runs_2026-10-28/R1_EDGE_OR_STOP.md"
+    ],
+    "session": "agent-ab3df96bdd580d435"
+  },
   "created": "2026-10-28T09:26:38Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/carry_basis_2026-10-18/EXECUTABILITY.md with three sections, every number SOURCED (URL/date or file:line) or OURS, a one-line operator ask for the sealed read, and the PASS/park rule from R1 E3 (venue exists AND latest-year net >= 4 %/yr OURS AND operator approves the sealed read and going private).",
