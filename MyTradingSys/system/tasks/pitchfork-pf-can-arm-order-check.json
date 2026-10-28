@@ -20,7 +20,7 @@
  "not_twin_of": [
   "pitchfork-review-fixes-2026-10-28"
  ],
- "note": "DRAFT 2026-10-28 Session_Planner (OURS): split from pitchfork-review-fixes-2026-10-28 (step 0 there). Read-only so live_path false. IMPORTANT: verdict decides whether the live Java card is urgent; needs real stamp. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+ "note": "DRAFT 2026-10-28 Session_Planner (OURS): split from pitchfork-review-fixes-2026-10-28 (step 0 there). Read-only so live_path false. IMPORTANT: verdict decides whether the live Java card is urgent; needs real stamp. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | T0 2026-10-28 planner-refine-A: scope_in paths all tracked, no open claim on them, content complete; only gap = Lab_Guy REVIEWED stamp (IMPORTANT+).",
  "prio": 2,
  "refine_tries": 0,
  "refined_by": "",
