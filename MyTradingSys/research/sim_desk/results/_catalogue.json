@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
-"count": 187,
-"exported": 187,
+"count": 188,
+"exported": 188,
 "rows": [
 {
 "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -168,6 +168,20 @@
 "exported": true,
 "result_id": "t07_stale_verdicts",
 "date": "2026-10-16",
+"status": "SEE_VERDICT",
+"verdict_class": "other"
+},
+{
+"id": "krown-s8-e2-desk-crosscheck",
+"family": "Audit: simulator vs E2 mechanics",
+"title": "Cross-check: E2 (4h OHLC) vs the simulator desk (1m replay), Krown S8 4h, BTCUSDT, 2026-10-28",
+"kind": "audit",
+"kind_source": "result file",
+"verdict": "MECHANICS AGREE",
+"source": "MyTradingSys/research/fable_run6_powered_prereg/CROSSCHECK.md",
+"exported": true,
+"result_id": "krown-s8-e2-desk-crosscheck",
+"date": null,
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },

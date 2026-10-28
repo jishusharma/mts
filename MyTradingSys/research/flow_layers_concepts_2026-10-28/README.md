@@ -86,3 +86,22 @@ Section 1 and facts F1-F8.
 - Engine, HALT and Tom state are NOT_IN_DATA here (live mirror points at another host).
 - The heatmap shots (1H to 1D) show a different layer and are not used here.
 - One session, one day; nothing here is evidence of an edge.
+
+## 6. Operator direction and the 15:01Z read (appended)
+
+Operator, 2026-10-28 about 15:01Z (verbatim): "See, these are the moments when we have to closely watch how the top traders related data is moving, because it gives perhaps some insight on what the market is doing and what the top traders are doing, and when they are succeeding and when they are falling, and if there is something opposite that they do or something similar. So all these things which provide some kind of edge has to be understood first, that how the edge should be found from these things. And perhaps the edge is by finding the confluence and not by a clear winner of some sort."
+Reading: understand each layer as a concept first; the working idea is confluence of layers, not one winning layer. No edge is claimed here.
+
+Shot 565dfa971fbc (BTCUSDT 1m, window 13:50 to 15:10Z, last bar about 15:00-15:01Z, time inferred from the axis):
+
+| Item | Reading | Tag |
+|---|---|---|
+| Price | 80,647.7; range about 80,480-80,740 since the 13:50 low; now at the upper BB 80,646.4 (mid 80,555.2, lower 80,464.0); VWAP 80,847.3 (legends) | OBSERVED |
+| Top-trader accounts | 2.0930; step up after 14:00, then steps near 14:48 and 14:57; was 2.0350 at 13:49 and 2.0800 at 14:33 (f51b95c21196) | OBSERVED |
+| Top-trader positions | 1.8500; steps up near 14:05, 14:15 and 14:45; was 1.8340 at 13:49 and 1.8480 at 14:33 | OBSERVED |
+| Net Longs (New) / (open) | 492.26 rising / -548.05 | OBSERVED |
+| Net Shorts (New) / (open) | 911.06 (red, easing) / 1.259K (flat to slightly down) | OBSERVED |
+| Both top-trader ratios rose in steps for about 70 minutes while price rose about 170 points from the low and stayed in a range | direction agrees with price here; at 13:36-13:50 (F7) it did not react | OBSERVED 565dfa971fbc, 25118992aa7b |
+| Net longs/shorts values across shots with different left edges (13:50 vs 12:50 vs 08:30) | not like-for-like, same caveat as F11; only within-shot moves used | NOT_IN_DATA (anchor) |
+
+Concept candidate 4 (added): top-trader ratios step up together after a low and stay up while price ranges, so the useful question is which other layers (OI, CVD, net delta, net shorts) agree with them at the same minutes, not whether one of them leads alone.

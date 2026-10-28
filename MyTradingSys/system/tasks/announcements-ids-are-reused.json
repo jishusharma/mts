@@ -1,34 +1,76 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T15:32:48Z",
   "commands": [],
   "created": "2026-10-28T13:08:18Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/test_announcements_ids.py passes on the live file (duplicate ids: none) and fails on a fixture with a repeated id; any duplicate id found in the file is renumbered.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "ANNOUNCEMENTS.md ids are unique, and the next id for a date is max+1, checked by a test.",
   "id": "announcements-ids-are-reused",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "0 duplicate ids of 12; scripts/dev/test_announcements_ids.py",
+      "ref": "95f14c0ab",
+      "utc": "2026-10-28T15:32:48Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Reapply \"dedupe batch 1: workers=Agents, model_guard refs, heartbeat, sched exceptions, Su",
+      "ref": "022aae9066b9",
+      "utc": "2026-10-28T09:34:11Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "022aae9066b9 Reapply \"dedupe batch 1: workers=Agents, model_guard refs, heartbeat, sched e",
+      "ref": "MyTradingSys/system/ANNOUNCEMENTS.md",
+      "utc": "2026-10-28T09:34:11Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "MyTradingSys/system/ANNOUNCEMENTS.md: an id was reused for a different announcement (reported by fixver follow-ups). Builder: grep duplicate ids in the file, add a check (test) that ids are unique, and make the add path pick max+1.",
+  "note": "DRAFT 2026-10-28 Session_Planner (OURS). Test only plus a doc fix; no new hook or gate step (prefer deleting). Original: an id was reused for a different announcement (fixver follow-ups).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-28T14:34:25Z",
   "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "result": "0 duplicate ids of 12; scripts/dev/test_announcements_ids.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/system/ANNOUNCEMENTS.md",
+    "scripts/dev/test_announcements_ids.py"
+  ],
+  "scope_out": [
+    "announcement content, HOLD/STOP semantics, tasks.py hold parser"
+  ],
+  "scope_sha": "022aae9066b9",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/ANNOUNCEMENTS.md entry format line 13"
+  ],
+  "state": "done",
+  "steps": [
+    "Count: grep '^### A-' ANNOUNCEMENTS.md, report duplicate ids (note: A-20261018-5 sits after -8, -1 reused across dates is fine only if full id differs).",
+    "Write the test with a next_id(text, yyyymmdd) helper inside the test module (no new tool); fix real duplicates by renumbering the later entry and its signal references (grep the old id).",
+    "Add the test to extra_tests.tsv; verify: sha, git cherry empty, ls-tree."
+  ],
+  "taken": "2026-10-28T15:32:48Z",
+  "tests": "scripts/dev/test_announcements_ids.py::test_ids_unique and ::test_next_id_is_max_plus_one (fail first: no helper, or duplicate fixture)",
   "title": "ANNOUNCEMENTS ids are reused",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

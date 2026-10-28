@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-28T14:33:56Z",
+  "depends_on": [],
+  "done_when": "Root cause named in the commit body with evidence; step 3xt PASS in a full run under load (or MTS_GATE_JOBS-loaded rerun) and standalone 9/9 still passes.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "test_trunk_lag.py passes inside a full run_all_tests run (step 3xt), not only standalone.",
+  "id": "trunk-lag-test-fails-under-full-load",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "trunk_lag: measure the session's folder (hook payload cwd), not the process folder; keep 5",
+      "ref": "086a1b257941",
+      "utc": "2026-10-23T21:43:01Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DRAFT 2026-10-28 Session_Planner (OURS). Evidence: 71/72 steps pass, 3xt FAIL on test_trunk_lag.py, standalone 9/9.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T14:34:27Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/test_trunk_lag.py",
+    "scripts/dev/trunk_lag.py"
+  ],
+  "scope_out": [
+    "run_all_tests.py, gate order, other tests"
+  ],
+  "scope_sha": "086a1b257941",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/fix_verification_2026-10-28/run_all_tests_full_2026-10-28.txt:157",
+    "scripts/dev/trunk_lag.py:34"
+  ],
+  "state": "ready",
+  "steps": [
+    "Reproduce: python scripts/dev/run_extra_tests.py (default jobs, all 187 files) and capture the test_trunk_lag.py traceback; the full log only has 'FAIL', no traceback.",
+    "Check the hypothesis (UNVERIFIED): trunk_lag.git() default timeout=8 (trunk_lag.py:34) raises TimeoutExpired when git subprocesses starve under load (test_refresh_main_checkout.py took 306 s in the same step); else fetch-throttle clock or shared env.",
+    "Fix the cause (test-side timeout via patch, or a raised/overridable timeout); rerun loaded and standalone; verify sha, git cherry empty, ls-tree."
+  ],
+  "tests": "scripts/dev/test_trunk_lag.py (existing, 9 tests): reproduce failing under load first with 4 parallel CPU burners or run_extra_tests.py at default jobs; fix must turn that run green",
+  "title": "test_trunk_lag.py fails under full run_all_tests load, passes standalone",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

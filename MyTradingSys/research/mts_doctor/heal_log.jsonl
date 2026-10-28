@@ -1,0 +1,210 @@
+{"heal": "release-shipped", "slug": "ai-behavior-fold-or-archive", "reason": "card ai-behavior-fold-or-archive is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "argon-fix-defects-and-re-land", "reason": "card argon-fix-defects-and-re-land is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "bt-engine-wire-real-funding-rsi-cc-rerun", "reason": "card bt-engine-wire-real-funding-rsi-cc-rerun is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "bug-app-permission-prompts-unattended", "reason": "card bug-app-permission-prompts-unattended is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "bug-instruction-conflicts-not-logged", "reason": "card bug-instruction-conflicts-not-logged is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "cbp-add-channel-latest-n-to-fetch-captio", "reason": "card cbp-add-channel-latest-n-to-fetch-captio is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "cbp-row-schema-expiry-gaps", "reason": "card cbp-row-schema-expiry-gaps is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "ci-flaky-sh-timeout-process-tree-windows", "reason": "card ci-flaky-sh-timeout-process-tree-windows is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "confluence-s1-context-counts", "reason": "card confluence-s1-context-counts is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "confluence-s3-context-read", "reason": "card confluence-s3-context-read is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "context-conditioned-session-flow-states", "reason": "card context-conditioned-session-flow-states is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "coord-audit-review", "reason": "card coord-audit-review is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "dispatch-a-critical-crucial-blocker-outr", "reason": "card dispatch-a-critical-crucial-blocker-outr is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "dsa-audit-04-clean-room-twin", "reason": "card dsa-audit-04-clean-room-twin is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "dsa-audit-10-missing-aspects", "reason": "card dsa-audit-10-missing-aspects is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "every-station-save-unshipped-worktree-wo", "reason": "card every-station-save-unshipped-worktree-wo is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "fix-raw-1d-vs-1m-resample-mismatch-905-o", "reason": "card fix-raw-1d-vs-1m-resample-mismatch-905-o is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "gemini-queue-claim-release-push-hangs-fo", "reason": "card gemini-queue-claim-release-push-hangs-fo is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "intrabar-stop-target-ordering-sensitivit", "reason": "card intrabar-stop-target-ordering-sensitivit is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "main-checkout-stays-a-clean-copy-of-trun", "reason": "card main-checkout-stays-a-clean-copy-of-trun is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "mfe-exit-dev-only-rerun-not-reproducible", "reason": "card mfe-exit-dev-only-rerun-not-reproducible is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "oi-pivot-reversal-probability-by-tf", "reason": "card oi-pivot-reversal-probability-by-tf is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "pipeliner-boot-diet", "reason": "card pipeliner-boot-diet is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "qriptal-discord-calls-2026-10-18", "reason": "card qriptal-discord-calls-2026-10-18 is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "registering-a-test-in-scripts-dev-run-ex", "reason": "card registering-a-test-in-scripts-dev-run-ex is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "rsi-deep-prob-tables", "reason": "card rsi-deep-prob-tables is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "rv05-h2-position-line-evidence", "reason": "card rv05-h2-position-line-evidence is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "sim-dashboard-v1", "reason": "card sim-dashboard-v1 is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "stability-report-per-study-per-year-long", "reason": "card stability-report-per-study-per-year-long is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "statecode-invalid-publish-race", "reason": "card statecode-invalid-publish-race is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "station-tidy-sync-py-where-all-at-sessio", "reason": "card station-tidy-sync-py-where-all-at-sessio is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "super-session-coordinator-stalls-when-it", "reason": "card super-session-coordinator-stalls-when-it is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "t02-f1-review-allowlist-chunk-4", "reason": "card t02-f1-review-allowlist-chunk-4 is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "t09-f1-volume-fvg-side-inverted", "reason": "card t09-f1-volume-fvg-side-inverted is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "t09-f2-live-exits-match-tested-exits", "reason": "card t09-f2-live-exits-match-tested-exits is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "t09-f5-funding-cvd-fade-backtest-at-1h", "reason": "card t09-f5-funding-cvd-fade-backtest-at-1h is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "tasks-py-check-rewrites-other-cards-mark", "reason": "card tasks-py-check-rewrites-other-cards-mark is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "tasks-sweep-closed-cards", "reason": "card tasks-sweep-closed-cards is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "turn-meter-his-first-typed-ask-counts-as", "reason": "card turn-meter-his-first-typed-ask-counts-as is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "usage-pilot-run-confluence-s0-registry-o", "reason": "card usage-pilot-run-confluence-s0-registry-o is done (shipped)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "expire-broadcast", "id": "b-544817", "host": "vm", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "expire-broadcast", "id": "b-2a5b44", "host": "vm", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "expire-broadcast", "id": "b-be9727", "host": "vm", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "expire-broadcast", "id": "b-79ee5e", "host": "vm", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "expire-broadcast", "id": "b-10b3d8", "host": "vm", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "expire-broadcast", "id": "b-81547e", "host": "vm", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "expire-broadcast", "id": "b-124793", "host": "vm", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "expire-broadcast", "id": "b-0011f8", "host": "vm", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "expire-broadcast", "id": "b-5d9f52", "host": "vm", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "expire-broadcast", "id": "b-d6f877", "host": "vm", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "expire-broadcast", "id": "b-e10ba6", "host": "vm", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "expire-broadcast", "id": "b-18ca60", "host": "vm", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "expire-broadcast", "id": "b-1b4eef", "host": "vm", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "expire-broadcast", "id": "b-56931e", "host": "vm", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "expire-broadcast", "id": "b-88e04d", "host": "vm", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "expire-broadcast", "id": "b-4c2dfe", "host": "vm", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "main-checkout", "line": "C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed was 986 behind origin/fast-track: would run  git -C C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed merge --ff-only origin/fast-track  (hooks load from C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed\\.claude\\settings.json)", "dry_run": true, "utc": "20261028T134653Z"}
+{"heal": "release-shipped", "slug": "ai-behavior-fold-or-archive", "reason": "card ai-behavior-fold-or-archive is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "argon-fix-defects-and-re-land", "reason": "card argon-fix-defects-and-re-land is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "bt-engine-wire-real-funding-rsi-cc-rerun", "reason": "card bt-engine-wire-real-funding-rsi-cc-rerun is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "bug-app-permission-prompts-unattended", "reason": "card bug-app-permission-prompts-unattended is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "bug-instruction-conflicts-not-logged", "reason": "card bug-instruction-conflicts-not-logged is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "cbp-add-channel-latest-n-to-fetch-captio", "reason": "card cbp-add-channel-latest-n-to-fetch-captio is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "cbp-row-schema-expiry-gaps", "reason": "card cbp-row-schema-expiry-gaps is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "ci-flaky-sh-timeout-process-tree-windows", "reason": "card ci-flaky-sh-timeout-process-tree-windows is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "confluence-s1-context-counts", "reason": "card confluence-s1-context-counts is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "confluence-s3-context-read", "reason": "card confluence-s3-context-read is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "context-conditioned-session-flow-states", "reason": "card context-conditioned-session-flow-states is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "coord-audit-review", "reason": "card coord-audit-review is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "dispatch-a-critical-crucial-blocker-outr", "reason": "card dispatch-a-critical-crucial-blocker-outr is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "dsa-audit-04-clean-room-twin", "reason": "card dsa-audit-04-clean-room-twin is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "dsa-audit-10-missing-aspects", "reason": "card dsa-audit-10-missing-aspects is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "every-station-save-unshipped-worktree-wo", "reason": "card every-station-save-unshipped-worktree-wo is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "fix-raw-1d-vs-1m-resample-mismatch-905-o", "reason": "card fix-raw-1d-vs-1m-resample-mismatch-905-o is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "gemini-queue-claim-release-push-hangs-fo", "reason": "card gemini-queue-claim-release-push-hangs-fo is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "intrabar-stop-target-ordering-sensitivit", "reason": "card intrabar-stop-target-ordering-sensitivit is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "main-checkout-stays-a-clean-copy-of-trun", "reason": "card main-checkout-stays-a-clean-copy-of-trun is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "mfe-exit-dev-only-rerun-not-reproducible", "reason": "card mfe-exit-dev-only-rerun-not-reproducible is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "oi-pivot-reversal-probability-by-tf", "reason": "card oi-pivot-reversal-probability-by-tf is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "pipeliner-boot-diet", "reason": "card pipeliner-boot-diet is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "qriptal-discord-calls-2026-10-18", "reason": "card qriptal-discord-calls-2026-10-18 is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "registering-a-test-in-scripts-dev-run-ex", "reason": "card registering-a-test-in-scripts-dev-run-ex is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "rsi-deep-prob-tables", "reason": "card rsi-deep-prob-tables is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "rv05-h2-position-line-evidence", "reason": "card rv05-h2-position-line-evidence is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "sim-dashboard-v1", "reason": "card sim-dashboard-v1 is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "stability-report-per-study-per-year-long", "reason": "card stability-report-per-study-per-year-long is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "statecode-invalid-publish-race", "reason": "card statecode-invalid-publish-race is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "station-tidy-sync-py-where-all-at-sessio", "reason": "card station-tidy-sync-py-where-all-at-sessio is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "super-session-coordinator-stalls-when-it", "reason": "card super-session-coordinator-stalls-when-it is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "t02-f1-review-allowlist-chunk-4", "reason": "card t02-f1-review-allowlist-chunk-4 is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "t09-f1-volume-fvg-side-inverted", "reason": "card t09-f1-volume-fvg-side-inverted is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "t09-f2-live-exits-match-tested-exits", "reason": "card t09-f2-live-exits-match-tested-exits is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "t09-f5-funding-cvd-fade-backtest-at-1h", "reason": "card t09-f5-funding-cvd-fade-backtest-at-1h is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "tasks-py-check-rewrites-other-cards-mark", "reason": "card tasks-py-check-rewrites-other-cards-mark is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "tasks-sweep-closed-cards", "reason": "card tasks-sweep-closed-cards is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "turn-meter-his-first-typed-ask-counts-as", "reason": "card turn-meter-his-first-typed-ask-counts-as is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "usage-pilot-run-confluence-s0-registry-o", "reason": "card usage-pilot-run-confluence-s0-registry-o is done (shipped)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "expire-broadcast", "id": "b-544817", "host": "vm", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "expire-broadcast", "id": "b-2a5b44", "host": "vm", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "expire-broadcast", "id": "b-be9727", "host": "vm", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "expire-broadcast", "id": "b-79ee5e", "host": "vm", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "expire-broadcast", "id": "b-10b3d8", "host": "vm", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "expire-broadcast", "id": "b-81547e", "host": "vm", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "expire-broadcast", "id": "b-124793", "host": "vm", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "expire-broadcast", "id": "b-0011f8", "host": "vm", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "expire-broadcast", "id": "b-5d9f52", "host": "vm", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "expire-broadcast", "id": "b-d6f877", "host": "vm", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "expire-broadcast", "id": "b-e10ba6", "host": "vm", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "expire-broadcast", "id": "b-18ca60", "host": "vm", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "expire-broadcast", "id": "b-1b4eef", "host": "vm", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "expire-broadcast", "id": "b-56931e", "host": "vm", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "expire-broadcast", "id": "b-88e04d", "host": "vm", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "expire-broadcast", "id": "b-4c2dfe", "host": "vm", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "main-checkout", "line": "C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed was 986 behind origin/fast-track: would run  git -C C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed merge --ff-only origin/fast-track  (hooks load from C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed\\.claude\\settings.json)", "dry_run": true, "utc": "20261028T134733Z"}
+{"heal": "release-shipped", "slug": "mfe-exit-dev-only-rerun-not-reproducible", "reason": "card mfe-exit-dev-only-rerun-not-reproducible is done (shipped)", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "release-shipped", "slug": "oi-pivot-reversal-probability-by-tf", "reason": "card oi-pivot-reversal-probability-by-tf is done (shipped)", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "release-shipped", "slug": "pipeliner-boot-diet", "reason": "card pipeliner-boot-diet is done (shipped)", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "release-shipped", "slug": "qriptal-discord-calls-2026-10-18", "reason": "card qriptal-discord-calls-2026-10-18 is done (shipped)", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "release-shipped", "slug": "registering-a-test-in-scripts-dev-run-ex", "reason": "card registering-a-test-in-scripts-dev-run-ex is done (shipped)", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "release-shipped", "slug": "rsi-deep-prob-tables", "reason": "card rsi-deep-prob-tables is done (shipped)", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "release-shipped", "slug": "rv05-h2-position-line-evidence", "reason": "card rv05-h2-position-line-evidence is done (shipped)", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "release-shipped", "slug": "sim-dashboard-v1", "reason": "card sim-dashboard-v1 is done (shipped)", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "release-shipped", "slug": "stability-report-per-study-per-year-long", "reason": "card stability-report-per-study-per-year-long is done (shipped)", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "release-shipped", "slug": "statecode-invalid-publish-race", "reason": "card statecode-invalid-publish-race is done (shipped)", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "release-shipped", "slug": "station-tidy-sync-py-where-all-at-sessio", "reason": "card station-tidy-sync-py-where-all-at-sessio is done (shipped)", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "release-shipped", "slug": "super-session-coordinator-stalls-when-it", "reason": "card super-session-coordinator-stalls-when-it is done (shipped)", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "release-shipped", "slug": "t02-f1-review-allowlist-chunk-4", "reason": "card t02-f1-review-allowlist-chunk-4 is done (shipped)", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "release-shipped", "slug": "t09-f1-volume-fvg-side-inverted", "reason": "card t09-f1-volume-fvg-side-inverted is done (shipped)", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "release-shipped", "slug": "t09-f2-live-exits-match-tested-exits", "reason": "card t09-f2-live-exits-match-tested-exits is done (shipped)", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "release-shipped", "slug": "t09-f5-funding-cvd-fade-backtest-at-1h", "reason": "card t09-f5-funding-cvd-fade-backtest-at-1h is done (shipped)", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "release-shipped", "slug": "tasks-py-check-rewrites-other-cards-mark", "reason": "card tasks-py-check-rewrites-other-cards-mark is done (shipped)", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "release-shipped", "slug": "tasks-sweep-closed-cards", "reason": "card tasks-sweep-closed-cards is done (shipped)", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "release-shipped", "slug": "turn-meter-his-first-typed-ask-counts-as", "reason": "card turn-meter-his-first-typed-ask-counts-as is done (shipped)", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "release-shipped", "slug": "usage-pilot-run-confluence-s0-registry-o", "reason": "card usage-pilot-run-confluence-s0-registry-o is done (shipped)", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "expire-broadcast", "id": "b-544817", "host": "vm", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "expire-broadcast", "id": "b-2a5b44", "host": "vm", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "expire-broadcast", "id": "b-be9727", "host": "vm", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "expire-broadcast", "id": "b-79ee5e", "host": "vm", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "expire-broadcast", "id": "b-10b3d8", "host": "vm", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "expire-broadcast", "id": "b-81547e", "host": "vm", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "expire-broadcast", "id": "b-124793", "host": "vm", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "expire-broadcast", "id": "b-0011f8", "host": "vm", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "expire-broadcast", "id": "b-5d9f52", "host": "vm", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "expire-broadcast", "id": "b-d6f877", "host": "vm", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "expire-broadcast", "id": "b-e10ba6", "host": "vm", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "expire-broadcast", "id": "b-18ca60", "host": "vm", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "expire-broadcast", "id": "b-1b4eef", "host": "vm", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "expire-broadcast", "id": "b-56931e", "host": "vm", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "expire-broadcast", "id": "b-88e04d", "host": "vm", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "expire-broadcast", "id": "b-4c2dfe", "host": "vm", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "main-checkout", "line": "C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed is 1028 behind origin/fast-track: run  git -C C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed merge --ff-only origin/fast-track  (hooks load from C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed\\.claude\\settings.json)", "dry_run": true, "utc": "20261028T142047Z"}
+{"heal": "release-shipped", "slug": "ai-behavior-fold-or-archive", "reason": "card ai-behavior-fold-or-archive is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "argon-fix-defects-and-re-land", "reason": "card argon-fix-defects-and-re-land is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "bt-engine-wire-real-funding-rsi-cc-rerun", "reason": "card bt-engine-wire-real-funding-rsi-cc-rerun is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "bug-app-permission-prompts-unattended", "reason": "card bug-app-permission-prompts-unattended is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "bug-instruction-conflicts-not-logged", "reason": "card bug-instruction-conflicts-not-logged is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "cbp-add-channel-latest-n-to-fetch-captio", "reason": "card cbp-add-channel-latest-n-to-fetch-captio is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "cbp-row-schema-expiry-gaps", "reason": "card cbp-row-schema-expiry-gaps is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "ci-flaky-sh-timeout-process-tree-windows", "reason": "card ci-flaky-sh-timeout-process-tree-windows is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "confluence-s1-context-counts", "reason": "card confluence-s1-context-counts is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "confluence-s3-context-read", "reason": "card confluence-s3-context-read is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "context-conditioned-session-flow-states", "reason": "card context-conditioned-session-flow-states is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "coord-audit-review", "reason": "card coord-audit-review is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "dispatch-a-critical-crucial-blocker-outr", "reason": "card dispatch-a-critical-crucial-blocker-outr is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "dsa-audit-04-clean-room-twin", "reason": "card dsa-audit-04-clean-room-twin is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "dsa-audit-10-missing-aspects", "reason": "card dsa-audit-10-missing-aspects is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "every-station-save-unshipped-worktree-wo", "reason": "card every-station-save-unshipped-worktree-wo is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "fix-raw-1d-vs-1m-resample-mismatch-905-o", "reason": "card fix-raw-1d-vs-1m-resample-mismatch-905-o is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "gemini-queue-claim-release-push-hangs-fo", "reason": "card gemini-queue-claim-release-push-hangs-fo is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "intrabar-stop-target-ordering-sensitivit", "reason": "card intrabar-stop-target-ordering-sensitivit is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "main-checkout-stays-a-clean-copy-of-trun", "reason": "card main-checkout-stays-a-clean-copy-of-trun is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "mfe-exit-dev-only-rerun-not-reproducible", "reason": "card mfe-exit-dev-only-rerun-not-reproducible is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "oi-pivot-reversal-probability-by-tf", "reason": "card oi-pivot-reversal-probability-by-tf is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "pipeliner-boot-diet", "reason": "card pipeliner-boot-diet is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "qriptal-discord-calls-2026-10-18", "reason": "card qriptal-discord-calls-2026-10-18 is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "registering-a-test-in-scripts-dev-run-ex", "reason": "card registering-a-test-in-scripts-dev-run-ex is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "rsi-deep-prob-tables", "reason": "card rsi-deep-prob-tables is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "rv05-h2-position-line-evidence", "reason": "card rv05-h2-position-line-evidence is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "sim-dashboard-v1", "reason": "card sim-dashboard-v1 is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "stability-report-per-study-per-year-long", "reason": "card stability-report-per-study-per-year-long is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "statecode-invalid-publish-race", "reason": "card statecode-invalid-publish-race is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "station-tidy-sync-py-where-all-at-sessio", "reason": "card station-tidy-sync-py-where-all-at-sessio is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "super-session-coordinator-stalls-when-it", "reason": "card super-session-coordinator-stalls-when-it is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "t02-f1-review-allowlist-chunk-4", "reason": "card t02-f1-review-allowlist-chunk-4 is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "t09-f1-volume-fvg-side-inverted", "reason": "card t09-f1-volume-fvg-side-inverted is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "t09-f2-live-exits-match-tested-exits", "reason": "card t09-f2-live-exits-match-tested-exits is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "t09-f5-funding-cvd-fade-backtest-at-1h", "reason": "card t09-f5-funding-cvd-fade-backtest-at-1h is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "tasks-py-check-rewrites-other-cards-mark", "reason": "card tasks-py-check-rewrites-other-cards-mark is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "tasks-sweep-closed-cards", "reason": "card tasks-sweep-closed-cards is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "turn-meter-his-first-typed-ask-counts-as", "reason": "card turn-meter-his-first-typed-ask-counts-as is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "release-shipped", "slug": "usage-pilot-run-confluence-s0-registry-o", "reason": "card usage-pilot-run-confluence-s0-registry-o is done (shipped)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "expire-broadcast", "id": "b-544817", "host": "vm", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "expire-broadcast", "id": "b-2a5b44", "host": "vm", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "expire-broadcast", "id": "b-be9727", "host": "vm", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "expire-broadcast", "id": "b-79ee5e", "host": "vm", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "expire-broadcast", "id": "b-10b3d8", "host": "vm", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "expire-broadcast", "id": "b-81547e", "host": "vm", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "expire-broadcast", "id": "b-124793", "host": "vm", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "expire-broadcast", "id": "b-0011f8", "host": "vm", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "expire-broadcast", "id": "b-5d9f52", "host": "vm", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "expire-broadcast", "id": "b-d6f877", "host": "vm", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "expire-broadcast", "id": "b-e10ba6", "host": "vm", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "expire-broadcast", "id": "b-18ca60", "host": "vm", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "expire-broadcast", "id": "b-1b4eef", "host": "vm", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "expire-broadcast", "id": "b-56931e", "host": "vm", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "expire-broadcast", "id": "b-88e04d", "host": "vm", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "expire-broadcast", "id": "b-4c2dfe", "host": "vm", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "main-checkout", "line": "C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed is 1028 behind origin/fast-track: run  git -C C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed merge --ff-only origin/fast-track  (hooks load from C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed\\.claude\\settings.json)", "dry_run": false, "utc": "20261028T141853Z"}
+{"heal": "main-checkout", "line": "C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed is 1035 behind origin/fast-track: run  git -C C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed merge --ff-only origin/fast-track  (hooks load from C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed\\.claude\\settings.json)", "dry_run": false, "utc": "20261028T143725Z"}
+{"heal": "main-checkout", "line": "C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed is 1041 behind origin/fast-track: run  git -C C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed merge --ff-only origin/fast-track  (hooks load from C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed\\.claude\\settings.json)", "dry_run": true, "utc": "20261028T144149Z"}

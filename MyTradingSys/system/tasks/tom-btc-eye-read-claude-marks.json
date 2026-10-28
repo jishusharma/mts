@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T15:29:08Z",
   "commands": [],
   "created": "2026-10-25T19:41:01Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "tom-btc-eye-read-claude-marks",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "marks_claude.csv: 80 rows C001..C080, 13 take / 67 skip / 0 unreadable; blind (no _key/ind",
+      "ref": "2b065277a",
+      "utc": "2026-10-28T15:29:08Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -37,7 +44,12 @@
   "refined_by": "",
   "refreshed": "2026-10-25T19:41:02Z",
   "refs": [],
-  "result": "",
+  "result": "marks_claude.csv: 80 rows C001..C080, 13 take / 67 skip / 0 unreadable; blind (no _key/index/gemini/outcome opened); stop unreadable on all takes (no price axis); rules in TOM_ON_BTC.md s6",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/tom_btc_2026-10-13/charts (PNG files C001..C080)",
     "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md",
@@ -54,12 +66,13 @@
   "sources": [
     "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4 and table 2 (concept ids A-C3, A-P1..A-P8)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read TOM_ON_BTC.md section 4 and table 2 for the concept ids.",
     "For each PNG C001..C080 (view in batches of 10) append one CSV row: chart,take,concepts,stop,target.",
     "Write marks_claude.csv with a header and 80 rows; run the python -c check (80 rows, ids C001..C080, takes valid)."
   ],
+  "taken": "2026-10-28T15:29:08Z",
   "tests": "Read task: the python -c row-count and id check fails before the file exists.",
   "title": "Tom-on-BTC T3 reader 1: Claude blind marks of all 80 lab charts (marks_claude.csv)",
   "weight": "ROUTINE",
