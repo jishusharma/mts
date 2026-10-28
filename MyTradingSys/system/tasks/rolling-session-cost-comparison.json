@@ -3,6 +3,21 @@
   "asks": "",
   "closed": "2026-10-28T15:13:23Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": 21,
+    "folded": "2026-10-28T15:13:35Z",
+    "misses": 35,
+    "reads": [
+      "MyTradingSys/research/fast_track_2026-09-27/SUPERVISOR_LOG.md",
+      "MyTradingSys/system/OPERATOR_DECISIONS.md",
+      "MyTradingSys/research/station_c_rolling_audit_20261026/REPORT.md",
+      "scripts/dev/usage_log.py",
+      "scripts/dev/context_gap.py",
+      "MyTradingSys/research/USAGE_PILOT.csv",
+      "MyTradingSys/research/context_load/REPORT.md"
+    ],
+    "session": "agent-adc7b8294cb777856"
+  },
   "created": "2026-10-28T08:13:44Z",
   "depends_on": [],
   "done_when": "research/rolling_session_cost_2026-10/REPORT.md has a table of >=5 past sessions (start/end context %, token or budget % spent, compaction count, run length) with a source per row, or NOT_IN_DATA per column; plus a list of past issues with sources.",
